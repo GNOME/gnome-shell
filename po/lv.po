@@ -1,55 +1,79 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Free Software Foundation, Inc.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# metaciy for Latvian.
+# Copyright (C) 2002 Free Software Foundation, Inc.
+# Peteris Krisjanis <pecisk@inbox.lv>, 2002.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity for latvian\n"
-"POT-Creation-Date: 2002-08-20 15:54-0400\n"
-"PO-Revision-Date: 2002-01-27 22:50+0200\n"
-"Last-Translator: Peteris Krisjanis <peteris.krisjanis@ttc.lv>\n"
-"Language-Team: Latvian <ll10nt@ttc.lv>\n"
+"Project-Id-Version: metacity\n"
+"POT-Creation-Date: 2002-08-02 12:48+0200\n"
+"PO-Revision-Date: 2002-08-19 10:59+0200\n"
+"Last-Translator: Artis Trops <hornet@navigators.lv>\n"
+"Language-Team: Latvian <ll10nt@os.lv>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
+#: src/delete.c:62
+#: src/delete.c:89
+#: src/metacity-dialog.c:46
 #: src/theme-parser.c:467
-#, fuzzy, c-format
+#, c-format
 msgid "Could not parse \"%s\" as an integer"
-msgstr "Nevarēja izveidot direktoriju '%s': %s\n"
+msgstr "Nevarēju parsēt \"%s\" kā vērtību"
 
-#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
-#: src/theme-parser.c:476 src/theme-parser.c:530
+#: src/delete.c:69
+#: src/delete.c:96
+#: src/metacity-dialog.c:53
+#: src/theme-parser.c:476
+#: src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr ""
+msgstr "Nesapratu pēdiņu rakstzīmes \"%s\" virknē \"%s\""
 
 #: src/delete.c:127
-#, fuzzy, c-format
-msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Kļūda parsējot saglabāto sesijas failu: %s\n"
+#, c-format
+msgid ""
+"Failed to parse message \"%s\" from dialog process\n"
+""
+msgstr ""
+"Neizdevās parsēt ziņu \"%s\" no dialoga procesa\n"
+""
 
 #: src/delete.c:262
 #, c-format
-msgid "Error reading from dialog display process: %s\n"
+msgid ""
+"Error reading from dialog display process: %s\n"
+""
 msgstr ""
+"Kļūda lasot no dialoga displeja procesa: %s\n"
+""
 
 #: src/delete.c:333
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
+""
 msgstr ""
+"Kļūda palaižot metacity-dialogu, lai pavaicātu par šīs aplikācijas nokaušanu: %s\n"
+""
 
 #: src/delete.c:431
-#, fuzzy, c-format
-msgid "Failed to get hostname: %s\n"
-msgstr "Nevarēja pārstartēt: %s\n"
-
-#: src/display.c:234
 #, c-format
-msgid "Failed to open X Window System display '%s'\n"
-msgstr "Nevarēja atvērt X Logu Sistēmas displeju '%s'\n"
+msgid ""
+"Failed to get hostname: %s\n"
+""
+msgstr ""
+"Neizdevās dabūt resursdatora nosaukumu: %s\n"
+""
+
+#: src/display.c:253
+#, c-format
+msgid ""
+"Failed to open X Window System display '%s'\n"
+""
+msgstr ""
+"Nevarēja atvērt X Logu Sistēmas displeju '%s'\n"
+""
 
 #: src/errors.c:154
 #, c-format
@@ -57,15 +81,21 @@ msgid ""
 "Lost connection to the display '%s';\n"
 "most likely the X server was shut down or you killed/destroyed\n"
 "the window manager.\n"
+""
 msgstr ""
 "Zaudēju savienojumu ar displeju  '%s';\n"
-"ļoti iespējams, X serveris ir ticis izslēgts vai arī jūs apturējāt\n"
+"ļoti iespējams, X serveris tika izslēgts vai arī jūs apturējāt\n"
 "logu pārvaldnieku.\n"
+""
 
 #: src/errors.c:161
 #, c-format
-msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr "Fatāla IO kļūda %d (%s) displejā '%s'.\n"
+msgid ""
+"Fatal IO error %d (%s) on display '%s'.\n"
+""
+msgstr ""
+"Fatāla IO kļūda %d (%s) displejā '%s'.\n"
+""
 
 #: src/frames.c:862
 msgid "Close Window"
@@ -81,88 +111,99 @@ msgstr "Samazināt Logu"
 
 #: src/frames.c:871
 msgid "Maximize Window"
-msgstr "Palielināt Logu"
+msgstr "Maksimizēt Logu"
 
 #: src/frames.c:874
 msgid "Unmaximize Window"
 msgstr "Atjaunot Logu"
 
-#: src/keybindings.c:819
+#: src/keybindings.c:808
 #, c-format
 msgid ""
-"Some other program is already using the key %s with modifiers %x as a "
-"binding\n"
+"Some other program is already using the key %s with modifiers %x as a binding\n"
+""
 msgstr ""
 "Kāda cita programma jau lieto taustiņu %s ar modifcētājiem %x kā sasaisti\n"
+""
 
-#: src/keybindings.c:2103
+#: src/keybindings.c:2085
 #, c-format
-msgid "Error launching metacity-dialog to print an error about a command: %s\n"
+msgid ""
+"Error launching metacity-dialog to print an error about a command: %s\n"
+""
 msgstr ""
+"Kļūda palaižot metacity-dialogu, lai parādītu kļūdu par komandu: %s\n"
+""
 
-#: src/keybindings.c:2133
+#: src/keybindings.c:2115
 #, c-format
-msgid "No command %d has been defined.\n"
+msgid ""
+"No command %d has been defined.\n"
+""
 msgstr ""
+"Neviena komanda %d netika definēta.\n"
+""
 
 #: src/main.c:63
 msgid ""
-"metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--"
-"replace]\n"
+"metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--replace]\n"
+""
 msgstr ""
+"metacity [--disable-sm] [--sm-save-file=FAILA NOSAUKUMS] [--display=DISPLEJS] [--replace]\n"
+""
 
 #: src/main.c:299
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr ""
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgstr "Nevaru atrast tēmu! Pārliecinies, vai %s eksisē un satur parastās tēmas."
 
 #: src/main.c:347
 #, c-format
-msgid "Failed to restart: %s\n"
-msgstr "Nevarēja pārstartēt: %s\n"
+msgid ""
+"Failed to restart: %s\n"
+""
+msgstr ""
+"Nevarēju pārstartēt: %s\n"
+""
 
 #: src/menu.c:51
-msgid "_Minimize"
-msgstr "_Samazināt"
+msgid "_Close"
+msgstr "_Aizvērt"
 
 #: src/menu.c:52
-msgid "Ma_ximize"
-msgstr "_Palielināt"
+msgid "_Minimize"
+msgstr "_Minimizēt"
 
 #: src/menu.c:53
-#, fuzzy
-msgid "Unma_ximize"
-msgstr "_Atjaunot"
+msgid "Ma_ximize"
+msgstr "Ma_ksimizēt"
 
 #: src/menu.c:54
+msgid "Unma_ximize"
+msgstr "At_jaunot"
+
+#: src/menu.c:55
 msgid "_Shade"
 msgstr "Ē_not"
 
-#: src/menu.c:55
-#, fuzzy
-msgid "Un_shade"
-msgstr "_Atēnot"
-
 #: src/menu.c:56
+msgid "Un_shade"
+msgstr "A_tēnot"
+
+#: src/menu.c:57
 msgid "Mo_ve"
 msgstr "_Pārvietot"
 
-#: src/menu.c:57
+#: src/menu.c:58
 msgid "_Resize"
 msgstr "_Mainīt"
 
 #. separator
-#: src/menu.c:59
-msgid "_Close"
-msgstr "_Aizvērt"
-
-#. separator
-#: src/menu.c:61
+#: src/menu.c:60
 msgid "Put on _All Workspaces"
-msgstr "Uzstādīt uz visām d_arba virsmām"
+msgstr "Novietot uz Visām D_arba vietām"
 
-#: src/menu.c:62
+#: src/menu.c:61
 msgid "Only on _This Workspace"
 msgstr "Tikai uz Šīs Darba vie_tas"
 
@@ -171,29 +212,29 @@ msgstr "Tikai uz Šīs Darba vie_tas"
 #. * integer, insert a '_' before the number if it is less than 10 and
 #. * return it
 #.
-#: src/menu.c:147
+#: src/menu.c:180
 #, c-format
 msgid "Workspace %u"
-msgstr ""
+msgstr "Darba vieta %u"
 
 #.
 #. * Above name is a pointer into the Workspace struct. Here we make
 #. * a copy copy so we can have our wicked way with it.
 #.
-#: src/menu.c:153
-#, fuzzy, c-format
+#: src/menu.c:186
+#, c-format
 msgid "Workspace %s%d"
-msgstr "Tikai uz darba virsmas %s%d"
+msgstr "Darba vieta %s%d"
 
-#: src/menu.c:295
-#, fuzzy, c-format
+#: src/menu.c:370
+#, c-format
 msgid "Only on %s"
-msgstr "Tikai uz darba virsmas %s%d"
+msgstr "Tikai uz %s"
 
-#: src/menu.c:297
-#, fuzzy, c-format
+#: src/menu.c:372
+#, c-format
 msgid "Move to %s"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgstr "Pārvietot uz %s"
 
 #: src/metacity-dialog.c:86
 #, c-format
@@ -202,24 +243,25 @@ msgid ""
 "Force this application to exit?\n"
 "(Any open documents will be lost.)"
 msgstr ""
+"Logs \"%s\" neatbild.\n"
+"Likt šai aplikācijai iziet?\n"
+"(Visi atvētie dokumenti būs zuduši.)"
 
 #: src/metacity-dialog.c:94
 msgid "Kill application"
-msgstr ""
+msgstr "Nokaut aplikāciju"
 
 #: src/metacity-dialog.c:188
 msgid "Title"
-msgstr ""
+msgstr "Nosaukums"
 
 #: src/metacity-dialog.c:200
 msgid "Class"
-msgstr ""
+msgstr "Klase"
 
 #: src/metacity-dialog.c:224
-msgid ""
-"These windows do not support \"save current setup\" and will have to be "
-"restarted manually next time you log in."
-msgstr ""
+msgid "These windows do not support \"save current setup\" and will have to be restarted manually next time you log in."
+msgstr "Šie logi neatbalsta \"saglabāt pašreizējos uzstādījumus\" un būs jāpārsāknē pašrocīgi nākamreiz, kad pieteiksieties."
 
 #: src/metacity-dialog.c:276
 #, c-format
@@ -227,964 +269,672 @@ msgid ""
 "There was an error running \"%s\":\n"
 "%s."
 msgstr ""
+"Atgadījās kļūda, darbinot \"%s\":\n"
+"%s."
 
 #: src/metacity.desktop.in.h:1
 msgid "Metacity"
-msgstr ""
+msgstr "Metacity"
 
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr ""
+msgstr "(Nav iestrādāts) Navigācija darbojas vairāk pēc aplikāciju, nekā logu nosacījumiem"
 
 #: src/metacity.schemas.in.h:2
-msgid ""
-"A font description string describing a font for window titlebars. The size "
-"from the description will only be used if the titlebar_font_size option is "
-"set to 0, however. Also, this option is disabled if the "
-"titlebar_uses_desktop_font option is set to true. By default, titlebar_font "
-"is unset, causing Metacity to fall back to the desktop font even if "
-"titlebar_uses_desktop_font is false."
-msgstr ""
+msgid "A font description string describing a font for window titlebars. The size from the description will only be used if the titlebar_font_size option is set to 0, however. Also, this option is disabled if the titlebar_uses_desktop_font option is set to true. By default, titlebar_font is unset, causing Metacity to fall back to the desktop font even if titlebar_uses_desktop_font is false."
+msgstr "Fonta apraksta virkne, kas apraksta fontu logu nosaukumjoslās. Izmērs no apraksta tiks lietots, ja virsrakstjoslas_fonta_izmēra opcija ir iestādīta uz 0. Tāpat arī šī opcija tiek deaktivizēta, ja virsrakstjosla_lieto_darbavirsmas_fontu opcija ir iestādīta kā patiesa. Pēc noklusējuma virsrakstjoslas_fonts ir atslēgts, liekot Metacity palikt pie darba virsmas fonta, pat ja virsrakstjosla_lieto darbavirsmas_fontu ir aplams."
 
 #: src/metacity.schemas.in.h:3
 msgid "Activate window menu"
-msgstr ""
+msgstr "Aktīvā loga izvēlne"
 
 #: src/metacity.schemas.in.h:4
 msgid "Automatically raises the focused window"
-msgstr ""
+msgstr "Automātiski pacelt fokusēto logu"
 
 #: src/metacity.schemas.in.h:5
-#, fuzzy
 msgid "Close a window"
-msgstr "Aizvērt Logu"
+msgstr "Aizvērt logu"
 
 #: src/metacity.schemas.in.h:6
 msgid "Commands to run in response to keybindings"
-msgstr ""
+msgstr "Komandas, kuras palaist kā atbildes uz taustiņsasaistēm"
 
 #: src/metacity.schemas.in.h:7
 msgid "Current theme"
-msgstr ""
+msgstr "Pašreizējā tēma"
 
 #: src/metacity.schemas.in.h:8
 msgid "Delay in milliseconds for the auto raise option"
-msgstr ""
+msgstr "Aizture milisekundēs automātiskās pacelšanas opcijai"
 
 #: src/metacity.schemas.in.h:9
 msgid "Disable misfeatures that are required by old or broken applications"
-msgstr ""
+msgstr "Deaktivizēt nepilnības, kas nepieciešamas vecām vai sabojātām aplikācijām"
 
 #: src/metacity.schemas.in.h:10
 msgid "Hide all windows and focus desktop"
-msgstr ""
+msgstr "Paslēpt visus logus un fokusēties uz darba virsmu"
 
 #: src/metacity.schemas.in.h:11
-msgid ""
-"If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
-"focused window will be automatically raised after a delay (the delay is "
-"specified by the auto_raise_delay key)."
-msgstr ""
+msgid "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the focused window will be automatically raised after a delay (the delay is specified by the auto_raise_delay key)."
+msgstr "Ja patiess un fokusēšanas režīms ir vai nu \"paviršs\" vai \"pele\", tad fokusetais logs tiks automātiski pacelts pēc aiztures (aizture tiek noteikta ar auto_raise_delay taustiņu)."
 
 #: src/metacity.schemas.in.h:12
-msgid ""
-"If true, ignore the titlebar_font option, and use the standard application "
-"font for window titles."
-msgstr ""
+msgid "If true, ignore the titlebar_font option, and use the standard application font for window titles."
+msgstr "Ja patiess, ignorēt virsrakstjoslas_fonta opciju un lietot standarta aplikāciju fontus logu nosaukumiem."
 
 #: src/metacity.schemas.in.h:13
-msgid ""
-"If true, then Metacity works in terms of applications rather than windows. "
-"The concept is a bit abstract, but in general an application-based setup is "
-"more like the Mac and less like Windows. When you focus a window in "
-"application-based mode, all the windows in the application will be raised. "
-"Also, in application-based mode, focus clicks are not passed through to "
-"windows in other applications. The existence of this setting is somewhat "
-"questionable. But it's better than having settings for all the specific "
-"details of application-based vs. window-based, e.g. whether to pass through "
-"clicks. Also, application-based mode is largely unimplemented at the moment."
-msgstr ""
+msgid "If true, then Metacity works in terms of applications rather than windows. The concept is a bit abstract, but in general an application-based setup is more like the Mac and less like Windows. When you focus a window in application-based mode, all the windows in the application will be raised. Also, in application-based mode, focus clicks are not passed through to windows in other applications. The existence of this setting is somewhat questionable. But it's better than having settings for all the specific details of application-based vs. window-based, e.g. whether to pass through clicks. Also, application-based mode is largely unimplemented at the moment."
+msgstr "Ja patiess, tad Metacity darbojas vairāk pēc aplikāciju, nekā logu nosacījumiem. Koncepcija ir nedaudz apstrakta, taču kopumā aplikācijām-bāzēts uzstādījums ir vairāk līdzinās Mac kā Windows. Kad jūs fokusējat logu aplikācijām-bāzētajā režīmā, visi logi aplikacijā tiks pacelti. Tāpat arī aplikācijām-bāzētajā režīmā fokusēšanas klikšķi netiek laisti caur logiem citās aplikācijās. Šī uzstādījuma eksistence ir diezgan apšaubāma. Bet šādi ir labāk, nekā uzstādījumi visām specifiskajām detaļām attiecībās starp aplikācijām-bāzētajiem un logiem-bāzētajiem režīmiem, piem., vai caurlaist klikšķus. Tāpat arī aplikācijām-bāzētais režīms ir diezgan neizstrādāta uz doto brīdi."
 
 #: src/metacity.schemas.in.h:14
-msgid "Lower window below other windows"
-msgstr ""
+msgid "Minimize a window"
+msgstr "Minimizēt logu"
 
 #: src/metacity.schemas.in.h:15
-#, fuzzy
-msgid "Minimize a window"
-msgstr "Samazināt Logu"
+msgid "Move a window"
+msgstr "Pārvietot logu"
 
 #: src/metacity.schemas.in.h:16
-#, fuzzy
-msgid "Move a window"
-msgstr "Aizvērt Logu"
+msgid "Move focus between panels and the desktop"
+msgstr "Pārvietot fokusu starp paneļiem un darba virsmu"
 
 #: src/metacity.schemas.in.h:17
-msgid "Move focus between panels and the desktop"
-msgstr ""
+msgid "Move focus between windows"
+msgstr "Pārvietot fokusu starp logiem"
 
 #: src/metacity.schemas.in.h:18
-msgid "Move focus between windows"
-msgstr ""
+msgid "Move window one workspace down"
+msgstr "Pārvietot logu par vienu darba vietu lejup"
 
 #: src/metacity.schemas.in.h:19
-#, fuzzy
-msgid "Move window one workspace down"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Move window one workspace to the left"
+msgstr "Pārvietot logu vienu darba vietu pa kreisi"
 
 #: src/metacity.schemas.in.h:20
-msgid "Move window one workspace to the left"
-msgstr ""
+msgid "Move window one workspace to the right"
+msgstr "Pārvietot logu vienu darba vietu pa labi"
 
 #: src/metacity.schemas.in.h:21
-msgid "Move window one workspace to the right"
-msgstr ""
+msgid "Move window one workspace up"
+msgstr "Pārvietot logu par vienu darba vietu augšup"
 
 #: src/metacity.schemas.in.h:22
-#, fuzzy
-msgid "Move window one workspace up"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Move window to workspace 1"
+msgstr "Pārvietot logu uz darba vietu 1"
 
 #: src/metacity.schemas.in.h:23
-#, fuzzy
-msgid "Move window to workspace 1"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Move window to workspace 10"
+msgstr "Pārvietot logu uz darba vietu 10"
 
 #: src/metacity.schemas.in.h:24
-#, fuzzy
-msgid "Move window to workspace 10"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Move window to workspace 11"
+msgstr "Pārvietot logu uz darba vietu 11"
 
 #: src/metacity.schemas.in.h:25
-#, fuzzy
-msgid "Move window to workspace 11"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Move window to workspace 12"
+msgstr "Pārvietot logu uz darba vietu 12"
 
 #: src/metacity.schemas.in.h:26
-#, fuzzy
-msgid "Move window to workspace 12"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Move window to workspace 2"
+msgstr "Pārvietot logu uz darba vietu 2"
 
 #: src/metacity.schemas.in.h:27
-#, fuzzy
-msgid "Move window to workspace 2"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Move window to workspace 3"
+msgstr "Pārvietot logu uz darba vietu 3"
 
 #: src/metacity.schemas.in.h:28
-#, fuzzy
-msgid "Move window to workspace 3"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Move window to workspace 4"
+msgstr "Pārvietot logu uz darba vietu 4"
 
 #: src/metacity.schemas.in.h:29
-#, fuzzy
-msgid "Move window to workspace 4"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Move window to workspace 5"
+msgstr "Pārvietot logu uz darba vietu 5"
 
 #: src/metacity.schemas.in.h:30
-#, fuzzy
-msgid "Move window to workspace 5"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Move window to workspace 6"
+msgstr "Pārvietot logu uz darba vietu 6"
 
 #: src/metacity.schemas.in.h:31
-#, fuzzy
-msgid "Move window to workspace 6"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Move window to workspace 7"
+msgstr "Pārvietot logu uz darba vietu 7"
 
 #: src/metacity.schemas.in.h:32
-#, fuzzy
-msgid "Move window to workspace 7"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Move window to workspace 8"
+msgstr "Pārvietot logu uz darba vietu 8"
 
 #: src/metacity.schemas.in.h:33
-#, fuzzy
-msgid "Move window to workspace 8"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Move window to workspace 9"
+msgstr "Pārvietot logu uz darba vietu 9"
 
 #: src/metacity.schemas.in.h:34
-#, fuzzy
-msgid "Move window to workspace 9"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Number of workspaces"
+msgstr "Darba vietu skaits"
 
 #: src/metacity.schemas.in.h:35
-#, fuzzy
-msgid "Number of workspaces"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Number of workspaces. Must be more than zero, and has a fixed maximum (to prevent accidentally destroying your desktop by asking for 34 million workspaces)."
+msgstr "Darba vietu skaits. Jābūt lielākam par nulli un ir fiksēts maksimums (lai nejauši neizpostītu jūsu darba virsmu, pieprasot 34 milionus darba vietu)."
 
 #: src/metacity.schemas.in.h:36
-msgid ""
-"Number of workspaces. Must be more than zero, and has a fixed maximum (to "
-"prevent accidentally destroying your desktop by asking for 34 million "
-"workspaces)."
-msgstr ""
+msgid "Raise window if obscured, lowers it otherwise"
+msgstr "Pacelt logu, ja aizklāts, citā gadījumā pazemina"
 
 #: src/metacity.schemas.in.h:37
-msgid "Raise window above other windows"
-msgstr ""
+msgid "Resize a window"
+msgstr "Mainīt loga izmēru"
 
 #: src/metacity.schemas.in.h:38
-msgid "Raise window if obscured, lowers it otherwise"
-msgstr ""
+msgid "Run a defined command"
+msgstr "Palaist definēto komandu"
 
 #: src/metacity.schemas.in.h:39
-#, fuzzy
-msgid "Resize a window"
-msgstr "Aizvērt Logu"
+msgid "Some applications break specifications in ways that result in window manager misfeatures. For example, ideally Metacity would place all dialogs in a consistent position with respect to their parent window. This requires ignoring application-specified positions for dialogs. But some versions of Java/Swing mark their popup menus as dialogs, so Metacity has to disable dialog positioning to allow menus to work in broken Java applications. There are several other examples like this. This option puts Metacity in full-on Correct mode, which perhaps gives a moderately nicer UI if you don't need to run any broken apps. Sadly, workarounds must be enabled by default; the real world is an ugly place. Some of the workarounds are workarounds for limitations in the specifications themselves, so sometimes a bug in no-workarounds mode won't be fixable without amending a spec."
+msgstr "Dažas aplikācijas pārkāpj specifikācijas, kas noved pie logu pārvaldnieka darbības nepilnībām. Piemēram, ideāli Metacity novietotu vius dialogus saskanīgā pozīcijā attiecībā pret pirmavota logu. Tam nepieciešams ignorēt aplikāciju noteiktās pozīcijas dialogiem. Bet dažas Java/Swing versijas marķē to lecējizvēlnes kā dialogus, tāpēc Metacity ir jādeaktivizē dialogu pozicionēšana, lai ļautu darboties izvēlnēm sabojātajās Java aplikācijās. Ir vēl arī pāris citu līdzīgu piemēru. Šī opcija ieslēdz Metacity pilnīgas Pareizības režīmā, kas, iespējams, piedāvā pārvaldītu un jaukāku UI, ja jums nav nepieciešams darbināt sabojātas aplikācijas. Diemžēl šādai apstrādei ir jābūt aktivizētai pēc noklusējuma; īstā pasaule ir neglīta vietiņa. Daži apvedceļi ir apvedceļi pašiem ierobežojumiem, tāpēc dažreiz \"blusa\" ne-apvedceļu režīmā nebūs izlabojama bez specifikācijas izlabojuma."
 
 #: src/metacity.schemas.in.h:40
-msgid "Run a defined command"
-msgstr ""
+msgid "Switch to workspace 1"
+msgstr "Pārslēgties uz darba vietu 1"
 
 #: src/metacity.schemas.in.h:41
-msgid ""
-"Some applications break specifications in ways that result in window manager "
-"misfeatures. For example, ideally Metacity would place all dialogs in a "
-"consistent position with respect to their parent window. This requires "
-"ignoring application-specified positions for dialogs. But some versions of "
-"Java/Swing mark their popup menus as dialogs, so Metacity has to disable "
-"dialog positioning to allow menus to work in broken Java applications. There "
-"are several other examples like this. This option puts Metacity in full-on "
-"Correct mode, which perhaps gives a moderately nicer UI if you don't need to "
-"run any broken apps. Sadly, workarounds must be enabled by default; the real "
-"world is an ugly place. Some of the workarounds are workarounds for "
-"limitations in the specifications themselves, so sometimes a bug in no-"
-"workarounds mode won't be fixable without amending a spec."
-msgstr ""
+msgid "Switch to workspace 10"
+msgstr "Pārslēgties uz darba vietu 10"
 
 #: src/metacity.schemas.in.h:42
-#, fuzzy
-msgid "Switch to workspace 1"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Switch to workspace 11"
+msgstr "Pārslēgties uz darba vietu 11"
 
 #: src/metacity.schemas.in.h:43
-#, fuzzy
-msgid "Switch to workspace 10"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Switch to workspace 12"
+msgstr "Pārslēgties uz darba vietu 12"
 
 #: src/metacity.schemas.in.h:44
-#, fuzzy
-msgid "Switch to workspace 11"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Switch to workspace 2"
+msgstr "Pārslēgties uz darba vietu 2"
 
 #: src/metacity.schemas.in.h:45
-#, fuzzy
-msgid "Switch to workspace 12"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Switch to workspace 3"
+msgstr "Pārslēgties uz darba vietu 3"
 
 #: src/metacity.schemas.in.h:46
-#, fuzzy
-msgid "Switch to workspace 2"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Switch to workspace 4"
+msgstr "Pārslēgties uz darba vietu 4"
 
 #: src/metacity.schemas.in.h:47
-#, fuzzy
-msgid "Switch to workspace 3"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Switch to workspace 5"
+msgstr "Pārslēgties uz darba vietu 5"
 
 #: src/metacity.schemas.in.h:48
-#, fuzzy
-msgid "Switch to workspace 4"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Switch to workspace 6"
+msgstr "Pārslēgties uz darba vietu 6"
 
 #: src/metacity.schemas.in.h:49
-#, fuzzy
-msgid "Switch to workspace 5"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Switch to workspace 7"
+msgstr "Pārslēgties uz darba vietu 7"
 
 #: src/metacity.schemas.in.h:50
-#, fuzzy
-msgid "Switch to workspace 6"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Switch to workspace 8"
+msgstr "Pārslēgties uz darba vietu 8"
 
 #: src/metacity.schemas.in.h:51
-#, fuzzy
-msgid "Switch to workspace 7"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Switch to workspace 9"
+msgstr "Pārslēgties uz darba vietu 9"
 
 #: src/metacity.schemas.in.h:52
-#, fuzzy
-msgid "Switch to workspace 8"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Switch to workspace above the current space"
+msgstr "Pārslēgties uz darba vietu virs pašreizējās vietas"
 
 #: src/metacity.schemas.in.h:53
-#, fuzzy
-msgid "Switch to workspace 9"
-msgstr "Pārvietot uz darba virsmas %s%d"
+msgid "Switch to workspace below the current space"
+msgstr "Pārslēgties uz darba vietu zem pašreizējās vietas"
 
 #: src/metacity.schemas.in.h:54
-msgid "Switch to workspace above the current space"
-msgstr ""
+msgid "Switch to workspace on the left"
+msgstr "Pārslēgties uz darba vietu pa kreisi"
 
 #: src/metacity.schemas.in.h:55
-msgid "Switch to workspace below the current space"
-msgstr ""
+msgid "Switch to workspace on the right"
+msgstr "Pārslēgties uz darba vietu pa labi"
 
 #: src/metacity.schemas.in.h:56
-msgid "Switch to workspace on the left"
-msgstr ""
+msgid "The /apps/metacity/global_keybindings/run_command_N keys define keybindings that correspond to these commands. Pressing the keybinding for run_command_N will execute command_N."
+msgstr "/apps/metacity/global_keybindings/run_command_N keys definē taustiņsasaistes, kas atbilst šīm komandām. Spiežot taustiņsasaisti priekš run_command_N palaidīs command_N."
 
 #: src/metacity.schemas.in.h:57
-msgid "Switch to workspace on the right"
-msgstr ""
+msgid "The keybinding that runs the correspondingly-numbered command in /apps/metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas palaiž atbilstoši numurēto komandu no /apps/metacity/keybinding_commands. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:58
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
-"that correspond to these commands. Pressing the keybinding for run_command_N "
-"will execute command_N."
-msgstr ""
+msgid "The keybinding that switches to the workspace above the current workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas pārslēdzas uz darba vietu virs pašreizējās darba vietas. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:59
-msgid ""
-"The keybinding that runs the correspondingly-numbered command in /apps/"
-"metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower "
-"or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-"Ctrl&gt;\". If you set the option to the special string \"disabled\", then "
-"there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to the workspace below the current workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas pārslēdzas uz darba vietu zem pašreizējās darba vietas. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:60
-msgid ""
-"The keybinding that switches to the workspace above the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
+msgid "The keybinding that switches to the workspace on the left of the current workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas pārslēdzas uz darba vietu pa kreisi no pašreizējās darba vietas. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:61
-msgid ""
-"The keybinding that switches to the workspace below the current workspace. "
-"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
-"option to the special string \"disabled\", then there will be no keybinding "
-"for this action."
-msgstr ""
+msgid "The keybinding that switches to the workspace on the right of the current workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas pārslēdzas uz darba vietu pa labi no pašreizējās darba vietas. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:62
-msgid ""
-"The keybinding that switches to the workspace on the left of the current "
-"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
-"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-"the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 1. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas pārslēdz uz 1. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:63
-msgid ""
-"The keybinding that switches to the workspace on the right of the current "
-"workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
-"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-"the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 10. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas pārslēdz uz 10. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:64
-msgid ""
-"The keybinding that switches to workspace 1. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 11. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas pārslēdz uz 11. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:65
-msgid ""
-"The keybinding that switches to workspace 10. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 12. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas pārslēdz uz 12. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:66
-msgid ""
-"The keybinding that switches to workspace 11. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 2. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas pārslēdz uz 2. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:67
-msgid ""
-"The keybinding that switches to workspace 12. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 3. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas pārslēdz uz 3. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:68
-msgid ""
-"The keybinding that switches to workspace 2. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 4. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas pārslēdz uz 4. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:69
-msgid ""
-"The keybinding that switches to workspace 3. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 5. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas pārslēdz uz 5. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:70
-msgid ""
-"The keybinding that switches to workspace 4. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 6. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas pārslēdz uz 6. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:71
-msgid ""
-"The keybinding that switches to workspace 5. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 7. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas pārslēdz uz 7. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:72
-msgid ""
-"The keybinding that switches to workspace 6. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 8. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas pārslēdz uz 8. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:73
-msgid ""
-"The keybinding that switches to workspace 7. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding that switches to workspace 9. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas pārslēdz uz 9. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:74
-msgid ""
-"The keybinding that switches to workspace 8. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to activate the window menu. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai aktivizētu loga izvēlni. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:75
-msgid ""
-"The keybinding that switches to workspace 9. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to close a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek ietota, lai aizvērtu logu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:76
-msgid ""
-"The keybinding used to activate the window menu. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to enter \"move mode\" and begin moving a window using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai ieietu \"pārvietošanas režīmā\" un sāktu pārvietot logus, lietojot tastatūru. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:77
-msgid ""
-"The keybinding used to close a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to enter \"resize mode\" and begin resizing a window using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai ieietu \"izmēru mainīšanas režīmā\" un sāktu mainīt loga izmērus, lietojot tastatūru. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:78
-msgid ""
-"The keybinding used to enter \"move mode\" and begin moving a window using "
-"the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The keybinding used to hide all normal windows and set the focus to the desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai paslēptu visus normālos logus un fokusētos uz darba virsmas fonu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:79
-msgid ""
-"The keybinding used to enter \"resize mode\" and begin resizing a window "
-"using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to minimize a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai minimizētu logu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:80
-msgid ""
-"The keybinding used to hide all normal windows and set the focus to the "
-"desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or "
-"upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-"\". If you set the option to the special string \"disabled\", then there "
-"will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window one workspace down. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai pārvietotu logu vienu darba vietu lejup. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:81
-msgid ""
-"The keybinding used to minimize a window. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window one workspace to the left. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai pārvietotu logu vienu darba vietu pa kreisi. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:82
-msgid ""
-"The keybinding used to move a window one workspace down. The format looks "
-"like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is "
-"fairly liberal and allows lower or upper case, and also abbreviations such "
-"as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
-msgstr ""
+msgid "The keybinding used to move a window one workspace to the right. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai pārvietotu logu vienu darba vietu pa labi. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:83
-msgid ""
-"The keybinding used to move a window one workspace to the left. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
-"is fairly liberal and allows lower or upper case, and also abbreviations "
-"such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
-msgstr ""
+msgid "The keybinding used to move a window one workspace up. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai pārvietotu logu vienu darba vietu augšup. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:84
-msgid ""
-"The keybinding used to move a window one workspace to the right. The format "
-"looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
-"is fairly liberal and allows lower or upper case, and also abbreviations "
-"such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 1. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai pārvietotu logu uz 1. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:85
-msgid ""
-"The keybinding used to move a window one workspace up. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 10. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai pārvietotu logu uz 10. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:86
-msgid ""
-"The keybinding used to move a window to workspace 1. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 11. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai pārvietotu logu uz 11. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:87
-msgid ""
-"The keybinding used to move a window to workspace 10. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 12. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai pārvietotu logu uz 12. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:88
-msgid ""
-"The keybinding used to move a window to workspace 11. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 2. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai pārvietotu logu uz 2. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:89
-msgid ""
-"The keybinding used to move a window to workspace 12. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 3. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai pārvietotu logu uz 3. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:90
-msgid ""
-"The keybinding used to move a window to workspace 2. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 4. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai pārvietotu logu uz 4. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:91
-msgid ""
-"The keybinding used to move a window to workspace 3. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 5. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai pārvietotu logu uz 5. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:92
-msgid ""
-"The keybinding used to move a window to workspace 4. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 6. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai pārvietotu logu uz 6. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:93
-msgid ""
-"The keybinding used to move a window to workspace 5. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 7. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai pārvietotu logu uz 7. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:94
-msgid ""
-"The keybinding used to move a window to workspace 6. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 8. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai pārvietotu logu uz 8. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:95
-msgid ""
-"The keybinding used to move a window to workspace 7. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move a window to workspace 9. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai pārvietotu logu uz 9. darba vietu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:96
-msgid ""
-"The keybinding used to move a window to workspace 8. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move focus between panels and the desktop, using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai fokusētos starp paneļiem un darba virmu, lietojot izlecējlogu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:97
-msgid ""
-"The keybinding used to move a window to workspace 9. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move focus between panels and the desktop, without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai fokusētos starp paneļiem un darba virmu, nelietojot izlecējlogu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:98
-msgid ""
-"The keybinding used to move focus between panels and the desktop, using a "
-"popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move focus between windows without a popup window. (Traditionally &lt;Alt&gt;Escape) The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai fokusētos starp paneļiem un darba virmu, lietojot izlecējlogu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:99
-msgid ""
-"The keybinding used to move focus between panels and the desktop, without a "
-"popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The keybinding used to move focus between windows, using a popup window. (Traditionally &lt;Alt&gt;Tab) The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai fokusētos starp logiem, lietojot izlecējlogu. (Tradicionālais &lt;Alt&gt;Tab) Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:100
-msgid ""
-"The keybinding used to move focus between windows without a popup window. "
-"(Traditionally &lt;Alt&gt;Escape) The format looks like \"&lt;Control&gt;a\" "
-"or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows "
-"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-"then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai slēgtu pilnekrāna režīmu. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:101
-msgid ""
-"The keybinding used to move focus between windows, using a popup window. "
-"(Traditionally &lt;Alt&gt;Tab) The format looks like \"&lt;Control&gt;a\" or "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower "
-"or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-"Ctrl&gt;\". If you set the option to the special string \"disabled\", then "
-"there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to toggle maximization. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai slēgtu maksimizāciju. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:102
-msgid ""
-"The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to toggle shaded/unshaded state. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai slēgtu ēnotu/atēnotu stāvokli. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:103
-msgid ""
-"The keybinding used to toggle maximization. The format looks like \"&lt;"
-"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
-"and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-"\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The keybinding used to toggle whether the window is on all workspaces or just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Taustiņsasaiste, kas tiek lietota, lai slēgtu, vai logs ir uz visām darba vietām vai tikai uz vienas . Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:104
-msgid ""
-"The keybinding used to toggle shaded/unshaded state. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "The theme determines the appearance of window borders, titlebar, and so forth."
+msgstr "Tēma nosaka izskatu loga robežām, nosaukumjoslai un tamlīdzīgi."
 
 #: src/metacity.schemas.in.h:105
-msgid ""
-"The keybinding used to toggle whether the window is on all workspaces or "
-"just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and "
-"also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-"the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "The time delay before raising a window if auto_raise is set to true. The delay is given in thousandths of a second."
+msgstr "Laika aizture pirms loga pacelšanas, ja auto_raise ir iestatīts kā patiess. Aizture tiek izteikta sekundes tūkstošdaļās."
 
 #: src/metacity.schemas.in.h:106
-msgid ""
-"The theme determines the appearance of window borders, titlebar, and so "
-"forth."
-msgstr ""
+msgid "The window focus mode indicates how windows are activated. It has three possible values; \"click\" means windows must be clicked in order to focus them, \"sloppy\" means windows are focused when the mouse enters the window, and \"mouse\" means windows are focused when the mouse enters the window and unfocused when the mouse leaves the window."
+msgstr "Loga fokusēšanās režīms nosaka, kā logi tiek aktivizēti. Tam ir trīs iespējamās vērtības; \"klikšķis\" nozīmē, ka uz logiem ir jāuzklikšķina, lai tos fokusētu, \"paviršs\" nozīmē , ka logi tiek fokusēti, kad pele slīd tiem pāri, un \"pele\" nozīmē, ka logi tiek fokusēti, kad pele slīd logam pāri, un atfokusēti, kad pele pamet logu."
 
 #: src/metacity.schemas.in.h:107
-msgid ""
-"The time delay before raising a window if auto_raise is set to true. The "
-"delay is given in thousandths of a second."
-msgstr ""
+msgid "This keybinding changes whether a window is above or below other windows. If the window is covered by another window, it raises the window above other windows. If the window is already fully visible, it lowers the window below other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Šī taustiņsasaiste maina to, vai logs ir virs vai zem citiem logiem. Ja logs ir aizsegts ar citu logu, tas tiek pacelts virs citiem logiem. Ja logs jau ir pilnīgi redzams, tas tiek novietots zem citiem logiem. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;Ctrl&gt;\". Ja jūs iestatīsit opciju uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #: src/metacity.schemas.in.h:108
-msgid ""
-"The window focus mode indicates how windows are activated. It has three "
-"possible values; \"click\" means windows must be clicked in order to focus "
-"them, \"sloppy\" means windows are focused when the mouse enters the window, "
-"and \"mouse\" means windows are focused when the mouse enters the window and "
-"unfocused when the mouse leaves the window."
-msgstr ""
+msgid "Toggle fullscreen mode"
+msgstr "Slēgt pilnekrāna režīmu"
 
 #: src/metacity.schemas.in.h:109
-msgid ""
-"This keybinding changes whether a window is above or below other windows. If "
-"the window is covered by another window, it raises the window above other "
-"windows. If the window is already fully visible, it lowers the window below "
-"other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
-"and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
-"set the option to the special string \"disabled\", then there will be no "
-"keybinding for this action."
-msgstr ""
+msgid "Toggle maximization state"
+msgstr "Slēgt maksimizācijas stāvokli"
 
 #: src/metacity.schemas.in.h:110
-msgid ""
-"This keybinding lowers a window below other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "Toggle shaded state"
+msgstr "Slēgt ēnoto stāvokli"
 
 #: src/metacity.schemas.in.h:111
-msgid ""
-"This keybinding raises the window above other windows. The format looks like "
-"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
-"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
-"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-"\"disabled\", then there will be no keybinding for this action."
-msgstr ""
+msgid "Toggle whether the window is on all workspaces"
+msgstr "Slēgt, vai logs ir uz visām darba vietām"
 
 #: src/metacity.schemas.in.h:112
-msgid "Toggle fullscreen mode"
-msgstr ""
+msgid "Use standard system font in window titles"
+msgstr "Lietot sistēmas standarta fontu logu nosaukumos"
 
 #: src/metacity.schemas.in.h:113
-msgid "Toggle maximization state"
-msgstr ""
+msgid "Window focus mode"
+msgstr "Logu fokusēšanās režīms"
 
 #: src/metacity.schemas.in.h:114
-msgid "Toggle shaded state"
-msgstr ""
-
-#: src/metacity.schemas.in.h:115
-msgid "Toggle whether the window is on all workspaces"
-msgstr ""
-
-#: src/metacity.schemas.in.h:116
-msgid "Use standard system font in window titles"
-msgstr ""
-
-#: src/metacity.schemas.in.h:117
-msgid "Window focus mode"
-msgstr ""
-
-#: src/metacity.schemas.in.h:118
-#, fuzzy
 msgid "Window title font"
-msgstr "Loga Izvēlne"
+msgstr "Loga nosaukuma fonts"
 
-#: src/prefs.c:346 src/prefs.c:362 src/prefs.c:378 src/prefs.c:394
-#: src/prefs.c:414 src/prefs.c:430 src/prefs.c:446 src/prefs.c:462
-#: src/prefs.c:478 src/prefs.c:494 src/prefs.c:510 src/prefs.c:527
+#: src/prefs.c:346
+#: src/prefs.c:362
+#: src/prefs.c:378
+#: src/prefs.c:394
+#: src/prefs.c:414
+#: src/prefs.c:430
+#: src/prefs.c:446
+#: src/prefs.c:462
+#: src/prefs.c:478
+#: src/prefs.c:494
+#: src/prefs.c:510
+#: src/prefs.c:527
 #, c-format
-msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "GConf taustiņš \"%s\" ir uzstādīts uz nepareizo tipu\n"
+msgid ""
+"GConf key \"%s\" is set to an invalid type\n"
+""
+msgstr ""
+"GConf atslēga \"%s\" ir uzstādīta uz nederīgu tipu\n"
+""
 
-#: src/prefs.c:562
+#: src/prefs.c:561
 #, c-format
 msgid "GConf key '%s' is set to an invalid value"
-msgstr "GConf taustiņš '%s'ir uzstādīts uz nepareizo tipu"
+msgstr "GConf atslēga '%s' ir uzstādīta uz nederīgu vērtību"
 
-#: src/prefs.c:634
-#, c-format
-msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "Nespēja parsēt fontu aprakstu \"%s\" no GConf taustiņa %s\n"
-
-#: src/prefs.c:673
-#, fuzzy, c-format
-msgid ""
-"%d stored in GConf key %s is not a reasonable number of workspaces, current "
-"maximum is %d\n"
-msgstr ""
-"Uz GConf atslēgu %s glabātais %d nesatur pieļaujamu darba virsmu skaitu, "
-"pašreizējais maksimums ir %d\n"
-
-#: src/prefs.c:722
-msgid ""
-"Workarounds for broken applications disabled. Some applications may not "
-"behave properly.\n"
-msgstr ""
-
-#: src/prefs.c:754
-#, fuzzy, c-format
-msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr "Uz GConf atslēgu %s glabātajam %d nav pareizs fontu izmērs\n"
-
-#: src/prefs.c:828
-#, c-format
-msgid "Error setting number of workspaces to %d: %s\n"
-msgstr ""
-
-#: src/prefs.c:1001
+#: src/prefs.c:633
 #, c-format
 msgid ""
-"\"%s\" found in configuration database is not a valid value for keybinding "
-"\"%s\""
+"Could not parse font description \"%s\" from GConf key %s\n"
+""
 msgstr ""
+"Nespēja parsēt fonta aprakstu \"%s\" no GConf atslēgas %s\n"
+""
+
+#: src/prefs.c:672
+#, c-format
+msgid ""
+"%d stored in GConf key %s is not a reasonable number of workspaces, current maximum is %d\n"
+""
+msgstr ""
+"GConf atslēgā %s glabātais %d nav saprātīgs darba vietu skaits, pašreizējais maksimums ir %d\n"
+""
+
+#: src/prefs.c:721
+msgid ""
+"Workarounds for broken applications disabled. Some applications may not behave properly.\n"
+""
+msgstr ""
+"Apvedceļi sabojātām aplikācijām deaktivizēti. Dažas aplikācijas var neuzvesties atbilstoši.\n"
+""
+
+#: src/prefs.c:753
+#, c-format
+msgid ""
+"%d stored in GConf key %s is out of range 0 to %d\n"
+""
+msgstr ""
+"GConf atslēgā %s glabātais %d ir ārpus 0 līdz %d diapazona\n"
+""
+
+#: src/prefs.c:827
+#, c-format
+msgid ""
+"Error setting number of workspaces to %d: %s\n"
+""
+msgstr ""
+"Kļūda iestatot darba vietu daudzumu uz %d: %s\n"
+""
+
+#: src/prefs.c:998
+#, c-format
+msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\""
+msgstr "\"%s\", atrasts konfigurācijas datu bāzē, nav derīga vērtība taustiņsasaistei \"%s\""
 
 #: src/resizepopup.c:168
 #, c-format
 msgid "%d x %d"
-msgstr ""
+msgstr "%d x %d"
 
 #: src/screen.c:205
-#, fuzzy, c-format
-msgid "Screen %d on display '%s' is invalid\n"
-msgstr "Displeja '%s' ekrāns %d  ir nepareizs\n"
+#, c-format
+msgid ""
+"Screen %d on display '%s' is invalid\n"
+""
+msgstr ""
+"Displeja \"%s\" ekrāns %d  ir nederīgs\n"
+""
 
 #: src/screen.c:221
-#, fuzzy, c-format
+#, c-format
 msgid ""
-"Screen %d on display \"%s\" already has a window manager; try using the --"
-"replace option to replace the current window manager.\n"
-msgstr "Displeja '%s' ekrānam %d  jau ir logu menedžeris\n"
+"Screen %d on display \"%s\" already has a window manager; try using the --replace option to override the current window manager.\n"
+""
+msgstr ""
+"Displeja \"%s\" ekrānam %d jau ir logu pārvaldnieks; mēģiniet lietot --replace opciju, lai aizvietotu pašreizējo logu pārvaldnieku.\n"
+""
 
 #: src/screen.c:262
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr "Nevarēja izlaist displeja '%s' ekrānu %d\n"
+""
+msgstr ""
+"Nevarēju iegūt logu ārvaldnieka izveli displeja \"%s\" ekrānā %d\n"
+""
 
 #: src/screen.c:317
-#, fuzzy, c-format
-msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "Displeja '%s' ekrānam %d  jau ir logu menedžeris\n"
+#, c-format
+msgid ""
+"Screen %d on display \"%s\" already has a window manager\n"
+""
+msgstr ""
+"Displeja \"%s\" ekrānam %d  jau ir logu pārvaldnieks\n"
+""
 
-#: src/screen.c:526
-#, fuzzy, c-format
-msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "Nevarēja izlaist displeja '%s' ekrānu %d\n"
+#: src/screen.c:525
+#, c-format
+msgid ""
+"Could not release screen %d on display \"%s\"\n"
+""
+msgstr ""
+"Nevarēju atlaist displeja \"%s\" ekrānu %d\n"
+""
 
 #: src/session.c:274
 #, c-format
 msgid ""
-"Failed to a open connection to a session manager, so window positions will "
-"not be saved: %s\n"
+"Failed to a open connection to a session manager, so window positions will not be saved: %s\n"
+""
 msgstr ""
+"Neizdevās atvērt savienojumu ar sesijas pārvaldnieku, tāpēc logu pozīcijas netiks saglabātas: %s\n"
+""
 
-#: src/session.c:881 src/session.c:888
+#: src/session.c:881
+#: src/session.c:888
 #, c-format
-msgid "Could not create directory '%s': %s\n"
-msgstr "Nevarēja izveidot direktoriju '%s': %s\n"
+msgid ""
+"Could not create directory '%s': %s\n"
+""
+msgstr ""
+"Nevarēja izveidot direktoriju '%s': %s\n"
+""
 
 #: src/session.c:898
 #, c-format
-msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "Nevarēja atvērt sesijas failu '%s' rakstīšanai: %s\n"
+msgid ""
+"Could not open session file '%s' for writing: %s\n"
+""
+msgstr ""
+"Nevarēja atvērt sesijas failu '%s' rakstīšanai: %s\n"
+""
 
 #: src/session.c:1044
 #, c-format
-msgid "Error writing session file '%s': %s\n"
-msgstr "Kļūda ierakstot sesijas failu '%s': %s\n"
+msgid ""
+"Error writing session file '%s': %s\n"
+""
+msgstr ""
+"Kļūda ierakstot sesijas failu '%s': %s\n"
+""
 
 #: src/session.c:1049
 #, c-format
-msgid "Error closing session file '%s': %s\n"
-msgstr "Kļūda aizverot sesijas failu '%s': %s\n"
+msgid ""
+"Error closing session file '%s': %s\n"
+""
+msgstr ""
+"Kļūda aizverot sesijas failu '%s': %s\n"
+""
 
 #: src/session.c:1124
 #, c-format
-msgid "Failed to read saved session file %s: %s\n"
-msgstr "Nevarēja nolasīt saglabāto sesijas failu %s: %s\n"
+msgid ""
+"Failed to read saved session file %s: %s\n"
+""
+msgstr ""
+"Nevarēja nolasīt saglabāto sesijas failu %s: %s\n"
+""
 
 #: src/session.c:1159
 #, c-format
-msgid "Failed to parse saved session file: %s\n"
-msgstr "Kļūda parsējot saglabāto sesijas failu: %s\n"
+msgid ""
+"Failed to parse saved session file: %s\n"
+""
+msgstr ""
+"Kļūda parsējot saglabāto sesijas failu: %s\n"
+""
 
 #: src/session.c:1208
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr ""
+msgstr "<metacity_session> atribūts pamanits, bet mums jau ir sesijas ID"
 
 #: src/session.c:1221
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
-msgstr "Nezināms atribūts %s <ģeogrāfijas> elementam"
+msgstr "Nezināms atribūts %s <metacity_session> elementam"
 
 #: src/session.c:1238
 msgid "nested <window> tag"
 msgstr "ligzdots <loga> tags"
 
-#: src/session.c:1296 src/session.c:1328
+#: src/session.c:1296
+#: src/session.c:1328
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Nezināms atribūts %s <loga> elementam"
@@ -1192,7 +942,7 @@ msgstr "Nezināms atribūts %s <loga> elementam"
 #: src/session.c:1398
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
-msgstr "Nezināms atribūts %s <ģeogrāfijas> elementam"
+msgstr "Nezināms atribūts %s <ģeometrijas> elementam"
 
 #: src/session.c:1418
 #, c-format
@@ -1202,935 +952,931 @@ msgstr "Nezināms elements %s"
 #: src/session.c:1846
 #, c-format
 msgid ""
-"Error launching metacity-dialog to warn about apps that don't support "
-"session management: %s\n"
+"Error launching metacity-dialog to warn about apps that don't support session management: %s\n"
+""
 msgstr ""
+"Kļūda palaižot metacity-dialogu, lai paziņotu par aplikācijām, kas neatbalsta sesijas pārvaldīšanu: %s\n"
+""
 
-#: src/theme-parser.c:224 src/theme-parser.c:242
+#: src/theme-parser.c:224
+#: src/theme-parser.c:242
 #, c-format
 msgid "Line %d character %d: %s"
-msgstr ""
+msgstr "Līnija %d rakstzīme %d: %s"
 
 #: src/theme-parser.c:396
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr ""
+msgstr "Atribūts \"%s\" atkārtots divreiz tajā pašā <%s> elementā"
 
-#: src/theme-parser.c:414 src/theme-parser.c:439
+#: src/theme-parser.c:414
+#: src/theme-parser.c:439
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr ""
+msgstr "Atribūts \"%s\" ir nederīgs <%s> elementā pēc šī konteksta"
 
 #: src/theme-parser.c:485
 #, c-format
 msgid "Integer %ld must be positive"
-msgstr ""
+msgstr "Vērtībai %ld jābūt pozitīvai"
 
 #: src/theme-parser.c:493
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
-msgstr ""
+msgstr "Vērtība %ld ir pārāk liela, pašreizējais maksimums ir %d"
 
-#: src/theme-parser.c:521 src/theme-parser.c:602 src/theme-parser.c:626
+#: src/theme-parser.c:521
+#: src/theme-parser.c:602
+#: src/theme-parser.c:626
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
-msgstr ""
+msgstr "Nevarēju parsēt \"%s\" kā plūstošā punkta numuru"
 
 #: src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr ""
+msgstr "Izvēles vērtībām jābūt \"true\" vai \"false\" nevis \"%s\""
 
 #: src/theme-parser.c:572
 #, c-format
-msgid "Angle must be between 0.0 and 360.0, was %g\n"
+msgid ""
+"Angle must be between 0.0 and 360.0, was %g\n"
+""
 msgstr ""
+"Leņķim jābūt starp 0.0 un 360.0, bija %g\n"
+""
 
 #: src/theme-parser.c:638
 #, c-format
-msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
+msgid ""
+"Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
+""
 msgstr ""
+"Alfa jābūt starp 0.0 (neredzams) un 1.0 (pinlnībā necaurredzams), bija %g\n"
+""
 
 #: src/theme-parser.c:684
 #, c-format
 msgid ""
-"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
-"large,x-large,xx-large)\n"
+"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,large,x-large,xx-large)\n"
+""
 msgstr ""
+"Nederīgs nosaukuma mērogs \"%s\" (jābūt vienam no xx-small,x-small,small,medium,large,x-large,xx-large)\n"
+""
 
-#: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2872
-#: src/theme-parser.c:2961 src/theme-parser.c:2968 src/theme-parser.c:2975
-#, fuzzy, c-format
+#: src/theme-parser.c:729
+#: src/theme-parser.c:737
+#: src/theme-parser.c:2872
+#: src/theme-parser.c:2961
+#: src/theme-parser.c:2968
+#: src/theme-parser.c:2975
+#, c-format
 msgid "No \"%s\" attribute on element <%s>"
-msgstr "Nezināms atribūts %s <loga> elementam"
+msgstr "Nav \"%s\" atribūta <%s> elementam"
 
-#: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
-#: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
-#: src/theme-parser.c:1126 src/theme-parser.c:1134
-#, fuzzy, c-format
+#: src/theme-parser.c:807
+#: src/theme-parser.c:897
+#: src/theme-parser.c:935
+#: src/theme-parser.c:1012
+#: src/theme-parser.c:1062
+#: src/theme-parser.c:1070
+#: src/theme-parser.c:1126
+#: src/theme-parser.c:1134
+#, c-format
 msgid "No \"%s\" attribute on <%s> element"
-msgstr "Nezināms atribūts %s <loga> elementam"
+msgstr "Nav \"%s\" atribūta <%s> elementam"
 
-#: src/theme-parser.c:837 src/theme-parser.c:905 src/theme-parser.c:943
+#: src/theme-parser.c:837
+#: src/theme-parser.c:905
+#: src/theme-parser.c:943
 #: src/theme-parser.c:1020
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
-msgstr ""
+msgstr "<%s> vārds \"%s\" lietots otru reizi"
 
-#: src/theme-parser.c:849 src/theme-parser.c:955 src/theme-parser.c:1032
+#: src/theme-parser.c:849
+#: src/theme-parser.c:955
+#: src/theme-parser.c:1032
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr ""
+msgstr "<%s> pirmavots \"%s\" nav ticis definēts"
 
 #: src/theme-parser.c:968
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr ""
+msgstr "<%s> ģeometrija \"%s\" nav tikusi definēta"
 
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
+msgstr "<%s> jānosaka vai nu ģeometrija vai pirmavots, kam ir ģeometrija"
 
 #: src/theme-parser.c:1080
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr "Nezināms atribūts %s <loga> elementam"
+msgstr "Nezināms tips \"%s\" <%s> elementam"
 
 #: src/theme-parser.c:1091
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr "Nezināms atribūts %s <loga> elementam"
+msgstr "Nezināms style_set \"%s\" <%s> elementam"
 
 #: src/theme-parser.c:1099
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
-msgstr ""
+msgstr "Loga tipam \"%s\" jau ir piesķirta stila kopa"
 
 #: src/theme-parser.c:1143
 #, c-format
 msgid "Unknown function \"%s\" for menu icon"
-msgstr ""
+msgstr "Nezināma funkcija \"%s\" izvēlnes ikonai"
 
 #: src/theme-parser.c:1152
 #, c-format
 msgid "Unknown state \"%s\" for menu icon"
-msgstr ""
+msgstr "Nezināms stāvoklis \"%s\" izvēlnes ikonai"
 
 #: src/theme-parser.c:1160
 #, c-format
 msgid "Theme already has a menu icon for function %s state %s"
-msgstr ""
+msgstr "Tēmai jau ir izvēlnes ikona funkcijas %s stāvoklim %s"
 
-#: src/theme-parser.c:1177 src/theme-parser.c:3180 src/theme-parser.c:3259
+#: src/theme-parser.c:1177
+#: src/theme-parser.c:3180
+#: src/theme-parser.c:3259
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr ""
+msgstr "Nevins <draw_ops> ar nosaukumu \"%s\" nav ticis definēts"
 
-#: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
-#: src/theme-parser.c:3060 src/theme-parser.c:3114 src/theme-parser.c:3274
-#: src/theme-parser.c:3451 src/theme-parser.c:3489 src/theme-parser.c:3527
+#: src/theme-parser.c:1192
+#: src/theme-parser.c:1256
+#: src/theme-parser.c:1545
+#: src/theme-parser.c:3060
+#: src/theme-parser.c:3114
+#: src/theme-parser.c:3274
+#: src/theme-parser.c:3451
+#: src/theme-parser.c:3489
+#: src/theme-parser.c:3527
 #: src/theme-parser.c:3565
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
-msgstr ""
+msgstr "Elements <%s> netiek atļauts zem <%s>"
 
-#: src/theme-parser.c:1282 src/theme-parser.c:1369 src/theme-parser.c:1439
-#, fuzzy, c-format
+#: src/theme-parser.c:1282
+#: src/theme-parser.c:1369
+#: src/theme-parser.c:1439
+#, c-format
 msgid "No \"name\" attribute on element <%s>"
-msgstr "Nezināms atribūts %s <loga> elementam"
+msgstr "Nav \"name\" atribūta <%s> elementam"
 
-#: src/theme-parser.c:1289 src/theme-parser.c:1376
+#: src/theme-parser.c:1289
+#: src/theme-parser.c:1376
 #, c-format
 msgid "No \"value\" attribute on element <%s>"
-msgstr ""
+msgstr "Nav \"value\" atribūta elementam <%s>"
 
-#: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
-msgstr ""
+#: src/theme-parser.c:1320
+#: src/theme-parser.c:1334
+#: src/theme-parser.c:1393
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgstr "Nevar noteikt abus button_width/button_height un skata proporciju pogām"
 
 #: src/theme-parser.c:1343
 #, c-format
 msgid "Distance \"%s\" is unknown"
-msgstr ""
+msgstr "Distance \"%s\" ir nezināma"
 
 #: src/theme-parser.c:1402
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
-msgstr ""
+msgstr "Skata proporcija \"%s\" ir nezināma"
 
 #: src/theme-parser.c:1446
 #, c-format
 msgid "No \"top\" attribute on element <%s>"
-msgstr ""
+msgstr "Nav \"top\" atribūta elementam <%s>"
 
 #: src/theme-parser.c:1453
 #, c-format
 msgid "No \"bottom\" attribute on element <%s>"
-msgstr ""
+msgstr "Nav \"bottom\" atribūta elementam <%s>"
 
 #: src/theme-parser.c:1460
 #, c-format
 msgid "No \"left\" attribute on element <%s>"
-msgstr ""
+msgstr "Nav \"left\" atribūta elementam <%s>"
 
 #: src/theme-parser.c:1467
 #, c-format
 msgid "No \"right\" attribute on element <%s>"
-msgstr ""
+msgstr "Nav \"right\" atribūta elementam <%s>"
 
 #: src/theme-parser.c:1499
 #, c-format
 msgid "Border \"%s\" is unknown"
-msgstr ""
+msgstr "Robeža \"%s\" ir nezināma"
 
-#: src/theme-parser.c:1655 src/theme-parser.c:1765 src/theme-parser.c:1868
-#: src/theme-parser.c:2055 src/theme-parser.c:2805
+#: src/theme-parser.c:1655
+#: src/theme-parser.c:1765
+#: src/theme-parser.c:1868
+#: src/theme-parser.c:2055
+#: src/theme-parser.c:2805
 #, c-format
 msgid "No \"color\" attribute on element <%s>"
-msgstr ""
+msgstr "Nav \"color\" atribūta elementam <%s>"
 
 #: src/theme-parser.c:1662
-#, fuzzy, c-format
+#, c-format
 msgid "No \"x1\" attribute on element <%s>"
-msgstr "Nezināms atribūts %s <loga> elementam"
+msgstr "Nav \"x1\" atribūta <%s> elementam"
 
-#: src/theme-parser.c:1669 src/theme-parser.c:2650
-#, fuzzy, c-format
+#: src/theme-parser.c:1669
+#: src/theme-parser.c:2650
+#, c-format
 msgid "No \"y1\" attribute on element <%s>"
-msgstr "Nezināms atribūts %s <loga> elementam"
+msgstr "Nav \"y1\" atribūta <%s> elementam"
 
 #: src/theme-parser.c:1676
-#, fuzzy, c-format
+#, c-format
 msgid "No \"x2\" attribute on element <%s>"
-msgstr "Nezināms atribūts %s <loga> elementam"
+msgstr "Nav \"x2\" atribūta <%s> elementam"
 
-#: src/theme-parser.c:1683 src/theme-parser.c:2657
-#, fuzzy, c-format
+#: src/theme-parser.c:1683
+#: src/theme-parser.c:2657
+#, c-format
 msgid "No \"y2\" attribute on element <%s>"
-msgstr "Nezināms atribūts %s <loga> elementam"
+msgstr "Nav \"y2\" atribūta <%s> elementam"
 
-#: src/theme-parser.c:1772 src/theme-parser.c:1875 src/theme-parser.c:1981
-#: src/theme-parser.c:2062 src/theme-parser.c:2168 src/theme-parser.c:2263
-#: src/theme-parser.c:2419 src/theme-parser.c:2545 src/theme-parser.c:2643
-#: src/theme-parser.c:2717 src/theme-parser.c:2812
-#, fuzzy, c-format
+#: src/theme-parser.c:1772
+#: src/theme-parser.c:1875
+#: src/theme-parser.c:1981
+#: src/theme-parser.c:2062
+#: src/theme-parser.c:2168
+#: src/theme-parser.c:2263
+#: src/theme-parser.c:2419
+#: src/theme-parser.c:2545
+#: src/theme-parser.c:2643
+#: src/theme-parser.c:2717
+#: src/theme-parser.c:2812
+#, c-format
 msgid "No \"x\" attribute on element <%s>"
-msgstr "Nezināms atribūts %s <loga> elementam"
+msgstr "Nav \"x\" atribūta <%s> elementam"
 
-#: src/theme-parser.c:1779 src/theme-parser.c:1882 src/theme-parser.c:1988
-#: src/theme-parser.c:2069 src/theme-parser.c:2175 src/theme-parser.c:2270
-#: src/theme-parser.c:2426 src/theme-parser.c:2552 src/theme-parser.c:2724
+#: src/theme-parser.c:1779
+#: src/theme-parser.c:1882
+#: src/theme-parser.c:1988
+#: src/theme-parser.c:2069
+#: src/theme-parser.c:2175
+#: src/theme-parser.c:2270
+#: src/theme-parser.c:2426
+#: src/theme-parser.c:2552
+#: src/theme-parser.c:2724
 #: src/theme-parser.c:2819
-#, fuzzy, c-format
+#, c-format
 msgid "No \"y\" attribute on element <%s>"
-msgstr "Nezināms atribūts %s <loga> elementam"
+msgstr "Nav \"y\" atribūta <%s> elementam"
 
-#: src/theme-parser.c:1786 src/theme-parser.c:1889 src/theme-parser.c:1995
-#: src/theme-parser.c:2076 src/theme-parser.c:2182 src/theme-parser.c:2277
-#: src/theme-parser.c:2433 src/theme-parser.c:2559 src/theme-parser.c:2731
-#, fuzzy, c-format
+#: src/theme-parser.c:1786
+#: src/theme-parser.c:1889
+#: src/theme-parser.c:1995
+#: src/theme-parser.c:2076
+#: src/theme-parser.c:2182
+#: src/theme-parser.c:2277
+#: src/theme-parser.c:2433
+#: src/theme-parser.c:2559
+#: src/theme-parser.c:2731
+#, c-format
 msgid "No \"width\" attribute on element <%s>"
-msgstr "Nezināms atribūts %s <loga> elementam"
+msgstr "Nav \"width\" atribūta <%s> elementam"
 
-#: src/theme-parser.c:1793 src/theme-parser.c:1896 src/theme-parser.c:2002
-#: src/theme-parser.c:2083 src/theme-parser.c:2189 src/theme-parser.c:2284
-#: src/theme-parser.c:2440 src/theme-parser.c:2566 src/theme-parser.c:2738
+#: src/theme-parser.c:1793
+#: src/theme-parser.c:1896
+#: src/theme-parser.c:2002
+#: src/theme-parser.c:2083
+#: src/theme-parser.c:2189
+#: src/theme-parser.c:2284
+#: src/theme-parser.c:2440
+#: src/theme-parser.c:2566
+#: src/theme-parser.c:2738
 #, c-format
 msgid "No \"height\" attribute on element <%s>"
-msgstr ""
+msgstr "Nav \"height\" atribūta elementam <%s>"
 
 #: src/theme-parser.c:1903
 #, c-format
 msgid "No \"start_angle\" attribute on element <%s>"
-msgstr ""
+msgstr "Nav \"start_angle\" atribūta elementam <%s>"
 
 #: src/theme-parser.c:1910
 #, c-format
 msgid "No \"extent_angle\" attribute on element <%s>"
-msgstr ""
+msgstr "Nav \"extent_angle\" atribūta elementam <%s>"
 
 #: src/theme-parser.c:2090
 #, c-format
 msgid "No \"alpha\" attribute on element <%s>"
-msgstr ""
+msgstr "Nav \"alpha\" atribūta elementam <%s>"
 
 #: src/theme-parser.c:2161
 #, c-format
 msgid "No \"type\" attribute on element <%s>"
-msgstr ""
+msgstr "Nav \"type\" atribūta elementam <%s>"
 
 #: src/theme-parser.c:2209
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr ""
+msgstr "Nesapratu vērtību \"%s\" krāsu pārejas tipam"
 
 #: src/theme-parser.c:2291
 #, c-format
 msgid "No \"filename\" attribute on element <%s>"
-msgstr ""
+msgstr "Nav \"filename\" atribūta elementam <%s>"
 
-#: src/theme-parser.c:2316 src/theme-parser.c:2763
-#, fuzzy, c-format
+#: src/theme-parser.c:2316
+#: src/theme-parser.c:2763
+#, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "Nezināms atribūts %s <loga> elementam"
+msgstr "Nesapratu aizpildījuma tipu \"%s\" <%s> elementam"
 
-#: src/theme-parser.c:2398 src/theme-parser.c:2531 src/theme-parser.c:2636
+#: src/theme-parser.c:2398
+#: src/theme-parser.c:2531
+#: src/theme-parser.c:2636
 #, c-format
 msgid "No \"state\" attribute on element <%s>"
-msgstr ""
+msgstr "Nav \"state\" atribūta elementam <%s>"
 
-#: src/theme-parser.c:2405 src/theme-parser.c:2538
+#: src/theme-parser.c:2405
+#: src/theme-parser.c:2538
 #, c-format
 msgid "No \"shadow\" attribute on element <%s>"
-msgstr ""
+msgstr "Nav \"shadow\" atribūta elementam <%s>"
 
 #: src/theme-parser.c:2412
-#, fuzzy, c-format
+#, c-format
 msgid "No \"arrow\" attribute on element <%s>"
-msgstr "Nezināms atribūts %s <loga> elementam"
+msgstr "Nav \"arrow\" atribūta <%s> elementam"
 
-#: src/theme-parser.c:2465 src/theme-parser.c:2587 src/theme-parser.c:2675
+#: src/theme-parser.c:2465
+#: src/theme-parser.c:2587
+#: src/theme-parser.c:2675
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr ""
+msgstr "Nesapratu stāvokli \"%s\" elementam <%s>"
 
-#: src/theme-parser.c:2475 src/theme-parser.c:2597
+#: src/theme-parser.c:2475
+#: src/theme-parser.c:2597
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr ""
+msgstr "Nesapratu ēnu \"%s\" elementam <%s>"
 
 #: src/theme-parser.c:2485
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr ""
+msgstr "Nesapratu bultu \"%s\" elementam <%s>"
 
-#: src/theme-parser.c:2898 src/theme-parser.c:3014
+#: src/theme-parser.c:2898
+#: src/theme-parser.c:3014
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr ""
+msgstr "Neviens <draw_ops> ar nosaukumu \"%s\" nav ticis definēts"
 
-#: src/theme-parser.c:2910 src/theme-parser.c:3026
+#: src/theme-parser.c:2910
+#: src/theme-parser.c:3026
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr ""
+msgstr "Iekļaujot draw_ops \"%s\" šeit izveidotu riņķveida atsauci"
 
 #: src/theme-parser.c:3089
-#, fuzzy, c-format
+#, c-format
 msgid "No \"value\" attribute on <%s> element"
-msgstr "Nezināms atribūts %s <loga> elementam"
+msgstr "Nav \"value\" atribūta <%s> elementam"
 
 #: src/theme-parser.c:3146
-#, fuzzy, c-format
+#, c-format
 msgid "No \"position\" attribute on <%s> element"
-msgstr "Nezināms atribūts %s <loga> elementam"
+msgstr "Nav \"position\" atribūta <%s> elementam"
 
 #: src/theme-parser.c:3155
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
-msgstr ""
+msgstr "Nezināma pozīcija \"%s\" rāmja daļai"
 
 #: src/theme-parser.c:3163
 #, c-format
 msgid "Frame style already has a piece at position %s"
-msgstr ""
+msgstr "Rāmja stilam jau ir daļa %s pozīcijā"
 
 #: src/theme-parser.c:3208
-#, fuzzy, c-format
+#, c-format
 msgid "No \"function\" attribute on <%s> element"
-msgstr "Nezināms atribūts %s <loga> elementam"
+msgstr "Nav \"function\" atribūta <%s> elementam"
 
-#: src/theme-parser.c:3216 src/theme-parser.c:3320
-#, fuzzy, c-format
+#: src/theme-parser.c:3216
+#: src/theme-parser.c:3320
+#, c-format
 msgid "No \"state\" attribute on <%s> element"
-msgstr "Nezināms atribūts %s <loga> elementam"
+msgstr "Nav \"state\" atribūta <%s> elementam"
 
 #: src/theme-parser.c:3225
 #, c-format
 msgid "Unknown function \"%s\" for button"
-msgstr ""
+msgstr "Nezināma pogas funkcija \"%s\""
 
 #: src/theme-parser.c:3234
 #, c-format
 msgid "Unknown state \"%s\" for button"
-msgstr ""
+msgstr "Nezināms pogas stāvoklis \"%s\""
 
 #: src/theme-parser.c:3242
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
-msgstr ""
+msgstr "Rāmja stilam jau ir poga funkcijas %s stāvoklim %s"
 
 #: src/theme-parser.c:3312
-#, fuzzy, c-format
+#, c-format
 msgid "No \"focus\" attribute on <%s> element"
-msgstr "Nezināms atribūts %s <loga> elementam"
+msgstr "Nav \"focus\" atribūta <%s> elementam"
 
 #: src/theme-parser.c:3328
-#, fuzzy, c-format
+#, c-format
 msgid "No \"style\" attribute on <%s> element"
-msgstr "Nezināms atribūts %s <loga> elementam"
+msgstr "Nav \"style\" atribūta <%s> elementam"
 
 #: src/theme-parser.c:3337
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
-msgstr ""
+msgstr "\"%s\" nav derīga vērtība fokusa atribūtam"
 
 #: src/theme-parser.c:3346
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
-msgstr ""
+msgstr "\"%s\" nav derīga vērtība stāvokļa atribūtam"
 
 #: src/theme-parser.c:3356
 #, c-format
 msgid "A style called \"%s\" has not been defined"
-msgstr ""
+msgstr "Stils \"%s\" nav ticis definēts"
 
 #: src/theme-parser.c:3366
-#, fuzzy, c-format
+#, c-format
 msgid "No \"resize\" attribute on <%s> element"
-msgstr "Nezināms atribūts %s <loga> elementam"
+msgstr "Nav \"resize\" atribūta <%s> elementam"
 
 #: src/theme-parser.c:3376
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr ""
+msgstr "\"%s\" nav derīga vērtība izmēra maiņas atribūtam"
 
 #: src/theme-parser.c:3386
 #, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
-"states"
-msgstr ""
+msgid "Should not have \"resize\" attribute on <%s> element for maximized/shaded states"
+msgstr "Nevajadzētu būt \"resize\" atribūtam <%s> elementā maksimizētos/ēnotos stāvokļos"
 
 #: src/theme-parser.c:3400
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
+msgstr "Stils jau ir ticis noteikts stāvokļa %s izmēra maiņas %s fokusam %s"
 
-#: src/theme-parser.c:3411 src/theme-parser.c:3422 src/theme-parser.c:3433
+#: src/theme-parser.c:3411
+#: src/theme-parser.c:3422
+#: src/theme-parser.c:3433
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
-msgstr ""
+msgstr "Stils jau ir ticis noteikts stāvokļa %s fokusam %s"
 
 #: src/theme-parser.c:3472
-msgid ""
-"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
+msgid "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr "Nevar būt divi draw_ops <piece> elementam (tēma noteica draw_ops atribūtu un arī <draw_ops> elementu, vai noteica divus elementus)"
 
 #: src/theme-parser.c:3510
-msgid ""
-"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
+msgid "Can't have a two draw_ops for a <button> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr "Nevar būt divi draw_ops <button> elementam (tēma noteica draw_ops atribūtu un arī <draw_ops> elementu, vai noteica divus elementus)"
 
 #: src/theme-parser.c:3548
-msgid ""
-"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
-"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
+msgid "Can't have a two draw_ops for a <menu_icon> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr "Nevar būt divi draw_ops <menu_icon> elementam (tēma noteica draw_ops atribūtu un arī <draw_ops> elementu, vai noteica divus elementus)"
 
 #: src/theme-parser.c:3595
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr ""
+msgstr "Visattālākajam elementam tēmā jābūt <metacity_theme> nevis <%s>"
 
 #: src/theme-parser.c:3615
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgstr "Elements <%s> netiek atļauts iekš name/author/date/description elementa"
 
 #: src/theme-parser.c:3620
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr ""
+msgstr "Elements <%s> netiek atļauts iekš <constant> elementa"
 
 #: src/theme-parser.c:3632
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr "Elements <%s> netiek atļauts iekš distance/border/aspect_ratio elementa"
 
 #: src/theme-parser.c:3654
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr ""
+msgstr "Elements <%s> netiek atļauts iekš zīmēšanas operāciju elementa"
 
-#: src/theme-parser.c:3664 src/theme-parser.c:3694 src/theme-parser.c:3699
+#: src/theme-parser.c:3664
+#: src/theme-parser.c:3694
+#: src/theme-parser.c:3699
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr ""
+msgstr "Elements <%s> netiek atļauts iekš <%s> elementa"
 
 #: src/theme-parser.c:3920
 msgid "No draw_ops provided for frame piece"
-msgstr ""
+msgstr "Neviens draw_ops nav nodrošināts rāmja daļai"
 
 #: src/theme-parser.c:3935
 msgid "No draw_ops provided for button"
-msgstr ""
+msgstr "Neviens draw_ops nav nodrošināts pogai"
 
 #: src/theme-parser.c:3950
 msgid "No draw_ops provided for menu icon"
-msgstr ""
+msgstr "Neviens draw_ops nav nodrošināts izvēlnes ikonai"
 
 #: src/theme-parser.c:3990
 #, c-format
 msgid "No text is allowed inside element <%s>"
-msgstr ""
+msgstr "Teksts netiek atļauts iekš elementa <%s>"
 
 #: src/theme-parser.c:4045
 msgid "<name> specified twice for this theme"
-msgstr ""
+msgstr "<name> šai tēmai noteikts divreiz"
 
 #: src/theme-parser.c:4056
 msgid "<author> specified twice for this theme"
-msgstr ""
+msgstr "<author> šai tēmai noteikts divreiz"
 
 #: src/theme-parser.c:4067
 msgid "<copyright> specified twice for this theme"
-msgstr ""
+msgstr "<copyright> šai tēmai noteikts divreiz"
 
 #: src/theme-parser.c:4078
 msgid "<date> specified twice for this theme"
-msgstr ""
+msgstr "<date> šai tēmai noteikts divreiz"
 
 #: src/theme-parser.c:4089
 msgid "<description> specified twice for this theme"
-msgstr ""
+msgstr "<description> šai tēmai noteikts divreiz"
 
 #: src/theme-parser.c:4283
-#, fuzzy, c-format
-msgid "Failed to read theme from file %s: %s\n"
-msgstr "Nevarēja nolasīt saglabāto sesijas failu %s: %s\n"
+#, c-format
+msgid ""
+"Failed to read theme from file %s: %s\n"
+""
+msgstr ""
+"Nevarēju nolasīt tēmu no faila %s: %s\n"
+""
 
 #: src/theme-parser.c:4338
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr ""
+msgstr "Tēmas fails %s nesaturēja saknes <metacity_theme> elementu"
 
 #: src/theme.c:202
 msgid "top"
-msgstr ""
+msgstr "augša"
 
 #: src/theme.c:204
 msgid "bottom"
-msgstr ""
+msgstr "apakša"
 
 #: src/theme.c:206
 msgid "left"
-msgstr ""
+msgstr "pa kreisi"
 
 #: src/theme.c:208
 msgid "right"
-msgstr ""
+msgstr "pa labi"
 
 #: src/theme.c:222
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
-msgstr ""
+msgstr "rāmja ģeometrija nenosaka \"%s\" dimensiju"
 
 #: src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr ""
+msgstr "rāmja ģeometrija nenosaka dimensiju \"%s\" robežai \"%s\""
 
 #: src/theme.c:278
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
-msgstr ""
+msgstr "Pogas skata proporcija %g nav saprātīga"
 
 #: src/theme.c:290
 msgid "Frame geometry does not specify size of buttons"
-msgstr ""
+msgstr "Rāmja ģeometrija nenosaka pogu izmēru"
 
 #: src/theme.c:656
 msgid "Gradients should have at least two colors"
-msgstr ""
+msgstr "Krāsu pārejās ir jābūt vismaz divām krāsām"
 
 #: src/theme.c:782
 #, c-format
-msgid ""
-"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
-"where NORMAL is the state; could not parse \"%s\""
-msgstr ""
+msgid "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr "GTK krāsas specifikācijā ir jābūt stāvoklim iekavās, piem., gtk:fg[NORMAL], kur NORMAL ir stāvoklis; nevarēju parsēt \"%s\""
 
 #: src/theme.c:796
 #, c-format
-msgid ""
-"GTK color specification must have a close bracket after the state, e.g. gtk:"
-"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr ""
+msgid "GTK color specification must have a close bracket after the state, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr "GTK krāsas specifikācijā ir jābūt kvadrātiekavām pēc stāvokļa, piem., gtk:fg[NORMAL], kur NORMAL ir stāvoklis; nevarēju parsēt \"%s\""
 
 #: src/theme.c:807
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr ""
+msgstr "Nesapratu stāvokli \"%s\" krāsas specifikācijā"
 
 #: src/theme.c:820
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr ""
+msgstr "Nesapratu krāsas komponentu \"%s\" krāsas specifikācijā"
 
 #: src/theme.c:850
 #, c-format
-msgid ""
-"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
-"format"
-msgstr ""
+msgid "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the format"
+msgstr "Saplūšanas formāts ir \"blend/bg_color/fg_color/alpha\", \"%s\" neatbilst formātam"
 
 #: src/theme.c:861
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr ""
+msgstr "Nevarēju parsēt alfa vērtību \"%s\" sapludinātajā krāsā"
 
 #: src/theme.c:871
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr ""
+msgstr "Alfa vērtība \"%s\" sapludinātajā krāsā nav starp 0.0 un 1.0"
 
 #: src/theme.c:918
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr "Ēnošanas formāts ir \"shade/base_color/factor\", \"%s\" neatbilst formātam"
 
 #: src/theme.c:929
-#, fuzzy, c-format
+#, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "Nevarēja izveidot direktoriju '%s': %s\n"
+msgstr "Nevarēju parsēt ēnas faktoru \"%s\" ēnotajā krāsā"
 
 #: src/theme.c:939
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr ""
+msgstr "Ēnošanas faktors \"%s\" ēnotajā krāsā ir negatīvs"
 
 #: src/theme.c:968
-#, fuzzy, c-format
+#, c-format
 msgid "Could not parse color \"%s\""
-msgstr "Nevarēja izveidot direktoriju '%s': %s\n"
+msgstr "Nevarēju parsēt krāsu \"%s\""
 
 #: src/theme.c:1230
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr ""
+msgstr "Koordinētā izteiksme satur rakstzīmi '%s', kas nav atļauta"
 
 #: src/theme.c:1257
 #, c-format
-msgid ""
-"Coordinate expression contains floating point number '%s' which could not be "
-"parsed"
-msgstr ""
+msgid "Coordinate expression contains floating point number '%s' which could not be parsed"
+msgstr "Koordinētā izteiksme satur peldošā punkta numuru '%s', kas nevar tikt parsēts"
 
 #: src/theme.c:1271
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr ""
+msgstr "Koordinētā izteiksme satur vērtību '%s', kas nevar tikt pasrēta"
 
 #: src/theme.c:1338
 #, c-format
-msgid ""
-"Coordinate expression contained unknown operator at the start of this text: "
-"\"%s\""
-msgstr ""
+msgid "Coordinate expression contained unknown operator at the start of this text: \"%s\""
+msgstr "Koordinētā izteiksme saturēja nezināmu operātoru šī teksta sākumā: \"%s\""
 
 #: src/theme.c:1395
 msgid "Coordinate expression was empty or not understood"
-msgstr ""
+msgstr "Koordinētā izteiksme bija tukša vai nesaprasta"
 
-#: src/theme.c:1534 src/theme.c:1544 src/theme.c:1578
+#: src/theme.c:1534
+#: src/theme.c:1544
+#: src/theme.c:1578
 msgid "Coordinate expression results in division by zero"
-msgstr ""
+msgstr "Koordinētā izteiksme noved pie dalīšanas ar nulli"
 
 #: src/theme.c:1586
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgstr "Koordinētā izteiksme mēģina lietot mod operātoru uz peldošā punkta numura"
 
 #: src/theme.c:1643
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr ""
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr "Koordinētajai izteiksmei ir operātors \"%s\", kur tika gaidīts operands"
 
 #: src/theme.c:1652
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
+msgstr "Koordinētajai izteiksmei bija operands, kur tika gaidīts operaors"
 
 #: src/theme.c:1660
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
+msgstr "Koordinētā izteiksme beidzās ar operātoru nevis ar operandu"
 
 #: src/theme.c:1670
 #, c-format
-msgid ""
-"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
-"operand in between"
-msgstr ""
+msgid "Coordinate expression has operator \"%c\" following operator \"%c\" with no operand in between"
+msgstr "Koordinētajā izteiksmē ir operātoram \"%c\" sekojošais operātors \"%c\" bez operanda to starpā"
 
 #: src/theme.c:1789
-msgid ""
-"Coordinate expression parser overflowed its buffer, this is really a "
-"Metacity bug, but are you sure you need a huge expression like that?"
-msgstr ""
+msgid "Coordinate expression parser overflowed its buffer, this is really a Metacity bug, but are you sure you need a huge expression like that?"
+msgstr "Koordinētās izteiksmes parsētājs pārpildīja tā buferi, tā patiesi ir Metacity \"blusa\", bet vai esat pārliecināts, ka jums vajag milzīgu izteiksmi kā šo?"
 
 #: src/theme.c:1818
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
+msgstr "Koordinētajai izteiksmei bija aizvērtās iekavas bez nevienas atvērtās iekavas"
 
 #: src/theme.c:1881
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr ""
+msgstr "Koordinētajai izteiksmei bija nezināms mainīgais vai konstante \"%s\""
 
 #: src/theme.c:1938
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
+msgstr "Koordinētajai izteiksmei bija atvērtās iekavas bez nevienas aizvērtās iekavas"
 
 #: src/theme.c:1949
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
+msgstr "Koordinētajai izteiksmei neliekas, ka būtu kāds operators vai operands"
 
-#: src/theme.c:2193 src/theme.c:2215 src/theme.c:2236
-#, c-format
-msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr ""
-
-#: src/theme.c:3559
+#: src/theme.c:2193
+#: src/theme.c:2215
+#: src/theme.c:2236
 #, c-format
 msgid ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this frame style"
+"Theme contained an expression \"%s\" that resulted in an error: %s\n"
+""
 msgstr ""
+"Tēma saturēja izteiksmi \"%s\", kas noveda pie kļūdas: %s\n"
+""
 
-#: src/theme.c:3982 src/theme.c:4014
+#: src/theme.c:3566
+#, c-format
+msgid "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this frame style"
+msgstr "<button function=\"%s\" state=\"%s\" draw_ops=\"jebkas\"/> jābūt noteiktam šajā rāmja stilā"
+
+#: src/theme.c:3976
+#: src/theme.c:4008
+#, c-format
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "Iztrūkst <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"jebkas\"/>"
+
+#: src/theme.c:4059
 #, c-format
 msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+"Failed to load theme \"%s\": %s\n"
+""
 msgstr ""
+"Nevarēju ielādēt tēmu \"%s\": %s\n"
+""
 
-#: src/theme.c:4065
-#, fuzzy, c-format
-msgid "Failed to load theme \"%s\": %s\n"
-msgstr "Nevarēja nolasīt saglabāto sesijas failu %s: %s\n"
-
-#: src/theme.c:4211
+#: src/theme.c:4205
 #, c-format
 msgid "No <name> set for theme \"%s\""
-msgstr ""
+msgstr "Nav iestādīts <name> tēmai \"%s\""
 
-#: src/theme.c:4218
+#: src/theme.c:4212
 #, c-format
 msgid "No <author> set for theme \"%s\""
-msgstr ""
+msgstr "Nav iestādīts <author> tēmai \"%s\""
 
-#: src/theme.c:4225
+#: src/theme.c:4219
 #, c-format
 msgid "No <date> set for theme \"%s\""
-msgstr ""
+msgstr "Nav iestādīts <date> tēmai \"%s\""
 
-#: src/theme.c:4232
+#: src/theme.c:4226
 #, c-format
 msgid "No <description> set for theme \"%s\""
-msgstr ""
+msgstr "Nav iestādīts <description> tēmai \"%s\""
 
-#: src/theme.c:4239
+#: src/theme.c:4233
 #, c-format
 msgid "No <copyright> set for theme \"%s\""
-msgstr ""
+msgstr "Nav iestādīts <copyright> tēmai \"%s\""
 
-#: src/theme.c:4249
+#: src/theme.c:4243
 #, c-format
-msgid ""
-"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
-"type=\"%s\" style_set=\"whatever\"/> element"
-msgstr ""
+msgid "No frame style set for window type \"%s\" in theme \"%s\", add a <window type=\"%s\" style_set=\"whatever\"/> element"
+msgstr "Nav ramja stila kopas loga tipam \"%s\" tēmā \"%s\", pievieno <window type=\"%s\" style_set=\"jebkas\"/> elementu"
 
-#: src/theme.c:4271
+#: src/theme.c:4265
 #, c-format
-msgid ""
-"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this theme"
-msgstr ""
+msgid "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this theme"
+msgstr "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"jebkas\"/> jābūt noteiktam šajā tēmā"
 
-#: src/theme.c:4654 src/theme.c:4716
+#: src/theme.c:4648
+#: src/theme.c:4708
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr "Lietotāja definētajām konstantēm jāsākas ar lielo burtu; \"%s\" nesākas"
 
-#: src/theme.c:4662 src/theme.c:4724
+#: src/theme.c:4656
+#: src/theme.c:4716
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr ""
+msgstr "Konstante \"%s\" jau tikusi definēta"
 
 #: src/tools/metacity-properties.desktop.in.h:1
 msgid "Change how focus is moved from one window to another"
-msgstr ""
+msgstr "Izmainīt, kā fokuss tiek pārvietots no viena loga uz otru"
 
 #: src/tools/metacity-properties.desktop.in.h:2
-#, fuzzy
 msgid "Window Focus"
-msgstr "Loga Izvēlne"
+msgstr "Loga Fokuss"
 
 #: src/tools/metacity-properties.glade.h:1
 msgid "Clic_k to give focus"
-msgstr ""
+msgstr "Kli_kšķis, lai dotu fokusu"
 
 #: src/tools/metacity-properties.glade.h:2
 msgid "Focus behavior:"
-msgstr ""
+msgstr "Fokusa uzvedība:"
 
 #: src/tools/metacity-properties.glade.h:3
 msgid "Window Focus Preferences"
-msgstr ""
+msgstr "Loga Fokusa Preferences"
 
 #: src/tools/metacity-properties.glade.h:4
 msgid "_Point to give focus"
-msgstr ""
+msgstr "_Norādi, lai dotu fokusu"
 
 #: src/tools/metacity-properties.glade.h:5
 msgid "_Raise window on focus"
-msgstr ""
+msgstr "_Pacelt logu pie fokusēšanas"
 
 #: src/util.c:91
-#, fuzzy, c-format
-msgid "Failed to open debug log: %s\n"
-msgstr "Kļūda parsējot saglabāto sesijas failu: %s\n"
+#, c-format
+msgid ""
+"Failed to open debug log: %s\n"
+""
+msgstr ""
+"Nevarēu atvērt atkļūdošanas žurnālu: %s\n"
+""
 
 #: src/util.c:101
-#, fuzzy, c-format
-msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "Nevarēja nolasīt saglabāto sesijas failu %s: %s\n"
+#, c-format
+msgid ""
+"Failed to fdopen() log file %s: %s\n"
+""
+msgstr ""
+"Nevarēju fdopen() žurnālfailu %s: %s\n"
+""
 
 #: src/util.c:107
 #, c-format
-msgid "Opened log file %s\n"
+msgid ""
+"Opened log file %s\n"
+""
 msgstr ""
+"Atvērtais žurnālfails %s\n"
+""
 
-#: src/window.c:436
+#: src/window.c:433
 #, c-format
-msgid "Application set a bogus _NET_WM_PID %ld\n"
+msgid ""
+"Application set a bogus _NET_WM_PID %ld\n"
+""
 msgstr ""
+"Aplikācija iestatīja neīstu _NET_WM_PID %ld\n"
+""
 
-#: src/workspace.c:50
-#, fuzzy, c-format
+#: src/workspace.c:51
+#, c-format
 msgid "Workspace %d"
-msgstr "Tikai uz darba virsmas %s%d"
+msgstr "Darba vieta %d"
 
 #: src/xprops.c:54
 #, c-format
 msgid ""
-"Window 0x%lx has property %s that was expected to have type %s format %d and "
-"actually has type %s format %d n_items %d\n"
+"Window 0x%lx has property %s that was expected to have type %s format %d and actually has type %s format %d n_items %d\n"
+""
 msgstr ""
-"Logam 0x%lx ir rekvizīts %s kam vajadzēja būt ar tipu %s formātu %d un "
-"īstenībā bija ar tipu %s formātu %d priekšmetiem (n_items) %d\n"
+"Logam 0x%lx ir rekvizīts %s, kam vajadzēja būt ar tipa %s formātu %d, bet īstenībā bija ar tipa %s formātu %d priekšmet_iem %d\n"
+""
 
-#: src/xprops.c:296
-#, fuzzy, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "Loga 0x%lx Rekvizīts %s saturēja nepareizu UTF-8\n"
+#: src/xprops.c:282
+#, c-format
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8\n"
+""
+msgstr ""
+"Loga 0x%lx rekvizīts %s saturēja nederīgu UTF-8\n"
+""
 
-#: src/xprops.c:381
-#, fuzzy, c-format
+#: src/xprops.c:367
+#, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr "Loga 0x%lx Rekvizīts %s saturēja nepareizu UTF-8\n"
+""
+msgstr ""
+"Loga 0x%lx rekvizīts %s saturēja nederīgu UTF-8 priekšmetam %d no saraksta\n"
+" "
 
-#~ msgid "Left edge"
-#~ msgstr "Kreisā mala"
-
-#~ msgid "Left window edge width"
-#~ msgstr "Loga kreisās malas platums"
-
-#~ msgid "Right edge"
-#~ msgstr "Labā mala"
-
-#~ msgid "Right window edge width"
-#~ msgstr "Loga labās malas platums"
-
-#~ msgid "Bottom edge"
-#~ msgstr "Apakšējā mala"
-
-#~ msgid "Bottom window edge height"
-#~ msgstr "Loga apakšējās malas augstums"
-
-#~ msgid "Title border"
-#~ msgstr "Virsraksta robeža"
-
-#~ msgid "Border around title area"
-#~ msgstr "Virsraksta apkārtējā robeža"
-
-#~ msgid "Text border"
-#~ msgstr "Teksta robeža"
-
-#~ msgid "Border around window title text"
-#~ msgstr "Apmale ap loga virsraksta tekstu"
-
-#~ msgid "Spacer padding"
-#~ msgstr "Sadalītāja papildinājums"
-
-#~ msgid "Padding on either side of spacer"
-#~ msgstr "Sadalītāja papildinājums"
-
-#~ msgid "Spacer width"
-#~ msgstr "Sadalītāja platums"
-
-#~ msgid "Width of spacer"
-#~ msgstr "Sadalītāja platums"
-
-#~ msgid "Spacer height"
-#~ msgstr "Sadalītāja augstums"
-
-#~ msgid "Height of spacer"
-#~ msgstr "Sadalītāja augstums"
-
-#~ msgid "Right inset"
-#~ msgstr "Kreisais ielaidums"
-
-#~ msgid "Distance of buttons from right edge of frame"
-#~ msgstr "Pogu attālums no rāmja labās malas"
-
-#~ msgid "Left inset"
-#~ msgstr "Kreisais ielaidums"
-
-#~ msgid "Distance of menu button from left edge of frame"
-#~ msgstr "Izvēlnes pogas attālums no rāmja kreisās malas"
-
-#~ msgid "Button width"
-#~ msgstr "Pogu platums"
-
-#~ msgid "Width of buttons"
-#~ msgstr "Pogu platums"
-
-#~ msgid "Button height"
-#~ msgstr "Pogu augstums"
-
-#~ msgid "Height of buttons"
-#~ msgstr "Pogu augstums"
-
-#~ msgid "Button border"
-#~ msgstr "Pogas apmale"
-
-#~ msgid "Border around buttons"
-#~ msgstr "Apmale apkārt pogām"
-
-#~ msgid "Inner button border"
-#~ msgstr "Iekšējā pogas apmale"
-
-#~ msgid "Border around the icon inside buttons"
-#~ msgstr "Apmale apkārt ikonai iekšpus pogām"
-
-#~ msgid ""
-#~ "Window %s sets max width %d less than min width %d, disabling resize\n"
-#~ msgstr ""
-#~ "Logs %s uzstāda maksimālo platumu %d mazāku kā minimālo platumu %d, "
-#~ "atsēdzot izmainīšanu\n"
-
-#~ msgid ""
-#~ "Window %s sets max height %d less than min height %d, disabling resize\n"
-#~ msgstr ""
-#~ "Logs %s uzstāda maksimālo augstumu %d mazāku kā minimālo augstumu %d, "
-#~ "atslēdzot izmainīšanu\n"
