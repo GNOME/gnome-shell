@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
-"POT-Creation-Date: 2002-10-29 01:26-0500\n"
-"PO-Revision-Date: 2002-10-16 16:42+0100\n"
+"POT-Creation-Date: 2002-11-01 21:55+0100\n"
+"PO-Revision-Date: 2002-11-01 21:55+0100\n"
 "Last-Translator: Christian Neumair <chris@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,18 +18,20 @@ msgstr ""
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
-msgstr "»%s« konnte nicht als Ganzzahl interpretiert werden"
+msgstr "»%s« konnte nicht als Ganzzahl verarbeitet werden"
 
 #: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Schließende Zeichen »%s« in Zeichenkette »%s« sind unverständlich"
+msgstr ""
+"Schließende Zeichen »%s« in Zeichenkette »%s« konnten nicht interpretiert "
+"werden"
 
 #: src/delete.c:127
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Nachricht »%s« vom Dialogprozess konnte nicht interpretiert werden\n"
+msgstr "Nachricht »%s« vom Dialogprozess konnte nicht verarbeitet werden\n"
 
 #: src/delete.c:262
 #, c-format
@@ -52,7 +54,7 @@ msgstr "Rechnername konnte nicht ermittelt werden: %s\n"
 #: src/display.c:266
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr "X-Window-System-Anzeige »%s« konnte nicht geöffnet werden\n"
+msgstr "X-Window-Systemanzeige »%s« konnte nicht geöffnet werden\n"
 
 #: src/errors.c:235
 #, c-format
@@ -63,7 +65,7 @@ msgid ""
 msgstr ""
 "Verbindung zur Anzeige »%s« verloren;\n"
 "wahrscheinlich wurde der X-Server beendet oder Sie haben den Fenstermanager\n"
-"abgewürgt/zerstört.\n"
+"abgewürgt.\n"
 
 #: src/errors.c:242
 #, c-format
@@ -96,8 +98,8 @@ msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr ""
-"Irgend ein anderes Programm verwendet die Taste %s bereits mit den "
-"Umschalttasten %x als Tastenkombination\n"
+"Ein anderes Programm verwendet die Taste %s bereits mit den Umschaltern %x "
+"als Tastenkombination\n"
 
 #: src/keybindings.c:2176
 #, c-format
@@ -130,10 +132,10 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
-"Copyright © 2001-2002 Havoc Pennington, Red Hat, Inc., und andere\n"
-"Dies ist freie Software; schauen sie in den Quelltext für weitere "
-"Informationen.\n"
-"Es gibt KEINE Garantie der MARKTREIFE oder EIGNUNG für einen BESTIMMTEN "
+"© 2001-2002 Havoc Pennington, Red Hat, Inc., und andere\n"
+"Dies ist freie Software; schauen sie in den Quelltext, um weitere "
+"Informationen zu erhalten.\n"
+"Es besteht KEINE Garantie auf MARKTREIFE oder EIGNUNG für einen BESTIMMTEN "
 "ZWECK.\n"
 
 #: src/main.c:326
@@ -142,7 +144,7 @@ msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 "Es konnte kein Thema gefunden werden! Stellen Sie sicher, dass %s existiert "
-"und die Standardthemen enthält."
+"und zumindest die mitgelieferten Themen enthält."
 
 #: src/main.c:374
 #, c-format
@@ -163,11 +165,11 @@ msgstr "_Wiederherstellen"
 
 #: src/menu.c:55
 msgid "Roll _Up"
-msgstr "Auf_rollen"
+msgstr "_Einrollen"
 
 #: src/menu.c:56
 msgid "_Unroll"
-msgstr "_Entrollen"
+msgstr "Aus_rollen"
 
 #: src/menu.c:57
 msgid "_Move"
@@ -227,7 +229,7 @@ msgstr "Auf Arbeitsfläche %s verschieben"
 #.
 #: src/metaaccellabel.c:105
 msgid "Shift"
-msgstr ""
+msgstr "Shift"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the control key. If the text on this key isn't typically
@@ -236,7 +238,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:111
 msgid "Ctrl"
-msgstr ""
+msgstr "Strg"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the alt key. If the text on this key isn't typically
@@ -245,7 +247,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:117
 msgid "Alt"
-msgstr ""
+msgstr "Alt"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the meta key. If the text on this key isn't typically
@@ -253,9 +255,8 @@ msgstr ""
 #. * this.
 #.
 #: src/metaaccellabel.c:123
-#, fuzzy
 msgid "Meta"
-msgstr "Metacity"
+msgstr "Meta"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the super key. If the text on this key isn't typically
@@ -264,7 +265,7 @@ msgstr "Metacity"
 #.
 #: src/metaaccellabel.c:129
 msgid "Super"
-msgstr ""
+msgstr "Super"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the hyper key. If the text on this key isn't typically
@@ -273,7 +274,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:135
 msgid "Hyper"
-msgstr ""
+msgstr "Hyper"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod2 key. If the text on this key isn't typically
@@ -282,7 +283,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:141
 msgid "Mod2"
-msgstr ""
+msgstr "Umschalter2"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod3 key. If the text on this key isn't typically
@@ -291,7 +292,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:147
 msgid "Mod3"
-msgstr ""
+msgstr "Umschalter3"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod4 key. If the text on this key isn't typically
@@ -300,7 +301,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:153
 msgid "Mod4"
-msgstr ""
+msgstr "Umschalter4"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod5 key. If the text on this key isn't typically
@@ -309,7 +310,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:159
 msgid "Mod5"
-msgstr ""
+msgstr "Umschalter5"
 
 #: src/metacity-dialog.c:86
 #, c-format
@@ -318,9 +319,9 @@ msgid ""
 "Force this application to exit?\n"
 "(Any open documents will be lost.)"
 msgstr ""
-"Das Fenster »%s« antworte nicht.\n"
-"Möchten Sie diese Anwendung gewaltsam beenden?\n"
-"(Alle offenen Dokumente werden verloren gehen.)"
+"Das Fenster »%s« reagiert nicht.\n"
+"Möchten Sie das Beenden dieser Anwendung erzwingen?\n"
+"(Alle offenen Dokumente gehen dabei verloren)"
 
 #: src/metacity-dialog.c:94
 msgid "Kill application"
@@ -358,8 +359,8 @@ msgstr "Metacity"
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
 msgstr ""
-"(Nicht implementiert) Navigation arbeitet Anwendungs- und nicht "
-"Fensterorientiert"
+"(Nicht implementiert) Navigation arbeitet anwendungs- und nicht "
+"fensterorientiert"
 
 #: src/metacity.schemas.in.h:2
 msgid ""
@@ -370,16 +371,17 @@ msgid ""
 "is unset, causing Metacity to fall back to the desktop font even if "
 "titlebar_uses_desktop_font is false."
 msgstr ""
-"Eine Zeichenkette zum Beschreiben einer Schrift für Fenstertitel. Die Größe "
-"dieser Beschreibung wird jedoch nur verwendet, falls die titlebar_font_size-"
-"Option auf 0 gesetzt ist. Außerdem ist diese Funktion wirkungslos, wenn die "
-"titlebar_uses_desktop_font-Option auf WAHR gesetzt ist. Als Vorgabe ist "
-"titlebar_font nicht gesetzt, was Metacity veranlasst, auf die Desktop-"
-"Schrift zurückzugreifen, obwohl titlebar_uses_desktop_font FALSCH ist."
+"Eine Zeichenkette, die für die Fenstertitel verwendete Schrift angibt. Die "
+"Größe dieser Angabe wird jedoch nur verwendet, falls die Option "
+"»titlebar_font_size« auf 0 gesetzt ist. Außerdem ist diese Funktion "
+"wirkungslos, falls die Option »titlebar_uses_desktop_font« »WAHR« ist. Als "
+"Vorgabe ist »titlebar_font« nicht gesetzt, was Metacity veranlasst, auf die "
+"Desktop-Schrift zurückzugreifen, obwohl »titlebar_uses_desktop_font« "
+"»FALSCH« ist."
 
 #: src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
-msgstr ""
+msgstr "Aktion beim Doppelklick auf Titelleiste"
 
 #: src/metacity.schemas.in.h:4
 msgid "Activate window menu"
@@ -437,10 +439,12 @@ msgstr "Aktuelles Thema"
 msgid "Delay in milliseconds for the auto raise option"
 msgstr "Verzögerung für die Auto-Anheben-Funktion in Millisekunden"
 
+# CHECK - Miss-Features?
 #: src/metacity.schemas.in.h:13
 msgid "Disable misfeatures that are required by old or broken applications"
 msgstr ""
-"»Miss-Features«, die von alten oder defekten Anwendungen verwendet werden"
+"»Miss-Features«, die von alten oder defekten Anwendungen benötigt werden, "
+"deaktivieren"
 
 #: src/metacity.schemas.in.h:14
 msgid "Hide all windows and focus desktop"
@@ -454,7 +458,7 @@ msgid ""
 msgstr ""
 "Falls dieser Schlüssel gesetzt ist und der Fokusmodus entweder »sloppy« oder "
 "»mouse« ist, wird das fokussierte Fenster automatisch nach dieser "
-"Verzögerung angehoben (Die Zeit wird vom auto_raise_delay-Schlüssel "
+"Verzögerung angehoben (Die Zeit wird vom Schlüssel »auto_raise_delay« "
 "angegeben)"
 
 #: src/metacity.schemas.in.h:16
@@ -462,8 +466,9 @@ msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
 msgstr ""
-"Falls dieser Schlüssel gesetzt ist, wird die titlebar_font-Option ignoriert "
-"und die Standard-Anwendungsschrift für Fenstertitel verwendet"
+"Falls dieser Schlüssel gesetzt ist, wird die Option zum Setzen der "
+"Titelleistenschrift (»titlebar_font«) ignoriert und die Standard-"
+"Anwendungsschrift für Fenstertitel verwendet"
 
 #: src/metacity.schemas.in.h:17
 msgid ""
@@ -479,13 +484,13 @@ msgid ""
 msgstr ""
 "Falls dieser Schlüssel gesetzt ist, arbeitet Metacity anwendungs- und nicht "
 "fensterorientiert. Das Konzept ist etwas abstrakt, aber generell verhält "
-"sich der Computer im applikationsorientierten Modus eher wie ein Mac und "
-"weniger wie Windows. Wenn Sie im applikationsorientierten Modus ein Fenster "
+"sich der Computer im anwendungsorientierten Modus eher wie ein Mac und "
+"weniger wie Windows. Wenn Sie im anwendungsorientierten Modus ein Fenster "
 "fokussieren, werden alle zur Applikation gehörigen Fenster angehoben. "
 "Außerdem werden in diesem Modus Fokusklicks nicht an Fenster von anderen "
 "Anwendungen weitergereicht. Die Existenz dieser Einstellung ist etwas "
-"fragwürdig, jedoch besser als all die spezifischen Details der applikations- "
-"und fensterordientierten Modi einzeln vorzuhalten, so zum Beispiel ob Klicks "
+"fragwürdig, jedoch besser als all die spezifischen Details der anwendungs- "
+"und fensterorientierten Modi einzeln vorzuhalten, so zum Beispiel ob Klicks "
 "durchgereicht werden. Desweiteren ist der anwendungsorientierte Modus "
 "momentan in weiten Teilen nicht implementiert."
 
@@ -502,55 +507,50 @@ msgid "Minimize a window"
 msgstr "Ein Fenster minimieren"
 
 #: src/metacity.schemas.in.h:21
-#, fuzzy
 msgid "Modifier to use for modified window click actions"
-msgstr ""
-"Der zum Umschalten der Fensterklick-Aktionen verwendete Umschalter (Alt"
-"+linke/mittlere/rechte Maustaste)"
+msgstr "Der zum Umschalten der Fensterklick-Aktionen verwendete Umschalter"
 
 #: src/metacity.schemas.in.h:22
 msgid "Move a window"
 msgstr "Ein Fenster verschieben"
 
 #: src/metacity.schemas.in.h:23
-#, fuzzy
 msgid "Move focus backward between panels and the desktop immediately"
-msgstr "Fokus sofort zwischen Panels und dem Desktop durchreichen"
+msgstr "Fokus sofort zwischen den Panels und dem Desktop durchreichen"
 
 #: src/metacity.schemas.in.h:24
-#, fuzzy
 msgid "Move focus backwards between panels and the desktop using popup display"
 msgstr ""
-"Fokus zwischen Panels und dem Desktop unter Verwendung der Fensterliste "
+"Fokus zwischen den Panels und dem Desktop unter Verwendung der Fensterliste "
 "durchreichen"
 
 #: src/metacity.schemas.in.h:25
-#, fuzzy
 msgid "Move focus backwards between windows immediately"
-msgstr "Fokus sofort zwischen Fenstern durchreichen"
+msgstr "Fokus sofort zwischen den Fenstern durchreichen"
 
 #: src/metacity.schemas.in.h:26
-#, fuzzy
 msgid "Move focus backwards between windows using popup display"
-msgstr "Fokus zwischen Fenstern unter Verwendung der Fensterliste durchreichen"
+msgstr ""
+"Fokus zwischen den Fenstern unter Verwendung der Fensterliste durchreichen"
 
 #: src/metacity.schemas.in.h:27
 msgid "Move focus between panels and the desktop immediately"
-msgstr "Fokus sofort zwischen Panels und dem Desktop durchreichen"
+msgstr "Fokus sofort zwischen den Panels und dem Desktop durchreichen"
 
 #: src/metacity.schemas.in.h:28
 msgid "Move focus between panels and the desktop using popup display"
 msgstr ""
-"Fokus zwischen Panels und dem Desktop unter Verwendung der Fensterliste "
+"Fokus zwischen den Panels und dem Desktop unter Verwendung der Fensterliste "
 "durchreichen"
 
 #: src/metacity.schemas.in.h:29
 msgid "Move focus between windows immediately"
-msgstr "Fokus sofort zwischen Fenstern durchreichen"
+msgstr "Fokus sofort zwischen den Fenstern durchreichen"
 
 #: src/metacity.schemas.in.h:30
 msgid "Move focus between windows using popup display"
-msgstr "Fokus zwischen Fenstern unter Verwendung der Fensterliste durchreichen"
+msgstr ""
+"Fokus zwischen den Fenstern unter Verwendung der Fensterliste durchreichen"
 
 #: src/metacity.schemas.in.h:31
 msgid "Move window one workspace down"
@@ -626,9 +626,9 @@ msgid ""
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
 msgstr ""
-"Anzahl der Arbeitsflächen. Muss größer Null sein und hat ein festgelegtes "
-"Maximum (um zu Verhindern, dass Ihr Desktop durch das versehentliche "
-"Anfordern von zig-Millionen Arbeitsflächen zerstört wird)"
+"Anzahl der Arbeitsflächen. Die Zahl muss größer als Null sein und hat ein "
+"festgelegtes Maximum (um zu Verhindern, dass Ihr Desktop durch das "
+"versehentliche Anfordern von zig-Millionen Arbeitsflächen zerstört wird)"
 
 #: src/metacity.schemas.in.h:49
 msgid "Raise window above other windows"
@@ -636,7 +636,7 @@ msgstr "Fenster vor die anderen Fenster anheben"
 
 #: src/metacity.schemas.in.h:50
 msgid "Raise window if obscured, lowers it otherwise"
-msgstr "Fenster, falls im Hintergrund, anheben, andernfalls absenken"
+msgstr "Fenster anheben, falls im Hintergrund, andernfalls absenken"
 
 #: src/metacity.schemas.in.h:51
 msgid "Resize a window"
@@ -664,68 +664,68 @@ msgstr ""
 "Einige Anwendungen missachten die Spezifikationen derartig, dass sie ein "
 "Fehlverhalten des Fenstermanagers hervorrufen. So würde Metacity "
 "Beispielsweise im Idealfall alle Dialoge in einer durchgängigen Position im "
-"Verhältnis zu ihren Elternfenstern positionieren. Dies erfordert das "
-"Ignorieren der von den Applikationen für Dialoge vorgegebenen Positionen. "
+"Verhältnis zu ihren Elternfenstern anzeigen. Dies erfordert das Ignorieren "
+"der von den Applikationen für ihre Dialoge angegebenen Positionen. "
 "Allerdings markieren einige Versionen von Java/Swing ihre Popup-Menüs als "
 "Dialoge, weswegen Metacity die Dialogpositionierung in diesen Fällen "
 "deaktivieren muss, um die Darstellung von Menüs in fehlerhaften Java-"
 "Anwendungen zu erlauben. Es gibt einige weitere derartige Beispiele. Diese "
-"Option versetzt Metacity in den komplett korrekten Modus, der Ihnen "
-"möglicherweise eine etwas schönere Benutzeroberfläche zur Verfügung stellt, "
-"sofern Sie keine fehlerhaften Applikationen einsetzen müssen. Leider müssen "
-"diese Workarounds als Vorgabe aktiviert werden; Die Welt ist ein hässlicher "
-"Ort. Einige der Workarounds dienen zur Überwindung von Beschränkungen "
-"innerhalb der Spezifikationen selbst, daher kann unter Umständen ein Fehler "
-"im Modus ohne Workarounds nicht behoben werden, ohne die betreffende "
+"Option versetzt Metacity in den pedantischen Modus, der Ihnen möglicherweise "
+"eine etwas schönere Benutzeroberfläche zur Verfügung stellt, sofern Sie "
+"keine fehlerhaften Applikationen einsetzen müssen. Leider müssen diese "
+"Provisorien als Vorgabe aktiviert werden; Die Wirklichkeit ist grausam. "
+"Einige der Provisorien dienen zur Überwindung von Beschränkungen innerhalb "
+"der Spezifikationen selbst, daher kann unter Umständen ein Fehler im Modus, "
+"der auf Provisorien verzichtet, nicht behoben werden, ohne die betreffende "
 "Spezifikation zu ändern."
 
 #: src/metacity.schemas.in.h:54
 msgid "Switch to workspace 1"
-msgstr "Zu Arbeitsfläche 1 wechseln"
+msgstr "Zur Arbeitsfläche 1 wechseln"
 
 #: src/metacity.schemas.in.h:55
 msgid "Switch to workspace 10"
-msgstr "Zu Arbeitsfläche 10 wechseln"
+msgstr "Zur Arbeitsfläche 10 wechseln"
 
 #: src/metacity.schemas.in.h:56
 msgid "Switch to workspace 11"
-msgstr "Zu Arbeitsfläche 11 wechseln"
+msgstr "Zur Arbeitsfläche 11 wechseln"
 
 #: src/metacity.schemas.in.h:57
 msgid "Switch to workspace 12"
-msgstr "Zu Arbeitsfläche 12 wechseln"
+msgstr "Zur Arbeitsfläche 12 wechseln"
 
 #: src/metacity.schemas.in.h:58
 msgid "Switch to workspace 2"
-msgstr "Zu Arbeitsfläche 2 wechseln"
+msgstr "Zur Arbeitsfläche 2 wechseln"
 
 #: src/metacity.schemas.in.h:59
 msgid "Switch to workspace 3"
-msgstr "Zu Arbeitsfläche 3 wechseln"
+msgstr "Zur Arbeitsfläche 3 wechseln"
 
 #: src/metacity.schemas.in.h:60
 msgid "Switch to workspace 4"
-msgstr "Zu Arbeitsfläche 4 wechseln"
+msgstr "Zur Arbeitsfläche 4 wechseln"
 
 #: src/metacity.schemas.in.h:61
 msgid "Switch to workspace 5"
-msgstr "Zu Arbeitsfläche 5 wechseln"
+msgstr "Zur Arbeitsfläche 5 wechseln"
 
 #: src/metacity.schemas.in.h:62
 msgid "Switch to workspace 6"
-msgstr "Zu Arbeitsfläche 6 wechseln"
+msgstr "Zur Arbeitsfläche 6 wechseln"
 
 #: src/metacity.schemas.in.h:63
 msgid "Switch to workspace 7"
-msgstr "Zu Arbeitsfläche 7 wechseln"
+msgstr "Zur Arbeitsfläche 7 wechseln"
 
 #: src/metacity.schemas.in.h:64
 msgid "Switch to workspace 8"
-msgstr "Zu Arbeitsfläche 8 wechseln"
+msgstr "Zur Arbeitsfläche 8 wechseln"
 
 #: src/metacity.schemas.in.h:65
 msgid "Switch to workspace 9"
-msgstr "Zu Arbeitsfläche 9 wechseln"
+msgstr "Zur Arbeitsfläche 9 wechseln"
 
 #: src/metacity.schemas.in.h:66
 msgid "Switch to workspace above the current space"
@@ -1023,12 +1023,12 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Die zur Aktivierung des Fenstermenüs verwendete Tastenkombination. Das "
-"Format ist »&lt;Control&gt;« (für Strg.) oder »&lt;Shift&gt;&lt;Alt&gt;F1«. "
-"Der Interpreter ist recht liberal und erlaubt Groß- und Kleinschreibung "
-"sowie Abkürzungen wie z.B. »&lt;Ctl&gt;« oder »&lt;Ctrl&gt;«. Falls diese "
-"diese Option auf die Zeichenkette »disabled« gesetzt ist, wird für diese "
-"Aktion keine Tastenkombination festgelegt."
+"Die zum Aktivieren des Fenstermenüs verwendete Tastenkombination. Das Format "
+"ist »&lt;Control&gt;« (für Strg.) oder »&lt;Shift&gt;&lt;Alt&gt;F1«. Der "
+"Interpreter ist recht liberal und erlaubt Groß- und Kleinschreibung sowie "
+"Abkürzungen wie z.B. »&lt;Ctl&gt;« oder »&lt;Ctrl&gt;«. Falls diese diese "
+"Option auf die Zeichenkette »disabled« gesetzt ist, wird für diese Aktion "
+"keine Tastenkombination festgelegt."
 
 #: src/metacity.schemas.in.h:89
 msgid ""
@@ -1370,7 +1370,6 @@ msgstr ""
 "ist, wird für diese Aktion keine Tastenkombination festgelegt."
 
 #: src/metacity.schemas.in.h:111
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1379,15 +1378,15 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Die verwendete Tastenkombination, um den Fokus zwischen Panels und dem "
-"Desktop durchzureichen. Das Format ist »&lt;Control&gt;« (für Strg.) oder "
-"»&lt;Shift&gt;&lt;Alt&gt;F1«. Der Interpreter ist recht liberal und erlaubt "
-"Groß- und Kleinschreibung sowie Abkürzungen wie z.B. »&lt;Ctl&gt;« oder »&lt;"
-"Ctrl&gt;«. Falls diese diese Option auf die Zeichenkette »disabled« gesetzt "
-"ist, wird für diese Aktion keine Tastenkombination festgelegt."
+"Die verwendete Tastenkombination, um den Fokus unter Verwendung eines Popup-"
+"Fensters zwischen den Panels und dem Desktop rückwärts durchzureichen. Das "
+"Format ist »&lt;Control&gt;« (für Strg.) oder »&lt;Shift&gt;&lt;Alt&gt;F1«. "
+"Der Interpreter ist recht liberal und erlaubt Groß- und Kleinschreibung "
+"sowie Abkürzungen wie z.B. »&lt;Ctl&gt;« oder »&lt;Ctrl&gt;«. Falls diese "
+"diese Option auf die Zeichenkette »disabled« gesetzt ist, wird für diese "
+"Aktion keine Tastenkombination festgelegt."
 
 #: src/metacity.schemas.in.h:112
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1396,8 +1395,8 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Die verwendete Tastenkombination, um den Fokus zwischen Panels und dem "
-"Desktop ohne Popup-Fenster durchzureichen. Das Format ist »&lt;"
+"Die verwendete Tastenkombination, um den Fokus ohne Popup-Fenster rückwärts "
+"zwischen den Panels und dem Desktop durchzureichen. Das Format ist »&lt;"
 "Control&gt;« (für Strg.) oder »&lt;Shift&gt;&lt;Alt&gt;F1«. Der Interpreter "
 "ist recht liberal und erlaubt Groß- und Kleinschreibung sowie Abkürzungen "
 "wie z.B. »&lt;Ctl&gt;« oder »&lt;Ctrl&gt;«. Falls diese diese Option auf die "
@@ -1405,7 +1404,6 @@ msgstr ""
 "Tastenkombination festgelegt."
 
 #: src/metacity.schemas.in.h:113
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1415,15 +1413,15 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Die verwendete Tastenkombination, um den Fokus zwischen den Fenstern "
-"durchzureichen. Das Format ist »&lt;Control&gt;« (für Strg.) oder »&lt;"
-"Shift&gt;&lt;Alt&gt;F1«. Der Interpreter ist recht liberal und erlaubt Groß- "
-"und Kleinschreibung sowie Abkürzungen wie z.B. »&lt;Ctl&gt;« oder »&lt;"
-"Ctrl&gt;«. Falls diese diese Option auf die Zeichenkette »disabled« gesetzt "
-"ist, wird für diese Aktion keine Tastenkombination festgelegt."
+"Die verwendete Tastenkombination, um den Fokus ohne Popup-Fenster rückwärts "
+"zwischen den Fenstern durchzureichen. Das Format ist »&lt;Control&gt;« (für "
+"Strg.) oder »&lt;Shift&gt;&lt;Alt&gt;F1«. Der Interpreter ist recht liberal "
+"und erlaubt Groß- und Kleinschreibung sowie Abkürzungen wie z.B. »&lt;"
+"Ctl&gt;« oder »&lt;Ctrl&gt;«. Falls diese Option auf die Zeichenkette "
+"»disabled« gesetzt ist, wird für diese Aktion keine Tastenkombination "
+"festgelegt."
 
 #: src/metacity.schemas.in.h:114
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1433,13 +1431,13 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Die verwendete Tastenkombination, um den Fokus zwischen den Fenstern ohne "
-"Popup-Fenster durchzureichen. Das Format ist »&lt;Control&gt;« (für Strg.) "
-"oder »&lt;Shift&gt;&lt;Alt&gt;F1«. Der Interpreter ist recht liberal und "
-"erlaubt Groß- und Kleinschreibung sowie Abkürzungen wie z.B. »&lt;Ctl&gt;« "
-"oder »&lt;Ctrl&gt;«. Falls diese diese Option auf die Zeichenkette "
-"»disabled« gesetzt ist, wird für diese Aktion keine Tastenkombination "
-"festgelegt."
+"Die verwendete Tastenkombination, um den Fokus zwischen den Fenstern unter "
+"Verwendung eines Popup-Fensters rückwärts durchzureichen. Das Format ist "
+"»&lt;Control&gt;« (für Strg.) oder »&lt;Shift&gt;&lt;Alt&gt;F1«. Der "
+"Interpreter ist recht liberal und erlaubt Groß- und Kleinschreibung sowie "
+"Abkürzungen wie z.B. »&lt;Ctl&gt;« oder »&lt;Ctrl&gt;«. Falls diese Option "
+"auf die Zeichenkette »disabled« gesetzt ist, wird für diese Aktion keine "
+"Tastenkombination festgelegt."
 
 #: src/metacity.schemas.in.h:115
 msgid ""
@@ -1450,7 +1448,7 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Die verwendete Tastenkombination, um den Fokus zwischen Panels und dem "
+"Die verwendete Tastenkombination, um den Fokus zwischen den Panels und dem "
 "Desktop durchzureichen. Das Format ist »&lt;Control&gt;« (für Strg.) oder "
 "»&lt;Shift&gt;&lt;Alt&gt;F1«. Der Interpreter ist recht liberal und erlaubt "
 "Groß- und Kleinschreibung sowie Abkürzungen wie z.B. »&lt;Ctl&gt;« oder »&lt;"
@@ -1466,7 +1464,7 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Die verwendete Tastenkombination, um den Fokus zwischen Panels und dem "
+"Die verwendete Tastenkombination, um den Fokus zwischen den Panels und dem "
 "Desktop ohne Popup-Fenster durchzureichen. Das Format ist »&lt;"
 "Control&gt;« (für Strg.) oder »&lt;Shift&gt;&lt;Alt&gt;F1«. Der Interpreter "
 "ist recht liberal und erlaubt Groß- und Kleinschreibung sowie Abkürzungen "
@@ -1475,7 +1473,6 @@ msgstr ""
 "Tastenkombination festgelegt."
 
 #: src/metacity.schemas.in.h:117
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1485,15 +1482,15 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Die verwendete Tastenkombination, um den Fokus zwischen den Fenstern "
-"durchzureichen. Das Format ist »&lt;Control&gt;« (für Strg.) oder »&lt;"
-"Shift&gt;&lt;Alt&gt;F1«. Der Interpreter ist recht liberal und erlaubt Groß- "
-"und Kleinschreibung sowie Abkürzungen wie z.B. »&lt;Ctl&gt;« oder »&lt;"
-"Ctrl&gt;«. Falls diese diese Option auf die Zeichenkette »disabled« gesetzt "
-"ist, wird für diese Aktion keine Tastenkombination festgelegt."
+"Die verwendete Tastenkombination, um den Fokus ohne Popup-Fenster zwischen "
+"den Fenstern durchzureichen (Traditionell &lt;Alt&gt;Escape). Das Format ist "
+"»&lt;Control&gt;« (für Strg.) oder »&lt;Shift&gt;&lt;Alt&gt;F1«. Der "
+"Interpreter ist recht liberal und erlaubt Groß- und Kleinschreibung sowie "
+"Abkürzungen wie z.B. »&lt;Ctl&gt;« oder »&lt;Ctrl&gt;«. Falls diese Option "
+"auf die Zeichenkette »disabled« gesetzt ist, wird für diese Aktion keine "
+"Tastenkombination festgelegt."
 
 #: src/metacity.schemas.in.h:118
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1503,13 +1500,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Die verwendete Tastenkombination, um den Fokus zwischen den Fenstern ohne "
-"Popup-Fenster durchzureichen. Das Format ist »&lt;Control&gt;« (für Strg.) "
-"oder »&lt;Shift&gt;&lt;Alt&gt;F1«. Der Interpreter ist recht liberal und "
-"erlaubt Groß- und Kleinschreibung sowie Abkürzungen wie z.B. »&lt;Ctl&gt;« "
-"oder »&lt;Ctrl&gt;«. Falls diese diese Option auf die Zeichenkette "
-"»disabled« gesetzt ist, wird für diese Aktion keine Tastenkombination "
-"festgelegt."
+"Die verwendete Tastenkombination, um den Fokus zwischen den Fenstern unter "
+"Verwendung eines Popup-Fensters durchzureichen (Traditionell &lt;Alt&gt;"
+"Tab). Das Format ist »&lt;Control&gt;« (für Strg.) oder »&lt;Shift&gt;&lt;"
+"Alt&gt;F1«. Der Interpreter ist recht liberal und erlaubt Groß- und "
+"Kleinschreibung sowie Abkürzungen wie z.B. »&lt;Ctl&gt;« oder »&lt;"
+"Ctrl&gt;«. Falls diese Option auf die Zeichenkette »disabled« gesetzt ist, "
+"wird für diese Aktion keine Tastenkombination festgelegt."
 
 #: src/metacity.schemas.in.h:119
 msgid ""
@@ -1520,11 +1517,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Die verwendete Tastenkombination, um in den Vollbildmodus zu wechseln und "
-"diesen wieder zu verlasen. Das Format ist »&lt;Control&gt;« (für Strg.) oder "
-"»&lt;Shift&gt;&lt;Alt&gt;F1«. Der Interpreter ist recht liberal und erlaubt "
-"Groß- und Kleinschreibung sowie Abkürzungen wie z.B. »&lt;Ctl&gt;« oder »&lt;"
-"Ctrl&gt;«. Falls diese diese Option auf die Zeichenkette »disabled« gesetzt "
-"ist, wird für diese Aktion keine Tastenkombination festgelegt."
+"diesen wieder zu verlassen. Das Format ist »&lt;Control&gt;« (für Strg.) "
+"oder »&lt;Shift&gt;&lt;Alt&gt;F1«. Der Interpreter ist recht liberal und "
+"erlaubt Groß- und Kleinschreibung sowie Abkürzungen wie z.B. »&lt;Ctl&gt;« "
+"oder »&lt;Ctrl&gt;«. Falls diese diese Option auf die Zeichenkette "
+"»disabled« gesetzt ist, wird für diese Aktion keine Tastenkombination "
+"festgelegt."
 
 #: src/metacity.schemas.in.h:120
 msgid ""
@@ -1593,8 +1591,8 @@ msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr ""
-"Das Thema legt das Aussehen von Fensterrahmen, Titelleisten und weiteren "
-"fest."
+"Das Thema legt das unter anderem das Aussehen von Fensterrahmen und "
+"Titelleisten fest."
 
 #: src/metacity.schemas.in.h:125
 msgid ""
@@ -1612,12 +1610,13 @@ msgid ""
 "and \"mouse\" means windows are focused when the mouse enters the window and "
 "unfocused when the mouse leaves the window."
 msgstr ""
-"Der Fensterfokusmodus legt fest, wie Fenster aktiviert werden. Er hat drei "
-"mögliche Werte; »click« führt dazu, dass Fenster angeklickt werden müssen, "
-"um fokussiert zu werden, »sloppy« bewirkt, dass Fenster fokussiert werden, "
-"sobald sich der Mauszeiger über dem Fenster befindet, und das Verhalten bei "
-"»mouse« entspricht dem von »sloppy« mit dem Zusatz, dass den Fenstern der "
-"Fokus wieder genommen wird, sobald der Mauszeiger das Fenster verlässt."
+"Der Modus des Fensterfokus legt fest, wie Fenster aktiviert werden. Er hat "
+"drei mögliche Werte: »click« führt dazu, dass Fenster angeklickt werden "
+"müssen, um fokussiert zu werden, »sloppy« bewirkt, dass Fenster fokussiert "
+"werden, sobald sich der Mauszeiger über dem Fenster befindet, und das "
+"Verhalten bei »mouse« entspricht dem von »sloppy« mit dem Zusatz, dass den "
+"Fenstern der Fokus wieder genommen wird, sobald der Mauszeiger das Fenster "
+"verlässt."
 
 #: src/metacity.schemas.in.h:127
 msgid ""
@@ -1673,6 +1672,10 @@ msgid ""
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
+"Dieser Schlüssel legt fest, was bei einem Doppelklick auf die Titelleiste "
+"passieren soll. Folgende Werte sind zur Zeit gültig: »toggle_shade« hat zur "
+"Folge, dass das Fenster ein- oder ausgerollt wird, »toggle_maximize« "
+"bewirkt, dass das Fenster maximiert bzw. wiederhergestellt wird."
 
 #: src/metacity.schemas.in.h:131
 msgid "Toggle fullscreen mode"
@@ -1688,7 +1691,7 @@ msgstr "Fenster ein- und wieder ausrollen"
 
 #: src/metacity.schemas.in.h:134
 msgid "Toggle whether the window is on all workspaces"
-msgstr "Ob das Fenster auf allen Arbeitsflächen sichtbar ist festlegen"
+msgstr "Ob das Fenster auf allen Arbeitsflächen sichtbar ist."
 
 #: src/metacity.schemas.in.h:135
 msgid "Unmaximize a window"
@@ -1741,7 +1744,7 @@ msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr ""
-"%d, gespeichert in GConf-Schlüssel %s ist keine sinnvolle Anzahl "
+"%d, gespeichert in GConf-Schlüssel %s ist keine sinnvolle Anzahl der "
 "Arbeitsflächen; das aktuelle Maximum ist %d\n"
 
 #: src/prefs.c:994
@@ -1749,8 +1752,8 @@ msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
-"Behelfe für defekte Anwendungen abgeschaltet. Manche Anwendungen werden "
-"eventuell nicht richtig funktionieren.\n"
+"Provisorien (Workarounds) für defekte Anwendungen abgeschaltet. "
+"Möglicherweise funktionieren manche Anwendungen nicht richtig.\n"
 
 #: src/prefs.c:1057
 #, c-format
@@ -1761,7 +1764,7 @@ msgstr ""
 #: src/prefs.c:1141
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
-msgstr "Fehler beim Festlegen der Anzahl Arbeitsflächen auf %d: %s\n"
+msgstr "Fehler beim Festlegen der Anzahl der Arbeitsflächen auf %d: %s\n"
 
 #: src/prefs.c:1320
 #, c-format
@@ -1788,8 +1791,8 @@ msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
-"Bildschirm %d auf Anzeige »%s« hat bereits einen Fenstermanager; Versuchen "
-"Sie, die »--replace«-Option zu verwenden, um den aktuellen Fenstermanager zu "
+"Bildschirm %d auf Anzeige »%s« hat bereits einen Fenstermanager;  Geben Sie "
+"die Option »--replace« an, um zu versuchen, den aktuellen Fenstermanager zu "
 "ersetzen.\n"
 
 #: src/screen.c:446
@@ -1797,8 +1800,8 @@ msgstr ""
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
-"Fenstermanager-Auswahl auf Bildschirm %d auf Anzeige »%s« konnte nicht "
-"empfangen werden\n"
+"Markierung des Fenstermanagers auf Bildschirm %d auf Anzeige »%s« konnte "
+"nicht empfangen werden\n"
 
 #: src/screen.c:502
 #, c-format
@@ -1858,26 +1861,26 @@ msgstr ""
 #: src/session.c:1234
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
-msgstr "Unbekanntes Attribut %s im Element <metacity_session>"
+msgstr "Unbekanntes Attribut %s in Element <metacity_session>"
 
 #: src/session.c:1251
 msgid "nested <window> tag"
-msgstr "verschachteltes <window>-Element"
+msgstr "verschachteltes Element <window>"
 
 #: src/session.c:1309 src/session.c:1341
 #, c-format
 msgid "Unknown attribute %s on <window> element"
-msgstr "Unbekanntes Attribut %s im Element <window>"
+msgstr "Unbekanntes Attribut %s in Element <window>"
 
 #: src/session.c:1413
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
-msgstr "Unbekanntes Attribut %s im <maximierten> Element"
+msgstr "Unbekanntes Attribut %s in Element <maximized>"
 
 #: src/session.c:1473
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
-msgstr "Unbekanntes Attribut %s im Element <geometry>"
+msgstr "Unbekanntes Attribut %s in Element <geometry>"
 
 #: src/session.c:1493
 #, c-format
@@ -1902,12 +1905,12 @@ msgstr "Zeile %d Zeichen %d: %s"
 #: src/theme-parser.c:396
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr "Attribut »%s« wiederholt sich im selben <%s>-Element"
+msgstr "Attribut »%s« wiederholt sich im selben Element <%s>"
 
 #: src/theme-parser.c:414 src/theme-parser.c:439
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr "Attribut »%s« ist in einem <%s>-Element in diesem Kontext ungültig"
+msgstr "Attribut »%s« ist in diesem Kontext in Element  <%s> ungültig"
 
 #: src/theme-parser.c:485
 #, c-format
@@ -1932,14 +1935,14 @@ msgstr "Wahrheitswerte müssen »true« oder »false« sein, nicht »%s«"
 #: src/theme-parser.c:572
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr "Winkel muss zwischen 0.0 und 360.0 sein, war aber %g\n"
+msgstr "Der Winkel muss zwischen 0.0 und 360.0 liegen, war jedoch %g\n"
 
 #: src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr ""
-"Alpha muss zwischen 0.0 (unsichtbar) und 1.0 (vollständig deckend) sein, war "
-"aber %g\n"
+"Alpha muss zwischen 0.0 (unsichtbar) und 1.0 (vollständig deckend) liegen, "
+"war jedoch %g\n"
 
 #: src/theme-parser.c:684
 #, c-format
@@ -1954,36 +1957,36 @@ msgstr ""
 #: src/theme-parser.c:2961 src/theme-parser.c:2968 src/theme-parser.c:2975
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
-msgstr "Kein »%s«-Attribut im Element <%s>"
+msgstr "Kein »%s«-Attribut in Element <%s>"
 
 #: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
 #: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
 #: src/theme-parser.c:1126 src/theme-parser.c:1134
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
-msgstr "Kein »%s«-Attribut im Element <%s>"
+msgstr "Kein »%s«-Attribut in Element <%s>"
 
 #: src/theme-parser.c:837 src/theme-parser.c:905 src/theme-parser.c:943
 #: src/theme-parser.c:1020
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
-msgstr "<%s> Name »%s« ein zweites Mal verwendet"
+msgstr "Name »%s« von <%s> wurde zweimal verwendet"
 
 #: src/theme-parser.c:849 src/theme-parser.c:955 src/theme-parser.c:1032
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr "<%s> Elter »%s« wurde nicht definiert"
+msgstr "Elternelement »%s« von <%s> wurde nicht definiert"
 
 #: src/theme-parser.c:968
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr "<%s> Geometrie »%s« wurde nicht definiert"
+msgstr "Geometrie »%s« für Element <%s> wurde nicht definiert"
 
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr ""
-"<%s> muss entweder eine Geometrie oder einen Elter mit einer Geometrie "
+"<%s> muss entweder eine Geometrie oder ein Elternelement mit einer Geometrie "
 "angeben"
 
 #: src/theme-parser.c:1080
@@ -1994,7 +1997,7 @@ msgstr "Unbekannter Typ »%s« in <%s>-Element"
 #: src/theme-parser.c:1091
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr "Unbekanntes style_set »%s« in <%s>-Element"
+msgstr "Attribut style_set in Element <%s> hat einen unbekannten Wert"
 
 #: src/theme-parser.c:1099
 #, c-format
@@ -2004,22 +2007,22 @@ msgstr "Fenstertyp »%s« wurde bereits ein Stilsatz zugeordnet"
 #: src/theme-parser.c:1143
 #, c-format
 msgid "Unknown function \"%s\" for menu icon"
-msgstr "Unbekannte Funktion »%s« für Menüicon"
+msgstr "Unbekannte Funktion »%s« des Menüicons"
 
 #: src/theme-parser.c:1152
 #, c-format
 msgid "Unknown state \"%s\" for menu icon"
-msgstr "Unbekannter Zustand »%s« für Menüicon"
+msgstr "Unbekannter Zustand »%s« des Menüicons"
 
 #: src/theme-parser.c:1160
 #, c-format
 msgid "Theme already has a menu icon for function %s state %s"
-msgstr "Thema hat bereits ein Menüicon für Funktion %s Zustand %s"
+msgstr "Das Thema hat bereits ein Menüicon für Funktion %s Zustand %s"
 
 #: src/theme-parser.c:1177 src/theme-parser.c:3180 src/theme-parser.c:3259
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr "Es wurde kein <draw_ops> mit dem Namen »%s« definiert"
+msgstr "Es wurde kein <draw_ops> mit Namen »%s« definiert"
 
 #: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
 #: src/theme-parser.c:3060 src/theme-parser.c:3114 src/theme-parser.c:3274
@@ -2079,7 +2082,7 @@ msgstr "Kein Attribut »right« in Element <%s>"
 #: src/theme-parser.c:1499
 #, c-format
 msgid "Border \"%s\" is unknown"
-msgstr "Rand »%s« ist unbekannt"
+msgstr "Rahmen »%s« ist unbekannt"
 
 #: src/theme-parser.c:1655 src/theme-parser.c:1765 src/theme-parser.c:1868
 #: src/theme-parser.c:2055 src/theme-parser.c:2805
@@ -2160,7 +2163,7 @@ msgstr "Kein Attribut »type« in Element <%s>"
 #: src/theme-parser.c:2209
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr "Wert »%s« für Typ des Verlaufs war unverständlich"
+msgstr "Wert »%s« für Typ des Farbverlaufs konnte nicht interpretiert werden"
 
 #: src/theme-parser.c:2291
 #, c-format
@@ -2170,7 +2173,7 @@ msgstr "Kein Attribut »filename« in Element <%s>"
 #: src/theme-parser.c:2316 src/theme-parser.c:2763
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "Fülltyp »%s« für Element <%s> ist unverständlich"
+msgstr "Fülltyp »%s« für Element <%s> konnte nicht interpretiert werden"
 
 #: src/theme-parser.c:2398 src/theme-parser.c:2531 src/theme-parser.c:2636
 #, c-format
@@ -2190,17 +2193,17 @@ msgstr "Kein Attribut »arrow« in Element <%s>"
 #: src/theme-parser.c:2465 src/theme-parser.c:2587 src/theme-parser.c:2675
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr "Zustand »%s« für Element <%s> ist unverständlich"
+msgstr "Zustand »%s« für Element <%s> konnte nicht interpretiert werden"
 
 #: src/theme-parser.c:2475 src/theme-parser.c:2597
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr "Schatten »%s« für Element <%s> ist unverständlich"
+msgstr "Schatten »%s« für Element <%s> konnte nicht interpretiert werden"
 
 #: src/theme-parser.c:2485
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr "Pfeil »%s« für Element <%s> ist unverständlich"
+msgstr "Pfeil »%s« für Element <%s> konnte nicht interpretiert werden"
 
 #: src/theme-parser.c:2898 src/theme-parser.c:3014
 #, c-format
@@ -2230,7 +2233,7 @@ msgstr "Unbekannte Position »%s« für Rahmenteil"
 #: src/theme-parser.c:3163
 #, c-format
 msgid "Frame style already has a piece at position %s"
-msgstr "Rahmenstil hat bereits ein Teil an Position %s"
+msgstr "Rahmenstil hat bereits einen Teil bei Position %s"
 
 #: src/theme-parser.c:3208
 #, c-format
@@ -2245,12 +2248,12 @@ msgstr "Kein Attribut »state« in Element <%s>"
 #: src/theme-parser.c:3225
 #, c-format
 msgid "Unknown function \"%s\" for button"
-msgstr "Unbekannte Funktion »%s« für Knopf"
+msgstr "Unbekannte Knopf-Funktion »%s«"
 
 #: src/theme-parser.c:3234
 #, c-format
 msgid "Unknown state \"%s\" for button"
-msgstr "Unbekannter Zustand »%s« für Knopf"
+msgstr "Unbekannter Knopfzustand »%s«"
 
 #: src/theme-parser.c:3242
 #, c-format
@@ -2290,7 +2293,7 @@ msgstr "Kein Attribut »resize« in Element <%s>"
 #: src/theme-parser.c:3376
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr "»%s« ist kein gültiger Wert für das Attribut resize"
+msgstr "»%s« ist kein gültiger Wert für das Attribut »resize«"
 
 #: src/theme-parser.c:3386
 #, c-format
@@ -2317,7 +2320,7 @@ msgid ""
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
 "Es kann keine zwei draw_ops für ein <piece>-Element geben (das Thema gab ein "
-"draw_ops-Attribut und ein <draw_ops>-Element an, oder zwei Elemente)"
+"draw_ops-Attribut und ein <draw_ops>-Element oder zwei Elemente an)"
 
 #: src/theme-parser.c:3510
 msgid ""
@@ -2325,7 +2328,7 @@ msgid ""
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
 "Es kann keine zwei draw_ops für ein <button>-Element geben (das Thema gab "
-"ein draw_ops-Attribut und ein <draw_ops>-Element an, oder zwei Elemente)<"
+"ein draw_ops-Attribut und ein <draw_ops>-Element oder zwei Elemente an)"
 
 #: src/theme-parser.c:3548
 msgid ""
@@ -2333,7 +2336,7 @@ msgid ""
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
 "Es kann keine zwei draw_ops für ein <menu_icon>-Element geben (das Thema gab "
-"ein draw_ops-Attribut und ein <draw_ops>-Element an, oder zwei Elemente)<"
+"ein draw_ops-Attribut und ein <draw_ops>-Element oder zwei Elemente an)"
 
 #: src/theme-parser.c:3595
 #, c-format
@@ -2344,7 +2347,8 @@ msgstr "Äußerstes Element im Thema muss <metacity_theme> sein, nicht <%s>"
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
-msgstr "Element <%s> ist in Element name/author/date/description nicht erlaubt"
+msgstr ""
+"Element <%s> ist einem name/author/date/description-Element nicht erlaubt"
 
 #: src/theme-parser.c:3620
 #, c-format
@@ -2434,25 +2438,26 @@ msgstr "rechts"
 #: src/theme.c:222
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
-msgstr "Rahmengeometrie gibt die Abmessung »%s« nicht an"
+msgstr "Die Rahmengeometrie gibt die »%s«-Abmessungen nicht an"
 
 #: src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "Rahmengeometrie gibt die Abmessung »%s« für den Rand »%s« nicht an"
+msgstr ""
+"Die Rahmengeometrie gibt die »%s«-Abmessungen für den Rand »%s« nicht an"
 
 #: src/theme.c:278
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
-msgstr "Seitenverhältnis %g für den Knopf ist nicht angemessen"
+msgstr "Das Seitenverhältnis %g für einen Knopf ergibt keinen Sinn"
 
 #: src/theme.c:290
 msgid "Frame geometry does not specify size of buttons"
-msgstr "Rahmengeometrie gibt die Abmessungen der Knöpfe nicht an"
+msgstr "Die Rahmengeometrie gibt die Abmessungen der Knöpfe nicht an"
 
 #: src/theme.c:849
 msgid "Gradients should have at least two colors"
-msgstr "Verläufe sollten mindestens zwei Farben enthalten"
+msgstr "Farbverläufe sollten mindestens zwei Farben enthalten"
 
 #: src/theme.c:975
 #, c-format
@@ -2469,19 +2474,20 @@ msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"GTK-Farbangaben müssen eine schließende eckige Klammer nach dem Zustand "
-"haben, z.B. gtk:fg[NORMAL], wobei NORMAL der Zustand ist; »%s« konnte nicht "
-"verarbeitet werden"
+"GTK-Farbangaben müssen nach dem Zustand eine schließende eckige Klammer "
+"enthalten, z.B. gtk:fg[NORMAL], wobei NORMAL der Zustand ist; »%s« konnte "
+"nicht verarbeitet werden"
 
 #: src/theme.c:1000
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr "Zustand »%s« in Farbangabe ist unverständlich"
+msgstr "Zustand »%s« in der Farbangabe konnte nicht interpretiert werden"
 
 #: src/theme.c:1013
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr "Farbkomponente »%s« in Farbangabe ist unverständlich"
+msgstr ""
+"Farbkomponente »%s« in der Farbangabe konnte nicht interpretiert werden"
 
 #: src/theme.c:1043
 #, c-format
@@ -2489,46 +2495,48 @@ msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr ""
-"Das Mischformat ist »blend/hg_farbe/fg_farbe/alpha«, »%s« passt nicht auf "
-"dieses Format"
+"Das Blendformat ist »Blend/Hintergrundfarbe/Vordergrundfarbe/Alpha«; »%s« "
+"passt nicht auf dieses Format"
 
 #: src/theme.c:1054
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr "Alphawert »%s« in gemischter Farbe konnte nicht verarbeitet werden"
+msgstr "Der Alphawert »%s« in einer Mischfarbe konnte nicht verarbeitet werden"
 
 #: src/theme.c:1064
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr "Alphawert »%s« in gemischter Farbe ist nicht zwischen 0,0 und 1,0"
+msgstr ""
+"Der Alphawert »%s« in einer Mischfarbe liegt nicht zwischen 0.0 und 1.0"
 
 #: src/theme.c:1111
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
-"Das Mischformat ist »blend/hg_farbe/fg_farbe/alpha«, »%s« passt nicht auf "
-"dieses Format"
+"Das Mischformat ist »Mischen/Basisfarbe/Faktor«; »%s« passt nicht auf dieses "
+"Format"
 
 #: src/theme.c:1122
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "Mischfaktor »%s« in Mischfarbe konnte nicht verarbeitet werden"
+msgstr ""
+"Der Mischfaktor »%s« in einer Mischfarbe konnte nicht verarbeitet werden"
 
 #: src/theme.c:1132
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr "Mischfaktor »%s« in Mischfarbe ist negativ"
+msgstr "Der Mischfaktor »%s« in einer Mischfarbe ist negativ"
 
 #: src/theme.c:1161
 #, c-format
 msgid "Could not parse color \"%s\""
-msgstr "Farbe »%s« war nicht zu verstehen"
+msgstr "Die Farbe »%s« konnte nicht interpretiert werden"
 
 #: src/theme.c:1423
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "Koordinatenausdruck enthält das unerlaubte Zeichen `%s'"
+msgstr "Der Koordinatenausdruck enthält das unerlaubte Zeichen »%s«"
 
 #: src/theme.c:1450
 #, c-format
@@ -2536,15 +2544,15 @@ msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr ""
-"Koordinatenausdruck enthält die Gleitkommazahl `%s', die nicht verarbeitet "
-"werden konnte"
+"Der Koordinatenausdruck enthält die Gleitkommazahl »%s«, die nicht "
+"verarbeitet werden konnte"
 
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
-"Koordinatenausdruck enthält die Ganzzahl `%s', die nicht verarbeitet werden "
-"konnte"
+"Der Koordinatenausdruck enthält die Ganzzahl »%s«, die nicht verarbeitet "
+"werden konnte"
 
 #: src/theme.c:1531
 #, c-format
@@ -2552,39 +2560,41 @@ msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr ""
-"Koordinatenausdruck enthält einen unbekannten Operator am Anfang dieses "
+"Der Koordinatenausdruck enthält einen unbekannten Operator am Anfang dieses "
 "Texts: »%s«"
 
 #: src/theme.c:1588
 msgid "Coordinate expression was empty or not understood"
-msgstr "Koordinatenausdruck war leer oder unverständlich"
+msgstr "Der Koordinatenausdruck war leer oder unverständlich"
 
 #: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
 msgid "Coordinate expression results in division by zero"
-msgstr "Koordinatenausdruck führt zu einer Division durch Null"
+msgstr "Der Koordinatenausdruck führt zu einer Division durch Null"
 
 #: src/theme.c:1779
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
-"Koordinatenausdruck versucht, den Modulo-Operator auf eine Gleitkommazahl "
-"anzuwenden"
+"Der Koordinatenausdruck versucht, den Modulo-Operator auf eine "
+"Gleitkommazahl anzuwenden"
 
 #: src/theme.c:1836
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
-"Koordinatenausdruck enthält den Operator »%s«, wo ein Operand stehen müsste"
+"Der Koordinatenausdruck enthält den Operator »%s«, wo ein Operand stehen "
+"müsste"
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr ""
-"Koordinatenausdruck enthält einen Operanden, wo ein Operator stehen müsste"
+"Der Koordinatenausdruck enthält einen Operanden, wo ein Operator stehen "
+"müsste"
 
 #: src/theme.c:1853
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr "Koordinatenausdruck endet mit einem Operator statt mit einem Operanden"
+msgstr "Der Koordinatenausdruck endet mit einem Operator statt einem Operanden"
 
 #: src/theme.c:1863
 #, c-format
@@ -2592,37 +2602,40 @@ msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
-"Koordinatenausdruck enthält den Operator »%c« nach dem Operator »%c« und "
-"dazwischen keinen Operanden"
+"Der Koordinatenausdruck enthält die beiden Operatoren »%c« und »%c«, jedoch "
+"keinen Operanden dazwischen"
 
 #: src/theme.c:1982
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
 msgstr ""
-"Der Koordinatenausdrucks-Parser hat seinen Puffer ausgeschöpft; dies ist "
-"eigentlich ein Fehler in Metacity, aber sind Sie sicher, dass sie so einen "
-"riesigen Ausdruck benötigen?"
+"Der Interpreter für Koordinatenausdrücke hat seinen Puffer ausgeschöpft. "
+"Dies ist ein Fehler in Metacity; Sind Sie sicher, dass sie so einen riesigen "
+"Ausdruck benötigen?"
 
 #: src/theme.c:2011
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr "Koordinatenausdruck hatte eine schließende Klammer ohne eine öffnende"
+msgstr ""
+"Der Koordinatenausdruck enthält eine schließende Klammer, jedoch keine "
+"Öffnende"
 
 #: src/theme.c:2074
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr ""
-"Koordinatenausdruck enthält die unbekannte Variable oder Konstante »%s«"
+"Der Koordinatenausdruck enthält die unbekannte Variable oder Konstante »%s«"
 
 #: src/theme.c:2131
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
-"Koordinatenausdruck enthält eine offene Klammer ohne schließende Klammer"
+"Der Koordinatenausdruck enthält eine öffnende Klammer, jedoch keine "
+"Schließende"
 
 #: src/theme.c:2142
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr ""
-"Koordinatenausdruck scheint keine Operatoren oder Operanden zu enthalten"
+"Der Koordinatenausdruck scheint weder Operatoren noch Operanden zu enthalten"
 
 #: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
 #, c-format
@@ -2635,8 +2648,8 @@ msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"irgendwas\"/> muss für "
-"diesen Rahmenstil angegeben werden"
+"Für diesen Rahmenstil muss <button function=\"%s\" state=\"%s\" draw_ops="
+"\"irgendwas\"/> angegeben werden"
 
 #: src/theme.c:4218 src/theme.c:4250
 #, c-format
@@ -2671,8 +2684,8 @@ msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 msgstr ""
-"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"irgendwas\"/> muss für "
-"dieses Thema angegeben werden"
+"Für dieses Thema muss <menu_icon function=\"%s\" state=\"%s\" draw_ops="
+"\"irgendwas\"/> angegeben werden"
 
 #: src/theme.c:4894 src/theme.c:4956
 #, c-format
@@ -2685,11 +2698,11 @@ msgstr ""
 #: src/theme.c:4902 src/theme.c:4964
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr "Konstante »%s« war bereits definiert"
+msgstr "Konstante »%s« wurde bereits definiert"
 
 #: src/tools/metacity-properties.desktop.in.h:1
 msgid "Select how to give focus to windows"
-msgstr "Festlegen, wie der Fenster zwischen Fenstern durchgereicht wird"
+msgstr "Festlegen, wie der Fokus zwischen Fenstern durchgereicht wird"
 
 #: src/tools/metacity-properties.desktop.in.h:2
 msgid "Window Focus"
@@ -2758,7 +2771,7 @@ msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
-"Fenster %s setzt die SM_CLIENT_ID auf sich selbst anstatt auf das "
+"Fenster %s setzt SM_CLIENT_ID auf sich selbst anstatt auf das "
 "WM_CLIENT_LEADER-Fenster, wie im ICCCM vorgegeben.\n"
 
 #  We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
@@ -2782,7 +2795,7 @@ msgid ""
 msgstr ""
 "Fenster %s zeigt durch einen MWM-Wink an, dass die Größe nicht veränderbar "
 "ist, setzt jedoch die minimale Größe auf %d x %d und die maximale Größe auf %"
-"d x %d; dies macht nicht viel Sinn.\n"
+"d x %d; dies ergibt keinen Sinn.\n"
 
 #: src/workspace.c:50
 #, c-format
@@ -2795,8 +2808,8 @@ msgid ""
 "Window 0x%lx has property %s that was expected to have type %s format %d and "
 "actually has type %s format %d n_items %d\n"
 msgstr ""
-"Fenster 0x%lx hat die Eigenschaft %s, die Typ %s, Format %d, haben sollte, "
-"aber Typ %s, Format %d n_items %d hat.\n"
+"Eigenschaft %s von Fenster 0x%lx, die Typ %s, Format %d, haben sollte, hat "
+"Typ %s, Format %d n_items %d.\n"
 
 #: src/xprops.c:369
 #, c-format
