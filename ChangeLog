@@ -1,5 +1,10 @@
 2002-05-28  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (redraw_icon): handle missing frame, prevents segv
+	with undecorated windows. #83298
+
+2002-05-28  Havoc Pennington  <hp@pobox.com>
+
         Patch from Erwann Chenede for raise_or_lower keybinding
 	
 	* src/display.c, src/common.h: POINT_IN_RECT moved to a common

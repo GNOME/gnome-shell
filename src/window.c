@@ -4624,7 +4624,8 @@ static void
 redraw_icon (MetaWindow *window)
 {
   /* We could probably be smart and just redraw the icon here. */
-  meta_ui_queue_frame_draw (window->screen->ui, window->frame->xwindow);
+  if (window->frame)
+    meta_ui_queue_frame_draw (window->screen->ui, window->frame->xwindow);
 }
 
 static GList*
