@@ -89,6 +89,11 @@ standard is available at http://freedesktop.org/Standards/wm-spec/
 
 + _NET_WM_MOVERESIZE (1.3)
 
+- _NET_RESTACK_WINDOW (-)
+  Metacity does not currently support this message.
+
++ _NET_REQUEST_FRAME_EXTENTS (1.3)  
+
   c. Application Window Properties
   --------------------------------
 
@@ -115,6 +120,8 @@ standard is available at http://freedesktop.org/Standards/wm-spec/
   See: http://bugzilla.gnome.org/show_bug.cgi?id=113601
   Metacity doesn't implement viewports so _NET_WM_STATE_STICKY is
   unimplemented.
+  _NET_WM_STATE_DEMANDS_ATTENTION is neither read nor updated by
+  metacity.  Metacity should unset it on window activation.
 
 + _NET_WM_ALLOWED_ACTIONS (1.3)
   Metacity keeps this hint up to date.  The code is somewhat crufty
@@ -139,6 +146,11 @@ standard is available at http://freedesktop.org/Standards/wm-spec/
 - _NET_WM_USER_TIME (-)
   Metacity does not read or set this property.  The EWMH does not
   require it to do so, but it should support it.
+
++ _NET_FRAME_EXTENTS (1.3)
+  If set in response to a _NET_REQUEST_FRAME_EXTENTS message received
+  prior to the window being mapped, this may be an estimate.  This is,
+  however, expressly allowed by the specification.
 
   d. Window Manager Protocols
   ---------------------------
