@@ -728,6 +728,12 @@ meta_stack_sync_to_server (MetaStack *stack)
           /* Restack remaining windows */
           meta_verbose ("Restacking remaining %d windows\n",
                         (int) (new_end - newp));
+          /* We need to include an already-stacked window
+           * in the restack call, so we get in the proper position
+           * with respect to it.
+           */
+          if (newp != new_stack)
+            --newp;
           XRestackWindows (stack->screen->display->xdisplay,
                            (Window *) newp, new_end - newp);
         }

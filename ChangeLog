@@ -1,3 +1,9 @@
+2001-10-22  Havoc Pennington  <hp@pobox.com>
+
+	* src/stack.c (meta_stack_sync_to_server): fix to keep desktop
+	window from appearing on top of everything else, among other stack
+	bugs. Untested.
+
 2001-10-15  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (meta_window_new): use queried attributes to check
