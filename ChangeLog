@@ -1,3 +1,10 @@
+2002-11-26 Calum Benson  <calum.benson@sun.com>
+
+	* src/themes/Crux :
+	
+	Removed alpha layers from the pixmaps that don't need them.
+	Fixes #98389, results in 10-15% speedup on most machines.
+
 2002-11-26  Glynn Foster  <glynn.foster@sun.com>
 
 	* configure.in: 2.4.5
