@@ -1,3 +1,8 @@
+2004-06-24  Elijah Newren  <newren@math.utah.edu>
+
+	* src/session.c: Change meta_warning to meta_topic on failure to
+	connect to a session manager.  Fixes #136218.
+
 2004-06-17  Elijah Newren  <newren@math.utah.edu>
 
 	Add support for _NET_WM_USER_TIME

@@ -271,7 +271,9 @@ meta_session_init (const char *previous_client_id,
   
   if (session_connection == NULL)
     {
-      meta_warning (_("Failed to a open connection to a session manager, so window positions will not be saved: %s\n"), buf);
+      meta_topic (META_DEBUG_SM, 
+                  "Failed to a open connection to a session manager, so window positions will not be saved: %s\n",
+                  buf);
 
       goto out;
     }
