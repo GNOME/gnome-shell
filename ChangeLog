@@ -1,3 +1,7 @@
+2002-10-01  Stanislav Brabec  <sbrabec@suse.cz>
+
+	* configure.in: Added cs to ALL_LINGUAS.
+
 2002-09-30  Havoc Pennington  <hp@pobox.com>
 
 	* src/screen.c (reload_xinerama_infos): fix compilation on
