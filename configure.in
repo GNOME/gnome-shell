@@ -3,7 +3,7 @@ AC_INIT(src/display.c)
 
 AM_CONFIG_HEADER(config.h)
 
-AM_INIT_AUTOMAKE(metacity, 2.9.0)
+AM_INIT_AUTOMAKE(metacity, 2.9.1)
 
 # Honor aclocal flags
 ACLOCAL="$ACLOCAL $ACLOCAL_FLAGS"
