@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2003-01-03 15:48+0100\n"
-"PO-Revision-Date: 2003-01-03 15:50+0100\n"
+"POT-Creation-Date: 2003-01-11 16:44+0100\n"
+"PO-Revision-Date: 2003-01-11 16:49+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -57,7 +57,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Feil under henting av vertsnavn: %s\n"
 
-#: src/display.c:273
+#: src/display.c:279
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Feil under åpning av X Window System skjerm «%s»\n"
@@ -78,23 +78,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatal IU-feil %d (%s) på skjerm «%s».\n"
 
-#: src/frames.c:900
+#: src/frames.c:1010
 msgid "Close Window"
 msgstr "Lukk vindu"
 
-#: src/frames.c:903
+#: src/frames.c:1013
 msgid "Window Menu"
 msgstr "Vindumeny"
 
-#: src/frames.c:906
+#: src/frames.c:1016
 msgid "Minimize Window"
 msgstr "Minimer vindu"
 
-#: src/frames.c:909
+#: src/frames.c:1019
 msgid "Maximize Window"
 msgstr "Maksimer vindu"
 
-#: src/frames.c:912
+#: src/frames.c:1022
 msgid "Unmaximize Window"
 msgstr "Gjenopprett vindu"
 
@@ -196,7 +196,7 @@ msgstr "Plasser på _alle arbeidsområder"
 msgid "Only on _This Workspace"
 msgstr "Kun på de_tte arbeidsområdet"
 
-#: src/menu.c:152 src/prefs.c:1644
+#: src/menu.c:152 src/prefs.c:1649
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbeidsområde %d"
@@ -372,7 +372,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
-msgstr ""
+msgstr "Handling ved dobbeltklikk på tittellinjen"
 
 #: src/metacity.schemas.in.h:4
 msgid "Activate window menu"
@@ -483,43 +483,36 @@ msgid "Move a window"
 msgstr "Flytt et vindu"
 
 #: src/metacity.schemas.in.h:25
-#, fuzzy
 msgid "Move backward between panels and the desktop immediately"
-msgstr "Flytt fokus mellom paneler og skrivebordet med en gang"
+msgstr "Flytt bakover mellom paneler og skrivebordet med en gang"
 
 #: src/metacity.schemas.in.h:26
-#, fuzzy
 msgid "Move backwards between panels and the desktop with popup"
-msgstr "Flytt fokus baklengs mellom paneler og skrivebordet med bruk av dialog"
+msgstr "Flytt bakover mellom paneler og skrivebordet med bruk av dialog"
 
 #: src/metacity.schemas.in.h:27
-#, fuzzy
 msgid "Move backwards between windows immediately"
-msgstr "Flytt fokus baklengs mellom vinduer med en gang"
+msgstr "Flytt bakover mellom vinduer med en gang"
 
 #: src/metacity.schemas.in.h:28
-#, fuzzy
 msgid "Move between panels and the desktop immediately"
-msgstr "Flytt fokus mellom paneler og skrivebordet med en gang"
+msgstr "Flytt mellom paneler og skrivebordet med en gang"
 
 #: src/metacity.schemas.in.h:29
-#, fuzzy
 msgid "Move between panels and the desktop with popup"
-msgstr "Flytt fokus mellom paneler og skrivebordet med dialog"
+msgstr "Flytt mellom paneler og skrivebordet med dialog"
 
 #: src/metacity.schemas.in.h:30
-#, fuzzy
 msgid "Move between windows immediately"
 msgstr "Flytt fokus mellom vinduer med en gang"
 
 #: src/metacity.schemas.in.h:31
-#, fuzzy
 msgid "Move between windows with popup"
-msgstr "Flytt fokus mellom vinduer med dialog"
+msgstr "Flytt mellom vinduer med dialog"
 
 #: src/metacity.schemas.in.h:32
 msgid "Move focus backwards between windows using popup display"
-msgstr "Flytt fokus baklengs mellom vinduer med dialiog"
+msgstr "Bytt fokus baklengs mellom vinduer med dialog"
 
 #: src/metacity.schemas.in.h:33
 msgid "Move window one workspace down"
@@ -601,9 +594,8 @@ msgid ""
 msgstr ""
 
 #: src/metacity.schemas.in.h:52
-#, fuzzy
 msgid "Raise obscured window, otherwise lower"
-msgstr "Hever vinduet hvis det er skjult, senker det ellers"
+msgstr "Hev vindu hvis skjult, senk det ellers"
 
 #: src/metacity.schemas.in.h:53
 msgid "Raise window above other windows"
@@ -682,14 +674,12 @@ msgid "Switch to workspace 9"
 msgstr "Bytt til arbeidsområde 9"
 
 #: src/metacity.schemas.in.h:69
-#, fuzzy
 msgid "Switch to workspace above this one"
-msgstr "Bytt til arbeidsområdet over aktivt område"
+msgstr "Bytt til arbeidsområdet over dette."
 
 #: src/metacity.schemas.in.h:70
-#, fuzzy
 msgid "Switch to workspace below this one"
-msgstr "Bytt  til arbeidsområdet under aktivt område"
+msgstr "Bytt til arbeidsområdet under dette"
 
 #: src/metacity.schemas.in.h:71
 msgid "Switch to workspace on the left"
@@ -1288,9 +1278,8 @@ msgstr ""
 "tastebinding for denne handlingen."
 
 #: src/metacity.schemas.in.h:127
-#, fuzzy
 msgid "The name of a workspace."
-msgstr "Antall arbeidsområder"
+msgstr "Navnet på et arbeidsområde."
 
 #: src/metacity.schemas.in.h:128
 msgid ""
@@ -1418,9 +1407,8 @@ msgid "Toggle shaded state"
 msgstr "Endre tilstand for skyggelegging"
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid "Toggle window on all workspaces"
-msgstr "Endre innstilling for vising av vindu på alle arbeidsområder"
+msgstr "Bytt mellom vising av vindu på alle arbeidsområder"
 
 #: src/metacity.schemas.in.h:141
 msgid "Unmaximize a window"
@@ -1455,7 +1443,7 @@ msgstr ""
 "«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for endring av "
 "musknapp\n"
 
-#: src/prefs.c:736 src/prefs.c:1098
+#: src/prefs.c:736 src/prefs.c:1103
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-nøkkel «%s» er satt til en ugyldig verdi\n"
@@ -1474,7 +1462,7 @@ msgstr ""
 "%d lagret i GConf-nøkkel %s er ikke et lesbart antall arbeidsområder, aktivt "
 "maksimum er %d\n"
 
-#: src/prefs.c:1060
+#: src/prefs.c:1065
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1482,17 +1470,17 @@ msgstr ""
 "Funskjonalietet for å gå rundt ødelagte applikasjoner er deaktivert. Noen "
 "applikasjoner vil kanskje ikke oppføre seg korrekt.\n"
 
-#: src/prefs.c:1125
+#: src/prefs.c:1130
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d lagret i GConf-nøkkel %s er utenfor området 0 til %d\n"
 
-#: src/prefs.c:1217
+#: src/prefs.c:1222
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Feil under spesifisering av antall arbeidsområder til %d: %s\n"
 
-#: src/prefs.c:1435
+#: src/prefs.c:1440
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1501,7 +1489,7 @@ msgstr ""
 "«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for "
 "tastaturbinding «%s»\n"
 
-#: src/prefs.c:1725
+#: src/prefs.c:1730
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Feil under setting av navn på arbeidsområde %d til «%s»: %s\n"
@@ -2450,15 +2438,15 @@ msgstr "Åpnet loggfil %s\n"
 msgid "Window manager: "
 msgstr "Vindushåndterer: "
 
-#: src/util.c:345
+#: src/util.c:347
 msgid "Bug in window manager: "
 msgstr "Feil i vindushåndterer: "
 
-#: src/util.c:374
+#: src/util.c:376
 msgid "Window manager warning: "
 msgstr "Advarsel fra vindushåndterer: "
 
-#: src/util.c:398
+#: src/util.c:400
 msgid "Window manager error: "
 msgstr "Feil i vindushåndterer: "
 
@@ -2468,7 +2456,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Applikasjonen satte en feil _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4863
+#: src/window.c:4893
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2484,7 +2472,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5423
+#: src/window.c:5453
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
