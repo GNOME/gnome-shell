@@ -107,6 +107,20 @@ gboolean meta_prop_get_cardinal_with_atom_type (MetaDisplay   *display,
                                                 Atom           xatom,
                                                 Atom           prop_type,
                                                 gulong        *cardinal_p);
+gboolean meta_prop_get_text_property (MetaDisplay   *display,
+                                      Window         xwindow,
+                                      Atom           xatom,
+                                      char         **utf8_str_p);
+
+gboolean meta_prop_get_wm_hints      (MetaDisplay   *display,
+                                      Window         xwindow,
+                                      Atom           xatom,
+                                      XWMHints     **hints_p);
+
+gboolean meta_prop_get_class_hint    (MetaDisplay   *display,
+                                      Window         xwindow,
+                                      Atom           xatom,
+                                      XClassHint    *class_hint);
 
 typedef enum
 {
@@ -118,7 +132,10 @@ typedef enum
   META_PROP_VALUE_WINDOW,
   META_PROP_VALUE_CARDINAL_LIST,
   META_PROP_VALUE_UTF8_LIST,
-  META_PROP_VALUE_ATOM_LIST
+  META_PROP_VALUE_ATOM_LIST,
+  META_PROP_VALUE_TEXT_PROPERTY, /* comes back as UTF-8 string */
+  META_PROP_VALUE_WM_HINTS,
+  META_PROP_VALUE_CLASS_HINT
 } MetaPropValueType;
 
 /* used to request/return/store property values */
@@ -134,6 +151,8 @@ typedef struct
     MotifWmHints *motif_hints;
     Window xwindow;
     gulong cardinal;
+    XWMHints *wm_hints;
+    XClassHint class_hint;
     
     struct
     {

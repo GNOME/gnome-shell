@@ -641,3 +641,9 @@ ag_Xmalloc (unsigned long bytes)
 {
   return (void*) Xmalloc (bytes);
 }
+
+void*
+ag_Xmalloc0 (unsigned long bytes)
+{
+  return (void*) Xcalloc (bytes, 1);
+}

@@ -25,6 +25,8 @@
 #include "errors.h"
 #include "util.h"
 #include "async-getprop.h"
+#include "ui.h"
+#include "metacity-Xatomtype.h"
 #include <X11/Xatom.h>
 #include <string.h>
 
@@ -506,6 +508,201 @@ meta_prop_get_cardinal_with_atom_type (MetaDisplay   *display,
   return cardinal_with_atom_type_from_results (&results, prop_type, cardinal_p);
 }
 
+static gboolean
+text_property_from_results (GetPropertyResults *results,
+                            char              **utf8_str_p)
+{
+  XTextProperty tp;
+
+  *utf8_str_p = NULL;
+  
+  tp.value = results->prop;
+  results->prop = NULL;
+  tp.encoding = results->type;
+  tp.format = results->format;
+  tp.nitems = results->n_items;  
+  
+  *utf8_str_p = meta_text_property_to_utf8 (results->display->xdisplay,
+                                            &tp);
+  
+  if (tp.value != NULL)
+    XFree (tp.value);
+  
+  return *utf8_str_p != NULL;
+}
+
+gboolean
+meta_prop_get_text_property (MetaDisplay   *display,
+                             Window         xwindow,
+                             Atom           xatom,
+                             char         **utf8_str_p)
+{
+  GetPropertyResults results;
+  
+  if (!get_property (display, xwindow, xatom, AnyPropertyType,
+                     &results))
+    return FALSE;
+
+  return text_property_from_results (&results, utf8_str_p);
+}
+
+/* From Xmd.h */
+#ifndef cvtINT32toInt
+#if defined(WORD64) && defined(UNSIGNEDBITFIELDS)
+#define cvtINT8toInt(val)   (((val) & 0x00000080) ? ((val) | 0xffffffffffffff00) : (val))
+#define cvtINT16toInt(val)  (((val) & 0x00008000) ? ((val) | 0xffffffffffff0000) : (val))
+#define cvtINT32toInt(val)  (((val) & 0x80000000) ? ((val) | 0xffffffff00000000) : (val))
+#define cvtINT8toShort(val)  cvtINT8toInt(val)
+#define cvtINT16toShort(val) cvtINT16toInt(val)
+#define cvtINT32toShort(val) cvtINT32toInt(val)
+#define cvtINT8toLong(val)  cvtINT8toInt(val)
+#define cvtINT16toLong(val) cvtINT16toInt(val)
+#define cvtINT32toLong(val) cvtINT32toInt(val)
+#else
+#define cvtINT8toInt(val) (val)
+#define cvtINT16toInt(val) (val)
+#define cvtINT32toInt(val) (val)
+#define cvtINT8toShort(val) (val)
+#define cvtINT16toShort(val) (val)
+#define cvtINT32toShort(val) (val)
+#define cvtINT8toLong(val) (val)
+#define cvtINT16toLong(val) (val)
+#define cvtINT32toLong(val) (val)
+#endif /* WORD64 and UNSIGNEDBITFIELDS */
+#endif /* cvtINT32toInt() */
+
+static gboolean
+wm_hints_from_results (GetPropertyResults *results,
+                       XWMHints          **hints_p)
+{
+  XWMHints *hints;
+  xPropWMHints *raw;
+  
+  *hints_p = NULL;
+  
+  if (!validate_or_free_results (results, 32, XA_WM_HINTS, TRUE))
+    return FALSE;  
+
+  /* pre-R3 bogusly truncated window_group, don't fail on them */  
+  if (results->n_items < (NumPropWMHintsElements - 1))
+    {
+      meta_verbose ("WM_HINTS property too short: %d should be %d\n",
+                    (int) results->n_items, NumPropWMHintsElements - 1);
+      if (results->prop)
+        {
+          XFree (results->prop);
+          results->prop = NULL;
+        }
+      return FALSE;
+    }
+  
+  hints = ag_Xmalloc0 (sizeof (XWMHints));
+
+  raw = (xPropWMHints*) results->prop;
+  
+  hints->flags = raw->flags;
+  hints->input = (raw->input ? True : False);
+  hints->initial_state = cvtINT32toInt (raw->initialState);
+  hints->icon_pixmap = raw->iconPixmap;
+  hints->icon_window = raw->iconWindow;
+  hints->icon_x = cvtINT32toInt (raw->iconX);
+  hints->icon_y = cvtINT32toInt (raw->iconY);
+  hints->icon_mask = raw->iconMask;
+  if (results->n_items >= NumPropWMHintsElements)
+    hints->window_group = raw->windowGroup;
+  else
+    hints->window_group = 0;
+
+  if (results->prop)
+    {
+      XFree (results->prop);
+      results->prop = NULL;
+    }
+
+  *hints_p = hints;
+
+  return TRUE;
+}
+
+gboolean
+meta_prop_get_wm_hints (MetaDisplay   *display,
+                        Window         xwindow,
+                        Atom           xatom,
+                        XWMHints     **hints_p)
+{
+  GetPropertyResults results;
+
+  *hints_p = NULL;
+  
+  if (!get_property (display, xwindow, xatom, XA_WM_HINTS,
+                     &results))
+    return FALSE;
+
+  return wm_hints_from_results (&results, hints_p);
+}
+
+static gboolean
+class_hint_from_results (GetPropertyResults *results,
+                         XClassHint         *class_hint)
+{
+  int len_name, len_class;
+  
+  class_hint->res_class = NULL;
+  class_hint->res_name = NULL;
+  
+  if (!validate_or_free_results (results, 8, XA_STRING, FALSE))
+    return FALSE;
+  
+  len_name = strlen ((char *) results->prop);
+  if (! (class_hint->res_name = ag_Xmalloc (len_name+1)))
+    {
+      XFree (results->prop);
+      results->prop = NULL;
+      return FALSE;
+    }
+  
+  strcpy (class_hint->res_name, results->prop);
+
+  if (len_name == (int) results->n_items)
+    len_name--;
+  
+  len_class = strlen (results->prop + len_name + 1);
+  
+  if (! (class_hint->res_class = ag_Xmalloc(len_class+1)))
+    {
+      XFree(class_hint->res_name);
+      class_hint->res_name = NULL;
+      XFree (results->prop);
+      results->prop = NULL;
+      return FALSE;
+    }
+  
+  strcpy (class_hint->res_class, results->prop + len_name + 1);
+
+  XFree (results->prop);
+  results->prop = NULL;
+  
+  return TRUE;
+}
+
+gboolean
+meta_prop_get_class_hint (MetaDisplay   *display,
+                          Window         xwindow,
+                          Atom           xatom,
+                          XClassHint    *class_hint)
+{
+  GetPropertyResults results;
+  
+  class_hint->res_class = NULL;
+  class_hint->res_name = NULL;
+  
+  if (!get_property (display, xwindow, xatom, XA_STRING,
+                     &results))
+    return FALSE;
+
+  return class_hint_from_results (&results, class_hint);
+}
+
 static AgGetPropertyTask*
 get_task (MetaDisplay        *display,
           Window              xwindow,
@@ -565,6 +762,15 @@ meta_prop_get_values (MetaDisplay   *display,
               break;
             case META_PROP_VALUE_ATOM_LIST:
               values[i].required_type = XA_ATOM;
+              break;
+            case META_PROP_VALUE_TEXT_PROPERTY:
+              values[i].required_type = AnyPropertyType;
+              break;
+            case META_PROP_VALUE_WM_HINTS:
+              values[i].required_type = XA_WM_HINTS;
+              break;
+            case META_PROP_VALUE_CLASS_HINT:
+              values[i].required_type = XA_STRING;
               break;
             }
         }
@@ -670,6 +876,18 @@ meta_prop_get_values (MetaDisplay   *display,
           if (!atom_list_from_results (&results,
                                        &values[i].v.atom_list.atoms,
                                        &values[i].v.atom_list.n_atoms))
+            values[i].type = META_PROP_VALUE_INVALID;
+          break;
+        case META_PROP_VALUE_TEXT_PROPERTY:
+          if (!text_property_from_results (&results, &values[i].v.str))
+            values[i].type = META_PROP_VALUE_INVALID;
+          break;
+        case META_PROP_VALUE_WM_HINTS:
+          if (!wm_hints_from_results (&results, &values[i].v.wm_hints))
+            values[i].type = META_PROP_VALUE_INVALID;
+          break;
+        case META_PROP_VALUE_CLASS_HINT:
+          if (!class_hint_from_results (&results, &values[i].v.class_hint))
             values[i].type = META_PROP_VALUE_INVALID;
           break;
         }

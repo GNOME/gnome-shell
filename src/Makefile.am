@@ -45,6 +45,7 @@ metacity_SOURCES= 				\
 	menu.h					\
 	metaaccellabel.c			\
 	metaaccellabel.h			\
+	metacity-Xatomtype.h			\
 	place.c					\
 	place.h					\
 	prefs.c					\

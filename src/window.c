@@ -38,6 +38,7 @@
 #include "group.h"
 
 #include <X11/Xatom.h>
+#include <string.h>
 
 typedef enum
 {
@@ -122,10 +123,6 @@ static void meta_window_move_resize_internal (MetaWindow         *window,
 
 
 void meta_window_move_resize_now (MetaWindow  *window);
-
-static char*    get_text_property (MetaDisplay *display,
-                                   Window       xwindow,
-                                   Atom         atom);
 
 void meta_window_unqueue_calc_showing (MetaWindow *window);
 void meta_window_flush_calc_showing   (MetaWindow *window);
@@ -4219,9 +4216,10 @@ update_title (MetaWindow *window)
 
   if (window->title == NULL)
     {
-      window->title = get_text_property (window->display,
-                                         window->xwindow,
-                                         XA_WM_NAME);
+      meta_prop_get_text_property (window->display,
+                                   window->xwindow,
+                                   XA_WM_NAME,
+                                   &window->title);
 
       if (window->title)
         {
@@ -4299,13 +4297,12 @@ update_wm_hints (MetaWindow *window)
   window->xgroup_leader = None;
   window->wm_hints_pixmap = None;
   window->wm_hints_mask = None;
-  
-  meta_error_trap_push (window->display);
-  
-  hints = XGetWMHints (window->display->xdisplay,
-                       window->xwindow);
 
-  meta_error_trap_pop (window->display, TRUE);
+  hints = NULL;
+  meta_prop_get_wm_hints (window->display,
+                          window->xwindow,
+                          XA_WM_HINTS,
+                          &hints);
   
   if (hints)
     {
@@ -4566,11 +4563,10 @@ update_wm_class (MetaWindow *window)
   ch.res_name = NULL;
   ch.res_class = NULL;
 
-  meta_error_trap_push (window->display);
-  XGetClassHint (window->display->xdisplay,
-                 window->xwindow,
-                 &ch);
-  meta_error_trap_pop (window->display, TRUE);
+  meta_prop_get_class_hint (window->display,
+                            window->xwindow,
+                            XA_WM_CLASS,
+                            &ch);
 
   if (ch.res_name)
     {
@@ -4728,38 +4724,6 @@ update_transient_for (MetaWindow *window)
 
   /* update stacking constraints */
   meta_stack_update_transient (window->screen->stack, window);
-}
-
-static char*
-get_text_property (MetaDisplay *display,
-                   Window       xwindow,
-                   Atom         atom)
-{
-  XTextProperty text;
-  char *retval;
-  
-  meta_error_trap_push (display);
-
-  text.nitems = 0;
-  if (XGetTextProperty (display->xdisplay,
-                        xwindow,
-                        &text,
-                        atom))
-    {
-      retval = meta_text_property_to_utf8 (display->xdisplay, &text);
-
-      if (text.nitems > 0)
-        XFree (text.value);
-    }
-  else
-    {
-      retval = NULL;
-      meta_verbose ("XGetTextProperty() failed\n");
-    }
-  
-  meta_error_trap_pop (display, TRUE);
-
-  return retval;
 }
 
 /* some legacy cruft */
@@ -4930,8 +4894,9 @@ update_icon_name (MetaWindow *window)
 
   if (window->icon_name == NULL)
     {
-      window->icon_name = get_text_property (window->display, window->xwindow,
-                                             XA_WM_ICON_NAME);
+      meta_prop_get_text_property (window->display, window->xwindow,
+                                   XA_WM_ICON_NAME,
+                                   &window->icon_name);
 
       if (window->icon_name)
         {
