@@ -2154,18 +2154,25 @@ event_callback (XEvent   *event,
                 {
                   int space;
                   MetaWorkspace *workspace;
+                  guint32 time;
               
                   space = event->xclient.data.l[0];
+                  time = event->xclient.data.l[1];
               
-                  meta_verbose ("Request to change current workspace to %d\n",
-                                space);
-              
+                  meta_verbose ("Request to change current workspace to %d with "
+                                "specified timestamp of %lu\n",
+                                space, (unsigned long)time);
+
                   workspace =
                     meta_screen_get_workspace_by_index (screen,
                                                         space);
 
+                  /* Handle clients using the older version of the spec... */
+                  if (time == 0 && workspace)
+                    time = meta_display_get_current_time_roundtrip (display);
+
                   if (workspace)
-                    meta_workspace_activate (workspace, meta_display_get_current_time_roundtrip (display));
+                    meta_workspace_activate (workspace, time);
                   else
                     meta_verbose ("Don't know about workspace %d\n", space);
                 }

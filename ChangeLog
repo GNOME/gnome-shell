@@ -1,5 +1,11 @@
 2005-02-20  Elijah Newren  <newren@gmail.com>
 
+	* src/display.c: (event_callback): Handle _NET_CURRENT_DESKTOP
+	messages that come with timestamps.  Fixes the metacity portion of
+	#161361 other than the portion handled by #128380.
+
+2005-02-20  Elijah Newren  <newren@gmail.com>
+
 	* src/window.c: (meta_window_activate): when receiving a
 	_NET_ACTIVE_WINDOW message, switch to the desktop where the window
 	is located before activating instead of moving the window to the
