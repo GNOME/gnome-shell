@@ -147,9 +147,24 @@ topic_name (MetaDebugTopic topic)
     {
     case META_DEBUG_FOCUS:
       return "FOCUS";
-      break;
-    case META_DEBUG_GRADIENT_CACHE:
-      return "GRADIENT_CACHE";
+    case META_DEBUG_WORKAREA:
+      return "WORKAREA";
+    case META_DEBUG_STACK:
+      return "STACK";
+    case META_DEBUG_THEMES:
+      return "THEMES";
+    case META_DEBUG_SM:
+      return "SM";
+    case META_DEBUG_EVENTS:
+      return "EVENTS";
+    case META_DEBUG_WINDOW_STATE:
+      return "WINDOW_STATE";
+    case META_DEBUG_WINDOW_OPS:
+      return "WINDOW_OPS";
+    case META_DEBUG_PLACEMENT:
+      return "PLACEMENT";
+    case META_DEBUG_GEOMETRY:
+      return "GEOMETRY";
       break;
     }
 

@@ -214,7 +214,7 @@ meta_window_place (MetaWindow *window,
    * placement coordinates.
    */
   
-  meta_verbose ("Placing window %s\n", window->desc);      
+  meta_topic (META_DEBUG_PLACEMENT, "Placing window %s\n", window->desc);      
 
   /* FIXME copying Mac, when placing a dialog
    * put it at 1/5 down and horizontally centered
@@ -245,8 +245,8 @@ meta_window_place (MetaWindow *window,
           if (fgeom)
             y += fgeom->top_height;
 
-          meta_verbose ("Centered window %s over transient parent\n",
-                        window->desc);
+          meta_topic (META_DEBUG_PLACEMENT, "Centered window %s over transient parent\n",
+                      window->desc);
           
           goto done;
         }
@@ -265,8 +265,8 @@ meta_window_place (MetaWindow *window,
       x = (w - window->rect.width) / 2;
       y = (y - window->rect.height) / 2;
 
-      meta_verbose ("Centered window %s on screen\n",
-                    window->desc);
+      meta_topic (META_DEBUG_PLACEMENT, "Centered window %s on screen\n",
+                  window->desc);
 
       goto done;
     }

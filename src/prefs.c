@@ -36,7 +36,7 @@
 #define KEY_NUM_WORKSPACES "/apps/metacity/general/num_workspaces"
 #define KEY_APPLICATION_BASED "/apps/metacity/general/application_based"
 
-static GConfClient *client = NULL;
+static GConfClient *default_client = NULL;
 static GList *listeners = NULL;
 static GList *changes = NULL;
 static guint changed_idle;
@@ -198,24 +198,24 @@ meta_prefs_init (void)
   int int_val;
   gboolean bool_val;
   
-  if (client != NULL)
+  if (default_client != NULL)
     return;
   
   /* returns a reference which we hold forever */
-  client = gconf_client_get_default ();
+  default_client = gconf_client_get_default ();
 
-  gconf_client_add_dir (client, "/apps/metacity",
+  gconf_client_add_dir (default_client, "/apps/metacity",
                         GCONF_CLIENT_PRELOAD_RECURSIVE,
                         &err);
   cleanup_error (&err);
 
-  str_val = gconf_client_get_string (client, KEY_FOCUS_MODE,
+  str_val = gconf_client_get_string (default_client, KEY_FOCUS_MODE,
                                      &err);
   cleanup_error (&err);
   update_focus_mode (str_val);
   g_free (str_val);  
 
-  str_val = gconf_client_get_string (client, KEY_THEME,
+  str_val = gconf_client_get_string (default_client, KEY_THEME,
                                      &err);
   cleanup_error (&err);
   update_theme (str_val);
@@ -226,33 +226,33 @@ meta_prefs_init (void)
    * just lazy. But they keys ought to be set, anyhow.
    */
   
-  bool_val = gconf_client_get_bool (client, KEY_USE_DESKTOP_FONT,
+  bool_val = gconf_client_get_bool (default_client, KEY_USE_DESKTOP_FONT,
                                     &err);
   cleanup_error (&err);
   update_use_desktop_font (bool_val);
   
-  int_val = gconf_client_get_int (client, KEY_TITLEBAR_FONT_SIZE,
+  int_val = gconf_client_get_int (default_client, KEY_TITLEBAR_FONT_SIZE,
                                   &err);
   cleanup_error (&err);
   update_titlebar_font_size (int_val);
   
-  str_val = gconf_client_get_string (client, KEY_TITLEBAR_FONT,
+  str_val = gconf_client_get_string (default_client, KEY_TITLEBAR_FONT,
                                      &err);
   cleanup_error (&err);
   update_titlebar_font (str_val);
   g_free (str_val);
 
-  int_val = gconf_client_get_int (client, KEY_NUM_WORKSPACES,
+  int_val = gconf_client_get_int (default_client, KEY_NUM_WORKSPACES,
                                   &err);
   cleanup_error (&err);
   update_num_workspaces (int_val);
 
-  bool_val = gconf_client_get_bool (client, KEY_APPLICATION_BASED,
+  bool_val = gconf_client_get_bool (default_client, KEY_APPLICATION_BASED,
                                     &err);
   cleanup_error (&err);
   update_application_based (bool_val);
   
-  gconf_client_notify_add (client, "/apps/metacity",
+  gconf_client_notify_add (default_client, "/apps/metacity",
                            change_notify,
                            NULL,
                            NULL,
@@ -422,7 +422,7 @@ update_focus_mode (const char *value)
 static gboolean
 update_theme (const char *value)
 {
-  const char *old_theme;
+  char *old_theme;
   gboolean changed;
   
   old_theme = current_theme;

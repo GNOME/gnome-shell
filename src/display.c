@@ -692,8 +692,9 @@ event_callback (XEvent   *event,
                                                  event->xunmap.window))
         {
           display->last_ignored_unmap_serial = event->xany.serial;
-          meta_verbose ("Will not focus on EnterNotify with serial %lu\n",
-                        display->last_ignored_unmap_serial);
+          meta_topic (META_DEBUG_FOCUS,
+                      "Will not focus on EnterNotify with serial %lu\n",
+                      display->last_ignored_unmap_serial);
         }
     }
   
@@ -968,8 +969,9 @@ event_callback (XEvent   *event,
         {
           if (window->unmaps_pending == 0)
             {
-              meta_verbose ("Window %s withdrawn\n",
-                            window->desc);
+              meta_topic (META_DEBUG_WINDOW_STATE,
+                          "Window %s withdrawn\n",
+                          window->desc);
               window->withdrawn = TRUE;
               meta_window_free (window); /* Unmanage withdrawn window */
               window = NULL;
@@ -977,8 +979,9 @@ event_callback (XEvent   *event,
           else
             {
               window->unmaps_pending -= 1;
-              meta_verbose ("Received pending unmap, %d now pending\n",
-                            window->unmaps_pending);
+              meta_topic (META_DEBUG_WINDOW_STATE,
+                          "Received pending unmap, %d now pending\n",
+                          window->unmaps_pending);
             }
         }
 
@@ -1078,7 +1081,6 @@ event_callback (XEvent   *event,
           
           if (screen)
             {
-              meta_debug_spew ("client for screen\n");
               if (event->xclient.message_type ==
                   display->atom_net_current_desktop)
                 {
@@ -1338,215 +1340,216 @@ static void
 meta_spew_event (MetaDisplay *display,
                  XEvent      *event)
 {
-      const char *name = NULL;
-      char *extra = NULL;
-      char *winname;
-      MetaScreen *screen;
+  const char *name = NULL;
+  char *extra = NULL;
+  char *winname;
+  MetaScreen *screen;
 
-      /* filter overnumerous events */
-      if (event->type == Expose || event->type == MotionNotify ||
-          event->type == NoExpose)
-        return;
+  /* filter overnumerous events */
+  if (event->type == Expose || event->type == MotionNotify ||
+      event->type == NoExpose)
+    return;
       
-      switch (event->type)
-        {
-        case KeyPress:
-          name = "KeyPress";
-          extra = key_event_description (display->xdisplay, event);
-          break;
-        case KeyRelease:
-          name = "KeyRelease";
-          extra = key_event_description (display->xdisplay, event);
-          break;
-        case ButtonPress:
-          name = "ButtonPress";
-          break;
-        case ButtonRelease:
-          name = "ButtonRelease";
-          break;
-        case MotionNotify:
-          name = "MotionNotify";
-          break;
-        case EnterNotify:
-          name = "EnterNotify";
-          extra = g_strdup_printf ("win: 0x%lx root: 0x%lx subwindow: 0x%lx mode: %d detail: %d",
-                                   event->xcrossing.window,
-                                   event->xcrossing.root,
-                                   event->xcrossing.subwindow,
-                                   event->xcrossing.mode,
-                                   event->xcrossing.detail);
-          break;
-        case LeaveNotify:
-          name = "LeaveNotify";
-          extra = g_strdup_printf ("win: 0x%lx root: 0x%lx subwindow: 0x%lx mode: %d detail: %d",
-                                   event->xcrossing.window,
-                                   event->xcrossing.root,
-                                   event->xcrossing.subwindow,
-                                   event->xcrossing.mode,
-                                   event->xcrossing.detail);
-          break;
-        case FocusIn:
-          name = "FocusIn";
-          extra = g_strdup_printf ("detail: %s mode: %s\n",
-                                   meta_focus_detail_to_string (event->xfocus.detail),
-                                   meta_focus_mode_to_string (event->xfocus.mode));
-          break;
-        case FocusOut:
-          name = "FocusOut";
-          extra = g_strdup_printf ("detail: %s mode: %s\n",
-                                   meta_focus_detail_to_string (event->xfocus.detail),
-                                   meta_focus_mode_to_string (event->xfocus.mode));
-          break;
-        case KeymapNotify:
-          name = "KeymapNotify";
-          break;
-        case Expose:
-          name = "Expose";
-          break;
-        case GraphicsExpose:
-          name = "GraphicsExpose";
-          break;
-        case NoExpose:
-          name = "NoExpose";
-          break;
-        case VisibilityNotify:
-          name = "VisibilityNotify";
-          break;
-        case CreateNotify:
-          name = "CreateNotify";
-          break;
-        case DestroyNotify:
-          name = "DestroyNotify";
-          break;
-        case UnmapNotify:
-          name = "UnmapNotify";
-          break;
-        case MapNotify:
-          name = "MapNotify";
-          break;
-        case MapRequest:
-          name = "MapRequest";
-          break;
-        case ReparentNotify:
-          name = "ReparentNotify";
-          break;
-        case ConfigureNotify:
-          name = "ConfigureNotify";
-          extra = g_strdup_printf ("x: %d y: %d w: %d h: %d above: 0x%lx",
-                                   event->xconfigure.x,
-                                   event->xconfigure.y,
-                                   event->xconfigure.width,
-                                   event->xconfigure.height,
-                                   event->xconfigure.above);
-          break;
-        case ConfigureRequest:
-          name = "ConfigureRequest";
-          extra = g_strdup_printf ("parent: 0x%lx window: 0x%lx x: %d %sy: %d %sw: %d %sh: %d %sborder: %d %s",
-                                   event->xconfigurerequest.parent,
-                                   event->xconfigurerequest.window,
-                                   event->xconfigurerequest.x,
-                                   event->xconfigurerequest.value_mask &
-                                   CWX ? "" : "(unset) ",
-                                   event->xconfigurerequest.y,
-                                   event->xconfigurerequest.value_mask &
-                                   CWY ? "" : "(unset) ",
-                                   event->xconfigurerequest.width,
-                                   event->xconfigurerequest.value_mask &
-                                   CWWidth ? "" : "(unset) ",
-                                   event->xconfigurerequest.height,
-                                   event->xconfigurerequest.value_mask &
-                                   CWHeight ? "" : "(unset) ",
-                                   event->xconfigurerequest.border_width,
-                                   event->xconfigurerequest.value_mask &
-                                   CWBorderWidth ? "" : "(unset)");
-          break;
-        case GravityNotify:
-          name = "GravityNotify";
-          break;
-        case ResizeRequest:
-          name = "ResizeRequest";
-          break;
-        case CirculateNotify:
-          name = "CirculateNotify";
-          break;
-        case CirculateRequest:
-          name = "CirculateRequest";
-          break;
-        case PropertyNotify:
-          {
-            char *str;
-            const char *state;
+  switch (event->type)
+    {
+    case KeyPress:
+      name = "KeyPress";
+      extra = key_event_description (display->xdisplay, event);
+      break;
+    case KeyRelease:
+      name = "KeyRelease";
+      extra = key_event_description (display->xdisplay, event);
+      break;
+    case ButtonPress:
+      name = "ButtonPress";
+      break;
+    case ButtonRelease:
+      name = "ButtonRelease";
+      break;
+    case MotionNotify:
+      name = "MotionNotify";
+      break;
+    case EnterNotify:
+      name = "EnterNotify";
+      extra = g_strdup_printf ("win: 0x%lx root: 0x%lx subwindow: 0x%lx mode: %d detail: %d",
+                               event->xcrossing.window,
+                               event->xcrossing.root,
+                               event->xcrossing.subwindow,
+                               event->xcrossing.mode,
+                               event->xcrossing.detail);
+      break;
+    case LeaveNotify:
+      name = "LeaveNotify";
+      extra = g_strdup_printf ("win: 0x%lx root: 0x%lx subwindow: 0x%lx mode: %d detail: %d",
+                               event->xcrossing.window,
+                               event->xcrossing.root,
+                               event->xcrossing.subwindow,
+                               event->xcrossing.mode,
+                               event->xcrossing.detail);
+      break;
+    case FocusIn:
+      name = "FocusIn";
+      extra = g_strdup_printf ("detail: %s mode: %s\n",
+                               meta_focus_detail_to_string (event->xfocus.detail),
+                               meta_focus_mode_to_string (event->xfocus.mode));
+      break;
+    case FocusOut:
+      name = "FocusOut";
+      extra = g_strdup_printf ("detail: %s mode: %s\n",
+                               meta_focus_detail_to_string (event->xfocus.detail),
+                               meta_focus_mode_to_string (event->xfocus.mode));
+      break;
+    case KeymapNotify:
+      name = "KeymapNotify";
+      break;
+    case Expose:
+      name = "Expose";
+      break;
+    case GraphicsExpose:
+      name = "GraphicsExpose";
+      break;
+    case NoExpose:
+      name = "NoExpose";
+      break;
+    case VisibilityNotify:
+      name = "VisibilityNotify";
+      break;
+    case CreateNotify:
+      name = "CreateNotify";
+      break;
+    case DestroyNotify:
+      name = "DestroyNotify";
+      break;
+    case UnmapNotify:
+      name = "UnmapNotify";
+      break;
+    case MapNotify:
+      name = "MapNotify";
+      break;
+    case MapRequest:
+      name = "MapRequest";
+      break;
+    case ReparentNotify:
+      name = "ReparentNotify";
+      break;
+    case ConfigureNotify:
+      name = "ConfigureNotify";
+      extra = g_strdup_printf ("x: %d y: %d w: %d h: %d above: 0x%lx",
+                               event->xconfigure.x,
+                               event->xconfigure.y,
+                               event->xconfigure.width,
+                               event->xconfigure.height,
+                               event->xconfigure.above);
+      break;
+    case ConfigureRequest:
+      name = "ConfigureRequest";
+      extra = g_strdup_printf ("parent: 0x%lx window: 0x%lx x: %d %sy: %d %sw: %d %sh: %d %sborder: %d %s",
+                               event->xconfigurerequest.parent,
+                               event->xconfigurerequest.window,
+                               event->xconfigurerequest.x,
+                               event->xconfigurerequest.value_mask &
+                               CWX ? "" : "(unset) ",
+                               event->xconfigurerequest.y,
+                               event->xconfigurerequest.value_mask &
+                               CWY ? "" : "(unset) ",
+                               event->xconfigurerequest.width,
+                               event->xconfigurerequest.value_mask &
+                               CWWidth ? "" : "(unset) ",
+                               event->xconfigurerequest.height,
+                               event->xconfigurerequest.value_mask &
+                               CWHeight ? "" : "(unset) ",
+                               event->xconfigurerequest.border_width,
+                               event->xconfigurerequest.value_mask &
+                               CWBorderWidth ? "" : "(unset)");
+      break;
+    case GravityNotify:
+      name = "GravityNotify";
+      break;
+    case ResizeRequest:
+      name = "ResizeRequest";
+      break;
+    case CirculateNotify:
+      name = "CirculateNotify";
+      break;
+    case CirculateRequest:
+      name = "CirculateRequest";
+      break;
+    case PropertyNotify:
+      {
+        char *str;
+        const char *state;
             
-            name = "PropertyNotify";
+        name = "PropertyNotify";
             
-            meta_error_trap_push (display);
-            str = XGetAtomName (display->xdisplay,
-                                event->xproperty.atom);
-            meta_error_trap_pop (display);
+        meta_error_trap_push (display);
+        str = XGetAtomName (display->xdisplay,
+                            event->xproperty.atom);
+        meta_error_trap_pop (display);
 
-            if (event->xproperty.state == PropertyNewValue)
-              state = "PropertyNewValue";
-            else if (event->xproperty.state == PropertyDelete)
-              state = "PropertyDelete";
-            else
-              state = "???";
+        if (event->xproperty.state == PropertyNewValue)
+          state = "PropertyNewValue";
+        else if (event->xproperty.state == PropertyDelete)
+          state = "PropertyDelete";
+        else
+          state = "???";
             
-            extra = g_strdup_printf ("atom: %s state: %s",
-                                     str ? str : "(unknown atom)",
-                                     state);
-            XFree (str);
-          }
-          break;
-        case SelectionClear:
-          name = "SelectionClear";
-          break;
-        case SelectionRequest:
-          name = "SelectionRequest";
-          break;
-        case SelectionNotify:
-          name = "SelectionNotify";
-          break;
-        case ColormapNotify:
-          name = "ColormapNotify";
-          break;
-        case ClientMessage:
-          {
-            char *str;
-            name = "ClientMessage";
-            meta_error_trap_push (display);
-            str = XGetAtomName (display->xdisplay,
-                                event->xclient.message_type);
-            meta_error_trap_pop (display);
-            extra = g_strdup_printf ("type: %s format: %d\n",
-                                     str ? str : "(unknown atom)",
-                                     event->xclient.format);
-            XFree (str);
-          }
-          break;
-        case MappingNotify:
-          name = "MappingNotify";
-          break;
-        default:
-          meta_verbose ("Unknown event type %d\n", event->xany.type);
-          name = "Unknown event type";
-          break;
-        }
+        extra = g_strdup_printf ("atom: %s state: %s",
+                                 str ? str : "(unknown atom)",
+                                 state);
+        XFree (str);
+      }
+      break;
+    case SelectionClear:
+      name = "SelectionClear";
+      break;
+    case SelectionRequest:
+      name = "SelectionRequest";
+      break;
+    case SelectionNotify:
+      name = "SelectionNotify";
+      break;
+    case ColormapNotify:
+      name = "ColormapNotify";
+      break;
+    case ClientMessage:
+      {
+        char *str;
+        name = "ClientMessage";
+        meta_error_trap_push (display);
+        str = XGetAtomName (display->xdisplay,
+                            event->xclient.message_type);
+        meta_error_trap_pop (display);
+        extra = g_strdup_printf ("type: %s format: %d\n",
+                                 str ? str : "(unknown atom)",
+                                 event->xclient.format);
+        XFree (str);
+      }
+      break;
+    case MappingNotify:
+      name = "MappingNotify";
+      break;
+    default:
+      meta_verbose ("Unknown event type %d\n", event->xany.type);
+      name = "Unknown event type";
+      break;
+    }
 
-      screen = meta_display_screen_for_root (display, event->xany.window);
+  screen = meta_display_screen_for_root (display, event->xany.window);
       
-      if (screen)
-        winname = g_strdup_printf ("root %d", screen->number);
-      else
-        winname = g_strdup_printf ("0x%lx", event->xany.window);
+  if (screen)
+    winname = g_strdup_printf ("root %d", screen->number);
+  else
+    winname = g_strdup_printf ("0x%lx", event->xany.window);
       
-      meta_verbose ("%s on %s%s %s serial %lu\n", name, winname,
-                    extra ? ":" : "", extra ? extra : "",
-                    event->xany.serial);
+  meta_topic (META_DEBUG_EVENTS,
+              "%s on %s%s %s serial %lu\n", name, winname,
+              extra ? ":" : "", extra ? extra : "",
+              event->xany.serial);
 
-      g_free (winname);
+  g_free (winname);
 
-      if (extra)
-        g_free (extra);
+  if (extra)
+    g_free (extra);
 }
 
 MetaWindow*

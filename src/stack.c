@@ -133,7 +133,7 @@ meta_stack_add (MetaStack  *stack,
 {
   MetaStackOp *op;
 
-  meta_verbose ("Adding window %s to the stack\n", window->desc);
+  meta_topic (META_DEBUG_STACK, "Adding window %s to the stack\n", window->desc);
   
   op = ensure_op (stack, window);
 
@@ -160,7 +160,7 @@ meta_stack_remove (MetaStack  *stack,
 {
   MetaStackOp *op;
 
-  meta_verbose ("Removing window %s from the stack\n", window->desc);
+  meta_topic (META_DEBUG_STACK, "Removing window %s from the stack\n", window->desc);
   
   op = ensure_op (stack, window);
 
@@ -275,8 +275,8 @@ compute_layer (MetaWindow *window)
       break;
     }
 
-  meta_verbose ("Window %s on layer %d\n",
-                window->desc, window->layer);
+  meta_topic (META_DEBUG_STACK, "Window %s on layer %d\n",
+              window->desc, window->layer);
 }
 
 static GList*
@@ -353,8 +353,8 @@ sort_window_list (GList *list)
 
           if (parent)
             {
-              meta_verbose ("Stacking %s above %s due to transiency\n",
-                            w->desc, parent->desc);
+              meta_topic (META_DEBUG_STACK, "Stacking %s above %s due to transiency\n",
+                          w->desc, parent->desc);
               list = ensure_before (list, w, parent);
             }
         }
@@ -388,7 +388,7 @@ meta_stack_sync_to_server (MetaStack *stack)
   if (stack->pending == NULL)
     return;
   
-  meta_verbose ("Syncing window stack to server\n");
+  meta_topic (META_DEBUG_STACK, "Syncing window stack to server\n");
   
   /* Here comes the fun - figure out all the stacking.
    * We make no pretense of efficiency.
@@ -596,12 +596,12 @@ meta_stack_sync_to_server (MetaStack *stack)
       /* Sort each layer... */
       if (needs_sort[i])
         {
-          meta_verbose ("Sorting layer %d\n", i);
+          meta_topic (META_DEBUG_STACK, "Sorting layer %d\n", i);
           stack->layers[i] = sort_window_list (stack->layers[i]);
         }
 
       /* ... then append it */
-      meta_verbose ("Layer %d: ", i);
+      meta_topic (META_DEBUG_STACK, "Layer %d: ", i);
       meta_push_no_msg_prefix ();
       tmp = stack->layers[i];
       while (tmp != NULL)
@@ -617,12 +617,12 @@ meta_stack_sync_to_server (MetaStack *stack)
           else
             g_array_append_val (root_children_stacked, w->xwindow);
 
-          meta_verbose ("%s ", w->desc);
+          meta_topic (META_DEBUG_STACK, "%s ", w->desc);
           
           tmp = tmp->next;
         }
 
-      meta_verbose ("\n");
+      meta_topic (META_DEBUG_STACK, "\n");
       meta_pop_no_msg_prefix ();
     }
   while (i > 0);
@@ -634,8 +634,8 @@ meta_stack_sync_to_server (MetaStack *stack)
   
   /* Sync to server */
 
-  meta_verbose ("Restacking %d windows\n",
-                root_children_stacked->len);
+  meta_topic (META_DEBUG_STACK, "Restacking %d windows\n",
+              root_children_stacked->len);
   
   meta_error_trap_push (stack->screen->display);
 
@@ -644,7 +644,7 @@ meta_stack_sync_to_server (MetaStack *stack)
       /* Just impose our stack, we don't know the previous state.
        * This involves a ton of circulate requests and may flicker.
        */
-      meta_verbose ("Don't know last stack state, restacking everything\n");
+      meta_topic (META_DEBUG_STACK, "Don't know last stack state, restacking everything\n");
 
       if (root_children_stacked->len > 0)
         XRestackWindows (stack->screen->display->xdisplay,
@@ -693,7 +693,7 @@ meta_stack_sync_to_server (MetaStack *stack)
               /* Move *newp below last_window */
               if (last_window == None)
                 {
-                  meta_verbose ("Raising window 0x%lx to the top\n", *newp);
+                  meta_topic (META_DEBUG_STACK, "Raising window 0x%lx to the top\n", *newp);
                   
                   XRaiseWindow (stack->screen->display->xdisplay,
                                 *newp);
@@ -710,7 +710,7 @@ meta_stack_sync_to_server (MetaStack *stack)
                   changes.sibling = last_window;
                   changes.stack_mode = Below;
 
-                  meta_verbose ("Placing window 0x%lx below 0x%lx\n",
+                  meta_topic (META_DEBUG_STACK, "Placing window 0x%lx below 0x%lx\n",
                                 *newp, last_window);
                   
                   XConfigureWindow (stack->screen->display->xdisplay,
@@ -727,7 +727,7 @@ meta_stack_sync_to_server (MetaStack *stack)
       if (newp != new_end)
         {
           /* Restack remaining windows */
-          meta_verbose ("Restacking remaining %d windows\n",
+          meta_topic (META_DEBUG_STACK, "Restacking remaining %d windows\n",
                         (int) (new_end - newp));
           /* We need to include an already-stacked window
            * in the restack call, so we get in the proper position

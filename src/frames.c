@@ -48,30 +48,10 @@ static gboolean meta_frames_destroy_event         (GtkWidget           *widget,
                                                    GdkEventAny         *event);
 static gboolean meta_frames_expose_event          (GtkWidget           *widget,
                                                    GdkEventExpose      *event);
-static gboolean meta_frames_key_press_event       (GtkWidget           *widget,
-                                                   GdkEventKey         *event);
-static gboolean meta_frames_key_release_event     (GtkWidget           *widget,
-                                                   GdkEventKey         *event);
 static gboolean meta_frames_enter_notify_event    (GtkWidget           *widget,
                                                    GdkEventCrossing    *event);
 static gboolean meta_frames_leave_notify_event    (GtkWidget           *widget,
                                                    GdkEventCrossing    *event);
-static gboolean meta_frames_configure_event       (GtkWidget           *widget,
-                                                   GdkEventConfigure   *event);
-static gboolean meta_frames_focus_in_event        (GtkWidget           *widget,
-                                                   GdkEventFocus       *event);
-static gboolean meta_frames_focus_out_event       (GtkWidget           *widget,
-                                                   GdkEventFocus       *event);
-static gboolean meta_frames_map_event             (GtkWidget           *widget,
-                                                   GdkEventAny         *event);
-static gboolean meta_frames_unmap_event           (GtkWidget           *widget,
-                                                   GdkEventAny         *event);
-static gboolean meta_frames_property_notify_event (GtkWidget           *widget,
-                                                   GdkEventProperty    *event);
-static gboolean meta_frames_client_event          (GtkWidget           *widget,
-                                                   GdkEventClient      *event);
-static gboolean meta_frames_window_state_event    (GtkWidget           *widget,
-                                                   GdkEventWindowState *event);
 
 static void meta_frames_paint_to_drawable (MetaFrames   *frames,
                                            MetaUIFrame  *frame,
@@ -94,14 +74,7 @@ static MetaFrameControl get_control  (MetaFrames        *frames,
                                       int                y);
 static void clear_tip (MetaFrames *frames);
 
-enum
-{
-  dummy, /* remove this when you add more signals */
-  LAST_SIGNAL
-};
-
 static GtkWidgetClass *parent_class = NULL;
-static guint signals[LAST_SIGNAL];
 
 GtkType
 meta_frames_get_type (void)
@@ -150,11 +123,11 @@ meta_frames_class_init (MetaFramesClass *class)
   widget_class->unrealize = meta_frames_unrealize;
   
   widget_class->expose_event = meta_frames_expose_event;
-  widget_class->unmap_event = meta_frames_unmap_event;
-  widget_class->destroy_event = meta_frames_destroy_event;
+  widget_class->destroy_event = meta_frames_destroy_event;  
   widget_class->button_press_event = meta_frames_button_press_event;
   widget_class->button_release_event = meta_frames_button_release_event;
   widget_class->motion_notify_event = meta_frames_motion_notify_event;
+  widget_class->enter_notify_event = meta_frames_enter_notify_event;
   widget_class->leave_notify_event = meta_frames_leave_notify_event;
 }
 
@@ -1253,38 +1226,6 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
 }
 
 static gboolean
-meta_frames_key_press_event         (GtkWidget           *widget,
-                                     GdkEventKey         *event)
-{
-  MetaUIFrame *frame;
-  MetaFrames *frames;
-
-  frames = META_FRAMES (widget);
-
-  frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
-  if (frame == NULL)
-    return FALSE;
-
-  return TRUE;
-}
-
-static gboolean
-meta_frames_key_release_event       (GtkWidget           *widget,
-                                     GdkEventKey         *event)
-{
-  MetaUIFrame *frame;
-  MetaFrames *frames;
-
-  frames = META_FRAMES (widget);
-
-  frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
-  if (frame == NULL)
-    return FALSE;
-
-  return TRUE;
-}
-
-static gboolean
 meta_frames_enter_notify_event      (GtkWidget           *widget,
                                      GdkEventCrossing    *event)
 {
@@ -1319,134 +1260,6 @@ meta_frames_leave_notify_event      (GtkWidget           *widget,
                                frame->xwindow,
                                META_CURSOR_DEFAULT);
   
-  return TRUE;
-}
-
-static gboolean
-meta_frames_configure_event         (GtkWidget           *widget,
-                                     GdkEventConfigure   *event)
-{
-  MetaUIFrame *frame;
-  MetaFrames *frames;
-
-  frames = META_FRAMES (widget);
-
-  frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
-  if (frame == NULL)
-    return FALSE;
-
-  return TRUE;
-}
-
-static gboolean
-meta_frames_focus_in_event          (GtkWidget           *widget,
-                                     GdkEventFocus       *event)
-{
-  MetaUIFrame *frame;
-  MetaFrames *frames;
-
-  frames = META_FRAMES (widget);
-
-  frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
-  if (frame == NULL)
-    return FALSE;
-
-  return TRUE;
-}
-
-static gboolean
-meta_frames_focus_out_event         (GtkWidget           *widget,
-                                     GdkEventFocus       *event)
-{
-  MetaUIFrame *frame;
-  MetaFrames *frames;
-
-  frames = META_FRAMES (widget);
-
-  frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
-  if (frame == NULL)
-    return FALSE;
-
-  return TRUE;
-}
-
-static gboolean
-meta_frames_map_event               (GtkWidget           *widget,
-                                     GdkEventAny         *event)
-{
-  MetaUIFrame *frame;
-  MetaFrames *frames;
-
-  frames = META_FRAMES (widget);
-
-  frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
-  if (frame == NULL)
-    return FALSE;
-
-  return TRUE;
-}
-
-static gboolean
-meta_frames_unmap_event             (GtkWidget           *widget,
-                                     GdkEventAny         *event)
-{
-  MetaUIFrame *frame;
-  MetaFrames *frames;
-
-  frames = META_FRAMES (widget);
-
-  frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
-  if (frame == NULL)
-    return FALSE;
-  
-  return TRUE;
-}
-
-static gboolean
-meta_frames_property_notify_event   (GtkWidget           *widget,
-                                     GdkEventProperty    *event)
-{
-  MetaUIFrame *frame;
-  MetaFrames *frames;
-
-  frames = META_FRAMES (widget);
-
-  frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
-  if (frame == NULL)
-    return FALSE;
-
-  return TRUE;
-}
-
-static gboolean
-meta_frames_client_event            (GtkWidget           *widget,
-                                     GdkEventClient      *event)
-{
-  MetaUIFrame *frame;
-  MetaFrames *frames;
-
-  frames = META_FRAMES (widget);
-
-  frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
-  if (frame == NULL)
-    return FALSE;
-
-  return TRUE;
-}
-
-static gboolean
-meta_frames_window_state_event      (GtkWidget           *widget,
-                                     GdkEventWindowState *event)
-{
-  MetaUIFrame *frame;
-  MetaFrames *frames;
-
-  frames = META_FRAMES (widget);
-
-  frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
-  if (frame == NULL)
-    return FALSE;
-
   return TRUE;
 }
 

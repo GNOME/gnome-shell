@@ -45,8 +45,16 @@ void meta_fatal      (const char *format,
 
 typedef enum
 {
-  META_DEBUG_FOCUS,
-  META_DEBUG_GRADIENT_CACHE
+  META_DEBUG_FOCUS        = 1 << 0,
+  META_DEBUG_WORKAREA     = 1 << 1,
+  META_DEBUG_STACK        = 1 << 2,
+  META_DEBUG_THEMES       = 1 << 3,
+  META_DEBUG_SM           = 1 << 4,
+  META_DEBUG_EVENTS       = 1 << 5,
+  META_DEBUG_WINDOW_STATE = 1 << 6,
+  META_DEBUG_WINDOW_OPS   = 1 << 7,
+  META_DEBUG_GEOMETRY     = 1 << 8,
+  META_DEBUG_PLACEMENT    = 1 << 9
 
 } MetaDebugTopic;
 

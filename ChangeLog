@@ -1,5 +1,14 @@
 2002-02-07  Havoc Pennington  <hp@pobox.com>
 
+        Throughout: move to meta_topic rather than meta_verbose so
+	metacity.log can start being more useful
+	
+	* src/util.h (enum): add more debug topics
+
+	* src/frames.c: clean up some cruft that caused warnings
+
+2002-02-07  Havoc Pennington  <hp@pobox.com>
+
 	* src/theme.c (colorize_pixbuf): do random voodoo on the algorithm
 
 2002-02-07  Havoc Pennington  <hp@pobox.com>

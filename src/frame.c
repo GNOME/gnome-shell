@@ -105,7 +105,8 @@ meta_window_ensure_frame (MetaWindow *window)
       window->mapped = FALSE; /* the reparent will unmap the window,
                                * we don't want to take that as a withdraw
                                */
-      meta_verbose ("Incrementing unmaps_pending on %s for reparent\n", window->desc);
+      meta_topic (META_DEBUG_WINDOW_STATE,
+                  "Incrementing unmaps_pending on %s for reparent\n", window->desc);
       window->unmaps_pending += 1;
     }
   /* window was reparented to this position */
@@ -158,7 +159,8 @@ meta_window_destroy_frame (MetaWindow *window)
                                * can identify a withdraw initiated
                                * by the client.
                                */
-      meta_verbose ("Incrementing unmaps_pending on %s for reparent back to root\n", window->desc);
+      meta_topic (META_DEBUG_WINDOW_STATE,
+                  "Incrementing unmaps_pending on %s for reparent back to root\n", window->desc);
       window->unmaps_pending += 1;
     }
   XReparentWindow (window->display->xdisplay,

@@ -317,8 +317,9 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   /* if already mapped we don't want to do the placement thing */
   window->placed = window->mapped;
   if (window->placed)
-    meta_verbose ("Not placing window 0x%lx since it's already mapped\n",
-                  xwindow);
+    meta_topic (META_DEBUG_PLACEMENT,
+                "Not placing window 0x%lx since it's already mapped\n",
+                xwindow);
   window->unmanaging = FALSE;
   window->calc_showing_queued = FALSE;
   window->move_resize_queued = FALSE;
@@ -517,7 +518,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
     {
       /* don't constrain with placement algorithm */
       window->placed = TRUE;
-      meta_verbose ("Honoring USPosition for %s instead of using placement algorithm\n", window->desc);
+      meta_topic (META_DEBUG_PLACEMENT,
+                  "Honoring USPosition for %s instead of using placement algorithm\n", window->desc);
     }
 
   /* Assume the app knows best how to place these. */
@@ -592,8 +594,9 @@ meta_window_apply_session_info (MetaWindow *window,
   if (info->on_all_workspaces_set)
     {
       window->on_all_workspaces = info->on_all_workspaces;
-      meta_verbose ("Restoring sticky state %d for window %s\n",
-                    window->on_all_workspaces, window->desc);
+      meta_topic (META_DEBUG_SM,
+                  "Restoring sticky state %d for window %s\n",
+                  window->on_all_workspaces, window->desc);
     }
   
   if (info->workspace_indices)
@@ -638,9 +641,10 @@ meta_window_apply_session_info (MetaWindow *window,
               
               meta_workspace_add_window (space, window);              
 
-              meta_verbose ("Restoring saved window %s to workspace %d\n",
-                            window->desc,
-                            meta_workspace_screen_index (space));
+              meta_topic (META_DEBUG_SM,
+                          "Restoring saved window %s to workspace %d\n",
+                          window->desc,
+                          meta_workspace_screen_index (space));
               
               tmp = tmp->next;
             }
@@ -666,8 +670,9 @@ meta_window_apply_session_info (MetaWindow *window,
       /* Force old gravity, ignoring anything now set */
       window->size_hints.win_gravity = info->gravity;
       
-      meta_verbose ("Restoring pos %d,%d size %d x %d for %s\n",
-                    x, y, w, h, window->desc);
+      meta_topic (META_DEBUG_SM,
+                  "Restoring pos %d,%d size %d x %d for %s\n",
+                  x, y, w, h, window->desc);
       
       meta_window_move_resize_internal (window,
                                         META_DO_GRAVITY_ADJUST,
@@ -710,7 +715,12 @@ meta_window_free (MetaWindow  *window)
     }
 
   if (window->has_struts)
-    invalidate_work_areas (window);
+    {
+      meta_topic (META_DEBUG_WORKAREA,
+                  "Unmanaging window %s which has struts, so invalidating work areas\n",
+                  window->desc);
+      invalidate_work_areas (window);
+    }
   
   if (window->display->grab_window == window)
     meta_display_end_grab_op (window->display,
@@ -970,7 +980,8 @@ idle_calc_showing (gpointer data)
   GSList *tmp;
   GSList *copy;
 
-  meta_verbose ("Clearing the calc_showing queue\n");
+  meta_topic (META_DEBUG_WINDOW_STATE,
+              "Clearing the calc_showing queue\n");
 
   /* Work with a copy, for reentrancy. The allowed reentrancy isn't
    * complete; destroying a window while we're in here would result in
@@ -1021,8 +1032,9 @@ meta_window_unqueue_calc_showing (MetaWindow *window)
   if (!window->calc_showing_queued)
     return;
 
-  meta_verbose ("Removing %s from the calc_showing queue\n",
-                window->desc);
+  meta_topic (META_DEBUG_WINDOW_STATE,
+              "Removing %s from the calc_showing queue\n",
+              window->desc);
 
   /* Note that window may not actually be in move_resize_pending
    * because it may have been in "copy" inside the idle handler
@@ -1057,8 +1069,9 @@ meta_window_queue_calc_showing (MetaWindow  *window)
   if (window->calc_showing_queued)
     return;
 
-  meta_verbose ("Putting %s in the calc_showing queue\n",
-                window->desc);
+  meta_topic (META_DEBUG_WINDOW_STATE,
+              "Putting %s in the calc_showing queue\n",
+              window->desc);
   
   window->calc_showing_queued = TRUE;
   
@@ -1073,8 +1086,9 @@ meta_window_show (MetaWindow *window)
 {
   gboolean did_placement;
   
-  meta_verbose ("Showing window %s, shaded: %d iconic: %d placed: %d\n",
-                window->desc, window->shaded, window->iconic, window->placed);
+  meta_topic (META_DEBUG_WINDOW_STATE,
+              "Showing window %s, shaded: %d iconic: %d placed: %d\n",
+              window->desc, window->shaded, window->iconic, window->placed);
 
   did_placement = FALSE;
   if (!window->placed)
@@ -1103,7 +1117,8 @@ meta_window_show (MetaWindow *window)
   
   if (window->frame && !window->frame->mapped)
     {
-      meta_verbose ("Frame actually needs map\n");
+      meta_topic (META_DEBUG_WINDOW_STATE,
+                  "Frame actually needs map\n");
       window->frame->mapped = TRUE;
       meta_ui_map_frame (window->screen->ui, window->frame->xwindow);
     }
@@ -1112,9 +1127,11 @@ meta_window_show (MetaWindow *window)
     {
       if (window->mapped)
         {          
-          meta_verbose ("%s actually needs unmap (shaded)\n", window->desc);
-          meta_verbose ("Incrementing unmaps_pending on %s for shade\n",
-                        window->desc);
+          meta_topic (META_DEBUG_WINDOW_STATE,
+                      "%s actually needs unmap (shaded)\n", window->desc);
+          meta_topic (META_DEBUG_WINDOW_STATE,
+                      "Incrementing unmaps_pending on %s for shade\n",
+                      window->desc);
           window->mapped = FALSE;
           window->unmaps_pending += 1;
           meta_error_trap_push (window->display);
@@ -1132,7 +1149,8 @@ meta_window_show (MetaWindow *window)
     {
       if (!window->mapped)
         {
-          meta_verbose ("%s actually needs map\n", window->desc);
+          meta_topic (META_DEBUG_WINDOW_STATE,
+                      "%s actually needs map\n", window->desc);
           window->mapped = TRUE;
           meta_error_trap_push (window->display);
           XMapWindow (window->display->xdisplay, window->xwindow);
@@ -1179,13 +1197,14 @@ meta_window_hide (MetaWindow *window)
 {
   gboolean did_hide;
   
-  meta_verbose ("Hiding window %s\n", window->desc);
+  meta_topic (META_DEBUG_WINDOW_STATE,
+              "Hiding window %s\n", window->desc);
 
   did_hide = FALSE;
   
   if (window->frame && window->frame->mapped)
     {
-      meta_verbose ("Frame actually needs unmap\n");
+      meta_topic (META_DEBUG_WINDOW_STATE, "Frame actually needs unmap\n");
       window->frame->mapped = FALSE;
       meta_ui_unmap_frame (window->screen->ui, window->frame->xwindow);
       did_hide = TRUE;
@@ -1193,9 +1212,11 @@ meta_window_hide (MetaWindow *window)
 
   if (window->mapped)
     {
-      meta_verbose ("%s actually needs unmap\n", window->desc);
-      meta_verbose ("Incrementing unmaps_pending on %s for hide\n",
-                    window->desc);
+      meta_topic (META_DEBUG_WINDOW_STATE,
+                  "%s actually needs unmap\n", window->desc);
+      meta_topic (META_DEBUG_WINDOW_STATE,
+                  "Incrementing unmaps_pending on %s for hide\n",
+                  window->desc);
       window->mapped = FALSE;
       window->unmaps_pending += 1;
       meta_error_trap_push (window->display);      
@@ -1213,7 +1234,12 @@ meta_window_hide (MetaWindow *window)
   if (did_hide)
     {
       if (window->has_struts)
-        invalidate_work_areas (window);
+        {
+          meta_topic (META_DEBUG_WORKAREA,
+                      "Unmapped window %s with struts, so invalidating work areas\n",
+                      window->desc);
+          invalidate_work_areas (window);
+        }
     }
 }
 
@@ -1258,7 +1284,8 @@ meta_window_maximize (MetaWindow  *window)
 {
   if (!window->maximized)
     {
-      meta_verbose ("Maximizing %s\n", window->desc);
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Maximizing %s\n", window->desc);
       
       window->maximized = TRUE;
 
@@ -1285,7 +1312,8 @@ meta_window_unmaximize (MetaWindow  *window)
 {
   if (window->maximized)
     {
-      meta_verbose ("Unmaximizing %s\n", window->desc);
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Unmaximizing %s\n", window->desc);
       
       window->maximized = FALSE;
 
@@ -1303,7 +1331,8 @@ meta_window_unmaximize (MetaWindow  *window)
 void
 meta_window_shade (MetaWindow  *window)
 {
-  meta_verbose ("Shading %s\n", window->desc);
+  meta_topic (META_DEBUG_WINDOW_OPS,
+              "Shading %s\n", window->desc);
   if (!window->shaded)
     {
       if (window->mapped)
@@ -1348,7 +1377,8 @@ meta_window_shade (MetaWindow  *window)
 void
 meta_window_unshade (MetaWindow  *window)
 {
-  meta_verbose ("Unshading %s\n", window->desc);
+  meta_topic (META_DEBUG_WINDOW_OPS,
+              "Unshading %s\n", window->desc);
   if (window->shaded)
     {
       window->shaded = FALSE;
@@ -1566,11 +1596,12 @@ meta_window_move_resize_internal (MetaWindow  *window,
   {
     int oldx, oldy;
     meta_window_get_position (window, &oldx, &oldy);
-    meta_verbose ("Move/resize %s to %d,%d %dx%d%s%s from %d,%d %dx%d\n",
-                  window->desc, root_x_nw, root_y_nw, w, h,
-                  is_configure_request ? " (configure request)" : "",
-                  is_user_action ? " (user move/resize)" : "",
-                  oldx, oldy, window->rect.width, window->rect.height);
+    meta_topic (META_DEBUG_GEOMETRY,
+                "Move/resize %s to %d,%d %dx%d%s%s from %d,%d %dx%d\n",
+                window->desc, root_x_nw, root_y_nw, w, h,
+                is_configure_request ? " (configure request)" : "",
+                is_user_action ? " (user move/resize)" : "",
+                oldx, oldy, window->rect.width, window->rect.height);
   }
   
   if (window->frame)
@@ -1578,7 +1609,8 @@ meta_window_move_resize_internal (MetaWindow  *window,
                               &fgeom);
   
   constrain_size (window, &fgeom, w, h, &w, &h);
-  meta_verbose ("Constrained resize of %s to %d x %d\n", window->desc, w, h);
+  meta_topic (META_DEBUG_GEOMETRY,
+              "Constrained resize of %s to %d x %d\n", window->desc, w, h);
 
   if (w != window->rect.width ||
       h != window->rect.height)
@@ -1609,9 +1641,10 @@ meta_window_move_resize_internal (MetaWindow  *window,
       window->frame->rect.width = new_w;
       window->frame->rect.height = new_h;
 
-      meta_verbose ("Calculated frame size %dx%d\n",
-                    window->frame->rect.width,
-                    window->frame->rect.height);
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "Calculated frame size %dx%d\n",
+                  window->frame->rect.width,
+                  window->frame->rect.height);
     }
   else
     {
@@ -1632,8 +1665,9 @@ meta_window_move_resize_internal (MetaWindow  *window,
                           &root_x_nw,
                           &root_y_nw);
       
-      meta_verbose ("Compensated position for gravity, new pos %d,%d\n",
-                    root_x_nw, root_y_nw);
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "Compensated position for gravity, new pos %d,%d\n",
+                  root_x_nw, root_y_nw);
     }
 
   /* There can be somewhat bogus interactions between gravity
@@ -1705,8 +1739,9 @@ meta_window_move_resize_internal (MetaWindow  *window,
                       root_x_nw, root_y_nw,
                       &root_x_nw, &root_y_nw);
 
-  meta_verbose ("Constrained position to %d,%d\n",
-                root_x_nw, root_y_nw);
+  meta_topic (META_DEBUG_GEOMETRY,
+              "Constrained position to %d,%d\n",
+              root_x_nw, root_y_nw);
       
   if (window->frame)
     {
@@ -1879,12 +1914,13 @@ meta_window_move_resize_internal (MetaWindow  *window,
       {
         int newx, newy;
         meta_window_get_position (window, &newx, &newy);
-        meta_verbose ("Syncing new client geometry %d,%d %dx%d, border: %s pos: %s size: %s\n",
-                      newx, newy,
-                      window->rect.width, window->rect.height,
-                      mask & CWBorderWidth ? "true" : "false",
-                      need_move_client ? "true" : "false",
-                      need_resize_client ? "true" : "false");
+        meta_topic (META_DEBUG_GEOMETRY,
+                    "Syncing new client geometry %d,%d %dx%d, border: %s pos: %s size: %s\n",
+                    newx, newy,
+                    window->rect.width, window->rect.height,
+                    mask & CWBorderWidth ? "true" : "false",
+                    need_move_client ? "true" : "false",
+                    need_resize_client ? "true" : "false");
       }
       
       meta_error_trap_push (window->display);
@@ -1924,14 +1960,15 @@ meta_window_move_resize_internal (MetaWindow  *window,
     {
       int newx, newy;
       meta_window_get_position (window, &newx, &newy);
-      meta_verbose ("New size/position %d,%d %dx%d (user %d,%d %dx%d)\n",
-                    newx, newy, window->rect.width, window->rect.height,
-                    window->user_rect.x, window->user_rect.y,
-                    window->user_rect.width, window->user_rect.height);
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "New size/position %d,%d %dx%d (user %d,%d %dx%d)\n",
+                  newx, newy, window->rect.width, window->rect.height,
+                  window->user_rect.x, window->user_rect.y,
+                  window->user_rect.width, window->user_rect.height);
     }
   else
     {
-      meta_verbose ("Size/position not modified\n");
+      meta_topic (META_DEBUG_GEOMETRY, "Size/position not modified\n");
     }
   
   /* Update struts for new window size */
@@ -1944,7 +1981,9 @@ meta_window_move_resize_internal (MetaWindow  *window,
        * above. We rely on reaching an equilibrium state, which
        * is somewhat fragile, though.
        */
-      
+
+      meta_topic (META_DEBUG_WORKAREA, "Window %s resized so invalidating its work areas\n",
+                  window->desc);
       invalidate_work_areas (window);
     }
   
@@ -2061,7 +2100,7 @@ idle_move_resize (gpointer data)
   GSList *tmp;
   GSList *copy;
 
-  meta_verbose ("Clearing the move_resize queue\n");
+  meta_topic (META_DEBUG_GEOMETRY, "Clearing the move_resize queue\n");
 
   /* Work with a copy, for reentrancy. The allowed reentrancy isn't
    * complete; destroying a window while we're in here would result in
@@ -2102,8 +2141,9 @@ meta_window_unqueue_move_resize (MetaWindow *window)
   if (!window->move_resize_queued)
     return;
 
-  meta_verbose ("Removing %s from the move_resize queue\n",
-                window->desc);
+  meta_topic (META_DEBUG_GEOMETRY,
+              "Removing %s from the move_resize queue\n",
+              window->desc);
 
   /* Note that window may not actually be in move_resize_pending
    * because it may have been in "copy" inside the idle handler
@@ -2144,8 +2184,9 @@ meta_window_queue_move_resize (MetaWindow  *window)
   if (window->move_resize_queued)
     return;
 
-  meta_verbose ("Putting %s in the move_resize queue\n",
-                window->desc);
+  meta_topic (META_DEBUG_GEOMETRY,
+              "Putting %s in the move_resize queue\n",
+              window->desc);
   
   window->move_resize_queued = TRUE;
   
@@ -2309,16 +2350,18 @@ meta_window_delete (MetaWindow  *window,
   meta_error_trap_push (window->display);
   if (window->delete_window)
     {
-      meta_verbose ("Deleting %s with delete_window request\n",
-                    window->desc);
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Deleting %s with delete_window request\n",
+                  window->desc);
       meta_window_send_icccm_message (window,
                                       window->display->atom_wm_delete_window,
                                       timestamp);
     }
   else
     {
-      meta_verbose ("Deleting %s with explicit kill\n",
-                    window->desc);
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Deleting %s with explicit kill\n",
+                  window->desc);
       XKillClient (window->display->xdisplay, window->xwindow);
     }
   
@@ -2520,7 +2563,8 @@ meta_window_set_current_workspace_hint (MetaWindow *window)
 void
 meta_window_raise (MetaWindow  *window)
 {
-  meta_verbose ("Raising window %s\n", window->desc);
+  meta_topic (META_DEBUG_WINDOW_OPS,
+              "Raising window %s\n", window->desc);
 
   meta_stack_raise (window->screen->stack, window);
 }
@@ -2528,7 +2572,8 @@ meta_window_raise (MetaWindow  *window)
 void
 meta_window_lower (MetaWindow  *window)
 {
-  meta_verbose ("Lowering window %s\n", window->desc);
+  meta_topic (META_DEBUG_WINDOW_OPS,
+              "Lowering window %s\n", window->desc);
 
   meta_stack_lower (window->screen->stack, window);
 }
@@ -2954,7 +2999,8 @@ meta_window_client_message (MetaWindow *window,
 
       if (event->xclient.data.l[1] & WIN_HINTS_DO_NOT_COVER)
         {
-          meta_verbose ("Setting WIN_HINTS_DO_NOT_COVER\n");
+          meta_topic (META_DEBUG_WORKAREA,
+                      "Setting WIN_HINTS_DO_NOT_COVER\n");
           
           data[0] = WIN_HINTS_DO_NOT_COVER;
 
@@ -2967,7 +3013,8 @@ meta_window_client_message (MetaWindow *window,
         }
       else
         {
-          meta_verbose ("Unsetting WIN_HINTS_DO_NOT_COVER\n");
+          meta_topic (META_DEBUG_WORKAREA,
+                      "Unsetting WIN_HINTS_DO_NOT_COVER\n");
           
           data[0] = 0;
 
@@ -3240,10 +3287,11 @@ send_configure_notify (MetaWindow *window)
   event.xconfigure.above = None; /* FIXME */
   event.xconfigure.override_redirect = False;
 
-  meta_verbose ("Sending synthetic configure notify to %s with x: %d y: %d w: %d h: %d\n",
-                window->desc,
-                event.xconfigure.x, event.xconfigure.y,
-                event.xconfigure.width, event.xconfigure.height);
+  meta_topic (META_DEBUG_GEOMETRY,
+              "Sending synthetic configure notify to %s with x: %d y: %d w: %d h: %d\n",
+              window->desc,
+              event.xconfigure.x, event.xconfigure.y,
+              event.xconfigure.width, event.xconfigure.height);
   
   meta_error_trap_push (window->display);
   XSendEvent (window->display->xdisplay,
@@ -3268,48 +3316,48 @@ spew_size_hints_differences (const XSizeHints *old,
                              const XSizeHints *new)
 {
   if (FLAG_CHANGED (old, new, USPosition))
-    meta_verbose ("XSizeHints: USPosition now %s\n",
-                  FLAG_TOGGLED_ON (old, new, USPosition) ? "set" : "unset");
+    meta_topic (META_DEBUG_GEOMETRY, "XSizeHints: USPosition now %s\n",
+                FLAG_TOGGLED_ON (old, new, USPosition) ? "set" : "unset");
   if (FLAG_CHANGED (old, new, USSize))
-    meta_verbose ("XSizeHints: USSize now %s\n",
-                  FLAG_TOGGLED_ON (old, new, USSize) ? "set" : "unset");
+    meta_topic (META_DEBUG_GEOMETRY, "XSizeHints: USSize now %s\n",
+                FLAG_TOGGLED_ON (old, new, USSize) ? "set" : "unset");
   if (FLAG_CHANGED (old, new, PPosition))
-    meta_verbose ("XSizeHints: PPosition now %s\n",
-                  FLAG_TOGGLED_ON (old, new, PPosition) ? "set" : "unset");
+    meta_topic (META_DEBUG_GEOMETRY, "XSizeHints: PPosition now %s\n",
+                FLAG_TOGGLED_ON (old, new, PPosition) ? "set" : "unset");
   if (FLAG_CHANGED (old, new, PSize))
-    meta_verbose ("XSizeHints: PSize now %s\n",
-                  FLAG_TOGGLED_ON (old, new, PSize) ? "set" : "unset");
+    meta_topic (META_DEBUG_GEOMETRY, "XSizeHints: PSize now %s\n",
+                FLAG_TOGGLED_ON (old, new, PSize) ? "set" : "unset");
   if (FLAG_CHANGED (old, new, PMinSize))
-    meta_verbose ("XSizeHints: PMinSize now %s (%d x %d -> %d x %d)\n",
-                  FLAG_TOGGLED_ON (old, new, PMinSize) ? "set" : "unset",
-                  old->min_width, old->min_height,
-                  new->min_width, new->min_height);
+    meta_topic (META_DEBUG_GEOMETRY, "XSizeHints: PMinSize now %s (%d x %d -> %d x %d)\n",
+                FLAG_TOGGLED_ON (old, new, PMinSize) ? "set" : "unset",
+                old->min_width, old->min_height,
+                new->min_width, new->min_height);
   if (FLAG_CHANGED (old, new, PMaxSize))
-    meta_verbose ("XSizeHints: PMaxSize now %s (%d x %d -> %d x %d)\n",
-                  FLAG_TOGGLED_ON (old, new, PMaxSize) ? "set" : "unset",
-                  old->max_width, old->max_height,
-                  new->max_width, new->max_height);
+    meta_topic (META_DEBUG_GEOMETRY, "XSizeHints: PMaxSize now %s (%d x %d -> %d x %d)\n",
+                FLAG_TOGGLED_ON (old, new, PMaxSize) ? "set" : "unset",
+                old->max_width, old->max_height,
+                new->max_width, new->max_height);
   if (FLAG_CHANGED (old, new, PResizeInc))
-    meta_verbose ("XSizeHints: PResizeInc now %s (width_inc %d -> %d height_inc %d -> %d)\n",
-                  FLAG_TOGGLED_ON (old, new, PResizeInc) ? "set" : "unset",
-                  old->width_inc, new->width_inc,
-                  old->height_inc, new->height_inc);
+    meta_topic (META_DEBUG_GEOMETRY, "XSizeHints: PResizeInc now %s (width_inc %d -> %d height_inc %d -> %d)\n",
+                FLAG_TOGGLED_ON (old, new, PResizeInc) ? "set" : "unset",
+                old->width_inc, new->width_inc,
+                old->height_inc, new->height_inc);
   if (FLAG_CHANGED (old, new, PAspect))
-    meta_verbose ("XSizeHints: PAspect now %s (min %d/%d -> %d/%d max %d/%d -> %d/%d)\n",
-                  FLAG_TOGGLED_ON (old, new, PAspect) ? "set" : "unset",
-                  old->min_aspect.x, old->min_aspect.y,
-                  new->min_aspect.x, new->min_aspect.y,
-                  old->max_aspect.x, old->max_aspect.y,
-                  new->max_aspect.x, new->max_aspect.y);
+    meta_topic (META_DEBUG_GEOMETRY, "XSizeHints: PAspect now %s (min %d/%d -> %d/%d max %d/%d -> %d/%d)\n",
+                FLAG_TOGGLED_ON (old, new, PAspect) ? "set" : "unset",
+                old->min_aspect.x, old->min_aspect.y,
+                new->min_aspect.x, new->min_aspect.y,
+                old->max_aspect.x, old->max_aspect.y,
+                new->max_aspect.x, new->max_aspect.y);
   if (FLAG_CHANGED (old, new, PBaseSize))
-    meta_verbose ("XSizeHints: PBaseSize now %s (%d x %d -> %d x %d)\n",
-                  FLAG_TOGGLED_ON (old, new, PBaseSize) ? "set" : "unset",
-                  old->base_width, old->base_height,
-                  new->base_width, new->base_height);
+    meta_topic (META_DEBUG_GEOMETRY, "XSizeHints: PBaseSize now %s (%d x %d -> %d x %d)\n",
+                FLAG_TOGGLED_ON (old, new, PBaseSize) ? "set" : "unset",
+                old->base_width, old->base_height,
+                new->base_width, new->base_height);
   if (FLAG_CHANGED (old, new, PWinGravity))
-    meta_verbose ("XSizeHints: PWinGravity now %s  (%d -> %d)\n",
-                  FLAG_TOGGLED_ON (old, new, PWinGravity) ? "set" : "unset",
-                  old->win_gravity, new->win_gravity);  
+    meta_topic (META_DEBUG_GEOMETRY, "XSizeHints: PWinGravity now %s  (%d -> %d)\n",
+                FLAG_TOGGLED_ON (old, new, PWinGravity) ? "set" : "unset",
+                old->win_gravity, new->win_gravity);  
 }
 
 static int
@@ -3319,7 +3367,7 @@ update_size_hints (MetaWindow *window)
   gulong supplied;
   XSizeHints old_hints;
   
-  meta_verbose ("Updating WM_NORMAL_HINTS for %s\n", window->desc);
+  meta_topic (META_DEBUG_GEOMETRY, "Updating WM_NORMAL_HINTS for %s\n", window->desc);
 
   old_hints = window->size_hints;
   
@@ -3355,10 +3403,10 @@ update_size_hints (MetaWindow *window)
   
   if (window->size_hints.flags & PBaseSize)
     {
-      meta_verbose ("Window %s sets base size %d x %d\n",
-                    window->desc,
-                    window->size_hints.base_width,
-                    window->size_hints.base_height);
+      meta_topic (META_DEBUG_GEOMETRY, "Window %s sets base size %d x %d\n",
+                  window->desc,
+                  window->size_hints.base_width,
+                  window->size_hints.base_height);
     }
   else if (window->size_hints.flags & PMinSize)
     {
@@ -3374,10 +3422,10 @@ update_size_hints (MetaWindow *window)
   
   if (window->size_hints.flags & PMinSize)
     {
-      meta_verbose ("Window %s sets min size %d x %d\n",
-                    window->desc,
-                    window->size_hints.min_width,
-                    window->size_hints.min_height);
+      meta_topic (META_DEBUG_GEOMETRY, "Window %s sets min size %d x %d\n",
+                  window->desc,
+                  window->size_hints.min_width,
+                  window->size_hints.min_height);
     }
   else if (window->size_hints.flags & PBaseSize)
     {
@@ -3393,10 +3441,10 @@ update_size_hints (MetaWindow *window)
   
   if (window->size_hints.flags & PMaxSize)
     {
-      meta_verbose ("Window %s sets max size %d x %d\n",
-                    window->desc,
-                    window->size_hints.max_width,
-                    window->size_hints.max_height);
+      meta_topic (META_DEBUG_GEOMETRY, "Window %s sets max size %d x %d\n",
+                  window->desc,
+                  window->size_hints.max_width,
+                  window->size_hints.max_height);
     }
   else
     {
@@ -3408,38 +3456,40 @@ update_size_hints (MetaWindow *window)
   if (window->size_hints.max_width < window->size_hints.min_width)
     {
       /* someone is on crack */
-      meta_warning (_("Window %s sets max width %d less than min width %d, disabling resize\n"),
-                    window->desc,
-                    window->size_hints.max_width,
-                    window->size_hints.min_width);
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "Window %s sets max width %d less than min width %d, disabling resize\n",
+                  window->desc,
+                  window->size_hints.max_width,
+                  window->size_hints.min_width);
       window->size_hints.max_width = window->size_hints.min_width;
     }
 
   if (window->size_hints.max_height < window->size_hints.min_height)
     {
       /* another cracksmoker */
-      meta_warning (_("Window %s sets max height %d less than min height %d, disabling resize\n"),
-                    window->desc,
-                    window->size_hints.max_height,
-                    window->size_hints.min_height);
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "Window %s sets max height %d less than min height %d, disabling resize\n",
+                  window->desc,
+                  window->size_hints.max_height,
+                  window->size_hints.min_height);
       window->size_hints.max_height = window->size_hints.min_height;
     }
   
   if (window->size_hints.flags & PResizeInc)
     {
-      meta_verbose ("Window %s sets resize width inc: %d height inc: %d\n",
-                    window->desc,
-                    window->size_hints.width_inc,
-                    window->size_hints.height_inc);
+      meta_topic (META_DEBUG_GEOMETRY, "Window %s sets resize width inc: %d height inc: %d\n",
+                  window->desc,
+                  window->size_hints.width_inc,
+                  window->size_hints.height_inc);
       if (window->size_hints.width_inc == 0)
         {
           window->size_hints.width_inc = 1;
-          meta_verbose ("Corrected 0 width_inc to 1\n");
+          meta_topic (META_DEBUG_GEOMETRY, "Corrected 0 width_inc to 1\n");
         }
       if (window->size_hints.height_inc == 0)
         {
           window->size_hints.height_inc = 1;
-          meta_verbose ("Corrected 0 height_inc to 1\n");
+          meta_topic (META_DEBUG_GEOMETRY, "Corrected 0 height_inc to 1\n");
         }
     }
   else
@@ -3451,12 +3501,12 @@ update_size_hints (MetaWindow *window)
   
   if (window->size_hints.flags & PAspect)
     {
-      meta_verbose ("Window %s sets min_aspect: %d/%d max_aspect: %d/%d\n",
-                    window->desc,
-                    window->size_hints.min_aspect.x,
-                    window->size_hints.min_aspect.y,
-                    window->size_hints.max_aspect.x,
-                    window->size_hints.max_aspect.y);
+      meta_topic (META_DEBUG_GEOMETRY, "Window %s sets min_aspect: %d/%d max_aspect: %d/%d\n",
+                  window->desc,
+                  window->size_hints.min_aspect.x,
+                  window->size_hints.min_aspect.y,
+                  window->size_hints.max_aspect.x,
+                  window->size_hints.max_aspect.y);
 
       /* don't divide by 0 */
       if (window->size_hints.min_aspect.y < 1)
@@ -3475,14 +3525,14 @@ update_size_hints (MetaWindow *window)
 
   if (window->size_hints.flags & PWinGravity)
     {
-      meta_verbose ("Window %s sets gravity %d\n",
-                    window->desc,
-                    window->size_hints.win_gravity);
+      meta_topic (META_DEBUG_GEOMETRY, "Window %s sets gravity %d\n",
+                  window->desc,
+                  window->size_hints.win_gravity);
     }
   else
     {
-      meta_verbose ("Window %s doesn't set gravity, using NW\n",
-                    window->desc);
+      meta_topic (META_DEBUG_GEOMETRY, "Window %s doesn't set gravity, using NW\n",
+                  window->desc);
       window->size_hints.win_gravity = NorthWestGravity;
       window->size_hints.flags |= PWinGravity;
     }
@@ -4832,6 +4882,9 @@ update_struts (MetaWindow *window)
         }
     }
 
+  meta_topic (META_DEBUG_WORKAREA,
+              "Invalidating work areas of window %s due to struts update\n",
+              window->desc);
   invalidate_work_areas (window);
 }
 
@@ -5737,8 +5790,9 @@ meta_window_get_work_area (MetaWindow    *window,
   area->width = window->screen->width - left_strut - right_strut;
   area->height = window->screen->height - top_strut - bottom_strut;
 
-  meta_verbose ("Window %s has work area %d,%d %d x %d\n",
-                window->desc, area->x, area->y, area->width, area->height);
+  meta_topic (META_DEBUG_WORKAREA,
+              "Window %s has work area %d,%d %d x %d\n",
+              window->desc, area->x, area->y, area->width, area->height);
 }
 
 gboolean

@@ -3790,8 +3790,8 @@ meta_theme_load (const char *theme_name,
                                 &length,
                                 &error))
         {
-          meta_verbose ("Failed to read theme from file %s: %s\n",
-                        theme_file, error->message);
+          meta_topic (META_DEBUG_THEMES, "Failed to read theme from file %s: %s\n",
+                      theme_file, error->message);
           g_error_free (error);
           g_free (theme_dir);
           g_free (theme_file);
@@ -3814,8 +3814,8 @@ meta_theme_load (const char *theme_name,
                                 &length,
                                 &error))
         {
-          meta_verbose ("Failed to read theme from file %s: %s\n",
-                        theme_file, error->message);
+          meta_topic (META_DEBUG_THEMES, "Failed to read theme from file %s: %s\n",
+                      theme_file, error->message);
           g_error_free (error);
           g_free (theme_dir);
           g_free (theme_file);
@@ -3838,8 +3838,8 @@ meta_theme_load (const char *theme_name,
                                 &length,
                                 &error))
         {
-          meta_verbose ("Failed to read theme from file %s: %s\n",
-                        theme_file, error->message);
+          meta_topic (META_DEBUG_THEMES, "Failed to read theme from file %s: %s\n",
+                      theme_file, error->message);
           g_error_free (error);
           g_free (theme_dir);
           g_free (theme_file);
@@ -3874,7 +3874,7 @@ meta_theme_load (const char *theme_name,
 
   g_assert (text);
 
-  meta_verbose ("Parsing theme file %s\n", theme_file);
+  meta_topic (META_DEBUG_THEMES, "Parsing theme file %s\n", theme_file);
 
   parse_info_init (&info);
   info.theme_name = theme_name;

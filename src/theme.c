@@ -3853,7 +3853,7 @@ meta_theme_set_current (const char *name,
   MetaTheme *new_theme;
   GError *err;
 
-  meta_verbose ("Setting current theme to \"%s\"\n", name);
+  meta_topic (META_DEBUG_THEMES, "Setting current theme to \"%s\"\n", name);
   
   if (!force_reload &&
       meta_current_theme &&
@@ -3876,7 +3876,7 @@ meta_theme_set_current (const char *name,
 
       meta_current_theme = new_theme;
 
-      meta_verbose ("New theme is \"%s\"\n", meta_current_theme->name);
+      meta_topic (META_DEBUG_THEMES, "New theme is \"%s\"\n", meta_current_theme->name);
     }
 }
 

@@ -27,7 +27,7 @@
 void
 meta_session_init (const char *previous_id)
 {
-  meta_verbose ("Compiled without session management support\n");
+  meta_topic (META_DEBUG_SM, "Compiled without session management support\n");
 }
 
 const MetaWindowSessionInfo*
@@ -208,8 +208,8 @@ meta_session_init (const char *previous_id)
   unsigned long mask;
   SmcCallbacks callbacks;
 
-  meta_verbose ("Initializing session with session ID '%s'\n",
-                previous_id ? previous_id : "(none)");
+  meta_topic (META_DEBUG_SM, "Initializing session with session ID '%s'\n",
+              previous_id ? previous_id : "(none)");
 
   if (previous_id)
     load_state (previous_id);
@@ -251,7 +251,7 @@ meta_session_init (const char *previous_id)
     {
       if (client_id == NULL)
         meta_bug ("Session manager gave us a NULL client ID?");
-      meta_verbose ("Obtained session ID '%s'\n", client_id);
+      meta_topic (META_DEBUG_SM, "Obtained session ID '%s'\n", client_id);
     }
 
   if (previous_id && strcmp (previous_id, client_id) == 0)
@@ -439,7 +439,7 @@ save_yourself_callback (SmcConn   smc_conn,
 static void
 die_callback (SmcConn smc_conn, SmPointer client_data)
 {
-  meta_verbose ("Exiting at request of session manager\n");
+  meta_topic (META_DEBUG_SM, "Exiting at request of session manager\n");
   disconnect ();
   meta_quit (META_EXIT_SUCCESS);
 }
@@ -768,7 +768,7 @@ save_state (void)
                     session_dir, g_strerror (errno));
     }
 
-  meta_verbose ("Saving session to '%s'\n", session_file);
+  meta_topic (META_DEBUG_SM, "Saving session to '%s'\n", session_file);
   
   outfile = fopen (session_file, "w");
 
@@ -833,8 +833,8 @@ save_state (void)
               role = window->role ?
                 encode_text_as_utf8_markup (window->role) : NULL;
               
-              meta_verbose ("Saving session managed window %s, client ID '%s'\n",
-                            window->desc, window->sm_client_id);
+              meta_topic (META_DEBUG_SM, "Saving session managed window %s, client ID '%s'\n",
+                          window->desc, window->sm_client_id);
 
               fprintf (outfile,
                        "  <window id=\"%s\" class=\"%s\" name=\"%s\" title=\"%s\" role=\"%s\" type=\"%s\">\n",
@@ -884,8 +884,8 @@ save_state (void)
             }
           else
             {
-              meta_verbose ("Not saving window '%s', not session managed\n",
-                            window->desc);
+              meta_topic (META_DEBUG_SM, "Not saving window '%s', not session managed\n",
+                          window->desc);
             }
           
           tmp = tmp->next;
@@ -992,7 +992,7 @@ load_state (const char *previous_id)
       return;
     }
 
-  meta_verbose ("Parsing saved session file %s\n", session_file);
+  meta_topic (META_DEBUG_SM, "Parsing saved session file %s\n", session_file);
   g_free (session_file);
   session_file = NULL;
   
@@ -1207,12 +1207,12 @@ start_element_handler  (GMarkupParseContext *context,
           ++i;
         }
 
-      meta_verbose ("Loaded geometry %d,%d %dx%d gravity %s\n",
-                    pd->info->rect.x,
-                    pd->info->rect.y,
-                    pd->info->rect.width,
-                    pd->info->rect.height,
-                    window_gravity_to_string (pd->info->gravity));
+      meta_topic (META_DEBUG_SM, "Loaded geometry %d,%d %dx%d gravity %s\n",
+                  pd->info->rect.x,
+                  pd->info->rect.y,
+                  pd->info->rect.width,
+                  pd->info->rect.height,
+                  window_gravity_to_string (pd->info->gravity));
     }
   else
     {
@@ -1242,10 +1242,10 @@ end_element_handler    (GMarkupParseContext *context,
       window_info_list = g_slist_prepend (window_info_list,
                                           pd->info);
       
-      meta_verbose ("Loaded window info from session with class: %s name: %s role: %s\n",
-                    pd->info->res_class ? pd->info->res_class : "(none)",
-                    pd->info->res_name ? pd->info->res_name : "(none)",
-                    pd->info->role ? pd->info->role : "(none)");
+      meta_topic (META_DEBUG_SM, "Loaded window info from session with class: %s name: %s role: %s\n",
+                  pd->info->res_class ? pd->info->res_class : "(none)",
+                  pd->info->res_name ? pd->info->res_name : "(none)",
+                  pd->info->role ? pd->info->role : "(none)");
       
       pd->info = NULL;
     }
@@ -1305,11 +1305,11 @@ get_possible_matches (MetaWindow *window)
           both_null_or_matching (info->res_name, window->res_name) &&
           both_null_or_matching (info->role, window->role))
         {
-          meta_verbose ("Window %s may match saved window with class: %s name: %s role: %s\n",
-                        window->desc,
-                        info->res_class ? info->res_class : "(none)",
-                        info->res_name ? info->res_name : "(none)",
-                        info->role ? info->role : "(none)");
+          meta_topic (META_DEBUG_SM, "Window %s may match saved window with class: %s name: %s role: %s\n",
+                      window->desc,
+                      info->res_class ? info->res_class : "(none)",
+                      info->res_name ? info->res_name : "(none)",
+                      info->role ? info->role : "(none)");
 
           retval = g_slist_prepend (retval, info);
         }
@@ -1318,29 +1318,29 @@ get_possible_matches (MetaWindow *window)
           if (meta_is_verbose ())
             {
               if (!both_null_or_matching (info->id, window->sm_client_id))
-                meta_verbose ("Window %s has SM client ID %s, saved state has %s, no match\n",
-                              window->desc,
-                              window->sm_client_id ? window->sm_client_id : "(none)",
-                              info->id ? info->id : "(none)");
+                meta_topic (META_DEBUG_SM, "Window %s has SM client ID %s, saved state has %s, no match\n",
+                            window->desc,
+                            window->sm_client_id ? window->sm_client_id : "(none)",
+                            info->id ? info->id : "(none)");
               else if (!both_null_or_matching (info->res_class, window->res_class))
-                meta_verbose ("Window %s has class %s doesn't match saved class %s, no match\n",
-                              window->desc,
-                              window->res_class ? window->res_class : "(none)",
-                              info->res_class ? info->res_class : "(none)");
-
+                meta_topic (META_DEBUG_SM, "Window %s has class %s doesn't match saved class %s, no match\n",
+                            window->desc,
+                            window->res_class ? window->res_class : "(none)",
+                            info->res_class ? info->res_class : "(none)");
+              
               else if (!both_null_or_matching (info->res_name, window->res_name))
-                meta_verbose ("Window %s has name %s doesn't match saved name %s, no match\n",
-                              window->desc,
-                              window->res_name ? window->res_name : "(none)",
-                              info->res_name ? info->res_name : "(none)");
+                meta_topic (META_DEBUG_SM, "Window %s has name %s doesn't match saved name %s, no match\n",
+                            window->desc,
+                            window->res_name ? window->res_name : "(none)",
+                            info->res_name ? info->res_name : "(none)");
               else if (!both_null_or_matching (info->role, window->role))
-                meta_verbose ("Window %s has role %s doesn't match saved role %s, no match\n",
-                              window->desc,
-                              window->role ? window->role : "(none)",
-                              info->role ? info->role : "(none)");
+                meta_topic (META_DEBUG_SM, "Window %s has role %s doesn't match saved role %s, no match\n",
+                            window->desc,
+                            window->role ? window->role : "(none)",
+                            info->role ? info->role : "(none)");
               else
-                meta_verbose ("???? should not happen - window %s doesn't match saved state %s for no good reason\n",
-                              window->desc, info->id);
+                meta_topic (META_DEBUG_SM, "???? should not happen - window %s doesn't match saved state %s for no good reason\n",
+                            window->desc, info->id);
             }
         }
       
@@ -1408,7 +1408,9 @@ meta_window_lookup_saved_state (MetaWindow *window)
    */
   if (window->sm_client_id == NULL)
     {
-      meta_verbose ("Window %s is not session managed, not checking for saved state\n", window->desc);
+      meta_topic (META_DEBUG_SM,
+                  "Window %s is not session managed, not checking for saved state\n",
+                  window->desc);
       return NULL;
     }
 
@@ -1416,8 +1418,8 @@ meta_window_lookup_saved_state (MetaWindow *window)
 
   if (possibles == NULL)
     {
-      meta_verbose ("Window %s has no possible matches in the list of saved window states\n",
-                    window->desc);
+      meta_topic (META_DEBUG_SM, "Window %s has no possible matches in the list of saved window states\n",
+                  window->desc);
       return NULL;
     }
 

@@ -104,7 +104,12 @@ meta_workspace_add_window (MetaWorkspace *workspace,
   
   meta_window_queue_calc_showing (window);
   if (window->has_struts)
-    meta_workspace_invalidate_work_area (workspace);
+    {
+      meta_topic (META_DEBUG_WORKAREA,
+                  "Invalidating work area of workspace %d since we're adding window %s to it\n",
+                  meta_workspace_index (workspace), window->desc);
+      meta_workspace_invalidate_work_area (workspace);
+    }
 
   /* queue a move_resize since changing workspaces may change
    * the relevant struts
@@ -126,7 +131,12 @@ meta_workspace_remove_window (MetaWorkspace *workspace,
   meta_window_queue_calc_showing (window);
 
   if (window->has_struts)
-    meta_workspace_invalidate_work_area (workspace);
+    {
+      meta_topic (META_DEBUG_WORKAREA,
+                  "Invalidating work area of workspace %d since we're removing window %s from it\n",
+                  meta_workspace_index (workspace), window->desc);
+      meta_workspace_invalidate_work_area (workspace);
+    }
 
   /* queue a move_resize since changing workspaces may change
    * the relevant struts
@@ -326,10 +336,16 @@ meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
   GList *tmp;
 
   if (workspace->work_area_invalid)
-    return;
+    {
+      meta_topic (META_DEBUG_WORKAREA,
+                  "Work area for workspace %d is already invalid\n",
+                  meta_workspace_index (workspace));
+      return;
+    }
 
-  meta_verbose ("Invalidating work area for workspace %d\n",
-                meta_workspace_index (workspace));
+  meta_topic (META_DEBUG_WORKAREA,
+              "Invalidating work area for workspace %d\n",
+              meta_workspace_index (workspace));
   
   workspace->work_area_invalid = TRUE;
 
@@ -399,12 +415,13 @@ meta_workspace_get_work_area (MetaWorkspace *workspace,
 
       workspace->work_area_invalid = FALSE;
 
-      meta_verbose ("Workspace %d has work area %d,%d %d x %d\n",
-                    meta_workspace_index (workspace),
-                    workspace->work_area.x,
-                    workspace->work_area.y,
-                    workspace->work_area.width,
-                    workspace->work_area.height);
+      meta_topic (META_DEBUG_WORKAREA,
+                  "Computed work area for workspace %d: %d,%d %d x %d\n",
+                  meta_workspace_index (workspace),
+                  workspace->work_area.x,
+                  workspace->work_area.y,
+                  workspace->work_area.width,
+                  workspace->work_area.height);
     }
 
   *area = workspace->work_area;
