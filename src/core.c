@@ -20,7 +20,7 @@
  */
 
 #include "core.h"
-#include "display.h"
+#include "frame.h"
 
 void
 meta_core_get_frame_size (Display *xdisplay,
@@ -43,10 +43,9 @@ meta_core_get_frame_size (Display *xdisplay,
     *height = window->frame->rect.height;
 }
 
-void
+MetaFrameFlags
 meta_core_get_frame_flags (Display *xdisplay,
-                           Window   frame_xwindow,
-                           MetaFrameFlags flags)
+                           Window   frame_xwindow)
 {
   MetaDisplay *display;
   MetaWindow *window;
@@ -59,3 +58,21 @@ meta_core_get_frame_flags (Display *xdisplay,
 
   return meta_frame_get_flags (window->frame);
 }
+
+void
+meta_core_queue_frame_resize (Display *xdisplay,
+                              Window   frame_xwindow)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+  
+
+  g_warning ("FIXME");
+}
+

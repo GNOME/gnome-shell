@@ -33,8 +33,10 @@ void meta_core_get_frame_size (Display *xdisplay,
                                int     *width,
                                int     *height);
 
-void meta_core_get_frame_flags (Display *xdisplay,
-                                Window   frame_xwindow,
-                                MetaFrameFlags flags);
+MetaFrameFlags meta_core_get_frame_flags (Display *xdisplay,
+                                          Window   frame_xwindow);
+
+void meta_core_queue_frame_resize (Display *xdisplay,
+                                   Window frame_xwindow);
 
 #endif

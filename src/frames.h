@@ -49,16 +49,16 @@ typedef enum
  */
 
 #define META_TYPE_FRAMES            (meta_frames_get_type ())
-#define META_FRAMES(obj)            (META_CHECK_CAST ((obj), META_TYPE_FRAMES, MetaFrames))
-#define META_FRAMES_CLASS(klass)    (META_CHECK_CLASS_CAST ((klass), META_TYPE_FRAMES, MetaFramesClass))
-#define META_IS_FRAMES(obj)         (META_CHECK_TYPE ((obj), META_TYPE_FRAMES))
-#define META_IS_FRAMES_CLASS(klass) (META_CHECK_CLASS_TYPE ((klass), META_TYPE_FRAMES))
-#define META_FRAMES_GET_CLASS(obj)  (META_CHECK_GET_CLASS ((obj), META_TYPE_FRAMES, MetaFramesClass))
+#define META_FRAMES(obj)            (GTK_CHECK_CAST ((obj), META_TYPE_FRAMES, MetaFrames))
+#define META_FRAMES_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), META_TYPE_FRAMES, MetaFramesClass))
+#define META_IS_FRAMES(obj)         (GTK_CHECK_TYPE ((obj), META_TYPE_FRAMES))
+#define META_IS_FRAMES_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), META_TYPE_FRAMES))
+#define META_FRAMES_GET_CLASS(obj)  (GTK_CHECK_GET_CLASS ((obj), META_TYPE_FRAMES, MetaFramesClass))
 
 typedef struct _MetaFrames        MetaFrames;
 typedef struct _MetaFramesClass   MetaFramesClass;
 
-typedef struct _MetaFrame           MetaFrame;
+typedef struct _MetaUIFrame         MetaUIFrame;
 typedef struct _MetaFrameProperties MetaFrameProperties;
 
 struct _MetaFrames
@@ -98,10 +98,6 @@ void meta_frames_get_geometry (MetaFrames *frames,
 
 void meta_frames_reset_bg (MetaFrames *frames,
                            Window      xwindow);
-
-void meta_frames_set_flags (MetaFrames *frames,
-                            Window xwindow,
-                            MetaFrameFlags flags);
 
 void meta_frames_queue_draw (MetaFrames *frames,
                              Window      xwindow);

@@ -21,7 +21,6 @@
 
 #include "frame.h"
 #include "errors.h"
-#include "uislave.h"
 
 void
 meta_window_ensure_frame (MetaWindow *window)
@@ -103,7 +102,6 @@ void
 meta_window_destroy_frame (MetaWindow *window)
 {
   MetaFrame *frame;
-  MetaFrameInfo info;
   
   if (window->frame == NULL)
     return;
@@ -156,7 +154,7 @@ meta_frame_get_flags (MetaFrame *frame)
     flags |= META_FRAME_ALLOWS_DELETE;
   
   if (frame->window->type == META_WINDOW_NORMAL)
-    flags |= (META_FRAME_ALLOWS_ICONIFY | META_FRAME_ALLOWS_MAXIMIZE);
+    flags |= (META_FRAME_ALLOWS_MINIMIZE | META_FRAME_ALLOWS_MAXIMIZE);
 
   if (!frame->window->has_maximize_func)
     flags &= ~META_FRAME_ALLOWS_MAXIMIZE;
@@ -172,6 +170,8 @@ meta_frame_get_flags (MetaFrame *frame)
 
   if (frame->window->on_all_workspaces)
     flags |= META_FRAME_STUCK;
+
+  return flags;
 }
 
 void
@@ -210,12 +210,11 @@ meta_frame_sync_to_window (MetaFrame *frame,
                            gboolean   need_move,
                            gboolean   need_resize)
 {
-  meta_verbose ("Syncing frame geometry %d,%d %dx%d (SE: %d,%d) pixel %ld\n",
+  meta_verbose ("Syncing frame geometry %d,%d %dx%d (SE: %d,%d)\n",
                 frame->rect.x, frame->rect.y,
                 frame->rect.width, frame->rect.height,
                 frame->rect.x + frame->rect.width,
-                frame->rect.y + frame->rect.height,
-                frame->bg_pixel);
+                frame->rect.y + frame->rect.height);
 
   /* set bg to none to avoid flicker */
   if (need_resize)

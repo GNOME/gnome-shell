@@ -23,7 +23,7 @@
 #define META_UI_H
 
 /* Don't include gtk.h here */
-#include "window.h"
+#include "common.h"
 
 typedef struct _MetaUI MetaUI;
 
@@ -45,10 +45,6 @@ void meta_ui_remove_frame (MetaUI *ui,
 
 void meta_ui_reset_frame_bg (MetaUI *ui,
                              Window xwindow);
-
-void meta_ui_set_frame_flags (MetaUI *ui,
-                              Window xwindow,
-                              MetaFrameFlags flags);
 
 void meta_ui_queue_frame_draw (MetaUI *ui,
                                Window xwindow);

@@ -25,6 +25,8 @@
 #include "errors.h"
 #include "ui.h"
 
+#include <glib.h>
+
 #include <stdlib.h>
 #include <sys/types.h>
 #include <stdio.h>

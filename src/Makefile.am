@@ -2,6 +2,8 @@
 INCLUDES=@METACITY_CFLAGS@ -DMETACITY_LIBEXECDIR=\"$(libexecdir)\" -DHOST_ALIAS=\"@HOST_ALIAS@\" 
 
 metacity_SOURCES= 				\
+	core.c					\
+	core.h					\
 	display.c				\
 	display.h				\
 	errors.c				\
@@ -16,14 +18,14 @@ metacity_SOURCES= 				\
 	keybindings.h				\
 	main.c					\
 	main.h					\
-	menu.c					\
-	menu.h					\
 	screen.c				\
 	screen.h				\
 	session.c				\
 	session.h				\
 	stack.c					\
 	stack.h					\
+	ui.c					\
+	ui.h					\
 	util.c					\
 	util.h					\
 	window.c				\

@@ -197,9 +197,9 @@ meta_display_open (const char *name)
    */
   display->leader_window = None;
 
+  screens = NULL;
 #if 0
   /* disable multihead pending GTK support */
-  screens = NULL;
   i = 0;
   while (i < ScreenCount (xdisplay))
     {
@@ -212,9 +212,12 @@ meta_display_open (const char *name)
       ++i;
     }
 #else
-  screen = meta_screen_new (display, DefaultScreen (xdisplay));
-  if (screen)
-    screens = g_slist_prepend (screens, screen);
+  {
+    MetaScreen *screen;
+    screen = meta_screen_new (display, DefaultScreen (xdisplay));
+    if (screen)
+      screens = g_slist_prepend (screens, screen);
+  }
 #endif
 
   if (screens == NULL)
@@ -753,7 +756,7 @@ event_get_modified_window (MetaDisplay *display,
 static const char*
 focus_detail (int d)
 {
-  const char *detail = "(????)";
+  const char *detail = "???";
   switch (d)
     {
     case NotifyAncestor:
@@ -788,7 +791,7 @@ focus_detail (int d)
 static const char*
 focus_mode (int m)
 {
-  const char *mode = "(????)";
+  const char *mode = "???";
   switch (m)
     {
     case NotifyNormal:
@@ -959,7 +962,7 @@ meta_spew_event (MetaDisplay *display,
             else if (event->xproperty.state == PropertyDelete)
               state = "PropertyDelete";
             else
-              state = "(????)";
+              state = "???";
             
             extra = g_strdup_printf ("atom: %s state: %s",
                                      str ? str : "(unknown atom)",

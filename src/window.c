@@ -903,7 +903,6 @@ meta_window_move_resize_internal (MetaWindow  *window,
       window->frame->child_y = fgeom.top_height;
       window->frame->right_width = fgeom.right_width;
       window->frame->bottom_height = fgeom.bottom_height;
-      window->frame->bg_pixel = fgeom.background_pixel;
     }
 
   /* See ICCCM 4.1.5 for when to send ConfigureNotify */

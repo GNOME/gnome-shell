@@ -24,6 +24,8 @@
 
 #include "window.h"
 
+typedef struct _MetaFrameGeometry MetaFrameGeometry;
+
 struct _MetaFrameGeometry
 {  
   /* border sizes (space between frame and child) */

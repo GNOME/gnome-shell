@@ -26,6 +26,17 @@
 #include <X11/Xlib.h>
 #include "eventqueue.h"
 
+/* this doesn't really belong here, oh well. */
+typedef struct _MetaRectangle MetaRectangle;
+
+struct _MetaRectangle
+{
+  int x;
+  int y;
+  int width;
+  int height;
+};
+
 typedef struct _MetaDisplay   MetaDisplay;
 typedef struct _MetaFrame     MetaFrame;
 typedef struct _MetaScreen    MetaScreen;
@@ -109,7 +120,6 @@ MetaScreen*   meta_display_screen_for_x_screen (MetaDisplay *display,
                                                 Screen      *screen);
 void          meta_display_grab                (MetaDisplay *display);
 void          meta_display_ungrab              (MetaDisplay *display);
-PangoContext* meta_display_get_pango_context   (MetaDisplay *display);
 gboolean      meta_display_is_double_click     (MetaDisplay *display);
 
 /* A given MetaWindow may have various X windows that "belong"

@@ -21,6 +21,7 @@
 
 #include "ui.h"
 #include "frames.h"
+#include "util.h"
 
 struct _MetaUI
 {
@@ -32,7 +33,8 @@ struct _MetaUI
 void
 meta_ui_init (int *argc, char ***argv)
 {
-  gtk_init (argc, argv);
+  if (!gtk_init_check (argc, argv))
+    meta_fatal ("Unable to open X display %s\n", gdk_display_name);
 }
 
 MetaUI*
@@ -91,14 +93,6 @@ meta_ui_reset_frame_bg (MetaUI *ui,
                         Window xwindow)
 {
   meta_frames_reset_bg (ui->frames, xwindow);
-}
-
-void
-meta_ui_set_frame_flags (MetaUI *ui,
-                         Window xwindow,
-                         MetaFrameFlags flags)
-{
-  meta_frames_set_flags (ui->frames, xwindow, flags);
 }
 
 void

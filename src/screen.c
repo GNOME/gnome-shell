@@ -98,7 +98,6 @@ meta_screen_new (MetaDisplay *display,
   Window xroot;
   Display *xdisplay;
   Cursor cursor;
-  XGCValues vals;
   
   /* Only display->name, display->xdisplay, and display->error_traps
    * can really be used in this function, since normally screens are
@@ -147,12 +146,7 @@ meta_screen_new (MetaDisplay *display,
   screen->number = number;
   screen->screen_name = get_screen_name (display, number);
   screen->xscreen = ScreenOfDisplay (xdisplay, number);
-  screen->xroot = xroot;  
-  screen->pango_context = NULL;
-  
-  screen->engine = &meta_default_engine;
-
-  screen->showing_tooltip = FALSE;
+  screen->xroot = xroot;
 
   if (display->leader_window == None)
     display->leader_window = XCreateSimpleWindow (display->xdisplay,
@@ -173,24 +167,13 @@ meta_screen_new (MetaDisplay *display,
   meta_workspace_new (screen);
   meta_workspace_new (screen);
   meta_workspace_new (screen);
-  
-  meta_screen_init_visual_info (screen);
-  meta_screen_init_ui_colors (screen);
 
   meta_screen_grab_keys (screen);
-  
-  screen->scratch_gc = XCreateGC (screen->display->xdisplay,
-                                  screen->xroot,
-                                  0,
-                                  &vals);
 
-  screen->ui = meta_ui_new (screen->display,
+  screen->ui = meta_ui_new (screen->display->xdisplay,
                             screen->xscreen);
 
   screen->stack = meta_stack_new (screen);
-
-  /* hack pango to get its coverage window */
-  meta_screen_get_pango_context (screen, NULL, PANGO_DIRECTION_LTR);
   
   meta_verbose ("Added screen %d ('%s') root 0x%lx\n",
                 screen->number, screen->screen_name, screen->xroot);  
@@ -203,15 +186,10 @@ meta_screen_free (MetaScreen *screen)
 {  
   meta_screen_ungrab_keys (screen);
   
-  meta_ui_slave_free (screen->uislave);
+  meta_ui_free (screen->ui);
 
   meta_stack_free (screen->stack);
   
-  XFreeGC (screen->display->xdisplay,
-           screen->scratch_gc);
-  
-  if (screen->pango_context)
-    g_object_unref (G_OBJECT (screen->pango_context));
   g_free (screen->screen_name);
   g_free (screen);
 }
@@ -253,129 +231,6 @@ meta_screen_manage_all_windows (MetaScreen *screen)
   
   if (children)
     XFree (children);
-}
-
-static GC
-get_gc_func (PangoContext *context, PangoColor *color, GC base_gc)
-{
-  MetaScreen *screen;
-  GC new_gc;
-  XGCValues vals;
-  int copy_mask = (GCFunction | GCPlaneMask | GCForeground | GCBackground |
-                   GCLineWidth | GCLineStyle | GCCapStyle | GCJoinStyle |
-                   GCFillStyle | GCFillRule | GCTile | GCStipple | GCTileStipXOrigin |
-                   GCTileStipYOrigin | GCFont | GCSubwindowMode |
-                   GCGraphicsExposures | GCClipXOrigin | GCClipYOrigin |
-                   GCDashOffset | GCArcMode);
-
-  screen = g_object_get_data (G_OBJECT (context), "meta-screen");
-  
-  new_gc = XCreateGC (screen->display->xdisplay,
-                      screen->xroot,
-                      0, 
-                      &vals);
-
-  XCopyGC (screen->display->xdisplay, base_gc, copy_mask, new_gc);
-
-  vals.foreground = meta_screen_get_x_pixel (screen, color);
-  XChangeGC (screen->display->xdisplay, new_gc, GCForeground, &vals);
-
-  return new_gc;
-}
-
-static void
-free_gc_func (PangoContext *context, GC gc)
-{
-  MetaScreen *screen;
-
-  screen = g_object_get_data (G_OBJECT (context), "meta-screen");
-
-  XFreeGC (screen->display->xdisplay, gc);
-}
-
-static char*
-get_default_language (void)
-{
-  /* Copied from GTK, Copyright 2001 Red Hat Inc. */
-  gchar *lang;
-  gchar *p;
-  
-  lang = g_strdup (setlocale (LC_CTYPE, NULL));
-  p = strchr (lang, '.');
-  if (p)
-    *p = '\0';
-  p = strchr (lang, '@');
-  if (p)
-    *p = '\0';
-
-  return lang;
-}
-
-PangoContext*
-meta_screen_get_pango_context (MetaScreen *screen,
-                               const PangoFontDescription *desc,
-                               PangoDirection direction)
-{
-  if (screen->pango_context == NULL)
-    {
-      PangoContext *ctx;
-      char *lang;
-      
-      /* Copied from GDK, Copyright 2001 Red Hat, Inc. */
-#ifdef HAVE_XFT
-      static int use_xft = -1;
-      if (use_xft == -1)
-        {
-          char *val = g_getenv ("META_USE_XFT");
-          
-          use_xft = val && (atoi (val) != 0);
-        }
-      
-      if (use_xft)
-        ctx = pango_xft_get_context (screen->display, screen->number);
-      else
-#endif /* HAVE_XFT */
-        ctx = pango_x_get_context (screen->display->xdisplay);
-
-      g_object_set_data (G_OBJECT (ctx), "meta-screen", screen);
-
-      pango_x_context_set_funcs (ctx, get_gc_func, free_gc_func);
-      
-      lang = get_default_language ();  
-      pango_context_set_lang (ctx, lang);
-      g_free (lang);
-
-      /* FIXME these two lines are wrong;
-       * we should be storing a context for each direction/desc,
-       * so that the args to meta_screen_get_pango_context()
-       * are honored.
-       */
-      pango_context_set_base_dir (ctx, direction);
-
-      if (desc == NULL)
-        {
-          desc = pango_font_description_from_string ("Sans 12");
-          pango_context_set_font_description (ctx, desc);
-          pango_font_description_free (desc);
-        }
-      else
-        {
-          pango_context_set_font_description (ctx, desc);
-        }
-
-      {
-        /* Make Pango grab server now not later */
-        PangoLayout *hack;
-        hack = pango_layout_new (ctx);
-        pango_layout_set_text (hack, "foo", -1);
-        pango_layout_get_extents (hack, NULL, NULL);
-        g_object_unref (G_OBJECT (hack));
-      }
-      
-      screen->pango_context = ctx;
-    }
-  
-  return screen->pango_context;
 }
 
 MetaScreen*
@@ -494,27 +349,6 @@ meta_screen_queue_frame_redraws (MetaScreen *screen)
   meta_screen_foreach_window (screen, queue_draw, NULL);
 }
 
-
-void
-meta_screen_show_tip (MetaScreen *screen,
-                      int         root_x,
-                      int         root_y,
-                      const char *markup)
-{
-  /* even if screen->showing_tip, may change position/text */
-  meta_ui_slave_show_tip (screen->uislave, root_x, root_y, markup);
-  screen->showing_tooltip = TRUE;
-}
-
-void
-meta_screen_hide_tip (MetaScreen *screen)
-{
-  if (screen->showing_tooltip)
-    {
-      meta_ui_slave_hide_tip (screen->uislave);
-      screen->showing_tooltip = FALSE;
-    }
-}
 
 int
 meta_screen_get_n_workspaces (MetaScreen *screen)

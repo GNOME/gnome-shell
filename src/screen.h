@@ -23,7 +23,6 @@
 #define META_SCREEN_H
 
 #include "display.h"
-#include "theme.h"
 #include <X11/Xutil.h>
 #include "ui.h"
 
@@ -37,25 +36,9 @@ struct _MetaScreen
   char *screen_name;
   Screen *xscreen;
   Window xroot;
-  MetaThemeEngine *engine;
   MetaUI *ui;
 
   MetaWorkspace *active_workspace;
-  
-  XVisualInfo visual_info;
-  MetaUIColors colors;
-
-  /* In screen's visual, no guarantees about colors, shouldn't be
-   * left with a clip.
-   */
-  GC scratch_gc;
-
-  guint showing_tooltip : 1;
-  
-  /* we only need one since we only draw to a single visual (that of
-   * root window)
-   */
-  PangoContext *pango_context;
 
   MetaStack *stack;
 };
@@ -64,19 +47,11 @@ MetaScreen*   meta_screen_new                 (MetaDisplay                *displ
                                                int                         number);
 void          meta_screen_free                (MetaScreen                 *screen);
 void          meta_screen_manage_all_windows  (MetaScreen                 *screen);
-PangoContext* meta_screen_get_pango_context   (MetaScreen                 *screen,
-                                               const PangoFontDescription *desc,
-                                               PangoDirection              direction);
 MetaScreen*   meta_screen_for_x_screen        (Screen                     *xscreen);
 void          meta_screen_foreach_window      (MetaScreen                 *screen,
                                                MetaScreenWindowFunc        func,
                                                gpointer                    data);
 void          meta_screen_queue_frame_redraws (MetaScreen                 *screen);
-void          meta_screen_show_tip            (MetaScreen                 *screen,
-                                               int                         root_x,
-                                               int                         root_y,
-                                               const char                 *markup);
-void          meta_screen_hide_tip            (MetaScreen                 *screen);
 
 int           meta_screen_get_n_workspaces    (MetaScreen                 *screen);
 
