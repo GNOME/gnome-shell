@@ -1,3 +1,20 @@
+2005-01-02  Elijah Newren  <newren@gmail.com>
+
+	Provide more documentation to make it easier for people to
+	contribute to Metacity
+
+	* HACKING: Add lots of information to extend this document: more
+	on relevant standards and X properties, lots of information on
+	debugging and testing, and add a list of some other important
+	things to read; also move some information to
+	src/code-overview.txt and organize this file into sections.
+	
+	* src/code-overview.txt: New file including some small parts from
+	the old HACKING file and lots of new stuff.  This file gives a
+	brief overview of some of the bigger structures and files, with
+	guides for a variety of task categories providing places to start
+	looking in the code and things to look for.
+
 2004-12-28  Elijah Newren  <newren@gmail.com>
 
 	Allow users to move the window around immediately after

@@ -1,0 +1,185 @@
+This is not meant to be comprehensive by any means.  Rather it is
+meant as just a brief overview of some of the bigger structures and
+files, with guides for a variety of task categories providing places
+to start looking in the code and things to look for.
+
+Overview
+  Jobs of various files
+  Major data structures and their relationships
+  Getting started -- where to look
+
+
+Jobs of various files
+  src/window.c is where all the guts of the window manager live. This is
+  basically the only remotely scary file.
+
+  src/frames.c is the GtkWidget that handles drawing window frames.
+
+  src/core.h defines the interface used by the GTK portion of the window
+  manager to talk to the other portions. There's some cruft in here that's
+  unused, since nearly all window operations have moved out of this file so
+  frameless apps can have window operations.
+
+  src/ui.h defines the interface the plain Xlib portion of the window
+  manager uses to talk to the GTK portion.
+
+  src/theme.c and src/theme-parser.c have the theme system; this is
+  well-modularized from the rest of the code, since the theme viewer app
+  links to these files in addition to the WM itself.
+
+Major data structures and their relationships
+  Major structs have a "Meta" prefix, thus MetaDisplay, MetaScreen,
+  MetaWindow, etc.  This serves as a way of namespacing in C.  It also has
+  the side effect of avoiding conflicts with common names that X already
+  uses such as Display, Screen, Window, etc.  Note that when I refer to a
+  display below, I'm meaning a MetaDisplay and not a Display.
+
+  Don't confuse displays and screens.  While Metacity can run with multiple
+  displays, it is kind of useless since you might as well just run two
+  copies of Metacity.  However, having multiple screens per display is
+  useful and increasingly common (known as "multiscreen" and "xinerama"
+  setups, where users make use of more than one monitor).  You should
+  basically think of a display as a combination of one or more monitors
+  with a single keyboard (...and usually only one mouse).
+
+  There is also a significant difference between multiscreen and xinerama
+  as well.  Basically, each MetaScreen is a root window (root node in the
+  tree of windows).  With Xinerama, a single root window appears to span
+  multiple monitors, whereas with multiscreen a root window is confined to
+  a single monitor.  To re-emphasize the distinction between a display and
+  a screen, the pointer and keyboard are shared between all root windows
+  for a given display.
+
+  The display keeps track of a lot of various global quantities, but in
+  particular has a compositor and a list (GList) of screens.
+
+  A compositor is an opaque structure (only defined in compositor.c),
+  meaning that you'll only reference the API for it.  It handles (or will
+  handle) cool stuff with the new X extensions, such as smooth resizing and
+  alpha transparency.
+
+  A screen keeps track of a number of quantities as well, in particular a
+  stack and a list of workspaces.
+
+  A stack is basically a list of windows, and the depth order they have
+  relative to each other (which thus determines which windows are on top
+  and which are obscured).
+
+  A workspace mostly contains a list of windows for the workspace, but also
+  has a few other quantities as well (a list of struts which are areas
+  where windows should not be placed and an mru_list or "most recently used
+  window list").
+
+  A window has a huge list of quantities for keeping track of things about
+  a window on the screen.  (We want to avoid making this list larger
+  because the memory for all these quantities is per window.)  One item in
+  particular that a window has, though, is a frame.
+
+  A frame is the decorations that surround the window (i.e. the titlebar and
+  the minimize and close buttons and the part that you can use to resize),
+  and contains a handful of variables related to that, but no other major
+  structures.
+
+Getting started -- where to look
+  Getting started on developing free software projects can often be like
+  being dropped off in a town that is unknown to you and being told to make
+  a map, when various road and building signs are missing or fading.  To
+  try to alleviate that initial difficulty in orientation, below I list a
+  variety of general task categories with file, function, variable, and x
+  property names that may be useful to fixing bugs or writing features that
+  fall within that category.
+
+  First, though, it's useful to note that most event and message passing
+  goes through display.c:event_callback(), so that's often a good place to
+  start reading for general familiarity with the code (actually, I'd
+  suggest skipping down to the first switch statement within that
+  function).  Of course, not all events go through that function, as there
+  are a few other places that handle events too such as frames.c.
+
+  Anyway, without further ado, here are the categories and (hopefully)
+  useful things to look at for each:
+
+    Focus issues (i.e. issues with which window is active):
+      doc/how-to-get-focus-right.txt
+      meta_workspace_focus_default_window
+      _NET_ACTIVE_WINDOW
+      _NET_WM_USER_TIME
+      meta_window_focus
+      meta_display_(set_input|focus_the_no)_focus_window
+      XSetInputFocus (only for purposes of understanding how X focus/input works)
+      CurrentTime (mostly, you should just think "Bad; don't use it")
+
+    Compositor stuff (X extension for eye candy like transparency):
+      compositor.c
+      The luminocity module in CVS
+
+    Window depth (i.e. stacking or lowering/raising) issues:
+      stack.c
+      _NET_CLIENT_LIST_STACKING
+      transient_for
+      WM_TRANSIENT_FOR
+      meta_window_(raise|lower)
+      _NET_WM_WINDOW_TYPE
+      _NET_WM_MOUSE_ACTION/_NET_WM_TAKE_ACTIVITY? (aren't yet in EWMH)
+
+    Window placement issues:
+      place.c
+      constraints.c
+      _NET_WM_STRUT
+      WM_SIZE_HINTS
+
+    Moving and resizing issues:
+      constraints.c
+      update_move
+      update_resize
+      meta_window_handle_mouse_grab_op_event
+      _NET_MOVERESIZE_WINDOW
+      _NET_WM_STRUT
+
+    Drag and drop issues:
+      the XDND protocol (see http://www.newplanetsoftware.com/xdnd/ and
+        http://freedesktop.org/Standards/XDND)
+      _NET_WM_MOUSE_ACTION/_NET_WM_TAKE_ACTIVITY (aren't yet in EWMH)
+      A general pointer: what causes the difficulty here is that when the
+        application receives a mouse click to start a drag, it does a grab
+        so that the window manager doesn't get any further events; thus
+        correcting things require standards so that applications and window
+        managers can collaborate correctly
+
+    Theme issues: ???
+      doc/theme-format.txt
+      theme.c
+      theme-parser.c
+      (ui.c, core.c, frames.c, frame.c?  I dunno...)
+
+    Session management issues: ???
+      session.c
+      http://www.x.org/X11R6.8.1/doc/SM/xsmp.pdf ?
+      http://www.x.org/X11R6.8.1/doc/SM/SMlib.pdf ?
+      meta_window_apply_session_info
+
+    Tasklist and Workspace switcher issues:
+      window-props.c
+      various functions in screen.c (especially ones using XChangeProperty)
+      xprops.c
+      The libwnck module in cvs
+      meta_window_client_message
+      Lots of the EWMH
+
+    Window and workspace selection/changing issues:
+      tabpopup.c
+      keybindings.c, functions: *_workspace*, *_tab_*
+      meta_screen_ensure_*_popup
+      display.c, functions: *_tab*
+
+    Key and mouse binding actions:
+      keybindings.c
+      meta_frames_button_(press|release)_event
+      display.c: event_callback, but only the (Key|Button)_(Press|Release) cases
+
+    Xinerama and multiscreen: ???
+      In general, just search for Xinerama, but in particular see
+      screen.c
+      window.c
+      place.c
+      constraints.c
