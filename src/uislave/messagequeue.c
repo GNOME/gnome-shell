@@ -112,7 +112,7 @@ meta_message_queue_new  (int                  fd,
   mq->buf = g_string_new ("");
   mq->current_message = g_string_new ("");
   mq->current_required_len = 0;
-  mq->last_serial = -1;
+  mq->last_serial = 0;
   mq->out_poll.fd = fd;
   mq->out_poll.events = G_IO_IN;
 
@@ -207,28 +207,6 @@ append_pending (MetaMessageQueue *mq)
 static void
 mq_queue_messages (MetaMessageQueue *mq)
 {  
-  if (mq->out_poll.revents & G_IO_IN)
-    {
-      ReadResult res;
-
-      res = read_data (mq->buf, mq->out_poll.fd);
-      
-      switch (res)
-        {
-        case READ_OK:
-          meta_verbose ("Read data from slave, %d bytes in buffer\n",
-                        mq->buf->len);
-          break;
-        case READ_EOF:
-          meta_verbose ("EOF reading stdout from slave process\n");
-          break;
-          
-        case READ_FAILED:
-          /* read_data printed the error */
-          break;
-        }
-    }
-  
   while (mq->buf->len > 0)
     {  
       if (mq->current_required_len > 0)
@@ -360,9 +338,12 @@ mq_queue_messages (MetaMessageQueue *mq)
 static gboolean
 mq_messages_pending (MetaMessageQueue *mq)
 {
-  return mq->queue->length > 0 ||
+  return mq->queue->length > 0;
+  /* these are useless until we wake up on poll again */
+#if 0
     mq->buf->len > 0 ||
     mq->current_message->len > 0;
+#endif
 }
 
 static gboolean
@@ -379,6 +360,7 @@ mq_prepare (GSource *source, gint *timeout)
   return mq_messages_pending (mq);
 }
 
+#include <stdio.h>
 static gboolean  
 mq_check (GSource  *source) 
 {
@@ -387,6 +369,29 @@ mq_check (GSource  *source)
   mq = (MetaMessageQueue*) source;
 
   mq_queue_messages (mq);
+
+  if (mq->out_poll.revents & G_IO_IN)
+    {
+      ReadResult res;
+
+      res = read_data (mq->buf, mq->out_poll.fd);
+      
+      switch (res)
+        {
+        case READ_OK:
+          meta_verbose ("Read data from slave, %d bytes in buffer\n",
+                        mq->buf->len);
+          break;
+        case READ_EOF:
+          meta_verbose ("EOF reading stdout from slave process\n");
+          break;
+          
+        case READ_FAILED:
+          /* read_data printed the error */
+          break;
+        }
+    }
+  
   mq->out_poll.revents = 0;
   
   return mq_messages_pending (mq);
@@ -474,4 +479,66 @@ read_data (GString *str,
     }
   else
     return READ_OK;
+}
+
+/* Wait forever and build infinite queue until we get
+ * the desired serial_of_request or one higher than it
+ */
+void
+meta_message_queue_wait_for_reply (MetaMessageQueue *mq,
+                                   int               serial_of_request)
+{
+  ReadResult res;
+  int prev_len;
+
+  prev_len = 0;
+  while (TRUE)
+    {
+      if (prev_len < mq->queue->length)
+        {
+          GList *tmp;
+
+          tmp = g_list_nth (mq->queue->head, prev_len);
+          while (tmp != NULL)
+            {
+              MetaMessage *msg = tmp->data;
+
+              if (msg->header.request_serial == serial_of_request)
+                return;
+
+              if (msg->header.request_serial > serial_of_request)
+                {
+                  meta_warning ("Serial request %d is greater than the awaited request %d\n",
+                                msg->header.request_serial, serial_of_request);
+                  return;
+                }
+              
+              tmp = tmp->next;
+            }
+
+          prev_len = mq->queue->length;
+        }
+      
+      res = read_data (mq->buf, mq->out_poll.fd);
+      
+      switch (res)
+        {
+        case READ_OK:
+          meta_verbose ("Read data from slave, %d bytes in buffer\n",
+                        mq->buf->len);
+          break;
+          
+        case READ_EOF:
+          meta_verbose ("EOF reading stdout from slave process\n");
+          return;
+          break;
+          
+        case READ_FAILED:
+          /* read_data printed the error */
+          return;
+          break;
+        }
+
+      mq_queue_messages (mq);
+    }
 }
