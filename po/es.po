@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-02-05 16:28+0100\n"
-"PO-Revision-Date: 2005-02-05 16:28+0100\n"
+"PO-Revision-Date: 2005-02-10 12:41+0100\n"
 "Last-Translator: Francisco Javier F. Serrador <serrador@cvs.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -27,7 +27,7 @@ msgstr "Uso: %s\n"
 
 #: ../src/tools/metacity-message.c:176 ../src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "Metacity fue compilado sin soporte para modo verboso\n"
+msgstr "Metacity fue compilado sin soporte para modo prolijo\n"
 
 #: ../src/delete.c:63 ../src/delete.c:90 ../src/metacity-dialog.c:70
 #: ../src/theme-parser.c:467
@@ -150,7 +150,7 @@ msgstr ""
 "Copyright © 2001-2002 Havoc Pennington, Red Hat, Inc., y otros\n"
 "Este programa es software libre ; vea el código fuente para obtener las "
 "condiciones de copia. NO se proporciona ninguna garantía ; ni de "
-"MERCANTILIDAD O DE CUMPLIMIENTO PARA UN PROPÓSITO PARTICULAR.\n"
+"MERCANTILIDAD O DE IDONEIDAD PARA UN PROPÓSITO PARTICULAR.\n"
 
 #: ../src/main.c:443
 #, c-format
@@ -234,7 +234,7 @@ msgstr "Mover al espacio de trabajo de a_bajo"
 #: ../src/menu.c:162 ../src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
-msgstr "espacio de trabajo %d"
+msgstr "Espacio de trabajo %d"
 
 #: ../src/menu.c:171
 msgid "Workspace 1_0"
@@ -366,9 +366,7 @@ msgstr "Clase"
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
-msgstr ""
-"Estas ventanas no soportan «guardar la configuración actual» y tendrán que "
-"ser reiniciadas manualmente la próxima vez que inicie una sesión."
+msgstr "Estas ventanas no soportan «guardar la configuración actual» y tendrán que reiniciarse manualmente la próxima vez que inicie una sesión."
 
 #: ../src/metacity-dialog.c:325
 #, c-format
@@ -412,7 +410,7 @@ msgstr "Acción al pulsar dos veces en la barra de títulos"
 
 #: ../src/metacity.schemas.in.h:4
 msgid "Activate window menu"
-msgstr "Activar menú de ventana"
+msgstr "Activar el menú de la ventana"
 
 #: ../src/metacity.schemas.in.h:5
 msgid "Arrangement of buttons on the titlebar"
@@ -428,16 +426,16 @@ msgid ""
 "older versions."
 msgstr ""
 "Distribución de botones en la barra de títulos. El valor debe ser una "
-"cadena, como «menu:minimize,maximize,close» ; la coma separa la esquina "
+"cadena, como \"menu:minimize,maximize,close\" ; los dos puntos separan la esquina "
 "izquierda de la ventana de la esquina derecha, y los nombres de los botones "
 "están separados por comas. No se permiten botones duplicados. Los nombres "
-"desconocidos de botones son ignorados sin aviso de este modo esos botones "
-"puedan ser añadidos en las versiones futuras de metacity sin problemas con "
-"las versiones mas antiguas."
+"desconocidos de botones se ignoran ignorados sin avisar de este modo esos botones "
+"puedan añadirse en las versiones futuras de metacity sin problemas con "
+"las versiones más antiguas."
 
 #: ../src/metacity.schemas.in.h:7
 msgid "Automatically raises the focused window"
-msgstr "Desplegar automáticamente la ventana que tiene el foco"
+msgstr "Elevar automáticamente la ventana que tiene el foco"
 
 #: ../src/metacity.schemas.in.h:8
 msgid ""
@@ -465,7 +463,7 @@ msgstr "Tema actual"
 
 #: ../src/metacity.schemas.in.h:12
 msgid "Delay in milliseconds for the auto raise option"
-msgstr "Retardo en milisegundos para la opción auto-desplegar"
+msgstr "Retardo en milisegundos para la opción auto-elevar"
 
 #: ../src/metacity.schemas.in.h:13
 msgid ""
@@ -473,7 +471,7 @@ msgid ""
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr ""
 "Determina si las aplicaciones o el sistema pueden generar «bips» audibles ; "
-"podría ser usado en conjunto con «la campana visual» para permitir «bips» "
+"podría usarse en conjunto con «la campana visual» para permitir «bips» "
 "silenciosos."
 
 #: ../src/metacity.schemas.in.h:14
@@ -542,12 +540,12 @@ msgstr ""
 "configuración basada en aplicaciones es más parecida a un Mac y menos a un "
 "Windows. Cuando enfoca a una ventana en el modo basado en aplicación todas "
 "las ventanas en la aplicación serán elevadas. También en el modo basado en "
-"aplicación las pulsaciones del foco no son pasadas a través de las ventanas "
+"aplicación las pulsaciones del foco no se pasan a través de las ventanas "
 "en otras aplicaciones. La existencia de esta configuración es un poco "
 "cuestionable. Pero es mejor que tener configuraciones para todos los "
 "detalles específicos de «basado en aplicación» frente a «basado en "
 "ventanas». Por ejemplo cuando decida pasar a través de pulsaciones. Además "
-"este modo basado en aplicaciones no esta en absoluto implementado en este "
+"este modo basado en aplicaciones no está en absoluto implementado en este "
 "momento."
 
 #: ../src/metacity.schemas.in.h:21
@@ -576,7 +574,7 @@ msgstr "Minimizar la ventana"
 
 #: ../src/metacity.schemas.in.h:27
 msgid "Modifier to use for modified window click actions"
-msgstr "Modificador a usar para las acciones de pulsación modificadas de ventana"
+msgstr "Modificador que se va a usar para las acciones de pulsación modificadas de ventana"
 
 #: ../src/metacity.schemas.in.h:28
 msgid "Move backward between panels and the desktop immediately"
@@ -684,7 +682,7 @@ msgstr "Nombre del espacio de trabajo"
 
 #: ../src/metacity.schemas.in.h:54
 msgid "Number of workspaces"
-msgstr "Cantidad de espacios de trabajo"
+msgstr "Número de espacios de trabajo"
 
 #: ../src/metacity.schemas.in.h:55
 msgid ""
@@ -692,7 +690,7 @@ msgid ""
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
 msgstr ""
-"Cantidad de espacios de trabajo. Debe ser mayor que cero y tener un máximo "
+"Número de espacios de trabajo. Debe ser mayor que cero y tener un máximo "
 "fijo (para prevenir la destrucción accidental de su escritorio al "
 "configurarlo con 34 millones de espacios de trabajo)."
 
@@ -1556,7 +1554,7 @@ msgid ""
 "no keybinding for this action."
 msgstr ""
 "La combinación de teclas usada para mover el foco entre ventanas, usando una "
-"ventana emergente. Manteniendo pulsada la tecla «mayús.» junto con esta "
+"ventana emergente. Manteniendo pulsada la tecla «Mayús.» junto con esta "
 "combinación hace que la dirección vaya hacia adelante de nuevo. El formato "
 "se ve como «&lt;Control&gt;a» o «&lt;Mayús&gt;&lt;Alt&gt;F1». El parser "
 "(analizador) es bastante liberal  y permite tanto mayúsculas como minúsculas "
@@ -1840,11 +1838,11 @@ msgid ""
 "unfocused when the mouse leaves the window."
 msgstr ""
 "El modo de foco de la ventana indica cómo son activadas las ventanas. Tiene "
-"tres valores posibles; «click» significa que la ventana debe ser "
-"seleccionada para obtener el foco, «sloppy» significa que ventanas obtienen "
+"tres valores posibles; «click» significa que la ventana debe seleccionarse "
+"para obtener el foco, «sloppy» significa que ventanas obtienen "
 "el foco cuando el ratón entra en la ventana y «mouse» significa que la "
 "ventanas obtienen el foco cuando el ratón entra en la ventana y lo pierden "
-"cuando el ratón deja la ventana."
+"cuando el ratón sale de la ventana."
 
 #: ../src/metacity.schemas.in.h:151
 msgid "The window screenshot command"
@@ -1863,8 +1861,8 @@ msgid ""
 msgstr ""
 "Esta combinación de teclas cambia entre una ventana cuando está debajo o "
 "encima de otras ventanas. Si la ventana está tapada por otras ventanas éste "
-"despliega la ventana por encima de ellas. Si la ventana ya está "
-"completamente visible éste coloca la ventana debajo de las otras ventanas. "
+"levanta la ventana por encima de ellas. Si la ventana ya está "
+"completamente visible, coloca la ventana debajo de las otras ventanas. "
 "El formato se ve como «&lt;Control&gt;a» o «&lt;Mayús&gt;&lt;Alt&gt;F1». El "
 "parser (NT: analizador) es bastante liberal y permite tanto mayúsculas como "
 "minúsculas además de abreviaturas como por ejemplo «&lt;Ctl&gt;» y »&lt;"
@@ -1879,7 +1877,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"La combinación de teclas usada para colocar una ventana detrás de otra. El "
+"Esta combinación de teclas coloca una ventana detrás de otras. El "
 "formato se ve como «&lt;Control&gt;a» o «&lt;Mayús&gt;&lt;Alt&gt;F1». El "
 "analizador es bastante liberal y permite tanto mayúsculas como minúsculas "
 "además de abreviaturas como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». Si "
@@ -1894,7 +1892,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"La combinación de teclas usada para desplegar una ventana encima de otra. El "
+"Esta combinación de teclas eleva una ventana por encima de otras. El "
 "formato se ve como «&lt;Control&gt;a» o «&lt;Mayús&gt;&lt;Alt&gt;F1». El "
 "analizador es bastante liberal y permite tanto mayúsculas como minúsculas "
 "además de abreviaturas como por ejemplo «&lt;Ctl&gt;» y «&lt;Ctrl&gt;». Si "
@@ -2041,7 +2039,7 @@ msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
-"Los arreglos para aplicaciones rotas deshabilitados. Algunas aplicaciones "
+"Los arreglos para aplicaciones rotas se han deshabilitado. Algunas aplicaciones "
 "podrían no comportarse correctamente.\n"
 
 #: ../src/prefs.c:1345
@@ -2053,7 +2051,7 @@ msgstr "%d almacenado en la clave GConf %s está fuera de rango 0 hasta %d\n"
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr ""
-"Ocurrió un error configurando la cantidad de espacios de trabajo para %d: %"
+"Ocurrió un error configurando la número de espacios de trabajo para %d: %"
 "s\n"
 
 #: ../src/prefs.c:1723
