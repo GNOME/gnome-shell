@@ -1,3 +1,11 @@
+2002-12-01  Havoc Pennington  <hp@pobox.com>
+
+	* src/tools/Makefile.am: conditionalize building the config dialog
+
+	* configure.in (BUILD_CONFIG_DIALOG): add --enable-config-dialog
+	option to turn on the "window focus" dialog. This is part of
+	deprecating this dialog.
+
 2002-11-30  Havoc Pennington  <hp@pobox.com>
 
 	* src/screen.c (STARTUP_TIMEOUT): lengthen to 15 seconds

@@ -83,6 +83,12 @@ if test "x$GCC" = "xyes"; then
 fi
 changequote([,])dnl
 
+AC_ARG_ENABLE(config-dialog,      [  --enable-config-dialog      enable the config dialog that you need with GNOME 2.0 (obsolete with GNOME 2.2)],enable_config_dialog=yes,enable_config_dialog=no)
+
+AM_CONDITIONAL(BUILD_CONFIG_DIALOG, test x$enable_config_dialog = xyes)
+if test x$enable_config_dialog = xyes; then
+    AC_DEFINE(BUILD_CONFIG_DIALOG,1,[Build configuration dialog])
+fi
 
 ## try definining HAVE_BACKTRACE
 AC_CHECK_HEADERS(execinfo.h, [AC_CHECK_FUNCS(backtrace)])
@@ -254,16 +260,16 @@ dnl ==========================================================================
 echo "
 metacity-$VERSION:
 
-	prefix:                 ${prefix}
-	source code location:	${srcdir}
-	compiler:		${CC}
+	prefix:                   ${prefix}
+	source code location:	  ${srcdir}
+	compiler:		  ${CC}
 
-	XFree86 Xinerama:       ${use_xfree_xinerama}
-	Solaris Xinerama:       ${use_solaris_xinerama}
-	Multihead:              ${with_multihead}
-	Startup notification:   ${with_startup_notification}
-	Session management:     ${found_sm}
-	Shape extension:        ${found_shape}
-	Resize-and-rotate:      ${found_randr}
-
+	XFree86 Xinerama:         ${use_xfree_xinerama}
+	Solaris Xinerama:         ${use_solaris_xinerama}
+	Multihead:                ${with_multihead}
+	Startup notification:     ${with_startup_notification}
+	Session management:       ${found_sm}
+	Shape extension:          ${found_shape}
+	Resize-and-rotate:        ${found_randr}
+        Deprecated config dialog: ${enable_config_dialog}
 "

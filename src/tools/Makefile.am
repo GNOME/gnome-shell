@@ -21,10 +21,12 @@ metacity_mag_SOURCES=					\
 metacity_grayscale_SOURCES=				\
 	metacity-grayscale.c
 
+if BUILD_CONFIG_DIALOG
 metacity_properties_SOURCES=				\
 	metacity-properties.c
 
 metacity_properties_LDFLAGS = -export-dynamic
+endif
 
 uidir=$(pkgdatadir)/glade
 ui_DATA=metacity-properties.glade
@@ -36,16 +38,24 @@ desktopdir=$(datadir)/control-center-2.0/capplets
 Desktop_in_files=metacity-properties.desktop.in
 desktop_DATA=$(Desktop_in_files:.desktop.in=.desktop)
 
-bin_PROGRAMS=metacity-message metacity-window-demo metacity-properties
+if BUILD_CONFIG_DIALOG
+CONFIG_DIALOG=metacity-properties
+else
+CONFIG_DIALOG=
+endif
+
+bin_PROGRAMS=metacity-message metacity-window-demo $(CONFIG_DIALOG)
 
 ## cheesy hacks I use, don't really have any business existing. ;-)
 noinst_PROGRAMS=metacity-mag metacity-grayscale
 
 metacity_message_LDADD= @METACITY_MESSAGE_LIBS@
 metacity_window_demo_LDADD= @METACITY_WINDOW_DEMO_LIBS@
-metacity_properties_LDADD= @METACITY_PROPS_LIBS@
 metacity_mag_LDADD= @METACITY_WINDOW_DEMO_LIBS@
 metacity_grayscale_LDADD = @METACITY_WINDOW_DEMO_LIBS@
+if BUILD_CONFIG_DIALOG
+metacity_properties_LDADD= @METACITY_PROPS_LIBS@
+endif
 
 EXTRA_DIST=$(icon_DATA) $(ui_DATA) $(propicon_DATA) $(Desktop_in_files)
 
