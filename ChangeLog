@@ -1,5 +1,13 @@
 2003-05-03  Havoc Pennington  <hp@pobox.com>
 
+	* src/keybindings.c (handle_move_to_workspace): when moving
+	window to another workspace, don't switch to that workspace.
+
+	* src/window.c (menu_callback): when moving window to another
+	workspace, don't switch to that workspace.
+
+2003-05-03  Havoc Pennington  <hp@pobox.com>
+
 	* configure.in: 2.5.1
 
 	* NEWS: update

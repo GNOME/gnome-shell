@@ -5435,10 +5435,12 @@ menu_callback (MetaWindowMenu *menu,
 
             if (workspace)
               {
-                meta_workspace_activate (workspace);
                 meta_window_change_workspace (window,
                                               workspace);
+#if 0
+                meta_workspace_activate (workspace);
                 meta_window_raise (window);
+#endif
               }
             else
               meta_warning ("Workspace %d doesn't exist\n", workspace_index);
