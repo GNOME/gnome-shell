@@ -636,6 +636,8 @@ meta_frames_set_title (MetaFrames *frames,
 
   frame = meta_frames_lookup_window (frames, xwindow);
 
+  g_assert (frame);
+  
   g_free (frame->title);
   frame->title = g_strdup (title);
   
@@ -648,6 +650,21 @@ meta_frames_set_title (MetaFrames *frames,
   gdk_window_invalidate_rect (frame->window, NULL, FALSE);
 }
 
+void
+meta_frames_repaint_frame (MetaFrames *frames,
+                           Window      xwindow)
+{
+  GtkWidget *widget;
+  MetaUIFrame *frame;
+  
+  widget = GTK_WIDGET (frames);
+
+  frame = meta_frames_lookup_window (frames, xwindow);
+
+  g_assert (frame);
+
+  gdk_window_process_updates (frame->window, TRUE);
+}
 
 static void
 show_tip_now (MetaFrames *frames)
@@ -731,7 +748,7 @@ show_tip_now (MetaFrames *frames)
 #ifdef HAVE_GTK_MULTIHEAD
       screen_number = gdk_screen_get_number (gtk_widget_get_screen (GTK_WIDGET (frames)));
 #else
-      screen_number = XScreenNumberOfScreen (DefaultScreen (gdk_display));
+      screen_number = DefaultScreen (gdk_display);
 #endif
       meta_fixed_tip_show (gdk_display,
 			   screen_number,

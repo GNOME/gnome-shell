@@ -1248,6 +1248,8 @@ event_callback (XEvent   *event,
     case SelectionNotify:
       break;
     case ColormapNotify:
+      if (window && !frame_was_receiver)
+        window->colormap = event->xcolormap.colormap;
       break;
     case ClientMessage:
       if (window)

@@ -217,6 +217,13 @@ meta_ui_unflicker_frame_bg (MetaUI *ui,
 }
 
 void
+meta_ui_repaint_frame (MetaUI *ui,
+                       Window xwindow)
+{
+  meta_frames_repaint_frame (ui->frames, xwindow);
+}
+
+void
 meta_ui_reset_frame_bg (MetaUI *ui,
                         Window xwindow)
 {

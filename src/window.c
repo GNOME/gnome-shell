@@ -316,7 +316,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   
   window->depth = attrs.depth;
   window->xvisual = attrs.visual;
-
+  window->colormap = attrs.colormap;
+  
   window->title = NULL;
   window->icon_name = NULL;
   window->icon = NULL;
@@ -3393,6 +3394,11 @@ meta_window_notify_focus (MetaWindow *window,
             g_list_prepend (window->display->mru_list, window);
           if (window->frame)
             meta_frame_queue_draw (window->frame);
+          
+          meta_error_trap_push (window->display);
+          XInstallColormap (window->display->xdisplay,
+                            window->colormap);
+          meta_error_trap_pop (window->display);
         }
     }
   else if (event->type == FocusOut ||
@@ -3421,6 +3427,11 @@ meta_window_notify_focus (MetaWindow *window,
           window->has_focus = FALSE;
           if (window->frame)
             meta_frame_queue_draw (window->frame);
+
+          meta_error_trap_push (window->display);
+          XUninstallColormap (window->display->xdisplay,
+                              window->colormap);
+          meta_error_trap_pop (window->display);
         }
     }
 

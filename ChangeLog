@@ -1,5 +1,25 @@
 2002-05-09  Havoc Pennington  <hp@redhat.com>
 
+	* src/frames.c (show_tip_now): DefaultScreen() returns the screen
+	number not Screen*
+
+	* src/frame.c (meta_frame_sync_to_window): immediately repaint
+	frame whenever we resize it, if we're inside a grab operation.
+
+	* src/frames.c (meta_frames_repaint_frame): new function
+
+	* src/window.c (meta_window_new): initialize window's colormap
+	(meta_window_notify_focus): install the colormap for a window when 
+	it gets focus, uninstall on unfocus.
+
+	* src/window.h (struct _MetaWindow): store window's colormap
+
+	* src/display.c (event_callback): note changes to window colormap
+
+	* src/frame.c (EVENT_MASK): add ColormapChangeMask
+
+2002-05-09  Havoc Pennington  <hp@redhat.com>
+
 	* src/display.c (event_callback): make Alt+button2 do a resize
 
 2002-05-08  Anders Carlsson  <andersca@gnu.org>

@@ -109,6 +109,9 @@ void meta_frames_set_title (MetaFrames *frames,
                             Window      xwindow,
                             const char *title);
 
+void meta_frames_repaint_frame (MetaFrames *frames,
+                                Window      xwindow);
+
 void meta_frames_get_geometry (MetaFrames *frames,
                                Window xwindow,
                                int *top_height, int *bottom_height,

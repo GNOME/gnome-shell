@@ -29,7 +29,8 @@
                     ButtonPressMask | ButtonReleaseMask |          \
                     PointerMotionMask | PointerMotionHintMask |    \
                     EnterWindowMask | LeaveWindowMask |            \
-                    FocusChangeMask)
+                    FocusChangeMask |                              \
+                    ColormapChangeMask)
 
 void
 meta_window_ensure_frame (MetaWindow *window)
@@ -303,8 +304,18 @@ meta_frame_sync_to_window (MetaFrame *frame,
                    frame->rect.height);  
 
   if (need_resize)
-    meta_ui_reset_frame_bg (frame->window->screen->ui,
-                            frame->xwindow);
+    {
+      meta_ui_reset_frame_bg (frame->window->screen->ui,
+                              frame->xwindow);
+
+      /* If we're interactively resizing the frame, repaint
+       * it immediately so we don't start to lag.
+       */
+      if (frame->window->display->grab_window ==
+          frame->window)
+        meta_ui_repaint_frame (frame->window->screen->ui,
+                               frame->xwindow);
+    }
 }
 
 void

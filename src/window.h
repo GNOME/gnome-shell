@@ -55,6 +55,7 @@ struct _MetaWindow
   MetaFrame *frame;
   int depth;
   Visual *xvisual;
+  Colormap colormap;
   char *desc; /* used in debug spew */
   char *title;
 
