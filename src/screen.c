@@ -761,7 +761,7 @@ meta_screen_manage_all_windows (MetaScreen *screen)
         {
           meta_window_new_with_attrs (screen->display, children[i], TRUE,
                                       &attrs);
-          
+
           meta_compositor_add_window (screen->display->compositor,
                                       children[i], &attrs);
         }

@@ -1,5 +1,10 @@
 2003-12-25  Havoc Pennington  <hp@redhat.com>
 
+	* src/compositor.c (process_reparent): handle ReparentNotify, and
+	add a lot of debug output.
+
+2003-12-25  Havoc Pennington  <hp@redhat.com>
+
 	* src/compositor.c (meta_compositor_process_event): change to
 	track all children of the root window, not only mapped children;
 	this keeps us from losing track of the stacking order

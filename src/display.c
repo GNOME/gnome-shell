@@ -1694,7 +1694,7 @@ event_callback (XEvent   *event,
             }
         }
       break;
-    case UnmapNotify:      
+    case UnmapNotify:
       if (window)
         {
           if (display->grab_op != META_GRAB_OP_NONE &&
@@ -2436,9 +2436,15 @@ meta_spew_event (MetaDisplay *display,
       break;
     case CreateNotify:
       name = "CreateNotify";
+      extra = g_strdup_printf ("parent: 0x%lx window: 0x%lx",
+                               event->xcreatewindow.parent,
+                               event->xcreatewindow.window);
       break;
     case DestroyNotify:
       name = "DestroyNotify";
+      extra = g_strdup_printf ("event: 0x%lx window: 0x%lx",
+                               event->xdestroywindow.event,
+                               event->xdestroywindow.window);
       break;
     case UnmapNotify:
       name = "UnmapNotify";
@@ -2462,6 +2468,10 @@ meta_spew_event (MetaDisplay *display,
       break;
     case ReparentNotify:
       name = "ReparentNotify";
+      extra = g_strdup_printf ("window: 0x%lx parent: 0x%lx event: 0x%lx\n",
+                               event->xreparent.window,
+                               event->xreparent.parent,
+                               event->xreparent.event);
       break;
     case ConfigureNotify:
       name = "ConfigureNotify";

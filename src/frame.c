@@ -2,6 +2,7 @@
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
+ * Copyright (C) 2003 Red Hat, Inc.
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -160,6 +161,8 @@ meta_window_destroy_frame (MetaWindow *window)
   if (window->frame == NULL)
     return;
 
+  meta_verbose ("Unframing window %s\n", window->desc);
+  
   frame = window->frame;
   
   meta_bell_notify_frame_destroy (frame);

@@ -218,6 +218,9 @@ meta_compositor_new (MetaDisplay *display)
 static void
 remove_repair_idle (MetaCompositor *compositor)
 {
+  if (compositor->repair_idle || compositor->repair_timeout)
+    meta_topic (META_DEBUG_COMPOSITOR, "Damage idle removed\n");
+  
   if (compositor->repair_idle != 0)
     {
       g_source_remove (compositor->repair_idle);
@@ -437,6 +440,8 @@ paint_screen (MetaCompositor *compositor,
   XFreeGC (xdisplay, gc);
 
   meta_display_ungrab (screen->display);
+
+  XSync (screen->display->xdisplay, False);
 }
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
@@ -532,6 +537,8 @@ ensure_repair_idle (MetaCompositor *compositor)
                                              repair_idle_func, compositor, NULL);
   compositor->repair_timeout = g_timeout_add (FRAME_INTERVAL_MILLISECONDS,
                                               repair_timeout_func, compositor);
+
+  meta_topic (META_DEBUG_COMPOSITOR, "Damage idle queued\n");
 }
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
@@ -567,6 +574,9 @@ merge_damage_region (MetaCompositor *compositor,
   if (screen->damage_region == None)
     screen->damage_region =
       XFixesCreateRegion (compositor->display->xdisplay, NULL, 0);
+
+  meta_topic (META_DEBUG_COMPOSITOR,
+              "(Merging damage region)\n");
   
   XFixesUnionRegion (compositor->display->xdisplay,
                      screen->damage_region,
@@ -629,6 +639,21 @@ process_configure_notify (MetaCompositor  *compositor,
 
   screen = meta_compositor_window_get_screen (cwindow);
 
+  g_assert (screen != NULL);
+
+  if (screen->xroot != event->event)
+    {
+      meta_topic (META_DEBUG_COMPOSITOR,
+                  "ConfigureNotify for 0x%lx received by 0x%lx not using\n",
+                  event->window, event->event);
+      return; /* ignore ConfigureNotify not received on root window */
+    }
+
+  meta_topic (META_DEBUG_COMPOSITOR,
+              "ConfigureNotify for 0x%lx received by 0x%lx  %d,%d %dx%d\n",
+              event->window, event->event,
+              event->x, event->y, event->width, event->height);
+  
   if (cwindow->last_painted_extents)
     {
       merge_and_destroy_damage_region (compositor,
@@ -737,7 +762,12 @@ process_map (MetaCompositor     *compositor,
                                          event->event);
 
   if (screen == NULL || screen->root_picture == None)
-    return; /* MapNotify wasn't for a child of the root */
+    {
+      meta_topic (META_DEBUG_COMPOSITOR,
+                  "MapNotify received on non-root 0x%lx for 0x%lx\n",
+                  event->event, event->window);
+      return; /* MapNotify wasn't for a child of the root */
+    }
   
   cwindow = g_hash_table_lookup (compositor->window_hash,
                                  &event->window);
@@ -757,6 +787,8 @@ process_map (MetaCompositor     *compositor,
         }
       else
         {
+          meta_topic (META_DEBUG_COMPOSITOR,
+                      "Map window 0x%lx\n", event->window);
           meta_compositor_add_window (compositor,
                                       event->window, &attrs);
         }
@@ -781,7 +813,12 @@ process_unmap (MetaCompositor     *compositor,
                                          event->event);
 
   if (screen == NULL || screen->root_picture == None)
-    return; /* UnmapNotify wasn't for a child of the root */
+    {
+      meta_topic (META_DEBUG_COMPOSITOR,
+                  "UnmapNotify received on non-root 0x%lx for 0x%lx\n",
+                  event->event, event->window);
+      return; /* UnmapNotify wasn't for a child of the root */
+    }
   
   cwindow = g_hash_table_lookup (compositor->window_hash,
                                  &event->window);
@@ -812,7 +849,12 @@ process_create (MetaCompositor     *compositor,
                                          event->parent);
 
   if (screen == NULL || screen->root_picture == None)
-    return;
+    {
+      meta_topic (META_DEBUG_COMPOSITOR,
+                  "CreateNotify received on non-root 0x%lx for 0x%lx\n",
+                  event->parent, event->window);
+      return;
+    }
       
   meta_error_trap_push_with_return (compositor->display);
   
@@ -826,6 +868,8 @@ process_create (MetaCompositor     *compositor,
     }
   else
     {
+      meta_topic (META_DEBUG_COMPOSITOR,
+                  "Create window 0x%lx, adding\n", event->window);
       meta_compositor_add_window (compositor,
                                   event->window, &attrs);
     }
@@ -843,9 +887,90 @@ process_destroy (MetaCompositor      *compositor,
                                          event->event);
 
   if (screen == NULL || screen->root_picture == None)
-    return;
+    {
+      meta_topic (META_DEBUG_COMPOSITOR,
+                  "DestroyNotify received on non-root 0x%lx for 0x%lx\n",
+                  event->event, event->window);
+      return;
+    }
 
+  meta_topic (META_DEBUG_COMPOSITOR,
+              "Destroy window 0x%lx\n", event->window);
   meta_compositor_remove_window (compositor, event->window);
+}
+#endif /* HAVE_COMPOSITE_EXTENSIONS */
+
+
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+static void
+process_reparent (MetaCompositor      *compositor,
+                  XReparentEvent      *event)
+{
+  /* Reparent from one screen to another doesn't happen now, but
+   * it's been suggested as a future extension
+   */
+  MetaScreen *event_screen;
+  MetaScreen *parent_screen;
+  MetaCompositorWindow *cwindow;
+  XWindowAttributes attrs;
+  
+  event_screen = meta_display_screen_for_root (compositor->display,
+                                               event->event);
+
+  if (event_screen == NULL || event_screen->root_picture == None)
+    {
+      meta_topic (META_DEBUG_COMPOSITOR,
+                  "ReparentNotify received on non-root 0x%lx for 0x%lx\n",
+                  event->event, event->window);
+      return;
+    }
+
+  meta_topic (META_DEBUG_COMPOSITOR,
+              "Reparent window 0x%lx new parent 0x%lx received on 0x%lx\n",
+              event->window, event->parent, event->event);
+
+  parent_screen = meta_display_screen_for_root (compositor->display,
+                                                event->parent);
+  
+  if (parent_screen == NULL)
+    {
+      meta_topic (META_DEBUG_COMPOSITOR,
+                  "ReparentNotify 0x%lx to a non-screen or unmanaged screen 0x%lx\n",
+                  event->window, event->parent);
+      meta_compositor_remove_window (compositor, event->window);
+      return;
+    }
+  
+  cwindow = g_hash_table_lookup (compositor->window_hash,
+                                 &event->window);
+  if (cwindow != NULL)
+    {
+      meta_topic (META_DEBUG_COMPOSITOR,
+                  "Window reparented to new screen at %d,%d\n",
+                  event->x, event->y);
+      cwindow->x = event->x;
+      cwindow->y = event->y;
+      return;
+    }
+
+  meta_error_trap_push_with_return (compositor->display);
+  
+  XGetWindowAttributes (compositor->display->xdisplay,
+                        event->window, &attrs);
+  
+  if (meta_error_trap_pop_with_return (compositor->display, TRUE) != Success)
+    {
+      meta_topic (META_DEBUG_COMPOSITOR, "Failed to get attributes for window 0x%lx\n",
+                  event->window);
+    }
+  else
+    {
+      meta_topic (META_DEBUG_COMPOSITOR,
+                  "Reparent window 0x%lx into screen 0x%lx, adding\n",
+                  event->window, event->parent);
+      meta_compositor_add_window (compositor,
+                                  event->window, &attrs);
+    }
 }
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
@@ -858,6 +983,8 @@ meta_compositor_process_event (MetaCompositor *compositor,
   if (!compositor->enabled)
     return; /* no extension */
 
+  /* FIXME support CirculateNotify */
+  
   if (event->type == (compositor->damage_event_base + XDamageNotify))
     {
       process_damage_notify (compositor,
@@ -882,6 +1009,11 @@ meta_compositor_process_event (MetaCompositor *compositor,
     {
       process_map (compositor,
                    (XMapEvent*) event);
+    }
+  else if (event->type == ReparentNotify)
+    {
+      process_reparent (compositor,
+                        (XReparentEvent*) event);
     }
   else if (event->type == CreateNotify)
     {
@@ -923,11 +1055,17 @@ meta_compositor_add_window (MetaCompositor    *compositor,
                                  &xwindow);
 
   if (cwindow != NULL)
-    return;
+    {
+      meta_topic (META_DEBUG_COMPOSITOR,
+                  "Window 0x%lx already added\n", xwindow);
+      return;
+    }
 
   meta_topic (META_DEBUG_COMPOSITOR,
-              "Adding window 0x%lx to compositor\n",
-              xwindow);
+              "Adding window 0x%lx (%s) to compositor\n",
+              xwindow,
+              attrs->map_state == IsViewable ?
+              "mapped" : "unmapped");
   
   /* Create Damage object to monitor window damage */
   meta_error_trap_push (compositor->display);
@@ -1001,11 +1139,16 @@ meta_compositor_remove_window (MetaCompositor    *compositor,
                                  &xwindow);
 
   if (cwindow == NULL)
-    return;
+    {
+      meta_topic (META_DEBUG_COMPOSITOR,
+                  "Window 0x%lx already removed\n", xwindow);
+      return;
+    }
 
   meta_topic (META_DEBUG_COMPOSITOR,
-              "Removing window 0x%lx from compositor\n",
-              xwindow);
+              "Removing window 0x%lx (%s) from compositor\n",
+              xwindow,
+              cwindow->viewable ? "mapped" : "unmapped");
   
   screen = meta_compositor_window_get_screen (cwindow);
 
@@ -1120,6 +1263,8 @@ meta_compositor_unmanage_screen (MetaCompositor *compositor,
     {
       MetaCompositorWindow *cwindow = screen->compositor_windows->data;
 
+      meta_topic (META_DEBUG_COMPOSITOR,
+                  "Unmanage screen for 0x%lx\n", cwindow->xwindow);
       meta_compositor_remove_window (compositor, cwindow->xwindow);
     }
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
