@@ -220,13 +220,8 @@ meta_screen_new (MetaDisplay *display,
    * so create that required workspace.
    */
   screen->active_workspace = meta_workspace_new (screen);
-  /* FIXME, for now there are always 6 workspaces... */
-  meta_workspace_new (screen);
-  meta_workspace_new (screen);
-  meta_workspace_new (screen);
-  meta_workspace_new (screen);
-  meta_workspace_new (screen);
-
+  update_num_workspaces (screen);
+  
   meta_screen_grab_keys (screen);
 
   screen->ui = meta_ui_new (screen->display->xdisplay,
