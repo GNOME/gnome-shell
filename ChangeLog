@@ -1,3 +1,9 @@
+2003-02-26  Mark McLoughlin  <mark@skynet.ie>
+
+	* src/keybindings.c: (handle_panel_keybinding): release
+	the keyboard grab before sending the action message to
+	the panel.
+
 2003-02-24  Mark McLoughlin  <mark@skynet.ie>
 
 	Take control of the panel's global keybindings. The

@@ -2617,12 +2617,20 @@ handle_panel_keybinding (MetaDisplay    *display,
   ev.data.l[0] = action_atom;
   ev.data.l[1] = event->xkey.time;
 
+  meta_topic (META_DEBUG_KEYBINDINGS,
+              "Sending panel message with timestamp %lu\n", event->xkey.time);
+
   meta_error_trap_push (display);
+
+  /* Release the grab for the panel before sending the event */
+  XUngrabKeyboard (display->xdisplay, event->xkey.time);
+
   XSendEvent (display->xdisplay,
 	      screen->xroot,
 	      False,
 	      StructureNotifyMask,
 	      (XEvent*) &ev);
+
   meta_error_trap_pop (display, FALSE);
 }
 
