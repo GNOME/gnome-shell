@@ -1347,7 +1347,9 @@ meta_window_show (MetaWindow *window)
               if (window->display->focus_window == NULL ||
                   (window->display->focus_window &&
                    meta_window_is_ancestor_of_transient (window->display->focus_window,
-                                                         window)))
+                                                         window)) ||
+                  (window->display->focus_window->type == META_WINDOW_DOCK ||
+                   window->display->focus_window->type == META_WINDOW_DESKTOP))
                 meta_window_focus (window,
                                    meta_display_get_current_time (window->display));
               break;
