@@ -1755,6 +1755,7 @@ control_rect (MetaFrameControl control,
 }
 
 #define RESIZE_EXTENDS 15
+#define TOP_RESIZE_HEIGHT 2
 static MetaFrameControl
 get_control (MetaFrames *frames,
              MetaUIFrame *frame,
@@ -1805,9 +1806,6 @@ get_control (MetaFrames *frames,
       int bottom_of_titlebar;
 
       bottom_of_titlebar = fgeom.title_rect.y + fgeom.title_rect.height;
-
-      if (y < bottom_of_titlebar)
-        goto noresize;
       
       /* South resize always has priority over north resize,
        * in case of overlap.
@@ -1858,7 +1856,7 @@ get_control (MetaFrames *frames,
           if (has_vert)
             return META_FRAME_CONTROL_RESIZE_S;
         }
-      else if (y >= bottom_of_titlebar && y < fgeom.top_height)
+      else if (y < TOP_RESIZE_HEIGHT)
         {
           if (has_vert)
             return META_FRAME_CONTROL_RESIZE_N;

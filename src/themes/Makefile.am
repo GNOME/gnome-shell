@@ -2,7 +2,8 @@ THEMES=			\
 	Atlanta		\
 	Bright		\
 	Crux		\
-	Esco
+	Esco		\
+	Gorilla
 
 THEME_DIR=$(pkgdatadir)/themes
 

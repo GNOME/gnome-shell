@@ -19,11 +19,10 @@
   <distance name="bottom_height" value="6"/>
   <distance name="left_titlebar_edge" value="5"/>
   <distance name="right_titlebar_edge" value="6"/>
-  <distance name="button_width" value="16"/>
-  <distance name="button_height" value="16"/>
-  <distance name="title_vertical_pad" value="6"/>
-  <border name="title_border" left="0" right="0" top="0" bottom="0"/>
-  <border name="button_border" left="0" right="0" top="0" bottom="0"/>
+  <aspect_ratio name="button" value="1.0"/>
+  <distance name="title_vertical_pad" value="0"/>
+  <border name="title_border" left="0" right="0" top="3" bottom="3"/>
+  <border name="button_border" left="0" right="0" top="3" bottom="3"/>
 </frame_geometry>
 
 <frame_geometry name="border" has_title="false">
@@ -34,7 +33,7 @@
   <distance name="right_titlebar_edge" value="0"/>
   <distance name="button_width" value="0"/>
   <distance name="button_height" value="0"/>
-  <distance name="title_vertical_pad" value="6"/>
+  <distance name="title_vertical_pad" value="5"/>
   <border name="title_border" left="0" right="0" top="0" bottom="0"/>
   <border name="button_border" left="0" right="0" top="0" bottom="0"/>
 </frame_geometry>
@@ -42,27 +41,27 @@
 <!-- Buttons -->
 
 <draw_ops name="active_button">
-  <image filename="active-button.png" x="0" y="0" width="object_width" height="object_height"/>
+  <image filename="active-button.png" x="0" y="0" width="width" height="height"/>
 </draw_ops>
 
 <draw_ops name="active_button_pressed">
-  <image filename="active-button-pressed.png" x="0" y="0" width="object_width" height="object_height"/>
+  <image filename="active-button-pressed.png" x="0" y="0" width="width" height="height"/>
 </draw_ops>
 
 <draw_ops name="active_button_prelight">
-  <image filename="active-button-prelight.png" x="0" y="0" width="object_width" height="object_height"/>
+  <image filename="active-button-prelight.png" x="0" y="0" width="width" height="height"/>
 </draw_ops>
 
 <draw_ops name="inactive_button">
-  <image filename="inactive-button.png" x="0" y="0" width="object_width" height="object_height"/>
+  <image filename="inactive-button.png" x="0" y="0" width="width" height="height"/>
 </draw_ops>
 
 <draw_ops name="inactive_button_pressed">
-  <image filename="inactive-button-pressed.png" x="0" y="0" width="object_width" height="object_height"/>
+  <image filename="inactive-button-pressed.png" x="0" y="0" width="width" height="height"/>
 </draw_ops>
 
 <draw_ops name="inactive_button_prelight">
-  <image filename="inactive-button-prelight.png" x="0" y="0" width="object_width" height="object_height"/>
+  <image filename="inactive-button-prelight.png" x="0" y="0" width="width" height="height"/>
 </draw_ops>
 
 <!-- Inactive style -->
@@ -81,37 +80,34 @@
 
   <piece position="title">
     <draw_ops>
-      <title color="white" x="IconTitleSpacing" y="((height - title_height) / 2) `max` 0"/>
+      <title color="white" x="IconTitleSpacing" y="0"/>
     </draw_ops>
   </piece>
 
   <piece position="titlebar">
     <draw_ops>
-      <image filename="inactive-left-top-border.png" 
-             x="0" y="3" width="object_width" height="height"/>
-      <image filename="inactive-top-left-border.png" 
-             x="0" y="0" width="object_width" height="object_height"/> 
 
-      <image filename="inactive-top-right-border.png" 
-             x="width - object_width" y="0" width="object_width" height="object_height"/>
+      <image filename="inactive-left-top-border.png" 
+             x="0" y="0" width="object_width" height="height"/>
       <image filename="inactive-right-top-border.png" 
-             x="width - object_width" y="3" width="object_width" height="object_height"/>
+             x="width - object_width" y="0" width="object_width" height="height"/>
 
       <image filename="inactive-top-center-left.png" 
              x="4" y="0" 
              width="(left_width + ButtonWidth + IconTitleSpacing + title_width) `min`
                     (width - right_width - 3 * ButtonWidth - CenterTitlePieceWidth - 3)" 
-             height="object_height"/>
+             height="height"/>
 
       <image filename="inactive-top-center-mid.png" 
-             x="((left_width + ButtonWidth + IconTitleSpacing + title_width) `min` (width - object_width - right_width - 3 * ButtonWidth)) + 1"
-             y="0" width="object_width" height="object_height"/>
+             x="((left_width + ButtonWidth + IconTitleSpacing + title_width) `min` (width - object_width * height / 22 - right_width - 3 * ButtonWidth)) + 1"
+             y="0" width="object_width * height / 22" height="height"/>
 
       <image filename="inactive-top-center-right.png"
-             x="((left_width + ButtonWidth + IconTitleSpacing + title_width + CenterTitlePieceWidth) `min` (width - 3 * ButtonWidth - right_width)) + 1"
+             x="((left_width + ButtonWidth + IconTitleSpacing + title_width + CenterTitlePieceWidth * height / 22) `min` (width - 3 * ButtonWidth - right_width)) + 1"
              y="0"
-             width="(width - title_width - left_width - ButtonWidth - IconTitleSpacing - CenterTitlePieceWidth - right_width) `max` (3 * ButtonWidth)"
-             height="object_height"/>
+             width="(width - title_width - left_width - ButtonWidth - IconTitleSpacing - CenterTitlePieceWidth * height / 22 - right_width) `max` (3 * ButtonWidth)"
+             height="height"/>
+
     </draw_ops>
   </piece>
 
@@ -143,80 +139,80 @@
   <button function="close" state="normal">
     <draw_ops>
       <include name="inactive_button"/>
-      <image filename="inactive-close-button.png" x="2" y="2" width="object_width" height="object_height"/>
+      <image filename="inactive-close-button.png" x="2" y="2" width="width-4" height="height-4"/>
     </draw_ops>
   </button>
 
   <button function="close" state="pressed">
     <draw_ops>
       <include name="inactive_button_pressed"/>
-      <image filename="inactive-close-button.png" x="2" y="2" width="object_width" height="object_height"/>
+      <image filename="inactive-close-button.png" x="2" y="2" width="width-4" height="height-4"/>
     </draw_ops>
   </button>
 
   <button function="close" state="prelight">
     <draw_ops>
       <include name="inactive_button_prelight"/>
-      <image filename="inactive-close-button.png" x="2" y="2" width="object_width" height="object_height"/>
+      <image filename="inactive-close-button.png" x="2" y="2" width="width-4" height="height-4"/>
     </draw_ops>
   </button>
 
   <button function="minimize" state="normal">
     <draw_ops>
       <include name="inactive_button"/>
-      <image filename="inactive-minimize-button.png" x="2" y="2" width="object_width" height="object_height"/>
+      <image filename="inactive-minimize-button.png" x="2" y="2" width="width-4" height="height-4"/>
     </draw_ops>
   </button>
 
   <button function="minimize" state="pressed">
     <draw_ops>
       <include name="inactive_button_pressed"/>
-      <image filename="inactive-minimize-button.png" x="2" y="2" width="object_width" height="object_height"/>
+      <image filename="inactive-minimize-button.png" x="2" y="2" width="width-4" height="height-4"/>
     </draw_ops>
   </button>
 
   <button function="minimize" state="prelight">
     <draw_ops>
       <include name="inactive_button_prelight"/>
-      <image filename="inactive-minimize-button.png" x="2" y="2" width="object_width" height="object_height"/>
+      <image filename="inactive-minimize-button.png" x="2" y="2" width="width-4" height="height-4"/>
     </draw_ops>
   </button>
 
   <button function="maximize" state="normal">
     <draw_ops>
       <include name="inactive_button"/>
-      <image filename="inactive-maximize-button.png" x="2" y="2" width="object_width" height="object_height"/>
+      <image filename="inactive-maximize-button.png" x="2" y="2" width="width-4" height="height-4"/>
     </draw_ops>
   </button>
 
   <button function="maximize" state="pressed">
     <draw_ops>
       <include name="inactive_button_pressed"/>
-      <image filename="inactive-maximize-button.png" x="2" y="2" width="object_width" height="object_height"/>
+      <image filename="inactive-maximize-button.png" x="2" y="2" width="width - 4" height="height - 4"/>
     </draw_ops>
   </button>
 
   <button function="maximize" state="prelight">
     <draw_ops>
       <include name="inactive_button_prelight"/>
-      <image filename="inactive-maximize-button.png" x="2" y="2" width="object_width" height="object_height"/>
+      <image filename="inactive-maximize-button.png" x="2" y="2" width="width-4" height="height-4"/>
     </draw_ops>
   </button>
 
   <button function="menu" state="normal">
     <draw_ops>
-      <image filename="inactive-menu-button.png" x="0" y="0" width="object_width" height="object_height"/>
+      <image filename="inactive-menu-button.png" x="0" y="0" width="width" height="height"/>
     </draw_ops>
   </button>
 
   <button function="menu" state="pressed">
     <draw_ops>
-      <image filename="inactive-menu-button-pressed.png" x="0" y="0" width="object_width" height="object_height"/>
+      <image filename="inactive-menu-button-pressed.png" x="0" y="0" width="width" height="height"/>
     </draw_ops>
   </button>
   <button function="menu" state="prelight">
     <draw_ops>
-      <image filename="inactive-menu-button-prelight.png" x="0" y="0" width="object_width" height="object_height"/>
+      <image filename="inactive-menu-button-prelight.png" x="0" y="0" width="width" height="height"/>
     </draw_ops>
   </button>
 </frame_style>
@@ -258,38 +254,36 @@
 
   <piece position="titlebar">
     <draw_ops>
+
       <image filename="active-left-top-border.png" 
              colorize="gtk:bg[SELECTED]"
-             x="0" y="3" width="object_width" height="height"/>
-      <image filename="active-top-left-border.png" 
-             colorize="gtk:bg[SELECTED]"
-             x="0" y="0" width="object_width" height="object_height"/> 
+             x="0" y="0" width="object_width" height="height"/>
 
-      <image filename="active-top-right-border.png" 
-             x="width - object_width" y="0" width="object_width" height="object_height"/>
       <image filename="active-right-top-border.png" 
-             x="width - object_width" y="3" width="object_width" height="object_height"/>
+             x="width - object_width" y="0" width="object_width" height="height"/>
 
       <image filename="active-top-center-left.png" 
              colorize="gtk:bg[SELECTED]"
              x="4" y="0" 
              width="(left_width + ButtonWidth + IconTitleSpacing + title_width) `min`
                     (width - right_width - 3 * ButtonWidth - CenterTitlePieceWidth - 3)" 
-             height="object_height"/>
+             height="height"/>
 
       <image filename="active-top-center-mid-left.png" 
              colorize="gtk:bg[SELECTED]"
-             x="((left_width + ButtonWidth + IconTitleSpacing + title_width) `min` (width - object_width - right_width - 3 * ButtonWidth)) + 1"
-             y="0" width="object_width" height="object_height"/>
+             x="((left_width + ButtonWidth + IconTitleSpacing + title_width) `min` (width - object_width * height / 22 - right_width - 3 * ButtonWidth)) + 1"
+             y="0" width="object_width * height / 22" height="height"/>
+
       <image filename="active-top-center-mid-right.png" 
-             x="((left_width + ButtonWidth + IconTitleSpacing + title_width) `min` (width - object_width - right_width - 3 * ButtonWidth)) + 1"
-             y="0" width="object_width" height="object_height"/>
+             x="((left_width + ButtonWidth + IconTitleSpacing + title_width) `min` (width - object_width * height / 22 - right_width - 3 * ButtonWidth)) + 1"
+             y="0" width="object_width * height / 22" height="height"/>
 
       <image filename="active-top-center-right.png"
-             x="((left_width + ButtonWidth + IconTitleSpacing + title_width + CenterTitlePieceWidth) `min` (width - 3 * ButtonWidth - right_width)) + 1"
+             x="((left_width + ButtonWidth + IconTitleSpacing + title_width + CenterTitlePieceWidth * height / 22) `min` (width - 3 * ButtonWidth - right_width)) + 1"
              y="0"
-             width="(width - title_width - left_width - ButtonWidth - IconTitleSpacing - CenterTitlePieceWidth - right_width) `max` (3 * ButtonWidth)"
-             height="object_height"/>
+             width="(width - title_width - left_width - ButtonWidth - IconTitleSpacing - CenterTitlePieceWidth * height / 22 - right_width) `max` (3 * ButtonWidth)"
+             height="height"/>
+
     </draw_ops>
   </piece>
 
@@ -327,80 +321,80 @@
   <button function="close" state="normal">
     <draw_ops>
       <include name="active_button"/>
-      <image filename="active-close-button.png" x="2" y="2" width="object_width" height="object_height"/>
+      <image filename="active-close-button.png" x="2" y="2" width="width-4" height="height-4"/>
     </draw_ops>
   </button>
 
   <button function="close" state="pressed">
     <draw_ops>
       <include name="active_button_pressed"/>
-      <image filename="active-close-button.png" x="2" y="2" width="object_width" height="object_height"/>
+      <image filename="active-close-button.png" x="2" y="2" width="width-4" height="height-4"/>
     </draw_ops>
   </button>
 
   <button function="close" state="prelight">
     <draw_ops>
       <include name="active_button_prelight"/>
-      <image filename="active-close-button.png" x="2" y="2" width="object_width" height="object_height"/>
+      <image filename="active-close-button.png" x="2" y="2" width="width-4" height="height-4"/>
     </draw_ops>
   </button>
 
   <button function="minimize" state="normal">
     <draw_ops>
       <include name="active_button"/>
-      <image filename="active-minimize-button.png" x="2" y="2" width="object_width" height="object_height"/>
+      <image filename="active-minimize-button.png" x="2" y="2" width="width-4" height="height-4"/>
     </draw_ops>
   </button>
 
   <button function="minimize" state="pressed">
     <draw_ops>
       <include name="active_button_pressed"/>
-      <image filename="active-minimize-button.png" x="2" y="2" width="object_width" height="object_height"/>
+      <image filename="active-minimize-button.png" x="2" y="2" width="width-4" height="height-4"/>
     </draw_ops>
   </button>
 
   <button function="minimize" state="prelight">
     <draw_ops>
       <include name="active_button_prelight"/>
-      <image filename="active-minimize-button.png" x="2" y="2" width="object_width" height="object_height"/>
+      <image filename="active-minimize-button.png" x="2" y="2" width="width-4" height="height-4"/>
     </draw_ops>
   </button>
 
   <button function="maximize" state="normal">
     <draw_ops>
       <include name="active_button"/>
-      <image filename="active-maximize-button.png" x="2" y="2" width="object_width" height="object_height"/>
+      <image filename="active-maximize-button.png" x="2" y="2" width="width-4" height="height-4"/>
     </draw_ops>
   </button>
 
   <button function="maximize" state="pressed">
     <draw_ops>
       <include name="active_button_pressed"/>
-      <image filename="active-maximize-button.png" x="2" y="2" width="object_width" height="object_height"/>
+      <image filename="active-maximize-button.png" x="2" y="2" width="width-4" height="height-4"/>
     </draw_ops>
   </button>
 
   <button function="maximize" state="prelight">
     <draw_ops>
       <include name="active_button_prelight"/>
-      <image filename="active-maximize-button.png" x="2" y="2" width="object_width" height="object_height"/>
+      <image filename="active-maximize-button.png" x="2" y="2" width="width-4" height="height-4"/>
     </draw_ops>
   </button>
 
   <button function="menu" state="normal">
     <draw_ops>
-      <image colorize="gtk:bg[SELECTED]" filename="active-menu-button.png" x="0" y="0" width="object_width" height="object_height"/>
+      <image colorize="gtk:bg[SELECTED]" filename="active-menu-button.png" x="0" y="0" width="width" height="height"/>
     </draw_ops>
   </button>
 
   <button function="menu" state="pressed">
     <draw_ops>
-      <image colorize="gtk:bg[SELECTED]" filename="active-menu-button-pressed.png" x="0" y="0" width="object_width" height="object_height"/>
+      <image colorize="gtk:bg[SELECTED]" filename="active-menu-button-pressed.png" x="0" y="0" width="width" height="height"/>
     </draw_ops>
   </button>
   <button function="menu" state="prelight">
     <draw_ops>
-      <image colorize="gtk:bg[SELECTED]" filename="active-menu-button-prelight.png" x="0" y="0" width="object_width" height="object_height"/>
+      <image colorize="gtk:bg[SELECTED]" filename="active-menu-button-prelight.png" x="0" y="0" width="width" height="height"/>
     </draw_ops>
   </button>
 </frame_style>
