@@ -21,12 +21,10 @@ metacity_mag_SOURCES=					\
 metacity_grayscale_SOURCES=				\
 	metacity-grayscale.c
 
-if BUILD_CONFIG_DIALOG
 metacity_properties_SOURCES=				\
 	metacity-properties.c
 
 metacity_properties_LDFLAGS = -export-dynamic
-endif
 
 uidir=$(pkgdatadir)/glade
 ui_DATA=metacity-properties.glade
