@@ -41,6 +41,8 @@ struct _MetaScreen
   char *screen_name;
   Screen *xscreen;
   Window xroot;
+  int default_depth;
+  Visual *default_xvisual;
   int width;
   int height;
   MetaUI *ui;

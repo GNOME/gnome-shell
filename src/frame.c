@@ -56,6 +56,19 @@ meta_window_ensure_frame (MetaWindow *window)
   frame->mapped = FALSE;
   
   attrs.event_mask = EVENT_MASK;
+
+  meta_verbose ("Framing window %s: visual %s default, depth %d default depth %d\n",
+                window->desc,
+                XVisualIDFromVisual (window->xvisual) ==
+                XVisualIDFromVisual (window->screen->default_xvisual) ?
+                "is" : "is not",
+                window->depth, window->screen->default_depth);
+
+  /* Default depth/visual handles clients with weird visuals; they can
+   * always be children of the root depth/visual obviously, but
+   * e.g. DRI games can't be children of a parent that has the same
+   * visual as the client.
+   */
   
   frame->xwindow = XCreateWindow (window->display->xdisplay,
                                   window->screen->xroot,
@@ -64,9 +77,9 @@ meta_window_ensure_frame (MetaWindow *window)
                                   frame->rect.width,
                                   frame->rect.height,
                                   0,
-                                  window->depth,
-                                  InputOutput,
-                                  window->xvisual,
+                                  window->screen->default_depth,
+                                  CopyFromParent,
+                                  window->screen->default_xvisual,
                                   CWEventMask,
                                   &attrs);
 
@@ -90,15 +103,17 @@ meta_window_ensure_frame (MetaWindow *window)
                            * we don't want to take that as a withdraw
                            */
   window->unmaps_pending += 1;
+  /* window was reparented to this position */
   window->rect.x = 0;
   window->rect.y = 0;
+
   XReparentWindow (window->display->xdisplay,
                    window->xwindow,
                    frame->xwindow,
                    window->rect.x,
                    window->rect.y);
   meta_error_trap_pop (window->display);
-
+  
   /* stick frame to the window */
   window->frame = frame;
   

@@ -253,6 +253,12 @@ meta_window_place (MetaWindow *window,
           meta_verbose ("Centered window %s over transient parent\n",
                         window->desc);
 
+          if (parent->has_focus)
+            {
+              meta_verbose ("Focusing transient window since parent had focus\n");
+              meta_window_focus (window, CurrentTime); /* FIXME CurrentTime */
+            }
+          
           goto done;
         }
     }

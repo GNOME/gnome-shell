@@ -36,7 +36,7 @@ void
 meta_ui_init (int *argc, char ***argv)
 {
   if (!gtk_init_check (argc, argv))
-    meta_fatal ("Unable to open X display %s\n", gdk_display_name);
+    meta_fatal ("Unable to open X display %s\n", XDisplayName (gdk_display));
 }
 
 Display*

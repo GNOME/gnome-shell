@@ -4354,7 +4354,7 @@ constrain_size (MetaWindow *window,
   
   maxw = window->size_hints.max_width;
   maxh = window->size_hints.max_height;
-
+  
   if (window->maximized)
     /* we used to only constrain to fit inside screen for these cases,
      * but now I don't remember why I did that.

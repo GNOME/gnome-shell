@@ -1,3 +1,16 @@
+2001-09-08  Havoc Pennington  <hp@pobox.com>
+
+	* src/ui.c (meta_ui_init): don't use gdk_display_name
+
+	* src/frame.c (meta_window_ensure_frame): create frame
+	with screen default visual, rather than client window visual;
+	for DRI games, the client window visual was not allowed to be 
+	a child of another window with the same visual, apparently.
+	Anyhow now we copy twm, etc. so it must be correct.
+	
+	* src/place.c (meta_window_place): if a transient is placed and
+	its parent has focus, focus the transient.
+
 2001-09-06  Havoc Pennington  <hp@pobox.com>
 
 	* configure.in: bump version 2.3.5, require newer GTK release

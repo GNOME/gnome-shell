@@ -195,6 +195,8 @@ meta_screen_new (MetaDisplay *display,
   screen->width = WidthOfScreen (screen->xscreen);
   screen->height = HeightOfScreen (screen->xscreen);
   screen->current_cursor = -1; /* invalid/unset */
+  screen->default_xvisual = DefaultVisualOfScreen (screen->xscreen);
+  screen->default_depth = DefaultDepthOfScreen (screen->xscreen);
   
   meta_screen_set_cursor (screen, META_CURSOR_DEFAULT);
   
