@@ -84,6 +84,10 @@ struct MetaCompositor
   guint repair_idle;
   
   guint enabled : 1;
+  guint have_composite : 1;
+  guint have_damage : 1;
+  guint have_fixes : 1;
+  guint have_render : 1;
 };
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
@@ -123,8 +127,9 @@ meta_compositor_new (MetaDisplay *display)
     {
       compositor->composite_event_base = 0;
       compositor->composite_error_base = 0;
-      meta_verbose ("XCompositeQueryExtension() returned FALSE\n");
     }
+  else
+    compositor->have_composite = TRUE;
 
   meta_verbose ("Composite extension event base %d error base %d\n",
                 compositor->composite_event_base,
@@ -137,6 +142,8 @@ meta_compositor_new (MetaDisplay *display)
       compositor->damage_event_base = 0;
       compositor->damage_error_base = 0;
     }
+  else
+    compositor->have_damage = TRUE;
 
   meta_verbose ("Damage extension event base %d error base %d\n",
                 compositor->damage_event_base,
@@ -149,6 +156,8 @@ meta_compositor_new (MetaDisplay *display)
       compositor->fixes_event_base = 0;
       compositor->fixes_error_base = 0;
     }
+  else
+    compositor->have_fixes = TRUE;
 
   meta_verbose ("Fixes extension event base %d error base %d\n",
                 compositor->fixes_event_base,
@@ -161,15 +170,17 @@ meta_compositor_new (MetaDisplay *display)
       compositor->render_event_base = 0;
       compositor->render_error_base = 0;
     }
+  else
+    compositor->have_render = TRUE;
 
   meta_verbose ("Render extension event base %d error base %d\n",
                 compositor->render_event_base,
                 compositor->render_error_base);
   
-  if (compositor->composite_event_base == 0 ||
-      compositor->fixes_event_base == 0 ||
-      compositor->render_event_base == 0 ||
-      compositor->damage_event_base == 0)
+  if (!(compositor->have_composite &&
+        compositor->have_fixes &&
+        compositor->have_render &&
+        compositor->have_damage))
     {
       meta_verbose ("Failed to find all extensions needed for compositing manager, disabling compositing manager\n");
       g_assert (!compositor->enabled);

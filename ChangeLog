@@ -1,5 +1,9 @@
 2003-11-24  Havoc Pennington  <hp@redhat.com>
 
+	* src/compositor.c (meta_compositor_new): fix the extension checks
+
+2003-11-24  Havoc Pennington  <hp@redhat.com>
+
 	* src/iconcache.c (meta_icon_cache_init): init prev_mask field
 
 	* src/window.c (meta_window_new_with_attrs): init xgroup_leader

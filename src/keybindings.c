@@ -29,6 +29,8 @@
 #include "prefs.h"
 #include "effects.h"
 
+#include "expocity.h"
+
 #include <X11/keysym.h>
 #include <string.h>
 #include <stdio.h>
@@ -2912,7 +2914,10 @@ do_choose_window (MetaDisplay    *display,
 {
   MetaTabList type;
   MetaWindow *initial_selection;
-  
+
+  expocity_run(display, screen);
+  return;  
+
   type = GPOINTER_TO_INT (binding->handler->data);
   
   meta_topic (META_DEBUG_KEYBINDINGS,

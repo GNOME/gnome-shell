@@ -28,6 +28,8 @@
 #include "session.h"
 #include "prefs.h"
 
+#include "expocity.h"
+
 #include <glib-object.h>
 #include <gmodule.h>
 #ifdef HAVE_GCONF
@@ -388,6 +390,9 @@ main (int argc, char **argv)
 
   /* must be after UI init so we can override GDK handlers */
   meta_errors_init ();
+
+  /* initialize the expocity addon */
+  expocity_init();
 
 #if 1
   g_log_set_handler (NULL,

@@ -31,6 +31,8 @@ metacity_SOURCES= 				\
 	errors.h				\
 	eventqueue.c				\
 	eventqueue.h				\
+        expocity.c                              \
+        expocity.h                              \
 	fixedtip.c				\
 	fixedtip.h				\
 	frame.c					\
