@@ -250,6 +250,9 @@ meta_effects_draw_box_animation (MetaScreen *screen,
   g_timeout_add (15,
                  (GSourceFunc)effects_draw_box_animation_timeout,
                  context);
+
+  /* kick changes onto the server */
+  XFlush (context->screen->display->xdisplay);  
 }
 
 

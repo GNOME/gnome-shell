@@ -35,6 +35,7 @@ metacity_SOURCES= 				\
 	session.h				\
 	stack.c					\
 	stack.h					\
+	tabpopup.c				\
 	ui.c					\
 	ui.h					\
 	util.c					\

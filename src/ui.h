@@ -117,5 +117,26 @@ GdkPixbuf* meta_gdk_pixbuf_get_from_window (GdkPixbuf   *dest,
 void      meta_ui_push_delay_exposes (MetaUI *ui);
 void      meta_ui_pop_delay_exposes  (MetaUI *ui);
 
+typedef struct _MetaTabEntry MetaTabEntry;
+typedef struct _MetaTabPopup MetaTabPopup;
+
+struct _MetaTabEntry
+{
+  Window      xwindow;
+  const char *title;
+  GdkPixbuf  *icon;
+};
+
+MetaTabPopup* meta_ui_tab_popup_new         (const MetaTabEntry *entries);
+void          meta_ui_tab_popup_free        (MetaTabPopup       *popup);
+void          meta_ui_tab_popup_set_showing (MetaTabPopup       *popup,
+                                             gboolean            showing);
+void          meta_ui_tab_popup_forward     (MetaTabPopup       *popup);
+void          meta_ui_tab_popup_backward    (MetaTabPopup       *popup);
+Window        meta_ui_tab_popup_get_selected (MetaTabPopup      *popup);
+void          meta_ui_tab_popup_select      (MetaTabPopup       *popup,
+                                             Window              xwindow);
+
+
 #endif
 

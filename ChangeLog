@@ -1,3 +1,13 @@
+2001-08-19  Havoc Pennington  <hp@pobox.com>
+
+	* src/tabpopup.c: add prototype thingy to display windows we're
+	cycling through with tab. Not wired up to keybindings yet.
+
+2001-08-18  Havoc Pennington  <hp@pobox.com>
+
+	* src/effects.c (meta_effects_draw_box_animation): put an XFlush()
+	right after starting things moving
+
 2001-08-18  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (meta_window_configure_request): 

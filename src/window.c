@@ -139,6 +139,16 @@ meta_window_new (MetaDisplay *display, Window xwindow,
       return NULL;
     }
 
+  meta_verbose ("attrs.map_state = %d (%s)\n",
+                attrs.map_state,
+                (attrs.map_state == IsUnmapped) ?
+                "IsUnmapped" :
+                (attrs.map_state == IsViewable) ?
+                "IsViewable" :
+                (attrs.map_state == IsUnviewable) ?
+                "IsUnviewable" :
+                "(unknown)");
+  
   existing_wm_state = WithdrawnState;
   if (must_be_viewable && attrs.map_state != IsViewable)
     {
