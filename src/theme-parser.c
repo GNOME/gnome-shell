@@ -42,6 +42,7 @@ typedef enum
   STATE_FRAME_GEOMETRY,
   STATE_DISTANCE,
   STATE_BORDER,
+  STATE_ASPECT_RATIO,
   /* draw ops */
   STATE_DRAW_OPS,
   STATE_LINE,
@@ -1309,9 +1310,92 @@ parse_distance (GMarkupParseContext  *context,
   else if (strcmp (name, "left_titlebar_edge") == 0)
     info->layout->left_titlebar_edge = val;
   else if (strcmp (name, "button_width") == 0)
-    info->layout->button_width = val;
+    {
+      info->layout->button_width = val;
+            
+      if (!(info->layout->button_sizing == META_BUTTON_SIZING_LAST ||
+            info->layout->button_sizing == META_BUTTON_SIZING_FIXED))
+        {
+          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                     _("Cannot specify both button_width/button_height and aspect ratio for buttons"));
+          return;      
+        }
+
+      info->layout->button_sizing = META_BUTTON_SIZING_FIXED;
+    }
   else if (strcmp (name, "button_height") == 0)
-    info->layout->button_height = val;
+    {
+      info->layout->button_height = val;
+      
+      if (!(info->layout->button_sizing == META_BUTTON_SIZING_LAST ||
+            info->layout->button_sizing == META_BUTTON_SIZING_FIXED))
+        {
+          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                     _("Cannot specify both button_width/button_height and aspect ratio for buttons"));
+          return;      
+        }
+
+      info->layout->button_sizing = META_BUTTON_SIZING_FIXED;
+    }
+  else
+    {
+      set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                 _("Distance \"%s\" is unknown"), name);
+      return;
+    }
+}
+
+static void
+parse_aspect_ratio (GMarkupParseContext  *context,
+                    const gchar          *element_name,
+                    const gchar         **attribute_names,
+                    const gchar         **attribute_values,
+                    ParseInfo            *info,
+                    GError              **error)
+{
+  const char *name;
+  const char *value;
+  double val;
+  
+  if (!locate_attributes (context, element_name, attribute_names, attribute_values,
+                          error,
+                          "name", &name, "value", &value,
+                          NULL))
+    return;
+
+  if (name == NULL)
+    {
+      set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                 _("No \"name\" attribute on element <%s>"), element_name);
+      return;
+    }
+
+  if (value == NULL)
+    {
+      set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                 _("No \"value\" attribute on element <%s>"), element_name);
+      return;
+    }
+
+  val = 0;
+  if (!parse_double (value, &val, context, error))
+    return;
+
+  g_assert (info->layout);
+  
+  if (strcmp (name, "button") == 0)
+    {
+      info->layout->button_aspect = val;
+
+      if (info->layout->button_sizing != META_BUTTON_SIZING_LAST)
+        {
+          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                     _("Cannot specify both button_width/button_height and aspect ratio for buttons"));
+          return;
+        }
+      
+      info->layout->button_sizing = META_BUTTON_SIZING_ASPECT;
+    }
   else
     {
       set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
@@ -1445,6 +1529,14 @@ parse_geometry_element (GMarkupParseContext  *context,
                     attribute_names, attribute_values,
                     info, error);
       push_state (info, STATE_BORDER);
+    }
+  else if (ELEMENT_IS ("aspect_ratio"))
+    {
+      parse_aspect_ratio (context, element_name,
+                          attribute_names, attribute_values,
+                          info, error);
+
+      push_state (info, STATE_ASPECT_RATIO);
     }
   else
     {
@@ -3535,8 +3627,9 @@ start_element_handler (GMarkupParseContext *context,
       break;
     case STATE_DISTANCE:
     case STATE_BORDER:
+    case STATE_ASPECT_RATIO:
       set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                 _("Element <%s> is not allowed inside a distance/border element"),
+                 _("Element <%s> is not allowed inside a distance/border/aspect_ratio element"),
                  element_name);
       break;
     case STATE_DRAW_OPS:
@@ -3684,6 +3777,10 @@ end_element_handler (GMarkupParseContext *context,
       g_assert (peek_state (info) == STATE_FRAME_GEOMETRY);
       break;
     case STATE_BORDER:
+      pop_state (info);
+      g_assert (peek_state (info) == STATE_FRAME_GEOMETRY);
+      break;
+    case STATE_ASPECT_RATIO:
       pop_state (info);
       g_assert (peek_state (info) == STATE_FRAME_GEOMETRY);
       break;
@@ -4006,6 +4103,9 @@ text_handler (GMarkupParseContext *context,
       break;
     case STATE_BORDER:
       NO_TEXT ("border");
+      break;
+    case STATE_ASPECT_RATIO:
+      NO_TEXT ("aspect_ratio");
       break;
     case STATE_DRAW_OPS:
       NO_TEXT ("draw_ops");

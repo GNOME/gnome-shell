@@ -15,11 +15,10 @@
  	<distance name="bottom_height" value="5"/>
 	<distance name="left_titlebar_edge" value="5"/>
 	<distance name="right_titlebar_edge" value="5"/>
-	<distance name="button_width" value="16"/>
-	<distance name="button_height" value="16"/>
+        <aspect_ratio name="button" value="1.0"/>      
 	<distance name="title_vertical_pad" value="3"/>
 	<border name="title_border" left="3" right="3" top="4" bottom="3"/>
-	<border name="button_border" left="0" right="1" top="0" bottom="0"/>
+	<border name="button_border" left="0" right="1" top="4" bottom="3"/>
 </frame_geometry>
 
 <!-- strip borders off the normal geometry -->

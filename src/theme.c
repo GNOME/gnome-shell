@@ -330,6 +330,8 @@ meta_frame_layout_new  (void)
   layout->right_titlebar_edge = -1;
   layout->left_titlebar_edge = -1;
 
+  layout->button_sizing = META_BUTTON_SIZING_LAST;
+  layout->button_aspect = 1.0;
   layout->button_width = -1;
   layout->button_height = -1;
 
@@ -416,8 +418,30 @@ meta_frame_layout_validate (const MetaFrameLayout *layout,
   CHECK_GEOMETRY_VALUE (right_titlebar_edge);
   CHECK_GEOMETRY_VALUE (left_titlebar_edge);
 
-  CHECK_GEOMETRY_VALUE (button_width);
-  CHECK_GEOMETRY_VALUE (button_height);
+  switch (layout->button_sizing)
+    {
+    case META_BUTTON_SIZING_ASPECT:
+      if (layout->button_aspect < (0.1) ||
+          layout->button_aspect > (15.0))
+        {
+          g_set_error (error, META_THEME_ERROR,
+                       META_THEME_ERROR_FRAME_GEOMETRY,
+                       _("Button aspect ratio %g is not reasonable"),
+                       layout->button_aspect);
+          return FALSE;
+        }
+      break;
+    case META_BUTTON_SIZING_FIXED:
+      CHECK_GEOMETRY_VALUE (button_width);
+      CHECK_GEOMETRY_VALUE (button_height);
+      break;
+    case META_BUTTON_SIZING_LAST:
+      g_set_error (error, META_THEME_ERROR,
+                   META_THEME_ERROR_FRAME_GEOMETRY,
+                   _("Frame geometry does not specify size of buttons"));
+      return FALSE;
+      break;
+    }
 
   CHECK_GEOMETRY_BORDER (button_border);
 
@@ -517,7 +541,8 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout *layout,
   int button_y;
   int title_right_edge;
   int width, height;
-
+  int button_width, button_height;
+  
   meta_frame_layout_get_borders (layout, text_height,
                                  flags,
                                  &fgeom->top_height,
@@ -538,17 +563,35 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout *layout,
 
   x = width - layout->right_titlebar_edge;
 
-  /* center buttons */
-  button_y = (fgeom->top_height -
-              (layout->button_height + layout->button_border.top + layout->button_border.bottom)) / 2 + layout->button_border.top;
+  switch (layout->button_sizing)
+    {
+    case META_BUTTON_SIZING_ASPECT:
+      button_height = fgeom->top_height - layout->button_border.top - layout->button_border.bottom;
+      button_width = button_height / layout->button_aspect;
+      break;
+    case META_BUTTON_SIZING_FIXED:
+      button_width = layout->button_width;
+      button_height = layout->button_height;
+      break;
+    case META_BUTTON_SIZING_LAST:
+      g_assert_not_reached ();
+      /* gcc warnings */
+      button_width = -1;
+      button_height = -1;
+      break;
+    }
 
+  /* center buttons vertically */
+  button_y = (fgeom->top_height -
+              (button_height + layout->button_border.top + layout->button_border.bottom)) / 2 + layout->button_border.top;
+  
   if ((flags & META_FRAME_ALLOWS_DELETE) &&
       x >= 0)
     {
-      fgeom->close_rect.x = x - layout->button_border.right - layout->button_width;
+      fgeom->close_rect.x = x - layout->button_border.right - button_width;
       fgeom->close_rect.y = button_y;
-      fgeom->close_rect.width = layout->button_width;
-      fgeom->close_rect.height = layout->button_height;
+      fgeom->close_rect.width = button_width;
+      fgeom->close_rect.height = button_height;
 
       x = fgeom->close_rect.x - layout->button_border.left;
     }
@@ -563,10 +606,10 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout *layout,
   if ((flags & META_FRAME_ALLOWS_MAXIMIZE) &&
       x >= 0)
     {
-      fgeom->max_rect.x = x - layout->button_border.right - layout->button_width;
+      fgeom->max_rect.x = x - layout->button_border.right - button_width;
       fgeom->max_rect.y = button_y;
-      fgeom->max_rect.width = layout->button_width;
-      fgeom->max_rect.height = layout->button_height;
+      fgeom->max_rect.width = button_width;
+      fgeom->max_rect.height = button_height;
 
       x = fgeom->max_rect.x - layout->button_border.left;
     }
@@ -581,10 +624,10 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout *layout,
   if ((flags & META_FRAME_ALLOWS_MINIMIZE) &&
       x >= 0)
     {
-      fgeom->min_rect.x = x - layout->button_border.right - layout->button_width;
+      fgeom->min_rect.x = x - layout->button_border.right - button_width;
       fgeom->min_rect.y = button_y;
-      fgeom->min_rect.width = layout->button_width;
-      fgeom->min_rect.height = layout->button_height;
+      fgeom->min_rect.width = button_width;
+      fgeom->min_rect.height = button_height;
 
       x = fgeom->min_rect.x - layout->button_border.left;
     }
@@ -605,8 +648,8 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout *layout,
     {
       fgeom->menu_rect.x = x + layout->button_border.left;
       fgeom->menu_rect.y = button_y;
-      fgeom->menu_rect.width = layout->button_width;
-      fgeom->menu_rect.height = layout->button_height;
+      fgeom->menu_rect.width = button_width;
+      fgeom->menu_rect.height = button_height;
 
       x = fgeom->menu_rect.x + fgeom->menu_rect.width + layout->button_border.right;
     }

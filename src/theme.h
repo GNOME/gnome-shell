@@ -52,6 +52,12 @@ typedef enum
   META_THEME_ERROR_FAILED
 } MetaThemeError;
 
+typedef enum
+{
+  META_BUTTON_SIZING_ASPECT,
+  META_BUTTON_SIZING_FIXED,
+  META_BUTTON_SIZING_LAST
+} MetaButtonSizing;
 
 /* Parameters used to calculate the geometry of the frame */
 struct _MetaFrameLayout
@@ -74,6 +80,10 @@ struct _MetaFrameLayout
   int left_titlebar_edge;
   
   /* Size of buttons */
+  MetaButtonSizing button_sizing;
+
+  double button_aspect; /* height / width */
+  
   int button_width;
   int button_height;
 

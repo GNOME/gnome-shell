@@ -27,6 +27,8 @@ Themes are in a simple XML-subset format.
   <distance name="right_titlebar_edge" value="6"/>
   <distance name="button_width" value="17"/>
   <distance name="button_height" value="17"/>
+  <!-- alternative to button_width button_height distances -->
+  <aspect_ratio name="button" value="1.0"/>
   <distance name="title_vertical_pad" value="4"/>
   <border name="title_border" left="3" right="12" top="4" bottom="3"/>
   <border name="button_border" left="0" right="0" top="1" bottom="1"/>

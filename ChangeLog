@@ -1,3 +1,22 @@
+2002-06-03  Havoc Pennington  <hp@pobox.com>
+
+	* src/themes/Esco/metacity-theme-1.xml: test button aspect ratio
+	instead of hardcoded button size, James feel free to revert if you 
+	don't like it this way.
+
+	* src/theme-parser.c: parse the aspect_ratio element for button 
+	aspect ratios.
+
+	* src/theme.h (struct _MetaFrameLayout): allow button sizes to be 
+	given as an aspect ratio derived from the titlebar height, 
+	instead of as a fixed size.
+
+	* src/theme.c (meta_frame_layout_validate): validate new button
+	sizing parameters
+
+	* src/theme.c (meta_frame_layout_calc_geometry): use new button
+	layout params
+	
 Mon Jun  3 15:12:11 2002  HideToshi Tajima  <hidetoshi.tajima@sun.com>
 
 	* configure.in (METACITY_LIBS): put -lXext into SHAPE_LIBS
