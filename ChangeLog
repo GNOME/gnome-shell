@@ -1,3 +1,7 @@
+2002-06-10 Jayaraj Rajappan <jayaraj.rajappan@wipro.com>
+
+	* src/fixedtip.c: include <config.h> - fix for #83960
+
 2002-06-10 Erwann Chenede - <erwann.chenede@sun.com>
 
         * src/keybindings.c : (handle_close_window, handle_minimize_window)
