@@ -1,3 +1,10 @@
+2003-01-14  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_maximize, meta_window_unmaximize) 
+	(meta_window_make_fullscreen, meta_window_unmake_fullscreen): 
+	recalc_window_features() after making these changes, should fix 
+	#103317
+	
 2003-01-14  Rob Adams <robadams@ucla.edu>
 
 	* src/prefs.c: Increase the number of run_command bindings in

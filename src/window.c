@@ -1801,6 +1801,7 @@ meta_window_maximize (MetaWindow  *window)
        */
       meta_window_queue_move_resize (window);
 
+      recalc_window_features (window);
       set_net_wm_state (window);
     }
 }
@@ -1822,6 +1823,7 @@ meta_window_unmaximize (MetaWindow  *window)
                                window->saved_rect.width,
                                window->saved_rect.height);
 
+      recalc_window_features (window);
       set_net_wm_state (window);
     }
 }
@@ -1852,6 +1854,7 @@ meta_window_make_fullscreen (MetaWindow  *window)
        */
       meta_window_queue_move_resize (window);
 
+      recalc_window_features (window);
       set_net_wm_state (window);
     }
 }
@@ -1875,6 +1878,7 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
                                window->saved_rect.width,
                                window->saved_rect.height);
 
+      recalc_window_features (window);
       set_net_wm_state (window);
     }
 }
