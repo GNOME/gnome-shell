@@ -1,3 +1,17 @@
+2003-09-26  Padraig O'Briain  <padraig.obriain@sun.com>
+
+	* src/Makefile.am: Add -DMETACITY_LIBDIR to support loading of modules
+	* src/main.c: Add functions find_accessibility_module, 
+	accessibility_invoke_module and accessibility_invoke
+	(main); Check whether GConf accessibility key is true and if so
+	load accessibility modules. This code is based on the libgnome code.
+
+	src/tabpopup.c (meta_ui_tab_popup_new): Set accessible role of 
+	accessible for label containing window name to STATUSBAR so
+	AT can be aware of window name.
+
+	This fixes bug #120025
+
 2003-09-24  Havoc Pennington  <hp@pobox.com>
 
 	* src/session.c (io_from_warning_dialog): fix hang when we get

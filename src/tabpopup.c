@@ -118,6 +118,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
   GList *tmp;
   GtkWidget *frame;
   int max_label_width;
+  AtkObject *obj;
 
   popup = g_new (MetaTabPopup, 1);
 
@@ -205,6 +206,9 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
                      table);
   
   popup->label = gtk_label_new ("");
+  obj = gtk_widget_get_accessible (popup->label);
+  atk_object_set_role (obj, ATK_ROLE_STATUSBAR);
+  
   gtk_misc_set_padding (GTK_MISC (popup->label), 3, 3);
 
   gtk_box_pack_end (GTK_BOX (vbox), popup->label, FALSE, FALSE, 0);

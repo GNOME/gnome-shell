@@ -29,6 +29,11 @@
 #include "prefs.h"
 
 #include <glib-object.h>
+#include <gmodule.h>
+#ifdef HAVE_GCONF
+#include <gconf/gconf-client.h>
+#endif
+
 
 #include <stdlib.h>
 #include <sys/types.h>
@@ -74,6 +79,89 @@ version (void)
              "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"),
            VERSION);
   exit (0);
+}
+
+#define GNOME_ACCESSIBILITY_KEY "/desktop/gnome/interface/accessibility"
+
+static char *
+find_accessibility_module (const char *libname)
+{
+  char *sub;
+  char *path;
+  char *fname;
+  char *retval;
+
+  fname = g_strconcat (libname, "." G_MODULE_SUFFIX, NULL);
+  path = g_strconcat (METACITY_LIBDIR"/gtk-2.0/modules", G_DIR_SEPARATOR_S, fname, NULL);
+
+  if (g_file_test (path, G_FILE_TEST_EXISTS))
+    retval = path;
+
+  if (path)
+    retval = path;
+  else
+    g_free (path);
+
+  g_free (fname);
+
+  return retval;
+}
+
+static gboolean
+accessibility_invoke_module (const char   *libname,
+			     gboolean      init)
+{
+  GModule    *handle;
+  void      (*invoke_fn) (void);
+  const char *method;
+  gboolean    retval = FALSE;
+  char       *module_name;
+
+  if (init)
+    method = "gnome_accessibility_module_init";
+  else
+    method = "gnome_accessibility_module_shutdown";
+
+  module_name = find_accessibility_module (libname);
+
+  if (!module_name)
+    {
+      g_warning ("Accessibility: failed to find module '%s' which "
+		 "is needed to make this application accessible",
+		 libname);
+
+    }
+  else if (!(handle = g_module_open (module_name, G_MODULE_BIND_LAZY)))
+    {
+      g_warning ("Accessibility: failed to load module '%s': '%s'",
+		 libname, g_module_error ());
+
+    }
+  else if (!g_module_symbol (handle, method, (gpointer *)&invoke_fn))
+    {
+      g_warning ("Accessibility: error library '%s' does not include "
+		 "method '%s' required for accessibility support",
+		 libname, method);
+      g_module_close (handle);
+
+    }
+  else
+    {
+      retval = TRUE;
+      invoke_fn ();
+    }
+
+  g_free (module_name);
+
+  return retval;
+}
+
+static gboolean
+accessibility_invoke (gboolean init)
+{
+  accessibility_invoke_module ("libgail", init);
+  accessibility_invoke_module ("libatk-bridge", init);
+  return TRUE;
 }
 
 int
@@ -358,6 +446,20 @@ main (int argc, char **argv)
   if (!meta_display_open (NULL))
     meta_exit (META_EXIT_ERROR);
   
+  {
+    gboolean do_init_a11y;
+    do_init_a11y = FALSE;
+
+#ifdef HAVE_GCONF
+    do_init_a11y = gconf_client_get_bool (
+			gconf_client_get_default (),
+			GNOME_ACCESSIBILITY_KEY, NULL);
+#endif
+
+    if (do_init_a11y)
+      accessibility_invoke (TRUE);
+  }
+
   g_main_run (meta_main_loop);
 
   {
