@@ -103,7 +103,8 @@ GType        meta_frames_get_type               (void) G_GNUC_CONST;
 MetaFrames *meta_frames_new (int screen_number);
 
 void meta_frames_manage_window (MetaFrames *frames,
-                                Window      xwindow);
+                                Window      xwindow,
+				GdkWindow  *window);
 void meta_frames_unmanage_window (MetaFrames *frames,
                                   Window      xwindow);
 void meta_frames_set_title (MetaFrames *frames,
@@ -130,7 +131,12 @@ void meta_frames_apply_shapes (MetaFrames *frames,
                                int         new_window_width,
                                int         new_window_height,
                                gboolean    window_has_shape);
-
+void meta_frames_move_resize_frame (MetaFrames *frames,
+				    Window      xwindow,
+				    int         x,
+				    int         y,
+				    int         width,
+				    int         height);
 void meta_frames_queue_draw (MetaFrames *frames,
                              Window      xwindow);
 

@@ -54,11 +54,21 @@ void meta_ui_get_frame_geometry (MetaUI *ui,
                                  Window frame_xwindow,
                                  int *top_height, int *bottom_height,
                                  int *left_width, int *right_width);
-void meta_ui_add_frame    (MetaUI *ui,
-                           Window  xwindow);
-void meta_ui_remove_frame (MetaUI *ui,
-                           Window  xwindow);
-                               
+Window meta_ui_create_frame_window (MetaUI *ui,
+				    Display *xdisplay,
+				    gint x,
+				    gint y,
+				    gint width,
+				    gint height,
+				    gint screen_no);
+void meta_ui_destroy_frame_window (MetaUI *ui,
+				   Window  xwindow);
+void meta_ui_move_resize_frame (MetaUI *ui,
+				Window frame,
+				int x,
+				int y,
+				int width,
+				int height);
 
 /* GDK insists on tracking map/unmap */
 void meta_ui_map_frame   (MetaUI *ui,

@@ -62,8 +62,6 @@ meta_window_ensure_frame (MetaWindow *window)
   frame->need_reapply_frame_shape = TRUE;
   frame->is_flashing = FALSE;
   
-  attrs.event_mask = EVENT_MASK;
-
   meta_verbose ("Framing window %s: visual %s default, depth %d default depth %d\n",
                 window->desc,
                 XVisualIDFromVisual (window->xvisual) ==
@@ -79,24 +77,19 @@ meta_window_ensure_frame (MetaWindow *window)
    * e.g. DRI games can't be children of a parent that has the same
    * visual as the client.
    */
-  
-  frame->xwindow = XCreateWindow (window->display->xdisplay,
-                                  window->screen->xroot,
-                                  frame->rect.x,
-                                  frame->rect.y,
-                                  frame->rect.width,
-                                  frame->rect.height,
-                                  0,
-                                  window->screen->default_depth,
-                                  CopyFromParent,
-                                  window->screen->default_xvisual,
-                                  CWEventMask,
-                                  &attrs);
 
-  /* So our UI can find the window ID */
-  XFlush (window->display->xdisplay);
-  
+  frame->xwindow = meta_ui_create_frame_window (window->screen->ui,
+						window->display->xdisplay,
+						frame->rect.x,
+						frame->rect.y,
+						frame->rect.width,
+						frame->rect.height,
+						frame->window->screen->number);
+
   meta_verbose ("Frame for %s is 0x%lx\n", frame->window->desc, frame->xwindow);
+  attrs.event_mask = EVENT_MASK;
+  XChangeWindowAttributes (window->display->xdisplay,
+			   frame->xwindow, CWEventMask, &attrs);
   
   meta_display_register_x_window (window->display, &frame->xwindow, window);
 
@@ -133,8 +126,6 @@ meta_window_ensure_frame (MetaWindow *window)
   /* stick frame to the window */
   window->frame = frame;
   
-  meta_ui_add_frame (window->screen->ui, frame->xwindow);
-
   if (window->title)
     meta_ui_set_frame_title (window->screen->ui,
                              window->frame->xwindow,
@@ -165,7 +156,6 @@ meta_window_destroy_frame (MetaWindow *window)
   frame = window->frame;
   
   meta_bell_notify_frame_destroy (frame);
-  meta_ui_remove_frame (window->screen->ui, frame->xwindow);
   
   /* Unparent the client window; it may be destroyed,
    * thus the error trap.
@@ -189,6 +179,8 @@ meta_window_destroy_frame (MetaWindow *window)
                    window->frame->rect.y);
   meta_error_trap_pop (window->display, FALSE);
 
+  meta_ui_destroy_frame_window (window->screen->ui, frame->xwindow);
+
   meta_display_unregister_x_window (window->display,
                                     frame->xwindow);
   
@@ -196,9 +188,6 @@ meta_window_destroy_frame (MetaWindow *window)
 
   /* Move keybindings to window instead of frame */
   meta_window_grab_keys (window);
-  
-  /* should we push an error trap? */
-  XDestroyWindow (window->display->xdisplay, frame->xwindow);
   
   g_free (frame);
   
@@ -339,23 +328,12 @@ meta_frame_sync_to_window (MetaFrame *frame,
    */
   update_shape (frame);
   
-  if (need_move && need_resize)
-    XMoveResizeWindow (frame->window->display->xdisplay,
-                       frame->xwindow,
-                       frame->rect.x,
-                       frame->rect.y,
-                       frame->rect.width,
-                       frame->rect.height);
-  else if (need_move)
-    XMoveWindow (frame->window->display->xdisplay,
-                 frame->xwindow,
-                 frame->rect.x,
-                 frame->rect.y);
-  else if (need_resize)
-    XResizeWindow (frame->window->display->xdisplay,
-                   frame->xwindow,
-                   frame->rect.width,
-                   frame->rect.height);  
+  meta_ui_move_resize_frame (frame->window->screen->ui,
+			     frame->xwindow,
+			     frame->rect.x,
+			     frame->rect.y,
+			     frame->rect.width,
+			     frame->rect.height);
 
   if (need_resize)
     {
@@ -379,8 +357,9 @@ meta_frame_queue_draw (MetaFrame *frame)
                             frame->xwindow);
 }
 
-void meta_frame_set_screen_cursor (MetaFrame	*frame,
-				   MetaCursor	cursor)
+void
+meta_frame_set_screen_cursor (MetaFrame	*frame,
+			      MetaCursor cursor)
 {
   Cursor xcursor;
   if (cursor == frame->current_cursor)

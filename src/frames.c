@@ -464,22 +464,20 @@ meta_frames_new (int screen_number)
 
 void
 meta_frames_manage_window (MetaFrames *frames,
-                           Window      xwindow)
+                           Window      xwindow,
+			   GdkWindow  *window)
 {
   MetaUIFrame *frame;
 
+  g_assert (window);
+
   frame = g_new (MetaUIFrame, 1);
   
-  frame->window = gdk_window_foreign_new (xwindow);
+  frame->window = window;
 
-  if (frame->window == NULL)
-    {
-      g_free (frame);
-      meta_bug ("Frame 0x%lx doesn't exist\n", xwindow);
-      return;
-    }
-  
   gdk_window_set_user_data (frame->window, frames);
+  gtk_style_set_background (GTK_WIDGET (frames)->style,
+			    frame->window, GTK_STATE_NORMAL);
 
   /* Don't set event mask here, it's in frame.c */
   
@@ -521,7 +519,7 @@ meta_frames_unmanage_window (MetaFrames *frames,
       
       g_hash_table_remove (frames->frames, &frame->xwindow);
 
-      g_object_unref (G_OBJECT (frame->window));
+      gdk_window_destroy (frame->window);
 
       if (frame->layout)
         g_object_unref (G_OBJECT (frame->layout));
@@ -908,6 +906,25 @@ meta_frames_apply_shapes (MetaFrames *frames,
   
   XDestroyRegion (window_xregion);
 #endif /* HAVE_SHAPE */
+}
+
+void
+meta_frames_move_resize_frame (MetaFrames *frames,
+			       Window      xwindow,
+			       int         x,
+			       int         y,
+			       int         width,
+			       int         height)
+{
+  MetaUIFrame *frame = meta_frames_lookup_window (frames, xwindow);
+  int old_width, old_height;
+  
+  gdk_drawable_get_size (frame->window, &old_width, &old_height);
+
+  gdk_window_move_resize (frame->window, x, y, width, height);
+
+  if (old_width != width || old_height != height)
+    gdk_window_invalidate_rect (frame->window, NULL, FALSE);
 }
 
 void
@@ -1672,7 +1689,7 @@ meta_frames_expose_event (GtkWidget           *widget,
   MetaFrames *frames;
 
   frames = META_FRAMES (widget);
-    
+
   frame = meta_frames_lookup_window (frames, GDK_WINDOW_XID (event->window));
   if (frame == NULL)
     return FALSE;

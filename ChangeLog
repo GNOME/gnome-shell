@@ -1,5 +1,14 @@
 2003-08-16  Havoc Pennington  <hp@pobox.com>
 
+	Patch from Soeren Sandmann #108926 to improve opaque resize
+	
+	* src/frame.c (meta_window_ensure_frame): new function
+
+	* src/ui.c (meta_ui_create_frame_window): new function to create
+	a frame with GDK, so that GDK's invalidation etc. work properly
+
+2003-08-16  Havoc Pennington  <hp@pobox.com>
+
 	* src/display.c (xcursor_for_op): fix cursor for
 	META_GRAB_OP_MOVING, #111943 from John Paul Wallington
 

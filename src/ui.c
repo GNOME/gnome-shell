@@ -152,19 +152,76 @@ meta_ui_get_frame_geometry (MetaUI *ui,
                             left_width, right_width);
 }
 
-
-void
-meta_ui_add_frame (MetaUI *ui,
-                   Window  xwindow)
+Window
+meta_ui_create_frame_window (MetaUI *ui,
+			     Display *xdisplay,
+			     gint x,
+			     gint y,
+			     gint width,
+			     gint height,
+			     gint screen_no)
 {
-  meta_frames_manage_window (ui->frames, xwindow);
+  GdkDisplay *display = gdk_x11_lookup_xdisplay (xdisplay);
+  GdkScreen *screen = gdk_display_get_screen (display, screen_no);
+  GdkWindowAttr attrs;
+  gint attributes_mask;
+  GdkWindow *window;
+  
+  /* Default depth/visual handles clients with weird visuals; they can
+   * always be children of the root depth/visual obviously, but
+   * e.g. DRI games can't be children of a parent that has the same
+   * visual as the client.
+   */
+
+  attrs.title = NULL;
+
+  /* frame.c is going to replace the event mask immediately, but
+   * we still have to set it here to let GDK know what it is.
+   */
+  attrs.event_mask =
+    GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
+    GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK |
+    GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK | GDK_FOCUS_CHANGE_MASK;
+  attrs.x = x;
+  attrs.y = y;
+  attrs.wclass = GDK_INPUT_OUTPUT;
+  attrs.visual = gdk_screen_get_system_visual (screen);
+  attrs.colormap = gdk_screen_get_default_colormap (screen);
+  attrs.window_type = GDK_WINDOW_CHILD;
+  attrs.cursor = NULL;
+  attrs.wmclass_name = NULL;
+  attrs.wmclass_class = NULL;
+  attrs.override_redirect = FALSE;
+
+  attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
+
+  window =
+    gdk_window_new (gdk_screen_get_root_window(screen),
+		    &attrs, attributes_mask);
+
+  gdk_window_resize (window, width, height);
+  
+  meta_frames_manage_window (ui->frames, GDK_WINDOW_XID (window), window);
+
+  return GDK_WINDOW_XID (window);
 }
 
 void
-meta_ui_remove_frame (MetaUI *ui,
-                      Window  xwindow)
+meta_ui_destroy_frame_window (MetaUI *ui,
+			      Window  xwindow)
 {
   meta_frames_unmanage_window (ui->frames, xwindow);
+}
+
+void
+meta_ui_move_resize_frame (MetaUI *ui,
+			   Window frame,
+			   int x,
+			   int y,
+			   int width,
+			   int height)
+{
+  meta_frames_move_resize_frame (ui->frames, frame, x, y, width, height);
 }
 
 void
@@ -713,12 +770,11 @@ meta_ui_window_is_widget (MetaUI *ui,
 
   window = gdk_xid_table_lookup (xwindow);
 
-  if (window &&
-      gdk_window_get_window_type (window) != GDK_WINDOW_FOREIGN)
+  if (window)
     {
       void *user_data = NULL;
       gdk_window_get_user_data (window, &user_data);
-      return user_data != NULL;
+      return user_data != NULL && user_data != ui->frames;
     }
   else
     return FALSE;
@@ -759,7 +815,7 @@ meta_stock_icons_init (void)
       icon_set = gtk_icon_set_new_from_pixbuf (pixbuf);
       gtk_icon_factory_add (factory, items[i].stock_id, icon_set);
       gtk_icon_set_unref (icon_set);
-		
+      
       g_object_unref (G_OBJECT (pixbuf));
     }
 
