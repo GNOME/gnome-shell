@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: metacity 2.5.3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-07-29 05:43+0900\n"
-"PO-Revision-Date: 2004-07-29 05:48+0900\n"
+"PO-Revision-Date: 2004-08-15 10:59+0900\n"
 "Last-Translator: Young-Ho, Cha <ganadist at mizi.com>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
 "MIME-Version: 1.0\n"
@@ -424,7 +424,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:7
 msgid "Automatically raises the focused window"
-msgstr "초점이 간 창을 자동으로 띄웁니다"
+msgstr "포커스가 있는 창을 자동으로 띄웁니다"
 
 #: src/metacity.schemas.in.h:8
 msgid ""
@@ -471,17 +471,14 @@ msgstr "비주얼 벨 사용하기"
 
 #: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
-msgstr "모든 창과 초점이 있는 바탕화면을 모두 숨깁니다"
+msgstr "모든 창을 숨기고 바탕화면에 포커스"
 
 #: src/metacity.schemas.in.h:17
 msgid ""
 "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 "focused window will be automatically raised after a delay (the delay is "
 "specified by the auto_raise_delay key)."
-msgstr ""
-"초점 모드가 \"최종 마우스 위치\" 또는 \"마우스 위치\"이면서 참일 때 지연시간 "
-"후 자동으로 초점이 간 창이 떠오르게 합니다. (지연 시간은 auto_raise_delay 키"
-"에 지정되어 있습니다)."
+msgstr "포커스 모드가 \"최종 마우스 위치\" 또는 \"마우스 위치\"이면서 참일 때 지연시간 후 자동으로 포커스가 있는 창이 떠오르게 합니다. (지연 시간은 auto_raise_delay 키에 지정되어 있습니다)."
 
 #: src/metacity.schemas.in.h:18
 msgid ""
@@ -796,7 +793,7 @@ msgstr "스크린샷 찍기"
 
 #: src/metacity.schemas.in.h:81
 msgid "Take a screenshot of a window"
-msgstr "창의 스크린샷을 찍습니다"
+msgstr "창 스크린샷 찍기"
 
 #: src/metacity.schemas.in.h:82
 msgid ""
@@ -1830,7 +1827,7 @@ msgstr "비주얼 벨 타입"
 
 #: src/metacity.schemas.in.h:165
 msgid "Window focus mode"
-msgstr "창 초점 모드"
+msgstr "창 포커스 모드"
 
 #: src/metacity.schemas.in.h:166
 msgid "Window title font"
@@ -2420,12 +2417,12 @@ msgstr ""
 #: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr "스타일에 상태 %s 크기 조절 %s 초점 %s에 대해 이미 지정되어 있습니다"
+msgstr "스타일에 상태 %s 크기 조절 %s 포커스 %s에 대해 이미 지정되어 있습니다"
 
 #: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
-msgstr "스타일에 상태 %s 초점 %s에 대해 이미 지정되어 있습니다"
+msgstr "스타일에 상태 %s 포커스 %s에 대해 이미 지정되어 있습니다"
 
 #: src/theme-parser.c:3536
 msgid ""
@@ -2991,31 +2988,31 @@ msgstr "상수 \"%s\"은(는) 이미 지정되어 있습니다"
 
 #: src/tools/metacity-properties.desktop.in.h:1
 msgid "Select how to give focus to windows"
-msgstr "창 사이에 초점주는 방법을 선택합니다"
+msgstr "창 사이에 포커스 주는 방법을 선택합니다"
 
 #: src/tools/metacity-properties.desktop.in.h:2
 msgid "Window Focus"
-msgstr "창 초점"
+msgstr "창 포커스"
 
 #: src/tools/metacity-properties.glade.h:1
 msgid "Clic_k to give focus"
-msgstr "마우스를 누르면 초점 주기(_K)"
+msgstr "마우스를 누르면 포커스 주기(_K)"
 
 #: src/tools/metacity-properties.glade.h:2
 msgid "Focus behavior:"
-msgstr "초점 설정:"
+msgstr "포커스 설정:"
 
 #: src/tools/metacity-properties.glade.h:3
 msgid "Window Focus Preferences"
-msgstr "창 초점 세부 설정"
+msgstr "창 포커스 세부 설정"
 
 #: src/tools/metacity-properties.glade.h:4
 msgid "_Point to give focus"
-msgstr "마우스 위치에 따라 초점 주기(_P)"
+msgstr "마우스 위치에 따라 포커스 주기(_P)"
 
 #: src/tools/metacity-properties.glade.h:5
 msgid "_Raise window on focus"
-msgstr "초점 주면 창 띄우기(_R)"
+msgstr "포커스 주면 창 띄우기(_R)"
 
 #: src/util.c:93
 #, c-format
