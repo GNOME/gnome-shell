@@ -26,15 +26,136 @@
 #include <time.h>
 
 static void run_position_expression_tests (void);
-static void run_position_expression_timings (void);
+static void run_position_expression_timings (void);  
+
+static int client_width = 200;
+static int client_height = 200;
+
+static void
+set_widget_to_frame_size (MetaFrameStyle *style,
+                          GtkWidget      *widget)
+{
+  int top_height, bottom_height, left_width, right_width;
+
+  meta_frame_layout_get_borders (style->layout,
+                                 widget,
+                                 15, /* FIXME */
+                                 0,  /* FIXME */
+                                 &top_height,
+                                 &bottom_height,
+                                 &left_width,
+                                 &right_width);
+
+  gtk_widget_set_size_request (widget,
+                               client_width + left_width + right_width,
+                               client_height + top_height + bottom_height);
+}
+
+static gboolean
+expose_handler (GtkWidget *widget,
+                GdkEventExpose *event,
+                gpointer data)
+{
+  MetaFrameStyle *style;
+  MetaButtonState button_states[META_BUTTON_TYPE_LAST] =
+  {
+    META_BUTTON_STATE_NORMAL,
+    META_BUTTON_STATE_NORMAL,
+    META_BUTTON_STATE_NORMAL,
+    META_BUTTON_STATE_NORMAL
+  };
+  int top_height, bottom_height, left_width, right_width;
+
+  style = meta_frame_style_get_test ();
+  
+  meta_frame_layout_get_borders (style->layout,
+                                 widget,
+                                 15, /* FIXME */
+                                 0,  /* FIXME */
+                                 &top_height,
+                                 &bottom_height,
+                                 &left_width,
+                                 &right_width);
+
+  meta_frame_style_draw (style,
+                         widget,
+                         widget->window,
+                         0, 0,
+                         &event->area,
+                         0, /* flags */
+                         client_width, client_height,
+                         NULL, /* FIXME */
+                         15,   /* FIXME */
+                         button_states);
+
+  /* Draw the "client" */
+
+  gdk_draw_rectangle (widget->window,
+                      widget->style->white_gc, 
+                      TRUE,
+                      left_width, top_height,
+                      client_width, client_height);
+  
+  return TRUE;
+}
 
 int
 main (int argc, char **argv)
 {
+  GtkWidget *window;
+  GtkWidget *layout;
+  GtkWidget *sw;
+  GtkWidget *da;
+  GdkColor desktop_color;
+  
   bindtextdomain (GETTEXT_PACKAGE, METACITY_LOCALEDIR);
-
+  
   run_position_expression_tests ();
+#if 0
   run_position_expression_timings ();
+#endif
+  
+  gtk_init (&argc, &argv);
+
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  gtk_window_set_default_size (GTK_WINDOW (window), 270, 270);
+
+  sw = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
+                                  GTK_POLICY_AUTOMATIC,
+                                  GTK_POLICY_AUTOMATIC);
+
+  gtk_container_add (GTK_CONTAINER (window), sw);
+
+  layout = gtk_layout_new (NULL, NULL);
+
+  gtk_layout_set_size (GTK_LAYOUT (layout), 500, 500);
+  
+  gtk_container_add (GTK_CONTAINER (sw), layout);
+
+  g_signal_connect (G_OBJECT (window), "destroy",
+                    G_CALLBACK (gtk_main_quit), NULL);
+
+  desktop_color.red = 0x5144;
+  desktop_color.green = 0x75D6;
+  desktop_color.blue = 0xA699;
+  
+  gtk_widget_modify_bg (layout, GTK_STATE_NORMAL, &desktop_color);
+
+  da = gtk_drawing_area_new ();
+  set_widget_to_frame_size (meta_frame_style_get_test (),
+                            da);
+
+  g_signal_connect (G_OBJECT (da), "expose_event",
+                    G_CALLBACK (expose_handler), NULL);
+
+  gtk_layout_put (GTK_LAYOUT (layout),
+                  da,
+                  5, 5);
+  
+  gtk_widget_show_all (window);
+  
+  gtk_main ();
   
   return 0;
 }

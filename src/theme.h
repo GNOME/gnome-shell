@@ -115,6 +115,18 @@ typedef enum
   META_COLOR_SPEC_BLEND
 } MetaColorSpecType;
 
+typedef enum
+{
+  META_GTK_COLOR_FG,
+  META_GTK_COLOR_BG,
+  META_GTK_COLOR_LIGHT,
+  META_GTK_COLOR_DARK,
+  META_GTK_COLOR_MID,
+  META_GTK_COLOR_TEXT,
+  META_GTK_COLOR_BASE,
+  META_GTK_COLOR_TEXT_AA
+} MetaGtkColorComponent;
+
 struct _MetaColorSpec
 {
   MetaColorSpecType type;
@@ -124,7 +136,7 @@ struct _MetaColorSpec
       GdkColor color;
     } basic;
     struct {
-      GtkRcFlags component;
+      MetaGtkColorComponent component;
       GtkStateType state;
     } gtk;
     struct {
@@ -481,11 +493,16 @@ gboolean meta_parse_size_expression     (const char  *expr,
                                          GError     **err);
 
 
-MetaColorSpec* meta_color_spec_new    (MetaColorSpecType  type);
-void           meta_color_spec_free   (MetaColorSpec     *spec);
-void           meta_color_spec_render (MetaColorSpec     *spec,
-                                       GtkWidget         *widget,
-                                       GdkColor          *color);
+MetaColorSpec* meta_color_spec_new             (MetaColorSpecType  type);
+MetaColorSpec* meta_color_spec_new_from_string (const char        *str,
+                                                GError           **err);
+MetaColorSpec* meta_color_spec_new_gtk         (MetaGtkColorComponent component,
+                                                GtkStateType          state);
+void           meta_color_spec_free            (MetaColorSpec     *spec);
+void           meta_color_spec_render          (MetaColorSpec     *spec,
+                                                GtkWidget         *widget,
+                                                GdkColor          *color);
+
 
 MetaShapeSpec* meta_shape_spec_new  (MetaShapeType        type);
 void           meta_shape_spec_free (MetaShapeSpec       *spec);
@@ -539,6 +556,8 @@ void            meta_frame_style_unref (MetaFrameStyle *style);
 void meta_frame_style_draw (MetaFrameStyle     *style,
                             GtkWidget          *widget,
                             GdkDrawable        *drawable,
+                            int                 x_offset,
+                            int                 y_offset,
                             const GdkRectangle *clip,
                             MetaFrameFlags      flags,
                             int                 client_width,
@@ -553,5 +572,7 @@ void               meta_frame_style_set_unref (MetaFrameStyleSet *style_set);
 
 MetaTheme* meta_theme_new  (void);
 void       meta_theme_free (MetaTheme *theme);
+
+MetaFrameStyle* meta_frame_style_get_test (void);
 
 #endif

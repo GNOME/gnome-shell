@@ -1385,7 +1385,7 @@ meta_shape_spec_draw (const MetaShapeSpec *spec,
             dash_list[0] = spec->data.line.dash_on_length;
             dash_list[1] = spec->data.line.dash_off_length;
             gdk_gc_set_dashes (gc, 0, dash_list, 2);
-          }        
+          }
 
         x1 = parse_x_position_unchecked (spec->data.line.x1,
                                          x, width, height);
@@ -1694,6 +1694,35 @@ meta_color_spec_free (MetaColorSpec *spec)
   g_free (spec);
 }
 
+MetaColorSpec*
+meta_color_spec_new_from_string (const char *str,
+                                 GError    **err)
+{
+  /* FIXME handle GTK colors, etc. */
+  MetaColorSpec *spec;
+
+  spec = meta_color_spec_new (META_COLOR_SPEC_BASIC);
+  
+  gdk_color_parse (str, &spec->data.basic.color);
+
+  return spec;
+}
+
+MetaColorSpec*
+meta_color_spec_new_gtk (MetaGtkColorComponent component,
+                         GtkStateType          state)
+{
+  /* FIXME handle GTK colors, etc. */
+  MetaColorSpec *spec;
+
+  spec = meta_color_spec_new (META_COLOR_SPEC_GTK);
+  
+  spec->data.gtk.component = component;
+  spec->data.gtk.state = state;
+
+  return spec;
+}
+
 void
 meta_color_spec_render (MetaColorSpec *spec,
                         GtkWidget     *widget,
@@ -1712,17 +1741,29 @@ meta_color_spec_render (MetaColorSpec *spec,
     case META_COLOR_SPEC_GTK:
       switch (spec->data.gtk.component)
         {
-        case GTK_RC_BG:
+        case META_GTK_COLOR_BG:
           *color = widget->style->bg[spec->data.gtk.state];
           break;
-        case GTK_RC_FG:
+        case META_GTK_COLOR_FG:
           *color = widget->style->fg[spec->data.gtk.state];
           break;
-        case GTK_RC_BASE:
+        case META_GTK_COLOR_BASE:
           *color = widget->style->base[spec->data.gtk.state];
           break;
-        case GTK_RC_TEXT:
+        case META_GTK_COLOR_TEXT:
           *color = widget->style->text[spec->data.gtk.state];
+          break;
+        case META_GTK_COLOR_LIGHT:
+          *color = widget->style->light[spec->data.gtk.state];
+          break;
+        case META_GTK_COLOR_DARK:
+          *color = widget->style->dark[spec->data.gtk.state];
+          break;
+        case META_GTK_COLOR_MID:
+          *color = widget->style->mid[spec->data.gtk.state];
+          break;
+        case META_GTK_COLOR_TEXT_AA:
+          *color = widget->style->text_aa[spec->data.gtk.state];
           break;
         }
       break;
@@ -1911,6 +1952,8 @@ multiply_alpha (GdkPixbuf *pixbuf,
   int rowstride;
   int height;
   int row;
+
+  g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
   
   if (alpha == 255)
     return pixbuf;
@@ -2007,8 +2050,6 @@ meta_texture_spec_render (const MetaTextureSpec *spec,
 
     case META_TEXTURE_GRADIENT:
       {
-        GdkPixbuf *pixbuf;
-        
         g_return_val_if_fail (spec->data.gradient.gradient_spec != NULL,
                               NULL);
 
@@ -2021,8 +2062,6 @@ meta_texture_spec_render (const MetaTextureSpec *spec,
 
     case META_TEXTURE_IMAGE:
       {
-        GdkPixbuf *pixbuf;
-        
         g_return_val_if_fail (spec->data.image.pixbuf != NULL,
                               NULL);
 
@@ -2429,7 +2468,7 @@ meta_texture_spec_draw   (const MetaTextureSpec *spec,
 
         pixbuf = meta_texture_spec_render (spec, widget, mode, 255,
                                            width, height);
-
+        
         if (pixbuf == NULL)
           return;
         
@@ -2634,6 +2673,8 @@ void
 meta_frame_style_draw (MetaFrameStyle     *style,
                        GtkWidget          *widget,
                        GdkDrawable        *drawable,
+                       int                 x_offset,
+                       int                 y_offset,
                        const GdkRectangle *clip,
                        MetaFrameFlags      flags,
                        int                 client_width,
@@ -2890,6 +2931,9 @@ meta_frame_style_draw (MetaFrameStyle     *style,
           rect.height = fgeom.height;
           break;
         }
+
+      rect.x += x_offset;
+      rect.y += y_offset;
       
       if (clip == NULL)
         combined_clip = rect;
@@ -2944,6 +2988,9 @@ meta_frame_style_draw (MetaFrameStyle     *style,
       GdkRectangle combined_clip;
 
       button_rect (i, &fgeom, &rect);
+
+      rect.x += x_offset;
+      rect.y += y_offset;
       
       if (clip == NULL)
         combined_clip = rect;
@@ -2986,6 +3033,9 @@ meta_frame_style_draw (MetaFrameStyle     *style,
       GdkRectangle combined_clip;
 
       button_rect (i, &fgeom, &rect);
+
+      rect.x += x_offset;
+      rect.y += y_offset;
       
       if (clip == NULL)
         combined_clip = rect;
@@ -3132,4 +3182,120 @@ meta_theme_free (MetaTheme *theme)
     }
   
   g_free (theme);
+}
+
+static MetaShapeSpec*
+line_spec (MetaGtkColorComponent component,
+           const char *x1,
+           const char *y1,
+           const char *x2,
+           const char *y2)
+{
+  MetaShapeSpec *shape;
+  
+  shape = meta_shape_spec_new (META_SHAPE_LINE);
+  shape->data.line.color_spec =
+    meta_color_spec_new_gtk (component, GTK_STATE_NORMAL);
+  shape->data.line.x1 = g_strdup (x1);
+  shape->data.line.x2 = g_strdup (x2);
+  shape->data.line.y1 = g_strdup (y1);
+  shape->data.line.y2 = g_strdup (y2);
+  shape->data.line.dash_on_length = 0;
+  shape->data.line.dash_off_length = 0;
+  shape->data.line.width = 0;
+
+  return shape;
+}
+
+#define DEFAULT_INNER_BUTTON_BORDER 3
+MetaFrameStyle*
+meta_frame_style_get_test (void)
+{
+  static MetaFrameStyle *style = NULL;
+  static GtkBorder default_title_border = { 3, 4, 4, 3 };
+  static GtkBorder default_text_border = { 2, 2, 2, 2 };
+  static GtkBorder default_button_border = { 0, 0, 1, 1 };
+  static GtkBorder default_inner_button_border = {
+    DEFAULT_INNER_BUTTON_BORDER,
+    DEFAULT_INNER_BUTTON_BORDER,
+    DEFAULT_INNER_BUTTON_BORDER,
+    DEFAULT_INNER_BUTTON_BORDER
+  };
+  MetaTextureSpec *texture;
+  MetaShapeSpec *shape;
+  MetaGradientSpec *gradient;
+  
+  if (style)
+    return style;
+  
+  style = meta_frame_style_new (NULL);
+  
+  style->layout = meta_frame_layout_new ();
+
+  style->layout->title_border = default_title_border;
+  style->layout->text_border = default_text_border;
+  style->layout->button_border = default_button_border;
+  style->layout->inner_button_border = default_inner_button_border;
+  
+  style->layout->left_width = 6;
+  style->layout->right_width = 6;
+  style->layout->bottom_height = 7;
+  style->layout->spacer_padding = 3;
+  style->layout->spacer_width = 2;
+  style->layout->spacer_height = 11;
+  style->layout->right_inset = 6;
+  style->layout->left_inset = 6;
+  style->layout->button_width = 17;
+  style->layout->button_height = 17;
+
+  texture = meta_texture_spec_new (META_TEXTURE_GRADIENT);
+  style->pieces[META_FRAME_PIECE_ENTIRE_BACKGROUND] = texture;
+
+  gradient = meta_gradient_spec_new (META_GRADIENT_VERTICAL);
+  texture->data.gradient.gradient_spec = gradient;
+
+  gradient->color_specs =
+    g_slist_prepend (gradient->color_specs,
+                     meta_color_spec_new_gtk (META_GTK_COLOR_BG,
+                                              GTK_STATE_NORMAL));
+  gradient->color_specs =
+    g_slist_prepend (gradient->color_specs,
+                     meta_color_spec_new_gtk (META_GTK_COLOR_BG,
+                                              GTK_STATE_SELECTED));
+                     
+  texture = meta_texture_spec_new (META_TEXTURE_SHAPE_LIST);
+  style->pieces[META_FRAME_PIECE_OVERLAY] = texture;
+  texture->data.shape_list.shape_specs = g_new (MetaShapeSpec*, 5);
+  texture->data.shape_list.n_specs = 5;
+
+  shape = meta_shape_spec_new (META_SHAPE_RECTANGLE);
+  shape->data.rectangle.color_spec =
+    meta_color_spec_new_from_string ("#000000", NULL);
+  shape->data.rectangle.filled = FALSE;
+  shape->data.rectangle.x = g_strdup ("0");
+  shape->data.rectangle.y = g_strdup ("0");
+  shape->data.rectangle.width = g_strdup ("width - 1");
+  shape->data.rectangle.height = g_strdup ("height - 1");
+
+  texture->data.shape_list.shape_specs[0] = shape;
+
+  texture->data.shape_list.shape_specs[1] =
+    line_spec (META_GTK_COLOR_LIGHT,
+               "1", "1", "1", "height - 2");
+
+  texture->data.shape_list.shape_specs[2] =
+    line_spec (META_GTK_COLOR_LIGHT,
+               "1", "1", "width - 2", "1");
+
+  texture->data.shape_list.shape_specs[3] =
+    line_spec (META_GTK_COLOR_DARK,
+               "width - 2", "1", "width - 2", "height - 2");
+
+  texture->data.shape_list.shape_specs[4] =
+    line_spec (META_GTK_COLOR_DARK,
+               "1", "height - 2", "width - 2", "height - 2");
+
+  
+  
+  return style;
 }

@@ -1,3 +1,14 @@
+2002-01-28  Havoc Pennington  <hp@pobox.com>
+
+	* src/theme.c (meta_texture_spec_render): fix shadowed variable
+	(stupid -Wall should have that)
+
+	* src/theme-viewer.c (main): implement a simple 
+	viewer for frame styles
+
+	* src/theme.c (meta_frame_style_get_test): create partial 
+	frame style to test drawing
+
 2002-01-27  Havoc Pennington  <hp@pobox.com>
 
 	* src/theme.c (meta_shape_spec_draw): implement
