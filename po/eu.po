@@ -8,14 +8,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-15 10:32-0700\n"
-"PO-Revision-Date: 2004-04-16 14:32+0200\n"
+"POT-Creation-Date: 2004-08-26 23:24+0200\n"
+"PO-Revision-Date: 2004-08-26 23:33+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Report-Msgid-Bugs-To: \n"
 "X-Generator: KBabel 1.0.2\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
@@ -28,38 +28,36 @@ msgstr "Erabilera: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity modu xehatuaren euskarririk gabe konpilatu da\n"
 
-#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
+#: src/delete.c:63 src/delete.c:90 src/metacity-dialog.c:70
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Ezin da \"%s\" analizatu osoko gisa"
 
-#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
+#: src/delete.c:70 src/delete.c:97 src/metacity-dialog.c:77
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Ez dira ulertzen amaierako \"%s\" karaktereak \"%s\" katean"
 
-#: src/delete.c:127
+#: src/delete.c:128
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr ""
-"Huts egin du elkarrizketa-koadroaren prozesutik \"%s\" mezua analizatzean\n"
+msgstr "Huts egin du elkarrizketa-koadroaren prozesutik \"%s\" mezua analizatzean\n"
 
-#: src/delete.c:262
+#: src/delete.c:263
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Errorea elkarrizketa-koadroa bistaratzeko prozesutik irakurtzean: %s\n"
 
-#: src/delete.c:338
+#: src/delete.c:344
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 "Errorea aplikazioa hil behar den galdetzeko metacity-ren elkarrizketa-"
 "koadroa abiaraztean: %s\n"
 
-#: src/delete.c:446
+#: src/delete.c:452
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Huts egin du ostalari-izena hartzean: %s\n"
@@ -114,14 +112,14 @@ msgstr ""
 "Beste programaren batek erabiltzen du %s gakoa %x aldatzaileekin lotura "
 "gisa\n"
 
-#: src/keybindings.c:2518
+#: src/keybindings.c:2529
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Errorea komando bati buruzko errorea inprimatzeko metacity-ren elkarrizketa-"
 "koadroa abiaraztean: %s\n"
 
-#: src/keybindings.c:2591
+#: src/keybindings.c:2602
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "%d komandoa ez dago definituta.\n"
@@ -156,10 +154,8 @@ msgstr "Huts egin du gaien direktorioa aztertzean: %s\n"
 
 #: src/main.c:459
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr ""
-"Gai bat ezin izan da aurkitu! Ziurtatu %s badagoela eta ohiko gaiak dituela."
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgstr "Gai bat ezin izan da aurkitu! Ziurtatu %s badagoela eta ohiko gaiak dituela."
 
 #: src/main.c:521
 #, c-format
@@ -336,31 +332,30 @@ msgstr "Ald4"
 msgid "Mod5"
 msgstr "Ald5"
 
-#: src/metacity-dialog.c:85
+#: src/metacity-dialog.c:110
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "\"%s\" leihoak ez du erantzuten."
 
-#: src/metacity-dialog.c:93
-msgid ""
-"Forcing this application to quit will cause you to lose any unsaved changes."
+#: src/metacity-dialog.c:118
+msgid "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Aplikazioa ixtera behartzen baduzu, gorde gabeko aldaketak galdu egingo "
 "dituzu."
 
-#: src/metacity-dialog.c:103
+#: src/metacity-dialog.c:128
 msgid "_Force Quit"
 msgstr "_Behartu ixtera"
 
-#: src/metacity-dialog.c:197
+#: src/metacity-dialog.c:225
 msgid "Title"
 msgstr "Titulua"
 
-#: src/metacity-dialog.c:209
+#: src/metacity-dialog.c:237
 msgid "Class"
 msgstr "Klasea"
 
-#: src/metacity-dialog.c:233
+#: src/metacity-dialog.c:262
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -368,7 +363,7 @@ msgstr ""
 "Leiho hauek ez dute onartzen \"gorde uneko konfigurazioa\" eta eskuz "
 "berrabiarazi beharko dituzu hurrengo saioa hasten duzunean."
 
-#: src/metacity-dialog.c:290
+#: src/metacity-dialog.c:323
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -383,8 +378,7 @@ msgstr "Metacity"
 
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr ""
-"(Ez dago inplementatuta) Nabigazioa aplikazioetan egiten da, ez leihoetan"
+msgstr "(Ez dago inplementatuta) Nabigazioa aplikazioetan egiten da, ez leihoetan"
 
 #: src/metacity.schemas.in.h:2
 msgid ""
@@ -447,9 +441,8 @@ msgstr ""
 "edo \"&lt;Super&gt;\" izango da, adibidez."
 
 #: src/metacity.schemas.in.h:9
-#, fuzzy
 msgid "Close window"
-msgstr "Leiho bat ixten du"
+msgstr "Itxi leihoa"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
@@ -543,15 +536,13 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
-msgstr ""
-"Egia bada, gutxiagotu erabilgarritasuna errekurtso gutxiago erabiltzeko"
+msgstr "Egia bada, gutxiagotu erabilgarritasuna errekurtso gutxiago erabiltzeko"
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
 msgstr "Beheratu leihoa beste leihoen azpira"
 
 #: src/metacity.schemas.in.h:23
-#, fuzzy
 msgid "Maximize window"
 msgstr "Maximizatu leihoa"
 
@@ -564,7 +555,6 @@ msgid "Maximize window vertically"
 msgstr "Maximizatu leihoa bertikalki"
 
 #: src/metacity.schemas.in.h:26
-#, fuzzy
 msgid "Minimize window"
 msgstr "Ikonotu leihoa"
 
@@ -605,7 +595,6 @@ msgid "Move focus backwards between windows using popup display"
 msgstr "Eraman fokua atzerantz leihoen artean laster-leihoekin"
 
 #: src/metacity.schemas.in.h:36
-#, fuzzy
 msgid "Move window"
 msgstr "Lekuz aldatu leihoa"
 
@@ -700,7 +689,6 @@ msgid "Raise window above other windows"
 msgstr "Goratu leihoa beste leihoen gainera"
 
 #: src/metacity.schemas.in.h:58
-#, fuzzy
 msgid "Resize window"
 msgstr "Tamaina aldatu leihoari"
 
@@ -713,7 +701,6 @@ msgid "Show the panel menu"
 msgstr "Erakutsi panel-menua"
 
 #: src/metacity.schemas.in.h:61
-#, fuzzy
 msgid "Show the panel run application dialog"
 msgstr "Erakutsi panela exekutatzeko elkarrizketa-koadroa"
 
@@ -870,7 +857,6 @@ msgstr ""
 "deituko zaio."
 
 #: src/metacity.schemas.in.h:86
-#, fuzzy
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -881,13 +867,12 @@ msgid ""
 msgstr ""
 "/apps/metacity/keybinding_commands-en dagokion zenbakitutako komandoa "
 "exekutatzen duen laster-tekla. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;"
-"Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da "
+"Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da "
 "eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta "
 "\"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate berezia "
 "ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:87
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -897,14 +882,13 @@ msgid ""
 "for this action."
 msgstr ""
 "Uneko laneko arearen gaineko laneko areara aldatzeko laster-teklak. Formatua "
-"\"&lt;Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
+"\"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
 "Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
 "eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. "
 "Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
 "izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:88
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -914,14 +898,13 @@ msgid ""
 "for this action."
 msgstr ""
 "Uneko laneko arearen azpiko laneko areara aldatzeko laster-teklak. Formatua "
-"\"&lt;Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
+"\"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
 "Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
 "eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. "
 "Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
 "izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:89
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -931,14 +914,13 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 "Uneko laneko arearen ezkerreko laneko areara aldatzeko laster-teklak. "
-"Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa "
+"Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa "
 "izango da. Analizatzailea oso irekia da eta maiuskulak eta minuskulak "
 "onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko "
 "laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da "
 "laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:90
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -955,7 +937,6 @@ msgstr ""
 "laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:91
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -964,13 +945,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "1. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo "
-"\"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
+"\"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
 "da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" "
 "eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
 "berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:92
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -979,13 +959,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "10. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo "
-"\"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
+"\"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
 "da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" "
 "eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
 "berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:93
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -994,13 +973,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "11. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo "
-"\"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
+"\"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
 "da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" "
 "eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
 "berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:94
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1009,13 +987,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "12. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo "
-"\"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
+"\"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
 "da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" "
 "eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
 "berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:95
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1024,13 +1001,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "2. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo "
-"\"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
+"\"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
 "da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" "
 "eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
 "berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:96
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1039,13 +1015,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "3. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo "
-"\"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
+"\"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
 "da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" "
 "eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
 "berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:97
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1054,13 +1029,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "4. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo "
-"\"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
+"\"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
 "da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" "
 "eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
 "berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:98
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1069,13 +1043,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "5. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo "
-"\"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
+"\"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
 "da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" "
 "eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
 "berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:99
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1084,13 +1057,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "6. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo "
-"\"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
+"\"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
 "da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" "
 "eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
 "berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:100
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1099,13 +1071,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "7. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo "
-"\"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
+"\"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
 "da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" "
 "eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
 "berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:101
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1114,13 +1085,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "8. laneko areara aldatzeko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo "
-"\"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
+"\"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
 "da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" "
 "eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
 "berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:102
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1135,7 +1105,6 @@ msgstr ""
 "berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:103
-#, fuzzy
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1144,13 +1113,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Leiho-menua aktibatzeko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo "
-"\"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
+"\"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
 "da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" "
 "eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
 "berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:104
-#, fuzzy
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1159,13 +1127,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Leihoa ixteko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;"
-"Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da "
+"Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da "
 "eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta "
 "\"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate berezia "
 "ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:105
-#, fuzzy
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1175,14 +1142,13 @@ msgid ""
 "no keybinding for this action."
 msgstr ""
 "\"move mode\" modura aldatu eta teklatuaren bidez leihoa lekuz aldatzen "
-"hasteko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;"
+"hasteko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;"
 "Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak "
 "eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" "
 "moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
 "da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:106
-#, fuzzy
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1193,13 +1159,12 @@ msgid ""
 msgstr ""
 "\"resize mode\" modura aldatu eta teklatuaren bidez leihoari tamaina "
 "aldatzen hasteko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;"
-"Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da "
+"Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da "
 "eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta "
 "\"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate berezia "
 "ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:107
-#, fuzzy
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1209,14 +1174,13 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "Leiho normal guztiak itxi eta fokua mahaigainaren atzeko planoari emateko "
-"laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;"
+"laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;"
 "F1 itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak eta "
 "minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" "
 "moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
 "da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:108
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1225,13 +1189,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Leihoa maximizatzeko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;"
-"Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da "
+"Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da "
 "eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta "
 "\"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate berezia "
 "ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1240,13 +1203,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Leihoa ikonotzeko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;"
-"Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da "
+"Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da "
 "eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta "
 "\"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate berezia "
 "ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:110
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -1256,14 +1218,13 @@ msgid ""
 "action."
 msgstr ""
 "Leihoa laneko area bat beherago eramateko laster-teklak. Formatua \"&lt;"
-"Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
+"Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
 "Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
 "eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. "
 "Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
 "izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:111
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1273,14 +1234,13 @@ msgid ""
 "for this action."
 msgstr ""
 "Leihoa laneko area bat ezkerrera eramateko laster-teklak. Formatua \"&lt;"
-"Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
+"Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
 "Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
 "eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. "
 "Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
 "izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:112
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1290,14 +1250,13 @@ msgid ""
 "for this action."
 msgstr ""
 "Leihoa laneko area bat eskuinera eramateko laster-teklak. Formatua \"&lt;"
-"Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
+"Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
 "Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
 "eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. "
 "Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
 "izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:113
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1306,14 +1265,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Leihoa laneko area bat gora eramateko laster-teklak. Formatua \"&lt;"
-"Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
+"Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
 "Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
 "eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. "
 "Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
 "izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:114
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1322,13 +1280,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Leihoa 1. laneko areara eramateko laster-teklak. Formatua \"&lt;Kontrol&gt;a"
-"\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
+"\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
 "irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
 "Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
 "kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:115
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1337,13 +1294,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Leihoa 10. laneko areara eramateko laster-teklak. Formatua \"&lt;Kontrol&gt;a"
-"\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
+"\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
 "irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
 "Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
 "kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:116
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1352,13 +1308,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Leihoa 11. laneko areara eramateko laster-teklak. Formatua \"&lt;Kontrol&gt;a"
-"\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
+"\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
 "irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
 "Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
 "kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:117
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1367,13 +1322,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Leihoa 12. laneko areara eramateko laster-teklak. Formatua \"&lt;Kontrol&gt;a"
-"\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
+"\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
 "irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
 "Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
 "kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:118
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1382,13 +1336,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Leihoa 2. laneko areara eramateko laster-teklak. Formatua \"&lt;Kontrol&gt;a"
-"\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
+"\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
 "irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
 "Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
 "kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:119
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1397,13 +1350,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Leihoa 3. laneko areara eramateko laster-teklak. Formatua \"&lt;Kontrol&gt;a"
-"\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
+"\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
 "irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
 "Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
 "kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:120
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1412,13 +1364,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Leihoa 4. laneko areara eramateko laster-teklak. Formatua \"&lt;Kontrol&gt;a"
-"\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
+"\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
 "irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
 "Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
 "kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:121
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1427,13 +1378,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Leihoa 5. laneko areara eramateko laster-teklak. Formatua \"&lt;Kontrol&gt;a"
-"\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
+"\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
 "irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
 "Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
 "kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:122
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1442,13 +1392,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Leihoa 6. laneko areara eramateko laster-teklak. Formatua \"&lt;Kontrol&gt;a"
-"\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
+"\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
 "irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
 "Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
 "kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:123
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1457,13 +1406,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Leihoa 7. laneko areara eramateko laster-teklak. Formatua \"&lt;Kontrol&gt;a"
-"\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
+"\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
 "irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
 "Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
 "kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:124
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1472,13 +1420,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Leihoa 8. laneko areara eramateko laster-teklak. Formatua \"&lt;Kontrol&gt;a"
-"\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
+"\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
 "irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
 "Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
 "kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:125
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1487,13 +1434,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Leihoa 9. laneko areara eramateko laster-teklak. Formatua \"&lt;Kontrol&gt;a"
-"\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
+"\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
 "irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
 "Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
 "kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:126
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1503,14 +1449,13 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "Fokua panelen eta atzeko planoaren artean laster-leihoaren bidez atzerantz "
-"eramateko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maiust&gt;"
+"eramateko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;"
 "&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da eta "
 "maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;"
 "Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen "
 "baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:127
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1520,14 +1465,13 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "Fokua panelen eta atzeko planoaren artean laster-leihorik gabe atzerantz "
-"eramateko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maiust&gt;"
+"eramateko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;"
 "&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da eta "
 "maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;"
 "Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen "
 "baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:128
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1539,14 +1483,13 @@ msgid ""
 msgstr ""
 "Fokua leihoen artean laster-leihorik gabe atzerantz eramateko laster-teklak. "
 "Laster-tekla hauekin batera \"maius\" sakatuta, aurrerantz eramango du fokua "
-"berriz ere. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 "
+"berriz ere. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 "
 "itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak eta "
 "minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" "
 "moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
 "da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:129
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1558,14 +1501,13 @@ msgid ""
 msgstr ""
 "Fokua leihoen artean laster-leihoaren bidez atzerantz eramateko laster-"
 "teklak. Laster-tekla hauekin batera \"maius\" sakatuta, aurrerantz eramango "
-"du fokua berriz ere. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;"
+"du fokua berriz ere. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;"
 "Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak "
 "eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" "
 "moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
 "da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:130
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1575,14 +1517,13 @@ msgid ""
 "no keybinding for this action."
 msgstr ""
 "Fokua panelen eta atzeko planoaren artean laster-leihoaren bidez aldatzeko "
-"laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;"
+"laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;"
 "F1 itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak eta "
 "minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" "
 "moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
 "da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:131
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1592,14 +1533,13 @@ msgid ""
 "no keybinding for this action."
 msgstr ""
 "Fokua panelen eta atzeko planoaren artean laster-leihorik gabe aldatzeko "
-"laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;"
+"laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;"
 "F1 itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak eta "
 "minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" "
 "moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
 "da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:132
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1612,14 +1552,13 @@ msgstr ""
 "Fokua leihoen artean laster-leihorik gabe aldatzeko laster-teklak. "
 "(Tradizionalki &lt;Alt&gt;Ihes). Laster-tekla hauekin batera \"maius\" "
 "sakatuta, mugimenduaren norabidea aldatu egiten da. Formatua \"&lt;"
-"Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
+"Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
 "Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
 "eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. "
 "Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
 "izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:133
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1632,14 +1571,13 @@ msgstr ""
 "Fokua leihoen artean laster-leihoarekin aldatzeko laster-teklak. "
 "(Tradizionalki &lt;Alt&gt;Tab). Laster-tekla hauekin batera \"maius\" "
 "sakatuta, mugimenduaren norabidea aldatu egiten da. Formatua \"&lt;"
-"Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
+"Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
 "Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
 "eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. "
 "Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
 "izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:134
-#, fuzzy
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1650,14 +1588,13 @@ msgid ""
 msgstr ""
 "\"Beti gainean\" aukera jarri eta kentzeko laster-teklak. Beti gainean "
 "egoteko ezarritako leihoa beti bistan azalduko da, gainerako leiho guztien "
-"gainean. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 "
+"gainean. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 "
 "itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak eta "
 "minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" "
 "moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
 "da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:135
-#, fuzzy
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1666,14 +1603,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Pantaila osoko modua jarri eta kentzeko laster-teklak. Formatua \"&lt;"
-"Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
+"Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
 "Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
 "eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. "
 "Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
 "izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:136
-#, fuzzy
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1682,13 +1618,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Maximizatzea jarri eta kentzeko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" "
-"edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
+"edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
 "irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
 "Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
 "kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:137
-#, fuzzy
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1697,14 +1632,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Bilduta/zabalduta egoera txandakatzeko laster-teklak. Formatua \"&lt;"
-"Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
+"Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
 "Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
 "eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. "
 "Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
 "izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:138
-#, fuzzy
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1714,14 +1648,13 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 "Leihoa laneko area guztietan ala bakarrean egongo den (txandaka) zehazteko "
-"laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;"
+"laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;"
 "F1 itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak eta "
 "minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" "
 "moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
 "da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:139
-#, fuzzy
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1730,13 +1663,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Leihoa desmaximizatzeko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo "
-"\"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
+"\"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia "
 "da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" "
 "eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate "
 "berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1746,14 +1678,13 @@ msgid ""
 "for this action."
 msgstr ""
 "Paneleko \"Exekutatu programa\" elkarrizketa-koadroa bistaratzeko laster-"
-"teklak. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 "
+"teklak. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 "
 "itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak eta "
 "minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" "
 "moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
 "da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:141
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1764,13 +1695,12 @@ msgid ""
 msgstr ""
 "Leiho baten pantaila-argazkia ateratzeko paneleko pantaila-argazkien "
 "utilitateari deitzeko laster-teklak. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;"
-"Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da "
+"Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da "
 "eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta "
 "\"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" kate berezia "
 "ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1780,14 +1710,13 @@ msgid ""
 "for this action."
 msgstr ""
 "Paneleko pantaila-argazkien utilitateari deitzeko laster-teklak. Formatua "
-"\"&lt;Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
+"\"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
 "Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
 "eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. "
 "Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
 "izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:143
-#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1796,7 +1725,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Panelaren menu nagusia erakusteko laster-teklak. Formatua \"&lt;Kontrol&gt;a"
-"\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
+"\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. Analizatzailea oso "
 "irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;"
 "Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. Aukeran \"disabled\" "
 "kate berezia ezartzen baduzu, ez da laster-teklarik izango ekintza honentzat."
@@ -1813,8 +1742,7 @@ msgstr "Pantaila-argazkiaren komandoa"
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
-msgstr ""
-"Gaiak erabakiko du leihoen ertzen, titulu-barren eta horrelakoen itxura."
+msgstr "Gaiak erabakiko du leihoen ertzen, titulu-barren eta horrelakoen itxura."
 
 #: src/metacity.schemas.in.h:147
 msgid ""
@@ -1843,7 +1771,6 @@ msgid "The window screenshot command"
 msgstr "Leihoaren pantaila-argazkiaren komandoa"
 
 #: src/metacity.schemas.in.h:150
-#, fuzzy
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1857,14 +1784,13 @@ msgstr ""
 "Laster-tekla honek leihoa beste batzuen gainean edo azpian egotea aldatzen "
 "du. Leihoa beste batzuen azpian badago, guztien gainera ekarriko du. Leihoa "
 "osorik ikusten bada, beste batzuen azpira eramango du. Formatua \"&lt;"
-"Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
+"Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
 "Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
 "eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. "
 "Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
 "izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:151
-#, fuzzy
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1873,14 +1799,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Laster-tekla honek leihoa beste batzuen azpira eramaten du. Formatua \"&lt;"
-"Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
+"Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
 "Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
 "eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. "
 "Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
 "izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:152
-#, fuzzy
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1889,14 +1814,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Laster-tekla honek leihoa beste batzuen gainera eramaten du. Formatua \"&lt;"
-"Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
+"Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
 "Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
 "eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. "
 "Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
 "izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:153
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1906,14 +1830,13 @@ msgid ""
 "for this action."
 msgstr ""
 "Laster-tekla honek leihoari tamaina aldatzen dio horizontalki libre dagoen "
-"lekua betetzeko. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;"
+"lekua betetzeko. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;"
 "Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak "
 "eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" "
 "moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
 "da laster-teklarik izango ekintza honentzat."
 
 #: src/metacity.schemas.in.h:154
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1923,7 +1846,7 @@ msgid ""
 "for this action."
 msgstr ""
 "Laster-tekla honek leihoari tamaina aldatzen dio bertikalki libre dagoen "
-"lekua betetzeko. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maiust&gt;&lt;"
+"lekua betetzeko. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;"
 "Alt&gt;F1 itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak "
 "eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" "
 "moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
@@ -1971,7 +1894,6 @@ msgstr ""
 "dagoenerako."
 
 #: src/metacity.schemas.in.h:162
-#, fuzzy
 msgid "Unmaximize window"
 msgstr "Desmaximizatu leihoa"
 
@@ -2081,8 +2003,7 @@ msgstr ""
 
 #: src/screen.c:448
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Ezin izan da eskuratu leiho-kudeatzailearen hautapena \"%2$s\" bistaratzeko %"
 "1$d pantailan\n"
@@ -2160,7 +2081,7 @@ msgstr "%s atributu ezezaguna <geometry> elementuan"
 msgid "Unknown element %s"
 msgstr "%s elementu ezezaguna"
 
-#: src/session.c:1937
+#: src/session.c:1947
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2202,8 +2123,7 @@ msgstr "\"%s\" ezin da analizatu koma mugikorreko zenbaki gisa"
 #: src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr ""
-"Balio boolearrak \"egiazkoak\" edo \"faltsuak\" izan daitezke, ez \"%s\""
+msgstr "Balio boolearrak \"egiazkoak\" edo \"faltsuak\" izan daitezke, ez \"%s\""
 
 #: src/theme-parser.c:572
 #, c-format
@@ -2213,8 +2133,7 @@ msgstr "Angeluak 0.0 eta 360.0 bitartekoa behar du, %g \n"
 #: src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
-"Alfak 0.0 (ikusezina) eta 1.0 (erabat opakoa) artekoa izan behar du, %g\n"
+msgstr "Alfak 0.0 (ikusezina) eta 1.0 (erabat opakoa) artekoa izan behar du, %g\n"
 
 #: src/theme-parser.c:684
 #, c-format
@@ -2313,8 +2232,7 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "Ez dago \"value\" atributurik <%s> elementuan"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 "button_width/button_height eta aspektu-erlazioa ezin dira batera zehaztu "
 "botoietan"
@@ -2483,8 +2401,7 @@ msgstr "Ez da \"%s\" izeneko <draw_ops> bat ere definitu"
 #: src/theme-parser.c:2974 src/theme-parser.c:3090
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr ""
-"Hemen \"%s\" draw_ops sartzen bada, erreferentzia zirkularra sortuko da"
+msgstr "Hemen \"%s\" draw_ops sartzen bada, erreferentzia zirkularra sortuko da"
 
 #: src/theme-parser.c:3153
 #, c-format
@@ -2613,13 +2530,11 @@ msgstr ""
 #: src/theme-parser.c:3659
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr ""
-"Gaian kanporen dagoen elementuak <metacity_theme> izan behar du, ez <%s>"
+msgstr "Gaian kanporen dagoen elementuak <metacity_theme> izan behar du, ez <%s>"
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "<%s> elementua ez da onartzen izena/egilea/data/azalpena elementuan"
 
 #: src/theme-parser.c:3684
@@ -2629,15 +2544,13 @@ msgstr "<%s> elementua ez da onartzen <constant> elementuaren barnean"
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "<%s> elementua ez da onartzen distance/border/aspect_ratio elementuan"
 
 #: src/theme-parser.c:3718
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr ""
-"<%s> elementua ez da onartzen marrazteko eragiketaren elementuaren barnean"
+msgstr "<%s> elementua ez da onartzen marrazteko eragiketaren elementuaren barnean"
 
 #: src/theme-parser.c:3728 src/theme-parser.c:3758 src/theme-parser.c:3763
 #, c-format
@@ -2853,8 +2766,7 @@ msgstr ""
 
 #: src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
-msgstr ""
-"adierazpenaren kokalekuko probak TRUE itzuli du, baina errore bat ezarri du"
+msgstr "adierazpenaren kokalekuko probak TRUE itzuli du, baina errore bat ezarri du"
 
 #: src/theme-viewer.c:1229
 msgid "position expression test returned FALSE but didn't set error"
@@ -2889,8 +2801,7 @@ msgstr "y balioa %d zen, %d espero zenean"
 #: src/theme-viewer.c:1310
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr ""
-"%d koordenada adierazpen analizatua %g segundotan (%g segundo batazbesteko)\n"
+msgstr "%d koordenada adierazpen analizatua %g segundotan (%g segundo batazbesteko)\n"
 
 #: src/theme.c:202
 msgid "top"
@@ -2980,8 +2891,7 @@ msgstr "Kolore nahastuko \"%s\" alfa balioa ez dago 0,0 eta 1,0 artean"
 
 #: src/theme.c:1111
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "Itzal-faktorea \"shade/base_color/factor\" da, \"%s\" ez dator bat "
 "formatuarekin"
@@ -3004,8 +2914,7 @@ msgstr "Ezin izan da \"%s\" kolorea analizatu"
 #: src/theme.c:1423
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr ""
-"Koordenatuen adierazpenak '%s' karakterea dauka, eta hori ez da onartzen"
+msgstr "Koordenatuen adierazpenak '%s' karakterea dauka, eta hori ez da onartzen"
 
 #: src/theme.c:1450
 #, c-format
@@ -3019,8 +2928,7 @@ msgstr ""
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr ""
-"Koordenatuen adierazpenak '%s' osoko zenbakia dauka, eta ezin da analizatu"
+msgstr "Koordenatuen adierazpenak '%s' osoko zenbakia dauka, eta ezin da analizatu"
 
 #: src/theme.c:1531
 #, c-format
@@ -3040,23 +2948,19 @@ msgid "Coordinate expression results in division by zero"
 msgstr "Koordenatuen adierazpenak zero zatitzaileko zatiketa ematen du"
 
 #: src/theme.c:1779
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Koordenatuen adierazpena mod eragilea erabiltzen saiatzen da koma "
 "mugikorreko zenbaki batean"
 
 #: src/theme.c:1836
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr ""
-"Koordenatuen adierazpenak \"%s\" eragilea du eragigai bat espero zen lekuan"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr "Koordenatuen adierazpenak \"%s\" eragilea du eragigai bat espero zen lekuan"
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
-"Koordenatuen adierazpenak eragigai bat du eragile bat espero zen lekuan"
+msgstr "Koordenatuen adierazpenak eragigai bat du eragile bat espero zen lekuan"
 
 #: src/theme.c:1853
 msgid "Coordinate expression ended with an operator instead of an operand"
@@ -3084,8 +2988,7 @@ msgstr ""
 
 #: src/theme.c:2011
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
-"Koordenatuen adierazpenak ixteko parentesi bat du, baina irekitzekoa falta da"
+msgstr "Koordenatuen adierazpenak ixteko parentesi bat du, baina irekitzekoa falta da"
 
 #: src/theme.c:2074
 #, c-format
@@ -3094,8 +2997,7 @@ msgstr "Koordenatuen adierazpenak \"%s\" aldagai edo konstante ezezaguna du"
 
 #: src/theme.c:2131
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
-"Koordenatuen adierazpenak irekitzeko parentesi bat du, baina ixtekoa falta da"
+msgstr "Koordenatuen adierazpenak irekitzeko parentesi bat du, baina ixtekoa falta da"
 
 #: src/theme.c:2142
 msgid "Coordinate expression doesn't seem to have any operators or operands"
@@ -3117,10 +3019,8 @@ msgstr ""
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> falta da"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> falta da"
 
 #: src/theme.c:4445
 #, c-format
@@ -3153,8 +3053,7 @@ msgstr ""
 
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Erabiltzaileak definitutako konstanteak maiuskulaz hasi behar du; \"%s\" ez "
 "da maiuskulaz hasten"
@@ -3229,7 +3128,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikazioak _NET_WM_PID %ld faltsua ezarri du\n"
 
 #. first time through
-#: src/window.c:4931
+#: src/window.c:4951
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3245,7 +3144,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5602
+#: src/window.c:5622
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3277,8 +3176,7 @@ msgstr "0x%2$lx leihoko %1$s propietateak UTF-8 baliogabea du\n"
 
 #: src/xprops.c:482
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "0x%2$lx leihoko %1$s propietateak UTF-8 baliogabea du zerrendako %3$d. "
 "elementuan\n"
@@ -3295,3 +3193,4 @@ msgstr ""
 
 #~ msgid "Move to %s"
 #~ msgstr "Eraman %s(e)ra"
+
