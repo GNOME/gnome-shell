@@ -26,7 +26,7 @@ Themes are in a simple XML-subset format.
      rounded_bottom_right=true.
 
      -->
-<frame_geometry name="normal" has_title="true" title_size="medium">
+<frame_geometry name="normal" has_title="true" title_scale="medium">
   <distance name="left_width" value="6"/>
   <distance name="right_width" value="6"/>
   <distance name="bottom_height" value="7"/>
@@ -93,9 +93,9 @@ Themes are in a simple XML-subset format.
         width="3" dash_on_length="2" dash_off_length="3"/>
   <rectangle color="blend/gtk:fg[NORMAL]/gtk:bg[NORMAL]/0.7"
              x="0" y="0" width="width - 1" height="height - 1" filled="true"/>
-  <arc x="0" y="0" width="width - 1" height="height - 1" 
+  <arc color="dark gray" x="0" y="0" width="width - 1" height="height - 1" 
        filled="false" start_angle="30" extent_angle="180"/>
-  <tint color="orange" alpha="0.5" x1="0" y1="0" x2="0" y2="height"/>
+  <tint color="orange" alpha="0.5" x="0" y="0" width="width" height="height"/>
  <!-- may be vertical, horizontal, diagonal -->
   <gradient type="diagonal" 
             x="10" y="30" width="width / 3" height="height / 4">
