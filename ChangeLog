@@ -1,3 +1,17 @@
+2002-08-12  Havoc Pennington  <hp@redhat.com>
+
+	* src/stack.c (compute_layer): window is in fullscreen layer if
+	any member of its group is fullscreen
+
+	* src/window.c (meta_window_unmake_fullscreen): update layer for
+	whole window group
+	(meta_window_make_fullscreen): ditto
+
+	* src/util.c (meta_unsigned_long_hash): move hash/equal funcs for
+	Window in here.
+
+	* src/group.c: track window groups so we can do stuff with them.
+
 2002-08-11  Havoc Pennington  <hp@pobox.com>
 
 	* src/menu.c: don't include nonexistent stock-icons.h file

@@ -34,6 +34,7 @@
 #include "prefs.h"
 #include "resizepopup.h"
 #include "xprops.h"
+#include "group.h"
 
 #include <X11/Xatom.h>
 
@@ -408,6 +409,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->right_strut = 0;
   window->top_strut = 0;
   window->bottom_strut = 0;
+
+  window->cached_group = NULL;
   
   window->layer = META_LAYER_NORMAL;
   window->stack_op = NULL;
@@ -943,6 +946,8 @@ meta_window_free (MetaWindow  *window)
     g_object_unref (G_OBJECT (window->mini_icon));
 
   meta_icon_cache_free (&window->icon_cache);
+
+  meta_window_shutdown_group (window);
   
   g_free (window->sm_client_id);
   g_free (window->wm_client_machine);
@@ -1646,6 +1651,8 @@ meta_window_make_fullscreen (MetaWindow  *window)
 {
   if (!window->fullscreen)
     {
+      MetaGroup *group;
+      
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Fullscreening %s\n", window->desc);
 
@@ -1654,8 +1661,15 @@ meta_window_make_fullscreen (MetaWindow  *window)
       
       window->fullscreen = TRUE;
 
-      meta_stack_update_layer (window->screen->stack, window);
+      meta_stack_freeze (window->screen->stack);
+      group = meta_window_get_group (window);
+      if (group)
+        meta_group_update_layers (group);
+      else
+        meta_stack_update_layer (window->screen->stack, window);
+      
       meta_window_raise (window);
+      meta_stack_thaw (window->screen->stack);
       
       /* save size/pos as appropriate args for move_resize */
       window->saved_rect = window->rect;
@@ -1678,12 +1692,20 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
 {
   if (window->fullscreen)
     {
+      MetaGroup *group;
+      
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Unfullscreening %s\n", window->desc);
       
       window->fullscreen = FALSE;
 
-      meta_stack_update_layer (window->screen->stack, window);
+      meta_stack_freeze (window->screen->stack);
+      group = meta_window_get_group (window);
+      if (group)
+        meta_group_update_layers (group);
+      else
+        meta_stack_update_layer (window->screen->stack, window);      
+      meta_stack_thaw (window->screen->stack);
       
       meta_window_move_resize (window,
                                TRUE,
@@ -4197,6 +4219,9 @@ static int
 update_wm_hints (MetaWindow *window)
 {
   XWMHints *hints;
+  Window old_group_leader;
+
+  old_group_leader = window->xgroup_leader;
   
   /* Fill in defaults */
   window->input = TRUE;
@@ -4233,6 +4258,20 @@ update_wm_hints (MetaWindow *window)
                     window->wm_hints_mask);
       
       meta_XFree (hints);
+    }
+
+  if (window->xgroup_leader != old_group_leader)
+    {
+      if (old_group_leader != None)
+        {
+          meta_warning ("Window %s changed its group leader, not handled right now.\n",
+                        window->desc);
+          /* ignore the change */
+          window->xgroup_leader = old_group_leader;
+        }
+
+      /* ensure this window is listed in the group for this group leader */
+      meta_window_get_group (window);
     }
   
   return meta_error_trap_pop (window->display);

@@ -30,6 +30,8 @@ metacity_SOURCES= 				\
 	frames.h				\
 	gradient.c				\
 	gradient.h				\
+	group.c					\
+	group.h					\
 	iconcache.c				\
 	iconcache.h				\
 	inlinepixbufs.h				\

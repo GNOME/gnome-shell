@@ -29,6 +29,8 @@
 #include <X11/Xutil.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
+typedef struct _MetaGroup MetaGroup;
+
 typedef void (*MetaWindowForeachFunc) (MetaWindow *window,
                                        void       *data);
 
@@ -252,6 +254,9 @@ struct _MetaWindow
   /* Current dialog open for this window */
   int dialog_pid;
   int dialog_pipe;
+
+  /* maintained by group.c */
+  MetaGroup *cached_group;
 };
 
 #define META_WINDOW_ALLOWS_MOVE(w)     ((w)->has_move_func && !(w)->maximized && !(w)->fullscreen)

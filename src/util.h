@@ -69,6 +69,10 @@ void meta_topic      (MetaDebugTopic topic,
 void meta_push_no_msg_prefix (void);
 void meta_pop_no_msg_prefix  (void);
 
+gint  meta_unsigned_long_equal (gconstpointer v1,
+                                gconstpointer v2);
+guint meta_unsigned_long_hash  (gconstpointer v);
+
 #include <libintl.h>
 #define _(x) dgettext (GETTEXT_PACKAGE, x)
 #define N_(x) x

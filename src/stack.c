@@ -23,6 +23,7 @@
 #include "window.h"
 #include "errors.h"
 #include "frame.h"
+#include "group.h"
 #include "workspace.h"
 
 #include <X11/Xatom.h>
@@ -256,6 +257,37 @@ meta_stack_thaw (MetaStack *stack)
   meta_stack_sync_to_server (stack);
 }
 
+static gboolean
+group_member_is_fullscreen (MetaWindow *window)
+{
+  GSList *members;
+  MetaGroup *group;
+  GSList *tmp;
+  gboolean retval;
+  
+  group = meta_window_get_group (window);
+  if (group == NULL)
+    return FALSE;
+
+  retval = FALSE;
+  members = meta_group_list_windows (group);
+  tmp = members;
+  while (tmp != NULL)
+    {
+      MetaWindow *w = tmp->data;
+
+      if (w->fullscreen)
+        {
+          retval = TRUE;
+          break;
+        }
+
+      tmp = tmp->next;
+    }
+
+  return retval;
+}
+
 static void
 compute_layer (MetaWindow *window)
 {
@@ -275,12 +307,12 @@ compute_layer (MetaWindow *window)
       break;
       
     default:
-      if (window->fullscreen)
+      if (group_member_is_fullscreen (window))
         window->layer = META_LAYER_FULLSCREEN;
       else
         window->layer = META_LAYER_NORMAL;
       break;
-    }  
+    }
   
   meta_topic (META_DEBUG_STACK, "Window %s on layer %d\n",
               window->desc, window->layer);

@@ -76,25 +76,6 @@ static void    process_selection_request (MetaDisplay   *display,
 static void    process_selection_clear   (MetaDisplay   *display,
                                           XEvent        *event);
 
-static gint
-unsigned_long_equal (gconstpointer v1,
-                     gconstpointer v2)
-{
-  return *((const gulong*) v1) == *((const gulong*) v2);
-}
-
-static guint
-unsigned_long_hash (gconstpointer v)
-{
-  gulong val = * (const gulong *) v;
-
-  /* I'm not sure this works so well. */
-#if G_SIZEOF_LONG > 4
-  return (guint) (val ^ (val >> 32));
-#else
-  return val;
-#endif
-}
 
 static int
 set_utf8_string_hint (MetaDisplay *display,
@@ -386,6 +367,8 @@ meta_display_open (const char *name)
   display->no_focus_window = None;
 
   display->xinerama_cache_invalidated = TRUE;
+
+  display->groups_by_leader = NULL;
   
   screens = NULL;
 
@@ -440,7 +423,8 @@ meta_display_open (const char *name)
                                           display);
 #endif
   
-  display->window_ids = g_hash_table_new (unsigned_long_hash, unsigned_long_equal);
+  display->window_ids = g_hash_table_new (meta_unsigned_long_hash,
+                                          meta_unsigned_long_equal);
   
   display->double_click_time = 250;
   display->last_button_time = 0;

@@ -244,6 +244,9 @@ struct _MetaDisplay
 
   /* Closing down the display */
   int closing;
+
+  /* Managed by group.c */
+  GHashTable *groups_by_leader;
 };
 
 gboolean      meta_display_open                (const char  *name);

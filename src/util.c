@@ -369,3 +369,23 @@ meta_exit (MetaExitCode code)
   
   exit (code);
 }
+
+gint
+meta_unsigned_long_equal (gconstpointer v1,
+                          gconstpointer v2)
+{
+  return *((const gulong*) v1) == *((const gulong*) v2);
+}
+
+guint
+meta_unsigned_long_hash  (gconstpointer v)
+{
+  gulong val = * (const gulong *) v;
+
+  /* I'm not sure this works so well. */
+#if G_SIZEOF_LONG > 4
+  return (guint) (val ^ (val >> 32));
+#else
+  return val;
+#endif
+}
