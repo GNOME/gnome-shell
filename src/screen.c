@@ -82,7 +82,7 @@ set_wm_check_hint (MetaScreen *screen)
 static int
 set_supported_hint (MetaScreen *screen)
 {
-#define N_SUPPORTED 70
+#define N_SUPPORTED 54
   Atom atoms[N_SUPPORTED];
   
   atoms[0] = screen->display->atom_net_wm_name;
@@ -133,28 +133,12 @@ set_supported_hint (MetaScreen *screen)
   atoms[45] = screen->display->atom_net_wm_action_close;
   atoms[46] = screen->display->atom_net_wm_state_above;
   atoms[47] = screen->display->atom_net_wm_state_below;
-  atoms[48] = screen->display->atom_net_wm_pid;
-  atoms[49] = screen->display->atom_net_workarea;
-  atoms[50] = screen->display->atom_net_showing_desktop;
-  atoms[51] = screen->display->atom_net_desktop_layout;
-  atoms[52] = screen->display->atom_net_desktop_names;
-  atoms[53] = screen->display->atom_net_wm_allowed_actions;
-  atoms[54] = screen->display->atom_net_wm_action_move;
-  atoms[55] = screen->display->atom_net_wm_action_resize;
-  atoms[56] = screen->display->atom_net_wm_action_shade;
-  atoms[57] = screen->display->atom_net_wm_action_stick;
-  atoms[58] = screen->display->atom_net_wm_action_maximize_horz;
-  atoms[59] = screen->display->atom_net_wm_action_maximize_vert;
-  atoms[60] = screen->display->atom_net_wm_action_change_desktop;
-  atoms[61] = screen->display->atom_net_wm_action_close;
-  atoms[62] = screen->display->atom_net_wm_state_above;
-  atoms[63] = screen->display->atom_net_wm_state_below;
-  atoms[64] = screen->display->atom_net_startup_id;
-  atoms[65] = screen->display->atom_net_wm_strut_partial;
-  atoms[66] = screen->display->atom_net_wm_action_fullscreen;
-  atoms[67] = screen->display->atom_net_wm_action_minimize;
-  atoms[68] = screen->display->atom_net_frame_extents;
-  atoms[69] = screen->display->atom_net_request_frame_extents;
+  atoms[48] = screen->display->atom_net_startup_id;
+  atoms[49] = screen->display->atom_net_wm_strut_partial;
+  atoms[50] = screen->display->atom_net_wm_action_fullscreen;
+  atoms[51] = screen->display->atom_net_wm_action_minimize;
+  atoms[52] = screen->display->atom_net_frame_extents;
+  atoms[53] = screen->display->atom_net_request_frame_extents;
   
   XChangeProperty (screen->display->xdisplay, screen->xroot,
                    screen->display->atom_net_supported,
