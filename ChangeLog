@@ -1,3 +1,31 @@
+2002-10-16  Havoc Pennington  <hp@redhat.com>
+
+	* src/workspace.c: workspaces are all per-screen now, fix
+	accordingly
+
+	* src/core.c: fix multihead workspace stuff
+
+	* src/keybindings.c: multihead-rama
+
+	* src/screen.c (meta_screen_show_desktop): new functions to
+	replace display equivalents
+
+	* src/display.c (meta_display_get_workspace_by_screen_index): get
+	rid of this
+	(meta_display_get_workspace_by_index): get rid of this
+	(event_callback): handle _NET_SHOWING_DESKTOP message per-screen
+
+	* src/screen.c (meta_screen_get_workspace_by_index): new function
+
+	* src/screen.h (struct _MetaScreen): move workspace list, and 
+	showing_desktop flag, to be per-screen
+
+	* src/window.c (window_query_root_pointer): return whether pointer
+	is on window's screen
+	(meta_window_handle_mouse_grab_op_event): don't use coordinates
+	from other screens when updating a window operation on the current 
+	screen. I can't believe no one has reported this...
+
 2002-10-16  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (meta_window_client_message): update window layer

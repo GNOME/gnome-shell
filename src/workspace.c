@@ -37,8 +37,8 @@ meta_workspace_new (MetaScreen *screen)
   workspace = g_new (MetaWorkspace, 1);
 
   workspace->screen = screen;
-  workspace->screen->display->workspaces =
-    g_list_append (workspace->screen->display->workspaces, workspace);
+  workspace->screen->workspaces =
+    g_list_append (workspace->screen->workspaces, workspace);
   workspace->windows = NULL;
 
   workspace->work_area.x = 0;
@@ -83,8 +83,8 @@ meta_workspace_free (MetaWorkspace *workspace)
 
   screen = workspace->screen;
   
-  workspace->screen->display->workspaces =
-    g_list_remove (workspace->screen->display->workspaces, workspace);
+  workspace->screen->workspaces =
+    g_list_remove (workspace->screen->workspaces, workspace);
 
   g_free (workspace->name);
   
@@ -234,38 +234,13 @@ meta_workspace_index (MetaWorkspace *workspace)
   int i;
 
   i = 0;
-  tmp = workspace->screen->display->workspaces;
+  tmp = workspace->screen->workspaces;
   while (tmp != NULL)
     {
       if (tmp->data == workspace)
         return i;
 
       ++i;
-                    
-      tmp = tmp->next;
-    }
-
-  meta_bug ("Workspace does not exist to index!\n");
-  return -1; /* compiler warnings */
-}
-
-int
-meta_workspace_screen_index  (MetaWorkspace *workspace)
-{
-  GList *tmp;
-  int i;
-
-  i = 0;
-  tmp = workspace->screen->display->workspaces;
-  while (tmp != NULL)
-    {
-      MetaWorkspace *w = tmp->data;
-
-      if (tmp->data == workspace)
-        return i;
-
-      if (w->screen == workspace->screen)
-        ++i;
                     
       tmp = tmp->next;
     }
@@ -309,7 +284,7 @@ set_active_space_hint (MetaScreen *screen)
 {
   unsigned long data[1];
   
-  data[0] = meta_workspace_screen_index (screen->active_workspace);
+  data[0] = meta_workspace_index (screen->active_workspace);
 
   meta_verbose ("Setting _NET_CURRENT_DESKTOP to %ld\n", data[0]);
   
@@ -541,8 +516,8 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
 
   meta_verbose ("Neighbor space is %d\n", i);
   
-  return meta_display_get_workspace_by_index (workspace->screen->display,
-                                              i);
+  return meta_screen_get_workspace_by_index (workspace->screen,
+                                             i);
 }
 
 void

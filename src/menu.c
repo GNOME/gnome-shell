@@ -133,12 +133,13 @@ activate_cb (GtkWidget *menuitem, gpointer data)
  */
 static char *
 get_workspace_name_with_accel (Display *display,
-                               int index)
+                               Window   xroot,
+                               int      index)
 {
   char *name;
   unsigned int number;
 
-  name = meta_core_get_workspace_name_with_index (display, index);
+  name = meta_core_get_workspace_name_with_index (display, xroot, index);
 
   /*
    * If the name is of the form "Workspace x" where x is an unsigned
@@ -312,9 +313,22 @@ meta_window_menu_new   (MetaFrames         *frames,
         {
           GtkWidget *mi;
           Display *display;
+          Window xroot;
+          
+          display = gdk_x11_drawable_get_xdisplay (GTK_WIDGET (frames)->window);
 
-          display = gdk_x11_drawable_get_xdisplay(GTK_WIDGET(frames)->window);
-
+#ifdef HAVE_GTK_MULTIHEAD
+          {
+            GdkScreen *screen;
+            screen = gdk_drawable_get_screen (GTK_WIDGET (frames)->window);
+            xroot = GDK_DRAWABLE_XID (gdk_screen_get_root_window (screen));
+          }
+#else
+          {
+            xroot = gdk_x11_get_default_root_xwindow ();
+          }
+#endif
+          
           i = 0;
           while (i < n_workspaces)
             {
@@ -327,7 +341,7 @@ meta_window_menu_new   (MetaFrames         *frames,
                                               i + 1,
                                               &key, &mods);
               
-              name = get_workspace_name_with_accel (display, i);
+              name = get_workspace_name_with_accel (display, xroot, i);
               if (ops & META_MENU_OP_UNSTICK)
                 label = g_strdup_printf (_("Only on %s"), name);
               else

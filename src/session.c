@@ -1008,7 +1008,7 @@ save_state (void)
                 while (w != NULL)
                   {
                     int n;
-                    n = meta_workspace_screen_index (w->data);
+                    n = meta_workspace_index (w->data);
                     fprintf (outfile,
                              "    <workspace index=\"%d\"/>\n", n);
 

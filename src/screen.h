@@ -64,6 +64,8 @@ struct _MetaScreen
   
   MetaWorkspace *active_workspace;
 
+  GList *workspaces;
+  
   MetaStack *stack;
 
   MetaCursor current_cursor;
@@ -87,7 +89,8 @@ struct _MetaScreen
   
   guint keys_grabbed : 1;
   guint all_keys_grabbed : 1;
-
+  guint showing_desktop : 1;
+  
   int closing;
 };
 
@@ -103,6 +106,9 @@ void          meta_screen_queue_frame_redraws (MetaScreen                 *scree
 void          meta_screen_queue_window_resizes (MetaScreen                 *screen);
 
 int           meta_screen_get_n_workspaces    (MetaScreen                 *screen);
+
+MetaWorkspace* meta_screen_get_workspace_by_index (MetaScreen    *screen,
+                                                   int            index);
 
 void          meta_screen_set_cursor          (MetaScreen                 *screen,
                                                MetaCursor                  cursor);
@@ -134,6 +140,11 @@ void meta_screen_calc_workspace_layout (MetaScreen *screen,
 void meta_screen_resize (MetaScreen *screen,
                          int         width,
                          int         height);
+
+
+/* Show/hide the desktop (temporarily hide all windows) */
+void     meta_screen_show_desktop   (MetaScreen *screen);
+void     meta_screen_unshow_desktop (MetaScreen *screen);
 
 
 #endif

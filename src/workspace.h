@@ -60,7 +60,6 @@ gboolean       meta_workspace_contains_window (MetaWorkspace *workspace,
                                                MetaWindow  *window);
 void           meta_workspace_activate      (MetaWorkspace *workspace);
 int            meta_workspace_index         (MetaWorkspace *workspace);
-int            meta_workspace_screen_index  (MetaWorkspace *workspace);
 GList*         meta_workspace_list_windows  (MetaWorkspace *workspace);
 
 void meta_workspace_invalidate_work_area (MetaWorkspace *workspace);

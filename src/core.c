@@ -434,9 +434,8 @@ meta_core_change_workspace (Display *xdisplay,
     meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
 
   meta_window_change_workspace (window,
-                                meta_display_get_workspace_by_screen_index (display,
-                                                                            window->screen,
-                                                                            new_workspace));
+                                meta_screen_get_workspace_by_index (window->screen,
+                                                                    new_workspace));
 }
 
 int
@@ -456,7 +455,7 @@ meta_core_get_active_workspace (Screen *xscreen)
 
   screen = meta_screen_for_x_screen (xscreen);
 
-  return meta_workspace_screen_index (screen->active_workspace);
+  return meta_workspace_index (screen->active_workspace);
 }
 
 int
@@ -624,13 +623,17 @@ meta_core_get_menu_accelerator (MetaMenuOp           menu_op,
 
 char *
 meta_core_get_workspace_name_with_index (Display *xdisplay,
-                                         int index)
+                                         Window   xroot,
+                                         int      index)
 {
   MetaDisplay *display;
+  MetaScreen *screen;
   MetaWorkspace *workspace;
 
   display = meta_display_for_x_display (xdisplay);
-  workspace = meta_display_get_workspace_by_index (display, index);
+  screen = meta_display_screen_for_root (display, xroot);
+  g_assert (screen != NULL);
+  workspace = meta_screen_get_workspace_by_index (screen, index);
   return (workspace != NULL) ? workspace->name : NULL;
 }
 

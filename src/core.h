@@ -101,7 +101,8 @@ int meta_core_get_active_workspace (Screen *xscreen);
 int meta_core_get_frame_workspace (Display *xdisplay,
                                    Window frame_xwindow);
 char* meta_core_get_workspace_name_with_index (Display *xdisplay,
-                                               int index);
+                                               Window xroot,
+                                               int    index);
 
 void  meta_core_get_frame_extents   (Display        *xdisplay,
                                      Window          frame_xwindow,

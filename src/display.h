@@ -162,11 +162,8 @@ struct _MetaDisplay
   /* Most recently focused list. Always contains all
    * live windows.
    */
-  GList *mru_list;
-  
-  GList *workspaces;
+  GList *mru_list;  
 
-  guint showing_desktop : 1;
   guint static_gravity_works : 1;
   
   /*< private-ish >*/
@@ -288,12 +285,6 @@ GSList*     meta_display_list_windows        (MetaDisplay *display);
 MetaDisplay* meta_display_for_x_display  (Display     *xdisplay);
 GSList*      meta_displays_list          (void);
 
-MetaWorkspace* meta_display_get_workspace_by_index        (MetaDisplay   *display,
-                                                           int            index);
-MetaWorkspace* meta_display_get_workspace_by_screen_index (MetaDisplay   *display,
-                                                           MetaScreen    *screen,
-                                                           int            index);
-
 Cursor         meta_display_create_x_cursor (MetaDisplay *display,
                                              MetaCursor   cursor);
 
@@ -331,10 +322,6 @@ void meta_display_ungrab_focus_window_button (MetaDisplay *display,
 void     meta_display_increment_event_serial (MetaDisplay *display);
 
 void     meta_display_update_active_window_hint (MetaDisplay *display);
-
-/* Show/hide the desktop (temporarily hide all windows) */
-void     meta_display_show_desktop   (MetaDisplay *display);
-void     meta_display_unshow_desktop (MetaDisplay *display);
 
 guint32  meta_display_get_current_time (MetaDisplay *display);
 

@@ -522,9 +522,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
                       window->desc, window->initial_workspace);
 
           space =
-            meta_display_get_workspace_by_screen_index (window->display,
-                                                        window->screen,
-                                                        window->initial_workspace);
+            meta_screen_get_workspace_by_index (window->screen,
+                                                window->initial_workspace);
           
           if (space)
             meta_workspace_add_window (space, window);
@@ -640,10 +639,10 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   meta_stack_thaw (window->screen->stack);
 
   /* disable show desktop mode unless we're a desktop component */
-  if (window->display->showing_desktop &&
+  if (window->screen->showing_desktop &&
       window->type != META_WINDOW_DESKTOP &&
       window->type != META_WINDOW_DOCK)
-    meta_display_unshow_desktop (window->display);
+    meta_screen_unshow_desktop (window->screen);
   
   meta_window_queue_calc_showing (window);
   
@@ -725,9 +724,8 @@ meta_window_apply_session_info (MetaWindow *window,
           MetaWorkspace *space;          
 
           space =
-            meta_display_get_workspace_by_screen_index (window->display,
-                                                        window->screen,
-                                                        GPOINTER_TO_INT (tmp->data));
+            meta_screen_get_workspace_by_index (window->screen,
+                                                GPOINTER_TO_INT (tmp->data));
           
           if (space)
             spaces = g_slist_prepend (spaces, space);
@@ -757,7 +755,7 @@ meta_window_apply_session_info (MetaWindow *window,
               meta_topic (META_DEBUG_SM,
                           "Restoring saved window %s to workspace %d\n",
                           window->desc,
-                          meta_workspace_screen_index (space));
+                          meta_workspace_index (space));
               
               tmp = tmp->next;
             }
@@ -1110,7 +1108,7 @@ meta_window_calc_showing (MetaWindow  *window)
   /* 3. See if we're in "show desktop" mode */
   
   if (showing &&
-      window->display->showing_desktop &&
+      window->screen->showing_desktop &&
       window->type != META_WINDOW_DESKTOP &&
       window->type != META_WINDOW_DOCK)
     {
@@ -1609,8 +1607,8 @@ meta_window_minimize (MetaWindow  *window)
 void
 meta_window_unminimize (MetaWindow  *window)
 {
-  if (window->display->showing_desktop)
-    meta_display_unshow_desktop (window->display);
+  if (window->screen->showing_desktop)
+    meta_screen_unshow_desktop (window->screen);
   
   if (window->minimized)
     {
@@ -1836,10 +1834,10 @@ meta_window_activate (MetaWindow *window,
                       guint32     timestamp)
 {
   /* disable show desktop mode unless we're a desktop component */
-  if (window->display->showing_desktop &&
+  if (window->screen->showing_desktop &&
       window->type != META_WINDOW_DESKTOP &&
       window->type != META_WINDOW_DOCK)
-    meta_display_unshow_desktop (window->display);
+    meta_screen_unshow_desktop (window->screen);
   
   /* Get window on current workspace */
   if (!meta_window_visible_on_workspace (window,
@@ -2957,7 +2955,7 @@ meta_window_get_net_wm_desktop (MetaWindow *window)
       g_list_length (window->workspaces) > 1)
     return 0xFFFFFFFF;
   else
-    return meta_workspace_screen_index (window->workspaces->data);
+    return meta_workspace_index (window->workspaces->data);
 }
 
 int
@@ -3274,9 +3272,8 @@ meta_window_client_message (MetaWindow *window,
                     window->desc, space);
 
       workspace =
-        meta_display_get_workspace_by_screen_index (display,
-                                                    window->screen,
-                                                    space);
+        meta_screen_get_workspace_by_index (window->screen,
+                                            space);
 
       if (workspace)
         {
@@ -4984,7 +4981,7 @@ static GList*
 meta_window_get_workspaces (MetaWindow *window)
 {
   if (window->on_all_workspaces)
-    return window->display->workspaces;
+    return window->screen->workspaces;
   else
     return window->workspaces;
 }
@@ -5864,9 +5861,8 @@ menu_callback (MetaWindowMenu *menu,
             MetaWorkspace *workspace;
 
             workspace =
-              meta_display_get_workspace_by_screen_index (window->display,
-                                                          window->screen,
-                                                          workspace_index);
+              meta_screen_get_workspace_by_index (window->screen,
+                                                  workspace_index);
 
             if (workspace)
               {
@@ -5983,7 +5979,7 @@ meta_window_show_menu (MetaWindow *window,
   meta_ui_window_menu_popup (menu, root_x, root_y, button, timestamp);
 }
 
-static void
+static gboolean
 window_query_root_pointer (MetaWindow *window,
                           int *x, int *y)
 {
@@ -6010,6 +6006,8 @@ window_query_root_pointer (MetaWindow *window,
     *x = root_x_return;
   if (y)
     *y = root_y_return;
+
+  return root_return == window->screen->xroot;
 }
 
 static void
@@ -6167,8 +6165,9 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
         case META_GRAB_OP_MOVING:
         case META_GRAB_OP_KEYBOARD_MOVING:
           clear_moveresize_time (window);
-          update_move (window, event->xbutton.state,
-                       event->xbutton.x_root, event->xbutton.y_root);
+          if (event->xbutton.root == window->screen->xroot)
+            update_move (window, event->xbutton.state,
+                         event->xbutton.x_root, event->xbutton.y_root);
           break;
           
         case META_GRAB_OP_RESIZING_E:
@@ -6188,7 +6187,8 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
         case META_GRAB_OP_KEYBOARD_RESIZING_SW:
         case META_GRAB_OP_KEYBOARD_RESIZING_NW:
           clear_moveresize_time (window);
-          update_resize (window, event->xbutton.x_root, event->xbutton.y_root);
+          if (event->xbutton.root == window->screen->xroot)
+            update_resize (window, event->xbutton.x_root, event->xbutton.y_root);
           break;
 
         default:
@@ -6205,10 +6205,10 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
         case META_GRAB_OP_KEYBOARD_MOVING:
           {
             int x, y;
-            window_query_root_pointer (window, &x, &y);
-            update_move (window,
-                         event->xbutton.state,
-                         x, y);
+            if (window_query_root_pointer (window, &x, &y))
+              update_move (window,
+                           event->xbutton.state,
+                           x, y);
           }
           break;
 
@@ -6230,8 +6230,8 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
         case META_GRAB_OP_KEYBOARD_RESIZING_NW:
           {
             int x, y;
-            window_query_root_pointer (window, &x, &y);
-            update_resize (window, x, y);
+            if (window_query_root_pointer (window, &x, &y))
+              update_resize (window, x, y);
           }
           break;
 

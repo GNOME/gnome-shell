@@ -56,7 +56,9 @@ if test -z "$ONLY_WM"; then
 
   echo "Launching clients"
   if test -n "$TEST_CLIENT"; then
-    DISPLAY=$CLIENT_DISPLAY $TEST_CLIENT &
+      for I in `seq 0 $SCREENS`; do
+          DISPLAY=$CLIENT_DISPLAY.$I $TEST_CLIENT &
+      done
   fi
 
   if test $CLIENTS != 0; then
@@ -79,7 +81,9 @@ if test -z "$ONLY_WM"; then
  
   usleep 50000
 
-  DISPLAY=$CLIENT_DISPLAY xsetroot -solid royalblue3
+  for I in `seq 0 $SCREENS`; do
+      DISPLAY=$CLIENT_DISPLAY.$I xsetroot -solid royalblue3
+  done
 fi
 
 if test -z "$ONLY_SETUP"; then

@@ -261,15 +261,12 @@ meta_display_open (const char *name)
   display->error_traps = 0;
   display->error_trap_handler = NULL;
   display->server_grab_count = 0;
-  display->workspaces = NULL;
 
   display->pending_pings = NULL;
   display->autoraise_timeout_id = 0;
   display->focus_window = NULL;
   display->expected_focus_window = NULL;
   display->mru_list = NULL;
-
-  display->showing_desktop = FALSE;
 
   /* FIXME copy the checks from GDK probably */
   display->static_gravity_works = g_getenv ("METACITY_USE_STATIC_GRAVITY") != NULL;
@@ -1539,9 +1536,8 @@ event_callback (XEvent   *event,
                                 space);
               
                   workspace =
-                    meta_display_get_workspace_by_screen_index (display,
-                                                                screen,
-                                                                space);
+                    meta_screen_get_workspace_by_index (screen,
+                                                        space);
 
                   if (workspace)
                     meta_workspace_activate (workspace);
@@ -1569,9 +1565,9 @@ event_callback (XEvent   *event,
 		  meta_verbose ("Request to %s desktop\n", showing_desktop ? "show" : "hide");
                   
 		  if (showing_desktop)
-		    meta_display_show_desktop (display);
+		    meta_screen_show_desktop (screen);
 		  else
-		    meta_display_unshow_desktop (display);
+		    meta_screen_unshow_desktop (screen);
 		}
               else if (event->xclient.message_type ==
                        display->atom_metacity_restart_message)
@@ -2145,56 +2141,6 @@ meta_display_unregister_x_window (MetaDisplay *display,
   remove_pending_pings_for_window (display, xwindow);
 }
 
-MetaWorkspace*
-meta_display_get_workspace_by_index (MetaDisplay *display,
-                                     int          idx)
-{
-  GList *tmp;
-
-  /* should be robust, index is maybe from an app */
-  if (idx < 0)
-    return NULL;
-  
-  tmp = g_list_nth (display->workspaces, idx);
-
-  if (tmp == NULL)
-    return NULL;
-  else
-    return tmp->data;
-}
-
-MetaWorkspace*
-meta_display_get_workspace_by_screen_index (MetaDisplay *display,
-                                            MetaScreen  *screen,
-                                            int          idx)
-{
-  GList *tmp;
-  int i;
-
-  /* should be robust, idx is maybe from an app */
-  if (idx < 0)
-    return NULL;
-  
-  i = 0;
-  tmp = display->workspaces;
-  while (tmp != NULL)
-    {
-      MetaWorkspace *w = tmp->data;
-
-      if (w->screen == screen)
-        {
-          if (i == idx)
-            return w;
-          else
-            ++i;
-        }
-      
-      tmp = tmp->next;
-    }
-
-  return NULL;
-}
-
 Cursor
 meta_display_create_x_cursor (MetaDisplay *display,
                               MetaCursor cursor)
@@ -2712,31 +2658,6 @@ meta_display_increment_event_serial (MetaDisplay *display)
                    display->atom_motif_wm_hints);
 }
 
-static void
-meta_display_update_showing_desktop_hint (MetaDisplay *display)
-{
-  GSList *tmp;
-  
-  unsigned long data[1];
-
-  data[0] = display->showing_desktop ? 1 : 0;
-  
-  tmp = display->screens;
-  while (tmp != NULL)
-    {
-      MetaScreen *screen = tmp->data;
-      
-      meta_error_trap_push (display);
-      XChangeProperty (display->xdisplay, screen->xroot,
-                       display->atom_net_showing_desktop,
-                       XA_CARDINAL,
-                       32, PropModeReplace, (guchar*) data, 1);
-      meta_error_trap_pop (display);
-
-      tmp = tmp->next;
-    }
-}
-
 void
 meta_display_update_active_window_hint (MetaDisplay *display)
 {
@@ -2762,62 +2683,6 @@ meta_display_update_active_window_hint (MetaDisplay *display)
                        32, PropModeReplace, (guchar*) data, 2);
       meta_error_trap_pop (display);
 
-      tmp = tmp->next;
-    }
-}
-
-static void
-queue_windows_showing (MetaDisplay *display)
-{
-  GSList *windows;
-  GSList *tmp;
-
-  windows = meta_display_list_windows (display);
-
-  tmp = windows;
-  while (tmp != NULL)
-    {
-      meta_window_queue_calc_showing (tmp->data);
-      
-      tmp = tmp->next;
-    }
-
-  g_slist_free (windows);
-}
-
-void
-meta_display_show_desktop (MetaDisplay *display)
-{
-  
-  if (display->showing_desktop)
-    return;
-
-  display->showing_desktop = TRUE;
-
-  queue_windows_showing (display);
-
-  meta_display_update_showing_desktop_hint (display);
-}
-
-void
-meta_display_unshow_desktop (MetaDisplay *display)
-{
-  GSList *tmp;
-
-  if (!display->showing_desktop)
-    return;
-
-  display->showing_desktop = FALSE;
-  
-  queue_windows_showing (display);
-
-  meta_display_update_showing_desktop_hint (display);
-
-  tmp = display->screens;
-  while (tmp != NULL)
-    {
-      MetaScreen *screen = tmp->data;
-      meta_screen_focus_top_window (screen, NULL);
       tmp = tmp->next;
     }
 }

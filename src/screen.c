@@ -523,15 +523,18 @@ meta_screen_new (MetaDisplay *display,
   screen->work_area_idle = 0;
 
   screen->active_workspace = NULL;
+  screen->workspaces = NULL;
   screen->rows_of_workspaces = 1;
   screen->columns_of_workspaces = -1;
   screen->vertical_workspaces = FALSE;
   screen->starting_corner = META_SCREEN_TOPLEFT;
 
+  screen->showing_desktop = FALSE;
+  
   screen->xinerama_infos = NULL;
   screen->n_xinerama_infos = 0;
   screen->last_xinerama_index = 0;
-
+  
   reload_xinerama_infos (screen);
   
   meta_screen_set_cursor (screen, META_CURSOR_DEFAULT);
@@ -811,22 +814,34 @@ meta_screen_queue_window_resizes (MetaScreen *screen)
 int
 meta_screen_get_n_workspaces (MetaScreen *screen)
 {
+  return g_list_length (screen->workspaces);
+}
+
+MetaWorkspace*
+meta_screen_get_workspace_by_index (MetaScreen  *screen,
+                                    int          idx)
+{
   GList *tmp;
   int i;
 
+  /* should be robust, idx is maybe from an app */
+  if (idx < 0)
+    return NULL;
+  
   i = 0;
-  tmp = screen->display->workspaces;
+  tmp = screen->workspaces;
   while (tmp != NULL)
     {
       MetaWorkspace *w = tmp->data;
 
-      if (w->screen == screen)
-        ++i;
-      
+      if (i == idx)
+        return w;
+
+      ++i;
       tmp = tmp->next;
     }
 
-  return i;
+  return NULL;
 }
 
 static int
@@ -867,21 +882,17 @@ update_num_workspaces (MetaScreen *screen)
   last_remaining = NULL;
   extras = NULL;
   i = 0;
-  tmp = screen->display->workspaces;
+  tmp = screen->workspaces;
   while (tmp != NULL)
     {
       MetaWorkspace *w = tmp->data;
 
-      if (w->screen == screen)
-        {          
-          ++i;
-
-          if (i > new_num)
-            extras = g_list_prepend (extras, w);
-          else
-            last_remaining = w;
-        }
-      
+      if (i > new_num)
+        extras = g_list_prepend (extras, w);
+      else
+        last_remaining = w;
+          
+      ++i;
       tmp = tmp->next;
     }
 
@@ -1078,7 +1089,7 @@ meta_screen_ensure_workspace_popup (MetaScreen *screen)
               if (k >= len)
                 break;
 
-              workspace = meta_display_get_workspace_by_index (screen->display, k);
+              workspace = meta_screen_get_workspace_by_index (screen, k);
               g_assert (workspace);
 
               entries[iter].key = (MetaTabEntryKey) workspace;
@@ -1096,7 +1107,7 @@ meta_screen_ensure_workspace_popup (MetaScreen *screen)
         {
           MetaWorkspace *workspace;
 
-          workspace = meta_display_get_workspace_by_index (screen->display, i);
+          workspace = meta_screen_get_workspace_by_index (screen, i);
 
           g_assert (workspace);
 
@@ -1362,17 +1373,14 @@ meta_screen_update_workspace_names (MetaScreen *screen)
     }
 
   i = 0;
-  tmp = screen->display->workspaces;
+  tmp = screen->workspaces;
   while (tmp != NULL && i < n_names)
     {
       MetaWorkspace *w = tmp->data;
 
-      if (w->screen == screen)
-        {
-          meta_workspace_set_name (w, names[i]);
+      meta_workspace_set_name (w, names[i]);
           
-          ++i;
-        }
+      ++i;
       
       tmp = tmp->next;
     }
@@ -1413,7 +1421,7 @@ set_work_area_hint (MetaScreen *screen)
   
   num_workspaces = meta_screen_get_n_workspaces (screen);
   data = g_new (unsigned long, num_workspaces * 4);
-  tmp_list = screen->display->workspaces;
+  tmp_list = screen->workspaces;
   tmp = data;
   
   while (tmp_list != NULL)
@@ -1542,4 +1550,69 @@ meta_screen_resize (MetaScreen *screen,
   
   /* Queue a resize on all the windows */
   meta_screen_foreach_window (screen, meta_screen_resize_func, 0);
+}
+
+static void
+update_showing_desktop_hint (MetaScreen *screen)
+{
+  unsigned long data[1];
+
+  data[0] = screen->showing_desktop ? 1 : 0;  
+      
+  meta_error_trap_push (screen->display);
+  XChangeProperty (screen->display->xdisplay, screen->xroot,
+                   screen->display->atom_net_showing_desktop,
+                   XA_CARDINAL,
+                   32, PropModeReplace, (guchar*) data, 1);
+  meta_error_trap_pop (screen->display);
+}
+
+static void
+queue_windows_showing (MetaScreen *screen)
+{
+  GSList *windows;
+  GSList *tmp;
+
+  windows = meta_display_list_windows (screen->display);
+
+  tmp = windows;
+  while (tmp != NULL)
+    {
+      MetaWindow *w = tmp->data;
+
+      if (w->screen == screen)
+        meta_window_queue_calc_showing (w);
+      
+      tmp = tmp->next;
+    }
+
+  g_slist_free (windows);
+}
+
+void
+meta_screen_show_desktop (MetaScreen *screen)
+{
+  if (screen->showing_desktop)
+    return;
+
+  screen->showing_desktop = TRUE;
+
+  queue_windows_showing (screen);
+
+  update_showing_desktop_hint (screen);
+}
+
+void
+meta_screen_unshow_desktop (MetaScreen *screen)
+{
+  if (!screen->showing_desktop)
+    return;
+
+  screen->showing_desktop = FALSE;
+  
+  queue_windows_showing (screen);
+
+  update_showing_desktop_hint (screen);
+
+  meta_screen_focus_top_window (screen, NULL);
 }
