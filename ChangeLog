@@ -1,5 +1,13 @@
 2002-06-12  Havoc Pennington  <hp@redhat.com>
 
+	* src/theme.c (meta_frame_layout_calc_geometry): when a window is
+	shaded, don't include client height in the height calculation.
+
+	* src/workspace.c (meta_workspace_get_neighbor): apply fix from 
+	Mads Villadsen for the Up arrow key, #84582
+
+2002-06-12  Havoc Pennington  <hp@redhat.com>
+
 	* src/theme.c (meta_frame_style_draw): Draw the buttons right
 	before the "overlay" piece.
 

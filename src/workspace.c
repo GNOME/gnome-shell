@@ -631,9 +631,22 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
         case META_MOTION_UP:
           if (i < cols)
             {
-              i = grid_area - (i % cols) - 1;
-              while (i >= num_workspaces)
-                i -= cols;
+	      if (i == 0)
+		{
+		  /* special case: go to bottom right corner == grid_area - 1 */
+		  i = grid_area - 1;
+		  while (i >= num_workspaces)
+		    /* if we are in a non-existant workspace look up in the column for next workspace */
+		    i -= cols;
+		}
+	      else
+		{
+		  /* calculate new workspace based on the bottom left corner == ((rows - 1) * cols) */
+		  i = ((rows - 1) * cols) + (i - 1);
+		  while (i >= num_workspaces)
+		    /* if we are in a non-existant workspace look up in the column for next workspace */
+		    i -= cols;
+		}
             }
           else
             i -= cols;

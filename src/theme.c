@@ -412,7 +412,8 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout *layout,
                                  &fgeom->right_width);
 
   width = client_width + fgeom->left_width + fgeom->right_width;
-  height = client_height + fgeom->top_height + fgeom->bottom_height;
+  height = ((flags & META_FRAME_SHADED) ? client_height : 0) +
+    fgeom->top_height + fgeom->bottom_height;
 
   fgeom->width = width;
   fgeom->height = height;
