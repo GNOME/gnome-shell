@@ -8,15 +8,15 @@ msgstr ""
 "POT-Creation-Date: 2002-02-08 01:59-0500\n"
 "PO-Revision-Date: 2002-02-10 12:26+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
-"Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
+"Language-Team: Norwegian (bokmÃ¥l) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/display.c:160
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr "Feil under åpning av X Window System skjerm «%s»\n"
+msgstr "Feil under Ã¥pning av X Window System skjerm Â«%sÂ»\n"
 
 #: src/errors.c:93
 #, c-format
@@ -25,14 +25,14 @@ msgid ""
 "most likely the X server was shut down or you killed/destroyed\n"
 "the window manager.\n"
 msgstr ""
-"Mistet forbindelsen til skjerm «%s»;\n"
-"sannsynligvis ble X-tjeneren stengt ned eller kanskje du drepte/ødela\n"
-"vindushåndtereren.\n"
+"Mistet forbindelsen til skjerm Â«%sÂ»;\n"
+"sannsynligvis ble X-tjeneren stengt ned eller kanskje du drepte/Ã¸dela\n"
+"vindushÃ¥ndtereren.\n"
 
 #: src/errors.c:100
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr "Fatal IU-feil %d (%s) på skjerm «%s».\n"
+msgstr "Fatal IU-feil %d (%s) pÃ¥ skjerm Â«%sÂ».\n"
 
 #: src/frames.c:555
 msgid "Close Window"
@@ -60,7 +60,7 @@ msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr ""
-"Et annet program bruker allerede nøkkelen %s med modifikatorer %x som "
+"Et annet program bruker allerede nÃ¸kkelen %s med modifikatorer %x som "
 "binding\n"
 
 #: src/main.c:227
@@ -105,47 +105,47 @@ msgstr "_Flytt"
 
 #: src/menu.c:56
 msgid "_Resize"
-msgstr "End_re størrelse"
+msgstr "End_re stÃ¸rrelse"
 
 #. separator
 #: src/menu.c:58
 msgid "Put on _All Workspaces"
-msgstr "Plasser på _alle arbeidsområder"
+msgstr "Plasser pÃ¥ _alle arbeidsomrÃ¥der"
 
 #: src/menu.c:59
 msgid "Only on _This Workspace"
-msgstr "Kun på de_tte arbeidsområdet"
+msgstr "Kun pÃ¥ de_tte arbeidsomrÃ¥det"
 
 #: src/menu.c:298
 #, c-format
 msgid "Only on workspace %s%d"
-msgstr "Kun på arbeidsområde %s%d"
+msgstr "Kun pÃ¥ arbeidsomrÃ¥de %s%d"
 
 #: src/menu.c:301
 #, c-format
 msgid "Move to workspace %s%d"
-msgstr "Flytt til arbeidsområde %s%d"
+msgstr "Flytt til arbeidsomrÃ¥de %s%d"
 
 #: src/prefs.c:281 src/prefs.c:297 src/prefs.c:313 src/prefs.c:329
 #: src/prefs.c:345 src/prefs.c:365 src/prefs.c:381
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "GConf-nøkkel «%s» er satt til en ugyldig type\n"
+msgstr "GConf-nÃ¸kkel Â«%sÂ» er satt til en ugyldig type\n"
 
 #: src/prefs.c:415
 #, c-format
 msgid "GConf key '%s' is set to an invalid value"
-msgstr "GConf-nøkkel «%s» er satt til en ugyldig verdi"
+msgstr "GConf-nÃ¸kkel Â«%sÂ» er satt til en ugyldig verdi"
 
 #: src/prefs.c:487
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "Kunne ikke tolke skriftbeskrivelsen «%s» fra GConf-nøkkel %s\n"
+msgstr "Kunne ikke tolke skriftbeskrivelsen Â«%sÂ» fra GConf-nÃ¸kkel %s\n"
 
 #: src/prefs.c:524
 #, c-format
 msgid "%d stored in GConf key %s is not a valid font size\n"
-msgstr "%d lagret i GConf-nøkkel %s er ikke en gyldig skriftstørrelse\n"
+msgstr "%d lagret i GConf-nÃ¸kkel %s er ikke en gyldig skriftstÃ¸rrelse\n"
 
 #: src/prefs.c:550
 #, c-format
@@ -153,43 +153,43 @@ msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr ""
-"%d lagret i GConf-nøkkel %s er ikke et lesbart antall arbeidsområder, aktivt "
+"%d lagret i GConf-nÃ¸kkel %s er ikke et lesbart antall arbeidsomrÃ¥der, aktivt "
 "maksimum er %d\n"
 
 #: src/screen.c:174
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr "Skjerm %d på display «%s» er ugyldig\n"
+msgstr "Skjerm %d pÃ¥ display Â«%sÂ» er ugyldig\n"
 
 #: src/screen.c:190
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
-msgstr "Skjerm %d på display «%s» har allerede en vindushåndterer\n"
+msgstr "Skjerm %d pÃ¥ display Â«%sÂ» har allerede en vindushÃ¥ndterer\n"
 
 #: src/screen.c:268
 #, c-format
 msgid "Could not release screen %d on display '%s'\n"
-msgstr "Kunne ikke slippe skjerm %d på display «%s»\n"
+msgstr "Kunne ikke slippe skjerm %d pÃ¥ display Â«%sÂ»\n"
 
 #: src/session.c:760 src/session.c:767
 #, c-format
 msgid "Could not create directory '%s': %s\n"
-msgstr "Kunne ikke opprette katalog «%s»: %s\n"
+msgstr "Kunne ikke opprette katalog Â«%sÂ»: %s\n"
 
 #: src/session.c:777
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "Kunne ikke åpne sesjonsfil «%s» for skriving: %s\n"
+msgstr "Kunne ikke Ã¥pne sesjonsfil Â«%sÂ» for skriving: %s\n"
 
 #: src/session.c:909
 #, c-format
 msgid "Error writing session file '%s': %s\n"
-msgstr "Feil under skriving av sesjonsfil «%s»: %s\n"
+msgstr "Feil under skriving av sesjonsfil Â«%sÂ»: %s\n"
 
 #: src/session.c:914
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr "Feil under lukking av sesjonsfil «%s»: %s\n"
+msgstr "Feil under lukking av sesjonsfil Â«%sÂ»: %s\n"
 
 #: src/session.c:988
 #, c-format
@@ -203,17 +203,17 @@ msgstr "Feil under tolking av lagret sesjonsfil: %s\n"
 
 #: src/session.c:1060
 msgid "nested <window> tag"
-msgstr "<window> tag med flere nivåer"
+msgstr "<window> tag med flere nivÃ¥er"
 
 #: src/session.c:1110 src/session.c:1142
 #, c-format
 msgid "Unknown attribute %s on <window> element"
-msgstr "Ukjent attributt %s på <window>-element"
+msgstr "Ukjent attributt %s pÃ¥ <window>-element"
 
 #: src/session.c:1202
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
-msgstr "Ukjent attributt %s på <geometry>-element"
+msgstr "Ukjent attributt %s pÃ¥ <geometry>-element"
 
 #: src/session.c:1222
 #, c-format
@@ -234,7 +234,7 @@ msgstr "venstre"
 
 #: src/theme.c:354
 msgid "right"
-msgstr "høyre"
+msgstr "hÃ¸yre"
 
 #: src/theme.c:368
 #, c-format
@@ -248,7 +248,7 @@ msgstr ""
 
 #: src/theme.c:738
 msgid "Gradients should have at least two colors"
-msgstr "Gradienter må ha minst to farger"
+msgstr "Gradienter mÃ¥ ha minst to farger"
 
 #: src/theme.c:828
 #, c-format
@@ -294,24 +294,24 @@ msgstr ""
 #: src/theme.c:956
 #, c-format
 msgid "Could not parse color \"%s\""
-msgstr "Kunne ikke lese farge «%s»"
+msgstr "Kunne ikke lese farge Â«%sÂ»"
 
 #: src/theme.c:1206
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "Koordinatuttrykk inneholder tegn «%s» som ikke er tillatt"
+msgstr "Koordinatuttrykk inneholder tegn Â«%sÂ» som ikke er tillatt"
 
 #: src/theme.c:1233
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
-msgstr "Koordinatuttrykk inneholder flyttall «%s» som ikke kunne tolkes"
+msgstr "Koordinatuttrykk inneholder flyttall Â«%sÂ» som ikke kunne tolkes"
 
 #: src/theme.c:1247
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "Koordinatuttrykk inneholder heltall «%s» som ikke kunne tolkes"
+msgstr "Koordinatuttrykk inneholder heltall Â«%sÂ» som ikke kunne tolkes"
 
 #: src/theme.c:1314
 #, c-format
@@ -320,11 +320,11 @@ msgid ""
 "\"%s\""
 msgstr ""
 "Koordinatuttrykket inneholdt en ukjent operator ved begynnelsen av denne "
-"teksten: «%s»"
+"teksten: Â«%sÂ»"
 
 #: src/theme.c:1371
 msgid "Coordinate expression was empty or not understood"
-msgstr "Koordinatuttrykket var tomt eller ble ikke forstått"
+msgstr "Koordinatuttrykket var tomt eller ble ikke forstÃ¥tt"
 
 #: src/theme.c:1510 src/theme.c:1520 src/theme.c:1554
 msgid "Coordinate expression results in division by zero"
@@ -333,13 +333,13 @@ msgstr "Koordinatuttrykket resulterer i divisjon med null"
 #: src/theme.c:1562
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr "Koordinatuttrykket prøver å bruke mod-operator på et flyttall"
+msgstr "Koordinatuttrykket prÃ¸ver Ã¥ bruke mod-operator pÃ¥ et flyttall"
 
 #: src/theme.c:1619
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr "Koordinatuttrykket har en operator «%s» hvor en operand var ventet"
+msgstr "Koordinatuttrykket har en operator Â«%sÂ» hvor en operand var ventet"
 
 #: src/theme.c:1628
 msgid "Coordinate expression had an operand where an operator was expected"
@@ -355,7 +355,7 @@ msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
-"Koordinatuttrykket har en operator «%c» etter en operator «%c» og ingen "
+"Koordinatuttrykket har en operator Â«%cÂ» etter en operator Â«%cÂ» og ingen "
 "operand mellom dem."
 
 #: src/theme.c:1765
@@ -363,8 +363,8 @@ msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
 msgstr ""
-"Koordinatuttrykkets tolkeprosess overfløt bufferen sin. Dette er virkelig en "
-"Metacity feil, men er du sikker på at du trenger så store uttrykk?"
+"Koordinatuttrykkets tolkeprosess overflÃ¸t bufferen sin. Dette er virkelig en "
+"Metacity feil, men er du sikker pÃ¥ at du trenger sÃ¥ store uttrykk?"
 
 #: src/theme.c:1794
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
@@ -373,21 +373,21 @@ msgstr "Koordinatuttrykket hadde en parantes slutt uten parantes start"
 #: src/theme.c:1857
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "Koordinatuttrykket haddeen ukjent variabel eller konstant «%s»"
+msgstr "Koordinatuttrykket haddeen ukjent variabel eller konstant Â«%sÂ»"
 
 #: src/theme.c:1914
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "Koordinatuttrykket hadde en åpen parantes uten en avsluttende parantes"
+msgstr "Koordinatuttrykket hadde en Ã¥pen parantes uten en avsluttende parantes"
 
 #: src/theme.c:1925
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr ""
-"Koordinatuttrykket ser ikke ut til å ha noen operatorer eller operander"
+"Koordinatuttrykket ser ikke ut til Ã¥ ha noen operatorer eller operander"
 
 #: src/theme.c:2169 src/theme.c:2191 src/theme.c:2212
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr "Tema inneholdt et uttrykk «%s» som resulterte i en feil: %s\n"
+msgstr "Tema inneholdt et uttrykk Â«%sÂ»Â som resulterte i en feil: %s\n"
 
 #: src/theme.c:3376
 #, c-format
@@ -405,7 +405,7 @@ msgstr ""
 #: src/theme.c:3868
 #, fuzzy, c-format
 msgid "Failed to load theme \"%s\": %s"
-msgstr "Feil under lasting av tema «%s»: %s\n"
+msgstr "Feil under lasting av tema Â«%sÂ»: %s\n"
 
 #: src/theme.c:4013
 #, c-format
@@ -455,7 +455,7 @@ msgstr ""
 #: src/theme.c:4432 src/theme.c:4492
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr "Konstant «%s» er allerede definert"
+msgstr "Konstant Â«%sÂ»Â er allerede definert"
 
 #: src/xprops.c:53
 #, c-format
@@ -469,149 +469,149 @@ msgstr ""
 #: src/xprops.c:281
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "Egenskap %s på vindu 0x%lx inneholdt ugyldig UTF-8\n"
+msgstr "Egenskap %s pÃ¥ vindu 0x%lx inneholdt ugyldig UTF-8\n"
 
 #~ msgid "Line %d character %d: %s"
 #~ msgstr "Linje %d tegn %d: %s"
 
 #~ msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-#~ msgstr "Attributt «%s» gjentatt to ganger på samme <%s>-element"
+#~ msgstr "Attributt Â«%sÂ» gjentatt to ganger pÃ¥ samme <%s>-element"
 
 #~ msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-#~ msgstr "Attributt «%s» er ugyldig på <%s>-element i denne konteksten"
+#~ msgstr "Attributt Â«%sÂ» er ugyldig pÃ¥ <%s>-element i denne konteksten"
 
 #~ msgid "Could not parse \"%s\" as an integer"
-#~ msgstr "Kunne ikke lese «%s» som et heltall"
+#~ msgstr "Kunne ikke lese Â«%sÂ» som et heltall"
 
 #~ msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-#~ msgstr "Forsto ikke etterslepende tegn «%s» i streng «%s»"
+#~ msgstr "Forsto ikke etterslepende tegn Â«%sÂ» i streng Â«%sÂ»"
 
 #~ msgid "Integer %ld must be positive"
-#~ msgstr "Heltall %ld må være positivt"
+#~ msgstr "Heltall %ld mÃ¥ vÃ¦re positivt"
 
 #~ msgid "Integer %ld is too large, current max is %d"
 #~ msgstr "Heltall %ld er for stort, maksimalverdien er %d"
 
 #~ msgid "Could not parse \"%s\" as a floating point number"
-#~ msgstr "Kunne ikke lese «%s» som et flyttall"
+#~ msgstr "Kunne ikke lese Â«%sÂ» som et flyttall"
 
 #~ msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-#~ msgstr "Bolske verdier må være «sann» eller «usann» ikke «%s»"
+#~ msgstr "Bolske verdier mÃ¥ vÃ¦re Â«sannÂ»Â eller Â«usannÂ» ikke Â«%sÂ»"
 
 #~ msgid "Angle must be between 0.0 and 360.0, was %g\n"
-#~ msgstr "Vinkelen må være mellom 0.0 og 360.0, var %g\n"
+#~ msgstr "Vinkelen mÃ¥ vÃ¦re mellom 0.0 og 360.0, var %g\n"
 
 #~ msgid "No \"%s\" attribute on element <%s>"
-#~ msgstr "Ingen attributt «%s» på element <%s>"
+#~ msgstr "Ingen attributt Â«%sÂ» pÃ¥ element <%s>"
 
 #~ msgid "No \"%s\" attribute on <%s> element"
-#~ msgstr "Ingen attributt «%s» på <%s>-element"
+#~ msgstr "Ingen attributt Â«%sÂ» pÃ¥ <%s>-element"
 
 #~ msgid "<%s> name \"%s\" used a second time"
-#~ msgstr "<%s> navn «%s» brukt på nytt"
+#~ msgstr "<%s> navn Â«%sÂ»Â brukt pÃ¥ nytt"
 
 #~ msgid "<%s> parent \"%s\" has not been defined"
-#~ msgstr "<%s> opphav «%s» er ikke definert"
+#~ msgstr "<%s> opphav Â«%sÂ» er ikke definert"
 
 #~ msgid "<%s> geometry \"%s\" has not been defined"
-#~ msgstr "<%s> geometri «%s» er ikke definert"
+#~ msgstr "<%s> geometri Â«%sÂ» er ikke definert"
 
 #~ msgid "<%s> must specify either a geometry or a parent that has a geometry"
 #~ msgstr ""
-#~ "<%s> må spesifisere enten en geometri eller et opphav som har geometri"
+#~ "<%s> mÃ¥ spesifisere enten en geometri eller et opphav som har geometri"
 
 #~ msgid "Unknown type \"%s\" on <%s> element"
-#~ msgstr "Ukjent type «%s» på <%s>-element"
+#~ msgstr "Ukjent type Â«%sÂ» pÃ¥ <%s>-element"
 
 #~ msgid "Unknown style_set \"%s\" on <%s> element"
-#~ msgstr "Ukjent style_set «%s» på <%s>-element"
+#~ msgstr "Ukjent style_set Â«%sÂ» pÃ¥ <%s>-element"
 
 #~ msgid "Unknown function \"%s\" for menu icon"
-#~ msgstr "Ukjent funksjon for «%s» for menyikon"
+#~ msgstr "Ukjent funksjon for Â«%sÂ» for menyikon"
 
 #~ msgid "Unknown state \"%s\" for menu icon"
-#~ msgstr "Ukjent tilstand «%s» for menyikon"
+#~ msgstr "Ukjent tilstand Â«%sÂ»Â for menyikon"
 
 #~ msgid "Element <%s> is not allowed below <%s>"
 #~ msgstr "Element <%s> er ikke tillatt under <%s>"
 
 #~ msgid "No \"name\" attribute on element <%s>"
-#~ msgstr "Ingen «name»-attributt <%s>-element"
+#~ msgstr "Ingen Â«nameÂ»-attributt <%s>-element"
 
 #~ msgid "No \"value\" attribute on element <%s>"
-#~ msgstr "Ingen «value»-attributt på element <%s>"
+#~ msgstr "Ingen Â«valueÂ»-attributt pÃ¥ element <%s>"
 
 #~ msgid "Distance \"%s\" is unknown"
-#~ msgstr "Avstand «%s» er ukjent"
+#~ msgstr "Avstand Â«%sÂ»Â er ukjent"
 
 #~ msgid "Border \"%s\" is unknown"
-#~ msgstr "Grense «%s» er ukjent"
+#~ msgstr "Grense Â«%sÂ» er ukjent"
 
 #~ msgid "No \"x1\" attribute on element <%s>"
-#~ msgstr "Ingen «x1»-attributt på <%s>-element"
+#~ msgstr "Ingen Â«x1Â»-attributt pÃ¥ <%s>-element"
 
 #~ msgid "No \"y1\" attribute on element <%s>"
-#~ msgstr "Ingen «y1»-attributt på element <%s>"
+#~ msgstr "Ingen Â«y1Â»-attributt pÃ¥ element <%s>"
 
 #~ msgid "No \"x2\" attribute on element <%s>"
-#~ msgstr "Ingen «x2»-attributt på element <%s>"
+#~ msgstr "Ingen Â«x2Â»-attributt pÃ¥ element <%s>"
 
 #~ msgid "No \"y2\" attribute on element <%s>"
-#~ msgstr "Ingen «y2»-attributt på element <%s>"
+#~ msgstr "Ingen Â«y2Â»-attributt pÃ¥ element <%s>"
 
 #~ msgid "No \"x\" attribute on element <%s>"
-#~ msgstr "Ingen «x»-attributt på element <%s>"
+#~ msgstr "Ingen Â«xÂ»-attributt pÃ¥ element <%s>"
 
 #~ msgid "No \"y\" attribute on element <%s>"
-#~ msgstr "Ingen «y»-attributt på element <%s>"
+#~ msgstr "Ingen Â«yÂ»-attributt pÃ¥ element <%s>"
 
 #~ msgid "No \"width\" attribute on element <%s>"
-#~ msgstr "Ingen «width»-attributt på element <%s>"
+#~ msgstr "Ingen Â«widthÂ»-attributt pÃ¥ element <%s>"
 
 #~ msgid "No \"arrow\" attribute on element <%s>"
-#~ msgstr "Ingen «arrow»-attributt på element <%s>"
+#~ msgstr "Ingen Â«arrowÂ»-attributt pÃ¥ element <%s>"
 
 #~ msgid "No \"value\" attribute on <%s> element"
-#~ msgstr "Ingen «value»-attributt på <%s>-element"
+#~ msgstr "Ingen Â«valueÂ»-attributt pÃ¥ <%s>-element"
 
 #~ msgid "No \"position\" attribute on <%s> element"
-#~ msgstr "Ingen «position»-attributt på <%s>-element"
+#~ msgstr "Ingen Â«positionÂ»-attributt pÃ¥ <%s>-element"
 
 #~ msgid "No \"function\" attribute on <%s> element"
-#~ msgstr "Ingen «function»-attributt på <%s>-element"
+#~ msgstr "Ingen Â«functionÂ»-attributt pÃ¥ <%s>-element"
 
 #~ msgid "No \"state\" attribute on <%s> element"
-#~ msgstr "Ingen «state»-attributt på <%s>-element"
+#~ msgstr "Ingen Â«stateÂ»-attributt pÃ¥ <%s>-element"
 
 #~ msgid "Unknown function \"%s\" for button"
-#~ msgstr "Ukjent funksjon «%s» for knapp"
+#~ msgstr "Ukjent funksjon Â«%sÂ»Â for knapp"
 
 #~ msgid "Unknown state \"%s\" for button"
-#~ msgstr "Ukjent tilstand «%s» for knapp"
+#~ msgstr "Ukjent tilstand Â«%sÂ» for knapp"
 
 #~ msgid "Frame style already has a button for function %s state %s"
 #~ msgstr "Rammestil har allerede en knapp for funksjon %s tilstand %s"
 
 #~ msgid "No \"focus\" attribute on <%s> element"
-#~ msgstr "Ingen «focus»-attributt på <%s>-element"
+#~ msgstr "Ingen Â«focusÂ»-attributt pÃ¥ <%s>-element"
 
 #~ msgid "No \"style\" attribute on <%s> element"
-#~ msgstr "Ingen «style»-attributt på <%s>-element"
+#~ msgstr "Ingen Â«styleÂ»-attributt pÃ¥ <%s>-element"
 
 #~ msgid "\"%s\" is not a valid value for focus attribute"
-#~ msgstr "«%s» er ikke en gyldig verdi for fokusattributt"
+#~ msgstr "Â«%sÂ»Â er ikke en gyldig verdi for fokusattributt"
 
 #~ msgid "\"%s\" is not a valid value for state attribute"
-#~ msgstr "«%s» er ikke en gyldig verdi for tilstandsattributt"
+#~ msgstr "Â«%sÂ» er ikke en gyldig verdi for tilstandsattributt"
 
 #~ msgid "A style called \"%s\" has not been defined"
-#~ msgstr "En stil med navn «%s» er ikke definert"
+#~ msgstr "En stil med navn Â«%sÂ»Â er ikke definert"
 
 #~ msgid "No \"resize\" attribute on <%s> element"
-#~ msgstr "Ingen «resize»-attributt på <%s>-element"
+#~ msgstr "Ingen Â«resizeÂ»-attributt pÃ¥ <%s>-element"
 
 #~ msgid "\"%s\" is not a valid value for resize attribute"
-#~ msgstr "«%s» er ikke en gyldig verdi for attributt for endring av størrelse"
+#~ msgstr "Â«%sÂ»Â er ikke en gyldig verdi for attributt for endring av stÃ¸rrelse"
 
 #~ msgid "Failed to read theme from file %s: %s\n"
 #~ msgstr "Feil under lesing av tema fra fil %s: %s\n"
