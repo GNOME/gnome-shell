@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "POT-Creation-Date: 2002-10-31 05:39+0100\n"
-"PO-Revision-Date: 2002-12-10 19:37+EDT\n"
+"PO-Revision-Date: 2002-12-21 22:37+EDT\n"
 "Last-Translator: Ge'ez Frontier Foundation <locales@geez.org>\n"
 "Language-Team: Amharic <locales@geez.org>\n"
 "MIME-Version: 1.0\n"
@@ -85,11 +85,11 @@ msgstr "የመስኮት ሜኑ"
 
 #: src/frames.c:906
 msgid "Minimize Window"
-msgstr ""
+msgstr "መስኮቱን አሳንስ"
 
 #: src/frames.c:909
 msgid "Maximize Window"
-msgstr ""
+msgstr "መስኮቱን አስተልቅ"
 
 #: src/frames.c:912
 msgid "Unmaximize Window"
@@ -141,11 +141,11 @@ msgstr ""
 
 #: src/menu.c:52
 msgid "Mi_nimize"
-msgstr "ምሳንስ"
+msgstr "ምሳንስ (_N)"
 
 #: src/menu.c:53
 msgid "Ma_Ximize"
-msgstr "ምተልቅ (_x)"
+msgstr "ምተልቅ (_X)"
 
 #: src/menu.c:54
 msgid "Unma_ximize"
@@ -175,16 +175,16 @@ msgstr "ዝጋ (_C)"
 #. separator
 #: src/menu.c:62
 msgid "Put on _All Workspaces"
-msgstr ""
+msgstr "ሁሉም መስሪይ ቦታዎች ላይ አድርግ (_A)"
 
 #: src/menu.c:63
 msgid "Only on _This Workspace"
-msgstr ""
+msgstr "በዚህ የመስሪያ ቦታ ላይ ብቻ (_U)"
 
 #: src/menu.c:152 src/prefs.c:1644
 #, c-format
 msgid "Workspace %d"
-msgstr "የ%d መሥሪያ ቦታ"
+msgstr "መሥሪያ ቦታ %d"
 
 #.
 #. * Above name is a pointer into the Workspace struct. Here we make
@@ -193,7 +193,7 @@ msgstr "የ%d መሥሪያ ቦታ"
 #: src/menu.c:160
 #, c-format
 msgid "Workspace %s%d"
-msgstr "የ%s%d መሥሪያ ቦታ"
+msgstr "መሥሪያ ቦታ %s%d"
 
 #: src/menu.c:353
 #, c-format
@@ -203,7 +203,7 @@ msgstr ""
 #: src/menu.c:355
 #, c-format
 msgid "Move to %s"
-msgstr ""
+msgstr "ወደ %s አንቀሳቅስ"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -390,7 +390,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:11
 msgid "Current theme"
-msgstr ""
+msgstr "የአሁኑን ጭብጥ"
 
 #: src/metacity.schemas.in.h:12
 msgid "Delay in milliseconds for the auto raise option"
@@ -436,7 +436,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:19
 msgid "Maximize a window"
-msgstr ""
+msgstr "መስኮት አስተልቅ"
 
 #: src/metacity.schemas.in.h:20
 msgid "Maximize window horizontally"
@@ -448,7 +448,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:22
 msgid "Minimize a window"
-msgstr ""
+msgstr "መስኮት አሳንስ"
 
 #: src/metacity.schemas.in.h:23
 msgid "Modifier to use for modified window click actions"
@@ -456,7 +456,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:24
 msgid "Move a window"
-msgstr ""
+msgstr "መስኮት አንቀሳቅስ"
 
 #: src/metacity.schemas.in.h:25
 msgid "Move backward between panels and the desktop immediately"
@@ -508,51 +508,51 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window to workspace 1"
-msgstr ""
+msgstr "መስኮትን ወደ መሥሪያ ቦታ 1 አንቀሳቅስ"
 
 #: src/metacity.schemas.in.h:38
 msgid "Move window to workspace 10"
-msgstr ""
+msgstr "መስኮትን ወደ መሥሪያ ቦታ 10 አንቀሳቅስ"
 
 #: src/metacity.schemas.in.h:39
 msgid "Move window to workspace 11"
-msgstr ""
+msgstr "መስኮትን ወደ መሥሪያ ቦታ 11 አንቀሳቅስ"
 
 #: src/metacity.schemas.in.h:40
 msgid "Move window to workspace 12"
-msgstr ""
+msgstr "መስኮትን ወደ መሥሪያ ቦታ 12 አንቀሳቅስ"
 
 #: src/metacity.schemas.in.h:41
 msgid "Move window to workspace 2"
-msgstr ""
+msgstr "መስኮትን ወደ መሥሪያ ቦታ 2 አንቀሳቅስ"
 
 #: src/metacity.schemas.in.h:42
 msgid "Move window to workspace 3"
-msgstr ""
+msgstr "መስኮትን ወደ መሥሪያ ቦታ 3 አንቀሳቅስ"
 
 #: src/metacity.schemas.in.h:43
 msgid "Move window to workspace 4"
-msgstr ""
+msgstr "መስኮትን ወደ መሥሪያ ቦታ 4 አንቀሳቅስ"
 
 #: src/metacity.schemas.in.h:44
 msgid "Move window to workspace 5"
-msgstr ""
+msgstr "መስኮትን ወደ መሥሪያ ቦታ 5 አንቀሳቅስ"
 
 #: src/metacity.schemas.in.h:45
 msgid "Move window to workspace 6"
-msgstr ""
+msgstr "መስኮትን ወደ መሥሪያ ቦታ 6 አንቀሳቅስ"
 
 #: src/metacity.schemas.in.h:46
 msgid "Move window to workspace 7"
-msgstr ""
+msgstr "መስኮትን ወደ መሥሪያ ቦታ 7 አንቀሳቅስ"
 
 #: src/metacity.schemas.in.h:47
 msgid "Move window to workspace 8"
-msgstr ""
+msgstr "መስኮትን ወደ መሥሪያ ቦታ 8 አንቀሳቅስ"
 
 #: src/metacity.schemas.in.h:48
 msgid "Move window to workspace 9"
-msgstr ""
+msgstr "መስኮትን ወደ መሥሪያ ቦታ 9 አንቀሳቅስ"
 
 #: src/metacity.schemas.in.h:49
 msgid "Name of workspace"
@@ -603,51 +603,51 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:57
 msgid "Switch to workspace 1"
-msgstr ""
+msgstr "ወደ መሥሪያ ቦታ 1 ቀይር"
 
 #: src/metacity.schemas.in.h:58
 msgid "Switch to workspace 10"
-msgstr ""
+msgstr "ወደ መሥሪያ ቦታ 10 ቀይር"
 
 #: src/metacity.schemas.in.h:59
 msgid "Switch to workspace 11"
-msgstr ""
+msgstr "ወደ መሥሪያ ቦታ 11 ቀይር"
 
 #: src/metacity.schemas.in.h:60
 msgid "Switch to workspace 12"
-msgstr ""
+msgstr "ወደ መሥሪያ ቦታ 12 ቀይር"
 
 #: src/metacity.schemas.in.h:61
 msgid "Switch to workspace 2"
-msgstr ""
+msgstr "ወደ መሥሪያ ቦታ 2 ቀይር"
 
 #: src/metacity.schemas.in.h:62
 msgid "Switch to workspace 3"
-msgstr ""
+msgstr "ወደ መሥሪያ ቦታ 3 ቀይር"
 
 #: src/metacity.schemas.in.h:63
 msgid "Switch to workspace 4"
-msgstr ""
+msgstr "ወደ መሥሪያ ቦታ 4 ቀይር"
 
 #: src/metacity.schemas.in.h:64
 msgid "Switch to workspace 5"
-msgstr ""
+msgstr "ወደ መሥሪያ ቦታ 5 ቀይር"
 
 #: src/metacity.schemas.in.h:65
 msgid "Switch to workspace 6"
-msgstr ""
+msgstr "ወደ መሥሪያ ቦታ 6 ቀይር"
 
 #: src/metacity.schemas.in.h:66
 msgid "Switch to workspace 7"
-msgstr ""
+msgstr "ወደ መሥሪያ ቦታ 7 ቀይር"
 
 #: src/metacity.schemas.in.h:67
 msgid "Switch to workspace 8"
-msgstr ""
+msgstr "ወደ መሥሪያ ቦታ 8 ቀይር"
 
 #: src/metacity.schemas.in.h:68
 msgid "Switch to workspace 9"
-msgstr ""
+msgstr "ወደ መሥሪያ ቦታ 9 ቀይር"
 
 #: src/metacity.schemas.in.h:69
 msgid "Switch to workspace above this one"
@@ -1285,7 +1285,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:144
 msgid "Window title font"
-msgstr ""
+msgstr "የመስኮት አርእስት የፊደል ቅርጽ"
 
 #: src/prefs.c:422 src/prefs.c:438 src/prefs.c:454 src/prefs.c:470
 #: src/prefs.c:486 src/prefs.c:506 src/prefs.c:522 src/prefs.c:538
@@ -1350,7 +1350,7 @@ msgstr ""
 #: src/resizepopup.c:127
 #, c-format
 msgid "%d x %d"
-msgstr "%d x %d"
+msgstr "%d በ %d"
 
 #: src/screen.c:392
 #, c-format
@@ -2300,3 +2300,15 @@ msgstr ""
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
+
+msgid "Mo_ve"
+msgstr "ምንቀሳቅስ (_V)"
+
+msgid "_Shade"
+msgstr "ማውጣት (_S)"
+
+msgid "Ma_ximize"
+msgstr "ምተልቅ (_X)"
+
+msgid "_Minimize"
+msgstr "ምሳንስ (_M)"
