@@ -1,3 +1,7 @@
+2002-05-03  Havoc Pennington  <hp@redhat.com>
+
+	* src/Makefile.am: fix for automake 1.5, patch from Tomasz Kloczko 
+
 2002-05-03  Laszlo Peter  <laca@sun.com>
 
 	* configure.in: add the X libs to METACITY_MESSAGE_LIBS and

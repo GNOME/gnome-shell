@@ -106,7 +106,7 @@ IMAGES=default_icon.png
 VARIABLES=default_icon_data $(srcdir)/default_icon.png
 
 BUILT_SOURCES = inlinepixbufs.h
-CLEANFILES += inlinepixbufs.h
+CLEANFILES = inlinepixbufs.h
 
 inlinepixbufs.h: $(IMAGES)
 	   $(GDK_PIXBUF_CSOURCE) --raw --build-list $(VARIABLES) >$(srcdir)/inlinepixbufs.h
