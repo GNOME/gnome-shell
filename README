@@ -9,7 +9,12 @@ your petty hangups about version numbers.
 COMPILING METACITY
 ===
 
-You need GTK+ 2.0, ideally the latest in the 2.0.x series.
+You need GTK+ 2.0, ideally the latest in the 2.0.x series.  For
+multihead/Xinerama support to work, you need GTK+ 2.1.x or 2.2.  For
+startup notification to work you need libstartup-notification at
+http://www.freedesktop.org/software/startup-notification/ or on the
+GNOME ftp site. You also need GConf 1.2 (though it would be easy to
+remove that dependency in a custom hacked metacity, if you wanted).
 
 REPORTING BUGS AND SUBMITTING PATCHES
 ===
@@ -102,8 +107,9 @@ METACITY FEATURES
     If you click anywhere on the frame with button 3 it shows the 
      window menu.
 
-    If you hold down Alt and click inside a window, it will move the 
-     window (buttons 1 and 2) or show menu (button 3).
+    If you hold down Super (windows key) and click inside a window, it
+     will move the window (buttons 1 and 2) or show menu (button 3).
+     Or you can configure a different modifier for this.
 
     If you pick up a window with button 1 and then switch workspaces
      the window will come with you to the new workspace, this is 
