@@ -1,3 +1,8 @@
+2003-08-29  Rob Adams  <robadams@ucla.edu>
+
+	* src/ui.c (meta_gdk_pixbuf_get_from_pixmap): harden against null
+	return from gdk_pixmap_foreign_new.  Fix for #116923.
+
 2003-08-26  Guntupalli Karunakar  <karunakar@freedomink.org>
 
 	* configure.in: Added "hi" (Hindi) to ALL_LINGUAS.

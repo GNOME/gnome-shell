@@ -523,18 +523,21 @@ meta_gdk_pixbuf_get_from_pixmap (GdkPixbuf   *dest,
   else
     drawable = gdk_pixmap_foreign_new (xpixmap);
 
-  cmap = get_cmap (drawable);
+  if (drawable)
+    {
+      cmap = get_cmap (drawable);
   
-  retval = gdk_pixbuf_get_from_drawable (dest,
-                                         drawable,
-                                         cmap,
-                                         src_x, src_y,
-                                         dest_x, dest_y,
-                                         width, height);
-
+      retval = gdk_pixbuf_get_from_drawable (dest,
+                                             drawable,
+                                             cmap,
+                                             src_x, src_y,
+                                             dest_x, dest_y,
+                                             width, height);
+    }
   if (cmap)
     g_object_unref (G_OBJECT (cmap));
-  g_object_unref (G_OBJECT (drawable));
+  if (drawable)
+    g_object_unref (G_OBJECT (drawable));
 
   return retval;
 }
