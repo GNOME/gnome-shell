@@ -1,3 +1,8 @@
+2002-10-14  Federico Mena Quintero  <federico@ximian.com>
+
+	* src/display.c (event_callback): Ignore EnterNotify events when
+	the detail field is set to NotifyInferior.  Fixes #95747.
+
 2002-10-12  Havoc Pennington  <hp@pobox.com>
 
 	* src/metacity.schemas.in: button layout key

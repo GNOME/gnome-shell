@@ -1192,7 +1192,8 @@ event_callback (XEvent   *event,
       break;
     case EnterNotify:
       /* do this even if window->has_focus to avoid races */
-      if (window && !serial_is_ignored (display, event->xany.serial))
+      if (window && !serial_is_ignored (display, event->xany.serial) &&
+	  event->xcrossing.detail != NotifyInferior)
         {
           switch (meta_prefs_get_focus_mode ())
             {
