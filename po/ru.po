@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-08-06 14:49-0400\n"
-"PO-Revision-Date: 2002-07-25 21:05+0400\n"
+"POT-Creation-Date: 2002-07-25 21:04+0400\n"
+"PO-Revision-Date: 2002-08-11 19:57+0400\n"
 "Last-Translator: Dmitry G. Mastrukov <dmitry@taurussoft.org>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -48,7 +48,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Сбой при получении имени узла: %s\n"
 
-#: src/display.c:253
+#: src/display.c:244
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Сбой при открытии системного окна \"%s\" среды X Window\n"
@@ -89,7 +89,7 @@ msgstr "Развернуть окно во весь экран"
 msgid "Unmaximize Window"
 msgstr "Восстановить прежний размер окна"
 
-#: src/keybindings.c:809
+#: src/keybindings.c:808
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -97,13 +97,13 @@ msgid ""
 msgstr ""
 "Клавишу %s со связующими модификаторами %x уже использует другая программа\n"
 
-#: src/keybindings.c:2078
+#: src/keybindings.c:2085
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Ошибка загрузки диалога Metacity для вывода сообщения об ошибке команды: %s\n"
 
-#: src/keybindings.c:2108
+#: src/keybindings.c:2115
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Команда %d не была определена.\n"
@@ -196,7 +196,7 @@ msgstr "Только на %s"
 #: src/menu.c:372
 #, c-format
 msgid "Move to %s"
-msgstr "Перейти к %s"
+msgstr "Переместить на %s"
 
 #: src/metacity-dialog.c:86
 #, c-format
@@ -229,7 +229,7 @@ msgstr ""
 "Эти окна не поддерживают команду \"save current setup\", при следующем входе "
 "их придется перезапустить вручную."
 
-#: src/metacity-dialog.c:276
+#: src/metacity-dialog.c:275
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -1409,12 +1409,12 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:205
+#: src/screen.c:196
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Недопустимый экран %d дисплея \"%s\"\n"
 
-#: src/screen.c:221
+#: src/screen.c:212
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1423,23 +1423,23 @@ msgstr ""
 "У экрана %d дисплея \"%s\" уже есть диспетчер окон; попробуйте использовать "
 "параметр --replace для замещения текущего диспетчера окон.\n"
 
-#: src/screen.c:262
+#: src/screen.c:253
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Не удалось выбрать диспетчер окон на экране %d дисплея \"%s\"\n"
 
-#: src/screen.c:317
+#: src/screen.c:308
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "У экрана %d дисплея \"%s\" уже есть диспетчер окон\n"
 
-#: src/screen.c:526
+#: src/screen.c:516
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Не удалось освободить экран %d дисплея \"%s\"\n"
 
-#: src/session.c:274
+#: src/session.c:273
 #, c-format
 msgid ""
 "Failed to a open connection to a session manager, so window positions will "
@@ -1448,65 +1448,65 @@ msgstr ""
 "Сбой при открытии соединения с диспетчером сеанса, позиция окна не будет "
 "сохранена: %s\n"
 
-#: src/session.c:881 src/session.c:888
+#: src/session.c:865 src/session.c:872
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Не удалось создать каталог \"%s\": %s\n"
 
-#: src/session.c:898
+#: src/session.c:882
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Не удалось открыть для записи файл сеанса \"%s\": %s\n"
 
-#: src/session.c:1044
+#: src/session.c:1028
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Ошибка записи файла сеанса \"%s\": %s\n"
 
-#: src/session.c:1049
+#: src/session.c:1033
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Ошибка закрытия файла сеанса \"%s\": %s\n"
 
-#: src/session.c:1124
+#: src/session.c:1108
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Сбой при чтении сохранённого файла сеанса \"%s\": %s\n"
 
-#: src/session.c:1159
+#: src/session.c:1143
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Сбой при выполнении разбора сохранённого файла сеанса: %s\n"
 
-#: src/session.c:1208
+#: src/session.c:1192
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "указан атрибут <metacity_session>, но ID сеанса уже есть"
 
-#: src/session.c:1221
+#: src/session.c:1205
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Неизвестный атрибут %s элемента <metacity_session>"
 
-#: src/session.c:1238
+#: src/session.c:1222
 msgid "nested <window> tag"
 msgstr "вложенный тег <window>"
 
-#: src/session.c:1296 src/session.c:1328
+#: src/session.c:1280 src/session.c:1312
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Неизвестный атрибут %s элемента <window>"
 
-#: src/session.c:1398
+#: src/session.c:1382
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Неизвестный атрибут %s элемента <geometry>"
 
-#: src/session.c:1418
+#: src/session.c:1402
 #, c-format
 msgid "Unknown element %s"
 msgstr "Неизвестный элемент %s"
 
-#: src/session.c:1846
+#: src/session.c:1830
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2257,7 +2257,7 @@ msgstr "В выражении координаты нет операторов �
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "В теме было выражение \"%s\", вызвавшее ошибку: %s\n"
 
-#: src/theme.c:3569
+#: src/theme.c:3566
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2266,7 +2266,7 @@ msgstr ""
 "для этого стиля рамки необходимо указать <button function=\"%s\" state=\"%s"
 "\" draw_ops=\"что-нибудь\"/>"
 
-#: src/theme.c:3992 src/theme.c:4024
+#: src/theme.c:3976 src/theme.c:4008
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
@@ -2274,37 +2274,37 @@ msgstr ""
 "Отсутствует <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"что-нибудь"
 "\"/>"
 
-#: src/theme.c:4075
+#: src/theme.c:4059
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Сбой при загрузке темы \"%s\": %s\n"
 
-#: src/theme.c:4221
+#: src/theme.c:4205
 #, c-format
 msgid "No <name> set for theme \"%s\""
 msgstr "Не задано имя <name> для темы \"%s\""
 
-#: src/theme.c:4228
+#: src/theme.c:4212
 #, c-format
 msgid "No <author> set for theme \"%s\""
 msgstr "Не задан автор <author> для темы \"%s\""
 
-#: src/theme.c:4235
+#: src/theme.c:4219
 #, c-format
 msgid "No <date> set for theme \"%s\""
 msgstr "Не задана дата <date> для темы \"%s\""
 
-#: src/theme.c:4242
+#: src/theme.c:4226
 #, c-format
 msgid "No <description> set for theme \"%s\""
 msgstr "Не задано описание <description> для темы \"%s\""
 
-#: src/theme.c:4249
+#: src/theme.c:4233
 #, c-format
 msgid "No <copyright> set for theme \"%s\""
 msgstr "Не заданы авторские права <copyright> для темы \"%s\""
 
-#: src/theme.c:4259
+#: src/theme.c:4243
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -2313,7 +2313,7 @@ msgstr ""
 "Нет стиля рамки для типа окна \"%s\" в теме \"%s\", добавьте элемент <window "
 "type=\"%s\" style_set=\"что-нибудь\"/>"
 
-#: src/theme.c:4281
+#: src/theme.c:4265
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2322,7 +2322,7 @@ msgstr ""
 "для этой темы необходимо указать <menu_icon function=\"%s\" state=\"%s\" "
 "draw_ops=\"что-нибудь\"/>"
 
-#: src/theme.c:4664 src/theme.c:4726
+#: src/theme.c:4648 src/theme.c:4708
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -2330,7 +2330,7 @@ msgstr ""
 "Константы, заданные пользователем, должны начинаться с заглавной буквы; \"%s"
 "\" не начинается с заглавной буквы"
 
-#: src/theme.c:4672 src/theme.c:4734
+#: src/theme.c:4656 src/theme.c:4716
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Константа \"%s\" уже задана"
