@@ -1,3 +1,10 @@
+2004-08-06  Elijah Newren  <newren@math.utah.edu>
+
+	* src/workspace.c (meta_workspace_focus_default_window): prevent
+	keyboard from "getting locked" upon workspace switch, by making
+	sure that the no_focus_window has focus if no other window does.
+	(fixes #147475)
+
 2004-08-05  Elijah Newren  <newren@math.utah.edu>
 
 	Have newly mapped windows that are denied focus appear after the

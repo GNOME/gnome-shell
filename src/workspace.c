@@ -799,7 +799,15 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
       else if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_SLOPPY)
         meta_workspace_focus_mru_window (workspace, not_this_one);
       else if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_MOUSE)
-        meta_topic (META_DEBUG_FOCUS, "No mouse window to focus found\n");
+        {
+          meta_topic (META_DEBUG_FOCUS,
+                      "Setting focus to no_focus_window, since no valid "
+                      "window to focus found.\n");
+          XSetInputFocus (workspace->screen->display->xdisplay,
+                          workspace->screen->display->no_focus_window,
+                          RevertToPointerRoot,
+                          meta_display_get_current_time (workspace->screen->display));
+        }
     }
 }
 
