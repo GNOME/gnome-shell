@@ -4126,21 +4126,27 @@ meta_window_notify_focus (MetaWindow *window,
           window->display->focus_window = window;
           window->has_focus = TRUE;
 
-          /* Move to the front of the focusing workspace's MRU list We
-	   * should only be "removing" it from the MRU list if it's
-	   * not already there.
+          /* Move to the front of the focusing workspace's MRU list.
+           * We should only be "removing" it from the MRU list if it's
+           * not already there.  Note that it's possible that we might
+           * be processing this FocusIn after we've changed to a
+           * different workspace; we should therefore update the MRU
+           * list only if the window is actually on the active
+           * workspace.
            */
-          if (window->screen->active_workspace)
+          if (window->screen->active_workspace &&
+              meta_window_visible_on_workspace (window, 
+                                                window->screen->active_workspace))
             {
-	      GList* link;
-	      link = g_list_find (window->screen->active_workspace->mru_list, 
-				  window);
-	      g_assert (link);
+              GList* link;
+              link = g_list_find (window->screen->active_workspace->mru_list, 
+                                  window);
+              g_assert (link);
 
-	      window->screen->active_workspace->mru_list = 
-		g_list_remove_link (window->screen->active_workspace->mru_list,
-				    link);
-	      g_list_free (link);
+              window->screen->active_workspace->mru_list = 
+                g_list_remove_link (window->screen->active_workspace->mru_list,
+                                    link);
+              g_list_free (link);
 
               window->screen->active_workspace->mru_list = 
                 g_list_prepend (window->screen->active_workspace->mru_list, 

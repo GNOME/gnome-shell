@@ -1,5 +1,18 @@
 2004-02-27  Rob Adams  <readams@readams.net>
 
+	* src/window.c (meta_window_notify_focus): only move on MRU list
+	if the window belongs on the workspace, since the FocusIn event
+	could be for a window whose workspace we've since switched away
+	from.  Possible fix for #122016.
+
+	* src/workspace.c (meta_workspace_contains_window): search for the
+	workspace in window->workspaces rather than the window in
+	workspace->windows.  Since the number of workspaces is at most 36,
+	this is a O(1) lookup rather than a O(n) lookup.  Sorry; couldn't
+	resist.
+
+2004-02-27  Rob Adams  <readams@readams.net>
+
 	* src/metacity.schemas.in: Change
 	move_to_workspace_left/right/up/down keybindings to
 	<Control><Alt><Shift> arrow to avoid conflicting with new

@@ -240,7 +240,7 @@ gboolean
 meta_workspace_contains_window (MetaWorkspace *workspace,
                                 MetaWindow    *window)
 {
-  return g_list_find (workspace->windows, window) != NULL;
+  return g_list_find (window->workspaces, workspace) != NULL;
 }
 
 void
