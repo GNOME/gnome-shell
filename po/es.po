@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-12-21 17:38+0100\n"
-"PO-Revision-Date: 2003-12-21 17:40+0100\n"
+"POT-Creation-Date: 2003-12-24 02:54+0100\n"
+"PO-Revision-Date: 2003-12-24 02:54+0100\n"
 "Last-Translator: Francisco Javier F. Serrador <serrador@arrakis.es>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -151,7 +151,7 @@ msgstr ""
 
 #: src/main.c:443
 #, c-format
-msgid "Failed to scan themes directory : %s\n"
+msgid "Failed to scan themes directory: %s\n"
 msgstr "Falló al inspeccionar el directorio de temas: %s\n"
 
 #: src/main.c:459
