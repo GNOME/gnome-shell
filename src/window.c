@@ -2990,31 +2990,31 @@ update_mwm_hints (MetaWindow *window)
           toggle_value = FALSE;
         }
       
-      if ((hints->functions & MWM_FUNC_CLOSE) == 0)
+      if ((hints->functions & MWM_FUNC_CLOSE) != 0)
         {
           meta_verbose ("Window %s toggles close via MWM hints\n",
                         window->desc);
           window->mwm_has_close_func = toggle_value;
         }
-      if ((hints->functions & MWM_FUNC_MINIMIZE) == 0)
+      if ((hints->functions & MWM_FUNC_MINIMIZE) != 0)
         {
           meta_verbose ("Window %s toggles minimize via MWM hints\n",
                         window->desc);
           window->mwm_has_minimize_func = toggle_value;
         }
-      if ((hints->functions & MWM_FUNC_MAXIMIZE) == 0)
+      if ((hints->functions & MWM_FUNC_MAXIMIZE) != 0)
         {
           meta_verbose ("Window %s toggles maximize via MWM hints\n",
                         window->desc);
           window->mwm_has_maximize_func = toggle_value;
         }
-      if ((hints->functions & MWM_FUNC_MOVE) == 0)
+      if ((hints->functions & MWM_FUNC_MOVE) != 0)
         {
           meta_verbose ("Window %s toggles move via MWM hints\n",
                         window->desc);
           window->mwm_has_move_func = toggle_value;
         }
-      if ((hints->functions & MWM_FUNC_RESIZE) == 0)
+      if ((hints->functions & MWM_FUNC_RESIZE) != 0)
         {
           meta_verbose ("Window %s toggles resize via MWM hints\n",
                         window->desc);

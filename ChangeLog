@@ -1,5 +1,10 @@
 2001-08-22  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (update_mwm_hints): all the MWM flag tests were
+	backward
+
+2001-08-22  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (update_icon): half-ass implementation of 
 	getting pixmap icons (WM_NORMAL_HINTS and KWM_WIN_ICON). 
 	Ignores mask for now, with possibly ugly results for 
