@@ -609,6 +609,24 @@ meta_window_new (MetaDisplay *display, Window xwindow,
       }
   }
   
+  /* Maximize windows if they are too big for their work
+   * area (bit of a hack here). Assume undecorated windows
+   * probably don't intend to be maximized.
+   */
+  if (window->has_maximize_func && window->decorated)
+    {
+      MetaRectangle workarea;
+      MetaRectangle outer;
+      
+      meta_window_get_work_area (window, TRUE, &workarea);      
+
+      meta_window_get_outer_rect (window, &outer);
+      
+      if (outer.width >= workarea.width &&
+          outer.height >= workarea.height)
+        meta_window_maximize (window);
+    }
+  
   /* Sync stack changes */
   meta_stack_thaw (window->screen->stack);
 

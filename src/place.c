@@ -160,16 +160,33 @@ find_next_cascade (MetaWindow *window,
           cascade_y = wy;
         }
       else
-        goto found; /* no window at this cascade point. */
+        {
+          /* Keep searching for a further-down-the-diagonal window. */
+        }
         
       tmp = tmp->next;
     }
 
-  /* cascade_x and cascade_y will match the last window in the list. */
+  /* cascade_x and cascade_y will match the last window in the list
+   * that was "in the way" (in the approximate cascade diagonal)
+   */
   
- found:
   g_list_free (sorted);
 
+  /* don't place windows off the screen */
+  if (((cascade_x + (window->frame ? window->frame->rect.width : window->rect.width)) >
+       (work_area.x + work_area.width)) ||
+      ((cascade_y + (window->frame ? window->frame->rect.height : window->rect.height)) >
+       (work_area.y + work_area.height)))
+    {
+      /* FIXME it would be better to try to start a new cascade to the
+       * right of the last one, probably. Instead of just falling back
+       * to "origin"
+       */
+      cascade_x = MAX (0, work_area.x);
+      cascade_y = MAX (0, work_area.y);
+    }
+  
   /* Convert coords to position of window, not position of frame. */
   if (fgeom == NULL)
     {

@@ -1,3 +1,12 @@
+2002-07-12  Havoc Pennington  <hp@redhat.com>
+
+	* src/window.c (meta_window_new): try to maximize windows that 
+	are too big for the work area
+
+	* src/place.c (find_next_cascade): don't let the cascade algorithm
+	place windows off the screen, and fix it to always exhaustively
+	search the window list for cascade parents.
+
 2002-07-11  Havoc Pennington  <hp@pobox.com>
 
 	* src/metacity-dialog.c (main): option to display error when a
