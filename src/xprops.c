@@ -3,6 +3,11 @@
 /* 
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2002 Red Hat Inc.
+ *
+ * Some trivial property-unpacking code from Xlib:
+ *   Copyright 1987, 1988, 1998  The Open Group
+ *   Copyright 1988 by Wyse Technology, Inc., San Jose, Ca,
+ *   Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts,
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,6 +24,59 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  */
+
+/***********************************************************
+Copyright 1988 by Wyse Technology, Inc., San Jose, Ca,
+Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts,
+
+                        All Rights Reserved
+
+Permission to use, copy, modify, and distribute this software and its 
+documentation for any purpose and without fee is hereby granted, 
+provided that the above copyright notice appear in all copies and that
+both that copyright notice and this permission notice appear in 
+supporting documentation, and that the name Digital not be
+used in advertising or publicity pertaining to distribution of the
+software without specific, written prior permission.  
+
+DIGITAL AND WYSE DISCLAIM ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, 
+INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO 
+EVENT SHALL DIGITAL OR WYSE BE LIABLE FOR ANY SPECIAL, INDIRECT OR 
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF 
+USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR 
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR 
+PERFORMANCE OF THIS SOFTWARE.
+
+******************************************************************/
+
+/*
+
+Copyright 1987, 1988, 1998  The Open Group
+
+Permission to use, copy, modify, distribute, and sell this software and its
+documentation for any purpose is hereby granted without fee, provided that
+the above copyright notice appear in all copies and that both that
+copyright notice and this permission notice appear in supporting
+documentation.
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE OPEN GROUP BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+Except as contained in this notice, the name of The Open Group shall
+not be used in advertising or otherwise to promote the sale, use or
+other dealings in this Software without prior written authorization
+from The Open Group.
+
+*/
+
 
 #include <config.h>
 #include "xprops.h"
@@ -703,6 +761,82 @@ meta_prop_get_class_hint (MetaDisplay   *display,
   return class_hint_from_results (&results, class_hint);
 }
 
+static gboolean
+size_hints_from_results (GetPropertyResults *results,
+                         XSizeHints        **hints_p,
+                         gulong             *flags_p)
+{
+  xPropSizeHints *raw;
+  XSizeHints *hints;
+  
+  *hints_p = NULL;
+  *flags_p = 0;
+  
+  if (!validate_or_free_results (results, 32, XA_WM_SIZE_HINTS, FALSE))
+    return FALSE;
+
+  if (results->n_items < OldNumPropSizeElements)
+    return FALSE;
+
+  raw = (xPropSizeHints*) results->prop;
+
+  hints = ag_Xmalloc (sizeof (XSizeHints));
+  
+  /* XSizeHints misdeclares these as int instead of long */
+  hints->flags = raw->flags;
+  hints->x = cvtINT32toInt (raw->x);
+  hints->y = cvtINT32toInt (raw->y);
+  hints->width = cvtINT32toInt (raw->width);
+  hints->height = cvtINT32toInt (raw->height);
+  hints->min_width  = cvtINT32toInt (raw->minWidth);
+  hints->min_height = cvtINT32toInt (raw->minHeight);
+  hints->max_width  = cvtINT32toInt (raw->maxWidth);
+  hints->max_height = cvtINT32toInt (raw->maxHeight);
+  hints->width_inc  = cvtINT32toInt (raw->widthInc);
+  hints->height_inc = cvtINT32toInt (raw->heightInc);
+  hints->min_aspect.x = cvtINT32toInt (raw->minAspectX);
+  hints->min_aspect.y = cvtINT32toInt (raw->minAspectY);
+  hints->max_aspect.x = cvtINT32toInt (raw->maxAspectX);
+  hints->max_aspect.y = cvtINT32toInt (raw->maxAspectY);
+
+  *flags_p = (USPosition | USSize | PAllHints);
+  if (results->n_items >= NumPropSizeElements)
+    {
+      hints->base_width= cvtINT32toInt (raw->baseWidth);
+      hints->base_height= cvtINT32toInt (raw->baseHeight);
+      hints->win_gravity= cvtINT32toInt (raw->winGravity);
+      *flags_p |= (PBaseSize | PWinGravity);
+    }
+
+  hints->flags &= (*flags_p);	/* get rid of unwanted bits */
+  
+  XFree (results->prop);
+  results->prop = NULL;
+
+  *hints_p = hints;
+  
+  return TRUE;
+}
+
+gboolean
+meta_prop_get_size_hints (MetaDisplay   *display,
+                          Window         xwindow,
+                          Atom           xatom,
+                          XSizeHints   **hints_p,
+                          gulong        *flags_p)
+{
+  GetPropertyResults results;
+
+  *hints_p = NULL;
+  *flags_p = 0;
+  
+  if (!get_property (display, xwindow, xatom, XA_WM_SIZE_HINTS,
+                     &results))
+    return FALSE;
+
+  return size_hints_from_results (&results, hints_p, flags_p);
+}
+
 static AgGetPropertyTask*
 get_task (MetaDisplay        *display,
           Window              xwindow,
@@ -771,6 +905,9 @@ meta_prop_get_values (MetaDisplay   *display,
               break;
             case META_PROP_VALUE_CLASS_HINT:
               values[i].required_type = XA_STRING;
+              break;
+            case META_PROP_VALUE_SIZE_HINTS:
+              values[i].required_type = XA_WM_SIZE_HINTS;
               break;
             }
         }
@@ -888,6 +1025,12 @@ meta_prop_get_values (MetaDisplay   *display,
           break;
         case META_PROP_VALUE_CLASS_HINT:
           if (!class_hint_from_results (&results, &values[i].v.class_hint))
+            values[i].type = META_PROP_VALUE_INVALID;
+          break;
+        case META_PROP_VALUE_SIZE_HINTS:
+          if (!size_hints_from_results (&results,
+                                        &values[i].v.size_hints.hints,
+                                        &values[i].v.size_hints.flags))
             values[i].type = META_PROP_VALUE_INVALID;
           break;
         }

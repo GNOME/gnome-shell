@@ -4022,6 +4022,7 @@ update_size_hints (MetaWindow *window)
   int x, y, w, h;
   gulong supplied;
   XSizeHints old_hints;
+  XSizeHints *new_hints;
   
   meta_topic (META_DEBUG_GEOMETRY, "Updating WM_NORMAL_HINTS for %s\n", window->desc);
 
@@ -4038,21 +4039,28 @@ update_size_hints (MetaWindow *window)
   
   window->size_hints.flags = 0;
   supplied = 0;
+  new_hints = NULL;
   
-  meta_error_trap_push (window->display);
-  XGetWMNormalHints (window->display->xdisplay,
-                     window->xwindow,
-                     &window->size_hints,
-                     &supplied);
-  meta_error_trap_pop (window->display, TRUE);
+  meta_prop_get_size_hints (window->display,
+                            window->xwindow,
+                            XA_WM_NORMAL_HINTS,
+                            &new_hints,
+                            &supplied);
   
-  /* as far as I can tell, "supplied" is just
-   * to check whether we had old-style normal hints
-   * without gravity, base size as returned by
-   * XGetNormalHints()
+  /* as far as I can tell, "supplied" is just to check whether we had
+   * old-style normal hints without gravity, base size as returned by
+   * XGetNormalHints(), so we don't really use it as we fixup
+   * window->size_hints to have those fields if they're missing.
    */
   
-  /* Put it back. */
+  if (new_hints != NULL)
+    {
+      window->size_hints = *new_hints;
+      XFree (new_hints);
+      new_hints = NULL;
+    }
+  
+  /* Put back saved ConfigureRequest. */
   window->size_hints.x = x;
   window->size_hints.y = y;
   window->size_hints.width = w;

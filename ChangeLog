@@ -1,3 +1,9 @@
+2002-10-28  Havoc Pennington  <hp@redhat.com>
+
+	* src/window.c (update_size_hints): use meta_prop_get_size_hints
+
+	* src/xprops.c: add support for getting XSizeHints
+
 2002-10-28  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c, src/display.c: store the window menu on the

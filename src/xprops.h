@@ -122,6 +122,12 @@ gboolean meta_prop_get_class_hint    (MetaDisplay   *display,
                                       Atom           xatom,
                                       XClassHint    *class_hint);
 
+gboolean meta_prop_get_size_hints    (MetaDisplay   *display,
+                                      Window         xwindow,
+                                      Atom           xatom,
+                                      XSizeHints   **hints_p,
+                                      gulong        *flags_p);
+
 typedef enum
 {
   META_PROP_VALUE_INVALID,
@@ -135,7 +141,8 @@ typedef enum
   META_PROP_VALUE_ATOM_LIST,
   META_PROP_VALUE_TEXT_PROPERTY, /* comes back as UTF-8 string */
   META_PROP_VALUE_WM_HINTS,
-  META_PROP_VALUE_CLASS_HINT
+  META_PROP_VALUE_CLASS_HINT,
+  META_PROP_VALUE_SIZE_HINTS
 } MetaPropValueType;
 
 /* used to request/return/store property values */
@@ -153,6 +160,12 @@ typedef struct
     gulong cardinal;
     XWMHints *wm_hints;
     XClassHint class_hint;
+    
+    struct
+    {
+      XSizeHints   *hints;
+      unsigned long flags;
+    } size_hints;
     
     struct
     {
