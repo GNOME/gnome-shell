@@ -323,8 +323,9 @@ meta_display_open (const char *name)
   display->no_focus_window = None;
   
   screens = NULL;
-#if 0
-  /* disable multihead pending GTK support */
+
+#ifdef HAVE_GTK_MULTIHEAD
+  
   i = 0;
   while (i < ScreenCount (xdisplay))
     {

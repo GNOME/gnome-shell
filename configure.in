@@ -89,6 +89,10 @@ PKG_CHECK_MODULES(METACITY, gtk+-2.0 >= 2.0.0 gconf-2.0 >= 1.1.9)
 PKG_CHECK_MODULES(METACITY_MESSAGE, gtk+-2.0 >= 2.0.0)
 PKG_CHECK_MODULES(METACITY_WINDOW_DEMO, gtk+-2.0 >= 2.0.0)
 
+if $PKG_CONFIG --atleast-version 2.1.0 gtk+-2.0; then
+   AC_DEFINE(HAVE_GTK_MULTIHEAD,,[gtk+ with multihead support found])
+fi
+
 AC_PATH_XTRA
 
 CFLAGS="$METACITY_CFLAGS $CFLAGS $X_CFLAGS"

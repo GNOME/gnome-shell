@@ -25,7 +25,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 
-void meta_fixed_tip_show (Display *xdisplay,
+void meta_fixed_tip_show (Display *xdisplay, int screen_number,
                           int root_x, int root_y,
                           const char *markup_text);
 void meta_fixed_tip_hide (void);

@@ -1,3 +1,16 @@
+2002-05-08  Anders Carlsson  <andersca@gnu.org>
+
+	* configure.in:
+	* src/display.c: (meta_display_open):
+	* src/fixedtip.c: (meta_fixed_tip_show):
+	* src/fixedtip.h:
+	* src/frames.c: (meta_frames_new), (show_tip_now):
+	* src/frames.h:
+	* src/menu.c: (meta_window_menu_new):
+	* src/ui.c: (meta_ui_new):
+	Add multi-screen support. Also add patch by Erwann Chenede
+	to make tooltips appear on the correct screen.
+	
 2002-05-07  Anders Carlsson  <andersca@gnu.org>
 
 	* src/workspace.c (set_work_area_hint): Doh, only update

@@ -175,7 +175,10 @@ meta_window_menu_new   (MetaFrames         *frames,
   menu->insensitive = insensitive;
   
   menu->menu = gtk_menu_new ();
-
+#ifdef HAVE_GTK_MULTIHEAD
+  gtk_menu_set_screen (GTK_MENU (menu->menu),
+		       gtk_widget_get_screen (GTK_WIDGET (frames)));
+#endif
   i = 0;
   while (i < (int) G_N_ELEMENTS (menuitems))
     {

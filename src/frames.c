@@ -400,9 +400,22 @@ meta_frames_calc_geometry (MetaFrames        *frames,
 }
 
 MetaFrames*
-meta_frames_new (void)
+meta_frames_new (int screen_number)
 {
-  return g_object_new (META_TYPE_FRAMES, NULL);
+#ifdef HAVE_GTK_MULTIHEAD
+  GdkScreen *screen;
+
+  screen = gdk_display_get_screen (gdk_get_default_display (),
+				   screen_number);
+
+  return g_object_new (META_TYPE_FRAMES,
+		       "screen", screen,
+		       NULL);
+#else
+  return g_object_new (META_TYPE_FRAMES,
+		       NULL);
+#endif
+  
 }
 
 void
@@ -706,6 +719,7 @@ show_tip_now (MetaFrames *frames)
       MetaFrameGeometry fgeom;
       GdkRectangle *rect;
       int dx, dy;
+      int screen_number;
       
       meta_frames_calc_geometry (frames, frame, &fgeom);
       
@@ -714,8 +728,13 @@ show_tip_now (MetaFrames *frames)
       /* get conversion delta for root-to-frame coords */
       dx = root_x - x;
       dy = root_y - y;
-      
+#ifdef HAVE_GTK_MULTIHEAD
+      screen_number = gdk_screen_get_number (gtk_widget_get_screen (GTK_WIDGET (frames)));
+#else
+      screen_number = XScreenNumberOfScreen (DefaultScreen (gdk_display));
+#endif
       meta_fixed_tip_show (gdk_display,
+			   screen_number,
                            rect->x + dx,
                            rect->y + rect->height + 2 + dy,
                            tiptext);

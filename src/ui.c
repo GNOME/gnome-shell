@@ -141,8 +141,8 @@ meta_ui_new (Display *xdisplay,
   ui->xdisplay = xdisplay;
   ui->xscreen = screen;
 
-  /* FIXME when gtk has multihead use it here */
-  ui->frames = meta_frames_new ();
+  g_assert (xdisplay == gdk_display);
+  ui->frames = meta_frames_new (XScreenNumberOfScreen (screen));
   gtk_widget_realize (GTK_WIDGET (ui->frames));
   
   return ui;
