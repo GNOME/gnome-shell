@@ -146,7 +146,8 @@ meta_display_open (const char *name)
     "_METACITY_SET_KEYBINDINGS_MESSAGE",
     "_NET_WM_STATE_HIDDEN",
     "_NET_WM_WINDOW_TYPE_UTILITY",
-    "_NET_WM_WINDOW_TYPE_SPLASHSCREEN"
+    "_NET_WM_WINDOW_TYPE_SPLASHSCREEN",
+    "_NET_WM_STATE_FULLSCREEN"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -247,6 +248,7 @@ meta_display_open (const char *name)
   display->atom_net_wm_state_hidden = atoms[49];
   display->atom_net_wm_window_type_utility = atoms[50];
   display->atom_net_wm_window_type_splashscreen = atoms[51];
+  display->atom_net_wm_state_fullscreen = atoms[52];
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new

@@ -1,3 +1,14 @@
+2002-02-19  Havoc Pennington  <hp@pobox.com>
+
+	* src/ui.c (meta_ui_init): put in hack to keep Pango from mangling
+	our server grab and locking up on startup. (hack doesn't work 
+	but I want to fix it on my real computer not this laptop)
+
+	* src/window.c: Implement _NET_WM_STATE_FULLSCREEN
+
+	* src/display.c (meta_display_open): add atoms for 
+	_NET_WM_STATE_FULLSCREEN
+	
 2002-02-16  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* src/main.c: Use bind_textdomain_codeset etc.

@@ -29,6 +29,8 @@
 
 #include "inlinepixbufs.h"
 
+#include <pango/pangox.h>
+
 struct _MetaUI
 {
   Display *xdisplay;
@@ -42,14 +44,13 @@ meta_ui_init (int *argc, char ***argv)
   if (!gtk_init_check (argc, argv))
     meta_fatal ("Unable to open X display %s\n", XDisplayName (NULL));
 
-  {
-    /* FIXME this is a hackaround for a GTK bug with using menus without
-     * menubars. we have to use the get_type value since it's G_GNUC_CONST
-     */
-    volatile GType t;
-    t = gtk_menu_bar_get_type ();
-    t += 5;
-  }
+  /* FIXME hackaround for Pango opening a separate display
+   * connection and doing a server grab while we have a grab
+   * on the primary display connection. This forces Pango to
+   * go ahead and do its font cache before we try to grab
+   * the server.
+   */
+  pango_x_font_map_for_display (gdk_display);
 }
 
 Display*

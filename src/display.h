@@ -111,6 +111,7 @@ struct _MetaDisplay
   Atom atom_net_wm_state_hidden;
   Atom atom_net_wm_window_type_utility;
   Atom atom_net_wm_window_type_splashscreen;
+  Atom atom_net_wm_state_fullscreen;
   
   /* This is the actual window from focus events,
    * not the one we last set

@@ -87,6 +87,9 @@ struct _MetaWindow
   /* Whether we're shaded */
   guint shaded : 1;
 
+  /* Whether we're fullscreen */
+  guint fullscreen : 1;
+  
   /* Whether we're sticky in the multi-workspace sense
    * (vs. the not-scroll-with-viewport sense, we don't
    * have no stupid viewports)
@@ -135,6 +138,7 @@ struct _MetaWindow
   guint has_shade_func : 1;
   guint has_move_func : 1;
   guint has_resize_func : 1;
+  guint has_fullscreen_func : 1;
   
   /* Weird "_NET_WM_STATE_MODAL" flag */
   guint wm_state_modal : 1;
@@ -253,6 +257,8 @@ void        meta_window_unstick            (MetaWindow  *window);
 
 void        meta_window_activate           (MetaWindow  *window,
                                             guint32      current_time);
+void        meta_window_make_fullscreen    (MetaWindow  *window);
+void        meta_window_unmake_fullscreen  (MetaWindow  *window);
 
 /* args to move are window pos, not frame pos */
 void        meta_window_move               (MetaWindow  *window,

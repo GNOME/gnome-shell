@@ -309,6 +309,7 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->user_has_move_resized = FALSE;
   
   window->maximized = FALSE;
+  window->fullscreen = FALSE;
   window->on_all_workspaces = FALSE;
   window->shaded = FALSE;
   window->initially_iconic = FALSE;
@@ -348,6 +349,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->has_resize_func = TRUE;
 
   window->has_shade_func = TRUE;
+
+  window->has_fullscreen_func = TRUE;
   
   window->wm_state_modal = FALSE;
   window->wm_state_skip_taskbar = FALSE;
@@ -839,6 +842,11 @@ set_net_wm_state (MetaWindow *window)
       data[i] = window->display->atom_net_wm_state_maximized_vert;
       ++i;
     }
+  if (window->fullscreen)
+    {
+      data[i] = window->display->atom_net_wm_state_fullscreen;
+      ++i;
+    }
   if (window->shaded || window->minimized)
     {
       data[i] = window->display->atom_net_wm_state_hidden;
@@ -1289,6 +1297,7 @@ meta_window_maximize (MetaWindow  *window)
       
       window->maximized = TRUE;
 
+      /* FIXME why did I put this here? */
       meta_window_raise (window);
       
       /* save size/pos as appropriate args for move_resize */
@@ -1316,6 +1325,57 @@ meta_window_unmaximize (MetaWindow  *window)
                   "Unmaximizing %s\n", window->desc);
       
       window->maximized = FALSE;
+
+      meta_window_move_resize (window,
+                               TRUE,
+                               window->saved_rect.x,
+                               window->saved_rect.y,
+                               window->saved_rect.width,
+                               window->saved_rect.height);
+
+      set_net_wm_state (window);
+    }
+}
+
+
+void
+meta_window_make_fullscreen (MetaWindow  *window)
+{
+  if (!window->fullscreen)
+    {
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Fullscreening %s\n", window->desc);
+      
+      window->fullscreen = TRUE;
+
+      /* FIXME why did I put this here? */
+      meta_window_raise (window);
+      
+      /* save size/pos as appropriate args for move_resize */
+      window->saved_rect = window->rect;
+      if (window->frame)
+        {
+          window->saved_rect.x += window->frame->rect.x;
+          window->saved_rect.y += window->frame->rect.y;
+        }
+      
+      /* move_resize with new constraints
+       */
+      meta_window_queue_move_resize (window);
+
+      set_net_wm_state (window);
+    }
+}
+
+void
+meta_window_unmake_fullscreen (MetaWindow  *window)
+{
+  if (window->fullscreen)
+    {
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Unfullscreening %s\n", window->desc);
+      
+      window->fullscreen = FALSE;
 
       meta_window_move_resize (window,
                                TRUE,
@@ -2825,6 +2885,19 @@ meta_window_client_message (MetaWindow *window,
             meta_window_unshade (window);
         }
 
+      if (first == display->atom_net_wm_state_fullscreen ||
+          second == display->atom_net_wm_state_fullscreen)
+        {
+          gboolean make_fullscreen;
+
+          make_fullscreen = (action == _NET_WM_STATE_ADD ||
+                             (action == _NET_WM_STATE_TOGGLE && !window->fullscreen));
+          if (make_fullscreen && window->has_fullscreen_func)
+            meta_window_make_fullscreen (window);
+          else
+            meta_window_unmake_fullscreen (window);
+        }
+      
       if (first == display->atom_net_wm_state_maximized_horz ||
           second == display->atom_net_wm_state_maximized_horz ||
           first == display->atom_net_wm_state_maximized_vert ||
@@ -4517,7 +4590,8 @@ recalc_window_features (MetaWindow *window)
   window->has_resize_func = window->mwm_has_resize_func;
 
   window->has_shade_func = TRUE;
-
+  window->has_fullscreen_func = TRUE;
+  
   /* Semantic category overrides the MWM hints */
   
   if (window->type == META_WINDOW_DESKTOP ||
@@ -4535,6 +4609,7 @@ recalc_window_features (MetaWindow *window)
     {
       window->has_minimize_func = FALSE;
       window->has_maximize_func = FALSE;
+      window->has_fullscreen_func = FALSE;
     }
 
   /* If min_size == max_size, then don't allow resize */
@@ -4542,9 +4617,12 @@ recalc_window_features (MetaWindow *window)
       window->size_hints.min_height == window->size_hints.max_height)
     window->has_resize_func = FALSE;
   
-  /* don't allow maximize if we can't resize */
+  /* don't allow fullscreen if we can't resize */
   if (!window->has_resize_func)
-    window->has_maximize_func = FALSE;
+    {
+      window->has_maximize_func = FALSE;
+      window->has_fullscreen_func = FALSE;
+    }
 
   /* no shading if not decorated */
   if (!window->decorated)
@@ -4582,7 +4660,8 @@ constrain_size (MetaWindow *window,
   meta_window_get_work_area (window, &work_area);
   
   /* Get the allowed size ranges, considering maximized, etc. */
-  if (window->type == META_WINDOW_DESKTOP ||
+  if (window->fullscreen ||
+      window->type == META_WINDOW_DESKTOP ||
       window->type == META_WINDOW_DOCK)
     {
       fullw = window->screen->width;
@@ -4594,7 +4673,7 @@ constrain_size (MetaWindow *window,
       fullh = work_area.height;
     }
 
-  if (window->frame)
+  if (window->frame && !window->fullscreen)
     {
       fullw -= (fgeom->left_width + fgeom->right_width);
       fullh -= (fgeom->top_height + fgeom->bottom_height);
@@ -4708,15 +4787,13 @@ constrain_position (MetaWindow *window,
   if (!window->placed && window->calc_placement)
     meta_window_place (window, fgeom, x, y, &x, &y);
 
-#if 0
   if (window->fullscreen)
     {
       x = 0;
       y = 0;
     }
-#endif
-  if (window->type != META_WINDOW_DESKTOP &&
-      window->type != META_WINDOW_DOCK)
+  else if (window->type != META_WINDOW_DESKTOP &&
+           window->type != META_WINDOW_DOCK)
     {
       int nw_x, nw_y;
       int se_x, se_y;
