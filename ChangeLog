@@ -1,3 +1,8 @@
+2005-03-17  Lex Hider <Lex.Hider@gmail.com>
+
+	* doc/Makefile.am (EXTRA_DIST): add doc/code-overview.txt and
+	doc/how-to-get-focus-right.txt
+
 2005-03-10  Adi Attar  <aattar@cvs.gnome.org>
 
 	* configure.in: Added "xh" to ALL_LINGUAS.
