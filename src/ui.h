@@ -101,6 +101,7 @@ void             meta_image_window_set_position (MetaImageWindow *iw,
                                                  int              x,
                                                  int              y);
 
+/* FIXME these lack a display arg */
 GdkPixbuf* meta_gdk_pixbuf_get_from_window (GdkPixbuf   *dest,
                                             Window       xwindow,
                                             int          src_x,
@@ -128,27 +129,10 @@ void      meta_ui_pop_delay_exposes  (MetaUI *ui);
 
 GdkPixbuf* meta_ui_get_default_window_icon (MetaUI *ui);
 
-typedef struct _MetaTabEntry MetaTabEntry;
-typedef struct _MetaTabPopup MetaTabPopup;
+gboolean  meta_ui_window_should_not_cause_focus (Display *xdisplay,
+                                                 Window   xwindow);
 
-struct _MetaTabEntry
-{
-  Window        xwindow;
-  const char   *title;
-  GdkPixbuf    *icon;
-  int           x, y, width, height;
-};
-
-MetaTabPopup* meta_ui_tab_popup_new         (const MetaTabEntry *entries);
-void          meta_ui_tab_popup_free        (MetaTabPopup       *popup);
-void          meta_ui_tab_popup_set_showing (MetaTabPopup       *popup,
-                                             gboolean            showing);
-void          meta_ui_tab_popup_forward     (MetaTabPopup       *popup);
-void          meta_ui_tab_popup_backward    (MetaTabPopup       *popup);
-Window        meta_ui_tab_popup_get_selected (MetaTabPopup      *popup);
-void          meta_ui_tab_popup_select      (MetaTabPopup       *popup,
-                                             Window              xwindow);
-
+#include "tabpopup.h"
 
 #endif
 

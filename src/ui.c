@@ -171,7 +171,7 @@ meta_ui_unmap_frame (MetaUI *ui,
 
   window = gdk_xid_table_lookup (xwindow);
 
-  if (window)  
+  if (window)
     gdk_window_hide (window);
 }
 
@@ -270,7 +270,10 @@ meta_image_window_set_showing  (MetaImageWindow *iw,
   if (showing)
     gtk_widget_show_all (iw->window);
   else
-    gtk_widget_hide (iw->window);
+    {
+      gtk_widget_hide (iw->window);
+      meta_core_increment_event_serial (gdk_display);
+    }
 }
 
 void
@@ -423,4 +426,21 @@ meta_ui_get_default_window_icon (MetaUI *ui)
                                  GTK_STOCK_NEW,
                                  GTK_ICON_SIZE_LARGE_TOOLBAR,
                                  NULL);
+}
+
+gboolean
+meta_ui_window_should_not_cause_focus (Display *xdisplay,
+                                       Window   xwindow)
+{
+  GdkWindow *window;
+
+  window = gdk_xid_table_lookup (xwindow);
+
+  /* we shouldn't cause focus if we're an override redirect
+   * toplevel which is not foreign
+   */
+  if (window && gdk_window_get_type (window) == GDK_WINDOW_TEMP)
+    return TRUE;
+  else
+    return FALSE;
 }

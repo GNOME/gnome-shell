@@ -124,6 +124,8 @@ struct _MetaDisplay
   Window last_button_xwindow;
   int last_button_num;
   guint is_double_click : 1;
+
+  unsigned long last_ignored_unmap_serial;
   
   /* current window operation */
   MetaGrabOp  grab_op;
@@ -189,5 +191,7 @@ void     meta_display_grab_window_buttons    (MetaDisplay *display,
 void     meta_display_ungrab_window_buttons  (MetaDisplay *display,
                                               Window       xwindow);
 
+/* make a request to ensure the event serial has changed */
+void     meta_display_increment_event_serial (MetaDisplay *display);
 
 #endif

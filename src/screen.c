@@ -491,6 +491,33 @@ meta_screen_ensure_tab_popup (MetaScreen *screen)
       entries[i].y = r.y;
       entries[i].width = r.width;
       entries[i].height = r.height;
+
+      /* Find inside of highlight rectangle to be used
+       * when window is outlined for tabbing.
+       * This should be the size of the east/west frame,
+       * and the size of the south frame, on those sides.
+       * on the top it should be the size of the south frame
+       * edge.
+       */
+      if (window->frame)
+        {
+          int south = window->frame->rect.height - window->frame->child_y -
+            window->rect.height;
+          int east = window->frame->child_x;
+          entries[i].inner_x = east;
+          entries[i].inner_y = south;
+          entries[i].inner_width = window->rect.width;
+          entries[i].inner_height = window->frame->rect.height - south * 2;
+        }
+      else
+        {
+          /* Use an arbitrary border size */
+#define OUTLINE_WIDTH 5
+          entries[i].inner_x = OUTLINE_WIDTH;
+          entries[i].inner_y = OUTLINE_WIDTH;
+          entries[i].inner_width = window->rect.width - OUTLINE_WIDTH * 2;
+          entries[i].inner_height = window->rect.height - OUTLINE_WIDTH * 2;
+        }
       
       ++i;
       tmp = tmp->next;

@@ -288,6 +288,8 @@ meta_display_open (const char *name)
   display->last_button_num = 0;
   display->is_double_click = FALSE;
 
+  display->last_ignored_unmap_serial = 0;
+  
   display->grab_op = META_GRAB_OP_NONE;
   display->grab_window = NULL;
   
@@ -644,6 +646,16 @@ event_callback (XEvent   *event,
       display->last_button_xwindow = event->xbutton.window;
       display->last_button_time = event->xbutton.time;
     }
+  else if (event->type == UnmapNotify)
+    {
+      if (meta_ui_window_should_not_cause_focus (display->xdisplay,
+                                                 event->xunmap.window))
+        {
+          display->last_ignored_unmap_serial = event->xany.serial;
+          meta_verbose ("Will not focus on EnterNotify with serial %lu\n",
+                        display->last_ignored_unmap_serial);
+        }
+    }
   
   modified = event_get_modified_window (display, event);
 
@@ -728,7 +740,7 @@ event_callback (XEvent   *event,
       break;
     case EnterNotify:
       /* do this even if window->has_focus to avoid races */
-      if (window)
+      if (window && event->xany.serial != display->last_ignored_unmap_serial)
         meta_window_focus (window, event->xcrossing.time);
       break;
     case LeaveNotify:
@@ -1263,8 +1275,9 @@ meta_spew_event (MetaDisplay *display,
       else
         winname = g_strdup_printf ("0x%lx", event->xany.window);
       
-      meta_verbose ("%s on %s%s %s\n", name, winname,
-                    extra ? ":" : "", extra ? extra : "");
+      meta_verbose ("%s on %s%s %s serial %lu\n", name, winname,
+                    extra ? ":" : "", extra ? extra : "",
+                    event->xany.serial);
 
       g_free (winname);
 
@@ -1645,3 +1658,10 @@ meta_display_ungrab_window_buttons  (MetaDisplay *display,
     }
 }
 
+void
+meta_display_increment_event_serial (MetaDisplay *display)
+{
+  /* We just make some random X request */
+  XDeleteProperty (display->xdisplay, display->leader_window,
+                   display->atom_motif_wm_hints);
+}

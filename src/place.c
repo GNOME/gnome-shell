@@ -220,7 +220,11 @@ meta_window_place (MetaWindow *window,
    */
   
   meta_verbose ("Placing window %s\n", window->desc);      
-      
+
+  /* FIXME copying Mac, when placing a dialog
+   * put it at 1/5 down and horizontally centered
+   */
+  
   if (window->xtransient_for != None)
     {
       /* Center horizontally, at top of parent vertically */

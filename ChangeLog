@@ -1,3 +1,11 @@
+2001-08-29  Havoc Pennington  <hp@pobox.com>
+
+	* src/display.c (event_callback): avoid focusing a window on tab
+	popup popdown
+
+	* src/screen.c (meta_screen_ensure_tab_popup): compute frame
+	outline size here
+
 2001-08-29  Havoc Pennington  <hp@redhat.com>
 
 	* src/tabpopup.c: Switch back to outline.
