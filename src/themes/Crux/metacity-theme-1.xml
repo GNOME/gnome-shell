@@ -86,32 +86,18 @@
              x="width - object_width" y="3" width="object_width" height="object_height"/>
 
       <image filename="inactive-top-center-left.png" 
-             x="4" y="3" 
+             x="4" y="0" 
              width="(left_width + ButtonWidth + IconTitleSpacing + title_width) `min`
-                    (width - right_width - 3 * ButtonWidth - CenterTitlePieceWidth - 3)" 
-             height="object_height"/>
-      <image filename="inactive-top-center-left-border.png"
-             x="left_width + 11" y="0"
-             width="(title_width + 8) `min` 
                     (width - right_width - 3 * ButtonWidth - CenterTitlePieceWidth - 3)" 
              height="object_height"/>
 
       <image filename="inactive-top-center-mid.png" 
              x="((left_width + ButtonWidth + IconTitleSpacing + title_width) `min` (width - object_width - right_width - 3 * ButtonWidth)) + 1"
-             y="3" width="object_width" height="object_height"/>
+             y="0" width="object_width" height="object_height"/>
 
-      <image filename="inactive-top-center-mid-border.png"
-             x="((left_width + 16 + title_width + IconTitleSpacing) `min` (width - CenterTitlePieceWidth - right_width - 3 * ButtonWidth)) + 1" y="0"
-             width="object_width" height="object_height"/>
-
-      <image filename="inactive-top-center-right-border.png"
-            x="((left_width + ButtonWidth + IconTitleSpacing + title_width + 16) `min` (width - 3 * ButtonWidth - right_width - 32)) + 1"
-            y="0"
-            width="(width - title_width - left_width - ButtonWidth - IconTitleSpacing - 33) `max` (3 * ButtonWidth + 21)"
-            height="object_height"/>
       <image filename="inactive-top-center-right.png"
              x="((left_width + ButtonWidth + IconTitleSpacing + title_width + CenterTitlePieceWidth) `min` (width - 3 * ButtonWidth - right_width)) + 1"
-             y="3"
+             y="0"
              width="(width - title_width - left_width - ButtonWidth - IconTitleSpacing - CenterTitlePieceWidth - right_width) `max` (3 * ButtonWidth)"
              height="object_height"/>
     </draw_ops>
@@ -267,42 +253,22 @@
 
       <image filename="active-top-center-left.png" 
              colorize="gtk:bg[SELECTED]"
-             x="4" y="3" 
+             x="4" y="0" 
              width="(left_width + ButtonWidth + IconTitleSpacing + title_width) `min`
                     (width - right_width - 3 * ButtonWidth - CenterTitlePieceWidth - 3)" 
              height="object_height"/>
-      <image filename="active-top-center-left-border.png"
-             colorize="gtk:bg[SELECTED]"
-             x="left_width + 11" y="0"
-             width="(title_width + 8) `min` 
-                    (width - right_width - 3 * ButtonWidth - CenterTitlePieceWidth - 3)" 
-             height="object_height"/>
-
-      <image filename="active-top-center-mid-left-border.png"
-             colorize="gtk:bg[SELECTED]"
-             x="((left_width + 16 + title_width + IconTitleSpacing) `min` (width - CenterTitlePieceWidth - right_width - 3 * ButtonWidth)) + 1" y="0"
-             width="object_width" height="object_height"/>
-
-      <image filename="active-top-center-mid-right-border.png"
-             x="((left_width + 16 + title_width + IconTitleSpacing) `min` (width - CenterTitlePieceWidth - right_width - 3 * ButtonWidth)) + 1" y="0"
-             width="object_width" height="object_height"/>
 
       <image filename="active-top-center-mid-left.png" 
              colorize="gtk:bg[SELECTED]"
              x="((left_width + ButtonWidth + IconTitleSpacing + title_width) `min` (width - object_width - right_width - 3 * ButtonWidth)) + 1"
-             y="3" width="object_width" height="object_height"/>
+             y="0" width="object_width" height="object_height"/>
       <image filename="active-top-center-mid-right.png" 
              x="((left_width + ButtonWidth + IconTitleSpacing + title_width) `min` (width - object_width - right_width - 3 * ButtonWidth)) + 1"
-             y="3" width="object_width" height="object_height"/>
+             y="0" width="object_width" height="object_height"/>
 
-      <image filename="active-top-center-right-border.png"
-            x="((left_width + ButtonWidth + IconTitleSpacing + title_width + 16) `min` (width - 3 * ButtonWidth - right_width - 32)) + 1"
-            y="0"
-            width="(width - title_width - left_width - ButtonWidth - IconTitleSpacing - 33) `max` (3 * ButtonWidth + 21)"
-            height="object_height"/>
       <image filename="active-top-center-right.png"
              x="((left_width + ButtonWidth + IconTitleSpacing + title_width + CenterTitlePieceWidth) `min` (width - 3 * ButtonWidth - right_width)) + 1"
-             y="3"
+             y="0"
              width="(width - title_width - left_width - ButtonWidth - IconTitleSpacing - CenterTitlePieceWidth - right_width) `max` (3 * ButtonWidth)"
              height="object_height"/>
     </draw_ops>

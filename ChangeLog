@@ -1,3 +1,16 @@
+2002-02-07  Anders Carlsson  <andersca@gnu.org>
+
+	* src/themes/Crux/metacity-theme-1.xml: 
+	Simplify things so we can remove some
+	now unnecessary .png files.
+	* src/themes/Crux/*.png: Remove some files.
+
+2002-02-07  Anders Carlsson  <andersca@gnu.org>
+
+	* src/themes/Crux/metacity-theme-1.xml
+	* src/themes/Crux/*.png: 
+	Add Crux theme
+
 2002-02-07  Kenneth Rohde Christiansen  <kenneth@gnu.org>
 
 	* configure.in: add da to ALL_LINGUAS
