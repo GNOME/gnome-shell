@@ -3421,8 +3421,8 @@ meta_window_change_workspace (MetaWindow    *window,
                                  workspace);
 }
 
-void
-meta_window_stick (MetaWindow  *window)
+static void
+window_stick_impl (MetaWindow  *window)
 {
   GList *tmp; 
   MetaWorkspace *workspace;
@@ -3456,8 +3456,8 @@ meta_window_stick (MetaWindow  *window)
   meta_window_queue_calc_showing (window);
 }
 
-void
-meta_window_unstick (MetaWindow  *window)
+static void
+window_unstick_impl (MetaWindow  *window)
 {
   GList *tmp;
   MetaWorkspace *workspace;
@@ -3490,6 +3490,40 @@ meta_window_unstick (MetaWindow  *window)
   meta_window_set_current_workspace_hint (window);
   
   meta_window_queue_calc_showing (window);
+}
+
+static gboolean
+stick_foreach_func (MetaWindow *window,
+                    void       *data)
+{
+  gboolean stick;
+
+  stick = *(gboolean*)data;
+  if (stick)
+    window_stick_impl (window);
+  else
+    window_unstick_impl (window);
+  return TRUE;
+}
+
+void
+meta_window_stick (MetaWindow  *window)
+{
+  gboolean stick = TRUE;
+  window_stick_impl (window);
+  meta_window_foreach_transient (window,
+                                 stick_foreach_func,
+                                 &stick);
+}
+
+void
+meta_window_unstick (MetaWindow  *window)
+{
+  gboolean stick = FALSE;
+  window_unstick_impl (window);
+  meta_window_foreach_transient (window,
+                                 stick_foreach_func,
+                                 &stick);
 }
 
 unsigned long

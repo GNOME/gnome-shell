@@ -1,5 +1,17 @@
 2005-01-26  Elijah Newren  <newren@gmail.com>
 
+	Stick and unstick transients with their parent automatically.
+	Fixes #152283.
+
+	* src/window.c: (window_stick_impl, window_unstick_impl): rename
+	from meta_window_stick and meta_window_unstick respectively,
+	(stick_foreach_func): a function to assist calling
+	window_(un)stick_impl on each transient, (meta_window_stick,
+	meta_window_unstick): new functions that call window_stick_impl or
+	window_unstick_impl for the window and each of its transients.
+
+2005-01-26  Elijah Newren  <newren@gmail.com>
+
 	Patch from John Paul Wallington to keep tooltip on screen
 	horizontally for xinerama.  Fixes #165261.
 
