@@ -950,7 +950,7 @@ update_num_workspaces (MetaScreen *screen)
     {
       MetaWorkspace *w = tmp->data;
 
-      if (i > new_num)
+      if (i >= new_num)
         extras = g_list_prepend (extras, w);
       else
         last_remaining = w;
