@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.4.x\n"
-"POT-Creation-Date: 2003-05-20 12:32-0400\n"
-"PO-Revision-Date: 2003-03-05 10:29+0530\n"
+"Project-Id-Version:metacity.HEAD\n"
+"POT-Creation-Date: 2003-06-06 04:56+0200\n"
+"PO-Revision-Date: 2003-07-05 10:29+0530\n"
 "Last-Translator: FSF-India <locale@gnu.org.in>\n"
 "Language-Team: Malayalam <locale@gnu.org.in>\n"
 "MIME-Version: 1.0\n"
@@ -36,14 +36,14 @@ msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr ""
 
 #: src/delete.c:125
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "രചന %sലെ പ്രമേയം വായിക്കുന്നതില്‌ പരാജയപ്പെട്ടു: %s\n"
+msgstr "രചന %sലെ പ്രമേയം വായിക്കുന്നതില്‌ പരാജയപ്പെട്ടു:\n"
 
 #: src/delete.c:260
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading from dialog display process: %s\n"
-msgstr "%s വായിക്കുന്നതില്‌ പരാജയം : %s"
+msgstr "%s വായിക്കുന്നതില്‌ പരാജയം : \n"
 
 #: src/delete.c:331
 #, c-format
@@ -56,10 +56,10 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "ആതിഥേയനാമം ലഭിക്കുന്നതില്‌ പരാജയപ്പെട്ടു: %s\n"
 
-#: src/display.c:286
-#, fuzzy, c-format
+#: src/display.c:287
+#, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr "തുറക്കുന്നതില്‌ പരാജയം: %s\n"
+msgstr "XWindow തുറക്കുന്നതില്‌ പരാജയം : %s\n"
 
 #: src/errors.c:231
 #, c-format
@@ -127,13 +127,13 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 
-#: src/main.c:345
+#: src/main.c:348
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 
-#: src/main.c:393
+#: src/main.c:396
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "പുനരാരംഭിക്കുന്നതില്‌ പരാജയപ്പെട്ടു: %s\n"
@@ -229,7 +229,7 @@ msgstr "നിയന്ത്രണം"
 #.
 #: src/metaaccellabel.c:117
 msgid "Alt"
-msgstr "ആള്‌ട്ട്"
+msgstr "Alt"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the meta key. If the text on this key isn't typically
@@ -414,9 +414,8 @@ msgid "Enable Visual Bell"
 msgstr ""
 
 #: src/metacity.schemas.in.h:16
-#, fuzzy
 msgid "Hide all windows and focus desktop"
-msgstr " "
+msgstr ""
 
 #: src/metacity.schemas.in.h:17
 msgid ""
@@ -1365,14 +1364,12 @@ msgid "Toggle fullscreen mode"
 msgstr "അക്ഷര വിവര രീതിയില്‌ അളവ് ദൃശ്യമാക്കുക"
 
 #: src/metacity.schemas.in.h:154
-#, fuzzy
 msgid "Toggle maximization state"
-msgstr "മാറിവരിക"
+msgstr ""
 
 #: src/metacity.schemas.in.h:155
-#, fuzzy
 msgid "Toggle shaded state"
-msgstr "മാറിവരിക"
+msgstr ""
 
 #: src/metacity.schemas.in.h:156
 msgid "Toggle window on all workspaces"
@@ -1450,9 +1447,9 @@ msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
 
 #: src/prefs.c:1336
-#, fuzzy, c-format
+#, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
-msgstr "%d യില്‌നിന്ന് \"%s\"ലേക്ക് പണിയറയുടെ പേ‌ര‌് സജ്ജമാക്കുന്നതില്‌ തെറ്റ്: %s\n"
+msgstr ""
 
 #: src/prefs.c:1578
 #, c-format
@@ -1495,9 +1492,9 @@ msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr ""
 
 #: src/screen.c:690
-#, fuzzy, c-format
+#, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "രചന %s ഉണ്ടാക്കാന്‌ കഴിഞ്ഞില്ല."
+msgstr ""
 
 #: src/session.c:274
 #, c-format
@@ -1532,9 +1529,9 @@ msgid "Failed to read saved session file %s: %s\n"
 msgstr "രചന %sലെ പ്രമേയം വായിക്കുന്നതില്‌ പരാജയപ്പെട്ടു: %s\n"
 
 #: src/session.c:1172
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr "രചന %sലെ പ്രമേയം വായിക്കുന്നതില്‌ പരാജയപ്പെട്ടു: %s\n"
+msgstr "രചന  വായിക്കുന്നതില്‌ പരാജയപ്പെട്ടു: %s\n"
 
 #: src/session.c:1221
 msgid "<metacity_session> attribute seen but we already have the session ID"
@@ -1577,9 +1574,9 @@ msgid ""
 msgstr ""
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
-#, fuzzy, c-format
+#, c-format
 msgid "Line %d character %d: %s"
-msgstr "അക്ഷരങ്ങള്‍ ഉള്‍പ്പെടുത്തുക"
+msgstr ""
 
 #: src/theme-parser.c:396
 #, c-format
@@ -1827,9 +1824,9 @@ msgid "No \"alpha\" attribute on element <%s>"
 msgstr ""
 
 #: src/theme-parser.c:2161
-#, fuzzy, c-format
+#, c-format
 msgid "No \"type\" attribute on element <%s>"
-msgstr "ഈ മൊട്ടിലുള്ള പ്രവ‌ര്ത്തനത്തിന്റെ തരം"
+msgstr ""
 
 #: src/theme-parser.c:2209
 #, c-format
@@ -2172,14 +2169,14 @@ msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "%s നെ ഒരു സംഖ്യയായി വേ‌ര്തിരിക്കാന്‌ കഴിയുഞ്ഞില്ല"
 
 #: src/theme.c:1132
-#, fuzzy, c-format
+#, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr "%s നെ ഒരു സംഖ്യയായി വേ‌ര്തിരിക്കാന്‌ കഴിയുഞ്ഞില്ല"
+msgstr ""
 
 #: src/theme.c:1161
-#, fuzzy, c-format
+#, c-format
 msgid "Could not parse color \"%s\""
-msgstr "രചന \"%s\" തുറക്കാനായില്ല "
+msgstr ""
 
 #: src/theme.c:1423
 #, c-format
@@ -2214,10 +2211,9 @@ msgid "Coordinate expression results in division by zero"
 msgstr ""
 
 #: src/theme.c:1779
-#, fuzzy
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr "%s നെ ഒരു സംഖ്യയായി വേ‌ര്തിരിക്കാന്‌ കഴിയുഞ്ഞില്ല"
+msgstr ""
 
 #: src/theme.c:1836
 #, c-format
@@ -2318,9 +2314,8 @@ msgid "Constant \"%s\" has already been defined"
 msgstr ""
 
 #: src/tools/metacity-properties.desktop.in.h:1
-#, fuzzy
 msgid "Select how to give focus to windows"
-msgstr "സമയം പട്ടികയില് നിന്ന് തെരഞ്ഞെടുക്കുക"
+msgstr ""
 
 #: src/tools/metacity-properties.desktop.in.h:2
 msgid "Window Focus"
@@ -2383,7 +2378,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr ""
 
 #. first time through
-#: src/window.c:4579
+#: src/window.c:4603
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2397,7 +2392,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5262
+#: src/window.c:5286
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2424,6 +2419,3 @@ msgstr ""
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
-
-#~ msgid "Kill application"
-#~ msgstr "പ്രയോഗം അവസാനിപ്പിക്കുക"
