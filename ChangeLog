@@ -1,3 +1,11 @@
+2001-12-07  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_unminimize): when unminimizing an app,
+	if we're in "show desktop" (all windows minimized) mode, leave
+	show desktop mode. Will occasionally be a bit weird, but allows
+	people to recover via task list if they accidentally do the show
+	desktop thing, and don't know what's going on.
+
 2001-12-06  Havoc Pennington  <hp@redhat.com>
 
 	* src/ui.c (meta_text_property_to_utf8): fix gdkatom/xatom screwup

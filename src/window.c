@@ -1133,6 +1133,9 @@ meta_window_minimize (MetaWindow  *window)
 void
 meta_window_unminimize (MetaWindow  *window)
 {
+  if (window->display->showing_desktop)
+    meta_display_unshow_desktop (window->display);
+  
   if (window->minimized)
     {
       window->minimized = FALSE;
