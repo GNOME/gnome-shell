@@ -1800,7 +1800,7 @@ you set
       <applyto>/apps/metacity/keybinding_commands/command_screenshot</applyto>
       <owner>metacity</owner>
       <type>string</type>
-      <default>gnome-panel-screenshot</default>
+      <default>gnome-screenshot</default>
       <locale name="C">
          <short>The screenshot command</short>
          <long>
@@ -1816,7 +1816,7 @@ you set
       <applyto>/apps/metacity/keybinding_commands/command_window_screenshot</applyto>
       <owner>metacity</owner>
       <type>string</type>
-      <default>gnome-panel-screenshot --window</default>
+      <default>gnome-screenshot --window</default>
       <locale name="C">
          <short>The window screenshot command</short>
          <long>

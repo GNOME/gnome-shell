@@ -1,3 +1,8 @@
+2004-11-06  Vincent Untz  <vincent@vuntz.net>
+
+	* src/metacity.schemas.in: gnome-panel-screenshot was renamed to
+	gnome-screenshot
+
 2004-11-01  Elijah Newren  <newren@math.utah.edu>
 
 	* configure.in: bump version to 2.9.1
