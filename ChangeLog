@@ -1,3 +1,20 @@
+2002-10-01  Havoc Pennington  <hp@pobox.com>
+
+	* src/screen.c (meta_screen_resize_func): make it static
+
+	* src/stack.c (get_standalone_layer): put above/below windows 
+	in an appropriate layer.
+
+	* src/screen.c (set_supported_hint): say we support above/below
+
+	* src/display.h (struct _MetaDisplay): add _NET_WM_STATE_ABOVE, 
+	_NET_WM_STATE_BELOW atoms
+
+	* src/window.c (meta_window_client_message): handle above/below
+	state messages
+	(set_net_wm_state): handler above/below state
+	(update_net_wm_state): handle above/below states
+
 2002-10-01  Mark McLoughlin  <mark@skynet.ie>
 
 	* src/screen.c: (meta_screen_new): default to

@@ -221,6 +221,8 @@ meta_display_open (const char *name)
     "_NET_WM_ACTION_MAXIMIZE_VERT",
     "_NET_WM_ACTION_CHANGE_DESKTOP",
     "_NET_WM_ACTION_CLOSE",
+    "_NET_WM_STATE_ABOVE",
+    "_NET_WM_STATE_BELOW"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -350,6 +352,8 @@ meta_display_open (const char *name)
   display->atom_net_wm_action_maximize_vert = atoms[72];
   display->atom_net_wm_action_change_desktop = atoms[73];
   display->atom_net_wm_action_close = atoms[74];
+  display->atom_net_wm_state_above = atoms[75];
+  display->atom_net_wm_state_below = atoms[76];
   
   /* Offscreen unmapped window used for _NET_SUPPORTING_WM_CHECK,
    * created in screen_new

@@ -84,7 +84,7 @@ set_wm_check_hint (MetaScreen *screen)
 static int
 set_supported_hint (MetaScreen *screen)
 {
-#define N_SUPPORTED 42
+#define N_SUPPORTED 44
 #define N_WIN_SUPPORTED 1
   Atom atoms[N_SUPPORTED];
   
@@ -130,6 +130,8 @@ set_supported_hint (MetaScreen *screen)
   atoms[39] = screen->display->atom_net_wm_action_maximize_vert;
   atoms[40] = screen->display->atom_net_wm_action_change_desktop;
   atoms[41] = screen->display->atom_net_wm_action_close;
+  atoms[42] = screen->display->atom_net_wm_state_above;
+  atoms[43] = screen->display->atom_net_wm_state_below;
   
   XChangeProperty (screen->display->xdisplay, screen->xroot,
                    screen->display->atom_net_supported,
@@ -1520,7 +1522,7 @@ meta_screen_calc_workspace_layout (MetaScreen *screen,
   *c = cols;
 }
 
-void
+static void
 meta_screen_resize_func (MetaScreen *screen,
                          MetaWindow *window,
                          void       *user_data)

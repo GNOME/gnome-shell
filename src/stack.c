@@ -191,7 +191,10 @@ get_standalone_layer (MetaWindow *window)
 
     case META_WINDOW_DOCK:
       /* still experimenting here */
-      layer = META_LAYER_DOCK;
+      if (window->wm_state_below)
+        layer = META_LAYER_BOTTOM;
+      else
+        layer = META_LAYER_DOCK;
       break;
 
     case META_WINDOW_SPLASHSCREEN:
@@ -205,6 +208,8 @@ get_standalone_layer (MetaWindow *window)
         layer = META_LAYER_FOCUSED_WINDOW;
       else if (window->fullscreen)
         layer = META_LAYER_FULLSCREEN;
+      else if (window->wm_state_above)
+        layer = META_LAYER_TOP;
       else
         layer = META_LAYER_NORMAL;
       break;

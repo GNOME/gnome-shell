@@ -162,6 +162,10 @@ struct _MetaWindow
   /* Computed whether to skip taskbar or not */
   guint skip_taskbar : 1;
   guint skip_pager : 1;
+
+  /* TRUE if client set these */
+  guint wm_state_above : 1;
+  guint wm_state_below : 1;
   
   /* this flag tracks receipt of focus_in focus_out and
    * determines whether we draw the focus

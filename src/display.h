@@ -147,6 +147,8 @@ struct _MetaDisplay
   Atom atom_net_wm_action_maximize_vert;
   Atom atom_net_wm_action_change_desktop;
   Atom atom_net_wm_action_close;
+  Atom atom_net_wm_state_above;
+  Atom atom_net_wm_state_below;
   
   /* This is the actual window from focus events,
    * not the one we last set

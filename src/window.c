@@ -389,6 +389,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->skip_pager = FALSE;
   window->wm_state_skip_taskbar = FALSE;
   window->wm_state_skip_pager = FALSE;
+  window->wm_state_above = FALSE;
+  window->wm_state_below = FALSE;
   
   window->res_class = NULL;
   window->res_name = NULL;
@@ -1061,6 +1063,16 @@ set_net_wm_state (MetaWindow *window)
   if (window->shaded || window->minimized)
     {
       data[i] = window->display->atom_net_wm_state_hidden;
+      ++i;
+    }
+  if (window->wm_state_above)
+    {
+      data[i] = window->display->atom_net_wm_state_above;
+      ++i;
+    }
+  if (window->wm_state_below)
+    {
+      data[i] = window->display->atom_net_wm_state_below;
       ++i;
     }
   
@@ -3440,6 +3452,26 @@ meta_window_client_message (MetaWindow *window,
 
           set_net_wm_state (window);
         }
+
+      if (first == display->atom_net_wm_state_above ||
+          second == display->atom_net_wm_state_above)
+        {
+          window->wm_state_above = 
+            (action == _NET_WM_STATE_ADD) ||
+            (action == _NET_WM_STATE_TOGGLE && !window->wm_state_above);
+
+          set_net_wm_state (window);
+        }
+
+      if (first == display->atom_net_wm_state_below ||
+          second == display->atom_net_wm_state_below)
+        {
+          window->wm_state_below = 
+            (action == _NET_WM_STATE_ADD) ||
+            (action == _NET_WM_STATE_TOGGLE && !window->wm_state_below);
+          
+          set_net_wm_state (window);
+        }
       
       return TRUE;
     }
@@ -4363,6 +4395,8 @@ update_net_wm_state (MetaWindow *window)
   window->wm_state_modal = FALSE;
   window->wm_state_skip_taskbar = FALSE;
   window->wm_state_skip_pager = FALSE;
+  window->wm_state_above = FALSE;
+  window->wm_state_below = FALSE;
   
   if (meta_prop_get_atom_list (window->display, window->xwindow,
                                window->display->atom_net_wm_state,
@@ -4387,7 +4421,11 @@ update_net_wm_state (MetaWindow *window)
             window->wm_state_skip_pager = TRUE;
           else if (atoms[i] == window->display->atom_net_wm_state_fullscreen)
             window->fullscreen = TRUE;
-      
+          else if (atoms[i] == window->display->atom_net_wm_state_above)
+            window->wm_state_above = TRUE;
+          else if (atoms[i] == window->display->atom_net_wm_state_below)
+            window->wm_state_below = TRUE;
+          
           ++i;
         }
   
