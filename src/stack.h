@@ -61,6 +61,9 @@ struct _MetaStack
   int freeze_count;
 
   int n_added;
+
+  /* The last-known stack */
+  GArray *last_root_children_stacked;
 };
 
 MetaStack *meta_stack_new       (MetaScreen     *screen);

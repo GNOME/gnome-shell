@@ -4378,10 +4378,10 @@ update_kwm_icon (MetaWindow *window)
 
   result = meta_error_trap_pop (window->display);
   if (result != Success)
-    return None;
+    return result;
   
   if (type != window->display->atom_kwm_win_icon)
-    return None;
+    return -1; /* FIXME mem leak? */
   
   window->kwm_pixmap = icons[0];
   window->kwm_mask = icons[1];

@@ -1,3 +1,10 @@
+2001-10-10  Havoc Pennington  <hp@pobox.com>
+
+	* src/stack.c (meta_stack_free): fix mem leak of the MetaStack
+	object
+	(meta_stack_sync_to_server): try to avoid the restack-flicker
+	thing
+
 2001-10-07  Havoc Pennington  <hp@pobox.com>
 
 	* src/display.c (meta_display_update_active_window_hint): 

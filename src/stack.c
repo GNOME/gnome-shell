@@ -62,6 +62,8 @@ meta_stack_new (MetaScreen *screen)
   stack->pending = NULL;
   stack->freeze_count = 0;
   stack->n_added = 0;
+
+  stack->last_root_children_stacked = NULL;
   
   return stack;
 }
@@ -95,6 +97,10 @@ meta_stack_free (MetaStack *stack)
     }
 
   g_list_free (stack->pending);
+
+  g_array_free (stack->last_root_children_stacked, TRUE);
+  
+  g_free (stack);
 }
 
 static MetaStackOp*
@@ -635,9 +641,101 @@ meta_stack_sync_to_server (MetaStack *stack)
                 root_children_stacked->len);
   
   meta_error_trap_push (stack->screen->display);
-  XRestackWindows (stack->screen->display->xdisplay,
-                   (Window *) root_children_stacked->data,
-                   root_children_stacked->len);
+
+  if (stack->last_root_children_stacked == NULL)
+    {
+      /* Just impose our stack, we don't know the previous state.
+       * This involves a ton of circulate requests and may flicker.
+       */
+      meta_verbose ("Don't know last stack state, restacking everything\n");
+
+      if (root_children_stacked->len > 0)
+        XRestackWindows (stack->screen->display->xdisplay,
+                         (Window *) root_children_stacked->data,
+                         root_children_stacked->len);
+    }
+  else if (root_children_stacked->len > 0)
+    {
+      /* Try to do minimal window moves to get the stack in order */
+      /* A point of note: these arrays include frames not client windows,
+       * so if a client window has changed frame since last_root_children_stacked
+       * as saved, then we may have inefficiency, but I don't think things
+       * break...
+       */
+      const Window *old_stack = (Window *) stack->last_root_children_stacked->data;
+      const Window *new_stack = (Window *) root_children_stacked->data;
+      const int old_len = stack->last_root_children_stacked->len;
+      const int new_len = root_children_stacked->len;
+      const Window *oldp = old_stack;
+      const Window *newp = new_stack;
+      const Window *old_end = old_stack + old_len;
+      const Window *new_end = new_stack + new_len;
+      Window last_window = None;
+      
+      while (oldp != old_end &&
+             newp != new_end)
+        {
+          if (*oldp == *newp)
+            {
+              /* Stacks are the same here, move on */
+              ++oldp;
+              ++newp;
+            }
+          else if (meta_display_lookup_x_window (stack->screen->display,
+                                                 *oldp) == NULL)
+            {
+              /* *oldp is no longer known to us (probably destroyed),
+               * so we can just skip it
+               */
+              ++oldp;
+            }
+          else
+            {
+              /* Move *newp below last_window */
+              if (last_window == None)
+                {
+                  meta_verbose ("Raising window 0x%lx to the top\n", *newp);
+                  
+                  XRaiseWindow (stack->screen->display->xdisplay,
+                                *newp);
+                }
+              else
+                {
+                  /* This means that if last_window is dead, but not
+                   * *newp, then we fail to restack *newp; but on
+                   * unmanaging last_window, we'll fix it up.
+                   */
+                  
+                  XWindowChanges changes;
+
+                  changes.sibling = last_window;
+                  changes.stack_mode = Below;
+
+                  meta_verbose ("Placing window 0x%lx below 0x%lx\n",
+                                *newp, last_window);
+                  
+                  XConfigureWindow (stack->screen->display->xdisplay,
+                                    *newp,
+                                    CWSibling | CWStackMode,
+                                    &changes);
+                }
+              
+              ++newp;
+            }
+          
+          last_window = *newp;
+        }
+
+      if (newp != new_end)
+        {
+          /* Restack remaining windows */
+          meta_verbose ("Restacking remaining %d windows\n",
+                        (int) (new_end - newp));
+          XRestackWindows (stack->screen->display->xdisplay,
+                           (Window *) newp, new_end - newp);
+        }
+    }
+
   meta_error_trap_pop (stack->screen->display);
   /* on error, a window was destroyed; it should eventually
    * get removed from the stacking list when we unmanage it
@@ -662,8 +760,11 @@ meta_stack_sync_to_server (MetaStack *stack)
                    stacked->len);
 
   g_array_free (stacked, TRUE);
-  g_array_free (root_children_stacked, TRUE);
 
+  if (stack->last_root_children_stacked)
+    g_array_free (stack->last_root_children_stacked, TRUE);
+  stack->last_root_children_stacked = root_children_stacked;
+  
   /* That was scary... */
 }
 
