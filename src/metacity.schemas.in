@@ -639,7 +639,7 @@ you set
       <applyto>/apps/metacity/window_keybindings/move_to_workspace_left</applyto>
       <owner>metacity</owner>
       <type>string</type>
-      <default>disabled</default>
+      <default>&lt;Shift&gt;&lt;Alt&gt;Left</default>
       <locale name="C">
          <short>Move window one workspace to the left</short>
          <long>
@@ -664,7 +664,7 @@ you set
       <applyto>/apps/metacity/window_keybindings/move_to_workspace_right</applyto>
       <owner>metacity</owner>
       <type>string</type>
-      <default>disabled</default>
+      <default>&lt;Shift&gt;&lt;Alt&gt;Right</default>
       <locale name="C">
          <short>Move window one workspace to the right</short>
          <long>
@@ -688,7 +688,7 @@ you set
       <applyto>/apps/metacity/window_keybindings/move_to_workspace_up</applyto>
       <owner>metacity</owner>
       <type>string</type>
-      <default>disabled</default>
+      <default>&lt;Shift&gt;&lt;Alt&gt;Up</default>
       <locale name="C">
          <short>Move window one workspace up</short>
          <long>
@@ -712,7 +712,7 @@ you set
       <applyto>/apps/metacity/window_keybindings/move_to_workspace_down</applyto>
       <owner>metacity</owner>
       <type>string</type>
-      <default>disabled</default>
+      <default>&lt;Shift&gt;&lt;Alt&gt;Down</default>
       <locale name="C">
          <short>Move window one workspace down</short>
          <long>

@@ -1,3 +1,9 @@
+2002-09-20  Arvind Samptur <arvind.samputr@wipro.com>
+	* src/metacity.schemas.in: added keybindings for
+	moving windows between workspaces.
+
+	Patch from Jeyasudha. Fixes #91944.
+
 2002-09-19  Arvind Samptur <arvind.samptur@wipro.com>
 	* src/tools/metacity-properties.desktop.in :
 	change in the tooltip suggested in ui-review.
