@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.5.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-06-08 21:31+0200\n"
-"PO-Revision-Date: 2003-06-08 21:29+0200\n"
+"POT-Creation-Date: 2003-06-21 00:49+0200\n"
+"PO-Revision-Date: 2003-06-21 00:42+0200\n"
 "Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -68,7 +68,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Impossible d'obtenir le nom de machine : %s\n"
 
-#: src/display.c:287
+#: src/display.c:280
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Impossible d'ouvrir le visuel « %s » du système X Window\n"
@@ -356,7 +356,7 @@ msgstr ""
 "configuration courante » et devront être redémarrées manuellement à la "
 "prochaine connexion."
 
-#: src/metacity-dialog.c:284
+#: src/metacity-dialog.c:287
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2075,12 +2075,12 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:407
+#: src/screen.c:389
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr "L'écran %d sur le visuel « %s » n'est pas correct\n"
+msgstr "L'écran %d sur le visuel « %s » n'est pas valide\n"
 
-#: src/screen.c:423
+#: src/screen.c:405
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2090,7 +2090,7 @@ msgstr ""
 "d'utiliser l'option --replace pour remplacer le gestionnaire de fenêtres "
 "courant.\n"
 
-#: src/screen.c:464
+#: src/screen.c:446
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -2098,12 +2098,12 @@ msgstr ""
 "Impossible d'avoir la sélection du gestionnaire de fenêtres sur l'écran %d "
 "du visuel « %s »\n"
 
-#: src/screen.c:520
+#: src/screen.c:502
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "L'écran %d sur le visuel « %s » a déjà un gestionnaire de fenêtres\n"
 
-#: src/screen.c:690
+#: src/screen.c:672
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Impossible de libérer l'écran %d sur le visuel « %s »\n"
@@ -3082,7 +3082,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "L'application a défini un faux _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4609
+#: src/window.c:4509
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3098,7 +3098,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5292
+#: src/window.c:5071
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3128,15 +3128,15 @@ msgstr ""
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr ""
-"La propriété %s de la fenêtre 0x%lx contenait un codage UTF-8 non valide\n"
+"La propriété %s de la fenêtre 0x%lx contenait un code UTF-8 non valide\n"
 
 #: src/xprops.c:479
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
-"La propriété %s de la fenêtre 0x%lx contient des données UTF-8 incorrectes "
-"pour l'élément %d dans la liste\n"
+"La propriété %s de la fenêtre 0x%lx contient un code UTF-8 non valide pour "
+"l'élément %d dans la liste\n"
 
 #~ msgid ""
 #~ "The window \"%s\" is not responding.\n"
