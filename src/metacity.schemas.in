@@ -223,7 +223,7 @@
 	causes the titlebar of the application which sent the bell signal to
 	flash.  If the application which sent the bell is unknown (as is
 	usually the case for the default "system beep"), the currently
-	focussed window's titlebar is flashed.
+	focused window's titlebar is flashed.
          </long>
       </locale>
     </schema>
