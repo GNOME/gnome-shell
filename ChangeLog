@@ -1,5 +1,11 @@
 2003-01-22  Havoc Pennington  <hp@redhat.com>
 	
+	* src/async-getprop.c (async_get_property_handler): do not read 
+	sizeof(long) off the X connection. The X protocol does not vary 
+	by architecture. Fixes longstanding hang on all 64-bit platforms.
+
+2003-01-22  Havoc Pennington  <hp@redhat.com>
+	
 	* src/tools/Makefile.am: fix conditional so we get
 	metacity-properties.c in the distribution #103071
 

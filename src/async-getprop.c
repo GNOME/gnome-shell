@@ -347,7 +347,7 @@ async_get_property_handler (Display *dpy,
           break;
 
         case 32:
-          nbytes = reply->nItems * sizeof (long);
+          nbytes = reply->nItems * sizeof (CARD32);
           netbytes = reply->nItems << 2;
           if (nbytes + 1 > 0 &&
               (task->data = (unsigned char *) Xmalloc ((unsigned)nbytes + 1)))
