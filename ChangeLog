@@ -1,5 +1,10 @@
 2002-04-29  Havoc Pennington  <hp@redhat.com>
 
+	* src/display.c (event_callback): always raise windows on focus
+	click, regardless of focus mode.
+
+2002-04-29  Havoc Pennington  <hp@redhat.com>
+
 	* configure.in: 2.3.144
 
 2002-04-29  Havoc Pennington  <hp@pobox.com>

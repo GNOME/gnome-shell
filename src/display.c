@@ -907,14 +907,7 @@ event_callback (XEvent   *event,
           if (unmodified ||
               event->xbutton.button == 1)
             {
-              /* We always raise in click-to-focus, and
-               * raise only if Alt is down for sloppy/mouse 
-               * (sloppy/mouse allow left-click without raising).
-               * I'm not sure I have a rationale for this.
-               */
-              if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK ||
-                  !unmodified)
-                meta_window_raise (window);
+              meta_window_raise (window);
 
               meta_topic (META_DEBUG_FOCUS,
                           "Focusing %s due to unmodified button %d press (display.c)\n",
