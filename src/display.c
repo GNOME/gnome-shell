@@ -1866,23 +1866,27 @@ meta_spew_event (MetaDisplay *display,
       break;
     case EnterNotify:
       name = "EnterNotify";
-      extra = g_strdup_printf ("win: 0x%lx root: 0x%lx subwindow: 0x%lx mode: %s detail: %s focus: %d",
+      extra = g_strdup_printf ("win: 0x%lx root: 0x%lx subwindow: 0x%lx mode: %s detail: %s focus: %d x: %d y: %d",
                                event->xcrossing.window,
                                event->xcrossing.root,
                                event->xcrossing.subwindow,
                                meta_event_mode_to_string (event->xcrossing.mode),
                                meta_event_detail_to_string (event->xcrossing.detail),
-                               event->xcrossing.focus);
+                               event->xcrossing.focus,
+                               event->xcrossing.x,
+                               event->xcrossing.y);
       break;
     case LeaveNotify:
       name = "LeaveNotify";
-      extra = g_strdup_printf ("win: 0x%lx root: 0x%lx subwindow: 0x%lx mode: %s detail: %s focus: %d",
+      extra = g_strdup_printf ("win: 0x%lx root: 0x%lx subwindow: 0x%lx mode: %s detail: %s focus: %d x: %d y: %d",
                                event->xcrossing.window,
                                event->xcrossing.root,
                                event->xcrossing.subwindow,
                                meta_event_mode_to_string (event->xcrossing.mode),
                                meta_event_detail_to_string (event->xcrossing.detail),
-                               event->xcrossing.focus);
+                               event->xcrossing.focus,
+                               event->xcrossing.x,
+                               event->xcrossing.y);
       break;
     case FocusIn:
       name = "FocusIn";

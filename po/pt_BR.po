@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-08-16 23:45-0300\n"
+"POT-Creation-Date: 2002-08-20 15:54-0400\n"
 "PO-Revision-Date: 2002-08-16 23:45-0300\n"
 "Last-Translator: Evandro Fernandes Giovanini <evandrofg@ig.com.br>\n"
 "Language-Team: Brazilian Portuguese <gnome-br@listas.cipsga.org.br>\n"

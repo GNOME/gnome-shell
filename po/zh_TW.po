@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.3.987\n"
-"POT-Creation-Date: 2002-08-06 14:49-0400\n"
+"POT-Creation-Date: 2002-08-20 15:54-0400\n"
 "PO-Revision-Date: 2002-06-25 01:07+0800\n"
 "Last-Translator: Abel Cheung <maddog@linux.org.hk>\n"
 "Language-Team: traditioanl Chinese <zh-l10n@linux.org.tw>\n"
@@ -46,7 +46,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "無法獲取主機名稱：%s\n"
 
-#: src/display.c:253
+#: src/display.c:234
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "無法開啟 X Window 系統畫面‘%s’\n"
@@ -84,19 +84,19 @@ msgstr "視窗最大化"
 msgid "Unmaximize Window"
 msgstr ""
 
-#: src/keybindings.c:809
+#: src/keybindings.c:819
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr ""
 
-#: src/keybindings.c:2078
+#: src/keybindings.c:2103
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 
-#: src/keybindings.c:2108
+#: src/keybindings.c:2133
 #, fuzzy, c-format
 msgid "No command %d has been defined.\n"
 msgstr "已定義了“%s”常數"
@@ -119,43 +119,44 @@ msgid "Failed to restart: %s\n"
 msgstr "無法重新啟動：%s\n"
 
 #: src/menu.c:51
-msgid "_Close"
-msgstr "關閉(_C)"
-
-#: src/menu.c:52
 msgid "_Minimize"
 msgstr "最小化(_M)"
 
-#: src/menu.c:53
+#: src/menu.c:52
 msgid "Ma_ximize"
 msgstr "最大化(_X)"
 
-#: src/menu.c:54
+#: src/menu.c:53
 msgid "Unma_ximize"
 msgstr ""
 
-#: src/menu.c:55
+#: src/menu.c:54
 msgid "_Shade"
 msgstr "捲起(_S)"
 
-#: src/menu.c:56
+#: src/menu.c:55
 msgid "Un_shade"
 msgstr "放下(_S)"
 
-#: src/menu.c:57
+#: src/menu.c:56
 msgid "Mo_ve"
 msgstr "移動(_V)"
 
-#: src/menu.c:58
+#: src/menu.c:57
 msgid "_Resize"
 msgstr "重定尺寸(_R)"
 
 #. separator
-#: src/menu.c:60
+#: src/menu.c:59
+msgid "_Close"
+msgstr "關閉(_C)"
+
+#. separator
+#: src/menu.c:61
 msgid "Put on _All Workspaces"
 msgstr ""
 
-#: src/menu.c:61
+#: src/menu.c:62
 msgid "Only on _This Workspace"
 msgstr ""
 
@@ -164,7 +165,7 @@ msgstr ""
 #. * integer, insert a '_' before the number if it is less than 10 and
 #. * return it
 #.
-#: src/menu.c:180
+#: src/menu.c:147
 #, fuzzy, c-format
 msgid "Workspace %u"
 msgstr "工作區 %d\n"
@@ -173,17 +174,17 @@ msgstr "工作區 %d\n"
 #. * Above name is a pointer into the Workspace struct. Here we make
 #. * a copy copy so we can have our wicked way with it.
 #.
-#: src/menu.c:186
+#: src/menu.c:153
 #, fuzzy, c-format
 msgid "Workspace %s%d"
 msgstr "工作區 %d\n"
 
-#: src/menu.c:370
+#: src/menu.c:295
 #, c-format
 msgid "Only on %s"
 msgstr ""
 
-#: src/menu.c:372
+#: src/menu.c:297
 #, fuzzy, c-format
 msgid "Move to %s"
 msgstr "移動至工作區 %s%d"
@@ -298,110 +299,118 @@ msgid ""
 msgstr ""
 
 #: src/metacity.schemas.in.h:14
+msgid "Lower window below other windows"
+msgstr ""
+
+#: src/metacity.schemas.in.h:15
 msgid "Minimize a window"
 msgstr "將視窗最小化"
 
-#: src/metacity.schemas.in.h:15
+#: src/metacity.schemas.in.h:16
 msgid "Move a window"
 msgstr "移動視窗"
 
-#: src/metacity.schemas.in.h:16
+#: src/metacity.schemas.in.h:17
 msgid "Move focus between panels and the desktop"
 msgstr ""
 
-#: src/metacity.schemas.in.h:17
+#: src/metacity.schemas.in.h:18
 msgid "Move focus between windows"
 msgstr ""
 
-#: src/metacity.schemas.in.h:18
+#: src/metacity.schemas.in.h:19
 msgid "Move window one workspace down"
 msgstr "將視窗移動至下方的工作區"
 
-#: src/metacity.schemas.in.h:19
+#: src/metacity.schemas.in.h:20
 msgid "Move window one workspace to the left"
 msgstr "將視窗移動至左方的工作區"
 
-#: src/metacity.schemas.in.h:20
+#: src/metacity.schemas.in.h:21
 msgid "Move window one workspace to the right"
 msgstr "將視窗移動至右方的工作區"
 
-#: src/metacity.schemas.in.h:21
+#: src/metacity.schemas.in.h:22
 msgid "Move window one workspace up"
 msgstr "將視窗移動至上方的工作區"
 
-#: src/metacity.schemas.in.h:22
+#: src/metacity.schemas.in.h:23
 msgid "Move window to workspace 1"
 msgstr "將視窗移動至第 1 個工作區"
 
-#: src/metacity.schemas.in.h:23
+#: src/metacity.schemas.in.h:24
 msgid "Move window to workspace 10"
 msgstr "將視窗移動至第 10 個工作區"
 
-#: src/metacity.schemas.in.h:24
+#: src/metacity.schemas.in.h:25
 msgid "Move window to workspace 11"
 msgstr "將視窗移動至第 11 個工作區"
 
-#: src/metacity.schemas.in.h:25
+#: src/metacity.schemas.in.h:26
 msgid "Move window to workspace 12"
 msgstr "將視窗移動至第 12 個工作區"
 
-#: src/metacity.schemas.in.h:26
+#: src/metacity.schemas.in.h:27
 msgid "Move window to workspace 2"
 msgstr "將視窗移動至第 2 個工作區"
 
-#: src/metacity.schemas.in.h:27
+#: src/metacity.schemas.in.h:28
 msgid "Move window to workspace 3"
 msgstr "將視窗移動至第 3 個工作區"
 
-#: src/metacity.schemas.in.h:28
+#: src/metacity.schemas.in.h:29
 msgid "Move window to workspace 4"
 msgstr "將視窗移動至第 4 個工作區"
 
-#: src/metacity.schemas.in.h:29
+#: src/metacity.schemas.in.h:30
 msgid "Move window to workspace 5"
 msgstr "將視窗移動至第 5 個工作區"
 
-#: src/metacity.schemas.in.h:30
+#: src/metacity.schemas.in.h:31
 msgid "Move window to workspace 6"
 msgstr "將視窗移動至第 6 個工作區"
 
-#: src/metacity.schemas.in.h:31
+#: src/metacity.schemas.in.h:32
 msgid "Move window to workspace 7"
 msgstr "將視窗移動至第 7 個工作區"
 
-#: src/metacity.schemas.in.h:32
+#: src/metacity.schemas.in.h:33
 msgid "Move window to workspace 8"
 msgstr "將視窗移動至第 8 個工作區"
 
-#: src/metacity.schemas.in.h:33
+#: src/metacity.schemas.in.h:34
 msgid "Move window to workspace 9"
 msgstr "將視窗移動至第 9 個工作區"
 
-#: src/metacity.schemas.in.h:34
+#: src/metacity.schemas.in.h:35
 msgid "Number of workspaces"
 msgstr "工作區數目"
 
-#: src/metacity.schemas.in.h:35
+#: src/metacity.schemas.in.h:36
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum (to "
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
 msgstr ""
 
-#: src/metacity.schemas.in.h:36
+#: src/metacity.schemas.in.h:37
+msgid "Raise window above other windows"
+msgstr ""
+
+#: src/metacity.schemas.in.h:38
 msgid "Raise window if obscured, lowers it otherwise"
 msgstr ""
 
-#: src/metacity.schemas.in.h:37
+#: src/metacity.schemas.in.h:39
 #, fuzzy
 msgid "Resize a window"
 msgstr "關閉視窗"
 
-#: src/metacity.schemas.in.h:38
+#: src/metacity.schemas.in.h:40
 msgid "Run a defined command"
 msgstr ""
 
-#: src/metacity.schemas.in.h:39
+#: src/metacity.schemas.in.h:41
 msgid ""
 "Some applications break specifications in ways that result in window manager "
 "misfeatures. For example, ideally Metacity would place all dialogs in a "
@@ -417,78 +426,78 @@ msgid ""
 "workarounds mode won't be fixable without amending a spec."
 msgstr ""
 
-#: src/metacity.schemas.in.h:40
+#: src/metacity.schemas.in.h:42
 msgid "Switch to workspace 1"
 msgstr "切換至第 1 個工作區"
 
-#: src/metacity.schemas.in.h:41
+#: src/metacity.schemas.in.h:43
 msgid "Switch to workspace 10"
 msgstr "切換至第 10 個工作區"
 
-#: src/metacity.schemas.in.h:42
+#: src/metacity.schemas.in.h:44
 msgid "Switch to workspace 11"
 msgstr "切換至第 11 個工作區"
 
-#: src/metacity.schemas.in.h:43
+#: src/metacity.schemas.in.h:45
 msgid "Switch to workspace 12"
 msgstr "切換至第 12 個工作區"
 
-#: src/metacity.schemas.in.h:44
+#: src/metacity.schemas.in.h:46
 msgid "Switch to workspace 2"
 msgstr "切換至第 2 個工作區"
 
-#: src/metacity.schemas.in.h:45
+#: src/metacity.schemas.in.h:47
 msgid "Switch to workspace 3"
 msgstr "切換至第 3 個工作區"
 
-#: src/metacity.schemas.in.h:46
+#: src/metacity.schemas.in.h:48
 msgid "Switch to workspace 4"
 msgstr "切換至第 4 個工作區"
 
-#: src/metacity.schemas.in.h:47
+#: src/metacity.schemas.in.h:49
 msgid "Switch to workspace 5"
 msgstr "切換至第 5 個工作區"
 
-#: src/metacity.schemas.in.h:48
+#: src/metacity.schemas.in.h:50
 msgid "Switch to workspace 6"
 msgstr "切換至第 6 個工作區"
 
-#: src/metacity.schemas.in.h:49
+#: src/metacity.schemas.in.h:51
 msgid "Switch to workspace 7"
 msgstr "切換至第 7 個工作區"
 
-#: src/metacity.schemas.in.h:50
+#: src/metacity.schemas.in.h:52
 msgid "Switch to workspace 8"
 msgstr "切換至第 8 個工作區"
 
-#: src/metacity.schemas.in.h:51
+#: src/metacity.schemas.in.h:53
 msgid "Switch to workspace 9"
 msgstr "切換至第 9 個工作區"
 
-#: src/metacity.schemas.in.h:52
+#: src/metacity.schemas.in.h:54
 msgid "Switch to workspace above the current space"
 msgstr "切換至上方的工作區"
 
-#: src/metacity.schemas.in.h:53
+#: src/metacity.schemas.in.h:55
 msgid "Switch to workspace below the current space"
 msgstr "切換至下方的工作區"
 
-#: src/metacity.schemas.in.h:54
+#: src/metacity.schemas.in.h:56
 msgid "Switch to workspace on the left"
 msgstr "切換至左方的工作區"
 
-#: src/metacity.schemas.in.h:55
+#: src/metacity.schemas.in.h:57
 msgid "Switch to workspace on the right"
 msgstr "切換至右方的工作區"
 
-#: src/metacity.schemas.in.h:56
+#: src/metacity.schemas.in.h:58
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
 "will execute command_N."
 msgstr ""
 
-#: src/metacity.schemas.in.h:57
+#: src/metacity.schemas.in.h:59
 #, fuzzy
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
@@ -503,7 +512,7 @@ msgstr ""
 "使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
 "“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:58
+#: src/metacity.schemas.in.h:60
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
@@ -517,7 +526,7 @@ msgstr ""
 "允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。\n"
 "如果將此選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:59
+#: src/metacity.schemas.in.h:61
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. "
@@ -531,7 +540,7 @@ msgstr ""
 "允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。\n"
 "如果將此選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:60
+#: src/metacity.schemas.in.h:62
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -545,7 +554,7 @@ msgstr ""
 "允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。\n"
 "如果將此選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:61
+#: src/metacity.schemas.in.h:63
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -559,7 +568,7 @@ msgstr ""
 "允許使用大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。\n"
 "如果將此選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:62
+#: src/metacity.schemas.in.h:64
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -572,7 +581,7 @@ msgstr ""
 "寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
 "項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:63
+#: src/metacity.schemas.in.h:65
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -585,7 +594,7 @@ msgstr ""
 "大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
 "選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:64
+#: src/metacity.schemas.in.h:66
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -598,7 +607,7 @@ msgstr ""
 "大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
 "選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:65
+#: src/metacity.schemas.in.h:67
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -611,7 +620,7 @@ msgstr ""
 "大寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此\n"
 "選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:66
+#: src/metacity.schemas.in.h:68
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -624,7 +633,7 @@ msgstr ""
 "寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
 "項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:67
+#: src/metacity.schemas.in.h:69
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -637,7 +646,7 @@ msgstr ""
 "寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
 "項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:68
+#: src/metacity.schemas.in.h:70
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -650,7 +659,7 @@ msgstr ""
 "寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
 "項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:69
+#: src/metacity.schemas.in.h:71
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -663,7 +672,7 @@ msgstr ""
 "寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
 "項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:70
+#: src/metacity.schemas.in.h:72
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -676,7 +685,7 @@ msgstr ""
 "寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
 "項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:71
+#: src/metacity.schemas.in.h:73
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -689,7 +698,7 @@ msgstr ""
 "寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
 "項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:72
+#: src/metacity.schemas.in.h:74
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -702,7 +711,7 @@ msgstr ""
 "寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
 "項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:73
+#: src/metacity.schemas.in.h:75
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -715,7 +724,7 @@ msgstr ""
 "寫或小寫，也允許使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選\n"
 "項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:74
+#: src/metacity.schemas.in.h:76
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -724,7 +733,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:75
+#: src/metacity.schemas.in.h:77
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -737,7 +746,7 @@ msgstr ""
 "使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
 "“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:76
+#: src/metacity.schemas.in.h:78
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -752,7 +761,7 @@ msgstr ""
 "&gt;”等的縮寫。如果將此選項設定為字串“disabled”，則不會為該項操作安排任\n"
 "何按鍵組合。"
 
-#: src/metacity.schemas.in.h:77
+#: src/metacity.schemas.in.h:79
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -767,7 +776,7 @@ msgstr ""
 "Ctrl&gt;”等的縮寫。如果將此選項設定為字串“disabled”，則不會為該項操作安\n"
 "排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:78
+#: src/metacity.schemas.in.h:80
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -782,7 +791,7 @@ msgstr ""
 "的縮寫。如果將此選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合\n"
 "。"
 
-#: src/metacity.schemas.in.h:79
+#: src/metacity.schemas.in.h:81
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -795,7 +804,7 @@ msgstr ""
 "使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
 "“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:80
+#: src/metacity.schemas.in.h:82
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is "
@@ -805,7 +814,7 @@ msgid ""
 "action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:81
+#: src/metacity.schemas.in.h:83
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -815,7 +824,7 @@ msgid ""
 "action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:82
+#: src/metacity.schemas.in.h:84
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -825,7 +834,7 @@ msgid ""
 "action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:83
+#: src/metacity.schemas.in.h:85
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -834,7 +843,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:84
+#: src/metacity.schemas.in.h:86
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -843,7 +852,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:85
+#: src/metacity.schemas.in.h:87
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -852,7 +861,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:86
+#: src/metacity.schemas.in.h:88
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -861,7 +870,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:87
+#: src/metacity.schemas.in.h:89
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -870,7 +879,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:88
+#: src/metacity.schemas.in.h:90
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -879,7 +888,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:89
+#: src/metacity.schemas.in.h:91
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -888,7 +897,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:90
+#: src/metacity.schemas.in.h:92
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -897,7 +906,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:91
+#: src/metacity.schemas.in.h:93
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -906,7 +915,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:92
+#: src/metacity.schemas.in.h:94
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -915,7 +924,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:93
+#: src/metacity.schemas.in.h:95
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -924,7 +933,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:94
+#: src/metacity.schemas.in.h:96
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -933,7 +942,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:95
+#: src/metacity.schemas.in.h:97
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -942,7 +951,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:96
+#: src/metacity.schemas.in.h:98
 #, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
@@ -957,7 +966,7 @@ msgstr ""
 "使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
 "“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:97
+#: src/metacity.schemas.in.h:99
 #, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
@@ -972,7 +981,7 @@ msgstr ""
 "使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
 "“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:98
+#: src/metacity.schemas.in.h:100
 #, fuzzy
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
@@ -987,7 +996,7 @@ msgstr ""
 "使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
 "“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:99
+#: src/metacity.schemas.in.h:101
 #, fuzzy
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
@@ -1002,7 +1011,7 @@ msgstr ""
 "使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
 "“disabled”，則不會為該項操作安排任何按鍵組合。"
 
-#: src/metacity.schemas.in.h:100
+#: src/metacity.schemas.in.h:102
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1011,7 +1020,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:101
+#: src/metacity.schemas.in.h:103
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1020,7 +1029,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:102
+#: src/metacity.schemas.in.h:104
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1029,7 +1038,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:103
+#: src/metacity.schemas.in.h:105
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1039,19 +1048,19 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:104
+#: src/metacity.schemas.in.h:106
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr ""
 
-#: src/metacity.schemas.in.h:105
+#: src/metacity.schemas.in.h:107
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
 msgstr ""
 
-#: src/metacity.schemas.in.h:106
+#: src/metacity.schemas.in.h:108
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1060,7 +1069,7 @@ msgid ""
 "unfocused when the mouse leaves the window."
 msgstr ""
 
-#: src/metacity.schemas.in.h:107
+#: src/metacity.schemas.in.h:109
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1072,31 +1081,59 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 
-#: src/metacity.schemas.in.h:108
+#: src/metacity.schemas.in.h:110
+#, fuzzy
+msgid ""
+"This keybinding lowers a window below other windows. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"此按鍵組合可以關閉視窗。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
+"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大寫或小寫，也允許\n"
+"使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
+"“disabled”，則不會為該項操作安排任何按鍵組合。"
+
+#: src/metacity.schemas.in.h:111
+#, fuzzy
+msgid ""
+"This keybinding raises the window above other windows. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"此按鍵組合可以關閉視窗。格式可以像“&lt;Control&gt;a”或是“&lt;Shift&gt;\n"
+"&lt;Alt&gt;F1”。分析按鍵組合字串時是比較自由的，允許使用大寫或小寫，也允許\n"
+"使用像“&lt;Ctl&gt;”及“&lt;Ctrl&gt;”等的縮寫。如果將此選項設定為字串\n"
+"“disabled”，則不會為該項操作安排任何按鍵組合。"
+
+#: src/metacity.schemas.in.h:112
 msgid "Toggle fullscreen mode"
 msgstr ""
 
-#: src/metacity.schemas.in.h:109
+#: src/metacity.schemas.in.h:113
 msgid "Toggle maximization state"
 msgstr ""
 
-#: src/metacity.schemas.in.h:110
+#: src/metacity.schemas.in.h:114
 msgid "Toggle shaded state"
 msgstr ""
 
-#: src/metacity.schemas.in.h:111
+#: src/metacity.schemas.in.h:115
 msgid "Toggle whether the window is on all workspaces"
 msgstr ""
 
-#: src/metacity.schemas.in.h:112
+#: src/metacity.schemas.in.h:116
 msgid "Use standard system font in window titles"
 msgstr ""
 
-#: src/metacity.schemas.in.h:113
+#: src/metacity.schemas.in.h:117
 msgid "Window focus mode"
 msgstr "視窗焦點模式"
 
-#: src/metacity.schemas.in.h:114
+#: src/metacity.schemas.in.h:118
 msgid "Window title font"
 msgstr "視窗標題列字型"
 
@@ -1107,40 +1144,40 @@ msgstr "視窗標題列字型"
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf 設定鍵“%s”的設定值類型無效\n"
 
-#: src/prefs.c:561
+#: src/prefs.c:562
 #, c-format
 msgid "GConf key '%s' is set to an invalid value"
 msgstr "GConf 設定鍵‘%s’的設定值類型無效"
 
-#: src/prefs.c:633
+#: src/prefs.c:634
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 
-#: src/prefs.c:672
+#: src/prefs.c:673
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr ""
 
-#: src/prefs.c:721
+#: src/prefs.c:722
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
 
-#: src/prefs.c:753
+#: src/prefs.c:754
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
 
-#: src/prefs.c:827
+#: src/prefs.c:828
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "將工作區數目設定為 %d 個時出現錯誤：%s\n"
 
-#: src/prefs.c:998
+#: src/prefs.c:1001
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1161,7 +1198,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
-"replace option to override the current window manager.\n"
+"replace option to replace the current window manager.\n"
 msgstr ""
 
 #: src/screen.c:262
@@ -1943,7 +1980,7 @@ msgstr ""
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "佈景主題中含有引致錯誤的表達式“%s”：%s\n"
 
-#: src/theme.c:3569
+#: src/theme.c:3559
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1952,64 +1989,64 @@ msgstr ""
 "此邊框款式必須指定 <button function=\"%s\" state=\"%s\" draw_ops=\"whatever"
 "\"/>"
 
-#: src/theme.c:3992 src/theme.c:4024
+#: src/theme.c:3982 src/theme.c:4014
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "缺少了 <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: src/theme.c:4075
+#: src/theme.c:4065
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "無法載入佈景主題“%s”：%s\n"
 
-#: src/theme.c:4221
+#: src/theme.c:4211
 #, c-format
 msgid "No <name> set for theme \"%s\""
 msgstr "佈景主題“%s”未指定 <name>"
 
-#: src/theme.c:4228
+#: src/theme.c:4218
 #, c-format
 msgid "No <author> set for theme \"%s\""
 msgstr "佈景主題“%s”未指定 <author>"
 
-#: src/theme.c:4235
+#: src/theme.c:4225
 #, c-format
 msgid "No <date> set for theme \"%s\""
 msgstr "佈景主題“%s”未指定 <date>"
 
-#: src/theme.c:4242
+#: src/theme.c:4232
 #, c-format
 msgid "No <description> set for theme \"%s\""
 msgstr "佈景主題“%s”未指定 <description>"
 
-#: src/theme.c:4249
+#: src/theme.c:4239
 #, c-format
 msgid "No <copyright> set for theme \"%s\""
 msgstr "佈景主題“%s”未指定 <copyright>"
 
-#: src/theme.c:4259
+#: src/theme.c:4249
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
 
-#: src/theme.c:4281
+#: src/theme.c:4271
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 msgstr ""
 
-#: src/theme.c:4664 src/theme.c:4726
+#: src/theme.c:4654 src/theme.c:4716
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "使用者定義的常數必須以大寫字母開始；但“%s”不是"
 
-#: src/theme.c:4672 src/theme.c:4734
+#: src/theme.c:4662 src/theme.c:4724
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "已定義了“%s”常數"
@@ -2057,12 +2094,12 @@ msgstr "無法 fdopen() 紀錄檔 %s：%s\n"
 msgid "Opened log file %s\n"
 msgstr "已開啟紀錄檔 %s\n"
 
-#: src/window.c:433
+#: src/window.c:436
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr ""
 
-#: src/workspace.c:51
+#: src/workspace.c:50
 #, fuzzy, c-format
 msgid "Workspace %d"
 msgstr "工作區 %d\n"
@@ -2074,12 +2111,12 @@ msgid ""
 "actually has type %s format %d n_items %d\n"
 msgstr ""
 
-#: src/xprops.c:282
+#: src/xprops.c:296
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr ""
 
-#: src/xprops.c:367
+#: src/xprops.c:381
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"

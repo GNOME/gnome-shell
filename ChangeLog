@@ -1,3 +1,19 @@
+2002-08-20  Havoc Pennington  <hp@redhat.com>
+
+	* src/frames.c (get_control): if in the title rect check for y 
+	<= TOP_RESIZE_HEIGHT
+
+	* src/display.c (meta_spew_event): put x/y coordinates in spew for
+	enter/leave notify
+
+	* src/frames.c (meta_frames_motion_notify_event): move cursor
+	changing from here to update_prelit_control so it happens on enter
+	notify as well
+	(get_control): change test "y < TOP_RESIZE_HEIGHT" to 
+	"y <= TOP_RESIZE_HEIGHT"
+
+	* src/Makefile.am (EXTRA_DIST): include .in files in EXTRA_DIST
+
 2002-08-17  Simos Xenitellis  <simos@hellug.gr>
 
 	* configure.in (ALL_LINGUAS): Added Greek (el).

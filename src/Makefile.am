@@ -128,7 +128,7 @@ CLEANFILES = inlinepixbufs.h
 inlinepixbufs.h: $(IMAGES)
 	   $(GDK_PIXBUF_CSOURCE) --raw --build-list $(VARIABLES) >$(srcdir)/inlinepixbufs.h
 
-EXTRA_DIST=$(desktopfiles_DATA) $(IMAGES) $(schema_DATA) update-from-egg.sh
+EXTRA_DIST=$(desktopfiles_DATA) $(IMAGES) $(schema_DATA) update-from-egg.sh $(desktopfiles_in_files) $(schema_in_files)
 
 EGGDIR=$(srcdir)/../../libegg/libegg
 

@@ -1329,7 +1329,62 @@ meta_frames_update_prelit_control (MetaFrames      *frames,
 				   MetaFrameControl control)
 {
   MetaFrameControl old_control;
+  MetaCursor cursor;
 
+  meta_verbose ("Updating prelit control from %d to %d\n",
+                frame->prelit_control, control);
+  
+  cursor = META_CURSOR_DEFAULT;
+  
+  switch (control)
+    {
+    case META_FRAME_CONTROL_CLIENT_AREA:
+      break;
+    case META_FRAME_CONTROL_NONE:
+      break;
+    case META_FRAME_CONTROL_TITLE:
+      break;
+    case META_FRAME_CONTROL_DELETE:
+      break;
+    case META_FRAME_CONTROL_MENU:
+      break;
+    case META_FRAME_CONTROL_MINIMIZE:
+      break;
+    case META_FRAME_CONTROL_MAXIMIZE:
+      break;
+    case META_FRAME_CONTROL_UNMAXIMIZE:
+      break;
+    case META_FRAME_CONTROL_RESIZE_SE:
+      cursor = META_CURSOR_SE_RESIZE;
+      break;
+    case META_FRAME_CONTROL_RESIZE_S:
+      cursor = META_CURSOR_SOUTH_RESIZE;
+      break;
+    case META_FRAME_CONTROL_RESIZE_SW:
+      cursor = META_CURSOR_SW_RESIZE;
+      break;
+    case META_FRAME_CONTROL_RESIZE_N:
+      cursor = META_CURSOR_NORTH_RESIZE;
+      break;
+    case META_FRAME_CONTROL_RESIZE_NE:
+      cursor = META_CURSOR_NE_RESIZE;
+      break;
+    case META_FRAME_CONTROL_RESIZE_NW:
+      cursor = META_CURSOR_NW_RESIZE;
+      break;
+    case META_FRAME_CONTROL_RESIZE_W:
+      cursor = META_CURSOR_WEST_RESIZE;
+      break;
+    case META_FRAME_CONTROL_RESIZE_E:
+      cursor = META_CURSOR_EAST_RESIZE;
+      break;
+    }        
+
+  /* set/unset the prelight cursor */
+  meta_core_set_screen_cursor (gdk_display,
+                               frame->xwindow,
+                               cursor);
+  
   /* Only prelight buttons */
   if (control != META_FRAME_CONTROL_MENU &&
       control != META_FRAME_CONTROL_MINIMIZE &&
@@ -1379,65 +1434,13 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
       {
         MetaFrameControl control;
         int x, y;
-        MetaCursor cursor;
         
         gdk_window_get_pointer (frame->window, &x, &y, NULL);
 
         control = get_control (frames, frame, x, y);
 
-        /* Update prelit control */
+        /* Update prelit control and cursor */
 	meta_frames_update_prelit_control (frames, frame, control);
-	
-        cursor = META_CURSOR_DEFAULT;
-
-        switch (control)
-          {
-          case META_FRAME_CONTROL_CLIENT_AREA:
-            break;
-          case META_FRAME_CONTROL_NONE:
-            break;
-          case META_FRAME_CONTROL_TITLE:
-            break;
-          case META_FRAME_CONTROL_DELETE:
-            break;
-          case META_FRAME_CONTROL_MENU:
-            break;
-          case META_FRAME_CONTROL_MINIMIZE:
-            break;
-          case META_FRAME_CONTROL_MAXIMIZE:
-            break;
-          case META_FRAME_CONTROL_UNMAXIMIZE:
-            break;
-          case META_FRAME_CONTROL_RESIZE_SE:
-            cursor = META_CURSOR_SE_RESIZE;
-            break;
-          case META_FRAME_CONTROL_RESIZE_S:
-            cursor = META_CURSOR_SOUTH_RESIZE;
-            break;
-          case META_FRAME_CONTROL_RESIZE_SW:
-            cursor = META_CURSOR_SW_RESIZE;
-            break;
-          case META_FRAME_CONTROL_RESIZE_N:
-            cursor = META_CURSOR_NORTH_RESIZE;
-            break;
-          case META_FRAME_CONTROL_RESIZE_NE:
-            cursor = META_CURSOR_NE_RESIZE;
-            break;
-          case META_FRAME_CONTROL_RESIZE_NW:
-            cursor = META_CURSOR_NW_RESIZE;
-            break;
-          case META_FRAME_CONTROL_RESIZE_W:
-            cursor = META_CURSOR_WEST_RESIZE;
-            break;
-          case META_FRAME_CONTROL_RESIZE_E:
-            cursor = META_CURSOR_EAST_RESIZE;
-            break;
-          }        
-
-        /* set/unset the prelight cursor */
-        meta_core_set_screen_cursor (gdk_display,
-                                     frame->xwindow,
-                                     cursor);
         
         queue_tip (frames);
       }
@@ -1714,10 +1717,6 @@ meta_frames_leave_notify_event      (GtkWidget           *widget,
   
   clear_tip (frames);
 
-  meta_core_set_screen_cursor (gdk_display,
-                               frame->xwindow,
-                               META_CURSOR_DEFAULT);
-
   return TRUE;
 }
 
@@ -1803,7 +1802,12 @@ get_control (MetaFrames *frames,
     return META_FRAME_CONTROL_MENU;
   
   if (POINT_IN_RECT (x, y, fgeom.title_rect))
-    return META_FRAME_CONTROL_TITLE;
+    {
+      if (y <= TOP_RESIZE_HEIGHT)
+        return META_FRAME_CONTROL_RESIZE_N;
+      else
+        return META_FRAME_CONTROL_TITLE;
+    }
   
   flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
 
@@ -1873,7 +1877,7 @@ get_control (MetaFrames *frames,
           if (has_vert)
             return META_FRAME_CONTROL_RESIZE_S;
         }
-      else if (y < TOP_RESIZE_HEIGHT)
+      else if (y <= TOP_RESIZE_HEIGHT)
         {
           if (has_vert)
             return META_FRAME_CONTROL_RESIZE_N;
