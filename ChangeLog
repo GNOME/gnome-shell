@@ -1,5 +1,9 @@
 2002-02-07  Havoc Pennington  <hp@pobox.com>
 
+	* src/theme.c (colorize_pixbuf): do random voodoo on the algorithm
+
+2002-02-07  Havoc Pennington  <hp@pobox.com>
+
 	* src/theme.c (colorize_pixbuf): use the intensity of the gray
 	pixel for both saturation and value, not just value.
 

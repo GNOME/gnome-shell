@@ -241,10 +241,28 @@ colorize_pixbuf (GdkPixbuf *orig,
           
           intensity = INTENSITY (src[0], src[1], src[2]) / 255.0;
 
+#if 0
+          /* black to new_color */
           dr = dh;
           dg = intensity;
           db = intensity;
           hsv_to_rgb (&dr, &dg, &db);
+#else
+          if (intensity <= 0.5)
+            {
+              /* Go from black at intensity = 0.0 to new_color at intensity = 0.5 */
+              dr = (new_color->red * intensity * 2.0) / 65535.0;
+              dg = (new_color->green * intensity * 2.0) / 65535.0;
+              db = (new_color->blue * intensity * 2.0) / 65535.0;
+            }
+          else
+            {
+              /* Go from new_color at intensity = 0.5 to white at intensity = 1.0 */
+              dr = (new_color->red + (65535 - new_color->red) * (intensity - 0.5) * 2.0) / 65535.0;
+              dg = (new_color->green + (65535 - new_color->green) * (intensity - 0.5) * 2.0) / 65535.0;
+              db = (new_color->blue + (65535 - new_color->blue) * (intensity - 0.5) * 2.0) / 65535.0;
+            }
+#endif
           
           dest[0] = CLAMP_UCHAR (255 * dr);
           dest[1] = CLAMP_UCHAR (255 * dg);
