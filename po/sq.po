@@ -1,14 +1,14 @@
-# Albanian translation of metacity
+# Përkthimi i mesazheve të metacity në shqip
 # This file is distributed under the same license as the metacity package.
 # Copyright (C) 2003, 2004 Free Software Foundation, Inc.
 # Laurent Dhima <laurenti@alblinux.net>, 2003, 2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity\n"
+"Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-10-11 08:59-0700\n"
-"PO-Revision-Date: 2004-07-27 17:54+0200\n"
+"POT-Creation-Date: 2004-10-19 12:48+0200\n"
+"PO-Revision-Date: 2004-10-19 18:44+0200\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -50,8 +50,7 @@ msgstr "Gabim gjatë leximit të dialogut të proçesit: %s\n"
 
 #: src/delete.c:344
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 "Gabim gjatë lëshimit të dritares së dialogut metacity për të pyetur nëse "
 "dëshiron të përfundosh një program: %s\n"
@@ -102,7 +101,7 @@ msgstr "Dritarja në maksimum"
 msgid "Unmaximize Window"
 msgstr "Zvogëlo dritaren"
 
-#: src/keybindings.c:989
+#: src/keybindings.c:996
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -111,17 +110,21 @@ msgstr ""
 "Ndonjë program tjetër është duke përdorur kombinimin e pulsantit %s me "
 "ndryshuesin %x\n"
 
-#: src/keybindings.c:2529
+#: src/keybindings.c:2530
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Gabim gjatë lëshimit të dritares së dialogut të metacity për të lajmëruar "
 "një gabim në lidhje me një komandë: %s\n"
 
-#: src/keybindings.c:2602
+#: src/keybindings.c:2634
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Komanda %d nuk është përcaktuar.\n"
+
+#: src/keybindings.c:3465
+msgid "No terminal command has been defined.\n"
+msgstr "Nuk është përcaktuar komanda e terminalit.\n"
 
 #: src/main.c:69
 msgid ""
@@ -153,10 +156,8 @@ msgstr "Gabim gjatë skanimit të directory të temave: %s\n"
 
 #: src/main.c:459
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr ""
-"Nuk u gjet asnjë temë! Sigurohu që %s ekziston dhe përmban temat e zakonshme."
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgstr "Nuk u gjet asnjë temë! Sigurohu që %s ekziston dhe përmban temat e zakonshme."
 
 #: src/main.c:521
 #, c-format
@@ -225,7 +226,7 @@ msgstr "Lëvize tek hapësira e punës _Sipër"
 msgid "Move to Workspace _Down"
 msgstr "Lëvize tek hapësira e punës _Poshtë"
 
-#: src/menu.c:162 src/prefs.c:1868
+#: src/menu.c:162 src/prefs.c:1942
 #, c-format
 msgid "Workspace %d"
 msgstr "Hapësira e punës %d"
@@ -339,8 +340,7 @@ msgid "The window \"%s\" is not responding."
 msgstr "Dritarja \"%s\" nuk përgjigjet."
 
 #: src/metacity-dialog.c:118
-msgid ""
-"Forcing this application to quit will cause you to lose any unsaved changes."
+msgid "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Duke detyruar me forcë përfundimin e këtij programi mund të humbisni çdo "
 "ndryshim të paruajtur."
@@ -380,8 +380,7 @@ msgstr "Metacity"
 
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr ""
-"(E pakompletuar) Lundrimi funksionon në nivel programi, jo në nivel dritareje"
+msgstr "(E pakompletuar) Lundrimi funksionon në nivel programi, jo në nivel dritareje"
 
 #: src/metacity.schemas.in.h:2
 msgid ""
@@ -471,8 +470,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
-msgstr ""
-"Disaktivo funksionet e kërkuara nga programet e vjetër ose jo funksionues"
+msgstr "Disaktivo funksionet e kërkuara nga programet e vjetër ose jo funksionues"
 
 #: src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
@@ -540,8 +538,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
-msgstr ""
-"Nëse e vërtetë, hiqet lehtësia e përdorimit në favor të konsumit më të ulët"
+msgstr "Nëse e vërtetë, hiqet lehtësia e përdorimit në favor të konsumit më të ulët"
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
@@ -565,8 +562,7 @@ msgstr "Minimizo dritaren"
 
 #: src/metacity.schemas.in.h:27
 msgid "Modifier to use for modified window click actions"
-msgstr ""
-"Ndryshues që duhet përdorur për veprimet mbi dritare me pulsantët e mouse"
+msgstr "Ndryshues që duhet përdorur për veprimet mbi dritare me pulsantët e mouse"
 
 #: src/metacity.schemas.in.h:28
 msgid "Move backward between panels and the desktop immediately"
@@ -600,8 +596,7 @@ msgstr "Lëviz fokusin midis dritareve me dialogun popup"
 
 #: src/metacity.schemas.in.h:35
 msgid "Move focus backwards between windows using popup display"
-msgstr ""
-"Lëvize, në drejtim të kundërt, fokusi midis dritareve me dialogun popup"
+msgstr "Lëvize, në drejtim të kundërt, fokusi midis dritareve me dialogun popup"
 
 #: src/metacity.schemas.in.h:36
 msgid "Move window"
@@ -691,8 +686,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:56
 msgid "Raise obscured window, otherwise lower"
-msgstr ""
-"Sill dritaren në plan të parë po të jetë e mbuluar, përndryshe në sfond"
+msgstr "Sill dritaren në plan të parë po të jetë e mbuluar, përndryshe në sfond"
 
 #: src/metacity.schemas.in.h:57
 msgid "Raise window above other windows"
@@ -707,14 +701,18 @@ msgid "Run a defined command"
 msgstr "Zbato një komandë të përcaktuar"
 
 #: src/metacity.schemas.in.h:60
+msgid "Run a terminal"
+msgstr "Hap një terminal"
+
+#: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
 msgstr "Shfaq menunë e panelit"
 
-#: src/metacity.schemas.in.h:61
+#: src/metacity.schemas.in.h:62
 msgid "Show the panel run application dialog"
 msgstr "Shfaq dialogun e \"zbato programin\" të panelit"
 
-#: src/metacity.schemas.in.h:62
+#: src/metacity.schemas.in.h:63
 msgid ""
 "Some applications break specifications in ways that result in window manager "
 "misfeatures. For example, ideally Metacity would place all dialogs in a "
@@ -744,83 +742,83 @@ msgstr ""
 "specifikimeve, kështu që është e mundur që difektet në modalitetin korrekt "
 "nuk mund të zgjidhen veçse me ndryshimin apo shtimin e specifikimeve."
 
-#: src/metacity.schemas.in.h:63
+#: src/metacity.schemas.in.h:64
 msgid "Switch to workspace 1"
 msgstr "Shko tek hapësira e punës 1"
 
-#: src/metacity.schemas.in.h:64
+#: src/metacity.schemas.in.h:65
 msgid "Switch to workspace 10"
 msgstr "Shko tek hapësira e punës 10"
 
-#: src/metacity.schemas.in.h:65
+#: src/metacity.schemas.in.h:66
 msgid "Switch to workspace 11"
 msgstr "Shko tek hapësira e punës 11"
 
-#: src/metacity.schemas.in.h:66
+#: src/metacity.schemas.in.h:67
 msgid "Switch to workspace 12"
 msgstr "Shko tek hapësira e punës 12"
 
-#: src/metacity.schemas.in.h:67
+#: src/metacity.schemas.in.h:68
 msgid "Switch to workspace 2"
 msgstr "Shko tek hapësira e punës 2"
 
-#: src/metacity.schemas.in.h:68
+#: src/metacity.schemas.in.h:69
 msgid "Switch to workspace 3"
 msgstr "Shko tek hapësira e punës 3"
 
-#: src/metacity.schemas.in.h:69
+#: src/metacity.schemas.in.h:70
 msgid "Switch to workspace 4"
 msgstr "Shko tek hapësira e punës 4"
 
-#: src/metacity.schemas.in.h:70
+#: src/metacity.schemas.in.h:71
 msgid "Switch to workspace 5"
 msgstr "Shko tek hapësira e punës 5"
 
-#: src/metacity.schemas.in.h:71
+#: src/metacity.schemas.in.h:72
 msgid "Switch to workspace 6"
 msgstr "Shko tek hapësira e punës 6"
 
-#: src/metacity.schemas.in.h:72
+#: src/metacity.schemas.in.h:73
 msgid "Switch to workspace 7"
 msgstr "Shko tek hapësira e punës 7"
 
-#: src/metacity.schemas.in.h:73
+#: src/metacity.schemas.in.h:74
 msgid "Switch to workspace 8"
 msgstr "Shko tek hapësira e punës 8"
 
-#: src/metacity.schemas.in.h:74
+#: src/metacity.schemas.in.h:75
 msgid "Switch to workspace 9"
 msgstr "Shko tek hapësira e punës 9"
 
-#: src/metacity.schemas.in.h:75
+#: src/metacity.schemas.in.h:76
 msgid "Switch to workspace above this one"
 msgstr "Shko tek hapësira e punës sipër"
 
-#: src/metacity.schemas.in.h:76
+#: src/metacity.schemas.in.h:77
 msgid "Switch to workspace below this one"
 msgstr "Shko tek hapësira e punës poshtë"
 
-#: src/metacity.schemas.in.h:77
+#: src/metacity.schemas.in.h:78
 msgid "Switch to workspace on the left"
 msgstr "Shko tek hapësira e punës majtas"
 
-#: src/metacity.schemas.in.h:78
+#: src/metacity.schemas.in.h:79
 msgid "Switch to workspace on the right"
 msgstr "Shko tek hapësira e punës djathtas"
 
-#: src/metacity.schemas.in.h:79
+#: src/metacity.schemas.in.h:80
 msgid "System Bell is Audible"
 msgstr "System Bell është i dëgjueshëm"
 
-#: src/metacity.schemas.in.h:80
+#: src/metacity.schemas.in.h:81
 msgid "Take a screenshot"
 msgstr "Merr një pamje"
 
-#: src/metacity.schemas.in.h:81
+#: src/metacity.schemas.in.h:82
 msgid "Take a screenshot of a window"
 msgstr "Merr pamjen e dritares"
 
-#: src/metacity.schemas.in.h:82
+#: src/metacity.schemas.in.h:83
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
 "or another application 'bell' indicator has been rung. Currently there are "
@@ -838,7 +836,7 @@ msgstr ""
 "është rasti i \"system beep\" të default), do të flash-ohet dritarja që në "
 "atë moment do të jetë në plan të parë."
 
-#: src/metacity.schemas.in.h:83
+#: src/metacity.schemas.in.h:84
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
@@ -849,7 +847,7 @@ msgstr ""
 "pulsantët e rrugëshkurtimit korrispondues me kyçit run_command_N, do të "
 "ekzekutohet komanda command_N."
 
-#: src/metacity.schemas.in.h:84
+#: src/metacity.schemas.in.h:85
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
@@ -858,7 +856,7 @@ msgstr ""
 "rrugë të shkurtër që ka si rezultat thërritjen e komandës së specifikuar nga "
 "ky rregullim."
 
-#: src/metacity.schemas.in.h:85
+#: src/metacity.schemas.in.h:86
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
@@ -868,7 +866,7 @@ msgstr ""
 "përcakton një rrugë të shkurtër që ka si rezultat thërritjen e komandës së "
 "specifikuar nga ky rregullim."
 
-#: src/metacity.schemas.in.h:86
+#: src/metacity.schemas.in.h:87
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -884,7 +882,7 @@ msgstr ""
 "vlera speciale \"disabled\", atëhere nuk do të ketë asnjë rrugëshkurtim për "
 "këtë veprim."
 
-#: src/metacity.schemas.in.h:87
+#: src/metacity.schemas.in.h:88
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -899,7 +897,7 @@ msgstr ""
 "sh. \"&lt;Ctl&gt;\" dhe \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek "
 "\"disabled\", atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:88
+#: src/metacity.schemas.in.h:89
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -914,7 +912,7 @@ msgstr ""
 "sh. \"&lt;Ctl&gt;\" dhe \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek "
 "\"disabled\", atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:89
+#: src/metacity.schemas.in.h:90
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -929,7 +927,7 @@ msgstr ""
 "sh. \"&lt;Ctl&gt;\" dhe \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek "
 "\"disabled\", atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:90
+#: src/metacity.schemas.in.h:91
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -944,7 +942,7 @@ msgstr ""
 "sh. \"&lt;Ctl&gt;\" dhe \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek "
 "\"disabled\", atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:91
+#: src/metacity.schemas.in.h:92
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -958,7 +956,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:92
+#: src/metacity.schemas.in.h:93
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -972,7 +970,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:93
+#: src/metacity.schemas.in.h:94
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -986,7 +984,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:94
+#: src/metacity.schemas.in.h:95
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1000,7 +998,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:95
+#: src/metacity.schemas.in.h:96
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1014,7 +1012,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:96
+#: src/metacity.schemas.in.h:97
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1028,7 +1026,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:97
+#: src/metacity.schemas.in.h:98
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1042,7 +1040,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:98
+#: src/metacity.schemas.in.h:99
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1056,7 +1054,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:99
+#: src/metacity.schemas.in.h:100
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1070,7 +1068,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:100
+#: src/metacity.schemas.in.h:101
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1084,7 +1082,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:101
+#: src/metacity.schemas.in.h:102
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1098,7 +1096,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:102
+#: src/metacity.schemas.in.h:103
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1112,7 +1110,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:103
+#: src/metacity.schemas.in.h:104
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1126,7 +1124,7 @@ msgstr ""
 "\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do të ketë asnjë "
 "rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:104
+#: src/metacity.schemas.in.h:105
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1140,7 +1138,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:105
+#: src/metacity.schemas.in.h:106
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1156,7 +1154,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:106
+#: src/metacity.schemas.in.h:107
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1172,7 +1170,7 @@ msgstr ""
 "Ctl&gt;\" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", "
 "atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:107
+#: src/metacity.schemas.in.h:108
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1188,7 +1186,7 @@ msgstr ""
 "ky opcion vendoset tek \"disabled\", atëhere nuk do të ketë asnjë "
 "rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:108
+#: src/metacity.schemas.in.h:109
 msgid ""
 "The keybinding used to maximize a window The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1202,7 +1200,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:109
+#: src/metacity.schemas.in.h:110
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1216,7 +1214,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:110
+#: src/metacity.schemas.in.h:111
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -1231,7 +1229,7 @@ msgstr ""
 "\"&lt;Ctl&gt; \" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled"
 "\", atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:111
+#: src/metacity.schemas.in.h:112
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1246,7 +1244,7 @@ msgstr ""
 "\"&lt;Ctl&gt; \" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled"
 "\", atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:112
+#: src/metacity.schemas.in.h:113
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1261,7 +1259,7 @@ msgstr ""
 "sh. \"&lt;Ctl&gt; \" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek "
 "\"disabled\", atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:113
+#: src/metacity.schemas.in.h:114
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1275,7 +1273,7 @@ msgstr ""
 "\"&lt;Ctl&gt; \" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled"
 "\", atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:114
+#: src/metacity.schemas.in.h:115
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1289,7 +1287,7 @@ msgstr ""
 "Ctl&gt; \" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", "
 "atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:115
+#: src/metacity.schemas.in.h:116
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1303,7 +1301,7 @@ msgstr ""
 "Ctl&gt; \" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", "
 "atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:116
+#: src/metacity.schemas.in.h:117
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1317,7 +1315,7 @@ msgstr ""
 "Ctl&gt; \" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", "
 "atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:117
+#: src/metacity.schemas.in.h:118
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1331,7 +1329,7 @@ msgstr ""
 "Ctl&gt; \" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", "
 "atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:118
+#: src/metacity.schemas.in.h:119
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1345,7 +1343,7 @@ msgstr ""
 "Ctl&gt; \" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", "
 "atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:119
+#: src/metacity.schemas.in.h:120
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1359,7 +1357,7 @@ msgstr ""
 "Ctl&gt; \" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", "
 "atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:120
+#: src/metacity.schemas.in.h:121
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1373,7 +1371,7 @@ msgstr ""
 "Ctl&gt; \" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", "
 "atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:121
+#: src/metacity.schemas.in.h:122
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1387,7 +1385,7 @@ msgstr ""
 "Ctl&gt; \" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", "
 "atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:122
+#: src/metacity.schemas.in.h:123
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1401,7 +1399,7 @@ msgstr ""
 "Ctl&gt; \" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", "
 "atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:123
+#: src/metacity.schemas.in.h:124
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1415,7 +1413,7 @@ msgstr ""
 "Ctl&gt; \" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", "
 "atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:124
+#: src/metacity.schemas.in.h:125
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1429,7 +1427,7 @@ msgstr ""
 "Ctl&gt; \" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", "
 "atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:125
+#: src/metacity.schemas.in.h:126
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1443,7 +1441,7 @@ msgstr ""
 "Ctl&gt; \" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", "
 "atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:126
+#: src/metacity.schemas.in.h:127
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1459,7 +1457,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:127
+#: src/metacity.schemas.in.h:128
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1475,7 +1473,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:128
+#: src/metacity.schemas.in.h:129
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1493,7 +1491,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:129
+#: src/metacity.schemas.in.h:130
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1511,7 +1509,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:130
+#: src/metacity.schemas.in.h:131
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1527,7 +1525,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:131
+#: src/metacity.schemas.in.h:132
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1543,7 +1541,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:132
+#: src/metacity.schemas.in.h:133
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1561,7 +1559,7 @@ msgstr ""
 "sh. \"&lt;Ctl&gt;\" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek "
 "\"disabled\", atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:133
+#: src/metacity.schemas.in.h:134
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1579,7 +1577,7 @@ msgstr ""
 "sh. \"&lt;Ctl&gt;\" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek "
 "\"disabled\", atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:134
+#: src/metacity.schemas.in.h:135
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1595,7 +1593,7 @@ msgstr ""
 "ky opcion vendoset tek \"disabled\", atëhere nuk do të ketë asnjë "
 "rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:135
+#: src/metacity.schemas.in.h:136
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1609,7 +1607,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled"
 "\", atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:136
+#: src/metacity.schemas.in.h:137
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1623,7 +1621,7 @@ msgstr ""
 "Ctl&gt;\" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", "
 "atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:137
+#: src/metacity.schemas.in.h:138
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1637,7 +1635,7 @@ msgstr ""
 "Ctl&gt;\" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", "
 "atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:138
+#: src/metacity.schemas.in.h:139
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1653,7 +1651,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:139
+#: src/metacity.schemas.in.h:140
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1667,7 +1665,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:140
+#: src/metacity.schemas.in.h:141
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1682,7 +1680,21 @@ msgstr ""
 "sh. \"&lt;Ctl&gt;\" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek "
 "\"disabled\", atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:141
+#: src/metacity.schemas.in.h:142
+msgid ""
+"The keybinding which invokes a terminal. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"Rrugëshkurtimi për të hapur një terminal. Forma është \"&lt;"
+"Control&gt;a\" ose \"&lt;Shift&gt;&lt;Alt&gt;F1\". Lejohet përdorimi i "
+"gërmave të mëdha, të vogla si dhe shkurtimet si p.sh. \"&lt;Ctl&gt;\" apo "
+"\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
+"të ketë asnjë rrugëshkurtim për këtë veprim."
+
+#: src/metacity.schemas.in.h:143
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1698,7 +1710,7 @@ msgstr ""
 "Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do të ketë asnjë "
 "rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:142
+#: src/metacity.schemas.in.h:144
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1713,7 +1725,7 @@ msgstr ""
 "sh. \"&lt;Ctl&gt;\" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek "
 "\"disabled\", atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:143
+#: src/metacity.schemas.in.h:145
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1727,15 +1739,15 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:144
+#: src/metacity.schemas.in.h:146
 msgid "The name of a workspace."
 msgstr "Emri i hapësirës së punës."
 
-#: src/metacity.schemas.in.h:145
+#: src/metacity.schemas.in.h:147
 msgid "The screenshot command"
 msgstr "Komanda për të fotografuar ekranin"
 
-#: src/metacity.schemas.in.h:146
+#: src/metacity.schemas.in.h:148
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
@@ -1743,7 +1755,7 @@ msgstr ""
 "Tema përcakton paraqitjen e kornizave të dritareve, panelit të titullit, e "
 "kështu me rradhë."
 
-#: src/metacity.schemas.in.h:147
+#: src/metacity.schemas.in.h:149
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -1751,7 +1763,7 @@ msgstr ""
 "Intervali i kohës në milisekonda para se dritarja të risillet në plan të "
 "parë nese auto_raise është vendosur në \"true\"."
 
-#: src/metacity.schemas.in.h:148
+#: src/metacity.schemas.in.h:150
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1765,11 +1777,11 @@ msgstr ""
 "që fokus-i t'i jepet dritares mbi të cilën ndodhet kursori dhe t'i hiqet kur "
 "ky i fundit të lëshojë dritaren."
 
-#: src/metacity.schemas.in.h:149
+#: src/metacity.schemas.in.h:151
 msgid "The window screenshot command"
 msgstr "Komanda për të fotografuar dritaren"
 
-#: src/metacity.schemas.in.h:150
+#: src/metacity.schemas.in.h:152
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1788,7 +1800,7 @@ msgstr ""
 "ky opcion vendoset tek \"disabled\", atëhere nuk do të ketë asnjë "
 "rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:151
+#: src/metacity.schemas.in.h:153
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1802,7 +1814,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:152
+#: src/metacity.schemas.in.h:154
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1816,7 +1828,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek \"disabled\", atëhere nuk do "
 "të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:153
+#: src/metacity.schemas.in.h:155
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1831,7 +1843,7 @@ msgstr ""
 "sh. \"&lt;Ctl&gt;\" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek "
 "\"disabled\", atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:154
+#: src/metacity.schemas.in.h:156
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1846,7 +1858,7 @@ msgstr ""
 "sh. \"&lt;Ctl&gt;\" apo \"&lt;Ctrl&gt;\". Nëse ky opcion vendoset tek "
 "\"disabled\", atëhere nuk do të ketë asnjë rrugëshkurtim për këtë veprim."
 
-#: src/metacity.schemas.in.h:155
+#: src/metacity.schemas.in.h:157
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -1856,27 +1868,27 @@ msgstr ""
 "vlefshme aktuale janë \"toggle_shade\" dhe \"toggle_maximize\" që shërbejnë "
 "reciprokisht për të palosur/shpalosur dhe maksimizuar/minimizuar dritaren."
 
-#: src/metacity.schemas.in.h:156
+#: src/metacity.schemas.in.h:158
 msgid "Toggle always on top state"
 msgstr "Aktivon/ç'aktivon gjendjen \"gjithmonë sipër\""
 
-#: src/metacity.schemas.in.h:157
+#: src/metacity.schemas.in.h:159
 msgid "Toggle fullscreen mode"
 msgstr "Aktivon/ç'aktivon modalitetin \"ekran i plotë\""
 
-#: src/metacity.schemas.in.h:158
+#: src/metacity.schemas.in.h:160
 msgid "Toggle maximization state"
 msgstr "Aktivon/ç'aktivon gjendjen \"e maksimizuar\""
 
-#: src/metacity.schemas.in.h:159
+#: src/metacity.schemas.in.h:161
 msgid "Toggle shaded state"
 msgstr "Aktivon/ç'aktivon palosjen"
 
-#: src/metacity.schemas.in.h:160
+#: src/metacity.schemas.in.h:162
 msgid "Toggle window on all workspaces"
 msgstr "Aktivon/ç'aktivon \"dritarja në të gjithë hapësirat e punës\""
 
-#: src/metacity.schemas.in.h:161
+#: src/metacity.schemas.in.h:163
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
@@ -1886,36 +1898,37 @@ msgstr ""
 "një 'beep', i dobishëm për të 'rënët nga veshët' apo për përdorim gjatë "
 "programimit, apo kur 'sinjalet me tinguj' nuk janë aktivë."
 
-#: src/metacity.schemas.in.h:162
+#: src/metacity.schemas.in.h:164
 msgid "Unmaximize window"
 msgstr "Ç'maksimizo dritaren"
 
-#: src/metacity.schemas.in.h:163
+#: src/metacity.schemas.in.h:165
 msgid "Use standard system font in window titles"
 msgstr "Përdor gërmat e prezgjedhura të sistemit për titujt e dritares"
 
-#: src/metacity.schemas.in.h:164
+#: src/metacity.schemas.in.h:166
 msgid "Visual Bell Type"
 msgstr "Lloji i sinjalit vizual"
 
-#: src/metacity.schemas.in.h:165
+#: src/metacity.schemas.in.h:167
 msgid "Window focus mode"
 msgstr "Modaliteti i fokusimit të dritareve"
 
-#: src/metacity.schemas.in.h:166
+#: src/metacity.schemas.in.h:168
 msgid "Window title font"
 msgstr "Gërmat e titullit të dritares"
 
-#: src/prefs.c:459 src/prefs.c:475 src/prefs.c:491 src/prefs.c:507
-#: src/prefs.c:523 src/prefs.c:543 src/prefs.c:559 src/prefs.c:575
-#: src/prefs.c:591 src/prefs.c:607 src/prefs.c:623 src/prefs.c:639
-#: src/prefs.c:655 src/prefs.c:672 src/prefs.c:688 src/prefs.c:704
-#: src/prefs.c:720 src/prefs.c:735 src/prefs.c:750 src/prefs.c:765
+#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
+#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
+#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
+#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
+#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
+#: src/prefs.c:798
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Kyçi GConf \"%s\" është vendosur në një lloj të pavlefshëm\n"
 
-#: src/prefs.c:810
+#: src/prefs.c:843
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1924,17 +1937,17 @@ msgstr ""
 "Vlera \"%s\" tek databaza e konfigurimit është e pavlefshme për ndryshuesin "
 "e pulsantit të mouse\n"
 
-#: src/prefs.c:834 src/prefs.c:1244
+#: src/prefs.c:867 src/prefs.c:1277
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Kyçi GConf \"%s\" është vendosur në një vlerë të pavlefshme\n"
 
-#: src/prefs.c:961
+#: src/prefs.c:994
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "E pamundur analiza e përshkrimit të gërmës \"%s\" nga kyçi GConf %s\n"
 
-#: src/prefs.c:1146
+#: src/prefs.c:1179
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1943,7 +1956,7 @@ msgstr ""
 "Vlera %d e memorizuar në kyçit GConf %s nuk është një numër i arsyeshëm për "
 "hapësirat e punës, maksimumi aktual është %d\n"
 
-#: src/prefs.c:1206
+#: src/prefs.c:1239
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1951,18 +1964,17 @@ msgstr ""
 "Veprimtari mirëmbajtje për manazhimin e programeve difektozë të ç'aktivuar. "
 "Disa programe mund të sillen në mënyrë të gabuar.\n"
 
-#: src/prefs.c:1271
+#: src/prefs.c:1304
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr ""
-"Vlera %d e memorizuar tek kyçi GConf %s është jashtë intervalit nga 0 në %d\n"
+msgstr "Vlera %d e memorizuar tek kyçi GConf %s është jashtë intervalit nga 0 në %d\n"
 
-#: src/prefs.c:1389
+#: src/prefs.c:1425
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Gabim gjatë vendosjes së numrit të hapësirave të punës në %d: %s\n"
 
-#: src/prefs.c:1632
+#: src/prefs.c:1669
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1971,11 +1983,10 @@ msgstr ""
 "Vlera \"%s\" në databazën e konfigurimit është e pavlefshme për kombinim "
 "tastesh \"%s\"\n"
 
-#: src/prefs.c:1949
+#: src/prefs.c:2023
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr ""
-"Gabim gjatë vendosjes së emrit të hapësirës së punës %d në \"%s\": %s\n"
+msgstr "Gabim gjatë vendosjes së emrit të hapësirës së punës %d në \"%s\": %s\n"
 
 #: src/resizepopup.c:126
 #, c-format
@@ -1998,8 +2009,7 @@ msgstr ""
 
 #: src/screen.c:448
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "E pamundur marrja e zgjedhjes së organizuesit të dritares për screen %d tek "
 "display \"%s\"\n"
@@ -2007,10 +2017,9 @@ msgstr ""
 #: src/screen.c:506
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr ""
-"Screen %d tek display \"%s\" aktualisht e ka një organizues dritareje\n"
+msgstr "Screen %d tek display \"%s\" aktualisht e ka një organizues dritareje\n"
 
-#: src/screen.c:701
+#: src/screen.c:699
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "I pamundur lëshimi i screen %d tek display \"%s\"\n"
@@ -2132,8 +2141,7 @@ msgstr "Këndi duhet të jetë midis 0.0 dhe 360.0, e jo %g\n"
 #: src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
-"Alpha duhet të jetë midis 0.0 (e tejdukshme) dhe 1.0 (opake), e jo %g\n"
+msgstr "Alpha duhet të jetë midis 0.0 (e tejdukshme) dhe 1.0 (opake), e jo %g\n"
 
 #: src/theme-parser.c:684
 #, c-format
@@ -2176,8 +2184,7 @@ msgstr "<%s> gjeometria \"%s\" nuk është përcaktuar"
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
-"<%s> duhet të specifikojë një gjeometri ose një prind që ka një gjeometri"
+msgstr "<%s> duhet të specifikojë një gjeometri ose një prind që ka një gjeometri"
 
 #: src/theme-parser.c:1080
 #, c-format
@@ -2233,8 +2240,7 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "Asnjë karakteristikë \"value\" në elementin <%s>"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 "I pamundur specifikimi si i button_width/button_height ashtu dhe "
 "proporcionet për pulsantët"
@@ -2403,8 +2409,7 @@ msgstr "Asnjë <draw_ops> e quajtur \"%s\" është përcaktuar"
 #: src/theme-parser.c:2974 src/theme-parser.c:3090
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr ""
-"Përfshirja e draw_ops \"%s\" këtu do të provokojë një riferiment qarkor"
+msgstr "Përfshirja e draw_ops \"%s\" këtu do të provokojë një riferiment qarkor"
 
 #: src/theme-parser.c:3153
 #, c-format
@@ -2539,8 +2544,7 @@ msgstr "Elementi i jashtëm në temë duhet të jetë <metacity_theme> e jo <%s>
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
 "Elementi <%s> nuk lejohet në brendësi të elementëve name/author/date/"
 "description"
@@ -2552,8 +2556,7 @@ msgstr "Elementi <%s> nuk lejohet në brendësi të elementit <constant>"
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
 "Elementi <%s> nuk lejohet në brendësi të elementëve distance/border/"
 "aspect_ratio"
@@ -2783,8 +2786,7 @@ msgstr "Ekspresioni i provës së pozicionit u përgjigj me TRUE por jep gabim"
 
 #: src/theme-viewer.c:1229
 msgid "position expression test returned FALSE but didn't set error"
-msgstr ""
-"Ekspresioni i provës së pozicionit u përgjigj me FALSE por nuk jep gabim"
+msgstr "Ekspresioni i provës së pozicionit u përgjigj me FALSE por nuk jep gabim"
 
 #: src/theme-viewer.c:1233
 msgid "Error was expected but none given"
@@ -2841,8 +2843,7 @@ msgstr "gjeometria e frame nuk specifikon dimensionin \"%s\""
 #: src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr ""
-"gjeometria e frame nuk specifikon dimensionin \"%s\" për kornizën \"%s\""
+msgstr "gjeometria e frame nuk specifikon dimensionin \"%s\" për kornizën \"%s\""
 
 #: src/theme.c:278
 #, c-format
@@ -2907,8 +2908,7 @@ msgstr "Vlera alpha \"%s\" në ngjyrën e sfumuar nuk gjendet midis 0.0 dhe 1.0"
 
 #: src/theme.c:1111
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "Formati i hijes është \"shade/base_color/factor\", \"%s\" nuk bën pjesë në "
 "format"
@@ -2952,8 +2952,7 @@ msgstr "Koordinata përmban numrin e plotë '%s' që nuk mund të analizohet"
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
-msgstr ""
-"Koordinata përmban një operator të panjohur në fillim të këtij teksti: \"%s\""
+msgstr "Koordinata përmban një operator të panjohur në fillim të këtij teksti: \"%s\""
 
 #: src/theme.c:1588
 msgid "Coordinate expression was empty or not understood"
@@ -2964,16 +2963,14 @@ msgid "Coordinate expression results in division by zero"
 msgstr "Koordinata rezulton një pjestim me zero"
 
 #: src/theme.c:1783
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Koordinata përpiqet të përdorë një operator në një numër me presje të "
 "lëvizëshme"
 
 #: src/theme.c:1840
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Koordinata ka një operator \"%s\" atje ku pritej një operim"
 
 #: src/theme.c:1849
@@ -3034,10 +3031,8 @@ msgstr ""
 
 #: src/theme.c:4369 src/theme.c:4401
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"Mungon <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "Mungon <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: src/theme.c:4452
 #, c-format
@@ -3070,8 +3065,7 @@ msgstr ""
 
 #: src/theme.c:5047 src/theme.c:5109
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Konstantet e përcaktuara nga përdoruesi duhet të fillojnë me një gërmë të "
 "madhe, \"%s\" nuk fillon me gërmë të madhe"
@@ -3146,7 +3140,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikativi ka vendosur një _NET_WM_PID të gabuar %ld\n"
 
 #. first time through
-#: src/window.c:4939
+#: src/window.c:4872
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3162,7 +3156,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5610
+#: src/window.c:5543
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3195,8 +3189,8 @@ msgstr "Pronësia %s e dritares 0x%lx përmban UTF-8 të pavlefshme\n"
 
 #: src/xprops.c:482
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Pronësia %s e dritares 0x%lx përmban UTF-8 të pavlefshme për elementin %d në "
 "listë\n"
+
