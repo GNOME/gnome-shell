@@ -1,5 +1,10 @@
 2002-08-25  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (meta_window_free): when freeing a fullscreen
+	window, update layers of the window's group.
+
+2002-08-25  Havoc Pennington  <hp@pobox.com>
+
 	* src/display.c (meta_display_open): _NET_SUPPORTING_WM_CHECK is
 	supposed to have type WINDOW not CARDINAL. reported by 
 	Ben Jansens

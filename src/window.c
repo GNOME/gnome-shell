@@ -801,7 +801,22 @@ meta_window_free (MetaWindow  *window)
               window->desc);
   
   window->unmanaging = TRUE;
-  
+
+  if (window->fullscreen)
+    {
+      MetaGroup *group;
+
+      /* If the window is fullscreen, it may be forcing
+       * other windows in its group to a higher layer
+       */
+
+      meta_stack_freeze (window->screen->stack);
+      group = meta_window_get_group (window);
+      if (group)
+        meta_group_update_layers (group);
+      meta_stack_thaw (window->screen->stack);
+    }
+    
   /* If we have the focus, focus some other window.
    * This is done first, so that if the unmap causes
    * an EnterNotify the EnterNotify will have final say
