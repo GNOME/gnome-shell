@@ -2895,9 +2895,9 @@ check_maximize_to_work_area (MetaWindow          *window,
 
   if ( rect.x >= work_area->x &&
        rect.y >= work_area->y &&
-       (((work_area->width - work_area->x) - rect.width) <
+       (((work_area->width + work_area->x) - (rect.width + rect.x)) <
         window->size_hints.width_inc) &&
-       (((work_area->height - work_area->y) - rect.height) <
+       (((work_area->height + work_area->y) - (rect.height + rect.y)) <
         window->size_hints.height_inc) )
     meta_window_maximize (window);
 }

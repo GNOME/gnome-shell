@@ -1,3 +1,10 @@
+2005-01-23  Elijah Newren  <newren@gmail.com>
+
+	Patch from John Paul Wallington to fix #163420.
+
+	* src/window.c: (check_maximize_to_work_area): fix vertical
+	maximization for second screen
+
 2005-01-21  Elijah Newren  <newren@gmail.com>
 
 	* rationales.txt: Add a tracker bug for modal dialog issues
