@@ -2818,6 +2818,8 @@ meta_display_begin_grab_op (MetaDisplay *display,
     grab_xwindow = window->frame ? window->frame->xwindow : window->xwindow;
   else
     grab_xwindow = screen->xroot;
+
+  display->grab_have_pointer = FALSE;
   
   if (pointer_already_grabbed)
     display->grab_have_pointer = TRUE;
