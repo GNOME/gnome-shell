@@ -295,7 +295,8 @@ meta_display_open (const char *name)
     "_NET_RESTACK_WINDOW",
     "_NET_MOVERESIZE_WINDOW",
     "_NET_DESKTOP_GEOMETRY",
-    "_NET_DESKTOP_VIEWPORT"
+    "_NET_DESKTOP_VIEWPORT",
+    "_METACITY_VERSION"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -449,6 +450,7 @@ meta_display_open (const char *name)
   display->atom_net_moveresize_window = atoms[88];
   display->atom_net_desktop_geometry = atoms[89];
   display->atom_net_desktop_viewport = atoms[90];
+  display->atom_metacity_version = atoms[91];
 
   display->prop_hooks = NULL;
   meta_display_init_window_prop_hooks (display);
@@ -622,6 +624,11 @@ meta_display_open (const char *name)
                           display->atom_net_wm_name,
                           "Metacity");
     
+    set_utf8_string_hint (display,
+                          display->leader_window,
+                          display->atom_metacity_version,
+                          VERSION);
+
     data[0] = display->leader_window;
     XChangeProperty (display->xdisplay,
                      display->leader_window,

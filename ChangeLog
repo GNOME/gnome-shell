@@ -1,5 +1,17 @@
 2005-02-06  Elijah Newren  <newren@gmail.com>
 
+	Set a _METACITY_VERSION property (a utf8 string) on the WM check
+	window.  #165350.
+
+	* src/display.h: (struct MetaDisplay): add a atom_metacity_version
+	field
+	
+	* src/display.c: (meta_display_open): initialize the
+	_METACITY_VERSION property on the WM check window to the current
+	version of Metacity.
+
+2005-02-06  Elijah Newren  <newren@gmail.com>
+
 	Ignore xconfigurerequest events for stacking when it should be
 	safe to do so.  Again, thanks to Crispin Flowerday for the test
 	case.  Thanks to KWin for the inspiration (and to Google for
@@ -9,7 +21,7 @@
 	active_window is from a separate application than the one getting
 	the configure request and the net_wm_user_time of the active
 	window is later than that of the window getting the configure
-	request, then ignore the request.  
+	request, then ignore the request.
 
 2005-02-06  Elijah Newren  <newren@gmail.com>
 

@@ -182,6 +182,7 @@ struct _MetaDisplay
   Atom atom_net_moveresize_window;
   Atom atom_net_desktop_geometry;
   Atom atom_net_desktop_viewport;
+  Atom atom_metacity_version;
 
   /* This is the actual window from focus events,
    * not the one we last set
