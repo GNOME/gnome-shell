@@ -3,20 +3,20 @@
 # Romanian translation for metacity-2.4.0.
 # Copyright (C) 2002
 # This file is distributed under the same license as the PACKAGE package.
-# Mugurel Tudor <mugurelu@go.ro>, 2002-2004.
+# Mugurel Tudor <mugurelu@go.ro>, 2002-2004, 2005.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.ro\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-24 10:50-0700\n"
-"PO-Revision-Date: 2004-09-07 01:05+0300\n"
+"POT-Creation-Date: 2005-03-05 14:09+0100\n"
+"PO-Revision-Date: 2005-03-06 23:06+0200\n"
 "Last-Translator: Mugurel Tudor <mugurelu@go.ro>\n"
 "Language-Team: Romanian <@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.3.1\n"
+"X-Generator: KBabel 1.9.1\n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -51,17 +51,15 @@ msgstr "Eroare la citire din dialogul de afişare a proceselor: %s\n"
 
 #: src/delete.c:344
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr ""
-"Eroare la lansarea metacity-dialog pentru omorârea unei aplicaţii: %s\n"
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgstr "Eroare la lansarea metacity-dialog pentru omorârea unei aplicaţii: %s\n"
 
 #: src/delete.c:452
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Nu am putut încărca numele gazdei: %s\n"
 
-#: src/display.c:312
+#: src/display.c:316
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nu am putut deschide afişajul X Window System '%s'\n"
@@ -107,25 +105,23 @@ msgstr "Restaurează fereastra"
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr ""
-"Alt program foloseşte deja tasta %s cu modificatorul %x drept combinaţie\n"
+msgstr "Alt program foloseşte deja tasta %s cu modificatorul %x drept combinaţie\n"
 
-#: src/keybindings.c:2559
+#: src/keybindings.c:2561
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Eroare la lansarea metacity-dialog pentru a afişa o eroare despre o comandă: "
 "%s\n"
 
-#: src/keybindings.c:2664
+#: src/keybindings.c:2666
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Nici o comandă %d nu a fost definită.\n"
 
-#: src/keybindings.c:3494
-#, fuzzy
+#: src/keybindings.c:3511
 msgid "No terminal command has been defined.\n"
-msgstr "Nici o comandă %d nu a fost definită.\n"
+msgstr "Nici o comandă pentru terminal nu a fost definită.\n"
 
 #: src/main.c:69
 msgid ""
@@ -157,10 +153,8 @@ msgstr "Nu am putut citi directorul de teme: %s\n"
 
 #: src/main.c:459
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr ""
-"Nu am putut găsi o temă ! Asiguraţi-vă că %s există şi conţine temele uzuale."
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgstr "Nu am putut găsi o temă ! Asiguraţi-vă că %s există şi conţine temele uzuale."
 
 #: src/main.c:521
 #, c-format
@@ -206,11 +200,11 @@ msgstr "_Închide"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "Pe _toate ecranele"
+msgid "_Always on Visible Workspace"
+msgstr "Întotde_auna pe ecranul vizibil"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
+msgid "_Only on This Workspace"
 msgstr "Doar pe _acest ecran"
 
 #: src/menu.c:68
@@ -229,7 +223,7 @@ msgstr "Mută fereastra către ecranul de s_us"
 msgid "Move to Workspace _Down"
 msgstr "Mută fereastra către ecranul de _jos"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
 msgstr "Ecranul %d"
@@ -343,8 +337,7 @@ msgid "The window \"%s\" is not responding."
 msgstr "Fereastra \"%s\" nu răspunde."
 
 #: src/metacity-dialog.c:118
-msgid ""
-"Forcing this application to quit will cause you to lose any unsaved changes."
+msgid "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Forţarea închiderii acestei aplicaţii va determina pierderea datelor "
 "nesalvate."
@@ -369,7 +362,7 @@ msgstr ""
 "Aceste ferestre nu suportă \"salvează setarea curentă\" şi vor trebui "
 "restartate manual urmatoarea dată când vă veţi loga."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:325
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -508,12 +501,11 @@ msgid ""
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages."
 msgstr ""
-"Daca este true, metacity va furniza mai puţin feedback utilizatorului, "
-"folosindwireframe, dezactivand animaţiile şi alte efecte. În acest fel "
-"uzabilitatea va fimult înrăutăţită pentru utilizatori, dar multe aplicaţii "
-"mai vechi şi servere determinale vor putea funcţiona doar în aceste condiţii."
+"Daca este true, metacity va furniza mai puţin feedback utilizatorului şi va da o senzaţie mai slabă pentru „manipularea directă”, folosind wireframe, dezactivand animaţiile şi alte efecte. În acest fel "
+"uzabilitatea va fi mult înrăutăţită pentru utilizatori, dar multe aplicaţii mai vechi şi servere determinale vor putea funcţiona doar în aceste condiţii. Totuşi, facilitatea de wireframe este dezactivată când accesibilitatea este activată pentru pentru a evita generarea de efecte ciudate pe ecran."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -540,8 +532,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
-msgstr ""
-"Daca este true, reduce uzabilitatea în favoarea ocupării a mai puţine resurse"
+msgstr "Daca este true, reduce uzabilitatea în favoarea ocupării a mai puţine resurse"
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
@@ -703,7 +694,7 @@ msgstr "Rulează o comandă definită"
 
 #: src/metacity.schemas.in.h:60
 msgid "Run a terminal"
-msgstr ""
+msgstr "Rulează un terminal"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
@@ -1201,7 +1192,6 @@ msgstr ""
 "o combinaţie de taste pentru această acţiune."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1212,8 +1202,7 @@ msgstr ""
 "Combinaţia de taste folosită pentru a maximiza o fereastră. Formatul arată "
 "ca de exemplu \"&lt;Control&gt;a\" sau \"&lt;Shift&gt;&lt;Alt&gt;F1\". Este "
 "permisă folosirea majusculelor şi a minusculelor, precum şi a abrevierilor "
-"gen \"&lt;Ctl&gt;\" şi \"&lt;Ctrl&gt;\". Dacă setaţi opţiunea cu şirul "
-"\"disabled\", atunci nu va exista o combinaţie de taste pentru această "
+"gen \"&lt;Ctl&gt;\" şi \"&lt;Ctrl&gt;\". Dacă setaţi opţiunea cu şirul \"disabled\", atunci nu va exista o combinaţie de taste pentru această "
 "acţiune."
 
 #: src/metacity.schemas.in.h:110
@@ -1726,7 +1715,6 @@ msgstr ""
 "pentru această acţiune."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1734,12 +1722,8 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Combinaţia de taste folosită pentru a activa meniul principal al panoului. "
-"Formatul arată ca de exemplu \"&lt;Control&gt;a\" sau \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". Este permisă folosirea majusculelor şi a minusculelor, precum "
-"şi a abrevierilor gen \"&lt;Ctl&gt;\" şi \"&lt;Ctrl&gt;\". Dacă setaţi "
-"opţiunea cu şirul \"disabled\", atunci nu va exista o combinaţie de taste "
-"pentru această acţiune."
+"Combinaţia de taste folosită pentru a porni un terminal. Formatul arată ca de exemplu \"&lt;Control&gt;a\" sau \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\". Este permisă folosirea majusculelor şi a minusculelor, precum şi a abrevierilor gen \"&lt;Ctl&gt;\" şi \"&lt;Ctrl&gt;\". Dacă setaţi opţiunea cu şirul \"disabled\", atunci nu va exista o combinaţie de taste pentru această acţiune."
 
 #: src/metacity.schemas.in.h:143
 msgid ""
@@ -1974,17 +1958,17 @@ msgstr "Modul de focalizare al ferestrei"
 msgid "Window title font"
 msgstr "Font titlu fereastră"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Cheia GConf \"%s\" este setată la o valoare invalidă\n"
 
-#: src/prefs.c:843
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1993,17 +1977,17 @@ msgstr ""
 "\"%s\" găsită în configuraţie nu este o cheie validă pentru modificatorul "
 "butonului de mouse\n"
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Cheia GConf '%s' este setată la o valoare invalidă\n"
 
-#: src/prefs.c:994
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Nu am putut parsa descrierea fontului \"%s\" din cheia GConf %s\n"
 
-#: src/prefs.c:1179
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2012,7 +1996,7 @@ msgstr ""
 "%d stocat în cheia GConf %s nu este un număr rezonabil de spaţii de lucru, "
 "maximul este de %d\n"
 
-#: src/prefs.c:1239
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2020,17 +2004,17 @@ msgstr ""
 "Soluţiile de compromis pentru aplicaţiile problematice sunt dezactivate. "
 "Există posibilitatea ca unele aplicaţii să nu se comporte corect.\n"
 
-#: src/prefs.c:1304
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d stocat în cheia GConf %s este în afara domeniului 0 - %d\n"
 
-#: src/prefs.c:1425
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Eroare la setare numărului de ecrane la %d: %s\n"
 
-#: src/prefs.c:1669
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2039,7 +2023,7 @@ msgstr ""
 "\"%s\" găsită în configuraţie nu este o cheie validă pentru combinaţia de "
 "taste \"%s\"\n"
 
-#: src/prefs.c:2023
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Eroare la setarea numelui pentru spaţiul de lucru %d la \"%s\": %s\n"
@@ -2065,8 +2049,7 @@ msgstr ""
 
 #: src/screen.c:448
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Nu am putut achiziţiona selecţia managerului de ferestre pe ecranul %d "
 "afişajul \"%s\"\n"
@@ -2241,8 +2224,7 @@ msgstr "<%s> geometrie \"%s\" nu a fost definită"
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
-"<%s> trebuie să specifice o geometrie sau un părinte care are o geometrie"
+msgstr "<%s> trebuie să specifice o geometrie sau un părinte care are o geometrie"
 
 #: src/theme-parser.c:1080
 #, c-format
@@ -2298,10 +2280,8 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "Nici un atribut \"value\" în elementul <%s>"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
-msgstr ""
-"Nu puteţi specifica şi button_width/button_height şi proporţia butoanelor"
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgstr "Nu puteţi specifica şi button_width/button_height şi proporţia butoanelor"
 
 #: src/theme-parser.c:1343
 #, c-format
@@ -2601,8 +2581,7 @@ msgstr "Elementul extern în temă trebuie să fie <metacity_theme> nu %s"
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
 "Elementul <%s> nu este permis în interiorul un element name/author/date/"
 "description"
@@ -2614,8 +2593,7 @@ msgstr "Elementul <%s> nu este permis în interiorul unui element <constant>"
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
 "Elementul <%s> nu este permis în interiorul unui element distance/border/"
 "aspect_ratio"
@@ -2900,8 +2878,7 @@ msgstr "geometria cadrului nu specifică dimensiunea \"%s\""
 #: src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr ""
-"geometria cadrului nu specifică dimensiunea \"%s\" pentru marginea \"%s\""
+msgstr "geometria cadrului nu specifică dimensiunea \"%s\" pentru marginea \"%s\""
 
 #: src/theme.c:278
 #, c-format
@@ -2966,8 +2943,7 @@ msgstr "Valoarea alfa \"%s\" în culoarea blend-ată nu este între 0.0 şi 1.0"
 
 #: src/theme.c:1111
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "Formatul de umbră este \"shade/base_color/factor\", \"%s\" nu se potriveşte "
 "formatului"
@@ -3024,16 +3000,14 @@ msgid "Coordinate expression results in division by zero"
 msgstr "Expresia coordonatelor este rezultată în urma unei împărţiri la zero"
 
 #: src/theme.c:1783
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Expresia coordonatelor încearcă să folosească operatorul mod asupra unui "
 "număr în virgulă mobilă"
 
 #: src/theme.c:1840
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Expresia coordonatelor are un operator \"%s\" care aşteaptă un operand"
 
 #: src/theme.c:1849
@@ -3042,8 +3016,7 @@ msgstr "Expresia coordonatelor are un operand unde un operator era aşteptat"
 
 #: src/theme.c:1857
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
-"Expresia coordonatelor a fost terminată cu un operator în locul operandului"
+msgstr "Expresia coordonatelor a fost terminată cu un operator în locul operandului"
 
 #: src/theme.c:1867
 #, c-format
@@ -3064,8 +3037,7 @@ msgstr ""
 
 #: src/theme.c:2015
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
-"Expresia coordonatelor are o paranteză închisă fără nici o paranteză deschisă"
+msgstr "Expresia coordonatelor are o paranteză închisă fără nici o paranteză deschisă"
 
 #: src/theme.c:2078
 #, c-format
@@ -3096,10 +3068,8 @@ msgstr ""
 
 #: src/theme.c:4369 src/theme.c:4401
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"Lipseşte <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "Lipseşte <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: src/theme.c:4452
 #, c-format
@@ -3132,8 +3102,7 @@ msgstr ""
 
 #: src/theme.c:5047 src/theme.c:5109
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Constantele definite de utilizatori trebuie să înceapă cu o majusculă;\"%s\" "
 "nu respectă acest lucru"
@@ -3180,7 +3149,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplicaţia a setat un _NET_WM_PID fals %ld\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:5070
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3196,7 +3165,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5741
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3229,29 +3198,8 @@ msgstr "Proprietatea %s din fereastra 0x%lx conţine date invalide UTF-8\n"
 
 #: src/xprops.c:482
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Proprietatea %s din fereastra 0x%lx conţine date invalide UTF-8 pentru "
 "elementul %d din listă\n"
 
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "Selectaţi metoda de focalizare a ferestrei"
-
-#~ msgid "Window Focus"
-#~ msgstr "Focalizare ferestră"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "Clic_k pentru a focaliza"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "Comportament focalizare:"
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "Preferinţe focalizare fereastră"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "_Indică pentru a focaliza"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "_Ridică fereastra focalizată"
