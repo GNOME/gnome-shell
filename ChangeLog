@@ -1,6 +1,14 @@
+2004-09-13  Rob Adams  <readams@readams.net>
+
+	* configure.in: bump version number
+
+	* NEWS: 2.8.5 release
+
+	* README: 2.8.5 release
+
 2004-09-14  Gora Mohanty  <gmohanty@cvs.gnome.org>
-                                                                                
-        * configure.in: Added 'or' to ALL_LINGUAS.
+
+	* configure.in: Added 'or' to ALL_LINGUAS.
    
 2004-09-07  Elijah Newren  <newren@math.utah.edu>
 

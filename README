@@ -6,9 +6,9 @@ on UNIX keyboards.
 The first release of Metacity was version 2.3. Metacity has no need for
 your petty hangups about version numbers.
 
-The stable releases so far are 2.4.x, 2.6.x, 2.8.0, 2.8.1, 2.8.1.x
+The stable releases so far are 2.4.x, 2.6.x, 2.8.0, 2.8.1, 2.8.1.x, 2.8.5
 
-Unstable branches are 2.3.x, 2.5.x, 2.8.y (where y>=2)
+Unstable branches are 2.3.x, 2.5.x, 2.8.2-4)
 
 COMPILING METACITY
 ===

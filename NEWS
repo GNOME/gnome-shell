@@ -1,3 +1,19 @@
+2.8.5
+==
+
+This is a stable release for Gnome 2.8.  Only translations and some
+new developer documentation were added since the last unstable release.  
+This release boasts improved standards-compliance and a number of 
+bug fixes since the last stable release.
+
+Translations
+
+  * ar(Abdulaziz Al-Arfaj), cs(Miloslav Trmac), cy(Dafydd Harries),
+    en_GB(David Lodge), fr(Christophe Merlet (RedFox)), 
+    nn(Åsmund Skjæveland), or(Gora Mohanty), 
+    pr_BR(Gustavo Noronha Silva), ro(Mugurel Tudor), 
+    th(Paisa Seeluangsawat), tr(Baris Cicek), zh_TW(Woodman Tuen)
+
 2.8.4
 ==
 
