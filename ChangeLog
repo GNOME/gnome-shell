@@ -1,3 +1,29 @@
+2004-01-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	Add _NET_FRAME_EXTENTS and _NET_REQUEST_FRAME_EXTENTS.
+
+	* src/display.c: include xprops.h
+	(process_request_frame_extents): new function
+	(meta_display_open): add _NET_FRAME_EXTENTS and
+	_NET_REQUEST_FRAME_EXTENTS atoms
+	(event_callback): handle frame extents message
+
+	* src/display.h (struct _MetaDisplay): add atom_net_frame_extents
+	and atom_net_request_frame_extents
+
+	* src/theme.c (meta_pango_font_desc_get_text_height): make font_desc
+	parameter const
+
+	* src/ui.c: include prefs.h
+	(meta_ui_theme_get_frame_borders): new function
+
+	* src/window.c (update_net_frame_extents): new function
+	(meta_window_move_resize_internal): update frame extents
+	property when frame geometry changes
+
+	* src/screen.c (set_supported_hint): add atom_net_frame_extents
+	and atom_net_request_frame_extents
+
 2004-01-09  Calum Benson  <calum.benson@sun.com>
 
 	* src/themes/Atlanta/metacity-theme-1.xml:

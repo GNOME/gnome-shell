@@ -5168,7 +5168,7 @@ meta_gtk_widget_get_font_desc (GtkWidget *widget,
 }
 
 int
-meta_pango_font_desc_get_text_height (PangoFontDescription *font_desc,
+meta_pango_font_desc_get_text_height (const PangoFontDescription *font_desc,
                                       PangoContext         *context)
 {
   PangoFontMetrics *metrics;

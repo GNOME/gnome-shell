@@ -33,6 +33,7 @@
 #include "keybindings.h"
 #include "prefs.h"
 #include "resizepopup.h"
+#include "xprops.h"
 #include "workspace.h"
 #include "bell.h"
 #include "effects.h"
@@ -90,6 +91,8 @@ static Window event_get_modified_window (MetaDisplay    *display,
                                          XEvent         *event);
 static guint32 event_get_time           (MetaDisplay    *display,
                                          XEvent         *event);
+static void    process_request_frame_extents (MetaDisplay    *display,
+                                              XEvent         *event);
 static void    process_pong_message     (MetaDisplay    *display,
                                          XEvent         *event);
 static void    process_selection_request (MetaDisplay   *display,
@@ -274,7 +277,9 @@ meta_display_open (const char *name)
     "_METACITY_SENTINEL",
     "_NET_WM_STRUT_PARTIAL",
     "_NET_WM_ACTION_FULLSCREEN",
-    "_NET_WM_ACTION_MINIMIZE"
+    "_NET_WM_ACTION_MINIMIZE",
+    "_NET_FRAME_EXTENTS",
+    "_NET_REQUEST_FRAME_EXTENTS",
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -419,7 +424,9 @@ meta_display_open (const char *name)
   display->atom_net_wm_strut_partial = atoms[80];
   display->atom_net_wm_action_fullscreen = atoms[81];
   display->atom_net_wm_action_minimize = atoms[82];
-  
+  display->atom_net_frame_extents = atoms[83];
+  display->atom_net_request_frame_extents = atoms[84];
+
   display->prop_hooks = NULL;
   meta_display_init_window_prop_hooks (display);
   display->group_prop_hooks = NULL;
@@ -1990,6 +1997,13 @@ event_callback (XEvent   *event,
                     }
 		}
             }
+
+          if (event->xclient.message_type ==
+              display->atom_net_request_frame_extents)
+            {
+              meta_verbose ("Received _NET_REQUEST_FRAME_EXTENTS message\n");
+              process_request_frame_extents (display, event);
+            }
         }
       break;
     case MappingNotify:
@@ -3541,6 +3555,74 @@ meta_display_ping_window (MetaDisplay       *display,
   meta_window_send_icccm_message (window,
                                   display->atom_net_wm_ping,
                                   timestamp);
+}
+
+static void
+process_request_frame_extents (MetaDisplay    *display,
+                               XEvent         *event)
+{
+  /* The X window whose frame extents will be set. */
+  Window xwindow = event->xclient.window;
+  unsigned long data[4] = { 0, 0, 0, 0 };
+
+  MotifWmHints *hints = NULL;
+  gboolean hints_set = FALSE;
+
+  meta_verbose ("Setting frame extents for 0x%lx\n", xwindow);
+
+  /* See if the window is decorated. */
+  hints_set = meta_prop_get_motif_hints (display,
+                                         xwindow,
+                                         display->atom_motif_wm_hints,
+                                         &hints);
+  if ((hints_set && hints->decorations) || !hints_set)
+    {
+      int top = 0;
+      int bottom = 0;
+      int left = 0;
+      int right = 0;
+
+      MetaScreen *screen;
+
+      screen = meta_display_screen_for_xwindow (display,
+                                                event->xclient.window);
+      if (screen == NULL)
+        {
+          meta_warning ("Received request to set _NET_FRAME_EXTENTS "
+                        "on 0x%lx which is on a screen we are not managing\n",
+                        event->xclient.window);
+          meta_XFree (hints);
+          return;
+        }
+
+      /* Return estimated frame extents for a normal window. */
+      meta_ui_theme_get_frame_borders (screen->ui,
+                                       META_FRAME_TYPE_NORMAL,
+                                       0,
+                                       &top,
+                                       &bottom,
+                                       &left,
+                                       &right);
+
+      data[0] = left;
+      data[1] = right;
+      data[2] = top;
+      data[3] = bottom;
+    }
+
+  meta_topic (META_DEBUG_GEOMETRY,
+              "Setting _NET_FRAME_EXTENTS on unmanaged window 0x%lx "
+              "to top = %ld, left = %ld, bottom = %ld, right = %ld\n",
+              xwindow, data[0], data[1], data[2], data[3]);
+
+  meta_error_trap_push (display);
+  XChangeProperty (display->xdisplay, xwindow,
+                   display->atom_net_frame_extents,
+                   XA_CARDINAL,
+                   32, PropModeReplace, (guchar*) data, 4);
+  meta_error_trap_pop (display, FALSE);
+
+  meta_XFree (hints);
 }
 
 /* process the pong from our ping */

@@ -64,12 +64,14 @@ static void     update_transient_for      (MetaWindow     *window);
 static void     update_sm_hints           (MetaWindow     *window);
 static void     update_role               (MetaWindow     *window);
 static void     update_net_wm_type        (MetaWindow     *window);
+static void     update_net_frame_extents  (MetaWindow     *window);
 static void     recalc_window_type        (MetaWindow     *window);
 static void     recalc_window_features    (MetaWindow     *window);
 static void     invalidate_work_areas     (MetaWindow     *window);
 static void     set_wm_state              (MetaWindow     *window,
                                            int             state);
 static void     set_net_wm_state          (MetaWindow     *window);
+
 static void     send_configure_notify     (MetaWindow     *window);
 static gboolean process_property_notify   (MetaWindow     *window,
                                            XPropertyEvent *event);
@@ -2541,15 +2543,22 @@ meta_window_move_resize_internal (MetaWindow  *window,
       use_static_gravity = FALSE;
     }
 
-  /* Fill in other frame member variables */
-  if (window->frame)
+  /* If frame extents have changed, fill in other frame fields and
+     change frame's extents property. */
+  if (window->frame &&
+      (window->frame->child_x != fgeom.left_width ||
+          window->frame->child_y != fgeom.top_height ||
+          window->frame->right_width != fgeom.right_width ||
+          window->frame->bottom_height != fgeom.bottom_height))
     {
       window->frame->child_x = fgeom.left_width;
       window->frame->child_y = fgeom.top_height;
       window->frame->right_width = fgeom.right_width;
       window->frame->bottom_height = fgeom.bottom_height;
+
+      update_net_frame_extents (window);
     }
-  
+
   /* See ICCCM 4.1.5 for when to send ConfigureNotify */
   
   need_configure_notify = FALSE;
@@ -3317,6 +3326,36 @@ meta_window_get_net_wm_desktop (MetaWindow *window)
     return 0xFFFFFFFF;
   else
     return meta_workspace_index (window->workspaces->data);
+}
+
+static void
+update_net_frame_extents (MetaWindow *window)
+{
+  unsigned long data[4] = { 0, 0, 0, 0 };
+
+  if (window->frame)
+    {
+      /* Left */
+      data[0] = window->frame->child_x;
+      /* Right */
+      data[1] = window->frame->right_width;
+      /* Top */
+      data[2] = window->frame->child_y;
+      /* Bottom */
+      data[3] = window->frame->bottom_height;
+    }
+
+  meta_topic (META_DEBUG_GEOMETRY,
+              "Setting _NET_FRAME_EXTENTS on managed window 0x%lx "
+              "to top = %ld, left = %ld, bottom = %ld, right = %ld\n",
+              window->xwindow, data[0], data[1], data[2], data[3]);
+
+  meta_error_trap_push (window->display);
+  XChangeProperty (window->display->xdisplay, window->xwindow,
+                   window->display->atom_net_frame_extents,
+                   XA_CARDINAL,
+                   32, PropModeReplace, (guchar*) data, 4);
+  meta_error_trap_pop (window->display, FALSE);
 }
 
 void

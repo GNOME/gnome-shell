@@ -55,6 +55,13 @@ MetaUI* meta_ui_new (Display *xdisplay,
                      Screen  *screen);
 void    meta_ui_free (MetaUI *ui);
 
+void meta_ui_theme_get_frame_borders (MetaUI *ui,
+                                      MetaFrameType      type,
+                                      MetaFrameFlags     flags,
+                                      int               *top_height,
+                                      int               *bottom_height,
+                                      int               *left_width,
+                                      int               *right_width);
 void meta_ui_get_frame_geometry (MetaUI *ui,
                                  Window frame_xwindow,
                                  int *top_height, int *bottom_height,

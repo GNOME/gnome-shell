@@ -21,6 +21,7 @@
  */
 
 #include <config.h>
+#include "prefs.h"
 #include "ui.h"
 #include "frames.h"
 #include "util.h"
@@ -682,6 +683,44 @@ meta_text_property_to_utf8 (Display             *xdisplay,
   g_strfreev (list);
 
   return retval;
+}
+
+void
+meta_ui_theme_get_frame_borders (MetaUI *ui,
+                                 MetaFrameType      type,
+                                 MetaFrameFlags     flags,
+                                 int               *top_height,
+                                 int               *bottom_height,
+                                 int               *left_width,
+                                 int               *right_width)
+{
+  int text_height;
+  PangoContext *context;
+  const PangoFontDescription *font_desc;
+  GtkStyle *default_style;
+
+  if (meta_ui_have_a_theme ())
+    {
+      context = gtk_widget_get_pango_context (GTK_WIDGET (ui->frames));
+      font_desc = meta_prefs_get_titlebar_font ();
+
+      if (!font_desc)
+        {
+          default_style = gtk_widget_get_default_style ();
+          font_desc = default_style->font_desc;
+        }
+
+      text_height = meta_pango_font_desc_get_text_height (font_desc, context);
+
+      meta_theme_get_frame_borders (meta_theme_get_current (),
+                                    type, text_height, flags,
+                                    top_height, bottom_height,
+                                    left_width, right_width);
+    }
+  else
+    {
+      *top_height = *bottom_height = *left_width = *right_width = 0;
+    }
 }
 
 void
