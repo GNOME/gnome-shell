@@ -767,21 +767,29 @@ meta_stock_icons_init (void)
 }
 
 int
-meta_ui_get_double_click_timeout (void)
+meta_ui_get_double_click_timeout (MetaUI *ui)
 {
   GtkSettings *settings;
-  GObjectClass *klass;
-  int timeout = 0;
+  int timeout;
 
-  settings = gtk_settings_get_default ();
+  settings = gtk_widget_get_settings (GTK_WIDGET (ui->frames));
 
-  klass = G_OBJECT_CLASS (GTK_SETTINGS_GET_CLASS (settings));
-  if (g_object_class_find_property (klass, "gtk-double-click-time") == NULL) 
-    {
-      return 250;
-    }
-
+  timeout = 250;
   g_object_get (G_OBJECT (settings), "gtk-double-click-time", &timeout, NULL);
 
   return timeout;
+}
+
+int
+meta_ui_get_drag_threshold (MetaUI *ui)
+{
+  GtkSettings *settings;
+  int threshold;
+
+  settings = gtk_widget_get_settings (GTK_WIDGET (ui->frames));
+
+  threshold = 8;
+  g_object_get (G_OBJECT (settings), "gtk-dnd-drag-threshold", &threshold, NULL);
+
+  return threshold;
 }

@@ -229,6 +229,9 @@ struct _MetaWindow
   /* icon props have changed */
   guint need_reread_icon : 1;
   
+  /* if TRUE, window was maximized at start of current grab op */
+  guint shaken_loose : 1;
+
 #ifdef HAVE_XSYNC
   /* XSync update counter */
   XSyncCounter update_counter;
@@ -288,7 +291,11 @@ struct _MetaWindow
   MetaGroup *group;
 };
 
-#define META_WINDOW_ALLOWS_MOVE(w)     ((w)->has_move_func && !(w)->maximized && !(w)->fullscreen)
+/* These differ from window->has_foo_func in that they consider
+ * the dynamic window state such as "maximized", not just the
+ * window's type
+ */
+#define META_WINDOW_ALLOWS_MOVE(w)     ((w)->has_move_func && !(w)->fullscreen)
 #define META_WINDOW_ALLOWS_RESIZE_EXCEPT_HINTS(w)   ((w)->has_resize_func && !(w)->maximized && !(w)->fullscreen && !(w)->shaded)
 #define META_WINDOW_ALLOWS_RESIZE(w)   (META_WINDOW_ALLOWS_RESIZE_EXCEPT_HINTS (w) &&                \
                                         (((w)->size_hints.min_width < (w)->size_hints.max_width) ||  \

@@ -165,7 +165,8 @@ gboolean meta_ui_parse_modifier    (const char          *accel,
 gboolean meta_ui_window_is_widget (MetaUI *ui,
                                    Window  xwindow);
 
-int      meta_ui_get_double_click_timeout (void);
+int      meta_ui_get_double_click_timeout (MetaUI *ui);
+int      meta_ui_get_drag_threshold       (MetaUI *ui);
 
 #include "tabpopup.h"
 

@@ -77,8 +77,6 @@ static GSList *all_displays = NULL;
 
 static void   meta_spew_event           (MetaDisplay    *display,
                                          XEvent         *event);
-static void   event_queue_callback      (XEvent         *event,
-                                         gpointer        data);
 static gboolean event_callback          (XEvent         *event,
                                          gpointer        data);
 static Window event_get_modified_window (MetaDisplay    *display,
@@ -898,14 +896,6 @@ meta_display_is_double_click (MetaDisplay *display)
 
 static gboolean dump_events = TRUE;
 
-
-static void
-event_queue_callback (XEvent         *event,
-                      gpointer        data)
-{
-  event_callback (event, data);
-}
-
 static gboolean
 grab_op_is_mouse (MetaGrabOp op)
 {
@@ -1119,6 +1109,28 @@ window_raise_with_delay_callback (void *data)
   return FALSE;
 }
 
+static int
+double_click_timeout_for_event (MetaDisplay *display,
+                                XEvent      *event)
+{
+  MetaScreen *screen;
+
+  g_assert (event->type == ButtonPress ||
+            event->type == ButtonRelease);
+  
+  screen = meta_display_screen_for_root (display,
+                                         event->xbutton.root);
+  if (screen == NULL)
+    {
+      /* Odd, we aren't managing this screen */
+      meta_warning ("Received button event on root 0x%lx we aren't managing\n",
+                    event->xbutton.root);
+      return 250; /* make up number */
+    }
+  
+  return meta_ui_get_double_click_timeout (screen->ui);
+}                                
+
 static gboolean
 event_callback (XEvent   *event,
                 gpointer  data)
@@ -1154,7 +1166,9 @@ event_callback (XEvent   *event,
       /* mark double click events, kind of a hack, oh well. */
       if (((int)event->xbutton.button) ==  display->last_button_num &&
           event->xbutton.window == display->last_button_xwindow &&
-          event->xbutton.time < (display->last_button_time + meta_ui_get_double_click_timeout ()))
+          event->xbutton.time < (display->last_button_time +
+                                 double_click_timeout_for_event (display,
+                                                                 event)))
         {
           display->is_double_click = TRUE;
           meta_topic (META_DEBUG_EVENTS,
@@ -1321,12 +1335,20 @@ event_callback (XEvent   *event,
                    * frames.c or special-cased if the click was on a
                    * minimize/close button.
                    */
-                  meta_window_raise (window);
-                  
-                  meta_topic (META_DEBUG_FOCUS,
-                              "Focusing %s due to unmodified button %d press (display.c)\n",
-                              window->desc, event->xbutton.button);
-                  meta_window_focus (window, event->xbutton.time);
+                  if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
+                    {
+                      meta_window_raise (window);
+                      
+                      meta_topic (META_DEBUG_FOCUS,
+                                  "Focusing %s due to unmodified button %d press (display.c)\n",
+                                  window->desc, event->xbutton.button);
+                      meta_window_focus (window, event->xbutton.time);
+                    }
+                  else
+                    {
+                      meta_topic (META_DEBUG_FOCUS,
+                                  "Not raising/focusing window on click due to mouse/sloppy focus mode\n");
+                    }
                 }
               
               /* you can move on alt-click but not on
@@ -2823,8 +2845,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_mask = modmask;
   display->grab_initial_root_x = root_x;
   display->grab_initial_root_y = root_y;
-  display->grab_current_root_x = root_x;
-  display->grab_current_root_y = root_y;
   display->grab_latest_motion_x = root_x;
   display->grab_latest_motion_y = root_y;
   display->grab_last_moveresize_time.tv_sec = 0;
@@ -2840,7 +2860,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
       meta_window_get_position (display->grab_window,
                                 &display->grab_initial_window_pos.x,
                                 &display->grab_initial_window_pos.y);
-      display->grab_current_window_pos = display->grab_initial_window_pos;
 
 #ifdef HAVE_XSYNC
       if (meta_grab_op_is_resizing (display->grab_op) &&
@@ -2930,6 +2949,9 @@ meta_display_end_grab_op (MetaDisplay *display,
   if (display->grab_op == META_GRAB_OP_NONE)
     return;
 
+  if (display->grab_window != NULL)
+    display->grab_window->shaken_loose = FALSE;
+  
   if (display->grab_op == META_GRAB_OP_KEYBOARD_TABBING_NORMAL ||
       display->grab_op == META_GRAB_OP_KEYBOARD_TABBING_DOCK ||
       display->grab_op == META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL ||

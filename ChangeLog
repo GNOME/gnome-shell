@@ -1,3 +1,27 @@
+2003-06-12  Havoc Pennington  <hp@pobox.com>
+
+	* src/display.c (event_callback): make raise-on-click explicitly 
+	only happen in click to focus mode.
+
+	* src/window.c (update_move): apply patch from Jurg Billeter to
+	allow you to "shake loose" maximized windows and move them between
+	Xinerama heads. #93586
+
+	* src/display.c: delete event_queue_callback
+
+	* src/display.h (struct _MetaDisplay): get rid of
+	grab_current_window_pos and grab_current_root_[xy] as I could find
+	absolutely no code using them for anything. They were just sort of
+	randomly assigned to for no apparent reason.
+	
+	* src/display.c (event_callback): double-click timeout is per
+	screen, so get the screen and pass screen->ui to
+	meta_ui_get_double_click_timeout()
+
+	* src/ui.c (meta_ui_get_double_click_timeout): take a MetaUI
+	argument so we get the right settings for each screen
+	(meta_ui_get_drag_threshold): new function
+
 2003-06-09  Rob Adams  <robadams@ucla.edu>
 
 	Revamp placement policy for windows that are maximized when they

@@ -237,15 +237,12 @@ struct _MetaDisplay
   int         grab_button;
   int         grab_initial_root_x;
   int         grab_initial_root_y;
-  int         grab_current_root_x;
-  int         grab_current_root_y;
   int         grab_latest_motion_x;
   int         grab_latest_motion_y;
   gulong      grab_mask;
   guint       grab_have_pointer : 1;
   guint       grab_have_keyboard : 1;
   MetaRectangle grab_initial_window_pos;
-  MetaRectangle grab_current_window_pos;
   MetaResizePopup *grab_resize_popup;
   GTimeVal    grab_last_moveresize_time;
   Time        grab_motion_notify_time;

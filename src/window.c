@@ -440,6 +440,7 @@ meta_window_new (MetaDisplay *display,
   window->withdrawn = FALSE;
   window->initial_workspace_set = FALSE;
   window->calc_placement = FALSE;
+  window->shaken_loose = FALSE;
   
   window->unmaps_pending = 0;
   
@@ -5693,15 +5694,95 @@ update_move (MetaWindow  *window,
 {
   int dx, dy;
   int new_x, new_y;
-
+  int shake_threshold;
+  
   window->display->grab_latest_motion_x = x;
   window->display->grab_latest_motion_y = y;
   
-  dx = x - window->display->grab_current_root_x;
-  dy = y - window->display->grab_current_root_y;
+  dx = x - window->display->grab_initial_root_x;
+  dy = y - window->display->grab_initial_root_y;
 
-  new_x = window->display->grab_current_window_pos.x + dx;
-  new_y = window->display->grab_current_window_pos.y + dy;
+  new_x = window->display->grab_initial_window_pos.x + dx;
+  new_y = window->display->grab_initial_window_pos.y + dy;
+
+  /* shake loose (unmaximize) maximized window if dragged beyond the threshold
+   * in the Y direction. You can't pull a window loose via X motion.
+   */
+
+#define DRAG_THRESHOLD_TO_SHAKE_THRESHOLD_FACTOR 6
+  shake_threshold = meta_ui_get_drag_threshold (window->screen->ui) *
+    DRAG_THRESHOLD_TO_SHAKE_THRESHOLD_FACTOR;
+    
+  if (window->maximized && ABS (dy) >= shake_threshold)
+    {
+      /* Shake loose */
+          
+      window->shaken_loose = TRUE;
+
+      /* Unmaximize at wherever the window would have moved to if it
+       * hadn't been maximized. FIXME if you grab the right side of
+       * the titlebar then on unmaximize the pointer isn't on the
+       * titlebar which is kind of odd.
+       */
+      window->saved_rect.x = new_x;
+      window->saved_rect.y = new_y;
+          
+      meta_window_unmaximize (window);
+
+      return;
+    }
+  /* remaximize window on an other xinerama monitor if window has
+   * been shaken loose or it is still maximized (then move straight)
+   */
+  else if (window->shaken_loose || window->maximized)
+    {
+      const MetaXineramaScreenInfo *wxinerama;
+      int monitor;
+
+      wxinerama = meta_screen_get_xinerama_for_window (window->screen, window);
+
+      for (monitor = 0; monitor < window->screen->n_xinerama_infos; monitor++)
+        {
+          /* FIXME this should check near the top of the work area probably,
+           * maybe only counting full-monitor-width panels in work area
+           * for this purpose.
+           */
+          /* check if cursor is near the top of a xinerama monitor */ 
+          if (x >= window->screen->xinerama_infos[monitor].x_origin &&
+              x < (window->screen->xinerama_infos[monitor].x_origin + 
+                   window->screen->xinerama_infos[monitor].width) &&
+              y >= window->screen->xinerama_infos[monitor].y_origin &&
+              y < (window->screen->xinerama_infos[monitor].y_origin + shake_threshold))
+            {
+              /* move the saved rect if window will become maximized on an
+               * other monitor so user isn't surprised on a later unmaximize
+               */
+              if (wxinerama->number != monitor)
+                {
+                  window->saved_rect.x = window->screen->xinerama_infos[monitor].x_origin;
+                  window->saved_rect.y = window->screen->xinerama_infos[monitor].y_origin;
+                  
+                  if (window->frame) 
+                    {
+                      window->saved_rect.x += window->frame->child_x;
+                      window->saved_rect.y += window->frame->child_y;
+                    }
+
+                  meta_window_unmaximize (window);
+                }
+
+              window->shaken_loose = FALSE;
+
+              meta_window_maximize (window);
+
+              return;
+            }
+        }
+    }
+
+  /* don't allow a maximized window to move */
+  if (window->maximized)
+    return;
 
   if (mask & ShiftMask)
     {
@@ -5725,11 +5806,11 @@ update_resize (MetaWindow *window,
   window->display->grab_latest_motion_x = x;
   window->display->grab_latest_motion_y = y;
   
-  dx = x - window->display->grab_current_root_x;
-  dy = y - window->display->grab_current_root_y;
+  dx = x - window->display->grab_initial_root_x;
+  dy = y - window->display->grab_initial_root_y;
 
-  new_w = window->display->grab_current_window_pos.width;
-  new_h = window->display->grab_current_window_pos.height;
+  new_w = window->display->grab_initial_window_pos.width;
+  new_h = window->display->grab_initial_window_pos.height;
 
   switch (window->display->grab_op)
     {
@@ -6491,15 +6572,21 @@ meta_window_update_resize_grab_op (MetaWindow *window,
   int x, y, x_offset, y_offset;
 
   meta_window_get_position (window, &x, &y);
-
+  
   warp_pointer (window, window->display->grab_op, &x_offset, &y_offset);
 
-  window->display->grab_current_root_x = x + x_offset;
-  window->display->grab_current_root_y = y + y_offset;
-
-  if (window->display->grab_window)
-    window->display->grab_current_window_pos = window->rect;
-
+  /* As we warped the pointer, we have to reset the apparent
+   * initial window state, since if the mouse moves we want
+   * to use those events to do the right thing.
+   */
+  if (window->display->grab_window == window)
+    {
+      window->display->grab_initial_root_x = x + x_offset;
+      window->display->grab_initial_root_y = y + y_offset;
+      
+      window->display->grab_initial_window_pos = window->rect;
+    }
+  
   if (update_cursor)
     {
       meta_display_set_grab_op_cursor (window->display,
