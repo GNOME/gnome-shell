@@ -1,3 +1,9 @@
+2002-01-15  Havoc Pennington  <hp@redhat.com>
+
+	* src/keybindings.c (handle_tab_backward): fix crash 
+	when grab failed due to another operation in progress
+	(handle_tab_forward): fix crash when grab failed
+
 2002-01-10  Havoc Pennington  <hp@pobox.com>
 
 	* src/frame.c (meta_window_destroy_frame): only bump

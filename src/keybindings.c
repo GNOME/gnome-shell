@@ -980,20 +980,21 @@ handle_tab_forward (MetaDisplay *display,
     {
       meta_verbose ("Starting tab forward, showing popup\n");
 
-      meta_display_begin_grab_op (window->display,
-                                  display->focus_window ?
-                                  display->focus_window : window,
-                                  META_GRAB_OP_KEYBOARD_TABBING,
-                                  FALSE,
-                                  0, 0,
-                                  event->xkey.time,
-                                  0, 0);
-
-      meta_ui_tab_popup_select (window->screen->tab_popup,
-                                window->xwindow);
-      /* only after selecting proper window */
-      meta_ui_tab_popup_set_showing (window->screen->tab_popup,
-                                     TRUE);
+      if (meta_display_begin_grab_op (window->display,
+                                      display->focus_window ?
+                                      display->focus_window : window,
+                                      META_GRAB_OP_KEYBOARD_TABBING,
+                                      FALSE,
+                                      0, 0,
+                                      event->xkey.time,
+                                      0, 0))
+        {
+          meta_ui_tab_popup_select (window->screen->tab_popup,
+                                    window->xwindow);
+          /* only after selecting proper window */
+          meta_ui_tab_popup_set_showing (window->screen->tab_popup,
+                                         TRUE);
+        }
     }
 }
 
@@ -1040,20 +1041,21 @@ handle_tab_backward (MetaDisplay *display,
     {
       meta_verbose ("Starting tab backward, showing popup\n");
       
-      meta_display_begin_grab_op (window->display,
-                                  display->focus_window ?
-                                  display->focus_window : window,
-                                  META_GRAB_OP_KEYBOARD_TABBING,
-                                  FALSE,
-                                  0, 0,
-                                  event->xkey.time,
-                                  0, 0);
-
-      meta_ui_tab_popup_select (window->screen->tab_popup,
-                                window->xwindow);
-      /* only after selecting proper window */
-      meta_ui_tab_popup_set_showing (window->screen->tab_popup,
-                                     TRUE);
+      if (meta_display_begin_grab_op (window->display,
+                                      display->focus_window ?
+                                      display->focus_window : window,
+                                      META_GRAB_OP_KEYBOARD_TABBING,
+                                      FALSE,
+                                      0, 0,
+                                      event->xkey.time,
+                                      0, 0))
+        {          
+          meta_ui_tab_popup_select (window->screen->tab_popup,
+                                    window->xwindow);
+          /* only after selecting proper window */
+          meta_ui_tab_popup_set_showing (window->screen->tab_popup,
+                                         TRUE);
+        }
     }
 }
 
