@@ -816,23 +816,6 @@ set_net_wm_state (MetaWindow *window)
 {
   int i;
   unsigned long data[10];
-  gboolean skip_pager;
-  gboolean skip_taskbar;
-
-  if (window->type == META_WINDOW_DESKTOP ||
-      window->type == META_WINDOW_DOCK ||
-      window->type == META_WINDOW_TOOLBAR ||
-      window->type == META_WINDOW_MENU)
-    skip_pager = TRUE;
-  else
-    skip_pager = FALSE;
-
-  if (window->type == META_WINDOW_DESKTOP ||
-      window->type == META_WINDOW_DOCK ||
-      window->type == META_WINDOW_MENU)
-    skip_taskbar = TRUE;
-  else
-    skip_taskbar = FALSE;
   
   i = 0;
   if (window->shaded)
@@ -845,12 +828,12 @@ set_net_wm_state (MetaWindow *window)
       data[i] = window->display->atom_net_wm_state_modal;
       ++i;
     }
-  if (window->wm_state_skip_pager || skip_pager)
+  if (window->wm_state_skip_pager)
     {
       data[i] = window->display->atom_net_wm_state_skip_pager;
       ++i;
     }
-  if (window->wm_state_skip_taskbar || skip_pager)
+  if (window->wm_state_skip_taskbar)
     {
       data[i] = window->display->atom_net_wm_state_skip_taskbar;
       ++i;
@@ -4143,6 +4126,7 @@ update_net_wm_type (MetaWindow *window)
       /* We break as soon as we find one we recognize,
        * supposed to prefer those near the front of the list
        */
+      /* FIXME modal dialog (? see if it's in spec), utility, splashscreen */
       if (atoms[i] == window->display->atom_net_wm_window_type_desktop ||
           atoms[i] == window->display->atom_net_wm_window_type_dock ||
           atoms[i] == window->display->atom_net_wm_window_type_toolbar ||
@@ -4981,6 +4965,8 @@ recalc_window_type (MetaWindow *window)
         window->type = META_WINDOW_DIALOG;
       else if (window->type_atom  == window->display->atom_net_wm_window_type_normal)
         window->type = META_WINDOW_NORMAL;
+      else
+        meta_bug ("Set a type atom for %s that wasn't handled in recalc_window_type\n");
     }
   else if (window->xtransient_for != None)
     {
