@@ -1,3 +1,7 @@
+2002-08-17  Simos Xenitellis  <simos@hellug.gr>
+
+	* configure.in (ALL_LINGUAS): Added Greek (el).
+
 2002-08-17  Evandro Fernandes Giovanini <evandrofg@ig.com.br>
 
 	* configure.in (ALL_LINGUAS): Added Brazilian Portuguese (pt_BR).
