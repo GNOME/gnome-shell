@@ -25,6 +25,7 @@
 /* Don't include gtk.h or gdk.h here */
 #include "common.h"
 #include <X11/Xlib.h>
+#include <X11/Xutil.h>
 #include <glib.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
@@ -131,6 +132,9 @@ GdkPixbuf* meta_ui_get_default_window_icon (MetaUI *ui);
 
 gboolean  meta_ui_window_should_not_cause_focus (Display *xdisplay,
                                                  Window   xwindow);
+
+char*     meta_text_property_to_utf8 (Display             *xdisplay,
+                                      const XTextProperty *prop);
 
 #include "tabpopup.h"
 

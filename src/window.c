@@ -107,6 +107,14 @@ static gboolean get_cardinal (MetaDisplay *display,
                               Atom         atom,
                               gulong      *val);
 
+static char*    get_text_property (MetaDisplay *display,
+                                   Window       xwindow,
+                                   Atom         atom);
+
+static char*    get_utf8_property (MetaDisplay *display,
+                                   Window       xwindow,
+                                   Atom         atom);
+
 void meta_window_unqueue_calc_showing (MetaWindow *window);
 
 static void meta_window_apply_session_info (MetaWindow                  *window,
@@ -2895,8 +2903,6 @@ update_size_hints (MetaWindow *window)
 static int
 update_title (MetaWindow *window)
 {
-  XTextProperty text;
-
   meta_error_trap_push (window->display);
   
   if (window->title)
@@ -2905,62 +2911,26 @@ update_title (MetaWindow *window)
       window->title = NULL;
     }  
 
-  XGetTextProperty (window->display->xdisplay,
-                    window->xwindow,
-                    &text,
-                    window->display->atom_net_wm_name);
+  window->title = get_utf8_property (window->display,
+                                     window->xwindow,
+                                     window->display->atom_net_wm_name);
 
-  if (text.nitems > 0 &&
-      text.format == 8 && 
-      g_utf8_validate (text.value, text.nitems, NULL))
+  if (window->title)
     {
       meta_verbose ("Using _NET_WM_NAME for new title of %s: '%s'\n",
-                    window->desc, text.value);
-
-      window->title = g_strdup (text.value);
+                    window->desc, window->title);
     }
-
-  if (text.nitems > 0)
-    XFree (text.value);
-  
-  if (window->title == NULL &&
-      text.nitems > 0)
-    meta_warning ("_NET_WM_NAME property for %s contained invalid UTF-8\n",
-                  window->desc);
 
   if (window->title == NULL)
     {
-      XGetTextProperty (window->display->xdisplay,
-                        window->xwindow,
-                        &text,
-                        XA_WM_NAME);
+      window->title = get_text_property (window->display,
+                                         window->xwindow,
+                                         XA_WM_NAME);
 
-      if (text.nitems > 0)
+      if (window->title)
         {
-          /* FIXME This isn't particularly correct. Need to copy the
-           * GDK code...
-           */
-          char *str;
-          GError *err;
-
-          err = NULL;
-          str = g_locale_to_utf8 (text.value,
-                                  (text.format / 8) * text.nitems,
-                                  NULL, NULL,
-                                  &err);
-          if (err != NULL)
-            {
-              meta_warning ("WM_NAME property for %s contained stuff window manager is too dumb to figure out: %s\n", window->desc, err->message);
-              g_error_free (err);
-            }
-
-          if (str)
-            meta_verbose ("Using WM_NAME for new title of %s: '%s'\n",
-                          window->desc, text.value);
-
-          window->title = str;
-
-          XFree (text.value);
+          meta_verbose ("Using WM_NAME for new title of %s: '%s'\n",
+                        window->desc, window->title);
         }
     }
   
@@ -3576,6 +3546,86 @@ get_cardinal (MetaDisplay *display,
   return TRUE;
 }
 
+static char*
+get_text_property (MetaDisplay *display,
+                   Window       xwindow,
+                   Atom         atom)
+{
+  XTextProperty text;
+  char *retval;
+  
+  meta_error_trap_push (display);
+
+  XGetTextProperty (display->xdisplay,
+                    xwindow,
+                    &text,
+                    atom);
+
+  retval = meta_text_property_to_utf8 (display->xdisplay, &text);
+
+  if (text.nitems > 0)
+    XFree (text.value);
+
+  meta_error_trap_pop (display);
+
+  return retval;
+}
+
+static char*
+get_utf8_property (MetaDisplay *display,
+                   Window       xwindow,
+                   Atom         atom)
+{
+  Atom type;
+  int format;
+  gulong nitems;
+  gulong bytes_after;
+  guchar *val;
+  int err;
+  char *retval;
+  
+  meta_error_trap_push (display);
+  type = None;
+  val = NULL;
+  XGetWindowProperty (display->xdisplay,
+                      xwindow,
+                      atom,
+                      0, G_MAXLONG,
+		      False, display->atom_utf8_string,
+                      &type, &format, &nitems,
+		      &bytes_after, (guchar **)&val);  
+  err = meta_error_trap_pop (display);
+
+  if (err != Success)
+    return NULL;
+  
+  if (type != display->atom_utf8_string ||
+      format != 8 ||
+      nitems == 0)
+    {
+      if (val)
+        XFree (val);
+      return NULL;
+    }
+
+  if (!g_utf8_validate (val, nitems, NULL))
+    {
+      char *name;
+      name = XGetAtomName (display->xdisplay, atom);
+      meta_warning ("Property %s contained invalid UTF-8\n",
+                    name);
+      XFree (name);
+      XFree (val);
+      return NULL;
+    }
+  
+  retval = g_strndup (val, nitems);
+  
+  XFree (val);
+  
+  return retval;
+}
+
 /* some legacy cruft */
 typedef enum
 {
@@ -3720,8 +3770,6 @@ update_initial_workspace (MetaWindow *window)
 static int
 update_icon_name (MetaWindow *window)
 {
-  XTextProperty text;
-
   meta_error_trap_push (window->display);
   
   if (window->icon_name)
@@ -3730,62 +3778,24 @@ update_icon_name (MetaWindow *window)
       window->icon_name = NULL;
     }  
 
-  XGetTextProperty (window->display->xdisplay,
-                    window->xwindow,
-                    &text,
-                    window->display->atom_net_wm_icon_name);
+  window->icon_name = get_utf8_property (window->display, window->xwindow,
+                                         window->display->atom_net_wm_icon_name);
 
-  if (text.nitems > 0 &&
-      text.format == 8 && 
-      g_utf8_validate (text.value, text.nitems, NULL))
+  if (window->icon_name)
     {
       meta_verbose ("Using _NET_WM_ICON_NAME for new icon name of %s: '%s'\n",
-                    window->desc, text.value);
-
-      window->icon_name = g_strdup (text.value);
-    }
-
-  if (text.nitems > 0)
-    XFree (text.value);
-  
-  if (window->icon_name == NULL &&
-      text.nitems > 0)
-    meta_warning ("_NET_WM_ICON_NAME property for %s contained invalid UTF-8\n",
-                  window->desc);
+                    window->desc, window->icon_name);
+    }  
 
   if (window->icon_name == NULL)
     {
-      XGetTextProperty (window->display->xdisplay,
-                        window->xwindow,
-                        &text,
-                        XA_WM_ICON_NAME);
+      window->icon_name = get_text_property (window->display, window->xwindow,
+                                             XA_WM_ICON_NAME);
 
-      if (text.nitems > 0)
+      if (window->icon_name)
         {
-          /* FIXME This isn't particularly correct. Need to copy the
-           * GDK code...
-           */
-          char *str;
-          GError *err;
-
-          err = NULL;
-          str = g_locale_to_utf8 (text.value,
-                                  (text.format / 8) * text.nitems,
-                                  NULL, NULL,
-                                  &err);
-          if (err != NULL)
-            {
-              meta_warning ("WM_ICON_NAME property for %s contained stuff we are too dumb to figure out: %s\n", window->desc, err->message);
-              g_error_free (err);
-            }
-
-          if (str)
-            meta_verbose ("Using WM_ICON_NAME for new title of %s: '%s'\n",
-                          window->desc, text.value);
-
-          window->icon_name = str;
-
-          XFree (text.value);
+          meta_verbose ("Using WM_ICON_NAME for new title of %s: '%s'\n",
+                        window->desc, window->icon_name);
         }
     }
   

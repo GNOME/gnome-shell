@@ -445,3 +445,30 @@ meta_ui_window_should_not_cause_focus (Display *xdisplay,
   else
     return FALSE;
 }
+
+char*
+meta_text_property_to_utf8 (Display             *xdisplay,
+                            const XTextProperty *prop)
+{
+  char **list;
+  int count;
+  char *retval;
+  
+  list = NULL;
+
+  count = gdk_text_property_to_utf8_list (prop->encoding,
+                                          prop->format,
+                                          prop->value,
+                                          prop->nitems,
+                                          &list);
+
+  if (count == 0)
+    return NULL;
+
+  retval = list[0];
+  list[0] = g_strdup (""); /* something to free */
+  
+  g_strfreev (list);
+
+  return retval;
+}
