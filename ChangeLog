@@ -1,3 +1,9 @@
+2003-03-16  Rob Adams <robadams@ucla.edu>
+
+	* window.c (meta_window_show_menu): Free old window menu if it
+	already exists so we don't end up with more than one.  Fix for
+	#108392.
+
 2003-03-14  Rob Adams <robadams@ucla.edu>
 
 	* contraints.c (get_outermost_screen_positions): Don't try to

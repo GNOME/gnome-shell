@@ -5490,6 +5490,13 @@ meta_window_show_menu (MetaWindow *window,
   MetaMenuOp insensitive;
   MetaWindowMenu *menu;
   
+  if (window->display->window_menu)
+    {
+      meta_ui_window_menu_free (window->display->window_menu);
+      window->display->window_menu = NULL;
+      window->display->window_with_menu = NULL;
+    }
+
   ops = 0;
   insensitive = 0;
 
