@@ -591,7 +591,8 @@ meta_screen_set_cursor (MetaScreen *screen,
 }
 
 void
-meta_screen_ensure_tab_popup (MetaScreen *screen)
+meta_screen_ensure_tab_popup (MetaScreen *screen,
+                              MetaTabList type)
 {
   MetaTabEntry *entries;
   GSList *tab_list;
@@ -603,6 +604,7 @@ meta_screen_ensure_tab_popup (MetaScreen *screen)
     return;
 
   tab_list = meta_display_get_tab_list (screen->display,
+                                        type,
                                         screen,
                                         screen->active_workspace);
   

@@ -364,8 +364,11 @@ void meta_window_get_work_area (MetaWindow    *window,
 gboolean meta_window_same_application (MetaWindow *window,
                                        MetaWindow *other_window);
 
-#define META_WINDOW_IN_TAB_CHAIN(w) \
+#define META_WINDOW_IN_NORMAL_TAB_CHAIN(w) \
   ((w)->type != META_WINDOW_DOCK && (w)->type != META_WINDOW_DESKTOP)
+
+#define META_WINDOW_IN_DOCK_TAB_CHAIN(w) \
+  (! META_WINDOW_IN_NORMAL_TAB_CHAIN (w))
 
 void meta_window_refresh_resize_popup (MetaWindow *window);
 

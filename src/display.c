@@ -718,7 +718,8 @@ grab_op_is_keyboard (MetaGrabOp op)
     case META_GRAB_OP_KEYBOARD_RESIZING_NE:
     case META_GRAB_OP_KEYBOARD_RESIZING_SW:
     case META_GRAB_OP_KEYBOARD_RESIZING_NW:
-    case META_GRAB_OP_KEYBOARD_TABBING:
+    case META_GRAB_OP_KEYBOARD_TABBING_NORMAL:
+    case META_GRAB_OP_KEYBOARD_TABBING_DOCK:
       return TRUE;
       break;
 
@@ -2043,8 +2044,14 @@ meta_display_begin_grab_op (MetaDisplay *display,
   /* Do this last, after everything is set up. */
   switch (op)
     {
-    case META_GRAB_OP_KEYBOARD_TABBING:
-      meta_screen_ensure_tab_popup (window->screen);
+    case META_GRAB_OP_KEYBOARD_TABBING_NORMAL:
+      meta_screen_ensure_tab_popup (window->screen,
+                                    META_TAB_LIST_NORMAL);
+      break;
+
+    case META_GRAB_OP_KEYBOARD_TABBING_DOCK:
+      meta_screen_ensure_tab_popup (window->screen,
+                                    META_TAB_LIST_DOCKS);
       break;
       
     default:
@@ -2063,7 +2070,8 @@ meta_display_end_grab_op (MetaDisplay *display,
   if (display->grab_op == META_GRAB_OP_NONE)
     return;
 
-  if (display->grab_op == META_GRAB_OP_KEYBOARD_TABBING)
+  if (display->grab_op == META_GRAB_OP_KEYBOARD_TABBING_NORMAL ||
+      display->grab_op == META_GRAB_OP_KEYBOARD_TABBING_DOCK)
     {
       meta_ui_tab_popup_free (display->grab_window->screen->tab_popup);
       display->grab_window->screen->tab_popup = NULL;
@@ -2523,8 +2531,11 @@ meta_display_window_has_pending_pings (MetaDisplay *display,
   return FALSE;
 }
 
+#define IN_TAB_CHAIN(w,t) (((t) == META_TAB_LIST_NORMAL && META_WINDOW_IN_NORMAL_TAB_CHAIN (w)) || ((t) == META_TAB_LIST_DOCKS && META_WINDOW_IN_DOCK_TAB_CHAIN (w)))
+
 static MetaWindow*
 find_tab_forward (MetaDisplay   *display,
+                  MetaTabList    type,
                   MetaWorkspace *workspace,
                   GList         *start)
 {
@@ -2537,7 +2548,7 @@ find_tab_forward (MetaDisplay   *display,
     {
       MetaWindow *window = tmp->data;
 
-      if (META_WINDOW_IN_TAB_CHAIN (window) &&
+      if (IN_TAB_CHAIN (window, type) &&
           (workspace == NULL ||
            meta_window_visible_on_workspace (window, workspace)))
         return window;
@@ -2550,7 +2561,7 @@ find_tab_forward (MetaDisplay   *display,
     {
       MetaWindow *window = tmp->data;
 
-      if (META_WINDOW_IN_TAB_CHAIN (window) &&
+      if (IN_TAB_CHAIN (window, type) &&
           (workspace == NULL ||
            meta_window_visible_on_workspace (window, workspace)))
         return window;
@@ -2563,6 +2574,7 @@ find_tab_forward (MetaDisplay   *display,
 
 static MetaWindow*
 find_tab_backward (MetaDisplay   *display,
+                   MetaTabList    type,
                    MetaWorkspace *workspace,
                    GList         *start)
 {
@@ -2575,7 +2587,7 @@ find_tab_backward (MetaDisplay   *display,
     {
       MetaWindow *window = tmp->data;
 
-      if (META_WINDOW_IN_TAB_CHAIN (window) &&
+      if (IN_TAB_CHAIN (window, type) &&
           (workspace == NULL ||
            meta_window_visible_on_workspace (window, workspace)))
         return window;
@@ -2588,7 +2600,7 @@ find_tab_backward (MetaDisplay   *display,
     {
       MetaWindow *window = tmp->data;
 
-      if (META_WINDOW_IN_TAB_CHAIN (window) &&
+      if (IN_TAB_CHAIN (window, type) &&
           (workspace == NULL ||
            meta_window_visible_on_workspace (window, workspace)))
         return window;
@@ -2601,17 +2613,14 @@ find_tab_backward (MetaDisplay   *display,
 
 GSList*
 meta_display_get_tab_list (MetaDisplay   *display,
+                           MetaTabList    type,
                            MetaScreen    *screen,
                            MetaWorkspace *workspace)
 {
   GSList *tab_list;
 
-  /* workspace can be NULL for all workspaces */
-  
-#ifdef JOEL_RECOMMENDATION
-  /* mapping order */
-  tab_list = meta_stack_get_tab_list (screen->stack, workspace);
-#else
+  /* workspace can be NULL for all workspaces */  
+
   /* Windows sellout mode - MRU order */
   {
     GList *tmp;
@@ -2623,7 +2632,7 @@ meta_display_get_tab_list (MetaDisplay   *display,
         MetaWindow *window = tmp->data;
         
         if (window->screen == screen &&
-            META_WINDOW_IN_TAB_CHAIN (window) &&
+            IN_TAB_CHAIN (window, type) &&
             (workspace == NULL ||
              meta_window_visible_on_workspace (window, workspace)))
           tab_list = g_slist_prepend (tab_list, window);
@@ -2632,23 +2641,17 @@ meta_display_get_tab_list (MetaDisplay   *display,
       }
     tab_list = g_slist_reverse (tab_list);
   }
-#endif
 
   return tab_list;
 }
 
 MetaWindow*
 meta_display_get_tab_next (MetaDisplay   *display,
+                           MetaTabList    type,
                            MetaWorkspace *workspace,
                            MetaWindow    *window,
                            gboolean       backward)
 {
-#ifdef JOEL_RECOMMENDATION
-  return meta_stack_get_tab_next (window->screen->stack,
-                                  workspace,
-                                  window,
-                                  backward);
-#else
   if (display->mru_list == NULL)
     return NULL;
   
@@ -2657,22 +2660,21 @@ meta_display_get_tab_next (MetaDisplay   *display,
       g_assert (window->display == display);
       
       if (backward)
-        return find_tab_backward (display, workspace,
+        return find_tab_backward (display, type, workspace,
                                   g_list_find (display->mru_list,
                                                window));
       else
-        return find_tab_forward (display, workspace,
+        return find_tab_forward (display, type, workspace,
                                  g_list_find (display->mru_list,
                                               window));
     }
   
   if (backward)
-    return find_tab_backward (display, workspace,
+    return find_tab_backward (display, type, workspace,
                               g_list_last (display->mru_list));
   else
-    return find_tab_forward (display, workspace,
+    return find_tab_forward (display, type, workspace,
                              display->mru_list);
-#endif
 }
 
 int

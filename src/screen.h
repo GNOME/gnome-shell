@@ -66,7 +66,8 @@ int           meta_screen_get_n_workspaces    (MetaScreen                 *scree
 void          meta_screen_set_cursor          (MetaScreen                 *screen,
                                                MetaCursor                  cursor);
 
-void          meta_screen_ensure_tab_popup    (MetaScreen                 *screen);
+void          meta_screen_ensure_tab_popup    (MetaScreen                 *screen,
+                                               MetaTabList                 type);
 
 void          meta_screen_focus_top_window    (MetaScreen                 *screen,
                                                MetaWindow                 *not_this_one);

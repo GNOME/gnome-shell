@@ -1,3 +1,11 @@
+2002-04-05  Havoc Pennington  <hp@pobox.com>
+
+	* src/stack.c: remove the unused tab stuff
+
+	* src/display.c: implement tab list among panels
+
+	* src/keybindings.c: fill in move-between-panels keybindings
+
 2002-03-31  Johan Dahlin  <jdahlin@telia.com>
 
 	* src/menu.c (meta_window_menu_new): Make sure all menu items are

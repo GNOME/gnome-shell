@@ -59,6 +59,10 @@ static void handle_focus_previous     (MetaDisplay *display,
                                        MetaWindow  *window,
                                        XEvent      *event,
                                        gpointer     data);
+static void handle_toggle_fullscreen  (MetaDisplay *display,
+                                       MetaWindow  *window,
+                                       XEvent      *event,
+                                       gpointer     data);
 static void handle_workspace_left     (MetaDisplay *display,
                                        MetaWindow  *window,
                                        XEvent      *event,
@@ -117,9 +121,12 @@ static MetaKeyBinding screen_bindings[] = {
   { XK_4, Mod1Mask, KeyPress, handle_activate_workspace, GINT_TO_POINTER (3), 0 },
   { XK_5, Mod1Mask, KeyPress, handle_activate_workspace, GINT_TO_POINTER (4), 0 },
   { XK_6, Mod1Mask, KeyPress, handle_activate_workspace, GINT_TO_POINTER (5), 0 },
-  { XK_Tab, Mod1Mask, KeyPress, handle_tab_forward, NULL, 0 },
-  { XK_ISO_Left_Tab, ShiftMask | Mod1Mask, KeyPress, handle_tab_backward, NULL, 0 },
-  { XK_Tab, ShiftMask | Mod1Mask, KeyPress, handle_tab_backward, NULL, 0 },
+  { XK_Tab, Mod1Mask, KeyPress, handle_tab_forward, GINT_TO_POINTER (META_TAB_LIST_NORMAL), 0 },
+  { XK_ISO_Left_Tab, ShiftMask | Mod1Mask, KeyPress, handle_tab_backward, GINT_TO_POINTER (META_TAB_LIST_NORMAL), 0 },
+  { XK_Tab, ShiftMask | Mod1Mask, KeyPress, handle_tab_backward, GINT_TO_POINTER (META_TAB_LIST_NORMAL), 0 },
+  { XK_Tab, Mod1Mask | ControlMask, KeyPress, handle_tab_forward, GINT_TO_POINTER (META_TAB_LIST_DOCKS), 0 },
+  { XK_ISO_Left_Tab, ShiftMask | Mod1Mask | ControlMask, KeyPress, handle_tab_backward, GINT_TO_POINTER (META_TAB_LIST_DOCKS), 0 },
+  { XK_Tab, ShiftMask | Mod1Mask | ControlMask, KeyPress, handle_tab_backward, GINT_TO_POINTER (META_TAB_LIST_DOCKS), 0 },
   { XK_Escape, Mod1Mask, KeyPress, handle_focus_previous, NULL, 0 },
   { XK_Left, Mod1Mask | ControlMask, KeyPress, handle_workspace_left, NULL, 0 },
   { XK_Right, Mod1Mask | ControlMask, KeyPress, handle_workspace_right, NULL, 0 },
@@ -139,6 +146,8 @@ static MetaKeyBinding window_bindings[] = {
   { XK_ISO_Left_Tab, ShiftMask | Mod1Mask, KeyPress, handle_tab_backward, NULL, 0 },
   { XK_Tab, ShiftMask | Mod1Mask, KeyPress, handle_tab_backward, NULL, 0 },
   { XK_Escape, Mod1Mask, KeyPress, handle_focus_previous, NULL, 0 },
+  /* Crack! */
+  { XK_f, ControlMask | Mod1Mask, KeyPress, handle_toggle_fullscreen, NULL, 0 },
   { None, 0, 0, NULL, NULL, 0 }
 };
 
@@ -592,7 +601,8 @@ meta_display_process_key_event (MetaDisplay *display,
           meta_verbose ("Processing event for keyboard move\n");
           handled = process_keyboard_move_grab (display, window, event, keysym);
           break;
-        case META_GRAB_OP_KEYBOARD_TABBING:
+        case META_GRAB_OP_KEYBOARD_TABBING_NORMAL:
+        case META_GRAB_OP_KEYBOARD_TABBING_DOCK:
           meta_verbose ("Processing event for keyboard tabbing\n");
           handled = process_tab_grab (display, window, event, keysym);
           break;
@@ -947,6 +957,22 @@ handle_activate_menu (MetaDisplay *display,
     }
 }
 
+static MetaGrabOp
+op_from_tab_type (MetaTabList type)
+{
+  switch (type)
+    {
+    case META_TAB_LIST_NORMAL:
+      return META_GRAB_OP_KEYBOARD_TABBING_NORMAL;
+    case META_TAB_LIST_DOCKS:
+      return META_GRAB_OP_KEYBOARD_TABBING_DOCK;
+    }
+
+  g_assert_not_reached ();
+  
+  return 0;
+}
+
 static void
 handle_tab_forward (MetaDisplay *display,
                     MetaWindow  *event_window,
@@ -954,14 +980,18 @@ handle_tab_forward (MetaDisplay *display,
                     gpointer     data)
 {
   MetaWindow *window;
+  MetaTabList type;
+
+  type = GPOINTER_TO_INT (data);
   
-  meta_verbose ("Tab forward\n");
+  meta_verbose ("Tab forward type = %d\n", type);
   
   window = NULL;
   
   if (display->focus_window != NULL)
     {
       window = meta_display_get_tab_next (display,
+                                          type,
                                           display->focus_window->screen->active_workspace,
                                           display->focus_window,
                                           FALSE);
@@ -980,6 +1010,7 @@ handle_tab_forward (MetaDisplay *display,
       if (screen)
         {
           window = meta_display_get_tab_next (screen->display,
+                                              type,
                                               screen->active_workspace,
                                               NULL,
                                               FALSE);
@@ -989,11 +1020,11 @@ handle_tab_forward (MetaDisplay *display,
   if (window)
     {
       meta_verbose ("Starting tab forward, showing popup\n");
-
+      
       if (meta_display_begin_grab_op (window->display,
                                       display->focus_window ?
                                       display->focus_window : window,
-                                      META_GRAB_OP_KEYBOARD_TABBING,
+                                      op_from_tab_type (type),
                                       FALSE,
                                       0, 0,
                                       event->xkey.time,
@@ -1015,14 +1046,18 @@ handle_tab_backward (MetaDisplay *display,
                      gpointer     data)
 {
   MetaWindow *window;
+  MetaTabList type;
+
+  type = GPOINTER_TO_INT (data);
   
-  meta_verbose ("Tab backward\n");
+  meta_verbose ("Tab backward type = %d\n", type);
   
   window = NULL;
   
   if (display->focus_window != NULL)
     {
       window = meta_display_get_tab_next (display,
+                                          type,
                                           display->focus_window->screen->active_workspace,
                                           display->focus_window,
                                           TRUE);
@@ -1041,6 +1076,7 @@ handle_tab_backward (MetaDisplay *display,
       if (screen)
         {
           window = meta_display_get_tab_next (screen->display,
+                                              type,
                                               screen->active_workspace,
                                               NULL,
                                               TRUE);
@@ -1054,7 +1090,7 @@ handle_tab_backward (MetaDisplay *display,
       if (meta_display_begin_grab_op (window->display,
                                       display->focus_window ?
                                       display->focus_window : window,
-                                      META_GRAB_OP_KEYBOARD_TABBING,
+                                      op_from_tab_type (type),
                                       FALSE,
                                       0, 0,
                                       event->xkey.time,
@@ -1104,6 +1140,7 @@ handle_focus_previous (MetaDisplay *display,
     {
       /* Pick first window in tab order */      
       window = meta_display_get_tab_next (screen->display,
+                                          META_TAB_LIST_NORMAL,
                                           screen->active_workspace,
                                           NULL,
                                           TRUE);
@@ -1124,6 +1161,20 @@ handle_focus_previous (MetaDisplay *display,
     }
 }
 
+static void
+handle_toggle_fullscreen  (MetaDisplay *display,
+                           MetaWindow  *window,
+                           XEvent      *event,
+                           gpointer     data)
+{
+  if (window)
+    {
+      if (window->fullscreen)
+        meta_window_unmake_fullscreen (window);
+      else
+        meta_window_make_fullscreen (window);
+    }
+}
 
 static void
 handle_spew_mark (MetaDisplay *display,

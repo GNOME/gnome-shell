@@ -100,13 +100,6 @@ MetaWindow* meta_stack_get_default_focus_window (MetaStack *stack,
                                                  MetaWorkspace *workspace,
                                                  MetaWindow    *not_this_one);
 
-MetaWindow* meta_stack_get_tab_next (MetaStack     *stack,
-                                     MetaWorkspace *workspace,
-                                     MetaWindow    *window,
-                                     gboolean       backward);
-GSList*     meta_stack_get_tab_list (MetaStack     *stack,
-                                     MetaWorkspace *workspace);
-
 /* -1 if a < b, etc. */
 int         meta_stack_windows_cmp  (MetaStack  *stack,
                                      MetaWindow *window_a,
