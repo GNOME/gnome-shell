@@ -1,11 +1,16 @@
 2003-05-16  Rob Adams  <robadams@ucla.edu>
 
+	Flip the workspace when using up/down/left/right for move window
+	to, but not when specifying a workspace explicitly as in move to
+	workspace 4.  Possible fix for #105492.
+
 	* src/keybindings.c (do_handle_move_to_workspace): new function
-	moves a window to a workspace with the option to flip to that workspace.
+	moves a window to a workspace with the option to flip to that
+	workspace.
 	(handle_move_to_workspace): Use new do_handle_move_to_workspace
 	function without flipping (a keybinding)
-	(handle_move_to_workspace_flip): Use new do_handle_move_to_workspace
-	function with flipping (a keybinding)
+	(handle_move_to_workspace_flip): Use new
+	do_handle_move_to_workspace function with flipping (a keybinding)
 
 2003-05-16  Havoc Pennington  <hp@redhat.com>
 
