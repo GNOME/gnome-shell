@@ -2149,9 +2149,11 @@ parse_draw_op_element (GMarkupParseContext  *context,
       const char *height;
       const char *alpha;
       const char *colorize;
+      const char *fill_type;
       MetaAlphaGradientSpec *alpha_spec;
       GdkPixbuf *pixbuf;
       MetaColorSpec *colorize_spec = NULL;
+      MetaImageFillType fill_type_val;
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
@@ -2159,6 +2161,7 @@ parse_draw_op_element (GMarkupParseContext  *context,
                               "width", &width, "height", &height,
                               "alpha", &alpha, "filename", &filename,
 			      "colorize", &colorize,
+                              "fill_type", &fill_type,
                               NULL))
         return;
       
@@ -2209,6 +2212,19 @@ parse_draw_op_element (GMarkupParseContext  *context,
       if (!check_expression (height, TRUE, info->theme, context, error))
         return;
 
+      fill_type_val = META_IMAGE_FILL_SCALE;
+      if (fill_type)
+        {
+          fill_type_val = meta_image_fill_type_from_string (fill_type);
+
+          if (((int) fill_type_val) == -1)
+            {
+              set_error (error, context, G_MARKUP_ERROR,
+                         G_MARKUP_ERROR_PARSE,
+                         _("Did not understand fill type \"%s\" for <%s> element"),
+                         fill_type, element_name);
+            }
+        }
       
       /* Check last so we don't have to free it when other
        * stuff fails
@@ -2249,7 +2265,8 @@ parse_draw_op_element (GMarkupParseContext  *context,
       op->data.image.width = optimize_expression (info->theme, width);
       op->data.image.height = optimize_expression (info->theme, height);
       op->data.image.alpha_spec = alpha_spec;
-
+      op->data.image.fill_type = fill_type_val;
+      
       g_assert (info->op_list);
       
       meta_draw_op_list_append (info->op_list, op);
@@ -2589,13 +2606,16 @@ parse_draw_op_element (GMarkupParseContext  *context,
       const char *width;
       const char *height;
       const char *alpha;
+      const char *fill_type;
       MetaAlphaGradientSpec *alpha_spec;
+      MetaImageFillType fill_type_val;
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
                               "x", &x, "y", &y,
                               "width", &width, "height", &height,
                               "alpha", &alpha,
+                              "fill_type", &fill_type,
                               NULL))
         return;
       
@@ -2639,6 +2659,20 @@ parse_draw_op_element (GMarkupParseContext  *context,
       if (!check_expression (height, FALSE, info->theme, context, error))
         return;
 
+      fill_type_val = META_IMAGE_FILL_SCALE;
+      if (fill_type)
+        {
+          fill_type_val = meta_image_fill_type_from_string (fill_type);
+
+          if (((int) fill_type_val) == -1)
+            {
+              set_error (error, context, G_MARKUP_ERROR,
+                         G_MARKUP_ERROR_PARSE,
+                         _("Did not understand fill type \"%s\" for <%s> element"),
+                         fill_type, element_name);
+            }
+        }
+      
       alpha_spec = NULL;
       if (alpha && !parse_alpha (alpha, &alpha_spec, context, error))
         return;
@@ -2650,7 +2684,8 @@ parse_draw_op_element (GMarkupParseContext  *context,
       op->data.icon.width = optimize_expression (info->theme, width);
       op->data.icon.height = optimize_expression (info->theme, height);
       op->data.icon.alpha_spec = alpha_spec;
-
+      op->data.icon.fill_type = fill_type_val;
+      
       g_assert (info->op_list);
       
       meta_draw_op_list_append (info->op_list, op);

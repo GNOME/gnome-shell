@@ -2582,8 +2582,52 @@ render_pixbuf (GdkDrawable        *drawable,
 }
 
 static GdkPixbuf*
+pixbuf_tile (GdkPixbuf *tile,
+             int        width,
+             int        height)
+{
+  GdkPixbuf *pixbuf;
+  int tile_width;
+  int tile_height;
+  int i, j;
+  
+  tile_width = gdk_pixbuf_get_width (tile);
+  tile_height = gdk_pixbuf_get_height (tile);
+  
+  pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
+                           gdk_pixbuf_get_has_alpha (tile),
+                           8, width, height);
+
+  i = 0;
+  while (i < width)
+    {
+      j = 0;
+      while (j < height)
+        {
+          int w, h;
+
+          w = MIN (tile_width, width - i);
+          h = MIN (tile_height, height - j);
+          
+          gdk_pixbuf_copy_area (tile,
+                                0, 0,
+                                w, h,
+                                pixbuf,
+                                i, j);
+
+          j += tile_height;
+        }
+      
+      i += tile_width;
+    }
+  
+  return pixbuf;
+}
+
+static GdkPixbuf*
 scale_and_alpha_pixbuf (GdkPixbuf             *src,
                         MetaAlphaGradientSpec *alpha_spec,
+                        MetaImageFillType      fill_type,
                         int                    width,
                         int                    height)
 {
@@ -2599,19 +2643,27 @@ scale_and_alpha_pixbuf (GdkPixbuf             *src,
     }
   else
     {
-      if (gdk_pixbuf_get_width (pixbuf) == width ||
-	  gdk_pixbuf_get_height (pixbuf) == height)
-	{
-	  pixbuf = gdk_pixbuf_scale_simple (pixbuf,
-					    width, height,
-					    GDK_INTERP_NEAREST);
-	}
-      else
-	{
-	  pixbuf = gdk_pixbuf_scale_simple (pixbuf,
-					    width, height,
-					    GDK_INTERP_BILINEAR);
-	}
+      switch (fill_type)
+        {
+        case META_IMAGE_FILL_SCALE:
+          if (gdk_pixbuf_get_width (pixbuf) == width ||
+              gdk_pixbuf_get_height (pixbuf) == height)
+            {
+              pixbuf = gdk_pixbuf_scale_simple (pixbuf,
+                                                width, height,
+                                                GDK_INTERP_NEAREST);
+            }
+          else
+            {
+              pixbuf = gdk_pixbuf_scale_simple (pixbuf,
+                                                width, height,
+                                                GDK_INTERP_BILINEAR);
+            }
+          break;
+        case META_IMAGE_FILL_TILE:
+          pixbuf = pixbuf_tile (pixbuf, width, height);
+          break;
+        }
     }
 
   if (pixbuf)
@@ -2749,6 +2801,7 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
               {
                 pixbuf = scale_and_alpha_pixbuf (op->data.image.colorize_cache_pixbuf,
                                                  op->data.image.alpha_spec,
+                                                 op->data.image.fill_type,
                                                  width, height);
               }
 	  }
@@ -2756,6 +2809,7 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
 	  {
 	    pixbuf = scale_and_alpha_pixbuf (op->data.image.pixbuf,
 					     op->data.image.alpha_spec,
+                                             op->data.image.fill_type,
 					     width, height);
 	  }
         break;
@@ -2772,10 +2826,12 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
           height <= gdk_pixbuf_get_height (info->mini_icon))
         pixbuf = scale_and_alpha_pixbuf (info->mini_icon,
                                          op->data.icon.alpha_spec,
+                                         op->data.image.fill_type,
                                          width, height);
       else if (info->icon)
         pixbuf = scale_and_alpha_pixbuf (info->icon,
                                          op->data.icon.alpha_spec,
+                                         op->data.image.fill_type,
                                          width, height);
       break;
 
@@ -5247,6 +5303,30 @@ meta_gtk_arrow_to_string (GtkArrowType arrow)
   return "<unknown>";
 }
 
+MetaImageFillType
+meta_image_fill_type_from_string (const char *str)
+{
+  if (strcmp ("tile", str) == 0)
+    return META_IMAGE_FILL_TILE;
+  else if (strcmp ("scale", str) == 0)
+    return META_IMAGE_FILL_SCALE;
+  else
+    return -1;
+}
+
+const char*
+meta_image_fill_type_to_string (MetaImageFillType fill_type)
+{
+  switch (fill_type)
+    {
+    case META_IMAGE_FILL_TILE:
+      return "tile";
+    case META_IMAGE_FILL_SCALE:
+      return "scale";
+    }
+  
+  return "<unknown>";
+}
 
 #if 0
 /* These are some functions I'm saving to use in optimizing

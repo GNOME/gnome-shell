@@ -1,5 +1,13 @@
 2002-05-31  Havoc Pennington  <hp@redhat.com>
 
+	* src/theme.c: add MetaImageFillType and implement TILE in
+	addition to the existing SCALE
+
+	* src/theme.h (struct _MetaDrawOp): remove no-longer-used "alpha"
+	field
+
+2002-05-31  Havoc Pennington  <hp@redhat.com>
+
 	* src/theme.c (multiply_alpha): now just uses
 	meta_gradient_add_alpha
 	(draw_op_as_pixbuf): implement alpha gradients for tint, gradient,

@@ -123,6 +123,11 @@ struct _MetaFrameGeometry
   guint bottom_right_corner_rounded : 1;
 };
 
+typedef enum
+{
+  META_IMAGE_FILL_SCALE, /* default, needs to be all-bits-zero for g_new0 */
+  META_IMAGE_FILL_TILE
+} MetaImageFillType;
 
 typedef enum
 {
@@ -284,13 +289,13 @@ struct _MetaDrawOp
       MetaColorSpec *colorize_spec;
       MetaAlphaGradientSpec *alpha_spec;
       GdkPixbuf *pixbuf;
-      double alpha;
       char *x;
       char *y;
       char *width;
       char *height;
       guint32 colorize_cache_pixel;
       GdkPixbuf *colorize_cache_pixbuf;
+      MetaImageFillType fill_type;
     } image;
     
     struct {
@@ -326,6 +331,7 @@ struct _MetaDrawOp
       char *y;
       char *width;
       char *height;
+      MetaImageFillType fill_type;
     } icon;
 
     struct {
@@ -800,5 +806,8 @@ GtkShadowType         meta_gtk_shadow_from_string      (const char            *s
 const char*           meta_gtk_shadow_to_string        (GtkShadowType          shadow);
 GtkArrowType          meta_gtk_arrow_from_string       (const char            *str);
 const char*           meta_gtk_arrow_to_string         (GtkArrowType           arrow);
+MetaImageFillType     meta_image_fill_type_from_string (const char            *str);
+const char*           meta_image_fill_type_to_string   (MetaImageFillType      fill_type);
+
 
 #endif
