@@ -1,5 +1,15 @@
 2005-01-28  Elijah Newren  <newren@gmail.com>
 
+	* src/menu.c: Change wording of menu to "Always on Current
+	Workspace" from "Put on All Workspaces", remove a quick-key
+	conflict between "On _Top" and "Only on _This Workspace" by
+	switching the latter to "_Only on This Workspace"
+
+	* src/window.c: Remove a comment that is no longer necessary
+	(since bug 87531 has been fixed)
+
+2005-01-28  Elijah Newren  <newren@gmail.com>
+
 	Take into account the appropriate list of windows when placing a
 	new one.  Fixes #165381.
 

@@ -63,8 +63,8 @@ static MenuItem menuitems[] = {
   { 0, NULL, FALSE, NULL }, /* separator */
   { META_MENU_OP_DELETE, METACITY_STOCK_DELETE, FALSE, N_("_Close") },
   { META_MENU_OP_WORKSPACES, NULL, FALSE, NULL }, /* separator */
-  { META_MENU_OP_STICK, NULL, FALSE, N_("Put on _All Workspaces") },
-  { META_MENU_OP_UNSTICK, NULL, FALSE,  N_("Only on _This Workspace") },
+  { META_MENU_OP_STICK, NULL, FALSE, N_("_Always on Current Workspace") },
+  { META_MENU_OP_UNSTICK, NULL, FALSE,  N_("_Only on This Workspace") },
   { META_MENU_OP_MOVE_LEFT, NULL, FALSE, N_("Move to Workspace _Left") },
   { META_MENU_OP_MOVE_RIGHT, NULL, FALSE, N_("Move to Workspace R_ight") },
   { META_MENU_OP_MOVE_UP, NULL, FALSE, N_("Move to Workspace _Up") },

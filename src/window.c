@@ -1215,9 +1215,6 @@ meta_window_showing_on_its_workspace (MetaWindow *window)
                                 &is_desktop_or_dock);
 
   if (window->on_all_workspaces)
-    /* Until the behavior in bug 87531 is implemented, this will be
-     * just a hack that only sort of works.
-     */
     workspace_of_window = window->screen->active_workspace;
   else if (window->workspace)
     workspace_of_window = window->workspace;
