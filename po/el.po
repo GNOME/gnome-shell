@@ -1,3 +1,4 @@
+# translation of el.po to 
 # translation of el.po to Greek
 # Greek translation of metacity.
 # Copyright (C) 2002 Simos Xenitellis.
@@ -14,13 +15,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-08-15 10:32-0700\n"
-"PO-Revision-Date: 2004-03-15 01:09-0200\n"
-"Last-Translator: Nikos Charonitakis <charosn@her.fothnet.gr>\n"
-"Language-Team: Greek <nls@tux.hellug.gr>\n"
+"POT-Creation-Date: 2004-08-29 11:51+0300\n"
+"PO-Revision-Date: 2004-08-29 11:51+0300\n"
+"Last-Translator: Kostas Papadimas <pkst@gnome.org>\n"
+"Language-Team:  <nls@tux.hellug.gr>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.3.1\n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -31,31 +33,31 @@ msgstr "Χρήση: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Το Metacity έχει γίνει compiled χωρίς υποστήριξη για verbose mode\n"
 
-#: src/delete.c:62 src/delete.c:89 src/metacity-dialog.c:46
+#: src/delete.c:63 src/delete.c:90 src/metacity-dialog.c:70
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Αδύνατη η ανάλυση του \"%s\" ως ακεραίου αριθμού"
 
-#: src/delete.c:69 src/delete.c:96 src/metacity-dialog.c:53
+#: src/delete.c:70 src/delete.c:97 src/metacity-dialog.c:77
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr ""
 "Δεν έγινε κατανοητή η ακολουθία χαρακτήρων \"%s\" στο αλφαριθμητικό \"%s\""
 
-#: src/delete.c:127
+#: src/delete.c:128
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Αποτυχία ανάλυσης μηνύματος \"%s\" από την διεργασία διαλόγου\n"
 
 # gconf/gconfd.c:901
-#: src/delete.c:262
+#: src/delete.c:263
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Σφάλμα κατά την διεργασία προβολής διαλόγου: %s\n"
 
-#: src/delete.c:338
+#: src/delete.c:344
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -64,13 +66,13 @@ msgstr ""
 "εφαρμογής: %s\n"
 
 # gconf-editor/gconf-editor.c:69 gconf/gconftool.c:447
-#: src/delete.c:446
+#: src/delete.c:452
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Αποτυχία λήψης hostname: %s\n"
 
 # gconf/gconf-internals.c:2416
-#: src/display.c:303
+#: src/display.c:306
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Αποτυχία άνοιγματος oθόνης του Παραθυρικού Συστήματος Χ '%s'\n"
@@ -91,24 +93,24 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Μοιραίο σφάλμα IO %d (%s) στην οθόνη '%s'.\n"
 
-#: src/frames.c:1016
+#: src/frames.c:1021
 msgid "Close Window"
 msgstr "Κλείσιμο Παραθύρου"
 
 #
-#: src/frames.c:1019
+#: src/frames.c:1024
 msgid "Window Menu"
 msgstr "Μενού Παραθύρου"
 
-#: src/frames.c:1022
+#: src/frames.c:1027
 msgid "Minimize Window"
 msgstr "Ελαχιστοποίηση Παραθύρου"
 
-#: src/frames.c:1025
+#: src/frames.c:1030
 msgid "Maximize Window"
 msgstr "Μεγιστοποίηση Παραθύρου"
 
-#: src/frames.c:1028
+#: src/frames.c:1033
 msgid "Unmaximize Window"
 msgstr "Απόμεγιστοποίηση Παραθύρου"
 
@@ -121,14 +123,14 @@ msgstr ""
 "Κάποιο άλλο πρόγραμμα χρησιμοποιεί ήδη το κλειδί %s με μετατροπείς %x ώς "
 "δεσμό\n"
 
-#: src/keybindings.c:2518
+#: src/keybindings.c:2529
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Σφάλμα εκκίνησης διαλόγου metacity για την εκτύπωση ενός σφάλματος για μια "
 "εντολή: %s\n"
 
-#: src/keybindings.c:2591
+#: src/keybindings.c:2602
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Δεν έχει ορισθεί εντολή %d.\n"
@@ -347,31 +349,31 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:85
+#: src/metacity-dialog.c:110
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "Το παράθυρο \"%s\" δεν ανταποκρίνεται."
 
-#: src/metacity-dialog.c:93
+#: src/metacity-dialog.c:118
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Ο εξαναγκασμός αυτού του παραθύρου σε τερματισμό θα προκαλέσει το χάσιμο των "
 "μη αποθηκευμένων αλλαγών."
 
-#: src/metacity-dialog.c:103
+#: src/metacity-dialog.c:128
 msgid "_Force Quit"
 msgstr "_Εξαναγκασμός σε Τερματισμό"
 
-#: src/metacity-dialog.c:197
+#: src/metacity-dialog.c:225
 msgid "Title"
 msgstr "Τίτλος"
 
-#: src/metacity-dialog.c:209
+#: src/metacity-dialog.c:237
 msgid "Class"
 msgstr "Κλάση"
 
-#: src/metacity-dialog.c:233
+#: src/metacity-dialog.c:262
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -379,7 +381,7 @@ msgstr ""
 "Αυτά τα παράθυρα δεν υποστηρίζουν \"αποθήκευση τρέχουσας εγκατάστασης\" και "
 "θα πρέπει να επανεκκινηθούν χειρονακτικά στην επόμενη είσοδο σας."
 
-#: src/metacity-dialog.c:290
+#: src/metacity-dialog.c:323
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -459,9 +461,8 @@ msgstr ""
 "εκφράζεται για παράδειγμα ως  \"&lt;Alt&gt;\" ή \"&lt;Super&gt;\"."
 
 #: src/metacity.schemas.in.h:9
-#, fuzzy
 msgid "Close window"
-msgstr "Κλείσιμο ενός παραθύρου"
+msgstr "Κλείσιμο παραθύρου"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
@@ -560,9 +561,8 @@ msgid "Lower window below other windows"
 msgstr "Χαμήλωμα παραθύρου κάτω από τα άλλα παράθυρα"
 
 #: src/metacity.schemas.in.h:23
-#, fuzzy
 msgid "Maximize window"
-msgstr "Μεγιστοποίηση ενός παραθύρου"
+msgstr "Μεγιστοποίηση παραθύρου"
 
 #: src/metacity.schemas.in.h:24
 msgid "Maximize window horizontally"
@@ -573,9 +573,8 @@ msgid "Maximize window vertically"
 msgstr "Μεγιστοποίηση ενός παραθύρου κάθετα"
 
 #: src/metacity.schemas.in.h:26
-#, fuzzy
 msgid "Minimize window"
-msgstr "Ελαχιστοποίηση ενός παραθύρου"
+msgstr "Ελαχιστοποίηση παραθύρου"
 
 #: src/metacity.schemas.in.h:27
 msgid "Modifier to use for modified window click actions"
@@ -621,9 +620,8 @@ msgstr ""
 "αναδυόμενης οθόνης"
 
 #: src/metacity.schemas.in.h:36
-#, fuzzy
 msgid "Move window"
-msgstr "Μετακίνηση ενός παραθύρου"
+msgstr "Μετακίνηση παραθύρου"
 
 #: src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
@@ -716,9 +714,8 @@ msgid "Raise window above other windows"
 msgstr "Ανάδυση παραθύρου πάνω από τα άλλα παράθυρα"
 
 #: src/metacity.schemas.in.h:58
-#, fuzzy
 msgid "Resize window"
-msgstr "Αλλαγή μεγέθους ενός παραθύρου"
+msgstr "Αλλαγή μεγέθους παραθύρου"
 
 #: src/metacity.schemas.in.h:59
 msgid "Run a defined command"
@@ -729,7 +726,6 @@ msgid "Show the panel menu"
 msgstr "Εμφάνιση του μενού ταμπλώ"
 
 #: src/metacity.schemas.in.h:61
-#, fuzzy
 msgid "Show the panel run application dialog"
 msgstr "Εμφάνιση του διαλόγου εκτέλεσης ταμπλώ"
 
@@ -885,7 +881,6 @@ msgstr ""
 "αυτή την εντολή."
 
 #: src/metacity.schemas.in.h:86
-#, fuzzy
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -896,13 +891,12 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που εκτελεί την αντίστοιχη αριθμημένη εντολή στο /apps/"
 "metacity/keybinding_commands. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\"..  Ο διαβιβαστής είναι φιλελεύθερος και "
 "επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;"
 "Ctrl&gt;\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός "
 "πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:87
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -913,12 +907,12 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που εναλλάσει στο χώρο εργασίας πάνω από τον τρέχοντα "
 "χώρο εργασίας. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και "
-"πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
-"\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
+"&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία "
+"και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν "
+"ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την "
+"ενέργεια."
 
 #: src/metacity.schemas.in.h:88
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -929,12 +923,11 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που εναλλάσει στο χώρο εργασίας κάτω από τον τρέχοντα "
 "χώρο εργασίας. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και "
+"&lt;Alt&gt;F1\"  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και "
 "πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:89
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -944,14 +937,13 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που εναλλάσει στο χώρο εργασίας στα αριστερά του "
-"τρέχοντα χώρου εργασίας. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και "
+"τρέχοντα χώρου εργασίας. Η διαμόρφωση μοιάζει με  \"&lt;Control&gt;a\" ή "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και "
 "επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;"
 "Ctrl&gt;\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός "
 "πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:90
-#, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -961,14 +953,13 @@ msgid ""
 "keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που εναλλάσει στο χώρο εργασίας στα δεξιά του τρέχοντα "
-"χώρου εργασίας. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
+"χώρου εργασίας. Η διαμόρφωση μοιάζει με  \"&lt;Control&gt;a\" ή \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
 "κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;"
 "\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για "
 "αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:91
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -977,13 +968,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που εναλλάσει στο χώρο εργασίας 1. Η διαμόρφωση "
-"μοιάζει με \"&lt; Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο "
+"μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο "
 "διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:92
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -992,13 +982,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που εναλλάσει στο χώρο εργασίας 10. Η διαμόρφωση "
-"μοιάζει με \"&lt; Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο "
+"μοιάζει με\"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο "
 "διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:93
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1007,13 +996,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που εναλλάσει στο χώρο εργασίας 11. Η διαμόρφωση "
-"μοιάζει με \"&lt; Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο "
+"μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο "
 "διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:94
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1022,13 +1010,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που εναλλάσει στο χώρο εργασίας 12.  Η διαμόρφωση "
-"μοιάζει με \"&lt; Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο "
+"μοιάζει με  \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο "
 "διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:95
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1037,13 +1024,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που εναλλάσει στο χώρο εργασίας 2. Η διαμόρφωση "
-"μοιάζει με \"&lt; Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο "
+"μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο "
 "διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:96
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1052,13 +1038,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που εναλλάσει στο χώρο εργασίας 3. Η διαμόρφωση "
-"μοιάζει με \"&lt; Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο "
+"μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο "
 "διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:97
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1067,13 +1052,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που εναλλάσει στο χώρο εργασίας 4. Η διαμόρφωση "
-"μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο "
+"μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο "
 "διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:98
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1082,13 +1066,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που εναλλάσει στο χώρο εργασίας 5. Η διαμόρφωση "
-"μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο "
-"διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
+"μοιάζει με \"&\"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\"..  "
+"Οδιαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:99
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1097,13 +1080,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που εναλλάσει στο χώρο εργασίας 6. Η διαμόρφωση "
-"μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο "
+"μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο "
 "διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:100
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1112,13 +1094,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που εναλλάσει στο χώρο εργασίας 7. Η διαμόρφωση "
-"μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο "
+"μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο "
 "διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:101
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1127,14 +1108,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που εναλλάσει στο χώρο εργασίας 8. Η διαμόρφωση "
-"μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο "
+"μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο "
 "διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την "
 "ενέργεια."
 
 #: src/metacity.schemas.in.h:102
-#, fuzzy
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1143,13 +1123,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που εναλλάσει στο χώρο εργασίας 9. Η διαμόρφωση "
-"μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο "
+"μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο "
 "διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:103
-#, fuzzy
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1158,13 +1137,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που ενεργοποιεί το μενού παραθύρου. Η διαμόρφωση "
-"μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο "
+"μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο "
 "διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:104
-#, fuzzy
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1173,13 +1151,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για το κλείσιμο παραθύρου. Η "
-"διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  "
-"Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
+"διαμόρφωση μοιάζει με  \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:105
-#, fuzzy
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1191,13 +1168,12 @@ msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για να εισάγετε την \"λειτουργία "
 "μετακίνησης\" και να ξεκινήσετε την μετακίνηση του παραθύρου με τη χρήση του "
 "πληκτρολογίου . Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
+"Shift&gt;&lt;Alt&gt;F1\"  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
 "κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;"
 "\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για "
 "αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:106
-#, fuzzy
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1209,13 +1185,12 @@ msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για να εισάγετε την \"λειτουργία "
 "αλλαγής μεγέθους\" και να ξεκινήσετε την αλλαγή μεγέθους του παραθύρου με τη "
 "χρήση του πληκτρολογίου . Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και "
 "επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;"
 "Ctrl&gt;\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός "
 "πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:107
-#, fuzzy
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1226,13 +1201,12 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για να αποκρύπτονται όλα τα "
 "παράθυρα και να γίνετε εστίαση στο παρασκήνιο της επιφάνειας εργασίας . Η "
-"διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  "
+"διαμόρφωση μοιάζει με\"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\".  "
 "Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:108
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1241,13 +1215,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μεγιστοποίηση παραθύρου. Η "
-"διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  "
-"Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
+"διαμόρφωση μοιάζει με  \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1256,13 +1229,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την ελαχιστοποιήση παραθύρου. "
-"Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
+"Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:110
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -1273,13 +1245,12 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μετακίνηση ενός χώρου "
 "εργασίας προς τα κάτω. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
+"Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
 "κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;"
 "\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για "
 "αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:111
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1290,13 +1261,12 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μετακίνηση ενός χώρου "
 "εργασίας προς τα αριστερά. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και "
 "επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;"
 "Ctrl&gt;\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός "
 "πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:112
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1306,14 +1276,13 @@ msgid ""
 "for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μετακίνηση ενός χώρου "
-"εργασίας προς τα δεξιά.Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
+"εργασίας προς τα δεξιά.Η διαμόρφωση μοιάζει με\"&lt;Control&gt;a\" ή \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
 "κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;"
 "\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για "
 "αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:113
-#, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1323,13 +1292,12 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μετακίνηση ενός χώρου "
 "εργασίας προς τα πάνω. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
+"Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
 "κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;"
 "\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για "
 "αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:114
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1339,13 +1307,12 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μετακίνηση ενός παραθύρου "
 "στον χώρο εργασίας 1. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
+"Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
 "κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;"
 "\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για "
 "αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:115
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1355,13 +1322,12 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μετακίνηση ενός παραθύρου "
 "στον χώρο εργασίας 10.Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
+"Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
 "κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;"
 "\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για "
 "αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:116
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1371,13 +1337,12 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μετακίνηση ενός παραθύρου "
 "στον χώρο εργασίας 11. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
+"Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
 "κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;"
 "\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για "
 "αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:117
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1387,13 +1352,12 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μετακίνηση ενός παραθύρου "
 "στον χώρο εργασίας 12. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
+"Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
 "κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;"
 "\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για "
 "αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:118
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1403,13 +1367,12 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μετακίνηση ενός παραθύρου "
 "στον χώρο εργασίας 2. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
+"Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
 "κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;"
 "\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για "
 "αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:119
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1419,13 +1382,12 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μετακίνηση ενός παραθύρου "
 "στον χώρο εργασίας 3. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
+"Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
 "κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;"
 "\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για "
 "αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:120
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1435,13 +1397,12 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μετακίνηση ενός παραθύρου "
 "στον χώρο εργασίας 4.Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
+"Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
 "κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;"
 "\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για "
 "αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:121
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1451,13 +1412,12 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μετακίνηση ενός παραθύρου "
 "στον χώρο εργασίας 5. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
+"Shift&gt;&lt;Alt&gt;F1\"  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
 "κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;"
 "\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για "
 "αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:122
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1467,13 +1427,12 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μετακίνηση ενός παραθύρου "
 "στον χώρο εργασίας 6. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
+"Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
 "κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;"
 "\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για "
 "αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:123
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1482,14 +1441,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μετακίνηση ενός παραθύρου "
-"στον χώρο εργασίας 7. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
+"στον χώρο εργασίας 7. Η διαμόρφωση μοιάζει με\"&lt;Control&gt;a\" ή \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
 "κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;"
 "\".  Αν ορίσετε \"disabled\" δεν θα υπάρχει κανένας συνδυασμός πλήκτρων για "
 "αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:124
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1499,13 +1457,12 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την μετακίνηση ενός παραθύρου "
 "στον χώρο εργασίας 8. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
+"Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
 "κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;"
 "\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για "
 "αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:125
-#, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1515,13 +1472,12 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μετακίνηση ενός παραθύρου "
 "στον χώρο εργασίας 9. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
+"Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
 "κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;"
 "\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για "
 "αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:126
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1532,14 +1488,13 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μετακίνηση της εστίασης "
 "προς τα πίσω ανάμεσα στα ταμπλώ και τα παράθυρα με την χρήση ενός "
-"αναδυόμενου παραθύρου. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
+"αναδυόμενου παραθύρου. Η διαμόρφωση μοιάζει με  \"&lt;Control&gt;a\" ή \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
 "κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;"
 "\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για "
 "αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:127
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1551,13 +1506,12 @@ msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μετακίνηση της εστίασης "
 "προς τα πίσω ανάμεσα στα ταμπλώ και τα παράθυρα χωρίς την χρήση ενός "
 "αναδυόμενου παραθύρου. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
+"Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
 "κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;"
 "\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για "
 "αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:128
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1571,13 +1525,12 @@ msgstr ""
 "προς τα πίσω ανάμεσα στα  παράθυρα χωρίς την χρήση ενός αναδυόμενου "
 "παραθύρου. Πατώντας συγχρόνως και το  \"shift\" μαζί με αυτό το συνδυασμό η "
 "κατεύθυνση αλλάζει και παέι πάλι προς τα μπροστά. Η διαμόρφωση μοιάζει με "
-"\"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι "
+"\"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι "
 "φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;"
 "Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε \"disabled\" δε θα υπάρχει "
 "κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:129
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1590,14 +1543,13 @@ msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μετακίνηση της εστίασης "
 "προς τα πίσω ανάμεσα στα  παράθυρα με την χρήση ενός αναδυόμενου παραθύρου. "
 "Πατώντας συγχρόνως και το  \"shift\" μαζί με αυτό το συνδυασμό η κατεύθυνση "
-"αλλάζει και παέι πάλι προς τα μπροστά. Η διαμόρφωση μοιάζει με \"&lt;"
-"Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι "
+"αλλάζει και παέι πάλι προς τα μπροστά. Η διαμόρφωση μοιάζει με  \"&lt;"
+"Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι "
 "φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;"
 "Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε \"disabled\" δε θα υπάρχει "
 "κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:130
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1609,12 +1561,11 @@ msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μετακίνηση της εστίασης "
 "ανάμεσα στα ταμπλώ και τον χώρο εργασίας με την χρήση ενός αναδυόμενου "
 "παραθύρου. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά "
-"και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
+"Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και "
+"πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:131
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1625,13 +1576,12 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μετακίνηση της εστίασης "
 "ανάμεσα στα ταμπλώ και τον χώρο εργασίας χωρίς την χρήση ενός αναδυόμενου "
-"παραθύρου.Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά "
-"και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
+"παραθύρου.Η διαμόρφωση μοιάζει με\"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και "
+"πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:132
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1645,13 +1595,12 @@ msgstr ""
 "ανάμεσα στα παράθυρα χωρίς την χρήση ενός αναδυόμενου παραθύρου.(Παραδοσιακά "
 "&lt;Alt&gt;Escape). Πατώντας συγχρόνως το πλήκτρο \"shift\" με τη χρήση "
 "αυτού του συνδυασμού αντιστρέφει την κατεύθυνση της κίνησης.  Η διαμόρφωση "
-"μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο "
+"μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο "
 "διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:133
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1665,13 +1614,12 @@ msgstr ""
 "ανάμεσα στα παράθυρα με την χρήση ενός αναδυόμενου παραθύρου.(Παραδοσιακά "
 "&lt;Alt&gt;Tab). Πατώντας συγχρόνως το  πλήκτρο \"shift\" με τη χρήση αυτού "
 "του συνδυασμού αντιστρέφει την κατεύθυνση της κίνησης. Η διαμόρφωση μοιάζει "
-"με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1. Ο διαβιβαστής είναι "
-"φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;"
-"Ctl&gt;\" και \"&lt;Ctrl&gt;\". Αν ορίσετε \"disabled\" δε θα υπάρχει "
+"με  \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ο διαβιβαστής "
+"είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως "
+"\"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\". Αν ορίσετε \"disabled\" δε θα υπάρχει "
 "κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:134
-#, fuzzy
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1681,13 +1629,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την εναλλαγή του παραθύρου σε "
-"επικάλυψη.  Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1.  Ο διαβιβαστής είναι  φιλελεύθερος και επιτρέπει κεφαλαία και "
+"επικάλυψη.  Η διαμόρφωση μοιάζει με\"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\".  Ο διαβιβαστής είναι  φιλελεύθερος και επιτρέπει κεφαλαία και "
 "πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:135
-#, fuzzy
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1696,13 +1643,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την εναλλαγή πλήρους οθόνης. Η "
-"διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  "
+"διαμόρφωση μοιάζει με\"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\".  "
 "Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:136
-#, fuzzy
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1711,13 +1657,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την εναλλαγή μεγιστοποίησης. Η "
-"διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  "
-"Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
+"διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:137
-#, fuzzy
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1727,13 +1672,12 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την εναλλαγή σκιασμένης/"
 "αποσκιασμένης κατάστασης. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και "
 "επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;"
 "Ctrl&gt;\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός "
 "πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:138
-#, fuzzy
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1744,13 +1688,12 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την εναλλαγή του παραθύρου αν "
 "θα είναι σε ένα χώρο εργασίας ή σε όλους. Η διαμόρφωση μοιάζει με \"&lt;"
-"Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι "
+"Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι "
 "φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;"
 "Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε \"disabled\" δε θα υπάρχει "
 "κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:139
-#, fuzzy
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1759,13 +1702,13 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την απομεγιστοποίηση ενός "
-"παραθύρου. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά "
-"και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
-"\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
+"παραθύρου. Η διαμόρφωση μοιάζει με \"&lt; Control&gt;a\" ή \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία "
+"και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν "
+"ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την "
+"ενέργεια."
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1776,13 +1719,12 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την εμφάνιση του διαλόγου "
 "\"Εκτέλεση προγράμματος\" στο ταμπλώ. Η διαμόρφωση μοιάζει με \"&lt;"
-"Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι "
+"Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι "
 "φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;"
 "Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε \"disabled\" δε θα υπάρχει "
 "κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:141
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1793,12 +1735,11 @@ msgid ""
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για την αρπαγή οθόνης ενός "
 "παραθύρου. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά "
-"και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
+"Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και "
+"πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1808,13 +1749,12 @@ msgid ""
 "for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που καλεί την εφαρμογή αρπαγής οθόνης. Η διαμόρφωση "
-"μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο "
+"μοιάζει με  \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ο "
 "διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:143
-#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1823,7 +1763,7 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που εμφανίζει το κυρίως μενού του ταμπλώ.Η διαμόρφωση "
-"μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1.  Ο "
+"μοιάζει με\"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\".  Ο "
 "διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
@@ -1872,7 +1812,6 @@ msgid "The window screenshot command"
 msgstr "Η εντολή αρπαγής οθόνης παραθύρου"
 
 #: src/metacity.schemas.in.h:150
-#, fuzzy
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1886,13 +1825,12 @@ msgstr ""
 "Αυτός ο συνδυασμός πλήκτρων αλλάζει το αν ένα παράθυρο είναι πάνω ή κάτω από "
 "άλλα παράθυρα. Αν καλύπτεται από ένα άλλο παράθυρο, ανασηκώνει το παράθυρο "
 "πάνω από τα άλλα. Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
+"Shift&gt;&lt;Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει "
 "κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;"
 "\".  Αν ορίσετε \"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για "
 "αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:151
-#, fuzzy
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1902,12 +1840,11 @@ msgid ""
 msgstr ""
 "Αυτός ο συνδυασμός πλήκτρων χαμηλώνει ένα παράθυρο κάτω από τα άλλα "
 "παράθυρα . Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά "
-"και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
+"Alt&gt;F1\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και "
+"πεζά και συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:152
-#, fuzzy
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1916,13 +1853,12 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Αυτός ο συνδυασμός πλήκτρων ανασηκώνει ένα παράθυρο πάνω από άλλα παράθυρα. "
-"Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
+"Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:153
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1932,13 +1868,12 @@ msgid ""
 "for this action."
 msgstr ""
 "Αυτός ο συνδυασμός πλήκτρων ανασηκώνει ένα παράθυρο πάνω από άλλα παράθυρα. "
-"Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
+"Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
 #: src/metacity.schemas.in.h:154
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1948,8 +1883,8 @@ msgid ""
 "for this action."
 msgstr ""
 "Αυτός ο συνδυασμός πλήκτρων ανασηκώνει ένα παράθυρο πάνω από άλλα παράθυρα. "
-"Η διαμόρφωση μοιάζει με \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1.  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
+"Η διαμόρφωση μοιάζει με  \"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\".  Ο διαβιβαστής είναι φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και "
 "συντομεύσεις όπως \"&lt;Ctl&gt;\" και \"&lt;Ctrl&gt;\".  Αν ορίσετε "
 "\"disabled\" δε θα υπάρχει κανένας συνδυασμός πλήκτρων για αυτή την ενέργεια."
 
@@ -1996,7 +1931,6 @@ msgstr ""
 "'ηχηρό κουδούνι'."
 
 #: src/metacity.schemas.in.h:162
-#, fuzzy
 msgid "Unmaximize window"
 msgstr "Απομεγιστοποίηση παραθύρου"
 
@@ -2196,7 +2130,7 @@ msgstr "Άγνωστο γνώρισμα %s στο <geometry>στοιχείο"
 msgid "Unknown element %s"
 msgstr "Άγνωστο στοιχείο %s "
 
-#: src/session.c:1937
+#: src/session.c:1947
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3160,7 +3094,7 @@ msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr ""
 "Το θέμα περιείχε μια έκφραση \"%s\" που είχε σαν αποτέλεσμα σφάλμα: %s\n"
 
-#: src/theme.c:3912
+#: src/theme.c:3915
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3169,26 +3103,26 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> θα πρέπει να "
 "καθοριστεί στο στυλ πλαισίου"
 
-#: src/theme.c:4362 src/theme.c:4394
+#: src/theme.c:4365 src/theme.c:4397
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Λείπει <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: src/theme.c:4445
+#: src/theme.c:4448
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Αποτυχία φόρτωσης θέματος \"%s\": %s\n"
 
 # gconf/gconftool.c:877
-#: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
-#: src/theme.c:4619
+#: src/theme.c:4594 src/theme.c:4601 src/theme.c:4608 src/theme.c:4615
+#: src/theme.c:4622
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Δεν έχει ορισθεί  <%s> για θέμα \"%s\""
 
-#: src/theme.c:4629
+#: src/theme.c:4632
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3197,7 +3131,7 @@ msgstr ""
 "Δεν έχει ορισθεί στύλ πλαισίου για τον τύπο παραθύρου \"%s\" στο θέμα \"%s"
 "\", add a <window type=\"%s\" style_set=\"whatever\"/> element"
 
-#: src/theme.c:4651
+#: src/theme.c:4654
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3206,7 +3140,7 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> θα πρέπει να "
 "καθοριστεί για αυτό το θέμα"
 
-#: src/theme.c:5040 src/theme.c:5102
+#: src/theme.c:5043 src/theme.c:5105
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -3214,7 +3148,7 @@ msgstr ""
 "Οι συνεχείς που ορίζονται από το χρήστη θα πρέπει να ξεκινάνε με κεφαλαίο "
 "γράμμα, η \"%s\" δεν έχει"
 
-#: src/theme.c:5048 src/theme.c:5110
+#: src/theme.c:5051 src/theme.c:5113
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Constant \"%s\" έχει ήδη καθορισθεί"
@@ -3286,7 +3220,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Η εφαρμογή έθεσε ένα πλαστό _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4931
+#: src/window.c:4951
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3302,7 +3236,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5602
+#: src/window.c:5622
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3340,10 +3274,3 @@ msgid ""
 msgstr ""
 "Η ιδιότητα %s στο παράθυρο 0x%lx περιείχε μη έγκυρο UTF-8\n"
 " για το αντικείμενο %d στην λίστα\n"
-
-#~ msgid ""
-#~ "Failed to a open connection to a session manager, so window positions "
-#~ "will not be saved: %s\n"
-#~ msgstr ""
-#~ "Αδυναμία ανοίγματος σύνδεσης με διαχειριστή συνεδρίας, έτσι δε θα "
-#~ "αποθηκευτούν οι θέσεις των παραθύρων: %s\n"
