@@ -69,7 +69,6 @@ void meta_frames_manage_window (MetaFrames *frames,
                                 Window      xwindow);
 void meta_frames_unmanage_window (MetaFrames *frames,
                                   Window      xwindow);
-
 void meta_frames_set_title (MetaFrames *frames,
                             Window      xwindow,
                             const char *title);

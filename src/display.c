@@ -196,7 +196,9 @@ meta_display_open (const char *name)
    * created in screen_new
    */
   display->leader_window = None;
-  
+
+#if 0
+  /* disable multihead pending GTK support */
   screens = NULL;
   i = 0;
   while (i < ScreenCount (xdisplay))
@@ -209,6 +211,11 @@ meta_display_open (const char *name)
         screens = g_slist_prepend (screens, screen);
       ++i;
     }
+#else
+  screen = meta_screen_new (display, DefaultScreen (xdisplay));
+  if (screen)
+    screens = g_slist_prepend (screens, screen);
+#endif
 
   if (screens == NULL)
     {

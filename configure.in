@@ -40,24 +40,8 @@ changequote([,])dnl
 ALL_LINGUAS=""
 AM_GNU_GETTEXT
 
-if test -z "$PKG_CONFIG"; then
-  AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
-fi
-
-## see if we have Pango built with xft support
-if $PKG_CONFIG --exists pangoxft ; then
-  PANGO_PACKAGES="pangox pangoxft"
-  have_xft=true
-  AC_DEFINE(HAVE_XFT)
-else
-  PANGO_PACKAGES="pangox"
-  have_xft=false
-fi
-AM_CONDITIONAL(HAVE_XFT, $have_xft)
-
 ## here we get the flags we'll actually use
-PKG_CHECK_MODULES(UISLAVE, gtk+-2.0 >= 1.3.5)
-PKG_CHECK_MODULES(METACITY, $PANGO_PACKAGES)
+PKG_CHECK_MODULES(METACITY, gtk+-2.0 >= 1.3.6)
 
 # Check for shaped window extension
 AC_CHECK_LIB(Xext, XShapeCombineMask, AC_DEFINE(HAVE_SHAPE_EXT),,$METACITY_LIBS)

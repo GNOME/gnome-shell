@@ -23,6 +23,7 @@
 #include "util.h"
 #include "display.h"
 #include "errors.h"
+#include "ui.h"
 
 #include <stdlib.h>
 #include <sys/types.h>
@@ -68,6 +69,8 @@ main (int argc, char **argv)
       putenv (display_name);
       /* DO NOT FREE display_name, putenv() sucks */
     }
+
+  meta_ui_init (&argc, &argv);
   
   if (!meta_display_open (NULL))
     meta_exit (META_EXIT_ERROR);

@@ -1009,6 +1009,13 @@ meta_frame_event (MetaFrame *frame,
     case ConfigureNotify:
       break;
     case ConfigureRequest:
+      {
+        /* This is a request from the UISlave, or else a client
+         * that's completely out of line. We call
+         * meta_window_move_resize() using this information.
+         */
+
+      }
       break;
     case GravityNotify:
       break;

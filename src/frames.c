@@ -577,7 +577,9 @@ meta_frames_manage_window (MetaFrames *frames,
 
   if (frame->window == NULL)
     {
+      gdk_flush ();
       gdk_error_trap_pop ();
+      g_free (frame);
       meta_ui_warning ("Frame 0x%lx disappeared as we managed it\n", xwindow);
       return;
     }
@@ -594,8 +596,25 @@ meta_frames_manage_window (MetaFrames *frames,
 
   gdk_drawable_get_size (GDK_DRAWABLE (frame->window),
                          &frame->width, &frame->height);
-  
-  gdk_error_trap_pop ();
+
+  /* This shouldn't be required if we don't select for button
+   * press in frame.c?
+   */
+  XGrabButton (gdk_display, AnyButton, AnyModifier,
+               xwindow, False,
+               ButtonPressMask | ButtonReleaseMask |    
+               PointerMotionMask | PointerMotionHintMask,
+               GrabModeAsync, GrabModeAsync,
+               False, None);
+
+  gdk_flush ();
+  if (gdk_error_trap_pop ())
+    {
+      g_object_unref (G_OBJECT (frame->window));
+      g_free (frame);
+      meta_ui_warning ("Errors managing frame 0x%lx\n", xwindow);
+      return;
+    }
 
   frame->xwindow = xwindow;
   frame->layout = NULL;
