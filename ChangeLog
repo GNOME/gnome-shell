@@ -1,3 +1,8 @@
+2002-06-23  Gediminas Paulauskas <menesis@delfi.lt>
+
+	* src/themes/Bright/metacity-theme-1.xml: Update with border-only
+	window stuff from Atlanta.
+
 2002-06-22  James M. Cape  <jcape@ignore-your.tv>
 
 	* src/themes/Esco/metacity-theme-1.xml: Update for "border"
