@@ -1119,20 +1119,38 @@ meta_window_constrain (MetaWindow          *window,
       !window->maximized &&
       !window->fullscreen)
     {
-      int x, y;
+      MetaRectangle placed_rect = current;
 
       meta_window_place (window, orig_fgeom, current.x, current.y,
-                         &x, &y);
+                         &placed_rect.x, &placed_rect.y);
+
+      /* placing the window may have changed the xinerama.  Find the
+       * new xinerama and update the ConstraintInfo
+       */
+      info.xinerama = meta_screen_get_xinerama_for_rect (window->screen,
+                                              &placed_rect);
+      meta_window_get_work_area_for_xinerama (window,
+                                              info.xinerama->number,
+                                              &info.work_area_xinerama);
+      update_position_limits (window, &info);
 
       constrain_move (window, &info, &current,
-                      x - current.x,
-                      y - current.y,
+                      placed_rect.x - current.x,
+                      placed_rect.y - current.y,
                       new);
       current = *new;
 
       /* Ignore any non-placement movement */
       x_move_delta = 0;
       y_move_delta = 0;
+
+    }
+
+  if (window->maximize_after_placement &&
+      window->placed)
+    {
+      window->maximize_after_placement = FALSE;
+      meta_window_maximize_internal (window, new);
     }
 
   /* Maximization, fullscreen, etc. are defined as a move followed by

@@ -404,6 +404,8 @@ find_first_fit (MetaWindow *window,
                 MetaFrameGeometry *fgeom,
                 /* visible windows on relevant workspaces */
                 GList      *windows,
+		int*        xineramas_list,
+		int         n_xineramas,
                 int         x,
                 int         y,
                 int        *new_x,
@@ -423,8 +425,6 @@ find_first_fit (MetaWindow *window,
   MetaRectangle rect;
   MetaRectangle work_area;
   int i;
-  int* xineramas_list;
-  int  n_xineramas;
   
   retval = FALSE;
 
@@ -447,9 +447,6 @@ find_first_fit (MetaWindow *window,
       rect.height += fgeom->top_height + fgeom->bottom_height;
     }
 
-  meta_screen_get_natural_xinerama_list (window->screen,
-					 &xineramas_list,
-					 &n_xineramas);
   for (i = 0; i < n_xineramas; i++)
     {
       meta_topic (META_DEBUG_XINERAMA,
@@ -552,66 +549,9 @@ find_first_fit (MetaWindow *window,
   
  out:
 
-  g_free (xineramas_list);
   g_list_free (below_sorted);
   g_list_free (right_sorted);
   return retval;
-}
-
-static void
-constrain_placement (MetaWindow        *window,
-                     MetaFrameGeometry *fgeom,
-                     int                x,
-                     int                y,
-                     int               *new_x,
-                     int               *new_y)
-{
-  /* The purpose of this function is to apply constraints that are not
-   * covered by window.c:constrain_position(), but should apply
-   * whenever we are _placing_ a window regardless of placement algorithm.
-   */
-  MetaRectangle work_area;  
-  int nw_x, nw_y;
-  int offscreen_w, offscreen_h;
-  MetaRectangle outer_rect;
-
-  meta_window_get_outer_rect (window, &outer_rect);
-
-  /* FIXME this is bogus because we get the current xinerama
-   * for the window based on its position, but we haven't
-   * placed it yet.
-   */
-  meta_window_get_work_area_current_xinerama (window, &work_area);
-
-  nw_x = work_area.x;
-  nw_y = work_area.y;
-
-  if (window->frame)
-    {
-      nw_x += fgeom->left_width;
-      nw_y += fgeom->top_height;
-    }
-
-  /* Keep window from going off the bottom right, though we don't have
-   * this constraint once the window has been placed
-   */
-  offscreen_w = (outer_rect.x + outer_rect.width) - (work_area.x + work_area.width);
-  if (offscreen_w > 0)
-    nw_x -= offscreen_w;
-  offscreen_h = (outer_rect.y + outer_rect.height) - (work_area.y + work_area.height);
-  if (offscreen_h > 0)
-    nw_y -= offscreen_h;
-  
-  /* Keep window from going off left edge, though again we don't have
-   * this constraint once the window has been placed.
-   */
-  if (x < nw_x)
-    x = nw_x;
-  if (y < nw_y)
-    y = nw_y;
-
-  *new_x = x;
-  *new_y = y;
 }
 
 void
@@ -624,6 +564,10 @@ meta_window_place (MetaWindow        *window,
 {
   GList *windows;
   const MetaXineramaScreenInfo *xi;
+  int* xineramas_list = NULL;
+  int  n_xineramas;
+  int  i;
+  int placed_on = -1;
   
   /* frame member variables should NEVER be used in here, only
    * MetaFrameGeometry. But remember fgeom == NULL
@@ -811,16 +755,87 @@ meta_window_place (MetaWindow        *window,
   x = xi->x_origin;
   y = xi->y_origin;
 
-  if (find_first_fit (window, fgeom, windows, x, y, &x, &y))
+  meta_screen_get_natural_xinerama_list (window->screen,
+					 &xineramas_list,
+					 &n_xineramas);
+
+  if (find_first_fit (window, fgeom, windows,
+                      xineramas_list, n_xineramas,
+                      x, y, &x, &y))
     goto done;
-  
-  find_next_cascade (window, fgeom, windows, x, y, &x, &y);
+
+  /* This is a special-case origin-cascade so that windows that are
+   * too large to fit onto a workspace (and which will be
+   * automaximized later) will go onto an empty xinerama if one is
+   * available.
+   */
+  if (window->has_maximize_func && window->decorated &&
+      !window->fullscreen)
+    {
+      if (window->frame)
+        {
+          x = fgeom->left_width;
+          y = fgeom->top_height;
+        }
+      else
+        {
+          x = 0;
+          y = 0;
+        }
+
+      for (i = 0; i < n_xineramas; i++)
+        {
+          MetaRectangle work_area;
+          
+          meta_window_get_work_area_for_xinerama (window, xineramas_list[i], &work_area);
+          
+          if (!rectangle_overlaps_some_window (&work_area, windows))
+            {
+              x += work_area.x;
+              y += work_area.y;
+              placed_on = i;
+              break;
+            }
+        }
+    }
+
+  /* if the window wasn't placed at the origin of an empty xinerama,
+   * cascade it onto the current xinerama
+   */
+  if (placed_on == -1)
+    {
+      find_next_cascade (window, fgeom, windows, x, y, &x, &y);
+      placed_on = 0;
+    }
+
+  /* Maximize windows if they are too big for their work area (bit of
+   * a hack here). Assume undecorated windows probably don't intend to
+   * be maximized.  
+   */
+  if (window->has_maximize_func && window->decorated &&
+      !window->fullscreen)
+    {
+      MetaRectangle workarea;
+      MetaRectangle outer;
+
+      meta_window_get_work_area_for_xinerama (window,
+                                              xineramas_list[placed_on],
+                                              &workarea);      
+      meta_window_get_outer_rect (window, &outer);
+      
+      if (outer.width >= workarea.width &&
+          outer.height >= workarea.height)
+        {
+          outer.x = x;
+          outer.y = y;
+          meta_window_maximize_internal (window, &outer);
+        }
+    }
   
  done:
+  g_free (xineramas_list);
   g_list_free (windows);
   
-  constrain_placement (window, fgeom, x, y, &x, &y);
-
  done_no_constraints:
 
   *new_x = x;

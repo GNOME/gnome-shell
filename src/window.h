@@ -94,6 +94,7 @@ struct _MetaWindow
   
   /* Whether we're maximized */
   guint maximized : 1;
+  guint maximize_after_placement : 1;
 
   /* Whether we're shaded */
   guint shaded : 1;
@@ -304,6 +305,8 @@ void        meta_window_queue_calc_showing (MetaWindow  *window);
 void        meta_window_minimize           (MetaWindow  *window);
 void        meta_window_unminimize         (MetaWindow  *window);
 void        meta_window_maximize           (MetaWindow  *window);
+void        meta_window_maximize_internal  (MetaWindow    *window,
+                                            MetaRectangle *saved_rect);
 void        meta_window_unmaximize         (MetaWindow  *window);
 void        meta_window_shade              (MetaWindow  *window);
 void        meta_window_unshade            (MetaWindow  *window);

@@ -1,5 +1,40 @@
 2003-06-09  Rob Adams  <robadams@ucla.edu>
 
+	Revamp placement policy for windows that are maximized when they
+	are mapped, including windows that set a hint to be maximized or
+	windows that are auto-maximized using our heuristic.  See #111902.
+
+	* src/window.h: add new flag maximize_after_placement and new
+	function meta_window_maximize_internal.
+	
+	* src/window.c (meta_window_new): initialize
+	maximize_after_placement to FALSE and remove the automaximize
+	heuristic.
+	(meta_window_maximize_internal): new function accepts a saved_rect
+	argument to be used as the new saved_rect for the window, and does
+	not queue a move_resize.
+	(meta_window_maximize): re-implement using
+	meta_window_maximize_internal.
+	(update_net_wm_state): If a window has a maximize hint set on
+	startup set maximize_after_placement to TRUE
+
+	* src/constraints.c (meta_window_constrain): Update the xinerama
+	information in the ConstraintInfo after placing the window, and
+	maximize the window after placement if
+	window->maximize_after_placement
+
+	* src/place.c (find_first_fit): take a natural xinerama list as an
+	argument instead of generating it here
+	(constrain_placement): remove function, since it is no longer
+	needed
+	(meta_window_place): generate the natural xinerama list here and
+	pass it into find_first_fit.  If find_first_fit fails, use the
+	list to find empty xineramas where we can place windows that may
+	be maximized later.  This makes maximized windows follow the
+	correct placement policy.  Move the automaximize heuristic here.
+
+2003-06-09  Rob Adams  <robadams@ucla.edu>
+
 	* src/metacity-dialog.c (warn_about_no_sm_support): install an
 	alarm to timeout the no-sm-dialog after 4 minutes of inactivity.
 	Patch from Ximian.  See #114789.

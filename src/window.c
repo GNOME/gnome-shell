@@ -417,6 +417,7 @@ meta_window_new (MetaDisplay *display,
   window->user_has_move_resized = FALSE;
   
   window->maximized = FALSE;
+  window->maximize_after_placement = FALSE;
   window->fullscreen = FALSE;
   window->on_all_workspaces = FALSE;
   window->shaded = FALSE;
@@ -694,28 +695,6 @@ meta_window_new (MetaDisplay *display,
         meta_window_release_saved_state (info);
       }
   }
-  
-  /* Maximize windows if they are too big for their work
-   * area (bit of a hack here). Assume undecorated windows
-   * probably don't intend to be maximized.
-   */
-  if (window->has_maximize_func && window->decorated &&
-      !window->fullscreen)
-    {
-      MetaRectangle workarea;
-      MetaRectangle outer;
-
-      if (!window->placed)
-        meta_warning ("Metacity issue: using position-based current xinerama prior to placement\n");
-
-      meta_window_get_work_area_current_xinerama (window, &workarea);      
-    
-      meta_window_get_outer_rect (window, &outer);
-      
-      if (outer.width >= workarea.width &&
-          outer.height >= workarea.height)
-        meta_window_maximize (window);
-    }
   
   /* Sync stack changes */
   meta_stack_thaw (window->screen->stack);
@@ -1841,29 +1820,44 @@ meta_window_save_rect (MetaWindow *window)
 }
 
 void
+meta_window_maximize_internal (MetaWindow    *window,
+                               MetaRectangle *saved_rect)
+{
+  meta_topic (META_DEBUG_WINDOW_OPS,
+              "Maximizing %s\n", window->desc);
+  
+  if (saved_rect != NULL)
+    window->saved_rect = *saved_rect;
+  else
+    meta_window_save_rect (window);
+  
+  window->maximized = TRUE;
+  
+  recalc_window_features (window);
+  set_net_wm_state (window);
+}
+
+void
 meta_window_maximize (MetaWindow  *window)
 {
   if (!window->maximized)
     {
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Maximizing %s\n", window->desc);
-
       if (window->shaded)
         meta_window_unshade (window);
-
-      meta_window_save_rect (window);
       
-      window->maximized = TRUE;
+      /* if the window hasn't been placed yet, we'll maximize it then
+       */
+      if (!window->placed)
+	{
+	  window->maximize_after_placement = TRUE;
+	  return;
+	}
 
-      /* FIXME why did I put this here? */
-      meta_window_raise (window);      
-      
+      meta_window_maximize_internal (window, NULL);
+
       /* move_resize with new maximization constraints
        */
       meta_window_queue_move_resize (window);
-
-      recalc_window_features (window);
-      set_net_wm_state (window);
     }
 }
 
@@ -4309,9 +4303,9 @@ update_net_wm_state (MetaWindow *window)
           if (atoms[i] == window->display->atom_net_wm_state_shaded)
             window->shaded = TRUE;
           else if (atoms[i] == window->display->atom_net_wm_state_maximized_horz)
-            window->maximized = TRUE;
+            window->maximize_after_placement = TRUE;
           else if (atoms[i] == window->display->atom_net_wm_state_maximized_vert)
-            window->maximized = TRUE;
+            window->maximize_after_placement = TRUE;
           else if (atoms[i] == window->display->atom_net_wm_state_modal)
             window->wm_state_modal = TRUE;
           else if (atoms[i] == window->display->atom_net_wm_state_skip_taskbar)
