@@ -1,3 +1,27 @@
+2.9.5
+==
+
+This is an unstable release to coincide with the release of Gnome
+2.10.0 Beta 1 (2.9.90).
+
+Thanks to Vincent Noel, Elijah Newren, and John Paul Wallington for
+fixes in this release.
+
+ - Restore original stacking when aborting an alt-esc window switch
+   operation (Elijah) [#123576]
+ - Fix vertical maximization for second screen (John) [#163420]
+ - Show labels in bold for windows that demand attention (Vincent)
+   [#164590]
+ - In the tab task switcher popup, dim the window icon and put its
+   name between brackets when the window is minimized (Vincent)
+   [#136666]
+ - Correct highlighting of windows in workspace switcher popup
+   (Elijah) [#163450]
+
+Translations
+ zh_CN (Funda Wang), nb (Kjartan Maraas), nn (Kjartan Maraas), de
+ (Frank Arnold)
+
 2.9.3
 ==
 

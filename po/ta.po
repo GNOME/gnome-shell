@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-09 21:23-0700\n"
+"POT-Creation-Date: 2005-01-23 23:23-0700\n"
 "PO-Revision-Date: 2004-09-03 16:47+0530\n"
 "Last-Translator: Jayaradha N <jaya@pune.redhat.com>\n"
 "Language-Team: Tamil <zhakanini@yahoogroups.com>\n"
@@ -63,7 +63,7 @@ msgstr "மெட்டாசிட்டி தகவலை ஏற்றும�
 msgid "Failed to get hostname: %s\n"
 msgstr "புரவலன் பெயரை பெறுவதில் தோல்வி: %s\n"
 
-#: src/display.c:306
+#: src/display.c:312
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X சாளர காட்சியை திறப்பதில் தோல்வி '%s'\n"
@@ -111,17 +111,17 @@ msgid ""
 "binding\n"
 msgstr "விசை %s ஐ மாற்றி  %x ஓடு இணைத்து வேறு நிரல் பயன்படுத்திக்கொண்டிருக்கிறது\n"
 
-#: src/keybindings.c:2554
+#: src/keybindings.c:2559
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "மெட்டா-சிட்டி உரையை துவக்குவதில் பிழை கட்டளை பற்றிய பிழையை அச்சடிக்கவும்: %s\n"
 
-#: src/keybindings.c:2659
+#: src/keybindings.c:2664
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "கட்டளை %d எதுவும் குறிப்பிடப்படவில்லை.\n"
 
-#: src/keybindings.c:3489
+#: src/keybindings.c:3494
 #, fuzzy
 msgid "No terminal command has been defined.\n"
 msgstr "கட்டளை %d எதுவும் குறிப்பிடப்படவில்லை.\n"

@@ -1,5 +1,10 @@
 2005-01-23  Elijah Newren  <newren@gmail.com>
 
+	* NEWS: Metacity 2.9.5 unstable release
+	* README: there are more stable releases beyond 2.8.6...
+
+2005-01-23  Elijah Newren  <newren@gmail.com>
+
 	Restore original stacking when aborting an alt-esc window switch
 	operation.  Fixes #123576.
 

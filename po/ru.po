@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-09 21:23-0700\n"
+"POT-Creation-Date: 2005-01-23 23:23-0700\n"
 "PO-Revision-Date: 2004-08-11 11:05+0400\n"
 "Last-Translator: Dmitry G. Mastrukov <dmitry@taurussoft.org>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
@@ -63,7 +63,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Произошёл сбой при получении имени узла: %s\n"
 
-#: src/display.c:306
+#: src/display.c:312
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Произошёл сбой при открытии системного окна \"%s\" среды X Window\n"
@@ -114,19 +114,19 @@ msgstr ""
 "Клавишу \"%s\" со связующими модификаторами \"%x\" уже использует другая "
 "программа\n"
 
-#: src/keybindings.c:2554
+#: src/keybindings.c:2559
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Произошла ошибка загрузки диалога \"Метасити\" для вывода сообщения об "
 "ошибке команды: %s\n"
 
-#: src/keybindings.c:2659
+#: src/keybindings.c:2664
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Команда %d не была определена.\n"
 
-#: src/keybindings.c:3489
+#: src/keybindings.c:3494
 #, fuzzy
 msgid "No terminal command has been defined.\n"
 msgstr "Команда %d не была определена.\n"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-09 21:23-0700\n"
+"POT-Creation-Date: 2005-01-23 23:23-0700\n"
 "PO-Revision-Date: 2004-08-02 20:50+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Falha ao obter nome de máquina: %s\n"
 
-#: src/display.c:306
+#: src/display.c:312
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Falha ao abrir ecrã '%s' do Sistema Janelas X\n"
@@ -110,18 +110,18 @@ msgstr ""
 "A tecla %s com os modificadores %x já está a ser utilizada como atalho por "
 "outra aplicação\n"
 
-#: src/keybindings.c:2554
+#: src/keybindings.c:2559
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Erro ao abrir diálogo-metacity para imprimir um erro sobre um comando: %s\n"
 
-#: src/keybindings.c:2659
+#: src/keybindings.c:2664
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Não foi definido nenhum comando %d.\n"
 
-#: src/keybindings.c:3489
+#: src/keybindings.c:3494
 #, fuzzy
 msgid "No terminal command has been defined.\n"
 msgstr "Não foi definido nenhum comando %d.\n"

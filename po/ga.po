@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-09 21:23-0700\n"
+"POT-Creation-Date: 2005-01-23 23:23-0700\n"
 "PO-Revision-Date: 2004-03-08 19:05 GMT\n"
 "Last-Translator: Alastair McKinstry <mckinstry@computer.org>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -58,7 +58,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Teip ag leámh óstainm: %s\n"
 
-#: src/display.c:306
+#: src/display.c:312
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Teipeadh ag oscailt scathán Corás Fhunneoga X '%s'\n"
@@ -103,17 +103,17 @@ msgid ""
 "binding\n"
 msgstr ""
 
-#: src/keybindings.c:2554
+#: src/keybindings.c:2559
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 
-#: src/keybindings.c:2659
+#: src/keybindings.c:2664
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr ""
 
-#: src/keybindings.c:3489
+#: src/keybindings.c:3494
 msgid "No terminal command has been defined.\n"
 msgstr ""
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-21 13:39+0100\n"
+"POT-Creation-Date: 2005-01-23 23:23-0700\n"
 "PO-Revision-Date: 2005-01-21 13:41+0100\n"
 "Last-Translator: Åsmund Skjæveland <aasmunds@fys.uio.no>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -65,7 +65,7 @@ msgid "Failed to get hostname: %s\n"
 msgstr "Klarte ikkje å finna vertsnamn: %s\n"
 
 # TRN: "X Window System"?
-#: src/display.c:306
+#: src/display.c:312
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Kunne ikkje opna X Window System-display «%s»\n"
@@ -114,18 +114,18 @@ msgstr ""
 "Eit anna program brukar allereie tasten %s med modifikator %x som ein "
 "snøggtast\n"
 
-#: src/keybindings.c:2554
+#: src/keybindings.c:2559
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Kunne ikkje opna metacity-dialog for å visa ein feil ved ein kommando: %s\n"
 
-#: src/keybindings.c:2659
+#: src/keybindings.c:2664
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Kommandoen %d er ikkje definert.\n"
 
-#: src/keybindings.c:3489
+#: src/keybindings.c:3494
 msgid "No terminal command has been defined.\n"
 msgstr "Ingen terminalkommando er definert.\n"
 
@@ -1698,7 +1698,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "Snøggtasten som køyrer ein terminal. Formatet er på forma «&lt;Control&gt;a» og «&lt;Shift&gt;&lt;Alt&gt;F1». Tolkaren er ganske romsleg og tillet små og store bokstavar, og forkortingar slik som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». Dersom du set dette valet til den spesielle verdien «disabled», vil ikkje denne handlinga ha nokon snøggtast."
+msgstr ""
+"Snøggtasten som køyrer ein terminal. Formatet er på forma «&lt;Control&gt;a» "
+"og «&lt;Shift&gt;&lt;Alt&gt;F1». Tolkaren er ganske romsleg og tillet små og "
+"store bokstavar, og forkortingar slik som «&lt;Ctl&gt;» og «&lt;Ctrl&gt;». "
+"Dersom du set dette valet til den spesielle verdien «disabled», vil ikkje "
+"denne handlinga ha nokon snøggtast."
 
 #: src/metacity.schemas.in.h:143
 msgid ""
