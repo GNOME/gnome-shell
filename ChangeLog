@@ -1,3 +1,20 @@
+2002-11-03  Havoc Pennington  <hp@pobox.com>
+
+	* src/workspace.c (meta_workspace_get_name): new function, 
+	and remove workspace->name field, instead just get the 
+	name from prefs each time
+
+	* src/screen.c (meta_screen_update_workspace_names): update the
+	gconf key to persist workspace names here, instead of changing 
+	the names we use
+
+	* src/util.c (topic_name): add META_DEBUG_PREFS
+
+	* src/prefs.c: change NUM_COMMANDS to 32 to allow more custom
+	commands, implement workspace names
+
+	* src/metacity.schemas.in: add workspace_names/name_NN gconf keys.
+
 2002-11-01  Christian Neumair  <chris@gnome-de.org>
 
 	* configure.in: We want at least autoconf 2.5.

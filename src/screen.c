@@ -51,6 +51,7 @@ static char* get_screen_name (MetaDisplay *display,
 
 static void update_num_workspaces  (MetaScreen *screen);
 static void update_focus_mode      (MetaScreen *screen);
+static void update_workspace_names (MetaScreen *screen);
 static void prefs_changed_callback (MetaPreference pref,
                                     gpointer       data);
 
@@ -727,6 +728,10 @@ prefs_changed_callback (MetaPreference pref,
     {
       update_focus_mode (screen);
     }
+  else if (pref == META_PREF_WORKSPACE_NAMES)
+    {
+      update_workspace_names (screen);
+    }
 }
 
 
@@ -1130,7 +1135,7 @@ meta_screen_ensure_workspace_popup (MetaScreen *screen)
               g_assert (workspace);
 
               entries[iter].key = (MetaTabEntryKey) workspace;
-              entries[iter].title = workspace->name;
+              entries[iter].title = meta_workspace_get_name (workspace);
               entries[iter].icon = NULL;
               iter++;
             }
@@ -1149,7 +1154,7 @@ meta_screen_ensure_workspace_popup (MetaScreen *screen)
           g_assert (workspace);
 
           entries[i].key = (MetaTabEntryKey) workspace;
-          entries[i].title = workspace->name;
+          entries[i].title = meta_workspace_get_name (workspace);
           entries[i].icon = NULL;
         }
     }
@@ -1389,13 +1394,58 @@ meta_screen_update_workspace_layout (MetaScreen *screen)
                 screen->starting_corner);
 }
 
+static void
+update_workspace_names (MetaScreen *screen)
+{
+  /* This updates names on root window when the pref changes,
+   * note we only get prefs change notify if things have
+   * really changed.
+   */
+  GString *flattened;
+  int i;
+  int n_spaces;
+
+  /* flatten to nul-separated list */
+  n_spaces = meta_screen_get_n_workspaces (screen);
+  flattened = g_string_new ("");
+  i = 0;
+  while (i < n_spaces)
+    {
+      const char *name;
+
+      name = meta_prefs_get_workspace_name (i);
+
+      if (name)
+        g_string_append_len (flattened, name, 
+                             strlen (name) + 1);
+      else
+        g_string_append_len (flattened, "", 1);
+      
+      ++i;
+    }
+  
+  meta_error_trap_push (screen->display);
+  XChangeProperty (screen->display->xdisplay,
+                   screen->xroot,
+                   screen->display->atom_net_desktop_names,
+		   screen->display->atom_utf8_string,
+                   8, PropModeReplace,
+		   flattened->str, flattened->len);
+  meta_error_trap_pop (screen->display, FALSE);
+  
+  g_string_free (flattened, TRUE);
+}
+
 void
 meta_screen_update_workspace_names (MetaScreen *screen)
 {
   char **names;
   int n_names;
   int i;
-  GList *tmp;
+
+  /* this updates names in prefs when the root window property changes,
+   * iff the new property contents don't match what's already in prefs
+   */
   
   names = NULL;
   n_names = 0;
@@ -1410,16 +1460,11 @@ meta_screen_update_workspace_names (MetaScreen *screen)
     }
 
   i = 0;
-  tmp = screen->workspaces;
-  while (tmp != NULL && i < n_names)
+  while (i < n_names)
     {
-      MetaWorkspace *w = tmp->data;
-
-      meta_workspace_set_name (w, names[i]);
-          
-      ++i;
+      meta_prefs_change_workspace_name (i, names[i]);
       
-      tmp = tmp->next;
+      ++i;
     }
   
   g_strfreev (names);

@@ -40,8 +40,6 @@ struct _MetaWorkspace
   MetaScreen *screen;
   
   GList *windows;
-
-  char *name;
   
   MetaRectangle work_area;
   guint work_area_invalid : 1;
@@ -70,8 +68,7 @@ void meta_workspace_get_work_area        (MetaWorkspace *workspace,
 MetaWorkspace* meta_workspace_get_neighbor (MetaWorkspace      *workspace,
                                             MetaMotionDirection direction);
 
-void meta_workspace_set_name (MetaWorkspace *workspace,
-                              const char    *name);
+const char* meta_workspace_get_name (MetaWorkspace *workspace);
 
 #endif
 

@@ -41,7 +41,8 @@ typedef enum
   META_PREF_SCREEN_KEYBINDINGS,
   META_PREF_DISABLE_WORKAROUNDS,
   META_PREF_COMMANDS,
-  META_PREF_BUTTON_LAYOUT
+  META_PREF_BUTTON_LAYOUT,
+  META_PREF_WORKSPACE_NAMES
 } MetaPreference;
 
 typedef void (* MetaPrefsChangedFunc) (MetaPreference pref,
@@ -74,6 +75,10 @@ void                        meta_prefs_get_button_layout (MetaButtonLayout *butt
 MetaActionDoubleClickTitlebar meta_prefs_get_action_double_click_titlebar (void);
 
 void meta_prefs_set_num_workspaces (int n_workspaces);
+
+const char* meta_prefs_get_workspace_name    (int         i);
+void        meta_prefs_change_workspace_name (int         i,
+                                              const char *name);
 
 /* Screen bindings */
 #define META_KEYBINDING_WORKSPACE_1              "switch_to_workspace_1"

@@ -22,6 +22,7 @@
 #include <config.h>
 #include "workspace.h"
 #include "errors.h"
+#include "prefs.h"
 #include <X11/Xatom.h>
 #include <string.h>
 
@@ -46,9 +47,6 @@ meta_workspace_new (MetaScreen *screen)
   workspace->work_area.width = screen->width;
   workspace->work_area.height = screen->height;
   workspace->work_area_invalid = TRUE;
-
-  workspace->name = g_strdup_printf (_("Workspace %d"),
-                                     meta_workspace_index (workspace) + 1);
   
   return workspace;
 }
@@ -85,8 +83,6 @@ meta_workspace_free (MetaWorkspace *workspace)
   
   workspace->screen->workspaces =
     g_list_remove (workspace->screen->workspaces, workspace);
-
-  g_free (workspace->name);
   
   g_free (workspace);
 
@@ -520,16 +516,8 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
                                              i);
 }
 
-void
-meta_workspace_set_name (MetaWorkspace *workspace,
-                         const char    *name)
+const char*
+meta_workspace_get_name (MetaWorkspace *workspace)
 {
-  if (strcmp (name, workspace->name) == 0)
-    return;
-  
-  g_free (workspace->name);
-  workspace->name = g_strdup (name);
-
-  meta_verbose ("Workspace has new name \"%s\"\n",
-                workspace->name);
+  return meta_prefs_get_workspace_name (meta_workspace_index (workspace));
 }

@@ -136,8 +136,8 @@ get_workspace_name_with_accel (Display *display,
                                Window   xroot,
                                int      index)
 {
-  char *name;
-  unsigned int number;
+  const char *name;
+  int number;
 
   name = meta_core_get_workspace_name_with_index (display, xroot, index);
 
@@ -146,16 +146,18 @@ get_workspace_name_with_accel (Display *display,
    * integer, insert a '_' before the number if it is less than 10 and
    * return it
    */
-  if (sscanf (name, _("Workspace %u"), &number) == 1)
+  if (sscanf (name, _("Workspace %d"), &number) == 1)
     {
+      char *new_name;
+      
       /*
        * Above name is a pointer into the Workspace struct. Here we make
        * a copy copy so we can have our wicked way with it.
        */
-      name = g_strdup_printf (_("Workspace %s%d"),
-                              number < 10 ? "_" : "",
-                              number);
-      return name;
+      new_name = g_strdup_printf (_("Workspace %s%d"),
+                                  number < 10 ? "_" : "",
+                                  number);
+      return new_name;
     }
   else
     {
@@ -164,7 +166,9 @@ get_workspace_name_with_accel (Display *display,
        * add accelerators. Escape any _ characters so that the user's
        * workspace names do not get mangled.
        */
-      char *new_name, *source, *dest;
+      char *new_name;
+      const char *source;
+      char *dest;
       source = name;
       /*
        * Assume the worst case, that every character is a _

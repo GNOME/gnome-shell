@@ -27,6 +27,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define MAX_REASONABLE_WORKSPACES 32
+#define MAX_COMMANDS 32
+
 /* If you add a key, it needs updating in init() and in the gconf
  * notify listener and of course in the .schemas file
  */
@@ -46,6 +49,8 @@
 #define KEY_COMMAND_PREFIX "/apps/metacity/keybinding_commands/command_"
 #define KEY_SCREEN_BINDINGS_PREFIX "/apps/metacity/global_keybindings"
 #define KEY_WINDOW_BINDINGS_PREFIX "/apps/metacity/window_keybindings"
+
+#define KEY_WORKSPACE_NAME_PREFIX "/apps/metacity/workspace_names/name_"
 
 static GConfClient *default_client = NULL;
 static GList *listeners = NULL;
@@ -77,10 +82,11 @@ static MetaButtonLayout button_layout = {
     META_BUTTON_FUNCTION_LAST
   }
 };
-  
-#define NUM_COMMANDS 12
-static char *commands[NUM_COMMANDS] = { NULL, NULL, NULL, NULL, NULL, NULL,
-                                        NULL, NULL, NULL, NULL, NULL, NULL };
+
+static char *commands[MAX_COMMANDS] = { NULL, };
+
+static char *workspace_names[MAX_REASONABLE_WORKSPACES] = { NULL, };
+
 
 static gboolean update_use_system_font   (gboolean    value);
 static gboolean update_titlebar_font      (const char *value);
@@ -104,6 +110,9 @@ static gboolean update_binding            (MetaKeyPref *binding,
 static gboolean update_command            (const char  *name,
                                            const char  *value);
 static void     init_commands             (void);
+static gboolean update_workspace_name     (const char  *name,
+                                           const char  *value);
+static void     init_workspace_names      (void);
 
 static void queue_changed (MetaPreference  pref);
 static void change_notify (GConfClient    *client,
@@ -111,8 +120,7 @@ static void change_notify (GConfClient    *client,
                            GConfEntry     *entry,
                            gpointer        user_data);
 
-
-
+static char* gconf_key_for_workspace_name (int i);
 
 typedef struct
 {
@@ -165,8 +173,8 @@ emit_changed (MetaPreference pref)
   GList *tmp;
   GList *copy;
 
-  meta_verbose ("Notifying listeners that pref %s changed\n",
-                meta_preference_to_string (pref));
+  meta_topic (META_DEBUG_PREFS, "Notifying listeners that pref %s changed\n",
+              meta_preference_to_string (pref));
   
   copy = g_list_copy (listeners);
   
@@ -214,14 +222,14 @@ changed_idle_handler (gpointer data)
 static void
 queue_changed (MetaPreference pref)
 {
-  meta_verbose ("Queueing change of pref %s\n",
-                meta_preference_to_string (pref));  
+  meta_topic (META_DEBUG_PREFS, "Queueing change of pref %s\n",
+              meta_preference_to_string (pref));  
   
   if (g_list_find (changes, GINT_TO_POINTER (pref)) == NULL)
     changes = g_list_prepend (changes, GINT_TO_POINTER (pref));
   else
-    meta_verbose ("Change of pref %s was already pending\n",
-                  meta_preference_to_string (pref));
+    meta_topic (META_DEBUG_PREFS, "Change of pref %s was already pending\n",
+                meta_preference_to_string (pref));
 
   /* add idle at priority below the gconf notify idle */
   if (changed_idle == 0)
@@ -338,6 +346,9 @@ meta_prefs_init (void)
 
   /* commands */
   init_commands ();
+
+  /* workspace names */
+  init_workspace_names ();
   
   gconf_client_notify_add (default_client, "/apps/metacity",
                            change_notify,
@@ -609,6 +620,22 @@ change_notify (GConfClient    *client,
       if (update_command (key, str))
         queue_changed (META_PREF_COMMANDS);
     }
+  else if (str_has_prefix (key, KEY_WORKSPACE_NAME_PREFIX))
+    {
+      const char *str;
+
+      if (value && value->type != GCONF_VALUE_STRING)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                        key);
+          goto out;
+        }
+
+      str = value ? gconf_value_get_string (value) : NULL;
+
+      if (update_workspace_name (key, str))
+        queue_changed (META_PREF_WORKSPACE_NAMES);
+    }
   else if (strcmp (key, KEY_BUTTON_LAYOUT) == 0)
     {
       const char *str;
@@ -627,8 +654,8 @@ change_notify (GConfClient    *client,
     }
   else
     {
-      meta_verbose ("Key %s doesn't mean anything to Metacity\n",
-                    key);
+      meta_topic (META_DEBUG_PREFS, "Key %s doesn't mean anything to Metacity\n",
+                  key);
     }
   
  out:
@@ -867,8 +894,8 @@ update_button_layout (const char *value)
             }
           else
             {
-              meta_verbose ("Ignoring unknown or already-used button name \"%s\"\n",
-                            buttons[b]);
+              meta_topic (META_DEBUG_PREFS, "Ignoring unknown or already-used button name \"%s\"\n",
+                          buttons[b]);
             }
           
           ++b;
@@ -905,8 +932,8 @@ update_button_layout (const char *value)
             }
           else
             {
-              meta_verbose ("Ignoring unknown or already-used button name \"%s\"\n",
-                            buttons[b]);
+              meta_topic (META_DEBUG_PREFS, "Ignoring unknown or already-used button name \"%s\"\n",
+                          buttons[b]);
             }
           
           ++b;
@@ -932,8 +959,6 @@ meta_prefs_get_titlebar_font (void)
   else
     return titlebar_font;
 }
-
-#define MAX_REASONABLE_WORKSPACES 32
 
 static gboolean
 update_num_workspaces (int value)
@@ -1277,7 +1302,7 @@ init_commands (void)
   GError *err;
   
   i = 0;
-  while (i < NUM_COMMANDS)
+  while (i < MAX_COMMANDS)
     {
       char *str_val;
       char *key;
@@ -1289,6 +1314,33 @@ init_commands (void)
       cleanup_error (&err);
 
       update_command (key, str_val);
+
+      g_free (str_val);    
+      g_free (key);
+
+      ++i;
+    }
+}
+
+static void
+init_workspace_names (void)
+{
+  int i;
+  GError *err;
+  
+  i = 0;
+  while (i < MAX_REASONABLE_WORKSPACES)
+    {
+      char *str_val;
+      char *key;
+
+      key = gconf_key_for_workspace_name (i);
+
+      err = NULL;
+      str_val = gconf_client_get_string (default_client, key, &err);
+      cleanup_error (&err);
+
+      update_workspace_name (key, str_val);
 
       g_free (str_val);    
       g_free (key);
@@ -1424,13 +1476,21 @@ update_command (const char  *name,
   i = atoi (p);
   i -= 1; /* count from 0 not 1 */
   
-  if (i >= NUM_COMMANDS)
+  if (i >= MAX_COMMANDS)
     {
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Command %d is too highly numbered, ignoring\n", i);
       return FALSE;
     }
 
+  if ((commands[i] == NULL && value == NULL) ||
+      (commands[i] && value && strcmp (commands[i], value) == 0))
+    {
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                  "Command %d is unchanged\n", i);
+      return FALSE;
+    }
+  
   g_free (commands[i]);
   commands[i] = g_strdup (value);
 
@@ -1444,7 +1504,7 @@ update_command (const char  *name,
 const char*
 meta_prefs_get_command (int i)
 {
-  g_return_val_if_fail (i >= 0 && i < NUM_COMMANDS, NULL);
+  g_return_val_if_fail (i >= 0 && i < MAX_COMMANDS, NULL);
   
   return commands[i];
 }
@@ -1455,6 +1515,128 @@ meta_prefs_get_gconf_key_for_command (int i)
   char *key;
   
   key = g_strdup_printf (KEY_COMMAND_PREFIX"%d", i + 1);
+  
+  return key;
+}
+
+static gboolean
+update_workspace_name (const char  *name,
+                       const char  *value)
+{
+  char *p;
+  int i;
+  
+  p = strrchr (name, '_');
+  if (p == NULL)
+    {
+      meta_topic (META_DEBUG_PREFS,
+                  "Workspace name %s has no underscore?\n", name);
+      return FALSE;
+    }
+  
+  ++p;
+
+  if (!g_ascii_isdigit (*p))
+    {
+      meta_topic (META_DEBUG_PREFS,
+                  "Workspace name %s doesn't end in number?\n", name);
+      return FALSE;
+    }
+  
+  i = atoi (p);
+  i -= 1; /* count from 0 not 1 */
+  
+  if (i >= MAX_REASONABLE_WORKSPACES)
+    {
+      meta_topic (META_DEBUG_PREFS,
+                  "Workspace name %d is too highly numbered, ignoring\n", i);
+      return FALSE;
+    }
+
+  if ((workspace_names[i] == NULL && value == NULL) ||
+      (workspace_names[i] && value && strcmp (workspace_names[i], value) == 0))
+    {
+      meta_topic (META_DEBUG_PREFS,
+                  "Workspace name %d is unchanged\n", i);
+      return FALSE;
+    }
+  
+  g_free (workspace_names[i]);
+  if (value != NULL)
+    workspace_names[i] = g_strdup (value);
+  else
+    {
+      /* use a default name */
+      char *d;
+      d = g_strdup_printf (_("Workspace %d"), i + 1);
+      if (workspace_names[i] && strcmp (workspace_names[i], d) == 0)
+        {
+          g_free (d);
+          return FALSE;
+        }
+      else
+        {
+          workspace_names[i] = d;
+        }
+    }
+  
+  meta_topic (META_DEBUG_PREFS,
+              "Updated workspace name %d to \"%s\"\n",
+              i, workspace_names[i] ? workspace_names[i] : "none");
+  
+  return TRUE;
+}
+
+const char*
+meta_prefs_get_workspace_name (int i)
+{
+  g_return_val_if_fail (i >= 0 && i < MAX_REASONABLE_WORKSPACES, NULL);
+  
+  return workspace_names[i];
+}
+
+void
+meta_prefs_change_workspace_name (int         i,
+                                  const char *name)
+{
+  char *key;
+  GError *err;
+  
+  g_return_if_fail (i >= 0 && i < MAX_REASONABLE_WORKSPACES);
+
+  if ((name == NULL && workspace_names[i] == NULL) ||
+      (name && workspace_names[i] && strcmp (name, workspace_names[i]) == 0))
+    {
+      meta_topic (META_DEBUG_PREFS,
+                  "Workspace %d already has name %s\n",
+                  i, name ? name : "none");
+      return;
+    }
+  
+  key = gconf_key_for_workspace_name (i);
+
+  err = NULL;
+  gconf_client_set_string (default_client,
+                           key, name,
+                           &err);
+
+  if (err)
+    {
+      meta_warning (_("Error setting name for workspace %d to \"%s\": %s\n"),
+                    i, name ? name : "none",
+                    err->message);
+      g_error_free (err);
+    }
+  
+  g_free (key);
+}
+
+static char*
+gconf_key_for_workspace_name (int i)
+{
+  char *key;
+  
+  key = g_strdup_printf (KEY_WORKSPACE_NAME_PREFIX"%d", i + 1);
   
   return key;
 }

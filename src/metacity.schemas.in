@@ -177,6 +177,35 @@
       </locale>
     </schema>
 
+    <schema>
+      <key>/schemas/apps/metacity/workspace_names/name</key>
+      <applyto>/apps/metacity/workspace_names/name_1</applyto>
+      <applyto>/apps/metacity/workspace_names/name_2</applyto>
+      <applyto>/apps/metacity/workspace_names/name_3</applyto>
+      <applyto>/apps/metacity/workspace_names/name_4</applyto>
+      <applyto>/apps/metacity/workspace_names/name_5</applyto>
+      <applyto>/apps/metacity/workspace_names/name_6</applyto>
+      <applyto>/apps/metacity/workspace_names/name_7</applyto>
+      <applyto>/apps/metacity/workspace_names/name_8</applyto>
+      <applyto>/apps/metacity/workspace_names/name_9</applyto>
+      <applyto>/apps/metacity/workspace_names/name_10</applyto>
+      <applyto>/apps/metacity/workspace_names/name_11</applyto>
+      <applyto>/apps/metacity/workspace_names/name_12</applyto>
+      <applyto>/apps/metacity/workspace_names/name_13</applyto>
+      <applyto>/apps/metacity/workspace_names/name_14</applyto>
+      <applyto>/apps/metacity/workspace_names/name_15</applyto>
+      <applyto>/apps/metacity/workspace_names/name_16</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default></default>
+      <locale name="C">
+         <short>Name of workspace</short>
+         <long>
+          The name of a workspace.
+         </long>
+      </locale>
+    </schema>
+
     <!-- Window Keybindings -->
 
     <schema>

@@ -641,7 +641,7 @@ meta_core_get_menu_accelerator (MetaMenuOp           menu_op,
     }
 }
 
-char *
+const char*
 meta_core_get_workspace_name_with_index (Display *xdisplay,
                                          Window   xroot,
                                          int      index)
@@ -654,7 +654,7 @@ meta_core_get_workspace_name_with_index (Display *xdisplay,
   screen = meta_display_screen_for_root (display, xroot);
   g_assert (screen != NULL);
   workspace = meta_screen_get_workspace_by_index (screen, index);
-  return (workspace != NULL) ? workspace->name : NULL;
+  return workspace ? meta_workspace_get_name (workspace) : NULL;
 }
 
 gboolean

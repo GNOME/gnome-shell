@@ -260,6 +260,8 @@ topic_name (MetaDebugTopic topic)
       return "ERRORS";
     case META_DEBUG_STARTUP:
       return "STARTUP";
+    case META_DEBUG_PREFS:
+      return "PREFS";
     }
 
   return "Window manager";
