@@ -7,15 +7,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-01-05 19:14+0100\n"
-"PO-Revision-Date: 2002-01-05 19:14+0100\n"
+"POT-Creation-Date: 2002-01-31 05:01+0100\n"
+"PO-Revision-Date: 2002-01-31 05:01+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/display.c:156
+#: src/display.c:158
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Misslyckades med att öppna X Window System-displayen \"%s\"\n"
@@ -36,140 +36,140 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Ödesdigert IO-fel %d (%s) på display \"%s\".\n"
 
-#: src/frames.c:231
+#: src/frames.c:178
 msgid "Left edge"
 msgstr "Vänsterkant"
 
-#: src/frames.c:231
+#: src/frames.c:178
 msgid "Left window edge width"
 msgstr "Bredd på vänster fönsterkant"
 
-#: src/frames.c:232
+#: src/frames.c:179
 msgid "Right edge"
 msgstr "Högerkant"
 
-#: src/frames.c:232
+#: src/frames.c:179
 msgid "Right window edge width"
 msgstr "Bredd på höger fönsterkant"
 
-#: src/frames.c:233
+#: src/frames.c:180
 msgid "Bottom edge"
 msgstr "Nederkant"
 
-#: src/frames.c:233
+#: src/frames.c:180
 msgid "Bottom window edge height"
 msgstr "Höjd på nedre fönsterkant"
 
-#: src/frames.c:235
+#: src/frames.c:182
 msgid "Title border"
 msgstr "Titelkant"
 
-#: src/frames.c:235
+#: src/frames.c:182
 msgid "Border around title area"
 msgstr "Ram runt titelområdet"
 
-#: src/frames.c:236
+#: src/frames.c:183
 msgid "Text border"
 msgstr "Textram"
 
-#: src/frames.c:236
+#: src/frames.c:183
 msgid "Border around window title text"
 msgstr "Ram runt fönstertiteln"
 
-#: src/frames.c:238
+#: src/frames.c:185
 msgid "Spacer padding"
 msgstr "Utfyllnadsmellanrum"
 
-#: src/frames.c:238
+#: src/frames.c:185
 msgid "Padding on either side of spacer"
 msgstr "Utfyllnad på varje sida om utfyllare"
 
-#: src/frames.c:239
+#: src/frames.c:186
 msgid "Spacer width"
 msgstr "Utfyllnadsbredd"
 
-#: src/frames.c:239
+#: src/frames.c:186
 msgid "Width of spacer"
 msgstr "Bredd på utfyllnad"
 
-#: src/frames.c:240
+#: src/frames.c:187
 msgid "Spacer height"
 msgstr "Utfyllnadshöjd"
 
-#: src/frames.c:240
+#: src/frames.c:187
 msgid "Height of spacer"
 msgstr "Höjd på utfyllnad"
 
 #. same as right_width left_width by default
-#: src/frames.c:243
+#: src/frames.c:190
 msgid "Right inset"
 msgstr "Höger infällning"
 
-#: src/frames.c:243
+#: src/frames.c:190
 msgid "Distance of buttons from right edge of frame"
 msgstr "Avstånd på knappar från högerkanten på ramen"
 
-#: src/frames.c:244
+#: src/frames.c:191
 msgid "Left inset"
 msgstr "Vänster infällning"
 
-#: src/frames.c:244
+#: src/frames.c:191
 msgid "Distance of menu button from left edge of frame"
 msgstr "Avstånd på menyknapp från vänsterkanten på ramen"
 
-#: src/frames.c:246
+#: src/frames.c:193
 msgid "Button width"
 msgstr "Knappbredd"
 
-#: src/frames.c:246
+#: src/frames.c:193
 msgid "Width of buttons"
 msgstr "Bredd på knappar"
 
-#: src/frames.c:247
+#: src/frames.c:194
 msgid "Button height"
 msgstr "Knapphöjd"
 
-#: src/frames.c:247
+#: src/frames.c:194
 msgid "Height of buttons"
 msgstr "Höjd på knappar"
 
-#: src/frames.c:249
+#: src/frames.c:196
 msgid "Button border"
 msgstr "Knappram"
 
-#: src/frames.c:249
+#: src/frames.c:196
 msgid "Border around buttons"
 msgstr "Ram runt knappar"
 
-#: src/frames.c:250
+#: src/frames.c:197
 msgid "Inner button border"
 msgstr "Inre knappram"
 
-#: src/frames.c:250
+#: src/frames.c:197
 msgid "Border around the icon inside buttons"
 msgstr "Ram runt ikonen inuti knappar"
 
-#: src/frames.c:891
+#: src/frames.c:699
 msgid "Close Window"
 msgstr "Stäng fönster"
 
-#: src/frames.c:894
+#: src/frames.c:702
 msgid "Window Menu"
 msgstr "Fönstermeny"
 
-#: src/frames.c:897
+#: src/frames.c:705
 msgid "Minimize Window"
 msgstr "Minimera fönster"
 
-#: src/frames.c:900
+#: src/frames.c:708
 msgid "Maximize Window"
 msgstr "Maximera fönster"
 
-#: src/frames.c:903
+#: src/frames.c:711
 msgid "Unmaximize Window"
 msgstr "Avmaximera fönster"
 
-#: src/keybindings.c:215
+#: src/keybindings.c:228
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -234,28 +234,28 @@ msgstr "Endast på arbetsyta %s%d"
 msgid "Move to workspace %s%d"
 msgstr "Flytta till arbetsyta %s%d"
 
-#: src/prefs.c:264 src/prefs.c:280 src/prefs.c:296 src/prefs.c:312
-#: src/prefs.c:332
+#: src/prefs.c:272 src/prefs.c:288 src/prefs.c:304 src/prefs.c:320
+#: src/prefs.c:340 src/prefs.c:356
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-nyckeln \"%s\" är satt till en ogiltig typ\n"
 
-#: src/prefs.c:365
+#: src/prefs.c:390
 #, c-format
 msgid "GConf key '%s' is set to an invalid value"
 msgstr "GConf-nyckeln \"%s\" är satt till ogiltigt värde"
 
-#: src/prefs.c:399
+#: src/prefs.c:424
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Kunde inte tolka typsnittsbeskrivningen \"%s\" från GConf-nyckeln %s\n"
 
-#: src/prefs.c:436
+#: src/prefs.c:461
 #, c-format
 msgid "%d stored in GConf key %s is not a valid font size\n"
 msgstr "%d lagrad i GConf-nyckeln %s är inte en giltig typsnittsstorlek\n"
 
-#: src/prefs.c:462
+#: src/prefs.c:487
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -269,12 +269,12 @@ msgstr ""
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skärm %d på display \"%s\" är ogiltig\n"
 
-#: src/screen.c:189
+#: src/screen.c:190
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "Skärm %d på display \"%s\" har redan en fönsterhanterare\n"
 
-#: src/screen.c:257
+#: src/screen.c:268
 #, c-format
 msgid "Could not release screen %d on display '%s'\n"
 msgstr "Kunde inte släppa skärm %d på display \"%s\"\n"
@@ -328,8 +328,93 @@ msgstr "Okänt attribut %s på <geometry>-element"
 msgid "Unknown element %s"
 msgstr "Okänt element %s"
 
+#: src/theme.c:378
+#, c-format
+msgid "Coordinate expression contains character '%c' which is not allowed"
+msgstr "Koordinatuttrycket innehåller tecknet \"%c\" vilket inte är tillåtet"
+
+#: src/theme.c:405
+#, c-format
+msgid ""
+"Coordinate expression contains floating point number '%s' which could not be "
+"parsed"
+msgstr "Koordinatuttrycket innehåller flyttalet \"%s\" som inte kunde tolkas"
+
+#: src/theme.c:419
+#, c-format
+msgid "Coordinate expression contains integer '%s' which could not be parsed"
+msgstr "Koordinatuttrycket innehåller heltalet \"%s\" som inte kunde tolkas"
+
+#: src/theme.c:524
+msgid "Coordinate expression was empty or not understood"
+msgstr "Koordinatuttrycket var tomt eller förstods inte"
+
+#: src/theme.c:663 src/theme.c:673 src/theme.c:698
+msgid "Coordinate expression results in division by zero"
+msgstr "Koordinatuttrycket resulterar i division med noll"
+
+#: src/theme.c:706
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
+msgstr "Koordinatuttrycket försöker använda mod-operator på ett flyttal"
+
+#: src/theme.c:754
+#, c-format
+msgid ""
+"Coordinate expression has an operator \"%c\" where an operand was expected"
+msgstr "Koordinatuttrycket har en operator \"%c\" där en operand förväntades"
+
+#: src/theme.c:763
+msgid "Coordinate expression had an operand where an operator was expected"
+msgstr "Koordinatuttrycket hade en operand där en operator förväntades"
+
+#: src/theme.c:771
+msgid "Coordinate expression ended with an operator instead of an operand"
+msgstr "Koordinatuttrycket slutade med en operator istället för en operand"
+
+#: src/theme.c:781
+#, c-format
+msgid ""
+"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
+"operand in between"
+msgstr ""
+"Koordinatuttrycket har en operator \"%c\" som följer på operatorn \"%c\" "
+"utan någon operand imellan"
+
+#: src/theme.c:883
+msgid ""
+"Coordinate expression parser overflowed its buffer, this is really a "
+"Metacity bug, but are you sure you need a huge expression like that?"
+msgstr ""
+"Koordinatuttryckstolken spillde över dess buffert, det här är egentligen ett "
+"fel i Metacity, men är du säker på att du behöver ett så stort uttryck?"
+
+#: src/theme.c:912
+msgid "Coordinate expression had a close parenthesis with no open parenthesis"
+msgstr ""
+"Koordinatuttrycket hade en stängningsparentes utan någon öppningsparentes"
+
+#: src/theme.c:927
+#, c-format
+msgid "Coordinate expression had unknown variable \"%s\""
+msgstr "Koordinatuttrycket hade en okänd variabel \"%s\""
+
+#: src/theme.c:984
+msgid "Coordinate expression had an open parenthesis with no close parenthesis"
+msgstr ""
+"Koordinatuttrycket hade en öppningsparentes utan någon stängningsparentes"
+
+#: src/theme.c:995
+msgid "Coordinate expression doesn't seem to have any operators or operands"
+msgstr "Koordinatuttrycket verkar inte ha några operatorer eller operander"
+
+#: src/theme.c:1163 src/theme.c:1187 src/theme.c:1209
+#, c-format
+msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
+msgstr "Temat innehöll ett uttryck \"%s\" som resulterade i ett fel: %s\n"
+
 #. someone is on crack
-#: src/window.c:3020
+#: src/window.c:3411
 #, c-format
 msgid "Window %s sets max width %d less than min width %d, disabling resize\n"
 msgstr ""
@@ -337,7 +422,7 @@ msgstr ""
 "stänger av storleksändring\n"
 
 #. another cracksmoker
-#: src/window.c:3030
+#: src/window.c:3421
 #, c-format
 msgid ""
 "Window %s sets max height %d less than min height %d, disabling resize\n"
