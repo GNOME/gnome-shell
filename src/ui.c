@@ -410,7 +410,11 @@ get_cmap (GdkPixmap *pixmap)
       else
         {
           meta_verbose ("Using system cmap to snapshot pixmap\n");
+#ifdef HAVE_GTK_MULTIHEAD
+          cmap = gdk_screen_get_system_colormap (gdk_drawable_get_screen (pixmap));
+#else
           cmap = gdk_colormap_get_system ();
+#endif
           g_object_ref (G_OBJECT (cmap));
         }
     }
