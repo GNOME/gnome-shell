@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.5.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-24 10:50-0700\n"
-"PO-Revision-Date: 2004-08-15 10:59+0900\n"
+"POT-Creation-Date: 2005-02-04 07:01+0900\n"
+"PO-Revision-Date: 2005-02-04 07:05+0900\n"
 "Last-Translator: Young-Ho, Cha <ganadist at mizi.com>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
 "MIME-Version: 1.0\n"
@@ -122,9 +122,8 @@ msgid "No command %d has been defined.\n"
 msgstr "명령 %d이(가) 정의되지 않았습니다.\n"
 
 #: src/keybindings.c:3494
-#, fuzzy
 msgid "No terminal command has been defined.\n"
-msgstr "명령 %d이(가) 정의되지 않았습니다.\n"
+msgstr "터미널 명령을 정의하지 않았습니다.\n"
 
 #: src/main.c:69
 msgid ""
@@ -205,12 +204,12 @@ msgstr "닫기(_C)"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "모든 작업 공간에 놓기(_A)"
+msgid "_Always on Visible Workspace"
+msgstr "항상 현재 작업 공간에 놓기(_T)"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
-msgstr "이 작업 공간에만 놓기(_T)"
+msgid "_Only on This Workspace"
+msgstr "이 작업 공간에만 놓기(_O)"
 
 #: src/menu.c:68
 msgid "Move to Workspace _Left"
@@ -218,7 +217,7 @@ msgstr "왼쪽 작업 공간으로 옮기기(_L)"
 
 #: src/menu.c:69
 msgid "Move to Workspace R_ight"
-msgstr "오른쪽 작업 공간으로 옮기기(_R)"
+msgstr "오른쪽 작업 공간으로 옮기기(_I)"
 
 #: src/menu.c:70
 msgid "Move to Workspace _Up"
@@ -228,7 +227,7 @@ msgstr "위쪽 작업 공간으로 옮기기(_U)"
 msgid "Move to Workspace _Down"
 msgstr "아래쪽 작업 공간으로 옮기기(_D)"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
 msgstr "작업 공간 %d"
@@ -367,7 +366,7 @@ msgstr ""
 "이 창은 \"현재 설정 저장\"을 지원하지 않기 때문에 다음 번에 로그인 할 때수동"
 "으로 재시작 하여야 합니다."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:325
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -502,12 +501,9 @@ msgid ""
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
-msgstr ""
-"참이면, 이른바 \"직접 제어\"에 대해서 제대로 지원하지 않게 됩니다. 예를 들어 "
-"애니메이션을 하지 않고 와이어프레임을 쓴다든지 하는 식입니다. \"직접 제어\"하"
-"는 것들은 많은 사용자의 사용성을 떨어뜨리지만, 과거의 프로그램이나 터미널 서"
-"버가 동작하는 데 꼭 필요할 수 있습니다."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages"
+msgstr "참이면, 이른바 \"직접 제어\"에 대해서 제대로 지원하지 않게 됩니다. 예를 들어 애니메이션을 하지 않고 와이어프레임을 쓴다든지 하는 식입니다. \"직접 제어\"하는 것들은 많은 사용자의 사용성을 떨어뜨리지만, 과거의 프로그램이나 터미널 서버가 동작하는 데 꼭 필요할 수 있습니다. 하지만 접근성 기능을 사용할 경우, 데스크탑이 괴상하게 망가지는 걸 막기 위해 와이어프레임 기능은 사용하지 않습니다."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -693,7 +689,7 @@ msgstr "정의한 명령을 실행합니다"
 
 #: src/metacity.schemas.in.h:60
 msgid "Run a terminal"
-msgstr ""
+msgstr "터미널 실행"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
@@ -1153,18 +1149,13 @@ msgstr ""
 "션에 대한 키바인딩은 없습니다."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"창을 최대화하는 키바인딩. 이 \"&lt;Control&gt;a\" 혹은 \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\"과 같이 씁니다. 파서는 매우 유연하므로 대소문자를 모두 쓸 수 있"
-"고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
-"을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다."
+msgstr "창을 최대화하는 키바인딩. \"&lt;Control&gt;a\" 혹은 \"&lt;Shift&gt;&lt;Alt&gt;F1\"과 같이 씁니다. 파서는 매우 유연하므로 대소문자를 모두 쓸 수 있고, \"&lt;Ctl&gt;\" 혹은 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다."
 
 #: src/metacity.schemas.in.h:110
 msgid ""
@@ -1173,11 +1164,7 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"창을 최소화하는 키바인딩. 이 \"&lt;Control&gt;a\" 혹은 \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\"과 같이 씁니다. 파서는 매우 유연하므로 대소문자를 모두 쓸 수 있"
-"고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
-"을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다."
+msgstr "창을 최소화하는 키바인딩. 이 \"&lt;Control&gt;a\" 혹은 \"&lt;Shift&gt;&lt;Alt&gt;F1\"과 같이 씁니다. 파서는 매우 유연하므로 대소문자를 모두 쓸 수 있고, \"&lt;Ctl&gt;\" 혹은 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다."
 
 #: src/metacity.schemas.in.h:111
 msgid ""
@@ -1633,18 +1620,13 @@ msgstr ""
 "은 없습니다."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr ""
-"패널의 주 메뉴를 보여주는 키바인딩. \"&lt;Control&gt;a\" 혹은 \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\"과 같이 씁니다. 파서는 매우 유연하므로 대소문자를 모두 쓸 수 "
-"있고, \"&lt;Ctl&gt;\"나 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션"
-"을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다."
+msgstr "터미널을 실행하는 키바인딩. \"&lt;Control&gt;a\" 혹은 \"&lt;Shift&gt;&lt;Alt&gt;F1\"과 같이 씁니다. 파서는 매우 유연하므로 대소문자를 모두 쓸 수 있고, \"&lt;Ctl&gt;\" 혹은 \"&lt;Ctrl&gt;\"처럼 줄여서 쓸 수도 있습니다. 이 옵션을 \"disabled\" 스트링으로 하면, 이 액션에 대한 키바인딩은 없습니다."
 
 #: src/metacity.schemas.in.h:143
 msgid ""
@@ -1865,17 +1847,17 @@ msgstr "창 포커스 모드"
 msgid "Window title font"
 msgstr "창 제목 글꼴"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf 키 \"%s\"이(가) 잘못된 형식으로 설정되어 있습니다\n"
 
-#: src/prefs.c:843
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1884,17 +1866,17 @@ msgstr ""
 "설정 데이터베이스에서 찾은 \"%s\"이(가) 마우스 단추 설정 키의 올바른 값이 아"
 "닙니다\n"
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf 키 '%s'이(가) 잘못된 값으로 설정되어 있습니다\n"
 
-#: src/prefs.c:994
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "GConf 키 %2$s에서 글꼴 지정 \"%1$s\"을(를) 분석할 수 없습니다\n"
 
-#: src/prefs.c:1179
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1903,7 +1885,7 @@ msgstr ""
 "Gconf 키 %2$s에 저장된 %1$d은(는) 사용할 수 없는 작업 공간 번호 입니다, 현재 "
 "최대값은 %3$d 입니다\n"
 
-#: src/prefs.c:1239
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1911,17 +1893,17 @@ msgstr ""
 "응용 프로그램에 대한 임시 방편을 막았습니다. 몇몇 응용프로그램들이 제대로 동"
 "작하지 않을것입니다.\n"
 
-#: src/prefs.c:1304
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "GConf 키 %2$s에 저장된 %1$d은(는) 0과 %3$d의 범위를 넘었습니다\n"
 
-#: src/prefs.c:1425
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "작업 공간의 수를 %d(으)로 설정하는 중 오류: %s\n"
 
-#: src/prefs.c:1669
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1930,7 +1912,7 @@ msgstr ""
 "설정 데이터베이스에서 찾은 \"%s\"이(가) 단축키 \"%s\"에 대한 올바른 값이 아닙"
 "니다\n"
 
-#: src/prefs.c:2023
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "작업 공간 %d의 이름을 \"%s\"(으)로 설정하는 중 오류: %s\n"
@@ -2141,7 +2123,7 @@ msgstr "<%2$s> 요소에 알 수 없는 형식 \"%1$s\""
 #: src/theme-parser.c:1091
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr "<%2$s> 요소에 알 수 없는 스티일 셋 \"%1$s\""
+msgstr "<%2$s> 요소에 알 수 없는 스타일 셋 \"%1$s\""
 
 #: src/theme-parser.c:1099
 #, c-format
@@ -3056,7 +3038,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "응용 프로그램이 가짜 _NET_WM_PID %ld을(를) 설정하였습니다\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:4911
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3072,7 +3054,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5582
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3108,24 +3090,3 @@ msgid ""
 msgstr ""
 "창 0x%2$lx의 등록 정보 %1$s은(는) 목록안의 항목 %3$d에 잘못된 UTF-8을 포함하"
 "고 있습니다\n"
-
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "창 사이에 포커스 주는 방법을 선택합니다"
-
-#~ msgid "Window Focus"
-#~ msgstr "창 포커스"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "마우스를 누르면 포커스 주기(_K)"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "포커스 설정:"
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "창 포커스 세부 설정"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "마우스 위치에 따라 포커스 주기(_P)"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "포커스 주면 창 띄우기(_R)"
