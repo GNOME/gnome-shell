@@ -1,3 +1,20 @@
+2003-06-04  Rob Adams  <robadams@ucla.edu>
+
+	Precompute groups to guarantee that meta_group_list_windows always
+	returns the correct list of windows.  See Bug #96973
+
+	* src/window.h: change cached_group variable to group
+
+	* src/window.c (meta_window_new): change cached_group to group and
+	call meta_window_compute_group
+	
+	* src/groups.c (meta_window_get_group): simply return
+	window->group rather than computing it and returning
+	window->cached_group
+	(meta_window_compute_group): new function computes window->group.
+	Designed to be called once from meta_window_new
+	(remove_window_from_group): change cached_group to group	
+
 2003-05-29  Rob Adams  <robadams@ucla.edu>
 
 	Use a new property _METACITY_SENTINEL to eliminate a race

@@ -284,7 +284,7 @@ struct _MetaWindow
   int dialog_pipe;
 
   /* maintained by group.c */
-  MetaGroup *cached_group;
+  MetaGroup *group;
 };
 
 #define META_WINDOW_ALLOWS_MOVE(w)     ((w)->has_move_func && !(w)->maximized && !(w)->fullscreen)
