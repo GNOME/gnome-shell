@@ -311,6 +311,15 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   update_initial_workspace (window);
   update_icon_name (window);
   update_icon (window);
+
+  if (!window->mapped &&
+      (window->size_hints.flags & PPosition) == 0 &&
+      (window->size_hints.flags & USPosition) == 0)
+    {
+      /* ignore current window position */
+      window->size_hints.x = 0;
+      window->size_hints.y = 0;
+    }
   
   if (window->initially_iconic)
     {
@@ -409,8 +418,11 @@ meta_window_new (MetaDisplay *display, Window xwindow,
       window->type == META_WINDOW_TOOLBAR ||
       window->type == META_WINDOW_MENU)
     {
-      window->placed = TRUE;
-      meta_verbose ("Not placing non-normal non-dialog window\n");
+      if ((window->size_hints.flags & PPosition) == 0)
+        {
+          window->placed = TRUE;
+          meta_verbose ("Not placing non-normal non-dialog window with PPosition set\n");
+        }
     }
 
   if (window->type == META_WINDOW_DESKTOP ||
@@ -1403,6 +1415,77 @@ meta_window_get_position (MetaWindow  *window,
 }
 
 void
+meta_window_get_gravity_position (MetaWindow  *window,
+                                  int         *root_x,
+                                  int         *root_y)
+{
+  MetaRectangle frame_extents;
+  int w, h;
+  int x, y;
+  
+  w = window->rect.width;
+  h = window->rect.height;
+
+  if (window->frame == NULL)
+    frame_extents = window->rect;
+  else
+    frame_extents = window->frame->rect;
+
+  x = frame_extents.x;
+  y = frame_extents.y;
+  
+  switch (window->size_hints.win_gravity)
+    {
+    case NorthGravity:
+    case CenterGravity:
+    case SouthGravity:
+      /* Find center of frame. */
+      x += frame_extents.width / 2;
+      /* Center client window on that point. */
+      x -= w / 2;
+      break;
+      
+    case SouthEastGravity:
+    case EastGravity:
+    case NorthEastGravity:
+      /* Find right edge of frame */
+      x += frame_extents.width;
+      /* Align left edge of client at that point. */
+      x -= w;
+      break;
+    default:
+      break;
+    }
+  
+  switch (window->size_hints.win_gravity)
+    {
+    case WestGravity:
+    case CenterGravity:
+    case EastGravity:
+      /* Find center of frame. */
+      y += frame_extents.height / 2;
+      /* Center client window there. */
+      y -= h / 2;
+      break;
+    case SouthWestGravity:
+    case SouthGravity:
+    case SouthEastGravity:
+      /* Find south edge of frame */
+      y += frame_extents.height;
+      /* Place bottom edge of client there */
+      y -= h;
+      break;
+    default:
+      break;
+    }
+  
+  if (root_x)
+    *root_x = x;
+  if (root_y)
+    *root_y = y;
+}
+
+void
 meta_window_delete (MetaWindow  *window,
                     Time         timestamp)
 {
@@ -1625,7 +1708,7 @@ gboolean
 meta_window_configure_request (MetaWindow *window,
                                XEvent     *event)
 {
-  int x, y, width, height, bw;
+  int x, y, width, height;
 
   /* it's essential to use only the explicitly-set fields,
    * and otherwise use our current up-to-date position.
@@ -1636,7 +1719,7 @@ meta_window_configure_request (MetaWindow *window,
    * generated.
    */
 
-  meta_window_get_position (window, &x, &y);
+  meta_window_get_gravity_position (window, &x, &y);
 
   if (FALSE && /* For now, always ignore program-specified positions. */
       (window->size_hints.flags & PPosition))
