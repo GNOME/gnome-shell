@@ -1,3 +1,7 @@
+2004-02-28  Rob Adams  <readams@readams.net>
+
+	Revert 2/27 patch for layer promotion.
+
 2004-02-27  Rob Adams  <readams@readams.net>
 
 	* src/window.c (meta_window_notify_focus): only move on MRU list

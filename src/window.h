@@ -287,7 +287,6 @@ struct _MetaWindow
 
   /* Managed by stack.c */
   MetaStackLayer layer;
-  MetaStackLayer tmp_layer;
   int stack_position; /* see comment in stack.h */
   
   /* Current dialog open for this window */
