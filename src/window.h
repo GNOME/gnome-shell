@@ -299,6 +299,7 @@ void        meta_window_delete             (MetaWindow  *window,
 void        meta_window_focus              (MetaWindow  *window,
                                             Time         timestamp);
 void        meta_window_raise              (MetaWindow  *window);
+void        meta_window_lower              (MetaWindow  *window);
 
 
 /* Sends a client message */

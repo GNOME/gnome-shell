@@ -1,11 +1,5 @@
 
-if HAVE_SM
-SM_SUBDIRS=msm
-else
-SM_SUBDIRS=
-endif
-
-SUBDIRS=wm-tester $(SM_SUBDIRS)
+SUBDIRS=wm-tester
 
 INCLUDES=@METACITY_CFLAGS@ -DMETACITY_LIBEXECDIR=\"$(libexecdir)\" -DHOST_ALIAS=\"@HOST_ALIAS@\" 
 

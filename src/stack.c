@@ -259,7 +259,8 @@ compute_layer (MetaWindow *window)
       break;
 
     case META_WINDOW_DOCK:
-      window->layer = META_LAYER_DOCK;
+      /* still experimenting here */
+      window->layer = META_LAYER_NORMAL;
       break;
 
     case META_WINDOW_FULLSCREEN:

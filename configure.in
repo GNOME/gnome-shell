@@ -2,7 +2,7 @@ AC_INIT(src/display.c)
 
 AM_CONFIG_HEADER(config.h)
 
-AM_INIT_AUTOMAKE(metacity, 2.3.5)
+AM_INIT_AUTOMAKE(metacity, 2.3.8)
 
 GETTEXT_PACKAGE=metacity
 AC_SUBST(GETTEXT_PACKAGE)
@@ -64,12 +64,6 @@ fi
 
 AM_CONDITIONAL(HAVE_SM, test "$found_sm" = "true") 
 
-MSM_CFLAGS=$METACITY_CFLAGS
-MSM_LIBS=$METACITY_LIBS
-
-AC_SUBST(MSM_CFLAGS)
-AC_SUBST(MSM_LIBS)
-
 HOST_ALIAS=$host_alias
 AC_SUBST(HOST_ALIAS)
 
@@ -77,7 +71,4 @@ AC_OUTPUT([
 Makefile
 src/Makefile
 src/wm-tester/Makefile
-src/msm/Makefile
 ])
-
-

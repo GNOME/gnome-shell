@@ -741,9 +741,18 @@ event_callback (XEvent   *event,
     case EnterNotify:
       /* do this even if window->has_focus to avoid races */
       if (window && event->xany.serial != display->last_ignored_unmap_serial)
-        meta_window_focus (window, event->xcrossing.time);
+        {
+          meta_window_focus (window, event->xcrossing.time);
+          if (window->type == META_WINDOW_DOCK)
+            meta_window_raise (window);
+        }
       break;
     case LeaveNotify:
+      if (window)
+        {
+          if (window->type == META_WINDOW_DOCK)
+            meta_window_lower (window);
+        }
       break;
     case FocusIn:
     case FocusOut:

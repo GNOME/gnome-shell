@@ -2040,6 +2040,14 @@ meta_window_raise (MetaWindow  *window)
 }
 
 void
+meta_window_lower (MetaWindow  *window)
+{
+  meta_verbose ("Lowering window %s\n", window->desc);
+
+  meta_stack_lower (window->screen->stack, window);
+}
+
+void
 meta_window_send_icccm_message (MetaWindow *window,
                                 Atom        atom,
                                 Time        timestamp)

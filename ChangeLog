@@ -1,3 +1,15 @@
+2001-09-16  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_lower): new function
+
+	* configure.in: bump version to 2.3.8
+
+	* src/display.c (event_callback): raise dock on enter notify, 
+	lower it on leave notify (need to refine this behavior)
+
+	* src/stack.c (compute_layer): experiment with putting the panel
+	in the normal layer, and raising it on mouseover
+
 2001-09-15  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c: add support for a mini icon in the titlebar
