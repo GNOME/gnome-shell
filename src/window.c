@@ -1965,9 +1965,14 @@ update_mwm_hints (MetaWindow *window)
     return -1; /* whatever */
 
   /* We support MWM hints deemed non-stupid */
+
+  meta_verbose ("Window %s has MWM hints\n",
+                window->desc);
   
   if (hints->flags & MWM_HINTS_DECORATIONS)
     {
+      meta_verbose ("Window %s sets MWM decorations to 0x%lx\n",
+                    window->desc, hints->decorations);
       if (hints->decorations == 0)
         window->decorated = FALSE;
     }
@@ -1975,11 +1980,23 @@ update_mwm_hints (MetaWindow *window)
   if (hints->flags & MWM_HINTS_FUNCTIONS)
     {
       if ((hints->functions & MWM_FUNC_CLOSE) == 0)
-        window->has_close_func = FALSE;
+        {
+          meta_verbose ("Window %s disables close via MWM hints\n",
+                        window->desc);
+          window->has_close_func = FALSE;
+        }
       if ((hints->functions & MWM_FUNC_MINIMIZE) == 0)
-        window->has_minimize_func = FALSE;
+        {
+          meta_verbose ("Window %s disables minimize via MWM hints\n",
+                        window->desc);
+          window->has_minimize_func = FALSE;
+        }
       if ((hints->functions & MWM_FUNC_MAXIMIZE) == 0)
-        window->has_maximize_func = FALSE;
+        {
+          meta_verbose ("Window %s disables maximize via MWM hints\n",
+                        window->desc);
+          window->has_maximize_func = FALSE;
+        }
     }
 
   XFree (hints);

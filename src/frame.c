@@ -38,7 +38,8 @@ struct _MetaFrameActionGrab
 /* This lacks ButtonReleaseMask to avoid the auto-grab
  * since it breaks our popup menu
  */
-#define EVENT_MASK (StructureNotifyMask | SubstructureNotifyMask | \
+#define EVENT_MASK (SubstructureRedirectMask |                     \
+                    StructureNotifyMask | SubstructureNotifyMask | \
                     ExposureMask |                                 \
                     ButtonPressMask | ButtonReleaseMask |          \
                     PointerMotionMask | PointerMotionHintMask |    \
@@ -51,11 +52,19 @@ meta_frame_init_info (MetaFrame     *frame,
                       MetaFrameInfo *info)
 {
   info->flags =
-    META_FRAME_ALLOWS_MENU | META_FRAME_ALLOWS_DELETE |
-    META_FRAME_ALLOWS_RESIZE;
+    META_FRAME_ALLOWS_MENU | META_FRAME_ALLOWS_RESIZE;
 
+  if (frame->window->has_close_func)
+    info->flags |= META_FRAME_ALLOWS_DELETE;
+  
   if (frame->window->type == META_WINDOW_NORMAL)
     info->flags |= (META_FRAME_ALLOWS_ICONIFY | META_FRAME_ALLOWS_MAXIMIZE);
+
+  if (!frame->window->has_maximize_func)
+    info->flags &= ~META_FRAME_ALLOWS_MAXIMIZE;
+
+  if (!frame->window->has_minimize_func)
+    info->flags &= ~META_FRAME_ALLOWS_ICONIFY;
   
   if (frame->window->has_focus)
     info->flags |= META_FRAME_HAS_FOCUS;

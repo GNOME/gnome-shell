@@ -22,10 +22,12 @@ if test -z "$ONLY_WM"; then
       DISPLAY=:1 xterm -geometry 25x15 &
     done
   fi
+ 
+  usleep 5000
 
   DISPLAY=:1 xsetroot -solid royalblue3
 fi
 
 if test -z "$ONLY_SETUP"; then
-  METACITY_UISLAVE_DIR=./uislave DISPLAY=:1 unst libtool --mode=execute $DEBUG ./metacity
+  METACITY_UISLAVE_DIR=./uislave DISPLAY=:1 exec unst libtool --mode=execute $DEBUG ./metacity
 fi

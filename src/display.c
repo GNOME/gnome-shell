@@ -562,6 +562,11 @@ event_queue_callback (MetaEventQueue *queue,
     case MapRequest:
       if (window == NULL)
         window = meta_window_new (display, event->xmaprequest.window, FALSE);
+      else if (window)
+        {
+          if (window->minimized)
+            meta_window_unminimize (window);
+        }
       break;
     case ReparentNotify:
       break;
