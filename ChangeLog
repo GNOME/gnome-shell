@@ -1,3 +1,15 @@
+2005-02-25  Elijah Newren  <newren@gmail.com>
+
+	Prevent the visual bell from changing the focus window.  Fixes
+	#123366.
+
+	* src/bell.c: (meta_bell_flash_screen): if not in click-to-focus
+	mode and mouse_mode is also false, increment the focus sentinel so
+	that we can ignore spurious EnterNotify and LeaveNotify events.
+
+	* src.display.c: (event_callback): make sure to also ignore
+	LeaveNotify events when the focus sentinel isn't clear
+
 2005-02-23  Elijah Newren  <newren@gmail.com>
 
 	* src/window.c: (meta_window_new_with_attrs): Fix crash that

@@ -1830,9 +1830,10 @@ event_callback (XEvent   *event,
             {
             case META_FOCUS_MODE_MOUSE:
               if ((window->frame == NULL || frame_was_receiver) &&
-		  event->xcrossing.mode != NotifyGrab && 
-		  event->xcrossing.mode != NotifyUngrab &&
-		  event->xcrossing.detail != NotifyInferior)
+                  event->xcrossing.mode != NotifyGrab && 
+                  event->xcrossing.mode != NotifyUngrab &&
+                  event->xcrossing.detail != NotifyInferior &&
+                  meta_display_focus_sentinel_clear (display))
                 {
                   if (window == display->expected_focus_window)
                     {
