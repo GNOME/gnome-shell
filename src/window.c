@@ -820,6 +820,13 @@ meta_window_free (MetaWindow  *window)
   
   meta_verbose ("Unmanaging 0x%lx\n", window->xwindow);
 
+  if (window->display->window_with_menu == window)
+    {
+      meta_ui_window_menu_free (window->display->window_menu);
+      window->display->window_menu = NULL;
+      window->display->window_with_menu = NULL;
+    }
+  
   if (destroying_windows_disallowed > 0)
     meta_bug ("Tried to destroy window %s while destruction was not allowed\n",
               window->desc);
@@ -5884,6 +5891,12 @@ menu_callback (MetaWindowMenu *menu,
     {
       meta_verbose ("Menu callback on nonexistent window\n");
     }
+
+  if (display->window_menu == menu)
+    {
+      display->window_menu = NULL;
+      display->window_with_menu = NULL;
+    }
   
   meta_ui_window_menu_free (menu);
 }
@@ -5950,7 +5963,11 @@ meta_window_show_menu (MetaWindow *window,
                              menu_callback,
                              NULL); 
 
+  window->display->window_menu = menu;
+  window->display->window_with_menu = window;
+  
   meta_verbose ("Popping up window menu for %s\n", window->desc);
+  
   meta_ui_window_menu_popup (menu, root_x, root_y, button, timestamp);
 }
 

@@ -1,3 +1,9 @@
+2002-10-28  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c, src/display.c: store the window menu on the
+	display and blow it away when a window closes, so we don't 
+	get funny stuck menus. Patch from Martin Garton #87514
+
 2002-10-27  Anders Carlsson  <andersca@gnu.org>
 
 	* configure.in: Make XRandr detection work better.

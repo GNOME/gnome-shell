@@ -259,6 +259,9 @@ struct _MetaDisplay
   /* Managed by group.c */
   GHashTable *groups_by_leader;
 
+  /* currently-active window menu if any */
+  MetaWindowMenu *window_menu;
+  MetaWindow *window_with_menu;
   
 #ifdef HAVE_STARTUP_NOTIFICATION
   /* This is at the end in case someone doesn't include config.h before this file

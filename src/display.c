@@ -394,8 +394,11 @@ meta_display_open (const char *name)
 
   display->groups_by_leader = NULL;
 
+  display->window_with_menu = NULL;
+  display->window_menu = NULL;
+  
   display->screens = NULL;
-
+  
 #ifdef HAVE_STARTUP_NOTIFICATION
   display->sn_display = sn_display_new (display->xdisplay,
                                         sn_error_trap_push,
