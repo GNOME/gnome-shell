@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "POT-Creation-Date: 2003-09-13 14:04+0200\n"
-"PO-Revision-Date: 2003-09-21 17:19+0200\n"
+"PO-Revision-Date: 2003-09-21 19:15+0200\n"
 "Last-Translator: Åsmund Skjæveland <aasmunds@fys.uio.no>\n"
 "Language-Team: Norsk nynorsk <i18n-nn@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -148,8 +148,9 @@ msgstr ""
 
 #: src/main.c:348
 #, c-format
+#, fuzzy
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr ""
+msgstr "Kunne ikkje finna eit tema! Kontroller at %s eksisterer og inneheld dei vanlege temaa."
 
 #: src/main.c:396
 #, c-format
@@ -1747,10 +1748,11 @@ msgid "The screenshot command"
 msgstr "Skjermbiletekommandoen"
 
 #: src/metacity.schemas.in.h:144
+#, fuzzy
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
-msgstr ""
+msgstr "Temaet avgjer korleis vindaugekantar, tittellinjer og så vidare ser ut."
 
 #: src/metacity.schemas.in.h:145
 msgid ""
@@ -1994,25 +1996,31 @@ msgstr "Skjerm %d på display «%s» er ugyldig\n"
 
 #: src/screen.c:408
 #, c-format
+#, fuzzy
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
+"Skjerm %d på display «%s» har allereie ein vindaugehandsamar. Prøv å bruka "
+"flagget --replace for å erstatta den aktive vindaugehandsamaren.\n"
 
 #: src/screen.c:449
 #, c-format
+#, fuzzy
 msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr ""
+msgstr "Kunne ikkje henta utvalet ftå vindaugehandsamaren på skjerm %d display «%s»\n"
 
 #: src/screen.c:504
 #, c-format
+#, fuzzy
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr ""
+msgstr "Skjerm %d på display «%s» har allereie ein vindaugehandsamar\n"
 
 #: src/screen.c:674
 #, c-format
+#, fuzzy
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr ""
+msgstr "Kunne ikkje frigjera skjerm %d på display «%s»\n"
 
 #: src/session.c:274
 #, c-format
@@ -2767,11 +2775,11 @@ msgstr "Koordinatuttrykket har ein operator «%s» der ein operand var venta"
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
+msgstr "Koodinatuttrykk hadde ein operand der ein operator var venta"
 
 #: src/theme.c:1853
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
+msgstr "Koordinatuttrykk slutta med ein operator i staden for ein operand"
 
 #: src/theme.c:1863
 #, c-format
@@ -2779,34 +2787,39 @@ msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
+"Koordinatuttrykk har operantoren «%c» etter operatoren «%c», utan å ha ein "
+"operand mellom."
 
 #: src/theme.c:1982
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
 msgstr ""
+"Koordinatuttrykktolkaren flaut over bufferet sitt. Dette er eigentleg ein "
+"feil i Metacity, men er du sikker på at du treng så store uttrykk?"
 
 #: src/theme.c:2011
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
+msgstr "Koordinatuttrykket hadde ein lukkeparentes men ingen opneparantes."
 
 #: src/theme.c:2074
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr ""
+msgstr "Koordinatuttrykk hadde ukjent variabel eller konstant «%s»"
 
 #: src/theme.c:2131
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
+msgstr "Koordinatuttrykket hadde ein opneparentes men ingen sluttparantes"
 
 #: src/theme.c:2142
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
+msgstr "Koordinatuttrykket ser ikkje ut til å ha nokon operatorar eller operandar"
 
 #: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
 #, c-format
+#, fuzzy
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr ""
+msgstr "Temaet inneheldt eit uttrykk «%s» som førte til ein feil: %s\n"
 
 #: src/theme.c:3912
 #, c-format
@@ -2814,110 +2827,120 @@ msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/>må vera spesifisert "
+"for denne rammestilen"
 
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
 msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
+msgstr "Manglande <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: src/theme.c:4445
 #, c-format
+#, fuzzy
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr ""
+msgstr "Kunne ikkje lasta temaet «%s»: %s\n"
 
 #: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
 #: src/theme.c:4619
 #, c-format
+#, fuzzy
 msgid "No <%s> set for theme \"%s\""
-msgstr ""
+msgstr "Det er ikkje satt nokon <%s> for temaet «%s»"
 
 #: src/theme.c:4629
 #, c-format
+#, fuzzy
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
+"Det er ikkje satt nokon rammestil for vindaugetypen «%s» i temaet «%s», "
+"legg til eit <window type=\"%s\" style_set=\"whatever\"/>-element"
 
 #: src/theme.c:4651
 #, c-format
+#, fuzzy
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 msgstr ""
+"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> må vera "
+"spesifisert for dette temaet"
 
 #: src/theme.c:5040 src/theme.c:5102
 #, c-format
 msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
+msgstr "Brukardefinerte konstantar må byrja med stor bokstav; «%s» gjer det ikkje"
 
 #: src/theme.c:5048 src/theme.c:5110
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr ""
+msgstr "Konstanten «%s» er alt definert"
 
 #: src/tools/metacity-properties.desktop.in.h:1
 msgid "Select how to give focus to windows"
-msgstr ""
+msgstr "Velg korleis vindauga skal få fokus"
 
 #: src/tools/metacity-properties.desktop.in.h:2
 msgid "Window Focus"
-msgstr ""
+msgstr "Vindaugefokus"
 
 #: src/tools/metacity-properties.glade.h:1
 msgid "Clic_k to give focus"
-msgstr ""
+msgstr "_Klikk for å gje fokus"
 
 #: src/tools/metacity-properties.glade.h:2
 msgid "Focus behavior:"
-msgstr ""
+msgstr "Fokusåtferd:"
 
 #: src/tools/metacity-properties.glade.h:3
 msgid "Window Focus Preferences"
-msgstr ""
+msgstr "Brukarval for vindaugefokus"
 
 #: src/tools/metacity-properties.glade.h:4
 msgid "_Point to give focus"
-msgstr ""
+msgstr "_Peik for å gje fokus"
 
 #: src/tools/metacity-properties.glade.h:5
 msgid "_Raise window on focus"
-msgstr ""
+msgstr "_Hev vindauga når dei får fokus"
 
 #: src/util.c:93
 #, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr ""
+msgstr "Kunne ikkje opna feilsøkingslogg: %s\n"
 
 #: src/util.c:103
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr ""
+msgstr "Kunne ikkje fdopen() loggfila %s: %s\n"
 
 #: src/util.c:109
 #, c-format
 msgid "Opened log file %s\n"
-msgstr ""
+msgstr "Opna loggfila %s\n"
 
 #: src/util.c:203
 msgid "Window manager: "
-msgstr ""
+msgstr "Vindaugehandsamar: "
 
 #: src/util.c:347
 msgid "Bug in window manager: "
-msgstr ""
+msgstr "Feil i vindaugehandsamar: "
 
 #: src/util.c:376
 msgid "Window manager warning: "
-msgstr ""
+msgstr "Åtvaring frå vindaugehandsamar: "
 
 #: src/util.c:400
 msgid "Window manager error: "
-msgstr ""
+msgstr "Feil i vindaugehandsamar: "
 
 #: src/window-props.c:162
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
-msgstr ""
+msgstr "Applikasjonen satte ein ugyldig _NET_WM_PID %ld\n"
 
 #. first time through
 #: src/window.c:4565
@@ -2926,6 +2949,8 @@ msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
+"Vindauget %s set SM_CLIENT_ID på seg sjølv, i staden for på "
+"WM_CLIENT_LEADER-vindauget slik som ICCCM spesifiserer.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -2940,6 +2965,8 @@ msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
+"Vindauge %s set eit MWM-hint som indikerer at det ikkje kan endra storleik, men set "
+"minste storleik %d x %d og største storleik %d x %d: Dette gir ikkje meining.\n"
 
 #: src/xprops.c:153
 #, c-format
@@ -2950,14 +2977,21 @@ msgid ""
 "This is most likely an application bug, not a window manager bug.\n"
 "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
+"Vindauge 0x%lx har eigenskap %s\n"
+"som var venta å ha type %s format %d\n"
+"og faktisk har type %s format %d n_items %d\n. "
+"Dette er truleg ein feil i applikasjonen, ikkje i vindaugehandamaren.\n"
+"Vindauget har title=«%s» class=«%s» name=«%s»\n"
 
 #: src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr ""
+msgstr "Eigenskap %s på vindauge 0x%lx inneheldt ugyldig UTF-8\n"
 
 #: src/xprops.c:482
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
+"Egenskap %s på vindauge 0x%lx inneheldt ugyldig UTF-8 for oppføring %d i "
+"lista\n"
 
