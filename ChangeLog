@@ -1,5 +1,28 @@
 2002-06-08  Havoc Pennington  <hp@pobox.com>
 
+	* src/screen.c (meta_screen_get_xinerama_for_window):
+	short-circuit the "only one xinerama" case, and use outer rect of
+	window instead of window->rect, so we get root window coords.
+	
+	* src/theme.c (meta_frame_layout_get_borders): if fullscreen all
+	frame edges are zero-width.
+
+	* src/frame.c (meta_frame_get_flags): init fullscreen flag.
+
+	* src/common.h (enum): add META_FRAME_FULLSCREEN frame flag
+
+	* src/place.c: fix up calls to meta_window_get_work_area
+
+	* src/window.c (meta_window_get_work_area): add an arg for whether
+	the work area is for the screen or the xinerama subscreen.
+	(constrain_position): fix up calls to meta_window_get_work_area
+	(constrain_size): ditto
+
+	* src/screen.c (meta_screen_new): add METACITY_DEBUG_XINERAMA
+	environment variable which simulates xinerama on a single head.
+
+2002-06-08  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (update_struts): only invalidate things if the
 	struts actually change, since the panel likes to set them over and
 	over. May fix the infinite loop that caused 100% CPU usage.

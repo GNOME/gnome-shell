@@ -244,7 +244,10 @@ meta_frame_get_flags (MetaFrame *frame)
     flags |= META_FRAME_STUCK;
 
   if (frame->window->maximized)
-    flags |= META_FRAME_MAXIMIZED;    
+    flags |= META_FRAME_MAXIMIZED;
+
+  if (frame->window->fullscreen)
+    flags |= META_FRAME_FULLSCREEN;
 
   return flags;
 }

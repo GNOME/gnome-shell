@@ -372,6 +372,7 @@ gboolean meta_window_visible_on_workspace (MetaWindow    *window,
 
 /* Get minimum work area for all workspaces we're on */
 void meta_window_get_work_area (MetaWindow    *window,
+                                gboolean       for_current_xinerama,
                                 MetaRectangle *area);
 
 gboolean meta_window_same_application (MetaWindow *window,

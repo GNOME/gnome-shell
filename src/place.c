@@ -103,7 +103,7 @@ find_next_cascade (MetaWindow *window,
    * cascade_x, cascade_y are the target position
    * of NW corner of window frame.
    */
-  meta_window_get_work_area (window, &work_area);
+  meta_window_get_work_area (window, TRUE, &work_area);
   
   cascade_x = MAX (0, work_area.x);
   cascade_y = MAX (0, work_area.y);
@@ -215,7 +215,7 @@ constrain_placement (MetaWindow        *window,
   MetaRectangle work_area;  
   int nw_x, nw_y;
   
-  meta_window_get_work_area (window, &work_area);  
+  meta_window_get_work_area (window, TRUE, &work_area);
 
   nw_x = work_area.x;
   nw_y = work_area.y;
@@ -561,7 +561,7 @@ get_vertical_edges (MetaWindow *window,
   edges = g_new (int, n_edges);
 
   /* workspace/screen edges */
-  meta_window_get_work_area (window, &work_area);
+  meta_window_get_work_area (window, FALSE, &work_area);
 
   edges[i] = work_area.x;
   ++i;
@@ -634,7 +634,7 @@ get_horizontal_edges (MetaWindow *window,
   edges = g_new (int, n_edges);
 
   /* workspace/screen edges */
-  meta_window_get_work_area (window, &work_area);
+  meta_window_get_work_area (window, FALSE, &work_area);
   
   edges[i] = work_area.y;
   ++i;

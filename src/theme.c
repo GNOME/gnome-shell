@@ -376,6 +376,18 @@ meta_frame_layout_get_borders (const MetaFrameLayout *layout,
       else
         *bottom_height = layout->bottom_height;
     }
+
+  if (flags & META_FRAME_FULLSCREEN)
+    {
+      if (top_height)
+        *top_height = 0;
+      if (bottom_height)
+        *bottom_height = 0;
+      if (left_width)
+        *left_width = 0;
+      if (right_width)
+        *right_width = 0;
+    }
 }
 
 void

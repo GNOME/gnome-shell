@@ -4983,7 +4983,7 @@ constrain_size (MetaWindow *window,
   
 #define FLOOR(value, base)	( ((int) ((value) / (base))) * (base) )
 
-  meta_window_get_work_area (window, &work_area);
+  meta_window_get_work_area (window, TRUE, &work_area);
   
   /* Get the allowed size ranges, considering maximized, etc. */
   if (window->fullscreen)
@@ -5112,11 +5112,7 @@ constrain_position (MetaWindow *window,
                     int         y,
                     int        *new_x,
                     int        *new_y)
-{
-  MetaRectangle work_area;  
-
-  meta_window_get_work_area (window, &work_area);  
-  
+{  
   /* frame member variables should NEVER be used in here, only
    * MetaFrameGeometry
    */
@@ -5160,6 +5156,10 @@ constrain_position (MetaWindow *window,
     }
   else if (window->maximized)
     {
+      MetaRectangle work_area;
+      
+      meta_window_get_work_area (window, TRUE, &work_area);
+      
       x = work_area.x;
       y = work_area.y;
       if (window->frame)
@@ -5183,6 +5183,9 @@ constrain_position (MetaWindow *window,
       int nw_x, nw_y;
       int se_x, se_y;
       int offscreen_w, offscreen_h;
+      MetaRectangle work_area;
+      
+      meta_window_get_work_area (window, FALSE, &work_area);
       
       /* (FIXME instead of TITLEBAR_LENGTH_ONSCREEN, get the actual
        * size of the menu control?).
@@ -5676,25 +5679,37 @@ meta_window_set_gravity (MetaWindow *window,
 
 void
 meta_window_get_work_area (MetaWindow    *window,
+                           gboolean       for_current_xinerama,
                            MetaRectangle *area)
 {
   MetaRectangle space_area;
   GList *tmp;
-  const MetaXineramaScreenInfo *xinerama;  
   
   int left_strut;
   int right_strut;
   int top_strut;
   int bottom_strut;  
 
-  xinerama = meta_screen_get_xinerama_for_window (window->screen,
-                                                  window);
-
-  left_strut = xinerama->x_origin;
-  right_strut = window->screen->width - xinerama->width - xinerama->x_origin;
-  top_strut = xinerama->y_origin;
-  bottom_strut = window->screen->height - xinerama->height - xinerama->y_origin;
-  
+  if (for_current_xinerama)
+    {
+      const MetaXineramaScreenInfo *xinerama;
+      
+      xinerama = meta_screen_get_xinerama_for_window (window->screen,
+                                                      window);
+      
+      left_strut = xinerama->x_origin;
+      right_strut = window->screen->width - xinerama->width - xinerama->x_origin;
+      top_strut = xinerama->y_origin;
+      bottom_strut = window->screen->height - xinerama->height - xinerama->y_origin;
+    }
+  else
+    {
+      left_strut = 0;
+      right_strut = 0;
+      top_strut = 0;
+      bottom_strut = 0;
+    }
+      
   tmp = meta_window_get_workspaces (window);
   
   while (tmp != NULL)

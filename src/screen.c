@@ -294,17 +294,40 @@ meta_screen_new (MetaDisplay *display,
    */
   if (screen->n_xinerama_infos == 0)
     {
-      meta_topic (META_DEBUG_XINERAMA,
-                  "No Xinerama screens, using default screen info\n");
-      
-      screen->xinerama_infos = g_new (MetaXineramaScreenInfo, 1);
-      screen->n_xinerama_infos = 1;
-      
-      screen->xinerama_infos[0].number = 0;
-      screen->xinerama_infos[0].x_origin = 0;
-      screen->xinerama_infos[0].y_origin = 0;
-      screen->xinerama_infos[0].width = screen->width;
-      screen->xinerama_infos[0].height = screen->height;
+      if (g_getenv ("METACITY_DEBUG_XINERAMA"))
+        {
+          meta_topic (META_DEBUG_XINERAMA,
+                      "Pretending a single monitor has two Xinerama screens\n");
+          
+          screen->xinerama_infos = g_new (MetaXineramaScreenInfo, 2);
+          screen->n_xinerama_infos = 2;
+          
+          screen->xinerama_infos[0].number = 0;
+          screen->xinerama_infos[0].x_origin = 0;
+          screen->xinerama_infos[0].y_origin = 0;
+          screen->xinerama_infos[0].width = screen->width / 2;
+          screen->xinerama_infos[0].height = screen->height;
+
+          screen->xinerama_infos[1].number = 1;
+          screen->xinerama_infos[1].x_origin = screen->width / 2;
+          screen->xinerama_infos[1].y_origin = 0;
+          screen->xinerama_infos[1].width = screen->width / 2 + screen->width % 2;
+          screen->xinerama_infos[1].height = screen->height;
+        }
+      else
+        {
+          meta_topic (META_DEBUG_XINERAMA,
+                      "No Xinerama screens, using default screen info\n");
+          
+          screen->xinerama_infos = g_new (MetaXineramaScreenInfo, 1);
+          screen->n_xinerama_infos = 1;
+          
+          screen->xinerama_infos[0].number = 0;
+          screen->xinerama_infos[0].x_origin = 0;
+          screen->xinerama_infos[0].y_origin = 0;
+          screen->xinerama_infos[0].width = screen->width;
+          screen->xinerama_infos[0].height = screen->height;
+        }
     }
 
   g_assert (screen->n_xinerama_infos > 0);
@@ -812,7 +835,13 @@ meta_screen_get_xinerama_for_window (MetaScreen *screen,
 {
   int i;
   int best_xinerama, xinerama_score;
+  MetaRectangle window_rect;
 
+  if (screen->n_xinerama_infos == 1)
+    return &screen->xinerama_infos[0];
+  
+  meta_window_get_outer_rect (window, &window_rect);
+  
   best_xinerama = 0;
   xinerama_score = 0;
 
@@ -826,7 +855,7 @@ meta_screen_get_xinerama_for_window (MetaScreen *screen,
       screen_info.width = screen->xinerama_infos[i].width;
       screen_info.height = screen->xinerama_infos[i].height;
       
-      if (meta_rectangle_intersect (&screen_info, &window->rect, &dest))
+      if (meta_rectangle_intersect (&screen_info, &window_rect, &dest))
         {
           if (dest.width * dest.height > xinerama_score)
             {
