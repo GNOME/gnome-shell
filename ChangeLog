@@ -1,3 +1,7 @@
+2003-01-05  Pablo Saratxaga  <pablo@mandrakesoft.com>
+
+	* configure.in: Added Macedonian (mk) to ALL_LINGUAS
+
 2003-01-05  Havoc Pennington  <hp@pobox.com>
 	
 	* src/frames.c (meta_frames_apply_shapes): put in the

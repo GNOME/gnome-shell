@@ -1829,8 +1829,8 @@ msgstr ""
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
-"Não foi possível obter a seleção do gerenciador de janelas na exibição \"%s"
-"\" da tela %d\n"
+"Não foi possível obter a seleção do gerenciador de janelas na exibição \"%2$s"
+"\" da tela %1$d\n"
 
 #: src/screen.c:505
 #, c-format
@@ -2826,8 +2826,8 @@ msgid ""
 "Window 0x%lx has property %s that was expected to have type %s format %d and "
 "actually has type %s format %d n_items %d\n"
 msgstr ""
-"A janela 0x%lx tem a propriedade %s que deveria ter o formato %d do tipo %s "
-"e, na verdade, ela tem n_items %d do formato %d do tipo %s\n"
+"A janela 0x%1$lx tem a propriedade %2$s que deveria ter o formato %4$d do tipo %3$s "
+"e, na verdade, ela tem n_items %6$d do formato %7$d do tipo %5$s\n"
 
 #: src/xprops.c:369
 #, c-format
@@ -2839,5 +2839,5 @@ msgstr "A propriedade %s na janela 0x%lx continha UTF-8 inválido\n"
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
-"A propriedade %s na janela 0x%1x continha UTF-8 inválido para o item %d da "
+"A propriedade %s na janela 0x%lx continha UTF-8 inválido para o item %d da "
 "lista\n"
