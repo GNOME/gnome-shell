@@ -1777,6 +1777,13 @@ warn_about_lame_clients_and_finish_interact (gboolean shutdown)
   /* don't need to free displays */
   displays = NULL;
 
+  if (lame == NULL)
+    {
+      /* No lame apps. */
+      finish_interact (shutdown);
+      return;
+    }
+  
   lame = g_slist_sort (lame, (GCompareFunc) windows_cmp_by_title);
 
   len = g_slist_length (lame);

@@ -1,5 +1,10 @@
 2002-07-12  Havoc Pennington  <hp@pobox.com>
 
+	* src/session.c (warn_about_lame_clients_and_finish_interact):
+	don't display the dialog if all the apps were session managed.
+
+2002-07-12  Havoc Pennington  <hp@pobox.com>
+
 	* src/session.c: don't send SmInteractDone until the warning
 	dialog about crappy clients has been closed.
 
