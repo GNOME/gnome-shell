@@ -1,5 +1,13 @@
 2002-05-23  Havoc Pennington  <hp@pobox.com>
 
+	* src/metacity.schemas: clean up the font preference
+
+	* src/prefs.c: font pref
+
+	* src/frames.c: pay attention to the font pref
+	
+2002-05-23  Havoc Pennington  <hp@pobox.com>
+
         Crack from Erwann
 	
 	* src/metacity.schemas: add autoraise crackrock
