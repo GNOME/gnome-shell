@@ -1,3 +1,19 @@
+2003-03-13  Rob Adams <robadams@ucla.edu>
+
+        Make it so that the alt-tabbing won't try to go to a minimized
+	window by default.  Fix for #107071.
+	
+	* display.c (meta_display_get_tab_list): use a GList instead of a
+	GSList
+	(meta_display_get_tab_next): use meta_display_get_tab_list to
+	decide what the next/previous tab window should be.
+
+	* display.h (meta_display_get_tab_list): update function prototype
+	to return GList instead of GSList.
+
+	* screen.c (meta_screen_ensure_tab_popup): update function to deal
+	with GList returned by meta_display_get_tab_list instead of GSList.
+	
 2003-03-13  Christian Rose  <menthos@menthos.com>
 
 	* configure.in: Added "ml" to ALL_LINGUAS.
