@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-24 10:50-0700\n"
-"PO-Revision-Date: 2004-08-19 02:27+0300\n"
+"POT-Creation-Date: 2005-02-05 15:16+0100\n"
+"PO-Revision-Date: 2005-02-05 20:03+0200\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -122,9 +122,8 @@ msgid "No command %d has been defined.\n"
 msgstr "Mitään komentoa %d ei ole määritelty.\n"
 
 #: src/keybindings.c:3494
-#, fuzzy
 msgid "No terminal command has been defined.\n"
-msgstr "Mitään komentoa %d ei ole määritelty.\n"
+msgstr "Mitään päätteen komentoa ei ole määritelty.\n"
 
 #: src/main.c:69
 msgid ""
@@ -206,12 +205,12 @@ msgstr "_Sulje"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "_Näytä joka työtilassa"
+msgid "_Always on Visible Workspace"
+msgstr "Näytä _aina tässä työtilassa"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
-msgstr "Näytä _vain tässä työtilassa"
+msgid "_Only on This Workspace"
+msgstr "Näytä vain _tässä työtilassa"
 
 #: src/menu.c:68
 msgid "Move to Workspace _Left"
@@ -229,7 +228,7 @@ msgstr "Siirry _ylläolevaan työtilaan"
 msgid "Move to Workspace _Down"
 msgstr "Siirrä _alla olevaan työtilaan"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
 msgstr "Työtila %d"
@@ -369,7 +368,7 @@ msgstr ""
 "Nämä ikkunat eivät ymmärrä \"tallenna nykyinen tila\"-komentoa, ja ne täytyy "
 "käynnistää käsin uudelleen kun kirjaudut seuraavan kerran sisään."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:325
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -509,13 +508,16 @@ msgid ""
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages."
 msgstr ""
 "Jos tosi, Metacity antaa käyttäjälle vähemmän palautetta ja tunnetta "
 "\"välittömästä vaikuttamisesta\", piirtämällä kehyksiä viivoina, välttämällä "
 "animaatioita ja muin keinoin. Tämä vähentää käytettävyyttä useimpien "
 "käyttäjien kohdalla, mutta saattaa saada vanhentuneet sovellukset tai "
-"päätepalvelimet toimimaan, kun ne muutoin olisivat epäkäytännöllisiä."
+"päätepalvelimet toimimaan, kun ne muutoin olisivat epäkäytännöllisiä. "
+"Kehyksiä ei kuitenkaan piirretä viivoina, jos esteettömyysominaisuudet ovat "
+"käytössä, jotta kummallisia ongelmia ei ilmene."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -703,7 +705,7 @@ msgstr "Suorita annettu komento"
 
 #: src/metacity.schemas.in.h:60
 msgid "Run a terminal"
-msgstr ""
+msgstr "Käynnistä päätteessä"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
@@ -1185,7 +1187,6 @@ msgstr ""
 "liity pikanäppäintä."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1679,7 +1680,6 @@ msgstr ""
 "pikanäppäintä."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1687,11 +1687,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Pikanäppäin, joka avaa paneelin päävalikon. Pikanäppäimet ovat muotoa \"&lt;"
-"Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
+"Pikanäppäin, joka avaa päätteen. Pikanäppäimet ovat muotoa \"&lt;Control&gt;a"
+"\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei "
+"välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja "
+"\"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen merkkijonon \"disabled\", "
+"niin tähän toimintoon ei liity pikanäppäintä."
 
 #: src/metacity.schemas.in.h:143
 msgid ""
@@ -1918,17 +1918,17 @@ msgstr "Windows-tyylinen kohdistus"
 msgid "Window title font"
 msgstr "Ikkunan otsikon kirjasin"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-avain \"%s\" on asetettu väärän tyyppiseksi\n"
 
-#: src/prefs.c:843
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1936,17 +1936,17 @@ msgid ""
 msgstr ""
 "Asetustietokannassa oleva \"%s\" ei ole kelvollinen hiiren muunnosnäppäin\n"
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-avain \"%s\" on asetettu arvoltaan vääräksi\n"
 
-#: src/prefs.c:994
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "GConf-avaimesta %2$s saatu kirjasinkuvaus \"%1$s\" ei jäsenny\n"
 
-#: src/prefs.c:1179
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1955,7 +1955,7 @@ msgstr ""
 "GConf-avaimeen %2$s tallennettu %1$d ei ole järkevä työtilojen määrä. "
 "Nykyinen raja on %3$d\n"
 
-#: src/prefs.c:1239
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1963,17 +1963,17 @@ msgstr ""
 "Rikkinäisten sovellusten kiertotiet eivät ole käytössä. Jotkin sovellukset "
 "eivät välttämättä käyttäydy kunnolla.\n"
 
-#: src/prefs.c:1304
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d, joka on GConf-avaimessa %s, ei ole välillä 0 - %d\n"
 
-#: src/prefs.c:1425
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Virhe työtilojen määrän asettamisessa arvoon %d: %s\n"
 
-#: src/prefs.c:1669
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1982,7 +1982,7 @@ msgstr ""
 "\"%s\", joka on asetustietokannassa, ei ole kelvollinen näppäinsidonnan \"%s"
 "\" arvo\n"
 
-#: src/prefs.c:2023
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Virhe työtilan %d nimen asettamisessa nimeksi \"%s\": %s\n"
@@ -3118,7 +3118,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Sovellus asetti virheellisen _NET_WM_PID:n %ld\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:4912
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3134,7 +3134,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5583
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3171,38 +3171,3 @@ msgid ""
 msgstr ""
 "Ikkunan 0x%2$lx ominaisuus %1$s sisälsi virheellistä UTF-8:aa luettelon "
 "kohdassa %3$d\n"
-
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "Valitse, miten ikkunoita kohdistetaan"
-
-#~ msgid "Window Focus"
-#~ msgstr "Ikkunoiden kohdistus"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "Kohdista _napsauttamalla"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "Kohdistuksen toiminta:"
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "Ikkunoiden kohdistamisasetukset"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "Kohdista _osoittamalla"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "_Nosta ikkuna sen kohdistuessa"
-
-#~ msgid ""
-#~ "Failed to a open connection to a session manager, so window positions "
-#~ "will not be saved: %s\n"
-#~ msgstr ""
-#~ "Yhteydenotto istunnonhallintaan epäonnistui, joten ikkunoiden sijainnit "
-#~ "eivät tallennu: %s\n"
-
-# This is very hard to do in Finnish...
-#~ msgid "Only on %s"
-#~ msgstr "Vain työtilassa %s"
-
-#~ msgid "Move to %s"
-#~ msgstr "Siirrä työtilaan %s"
