@@ -1,5 +1,15 @@
 2002-10-18  Havoc Pennington  <hp@redhat.com>
 
+	* src/window.c (meta_window_refresh_resize_popup): only create the 
+	resize popup if width_inc or height_inc are > 1
+
+	* src/resizepopup.c: Clear out all the weird tickmark cruft, 
+	saves us about 2.5K of binary size, whee
+	(meta_ui_resize_popup_new): take display/screen arguments and make
+	multihead-safe #94349
+	
+2002-10-18  Havoc Pennington  <hp@redhat.com>
+
 	* src/keybindings.c (do_choose_window): don't start the cycle
 	process if the binding for switching windows has no modifier bits, 
 	just focus the window immediately.
