@@ -51,7 +51,7 @@ static char* get_screen_name (MetaDisplay *display,
 
 static void update_num_workspaces  (MetaScreen *screen);
 static void update_focus_mode      (MetaScreen *screen);
-static void update_workspace_names (MetaScreen *screen);
+static void set_workspace_names    (MetaScreen *screen);
 static void prefs_changed_callback (MetaPreference pref,
                                     gpointer       data);
 
@@ -569,7 +569,6 @@ meta_screen_new (MetaDisplay *display,
   set_wm_check_hint (screen);
 
   meta_screen_update_workspace_layout (screen);
-  meta_screen_update_workspace_names (screen);
 
   /* Get current workspace */
   current_workspace = 0;
@@ -588,6 +587,8 @@ meta_screen_new (MetaDisplay *display,
   meta_workspace_activate (meta_workspace_new (screen));
   update_num_workspaces (screen);
   
+  set_workspace_names (screen);
+
   screen->all_keys_grabbed = FALSE;
   screen->keys_grabbed = FALSE;
   meta_screen_grab_keys (screen);
@@ -755,7 +756,7 @@ prefs_changed_callback (MetaPreference pref,
     }
   else if (pref == META_PREF_WORKSPACE_NAMES)
     {
-      update_workspace_names (screen);
+      set_workspace_names (screen);
     }
 }
 
@@ -1473,7 +1474,7 @@ meta_screen_update_workspace_layout (MetaScreen *screen)
 }
 
 static void
-update_workspace_names (MetaScreen *screen)
+set_workspace_names (MetaScreen *screen)
 {
   /* This updates names on root window when the pref changes,
    * note we only get prefs change notify if things have
