@@ -5,20 +5,20 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0.1\n"
-"POT-Creation-Date: 2002-02-22 17:31+0100\n"
-"PO-Revision-Date: 2002-02-22 17:35+0100\n"
+"POT-Creation-Date: 2002-03-27 09:22+0100\n"
+"PO-Revision-Date: 2002-03-27 09:23+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/display.c:163
+#: src/display.c:221
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Feil under åpning av X Window System skjerm «%s»\n"
 
-#: src/errors.c:93
+#: src/errors.c:154
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -29,7 +29,7 @@ msgstr ""
 "sannsynligvis ble X-tjeneren stengt ned eller kanskje du drepte/ødela\n"
 "vindushåndtereren.\n"
 
-#: src/errors.c:100
+#: src/errors.c:161
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatal IU-feil %d (%s) på skjerm «%s».\n"
@@ -63,14 +63,14 @@ msgstr ""
 "Et annet program bruker allerede nøkkelen %s med modifikatorer %x som "
 "binding\n"
 
-#: src/main.c:229
+#: src/main.c:263
 #, c-format
 msgid "Could not find a theme! Be sure %s exits and contains the usual themes."
 msgstr ""
 "Kunne ikke finne et tema! Sjekk at %s eksisterer og inneholder de vanlige "
 "temaene."
 
-#: src/main.c:275
+#: src/main.c:309
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Feil under omstart: %s\n"
@@ -156,66 +156,80 @@ msgstr ""
 "%d lagret i GConf-nøkkel %s er ikke et lesbart antall arbeidsområder, aktivt "
 "maksimum er %d\n"
 
-#: src/screen.c:177
+#: src/prefs.c:639
+#, c-format
+msgid "Error setting number of workspaces to %d: %s\n"
+msgstr ""
+
+#: src/screen.c:180
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Skjerm %d på display «%s» er ugyldig\n"
 
-#: src/screen.c:193
+#: src/screen.c:196
 #, c-format
 msgid "Screen %d on display '%s' already has a window manager\n"
 msgstr "Skjerm %d på display «%s» har allerede en vindushåndterer\n"
 
-#: src/screen.c:271
+#: src/screen.c:274
 #, c-format
 msgid "Could not release screen %d on display '%s'\n"
 msgstr "Kunne ikke slippe skjerm %d på display «%s»\n"
 
-#: src/session.c:770 src/session.c:777
+#: src/session.c:766 src/session.c:773
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Kunne ikke opprette katalog «%s»: %s\n"
 
-#: src/session.c:787
+#: src/session.c:783
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Kunne ikke åpne sesjonsfil «%s» for skriving: %s\n"
 
-#: src/session.c:919
+#: src/session.c:915
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Feil under skriving av sesjonsfil «%s»: %s\n"
 
-#: src/session.c:924
+#: src/session.c:920
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Feil under lukking av sesjonsfil «%s»: %s\n"
 
-#: src/session.c:998
+#: src/session.c:993
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Feil under lesing av lagret sesjonsfil %s: %s\n"
 
-#: src/session.c:1032
+#: src/session.c:1028
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Feil under tolking av lagret sesjonsfil: %s\n"
 
-#: src/session.c:1070
+#: src/session.c:1077
+msgid "<metacity_session> attribute seen but we already have the session ID"
+msgstr ""
+
+#: src/session.c:1090
+#, c-format
+msgid "Unknown attribute %s on <metacity_session> element"
+msgstr "Ukjent attributt %s på <metacity_session>-element"
+
+#: src/session.c:1107
 msgid "nested <window> tag"
 msgstr "<window> tag med flere nivåer"
 
-#: src/session.c:1120 src/session.c:1152
+#: src/session.c:1157 src/session.c:1189
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Ukjent attributt %s på <window>-element"
 
-#: src/session.c:1212
+#: src/session.c:1249
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Ukjent attributt %s på <geometry>-element"
 
-#: src/session.c:1232
+#: src/session.c:1269
 #, c-format
 msgid "Unknown element %s"
 msgstr "Ukjent element %s"
@@ -620,7 +634,8 @@ msgstr ""
 #: src/theme-parser.c:3169
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr "Stil er allerede spesifisert for tilstand %s størrelsesendring %s fokus %s"
+msgstr ""
+"Stil er allerede spesifisert for tilstand %s størrelsesendring %s fokus %s"
 
 #: src/theme-parser.c:3180 src/theme-parser.c:3191 src/theme-parser.c:3202
 #, c-format
@@ -654,7 +669,8 @@ msgstr "Ytterste element i temaet må være <metacity_theme> ikke <%s>"
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
-msgstr "Element <%s> er ikke tillatt inne i et name/author/date/description element"
+msgstr ""
+"Element <%s> er ikke tillatt inne i et name/author/date/description element"
 
 #: src/theme-parser.c:3389
 #, c-format
