@@ -3200,6 +3200,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_last_moveresize_time.tv_sec = 0;
   display->grab_last_moveresize_time.tv_usec = 0;
   display->grab_motion_notify_time = 0;
+  display->grab_old_window_stacking = NULL;
 #ifdef HAVE_XSYNC
   display->grab_sync_request_alarm = None;
 #endif
