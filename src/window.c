@@ -2287,7 +2287,7 @@ meta_window_client_message (MetaWindow *window,
 
           shade = (action == _NET_WM_STATE_ADD ||
                    (action == _NET_WM_STATE_TOGGLE && !window->shaded));
-          if (shade)
+          if (shade && window->has_shade_func)
             meta_window_shade (window);
           else
             meta_window_unshade (window);
@@ -2302,7 +2302,7 @@ meta_window_client_message (MetaWindow *window,
 
           max = (action == _NET_WM_STATE_ADD ||
                  (action == _NET_WM_STATE_TOGGLE && !window->maximized));
-          if (max)
+          if (max && window->has_maximize_func)
             meta_window_maximize (window);
           else
             meta_window_unmaximize (window);
@@ -2346,7 +2346,8 @@ meta_window_client_message (MetaWindow *window,
     {
       meta_verbose ("WM_CHANGE_STATE client message, state: %ld\n",
                     event->xclient.data.l[0]);
-      if (event->xclient.data.l[0] == IconicState)
+      if (event->xclient.data.l[0] == IconicState &&
+          window->has_minimize_func)
         meta_window_minimize (window);
 
       return TRUE;
@@ -3549,7 +3550,7 @@ get_cardinal (MetaDisplay *display,
     return FALSE;
   
   if (type != XA_CARDINAL)
-    return FALSE;
+    return FALSE; /* FIXME free num ? */
 
   *val = *num;
   

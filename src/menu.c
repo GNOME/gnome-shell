@@ -257,10 +257,10 @@ meta_window_menu_new   (MetaFrames         *frames,
               MenuData *md;
 
               if (ops & META_MENU_OP_UNSTICK)
-                label = g_strdup_printf (_("Only on workspace _%d\n"),
+                label = g_strdup_printf (_("Only on workspace _%d"),
                                          i + 1);
               else
-                label = g_strdup_printf (_("Move to workspace _%d\n"),
+                label = g_strdup_printf (_("Move to workspace _%d"),
                                          i + 1);
           
               mi = gtk_menu_item_new_with_mnemonic (label);

@@ -194,7 +194,7 @@ meta_change_keygrab (MetaDisplay *display,
       if (grab && result != Success)
         {
           const char *name;
-      
+          
           name = XKeysymToString (keysym);
           if (name == NULL)
             name = "(unknown)";

@@ -1,3 +1,9 @@
+2001-10-07  Havoc Pennington  <hp@pobox.com>
+
+	* src/window.c (meta_window_client_message): don't allow
+	shade/maximize/minimize for windows that don't support those
+	operations. (minimizing the panel = bad)
+
 2001-10-04  Havoc Pennington  <hp@pobox.com>
 
 	* src/keybindings.c (meta_change_keygrab): add code to grab all
