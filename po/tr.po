@@ -2,19 +2,20 @@
 # Copyright (C) 2003 Free Software Foundation.
 # This file is distributed under the same license as the metacity package.
 # Sinan İmamoğlu <sinan@myrealbox.com>, 2003.
-# Baris Cicek <baris@teamforce.name.tr>, 2004.
+# Baris Cicek <baris@teamforce.name.tr>, 2004, 2005.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-24 10:50-0700\n"
-"PO-Revision-Date: 2004-09-03 22:39+0300\n"
+"POT-Creation-Date: 2005-03-13 03:34+0200\n"
+"PO-Revision-Date: 2005-03-13 03:34+0200\n"
 "Last-Translator: Baris Cicek <baris@teamforce.name.tr>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9.1\n"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -60,7 +61,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Makine adı alınamadı: %s\n"
 
-#: src/display.c:312
+#: src/display.c:316
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X Pencere Sistemi '%s' ekranı açılamadı\n"
@@ -110,22 +111,21 @@ msgstr ""
 "%s tuşu %x değiştiricileriyle birlikte başka bir uygulama tarafından tuş "
 "bağıolarak kullanılıyor\n"
 
-#: src/keybindings.c:2559
+#: src/keybindings.c:2561
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Bir komutla ilgili hatayı göstermek için metacity-dialog başlatılırken hata: "
 "%s\n"
 
-#: src/keybindings.c:2664
+#: src/keybindings.c:2666
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "%d komutu tanımlanmamış.\n"
 
-#: src/keybindings.c:3494
-#, fuzzy
+#: src/keybindings.c:3511
 msgid "No terminal command has been defined.\n"
-msgstr "%d komutu tanımlanmamış.\n"
+msgstr "Hiçbir termina komutu tanımlanmamış.\n"
 
 #: src/main.c:69
 msgid ""
@@ -206,11 +206,11 @@ msgstr "_Kapat"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "Tüm Çalışma _Alanlarına Yerleştir"
+msgid "_Always on Visible Workspace"
+msgstr "Her _Zaman Görünen Çalışma Alanında"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
+msgid "_Only on This Workspace"
 msgstr "Yalnız _Bu Çalışma Alanında"
 
 #: src/menu.c:68
@@ -229,7 +229,7 @@ msgstr "_Yukarıdaki Çalışma Alanına Taşı"
 msgid "Move to Workspace _Down"
 msgstr "_Aşağıdaki Çalışma Alanına Taşı"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
 msgstr "Çalışma Alanı %d"
@@ -369,7 +369,7 @@ msgstr ""
 "Bu pencereler, \"geçerli durumu kaydet\" özelliğini desteklemiyorlar ve bir "
 "dahaki girişte kendiniz yeniden başlatmalısınız."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:325
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -509,13 +509,14 @@ msgid ""
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages."
 msgstr ""
 "Eğer seçiliyse, metacity tel çerçeveleri kullanarak, canlandırma "
 "kullanmayarak ve diğer şekillerde, kullanıcıya daha az geri bildirim verip "
 "daha az \"doğrudan işlem\"e imkan verir. Bu bir çok kullanıcı için "
 "kullanılabilirlikte belirgin biz azalmaya neden olur, ancak aksi halde "
-"kullanışsız olacak terminal sunucuları ve diğer eskiuygulamalar için "
+"kullanışsız olacak terminal sunucuları ve diğer eski uygulamalar için "
 "işleyebilirlik sağlayabilir."
 
 #: src/metacity.schemas.in.h:20
@@ -706,7 +707,7 @@ msgstr "Tanımlanmış bir komutu çalıştır"
 
 #: src/metacity.schemas.in.h:60
 msgid "Run a terminal"
-msgstr ""
+msgstr "Bir terminal çalıştır"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
@@ -1192,7 +1193,6 @@ msgstr ""
 "tuş bağı yapılmamış olur."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1693,7 +1693,6 @@ msgstr ""
 "yapılmamış olur."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1934,17 +1933,17 @@ msgstr "Pencere odaklama kipi"
 msgid "Window title font"
 msgstr "Pencere başlığı yazıtipi"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "\"%s\" GConf anahtarına geçersiz bir tür atanmış\n"
 
-#: src/prefs.c:843
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1953,17 +1952,17 @@ msgstr ""
 "Yapılandırma veritabanında bulunan \"%s\", fare düğme düzenleyicisi olarak "
 "geçerli bir değer değil\n"
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "'%s' GConf anahtarına geçersiz bir değer atanmış\n"
 
-#: src/prefs.c:994
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "\"%s\" yazıtipi tanımlaması %s GConf anahtarından ayrıştırılamadı\n"
 
-#: src/prefs.c:1179
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1972,7 +1971,7 @@ msgstr ""
 "%2$s GConf anahtarında saklı %1$d değeri geçerli bir çalışma alanı sayısı "
 "değil; şu anki üst sınır: %3$d\n"
 
-#: src/prefs.c:1239
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1980,18 +1979,18 @@ msgstr ""
 "Hatalı uygulamalara yönelik çözümler devre dışı. Bazı uygulamalar düzgün "
 "işlemeyebilir.\n"
 
-#: src/prefs.c:1304
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
 "%2$s GConf anahtarında saklı %1$d değeri 0 ile %3$d aralığının dışında\n"
 
-#: src/prefs.c:1425
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Çalışma alanı sayısının %d yapılmasında hata: %s\n"
 
-#: src/prefs.c:1669
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2000,7 +1999,7 @@ msgstr ""
 "Yapılandırma veritabanında bulunan \"%s\", \"%s\" tuş bağı olarak geçerli "
 "bir değer değil\n"
 
-#: src/prefs.c:2023
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "%d çalışma alanının adının \"%s\" yapılmasında hata: %s\n"
@@ -3140,7 +3139,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Uygulama _NET_WM_PID'e geçersiz %ld değerini atadı\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:5070
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3156,7 +3155,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5741
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3193,24 +3192,3 @@ msgid ""
 msgstr ""
 "0x%2$lx penceresinin %1$s özelliği listedeki öğe %3$d için geçersiz UTF-8 "
 "içeriyor\n"
-
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "Pencerelere nasıl odaklanacağını seçin"
-
-#~ msgid "Window Focus"
-#~ msgstr "Pencere Odaklanması"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "Odaklamak için _tıklayın"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "Odaklanma işleyişi:"
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "Pencere Odaklanma Tercihleri"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "_Göstererek odakla"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "Odaklanan pencereyi _yükselt"
