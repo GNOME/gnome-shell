@@ -1,0 +1,433 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: metacity for latvian\n"
+"POT-Creation-Date: 2002-01-25 07:26-0500\n"
+"PO-Revision-Date: 2002-01-27 22:50+0200\n"
+"Last-Translator: Peteris Krisjanis <peteris.krisjanis@ttc.lv>\n"
+"Language-Team: Latvian <ll10nt@ttc.lv>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/display.c:158
+#, c-format
+msgid ""
+"Failed to open X Window System display '%s'\n"
+""
+msgstr ""
+"Nevarēja atvērt X Logu Sistēmas displeju '%s'\n"
+""
+
+#: src/errors.c:93
+#, c-format
+msgid ""
+"Lost connection to the display '%s';\n"
+"most likely the X server was shut down or you killed/destroyed\n"
+"the window manager.\n"
+""
+msgstr ""
+"Zaudēju savienojumu ar displeju  '%s';\n"
+"ļoti iespējams, X serveris ir ticis izslēgts vai arī jūs apturējāt\n"
+"logu pārvaldnieku.\n"
+""
+
+#: src/errors.c:100
+#, c-format
+msgid ""
+"Fatal IO error %d (%s) on display '%s'.\n"
+""
+msgstr ""
+"Fatāla IO kļūda %d (%s) displejā '%s'.\n"
+""
+
+#: src/frames.c:175
+msgid "Left edge"
+msgstr "Kreisā mala"
+
+#: src/frames.c:175
+msgid "Left window edge width"
+msgstr "Loga kreisās malas platums"
+
+#: src/frames.c:176
+msgid "Right edge"
+msgstr "Labā mala"
+
+#: src/frames.c:176
+msgid "Right window edge width"
+msgstr "Loga labās malas platums"
+
+#: src/frames.c:177
+msgid "Bottom edge"
+msgstr "Apakšējā mala"
+
+#: src/frames.c:177
+msgid "Bottom window edge height"
+msgstr "Loga apakšējās malas augstums"
+
+#: src/frames.c:179
+msgid "Title border"
+msgstr "Virsraksta robeža"
+
+#: src/frames.c:179
+msgid "Border around title area"
+msgstr "Virsraksta apkārtējā robeža"
+
+#: src/frames.c:180
+msgid "Text border"
+msgstr "Teksta robeža"
+
+#: src/frames.c:180
+msgid "Border around window title text"
+msgstr "Apmale ap loga virsraksta tekstu"
+
+#: src/frames.c:182
+msgid "Spacer padding"
+msgstr "Sadalītāja papildinājums"
+
+#: src/frames.c:182
+msgid "Padding on either side of spacer"
+msgstr "Sadalītāja papildinājums"
+
+#: src/frames.c:183
+msgid "Spacer width"
+msgstr "Sadalītāja platums"
+
+#: src/frames.c:183
+msgid "Width of spacer"
+msgstr "Sadalītāja platums"
+
+#: src/frames.c:184
+msgid "Spacer height"
+msgstr "Sadalītāja augstums"
+
+#: src/frames.c:184
+msgid "Height of spacer"
+msgstr "Sadalītāja augstums"
+
+#. same as right_width left_width by default
+#: src/frames.c:187
+msgid "Right inset"
+msgstr "Kreisais ielaidums"
+
+#: src/frames.c:187
+msgid "Distance of buttons from right edge of frame"
+msgstr "Pogu attālums no rāmja labās malas"
+
+#: src/frames.c:188
+msgid "Left inset"
+msgstr "Kreisais ielaidums"
+
+#: src/frames.c:188
+msgid "Distance of menu button from left edge of frame"
+msgstr "Izvēlnes pogas attālums no rāmja kreisās malas"
+
+#: src/frames.c:190
+msgid "Button width"
+msgstr "Pogu platums"
+
+#: src/frames.c:190
+msgid "Width of buttons"
+msgstr "Pogu platums"
+
+#: src/frames.c:191
+msgid "Button height"
+msgstr "Pogu augstums"
+
+#: src/frames.c:191
+msgid "Height of buttons"
+msgstr "Pogu augstums"
+
+#: src/frames.c:193
+msgid "Button border"
+msgstr "Pogas apmale"
+
+#: src/frames.c:193
+msgid "Border around buttons"
+msgstr "Apmale apkārt pogām"
+
+#: src/frames.c:194
+msgid "Inner button border"
+msgstr "Iekšējā pogas apmale"
+
+#: src/frames.c:194
+msgid "Border around the icon inside buttons"
+msgstr "Apmale apkārt ikonai iekšpus pogām"
+
+#: src/frames.c:658
+msgid "Close Window"
+msgstr "Aizvērt Logu"
+
+#: src/frames.c:661
+msgid "Window Menu"
+msgstr "Loga Izvēlne"
+
+#: src/frames.c:664
+msgid "Minimize Window"
+msgstr "Samazināt Logu"
+
+#: src/frames.c:667
+msgid "Maximize Window"
+msgstr "Palielināt Logu"
+
+#: src/frames.c:670
+msgid "Unmaximize Window"
+msgstr "Atjaunot Logu"
+
+#: src/keybindings.c:228
+#, c-format
+msgid ""
+"Some other program is already using the key %s with modifiers %x as a binding\n"
+""
+msgstr ""
+"Kāda cita programma jau lieto taustiņu %s ar modifcētājiem %x kā sasaisti\n"
+""
+
+#: src/main.c:252
+#, c-format
+msgid ""
+"Failed to restart: %s\n"
+""
+msgstr ""
+"Nevarēja pārstartēt: %s\n"
+""
+
+#: src/menu.c:48
+msgid "_Close"
+msgstr "_Aizvērt"
+
+#: src/menu.c:49
+msgid "_Minimize"
+msgstr "_Samazināt"
+
+#: src/menu.c:50
+msgid "Ma_ximize"
+msgstr "_Palielināt"
+
+#: src/menu.c:51
+msgid "_Unmaximize"
+msgstr "_Atjaunot"
+
+#: src/menu.c:52
+msgid "_Shade"
+msgstr "Ē_not"
+
+#: src/menu.c:53
+msgid "U_nshade"
+msgstr "_Atēnot"
+
+#: src/menu.c:54
+msgid "Mo_ve"
+msgstr "_Pārvietot"
+
+#: src/menu.c:55
+msgid "_Resize"
+msgstr "_Mainīt"
+
+#. separator
+#: src/menu.c:57
+msgid "Put on _All Workspaces"
+msgstr "Uzstādīt uz visām d_arba virsmām"
+
+#: src/menu.c:58
+msgid "Only on _This Workspace"
+msgstr "Tikai uz Šīs Darba vie_tas"
+
+#: src/menu.c:261
+#, c-format
+msgid "Only on workspace %s%d"
+msgstr "Tikai uz darba virsmas %s%d"
+
+#: src/menu.c:264
+#, c-format
+msgid "Move to workspace %s%d"
+msgstr "Pārvietot uz darba virsmas %s%d"
+
+#: src/prefs.c:264
+#: src/prefs.c:280
+#: src/prefs.c:296
+#: src/prefs.c:312
+#: src/prefs.c:332
+#, c-format
+msgid ""
+"GConf key \"%s\" is set to an invalid type\n"
+""
+msgstr ""
+"GConf taustiņš \"%s\" ir uzstādīts uz nepareizo tipu\n"
+""
+
+#: src/prefs.c:365
+#, c-format
+msgid "GConf key '%s' is set to an invalid value"
+msgstr "GConf taustiņš '%s'ir uzstādīts uz nepareizo tipu"
+
+#: src/prefs.c:399
+#, c-format
+msgid ""
+"Could not parse font description \"%s\" from GConf key %s\n"
+""
+msgstr ""
+"Nespēja parsēt fontu aprakstu \"%s\" no GConf taustiņa %s\n"
+""
+
+#: src/prefs.c:436
+#, c-format
+msgid ""
+"%d stored in GConf key %s is not a valid font size\n"
+""
+msgstr ""
+"Uz GConf atslēgu %s glabātajam %d nav pareizs fontu izmērs\n"
+""
+
+#: src/prefs.c:462
+#, c-format
+msgid ""
+"%d stored in GConf key %s is not a reasonable number of workspaces, current maximum is %d\n"
+""
+msgstr ""
+"Uz GConf atslēgu %s glabātais %d nesatur pieļaujamu darba virsmu skaitu, pašreizējais maksimums ir %d\n"
+""
+
+#: src/screen.c:174
+#, c-format
+msgid ""
+"Screen %d on display '%s' is invalid\n"
+""
+msgstr ""
+"Displeja '%s' ekrāns %d  ir nepareizs\n"
+""
+
+#: src/screen.c:190
+#, c-format
+msgid ""
+"Screen %d on display '%s' already has a window manager\n"
+""
+msgstr ""
+"Displeja '%s' ekrānam %d  jau ir logu menedžeris\n"
+""
+
+#: src/screen.c:268
+#, c-format
+msgid ""
+"Could not release screen %d on display '%s'\n"
+""
+msgstr ""
+"Nevarēja izlaist displeja '%s' ekrānu %d\n"
+""
+
+#: src/session.c:760
+#: src/session.c:767
+#, c-format
+msgid ""
+"Could not create directory '%s': %s\n"
+""
+msgstr ""
+"Nevarēja izveidot direktoriju '%s': %s\n"
+""
+
+#: src/session.c:777
+#, c-format
+msgid ""
+"Could not open session file '%s' for writing: %s\n"
+""
+msgstr ""
+"Nevarēja atvērt sesijas failu '%s' rakstīšanai: %s\n"
+""
+
+#: src/session.c:909
+#, c-format
+msgid ""
+"Error writing session file '%s': %s\n"
+""
+msgstr ""
+"Kļūda ierakstot sesijas failu '%s': %s\n"
+""
+
+#: src/session.c:914
+#, c-format
+msgid ""
+"Error closing session file '%s': %s\n"
+""
+msgstr ""
+"Kļūda aizverot sesijas failu '%s': %s\n"
+""
+
+#: src/session.c:988
+#, c-format
+msgid ""
+"Failed to read saved session file %s: %s\n"
+""
+msgstr ""
+"Nevarēja nolasīt saglabāto sesijas failu %s: %s\n"
+""
+
+#: src/session.c:1022
+#, c-format
+msgid ""
+"Failed to parse saved session file: %s\n"
+""
+msgstr ""
+"Kļūda parsējot saglabāto sesijas failu: %s\n"
+""
+
+#: src/session.c:1060
+msgid "nested <window> tag"
+msgstr "ligzdots <loga> tags"
+
+#: src/session.c:1110
+#: src/session.c:1142
+#, c-format
+msgid "Unknown attribute %s on <window> element"
+msgstr "Nezināms atribūts %s <loga> elementam"
+
+#: src/session.c:1202
+#, c-format
+msgid "Unknown attribute %s on <geometry> element"
+msgstr "Nezināms atribūts %s <ģeogrāfijas> elementam"
+
+#: src/session.c:1222
+#, c-format
+msgid "Unknown element %s"
+msgstr "Nezināms elements %s"
+
+#. someone is on crack
+#: src/window.c:3411
+#, c-format
+msgid ""
+"Window %s sets max width %d less than min width %d, disabling resize\n"
+""
+msgstr ""
+"Logs %s uzstāda maksimālo platumu %d mazāku kā minimālo platumu %d, atsēdzot izmainīšanu\n"
+""
+
+#. another cracksmoker
+#: src/window.c:3421
+#, c-format
+msgid ""
+"Window %s sets max height %d less than min height %d, disabling resize\n"
+""
+msgstr ""
+"Logs %s uzstāda maksimālo augstumu %d mazāku kā minimālo augstumu %d, atslēdzot izmainīšanu\n"
+""
+
+#: src/xprops.c:53
+#, c-format
+msgid ""
+"Window 0x%lx has property %s that was expected to have type %s format %d and actually has type %s format %d n_items %d\n"
+""
+msgstr ""
+"Logam 0x%lx ir rekvizīts %s kam vajadzēja būt ar tipu %s formātu %d un īstenībā bija ar tipu %s formātu %d priekšmetiem (n_items) %d\n"
+""
+
+#: src/xprops.c:281
+#, c-format
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8\n"
+""
+msgstr ""
+"Loga 0x%lx Rekvizīts %s saturēja nepareizu UTF-8\n"
+""
+
