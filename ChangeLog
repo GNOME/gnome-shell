@@ -1,3 +1,13 @@
+2005-02-28  Elijah Newren  <newren@gmail.com>
+
+	Patch from Aidan Delaney to make sure that icons in the alt-tab
+	popup are dimmed for all hidden windows, not just minimized ones.
+	Fixes #168455.
+
+	* src/screen.c: (meta_screen_ensure_tab_popup): make use
+	meta_window_showing_on_its_workspace() instead of just checking if
+	the window is minimized.
+
 2005-02-25  Elijah Newren  <newren@gmail.com>
 
 	Prevent the visual bell from changing the focus window.  Fixes

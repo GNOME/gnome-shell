@@ -1163,7 +1163,7 @@ meta_screen_ensure_tab_popup (MetaScreen *screen,
       entries[i].title = window->title;
       entries[i].icon = window->icon;
       entries[i].blank = FALSE;
-      entries[i].minimized = window->minimized;
+      entries[i].minimized = !meta_window_showing_on_its_workspace (window);
       entries[i].demands_attention = window->wm_state_demands_attention;
       
       if (!window->minimized || !meta_window_get_icon_geometry (window, &r))
