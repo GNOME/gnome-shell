@@ -1,0 +1,103 @@
+<gconfschemafile>
+  <schemalist>
+
+    <!-- General preferences -->        
+
+    <schema>
+      <key>/apps/metacity/general/focus_mode</key>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>click</default>
+      <locale name="C">
+         <short>Window focus mode</short>
+         <long>
+          The window focus mode indicates how windows are activated. 
+          It has three possible values; "click" means windows must 
+          be clicked in order to focus them, "sloppy" means windows
+          are focused when the mouse enters the window, and "mouse" means
+          windows are focused when the mouse enters the window and 
+          unfocused when the mouse leaves the window.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/apps/metacity/general/titlebar_uses_desktop_font</key>
+      <owner>metacity</owner>
+      <type>bool</type>
+      <default>true</default>
+      <locale name="C">
+         <short>Use standard desktop font in window titles</short>
+         <long> 
+          If true, ignore the titlebar_font and titlebar_font_size 
+          options, and use the standard application font for window 
+          titles.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/apps/metacity/general/titlebar_font</key>
+      <owner>metacity</owner>
+      <type>string</type>
+      <!-- no default is deliberate - we want to be unset by default -->
+      <locale name="C">
+         <short>Window title font</short>
+         <long>
+          A font description string describing a font for window
+          titlebars. The size from the description
+          will only be used if the titlebar_font_size option is set 
+          to 0, however. Also, this option is disabled if the
+          titlebar_uses_desktop_font option is set to true.
+          By default, titlebar_font is unset, causing Metacity to fall 
+          back to the desktop font even if titlebar_uses_desktop_font 
+          is false.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/apps/metacity/general/titlebar_font_size</key>
+      <owner>metacity</owner>
+      <type>int</type>
+      <default>0</default>
+      <locale name="C">
+         <short>Window title font size</short>
+         <long>
+          The size of the font used in window titlebars, in points.
+          If set to 0, the size comes from the titlebar_font option 
+          or from the desktop-wide default. If set to nonzero, 
+          overrides those sizes.
+         </long>
+      </locale>
+    </schema>
+
+    <!-- Keybindings -->
+
+    <schema>
+      <key>/apps/metacity/keybindings/activate_window_menu</key>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>
+      <locale name="C">
+         <short>Activate window menu</short>
+         <long>
+          The keybinding used to activate the window menu.
+          The format looks like "<Control>a" or "<Shift><Alt>F1" or
+          "<Release>z" (the last one is for key release). The parser is
+          fairly liberal and allows lower or upper case, and also
+          abbreviations such as "<Ctl>" and "<Ctrl>". This option can be 
+          set to a single string, or a list of strings; if a list, 
+          all of the given keybindings will be present. If you set 
+          the option to the special string "disabled", then there 
+          will be no keybinding for this action.
+         </long>
+      </locale>
+    </schema>
+
+  </schemalist>  
+</gconfschemafile>
+
+
+
+
