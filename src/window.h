@@ -104,12 +104,22 @@ struct _MetaWindow
   /* Globally active / No input */
   guint input : 1;
 
-  /* Features of window */
+  /* MWM hints about features of window */
+  guint mwm_decorated : 1;
+  guint mwm_has_close_func : 1;
+  guint mwm_has_minimize_func : 1;
+  guint mwm_has_maximize_func : 1;
+  guint mwm_has_move_func : 1;
+  guint mwm_has_resize_func : 1;
+  
+  /* Computed features of window */
   guint decorated : 1;
   guint has_close_func : 1;
   guint has_minimize_func : 1;
   guint has_maximize_func : 1;
   guint has_shade_func : 1;
+  guint has_move_func : 1;
+  guint has_resize_func : 1;
   
   /* Weird "_NET_WM_STATE_MODAL" flag */
   guint wm_state_modal : 1;
@@ -144,6 +154,11 @@ struct _MetaWindow
   /* Used by keybindings.c */
   guint keys_grabbed : 1;
   guint grab_on_frame : 1;
+
+  /* Set if the reason for unmanaging the window is that
+   * it was withdrawn
+   */
+  guint withdrawn : 1;
   
   /* Number of UnmapNotify that are caused by us, if
    * we get UnmapNotify with none pending then the client

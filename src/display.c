@@ -599,6 +599,7 @@ event_callback (XEvent   *event,
             {
               meta_verbose ("Window %s withdrawn\n",
                             window->desc);
+              window->withdrawn = TRUE;
               meta_window_free (window); /* Unmanage withdrawn window */
             }
           else

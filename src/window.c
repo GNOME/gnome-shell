@@ -56,6 +56,7 @@ static int      update_role               (MetaWindow     *window);
 static int      update_net_wm_type        (MetaWindow     *window);
 static int      update_initial_workspace  (MetaWindow     *window);
 static void     recalc_window_type        (MetaWindow     *window);
+static void     recalc_window_features    (MetaWindow     *window);
 static int      set_wm_state              (MetaWindow     *window,
                                            int             state);
 static int      set_net_wm_state          (MetaWindow     *window);
@@ -77,6 +78,12 @@ static void   meta_window_move_resize_internal (MetaWindow  *window,
                                                 int          root_y_nw,
                                                 int          w,
                                                 int          h);
+
+
+static gboolean get_cardinal (MetaDisplay *display,
+                              Window       xwindow,
+                              Atom         atom,
+                              gulong      *val);
 
 void meta_window_unqueue_calc_showing (MetaWindow *window);
 
@@ -116,9 +123,20 @@ meta_window_new (MetaDisplay *display, Window xwindow,
 
   if (must_be_viewable && attrs.map_state != IsViewable)
     {
-      meta_verbose ("Deciding not to manage unmapped or unviewable window 0x%lx\n", xwindow);
-      meta_display_ungrab (display);
-      return NULL;
+      /* Only manage if WM_STATE is IconicState or NormalState */
+      gulong state;
+
+      if (!(get_cardinal (display, xwindow,
+                          display->atom_wm_state,
+                          &state) &&
+            (state == IconicState || state == NormalState)))
+        {
+          meta_verbose ("Deciding not to manage unmapped or unviewable window 0x%lx\n", xwindow);
+          meta_display_ungrab (display);
+          return NULL;
+        }
+
+      /* FIXME should honor WM_STATE probably */
     }
   
   meta_error_trap_push (display);
@@ -214,13 +232,24 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   window->calc_showing_queued = FALSE;
   window->keys_grabbed = FALSE;
   window->grab_on_frame = FALSE;
+  window->withdrawn = FALSE;
   
   window->unmaps_pending = 0;
+
+  window->mwm_decorated = TRUE;
+  window->mwm_has_close_func = TRUE;
+  window->mwm_has_minimize_func = TRUE;
+  window->mwm_has_maximize_func = TRUE;
+  window->mwm_has_move_func = TRUE;
+  window->mwm_has_resize_func = TRUE;
   
   window->decorated = TRUE;
   window->has_close_func = TRUE;
   window->has_minimize_func = TRUE;
   window->has_maximize_func = TRUE;
+  window->has_move_func = TRUE;
+  window->has_resize_func = TRUE;
+
   window->has_shade_func = TRUE;
   
   window->wm_state_modal = FALSE;
@@ -271,7 +300,6 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   set_wm_state (window, window->iconic ? IconicState : NormalState);
   set_net_wm_state (window);
 
-  /* keys grab on client window if no frame */
   if (window->decorated)
     meta_window_ensure_frame (window);
 
@@ -306,16 +334,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
   if (window->type == META_WINDOW_DESKTOP ||
       window->type == META_WINDOW_DOCK)
     {
-      /* Change around the defaults */
+      /* Change the default */
       window->on_all_workspaces = TRUE;
-      window->has_close_func = FALSE;
-      window->has_shade_func = FALSE;
-    }
-
-  if (window->type != META_WINDOW_NORMAL)
-    {
-      window->has_minimize_func = FALSE;
-      window->has_maximize_func = FALSE;
     }
   
   /* Put our state back where it should be,
@@ -373,9 +393,10 @@ meta_window_free (MetaWindow  *window)
   meta_stack_remove (window->screen->stack, window);
   
   /* FIXME restore original size if window has maximized */
-  
-  set_wm_state (window, WithdrawnState);
 
+  if (window->withdrawn)
+    set_wm_state (window, WithdrawnState);
+  
   if (window->frame)
     meta_window_destroy_frame (window);
 
@@ -2152,10 +2173,12 @@ update_mwm_hints (MetaWindow *window)
   gulong bytes_after;
   int result;
 
-  window->decorated = TRUE;
-  window->has_close_func = TRUE;
-  window->has_minimize_func = TRUE;
-  window->has_maximize_func = TRUE;
+  window->mwm_decorated = TRUE;
+  window->mwm_has_close_func = TRUE;
+  window->mwm_has_minimize_func = TRUE;
+  window->mwm_has_maximize_func = TRUE;
+  window->mwm_has_move_func = TRUE;
+  window->mwm_has_resize_func = TRUE;
   
   meta_error_trap_push (window->display);
   XGetWindowProperty (window->display->xdisplay, window->xwindow,
@@ -2185,39 +2208,79 @@ update_mwm_hints (MetaWindow *window)
                     window->desc, hints->decorations);
 
       if (hints->decorations == 0)
-        window->decorated = FALSE;
+        window->mwm_decorated = FALSE;
     }
   else
     meta_verbose ("Decorations flag unset\n");
-
+  
   if (hints->flags & MWM_HINTS_FUNCTIONS)
     {
+      gboolean toggle_value;
+      
       meta_verbose ("Window %s sets MWM_HINTS_FUNCTIONS 0x%lx\n",
                     window->desc, hints->functions);
 
+      /* If _ALL is specified, then other flags indicate what to turn off;
+       * if ALL is not specified, flags are what to turn on.
+       * at least, I think so
+       */
+      
+      if ((hints->flags & MWM_FUNC_ALL) == 0)
+        {
+          toggle_value = TRUE;
+
+          meta_verbose ("Window %s disables all funcs then reenables some\n",
+                        window->desc);
+          window->mwm_has_close_func = FALSE;
+          window->mwm_has_minimize_func = FALSE;
+          window->mwm_has_maximize_func = FALSE;
+          window->mwm_has_move_func = FALSE;
+          window->mwm_has_resize_func = FALSE;
+        }
+      else
+        {
+          meta_verbose ("Window %s enables all funcs then disables some\n",
+                        window->desc);
+          toggle_value = FALSE;
+        }
+      
       if ((hints->functions & MWM_FUNC_CLOSE) == 0)
         {
-          meta_verbose ("Window %s disables close via MWM hints\n",
+          meta_verbose ("Window %s toggles close via MWM hints\n",
                         window->desc);
-          window->has_close_func = FALSE;
+          window->mwm_has_close_func = toggle_value;
         }
       if ((hints->functions & MWM_FUNC_MINIMIZE) == 0)
         {
-          meta_verbose ("Window %s disables minimize via MWM hints\n",
+          meta_verbose ("Window %s toggles minimize via MWM hints\n",
                         window->desc);
-          window->has_minimize_func = FALSE;
+          window->mwm_has_minimize_func = toggle_value;
         }
       if ((hints->functions & MWM_FUNC_MAXIMIZE) == 0)
         {
-          meta_verbose ("Window %s disables maximize via MWM hints\n",
+          meta_verbose ("Window %s toggles maximize via MWM hints\n",
                         window->desc);
-          window->has_maximize_func = FALSE;
+          window->mwm_has_maximize_func = toggle_value;
+        }
+      if ((hints->functions & MWM_FUNC_MOVE) == 0)
+        {
+          meta_verbose ("Window %s toggles move via MWM hints\n",
+                        window->desc);
+          window->mwm_has_move_func = toggle_value;
+        }
+      if ((hints->functions & MWM_FUNC_RESIZE) == 0)
+        {
+          meta_verbose ("Window %s toggles resize via MWM hints\n",
+                        window->desc);
+          window->mwm_has_resize_func = toggle_value;
         }
     }
   else
     meta_verbose ("Functions flag unset\n");
 
   XFree (hints);
+
+  recalc_window_features (window);
   
   return Success;
 }
@@ -2426,7 +2489,8 @@ update_transient_for (MetaWindow *window)
 
 
 static gboolean
-get_cardinal (MetaWindow *window,
+get_cardinal (MetaDisplay *display,
+              Window      xwindow,
               Atom        atom,
               gulong     *val)
 {  
@@ -2437,15 +2501,15 @@ get_cardinal (MetaWindow *window,
   gulong *num;
   int err;
   
-  meta_error_trap_push (window->display);
+  meta_error_trap_push (display);
   type = None;
-  XGetWindowProperty (window->display->xdisplay,
-                      window->xwindow,
+  XGetWindowProperty (display->xdisplay,
+                      xwindow,
                       atom,
                       0, G_MAXLONG,
 		      False, XA_CARDINAL, &type, &format, &nitems,
 		      &bytes_after, (guchar **)&num);  
-  err = meta_error_trap_pop (window->display);
+  err = meta_error_trap_pop (display);
   if (err != Success)
     return FALSE;
   
@@ -2497,7 +2561,9 @@ update_net_wm_type (MetaWindow *window)
       /* Fall back to WIN_LAYER */
       gulong layer = WIN_LAYER_NORMAL;
 
-      if (get_cardinal (window, window->display->atom_win_layer,
+      if (get_cardinal (window->display,
+                        window->xwindow,
+                        window->display->atom_win_layer,
                         &layer))
         {
           meta_verbose ("%s falling back to _WIN_LAYER hint, layer %ld\n",
@@ -2576,10 +2642,14 @@ update_initial_workspace (MetaWindow *window)
    * is just to be nice when restarting from old Sawfish basically,
    * should nuke it eventually
    */  
-  if (get_cardinal (window, window->display->atom_net_wm_desktop,
+  if (get_cardinal (window->display,
+                    window->xwindow,
+                    window->display->atom_net_wm_desktop,
                     &val))
     window->initial_workspace = val;
-  else if (get_cardinal (window, window->display->atom_win_workspace,
+  else if (get_cardinal (window->display,
+                         window->xwindow,
+                         window->display->atom_win_workspace,
                          &val))
     window->initial_workspace = val;
 
@@ -2625,11 +2695,54 @@ recalc_window_type (MetaWindow *window)
 
   if (old_type != window->type)
     {
+      recalc_window_features (window);
+      
       set_net_wm_state (window);
-  
+
+      /* Update frame */
+      if (window->decorated)
+        meta_window_ensure_frame (window);
+      else
+        meta_window_destroy_frame (window);
+      
       /* update stacking constraints */
       meta_stack_update_layer (window->screen->stack, window);
     }
+}
+
+static void
+recalc_window_features (MetaWindow *window)
+{
+  /* Use MWM hints initially */
+  window->decorated = window->mwm_decorated;
+  window->has_close_func = window->mwm_has_close_func;
+  window->has_minimize_func = window->mwm_has_minimize_func;
+  window->has_maximize_func = window->mwm_has_maximize_func;
+  window->has_move_func = window->mwm_has_move_func;
+  window->has_resize_func = window->mwm_has_resize_func;
+
+  window->has_shade_func = TRUE;
+
+  /* Semantic category overrides the MWM hints */
+  
+  if (window->type == META_WINDOW_DESKTOP ||
+      window->type == META_WINDOW_DOCK)
+    {
+      window->has_close_func = FALSE;
+      window->has_shade_func = FALSE;
+      window->has_move_func = FALSE;
+      window->has_resize_func = FALSE;
+    }
+
+  if (window->type != META_WINDOW_NORMAL)
+    {
+      window->has_minimize_func = FALSE;
+      window->has_maximize_func = FALSE;
+    }
+
+  /* FIXME perhaps should ensure if we don't have a shade func,
+   * we aren't shaded, etc.
+   */
 }
 
 static void
@@ -2792,7 +2905,7 @@ constrain_position (MetaWindow *window,
 
           if (parent)
             {
-              int w;              
+              int w;
 
               meta_window_get_position (parent, &x, &y);
               w = parent->rect.width;

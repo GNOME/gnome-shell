@@ -598,12 +598,11 @@ meta_frames_calc_geometry (MetaFrames        *frames,
     }
 
   title_right_edge = x - props.title_border.right;
-
+  
   /* Now x changes to be position from the left */
   x = props.left_inset;
   
-  if ((flags & META_FRAME_ALLOWS_MENU) &&
-      x < title_right_edge)
+  if (flags & META_FRAME_ALLOWS_MENU)
     {
       fgeom->menu_rect.x = x + props.button_border.left;
       fgeom->menu_rect.y = button_y;
@@ -628,6 +627,30 @@ meta_frames_calc_geometry (MetaFrames        *frames,
     {
       fgeom->close_rect.width = 0;
       fgeom->close_rect.height = 0;
+    }
+
+  /* Check for maximize overlap */
+  if (fgeom->max_rect.width > 0 &&
+      fgeom->max_rect.x < (fgeom->menu_rect.x + fgeom->menu_rect.height))
+    {
+      fgeom->max_rect.width = 0;
+      fgeom->max_rect.height = 0;
+    }
+  
+  /* Check for minimize overlap */
+  if (fgeom->min_rect.width > 0 &&
+      fgeom->min_rect.x < (fgeom->menu_rect.x + fgeom->menu_rect.height))
+    {
+      fgeom->min_rect.width = 0;
+      fgeom->min_rect.height = 0;
+    }
+
+  /* Check for spacer overlap */
+  if (fgeom->spacer_rect.width > 0 &&
+      fgeom->spacer_rect.x < (fgeom->menu_rect.x + fgeom->menu_rect.height))
+    {
+      fgeom->spacer_rect.width = 0;
+      fgeom->spacer_rect.height = 0;
     }
   
   /* We always fill as much vertical space as possible with title rect,
@@ -1035,38 +1058,52 @@ meta_frames_button_press_event (GtkWidget      *widget,
   else if (control == META_FRAME_CONTROL_RESIZE_SE &&
            event->button == 1)
     {
-      int w, h;
-
-      meta_core_get_size (gdk_display,
-                          frame->xwindow,
-                          &w, &h);
+      MetaFrameFlags flags;
       
-      meta_frames_begin_grab (frames, frame,
-                              META_FRAME_STATUS_RESIZING_SE,
-                              event->button,
-                              event->x_root,
-                              event->y_root,
-                              w, h,
-                              event->time);
+      flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
+
+      if (flags & META_FRAME_ALLOWS_RESIZE)
+        {
+          int w, h;
+          
+          meta_core_get_size (gdk_display,
+                              frame->xwindow,
+                              &w, &h);
+          
+          meta_frames_begin_grab (frames, frame,
+                                  META_FRAME_STATUS_RESIZING_SE,
+                                  event->button,
+                                  event->x_root,
+                                  event->y_root,
+                                  w, h,
+                                  event->time);
+        }
     }
   else if (((control == META_FRAME_CONTROL_TITLE ||
              control == META_FRAME_CONTROL_NONE) &&
             event->button == 1) ||
            event->button == 2)
     {
-      int x, y;
-
-      meta_core_get_position (gdk_display,
-                              frame->xwindow,
-                              &x, &y);
+      MetaFrameFlags flags;
       
-      meta_frames_begin_grab (frames, frame,
-                              META_FRAME_STATUS_MOVING,
-                              event->button,
-                              event->x_root,
-                              event->y_root,
-                              x, y,
-                              event->time);
+      flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
+      
+      if (flags & META_FRAME_ALLOWS_MOVE)
+        {
+          int x, y;
+          
+          meta_core_get_position (gdk_display,
+                                  frame->xwindow,
+                                  &x, &y);
+          
+          meta_frames_begin_grab (frames, frame,
+                                  META_FRAME_STATUS_MOVING,
+                                  event->button,
+                                  event->x_root,
+                                  event->y_root,
+                                  x, y,
+                                  event->time);
+        }
     }
   
   return TRUE;

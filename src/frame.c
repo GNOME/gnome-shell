@@ -164,8 +164,7 @@ meta_frame_get_flags (MetaFrame *frame)
 {
   MetaFrameFlags flags;
   
-  flags =
-    META_FRAME_ALLOWS_MENU | META_FRAME_ALLOWS_RESIZE;
+  flags = META_FRAME_ALLOWS_MENU;
   
   if (frame->window->has_close_func)
     flags |= META_FRAME_ALLOWS_DELETE;
@@ -178,6 +177,12 @@ meta_frame_get_flags (MetaFrame *frame)
 
   if (frame->window->has_shade_func)
     flags |= META_FRAME_ALLOWS_SHADE;
+
+  if (frame->window->has_move_func)
+    flags |= META_FRAME_ALLOWS_MOVE;
+
+  if (frame->window->has_resize_func)
+    flags |= META_FRAME_ALLOWS_RESIZE;
   
   if (frame->window->has_focus)
     flags |= META_FRAME_HAS_FOCUS;
