@@ -1616,12 +1616,22 @@ meta_window_get_gravity_position (MetaWindow  *window,
   w = window->rect.width;
   h = window->rect.height;
 
-  if (window->frame == NULL ||
-      /* ignore frame for static gravity */
-      window->size_hints.win_gravity == StaticGravity)
-    frame_extents = window->rect;
+  if (window->size_hints.win_gravity == StaticGravity)
+    {
+      frame_extents = window->rect;
+      if (window->frame)
+        {
+          frame_extents.x = window->frame->rect.x + window->frame->child_x;
+          frame_extents.y = window->frame->rect.y + window->frame->child_y;
+        }
+    }
   else
-    frame_extents = window->frame->rect;
+    {
+      if (window->frame == NULL)
+        frame_extents = window->rect;
+      else
+        frame_extents = window->frame->rect;
+    }
 
   x = frame_extents.x;
   y = frame_extents.y;

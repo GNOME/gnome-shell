@@ -1,10 +1,16 @@
 2001-08-18  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (meta_window_get_gravity_position): hrm, I fixed
+	this wrong the other day. Fixes static gravity when moving
+	windows.
+
+2001-08-18  Havoc Pennington  <hp@pobox.com>
+
 	* src/ui.c (meta_image_window_set_position): also set the current
 	size. Lame hack of the day.
 
 	* src/effects.c (effects_draw_box_animation_timeout): use the
-	delay exposes feature to avoid the scren dirt
+	delay exposes feature to avoid the screen dirt
 
 	* src/ui.c
 	(meta_ui_push_delay_exposes):
