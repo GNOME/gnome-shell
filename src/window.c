@@ -96,6 +96,9 @@ static void meta_window_move_resize_internal (MetaWindow         *window,
                                               int                 w,
                                               int                 h);
 
+static void     ensure_mru_position_after (MetaWindow *window,
+                                           MetaWindow *after_this_one);
+
 
 void meta_window_move_resize_now (MetaWindow  *window);
 
@@ -1715,8 +1718,10 @@ meta_window_show (MetaWindow *window)
   takes_focus_on_map = window_takes_focus_on_map (window);
 
   if ( (!takes_focus_on_map) && (window->display->focus_window != NULL) )
-    meta_window_stack_just_below (window,
-                                  window->display->focus_window);
+    {
+      meta_window_stack_just_below (window, window->display->focus_window);
+      ensure_mru_position_after (window, window->display->focus_window);
+    }
 
   window->focus_despite_user_time = FALSE;
  
@@ -7194,6 +7199,49 @@ meta_window_update_layer (MetaWindow *window)
   else
     meta_stack_update_layer (window->screen->stack, window);
   meta_stack_thaw (window->screen->stack);
+}
+
+/* ensure_mru_position_after ensures that window appears after
+ * below_this_one in the active_workspace's mru_list (i.e. it treats
+ * window as having been less recently used than below_this_one)
+ */
+static void
+ensure_mru_position_after (MetaWindow *window,
+                           MetaWindow *after_this_one)
+{
+  /* This is sort of slow since it runs through the entire list more
+   * than once (especially considering the fact that we expect the
+   * windows of interest to be the first two elements in the list),
+   * but it doesn't matter while we're only using it on new window
+   * map.
+   */
+
+  GList* active_mru_list;
+  GList* window_position;
+  GList* after_this_one_position;
+
+  active_mru_list         = window->screen->active_workspace->mru_list;
+  window_position         = g_list_find (active_mru_list, window);
+  after_this_one_position = g_list_find (active_mru_list, after_this_one);
+
+  /* after_this_one_position is NULL when we switch workspaces, but in
+   * that case we don't need to do any MRU shuffling so we can simply
+   * return.
+   */
+  if (after_this_one_position == NULL)
+    return;
+
+  if (g_list_length (window_position) > g_list_length (after_this_one_position))
+    {
+      window->screen->active_workspace->mru_list =
+        g_list_delete_link (window->screen->active_workspace->mru_list,
+                            window_position);
+
+      window->screen->active_workspace->mru_list =
+        g_list_insert_before (window->screen->active_workspace->mru_list,
+                              after_this_one_position->next,
+                              window);
+    }
 }
 
 void

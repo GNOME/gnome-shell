@@ -1,5 +1,16 @@
 2004-08-05  Elijah Newren  <newren@math.utah.edu>
 
+	Have newly mapped windows that are denied focus appear after the
+	focused window in the alt-tab list.  This allows one to switch to
+	such a window with a single alt-tab press.
+	
+	* src/window.c (ensure_mru_position_after): new function,
+	(meta_window_show): If newly mapped window is denied focus, call
+	ensure_mru_position_after to make the window appear after the
+	focus window in the mru list.
+
+2004-08-05  Elijah Newren  <newren@math.utah.edu>
+
 	* src/window.c (meta_window_stick): prepend window to mru list
 	instead of appending, since making the window sticky should imply
 	that it is the most recently used, not the least recently.  (fixes
