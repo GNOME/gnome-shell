@@ -3,7 +3,8 @@
 	Remove legacy support for Gnome 1 hints, since we deem it unlikely
 	that anyone is running a current metacity with Gnome 1.  The
 	removed hints are _WIN_WORKSPACE, _WIN_LAYER, _WIN_PROTOCOLS,
-	_WIN_SUPPORTING_WM_CHECK, and _WIN_HINTS.
+	_WIN_SUPPORTING_WM_CHECK, and _WIN_HINTS.  Thanks to Ben Jansens
+	for much of this patch.
 
 	* display.c (meta_display_open): remove hints
 
