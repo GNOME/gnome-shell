@@ -718,6 +718,8 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
       rect->height = button_height;
       
       x = rect->x + rect->width + layout->button_border.right;
+
+      *(left_bg_rects[i]) = *rect;
       
       ++i;
     }

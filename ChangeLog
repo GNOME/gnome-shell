@@ -1,3 +1,8 @@
+2002-10-23  Havoc Pennington  <hp@redhat.com>
+
+	* src/theme.c (meta_frame_layout_calc_geometry): initialize the 
+	left button background rectangles.
+
 2002-10-21  Havoc Pennington  <hp@redhat.com>
 
 	Optimizations for managing new windows (do not all take effect if
