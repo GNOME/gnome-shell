@@ -123,6 +123,10 @@ METACITY FEATURES
  - Uses Pango to render text, so has cool i18n capabilities. 
    Supports UTF-8 window titles and such.
 
+ - There are simple animations for actions such as minimization, 
+   to help users see what is happening. Should probably 
+   have a few more of these.
+
 METACITY BUGS, NON-FEATURES, AND CAVEATS
 ===
 
@@ -166,9 +170,6 @@ METACITY BUGS, NON-FEATURES, AND CAVEATS
    windows that have changed their stacking with respect to one 
    another. (But sometimes I don't see the flicker, so 
    I'm not sure.)
-
- - Various operations, such as minimize, maximize, etc., should 
-   have simple animations to make them clearer to users.
 
  - I haven't even read the ICCCM section about colormaps. So if you 
    have an 8-bit display you are basically screwed.

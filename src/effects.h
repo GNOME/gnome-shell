@@ -28,6 +28,9 @@
 #define META_MINIMIZE_ANIMATION_STEPS 16
 #define META_MINIMIZE_ANIMATION_DELAY 20
 
+#define META_SHADE_ANIMATION_STEPS 7
+#define META_SHADE_ANIMATION_DELAY 15
+
 void meta_effects_draw_box_animation (MetaScreen    *screen,
                                       MetaRectangle *initial_rect,
                                       MetaRectangle *destination_rect,

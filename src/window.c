@@ -1064,10 +1064,28 @@ meta_window_shade (MetaWindow  *window)
   meta_verbose ("Shading %s\n", window->desc);
   if (!window->shaded)
     {
-      window->shaded = TRUE;
+      {
+        /* Animation */
+        MetaRectangle starting_size;
+        MetaRectangle titlebar_size;
 
-      meta_window_focus (window, CurrentTime);
+        meta_window_get_outer_rect (window, &starting_size);
+        if (window->frame)
+          starting_size.y += window->frame->child_y;
+        titlebar_size = starting_size;
+        titlebar_size.height = 0;
+
+        meta_effects_draw_box_animation (window->screen,
+                                         &starting_size,
+                                         &titlebar_size,
+                                         META_SHADE_ANIMATION_STEPS,
+                                         META_SHADE_ANIMATION_DELAY);
+      }
+
+      window->shaded = TRUE;
       
+      meta_window_focus (window, CurrentTime);
+
       meta_window_queue_move_resize (window);
       meta_window_queue_calc_showing (window);
 
