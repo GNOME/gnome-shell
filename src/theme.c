@@ -3961,7 +3961,7 @@ meta_theme_set_current (const char *name,
 
   if (new_theme == NULL)
     {
-      meta_warning (_("Failed to load theme \"%s\": %s"),
+      meta_warning (_("Failed to load theme \"%s\": %s\n"),
                     name, err->message);
       g_error_free (err);
     }

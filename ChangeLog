@@ -1,4 +1,12 @@
 2002-02-09  Havoc Pennington  <hp@pobox.com>
+
+	* src/theme.c (meta_theme_set_current): add a newline to an error
+	message
+
+	* src/themes/Gorilla: add Gorilla theme by Jakub Steiner ported to
+	metacity by Kenneth Christiansen
+
+2002-02-09  Havoc Pennington  <hp@pobox.com>
 	
 	* src/theme.c (meta_draw_op_draw_with_env): implement wacky "tile"
 	draw op to lose some of the PNG files in Gorilla theme

@@ -1,6 +1,7 @@
 THEMES=			\
 	Atlanta		\
-	Crux
+	Crux		\
+	Gorilla
 
 THEME_DIR=$(pkgdatadir)/themes
 
