@@ -91,8 +91,7 @@ meta_core_user_move (Display *xdisplay,
   if (window == NULL || window->frame == NULL)
     meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
 
-  window->user_has_moved = TRUE;
-  meta_window_move (window, x, y);
+  meta_window_move (window, TRUE, x, y);
 }
 
 void
@@ -111,8 +110,7 @@ meta_core_user_resize  (Display *xdisplay,
   if (window == NULL || window->frame == NULL)
     meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
 
-  window->user_has_resized = TRUE;
-  meta_window_resize_with_gravity (window, width, height, gravity);
+  meta_window_resize_with_gravity (window, TRUE, width, height, gravity);
 }
 
 void

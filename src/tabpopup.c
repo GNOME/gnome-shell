@@ -61,6 +61,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries)
   GtkWidget *table;
   GList *tmp;
   GtkWidget *frame;
+  int max_label_width;
   
   popup = g_new (MetaTabPopup, 1);
   popup->window = gtk_window_new (GTK_WINDOW_POPUP);
@@ -118,6 +119,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries)
                     3,                     3);
   
 
+  max_label_width = 0;
   top = 0;
   bottom = 1;
   tmp = popup->entries;
@@ -130,6 +132,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries)
       while (tmp && left < width)
         {
           GtkWidget *image;
+          GtkRequisition req;
           
           TabEntry *te;
 
@@ -148,6 +151,12 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries)
                             left, right,           top, bottom,
                             GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL,
                             0,                     0);
+
+          /* Efficiency rules! */
+          gtk_label_set_text (GTK_LABEL (popup->label),
+                              te->title);
+          gtk_widget_size_request (popup->label, &req);
+          max_label_width = MAX (max_label_width, req.width);
           
           tmp = tmp->next;
           
@@ -158,7 +167,14 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries)
       ++top;
       ++bottom;
     }
-      
+
+  /* remove all the temporary text */
+  gtk_label_set_text (GTK_LABEL (popup->label), "");
+
+  gtk_window_set_default_size (GTK_WINDOW (popup->window),
+                               max_label_width + 20 /* random number */,
+                               -1);
+  
   return popup;
 }
 

@@ -862,12 +862,23 @@ find_tab_backward (MetaStack     *stack,
 
 /* This ignores the dock/desktop layers */
 MetaWindow*
-meta_stack_get_tab_next (MetaStack  *stack,
-                         MetaWindow *window,
-                         gboolean    backward)
+meta_stack_get_tab_next (MetaStack     *stack,
+                         MetaWorkspace *workspace,
+                         MetaWindow    *window,
+                         gboolean       backward)
 {
   int i;
 
+  if (workspace && window)
+    {
+      /* This is a paranoia check, because races can happen where
+       * you get a key shortcut or something on a window just as you
+       * are moving workspaces to one the window isn't on
+       */
+      if (!meta_workspace_contains_window (workspace, window))
+        return NULL;
+    }
+  
   if (stack->windows->len == 0)
     return NULL;
 
@@ -881,11 +892,7 @@ meta_stack_get_tab_next (MetaStack  *stack,
           w = g_array_index (stack->windows, Window, i);
 
           if (w == window->xwindow)
-            {
-              MetaWorkspace *workspace;
-
-              workspace = window->screen->active_workspace;
-              
+            {             
               if (backward)
                 return find_tab_backward (stack, workspace, i);
               else
@@ -900,14 +907,15 @@ meta_stack_get_tab_next (MetaStack  *stack,
    * window and we need to wrap around
    */
   if (backward)
-    return find_tab_backward (stack, NULL, 
+    return find_tab_backward (stack, workspace, 
                               stack->windows->len);
   else
-    return find_tab_forward (stack, NULL, -1);
+    return find_tab_forward (stack, workspace, -1);
 }
 
 GSList*
-meta_stack_get_tab_list (MetaStack *stack)
+meta_stack_get_tab_list (MetaStack     *stack,
+                         MetaWorkspace *workspace)
 {
   GSList *list;
   int i;
@@ -918,15 +926,9 @@ meta_stack_get_tab_list (MetaStack *stack)
   while (i < stack->windows->len)
     {
       MetaWindow *window;
-      MetaWorkspace *workspace;
       
       window = meta_display_lookup_x_window (stack->screen->display,
                                              GET_XWINDOW (stack, i));
-
-      if (window)
-        workspace = window->screen->active_workspace;
-      else
-        workspace = NULL;
       
       if (window && IN_TAB_CHAIN (window) &&
           (workspace == NULL ||

@@ -1,3 +1,17 @@
+2001-08-28  Havoc Pennington  <hp@pobox.com>
+
+        Unbreak tab popup a bit.
+	
+	* src/stack.c (meta_stack_get_tab_list): add workspace argument
+	(meta_stack_get_tab_next): add workspace argument
+
+	* src/window.c: implement recording of the last user-initiated
+	window position, so we can magically handle moving panels around
+	really nicely.
+
+	* src/wm-tester/main.c (set_up_icon_windows): fix to use new GTK
+	API
+
 2001-08-24  Havoc Pennington  <hp@pobox.com>
 
 	* src/window.c (constrain_position): force fullscreen windows to

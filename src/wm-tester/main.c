@@ -44,7 +44,7 @@ main (int argc, char **argv)
   gboolean do_evil;
   gboolean do_icon_windows;
   
-  gtk_init (&argc, &argv);
+  gtk_init (&argc, &argv);  
   
   do_evil = FALSE;
   do_icon_windows = FALSE;
@@ -185,8 +185,6 @@ set_up_icon_windows (void)
       c = gtk_button_new_with_label ("Icon window");
       gtk_container_add (GTK_CONTAINER (w), c);
 
-      gtk_widget_realize (w);
-
       icons = NULL;
 
       pix = gtk_widget_render_icon (w,
@@ -213,9 +211,8 @@ set_up_icon_windows (void)
                                         NULL);
           icons = g_list_append (icons, pix);
         }
-      
-      if (!gdk_window_set_icon_list (w->window, icons))
-        g_warning ("_NET_WM_ICON not supported?");
+
+      gtk_window_set_icon_list (GTK_WINDOW (w), icons);
 
       g_list_foreach (icons, (GFunc) g_object_unref, NULL);
       g_list_free (icons);

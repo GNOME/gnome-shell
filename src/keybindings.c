@@ -581,6 +581,7 @@ process_keyboard_move_grab (MetaDisplay *display,
     case XK_Escape:
       /* End move and restore to original position */
       meta_window_move_resize (display->grab_window,
+                               TRUE,
                                display->grab_initial_window_pos.x,
                                display->grab_initial_window_pos.y,
                                display->grab_initial_window_pos.width,
@@ -592,7 +593,7 @@ process_keyboard_move_grab (MetaDisplay *display,
     }
 
   if (handled)
-    meta_window_move (window, x, y);
+    meta_window_move (window, TRUE, x, y);
 
   return handled;
 }
@@ -832,6 +833,7 @@ handle_tab_forward (MetaDisplay *display,
   if (display->focus_window != NULL)
     {
       window = meta_stack_get_tab_next (display->focus_window->screen->stack,
+                                        display->focus_window->screen->active_workspace,
                                         display->focus_window,
                                         FALSE);
     }
@@ -849,7 +851,8 @@ handle_tab_forward (MetaDisplay *display,
       if (screen)
         {
           window = meta_stack_get_tab_next (screen->stack,
-                                            event_window,
+                                            screen->active_workspace,
+                                            NULL,
                                             FALSE);
         }
     }
@@ -890,6 +893,7 @@ handle_tab_backward (MetaDisplay *display,
   if (display->focus_window != NULL)
     {
       window = meta_stack_get_tab_next (display->focus_window->screen->stack,
+                                        display->focus_window->screen->active_workspace,
                                         display->focus_window,
                                         TRUE);
     }
@@ -907,7 +911,8 @@ handle_tab_backward (MetaDisplay *display,
       if (screen)
         {
           window = meta_stack_get_tab_next (screen->stack,
-                                            event_window,
+                                            screen->active_workspace,
+                                            NULL,
                                             TRUE);
         }
     }
@@ -940,29 +945,36 @@ handle_focus_previous (MetaDisplay *display,
                        gpointer     data)
 {
   MetaWindow *window;
-
+  MetaScreen *screen;      
+  
   meta_verbose ("Focus previous window\n");
+
+  screen = meta_display_screen_for_root (display,
+                                         event->xkey.root);
+
+  if (screen == NULL)
+    return;
   
   window = display->prev_focus_window;
 
+  if (window &&
+      !meta_workspace_contains_window (screen->active_workspace,
+                                       window))
+    window = NULL;
+  
   if (window == NULL)
     {
-      /* Pick first window in tab order */
-      MetaScreen *screen;
-      
-      screen = meta_display_screen_for_root (display,
-                                             event->xkey.root);
-      
-      /* We get the screen because event_window may be NULL,
-       * in which case we can't use event_window->screen
-       */
-      if (screen)
-        {
-          window = meta_stack_get_tab_next (screen->stack,
-                                            event_window,
-                                            TRUE);
-        }
+      /* Pick first window in tab order */      
+      window = meta_stack_get_tab_next (screen->stack,
+                                        screen->active_workspace,
+                                        NULL,
+                                        TRUE);
     }
+
+  if (window &&
+      !meta_workspace_contains_window (screen->active_workspace,
+                                       window))
+    window = NULL;
   
   if (window)
     {

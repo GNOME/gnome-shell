@@ -156,8 +156,7 @@ struct _MetaWindow
   guint has_focus : 1;
   
   /* Track whether the user has ever manually modified
-   * the window; if so, we remove some constraints
-   * that exist on program modifications.
+   * the window; if so, we can use the saved user size/pos
    */
   guint user_has_resized : 1;
   guint user_has_moved : 1;
@@ -191,7 +190,7 @@ struct _MetaWindow
    * is withdrawing the window.
    */
   int unmaps_pending;
-
+  
   /* The size we set the window to last (i.e. what we believe
    * to be its actual size on the server). The x, y are
    * the actual server-side x,y so are relative to the frame
@@ -205,6 +204,17 @@ struct _MetaWindow
    * above.
    */
   MetaRectangle saved_rect;
+
+  /* This is the geometry the window had after the last user-initiated
+   * move/resize operations. We use this whenever we are moving the
+   * implicitly (for example, if we move to avoid a panel, we
+   * can snap back to this position if the panel moves again)
+   *
+   * Position valid if user_has_moved, size valid if user_has_resized
+   *
+   * Position always in root coords, unlike window->rect
+   */
+  MetaRectangle user_rect;
   
   /* Requested geometry */
   int border_width;
@@ -235,17 +245,21 @@ void        meta_window_unstick            (MetaWindow  *window);
 
 /* args to move are window pos, not frame pos */
 void        meta_window_move               (MetaWindow  *window,
+                                            gboolean     user_op,
                                             int          root_x_nw,
                                             int          root_y_nw);
 void        meta_window_resize             (MetaWindow  *window,
+                                            gboolean     user_op,
                                             int          w,
                                             int          h);
 void        meta_window_move_resize        (MetaWindow  *window,
+                                            gboolean     user_op,
                                             int          root_x_nw,
                                             int          root_y_nw,
                                             int          w,
                                             int          h);
-void        meta_window_resize_with_gravity (MetaWindow *window,
+void        meta_window_resize_with_gravity (MetaWindow  *window,
+                                             gboolean     user_op,
                                              int          w,
                                              int          h,
                                              int          gravity);
@@ -257,6 +271,9 @@ void        meta_window_queue_move_resize  (MetaWindow  *window);
 
 /* this gets root coords */
 void        meta_window_get_position       (MetaWindow  *window,
+                                            int         *x,
+                                            int         *y);
+void        meta_window_get_user_position  (MetaWindow  *window,
                                             int         *x,
                                             int         *y);
 /* gets position we need to set to stay in current position,

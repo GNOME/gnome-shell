@@ -93,10 +93,13 @@ MetaWindow* meta_stack_get_above  (MetaStack  *stack,
 MetaWindow* meta_stack_get_below  (MetaStack  *stack,
                                    MetaWindow *window);
 
-MetaWindow* meta_stack_get_tab_next (MetaStack  *stack,
-                                     MetaWindow *window,
-                                     gboolean    backward);
-GSList*     meta_stack_get_tab_list (MetaStack  *stack);
+MetaWindow* meta_stack_get_tab_next (MetaStack     *stack,
+                                     MetaWorkspace *workspace,
+                                     MetaWindow    *window,
+                                     gboolean       backward);
+GSList*     meta_stack_get_tab_list (MetaStack     *stack,
+                                     MetaWorkspace *workspace);
+
 /* -1 if a < b, etc. */
 int         meta_stack_windows_cmp  (MetaStack  *stack,
                                      MetaWindow *window_a,
