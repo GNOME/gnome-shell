@@ -1759,12 +1759,21 @@ meta_frames_expose_event            (GtkWidget           *widget,
       if (flags & META_FRAME_HAS_FOCUS)
         {
           GdkPixbuf *gradient;
+          GdkColor selected_faded;
+          const GdkColor *bg = &widget->style->bg[GTK_STATE_NORMAL];
 
+          /* alpha blend selection color into normal color */
+#define ALPHA 25000
+          selected_faded = widget->style->bg[GTK_STATE_SELECTED];
+          selected_faded.red = selected_faded.red + (((bg->red - selected_faded.red) * ALPHA + 32768) >> 16);
+          selected_faded.green = selected_faded.green + (((bg->green - selected_faded.green) * ALPHA + 32768) >> 16);
+          selected_faded.blue = selected_faded.blue + (((bg->blue - selected_faded.blue) * ALPHA + 32768) >> 16);
+          
           layout_gc = widget->style->fg_gc[GTK_STATE_SELECTED];
 
           gradient = meta_theme_get_gradient (META_GRADIENT_DIAGONAL,
+                                              &selected_faded,
                                               &widget->style->bg[GTK_STATE_SELECTED],
-                                              &widget->style->bg[GTK_STATE_NORMAL],
                                               fgeom.title_rect.width,
                                               fgeom.title_rect.height);
 
