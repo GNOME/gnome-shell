@@ -1,14 +1,14 @@
 # Czech translation of Metacity
-# Copyright (C) 2003 Miloslav Trmac <mitr@volny.cz>
+# Copyright (C) 2003, 2004, 2005 Miloslav Trmac <mitr@volny.cz>
 # This file is distributed under the same license as the metacity package.
-# Miloslav Trmac <mitr@volny.cz>, 2002, 2003.
+# Miloslav Trmac <mitr@volny.cz>, 2002, 2003, 2004, 2005.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-24 10:50-0700\n"
-"PO-Revision-Date: 2004-12-25 15:56+0100\n"
+"POT-Creation-Date: 2005-01-28 12:42+0100\n"
+"PO-Revision-Date: 2005-01-29 15:42+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -223,7 +223,7 @@ msgstr "Přesunout na plochu _nahoře"
 msgid "Move to Workspace _Down"
 msgstr "Přesunout na plochu _dole"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
 msgstr "Plocha %d"
@@ -499,13 +499,9 @@ msgid ""
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
-msgstr ""
-"Je-li true, bude metacity dávat uživateli méně zpětné vazby a pocitu \"přímé "
-"manipulace\" používáním drátových rámů, nepoužíváním animací nebo jinými "
-"způsoby. To je pro mnoho uživatelů výrazné snížení použitelnosti, ale může "
-"umožnit fungování starých aplikací a terminálových serverů v situacích, kde "
-"by jindy byly nepraktické."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages"
+msgstr "Je-li true, bude metacity dávat uživateli méně zpětné vazby a pocitu \"přímé manipulace\" používáním drátových rámů, nepoužíváním animací nebo jinými způsoby. To je pro mnoho uživatelů výrazné snížení použitelnosti, ale může umožnit fungování starých aplikací a terminálových serverů v situacích, kde by jindy byly nepraktické. Funkce drátových rámů je ale zakázána, když je povoleno zpřístupnění, abychom se vyhnuli divným chybám prostředí pracovní plochy"
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -1900,17 +1896,17 @@ msgstr "Režim aktivace oken"
 msgid "Window title font"
 msgstr "Písmo nadpisu oken"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Klíč GConf \"%s\" je nastaven na neplatný typ\n"
 
-#: src/prefs.c:843
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1919,17 +1915,17 @@ msgstr ""
 "\"%s\" nalezené v konfigurační databázi není platná hodnota pro modifikátor "
 "tlačítka myši\n"
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Klíč GConf '%s' je nastaven na neplatnou hodnotu\n"
 
-#: src/prefs.c:994
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Nemohu parsovat popis písma \"%s\" v klíči GConf %s\n"
 
-#: src/prefs.c:1179
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1938,7 +1934,7 @@ msgstr ""
 "%d uložené v klíči GConf %s není rozumný počet ploch, aktuální maximum je %"
 "d\n"
 
-#: src/prefs.c:1239
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1946,17 +1942,17 @@ msgstr ""
 "Bylo zakázáno obcházení chyb aplikací. Některé aplikace se možná nebudou "
 "chovat správně.\n"
 
-#: src/prefs.c:1304
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d uloženo v klíči GConf %s je mimo rozsah 0 až %d\n"
 
-#: src/prefs.c:1425
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Chyba při nastavování počtu ploch na %d: %s\n"
 
-#: src/prefs.c:1669
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1965,7 +1961,7 @@ msgstr ""
 "\"%s\" nalezené v konfigurační databázi není platná hodnota pro klávesovou "
 "zkratku \"%s\"\n"
 
-#: src/prefs.c:2023
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Chyba při nastavování jména plochy %d na \"%s\": %s\n"
@@ -3088,7 +3084,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikace nastavila neplatný _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:4916
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3104,7 +3100,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5587
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
