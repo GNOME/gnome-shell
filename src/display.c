@@ -1253,6 +1253,18 @@ event_callback (XEvent   *event,
                     meta_verbose ("Don't know about workspace %d\n", space);
                 }
               else if (event->xclient.message_type ==
+                       display->atom_net_number_of_desktops)
+                {
+                  int num_spaces;
+              
+                  num_spaces = event->xclient.data.l[0];
+              
+                  meta_verbose ("Request to set number of workspaces to %d\n",
+                                num_spaces);
+
+                  meta_prefs_set_num_workspaces (num_spaces);
+                }
+              else if (event->xclient.message_type ==
                        display->atom_metacity_restart_message)
                 {
                   meta_verbose ("Received restart request\n");
@@ -1497,6 +1509,26 @@ meta_event_mode_to_string (int m)
   return mode;
 }
 
+const char*
+stack_mode_to_string (int mode)
+{
+  switch (mode)
+    {
+    case Above:
+      return "Above";
+    case Below:
+      return "Below";
+    case TopIf:
+      return "TopIf";
+    case BottomIf:
+      return "BottomIf";
+    case Opposite:
+      return "Opposite";      
+    }
+
+  return "Unknown";
+}
+
 static char*
 key_event_description (Display *xdisplay,
                        XEvent  *event)
@@ -1622,7 +1654,7 @@ meta_spew_event (MetaDisplay *display,
       break;
     case ConfigureRequest:
       name = "ConfigureRequest";
-      extra = g_strdup_printf ("parent: 0x%lx window: 0x%lx x: %d %sy: %d %sw: %d %sh: %d %sborder: %d %s",
+      extra = g_strdup_printf ("parent: 0x%lx window: 0x%lx x: %d %sy: %d %sw: %d %sh: %d %sborder: %d %sabove: %lx %sstackmode: %lx %s",
                                event->xconfigurerequest.parent,
                                event->xconfigurerequest.window,
                                event->xconfigurerequest.x,
@@ -1639,7 +1671,13 @@ meta_spew_event (MetaDisplay *display,
                                CWHeight ? "" : "(unset) ",
                                event->xconfigurerequest.border_width,
                                event->xconfigurerequest.value_mask &
-                               CWBorderWidth ? "" : "(unset)");
+                               CWBorderWidth ? "" : "(unset)",
+                               event->xconfigurerequest.above,
+                               event->xconfigurerequest.value_mask &
+                               CWSibling ? "" : "(unset)",
+                               stack_mode_to_string (event->xconfigurerequest.detail),
+                               event->xconfigurerequest.value_mask &
+                               CWStackMode ? "" : "(unset)");
       break;
     case GravityNotify:
       name = "GravityNotify";

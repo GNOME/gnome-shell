@@ -1,5 +1,15 @@
 2002-03-10  Havoc Pennington  <hp@pobox.com>
 
+	* src/display.c (event_callback): support _NET_NUMBER_OF_DESKTOPS
+	message so you can change number of desktops with the pager
+
+	* src/prefs.c (meta_prefs_set_num_workspaces): new function
+
+	* src/display.c (meta_spew_event): print stacking aspects of
+	configure requests
+
+2002-03-10  Havoc Pennington  <hp@pobox.com>
+
 	* src/screen.c (set_supported_hint): we didn't claim to support 
 	_NET_ACTIVE_WINDOW so gtk_window_present() didn't work. Mumble.
 	Only worked with tasklist because libwnck didn't check for 

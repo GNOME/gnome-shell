@@ -56,6 +56,8 @@ int                         meta_prefs_get_titlebar_font_size (void);
 int                         meta_prefs_get_num_workspaces     (void);
 gboolean                    meta_prefs_get_application_based  (void);
 
+void meta_prefs_set_num_workspaces (int n_workspaces);
+
 #endif
 
 

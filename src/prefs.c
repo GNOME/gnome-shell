@@ -614,3 +614,31 @@ meta_preference_to_string (MetaPreference pref)
 
   return "(unknown)";
 }
+
+void
+meta_prefs_set_num_workspaces (int n_workspaces)
+{
+  GError *err;
+  
+  if (default_client == NULL)
+    return;
+
+  if (n_workspaces < 1)
+    n_workspaces = 1;
+  if (n_workspaces > MAX_REASONABLE_WORKSPACES)
+    n_workspaces = MAX_REASONABLE_WORKSPACES;
+  
+  err = NULL;
+  gconf_client_set_int (default_client,
+                        KEY_NUM_WORKSPACES,
+                        n_workspaces,
+                        &err);
+
+  if (err)
+    {
+      meta_warning (_("Error setting number of workspaces to %d: %s\n"),
+                    num_workspaces,
+                    err->message);
+      g_error_free (err);
+    }
+}
