@@ -2091,7 +2091,7 @@ meta_change_button_grab (MetaDisplay *display,
       result = meta_error_trap_pop (display);
 
       if (result != Success)
-        meta_warning ("Failed to grab button %d with mask 0x%x for window 0x%lx error code %d\n",
+        meta_verbose ("Failed to grab button %d with mask 0x%x for window 0x%lx error code %d\n",
                       button, modmask | ignored_mask, xwindow, result);
       
       ++ignored_mask;

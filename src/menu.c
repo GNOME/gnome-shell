@@ -281,7 +281,7 @@ meta_window_menu_new   (MetaFrames         *frames,
 
   if (ops & META_MENU_OP_WORKSPACES)
     {
-      meta_warning ("Creating %d-workspace menu current %d\n",
+      meta_verbose ("Creating %d-workspace menu current space %d\n",
                     n_workspaces, active_workspace);
       
       if (n_workspaces > 0)

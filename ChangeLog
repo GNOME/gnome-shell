@@ -1,3 +1,14 @@
+2002-03-06  Havoc Pennington  <hp@pobox.com>
+
+	* src/core.c (meta_core_get_grab_frame): add some assertions
+
+	* src/menu.c (meta_window_menu_new): make another warning 
+	into a verbose
+
+	* src/display.c (meta_change_button_grab): use verbose rather than
+	warning to log failures to grab button, since these are typically
+	BadWindow from a destroyed window.
+
 2002-03-06  Havoc Pennington  <hp@redhat.com>
 
 	* src/frames.c (meta_frames_manage_window): use hash_table_replace
