@@ -1,3 +1,9 @@
+2002-06-09  Havoc Pennington  <hp@pobox.com>
+
+	* src/frames.c (meta_frames_button_press_event): don't raise/focus
+	the window if minimize/close are clicked, patch from Gaute
+	Lindkvist #75460
+
 2002-06-08  Havoc Pennington  <hp@pobox.com>
 
         Cleanups to workspace popup patch. Space before all parens

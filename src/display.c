@@ -1000,12 +1000,19 @@ event_callback (XEvent   *event,
           if (unmodified ||
               event->xbutton.button == 1)
             {
-              meta_window_raise (window);
-
-              meta_topic (META_DEBUG_FOCUS,
-                          "Focusing %s due to unmodified button %d press (display.c)\n",
-                          window->desc, event->xbutton.button);
-              meta_window_focus (window, event->xbutton.time);
+              if (!frame_was_receiver)
+                {
+                  /* don't focus if frame received, will be
+                   * done in frames.c if the click wasn't on
+                   * the minimize/close button.
+                   */
+                  meta_window_raise (window);
+                  
+                  meta_topic (META_DEBUG_FOCUS,
+                              "Focusing %s due to unmodified button %d press (display.c)\n",
+                              window->desc, event->xbutton.button);
+                  meta_window_focus (window, event->xbutton.time);
+                }
 
               if (!frame_was_receiver && unmodified)
                 {

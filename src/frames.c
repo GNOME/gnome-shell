@@ -1005,7 +1005,9 @@ meta_frames_button_press_event (GtkWidget      *widget,
   if (control == META_FRAME_CONTROL_CLIENT_AREA)
     return FALSE; /* not on the frame, just passed through from client */
 
-  if (event->button == 1)
+  if (event->button == 1 &&
+      !(control == META_FRAME_CONTROL_MINIMIZE ||
+        control == META_FRAME_CONTROL_DELETE))
     {
       meta_core_user_raise (gdk_display,
                             frame->xwindow);
