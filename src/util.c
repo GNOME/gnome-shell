@@ -153,6 +153,22 @@ meta_set_replace_current_wm (gboolean setting)
   replace_current = setting;
 }
 
+static int
+utf8_fputs (const char *str,
+            FILE       *f)
+{
+  char *l;
+
+  l = g_locale_from_utf8 (str, -1, NULL, NULL, NULL);
+
+  if (l == NULL)
+    fputs (str, f); /* just print it anyway, better than nothing */
+  else
+    fputs (l, f);
+
+  g_free (l);
+}
+
 void
 meta_debug_spew (const char *format, ...)
 {
@@ -172,8 +188,8 @@ meta_debug_spew (const char *format, ...)
   out = logfile ? logfile : stderr;
   
   if (no_prefix == 0)
-    fputs ("Window manager: ", out);
-  fputs (str, out);
+    utf8_fputs (_("Window manager: "), out);
+  utf8_fputs (str, out);
 
   fflush (out);
   
@@ -199,8 +215,8 @@ meta_verbose (const char *format, ...)
   out = logfile ? logfile : stderr;
   
   if (no_prefix == 0)
-    fputs ("Window manager: ", out);
-  fputs (str, out);
+    utf8_fputs ("Window manager: ", out);
+  utf8_fputs (str, out);
 
   fflush (out);
   
@@ -265,7 +281,7 @@ meta_topic (MetaDebugTopic topic,
 
   if (no_prefix == 0)
     fprintf (out, "%s: ", topic_name (topic));
-  fputs (str, out);
+  utf8_fputs (str, out);
   
   fflush (out);
   
@@ -288,8 +304,8 @@ meta_bug (const char *format, ...)
   out = logfile ? logfile : stderr;
   
   if (no_prefix == 0)
-    fputs ("Bug in window manager: ", out);
-  fputs (str, out);
+    utf8_fputs (_("Bug in window manager: "), out);
+  utf8_fputs (str, out);
 
   fflush (out);
   
@@ -317,8 +333,8 @@ meta_warning (const char *format, ...)
   out = logfile ? logfile : stderr;
   
   if (no_prefix == 0)
-    fputs ("Window manager warning: ", out);
-  fputs (str, out);
+    utf8_fputs (_("Window manager warning: "), out);
+  utf8_fputs (str, out);
   
   g_free (str);
 }
@@ -339,8 +355,8 @@ meta_fatal (const char *format, ...)
   out = logfile ? logfile : stderr;
   
   if (no_prefix == 0)
-    fputs ("Window manager error: ", out);
-  fputs (str, out);
+    utf8_fputs (_("Window manager error: "), out);
+  utf8_fputs (str, out);
 
   fflush (out);
   

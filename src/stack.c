@@ -264,6 +264,9 @@ group_member_is_fullscreen (MetaWindow *window)
   MetaGroup *group;
   GSList *tmp;
   gboolean retval;
+
+  if (window->fullscreen)
+    return TRUE;
   
   group = meta_window_get_group (window);
   if (group == NULL)

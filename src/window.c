@@ -3196,6 +3196,42 @@ meta_window_configure_request (MetaWindow *window,
           break;
         }
     }      
+
+  /* If we went full-size for an undecorated window, then enter
+   * fullscreen mode.  A hack for lame clients.
+   */
+  if (window->has_fullscreen_func && !window->decorated &&
+      !window->maximized)
+    {
+      const MetaXineramaScreenInfo *xinerama;
+      MetaRectangle outer;
+
+      xinerama = meta_screen_get_xinerama_for_window (window->screen,
+                                                      window);
+      
+      meta_window_get_outer_rect (window, &outer);
+      
+      if (outer.width >= xinerama->width &&
+          outer.height >= xinerama->height)
+        meta_window_make_fullscreen (window);
+      else
+        {
+          meta_topic (META_DEBUG_GEOMETRY,
+                      "Did not fullscreen %s size %dx%d with xinerama %dx%d\n",
+                      window->desc,
+                      outer.width, outer.height,
+                      xinerama->width, xinerama->height);
+        }
+    }
+  else
+    {
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "Did not fullscreen %s has_fullscreen = %d decorated = %d maximized = %d\n", 
+                  window->desc,
+                  window->has_fullscreen_func,
+                  window->decorated,
+                  window->maximized);
+    }
   
   return TRUE;
 }
@@ -5226,7 +5262,30 @@ recalc_window_features (MetaWindow *window)
   window->has_minimize_func = window->mwm_has_minimize_func;
   window->has_maximize_func = window->mwm_has_maximize_func;
   window->has_move_func = window->mwm_has_move_func;
-  window->has_resize_func = window->mwm_has_resize_func;
+    
+  window->has_resize_func = TRUE;  
+
+  /* If min_size == max_size, then don't allow resize */
+  if (window->size_hints.min_width == window->size_hints.max_width &&
+      window->size_hints.min_height == window->size_hints.max_height)
+    window->has_resize_func = FALSE;
+  else if (!window->mwm_has_resize_func)
+    {
+      /* We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
+       * authoritative source for that info. Some apps such as mplayer or
+       * xine disable resize via MWM but not WM_NORMAL_HINTS, but that
+       * leads to e.g. us not fullscreening their windows.  Apps that set
+       * MWM but not WM_NORMAL_HINTS are basically broken. We complain
+       * about these apps but make them work.
+       */
+      
+      meta_warning (_("Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"),
+                    window->desc,
+                    window->size_hints.min_width,
+                    window->size_hints.min_height,
+                    window->size_hints.max_width,
+                    window->size_hints.max_height);
+    }
 
   window->has_shade_func = TRUE;
   window->has_fullscreen_func = TRUE;
@@ -5277,27 +5336,30 @@ recalc_window_features (MetaWindow *window)
       window->has_move_func = FALSE;
       window->has_resize_func = FALSE;
       window->has_maximize_func = FALSE;
-    }
-  
-  /* If min_size == max_size, then don't allow resize */
-  if (window->size_hints.min_width == window->size_hints.max_width &&
-      window->size_hints.min_height == window->size_hints.max_height)
-    window->has_resize_func = FALSE;
-  
-  /* don't allow fullscreen if we can't resize, unless the size
-   * is entire screen size (kind of broken, because we
-   * actually fullscreen to xinerama head size not screen size)
-   */
-  if (!window->has_resize_func)
-    {
-      window->has_maximize_func = FALSE;
+    }  
 
+  if (!window->has_resize_func)
+    {      
+      window->has_maximize_func = FALSE;
+      
+      /* don't allow fullscreen if we can't resize, unless the size
+       * is entire screen size (kind of broken, because we
+       * actually fullscreen to xinerama head size not screen size)
+       */
       if (window->size_hints.min_width == window->screen->width &&
           window->size_hints.min_height == window->screen->height &&
           !window->decorated)
         ; /* leave fullscreen available */
       else
         window->has_fullscreen_func = FALSE;
+
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Window %s not resizable, maximizable = %d fullscreenable = %d min size %dx%d max size %dx%d\n",
+                  window->desc, window->has_maximize_func, window->has_fullscreen_func,
+                  window->size_hints.min_width,
+                  window->size_hints.min_height,
+                  window->size_hints.max_width,
+                  window->size_hints.max_height);
     }
 
   /* no shading if not decorated */
