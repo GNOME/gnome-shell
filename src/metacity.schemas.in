@@ -71,8 +71,8 @@
          <short>Action on title bar double-click</short>
          <long>
 	  This option determines the effects of double-clicking on the
-	  title bar.  Current valid options are 'toggle_shade', which will
-	  shade/unshade the window, and 'toggle_maximize' which will
+	  title bar.  Current valid options are 'toggle_shaded', which will
+	  shade/unshade the window, and 'toggle_maximized' which will
 	  maximize/unmaximize the window.
          </long>
       </locale>
@@ -426,7 +426,7 @@ you set
       <type>string</type>
       <default>disabled</default>
       <locale name="C">
-         <short>Toggle whether the window is on all workspaces</short>
+         <short>Toggle window on all workspaces</short>
          <long>
           The keybinding used to toggle whether the window is on all 
           workspaces or just one.
@@ -823,7 +823,7 @@ you set
       <type>string</type>
       <!-- no default for this one -->
       <locale name="C">
-         <short>Raise window if obscured, lowers it otherwise</short>
+         <short>Raise obscured window, otherwise lower</short>
          <long>
             This keybinding changes whether a window is above or below
             other windows. If the window is covered by another window, it raises
@@ -888,6 +888,51 @@ you set
       </locale>
     </schema>
 
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/maximize_vertically</key>
+      <applyto>/apps/metacity/window_keybindings/maximize_vertically</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <!-- no default for this one -->
+      <locale name="C">
+         <short>Maximize window vertically</short>
+         <long>
+            This keybinding resizes a window to fill available vertical space.
+
+            The format looks like "&lt;Control&gt;a" or
+            "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+            The parser is fairly liberal and allows lower or upper case,
+            and also abbreviations such as "&lt;Ctl&gt;" and
+            "&lt;Ctrl&gt;". If you set the option to the special string
+            "disabled", then there will be no keybinding for this
+            action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/maximize_horizontally</key>
+      <applyto>/apps/metacity/window_keybindings/maximize_horizontally</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <!-- no default for this one -->
+      <locale name="C">
+         <short>Maximize window horizontally</short>
+         <long>
+            This keybinding resizes a window to fill available horizontal space.
+
+            The format looks like "&lt;Control&gt;a" or
+            "&lt;Shift&gt;&lt;Alt&gt;F1.
+
+            The parser is fairly liberal and allows lower or upper case,
+            and also abbreviations such as "&lt;Ctl&gt;" and
+            "&lt;Ctrl&gt;". If you set the option to the special string
+            "disabled", then there will be no keybinding for this
+            action.
+         </long>
+      </locale>
+    </schema>
 
     <!-- Global Keybindings -->
 
@@ -899,7 +944,7 @@ you set
       <type>string</type>
       <default>&lt;Alt&gt;Tab</default>
       <locale name="C">
-         <short>Move focus between windows using popup display</short>
+         <short>Move between windows with popup</short>
          <long>
           The keybinding used to move focus between windows, using 
           a popup window.
@@ -950,7 +995,7 @@ you set
       <type>string</type>
       <default>&lt;Control&gt;&lt;Alt&gt;Tab</default>
       <locale name="C">
-         <short>Move focus between panels and the desktop using popup display</short>
+         <short>Move between panels and the desktop with popup</short>
          <long>
           The keybinding used to move focus between panels and 
           the desktop, using a popup window.
@@ -974,7 +1019,7 @@ you set
       <type>string</type>
       <default>disabled</default>
       <locale name="C">
-         <short>Move focus backwards between panels and the desktop using popup display</short>
+         <short>Move backwards between panels and the desktop with popup</short>
          <long>
           The keybinding used to move focus backwards between panels
           and the desktop, using a popup window.
@@ -998,7 +1043,7 @@ you set
       <type>string</type>
       <default>&lt;Alt&gt;Escape</default>
       <locale name="C">
-         <short>Move focus between windows immediately</short>
+         <short>Move between windows immediately</short>
          <long>
           The keybinding used to move focus between windows without 
           a popup window.
@@ -1024,7 +1069,7 @@ you set
       <type>string</type>
       <default>disabled</default>
       <locale name="C">
-         <short>Move focus backwards between windows immediately</short>
+         <short>Move backwards between windows immediately</short>
          <long>
           The keybinding used to move focus backwards between windows
           without a popup window. Holding "shift" together with this
@@ -1049,7 +1094,7 @@ you set
       <type>string</type>
       <default>&lt;Control&gt;&lt;Alt&gt;Escape</default>
       <locale name="C">
-         <short>Move focus between panels and the desktop immediately</short>
+         <short>Move between panels and the desktop immediately</short>
          <long>
           The keybinding used to move focus between panels and 
           the desktop, without a popup window.
@@ -1073,7 +1118,7 @@ you set
       <type>string</type>
       <default>&lt;Control&gt;&lt;Alt&gt;Escape</default>
       <locale name="C">
-         <short>Move focus backward between panels and the desktop immediately</short>
+         <short>Move backward between panels and the desktop immediately</short>
          <long>
           The keybinding used to move focus backwards between panels and 
           the desktop, without a popup window.
@@ -1461,7 +1506,7 @@ you set
       <type>string</type>
       <default>&lt;Control&gt;&lt;Alt&gt;Up</default>
       <locale name="C">
-         <short>Switch to workspace above the current space</short>
+         <short>Switch to workspace above this one</short>
          <long>
           The keybinding that switches to the workspace above
           the current workspace.
@@ -1486,7 +1531,7 @@ you set
       <type>string</type>
       <default>&lt;Control&gt;&lt;Alt&gt;Down</default>
       <locale name="C">
-         <short>Switch to workspace below the current space</short>
+         <short>Switch to workspace below this one</short>
          <long>
           The keybinding that switches to the workspace below
           the current workspace.

@@ -2621,6 +2621,88 @@ meta_window_move_resize_now (MetaWindow  *window)
                            window->rect.height);
 }
 
+static void
+check_maximize_to_xinerama (MetaWindow                   *window,
+                            const MetaXineramaScreenInfo *xinerama)
+{
+  /* If we now fill the screen, maximize.
+   * the point here is that fill horz + fill vert = maximized
+   */
+  MetaRectangle rect;
+
+  if (!window->has_maximize_func)
+    return;
+  
+  meta_window_get_outer_rect (window, &rect);
+
+  if ( rect.x >= xinerama->x_origin &&
+       rect.y >= xinerama->y_origin &&
+       (((xinerama->width - xinerama->x_origin) - rect.width) <
+        window->size_hints.width_inc) &&
+       (((xinerama->height - xinerama->y_origin) - rect.height) <
+        window->size_hints.height_inc) )
+    meta_window_maximize (window);
+}
+
+void
+meta_window_fill_horizontal (MetaWindow  *window)
+{
+  const MetaXineramaScreenInfo *xinerama;
+  int x, y, w, h;
+  
+  meta_window_get_user_position (window, &x, &y);
+
+  w = window->rect.width;
+  h = window->rect.height;
+  
+  xinerama = meta_screen_get_xinerama_for_window (window->screen,
+                                                  window);
+
+
+  x = xinerama->x_origin;
+  w = xinerama->width;
+  
+  if (window->frame != NULL)
+    {
+      x += window->frame->child_x;
+      w -= (window->frame->child_x + window->frame->right_width);
+    }
+  
+  meta_window_move_resize (window, TRUE,
+                           x, y, w, h);
+
+  check_maximize_to_xinerama (window, xinerama);
+}
+
+void
+meta_window_fill_vertical (MetaWindow  *window)
+{
+  const MetaXineramaScreenInfo *xinerama;
+  int x, y, w, h;
+  
+  meta_window_get_user_position (window, &x, &y);
+
+  w = window->rect.width;
+  h = window->rect.height;
+  
+  xinerama = meta_screen_get_xinerama_for_window (window->screen,
+                                                  window);
+
+
+  y = xinerama->y_origin;
+  h = xinerama->height;
+  
+  if (window->frame != NULL)
+    {
+      y += window->frame->child_y;
+      h -= (window->frame->child_y + window->frame->bottom_height);
+    }
+  
+  meta_window_move_resize (window, TRUE,
+                           x, y, w, h);
+
+  check_maximize_to_xinerama (window, xinerama);
+}
 
 static guint move_resize_idle = 0;
 static GSList *move_resize_pending = NULL;

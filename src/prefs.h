@@ -150,6 +150,8 @@ void        meta_prefs_change_workspace_name (int         i,
 #define META_KEYBINDING_RAISE_OR_LOWER           "raise_or_lower"
 #define META_KEYBINDING_RAISE                    "raise"
 #define META_KEYBINDING_LOWER                    "lower"
+#define META_KEYBINDING_MAXIMIZE_VERTICALLY      "maximize_vertically"
+#define META_KEYBINDING_MAXIMIZE_HORIZONTALLY    "maximize_horizontally"
 
 typedef enum _MetaKeyBindingAction
 {

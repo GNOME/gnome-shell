@@ -154,6 +154,16 @@ static void handle_run_command        (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
                                        MetaKeyBinding *binding);
+static void handle_maximize_vert      (MetaDisplay    *display,
+                                       MetaScreen     *screen,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
+static void handle_maximize_horiz     (MetaDisplay    *display,
+                                       MetaScreen     *screen,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
 
 /* debug */
 static void handle_spew_mark          (MetaDisplay *display,
@@ -329,6 +339,8 @@ static const MetaKeyHandler window_handlers[] = {
   { META_KEYBINDING_RAISE_OR_LOWER, handle_raise_or_lower, NULL},
   { META_KEYBINDING_RAISE, handle_raise, NULL},
   { META_KEYBINDING_LOWER, handle_lower, NULL},
+  { META_KEYBINDING_MAXIMIZE_VERTICALLY, handle_maximize_vert, NULL },
+  { META_KEYBINDING_MAXIMIZE_HORIZONTALLY, handle_maximize_horiz, NULL },
   { NULL, NULL, NULL }
 };
 
@@ -2236,6 +2248,35 @@ handle_run_command (MetaDisplay    *display,
       error_on_command (which, command, err->message);
       
       g_error_free (err);
+    }
+}
+
+
+static void
+handle_maximize_vert (MetaDisplay    *display,
+                      MetaScreen     *screen,
+                      MetaWindow     *window,
+                      XEvent         *event,
+                      MetaKeyBinding *binding)
+{
+  if (window)
+    {
+      if (window->has_resize_func)
+        meta_window_fill_vertical (window);
+    }
+}
+
+static void
+handle_maximize_horiz (MetaDisplay    *display,
+                       MetaScreen     *screen,
+                       MetaWindow     *window,
+                       XEvent         *event,
+                       MetaKeyBinding *binding)
+{
+  if (window)
+    {
+      if (window->has_resize_func)
+        meta_window_fill_horizontal (window);
     }
 }
 

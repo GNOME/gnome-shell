@@ -322,6 +322,10 @@ void        meta_window_resize_with_gravity (MetaWindow  *window,
                                              int          h,
                                              int          gravity);
 
+
+void        meta_window_fill_horizontal     (MetaWindow  *window);
+void        meta_window_fill_vertical       (MetaWindow  *window);
+
 /* This recalcs the window/frame size, and recalcs the frame
  * size/contents as well.
  */

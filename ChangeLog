@@ -1,5 +1,19 @@
 2002-12-08  Havoc Pennington  <hp@pobox.com>
 
+	* src/window.c (meta_window_fill_vertical) 
+	(meta_window_fill_horizontal): new functions to resize to 
+	fill screen
+
+	* src/keybindings.c: add vert, horiz maximize
+
+	* src/prefs.c: had vert, horiz maximize
+
+	* src/metacity.schemas.in: shorten some overlong short
+	descriptions that make the keybindings capplet look ugly.
+	Add maximize_vertically, maximize_horizontally keys.
+	
+2002-12-08  Havoc Pennington  <hp@pobox.com>
+
 	* src/prefs.c (meta_prefs_get_application_based): make this always
 	return FALSE for now, to avoid bug reports.
 
