@@ -1,14 +1,15 @@
 # Simplified Chinese translation of metacity.
 # Copyright (C) 2002 Free Software Foundation, Inc.
 # Sun G11n <gnome_int_l10n@ireland.sun.com>, 2002.
+# He Qiangqiang <carton@linux.net.cn>, 2002
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-08-06 14:49-0400\n"
-"PO-Revision-Date: 2002-07-24 11:52+0100\n"
-"Last-Translator: Sun G11n <gnome_int_l10n@ireland.sun.com>\n"
-"Language-Team: Sun G11n <gnome_int_l10n@ireland.sun.com>\n"
+"POT-Creation-Date: 2002-08-10 15:34+0000\n"
+"PO-Revision-Date: 2002-08-10 15:50+0800\n"
+"Last-Translator: He Qiangqiang <carton@linux.net.cn>\n"
+"Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
@@ -109,12 +110,12 @@ msgid ""
 "binding\n"
 msgstr "某个其它程序已经将关键字 %s 和修饰符 %x 配合使用作为一种组合\n"
 
-#: src/keybindings.c:2078
+#: src/keybindings.c:2087
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 
-#: src/keybindings.c:2108
+#: src/keybindings.c:2117
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr ""
@@ -1359,7 +1360,7 @@ msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr ""
-"存储在 GConf 关键字 %s 中的值 %d 不是一个合理的工作区数量，当前最大值为 %d\n"
+"存储在 GConf 关键字 %2$s 中的值 %1$d 不是一个合理的工作区数量，当前最大值为 %3$d\n"
 
 # SUN NEW TRANSLATION
 #: src/prefs.c:721
@@ -1372,7 +1373,7 @@ msgstr "已损坏应用程序的工作区已禁用。某些应用程序可能无
 #: src/prefs.c:753
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr "存储在 GConf 关键字 %s 中的值 %d 超出了 0 到 %d 的范围\n"
+msgstr "存储在 GConf 关键字 %2$s 中的值 %1$d 超出了 0 到 %3$d 的范围\n"
 
 # SUN NEW TRANSLATION
 #: src/prefs.c:827
@@ -1398,7 +1399,7 @@ msgstr "%d x %d"
 #: src/screen.c:205
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr "显示“%s”上的屏幕 %d 无效\n"
+msgstr "显示“%2$s”上的屏幕 %1$d 无效\n"
 
 # SUN NEW TRANSLATION
 #: src/screen.c:221
@@ -1407,7 +1408,7 @@ msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to override the current window manager.\n"
 msgstr ""
-"显示“%s”上的屏幕 %d 已经有一个窗口管理器；请尝试使用 --replace 选项覆盖当前的"
+"显示“%2$s”上的屏幕 %1$d 已经有一个窗口管理器；请尝试使用 --replace 选项覆盖当前的"
 "窗口管理器。\n"
 
 # SUN NEW TRANSLATION
@@ -1415,19 +1416,19 @@ msgstr ""
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr "无法获得显示“%s”上的屏幕 %d 的窗口管理器选定项\n"
+msgstr "无法获得显示“%2$s”上的屏幕 %1$d 的窗口管理器选定项\n"
 
 # SUN NEW TRANSLATION
 #: src/screen.c:317
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "显示“%s”上的屏幕 %d 已经有一个窗口管理器\n"
+msgstr "显示“%2$s”上的屏幕 %1$d 已经有一个窗口管理器\n"
 
 # SUN NEW TRANSLATION
 #: src/screen.c:526
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "无法释放显示“%s”上的屏幕 %d\n"
+msgstr "无法释放显示“%2$s”上的屏幕 %1$d\n"
 
 # SUN NEW TRANSLATION
 #: src/session.c:274
@@ -2519,7 +2520,7 @@ msgstr ""
 #: src/xprops.c:282
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "窗口 0x%lx 上的属性 %s 包含无效的 UTF-8\n"
+msgstr "窗口 0x%2$lx 上的属性 %1$s 包含无效的 UTF-8\n"
 
 #: src/xprops.c:367
 #, c-format

@@ -1,3 +1,7 @@
+2002-08-10  He Qiangqiang  <carton@linux.net.cn>
+
+	* zh_CN.po: Fixed c-format specifiers position error.
+
 2002-08-08  Akira TAGOH  <tagoh@gnome.gr.jp>
 
 	* ja.po: Updated Japanese translation.
