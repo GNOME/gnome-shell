@@ -290,7 +290,8 @@ reload_modmap (MetaDisplay *display)
     }
 
   display->ignored_modifier_mask = (display->num_lock_mask |
-                                    display->scroll_lock_mask);
+                                    display->scroll_lock_mask |
+                                    LockMask);
 
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Ignoring modmask 0x%x num lock 0x%x scroll lock 0x%x\n",

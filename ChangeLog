@@ -1,5 +1,11 @@
 2002-05-10  Havoc Pennington  <hp@pobox.com>
 
+	* src/keybindings.c (reload_modmap): put LockMask into the
+	ignored_modifier_mask so that caps lock doesn't mess up 
+	keybindings.
+
+2002-05-10  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (meta_window_focus): if window is not mapped after
 	the calc_showing, don't focus it, it's probably on another
 	workspace or something.
