@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-30 03:06+0200\n"
-"PO-Revision-Date: 2005-01-30 03:21+0200\n"
+"POT-Creation-Date: 2005-02-01 01:25+0200\n"
+"PO-Revision-Date: 2005-02-01 01:25+0200\n"
 "Last-Translator: Žygimantas Beručka <uid0@akl.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
 "MIME-Version: 1.0\n"
@@ -208,8 +208,8 @@ msgstr "_Uždaryti"
 
 #. separator
 #: src/menu.c:66
-msgid "_Always on Current Workspace"
-msgstr "_Visada dabartiniame darbo lauke"
+msgid "_Always on Visible Workspace"
+msgstr "_Visada matomame lauke"
 
 #: src/menu.c:67
 msgid "_Only on This Workspace"
@@ -521,8 +521,8 @@ msgstr ""
 "„tiesioginių pokyčių“ požymių, naudodama langų rėmelius, vengdama animacijų "
 "ar kitų efektų. Tai smarkiai suprastina sąsajos išraiškingumą, bet leidžia "
 "normaliai veikti senesnėms programoms bei terminalų serveriams, kai kitu "
-"atveju jie būtų nepraktiški. Tačiau, norint išvengti darbastalio gedimų, "
-"kai yra įjungtas prieinamumas, rėmelių naudojimas yra išjungtas."
+"atveju jie būtų nepraktiški. Tačiau, norint išvengti darbastalio gedimų, kai "
+"yra įjungtas prieinamumas, rėmelių naudojimas yra išjungtas."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -1226,10 +1226,10 @@ msgid ""
 msgstr ""
 "Klavišų kombinacija, naudojama išplėsti langui. Klavišų kombinacijos "
 "formatas gali būti panašus į „&lt;Control&gt;a“ arba „&lt;Shift&gt;&lt;"
-"Alt&gt;F1“. Sistema apdorojanti aprašymą yra gana laisva ir leidžia "
-"maišyti didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus "
-"kaip „&lt;Ctl&gt;“ ir „&lt;Ctrl&gt;“. Nustačius specialų požymį "
-"„disabled“, su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
+"Alt&gt;F1“. Sistema apdorojanti aprašymą yra gana laisva ir leidžia maišyti "
+"didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus kaip „&lt;"
+"Ctl&gt;“ ir „&lt;Ctrl&gt;“. Nustačius specialų požymį „disabled“, su šiuo "
+"veiksmu nebus susieta jokia klavišų kombinacija."
 
 #: src/metacity.schemas.in.h:110
 msgid ""
@@ -3207,8 +3207,8 @@ msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
-"Langas %s nustatė SM_CLIENT_ID kintamajį į save patį vietoj to, kad "
-"ustatytų jį į WM_CLIENT_LEADER langą kaip nurodo ICCCM..\n"
+"Langas %s nustatė SM_CLIENT_ID kintamajį į save patį vietoj to, kad ustatytų "
+"jį į WM_CLIENT_LEADER langą kaip nurodo ICCCM..\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
