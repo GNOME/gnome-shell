@@ -1,5 +1,23 @@
 2004-10-25  Elijah Newren  <newren@math.utah.edu>
 
+	Don't lower newly mapped windows when they're denied focus, if
+	they are transients of the focused window.  Instead, defocus the
+	currently focused window.  (fixes #151996).
+
+	(Also, reenable focus stealing prevention and do a small spacing
+	cleanup)
+
+	* src/window-props.c (init_net_startup_id): fix spacing
+
+	* src/window.c (window_takes_focus_on_map): re-enable focus
+	stealing prevention, (meta_window_show): if the new window is
+	denied focus and is a transient of the currently focused window,
+	defocus the currently focused window but keep the transient on
+	top; remove some old code about transients and focus; make sure
+	that EnterNotify events won't accidentally focus the new window.
+
+2004-10-25  Elijah Newren  <newren@math.utah.edu>
+
 	Fix the alt-tab order--if the most recently used window is not
 	focused, start alt tabbing with that window instead of the one
 	after it (fixes #156251)

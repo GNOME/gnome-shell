@@ -381,8 +381,8 @@ reload_net_wm_desktop (MetaWindow    *window,
 
 static void
 init_net_startup_id (MetaDisplay   *display,
-                  Atom           property,
-                  MetaPropValue *value)
+                     Atom           property,
+                     MetaPropValue *value)
 {
   value->type = META_PROP_VALUE_UTF8;
   value->atom = display->atom_net_startup_id;

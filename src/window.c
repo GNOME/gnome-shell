@@ -1611,9 +1611,6 @@ window_takes_focus_on_map (MetaWindow *window)
     case META_WINDOW_NORMAL:
     case META_WINDOW_DIALOG:
     case META_WINDOW_MODAL_DIALOG:
-      /* Disable the focus-stealing-prevention stuff for now; see #149028 */
-      return TRUE;
-
       meta_topic (META_DEBUG_STARTUP,
                   "COMPARISON:\n"
                   "  net_wm_user_time_set : %d\n"
@@ -1708,8 +1705,27 @@ meta_window_show (MetaWindow *window)
 
   if ( (!takes_focus_on_map) && (window->display->focus_window != NULL) )
     {
-      meta_window_stack_just_below (window, window->display->focus_window);
-      ensure_mru_position_after (window, window->display->focus_window);
+
+      if (meta_window_is_ancestor_of_transient (window->display->focus_window,
+                                                window))
+        {
+          /* This happens for error dialogs or alerts; these need to remain on
+           * top, but it would be confusing to have its ancestor remain
+           * focused.
+           */
+          meta_topic (META_DEBUG_STARTUP,
+                      "The focus window %s is an ancestor of the newly mapped "
+                      "window %s which isn't being focused.  Unfocusing the "
+                      "ancestor.\n",
+                      window->display->focus_window->desc, window->desc);
+
+          meta_display_focus_the_no_focus_window (window->display, meta_display_get_current_time_roundtrip (window->display));
+        }
+      else
+        {
+          meta_window_stack_just_below (window, window->display->focus_window);
+          ensure_mru_position_after (window, window->display->focus_window);
+        }
     }
 
   if (!window->placed)
@@ -1789,32 +1805,23 @@ meta_window_show (MetaWindow *window)
 
   if (did_placement)
     {
-      if (window->xtransient_for != None)
-        {
-          MetaWindow *parent;
-
-          parent =
-            meta_display_lookup_x_window (window->display,
-                                          window->xtransient_for);
-          
-          if (parent && parent->has_focus &&
-              (window->input || window->take_focus))
-            {
-              meta_topic (META_DEBUG_FOCUS,
-                          "Focusing transient window '%s' since parent had focus\n",
-                          window->desc);
-              meta_window_focus (window,
-                                 meta_display_get_current_time (window->display));
-            }
-        }
-
       if (takes_focus_on_map)
         {                
           meta_window_focus (window,
-                             meta_display_get_current_time (window->display));
+                             meta_display_get_current_time_roundtrip (window->display));
         }
       else
-        window->wm_state_demands_attention = TRUE;
+        {
+          window->wm_state_demands_attention = TRUE;
+
+          /* Prevent EnterNotify events in sloppy/mouse focus from
+           * erroneously focusing the window that had been denied
+           * focus.  FIXME: This introduces a race; I have a couple
+           * ideas for a better way to accomplish the same thing, but
+           * they're more involved so do it this way for now.
+           */
+          meta_display_increment_focus_sentinel (window->display);
+        }
     }
 
   if (did_show)
