@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2003-05-20 12:32-0400\n"
-"PO-Revision-Date: 2003-04-15 02:25+0300\n"
+"POT-Creation-Date: 2003-06-03 16:37+0300\n"
+"PO-Revision-Date: 2003-06-03 17:11+0300\n"
 "Last-Translator: \"Andrew W. Nosenko\" <awn@bcs.zp.ua>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -317,18 +317,20 @@ msgid "Mod5"
 msgstr "Mod5"
 
 #: src/metacity-dialog.c:84
-#, fuzzy, c-format
+#, c-format
 msgid "The window \"%s\" is not responding."
-msgstr "Команда для получения снимка окна"
+msgstr "Окно \"%s\" не отвечает."
 
 #: src/metacity-dialog.c:92
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
+"Насильственное завершение приложения вызовет потерю всех не сохраненных "
+"изменений."
 
 #: src/metacity-dialog.c:102
 msgid "_Force Quit"
-msgstr ""
+msgstr "_Убить"
 
 #: src/metacity-dialog.c:196
 msgid "Title"
