@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-02-29 04:20+0100\n"
-"PO-Revision-Date: 2004-03-01 00:23+0100\n"
+"POT-Creation-Date: 2004-03-17 04:13+0100\n"
+"PO-Revision-Date: 2004-03-18 15:33+0100\n"
 "Last-Translator: Arafat Medini <lumina@silverpen.de>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
@@ -51,8 +51,7 @@ msgstr "خطأ قراءة من حوار عملية العرض: %s\n"
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr ""
-"خطأ اطلاق حوار ميتستي للسؤال حول قتل تطبيق: %s\n"
+msgstr "خطأ اطلاق حوار ميتستي للسؤال حول قتل تطبيق: %s\n"
 
 #: src/delete.c:446
 #, c-format
@@ -105,8 +104,7 @@ msgstr "إلغاء تكبير النافذة"
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr ""
-"برنامج آخر بصدد استعمال المفتاح %s بالمغيرين %x كرابط\n"
+msgstr "برنامج آخر بصدد استعمال المفتاح %s بالمغيرين %x كرابط\n"
 
 #: src/keybindings.c:2518
 #, c-format
@@ -149,8 +147,7 @@ msgstr "فشلت قراءة دليل التيمات : %s\n"
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr ""
-"لم يمكن ايجاد تيمة! تأكد من وجود %s و احتواءه على تيمات عادية."
+msgstr "لم يمكن ايجاد تيمة! تأكد من وجود %s و احتواءه على تيمات عادية."
 
 #: src/main.c:521
 #, c-format
@@ -335,8 +332,7 @@ msgstr "النافذة \"%s\" لا تجيب"
 #: src/metacity-dialog.c:93
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
-msgstr ""
-"اجبار هذا التطبيق على الانتهاء سيفقدك تغييراتك الغير محفوظة."
+msgstr "اجبار هذا التطبيق على الانتهاء سيفقدك تغييراتك الغير محفوظة."
 
 #: src/metacity-dialog.c:103
 msgid "_Force Quit"
@@ -437,7 +433,7 @@ msgstr "غلق نافذة"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
-msgstr ""
+msgstr "الأوامر التي ستنفذ إستجابة لمفاتيح الربط"
 
 #: src/metacity.schemas.in.h:11
 msgid "Current theme"
@@ -452,6 +448,8 @@ msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr ""
+"يقرر فيما إذا ستنشأ التطبيقات أو النظام 'بيبات' مسموعة، "
+"يمكن إستخدامه مع 'الناقوس المرئي' للسماح بالـ'بيبات' الصامتة."
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
@@ -490,6 +488,12 @@ msgid ""
 "allow legacy applications and terminal servers to function when they would "
 "otherwise be impractical."
 msgstr ""
+"إذا ضبط لـ true، فسيعطي ميتستي المستخدم ردّا أقل و أحساسا "
+"أقل بـ \"التحوير المباشر\"، بإستخدام إطارات شبكية تجنّب الرسوم المتحركة "
+"أو بطرق أخرى. هذا تخفيض هام لقابلية الإستخدام للعديد من المستخدمين، "
+"لكنه سيسمح يتطبيقات موروثة و نوادل الشاشات الطرفية أن تعمل عوض أن تكون "
+"غير عمليّة."
+""
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -513,7 +517,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
-msgstr ""
+msgstr "إذا ضبط لـ true، سيقع تبادل تسهيل الإستخدام بتقليل إستخدام الموارد"
 
 #: src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
@@ -772,7 +776,7 @@ msgstr "تحول إلى مساحة العمل على اليمين"
 
 #: src/metacity.schemas.in.h:79
 msgid "System Bell is Audible"
-msgstr ""
+msgstr "ناقوس النظام مسموع"
 
 #: src/metacity.schemas.in.h:80
 msgid "Take a screenshot"
@@ -792,6 +796,13 @@ msgid ""
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
 msgstr ""
+"يقول لمتاستي كيفية تنفيذ المؤشر المرئي عند عزف "
+"ناقوس النظام أو ناقوس أي تطبيق آخر. حاليا هناك قيمتان "
+"ممكنتان، \"fullscreen\" (كامل الشاشة) الذي يُنتج وميض "
+"أبيض و أسود و \"frame_flash\" الذي ينتج عنه وميض عمود عنوان "
+"التطبيق الذي أرسل إشارة الناقوس. إذا كان التطبيق الذي أرسل الجرس "
+"مجهولا (الذي هو الحال لـ \"بيب النظام\" الإفتراضي) فسيومض "
+"عمود عنوان التطبيق المركزّ حاليا."
 
 #: src/metacity.schemas.in.h:83
 msgid ""
@@ -807,6 +818,8 @@ msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
+"مفتاح /apps/metacity/global_keybindings/run_command_screenshot "
+"يحدد مفتاح رابط ينفّذ الأمر المحدد من قبل هذا التعيين."
 
 #: src/metacity.schemas.in.h:85
 msgid ""
@@ -814,7 +827,8 @@ msgid ""
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
-""
+"مفتاح ·/apps/metacity/global_keybindings/run_command_window_screenshot·"
+"يعرف مفتاحا رابطا ينفذ الأمر المحدد من قبل هذا التعيين."
 
 #: src/metacity.schemas.in.h:86
 msgid ""
@@ -1614,10 +1628,10 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"رابط المفتاح المستعمل لإظهار قائمة الشريط الرئيسية. التهيئة تكتب \"&lt;Control&gt;a"
-"\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب منان و يسمح بحروف كبيرة أو صغيرة، و "
-"كذلك الإختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". اذا تضبط الخيار "
-"للسلسلة الخاصة \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
+"رابط المفتاح المستعمل لإظهار قائمة الشريط الرئيسية. التهيئة تكتب \"&lt;"
+"Control&gt;a\" أو \"&lt;Shift&gt;&lt;Alt&gt;F1. المعرب منان و يسمح بحروف "
+"كبيرة أو صغيرة، و كذلك الإختصارات مثل \"&lt;Ctl&gt;\" و \"&lt;Ctrl&gt;\". "
+"اذا تضبط الخيار للسلسلة الخاصة \"ملغى\"، فلن يكون هناك رابط مفتاح لهذا العمل."
 
 #: src/metacity.schemas.in.h:144
 msgid "The name of a workspace."
@@ -1631,8 +1645,7 @@ msgstr "أمر صورة الشاشة"
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
-msgstr ""
-"التيمة تحدد مظهر حدود النافذة و عمود العناوين، الخ."
+msgstr "التيمة تحدد مظهر حدود النافذة و عمود العناوين، الخ."
 
 #: src/metacity.schemas.in.h:147
 msgid ""
@@ -1737,13 +1750,13 @@ msgid ""
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
-"هذا الخيار يحدد نتائج النقر الثنائي على عمود العنواين. الخيارات الممكنة حاليا هي "
-"'toggle_shaded'، مما سيخفي/يلغي إخفاء النافذة، و 'toggle_maximized' مما "
-"سيكبر/يلغي تكبير النافذة."
+"هذا الخيار يحدد نتائج النقر الثنائي على عمود العنواين. الخيارات الممكنة "
+"حاليا هي 'toggle_shaded'، مما سيخفي/يلغي إخفاء النافذة، و 'toggle_maximized' "
+"مما سيكبر/يلغي تكبير النافذة."
 
 #: src/metacity.schemas.in.h:156
 msgid "Toggle always on top state"
-msgstr ""
+msgstr "تحوّل دائم للحالة العليا"
 
 #: src/metacity.schemas.in.h:157
 msgid "Toggle fullscreen mode"
@@ -1751,15 +1764,15 @@ msgstr "تحول إلى نسق كامل الشاشة"
 
 #: src/metacity.schemas.in.h:158
 msgid "Toggle maximization state"
-msgstr ""
+msgstr "تحول لحالة التكبير"
 
 #: src/metacity.schemas.in.h:159
 msgid "Toggle shaded state"
-msgstr ""
+msgstr "تحول لحالة الإخفاء"
 
 #: src/metacity.schemas.in.h:160
 msgid "Toggle window on all workspaces"
-msgstr ""
+msgstr "تحويل النافذة على جميع مساحات العمل"
 
 #: src/metacity.schemas.in.h:161
 msgid ""
@@ -1767,6 +1780,9 @@ msgid ""
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
+"يفعّل تأشيرا بصريا عند إرسال التطبيق أو النظام "
+"لـ 'ناقوس' أو 'بيب'، هذا مفيد للذين يسمعون يصعوبة "
+"أو للإسعمال في بيئات مغعمة بالضجيج أو عند تعطيل 'الناقوس السمعي'"
 
 #: src/metacity.schemas.in.h:162
 msgid "Unmaximize a window"
@@ -1877,8 +1893,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr ""
-"لا يمكن الحصول على اختيار مدير النوافذ على الشاشة %d المعرض \"%s\"\n"
+msgstr "لا يمكن الحصول على اختيار مدير النوافذ على الشاشة %d المعرض \"%s\"\n"
 
 #: src/screen.c:497
 #, c-format
@@ -1895,8 +1910,7 @@ msgstr "لا يمكن تسريح الشاشة %d على المعرض \"%s\"\n"
 msgid ""
 "Failed to a open connection to a session manager, so window positions will "
 "not be saved: %s\n"
-msgstr ""
-"فشل فتح اتصال لمدير جلسة، لن تحفظ مواقع النوافذ: %s\n"
+msgstr "فشل فتح اتصال لمدير جلسة، لن تحفظ مواقع النوافذ: %s\n"
 
 #: src/session.c:881 src/session.c:888
 #, c-format
@@ -1966,8 +1980,7 @@ msgstr "عنصر مجهول %s"
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
-msgstr ""
-"خطأ اطلاق حوار ميتستي للتحذير من تطبيقات لا تدعم ادارة الجلسة: %s\n"
+msgstr "خطأ اطلاق حوار ميتستي للتحذير من تطبيقات لا تدعم ادارة الجلسة: %s\n"
 
 #: src/theme-parser.c:224 src/theme-parser.c:242
 #, c-format
@@ -2113,8 +2126,7 @@ msgstr "لا صفة \"قيمة\" على العنصر <%s>"
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
 msgid ""
 "Cannot specify both button_width/button_height and aspect ratio for buttons"
-msgstr ""
-"لا يمكن تخصيص button_width/button_height و نسبة الجانب للأزرار"
+msgstr "لا يمكن تخصيص button_width/button_height و نسبة الجانب للأزرار"
 
 #: src/theme-parser.c:1343
 #, c-format
@@ -2423,8 +2435,7 @@ msgstr "العنصر <%s> غير مسموح به داخل عنصر <constant>"
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
-"العنصر <%s> غير مسموح به داخل عنصر مسافة/حد/aspect_ratio"
+msgstr "العنصر <%s> غير مسموح به داخل عنصر مسافة/حد/aspect_ratio"
 
 #: src/theme-parser.c:3718
 #, c-format
@@ -2485,51 +2496,51 @@ msgstr "ملف التيمة %s لا يحتوي على عنصر جذري <metacit
 
 #: src/theme-viewer.c:70
 msgid "/_Windows"
-msgstr ""
+msgstr "/_نوافذ"
 
 #: src/theme-viewer.c:71
 msgid "/Windows/tearoff"
-msgstr ""
+msgstr "/نوافذ/قاطف"
 
 #: src/theme-viewer.c:72
 msgid "/Windows/_Dialog"
-msgstr ""
+msgstr "/نوافذ/_حوار"
 
 #: src/theme-viewer.c:73
 msgid "/Windows/_Modal dialog"
-msgstr ""
+msgstr "/نوافذ/حوار _سائد"
 
 #: src/theme-viewer.c:74
 msgid "/Windows/_Utility"
-msgstr ""
+msgstr "/نوافذ/أ_دات"
 
 #: src/theme-viewer.c:75
 msgid "/Windows/_Splashscreen"
-msgstr ""
+msgstr "/نوافذ/_صورة البدأ"
 
 #: src/theme-viewer.c:76
 msgid "/Windows/_Top dock"
-msgstr ""
+msgstr "/نوافذ/المرسى ال_علوي"
 
 #: src/theme-viewer.c:77
 msgid "/Windows/_Bottom dock"
-msgstr ""
+msgstr "/نوافذ/المرسى ال_سفلي"
 
 #: src/theme-viewer.c:78
 msgid "/Windows/_Left dock"
-msgstr ""
+msgstr "/نوافذ/المرسى ال_يساري"
 
 #: src/theme-viewer.c:79
 msgid "/Windows/_Right dock"
-msgstr ""
+msgstr "/نوافذ/المرسى الي_ميني"
 
 #: src/theme-viewer.c:80
 msgid "/Windows/_All docks"
-msgstr ""
+msgstr "/نوافذ/جميع المرسات"
 
 #: src/theme-viewer.c:81
 msgid "/Windows/Des_ktop"
-msgstr ""
+msgstr "/نوافذ/ال_مكتب"
 
 #: src/theme-viewer.c:131
 msgid "Open another one of these windows"
@@ -2537,24 +2548,24 @@ msgstr "فتح نافذة أخرى من هذه النوافذ"
 
 #: src/theme-viewer.c:138
 msgid "This is a demo button with an 'open' icon"
-msgstr ""
+msgstr "هذا زر عرض بأيقونة 'فتح'"
 
 #: src/theme-viewer.c:145
 msgid "This is a demo button with a 'quit' icon"
-msgstr ""
+msgstr "هذا·زر·عرض·بأيقونة·'إنهاء'"
 
 #: src/theme-viewer.c:241
 msgid "This is a sample message in a sample dialog"
-msgstr ""
+msgstr "هذه رسالة نموذجية في حوار نموذجي"
 
 #: src/theme-viewer.c:324
 #, c-format
 msgid "Fake menu item %d\n"
-msgstr ""
+msgstr "عنصر قائمة مستعار %d\n"
 
 #: src/theme-viewer.c:358
 msgid "Border-only window"
-msgstr ""
+msgstr "نافذة ذات حدود فقط"
 
 #: src/theme-viewer.c:360
 msgid "Bar"
@@ -2562,7 +2573,7 @@ msgstr "عمود"
 
 #: src/theme-viewer.c:377
 msgid "Normal Application Window"
-msgstr ""
+msgstr "نافذة تطبيق عادية"
 
 #: src/theme-viewer.c:382
 msgid "Dialog Box"
@@ -2578,7 +2589,7 @@ msgstr "لوحة الأدوات"
 
 #: src/theme-viewer.c:397
 msgid "Torn-off Menu"
-msgstr ""
+msgstr "إرتداد قطف القائمة"
 
 #: src/theme-viewer.c:402
 msgid "Border"
@@ -2592,11 +2603,11 @@ msgstr "تحربة تصميم الأزرار %d"
 #: src/theme-viewer.c:760
 #, c-format
 msgid "%g milliseconds to draw one window frame"
-msgstr ""
+msgstr "%g مليثانية لرسم إظار واحد للنافذة"
 
 #: src/theme-viewer.c:803
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr ""
+msgstr "الإستعمال: metacity-theme-viewer·[THEMENAME]\n"
 
 #: src/theme-viewer.c:810
 #, c-format
@@ -2639,28 +2650,30 @@ msgid ""
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
 msgstr ""
+"دفعت %d إطارات في %g ثوان بإتجاه العميل (%g·مليثانية لكل إطار) و %g ثواني "
+"بوقت ساعة حائطية مع مصادر نادل X (%g·مليثانية لكل إطار)\n"
 
 #: src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
-msgstr ""
+msgstr "أرجع·إختبار·تعبير·الموقع·TRUE·لكنه·لم·يكتشف·الخطأ"
 
 #: src/theme-viewer.c:1229
 msgid "position expression test returned FALSE but didn't set error"
-msgstr ""
+msgstr "أرجع إختبار تعبير الموقع FALSE لكنه لم يكتشف الخطأ"
 
 #: src/theme-viewer.c:1233
 msgid "Error was expected but none given"
-msgstr ""
+msgstr "ترقب خطأ لكنه لم يعطى أي خطأ"
 
 #: src/theme-viewer.c:1235
 #, c-format
 msgid "Error %d was expected but %d given"
-msgstr ""
+msgstr "تُرقّب %d لكن أعطى %d"
 
 #: src/theme-viewer.c:1241
 #, c-format
 msgid "Error not expected but one was returned: %s"
-msgstr ""
+msgstr "لم يُترقب خطأ لكنه أرجع واحد: %s"
 
 #: src/theme-viewer.c:1245
 #, c-format
@@ -2675,7 +2688,7 @@ msgstr "قيمة ص كانت %d، ترقب %d"
 #: src/theme-viewer.c:1310
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr ""
+msgstr "أعربة %d تعابير أحداثيات في %g ثواني (بمعدّل %g ثوان)\n"
 
 #: src/theme.c:202
 msgid "top"
@@ -2749,8 +2762,7 @@ msgstr "لم يفهم جزء اللون \"%s\" في تخصيص اللون"
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
-msgstr ""
-"تهيئة الخلط \"blend/bg_color/fg_color/alpha\"، \"%s\"لا يناسب التهيئة"
+msgstr "تهيئة الخلط \"blend/bg_color/fg_color/alpha\"، \"%s\"لا يناسب التهيئة"
 
 #: src/theme.c:1054
 #, c-format
@@ -2794,8 +2806,7 @@ msgstr "تعبير التنسيق يحتوي على الرمز '%s' الممنو
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
-msgstr ""
-"تعبير التنسيق يحتوي على عدد نقطة متغيرة '%s' لم يمكن اعرابه"
+msgstr "تعبير التنسيق يحتوي على عدد نقطة متغيرة '%s' لم يمكن اعرابه"
 
 #: src/theme.c:1464
 #, c-format
@@ -2807,8 +2818,7 @@ msgstr "تعبير التنسيق يحتوي على عدد صحيح '%s' لم ي
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
-msgstr ""
-"تعبير التنسيق يحتوي على مقسوم عند بداية هذا النص: \"%s\""
+msgstr "تعبير التنسيق يحتوي على مقسوم عند بداية هذا النص: \"%s\""
 
 #: src/theme.c:1588
 msgid "Coordinate expression was empty or not understood"
@@ -2821,15 +2831,13 @@ msgstr "تعبير التنسيق ينتج عند القسمة على صفر"
 #: src/theme.c:1779
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
-"تعبير التنسيق يحاول استعمال مقسوم mod على عدد نقطة متغيرة"
+msgstr "تعبير التنسيق يحاول استعمال مقسوم mod على عدد نقطة متغيرة"
 
 #: src/theme.c:1836
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr ""
-"تعبير التنسيق له مقسوم \"%s\" بالرغم من ترقبه قاسم"
+msgstr "تعبير التنسيق له مقسوم \"%s\" بالرغم من ترقبه قاسم"
 
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
@@ -2844,8 +2852,7 @@ msgstr "انتهى تعبير التنسيق بمقسوم عوض قاسم"
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
-msgstr ""
-"لتعبير التنسيق مقسوم \"%c\" يتبع القاسم \"%c\" بدون قاسم بينهما"
+msgstr "لتعبير التنسيق مقسوم \"%c\" يتبع القاسم \"%c\" بدون قاسم بينهما"
 
 #: src/theme.c:1982
 msgid ""
