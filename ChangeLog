@@ -1,3 +1,7 @@
+2002-05-29  Jacob Berkman  <jacob@ximian.com>
+
+	* src/tools/Makefile.am (EXTRA_DIST): dist .desktop.in files
+
 2002-05-29 Stephen Browne <stephen.browne@sun.com>
 
 	New simple metacity-properties dialog to configure focus mode

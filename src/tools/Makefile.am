@@ -36,5 +36,5 @@ metacity_message_LDADD= @METACITY_MESSAGE_LIBS@
 metacity_window_demo_LDADD= @METACITY_WINDOW_DEMO_LIBS@
 metacity_properties_LDADD= @METACITY_PROPS_LIBS@
 
-EXTRA_DIST=$(icon_DATA) $(ui_DATA) $(propicon_DATA)
+EXTRA_DIST=$(icon_DATA) $(ui_DATA) $(propicon_DATA) $(Desktop_in_files)
 
