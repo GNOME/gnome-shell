@@ -72,6 +72,10 @@ if test -z "$ONLY_WM"; then
       DISPLAY=$CLIENT_DISPLAY gnome-terminal --geometry 25x15 &
     done
   fi
+
+  if test -e ~/.Xmodmap; then
+      DISPLAY=$CLIENT_DISPLAY xmodmap ~/.Xmodmap
+  fi
  
   usleep 50000
 

@@ -156,6 +156,8 @@ gboolean meta_ui_have_a_theme      (void);
 gboolean meta_ui_parse_accelerator (const char          *accel,
                                     unsigned int        *keysym,
                                     MetaVirtualModifier *mask);
+gboolean meta_ui_parse_modifier    (const char          *accel,
+                                    MetaVirtualModifier *mask);
 
 gboolean meta_ui_window_is_widget (MetaUI *ui,
                                    Window  xwindow);

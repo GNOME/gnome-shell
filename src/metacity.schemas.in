@@ -4,6 +4,24 @@
     <!-- General preferences -->        
 
     <schema>
+      <key>/schemas/apps/metacity/general/mouse_button_modifier</key>
+      <applyto>/apps/metacity/general/mouse_button_modifier</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>&lt;Alt&gt;</default>
+      <locale name="C">
+         <short>Modifier to use for modified window click actions (Alt+left/middle/right click)</short>
+         <long>
+           Clicking a window while holding down this modifier key 
+           will move the window (left click), resize the window 
+           (middle click), or show the window menu (right click).
+           Modifier is expressed as "&lt;Alt&gt;" or "&lt;Super&gt;"
+           for example.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
       <key>/schemas/apps/metacity/general/focus_mode</key>
       <applyto>/apps/metacity/general/focus_mode</applyto>
       <owner>metacity</owner>

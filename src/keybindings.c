@@ -440,35 +440,6 @@ reload_keycodes (MetaDisplay *display)
 }
 
 static void
-devirtualize_modifiers (MetaDisplay        *display,
-                        MetaVirtualModifier modifiers,
-                        unsigned int       *mask)
-{
-  *mask = 0;
-  
-  if (modifiers & META_VIRTUAL_SHIFT_MASK)
-    *mask |= ShiftMask;
-  if (modifiers & META_VIRTUAL_CONTROL_MASK)
-    *mask |= ControlMask;
-  if (modifiers & META_VIRTUAL_ALT_MASK)
-    *mask |= Mod1Mask;
-  if (modifiers & META_VIRTUAL_META_MASK)
-    *mask |= display->meta_mask;
-  if (modifiers & META_VIRTUAL_HYPER_MASK)
-    *mask |= display->hyper_mask;
-  if (modifiers & META_VIRTUAL_SUPER_MASK)
-    *mask |= display->super_mask;
-  if (modifiers & META_VIRTUAL_MOD2_MASK)
-    *mask |= Mod2Mask;
-  if (modifiers & META_VIRTUAL_MOD3_MASK)
-    *mask |= Mod3Mask;
-  if (modifiers & META_VIRTUAL_MOD4_MASK)
-    *mask |= Mod4Mask;
-  if (modifiers & META_VIRTUAL_MOD5_MASK)
-    *mask |= Mod5Mask;  
-}
-
-static void
 reload_modifiers (MetaDisplay *display)
 {
   meta_topic (META_DEBUG_KEYBINDINGS,
@@ -481,9 +452,9 @@ reload_modifiers (MetaDisplay *display)
       i = 0;
       while (display->screen_bindings[i].keysym != None)
         {
-          devirtualize_modifiers (display,
-                                  display->screen_bindings[i].modifiers,
-                                  &display->screen_bindings[i].mask);
+          meta_display_devirtualize_modifiers (display,
+                                               display->screen_bindings[i].modifiers,
+                                               &display->screen_bindings[i].mask);
           
           ++i;
         }
@@ -496,9 +467,9 @@ reload_modifiers (MetaDisplay *display)
       i = 0;
       while (display->window_bindings[i].keysym != None)
         {
-          devirtualize_modifiers (display,
-                                  display->window_bindings[i].modifiers,
-                                  &display->window_bindings[i].mask);
+          meta_display_devirtualize_modifiers (display,
+                                               display->window_bindings[i].modifiers,
+                                               &display->window_bindings[i].mask);
           
           ++i;
         }

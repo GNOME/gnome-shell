@@ -1,3 +1,27 @@
+2002-10-07  Havoc Pennington  <hp@redhat.com>
+
+        Add a modifier key preference for the Alt+click stuff. 
+	Can be set to "disabled" as well.
+	
+	* src/run-metacity.sh: load .Xmodmap in the Xnest if it exists
+
+	* src/display.c (meta_display_ungrab_window_buttons): ungrab
+	AnyModifier in case the modifier changed since we grabbed
+	(meta_display_open): rearrange code to use meta_display_close() to
+	mop up when we can't find any screens, avoiding the need to 
+	keep the bail-out code in sync with meta_display_close.
+
+	* src/keybindings.c (devirtualize_modifiers): move this function
+	to a public place in display.c
+
+	* src/metacity.schemas.in: add setting for the modifier key 
+	to use for Alt+left/middle/right click.
+
+	* src/prefs.c (update_binding): add a missing newline to a warning
+	(meta_prefs_get_mouse_button_mods): new function	
+
+	* src/ui.c (meta_ui_parse_modifier): new function
+
 2002-10-07  Havoc Pennington  <hp@pobox.com>
 
 	* src/async-getprop.c: don't include unportable Xproto.h, fix from

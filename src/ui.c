@@ -669,6 +669,51 @@ meta_ui_parse_accelerator (const char          *accel,
 }
 
 gboolean
+meta_ui_parse_modifier (const char          *accel,
+                        MetaVirtualModifier *mask)
+{
+  EggVirtualModifierType gdk_mask = 0;
+  guint gdk_sym = 0;
+  
+  *mask = 0;
+
+  if (strcmp (accel, "disabled") == 0)
+    return TRUE;
+  
+  if (!egg_accelerator_parse_virtual (accel, &gdk_sym, &gdk_mask))
+    return FALSE;
+
+  if (gdk_sym != None)
+    return FALSE;
+  
+  if (gdk_mask & EGG_VIRTUAL_RELEASE_MASK) /* we don't allow this */
+    return FALSE;
+
+  if (gdk_mask & EGG_VIRTUAL_SHIFT_MASK)
+    *mask |= META_VIRTUAL_SHIFT_MASK;
+  if (gdk_mask & EGG_VIRTUAL_CONTROL_MASK)
+    *mask |= META_VIRTUAL_CONTROL_MASK;
+  if (gdk_mask & EGG_VIRTUAL_ALT_MASK)
+    *mask |= META_VIRTUAL_ALT_MASK;
+  if (gdk_mask & EGG_VIRTUAL_MOD2_MASK)
+    *mask |= META_VIRTUAL_MOD2_MASK;
+  if (gdk_mask & EGG_VIRTUAL_MOD3_MASK)
+    *mask |= META_VIRTUAL_MOD3_MASK;
+  if (gdk_mask & EGG_VIRTUAL_MOD4_MASK)
+    *mask |= META_VIRTUAL_MOD4_MASK;
+  if (gdk_mask & EGG_VIRTUAL_MOD5_MASK)
+    *mask |= META_VIRTUAL_MOD5_MASK;
+  if (gdk_mask & EGG_VIRTUAL_SUPER_MASK)
+    *mask |= META_VIRTUAL_SUPER_MASK;
+  if (gdk_mask & EGG_VIRTUAL_HYPER_MASK)
+    *mask |= META_VIRTUAL_HYPER_MASK;
+  if (gdk_mask & EGG_VIRTUAL_META_MASK)
+    *mask |= META_VIRTUAL_META_MASK;
+  
+  return TRUE;
+}
+
+gboolean
 meta_ui_window_is_widget (MetaUI *ui,
                           Window  xwindow)
 {

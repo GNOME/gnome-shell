@@ -30,6 +30,7 @@
 /* If you add a key, it needs updating in init() and in the gconf
  * notify listener and of course in the .schemas file
  */
+#define KEY_MOUSE_BUTTON_MODS "/apps/metacity/general/mouse_button_modifier"
 #define KEY_FOCUS_MODE "/apps/metacity/general/focus_mode"
 #define KEY_AUTO_RAISE "/apps/metacity/general/auto_raise"
 #define KEY_AUTO_RAISE_DELAY "/apps/metacity/general/auto_raise_delay"
@@ -50,6 +51,7 @@ static GList *changes = NULL;
 static guint changed_idle;
 static gboolean use_system_font = TRUE;
 static PangoFontDescription *titlebar_font = NULL;
+static MetaVirtualModifier mouse_button_mods = Mod1Mask;
 static MetaFocusMode focus_mode = META_FOCUS_MODE_CLICK;
 static char* current_theme = NULL;
 static int num_workspaces = 4;
@@ -63,6 +65,7 @@ static char *commands[NUM_COMMANDS] = { NULL, NULL, NULL, NULL, NULL, NULL,
 
 static gboolean update_use_system_font   (gboolean    value);
 static gboolean update_titlebar_font      (const char *value);
+static gboolean update_mouse_button_mods  (const char *value);
 static gboolean update_focus_mode         (const char *value);
 static gboolean update_theme              (const char *value);
 static gboolean update_num_workspaces     (int         value);
@@ -236,6 +239,12 @@ meta_prefs_init (void)
                         &err);
   cleanup_error (&err);
 
+  str_val = gconf_client_get_string (default_client, KEY_MOUSE_BUTTON_MODS,
+                                     &err);
+  cleanup_error (&err);
+  update_mouse_button_mods (str_val);
+  g_free (str_val);
+  
   str_val = gconf_client_get_string (default_client, KEY_FOCUS_MODE,
                                      &err);
   cleanup_error (&err);
@@ -336,7 +345,23 @@ change_notify (GConfClient    *client,
   
   key = gconf_entry_get_key (entry);
   value = gconf_entry_get_value (entry);
-  
+
+  if (strcmp (key, KEY_MOUSE_BUTTON_MODS) == 0)
+    {
+      const char *str;
+
+      if (value && value->type != GCONF_VALUE_STRING)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                        KEY_MOUSE_BUTTON_MODS);
+          goto out;
+        }
+      
+      str = value ? gconf_value_get_string (value) : NULL;
+
+      if (update_mouse_button_mods (str))
+        queue_changed (META_PREF_MOUSE_BUTTON_MODS);
+    }
   if (strcmp (key, KEY_FOCUS_MODE) == 0)
     {
       const char *str;
@@ -546,6 +571,36 @@ change_notify (GConfClient    *client,
 }
 
 static gboolean
+update_mouse_button_mods (const char *value)
+{
+  MetaVirtualModifier old_mods = mouse_button_mods;
+  
+  if (value != NULL)
+    {
+      MetaVirtualModifier mods;
+  
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                  "Mouse button modifier has new gconf value \"%s\"\n",
+                  value ? value : "none");
+  
+      if (meta_ui_parse_modifier (value, &mods))
+        {
+          mouse_button_mods = mods;
+        }
+      else
+        {
+          meta_topic (META_DEBUG_KEYBINDINGS,
+                      "Failed to parse new gconf value\n");
+          
+          meta_warning (_("\"%s\" found in configuration database is not a valid value for mouse button modifier\n"),
+                        value);
+        }
+    }
+
+  return old_mods != mouse_button_mods;
+}
+
+static gboolean
 update_focus_mode (const char *value)
 {
   MetaFocusMode old_mode = focus_mode;
@@ -559,7 +614,7 @@ update_focus_mode (const char *value)
       else if (g_ascii_strcasecmp (value, "mouse") == 0)
         focus_mode = META_FOCUS_MODE_MOUSE;
       else
-        meta_warning (_("GConf key '%s' is set to an invalid value"),
+        meta_warning (_("GConf key '%s' is set to an invalid value\n"),
                       KEY_FOCUS_MODE);
     }
 
@@ -596,6 +651,13 @@ update_theme (const char *value)
     }
   
   return changed;
+}
+
+
+MetaVirtualModifier
+meta_prefs_get_mouse_button_mods  (void)
+{
+  return mouse_button_mods;
 }
 
 MetaFocusMode
@@ -767,6 +829,9 @@ meta_preference_to_string (MetaPreference pref)
 {
   switch (pref)
     {
+    case META_PREF_MOUSE_BUTTON_MODS:
+      return "MOUSE_BUTTON_MODS";
+
     case META_PREF_FOCUS_MODE:
       return "FOCUS_MODE";
 
@@ -1004,7 +1069,7 @@ update_binding (MetaKeyPref *binding,
         {
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Failed to parse new gconf value\n");
-          meta_warning (_("\"%s\" found in configuration database is not a valid value for keybinding \"%s\""),
+          meta_warning (_("\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"),
                         value, binding->name);
         }
     }

@@ -204,6 +204,9 @@ struct _MetaDisplay
 
   /* Pending autoraise */
   guint       autoraise_timeout_id;
+
+  /* Alt+click button grabs */
+  unsigned int window_grab_modifiers;
   
   /* current window operation */
   MetaGrabOp  grab_op;
@@ -381,5 +384,9 @@ int meta_resize_gravity_from_grab_op (MetaGrabOp op);
 gboolean meta_rectangle_intersect (MetaRectangle *src1,
                                    MetaRectangle *src2,
                                    MetaRectangle *dest);
+
+void meta_display_devirtualize_modifiers (MetaDisplay        *display,
+                                          MetaVirtualModifier modifiers,
+                                          unsigned int       *mask);
 
 #endif

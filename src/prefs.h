@@ -28,6 +28,7 @@
 
 typedef enum
 {
+  META_PREF_MOUSE_BUTTON_MODS,
   META_PREF_FOCUS_MODE,
   META_PREF_AUTO_RAISE,
   META_PREF_AUTO_RAISE_DELAY,
@@ -53,6 +54,7 @@ void meta_prefs_remove_listener (MetaPrefsChangedFunc func,
 void meta_prefs_init (void);
 const char* meta_preference_to_string (MetaPreference pref);
 
+MetaVirtualModifier         meta_prefs_get_mouse_button_mods  (void);
 MetaFocusMode               meta_prefs_get_focus_mode         (void);
 const char*                 meta_prefs_get_theme              (void);
 /* returns NULL if GTK default should be used */

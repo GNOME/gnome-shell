@@ -79,6 +79,10 @@ static void    process_selection_request (MetaDisplay   *display,
 static void    process_selection_clear   (MetaDisplay   *display,
                                           XEvent        *event);
 
+static void    update_window_grab_modifiers (MetaDisplay *display);
+
+static void    prefs_changed_callback    (MetaPreference pref,
+                                          void          *data);
 
 static int
 set_utf8_string_hint (MetaDisplay *display,
@@ -275,6 +279,10 @@ meta_display_open (const char *name)
 
   meta_display_init_keys (display);
 
+  update_window_grab_modifiers (display);
+
+  meta_prefs_add_listener (prefs_changed_callback, display);
+  
   XInternAtoms (display->xdisplay, atom_names, G_N_ELEMENTS (atom_names),
                 False, atoms);
   display->atom_net_wm_name = atoms[0];
@@ -364,47 +372,9 @@ meta_display_open (const char *name)
   display->xinerama_cache_invalidated = TRUE;
 
   display->groups_by_leader = NULL;
+
+  display->screens = NULL;
   
-  screens = NULL;
-
-#ifdef HAVE_GTK_MULTIHEAD
-  
-  i = 0;
-  while (i < ScreenCount (xdisplay))
-    {
-      MetaScreen *screen;
-
-      screen = meta_screen_new (display, i);
-
-      if (screen)
-        screens = g_slist_prepend (screens, screen);
-      ++i;
-    }
-#else
-  {
-    MetaScreen *screen;
-    screen = meta_screen_new (display, DefaultScreen (xdisplay));
-    if (screen)
-      screens = g_slist_prepend (screens, screen);
-  }
-#endif
-
-  if (screens == NULL)
-    {
-      /* This would typically happen because all the screens already
-       * have window managers
-       */
-#ifndef USE_GDK_DISPLAY
-      XCloseDisplay (xdisplay);
-#endif
-      all_displays = g_slist_remove (all_displays, display);
-      g_free (display->name);
-      g_free (display);
-      return FALSE;
-    }
-  
-  display->screens = screens;
-
 #ifdef USE_GDK_DISPLAY
   display->events = NULL;
 
@@ -441,6 +411,44 @@ meta_display_open (const char *name)
   display->grab_window = NULL;
   display->grab_screen = NULL;
   display->grab_resize_popup = NULL;
+
+  screens = NULL;
+  
+#ifdef HAVE_GTK_MULTIHEAD  
+  i = 0;
+  while (i < ScreenCount (xdisplay))
+    {
+      MetaScreen *screen;
+
+      screen = meta_screen_new (display, i);
+
+      if (screen)
+        screens = g_slist_prepend (screens, screen);
+      ++i;
+    }
+#else
+  {
+    MetaScreen *screen;
+    screen = meta_screen_new (display, DefaultScreen (xdisplay));
+    if (screen)
+      screens = g_slist_prepend (screens, screen);
+  }
+#endif
+  
+  display->screens = screens;
+  
+  if (screens == NULL)
+    {
+      /* This would typically happen because all the screens already
+       * have window managers.
+       */
+      meta_display_close (display);
+      return FALSE;
+    }
+
+  /* display->leader_window was created as a side effect of
+   * initializing the screens
+   */
   
   set_utf8_string_hint (display,
                         display->leader_window,
@@ -467,8 +475,9 @@ meta_display_open (const char *name)
                      XA_WINDOW,
                      32, PropModeReplace, (guchar*) data, 1);
   }
-
+  
   meta_display_grab (display);
+  
   /* Now manage all existing windows */
   tmp = display->screens;
   while (tmp != NULL)
@@ -579,6 +588,8 @@ meta_display_close (MetaDisplay *display)
     meta_bug ("Display closed with error traps pending\n");
 
   display->closing += 1;
+
+  meta_prefs_remove_listener (prefs_changed_callback, display);
   
   if (display->autoraise_timeout_id != 0)
     {
@@ -1046,10 +1057,10 @@ event_callback (XEvent   *event,
       else if (window && display->grab_op == META_GRAB_OP_NONE)
         {
           gboolean begin_move = FALSE;
-          guint grab_mask;
+          unsigned int grab_mask;
           gboolean unmodified;
 
-          grab_mask = Mod1Mask;
+          grab_mask = display->window_grab_modifiers;
           if (g_getenv ("METACITY_DEBUG_BUTTON_GRABS"))
             grab_mask |= ControlMask;
 
@@ -2570,53 +2581,61 @@ meta_change_button_grab (MetaDisplay *display,
 void
 meta_display_grab_window_buttons (MetaDisplay *display,
                                   Window       xwindow)
-{    
+{  
   /* Grab Alt + button1 and Alt + button2 for moving window,
    * and Alt + button3 for popping up window menu.
    */
   meta_verbose ("Grabbing window buttons for 0x%lx\n", xwindow);
-
+  
   /* FIXME If we ignored errors here instead of spewing, we could
    * put one big error trap around the loop and avoid a bunch of
    * XSync()
    */
-  
-  {
-    gboolean debug = g_getenv ("METACITY_DEBUG_BUTTON_GRABS") != NULL;
-    int i = 1;
-    while (i < 4)
-      {
-        meta_change_button_grab (display,
-                                 xwindow,
-                                 TRUE,
-                                 FALSE,
-                                 i, Mod1Mask);
-                                 
 
-        /* This is for debugging, since I end up moving the Xnest
-         * otherwise ;-)
-         */
-        if (debug)
-          meta_change_button_grab (display, xwindow,
+  if (display->window_grab_modifiers != 0)
+    {
+      gboolean debug = g_getenv ("METACITY_DEBUG_BUTTON_GRABS") != NULL;
+      int i = 1;
+      while (i < 4)
+        {
+          meta_change_button_grab (display,
+                                   xwindow,
                                    TRUE,
                                    FALSE,
-                                   i, ControlMask);
-        
-        ++i;
-      }
-  }
+                                   i, display->window_grab_modifiers);  
+          
+          /* This is for debugging, since I end up moving the Xnest
+           * otherwise ;-)
+           */
+          if (debug)
+            meta_change_button_grab (display, xwindow,
+                                     TRUE,
+                                     FALSE,
+                                     i, ControlMask);
+          
+          ++i;
+        }
+    }
 }
 
 void
 meta_display_ungrab_window_buttons  (MetaDisplay *display,
                                      Window       xwindow)
 {
-  gboolean debug = g_getenv ("METACITY_DEBUG_BUTTON_GRABS") != NULL;
-  int i = 1;
+  gboolean debug;
+  int i;
+
+  if (display->window_grab_modifiers == 0)
+    return;
+  
+  debug = g_getenv ("METACITY_DEBUG_BUTTON_GRABS") != NULL;
+  i = 1;
   while (i < 4)
     {
       meta_change_button_grab (display, xwindow,
-                               FALSE, FALSE, i, Mod1Mask);
+                               FALSE, FALSE, i,
+                               display->window_grab_modifiers);
+      
       if (debug)
         meta_change_button_grab (display, xwindow,
                                  FALSE, FALSE, i, ControlMask);
@@ -3494,4 +3513,86 @@ meta_display_unmanage_windows_for_screen (MetaDisplay *display,
       tmp = tmp->next;
     }
   g_slist_free (winlist);
+}
+
+void
+meta_display_devirtualize_modifiers (MetaDisplay        *display,
+                                     MetaVirtualModifier modifiers,
+                                     unsigned int       *mask)
+{
+  *mask = 0;
+  
+  if (modifiers & META_VIRTUAL_SHIFT_MASK)
+    *mask |= ShiftMask;
+  if (modifiers & META_VIRTUAL_CONTROL_MASK)
+    *mask |= ControlMask;
+  if (modifiers & META_VIRTUAL_ALT_MASK)
+    *mask |= Mod1Mask;
+  if (modifiers & META_VIRTUAL_META_MASK)
+    *mask |= display->meta_mask;
+  if (modifiers & META_VIRTUAL_HYPER_MASK)
+    *mask |= display->hyper_mask;
+  if (modifiers & META_VIRTUAL_SUPER_MASK)
+    *mask |= display->super_mask;
+  if (modifiers & META_VIRTUAL_MOD2_MASK)
+    *mask |= Mod2Mask;
+  if (modifiers & META_VIRTUAL_MOD3_MASK)
+    *mask |= Mod3Mask;
+  if (modifiers & META_VIRTUAL_MOD4_MASK)
+    *mask |= Mod4Mask;
+  if (modifiers & META_VIRTUAL_MOD5_MASK)
+    *mask |= Mod5Mask;  
+}
+
+static void
+update_window_grab_modifiers (MetaDisplay *display)
+     
+{
+  MetaVirtualModifier virtual_mods;
+  unsigned int mods;
+    
+  virtual_mods = meta_prefs_get_mouse_button_mods ();
+  meta_display_devirtualize_modifiers (display, virtual_mods,
+                                       &mods);
+    
+  display->window_grab_modifiers = mods;
+}
+
+static void
+prefs_changed_callback (MetaPreference pref,
+                        void          *data)
+{
+  if (pref == META_PREF_MOUSE_BUTTON_MODS)
+    {
+      MetaDisplay *display = data;
+      GSList *windows;
+      GSList *tmp;
+
+      windows = meta_display_list_windows (display);
+      
+      /* Ungrab all */
+      tmp = windows;
+      while (tmp != NULL)
+        {
+          MetaWindow *w = tmp->data;
+          meta_display_ungrab_window_buttons (display, w->xwindow);
+          meta_display_ungrab_focus_window_button (display, w->xwindow);
+          tmp = tmp->next;
+        }
+      
+      /* change our modifier */
+      update_window_grab_modifiers (display);
+
+      /* Grab all */
+      tmp = windows;
+      while (tmp != NULL)
+        {
+          MetaWindow *w = tmp->data;
+          meta_display_grab_focus_window_button (display, w->xwindow);
+          meta_display_grab_window_buttons (display, w->xwindow);
+          tmp = tmp->next;
+        }
+
+      g_slist_free (windows);
+    }
 }
