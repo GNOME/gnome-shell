@@ -1,3 +1,8 @@
+2002-12-19  Ross Burton  <ross@burtonini.com>
+
+	* doc/metacity-theme.dtd: Fix a typo and loosen the requirements
+	for the resize element.
+
 2002-12-19  Havoc Pennington  <hp@pobox.com>
 
 	* Reverted visual bell patch, #99886

@@ -70,7 +70,7 @@
 <!ATTLIST frame
 	focus		(yes|no) #REQUIRED
 	state		(normal|maximized|shaded|maximized_and_shaded) #REQUIRED
-	resize		(both|horizontal|vertical|none) #REQUIRED
+	resize		(both|horizontal|vertical|none) #IMPLIED
 	style		CDATA #REQUIRED
 >
 
@@ -153,7 +153,7 @@
 	filled			%boolean; 'false'
 >
 
-<!ELEMENT arc EMTPY>
+<!ELEMENT arc EMPTY>
 <!ATTLIST arc
 	color			CDATA #REQUIRED
 	%xyrequired;
