@@ -1,3 +1,8 @@
+2002-12-15  Havoc Pennington  <hp@pobox.com>
+
+	* src/prefs.c (meta_prefs_change_workspace_name): don't pass NULL
+	string to gconf_client_set_string #101237
+
 2002-12-13  Havoc Pennington  <hp@redhat.com>
 
 	* src/tools/Makefile.am (Desktop_in_files): only install .desktop

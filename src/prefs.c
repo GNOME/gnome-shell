@@ -1711,10 +1711,15 @@ meta_prefs_change_workspace_name (int         i,
   key = gconf_key_for_workspace_name (i);
 
   err = NULL;
-  gconf_client_set_string (default_client,
-                           key, name,
-                           &err);
+  if (name != NULL)
+    gconf_client_set_string (default_client,
+                             key, name,
+                             &err);
+  else
+    gconf_client_unset (default_client,
+                        key, &err);
 
+  
   if (err)
     {
       meta_warning (_("Error setting name for workspace %d to \"%s\": %s\n"),
