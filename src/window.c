@@ -415,8 +415,8 @@ meta_window_new (MetaDisplay *display, Window xwindow,
 
   window->cached_group = NULL;
   
-  window->layer = META_LAYER_NORMAL;
-  window->stack_op = NULL;
+  window->layer = META_LAYER_LAST; /* invalid value */
+  window->stack_position = -1;
   window->initial_workspace = 0; /* not used */
   meta_display_register_x_window (display, &window->xwindow, window);
 

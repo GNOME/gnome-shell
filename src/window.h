@@ -252,8 +252,8 @@ struct _MetaWindow
   
   /* Managed by stack.c */
   MetaStackLayer layer;
-  MetaStackOp *stack_op;
-
+  int stack_position; /* see comment in stack.h */
+  
   /* Current dialog open for this window */
   int dialog_pid;
   int dialog_pipe;

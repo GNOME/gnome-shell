@@ -24,10 +24,24 @@
 
 #include "screen.h"
 
-/* Type of last-queued stacking operation, hung off of MetaWindow
- * but an opaque type used only in stack.c
+/* Layers vs. stack positions
+ * ==========================
+ *
+ * There are two factors that determine window position.
+ * 
+ * One is window->stack_position, which is a unique integer
+ * indicating how windows are ordered with respect to one
+ * another. The ordering here transcends layers; it isn't changed
+ * as the window is moved among layers. This allows us to move several
+ * windows from one layer to another, while preserving the relative
+ * order of the moved windows. Also, it allows us to restore
+ * the stacking order from a saved session.
+ * 
+ * However when actually stacking windows on the screen, the
+ * layer overrides the stack_position; windows are first sorted
+ * by layer, then by stack_position within each layer.
+ *
  */
-typedef struct _MetaStackOp MetaStackOp;
 
 /* These MUST be in the order of stacking */
 typedef enum
@@ -47,25 +61,30 @@ struct _MetaStack
 {
   MetaScreen *screen;
 
-  /* All windows that we manage, in mapping order,
+  /* All X windows that we manage, in mapping order,
    * for _NET_CLIENT_LIST
    */
   GArray *windows;
 
-  /* List of MetaWindow* in each layer */
-  GList *layers[META_LAYER_LAST];
-
-  /* List of MetaStackOp, most recent op
-   * first in list.
-   */
-  GList *pending;
+  /* Currently-stacked MetaWindow */
+  GList *sorted;
+  /* MetaWindow to be added to the sorted list */
+  GList *added;
+  /* Window IDs to be removed from the stack */
+  GList *removed;
   
   int freeze_count;
 
-  int n_added;
-
   /* The last-known stack */
   GArray *last_root_children_stacked;
+
+  /* number of stack positions */
+  int n_positions;
+
+  /* What needs doing */
+  unsigned int need_resort : 1;
+  unsigned int need_relayer : 1;
+  unsigned int need_constrain : 1;
 };
 
 MetaStack *meta_stack_new       (MetaScreen     *screen);
@@ -110,6 +129,9 @@ GList*      meta_stack_list_windows (MetaStack *stack,
 int         meta_stack_windows_cmp  (MetaStack  *stack,
                                      MetaWindow *window_a,
                                      MetaWindow *window_b);
+
+void meta_window_set_stack_position (MetaWindow *window,
+                                     int         position);
 
 #endif
 
