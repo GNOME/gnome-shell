@@ -1,0 +1,199 @@
+To make choice of focus window consistent for each focus method, a
+number of guidelines should be followed.  (For purposes of discussion
+here, I'm excluding things like the panel and the desktop from
+"windows".  It is technically incorrect to do this, but I'm lazy and
+"windows" is shorter than something like "normal windows".  See the
+end of the discussion for how these special cases are handled.)  The
+basics are easy:
+
+Focus method  Behavior
+    click     When a user clicks on a window, focus it
+   sloppy     When an EnterNotify is received, focus the window
+    mouse     Same as sloppy, but also defocus on LeaveNotify
+
+Note that these choices (along with the choice that clicking on a
+window raises it for the click focus method) introduces the following
+invariants for focus from mouse activity:
+
+Focus method  Invariant
+    click     The window on top is focused
+   sloppy     If the mouse is in a window, then it is focused; if the
+              mouse is not in a window, then the most recently used
+              window is focused.
+    mouse     If the mouse is in a window, then it is focused; otherwise,
+              the designated "no_focus_window" is focused
+
+However, there are a number of cases where the current focus window
+becomes invalid and another should be chosen.  Some examples are when
+a focused window is closed or minimized, or when the user changes
+workspaces.  In these cases, there needs to be a rule consistent with
+the above about the new window to choose.
+
+Focus method  Behavior
+    click     Focus the most recently used window (same as the window
+              on top)
+   sloppy     Focus the window containing the pointer if there is such
+              a window, otherwise focus the most recently used window.
+    mouse     Focus the window containing the pointer if there is one,
+              otherwise focus the designated "no_focus_window".
+
+Also, sometimes a new window will be mapped (e.g. unminimizing a
+window or launching a new application).  Most users want to interact
+with new windows right away, so these should typically be focused.
+This does conflict with the invariants for sloppy and mouse focus
+modes, so this wouldn't be true for a strict-pointer-focus mode.  For
+all other modes (non-strict-pointer-focus modes), there are only two
+cases in which a new window shouldn't be focused:
+
+  1) If the window takes a while to launch and the user starts
+     interacting with a different application, the new window should
+     not take focus.
+  2) If the window that will appear was not launched by the user
+     (error dialogs, instant messaging windows, etc.), then the window
+     should not take focus when it appears.
+
+To handle these cases, Metacity compares timestamps of the event that
+caused the launch and the timestamp of the last interaction with the
+focused window.  (Case 2 is handled by providing a special timestamp
+of 0 for the launch time, which ensures that the window that appears
+doesn't get focus)
+
+If the newly launched window isn't focused, some things should be done
+to alert the user that there is a window to work with:
+  1) The _NET_WM_DEMANDS_ATTENTION hint should be set
+  2) If the new window isn't modal for the focused window, it should
+     appear below the focused window so that it doesn't obscure the
+     focused window that the user is interacting with.
+  3) If the new window is modal to the focused window, the currently
+     focused window should lose focus but the modal window should
+     appear on top.
+
+Additionally, the user may decide to use the keyboard instead of the mouse
+to navigate between windows (referred to as "keynav").  This poses no
+problems for click-to-focus (because the same invariant can be
+maintained), but for sloppy and mouse focus it means that EnterNotify
+and LeaveNotify events should be ignored (they can be generated
+without using the mouse, for example, by grabs).
+
+Finally, windows of type WM_DOCK or WM_DESKTOP (e.g. the desktop and
+the panel) present a special case.  For all focus modes, we only focus
+these windows if the user clicks on them.  (Well, erm, actually they
+can be focused in click and sloppy focus modes if no other window
+besides these are found, but there shouldn't be any difference in
+behavior between doing this and focusing the designated
+"no_focus_window")
+
+
+
+
+To read more about the bugs that inspired these choices:
+  - When a focused window becomes invalid and another should be chosen
+    http://bugzilla.gnome.org/show_bug.cgi?id=135810
+  - When a new window is mapped
+    http://bugzilla.gnome.org/show_bug.cgi?id=118372
+    Also, the EWMH spec, especially the parts relating to _NET_WM_USER_TIME
+  - Modal vs. non-modal dialogs that get denied focus when mapped
+    http://bugzilla.gnome.org/show_bug.cgi?id=151996
+  - Ignoring EnterNotify and LeaveNotify events during keynav
+    http://bugzilla.gnome.org/show_bug.cgi?id=101190
+  - Not focusing panels
+    http://bugzilla.gnome.org/show_bug.cgi?id=120100 (maybe a different bug?)
+
+There were many bugs which had to be fixed to get all the above
+working; they helped form these policies and/or show the difficulties
+in implementing this policy (my apologies in advance for producing a
+list heavily lopsided to what I've done; it's just that these bugs are
+the ones I'm the most familiar with):
+  bug  72314  ignore LeaveNotify events from grabs
+  bug  82921  focus windows on map
+  bug  87531  only show focus for sticky windows on active workspace (pager)
+  bug  94545  focus window on workspace switch is non-deterministic
+  bug  95747  should ignore EnterNotify events with NotifyInferior detail set
+  bug  97635  sticky windows always keep focus when switching workspaces
+  bug 102665  a window unminimized from the tasklist should be focused
+  bug 108643  focus in MRU order instead of stack order
+  bug 110970  moving a window to another workspace loses focus
+  bug 112031  closing a dialog can result in a strange focus window
+  bug 115650  add _NET_WM_USER_TIME support to gtk+ (see also 150502)
+  bug 120100  panel shouldn't be focused after workspace applet usage
+  bug 123803  need final EnterNotify after workspace switch (see also 124798)
+  bug 124981  focus clicked window in pager only if on current workspace
+  bug 128200  focus correct window on libwnck window minimize (see 107681 too)
+  bug 131582  fix race condition on window minimize/close
+  bug 133120  wrong window focused when changing workspaces
+  bug 135024  _NET_ACTIVE_WINDOW messages need timestamps
+  bug 135786  middle-clicking on focused window to lower it should defocus too
+  bug 136581  window minimization vs. activation for mouse focus
+  bug 144900  fix focus choice on "un-showing" the desktop
+  bug 147475  don't lock keyboard on workspace change
+  bug 148364  DEMANDS_ATTENTION support for metacity & libwnck (and other stuff)
+  bug 149028  focus-stealing-prevention for metacity-dialog (and other stuff)
+  bug 149366  windows denied focus on map occur in wrong order in alt-tab list
+  bug 149543  consistent focus window when unshowing desktop
+  bug 149589  race in focus choice from libwnck messages
+  bug 150271  make sure "run application" dialog gets focused
+  bug 150668  update gtk+ _NET_ACTIVE_WINDOW support
+  bug 151245  application startup notification forwarding (partially rejected)
+  bug 151984  Soeren's idea--backup timestamp when startup notification not used
+  bug 151990  prevent focus inconsistencies by only providing one focus method
+  bug 151996  modal dialogs denied focus should not be lowered
+  bug 152000  fix race on window close followed by rapid mouse movement
+
+
+Addendum on sloppy and mouse focus
+  You may occasionally hear people refer to sloppy or mouse focus
+  modes as inherently buggy.  This is what they mean by that:
+
+  1) Keynav doesn't maintain the same invariants as mouse navigation
+     for these focus modes; switching back and forth between
+     navigation methods, therefore, may appear to have
+     inconsistencies.  Examples:
+     a) If the user uses Alt-Tab to change the window with focus, then
+        starts to move the mouse, at that moment the window where the
+        mouse is does not have focus.
+     b) Users expect that a workspace they previously used will not
+        change when the return to it.  This means things like window
+        position and stacking order, but also the focus window.
+        Unfortunately, using the original focus window (which would be
+        the most recently used window on that workspace) will
+        sometimes conflict with the invariants for mouse and sloppy
+        focus modes.  Users are much more surprised by the invariant
+        being broken than by having the focus window changed (see bug
+        94545 and probably others), so we maintain the invariant.
+        This only matters when using Ctrl-Alt-Arrow to switch
+        workspaces instead of clicking in the workspace switcher, so
+        this really is a keynav vs mouse issue.  Either that, or a
+        windows-are-being-mapped exception.  ;-)
+     c) Opening a menu, then moving the mouse to a different window,
+        and then pressing escape to dismiss the menu will result in
+        the window containing the mouse not being focused.  This is
+        actually correct behavior (because pressing escape shows that
+        the user is using key navigation to interact with the window
+        containing the menu) but is one of those hard-to-get-right
+        keynav and mouse focus mixture cases.  (See bug 101190 for
+        more details)
+  2) The sloppy/mouse invariants are often not strictly maintained;
+     for example, we provide an exception to the invariant for newly
+     mapped windows.  (Most find that not allowing this exception is
+     confusing)
+  3) There are an awful lot of little cases to handle to get any focus
+     mode right, even for click-to-focus.  Since mouse and sloppy
+     focus have sometimes been hard to even determine what correct
+     behavior is, it is much harder to get them completely right.
+     Plus mouse and sloppy focus users are a minority, decreasing the
+     motivation of window manager implementors to get those focus
+     modes right.
+  4) Because of -1-, -2-, and -3-, implementations are often buggy or
+     inconsistent and people form their opinions from usage of these
+     implementations.
+  5) Sloppy focus suffers from a bit of a discoverability problem (for
+     example, I have seen a scientist sit down to a computer for which
+     sloppy focus was in use and take a few minutes before figuring
+     out how window activation worked; granted the layout of the
+     windows in that situation was a bit unusual but it still
+     illustrates that sloppy focus is harder than it should be to
+     figure out).  Mouse focus solves this problem; however, people
+     that have experience with other computing environments are
+     accustomed to being able to move their mouse outside the window
+     they are working with and still continue interacting with that
+     window, which conflicts with mouse focus.

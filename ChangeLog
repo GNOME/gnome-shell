@@ -1,3 +1,12 @@
+2004-09-07  Elijah Newren  <newren@math.utah.edu>
+
+	Add a new write-up on making window focus consistent (see #152004)
+
+	* doc/how-to-get-focus-right.txt: New document
+
+	* rationales.txt: Remove references to focus bugs, instead point
+	to doc/how-to-get-focus-right.txt
+
 2004-09-06  Elijah Newren  <newren@math.utah.edu>
 
 	* rationales.txt: Add bugs regarding window focus

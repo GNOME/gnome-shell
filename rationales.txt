@@ -2,12 +2,7 @@
 History
 ====
 
-Focus windows on map:
-  http://bugzilla.gnome.org/show_bug.cgi?id=118372
-  http://bugzilla.gnome.org/show_bug.cgi?id=82921
-
-Choice of focus window (other than during a window map):
-  http://bugzilla.gnome.org/show_bug.cgi?id=135810
+Focus issues: see doc/how-to-get-focus-right.txt
 
 Keep panel always on top: http://bugzilla.gnome.org/show_bug.cgi?id=81551
 Edge flipping: http://bugzilla.gnome.org/show_bug.cgi?id=82917
@@ -32,15 +27,6 @@ raise windows on click:
   http://bugzilla.gnome.org/show_bug.cgi?id=86108
   http://bugzilla.gnome.org/show_bug.cgi?id=115072
   http://bugzilla.gnome.org/show_bug.cgi?id=115753
-
-Some discussion of how pointer focus is perhaps inherently problematic
-because of the "sometimes focus window that isn't under the mouse"
-heuristics (almost always involves some kind of use of keynav):
-  http://bugzilla.gnome.org/show_bug.cgi?id=101190
-  http://bugzilla.gnome.org/show_bug.cgi?id=145387
-  http://bugzilla.gnome.org/show_bug.cgi?id=147699
-  http://bugzilla.gnome.org/show_bug.cgi?id=124798
-  http://bugzilla.gnome.org/show_bug.cgi?id=123803
 
 Tracking bugs
 ====
