@@ -115,6 +115,9 @@ static void    update_window_grab_modifiers (MetaDisplay *display);
 static void    prefs_changed_callback    (MetaPreference pref,
                                           void          *data);
 
+static void    sanity_check_timestamps   (MetaDisplay *display,
+                                          Time         known_good_timestamp);
+
 static void
 set_utf8_string_hint (MetaDisplay *display,
                       Window xwindow,
@@ -645,6 +648,7 @@ meta_display_open (const char *name)
   }
 
   display->last_focus_time = timestamp;
+  display->last_user_time = timestamp;
   display->compositor = meta_compositor_new (display);
   
   screens = NULL;
@@ -1146,6 +1150,8 @@ meta_display_get_current_time_roundtrip (MetaDisplay *display)
       timestamp = property_event.xproperty.time;
     }
 
+  sanity_check_timestamps (display, timestamp);
+
   return timestamp;
 }
 
@@ -1563,11 +1569,8 @@ event_callback (XEvent   *event,
   if (window && ((event->type == KeyPress) || (event->type == ButtonPress)))
     {
       g_assert (CurrentTime != display->current_time);
-      meta_topic (META_DEBUG_WINDOW_STATE,
-                  "Metacity set %s's net_wm_user_time to %lu.\n",
-                  window->desc, display->current_time);
-      window->net_wm_user_time_set = TRUE;
-      window->net_wm_user_time = display->current_time;
+      meta_window_set_user_time (window, display->current_time);
+      sanity_check_timestamps (display, display->current_time);
     }
   
   switch (event->type)
@@ -4648,21 +4651,114 @@ meta_display_focus_sentinel_clear (MetaDisplay *display)
   return (display->sentinel_counter == 0);
 }
 
+static void
+sanity_check_timestamps (MetaDisplay *display,
+                         Time         timestamp)
+{
+  if (XSERVER_TIME_IS_BEFORE (timestamp, display->last_focus_time))
+    {
+      meta_warning ("last_focus_time (%lu) is greater than comparison "
+                    "timestamp (%lu).  This most likely represents a buggy "
+                    "client sending inaccurate timestamps in messages such as "
+                    "_NET_ACTIVE_WINDOW.  Trying to work around...\n",
+                    display->last_focus_time, (unsigned long)timestamp);
+      display->last_focus_time = timestamp;
+    }
+  if (XSERVER_TIME_IS_BEFORE (timestamp, display->last_user_time))
+    {
+      GSList *windows;
+      GSList *tmp;
+
+      meta_warning ("last_user_time (%lu) is greater than comparison "
+                    "timestamp (%lu).  This most likely represents a buggy "
+                    "client sending inaccurate timestamps in messages such as "
+                    "_NET_ACTIVE_WINDOW.  Trying to work around...\n",
+                    display->last_user_time, (unsigned long)timestamp);
+      display->last_user_time = timestamp;
+
+      windows = meta_display_list_windows (display);
+      tmp = windows;
+      while (tmp != NULL)
+        {
+          MetaWindow *window = tmp->data;
+          
+          if (XSERVER_TIME_IS_BEFORE (timestamp, window->net_wm_user_time))
+            {
+              meta_warning ("%s appears to be one of the offending windows "
+                            "with a timestamp of %lu.  Working around...\n",
+                            window->desc, window->net_wm_user_time);
+              window->net_wm_user_time = timestamp;
+            }
+          
+          tmp = tmp->next;
+        }
+
+      g_slist_free (windows);
+    }
+}
+
+static gboolean
+timestamp_too_old (MetaDisplay *display,
+                   MetaWindow  *window,
+                   Time        *timestamp)
+{
+  /* FIXME: If Soeren's suggestion in bug 151984 is implemented, it will allow
+   * us to sanity check the timestamp here and ensure it doesn't correspond to
+   * a future time (though we would want to rename to 
+   * timestamp_too_old_or_in_future).
+   */
+
+  MetaWindow *focus_window;
+  focus_window = display->focus_window;
+
+  if (*timestamp == CurrentTime)
+    {
+      meta_warning ("Got a request to focus %s with a timestamp of 0.  This "
+                    "shouldn't happen!\n",
+                    window ? window->desc : "the no_focus_window");
+      meta_print_backtrace ();
+      *timestamp = meta_display_get_current_time_roundtrip (display);
+      return FALSE;
+    }
+  else if (XSERVER_TIME_IS_BEFORE (*timestamp, display->last_focus_time))
+    {
+      if (XSERVER_TIME_IS_BEFORE (*timestamp, display->last_user_time))
+        {
+          meta_topic (META_DEBUG_FOCUS,
+                      "Ignoring focus request for %s since %lu "
+                      "is less than %lu and %lu.\n",
+                      window ? window->desc : "the no_focus_window",
+                      *timestamp,
+                      (unsigned long) display->last_user_time,
+                      (unsigned long) display->last_focus_time);
+          return TRUE;
+        }
+      else
+        {
+          meta_topic (META_DEBUG_FOCUS,
+                      "Received focus request for %s which is newer than most "
+                      "recent user_time, but less recent than "
+                      "last_focus_time (%lu < %lu < %lu); adjusting "
+                      "accordingly.  (See bug 167358)\n",
+                      window ? window->desc : "the no_focus_window",
+                      display->last_user_time,
+                      *timestamp,
+                      display->last_focus_time);
+          *timestamp = display->last_focus_time;
+          return FALSE;
+        }
+    }
+
+  return FALSE;
+}
+
 void
 meta_display_set_input_focus_window (MetaDisplay *display, 
                                      MetaWindow  *window,
                                      gboolean     focus_frame,
                                      Time         timestamp)
 {
-  if (timestamp == CurrentTime)
-    {
-      meta_warning ("meta_display_set_input_focus_window called with a "
-                    "timestamp of 0 for window %s.  This shouldn't happen!\n",
-                    window->desc);
-      meta_print_backtrace ();
-      timestamp = meta_display_get_current_time_roundtrip (display);
-    }
-  else if (XSERVER_TIME_IS_BEFORE (timestamp, display->last_focus_time))
+  if (timestamp_too_old (display, window, &timestamp))
     return;
 
   XSetInputFocus (display->xdisplay,
@@ -4680,18 +4776,8 @@ void
 meta_display_focus_the_no_focus_window (MetaDisplay *display, 
                                         Time         timestamp)
 {
-  if (timestamp == CurrentTime)
-    {
-      meta_warning ("meta_display_focus_the_no_focus_window called with a "
-                    "timestamp of 0.  This shouldn't happen!\n");
-      meta_print_backtrace ();
-      timestamp = meta_display_get_current_time_roundtrip (display);
-    }
-  else if (XSERVER_TIME_IS_BEFORE (timestamp, display->last_focus_time))
-    {
-      meta_warning ("Ignoring focus request for no_focus_window since %lu is less than %lu.\n", timestamp, display->last_focus_time);
+  if (timestamp_too_old (display, NULL, &timestamp))
     return;
-    }
 
   XSetInputFocus (display->xdisplay,
                   display->no_focus_window,

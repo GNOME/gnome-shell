@@ -198,8 +198,11 @@ struct _MetaDisplay
    */
   MetaWindow *expected_focus_window;
 
-  /* last timestamp that a window was focused */
+  /* last timestamp passed to XSetInputFocus */
   Time last_focus_time;
+
+  /* last user interaction time in any app */
+  Time last_user_time;
 
   guint static_gravity_works : 1;
   
@@ -361,11 +364,21 @@ struct _MetaDisplay
  * has occurred, this is equivalent to
  *   time1 < time2
  * Of course, the rest of the ugliness of this macro comes from accounting
- * for the fact that wraparound can occur.
+ * for the fact that wraparound can occur and the fact that a timestamp of
+ * 0 must be special-cased since it means older than anything else. 
+ *
+ * Note that this is NOT an equivalent for time1 <= time2; if that's what
+ * you need then you'll need to swap the order of the arguments and negate
+ * the result.
  */
-#define XSERVER_TIME_IS_BEFORE(time1, time2)                       \
-  ( (( time1 < time2 ) && ( time2 - time1 < ((guint32)-1)/2 )) ||  \
-    (( time1 > time2 ) && ( time1 - time2 > ((guint32)-1)/2 ))     \
+#define XSERVER_TIME_IS_BEFORE_ASSUMING_REAL_TIMESTAMPS(time1, time2) \
+  ( (( time1 < time2 ) && ( time2 - time1 < ((guint32)-1)/2 )) ||     \
+    (( time1 > time2 ) && ( time1 - time2 > ((guint32)-1)/2 ))        \
+  )
+#define XSERVER_TIME_IS_BEFORE(time1, time2)                          \
+  ( time1 == 0 ||                                                     \
+    (XSERVER_TIME_IS_BEFORE_ASSUMING_REAL_TIMESTAMPS(time1, time2) && \
+     time2 != 0)                                                      \
   )
 
 gboolean      meta_display_open                (const char  *name);
@@ -507,9 +520,11 @@ gboolean meta_display_focus_sentinel_clear (MetaDisplay *display);
 /* meta_display_set_input_focus_window is like XSetInputFocus, except
  * that (a) it can't detect timestamps later than the current time,
  * since Metacity isn't part of the XServer, and thus gives erroneous
- * behavior in this circumstance (so don't do it), and (b) it uses
- * display->last_focus_time and display->expected_focus_window since
- * we don't have access to the true Xserver ones.
+ * behavior in this circumstance (so don't do it), (b) it uses
+ * display->last_focus_time since we don't have access to the true
+ * Xserver one, (c) it makes use of display->user_time since checking
+ * whether a window should be allowed to be focused should depend
+ * on user_time events (see bug 167358, comment 15 in particular)
  */
 void meta_display_set_input_focus_window   (MetaDisplay *display, 
                                             MetaWindow  *window,

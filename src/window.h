@@ -532,4 +532,7 @@ void meta_window_queue_update_icon (MetaWindow *window);
 void meta_window_stack_just_below (MetaWindow *window,
                                    MetaWindow *below_this_one);
 
+void meta_window_set_user_time (MetaWindow *window,
+                                Time        timestamp);
+
 #endif

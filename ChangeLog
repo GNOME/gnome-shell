@@ -1,3 +1,53 @@
+2005-02-20  Elijah Newren  <newren@gmail.com>
+
+	Big patch to cover about 6 different issues in order to correct
+	rare problems with timestamps (make sure window selected in
+	tasklist actually gets focus, sanity check timestamps to avoid
+	rogue apps hosing the system, correct the updating of
+	net_wm_user_time, correctly handle timestamps of 0 when comparing
+	xserver timestamps for those who have had their systems up for
+	over 25 days or so, add some debugging information to verbose
+	logs, some code cleanups).  Fixes all issues listed in #167358.
+
+	* src/display.h: (struct _MetaDisplay): clarify comment on
+	last_focus_time, introduce a new variable--last_user_time,
+	(XSERVER_TIME_IS_BEFORE macro): put this functionality into a
+	separate macro and then introduce a new macro with this name that
+	uses the old one but adds additional special-case checks for
+	timestamps that are 0, (comment to
+	meta_display_set_input_focus_window): add information about how
+	last_user_time should be used in this function
+	
+	* src/display.c (santiy_check_timestamps): new function,
+	(meta_display_open): intialize display->last_user_time,
+	(meta_display_get_current_time_roundtrip): use the timestamp,
+	which is known to be good, in order to sanity_check_timestamps,
+	(event_callback): use the new meta_window_ste_user_time() function
+	in order to correct problems, use the timestamp of KeyPress and
+	ButtonPress events, which are known to be good, in order to
+	sanity_check_timestamps, (timestamp_too_old): new function for
+	common behavior of meta_display_focus_the_no_focus_window and
+	meta_display_set_input_focus_window, with added checking for
+	display->last_user_time in addition to display->last_focus_time,
+	(meta_display_set_input_focus_window): replace some of the code
+	with a call to timestamp_too_old(),
+	(meta_display_focus_the_no_focus_window): replace some of th ecode
+	with a call to timestamp_too_old()
+
+	* src/window.h: (meta_window_set_user_time): new function to
+	abstract the many things that need to be done when updating the
+	net_wm_user_time of any window
+
+	* src/window.c: (meta_window_activate): add debugging spew, make
+	sure the comparison is made with last_user_time NOT
+	last_focus_time, use meta_window_set_user_time() function in order
+	to correct problems, (meta_window_client_message): add a newline
+	to a debugging message to make them easier to read,
+	(meta_window_set_user_time): new function
+
+	* src/window-props.c (reload_net_wm_user_time): use the new
+	meta_window_ste_user_time() function in order to correct problems
+
 2005-02-16  Elijah Newren  <newren@gmail.com>
 
 	* src/display.c: (event_callback): trivial fix to a log message:

@@ -186,12 +186,7 @@ reload_net_wm_user_time (MetaWindow    *window,
   if (value->type != META_PROP_VALUE_INVALID)
     {
       gulong cardinal = value->v.cardinal;
-
-      window->net_wm_user_time_set = TRUE;
-      window->net_wm_user_time = cardinal;
-      meta_topic (META_DEBUG_STARTUP,
-                  "Window %s has _NET_WM_USER_TIME of %lu\n",
-                  window->desc, window->net_wm_user_time);
+      meta_window_set_user_time (window, cardinal);
     }
 }
 

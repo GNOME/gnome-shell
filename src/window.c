@@ -2206,15 +2206,20 @@ void
 meta_window_activate (MetaWindow *window,
                       guint32     timestamp)
 {
+  meta_topic (META_DEBUG_FOCUS,
+              "_NET_ACTIVE_WINDOW message sent for %s at time %lu.\n",
+              window->desc, (unsigned long)timestamp);
+
   /* Older EWMH spec didn't specify a timestamp, so it can be 0 and we
    * have to treat that as a new request.
    */
-  if (XSERVER_TIME_IS_BEFORE (timestamp, window->display->last_focus_time) &&
+  if (XSERVER_TIME_IS_BEFORE (timestamp, window->display->last_user_time) &&
       timestamp != 0)
     {
       meta_topic (META_DEBUG_FOCUS,
-                  "_NET_ACTIVE_WINDOW message sent but with a timestamp that"
-                  "requests the window not be active, so we're ignoring it.\n");
+                  "last_user_time (%lu) is more recent; ignoring "
+                  " _NET_ACTIVE_WINDOW message.\n",
+                  window->display->last_user_time);
       window->wm_state_demands_attention = TRUE;
       set_net_wm_state (window);
       return;
@@ -2223,7 +2228,7 @@ meta_window_activate (MetaWindow *window,
   if (timestamp == 0)
     timestamp = meta_display_get_current_time_roundtrip (window->display);
 
-  window->net_wm_user_time = timestamp;
+  meta_window_set_user_time (window, timestamp);
 
   /* disable show desktop mode unless we're a desktop component */
   maybe_leave_show_desktop_mode (window);
@@ -4305,7 +4310,7 @@ meta_window_client_message (MetaWindow *window,
   else if (event->xclient.message_type ==
            display->atom_net_active_window)
     {
-      meta_verbose ("_NET_ACTIVE_WINDOW request for window '%s', activating",
+      meta_verbose ("_NET_ACTIVE_WINDOW request for window '%s', activating\n",
                     window->desc);
 
       if (event->xclient.data.l[0] != 0)
@@ -7376,5 +7381,36 @@ meta_window_stack_just_below (MetaWindow *window,
       meta_topic (META_DEBUG_STACK,
                   "Window %s  was already below window %s.\n",
                   window->desc, below_this_one->desc);
+    }
+}
+
+void
+meta_window_set_user_time (MetaWindow *window,
+                           Time        timestamp)
+{
+  /* FIXME: If Soeren's suggestion in bug 151984 is implemented, it will allow
+   * us to sanity check the timestamp here and ensure it doesn't correspond to
+   * a future time.
+   */
+
+  /* Only update the time if this timestamp is newer... */
+  if (window->net_wm_user_time_set &&
+      XSERVER_TIME_IS_BEFORE (timestamp, window->net_wm_user_time))
+    {
+      meta_topic (META_DEBUG_STARTUP,
+                  "Window %s _NET_WM_USER_TIME not updated to %lu, because it "
+                  "is less than %lu\n",
+                  window->desc, timestamp, window->net_wm_user_time);
+
+    }
+  else
+    {
+      meta_topic (META_DEBUG_STARTUP,
+                  "Window %s has _NET_WM_USER_TIME of %lu\n",
+                  window->desc, timestamp);
+      window->net_wm_user_time_set = TRUE;
+      window->net_wm_user_time = timestamp;
+      if (XSERVER_TIME_IS_BEFORE (window->display->last_user_time, timestamp))
+        window->display->last_user_time = timestamp;
     }
 }
