@@ -3721,6 +3721,22 @@ get_button (MetaFrameStyle *style,
   if (op_list == NULL &&
       state == META_BUTTON_STATE_PRELIGHT)
     return get_button (style, type, META_BUTTON_STATE_NORMAL);
+
+  /* We fall back to middle button backgrounds if we don't
+   * have the ones on the sides
+   */
+
+  if (op_list == NULL &&
+      (type == META_BUTTON_TYPE_LEFT_LEFT_BACKGROUND ||
+       type == META_BUTTON_TYPE_LEFT_RIGHT_BACKGROUND))
+    return get_button (style, META_BUTTON_TYPE_LEFT_MIDDLE_BACKGROUND,
+                       state);
+
+  if (op_list == NULL &&
+      (type == META_BUTTON_TYPE_RIGHT_LEFT_BACKGROUND ||
+       type == META_BUTTON_TYPE_RIGHT_RIGHT_BACKGROUND))
+    return get_button (style, META_BUTTON_TYPE_RIGHT_MIDDLE_BACKGROUND,
+                       state);
   
   return op_list;
 }
@@ -3766,6 +3782,7 @@ meta_frame_style_validate (MetaFrameStyle    *style,
 static void
 button_rect (MetaButtonType           type,
              const MetaFrameGeometry *fgeom,
+             int                      middle_background_offset,
              GdkRectangle            *rect)
 {
   switch (type)
@@ -3775,7 +3792,7 @@ button_rect (MetaButtonType           type,
       break;
 
     case META_BUTTON_TYPE_LEFT_MIDDLE_BACKGROUND:
-      /* FIXME */
+      *rect = fgeom->left_middle_backgrounds[middle_background_offset];
       break;
       
     case META_BUTTON_TYPE_LEFT_RIGHT_BACKGROUND:
@@ -3787,7 +3804,7 @@ button_rect (MetaButtonType           type,
       break;
       
     case META_BUTTON_TYPE_RIGHT_MIDDLE_BACKGROUND:
-      /* FIXME */
+      *rect = fgeom->right_middle_backgrounds[middle_background_offset];
       break;
       
     case META_BUTTON_TYPE_RIGHT_RIGHT_BACKGROUND:
@@ -4001,10 +4018,13 @@ meta_frame_style_draw (MetaFrameStyle          *style,
       /* Draw buttons just before overlay */
       if ((i + 1) == META_FRAME_PIECE_OVERLAY)
         {
+          int middle_bg_offset;
+
+          middle_bg_offset = 0;
           j = 0;
           while (j < META_BUTTON_TYPE_LAST)
             {              
-              button_rect (j, fgeom, &rect);
+              button_rect (j, fgeom, middle_bg_offset, &rect);
               
               rect.x += x_offset;
               rect.y += y_offset;
@@ -4030,8 +4050,19 @@ meta_frame_style_draw (MetaFrameStyle          *style,
                                             &draw_info,
                                             rect.x, rect.y, rect.width, rect.height);
                 }
-              
-              ++j;
+
+              /* MIDDLE_BACKGROUND type may get drawn more than once */
+              if ((j == META_BUTTON_TYPE_RIGHT_MIDDLE_BACKGROUND ||
+                   j == META_BUTTON_TYPE_LEFT_MIDDLE_BACKGROUND) &&
+                  middle_bg_offset < MAX_MIDDLE_BACKGROUNDS)
+                {
+                  ++middle_bg_offset;
+                }
+              else
+                {
+                  middle_bg_offset = 0;
+                  ++j;
+                }
             }
         }
       

@@ -1,5 +1,16 @@
 2002-10-03  Havoc Pennington  <hp@pobox.com>
 
+	* src/themes/Esco/metacity-theme-1.xml: only specify the 
+	middle backgrounds, let left/right fall back to middle
+
+	* src/theme.c (get_button): fall back to middle_background draw
+	routines when missing the left/right button backgrounds.
+	(button_rect): fix to handle drawing middle button backgrounds
+	(meta_frame_style_draw): draw middle background once per middle
+	button
+
+2002-10-03  Havoc Pennington  <hp@pobox.com>
+
         Button-reordering patch. Has all the code except actually
 	installing a gconf schema and reading the gconf key in prefs.c.
 	metacity-theme-viewer displays the button layouts for testing 

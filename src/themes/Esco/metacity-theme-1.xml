@@ -467,17 +467,9 @@
 
 	<!-- we don't specify for normal or prelight, so nothing is used for
 		 those -->
-	<button function="left_left_background" state="pressed"
-		draw_ops="button_pressed_bg"/>
 	<button function="left_middle_background" state="pressed"
 		draw_ops="button_pressed_bg"/>
-	<button function="left_right_background" state="pressed"
-  		draw_ops="button_pressed_bg"/>
-	<button function="right_left_background" state="pressed"
-		draw_ops="button_pressed_bg"/>
 	<button function="right_middle_background" state="pressed"
-		draw_ops="button_pressed_bg"/>
-	<button function="right_right_background" state="pressed"
 		draw_ops="button_pressed_bg"/>
 
 	<button function="menu" state="normal"
@@ -506,17 +498,9 @@
 	<piece position="title" draw_ops="title_focused"/>
 
 	<!-- we don't specify for prelight, so normal is used -->
-	<button function="left_left_background" state="normal"
-		draw_ops="button_normal_bg"/>
 	<button function="left_middle_background" state="normal"
 		draw_ops="button_normal_bg"/>
-	<button function="left_right_background" state="normal"
-  		draw_ops="button_normal_bg"/>
-	<button function="right_left_background" state="normal"
-		draw_ops="button_normal_bg"/>
 	<button function="right_middle_background" state="normal"
-		draw_ops="button_normal_bg"/>
-	<button function="right_right_background" state="normal"
 		draw_ops="button_normal_bg"/>
 
 	<button function="close" state="normal" draw_ops="close_button_focused"/>
