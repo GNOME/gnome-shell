@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-06 12:29-0700\n"
+"POT-Creation-Date: 2004-12-20 14:44-0700\n"
 "PO-Revision-Date: 2004-08-02 20:50+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -1210,8 +1210,9 @@ msgstr ""
 "atalhos de teclado para esta acção."
 
 #: src/metacity.schemas.in.h:109
+#, fuzzy
 msgid ""
-"The keybinding used to maximize a window The format looks like \"&lt;"
+"The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
@@ -3155,34 +3156,6 @@ msgstr ""
 msgid "Constant \"%s\" has already been defined"
 msgstr "Constante \"%s\" já foi definida"
 
-#: src/tools/metacity-properties.desktop.in.h:1
-msgid "Select how to give focus to windows"
-msgstr "Seleccione como dar foco a uma janela"
-
-#: src/tools/metacity-properties.desktop.in.h:2
-msgid "Window Focus"
-msgstr "Foco de Janela"
-
-#: src/tools/metacity-properties.glade.h:1
-msgid "Clic_k to give focus"
-msgstr "_Clicar para dar foco"
-
-#: src/tools/metacity-properties.glade.h:2
-msgid "Focus behavior:"
-msgstr "Comportamento de foco:"
-
-#: src/tools/metacity-properties.glade.h:3
-msgid "Window Focus Preferences"
-msgstr "Preferências de Foco de Janela"
-
-#: src/tools/metacity-properties.glade.h:4
-msgid "_Point to give focus"
-msgstr "A_pontar para dar foco"
-
-#: src/tools/metacity-properties.glade.h:5
-msgid "_Raise window on focus"
-msgstr "_Elevar janela ao dar foco"
-
 #: src/util.c:93
 #, c-format
 msgid "Failed to open debug log: %s\n"
@@ -3220,7 +3193,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplicação definiu um _NET_WM_PID %ld fictício\n"
 
 #. first time through
-#: src/window.c:4908
+#: src/window.c:4907
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3236,7 +3209,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5579
+#: src/window.c:5578
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3274,6 +3247,27 @@ msgid ""
 msgstr ""
 "Propriedade %s na janela 0x%lx continha UTF-8 inválido para item %d na "
 "lista\n"
+
+#~ msgid "Select how to give focus to windows"
+#~ msgstr "Seleccione como dar foco a uma janela"
+
+#~ msgid "Window Focus"
+#~ msgstr "Foco de Janela"
+
+#~ msgid "Clic_k to give focus"
+#~ msgstr "_Clicar para dar foco"
+
+#~ msgid "Focus behavior:"
+#~ msgstr "Comportamento de foco:"
+
+#~ msgid "Window Focus Preferences"
+#~ msgstr "Preferências de Foco de Janela"
+
+#~ msgid "_Point to give focus"
+#~ msgstr "A_pontar para dar foco"
+
+#~ msgid "_Raise window on focus"
+#~ msgstr "_Elevar janela ao dar foco"
 
 #~ msgid ""
 #~ "Failed to a open connection to a session manager, so window positions "

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-06 12:29-0700\n"
+"POT-Creation-Date: 2004-12-20 14:44-0700\n"
 "PO-Revision-Date: 2004-11-04 22:09+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -1190,8 +1190,9 @@ msgstr ""
 "キーバインドはなくなります。"
 
 #: src/metacity.schemas.in.h:109
+#, fuzzy
 msgid ""
-"The keybinding used to maximize a window The format looks like \"&lt;"
+"The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
@@ -3110,34 +3111,6 @@ msgstr "ユーザ定義の定数は大文字で始まらなければなりませ
 msgid "Constant \"%s\" has already been defined"
 msgstr "定数 \"%s\" は既に定義されています"
 
-#: src/tools/metacity-properties.desktop.in.h:1
-msgid "Select how to give focus to windows"
-msgstr "ウィンドウへのフォーカスの当て方を選択します"
-
-#: src/tools/metacity-properties.desktop.in.h:2
-msgid "Window Focus"
-msgstr "ウィンドウ・フォーカス"
-
-#: src/tools/metacity-properties.glade.h:1
-msgid "Clic_k to give focus"
-msgstr "マウス・クリックでフォーカスさせる(_K)"
-
-#: src/tools/metacity-properties.glade.h:2
-msgid "Focus behavior:"
-msgstr "フォーカスの動作:"
-
-#: src/tools/metacity-properties.glade.h:3
-msgid "Window Focus Preferences"
-msgstr "ウィンドウ・フォーカスの設定"
-
-#: src/tools/metacity-properties.glade.h:4
-msgid "_Point to give focus"
-msgstr "マウス・カーソルでフォーカスさせる(_P)"
-
-#: src/tools/metacity-properties.glade.h:5
-msgid "_Raise window on focus"
-msgstr "フォーカスでウィンドウを手前に表示する(_R)"
-
 #: src/util.c:93
 #, c-format
 msgid "Failed to open debug log: %s\n"
@@ -3175,7 +3148,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "アプリケーションは偽物の _NET_WM_PID %ld を設定しました\n"
 
 #. first time through
-#: src/window.c:4908
+#: src/window.c:4907
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3191,7 +3164,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5579
+#: src/window.c:5578
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3228,3 +3201,24 @@ msgid ""
 msgstr ""
 "ウィンドウ 0x%2$lx 上のプロパティ %1$s はリスト内のアイテム %3$d で無効な "
 "UTF-8を含んでいました\n"
+
+#~ msgid "Select how to give focus to windows"
+#~ msgstr "ウィンドウへのフォーカスの当て方を選択します"
+
+#~ msgid "Window Focus"
+#~ msgstr "ウィンドウ・フォーカス"
+
+#~ msgid "Clic_k to give focus"
+#~ msgstr "マウス・クリックでフォーカスさせる(_K)"
+
+#~ msgid "Focus behavior:"
+#~ msgstr "フォーカスの動作:"
+
+#~ msgid "Window Focus Preferences"
+#~ msgstr "ウィンドウ・フォーカスの設定"
+
+#~ msgid "_Point to give focus"
+#~ msgstr "マウス・カーソルでフォーカスさせる(_P)"
+
+#~ msgid "_Raise window on focus"
+#~ msgstr "フォーカスでウィンドウを手前に表示する(_R)"

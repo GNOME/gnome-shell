@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-06 12:29-0700\n"
+"POT-Creation-Date: 2004-12-20 14:44-0700\n"
 "PO-Revision-Date: 2003-06-30 09:13+0100\n"
 "Last-Translator: Gnome PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <translation-team-pl@lists.sourceforge.net>\n"
@@ -1233,8 +1233,9 @@ msgstr ""
 "powiązany żaden skrót klawiszowy."
 
 #: src/metacity.schemas.in.h:109
+#, fuzzy
 msgid ""
-"The keybinding used to maximize a window The format looks like \"&lt;"
+"The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
@@ -3223,34 +3224,6 @@ msgstr ""
 msgid "Constant \"%s\" has already been defined"
 msgstr "Stała \"%s\" została już zdefiniowana"
 
-#: src/tools/metacity-properties.desktop.in.h:1
-msgid "Select how to give focus to windows"
-msgstr "Sposób przekazywania skupienia do okien"
-
-#: src/tools/metacity-properties.desktop.in.h:2
-msgid "Window Focus"
-msgstr "Skupienie okna"
-
-#: src/tools/metacity-properties.glade.h:1
-msgid "Clic_k to give focus"
-msgstr "Przekazanie skupienia po _kliknięciu"
-
-#: src/tools/metacity-properties.glade.h:2
-msgid "Focus behavior:"
-msgstr "Zachowanie skupienia:"
-
-#: src/tools/metacity-properties.glade.h:3
-msgid "Window Focus Preferences"
-msgstr "Ustawienia zachowania się skupienia okna"
-
-#: src/tools/metacity-properties.glade.h:4
-msgid "_Point to give focus"
-msgstr "Przekazanie skupienia po _wskazaniu"
-
-#: src/tools/metacity-properties.glade.h:5
-msgid "_Raise window on focus"
-msgstr "Wysuwanie _okna po otrzymaniu skupienia"
-
 #: src/util.c:93
 #, c-format
 msgid "Failed to open debug log: %s\n"
@@ -3288,7 +3261,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikacja ustawiła błędną wartość _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4908
+#: src/window.c:4907
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3304,7 +3277,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5579
+#: src/window.c:5578
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3342,6 +3315,27 @@ msgid ""
 msgstr ""
 "Własność %s odnosząca się do okna 0x%lx zawiera niepoprawną sekwencję UTF-8 "
 "w %d. elemencie listy\n"
+
+#~ msgid "Select how to give focus to windows"
+#~ msgstr "Sposób przekazywania skupienia do okien"
+
+#~ msgid "Window Focus"
+#~ msgstr "Skupienie okna"
+
+#~ msgid "Clic_k to give focus"
+#~ msgstr "Przekazanie skupienia po _kliknięciu"
+
+#~ msgid "Focus behavior:"
+#~ msgstr "Zachowanie skupienia:"
+
+#~ msgid "Window Focus Preferences"
+#~ msgstr "Ustawienia zachowania się skupienia okna"
+
+#~ msgid "_Point to give focus"
+#~ msgstr "Przekazanie skupienia po _wskazaniu"
+
+#~ msgid "_Raise window on focus"
+#~ msgstr "Wysuwanie _okna po otrzymaniu skupienia"
 
 #~ msgid ""
 #~ "Failed to a open connection to a session manager, so window positions "

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-06 12:29-0700\n"
+"POT-Creation-Date: 2004-12-20 14:44-0700\n"
 "PO-Revision-Date: 2004-08-13 03:30+0330\n"
 "Last-Translator: Gurban Mühemmet Tewekgeli <gmtavakkoli@yahoo.com>\n"
 "Language-Team: Turkmen <kakilikgroup@yahoo.com>\n"
@@ -977,7 +977,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:109
 msgid ""
-"The keybinding used to maximize a window The format looks like \"&lt;"
+"The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
@@ -2564,34 +2564,6 @@ msgstr ""
 msgid "Constant \"%s\" has already been defined"
 msgstr ""
 
-#: src/tools/metacity-properties.desktop.in.h:1
-msgid "Select how to give focus to windows"
-msgstr ""
-
-#: src/tools/metacity-properties.desktop.in.h:2
-msgid "Window Focus"
-msgstr ""
-
-#: src/tools/metacity-properties.glade.h:1
-msgid "Clic_k to give focus"
-msgstr ""
-
-#: src/tools/metacity-properties.glade.h:2
-msgid "Focus behavior:"
-msgstr ""
-
-#: src/tools/metacity-properties.glade.h:3
-msgid "Window Focus Preferences"
-msgstr ""
-
-#: src/tools/metacity-properties.glade.h:4
-msgid "_Point to give focus"
-msgstr ""
-
-#: src/tools/metacity-properties.glade.h:5
-msgid "_Raise window on focus"
-msgstr ""
-
 #: src/util.c:93
 #, c-format
 msgid "Failed to open debug log: %s\n"
@@ -2629,7 +2601,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr ""
 
 #. first time through
-#: src/window.c:4908
+#: src/window.c:4907
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2643,7 +2615,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5579
+#: src/window.c:5578
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

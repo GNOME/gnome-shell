@@ -1,5 +1,9 @@
 2004-12-20  Elijah Newren  <newren@gmail.com>
 
+	* NEWS: Metacity 2.9.2 unstable release
+
+2004-12-20  Elijah Newren  <newren@gmail.com>
+
 	* configure.in: re-add the note	about Fibonacci sequence micro
 	version numbers that was lost with 2.8.5
 

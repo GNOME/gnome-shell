@@ -1,3 +1,21 @@
+2.9.2
+==
+
+This is an unstable release to coincide with the release of Gnome 2.9.3.
+
+Thanks to Alex Duggan, ash AT contact bg, Elijah Newren, and Baptiste
+Mille-Mathias for fixes in this release.
+
+ - Add a missing period at the end of a sentence (Baptiste) [#158210]
+ - When snap-moving don't snap to hidden windows, such as transients
+   of minimized windows (Elijah) [#157180]
+ - Focus the desktop when showing it (Elijah) [#159257]
+ - Remove deprecated capplet (Alex, ash) [#160753]
+
+Translations
+  da (Martin Willemoes Hansen), bg (Alexander Shopov), en_CA (Adam
+  Weinberger)
+
 2.9.1
 ==
 

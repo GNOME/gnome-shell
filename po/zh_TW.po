@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.8.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-06 12:29-0700\n"
+"POT-Creation-Date: 2004-12-20 14:44-0700\n"
 "PO-Revision-Date: 2004-09-11 19:26+0800\n"
 "Last-Translator: Woodman Tuen <woodman@culurecom.com.hk>\n"
 "Language-Team: Chinese (traditioanl) <zh-l10n@linux.org.tw>\n"
@@ -1125,8 +1125,9 @@ msgstr ""
 "果將此選項設定為字串“disabled”，則不會為該項操作安排任何按鍵組合。"
 
 #: src/metacity.schemas.in.h:109
+#, fuzzy
 msgid ""
-"The keybinding used to maximize a window The format looks like \"&lt;"
+"The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
@@ -2931,34 +2932,6 @@ msgstr "自行定義的常數必須以大寫字母開始；但“%s”不是"
 msgid "Constant \"%s\" has already been defined"
 msgstr "已定義了“%s”常數"
 
-#: src/tools/metacity-properties.desktop.in.h:1
-msgid "Select how to give focus to windows"
-msgstr "選擇如何令視窗獲取輸入焦點"
-
-#: src/tools/metacity-properties.desktop.in.h:2
-msgid "Window Focus"
-msgstr "視窗焦點"
-
-#: src/tools/metacity-properties.glade.h:1
-msgid "Clic_k to give focus"
-msgstr "按滑鼠按鈕方可獲得輸入焦點(_K)"
-
-#: src/tools/metacity-properties.glade.h:2
-msgid "Focus behavior:"
-msgstr "焦點運作方式："
-
-#: src/tools/metacity-properties.glade.h:3
-msgid "Window Focus Preferences"
-msgstr "視窗焦點偏好設定"
-
-#: src/tools/metacity-properties.glade.h:4
-msgid "_Point to give focus"
-msgstr "輸入焦點跟隨鼠標移動(_P)"
-
-#: src/tools/metacity-properties.glade.h:5
-msgid "_Raise window on focus"
-msgstr "當視窗獲取輸入焦點後會自動覆蓋其它視窗(_R)"
-
 #: src/util.c:93
 #, c-format
 msgid "Failed to open debug log: %s\n"
@@ -2996,7 +2969,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "程式設定了多餘的 _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4908
+#: src/window.c:4907
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3012,7 +2985,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5579
+#: src/window.c:5578
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3046,3 +3019,24 @@ msgstr "視窗 0x%2$lx 的屬性 %1$s 中含有無效的 UTF-8 資料\n"
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "視窗 0x%2$lx 的屬性清單 %1$s 的第 %3$d 個項目含有無效的 UTF-8 資料\n"
+
+#~ msgid "Select how to give focus to windows"
+#~ msgstr "選擇如何令視窗獲取輸入焦點"
+
+#~ msgid "Window Focus"
+#~ msgstr "視窗焦點"
+
+#~ msgid "Clic_k to give focus"
+#~ msgstr "按滑鼠按鈕方可獲得輸入焦點(_K)"
+
+#~ msgid "Focus behavior:"
+#~ msgstr "焦點運作方式："
+
+#~ msgid "Window Focus Preferences"
+#~ msgstr "視窗焦點偏好設定"
+
+#~ msgid "_Point to give focus"
+#~ msgstr "輸入焦點跟隨鼠標移動(_P)"
+
+#~ msgid "_Raise window on focus"
+#~ msgstr "當視窗獲取輸入焦點後會自動覆蓋其它視窗(_R)"

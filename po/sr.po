@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-12-06 12:29-0700\n"
+"POT-Creation-Date: 2004-12-20 14:44-0700\n"
 "PO-Revision-Date: 2004-10-15 23:15+0200\n"
 "Last-Translator: Данило Шеган <danilo@prevod.org>\n"
 "Language-Team: Serbian (sr) <gnom@prevod.org>\n"
@@ -1197,8 +1197,9 @@ msgstr ""
 
 # bug: missing dot
 #: src/metacity.schemas.in.h:109
+#, fuzzy
 msgid ""
-"The keybinding used to maximize a window The format looks like \"&lt;"
+"The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
@@ -3112,34 +3113,6 @@ msgstr ""
 msgid "Constant \"%s\" has already been defined"
 msgstr "Константа „%s“ је већ дефинисана"
 
-#: src/tools/metacity-properties.desktop.in.h:1
-msgid "Select how to give focus to windows"
-msgstr "Изаберизе како желите да дате фокус прозору"
-
-#: src/tools/metacity-properties.desktop.in.h:2
-msgid "Window Focus"
-msgstr "Фокус прозора"
-
-#: src/tools/metacity-properties.glade.h:1
-msgid "Clic_k to give focus"
-msgstr "Кликни да даш фокус"
-
-#: src/tools/metacity-properties.glade.h:2
-msgid "Focus behavior:"
-msgstr "Понашање фокуса:"
-
-#: src/tools/metacity-properties.glade.h:3
-msgid "Window Focus Preferences"
-msgstr "Подешавања фокуса прозора"
-
-#: src/tools/metacity-properties.glade.h:4
-msgid "_Point to give focus"
-msgstr "Покажи да даш фокус"
-
-#: src/tools/metacity-properties.glade.h:5
-msgid "_Raise window on focus"
-msgstr "Подигни прозор по фокусирању"
-
 #: src/util.c:93
 #, c-format
 msgid "Failed to open debug log: %s\n"
@@ -3177,7 +3150,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Програм је поставио нетачан _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4908
+#: src/window.c:4907
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3193,7 +3166,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5579
+#: src/window.c:5578
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3229,6 +3202,27 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Особина %s прозора 0x%lx садржи неисправан UTF-8 за ставку %d у листи\n"
+
+#~ msgid "Select how to give focus to windows"
+#~ msgstr "Изаберизе како желите да дате фокус прозору"
+
+#~ msgid "Window Focus"
+#~ msgstr "Фокус прозора"
+
+#~ msgid "Clic_k to give focus"
+#~ msgstr "Кликни да даш фокус"
+
+#~ msgid "Focus behavior:"
+#~ msgstr "Понашање фокуса:"
+
+#~ msgid "Window Focus Preferences"
+#~ msgstr "Подешавања фокуса прозора"
+
+#~ msgid "_Point to give focus"
+#~ msgstr "Покажи да даш фокус"
+
+#~ msgid "_Raise window on focus"
+#~ msgstr "Подигни прозор по фокусирању"
 
 #~ msgid ""
 #~ "Failed to a open connection to a session manager, so window positions "
