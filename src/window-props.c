@@ -620,6 +620,39 @@ reload_normal_hints (MetaWindow    *window,
                       window->size_hints.min_height);
           window->size_hints.max_height = window->size_hints.min_height;
         }
+
+      if (window->size_hints.min_width < 1)
+        {
+          /* another cracksmoker */
+          meta_topic (META_DEBUG_GEOMETRY,
+                      "Window %s sets min width to 0, which makes no sense\n",
+                      window->desc);
+          window->size_hints.min_width = 1;
+        }
+      if (window->size_hints.max_width < 1)
+        {
+          /* another cracksmoker */
+          meta_topic (META_DEBUG_GEOMETRY,
+                      "Window %s sets max width to 0, which makes no sense\n",
+                      window->desc);
+          window->size_hints.max_width = 1;
+        }
+      if (window->size_hints.min_height < 1)
+        {
+          /* another cracksmoker */
+          meta_topic (META_DEBUG_GEOMETRY,
+                      "Window %s sets min height to 0, which makes no sense\n",
+                      window->desc);
+          window->size_hints.min_height = 1;
+        }
+      if (window->size_hints.max_height < 1)
+        {
+          /* another cracksmoker */
+          meta_topic (META_DEBUG_GEOMETRY,
+                      "Window %s sets max height to 0, which makes no sense\n",
+                      window->desc);
+          window->size_hints.max_height = 1;
+        }
   
       if (window->size_hints.flags & PResizeInc)
         {

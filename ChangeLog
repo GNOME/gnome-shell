@@ -1,3 +1,8 @@
+2003-03-08  Rob Adams <robadams@ucla.edu>
+
+	* src/window-props.c (reload_normal_hints):  Check that window min
+	and max size hints are at least 1.  Fix for #107110.
+
 2003-02-27  Havoc Pennington  <hp@pobox.com>
 
 	Changes made on plane from FOSDEM, syncing from laptop.
