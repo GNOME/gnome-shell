@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the metacity package.
 # Tino Meinen <a.t.meinen@chello.nl>, 2003.
 # Reinout van Schouwen <reinout@cs.vu.nl>, 2003.
+# -------------------------------------------
 # Unroll -> Uitrollen of afrollen?
 # draw_ops?
 # operand operator?
@@ -11,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-07-07 13:13+0200\n"
-"PO-Revision-Date: 2003-01-16 22:41+0100\n"
+"POT-Creation-Date: 2003-07-16 23:45+0200\n"
+"PO-Revision-Date: 2003-07-17 03:01+0200\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
 "MIME-Version: 1.0\n"
@@ -127,13 +128,12 @@ msgid "No command %d has been defined.\n"
 msgstr "Er is geen opdracht %d gedefinieerd.\n"
 
 #: src/main.c:64
-#, fuzzy
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
-"metacity [--disable-sm] [--sm-save-file=BESTANDSNAAM] [--display=DISPLAY] [--"
-"replace] [--version]\n"
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=BESTANDSNAAM] [--"
+"display=DISPLAY] [--replace] [--version]\n"
 
 #: src/main.c:71
 #, c-format
@@ -322,16 +322,18 @@ msgstr "Mod5"
 #: src/metacity-dialog.c:84
 #, c-format
 msgid "The window \"%s\" is not responding."
-msgstr ""
+msgstr "Het venster \"%s\" reageert niet."
 
 #: src/metacity-dialog.c:92
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
+"Als u deze toepassing geforceerd afsluit zullen alle niet opgeslagen "
+"veranderingen verloren gaan."
 
 #: src/metacity-dialog.c:102
 msgid "_Force Quit"
-msgstr ""
+msgstr "Ge_forceerd afsluiten"
 
 #: src/metacity-dialog.c:196
 msgid "Title"
@@ -450,6 +452,9 @@ msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr ""
+"Bepaalt of toepassingen of het systeem hoorbare 'piepjes' kan genereren; kan "
+"samen met 'visuele bel' gebruikt worden om geluidloze 'piepjes' mogelijk te "
+"maken."
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
@@ -458,7 +463,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
-msgstr ""
+msgstr "Visuele bel gebruiken"
 
 #: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
@@ -669,13 +674,14 @@ msgstr "Venstergrootte veranderen"
 msgid "Run a defined command"
 msgstr "Voorgedefineerde opdracht uitvoeren"
 
+# aan elkaar hier is niet consistent met het andere bericht: panel run dialog
 #: src/metacity.schemas.in.h:58
 msgid "Show the panel menu"
-msgstr ""
+msgstr "Het paneel menu tonen"
 
 #: src/metacity.schemas.in.h:59
 msgid "Show the panel run dialog"
-msgstr ""
+msgstr "Het paneel uitvoer-dialoog tonen"
 
 #: src/metacity.schemas.in.h:60
 msgid ""
@@ -774,7 +780,7 @@ msgstr "Schakelen naar werkblad aan de rechterkant"
 
 #: src/metacity.schemas.in.h:77
 msgid "System Bell is Audible"
-msgstr ""
+msgstr "Systeembel is hoorbaar"
 
 #: src/metacity.schemas.in.h:78
 msgid "Take a screenshot"
@@ -782,7 +788,7 @@ msgstr "Een schermafdruk maken"
 
 #: src/metacity.schemas.in.h:79
 msgid "Take a screenshot of a window"
-msgstr ""
+msgstr "Een schermafdruk van een venster maken"
 
 #: src/metacity.schemas.in.h:80
 msgid ""
@@ -794,6 +800,13 @@ msgid ""
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
 msgstr ""
+"Vertelt Metacity hoe de de visuele indicatie dat de systeembel of een andere "
+"toepassings-bel is afgegaan, moet worden geimplementeerd. Momenteel zijn er "
+"twee geldige waardes, \"fullscreen\", wat een zwart-witte flits over hele "
+"beelscherm geeft, of \"frame_flash\" waarbij de titelbalk opflitst van de "
+"toepassing die het belsignaal gaf. Als de toepassing die het belletje gaf "
+"onbekend is (wat meestal het geval is bij de standaard \"systeem-piep\"), "
+"zal de titelbalk van het huidige scherm dat de focus heeft opflitsen."
 
 #: src/metacity.schemas.in.h:81
 msgid ""
@@ -801,30 +814,28 @@ msgid ""
 "that correspond to these commands. Pressing the keybinding for run_command_N "
 "will execute command_N."
 msgstr ""
-"De /apps/metacity/global_keybindings/run_command_N-sleutels definiëren "
+"De sleutels: /apps/metacity/global_keybindings/run_command_N definiëren "
 "toetskoppelingen die corresponderen met deze opdrachten. Het intoetsen van "
-"detoetskoppeling voor run_command_N zal de opdracht command_N uitvoeren."
+"de toetskoppeling voor run_command_N zal de opdracht command_N uitvoeren."
 
 #: src/metacity.schemas.in.h:82
-#, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
-"De /apps/metacity/global_keybindings/run_command_N-sleutels definiëren "
-"toetskoppelingen die corresponderen met deze opdrachten. Het intoetsen van "
-"detoetskoppeling voor run_command_N zal de opdracht command_N uitvoeren."
+"De sleutel: /apps/metacity/global_keybindings/run_command_screenshot "
+"definieert een toetskoppeling waardoor de opdracht in deze instelling wordt "
+"uitgevoerd."
 
 #: src/metacity.schemas.in.h:83
-#, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
-"De /apps/metacity/global_keybindings/run_command_N-sleutels definiëren "
-"toetskoppelingen die corresponderen met deze opdrachten. Het intoetsen van "
-"detoetskoppeling voor run_command_N zal de opdracht command_N uitvoeren."
+"De sleutel /apps/metacity/global_keybindings/run_command_window_screenshot "
+"definieert een toetskoppeling waardoor de opdracht in deze instelling wordt "
+"uitgevoerd."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -1553,7 +1564,6 @@ msgstr ""
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
 #: src/metacity.schemas.in.h:132
-#, fuzzy
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1562,9 +1572,9 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"De toetskoppeling om te schakelen tussen de staat waarin het venster zich op "
-"alle werkbladen- en de staat waarin het zich op slechts één werkblad "
-"bevindt. Het formaat ziet eruit als\"&lt;Control&gt;a\" of \"&lt;Shift&gt;"
+"De toetskoppeling waarbij \"altijd boven\" wordt omgeschakeld. Een venster "
+"dat altijd boven is, zal altijd zichtbaar zijn boven andere overlappende "
+"vensters. Het formaat ziet eruit als\"&lt;Control&gt;a\" of \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1. Hierbij zijn kleine- en hoofdletters toegestaan, evenals "
 "afkortingen zoals \"&lt;Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de optie "
 "instelt op de speciale tekenreeks \"uitgeschakeld\", dan zal deze actie geen "
@@ -1646,7 +1656,6 @@ msgstr ""
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
 #: src/metacity.schemas.in.h:138
-#, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Program\" dialog box. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1655,14 +1664,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"De toetskoppeling voor het sluiten van een venster. Het formaat ziet eruit "
-"als\"&lt;Control&gt;a\" of \"&lt;Shift&gt;&lt;Alt&gt;F1. Hierbij zijn "
-"kleine- en hoofdletters toegestaan, evenals afkortingen zoals \"&lt;Ctl&gt;"
-"\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
-"\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
+"De toetskoppeling voor het in het paneel tonen van het \"Uitvoeren\" "
+"dialoogvenster. Het formaat ziet eruit als\"&lt;Control&gt;a\" of \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1. Hierbij zijn kleine- en hoofdletters toegestaan, "
+"evenals afkortingen zoals \"&lt;Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de "
+"optie instelt op de speciale tekenreeks \"uitgeschakeld\", dan zal deze "
+"actie geen toetskoppeling kennen."
 
 #: src/metacity.schemas.in.h:139
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1671,14 +1680,14 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"De toetskoppeling voor het sluiten van een venster. Het formaat ziet eruit "
-"als\"&lt;Control&gt;a\" of \"&lt;Shift&gt;&lt;Alt&gt;F1. Hierbij zijn "
-"kleine- en hoofdletters toegestaan, evenals afkortingen zoals \"&lt;Ctl&gt;"
-"\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
-"\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
+"De toetskoppeling voor het nemen van een schermafdruk van een venster. Het "
+"formaat ziet eruit als\"&lt;Control&gt;a\" of \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"Hierbij zijn kleine- en hoofdletters toegestaan, evenals afkortingen zoals "
+"\"&lt;Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de "
+"speciale tekenreeks \"uitgeschakeld\", dan zal deze actie geen "
+"toetskoppeling kennen."
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1687,14 +1696,13 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"De toetskoppeling die schakelt naar werkblad 9. Het formaat ziet eruit als"
-"\"&lt;Control&gt;a\" of \"&lt;Shift&gt;&lt;Alt&gt;F1. Hierbij zijn kleine- "
-"en hoofdletters toegestaan, evenals afkortingen zoals \"&lt;Ctl&gt;\" en "
-"\"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
+"De toetskoppeling voor het nemen van een schermafdruk. Het formaat ziet "
+"eruit als\"&lt;Control&gt;a\" of \"&lt;Shift&gt;&lt;Alt&gt;F1. Hierbij zijn "
+"kleine- en hoofdletters toegestaan, evenals afkortingen zoals \"&lt;Ctl&gt;"
+"\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
 #: src/metacity.schemas.in.h:141
-#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1702,11 +1710,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"De toetskoppeling voor het activeren van het venstermenu. Het formaat ziet "
-"eruit als\"&lt;Control&gt;a\" of \"&lt;Shift&gt;&lt;Alt&gt;F1. Hierbij zijn "
-"kleine- en hoofdletters toegestaan, evenals afkortingen zoals \"&lt;Ctl&gt;"
-"\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
-"\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
+"De toetskoppeling voor tonen van het hoofdmenu van het paneel. Het formaat "
+"ziet eruit als\"&lt;Control&gt;a\" of \"&lt;Shift&gt;&lt;Alt&gt;F1. Hierbij "
+"zijn kleine- en hoofdletters toegestaan, evenals afkortingen zoals \"&lt;"
+"Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale "
+"tekenreeks \"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
 #: src/metacity.schemas.in.h:142
 msgid "The name of a workspace."
@@ -1714,7 +1722,7 @@ msgstr "De naam van een werkblad."
 
 #: src/metacity.schemas.in.h:143
 msgid "The screenshot command"
-msgstr ""
+msgstr "De opdracht voor schermafdruk"
 
 #: src/metacity.schemas.in.h:144
 msgid ""
@@ -1748,7 +1756,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:147
 msgid "The window screenshot command"
-msgstr ""
+msgstr "De opdracht voor venster-schermafdruk"
 
 #: src/metacity.schemas.in.h:148
 msgid ""
@@ -1843,9 +1851,8 @@ msgstr ""
 "herstellen."
 
 #: src/metacity.schemas.in.h:154
-#, fuzzy
 msgid "Toggle always on top state"
-msgstr "Maximalisatiestaat omschakelen"
+msgstr "\"Altijd boven\"-staat omschakelen"
 
 #: src/metacity.schemas.in.h:155
 msgid "Toggle fullscreen mode"
@@ -1869,6 +1876,9 @@ msgid ""
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
+"Geeft een zichtbare indicatie wanneer een toepassing of het systeem een "
+"'bel' of 'piepje' geeft; handig voor slechthorenden of voor gebruik in "
+"omgevingen met veel lawaai, of wanneer de 'hoorbare bel' uitstaat."
 
 #: src/metacity.schemas.in.h:160
 msgid "Unmaximize a window"
@@ -1880,7 +1890,7 @@ msgstr "Standaard systeemlettertype gebruiken in venstertitels"
 
 #: src/metacity.schemas.in.h:162
 msgid "Visual Bell Type"
-msgstr ""
+msgstr "Visuele bel type"
 
 #: src/metacity.schemas.in.h:163
 msgid "Window focus mode"
