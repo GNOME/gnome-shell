@@ -1,65 +1,68 @@
+# translation of metacity.po to zh_CN
 # Simplified Chinese translation of metacity.
-# Copyright (C) 2002 Free Software Foundation, Inc.
+# Copyright (C) 2002,2003 Free Software Foundation, Inc.
 # Sun G11n <gnome_int_l10n@ireland.sun.com>, 2002.
 # He Qiangqiang <carton@linux.net.cn>, 2002
+# Xiong Jiang <jxiong@offtopic.org>, 2003
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2002-12-09 14:37-0500\n"
-"PO-Revision-Date: 2002-08-10 15:50+0800\n"
+"POT-Creation-Date: 2003-01-23 12:13+0100\n"
+"PO-Revision-Date: 2003-01-23 22:48+0800\n"
 "Last-Translator: He Qiangqiang <carton@linux.net.cn>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-# SUN NEW TRANSLATION
+#: src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr "用法：%s\n"
+
+#: src/tools/metacity-message.c:174 src/util.c:128
+msgid "Metacity was compiled without support for verbose mode\n"
+msgstr "Metacity 编译的时候没有加入详细模式的支持\n"
+
 #: src/delete.c:60 src/delete.c:87 src/metacity-dialog.c:46
 #: src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "无法将“%s”解析为整数"
 
-# SUN NEW TRANSLATION
 #: src/delete.c:67 src/delete.c:94 src/metacity-dialog.c:53
 #: src/theme-parser.c:476 src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "不理解结尾字符“%s”（位于字符串“%s”中）"
+msgstr "不理解结尾字符“%s”(位于字符串“%s”中)"
 
-# SUN NEW TRANSLATION
 #: src/delete.c:125
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "无法通过对话进程解析消息“%s”\n"
 
-# SUN NEW TRANSLATION
 #: src/delete.c:260
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "读取对话显示进程时出错：%s\n"
 
-# SUN NEW TRANSLATION
 #: src/delete.c:331
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "启动 metacity-dialog 查询有关杀死应用程序的情况时出错：%s\n"
 
-# SUN NEW TRANSLATION
 #: src/delete.c:429
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "无法获取主机名：%s\n"
 
-# SUN NEW TRANSLATION
-#: src/display.c:270
+#: src/display.c:279
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "无法打开 X Window System 显示“%s”\n"
 
-# SUN NEW TRANSLATION
 #: src/errors.c:231
 #, c-format
 msgid ""
@@ -71,60 +74,55 @@ msgstr ""
 "可能是 X 服务器已关闭或者您杀死/摧毁了\n"
 "窗口管理器。\n"
 
-# SUN NEW TRANSLATION
 #: src/errors.c:238
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "严重的 IO 错误 %d (%s) 出现在显示“%s”上。\n"
 
-# SUN NEW TRANSLATION
-#: src/frames.c:900
+#: src/frames.c:1010
 msgid "Close Window"
 msgstr "关闭窗口"
 
-# SUN NEW TRANSLATION
-#: src/frames.c:903
+#: src/frames.c:1013
 msgid "Window Menu"
 msgstr "窗口菜单"
 
-# SUN NEW TRANSLATION
-#: src/frames.c:906
+#: src/frames.c:1016
 msgid "Minimize Window"
 msgstr "最小化窗口"
 
-# SUN NEW TRANSLATION
-#: src/frames.c:909
+#: src/frames.c:1019
 msgid "Maximize Window"
 msgstr "最大化窗口"
 
-# SUN NEW TRANSLATION
-#: src/frames.c:912
+#: src/frames.c:1022
 msgid "Unmaximize Window"
 msgstr "取消最大化窗口"
 
-# SUN NEW TRANSLATION
-#: src/keybindings.c:870
+#: src/keybindings.c:910
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr "某个其它程序已经将关键字 %s 和修饰符 %x 配合使用作为一种组合\n"
+msgstr "某个其它程序已经将按键 %s 和修饰键 %x 配合使用作为一种组合\n"
 
-#: src/keybindings.c:2206
+#: src/keybindings.c:2317
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
-msgstr ""
+msgstr "用 metacity-dialog 输出一个命令错误消息时出错：%s\n"
 
-#: src/keybindings.c:2237
+#: src/keybindings.c:2348
 #, c-format
 msgid "No command %d has been defined.\n"
-msgstr ""
+msgstr "命令 %d 尚未定义。\n"
 
 #: src/main.c:64
 msgid ""
 "metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--"
 "replace] [--version]\n"
 msgstr ""
+"metacity [--disable-sm] [--sm-save-file=FILENAME] [--display=DISPLAY] [--"
+"replace] [--version]\n"
 
 #: src/main.c:71
 #, c-format
@@ -135,97 +133,87 @@ msgid ""
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
+"metacity %s\n"
+"Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., 以及其他人\n"
+"这是自由软件：版权条款请参见源码.\n"
+"不存在任何保证：即使是对商用性或者适合某种特定目的也不作保证。\n"
 
 #: src/main.c:326
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr ""
+msgstr "无法找到主题！请确认 %s 存在并且含有正常的主题。"
 
-# SUN NEW TRANSLATION
 #: src/main.c:374
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "无法重启动：%s\n"
 
-# SUN NEW TRANSLATION
 #: src/menu.c:52
-#, fuzzy
 msgid "Mi_nimize"
-msgstr "最小化(_M)"
+msgstr "最小化(_N)"
 
-# SUN NEW TRANSLATION
 #: src/menu.c:53
 msgid "Ma_ximize"
 msgstr "最大化(_X)"
 
-# SUN NEW TRANSLATION
 #: src/menu.c:54
 msgid "Unma_ximize"
 msgstr "取消最大化(_X)"
 
 #: src/menu.c:55
 msgid "Roll _Up"
-msgstr ""
+msgstr "卷起(_U)"
 
 #: src/menu.c:56
 msgid "_Unroll"
-msgstr ""
+msgstr "展开(_U)"
 
-# SUN NEW TRANSLATION
 #: src/menu.c:57
-#, fuzzy
 msgid "_Move"
-msgstr "移动(_V)"
+msgstr "移动(_M)"
 
-# SUN NEW TRANSLATION
 #: src/menu.c:58
 msgid "_Resize"
 msgstr "改变大小(_R)"
 
-# SUN NEW TRANSLATION
 #. separator
 #: src/menu.c:60
 msgid "_Close"
 msgstr "关闭(_C)"
 
-# SUN NEW TRANSLATION
 #. separator
 #: src/menu.c:62
 msgid "Put on _All Workspaces"
 msgstr "放在所有工作区上(_A)"
 
-# SUN NEW TRANSLATION
 #: src/menu.c:63
 msgid "Only on _This Workspace"
-msgstr "只在该工作区上(_T)"
+msgstr "只在此工作区上(_T)"
 
-#: src/menu.c:152 src/prefs.c:1644
+#: src/menu.c:152 src/prefs.c:1669
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "工作区 %d"
 
-# SUN NEW TRANSLATION
 #.
 #. * Above name is a pointer into the Workspace struct. Here we make
 #. * a copy copy so we can have our wicked way with it.
 #.
 #: src/menu.c:160
-#, fuzzy, c-format
+#, c-format
 msgid "Workspace %s%d"
-msgstr "移动到工作区 %s%d"
+msgstr "工作区 %s%d"
 
-# SUN NEW TRANSLATION
 #: src/menu.c:353
-#, fuzzy, c-format
+#, c-format
 msgid "Only on %s"
-msgstr "只在工作区 %s%d 上"
+msgstr "只在工作区 %s"
 
-# SUN NEW TRANSLATION
 #: src/menu.c:355
-#, fuzzy, c-format
+#, c-format
 msgid "Move to %s"
-msgstr "移动到工作区 %s%d"
+msgstr "移动到工作区 %s"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -234,7 +222,7 @@ msgstr "移动到工作区 %s%d"
 #.
 #: src/metaaccellabel.c:105
 msgid "Shift"
-msgstr ""
+msgstr "Shift"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the control key. If the text on this key isn't typically
@@ -243,7 +231,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:111
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the alt key. If the text on this key isn't typically
@@ -252,18 +240,16 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:117
 msgid "Alt"
-msgstr ""
+msgstr "Alt"
 
-# SUN NEW TRANSLATION
 #. This is the text that should appear next to menu accelerators
 #. * that use the meta key. If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
 #: src/metaaccellabel.c:123
-#, fuzzy
 msgid "Meta"
-msgstr "Metacity"
+msgstr "Meta"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the super key. If the text on this key isn't typically
@@ -272,7 +258,7 @@ msgstr "Metacity"
 #.
 #: src/metaaccellabel.c:129
 msgid "Super"
-msgstr ""
+msgstr "Super"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the hyper key. If the text on this key isn't typically
@@ -281,7 +267,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:135
 msgid "Hyper"
-msgstr ""
+msgstr "Hyper"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod2 key. If the text on this key isn't typically
@@ -290,7 +276,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:141
 msgid "Mod2"
-msgstr ""
+msgstr "Mod2"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod3 key. If the text on this key isn't typically
@@ -299,7 +285,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:147
 msgid "Mod3"
-msgstr ""
+msgstr "Mod3"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod4 key. If the text on this key isn't typically
@@ -308,7 +294,7 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:153
 msgid "Mod4"
-msgstr ""
+msgstr "Mod4"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod5 key. If the text on this key isn't typically
@@ -317,9 +303,8 @@ msgstr ""
 #.
 #: src/metaaccellabel.c:159
 msgid "Mod5"
-msgstr ""
+msgstr "Mod5"
 
-# SUN NEW TRANSLATION
 #: src/metacity-dialog.c:86
 #, c-format
 msgid ""
@@ -329,24 +314,20 @@ msgid ""
 msgstr ""
 "窗口“%s”没有响应。\n"
 "是否强制该应用程序退出？\n"
-"（所有打开的文档都将丢失。）"
+"(所有打开的文档都将丢失。)"
 
-# SUN NEW TRANSLATION
 #: src/metacity-dialog.c:94
 msgid "Kill application"
 msgstr "杀死应用程序"
 
-# SUN NEW TRANSLATION
 #: src/metacity-dialog.c:188
 msgid "Title"
 msgstr "标题"
 
-# SUN NEW TRANSLATION
 #: src/metacity-dialog.c:200
 msgid "Class"
-msgstr "类"
+msgstr "类别"
 
-# SUN NEW TRANSLATION
 #: src/metacity-dialog.c:224
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
@@ -359,18 +340,17 @@ msgid ""
 "There was an error running \"%s\":\n"
 "%s."
 msgstr ""
+"运行“%s”时发生错误：\n"
+"%s"
 
-# SUN NEW TRANSLATION
 #: src/metacity.desktop.in.h:1
 msgid "Metacity"
 msgstr "Metacity"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr "（未实现）导航以应用程序而不是窗口的方式工作"
+msgstr "(未实现)导航以应用程序而不是窗口的方式工作"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:2
 msgid ""
 "A font description string describing a font for window titlebars. The size "
@@ -382,21 +362,20 @@ msgid ""
 msgstr ""
 "字体说明字符串描述窗口工具栏的字体。但是，只有在titlebar_font_size 选项设置"
 "为 0 时，才使用该说明中的字体大小。同时，如果 titlebar_uses_desktop_font 选项"
-"设置为true，则禁用该选项。默认情况下不设置 titlebar_font。这样，即使 "
-"titlebar_uses_desktop_font 为 false， Metacity 也会退回为桌面字体。"
+"设置为真，则禁用该选项。默认情况下不设置 titlebar_font。这样，即使 "
+"titlebar_uses_desktop_font 为假， Metacity 也会退回为桌面字体。"
 
 #: src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
-msgstr ""
+msgstr "双击标题栏时的动作"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:4
 msgid "Activate window menu"
 msgstr "激活窗口菜单"
 
 #: src/metacity.schemas.in.h:5
 msgid "Arrangement of buttons on the titlebar"
-msgstr ""
+msgstr "标题栏上按钮的排列"
 
 #: src/metacity.schemas.in.h:6
 msgid ""
@@ -407,11 +386,14 @@ msgid ""
 "so that buttons can be added in future metacity versions without breaking "
 "older versions."
 msgstr ""
+"标题栏上按钮的排列。它的值必须是一个字符串，比如“menu:minimize,maximize,"
+"close”；冒号分隔窗口左上角和右上角的按钮，按钮名称之间用逗号分隔。不允许指定"
+"重复的按钮。未知的按钮名称将被忽略，因此在将来版本的 metacity 中可以添加新的"
+"按钮，而不至于破坏旧的版本。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:7
 msgid "Automatically raises the focused window"
-msgstr "自动提升聚焦的窗口"
+msgstr "自动提升获得焦点的窗口"
 
 #: src/metacity.schemas.in.h:8
 msgid ""
@@ -420,55 +402,49 @@ msgid ""
 "(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
 "for example."
 msgstr ""
+"单击窗口时如果按住这个修饰键将移动窗口(左键单击)、改变窗口大小(中键单击)、或"
+"者显示窗口菜单(右键单击)。修饰键可写作“&lt;Alt&gt;”或者“&lt;Super&gt;”。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:9
 msgid "Close a window"
 msgstr "关闭窗口"
 
 #: src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
-msgstr ""
+msgstr "按键组合对应的执行命令"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:11
 msgid "Current theme"
 msgstr "当前主题"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:12
 msgid "Delay in milliseconds for the auto raise option"
 msgstr "自动提升选项的几毫秒延迟"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:13
 msgid "Disable misfeatures that are required by old or broken applications"
-msgstr "禁用旧的或损坏的应用程序所需的错误功能"
+msgstr "禁用旧的或有缺陷的应用程序所需的错误功能"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:14
 msgid "Hide all windows and focus desktop"
 msgstr "隐藏所有窗口并聚焦桌面"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:15
 msgid ""
 "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 "focused window will be automatically raised after a delay (the delay is "
 "specified by the auto_raise_delay key)."
 msgstr ""
-"如果为 true，并且聚焦模式为“sloppy”或“mouse”，那么聚焦的窗口将在一段延迟后被"
-"自动提升（该延迟时间由 auto_raise_delay 关键字指定）。"
+"如果为真，并且聚焦模式为“sloppy”或“mouse”，那么聚焦的窗口将在一段延迟后被自动"
+"提升(该延迟时间由 auto_raise_delay 关键字指定)。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:16
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
 msgstr ""
-"如果为 true，则忽略 titlebar_font 选项，并为窗口标题使用标准应用程序字体。"
+"如果为真，则忽略 titlebar_font 选项，并为窗口标题使用标准应用程序字体。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:17
 msgid ""
 "If true, then Metacity works in terms of applications rather than windows. "
@@ -481,219 +457,170 @@ msgid ""
 "details of application-based vs. window-based, e.g. whether to pass through "
 "clicks. Also, application-based mode is largely unimplemented at the moment."
 msgstr ""
-"如果为 true，那么 Metacity 将以应用程序而不是窗口的方式工作。该概念有点抽象，"
-"但通常基于应用程序的设置更类似于 Mac 系统，而不太像 Windows 系统。当您以基于"
-"应用程序的模式聚焦窗口时，该应用程序中的所有窗口都将被提升。同时，在基于应用"
-"程序的模式下，聚焦点击不会被传递到其它应用程序中的窗口。这种设置的存在有些问"
+"如果为真，那么 Metacity 将以应用程序而不是窗口的方式工作。该概念有点抽象，但"
+"通常基于应用程序的设置更类似于 Mac 系统，而不太像 Windows 系统。当您以基于应"
+"用程序的模式聚焦窗口时，该应用程序中的所有窗口都将被提升。同时，在基于应用程"
+"序的模式下，聚焦点击不会被传递到其它应用程序中的窗口。这种设置的存在有些问"
 "题。但是，使所有特定细节的设置基于应用程序要比基于窗口好，如是否传递点击操作"
 "的设置。同时，基于应用程序的模式目前还基本没有实现。"
 
 #: src/metacity.schemas.in.h:18
 msgid "Lower window below other windows"
-msgstr ""
+msgstr "将窗口降低到其它窗口之下"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:19
-#, fuzzy
 msgid "Maximize a window"
-msgstr "最小化窗口"
+msgstr "最大化窗口"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:20
-#, fuzzy
 msgid "Maximize window horizontally"
-msgstr "最小化窗口"
+msgstr "水平最大化窗口"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:21
-#, fuzzy
 msgid "Maximize window vertically"
-msgstr "最小化窗口"
+msgstr "垂直最大化窗口"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:22
 msgid "Minimize a window"
 msgstr "最小化窗口"
 
 #: src/metacity.schemas.in.h:23
 msgid "Modifier to use for modified window click actions"
-msgstr ""
+msgstr "用于修改窗口点击动作的修饰键"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:24
 msgid "Move a window"
 msgstr "移动窗口"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:25
-#, fuzzy
 msgid "Move backward between panels and the desktop immediately"
-msgstr "在面板和桌面之间移动焦点"
+msgstr "在面板和桌面之间立即反向移动焦点"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:26
-#, fuzzy
 msgid "Move backwards between panels and the desktop with popup"
-msgstr "在面板和桌面之间移动焦点"
+msgstr "在面板和桌面之间用弹出框反向移动焦点"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:27
-#, fuzzy
 msgid "Move backwards between windows immediately"
-msgstr "在窗口之间移动焦点"
+msgstr "在窗口之间立即反向移动焦点"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:28
-#, fuzzy
 msgid "Move between panels and the desktop immediately"
-msgstr "在面板和桌面之间移动焦点"
+msgstr "在面板和桌面之间立即移动焦点"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:29
-#, fuzzy
 msgid "Move between panels and the desktop with popup"
-msgstr "在面板和桌面之间移动焦点"
+msgstr "在面板和桌面之间用弹出框移动焦点"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:30
-#, fuzzy
 msgid "Move between windows immediately"
-msgstr "在窗口之间移动焦点"
+msgstr "在窗口之间立即移动焦点"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:31
-#, fuzzy
 msgid "Move between windows with popup"
-msgstr "在窗口之间移动焦点"
+msgstr "在窗口之间用弹出框移动焦点"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:32
-#, fuzzy
 msgid "Move focus backwards between windows using popup display"
-msgstr "在窗口之间移动焦点"
+msgstr "在窗口之间用弹出框反向移动焦点"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:33
 msgid "Move window one workspace down"
 msgstr "将窗口下移一个工作区"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:34
 msgid "Move window one workspace to the left"
 msgstr "将窗口左移一个工作区"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:35
 msgid "Move window one workspace to the right"
 msgstr "将窗口右移一个工作区"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:36
 msgid "Move window one workspace up"
 msgstr "将窗口上移一个工作区"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:37
 msgid "Move window to workspace 1"
 msgstr "将窗口移到工作区 1"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:38
 msgid "Move window to workspace 10"
 msgstr "将窗口移到工作区 10"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:39
 msgid "Move window to workspace 11"
 msgstr "将窗口移到工作区 11"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:40
 msgid "Move window to workspace 12"
 msgstr "将窗口移到工作区 12"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:41
 msgid "Move window to workspace 2"
 msgstr "将窗口移到工作区 2"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:42
 msgid "Move window to workspace 3"
 msgstr "将窗口移到工作区 3"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:43
 msgid "Move window to workspace 4"
 msgstr "将窗口移到工作区 4"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:44
 msgid "Move window to workspace 5"
 msgstr "将窗口移到工作区 5"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:45
 msgid "Move window to workspace 6"
 msgstr "将窗口移到工作区 6"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:46
 msgid "Move window to workspace 7"
 msgstr "将窗口移到工作区 7"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:47
 msgid "Move window to workspace 8"
 msgstr "将窗口移到工作区 8"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:48
 msgid "Move window to workspace 9"
 msgstr "将窗口移到工作区 9"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:49
-#, fuzzy
 msgid "Name of workspace"
-msgstr "工作区数量"
+msgstr "工作区名称"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:50
 msgid "Number of workspaces"
 msgstr "工作区数量"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:51
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum (to "
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
 msgstr ""
-"工作区数量。必须大于零，并有一个固定的最大值（以防由于不小心请求调用三千四百"
-"万个工作区而摧毁您的桌面）。"
+"工作区数量。必须大于零，并有一个固定的最大值(以防由于不小心请求调用三千四百万"
+"个工作区而摧毁您的桌面)。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:52
-#, fuzzy
 msgid "Raise obscured window, otherwise lower"
-msgstr "如果窗口被遮蔽，则提升它，否则降低它"
+msgstr "如果窗口被遮盖，则提升它，否则降低它"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:53
-#, fuzzy
 msgid "Raise window above other windows"
-msgstr "如果窗口被遮蔽，则提升它，否则降低它"
+msgstr "将窗口提升到其它窗口之上"
 
 #: src/metacity.schemas.in.h:54
 msgid "Resize a window"
-msgstr ""
+msgstr "改变窗口大小"
 
 #: src/metacity.schemas.in.h:55
 msgid "Run a defined command"
-msgstr ""
+msgstr "运行预定义的命令"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:56
 msgid ""
 "Some applications break specifications in ways that result in window manager "
@@ -711,94 +638,76 @@ msgid ""
 msgstr ""
 "某些应用程序破坏规定从而导致窗口管理器功能失常。例如，理想情况下 Metacity 将"
 "把所有对话框放置在与它们的父窗口一致的位置上。这就要求忽略应用程序指定的对话"
-"框位置。但某些版本的Java/Swing 将它们的弹出菜单标记为对话框，所以Metacity 必"
-"须禁用对话框定位以便允许菜单在损坏的Java 应用程序中工作。还有一些其它的类似示"
-"例。该选项将 Metacity 置于完全正确模式下，这样如果您不需要运行任何损坏的应用"
-"程序，就会拥有更好的 UI。但不幸的是，默认情况下必须启用工作区；现实世界是一个"
-"险恶的地方。某些工作区在规定本身方面就有局限，所以有时无工作区模式下的缺陷在"
-"不修改规定的情况下将无法修复。"
+"框位置。但某些版本的 Java/Swing 将它们的弹出菜单标记为对话框，所以 Metacity "
+"必须禁用对话框定位以便允许菜单在有缺陷的 Java 应用程序中工作。还有一些其它的"
+"类似示例。该选项将 Metacity 置于完全正确模式下，这样如果您不需要运行任何有缺"
+"陷的应用程序，就会拥有更好的 UI。但不幸的是，默认情况下必须使用一些折衷；现实"
+"是丑陋的。某些折衷是因为规范本身方面就有局限，所以有时一些不使用折衷方法的问"
+"题如果不修改规范将不可能修复。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:57
 msgid "Switch to workspace 1"
 msgstr "切换到工作区 1"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:58
 msgid "Switch to workspace 10"
 msgstr "切换到工作区 10"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:59
 msgid "Switch to workspace 11"
 msgstr "切换到工作区 11"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:60
 msgid "Switch to workspace 12"
 msgstr "切换到工作区 12"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:61
 msgid "Switch to workspace 2"
 msgstr "切换到工作区 2"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:62
 msgid "Switch to workspace 3"
 msgstr "切换到工作区 3"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:63
 msgid "Switch to workspace 4"
 msgstr "切换到工作区 4"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:64
 msgid "Switch to workspace 5"
 msgstr "切换到工作区 5"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:65
 msgid "Switch to workspace 6"
 msgstr "切换到工作区 6"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:66
 msgid "Switch to workspace 7"
 msgstr "切换到工作区 7"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:67
 msgid "Switch to workspace 8"
 msgstr "切换到工作区 8"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:68
 msgid "Switch to workspace 9"
 msgstr "切换到工作区 9"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:69
-#, fuzzy
 msgid "Switch to workspace above this one"
-msgstr "切换到高于当前工作区的工作区"
+msgstr "切换到当前工作区上方的工作区"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:70
-#, fuzzy
 msgid "Switch to workspace below this one"
-msgstr "切换到低于当前工作区的工作区"
+msgstr "切换到当前工作区下方的工作区"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:71
 msgid "Switch to workspace on the left"
-msgstr "切换到左侧工作区"
+msgstr "切换到左侧的工作区"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:72
 msgid "Switch to workspace on the right"
-msgstr "切换到右侧工作区"
+msgstr "切换到右侧的工作区"
 
 #: src/metacity.schemas.in.h:73
 msgid ""
@@ -806,6 +715,8 @@ msgid ""
 "that correspond to these commands. Pressing the keybinding for run_command_N "
 "will execute command_N."
 msgstr ""
+"/apps/metacity/global_keybindings/run_command_N 键值定义这些命令对应的按键组"
+"合。按下 run_command_N 对应的按键组合将执行命令 command_N。"
 
 #: src/metacity.schemas.in.h:74
 msgid ""
@@ -816,8 +727,11 @@ msgid ""
 "Ctrl&gt;\". If you set the option to the special string \"disabled\", then "
 "there will be no keybinding for this action."
 msgstr ""
+"运行 /apps/metacity/keybinding_commands 中相应编号的命令的按键组合。其格式类"
+"似于“&lt;Control&gt;a”或者“&lt;Shift&gt;&lt;Alt&gt;F1”。该分析程序的格式相当"
+"自由并允许大小写或者缩写，如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为"
+"特殊字符串“disabled”，那么此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:75
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
@@ -827,12 +741,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"切换到高于当前工作区的工作区的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
+"切换到当前工作区上方的工作区的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:76
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
@@ -842,12 +755,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"切换到低于当前工作区的工作区的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
+"切换到当前工作区下方的工作区的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:77
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
@@ -857,12 +769,11 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"切换到当前工作区的左侧工作区的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
+"切换到当前工作区的左侧工作区的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:78
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
@@ -872,12 +783,11 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"切换到当前工作区的右侧工作区的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
+"切换到当前工作区的右侧工作区的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，"
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:79
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
@@ -886,12 +796,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"切换到工作区 1 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"切换到工作区 1 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
 "Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
-"将没有按键组。"
+"将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:80
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
@@ -900,12 +809,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"切换到工作区 10 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
-"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"切换到工作区 10 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
+"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
-"将没有按键组。"
+"将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:81
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
@@ -914,12 +822,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"切换到工作区 11 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
-"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"切换到工作区 11 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
+"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
-"将没有按键组。"
+"将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:82
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
@@ -928,12 +835,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"切换到工作区 12 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
-"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"切换到工作区 12 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
+"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
-"将没有按键组。"
+"将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:83
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
@@ -942,12 +848,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"切换到工作区 2 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"切换到工作区 2 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
 "Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
-"将没有按键组。"
+"将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:84
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
@@ -956,12 +861,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"切换到工作区 3 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"切换到工作区 3 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
 "Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
-"将没有按键组。"
+"将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:85
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
@@ -970,12 +874,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"切换到工作区 4 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"切换到工作区 4 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
 "Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
-"将没有按键组。"
+"将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:86
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
@@ -984,12 +887,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"切换到工作区 5 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"切换到工作区 5 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
 "Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
-"将没有按键组。"
+"将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:87
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
@@ -998,12 +900,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"切换到工作区 6 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"切换到工作区 6 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
 "Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
-"将没有按键组。"
+"将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:88
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
@@ -1012,12 +913,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"切换到工作区 7 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"切换到工作区 7 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
 "Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
-"将没有按键组。"
+"将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:89
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
@@ -1026,12 +926,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"切换到工作区 8 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"切换到工作区 8 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
 "Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
-"将没有按键组。"
+"将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:90
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
@@ -1040,12 +939,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"切换到工作区 9 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"切换到工作区 9 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
 "Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
-"将没有按键组。"
+"将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:91
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
@@ -1054,12 +952,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于激活窗口菜单的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
-"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"用于激活窗口菜单的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
+"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
-"将没有按键组。"
+"将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:92
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
@@ -1068,11 +965,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于关闭窗口的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;"
-"F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;"
-"Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作将没有按键组。"
+"用于关闭窗口的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:93
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
@@ -1082,12 +979,11 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"用于进入“move mode”并开始使用键盘移动窗口的按键组。格式类似于“&lt;Control&gt;"
-"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和"
-"缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组。"
+"用于进入“移动窗口模式”并开始使用键盘移动窗口的按键组合。其格式类似于“&lt;"
+"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使"
+"用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
+"串“disabled”，那么此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:94
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
@@ -1097,12 +993,11 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"用于进入“resize mode”并开始使用键盘改变窗口大小的按键组。格式类似于“&lt;"
+"用于进入“改变大小模式”并开始使用键盘改变窗口大小的按键组合。其格式类似于“&lt;"
 "Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使"
 "用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组。"
+"串“disabled”，那么此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:95
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
@@ -1112,14 +1007,12 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"用于隐藏所有普通窗口并将焦点设置为桌面背景的按键组。格式类似于“&lt;"
+"用于隐藏所有普通窗口并将焦点设置为桌面背景的按键组合。其格式类似于“&lt;"
 "Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使"
 "用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组。"
+"串“disabled”，那么此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:96
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1127,12 +1020,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于最小化窗口的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"用于最大化窗口的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
 "Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
-"将没有按键组。"
+"将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:97
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
@@ -1141,12 +1033,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于最小化窗口的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"用于最小化窗口的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
 "Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
-"将没有按键组。"
+"将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:98
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
@@ -1156,12 +1047,11 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"用于将窗口下移一个工作区的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
+"用于将窗口下移一个工作区的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:99
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
@@ -1171,12 +1061,11 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"用于将窗口左移一个工作区的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
+"用于将窗口左移一个工作区的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:100
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
@@ -1186,12 +1075,11 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"用于将窗口右移一个工作区的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
+"用于将窗口右移一个工作区的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:101
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
@@ -1200,12 +1088,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于将窗口上移一个工作区的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
+"用于将窗口上移一个工作区的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:102
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
@@ -1214,12 +1101,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于将窗口移动到工作区 1 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
+"用于将窗口移动到工作区 1 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:103
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
@@ -1228,12 +1114,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于将窗口移动到工作区 10 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
+"用于将窗口移动到工作区 10 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:104
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
@@ -1242,12 +1127,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于将窗口移动到工作区 11 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
+"用于将窗口移动到工作区 11 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:105
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
@@ -1256,12 +1140,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于将窗口移动到工作区 12 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
+"用于将窗口移动到工作区 12 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:106
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
@@ -1270,12 +1153,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于将窗口移动到工作区 2 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
+"用于将窗口移动到工作区 2 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:107
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
@@ -1284,12 +1166,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于将窗口移动到工作区 3 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
+"用于将窗口移动到工作区 3 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:108
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
@@ -1298,12 +1179,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于将窗口移动到工作区 4 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
+"用于将窗口移动到工作区 4 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:109
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
@@ -1312,12 +1192,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于将窗口移动到工作区 5 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
+"用于将窗口移动到工作区 5 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:110
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
@@ -1326,12 +1205,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于将窗口移动到工作区 6 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
+"用于将窗口移动到工作区 6 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:111
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
@@ -1340,12 +1218,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于将窗口移动到工作区 7 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
+"用于将窗口移动到工作区 7 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:112
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
@@ -1354,12 +1231,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于将窗口移动到工作区 8 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
+"用于将窗口移动到工作区 8 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:113
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
@@ -1368,14 +1244,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于将窗口移动到工作区 9 的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
+"用于将窗口移动到工作区 9 的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:114
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1384,13 +1258,12 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"用于关闭窗口的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;"
-"F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;"
-"Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作将没有按键组。"
+"用于在面板和桌面之间用弹出框反向移动焦点的按键组合。其格式类似于“&lt;"
+"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使"
+"用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
+"串“disabled”，那么此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:115
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1399,13 +1272,12 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"用于关闭窗口的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;"
-"F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;"
-"Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作将没有按键组。"
+"用于在面板和桌面之间不用弹出框反向移动焦点的按键组合。其格式类似于“&lt;"
+"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使"
+"用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
+"串“disabled”，那么此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:116
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1415,14 +1287,13 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"用于进入“move mode”并开始使用键盘移动窗口的按键组。格式类似于“&lt;Control&gt;"
-"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和"
-"缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组。"
+"用于在窗口之间不用弹出框反向移动焦点的按键组合。使用这个组合时如果按"
+"住“Shift”键会将移动顺序改回正向顺序。其格式类似于“&lt;Control&gt;a”或“&lt;"
+"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:117
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1432,10 +1303,11 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"用于进入“move mode”并开始使用键盘移动窗口的按键组。格式类似于“&lt;Control&gt;"
-"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和"
-"缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组。"
+"用于在窗口之间用弹出框反向移动焦点的按键组合。使用这个组合时如果按住“Shift”键"
+"会将移动顺序改回正向顺序。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
 
 #: src/metacity.schemas.in.h:118
 msgid ""
@@ -1446,6 +1318,10 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"用于在面板和桌面之间用弹出框移动焦点的按键组合。其格式类似于“&lt;Control&gt;"
+"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和"
+"缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
+"串“disabled”，那么此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:119
 msgid ""
@@ -1456,10 +1332,12 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
+"用于在面板和桌面之间不用弹出框移动焦点的按键组合。其格式类似于“&lt;"
+"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使"
+"用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
+"串“disabled”，那么此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:120
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1469,14 +1347,13 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于将窗口左移一个工作区的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
-"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
-"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"用于在窗口之间不用弹出框移动焦点的按键组合(传统设置为 &lt;Alt&gt;Esc)。使用这"
+"个组合时如果按住“Shift”键将反转移动顺序。其格式类似于“&lt;Control&gt;"
+"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和"
+"缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
+"串“disabled”，那么此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:121
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1486,12 +1363,12 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于将窗口左移一个工作区的按键组。格式类似于“&lt;Control&gt;a”或“&lt;"
+"用于在窗口之间用弹出框移动焦点的按键组合(传统传统为&lt;Alt&gt;Tab)。使用这个"
+"组合时如果按住“Shift”键将反转移动顺序。其格式类似于“&lt;Control&gt;a”或“&lt;"
 "Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
-"此操作将没有按键组。"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:122
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
@@ -1500,12 +1377,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于切换全屏模式的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
-"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"用于切换全屏模式的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
+"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
-"将没有按键组。"
+"将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:123
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
@@ -1514,12 +1390,11 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于切换最大化操作的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
-"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"用于切换最大化操作的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
+"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
-"将没有按键组。"
+"将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:124
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
@@ -1528,12 +1403,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于切换阴影/非阴影状态的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
+"用于切换卷起/展开状态的按键组合。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
 "&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
-"将没有按键组。"
+"将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:125
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
@@ -1543,14 +1417,12 @@ msgid ""
 "the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"用于切换窗口是在所有工作区上还是只在一个工作区上的按键组。格式类似于“&lt;"
+"用于切换窗口是在所有工作区上还是只在一个工作区上的按键组合。其格式类似于“&lt;"
 "Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使"
 "用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
-"串“disabled”，那么此操作将没有按键组。"
+"串“disabled”，那么此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:126
-#, fuzzy
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal "
@@ -1558,33 +1430,27 @@ msgid ""
 "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于最小化窗口的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
-"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"用于取消最大化窗口的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;"
+"&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
-"将没有按键组。"
+"将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:127
-#, fuzzy
 msgid "The name of a workspace."
-msgstr "工作区数量"
+msgstr "工作区名称。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:128
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr "主题决定窗口边框、标题栏等的外观。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:129
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
-msgstr ""
-"提升窗口前的延迟时间（如果 auto_raise 设置为 true）。延迟时间的单位为毫秒。"
+msgstr "提升窗口前的延迟时间(如果 auto_raise 设置为真)。延迟时间的单位为毫秒。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:130
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
@@ -1597,7 +1463,6 @@ msgstr ""
 "聚焦该窗口，“sloppy”表示当鼠标进入窗口时，即会聚焦该窗口，“mouse”表示当鼠标进"
 "入窗口时会聚焦该窗口，当鼠标离开该窗口时则会失去焦点。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:131
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
@@ -1609,15 +1474,13 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"用于将窗口更改到位于其它窗口上方或下方的按键组。如果窗口被另一个窗口覆盖，则"
-"会将该窗口提升到其它窗口的上方。如果窗口已经完全可见，则会将该窗口降低到其它"
-"窗口的下方。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解"
-"析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;"
-"Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作将没有按键组。"
+"用于将窗口更改到位于其它窗口上方或下方的按键组合。如果窗口被另一个窗口覆盖，"
+"则会将该窗口提升到其它窗口的上方。如果窗口已经完全可见，则会将该窗口降低到其"
+"它窗口的下方。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。"
+"该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;"
+"Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:132
-#, fuzzy
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1625,13 +1488,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于关闭窗口的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;"
-"F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;"
-"Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作将没有按键组。"
+"用于将窗口降低到其它窗口之下的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
+"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:133
-#, fuzzy
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1639,13 +1501,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"用于关闭窗口的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;"
-"F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;"
-"Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作将没有按键组。"
+"用于将窗口提升到其它窗口之上的按键组合。其格式类似于“&lt;Control&gt;a”或“&lt;"
+"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:134
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1654,13 +1515,12 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"用于关闭窗口的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;"
-"F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;"
-"Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作将没有按键组。"
+"用于改变窗口大小使其充满可用的水平空间的按键组合。其格式类似于“&lt;"
+"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使"
+"用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
+"串“disabled”，那么此操作将没有按键组合。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:135
-#, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1669,9 +1529,10 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"用于关闭窗口的按键组。格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;"
-"F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;"
-"Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作将没有按键组。"
+"用于改变窗口大小使其充满可用的垂直空间的按键组合。其格式类似于“&lt;"
+"Control&gt;a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使"
+"用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
+"串“disabled”，那么此操作将没有按键组合。"
 
 #: src/metacity.schemas.in.h:136
 msgid ""
@@ -1679,50 +1540,41 @@ msgid ""
 "Current valid options are 'toggle_shaded', which will shade/unshade the "
 "window, and 'toggle_maximized' which will maximize/unmaximize the window."
 msgstr ""
+"这个选项决定在标题栏上双击的效果。当前有效的选项是“切换卷起”，它将卷起/展开窗"
+"口；以及“切换最大化”，它将最大化/还原窗口。"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:137
 msgid "Toggle fullscreen mode"
 msgstr "切换全屏模式"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:138
 msgid "Toggle maximization state"
 msgstr "切换最大化状态"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:139
 msgid "Toggle shaded state"
-msgstr "切换阴影状态"
+msgstr "切换卷起状态"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid "Toggle window on all workspaces"
-msgstr "切换窗口是否位于所有工作区上"
+msgstr "切换窗口是否位于所有工作区"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:141
-#, fuzzy
 msgid "Unmaximize a window"
 msgstr "取消最大化窗口"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:142
 msgid "Use standard system font in window titles"
 msgstr "在窗口标题中使用标准系统字体"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:143
 msgid "Window focus mode"
 msgstr "窗口焦点模式"
 
-# SUN NEW TRANSLATION
 #: src/metacity.schemas.in.h:144
 msgid "Window title font"
 msgstr "窗口标题字体"
 
-# SUN NEW TRANSLATION
 #: src/prefs.c:422 src/prefs.c:438 src/prefs.c:454 src/prefs.c:470
 #: src/prefs.c:486 src/prefs.c:506 src/prefs.c:522 src/prefs.c:538
 #: src/prefs.c:554 src/prefs.c:570 src/prefs.c:586 src/prefs.c:602
@@ -1731,27 +1583,23 @@ msgstr "窗口标题字体"
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf 关键字“%s”被设置为无效的类型\n"
 
-# SUN NEW TRANSLATION
 #: src/prefs.c:712
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
-msgstr "在配置数据库中找到的“%s”不是按键组“%s”的有效值"
+msgstr "在配置数据库中找到的“%s”不是鼠标按钮修饰键的有效值\n"
 
-# SUN NEW TRANSLATION
-#: src/prefs.c:736 src/prefs.c:1098
-#, fuzzy, c-format
+#: src/prefs.c:736 src/prefs.c:1103
+#, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "GConf 关键字“%s”被设置为无效值"
+msgstr "GConf 关键字“%s”被设置为无效值\n"
 
-# SUN NEW TRANSLATION
 #: src/prefs.c:820
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "无法解析字体说明“%s”（来自 GConf 关键字 %s）\n"
+msgstr "无法解析字体说明“%s”(来自 GConf 关键字 %s)\n"
 
-# SUN NEW TRANSLATION
 #: src/prefs.c:1005
 #, c-format
 msgid ""
@@ -1761,81 +1609,69 @@ msgstr ""
 "存储在 GConf 关键字 %2$s 中的值 %1$d 不是一个合理的工作区数量，当前最大值为 %"
 "3$d\n"
 
-# SUN NEW TRANSLATION
-#: src/prefs.c:1060
+#: src/prefs.c:1065
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
-msgstr "已损坏应用程序的工作区已禁用。某些应用程序可能无法正常运行。\n"
+msgstr "有缺陷的应用程序的工作区已禁用。某些应用程序可能无法正常运行。\n"
 
-# SUN NEW TRANSLATION
-#: src/prefs.c:1125
+#: src/prefs.c:1130
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "存储在 GConf 关键字 %2$s 中的值 %1$d 超出了 0 到 %3$d 的范围\n"
 
-# SUN NEW TRANSLATION
-#: src/prefs.c:1217
+#: src/prefs.c:1222
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "将工作区数量设置为 %d 时出错：%s\n"
 
-# SUN NEW TRANSLATION
-#: src/prefs.c:1435
-#, fuzzy, c-format
+#: src/prefs.c:1460
+#, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
-msgstr "在配置数据库中找到的“%s”不是按键组“%s”的有效值"
+msgstr "在配置数据库中找到的“%s”不是按键组合“%s”的有效值\n"
 
-# SUN NEW TRANSLATION
-#: src/prefs.c:1720
-#, fuzzy, c-format
+#: src/prefs.c:1750
+#, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "将工作区数量设置为 %d 时出错：%s\n"
+msgstr "将工作区 %d 的名称设置为“%s”时出错：%s\n"
 
-# SUN NEW TRANSLATION
 #: src/resizepopup.c:127
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
 
-# SUN NEW TRANSLATION
 #: src/screen.c:392
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "显示“%2$s”上的屏幕 %1$d 无效\n"
 
-# SUN NEW TRANSLATION
 #: src/screen.c:408
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
-"显示“%2$s”上的屏幕 %1$d 已经有一个窗口管理器；请尝试使用 --replace 选项覆盖当"
+"显示“%2$s”上的屏幕 %1$d 已经有一个窗口管理器；请尝试使用 --replace 选项替换当"
 "前的窗口管理器。\n"
 
-# SUN NEW TRANSLATION
 #: src/screen.c:449
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "无法获得显示“%2$s”上的屏幕 %1$d 的窗口管理器选定项\n"
 
-# SUN NEW TRANSLATION
 #: src/screen.c:505
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "显示“%2$s”上的屏幕 %1$d 已经有一个窗口管理器\n"
 
-# SUN NEW TRANSLATION
 #: src/screen.c:673
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "无法释放显示“%2$s”上的屏幕 %1$d\n"
 
-# SUN NEW TRANSLATION
 #: src/session.c:274
 #, c-format
 msgid ""
@@ -1843,83 +1679,69 @@ msgid ""
 "not be saved: %s\n"
 msgstr "无法打开到会话管理器的连接，因此不会保存窗口位置：%s\n"
 
-# SUN NEW TRANSLATION
 #: src/session.c:881 src/session.c:888
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "无法创建目录“%s”：%s\n"
 
-# SUN NEW TRANSLATION
 #: src/session.c:898
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "无法打开会话文件“%s”进行写入：%s\n"
 
-# SUN NEW TRANSLATION
 #: src/session.c:1057
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "写入会话文件“%s”时出错：%s\n"
 
-# SUN NEW TRANSLATION
 #: src/session.c:1062
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "关闭会话文件“%s”时出错：%s\n"
 
-# SUN NEW TRANSLATION
 #: src/session.c:1137
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "无法读取保存的会话文件 %s：%s\n"
 
-# SUN NEW TRANSLATION
 #: src/session.c:1172
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "无法解析保存的会话文件：%s\n"
 
-# SUN NEW TRANSLATION
 #: src/session.c:1221
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session> 属性已看到，但我们已经拥有该会话 ID"
 
-# SUN NEW TRANSLATION
 #: src/session.c:1234
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "<metacity_session> 元素上未知的属性 %s"
 
-# SUN NEW TRANSLATION
 #: src/session.c:1251
 msgid "nested <window> tag"
 msgstr "嵌套 <window> 标记"
 
-# SUN NEW TRANSLATION
 #: src/session.c:1309 src/session.c:1341
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "<window> 元素上未知的属性 %s"
 
-# SUN NEW TRANSLATION
 #: src/session.c:1413
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown attribute %s on <maximized> element"
-msgstr "<window> 元素上未知的属性 %s"
+msgstr "<maximized> 元素上未知的属性 %s"
 
-# SUN NEW TRANSLATION
 #: src/session.c:1473
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "<geometry> 元素上未知的属性 %s"
 
-# SUN NEW TRANSLATION
 #: src/session.c:1493
 #, c-format
 msgid "Unknown element %s"
 msgstr "未知的元素 %s"
 
-# SUN NEW TRANSLATION
 #: src/session.c:1921
 #, c-format
 msgid ""
@@ -1927,78 +1749,66 @@ msgid ""
 "session management: %s\n"
 msgstr "启动 metacity-dialog 以警告应用程序不支持会话管理时出错：%s\n"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:224 src/theme-parser.c:242
 #, c-format
 msgid "Line %d character %d: %s"
 msgstr "行 %d 字符 %d：%s"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:396
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "属性“%s”在同一个 <%s> 元素上重复了两次"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:414 src/theme-parser.c:439
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "在该上下文中，属性“%s”对 <%s> 元素无效"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:485
 #, c-format
 msgid "Integer %ld must be positive"
 msgstr "整数 %ld 必须是正数"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:493
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
 msgstr "整数 %ld 过大，当前最大值为 %d"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:521 src/theme-parser.c:602 src/theme-parser.c:626
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "无法将“%s”解析为浮点数"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "布尔值必须为“true”或“false”，不能为“%s”"
+msgstr "布尔值必须为“真”或“假”，不能为“%s”"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:572
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
 msgstr "角度值必须界于 0.0 到 360.0 之间，现在是 %g\n"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr "Alpha 值必须界于 0.0（不可见）到 1.0（完全不透明）之间，现在是 %g\n"
+msgstr "Alpha 值必须界于 0.0(不可见)到 1.0(完全不透明)之间，现在是 %g\n"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:684
 #, c-format
 msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
-"无效的标题比例“%s”（必须是 xx-small、x-small、small、medium、large、x-large、"
-"xx-large 中的一个）\n"
+"无效的标题比例“%s”(必须是 xx-small、x-small、small、medium、large、x-large、"
+"xx-large 中的一个)\n"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
 #: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
 msgstr "无“%s”属性在元素 <%s> 上"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
 #: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
 #: src/theme-parser.c:1126 src/theme-parser.c:1134
@@ -2006,74 +1816,62 @@ msgstr "无“%s”属性在元素 <%s> 上"
 msgid "No \"%s\" attribute on <%s> element"
 msgstr "无“%s”属性在 <%s> 元素上"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:837 src/theme-parser.c:905 src/theme-parser.c:943
 #: src/theme-parser.c:1020
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "再次使用了 <%s> 名称“%s”"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:849 src/theme-parser.c:955 src/theme-parser.c:1032
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
 msgstr "<%s> 父级“%s”尚未定义"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:968
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
 msgstr "<%s> 几何布局“%s”尚未定义"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr "<%s> 必须指定一个几何布局或者一个带有几何布局的父级"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1080
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
 msgstr "未知的类型“%s”在元素 <%s> 上"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1091
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "未知的 style_set“%s”在元素 <%s> 上"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1099
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "已经为窗口类型“%s”指定了一种风格设置"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1143
 #, c-format
 msgid "Unknown function \"%s\" for menu icon"
 msgstr "菜单图标的未知函数“%s”"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1152
 #, c-format
 msgid "Unknown state \"%s\" for menu icon"
 msgstr "菜单图标的未知状态“%s”"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1160
 #, c-format
 msgid "Theme already has a menu icon for function %s state %s"
 msgstr "主题已经有一个函数为 %s、状态为 %s 的菜单图标"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1177 src/theme-parser.c:3244 src/theme-parser.c:3323
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "尚未定义名为“%s”的 <draw_ops>"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
 #: src/theme-parser.c:3124 src/theme-parser.c:3178 src/theme-parser.c:3338
 #: src/theme-parser.c:3515 src/theme-parser.c:3553 src/theme-parser.c:3591
@@ -2082,98 +1880,82 @@ msgstr "尚未定义名为“%s”的 <draw_ops>"
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "不允许元素 <%s> 在 <%s> 下方"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1282 src/theme-parser.c:1369 src/theme-parser.c:1439
 #, c-format
 msgid "No \"name\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“name”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1289 src/theme-parser.c:1376
 #, c-format
 msgid "No \"value\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“value”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
 msgid ""
 "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr "不能同时指定按钮的 button_width/button_height 和长宽比"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1343
 #, c-format
 msgid "Distance \"%s\" is unknown"
 msgstr "距离“%s”未知"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1402
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
 msgstr "长宽比“%s”未知"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1446
 #, c-format
 msgid "No \"top\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“top”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1453
 #, c-format
 msgid "No \"bottom\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“bottom”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1460
 #, c-format
 msgid "No \"left\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“left”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1467
 #, c-format
 msgid "No \"right\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“right”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1499
 #, c-format
 msgid "Border \"%s\" is unknown"
 msgstr "边框“%s”未知"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1655 src/theme-parser.c:1765 src/theme-parser.c:1868
 #: src/theme-parser.c:2055 src/theme-parser.c:2869
 #, c-format
 msgid "No \"color\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“color”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1662
 #, c-format
 msgid "No \"x1\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“x1”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1669 src/theme-parser.c:2714
 #, c-format
 msgid "No \"y1\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“y1”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1676
 #, c-format
 msgid "No \"x2\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“x2”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1683 src/theme-parser.c:2721
 #, c-format
 msgid "No \"y2\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“y2”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1772 src/theme-parser.c:1875 src/theme-parser.c:1981
 #: src/theme-parser.c:2062 src/theme-parser.c:2168 src/theme-parser.c:2266
 #: src/theme-parser.c:2483 src/theme-parser.c:2609 src/theme-parser.c:2707
@@ -2182,7 +1964,6 @@ msgstr "元素 <%s> 上没有“y2”属性"
 msgid "No \"x\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“x”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1779 src/theme-parser.c:1882 src/theme-parser.c:1988
 #: src/theme-parser.c:2069 src/theme-parser.c:2175 src/theme-parser.c:2273
 #: src/theme-parser.c:2490 src/theme-parser.c:2616 src/theme-parser.c:2788
@@ -2191,7 +1972,6 @@ msgstr "元素 <%s> 上没有“x”属性"
 msgid "No \"y\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“y”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1786 src/theme-parser.c:1889 src/theme-parser.c:1995
 #: src/theme-parser.c:2076 src/theme-parser.c:2182 src/theme-parser.c:2280
 #: src/theme-parser.c:2497 src/theme-parser.c:2623 src/theme-parser.c:2795
@@ -2199,7 +1979,6 @@ msgstr "元素 <%s> 上没有“y”属性"
 msgid "No \"width\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“width”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1793 src/theme-parser.c:1896 src/theme-parser.c:2002
 #: src/theme-parser.c:2083 src/theme-parser.c:2189 src/theme-parser.c:2287
 #: src/theme-parser.c:2504 src/theme-parser.c:2630 src/theme-parser.c:2802
@@ -2207,193 +1986,161 @@ msgstr "元素 <%s> 上没有“width”属性"
 msgid "No \"height\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“height”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1903
 #, c-format
 msgid "No \"start_angle\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“start_angle”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:1910
 #, c-format
 msgid "No \"extent_angle\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“extent_angle”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:2090
 #, c-format
 msgid "No \"alpha\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“alpha”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:2161
 #, c-format
 msgid "No \"type\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“type”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:2209
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "不理解梯度类型的值“%s”"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:2294
 #, c-format
 msgid "No \"filename\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“filename”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:2319 src/theme-parser.c:2827
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "不理解填充类型“%s”（用于 <%s> 元素）"
+msgstr "不理解填充类型“%s”(用于 <%s> 元素)"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:2462 src/theme-parser.c:2595 src/theme-parser.c:2700
 #, c-format
 msgid "No \"state\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“state”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:2469 src/theme-parser.c:2602
 #, c-format
 msgid "No \"shadow\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“shadow”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:2476
 #, c-format
 msgid "No \"arrow\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“arrow”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:2529 src/theme-parser.c:2651 src/theme-parser.c:2739
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr "不理解状态“%s”（用于 <%s> 元素）"
+msgstr "不理解状态“%s”(用于 <%s> 元素)"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:2539 src/theme-parser.c:2661
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr "不理解阴影“%s”（用于 <%s> 元素）"
+msgstr "不理解阴影“%s”(用于 <%s> 元素)"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:2549
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr "不理解箭头“%s”（用于 <%s> 元素）"
+msgstr "不理解箭头“%s”(用于 <%s> 元素)"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:2962 src/theme-parser.c:3078
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "尚未定义名为“%s”的 <draw_ops>"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:2974 src/theme-parser.c:3090
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "此处包括 draw_ops“%s”将创建一个循环引用"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3153
 #, c-format
 msgid "No \"value\" attribute on <%s> element"
 msgstr "元素 <%s> 上没有“value”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3210
 #, c-format
 msgid "No \"position\" attribute on <%s> element"
 msgstr "元素 <%s> 上没有“position”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3219
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "帧段的位置“%s”未知"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3227
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "在位置 %s 处已经有一段窗帧风格"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3272
 #, c-format
 msgid "No \"function\" attribute on <%s> element"
 msgstr "元素 <%s> 上没有“function”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3280 src/theme-parser.c:3384
 #, c-format
 msgid "No \"state\" attribute on <%s> element"
 msgstr "元素 <%s> 上没有“state”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3289
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "按钮的函数“%s”未知"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3298
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "按钮的状态“%s”未知"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3306
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "窗帧风格已经有一个函数为 %s、状态为 %s 的按钮"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3376
 #, c-format
 msgid "No \"focus\" attribute on <%s> element"
 msgstr "元素 <%s> 上没有“focus”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3392
 #, c-format
 msgid "No \"style\" attribute on <%s> element"
 msgstr "元素 <%s> 上没有“style”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3401
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "“%s”不是 focus 属性的有效值"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3410
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "“%s”不是 state 属性的有效值"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3420
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "尚未定义名为“%s”的风格"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3430
 #, c-format
 msgid "No \"resize\" attribute on <%s> element"
 msgstr "元素 <%s> 上没有“resize”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3440
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "“%s”不是 resize 属性的有效值"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3450
 #, c-format
 msgid ""
@@ -2401,190 +2148,158 @@ msgid ""
 "states"
 msgstr "状态为 maximized/shaded 的 <%s> 元素不应有“resize”属性"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "已经为 state 属性 %s、resize 属性 %s、focus 属性 %s 指定了风格"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "已经为 state 属性 %s、focus 属性 %s 指定了风格"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3536
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"一个 <piece> 元素不能有两个 draw_ops（主题指定了一个 draw_ops属性和一个 "
-"<draw_ops> 元素，或者指定了两个元素）"
+"一个 <piece> 元素不能有两个 draw_ops(主题指定了一个 draw_ops属性和一个 "
+"<draw_ops> 元素，或者指定了两个元素)"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3574
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"一个 <button> 元素不能有两个 draw_ops（主题指定了一个 draw_ops属性和一个 "
-"<draw_ops> 元素，或者指定了两个元素）"
+"一个 <button> 元素不能有两个 draw_ops(主题指定了一个 draw_ops属性和一个 "
+"<draw_ops> 元素，或者指定了两个元素)"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3612
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"一个 <menu_icon> 元素不能有两个 draw_ops（主题指定了一个draw_ops 属性和一个 "
-"<draw_ops> 元素，或者指定了两个元素）"
+"一个 <menu_icon> 元素不能有两个 draw_ops(主题指定了一个draw_ops 属性和一个 "
+"<draw_ops> 元素，或者指定了两个元素)"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3659
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "主题中最外面的元素必须是 <metacity_theme>，而不能是 <%s>"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3679
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "name/author/date/description 元素中不允许有元素 <%s>"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3684
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "<constant> 元素中不允许有元素 <%s>"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3696
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "distance/border/aspect_ratio 元素中不允许有元素 <%s>"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3718
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "draw operation 元素中不允许有元素 <%s>"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3728 src/theme-parser.c:3758 src/theme-parser.c:3763
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "元素 <%s> 不允许出现在 <%s> 元素内"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3984
 msgid "No draw_ops provided for frame piece"
 msgstr "没有为帧段提供 draw_ops"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:3999
 msgid "No draw_ops provided for button"
 msgstr "没有为按钮提供 draw_ops"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:4014
 msgid "No draw_ops provided for menu icon"
 msgstr "没有为菜单图标提供 draw_ops"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:4054
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "元素 <%s> 中不允许有文本"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:4109
 msgid "<name> specified twice for this theme"
 msgstr "为此主题指定了两次 <name>"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:4120
 msgid "<author> specified twice for this theme"
 msgstr "为此主题指定了两次 <author>"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:4131
 msgid "<copyright> specified twice for this theme"
 msgstr "为此主题指定了两次 <copyright>"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:4142
 msgid "<date> specified twice for this theme"
 msgstr "为此主题指定了两次 <date>"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:4153
 msgid "<description> specified twice for this theme"
 msgstr "为此主题指定了两次 <description>"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:4347
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
 msgstr "无法从文件 %s 读取主题：%s\n"
 
-# SUN NEW TRANSLATION
 #: src/theme-parser.c:4402
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "主题文件 %s 不包含根 <metacity_theme> 元素"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:202
 msgid "top"
 msgstr "顶部"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:204
 msgid "bottom"
 msgstr "底部"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:206
 msgid "left"
 msgstr "左"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:208
 msgid "right"
 msgstr "右"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:222
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "窗帧几何布局没有指定“%s”尺寸"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "窗帧几何布局没有指定“%s”尺寸（该尺寸是为边¡¡“%s”指定的）"
+msgstr "窗帧几何布局没有指定“%s”尺寸(该尺寸是为边框“%s”指定的)"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:278
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "按钮长宽比 %g 不合理"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:290
 msgid "Frame geometry does not specify size of buttons"
 msgstr "窗帧几何布局没有指定按钮大小"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:849
 msgid "Gradients should have at least two colors"
 msgstr "渐变应至少有两种颜色"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:975
 #, c-format
 msgid ""
@@ -2594,7 +2309,6 @@ msgstr ""
 "GTK 颜色规范必须将状态包含在方括号中，例如 gtk:fg[NORMAL]其中 NORMAL 是状态；"
 "无法解析“%s”"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:989
 #, c-format
 msgid ""
@@ -2604,19 +2318,16 @@ msgstr ""
 "GTK 颜色规范必须在状态后有一个闭方括号，例如 gtk:fg[NORMAL]，其中 NORMAL 是状"
 "态；无法解析“%s”"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:1000
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "不理解颜色规范中的状态“%s”"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:1013
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "不理解颜色规范中的颜色组成部分“%s”"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:1043
 #, c-format
 msgid ""
@@ -2624,50 +2335,42 @@ msgid ""
 "format"
 msgstr "混合格式为“blend/bg_color/fg_color/alpha”，“%s”不符合该格式"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:1054
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "无法解析混合色中的 Alpha 值“%s”"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:1064
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "混合色中的 Alpha 值“%s”不在 0.0 到 1.0 之间"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:1111
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "阴影格式为“shade/base_color/factor”，“%s”不符合该格式"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:1122
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "无法解析阴影色中的阴影因子“%s”"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:1132
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "阴影色中的阴影因子“%s”为负数"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:1161
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "无法解析颜色“%s”"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:1423
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "坐标表达式包含不允许的字符“%s”"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:1450
 #, c-format
 msgid ""
@@ -2675,13 +2378,11 @@ msgid ""
 "parsed"
 msgstr "坐标表达式包含无法解析的浮点数“%s”"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:1464
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "坐标表达式包含无法解析的整数“%s”"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:1531
 #, c-format
 msgid ""
@@ -2689,40 +2390,33 @@ msgid ""
 "\"%s\""
 msgstr "坐标表达式在该文本开始处包含未知的运算符：“%s”"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:1588
 msgid "Coordinate expression was empty or not understood"
 msgstr "坐标表达式为空或无法理解"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:1727 src/theme.c:1737 src/theme.c:1771
 msgid "Coordinate expression results in division by zero"
 msgstr "坐标表达式用零做除数"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:1779
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "坐标表达式试图对浮点数使用 mod 运算符"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:1836
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "坐标表达式的运算符“%s”应该是一个操作数"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:1845
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "坐标表达式的某个操作数应该是运算符"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:1853
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "坐标表达式以运算符结尾，而不是以操作数结尾"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:1863
 #, c-format
 msgid ""
@@ -2730,7 +2424,6 @@ msgid ""
 "operand in between"
 msgstr "坐标表达式的运算符“%c”后面跟着运算符“%c”，之间没有操作数"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:1982
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
@@ -2739,34 +2432,28 @@ msgstr ""
 "坐标表达式解析程序溢出它的缓冲区，这实际上是一个Metacity 缺陷，但您是否确实需"
 "要一个如此大的表达式？"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:2011
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "坐标表达式有一个闭括号，而没有开括号"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:2074
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "坐标表达式有未知的变量或常数“%s”"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:2131
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "坐标表达式有一个开括号，而没有闭括号"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:2142
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "坐标表达式似乎没有任何运算符或操作数"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:2386 src/theme.c:2408 src/theme.c:2429
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "主题包含的表达式“%s”产生一个错误：%s\n"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:3912
 #, c-format
 msgid ""
@@ -2776,7 +2463,6 @@ msgstr ""
 "必须为该窗帧风格指定<button function=\"%s\" state=\"%s\" draw_ops=\"whatever"
 "\"/>"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:4362 src/theme.c:4394
 #, c-format
 msgid ""
@@ -2784,30 +2470,26 @@ msgid ""
 msgstr ""
 "缺少 <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:4445
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "无法载入主题“%s”：%s\n"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:4591 src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
 #: src/theme.c:4619
-#, fuzzy, c-format
+#, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr "没有为主题“%s”设置 <name>"
+msgstr "没有为主题“%2$s”设置 <%1$s>"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:4629
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
-"没有为窗口类型“%s”（在主题“%s”中）设置窗帧风格，请添加一个 <window type=\"%s"
-"\" style_set=\"whatever\"/> 元素"
+"没有为窗口类型“%s”(在主题“%s”中)设置窗帧风格，请添加一个 <window type=\"%s\" "
+"style_set=\"whatever\"/> 元素"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:4651
 #, c-format
 msgid ""
@@ -2817,106 +2499,90 @@ msgstr ""
 "必须为该主题指定<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever"
 "\"/>"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:5038 src/theme.c:5100
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "用户定义的常数必须以大写字母开头；而“%s”却不必"
 
-# SUN NEW TRANSLATION
 #: src/theme.c:5046 src/theme.c:5108
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "常数“%s”已被定义"
 
-# SUN NEW TRANSLATION
 #: src/tools/metacity-properties.desktop.in.h:1
-#, fuzzy
 msgid "Select how to give focus to windows"
-msgstr "在窗口之间移动焦点"
+msgstr "选择如何为窗口设置焦点"
 
-# SUN NEW TRANSLATION
 #: src/tools/metacity-properties.desktop.in.h:2
 msgid "Window Focus"
 msgstr "窗口焦点"
 
-# SUN NEW TRANSLATION
 #: src/tools/metacity-properties.glade.h:1
 msgid "Clic_k to give focus"
-msgstr "单击时聚焦(_K)"
+msgstr "单击时设置焦点(_K)"
 
-# SUN NEW TRANSLATION
 #: src/tools/metacity-properties.glade.h:2
 msgid "Focus behavior:"
-msgstr "聚焦行为："
+msgstr "焦点行为："
 
-# SUN NEW TRANSLATION
 #: src/tools/metacity-properties.glade.h:3
 msgid "Window Focus Preferences"
 msgstr "窗口焦点首选项"
 
-# SUN NEW TRANSLATION
 #: src/tools/metacity-properties.glade.h:4
 msgid "_Point to give focus"
-msgstr "指向时聚焦(_P)"
+msgstr "指向时设置焦点(_P)"
 
-# SUN NEW TRANSLATION
 #: src/tools/metacity-properties.glade.h:5
 msgid "_Raise window on focus"
 msgstr "提升焦点窗口(_R)"
 
-# SUN NEW TRANSLATION
 #: src/util.c:93
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "无法打开调试日志：%s\n"
 
-# SUN NEW TRANSLATION
 #: src/util.c:103
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "无法对日志文件 %s 进行 fdopen() 操作：%s\n"
 
-# SUN NEW TRANSLATION
 #: src/util.c:109
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "打开的日志文件 %s\n"
 
-#: src/util.c:128
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr ""
-
 #: src/util.c:203
 msgid "Window manager: "
-msgstr ""
+msgstr "窗口管理器："
 
-#: src/util.c:343
+#: src/util.c:347
 msgid "Bug in window manager: "
-msgstr ""
+msgstr "窗口管理器中的错误："
 
-#: src/util.c:372
+#: src/util.c:376
 msgid "Window manager warning: "
-msgstr ""
+msgstr "窗口管理器警告："
 
-#: src/util.c:396
+#: src/util.c:400
 msgid "Window manager error: "
-msgstr ""
+msgstr "窗口管理器错误："
 
-# SUN NEW TRANSLATION
 #: src/window-props.c:161
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "应用程序设置一个假的 _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4847
+#: src/window.c:4897
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
+"窗口 %s 在它自身上设置 SM_CLIENT_ID，而不是按照 ICCCM 规定的那样，设置在 "
+"WM_CLIENT_LEADER 窗口上。\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -2925,59 +2591,40 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5407
+#: src/window.c:5471
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
+"窗口 %s 设置了一个 MWM 提示，表明它是不可改变大小的，但设置最小尺寸为 %d x %"
+"d，最大尺寸为 %d x %d；这没有任何意义。\n"
 
-# SUN NEW TRANSLATION
-#: src/xprops.c:124
+#: src/xprops.c:153
 #, c-format
 msgid ""
-"Window 0x%lx has property %s that was expected to have type %s format %d and "
-"actually has type %s format %d n_items %d\n"
+"Window 0x%lx has property %s\n"
+"that was expected to have type %s format %d\n"
+"and actually has type %s format %d n_items %d.\n"
+"This is most likely an application bug, not a window manager bug.\n"
+"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
-"窗口 0x%lx 的属性 %s 的期望类型为 %s、格式为 %d，而实际类型为 %s、格式为 %d "
-"n_items %d\n"
+"窗口 0x%lx 的属性 %s\n"
+"的期望类型为 %s、格式为 %d，\n"
+"而实际类型为 %s、格式为 %d、n_items 为 %d。\n"
+"这很可能是应用程序的错误，不是窗口管理器的错误。\n"
+"窗口的标题为“%s”，类别为“%s”，名称为“%s”\n"
 
-# SUN NEW TRANSLATION
-#: src/xprops.c:369
+#: src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "窗口 0x%2$lx 上的属性 %1$s 包含无效的 UTF-8\n"
 
-#: src/xprops.c:449
+#: src/xprops.c:479
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr ""
+msgstr "窗口 0x%2$lx 上的属性 %1$s 为列表中的条目 %3$d 包含无效的 UTF-8\n"
 
-# SUN NEW TRANSLATION
-#~ msgid "_Shade"
-#~ msgstr "阴影(_S)"
-
-# SUN NEW TRANSLATION
-#~ msgid "Un_shade"
-#~ msgstr "取消阴影(_S)"
-
-# SUN NEW TRANSLATION
-#~ msgid "No <author> set for theme \"%s\""
-#~ msgstr "没有为主题“%s”设置 <author>"
-
-# SUN NEW TRANSLATION
-#~ msgid "No <date> set for theme \"%s\""
-#~ msgstr "没有为主题“%s”设置 <date>"
-
-# SUN NEW TRANSLATION
-#~ msgid "No <description> set for theme \"%s\""
-#~ msgstr "没有为主题“%s”设置 <description>"
-
-# SUN NEW TRANSLATION
-#~ msgid "No <copyright> set for theme \"%s\""
-#~ msgstr "没有为主题“%s”设置 <copyright>"
-
-# SUN NEW TRANSLATION
 #~ msgid "Change how focus is moved from one window to another"
 #~ msgstr "更改焦点在窗口间移动的方式"
