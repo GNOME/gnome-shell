@@ -1,3 +1,9 @@
+2005-01-25  Balamurali Viswanathan <balamurali.viswanathan@wipro.com>
+ 
+ 	* src/prefs.c (meta_prefs_init): Get gconf to load the
+ 	terminal dir so that we get the notifications when
+ 	the command is changed. Fixes bug #160934
+ 
 2005-01-25  Elijah Newren  <newren@gmail.com>
 
 	Refuse to focus a window with a modal transient, and focus the

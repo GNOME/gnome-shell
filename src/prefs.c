@@ -310,6 +310,11 @@ meta_prefs_init (void)
                         &err);
   cleanup_error (&err);
 
+  gconf_client_add_dir (default_client, "/desktop/gnome/applications/terminal",
+                        GCONF_CLIENT_PRELOAD_RECURSIVE,
+                        &err);
+  cleanup_error (&err);
+
   str_val = gconf_client_get_string (default_client, KEY_MOUSE_BUTTON_MODS,
                                      &err);
   cleanup_error (&err);
