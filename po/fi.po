@@ -7,8 +7,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"POT-Creation-Date: 2003-05-20 12:32-0400\n"
-"PO-Revision-Date: 2003-01-08 22:44+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-06-17 20:59+0300\n"
+"PO-Revision-Date: 2003-06-16 20:43+0200\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Gnome Finnish Translation Team <gnome-fi-laatu@lists."
 "sourceforge.net>\n"
@@ -60,7 +61,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Isäntänimen haku epäonnistui: %s\n"
 
-#: src/display.c:286
+#: src/display.c:280
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X-ikkunointijärjestelmän näytön \"%s\" avaaminen epäonnistui\n"
@@ -122,13 +123,12 @@ msgid "No command %d has been defined.\n"
 msgstr "Mitään komentoa %d ei ole määritelty.\n"
 
 #: src/main.c:64
-#, fuzzy
 msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
-"metacity [--disable-sm] [--sm-save-file=TIEDOSTO] [--display=NÄYTTÖ] [--"
-"replace] [--version]\n"
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=TIEDOSTO] [--"
+"display=NÄYTTÖ] [--replace] [--version]\n"
 
 #: src/main.c:71
 #, c-format
@@ -145,7 +145,7 @@ msgstr ""
 "Ei MINKÄÄNLAISTA takuuta: ei edes takuuta MYYNTIKELPOISUUDESTA tai\n"
 "SOPIVUUDESTA JOHONKIN KÄYTTÖÖN.\n"
 
-#: src/main.c:345
+#: src/main.c:348
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -153,7 +153,7 @@ msgstr ""
 "Teemaa ei löydy! Varmista, että %s on olemassa, ja sisältää tavalliset "
 "teemat."
 
-#: src/main.c:393
+#: src/main.c:396
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Uudelleenkäynnistys epäonnistui: %s\n"
@@ -176,7 +176,7 @@ msgstr "_Rullaa ylös"
 
 #: src/menu.c:56
 msgid "_Unroll"
-msgstr "Rullaa _alas"
+msgstr "_Rullaa alas"
 
 #: src/menu.c:57
 msgid "_Move"
@@ -318,16 +318,18 @@ msgstr "Mod5"
 #: src/metacity-dialog.c:84
 #, c-format
 msgid "The window \"%s\" is not responding."
-msgstr ""
+msgstr "Ikkuna \"%s\" ei vastaa."
 
 #: src/metacity-dialog.c:92
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
+"Tämän sovelluksen sulkeminen väkisin saa tallentamattomat muutokset "
+"katoamaan."
 
 #: src/metacity-dialog.c:102
 msgid "_Force Quit"
-msgstr ""
+msgstr "Sulje _väkisin"
 
 #: src/metacity-dialog.c:196
 msgid "Title"
@@ -345,7 +347,7 @@ msgstr ""
 "Nämä ikkunat eivät ymmärrä \"tallenna nykyinen tila\"-komentoa, ja ne täytyy "
 "käynnistää käsin uudelleen kun kirjaudut seuraavan kerran sisään."
 
-#: src/metacity-dialog.c:284
+#: src/metacity-dialog.c:287
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -443,6 +445,9 @@ msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr ""
+"Määrittelee, voivatko sovellukset tai järjestelmä päästää kuultavia "
+"\"piippauksia\". Tätä voi käyttää yhdessä \"näkyvien piippausten\" kanssa ja "
+"sallia \"hiljaiset piippaukset\"."
 
 #: src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
@@ -452,7 +457,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
-msgstr ""
+msgstr "Käytä näkyviä piippauksia"
 
 #: src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
@@ -658,11 +663,11 @@ msgstr "Suorita annettu komento"
 
 #: src/metacity.schemas.in.h:58
 msgid "Show the panel menu"
-msgstr ""
+msgstr "Näytä paneelivalikko"
 
 #: src/metacity.schemas.in.h:59
 msgid "Show the panel run dialog"
-msgstr ""
+msgstr "Näytä paneelin suoritusikkuna"
 
 #: src/metacity.schemas.in.h:60
 msgid ""
@@ -759,15 +764,15 @@ msgstr "Siirry oikealla olevaan työtilaan"
 
 #: src/metacity.schemas.in.h:77
 msgid "System Bell is Audible"
-msgstr ""
+msgstr "Järjestelmän piippaus on kuultavissa"
 
 #: src/metacity.schemas.in.h:78
 msgid "Take a screenshot"
-msgstr ""
+msgstr "Ota kuvakaappaus"
 
 #: src/metacity.schemas.in.h:79
 msgid "Take a screenshot of a window"
-msgstr ""
+msgstr "Ota kuvakaappaus ikkunasta"
 
 #: src/metacity.schemas.in.h:80
 msgid ""
@@ -779,6 +784,13 @@ msgid ""
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
 msgstr ""
+"Kertoo Metacitylle, miten ilmaista näkyvästi, että järjestelmä tai ohjelma "
+"on päästänyt äänimerkin. Mahdollisia arvoja on tällä hetkellä kaksi: "
+"\"fullscreen\", joka saa koko ruudun välkähtämään mustasta valkoiseksi ja "
+"\"frame_flash\", joka saa merkin päästäneen sovelluksen ikkunan "
+"otsikkopalkin välkähtämään. Jos merkin lähettäjä on tuntematon (kuten "
+"yleensä kun \"järjestelmä piippaa\"), nykyisen ikkunan otsikkopalkki "
+"välkähtää."
 
 #: src/metacity.schemas.in.h:81
 msgid ""
@@ -791,25 +803,22 @@ msgstr ""
 "pikanäppäimen painaminen suorittaa komennon command_N."
 
 #: src/metacity.schemas.in.h:82
-#, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr ""
-"/apps/metacity/global_keybindings/run_command_N-avaimet määrittelevät "
-"pikanäppäimet, jotka liittyvät näihin komentoihin. Avaimen run_command_N "
-"pikanäppäimen painaminen suorittaa komennon command_N."
+"/apps/metacity/global_keybindings/run_command_screenshot-avain määrittelee "
+"pikanäppäimen, joka käynnistää tämän asetuksen määrittelemän ohjelman."
 
 #: src/metacity.schemas.in.h:83
-#, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
 "be invoked."
 msgstr ""
-"/apps/metacity/global_keybindings/run_command_N-avaimet määrittelevät "
-"pikanäppäimet, jotka liittyvät näihin komentoihin. Avaimen run_command_N "
-"pikanäppäimen painaminen suorittaa komennon command_N."
+"/apps/metacity/global_keybindings/run_command_window_screenshot-avain "
+"määrittelee pikanäppäimen, joka käynnistää tämän asetuksen määrittelemän "
+"ohjelman."
 
 #: src/metacity.schemas.in.h:84
 msgid ""
@@ -1593,7 +1602,6 @@ msgstr ""
 "merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
 
 #: src/metacity.schemas.in.h:137
-#, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Program\" dialog box. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The "
@@ -1602,14 +1610,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Pikanäppäin, joka sulkee ikkunan. Pikanäppäimet ovat muotoa \"&lt;Control&gt;"
-"a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei "
-"välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja "
-"\"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen merkkijonon \"disabled\", "
-"niin tähän toimintoon ei liity pikanäppäintä."
+"Pikanäppäin, joka näyttää paneelin \"Suorita ohjelma\"-ikkunan. "
+"Pikanäppäimet ovat muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;"
+"F1\". Jäsennin on varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää "
+"myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat "
+"arvoksi erityisen merkkijonon \"disabled\", niin tähän toimintoon ei liity "
+"pikanäppäintä."
 
 #: src/metacity.schemas.in.h:138
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1618,14 +1626,14 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Pikanäppäin, joka sulkee ikkunan. Pikanäppäimet ovat muotoa \"&lt;Control&gt;"
-"a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei "
-"välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja "
-"\"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen merkkijonon \"disabled\", "
-"niin tähän toimintoon ei liity pikanäppäintä."
+"Pikanäppäin, joka käynnistää paneelin kuvakaappaustyökalun ottamaan kuvan "
+"ikkunasta. Pikanäppäimet ovat muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1\". Jäsennin on varsin vapaamielinen, ei välitä kirjainkoosta "
+"ja ymmärtää myös lyhenteitä, kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos "
+"vaihdat arvoksi erityisen merkkijonon \"disabled\", niin tähän toimintoon ei "
+"liity pikanäppäintä."
 
 #: src/metacity.schemas.in.h:139
-#, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser "
@@ -1634,14 +1642,14 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Pikanäppäin, joka vaihtaa työtilaan 9. Pikanäppäimet ovat muotoa \"&lt;"
-"Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
-"vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
-"\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
-"merkkijonon \"disabled\", niin tähän toimintoon ei liity pikanäppäintä."
+"Pikanäppäin, joka käynnistää paneelin kuvakaappaustyökalun. Pikanäppäimet "
+"ovat muotoa \"&lt;Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
+"Jäsennin on varsin vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös "
+"lyhenteitä, kuten \"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi "
+"erityisen merkkijonon \"disabled\", niin tähän toimintoon ei liity "
+"pikanäppäintä."
 
 #: src/metacity.schemas.in.h:140
-#, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly "
@@ -1649,7 +1657,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Pikanäppäin, joka avaa ikkunavalikon. Pikanäppäimet ovat muotoa \"&lt;"
+"Pikanäppäin, joka avaa paneelin päävalikon. Pikanäppäimet ovat muotoa \"&lt;"
 "Control&gt;a\" tai \"&lt;Shift&gt;&lt;Alt&gt;F1\". Jäsennin on varsin "
 "vapaamielinen, ei välitä kirjainkoosta ja ymmärtää myös lyhenteitä, kuten "
 "\"&lt;Ctl&gt;\" ja \"&lt;Ctrl&gt;\". Jos vaihdat arvoksi erityisen "
@@ -1661,7 +1669,7 @@ msgstr "Työtilan nimi."
 
 #: src/metacity.schemas.in.h:142
 msgid "The screenshot command"
-msgstr ""
+msgstr "Kuvakaappauksen ottokomento"
 
 #: src/metacity.schemas.in.h:143
 msgid ""
@@ -1693,7 +1701,7 @@ msgstr ""
 
 #: src/metacity.schemas.in.h:146
 msgid "The window screenshot command"
-msgstr ""
+msgstr "Ikkunan kuvakaappauksen ottokomento"
 
 #: src/metacity.schemas.in.h:147
 msgid ""
@@ -1781,7 +1789,7 @@ msgid ""
 msgstr ""
 "Tämä valinta määrittelee otsikkopalkin kaksoisnapsautuksen toiminnan. "
 "Nykyisiä kelvollisia valintoja ovat \"toggle_shade\", joka rullaa ikkunan "
-"tai avaa rullauksen; \"toggle_maximize\", joka suurentaa tai palauttaa "
+"tai avaa rullauksen, ja \"toggle_maximize\", joka suurentaa tai palauttaa "
 "ikkunan."
 
 #: src/metacity.schemas.in.h:153
@@ -1806,6 +1814,9 @@ msgid ""
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
+"Ottaa käyttöön ominaisuuden, joka ilmaisee näkyvästi, milloin sovellus tai "
+"järjestelmä on päästänyt äänimerkin tai piippauksen. Tämä on hyödyllistä, "
+"jos kuulo on heikko, ympäristö meluinen tai äänimerkit hiljennetty."
 
 #: src/metacity.schemas.in.h:158
 msgid "Unmaximize a window"
@@ -1817,7 +1828,7 @@ msgstr "Järjestelmän oletuskirjasin ikkunoiden otsikoissa"
 
 #: src/metacity.schemas.in.h:160
 msgid "Visual Bell Type"
-msgstr ""
+msgstr "Näkyvän piippauksen tyyppi"
 
 #: src/metacity.schemas.in.h:161
 msgid "Window focus mode"
@@ -1900,12 +1911,12 @@ msgstr "Virhe työtilan %d nimen asettamisessa nimeksi \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d × %d"
 
-#: src/screen.c:407
+#: src/screen.c:389
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Näytön \"%2$s\" ruutu %1$d ei ole kelvollinen\n"
 
-#: src/screen.c:423
+#: src/screen.c:405
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1914,7 +1925,7 @@ msgstr ""
 "Näytön \"%2$s\" ruudulla %1$d on jo ikkunointiohjelma: kokeile valitsinta --"
 "replace, jos haluat korvata nykyisen ikkunointiohjelman.\n"
 
-#: src/screen.c:464
+#: src/screen.c:446
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -1922,12 +1933,12 @@ msgstr ""
 "Näytön \"%2$s\" ruudun %1$d ikkunointiohjelman valinnan hankkiminen "
 "epäonnistui\n"
 
-#: src/screen.c:520
+#: src/screen.c:502
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Näytön \"%2$s\" ruudulla %1$d on jo ikkunointiohjelma\n"
 
-#: src/screen.c:690
+#: src/screen.c:672
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Näytön \"%2$s\" ruudun %1$d vapauttaminen ei onnistunut\n"
@@ -2865,7 +2876,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Sovellus asetti virheellisen _NET_WM_PID:n %ld\n"
 
 #. first time through
-#: src/window.c:4579
+#: src/window.c:4509
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -2881,7 +2892,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5262
+#: src/window.c:5071
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -2918,15 +2929,3 @@ msgid ""
 msgstr ""
 "Ikkunan 0x%2$lx ominaisuus %1$s sisälsi virheellistä UTF-8:aa luettelon "
 "kohdassa %3$d\n"
-
-#~ msgid ""
-#~ "The window \"%s\" is not responding.\n"
-#~ "Force this application to exit?\n"
-#~ "(Any open documents will be lost.)"
-#~ msgstr ""
-#~ "Ikkuna \"%s\" ei vastaa.\n"
-#~ "Haluatko sulkea tämän sovelluksen väkisin?\n"
-#~ "(Kaikki sen avoimet asiakirjat häviävät.)"
-
-#~ msgid "Kill application"
-#~ msgstr "Tapa sovellus"
