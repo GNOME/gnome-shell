@@ -4,7 +4,6 @@
 <glade-interface>
 
 <widget class="GtkDialog" id="Mainwindow">
-  <property name="visible">False</property>
   <property name="title" translatable="yes">Window Focus Preferences</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
@@ -45,6 +44,7 @@
 	    <widget class="GtkButton" id="closebutton1">
 	      <property name="visible">True</property>
 	      <property name="can_default">True</property>
+	      <property name="has_default">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="label">gtk-close</property>
 	      <property name="use_stock">True</property>
@@ -70,98 +70,18 @@
 	  <property name="spacing">8</property>
 
 	  <child>
-	    <widget class="GtkImage" id="Icon">
+	    <widget class="GtkLabel" id="label5">
 	      <property name="visible">True</property>
+	      <property name="label" translatable="yes">Focus behavior:</property>
+	      <property name="use_underline">False</property>
+	      <property name="use_markup">False</property>
+	      <property name="justify">GTK_JUSTIFY_LEFT</property>
+	      <property name="wrap">False</property>
+	      <property name="selectable">False</property>
 	      <property name="xalign">0</property>
 	      <property name="yalign">0.5</property>
 	      <property name="xpad">0</property>
 	      <property name="ypad">0</property>
-	    </widget>
-	    <packing>
-	      <property name="padding">0</property>
-	      <property name="expand">True</property>
-	      <property name="fill">True</property>
-	    </packing>
-	  </child>
-
-	  <child>
-	    <widget class="GtkTable" id="table1">
-	      <property name="visible">True</property>
-	      <property name="n_rows">2</property>
-	      <property name="n_columns">2</property>
-	      <property name="homogeneous">False</property>
-	      <property name="row_spacing">8</property>
-	      <property name="column_spacing">8</property>
-
-	      <child>
-		<widget class="GtkRadioButton" id="Clickfocus">
-		  <property name="visible">True</property>
-		  <property name="can_focus">True</property>
-		  <property name="label" translatable="yes">_Click to give focus</property>
-		  <property name="use_underline">True</property>
-		  <property name="relief">GTK_RELIEF_NORMAL</property>
-		  <property name="active">False</property>
-		  <property name="inconsistent">False</property>
-		  <property name="draw_indicator">True</property>
-		  <signal name="toggled" handler="update_config" last_modification_time="Tue, 28 May 2002 20:59:55 GMT"/>
-		  <signal name="clicked" handler="update_config" last_modification_time="Tue, 28 May 2002 21:19:56 GMT"/>
-		</widget>
-		<packing>
-		  <property name="left_attach">1</property>
-		  <property name="right_attach">2</property>
-		  <property name="top_attach">0</property>
-		  <property name="bottom_attach">1</property>
-		  <property name="x_options">fill</property>
-		  <property name="y_options"></property>
-		</packing>
-	      </child>
-
-	      <child>
-		<widget class="GtkRadioButton" id="Pointfocus">
-		  <property name="visible">True</property>
-		  <property name="can_focus">True</property>
-		  <property name="label" translatable="yes">_Point to give focus</property>
-		  <property name="use_underline">True</property>
-		  <property name="relief">GTK_RELIEF_NORMAL</property>
-		  <property name="active">False</property>
-		  <property name="inconsistent">False</property>
-		  <property name="draw_indicator">True</property>
-		  <property name="group">Clickfocus</property>
-		  <signal name="toggled" handler="update_config" last_modification_time="Tue, 28 May 2002 21:00:02 GMT"/>
-		</widget>
-		<packing>
-		  <property name="left_attach">1</property>
-		  <property name="right_attach">2</property>
-		  <property name="top_attach">1</property>
-		  <property name="bottom_attach">2</property>
-		  <property name="x_options">fill</property>
-		  <property name="y_options"></property>
-		</packing>
-	      </child>
-
-	      <child>
-		<widget class="GtkLabel" id="label4">
-		  <property name="visible">True</property>
-		  <property name="label" translatable="yes">Window behavior:</property>
-		  <property name="use_underline">False</property>
-		  <property name="use_markup">False</property>
-		  <property name="justify">GTK_JUSTIFY_LEFT</property>
-		  <property name="wrap">False</property>
-		  <property name="selectable">False</property>
-		  <property name="xalign">0</property>
-		  <property name="yalign">0.5</property>
-		  <property name="xpad">0</property>
-		  <property name="ypad">0</property>
-		</widget>
-		<packing>
-		  <property name="left_attach">0</property>
-		  <property name="right_attach">1</property>
-		  <property name="top_attach">0</property>
-		  <property name="bottom_attach">1</property>
-		  <property name="x_options">fill</property>
-		  <property name="y_options"></property>
-		</packing>
-	      </child>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>
@@ -171,16 +91,90 @@
 	  </child>
 
 	  <child>
-	    <widget class="GtkCheckButton" id="Autoraise">
+	    <widget class="GtkRadioButton" id="Clickfocus">
 	      <property name="visible">True</property>
 	      <property name="can_focus">True</property>
-	      <property name="label" translatable="yes">_Raise window on focus</property>
+	      <property name="label" translatable="yes">Clic_k to give focus</property>
 	      <property name="use_underline">True</property>
 	      <property name="relief">GTK_RELIEF_NORMAL</property>
 	      <property name="active">False</property>
 	      <property name="inconsistent">False</property>
 	      <property name="draw_indicator">True</property>
-	      <signal name="toggled" handler="update_config" last_modification_time="Tue, 28 May 2002 21:00:14 GMT"/>
+	      <signal name="toggled" handler="update_config" last_modification_time="Tue, 28 May 2002 20:59:55 GMT"/>
+	      <signal name="clicked" handler="update_config" last_modification_time="Tue, 28 May 2002 21:19:56 GMT"/>
+	    </widget>
+	    <packing>
+	      <property name="padding">0</property>
+	      <property name="expand">False</property>
+	      <property name="fill">False</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkRadioButton" id="Pointfocus">
+	      <property name="visible">True</property>
+	      <property name="can_focus">True</property>
+	      <property name="label" translatable="yes">_Point to give focus</property>
+	      <property name="use_underline">True</property>
+	      <property name="relief">GTK_RELIEF_NORMAL</property>
+	      <property name="active">False</property>
+	      <property name="inconsistent">False</property>
+	      <property name="draw_indicator">True</property>
+	      <property name="group">Clickfocus</property>
+	      <signal name="toggled" handler="update_config" last_modification_time="Tue, 28 May 2002 21:00:02 GMT"/>
+	    </widget>
+	    <packing>
+	      <property name="padding">0</property>
+	      <property name="expand">False</property>
+	      <property name="fill">False</property>
+	    </packing>
+	  </child>
+
+	  <child>
+	    <widget class="GtkHBox" id="hbox1">
+	      <property name="visible">True</property>
+	      <property name="homogeneous">False</property>
+	      <property name="spacing">17</property>
+
+	      <child>
+		<widget class="GtkLabel" id="label4">
+		  <property name="visible">True</property>
+		  <property name="label" translatable="yes"></property>
+		  <property name="use_underline">False</property>
+		  <property name="use_markup">False</property>
+		  <property name="justify">GTK_JUSTIFY_LEFT</property>
+		  <property name="wrap">False</property>
+		  <property name="selectable">False</property>
+		  <property name="xalign">0.5</property>
+		  <property name="yalign">0.5</property>
+		  <property name="xpad">0</property>
+		  <property name="ypad">0</property>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">False</property>
+		  <property name="fill">False</property>
+		</packing>
+	      </child>
+
+	      <child>
+		<widget class="GtkCheckButton" id="Autoraise">
+		  <property name="visible">True</property>
+		  <property name="can_focus">True</property>
+		  <property name="label" translatable="yes">_Raise window on focus</property>
+		  <property name="use_underline">True</property>
+		  <property name="relief">GTK_RELIEF_NORMAL</property>
+		  <property name="active">False</property>
+		  <property name="inconsistent">False</property>
+		  <property name="draw_indicator">True</property>
+		  <signal name="toggled" handler="update_config" last_modification_time="Tue, 28 May 2002 21:00:14 GMT"/>
+		</widget>
+		<packing>
+		  <property name="padding">0</property>
+		  <property name="expand">False</property>
+		  <property name="fill">False</property>
+		</packing>
+	      </child>
 	    </widget>
 	    <packing>
 	      <property name="padding">0</property>

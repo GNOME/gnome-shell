@@ -1,4 +1,11 @@
-2002-05-30  Stephen Browne@sun.com <stephen.browne@sun.com>
+2002-05-30  Stephen Browne <stephen.browne@sun.com>
+
+	* src/tools/metacity-properties.glade
+	Some UI changes demanded by Pat and Calum.
+	Make Close default response
+	Change mnemonic for Click so as not to clash with Close
+
+2002-05-30  Stephen Browne <stephen.browne@sun.com>
 
 	* src/tools/metacity-properties.glade: changed window title
 	to match other control center dialogs
