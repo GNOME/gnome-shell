@@ -1,3 +1,10 @@
+2003-10-25  Havoc Pennington  <hp@redhat.com>
+
+	* src/window.c (meta_window_notify_focus): if a window is focused
+	which is not either a dock or a transient in the same group as a
+	dock, shuffle all dock/desktop windows to the end of the MRU list
+	so they won't annoyingly get focus all the time. #123816
+
 2003-10-15  Yukihiro Nakai  <nakai@gnome.gr.jp>
 
 	Gettextize metacity-theme-viewer. #121747
