@@ -36,7 +36,8 @@ expose_handler (GtkTooltips *tooltips)
 }
 
 void
-meta_fixed_tip_show (int root_x, int root_y,
+meta_fixed_tip_show (Display *xdisplay,
+                     int root_x, int root_y,
                      const char *markup_text)
 {
   if (tip == NULL)
@@ -74,5 +75,9 @@ meta_fixed_tip_show (int root_x, int root_y,
 void
 meta_fixed_tip_hide (void)
 {
-  gtk_widget_destroy (tip);
+  if (tip)
+    {
+      gtk_widget_destroy (tip);
+      tip = NULL;
+    }
 }

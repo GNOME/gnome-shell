@@ -73,7 +73,6 @@ Makefile
 intl/Makefile
 po/Makefile.in
 src/Makefile
-src/uislave/Makefile
 ])
 
 

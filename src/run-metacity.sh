@@ -1,6 +1,6 @@
 #! /bin/bash
 if test -z "$SCREENS"; then
-  SCREENS=2
+  SCREENS=1
 fi
 
 if test "$DEBUG" = none; then

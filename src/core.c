@@ -98,6 +98,7 @@ meta_core_user_move (Display *xdisplay,
 void
 meta_core_user_resize  (Display *xdisplay,
                         Window   frame_xwindow,
+                        int      gravity,
                         int      width,
                         int      height)
 {
@@ -111,7 +112,7 @@ meta_core_user_resize  (Display *xdisplay,
     meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
 
   window->user_has_resized = TRUE;
-  meta_window_resize (window, width, height);
+  meta_window_resize_with_gravity (window, width, height, gravity);
 }
 
 void
@@ -374,5 +375,4 @@ meta_core_show_window_menu (Display *xdisplay,
 
   meta_window_show_menu (window, root_x, root_y, button, timestamp);
 }
-
 

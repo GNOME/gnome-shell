@@ -10,6 +10,8 @@ metacity_SOURCES= 				\
 	errors.h				\
 	eventqueue.c				\
 	eventqueue.h				\
+	fixedtip.c				\
+	fixedtip.h				\
 	frame.c					\
 	frame.h					\
 	frames.c				\

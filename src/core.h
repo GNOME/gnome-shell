@@ -46,6 +46,7 @@ void meta_core_user_move    (Display *xdisplay,
                              int      y);
 void meta_core_user_resize  (Display *xdisplay,
                              Window   frame_xwindow,
+                             int      gravity,
                              int      width,
                              int      height);
 
@@ -83,7 +84,6 @@ void meta_core_stick            (Display *xdisplay,
 void meta_core_change_workspace (Display *xdisplay,
                                  Window   frame_xwindow,
                                  int      new_workspace);
-
 
 int meta_core_get_num_workspaces (Screen  *xscreen);
 int meta_core_get_active_workspace (Screen *xscreen);

@@ -234,6 +234,11 @@ void        meta_window_move_resize        (MetaWindow  *window,
                                             int          root_y_nw,
                                             int          w,
                                             int          h);
+void        meta_window_resize_with_gravity (MetaWindow *window,
+                                             int          w,
+                                             int          h,
+                                             int          gravity);
+
 /* This recalcs the window/frame size, and recalcs the frame
  * size/contents as well.
  */
@@ -277,5 +282,8 @@ void meta_window_show_menu (MetaWindow *window,
 
 gboolean meta_window_shares_some_workspace (MetaWindow *window,
                                             MetaWindow *with);
+
+void meta_window_set_gravity (MetaWindow *window,
+                              int         gravity);
 
 #endif

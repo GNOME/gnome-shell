@@ -3,5 +3,3 @@ Makefile.in
 Makefile
 .deps
 metacity
-messagequeue.h
-messagequeue.c
