@@ -1,5 +1,16 @@
 2002-11-19  Havoc Pennington  <hp@pobox.com>
 
+	Should really fix #98303
+	
+	* src/prefs.c (meta_prefs_change_workspace_name): add 
+	bad hack to treat empty string the same as null
+
+	* src/menu.c (get_workspace_name_with_accel): allocate one more
+	than the length of "name" so we have room for a nul byte (and
+	don't malloc(0) on empty strings). Also some formatting cleanups.
+
+2002-11-19  Havoc Pennington  <hp@pobox.com>
+
 	* src/window.c (meta_window_client_message): do a
 	recalc_window_features after setting new wm_state in order
 	to update skip_pager in addition to wm_state_skip_pager

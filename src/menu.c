@@ -131,7 +131,7 @@ activate_cb (GtkWidget *menuitem, gpointer data)
  * The calling code owns the string, and is reponsible to free the
  * memory after use.
  */
-static char *
+static char*
 get_workspace_name_with_accel (Display *display,
                                Window   xroot,
                                int      index)
@@ -148,6 +148,7 @@ get_workspace_name_with_accel (Display *display,
    * integer, insert a '_' before the number if it is less than 10 and
    * return it
    */
+  number = 0;
   if (sscanf (name, _("Workspace %d"), &number) == 1)
     {
       char *new_name;
@@ -171,24 +172,24 @@ get_workspace_name_with_accel (Display *display,
       char *new_name;
       const char *source;
       char *dest;
-      source = name;
+
       /*
        * Assume the worst case, that every character is a _
        */
-      dest = new_name = g_malloc0 (strlen (name) * 2);
+      new_name = g_malloc0 (strlen (name) * 2 + 1);
+
       /*
        * Now iterate down the strings, adding '_' to escape as we go
        */
+      dest = new_name;
+      source = name;
       while (*source != '\0')
         {
           if (*source == '_')
             *dest++ = '_';
           *dest++ = *source++;
         }
-      /*
-       * We don't free *name as we don't own it, and pass ownership of
-       * *new_name to the calling code.
-       */
+
       return new_name;
     }
 }

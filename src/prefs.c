@@ -1602,6 +1602,10 @@ meta_prefs_get_workspace_name (int i)
   g_return_val_if_fail (i >= 0 && i < MAX_REASONABLE_WORKSPACES, NULL);
 
   g_assert (workspace_names[i] != NULL);
+
+  meta_topic (META_DEBUG_PREFS,
+              "Getting workspace name for %d: \"%s\"\n",
+              i, workspace_names[i]);
   
   return workspace_names[i];
 }
@@ -1615,6 +1619,19 @@ meta_prefs_change_workspace_name (int         i,
   
   g_return_if_fail (i >= 0 && i < MAX_REASONABLE_WORKSPACES);
 
+  meta_topic (META_DEBUG_PREFS,
+              "Changing name of workspace %d to %s\n",
+              i, name ? name : "none");
+
+  /* This is a bad hack. We have to treat empty string as
+   * "unset" because the root window property can't contain
+   * null. So it gets empty string instead and we don't want
+   * that to result in setting the empty string as a value that
+   * overrides "unset".
+   */
+  if (name && *name == '\0')
+    name = NULL;
+  
   if ((name == NULL && workspace_names[i] == NULL) ||
       (name && workspace_names[i] && strcmp (name, workspace_names[i]) == 0))
     {
