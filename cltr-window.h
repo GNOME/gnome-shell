@@ -10,14 +10,19 @@ typedef struct CltrWindow CltrWindow;
 CltrWidget*
 cltr_window_new(int width, int height);
 
-Window
-cltr_window_xwin(CltrWindow *win);
-
 void
 cltr_window_paint(CltrWidget *widget);
 
 void
 cltr_window_add_widget(CltrWindow *win, CltrWidget *widget, int x, int y);
+
+/* win only methods */
+
+Window
+cltr_window_xwin(CltrWindow *win);
+
+Window
+cltr_window_focus_widget(CltrWindow *win, CltrWidget *widget);
 
 
 #endif

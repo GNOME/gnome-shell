@@ -7,6 +7,9 @@ cltr_window_handle_xevent (CltrWidget *widget, XEvent *xev);
 static void
 cltr_window_show(CltrWidget *widget);
 
+static void
+cltr_window_paint(CltrWidget *widget);
+
 struct CltrWindow
 {
   CltrWidget  widget;  
@@ -25,6 +28,7 @@ cltr_window_new(int width, int height)
   win->widget.width          = width;
   win->widget.height         = height;
   win->widget.show           = cltr_window_show;
+  win->widget.paint          = cltr_window_paint;
   win->widget.xevent_handler = cltr_window_handle_xevent;
 
   win->xwin = XCreateSimpleWindow(CltrCntx.xdpy,
@@ -55,12 +59,6 @@ cltr_window_new(int width, int height)
   return CLTR_WIDGET(win);
 }
 
-Window
-cltr_window_xwin(CltrWindow *win)
-{
-  return win->xwin;
-}
-
 static void
 cltr_window_show(CltrWidget *widget)
 {
@@ -70,10 +68,19 @@ cltr_window_show(CltrWidget *widget)
   /* XXX set focused call */
   if (widget->children)
     {
-      win->focused_child = g_list_nth_data(widget->children, 0);
+      if (win->focused_child == NULL)
+	win->focused_child = g_list_nth_data(widget->children, 0);
     }
 
   XMapWindow(ctx->xdpy, win->xwin);
+}
+
+static void
+cltr_window_paint(CltrWidget *widget)
+{
+  glClear(GL_COLOR_BUFFER_BIT);
+  glClearColor( 0.0, 0.0, 0.0, 0.0 ); /* needed for saturate to work */
+
 }
 
 static gboolean 
@@ -85,7 +92,7 @@ cltr_window_handle_xevent (CltrWidget *widget, XEvent *xev)
 
   if (xev->type == Expose)
     {
-      ;
+      cltr_widget_queue_paint(widget);
     }
 
   /* XXX Very basic - assumes we are only interested in mouse clicks */
@@ -95,7 +102,22 @@ cltr_window_handle_xevent (CltrWidget *widget, XEvent *xev)
   return FALSE;
 }
 
-/* window only */
+/* window only methods */
 
+Window
+cltr_window_xwin(CltrWindow *win)
+{
+  return win->xwin;
+}
+
+Window
+cltr_window_focus_widget(CltrWindow *win, CltrWidget *widget)
+{
+  /* XXX Should check widget is an actual child of the window */
+
+  ClutterMainContext *ctx = CLTR_CONTEXT();
+
+  win->focused_child = widget;
+}
 
 

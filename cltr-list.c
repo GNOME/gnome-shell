@@ -1,349 +1,301 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
-#include <math.h>
+#include "cltr-list.h"
+#include "cltr-private.h"
 
-#include <X11/Xlib.h>
+#define ANIM_FPS 200 
+#define FPS_TO_TIMEOUT(t) (1000/(t))
 
-#include <GL/glx.h>
-#include <GL/gl.h>
-
-#include "pixbuf.h"
-#include "fonts.h"
-
-#define TEX_W 1024   /* must be > than frame_w & power of 2 */
-#define TEX_H 1024
-/* 
- *
- */
-
-#define WINW 640
-#define WINH 480
-
-#define NBOXITEMS 10
-
-#define NUMRECTS 4
-#define MAXSCALE 2
-#define MAXDIST (WINH)
-#define MAXH    (WINH/NUMRECTS) 
-#define MAXW    (WINW - 20)
-
-#ifndef ABS
-#define ABS(a) ((a > 0) ? (a) : -1 * (a))
-#endif
-
-typedef struct TableWidget TableWidget;
-
-typedef struct TableWidgetCell TableWidgetCell;
-
-int ScrollDir = 1;
-
-struct TableWidget
+typedef struct CltrListCell
 {
-  int x,y,width,height;
-  
-  TableWidgetCell *cells, *active_cell;
-  
-  int active_cell_y;
+  CltrRect     rect;
+  Pixbuf      *pixb;
+  CltrTexture *texture;
 
+} CltrListCell;
 
+struct CltrList
+{
+  CltrWidget    widget;  
+  GList        *cells, *active_cell;
+  int           active_cell_y;
+  int           cell_height;
+  int           cell_width;
+
+  CltrListState state;
+  int           scroll_dir;
 };
 
-struct TableWidgetCell
+static void
+cltr_list_show(CltrWidget *widget);
+
+static gboolean 
+cltr_list_handle_xevent (CltrWidget *widget, XEvent *xev);
+
+static void
+cltr_list_paint(CltrWidget *widget);
+
+static float
+distfunc(CltrList *list, int d)
 {
-  XRectangle rect;
-  TableWidgetCell   *next, *prev;
-
-};
-
-
-Display       *xdpy;
-Window         xwin;
-XEvent         xevent;         
-GC             xgc;
-Pixbuf        *pix, *pix_orig;
-
-float
-distfunc(TableWidget *table, int d)
-{
-/*   printf("returning %f\n", (exp((float)d/MAXDIST)/exp(1.0)));   */
-  int maxdist = table->height;
+  int maxdist = list->widget.height;
 
   d = (maxdist-ABS(d)) ;
   return ( exp( (float)d/maxdist * 2.0 ) / exp(2.0) );
 }
 
-TableWidgetCell*
-table_cell_new()
+CltrListCell*
+cltr_list_cell_new(CltrList *list)
 {
-  TableWidgetCell *cell = NULL;
+  CltrListCell *cell = NULL;
+  ClutterFont  *font;
+  gchar         buf[24];
+  PixbufPixel   pixel = { 255, 20, 20, 255 };
 
-  cell = malloc(sizeof(TableWidgetCell));
-  memset(cell, 0, sizeof(TableWidgetCell));
+  font = font_new ("Sans Bold 96");
+
+  cell = g_malloc0(sizeof(CltrListCell));
+
+  cell->pixb = pixbuf_new(list->cell_width, list->cell_height);
+
+  pixbuf_fill_rect(cell->pixb, 0, 0, -1, -1, &pixel);
+
+  g_snprintf(&buf[0], 24, "%i %i %i", rand()%10, rand()%10, rand()%10);
+
+  font_draw(font, cell->pixb, buf, 10, 10);
+
+  cell->texture = cltr_texture_new(cell->pixb);
 
   return cell;
 }
 
-TableWidget*
-table_new(int n_items)
+CltrWidget*
+cltr_list_new(int width, 
+	      int height,
+	      int cell_width,
+	      int cell_height)
 {
-  TableWidget     *table = NULL;
-  TableWidgetCell *last = NULL, *cell = NULL;
-  int              i;
+  CltrList *list;
 
-  table = malloc(sizeof(TableWidget));
-  memset(table, 0, sizeof(TableWidget));
+  list = g_malloc0(sizeof(CltrList));
+  
+  list->widget.width          = width;
+  list->widget.height         = height;
+  
+  list->widget.show           = cltr_list_show;
+  list->widget.paint          = cltr_list_paint;
+  
+  list->cell_height = cell_height; /* maximum */
+  list->cell_width  = cell_width;  /* maximum */
 
-  table->width = WINW;
-  table->height = WINH;
+  list->widget.xevent_handler = cltr_list_handle_xevent;
 
-  table->active_cell_y = 100;
+  return CLTR_WIDGET(list);
+}
+
+static void
+cltr_list_show(CltrWidget *widget)
+{
+  CltrList *list = CLTR_LIST(widget);
+  
+  int n_items = 50, i;
+
+  list->active_cell_y = 100;
 
   for (i=0; i<n_items; i++)
     {
-      cell = table_cell_new();
-      if (last)
+      list->cells = g_list_append(list->cells, cltr_list_cell_new(list));
+    }
+
+  list->active_cell = g_list_first(list->cells);
+
+  cltr_widget_queue_paint(widget);
+}
+
+static gboolean 
+cltr_list_handle_xevent (CltrWidget *widget, XEvent *xev) 
+{
+  CltrList *list = CLTR_LIST(widget);
+
+  switch (xev->type)
+    {
+    case KeyPress:
+      {
+	KeySym kc;
+
+	kc = XKeycodeToKeysym(xev->xkey.display, xev->xkey.keycode, 0);
+
+	switch (kc)
+	  {
+	  case XK_Up:
+	  case XK_KP_Up:
+	    cltr_list_scroll_up(list);
+	    break;
+	  case XK_Down:	
+	  case XK_KP_Down:	
+	    cltr_list_scroll_down(list);
+	    break;
+	  case XK_Return:
+	    CLTR_DBG("Return");
+	    break;
+	  case XK_Left:
+	  case XK_KP_Left:
+	  case XK_Right:
+	  case XK_KP_Right:
+	  default:
+	    CLTR_DBG("unhandled keysym");
+	  }
+      }
+      break;
+    }
+
+  return TRUE;
+}
+
+static void
+cltr_list_animate(CltrList *list)
+{
+  GList        *cell_item = NULL;
+  CltrListCell *next_active = NULL, *cell_top = NULL;
+
+  cell_top  = (CltrListCell *)g_list_nth_data(list->cells, 0);
+
+  if (list->state == CLTR_LIST_STATE_SCROLL_UP)
+    {
+      cell_item = g_list_previous(list->active_cell);
+
+      if (!cell_item)
 	{
-	  last->next = cell;
-	  cell->prev = last;
+	  list->state = CLTR_LIST_STATE_BROWSE;
+	  return;
+	}
+
+      next_active = (CltrListCell *)cell_item->data;
+
+      if (next_active->rect.y < list->active_cell_y)
+	{
+	  cell_top->rect.y += 2;
 	}
       else
-	table->cells = table->active_cell = cell;
-  
-      last = cell;
-    }
-
-  table->cells->rect.y = table->active_cell_y;
-
-  return table;
-}
-
-void
-table_redraw(TableWidget *table)
-{
-  TableWidgetCell *cur = table->cells;
-  int             last = table->cells->rect.y;
-
-  glClearColor( 0.0, 0.0, 0.0, 1.0);
-  glClear    (GL_COLOR_BUFFER_BIT);
-
-  while (cur)
-    {
-      cur->rect.y = last;
-      
-      if (cur->rect.y+cur->rect.height >= 0)
 	{
-	  cur->rect.width  = MAXW * distfunc(table, cur->rect.y - table->active_cell_y);
-	  cur->rect.height = MAXH * distfunc(table, cur->rect.y - table->active_cell_y);
-
-	  cur->rect.x = (WINW - cur->rect.width)/6; 
+	  list->active_cell = cell_item;
+	  list->state = CLTR_LIST_STATE_BROWSE;
 	}
+    }
+  else if (list->state == CLTR_LIST_STATE_SCROLL_DOWN)
+    {
+      cell_item = g_list_next(list->active_cell);
       
-      last = cur->rect.y + cur->rect.height;
-      
-      if (last > 0 && cur->rect.y < WINH) /* crappy clip */
+      if (!cell_item)
 	{
-	  float tx = 1.0, ty = 1.0, sx, sy;
-	  int x1 = cur->rect.x, x2 = cur->rect.x + cur->rect.width;
-	  int y1 = cur->rect.y, y2 = cur->rect.y + cur->rect.height;
-
-	  tx = (float) pix->width  / TEX_W;
-	  ty = (float) pix->height / TEX_H;
-
-
-	  glBegin (GL_QUADS);
-	  glTexCoord2f (tx, ty);   glVertex2i   (x2, y2);
-	  glTexCoord2f (0,  ty);   glVertex2i   (x1, y2);
-	  glTexCoord2f (0,  0);    glVertex2i   (x1, y1);
-	  glTexCoord2f (tx, 0);    glVertex2i   (x2, y1);
-	  glEnd ();	
-
-	  /* draw with X primitives
-	  XDrawRectangle(xdpy, xwin, xgc, 
-			 cur->rect.x, cur->rect.y,
-			 cur->rect.width, cur->rect.height);
-
-	  XDrawLine(xdpy, xwin, xgc,
-		    cur->rect.x, cur->rect.y,
-		    cur->rect.x + cur->rect.width, 
-		    cur->rect.y + cur->rect.height);
-	  */
+	  list->state = CLTR_LIST_STATE_BROWSE;
+	  return;
 	}
-      
-      cur = cur->next;
+
+      next_active = (CltrListCell *)cell_item->data;
+
+      if (next_active->rect.y > list->active_cell_y)
+	{
+	  cell_top->rect.y -= 2;
+	}
+      else
+	{
+	  list->active_cell = cell_item;
+	  list->state = CLTR_LIST_STATE_BROWSE;
+	}
     }
-
-  glXSwapBuffers(xdpy, xwin);  
-
 }
 
-
-void
-table_scroll_down(TableWidget *table)
+gboolean
+cltr_list_timeout_cb(gpointer data)
 {
-  TableWidgetCell *next_active =  table->active_cell->next;
+  CltrList *list = (CltrList *)data;
 
-  if (!next_active)
+  cltr_list_animate(list);
+
+  cltr_widget_queue_paint(CLTR_WIDGET(list));
+
+  switch(list->state)
     {
-      ScrollDir = 0;
-      return;
+    case CLTR_LIST_STATE_SCROLL_UP:
+    case CLTR_LIST_STATE_SCROLL_DOWN:   
+      return TRUE;
+    case CLTR_LIST_STATE_LOADING:
+    case CLTR_LIST_STATE_LOAD_COMPLETE:
+    case CLTR_LIST_STATE_BROWSE:
+    default:
+      return FALSE;
     }
-
-  while (next_active->rect.y > table->active_cell_y)
-    {
-      table->cells->rect.y--;
-      table_redraw(table);
-    }
-
-  table->active_cell = next_active;
 }
 
-void
-table_scroll_up(TableWidget *table)
+static void
+cltr_list_paint(CltrWidget *widget)
 {
-  TableWidgetCell *next_active =  table->active_cell->prev;
+  GList        *cell_item = NULL;
+  CltrList     *list = CLTR_LIST(widget);
+  CltrListCell *cell = NULL;
 
-  if (!next_active)
-    return;
+  int       last;
 
-  while (next_active->rect.y < table->active_cell_y)
-    {
-      table->cells->rect.y++;
-      table_redraw(table);
-    }
+  cell_item = g_list_first(list->cells);
+  cell = (CltrListCell *)cell_item->data;
+  last = cell->rect.y;
 
-  table->active_cell = next_active;
-}
+  glPushMatrix();
 
+  glEnable(GL_TEXTURE_2D);
 
-int
-main(int argc, char **argv)
-{
-  TableWidget *table;
-  int       i, j, last, offset=0;
-  XGCValues gcvals;
-  ClutterFont *font = NULL;
-
-  /* GL */
-  GLXContext		context;	/* OpenGL context */
-  GLubyte              *texture_data = NULL;
-  XVisualInfo	       *vinfo;
-  static int 		attributes[] =
-			{
-			  GLX_RGBA, 
-			  GLX_DOUBLEBUFFER,
-			  GLX_RED_SIZE, 1,
-			  GLX_GREEN_SIZE, 1,
-			  GLX_BLUE_SIZE, 1,
-			  0
-			};
-
-  
-
-  if ((xdpy = XOpenDisplay(getenv("DISPLAY"))) == NULL)
-    {
-      fprintf(stderr, "%s: Cant open display\n", argv[0]);
-      exit(-1);
-    }
-  
-
-  if ((vinfo = glXChooseVisual(xdpy, DefaultScreen(xdpy), attributes)) == NULL)
-    {
-      fprintf(stderr, "Unable to find visual\n");
-      exit(-1);
-    }
-
-  xwin = XCreateSimpleWindow(xdpy,
-			     RootWindow(xdpy, DefaultScreen(xdpy)),
-			     0, 0,
-			     WINW, WINH,
-			     0, 0, WhitePixel(xdpy, DefaultScreen(xdpy)));
-
-  gcvals.foreground = BlackPixel(xdpy, DefaultScreen(xdpy));
-  gcvals.background = WhitePixel(xdpy, DefaultScreen(xdpy));
-  gcvals.line_width = 1;
-
-  xgc = XCreateGC(xdpy, RootWindow(xdpy, DefaultScreen(xdpy)), 
-		  GCForeground|GCBackground|GCLineWidth, 
-		  &gcvals);
-
-  context = glXCreateContext(xdpy, vinfo, 0, True);
-  glXMakeCurrent(xdpy, xwin, context);
-
-  glViewport (0, 0, WINW, WINH);
-  glMatrixMode (GL_MODELVIEW);
-  glLoadIdentity ();
-  glClearColor (0, 0, 0, 0);
-  glClearDepth (1.0f);
-
-  glDisable    (GL_DEPTH_TEST);
-  glDepthMask  (GL_FALSE);
-  glDisable    (GL_CULL_FACE);
-  glShadeModel (GL_FLAT);
-  glHint       (GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
-
-  // glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glEnable(GL_BLEND);
 
-  glMatrixMode (GL_PROJECTION);
-  glLoadIdentity ();
-  glOrtho (0, WINW, WINH, 0, -1, 1);
-
-  glEnable        (GL_TEXTURE_2D);
-  glTexParameteri (GL_TEXTURE_2D,  GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-  glTexParameteri (GL_TEXTURE_2D,  GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  glTexEnvi       (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,   GL_REPLACE);
-
-  texture_data = malloc (TEX_W * TEX_H * 4);
-
-  for (i=0; i < (TEX_W * TEX_H * 4); i++)
-    texture_data[i] = rand()%255;
-
-  glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA,
-		TEX_W, TEX_H,
-		0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
-
-  pix_orig = pixbuf_new_from_file(argv[1]);
-
-  if (!pix_orig)
+  while (cell_item)
     {
-      fprintf(stderr, "image load failed\n");
-      exit(-1);
-    }
+      cell = (CltrListCell *)cell_item->data;
 
-  pix = pixbuf_scale_down(pix_orig, 100, 100);
-
-  /*
-  font = font_new("Sans Bold 48");
-
-  font_draw(font, pix, "Hello World\nlove matmoo", 0, 0);
-  */
-
-  glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0,
-		   (GLsizei)pix->width,
-		   (GLsizei)pix->height,
-		   GL_RGBA, GL_UNSIGNED_INT_8_8_8_8,
-		   pix->data);
-
-  table = table_new(NBOXITEMS);
-
-  table_redraw(table);
-
-  XMapWindow(xdpy, xwin);
-
-  for (;;) 
-    {
-      XEvent ev;
-      // XNextEvent(xdpy, &ev);
-      // XClearWindow(xdpy, xwin);
-      table_redraw(table);
-      ScrollDir ? table_scroll_down(table) : table_scroll_up(table);
+      cell->rect.y = last;
+       
+      if (cell->rect.y + cell->rect.height >= 0)
+	{
+	  cell->rect.width  = list->cell_width * distfunc(list, cell->rect.y - list->active_cell_y);
+	  cell->rect.height = list->cell_height * distfunc(list, cell->rect.y - list->active_cell_y);
+	  
+	  /* cell->rect.x = (list->widget.width - cell->rect.width) / 6;  */
+	  cell->rect.x = 0;
+	}
       
-      // scroll_to_next();
-      XFlush(xdpy);
-      sleep(1);
+      last = cell->rect.y + cell->rect.height;
+      
+      if (last > 0 && cell->rect.y < list->widget.width) /* crappy clip */
+	{
+	  cltr_texture_render_to_gl_quad(cell->texture,
+					 cltr_rect_x1(cell->rect),
+					 cltr_rect_y1(cell->rect),
+					 cltr_rect_x2(cell->rect),
+					 cltr_rect_y2(cell->rect));
+	}
+
+      cell_item = g_list_next(cell_item);
     }
 
+  glDisable(GL_BLEND);
+
+  glDisable(GL_TEXTURE_2D);
+
+  glPopMatrix();
+}
+
+
+void
+cltr_list_scroll_down(CltrList *list)
+{
+  list->state = CLTR_LIST_STATE_SCROLL_DOWN;
+
+  g_timeout_add(FPS_TO_TIMEOUT(ANIM_FPS), 
+		cltr_list_timeout_cb, list);
+}
+
+void
+cltr_list_scroll_up(CltrList *list)
+{
+  list->state = CLTR_LIST_STATE_SCROLL_UP;
+
+  g_timeout_add(FPS_TO_TIMEOUT(ANIM_FPS), 
+		cltr_list_timeout_cb, list);
 }

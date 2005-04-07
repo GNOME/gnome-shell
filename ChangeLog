@@ -1,3 +1,27 @@
+2005-04-07  mallum,,,  <mallum@openedhand.com>
+
+	* Makefile:
+	* cltr-events.c: (cltr_main_loop):
+	* cltr-list.c:
+	* cltr-list.h:
+	Add list widget
+	* cltr-photo-grid.c: (cltr_photo_grid_cell_new),
+	(cltr_photo_grid_append_cell), (ctrl_photo_grid_cell_to_coords),
+	(ctrl_photo_grid_get_zoomed_coords), (cltr_photo_grid_idle_cb),
+	(cltr_photo_grid_navigate), (cltr_photo_grid_activate_cell),
+	(cltr_photo_grid_update_visual_state), (cltr_photo_grid_paint),
+	(cltr_photo_grid_show), (cltr_photo_grid_new):
+	* cltr-texture.c:
+	* cltr-widget.c:
+	* cltr-window.c: (cltr_window_new), (cltr_window_show),
+	(cltr_window_handle_xevent):
+	* cltr-window.h:
+	* cltr.c: (main):
+	* cltr.h:
+	* pixbuf.c: (pixbuf_copy):
+	* pixbuf.h:
+	Cleanups
+
 2005-04-03  mallum,,,  <mallum@openedhand.com>
 
 	* Makefile:

@@ -72,6 +72,15 @@ pixbuf_copy(Pixbuf *src_pixb,
 	    int     dstx, 
 	    int     dsty);
 
+void
+pixbuf_fill_rect(Pixbuf      *pixb,
+		 int          x,
+		 int          y,
+		 int          width,
+		 int          height,
+		 PixbufPixel *p);
+
+
 Pixbuf*
 pixbuf_scale_down(Pixbuf *pixb,
 		  int     new_width, 

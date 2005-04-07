@@ -577,6 +577,24 @@ pixbuf_copy(Pixbuf *src_pixb,
     }
 }
 
+void
+pixbuf_fill_rect(Pixbuf      *pixb,
+		 int          x,
+		 int          y,
+		 int          width,
+		 int          height,
+		 PixbufPixel *p)
+{
+  int i, j;
+
+  if (width  < 0) width  = pixb->width;
+  if (height < 0) height = pixb->height;
+
+  for (i = x; i<width; i++)
+    for (j =y; j<height; j++)
+	pixbuf_set_pixel(pixb, i, j, p);
+}
+
 Pixbuf *
 pixbuf_scale_down(Pixbuf *pixb,
 		  int     new_width, 

@@ -27,6 +27,17 @@ typedef enum CltrDirection
 } 
 CltrDirection;
 
+typedef struct CltrRect
+{
+  int x, y, width, height;
+}
+CltrRect;
+
+#define cltr_rect_x1(r) ((r).x)
+#define cltr_rect_y1(r) ((r).y)
+#define cltr_rect_x2(r) ((r).x + (r).width)
+#define cltr_rect_y2(r) ((r).y + (r).height)
+
 /* texture stuff */
 
 /* ******************* */

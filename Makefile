@@ -10,7 +10,9 @@ OBJS=cltr.o pixbuf.o util.o fonts.o \
      cltr-widget.o                  \
      cltr-events.o	            \
      cltr-window.o                  \
-     cltr-photo-grid.o  	 
+     cltr-photo-grid.o  	    \
+     cltr-list.o         	    \
+     cltr-scratch.o
 
 # cltr-photo-grid.o
 
@@ -24,7 +26,9 @@ $(OBJS): pixbuf.h util.h fonts.h \
          cltr-texture.h          \
          cltr-widget.h           \
          cltr-window.h           \
-         cltr-photo-grid.h  
+         cltr-photo-grid.h       \
+         cltr-list.h             \
+         cltr-scratch.h
 
 #cltr-photo-grid.h
 

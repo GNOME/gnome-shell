@@ -160,10 +160,15 @@ cltr_main_loop()
 	  CltrWidget *widget = NULL;
 	  CltrWindow *win    = CLTR_WINDOW(ctx->window);
 
-	  while ((widget = g_queue_pop_head(ctx->internal_event_q)) != NULL)
-	    {
-	      cltr_widget_paint(widget);
-	    }
+	  /* Empty the queue  */
+	  while (g_queue_pop_head(ctx->internal_event_q) != NULL) ;
+
+	  /* Repaint everything visible from window down - URG. 
+           * GL workings make it difficult to paint single part with
+           * layering etc..
+           * Is this really bad ? time will tell...
+	  */
+	  cltr_widget_paint(CLTR_WIDGET(win));
 
 	  /* Swap Buffers */
 	  glXSwapBuffers(ctx->xdpy, cltr_window_xwin(win));  

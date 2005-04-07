@@ -4,9 +4,7 @@
 /* 
    IDEAS or less memory
 
-   + up to 4 textures tiled per image *DONE*
-
-   + texture compression ?
+   + texture compression - made no difference ?
 
    + mipmaps - make zoom faster ? ( vs memory )
 

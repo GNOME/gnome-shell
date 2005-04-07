@@ -14,9 +14,10 @@ cltr_widget_new(void)
 void
 cltr_widget_show(CltrWidget *widget)
 {
+  widget->visible = TRUE;
+
   if (widget->show)
     {
-      widget->visible = TRUE;
       widget->show(widget);
     }
 }
@@ -60,8 +61,27 @@ cltr_widget_hide(CltrWidget *widget)
 void
 cltr_widget_paint(CltrWidget *widget)
 {
-  if (widget->paint && widget->visible)
-    widget->paint(widget);
+  if (widget->visible)
+    {
+      GList *child_item =  widget->children;;
+
+      if (widget->paint)
+	widget->paint(widget);
+
+      /* Recurse down */
+      if (child_item)
+	{
+	  do 
+	    {
+	      CltrWidget *child = CLTR_WIDGET(child_item->data);
+	      
+	      if (child->visible)
+		cltr_widget_paint(child);
+	      
+	    }
+	  while ((child_item = g_list_next(child_item)) != NULL);
+	}
+    }
 }
 
 void
