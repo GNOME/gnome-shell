@@ -254,11 +254,12 @@ warn_about_no_sm_support (char **lame_apps,
   GtkWidget *dialog;
   GtkWidget *list;
   GtkWidget *sw;
+  GtkWidget *button;
       
   dialog = gtk_message_dialog_new (NULL,
                                    0,
                                    GTK_MESSAGE_WARNING,
-                                   GTK_BUTTONS_CLOSE,
+                                   GTK_BUTTONS_NONE,
                                    _("These windows do not support \"save current setup\" and will have to be restarted manually next time you log in."));
   
   g_signal_connect (G_OBJECT (dialog),
@@ -269,6 +270,7 @@ warn_about_no_sm_support (char **lame_apps,
   /* Wait 4 minutes then force quit, so we don't wait around all night */
   g_timeout_add (4 * 60 * 1000, (GSourceFunc) gtk_main_quit, NULL);
 
+  button = gtk_dialog_add_button (GTK_DIALOG (dialog), GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE);
   gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_CLOSE);
   list = create_lame_apps_list (lame_apps);
 
@@ -301,6 +303,7 @@ warn_about_no_sm_support (char **lame_apps,
   gtk_widget_realize (dialog);
   copy_of_gdk_x11_window_set_user_time (dialog->window, timestamp);
 
+  gtk_widget_grab_focus (button);
   gtk_widget_show_all (dialog);
 
   gtk_main ();

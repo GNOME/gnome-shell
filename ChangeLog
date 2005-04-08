@@ -1,3 +1,8 @@
+2005-04-05  Dan Winship  <danw@novell.com>
+
+	* src/metacity-dialog.c (warn_about_no_sm_support): Make sure the
+	"Close" button has the focus, not the table. (#172703)
+
 2005-04-05  Pawan Chitrakar  <pawan@nplinux.org>
 
 	* configure.in: Added ne in ALL_LINGUAS
