@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-02-07 12:44+0000\n"
-"PO-Revision-Date: 2005-02-07 12:44+0100\n"
-"Last-Translator: David Lodge <dave@cirt.net>\n"
+"PO-Revision-Date: 2005-04-09 15:10+0100\n"
+"Last-Translator: Christopher Orr <chris@protactin.co.uk>\n"
 "Language-Team: English/GB <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -57,7 +57,7 @@ msgstr "Error reading from dialogue display process: %s\n"
 #: src/delete.c:344
 #, c-format
 msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr "Error launching metacity-dialogue to ask about killing an application: %s\n"
+msgstr "Error launching metacity-dialog to ask about killing an application: %s\n"
 
 #: src/delete.c:452
 #, c-format
@@ -95,15 +95,15 @@ msgstr "Window Menu"
 
 #: src/frames.c:1026
 msgid "Minimize Window"
-msgstr "Minimize Window"
+msgstr "Minimise Window"
 
 #: src/frames.c:1029
 msgid "Maximize Window"
-msgstr "Maximize Window"
+msgstr "Maximise Window"
 
 #: src/frames.c:1032
 msgid "Unmaximize Window"
-msgstr "Unmaximize Window"
+msgstr "Unmaximise Window"
 
 #: src/keybindings.c:994
 #, c-format
@@ -113,7 +113,7 @@ msgstr "Some other program is already using the key %s with modifiers %x as a bi
 #: src/keybindings.c:2559
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
-msgstr "Error launching metacity-dialogue to print an error about a command: %s\n"
+msgstr "Error launching metacity-dialog to print an error about a command: %s\n"
 
 #: src/keybindings.c:2664
 #, c-format
@@ -158,15 +158,15 @@ msgstr "Failed to restart: %s\n"
 
 #: src/menu.c:54
 msgid "Mi_nimize"
-msgstr "Mi_nimize"
+msgstr "Mi_nimise"
 
 #: src/menu.c:55
 msgid "Ma_ximize"
-msgstr "Ma_ximize"
+msgstr "Ma_ximise"
 
 #: src/menu.c:56
 msgid "Unma_ximize"
-msgstr "Unma_ximize"
+msgstr "Unma_ximise"
 
 #: src/menu.c:57
 msgid "Roll _Up"
@@ -586,7 +586,7 @@ msgstr "Show the panel run application dialogue"
 
 #: src/metacity.schemas.in.h:63
 msgid "Some applications break specifications in ways that result in window manager misfeatures. For example, ideally Metacity would place all dialogs in a consistent position with respect to their parent window. This requires ignoring application-specified positions for dialogs. But some versions of Java/Swing mark their popup menus as dialogs, so Metacity has to disable dialog positioning to allow menus to work in broken Java applications. There are several other examples like this. This option puts Metacity in full-on Correct mode, which perhaps gives a moderately nicer UI if you don't need to run any broken apps. Sadly, workarounds must be enabled by default; the real world is an ugly place. Some of the workarounds are workarounds for limitations in the specifications themselves, so sometimes a bug in no-workarounds mode won't be fixable without amending a spec."
-msgstr "Some applications break specifications in ways that result in window manager misfeatures. For example, ideally Metacity would place all dialogues in a consistent position with respect to their parent window. This requires ignoring application-specified positions for dialogs. But some versions of Java/Swing mark their popup menus as dialogs, so Metacity has to disable dialog positioning to allow menus to work in broken Java applications. There are several other examples like this. This option puts Metacity in full-on Correct mode, which perhaps gives a moderately nicer UI if you don't need to run any broken apps. Sadly, workarounds must be enabled by default; the real world is an ugly place. Some of the workarounds are workarounds for limitations in the specifications themselves, so sometimes a bug in no-workarounds mode won't be fixable without amending a spec."
+msgstr "Some applications break specifications in ways that result in window manager misfeatures. For example, ideally Metacity would place all dialogues in a consistent position with respect to their parent window. This requires ignoring application-specified positions for dialogues. But some versions of Java/Swing mark their popup menus as dialogues, so Metacity has to disable dialogue positioning to allow menus to work in broken Java applications. There are several other examples like this. This option puts Metacity in full-on Correct mode, which perhaps gives a moderately nicer UI if you don't need to run any broken apps. Sadly, workarounds must be enabled by default; the real world is an ugly place. Some of the workarounds are workarounds for limitations in the specifications themselves, so sometimes a bug in no-workarounds mode won't be fixable without amending a spec."
 
 #: src/metacity.schemas.in.h:64
 msgid "Switch to workspace 1"
@@ -962,7 +962,7 @@ msgstr "This keybinding resizes a window to fill available vertical space. The f
 
 #: src/metacity.schemas.in.h:157
 msgid "This option determines the effects of double-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, and 'toggle_maximize' which will maximize/unmaximize the window."
-msgstr "This option determines the effects of double-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, and 'toggle_maximize' which will maximize/unmaximize the window."
+msgstr "This option determines the effects of double-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, and 'toggle_maximize' which will maximise/unmaximise the window."
 
 #: src/metacity.schemas.in.h:158
 msgid "Toggle always on top state"
@@ -974,7 +974,7 @@ msgstr "Toggle fullscreen mode"
 
 #: src/metacity.schemas.in.h:160
 msgid "Toggle maximization state"
-msgstr "Toggle maximization state"
+msgstr "Toggle maximisation state"
 
 #: src/metacity.schemas.in.h:161
 msgid "Toggle shaded state"
@@ -1392,7 +1392,7 @@ msgstr "Border \"%s\" is unknown"
 #: src/theme-parser.c:2869
 #, c-format
 msgid "No \"color\" attribute on element <%s>"
-msgstr "No \"colour\" attribute on element <%s>"
+msgstr "No \"color\" attribute on element <%s>"
 
 #: src/theme-parser.c:1662
 #, c-format
@@ -1639,7 +1639,7 @@ msgstr "\"%s\" is not a valid value for resize attribute"
 #: src/theme-parser.c:3450
 #, c-format
 msgid "Should not have \"resize\" attribute on <%s> element for maximized/shaded states"
-msgstr "Should not have \"resize\" attribute on <%s> element for maximized/shaded states"
+msgstr "Should not have \"resize\" attribute on <%s> element for maximised/shaded states"
 
 #: src/theme-parser.c:3464
 #, c-format
@@ -1992,12 +1992,12 @@ msgstr "Did not understand state \"%s\" in colour specification"
 #: src/theme.c:1013
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr "Did not understand colour component \"%s\" in color specification"
+msgstr "Did not understand colour component \"%s\" in colour specification"
 
 #: src/theme.c:1043
 #, c-format
 msgid "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the format"
-msgstr "Blend format is \"blend/bg_colour/fg_color/alpha\", \"%s\" does not fit the format"
+msgstr "Blend format is \"blend/bg_colour/fg_colour/alpha\", \"%s\" does not fit the format"
 
 #: src/theme.c:1054
 #, c-format
