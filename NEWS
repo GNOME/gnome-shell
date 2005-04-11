@@ -1,3 +1,21 @@
+2.10.1
+==
+
+This is a stable release to coincide with the release of Gnome 2.10.0.
+
+Thanks to Dan Winship and Lex Hider for fixes in this release.
+
+ - Make sure the "Close" button has the focus in the
+   buggy-session-management-applications-warning dialog instead of the
+   table (Dan) [#172703]
+ - add doc/code-overview.txt and doc/how-to-get-focus-right.txt to the
+   distributed files (Lex) [#170519]
+
+Translations
+  Adam Weinberger (en_CA), Christopher Orr (en_GB), Elnaz Sarbar (fa),
+  Gabor Kelemen (hu), Jyotsna Shrestha (ne), Steve Murphy (rw),
+  Baris Cicek (tr), Canonical Ltd (xh)
+
 2.10.0
 ==
 

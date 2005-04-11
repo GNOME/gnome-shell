@@ -1,3 +1,7 @@
+2005-04-11  Elijah Newren  <newren@gmail.com>
+
+	* NEWS:	2.10.1 release
+
 2005-04-05  Dan Winship  <danw@novell.com>
 
 	* src/metacity-dialog.c (warn_about_no_sm_support): Make sure the
@@ -11,7 +15,7 @@
 
         * configure.in: Added "rw" to ALL_LINGUAS.
 
-2005-03-17  Lex Hider <Lex.Hider@gmail.com>
+2005-03-17  Lex Hider  <Lex.Hider@gmail.com>
 
 	* doc/Makefile.am (EXTRA_DIST): add doc/code-overview.txt and
 	doc/how-to-get-focus-right.txt
