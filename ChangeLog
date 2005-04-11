@@ -1,5 +1,9 @@
 2005-04-11  Elijah Newren  <newren@gmail.com>
 
+	* configure.in: post-release version bump to 2.10.2
+
+2005-04-11  Elijah Newren  <newren@gmail.com>
+
 	* NEWS:	2.10.1 release
 
 2005-04-05  Dan Winship  <danw@novell.com>
