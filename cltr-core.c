@@ -42,3 +42,19 @@ cltr_init(int *argc, char ***argv)
 
   return 1;
 }
+
+int 
+cltr_display_width(void)
+{
+  ClutterMainContext *ctx = CLTR_CONTEXT();
+
+  return DisplayWidth(ctx->xdpy, ctx->xscreen);
+}
+
+int 
+cltr_display_height(void)
+{
+  ClutterMainContext *ctx = CLTR_CONTEXT();
+
+  return DisplayHeight(ctx->xdpy, ctx->xscreen);
+}

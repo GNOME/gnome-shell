@@ -21,6 +21,9 @@ cltr_window_add_widget(CltrWindow *win, CltrWidget *widget, int x, int y);
 Window
 cltr_window_xwin(CltrWindow *win);
 
+void
+cltr_window_set_fullscreen(CltrWindow *win);
+
 Window
 cltr_window_focus_widget(CltrWindow *win, CltrWidget *widget);
 

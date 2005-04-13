@@ -48,7 +48,7 @@ cltr_list_cell_new(CltrList *list)
   CltrListCell *cell = NULL;
   ClutterFont  *font;
   gchar         buf[24];
-  PixbufPixel   pixel = { 255, 20, 20, 255 };
+  PixbufPixel   pixel = { 255, 20, 20, 255 }, font_pixel = { 255, 255, 255, 200 };
 
   font = font_new ("Sans Bold 96");
 
@@ -60,7 +60,9 @@ cltr_list_cell_new(CltrList *list)
 
   g_snprintf(&buf[0], 24, "%i %i %i", rand()%10, rand()%10, rand()%10);
 
-  font_draw(font, cell->pixb, buf, 10, 10);
+
+
+  font_draw(font, cell->pixb, buf, 10, 10, &font_pixel);
 
   cell->texture = cltr_texture_new(cell->pixb);
 

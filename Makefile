@@ -6,6 +6,7 @@ CFLAGS=`pkg-config --cflags pangoft2 pango glib-2.0 gthread-2.0`
 
 OBJS=cltr.o pixbuf.o util.o fonts.o \
      cltr-core.o                    \
+     cltr-glu.o                     \
      cltr-texture.o                 \
      cltr-widget.o                  \
      cltr-events.o	            \
@@ -22,6 +23,7 @@ clutter: $(OBJS)
 $(OBJS): pixbuf.h util.h fonts.h \
          cltr.h                  \
          cltr-private.h          \
+         cltr-glu.h              \
 	 cltr-events.h           \
          cltr-texture.h          \
          cltr-widget.h           \

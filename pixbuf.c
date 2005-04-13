@@ -458,7 +458,7 @@ pixbuf_new(int width, int height)
   pixb->bytes_per_line  = pixb->bytes_per_pixel * pixb->width;
   pixb->data            = malloc(pixb->bytes_per_line * pixb->height);
 
-  /* memset ? */
+  memset(pixb->data, 0, pixb->bytes_per_line * pixb->height);
 
   return pixb;
 }
@@ -671,3 +671,260 @@ pixbuf_scale_down(Pixbuf *pixb,
 
   return pixb_scaled;
 }
+
+#if 0
+
+/*
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                             %
+%                                                                             %
+%     C o n v o l v e I m a g e                                               %
+%                                                                             %
+%                                                                             %
+%                                                                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  Method ConvolveImage applies a general image convolution kernel to an
+%  image returns the results.  ConvolveImage allocates the memory necessary for
+%  the new Image structure and returns a pointer to the new image.
+%
+%  The format of the ConvolveImage method is:
+%
+%      Image *ConvolveImage(Image *image,const unsigned int order,
+%        const double *kernel,ExceptionInfo *exception)
+%
+%  A description of each parameter follows:
+%
+%    o convolve_image: Method ConvolveImage returns a pointer to the image
+%      after it is convolved.  A null image is returned if there is a memory
+%      shortage.
+%
+%    o image: The address of a structure of type Image;  returned from
+%      ReadImage.
+%
+%    o order:  The number of columns and rows in the filter kernel.
+%
+%    o kernel:  An array of double representing the convolution kernel.
+%
+%    o exception: return any errors or warnings in this structure.
+%
+%
+*/
+MagickExport Image *ConvolveImage(Image *image,
+				  const unsigned int order,
+				  const double *kernel,
+				  ExceptionInfo *exception)
+{
+#define ConvolveImageText  "  Convolving image...  "
+#define Cx(x) \
+  (x) < 0 ? (x)+image->columns : (x) >= image->columns ? (x)-image->columns : x
+#define Cy(y) \
+  (y) < 0 ? (y)+image->rows : (y) >= image->rows ? (y)-image->rows : y
+
+  double
+    blue,
+    green,
+    normalize,
+    opacity,
+    red;
+
+  Image
+    *convolve_image;
+
+  int
+    i,
+    width,
+    y;
+
+  PixelPacket
+    *p,
+    pixel;
+
+  register const double
+    *k;
+
+  register int
+    u,
+    v,
+    x;
+
+  register PixelPacket
+    *q,
+    *s;
+
+  /*
+    Initialize convolved image attributes.
+  */
+  assert(image != (Image *) NULL);
+  assert(image->signature == MagickSignature);
+  assert(exception != (ExceptionInfo *) NULL);
+  assert(exception->signature == MagickSignature);
+  width=order;
+  if ((width % 2) == 0)
+    ThrowImageException(OptionWarning,"Unable to convolve image",
+			"kernel width must be an odd number");
+  if ((image->columns < width) || (image->rows < width))
+    ThrowImageException(OptionWarning,"Unable to convolve image",
+			"image smaller than kernel width");
+  convolve_image=CloneImage(image,image->columns,image->rows,False,exception);
+  if (convolve_image == (Image *) NULL)
+    return((Image *) NULL);
+  convolve_image->storage_class=DirectClass;
+  /*
+    Convolve image.
+  */
+  normalize=0.0;
+  for (i=0; i < (width*width); i++)
+    normalize+=kernel[i];
+  for (y=0; y < (int) convolve_image->rows; y++)
+    {
+      p=(PixelPacket *) NULL;
+      q=SetImagePixels(convolve_image,0,y,convolve_image->columns,1);
+      if (q == (PixelPacket *) NULL)
+	break;
+      for (x=0; x < (int) convolve_image->columns; x++)
+	{
+	  red=0.0;
+	  green=0.0;
+	  blue=0.0;
+	  opacity=0.0;
+	  k=kernel;
+	  if ((x < (width/2)) || (x >= (int) (image->columns-width/2)) ||
+	      (y < (width/2)) || (y >= (int) (image->rows-width/2)))
+	    {
+	      for (v=(-width/2); v <= (width/2); v++)
+		{
+		  for (u=(-width/2); u <= (width/2); u++)
+		    {
+		      pixel=GetOnePixel(image,Cx(x+u),Cy(y+v));
+		      red+=(*k)*pixel.red;
+		      green+=(*k)*pixel.green;
+		      blue+=(*k)*pixel.blue;
+		      opacity+=(*k)*pixel.opacity;
+		      k++;
+		    }
+		}
+	    }
+	  else
+	    {
+	      if (p == (PixelPacket *) NULL)
+		{
+		  p=GetImagePixels(image,0,y-width/2,image->columns,width);
+		  if (p == (PixelPacket *) NULL)
+		    break;
+		}
+	      s=p+x;
+	      for (v=(-width/2); v <= (width/2); v++)
+		{
+		  for (u=(-width/2); u <= (width/2); u++)
+		    {
+		      red+=(*k)*s[u].red;
+		      green+=(*k)*s[u].green;
+		      blue+=(*k)*s[u].blue;
+		      opacity+=(*k)*s[u].opacity;
+		      k++;
+		    }
+		  s+=image->columns;
+		}
+	    }
+	  if ((normalize != 0.0) && (normalize != 1.0))
+	    {
+	      red/=normalize;
+	      green/=normalize;
+	      blue/=normalize;
+	      opacity/=normalize;
+	    }
+	  q->red=(Quantum) ((red < 0) ? 0 : (red > MaxRGB) ? MaxRGB : red+0.5);
+	  q->green=(Quantum)
+	    ((green < 0) ? 0 : (green > MaxRGB) ? MaxRGB : green+0.5);
+	  q->blue=(Quantum) ((blue < 0) ? 0 : (blue > MaxRGB) ? MaxRGB : blue+0.5);
+	  q->opacity=(Quantum)
+	    ((opacity < 0) ? 0 : (opacity > MaxRGB) ? MaxRGB : opacity+0.5);
+	  q++;
+	}
+      if (!SyncImagePixels(convolve_image))
+	break;
+      if (QuantumTick(y,convolve_image->rows))
+	MagickMonitor(ConvolveImageText,y,convolve_image->rows);
+    }
+  return(convolve_image);
+}
+
+/*
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                             %
+%                                                                             %
+%     G a u s s i a n B l u r I m a g e                                       %
+%                                                                             %
+%                                                                             %
+%                                                                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  Method GaussianBlurImage creates a new image that is a copy of an existing
+%  one with the pixels blur.  It allocates the memory necessary for the
+%  new Image structure and returns a pointer to the new image.
+%
+%  The format of the BlurImage method is:
+%
+%      Image *GaussianBlurImage(Image *image,const double radius,
+%        const double sigma,ExceptionInfo *exception)
+%
+%  A description of each parameter follows:
+%
+%    o blur_image: Method GaussianBlurImage returns a pointer to the image
+%      after it is blur.  A null image is returned if there is a memory
+%      shortage.
+%
+%    o radius: the radius of the Gaussian, in pixels, not counting the center
+%      pixel.
+%
+%    o sigma: the standard deviation of the Gaussian, in pixels.
+%
+%    o exception: return any errors or warnings in this structure.
+%
+%
+*/
+MagickExport Image *GaussianBlurImage(Image *image,const double radius,
+				      const double sigma,ExceptionInfo *exception)
+{
+  double
+    *kernel;
+
+  Image
+    *blur_image;
+
+  int
+    width;
+
+  register int
+    i,
+    u,
+    v;
+
+  assert(image != (Image *) NULL);
+  assert(image->signature == MagickSignature);
+  assert(exception != (ExceptionInfo *) NULL);
+  assert(exception->signature == MagickSignature);
+  width=GetOptimalKernelWidth2D(radius,sigma);
+  if ((image->columns < width) || (image->rows < width))
+    ThrowImageException(OptionWarning,"Unable to Gaussian blur image",
+			"image is smaller than radius");
+  kernel=(double *) AcquireMemory(width*width*sizeof(double));
+  if (kernel == (double *) NULL)
+    ThrowImageException(ResourceLimitWarning,"Unable to Gaussian blur image",
+			"Memory allocation failed");
+  i=0;
+  for (v=(-width/2); v <= (width/2); v++)
+    {
+      for (u=(-width/2); u <= (width/2); u++)
+	{
+	  kernel[i]=exp((double) -(u*u+v*v)/(sigma*sigma));
+	  i++;
+	}
+    }
+  blur_image=ConvolveImage(image,width,kernel,exception);
+  LiberateMemory((void **) &kernel);
+  return(blur_image);
+}
+
+#endif

@@ -393,6 +393,7 @@ cltr_photo_grid_populate(gpointer data)
   gchar            *fullpath = NULL;
   int               n_pixb = 0, i =0;
   ClutterFont      *font = NULL;
+  PixbufPixel       font_col = { 255, 255, 255, 255 };
 
   font = font_new("Sans Bold 96");
 
@@ -430,7 +431,7 @@ cltr_photo_grid_populate(gpointer data)
 	  cell = cltr_photo_grid_cell_new(grid, pixb, entry);
 
 	  g_snprintf(&buf[0], 24, "%i", i);
-	  font_draw(font, cell->pixb, buf, 10, 10);
+	  font_draw(font, cell->pixb, buf, 10, 10, &font_col);
 
 	  g_mutex_lock(Mutex_GRID);
 
@@ -721,6 +722,7 @@ cltr_photo_grid_paint(CltrWidget *widget)
 
 	  glDisable(GL_TEXTURE_2D);
 
+
 	  if (cell_item == grid->cell_active 
 	      && grid->state == CLTR_PHOTO_GRID_STATE_BROWSE)
 	    glColor4f(1.0, 1.0, 1.0, 1.0);
@@ -729,8 +731,24 @@ cltr_photo_grid_paint(CltrWidget *widget)
 
 	  /* Draw with origin in center of photo */
 
+	  /*
 	  glRecti(-(thumb_w/2)-4, -(thumb_h/2)-4, 
 		  (thumb_w/2)+4, (thumb_h/2)+ns_border);
+	  */
+
+	  cltr_glu_rounded_rect(-(thumb_w/2)-4, -(thumb_h/2)-4, 
+				(thumb_w/2)+4, (thumb_h/2)+ns_border,
+				thumb_w/40,
+				NULL);
+
+	  glColor4f(0.1, 0.1, 0.1, 0.5);
+
+	  cltr_glu_rounded_rect(-(thumb_w/2)-4, -(thumb_h/2)-4+1, 
+				(thumb_w/2)+4, (thumb_h/2)+ns_border+1,
+				thumb_w/40,
+				NULL);
+
+	  glColor4f(1.0, 1.0, 1.0, 1.0);
 
 	  glEnable(GL_TEXTURE_2D);
 

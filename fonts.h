@@ -25,7 +25,8 @@ font_draw(ClutterFont *font,
 	  Pixbuf      *pixb, 
 	  const char  *text,
 	  int          x, 
-	  int          y);
+	  int          y,
+	  PixbufPixel *p);
 
 
 #endif

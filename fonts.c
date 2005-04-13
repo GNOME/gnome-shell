@@ -146,11 +146,11 @@ font_draw(ClutterFont *font,
 	  Pixbuf      *pixb, 
 	  const char  *text,
 	  int          x, 
-	  int          y)
+	  int          y,
+	  PixbufPixel *p)
 {
   int layout_width, layout_height;
   PangoLayout *layout;
-  PixbufPixel  p = { 0xff,0xff,0xff,0x80 };
 
   layout = pango_layout_new (font->context);
 
@@ -161,7 +161,7 @@ font_draw(ClutterFont *font,
 
   /* cant rely on just clip - need to set layout width too */
 
-  draw_layout_on_pixbuf (layout, pixb, &p, x, y, 
+  draw_layout_on_pixbuf (layout, pixb, p, x, y, 
 			 x, 
 			 y, 
 			 pixb->width  - x,

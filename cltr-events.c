@@ -157,7 +157,6 @@ cltr_main_loop()
     {
       if (!g_queue_is_empty (ctx->internal_event_q))
 	{
-	  CltrWidget *widget = NULL;
 	  CltrWindow *win    = CLTR_WINDOW(ctx->window);
 
 	  /* Empty the queue  */

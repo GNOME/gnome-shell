@@ -11,6 +11,18 @@ cltr_widget_new(void)
   return w;
 }
 
+int
+cltr_widget_width(CltrWidget *widget)
+{
+  return widget->width;
+}
+
+int
+cltr_widget_height(CltrWidget *widget)
+{
+  return widget->width;
+}
+
 void
 cltr_widget_show(CltrWidget *widget)
 {

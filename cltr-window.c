@@ -17,6 +17,19 @@ struct CltrWindow
   CltrWidget *focused_child;
 };
 
+void
+clrt_window_set_gl_viewport(CltrWindow *win)
+{
+  CltrWidget *widget = CLTR_WIDGET(win);
+
+  glViewport (0, 0, widget->width, widget->height);
+  glMatrixMode (GL_PROJECTION);
+  glLoadIdentity ();
+  glOrtho (0, widget->width, widget->height, 0, -1, 1); /* 2d */
+  glMatrixMode (GL_MODELVIEW);
+  glLoadIdentity ();
+}
+
 CltrWidget*
 cltr_window_new(int width, int height)
 {
@@ -46,15 +59,9 @@ cltr_window_new(int width, int height)
 
   /* All likely better somewhere else */
 
-  /* view port */
-  glViewport (0, 0, width, height);
-  glMatrixMode (GL_PROJECTION);
-  glLoadIdentity ();
-  glOrtho (0, width, height, 0, -1, 1); /* 2d */
-  glMatrixMode (GL_MODELVIEW);
-  glLoadIdentity ();
-
   ctx->window = CLTR_WIDGET(win);
+
+  clrt_window_set_gl_viewport(win);
 
   return CLTR_WIDGET(win);
 }
@@ -83,6 +90,17 @@ cltr_window_paint(CltrWidget *widget)
 
 }
 
+static void
+cltr_window_handle_xconfigure(CltrWindow *win, XConfigureEvent *cxev)
+{
+  
+  /* 
+     widget.width = cxev->width;
+     widget.height = cxev->height;
+  */
+
+}			      
+
 static gboolean 
 cltr_window_handle_xevent (CltrWidget *widget, XEvent *xev) 
 {
@@ -94,6 +112,11 @@ cltr_window_handle_xevent (CltrWidget *widget, XEvent *xev)
     {
       cltr_widget_queue_paint(widget);
     }
+
+  /*
+    case ConfigureNotify:
+    wm_handle_configure_request(w, &ev.xconfigure); break;
+  */
 
   /* XXX Very basic - assumes we are only interested in mouse clicks */
   if (win->focused_child)
@@ -110,6 +133,25 @@ cltr_window_xwin(CltrWindow *win)
   return win->xwin;
 }
 
+void
+cltr_window_set_fullscreen(CltrWindow *win)
+{
+  ClutterMainContext *ctx = CLTR_CONTEXT();
+
+  Atom atom_WINDOW_STATE, atom_WINDOW_STATE_FULLSCREEN;
+
+  atom_WINDOW_STATE 
+    = XInternAtom(ctx->xdpy, "_NET_WM_STATE", False);
+  atom_WINDOW_STATE_FULLSCREEN 
+    = XInternAtom(ctx->xdpy, "_NET_WM_STATE_FULLSCREEN",False);
+
+  XChangeProperty(ctx->xdpy, win->xwin,
+		  atom_WINDOW_STATE, XA_ATOM, 32,
+		  PropModeReplace,
+		  (unsigned char *)&atom_WINDOW_STATE_FULLSCREEN, 1);
+}
+
+
 Window
 cltr_window_focus_widget(CltrWindow *win, CltrWidget *widget)
 {
@@ -118,6 +160,7 @@ cltr_window_focus_widget(CltrWindow *win, CltrWidget *widget)
   ClutterMainContext *ctx = CLTR_CONTEXT();
 
   win->focused_child = widget;
+
 }
 
 
