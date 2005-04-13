@@ -1,3 +1,13 @@
+2005-04-13  mallum,,,  <mallum@openedhand.com>
+
+	* bootstrap-autotools.sh:
+	* clutter/Makefile.am:
+	* clutter/cltr.c:
+	* configure.ac:
+	* examples/Makefile.am:
+	* examples/scratch.c:
+	Initial autotooling of everything. 
+
 2005-04-07  mallum,,,  <mallum@openedhand.com>
 
 	* Makefile:

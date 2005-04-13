@@ -1,4 +1,4 @@
-#include "cltr.h"
+#include <clutter/cltr.h>
 
 int 
 usage(char *progname)
