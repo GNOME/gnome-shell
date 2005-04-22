@@ -259,7 +259,7 @@ cltr_texture_realize(CltrTexture *texture)
 	Pixbuf *pixtmp;
 	int src_h, src_w;
 	
-	pixtmp = pixbuf_new(texture->tile_x_size[x], texture->tile_y_size[y]);
+
 
 	src_w = texture->tile_x_size[x];
 	src_h = texture->tile_y_size[y];
@@ -276,13 +276,21 @@ cltr_texture_realize(CltrTexture *texture)
 		 texture->tile_y_waste[y]);
 	*/
 
-	pixbuf_copy(texture->pixb, 
-		    pixtmp,
-		    texture->tile_x_position[x],
-		    texture->tile_y_position[y],
-		    texture->tile_x_size[x], 
-		    texture->tile_y_size[y],
-		    0,0);
+	/* Only break the pixbuf up if we have multiple tiles */
+	if (texture->n_x_tiles > 1 && texture->n_y_tiles >1)
+	  {
+	    pixtmp = pixbuf_new(texture->tile_x_size[x], 
+				texture->tile_y_size[y]);
+
+	    pixbuf_copy(texture->pixb, 
+			pixtmp,
+			texture->tile_x_position[x],
+			texture->tile_y_position[y],
+			texture->tile_x_size[x], 
+			texture->tile_y_size[y],
+			0,0);
+	  }
+	else pixtmp = texture->pixb;
 
 	glBindTexture(GL_TEXTURE_2D, texture->tiles[i]);
 
@@ -303,7 +311,8 @@ cltr_texture_realize(CltrTexture *texture)
 
 	CLTR_GLERR();
 
-	pixbuf_unref(pixtmp);
+	if (pixtmp != texture->pixb)
+	  pixbuf_unref(pixtmp);
 	
 	i++;
 
@@ -331,4 +340,16 @@ cltr_texture_new(Pixbuf *pixb)
   init_tiles (texture);
 
   return texture;
+}
+
+Pixbuf*
+cltr_texture_get_pixbuf(CltrTexture* texture)
+{
+  return texture->pixb;
+}
+
+void
+cltr_texture_resync_pixbuf(CltrTexture* texture)
+{
+  cltr_texture_unrealize(texture);
 }

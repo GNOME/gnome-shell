@@ -1,1 +1,1 @@
-SUBDIRS=clutter examples
+SUBDIRS=clutter gst examples

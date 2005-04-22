@@ -86,4 +86,20 @@ pixbuf_scale_down(Pixbuf *pixb,
 		  int     new_width, 
 		  int     new_height);
 
+Pixbuf*
+pixbuf_clone(Pixbuf *pixb);
+
+Pixbuf*
+pixbuf_convolve(Pixbuf *pixb, 
+		int    *kernel, 
+		int     kernel_size, 
+		int     kernel_divisor) ;
+
+Pixbuf*
+pixbuf_blur(Pixbuf *pixb);
+
+Pixbuf*
+pixbuf_sharpen(Pixbuf *pixb);
+
+
 #endif

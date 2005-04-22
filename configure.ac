@@ -66,8 +66,12 @@ PKG_CHECK_MODULES(CLTR, pangoft2 pango glib-2.0 gthread-2.0)
 
 dnl ----- Gstreamer ---------------------------------------------------------
 
-pkg_modules="gstreamer-0.8 gstreamer-interfaces-0.8 gthread-2.0"
+pkg_modules="gstreamer-0.8 gstreamer-interfaces-0.8 gthread-2.0 gstreamer-play-0.8 gstreamer-gconf-0.8"
 PKG_CHECK_MODULES(GST, [$pkg_modules])
+
+dnl ----- Gconf -------------------------------------------------------------
+
+PKG_CHECK_MODULES(GCONF, gconf-2.0, HAVE_GCONF="yes", HAVE_GCONF="no")
 
 dnl ------ Check for PNG ---------------------------------------------------
 
@@ -110,14 +114,17 @@ AC_SUBST(GCC_FLAGS)
 AC_SUBST(GST_CFLAGS)
 AC_SUBST(GST_LIBS)
 
+AC_SUBST(GCONF_CFLAGS)
+AC_SUBST(GCONF_LIBS)
+
 CLTR_CFLAGS="$GLX_CLAGS $CLTR_CFLAGS"
 CLTR_LIBS="$GLX_LIBS $PNG_LIBS $JPEG_LIBS $CLTR_LIBS"
 
 AC_SUBST(CLTR_CFLAGS)
 AC_SUBST(CLTR_LIBS)
 
-
 AC_OUTPUT([Makefile
 clutter/Makefile
 examples/Makefile
+gst/Makefile
 ])

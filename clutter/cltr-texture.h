@@ -37,4 +37,11 @@ cltr_texture_render_to_gl_quad(CltrTexture *texture,
 			       int          x2, 
 			       int          y2);
 
+Pixbuf*
+cltr_texture_get_pixbuf(CltrTexture* texture);
+
+void
+cltr_texture_resync_pixbuf(CltrTexture* texture);
+
+
 #endif

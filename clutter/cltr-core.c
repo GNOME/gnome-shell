@@ -4,20 +4,38 @@
 int
 cltr_init(int *argc, char ***argv)
 {
+
+#define GLX_SAMPLE_BUFFERS_ARB             100000
+#define GLX_SAMPLES_ARB                    100001
+
+
   int  gl_attributes[] =
     {
       GLX_RGBA, 
       GLX_DOUBLEBUFFER,
+      GLX_STENCIL_SIZE, 1, 
+      GLX_DEPTH_SIZE, 24,
+
+      /*
+      GLX_SAMPLE_BUFFERS_ARB, 1, 
+      GLX_SAMPLES_ARB, 0,
+
+      */
+      /*
       GLX_RED_SIZE, 1,
       GLX_GREEN_SIZE, 1,
       GLX_BLUE_SIZE, 1,
+
+
+
+      */
       0
     };
 
   XVisualInfo	       *vinfo;  
 
-
-  g_thread_init (NULL);
+  if (!g_thread_supported ())
+    g_thread_init (NULL);
   // XInitThreads ();
 
   if ((CltrCntx.xdpy = XOpenDisplay(getenv("DISPLAY"))) == NULL)
@@ -27,6 +45,10 @@ cltr_init(int *argc, char ***argv)
 
   CltrCntx.xscreen   = DefaultScreen(CltrCntx.xdpy);
   CltrCntx.xwin_root = RootWindow(CltrCntx.xdpy, CltrCntx.xscreen);
+
+  CLTR_DBG("EXT : %s", glXQueryExtensionsString( CltrCntx.xdpy, 
+					      CltrCntx.xscreen));
+
 
   if ((vinfo = glXChooseVisual(CltrCntx.xdpy, 
 			       CltrCntx.xscreen,

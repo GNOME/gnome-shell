@@ -19,6 +19,8 @@
 #include "pixbuf.h"
 #include "util.h"
 
+#define CLTR_CLAMP(x, y)  ((x) > (y)) ? (y) : (x);
+
 static int*
 load_png_file( const char *file, 
 	       int        *width, 
@@ -672,6 +674,100 @@ pixbuf_scale_down(Pixbuf *pixb,
   return pixb_scaled;
 }
 
+Pixbuf*
+pixbuf_clone(Pixbuf *pixb)
+{
+  Pixbuf *clone;
+
+  clone = util_malloc0(sizeof(Pixbuf));
+
+  clone->width           = pixb->width;
+  clone->height          = pixb->height;
+  clone->bytes_per_pixel = pixb->bytes_per_pixel; 
+  clone->channels       = pixb->channels;
+  clone->bytes_per_line  = pixb->bytes_per_line;
+  clone->data            = malloc(pixb->bytes_per_line * pixb->height);
+
+  memcpy(clone->data, pixb->data, pixb->bytes_per_line * pixb->height);
+  
+  return clone;
+}
+
+Pixbuf*
+pixbuf_convolve(Pixbuf *pixb, 
+		int    *kernel, 
+		int     kernel_size, 
+		int     kernel_divisor) 
+{
+  int         padding, x, y, r, g, b, a, l, k;
+  PixbufPixel pixel;
+  Pixbuf     *clone_pixb;
+    
+  padding = ( kernel_size - 1 ) / 2; 
+  clone_pixb = pixbuf_clone(pixb);
+
+  for( y = padding; y < pixb->height - padding; y++ ) 
+    {
+      for( x = padding; x < pixb->width - padding; x++ ) 
+	{
+	  r = b = g = a = 0;
+
+	  for( l = 0; l < kernel_size; l++ ) 
+	    {
+	      for( k = 0; k < kernel_size; k++ ) 
+		{
+		  pixbuf_get_pixel(pixb, (x+k-padding), (y+l-padding), &pixel);
+		  
+		  r += pixel.r * kernel[k + l * kernel_size];
+		  g += pixel.g * kernel[k + l * kernel_size];
+		  b += pixel.b * kernel[k + l * kernel_size];
+		  a += pixel.a * kernel[k + l * kernel_size];
+		}
+	    }
+
+	  r = CLTR_CLAMP( r / kernel_divisor, 0xff);
+	  g = CLTR_CLAMP( g / kernel_divisor, 0xff);
+	  b = CLTR_CLAMP( b / kernel_divisor, 0xff);
+	  a = CLTR_CLAMP( a / kernel_divisor, 0xff); 
+	  
+	  pixel_set_vals(&pixel, r, g, b, a); 
+	  
+	  pixbuf_set_pixel(clone_pixb, x, y, &pixel);
+	  
+	}
+    }
+  
+  return clone_pixb;
+}
+
+Pixbuf*
+pixbuf_blur(Pixbuf *pixb)
+{ 
+  /*
+  int kernel[] = { 1, 1, 1,
+		   1, 0, 1, 
+		   1, 1, 1 };
+  */
+
+  int kernel[] = { 1, 1, 1,
+		   1, 1, 1,
+		   1, 1, 1 };
+
+
+  return pixbuf_convolve( pixb, kernel, 3, 9 );
+}
+
+Pixbuf*
+pixbuf_sharpen(Pixbuf *pixb)
+{ 
+  int kernel[] = {-1, -1, -1,
+		  -1, 9, -1, 
+		  -1, -1, -1 };
+
+  return pixbuf_convolve( pixb, kernel, 3, 1 );
+}
+
+
 #if 0
 
 /*
@@ -925,6 +1021,91 @@ MagickExport Image *GaussianBlurImage(Image *image,const double radius,
   blur_image=ConvolveImage(image,width,kernel,exception);
   LiberateMemory((void **) &kernel);
   return(blur_image);
+}
+
+/* GPE-gallery convolve code */
+
+static void 
+image_convolve( GdkPixbuf *pixbuf, 
+		int       *mask, 
+		int        mask_size, 
+		int        mask_divisor ) {
+
+  int x, y, k, l, b, rowstride, width, height, channels, padding, new_value;
+  int* temp_pixel;
+  guchar *temp_image, *image;
+
+  rowstride = gdk_pixbuf_get_rowstride( GDK_PIXBUF( pixbuf ) );
+  channels = gdk_pixbuf_get_n_channels( GDK_PIXBUF( pixbuf ) );
+
+  width = gdk_pixbuf_get_width( GDK_PIXBUF( pixbuf ) );
+  height = gdk_pixbuf_get_height( GDK_PIXBUF( pixbuf ) );
+
+  //    fprintf( stderr, "Rowstride: %d, width: %d, height: %d, channels: %d\n", rowstride, width, height, channels );
+
+    
+  padding = ( mask_size - 1 ) / 2; 
+
+  image = gdk_pixbuf_get_pixels( GDK_PIXBUF( pixbuf ) );
+  temp_image = (guchar*) malloc( width * height * channels * sizeof( guchar ) );
+  memcpy( temp_image, image, width * height * channels * sizeof( guchar ) ); 
+  temp_pixel =(int*)  malloc( channels * sizeof( int ) );
+  for( y = padding; y < height - padding; y++ ) {
+
+    for( x = padding; x < width - padding; x++ ) {
+        
+      for( b = 0; b < channels; b++ ) 
+	temp_pixel[b] = 0;
+
+      for( l = 0; l < mask_size; l++ ) {
+
+	for( k = 0; k < mask_size; k++ ) {
+
+	  for( b = 0; b < channels; b++ ) 
+	    temp_pixel[b] += temp_image[ ( y + l - padding ) * rowstride
+					 + ( x + k - padding ) * channels + b ] * mask[ k + l *
+											mask_size ];
+
+	}
+
+       }
+
+      for( b = 0; b < channels; b++ ) {
+
+	new_value = temp_pixel[b] / mask_divisor; 
+	image[ y * rowstride + x * channels +  b ] = ( new_value > 255 ? 255
+						       : new_value < 0 ? 0 : new_value ); 
+
+      }
+
+    }
+
+  }
+
+
+  free( temp_image );
+  free( temp_pixel );
+
+}
+
+void image_tools_blur( GdkPixbuf* pixbuf ) {
+
+  int mask[] = { 1, 1, 1,
+		 1, 1, 1, 
+		 1, 1, 1 };
+
+  image_convolve( pixbuf, mask, 3, 9 );
+
+}
+
+void image_tools_sharpen( GdkPixbuf* pixbuf ) {
+
+  int mask[] = {-1, -1, -1,
+		-1, 9, -1, 
+		-1, -1, -1 };
+
+  image_convolve( pixbuf, mask, 3, 1 );
+
 }
 
 #endif

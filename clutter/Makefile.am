@@ -8,6 +8,8 @@ source_h = pixbuf.h util.h fonts.h \
           cltr-window.h           \
           cltr-photo-grid.h       \
           cltr-list.h             \
+          cltr-overlay.h          \
+          cltr-button.h           \
           cltr-scratch.h
 
 source_c = pixbuf.c util.c fonts.c \
@@ -19,6 +21,8 @@ source_c = pixbuf.c util.c fonts.c \
            cltr-window.c           \
            cltr-photo-grid.c  	   \
            cltr-list.c         	   \
+           cltr-overlay.c          \
+           cltr-button.c           \
            cltr-scratch.c
 
 AM_CFLAGS = @GCC_FLAGS@ @CLTR_CFLAGS@

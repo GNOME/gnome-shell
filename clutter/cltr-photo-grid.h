@@ -11,8 +11,6 @@ typedef struct CltrPhotoGridCell CltrPhotoGridCell;
 
 typedef enum CltrPhotoGridState
 {
-  CLTR_PHOTO_GRID_STATE_LOADING       ,
-  CLTR_PHOTO_GRID_STATE_LOAD_COMPLETE ,
   CLTR_PHOTO_GRID_STATE_BROWSE        ,
   CLTR_PHOTO_GRID_STATE_ZOOM_IN       ,
   CLTR_PHOTO_GRID_STATE_ZOOMED        ,
@@ -29,11 +27,28 @@ typedef enum CltrPhotoGridCellState
 } 
 CltrPhotoGridCellState;
 
+GMutex*
+cltr_photo_grid_mutex(CltrPhotoGrid *grid);
+
+void
+cltr_photo_grid_set_populated(CltrPhotoGrid *grid, gboolean populated);
 
 CltrPhotoGridCell*
 cltr_photo_grid_cell_new(CltrPhotoGrid *grid,
-			 Pixbuf           *pixb,
-			 const gchar      *filename);
+			 Pixbuf           *pixb);
+
+Pixbuf*
+cltr_photo_grid_cell_pixbuf(CltrPhotoGridCell *cell);
+
+CltrPhotoGridCell*
+cltr_photo_grid_get_active_cell(CltrPhotoGrid *grid);
+
+void
+cltr_photo_grid_set_active_cell(CltrPhotoGrid *grid, CltrPhotoGridCell *cell);
+
+CltrPhotoGridCell*
+cltr_photo_grid_get_first_cell(CltrPhotoGrid *grid);
+
 
 void
 cltr_photo_grid_append_cell(CltrPhotoGrid     *grid,

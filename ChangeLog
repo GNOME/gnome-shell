@@ -1,3 +1,41 @@
+2005-04-22  mallum,,,  <mallum@openedhand.com>
+
+	* clutter/Makefile.am:
+	* clutter/cltr-button.c:
+	* clutter/cltr-button.h:
+	* clutter/cltr-core.c: (cltr_init):
+	* clutter/cltr-overlay.c:
+	* clutter/cltr-overlay.h:
+	* clutter/cltr-photo-grid.c: (cltr_photo_grid_handle_xevent),
+	(cltr_photo_grid_cell_new), (ctrl_photo_grid_get_zoomed_coords),
+	(cell_is_offscreen), (cltr_photo_grid_idle_cb),
+	(cltr_photo_grid_navigate), (cltr_photo_grid_activate_cell),
+	(cltr_photo_grid_populate), (cltr_photo_grid_update_visual_state),
+	(cltr_photo_grid_paint), (cltr_photo_grid_show),
+	(cltr_photo_grid_set_fps), (cltr_photo_grid_get_fps),
+	(cltr_photo_grid_set_anim_steps), (cltr_photo_grid_get_anim_steps),
+	(cltr_photo_grid_new):
+	Fix up grid so external prog can load images.	
+	* clutter/cltr-photo-grid.h:
+	* clutter/cltr-texture.c: (cltr_texture_realize),
+	(cltr_texture_new):
+	* clutter/cltr-texture.h:
+	* clutter/cltr-window.c: (cltr_window_set_fullscreen):
+	* clutter/cltr.h:
+	* clutter/pixbuf.c: (pixbuf_scale_down), (ConvolveImage),
+	(GaussianBlurImage):
+	* clutter/pixbuf.h:
+	New experimental Methods
+	* configure.ac:
+	* examples/Makefile.am:
+	* examples/photos.c:
+	* examples/player.c:
+	Add new examples
+	* gst/Makefile.am:
+	* gst/cltrimagesink.c:
+	* gst/cltrimagesink.h:
+	Add initial crusty ( broken ) gst stuff
+
 2005-04-13  mallum,,,  <mallum@openedhand.com>
 
 	* bootstrap-autotools.sh:

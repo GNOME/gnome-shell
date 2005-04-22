@@ -149,6 +149,11 @@ cltr_window_set_fullscreen(CltrWindow *win)
 		  atom_WINDOW_STATE, XA_ATOM, 32,
 		  PropModeReplace,
 		  (unsigned char *)&atom_WINDOW_STATE_FULLSCREEN, 1);
+
+  /* 
+    XF86VidModeSwitchToMode (GLWin.dpy, GLWin.screen, &GLWin.deskMode);
+    XF86VidModeSetViewPort (GLWin.dpy, GLWin.screen, 0, 0);
+  */
 }
 
 

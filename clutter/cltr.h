@@ -49,7 +49,8 @@ CltrRect;
 #include "cltr-events.h"
 #include "cltr-widget.h"
 #include "cltr-window.h"
-
+#include "cltr-overlay.h"
+#include "cltr-button.h"
 #include "cltr-photo-grid.h"
 
 #endif
