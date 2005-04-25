@@ -1,15 +1,19 @@
-# metacity eesti tõlge.
-# Copyright (C) 2004 The Free Software Foundation
+# Metacity eesti tõlge.
+# Estonian translation of Metacity
+# 
+# Copyright (C) 2004-2005 The Free Software Foundation
 # This file is distributed under the same license as the metacity package.
+# 
 # Tõivo Leedjärv <toivo@linux.ee>, 2004.
+# Ivar Smolin <okul@linux.ee>, 2005
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: gnome-et@linux.ee\n"
 "POT-Creation-Date: 2005-02-08 15:29+0100\n"
-"PO-Revision-Date: 2004-03-27 20:12+0300\n"
-"Last-Translator: Tõivo Leedjärv <toivo@linux.ee>\n"
+"PO-Revision-Date: 2005-04-25 09:16+0300\n"
+"Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -61,7 +65,7 @@ msgstr ""
 #: src/display.c:313
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr ""
+msgstr "Tõrge X Window System'i kuva '%s' avamisel\n"
 
 #: src/errors.c:231
 #, c-format
@@ -122,6 +126,8 @@ msgid ""
 "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
 "display=DISPLAY] [--replace] [--version]\n"
 msgstr ""
+"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FAILINIMI] [--"
+"display=KUVA] [--replace] [--version]\n"
 
 #: src/main.c:76
 #, c-format
@@ -136,7 +142,7 @@ msgstr ""
 #: src/main.c:443
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
-msgstr ""
+msgstr "Tõrge teemadekataloogi skannimisel: %s\n"
 
 #: src/main.c:459
 #, c-format
@@ -147,7 +153,7 @@ msgstr ""
 #: src/main.c:521
 #, c-format
 msgid "Failed to restart: %s\n"
-msgstr ""
+msgstr "Tõrge taaskäivitamisel: %s\n"
 
 #: src/menu.c:54
 msgid "Mi_nimize"
@@ -197,11 +203,11 @@ msgstr "Ainult _sellel tööalal"
 
 #: src/menu.c:68
 msgid "Move to Workspace _Left"
-msgstr "Tõsta _vasemale tööalale"
+msgstr "Tõsta _vasakpoolsele tööalale"
 
 #: src/menu.c:69
 msgid "Move to Workspace R_ight"
-msgstr "Tõsta pa_remale tööalale"
+msgstr "Tõsta pa_rempoolsele tööalale"
 
 #: src/menu.c:70
 msgid "Move to Workspace _Up"
@@ -2139,7 +2145,7 @@ msgstr ""
 
 #: src/theme-viewer.c:70
 msgid "/_Windows"
-msgstr ""
+msgstr "/_Aknad"
 
 #: src/theme-viewer.c:71
 msgid "/Windows/tearoff"
@@ -2147,7 +2153,7 @@ msgstr ""
 
 #: src/theme-viewer.c:72
 msgid "/Windows/_Dialog"
-msgstr ""
+msgstr "/Aknad/_Dialoog"
 
 #: src/theme-viewer.c:73
 msgid "/Windows/_Modal dialog"
@@ -2204,7 +2210,7 @@ msgstr ""
 #: src/theme-viewer.c:324
 #, c-format
 msgid "Fake menu item %d\n"
-msgstr ""
+msgstr "Võltsitud menüüpunkt %d\n"
 
 #: src/theme-viewer.c:358
 msgid "Border-only window"
@@ -2216,15 +2222,15 @@ msgstr ""
 
 #: src/theme-viewer.c:377
 msgid "Normal Application Window"
-msgstr ""
+msgstr "Tavaline rakenduseaken"
 
 #: src/theme-viewer.c:382
 msgid "Dialog Box"
-msgstr ""
+msgstr "Dialoogikast"
 
 #: src/theme-viewer.c:387
 msgid "Modal Dialog Box"
-msgstr ""
+msgstr "Modaalne dialoogikast"
 
 #: src/theme-viewer.c:392
 msgid "Utility Palette"
@@ -2255,7 +2261,7 @@ msgstr ""
 #: src/theme-viewer.c:810
 #, c-format
 msgid "Error loading theme: %s\n"
-msgstr ""
+msgstr "Viga teema laadimisel: %s\n"
 
 #: src/theme-viewer.c:816
 #, c-format
@@ -2565,12 +2571,12 @@ msgstr ""
 #: src/theme.c:5055 src/theme.c:5117
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr ""
+msgstr "Konstant \"%s\" on juba kirjeldatud"
 
 #: src/util.c:93
 #, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr ""
+msgstr "Tõrge silumislogi avamisel: %s\n"
 
 #: src/util.c:103
 #, c-format
@@ -2588,15 +2594,15 @@ msgstr "Aknahaldur: "
 
 #: src/util.c:349
 msgid "Bug in window manager: "
-msgstr ""
+msgstr "Viga aknahalduris: "
 
 #: src/util.c:378
 msgid "Window manager warning: "
-msgstr ""
+msgstr "Aknahalduri hoiatus: "
 
 #: src/util.c:402
 msgid "Window manager error: "
-msgstr ""
+msgstr "Aknahalduri viga: "
 
 #: src/window-props.c:162
 #, c-format
@@ -2646,26 +2652,3 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 
-#~ msgid "Put on _All Workspaces"
-#~ msgstr "Aseta kõikidele t_ööaladele"
-
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "Vali, kuidas aknaid fokuseeritakse"
-
-#~ msgid "Window Focus"
-#~ msgstr "Akende fookus"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "_Klõps fokuseerib"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "Fokuseerimine:"
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "Akende fookuse sätted"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "_Osutamine fokuseerib"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "_Tõsta fokuseeritud aken esile"
