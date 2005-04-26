@@ -1,3 +1,31 @@
+2005-04-26  mallum,,,  <mallum@openedhand.com>
+
+	* clutter/Makefile.am:
+	* clutter/cltr-core.c: (cltr_init):
+	* clutter/cltr-events.c: (cltr_events_init), (cltr_main_loop):
+	* clutter/cltr-photo-grid.c:
+	* clutter/cltr-private.h:
+	* clutter/cltr-scratch.c: (cltr_scratch_handle_xevent),
+	(cltr_scratch_paint):
+	* clutter/cltr-texture.c: (cltr_texture_render_to_gl_quad),
+	(init_tiles), (cltr_texture_unrealize), (cltr_texture_realize),
+	(cltr_texture_new), (cltr_texture_no_tile_new),
+	(cltr_texture_get_pixbuf):
+	* clutter/cltr-texture.h:
+	* clutter/cltr-video.c:
+	* clutter/cltr-video.h:
+	* clutter/cltr-widget.c: (cltr_widget_queue_paint):
+	* clutter/cltr.h:
+	* examples/Makefile.am:
+	* examples/player.c:
+	* gst/cltrimagesink.c: (gst_cltrimagesink_fixate),
+	(gst_cltrimagesink_getcaps), (gst_cltrimagesink_sink_link),
+	(gst_cltrimagesink_change_state), (gst_cltrimagesink_chain),
+	(gst_cltrimagesink_set_property), (gst_cltrimagesink_get_property),
+	(gst_cltrimagesink_finalize), (gst_cltrimagesink_class_init):
+	* gst/cltrimagesink.h:
+	Initial go at very hacky gst video widget
+
 2005-04-22  mallum,,,  <mallum@openedhand.com>
 
 	* clutter/Makefile.am:

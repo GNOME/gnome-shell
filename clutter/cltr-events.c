@@ -137,7 +137,7 @@ cltr_events_init()
   g_source_attach (source, gmain_context);
   g_source_unref (source);
 
-  ctx->internal_event_q = g_queue_new();  
+  ctx->internal_event_q = g_async_queue_new();  
 }
 
 void
@@ -155,12 +155,12 @@ cltr_main_loop()
 
   while (TRUE)
     {
-      if (!g_queue_is_empty (ctx->internal_event_q))
+      if (g_async_queue_length (ctx->internal_event_q))
 	{
 	  CltrWindow *win    = CLTR_WINDOW(ctx->window);
 
 	  /* Empty the queue  */
-	  while (g_queue_pop_head(ctx->internal_event_q) != NULL) ;
+	  while (g_async_queue_try_pop(ctx->internal_event_q) != NULL) ;
 
 	  /* Repaint everything visible from window down - URG. 
            * GL workings make it difficult to paint single part with

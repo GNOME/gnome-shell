@@ -37,9 +37,9 @@ struct _GstCltrimageSink
   GMutex *pool_lock;
   GSList *image_pool;
 
-  GstCaps *caps;
+  GstCaps     *caps;
+  GAsyncQueue *queue; 
 
-  CltrWidget *widget;
 };
 
 struct _GstCltrimageSinkClass {
@@ -51,6 +51,7 @@ struct _GstCltrimageSinkClass {
 };
 
 GType gst_cltrimagesink_get_type(void); /* XXX needed ? */
+
 
 G_END_DECLS
 

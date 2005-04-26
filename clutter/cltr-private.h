@@ -65,11 +65,13 @@ struct ClutterMainContext
   GLXContext      gl_context;
   
   CltrWidget     *window;
-  GQueue         *internal_event_q;
+  GAsyncQueue    *internal_event_q;
 };
 
 ClutterMainContext CltrCntx;
 
 #define CLTR_CONTEXT() &CltrCntx
+
+#define FPS_TO_TIMEOUT(t) (1000/(t))
 
 #endif

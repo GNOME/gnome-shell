@@ -16,6 +16,8 @@
 
 #include <glib.h>
 
+#include <gst/gconf/gconf.h>
+
 #include "pixbuf.h"
 #include "fonts.h"
 
@@ -33,6 +35,8 @@ typedef struct CltrRect
   int x, y, width, height;
 }
 CltrRect;
+
+typedef struct CltrTexture CltrTexture;
 
 #define cltr_rect_x1(r) ((r).x)
 #define cltr_rect_y1(r) ((r).y)
@@ -52,5 +56,6 @@ CltrRect;
 #include "cltr-overlay.h"
 #include "cltr-button.h"
 #include "cltr-photo-grid.h"
+#include "cltr-video.h"
 
 #endif

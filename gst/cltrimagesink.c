@@ -30,7 +30,7 @@
 /* Debugging category */
 #include <gst/gstinfo.h>
 
-GST_DEBUG_CATEGORY_STATIC (gst_debug_cltrimagesink);
+GST_DEBUG_CATEGORY_STATIC (gst_debug_cltrimagesink); 
 
 #define GST_CAT_DEFAULT gst_debug_cltrimagesink
 
@@ -70,7 +70,7 @@ static guint gst_cltrimagesink_signals[LAST_SIGNAL] = { 0 };
 enum
 {
   ARG_0,
-  ARG_WIDGET,
+  ARG_QUEUE,
   ARG_SYNCHRONOUS,
   ARG_SIGNAL_HANDOFFS
       /* FILL ME */
@@ -103,14 +103,21 @@ Element stuff
 =================
 */
 
+#define SWAP_4(x) ( ((x) << 24) | \
+         (((x) << 16) & 0x00ff0000) | \
+         (((x) << 8) & 0x0000ff00) | \
+         0x000000ff )
+
+
+
+
+
 static GstCaps *
 gst_cltrimagesink_fixate (GstPad        *pad, 
 			  const GstCaps *caps)
 {
   GstStructure *structure;
   GstCaps *newcaps;
-
-  DBG("mark");
 
   if (gst_caps_get_size (caps) > 1)
     return NULL;
@@ -153,9 +160,11 @@ gst_cltrimagesink_getcaps (GstPad * pad)
 			     "bpp",        G_TYPE_INT, 24,
 			     "depth",      G_TYPE_INT, 24,
 			     "endianness", G_TYPE_INT, G_BIG_ENDIAN,
-			     "red_mask",   G_TYPE_INT,   0xff0000,
-			     "green_mask", G_TYPE_INT, 0x00ff00,
-			     "blue_mask",  G_TYPE_INT,  0xff,
+			     /*
+			     "red_mask",   G_TYPE_INT, 0xff0000,
+			     "green_mask", G_TYPE_INT, 0x0000ff,
+			     "blue_mask",  G_TYPE_INT, 0x00ff00,
+			     */
 			     "width",      GST_TYPE_INT_RANGE, 1, G_MAXINT,
 			     "height",     GST_TYPE_INT_RANGE, 1, G_MAXINT,
 			     "framerate",  GST_TYPE_DOUBLE_RANGE, 1.0, 100.0, NULL);
@@ -171,8 +180,6 @@ gst_cltrimagesink_sink_link (GstPad * pad, const GstCaps * caps)
   gboolean ret;
   GstStructure *structure;
   Pixbuf *pixb = NULL;
-
-  DBG("mark");
 
   cltrimagesink = GST_CLTRIMAGESINK (gst_pad_get_parent (pad));
 
@@ -220,7 +227,7 @@ gst_cltrimagesink_sink_link (GstPad * pad, const GstCaps * caps)
       GST_VIDEOSINK_HEIGHT (cltrimagesink));
 
   /* Is this the right place ? */
-  cltrimagesink->texture = cltr_texture_new(pixb);
+  cltrimagesink->texture = cltr_texture_no_tile_new(pixb);
 
   pixbuf_unref(pixb);
 
@@ -249,7 +256,6 @@ gst_cltrimagesink_change_state (GstElement * element)
       */
       break;
     case GST_STATE_READY_TO_PAUSED:
-      printf ("ready to paused\n");
       cltrimagesink->time = 0;
       break;
     case GST_STATE_PAUSED_TO_PLAYING:
@@ -283,8 +289,6 @@ gst_cltrimagesink_chain (GstPad * pad, GstData * data)
   g_return_if_fail (GST_IS_PAD (pad));
   g_return_if_fail (buf != NULL);
 
-  DBG("mark");
-
   cltrimagesink = GST_CLTRIMAGESINK (gst_pad_get_parent (pad));
  
  if (GST_IS_EVENT (data)) 
@@ -302,8 +306,6 @@ gst_cltrimagesink_chain (GstPad * pad, GstData * data)
 
  /* If this buffer has been allocated using our buffer management we 
   * simply put the ximage which is in the PRIVATE pointer */
-
- DBG("time is is %li", cltrimagesink->time);
 
 #if 0
  if (GST_BUFFER_FREE_DATA_FUNC (buf) == gst_cltrimagesink_buffer_free)
@@ -323,37 +325,46 @@ gst_cltrimagesink_chain (GstPad * pad, GstData * data)
 	 /* need to copy the data into out pixbuf here */
 	 Pixbuf *pixb = NULL;
 
+	 cltr_texture_lock(cltrimagesink->texture);
+
 	 pixb = cltr_texture_get_pixbuf(cltrimagesink->texture);
 
 	 if (pixb)
-	   memcpy (pixb->data,
-		   GST_BUFFER_DATA (buf),
-		   MIN (GST_BUFFER_SIZE (buf), 
-			pixb->bytes_per_line * pixb->width));
+	   {
+	     /*
+	     memcpy (pixb->data,
+		     GST_BUFFER_DATA (buf),
+		     MIN (GST_BUFFER_SIZE (buf), 
+			  pixb->bytes_per_line * pixb->width));
+	     */
 
-	 cltr_texture_resync_pixbuf(cltrimagesink->texture);
+	     /* EVIL */
 
-	 /*
-	 cltr_texture_render_to_gl_quad(cltrimagesink->texture, 
-					0, 0, 320, 240); 
-	 */
-	 
+	     if (GST_BUFFER_SIZE (buf) >= pixb->width * pixb->height * 3)
+	       cltr_texture_force_rgb_data(cltrimagesink->texture,
+					   pixb->width,
+					   pixb->height,
+					   GST_BUFFER_DATA (buf));
 
-#if 0
-	 memcpy (cltrimagesink->cltrimage->data,
-		 GST_BUFFER_DATA (buf),
-		 MIN (GST_BUFFER_SIZE (buf), 
-		      cltrimagesink->cltrimage->size));
-	 
-	 gst_cltrimagesink_ximage_put (cltrimagesink, 
-				       cltrimagesink->cltrimage);
-#endif
+	   }
+
+	 cltr_texture_unlock(cltrimagesink->texture);
+
+	 if (cltrimagesink->queue)
+	   {
+	     CltrVideoSignal *signal;
+
+	     signal = g_new0 (CltrVideoSignal, 1);
+	     signal->signal_id = CLTR_VIDEO_ASYNC_TEXTURE;
+	     signal->signal_data.texture.ref = cltrimagesink->texture;
+	     
+	     g_async_queue_push(cltrimagesink->queue, 
+				(gpointer)signal);
+	   }
        } 
      else 
        {                  
 	    /* No image available. Something went wrong during capsnego ! */
-
-	 DBG("MARK, texture == NULL");
 
 	 gst_buffer_unref (buf);
 	 GST_ELEMENT_ERROR (cltrimagesink, CORE, NEGOTIATION, (NULL),
@@ -406,8 +417,8 @@ gst_cltrimagesink_set_property (GObject      *object,
 
   switch (prop_id) 
     {
-    case ARG_WIDGET:
-      cltrimagesink->widget = g_value_get_pointer (value);
+    case ARG_QUEUE:
+      cltrimagesink->queue = g_value_get_pointer (value);
       break;
       /*
     case ARG_SIGNAL_HANDOFFS:
@@ -434,8 +445,8 @@ gst_cltrimagesink_get_property (GObject    *object,
 
   switch (prop_id) 
     {
-    case ARG_WIDGET:
-      g_value_set_pointer (value, cltrimagesink->widget);
+    case ARG_QUEUE:
+      g_value_set_pointer (value, cltrimagesink->queue);
       break;
       /*
     case ARG_SIGNAL_HANDOFFS:
@@ -472,8 +483,6 @@ gst_cltrimagesink_finalize (GObject *object)
 static void
 gst_cltrimagesink_init (GstCltrimageSink * cltrimagesink)
 {
-  DBG("mark");
-
   GST_VIDEOSINK_PAD (cltrimagesink) 
     = gst_pad_new_from_template ( gst_static_pad_template_get(&gst_cltrimagesink_sink_template_factory), "sink");
 
@@ -536,10 +545,10 @@ gst_cltrimagesink_class_init (GstCltrimageSinkClass * klass)
 
   /* TOGO */
   g_object_class_install_property (gobject_class, 
-				   ARG_WIDGET,
-				   g_param_spec_pointer ("widget", 
-							"Widget", 
-							"Cltr drawable widget",
+				   ARG_QUEUE,
+				   g_param_spec_pointer ("queue", 
+							"Queue", 
+							"Async Signal Queue",
 							 G_PARAM_READWRITE));
 
   /* TOGO */

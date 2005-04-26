@@ -32,8 +32,8 @@ cltr_texture_render_to_gl_quad(CltrTexture *texture,
 			       int          x2, 
 			       int          y2)
 {
-  int   qx1, qx2, qy1, qy2;
-  int   qwidth, qheight;
+  int   qx1 = 0, qx2 = 0, qy1 = 0, qy2 = 0;
+  int   qwidth = 0, qheight = 0;
   int   x, y, i =0, lastx = 0, lasty = 0;
   float tx, ty;
 
@@ -42,6 +42,29 @@ cltr_texture_render_to_gl_quad(CltrTexture *texture,
 
   if (texture->tiles == NULL)
     cltr_texture_realize(texture);
+
+  if (!texture->tiled)
+    {
+      glBindTexture(GL_TEXTURE_2D, texture->tiles[0]);
+
+      tx = (float) texture->pixb->width  / texture->width;
+      ty = (float) texture->pixb->height / texture->height;
+
+      qx1 = x1;
+      qx2 = x2;
+      
+      qy1 = y1;
+      qy2 = y2;
+      
+      glBegin (GL_QUADS);
+      glTexCoord2f (tx, ty);   glVertex2i   (qx2, qy2);
+      glTexCoord2f (0,  ty);   glVertex2i   (qx1, qy2);
+      glTexCoord2f (0,  0);    glVertex2i   (qx1, qy1);
+      glTexCoord2f (tx, 0);    glVertex2i   (qx2, qy1);
+      glEnd ();	
+      
+      return;
+    }
 
   for (x=0; x < texture->n_x_tiles; x++)
     {
@@ -239,10 +262,15 @@ cltr_texture_unrealize(CltrTexture *texture)
   if (texture->tiles == NULL)
     return;
 
-  glDeleteTextures(texture->n_x_tiles * texture->n_y_tiles, texture->tiles);
+  if (!texture->tiled)
+    glDeleteTextures(1, texture->tiles);
+  else
+    glDeleteTextures(texture->n_x_tiles * texture->n_y_tiles, texture->tiles);
+
   g_free(texture->tiles);
 
   texture->tiles = NULL;
+
 }
 
 void
@@ -250,8 +278,41 @@ cltr_texture_realize(CltrTexture *texture)
 {
   int        x, y, i = 0;
 
-  texture->tiles = g_new (GLuint, texture->n_x_tiles * texture->n_y_tiles);
-  glGenTextures (texture->n_x_tiles * texture->n_y_tiles, texture->tiles);
+  if (!texture->tiled)
+    {
+      if (!texture->tiles)
+	{
+	  texture->tiles = g_new (GLuint, 1);
+	  glGenTextures (1, texture->tiles);
+	}
+
+      glBindTexture(GL_TEXTURE_2D, texture->tiles[0]);
+	
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+      glTexEnvi      (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,   GL_DECAL);
+      
+      glTexImage2D(GL_TEXTURE_2D, 0, /*GL_COMPRESSED_RGBA_ARB*/ GL_RGBA, 
+		   texture->width,
+		   texture->height,
+		   0, GL_RGBA, 
+		   GL_UNSIGNED_INT_8_8_8_8,
+		   NULL);
+
+      CLTR_GLERR();
+
+      cltr_texture_sync_pixbuf(texture);
+
+      return;
+    }
+
+  if (!texture->tiles)
+    {
+      texture->tiles = g_new (GLuint, texture->n_x_tiles * texture->n_y_tiles);
+      glGenTextures (texture->n_x_tiles * texture->n_y_tiles, texture->tiles);
+    }
 
   for (x=0; x < texture->n_x_tiles; x++)
     for (y=0; y < texture->n_y_tiles; y++)
@@ -259,41 +320,40 @@ cltr_texture_realize(CltrTexture *texture)
 	Pixbuf *pixtmp;
 	int src_h, src_w;
 	
-
-
 	src_w = texture->tile_x_size[x];
 	src_h = texture->tile_y_size[y];
-
+	
 	/*
-	CLTR_DBG("%i+%i, %ix%i to %ix%i, waste %ix%i",
-		 texture->tile_x_position[x],
-		 texture->tile_y_position[y],
-		 texture->tile_x_size[x], 
-		 texture->tile_y_size[y],
-		 texture->width,
-		 texture->height,
-		 texture->tile_x_waste[x], 
-		 texture->tile_y_waste[y]);
+	  CLTR_DBG("%i+%i, %ix%i to %ix%i, waste %ix%i",
+	  texture->tile_x_position[x],
+	  texture->tile_y_position[y],
+	  texture->tile_x_size[x], 
+	  texture->tile_y_size[y],
+	  texture->width,
+	  texture->height,
+	  texture->tile_x_waste[x], 
+	  texture->tile_y_waste[y]);
 	*/
-
+	
 	/* Only break the pixbuf up if we have multiple tiles */
-	if (texture->n_x_tiles > 1 && texture->n_y_tiles >1)
-	  {
-	    pixtmp = pixbuf_new(texture->tile_x_size[x], 
-				texture->tile_y_size[y]);
-
-	    pixbuf_copy(texture->pixb, 
-			pixtmp,
-			texture->tile_x_position[x],
-			texture->tile_y_position[y],
-			texture->tile_x_size[x], 
-			texture->tile_y_size[y],
-			0,0);
-	  }
-	else pixtmp = texture->pixb;
-
+	/* if (texture->n_x_tiles > 1 && texture->n_y_tiles >1) */
+	{
+	  pixtmp = pixbuf_new(texture->tile_x_size[x], 
+			      texture->tile_y_size[y]);
+	  
+	  pixbuf_copy(texture->pixb, 
+		      pixtmp,
+		      texture->tile_x_position[x],
+		      texture->tile_y_position[y],
+		      texture->tile_x_size[x], 
+		      texture->tile_y_size[y],
+		      0,0);
+	}
+	/* else pixtmp = texture->pixb; */
+	
+	
 	glBindTexture(GL_TEXTURE_2D, texture->tiles[i]);
-
+	
 	CLTR_GLERR();
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -311,12 +371,16 @@ cltr_texture_realize(CltrTexture *texture)
 
 	CLTR_GLERR();
 
-	if (pixtmp != texture->pixb)
-	  pixbuf_unref(pixtmp);
-	
+	CLTR_DBG("pixtmp is %ix%i texture %ix%i\n", 
+		 pixtmp->width, pixtmp->height, 
+		 texture->width, texture->height); 
+
+	pixbuf_unref(pixtmp);
+
 	i++;
 
       }
+
 }
 
 CltrTexture*
@@ -324,23 +388,54 @@ cltr_texture_new(Pixbuf *pixb)
 {
   CltrTexture *texture;
 
-
   CLTR_MARK();
 
   texture = g_malloc0(sizeof(CltrTexture));
 
   texture->width  = pixb->width;
   texture->height = pixb->height;
+  texture->tiled  = TRUE;
 
   /* maybe we should copy the pixbuf - a change to refed one would explode */
   texture->pixb   = pixb;
+  texture->mutex  = g_mutex_new();
 
   pixbuf_ref(pixb);
+
+
 
   init_tiles (texture);
 
   return texture;
 }
+
+CltrTexture*
+cltr_texture_no_tile_new(Pixbuf *pixb)
+{
+  CltrTexture *texture;
+
+  CLTR_MARK();
+
+  texture = g_malloc0(sizeof(CltrTexture));
+  
+  texture->tiled  = FALSE;
+  texture->width  = next_p2(pixb->width);
+  texture->height = next_p2(pixb->height);
+
+  if (!can_create (texture->width, texture->height))
+    {
+      free(texture);
+      return NULL;
+    }
+
+  texture->pixb   = pixb;
+  texture->mutex  = g_mutex_new();
+
+  pixbuf_ref(pixb);
+
+  return texture;
+}
+
 
 Pixbuf*
 cltr_texture_get_pixbuf(CltrTexture* texture)
@@ -349,7 +444,62 @@ cltr_texture_get_pixbuf(CltrTexture* texture)
 }
 
 void
-cltr_texture_resync_pixbuf(CltrTexture* texture)
+cltr_texture_lock(CltrTexture* texture)
 {
-  cltr_texture_unrealize(texture);
+  g_mutex_lock(texture->mutex);
+}
+
+void
+cltr_texture_unlock(CltrTexture* texture)
+{
+  g_mutex_unlock(texture->mutex);
+}
+
+void
+cltr_texture_sync_pixbuf(CltrTexture* texture)
+{
+  if (texture->tiled)
+    {
+      cltr_texture_realize(texture);
+    }
+  else
+    {
+      glBindTexture(GL_TEXTURE_2D, texture->tiles[0]);
+
+      glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0,
+		       texture->pixb->width,
+		       texture->pixb->height,
+		       GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, 
+		       texture->pixb->data);
+    }
+}
+
+
+/*
+ * This is a nasty hack to work round me not figuring out 
+ * how to get RGBA data out of gstreamer in a format clutters
+ * GL setup can handle :(
+ *
+ * The good side is it probably speeds video playback up by
+ * avoiding copys of frame data. 
+ */
+void
+cltr_texture_force_rgb_data(CltrTexture *texture,
+			    int          width,
+			    int          height,
+			    int         *data)
+{
+  if (texture->tiled)
+    return;
+
+  if (!texture->tiles)
+    cltr_texture_realize(texture);
+    
+  glBindTexture(GL_TEXTURE_2D, texture->tiles[0]);
+
+  glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0,
+		   width, 
+		   height,
+		   GL_RGB, GL_UNSIGNED_BYTE,
+		   data);
 }

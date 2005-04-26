@@ -22,7 +22,7 @@
 
  */
 
-#define FPS_TO_TIMEOUT(t) (1000/(t))
+
 
 struct CltrPhotoGridCell
 {

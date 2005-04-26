@@ -3,7 +3,7 @@
 
 #include "cltr.h"
 
-typedef struct CltrTexture CltrTexture;
+
 
 struct CltrTexture
 {
@@ -11,11 +11,15 @@ struct CltrTexture
 
   int    width, height;
 
+  gboolean tiled;
+
   int     n_x_tiles, n_y_tiles;
   int    *tile_x_position, *tile_x_size, *tile_x_waste;
   int    *tile_y_position, *tile_y_size, *tile_y_waste;
 
   GLuint *tiles;
+
+  GMutex *mutex;
 
   gint    refcnt; 
 };
@@ -23,6 +27,9 @@ struct CltrTexture
 
 CltrTexture*
 cltr_texture_new(Pixbuf *pixb);
+
+CltrTexture*
+cltr_texture_no_tile_new(Pixbuf *pixb);
 
 void
 cltr_texture_unrealize(CltrTexture *texture);
@@ -41,7 +48,19 @@ Pixbuf*
 cltr_texture_get_pixbuf(CltrTexture* texture);
 
 void
-cltr_texture_resync_pixbuf(CltrTexture* texture);
+cltr_texture_lock(CltrTexture* texture);
+
+void
+cltr_texture_unlock(CltrTexture* texture);
+
+void
+cltr_texture_sync_pixbuf(CltrTexture* texture);
+
+void
+cltr_texture_force_rgb_data(CltrTexture *texture,
+			    int          width,
+			    int          height,
+			    int         *data);
 
 
 #endif

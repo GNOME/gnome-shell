@@ -101,7 +101,7 @@ cltr_widget_queue_paint(CltrWidget *widget)
 {
   ClutterMainContext *ctx = CLTR_CONTEXT();
 
-  g_queue_push_head (ctx->internal_event_q, (gpointer)widget);
+  g_async_queue_push (ctx->internal_event_q, (gpointer)widget);
 }
 
 gboolean

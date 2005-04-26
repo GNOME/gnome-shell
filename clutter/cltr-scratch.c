@@ -67,7 +67,7 @@ cltr_scratch_handle_xevent (CltrWidget *widget, XEvent *xev)
 }
 
 static void
-cltr_scratch_paint(CltrWidget *widget)
+cltr_scratch_paint_old(CltrWidget *widget)
 {
   CltrScratch *scratch = CLTR_SCRATCH(widget);
 
@@ -120,8 +120,10 @@ cltr_scratch_paint(CltrWidget *widget)
 
 
 static void
-cltr_scratch_paint_old(CltrWidget *widget)
+cltr_scratch_paint(CltrWidget *widget)
 {
+  CltrScratch *scratch = CLTR_SCRATCH(widget);
+  
   glPushMatrix();
 
   CLTR_MARK();
@@ -136,6 +138,15 @@ cltr_scratch_paint_old(CltrWidget *widget)
 	  widget->x + widget->width, 
 	  widget->y + widget->height);
 
+  glEnable(GL_TEXTURE_2D);
+
+  cltr_texture_render_to_gl_quad(scratch->tex,
+				 widget->x,
+				 widget->y,
+				 widget->x + widget->width ,
+				 widget->y + widget->height);
+
+  glDisable(GL_TEXTURE_2D);
 
   glDisable(GL_BLEND);
 

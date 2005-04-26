@@ -34,6 +34,8 @@ cltr_init(int *argc, char ***argv)
 
   XVisualInfo	       *vinfo;  
 
+  gst_init (argc, argv);
+
   if (!g_thread_supported ())
     g_thread_init (NULL);
   // XInitThreads ();
