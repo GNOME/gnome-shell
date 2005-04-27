@@ -5,8 +5,7 @@ struct CltrVideo
 {
   CltrWidget  widget;  
 
-  GstPlay     *play;
-  GstElement  *data_src, *video_sink, *audio_sink, *vis_element;
+  GstElement  *play, *data_src, *video_sink, *audio_sink, *vis_element;
 
   GAsyncQueue *queue;
 
@@ -82,9 +81,11 @@ cltr_video_got_time_tick (GstPlay   *play,
 			  gint64     time_nanos,
 			  CltrVideo *video)
 {
-  CltrVideoSignal *signal;
+
 
   /*
+  CltrVideoSignal *signal;
+
   signal = g_new0 (CltrVideoSignal, 1);
   signal->signal_id                      = CLTR_VIDEO_ASYNC_FOUND_TAG;
   signal->signal_data.found_tag.source   = source;
@@ -161,11 +162,14 @@ caps_set (GObject    *obj,
 	  GParamSpec *pspec, 
 	  CltrVideo  *video)
 {
+#if 0
   GstPad *pad = GST_PAD (obj);
   GstStructure *s;
 
   if (!GST_PAD_CAPS (pad))
     return;
+
+
 
   s = gst_caps_get_structure (GST_PAD_CAPS (pad), 0);
 
@@ -191,8 +195,10 @@ caps_set (GObject    *obj,
 
     got_video_size (bvw->priv->play, bvw->priv->video_width,
 		    bvw->priv->video_height, bvw);
+
   }
-  */
+#endif
+  
   /* and disable ourselves */
   //g_signal_handlers_disconnect_by_func (pad, caps_set, bvw);
 }
@@ -216,6 +222,91 @@ cltr_video_new(int width, int height)
 
   /* Creating the GstPlay object */
 
+  video->play = gst_element_factory_make ("playbin", "play");
+  if (!video->play) {
+    g_error ("Could not make playbin element");
+    /* XXX Error */
+    return NULL;
+  }
+
+  video->audio_sink = gst_gconf_get_default_audio_sink ();
+
+  if (!GST_IS_ELEMENT (video->audio_sink))
+    g_error ("Could not get default audio sink from GConf");
+  
+  video->video_sink = gst_element_factory_make ("cltrimagesink", "cltr-output");
+
+  if (!GST_IS_ELEMENT (video->video_sink))
+    g_error ("Could not get clutter video sink");
+
+#if 0
+  sig1 = g_signal_connect (video_sink, "error", G_CALLBACK (out_error), err);
+  sig2 = g_signal_connect (audio_sink, "error", G_CALLBACK (out_error), err);
+  if (gst_element_set_state (video_sink,
+			     GST_STATE_READY) != GST_STATE_SUCCESS ||
+      gst_element_set_state (audio_sink,
+			     GST_STATE_READY) != GST_STATE_SUCCESS) {
+    if (err && !*err) {
+      g_set_error (err, 0, 0,
+		   "Failed to intialize %s output; check your configuration",
+		   GST_STATE (video_sink) == GST_STATE_NULL ?
+		   "video" : "audio");
+    }
+    gst_object_unref (GST_OBJECT (video_sink));
+    gst_object_unref (GST_OBJECT (audio_sink));
+    g_object_unref (G_OBJECT (bvw));
+    return NULL;
+  }
+  /* somehow, alsa hangs? */
+  gst_element_set_state (video->audio_sink, GST_STATE_NULL);
+  g_signal_handler_disconnect (video->video_sink, sig1);
+  g_signal_handler_disconnect (video->audio_sink, sig2);
+#endif
+  g_object_set (G_OBJECT (video->play), "video-sink",
+		video->video_sink, NULL);
+  g_object_set (G_OBJECT (video->play), "audio-sink",
+		video->audio_sink, NULL);
+
+  /* Needed ? */
+#if 0
+  g_signal_connect (GST_PAD_REALIZE (gst_element_get_pad (audio_sink, "sink")),
+		    "fixate", G_CALLBACK (cb_audio_fixate), (gpointer) bvw);
+#endif
+
+  g_signal_connect (G_OBJECT (video->play), "eos",
+		     G_CALLBACK (cltr_video_got_eos), (gpointer) video);
+  /*
+  g_signal_connect (G_OBJECT (video->play), "state-change",
+		    G_CALLBACK (state_change), (gpointer) video);
+  */
+  g_signal_connect (G_OBJECT (video->play), "found_tag",
+		    G_CALLBACK (cltr_video_got_found_tag), (gpointer) video);
+
+  /*
+  g_signal_connect (G_OBJECT (video->play), "error",
+		    G_CALLBACK (got_error), (gpointer) video);
+
+  g_signal_connect (G_OBJECT (video->play), "buffering",
+		    G_CALLBACK (got_buffering), (gpointer) video);
+
+  g_signal_connect (G_OBJECT (video->play), "notify::source",
+		    G_CALLBACK (got_source), (gpointer) video);
+  g_signal_connect (G_OBJECT (video->play), "notify::stream-info",
+		    G_CALLBACK (stream_info_set), (gpointer) video);
+  g_signal_connect (G_OBJECT (video->play), "group-switch",
+		    G_CALLBACK (group_switch), (gpointer) video);
+  g_signal_connect (G_OBJECT (video->play), "got-redirect",
+		    G_CALLBACK (got_redirect), (gpointer) video);
+  */
+
+  video->queue = g_async_queue_new ();
+
+  gst_element_set(video->video_sink, "queue", video->queue, NULL);
+
+
+  return CLTR_WIDGET(video);
+
+#if 0
   video->play = gst_play_new (&error);
 
   if (error) 
@@ -275,7 +366,7 @@ cltr_video_new(int width, int height)
   g_signal_connect (G_OBJECT (video->video_sink), "notify::caps",
 		    G_CALLBACK (caps_set), video);
 
-
+#endif
   /*
   g_object_set (G_OBJECT (video->play), "volume",
 		(gdouble) (1. *  0 / 100), NULL);
@@ -336,8 +427,9 @@ cltr_video_idler (CltrVideo *video)
 gboolean
 cltr_video_set_source(CltrVideo *video, char *location)
 {
-  if (!gst_play_set_location (video->play, location))
-    return FALSE;
+  /* if (!gst_play_set_location (video->play, location)) */
+
+  g_object_set (G_OBJECT (video->play), "uri", location, NULL);
 
   return TRUE;
 }
@@ -390,10 +482,23 @@ cltr_video_paint(CltrWidget *widget)
   glPushMatrix();
 
   if (video->frame_texture
+      /*
       && video->video_height
-      && video->video_width)
+      && video->video_width 
+      */)
     {
       int dis_x, dis_y, dis_height, dis_width;
+
+      /* Hack */
+
+      if (!video->video_height || !video->video_width )
+	{
+	  Pixbuf *pixb = cltr_texture_get_pixbuf(video->frame_texture);
+
+	  video->video_height = pixb->height;
+	  video->video_width = pixb->width;
+	}
+
 
       if (video->video_width > video->video_height)
 	{
@@ -407,6 +512,10 @@ cltr_video_paint(CltrWidget *widget)
       glColor4f(1.0, 1.0, 1.0, 1.0);
 
       glEnable(GL_TEXTURE_2D);
+
+      glDisable(GL_BLEND); 
+
+      glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
       cltr_texture_lock(video->frame_texture);
 

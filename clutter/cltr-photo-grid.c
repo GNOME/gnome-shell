@@ -1,29 +1,6 @@
 #include "cltr-photo-grid.h"
 #include "cltr-private.h"
 
-/* 
-   TODO
-
-   - image cache !!
-
-   - change idle_cb to timeouts, reduce tearing + inc interactivity on
-     image load
-
-   - Split events into seperate file ( break up ctrl.c )
-   
-   - offset zoom a little to give border around picture grid
-
-   - figure out highlighting selected cell
-
-   - tape on pictures ?
-
-   - tidy this code here + document !
-     - fix threads, lower priority ?
-
- */
-
-
-
 struct CltrPhotoGridCell
 {
   Pixbuf      *pixb;
@@ -432,88 +409,6 @@ cltr_photo_grid_activate_cell(CltrPhotoGrid *grid)
     }
 }			      
 
-#if 0
-gpointer
-cltr_photo_grid_populate(gpointer data) 
-{
-  CltrPhotoGrid *grid = (CltrPhotoGrid *)data;
-  GDir             *dir;
-  GError           *error;
-  const gchar      *entry = NULL;
-  gchar            *fullpath = NULL;
-  int               n_pixb = 0, i =0;
-  ClutterFont      *font = NULL;
-  PixbufPixel       font_col = { 255, 255, 255, 255 };
-
-  font = font_new("Sans Bold 96");
-
-  if ((dir = g_dir_open (grid->img_path, 0, &error)) == NULL)
-    {
-      /* handle this much better */
-      fprintf(stderr, "failed to open '%s'\n", grid->img_path);
-      return NULL;
-    }
-
-  while ((entry = g_dir_read_name (dir)) != NULL)
-    {
-      if (!strcasecmp(&entry[strlen(entry)-4], ".png")
-	  || !strcasecmp(&entry[strlen(entry)-4], ".jpg")
-	  || !strcasecmp(&entry[strlen(entry)-5], ".jpeg"))
-	n_pixb++;
-    }
-
-  CLTR_DBG("estamited %i pixb's\n", n_pixb);
-
-  g_dir_rewind (dir);
-
-  while ((entry = g_dir_read_name (dir)) != NULL)
-    {
-      Pixbuf *pixb = NULL; 
-      fullpath = g_strconcat(grid->img_path, "/", entry, NULL);
- 
-      pixb = pixbuf_new_from_file(fullpath);
-
-      if (pixb)
-	{
-	  CltrPhotoGridCell *cell;
-	  gchar              buf[24];
-	  Pixbuf            *tmp_pixb;
-
-	  cell = cltr_photo_grid_cell_new(grid, pixb);
-
-	  g_snprintf(&buf[0], 24, "%i", i);
-	  font_draw(font, cell->pixb, buf, 10, 10, &font_col);
-
-	  g_mutex_lock(Mutex_GRID);
-
-	  cell->texture = cltr_texture_new(cell->pixb);
-
-	  if (!grid->cell_active)
-	    grid->cell_active = g_list_first(grid->cells_tail);
-
-	  cltr_photo_grid_append_cell(grid, cell);
-
-	  g_mutex_unlock(Mutex_GRID);
-
-	  i++;
-	}
-
-      g_free(fullpath);
-    }
-
-  g_dir_close (dir);
-
-  g_mutex_lock(Mutex_GRID);
-
-  grid->is_populated = TRUE;
-
-  g_mutex_unlock(Mutex_GRID);
-
-  cltr_widget_queue_paint(CLTR_WIDGET(grid));
-
-  return NULL;
-}
-#endif
 
 static void
 cltr_photo_grid_update_visual_state(CltrPhotoGrid *grid)
@@ -678,6 +573,9 @@ cltr_photo_grid_paint(CltrWidget *widget)
    * Is there a better way.?
    *  - multisample ?  
   */
+
+  if (!grid->paint_cell_item)
+    cltr_photo_grid_update_visual_state(grid);
 
   glEnable(GL_BLEND);
 

@@ -22,7 +22,11 @@
 int
 main (int argc, char *argv[])
 {
-  CltrWidget *win, *video, *test;
+  CltrWidget *win, *video, *label;
+  CltrFont   *font;
+  PixbufPixel col = { 0xff, 0xff, 0xff, 0x66 };
+
+  pixel_set_vals(&col, 0xff, 0x00, 0x00, 0xff);
 
   cltr_init (&argc, &argv);
 
@@ -31,17 +35,19 @@ main (int argc, char *argv[])
     exit (-1);
   }
 
-  win = cltr_window_new(800, 600);
+  font = font_new("Sans bold 96");
 
-  video = cltr_video_new(800, 600);
+  win = cltr_window_new(1400, 1050);
+
+  video = cltr_video_new(1400, 1050);
 
   cltr_video_set_source(CLTR_VIDEO(video), argv[1]);
 
   cltr_widget_add_child(win, video, 0, 0);  
 
-  test = cltr_scratch_new(300, 300);
+  label = cltr_label_new("hello world", font, &col);
 
-  cltr_widget_add_child(win, test, 100, 100);  
+  cltr_widget_add_child(win, label, 100, 100);  
 
   cltr_widget_show_all(win);
 

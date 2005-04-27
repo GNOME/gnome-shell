@@ -10,6 +10,7 @@ source_h = pixbuf.h util.h fonts.h \
           cltr-video.h            \
           cltr-list.h             \
           cltr-overlay.h          \
+          cltr-label.h            \
           cltr-button.h           \
           cltr-scratch.h
 
@@ -24,6 +25,7 @@ source_c = pixbuf.c util.c fonts.c \
            cltr-video.c  	   \
            cltr-list.c         	   \
            cltr-overlay.c          \
+           cltr-label.c            \
            cltr-button.c           \
            cltr-scratch.c
 

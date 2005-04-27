@@ -519,7 +519,12 @@ pixbuf_set_pixel(Pixbuf *pixb, int x, int y, PixbufPixel *p)
   /* ARGB_32 MSB */
 
   // *offset = (p->r << 0) | (p->g << 8) | (p->b << 16) | (p->a << 24);
-  *offset = (p->r << 24) | (p->g << 16) | (p->b << 8) | (p->a);
+  *offset = ( (p->r << 24) | (p->g << 16) | (p->b << 8) | (p->a) );
+
+  /*
+  printf("set %i,%i,%i,%i\n", p->r, p->g, p->b, p->a);
+  printf("Looks like %i %x\n", *offset, *offset);
+  */
 }
 
 void
@@ -529,7 +534,7 @@ pixbuf_get_pixel(Pixbuf *pixb, int x, int y, PixbufPixel *p)
 
   /* ARGB_32 MSB */
 
-  p->r = (*offset >> 24) & 0xff;
+  p->r = (*offset >> 24) & 0xff; 
   p->g = (*offset >> 16) & 0xff;
   p->b = (*offset >> 8) & 0xff;
   p->a =  *offset & 0xff;

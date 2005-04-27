@@ -292,7 +292,7 @@ cltr_texture_realize(CltrTexture *texture)
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-      glTexEnvi      (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,   GL_DECAL);
+      glTexEnvi      (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
       
       glTexImage2D(GL_TEXTURE_2D, 0, /*GL_COMPRESSED_RGBA_ARB*/ GL_RGBA, 
 		   texture->width,
@@ -360,13 +360,17 @@ cltr_texture_realize(CltrTexture *texture)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexEnvi      (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,   GL_DECAL);
+	/* glTexEnvi      (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,   GL_); */
+
+	/* glPixelStorei (GL_UNPACK_ALIGNMENT, 4); */
+	/* glPixelStorei (GL_UNPACK_ROW_LENGTH, texture->tile_x_size[x]); */
 
 	glTexImage2D(GL_TEXTURE_2D, 0, /*GL_COMPRESSED_RGBA_ARB*/ GL_RGBA, 
 		     pixtmp->width,
 		     pixtmp->height,
 		     0, GL_RGBA, 
-		     GL_UNSIGNED_INT_8_8_8_8,
+		     GL_UNSIGNED_INT_8_8_8_8, 
+		     /* GL_UNSIGNED_BYTE, */
 		     pixtmp->data);
 
 	CLTR_GLERR();
@@ -402,11 +406,30 @@ cltr_texture_new(Pixbuf *pixb)
 
   pixbuf_ref(pixb);
 
-
-
   init_tiles (texture);
 
+  cltr_texture_ref(texture);
+
   return texture;
+}
+
+void
+cltr_texture_ref(CltrTexture *texture)
+{
+  texture->refcnt++;
+}
+
+void
+cltr_texture_unref(CltrTexture *texture)
+{
+  texture->refcnt--;
+
+  if (texture->refcnt <= 0)
+    {
+      cltr_texture_unrealize(texture);
+      g_free(texture);
+      pixbuf_unref(texture->pixb);
+    }
 }
 
 CltrTexture*
@@ -432,6 +455,7 @@ cltr_texture_no_tile_new(Pixbuf *pixb)
   texture->mutex  = g_mutex_new();
 
   pixbuf_ref(pixb);
+  cltr_texture_ref(texture);
 
   return texture;
 }

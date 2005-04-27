@@ -22,6 +22,8 @@ font_new (const char *face)
 
   pango_font_description_free (desc);
 
+  cltr_font_ref(font);
+
   return font;
 }
 
@@ -116,6 +118,11 @@ draw_layout_on_pixbuf (PangoLayout       *layout,
 		  int tr1, tg1, tb1, tr2, tg2, tb2;
 		  int a = (*b * color->a + 0x80) >> 8;
 
+		  /*
+		  if (!a)
+		    { b++; continue; }
+		  */
+
 		  pixbuf_get_pixel (pixb, i, j, &pixel);
 
 		  tr1 = (255 - a) * pixel.r + 0x80;
@@ -127,6 +134,7 @@ draw_layout_on_pixbuf (PangoLayout       *layout,
 		  tb1 = (255 - a) * pixel.b + 0x80;
 		  tb2 = a * color->b + 0x80;
 		  pixel.b = ((tb1 + (tb1 >> 8)) >> 8) + ((tb2 + (tb2 >> 8)) >> 8);
+
 
 		  pixbuf_set_pixel (pixb, i, j, &pixel);
 		  b++;
@@ -154,6 +162,8 @@ font_draw(ClutterFont *font,
 
   layout = pango_layout_new (font->context);
 
+  pango_layout_set_width(layout, pixb->width - x );
+
   pango_layout_set_text (layout, text, -1);
 
   pango_layout_get_pixel_size (layout,
@@ -166,4 +176,41 @@ font_draw(ClutterFont *font,
 			 y, 
 			 pixb->width  - x,
 			 pixb->height - y);
+
+  g_object_unref(G_OBJECT(layout));
+}
+
+void
+font_get_pixel_size (ClutterFont *font, 
+		     const char  *text,
+		     int         *width,
+		     int         *height)
+{
+  PangoLayout *layout;
+
+  layout = pango_layout_new (font->context);
+
+  pango_layout_set_text (layout, text, -1);
+
+  pango_layout_get_pixel_size (layout, width, height);
+
+  g_object_unref(G_OBJECT(layout));
+}
+
+void
+cltr_font_ref(CltrFont *font)
+{
+  font->refcnt++;
+}
+
+void
+cltr_font_unref(CltrFont *font)
+{
+  font->refcnt--;
+
+  if (font->refcnt <= 0)
+    {
+      /* XXX free up pango stuff  */
+      g_free(font);
+    }
 }

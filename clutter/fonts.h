@@ -14,11 +14,19 @@ struct ClutterFont
 {
   PangoFontMap *font_map;
   PangoContext *context;
+  int refcnt;
 };
+
+typedef ClutterFont CltrFont ; 	/* Tsk Tsk .. */
 
 ClutterFont*
 font_new (const char *face);
 
+void
+cltr_font_ref(CltrFont *font);
+
+void
+cltr_font_unref(CltrFont *font);
 
 void
 font_draw(ClutterFont *font, 
@@ -28,5 +36,10 @@ font_draw(ClutterFont *font,
 	  int          y,
 	  PixbufPixel *p);
 
+void
+font_get_pixel_size (ClutterFont *font, 
+		     const char  *text,
+		     int         *width,
+		     int         *height);
 
 #endif

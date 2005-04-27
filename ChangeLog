@@ -1,3 +1,28 @@
+2005-04-27  mallum,,,  <mallum@openedhand.com>
+
+	* clutter/Makefile.am:
+	* clutter/cltr-button.c: (cltr_button_new):
+	* clutter/cltr-label.c:
+	* clutter/cltr-label.h:
+	* clutter/cltr-photo-grid.c: (cltr_photo_grid_paint):
+	* clutter/cltr-texture.c: (cltr_texture_realize),
+	(cltr_texture_new), (cltr_texture_unref),
+	(cltr_texture_no_tile_new):
+	* clutter/cltr-texture.h:
+	* clutter/cltr-video.c: (cltr_video_got_time_tick), (caps_set),
+	(cltr_video_new), (cltr_video_idler), (cltr_video_set_source),
+	(cltr_video_play), (cltr_video_pause), (cltr_video_show),
+	(cltr_video_hide), (cltr_video_handle_xevent), (cltr_video_paint):
+	* clutter/cltr.h:
+	* clutter/fonts.c: (font_new), (draw_layout_on_pixbuf),
+	(font_draw):
+	* clutter/fonts.h:
+	* clutter/pixbuf.c: (pixbuf_set_pixel), (pixbuf_get_pixel):
+	* examples/photos.c: (photo_grid_populate), (main):
+	* examples/player.c: (main):
+	Improve video widget, use playbin rather than gst_play 
+	Lots of misc tweaks. 
+
 2005-04-26  mallum,,,  <mallum@openedhand.com>
 
 	* clutter/Makefile.am:

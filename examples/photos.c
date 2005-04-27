@@ -19,7 +19,7 @@ photo_grid_populate(gpointer data)
   gchar            *fullpath = NULL;
   int               n_pixb = 0, i =0;
   ClutterFont      *font = NULL;
-  PixbufPixel       font_col = { 255, 255, 255, 255 };
+  PixbufPixel       font_col = { 255, 0, 0, 255 };
 
   font = font_new("Sans Bold 96");
 
@@ -130,12 +130,12 @@ main(int argc, char **argv)
       usage(argv[0]);
     }
 
-  win = cltr_window_new(800, 600);
+  win = cltr_window_new(640, 480);
 
   if (want_fullscreen)
     cltr_window_set_fullscreen(CLTR_WINDOW(win));
 
-  grid = cltr_photo_grid_new(800, 600, cols, cols, ImgPath);
+  grid = cltr_photo_grid_new(640, 480, cols, cols, ImgPath);
 
   cltr_window_focus_widget(CLTR_WINDOW(win), grid);
 

@@ -28,6 +28,12 @@ struct CltrTexture
 CltrTexture*
 cltr_texture_new(Pixbuf *pixb);
 
+void
+cltr_texture_ref(CltrTexture *texture);
+
+void
+cltr_texture_unref(CltrTexture *texture);
+
 CltrTexture*
 cltr_texture_no_tile_new(Pixbuf *pixb);
 
