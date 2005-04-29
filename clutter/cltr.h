@@ -21,6 +21,7 @@
 #include "pixbuf.h"
 #include "fonts.h"
 
+
 typedef enum CltrDirection
 {
   CLTR_NORTH,

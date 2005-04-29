@@ -12,6 +12,8 @@ main(int argc, char **argv)
 {
   int         i;
   CltrWidget *win = NULL, *grid = NULL, *test = NULL, *test2 = NULL;
+  CltrFont   *font = NULL;
+  PixbufPixel col = { 0xff, 0, 0, 0xff };
 
   gchar      *img_path = NULL;
   gboolean    want_fullscreen = FALSE;
@@ -51,12 +53,22 @@ main(int argc, char **argv)
   if (want_fullscreen)
     cltr_window_set_fullscreen(CLTR_WINDOW(win));
 
+  font = font_new("Sans 20");
 
-  grid = cltr_photo_grid_new(800, 600, cols, cols, img_path);
+  test = cltr_button_new_with_label("ButtonBoooo\ndsfdsfdsf sss\nsjhsjhsjhs", font, &col);
 
-  cltr_window_focus_widget(CLTR_WINDOW(win), grid);
+  test2 = cltr_button_new_with_label("Button", font, &col);
 
-  cltr_widget_add_child(win, grid, 0, 0);
+  cltr_widget_add_child(win, test, 300, 100);
+
+  cltr_widget_add_child(win, test2, 100, 100);
+
+  cltr_window_focus_widget(CLTR_WINDOW(win), test);
+
+  cltr_widget_set_focus_next(test, test2, CLTR_EAST);
+  cltr_widget_set_focus_next(test, test2, CLTR_WEST);
+  cltr_widget_set_focus_next(test2, test, CLTR_EAST);
+  cltr_widget_set_focus_next(test2, test, CLTR_WEST);
 
 
   /*

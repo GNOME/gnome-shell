@@ -16,6 +16,37 @@ cltr_widget_width(CltrWidget *widget);
 int
 cltr_widget_height(CltrWidget *widget);
 
+int
+cltr_widget_abs_x(CltrWidget *widget);
+
+int
+cltr_widget_abs_y(CltrWidget *widget);
+
+int
+cltr_widget_abs_x2(CltrWidget *widget);
+
+int
+cltr_widget_abs_y2(CltrWidget *widget);
+
+
+/* These are hacky see notes in .c */
+void
+cltr_widget_focus(CltrWidget *widget);
+
+void
+cltr_widget_unfocus(CltrWidget *widget);
+
+/* ******************************* */
+
+void
+cltr_widget_set_focus_next(CltrWidget    *widget,
+			   CltrWidget    *widget_to_focus,
+			   CltrDirection  direction);
+
+CltrWidget*
+cltr_widget_get_focus_next(CltrWidget    *widget,
+			   CltrDirection  direction);
+
 void
 cltr_widget_show(CltrWidget *widget);
 

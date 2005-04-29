@@ -5,10 +5,26 @@
 
 typedef struct CltrButton CltrButton;
 
+typedef enum CltrButtonState
+{
+  CltrButtonStateDisabled,
+  CltrButtonStateInactive,
+  CltrButtonStateFocused,
+  CltrButtonStateActive,
+ }
+CltrButtonState;
+
+typedef void (*CltrButtonActivate) (CltrWidget *widget, void *userdata) ;
+
 #define CLTR_BUTTON(w) ((CltrButton*)(w))
 
 CltrWidget*
 cltr_button_new(int width, int height);
+
+void
+cltr_button_on_activate(CltrButton         *button,
+			CltrButtonActivate  callback,
+			void*               userdata);
 
 
 #endif

@@ -1,3 +1,27 @@
+2005-04-29  mallum,,,  <mallum@openedhand.com>
+
+	* clutter/cltr-button.c: (cltr_button_new),
+	(cltr_button_on_activate), (cltr_button_new_with_label),
+	(cltr_button_show):
+	* clutter/cltr-button.h:
+	* clutter/cltr-label.c: (cltr_label_new), (cltr_label_paint):
+	* clutter/cltr-private.h:
+	* clutter/cltr-video.c: (cltr_video_play):
+	* clutter/cltr-widget.c: (cltr_widget_new), (cltr_widget_abs_x),
+	(cltr_widget_abs_y), (cltr_widget_abs_x2), (cltr_widget_abs_y2),
+	(cltr_widget_width), (cltr_widget_height), (cltr_widget_show),
+	(cltr_widget_focus), (cltr_widget_unfocus),
+	(cltr_widget_set_focus_next), (cltr_widget_get_focus_next),
+	(cltr_widget_show_all):
+	* clutter/cltr-widget.h:
+	* clutter/cltr-window.c: (cltr_window_new),
+	(cltr_window_focus_widget):
+	* clutter/cltr.h:
+	* clutter/fonts.c: (draw_layout_on_pixbuf), (font_get_pixel_size):
+	* examples/scratch.c: (main):
+	Hack buttons some more
+
+
 2005-04-27  mallum,,,  <mallum@openedhand.com>
 
 	* clutter/Makefile.am:

@@ -53,7 +53,7 @@ cltr_window_new(int width, int height)
 
   XSelectInput(CltrCntx.xdpy, win->xwin, 
 	       StructureNotifyMask|ExposureMask|
-	       KeyPressMask|PropertyChangeMask);
+	       KeyPressMask|KeyReleaseMask|PropertyChangeMask);
 
   glXMakeCurrent(CltrCntx.xdpy, win->xwin, CltrCntx.gl_context);
 
@@ -164,8 +164,12 @@ cltr_window_focus_widget(CltrWindow *win, CltrWidget *widget)
 
   ClutterMainContext *ctx = CLTR_CONTEXT();
 
-  win->focused_child = widget;
+  if (win->focused_child)
+    cltr_widget_unfocus(win->focused_child);
 
+  cltr_widget_focus(widget);
+
+  win->focused_child = widget;
 }
 
 

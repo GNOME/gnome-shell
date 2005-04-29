@@ -36,21 +36,20 @@ cltr_label_new(const char  *text,
 
   if (width && height)
     {
-      PixbufPixel bg = { 0xff, 0x0, 0x0, 0xff };
+      PixbufPixel bg = { 0xff, 0xff, 0xff, 0x00 };
 
       label->text = strdup(text);
       label->pixb  = pixbuf_new(width, height);
 
       pixbuf_fill_rect(label->pixb, 0, 0, -1, -1, &bg);
 
-      /*      
       font_draw(font, 
 		label->pixb, 
 		label->text,
 		0,
 		0,
 		col);
-      */
+
       label->texture = cltr_texture_new(label->pixb);
     }
 
@@ -106,6 +105,8 @@ cltr_label_paint(CltrWidget *widget)
 {
   CltrLabel *label = CLTR_LABEL(widget);
 
+  CLTR_MARK();
+
   if (label->text)
     {
       glPushMatrix();
@@ -115,15 +116,13 @@ cltr_label_paint(CltrWidget *widget)
       glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
       glEnable(GL_BLEND);
 
-      glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
-
-      /* glColor4ub(100, 200, 50, 100);  */
+      /* glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND); */
 
       cltr_texture_render_to_gl_quad(label->texture,
-				     widget->x,
-				     widget->y,
-				     widget->x + widget->width ,
-				     widget->y + widget->height);
+				     cltr_widget_abs_x(widget),
+				     cltr_widget_abs_y(widget),
+				     cltr_widget_abs_x2(widget),
+				     cltr_widget_abs_y2(widget));
 
       glDisable(GL_BLEND);
       glDisable(GL_TEXTURE_2D);

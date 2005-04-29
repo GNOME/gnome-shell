@@ -118,10 +118,16 @@ draw_layout_on_pixbuf (PangoLayout       *layout,
 		  int tr1, tg1, tb1, tr2, tg2, tb2;
 		  int a = (*b * color->a + 0x80) >> 8;
 
-		  /*
+		  /* 
+		     this is wrong for when the backing has an
+                     alpha of zero. we need a different algorythm
+                     to handle that - so we can overlay just a font
+                     text texture with no bg
+ 
+		  */
+
 		  if (!a)
 		    { b++; continue; }
-		  */
 
 		  pixbuf_get_pixel (pixb, i, j, &pixel);
 
@@ -134,8 +140,10 @@ draw_layout_on_pixbuf (PangoLayout       *layout,
 		  tb1 = (255 - a) * pixel.b + 0x80;
 		  tb2 = a * color->b + 0x80;
 		  pixel.b = ((tb1 + (tb1 >> 8)) >> 8) + ((tb2 + (tb2 >> 8)) >> 8);
-
-
+		  tb1 = (255 - a) * pixel.a + 0x80;
+		  tb2 = a * color->a + 0x80;
+		  pixel.a = ((tb1 + (tb1 >> 8)) >> 8) + ((tb2 + (tb2 >> 8)) >> 8);
+		  
 		  pixbuf_set_pixel (pixb, i, j, &pixel);
 		  b++;
 		}
@@ -193,6 +201,8 @@ font_get_pixel_size (ClutterFont *font,
   pango_layout_set_text (layout, text, -1);
 
   pango_layout_get_pixel_size (layout, width, height);
+
+  printf("gave width:%i, height %i\n", *width, *height);
 
   g_object_unref(G_OBJECT(layout));
 }

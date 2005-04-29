@@ -442,7 +442,7 @@ cltr_video_play(CltrVideo *video)
           GST_STATE_PLAYING) == GST_STATE_FAILURE)
     g_error ("Could not set state to PLAYING");
 
-  g_timeout_add(FPS_TO_TIMEOUT(20), (GSourceFunc) cltr_video_idler, video);
+  g_timeout_add(FPS_TO_TIMEOUT(30), (GSourceFunc) cltr_video_idler, video);
 }
 
 void

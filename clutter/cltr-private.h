@@ -32,11 +32,13 @@
 typedef void     (*WidgetPaintMethod)   (CltrWidget *widget ) ;
 typedef void     (*WidgetShowMethod)    (CltrWidget *widget ) ;
 typedef void     (*WidgetDestroyMethod) (CltrWidget *widget) ;
-
+typedef void     (*WidgetFocusMethod)   (CltrWidget *widget) ;
+typedef void     (*WidgetUnfocusMethod) (CltrWidget *widget) ;
 typedef gboolean (*WidgetXEventHandler) (CltrWidget *widget, XEvent *xev) ;
 
 struct CltrWidget
 {
+  int         type;
   int         x,y,width,height;
   CltrWidget *parent;
 
@@ -44,11 +46,18 @@ struct CltrWidget
 
   GList      *children;
 
+  /* focus */
+
+  CltrWidget *focus_next_north, *focus_next_south, 
+    *focus_next_west, *focus_next_east;
+
   /* methods */
 
   WidgetPaintMethod   paint;
   WidgetShowMethod    show;
   WidgetDestroyMethod destroy;
+  WidgetFocusMethod   focus_in;
+  WidgetUnfocusMethod  focus_out;
 
   WidgetXEventHandler xevent_handler;
 };
