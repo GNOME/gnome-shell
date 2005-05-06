@@ -3,7 +3,7 @@
 
 struct CltrOverlay
 {
-  CltrWidget  widget;  
+  CltrWidget   widget;  
 };
 
 static void
@@ -49,6 +49,17 @@ cltr_overlay_handle_xevent (CltrWidget *widget, XEvent *xev)
 static void
 cltr_overlay_paint(CltrWidget *widget)
 {
+  glEnable(GL_BLEND);
 
+  glColor4f(0.5, 0.5, 0.5, 1.0);
+
+  cltr_glu_rounded_rect(widget->x,
+			widget->y,
+			widget->x + widget->width,
+			widget->y + widget->height,
+			widget->width/30,
+			NULL);
+
+  glDisable(GL_BLEND);
 
 }

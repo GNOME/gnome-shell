@@ -56,6 +56,8 @@ get_layout_bitmap (PangoLayout    *layout,
   
   pango_layout_get_extents (layout, &ink_rect, NULL);
 
+  printf("%s() gave width:%i, height %i\n", __func__, ink->width, ink->height);
+
   /* XXX why the >> 10 */
   ink->x      = ink_rect.x >> 10;
   ink->width  = ((ink_rect.x + ink_rect.width + 1023) >> 10) - ink->x;
@@ -170,14 +172,10 @@ font_draw(ClutterFont *font,
 
   layout = pango_layout_new (font->context);
 
-  pango_layout_set_width(layout, pixb->width - x );
-
   pango_layout_set_text (layout, text, -1);
 
-  pango_layout_get_pixel_size (layout,
-			       &layout_width, &layout_height);
-
-  /* cant rely on just clip - need to set layout width too */
+  /* cant rely on just clip - need to set layout width too ? */
+  /* pango_layout_set_width(layout, (pixb->width - x) << 10); */
 
   draw_layout_on_pixbuf (layout, pixb, p, x, y, 
 			 x, 
@@ -202,7 +200,7 @@ font_get_pixel_size (ClutterFont *font,
 
   pango_layout_get_pixel_size (layout, width, height);
 
-  printf("gave width:%i, height %i\n", *width, *height);
+  printf("%s() gave width:%i, height %i\n", __func__, *width, *height);
 
   g_object_unref(G_OBJECT(layout));
 }

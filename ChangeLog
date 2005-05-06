@@ -1,3 +1,32 @@
+2005-05-06  mallum,,,  <mallum@openedhand.com>
+
+	* clutter/cltr-button.c: (cltr_button_new_with_label):
+	* clutter/cltr-overlay.c:
+	* clutter/cltr-photo-grid.c: (cltr_photo_grid_cell_new),
+	(cltr_photo_grid_paint), (cltr_photo_grid_new):
+	* clutter/cltr-video.c: (cltr_video_print_tag), (got_buffering),
+	(got_error), (caps_set), (parse_stream_info), (cb_iterate),
+	(cltr_video_new), (cltr_video_play), (cltr_video_seek),
+	(cltr_video_seek_time), (cltr_video_stop), (cltr_video_close),
+	(cltr_video_pause), (cltr_video_can_set_volume),
+	(cltr_video_set_volume), (cltr_video_get_volume),
+	(cltr_video_idler), (cltr_video_set_source), (cltr_video_show),
+	(cltr_video_hide), (cltr_video_handle_xevent), (cltr_video_paint):
+	* clutter/cltr-video.h:
+	* clutter/cltr-widget.h:
+	* clutter/cltr-window.c: (cltr_window_show), (cltr_window_paint),
+	(cltr_window_handle_xevent), (cltr_window_set_fullscreen),
+	(cltr_window_focus_widget):
+	* clutter/cltr-window.h:
+	* clutter/cltr.h:
+	* clutter/fonts.c: (get_layout_bitmap), (font_draw),
+	(font_get_pixel_size):
+	* configure.ac:
+	* examples/photos.c: (photo_grid_populate):
+	* examples/player.c: (handle_xevent), (main):
+	* examples/scratch.c: (main):
+	Lots more tweaks, mainly updating video widget.
+
 2005-04-29  mallum,,,  <mallum@openedhand.com>
 
 	* clutter/cltr-button.c: (cltr_button_new),

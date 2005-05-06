@@ -12,9 +12,15 @@ cltr_window_paint(CltrWidget *widget);
 
 struct CltrWindow
 {
-  CltrWidget  widget;  
-  Window      xwin;
-  CltrWidget *focused_child;
+  CltrWidget    widget;  
+  Window        xwin;
+  CltrWidget   *focused_child;
+
+  CltrCallback *pre_paint_hook, *post_paint_hook;
+
+  CltrXEventCallback  xevent_cb;
+  void               *xevent_cb_data;
+
 };
 
 void
@@ -86,6 +92,10 @@ static void
 cltr_window_paint(CltrWidget *widget)
 {
   glClear(GL_COLOR_BUFFER_BIT);
+
+  glDisable(GL_LIGHTING); 
+  glDisable(GL_DEPTH_TEST);
+
   glClearColor( 0.0, 0.0, 0.0, 0.0 ); /* needed for saturate to work */
 
 }
@@ -93,7 +103,6 @@ cltr_window_paint(CltrWidget *widget)
 static void
 cltr_window_handle_xconfigure(CltrWindow *win, XConfigureEvent *cxev)
 {
-  
   /* 
      widget.width = cxev->width;
      widget.height = cxev->height;
@@ -120,7 +129,10 @@ cltr_window_handle_xevent (CltrWidget *widget, XEvent *xev)
 
   /* XXX Very basic - assumes we are only interested in mouse clicks */
   if (win->focused_child)
-    return cltr_widget_handle_xevent(win->focused_child, xev);
+    cltr_widget_handle_xevent(win->focused_child, xev);
+
+  if (win->xevent_cb)
+    (win->xevent_cb)(widget, xev, win->xevent_cb_data);
 
   return FALSE;
 }
@@ -157,12 +169,12 @@ cltr_window_set_fullscreen(CltrWindow *win)
 }
 
 
-Window
+void
 cltr_window_focus_widget(CltrWindow *win, CltrWidget *widget)
 {
   /* XXX Should check widget is an actual child of the window */
 
-  ClutterMainContext *ctx = CLTR_CONTEXT();
+  /* ClutterMainContext *ctx = CLTR_CONTEXT(); */
 
   if (win->focused_child)
     cltr_widget_unfocus(win->focused_child);
@@ -170,6 +182,15 @@ cltr_window_focus_widget(CltrWindow *win, CltrWidget *widget)
   cltr_widget_focus(widget);
 
   win->focused_child = widget;
+}
+
+void
+cltr_window_on_xevent(CltrWindow         *win,
+		      CltrXEventCallback  callback,
+		      void               *userdata)
+{
+  win->xevent_cb      = callback;
+  win->xevent_cb_data = userdata;
 }
 
 

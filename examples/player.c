@@ -19,6 +19,34 @@
 
 #include <clutter/cltr.h>
 
+int Paused = 0;
+
+void
+handle_xevent(CltrWidget *win, XEvent *xev, void *cookie)
+{
+  KeySym          kc;
+  CltrVideo      *video = CLTR_VIDEO(cookie);
+
+  if (xev->type == KeyPress)
+    {
+      XKeyEvent *xkeyev = &xev->xkey;
+
+      kc = XKeycodeToKeysym(xkeyev->display, xkeyev->keycode, 0);
+
+      switch (kc)
+	{
+	case XK_Return:
+	  if (Paused)
+	    cltr_video_play (video, NULL);
+	  else
+	    cltr_video_pause (video);
+	  Paused ^= 1;
+	  break;
+	}
+    }
+
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -26,7 +54,7 @@ main (int argc, char *argv[])
   CltrFont   *font;
   PixbufPixel col = { 0xff, 0xff, 0xff, 0x66 };
 
-  pixel_set_vals(&col, 0xff, 0x00, 0x00, 0xff);
+  pixel_set_vals(&col, 0x00, 0x00, 0x00, 0x99);
 
   cltr_init (&argc, &argv);
 
@@ -45,13 +73,15 @@ main (int argc, char *argv[])
 
   cltr_widget_add_child(win, video, 0, 0);  
 
-  label = cltr_label_new("hello world", font, &col);
+  // label = cltr_label_new("hello world", font, &col);
 
-  cltr_widget_add_child(win, label, 100, 100);  
+  // cltr_widget_add_child(win, label, 100, 300);  
+
+  cltr_window_on_xevent(CLTR_WINDOW(win), handle_xevent, video);
 
   cltr_widget_show_all(win);
 
-  cltr_video_play(CLTR_VIDEO(video));
+  cltr_video_play(CLTR_VIDEO(video), NULL);
 
   cltr_main_loop();
 

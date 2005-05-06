@@ -21,7 +21,6 @@
 #include "pixbuf.h"
 #include "fonts.h"
 
-
 typedef enum CltrDirection
 {
   CLTR_NORTH,
@@ -43,6 +42,17 @@ typedef struct CltrTexture CltrTexture;
 #define cltr_rect_y1(r) ((r).y)
 #define cltr_rect_x2(r) ((r).x + (r).width)
 #define cltr_rect_y2(r) ((r).y + (r).height)
+
+typedef struct CltrWidget CltrWidget;
+
+
+
+typedef void (*CltrCallback) (CltrWidget *widget, void *userdata) ;
+
+typedef void (*CltrXEventCallback) (CltrWidget *widget, 
+				    XEvent     *xev,
+				    void       *userdata) ;
+
 
 /* texture stuff */
 

@@ -61,8 +61,8 @@ fi
 
 dnl ----- Pango, glib etc ---------------------------------------------------
 
-pkg_modules="pangoft2 pango glib-2.0 gthread-2.0"
-PKG_CHECK_MODULES(CLTR, pangoft2 pango glib-2.0 gthread-2.0)
+pkg_modules="pangoft2 glib-2.0 gthread-2.0"
+PKG_CHECK_MODULES(CLTR, pangoft2 glib-2.0 gthread-2.0)
 
 dnl ----- Gstreamer ---------------------------------------------------------
 

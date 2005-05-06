@@ -132,7 +132,6 @@ cltr_photo_grid_cell_new(CltrPhotoGrid *grid,
   CltrPhotoGridCell *cell = NULL;
   int                   maxw = grid->widget.width, maxh = grid->widget.height;
   int                   neww = 0, newh = 0;
-  Pixbuf               *tmp_pixb = NULL;
 
   cell = g_malloc0(sizeof(CltrPhotoGridCell));
 
@@ -540,7 +539,6 @@ cltr_photo_grid_paint(CltrWidget *widget)
   int x = 0, y = 0, rows = 0, cols = 0, i =0;
   GList *cell_item;
 
-  CltrWindow *win = CLTR_WINDOW(widget->parent);
   CltrPhotoGrid *grid = (CltrPhotoGrid *)widget;
 
   rows = grid->n_rows+1;
@@ -551,10 +549,7 @@ cltr_photo_grid_paint(CltrWidget *widget)
 
   if (grid->cells_tail == NULL)
     {
-      /* No pictures to paint yet */
-      CltrWindow *win = CLTR_WINDOW(grid->widget.parent);
-
-      glColor3f(0.6, 0.6, 0.62);
+      glColor3ub(0xc2, 0xc3, 0xc1);
       glRecti(0, 0, widget->width, widget->height);
 
       glPopMatrix();
@@ -607,7 +602,7 @@ cltr_photo_grid_paint(CltrWidget *widget)
 	  CltrPhotoGridCell *cell = (CltrPhotoGridCell *)cell_item->data;
 	  Pixbuf            *pixb = NULL;
 	  int                x1, x2, y1, y2, thumb_w, thumb_h;
-	  int                ns_border, ew_border;
+	  int                ns_border, ew_border, selected_offset = 0;
 
 	  pixb = cell->pixb;
 
@@ -636,8 +631,12 @@ cltr_photo_grid_paint(CltrWidget *widget)
 	      cell->anim_step = 0;
 	    }
 
+	  if (cell_item == grid->cell_active 
+	      && grid->state == CLTR_PHOTO_GRID_STATE_BROWSE)
+	    selected_offset = 2;
+
 	  ew_border = thumb_w/8;
-	  ns_border = thumb_h/8; 
+	  ns_border = (thumb_h/8) + 4; 
 
 	  thumb_w -= (2 * ew_border);
 	  thumb_h -= (2 * ns_border);
@@ -662,10 +661,10 @@ cltr_photo_grid_paint(CltrWidget *widget)
 	  g_mutex_lock(grid->mutex);
 
 	  cltr_texture_render_to_gl_quad(cell->texture,
-					 -(thumb_w/2),
-					 -(thumb_h/2),
-					 (thumb_w/2),
-					 (thumb_h/2));
+					 -(thumb_w/2) - selected_offset,
+					 -(thumb_h/2) - selected_offset,
+					 (thumb_w/2) - selected_offset,
+					 (thumb_h/2) - selected_offset);
 
 	  g_mutex_unlock(grid->mutex);
 
@@ -678,27 +677,47 @@ cltr_photo_grid_paint(CltrWidget *widget)
 	  else
 	    glColor4f(0.9, 0.95, 0.95, 1.0);
 
+	  glColor4f(1.0, 1.0, 1.0, 1.0);
+
 	  /* Draw with origin in center of photo */
 
-	  /*
-	  glRecti(-(thumb_w/2)-4, -(thumb_h/2)-4, 
-		  (thumb_w/2)+4, (thumb_h/2)+ns_border);
-	  */
 
+	  glRecti(-(thumb_w/2)-6 - selected_offset, 
+		  -(thumb_h/2)-6 - selected_offset, 
+		  (thumb_w/2)+6 - selected_offset, 
+		  (thumb_h/2)+ns_border - selected_offset);
+
+
+	  /*
 	  cltr_glu_rounded_rect(-(thumb_w/2)-4, -(thumb_h/2)-4, 
 				(thumb_w/2)+4, (thumb_h/2)+ns_border,
 				thumb_w/30,
 				NULL);
+	  */
+
+
+	  /* Nice colors */
+	  /* glColor4ub(0x3c, 0xbb, 0x15,  0xff); */
+	  /* glColor4ub(0x99, 0x99, 0xff,  0xff); */
+	  /* glColor4ub(0x99, 0x99, 0x99,  0xff); */
 
 	  /* shadow */
 
+	      glColor4ub(0x99, 0x99, 0x99,  0xff);
+	      glRecti(-(thumb_w/2)-6+2, -(thumb_h/2)-6+2, 
+		      (thumb_w/2)+6+2, (thumb_h/2)+ns_border+2);
+
+
+	  /*
 	  glColor4f(0.1, 0.1, 0.1, 0.3);
+
 
 	  cltr_glu_rounded_rect(-(thumb_w/2)-4 + 1, -(thumb_h/2)-4 + 1, 
 				(thumb_w/2)+4 + 1, (thumb_h/2)+ns_border +1,
 				thumb_w/30,
 				NULL);
-
+	  */
+	  
 
 	  glColor4f(1.0, 1.0, 1.0, 1.0);
 
@@ -725,7 +744,9 @@ cltr_photo_grid_paint(CltrWidget *widget)
   /* finally paint background  */
 
   glDisable(GL_TEXTURE_2D);
-  glColor3f(0.6, 0.6, 0.62);
+
+  glColor3ub(0xc2, 0xc3, 0xc1);
+
   glRecti(0, 0, widget->width, widget->height);
 
   /* reset */
@@ -824,7 +845,7 @@ cltr_photo_grid_new(int            width,
   grid->view_min_y = 0.0;
 
   /* Assmes cols == rows */
-  grid->zoom_max  = /* 1.0 + */  (float) (n_rows * 1.0); //  - 0.3;
+  grid->zoom_max  = (float) (n_rows * 1.0);
 
   grid->row_offset = 0;
 

@@ -55,10 +55,11 @@ photo_grid_populate(gpointer data)
 
 	  cell = cltr_photo_grid_cell_new(grid, pixb);
 
+	  /*
 	  g_snprintf(&buf[0], 24, "%i", i);
 	  font_draw(font, cltr_photo_grid_cell_pixbuf(cell), 
 		    buf, 10, 10, &font_col);
-
+	  */
 	  g_mutex_lock(cltr_photo_grid_mutex(grid));
 
 	  if (!cltr_photo_grid_get_active_cell(grid))

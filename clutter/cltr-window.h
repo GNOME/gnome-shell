@@ -11,9 +11,6 @@ CltrWidget*
 cltr_window_new(int width, int height);
 
 void
-cltr_window_paint(CltrWidget *widget);
-
-void
 cltr_window_add_widget(CltrWindow *win, CltrWidget *widget, int x, int y);
 
 /* win only methods */
@@ -24,8 +21,13 @@ cltr_window_xwin(CltrWindow *win);
 void
 cltr_window_set_fullscreen(CltrWindow *win);
 
-Window
+void
 cltr_window_focus_widget(CltrWindow *win, CltrWidget *widget);
+
+void
+cltr_window_on_xevent(CltrWindow         *win,
+		      CltrXEventCallback  callback,
+		      void               *userdata);
 
 
 #endif

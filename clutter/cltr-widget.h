@@ -1,8 +1,6 @@
 #ifndef _HAVE_CLTR_WIDGET_H
 #define _HAVE_CLTR_WIDGET_H
 
-typedef struct CltrWidget CltrWidget;
-
 #include "cltr.h"
 
 #define CLTR_WIDGET(w) ((CltrWidget*)(w))

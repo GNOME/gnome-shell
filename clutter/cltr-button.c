@@ -5,9 +5,12 @@ struct CltrButton
 {
   CltrWidget       widget;  
   CltrLabel       *label;
+  Pixmap          *pixb;
+  CltrTexture     *texture;
 
   CltrButtonActivate  activate_cb;
   void               *activate_cb_data;
+
 
   CltrButtonState  state;  	/* may be better in widget ? */
 };
@@ -83,6 +86,15 @@ cltr_button_new_with_label(const char  *label,
 			( BUTTON_BORDER + BUTTON_PAD));
 
   return CLTR_WIDGET(button);
+}
+
+CltrWidget*
+cltr_button_new_with_pixbuf(Pixbuf *pixb)
+{
+  CltrButton *button = NULL;
+
+  button = CLTR_BUTTON(cltr_button_new(-1, -1));
+
 }
 
 static void

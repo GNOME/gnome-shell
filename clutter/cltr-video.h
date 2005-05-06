@@ -66,8 +66,32 @@ cltr_video_new(int width, int height);
 gboolean
 cltr_video_set_source(CltrVideo *video, char *location);
 
+gboolean
+cltr_video_play ( CltrVideo *video, GError ** Error);
+
+gboolean
+cltr_video_seek (CltrVideo *video, float position, GError **gerror);
+
+gboolean
+cltr_video_seek_time (CltrVideo *video, gint64 time, GError **gerror);
+
 void
-cltr_video_play(CltrVideo *video);
+cltr_video_stop ( CltrVideo *video);
+
+void
+cltr_video_close ( CltrVideo *video);
+
+void
+cltr_video_pause ( CltrVideo *video);
+
+gboolean
+cltr_video_can_set_volume ( CltrVideo *video );
+
+void
+cltr_video_set_volume ( CltrVideo *video, int volume);
+
+int
+cltr_video_get_volume ( CltrVideo *video);
 
 
 #endif

@@ -1,6 +1,8 @@
 #include "cltr-video.h"
 #include "cltr-private.h"
 
+/* This is all very much based on the totem gst bacon video widget */
+
 struct CltrVideo
 {
   CltrWidget  widget;  
@@ -9,10 +11,20 @@ struct CltrVideo
 
   GAsyncQueue *queue;
 
-  int          video_width, video_height;
+  gint         video_width, video_height;
+  gdouble      video_fps;
   CltrTexture *frame_texture;
-};
+  
+  gboolean     has_video, has_audio;
 
+  gint64       stream_length;
+  gint64       current_time_nanos;
+  gint64       current_time;
+  float        current_position;
+
+  guint        update_id;
+  char        *last_error_message;
+};
 
 
 static void
@@ -24,6 +36,14 @@ cltr_video_handle_xevent (CltrWidget *widget, XEvent *xev);
 static void
 cltr_video_paint(CltrWidget *widget);
 
+static void
+parse_stream_info (CltrVideo *video);
+
+static gboolean
+cb_iterate (CltrVideo *video);
+
+static gboolean
+cltr_video_idler (CltrVideo *video);
 
 
 static gint64     length = 0; 	/* to go */
@@ -59,83 +79,7 @@ cltr_video_print_tag (const GstTagList *list,
 }
 
 static void
-cltr_video_got_found_tag (GstPlay    *play, 
-			  GstElement *source, 
-			  GstTagList *tag_list,
-			  CltrVideo  *video)
-{
-  CltrVideoSignal *signal;
-
-  signal = g_new0 (CltrVideoSignal, 1);
-  signal->signal_id                      = CLTR_VIDEO_ASYNC_FOUND_TAG;
-  signal->signal_data.found_tag.source   = source;
-  signal->signal_data.found_tag.tag_list = gst_tag_list_copy (tag_list);
-
-  g_async_queue_push (video->queue, signal);
-
-  /* gst_tag_list_foreach (tag_list, cltr_video_print_tag, NULL); */
-}
-
-static void
-cltr_video_got_time_tick (GstPlay   *play, 
-			  gint64     time_nanos,
-			  CltrVideo *video)
-{
-
-
-  /*
-  CltrVideoSignal *signal;
-
-  signal = g_new0 (CltrVideoSignal, 1);
-  signal->signal_id                      = CLTR_VIDEO_ASYNC_FOUND_TAG;
-  signal->signal_data.found_tag.source   = source;
-  signal->signal_data.found_tag.tag_list = gst_tag_list_copy (tag_list);
-
-  g_async_queue_push (video->queue, signal);
-  */
-
-  g_print ("time tick %f\n", time_nanos / (float) GST_SECOND); 
-}
-
-static void
-cltr_video_got_stream_length (GstPlay   *play, 
-			      gint64     length_nanos,
-			      CltrVideo *video)
-{
-  /*
-  CltrVideoSignal *signal;
-
-  signal = g_new0 (CltrVideoSignal, 1);
-
-  signal->signal_id = CLTR_VIDEO_ASYNC_VIDEO_SIZE;
-  signal->signal_data.video_size.width = width;
-  signal->signal_data.video_size.height = height;
-
-  g_async_queue_push (video->queue, signal);
-  */
-  CLTR_DBG ("got length %" G_GUINT64_FORMAT "\n", length_nanos);
-  length = length_nanos;
-}
-
-static void
-cltr_video_got_video_size (GstPlay   *play, 
-			   gint       width, 
-			   gint       height,
-			   CltrVideo *video)
-{
-  CltrVideoSignal *signal;
-
-  signal = g_new0 (CltrVideoSignal, 1);
-
-  signal->signal_id = CLTR_VIDEO_ASYNC_VIDEO_SIZE;
-  signal->signal_data.video_size.width = width;
-  signal->signal_data.video_size.height = height;
-
-  g_async_queue_push (video->queue, signal);
-}
-
-static void
-cltr_video_got_eos (GstPlay* play, CltrVideo *video)
+got_eos (GstPlay* play, CltrVideo *video)
 {
   CLTR_DBG ("End Of Stream\n");
 
@@ -150,59 +94,378 @@ cltr_video_got_eos (GstPlay* play, CltrVideo *video)
   gst_element_set_state (GST_ELEMENT (play), GST_STATE_READY);
 }
 
-static gboolean
-cltr_video_seek_timer (GstPlay * play)
+static void
+got_stream_length (GstElement *play, 
+		   gint64      length_nanos,
+                   CltrVideo  *video)
 {
-  gst_play_seek_to_time (play, length / 2);
-  return FALSE;
+  video->stream_length = (gint64) length_nanos / GST_MSECOND;
+
+  /* fire off some callback here ? */
+
+  CLTR_DBG("length: %i", video->stream_length);
 }
 
 static void
-caps_set (GObject    *obj,
-	  GParamSpec *pspec, 
-	  CltrVideo  *video)
+got_time_tick (GstElement *play, 
+	       gint64      time_nanos, 
+	       CltrVideo  *video)
 {
+  CLTR_MARK();
+
+  video->current_time_nanos = time_nanos;
+
+  video->current_time = (gint64) time_nanos / GST_MSECOND;
+
+  if (video->stream_length == 0)
+    video->current_position = 0;
+  else
+    {
+      video->current_position = (float) video->current_time / video->stream_length;
+    }
+
+  /* fire off callback here */
+}
+
+
+static void
+got_found_tag (GstPlay    *play, 
+	       GstElement *source, 
+	       GstTagList *tag_list,
+	       CltrVideo  *video)
+{
+  CltrVideoSignal *signal;
+
+  CLTR_MARK();
+
+  signal = g_new0 (CltrVideoSignal, 1);
+  signal->signal_id                      = CLTR_VIDEO_ASYNC_FOUND_TAG;
+  signal->signal_data.found_tag.source   = source;
+  signal->signal_data.found_tag.tag_list = gst_tag_list_copy (tag_list);
+
+  g_async_queue_push (video->queue, signal);
+
+  /* gst_tag_list_foreach (tag_list, cltr_video_print_tag, NULL); */
+}
+
+static void
+got_state_change (GstElement     *play, 
+		  GstElementState old_state,
+		  GstElementState new_state, 
+		  CltrVideo      *video)
+{
+  if (old_state == GST_STATE_PLAYING) 
+    {
+      if (video->update_id != 0) 
+	{
+	  g_source_remove (video->update_id);
+	  video->update_id = 0;
+	}
+
+      g_idle_remove_by_data (video);
+
+    } 
+  else if (new_state == GST_STATE_PLAYING) 
+    {
+      if (video->update_id != 0)
+	g_source_remove (video->update_id);
+
+      video->update_id = g_timeout_add (200, (GSourceFunc) cb_iterate, video);
+
+      g_idle_add((GSourceFunc) cltr_video_idler, video);
+    }
+
+  if (old_state <= GST_STATE_READY && new_state >= GST_STATE_PAUSED) 
+    {
+      parse_stream_info (video);
+    } 
+  else if (new_state <= GST_STATE_READY && old_state >= GST_STATE_PAUSED) 
+    {
+      video->has_video = FALSE;
+      video->has_audio = FALSE;
+
+      /*
+      if (bvw->priv->tagcache)
+	{
+	  gst_tag_list_free (bvw->priv->tagcache);
+	  bvw->priv->tagcache = NULL;
+	}
+      */      
+
+      video->video_width = 0;
+      video->video_height = 0;
+    }
+}
+
+
+static void
+got_redirect (GstElement  *play, 
+	      const gchar *new_location,
+	      CltrVideo   *bvw)
+{
+  CLTR_MARK();
+
+  /*
+  bvw->priv->got_redirect = TRUE;
+
+  signal = g_new0 (BVWSignal, 1);
+  signal->signal_id = ASYNC_REDIRECT;
+  signal->signal_data.redirect.new_location = g_strdup (new_location);
+
+  g_async_queue_push (bvw->priv->queue, signal);
+
+  g_idle_add ((GSourceFunc) bacon_video_widget_signal_idler, bvw);
+  */
+}
+
+
+static void
+stream_info_set (GObject    *obj, 
+		 GParamSpec *pspec, 
+		 CltrVideo  *video)
+{
+
+  parse_stream_info (video);
+
+  /*
+  signal = g_new0 (BVWSignal, 1);
+  signal->signal_id = ASYNC_NOTIFY_STREAMINFO;
+
+  g_async_queue_push (bvw->priv->queue, signal);
+
+  g_idle_add ((GSourceFunc) bacon_video_widget_signal_idler, bvw);
+  */
+}
+
+static void
+got_source (GObject    *play,
+	    GParamSpec *pspec,
+	    CltrVideo  *video)
+{
+  GObject      *source = NULL;
+  GObjectClass *klass;
+
+  CLTR_MARK();
+
+  /*
+  if (bvw->priv->tagcache) {
+    gst_tag_list_free (bvw->priv->tagcache);
+    bvw->priv->tagcache = NULL;
+  }
+
+  if (!bvw->priv->media_device)
+    return;
+
+  g_object_get (play, "source", &source, NULL);
+  if (!source)
+    return;
+
+  klass = G_OBJECT_GET_CLASS (source);
+  if (!g_object_class_find_property (klass, "device"))
+    return;
+
+  g_object_set (source, "device", bvw->priv->media_device, NULL);
+  */
+}
+
+
+static void
+got_buffering (GstElement *play, 
+	       gint        percentage,
+	       CltrVideo  *video)
+{
+  CLTR_DBG("Buffering with %i", percentage);
+
 #if 0
+  BVWSignal *signal;
+
+  g_return_if_fail (bvw != NULL);
+  g_return_if_fail (BACON_IS_VIDEO_WIDGET (bvw));
+
+  signal = g_new0 (BVWSignal, 1);
+  signal->signal_id = ASYNC_BUFFERING;
+  signal->signal_data.buffering.percent = percentage;
+
+  g_async_queue_push (bvw->priv->queue, signal);
+
+  g_idle_add ((GSourceFunc) bacon_video_widget_signal_idler, bvw);
+#endif
+}
+
+
+static void
+got_error (GstElement *play, 
+	   GstElement *orig, 
+	   GError     *error,
+           gchar      *debug, 
+	   CltrVideo  *video)
+{
+
+  /* 
+     XXX TODO cpy the error message to asyc queueu
+
+  */
+
+  CLTR_MARK();
+
+#if 0
+  /* since we're opening, we will never enter the mainloop
+   * until we return, so setting an idle handler doesn't
+   * help... Anyway, let's prepare a message. */
+  if (GST_STATE (play) != GST_STATE_PLAYING) {
+    g_free (bvw->priv->last_error_message);
+    bvw->priv->last_error_message = g_strdup (error->message);
+    return;
+  }
+  
+  signal = g_new0 (BVWSignal, 1);
+  signal->signal_id = ASYNC_ERROR;
+  signal->signal_data.error.element = orig;
+  signal->signal_data.error.error = g_error_copy (error);
+  if (debug)
+    signal->signal_data.error.debug_message = g_strdup (debug);
+
+  g_async_queue_push (bvw->priv->queue, signal);
+
+  g_idle_add ((GSourceFunc) bacon_video_widget_signal_idler, bvw);
+#endif
+}
+
+
+static void
+caps_set (GObject         *obj,
+	  GParamSpec      *pspec, 
+	  CltrVideo       *video)
+{
   GstPad *pad = GST_PAD (obj);
   GstStructure *s;
 
   if (!GST_PAD_CAPS (pad))
     return;
 
-
-
   s = gst_caps_get_structure (GST_PAD_CAPS (pad), 0);
 
-  if (s) {
+  if (s) 
+    {
+      /* const GValue *par; */
 
+      if (!(gst_structure_get_double (s, "framerate", &video->video_fps) &&
+	    gst_structure_get_int (s, "width", &video->video_width) &&
+	    gst_structure_get_int (s, "height", &video->video_height)))
+	return;
 
-    const GValue *par;
+      /*
+      if ((par = gst_structure_get_value (s, "pixel-aspect-ratio"))) 
+	{
+	  gint num = gst_value_get_fraction_numerator (par),
+	    den = gst_value_get_fraction_denominator (par);
 
-    if (!(gst_structure_get_double (s, "framerate", &bvw->priv->video_fps) &&
-          gst_structure_get_int (s, "width", &bvw->priv->video_width) &&
-          gst_structure_get_int (s, "height", &bvw->priv->video_height)))
-      return;
-    if ((par = gst_structure_get_value (s,
-                   "pixel-aspect-ratio"))) {
-      gint num = gst_value_get_fraction_numerator (par),
-          den = gst_value_get_fraction_denominator (par);
+	  if (num > den)
+	    bvw->priv->video_width *= (gfloat) num / den;
+	  else
+	    bvw->priv->video_height *= (gfloat) den / num;
+	}
 
-      if (num > den)
-        bvw->priv->video_width *= (gfloat) num / den;
-      else
-        bvw->priv->video_height *= (gfloat) den / num;
-    }
+	got_video_size (bvw->priv->play, bvw->priv->video_width,
+	bvw->priv->video_height, bvw);
 
-    got_video_size (bvw->priv->play, bvw->priv->video_width,
-		    bvw->priv->video_height, bvw);
-
+      */
   }
-#endif
-  
-  /* and disable ourselves */
-  //g_signal_handlers_disconnect_by_func (pad, caps_set, bvw);
 }
 
+
+static void
+parse_stream_info (CltrVideo *video)
+{
+  GList  *streaminfo = NULL;
+  GstPad *videopad = NULL;
+
+  g_object_get (G_OBJECT (video->play), "stream-info", &streaminfo, NULL);
+
+  streaminfo = g_list_copy (streaminfo);
+
+  g_list_foreach (streaminfo, (GFunc) g_object_ref, NULL);
+
+  for ( ; streaminfo != NULL; streaminfo = streaminfo->next) 
+    {
+      GObject *info = streaminfo->data;
+      gint type;
+      GParamSpec *pspec;
+      GEnumValue *val;
+
+      if (!info)
+	continue;
+
+      g_object_get (info, "type", &type, NULL);
+
+      pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (info), "type");
+
+      val = g_enum_get_value (G_PARAM_SPEC_ENUM (pspec)->enum_class, type);
+
+    if (strstr (val->value_name, "AUDIO")) 
+      {
+	if (!video->has_audio) {
+	  video->has_audio = TRUE;
+	  /*if (!bvw->priv->media_has_video &&
+            bvw->priv->show_vfx && bvw->priv->vis_element) {
+	    videopad = gst_element_get_pad (bvw->priv->vis_element, "src");
+	    }*/
+	}
+      } 
+    else if (strstr (val->value_name, "VIDEO")) 
+      {
+	video->has_video = TRUE;
+	if (!videopad)
+	  g_object_get (info, "object", &videopad, NULL);
+
+      }
+    }
+
+  if (videopad) 
+    {
+      GstPad *real = (GstPad *) GST_PAD_REALIZE (videopad);
+
+      /* handle explicit caps as well - they're set later */
+      if (((GstRealPad *) real)->link != NULL && GST_PAD_CAPS (real))
+	caps_set (G_OBJECT (real), NULL, video);
+
+      g_signal_connect (real, "notify::caps", G_CALLBACK (caps_set), video);
+
+    } 
+  /*
+  else if (bvw->priv->show_vfx && bvw->priv->vis_element) 
+    {
+      fixate_visualization (NULL, NULL, bvw);
+    }
+  */
+
+  g_list_foreach (streaminfo, (GFunc) g_object_unref, NULL);
+  g_list_free (streaminfo);
+}
+
+static gboolean
+cb_iterate (CltrVideo *video)
+{
+  GstFormat fmt = GST_FORMAT_TIME;
+  gint64          value;
+
+  /* check length/pos of stream */
+  if (gst_element_query (GST_ELEMENT (video->play),
+			 GST_QUERY_TOTAL, &fmt, &value) 
+      && GST_CLOCK_TIME_IS_VALID (value) 
+      && value / GST_MSECOND != video->stream_length) 
+    {
+      got_stream_length (GST_ELEMENT (video->play), value, video);
+    }
+
+  if (gst_element_query (GST_ELEMENT (video->play),
+			 GST_QUERY_POSITION, &fmt, &value)) 
+    {
+      got_time_tick (GST_ELEMENT (video->play), value, video);
+    }
+
+  return TRUE;
+}
 
 CltrWidget*
 cltr_video_new(int width, int height)
@@ -274,15 +537,14 @@ cltr_video_new(int width, int height)
 #endif
 
   g_signal_connect (G_OBJECT (video->play), "eos",
-		     G_CALLBACK (cltr_video_got_eos), (gpointer) video);
-  /*
-  g_signal_connect (G_OBJECT (video->play), "state-change",
-		    G_CALLBACK (state_change), (gpointer) video);
-  */
-  g_signal_connect (G_OBJECT (video->play), "found_tag",
-		    G_CALLBACK (cltr_video_got_found_tag), (gpointer) video);
+		     G_CALLBACK (got_eos), (gpointer) video);
 
-  /*
+  g_signal_connect (G_OBJECT (video->play), "state-change",
+		    G_CALLBACK (got_state_change), (gpointer) video);
+
+  g_signal_connect (G_OBJECT (video->play), "found_tag",
+		    G_CALLBACK (got_found_tag), (gpointer) video);
+
   g_signal_connect (G_OBJECT (video->play), "error",
 		    G_CALLBACK (got_error), (gpointer) video);
 
@@ -291,13 +553,18 @@ cltr_video_new(int width, int height)
 
   g_signal_connect (G_OBJECT (video->play), "notify::source",
 		    G_CALLBACK (got_source), (gpointer) video);
+
   g_signal_connect (G_OBJECT (video->play), "notify::stream-info",
 		    G_CALLBACK (stream_info_set), (gpointer) video);
+
+  /* what does this do ?
   g_signal_connect (G_OBJECT (video->play), "group-switch",
 		    G_CALLBACK (group_switch), (gpointer) video);
+  */
+
   g_signal_connect (G_OBJECT (video->play), "got-redirect",
 		    G_CALLBACK (got_redirect), (gpointer) video);
-  */
+
 
   video->queue = g_async_queue_new ();
 
@@ -305,76 +572,114 @@ cltr_video_new(int width, int height)
 
 
   return CLTR_WIDGET(video);
+}
 
-#if 0
-  video->play = gst_play_new (&error);
+gboolean
+cltr_video_play ( CltrVideo *video, GError ** error)
+{
+  gboolean ret;
 
-  if (error) 
+  if (video->last_error_message)
     {
-      g_print ("Error: could not create play object:\n%s\n", error->message);
-      g_error_free (error);
-      return NULL;
+      g_free (video->last_error_message);
+      video->last_error_message = NULL;
     }
 
-  /* Getting default audio and video plugins from GConf */
-  video->vis_element = gst_element_factory_make ("goom", "vis_element");
-  video->data_src    = gst_element_factory_make ("gnomevfssrc", "source");
+  ret = (gst_element_set_state (GST_ELEMENT (video->play),
+				GST_STATE_PLAYING) == GST_STATE_SUCCESS);
+  if (!ret)
+    {
+      g_set_error (error, 0, 0, "%s", video->last_error_message ?
+          video->last_error_message : "Failed to play; reason unknown");
+    }
 
-  video->audio_sink = gst_gconf_get_default_audio_sink ();
+  return ret;
+}
 
-  if (!GST_IS_ELEMENT (video->audio_sink))
-    g_error ("Could not get default audio sink from GConf");
+gboolean
+cltr_video_seek (CltrVideo *video, float position, GError **gerror)
+{
+  gint64 seek_time, length_nanos;
 
-  video->video_sink = gst_element_factory_make ("cltrimagesink", "cltr-output");
+  /* Resetting last_error_message to NULL */
+  if (video->last_error_message)
+    {
+      g_free (video->last_error_message);
+      video->last_error_message = NULL;
+    }
 
-  if (!GST_IS_ELEMENT (video->video_sink))
-    g_error ("Could not get clutter video sink");
+  length_nanos = (gint64) (video->stream_length * GST_MSECOND);
+  seek_time    = (gint64) (length_nanos * position);
 
-  video->queue = g_async_queue_new ();
+  gst_element_seek (video->play, GST_SEEK_METHOD_SET |
+		    GST_SEEK_FLAG_FLUSH | GST_FORMAT_TIME,
+		    seek_time);
 
-  gst_element_set(video->video_sink, "queue", video->queue, NULL);
+  return TRUE;
+}
 
-  /* Let's send them to GstPlay object */
+gboolean
+cltr_video_seek_time (CltrVideo *video, gint64 time, GError **gerror)
+{
+  if (video->last_error_message)
+    {
+      g_free (video->last_error_message);
+      video->last_error_message = NULL;
+    }
 
-  if (!gst_play_set_audio_sink (video->play, video->audio_sink))
-    g_warning ("Could not set audio sink");
-  if (!gst_play_set_video_sink (video->play, video->video_sink))
-    g_warning ("Could not set video sink");
-  if (!gst_play_set_data_src (video->play, video->data_src))
-    g_warning ("Could not set data src");
-  if (!gst_play_set_visualization (video->play, video->vis_element))
-    g_warning ("Could not set visualisation");
+  gst_element_seek (video->play, GST_SEEK_METHOD_SET |
+		    GST_SEEK_FLAG_FLUSH | GST_FORMAT_TIME,
+		    time * GST_MSECOND);
 
-  /* Setting location we want to play */
+  return TRUE;
+}
 
-  /* Uncomment that line to get an XML dump of the pipeline */
-  /* gst_xml_write_file (GST_ELEMENT (play), stdout);  */
+void
+cltr_video_stop ( CltrVideo *video)
+{
+  gst_element_set_state (GST_ELEMENT (video->play), GST_STATE_READY);
+}
 
-  g_signal_connect (G_OBJECT (video->play), "time_tick",
-      G_CALLBACK (cltr_video_got_time_tick), video);
-  g_signal_connect (G_OBJECT (video->play), "stream_length",
-      G_CALLBACK (cltr_video_got_stream_length), video);
-  g_signal_connect (G_OBJECT (video->play), "have_video_size",
-      G_CALLBACK (cltr_video_got_video_size), video);
-  g_signal_connect (G_OBJECT (video->play), "found_tag",
-      G_CALLBACK (cltr_video_got_found_tag), video);
-  g_signal_connect (G_OBJECT (video->play), "error",
-      G_CALLBACK (gst_element_default_error), NULL);
-  g_signal_connect (G_OBJECT (video->play), 
-		    "eos", G_CALLBACK (cltr_video_got_eos), video);
+void
+cltr_video_close ( CltrVideo *video)
+{
+  gst_element_set_state (GST_ELEMENT (video->play), GST_STATE_READY);
+  
+  /* XX close callback here */
+}
 
-  g_signal_connect (G_OBJECT (video->video_sink), "notify::caps",
-		    G_CALLBACK (caps_set), video);
+void
+cltr_video_pause ( CltrVideo *video)
+{
+  gst_element_set_state (GST_ELEMENT (video->play), GST_STATE_PAUSED);
+}
 
-#endif
-  /*
-  g_object_set (G_OBJECT (video->play), "volume",
-		(gdouble) (1. *  0 / 100), NULL);
-  */
 
-  /* gst_element_set_state (GST_ELEMENT (play), GST_STATE_READY); */
+gboolean
+cltr_video_can_set_volume ( CltrVideo *video )
+{
+  return TRUE;
+}
 
-  return CLTR_WIDGET(video);
+void
+cltr_video_set_volume ( CltrVideo *video, int volume)
+{
+  if (cltr_video_can_set_volume (video) != FALSE)
+  {
+    volume = CLAMP (volume, 0, 100);
+    g_object_set (G_OBJECT (video->play), "volume",
+	(gdouble) (1. * volume / 100), NULL);
+  }
+}
+
+int
+cltr_video_get_volume ( CltrVideo *video)
+{
+  gdouble vol;
+
+  g_object_get (G_OBJECT (video->play), "volume", &vol, NULL);
+
+  return (gint) (vol * 100 + 0.5);
 }
 
 
@@ -434,24 +739,6 @@ cltr_video_set_source(CltrVideo *video, char *location)
   return TRUE;
 }
 
-void
-cltr_video_play(CltrVideo *video)
-{
-  /* Change state to PLAYING */
-  if (gst_element_set_state (GST_ELEMENT (video->play),
-          GST_STATE_PLAYING) == GST_STATE_FAILURE)
-    g_error ("Could not set state to PLAYING");
-
-  g_timeout_add(FPS_TO_TIMEOUT(30), (GSourceFunc) cltr_video_idler, video);
-}
-
-void
-cltr_video_pause(CltrVideo *video)
-{
-  if (gst_element_set_state (GST_ELEMENT (video->play),
-			     GST_STATE_PAUSED) == GST_STATE_FAILURE)
-    g_error ("Could not set state to PAUSED");
-}
 
 
 static void
@@ -482,23 +769,10 @@ cltr_video_paint(CltrWidget *widget)
   glPushMatrix();
 
   if (video->frame_texture
-      /*
       && video->video_height
-      && video->video_width 
-      */)
+      && video->video_width)
     {
-      int dis_x, dis_y, dis_height, dis_width;
-
-      /* Hack */
-
-      if (!video->video_height || !video->video_width )
-	{
-	  Pixbuf *pixb = cltr_texture_get_pixbuf(video->frame_texture);
-
-	  video->video_height = pixb->height;
-	  video->video_width = pixb->width;
-	}
-
+      int dis_x = 0, dis_y = 0, dis_height = 0, dis_width = 0;
 
       if (video->video_width > video->video_height)
 	{
@@ -509,11 +783,12 @@ cltr_video_paint(CltrWidget *widget)
 	  dis_x = 0;
 	}
 
+
+      glEnable(GL_BLEND); 
+
       glColor4f(1.0, 1.0, 1.0, 1.0);
 
       glEnable(GL_TEXTURE_2D);
-
-      glDisable(GL_BLEND); 
 
       glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
@@ -528,6 +803,10 @@ cltr_video_paint(CltrWidget *widget)
       cltr_texture_unlock(video->frame_texture);
 
       glDisable(GL_TEXTURE_2D); 
+
+      glColor4f(1.0, 1.0, 1.0, 0.5);
+
+      // glRecti(100, 100, 600, 600);
     }
 
   glPopMatrix();
