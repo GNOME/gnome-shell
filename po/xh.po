@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-29 15:43+0200\n"
+"POT-Creation-Date: 2005-05-10 16:40+0200\n"
 "PO-Revision-Date: 2005-03-22 18:03+0200\n"
 "Last-Translator: Canonical Ltd <translations@canonical.com>\n"
 "Language-Team: Xhosa <xh-translate@ubuntu.com>\n"
@@ -206,14 +206,12 @@ msgstr "_Vala"
 
 #. separator
 #: ../src/menu.c:66
-#, fuzzy
 msgid "_Always on Visible Workspace"
-msgstr "Kuphela _Kule Ndawo yoSebenzela"
+msgstr "_Rhoqo kwiNdawo yoSebenzela eBonakalayo"
 
 #: ../src/menu.c:67
-#, fuzzy
 msgid "_Only on This Workspace"
-msgstr "Kuphela _Kule Ndawo yoSebenzela"
+msgstr "_Kuphela Kule Ndawo yoSebenzela"
 
 #: ../src/menu.c:68
 msgid "Move to Workspace _Left"
@@ -363,7 +361,7 @@ msgstr "Isihloko"
 msgid "Class"
 msgstr "Udidi"
 
-#: ../src/metacity-dialog.c:262
+#: ../src/metacity-dialog.c:263
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -371,7 +369,7 @@ msgstr ""
 "Ezi festile azixhasi \"gcina umiselo lwenkqubo lwangoku\" kwaye ziya "
 "kufuneka ziqaliswe ngokutsha ngesandla kwixa elizayo xa ungena."
 
-#: ../src/metacity-dialog.c:325
+#: ../src/metacity-dialog.c:328
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -508,7 +506,6 @@ msgstr ""
 "esemgangathweni kwizihloko zefestile."
 
 #: ../src/metacity.schemas.in.h:19
-#, fuzzy
 msgid ""
 "If true, metacity will give the user less feedback and less sense of "
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
@@ -517,12 +514,13 @@ msgid ""
 "otherwise be impractical. However, the wireframe feature is disabled when "
 "accessibility is on to avoid weird desktop breakages."
 msgstr ""
-"Ukuba kuyinene, imetacity iya kunikeza umsebenzisi ingxelo engaphantsi "
-"nobulumko obungaphantsi \"direct manipulation\", ngokusebenzisa izakhelo "
+"Ukuba kuyinene, i-metacity iya kunikeza umsebenzisi ingxelo engaphantsi "
+"nentsingiselo engaphantsi \"direct manipulation\", ngokusebenzisa izakhelo "
 "zocingo, ukuthintela oopopayi, okanye ezinye iindlela. Olu lunciphiso "
 "olubalulekileyo kusetyenziso lwabasebenzisi abaninzi kodwa kungavumela "
 "iinkqubo ezililifa neeseva zetheminali ukuba zisebenze ngexa bezingasayi "
-"kusebenza."
+"kusebenza. Kodwa ke, uphawu lwezakhelo zocingo alusebenzi xa ufikelelo "
+"luvuliwe ukuthintela ukophuka okungaqhelekanga kwe-desktop."
 
 #: ../src/metacity.schemas.in.h:20
 msgid ""
