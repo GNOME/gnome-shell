@@ -23,7 +23,8 @@ struct CltrVideo
   float        current_position;
 
   guint        update_id;
-  char        *last_error_message;
+  gchar       *last_error_message;
+  gchar       *mrl;
 };
 
 
@@ -41,6 +42,9 @@ parse_stream_info (CltrVideo *video);
 
 static gboolean
 cb_iterate (CltrVideo *video);
+
+static void
+reset_error_msg (CltrVideo *video);
 
 static gboolean
 cltr_video_idler (CltrVideo *video);
@@ -290,6 +294,16 @@ got_buffering (GstElement *play,
 
   g_idle_add ((GSourceFunc) bacon_video_widget_signal_idler, bvw);
 #endif
+}
+
+static void
+reset_error_msg (CltrVideo *video)
+{
+  if (video->last_error_message)
+    {
+      g_free (video->last_error_message);
+      video->last_error_message = NULL;
+    }
 }
 
 
@@ -579,11 +593,7 @@ cltr_video_play ( CltrVideo *video, GError ** error)
 {
   gboolean ret;
 
-  if (video->last_error_message)
-    {
-      g_free (video->last_error_message);
-      video->last_error_message = NULL;
-    }
+  reset_error_msg (video);
 
   ret = (gst_element_set_state (GST_ELEMENT (video->play),
 				GST_STATE_PLAYING) == GST_STATE_SUCCESS);
@@ -697,14 +707,25 @@ cltr_video_idler (CltrVideo *video)
   switch (signal->signal_id)
     {
     case CLTR_VIDEO_ASYNC_TEXTURE:
-      video->frame_texture = signal->signal_data.texture.ref;
+      {
+	Pixbuf *pixb = NULL;
 
-      /* 
-       * we can actually grab the width and height from 
-       * the textures pixbuf.
-      */
+	video->frame_texture = signal->signal_data.texture.ref;
 
-      cltr_widget_queue_paint(CLTR_WIDGET(video));
+	cltr_texture_lock(video->frame_texture);
+
+	pixb = cltr_texture_get_pixbuf(video->frame_texture);
+
+	if (pixb)
+	  cltr_texture_force_rgb_data(video->frame_texture,
+				      pixb->width,
+				      pixb->height,
+				      pixb->data);
+
+	cltr_texture_unlock(video->frame_texture);
+
+	cltr_widget_queue_paint(CLTR_WIDGET(video));
+      }
       break;
     case CLTR_VIDEO_ASYNC_VIDEO_SIZE:
       video->video_width  = signal->signal_data.video_size.width;
@@ -730,13 +751,72 @@ cltr_video_idler (CltrVideo *video)
 }
 
 gboolean
-cltr_video_set_source(CltrVideo *video, char *location)
+cltr_video_set_source(CltrVideo *video, char *mrl)
 {
-  /* if (!gst_play_set_location (video->play, location)) */
+  gboolean ret;
 
-  g_object_set (G_OBJECT (video->play), "uri", location, NULL);
+  if (video->mrl && !strcmp (video->mrl, mrl))
+    return TRUE;
 
-  return TRUE;
+  if (video->mrl)
+    g_free (video->mrl);
+
+  video->mrl = g_strdup (mrl);
+
+  gst_element_set_state (GST_ELEMENT (video->play), GST_STATE_READY);
+
+  reset_error_msg (video);
+
+  /* video->got_redirect  = FALSE; */
+  video->has_video     = FALSE;
+  video->stream_length = 0;
+
+  /* Dont handle subtitles as yet
+  if (g_strrstr (video->mrl, "#subtitle:")) 
+    {
+      gchar **uris;
+
+      uris = g_strsplit (video->mrl, "#subtitle:", 2);
+      g_object_set (G_OBJECT (video->play), "uri",
+		    uris[0], "suburi", uris[1], NULL);
+      g_strfreev (uris);
+    } 
+  else 
+    {
+      g_object_set (G_OBJECT (video->play), "uri",
+		    video->mrl, "suburi", subtitle_uri, NULL);
+  }
+  */
+
+  g_object_set (G_OBJECT (video->play), "uri",
+		video->mrl, "suburi", NULL, NULL);
+
+
+  ret = (gst_element_set_state (video->play, 
+				GST_STATE_PAUSED) == GST_STATE_SUCCESS);
+
+
+  if (!ret /* && !video->got_redirect */)
+    {
+
+      /*
+      g_set_error (error, 0, 0, "%s", video->last_error_message ?
+          video->last_error_message : "Failed to open; reason unknown");
+      */
+
+      g_free (video->mrl);
+      video->mrl = NULL;
+      
+      return FALSE;
+    }
+
+  /*
+  if (ret)
+    g_signal_emit (bvw, bvw_table_signals[SIGNAL_CHANNELS_CHANGE], 0);
+  */
+
+  return ret;
+
 }
 
 

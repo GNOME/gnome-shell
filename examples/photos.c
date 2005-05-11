@@ -131,12 +131,12 @@ main(int argc, char **argv)
       usage(argv[0]);
     }
 
-  win = cltr_window_new(640, 480);
+  win = cltr_window_new(800, 600);
 
   if (want_fullscreen)
     cltr_window_set_fullscreen(CLTR_WINDOW(win));
 
-  grid = cltr_photo_grid_new(640, 480, cols, cols, ImgPath);
+  grid = cltr_photo_grid_new(800, 600, cols, cols, ImgPath);
 
   cltr_window_focus_widget(CLTR_WINDOW(win), grid);
 

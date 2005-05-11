@@ -331,21 +331,20 @@ gst_cltrimagesink_chain (GstPad * pad, GstData * data)
 
 	 if (pixb)
 	   {
-	     /*
 	     memcpy (pixb->data,
 		     GST_BUFFER_DATA (buf),
 		     MIN (GST_BUFFER_SIZE (buf), 
 			  pixb->bytes_per_line * pixb->width));
-	     */
 
-	     /* EVIL */
+	     /* Below faster but threading issues causing DRI to bomb out */
 
+	     /*
 	     if (GST_BUFFER_SIZE (buf) >= pixb->width * pixb->height * 3)
 	       cltr_texture_force_rgb_data(cltrimagesink->texture,
 					   pixb->width,
 					   pixb->height,
 					   GST_BUFFER_DATA (buf));
-
+	     */
 	   }
 
 	 cltr_texture_unlock(cltrimagesink->texture);

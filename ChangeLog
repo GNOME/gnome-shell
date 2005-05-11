@@ -1,3 +1,13 @@
+2005-05-11  mallum,,,  <mallum@openedhand.com>
+
+	* clutter/cltr-video.c: (got_buffering), (cltr_video_new),
+	(cltr_video_play), (cltr_video_idler):
+	* examples/photos.c: (main):
+	* examples/player.c: (handle_xevent), (main):
+	* gst/cltrimagesink.c: (gst_cltrimagesink_chain):
+	Fix Gl thread related crash on video playback
+	Make examples less bound to my laptop ;)
+
 2005-05-06  mallum,,,  <mallum@openedhand.com>
 
 	* clutter/cltr-button.c: (cltr_button_new_with_label):

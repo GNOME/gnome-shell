@@ -41,6 +41,7 @@ handle_xevent(CltrWidget *win, XEvent *xev, void *cookie)
 	  else
 	    cltr_video_pause (video);
 	  Paused ^= 1;
+
 	  break;
 	}
     }
@@ -65,17 +66,17 @@ main (int argc, char *argv[])
 
   font = font_new("Sans bold 96");
 
-  win = cltr_window_new(1400, 1050);
+  win = cltr_window_new(800, 600);
 
-  video = cltr_video_new(1400, 1050);
+  video = cltr_video_new(800, 600);
 
   cltr_video_set_source(CLTR_VIDEO(video), argv[1]);
 
   cltr_widget_add_child(win, video, 0, 0);  
 
-  // label = cltr_label_new("hello world", font, &col);
+  label = cltr_label_new("hello world", font, &col);
 
-  // cltr_widget_add_child(win, label, 100, 300);  
+  cltr_widget_add_child(win, label, 100, 300);  
 
   cltr_window_on_xevent(CLTR_WINDOW(win), handle_xevent, video);
 
