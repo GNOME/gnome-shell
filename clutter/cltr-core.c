@@ -25,9 +25,6 @@ cltr_init(int *argc, char ***argv)
       GLX_RED_SIZE, 1,
       GLX_GREEN_SIZE, 1,
       GLX_BLUE_SIZE, 1,
-
-
-
       */
       0
     };
@@ -38,7 +35,8 @@ cltr_init(int *argc, char ***argv)
 
   if (!g_thread_supported ())
     g_thread_init (NULL);
-  // XInitThreads ();
+
+  /* XInitThreads (); */
 
   if ((CltrCntx.xdpy = XOpenDisplay(getenv("DISPLAY"))) == NULL)
     {
@@ -62,6 +60,10 @@ cltr_init(int *argc, char ***argv)
 
   CltrCntx.gl_context = glXCreateContext(CltrCntx.xdpy, vinfo, 0, True);
 
+  pixel_set_vals(&CltrCntx.colors[CLTR_COL_BG], 0xff, 0xff, 0xff, 0xff );
+  pixel_set_vals(&CltrCntx.colors[CLTR_COL_BDR],0xff, 0xff, 0xff, 0xff );
+  pixel_set_vals(&CltrCntx.colors[CLTR_COL_FG], 0xff, 0xff, 0xff, 0xff );
+
   cltr_events_init();
 
   return 1;
@@ -81,4 +83,12 @@ cltr_display_height(void)
   ClutterMainContext *ctx = CLTR_CONTEXT();
 
   return DisplayHeight(ctx->xdpy, ctx->xscreen);
+}
+
+PixbufPixel*
+cltr_core_get_color(CltrNamedColor col)
+{
+  ClutterMainContext *ctx = CLTR_CONTEXT();
+
+  return &ctx->colors[col];
 }

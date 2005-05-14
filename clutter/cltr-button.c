@@ -95,6 +95,7 @@ cltr_button_new_with_pixbuf(Pixbuf *pixb)
 
   button = CLTR_BUTTON(cltr_button_new(-1, -1));
 
+  return CLTR_WIDGET(button);
 }
 
 static void
@@ -191,7 +192,8 @@ cltr_button_handle_xkeyevent(CltrButton *button, XKeyEvent *xkeyev)
       break;
     default:
       /* ??? */
-    }
+      break;
+   }
 
   if (button->state != old_state)
     {
@@ -203,7 +205,7 @@ cltr_button_handle_xkeyevent(CltrButton *button, XKeyEvent *xkeyev)
     {
       /* Evil - need to centralise focus management */
       ClutterMainContext *ctx = CLTR_CONTEXT();
-      cltr_window_focus_widget(ctx->window, next_focus);
+      cltr_window_focus_widget(CLTR_WIDGET(ctx->window), next_focus);
     }
 }
 
@@ -221,6 +223,8 @@ cltr_button_handle_xevent (CltrWidget *widget, XEvent *xev)
       cltr_button_handle_xkeyevent(button, &xev->xkey);
       break;
     }
+
+  return TRUE;
 }
 
 
@@ -251,7 +255,7 @@ cltr_button_paint(CltrWidget *widget)
 			widget->y,
 			widget->x + widget->width,
 			widget->y + widget->height,
-			widget->width/30,
+			2, 5,
 			NULL);
 
   glDisable(GL_BLEND);

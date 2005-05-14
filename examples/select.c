@@ -11,7 +11,7 @@ int
 main(int argc, char **argv)
 {
   int         i;
-  CltrWidget *win = NULL, *grid = NULL, *test = NULL, *test2 = NULL, *list;
+  CltrWidget *win = NULL, *list = NULL;
   CltrFont   *font = NULL;
   PixbufPixel col = { 0xff, 0, 0, 0xff };
 
@@ -53,44 +53,13 @@ main(int argc, char **argv)
   if (want_fullscreen)
     cltr_window_set_fullscreen(CLTR_WINDOW(win));
 
-  font = font_new("Sans Bold 11");
+  list = cltr_list_new(800, 600, 800, 600/5);
+  
+  cltr_widget_add_child(win, list, 0, 0);
 
-  test = cltr_button_new_with_label("ButtonBoooo\nd sfdsfdsfsss\nsjhsjhsjhs", font, &col);
-
-  test2 = cltr_button_new_with_label("One Two", font, &col);
-
-  cltr_widget_add_child(win, test, 300, 100);
-
-  cltr_widget_add_child(win, test2, 100, 100);
-
-  cltr_window_focus_widget(CLTR_WINDOW(win), test2);
-
-  cltr_widget_set_focus_next(test, test2, CLTR_EAST);
-  cltr_widget_set_focus_next(test, test2, CLTR_WEST);
-  cltr_widget_set_focus_next(test2, test, CLTR_EAST);
-  cltr_widget_set_focus_next(test2, test, CLTR_WEST);
-
-  /*
-  test = cltr_scratch_new(300, 100);
-  test2 = cltr_scratch_new(150, 150);
-
-  cltr_widget_add_child(win, test, 400, 240);
-  */
-
-
-
-  /*
-  cltr_widget_add_child(win, test, 320, 240);
-  cltr_widget_add_child(win, test2, 400, 300);
-  */
-
-
-  cltr_window_focus_widget(CLTR_WINDOW(win), test);
-
+  cltr_window_focus_widget(CLTR_WINDOW(win), list);
 
   cltr_widget_show_all(win);
 
   cltr_main_loop();
-
-  return 0;
 }

@@ -117,6 +117,8 @@ draw_layout_on_pixbuf (PangoLayout       *layout,
 	      for (i = start_x ; i < end_x; i++)
 		{
 		  PixbufPixel pixel;
+
+#if 0
 		  int tr1, tg1, tb1, tr2, tg2, tb2;
 		  int a = (*b * color->a + 0x80) >> 8;
 
@@ -145,7 +147,12 @@ draw_layout_on_pixbuf (PangoLayout       *layout,
 		  tb1 = (255 - a) * pixel.a + 0x80;
 		  tb2 = a * color->a + 0x80;
 		  pixel.a = ((tb1 + (tb1 >> 8)) >> 8) + ((tb2 + (tb2 >> 8)) >> 8);
-		  
+#endif		  
+		  pixel.r = color->r; 
+		  pixel.g = color->g; 
+		  pixel.b = color->b; 
+		  pixel.a = (( *b * color->a ) >> 8 );
+
 		  pixbuf_set_pixel (pixb, i, j, &pixel);
 		  b++;
 		}

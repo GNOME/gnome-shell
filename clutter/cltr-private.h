@@ -75,6 +75,8 @@ struct ClutterMainContext
   
   CltrWidget     *window;
   GAsyncQueue    *internal_event_q;
+  
+  PixbufPixel    colors[CLTR_N_COLS];
 };
 
 ClutterMainContext CltrCntx;

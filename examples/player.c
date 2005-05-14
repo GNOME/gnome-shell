@@ -53,9 +53,7 @@ main (int argc, char *argv[])
 {
   CltrWidget *win, *video, *label;
   CltrFont   *font;
-  PixbufPixel col = { 0xff, 0xff, 0xff, 0x66 };
-
-  pixel_set_vals(&col, 0x00, 0x00, 0x00, 0x99);
+  PixbufPixel col = { 0x66, 0x00, 0x00, 0x99 };
 
   cltr_init (&argc, &argv);
 
@@ -64,7 +62,7 @@ main (int argc, char *argv[])
     exit (-1);
   }
 
-  font = font_new("Sans bold 96");
+  font = font_new("Baubau 72");
 
   win = cltr_window_new(800, 600);
 
@@ -74,9 +72,9 @@ main (int argc, char *argv[])
 
   cltr_widget_add_child(win, video, 0, 0);  
 
-  label = cltr_label_new("hello world", font, &col);
+  label = cltr_label_new("Clutter", font, &col);
 
-  cltr_widget_add_child(win, label, 100, 300);  
+  cltr_widget_add_child(win, label, 10, 400);  
 
   cltr_window_on_xevent(CLTR_WINDOW(win), handle_xevent, video);
 

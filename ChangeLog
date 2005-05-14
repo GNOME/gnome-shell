@@ -1,3 +1,34 @@
+2005-05-14  mallum,,,  <mallum@openedhand.com>
+
+	* clutter/cltr-animator.c:
+	Add initial outline
+	* clutter/cltr-button.c: (cltr_button_new_with_pixbuf),
+	(cltr_button_handle_xkeyevent), (cltr_button_handle_xevent),
+	(cltr_button_paint):
+	various tweaks/experimentation
+	* clutter/cltr-core.c: (cltr_init), (cltr_display_height):
+	* clutter/cltr-glu.c: (cltr_glu_set_color):
+	* clutter/cltr-glu.h:
+	Add unfilled rect call.
+	* clutter/cltr-label.c: (cltr_label_new), (cltr_label_paint):
+	* clutter/cltr-list.c: (distfunc), (cltr_list_cell_new),
+	(cltr_list_show), (cltr_list_animate), (cltr_list_paint):
+	update list a little.
+	* clutter/cltr-overlay.c: (cltr_overlay_handle_xevent),
+	(cltr_overlay_paint):
+	* clutter/cltr-private.h:
+	* clutter/cltr-texture.c: (cltr_texture_realize):
+	* clutter/cltr-video.c: (cltr_video_paint):
+	* clutter/cltr.h:
+	* clutter/fonts.c: (draw_layout_on_pixbuf):
+	Fix font alpha blending 
+	* examples/Makefile.am:
+	* examples/player.c: (main):
+	* examples/scratch.c: (main):
+	tweaks.
+	* examples/select.c:
+	new example
+
 2005-05-11  mallum,,,  <mallum@openedhand.com>
 
 	* clutter/cltr-video.c: (got_buffering), (cltr_video_new),

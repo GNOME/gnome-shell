@@ -1,7 +1,7 @@
 #include "cltr-list.h"
 #include "cltr-private.h"
 
-#define ANIM_FPS 200 
+#define ANIM_FPS 50 
 #define FPS_TO_TIMEOUT(t) (1000/(t))
 
 typedef struct CltrListCell
@@ -39,7 +39,7 @@ distfunc(CltrList *list, int d)
   int maxdist = list->widget.height;
 
   d = (maxdist-ABS(d)) ;
-  return ( exp( (float)d/maxdist * 2.0 ) / exp(2.0) );
+  return ( exp( (float)d/maxdist * 0.8 ) / exp(0.8) ) ;
 }
 
 CltrListCell*
@@ -48,9 +48,9 @@ cltr_list_cell_new(CltrList *list)
   CltrListCell *cell = NULL;
   ClutterFont  *font;
   gchar         buf[24];
-  PixbufPixel   pixel = { 255, 20, 20, 255 }, font_pixel = { 255, 255, 255, 200 };
+  PixbufPixel   pixel = { 0xff, 0, 0, 0 }, font_pixel = { 255, 255, 255, 255};
 
-  font = font_new ("Sans Bold 96");
+  font = font_new ("Sans Bold 48");
 
   cell = g_malloc0(sizeof(CltrListCell));
 
@@ -59,8 +59,6 @@ cltr_list_cell_new(CltrList *list)
   pixbuf_fill_rect(cell->pixb, 0, 0, -1, -1, &pixel);
 
   g_snprintf(&buf[0], 24, "%i %i %i", rand()%10, rand()%10, rand()%10);
-
-
 
   font_draw(font, cell->pixb, buf, 10, 10, &font_pixel);
 
@@ -98,9 +96,9 @@ cltr_list_show(CltrWidget *widget)
 {
   CltrList *list = CLTR_LIST(widget);
   
-  int n_items = 50, i;
+  int n_items = 20, i;
 
-  list->active_cell_y = 100;
+  list->active_cell_y = (widget->height / 2) - (list->cell_height/2);
 
   for (i=0; i<n_items; i++)
     {
@@ -174,7 +172,7 @@ cltr_list_animate(CltrList *list)
 
       if (next_active->rect.y < list->active_cell_y)
 	{
-	  cell_top->rect.y += 2;
+	  cell_top->rect.y += 10;
 	}
       else
 	{
@@ -196,7 +194,7 @@ cltr_list_animate(CltrList *list)
 
       if (next_active->rect.y > list->active_cell_y)
 	{
-	  cell_top->rect.y -= 2;
+	  cell_top->rect.y -= 10;
 	}
       else
 	{
@@ -228,12 +226,14 @@ cltr_list_timeout_cb(gpointer data)
     }
 }
 
+
 static void
 cltr_list_paint(CltrWidget *widget)
 {
   GList        *cell_item = NULL;
   CltrList     *list = CLTR_LIST(widget);
   CltrListCell *cell = NULL;
+  PixbufPixel col = { 0xff, 0, 0, 0xff };
 
   int       last;
 
@@ -249,28 +249,64 @@ cltr_list_paint(CltrWidget *widget)
 
   while (cell_item)
     {
+      float scale = 0.0;
+
       cell = (CltrListCell *)cell_item->data;
+
+      col.r = 0xff; col.g = 0;  col.b = 0; col.a = 0xff;
 
       cell->rect.y = last;
        
       if (cell->rect.y + cell->rect.height >= 0)
 	{
-	  cell->rect.width  = list->cell_width * distfunc(list, cell->rect.y - list->active_cell_y);
-	  cell->rect.height = list->cell_height * distfunc(list, cell->rect.y - list->active_cell_y);
+	  scale = distfunc(list, cell->rect.y - list->active_cell_y);
+
+	  cell->rect.width  = list->cell_width * scale;
+	  cell->rect.height = list->cell_height * scale;
 	  
-	  /* cell->rect.x = (list->widget.width - cell->rect.width) / 6;  */
-	  cell->rect.x = 0;
+	  cell->rect.x = (list->widget.width - cell->rect.width) / 2;  
 	}
       
       last = cell->rect.y + cell->rect.height;
       
       if (last > 0 && cell->rect.y < list->widget.width) /* crappy clip */
 	{
+	  glDisable(GL_TEXTURE_2D);
+
+	  if (cell_item == list->active_cell && list->state == CLTR_LIST_STATE_BROWSE)
+	    col.b = 0xff;
+	  else
+	    col.b = 0x00;
+
+	  cltr_glu_rounded_rect_filled(cltr_rect_x1(cell->rect),
+				       cltr_rect_y1(cell->rect) + (5.0 * scale),
+				       cltr_rect_x2(cell->rect),
+				       cltr_rect_y2(cell->rect) - (5.0 * scale),
+				       10,
+				       &col);
+
+	  col.r = 0xff; col.g = 0xff;  col.b = 0xff; col.a = 0xff;
+
+	  /*
+	  cltr_glu_rounded_rect(cltr_rect_x1(cell->rect) + 10,
+				cltr_rect_y1(cell->rect) + 12,
+				cltr_rect_x2(cell->rect) - 10,
+				cltr_rect_y2(cell->rect) - 12,
+				10,
+				&col);
+	  */
+
+	  glEnable(GL_TEXTURE_2D);
+
+	  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	  glColor4f(1.0, 1.0, 1.0, 1.0);
+
 	  cltr_texture_render_to_gl_quad(cell->texture,
-					 cltr_rect_x1(cell->rect),
-					 cltr_rect_y1(cell->rect),
-					 cltr_rect_x2(cell->rect),
-					 cltr_rect_y2(cell->rect));
+					 cltr_rect_x1(cell->rect) + 100,
+					 cltr_rect_y1(cell->rect) + 10,
+					 cltr_rect_x2(cell->rect) - 100,
+					 cltr_rect_y2(cell->rect) - 10);
 	}
 
       cell_item = g_list_next(cell_item);

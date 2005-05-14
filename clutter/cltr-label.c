@@ -36,11 +36,11 @@ cltr_label_new(const char  *text,
 
   if (width && height)
     {
-      PixbufPixel bg = { 0xff, 0xff, 0xff, 0x00 };
+      PixbufPixel bg = { 0x00, 0x00, 0x00, 0x00 };
 
       label->text = strdup(text);
       label->pixb  = pixbuf_new(width, height);
-
+      
       pixbuf_fill_rect(label->pixb, 0, 0, -1, -1, &bg);
 
       font_draw(font, 
@@ -113,10 +113,11 @@ cltr_label_paint(CltrWidget *widget)
 
       glEnable(GL_TEXTURE_2D);
 
-      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
       glEnable(GL_BLEND);
 
-      /* glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND); */
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+      glColor4f(1.0, 1.0, 1.0, 1.0);
 
       cltr_texture_render_to_gl_quad(label->texture,
 				     cltr_widget_abs_x(widget),
@@ -125,6 +126,7 @@ cltr_label_paint(CltrWidget *widget)
 				     cltr_widget_abs_y2(widget));
 
       glDisable(GL_BLEND);
+
       glDisable(GL_TEXTURE_2D);
 
       glPopMatrix();

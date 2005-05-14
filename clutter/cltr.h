@@ -30,6 +30,15 @@ typedef enum CltrDirection
 } 
 CltrDirection;
 
+typedef enum CltrNamedColor
+{
+  CLTR_COL_BG = 0,
+  CLTR_COL_BDR,
+  CLTR_COL_FG,
+  CLTR_N_COLS
+} 
+CltrNamedColor;
+
 typedef struct CltrRect
 {
   int x, y, width, height;

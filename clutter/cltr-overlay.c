@@ -44,6 +44,7 @@ static gboolean
 cltr_overlay_handle_xevent (CltrWidget *widget, XEvent *xev) 
 {
 
+  return FALSE;
 }
 
 static void
@@ -53,12 +54,12 @@ cltr_overlay_paint(CltrWidget *widget)
 
   glColor4f(0.5, 0.5, 0.5, 1.0);
 
-  cltr_glu_rounded_rect(widget->x,
-			widget->y,
-			widget->x + widget->width,
-			widget->y + widget->height,
-			widget->width/30,
-			NULL);
+  cltr_glu_rounded_rect_filled(widget->x,
+			       widget->y,
+			       widget->x + widget->width,
+			       widget->y + widget->height,
+			       widget->width/30,
+			       NULL);
 
   glDisable(GL_BLEND);
 

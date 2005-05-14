@@ -1,4 +1,4 @@
-noinst_PROGRAMS = scratch photos player
+noinst_PROGRAMS = scratch photos player select
 
 scratch_SOURCES = scratch.c
 scratch_CFLAGS = $(CLTR_CFLAGS) $(GST_CFLAGS) $(GCONF_CFLAGS)
@@ -19,6 +19,14 @@ photos_LDFLAGS = \
 player_SOURCES = player.c
 player_CFLAGS = $(CLTR_CFLAGS) $(GST_CFLAGS) $(GCONF_CFLAGS)
 player_LDFLAGS =    \
+    $(CLTR_LIBS)    \
+    $(GST_LIBS)   \
+    $(GCONF_LIBS) \
+    $(top_builddir)/clutter/libclutter.la 
+
+select_SOURCES = select.c
+select_CFLAGS = $(CLTR_CFLAGS) $(GST_CFLAGS) $(GCONF_CFLAGS)
+select_LDFLAGS =    \
     $(CLTR_LIBS)    \
     $(GST_LIBS)   \
     $(GCONF_LIBS) \

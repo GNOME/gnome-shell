@@ -864,13 +864,15 @@ cltr_video_paint(CltrWidget *widget)
 	}
 
 
-      glEnable(GL_BLEND); 
+      // glEnable(GL_BLEND); 
+
+      // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
       glColor4f(1.0, 1.0, 1.0, 1.0);
 
       glEnable(GL_TEXTURE_2D);
 
-      glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+      // glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
       cltr_texture_lock(video->frame_texture);
 
@@ -884,7 +886,9 @@ cltr_video_paint(CltrWidget *widget)
 
       glDisable(GL_TEXTURE_2D); 
 
-      glColor4f(1.0, 1.0, 1.0, 0.5);
+      // glDisable(GL_BLEND); 
+
+      // glColor4f(1.0, 1.0, 1.0, 0.5);
 
       // glRecti(100, 100, 600, 600);
     }
