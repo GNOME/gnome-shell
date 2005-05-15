@@ -2,6 +2,7 @@ source_h = pixbuf.h util.h fonts.h \
           cltr.h                  \
           cltr-private.h          \
           cltr-glu.h              \
+          cltr-animator.h         \
           cltr-events.h           \
           cltr-texture.h          \
           cltr-widget.h           \
@@ -17,6 +18,7 @@ source_h = pixbuf.h util.h fonts.h \
 source_c = pixbuf.c util.c fonts.c \
            cltr-core.c             \
            cltr-glu.c              \
+           cltr-animator.c         \
            cltr-texture.c          \
            cltr-widget.c           \
            cltr-events.c	   \

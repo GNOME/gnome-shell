@@ -72,11 +72,13 @@ typedef void (*CltrXEventCallback) (CltrWidget *widget,
 #include "cltr-texture.h"
 #include "cltr-events.h"
 #include "cltr-widget.h"
+#include "cltr-animator.h"
 #include "cltr-window.h"
 #include "cltr-overlay.h"
 #include "cltr-label.h"
 #include "cltr-button.h"
 #include "cltr-photo-grid.h"
+#include "cltr-list.h"
 #include "cltr-video.h"
 
 #endif

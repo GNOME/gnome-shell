@@ -1,3 +1,21 @@
+2005-05-16  mallum,,,  <mallum@openedhand.com>
+
+	* clutter/Makefile.am:
+	* clutter/cltr-animator.c:
+	* clutter/cltr-animator.h:
+	* clutter/cltr-list.c: (distfunc), (cltr_list_new),
+	(cltr_list_get_active_cell_co_ords), (cltr_list_show),
+	(cltr_list_on_activate_cell), (cltr_list_handle_xevent),
+	(cltr_list_animate), (cltr_list_timeout_cb),
+	(cltr_list_update_layout), (cltr_list_paint):
+	* clutter/cltr-list.h:
+	* clutter/cltr-private.h:
+	* clutter/cltr.h:
+	* clutter/pixbuf.c: (load_png_file):
+	* examples/player.c:
+	* examples/select.c: (usage), (populate), (cell_activated), (main):
+	Work on animator zooming. Also build up select.c much
+
 2005-05-14  mallum,,,  <mallum@openedhand.com>
 
 	* clutter/cltr-animator.c:

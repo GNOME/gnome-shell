@@ -60,6 +60,10 @@ struct CltrWidget
   WidgetUnfocusMethod  focus_out;
 
   WidgetXEventHandler xevent_handler;
+
+  /* Anim ref */
+  
+  CltrAnimator *anim;
 };
 
 typedef struct ClutterMainContext ClutterMainContext;

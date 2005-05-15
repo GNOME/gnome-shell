@@ -96,11 +96,13 @@ load_png_file( const char *file,
 
   if (( color_type == PNG_COLOR_TYPE_GRAY ) ||
       ( color_type == PNG_COLOR_TYPE_RGB ))
-    png_set_add_alpha(png_ptr, 0xff, PNG_FILLER_AFTER); /* req 1.2.7 */
+    png_set_add_alpha(png_ptr, 0xff, PNG_FILLER_BEFORE); /* req 1.2.7 */
 
   if (( color_type == PNG_COLOR_TYPE_PALETTE )||
       ( png_get_valid( png_ptr, info_ptr, PNG_INFO_tRNS )))
     png_set_expand(png_ptr);
+
+  png_set_packswap(png_ptr);
 
   png_read_update_info( png_ptr, info_ptr);
  
