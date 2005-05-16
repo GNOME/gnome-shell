@@ -1,5 +1,29 @@
 #include <clutter/cltr.h>
 
+typedef struct ItemEntry ItemEntry;
+
+typedef struct DemoApp
+{
+  CltrAnimator *anim;
+  CltrWidget   *list;
+  CltrWidget   *video;
+  CltrWidget   *win;
+
+  GList        *items;
+
+} DemoApp;
+
+struct ItemEntry
+{
+  gchar        *nice_name;
+  gchar        *path;
+  gchar        *uri;
+  CltrListCell *cell;
+};
+
+static void
+zoom_out_complete (CltrAnimator *anim, void *userdata);
+
 int 
 usage(char *progname)
 {
@@ -7,14 +31,15 @@ usage(char *progname)
   exit(-1);
 }
 
+
 gboolean
-populate(CltrList *list, char *path)
+populate(DemoApp *app, char *path)
 {
   GDir             *dir;
   GError           *error;
   const gchar      *entry = NULL;
   int               n_pixb = 0, i =0;
-  
+  CltrList         *list = CLTR_LIST(app->list);
   Pixbuf           *default_thumb_pixb = NULL;
 
   default_thumb_pixb = pixbuf_new_from_file("clutter-logo-800x600.png");
@@ -33,33 +58,49 @@ populate(CltrList *list, char *path)
 
   while ((entry = g_dir_read_name (dir)) != NULL)
     {
-      Pixbuf       *pixb = default_thumb_pixb;
-      CltrListCell *cell;
-      gchar        *nice_name = NULL;
+      Pixbuf       *pixb = NULL;
       gint          i = 0;
+      ItemEntry    *new_item;
+      char         *img_path;
 
       if (!(g_str_has_suffix (entry, ".mpg") ||
 	    g_str_has_suffix (entry, ".MPG") ||
 	    g_str_has_suffix (entry, ".mpg4") ||
 	    g_str_has_suffix (entry, ".MPG4") ||
 	    g_str_has_suffix (entry, ".avi") ||
+	    g_str_has_suffix (entry, ".mov") ||
+	    g_str_has_suffix (entry, ".MOV") ||
 	    g_str_has_suffix (entry, ".AVI")))
 	{
 	  continue;
 	}
 
-      nice_name = g_strdup(entry);
+      new_item = g_malloc0(sizeof(ItemEntry));
 
-      i = strlen(nice_name) - 1;
-      while (i-- && nice_name[i] != '.') ;
+      new_item->nice_name = g_strdup(entry);
+
+      i = strlen(new_item->nice_name) - 1;
+      while (i-- && new_item->nice_name[i] != '.') ;
       if (i > 0) 
-	nice_name[i] = '\0';
+	new_item->nice_name[i] = '\0';
 
-      cell = cltr_list_cell_new(list, pixb, nice_name);
+      img_path = g_strconcat(path, "/", new_item->nice_name, ".png", NULL);
 
-      cltr_list_append_cell(list, cell);
+      pixb = pixbuf_new_from_file(img_path);
 
-      g_free(nice_name);
+      if (!pixb) 
+	pixb = default_thumb_pixb;
+
+      new_item->cell = cltr_list_cell_new(list, pixb, new_item->nice_name);
+
+      cltr_list_append_cell(list, new_item->cell);
+
+      new_item->uri = g_strconcat("file://", path, "/", entry, NULL);
+      new_item->path = g_strdup(path);
+
+      app->items = g_list_append(app->items, new_item);
+
+      g_free(img_path);
 
       g_printf(".");
     }
@@ -71,19 +112,175 @@ populate(CltrList *list, char *path)
   return TRUE;
 }
 
+ItemEntry*
+cell_to_item(DemoApp *app, CltrListCell *cell)
+{
+  GList *item = NULL;
+
+  item = g_list_first(app->items);
+
+  while (item)
+    {
+      ItemEntry *entry = item->data;
+
+      if (entry->cell == cell)
+	return entry;
+
+      item = g_list_next(item);
+    }
+
+  return NULL;
+}
+
+
+
+void
+handle_xevent(CltrWidget *win, XEvent *xev, void *cookie)
+{
+  KeySym          kc;
+  DemoApp        *app = (DemoApp*)cookie;
+
+  if (xev->type == KeyPress)
+    {
+      XKeyEvent *xkeyev = &xev->xkey;
+
+      kc = XKeycodeToKeysym(xkeyev->display, xkeyev->keycode, 0);
+
+      switch (kc)
+	{
+	case XK_Return:
+	  {
+	    ItemEntry    *item;
+	    char          filename[1024];
+	    Pixbuf       *spixb, *dpixb;
+	    int           dstx, dsty, dstw, dsth;
+	    PixbufPixel   col = { 0, 0, 0, 0xff };
+	    int           x1, y1, x2, y2;
+
+	    // cltr_video_pause (CLTR_VIDEO(app->video));
+
+	    item = cell_to_item(app, cltr_list_get_active_cell(app->list));
+
+	    snprintf(filename, 1024, "%s/%s.png", item->path, item->nice_name);
+
+	    spixb = cltr_video_get_pixbuf (app->video);
+
+	    /* fixup pixbuf so scaled like video 
+             *
+	    */
+
+	    /* XXX wrongly assume width > height */
+
+	    dstw = spixb->width;
+
+	    dsth = (spixb->width * cltr_widget_height(win)) 
+	                  / cltr_widget_width(win) ;
+
+	    printf("dsth %i, spixb h %i\n", dsth, spixb->height);
+
+	    dsty = (dsth - spixb->height)/2; dstx = 0;
+
+	    dpixb = pixbuf_new(dstw, dsth);
+	    pixbuf_fill_rect(dpixb, 0, 0, -1, -1, &col);
+	    pixbuf_copy(spixb, dpixb, 0, 0, 
+			spixb->width, spixb->height, dstx, dsty);
+
+	    cltr_list_cell_set_pixbuf(cltr_list_get_active_cell(app->list),
+				      dpixb);
+
+	    pixbuf_write_png(dpixb, filename);
+
+
+	    /* reset the viewing pixbuf */
+
+	    pixbuf_unref(dpixb);
+
+	    cltr_list_get_active_cell_co_ords(CLTR_LIST(app->list), 
+					      &x1, &y1, &x2, &y2);
+
+
+	    cltr_video_stop (CLTR_VIDEO(app->video));
+
+	    /* zoom out, XXX old anim needs freeing */
+
+	    app->anim = cltr_animator_zoom_new(app->list,
+					       x1, y1, x1+80, y1+60,
+					       0,0,800,600);
+
+	    printf("got return, seek time %li, %i, %i \n", 
+		   cltr_video_get_time (CLTR_VIDEO(app->video)),
+		   x1, y1);
+
+	    cltr_widget_show(app->list);
+	    
+	    cltr_animator_run(app->anim, zoom_out_complete, app);
+	  }
+	  break;
+	}
+    }
+
+}
+
+static void
+zoom_out_complete (CltrAnimator *anim, void *userdata)
+{
+  DemoApp *app = (DemoApp*)userdata;
+
+  cltr_window_on_xevent(CLTR_WINDOW(app->win), NULL, NULL);
+
+
+
+  cltr_widget_hide(app->video);
+
+  cltr_widget_queue_paint(app->win);
+}
+
+void
+zoom_in_complete (CltrAnimator *anim, void *userdata)
+{
+  DemoApp      *app = (DemoApp*)userdata;
+  ItemEntry    *item;
+
+  cltr_widget_hide(CLTR_WIDGET(app->list));
+
+  /* cltr_animator_reset(anim); */
+
+  item = cell_to_item(app, cltr_list_get_active_cell(app->list));
+
+  cltr_video_set_source(CLTR_VIDEO(app->video), item->uri);
+
+  cltr_video_play(CLTR_VIDEO(app->video), NULL);
+
+  cltr_widget_show(app->video);
+
+  cltr_window_on_xevent(CLTR_WINDOW(app->win), handle_xevent, app);
+}
+
 void
 cell_activated (CltrList     *list, 
 		CltrListCell *cell,
 		void         *userdata)
 {
+  DemoApp      *app = (DemoApp*)userdata;
   int           x1, y1, x2, y2;
-  CltrAnimator *anim = NULL;
+  static        have_added_child = 0; /* HACK */
 
   cltr_list_get_active_cell_co_ords(CLTR_LIST(list), &x1, &y1, &x2, &y2);
 
-  anim = cltr_animator_fullzoom_new(CLTR_LIST(list), x1, y1, x1+80, y1+60);
+  app->anim = cltr_animator_zoom_new(CLTR_WIDGET(list),
+				     0,0,800,600,
+				     x1, y1, x1+80, y1+60);
 
-  cltr_animator_run(anim, NULL, NULL);
+  if (!have_added_child)
+    cltr_widget_add_child(app->win, app->video, x1, y1);
+  else
+    {
+      printf("x1: %i, y1: %i\n", x1, y1); 
+    }
+
+  have_added_child = 1;
+
+  cltr_animator_run(app->anim, zoom_in_complete, app);
 }
 
 int
@@ -98,7 +295,7 @@ main(int argc, char **argv)
   gboolean    want_fullscreen = FALSE;
   gint        cols = 3;
 
-  CltrAnimator *anim = NULL;
+  DemoApp *app;
 
   cltr_init(&argc, &argv);
 
@@ -135,23 +332,29 @@ main(int argc, char **argv)
       exit(-1);
     }
 
-  win = cltr_window_new(800, 600);
+  app = g_malloc0(sizeof(DemoApp));
+
+  app->win = cltr_window_new(800, 600);
 
   if (want_fullscreen)
-    cltr_window_set_fullscreen(CLTR_WINDOW(win));
+    cltr_window_set_fullscreen(CLTR_WINDOW(app->win));
 
-  list = cltr_list_new(800, 600, 800, 600/5);
+  app->list = cltr_list_new(800, 600, 800, 600/5);
   
-  if (!populate(list, movie_path))
+  if (!populate(app, movie_path))
       exit(-1);
 
-  cltr_widget_add_child(win, list, 0, 0);
+  cltr_widget_add_child(app->win, app->list, 0, 0);
 
-  cltr_window_focus_widget(CLTR_WINDOW(win), list);
+  app->video = cltr_video_new(80, 60);
 
-  cltr_widget_show_all(win);
+  cltr_window_focus_widget(CLTR_WINDOW(app->win), app->list);
 
-  cltr_list_on_activate_cell(CLTR_LIST(list), cell_activated, NULL);
+  cltr_widget_show_all(app->win);
+  cltr_widget_hide(app->video);
+
+  cltr_list_on_activate_cell(CLTR_LIST(app->list), 
+			     cell_activated, (gpointer)app);
 
   cltr_main_loop();
 }

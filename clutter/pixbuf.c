@@ -21,6 +21,111 @@
 
 #define CLTR_CLAMP(x, y)  ((x) > (y)) ? (y) : (x);
 
+static void
+fix_png_write_data (png_structp   png, 
+		    png_row_infop row_info, 
+		    png_bytep     data)
+{
+  int i;
+
+  for (i = 0; i < row_info->rowbytes; i += 4) 
+    {
+      unsigned char *b = &data[i];
+      unsigned int pixel;
+
+      memcpy (&pixel, b, sizeof (unsigned int));
+
+      b[0] = (pixel >> 24) & 0xff; 
+      b[1] = (pixel >> 16) & 0xff; 
+      b[2] = (pixel >> 8) & 0xff; 
+      b[3] = pixel & 0xff;
+    }
+}
+
+static void
+fix_png_read_data (png_structp   png, 
+		   png_row_infop row_info, 
+		   png_bytep     data)
+{
+  int i;
+
+  for (i = 0; i < row_info->rowbytes; i += 4) 
+    {
+      unsigned char *b = &data[i];
+      unsigned int pixel;
+
+      memcpy (&pixel, b, sizeof (unsigned int));
+
+      b[0] = (pixel >> 24) & 0xff; 
+      b[1] = (pixel >> 16) & 0xff; 
+      b[2] = (pixel >> 8) & 0xff; 
+      b[3] = pixel & 0xff;
+    }
+}
+
+int
+pixbuf_write_png(Pixbuf *pixb, char *filename)
+{
+  FILE         *f;
+  int           i;
+  png_struct   *png;
+  png_info     *info;
+  png_byte    **rows;
+  png_color_16  white;
+    
+  f = fopen (filename, "w");
+
+  rows = malloc (pixb->height * sizeof(png_byte*));
+
+  for (i = 0; i < pixb->height; i++) 
+    {
+      rows[i] = pixb->data + (i * (pixb->width));
+    }
+
+  png = png_create_write_struct (PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+
+  info = png_create_info_struct (png);
+
+  png_init_io (png, f);
+
+  png_set_IHDR (png, info,
+		pixb->width, pixb->height, 8,
+		PNG_COLOR_TYPE_RGB_ALPHA, 
+		PNG_INTERLACE_NONE,
+		PNG_COMPRESSION_TYPE_DEFAULT,
+		PNG_FILTER_TYPE_DEFAULT);
+
+  white.red = 0xff;
+  white.blue = 0xff;
+  white.green = 0xff;
+  png_set_bKGD (png, info, &white);
+
+  /* png_set_write_user_transform_fn (png, unpremultiply_data); */
+
+  /* png_set_bgr (png); */
+
+  /* png_set_filler(png, 0, PNG_FILLER_BEFORE); */
+
+  /*
+  png_set_packswap(png); 
+
+  png_set_swap(png);
+  */
+
+  png_set_write_user_transform_fn (png, fix_png_write_data);
+
+  png_write_info (png, info);
+  png_write_image (png, rows);
+  png_write_end (png, info);
+
+  png_destroy_write_struct (&png, &info);
+
+  free (rows);
+  fclose (f);
+
+  return 1;
+}
+
 static int*
 load_png_file( const char *file, 
 	       int        *width, 
@@ -97,12 +202,18 @@ load_png_file( const char *file,
   if (( color_type == PNG_COLOR_TYPE_GRAY ) ||
       ( color_type == PNG_COLOR_TYPE_RGB ))
     png_set_add_alpha(png_ptr, 0xff, PNG_FILLER_BEFORE); /* req 1.2.7 */
+  else 	 /*  */
+    {
+      if (( color_type == PNG_COLOR_TYPE_PALETTE )||
+	  ( png_get_valid( png_ptr, info_ptr, PNG_INFO_tRNS )))
+	png_set_expand(png_ptr);
 
-  if (( color_type == PNG_COLOR_TYPE_PALETTE )||
-      ( png_get_valid( png_ptr, info_ptr, PNG_INFO_tRNS )))
-    png_set_expand(png_ptr);
+      /* Needed to fix endianess */
+      png_set_read_user_transform_fn (png_ptr, fix_png_read_data);    
+    }
 
-  png_set_packswap(png_ptr);
+
+  /* png_set_packswap(png_ptr); */
 
   png_read_update_info( png_ptr, info_ptr);
  
@@ -685,6 +796,9 @@ Pixbuf*
 pixbuf_clone(Pixbuf *pixb)
 {
   Pixbuf *clone;
+
+  if (pixb == NULL)
+    return NULL;
 
   clone = util_malloc0(sizeof(Pixbuf));
 

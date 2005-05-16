@@ -219,6 +219,9 @@ cltr_widget_queue_paint(CltrWidget *widget)
 gboolean
 cltr_widget_handle_xevent(CltrWidget *widget, XEvent *xev)
 {
+  if (!widget->visible)
+    return FALSE;
+
   if (widget && widget->xevent_handler)
     return widget->xevent_handler(widget, xev);
 

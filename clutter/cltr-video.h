@@ -69,6 +69,9 @@ cltr_video_set_source(CltrVideo *video, char *location);
 gboolean
 cltr_video_play ( CltrVideo *video, GError ** Error);
 
+gint64
+cltr_video_get_time (CltrVideo *video);
+
 gboolean
 cltr_video_seek (CltrVideo *video, float position, GError **gerror);
 
@@ -92,6 +95,9 @@ cltr_video_set_volume ( CltrVideo *video, int volume);
 
 int
 cltr_video_get_volume ( CltrVideo *video);
+
+Pixbuf*
+cltr_video_get_pixbuf (CltrVideo *video);
 
 
 #endif

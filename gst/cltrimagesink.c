@@ -162,8 +162,8 @@ gst_cltrimagesink_getcaps (GstPad * pad)
 			     "endianness", G_TYPE_INT, G_BIG_ENDIAN,
 			     /*
 			     "red_mask",   G_TYPE_INT, 0xff0000,
-			     "green_mask", G_TYPE_INT, 0x0000ff,
-			     "blue_mask",  G_TYPE_INT, 0x00ff00,
+			     "green_mask", G_TYPE_INT, 0x00ff00,
+			     "blue_mask",  G_TYPE_INT, 0x0000ff,
 			     */
 			     "width",      GST_TYPE_INT_RANGE, 1, G_MAXINT,
 			     "height",     GST_TYPE_INT_RANGE, 1, G_MAXINT,
@@ -331,10 +331,24 @@ gst_cltrimagesink_chain (GstPad * pad, GstData * data)
 
 	 if (pixb)
 	   {
+	     int      i = 0;
+	     guint8 *d = GST_BUFFER_DATA (buf);
+	     for (i = 0; i < pixb->height * pixb->width; i++)
+	       {
+		 int r,g,b, a;
+		 r = *d++;  g = *d++; b = *d++; a = 0xff;
+		 pixb->data[i] = ((r << 24) | 
+				  (g << 16) | 
+				  (b << 8) |
+				  a );
+	       }
+
+	     /*
 	     memcpy (pixb->data,
 		     GST_BUFFER_DATA (buf),
 		     MIN (GST_BUFFER_SIZE (buf), 
 			  pixb->bytes_per_line * pixb->width));
+	     */
 
 	     /* Below faster but threading issues causing DRI to bomb out */
 

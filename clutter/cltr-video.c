@@ -105,9 +105,10 @@ got_stream_length (GstElement *play,
 {
   video->stream_length = (gint64) length_nanos / GST_MSECOND;
 
+  CLTR_MARK();
   /* fire off some callback here ? */
 
-  CLTR_DBG("length: %i", video->stream_length);
+  CLTR_DBG("length: %li", video->stream_length);
 }
 
 static void
@@ -128,6 +129,8 @@ got_time_tick (GstElement *play,
       video->current_position = (float) video->current_time / video->stream_length;
     }
 
+  CLTR_DBG("current pos is %f\n", video->current_position);
+  
   /* fire off callback here */
 }
 
@@ -168,6 +171,7 @@ got_state_change (GstElement     *play,
 
       g_idle_remove_by_data (video);
 
+
     } 
   else if (new_state == GST_STATE_PLAYING) 
     {
@@ -188,6 +192,10 @@ got_state_change (GstElement     *play,
       video->has_video = FALSE;
       video->has_audio = FALSE;
 
+      /* blank the texture */
+
+      /* while (g_async_queue_try_pop (video->queue)) ; */
+
       /*
       if (bvw->priv->tagcache)
 	{
@@ -196,7 +204,7 @@ got_state_change (GstElement     *play,
 	}
       */      
 
-      video->video_width = 0;
+      video->video_width  = 0;
       video->video_height = 0;
     }
 }
@@ -463,6 +471,8 @@ cb_iterate (CltrVideo *video)
   GstFormat fmt = GST_FORMAT_TIME;
   gint64          value;
 
+  CLTR_MARK();
+
   /* check length/pos of stream */
   if (gst_element_query (GST_ELEMENT (video->play),
 			 GST_QUERY_TOTAL, &fmt, &value) 
@@ -606,6 +616,14 @@ cltr_video_play ( CltrVideo *video, GError ** error)
   return ret;
 }
 
+gint64
+cltr_video_get_time (CltrVideo *video)
+{
+  CLTR_DBG("current pos is %f\n", video->current_position);
+
+  return video->current_time;
+}
+
 gboolean
 cltr_video_seek (CltrVideo *video, float position, GError **gerror)
 {
@@ -692,6 +710,22 @@ cltr_video_get_volume ( CltrVideo *video)
   return (gint) (vol * 100 + 0.5);
 }
 
+Pixbuf*
+cltr_video_get_pixbuf (CltrVideo *video)
+{
+  Pixbuf *pixb = NULL;
+
+  if (video->frame_texture)
+    {
+      cltr_texture_lock(video->frame_texture);
+
+      pixb = pixbuf_clone(cltr_texture_get_pixbuf(video->frame_texture));
+
+      cltr_texture_unlock(video->frame_texture);
+    }
+
+  return pixb;
+}
 
 static gboolean
 cltr_video_idler (CltrVideo *video)
@@ -714,13 +748,8 @@ cltr_video_idler (CltrVideo *video)
 
 	cltr_texture_lock(video->frame_texture);
 
-	pixb = cltr_texture_get_pixbuf(video->frame_texture);
-
-	if (pixb)
-	  cltr_texture_force_rgb_data(video->frame_texture,
-				      pixb->width,
-				      pixb->height,
-				      pixb->data);
+	if (cltr_texture_get_pixbuf(video->frame_texture))
+	  cltr_texture_sync_pixbuf(video->frame_texture);
 
 	cltr_texture_unlock(video->frame_texture);
 
@@ -791,7 +820,6 @@ cltr_video_set_source(CltrVideo *video, char *mrl)
   g_object_set (G_OBJECT (video->play), "uri",
 		video->mrl, "suburi", NULL, NULL);
 
-
   ret = (gst_element_set_state (video->play, 
 				GST_STATE_PAUSED) == GST_STATE_SUCCESS);
 
@@ -816,7 +844,6 @@ cltr_video_set_source(CltrVideo *video, char *mrl)
   */
 
   return ret;
-
 }
 
 
@@ -863,30 +890,29 @@ cltr_video_paint(CltrWidget *widget)
 	  dis_x = 0;
 	}
 
-
-      // glEnable(GL_BLEND); 
-
-      // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-      glColor4f(1.0, 1.0, 1.0, 1.0);
-
       glEnable(GL_TEXTURE_2D);
 
-      // glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+      /*
+      glEnable(GL_BLEND);
+
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+      */
+
+      glColor4f(1.0, 1.0, 1.0, 1.0);
 
       cltr_texture_lock(video->frame_texture);
 
       cltr_texture_render_to_gl_quad(video->frame_texture, 
-				     dis_x, 
-				     dis_y,
-				     dis_x + dis_width,
-				     dis_y + dis_height);
+				     widget->x + dis_x, 
+				     widget->y + dis_y,
+				     widget->x + dis_x + dis_width,
+				     widget->y + dis_y + dis_height);
 
       cltr_texture_unlock(video->frame_texture);
 
       glDisable(GL_TEXTURE_2D); 
 
-      // glDisable(GL_BLEND); 
+      glDisable(GL_BLEND); 
 
       // glColor4f(1.0, 1.0, 1.0, 0.5);
 

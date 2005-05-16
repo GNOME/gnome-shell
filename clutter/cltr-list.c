@@ -79,6 +79,18 @@ cltr_list_cell_new(CltrList *list,
   return cell;
 }
 
+void
+cltr_list_cell_set_pixbuf(CltrListCell *cell,
+			  Pixbuf       *thumb_pixb)
+{
+  cltr_texture_unref(cell->thumb_texture); 
+
+  cell->thumb_pixb = thumb_pixb;
+
+  cell->thumb_texture = cltr_texture_new(cell->thumb_pixb);
+
+}
+
 CltrWidget*
 cltr_list_new(int width, 
 	      int height,
@@ -145,20 +157,16 @@ cltr_list_show(CltrWidget *widget)
   CltrList     *list = CLTR_LIST(widget);
   CltrListCell *cell = NULL;
   
-  list->active_cell_y = (widget->height / 2) - (list->cell_height/2);
-
-  /*
-  for (i=0; i<n_items; i++)
+  if (list->active_cell_y == 0)
     {
-      list->cells = g_list_append(list->cells, cltr_list_cell_new(list));
+      list->active_cell_y = (widget->height / 2) - (list->cell_height/2);
+
+      list->active_cell = g_list_first(list->cells);
+
+      cell = list->active_cell->data;
+
+      cell->rect.y = list->active_cell_y;
     }
-  */
-
-  list->active_cell = g_list_first(list->cells);
-
-  cell = list->active_cell->data;
-
-  cell->rect.y = list->active_cell_y;
 
   list->state = CLTR_LIST_STATE_BROWSE;
 
@@ -176,6 +184,14 @@ cltr_list_on_activate_cell(CltrList             *list,
   list->cell_activate_data    = userdata;
 }
 
+CltrListCell*
+cltr_list_get_active_cell(CltrList *list)
+{
+  if (list->active_cell)
+    return list->active_cell->data;
+
+  return NULL;
+}
 
 static gboolean 
 cltr_list_handle_xevent (CltrWidget *widget, XEvent *xev) 
@@ -353,6 +369,8 @@ cltr_list_paint(CltrWidget *widget)
   PixbufPixel col = { 0xff, 0, 0, 0xff };
 
   int       last;
+
+  CLTR_MARK();
 
   cell_item = g_list_first(list->cells);
   cell = (CltrListCell *)cell_item->data;

@@ -1,5 +1,38 @@
 2005-05-16  mallum,,,  <mallum@openedhand.com>
 
+	* clutter/cltr-animator.c: (cltr_animator_zoom_new),
+	(cltr_animator_fullzoom_new), (cltr_animator_new),
+	(cltr_animator_set_args), (cltr_animator_wrapped_paint):
+	* clutter/cltr-animator.h:
+	* clutter/cltr-list.c: (cltr_list_cell_new),
+	(cltr_list_get_active_cell_co_ords), (cltr_list_show),
+	(cltr_list_on_activate_cell), (cltr_list_update_layout),
+	(cltr_list_paint):
+	* clutter/cltr-list.h:
+	* clutter/cltr-texture.c: (cltr_texture_realize),
+	(cltr_texture_unref), (cltr_texture_sync_pixbuf),
+	(cltr_texture_force_rgb_data):
+	* clutter/cltr-video.c: (got_stream_length), (got_time_tick),
+	(got_state_change), (parse_stream_info), (cb_iterate),
+	(cltr_video_play), (cltr_video_set_volume),
+	(cltr_video_get_volume), (cltr_video_get_pixbuf),
+	(cltr_video_idler), (cltr_video_set_source),
+	(cltr_video_handle_xevent), (cltr_video_paint):
+	* clutter/cltr-video.h:
+	* clutter/cltr-widget.c:
+	* clutter/pixbuf.c: (pixbuf_write_png), (load_png_file),
+	(pixbuf_copy), (pixbuf_fill_rect), (pixbuf_scale_down),
+	(pixbuf_clone):
+	* examples/select.c: (usage), (populate), (cell_to_item),
+	(handle_xevent), (zoom_out_complete), (zoom_in_complete),
+	(cell_activated), (main):
+	* gst/cltrimagesink.c: (gst_cltrimagesink_getcaps),
+	(gst_cltrimagesink_chain):
+	Far too much hacking. Fix many endian image issues.
+	Greatly improve select demo
+
+2005-05-16  mallum,,,  <mallum@openedhand.com>
+
 	* clutter/Makefile.am:
 	* clutter/cltr-animator.c:
 	* clutter/cltr-animator.h:

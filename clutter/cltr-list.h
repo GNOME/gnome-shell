@@ -29,6 +29,10 @@ cltr_list_cell_new(CltrList *list,
 		   char     *text);
 
 void
+cltr_list_cell_set_pixbuf(CltrListCell *cell,
+			  Pixbuf   *thump_pixb);
+
+void
 cltr_list_append_cell(CltrList *list, CltrListCell *cell);
 
 CltrWidget*
@@ -36,6 +40,9 @@ cltr_list_new(int width,
 	      int height,
 	      int cell_width,
 	      int cell_height);
+
+CltrListCell*
+cltr_list_get_active_cell(CltrList *list);
 
 void
 cltr_list_on_activate_cell(CltrList             *list,

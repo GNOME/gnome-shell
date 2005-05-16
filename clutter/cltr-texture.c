@@ -292,7 +292,7 @@ cltr_texture_realize(CltrTexture *texture)
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-      glTexEnvi      (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+      /* glTexEnvi      (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE); */
       
       glTexImage2D(GL_TEXTURE_2D, 0, /*GL_COMPRESSED_RGBA_ARB*/ GL_RGBA, 
 		   texture->width,
@@ -360,7 +360,8 @@ cltr_texture_realize(CltrTexture *texture)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	/* glTexEnvi      (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,   GL_); */
+glTexEnvi      (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	/* glTexEnvi      (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,   GL_BLEND); */
 
 	/* glPixelStorei (GL_UNPACK_ALIGNMENT, 4); */
 	/* glPixelStorei (GL_UNPACK_ROW_LENGTH, texture->tile_x_size[x]); */
@@ -427,8 +428,9 @@ cltr_texture_unref(CltrTexture *texture)
   if (texture->refcnt <= 0)
     {
       cltr_texture_unrealize(texture);
+      if (texture->pixb)
+	pixbuf_unref(texture->pixb);
       g_free(texture);
-      pixbuf_unref(texture->pixb);
     }
 }
 
@@ -488,6 +490,9 @@ cltr_texture_sync_pixbuf(CltrTexture* texture)
     }
   else
     {
+      if (!texture->tiles)
+	cltr_texture_realize(texture);
+
       glBindTexture(GL_TEXTURE_2D, texture->tiles[0]);
 
       glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0,
@@ -524,6 +529,8 @@ cltr_texture_force_rgb_data(CltrTexture *texture,
   glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0,
 		   width, 
 		   height,
-		   GL_RGB, GL_UNSIGNED_BYTE,
+		   GL_RGBA, GL_UNSIGNED_INT_8_8_8_8,
 		   data);
+
+  CLTR_GLERR();
 }
