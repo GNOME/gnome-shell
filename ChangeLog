@@ -1,3 +1,11 @@
+2005-05-17  mallum,,,  <mallum@openedhand.com>
+
+	* clutter/cltr-video.c: (cltr_video_get_pixbuf):
+	* gst/cltrimagesink.c: (gst_cltrimagesink_change_state),
+	(gst_cltrimagesink_chain):
+	Fix thread related segv's on grabbing video image.
+	Also pop any unplayed data from sink on stop
+
 2005-05-16  mallum,,,  <mallum@openedhand.com>
 
 	* clutter/cltr-animator.c: (cltr_animator_zoom_new),

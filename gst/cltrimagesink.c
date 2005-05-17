@@ -254,23 +254,33 @@ gst_cltrimagesink_change_state (GstElement * element)
 	  return GST_STATE_FAILURE;
 	}
       */
+      DBG("GST_STATE_NULL_TO_READY");
       break;
     case GST_STATE_READY_TO_PAUSED:
+      DBG("GST_STATE_READY_TO_PAUSED");
       cltrimagesink->time = 0;
       break;
     case GST_STATE_PAUSED_TO_PLAYING:
+      DBG("GST_STATE_PAUSED_TO_PLAYING");
       break;
     case GST_STATE_PLAYING_TO_PAUSED:
+      DBG("GST_STATE_PLAYING_TO_PAUSED");
       break;
     case GST_STATE_PAUSED_TO_READY:
+      DBG("GST_STATE_PAUSED_TO_READY");
+
+      while (g_async_queue_try_pop (cltrimagesink->queue)) ;
+
       cltrimagesink->framerate = 0;
       GST_VIDEOSINK_WIDTH (cltrimagesink) = 0;
       GST_VIDEOSINK_HEIGHT (cltrimagesink) = 0;
       break;
     case GST_STATE_READY_TO_NULL:
+      DBG("GST_STATE_READY_TO_NULL");
+      /*
       if (cltrimagesink->texture)
 	cltr_texture_unref(cltrimagesink->texture);
-
+      */
       break;
     }
 
@@ -320,7 +330,9 @@ gst_cltrimagesink_chain (GstPad * pad, GstData * data)
      /* if we have one... */
 
 
-     if (cltrimagesink->texture) 
+     if (cltrimagesink->texture 
+	 && GST_VIDEOSINK_WIDTH (cltrimagesink)
+	 && GST_VIDEOSINK_HEIGHT (cltrimagesink)) 
        {
 	 /* need to copy the data into out pixbuf here */
 	 Pixbuf *pixb = NULL;

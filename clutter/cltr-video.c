@@ -715,7 +715,7 @@ cltr_video_get_pixbuf (CltrVideo *video)
 {
   Pixbuf *pixb = NULL;
 
-  if (video->frame_texture)
+  /* if (video->frame_texture) */
     {
       cltr_texture_lock(video->frame_texture);
 
