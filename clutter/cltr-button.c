@@ -73,7 +73,7 @@ cltr_button_new_with_label(const char  *label,
 
   button->label = CLTR_LABEL(cltr_label_new(label, font, col));
 
-  button->widget.width  = cltr_widget_width((CltrWidget*)button->label) + (2 * ( BUTTON_BORDER + BUTTON_PAD));
+  button->widget.width  =   cltr_widget_width((CltrWidget*)button->label) + (2 * ( BUTTON_BORDER + BUTTON_PAD));
   button->widget.height = cltr_widget_height((CltrWidget*)button->label) + ( 2 * ( BUTTON_BORDER + BUTTON_PAD));
 
   CLTR_DBG("width: %i, height %i", 
@@ -86,6 +86,34 @@ cltr_button_new_with_label(const char  *label,
 			( BUTTON_BORDER + BUTTON_PAD));
 
   return CLTR_WIDGET(button);
+}
+
+void
+cltr_button_set_label(CltrButton  *button, 
+		      const char  *text,
+		      CltrFont    *font,
+		      PixbufPixel *col)
+{
+  int x, y;
+
+  if (button->label)
+    {
+      cltr_widget_remove_child(CLTR_WIDGET(button), 
+			       CLTR_WIDGET(button->label));
+
+      cltr_widget_unref(CLTR_WIDGET(button));
+      /* XXX free up pre-existing label */
+    }
+
+  button->label = CLTR_LABEL(cltr_label_new(text, font, col));
+
+  x = (cltr_widget_width(CLTR_WIDGET(button)) - cltr_widget_width(CLTR_WIDGET(button->label)))/2;
+
+  y = (cltr_widget_height(CLTR_WIDGET(button)) - cltr_widget_height(CLTR_WIDGET(button->label)))/2;
+
+  cltr_widget_add_child(CLTR_WIDGET(button), 
+			CLTR_WIDGET(button->label), 
+			x, y);
 }
 
 CltrWidget*
@@ -251,10 +279,10 @@ cltr_button_paint(CltrWidget *widget)
       glColor4f(1.0, 1.0, 1.0, 1.0);
     }
 
-  cltr_glu_rounded_rect(widget->x,
-			widget->y,
-			widget->x + widget->width,
-			widget->y + widget->height,
+  cltr_glu_rounded_rect(cltr_widget_abs_x(widget),
+			cltr_widget_abs_y(widget),
+			cltr_widget_abs_x2(widget),
+			cltr_widget_abs_y2(widget),
 			2, 5,
 			NULL);
 

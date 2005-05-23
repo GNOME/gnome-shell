@@ -34,6 +34,8 @@ struct CltrList
 
 };
 
+#define PAD 10
+
 static void
 cltr_list_show(CltrWidget *widget);
 
@@ -61,7 +63,7 @@ cltr_list_cell_new(CltrList *list,
   ClutterFont  *font;
   PixbufPixel   pixel = { 0, 0, 0, 0 }, font_pixel = { 255, 255, 255, 255};
 
-  font = font_new ("Sans Bold 32");
+  font = font_new ("Sans Bold 24");
 
   cell = g_malloc0(sizeof(CltrListCell));
 
@@ -70,7 +72,7 @@ cltr_list_cell_new(CltrList *list,
   cell->thumb_texture = cltr_texture_new(cell->thumb_pixb);
 
   cell->text_pixb = pixbuf_new(list->cell_width - (list->cell_width/4), 
-			       list->cell_height);
+			       (list->cell_height/2) - (2*PAD));
 
   pixbuf_fill_rect(cell->text_pixb, 0, 0, -1, -1, &pixel);
   font_draw(font, cell->text_pixb, text, 0, 0, &font_pixel);
@@ -126,25 +128,38 @@ cltr_list_append_cell(CltrList *list, CltrListCell *cell)
   list->n_cells++;
 }
 
+static void
+video_box_co_ords(CltrList    *list,
+		  CltrListCell *cell, 
+		  int          *x1, int *y1, int *x2, int *y2)
+{
+  CltrWidget *widget = CLTR_WIDGET(list);
+  int         vw, vh;
+
+  vh  = cltr_rect_y2(cell->rect) - cltr_rect_y1(cell->rect);
+  vh -= (PAD*2);
+  vw  = ( widget->width * vh ) / widget->height;
+  
+  *x1 = cltr_rect_x1(cell->rect) + PAD; *x2 = *x1 + vw;
+  *y1 = cltr_rect_y1(cell->rect) + PAD; *y2 = *y1 + vh;
+}
+
 /* 
- * This is messy hack cos, cells arn't real widgets :(
+ * This is messy hack as cells arn't real widgets :(
  *
  */
 gboolean
-cltr_list_get_active_cell_co_ords(CltrList *list,
-				  int      *x1,
-				  int      *y1,
-				  int      *x2,
-				  int      *y2)
+cltr_list_get_active_cell_video_box_co_ords(CltrList *list,
+					    int      *x1,
+					    int      *y1,
+					    int      *x2,
+					    int      *y2)
 {
   if (list->active_cell)
     {
       CltrListCell *cell = list->active_cell->data; 
 
-      *x1 = cltr_rect_x1(cell->rect);
-      *y1 = cltr_rect_y1(cell->rect);
-      *x2 = cltr_rect_x2(cell->rect);
-      *y2 = cltr_rect_y2(cell->rect);
+      video_box_co_ords(list, cell, x1, y1, x2, y2);
 
       return TRUE;
     }
@@ -366,9 +381,12 @@ cltr_list_paint(CltrWidget *widget)
   GList        *cell_item = NULL;
   CltrList     *list = CLTR_LIST(widget);
   CltrListCell *cell = NULL;
-  PixbufPixel col = { 0xff, 0, 0, 0xff };
+  int           last;
 
-  int       last;
+  PixbufPixel col       = { 0xff, 0, 0, 0xff };
+  PixbufPixel bgcol     = { 0xe7, 0xe7, 0xe7, 0xff };
+  PixbufPixel boxcol    = { 0xd7, 0xd7, 0xd7, 0xff };
+  PixbufPixel hlfontcol = { 0xff, 0x33, 0x66, 0xff };
 
   CLTR_MARK();
 
@@ -377,6 +395,10 @@ cltr_list_paint(CltrWidget *widget)
   last = cell->rect.y;
 
   glPushMatrix();
+
+  cltr_glu_set_color(&bgcol);
+
+  glRecti(0, 0, widget->width, widget->height);
 
   glEnable(GL_TEXTURE_2D);
 
@@ -400,19 +422,19 @@ cltr_list_paint(CltrWidget *widget)
 	{
 	  glDisable(GL_TEXTURE_2D);
 
-
-
 	  if (cell_item == list->active_cell && list->state == CLTR_LIST_STATE_BROWSE)
 	    col.b = 0xff;
 	  else
 	    col.b = 0x00;
+
+	  cltr_glu_set_color(&boxcol);
 
 	  cltr_glu_rounded_rect_filled(cltr_rect_x1(cell->rect),
 				       cltr_rect_y1(cell->rect) + (5.0 * scale),
 				       cltr_rect_x2(cell->rect),
 				       cltr_rect_y2(cell->rect) - (5.0 * scale),
 				       10,
-				       &col);
+				       &boxcol);
 
 	  col.r = 0xff; col.g = 0xff;  col.b = 0xff; col.a = 0xff;
 
@@ -431,19 +453,32 @@ cltr_list_paint(CltrWidget *widget)
 
 	  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	  glColor4f(1.0, 1.0, 1.0, 1.0); 
 
-	  cltr_texture_render_to_gl_quad(cell->text_texture,
-					 cltr_rect_x1(cell->rect) + 100,
-					 cltr_rect_y1(cell->rect) + 10,
-					 cltr_rect_x2(cell->rect) - 100,
-					 cltr_rect_y2(cell->rect) - 10);
+	  {
+	    /* Video Box */
 
-	  cltr_texture_render_to_gl_quad(cell->thumb_texture,
-					 cltr_rect_x1(cell->rect),
-					 cltr_rect_y1(cell->rect),
-					 cltr_rect_x1(cell->rect) + 80 ,
-					 cltr_rect_y1(cell->rect) + 60);
+	    int vx1, vx2, vy1, vy2;
+
+	    video_box_co_ords(list, cell, &vx1, &vy1, &vx2, &vy2);
+
+	    cltr_texture_render_to_gl_quad(cell->thumb_texture,
+					   vx1, vy1, vx2, vy2);
+
+	    /* Text */
+
+	    if (cell_item == list->active_cell 
+		&& list->state == CLTR_LIST_STATE_BROWSE)
+	      cltr_glu_set_color(&hlfontcol);
+	    else
+	      glColor4f(0.4, 0.4, 0.4, 1.0); 
+	    
+	    cltr_texture_render_to_gl_quad(cell->text_texture,
+					   vx2 + PAD,
+					   vy1,
+					   cltr_rect_x2(cell->rect) - PAD,
+					   vy1 + (list->cell_height/2) - PAD);
+
+	  }
 
 	  glDisable(GL_BLEND);
 

@@ -45,6 +45,7 @@ struct CltrWidget
   gboolean    visible;
 
   GList      *children;
+  int         refcnt;
 
   /* focus */
 
@@ -57,8 +58,7 @@ struct CltrWidget
   WidgetShowMethod    show;
   WidgetDestroyMethod destroy;
   WidgetFocusMethod   focus_in;
-  WidgetUnfocusMethod  focus_out;
-
+  WidgetUnfocusMethod focus_out;
   WidgetXEventHandler xevent_handler;
 
   /* Anim ref */

@@ -1,6 +1,7 @@
 #include <clutter/cltr.h>
 
 typedef struct ItemEntry ItemEntry;
+typedef struct VideoCtrls VideoCtrls;
 
 typedef struct DemoApp
 {
@@ -8,6 +9,7 @@ typedef struct DemoApp
   CltrWidget   *list;
   CltrWidget   *video;
   CltrWidget   *win;
+  VideoCtrls   *video_ctrls;
 
   GList        *items;
 
@@ -18,7 +20,25 @@ struct ItemEntry
   gchar        *nice_name;
   gchar        *path;
   gchar        *uri;
+  gint64        stoptime;
   CltrListCell *cell;
+};
+
+enum {
+  VIDEO_PLAY_BTN = 0,
+  VIDEO_STOP_BTN,
+  VIDEO_REWND_BTN,
+  VIDEO_FFWD_BTN,
+  N_VIDEO_BTNS
+};
+
+struct VideoCtrls
+{
+  ClutterFont *font;
+
+
+  CltrWidget *container;
+  CltrWidget *buttons[N_VIDEO_BTNS];
 };
 
 static void
@@ -31,6 +51,92 @@ usage(char *progname)
   exit(-1);
 }
 
+/* video control buttons */
+
+void
+init_video_ctrl(DemoApp *app)
+{
+  VideoCtrls *v;
+  int         width, height, x =0, y = 0;
+  PixbufPixel col = { 0xff, 0xff, 0xff, 0xff };
+
+  v = app->video_ctrls = g_malloc0(sizeof(VideoCtrls));
+
+  v->font = font_new ("Sans Bold 20");
+
+  font_get_pixel_size (v->font, "1234567890", &width, &height); 
+
+  height += 6;
+
+  v->container = cltr_overlay_new(width, height * N_VIDEO_BTNS);
+
+  v->buttons[VIDEO_PLAY_BTN] = cltr_button_new(width, height);
+
+  cltr_button_set_label(v->buttons[VIDEO_PLAY_BTN],
+			"PlAY", v->font, &col);
+
+  cltr_widget_add_child(v->container, 
+			v->buttons[VIDEO_PLAY_BTN],
+ 			x, y);
+  y += height;
+
+  v->buttons[VIDEO_STOP_BTN] =  cltr_button_new(width, height); 
+
+  cltr_button_set_label(v->buttons[VIDEO_STOP_BTN],
+			"STOP", 
+			v->font, &col);
+
+  cltr_widget_add_child(v->container, 
+			v->buttons[VIDEO_STOP_BTN],
+			x, y);
+  y += height;
+
+
+  v->buttons[VIDEO_REWND_BTN] =  cltr_button_new(width, height);
+
+  cltr_button_set_label(v->buttons[VIDEO_REWND_BTN],
+			"RWND", 
+			v->font, &col);
+
+  cltr_widget_add_child(v->container, 
+			v->buttons[VIDEO_REWND_BTN],
+			x, y);
+  y += height;
+
+  v->buttons[VIDEO_FFWD_BTN] =  cltr_button_new(width, height);
+
+  cltr_button_set_label(v->buttons[VIDEO_FFWD_BTN],
+			"FFWD", 
+			v->font, &col);
+
+  cltr_widget_add_child(v->container, 
+			v->buttons[VIDEO_FFWD_BTN],
+			x, y);
+  y += height;
+  
+  cltr_widget_add_child(app->video, v->container, 100, 100);
+
+  /* focus */
+
+  cltr_widget_set_focus_next(v->buttons[VIDEO_PLAY_BTN], 
+			     v->buttons[VIDEO_STOP_BTN], 
+			     CLTR_SOUTH);
+
+  cltr_widget_set_focus_next(v->buttons[VIDEO_STOP_BTN], 
+			     v->buttons[VIDEO_PLAY_BTN], 
+			     CLTR_NORTH);
+
+}
+
+void
+show_video_ctrl(DemoApp *app)
+{
+  cltr_widget_show_all(app->video_ctrls->container);
+}
+
+
+
+/* ********************* */
 
 gboolean
 populate(DemoApp *app, char *path)
@@ -63,6 +169,7 @@ populate(DemoApp *app, char *path)
       ItemEntry    *new_item;
       char         *img_path;
 
+      /* Eeek! */
       if (!(g_str_has_suffix (entry, ".mpg") ||
 	    g_str_has_suffix (entry, ".MPG") ||
 	    g_str_has_suffix (entry, ".mpg4") ||
@@ -70,6 +177,8 @@ populate(DemoApp *app, char *path)
 	    g_str_has_suffix (entry, ".avi") ||
 	    g_str_has_suffix (entry, ".mov") ||
 	    g_str_has_suffix (entry, ".MOV") ||
+	    g_str_has_suffix (entry, ".ogg") ||
+	    g_str_has_suffix (entry, ".OGG") ||
 	    g_str_has_suffix (entry, ".AVI")))
 	{
 	  continue;
@@ -157,9 +266,11 @@ handle_xevent(CltrWidget *win, XEvent *xev, void *cookie)
 	    PixbufPixel   col = { 0, 0, 0, 0xff };
 	    int           x1, y1, x2, y2;
 
-	    // cltr_video_pause (CLTR_VIDEO(app->video));
+	    cltr_video_pause (CLTR_VIDEO(app->video));
 
 	    item = cell_to_item(app, cltr_list_get_active_cell(app->list));
+
+	    item->stoptime = cltr_video_get_time (app->video);
 
 	    snprintf(filename, 1024, "%s/%s.png", item->path, item->nice_name);
 
@@ -195,16 +306,15 @@ handle_xevent(CltrWidget *win, XEvent *xev, void *cookie)
 
 	    pixbuf_unref(dpixb);
 
-	    cltr_list_get_active_cell_co_ords(CLTR_LIST(app->list), 
-					      &x1, &y1, &x2, &y2);
-
+	    cltr_list_get_active_cell_video_box_co_ords(CLTR_LIST(app->list), 
+							&x1, &y1, &x2, &y2);
 
 	    cltr_video_stop (CLTR_VIDEO(app->video));
 
 	    /* zoom out, XXX old anim needs freeing */
 
 	    app->anim = cltr_animator_zoom_new(app->list,
-					       x1, y1, x1+80, y1+60,
+					       x1, y1, x2, y2,
 					       0,0,800,600);
 
 	    printf("got return, seek time %li, %i, %i \n", 
@@ -241,17 +351,31 @@ zoom_in_complete (CltrAnimator *anim, void *userdata)
   DemoApp      *app = (DemoApp*)userdata;
   ItemEntry    *item;
 
-  cltr_widget_hide(CLTR_WIDGET(app->list));
-
   /* cltr_animator_reset(anim); */
 
   item = cell_to_item(app, cltr_list_get_active_cell(app->list));
 
   cltr_video_set_source(CLTR_VIDEO(app->video), item->uri);
 
+  if (item->stoptime)
+    {
+      printf("*** seeking to %li\n", item->stoptime);
+      cltr_video_seek_time (CLTR_VIDEO(app->video), item->stoptime, NULL);
+    }
+
   cltr_video_play(CLTR_VIDEO(app->video), NULL);
 
+  if (item->stoptime)
+    {
+      printf("*** seeking to %li\n", item->stoptime);
+      cltr_video_seek_time (CLTR_VIDEO(app->video), item->stoptime, NULL);
+    }
+
   cltr_widget_show(app->video);
+
+  cltr_widget_hide(CLTR_WIDGET(app->list));
+
+  show_video_ctrl(app);
 
   cltr_window_on_xevent(CLTR_WINDOW(app->win), handle_xevent, app);
 }
@@ -265,19 +389,24 @@ cell_activated (CltrList     *list,
   int           x1, y1, x2, y2;
   static        have_added_child = 0; /* HACK */
 
-  cltr_list_get_active_cell_co_ords(CLTR_LIST(list), &x1, &y1, &x2, &y2);
+  cltr_list_get_active_cell_video_box_co_ords(CLTR_LIST(list), 
+					      &x1, &y1, &x2, &y2);
+
+  if (app->video == NULL) 
+    {
+      /*
+      app->video = cltr_video_new(x2-x1, y2-y1);
+      cltr_widget_add_child(app->win, app->video, x1, y1);
+      */
+      app->video = cltr_video_new(800, 600);
+      cltr_widget_add_child(app->win, app->video, 0, 0);
+
+      init_video_ctrl(app);
+    }
 
   app->anim = cltr_animator_zoom_new(CLTR_WIDGET(list),
 				     0,0,800,600,
-				     x1, y1, x1+80, y1+60);
-
-  if (!have_added_child)
-    cltr_widget_add_child(app->win, app->video, x1, y1);
-  else
-    {
-      printf("x1: %i, y1: %i\n", x1, y1); 
-    }
-
+				     x1, y1, x2, y2);
   have_added_child = 1;
 
   cltr_animator_run(app->anim, zoom_in_complete, app);
@@ -339,6 +468,8 @@ main(int argc, char **argv)
   if (want_fullscreen)
     cltr_window_set_fullscreen(CLTR_WINDOW(app->win));
 
+
+
   app->list = cltr_list_new(800, 600, 800, 600/5);
   
   if (!populate(app, movie_path))
@@ -346,12 +477,10 @@ main(int argc, char **argv)
 
   cltr_widget_add_child(app->win, app->list, 0, 0);
 
-  app->video = cltr_video_new(80, 60);
-
   cltr_window_focus_widget(CLTR_WINDOW(app->win), app->list);
 
   cltr_widget_show_all(app->win);
-  cltr_widget_hide(app->video);
+
 
   cltr_list_on_activate_cell(CLTR_LIST(app->list), 
 			     cell_activated, (gpointer)app);

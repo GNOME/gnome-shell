@@ -1,3 +1,28 @@
+2005-05-23  mallum,,,  <mallum@openedhand.com>
+
+	* clutter/cltr-button.c: (cltr_button_new_with_label),
+	(cltr_button_handle_xevent), (cltr_button_paint):
+	* clutter/cltr-button.h:
+	* clutter/cltr-events.c: (cltr_main_loop):
+	* clutter/cltr-list.c: (cltr_list_cell_new),
+	(cltr_list_append_cell), (cltr_list_update_layout),
+	(cltr_list_paint):
+	* clutter/cltr-list.h:
+	* clutter/cltr-overlay.c: (cltr_overlay_paint):
+	* clutter/cltr-private.h:
+	* clutter/cltr-widget.c: (cltr_widget_show),
+	(cltr_widget_show_all), (cltr_widget_add_child):
+	* clutter/cltr-widget.h:
+	* clutter/cltr-window.c: (cltr_window_show), (cltr_window_paint),
+	(cltr_window_handle_xevent), (cltr_window_post_paint),
+	(cltr_window_set_paint_funcs), (cltr_window_xwin),
+	(cltr_window_hide_cursor), (cltr_window_set_fullscreen):
+	* clutter/cltr-window.h:
+	* examples/select.c: (usage), (init_video_ctrl), (show_video_ctrl),
+	(populate), (cell_to_item), (handle_xevent), (zoom_out_complete),
+	(zoom_in_complete), (cell_activated), (main):
+	Much Select hacking
+
 2005-05-17  mallum,,,  <mallum@openedhand.com>
 
 	* clutter/cltr-video.c: (cltr_video_get_pixbuf):

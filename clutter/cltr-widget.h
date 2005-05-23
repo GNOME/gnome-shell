@@ -51,6 +51,9 @@ cltr_widget_show(CltrWidget *widget);
 void
 cltr_widget_paint(CltrWidget *widget);
 
+void
+cltr_widget_unref(CltrWidget *widget);
+
 gboolean
 cltr_widget_handle_xevent(CltrWidget *widget, XEvent *xev);
 
@@ -62,5 +65,8 @@ cltr_widget_queue_paint(CltrWidget *widget);
 
 void
 cltr_widget_add_child(CltrWidget *widget, CltrWidget *child, int x, int y);
+
+void
+cltr_widget_remove_child(CltrWidget *widget, CltrWidget *child);
 
 #endif

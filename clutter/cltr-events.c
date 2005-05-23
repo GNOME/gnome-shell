@@ -169,6 +169,9 @@ cltr_main_loop()
 	  */
 	  cltr_widget_paint(CLTR_WIDGET(win));
 
+	  /* pre paint in window paint method */
+	  cltr_window_post_paint(win);
+
 	  /* Swap Buffers */
 	  glXSwapBuffers(ctx->xdpy, cltr_window_xwin(win));  
 	}

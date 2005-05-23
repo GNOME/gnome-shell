@@ -75,6 +75,17 @@ cltr_widget_show(CltrWidget *widget)
     }
 }
 
+void
+cltr_widget_unref(CltrWidget *widget)
+{
+  widget->refcnt--;
+
+  if (widget->refcnt < 0 && widget->destroy)
+    {
+      widget->destroy(widget);
+    }
+}
+
 
 /* XXX Focus hacks; 
  * 
@@ -173,6 +184,16 @@ cltr_widget_add_child(CltrWidget *widget, CltrWidget *child, int x, int y)
   child->x      = x;
   child->y      = y;
 
+}
+
+void
+cltr_widget_remove_child(CltrWidget *widget, CltrWidget *child)
+{
+  g_list_remove(widget->children, child);
+
+  child->parent = NULL;
+  child->x      = 0;
+  child->y      = 0;
 }
 
 

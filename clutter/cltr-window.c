@@ -19,8 +19,13 @@ struct CltrWindow
   CltrCallback *pre_paint_hook, *post_paint_hook;
 
   CltrXEventCallback  xevent_cb;
-  void               *xevent_cb_data;
+  gpointer           *xevent_cb_data;
 
+  CltrCallback        post_paint_cb;
+  gpointer           *post_paint_cb_data;
+
+  CltrCallback        pre_paint_cb;
+  gpointer           *pre_paint_cb_data;
 };
 
 void
@@ -91,6 +96,10 @@ cltr_window_show(CltrWidget *widget)
 static void
 cltr_window_paint(CltrWidget *widget)
 {
+  CltrWindow         *win = CLTR_WINDOW(widget);
+
+  clrt_window_set_gl_viewport(win);
+
   glClear(GL_COLOR_BUFFER_BIT);
 
   glDisable(GL_LIGHTING); 
@@ -98,6 +107,8 @@ cltr_window_paint(CltrWidget *widget)
 
   glClearColor( 0.0, 0.0, 0.0, 0.0 ); /* needed for saturate to work */
 
+  if (win->pre_paint_cb)
+    win->pre_paint_cb(widget, win->pre_paint_cb_data);
 }
 
 static void
@@ -127,6 +138,13 @@ cltr_window_handle_xevent (CltrWidget *widget, XEvent *xev)
     wm_handle_configure_request(w, &ev.xconfigure); break;
   */
 
+  if (xev->type == KeyPress)
+    {
+      if (XKeycodeToKeysym(xev->xkey.display, 
+			   xev->xkey.keycode, 0) == XK_Escape)
+	exit(0);
+    }
+
   /* XXX Very basic - assumes we are only interested in mouse clicks */
   if (win->focused_child)
     cltr_widget_handle_xevent(win->focused_child, xev);
@@ -139,10 +157,51 @@ cltr_window_handle_xevent (CltrWidget *widget, XEvent *xev)
 
 /* window only methods */
 
+void
+cltr_window_post_paint(CltrWindow *win)
+{
+  if (win->post_paint_cb)
+    win->post_paint_cb(CLTR_WIDGET(win), win->post_paint_cb_data);
+}
+
+/* naming is a little odd */
+void
+cltr_window_set_paint_funcs(CltrWindow  *win,
+			    CltrCallback pre_paint,
+			    gpointer     pre_userdata,
+			    CltrCallback post_paint,
+			    gpointer     post_userdata)
+{
+  win->post_paint_cb      = post_paint;
+  win->post_paint_cb_data = post_userdata;
+  win->pre_paint_cb       = pre_paint;
+  win->pre_paint_cb_data = pre_userdata;
+}
+
+
 Window
 cltr_window_xwin(CltrWindow *win)
 {
   return win->xwin;
+}
+
+void
+cltr_window_hide_cursor(CltrWindow *win)
+{
+  ClutterMainContext *ctx = CLTR_CONTEXT();
+  XColor              col;
+  Pixmap              pix;
+  Cursor              curs;
+
+  pix = XCreatePixmap (ctx->xdpy, win->xwin, 1, 1, 1);
+
+  memset (&col, 0, sizeof (col));
+
+  curs = XCreatePixmapCursor (ctx->xdpy, pix, pix, &col, &col, 1, 1);
+
+  XFreePixmap (ctx->xdpy, pix);
+
+  XDefineCursor(ctx->xdpy, win->xwin, curs);
 }
 
 void
@@ -166,6 +225,8 @@ cltr_window_set_fullscreen(CltrWindow *win)
     XF86VidModeSwitchToMode (GLWin.dpy, GLWin.screen, &GLWin.deskMode);
     XF86VidModeSetViewPort (GLWin.dpy, GLWin.screen, 0, 0);
   */
+
+  cltr_window_hide_cursor(win);
 }
 
 

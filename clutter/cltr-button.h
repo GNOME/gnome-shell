@@ -26,5 +26,10 @@ cltr_button_on_activate(CltrButton         *button,
 			CltrButtonActivate  callback,
 			void*               userdata);
 
+void
+cltr_button_set_label(CltrButton  *button, 
+		      const char  *text,
+		      CltrFont    *font,
+		      PixbufPixel *col);
 
 #endif

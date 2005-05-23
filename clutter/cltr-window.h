@@ -19,6 +19,9 @@ Window
 cltr_window_xwin(CltrWindow *win);
 
 void
+cltr_window_hide_cursor(CltrWindow *win);
+
+void
 cltr_window_set_fullscreen(CltrWindow *win);
 
 void
@@ -28,6 +31,8 @@ void
 cltr_window_on_xevent(CltrWindow         *win,
 		      CltrXEventCallback  callback,
 		      void               *userdata);
+void
+cltr_window_post_paint(CltrWindow *win);
 
 
 #endif

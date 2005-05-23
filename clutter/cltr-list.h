@@ -50,12 +50,11 @@ cltr_list_on_activate_cell(CltrList             *list,
 			   gpointer             *userdata);
 
 gboolean
-cltr_list_get_active_cell_co_ords(CltrList *list,
-				  int      *x1,
-				  int      *y1,
-				  int      *x2,
-				  int      *y2);
-
+cltr_list_get_active_cell_video_box_co_ords(CltrList *list,
+					    int      *x1,
+					    int      *y1,
+					    int      *x2,
+					    int      *y2);
 
 void
 cltr_list_scroll_down(CltrList *list);

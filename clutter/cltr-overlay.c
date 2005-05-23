@@ -52,7 +52,7 @@ cltr_overlay_paint(CltrWidget *widget)
 {
   glEnable(GL_BLEND);
 
-  glColor4f(0.5, 0.5, 0.5, 1.0);
+  glColor4f(0.5, 0.5, 0.5, 0.5);
 
   cltr_glu_rounded_rect_filled(widget->x,
 			       widget->y,
