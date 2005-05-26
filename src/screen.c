@@ -551,10 +551,12 @@ meta_screen_new (MetaDisplay *display,
     gc_values.subwindow_mode = IncludeInferiors;
     gc_values.function = GXinvert;
     gc_values.line_width = META_WIREFRAME_XOR_LINE_WIDTH;
+    gc_values.font = XLoadFont (screen->display->xdisplay,
+                                "-misc-fixed-*-*-*-*-16-*-*-*-*-*-*-*");
     
     screen->root_xor_gc = XCreateGC (screen->display->xdisplay,
                                      screen->xroot,
-                                     GCSubwindowMode | GCFunction | GCLineWidth,
+                                     GCSubwindowMode | GCFunction | GCLineWidth | GCFont,
                                      &gc_values);
   }
   

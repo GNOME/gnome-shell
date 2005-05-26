@@ -2892,7 +2892,10 @@ meta_window_move_resize_internal (MetaWindow  *window,
       meta_topic (META_DEBUG_GEOMETRY, "Size/position not modified\n");
     }
   
-  meta_window_refresh_resize_popup (window);
+  if (window->display->grab_wireframe_active)
+    meta_window_update_wireframe (window, root_x_nw, root_y_nw, w, h);
+  else
+    meta_window_refresh_resize_popup (window);
   
   /* Invariants leaving this function are:
    *   a) window->rect and frame->rect reflect the actual
@@ -3341,6 +3344,105 @@ meta_window_get_xor_rect (MetaWindow          *window,
     }
   else
     *xor_rect = *grab_wireframe_rect;
+}
+
+/* Figure out the numbers that show up in the
+ * resize popup when in reduced resources mode.
+ */
+static void
+meta_window_get_wireframe_geometry (MetaWindow    *window,
+                                    int           *width,
+                                    int           *height)
+{
+
+  if (!window->display->grab_wireframe_active)
+    return;
+
+  if ((width == NULL) || (height == NULL))
+    return;
+
+  if ((window->display->grab_window->size_hints.width_inc <= 1) ||
+      (window->display->grab_window->size_hints.height_inc <= 1))
+    {
+      *width = -1;
+      *height = -1;
+      return;
+    }
+
+  *width = window->display->grab_wireframe_rect.width - 
+      window->display->grab_window->size_hints.base_width;
+  *width /= window->display->grab_window->size_hints.width_inc;
+
+  *height = window->display->grab_wireframe_rect.height -
+      window->display->grab_window->size_hints.base_height;
+  *height /= window->display->grab_window->size_hints.height_inc;
+}
+
+void
+meta_window_begin_wireframe (MetaWindow *window)
+{
+
+  MetaRectangle new_xor;
+  int display_width, display_height;
+
+  window->display->grab_wireframe_rect = window->rect;
+
+  if (window->frame)
+    {
+      window->display->grab_wireframe_rect.x += window->frame->rect.x;
+      window->display->grab_wireframe_rect.y += window->frame->rect.y;
+    }
+
+  meta_window_get_xor_rect (window, &window->display->grab_wireframe_rect,
+                            &new_xor);
+  meta_window_get_wireframe_geometry (window, &display_width, &display_height);
+
+  meta_effects_begin_wireframe (window->screen,
+                                &new_xor, display_width, display_height);
+
+  window->display->grab_wireframe_last_xor_rect = new_xor;
+  window->display->grab_wireframe_last_display_width = display_width;
+  window->display->grab_wireframe_last_display_height = display_height;
+}
+
+void
+meta_window_update_wireframe (MetaWindow *window,
+                              int         x,
+                              int         y,
+                              int         width,
+                              int         height)
+{
+
+  MetaRectangle new_xor;
+  int display_width, display_height;
+
+  window->display->grab_wireframe_rect.x = x;
+  window->display->grab_wireframe_rect.y = y;
+  window->display->grab_wireframe_rect.width = width;
+  window->display->grab_wireframe_rect.height = height;
+
+  meta_window_get_xor_rect (window, &window->display->grab_wireframe_rect,
+                            &new_xor);
+  meta_window_get_wireframe_geometry (window, &display_width, &display_height);
+
+  meta_effects_update_wireframe (window->screen,
+                                 &window->display->grab_wireframe_last_xor_rect,
+                                 window->display->grab_wireframe_last_display_width,
+                                 window->display->grab_wireframe_last_display_height,
+                                 &new_xor, display_width, display_height);
+
+  window->display->grab_wireframe_last_xor_rect = new_xor;
+  window->display->grab_wireframe_last_display_width = display_width;
+  window->display->grab_wireframe_last_display_height = display_height;
+}
+
+void
+meta_window_end_wireframe (MetaWindow *window)
+{
+  meta_effects_end_wireframe (window->display->grab_window->screen,
+                              &window->display->grab_wireframe_last_xor_rect,
+                              window->display->grab_wireframe_last_display_width,
+                              window->display->grab_wireframe_last_display_height);
 }
 
 const char*
@@ -6386,19 +6488,9 @@ update_move (MetaWindow  *window,
       /* FIXME Horribly broken, does not honor position
        * constraints
        */
-      MetaRectangle new_xor;
-
-      window->display->grab_wireframe_rect.x = new_x;
-      window->display->grab_wireframe_rect.y = new_y;
-
-      meta_window_get_xor_rect (window,
-                                &window->display->grab_wireframe_rect,
-                                &new_xor);
-
-      meta_effects_update_wireframe (window->screen,
-                                     &window->display->grab_wireframe_last_xor_rect,
-                                     &new_xor);
-      window->display->grab_wireframe_last_xor_rect = new_xor;
+      meta_window_update_wireframe (window, new_x, new_y, 
+                                    window->display->grab_wireframe_rect.width,
+                                    window->display->grab_wireframe_rect.height);
     }
   else
     {
@@ -6536,6 +6628,9 @@ update_resize (MetaWindow *window,
   
   if (window->display->grab_wireframe_active)
     {
+      if ((new_x + new_w <= new_x) || (new_y + new_h <= new_y))
+        return;
+
       /* FIXME This is crap. For example, the wireframe isn't
        * constrained in the way that a real resize would be. An
        * obvious elegant solution is to unmap the window during
@@ -6543,26 +6638,7 @@ update_resize (MetaWindow *window,
        * confuses broken clients that have problems with opaque
        * resize, they probably don't track their visibility.
        */
-      MetaRectangle new_xor;
-      
-      if ((new_x + new_w <= new_x) || (new_y + new_h <= new_y))
-        return;
-      
-      window->display->grab_wireframe_rect.x = new_x;
-      window->display->grab_wireframe_rect.y = new_y;
-      window->display->grab_wireframe_rect.width = new_w;
-      window->display->grab_wireframe_rect.height = new_h;
-
-      meta_window_get_xor_rect (window, &window->display->grab_wireframe_rect,
-                                &new_xor);
-      
-      meta_effects_update_wireframe (window->screen,
-                                     &window->display->grab_wireframe_last_xor_rect,
-                                     &new_xor);
-      window->display->grab_wireframe_last_xor_rect = new_xor;
-
-      /* do this after drawing the wires, so we don't draw over it */
-      meta_window_refresh_resize_popup (window);
+      meta_window_update_wireframe (window, new_x, new_y, new_w, new_h);
     }
   else
     {
@@ -6955,12 +7031,15 @@ meta_window_refresh_resize_popup (MetaWindow *window)
   if (window->display->grab_window != window)
     return;
 
-  /* FIXME for now we bail out when doing wireframe, because our
-   * server grab keeps us from being able to redraw the stuff
-   * underneath the resize popup.
+  /* We shouldn't ever get called when the wireframe is active
+   * because that's handled by a different code path in effects.c
    */
   if (window->display->grab_wireframe_active)
-    return;
+    {
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "refresh_resize_popup called when wireframe active\n");
+      return;
+    }
   
   switch (window->display->grab_op)
     {

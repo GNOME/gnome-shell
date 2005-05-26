@@ -42,11 +42,19 @@ void meta_effects_draw_box_animation (MetaScreen     *screen,
                                       MetaBoxAnimType anim_type);
 
 void meta_effects_begin_wireframe  (MetaScreen          *screen,
-                                    const MetaRectangle *rect);
+                                    const MetaRectangle *rect,
+                                    int                  width,
+                                    int                  height);
 void meta_effects_update_wireframe (MetaScreen          *screen,
                                     const MetaRectangle *old_rect,
-                                    const MetaRectangle *new_rect);
+                                    int                  old_width,
+                                    int                  old_height,
+                                    const MetaRectangle *new_rect,
+                                    int                  new_width,
+                                    int                  new_height);
 void meta_effects_end_wireframe    (MetaScreen          *screen,
-                                    const MetaRectangle *old_rect);
+                                    const MetaRectangle *old_rect,
+                                    int                  width,
+                                    int                  height);
 
 #endif /* META_EFFECTS_H */

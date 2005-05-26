@@ -1,4 +1,9 @@
 2005-05-26  Ray Strode  <rstrode@redhat.com>
+	
+	Actually commit the stuff mentioned in the last 
+	ChangeLog entry.
+
+2005-05-26  Ray Strode  <rstrode@redhat.com>
 
 	Add a resize popup when resizing constrained 
 	windows, (bug 305564).

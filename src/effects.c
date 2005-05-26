@@ -28,6 +28,8 @@
 #include <X11/extensions/shape.h>
 #endif
 
+#include <string.h>
+
 typedef enum
 {
   META_ANIMATION_DRAW_ROOT,
@@ -429,18 +431,24 @@ meta_effects_draw_box_animation (MetaScreen     *screen,
 
 void
 meta_effects_begin_wireframe (MetaScreen          *screen,
-                              const MetaRectangle *rect)
+                              const MetaRectangle *rect,
+                              int                  width,
+                              int                  height)
 {
   /* Grab the X server to avoid screen dirt */
   meta_display_grab (screen->display);
   meta_ui_push_delay_exposes (screen->ui);  
 
-  meta_effects_update_wireframe (screen, NULL, rect);
+  meta_effects_update_wireframe (screen, 
+                                 NULL, -1, -1,
+                                 rect, width, height);
 }
 
 static void
 draw_xor_rect (MetaScreen          *screen,
-               const MetaRectangle *rect)
+               const MetaRectangle *rect,
+               int                  width,
+               int                  height)
 {
   /* The lines in the center can't overlap the rectangle or each
    * other, or the XOR gets reversed. So we have to draw things
@@ -461,7 +469,69 @@ draw_xor_rect (MetaScreen          *screen,
   if (rect->width < (LINE_WIDTH * 4) ||
       rect->height < (LINE_WIDTH * 4))
     return;
-  
+
+  if ((width >= 0) && (height >= 0))
+    {
+      int box_width, box_height;
+      XGCValues gc_values = { 0 };
+
+      if (XGetGCValues (screen->display->xdisplay,
+                        screen->root_xor_gc, 
+                        GCFont, &gc_values))
+        {
+          char *text;
+          int text_length;
+
+          XFontStruct *font_struct;
+          int text_width, text_height; 
+          int box_x, box_y;
+
+          font_struct = XQueryFont (screen->display->xdisplay,
+                                    gc_values.font);
+
+          if (font_struct != NULL)
+            {
+              text = g_strdup_printf ("%d x %d", width, height);
+              text_length = strlen (text);
+
+              text_width = text_length * font_struct->max_bounds.width;
+              text_height = font_struct->max_bounds.descent + 
+                            font_struct->max_bounds.ascent;
+
+              box_width = text_width + 2 * LINE_WIDTH;
+              box_height = text_height + 2 * LINE_WIDTH;
+
+              box_x = rect->x + (rect->width - box_width) / 2;
+              box_y = rect->y + (rect->height - box_height) / 2;
+
+              if ((box_width < rect->width) &&
+                  (box_height < rect->height))
+                {
+                  XFillRectangle (screen->display->xdisplay,
+                                  screen->xroot,
+                                  screen->root_xor_gc,
+                                  box_x, box_y,
+                                  box_width, box_height);
+                  XDrawString (screen->display->xdisplay, 
+                               screen->xroot,
+                               screen->root_xor_gc,
+                               box_x + LINE_WIDTH,
+                               box_y + LINE_WIDTH + font_struct->max_bounds.ascent,
+                               text, text_length);
+                }
+
+              g_free (text);
+            }
+        }
+
+      if ((box_width + LINE_WIDTH) >= (rect->width / 3))
+        return;
+
+      if ((box_height + LINE_WIDTH) >= (rect->height / 3))
+        return;
+
+    }
+
   /* Two vertical lines at 1/3 and 2/3 */
   segments[0].x1 = rect->x + rect->width / 3;
   segments[0].y1 = rect->y + LINE_WIDTH / 2 + LINE_WIDTH % 2;
@@ -511,22 +581,30 @@ draw_xor_rect (MetaScreen          *screen,
 void
 meta_effects_update_wireframe (MetaScreen          *screen,
                                const MetaRectangle *old_rect,
-                               const MetaRectangle *new_rect)
+                               int                  old_width,
+                               int                  old_height,
+                               const MetaRectangle *new_rect,
+                               int                  new_width,
+                               int                  new_height)
 {
   if (old_rect)
-    draw_xor_rect (screen, old_rect);
+    draw_xor_rect (screen, old_rect, old_width, old_height);
     
   if (new_rect)
-    draw_xor_rect (screen, new_rect);
+    draw_xor_rect (screen, new_rect, new_width, new_height);
     
   XFlush (screen->display->xdisplay);
 }
 
 void
 meta_effects_end_wireframe (MetaScreen          *screen,
-                            const MetaRectangle *old_rect)
+                            const MetaRectangle *old_rect,
+                            int                  old_width,
+                            int                  old_height)
 {
-  meta_effects_update_wireframe (screen, old_rect, NULL);
+  meta_effects_update_wireframe (screen, 
+                                 old_rect, old_width, old_height,
+                                 NULL, -1, -1);
   
   meta_display_ungrab (screen->display);
   meta_ui_pop_delay_exposes (screen->ui);

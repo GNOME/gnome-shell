@@ -274,6 +274,8 @@ struct _MetaDisplay
   MetaResizePopup *grab_resize_popup;
   GTimeVal    grab_last_moveresize_time;
   Time        grab_motion_notify_time;
+  int         grab_wireframe_last_display_width;
+  int         grab_wireframe_last_display_height;
   GList*      grab_old_window_stacking;
   
   /* we use property updates as sentinels for certain window focus events
