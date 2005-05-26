@@ -106,6 +106,9 @@ static void meta_window_update_icon_now (MetaWindow *window);
 void meta_window_unqueue_update_icon    (MetaWindow *window);
 void meta_window_flush_update_icon      (MetaWindow *window);
 
+static gboolean queue_calc_showing_func (MetaWindow *window,
+                                         void       *data);
+
 static void meta_window_apply_session_info (MetaWindow                  *window,
                                             const MetaWindowSessionInfo *info);
 
@@ -720,6 +723,12 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   maybe_leave_show_desktop_mode (window);
   
   meta_window_queue_calc_showing (window);
+  /* See bug 303284; a transient of the given window can already exist, in which
+   * case we think it should probably be shown.
+   */
+  meta_window_foreach_transient (window,
+                                 queue_calc_showing_func,
+                                 NULL);
 
   meta_error_trap_pop (display, FALSE); /* pop the XSync()-reducing trap */
   meta_display_ungrab (display);

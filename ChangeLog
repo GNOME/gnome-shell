@@ -1,3 +1,9 @@
+2005-05-26  Elijah Newren  <newren@gmail.com>
+
+	* src/window.c: (meta_window_new_with_attrs): put all transients
+	of the new window, if any exist, in the calc_showing queue.  Fixes
+	#303284.
+
 2005-04-11  Elijah Newren  <newren@gmail.com>
 
 	* configure.in: post-release version bump to 2.10.2
