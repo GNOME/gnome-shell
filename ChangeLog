@@ -1,5 +1,10 @@
 2005-05-26  Elijah Newren  <newren@gmail.com>
 
+	* HACKING: Add a clarification that METACITY_VERBOSE needs to be
+	accompanied by METACITY_USE_LOGFILE
+
+2005-05-26  Elijah Newren  <newren@gmail.com>
+
 	* src/window.c (meta_window_configure_request): Patch from Greg
 	Hudson to make sure window position is calculated correctly for
 	reconfigure requests when part of the XWindowChanges structure is

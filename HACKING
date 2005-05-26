@@ -101,9 +101,11 @@ Debugging information
   useful to get more information than just warnings.  You can set
   METACITY_VERBOSE to do that, like so:
     METACITY_VERBOSE=1 METACITY_USE_LOGFILE=1 metacity --replace
-  There are also other flags, such as METACITY_DEBUG, most of which I
-  haven't tried and don't know what they do.  Go to the source code
-  directory and run
+  (note that METACITY_VERBOSE=1 cannot be used without
+  METACITY_USE_LOGFILE=1 or metacity will crash).  There are also
+  other flags, such as METACITY_DEBUG, most of which I haven't tried
+  and don't know what they do.  Go to the source code directory and
+  run
     grep "METACITY_" * | grep getenv
   to find out what the other ones are.
 
