@@ -1,3 +1,10 @@
+2005-05-26  Elijah Newren  <newren@gmail.com>
+
+	* src/window.c (meta_window_configure_request): Patch from Greg
+	Hudson to make sure window position is calculated correctly for
+	reconfigure requests when part of the XWindowChanges structure is
+	uninitialized.  Fixes #305257.
+
 2005-05-26  Ray Strode  <rstrode@redhat.com>
 	
 	Actually commit the stuff mentioned in the last 

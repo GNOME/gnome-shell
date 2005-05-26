@@ -4016,7 +4016,8 @@ meta_window_configure_request (MetaWindow *window,
    * and give windows a border of 0. But we save the
    * requested border here.
    */
-  window->border_width = event->xconfigurerequest.border_width;
+  if (event->xconfigurerequest.value_mask & CWBorderWidth)
+    window->border_width = event->xconfigurerequest.border_width;
 
   /* We're ignoring the value_mask here, since sizes
    * not in the mask will be the current window geometry.
