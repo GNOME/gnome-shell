@@ -1,3 +1,44 @@
+2005-05-26  Ray Strode  <rstrode@redhat.com>
+
+	Add a resize popup when resizing constrained 
+	windows, (bug 305564).
+
+	* src/display.c: 
+	(meta_display_begin_grab_op), 
+	(meta_display_end_grab_op): 
+	* src/keybindings.c (process_keyboard_move_grab),
+	(process_keyboard_resize_grab): Call 
+	meta_window_{begin,update,end}_wireframe convenience 
+	functions instead of the meta_effects counterparts.
+
+	* src/display.h: keep track of old wireframe geometry to
+	clean up xor popup on resize
+
+	* src/effects.[ch] (meta_effects_begin_wireframe),
+	(meta_effects_update_wireframe),
+	(meta_effects_end_wireframe),
+	(draw_xor_rect): take optional width and height arguments
+	to show to user in resize popup. Draw resize popup if
+	width and height >= 0 and wireframe isn't smaller than
+	the popup would be.
+
+	* src/screen.c (meta_screen_new): load a largish font for
+	the resize popup
+
+	* src/window.[ch] 
+	(meta_window_move_resize_internal): update
+	wireframe resize popup when the window is resized.
+	(meta_window_get_wireframe_geometry): new function to
+	calculate the numbers to display in resize popup
+	(meta_window_begin_wireframe),
+	(meta_window_update_wireframe),
+	(meta_window_end_wireframe): new functions to reduce
+	repetitive wireframe code.  Functions handle updating
+	wireframe and resize popup geometry.
+	(update_move), (update_resize),
+	(meta_window_refresh_resize_popup): remove fixme and
+	add debug message.
+
 2005-05-26  Elijah Newren  <newren@gmail.com>
 
 	* src/window.c (check_maximize_to_work_area): don't accidentally
