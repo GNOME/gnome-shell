@@ -1,8 +1,15 @@
 2005-05-26  Elijah Newren  <newren@gmail.com>
 
-	* src/window.c: (meta_window_new_with_attrs): put all transients
+	* src/window.c (check_maximize_to_work_area): don't accidentally
+	treat maximize vertically as maximize in both directions.  Fixes
+	#302204.
+
+2005-05-26  Elijah Newren  <newren@gmail.com>
+
+	* src/window.c (meta_window_new_with_attrs): put all transients
 	of the new window, if any exist, in the calc_showing queue.  Fixes
-	#303284.
+	#303284.  Thanks to Billy Biggs for the testcase that made this
+	easy to track down.
 
 2005-04-11  Elijah Newren  <newren@gmail.com>
 

@@ -2998,8 +2998,17 @@ check_maximize_to_work_area (MetaWindow          *window,
   
   meta_window_get_outer_rect (window, &rect);
 
-  if ( rect.x >= work_area->x &&
-       rect.y >= work_area->y &&
+  /* The logic in this if is basically:
+   *   if window's left side is at far left or offscreen AND
+   *      window's bottom side is far top or offscreen AND
+   *      window's right side is at far right or offscreen AND
+   *      window's bottom side is at far bottom or offscreen
+   * except that we maximize windows with a size increment hint (e.g.
+   * terminals) should be maximized if they are "sufficiently close"
+   * to the above criteria...
+   */
+  if ( rect.x <= work_area->x &&
+       rect.y <= work_area->y &&
        (((work_area->width + work_area->x) - (rect.width + rect.x)) <
         window->size_hints.width_inc) &&
        (((work_area->height + work_area->y) - (rect.height + rect.y)) <
