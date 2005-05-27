@@ -7,7 +7,9 @@ typedef struct CltrAnimator CltrAnimator;
 
 typedef enum CltrAnimatorType
 {
-  CltrAnimatorFullZoom
+  CltrAnimatorZoom,
+  CltrAnimatorFullZoom,
+  CltrAnimatorMove
 }
 CltrAnimatorType;
 

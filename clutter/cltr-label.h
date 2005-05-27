@@ -12,5 +12,7 @@ cltr_label_new(const char  *text,
 	       CltrFont    *font,
 	       PixbufPixel *col);
 
+void
+cltr_label_set_text(CltrLabel *label, char *text);
 
 #endif

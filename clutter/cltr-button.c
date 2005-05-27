@@ -98,22 +98,20 @@ cltr_button_set_label(CltrButton  *button,
 
   if (button->label)
     {
-      cltr_widget_remove_child(CLTR_WIDGET(button), 
-			       CLTR_WIDGET(button->label));
-
-      cltr_widget_unref(CLTR_WIDGET(button));
-      /* XXX free up pre-existing label */
+      cltr_label_set_text(button->label, text);
     }
+  else
+    {
+      button->label = CLTR_LABEL(cltr_label_new(text, font, col));
 
-  button->label = CLTR_LABEL(cltr_label_new(text, font, col));
+      x = (cltr_widget_width(CLTR_WIDGET(button)) - cltr_widget_width(CLTR_WIDGET(button->label)))/2;
 
-  x = (cltr_widget_width(CLTR_WIDGET(button)) - cltr_widget_width(CLTR_WIDGET(button->label)))/2;
+      y = (cltr_widget_height(CLTR_WIDGET(button)) - cltr_widget_height(CLTR_WIDGET(button->label)))/2;
 
-  y = (cltr_widget_height(CLTR_WIDGET(button)) - cltr_widget_height(CLTR_WIDGET(button->label)))/2;
-
-  cltr_widget_add_child(CLTR_WIDGET(button), 
-			CLTR_WIDGET(button->label), 
-			x, y);
+      cltr_widget_add_child(CLTR_WIDGET(button), 
+			    CLTR_WIDGET(button->label), 
+			    x, y);
+    }
 }
 
 CltrWidget*
@@ -259,6 +257,10 @@ cltr_button_handle_xevent (CltrWidget *widget, XEvent *xev)
 static void
 cltr_button_paint(CltrWidget *widget)
 {
+  PixbufPixel bgcol     = { 0xe7, 0xe7, 0xe7, 0xff };
+  PixbufPixel boxcol    = { 0xd7, 0xd7, 0xd7, 0xff };
+  PixbufPixel hlfontcol = { 0xe6, 0x99, 0x99, 0xff };
+
   CltrButton *button = CLTR_BUTTON(widget);
 
   CLTR_MARK();
@@ -270,20 +272,20 @@ cltr_button_paint(CltrWidget *widget)
   switch (button->state) 
     {
     case CltrButtonStateFocused:
-      glColor4f(1.0, 1.0, 0.0, 1.0);
+      cltr_glu_set_color(&hlfontcol);
       break;
     case CltrButtonStateActive:
-      glColor4f(1.0, 0.0, 0.0, 1.0);
+      glColor4f(1.0, 1.0, 1.0, 1.0);
       break;
     default:
-      glColor4f(1.0, 1.0, 1.0, 1.0);
+      cltr_glu_set_color(&bgcol);
     }
 
   cltr_glu_rounded_rect(cltr_widget_abs_x(widget),
 			cltr_widget_abs_y(widget),
 			cltr_widget_abs_x2(widget),
 			cltr_widget_abs_y2(widget),
-			2, 5,
+			1, 2,
 			NULL);
 
   glDisable(GL_BLEND);

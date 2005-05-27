@@ -1,3 +1,26 @@
+2005-05-27  mallum,,,  <mallum@openedhand.com>
+
+	* clutter/cltr-animator.c: (cltr_animator_zoom_new),
+	(cltr_animator_move_new), (cltr_animator_fullzoom_new),
+	(cltr_animator_new), (cltr_animator_set_args),
+	(cltr_animator_wrapped_zoom_paint), (cltr_animator_reset),
+	(cltr_animator_timeout_cb), (cltr_animator_run):
+	* clutter/cltr-animator.h:
+	* clutter/cltr-button.c: (cltr_button_set_label),
+	(cltr_button_paint):
+	* clutter/cltr-label.c: (cltr_label_new), (cltr_label_set_text),
+	(cltr_label_get_text), (cltr_label_show),
+	(cltr_label_handle_xevent), (cltr_label_paint):
+	* clutter/cltr-label.h:
+	* clutter/cltr-list.c: (cltr_list_paint):
+	* clutter/cltr-widget.c:
+	* examples/select.c: (usage), (video_ctrl_hide),
+	(video_ctrl_stop_cb), (video_ctrl_play_cb),
+	(video_ctrl_seek_begin_cb), (init_video_ctrl), (show_video_ctrl),
+	(populate), (cell_to_item), (zoom_video_out), (init_show_controls),
+	(handle_xevent), (zoom_out_complete), (zoom_in_complete):
+	More select hacking ...
+
 2005-05-23  mallum,,,  <mallum@openedhand.com>
 
 	* clutter/cltr-button.c: (cltr_button_new_with_label),

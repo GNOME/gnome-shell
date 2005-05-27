@@ -4,7 +4,10 @@
 
 struct CltrAnimator 
 {
-  CltrWidget *widget;
+  CltrWidget      *widget;
+
+  CltrAnimatorType type;
+
   gint        fps;
   int         n_steps, step;
 
@@ -15,7 +18,10 @@ struct CltrAnimator
 
   int         zoom_end_x1, zoom_end_y1, zoom_end_x2, zoom_end_y2;
   int         zoom_start_x1, zoom_start_y1, zoom_start_x2, zoom_start_y2;
+
+  int         move_start_x1, move_start_y1, move_end_x1, move_end_y1;
 };
+
 
 static void
 cltr_animator_wrapped_paint(CltrWidget *widget);
@@ -32,6 +38,8 @@ cltr_animator_zoom_new(CltrWidget *widget,
 		       int         dst_y2)
 {
   CltrAnimator *anim = g_malloc0(sizeof(CltrAnimator));
+
+  anim->type = CltrAnimatorZoom;
 
   anim->zoom_end_x1 = dst_x1;
   anim->zoom_end_x2 = dst_x2;
@@ -55,6 +63,34 @@ cltr_animator_zoom_new(CltrWidget *widget,
   return anim;
 }
 
+CltrAnimator*
+cltr_animator_move_new(CltrWidget *widget,
+		       int         src_x1,
+		       int         src_y1,
+		       int         dst_x1,
+		       int         dst_y1)
+{
+  CltrAnimator *anim = g_malloc0(sizeof(CltrAnimator));
+
+  anim->type = CltrAnimatorMove;
+
+  anim->move_start_x1 = src_x1;
+  anim->move_start_y1 = src_y1;
+  anim->move_end_x1   = dst_x1;
+  anim->move_end_y1   = dst_y1;
+
+  anim->wrapped_paint_func = widget->paint;
+
+  anim->widget = widget;
+  widget->anim = anim;
+
+  anim->n_steps = 10;
+  anim->step    = 0;
+  anim->fps     = 50;
+
+  return anim;
+}
+
 
 CltrAnimator*
 cltr_animator_fullzoom_new(CltrWidget *widget,
@@ -65,6 +101,8 @@ cltr_animator_fullzoom_new(CltrWidget *widget,
 {
   CltrAnimator *anim = g_malloc0(sizeof(CltrAnimator));
 
+  anim->type = CltrAnimatorFullZoom;
+ 
   anim->zoom_end_x1 = x1;
   anim->zoom_end_x2 = x2;
   anim->zoom_end_y1 = y1;
@@ -101,7 +139,27 @@ cltr_animator_set_args(CltrAnimator *anim)
 }
 
 static void
-cltr_animator_wrapped_paint(CltrWidget *widget)
+cltr_animator_wrapped_move_paint(CltrWidget *widget)
+{
+  CltrAnimator *anim = widget->anim;
+  int           orig_x, orig_y;
+
+  float f = (float)anim->step/anim->n_steps;
+
+  orig_x = widget->x;
+  orig_y = widget->y;
+
+  widget->x = anim->move_start_x1 + ( (anim->move_end_x1 - anim->move_start_x1) * f );
+  widget->x = anim->move_start_y1 + ( (anim->move_end_y1 - anim->move_start_y1) * f );
+
+  anim->wrapped_paint_func(widget);
+
+  widget->x = orig_x;
+  widget->y = orig_y;
+}
+
+static void
+cltr_animator_wrapped_zoom_paint(CltrWidget *widget)
 {
   CltrAnimator *anim = widget->anim;
   float         tx = 0.0, ty = 0.0;
@@ -222,7 +280,19 @@ cltr_animator_run(CltrAnimator            *anim,
   anim->anim_finish_cb   = finish_callback;
   anim->anim_finish_data = finish_data;
 
-  anim->widget->paint = cltr_animator_wrapped_paint;
+
+  switch (anim->type)
+    {
+    case CltrAnimatorZoom:
+      anim->widget->paint = cltr_animator_wrapped_zoom_paint;
+      break;
+    case CltrAnimatorFullZoom:
+      /* anim->widget->paint = cltr_animator_wrapped_fullzoom_paint; */
+      break;
+    case CltrAnimatorMove:
+      anim->widget->paint = cltr_animator_wrapped_move_paint;
+      break;
+    }
 
   anim->step = 0;
 

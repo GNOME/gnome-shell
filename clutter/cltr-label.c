@@ -7,7 +7,7 @@ struct CltrLabel
 
   char        *text;
   Pixbuf      *pixb;
-  PixbufPixel *col;
+  PixbufPixel  col;
   CltrFont    *font;
   CltrTexture *texture;
 };
@@ -54,7 +54,8 @@ cltr_label_new(const char  *text,
     }
 
   label->font = font; 		/* XXX Ref The font XXX*/
-  label->col  = col;            /* XXX Ref The Col  XXX*/
+
+  memcpy(&label->col, col, sizeof(PixbufPixel));
 
   label->widget.width          = width;
   label->widget.height         = height;
@@ -68,8 +69,10 @@ cltr_label_new(const char  *text,
 }
 
 void
-cltr_label_set_text(CltrLabel *label)
+cltr_label_set_text(CltrLabel *label, char *text)
 {
+  int        width,height;
+
   if (label->texture)
     cltr_texture_unref(label->texture);
 
@@ -79,7 +82,34 @@ cltr_label_set_text(CltrLabel *label)
   if (label->text)
     free(label->text);
 
-  /* XXX TODO */
+  font_get_pixel_size (label->font, text, &width, &height);
+
+  if (width && height)
+    {
+      PixbufPixel bg = { 0x00, 0x00, 0x00, 0x00 };
+      PixbufPixel col = { 0xff, 0xff, 0xff, 0xff };
+
+      label->widget.width          = width;
+      label->widget.height         = height;
+
+      CLTR_DBG("** setting label to %s ***", text);
+
+      label->text = strdup(text);
+      label->pixb  = pixbuf_new(width, height);
+      
+      pixbuf_fill_rect(label->pixb, 0, 0, -1, -1, &bg);
+
+      font_draw(label->font, 
+		label->pixb, 
+		label->text,
+		0,
+		0,
+		&label->col);
+
+      label->texture = cltr_texture_new(label->pixb);
+
+    }
+
 }
 
 const char*
@@ -109,6 +139,7 @@ cltr_label_paint(CltrWidget *widget)
 
   if (label->text)
     {
+
       glPushMatrix();
 
       glEnable(GL_TEXTURE_2D);
@@ -117,7 +148,7 @@ cltr_label_paint(CltrWidget *widget)
 
       glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-      glColor4f(1.0, 1.0, 1.0, 1.0);
+      /* glColor4f(1.0, 1.0, 1.0, 1.0); */
 
       cltr_texture_render_to_gl_quad(label->texture,
 				     cltr_widget_abs_x(widget),

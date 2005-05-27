@@ -9,9 +9,15 @@ typedef struct DemoApp
   CltrWidget   *list;
   CltrWidget   *video;
   CltrWidget   *win;
-  VideoCtrls   *video_ctrls;
+
 
   GList        *items;
+
+  /* video stuff */
+  gboolean      paused;
+  VideoCtrls   *video_ctrls;
+
+  gboolean ignore_next_xevent_hack;
 
 } DemoApp;
 
@@ -29,6 +35,9 @@ enum {
   VIDEO_STOP_BTN,
   VIDEO_REWND_BTN,
   VIDEO_FFWD_BTN,
+  VIDEO_VOLUP_BTN,
+  VIDEO_VOLDOWN_BTN,
+  VIDEO_BEGIN_BTN,
   N_VIDEO_BTNS
 };
 
@@ -44,6 +53,12 @@ struct VideoCtrls
 static void
 zoom_out_complete (CltrAnimator *anim, void *userdata);
 
+static void
+zoom_video_out(DemoApp *app);
+
+void
+handle_xevent(CltrWidget *win, XEvent *xev, void *cookie);
+
 int 
 usage(char *progname)
 {
@@ -52,6 +67,71 @@ usage(char *progname)
 }
 
 /* video control buttons */
+
+void
+video_ctrl_hide(DemoApp *app)
+{
+  cltr_widget_hide(app->video_ctrls->container);
+
+  cltr_window_focus_widget(CLTR_WINDOW(app->win), app->video);
+
+  app->ignore_next_xevent_hack = TRUE; /* urg */
+  cltr_window_on_xevent(CLTR_WINDOW(app->win), handle_xevent, app);
+}
+
+void
+video_ctrl_stop_cb(CltrButton *button, void *cookie)
+{
+  DemoApp        *app = (DemoApp*)cookie;
+
+  cltr_widget_hide(app->video_ctrls->container);
+
+  cltr_window_focus_widget(CLTR_WINDOW(app->win), app->list);
+
+  zoom_video_out(app);
+}
+
+void
+video_ctrl_play_cb(CltrButton *button, void *cookie)
+{
+  DemoApp        *app = (DemoApp*)cookie;
+  VideoCtrls     *v   = app->video_ctrls;
+
+  PixbufPixel col = { 0xff, 0xff, 0xff, 0xff };
+
+  if (app->paused)
+    {
+      cltr_video_play (CLTR_VIDEO(app->video), NULL);
+
+      cltr_button_set_label(CLTR_BUTTON(v->buttons[VIDEO_PLAY_BTN]),
+			    "PAUSE", v->font, &col);
+
+      app->paused = FALSE;
+
+      video_ctrl_hide(app);
+    }
+  else
+    {
+      cltr_button_set_label(CLTR_BUTTON(v->buttons[VIDEO_PLAY_BTN]),
+			    "PLAY", v->font, &col);
+
+      cltr_video_pause (CLTR_VIDEO(app->video));
+
+      app->paused = TRUE;
+
+      cltr_widget_queue_paint(v->buttons[VIDEO_PLAY_BTN]);
+    }
+}
+
+void
+video_ctrl_seek_begin_cb(CltrButton *button, void *cookie)
+{
+  DemoApp        *app = (DemoApp*)cookie;
+
+  video_ctrl_hide(app);
+
+  cltr_video_seek (CLTR_VIDEO(app->video), 0.0, NULL);
+}
 
 void
 init_video_ctrl(DemoApp *app)
@@ -68,23 +148,29 @@ init_video_ctrl(DemoApp *app)
 
   height += 6;
 
-  v->container = cltr_overlay_new(width, height * N_VIDEO_BTNS);
+  v->container = cltr_overlay_new(width, height * 3 /*N_VIDEO_BTNS*/);
 
-  v->buttons[VIDEO_PLAY_BTN] = cltr_button_new(width, height);
+  v->buttons[VIDEO_PLAY_BTN] = cltr_button_new(width, height-1);
 
-  cltr_button_set_label(v->buttons[VIDEO_PLAY_BTN],
-			"PlAY", v->font, &col);
+  cltr_button_set_label(CLTR_BUTTON(v->buttons[VIDEO_PLAY_BTN]),
+			"PAUSE", v->font, &col);
+
+  cltr_button_on_activate(CLTR_BUTTON(v->buttons[VIDEO_PLAY_BTN]),
+			  video_ctrl_play_cb, (void *)app);
 
   cltr_widget_add_child(v->container, 
 			v->buttons[VIDEO_PLAY_BTN],
  			x, y);
   y += height;
 
-  v->buttons[VIDEO_STOP_BTN] =  cltr_button_new(width, height); 
+  v->buttons[VIDEO_STOP_BTN] =  cltr_button_new(width, height-1); 
 
-  cltr_button_set_label(v->buttons[VIDEO_STOP_BTN],
+  cltr_button_set_label(CLTR_BUTTON(v->buttons[VIDEO_STOP_BTN]),
 			"STOP", 
 			v->font, &col);
+
+  cltr_button_on_activate(CLTR_BUTTON(v->buttons[VIDEO_STOP_BTN]),
+			  video_ctrl_stop_cb, (void *)app);
 
   cltr_widget_add_child(v->container, 
 			v->buttons[VIDEO_STOP_BTN],
@@ -92,31 +178,38 @@ init_video_ctrl(DemoApp *app)
   y += height;
 
 
-  v->buttons[VIDEO_REWND_BTN] =  cltr_button_new(width, height);
+  v->buttons[VIDEO_REWND_BTN] =  cltr_button_new(width, height-1);
 
-  cltr_button_set_label(v->buttons[VIDEO_REWND_BTN],
-			"RWND", 
+  cltr_button_set_label(CLTR_BUTTON(v->buttons[VIDEO_REWND_BTN]),
+			"BEGIN", 
 			v->font, &col);
+
+  cltr_button_on_activate(CLTR_BUTTON(v->buttons[VIDEO_REWND_BTN]),
+			  video_ctrl_seek_begin_cb, (void *)app);
 
   cltr_widget_add_child(v->container, 
 			v->buttons[VIDEO_REWND_BTN],
 			x, y);
+
   y += height;
 
-  v->buttons[VIDEO_FFWD_BTN] =  cltr_button_new(width, height);
+  /*
+  v->buttons[VIDEO_FFWD_BTN] =  cltr_button_new(width, height-1);
 
-  cltr_button_set_label(v->buttons[VIDEO_FFWD_BTN],
+  cltr_button_set_label(CLTR_BUTTON(v->buttons[VIDEO_FFWD_BTN]),
 			"FFWD", 
 			v->font, &col);
 
   cltr_widget_add_child(v->container, 
 			v->buttons[VIDEO_FFWD_BTN],
 			x, y);
+
   y += height;
-  
+
+  */
   cltr_widget_add_child(app->video, v->container, 100, 100);
 
-  /* focus */
+  /* focus - URG !*/
 
   cltr_widget_set_focus_next(v->buttons[VIDEO_PLAY_BTN], 
 			     v->buttons[VIDEO_STOP_BTN], 
@@ -125,6 +218,18 @@ init_video_ctrl(DemoApp *app)
   cltr_widget_set_focus_next(v->buttons[VIDEO_STOP_BTN], 
 			     v->buttons[VIDEO_PLAY_BTN], 
 			     CLTR_NORTH);
+
+  cltr_widget_set_focus_next(v->buttons[VIDEO_STOP_BTN], 
+			     v->buttons[VIDEO_REWND_BTN], 
+			     CLTR_SOUTH);
+
+  cltr_widget_set_focus_next(v->buttons[VIDEO_REWND_BTN], 
+			     v->buttons[VIDEO_STOP_BTN], 
+			     CLTR_NORTH);
+
+  cltr_widget_set_focus_next(v->buttons[VIDEO_REWND_BTN], 
+			     v->buttons[VIDEO_PLAY_BTN], 
+			     CLTR_SOUTH);
 
 }
 
@@ -168,6 +273,8 @@ populate(DemoApp *app, char *path)
       gint          i = 0;
       ItemEntry    *new_item;
       char         *img_path;
+      char         *seek_path, *seek_data = NULL;
+      gint64        seek_time = 0;
 
       /* Eeek! */
       if (!(g_str_has_suffix (entry, ".mpg") ||
@@ -193,6 +300,13 @@ populate(DemoApp *app, char *path)
       if (i > 0) 
 	new_item->nice_name[i] = '\0';
 
+      seek_path  = g_strconcat(path, "/", new_item->nice_name, ".seek", NULL);
+
+      if (g_file_get_contents (seek_path, &seek_data, NULL, NULL))
+	{
+	  seek_time = atol(seek_data);
+	}
+
       img_path = g_strconcat(path, "/", new_item->nice_name, ".png", NULL);
 
       pixb = pixbuf_new_from_file(img_path);
@@ -206,6 +320,8 @@ populate(DemoApp *app, char *path)
 
       new_item->uri = g_strconcat("file://", path, "/", entry, NULL);
       new_item->path = g_strdup(path);
+
+      new_item->stoptime = seek_time;
 
       app->items = g_list_append(app->items, new_item);
 
@@ -242,12 +358,124 @@ cell_to_item(DemoApp *app, CltrListCell *cell)
 }
 
 
+void
+zoom_video_out(DemoApp *app)
+{
+  ItemEntry    *item;
+  char          filename[1024];
+  Pixbuf       *spixb, *dpixb;
+  int           dstx, dsty, dstw, dsth;
+  PixbufPixel   col = { 0, 0, 0, 0xff };
+  int           x1, y1, x2, y2;
+  FILE         *fp;
+
+  cltr_video_pause (CLTR_VIDEO(app->video));
+  
+  item = cell_to_item(app, cltr_list_get_active_cell(CLTR_LIST(app->list)));
+  
+  item->stoptime = cltr_video_get_time (CLTR_VIDEO(app->video));
+  
+  snprintf(filename, 1024, "%s/%s.png", item->path, item->nice_name);
+  
+  spixb = cltr_video_get_pixbuf (CLTR_VIDEO(app->video));
+  
+  /* fixup pixbuf so scaled like video 
+   *
+   */
+  
+  /* XXX wrongly assume width > height */
+  
+  dstw = spixb->width;
+  
+  dsth = (spixb->width * cltr_widget_height(app->win)) 
+    / cltr_widget_width(app->win) ;
+  
+  printf("dsth %i, spixb h %i\n", dsth, spixb->height);
+  
+  dsty = (dsth - spixb->height)/2; dstx = 0;
+  
+  dpixb = pixbuf_new(dstw, dsth);
+  pixbuf_fill_rect(dpixb, 0, 0, -1, -1, &col);
+  pixbuf_copy(spixb, dpixb, 0, 0, 
+	      spixb->width, spixb->height, dstx, dsty);
+  
+  cltr_list_cell_set_pixbuf(cltr_list_get_active_cell(app->list),
+			    dpixb);
+
+  pixbuf_write_png(dpixb, filename);
+  
+  /* reset the viewing pixbuf */
+  
+  pixbuf_unref(dpixb);
+
+  /* write out the seektime too  */
+
+  snprintf(filename, 1024, "%s/%s.seek", item->path, item->nice_name);
+  
+  fp = fopen(filename, "w");
+
+  if (fp)
+    {
+      fprintf(fp, "%li", item->stoptime);
+      fclose(fp);
+    }
+
+  cltr_list_get_active_cell_video_box_co_ords(CLTR_LIST(app->list), 
+					      &x1, &y1, &x2, &y2);
+  
+  cltr_video_stop (CLTR_VIDEO(app->video));
+  
+  /* zoom out, XXX old anim needs freeing */
+  
+  app->anim = cltr_animator_zoom_new(app->list,
+				     x1, y1, x2, y2,
+				     0,0,800,600);
+  
+  printf("got return, seek time %li, %i, %i \n", 
+	 cltr_video_get_time (CLTR_VIDEO(app->video)),
+	 x1, y1);
+  
+  cltr_widget_show(app->list);
+  
+  cltr_animator_run(app->anim, zoom_out_complete, app);
+  
+  return;
+}
+
+void
+init_show_controls(DemoApp *app)
+{
+  /*
+  app->anim = cltr_animator_move_new(app->video_ctrls->container,
+				     -100, 200, 
+				     100, 200);
+
+  cltr_widget_show_all(app->video_ctrls->container);
+  
+  cltr_animator_run(app->anim, NULL, app);
+  */
+
+  cltr_widget_show_all(app->video_ctrls->container);
+  cltr_window_focus_widget(CLTR_WINDOW(app->win), 
+			   app->video_ctrls->buttons[VIDEO_PLAY_BTN]);
+  cltr_window_on_xevent(CLTR_WINDOW(app->win), NULL, NULL);
+}
 
 void
 handle_xevent(CltrWidget *win, XEvent *xev, void *cookie)
 {
   KeySym          kc;
   DemoApp        *app = (DemoApp*)cookie;
+
+  /* 
+   * XXX really need to think about not queuing xevents in
+   *     the current queue or something :/
+  */
+  if (app->ignore_next_xevent_hack)
+    {
+      app->ignore_next_xevent_hack = FALSE;
+      return;
+    }
 
   if (xev->type == KeyPress)
     {
@@ -259,71 +487,8 @@ handle_xevent(CltrWidget *win, XEvent *xev, void *cookie)
 	{
 	case XK_Return:
 	  {
-	    ItemEntry    *item;
-	    char          filename[1024];
-	    Pixbuf       *spixb, *dpixb;
-	    int           dstx, dsty, dstw, dsth;
-	    PixbufPixel   col = { 0, 0, 0, 0xff };
-	    int           x1, y1, x2, y2;
-
-	    cltr_video_pause (CLTR_VIDEO(app->video));
-
-	    item = cell_to_item(app, cltr_list_get_active_cell(app->list));
-
-	    item->stoptime = cltr_video_get_time (app->video);
-
-	    snprintf(filename, 1024, "%s/%s.png", item->path, item->nice_name);
-
-	    spixb = cltr_video_get_pixbuf (app->video);
-
-	    /* fixup pixbuf so scaled like video 
-             *
-	    */
-
-	    /* XXX wrongly assume width > height */
-
-	    dstw = spixb->width;
-
-	    dsth = (spixb->width * cltr_widget_height(win)) 
-	                  / cltr_widget_width(win) ;
-
-	    printf("dsth %i, spixb h %i\n", dsth, spixb->height);
-
-	    dsty = (dsth - spixb->height)/2; dstx = 0;
-
-	    dpixb = pixbuf_new(dstw, dsth);
-	    pixbuf_fill_rect(dpixb, 0, 0, -1, -1, &col);
-	    pixbuf_copy(spixb, dpixb, 0, 0, 
-			spixb->width, spixb->height, dstx, dsty);
-
-	    cltr_list_cell_set_pixbuf(cltr_list_get_active_cell(app->list),
-				      dpixb);
-
-	    pixbuf_write_png(dpixb, filename);
-
-
-	    /* reset the viewing pixbuf */
-
-	    pixbuf_unref(dpixb);
-
-	    cltr_list_get_active_cell_video_box_co_ords(CLTR_LIST(app->list), 
-							&x1, &y1, &x2, &y2);
-
-	    cltr_video_stop (CLTR_VIDEO(app->video));
-
-	    /* zoom out, XXX old anim needs freeing */
-
-	    app->anim = cltr_animator_zoom_new(app->list,
-					       x1, y1, x2, y2,
-					       0,0,800,600);
-
-	    printf("got return, seek time %li, %i, %i \n", 
-		   cltr_video_get_time (CLTR_VIDEO(app->video)),
-		   x1, y1);
-
-	    cltr_widget_show(app->list);
-	    
-	    cltr_animator_run(app->anim, zoom_out_complete, app);
+	    init_show_controls(app);
+	    /* zoom_video_out(app); */
 	  }
 	  break;
 	}
@@ -355,6 +520,8 @@ zoom_in_complete (CltrAnimator *anim, void *userdata)
 
   item = cell_to_item(app, cltr_list_get_active_cell(app->list));
 
+  app->paused = FALSE;
+
   cltr_video_set_source(CLTR_VIDEO(app->video), item->uri);
 
   if (item->stoptime)
@@ -371,11 +538,12 @@ zoom_in_complete (CltrAnimator *anim, void *userdata)
       cltr_video_seek_time (CLTR_VIDEO(app->video), item->stoptime, NULL);
     }
 
+
   cltr_widget_show(app->video);
 
   cltr_widget_hide(CLTR_WIDGET(app->list));
 
-  show_video_ctrl(app);
+
 
   cltr_window_on_xevent(CLTR_WINDOW(app->win), handle_xevent, app);
 }

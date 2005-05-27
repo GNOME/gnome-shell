@@ -189,7 +189,7 @@ cltr_widget_add_child(CltrWidget *widget, CltrWidget *child, int x, int y)
 void
 cltr_widget_remove_child(CltrWidget *widget, CltrWidget *child)
 {
-  g_list_remove(widget->children, child);
+  widget->children = g_list_remove(widget->children, child);
 
   child->parent = NULL;
   child->x      = 0;

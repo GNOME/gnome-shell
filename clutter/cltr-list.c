@@ -386,7 +386,7 @@ cltr_list_paint(CltrWidget *widget)
   PixbufPixel col       = { 0xff, 0, 0, 0xff };
   PixbufPixel bgcol     = { 0xe7, 0xe7, 0xe7, 0xff };
   PixbufPixel boxcol    = { 0xd7, 0xd7, 0xd7, 0xff };
-  PixbufPixel hlfontcol = { 0xff, 0x33, 0x66, 0xff };
+  PixbufPixel hlfontcol = { 0xe6, 0x99, 0x99, 0xff };
 
   CLTR_MARK();
 
@@ -471,12 +471,12 @@ cltr_list_paint(CltrWidget *widget)
 	      cltr_glu_set_color(&hlfontcol);
 	    else
 	      glColor4f(0.4, 0.4, 0.4, 1.0); 
-	    
+
 	    cltr_texture_render_to_gl_quad(cell->text_texture,
 					   vx2 + PAD,
 					   vy1,
-					   cltr_rect_x2(cell->rect) - PAD,
-					   vy1 + (list->cell_height/2) - PAD);
+					   cltr_rect_x2(cell->rect) - (2*PAD),
+					   vy1 + (list->cell_height/2) - (2*PAD));
 
 	  }
 
