@@ -1,3 +1,20 @@
+2005-05-30  Ray Strode  <rstrode@redhat.com>
+
+	Bug 305564 again.
+
+	When drawing XOR resize popup use "fixed" font instead of
+	-misc-fixed-*-16-* xlfd.  Should work on more xservers.
+
+	Also take steps to fail better if the xserver isn't 
+	cooperating. 
+	
+	* src/effects.c (draw_xor_rect): if we can't draw font box
+	for whatever reason, at least draw grid frames.
+	
+	* src/screen.c (meta_screen_new): use fixed alias instead
+	of a xfld.  Don't pass GCFont to XCreateGC if font couldn't
+	be loaded.  Print a warning if font couldn't be loaded.
+
 2005-05-26  Elijah Newren  <newren@gmail.com>
 
 	* HACKING: Add a clarification that METACITY_VERBOSE needs to be

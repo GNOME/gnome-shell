@@ -546,17 +546,31 @@ meta_screen_new (MetaDisplay *display,
   screen->trans_picture = None;
   
   {
+    XFontStruct *font_info;
     XGCValues gc_values;
+    gulong value_mask = 0;
     
     gc_values.subwindow_mode = IncludeInferiors;
+    value_mask |= GCSubwindowMode;
     gc_values.function = GXinvert;
+    value_mask |= GCFunction;
     gc_values.line_width = META_WIREFRAME_XOR_LINE_WIDTH;
-    gc_values.font = XLoadFont (screen->display->xdisplay,
-                                "-misc-fixed-*-*-*-*-16-*-*-*-*-*-*-*");
-    
+    value_mask |= GCLineWidth;
+
+    font_info = XLoadQueryFont (screen->display->xdisplay, "fixed");
+
+    if (font_info != NULL)
+      {
+        gc_values.font = font_info->fid;
+        value_mask |= GCFont;
+        XFreeFontInfo (NULL, font_info, 0);
+      }
+    else
+      meta_warning ("xserver doesn't have 'fixed' font.\n");
+
     screen->root_xor_gc = XCreateGC (screen->display->xdisplay,
                                      screen->xroot,
-                                     GCSubwindowMode | GCFunction | GCLineWidth | GCFont,
+                                     value_mask,
                                      &gc_values);
   }
   

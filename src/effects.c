@@ -472,7 +472,6 @@ draw_xor_rect (MetaScreen          *screen,
 
   if ((width >= 0) && (height >= 0))
     {
-      int box_width, box_height;
       XGCValues gc_values = { 0 };
 
       if (XGetGCValues (screen->display->xdisplay,
@@ -485,6 +484,7 @@ draw_xor_rect (MetaScreen          *screen,
           XFontStruct *font_struct;
           int text_width, text_height; 
           int box_x, box_y;
+          int box_width, box_height;
 
           font_struct = XQueryFont (screen->display->xdisplay,
                                     gc_values.font);
@@ -500,6 +500,7 @@ draw_xor_rect (MetaScreen          *screen,
 
               box_width = text_width + 2 * LINE_WIDTH;
               box_height = text_height + 2 * LINE_WIDTH;
+
 
               box_x = rect->x + (rect->width - box_width) / 2;
               box_y = rect->y + (rect->height - box_height) / 2;
@@ -521,15 +522,14 @@ draw_xor_rect (MetaScreen          *screen,
                 }
 
               g_free (text);
+
+              if ((box_width + LINE_WIDTH) >= (rect->width / 3))
+                return;
+
+              if ((box_height + LINE_WIDTH) >= (rect->height / 3))
+                return;
             }
         }
-
-      if ((box_width + LINE_WIDTH) >= (rect->width / 3))
-        return;
-
-      if ((box_height + LINE_WIDTH) >= (rect->height / 3))
-        return;
-
     }
 
   /* Two vertical lines at 1/3 and 2/3 */
