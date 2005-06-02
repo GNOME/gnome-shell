@@ -3519,7 +3519,8 @@ meta_window_focus (MetaWindow  *window,
     }
 
   modal_transient = get_modal_transient (window);
-  if (modal_transient != NULL)
+  if (modal_transient != NULL &&
+      !modal_transient->unmanaging)
     {
       meta_topic (META_DEBUG_FOCUS,
                   "%s has %s as a modal transient, so focusing it instead.\n",

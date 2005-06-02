@@ -1,3 +1,9 @@
+2005-06-02  Elijah Newren  <newren@gmail.com>
+
+	* src/window.c (meta_window_focus): if the window has a modal
+	transient which is being unmanaged, don't focus it.  Fixes the
+	Metacity issue reported in #305362.
+
 2005-05-30  Ray Strode  <rstrode@redhat.com>
 
 	Bug 305564 again.
