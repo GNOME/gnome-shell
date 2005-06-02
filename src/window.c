@@ -4082,6 +4082,11 @@ meta_window_configure_request (MetaWindow *window,
                       window->net_wm_user_time,
                       active_window->desc,
                       active_window->net_wm_user_time);
+          if (event->xconfigurerequest.detail == Above)
+            {
+              window->wm_state_demands_attention = TRUE;
+              set_net_wm_state (window);
+            }
         }
       else
         {
