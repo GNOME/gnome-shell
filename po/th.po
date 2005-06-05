@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-24 10:50-0700\n"
-"PO-Revision-Date: 2005-01-25 20:22+0700\n"
+"POT-Creation-Date: 2005-06-05 23:11+0700\n"
+"PO-Revision-Date: 2005-06-05 23:25+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <L10n@opentle.org>\n"
 "MIME-Version: 1.0\n"
@@ -62,7 +62,7 @@ msgstr "เกิดข้อผิดพลาด ขณะเปิดหน�
 msgid "Failed to get hostname: %s\n"
 msgstr "ไม่สามารถอ่านชื่อโฮสต์: %s\n"
 
-#: src/display.c:312
+#: src/display.c:316
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "ไม่สามารถเปิด display '%s' ของระบบ X Window\n"
@@ -109,17 +109,17 @@ msgid ""
 "binding\n"
 msgstr "โปรแกรมอื่นกำลังใช้ปุ่ม %s ร่วมกับปุ่ม %x เป็นปุ่มลัดอยู่แล้ว\n"
 
-#: src/keybindings.c:2559
+#: src/keybindings.c:2535
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "ไม่สามารถเปิดหน้าต่างโต้ตอบ เพื่อแสดงข้อผิดพลาดของคำสั่ง: %s\n"
 
-#: src/keybindings.c:2664
+#: src/keybindings.c:2640
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "คำสั่ง %d ยังไม่ได้ถูกกำหนด\n"
 
-#: src/keybindings.c:3494
+#: src/keybindings.c:3485
 msgid "No terminal command has been defined.\n"
 msgstr "คำสั่งเปิดเทอร์มินัลยังไม่ได้ถูกกำหนด\n"
 
@@ -202,12 +202,12 @@ msgstr "ปิ_ด"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "แสดงบนทุก_พื้นที่ทำงาน"
+msgid "_Always on Visible Workspace"
+msgstr "แสดงบนพื้นที่ทำงานเ_สมอ"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
-msgstr "บน_พื้นที่ทำงานนี้เท่านั้น"
+msgid "_Only on This Workspace"
+msgstr "แสดงบนพื้นที่ทำงาน_นี้เท่านั้น"
 
 #: src/menu.c:68
 msgid "Move to Workspace _Left"
@@ -225,7 +225,7 @@ msgstr "ย้ายไปพื้นที่ทำงาน_บน"
 msgid "Move to Workspace _Down"
 msgstr "ย้ายไปพื้นที่ทำงาน_ล่าง"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
 msgstr "พื้นที่ทำงาน %d"
@@ -355,7 +355,7 @@ msgstr "หัวหน้าต่าง"
 msgid "Class"
 msgstr "คลาส"
 
-#: src/metacity-dialog.c:262
+#: src/metacity-dialog.c:263
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -363,7 +363,7 @@ msgstr ""
 "หน้าต่างเหล่านี้ไม่สนับสนุนการ \"บันทึกค่าตั้งปัจจุบัน\" และคุณต้องเรียกใช้มันใหม่เอง "
 "เมื่อคุณเข้าสู่ระบบครั้งต่อไป"
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:328
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -496,11 +496,13 @@ msgid ""
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages."
 msgstr ""
 "ถ้าเป็นจริง metacity จะตอบสนองและให้ความรู้สึกของการ \"ควบคุมโดยตรง\" น้อยลงโดยใช้ "
 "wireframe ใช้ภาพเคลื่อนไหวน้อยลง หรืออะไรก็ตาม ซึ่งอาจดูใช้ยากขึ้นสำหรับผู้ใช้หลายๆ คน "
-"แต่จะช่วยให้โปรแกรมเก่าๆ หรือเทอร์มินัลเก่าๆ ทำงานได้"
+"แต่จะช่วยให้โปรแกรมเก่าๆ หรือเทอร์มินัลเก่าๆ ทำงานได้ อย่างไรก็ดี metacity "
+"จะไม่ใช้ wireframe เมื่อเปิดระบบอำนวยการใช้งาน เพื่อเลี่ยงการพังของเดสก์ท็อป"
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -1608,8 +1610,8 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"ปุ่มลัดสำหรับเปิดเทอร์มินัล  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
+"ปุ่มลัดสำหรับเปิดเทอร์มินัล  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
 "Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
@@ -1824,41 +1826,41 @@ msgstr "โหมดโฟกัสหน้าต่าง"
 msgid "Window title font"
 msgstr "แบบอักษรหัวหน้าต่าง"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf คีย์ \"%s\" ถูกตั้งค่าเป็นชนิดที่ใช้ไม่ได้\n"
 
-#: src/prefs.c:843
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr "\"%s\" ที่พบในฐานข้อมูลข้อปรับแต่ง ใช้เป็นปุ่มใช้ร่วมสำหรับเมาส์ไม่ได้\n"
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf คีย์ '%s' ถูกตั้งค่าเป็นค่าที่ใช้ไม่ได้\n"
 
-#: src/prefs.c:994
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "ไม่เข้าใจคำบรรยายแบบตัวอักษร \"%s\" จาก GConf คีย์ %s\n"
 
-#: src/prefs.c:1179
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr "%d ใน GConf คีย์ %s ไม่ใช่จำนวนพื้นที่ทำงาน ที่สมเหตุสมผล สามารถตั้งได้มากสุดเป็น %d\n"
 
-#: src/prefs.c:1239
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1866,24 +1868,24 @@ msgstr ""
 "ปิดการแก้ขัดที่เตรียมไว้สำหรับโปรแกรมเสียๆ บางโปรแกรมแล้ว "
 "ซึ่งอาจทำให้โปรแกรมเหล่านี้ทำงานไม่ปกติ\n"
 
-#: src/prefs.c:1304
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d ใน GConf คีย์ %s ต้องอยู่ระหว่าง 0 และ %d\n"
 
-#: src/prefs.c:1425
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "ไม่สามารถตั้งจำนวนพื้นที่ทำงานเป็น %d: %s\n"
 
-#: src/prefs.c:1669
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "\"%s\" ที่พบในฐานข้อมูลค่าปรับแต่ง ไม่สามารถใช้เป็นปุ่มลัด \"%s\"\n"
 
-#: src/prefs.c:2023
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "ไม่สามารถตั้งชื่อพื้นที่ทำงาน %d เป็น %s: %s\n"
@@ -1918,7 +1920,7 @@ msgstr "ไม่สามารถอ่านค่าตัวจัดกา
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "screen %d บน display \"%s\" มีตัวจัดการหน้าต่างอยู่แล้ว\n"
 
-#: src/screen.c:699
+#: src/screen.c:715
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "ไม่สามารถปล่อยการควบคุม screen %d บน display \"%s\"\n"
@@ -2019,7 +2021,8 @@ msgstr "จำนวนเต็ม %ld ต้องเป็นบวก"
 msgid "Integer %ld is too large, current max is %d"
 msgstr "จำนวนเต็ม %ld ใหญ่เกินไป ตั้งได้สูงสุดเป็น %d"
 
-#: src/theme-parser.c:521 src/theme-parser.c:602 src/theme-parser.c:626
+#: src/theme-parser.c:521 src/theme-parser.c:602
+#: src/theme-parser.c:626
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "แปลง \"%s\" เป็นเลขจุดทศนิยมไม่สำเร็จ"
@@ -2049,26 +2052,29 @@ msgstr ""
 "x-large, หรือ xx-large\n"
 
 # 
-#: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
-#: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
+#: src/theme-parser.c:729 src/theme-parser.c:737
+#: src/theme-parser.c:2936 src/theme-parser.c:3025
+#: src/theme-parser.c:3032 src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"%s\" ในอีลีเมนต์ <%s>"
 
-#: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
-#: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
+#: src/theme-parser.c:807 src/theme-parser.c:897
+#: src/theme-parser.c:935 src/theme-parser.c:1012
+#: src/theme-parser.c:1062 src/theme-parser.c:1070
 #: src/theme-parser.c:1126 src/theme-parser.c:1134
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
 msgstr "ขาดแอตทริบิวต์ \"%s\" ในอีลิเมนต์ <%s>"
 
-#: src/theme-parser.c:837 src/theme-parser.c:905 src/theme-parser.c:943
-#: src/theme-parser.c:1020
+#: src/theme-parser.c:837 src/theme-parser.c:905
+#: src/theme-parser.c:943 src/theme-parser.c:1020
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "<%s> ชื่อ \"%s\" ถูกใช้เป็นครั้งที่สอง"
 
-#: src/theme-parser.c:849 src/theme-parser.c:955 src/theme-parser.c:1032
+#: src/theme-parser.c:849 src/theme-parser.c:955
+#: src/theme-parser.c:1032
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
 msgstr "<%s>: พาเรนต์ \"%s\" ไม่ได้ระบุ"
@@ -2113,20 +2119,23 @@ msgstr "ไม่รู้จักสถานะ \"%s\" สำหรับไ�
 msgid "Theme already has a menu icon for function %s state %s"
 msgstr "ชุดตกแต่งมีไอคอนเมนูสำหรับฟังก์ชัน %s สถานะ %s อยู่แล้ว"
 
-#: src/theme-parser.c:1177 src/theme-parser.c:3244 src/theme-parser.c:3323
+#: src/theme-parser.c:1177 src/theme-parser.c:3244
+#: src/theme-parser.c:3323
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "ยังไม่ได้กำหนด <draw_ops> ชื่อ \"%s\""
 
-#: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
-#: src/theme-parser.c:3124 src/theme-parser.c:3178 src/theme-parser.c:3338
-#: src/theme-parser.c:3515 src/theme-parser.c:3553 src/theme-parser.c:3591
-#: src/theme-parser.c:3629
+#: src/theme-parser.c:1192 src/theme-parser.c:1256
+#: src/theme-parser.c:1545 src/theme-parser.c:3124
+#: src/theme-parser.c:3178 src/theme-parser.c:3338
+#: src/theme-parser.c:3515 src/theme-parser.c:3553
+#: src/theme-parser.c:3591 src/theme-parser.c:3629
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "ไม่อนุญาตให้มีอีลิเมนต์ <%s> ภายใน <%s>"
 
-#: src/theme-parser.c:1282 src/theme-parser.c:1369 src/theme-parser.c:1439
+#: src/theme-parser.c:1282 src/theme-parser.c:1369
+#: src/theme-parser.c:1439
 #, c-format
 msgid "No \"name\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"name\" ในอีลิเมนต์ <%s>"
@@ -2136,7 +2145,8 @@ msgstr "ขาดแอตทริบิวต์ \"name\" ในอีลิ�
 msgid "No \"value\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"value\" ในอีลิเมนต์ <%s>"
 
-#: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
+#: src/theme-parser.c:1320 src/theme-parser.c:1334
+#: src/theme-parser.c:1393
 msgid ""
 "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
@@ -2177,8 +2187,9 @@ msgstr "ขาดแอตทริบิวต์ \"right\" ในอีลิ�
 msgid "Border \"%s\" is unknown"
 msgstr "ไม่รู้จักเส้นขอบ \"%s\""
 
-#: src/theme-parser.c:1655 src/theme-parser.c:1765 src/theme-parser.c:1868
-#: src/theme-parser.c:2055 src/theme-parser.c:2869
+#: src/theme-parser.c:1655 src/theme-parser.c:1765
+#: src/theme-parser.c:1868 src/theme-parser.c:2055
+#: src/theme-parser.c:2869
 #, c-format
 msgid "No \"color\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"color\" ในอีลิเมนต์<%s>"
@@ -2203,32 +2214,39 @@ msgstr "ขาดแอตทริบิวต์ \"x2\" ในอีลิเ�
 msgid "No \"y2\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"y2\" ในอีลิเมนต์<%s>"
 
-#: src/theme-parser.c:1772 src/theme-parser.c:1875 src/theme-parser.c:1981
-#: src/theme-parser.c:2062 src/theme-parser.c:2168 src/theme-parser.c:2266
-#: src/theme-parser.c:2483 src/theme-parser.c:2609 src/theme-parser.c:2707
-#: src/theme-parser.c:2781 src/theme-parser.c:2876
+#: src/theme-parser.c:1772 src/theme-parser.c:1875
+#: src/theme-parser.c:1981 src/theme-parser.c:2062
+#: src/theme-parser.c:2168 src/theme-parser.c:2266
+#: src/theme-parser.c:2483 src/theme-parser.c:2609
+#: src/theme-parser.c:2707 src/theme-parser.c:2781
+#: src/theme-parser.c:2876
 #, c-format
 msgid "No \"x\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"x\" ในอีลิเมนต์<%s>"
 
-#: src/theme-parser.c:1779 src/theme-parser.c:1882 src/theme-parser.c:1988
-#: src/theme-parser.c:2069 src/theme-parser.c:2175 src/theme-parser.c:2273
-#: src/theme-parser.c:2490 src/theme-parser.c:2616 src/theme-parser.c:2788
-#: src/theme-parser.c:2883
+#: src/theme-parser.c:1779 src/theme-parser.c:1882
+#: src/theme-parser.c:1988 src/theme-parser.c:2069
+#: src/theme-parser.c:2175 src/theme-parser.c:2273
+#: src/theme-parser.c:2490 src/theme-parser.c:2616
+#: src/theme-parser.c:2788 src/theme-parser.c:2883
 #, c-format
 msgid "No \"y\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"y\" ในอีลิเมนต์<%s>"
 
-#: src/theme-parser.c:1786 src/theme-parser.c:1889 src/theme-parser.c:1995
-#: src/theme-parser.c:2076 src/theme-parser.c:2182 src/theme-parser.c:2280
-#: src/theme-parser.c:2497 src/theme-parser.c:2623 src/theme-parser.c:2795
+#: src/theme-parser.c:1786 src/theme-parser.c:1889
+#: src/theme-parser.c:1995 src/theme-parser.c:2076
+#: src/theme-parser.c:2182 src/theme-parser.c:2280
+#: src/theme-parser.c:2497 src/theme-parser.c:2623
+#: src/theme-parser.c:2795
 #, c-format
 msgid "No \"width\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"width\" ในอีลิเมนต์<%s>"
 
-#: src/theme-parser.c:1793 src/theme-parser.c:1896 src/theme-parser.c:2002
-#: src/theme-parser.c:2083 src/theme-parser.c:2189 src/theme-parser.c:2287
-#: src/theme-parser.c:2504 src/theme-parser.c:2630 src/theme-parser.c:2802
+#: src/theme-parser.c:1793 src/theme-parser.c:1896
+#: src/theme-parser.c:2002 src/theme-parser.c:2083
+#: src/theme-parser.c:2189 src/theme-parser.c:2287
+#: src/theme-parser.c:2504 src/theme-parser.c:2630
+#: src/theme-parser.c:2802
 #, c-format
 msgid "No \"height\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"height\" ในอีลิเมนต์<%s>"
@@ -2268,7 +2286,8 @@ msgstr "ขาดแอตทริบิวต์ \"filename\" ในอีล�
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "ไม่เข้าใจชนิดการเติม \"%s\" สำหรับอีลิเมนต์ <%s>"
 
-#: src/theme-parser.c:2462 src/theme-parser.c:2595 src/theme-parser.c:2700
+#: src/theme-parser.c:2462 src/theme-parser.c:2595
+#: src/theme-parser.c:2700
 #, c-format
 msgid "No \"state\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"state\" ในอีลิเมนต์ <%s>"
@@ -2283,7 +2302,8 @@ msgstr "ขาดแอตทริบิวต์ \"shadow\" ในอีลิ
 msgid "No \"arrow\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"arrow\" ในอีลิเมนต์ <%s>"
 
-#: src/theme-parser.c:2529 src/theme-parser.c:2651 src/theme-parser.c:2739
+#: src/theme-parser.c:2529 src/theme-parser.c:2651
+#: src/theme-parser.c:2739
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "ไม่เข้าใจค่า state \"%s\" สำหรับอีลิเมนต์ <%s>"
@@ -2400,7 +2420,8 @@ msgstr "ไม่ควรมีแอตทริบิวต์ \"resize\" ใ
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "มีรูปแบบสำหรับ state %s resize %s focus %s กำหนดไว้ก่อนแล้ว"
 
-#: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
+#: src/theme-parser.c:3475 src/theme-parser.c:3486
+#: src/theme-parser.c:3497
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "มีรูปแบบสำหรับ state %s focus %s กำหนดไว้ก่อนแล้ว"
@@ -2457,7 +2478,8 @@ msgstr "ไม่อนุญาตให้มีอีลิเมนต์·<
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "ไม่อนุญาตให้มีอีลิเมนต์·<%s>·ภายในอีลิเมนต์เกี่ยวกับคำสั่งวาด"
 
-#: src/theme-parser.c:3728 src/theme-parser.c:3758 src/theme-parser.c:3763
+#: src/theme-parser.c:3728 src/theme-parser.c:3758
+#: src/theme-parser.c:3763
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "ไม่อนุญาตให้มีอีลิเมนต์·<%s>·ภายในอีลิเมนต์·<%s>"
@@ -2921,8 +2943,8 @@ msgstr ""
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "โหลดชุดตกแต่ง \"%s\" ล้มเหลว: %s\n"
 
-#: src/theme.c:4598 src/theme.c:4605 src/theme.c:4612 src/theme.c:4619
-#: src/theme.c:4626
+#: src/theme.c:4598 src/theme.c:4605 src/theme.c:4612
+#: src/theme.c:4619 src/theme.c:4626
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "ไม่ได้กำหนดค่า <%s> สำหรับชุดตกแต่ง \"%s\""
@@ -2993,13 +3015,14 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "โปรแกรมประยุกต์ตั้งค่า _NET_WM_PID เป็น %ld ซึ่งไม่มีอยู่จริง\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:5197
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
-"หน้าต่าง %s ตั้งค่า SM_CLIENT_ID มาที่ตัวเอง แทนที่จะอ้างไปถึงหน้าต่างของ WM_CLIENT_LEADER ตามที่กำหนดไว้ใน ICCCM\n"
+"หน้าต่าง %s ตั้งค่า SM_CLIENT_ID มาที่ตัวเอง แทนที่จะอ้างไปถึงหน้าต่างของ WM_CLIENT_LEADER "
+"ตามที่กำหนดไว้ใน ICCCM\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -3008,13 +3031,14 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5868
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
-"หน้าต่าง %s ตั้งค่า MWM hint ไว้ว่าเป็นหน้าต่างที่เปลี่ยนขนาดไม่ได้ แต่กลับตั้งค่าขนาดต่ำสุด %d x %d และขนาดสูงสุด %d x %d ไว้ ซึ่งไม่สมเหตุสมผลเท่าไรนัก\n"
+"หน้าต่าง %s ตั้งค่า MWM hint ไว้ว่าเป็นหน้าต่างที่เปลี่ยนขนาดไม่ได้ แต่กลับตั้งค่าขนาดต่ำสุด %d x %"
+"d และขนาดสูงสุด %d x %d ไว้ ซึ่งไม่สมเหตุสมผลเท่าไรนัก\n"
 
 #: src/xprops.c:153
 #, c-format
@@ -3042,6 +3066,9 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "คุณสมบัติ %s ของหน้าต่าง 0x%lx มีค่าที่ไม่ใช่ UTF-8 ที่ถูกต้องสำหรับหัวข้อที่ %d ในรายการ\n"
+
+#~ msgid "Put on _All Workspaces"
+#~ msgstr "แสดงบนทุก_พื้นที่ทำงาน"
 
 #~ msgid "Select how to give focus to windows"
 #~ msgstr "เลือกวิธีโฟกัสหน้าต่าง"
