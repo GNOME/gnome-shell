@@ -563,7 +563,7 @@ meta_screen_new (MetaDisplay *display,
       {
         gc_values.font = font_info->fid;
         value_mask |= GCFont;
-        XFreeFontInfo (NULL, font_info, 0);
+        XFreeFontInfo (NULL, font_info, 1);
       }
     else
       meta_warning ("xserver doesn't have 'fixed' font.\n");
@@ -671,6 +671,7 @@ void
 meta_screen_free (MetaScreen *screen)
 {
   MetaDisplay *display;
+  XGCValues gc_values = { 0 };
 
   display = screen->display;
 
@@ -720,6 +721,16 @@ meta_screen_free (MetaScreen *screen)
   
   if (screen->work_area_idle != 0)
     g_source_remove (screen->work_area_idle);
+
+
+  if (XGetGCValues (screen->display->xdisplay,
+                    screen->root_xor_gc,
+                    GCFont,
+                    &gc_values))
+    {
+      XUnloadFont (screen->display->xdisplay,
+                   gc_values.font);
+    }
 
   XFreeGC (screen->display->xdisplay,
            screen->root_xor_gc);

@@ -1,8 +1,12 @@
-2005-06-02  Elijah Newren  <newren@gmail.com>
+2005-06-07  Ray Strode  <rstrode@redhat.com>
 
-	* src/window.c (meta_window_configure_request): If a window
-	requests to be raised and is denied, set the demands attention
-	hint.  Fixes #305882.
+	Cleanup font data when done with it (bug 306720).
+
+	* src/effects.c (draw_xor_rect): free font info structure.
+	* src/screen.c (meta_screen_new): pass a 1 not a 0 to
+	XFreeFontInfo to free font info structure.
+	(meta_screen_free): call XUnloadFont on GC font before freeing
+	the GC.
 
 2005-06-02  Elijah Newren  <newren@gmail.com>
 

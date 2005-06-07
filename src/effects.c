@@ -523,6 +523,8 @@ draw_xor_rect (MetaScreen          *screen,
 
               g_free (text);
 
+              XFreeFontInfo (NULL, font_struct, 1);
+
               if ((box_width + LINE_WIDTH) >= (rect->width / 3))
                 return;
 
