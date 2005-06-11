@@ -188,7 +188,7 @@ meta_frames_init (MetaFrames *frames)
 {
   GTK_WINDOW (frames)->type = GTK_WINDOW_POPUP;
 
-  frames->text_heights = g_hash_table_new (g_int_hash, g_int_equal);
+  frames->text_heights = g_hash_table_new (NULL, NULL);
   
   frames->frames = g_hash_table_new (unsigned_long_hash, unsigned_long_equal);
 
@@ -296,7 +296,7 @@ meta_frames_font_changed (MetaFrames *frames)
   if (g_hash_table_size (frames->text_heights) > 0)
     {
       g_hash_table_destroy (frames->text_heights);
-      frames->text_heights = g_hash_table_new (g_int_hash, g_int_equal);
+      frames->text_heights = g_hash_table_new (NULL, NULL);
     }
   
   /* Queue a draw/resize on all frames */
@@ -395,9 +395,9 @@ meta_frames_ensure_layout (MetaFrames  *frames,
 						 meta_prefs_get_titlebar_font ());
 
       size = pango_font_description_get_size (font_desc);
-      
+
       if (g_hash_table_lookup_extended (frames->text_heights,
-                                        &size,
+                                        GINT_TO_POINTER (size),
                                         &key, &value))
         {
           frame->text_height = GPOINTER_TO_INT (value);
@@ -409,7 +409,7 @@ meta_frames_ensure_layout (MetaFrames  *frames,
                                                   gtk_widget_get_pango_context (widget));
 
           g_hash_table_replace (frames->text_heights,
-                                &size,
+                                GINT_TO_POINTER (size),
                                 GINT_TO_POINTER (frame->text_height));
         }
       

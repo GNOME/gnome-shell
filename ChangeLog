@@ -1,3 +1,12 @@
+2005-06-10  Ryan Lortie  <desrt@desrt.ca>
+
+	* src/frames.c: Prevent using the address of a local variable
+	  as a hash key.  (Bug #307209)
+
+	* src/xprops.c (meta_prop_get_values): Fix a small leak in the
+	  case of a SYNC_COUNTER property value and HAVE_XSYNC not
+	  defined.  (Bug #307214)
+
 2005-06-07  Ray Strode  <rstrode@redhat.com>
 
 	Cleanup font data when done with it (bug 306720).

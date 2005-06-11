@@ -1143,10 +1143,15 @@ meta_prop_get_values (MetaDisplay   *display,
             values[i].type = META_PROP_VALUE_INVALID;
 #else
           values[i].type = META_PROP_VALUE_INVALID;
+          if (results.prop)
+            {
+              XFree (results.prop);
+              results.prop = NULL;
+            }
 #endif
           break;
         }
-      
+
     next:
       ++i;
     }
