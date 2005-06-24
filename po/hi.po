@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.hi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-14 22:47+0000\n"
-"PO-Revision-Date: 2005-06-15 11:36+0530\n"
+"POT-Creation-Date: 2005-06-24 06:05+0000\n"
+"PO-Revision-Date: 2005-06-24 13:11+0530\n"
 "Last-Translator: Rajesh Ranjan <rranjan@redhat.com>\n"
 "Language-Team: Hindi <fedora-trans-hi@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -19,6 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.9.1\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
+"\n"
 
 #: ../src/tools/metacity-message.c:150
 #, c-format
@@ -426,6 +427,8 @@ msgid ""
 "is unset, causing Metacity to fall back to the desktop font even if "
 "titlebar_uses_desktop_font is false."
 msgstr ""
+"एक फंट विवरण स्ट्रिंग विंडो शीर्षक पट्टी के लिये फंट के बारे में बता रहा है. विवरण से आकार प्रयुक्त होगा अगर titlebar_font_size विकल्प 0 में सेट किया जाता है, हालांकि. साथ ही यह विकल्प निष्क्रिय होता है अगर titlebar_uses_desktop_font विकल्प सही पर सेट किया जाता है. मूलभूत रूप से, titlebar_font "
+"नहीं सेट किया हुआ है, Metacity को डेस्कटॉप फंट पर लौटाते हुये अगर titlebar_uses_desktop_font गलत है."
 
 #: ../src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
@@ -530,6 +533,8 @@ msgid ""
 "otherwise be impractical. However, the wireframe feature is disabled when "
 "accessibility is on to avoid weird desktop breakages."
 msgstr ""
+"अगर सही है, metacity उपयोक्ता को कम फीडबेक और "
+"\"सीधा हस्तक्षेप\" का कम सेंस देगा, वायरफ्रेम, एनीमेशन अनदेखा करते हुये, या अन्य साधन. यह महत्वपूर्ण कमी है कई उपयोक्ता के प्रयोग में, लेकिन कई पुरातन अनुप्रयोग व टर्मिनल सर्वर की अनुमति देते हैं कि वे कब अन्यथा रूप से अप्रायोगिक होगें. हालांकि, वायरफ्रेम फीचर को निष्क्रिय किया जाता है जब पहुंच वीयर्ड डेस्कटॉप खंडन को अनदेखा करने के लिये हो."
 
 #: ../src/metacity.schemas.in.h:20
 msgid ""
@@ -2769,6 +2774,8 @@ msgid ""
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
 msgstr ""
+"%d frames को %g क्लाइंट पक्ष सेकेंड में खींचा (%g milliseconds per frame) और %g "
+"X सर्वर संसाधन को समाहित करता सेकेंड वाल घड़ी (%g विविध प्रति फ्रेम)\n"
 
 #: ../src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
