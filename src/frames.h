@@ -90,6 +90,10 @@ struct _MetaFrames
   MetaUIFrame *last_motion_frame;
 
   int expose_delay_count;
+
+  int invalidate_cache_timeout_id;
+  GList *invalidate_frames;
+  GHashTable *cache;
 };
 
 struct _MetaFramesClass

@@ -62,7 +62,9 @@ static gboolean meta_frames_leave_notify_event    (GtkWidget           *widget,
 static void meta_frames_paint_to_drawable (MetaFrames   *frames,
                                            MetaUIFrame  *frame,
                                            GdkDrawable  *drawable,
-                                           GdkRegion    *region);
+                                           GdkRegion    *region,
+					   int           x_offset,
+					   int           y_offset);
 
 static void meta_frames_set_window_background (MetaFrames   *frames,
                                                MetaUIFrame  *frame);
@@ -88,6 +90,9 @@ static MetaFrameControl get_control  (MetaFrames        *frames,
                                       int                x,
                                       int                y);
 static void clear_tip (MetaFrames *frames);
+static void invalidate_all_caches (MetaFrames *frames);
+static void invalidate_whole_window (MetaFrames *frames,
+				     MetaUIFrame *frame);
 
 static GtkWidgetClass *parent_class = NULL;
 
@@ -196,6 +201,10 @@ meta_frames_init (MetaFrames *frames)
 
   frames->expose_delay_count = 0;
 
+  frames->invalidate_cache_timeout_id = 0;
+  frames->invalidate_frames = NULL;
+  frames->cache = g_hash_table_new (g_direct_hash, g_direct_equal);
+
   gtk_widget_set_double_buffered (GTK_WIDGET (frames), FALSE);
 
   meta_prefs_add_listener (prefs_changed_callback, frames);
@@ -253,11 +262,98 @@ meta_frames_finalize (GObject *object)
   meta_prefs_remove_listener (prefs_changed_callback, frames);
   
   g_hash_table_destroy (frames->text_heights);
+
+  invalidate_all_caches (frames);
+  if (frames->invalidate_cache_timeout_id)
+    g_source_remove (frames->invalidate_cache_timeout_id);
   
   g_assert (g_hash_table_size (frames->frames) == 0);
   g_hash_table_destroy (frames->frames);
+  g_hash_table_destroy (frames->cache);
 
   G_OBJECT_CLASS (parent_class)->finalize (object);
+}
+
+typedef struct
+{
+  GdkPixmap *top;
+  gint top_x, top_y;
+  
+  GdkPixmap *left;
+  gint left_x, left_y;
+  
+  GdkPixmap *right;
+  gint right_y, right_x;
+  
+  GdkPixmap *bottom;
+  gint bottom_x, bottom_y;
+  
+} CachedPixels;
+
+static CachedPixels *
+get_cache (MetaFrames *frames,
+	   MetaUIFrame *frame)
+{
+  CachedPixels *pixels;
+  
+  pixels = g_hash_table_lookup (frames->cache, frame);
+
+  if (!pixels)
+    {
+      pixels = g_new0 (CachedPixels, 1);
+      g_hash_table_insert (frames->cache, frame, pixels);
+    }
+
+  return pixels;
+}
+
+static void
+invalidate_cache (MetaFrames *frames,
+		  MetaUIFrame *frame)
+{
+  CachedPixels *pixels = get_cache (frames, frame);
+  
+  if (pixels->top)
+    g_object_unref (pixels->top);
+  if (pixels->left)
+    g_object_unref (pixels->left);
+  if (pixels->right)
+    g_object_unref (pixels->right);
+  if (pixels->bottom)
+    g_object_unref (pixels->bottom);
+  
+  pixels->top = NULL;
+  pixels->bottom = NULL;
+  pixels->right = NULL;
+  pixels->left = NULL;
+
+  g_hash_table_remove (frames->cache, frame);
+}
+
+static void
+invalidate_all_caches (MetaFrames *frames)
+{
+  GList *l;
+
+  for (l = frames->invalidate_frames; l; l = l->next)
+    {
+      MetaUIFrame *frame = l->data;
+
+      invalidate_cache (frames, frame);
+    }
+  
+  g_list_free (frames->invalidate_frames);
+  frames->invalidate_frames = NULL;
+}
+
+static gboolean
+invalidate_cache_timeout (gpointer data)
+{
+  MetaFrames *frames = data;
+  
+  invalidate_all_caches (frames);
+  frames->invalidate_cache_timeout_id = 0;
+  return FALSE;
 }
 
 static void
@@ -275,7 +371,7 @@ queue_recalc_func (gpointer key, gpointer value, gpointer data)
    */
   meta_frames_set_window_background (frames, frame);
   
-  gdk_window_invalidate_rect (frame->window, NULL, FALSE);
+  invalidate_whole_window (frames, frame);
   meta_core_queue_frame_resize (gdk_display,
                                 frame->xwindow);
   if (frame->layout)
@@ -320,7 +416,7 @@ queue_draw_func (gpointer key, gpointer value, gpointer data)
    */
   meta_frames_set_window_background (frames, frame);
 
-  gdk_window_invalidate_rect (frame->window, NULL, FALSE);
+  invalidate_whole_window (frames, frame);
 }
 
 static void
@@ -512,6 +608,11 @@ meta_frames_unmanage_window (MetaFrames *frames,
 
   if (frame)
     {
+      /* invalidating all caches ensures the frame
+       * is not actually referenced anymore
+       */
+      invalidate_all_caches (frames);
+      
       /* restore the cursor */
       meta_core_set_screen_cursor (gdk_display,
 				   frame->xwindow,
@@ -922,14 +1023,15 @@ meta_frames_move_resize_frame (MetaFrames *frames,
 			       int         height)
 {
   MetaUIFrame *frame = meta_frames_lookup_window (frames, xwindow);
-  int old_width, old_height;
+  int old_x, old_y, old_width, old_height;
   
   gdk_drawable_get_size (frame->window, &old_width, &old_height);
+  gdk_window_get_position (frame->window, &old_x, &old_y);
 
   gdk_window_move_resize (frame->window, x, y, width, height);
 
   if (old_width != width || old_height != height)
-    gdk_window_invalidate_rect (frame->window, NULL, FALSE);
+    invalidate_whole_window (frames, frame);
 }
 
 void
@@ -943,7 +1045,7 @@ meta_frames_queue_draw (MetaFrames *frames,
 
   frame = meta_frames_lookup_window (frames, xwindow);
 
-  gdk_window_invalidate_rect (frame->window, NULL, FALSE);
+  invalidate_whole_window (frames, frame);
 }
 
 void
@@ -968,8 +1070,8 @@ meta_frames_set_title (MetaFrames *frames,
       g_object_unref (frame->layout);
       frame->layout = NULL;
     }
-  
-  gdk_window_invalidate_rect (frame->window, NULL, FALSE);
+
+  invalidate_whole_window (frames, frame);
 }
 
 void
@@ -985,7 +1087,10 @@ meta_frames_repaint_frame (MetaFrames *frames,
 
   g_assert (frame);
 
-  gdk_window_process_updates (frame->window, TRUE);
+  /* repaint everything, so the other frame don't
+   * lag behind if they are exposed
+   */
+  gdk_window_process_all_updates ();
 }
 
 static void
@@ -1124,6 +1229,7 @@ redraw_control (MetaFrames *frames,
   rect = control_rect (control, &fgeom);
 
   gdk_window_invalidate_rect (frame->window, rect, FALSE);
+  invalidate_cache (frames, frame);
 }
 
 static gboolean
@@ -1691,12 +1797,218 @@ meta_frames_destroy_event           (GtkWidget           *widget,
   return TRUE;
 }
 
+/* Cut and paste from GDK */
+static GdkGC *
+get_bg_gc (GdkWindow *window, int x_offset, int y_offset)
+{
+  GdkWindowObject *private = (GdkWindowObject *)window;
+  guint gc_mask = 0;
+  GdkGCValues gc_values;
+
+  if (private->bg_pixmap == GDK_PARENT_RELATIVE_BG && private->parent)
+    {
+      return get_bg_gc (GDK_WINDOW (private->parent),
+			x_offset + private->x,
+			y_offset + private->y);
+    }
+  else if (private->bg_pixmap && 
+           private->bg_pixmap != GDK_PARENT_RELATIVE_BG && 
+           private->bg_pixmap != GDK_NO_BG)
+    {
+      gc_values.fill = GDK_TILED;
+      gc_values.tile = private->bg_pixmap;
+      gc_values.ts_x_origin = x_offset;
+      gc_values.ts_y_origin = y_offset;
+      
+      gc_mask = GDK_GC_FILL | GDK_GC_TILE | GDK_GC_TS_X_ORIGIN | GDK_GC_TS_Y_ORIGIN;
+
+      return gdk_gc_new_with_values (window, &gc_values, gc_mask);
+    }
+  else
+    {
+      GdkGC *gc = gdk_gc_new (window);
+
+      gdk_gc_set_foreground (gc, &(private->bg_color));
+
+      return gc;
+    }
+}
+
+static void
+clear_backing (GdkPixmap *pixmap,
+	       GdkWindow *window,
+	       int xoffset, int yoffset)
+{
+  GdkGC *tmp_gc = get_bg_gc (window, xoffset, yoffset);
+
+  gdk_draw_rectangle (pixmap, tmp_gc, TRUE,
+		      0, 0, -1, -1);
+  
+  g_object_unref (tmp_gc);
+}
+
+static GdkPixmap *
+generate_pixmap (MetaFrames *frames,
+		 MetaUIFrame *frame,
+		 int x,
+		 int y,
+		 int width,
+		 int height)
+{
+  GdkRectangle rectangle;
+  GdkRegion *region;
+  GdkPixmap *result;
+
+  rectangle.x = x;
+  rectangle.y = y;
+  rectangle.width = MAX (width, 1);
+  rectangle.height = MAX (height, 1);
+  
+  result = gdk_pixmap_new (frame->window, rectangle.width, rectangle.height, -1);
+  
+  clear_backing (result, frame->window, rectangle.x, rectangle.y);
+
+  region = gdk_region_rectangle (&rectangle);
+
+  meta_frames_paint_to_drawable (frames, frame, result, region,
+				 - rectangle.x, - rectangle.y);
+
+  gdk_region_destroy (region);
+
+  return result;
+}
+
+static void
+populate_cache (MetaFrames *frames,
+		MetaUIFrame *frame)
+{
+  int top, bottom, left, right;
+  int width, height;
+  int frame_width, frame_height, screen_width, screen_height;
+  CachedPixels *pixels;
+
+  meta_core_get_frame_extents (gdk_display,
+                               frame->xwindow,
+                               NULL, NULL,
+                               &frame_width, &frame_height);
+
+  meta_core_get_screen_size (gdk_display,
+                             frame->xwindow,
+                             &screen_width, &screen_height);
+
+  /* don't cache extremely large windows */
+  if (frame_width > 2 * screen_width ||
+      frame_height > 2 * screen_height)
+    {
+      return;
+    }
+  
+  meta_theme_get_frame_borders (meta_theme_get_current (),
+                                meta_core_get_frame_type (gdk_display, frame->xwindow),
+				frame->text_height,
+				meta_core_get_frame_flags (gdk_display, frame->xwindow),
+                                &top, &bottom, &left, &right);
+
+  meta_core_get_client_size (gdk_display, frame->xwindow, &width, &height);
+
+  pixels = get_cache (frames, frame);
+  
+  if (!pixels->top)
+    {
+      pixels->top = generate_pixmap (frames, frame,
+				    0, 0, left + width + height, top);
+      pixels->top_x = 0;
+      pixels->top_y = 0;
+    }
+  
+  if (!pixels->left)
+    {
+      pixels->left = generate_pixmap (frames, frame,
+				     0, top, left, height);
+      pixels->left_x = 0;
+      pixels->left_y = top;
+    }
+  
+  if (!pixels->right)
+    {
+      pixels->right = generate_pixmap (frames, frame,
+				      left + width, top, right, height);
+      pixels->right_x = left + width;
+      pixels->right_y = top;
+    }
+  
+  if (!pixels->bottom)
+    {
+      pixels->bottom = generate_pixmap (frames, frame,
+				       0, top + height, left + width + height, bottom);
+      pixels->bottom_x = 0;
+      pixels->bottom_y = top + height;
+    }
+  
+  if (frames->invalidate_cache_timeout_id)
+    g_source_remove (frames->invalidate_cache_timeout_id);
+  
+  frames->invalidate_cache_timeout_id = g_timeout_add (1000, invalidate_cache_timeout, frames);
+
+  if (!g_list_find (frames->invalidate_frames, frame))
+    frames->invalidate_frames =
+      g_list_prepend (frames->invalidate_frames, frame);
+}
+
+static void
+clip_to_screen (GdkRegion *region, MetaUIFrame *frame)
+{
+  GdkRectangle frame_area;
+  GdkRectangle screen_area = { 0, 0, 0, 0 };
+  GdkRegion *tmp_region;
+  
+  /* Chop off stuff outside the screen; this optimization
+   * is crucial to handle huge client windows,
+   * like "xterm -geometry 1000x1000"
+   */
+  meta_core_get_frame_extents (gdk_display,
+                               frame->xwindow,
+                               &frame_area.x, &frame_area.y,
+                               &frame_area.width, &frame_area.height);
+
+  meta_core_get_screen_size (gdk_display,
+                             frame->xwindow,
+                             &screen_area.width, &screen_area.height);
+
+  gdk_region_offset (region, frame_area.x, frame_area.y);
+
+  tmp_region = gdk_region_rectangle (&frame_area);
+  gdk_region_intersect (region, tmp_region);
+  gdk_region_destroy (tmp_region);
+
+  gdk_region_offset (region, - frame_area.x, - frame_area.y);
+}
+
+static void
+subtract_from_region (GdkRegion *region, GdkDrawable *drawable,
+		      gint x, gint y)
+{
+  GdkRectangle rect;
+  GdkRegion *reg_rect;
+
+  gdk_drawable_get_size (drawable, &rect.width, &rect.height);
+  rect.x = x;
+  rect.y = y;
+
+  reg_rect = gdk_region_rectangle (&rect);
+  gdk_region_subtract (region, reg_rect);
+  gdk_region_destroy (reg_rect);
+}
+
 static gboolean
 meta_frames_expose_event (GtkWidget           *widget,
                           GdkEventExpose      *event)
 {
   MetaUIFrame *frame;
   MetaFrames *frames;
+  GdkGC *gc;
+  GdkRegion *region;
+  CachedPixels *pixels;
 
   frames = META_FRAMES (widget);
 
@@ -1711,8 +2023,57 @@ meta_frames_expose_event (GtkWidget           *widget,
       return TRUE;
     }
 
-  meta_frames_paint_to_drawable (frames, frame, frame->window, event->region);
+  populate_cache (frames, frame);
 
+  region = gdk_region_copy (event->region);
+  
+  gc = gdk_gc_new (frame->window);
+
+  pixels = get_cache (frames, frame);
+  
+  if (pixels->top)
+    {
+      gdk_draw_drawable (frame->window, gc, pixels->top,
+			 0, 0,
+			 pixels->top_x, pixels->top_y,
+			 -1, -1);
+      subtract_from_region (region, pixels->top, pixels->top_x, pixels->top_y);
+    }
+
+  if (pixels->left)
+    {
+      gdk_draw_drawable (frame->window, gc, pixels->left,
+			 0, 0,
+			 pixels->left_x, pixels->left_y,
+			 -1, -1);
+      subtract_from_region (region, pixels->left, pixels->left_x, pixels->left_y);
+    }
+
+  if (pixels->right)
+    {
+      gdk_draw_drawable (frame->window, gc, pixels->right,
+			 0, 0,
+			 pixels->right_x, pixels->right_y,
+			 -1, -1);
+      subtract_from_region (region, pixels->right, pixels->right_x, pixels->right_y);
+    }
+  
+  if (pixels->bottom)
+    {
+      gdk_draw_drawable (frame->window, gc, pixels->bottom,
+			 0, 0,
+			 pixels->bottom_x, pixels->bottom_y,
+			 -1, -1);
+      subtract_from_region (region, pixels->bottom, pixels->bottom_x, pixels->bottom_y);
+    }
+
+  clip_to_screen (region, frame);
+  meta_frames_paint_to_drawable (frames, frame,
+				 frame->window, region, 0, 0);
+  
+  g_object_unref (gc);
+  gdk_region_destroy (region);
+  
   return TRUE;
 }
 
@@ -1720,7 +2081,9 @@ static void
 meta_frames_paint_to_drawable (MetaFrames   *frames,
                                MetaUIFrame  *frame,
                                GdkDrawable  *drawable,
-                               GdkRegion    *region)
+                               GdkRegion    *region,
+			       int           x_offset,
+			       int           y_offset)
 {
   GtkWidget *widget;
   MetaFrameFlags flags;
@@ -1737,7 +2100,6 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
   GdkRectangle area;
   GdkRectangle *areas;
   int n_areas;
-  int screen_width, screen_height;
   MetaButtonLayout button_layout;
   MetaGrabOp grab_op;
   
@@ -1834,36 +2196,6 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
   gdk_region_subtract (edges, tmp_region);
   gdk_region_destroy (tmp_region);
 
-  /* Chop off stuff outside the screen; this optimization
-   * is crucial to handle huge client windows,
-   * like "xterm -geometry 1000x1000"
-   */
-  meta_core_get_frame_extents (gdk_display,
-                               frame->xwindow,
-                               &area.x, &area.y,
-                               &area.width, &area.height);
-
-  meta_core_get_screen_size (gdk_display,
-                             frame->xwindow,
-                             &screen_width, &screen_height);
-
-  if ((area.x + area.width) > screen_width)
-    area.width = screen_width - area.x;
-  if (area.width < 0)
-    area.width = 0;
-  
-  if ((area.y + area.height) > screen_height)
-    area.height = screen_height - area.y;
-  if (area.height < 0)
-    area.height = 0;
-
-  area.x = 0; /* make relative to frame rather than screen */
-  area.y = 0;
-  
-  tmp_region = gdk_region_rectangle (&area);
-  gdk_region_intersect (edges, tmp_region);
-  gdk_region_destroy (tmp_region);
-
   /* Now draw remaining portion of region */
   gdk_region_get_rectangles (edges, &areas, &n_areas);
 
@@ -1878,8 +2210,8 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
       meta_theme_draw_frame (meta_theme_get_current (),
                              widget,
                              drawable,
-                             &areas[i],
-                             0, 0,
+                             NULL, /* &areas[i], */
+                             x_offset, y_offset,
                              type,
                              flags,
                              w, h,
@@ -2157,7 +2489,7 @@ queue_pending_exposes_func (gpointer key, gpointer value, gpointer data)
 
   if (frame->expose_delayed)
     {
-      gdk_window_invalidate_rect (frame->window, NULL, FALSE);
+      invalidate_whole_window (frames, frame);
       frame->expose_delayed = FALSE;
     }
 }
@@ -2175,4 +2507,12 @@ meta_frames_pop_delay_exposes  (MetaFrames *frames)
                             queue_pending_exposes_func,
                             frames);
     }
+}
+
+static void
+invalidate_whole_window (MetaFrames *frames,
+			 MetaUIFrame *frame)
+{
+  gdk_window_invalidate_rect (frame->window, NULL, FALSE);
+  invalidate_cache (frames, frame);
 }
