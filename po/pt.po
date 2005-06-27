@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-18 00:40+0000\n"
+"POT-Creation-Date: 2005-06-27 17:21-0600\n"
 "PO-Revision-Date: 2005-02-18 00:45+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Falha ao obter nome de máquina: %s\n"
 
-#: src/display.c:313
+#: src/display.c:316
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Falha ao abrir ecrã '%s' do Sistema Janelas X\n"
@@ -81,23 +81,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Erro IO fatal %d (%s) no ecrã '%s'.\n"
 
-#: src/frames.c:1020
+#: src/frames.c:1125
 msgid "Close Window"
 msgstr "Fechar Janela"
 
-#: src/frames.c:1023
+#: src/frames.c:1128
 msgid "Window Menu"
 msgstr "Menu de Janela"
 
-#: src/frames.c:1026
+#: src/frames.c:1131
 msgid "Minimize Window"
 msgstr "Minimizar Janela"
 
-#: src/frames.c:1029
+#: src/frames.c:1134
 msgid "Maximize Window"
 msgstr "Maximizar Janela"
 
-#: src/frames.c:1032
+#: src/frames.c:1137
 msgid "Unmaximize Window"
 msgstr "Restaurar Janela"
 
@@ -110,18 +110,18 @@ msgstr ""
 "A tecla %s com os modificadores %x já está a ser utilizada como atalho por "
 "outra aplicação\n"
 
-#: src/keybindings.c:2559
+#: src/keybindings.c:2535
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Erro ao abrir diálogo-metacity para imprimir um erro sobre um comando: %s\n"
 
-#: src/keybindings.c:2664
+#: src/keybindings.c:2640
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Não foi definido nenhum comando %d.\n"
 
-#: src/keybindings.c:3494
+#: src/keybindings.c:3485
 msgid "No terminal command has been defined.\n"
 msgstr "Não foi definido nenhum comando de consola.\n"
 
@@ -360,7 +360,7 @@ msgstr "Título"
 msgid "Class"
 msgstr "Classe"
 
-#: src/metacity-dialog.c:262
+#: src/metacity-dialog.c:263
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -368,7 +368,7 @@ msgstr ""
 "Estas janelas não suportam \"gravar configuração actual\" e terão de ser "
 "reiniciadas manualmente da próxima vez que iniciar sessão."
 
-#: src/metacity-dialog.c:325
+#: src/metacity-dialog.c:328
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2087,7 +2087,7 @@ msgstr ""
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Ecrã %d no monitor \"%s\" já tem um gestor de janelas\n"
 
-#: src/screen.c:699
+#: src/screen.c:716
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Incapaz libertar ecrã %d no monitor \"%s\"\n"
@@ -3193,7 +3193,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplicação definiu um _NET_WM_PID %ld fictício\n"
 
 #. first time through
-#: src/window.c:5036
+#: src/window.c:5197
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3209,7 +3209,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5707
+#: src/window.c:5868
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

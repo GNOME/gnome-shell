@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-31 18:31-0700\n"
+"POT-Creation-Date: 2005-06-27 17:21-0600\n"
 "PO-Revision-Date: 2005-03-28 19:35-0700\n"
 "Last-Translator: Steve Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -86,25 +86,25 @@ msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Ikosa ku Kugaragaza"
 
 # sfx2/sdi\sfxslots.src:SID_CLOSEWIN.text
-#: src/frames.c:1020
+#: src/frames.c:1125
 msgid "Close Window"
 msgstr "Gufunga Idirishya"
 
-#: src/frames.c:1023
+#: src/frames.c:1128
 msgid "Window Menu"
 msgstr ""
 
 # 3850
-#: src/frames.c:1026
+#: src/frames.c:1131
 msgid "Minimize Window"
 msgstr "gira idirishya rito"
 
 # 3784
-#: src/frames.c:1029
+#: src/frames.c:1134
 msgid "Maximize Window"
 msgstr "heza idirishya"
 
-#: src/frames.c:1032
+#: src/frames.c:1137
 msgid "Unmaximize Window"
 msgstr ""
 
@@ -115,17 +115,17 @@ msgid ""
 "binding\n"
 msgstr "Ikindi Porogaramu ni ikoresha Urufunguzo Na: Nka a"
 
-#: src/keybindings.c:2561
+#: src/keybindings.c:2535
 #, fuzzy, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "Ikiganiro Kuri Gucapa Ikosa Ibyerekeye a Komandi:"
 
-#: src/keybindings.c:2666
+#: src/keybindings.c:2640
 #, fuzzy, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Komandi:"
 
-#: src/keybindings.c:3511
+#: src/keybindings.c:3485
 #, fuzzy
 msgid "No terminal command has been defined.\n"
 msgstr "Komandi:"
@@ -386,7 +386,7 @@ msgstr "Umutwe"
 msgid "Class"
 msgstr "ishuri,urwego"
 
-#: src/metacity-dialog.c:262
+#: src/metacity-dialog.c:263
 #, fuzzy
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
@@ -394,7 +394,7 @@ msgid ""
 msgstr ""
 "OYA Gushigikira Kubika KIGEZWEHO Imikorere Na Kuri Komeza>> Igihe LOG in"
 
-#: src/metacity-dialog.c:325
+#: src/metacity-dialog.c:328
 #, fuzzy, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2023,7 +2023,7 @@ msgstr "OYA Idirishya Muyobozi Ihitamo ku Mugaragaza Kugaragaza"
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "ku Kugaragaza a Idirishya"
 
-#: src/screen.c:699
+#: src/screen.c:716
 #, fuzzy, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "OYA Mugaragaza ku Kugaragaza"
@@ -3162,7 +3162,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Gushyiraho a"
 
 #. first time through
-#: src/window.c:5070
+#: src/window.c:5197
 #, fuzzy, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3176,7 +3176,7 @@ msgstr "ku Bya ku Idirishya Nka in"
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5741
+#: src/window.c:5868
 #, fuzzy, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

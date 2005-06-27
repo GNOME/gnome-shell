@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-24 10:50-0700\n"
+"POT-Creation-Date: 2005-06-27 17:21-0600\n"
 "PO-Revision-Date: 2003-06-26 22:41+0700\n"
 "Last-Translator: Mohammad DAMT <mdamt@bisnisweb.com>\n"
 "Language-Team: Indonesian <sukarelawan@gnome.linux.or.id>\n"
@@ -60,7 +60,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Gagal mendapatkan alamat host: %s\n"
 
-#: src/display.c:312
+#: src/display.c:316
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Gagal membuka tampilan X Window System '%s'\n"
@@ -81,23 +81,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Error IO yang fatal berkode %d (%s) pada display '%s'\n"
 
-#: src/frames.c:1020
+#: src/frames.c:1125
 msgid "Close Window"
 msgstr "Tutup Window"
 
-#: src/frames.c:1023
+#: src/frames.c:1128
 msgid "Window Menu"
 msgstr "Menu Window"
 
-#: src/frames.c:1026
+#: src/frames.c:1131
 msgid "Minimize Window"
 msgstr "Kecilkan Window"
 
-#: src/frames.c:1029
+#: src/frames.c:1134
 msgid "Maximize Window"
 msgstr "Besarkan Window maksimal"
 
-#: src/frames.c:1032
+#: src/frames.c:1137
 msgid "Unmaximize Window"
 msgstr "Kembalikan ukuran window semula"
 
@@ -108,19 +108,19 @@ msgid ""
 "binding\n"
 msgstr "Ada program lain yang menggunakan tombol %s dengan kombinasi %x\n"
 
-#: src/keybindings.c:2559
+#: src/keybindings.c:2535
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Ada error saat menjalankan metacity-dialog untuk menampilkan error suatu "
 "perintah: %s\n"
 
-#: src/keybindings.c:2664
+#: src/keybindings.c:2640
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Tidak ada perintah %d.\n"
 
-#: src/keybindings.c:3494
+#: src/keybindings.c:3485
 #, fuzzy
 msgid "No terminal command has been defined.\n"
 msgstr "Tidak ada perintah %d.\n"
@@ -203,11 +203,13 @@ msgstr "_Tutup"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "Letakkan p_ada semua area kerja"
+#, fuzzy
+msgid "_Always on Visible Workspace"
+msgstr "Le_takkan di area kerja ini saja"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
+#, fuzzy
+msgid "_Only on This Workspace"
 msgstr "Le_takkan di area kerja ini saja"
 
 #: src/menu.c:68
@@ -226,7 +228,7 @@ msgstr "Pindahkan jendela ini ke area kerja atas"
 msgid "Move to Workspace _Down"
 msgstr "Pindahkan jendela ini ke area kerja bawah"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
 msgstr "Area kerja %d"
@@ -358,7 +360,7 @@ msgstr "Judul"
 msgid "Class"
 msgstr "Kelas"
 
-#: src/metacity-dialog.c:262
+#: src/metacity-dialog.c:263
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -366,7 +368,7 @@ msgstr ""
 "Window ini tidak bisa \"menyimpan setingan aktif saat ini\" dan bila login "
 "kali lain Anda harus menjalankan ulang."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:328
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -502,12 +504,14 @@ msgstr ""
 "huruf yang digunakan aplikasi standar pada judul windownya."
 
 #: src/metacity.schemas.in.h:19
+#, fuzzy
 msgid ""
 "If true, metacity will give the user less feedback and less sense of "
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages."
 msgstr ""
 "Pilih jika ingin metacity memberi reaksi yang lebih sedikit dan melakukan "
 "manipulasi langsung dengan menggunakan bingkai kawat, tidak menjalankan "
@@ -2107,17 +2111,17 @@ msgstr "mode fokus window"
 msgid "Window title font"
 msgstr "Jenis huruf yang dipakai pada judul window"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Key \"%s\" GConf tipenya salah\n"
 
-#: src/prefs.c:843
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2126,17 +2130,17 @@ msgstr ""
 "\"%s\" yang ada pada database konfigurasi bukanlah nilai yang benar untuk "
 "tombol mouse.\n"
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Key GConf '%s' bernilai salah\n"
 
-#: src/prefs.c:994
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Tidak dapat membaca deskripsi font \"%s\" dari key GConf %s\n"
 
-#: src/prefs.c:1179
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2145,7 +2149,7 @@ msgstr ""
 "%d yang ada pada key GConf %s berisi angka yang tidak lazim sebagai jumlah "
 "workspace, karena sudah ditentukan maksimumnya adlaah %d\n"
 
-#: src/prefs.c:1239
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2153,18 +2157,18 @@ msgstr ""
 "Pencegahan kesalahan bagi aplikasi yang rusak sedang dinonaktifkan. Mungkin "
 "nanti ada beberapa aplikasi yang akan bertingkah aneh.\n"
 
-#: src/prefs.c:1304
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
 "%d yang disimpan pada key GConf %s berada di luar jangkauan 0 hingga %d\n"
 
-#: src/prefs.c:1425
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Ada error saat mengeset jumlah workspace ke %d: %s\n"
 
-#: src/prefs.c:1669
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2173,7 +2177,7 @@ msgstr ""
 "\"%s\" yang ada pada database konfigurasi bernilai tidak benar untuk "
 "kombinasi tombol \"%s\"\n"
 
-#: src/prefs.c:2023
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Ada error saat melakukan seting nama workspace %d ke \"%s\": %s\n"
@@ -2210,7 +2214,7 @@ msgstr ""
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Layar %d pada tampilan \"%s\" sudah ada manajer windownya\n"
 
-#: src/screen.c:699
+#: src/screen.c:716
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Layar %d pada display \"%s\" tidak dapat dilepas\n"
@@ -3304,7 +3308,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikasi telah membuat _NET_WM_PID %ld bohongan\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:5197
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3320,7 +3324,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5868
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3356,6 +3360,9 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Properti %s pada jendela 0x%lx di obyek %d berisi karakter UTF-8 yang salah\n"
+
+#~ msgid "Put on _All Workspaces"
+#~ msgstr "Letakkan p_ada semua area kerja"
 
 #~ msgid "Select how to give focus to windows"
 #~ msgstr "Pilih bagaimana cara fokus dapat dikenakan pada window"

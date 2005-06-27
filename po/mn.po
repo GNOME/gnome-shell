@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-24 10:50-0700\n"
+"POT-Creation-Date: 2005-06-27 17:21-0600\n"
 "PO-Revision-Date: 2004-01-03 15:09+0100\n"
 "Last-Translator: Sanlig Badral <Badral@openmn.org>\n"
 "Language-Team: Mongolian <openmn-core@lists.sf.net>\n"
@@ -65,7 +65,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Хостын нэрийг олж чадсангүй: %s\n"
 
-#: src/display.c:312
+#: src/display.c:316
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X-Цонхны системийн дэлгэц »%s« нээгдсэнгүй\n"
@@ -85,23 +85,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "%d (%s) төрлийн алдаа »%s«.дэлгэцэн дээр гарлаа \n"
 
-#: src/frames.c:1020
+#: src/frames.c:1125
 msgid "Close Window"
 msgstr "Цонх хаах"
 
-#: src/frames.c:1023
+#: src/frames.c:1128
 msgid "Window Menu"
 msgstr "Цонхны цэс"
 
-#: src/frames.c:1026
+#: src/frames.c:1131
 msgid "Minimize Window"
 msgstr "Цонх агшаах"
 
-#: src/frames.c:1029
+#: src/frames.c:1134
 msgid "Maximize Window"
 msgstr "Цонх томсгох"
 
-#: src/frames.c:1032
+#: src/frames.c:1137
 msgid "Unmaximize Window"
 msgstr "Цонх хаах"
 
@@ -114,19 +114,19 @@ msgstr ""
 "Өөр нэг программ %s товчийг %x modifier-ын хамтаар товчлуурын комбинац "
 "хэлбэрээр хэрэглэж бйна \n"
 
-#: src/keybindings.c:2559
+#: src/keybindings.c:2535
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Нэгэн командад гарсан алдааг заах ёстой  Metacity-диалогийг эхлэхэд алдаа "
 "гарлаа: %s\n"
 
-#: src/keybindings.c:2664
+#: src/keybindings.c:2640
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Ямар ч %d команд тодорхойлогдоогүй байна.\n"
 
-#: src/keybindings.c:3494
+#: src/keybindings.c:3485
 #, fuzzy
 msgid "No terminal command has been defined.\n"
 msgstr "Ямар ч %d команд тодорхойлогдоогүй байна.\n"
@@ -212,11 +212,13 @@ msgstr "_Хаах"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "_Бүх ажлын талбар дээр тавих"
+#, fuzzy
+msgid "_Always on Visible Workspace"
+msgstr "Зөвхөн _энэ ажлын талбар дээр "
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
+#, fuzzy
+msgid "_Only on This Workspace"
 msgstr "Зөвхөн _энэ ажлын талбар дээр "
 
 #: src/menu.c:68
@@ -235,7 +237,7 @@ msgstr "Ажлын талбарын дээш зөө"
 msgid "Move to Workspace _Down"
 msgstr "Ажлын талбарын доош зөө"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
 msgstr "Ажлын талбар %d"
@@ -366,7 +368,7 @@ msgstr "Гарчиг"
 msgid "Class"
 msgstr "Анги"
 
-#: src/metacity-dialog.c:262
+#: src/metacity-dialog.c:263
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -374,7 +376,7 @@ msgstr ""
 "Эдгээр цонхнууд одоогийн тохиргоонуудыг хадгалахад оролцохгүй бөгөөд "
 "дараагийн асаалтаар гараар шинээр эхлэх хэрэгтэй."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:328
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -510,12 +512,14 @@ msgstr ""
 "стандарт  программын шрифтийг ашигла."
 
 #: src/metacity.schemas.in.h:19
+#, fuzzy
 msgid ""
 "If true, metacity will give the user less feedback and less sense of "
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages."
 msgstr ""
 "Хэрэв үнэн бол метасити бага сонордуулга өгөх ба утсан хүрээ хэрэглэх "
 "хөдөлгөөн оруулах зэрэг »шууд зохицуулалтад« бага боломж олгоно. Энэ нь "
@@ -2007,17 +2011,17 @@ msgstr "Цонхны фокусын горим"
 msgid "Window title font"
 msgstr "Цонхны нэрийн үсгийн хэв"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-key »%s«-д хүчингүй төрөл өгөгдсөн байна\n"
 
-#: src/prefs.c:843
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2026,17 +2030,17 @@ msgstr ""
 "Конфигурацийн сангаас олдсон »%s« утга нь хулганын товчлуурын сэлгүүрт "
 "тохирох утга биш\n"
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-key »%s«-д хүчингүй утга өгөгдсөн байна\n"
 
-#: src/prefs.c:994
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Фонтын тайлбар »%s«-ыг GConf-key %s-с ялгаж чадсангүй\n"
 
-#: src/prefs.c:1179
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2045,7 +2049,7 @@ msgstr ""
 "%d нь GConf-key %s дотор хадгалагдсан ба ажлын талбарын тоог үнэмшилтэйгээр "
 "төлөөлж чадахгүй; одоогоор максимум утга %d байна\n"
 
-#: src/prefs.c:1239
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2053,18 +2057,18 @@ msgstr ""
 "Эвдрэлтэй х.программын Workarounds-ийг идэвхгүйжүүллээ. Магадгүй зарим х."
 "программууд буруу ажиллаж магадгүй.\n"
 
-#: src/prefs.c:1304
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
 "%d нь GConf-key %s-д хадгалагдсан ба утга нь 0-%d интервалаас гадуур байна\n"
 
-#: src/prefs.c:1425
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "%d дээрхи ажлын талбарын тоог оруулахад алдаа гарлаа: %s\n"
 
-#: src/prefs.c:1669
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2072,7 +2076,7 @@ msgid ""
 msgstr ""
 "Тохируулгын сангаас олдсон »%s« нь »%s«-товчлуурын комбинацид үл тохирно\n"
 
-#: src/prefs.c:2023
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Ажлын талбар %d-ийн нэрийг »%s« болгож өөрчлөхөд алдаа гарлаа: %s\n"
@@ -2110,7 +2114,7 @@ msgstr ""
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "%d » (%s« джжрхи) цонхны менежертэй байна\n"
 
-#: src/screen.c:699
+#: src/screen.c:716
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "%d нь »%s« дэлгэцэн дээр гаргагдаж чадсангүй\n"
@@ -3216,7 +3220,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Программ дараахи утгагүй _NET_WM_PID %ld үзүүлж байна\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:5197
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3238,7 +3242,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5868
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3274,6 +3278,9 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Онцлог %s. 0x%lx цонхон дээр объект %d -ийн буруу UTF-8 агуулагдаж байна\n"
+
+#~ msgid "Put on _All Workspaces"
+#~ msgstr "_Бүх ажлын талбар дээр тавих"
 
 #~ msgid "Select how to give focus to windows"
 #~ msgstr "Цонхыг фокуслахын тулд сонгох"

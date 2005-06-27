@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-24 10:50-0700\n"
+"POT-Creation-Date: 2005-06-27 17:21-0600\n"
 "PO-Revision-Date: 2004-02-05 23:51+CET\n"
 "Last-Translator: auto\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
@@ -58,7 +58,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Nije uspjelo dobivanje imena računala: %s\n"
 
-#: src/display.c:312
+#: src/display.c:316
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nije uspjelo otvaranje  X Window System prikaza'%s'\n"
@@ -79,23 +79,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Kobna IO greška %d (%s) na prikazu '%s'.\n"
 
-#: src/frames.c:1020
+#: src/frames.c:1125
 msgid "Close Window"
 msgstr "Zatvori prozor"
 
-#: src/frames.c:1023
+#: src/frames.c:1128
 msgid "Window Menu"
 msgstr "Izbornik Prozor"
 
-#: src/frames.c:1026
+#: src/frames.c:1131
 msgid "Minimize Window"
 msgstr "Minimiziraj prozor"
 
-#: src/frames.c:1029
+#: src/frames.c:1134
 msgid "Maximize Window"
 msgstr "Maksimiziraj prozor"
 
-#: src/frames.c:1032
+#: src/frames.c:1137
 msgid "Unmaximize Window"
 msgstr "Poništi uvećanje prozora"
 
@@ -107,18 +107,18 @@ msgid ""
 msgstr ""
 "Neki drugi prograk već koristi kljuć %s sa modifikacijama %x kao spoj\n"
 
-#: src/keybindings.c:2559
+#: src/keybindings.c:2535
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Greška pri pokretanju metacity-dialoga za ispisom greške o komandi %s\n"
 
-#: src/keybindings.c:2664
+#: src/keybindings.c:2640
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Naredba %d nije definirana.\n"
 
-#: src/keybindings.c:3494
+#: src/keybindings.c:3485
 #, fuzzy
 msgid "No terminal command has been defined.\n"
 msgstr "Naredba %d nije definirana.\n"
@@ -202,11 +202,13 @@ msgstr "_Zatvori"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "Stavi na _sve radne prostore"
+#, fuzzy
+msgid "_Always on Visible Workspace"
+msgstr "Samo na _ovom radnom prostoru"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
+#, fuzzy
+msgid "_Only on This Workspace"
 msgstr "Samo na _ovom radnom prostoru"
 
 #: src/menu.c:68
@@ -225,7 +227,7 @@ msgstr "Premjesti na _gornju radnu površinu"
 msgid "Move to Workspace _Down"
 msgstr "Pomak na _donju radnu površinu"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
 msgstr "Radna površina %d"
@@ -357,7 +359,7 @@ msgstr "Naslov"
 msgid "Class"
 msgstr "Klasa"
 
-#: src/metacity-dialog.c:262
+#: src/metacity-dialog.c:263
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -365,7 +367,7 @@ msgstr ""
 "Ovi prozori ne podržavaju mogućnost \"snimi trenutne postavke\" i morati "
 "ćete ih ručno ponovno pokrenuti sljedeći put kada se prijavite.."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:328
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -498,12 +500,14 @@ msgstr ""
 "aplikacijsko pismo za naslovnu traku prozora."
 
 #: src/metacity.schemas.in.h:19
+#, fuzzy
 msgid ""
 "If true, metacity will give the user less feedback and less sense of "
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages."
 msgstr ""
 "Ukoliko je postavljeno, metacity će korisniku dati manje povratnih "
 "informacija i manje osjećaja \"direktne manipulacije\", korištenjem žičanih "
@@ -2040,17 +2044,17 @@ msgstr "Način fokusa prozora"
 msgid "Window title font"
 msgstr "Pismo naslova prozora"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf ključ \"%s\" je postavljen na neispravan tip\n"
 
-#: src/prefs.c:843
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2059,17 +2063,17 @@ msgstr ""
 "“%s“ je pronađen u bazi podešavanja što nije ispravna vrijednost za tipku "
 "koja mijenja ponašanje tipki miša\n"
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf ključ '%s' je postavljen na neispravnu vrijednost\n"
 
-#: src/prefs.c:994
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Nije moguće analizirati opis pisma  \"%s\" iz Gconf ključa %s\n"
 
-#: src/prefs.c:1179
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2078,7 +2082,7 @@ msgstr ""
 "%d pohranjen u GConf ključu %s nije podnošljiv broj radnih površina, "
 "trenutno je maksimalan %d\n"
 
-#: src/prefs.c:1239
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2086,24 +2090,24 @@ msgstr ""
 "Kompromisi za loše programe su isključeni. Neki programi se mogu ponašati "
 "čudno.\n"
 
-#: src/prefs.c:1304
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d pohranjen u GConf ključu %s je izvan dometa od 0 do %d\n"
 
-#: src/prefs.c:1425
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Pogreška prilikom podešavanja broja radnih površina na %d: %s\n"
 
-#: src/prefs.c:1669
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "\"%s\" nađen u bazi postavki nije ispravna kombinacija tipki \"%s\"\n"
 
-#: src/prefs.c:2023
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Pogreška prilikom podešavanja imena radne površine %d  u \"%s\": %s\n"
@@ -2139,7 +2143,7 @@ msgstr ""
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Ekran %d na prikazu \"%s\" već ima rukovoditelj prozora\n"
 
-#: src/screen.c:699
+#: src/screen.c:716
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nije moguće izbaciti otpustiti ekran %d na prikazu \"%s\"\n"
@@ -3239,7 +3243,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikacija je postavila prividan _NETWM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:5197
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3255,7 +3259,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5868
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3292,6 +3296,9 @@ msgid ""
 msgstr ""
 "Svojstvo %s na prozoru 0x%lx sadrži neispravni UTF-8 za predmet %d na "
 "popisu\n"
+
+#~ msgid "Put on _All Workspaces"
+#~ msgstr "Stavi na _sve radne prostore"
 
 #~ msgid "Select how to give focus to windows"
 #~ msgstr "Odaberite kako da usredotočite na prozor"

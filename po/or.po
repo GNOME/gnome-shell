@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.or\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-24 10:50-0700\n"
+"POT-Creation-Date: 2005-06-27 17:21-0600\n"
 "PO-Revision-Date: 2004-08-10 03:43+0530\n"
 "Last-Translator: Gora Mohanty <gora_mohanty@yahoo.co.in>\n"
 "Language-Team: Oriya <oriya-group@lists.sarovar.org>\n"
@@ -59,7 +59,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "ହୋଷ୍ଟ ନାମ ପାଇବାରେ ଅସମର୍ଥ: %s\n"
 
-#: src/display.c:312
+#: src/display.c:316
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "ଏକ୍ସ ୱିଣ୍ଡୋ ତନ୍ତ୍ରର ପ୍ରଦର୍ଶିକା '%s' ଖୋଲିବାରେ ଅସମର୍ଥ\n"
@@ -79,23 +79,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "ପ୍ରଦର୍ଶିକା '%3$s'ରେ ସାଂଘାତିକ ଆଇ.ଓ. (ନିବେଶ/ନିର୍ଗମ) ତ୍ରୁଟି %1$d (%2$s).\n"
 
-#: src/frames.c:1020
+#: src/frames.c:1125
 msgid "Close Window"
 msgstr "ୱିଣ୍ଡୋ ବନ୍ଦ କରନ୍ତୁ"
 
-#: src/frames.c:1023
+#: src/frames.c:1128
 msgid "Window Menu"
 msgstr "ୱିଣ୍ଡୋ ମେନୁ"
 
-#: src/frames.c:1026
+#: src/frames.c:1131
 msgid "Minimize Window"
 msgstr "ୱିଣ୍ଡୋକୁ କ୍ଷୁଦ୍ରତମ କରନ୍ତୁ"
 
-#: src/frames.c:1029
+#: src/frames.c:1134
 msgid "Maximize Window"
 msgstr "ୱିଣ୍ଡୋକୁ ବୃହତ୍ତମ କରନ୍ତୁ"
 
-#: src/frames.c:1032
+#: src/frames.c:1137
 msgid "Unmaximize Window"
 msgstr "ୱିଣ୍ଡୋକୁ ସାଧାରଣ ଆକାର ଦିଅନ୍ତୁ"
 
@@ -106,17 +106,17 @@ msgid ""
 "binding\n"
 msgstr "ଏକ ଅଲଗା କାରିକା ପୂର୍ବରୁ ଚାବି %sକୁ ରୂପାନ୍ତରକ %x ସହିତ ବନ୍ଧନ ରୂପେ ବ୍ଯବହାର କରୁଛି\n"
 
-#: src/keybindings.c:2559
+#: src/keybindings.c:2535
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "ଗୋଟିଏ ନିର୍ଦ୍ଦେଶ ବିଷୟରେ ଏକ ତ୍ରୁଟି ମୁଦ୍ରଣ କରିବା ପାଇଁ ମେଟାସିଟି ସଂଳାପ ଚଳାଇବାରେ ତ୍ରୁଟି: %s\n"
 
-#: src/keybindings.c:2664
+#: src/keybindings.c:2640
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "%d ନିର୍ଦ୍ଦେଶ ବ୍ଯାଖ୍ଯା କରାଯାଇ ନାହିଁ.\n"
 
-#: src/keybindings.c:3494
+#: src/keybindings.c:3485
 #, fuzzy
 msgid "No terminal command has been defined.\n"
 msgstr "%d ନିର୍ଦ୍ଦେଶ ବ୍ଯାଖ୍ଯା କରାଯାଇ ନାହିଁ.\n"
@@ -200,11 +200,13 @@ msgstr "ବନ୍ଦ କରନ୍ତୁ (_C)"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "ସବୁ କାର୍ଯ୍ଯକ୍ଷେତ୍ରରେ ରଖନ୍ତୁ (_A)"
+#, fuzzy
+msgid "_Always on Visible Workspace"
+msgstr "କେବଳ ଏହି କାର୍ଯ୍ଯକ୍ଷେତ୍ରରେ (_T)"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
+#, fuzzy
+msgid "_Only on This Workspace"
 msgstr "କେବଳ ଏହି କାର୍ଯ୍ଯକ୍ଷେତ୍ରରେ (_T)"
 
 #: src/menu.c:68
@@ -223,7 +225,7 @@ msgstr "ଉପର କାର୍ଯ୍ଯକ୍ଷେତ୍ରକୁ ପଠାନ�
 msgid "Move to Workspace _Down"
 msgstr "ତଳ କାର୍ଯ୍ଯକ୍ଷେତ୍ରକୁ ପଠାନ୍ତୁ (_D)"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
 msgstr "କାର୍ଯ୍ଯକ୍ଷେତ୍ର %d"
@@ -353,7 +355,7 @@ msgstr "ଶୀର୍ଷକ"
 msgid "Class"
 msgstr "ଶ୍ରେଣୀ"
 
-#: src/metacity-dialog.c:262
+#: src/metacity-dialog.c:263
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -361,7 +363,7 @@ msgstr ""
 "ଏହି ୱିଣ୍ଡୋଗୁଡ଼ିକର \"ସାମ୍ପ୍ରତିକ ବ୍ଯବସ୍ଥା ସଂରକ୍ଷଣ\" ସହାୟକ ନାହିଁ, ଏବଂ ଆପଣ ପୁଣି ଲଗଇନ୍ କଲେ "
 "ଏହୋଙ୍କୁନିଜେ ପୁନଃ ପ୍ରାରମ୍ଭ କରିବାକୁ ହେବ."
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:328
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -489,12 +491,14 @@ msgid ""
 msgstr "ଏହା ସତ ହେଲେ, "
 
 #: src/metacity.schemas.in.h:19
+#, fuzzy
 msgid ""
 "If true, metacity will give the user less feedback and less sense of "
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages."
 msgstr ""
 "ଏହା ସତ ହେଲେ, ମେଟାସିଟି ତାର ଆକୃତି ବ୍ଯବହାର କରି, ଜୀବନାୟନଗୁଡ଼ିକୁ ଏଡ଼ାଇ, ଓ ଅନ୍ଯ ଉପାୟ ଦ୍ବାରା "
 "ବ୍ଯବହାରକାରୀକୁ କମ ପ୍ରତିକ୍ରିୟା ଏବଂ \"ପ୍ରତ୍ଯକ୍ଷ ପ୍ରକଳନ\"ର କମ ଭାବ ଦେବ. ଅନେକ ବ୍ଯବହାରକାରୀଙ୍କ "
@@ -1841,17 +1845,17 @@ msgstr "ୱିଣ୍ଡୋ କେନ୍ଦ୍ରୀଭୂତ ଧାରା"
 msgid "Window title font"
 msgstr "ୱିଣ୍ଡୋ ଶୀର୍ଷକ ଅକ୍ଷରରୂପ"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "ଜିକନ୍ଫ ଚାବି \"%s\" ଅବୈଧ ପ୍ରକାରକୁ ବିନ୍ଯାସ କରାଯାଇଛି\n"
 
-#: src/prefs.c:843
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1859,17 +1863,17 @@ msgid ""
 msgstr ""
 "ବିନ୍ଯାସ ତଥ୍ଯାଧାରରେ ପାୟାଯାଇଥିବା \"%s\" ମାଉସ ଚାବି ରୂପାନ୍ତରକ ପାଇଁ ଗୋଟିଏ ବୈଧ ମୂଲ୍ଯ ନୁହେଁ\n"
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "ଜିକନ୍ଫ ଚାବି '%s' ଅବୈଧ ମୂଲ୍ଯକୁ ବିନ୍ଯାସ କରାଯାଇଛି\n"
 
-#: src/prefs.c:994
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "ଜିକନ୍ଫ ଚାବି %2$sରୁ \"%1$s\" ଅକ୍ଷରରୂପ ବିବରଣୀ ବିଶ୍ଳେଷଣ କରିହେଲା ନାହିଁ\n"
 
-#: src/prefs.c:1179
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1878,24 +1882,24 @@ msgstr ""
 "ଜିକନ୍ଫ ଚାବି %2$sରେ ସଞ୍ଚିତ %1$d କାର୍ଯ୍ଯକ୍ଷେତ୍ର ସଂଖ୍ଯା ପାଇଁ ଯୁକ୍ତିଯୁକ୍ତ ମୂଲ୍ଯ ନୁହେଁ, ବର୍ତ୍ତମାନ "
 "ସର୍ବାଧିକ ମୂଲ୍ଯ ହେଲା %3$d\n"
 
-#: src/prefs.c:1239
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
 "ଅବୈଧ ପ୍ରୟୋଗ ପାଇଁ ଅନ୍ଯତର ଉପାୟଗୁଡ଼ିକ ଅସମର୍ଥ କରାଯାଇଛି. କିଛି ପ୍ରୟୋଗ ଠିକ ଭାବେ ନ ଚଳିପାରନ୍ତି.\n"
 
-#: src/prefs.c:1304
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "ଜିକନ୍ଫ ଚାବି %2$sରେ ସଞ୍ଚିତ %1$d ପରିସର ୦ରୁ %3$d ବାହାରେ\n"
 
-#: src/prefs.c:1425
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "କାର୍ଯ୍ଯକ୍ଷେତ୍ର ସଂଖ୍ଯାକୁ %d ଭଳି ବିନ୍ଯାସ କରିବାରେ ତ୍ରୁଟି: %s\n"
 
-#: src/prefs.c:1669
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1903,7 +1907,7 @@ msgid ""
 msgstr ""
 "ବିନ୍ଯାସ ତଥ୍ଯାଧାରରେ ପାୟାଯାଇଥିବା \"%s\" ଚାବିବନ୍ଧନୀ \"%s\" ପାଇଁ ଗୋଟିଏ ବୈଧ ମୂଲ୍ଯ ନୁହେଁ\n"
 
-#: src/prefs.c:2023
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "କାର୍ଯ୍ଯକ୍ଷେତ୍ର %dର ନାମ \"%s\" ବିନ୍ଯାସ କରିବାରେ ତ୍ରୁଟି: %s\n"
@@ -1938,7 +1942,7 @@ msgstr "ପ୍ରଦର୍ଶକ \"%2$s\"ରେ ପରଦା %1$dର ୱିଣ�
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "ପ୍ରଦର୍ଶକ \"%2$s\"ରେ ପରଦା %1$dର ପୂର୍ବରୁ ଗୋଟିଏ ୱିଣ୍ଢୋ ପରିଚାଳକ ଅଛି\n"
 
-#: src/screen.c:699
+#: src/screen.c:716
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "ପ୍ରଦର୍ଶକ \"%2$s\"ରେ ପରଦା %1$dକୁ ନୁକ୍ତ କରିହେଲା ନାହିଁ\n"
@@ -3016,7 +3020,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "ପ୍ରୟୋଗ ଗୋଟିଏ ନକଲି _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:5197
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3032,7 +3036,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5868
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3066,6 +3070,9 @@ msgstr "ୱିଣ୍ଡୋ 0x%2$lxର %1$s ଗୁଣଧର୍ମରେ ଅବୈ
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "ୱିଣ୍ଡୋ 0x%2$lxର %1$s ଗୁଣଧର୍ମର ତାଲିକାରେ %3$d ବସ୍ତୁରେ ଅବୈଧ ୟି.ଟି.ଏଫ.-୮ ଅଛି\n"
+
+#~ msgid "Put on _All Workspaces"
+#~ msgstr "ସବୁ କାର୍ଯ୍ଯକ୍ଷେତ୍ରରେ ରଖନ୍ତୁ (_A)"
 
 #~ msgid "Select how to give focus to windows"
 #~ msgstr "ୱିଣ୍ଡୋଗୁଡ଼ିକୁ କିପରି କେନ୍ଦ୍ରିତ କରିବା ବାଛନ୍ତୁ"

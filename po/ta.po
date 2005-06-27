@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-01-24 10:50-0700\n"
+"POT-Creation-Date: 2005-06-27 17:21-0600\n"
 "PO-Revision-Date: 2004-09-03 16:47+0530\n"
 "Last-Translator: Jayaradha N <jaya@pune.redhat.com>\n"
 "Language-Team: Tamil <zhakanini@yahoogroups.com>\n"
@@ -63,7 +63,7 @@ msgstr "மெட்டாசிட்டி தகவலை ஏற்றும�
 msgid "Failed to get hostname: %s\n"
 msgstr "புரவலன் பெயரை பெறுவதில் தோல்வி: %s\n"
 
-#: src/display.c:312
+#: src/display.c:316
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X சாளர காட்சியை திறப்பதில் தோல்வி '%s'\n"
@@ -84,23 +84,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "கவலைக்கிடமான IO பிழை %d (%s) திரையில் '%s'.\n"
 
-#: src/frames.c:1020
+#: src/frames.c:1125
 msgid "Close Window"
 msgstr "சாளரம் மூடவும்"
 
-#: src/frames.c:1023
+#: src/frames.c:1128
 msgid "Window Menu"
 msgstr "தலைப்புப் பட்டி"
 
-#: src/frames.c:1026
+#: src/frames.c:1131
 msgid "Minimize Window"
 msgstr "சாளரத்தை சிறிதாக்கு"
 
-#: src/frames.c:1029
+#: src/frames.c:1134
 msgid "Maximize Window"
 msgstr "சாளரத்தை பெரிதாக்கு"
 
-#: src/frames.c:1032
+#: src/frames.c:1137
 msgid "Unmaximize Window"
 msgstr "சாளரத்தை பெரிதாக்காதே"
 
@@ -111,17 +111,17 @@ msgid ""
 "binding\n"
 msgstr "விசை %s ஐ மாற்றி  %x ஓடு இணைத்து வேறு நிரல் பயன்படுத்திக்கொண்டிருக்கிறது\n"
 
-#: src/keybindings.c:2559
+#: src/keybindings.c:2535
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "மெட்டா-சிட்டி உரையை துவக்குவதில் பிழை கட்டளை பற்றிய பிழையை அச்சடிக்கவும்: %s\n"
 
-#: src/keybindings.c:2664
+#: src/keybindings.c:2640
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "கட்டளை %d எதுவும் குறிப்பிடப்படவில்லை.\n"
 
-#: src/keybindings.c:3494
+#: src/keybindings.c:3485
 #, fuzzy
 msgid "No terminal command has been defined.\n"
 msgstr "கட்டளை %d எதுவும் குறிப்பிடப்படவில்லை.\n"
@@ -206,11 +206,13 @@ msgstr "மூடு"
 
 #. separator
 #: src/menu.c:66
-msgid "Put on _All Workspaces"
-msgstr "அனைத்து வேலையிடங்களிலும் போடுக"
+#, fuzzy
+msgid "_Always on Visible Workspace"
+msgstr "þவ்வேலையிடத்தில் மட்டும்"
 
 #: src/menu.c:67
-msgid "Only on _This Workspace"
+#, fuzzy
+msgid "_Only on This Workspace"
 msgstr "þவ்வேலையிடத்தில் மட்டும்"
 
 #: src/menu.c:68
@@ -229,7 +231,7 @@ msgstr "(_U)பணியிடத்தின் மேலே நகர்த்
 msgid "Move to Workspace _Down"
 msgstr "(_D)பணியிடத்தின் கீழேகம் நகர்த்து"
 
-#: src/menu.c:162 src/prefs.c:1942
+#: src/menu.c:162 src/prefs.c:1996
 #, c-format
 msgid "Workspace %d"
 msgstr "வேலை þடம் %d"
@@ -359,7 +361,7 @@ msgstr "தலைப்பு"
 msgid "Class"
 msgstr "Class"
 
-#: src/metacity-dialog.c:262
+#: src/metacity-dialog.c:263
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -367,7 +369,7 @@ msgstr ""
 "\"தற்போதைய அமைப்பை சேமி\" செயலுக்கு ஆதரவு இல்லை மேலும் அடுத்த முறை உள்நுழையும் போது "
 "நீங்களாக துவக்க வேண்டும்"
 
-#: src/metacity-dialog.c:323
+#: src/metacity-dialog.c:328
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -495,12 +497,14 @@ msgstr ""
 "காட்டும்."
 
 #: src/metacity.schemas.in.h:19
+#, fuzzy
 msgid ""
 "If true, metacity will give the user less feedback and less sense of "
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
 "means. This is a significant reduction in usability for many users, but may "
 "allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical."
+"otherwise be impractical. However, the wireframe feature is disabled when "
+"accessibility is on to avoid weird desktop breakages."
 msgstr ""
 "உண்மையெனில், மெட்டாசிட்டி குறைவான கருத்து மற்றும் குறைந்த  \"நேர் மாற்றத்திற்கம்\" வசதி "
 "செய்து தரும், கம்பி சட்டங்களை பயன்படுத்தி, உயிர் சித்திரங்களை தவிர்க்கும். இது பயனீட்டாளரின் "
@@ -1877,34 +1881,34 @@ msgstr "சாளர குறி பாங்கு"
 msgid "Window title font"
 msgstr "சாளர தலைப்பு எழுத்துரு"
 
-#: src/prefs.c:476 src/prefs.c:492 src/prefs.c:508 src/prefs.c:524
-#: src/prefs.c:540 src/prefs.c:560 src/prefs.c:576 src/prefs.c:592
-#: src/prefs.c:608 src/prefs.c:624 src/prefs.c:640 src/prefs.c:656
-#: src/prefs.c:672 src/prefs.c:689 src/prefs.c:705 src/prefs.c:721
-#: src/prefs.c:737 src/prefs.c:753 src/prefs.c:768 src/prefs.c:783
-#: src/prefs.c:798
+#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
+#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
+#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
+#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
+#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
+#: src/prefs.c:823 src/prefs.c:839
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf விசை \"%s\" செல்லாத வகை\n"
 
-#: src/prefs.c:843
+#: src/prefs.c:884
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr "அமைப்பு பாங்கில் உள்ள \"%s\" சுட்டி பட்டன் மாற்றியில் செல்லாத மதிப்பு\n"
 
-#: src/prefs.c:867 src/prefs.c:1277
+#: src/prefs.c:908 src/prefs.c:1318
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf விசை '%s' செல்லாத மதிப்பாக அமைக்கப்பட்டுள்ளது\n"
 
-#: src/prefs.c:994
+#: src/prefs.c:1035
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "எழுத்துரு விளக்கம் \"%s\" ஐ GConf விசையிலிருந்து பகுக்க முடியவில்லை %s\n"
 
-#: src/prefs.c:1179
+#: src/prefs.c:1220
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1912,7 +1916,7 @@ msgid ""
 msgstr ""
 "%d GConf விசை %s இல் சேமிக்கப்பட்டுள்ளது ஆனால் அது செல்லாது தற்போது அதிகபட்சம் %d\n"
 
-#: src/prefs.c:1239
+#: src/prefs.c:1280
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1920,24 +1924,24 @@ msgstr ""
 "உடைந்த பயன்பாடுகளின் செயல்பாடு தடைசெய்யப்பட்டது, சில பயன்பாடுகள் சரியாக வேலை "
 "செய்யாது.\n"
 
-#: src/prefs.c:1304
+#: src/prefs.c:1345
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d GConf விசையில் %s சேமிக்கப்பட்டுள்ளது அதன் வரம்பு 0 லிருந்து %d\n"
 
-#: src/prefs.c:1425
+#: src/prefs.c:1479
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "பணியிடத்தை அமைப்பதில் பிழை %d: %s\n"
 
-#: src/prefs.c:1669
+#: src/prefs.c:1723
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "\"%s\" அமைப்பு தரவுத்தளத்தில் உள்ள மதிப்பு செல்லாத கீபைன்டிங்\"%s\"\n"
 
-#: src/prefs.c:2023
+#: src/prefs.c:2077
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "பணியிடத்தை %d லிருந்து \"%s\" க்கு மாற்றுவதில் பிழை: %s\n"
@@ -1972,7 +1976,7 @@ msgstr "திரையில் சாளர மேலாளர் தேர்
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "திரை %d யின் காட்சி \"%s\" க்கு சாளர மேலாளர் ஏற்கெனவே உள்ளது\n"
 
-#: src/screen.c:699
+#: src/screen.c:716
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "திரை %d ஐ விடுவிக்க முடியவில்லை \"%s\"\n"
@@ -3047,7 +3051,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "பயன்பாடு தவறாக அமைக்கப்பட்டது _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:4829
+#: src/window.c:5197
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3063,7 +3067,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5500
+#: src/window.c:5868
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3097,6 +3101,9 @@ msgstr "பண்பு %s சாளரம் 0x%lx செல்லாத UTF-8 
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "பண்பு %s சாளரம் 0x%lx செல்லாத UTF-8 உருப்படி %d பட்டியலில் உள்ளது\n"
+
+#~ msgid "Put on _All Workspaces"
+#~ msgstr "அனைத்து வேலையிடங்களிலும் போடுக"
 
 #~ msgid "Select how to give focus to windows"
 #~ msgstr "சாளரத்தை எப்படி குறிப்பது என்பதை தேர்வு செய்யவும்"

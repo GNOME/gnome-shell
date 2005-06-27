@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-03 12:57+0100\n"
+"POT-Creation-Date: 2005-06-27 17:21-0600\n"
 "PO-Revision-Date: 2005-03-03 17:36+0530\n"
 "Last-Translator: Amanpreet Singh Alam <amanpreetalam@yahoo.com>\n"
 "Language-Team: Punjabi <fedora-trans-pa@redhat.com>\n"
@@ -57,7 +57,8 @@ msgstr "ਵਾਰਤਾਲਾਪ ਵਿਖਾਵੇ ਵਾਲੇ ਕਾਰਜ �
 
 #: src/delete.c:344
 #, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "ਕਾਰਜ ਖਤਮ ਕਰਨ ਲਈ ਪੁੱਛਣ ਵਾਲੇ ਮੈਟਾਸਿਟੀ ਵਾਰਤਾਲਾਪ ਨੂੰ ਸ਼ੁਰੂ ਕਰਨ ਵਿੱਚ ਗਲਤੀ:%s\n"
 
 #: src/delete.c:452
@@ -86,23 +87,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "ਘਾਤਕ IO ਗਲਤੀ %d (%s) ਦਰਿਸ਼ ਉਪੱਰ'%s' ਹੈ।\n"
 
-#: src/frames.c:1020
+#: src/frames.c:1125
 msgid "Close Window"
 msgstr "ਝਰੋਖਾ ਬੰਦ"
 
-#: src/frames.c:1023
+#: src/frames.c:1128
 msgid "Window Menu"
 msgstr "ਝਰੋਖਾ ਮੇਨੂ-ਸੂਚੀ"
 
-#: src/frames.c:1026
+#: src/frames.c:1131
 msgid "Minimize Window"
 msgstr "ਝਰੋਖਾ ਅਲਪੀਕਰਨ"
 
-#: src/frames.c:1029
+#: src/frames.c:1134
 msgid "Maximize Window"
 msgstr "ਝਰੋਖਾ ਅਧਿਕਤਮ"
 
-#: src/frames.c:1032
+#: src/frames.c:1137
 msgid "Unmaximize Window"
 msgstr "ਝਰੋਖਾ ਅਧਿਕਤਮ ਨਾ ਕਰੋ"
 
@@ -113,17 +114,17 @@ msgid ""
 "binding\n"
 msgstr "ਕੋਈ ਹੋਰ ਕਾਰਜ %s ਸਵਿੱਚ ਨੂੰ %x ਸੋਧਕ ਨਾਲ ਪਹਿਲਾਂ ਹੀ ਜੋੜ ਵਾਂਗ ਵਰਤ ਰਿਹਾ ਹੈ\n"
 
-#: src/keybindings.c:2561
+#: src/keybindings.c:2535
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "ਕਮਾਂਡ ਬਾਰੇ ਗਲਤੀ ਛਾਪਣ ਵਾਲੇ ਮੈਟਾਸਿਟੀ ਵਾਰਤਾਲਾਪ ਨੂੰ ਸ਼ੁਰੂ ਕਰਨ ਵਿੱਚ ਗਲਤੀ: %s \n"
 
-#: src/keybindings.c:2666
+#: src/keybindings.c:2640
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "ਕੋਈ ਕਮਾਂਡ %d ਪਰਭਾਸ਼ਿਤ ਨਹੀ ਕੀਤੀ।\n"
 
-#: src/keybindings.c:3511
+#: src/keybindings.c:3485
 msgid "No terminal command has been defined.\n"
 msgstr "ਕੋਈ ਟਰਮੀਨਲ ਕਮਾਂਡ ਪ੍ਰਭਾਸ਼ਿਤ ਨਹੀ ਕੀਤੀ।\n"
 
@@ -156,7 +157,8 @@ msgstr "ਸਰੂਪ ਡਾਇਰੈਕਟਰੀ ਦੀ ਜਾਂਚ ਅਸਫ�
 
 #: src/main.c:459
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr "ਸਰੂਪ ਨਹੀ ਲੱਭ ਸਕਿਆ! ਯਕੀਨੀ ਬਣਾਓ ਕਿ %s ਮੌਜੂਦ ਹੈ ਅਤੇ ਇਸ ਵਿਚ ਵਰਤਣ ਵਾਲੇ ਸਰੂਪ ਹਨ।"
 
 #: src/main.c:521
@@ -340,7 +342,8 @@ msgid "The window \"%s\" is not responding."
 msgstr "ਝਰੋਖਾ \"%s\" ਜਵਾਬ ਨਹੀ ਦਿੰਦਾ।"
 
 #: src/metacity-dialog.c:118
-msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr "ਇਸ ਕਾਰਜ ਤੋਂ ਬਾਹਰ ਆਉਣ ਨਾਲ ਨਾ ਸੰਭਾਲੀ ਤਬਦੀਲੀ ਗੁੰਮ ਜਾਏਗੀ।"
 
 #: src/metacity-dialog.c:128
@@ -355,7 +358,7 @@ msgstr "ਸਿਰਲੇਖ"
 msgid "Class"
 msgstr "ਸ਼੍ਰੇਣੀ"
 
-#: src/metacity-dialog.c:262
+#: src/metacity-dialog.c:263
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -363,7 +366,7 @@ msgstr ""
 "ਇਹ ਝਰੋਖੇ \"ਵਰਤਮਾਨ ਸਥਿਤੀ ਸੰਭਾਲੋ\" ਵਾਸਤੇ ਸਹਾਇਕ ਨਹੀਂ ਅਤੇ ਅਗਲੀ ਵਾਰ ਜਦੋਂ ਤੁਸੀਂ ਲਾਗਿੰਨ ਕਰੋਗੇ ਤਾਂ "
 "ਮੁੜ ਸ਼ੁਰੂ ਕਰਨਾ ਪਵੇਗਾ।"
 
-#: src/metacity-dialog.c:325
+#: src/metacity-dialog.c:328
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -484,7 +487,8 @@ msgstr ""
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
-msgstr "ਜੇ ਯੋਗ ਹੈ, ਸਿਰਲੇਖ ਪੱਟੀ ਫੋਟ ਚੋਣ ਨੂੰ ਅਣਡਿੱਠ ਕਰੋ, ਅਤੇ ਝਰੋਖਾ ਸਿਰਲੇਖ ਵਾਸਤੇ ਮਿਆਰੀ ਕਾਰਜ ਅੱਖਰ ਵਰਤੋਂ।"
+msgstr ""
+"ਜੇ ਯੋਗ ਹੈ, ਸਿਰਲੇਖ ਪੱਟੀ ਫੋਟ ਚੋਣ ਨੂੰ ਅਣਡਿੱਠ ਕਰੋ, ਅਤੇ ਝਰੋਖਾ ਸਿਰਲੇਖ ਵਾਸਤੇ ਮਿਆਰੀ ਕਾਰਜ ਅੱਖਰ ਵਰਤੋਂ।"
 
 #: src/metacity.schemas.in.h:19
 msgid ""
@@ -1698,7 +1702,8 @@ msgstr "ਸਰੂਪ ਝਰੋਖੇ ਦੇ ਹਾਸ਼ੀਏ, ਸਿਰਲੇਖ 
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
-msgstr "ਝਰੋਖਾ ਉਠਾਉਣ ਤੋਂ ਪਹਿਲਾਂ ਵਕਫਾ ਜੇ ਸਵੈ-ਉਠਾਊ ਯੋਗ ਕੀਤੀ ਹੈ। ਵਕਫਾ ਸਕਿੰਟ ਦੇ ਹਜਾਰਵੇਂ ਵਿੱਚ ਦਿੱਤਾ ਹੈ।"
+msgstr ""
+"ਝਰੋਖਾ ਉਠਾਉਣ ਤੋਂ ਪਹਿਲਾਂ ਵਕਫਾ ਜੇ ਸਵੈ-ਉਠਾਊ ਯੋਗ ਕੀਤੀ ਹੈ। ਵਕਫਾ ਸਕਿੰਟ ਦੇ ਹਜਾਰਵੇਂ ਵਿੱਚ ਦਿੱਤਾ ਹੈ।"
 
 #: src/metacity.schemas.in.h:150
 msgid ""
@@ -1935,7 +1940,8 @@ msgstr ""
 
 #: src/screen.c:448
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "%d ਪਰਦੇ ਤੇ ਦਰਿਸ਼ \"%s\" ਉੱਪਰ ਝਰੋਖਾ ਪ੍ਰਬੰਧਕ ਚੋਣ ਉਪਲੱਬਧ ਨਹੀਂ ਹੋ ਸਕੀ\n"
 
 #: src/screen.c:506
@@ -1943,7 +1949,7 @@ msgstr "%d ਪਰਦੇ ਤੇ ਦਰਿਸ਼ \"%s\" ਉੱਪਰ ਝਰੋਖਾ 
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "ਪਰਦੇ %d ਤੇ ਦਰਿਸ਼ '%s' ਉੱਪਰ ਕੋਲ ਪਹਿਲਾਂ ਹੀ ਝਰੋਖਾ ਪ੍ਰਬੰਧਕ ਹੈ\n"
 
-#: src/screen.c:699
+#: src/screen.c:716
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "ਪਰਦੇ %d ਤੇ  ਦਰਿਸ਼ '%s'ਵਿਖਾਵੇ ਉੱਪਰ ਪਰਸਾਰਿਤ ਨਹੀਂ ਕਰ ਸਕਿਆ\n"
@@ -2160,7 +2166,8 @@ msgid "No \"value\" attribute on element <%s>"
 msgstr "<%s> ਅੰਸ਼ ਉੱਪਰ ਕੋਈ \"ਕੀਮਤ\" ਗੁਣ ਨਹੀ"
 
 #: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid ""
+"Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr "ਬਟਨਾਂ ਲਈ ਦੋਨੋਂ ਬਟਨ ਚੌੜਾਈ/ਬਟਨ ਉਚਾਈ ਅਤੇ ਰੂਪ ਅਨੁਪਾਤ ਨਿਰਧਾਰਿਤ ਨਹੀਂ ਹੋ ਸਕਿਆ"
 
 #: src/theme-parser.c:1343
@@ -2457,7 +2464,8 @@ msgstr "ਸਰੂਪ ਵਿੱਚ ਸਭ ਤੋਂ ਬਾਹਰੀ ਅੰਸ਼ <�
 
 #: src/theme-parser.c:3679
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "<%s> ਅੰਸ਼ ਨੂੰ ਨਾਂ/ਲੇਖਕ/ਮਿਤੀ/ਵਰਨਣ ਅੰਸ਼ ਵਿੱਚ ਇਜਾਜ਼ਤ ਨਹੀਂ ਹੈ"
 
 #: src/theme-parser.c:3684
@@ -2467,7 +2475,8 @@ msgstr "<%s> ਅੰਸ਼ ਨੂੰ <ਸਥਿਰ> ਅੰਸ਼ ਵਿੱਚ ਇਜਾ
 
 #: src/theme-parser.c:3696
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "<%s> ਅੰਸ਼ ਨੂੰ ਫਾਸਲਾ/ਹਾਸ਼ੀਆ/ਅਕਾਰ ਅਨੁਪਾਤ ਅੰਸ਼ ਵਿੱਚ ਇਜਾਜ਼ਤ ਨਹੀਂ ਹੈ"
 
 #: src/theme-parser.c:3718
@@ -2809,7 +2818,8 @@ msgstr "ਧੁੰਦਲੇ ਰੰਗ ਵਿੱਚ ਐਲਫਾ ਕੀਮਤ \"%s
 
 #: src/theme.c:1111
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "ਰੰਗਤ ਬਣਤਰ \"ਰੰਗਤ/ਆਧਾਰ_ਰੰਗ/ਗੁਣਨਖੰਡ\" ਹੈ, \"%s\" ਬਣਤਰ ਵਿੱਚ ਠੀਕ ਨਹੀਂ ਆਉਦੀ"
 
 #: src/theme.c:1122
@@ -2860,12 +2870,14 @@ msgid "Coordinate expression results in division by zero"
 msgstr "ਤਾਲਮੇਲ ਸਮੀਕਰਨ ਦੇ ਨਤੀਜੇ ਵਜੋਂ ਜੀਰੋ ਨਾਲ ਭਾਗ ਹੈ"
 
 #: src/theme.c:1783
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "ਤਾਲਮੇਲ ਸਮੀਕਰਨ ਦਸ਼ਮਲਵ ਅੰਕ ਉੱਪਰ ਮਾਡ(mod)ਆਪ੍ਰੇਟਰ ਵਰਤਣ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰਦਾ ਹੈ"
 
 #: src/theme.c:1840
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "ਤਾਲਮੇਲ ਸਮੀਕਰਨ ਵਿੱਚ ਆਪ੍ਰੇਟਰ \"%s\" ਹੈ ਜਿੱਥੇ ਪ੍ਰਭਾਵੀ ਅੰਕ ਦੀ ਉਮੀਦ ਸੀ"
 
 #: src/theme.c:1849
@@ -2881,7 +2893,8 @@ msgstr "ਤਾਲਮੇਲ ਸਮੀਕਰਨ ਦੀ ਸਮਾਪਤੀ ਆਪ�
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
-msgstr "ਤਾਲਮੇਲ ਸਮੀਕਰਨ ਵਿੱਚ ਵਿਚਕਾਰ ਪ੍ਰਭਾਵੀ ਅੰਕ ਤੋਂ ਬਿਨਾਂ  ਆਪ੍ਰੇਟਰ \"%c\" ਤੋਂ ਬਾਅਦ ਆਪ੍ਰੇਟਰ \"%c\" ਹੈ "
+msgstr ""
+"ਤਾਲਮੇਲ ਸਮੀਕਰਨ ਵਿੱਚ ਵਿਚਕਾਰ ਪ੍ਰਭਾਵੀ ਅੰਕ ਤੋਂ ਬਿਨਾਂ  ਆਪ੍ਰੇਟਰ \"%c\" ਤੋਂ ਬਾਅਦ ਆਪ੍ਰੇਟਰ \"%c\" ਹੈ "
 
 #: src/theme.c:1986
 msgid ""
@@ -2902,7 +2915,8 @@ msgstr "ਤਾਲਮੇਲ ਸਮੀਕਰਨ ਵਿੱਚ ਅਣਪਛਾਤਾ
 
 #: src/theme.c:2135
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "ਤਾਲਮੇਲ ਸਮੀਕਰਨ ਵਿੱਚ ਕੋਈ ਬੰਦ ਬਰੈਕਟ (parenthesis) ਨਾ ਹੋਣ ਕਰਕੇ ਖੁੱਲੀ ਬਰੈਕਟ(parenthesis) ਸੀ"
+msgstr ""
+"ਤਾਲਮੇਲ ਸਮੀਕਰਨ ਵਿੱਚ ਕੋਈ ਬੰਦ ਬਰੈਕਟ (parenthesis) ਨਾ ਹੋਣ ਕਰਕੇ ਖੁੱਲੀ ਬਰੈਕਟ(parenthesis) ਸੀ"
 
 #: src/theme.c:2146
 msgid "Coordinate expression doesn't seem to have any operators or operands"
@@ -2924,7 +2938,8 @@ msgstr ""
 
 #: src/theme.c:4369 src/theme.c:4401
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr "ਗੁੰਮ <ਫਰੇਮ ਅਵਸਥਾ=\"%s\" ਮੁੜ ਆਕਾਰ =\"%s\" ਕੇਂਦਰ=\"%s\" ਨਮੂਨਾ=\"ਕੋਈ ਵੀ\"/>"
 
 #: src/theme.c:4452
@@ -2958,7 +2973,8 @@ msgstr ""
 
 #: src/theme.c:5047 src/theme.c:5109
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "ਉਪਯੋਗੀ ਦੁਆਰਾ ਪਰਭਾਸ਼ਿਤ ਸਥਿਰ ਵੱਡੇ ਅੱਖਰ ਨਾਲ ਸ਼ੁਰੂ ਹੋਣ; \"%s\" ਨਹੀਂ ਹੁੰਦੇ"
 
 #: src/theme.c:5055 src/theme.c:5117
@@ -3003,7 +3019,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "ਕਾਰਜ ਨੇ ਇੱਕ ਨਕਲੀ _NET_WM_PID %ld ਨਿਰਧਾਰਿਤ ਕੀਤਾ\n"
 
 #. first time through
-#: src/window.c:5070
+#: src/window.c:5197
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3019,7 +3035,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5741
+#: src/window.c:5868
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3050,6 +3066,6 @@ msgstr "ਵਿਸ਼ੇਸ਼ਤਾ %s ਝਰੋਖੇ 0x%lx ਵਿੱਚ ਅਯੋਗ
 
 #: src/xprops.c:482
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "%s ਵਿਸ਼ੇਸ਼ਤਾ 0x%lx ਝਰੋਖੇ ਉੱਪਰ ਵਿੱਚ ਲੜੀ ਵਿਚਲੇ ਮੈਂਬਰ %d ਲਈ ਅਯੋਗ UTF-8 ਸ਼ਾਮਿਲ ਹੈ\n"
-

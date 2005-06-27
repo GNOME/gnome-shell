@@ -1,3 +1,31 @@
+2.10.2
+==
+
+Thanks to Billy Biggs, Greg Hudson, Elijah Newren, Ray Strode, Ryan
+Lortie, and Soeren Sandmann for improvements in this release.
+
+ - Makes metacity a bit faster when dragging windows around (Soeren) [#141813]
+ - Fix simple memory error, using the address of a local variable as a
+   hash key (Ryan) [#307209]
+ - Fix a small leak in the case of a SYNC_COUNTER property value and
+   HAVE_XSYNC not defined (Ryan) [#307214]
+ - Cleanup font data when done with it (Ray) [#306720]
+ - If the window has a modal transient which is being unmanaged, don't
+   focus it (Elijah) [#305362]
+ - Make sure window position is calculated correctly for reconfigure
+   requests when part of the XWindowChanges structure is uninitialized
+   (Greg) [#305257]
+ - Add a resize popup when resizing constrained windows (Ray) [#305564]
+ - Don't accidentally treat maximize vertically as maximize in both
+   directions (Elijah) [#302204]
+ - Put all transients of the new window, if any exist, in the
+   calc_showing queue (Elijah, Billy) [#303284]
+
+Translations
+  Kostas Papadimas (el), Priit Laes (et), Pauli Virtanen (fi), Ignacio
+  Casal Quinteiro (gl), Theppitak Karoonboonyanan (th), Canonical
+  Ltd (xh), Woodman Tuen (zh_TW)
+
 2.10.1
 ==
 

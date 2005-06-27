@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-02-12 16:56+0100\n"
+"POT-Creation-Date: 2005-06-27 17:21-0600\n"
 "PO-Revision-Date: 2005-02-12 17:03+0100\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -63,7 +63,7 @@ msgstr "Chyba pri spustení dialógu metacity pre zabitie aplikácie: %s\n"
 msgid "Failed to get hostname: %s\n"
 msgstr "Nepodarilo sa získať meno hostiteľa: %s\n"
 
-#: src/display.c:313
+#: src/display.c:316
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nepodarilo sa otvoriť displej X Window '%s'\n"
@@ -83,23 +83,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Kritická chyba V/V %d (%s) na displeji '%s'\n"
 
-#: src/frames.c:1020
+#: src/frames.c:1125
 msgid "Close Window"
 msgstr "Zavrieť okno"
 
-#: src/frames.c:1023
+#: src/frames.c:1128
 msgid "Window Menu"
 msgstr "Menu okna"
 
-#: src/frames.c:1026
+#: src/frames.c:1131
 msgid "Minimize Window"
 msgstr "Minimalizovať okno"
 
-#: src/frames.c:1029
+#: src/frames.c:1134
 msgid "Maximize Window"
 msgstr "Maximalizovať okno"
 
-#: src/frames.c:1032
+#: src/frames.c:1137
 msgid "Unmaximize Window"
 msgstr "Odmaximalizovať okno"
 
@@ -111,17 +111,17 @@ msgid ""
 msgstr ""
 "Iný program už používa kláves %s s modifikátormi %x ako klávesovú skratku.\n"
 
-#: src/keybindings.c:2559
+#: src/keybindings.c:2535
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "Chyba pri spustení dialógu metacity pre zobrazenie chyby príkazu: %s\n"
 
-#: src/keybindings.c:2664
+#: src/keybindings.c:2640
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Nedefinovaný príkaz %d.\n"
 
-#: src/keybindings.c:3494
+#: src/keybindings.c:3485
 msgid "No terminal command has been defined.\n"
 msgstr "Nebol definovaný terminálový príkaz.\n"
 
@@ -357,7 +357,7 @@ msgstr "Titulok"
 msgid "Class"
 msgstr "Trieda"
 
-#: src/metacity-dialog.c:262
+#: src/metacity-dialog.c:263
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -365,7 +365,7 @@ msgstr ""
 "Tieto okná nepodporujú \"uložiť aktuálne nastavenie\n"
 " a pri budúcom prihlásení ich budete musieť znovu spustiť ručne."
 
-#: src/metacity-dialog.c:325
+#: src/metacity-dialog.c:328
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2014,7 +2014,7 @@ msgstr ""
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Obrazovka %d na displeji \"%s\" už má správcu okien\n"
 
-#: src/screen.c:699
+#: src/screen.c:716
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nepodarilo sa uvoľniť obrazovku %d na displeji \"%s\"\n"
@@ -3098,7 +3098,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikácia nastavila neplatné _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:5036
+#: src/window.c:5197
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3114,7 +3114,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5707
+#: src/window.c:5868
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
