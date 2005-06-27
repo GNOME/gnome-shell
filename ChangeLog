@@ -1,5 +1,9 @@
 2005-06-27  Elijah Newren  <newren@gmail.com>
 
+	* configure.in: post-release version bump to 2.10.3
+
+2005-06-27  Elijah Newren  <newren@gmail.com>
+
 	* NEWS:	2.10.2 release
 
 Sun Jun 26 11:19:18 2005  Soeren Sandmann  <sandmann@redhat.com>
