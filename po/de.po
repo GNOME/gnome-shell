@@ -2,15 +2,15 @@
 # Copyright (C) 2002-2004 Free Software Foundation, Inc.
 # Matthias Warkus <mawarkus@gnome.org>, 2002.
 # Christian Neumair <chris@gnome-de.org>, 2002-2004.
-# 
+# Hendrik Richter <hendi@gnome-de.org>, 2005.
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Metacity\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-06-27 17:21-0600\n"
-"PO-Revision-Date: 2005-02-05 20:58+0100\n"
-"Last-Translator: Frank Arnold <frank@scirocco-5v-turbo.de>\n"
+"PO-Revision-Date: 2005-07-04 20:03+0200\n"
+"Last-Translator: Hendrik Richter <hendi@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -862,7 +862,7 @@ msgid ""
 "currently focused window's titlebar is flashed."
 msgstr ""
 "Legt fest, wie Metacity visuell verdeutlichen soll, dass die Systemglocke "
-"ausgelöst wurde oder ein andrer »Piepser« seitens der Anwendung erfolgt ist. "
+"ausgelöst wurde oder ein anderer »Piepser« seitens der Anwendung erfolgt ist. "
 "Zulässige Werte: »fullscreen« (Schwarz/weiß-Blinken im Vollbild) sowie "
 "»frame_flash« (Titelbar der betroffenen Anwendung blinkt). Ist die Anwendung "
 "unbekannt, die die Glocke ausgelöst hat (bei »Systempiepsern« ist dies der "
@@ -1232,7 +1232,7 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Die zum Verbergen aller normalen Fenster und Fokusieren des Desktops "
+"Die zum Verbergen aller normalen Fenster und Fokussieren des Desktops "
 "verwendete Tastenkombination. Das Format ist »&lt;Control&gt;« (für Strg.) "
 "oder »&lt;Shift&gt;&lt;Alt&gt;F1«. Der Interpreter ist recht liberal und "
 "erlaubt Groß- und Kleinschreibung sowie Abkürzungen wie z.B. »&lt;Ctl&gt;« "
