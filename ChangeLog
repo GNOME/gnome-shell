@@ -1,3 +1,11 @@
+2005-07-11  Elijah Newren  <newren@gmail.com>
+
+	Stuff I forgot to do when I branched an hour or so ago before
+	Matthias' commit...
+	
+	* configure.in: bump version to 2.11.0.  Add UNSTABLE warning.
+	* README: add 2.11.x to the list of unstable branches
+
 2005-07-11  Matthias Clasen  <mclasen@redhat.com>
 
 	React to cursor theme changes: (#308106)
