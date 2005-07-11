@@ -1,3 +1,27 @@
+2005-07-11  Matthias Clasen  <mclasen@redhat.com>
+
+	React to cursor theme changes: (#308106)
+	
+	* src/prefs.h: 
+	* src/prefs.c: Expose the GConf keys for cursor theme
+	and size as preferences META_PREF_CURSOR_THEME and
+	META_PREF_CURSOR_SIZE with getters meta_prefs_get_cursor_theme()
+	and meta_prefs_get_cursor_size().
+
+	* src/display.c (meta_display_open): Initialize the cursor 
+	theme and size.
+	
+	* src/display.h:
+	* src/display.c (meta_display_set_cursor_theme): New function 
+	to change the cursor theme and update all cursors.
+
+	* src/screen.h 
+	* src/screen.c (meta_screen_update_cursor): New function to
+	refesh the root cursor of a screen.
+
+	* src/main.c (prefs_changed_callback): Update the cursor
+	theme when the cursor preferences change.
+
 2005-06-27  Elijah Newren  <newren@gmail.com>
 
 	* configure.in: post-release version bump to 2.10.3

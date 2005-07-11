@@ -1153,6 +1153,18 @@ meta_screen_set_cursor (MetaScreen *screen,
 }
 
 void
+meta_screen_update_cursor (MetaScreen *screen)
+{
+  Cursor xcursor;
+
+  xcursor = meta_display_create_x_cursor (screen->display, 
+					  screen->current_cursor);
+  XDefineCursor (screen->display->xdisplay, screen->xroot, xcursor);
+  XFlush (screen->display->xdisplay);
+  XFreeCursor (screen->display->xdisplay, xcursor);
+}
+
+void
 meta_screen_ensure_tab_popup (MetaScreen *screen,
                               MetaTabList type)
 {

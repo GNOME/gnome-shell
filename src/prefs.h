@@ -48,7 +48,9 @@ typedef enum
   META_PREF_AUDIBLE_BELL,
   META_PREF_VISUAL_BELL_TYPE,
   META_PREF_REDUCED_RESOURCES,
-  META_PREF_GNOME_ACCESSIBILITY
+  META_PREF_GNOME_ACCESSIBILITY,
+  META_PREF_CURSOR_THEME,
+  META_PREF_CURSOR_SIZE
 } MetaPreference;
 
 typedef void (* MetaPrefsChangedFunc) (MetaPreference pref,
@@ -90,6 +92,9 @@ void meta_prefs_set_num_workspaces (int n_workspaces);
 const char* meta_prefs_get_workspace_name    (int         i);
 void        meta_prefs_change_workspace_name (int         i,
                                               const char *name);
+
+const char* meta_prefs_get_cursor_theme      (void);
+int         meta_prefs_get_cursor_size       (void);
 
 /* Screen bindings */
 #define META_KEYBINDING_WORKSPACE_1              "switch_to_workspace_1"

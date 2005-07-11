@@ -59,6 +59,9 @@
 #ifdef HAVE_XKB
 #include <X11/XKBlib.h>
 #endif
+#ifdef HAVE_XCURSOR
+#include <X11/Xcursor/Xcursor.h>
+#endif
 #include <string.h>
 
 #define USE_GDK_DISPLAY
@@ -609,7 +612,16 @@ meta_display_open (const char *name)
 #else  /* HAVE_RENDER */
   meta_verbose ("Not compiled with Render support\n");
 #endif /* !HAVE_RENDER */
-  
+
+#ifdef HAVE_XCURSOR
+  {
+    XcursorSetTheme (display->xdisplay, meta_prefs_get_cursor_theme ());
+    XcursorSetDefaultSize (display->xdisplay, meta_prefs_get_cursor_size ());
+  }
+#else /* HAVE_XCURSOR */
+  meta_verbose ("Not compiled with Xcursor support\n");
+#endif /* !HAVE_XCURSOR */
+
   /* Create the leader window here. Set its properties and
    * use the timestamp from one of the PropertyNotify events
    * that will follow.
@@ -3760,6 +3772,36 @@ meta_display_retheme_all (void)
       meta_display_queue_retheme_all_windows (display);
       tmp = tmp->next;
     }
+}
+
+void 
+meta_display_set_cursor_theme (const char *theme, 
+			       int         size)
+{
+#ifdef HAVE_XCURSOR     
+  GSList *tmp, *tmp2;
+  
+  tmp = meta_displays_list ();
+  while (tmp != NULL)
+    {
+      MetaDisplay *display = tmp->data;
+
+      XcursorSetTheme (display->xdisplay, theme);
+      XcursorSetDefaultSize (display->xdisplay, size);
+
+      tmp2 = display->screens;
+      while (tmp2 != NULL)
+	{
+	  MetaScreen *screen = tmp2->data;
+	  	  
+	  meta_screen_update_cursor (screen);
+
+	  tmp2 = tmp2->next;
+	}
+      
+      tmp = tmp->next;
+    }
+#endif
 }
 
 static gboolean is_syncing = FALSE;

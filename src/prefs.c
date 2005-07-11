@@ -66,6 +66,8 @@
 #define KEY_VISUAL_BELL "/apps/metacity/general/visual_bell"
 #define KEY_AUDIBLE_BELL "/apps/metacity/general/audible_bell"
 #define KEY_VISUAL_BELL_TYPE "/apps/metacity/general/visual_bell_type"
+#define KEY_CURSOR_THEME "/desktop/gnome/peripherals/mouse/cursor_theme"
+#define KEY_CURSOR_SIZE "/desktop/gnome/peripherals/mouse/cursor_size"
 
 #ifdef HAVE_GCONF
 static GConfClient *default_client = NULL;
@@ -90,6 +92,8 @@ static gboolean provide_visual_bell = TRUE;
 static gboolean bell_is_audible = TRUE;
 static gboolean reduced_resources = FALSE;
 static gboolean gnome_accessibility = FALSE;
+static char *cursor_theme = NULL;
+static int   cursor_size = 24;
 
 static MetaVisualBellType visual_bell_type = META_VISUAL_BELL_INVALID;
 static MetaButtonLayout button_layout = {
@@ -142,6 +146,8 @@ static gboolean update_workspace_name     (const char  *name,
                                            const char  *value);
 static gboolean update_reduced_resources  (gboolean     value);
 static gboolean update_gnome_accessibility  (gboolean     value);
+static gboolean update_cursor_theme       (const char *value);
+static gboolean update_cursor_size        (int size);
 
 static void change_notify (GConfClient    *client,
                            guint           cnxn_id,
@@ -323,6 +329,11 @@ meta_prefs_init (void)
                         &err);
   cleanup_error (&err);
 
+  gconf_client_add_dir (default_client, "/desktop/gnome/peripherals/mouse",
+                        GCONF_CLIENT_PRELOAD_RECURSIVE,
+                        &err);
+  cleanup_error (&err);
+
   str_val = gconf_client_get_string (default_client, KEY_MOUSE_BUTTON_MODS,
                                      &err);
   cleanup_error (&err);
@@ -426,6 +437,17 @@ meta_prefs_init (void)
   
   cleanup_error (&err);
   update_gnome_accessibility (bool_val);
+
+  str_val = gconf_client_get_string (default_client, KEY_CURSOR_THEME,
+                                     &err);
+  cleanup_error (&err);
+  update_cursor_theme (str_val);
+  g_free (str_val);
+
+  int_val = gconf_client_get_int (default_client, KEY_CURSOR_SIZE,
+                                  &err);
+  cleanup_error (&err);
+  update_cursor_size (int_val);
 #endif /* HAVE_GCONF */
   
   /* Load keybindings prefs */
@@ -449,6 +471,11 @@ meta_prefs_init (void)
                            NULL,
                            &err);
   gconf_client_notify_add (default_client, KEY_GNOME_ACCESSIBILITY,
+                           change_notify,
+                           NULL,
+                           NULL,
+                           &err);
+  gconf_client_notify_add (default_client, "/desktop/gnome/peripherals/mouse",
                            change_notify,
                            NULL,
                            NULL,
@@ -846,6 +873,38 @@ change_notify (GConfClient    *client,
       if (update_gnome_accessibility (b))
         queue_changed (META_PREF_GNOME_ACCESSIBILITY);
     }
+  else if (strcmp (key, KEY_CURSOR_THEME) == 0)
+    {
+      const char *str;
+
+      if (value && value->type != GCONF_VALUE_STRING)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                       KEY_CURSOR_THEME);
+          goto out;
+        }
+
+      str = value ? gconf_value_get_string (value) : NULL;
+
+      if (update_cursor_theme (str))
+	queue_changed (META_PREF_CURSOR_THEME);
+    }
+  else if (strcmp (key, KEY_CURSOR_SIZE) == 0)
+    {
+      int d;
+
+      if (value && value->type != GCONF_VALUE_INT)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                       KEY_CURSOR_SIZE);
+          goto out;
+        }
+
+      d = value ? gconf_value_get_int (value) : 24;
+
+      if (update_cursor_size (d))
+	queue_changed (META_PREF_CURSOR_SIZE);
+    }
   else
     {
       meta_topic (META_DEBUG_PREFS, "Key %s doesn't mean anything to Metacity\n",
@@ -963,6 +1022,57 @@ const char*
 meta_prefs_get_theme (void)
 {
   return current_theme;
+}
+
+#ifdef HAVE_GCONF
+static gboolean
+update_cursor_theme (const char *value)
+{
+  char *old_theme;
+  gboolean changed;
+  
+  old_theme = cursor_theme;
+  
+  if (value != NULL && *value)
+    {
+      cursor_theme = g_strdup (value);
+    }
+
+  changed = TRUE;
+  if ((old_theme && cursor_theme &&
+       strcmp (old_theme, cursor_theme) == 0) ||
+      (old_theme == NULL && cursor_theme == NULL))
+    changed = FALSE;
+
+  if (old_theme != cursor_theme)
+    g_free (old_theme);
+
+  return changed;
+}
+#endif /* HAVE_GCONF */
+
+const char*
+meta_prefs_get_cursor_theme (void)
+{
+  return cursor_theme;
+}
+
+#ifdef HAVE_GCONF
+static gboolean
+update_cursor_size (int value)
+{
+  int old = cursor_size;
+
+  cursor_size = value;
+
+  return old != value;
+}
+#endif
+
+int
+meta_prefs_get_cursor_size (void)
+{
+  return cursor_size;
 }
 
 #ifdef HAVE_GCONF
