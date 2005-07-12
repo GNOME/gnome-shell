@@ -1,5 +1,9 @@
 2005-07-12  Elijah Newren  <newren@gmail.com>
 
+	* NEWS:	2.11.0 release
+
+2005-07-12  Elijah Newren  <newren@gmail.com>
+
 	Patch from Andrew Johnson to speed up vertical gradients.  Fixes
 	#169982.
 

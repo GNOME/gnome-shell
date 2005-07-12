@@ -1,3 +1,21 @@
+2.11.0
+==
+
+This release contains all fixes up to Metacity 2.10.2 plus some new goodies.
+
+Thanks to Matthias Clasen, Aivars Kalvans, Björn Lindqvist, and
+Andrew Johnson for improvements in this release.
+
+ - React to cursor theme changes (Matthias) [#308106]
+ - Plug a small leak with xinerama information (Aivars) [#307884]
+ - Split up main() into more manageable chunks and make use of GOpt
+   (Björn) [#305331]
+ - Speed up vertical gradients (Andrew) [#169982]
+
+Translations
+  Hendrik Richter (de), Ivar Smolin (et), Ignacio Casal
+  Quinteiro (gl), Clytie Siddall (vi)
+
 2.10.2
 ==
 
