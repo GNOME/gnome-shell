@@ -1,5 +1,18 @@
 2005-07-12  Elijah Newren  <newren@gmail.com>
 
+	Patch from Andrew Johnson to speed up vertical gradients.  Fixes
+	#169982.
+
+	* src/gradient.c:
+	(meta_gradient_create_interwoven):
+	(meta_gradient_create_vertical):
+	(meta_gradient_create_multi_vertical):
+	
+	use memcpy instead of really long loops to set values in memory to
+	a given pattern.
+
+2005-07-12  Elijah Newren  <newren@gmail.com>
+
 	Patch from Björn Lindqvist to split up main() into more manageable
 	chunks and make use of GOpt.  Closes #305331.
 

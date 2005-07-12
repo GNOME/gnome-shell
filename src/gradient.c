@@ -166,7 +166,6 @@ meta_gradient_create_interwoven (int            width,
   long r2, g2, b2, dr2, dg2, db2;
   GdkPixbuf *pixbuf;
   unsigned char *ptr;
-  unsigned char rr, gg, bb;
   unsigned char *pixels;
   int rowstride;
   
@@ -199,37 +198,21 @@ meta_gradient_create_interwoven (int            width,
       
       if (k == 0)
         {
-          rr = r1>>16;
-          gg = g1>>16;
-          bb = b1>>16;
+          ptr[0] = (unsigned char) r1>>16;
+          ptr[1] = (unsigned char) g1>>16;
+          ptr[2] = (unsigned char) b1>>16;
         }
       else
         {
-          rr = r2>>16;
-          gg = g2>>16;
-          bb = b2>>16;
+          ptr[0] = (unsigned char) r2>>16;
+          ptr[1] = (unsigned char) g2>>16;
+          ptr[2] = (unsigned char) b2>>16;
         }
-      for (j=0; j<width/8; j++)
-        {
-          *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-          *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-          *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-          *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-          *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-          *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-          *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-          *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-        }
-      switch (width%8)
-        {
-        case 7: *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-        case 6: *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-        case 5: *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-        case 4: *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-        case 3: *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-        case 2: *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-        case 1: *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-        }
+
+      for (j=1; j <= width/2; j *= 2)
+        memcpy (&(ptr[j*3]), ptr, j*3);
+      memcpy (&(ptr[j*3]), ptr, (width - j)*3);
+
       if (++l == ll)
         {
           if (k == 0)
@@ -346,7 +329,6 @@ meta_gradient_create_vertical (int width, int height,
   long r, g, b, dr, dg, db;
   GdkPixbuf *pixbuf;
   unsigned char *ptr;
-  unsigned char rr, gg, bb;
   int r0, g0, b0;
   int rf, gf, bf;
   int rowstride;
@@ -378,30 +360,14 @@ meta_gradient_create_vertical (int width, int height,
     {
       ptr = pixels + i * rowstride;
       
-      rr = r>>16;
-      gg = g>>16;
-      bb = b>>16;
-      for (j=0; j<width/8; j++)
-        {
-          *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-          *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-          *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-          *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-          *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-          *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-          *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-          *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-	}
-      switch (width%8)
-        {
-        case 7: *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-        case 6: *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-        case 5: *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-        case 4: *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-        case 3: *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-        case 2: *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-        case 1: *(ptr++) = rr; *(ptr++) = gg; *(ptr++) = bb;
-	}
+      ptr[0] = (unsigned char)(r>>16);
+      ptr[1] = (unsigned char)(g>>16);
+      ptr[2] = (unsigned char)(b>>16);
+
+      for (j=1; j <= width/2; j *= 2)
+        memcpy (&(ptr[j*3]), ptr, j*3);
+      memcpy (&(ptr[j*3]), ptr, (width - j)*3);
+
       r+=dr;
       g+=dg;
       b+=db;
@@ -565,9 +531,7 @@ meta_gradient_create_multi_vertical (int width, int height,
   unsigned char *ptr, *tmp, *pixels;
   int height2;
   int x;
-  unsigned char rr, gg, bb;    
   int rowstride;
-  int pad;
   
   g_return_val_if_fail (count > 2, NULL);
 
@@ -577,7 +541,6 @@ meta_gradient_create_multi_vertical (int width, int height,
     
   pixels = gdk_pixbuf_get_pixels (pixbuf);
   rowstride = gdk_pixbuf_get_rowstride (pixbuf);
-  pad = rowstride - (width * 3);
   ptr = pixels;
     
   if (count > height)
@@ -602,25 +565,15 @@ meta_gradient_create_multi_vertical (int width, int height,
 
       for (j=0; j<height2; j++)
         {
-          rr = r>>16;
-          gg = g>>16;
-          bb = b>>16;
+          ptr[0] = (unsigned char)(r>>16);
+          ptr[1] = (unsigned char)(g>>16);
+          ptr[2] = (unsigned char)(b>>16);
 
-          for (x=0; x<width/4; x++)
-            {
-              *ptr++ = rr; *ptr++ = gg; *ptr++ = bb;
-              *ptr++ = rr; *ptr++ = gg; *ptr++ = bb;
-              *ptr++ = rr; *ptr++ = gg; *ptr++ = bb;
-              *ptr++ = rr; *ptr++ = gg; *ptr++ = bb;
-	    }
-          switch (width%4)
-            {
-            case 3: *ptr++ = rr; *ptr++ = gg; *ptr++ = bb;
-            case 2: *ptr++ = rr; *ptr++ = gg; *ptr++ = bb;
-            case 1: *ptr++ = rr; *ptr++ = gg; *ptr++ = bb;
-	    }
+          for (x=1; x <= width/2; x *= 2)
+            memcpy (&(ptr[x*3]), ptr, x*3);
+          memcpy (&(ptr[x*3]), ptr, (width - x)*3);
 
-          ptr += pad;
+          ptr += rowstride;
           
           r += dr;
           g += dg;
@@ -632,29 +585,19 @@ meta_gradient_create_multi_vertical (int width, int height,
       b = colors[i].blue << 8;
     }
 
-  rr = r>>16;
-  gg = g>>16;
-  bb = b>>16;
-
   if (k<height)
     {
       tmp = ptr;
-      for (x=0; x<width/4; x++)
-        {
-          *ptr++ = rr; *ptr++ = gg; *ptr++ = bb;
-          *ptr++ = rr; *ptr++ = gg; *ptr++ = bb;
-          *ptr++ = rr; *ptr++ = gg; *ptr++ = bb;
-          *ptr++ = rr; *ptr++ = gg; *ptr++ = bb;
-        }
-      switch (width%4)
-        {
-        case 3: *ptr++ = rr; *ptr++ = gg; *ptr++ = bb;
-        case 2: *ptr++ = rr; *ptr++ = gg; *ptr++ = bb;
-        case 1: *ptr++ = rr; *ptr++ = gg; *ptr++ = bb;
-        default: break;
-        }
 
-      ptr += pad;
+      ptr[0] = (unsigned char) r>>16;
+      ptr[1] = (unsigned char) g>>16;
+      ptr[2] = (unsigned char) b>>16;
+
+      for (x=1; x <= width/2; x *= 2)
+        memcpy (&(ptr[x*3]), ptr, x*3);
+      memcpy (&(ptr[x*3]), ptr, (width - x)*3);
+
+      ptr += rowstride;
       
       for (j=k+1; j<height; j++)
         {
