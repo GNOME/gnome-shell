@@ -1,3 +1,8 @@
+2005-07-12  Aivars Kalvans <aivars.kalvans@inbox.lv>
+
+	* src/screen.c (meta_screen_free): free ->xinerama_infos
+	Closes bug#307884
+
 2005-07-11  Elijah Newren  <newren@gmail.com>
 
 	Stuff I forgot to do when I branched an hour or so ago before

@@ -735,6 +735,9 @@ meta_screen_free (MetaScreen *screen)
   XFreeGC (screen->display->xdisplay,
            screen->root_xor_gc);
   
+  if (screen->xinerama_infos)
+    g_free (screen->xinerama_infos);
+  
   g_free (screen->screen_name);
   g_free (screen);
 
