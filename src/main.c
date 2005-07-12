@@ -64,13 +64,6 @@ log_handler (const gchar   *log_domain,
 }
 
 static void
-usage (void)
-{
-  g_print (_("metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--display=DISPLAY] [--replace] [--version]\n"));
-  exit (1);
-}
-
-static void
 version (void)
 {
   g_print (_("metacity %s\n"
@@ -110,7 +103,7 @@ find_accessibility_module (const char *libname)
 
 static gboolean
 accessibility_invoke_module (const char   *libname,
-			     gboolean      init)
+                             gboolean      init)
 {
   GModule    *handle;
   void      (*invoke_fn) (void);
@@ -128,21 +121,21 @@ accessibility_invoke_module (const char   *libname,
   if (!module_name)
     {
       g_warning ("Accessibility: failed to find module '%s' which "
-		 "is needed to make this application accessible",
-		 libname);
+                 "is needed to make this application accessible",
+                 libname);
 
     }
   else if (!(handle = g_module_open (module_name, G_MODULE_BIND_LAZY)))
     {
       g_warning ("Accessibility: failed to load module '%s': '%s'",
-		 libname, g_module_error ());
+                 libname, g_module_error ());
 
     }
   else if (!g_module_symbol (handle, method, (gpointer *)&invoke_fn))
     {
       g_warning ("Accessibility: error library '%s' does not include "
-		 "method '%s' required for accessibility support",
-		 libname, method);
+                 "method '%s' required for accessibility support",
+                 libname, method);
       g_module_close (handle);
 
     }
@@ -165,184 +158,9 @@ accessibility_invoke (gboolean init)
   return TRUE;
 }
 
-int
-main (int argc, char **argv)
+static void
+meta_print_compilation_info (void)
 {
-  struct sigaction act;
-  sigset_t empty_mask;
-  char *display_name;
-  int i;
-  const char *client_id;
-  gboolean disable_sm;
-  const char *prev_arg;
-  const char *save_file;
-
-  g_set_prgname (argv[0]);
-  
-  if (setlocale (LC_ALL, "") == NULL)
-    meta_warning ("Locale not understood by C library, internationalization will not work\n");
-  
-  sigemptyset (&empty_mask);
-  act.sa_handler = SIG_IGN;
-  act.sa_mask    = empty_mask;
-  act.sa_flags   = 0;
-  if (sigaction (SIGPIPE,  &act, NULL) < 0)
-    g_printerr ("Failed to register SIGPIPE handler: %s\n",
-                g_strerror (errno));
-#ifdef SIGXFSZ
-  if (sigaction (SIGXFSZ,  &act, NULL) < 0)
-    g_printerr ("Failed to register SIGXFSZ handler: %s\n",
-                g_strerror (errno));
-#endif
-
-  if (g_getenv ("METACITY_VERBOSE"))
-    meta_set_verbose (TRUE);
-  if (g_getenv ("METACITY_DEBUG"))
-    meta_set_debugging (TRUE);
-  meta_set_syncing (g_getenv ("METACITY_SYNC") != NULL);
-
-  if (g_get_home_dir ())
-    chdir (g_get_home_dir ());
-
-  {
-    char buf[256];
-    GDate d;
-    g_date_clear (&d, 1);
-    g_date_set_time (&d, time (NULL));
-    g_date_strftime (buf, sizeof (buf), "%x", &d);
-    meta_verbose ("Metacity version %s running on %s\n", VERSION, buf);
-  }
-  
-  {
-    const char *charset;
-    g_get_charset (&charset);
-    meta_verbose ("Running in locale \"%s\" with encoding \"%s\"\n",
-                  setlocale (LC_ALL, NULL), charset);
-  }
-  
-  bindtextdomain (GETTEXT_PACKAGE, METACITY_LOCALEDIR);
-  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-  textdomain (GETTEXT_PACKAGE);
-  
-  /* Parse options lamely */
-
-  display_name = NULL;
-  client_id = NULL;
-  save_file = NULL;
-  disable_sm = FALSE;
-  prev_arg = NULL;
-  i = 1;
-  while (i < argc)
-    {
-      const char *arg = argv[i];
-      
-      if (strcmp (arg, "--help") == 0 ||
-          strcmp (arg, "-h") == 0 ||
-          strcmp (arg, "-?") == 0)
-        usage ();
-      else if (strcmp (arg, "--version") == 0)
-        version ();
-      else if (strcmp (arg, "--sm-disable") == 0)
-        disable_sm = TRUE;
-      else if (strcmp (arg, "--replace") == 0)
-        meta_set_replace_current_wm (TRUE);
-      else if (strstr (arg, "--display=") == arg)
-        {
-          const char *disp;
-
-          if (display_name != NULL)
-            meta_fatal ("Can't specify display twice\n");
-          
-          disp = strchr (arg, '=');
-          ++disp;
-          
-          display_name =
-            g_strconcat ("DISPLAY=", disp, NULL);
-        }
-      else if (prev_arg &&
-               strcmp (prev_arg, "--display") == 0)
-        {
-          if (display_name != NULL)
-            meta_fatal ("Can't specify display twice\n");
-
-          display_name = g_strconcat ("DISPLAY=", arg, NULL);
-        }
-      else if (strcmp (arg, "--display") == 0)
-        ; /* wait for next arg */
-      else if (strstr (arg, "--sm-client-id=") == arg)
-        {
-          const char *id;
-
-          if (client_id)
-            meta_fatal ("Can't specify client ID twice\n");
-          
-          id = strchr (arg, '=');
-          ++id;
-
-          client_id = g_strdup (id);
-        }
-      else if (prev_arg &&
-               strcmp (prev_arg, "--sm-client-id") == 0)
-        {
-          if (client_id)
-            meta_fatal ("Can't specify client ID twice\n");
-
-          client_id = g_strdup (arg);
-        }
-      else if (strcmp (arg, "--sm-client-id") == 0)
-        ; /* wait for next arg */
-      else if (strstr (arg, "--sm-save-file=") == arg)
-        {
-          const char *file;
-
-          if (save_file)
-            meta_fatal ("Can't specify SM save file twice\n");
-          
-          file = strchr (arg, '=');
-          ++file;
-
-          save_file = g_strdup (file);
-        }
-      else if (prev_arg &&
-               strcmp (prev_arg, "--sm-save-file") == 0)
-        {
-          if (save_file)
-            meta_fatal ("Can't specify SM save file twice\n");
-
-          save_file = g_strdup (arg);
-        }
-      else if (strcmp (arg, "--sm-save-file") == 0)
-        ; /* wait for next arg */
-      else
-        usage ();
-      
-      prev_arg = arg;
-      
-      ++i;
-    }
-
-  if (save_file && client_id)
-    meta_fatal ("Can't specify both SM save file and SM client id\n");
-  
-  meta_main_loop = g_main_loop_new (NULL, FALSE);
-  
-  if (display_name == NULL &&
-      g_getenv ("METACITY_DISPLAY"))
-    {
-      meta_verbose ("Using METACITY_DISPLAY %s\n",
-                    g_getenv ("METACITY_DISPLAY"));
-      display_name =
-        g_strconcat ("DISPLAY=", g_getenv ("METACITY_DISPLAY"), NULL);
-    }
-
-  if (display_name)
-    {
-      putenv (display_name);
-      /* DO NOT FREE display_name, putenv() sucks */
-    }  
-  
-  g_type_init ();
-
 #ifdef HAVE_SHAPE
   meta_verbose ("Compiled with shape extension\n");
 #else
@@ -383,11 +201,190 @@ main (int argc, char **argv)
 #else
   meta_verbose ("Compiled without composite extensions\n");
 #endif
+}
+
+static void
+meta_print_self_identity (void)
+{
+  char buf[256];
+  GDate d;
+  const char *charset;
+
+  /* Version and current date. */
+  g_date_clear (&d, 1);
+  g_date_set_time (&d, time (NULL));
+  g_date_strftime (buf, sizeof (buf), "%x", &d);
+  meta_verbose ("Metacity version %s running on %s\n",
+    VERSION, buf);
   
+  /* Locale and encoding. */
+  g_get_charset (&charset);
+  meta_verbose ("Running in locale \"%s\" with encoding \"%s\"\n",
+    setlocale (LC_ALL, NULL), charset);
+
+  /* Compilation settings. */
+  meta_print_compilation_info ();
+}
+
+typedef struct
+{
+  gchar *save_file;
+  gchar *display_name;
+  gchar *client_id;
+  gboolean replace_wm;
+  gboolean disable_sm;
+  gboolean print_version;
+} MetaArguments;
+
+/**
+ * meta_parse_options() parses argc and argv and returns the
+ * arguments that Metacity understands in struct
+ * MetaArguments. In meta_args.
+ *
+ * The strange call signature has to be written like it is so
+ * that g_option_context_parse() gets a chance to modify argc and
+ * argv.
+ **/
+static void
+meta_parse_options (int *argc, char ***argv,
+                    MetaArguments *meta_args)
+{
+  MetaArguments my_args = {NULL, NULL, NULL, FALSE, FALSE, FALSE};
+  GOptionEntry options[] = {
+    {
+      "sm-disable", 0, 0, G_OPTION_ARG_NONE,
+      &my_args.disable_sm,
+      N_("Disable connection to session manager"),
+      NULL
+    },
+    {
+      "replace", 0, 0, G_OPTION_ARG_NONE,
+      &my_args.replace_wm,
+      N_("Replace the running window manager with Metacity"),
+      NULL
+    },
+    {
+      "sm-client-id", 0, 0, G_OPTION_ARG_STRING,
+      &my_args.client_id,
+      N_("Specify session management ID"),
+      "ID"
+    },
+    {
+      "display", 0, 0, G_OPTION_ARG_STRING,
+      &my_args.display_name, N_("X Display to use"),
+      "DISPLAY"
+    },
+    {
+      "sm-save-file", 0, 0, G_OPTION_ARG_FILENAME,
+      &my_args.save_file,
+      N_("Initialize session from savefile"),
+      "FILE"
+    },
+    {
+      "version", 0, 0, G_OPTION_ARG_NONE,
+      &my_args.print_version,
+      N_("Print version"),
+      NULL
+    },
+    {NULL}
+  };
+  GOptionContext *ctx;
+  GError *error = NULL;
+
+  ctx = g_option_context_new (NULL);
+  g_option_context_add_main_entries (ctx, options, "metacity");
+  if (!g_option_context_parse (ctx, argc, argv, &error))
+    {
+      g_print ("metacity: %s\n", error->message);
+      exit(1);
+    }
+  g_option_context_free (ctx);
+  /* Return the parsed options through the meta_args param. */
+  *meta_args = my_args;
+}
+
+/**
+ * meta_select_display() is a helper function that selects
+ * which display Metacity should use. It first tries to use
+ * display_name as the display. If display_name is NULL then
+ * try to use the environment variable METACITY_DISPLAY. If that
+ * also is NULL, use the default - :0.0
+ */
+static
+void meta_select_display (gchar *display_name)
+{
+  gchar *envVar = "";
+  if (display_name)
+    envVar = g_strconcat ("DISPLAY=", display_name, NULL);
+  else if (g_getenv ("METACITY_DISPLAY"))
+    envVar = g_strconcat ("DISPLAY=",
+      g_getenv ("METACITY_DISPLAY"), NULL);
+  /* DO NOT FREE envVar, putenv() sucks */
+  putenv (envVar);
+}
+    
+int
+main (int argc, char **argv)
+{
+  struct sigaction act;
+  sigset_t empty_mask;
+  MetaArguments meta_args;
+
+  g_set_prgname (argv[0]);
+  
+  if (setlocale (LC_ALL, "") == NULL)
+    meta_warning ("Locale not understood by C library, internationalization will not work\n");
+  
+  sigemptyset (&empty_mask);
+  act.sa_handler = SIG_IGN;
+  act.sa_mask    = empty_mask;
+  act.sa_flags   = 0;
+  if (sigaction (SIGPIPE,  &act, NULL) < 0)
+    g_printerr ("Failed to register SIGPIPE handler: %s\n",
+                g_strerror (errno));
+#ifdef SIGXFSZ
+  if (sigaction (SIGXFSZ,  &act, NULL) < 0)
+    g_printerr ("Failed to register SIGXFSZ handler: %s\n",
+                g_strerror (errno));
+#endif
+
+  if (g_getenv ("METACITY_VERBOSE"))
+    meta_set_verbose (TRUE);
+  if (g_getenv ("METACITY_DEBUG"))
+    meta_set_debugging (TRUE);
+  meta_set_syncing (g_getenv ("METACITY_SYNC") != NULL);
+
+  if (g_get_home_dir ())
+    chdir (g_get_home_dir ());
+
+  meta_print_self_identity ();
+  
+  bindtextdomain (GETTEXT_PACKAGE, METACITY_LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  textdomain (GETTEXT_PACKAGE);
+
+  /* Parse command line arguments.*/
+  meta_parse_options (&argc, &argv, &meta_args);
+
+  if (meta_args.print_version)
+    version ();
+
+  meta_select_display (meta_args.display_name);
+  
+  if (meta_args.replace_wm)
+    meta_set_replace_current_wm (TRUE);
+
+  if (meta_args.save_file && meta_args.client_id)
+    meta_fatal ("Can't specify both SM save file and SM client id\n");
+  
+  meta_main_loop = g_main_loop_new (NULL, FALSE);
+  
+  g_type_init ();
+
   /* Load prefs */
   meta_prefs_init ();
   meta_prefs_add_listener (prefs_changed_callback, NULL);
-  
+
   meta_ui_init (&argc, &argv);  
 
   /* must be after UI init so we can override GDK handlers */
@@ -463,8 +460,8 @@ main (int argc, char **argv)
    * or we might try to manage a window before we have the session
    * info
    */
-  if (!disable_sm)
-    meta_session_init (client_id, save_file);
+  if (!meta_args.disable_sm)
+    meta_session_init (meta_args.client_id, meta_args.save_file);
   
   if (!meta_display_open (NULL))
     meta_exit (META_EXIT_ERROR);

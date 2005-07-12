@@ -1,7 +1,19 @@
+2005-07-12  Elijah Newren  <newren@gmail.com>
+
+	Patch from Björn Lindqvist to split up main() into more manageable
+	chunks and make use of GOpt.  Closes #305331.
+
+	* src/main.c (usage): remove this function,
+	(meta_print_compilation_info): new function taken from main(),
+	(meta_print_self_identity): new function taken from main(),
+	(struct MetaArguments) new struct to replace some free variables,
+	(meta_parse_options): new funcion taken from main() but now using
+	GOpt, (meta_select_display): new function taken from main()
+
 2005-07-12  Aivars Kalvans <aivars.kalvans@inbox.lv>
 
 	* src/screen.c (meta_screen_free): free ->xinerama_infos
-	Closes bug#307884
+	Closes #307884
 
 2005-07-11  Elijah Newren  <newren@gmail.com>
 
