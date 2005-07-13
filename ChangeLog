@@ -1,3 +1,15 @@
+2005-07-13  Elijah Newren  <newren@gmail.com>
+
+	Fix a slight bug (causing possible miscoloring of parts of the
+	titlebar) introduced by the patch from #169982.
+
+	* src/gradient.c:
+	(meta_gradient_create_interwoven):
+	(meta_gradient_create_multi_vertical):
+	
+	bitshifting operators do not take precedence over typecasting, so
+	make sure to use parentheses to get the right operation order.
+
 2005-07-12  Elijah Newren  <newren@gmail.com>
 
 	* configure.in: post-release version bump to 2.11.1

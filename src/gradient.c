@@ -198,15 +198,15 @@ meta_gradient_create_interwoven (int            width,
       
       if (k == 0)
         {
-          ptr[0] = (unsigned char) r1>>16;
-          ptr[1] = (unsigned char) g1>>16;
-          ptr[2] = (unsigned char) b1>>16;
+          ptr[0] = (unsigned char) (r1>>16);
+          ptr[1] = (unsigned char) (g1>>16);
+          ptr[2] = (unsigned char) (b1>>16);
         }
       else
         {
-          ptr[0] = (unsigned char) r2>>16;
-          ptr[1] = (unsigned char) g2>>16;
-          ptr[2] = (unsigned char) b2>>16;
+          ptr[0] = (unsigned char) (r2>>16);
+          ptr[1] = (unsigned char) (g2>>16);
+          ptr[2] = (unsigned char) (b2>>16);
         }
 
       for (j=1; j <= width/2; j *= 2)
@@ -589,9 +589,9 @@ meta_gradient_create_multi_vertical (int width, int height,
     {
       tmp = ptr;
 
-      ptr[0] = (unsigned char) r>>16;
-      ptr[1] = (unsigned char) g>>16;
-      ptr[2] = (unsigned char) b>>16;
+      ptr[0] = (unsigned char) (r>>16);
+      ptr[1] = (unsigned char) (g>>16);
+      ptr[2] = (unsigned char) (b>>16);
 
       for (x=1; x <= width/2; x *= 2)
         memcpy (&(ptr[x*3]), ptr, x*3);
