@@ -1,3 +1,11 @@
+2005-07-14  Elijah Newren  <newren@gmail.com>
+
+	Patch from Ken Harris to provide a more lenient threshold for
+	drawing rounded corners.  Fixes #122065.
+
+	* src/theme.c (meta_frame_layout_calc_geometry): use height +
+	width > 5 instead of height > 3 && width > 3 as criterion
+
 2005-07-13  Elijah Newren  <newren@gmail.com>
 
 	Fix a slight bug (causing possible miscoloring of parts of the

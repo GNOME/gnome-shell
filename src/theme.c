@@ -743,28 +743,22 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
   if (flags & META_FRAME_SHADED)
     min_size_for_rounding = 0;
   else
-    min_size_for_rounding = 3;
+    min_size_for_rounding = 5;
   
   fgeom->top_left_corner_rounded = FALSE;
   fgeom->top_right_corner_rounded = FALSE;
   fgeom->bottom_left_corner_rounded = FALSE;
   fgeom->bottom_right_corner_rounded = FALSE;
 
-  if (fgeom->top_height >= min_size_for_rounding)
-    {
-      if (fgeom->left_width >= min_size_for_rounding)
-        fgeom->top_left_corner_rounded = layout->top_left_corner_rounded;
-      if (fgeom->right_width >= min_size_for_rounding)
-        fgeom->top_right_corner_rounded = layout->top_right_corner_rounded;
-    }
+  if (fgeom->top_height + fgeom->left_width >= min_size_for_rounding)
+    fgeom->top_left_corner_rounded = layout->top_left_corner_rounded;
+  if (fgeom->top_height + fgeom->right_width >= min_size_for_rounding)
+    fgeom->top_right_corner_rounded = layout->top_right_corner_rounded;
 
-  if (fgeom->bottom_height >= min_size_for_rounding)
-    {
-      if (fgeom->left_width >= min_size_for_rounding)
-        fgeom->bottom_left_corner_rounded = layout->bottom_left_corner_rounded;
-      if (fgeom->right_width >= min_size_for_rounding)
-        fgeom->bottom_right_corner_rounded = layout->bottom_right_corner_rounded;
-    }
+  if (fgeom->bottom_height + fgeom->left_width >= min_size_for_rounding)
+    fgeom->bottom_left_corner_rounded = layout->bottom_left_corner_rounded;
+  if (fgeom->bottom_height + fgeom->right_width >= min_size_for_rounding)
+    fgeom->bottom_right_corner_rounded = layout->bottom_right_corner_rounded;
 }
 
 MetaGradientSpec*
