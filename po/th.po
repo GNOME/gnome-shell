@@ -11,14 +11,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-27 17:21-0600\n"
-"PO-Revision-Date: 2005-06-05 23:25+0700\n"
+"POT-Creation-Date: 2005-07-17 09:12+0700\n"
+"PO-Revision-Date: 2005-07-17 09:22+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <L10n@opentle.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=1; plural=0;"
 
 #: src/tools/metacity-message.c:150
 #, c-format
@@ -62,7 +62,7 @@ msgstr "เกิดข้อผิดพลาด ขณะเปิดหน�
 msgid "Failed to get hostname: %s\n"
 msgstr "ไม่สามารถอ่านชื่อโฮสต์: %s\n"
 
-#: src/display.c:316
+#: src/display.c:319
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "ไม่สามารถเปิด display '%s' ของระบบ X Window\n"
@@ -123,16 +123,8 @@ msgstr "คำสั่ง %d ยังไม่ได้ถูกกำหน�
 msgid "No terminal command has been defined.\n"
 msgstr "คำสั่งเปิดเทอร์มินัลยังไม่ได้ถูกกำหนด\n"
 
-#: src/main.c:69
-msgid ""
-"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-"display=DISPLAY] [--replace] [--version]\n"
-msgstr ""
-"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-"display=DISPLAY] [--replace] [--version]\n"
-
 # FIXME: Get a lawer to translate the legal clause.
-#: src/main.c:76
+#: src/main.c:69
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -147,18 +139,42 @@ msgstr ""
 "ไม่รับผิดชอบข้อเสียหายใดๆ "
 "ไม่รับประกันความเหมาะสมในเชิงพาณิชย์หรือการใช้งานเฉพาะทางอย่างหนึ่งอย่างใด\n"
 
-#: src/main.c:443
+#: src/main.c:257
+msgid "Disable connection to session manager"
+msgstr "ปิดการเชื่อมต่อไปยังตัวจัดการวาระ"
+
+#: src/main.c:263
+msgid "Replace the running window manager with Metacity"
+msgstr "แทนที่ตัวจัดการหน้าต่างที่กำลังทำงานอยู่ด้วย Metacity"
+
+#: src/main.c:269
+msgid "Specify session management ID"
+msgstr "ระบุ ID ของการจัดการวาระ"
+
+#: src/main.c:274
+msgid "X Display to use"
+msgstr "ดิสเพลย์ X ที่จะใช้"
+
+#: src/main.c:280
+msgid "Initialize session from savefile"
+msgstr "ใช้ค่าเริ่มต้นของวาระจากแฟ้มที่บันทึกไว้"
+
+#: src/main.c:286
+msgid "Print version"
+msgstr "แสดงเลขรุ่น"
+
+#: src/main.c:440
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "ไม่สามารถอ่านโฟลเดอร์ชุดตกแต่ง: %s\n"
 
-#: src/main.c:459
+#: src/main.c:456
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr "ไม่พบชุดตกแต่ง โปรดตรวจดูว่า %s มีอยู่จริง และบรรจุชุดตกแต่งที่ควรจะมี"
 
-#: src/main.c:521
+#: src/main.c:518
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "ไม่สามารถเริ่มการทำงานใหม่ของ: %s\n"
@@ -225,7 +241,7 @@ msgstr "ย้ายไปพื้นที่ทำงาน_บน"
 msgid "Move to Workspace _Down"
 msgstr "ย้ายไปพื้นที่ทำงาน_ล่าง"
 
-#: src/menu.c:162 src/prefs.c:1996
+#: src/menu.c:162 src/prefs.c:2106
 #, c-format
 msgid "Workspace %d"
 msgstr "พื้นที่ทำงาน %d"
@@ -1826,41 +1842,41 @@ msgstr "โหมดโฟกัสหน้าต่าง"
 msgid "Window title font"
 msgstr "แบบอักษรหัวหน้าต่าง"
 
-#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
-#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
-#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
-#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
-#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
-#: src/prefs.c:823 src/prefs.c:839
+#: src/prefs.c:528 src/prefs.c:544 src/prefs.c:560 src/prefs.c:576
+#: src/prefs.c:592 src/prefs.c:612 src/prefs.c:628 src/prefs.c:644
+#: src/prefs.c:660 src/prefs.c:676 src/prefs.c:692 src/prefs.c:708
+#: src/prefs.c:724 src/prefs.c:741 src/prefs.c:757 src/prefs.c:773
+#: src/prefs.c:789 src/prefs.c:805 src/prefs.c:820 src/prefs.c:835
+#: src/prefs.c:850 src/prefs.c:866 src/prefs.c:882 src/prefs.c:898
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf คีย์ \"%s\" ถูกตั้งค่าเป็นชนิดที่ใช้ไม่ได้\n"
 
-#: src/prefs.c:884
+#: src/prefs.c:943
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr "\"%s\" ที่พบในฐานข้อมูลข้อปรับแต่ง ใช้เป็นปุ่มใช้ร่วมสำหรับเมาส์ไม่ได้\n"
 
-#: src/prefs.c:908 src/prefs.c:1318
+#: src/prefs.c:967 src/prefs.c:1428
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf คีย์ '%s' ถูกตั้งค่าเป็นค่าที่ใช้ไม่ได้\n"
 
-#: src/prefs.c:1035
+#: src/prefs.c:1145
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "ไม่เข้าใจคำบรรยายแบบตัวอักษร \"%s\" จาก GConf คีย์ %s\n"
 
-#: src/prefs.c:1220
+#: src/prefs.c:1330
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr "%d ใน GConf คีย์ %s ไม่ใช่จำนวนพื้นที่ทำงาน ที่สมเหตุสมผล สามารถตั้งได้มากสุดเป็น %d\n"
 
-#: src/prefs.c:1280
+#: src/prefs.c:1390
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1868,24 +1884,24 @@ msgstr ""
 "ปิดการแก้ขัดที่เตรียมไว้สำหรับโปรแกรมเสียๆ บางโปรแกรมแล้ว "
 "ซึ่งอาจทำให้โปรแกรมเหล่านี้ทำงานไม่ปกติ\n"
 
-#: src/prefs.c:1345
+#: src/prefs.c:1455
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d ใน GConf คีย์ %s ต้องอยู่ระหว่าง 0 และ %d\n"
 
-#: src/prefs.c:1479
+#: src/prefs.c:1589
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "ไม่สามารถตั้งจำนวนพื้นที่ทำงานเป็น %d: %s\n"
 
-#: src/prefs.c:1723
+#: src/prefs.c:1833
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "\"%s\" ที่พบในฐานข้อมูลค่าปรับแต่ง ไม่สามารถใช้เป็นปุ่มลัด \"%s\"\n"
 
-#: src/prefs.c:2077
+#: src/prefs.c:2187
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "ไม่สามารถตั้งชื่อพื้นที่ทำงาน %d เป็น %s: %s\n"
@@ -2021,7 +2037,8 @@ msgstr "จำนวนเต็ม %ld ต้องเป็นบวก"
 msgid "Integer %ld is too large, current max is %d"
 msgstr "จำนวนเต็ม %ld ใหญ่เกินไป ตั้งได้สูงสุดเป็น %d"
 
-#: src/theme-parser.c:521 src/theme-parser.c:602 src/theme-parser.c:626
+#: src/theme-parser.c:521 src/theme-parser.c:602
+#: src/theme-parser.c:626
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "แปลง \"%s\" เป็นเลขจุดทศนิยมไม่สำเร็จ"
@@ -2051,26 +2068,29 @@ msgstr ""
 "x-large, หรือ xx-large\n"
 
 # 
-#: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
-#: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
+#: src/theme-parser.c:729 src/theme-parser.c:737
+#: src/theme-parser.c:2936 src/theme-parser.c:3025
+#: src/theme-parser.c:3032 src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"%s\" ในอีลีเมนต์ <%s>"
 
-#: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
-#: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
+#: src/theme-parser.c:807 src/theme-parser.c:897
+#: src/theme-parser.c:935 src/theme-parser.c:1012
+#: src/theme-parser.c:1062 src/theme-parser.c:1070
 #: src/theme-parser.c:1126 src/theme-parser.c:1134
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
 msgstr "ขาดแอตทริบิวต์ \"%s\" ในอีลิเมนต์ <%s>"
 
-#: src/theme-parser.c:837 src/theme-parser.c:905 src/theme-parser.c:943
-#: src/theme-parser.c:1020
+#: src/theme-parser.c:837 src/theme-parser.c:905
+#: src/theme-parser.c:943 src/theme-parser.c:1020
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "<%s> ชื่อ \"%s\" ถูกใช้เป็นครั้งที่สอง"
 
-#: src/theme-parser.c:849 src/theme-parser.c:955 src/theme-parser.c:1032
+#: src/theme-parser.c:849 src/theme-parser.c:955
+#: src/theme-parser.c:1032
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
 msgstr "<%s>: พาเรนต์ \"%s\" ไม่ได้ระบุ"
@@ -2115,20 +2135,23 @@ msgstr "ไม่รู้จักสถานะ \"%s\" สำหรับไ�
 msgid "Theme already has a menu icon for function %s state %s"
 msgstr "ชุดตกแต่งมีไอคอนเมนูสำหรับฟังก์ชัน %s สถานะ %s อยู่แล้ว"
 
-#: src/theme-parser.c:1177 src/theme-parser.c:3244 src/theme-parser.c:3323
+#: src/theme-parser.c:1177 src/theme-parser.c:3244
+#: src/theme-parser.c:3323
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "ยังไม่ได้กำหนด <draw_ops> ชื่อ \"%s\""
 
-#: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
-#: src/theme-parser.c:3124 src/theme-parser.c:3178 src/theme-parser.c:3338
-#: src/theme-parser.c:3515 src/theme-parser.c:3553 src/theme-parser.c:3591
-#: src/theme-parser.c:3629
+#: src/theme-parser.c:1192 src/theme-parser.c:1256
+#: src/theme-parser.c:1545 src/theme-parser.c:3124
+#: src/theme-parser.c:3178 src/theme-parser.c:3338
+#: src/theme-parser.c:3515 src/theme-parser.c:3553
+#: src/theme-parser.c:3591 src/theme-parser.c:3629
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "ไม่อนุญาตให้มีอีลิเมนต์ <%s> ภายใน <%s>"
 
-#: src/theme-parser.c:1282 src/theme-parser.c:1369 src/theme-parser.c:1439
+#: src/theme-parser.c:1282 src/theme-parser.c:1369
+#: src/theme-parser.c:1439
 #, c-format
 msgid "No \"name\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"name\" ในอีลิเมนต์ <%s>"
@@ -2138,7 +2161,8 @@ msgstr "ขาดแอตทริบิวต์ \"name\" ในอีลิ�
 msgid "No \"value\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"value\" ในอีลิเมนต์ <%s>"
 
-#: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
+#: src/theme-parser.c:1320 src/theme-parser.c:1334
+#: src/theme-parser.c:1393
 msgid ""
 "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
@@ -2179,8 +2203,9 @@ msgstr "ขาดแอตทริบิวต์ \"right\" ในอีลิ�
 msgid "Border \"%s\" is unknown"
 msgstr "ไม่รู้จักเส้นขอบ \"%s\""
 
-#: src/theme-parser.c:1655 src/theme-parser.c:1765 src/theme-parser.c:1868
-#: src/theme-parser.c:2055 src/theme-parser.c:2869
+#: src/theme-parser.c:1655 src/theme-parser.c:1765
+#: src/theme-parser.c:1868 src/theme-parser.c:2055
+#: src/theme-parser.c:2869
 #, c-format
 msgid "No \"color\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"color\" ในอีลิเมนต์<%s>"
@@ -2205,32 +2230,39 @@ msgstr "ขาดแอตทริบิวต์ \"x2\" ในอีลิเ�
 msgid "No \"y2\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"y2\" ในอีลิเมนต์<%s>"
 
-#: src/theme-parser.c:1772 src/theme-parser.c:1875 src/theme-parser.c:1981
-#: src/theme-parser.c:2062 src/theme-parser.c:2168 src/theme-parser.c:2266
-#: src/theme-parser.c:2483 src/theme-parser.c:2609 src/theme-parser.c:2707
-#: src/theme-parser.c:2781 src/theme-parser.c:2876
+#: src/theme-parser.c:1772 src/theme-parser.c:1875
+#: src/theme-parser.c:1981 src/theme-parser.c:2062
+#: src/theme-parser.c:2168 src/theme-parser.c:2266
+#: src/theme-parser.c:2483 src/theme-parser.c:2609
+#: src/theme-parser.c:2707 src/theme-parser.c:2781
+#: src/theme-parser.c:2876
 #, c-format
 msgid "No \"x\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"x\" ในอีลิเมนต์<%s>"
 
-#: src/theme-parser.c:1779 src/theme-parser.c:1882 src/theme-parser.c:1988
-#: src/theme-parser.c:2069 src/theme-parser.c:2175 src/theme-parser.c:2273
-#: src/theme-parser.c:2490 src/theme-parser.c:2616 src/theme-parser.c:2788
-#: src/theme-parser.c:2883
+#: src/theme-parser.c:1779 src/theme-parser.c:1882
+#: src/theme-parser.c:1988 src/theme-parser.c:2069
+#: src/theme-parser.c:2175 src/theme-parser.c:2273
+#: src/theme-parser.c:2490 src/theme-parser.c:2616
+#: src/theme-parser.c:2788 src/theme-parser.c:2883
 #, c-format
 msgid "No \"y\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"y\" ในอีลิเมนต์<%s>"
 
-#: src/theme-parser.c:1786 src/theme-parser.c:1889 src/theme-parser.c:1995
-#: src/theme-parser.c:2076 src/theme-parser.c:2182 src/theme-parser.c:2280
-#: src/theme-parser.c:2497 src/theme-parser.c:2623 src/theme-parser.c:2795
+#: src/theme-parser.c:1786 src/theme-parser.c:1889
+#: src/theme-parser.c:1995 src/theme-parser.c:2076
+#: src/theme-parser.c:2182 src/theme-parser.c:2280
+#: src/theme-parser.c:2497 src/theme-parser.c:2623
+#: src/theme-parser.c:2795
 #, c-format
 msgid "No \"width\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"width\" ในอีลิเมนต์<%s>"
 
-#: src/theme-parser.c:1793 src/theme-parser.c:1896 src/theme-parser.c:2002
-#: src/theme-parser.c:2083 src/theme-parser.c:2189 src/theme-parser.c:2287
-#: src/theme-parser.c:2504 src/theme-parser.c:2630 src/theme-parser.c:2802
+#: src/theme-parser.c:1793 src/theme-parser.c:1896
+#: src/theme-parser.c:2002 src/theme-parser.c:2083
+#: src/theme-parser.c:2189 src/theme-parser.c:2287
+#: src/theme-parser.c:2504 src/theme-parser.c:2630
+#: src/theme-parser.c:2802
 #, c-format
 msgid "No \"height\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"height\" ในอีลิเมนต์<%s>"
@@ -2270,7 +2302,8 @@ msgstr "ขาดแอตทริบิวต์ \"filename\" ในอีล�
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "ไม่เข้าใจชนิดการเติม \"%s\" สำหรับอีลิเมนต์ <%s>"
 
-#: src/theme-parser.c:2462 src/theme-parser.c:2595 src/theme-parser.c:2700
+#: src/theme-parser.c:2462 src/theme-parser.c:2595
+#: src/theme-parser.c:2700
 #, c-format
 msgid "No \"state\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"state\" ในอีลิเมนต์ <%s>"
@@ -2285,7 +2318,8 @@ msgstr "ขาดแอตทริบิวต์ \"shadow\" ในอีลิ
 msgid "No \"arrow\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"arrow\" ในอีลิเมนต์ <%s>"
 
-#: src/theme-parser.c:2529 src/theme-parser.c:2651 src/theme-parser.c:2739
+#: src/theme-parser.c:2529 src/theme-parser.c:2651
+#: src/theme-parser.c:2739
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "ไม่เข้าใจค่า state \"%s\" สำหรับอีลิเมนต์ <%s>"
@@ -2402,7 +2436,8 @@ msgstr "ไม่ควรมีแอตทริบิวต์ \"resize\" ใ
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "มีรูปแบบสำหรับ state %s resize %s focus %s กำหนดไว้ก่อนแล้ว"
 
-#: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
+#: src/theme-parser.c:3475 src/theme-parser.c:3486
+#: src/theme-parser.c:3497
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "มีรูปแบบสำหรับ state %s focus %s กำหนดไว้ก่อนแล้ว"
@@ -2459,7 +2494,8 @@ msgstr "ไม่อนุญาตให้มีอีลิเมนต์·<
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "ไม่อนุญาตให้มีอีลิเมนต์·<%s>·ภายในอีลิเมนต์เกี่ยวกับคำสั่งวาด"
 
-#: src/theme-parser.c:3728 src/theme-parser.c:3758 src/theme-parser.c:3763
+#: src/theme-parser.c:3728 src/theme-parser.c:3758
+#: src/theme-parser.c:3763
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "ไม่อนุญาตให้มีอีลิเมนต์·<%s>·ภายในอีลิเมนต์·<%s>"
@@ -2742,11 +2778,11 @@ msgstr "ค่า aspect ratio %g ของปุ่มไม่สมเหต�
 msgid "Frame geometry does not specify size of buttons"
 msgstr "ค่าเรขาคณิตของเฟรมไม่ได้ระบุขนาดของปุ่ม"
 
-#: src/theme.c:849
+#: src/theme.c:843
 msgid "Gradients should have at least two colors"
 msgstr "การไล่สีควรใช้อย่างน้อยสองสี"
 
-#: src/theme.c:975
+#: src/theme.c:969
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -2755,7 +2791,7 @@ msgstr ""
 "การกำหนดสี GTK ต้องเขียนสถานะในวงเล็บเหลี่ยม เช่น gtk:fg[NORMAL] เมื่อ NORMAL "
 "เป็นสถานะ; ไม่สามารถแจงค่า \"%s\""
 
-#: src/theme.c:989
+#: src/theme.c:983
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -2764,17 +2800,17 @@ msgstr ""
 "การกำหนดสี·GTK·ต้องมีวงเล็บเหลี่ยมปิดหลังสถานะด้วย·เช่น·gtk:fg[NORMAL]"
 "·เมื่อ·NORMAL·เป็นสถานะ;·ไม่สามารถแจงค่า·\"%s\""
 
-#: src/theme.c:1000
+#: src/theme.c:994
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "ไม่เข้าใจสถานะ \"%s\" ในการระบุสี"
 
-#: src/theme.c:1013
+#: src/theme.c:1007
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "ไม่เข้าใจองค์ประกอบ \"%s\" ในการระบุสี"
 
-#: src/theme.c:1043
+#: src/theme.c:1037
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -2782,89 +2818,89 @@ msgid ""
 msgstr ""
 "รูปแบบการเกลี่ยสีคือ \"blend/bg_color/fg_color/alpha\", ค่า \"%s\" ไม่ตรงกับรูปแบบ"
 
-#: src/theme.c:1054
+#: src/theme.c:1048
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "ไม่สามารถแจงค่าอัลฟา \"%s\" ในการเกลี่ยสี"
 
-#: src/theme.c:1064
+#: src/theme.c:1058
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "ค่าอัลฟา \"%s\" ในการเกลี่ยสีไม่อยู่ระหว่าง 0.0 และ 1.0"
 
-#: src/theme.c:1111
+#: src/theme.c:1105
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "รูปแบบของเฉดสีคือ \"shade/base_color/factor \", \"%s\" ไม่ตรงกับรูปแบบ"
 
-#: src/theme.c:1122
+#: src/theme.c:1116
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "ไม่สามารถแจงค่าตัวคูณของเฉด \"%s\" ในเฉดสี"
 
-#: src/theme.c:1132
+#: src/theme.c:1126
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "ตัวคูณเฉดสี \"%s\" ในเฉดสีเป็นค่าลบ"
 
-#: src/theme.c:1161
+#: src/theme.c:1155
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "ไม่เข้าใจสี \"%s\""
 
-#: src/theme.c:1423
+#: src/theme.c:1417
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "นิพจน์พิกัดมีอักขระ'%s' ซึ่งไม่อนุญาตให้ใช้"
 
-#: src/theme.c:1450
+#: src/theme.c:1444
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "นิพจน์พิกัดมีเลขจุดทศนิยม '%s'·ที่แจงค่าไม่ได้"
 
-#: src/theme.c:1464
+#: src/theme.c:1458
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "นิพจน์พิกัดมีเลขจำนวนเต็ม·'%s' ที่แจงค่าไม่ได้"
 
-#: src/theme.c:1531
+#: src/theme.c:1525
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr "นิพจน์พิกัดมีเครื่องหมายดำเนินการที่ไม่รู้จัก เริ่มจากตำแหน่ง·\"%s\""
 
-#: src/theme.c:1588
+#: src/theme.c:1582
 msgid "Coordinate expression was empty or not understood"
 msgstr "นิพจน์พิกัดว่างเปล่าหรือไม่สามารถเข้าใจ"
 
-#: src/theme.c:1731 src/theme.c:1741 src/theme.c:1775
+#: src/theme.c:1725 src/theme.c:1735 src/theme.c:1769
 msgid "Coordinate expression results in division by zero"
 msgstr "นิพจน์พิกัดมีผลลัพธ์ที่เป็นการหารด้วยศูนย์"
 
-#: src/theme.c:1783
+#: src/theme.c:1777
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "นิพจน์พิกัดพยายามใช้ตัวดำเนินการ mod กับตัวเลขจุดทศนิยม"
 
-#: src/theme.c:1840
+#: src/theme.c:1834
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "นิพจน์พิกัดมีตัวดำเนินการ\"%s\" ในที่ที่ควรจะเป็นตัวถูกดำเนินการ"
 
-#: src/theme.c:1849
+#: src/theme.c:1843
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "นิพจน์พิกัดมีตัวถูกดำเนินการในที่ที่ควรจะเป็นตัวดำเนินการ"
 
-#: src/theme.c:1857
+#: src/theme.c:1851
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "นิพจน์พิกัดจบด้วยตัวดำเนินการแทนที่จะเป็นตัวถูกดำเนินการ"
 
-#: src/theme.c:1867
+#: src/theme.c:1861
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -2872,7 +2908,7 @@ msgid ""
 msgstr ""
 "นิพจน์พิกัดมีตัวดำเนินการ\"%c\" ตามหลังตัวดำเนินการ \"%c\" โดยไม่มีตัวถูกดำเนินการคั่นกลาง"
 
-#: src/theme.c:1986
+#: src/theme.c:1980
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
@@ -2880,29 +2916,29 @@ msgstr ""
 "ตัวแจงค่านิพจน์พิกัดทำข้อมูลล้น ความจริงแล้วนี่ถือเป็นบักของ Metacity "
 "แต่คุณแน่ใจหรือว่าคุณต้องการนิพจน์ที่ใหญ่มหึมาเช่นนี้?"
 
-#: src/theme.c:2015
+#: src/theme.c:2009
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "นิพจน์พิกัดมีวงเล็บปิดโดยไม่มีวงเล็บเปิด"
 
-#: src/theme.c:2078
+#: src/theme.c:2072
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "นิพจน์พิกัดมีตัวแปรหรือค่าคงที่ \"%s\" ที่ไม่รู้จัก"
 
-#: src/theme.c:2135
+#: src/theme.c:2129
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "นิพจน์พิกัดมีวงเล็บเปิดโดยไม่มีวงเล็บปิด"
 
-#: src/theme.c:2146
+#: src/theme.c:2140
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "นิพจน์พิกัดท่าทางจะไม่มีตัวดำเนินการหรือตัวถูกดำเนินการเลย"
 
-#: src/theme.c:2390 src/theme.c:2412 src/theme.c:2433
+#: src/theme.c:2384 src/theme.c:2406 src/theme.c:2427
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "ชุดตกแต่งมีนิพจน์ \"%s\" ซึ่งทำให้เกิดข้อผิดพลาด: %s\n"
 
-#: src/theme.c:3919
+#: src/theme.c:3913
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2911,25 +2947,25 @@ msgstr ""
 "ต้องระบุ <button function =\"%s\" state=\"%s\" draw_ops=\"อะไรก็ตามแต่\"/> "
 "สำหรับรูปแบบเฟรมด้วย"
 
-#: src/theme.c:4369 src/theme.c:4401
+#: src/theme.c:4363 src/theme.c:4395
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "ขาด <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"อะไรก็ตามแต่\"/>"
 
-#: src/theme.c:4452
+#: src/theme.c:4446
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "โหลดชุดตกแต่ง \"%s\" ล้มเหลว: %s\n"
 
-#: src/theme.c:4598 src/theme.c:4605 src/theme.c:4612 src/theme.c:4619
-#: src/theme.c:4626
+#: src/theme.c:4592 src/theme.c:4599 src/theme.c:4606
+#: src/theme.c:4613 src/theme.c:4620
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "ไม่ได้กำหนดค่า <%s> สำหรับชุดตกแต่ง \"%s\""
 
-#: src/theme.c:4636
+#: src/theme.c:4630
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -2938,7 +2974,7 @@ msgstr ""
 "ไม่ได้กำหนดรูปแบบเฟรมสำหรับชนิดหน้าต่าง \"%s\" ในชุดตกแต่ง \"%s\", กรุณาเพิ่มอีลิเมนต์ "
 "<window type=\"%s\" style_set=\"อะไรก็ตามแต่\"/>"
 
-#: src/theme.c:4658
+#: src/theme.c:4652
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2947,13 +2983,13 @@ msgstr ""
 "ต้องระบุ <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"อะไรก็ตามแต่\"/> "
 "สำหรับชุดตกแต่งนี้"
 
-#: src/theme.c:5047 src/theme.c:5109
+#: src/theme.c:5041 src/theme.c:5103
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "ค่าคงที่ที่ผู้ใช้กำหนดเองต้องเริ่มต้นด้วยอักษรตัวใหญ่; แต่ \"%s\" ไม่ได้เป็นตามนั้น"
 
-#: src/theme.c:5055 src/theme.c:5117
+#: src/theme.c:5049 src/theme.c:5111
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "ค่าคงที่ \"%s\" ถูกกำหนดไว้แล้ว"
@@ -3046,6 +3082,13 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "คุณสมบัติ %s ของหน้าต่าง 0x%lx มีค่าที่ไม่ใช่ UTF-8 ที่ถูกต้องสำหรับหัวข้อที่ %d ในรายการ\n"
+
+#~ msgid ""
+#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
+#~ "display=DISPLAY] [--replace] [--version]\n"
+#~ msgstr ""
+#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
+#~ "display=DISPLAY] [--replace] [--version]\n"
 
 #~ msgid "Put on _All Workspaces"
 #~ msgstr "แสดงบนทุก_พื้นที่ทำงาน"
