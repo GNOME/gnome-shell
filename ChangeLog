@@ -1,3 +1,8 @@
+2005-07-18  Matthias Clasen  <mclasen@redhat.com>
+	
+	* configure.in: Add checks for Xcursor, to make the changes
+	done on 2005-07-11 effective.
+
 2005-07-14  Elijah Newren  <newren@gmail.com>
 
 	Patch from Ken Harris to provide a more lenient threshold for

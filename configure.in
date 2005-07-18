@@ -258,6 +258,20 @@ if test x$have_xrender = xyes; then
   AC_DEFINE(HAVE_RENDER, , [Building with Render extension support])
 fi
 
+AC_MSG_CHECKING([Xcursor])
+if $PKG_CONFIG xcursor; then
+     have_xcursor=yes
+  else
+     have_xcursor=no
+  fi
+  AC_MSG_RESULT($have_xcursor)
+
+if test x$have_xcursor = xyes; then
+  echo "Building with Xcursor"
+  METACITY_PC_MODULES="$METACITY_PC_MODULES xcursor"
+  AC_DEFINE(HAVE_XCURSOR, , [Building with Xcursor support]) 
+fi
+
 PKG_CHECK_MODULES(METACITY, $METACITY_PC_MODULES)
 
 AC_PATH_XTRA
@@ -498,6 +512,7 @@ metacity-$VERSION:
 	Resize-and-rotate:        ${found_randr}
 	Xsync:                    ${found_xsync}
 	Render:                   ${have_xrender}
+	Xcursor:                  ${have_xcursor}
 "
 echo "This is the UNSTABLE branch of metacity"
 echo "Use 2.10.x for stable (gnome-2-10 branch in CVS)"
