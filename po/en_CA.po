@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-27 17:21-0600\n"
-"PO-Revision-Date: 2005-02-06 18:28-0400\n"
+"POT-Creation-Date: 2005-07-18 05:01-0400\n"
+"PO-Revision-Date: 2005-07-18 18:28-0400\n"
 "Last-Translator: Adam Weinberger <adamw@gnome.org>\n"
 "Language-Team: Canadian English <adamw@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -59,7 +59,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Failed to get hostname: %s\n"
 
-#: src/display.c:316
+#: src/display.c:319
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Failed to open X Window System display '%s'\n"
@@ -125,14 +125,6 @@ msgid "No terminal command has been defined.\n"
 msgstr "No terminal command has been defined.\n"
 
 #: src/main.c:69
-msgid ""
-"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-"display=DISPLAY] [--replace] [--version]\n"
-msgstr ""
-"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-"display=DISPLAY] [--replace] [--version]\n"
-
-#: src/main.c:76
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -147,19 +139,43 @@ msgstr ""
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 
-#: src/main.c:443
+#: src/main.c:257
+msgid "Disable connection to session manager"
+msgstr "Disable connection to session manager"
+
+#: src/main.c:263
+msgid "Replace the running window manager with Metacity"
+msgstr "Replace the running window manager with Metacity"
+
+#: src/main.c:269
+msgid "Specify session management ID"
+msgstr "Specify session management ID"
+
+#: src/main.c:274
+msgid "X Display to use"
+msgstr "X Display to use"
+
+#: src/main.c:280
+msgid "Initialize session from savefile"
+msgstr "Initialize session from savefile"
+
+#: src/main.c:286
+msgid "Print version"
+msgstr "Print version"
+
+#: src/main.c:440
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Failed to scan themes directory: %s\n"
 
-#: src/main.c:459
+#: src/main.c:456
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 
-#: src/main.c:521
+#: src/main.c:518
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Failed to restart: %s\n"
@@ -226,7 +242,7 @@ msgstr "Move to Workspace _Up"
 msgid "Move to Workspace _Down"
 msgstr "Move to Workspace _Down"
 
-#: src/menu.c:162 src/prefs.c:1996
+#: src/menu.c:162 src/prefs.c:2106
 #, c-format
 msgid "Workspace %d"
 msgstr "Workspace %d"
@@ -1923,17 +1939,17 @@ msgstr "Window focus mode"
 msgid "Window title font"
 msgstr "Window title font"
 
-#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
-#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
-#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
-#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
-#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
-#: src/prefs.c:823 src/prefs.c:839
+#: src/prefs.c:528 src/prefs.c:544 src/prefs.c:560 src/prefs.c:576
+#: src/prefs.c:592 src/prefs.c:612 src/prefs.c:628 src/prefs.c:644
+#: src/prefs.c:660 src/prefs.c:676 src/prefs.c:692 src/prefs.c:708
+#: src/prefs.c:724 src/prefs.c:741 src/prefs.c:757 src/prefs.c:773
+#: src/prefs.c:789 src/prefs.c:805 src/prefs.c:820 src/prefs.c:835
+#: src/prefs.c:850 src/prefs.c:866 src/prefs.c:882 src/prefs.c:898
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf key \"%s\" is set to an invalid type\n"
 
-#: src/prefs.c:884
+#: src/prefs.c:943
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1942,17 +1958,17 @@ msgstr ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 
-#: src/prefs.c:908 src/prefs.c:1318
+#: src/prefs.c:967 src/prefs.c:1428
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf key '%s' is set to an invalid value\n"
 
-#: src/prefs.c:1035
+#: src/prefs.c:1145
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Could not parse font description \"%s\" from GConf key %s\n"
 
-#: src/prefs.c:1220
+#: src/prefs.c:1330
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1961,7 +1977,7 @@ msgstr ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 
-#: src/prefs.c:1280
+#: src/prefs.c:1390
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1969,17 +1985,17 @@ msgstr ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 
-#: src/prefs.c:1345
+#: src/prefs.c:1455
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d stored in GConf key %s is out of range 0 to %d\n"
 
-#: src/prefs.c:1479
+#: src/prefs.c:1589
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Error setting number of workspaces to %d: %s\n"
 
-#: src/prefs.c:1723
+#: src/prefs.c:1833
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1988,7 +2004,7 @@ msgstr ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 
-#: src/prefs.c:2077
+#: src/prefs.c:2187
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Error setting name for workspace %d to \"%s\": %s\n"
@@ -2850,11 +2866,11 @@ msgstr "Button aspect ratio %g is not reasonable"
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Frame geometry does not specify size of buttons"
 
-#: src/theme.c:849
+#: src/theme.c:843
 msgid "Gradients should have at least two colors"
 msgstr "Gradients should have at least two colours"
 
-#: src/theme.c:975
+#: src/theme.c:969
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -2863,7 +2879,7 @@ msgstr ""
 "GTK colour specification must have the state in brackets, e.g. gtk:fg"
 "[NORMAL] where NORMAL is the state; could not parse \"%s\""
 
-#: src/theme.c:989
+#: src/theme.c:983
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -2872,17 +2888,17 @@ msgstr ""
 "GTK colour specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 
-#: src/theme.c:1000
+#: src/theme.c:994
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Did not understand state \"%s\" in colour specification"
 
-#: src/theme.c:1013
+#: src/theme.c:1007
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Did not understand colour component \"%s\" in colour specification"
 
-#: src/theme.c:1043
+#: src/theme.c:1037
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -2891,44 +2907,44 @@ msgstr ""
 "Blend format is \"blend/bg_colour/fg_colour/alpha\", \"%s\" does not fit the "
 "format"
 
-#: src/theme.c:1054
+#: src/theme.c:1048
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Could not parse alpha value \"%s\" in blended colour"
 
-#: src/theme.c:1064
+#: src/theme.c:1058
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "Alpha value \"%s\" in blended colour is not between 0.0 and 1.0"
 
-#: src/theme.c:1111
+#: src/theme.c:1105
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "Shade format is \"shade/base_colour/factor\", \"%s\" does not fit the format"
 
-#: src/theme.c:1122
+#: src/theme.c:1116
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Could not parse shade factor \"%s\" in shaded colour"
 
-#: src/theme.c:1132
+#: src/theme.c:1126
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Shade factor \"%s\" in shaded colour is negative"
 
-#: src/theme.c:1161
+#: src/theme.c:1155
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Could not parse colour \"%s\""
 
-#: src/theme.c:1423
+#: src/theme.c:1417
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Coordinate expression contains character '%s' which is not allowed"
 
-#: src/theme.c:1450
+#: src/theme.c:1444
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -2937,12 +2953,12 @@ msgstr ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 
-#: src/theme.c:1464
+#: src/theme.c:1458
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "Coordinate expression contains integer '%s' which could not be parsed"
 
-#: src/theme.c:1531
+#: src/theme.c:1525
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -2951,36 +2967,36 @@ msgstr ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 
-#: src/theme.c:1588
+#: src/theme.c:1582
 msgid "Coordinate expression was empty or not understood"
 msgstr "Coordinate expression was empty or not understood"
 
-#: src/theme.c:1731 src/theme.c:1741 src/theme.c:1775
+#: src/theme.c:1725 src/theme.c:1735 src/theme.c:1769
 msgid "Coordinate expression results in division by zero"
 msgstr "Coordinate expression results in division by zero"
 
-#: src/theme.c:1783
+#: src/theme.c:1777
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 
-#: src/theme.c:1840
+#: src/theme.c:1834
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 
-#: src/theme.c:1849
+#: src/theme.c:1843
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Coordinate expression had an operand where an operator was expected"
 
-#: src/theme.c:1857
+#: src/theme.c:1851
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Coordinate expression ended with an operator instead of an operand"
 
-#: src/theme.c:1867
+#: src/theme.c:1861
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -2989,7 +3005,7 @@ msgstr ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 
-#: src/theme.c:1986
+#: src/theme.c:1980
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
@@ -2997,30 +3013,30 @@ msgstr ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
 
-#: src/theme.c:2015
+#: src/theme.c:2009
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "Coordinate expression had a close parenthesis with no open parenthesis"
 
-#: src/theme.c:2078
+#: src/theme.c:2072
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Coordinate expression had unknown variable or constant \"%s\""
 
-#: src/theme.c:2135
+#: src/theme.c:2129
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 "Coordinate expression had an open parenthesis with no close parenthesis"
 
-#: src/theme.c:2146
+#: src/theme.c:2140
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Coordinate expression doesn't seem to have any operators or operands"
 
-#: src/theme.c:2390 src/theme.c:2412 src/theme.c:2433
+#: src/theme.c:2384 src/theme.c:2406 src/theme.c:2427
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 
-#: src/theme.c:3919
+#: src/theme.c:3913
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3029,25 +3045,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 
-#: src/theme.c:4369 src/theme.c:4401
+#: src/theme.c:4363 src/theme.c:4395
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: src/theme.c:4452
+#: src/theme.c:4446
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Failed to load theme \"%s\": %s\n"
 
-#: src/theme.c:4598 src/theme.c:4605 src/theme.c:4612 src/theme.c:4619
-#: src/theme.c:4626
+#: src/theme.c:4592 src/theme.c:4599 src/theme.c:4606 src/theme.c:4613
+#: src/theme.c:4620
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "No <%s> set for theme \"%s\""
 
-#: src/theme.c:4636
+#: src/theme.c:4630
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3056,7 +3072,7 @@ msgstr ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 
-#: src/theme.c:4658
+#: src/theme.c:4652
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3065,14 +3081,14 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 
-#: src/theme.c:5047 src/theme.c:5109
+#: src/theme.c:5041 src/theme.c:5103
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 
-#: src/theme.c:5055 src/theme.c:5117
+#: src/theme.c:5049 src/theme.c:5111
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Constant \"%s\" has already been defined"
