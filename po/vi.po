@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity GNOME 2.10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-21 06:41+0000\n"
-"PO-Revision-Date: 2005-07-08 16:23+0930\n"
+"POT-Creation-Date: 2005-07-23 06:42+0000\n"
+"PO-Revision-Date: 2005-07-23 20:48+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -30,18 +30,18 @@ msgstr "Metacity đã được biên dịch không hỗ trợ phương thức ch
 #: ../src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
-msgstr "Không thể phân tích «%s» thành một số nguyên."
+msgstr "Không thể phân tích « %s » thành một số nguyên."
 
 #: ../src/delete.c:70 ../src/delete.c:97 ../src/metacity-dialog.c:77
 #: ../src/theme-parser.c:476 ../src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Không thể hiểu ký tự đuôi «%s» trong chuỗi «%s»."
+msgstr "Không thể hiểu ký tự đuôi « %s » trong chuỗi « %s »."
 
 #: ../src/delete.c:128
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Lỗi phân tích thông điệp «%s» từ tiến trình hội thoại.\n"
+msgstr "Lỗi phân tích thông điệp « %s » từ tiến trình hội thoại.\n"
 
 #: ../src/delete.c:263
 #, c-format
@@ -64,7 +64,7 @@ msgstr "Lỗi lấy tên máy: %s\n"
 #: ../src/display.c:319
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr "Lỗi mở bộ trình bày Hệ thống Cửa sổ X «%s».\n"
+msgstr "Lỗi mở bộ trình bày Hệ thống Cửa sổ X « %s ».\n"
 
 #: ../src/errors.c:231
 #, c-format
@@ -73,14 +73,14 @@ msgid ""
 "most likely the X server was shut down or you killed/destroyed\n"
 "the window manager.\n"
 msgstr ""
-"Mất liên kết với bộ trình bày «%s»;\n"
+"Mất liên kết với bộ trình bày « %s »;\n"
 "thường là do trình phục vụ X bị ngừng hoạt động hoặc \n"
 "bạn đã buộc chấm dứt hoạt động bộ quản lý cửa sổ.\n"
 
 #: ../src/errors.c:238
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr "Lỗi gõ/xuất nghiêm trọng %d (%s) trên bộ trình bày «%s».\n"
+msgstr "Lỗi gõ/xuất nghiêm trọng %d (%s) trên bộ trình bày « %s ».\n"
 
 #: ../src/frames.c:1125
 msgid "Close Window"
@@ -108,7 +108,7 @@ msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr ""
-"Một chương trình khác đã dùng phím «%s» với phím bổ trợ «%x» như là tổ hợp.\n"
+"Một chương trình khác đã dùng phím « %s » với phím bổ trợ «%x» như là tổ hợp.\n"
 
 #: ../src/keybindings.c:2535
 #, c-format
@@ -142,27 +142,27 @@ msgstr ""
 
 #: ../src/main.c:257
 msgid "Disable connection to session manager"
-msgstr ""
+msgstr "Vô hiệu hóa sự kết nối đến bộ quản lý phiên làm việc"
 
 #: ../src/main.c:263
 msgid "Replace the running window manager with Metacity"
-msgstr ""
+msgstr "Thay thế bộ quản lý cửa sổ đang chạy bằng Metacity"
 
 #: ../src/main.c:269
 msgid "Specify session management ID"
-msgstr ""
+msgstr "Ghi rõ ID quản lý phiên làm việc"
 
 #: ../src/main.c:274
 msgid "X Display to use"
-msgstr ""
+msgstr "Bộ trình bày X cần dùng"
 
 #: ../src/main.c:280
 msgid "Initialize session from savefile"
-msgstr ""
+msgstr "Khởi động phiên làm việc từ tập tin lưu"
 
 #: ../src/main.c:286
 msgid "Print version"
-msgstr ""
+msgstr "In ra phiên bản"
 
 #: ../src/main.c:440
 #, c-format
@@ -174,7 +174,7 @@ msgstr "Lỗi quét thư mục sắc thái: %s\n"
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
-"Không thể tìm thấy sắc thái. Hãy chắc rằng «%s» tồn tại và chứa những sắc "
+"Không thể tìm thấy sắc thái. Hãy chắc rằng « %s » tồn tại và chứa những sắc "
 "thái thường dùng."
 
 #: ../src/main.c:518
@@ -363,7 +363,7 @@ msgstr "Mod5"
 #: ../src/metacity-dialog.c:110
 #, c-format
 msgid "The window \"%s\" is not responding."
-msgstr "Cửa sổ «%s» không trả lời."
+msgstr "Cửa sổ « %s » không trả lời."
 
 #: ../src/metacity-dialog.c:118
 msgid ""
@@ -396,7 +396,7 @@ msgid ""
 "There was an error running \"%s\":\n"
 "%s."
 msgstr ""
-"Gặp lỗi khi chạy «%s»:\n"
+"Gặp lỗi khi chạy « %s »:\n"
 "%s."
 
 # Name: don't translate / Tên: đừng dịch
@@ -1945,7 +1945,7 @@ msgstr "Phông chữ tựa đề cửa sổ"
 #: ../src/prefs.c:850 ../src/prefs.c:866 ../src/prefs.c:882 ../src/prefs.c:898
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "Khóa GConf «%s» được đặt kiểu sai\n"
+msgstr "Khóa GConf « %s » được đặt kiểu sai\n"
 
 #: ../src/prefs.c:943
 #, c-format
@@ -1953,18 +1953,18 @@ msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr ""
-"Tìm thấy «%s» trong cơ sở dữ liệu cấu hình không phải giá trị hợp lệ cho bộ "
+"Tìm thấy « %s » trong cơ sở dữ liệu cấu hình không phải giá trị hợp lệ cho bộ "
 "biến đổi nút chuột.\n"
 
 #: ../src/prefs.c:967 ../src/prefs.c:1428
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "Khóa GConf «%s» được đặt giá trị không hợp lệ\n"
+msgstr "Khóa GConf « %s » được đặt giá trị không hợp lệ\n"
 
 #: ../src/prefs.c:1145
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "Không thể phân tách mô tả phông chữ «%s» từ khóa GConf «%s».\n"
+msgstr "Không thể phân tách mô tả phông chữ « %s » từ khóa GConf « %s ».\n"
 
 #: ../src/prefs.c:1330
 #, c-format
@@ -1972,7 +1972,7 @@ msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr ""
-"«%d» được lưu trong khóa GConf «%s» không phải là một con số hợp lý cho số "
+"«%d» được lưu trong khóa GConf « %s » không phải là một con số hợp lý cho số "
 "vùng làm việc, hiện thời tối đa là «%d».\n"
 
 #: ../src/prefs.c:1390
@@ -1986,7 +1986,7 @@ msgstr ""
 #: ../src/prefs.c:1455
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr "«%d» được lưu trong khóa GConf «%s» nằm ngoài phạm vi từ 0 tới «%d».\n"
+msgstr "«%d» được lưu trong khóa GConf « %s » nằm ngoài phạm vi từ 0 tới «%d».\n"
 
 #: ../src/prefs.c:1589
 #, c-format
@@ -1999,13 +1999,13 @@ msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr ""
-"Tìm thấy «%s» trong cơ sở dữ liệu cấu hình không phải giá trị hợp lệ cho tổ "
-"hợp phím «%s».\n"
+"Tìm thấy « %s » trong cơ sở dữ liệu cấu hình không phải giá trị hợp lệ cho tổ "
+"hợp phím « %s ».\n"
 
 #: ../src/prefs.c:2187
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "Gặp lỗi khi đặt tên cho vùng làm việc «%d» thành «%s»: %s\n"
+msgstr "Gặp lỗi khi đặt tên cho vùng làm việc «%d» thành « %s »: %s\n"
 
 # Variable: don't translate / Biến: đừng dịch
 #: ../src/resizepopup.c:126
@@ -2016,7 +2016,7 @@ msgstr "%d x %d"
 #: ../src/screen.c:408
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr "Màn hình %d trên bộ trình bày «%s» không hợp lệ.\n"
+msgstr "Màn hình %d trên bộ trình bày « %s » không hợp lệ.\n"
 
 #: ../src/screen.c:424
 #, c-format
@@ -2024,7 +2024,7 @@ msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
-"Màn hình %d trên bộ trình bày «%s» đã có bộ quản lý cửa sổ rồi; hãy thử dùng "
+"Màn hình %d trên bộ trình bày « %s » đã có bộ quản lý cửa sổ rồi; hãy thử dùng "
 "tùy chọn «--replace» để _thay thế_ bộ quản lý cửa sổ đang dùng.\n"
 
 #: ../src/screen.c:448
@@ -2033,37 +2033,37 @@ msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Không thể lấy vùng chọn bộ quản lý cửa sổ trên Màn hình %d trên bộ trình bày "
-"«%s».\n"
+"« %s ».\n"
 
 #: ../src/screen.c:506
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "Màn hình %d trên bộ trình bày «%s» đã có bộ quản lý cửa sổ rồi.\n"
+msgstr "Màn hình %d trên bộ trình bày « %s » đã có bộ quản lý cửa sổ rồi.\n"
 
 #: ../src/screen.c:716
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "Không thể giải phóng Màn hình %d trên bộ trình bày «%s».\n"
+msgstr "Không thể giải phóng Màn hình %d trên bộ trình bày « %s ».\n"
 
 #: ../src/session.c:884 ../src/session.c:891
 #, c-format
 msgid "Could not create directory '%s': %s\n"
-msgstr "Không thể tạo thư mục «%s»: %s\n"
+msgstr "Không thể tạo thư mục « %s »: %s\n"
 
 #: ../src/session.c:901
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "Không thể mở tập tin phiên làm việc «%s» để ghi: %s\n"
+msgstr "Không thể mở tập tin phiên làm việc « %s » để ghi: %s\n"
 
 #: ../src/session.c:1053
 #, c-format
 msgid "Error writing session file '%s': %s\n"
-msgstr "Gặp lỗi khi ghi tập tin phiên làm việc «%s»: %s\n"
+msgstr "Gặp lỗi khi ghi tập tin phiên làm việc « %s »: %s\n"
 
 #: ../src/session.c:1058
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr "Gặp lỗi khi đóng tập tin phiên làm việc «%s»: %s\n"
+msgstr "Gặp lỗi khi đóng tập tin phiên làm việc « %s »: %s\n"
 
 #: ../src/session.c:1133
 #, c-format
@@ -2082,7 +2082,7 @@ msgstr "Thấy thuộc tính <metacity_session>, nhưng đã có session ID rồ
 #: ../src/session.c:1230
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
-msgstr "Thuộc tính lạ «%s» trên phần tử <metacity_session>."
+msgstr "Thuộc tính lạ « %s » trên phần tử <metacity_session>."
 
 #: ../src/session.c:1247
 msgid "nested <window> tag"
@@ -2091,22 +2091,22 @@ msgstr "thẻ <window> lồng nhau"
 #: ../src/session.c:1305 ../src/session.c:1337
 #, c-format
 msgid "Unknown attribute %s on <window> element"
-msgstr "Thuộc tính lạ «%s» trên phần tử <window>"
+msgstr "Thuộc tính lạ « %s » trên phần tử <window>"
 
 #: ../src/session.c:1409
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
-msgstr "Thuộc tính lạ «%s» trên phần tử <maximized>"
+msgstr "Thuộc tính lạ « %s » trên phần tử <maximized>"
 
 #: ../src/session.c:1469
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
-msgstr "Thuộc tính lạ «%s» trên phần tử <geometry>"
+msgstr "Thuộc tính lạ « %s » trên phần tử <geometry>"
 
 #: ../src/session.c:1489
 #, c-format
 msgid "Unknown element %s"
-msgstr "Phần tử lạ «%s»"
+msgstr "Phần tử lạ « %s »"
 
 #: ../src/session.c:1961
 #, c-format
@@ -2125,12 +2125,12 @@ msgstr "Dòng %d ký tự %d: %s"
 #: ../src/theme-parser.c:396
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr "Thuộc tính «%s» lặp hai lần trên cùng phần tử <%s>."
+msgstr "Thuộc tính « %s » lặp hai lần trên cùng phần tử <%s>."
 
 #: ../src/theme-parser.c:414 ../src/theme-parser.c:439
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr "Thuộc tính «%s» không hợp lệ trên phần tử <%s> trong ngữ cảnh này."
+msgstr "Thuộc tính « %s » không hợp lệ trên phần tử <%s> trong ngữ cảnh này."
 
 #: ../src/theme-parser.c:485
 #, c-format
@@ -2146,7 +2146,7 @@ msgstr "Số nguyên %ld quá lớn, giá trị tối đa hiện thời là %d"
 #: ../src/theme-parser.c:626
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
-msgstr "Không thể phân tích «%s» thành số với điểm phù động."
+msgstr "Không thể phân tích « %s » thành số với điểm phù động."
 
 #: ../src/theme-parser.c:552
 #, c-format
@@ -2172,7 +2172,7 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
-"Tỷ lệ tựa đề «%s» không hợp lệ. Nó phải là một điều của những điều này:\n"
+"Tỷ lệ tựa đề « %s » không hợp lệ. Nó phải là một điều của những điều này:\n"
 " • xx-small\t\ttí tị\n"
 " • x-small\t\tnhỏ lắm\n"
 " • small\t\t\tnhỏ\n"
@@ -2186,7 +2186,7 @@ msgstr ""
 #: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
-msgstr "Không có thuộc tính «%s» trong phần tử <%s>."
+msgstr "Không có thuộc tính « %s » trong phần tử <%s>."
 
 #: ../src/theme-parser.c:807 ../src/theme-parser.c:897
 #: ../src/theme-parser.c:935 ../src/theme-parser.c:1012
@@ -2194,24 +2194,24 @@ msgstr "Không có thuộc tính «%s» trong phần tử <%s>."
 #: ../src/theme-parser.c:1126 ../src/theme-parser.c:1134
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
-msgstr "Không có thuộc tính «%s» trong phần tử <%s>."
+msgstr "Không có thuộc tính « %s » trong phần tử <%s>."
 
 #: ../src/theme-parser.c:837 ../src/theme-parser.c:905
 #: ../src/theme-parser.c:943 ../src/theme-parser.c:1020
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
-msgstr "<%s> tên «%s» được dùng lần hai"
+msgstr "<%s> tên « %s » được dùng lần hai"
 
 #: ../src/theme-parser.c:849 ../src/theme-parser.c:955
 #: ../src/theme-parser.c:1032
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr "<%s> chưa định nghĩa mẹ «%s»."
+msgstr "<%s> chưa định nghĩa mẹ « %s »."
 
 #: ../src/theme-parser.c:968
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr "<%s> chưa định nghĩa tọa độ «%s»"
+msgstr "<%s> chưa định nghĩa tọa độ « %s »"
 
 #: ../src/theme-parser.c:981
 #, c-format
@@ -2221,38 +2221,38 @@ msgstr "<%s> phải xác định hoặc tọa độ hoặc mẹ có tọa độ.
 #: ../src/theme-parser.c:1080
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr "Loại lạ «%s» trong phần tử <%s>."
+msgstr "Loại lạ « %s » trong phần tử <%s>."
 
 #: ../src/theme-parser.c:1091
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr "«style_set» lạ «%s» trong phần tử <%s>."
+msgstr "«style_set» lạ « %s » trong phần tử <%s>."
 
 #: ../src/theme-parser.c:1099
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
-msgstr "Loại cửa sổ «%s» đã được gán một tập kiểu."
+msgstr "Loại cửa sổ « %s » đã được gán một tập kiểu."
 
 #: ../src/theme-parser.c:1143
 #, c-format
 msgid "Unknown function \"%s\" for menu icon"
-msgstr "Hàm lạ «%s» cho biểu tượng trình đơn."
+msgstr "Hàm lạ « %s » cho biểu tượng trình đơn."
 
 #: ../src/theme-parser.c:1152
 #, c-format
 msgid "Unknown state \"%s\" for menu icon"
-msgstr "Trạng thái lạ «%s» cho biểu tượng trình đơn"
+msgstr "Trạng thái lạ « %s » cho biểu tượng trình đơn"
 
 #: ../src/theme-parser.c:1160
 #, c-format
 msgid "Theme already has a menu icon for function %s state %s"
-msgstr "Sắc thái đã có biểu tượng trình đơn cho hàm «%s» trạng thái «%s»."
+msgstr "Sắc thái đã có biểu tượng trình đơn cho hàm « %s » trạng thái « %s »."
 
 #: ../src/theme-parser.c:1177 ../src/theme-parser.c:3244
 #: ../src/theme-parser.c:3323
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr "Chưa định nghĩa <draw_ops> với tên «%s»."
+msgstr "Chưa định nghĩa <draw_ops> với tên « %s »."
 
 #: ../src/theme-parser.c:1192 ../src/theme-parser.c:1256
 #: ../src/theme-parser.c:1545 ../src/theme-parser.c:3124
@@ -2285,12 +2285,12 @@ msgstr ""
 #: ../src/theme-parser.c:1343
 #, c-format
 msgid "Distance \"%s\" is unknown"
-msgstr "Khoảng cách «%s» không biết."
+msgstr "Khoảng cách « %s » không biết."
 
 #: ../src/theme-parser.c:1402
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
-msgstr "Tỷ lệ hình thể «%s» không biết."
+msgstr "Tỷ lệ hình thể « %s » không biết."
 
 #: ../src/theme-parser.c:1446
 #, c-format
@@ -2315,7 +2315,7 @@ msgstr "Không có thuộc tính «right» (bên phải) trong phần tử <%s>.
 #: ../src/theme-parser.c:1499
 #, c-format
 msgid "Border \"%s\" is unknown"
-msgstr "Biên «%s» không biết."
+msgstr "Biên « %s » không biết."
 
 #: ../src/theme-parser.c:1655 ../src/theme-parser.c:1765
 #: ../src/theme-parser.c:1868 ../src/theme-parser.c:2055
@@ -2404,7 +2404,7 @@ msgstr "Không có thuộc tính «type» (loại) trong phần tử <%s>."
 #: ../src/theme-parser.c:2209
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr "Không thể hiểu giá trị «%s» (loại thang độ)."
+msgstr "Không thể hiểu giá trị « %s » (loại thang độ)."
 
 #: ../src/theme-parser.c:2294
 #, c-format
@@ -2414,7 +2414,7 @@ msgstr "Không có thuộc tính «filename» (tên tập tin) trong phần tử
 #: ../src/theme-parser.c:2319 ../src/theme-parser.c:2827
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "Không hiểu loại tô «%s» cho phần tử <%s>."
+msgstr "Không hiểu loại tô « %s » cho phần tử <%s>."
 
 #: ../src/theme-parser.c:2462 ../src/theme-parser.c:2595
 #: ../src/theme-parser.c:2700
@@ -2436,27 +2436,27 @@ msgstr "Không có thuộc tính «arrow» (mũi tên) trong phần tử <%s>."
 #: ../src/theme-parser.c:2739
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr "Không hiểu trạng thái «%s» của phần tử <%s>."
+msgstr "Không hiểu trạng thái « %s » của phần tử <%s>."
 
 #: ../src/theme-parser.c:2539 ../src/theme-parser.c:2661
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr "Không hiểu bóng «%s» của phần tử <%s>."
+msgstr "Không hiểu bóng « %s » của phần tử <%s>."
 
 #: ../src/theme-parser.c:2549
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr "Không hiểu mũi tên «%s» của phần tử <%s>."
+msgstr "Không hiểu mũi tên « %s » của phần tử <%s>."
 
 #: ../src/theme-parser.c:2962 ../src/theme-parser.c:3078
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr "Không có <draw_ops> nào gọi là «%s» được định nghĩa."
+msgstr "Không có <draw_ops> nào gọi là « %s » được định nghĩa."
 
 #: ../src/theme-parser.c:2974 ../src/theme-parser.c:3090
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr "Bao gồm |draw_ops| «%s» ở đây sẽ tạo tham chiếu vòng."
+msgstr "Bao gồm |draw_ops| « %s » ở đây sẽ tạo tham chiếu vòng."
 
 #: ../src/theme-parser.c:3153
 #, c-format
@@ -2471,7 +2471,7 @@ msgstr "Không có thuộc tính «position» (vị trí) trong phần tử <%s>
 #: ../src/theme-parser.c:3219
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
-msgstr "Vị trí lạ «%s» trong phần khung."
+msgstr "Vị trí lạ « %s » trong phần khung."
 
 #: ../src/theme-parser.c:3227
 #, c-format
@@ -2491,17 +2491,17 @@ msgstr "Không có thuộc tính «state» (tính trạng) trong phần tử <%s
 #: ../src/theme-parser.c:3289
 #, c-format
 msgid "Unknown function \"%s\" for button"
-msgstr "Hàm lạ «%s» trong nút."
+msgstr "Hàm lạ « %s » trong nút."
 
 #: ../src/theme-parser.c:3298
 #, c-format
 msgid "Unknown state \"%s\" for button"
-msgstr "Trạng thái lạ «%s» trong nút."
+msgstr "Trạng thái lạ « %s » trong nút."
 
 #: ../src/theme-parser.c:3306
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
-msgstr "Kiểu khung đã có nút cho hàm «%s» trạng thái «%s»."
+msgstr "Kiểu khung đã có nút cho hàm « %s » trạng thái « %s »."
 
 #: ../src/theme-parser.c:3376
 #, c-format
@@ -2516,17 +2516,17 @@ msgstr "Không có thuộc tính «style» (kiểu dạng) trong phần tử <%s
 #: ../src/theme-parser.c:3401
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
-msgstr "«%s» không phải là giá trị tiêu điểm hợp lệ."
+msgstr "« %s » không phải là giá trị tiêu điểm hợp lệ."
 
 #: ../src/theme-parser.c:3410
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
-msgstr "«%s» không phải là giá trị trạng thái hợp lệ."
+msgstr "« %s » không phải là giá trị trạng thái hợp lệ."
 
 #: ../src/theme-parser.c:3420
 #, c-format
 msgid "A style called \"%s\" has not been defined"
-msgstr "Chưa định nghĩa kiểu dạng «%s»."
+msgstr "Chưa định nghĩa kiểu dạng « %s »."
 
 #: ../src/theme-parser.c:3430
 #, c-format
@@ -2536,7 +2536,7 @@ msgstr "Không có thuộc tính «resize» (đổi cỡ) trong phần tử <%s>
 #: ../src/theme-parser.c:3440
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr "«%s» không phải là giá trị đổi cỡ hợp lệ."
+msgstr "« %s » không phải là giá trị đổi cỡ hợp lệ."
 
 #: ../src/theme-parser.c:3450
 #, c-format
@@ -2551,13 +2551,13 @@ msgstr ""
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr ""
-"Kiểu dạng đã được xác định cho trạng thái «%s» đổi cỡ «%s» tiêu điểm «%s»."
+"Kiểu dạng đã được xác định cho trạng thái « %s » đổi cỡ « %s » tiêu điểm « %s »."
 
 #: ../src/theme-parser.c:3475 ../src/theme-parser.c:3486
 #: ../src/theme-parser.c:3497
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
-msgstr "Kiểu dạng đã được xác định cho trạng thái «%s» tiêu điểm «%s»."
+msgstr "Kiểu dạng đã được xác định cho trạng thái « %s » tiêu điểm « %s »."
 
 #: ../src/theme-parser.c:3536
 msgid ""
@@ -2666,7 +2666,7 @@ msgstr "Lỗi đọc sắc thái từ tập tin %s: %s\n"
 #: ../src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr "Tập tin sắc thái «%s» không chứa phần tử gốc <metacity_theme>."
+msgstr "Tập tin sắc thái « %s » không chứa phần tử gốc <metacity_theme>."
 
 #: ../src/theme-viewer.c:70
 msgid "/_Windows"
@@ -2791,7 +2791,7 @@ msgstr "Gặp lỗi khi tải sắc thái: %s\n"
 #: ../src/theme-viewer.c:816
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr "Tải sắc thái «%s» trong %g giây.\n"
+msgstr "Tải sắc thái « %s » trong %g giây.\n"
 
 #: ../src/theme-viewer.c:839
 msgid "Normal Title Font"
@@ -2848,7 +2848,7 @@ msgstr "Ngờ lỗi «%d» nhưng có «%d»"
 #: ../src/theme-viewer.c:1241
 #, c-format
 msgid "Error not expected but one was returned: %s"
-msgstr "Gặp lỗi «%s» bất ngờ"
+msgstr "Gặp lỗi « %s » bất ngờ"
 
 #: ../src/theme-viewer.c:1245
 #, c-format
@@ -2886,12 +2886,12 @@ msgstr "phải"
 #: ../src/theme.c:222
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
-msgstr "tọa độ khung không xác định chiều «%s»."
+msgstr "tọa độ khung không xác định chiều « %s »."
 
 #: ../src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "tọa độ khung không xác định chiều «%s» cho biên «%s»."
+msgstr "tọa độ khung không xác định chiều « %s » cho biên « %s »."
 
 #: ../src/theme.c:278
 #, c-format
@@ -2913,7 +2913,7 @@ msgid ""
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
 "Lời ghi rõ màu GTK phải có trạng thái nằm trong ngoặc, v.d. «gtk:fg"
-"[NORMAL]», NORMAL (bình thường) là trạng thái; không thể phân tích «%s»."
+"[NORMAL]», NORMAL (bình thường) là trạng thái; không thể phân tích « %s »."
 
 #: ../src/theme.c:983
 #, c-format
@@ -2922,17 +2922,17 @@ msgid ""
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
 "Lời ghi rõ màu GTK phải có dấu đóng ngoặc sau trạng thái, v.d. «fg[NORMAL]», "
-"NORMAL (bình thường) là trạng thái; không thể phân tích «%s»."
+"NORMAL (bình thường) là trạng thái; không thể phân tích « %s »."
 
 #: ../src/theme.c:994
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr "Không hiểu trạng thái «%s» trong lời ghi rõ màu."
+msgstr "Không hiểu trạng thái « %s » trong lời ghi rõ màu."
 
 #: ../src/theme.c:1007
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr "Không hiểu thành phần màu «%s» trong lời ghi rõ màu."
+msgstr "Không hiểu thành phần màu « %s » trong lời ghi rõ màu."
 
 #: ../src/theme.c:1037
 #, c-format
@@ -2940,58 +2940,58 @@ msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr ""
-"Dạng pha trộn là «blend/bg_color/fg_color/alpha», «%s» không tuân theo dạng "
+"Dạng pha trộn là «blend/bg_color/fg_color/alpha», « %s » không tuân theo dạng "
 "thức đó."
 
 #: ../src/theme.c:1048
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr "Không thể phân tích giá trị alpha «%s» trong màu pha trộn."
+msgstr "Không thể phân tích giá trị alpha « %s » trong màu pha trộn."
 
 #: ../src/theme.c:1058
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr "Giá trị alpha «%s» trong màu pha trộn không nằm giữa 0.0 và 1.0."
+msgstr "Giá trị alpha « %s » trong màu pha trộn không nằm giữa 0.0 và 1.0."
 
 #: ../src/theme.c:1105
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
-"Dạng thức bóng là «shade/base_color/factor», «%s» không tuân theo dạng thức "
+"Dạng thức bóng là «shade/base_color/factor», « %s » không tuân theo dạng thức "
 "đó."
 
 #: ../src/theme.c:1116
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "Không thể phân tích hệ số bóng «%s» trong màu bóng."
+msgstr "Không thể phân tích hệ số bóng « %s » trong màu bóng."
 
 #: ../src/theme.c:1126
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr "Có hệ số bóng âm «%s» trong màu bóng."
+msgstr "Có hệ số bóng âm « %s » trong màu bóng."
 
 #: ../src/theme.c:1155
 #, c-format
 msgid "Could not parse color \"%s\""
-msgstr "Không thể phân tích màu «%s»."
+msgstr "Không thể phân tích màu « %s »."
 
 #: ../src/theme.c:1417
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "Biểu thức tọa độ chứa ký tự «%s» không được phép."
+msgstr "Biểu thức tọa độ chứa ký tự « %s » không được phép."
 
 #: ../src/theme.c:1444
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
-msgstr "Biểu thức tọa độ chứa số với điểm phù động «%s» không thể phân tích."
+msgstr "Biểu thức tọa độ chứa số với điểm phù động « %s » không thể phân tích."
 
 #: ../src/theme.c:1458
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "Biểu thức tọa độ chứa số nguyên «%s» không thể phân tích."
+msgstr "Biểu thức tọa độ chứa số nguyên « %s » không thể phân tích."
 
 #: ../src/theme.c:1525
 #, c-format
@@ -3000,7 +3000,7 @@ msgid ""
 "\"%s\""
 msgstr ""
 "Biểu thức tọa độ chứa toán tử lạ tại đầu văn bản: \n"
-"«%s»"
+"« %s »"
 
 #: ../src/theme.c:1582
 msgid "Coordinate expression was empty or not understood"
@@ -3019,7 +3019,7 @@ msgstr "Biểu thức tọa độ thử dùng toán tử «mod» với số vớ
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr "Biểu thức tọa độ có toán tử «%s», nơi lẽ ra phải là một toán hạng."
+msgstr "Biểu thức tọa độ có toán tử « %s », nơi lẽ ra phải là một toán hạng."
 
 #: ../src/theme.c:1843
 msgid "Coordinate expression had an operand where an operator was expected"
@@ -3054,7 +3054,7 @@ msgstr "Biểu thức tọa độ có dấu đóng ngoặc mà thiếu dấu m�
 #: ../src/theme.c:2072
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "Biểu thức tọa độ có biến hoặc hằng lạ «%s»."
+msgstr "Biểu thức tọa độ có biến hoặc hằng lạ « %s »."
 
 #: ../src/theme.c:2129
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
@@ -3067,7 +3067,7 @@ msgstr "Biểu thức tọa độ không có bất kỳ toán tử hay toán h�
 #: ../src/theme.c:2384 ../src/theme.c:2406 ../src/theme.c:2427
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr "Sắc thái chứa biểu thức «%s» gây ra lỗi: %s\n"
+msgstr "Sắc thái chứa biểu thức « %s » gây ra lỗi: %s\n"
 
 #: ../src/theme.c:3913
 #, c-format
@@ -3087,13 +3087,13 @@ msgstr "Thiếu <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"gì đó\
 #: ../src/theme.c:4446
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr "Lỗi nạp sắc thái «%s»: %s\n"
+msgstr "Lỗi nạp sắc thái « %s »: %s\n"
 
 #: ../src/theme.c:4592 ../src/theme.c:4599 ../src/theme.c:4606
 #: ../src/theme.c:4613 ../src/theme.c:4620
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr "Chưa đặt <%s> cho sắc thái «%s»."
+msgstr "Chưa đặt <%s> cho sắc thái « %s »."
 
 #: ../src/theme.c:4630
 #, c-format
@@ -3101,7 +3101,7 @@ msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
-"Chưa đặt kiểu khung cho loại cửa sổ «%s» trong sắc thái «%s», hãy thêm phần "
+"Chưa đặt kiểu khung cho loại cửa sổ « %s » trong sắc thái « %s », hãy thêm phần "
 "tử <window type=\"%s\" style_set=\"gì đó\"/>."
 
 #: ../src/theme.c:4652
@@ -3117,12 +3117,12 @@ msgstr ""
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr "Hằng tự định nghĩa phải bắt đầu bằng ký tự hoa; «%s» không như vậy."
+msgstr "Hằng tự định nghĩa phải bắt đầu bằng ký tự hoa; « %s » không như vậy."
 
 #: ../src/theme.c:5049 ../src/theme.c:5111
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr "Hằng «%s» đã được định nghĩa rồi."
+msgstr "Hằng « %s » đã được định nghĩa rồi."
 
 #: ../src/util.c:93
 #, c-format
@@ -3137,7 +3137,7 @@ msgstr "Lỗi «fdopen()» tập tin ghi lưu %s: %s\n"
 #: ../src/util.c:109
 #, c-format
 msgid "Opened log file %s\n"
-msgstr "Đã mở tập tin ghi lưu «%s».\n"
+msgstr "Đã mở tập tin ghi lưu « %s ».\n"
 
 #: ../src/util.c:203
 msgid "Window manager: "
@@ -3167,7 +3167,7 @@ msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
-"Cửa sổ «%s» tự đặt «SM_CLIENT_ID» cho chính nó, thay vì đặt trên cửa sổ "
+"Cửa sổ « %s » tự đặt «SM_CLIENT_ID» cho chính nó, thay vì đặt trên cửa sổ "
 "«WM_CLIENT_LEADER» như quy định trong «ICCCM».\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
@@ -3183,7 +3183,7 @@ msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
-"Cửa sổ «%s» gọi ý «MWM» nói rằng nó không thể bị thay đổi kích thước, nhưng "
+"Cửa sổ « %s » gọi ý «MWM» nói rằng nó không thể bị thay đổi kích thước, nhưng "
 "đặt kích thước tối thiểu «%d x %d» và tối đa «%d x %d»; điều này có vẻ không "
 "hợp lý lắm.\n"
 
@@ -3196,34 +3196,34 @@ msgid ""
 "This is most likely an application bug, not a window manager bug.\n"
 "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
-"Cửa sổ «0x%lx» có thuộc tính «%s»\n"
-"mà lẽ ra phải có kiểu «%s» dạng thức «%d»\n"
-"và thực sự là kiểu «%s» dạng thức «%d n_items %d».\n"
+"Cửa sổ «0x%lx» có thuộc tính « %s »\n"
+"mà lẽ ra phải có kiểu « %s » dạng thức «%d»\n"
+"và thực sự là kiểu « %s » dạng thức «%d n_items %d».\n"
 "Chắc là có một ứng dụng bị lỗi, không phải lỗi trình quản lý cửa sổ.\n"
 "Cửa sổ có «title=\"%s\" class=\"%s\" name=\"%s\"»\n"
 
 #: ../src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "Thuộc tính «%s» trên cửa sổ «0x%lx» chứa chuỗi UTF-8 sai.\n"
+msgstr "Thuộc tính « %s » trên cửa sổ «0x%lx» chứa chuỗi UTF-8 sai.\n"
 
 #: ../src/xprops.c:482
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
-"Thuộc tính «%s» trên cửa sổ «0x%lx» chứa chuỗi UTF-8 sai cho mục «%d» trong "
+"Thuộc tính « %s » trên cửa sổ «0x%lx» chứa chuỗi UTF-8 sai cho mục «%d» trong "
 "danh sách.\n"
 
-msgid ""
-"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-"display=DISPLAY] [--replace] [--version]\n"
-msgstr ""
-"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=TÊN_TẬP_TIN] [--"
-"display=BỘ_TRÌNH_BÀY] [--replace] [--version]\n"
-"(disable: tắt\n"
-"client ID: mã nhận diện khách\n"
-"save file: lưu tập tin\n"
-"display: bộ trình bày\n"
-"replace: thay thế\n"
-"version: phiên bản)\n"
+#~ msgid ""
+#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
+#~ "display=DISPLAY] [--replace] [--version]\n"
+#~ msgstr ""
+#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=TÊN_TẬP_TIN] "
+#~ "[--display=BỘ_TRÌNH_BÀY] [--replace] [--version]\n"
+#~ "(disable: tắt\n"
+#~ "client ID: mã nhận diện khách\n"
+#~ "save file: lưu tập tin\n"
+#~ "display: bộ trình bày\n"
+#~ "replace: thay thế\n"
+#~ "version: phiên bản)\n"
