@@ -1,3 +1,9 @@
+2005-07-23  Elijah Newren  <newren@gmail.com>
+
+	* src/window.c: (meta_window_activate): revert the patch from
+	#128380--change _NET_ACTIVE_WINDOW behavior to what it originally
+	was.
+
 2005-07-18  Matthias Clasen  <mclasen@redhat.com>
 	
 	* configure.in: Add checks for Xcursor, to make the changes

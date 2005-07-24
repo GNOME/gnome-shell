@@ -2262,31 +2262,22 @@ meta_window_activate (MetaWindow *window,
   /* disable show desktop mode unless we're a desktop component */
   maybe_leave_show_desktop_mode (window);
  
+  /* Get window on current workspace */
+  if (!meta_window_located_on_workspace (window,
+                                         window->screen->active_workspace))
+    meta_window_change_workspace (window,
+                                  window->screen->active_workspace);
+  
   if (window->shaded)
     meta_window_unshade (window);
 
   unminimize_window_and_all_transient_parents (window);
-
-  /* Activate the window, moving to its workspace if necessary */
-  if (!meta_window_located_on_workspace (window,
-                                         window->screen->active_workspace))
-    {
-      meta_topic (META_DEBUG_FOCUS,
-                  "Focusing and moving to workspace of window %s due to "
-                  "activation\n",
-                  window->desc);
-      meta_workspace_activate_with_focus (window->workspace,
-                                          window,
-                                          timestamp);
-    }
-  else
-    {
-      meta_window_raise (window);
-      meta_topic (META_DEBUG_FOCUS,
-                  "Focusing window %s due to activation\n",
-                  window->desc);
-      meta_window_focus (window, timestamp);
-    }
+  
+  meta_window_raise (window);
+  meta_topic (META_DEBUG_FOCUS,
+              "Focusing window %s due to activation\n",
+              window->desc);
+  meta_window_focus (window, timestamp);
 }
 
 /* returns values suitable for meta_window_move
