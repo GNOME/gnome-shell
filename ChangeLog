@@ -1,5 +1,16 @@
 2005-07-24  Elijah Newren  <newren@gmail.com>
 
+	* src/place.c (find_most_freespace): try to place windows denied
+	focus near the focus window and fix a xinerama bug with the
+	placement, (avoid_being_obscured_as_a_second_modal_dialog): avoid
+	modal dialogs being obscured in somewhat pathologically strange
+	circumstances that Eclipse seems to be good at triggering,
+	(meta_window_place): have dialog windows make use of
+	avoid_being_obscured_as_a_second_modal_dialog().  Fixes one of the
+	issues found in #307875.
+
+2005-07-24  Elijah Newren  <newren@gmail.com>
+
 	* src/window.c (meta_window_raise): raise the window as well as
 	its ancestor; fixes a stacking bug with an ancestor that has more
 	than one child window.  Fixes one of the issues in #307875.

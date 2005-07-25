@@ -245,6 +245,7 @@ find_most_freespace (MetaWindow *window,
   MetaWindowDirection side;
   int max_area;
   int max_width, max_height, left, right, top, bottom;
+  int left_space, right_space, top_space, bottom_space;
   int frame_size_left, frame_size_top;
   MetaRectangle work_area;
   MetaRectangle avoid;
@@ -260,10 +261,14 @@ find_most_freespace (MetaWindow *window,
   /* Find the areas of choosing the various sides of the focus window */
   max_width  = MIN (avoid.width, outer.width);
   max_height = MIN (avoid.height, outer.height);
-  left   = MIN (avoid.x, outer.width);
-  right  = MIN (work_area.width - (avoid.x + avoid.width), outer.width);
-  top    = MIN (avoid.y, outer.height);
-  bottom = MIN (work_area.height - (avoid.y + avoid.height), outer.height);
+  left_space   = avoid.x - work_area.x;
+  right_space  = work_area.width - (avoid.x + avoid.width - work_area.x);
+  top_space    = avoid.y - work_area.y;
+  bottom_space = work_area.height - (avoid.y + avoid.height - work_area.y);
+  left   = MIN (left_space,   outer.width);
+  right  = MIN (right_space,  outer.width);
+  top    = MIN (top_space,    outer.height);
+  bottom = MIN (bottom_space, outer.height);
 
   /* Find out which side of the focus_window can show the most of the window */
   side = META_LEFT;
@@ -279,32 +284,106 @@ find_most_freespace (MetaWindow *window,
       max_area = top*max_width;
     }
   if (bottom*max_width > max_area)
-    side = META_BOTTOM;
+    {
+      side = META_BOTTOM;
+      max_area = bottom*max_width;
+    }
 
-  /* Place the window on the relevant side; convert coord to position of window,
-   * not position of frame.
+  /* Give up if there's no where to put it (i.e. focus window is maximized) */
+  if (max_area == 0)
+    return;
+
+  /* Place the window on the relevant side; if the whole window fits,
+   * make it adjacent to the focus window; if not, make sure the
+   * window doesn't go off the edge of the screen.
    */
   switch (side)
     {
     case META_LEFT:
-      *new_x = work_area.x + frame_size_left;
       *new_y = avoid.y + frame_size_top;
+      if (left_space > outer.width)
+        *new_x = avoid.x - outer.width + frame_size_left;
+      else
+        *new_x = work_area.x + frame_size_left;
       break;
     case META_RIGHT:
-      *new_x = work_area.x + work_area.width - outer.width + frame_size_left;
       *new_y = avoid.y + frame_size_top;
+      if (right_space > outer.width)
+        *new_x = avoid.x + avoid.width + frame_size_left;
+      else
+        *new_x = work_area.x + work_area.width - outer.width + frame_size_left;
       break;
     case META_TOP:
       *new_x = avoid.x + frame_size_left;
-      *new_y = work_area.y + frame_size_top;
+      if (top_space > outer.height)
+        *new_y = avoid.y - outer.height + frame_size_top;
+      else
+        *new_y = work_area.y + frame_size_top;
       break;
     case META_BOTTOM:
       *new_x = avoid.x + frame_size_left;
-      *new_y = work_area.y + work_area.height - outer.height + frame_size_top;
+      if (bottom_space > outer.height)
+        *new_y = avoid.y + avoid.height + frame_size_top;
+      else
+        *new_y = work_area.y + work_area.height - outer.height + frame_size_top;
       break;
     }
 }
 
+static void
+avoid_being_obscured_as_second_modal_dialog (MetaWindow *window,
+                                             MetaFrameGeometry *fgeom,
+                                             int        *x,
+                                             int        *y)
+{
+  /* We can't center this dialog if it was denied focus and it
+   * overlaps with the focus window and this dialog is modal and this
+   * dialog is in the same app as the focus window (*phew*...please
+   * don't make me say that ten times fast). See bug 307875 comment 11
+   * and 12 for details, but basically it means this is probably a
+   * second modal dialog for some app while the focus window is the
+   * first modal dialog.  We should probably make them simultaneously
+   * visible in general, but it becomes mandatory to do so due to
+   * buggy apps (e.g. those using gtk+ *sigh*) because in those cases
+   * this second modal dialog also happens to be modal to the first
+   * dialog in addition to the main window, while it has only let us
+   * know about the modal-to-the-main-window part.
+   */
+
+  MetaWindow *focus_window;
+  MetaRectangle overlap;
+
+  focus_window = window->display->focus_window;
+
+  if (window->denied_focus_and_not_transient &&
+      window->wm_state_modal && /* FIXME: Maybe do this for all transients? */
+      meta_window_same_application (window, focus_window) &&
+      meta_rectangle_intersect (&window->rect,
+                                &focus_window->rect,
+                                &overlap))
+    {
+      find_most_freespace (window, fgeom, focus_window, *x, *y, x, y);
+      meta_topic (META_DEBUG_PLACEMENT,
+                  "Dialog window %s was denied focus but may be modal "
+                  "to the focus window; had to move it to avoid the "
+                  "focus window\n",
+                  window->desc);
+    }
+
+  meta_topic (META_DEBUG_PLACEMENT,
+              "Status:\n"
+              "  denied focus: %d\n"
+              "  modal:        %d\n"
+              "  same app:     %d\n"
+              "  overlaps      %d\n",
+              window->denied_focus_and_not_transient,
+              window->wm_state_modal,
+              meta_window_same_application (window, focus_window),
+              meta_rectangle_intersect (&window->rect,
+                                        &focus_window->rect,
+                                        &overlap)
+              );
+}
 
 static int
 intcmp (const void* a, const void* b)
@@ -731,6 +810,7 @@ meta_window_place (MetaWindow        *window,
         {
           meta_topic (META_DEBUG_PLACEMENT,
                       "Not placing window with PPosition or USPosition set\n");
+          avoid_being_obscured_as_second_modal_dialog (window, fgeom, &x, &y);
           goto done_no_constraints;
         }
     }
@@ -782,6 +862,8 @@ meta_window_place (MetaWindow        *window,
           meta_topic (META_DEBUG_PLACEMENT, "Centered window %s over transient parent\n",
                       window->desc);
           
+          avoid_being_obscured_as_second_modal_dialog (window, fgeom, &x, &y);
+
           goto done;
         }
     }
