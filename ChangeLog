@@ -1,7 +1,15 @@
 2005-07-24  Elijah Newren  <newren@gmail.com>
 
+	* src/window.c (meta_window_raise): raise the window as well as
+	its ancestor; fixes a stacking bug with an ancestor that has more
+	than one child window.  Fixes one of the issues in #307875.
+
+2005-07-24  Elijah Newren  <newren@gmail.com>
+
 	* src/window.c (meta_window_free): restore original window size if
 	the window was maximized, as the FIXME says.  ;-) Fixes #137185.
+	Thanks to Christian Persch for the testcase that made this easier
+	to track down.
 
 2005-07-23  Elijah Newren  <newren@gmail.com>
 

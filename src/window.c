@@ -3827,18 +3827,34 @@ meta_window_raise (MetaWindow  *window)
               "Raising window %s, ancestor of %s\n", 
               ancestor->desc, window->desc);
 
-  if (window->screen->stack != ancestor->screen->stack)
+  /* Raise the ancestor of the window (if the window has no ancestor,
+   * then ancestor will be set to the window itself); do this because
+   * it's weird to see windows from other apps stacked between a child
+   * and parent window of the currently active app.  The stacking
+   * constraints in stack.c then magically take care of raising all
+   * the child windows appropriately.
+   */
+  if (window->screen->stack == ancestor->screen->stack)
+    meta_stack_raise (window->screen->stack, ancestor);
+  else
     {
       meta_warning (
                     "Either stacks aren't per screen or some window has a weird "
                     "transient_for hint; window->screen->stack != "
                     "ancestor->screen->stack.  window = %s, ancestor = %s.\n",
                     window->desc, ancestor->desc);
-      /* Just punt and raise the window itself */
-      meta_stack_raise (window->screen->stack, window);
+      /* We could raise the window here, but don't want to do that twice and
+       * so we let the case below handle that.
+       */
     }
-  else
-    meta_stack_raise (window->screen->stack, ancestor);
+
+  /* Okay, so stacking constraints misses one case: If a window has
+   * two children and we want to raise one of those children, then
+   * raising the ancestor isn't enough; we need to also raise the
+   * correct child.  See bug 307875.
+   */
+  if (window != ancestor)
+    meta_stack_raise (window->screen->stack, window);
 }
 
 void
