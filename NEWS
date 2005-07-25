@@ -1,3 +1,36 @@
+2.11.1
+==
+
+Thanks to Elijah Newren, Ken Harris, Matthias Clasen, Christian
+Persch, and Billy Biggs for improvements in this release.
+
+ - Fix a miscoloring of parts of the titlebar introduced in the last
+   unstable release (Elijah) [follow-up to #169982]
+ - Provide a more lenient threshold for drawing rounded corners (Ken)
+   [#122065]
+ - Make the Xcursor changes in the last unstable release effective
+   (Matthias) [follow-up to #308106]
+ - Revert the _NET_ACTIVE_WINDOW behavior change made in the 2.9.x
+   unstable series; activation includes changing a window to the
+   current workspace again (Elijah) [reversion of #128380]
+ - Restore original window size if the window was maximized upon
+   withdrawing it (Elijah, Christian) [#137185]
+ - Fix a raising bug with a window that has more than one child window
+   (Elijah, Billy) [part of #307875]
+ - Try to place windows denied focus near the focus window and fix a
+   xinerama bug with the placement (Elijah) [part of #307875]
+ - Avoid modal dialogs being obscured in somewhat pathologically
+   strange circumstances that Eclipse seems to be good at triggering
+   (Elijah) [part of #307875]
+
+Translations
+  Miloslav Trmac (cs), Kostas Papadimas (el), Adam Weinberger (en_CA),
+  Francisco Javier F. Serrador (es), Ilkka Tuohela (fi), Christophe
+  Merlet (RedFox) (fr), Ignacio Casal Quinteiro (gl), Ankit 
+  Patel (gu), Yair Hershkovitz (he), Takeshi AIHANA (ja), Kjartan
+  Maraas (nb), Kjartan Maraas (no), Marcel Telka (sk), Theppitak
+  Karoonboonyanan (th), Clytie Siddall (vi), Funda Wang (zh_CN)
+
 2.11.0
 ==
 

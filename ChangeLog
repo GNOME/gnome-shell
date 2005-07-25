@@ -1,5 +1,9 @@
 2005-07-24  Elijah Newren  <newren@gmail.com>
 
+	* NEWS:	2.11.1 release
+
+2005-07-24  Elijah Newren  <newren@gmail.com>
+
 	* src/place.c (find_most_freespace): try to place windows denied
 	focus near the focus window and fix a xinerama bug with the
 	placement, (avoid_being_obscured_as_a_second_modal_dialog): avoid
