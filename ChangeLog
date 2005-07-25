@@ -1,6 +1,11 @@
+2005-07-24  Elijah Newren  <newren@gmail.com>
+
+	* src/window.c (meta_window_free): restore original window size if
+	the window was maximized, as the FIXME says.  ;-) Fixes #137185.
+
 2005-07-23  Elijah Newren  <newren@gmail.com>
 
-	* src/window.c: (meta_window_activate): revert the patch from
+	* src/window.c (meta_window_activate): revert the patch from
 	#128380--change _NET_ACTIVE_WINDOW behavior to what it originally
 	was.
 

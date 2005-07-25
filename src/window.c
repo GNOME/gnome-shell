@@ -959,6 +959,9 @@ meta_window_free (MetaWindow  *window)
   if (window->display->focus_window == window)
     window->display->focus_window = NULL;
 
+  if (window->maximized)
+    meta_window_unmaximize (window);
+  
   meta_window_unqueue_calc_showing (window);
   meta_window_unqueue_move_resize (window);
   meta_window_unqueue_update_icon (window);
@@ -983,8 +986,6 @@ meta_window_free (MetaWindow  *window)
 #endif
   
   meta_stack_remove (window->screen->stack, window);
-  
-  /* FIXME restore original size if window has maximized */
   
   if (window->frame)
     meta_window_destroy_frame (window);
