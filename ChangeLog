@@ -1,3 +1,9 @@
+2005-07-28  Elijah Newren  <newren@gmail.com>
+
+	* src/place.c (avoid_being_obscured_as_second_modal_dialog):
+	remove some unneeded debug spew that was causing crashes.  Fixes
+	#311819.
+
 2005-07-24  Elijah Newren  <newren@gmail.com>
 
 	* configure.in: post-release version bump to 2.11.2

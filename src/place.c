@@ -369,20 +369,6 @@ avoid_being_obscured_as_second_modal_dialog (MetaWindow *window,
                   "focus window\n",
                   window->desc);
     }
-
-  meta_topic (META_DEBUG_PLACEMENT,
-              "Status:\n"
-              "  denied focus: %d\n"
-              "  modal:        %d\n"
-              "  same app:     %d\n"
-              "  overlaps      %d\n",
-              window->denied_focus_and_not_transient,
-              window->wm_state_modal,
-              meta_window_same_application (window, focus_window),
-              meta_rectangle_intersect (&window->rect,
-                                        &focus_window->rect,
-                                        &overlap)
-              );
 }
 
 static int
