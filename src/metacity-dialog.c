@@ -118,7 +118,8 @@ kill_window_question (const char *window_name,
 				   _("Forcing this application to quit will "
 				     "cause you to lose any unsaved changes."));
   g_free (str);
-  
+  gtk_window_set_icon_name (GTK_WINDOW (dialog), "panel-force-quit");
+
   gtk_label_set_use_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label), TRUE);
   gtk_label_set_line_wrap (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label), TRUE);
   
@@ -261,6 +262,7 @@ warn_about_no_sm_support (char **lame_apps,
                                    GTK_MESSAGE_WARNING,
                                    GTK_BUTTONS_NONE,
                                    _("These windows do not support \"save current setup\" and will have to be restarted manually next time you log in."));
+  gtk_window_set_icon_name (GTK_WINDOW (dialog), "stock_dialog-warning");
   
   g_signal_connect (G_OBJECT (dialog),
                     "response",
@@ -333,6 +335,7 @@ error_about_command (const char *gconf_key,
                                      GTK_MESSAGE_ERROR,
                                      GTK_BUTTONS_CLOSE,
                                      "%s", error);
+  gtk_window_set_icon_name (GTK_WINDOW (dialog), "stock_dialog-error");
   
   gtk_widget_realize (dialog);
   copy_of_gdk_x11_window_set_user_time (dialog->window, timestamp);
