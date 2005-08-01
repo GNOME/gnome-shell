@@ -1,3 +1,11 @@
+2005-07-31  Elijah Newren  <newren@gmail.com>
+
+	* src/stack.c (is_focused_foreach, get_standalone_layer): use only
+	the expected_focus_window instead of both the focused_window and
+	the expected_focus_window.  Removes an infinite flicker loop in
+	sloppy and mouse focus, and an ugly one time flicker in click to
+	focus.  Fixes #311400.
+
 2005-07-30  Elijah Newren  <newren@gmail.com>
 
 	Patch from Jaap Haitsma to make sure that Metacity dialogs have
