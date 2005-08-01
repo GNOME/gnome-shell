@@ -1,3 +1,8 @@
+2005-08-01  Elijah Newren  <newren@gmail.com>
+
+	* src/metacity.schemas.in: Change default theme from "Simple" to
+	"Clearlooks".
+
 2005-07-31  Elijah Newren  <newren@gmail.com>
 
 	* src/stack.c (is_focused_foreach, get_standalone_layer): use only

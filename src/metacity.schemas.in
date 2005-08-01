@@ -114,7 +114,7 @@
       <applyto>/apps/metacity/general/theme</applyto>
       <owner>metacity</owner>
       <type>string</type>
-      <default>Simple</default>
+      <default>Clearlooks</default>
       <locale name="C">
          <short>Current theme</short>
          <long>
