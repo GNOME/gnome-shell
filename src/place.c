@@ -1126,43 +1126,53 @@ get_vertical_edges (MetaWindow *window,
   GSList *windows;
   GSList *tmp;
   int n_windows;
-  int *edges;
-  int i, j;
-  int n_edges;
+  GArray *edges;
+  int edge, i;
   MetaRectangle rect;
   MetaRectangle work_area;
   
   windows = get_windows_on_same_workspace (window, &n_windows);
 
-  i = 0;
-  /* 4 = workspace/screen edges */
-  n_edges = n_windows * 2 + 4 + window->screen->n_xinerama_infos - 1; 
-
-  edges = g_new (int, n_edges);
+  edges = g_array_sized_new (FALSE, FALSE, sizeof (int), 
+                             n_windows * 2 + 4 /* 4 = workspace/screen edges */
+                             + window->screen->n_xinerama_infos - 1
+                             + 2 /* active window edges when in wireframe mode */); 
 
   /* workspace/screen edges */
   meta_window_get_work_area_current_xinerama (window, &work_area);
-
-  edges[i] = work_area.x;
-  ++i;
-  edges[i] = work_area.x + work_area.width;
-  ++i;
-  edges[i] = 0;
-  ++i;
-  edges[i] = window->screen->width;
-  ++i;
-
-  g_assert (i == 4);
+  
+  g_array_append_val (edges, work_area.x);
+  edge = work_area.x + work_area.width;
+  g_array_append_val (edges, edge);
+  edge = 0;
+  g_array_append_val (edges, edge);
+  g_array_append_val (edges, window->screen->width);
 
   /* Now get the xinerama screen edges */
-  for (j = 0; j < window->screen->n_xinerama_infos - 1; j++) {
-    edges[i] = window->screen->xinerama_infos[j].x_origin +
-      window->screen->xinerama_infos[j].width;
-    ++i;
-  }
-  
-  meta_window_get_outer_rect (window, &rect);
-  
+  for (i = 0; i < window->screen->n_xinerama_infos - 1; i++)
+    {
+      edge = window->screen->xinerama_infos[i].x_origin +
+             window->screen->xinerama_infos[i].width;
+
+      g_array_append_val (edges, edge);
+    }
+
+  if (window->display->grab_wireframe_active)
+    {
+      int left_edge, right_edge, top_edge, bottom_edge;
+
+      meta_window_get_xor_rect (window, &window->display->grab_wireframe_rect,
+                                &rect);
+
+      window_get_edges (window, &left_edge, &right_edge, 
+                        &top_edge, &bottom_edge);
+
+      g_array_append_val (edges, left_edge);
+      g_array_append_val (edges, right_edge);
+    }
+  else
+    meta_window_get_outer_rect (window, &rect);
+
   /* get window edges */
   tmp = windows;
   while (tmp != NULL)
@@ -1174,22 +1184,21 @@ get_vertical_edges (MetaWindow *window,
       
       if (rects_overlap_vertically (&rect, &w_rect))
         {
-          window_get_edges (w, &edges[i], &edges[i+1], NULL, NULL);
-          i += 2;
+          g_array_append_val (edges, w_rect.x);
+          edge = w_rect.x + w_rect.width;
+          g_array_append_val (edges, edge);
         }
 
       tmp = tmp->next;
     }
-  n_edges = i;
-  
   g_slist_free (windows);
 
   /* Sort */
-  qsort (edges, n_edges, sizeof (int), intcmp);
+  qsort (edges->data, edges->len, sizeof (int), intcmp);
 
-  *edges_p = edges;
-  *n_edges_p = n_edges;
-}  
+  *n_edges_p = edges->len;  
+  *edges_p = (int *) g_array_free (edges, FALSE);
+}
 
 static void
 get_horizontal_edges (MetaWindow *window,
@@ -1199,41 +1208,52 @@ get_horizontal_edges (MetaWindow *window,
   GSList *windows;
   GSList *tmp;
   int n_windows;
-  int *edges;
-  int i, j;
-  int n_edges;
+  GArray *edges;
+  int edge, i;
   MetaRectangle rect;
   MetaRectangle work_area;
   
   windows = get_windows_on_same_workspace (window, &n_windows);
 
-  i = 0;
-  n_edges = n_windows * 2 + 4 + window->screen->n_xinerama_infos - 1; /* 4 = workspace/screen edges */
-  edges = g_new (int, n_edges);
+  edges = g_array_sized_new (FALSE, FALSE, sizeof (int), 
+                             n_windows * 2 + 4 /* 4 = workspace/screen edges */
+                             + window->screen->n_xinerama_infos - 1
+                             + 2 /* active window edges when in wireframe mode */); 
 
   /* workspace/screen edges */
   meta_window_get_work_area_current_xinerama (window, &work_area);
   
-  edges[i] = work_area.y;
-  ++i;
-  edges[i] = work_area.y + work_area.height;
-  ++i;
-  edges[i] = 0;
-  ++i;
-  edges[i] = window->screen->height;
-  ++i;
+  g_array_append_val (edges, work_area.y);
+  edge = work_area.y + work_area.height;
+  g_array_append_val (edges, edge);
+  edge = 0;
+  g_array_append_val (edges, edge);
+  g_array_append_val (edges, window->screen->height);
 
-  g_assert (i == 4);
-  
   /* Now get the xinerama screen edges */
-  for (j = 0; j < window->screen->n_xinerama_infos - 1; j++) {
-    edges[i] = window->screen->xinerama_infos[j].y_origin +
-      window->screen->xinerama_infos[j].height;
-    ++i;
-  }
+  for (i = 0; i < window->screen->n_xinerama_infos - 1; i++) 
+    {
+      edge = window->screen->xinerama_infos[i].y_origin +
+             window->screen->xinerama_infos[i].height;
+      g_array_append_val (edges, edge);
+    }
 
-  meta_window_get_outer_rect (window, &rect);
-  
+  if (window->display->grab_wireframe_active)
+    {
+      int left_edge, right_edge, top_edge, bottom_edge;
+
+      meta_window_get_xor_rect (window, &window->display->grab_wireframe_rect,
+                                &rect);
+
+      window_get_edges (window, &left_edge, &right_edge, 
+                        &top_edge, &bottom_edge);
+
+      g_array_append_val (edges, top_edge);
+      g_array_append_val (edges, bottom_edge);
+    }
+  else
+    meta_window_get_outer_rect (window, &rect);
+ 
   /* get window edges */
   tmp = windows;
   while (tmp != NULL)
@@ -1245,60 +1265,75 @@ get_horizontal_edges (MetaWindow *window,
       
       if (rects_overlap_horizontally (&rect, &w_rect))
         {
-          window_get_edges (w, NULL, NULL, &edges[i], &edges[i+1]);
-          i += 2;
+          g_array_append_val (edges, w_rect.y);
+          edge = w_rect.y + w_rect.height;
+          g_array_append_val (edges, edge);
         }
 
       tmp = tmp->next;
     }
-  n_edges = i;
-  
   g_slist_free (windows);
 
   /* Sort */
-  qsort (edges, n_edges, sizeof (int), intcmp);
+  qsort (edges->data, edges->len, sizeof (int), intcmp);
 
-  *edges_p = edges;
-  *n_edges_p = n_edges;  
+  *n_edges_p = edges->len;  
+  *edges_p = (int *) g_array_free (edges, FALSE);
 }
 
 int
 meta_window_find_next_vertical_edge (MetaWindow *window,
+                                     MetaWindowEdgePosition source_edge_position,
                                      gboolean    right)
 {
-  int left_edge, right_edge;
+  int left_edge, right_edge, source_edge;
   int *edges;
   int i;
   int n_edges;
   int retval;
 
   get_vertical_edges (window, &edges, &n_edges);
-  
-  /* Find next */
-  meta_window_get_position (window, &retval, NULL);
 
-  window_get_edges (window, &left_edge, &right_edge, NULL, NULL);
-  
+  /* Find next */
+  if (window->display->grab_wireframe_active)
+    {
+      MetaRectangle rect;
+
+      meta_window_get_xor_rect (window, &window->display->grab_wireframe_rect,
+                                &rect);
+
+      left_edge = rect.x;
+      right_edge = left_edge + rect.width;
+    }
+  else
+    window_get_edges (window, &left_edge, &right_edge, NULL, NULL);
+
+  switch (source_edge_position)
+    {
+      case META_WINDOW_EDGE_LEFT:
+        source_edge = left_edge;
+        break;
+
+      case META_WINDOW_EDGE_RIGHT:
+        source_edge = right_edge;
+        break;
+
+      case META_WINDOW_EDGE_TOP:
+      case META_WINDOW_EDGE_BOTTOM:
+      default:
+        g_assert_not_reached ();
+    }
+
+  retval = source_edge;
+
   if (right)
     {
       i = 0;
       while (i < n_edges)
         {
-          if (edges[i] > right_edge)
+          if (edges[i] > source_edge)
             {
-              /* This is the one we want, snap right
-               * edge of window to edges[i]
-               */
               retval = edges[i];
-              if (window->frame)
-                {
-                  retval -= window->frame->rect.width;
-                  retval += window->frame->child_x;
-                }
-              else
-                {
-                  retval -= window->rect.width;
-                }
               break;
             }
           
@@ -1312,13 +1347,9 @@ meta_window_find_next_vertical_edge (MetaWindow *window,
         {
           --i;
           
-          if (edges[i] < left_edge)
+          if (edges[i] < source_edge)
             {
-              /* This is the one we want */
               retval = edges[i];
-              if (window->frame)
-                retval += window->frame->child_x;
-
               break;
             }
         }
@@ -1332,9 +1363,10 @@ meta_window_find_next_vertical_edge (MetaWindow *window,
 
 int
 meta_window_find_next_horizontal_edge (MetaWindow *window,
+                                       MetaWindowEdgePosition source_edge_position,
                                        gboolean    down)
 {
-  int top_edge, bottom_edge;
+  int top_edge, bottom_edge, source_edge;
   int *edges;
   int i;
   int n_edges;
@@ -1343,30 +1375,45 @@ meta_window_find_next_horizontal_edge (MetaWindow *window,
   get_horizontal_edges (window, &edges, &n_edges);
   
   /* Find next */
-  meta_window_get_position (window, NULL, &retval);
+  if (window->display->grab_wireframe_active)
+    {
+      MetaRectangle rect;
 
-  window_get_edges (window, NULL, NULL, &top_edge, &bottom_edge);
-  
+      meta_window_get_xor_rect (window, &window->display->grab_wireframe_rect,
+                                &rect);
+
+      top_edge = rect.y;
+      bottom_edge = top_edge + rect.height;
+    }
+  else
+    window_get_edges (window, NULL, NULL, &top_edge, &bottom_edge);
+
+  switch (source_edge_position)
+    {
+      case META_WINDOW_EDGE_TOP:
+        source_edge = top_edge;
+        break;
+
+      case META_WINDOW_EDGE_BOTTOM:
+        source_edge = bottom_edge;
+        break;
+
+      case META_WINDOW_EDGE_LEFT:
+      case META_WINDOW_EDGE_RIGHT:
+      default:
+        g_assert_not_reached ();
+    }
+
+  retval = source_edge;
+
   if (down)
     {
       i = 0;
       while (i < n_edges)
         {
-          if (edges[i] > bottom_edge)
+          if (edges[i] > source_edge)
             {
-              /* This is the one we want, snap right
-               * edge of window to edges[i]
-               */
               retval = edges[i];
-              if (window->frame)
-                {
-                  retval -= window->frame->rect.height;
-                  retval += window->frame->child_y;
-                }
-              else
-                {
-                  retval -= window->rect.height;
-                }
               break;
             }
           
@@ -1380,13 +1427,9 @@ meta_window_find_next_horizontal_edge (MetaWindow *window,
         {
           --i;
           
-          if (edges[i] < top_edge)
+          if (edges[i] < source_edge)
             {
-              /* This is the one we want */
               retval = edges[i];
-              if (window->frame)
-                retval += window->frame->child_y;
-
               break;
             }
         }
@@ -1421,11 +1464,10 @@ meta_window_find_nearest_vertical_edge (MetaWindow *window,
       int left_pos, right_pos;
 
       left_pos = edges[i];
-      if (window->frame)
-        left_pos += window->frame->child_x;
 
       if (window->frame)
         {
+          left_pos += window->frame->child_x;
           right_pos = edges[i] - window->frame->rect.width;
           right_pos += window->frame->child_x;
         }
@@ -1492,11 +1534,10 @@ meta_window_find_nearest_horizontal_edge (MetaWindow *window,
       int top_pos, bottom_pos;
 
       top_pos = edges[i];
-      if (window->frame)
-        top_pos += window->frame->child_y;
 
       if (window->frame)
         {
+          top_pos += window->frame->child_y;
           bottom_pos = edges[i] - window->frame->rect.height;
           bottom_pos += window->frame->child_y;
         }

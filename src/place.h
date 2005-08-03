@@ -25,6 +25,16 @@
 #include "window.h"
 #include "frame.h"
 
+typedef enum _MetaWindowEdgePosition MetaWindowEdgePosition;
+
+enum _MetaWindowEdgePosition
+{
+  META_WINDOW_EDGE_TOP = 0,
+  META_WINDOW_EDGE_LEFT,
+  META_WINDOW_EDGE_RIGHT,
+  META_WINDOW_EDGE_BOTTOM
+};
+
 void meta_window_place (MetaWindow *window,
                         MetaFrameGeometry *fgeom,
                         int         x,
@@ -32,14 +42,16 @@ void meta_window_place (MetaWindow *window,
                         int        *new_x,
                         int        *new_y);
 
-/* Returns the position to move the window to in order
+/* Returns the position to move the specified window edge to in order
  * to snap it to the next edge in the given direction,
  * while moving.
  */
 int meta_window_find_next_vertical_edge   (MetaWindow *window,
-                                           gboolean    right);
-int meta_window_find_next_horizontal_edge (MetaWindow *window,
+                                           MetaWindowEdgePosition source_edge_position,
                                            gboolean    down);
+int meta_window_find_next_horizontal_edge (MetaWindow *window,
+                                           MetaWindowEdgePosition source_edge_position,
+                                           gboolean    right);
 
 /* Returns the position to move the window to in order
  * to snap it to the nearest edge, while moving.
@@ -49,13 +61,4 @@ int meta_window_find_nearest_vertical_edge (MetaWindow *window,
 
 int meta_window_find_nearest_horizontal_edge (MetaWindow *window,
                                               int         y_pos);
-
-/* FIXME need edge-snap functions for resizing as well, those
- * behave somewhat differently.
- */
-
 #endif
-
-
-
-

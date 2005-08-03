@@ -1,3 +1,40 @@
+2005-08-03  Ray Strode  <rstrode@redhat.com>
+
+	Improve the behavior of keyboard move/resize and edge
+	snapping.  Still not perfect, bug 310888.
+
+	* src/effects.c (draw_xor_rect): Make the outside of a
+	wireframe rectangle line up with the outside edge of its
+	window, instead of centering the wireframe edges on the
+	window edges.
+
+	* src/keybindings.c (process_keyboard_move_grab): allow
+	edge snapping in wireframe mode.  Adjust code to take
+	into account changed semantics of find_next_*_edge
+	functions.
+	(process_keyboard_resize_grab_op_change): new function 
+	to take some orthogonal logic out of
+	process_keyboard_resize_grab_op.  Only allow keyboard
+	resize cursor to go to flat edges, not corners.
+	(process_keyboard_resize_grab):  allow edge snapping in
+	wireframe mode.  Fix up snapping logic.
+
+	* src/place.c (get_{vertical,horizontal}_edges): use 
+	GArray instead of int *, since the number of output
+	edges isn't known until the middle of the function now.
+	Use xor rect extents instead of window extends if in
+	wireframe mode.
+	(meta_window_find_next_{vertical,horizontal}_edge: add
+	new source_edge_position parameter to specify which edge
+	on the active window to start from when looking for next
+	edge on the screen. Return the coordinate of the edge 
+	found and not the coordinate of where the window should be
+	moved to snap to where the edge was found.
+
+	* src/window.c (update_move): all the user to specify
+	an edge to resize with mouse in keyboard resize mode.
+	window
+
 2005-08-01  Elijah Newren  <newren@gmail.com>
 
 	* src/metacity.schemas.in: Change default theme from "Simple" to

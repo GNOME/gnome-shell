@@ -6498,27 +6498,22 @@ update_move (MetaWindow  *window,
   if (window->maximized)
     return;
 
+  if (mask & ShiftMask)
+    {
+      /* snap to edges */
+      if (dy != 0)
+        new_x = meta_window_find_nearest_vertical_edge (window, new_x);
+
+      if (dx != 0)
+        new_y = meta_window_find_nearest_horizontal_edge (window, new_y);
+    }
+
   if (window->display->grab_wireframe_active)
-    {
-      /* FIXME Horribly broken, does not honor position
-       * constraints
-       */
-      meta_window_update_wireframe (window, new_x, new_y, 
-                                    window->display->grab_wireframe_rect.width,
-                                    window->display->grab_wireframe_rect.height);
-    }
+    meta_window_update_wireframe (window, new_x, new_y, 
+                                  window->display->grab_wireframe_rect.width,
+                                  window->display->grab_wireframe_rect.height);
   else
-    {
-      /* FIXME, edge snapping broken in wireframe mode */
-      if (mask & ShiftMask)
-        {
-          /* snap to edges */
-          new_x = meta_window_find_nearest_vertical_edge (window, new_x);
-          new_y = meta_window_find_nearest_horizontal_edge (window, new_y);
-        }
-      
-      meta_window_move (window, TRUE, new_x, new_y);
-    }
+    meta_window_move (window, TRUE, new_x, new_y);
 }
 
 static void update_resize (MetaWindow *window,
@@ -6562,6 +6557,50 @@ update_resize (MetaWindow *window,
   /* FIXME this is only used in wireframe mode */
   new_x = window->display->grab_anchor_window_pos.x;
   new_y = window->display->grab_anchor_window_pos.y;
+
+  if (window->display->grab_op == META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN)
+    {
+      if ((dx > 0) && (dy > 0))
+        {
+          window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_SE;
+          meta_window_update_keyboard_resize (window, TRUE);
+        }
+      else if ((dx < 0) && (dy > 0))
+        {
+          window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_SW;
+          meta_window_update_keyboard_resize (window, TRUE);
+        }
+      else if ((dx > 0) && (dy < 0))
+        {
+          window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_NE;
+          meta_window_update_keyboard_resize (window, TRUE);
+        }
+      else if ((dx < 0) && (dy < 0))
+        {
+          window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_NW;
+          meta_window_update_keyboard_resize (window, TRUE);
+        }
+      else if (dx < 0)
+        {
+          window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_W;
+          meta_window_update_keyboard_resize (window, TRUE);
+        }
+      else if (dx > 0)
+        {
+          window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_E;
+          meta_window_update_keyboard_resize (window, TRUE);
+        }
+      else if (dy > 0)
+        {
+          window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_S;
+          meta_window_update_keyboard_resize (window, TRUE);
+        }
+      else if (dy < 0)
+        {
+          window->display->grab_op = META_GRAB_OP_KEYBOARD_RESIZING_N;
+          meta_window_update_keyboard_resize (window, TRUE);
+        }
+    }
   
   switch (window->display->grab_op)
     {
@@ -7270,11 +7309,13 @@ warp_grab_pointer (MetaWindow          *window,
   
   if (window == window->display->grab_window &&
       window->display->grab_wireframe_active)
-    rect = window->display->grab_wireframe_rect;
+    {
+      meta_window_get_xor_rect (window, &window->display->grab_wireframe_rect,
+                                &rect);
+    }
   else
     {
-      rect = window->rect;
-      meta_window_get_position (window, &rect.x, &rect.y);
+      meta_window_get_outer_rect (window, &rect);
     }
   
   switch (grab_op)
