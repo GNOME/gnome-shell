@@ -726,7 +726,7 @@ parse_toplevel_element (GMarkupParseContext  *context,
       if (name == NULL)
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"%s\" attribute on element <%s>"),
+                     _("No \"%s\" attribute on <%s> element"),
                      "name", element_name);
           return;
         }
@@ -734,7 +734,7 @@ parse_toplevel_element (GMarkupParseContext  *context,
       if (value == NULL)
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"%s\" attribute on element <%s>"),
+                     _("No \"%s\" attribute on <%s> element"),
                      "value", element_name);
           return;
         }
@@ -2933,7 +2933,7 @@ parse_draw_op_element (GMarkupParseContext  *context,
       if (name == NULL)
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"%s\" attribute on element <%s>"), "name", element_name);
+                     _("No \"%s\" attribute on <%s> element"), "name", element_name);
           return;
         }
 
@@ -3022,21 +3022,21 @@ parse_draw_op_element (GMarkupParseContext  *context,
       if (name == NULL)
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"%s\" attribute on element <%s>"), "name", element_name);
+                     _("No \"%s\" attribute on <%s> element"), "name", element_name);
           return;
         }
 
       if (tile_width == NULL)
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"%s\" attribute on element <%s>"), "tile_width", element_name);
+                     _("No \"%s\" attribute on <%s> element"), "tile_width", element_name);
           return;
         }
 
       if (tile_height == NULL)
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"%s\" attribute on element <%s>"), "tile_height", element_name);
+                     _("No \"%s\" attribute on <%s> element"), "tile_height", element_name);
           return;
         }
 
