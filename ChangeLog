@@ -1,9 +1,12 @@
 2005-08-08  Elijah Newren  <newren@gmail.com>
 
+	* NEWS:	2.11.2 release
+
+2005-08-08  Elijah Newren  <newren@gmail.com>
+
 	Patch from Brent Smith to fix a duplicate string.  Fixes #309774.
 
 	* src/theme-parser.c (parse_toplevel_element, parse_draw_op_element):
-
 	Change "No \"%s\" attribute on element <%s>" string to "No \"%s\"
 	attribute on <%s> element"
 
