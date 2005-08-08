@@ -6,12 +6,12 @@ improvements in this release.
 
  - Fix an easy to trigger crasher in 2.11.1 caused by unneeded
    debugging spew (Elijah) [#311819]
- - Make sure that Metacity dialogs have icons (Jaap) [309876]
+ - Make sure that Metacity dialogs have icons (Jaap) [#309876]
  - Fix an infinite restacking flicker loop in sloppy and mouse focus
    with fullscreen windows (Elijah) [#311400]
  - Change default theme from Simple to Clearlooks (Elijah)
  - Vastly improve the behavior of keyboard move/resize and edge
-   snapping (Ray) [310888]
+   snapping (Ray) [#310888]
  - Remove a duplicate string (Brent) [#309774]
 
 Translations
