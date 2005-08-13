@@ -880,7 +880,7 @@ meta_window_place (MetaWindow        *window,
       meta_topic (META_DEBUG_PLACEMENT, "Centered window %s on screen %d xinerama %d\n",
                   window->desc, window->screen->number, xi->number);
 
-      goto done;
+      goto done_check_denied_focus;
     }
   
   /* Find windows that matter (not minimized, on same workspace
