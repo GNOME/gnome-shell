@@ -8,46 +8,46 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-27 17:21-0600\n"
-"PO-Revision-Date: 2003-06-26 22:41+0700\n"
+"POT-Creation-Date: 2005-08-14 09:55+0300\n"
+"PO-Revision-Date: 2005-08-14 10:27+0300\n"
 "Last-Translator: Mohammad DAMT <mdamt@bisnisweb.com>\n"
 "Language-Team: Indonesian <sukarelawan@gnome.linux.or.id>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: 8bit"
 
-#: src/tools/metacity-message.c:150
+#: ../src/tools/metacity-message.c:150
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Cara pakai: %s\n"
 
-#: src/tools/metacity-message.c:176 src/util.c:128
+#: ../src/tools/metacity-message.c:176 ../src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity dikompilasi tanpa dukungan mode verbose\n"
 
-#: src/delete.c:63 src/delete.c:90 src/metacity-dialog.c:70
-#: src/theme-parser.c:467
+#: ../src/delete.c:63 ../src/delete.c:90 ../src/metacity-dialog.c:70
+#: ../src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
-msgstr "Tidak dapat parse \"%s\" sebagai integer"
+msgstr "Tidak dapat menguraikan \"%s\" sebagai integer"
 
-#: src/delete.c:70 src/delete.c:97 src/metacity-dialog.c:77
-#: src/theme-parser.c:476 src/theme-parser.c:530
+#: ../src/delete.c:70 ../src/delete.c:97 ../src/metacity-dialog.c:77
+#: ../src/theme-parser.c:476 ../src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Tidak mengerti karakter \"%s\" kenapa ada di buntut string \"%s\""
+msgstr "Tidak mengerti karakter \"%s\" kenapa ada dibuntut string \"%s\""
 
-#: src/delete.c:128
+#: ../src/delete.c:128
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Gagal untuk melakukan parse pesan \"%s\" dari proses dialog\n"
+msgstr "Gagal untuk melakukan penguraian pesan \"%s\" dari proses dialog\n"
 
-#: src/delete.c:263
+#: ../src/delete.c:263
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
-msgstr "Ada error saat membacar dari proses tampilan dialog: %s\n"
+msgstr "Ada error saat membaca dari proses tampilan dialog: %s\n"
 
-#: src/delete.c:344
+#: ../src/delete.c:344
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -55,17 +55,17 @@ msgstr ""
 "Error saat menjalankan metacity-dialog untuk menanyakan perihal penghentian "
 "aplikasi: %s\n"
 
-#: src/delete.c:452
+#: ../src/delete.c:452
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Gagal mendapatkan alamat host: %s\n"
 
-#: src/display.c:316
+#: ../src/display.c:319
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Gagal membuka tampilan X Window System '%s'\n"
 
-#: src/errors.c:231
+#: ../src/errors.c:231
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -74,66 +74,57 @@ msgid ""
 msgstr ""
 "Kehilangan koneksi ke tampilan '%s':\n"
 "mungkin server Xnya mati atau ada yang mematikan \n"
-"manager window.\n"
+"pengatur jendela.\n"
 
-#: src/errors.c:238
+#: ../src/errors.c:238
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr "Error IO yang fatal berkode %d (%s) pada display '%s'\n"
+msgstr "Error IO yang fatal berkode %d (%s) pada tampilan '%s'\n"
 
-#: src/frames.c:1125
+#: ../src/frames.c:1125
 msgid "Close Window"
-msgstr "Tutup Window"
+msgstr "Tutup Jendela"
 
-#: src/frames.c:1128
+#: ../src/frames.c:1128
 msgid "Window Menu"
-msgstr "Menu Window"
+msgstr "Menu Jendela"
 
-#: src/frames.c:1131
+#: ../src/frames.c:1131
 msgid "Minimize Window"
-msgstr "Kecilkan Window"
+msgstr "Kecilkan Jendela"
 
-#: src/frames.c:1134
+#: ../src/frames.c:1134
 msgid "Maximize Window"
-msgstr "Besarkan Window maksimal"
+msgstr "Maksimalkan Ukuran Jendela"
 
-#: src/frames.c:1137
+#: ../src/frames.c:1137
 msgid "Unmaximize Window"
-msgstr "Kembalikan ukuran window semula"
+msgstr "Kembalikan Ukuran ke Semula"
 
-#: src/keybindings.c:994
+#: ../src/keybindings.c:994
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "Ada program lain yang menggunakan tombol %s dengan kombinasi %x\n"
 
-#: src/keybindings.c:2535
+#: ../src/keybindings.c:2620
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Ada error saat menjalankan metacity-dialog untuk menampilkan error suatu "
 "perintah: %s\n"
 
-#: src/keybindings.c:2640
+#: ../src/keybindings.c:2725
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Tidak ada perintah %d.\n"
 
-#: src/keybindings.c:3485
-#, fuzzy
+#: ../src/keybindings.c:3570
 msgid "No terminal command has been defined.\n"
-msgstr "Tidak ada perintah %d.\n"
+msgstr "Tidak ada perintah untuk menjalankan terminal.\n"
 
-#: src/main.c:69
-msgid ""
-"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-"display=DISPLAY] [--replace] [--version]\n"
-msgstr ""
-"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-"display=DISPLAY] [--replace] [--version]\n"
-
-#: src/main.c:76
+#: ../src/main.c:69
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -143,115 +134,137 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
-"Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., dan lain-lain.\n"
-"This is free software; see the source for copying conditions.\n"
-"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-"PARTICULAR PURPOSE.\n"
+"Hak Cipta (C) 2001-2002 Havoc Pennington, Red Hat, Inc., dan lain-lain.\n"
+"Ini adalah perangkat lunak bebas, silakan lihat kode asalnya untuk keterangan distribusi.\n"
+"TIDAK ADA jaminan, bahkan untuk KELAYAKAN JUAL atau KELAYAKAN UNTUK KEGUNAAN TERTENTU.\n"
+""
 
-#: src/main.c:443
+#: ../src/main.c:257
+msgid "Disable connection to session manager"
+msgstr "Matikan koneksi ke pengatur sesi"
+
+#: ../src/main.c:263
+msgid "Replace the running window manager with Metacity"
+msgstr "Ganti program pengatur jendela yang aktif dengan Metacity"
+
+#: ../src/main.c:269
+msgid "Specify session management ID"
+msgstr "Tentukan kode pengaturan sesi"
+
+#: ../src/main.c:274
+msgid "X Display to use"
+msgstr "Tampilan X yang digunakna"
+
+#: ../src/main.c:280
+msgid "Initialize session from savefile"
+msgstr "Aktifkan sesi dari berkas simpanan"
+
+#: ../src/main.c:286
+msgid "Print version"
+msgstr "Cetak versi"
+
+#: ../src/main.c:440
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Gagal memeriksa direktori tema: %s\n"
 
-#: src/main.c:459
+#: ../src/main.c:456
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr "Tidak ada tema! Pastikan %s ada dan berisi tema yang benar."
 
-#: src/main.c:521
+#: ../src/main.c:518
 #, c-format
 msgid "Failed to restart: %s\n"
-msgstr "Gagal merestart: %s\n"
+msgstr "Gagal menjalankan ulang: %s\n"
 
-#: src/menu.c:54
+#: ../src/menu.c:54
 msgid "Mi_nimize"
-msgstr "Kecilka_n"
+msgstr "Mi_nimalkan Ukuran"
 
-#: src/menu.c:55
+#: ../src/menu.c:55
 msgid "Ma_ximize"
-msgstr "Besarkan Ma_ksimum"
+msgstr "Ma_ksimalkan Ukuran"
 
-#: src/menu.c:56
+#: ../src/menu.c:56
 msgid "Unma_ximize"
-msgstr "Kem_balikan ukuran"
+msgstr "Kem_balikan Ukuran"
 
-#: src/menu.c:57
+#: ../src/menu.c:57
 msgid "Roll _Up"
 msgstr "G_ulung"
 
-#: src/menu.c:58
+#: ../src/menu.c:58
 msgid "_Unroll"
 msgstr "B_uka"
 
-#: src/menu.c:59 src/menu.c:60
+#: ../src/menu.c:59 ../src/menu.c:60
 msgid "On _Top"
-msgstr "Selalu di a_tas"
+msgstr "Selalu di A_tas"
 
-#: src/menu.c:61
+#: ../src/menu.c:61
 msgid "_Move"
 msgstr "_Pindahkan"
 
-#: src/menu.c:62
+#: ../src/menu.c:62
 msgid "_Resize"
-msgstr "_Ganti ukuran"
+msgstr "_Ganti Ukuran"
 
 #. separator
-#: src/menu.c:64
+#: ../src/menu.c:64
 msgid "_Close"
 msgstr "_Tutup"
 
 #. separator
-#: src/menu.c:66
-#, fuzzy
+#: ../src/menu.c:66
 msgid "_Always on Visible Workspace"
-msgstr "Le_takkan di area kerja ini saja"
+msgstr "T_ampak pada Area Kerja Aktif"
 
-#: src/menu.c:67
-#, fuzzy
+#: ../src/menu.c:67
 msgid "_Only on This Workspace"
-msgstr "Le_takkan di area kerja ini saja"
+msgstr "_Tampak pada Area Kerja Ini Saja"
 
-#: src/menu.c:68
+#: ../src/menu.c:68
 msgid "Move to Workspace _Left"
-msgstr "Pindahkan jendela ini ke area kerja sebelah kiri"
+msgstr "Pindahkan ke Area Kerja _Kiri"
 
-#: src/menu.c:69
+#: ../src/menu.c:69
 msgid "Move to Workspace R_ight"
-msgstr "Pindahkan jendela ini ke area kerja sebelah kanan"
+msgstr "Pindahkan ke A_rea Kerja Kanan"
 
-#: src/menu.c:70
+#: ../src/menu.c:70
 msgid "Move to Workspace _Up"
-msgstr "Pindahkan jendela ini ke area kerja atas"
+msgstr "Pindahkan ke Area Kerja Ata_s"
 
-#: src/menu.c:71
+#: ../src/menu.c:71
 msgid "Move to Workspace _Down"
-msgstr "Pindahkan jendela ini ke area kerja bawah"
+msgstr "Pindahkan ke Area Kerja _Bawah"
 
-#: src/menu.c:162 src/prefs.c:1996
+#: ../src/menu.c:162 ../src/prefs.c:2106
 #, c-format
 msgid "Workspace %d"
 msgstr "Area kerja %d"
 
-#: src/menu.c:171
+#: ../src/menu.c:171
 msgid "Workspace 1_0"
-msgstr "Area kerja 1_0"
+msgstr "Area Kerja 1_0"
 
-#: src/menu.c:173
+#: ../src/menu.c:173
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Area Kerja %s%d"
 
-#: src/menu.c:368
+#: ../src/menu.c:368
 msgid "Move to Another _Workspace"
-msgstr "Pindahkan jendela ini ke area kerja _lain"
+msgstr "Pindahkan ke Area Kerja _Lain"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: src/metaaccellabel.c:105
+#: ../src/metaaccellabel.c:105
 msgid "Shift"
 msgstr "Shift"
 
@@ -260,7 +273,7 @@ msgstr "Shift"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: src/metaaccellabel.c:111
+#: ../src/metaaccellabel.c:111
 msgid "Ctrl"
 msgstr "Ctrl"
 
@@ -269,7 +282,7 @@ msgstr "Ctrl"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: src/metaaccellabel.c:117
+#: ../src/metaaccellabel.c:117
 msgid "Alt"
 msgstr "Alt"
 
@@ -278,7 +291,7 @@ msgstr "Alt"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: src/metaaccellabel.c:123
+#: ../src/metaaccellabel.c:123
 msgid "Meta"
 msgstr "Meta"
 
@@ -287,7 +300,7 @@ msgstr "Meta"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: src/metaaccellabel.c:129
+#: ../src/metaaccellabel.c:129
 msgid "Super"
 msgstr "Super"
 
@@ -296,7 +309,7 @@ msgstr "Super"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: src/metaaccellabel.c:135
+#: ../src/metaaccellabel.c:135
 msgid "Hyper"
 msgstr "Hiper"
 
@@ -305,7 +318,7 @@ msgstr "Hiper"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: src/metaaccellabel.c:141
+#: ../src/metaaccellabel.c:141
 msgid "Mod2"
 msgstr "Mod2"
 
@@ -314,7 +327,7 @@ msgstr "Mod2"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: src/metaaccellabel.c:147
+#: ../src/metaaccellabel.c:147
 msgid "Mod3"
 msgstr "Mod3"
 
@@ -323,7 +336,7 @@ msgstr "Mod3"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: src/metaaccellabel.c:153
+#: ../src/metaaccellabel.c:153
 msgid "Mod4"
 msgstr "Mod4"
 
@@ -332,43 +345,43 @@ msgstr "Mod4"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: src/metaaccellabel.c:159
+#: ../src/metaaccellabel.c:159
 msgid "Mod5"
 msgstr "Mod5"
 
-#: src/metacity-dialog.c:110
+#: ../src/metacity-dialog.c:110
 #, c-format
 msgid "The window \"%s\" is not responding."
-msgstr "Window \"%s\" tidak ada tanda-tanda kehidupan."
+msgstr "Tidak ada tanda-tanda kehidupan pada jendela \"%s\"."
 
-#: src/metacity-dialog.c:118
+#: ../src/metacity-dialog.c:118
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Perubahan yang telah dilakukan akan hilang bila Anda mematikan aplikasi ini "
 "secara paksa."
 
-#: src/metacity-dialog.c:128
+#: ../src/metacity-dialog.c:129
 msgid "_Force Quit"
-msgstr "_Paksa Berhenti"
+msgstr "_Matikan Paksa"
 
-#: src/metacity-dialog.c:225
+#: ../src/metacity-dialog.c:226
 msgid "Title"
 msgstr "Judul"
 
-#: src/metacity-dialog.c:237
+#: ../src/metacity-dialog.c:238
 msgid "Class"
 msgstr "Kelas"
 
-#: src/metacity-dialog.c:263
+#: ../src/metacity-dialog.c:264
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
 msgstr ""
-"Window ini tidak bisa \"menyimpan setingan aktif saat ini\" dan bila login "
-"kali lain Anda harus menjalankan ulang."
+"Jendela ini tidak bisa \"menyimpan setelan aktif saat ini\" dan bila login "
+"kali lain Anda harus menjalankannya ulang."
 
-#: src/metacity-dialog.c:328
+#: ../src/metacity-dialog.c:330
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -377,15 +390,15 @@ msgstr ""
 "Ada error saat menjalankan \"%s\":\n"
 "%s."
 
-#: src/metacity.desktop.in.h:1
+#: ../src/metacity.desktop.in.h:1
 msgid "Metacity"
 msgstr "Metacity"
 
-#: src/metacity.schemas.in.h:1
+#: ../src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr "(Belum jadi) Navigasi dilakukan berdasarkan aplikasi, bukan windows"
+msgstr "(Belum jadi) Navigasi dilakukan berdasarkan aplikasi, bukan jendela"
 
-#: src/metacity.schemas.in.h:2
+#: ../src/metacity.schemas.in.h:2
 msgid ""
 "A font description string describing a font for window titlebars. The size "
 "from the description will only be used if the titlebar_font_size option is "
@@ -402,19 +415,19 @@ msgstr ""
 "menggunakan jenis huruf yang digunakan desktop apapun nilai "
 "titlebar_uses_desktop_font."
 
-#: src/metacity.schemas.in.h:3
+#: ../src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
-msgstr "Aksi yang harus dilakukan saat judul window diklik ganda"
+msgstr "Aksi yang harus dilakukan saat judul jendela diklik ganda"
 
-#: src/metacity.schemas.in.h:4
+#: ../src/metacity.schemas.in.h:4
 msgid "Activate window menu"
-msgstr "Aktifkan menu window"
+msgstr "Aktifkan menu jendela"
 
-#: src/metacity.schemas.in.h:5
+#: ../src/metacity.schemas.in.h:5
 msgid "Arrangement of buttons on the titlebar"
-msgstr "Pengaturan tombol pada judul window"
+msgstr "Pengaturan tombol pada judul jendela"
 
-#: src/metacity.schemas.in.h:6
+#: ../src/metacity.schemas.in.h:6
 msgid ""
 "Arrangement of buttons on the titlebar. The value should be a string, such "
 "as \"menu:minimize,maximize,close\"; the colon separates the left corner of "
@@ -431,11 +444,11 @@ msgstr ""
 "ditambahkan bila memang diperlukan tanpa harus merusak konfigurasi Metacity "
 "yang ada sekarang."
 
-#: src/metacity.schemas.in.h:7
+#: ../src/metacity.schemas.in.h:7
 msgid "Automatically raises the focused window"
-msgstr "Naikan window yang berfokus secara otomatis"
+msgstr "Naikan jendela yang berfokus secara otomatis"
 
-#: src/metacity.schemas.in.h:8
+#: ../src/metacity.schemas.in.h:8
 msgid ""
 "Clicking a window while holding down this modifier key will move the window "
 "(left click), resize the window (middle click), or show the window menu "
@@ -447,24 +460,23 @@ msgstr ""
 "window (klik kanan). Tombol tambahan ini dinyatakan sebagai misalnya \"&lt;"
 "Alt;&gt; atau \"&lt;Super&gt;\""
 
-#: src/metacity.schemas.in.h:9
-#, fuzzy
+#: ../src/metacity.schemas.in.h:9
 msgid "Close window"
-msgstr "Tutup window"
+msgstr "Tutup jendela"
 
-#: src/metacity.schemas.in.h:10
+#: ../src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
 msgstr "Perintah yang akan dijalankan bila tombol kombinasi ditekan"
 
-#: src/metacity.schemas.in.h:11
+#: ../src/metacity.schemas.in.h:11
 msgid "Current theme"
 msgstr "Tema yang aktif"
 
-#: src/metacity.schemas.in.h:12
+#: ../src/metacity.schemas.in.h:12
 msgid "Delay in milliseconds for the auto raise option"
-msgstr "Jeda dalam milidetik untuk pilihan naikan window secara otomatis"
+msgstr "Jeda dalam milidetik untuk pilihan naikan jendela secara otomatis"
 
-#: src/metacity.schemas.in.h:13
+#: ../src/metacity.schemas.in.h:13
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
@@ -473,19 +485,19 @@ msgstr ""
 "terdengar.Hal ini berlawanan dengan bel visual yang tidak mengeluarkan suara "
 "pada saat membunyikan bel."
 
-#: src/metacity.schemas.in.h:14
+#: ../src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
 msgstr "Nonaktifkan fitur yang diperlukan oleh aplikasi tua dan aplikasi jelek"
 
-#: src/metacity.schemas.in.h:15
+#: ../src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
 msgstr "Gunakan Bel Visual"
 
-#: src/metacity.schemas.in.h:16
+#: ../src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
-msgstr "Sembunyikan semua window dan fokus ke desktop"
+msgstr "Sembunyikan semua jendela dan fokus ke desktop"
 
-#: src/metacity.schemas.in.h:17
+#: ../src/metacity.schemas.in.h:17
 msgid ""
 "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 "focused window will be automatically raised after a delay (the delay is "
@@ -495,7 +507,7 @@ msgstr ""
 "window yang berfokus akan dinaikkan secara otomatis setelah waktu jeda usai "
 "(nilai waktu jeda ditetapkan oleh key auto_rise_delay)."
 
-#: src/metacity.schemas.in.h:18
+#: ../src/metacity.schemas.in.h:18
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
@@ -503,8 +515,7 @@ msgstr ""
 "Bila bernilai true, pilihan titlebar_font akan diabaikan dan gunakan jenis "
 "huruf yang digunakan aplikasi standar pada judul windownya."
 
-#: src/metacity.schemas.in.h:19
-#, fuzzy
+#: ../src/metacity.schemas.in.h:19
 msgid ""
 "If true, metacity will give the user less feedback and less sense of "
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
@@ -516,9 +527,11 @@ msgstr ""
 "Pilih jika ingin metacity memberi reaksi yang lebih sedikit dan melakukan "
 "manipulasi langsung dengan menggunakan bingkai kawat, tidak menjalankan "
 "animasi, dan sebagainya. Ini berarti akan kurang berdaya guna menurut "
-"sebagian pemakai, tapi cukup baik pada kondisi-kondisi tertentu."
+"sebagian pemakai, tapi cukup baik pada kondisi-kondisi tertentu, misalnya aplikasi "
+"pada server terminal. Betapapun, fitur bingkai kawat akan dimatikan saat kemudahan "
+"akses dinyalakan."
 
-#: src/metacity.schemas.in.h:20
+#: ../src/metacity.schemas.in.h:20
 msgid ""
 "If true, then Metacity works in terms of applications rather than windows. "
 "The concept is a bit abstract, but in general an application-based setup is "
@@ -541,149 +554,146 @@ msgstr ""
 "via klik. Lagipula mode aplikasi belum selesai diimplementasikan secara "
 "penuh pada saat ini."
 
-#: src/metacity.schemas.in.h:21
+#: ../src/metacity.schemas.in.h:21
 msgid "If true, trade off usability for less resource usage"
 msgstr ""
 "Pilih jika Anda mementingkan penggunaan memori yang lebih kecil dari pada "
 "daya guna"
 
-#: src/metacity.schemas.in.h:22
+#: ../src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
 msgstr "Turunkan jendela di bawah jendela lain"
 
-#: src/metacity.schemas.in.h:23
-#, fuzzy
+#: ../src/metacity.schemas.in.h:23
 msgid "Maximize window"
 msgstr "Maksimalkan ukuran jendela"
 
-#: src/metacity.schemas.in.h:24
+#: ../src/metacity.schemas.in.h:24
 msgid "Maximize window horizontally"
 msgstr "Maksimalkan ukuran jendela secara horisontal"
 
-#: src/metacity.schemas.in.h:25
+#: ../src/metacity.schemas.in.h:25
 msgid "Maximize window vertically"
 msgstr "Maksimalkan ukuran jendela secara vertikal"
 
-#: src/metacity.schemas.in.h:26
-#, fuzzy
+#: ../src/metacity.schemas.in.h:26
 msgid "Minimize window"
-msgstr "Kecilkan jendela"
+msgstr "Minimalkan ukuran jendela"
 
-#: src/metacity.schemas.in.h:27
+#: ../src/metacity.schemas.in.h:27
 msgid "Modifier to use for modified window click actions"
 msgstr ""
 "Tombol yang digunakan untuk menjalankan suatu perintah apabila jendela diklik"
 
-#: src/metacity.schemas.in.h:28
+#: ../src/metacity.schemas.in.h:28
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Pindahkan langsung ke belakang antara panel dan desktop"
 
-#: src/metacity.schemas.in.h:29
+#: ../src/metacity.schemas.in.h:29
 msgid "Move backwards between panels and the desktop with popup"
 msgstr "Pindahkan ke belakang antara  panel dan desktop dengan popup"
 
-#: src/metacity.schemas.in.h:30
+#: ../src/metacity.schemas.in.h:30
 msgid "Move backwards between windows immediately"
-msgstr "Pindahkan langsung ke belakang antara window"
+msgstr "Pindahkan langsung ke belakang antara jendela"
 
-#: src/metacity.schemas.in.h:31
+#: ../src/metacity.schemas.in.h:31
 msgid "Move between panels and the desktop immediately"
 msgstr "Pindahkan langsung antara panel dan desktop"
 
-#: src/metacity.schemas.in.h:32
+#: ../src/metacity.schemas.in.h:32
 msgid "Move between panels and the desktop with popup"
 msgstr "Pindahkan antara panel dan desktop dengan popup"
 
-#: src/metacity.schemas.in.h:33
+#: ../src/metacity.schemas.in.h:33
 msgid "Move between windows immediately"
 msgstr "Pindahkan langsung antara jendela-jendela"
 
-#: src/metacity.schemas.in.h:34
+#: ../src/metacity.schemas.in.h:34
 msgid "Move between windows with popup"
 msgstr "Pindahkan antara jendela dengan popup"
 
-#: src/metacity.schemas.in.h:35
+#: ../src/metacity.schemas.in.h:35
 msgid "Move focus backwards between windows using popup display"
 msgstr "Pindahkan fokus ke belakang antara jendela dengan menampilkan popup"
 
-#: src/metacity.schemas.in.h:36
-#, fuzzy
+#: ../src/metacity.schemas.in.h:36
 msgid "Move window"
 msgstr "Pindahkan jendela"
 
-#: src/metacity.schemas.in.h:37
+#: ../src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
 msgstr "Pindahkan jendela ke area kerja bawah"
 
-#: src/metacity.schemas.in.h:38
+#: ../src/metacity.schemas.in.h:38
 msgid "Move window one workspace to the left"
 msgstr "Pindahkan jendela ke area kerja kiri"
 
-#: src/metacity.schemas.in.h:39
+#: ../src/metacity.schemas.in.h:39
 msgid "Move window one workspace to the right"
 msgstr "Pindahkan jendela ke area kerja kanan"
 
-#: src/metacity.schemas.in.h:40
+#: ../src/metacity.schemas.in.h:40
 msgid "Move window one workspace up"
 msgstr "Pindahkan jendela ke area kerja atas"
 
-#: src/metacity.schemas.in.h:41
+#: ../src/metacity.schemas.in.h:41
 msgid "Move window to workspace 1"
 msgstr "Pindahkan jendela ke area kerja 1"
 
-#: src/metacity.schemas.in.h:42
+#: ../src/metacity.schemas.in.h:42
 msgid "Move window to workspace 10"
 msgstr "Pindahkan jendela ke area kerja 10"
 
-#: src/metacity.schemas.in.h:43
+#: ../src/metacity.schemas.in.h:43
 msgid "Move window to workspace 11"
 msgstr "Pindahkan jendela ke area kerja 11"
 
-#: src/metacity.schemas.in.h:44
+#: ../src/metacity.schemas.in.h:44
 msgid "Move window to workspace 12"
 msgstr "Pindahkan jendela ke area kerja 12"
 
-#: src/metacity.schemas.in.h:45
+#: ../src/metacity.schemas.in.h:45
 msgid "Move window to workspace 2"
 msgstr "Pindahkan jendela ke area kerja 2"
 
-#: src/metacity.schemas.in.h:46
+#: ../src/metacity.schemas.in.h:46
 msgid "Move window to workspace 3"
 msgstr "Pindahkan jendela ke area kerja 3"
 
-#: src/metacity.schemas.in.h:47
+#: ../src/metacity.schemas.in.h:47
 msgid "Move window to workspace 4"
 msgstr "Pindahkan jendela ke area kerja 4"
 
-#: src/metacity.schemas.in.h:48
+#: ../src/metacity.schemas.in.h:48
 msgid "Move window to workspace 5"
 msgstr "Pindahkan jendela ke area kerja 5"
 
-#: src/metacity.schemas.in.h:49
+#: ../src/metacity.schemas.in.h:49
 msgid "Move window to workspace 6"
 msgstr "Pindahkan jendela ke area kerja 6"
 
-#: src/metacity.schemas.in.h:50
+#: ../src/metacity.schemas.in.h:50
 msgid "Move window to workspace 7"
 msgstr "Pindahkan jendela ke area kerja 7"
 
-#: src/metacity.schemas.in.h:51
+#: ../src/metacity.schemas.in.h:51
 msgid "Move window to workspace 8"
 msgstr "Pindahkan jendela ke area kerja 8"
 
-#: src/metacity.schemas.in.h:52
+#: ../src/metacity.schemas.in.h:52
 msgid "Move window to workspace 9"
 msgstr "Pindahkan jendela ke area kerja 9"
 
-#: src/metacity.schemas.in.h:53
+#: ../src/metacity.schemas.in.h:53
 msgid "Name of workspace"
 msgstr "Nama area kerja"
 
-#: src/metacity.schemas.in.h:54
+#: ../src/metacity.schemas.in.h:54
 msgid "Number of workspaces"
 msgstr "Jumlah area kerja"
 
-#: src/metacity.schemas.in.h:55
+#: ../src/metacity.schemas.in.h:55
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum (to "
 "prevent accidentally destroying your desktop by asking for 34 million "
@@ -693,37 +703,35 @@ msgstr ""
 "(untuk mencegah kerusakan pada desktop, misalnya karena minta membuat 34 "
 "juta workspace)"
 
-#: src/metacity.schemas.in.h:56
+#: ../src/metacity.schemas.in.h:56
 msgid "Raise obscured window, otherwise lower"
 msgstr "Naikan jendela tertentu dan turunkan yang lain"
 
-#: src/metacity.schemas.in.h:57
+#: ../src/metacity.schemas.in.h:57
 msgid "Raise window above other windows"
 msgstr "Naikan jendela ini di atas jendela-jendela lain"
 
-#: src/metacity.schemas.in.h:58
-#, fuzzy
+#: ../src/metacity.schemas.in.h:58
 msgid "Resize window"
 msgstr "Rubah ukuran jendela"
 
-#: src/metacity.schemas.in.h:59
+#: ../src/metacity.schemas.in.h:59
 msgid "Run a defined command"
 msgstr "Jalankan perintah tertentu"
 
-#: src/metacity.schemas.in.h:60
+#: ../src/metacity.schemas.in.h:60
 msgid "Run a terminal"
-msgstr ""
+msgstr "Jalankan terminal"
 
-#: src/metacity.schemas.in.h:61
+#: ../src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
 msgstr "Tampilkan menu panel"
 
-#: src/metacity.schemas.in.h:62
-#, fuzzy
+#: ../src/metacity.schemas.in.h:62
 msgid "Show the panel run application dialog"
 msgstr "Tampilkkan kotak dialog panel untuk menjalankan aplikasi"
 
-#: src/metacity.schemas.in.h:63
+#: ../src/metacity.schemas.in.h:63
 msgid ""
 "Some applications break specifications in ways that result in window manager "
 "misfeatures. For example, ideally Metacity would place all dialogs in a "
@@ -753,83 +761,83 @@ msgstr ""
 "kadang kala ada bug yang apabila ditemukan saat pilihan ini tidak aktif, "
 "maka bug itu tidak dapat dibetulkan tanpa mengabaikan spesifikasi yang ada."
 
-#: src/metacity.schemas.in.h:64
+#: ../src/metacity.schemas.in.h:64
 msgid "Switch to workspace 1"
 msgstr "Ganti ke area kerja 1"
 
-#: src/metacity.schemas.in.h:65
+#: ../src/metacity.schemas.in.h:65
 msgid "Switch to workspace 10"
 msgstr "Ganti ke area kerja 10"
 
-#: src/metacity.schemas.in.h:66
+#: ../src/metacity.schemas.in.h:66
 msgid "Switch to workspace 11"
 msgstr "Ganti ke area kerja 11"
 
-#: src/metacity.schemas.in.h:67
+#: ../src/metacity.schemas.in.h:67
 msgid "Switch to workspace 12"
 msgstr "Ganti ke area kerja 12"
 
-#: src/metacity.schemas.in.h:68
+#: ../src/metacity.schemas.in.h:68
 msgid "Switch to workspace 2"
 msgstr "Ganti ke area kerja 2"
 
-#: src/metacity.schemas.in.h:69
+#: ../src/metacity.schemas.in.h:69
 msgid "Switch to workspace 3"
 msgstr "Ganti ke area kerja 3"
 
-#: src/metacity.schemas.in.h:70
+#: ../src/metacity.schemas.in.h:70
 msgid "Switch to workspace 4"
 msgstr "Ganti ke area kerja 4"
 
-#: src/metacity.schemas.in.h:71
+#: ../src/metacity.schemas.in.h:71
 msgid "Switch to workspace 5"
 msgstr "Ganti ke area kerja 5"
 
-#: src/metacity.schemas.in.h:72
+#: ../src/metacity.schemas.in.h:72
 msgid "Switch to workspace 6"
 msgstr "Ganti ke area kerja 6"
 
-#: src/metacity.schemas.in.h:73
+#: ../src/metacity.schemas.in.h:73
 msgid "Switch to workspace 7"
 msgstr "Ganti ke area kerja 7"
 
-#: src/metacity.schemas.in.h:74
+#: ../src/metacity.schemas.in.h:74
 msgid "Switch to workspace 8"
 msgstr "Ganti ke area kerja 8"
 
-#: src/metacity.schemas.in.h:75
+#: ../src/metacity.schemas.in.h:75
 msgid "Switch to workspace 9"
 msgstr "Ganti ke area kerja 9"
 
-#: src/metacity.schemas.in.h:76
+#: ../src/metacity.schemas.in.h:76
 msgid "Switch to workspace above this one"
 msgstr "Ganti ke area kerja yang lebih tinggi"
 
-#: src/metacity.schemas.in.h:77
+#: ../src/metacity.schemas.in.h:77
 msgid "Switch to workspace below this one"
 msgstr "Ganti ke area kerja yang lebih rendah"
 
-#: src/metacity.schemas.in.h:78
+#: ../src/metacity.schemas.in.h:78
 msgid "Switch to workspace on the left"
 msgstr "Ganti ke area kerja sebelah kiri"
 
-#: src/metacity.schemas.in.h:79
+#: ../src/metacity.schemas.in.h:79
 msgid "Switch to workspace on the right"
-msgstr "Ganti ke area kerja sbelah kanan"
+msgstr "Ganti ke area kerja sebelah kanan"
 
-#: src/metacity.schemas.in.h:80
+#: ../src/metacity.schemas.in.h:80
 msgid "System Bell is Audible"
 msgstr "Bel sistem dapat terdengar"
 
-#: src/metacity.schemas.in.h:81
+#: ../src/metacity.schemas.in.h:81
 msgid "Take a screenshot"
-msgstr "Ambil screenshot"
+msgstr "Ambil gambar layar"
 
-#: src/metacity.schemas.in.h:82
+#: ../src/metacity.schemas.in.h:82
 msgid "Take a screenshot of a window"
-msgstr "Ambil screenshot khusus jendela tertentu"
+msgstr "Ambil gambar layar khusus jendela tertentu"
 
-#: src/metacity.schemas.in.h:83
+#: ../src/metacity.schemas.in.h:83
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
 "or another application 'bell' indicator has been rung. Currently there are "
@@ -847,7 +855,7 @@ msgstr ""
 "(biasanya karena inimerupakan bel sistem standar) maka kilatan akan "
 "ditampilkan pada kotak judul window yang sedang memiliki fokus saat ini."
 
-#: src/metacity.schemas.in.h:84
+#: ../src/metacity.schemas.in.h:84
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
@@ -857,7 +865,7 @@ msgstr ""
 "tombol untuk perintah ini. Dengan menekan kombinasi tombol tersebut maka "
 "perintah command_N akan dijalankan."
 
-#: src/metacity.schemas.in.h:85
+#: ../src/metacity.schemas.in.h:85
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
@@ -865,7 +873,7 @@ msgstr ""
 "Key /apps/metacity/global_keybindings/run_command_screenshot menentukan "
 "kombinasi tombol untuk menjalankan perintah ini"
 
-#: src/metacity.schemas.in.h:86
+#: ../src/metacity.schemas.in.h:86
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
@@ -874,8 +882,7 @@ msgstr ""
 "Key /apps/metacity/global_keybindings/run_command_window_screenshot "
 "menentukan kombinasi tombol untuk menjalankan perintah ini."
 
-#: src/metacity.schemas.in.h:87
-#, fuzzy
+#: ../src/metacity.schemas.in.h:87
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -889,12 +896,11 @@ msgstr ""
 "seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program "
 "pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
-"singkata seperti \"&lt;Ctl&gt;\" atau \"&lt;Ctrl&gt;\". Dan apabila Anda "
+"singkatan seperti \"&lt;Ctl&gt;\" atau \"&lt;Ctrl&gt;\". Dan apabila Anda "
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:88
-#, fuzzy
+#: ../src/metacity.schemas.in.h:88
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -903,16 +909,15 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Kombinasi tombol untuk mengganti workspace ke workspace yang ada di atas "
-"workspace aktif saat ini. Format penulisannya seperti \"&lt;Control&gt;a\" "
+"Kombinasi tombol untuk mengganti area kerja ke area kerja yang ada di atas "
+"area kerja aktif saat ini. Format penulisannya seperti \"&lt;Control&gt;a\" "
 "atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program pendeteksi kombinasi tombol ini "
 "sangat fleksibel dan memperbolehkan digunakannya huruf besar dan huruf "
-"kecil, juga memperbolehkan digunakannya singkata seperti \"&lt;Ctl&gt;\" "
+"kecil, juga memperbolehkan digunakannya singkatan seperti \"&lt;Ctl&gt;\" "
 "atau \"&lt;Ctrl&gt;\". Dan apabila Anda menuliskan kata \"disabled\" maka "
 "perintah ini tidak memiliki kombinasi tombol."
 
-#: src/metacity.schemas.in.h:89
-#, fuzzy
+#: ../src/metacity.schemas.in.h:89
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -921,16 +926,15 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Kombinasi tombol untuk mengganti workspace ke workspace yang ada di bawah "
-"workspace aktif saat ini. Format penulisannya seperti \"&lt;Control&gt;a\" "
+"Kombinasi tombol untuk mengganti area kerja ke area kerja yang ada di bawah "
+"area kerja aktif saat ini. Format penulisannya seperti \"&lt;Control&gt;a\" "
 "atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program pendeteksi kombinasi tombol ini "
 "sangat fleksibel dan memperbolehkan digunakannya huruf besar dan huruf "
 "kecil, juga memperbolehkan digunakannya singkata seperti \"&lt;Ctl&gt;\" "
 "atau \"&lt;Ctrl&gt;\". Dan apabila Anda menuliskan kata \"disabled\" maka "
 "perintah ini tidak memiliki kombinasi tombol."
 
-#: src/metacity.schemas.in.h:90
-#, fuzzy
+#: ../src/metacity.schemas.in.h:90
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -939,16 +943,15 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengganti workspace ke workspace yang ada di sebelah "
-"kiri workspace aktif saat ini. Format penulisannya seperti \"&lt;Control&gt;a"
+"Kombinasi tombol untuk mengganti area kerja ke area kerja yang ada di sebelah "
+"kiri area kerja aktif saat ini. Format penulisannya seperti \"&lt;Control&gt;a"
 "\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program pendeteksi kombinasi tombol "
 "ini sangat fleksibel dan memperbolehkan digunakannya huruf besar dan huruf "
 "kecil, juga memperbolehkan digunakannya singkata seperti \"&lt;Ctl&gt;\" "
 "atau \"&lt;Ctrl&gt;\". Dan apabila Anda menuliskan kata \"disabled\" maka "
 "perintah ini tidak memiliki kombinasi tombol."
 
-#: src/metacity.schemas.in.h:91
-#, fuzzy
+#: ../src/metacity.schemas.in.h:91
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -957,16 +960,15 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengganti workspace ke workspace yang ada di sebelah "
-"kanan workspace aktif saat ini. Format penulisannya seperti \"&lt;Control&gt;"
+"Kombinasi tombol untuk mengganti area kerja ke area kerja yang ada di sebelah "
+"kanan area kerja aktif saat ini. Format penulisannya seperti \"&lt;Control&gt;"
 "a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program pendeteksi kombinasi tombol "
 "ini sangat fleksibel dan memperbolehkan digunakannya huruf besar dan huruf "
 "kecil, juga memperbolehkan digunakannya singkata seperti \"&lt;Ctl&gt;\" "
 "atau \"&lt;Ctrl&gt;\". Dan apabila Anda menuliskan kata \"disabled\" maka "
 "perintah ini tidak memiliki kombinasi tombol."
 
-#: src/metacity.schemas.in.h:92
-#, fuzzy
+#: ../src/metacity.schemas.in.h:92
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -974,7 +976,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengganti workspace ke workspace nomor 1. Format "
+"Kombinasi tombol untuk mengganti area kerja ke area kerja nomor 1. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -982,8 +984,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:93
-#, fuzzy
+#: ../src/metacity.schemas.in.h:93
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -991,7 +992,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengganti workspace ke workspace nomor 10. Format "
+"Kombinasi tombol untuk mengganti area kerja ke area kerja nomor 10. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -999,8 +1000,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:94
-#, fuzzy
+#: ../src/metacity.schemas.in.h:94
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1008,7 +1008,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengganti workspace ke workspace nomor 11. Format "
+"Kombinasi tombol untuk mengganti area kerja ke area kerja nomor 11. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1016,8 +1016,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:95
-#, fuzzy
+#: ../src/metacity.schemas.in.h:95
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1025,7 +1024,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengganti workspace ke workspace nomor 12. Format "
+"Kombinasi tombol untuk mengganti area kerja ke area kerja nomor 12. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1033,8 +1032,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:96
-#, fuzzy
+#: ../src/metacity.schemas.in.h:96
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1042,7 +1040,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengganti workspace ke workspace nomor 2. Format "
+"Kombinasi tombol untuk mengganti area kerja ke area kerja nomor 2. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1050,8 +1048,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:97
-#, fuzzy
+#: ../src/metacity.schemas.in.h:97
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1059,7 +1056,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengganti workspace ke workspace nomor 3. Format "
+"Kombinasi tombol untuk mengganti area kerja ke area kerja nomor 3. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1067,8 +1064,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:98
-#, fuzzy
+#: ../src/metacity.schemas.in.h:98
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1076,7 +1072,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengganti workspace ke workspace nomor 4. Format "
+"Kombinasi tombol untuk mengganti area kerja ke area kerja nomor 4. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1084,8 +1080,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:99
-#, fuzzy
+#: ../src/metacity.schemas.in.h:99
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1093,7 +1088,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengganti workspace ke workspace nomor 5. Format "
+"Kombinasi tombol untuk mengganti area kerja ke area kerja nomor 5. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1101,8 +1096,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:100
-#, fuzzy
+#: ../src/metacity.schemas.in.h:100
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1110,7 +1104,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengganti workspace ke workspace nomor 6. Format "
+"Kombinasi tombol untuk mengganti area kerja ke area kerja nomor 6. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1118,8 +1112,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:101
-#, fuzzy
+#: ../src/metacity.schemas.in.h:101
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1127,7 +1120,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengganti workspace ke workspace nomor 7. Format "
+"Kombinasi tombol untuk mengganti area kerja ke area kerja nomor 7. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1135,8 +1128,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:102
-#, fuzzy
+#: ../src/metacity.schemas.in.h:102
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1144,7 +1136,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengganti workspace ke workspace nomor 8. Format "
+"Kombinasi tombol untuk mengganti area kerja ke area kerja nomor 8. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1152,8 +1144,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:103
-#, fuzzy
+#: ../src/metacity.schemas.in.h:103
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1161,7 +1152,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengganti workspace ke workspace nomor 9. Format "
+"Kombinasi tombol untuk mengganti area kerja ke area kerja nomor 9. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1169,8 +1160,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:104
-#, fuzzy
+#: ../src/metacity.schemas.in.h:104
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1178,15 +1168,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengaktifkan menu window. Format penulisannya seperti "
+"Kombinasi tombol untuk mengaktifkan menu jendela. Format penulisannya seperti "
 "\"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program pendeteksi "
 "kombinasi tombol ini sangat fleksibel dan memperbolehkan digunakannya huruf "
 "besar dan huruf kecil, juga memperbolehkan digunakannya singkata seperti "
 "\"&lt;Ctl&gt;\" atau \"&lt;Ctrl&gt;\". Dan apabila Anda menuliskan kata "
 "\"disabled\" maka perintah ini tidak memiliki kombinasi tombol."
 
-#: src/metacity.schemas.in.h:105
-#, fuzzy
+#: ../src/metacity.schemas.in.h:105
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1194,15 +1183,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk menutup window. Format penulisannya seperti \"&lt;"
+"Kombinasi tombol untuk menutup jendela. Format penulisannya seperti \"&lt;"
 "Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program pendeteksi "
 "kombinasi tombol ini sangat fleksibel dan memperbolehkan digunakannya huruf "
 "besar dan huruf kecil, juga memperbolehkan digunakannya singkata seperti "
 "\"&lt;Ctl&gt;\" atau \"&lt;Ctrl&gt;\". Dan apabila Anda menuliskan kata "
 "\"disabled\" maka perintah ini tidak memiliki kombinasi tombol."
 
-#: src/metacity.schemas.in.h:106
-#, fuzzy
+#: ../src/metacity.schemas.in.h:106
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1212,7 +1200,7 @@ msgid ""
 "no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengaktifkan \"modus perpindahan\" dan Anda bisa "
-"memindahkan window menggunakan panah di keyboard. Format penulisannya "
+"memindahkan jendela menggunakan panah di keyboard. Format penulisannya "
 "seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program "
 "pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1220,8 +1208,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:107
-#, fuzzy
+#: ../src/metacity.schemas.in.h:107
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1230,8 +1217,8 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengaktifkan \"modus perubahan ukuran window\" dan "
-"Anda bisa langsung merubah ukuran window menggunakan keyboard. Format "
+"Kombinasi tombol untuk mengaktifkan \"modus perubahan ukuran jendela\" dan "
+"Anda bisa langsung merubah ukuran jendela menggunakan keyboard. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1239,8 +1226,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:108
-#, fuzzy
+#: ../src/metacity.schemas.in.h:108
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1249,7 +1235,7 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk menyembunyikan semua window biasa dan mengalihkan "
+"Kombinasi tombol untuk menyembunyikan semua jendela biasa dan mengalihkan "
 "fokus ke layar desktop yang ada pada latar belakang layar. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
@@ -1258,8 +1244,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:109
-#, fuzzy
+#: ../src/metacity.schemas.in.h:109
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1267,7 +1252,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk memaksimalkan ukuran window. Format penulisannya "
+"Kombinasi tombol untuk memaksimalkan ukuran jendela. Format penulisannya "
 "seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program "
 "pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1275,8 +1260,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:110
-#, fuzzy
+#: ../src/metacity.schemas.in.h:110
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1284,7 +1268,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengecilkan window hingga minimal. Format "
+"Kombinasi tombol untuk mengecilkan jendela hingga minimal. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1292,8 +1276,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:111
-#, fuzzy
+#: ../src/metacity.schemas.in.h:111
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -1302,7 +1285,7 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Kombinasi tombol untuk memindahkan window ke workspace yang lebih rendah. "
+"Kombinasi tombol untuk memindahkan jendela ke area kerja yang lebih rendah. "
 "Format penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1. Program pendeteksi kombinasi tombol ini sangat fleksibel dan "
 "memperbolehkan digunakannya huruf besar dan huruf kecil, juga memperbolehkan "
@@ -1310,8 +1293,7 @@ msgstr ""
 "apabila Anda menuliskan kata \"disabled\" maka perintah ini tidak memiliki "
 "kombinasi tombol."
 
-#: src/metacity.schemas.in.h:112
-#, fuzzy
+#: ../src/metacity.schemas.in.h:112
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1320,7 +1302,7 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Kombinasi tombol untuk memindahkan window ke workspace sebelah kiri. Format "
+"Kombinasi tombol untuk memindahkan jendela ke area kerja sebelah kiri. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1328,8 +1310,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:113
-#, fuzzy
+#: ../src/metacity.schemas.in.h:113
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1338,7 +1319,7 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Kombinasi tombol untuk memindahkan window ke workspace sebelah kanan. Format "
+"Kombinasi tombol untuk memindahkan jendela ke area kerja sebelah kanan. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1346,8 +1327,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:114
-#, fuzzy
+#: ../src/metacity.schemas.in.h:114
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1355,7 +1335,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk memindahkan window ke workspace sebelah atas. Format "
+"Kombinasi tombol untuk memindahkan jendela ke area kerja sebelah atas. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1363,8 +1343,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:115
-#, fuzzy
+#: ../src/metacity.schemas.in.h:115
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1372,7 +1351,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk memindahkan window ke workspace 1. Format "
+"Kombinasi tombol untuk memindahkan jendela ke area kerja 1. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1380,8 +1359,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:116
-#, fuzzy
+#: ../src/metacity.schemas.in.h:116
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1389,7 +1367,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk memindahkan window ke workspace 10. Format "
+"Kombinasi tombol untuk memindahkan jendela ke area kerja 10. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1397,8 +1375,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:117
-#, fuzzy
+#: ../src/metacity.schemas.in.h:117
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1406,7 +1383,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk memindahkan window ke workspace 11. Format "
+"Kombinasi tombol untuk memindahkan jendela ke area kerja 11. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1414,8 +1391,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:118
-#, fuzzy
+#: ../src/metacity.schemas.in.h:118
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1423,7 +1399,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk memindahkan window ke workspace 12. Format "
+"Kombinasi tombol untuk memindahkan jendela ke area kerja 12. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1431,8 +1407,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:119
-#, fuzzy
+#: ../src/metacity.schemas.in.h:119
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1440,7 +1415,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk memindahkan window ke workspace 2. Format "
+"Kombinasi tombol untuk memindahkan jendela ke area kerja 2. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1448,8 +1423,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:120
-#, fuzzy
+#: ../src/metacity.schemas.in.h:120
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1457,7 +1431,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk memindahkan window ke workspace 3. Format "
+"Kombinasi tombol untuk memindahkan jendela ke area kerja 3. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1465,8 +1439,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:121
-#, fuzzy
+#: ../src/metacity.schemas.in.h:121
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1474,7 +1447,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk memindahkan window ke workspace 4. Format "
+"Kombinasi tombol untuk memindahkan jendela ke area kerja 4. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1482,8 +1455,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:122
-#, fuzzy
+#: ../src/metacity.schemas.in.h:122
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1491,7 +1463,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk memindahkan window ke workspace 5. Format "
+"Kombinasi tombol untuk memindahkan jendela ke area kerja 5. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1499,8 +1471,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:123
-#, fuzzy
+#: ../src/metacity.schemas.in.h:123
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1508,7 +1479,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk memindahkan window ke workspace 6. Format "
+"Kombinasi tombol untuk memindahkan jendela ke area kerja 6. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1516,8 +1487,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:124
-#, fuzzy
+#: ../src/metacity.schemas.in.h:124
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1525,7 +1495,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk memindahkan window ke workspace 7. Format "
+"Kombinasi tombol untuk memindahkan jendela ke area kerja 7. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1533,8 +1503,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:125
-#, fuzzy
+#: ../src/metacity.schemas.in.h:125
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1542,7 +1511,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk memindahkan window ke workspace 8. Format "
+"Kombinasi tombol untuk memindahkan jendela ke area kerja 8. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1550,8 +1519,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:126
-#, fuzzy
+#: ../src/metacity.schemas.in.h:126
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1559,7 +1527,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk memindahkan window ke workspace 9. Format "
+"Kombinasi tombol untuk memindahkan jendela ke area kerja 9. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1567,8 +1535,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:127
-#, fuzzy
+#: ../src/metacity.schemas.in.h:127
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1578,15 +1545,14 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengalihkan fokus ke belakang antara panel dan "
-"desktop dengan menampilkan window popup. Format penulisannya seperti \"&lt;"
+"desktop dengan menampilkan jendela popup. Format penulisannya seperti \"&lt;"
 "Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program pendeteksi "
 "kombinasi tombol ini sangat fleksibel dan memperbolehkan digunakannya huruf "
 "besar dan huruf kecil, juga memperbolehkan digunakannya singkata seperti "
 "\"&lt;Ctl&gt;\" atau \"&lt;Ctrl&gt;\". Dan apabila Anda menuliskan kata "
 "\"disabled\" maka perintah ini tidak memiliki kombinasi tombol."
 
-#: src/metacity.schemas.in.h:128
-#, fuzzy
+#: ../src/metacity.schemas.in.h:128
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1596,15 +1562,14 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengalihkan fokus ke belakang antara panel dan "
-"desktop tanpa menampilkan window popup. Format penulisannya seperti \"&lt;"
+"desktop tanpa menampilkan jendela popup. Format penulisannya seperti \"&lt;"
 "Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program pendeteksi "
 "kombinasi tombol ini sangat fleksibel dan memperbolehkan digunakannya huruf "
 "besar dan huruf kecil, juga memperbolehkan digunakannya singkata seperti "
 "\"&lt;Ctl&gt;\" atau \"&lt;Ctrl&gt;\". Dan apabila Anda menuliskan kata "
 "\"disabled\" maka perintah ini tidak memiliki kombinasi tombol."
 
-#: src/metacity.schemas.in.h:129
-#, fuzzy
+#: ../src/metacity.schemas.in.h:129
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1614,8 +1579,8 @@ msgid ""
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk memindahkan fokus ke belakang antara window tanpa "
-"menampilkan window popup. Dengan menekan \"shit\" bersamaan dengan kombinasi "
+"Kombinasi tombol untuk memindahkan fokus ke belakang antara jendela tanpa "
+"menampilkan jendela popup. Dengan menekan \"shit\" bersamaan dengan kombinasi "
 "tombol ini akan membuat arah fokus maju kembali ke depan. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
@@ -1624,8 +1589,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:130
-#, fuzzy
+#: ../src/metacity.schemas.in.h:130
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1635,8 +1599,8 @@ msgid ""
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk memindahkan fokus ke belakang antara window dengan "
-"menampilkan window popup. Dengan menekan \"shit\" bersamaan dengan kombinasi "
+"Kombinasi tombol untuk memindahkan fokus ke belakang antara jendela dengan "
+"menampilkan jendela popup. Dengan menekan \"shit\" bersamaan dengan kombinasi "
 "tombol ini akan membuat arah fokus maju kembali ke depan. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
@@ -1645,8 +1609,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:131
-#, fuzzy
+#: ../src/metacity.schemas.in.h:131
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1655,16 +1618,15 @@ msgid ""
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengalihkan fokus antara panel dan window dengan "
-"menampilkan window popup. Format penulisannya seperti \"&lt;Control&gt;a\" "
+"Kombinasi tombol untuk mengalihkan fokus antara panel dan desktop dengan "
+"menampilkan jendela popup. Format penulisannya seperti \"&lt;Control&gt;a\" "
 "atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program pendeteksi kombinasi tombol ini "
 "sangat fleksibel dan memperbolehkan digunakannya huruf besar dan huruf "
 "kecil, juga memperbolehkan digunakannya singkata seperti \"&lt;Ctl&gt;\" "
 "atau \"&lt;Ctrl&gt;\". Dan apabila Anda menuliskan kata \"disabled\" maka "
 "perintah ini tidak memiliki kombinasi tombol."
 
-#: src/metacity.schemas.in.h:132
-#, fuzzy
+#: ../src/metacity.schemas.in.h:132
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1673,16 +1635,15 @@ msgid ""
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengalihkan fokus antara panel dan window tanpa "
-"menampilkan window popup. Format penulisannya seperti \"&lt;Control&gt;a\" "
+"Kombinasi tombol untuk mengalihkan fokus antara panel dan desktop tanpa "
+"menampilkan jendela popup. Format penulisannya seperti \"&lt;Control&gt;a\" "
 "atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program pendeteksi kombinasi tombol ini "
 "sangat fleksibel dan memperbolehkan digunakannya huruf besar dan huruf "
 "kecil, juga memperbolehkan digunakannya singkata seperti \"&lt;Ctl&gt;\" "
 "atau \"&lt;Ctrl&gt;\". Dan apabila Anda menuliskan kata \"disabled\" maka "
 "perintah ini tidak memiliki kombinasi tombol."
 
-#: src/metacity.schemas.in.h:133
-#, fuzzy
+#: ../src/metacity.schemas.in.h:133
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1692,8 +1653,8 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengalihkan fokus antara window tanpa menampilkan "
-"window popup (biasanya menggunakan kombilasi &lt;Alt&gt;Escape). Bila "
+"Kombinasi tombol untuk mengalihkan fokus antara jendela tanpa menampilkan "
+"jendela popup (biasanya menggunakan kombilasi &lt;Alt&gt;Escape). Bila "
 "ditambah lagi menekan \"shift\" maka arah pengalihan akan dibalik. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
@@ -1702,8 +1663,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:134
-#, fuzzy
+#: ../src/metacity.schemas.in.h:134
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1713,8 +1673,8 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengalihkan fokus antara window dengan menampilkan "
-"window popup (biasanya menggunakan kombilasi &lt;Alt&gt;Tab). Bila ditambah "
+"Kombinasi tombol untuk mengalihkan fokus antara jendela dengan menampilkan "
+"jendela popup (biasanya menggunakan kombilasi &lt;Alt&gt;Tab). Bila ditambah "
 "lagi menekan \"shift\" maka arah pengalihan akan dibalik. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
@@ -1723,8 +1683,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:135
-#, fuzzy
+#: ../src/metacity.schemas.in.h:135
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1734,15 +1693,15 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk togel apakah jendela diletakkan selalu di atas atau "
-"tidak. Format penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;"
+"tidak. Jendela yang selalu di atas akan selalu tampak walaupun ada banyak jendela terbuka."
+" Format penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1. Program pendeteksi kombinasi tombol ini sangat fleksibel dan "
 "memperbolehkan digunakannya huruf besar dan huruf kecil, juga memperbolehkan "
 "digunakannya singkatan seperti \"&lt;Ctl&gt;\" atau \"&lt;Ctrl&gt;\". Dan "
 "apabila Anda menuliskan kata \"disabled\" maka perintah ini tidak memiliki "
 "kombinasi tombol."
 
-#: src/metacity.schemas.in.h:136
-#, fuzzy
+#: ../src/metacity.schemas.in.h:136
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1757,8 +1716,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" atau \"&lt;Ctrl&gt;\". Dan apabila Anda menuliskan kata "
 "\"disabled\" maka perintah ini tidak memiliki kombinasi tombol."
 
-#: src/metacity.schemas.in.h:137
-#, fuzzy
+#: ../src/metacity.schemas.in.h:137
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1766,7 +1724,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk togel ukuran window maksimum. Format penulisannya "
+"Kombinasi tombol untuk togel ukuran jendela maksimum. Format penulisannya "
 "seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program "
 "pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1774,8 +1732,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:138
-#, fuzzy
+#: ../src/metacity.schemas.in.h:138
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1791,8 +1748,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:139
-#, fuzzy
+#: ../src/metacity.schemas.in.h:139
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1801,7 +1757,7 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk togel apakah window diletakkan pada semua workspace "
+"Kombinasi tombol untuk togel apakah jendela diletakkan pada semua area kerja "
 "atau tidak. Format penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1. Program pendeteksi kombinasi tombol ini sangat "
 "fleksibel dan memperbolehkan digunakannya huruf besar dan huruf kecil, juga "
@@ -1809,8 +1765,7 @@ msgstr ""
 "Ctrl&gt;\". Dan apabila Anda menuliskan kata \"disabled\" maka perintah ini "
 "tidak memiliki kombinasi tombol."
 
-#: src/metacity.schemas.in.h:140
-#, fuzzy
+#: ../src/metacity.schemas.in.h:140
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1818,7 +1773,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengembalikan ukuran window menjadi semula. Format "
+"Kombinasi tombol untuk mengembalikan ukuran jendela menjadi semula. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1826,8 +1781,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:141
-#, fuzzy
+#: ../src/metacity.schemas.in.h:141
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1844,8 +1798,7 @@ msgstr ""
 "apabila Anda menuliskan kata \"disabled\" maka perintah ini tidak memiliki "
 "kombinasi tombol."
 
-#: src/metacity.schemas.in.h:142
-#, fuzzy
+#: ../src/metacity.schemas.in.h:142
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1853,7 +1806,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengaktifkan menu utama panel. Format penulisannya "
+"Kombinasi tombol untuk menjalankan terminal. Format penulisannya "
 "seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program "
 "pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1861,8 +1814,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:143
-#, fuzzy
+#: ../src/metacity.schemas.in.h:143
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1871,7 +1823,7 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk menangkap screenshot pada window. Format penulisannya "
+"Kombinasi tombol untuk menangkap gambar layar pada jendela. Format penulisannya "
 "seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program "
 "pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1879,8 +1831,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:144
-#, fuzzy
+#: ../src/metacity.schemas.in.h:144
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1889,15 +1840,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Kombinasi tombol untuk menangkap screenshot. Format penulisannya seperti "
+"Kombinasi tombol untuk menangkap gambar layar. Format penulisannya seperti "
 "\"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program pendeteksi "
 "kombinasi tombol ini sangat fleksibel dan memperbolehkan digunakannya huruf "
 "besar dan huruf kecil, juga memperbolehkan digunakannya singkata seperti "
 "\"&lt;Ctl&gt;\" atau \"&lt;Ctrl&gt;\". Dan apabila Anda menuliskan kata "
 "\"disabled\" maka perintah ini tidak memiliki kombinasi tombol."
 
-#: src/metacity.schemas.in.h:145
-#, fuzzy
+#: ../src/metacity.schemas.in.h:145
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1913,22 +1863,22 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:146
+#: ../src/metacity.schemas.in.h:146
 msgid "The name of a workspace."
 msgstr "Nama workspace."
 
-#: src/metacity.schemas.in.h:147
+#: ../src/metacity.schemas.in.h:147
 msgid "The screenshot command"
 msgstr "Perintah screenshot"
 
-#: src/metacity.schemas.in.h:148
+#: ../src/metacity.schemas.in.h:148
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr ""
 "Tema menentukan kemunculan batas-batas pada window, judul, dan lain-lain "
 
-#: src/metacity.schemas.in.h:149
+#: ../src/metacity.schemas.in.h:149
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -1936,7 +1886,7 @@ msgstr ""
 "Waktu jeda sebelum suatu window akan otomatis naik apabila auto_rise "
 "diaktifkan. Waktu jeda dinyatakan dalam seperseribu detik."
 
-#: src/metacity.schemas.in.h:150
+#: ../src/metacity.schemas.in.h:150
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1951,12 +1901,11 @@ msgstr ""
 "diberi fokus apabila mouse memasuki area window dan akan kembali kehilangan "
 "fokus saat mouse keluar dari area window."
 
-#: src/metacity.schemas.in.h:151
+#: ../src/metacity.schemas.in.h:151
 msgid "The window screenshot command"
-msgstr "Perintah screenshot pada window"
+msgstr "Perintah pengambilan gambar layar pada jendela"
 
-#: src/metacity.schemas.in.h:152
-#, fuzzy
+#: ../src/metacity.schemas.in.h:152
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1967,11 +1916,11 @@ msgid ""
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk merubah apakah letak suatu window ada di bawah/atas "
-"window lain. Bila window tersebut ditutupi window lain, maka window tersebut "
-"akan dinaikkan di atas window yang menutupi. Namun apabila window tersebut "
-"sudah kelihatan sepenuhnya (ada di paling atas), maka window tersebut akan "
-"diturunkan di bawah window yang sebelumnya ada dibawahnya. Format "
+"Kombinasi tombol untuk merubah apakah letak suatu jendela ada di bawah/atas "
+"jendela lain. Bila jendela tersebut ditutupi jendela lain, maka jendela tersebut "
+"akan dinaikkan di atas jendela yang menutupi. Namun apabila jendela tersebut "
+"sudah kelihatan sepenuhnya (ada di paling atas), maka jendela tersebut akan "
+"diturunkan di bawah jendela yang sebelumnya ada dibawahnya. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -1979,8 +1928,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:153
-#, fuzzy
+#: ../src/metacity.schemas.in.h:153
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1988,7 +1936,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk menurunkan suatu window ke bawah window yang lain. "
+"Kombinasi tombol untuk menurunkan suatu jendela ke bawah jendela yang lain. "
 "Format penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1. Program pendeteksi kombinasi tombol ini sangat fleksibel dan "
 "memperbolehkan digunakannya huruf besar dan huruf kecil, juga memperbolehkan "
@@ -1996,8 +1944,7 @@ msgstr ""
 "apabila Anda menuliskan kata \"disabled\" maka perintah ini tidak memiliki "
 "kombinasi tombol."
 
-#: src/metacity.schemas.in.h:154
-#, fuzzy
+#: ../src/metacity.schemas.in.h:154
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2005,7 +1952,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk menaikkan suatu window ke atas window lain. Format "
+"Kombinasi tombol untuk menaikkan suatu jendela ke atas jendela lain. Format "
 "penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
@@ -2013,8 +1960,7 @@ msgstr ""
 "menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
 "tombol."
 
-#: src/metacity.schemas.in.h:155
-#, fuzzy
+#: ../src/metacity.schemas.in.h:155
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2023,7 +1969,7 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Kombinasi tombol untuk merubah ukuran window agar memenuhi ruangan "
+"Kombinasi tombol untuk merubah ukuran jendela agar memenuhi ruangan "
 "horisontal yang ada . Format penulisannya seperti \"&lt;Control&gt;a\" atau "
 "\"&lt;Shift&gt;&lt;Alt&gt;F1. Program pendeteksi kombinasi tombol ini sangat "
 "fleksibel dan memperbolehkan digunakannya huruf besar dan huruf kecil, juga "
@@ -2031,8 +1977,7 @@ msgstr ""
 "Ctrl&gt;\". Dan apabila Anda menuliskan kata \"disabled\" maka perintah ini "
 "tidak memiliki kombinasi tombol."
 
-#: src/metacity.schemas.in.h:156
-#, fuzzy
+#: ../src/metacity.schemas.in.h:156
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2041,7 +1986,7 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Kombinasi tombol untuk merubah ukuran window agar memenuhi ukuran ruangan "
+"Kombinasi tombol untuk merubah ukuran jendela agar memenuhi ukuran ruangan "
 "sisa vertikal yang ada . Format penulisannya seperti \"&lt;Control&gt;a\" "
 "atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program pendeteksi kombinasi tombol ini "
 "sangat fleksibel dan memperbolehkan digunakannya huruf besar dan huruf "
@@ -2049,7 +1994,7 @@ msgstr ""
 "atau \"&lt;Ctrl&gt;\". Dan apabila Anda menuliskan kata \"disabled\" maka "
 "perintah ini tidak memiliki kombinasi tombol."
 
-#: src/metacity.schemas.in.h:157
+#: ../src/metacity.schemas.in.h:157
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2059,27 +2004,27 @@ msgstr ""
 "yang sah adalah 'toggle_shade' yang akan menggulung/membuka window, dan "
 "'toggle_maximize' yang akan memaksimalkan dan mengecilkan window."
 
-#: src/metacity.schemas.in.h:158
+#: ../src/metacity.schemas.in.h:158
 msgid "Toggle always on top state"
 msgstr "Togel kondisi apakah jendela selalu ada di atas"
 
-#: src/metacity.schemas.in.h:159
+#: ../src/metacity.schemas.in.h:159
 msgid "Toggle fullscreen mode"
 msgstr "Rubah mode layar penuh"
 
-#: src/metacity.schemas.in.h:160
+#: ../src/metacity.schemas.in.h:160
 msgid "Toggle maximization state"
 msgstr "Togel kondisi maksimum"
 
-#: src/metacity.schemas.in.h:161
+#: ../src/metacity.schemas.in.h:161
 msgid "Toggle shaded state"
 msgstr "Togel kondisi tergulung"
 
-#: src/metacity.schemas.in.h:162
+#: ../src/metacity.schemas.in.h:162
 msgid "Toggle window on all workspaces"
-msgstr "Togel window pada semua workspace"
+msgstr "Togel jendela pada semua workspace"
 
-#: src/metacity.schemas.in.h:163
+#: ../src/metacity.schemas.in.h:163
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
@@ -2090,38 +2035,37 @@ msgstr ""
 "pada penggunaan di tempat-tempat yang berisik atau apabila suara bell "
 "komputer dimatikan."
 
-#: src/metacity.schemas.in.h:164
-#, fuzzy
+#: ../src/metacity.schemas.in.h:164
 msgid "Unmaximize window"
-msgstr "Kembalikan ukuran window kembali semula"
+msgstr "Kembalikan ukuran jendela kembali semula"
 
-#: src/metacity.schemas.in.h:165
+#: ../src/metacity.schemas.in.h:165
 msgid "Use standard system font in window titles"
-msgstr "Gunakan jenis huruf sistem standar pada judul window"
+msgstr "Gunakan jenis huruf sistem standar pada judul jendela"
 
-#: src/metacity.schemas.in.h:166
+#: ../src/metacity.schemas.in.h:166
 msgid "Visual Bell Type"
 msgstr "Tipe Bel Visual"
 
-#: src/metacity.schemas.in.h:167
+#: ../src/metacity.schemas.in.h:167
 msgid "Window focus mode"
-msgstr "mode fokus window"
+msgstr "Mode fokus jendela"
 
-#: src/metacity.schemas.in.h:168
+#: ../src/metacity.schemas.in.h:168
 msgid "Window title font"
-msgstr "Jenis huruf yang dipakai pada judul window"
+msgstr "Jenis huruf yang dipakai pada judul jendela"
 
-#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
-#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
-#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
-#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
-#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
-#: src/prefs.c:823 src/prefs.c:839
+#: ../src/prefs.c:528 ../src/prefs.c:544 ../src/prefs.c:560 ../src/prefs.c:576
+#: ../src/prefs.c:592 ../src/prefs.c:612 ../src/prefs.c:628 ../src/prefs.c:644
+#: ../src/prefs.c:660 ../src/prefs.c:676 ../src/prefs.c:692 ../src/prefs.c:708
+#: ../src/prefs.c:724 ../src/prefs.c:741 ../src/prefs.c:757 ../src/prefs.c:773
+#: ../src/prefs.c:789 ../src/prefs.c:805 ../src/prefs.c:820 ../src/prefs.c:835
+#: ../src/prefs.c:850 ../src/prefs.c:866 ../src/prefs.c:882 ../src/prefs.c:898
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Key \"%s\" GConf tipenya salah\n"
 
-#: src/prefs.c:884
+#: ../src/prefs.c:943
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2130,26 +2074,26 @@ msgstr ""
 "\"%s\" yang ada pada database konfigurasi bukanlah nilai yang benar untuk "
 "tombol mouse.\n"
 
-#: src/prefs.c:908 src/prefs.c:1318
+#: ../src/prefs.c:967 ../src/prefs.c:1428
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Key GConf '%s' bernilai salah\n"
 
-#: src/prefs.c:1035
+#: ../src/prefs.c:1145
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "Tidak dapat membaca deskripsi font \"%s\" dari key GConf %s\n"
+msgstr "Tidak dapat membaca deskripsi fonta \"%s\" dari key GConf %s\n"
 
-#: src/prefs.c:1220
+#: ../src/prefs.c:1330
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr ""
 "%d yang ada pada key GConf %s berisi angka yang tidak lazim sebagai jumlah "
-"workspace, karena sudah ditentukan maksimumnya adlaah %d\n"
+"workspace, karena sudah ditentukan maksimumnya adalah %d\n"
 
-#: src/prefs.c:1280
+#: ../src/prefs.c:1390
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2157,18 +2101,18 @@ msgstr ""
 "Pencegahan kesalahan bagi aplikasi yang rusak sedang dinonaktifkan. Mungkin "
 "nanti ada beberapa aplikasi yang akan bertingkah aneh.\n"
 
-#: src/prefs.c:1345
+#: ../src/prefs.c:1455
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
 "%d yang disimpan pada key GConf %s berada di luar jangkauan 0 hingga %d\n"
 
-#: src/prefs.c:1479
+#: ../src/prefs.c:1589
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
-msgstr "Ada error saat mengeset jumlah workspace ke %d: %s\n"
+msgstr "Ada error saat mengeset jumlah area kerja menjadi %d: %s\n"
 
-#: src/prefs.c:1723
+#: ../src/prefs.c:1833
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2177,112 +2121,112 @@ msgstr ""
 "\"%s\" yang ada pada database konfigurasi bernilai tidak benar untuk "
 "kombinasi tombol \"%s\"\n"
 
-#: src/prefs.c:2077
+#: ../src/prefs.c:2187
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Ada error saat melakukan seting nama workspace %d ke \"%s\": %s\n"
 
-#: src/resizepopup.c:126
+#: ../src/resizepopup.c:126
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: src/screen.c:408
+#: ../src/screen.c:408
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr "Layar %d pada tampilah '%s' tidak benar\n"
+msgstr "Layar %d pada tampilan '%s' tidak benar\n"
 
-#: src/screen.c:424
+#: ../src/screen.c:424
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
-"Layar %d pada tampilan \"%s\" sudah memiliki manajer window. Cobalah gunakan "
-"pilihan --replace untuk mengganti manajer window yang aktif.\n"
+"Layar %d pada tampilan \"%s\" sudah memiliki pengatur jendela. Cobalah gunakan "
+"pilihan --replace untuk mengganti pengatur jendela yang aktif.\n"
 
-#: src/screen.c:448
+#: ../src/screen.c:448
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
-"Tidak dapat mendapatkan pilihan manajer window pada layar %d tampilan \"%s"
+"Tidak dapat mendapatkan pilihan pengatur jendela pada layar %d tampilan \"%s"
 "\"\n"
 
-#: src/screen.c:506
+#: ../src/screen.c:506
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "Layar %d pada tampilan \"%s\" sudah ada manajer windownya\n"
+msgstr "Layar %d pada tampilan \"%s\" sudah ada pengatur jendelanya\n"
 
-#: src/screen.c:716
+#: ../src/screen.c:716
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "Layar %d pada display \"%s\" tidak dapat dilepas\n"
+msgstr "Layar %d pada tampilan \"%s\" tidak dapat dilepas\n"
 
-#: src/session.c:884 src/session.c:891
+#: ../src/session.c:884 ../src/session.c:891
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Tidak dapat membuat direktori '%s': %s\n"
 
-#: src/session.c:901
+#: ../src/session.c:901
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "Tidak dapat menulis ke dalam  file sesi '%s': %s\n"
+msgstr "Tidak dapat menulis ke dalam berkas sesi '%s': %s\n"
 
-#: src/session.c:1053
+#: ../src/session.c:1053
 #, c-format
 msgid "Error writing session file '%s': %s\n"
-msgstr "Ada error saat menulisi file sesi '%s': %s\n"
+msgstr "Ada error saat menulisi berkas sesi '%s': %s\n"
 
-#: src/session.c:1058
+#: ../src/session.c:1058
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr "Ada error saat menutup file sesi '%s': %s\n"
+msgstr "Ada error saat menutup berkas sesi '%s': %s\n"
 
-#: src/session.c:1133
+#: ../src/session.c:1133
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
-msgstr "Gagal saat membaca file sesi simpanan %s: %s\n"
+msgstr "Gagal saat membaca berkas sesi simpanan %s: %s\n"
 
-#: src/session.c:1168
+#: ../src/session.c:1168
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr "Gagal membaca file sesi simpanan: %s\n"
+msgstr "Gagal membaca berkas sesi simpanan: %s\n"
 
-#: src/session.c:1217
+#: ../src/session.c:1217
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr "Atribut <metacity_session> ada tapi session ID sudah ada sebelumnya"
+msgstr "Atribut <metacity_session> ada tapi kode sesi sudah ada sebelumnya"
 
-#: src/session.c:1230
+#: ../src/session.c:1230
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Atribut %s tidak dikenal pada elemen <metacity_session>"
 
-#: src/session.c:1247
+#: ../src/session.c:1247
 msgid "nested <window> tag"
 msgstr "Ada tag <window> bersarang"
 
-#: src/session.c:1305 src/session.c:1337
+#: ../src/session.c:1305 ../src/session.c:1337
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Atribut %s tidak dikenal pada elemen <window>"
 
-#: src/session.c:1409
+#: ../src/session.c:1409
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Atribut %s tidak dikenal pada elemen <maximized>"
 
-#: src/session.c:1469
+#: ../src/session.c:1469
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Atribut %s tidak dikenal pada elemen <geometry>"
 
-#: src/session.c:1489
+#: ../src/session.c:1489
 #, c-format
 msgid "Unknown element %s"
 msgstr "Elemen %s tidak dikenal"
 
-#: src/session.c:1961
+#: ../src/session.c:1961
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2291,54 +2235,55 @@ msgstr ""
 "Ada error saat menjalankan metacity-dialog untun memberikan peringatan bahwa "
 "ada aplikasi yang tidak mendukung manajemen sesi: %s\n"
 
-#: src/theme-parser.c:224 src/theme-parser.c:242
+#: ../src/theme-parser.c:224 ../src/theme-parser.c:242
 #, c-format
 msgid "Line %d character %d: %s"
 msgstr "Baris %d karakter %d: %s"
 
-#: src/theme-parser.c:396
+#: ../src/theme-parser.c:396
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "Atribut \"%s\" diulangi dua kali pada elemen <%s> yang sama"
 
-#: src/theme-parser.c:414 src/theme-parser.c:439
+#: ../src/theme-parser.c:414 ../src/theme-parser.c:439
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "Atribut \"%s\" tidak diperkenankan pada elemen <%s> pada konteks ini"
 
-#: src/theme-parser.c:485
+#: ../src/theme-parser.c:485
 #, c-format
 msgid "Integer %ld must be positive"
 msgstr "Integer %ld harus bernilai positif"
 
-#: src/theme-parser.c:493
+#: ../src/theme-parser.c:493
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
 msgstr "Integer %ld terlalu besar, maksimal %d"
 
-#: src/theme-parser.c:521 src/theme-parser.c:602 src/theme-parser.c:626
+#: ../src/theme-parser.c:521 ../src/theme-parser.c:602
+#: ../src/theme-parser.c:626
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "Tidak dapat membaca \"%s\" sebagai angka floating point"
 
-#: src/theme-parser.c:552
+#: ../src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr "Nilai boolean harus \"true\" atau \"false\" dan bukannya \"%s\""
 
-#: src/theme-parser.c:572
+#: ../src/theme-parser.c:572
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr "Sudut harus ada dalam rentang 0.0 dan 360.0, dalam file didapat %g\n"
+msgstr "Sudut harus ada dalam rentang 0.0 dan 360.0, dalam berkas didapat %g\n"
 
-#: src/theme-parser.c:638
+#: ../src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr ""
 "Alpha harus ada dalam rentang 0.0 (tidak kelihatan) dan 1.0 (nampak  semua, "
-"dalam file didapat %g\n"
+"dalam berkas didapat %g\n"
 
-#: src/theme-parser.c:684
+#: ../src/theme-parser.c:684
 #, c-format
 msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
@@ -2347,348 +2292,361 @@ msgstr ""
 "Skala judul \"%s\" tidak benar (harusnya bernilai xx-small, x-small, small, "
 "medium, large, x-large, xx-large)\n"
 
-#: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
-#: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
-#, c-format
-msgid "No \"%s\" attribute on element <%s>"
-msgstr "Tidak dijumpai atribut \"%s\" pada elemen <%s>"
-
-#: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
-#: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
-#: src/theme-parser.c:1126 src/theme-parser.c:1134
+#: ../src/theme-parser.c:729 ../src/theme-parser.c:737
+#: ../src/theme-parser.c:807 ../src/theme-parser.c:897
+#: ../src/theme-parser.c:935 ../src/theme-parser.c:1012
+#: ../src/theme-parser.c:1062 ../src/theme-parser.c:1070
+#: ../src/theme-parser.c:1126 ../src/theme-parser.c:1134
+#: ../src/theme-parser.c:2936 ../src/theme-parser.c:3025
+#: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
 msgstr "Tidak dijumpai atribut \"%s\" pada elemen <%s>"
 
-#: src/theme-parser.c:837 src/theme-parser.c:905 src/theme-parser.c:943
-#: src/theme-parser.c:1020
+#: ../src/theme-parser.c:837 ../src/theme-parser.c:905
+#: ../src/theme-parser.c:943 ../src/theme-parser.c:1020
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "Nama <%s> \"%s\" digunakan kedua kali"
 
-#: src/theme-parser.c:849 src/theme-parser.c:955 src/theme-parser.c:1032
+#: ../src/theme-parser.c:849 ../src/theme-parser.c:955
+#: ../src/theme-parser.c:1032
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr "Bapak <%s> \"%s\" belum didefinisikan"
+msgstr "Induk <%s> \"%s\" belum didefinisikan"
 
-#: src/theme-parser.c:968
+#: ../src/theme-parser.c:968
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
 msgstr "Geometri <%s> \"%s\" belum didefinisikan"
 
-#: src/theme-parser.c:981
+#: ../src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr "<%s> harus menentukan geometri atau bapak yang ada geometrinya"
+msgstr "<%s> harus menentukan geometri atau induk yang ada geometrinya"
 
-#: src/theme-parser.c:1080
+#: ../src/theme-parser.c:1080
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
 msgstr "Tipe \"%s\" tidak dikenal pada elemen <%s>"
 
-#: src/theme-parser.c:1091
+#: ../src/theme-parser.c:1091
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "style_set \"%s\" tidak dikenali pada elemen <%s>"
 
-#: src/theme-parser.c:1099
+#: ../src/theme-parser.c:1099
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
-msgstr "Tipe window \"%s\" sudah memiliki set gaya"
+msgstr "Tipe jendela \"%s\" sudah memiliki set gaya"
 
-#: src/theme-parser.c:1143
+#: ../src/theme-parser.c:1143
 #, c-format
 msgid "Unknown function \"%s\" for menu icon"
 msgstr "Fungsi \"%s\" tidak dikenali untuk ikon menu"
 
-#: src/theme-parser.c:1152
+#: ../src/theme-parser.c:1152
 #, c-format
 msgid "Unknown state \"%s\" for menu icon"
 msgstr "Kondisi \"%s\" tidak dikenali untuk ikon menu"
 
-#: src/theme-parser.c:1160
+#: ../src/theme-parser.c:1160
 #, c-format
 msgid "Theme already has a menu icon for function %s state %s"
 msgstr "Tema sudah memiliki ikon menu untuk fungsi %s kondisi %s"
 
-#: src/theme-parser.c:1177 src/theme-parser.c:3244 src/theme-parser.c:3323
+#: ../src/theme-parser.c:1177 ../src/theme-parser.c:3244
+#: ../src/theme-parser.c:3323
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "Tidak ada <draw_ops> dengan nama \"%s\" yang didefinisikan"
 
-#: src/theme-parser.c:1192 src/theme-parser.c:1256 src/theme-parser.c:1545
-#: src/theme-parser.c:3124 src/theme-parser.c:3178 src/theme-parser.c:3338
-#: src/theme-parser.c:3515 src/theme-parser.c:3553 src/theme-parser.c:3591
-#: src/theme-parser.c:3629
+#: ../src/theme-parser.c:1192 ../src/theme-parser.c:1256
+#: ../src/theme-parser.c:1545 ../src/theme-parser.c:3124
+#: ../src/theme-parser.c:3178 ../src/theme-parser.c:3338
+#: ../src/theme-parser.c:3515 ../src/theme-parser.c:3553
+#: ../src/theme-parser.c:3591 ../src/theme-parser.c:3629
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "Elemen <%s> tidak diperkenankan ada di bawah <%s>"
 
-#: src/theme-parser.c:1282 src/theme-parser.c:1369 src/theme-parser.c:1439
+#: ../src/theme-parser.c:1282 ../src/theme-parser.c:1369
+#: ../src/theme-parser.c:1439
 #, c-format
 msgid "No \"name\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"name\" pada elemen <%s>"
 
-#: src/theme-parser.c:1289 src/theme-parser.c:1376
+#: ../src/theme-parser.c:1289 ../src/theme-parser.c:1376
 #, c-format
 msgid "No \"value\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"value\" pada elemen <%s>"
 
-#: src/theme-parser.c:1320 src/theme-parser.c:1334 src/theme-parser.c:1393
+#: ../src/theme-parser.c:1320 ../src/theme-parser.c:1334
+#: ../src/theme-parser.c:1393
 msgid ""
 "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 "Tidak dapat menentukan button_width/button_height dan rasio aspek untuk "
 "tombol"
 
-#: src/theme-parser.c:1343
+#: ../src/theme-parser.c:1343
 #, c-format
 msgid "Distance \"%s\" is unknown"
 msgstr "Jarak \"%s\" tidak dikenal"
 
-#: src/theme-parser.c:1402
+#: ../src/theme-parser.c:1402
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
 msgstr "Rasio aspek \"%s\" tidak dikenal"
 
-#: src/theme-parser.c:1446
+#: ../src/theme-parser.c:1446
 #, c-format
 msgid "No \"top\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"top\" pada elemen <%s>"
 
-#: src/theme-parser.c:1453
+#: ../src/theme-parser.c:1453
 #, c-format
 msgid "No \"bottom\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"bottom\" pada elemen <%s>"
 
-#: src/theme-parser.c:1460
+#: ../src/theme-parser.c:1460
 #, c-format
 msgid "No \"left\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"left\" pada elemen <%s>"
 
-#: src/theme-parser.c:1467
+#: ../src/theme-parser.c:1467
 #, c-format
 msgid "No \"right\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"right\" pada elemen <%s>"
 
-#: src/theme-parser.c:1499
+#: ../src/theme-parser.c:1499
 #, c-format
 msgid "Border \"%s\" is unknown"
 msgstr "Batas \"%s\" tidak dikenal"
 
-#: src/theme-parser.c:1655 src/theme-parser.c:1765 src/theme-parser.c:1868
-#: src/theme-parser.c:2055 src/theme-parser.c:2869
+#: ../src/theme-parser.c:1655 ../src/theme-parser.c:1765
+#: ../src/theme-parser.c:1868 ../src/theme-parser.c:2055
+#: ../src/theme-parser.c:2869
 #, c-format
 msgid "No \"color\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"color\" pada elemen <%s>"
 
-#: src/theme-parser.c:1662
+#: ../src/theme-parser.c:1662
 #, c-format
 msgid "No \"x1\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"x1\" pada elemen <%s>"
 
-#: src/theme-parser.c:1669 src/theme-parser.c:2714
+#: ../src/theme-parser.c:1669 ../src/theme-parser.c:2714
 #, c-format
 msgid "No \"y1\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"y1\" pada elemen <%s>"
 
-#: src/theme-parser.c:1676
+#: ../src/theme-parser.c:1676
 #, c-format
 msgid "No \"x2\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"x2\" pada elemen <%s>"
 
-#: src/theme-parser.c:1683 src/theme-parser.c:2721
+#: ../src/theme-parser.c:1683 ../src/theme-parser.c:2721
 #, c-format
 msgid "No \"y2\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"y2\" pada elemen <%s>"
 
-#: src/theme-parser.c:1772 src/theme-parser.c:1875 src/theme-parser.c:1981
-#: src/theme-parser.c:2062 src/theme-parser.c:2168 src/theme-parser.c:2266
-#: src/theme-parser.c:2483 src/theme-parser.c:2609 src/theme-parser.c:2707
-#: src/theme-parser.c:2781 src/theme-parser.c:2876
+#: ../src/theme-parser.c:1772 ../src/theme-parser.c:1875
+#: ../src/theme-parser.c:1981 ../src/theme-parser.c:2062
+#: ../src/theme-parser.c:2168 ../src/theme-parser.c:2266
+#: ../src/theme-parser.c:2483 ../src/theme-parser.c:2609
+#: ../src/theme-parser.c:2707 ../src/theme-parser.c:2781
+#: ../src/theme-parser.c:2876
 #, c-format
 msgid "No \"x\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"x\" pada elemen <%s>"
 
-#: src/theme-parser.c:1779 src/theme-parser.c:1882 src/theme-parser.c:1988
-#: src/theme-parser.c:2069 src/theme-parser.c:2175 src/theme-parser.c:2273
-#: src/theme-parser.c:2490 src/theme-parser.c:2616 src/theme-parser.c:2788
-#: src/theme-parser.c:2883
+#: ../src/theme-parser.c:1779 ../src/theme-parser.c:1882
+#: ../src/theme-parser.c:1988 ../src/theme-parser.c:2069
+#: ../src/theme-parser.c:2175 ../src/theme-parser.c:2273
+#: ../src/theme-parser.c:2490 ../src/theme-parser.c:2616
+#: ../src/theme-parser.c:2788 ../src/theme-parser.c:2883
 #, c-format
 msgid "No \"y\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"x\" pada elemen <%s>"
 
-#: src/theme-parser.c:1786 src/theme-parser.c:1889 src/theme-parser.c:1995
-#: src/theme-parser.c:2076 src/theme-parser.c:2182 src/theme-parser.c:2280
-#: src/theme-parser.c:2497 src/theme-parser.c:2623 src/theme-parser.c:2795
+#: ../src/theme-parser.c:1786 ../src/theme-parser.c:1889
+#: ../src/theme-parser.c:1995 ../src/theme-parser.c:2076
+#: ../src/theme-parser.c:2182 ../src/theme-parser.c:2280
+#: ../src/theme-parser.c:2497 ../src/theme-parser.c:2623
+#: ../src/theme-parser.c:2795
 #, c-format
 msgid "No \"width\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"width\" pada elemen <%s>"
 
-#: src/theme-parser.c:1793 src/theme-parser.c:1896 src/theme-parser.c:2002
-#: src/theme-parser.c:2083 src/theme-parser.c:2189 src/theme-parser.c:2287
-#: src/theme-parser.c:2504 src/theme-parser.c:2630 src/theme-parser.c:2802
+#: ../src/theme-parser.c:1793 ../src/theme-parser.c:1896
+#: ../src/theme-parser.c:2002 ../src/theme-parser.c:2083
+#: ../src/theme-parser.c:2189 ../src/theme-parser.c:2287
+#: ../src/theme-parser.c:2504 ../src/theme-parser.c:2630
+#: ../src/theme-parser.c:2802
 #, c-format
 msgid "No \"height\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"height\" pada elemen <%s>"
 
-#: src/theme-parser.c:1903
+#: ../src/theme-parser.c:1903
 #, c-format
 msgid "No \"start_angle\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"start_angle\" pada elemen <%s>"
 
-#: src/theme-parser.c:1910
+#: ../src/theme-parser.c:1910
 #, c-format
 msgid "No \"extent_angle\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"extent_angle\" pada elemen <%s>"
 
-#: src/theme-parser.c:2090
+#: ../src/theme-parser.c:2090
 #, c-format
 msgid "No \"alpha\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"alpha\" pada elemen <%s>"
 
-#: src/theme-parser.c:2161
+#: ../src/theme-parser.c:2161
 #, c-format
 msgid "No \"type\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"type\" pada elemen <%s>"
 
-#: src/theme-parser.c:2209
+#: ../src/theme-parser.c:2209
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "Nilai \"%s\" bukan nilai yang sah untuk tipe gradien"
 
-#: src/theme-parser.c:2294
+#: ../src/theme-parser.c:2294
 #, c-format
 msgid "No \"filename\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"filename\" pada elemen <%s>"
 
-#: src/theme-parser.c:2319 src/theme-parser.c:2827
+#: ../src/theme-parser.c:2319 ../src/theme-parser.c:2827
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "Tipe isian \"%s\" tidak dikenal untuk elemen <%s>"
 
-#: src/theme-parser.c:2462 src/theme-parser.c:2595 src/theme-parser.c:2700
+#: ../src/theme-parser.c:2462 ../src/theme-parser.c:2595
+#: ../src/theme-parser.c:2700
 #, c-format
 msgid "No \"state\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"state\" pada elemen <%s>"
 
-#: src/theme-parser.c:2469 src/theme-parser.c:2602
+#: ../src/theme-parser.c:2469 ../src/theme-parser.c:2602
 #, c-format
 msgid "No \"shadow\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"shadow\" pada elemen <%s>"
 
-#: src/theme-parser.c:2476
+#: ../src/theme-parser.c:2476
 #, c-format
 msgid "No \"arrow\" attribute on element <%s>"
 msgstr "Tidak dijumpai atribut \"arrow\" pada elemen <%s>"
 
-#: src/theme-parser.c:2529 src/theme-parser.c:2651 src/theme-parser.c:2739
+#: ../src/theme-parser.c:2529 ../src/theme-parser.c:2651
+#: ../src/theme-parser.c:2739
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "Kondisi \"%s\" tidak dikenal untuk elemen <%s>"
 
-#: src/theme-parser.c:2539 src/theme-parser.c:2661
+#: ../src/theme-parser.c:2539 ../src/theme-parser.c:2661
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "Bayangan \"%s\" tidak dikenal untuk elemen <%s>"
 
-#: src/theme-parser.c:2549
+#: ../src/theme-parser.c:2549
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "Panah \"%s\" tidak dikenal untuk elemen <%s>"
 
-#: src/theme-parser.c:2962 src/theme-parser.c:3078
+#: ../src/theme-parser.c:2962 ../src/theme-parser.c:3078
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr "Tidak ada <draw_ops> bernama \"%s\" yang telah didefiniskan"
+msgstr "Tidak ada <draw_ops> bernama \"%s\" yang telah didefinisikan"
 
-#: src/theme-parser.c:2974 src/theme-parser.c:3090
+#: ../src/theme-parser.c:2974 ../src/theme-parser.c:3090
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr ""
 "Menyertakan draw_ops \"%s\" di sini akan membuat referensi tak berujung"
 
-#: src/theme-parser.c:3153
+#: ../src/theme-parser.c:3153
 #, c-format
 msgid "No \"value\" attribute on <%s> element"
 msgstr "Tidak dijumpai atribut \"value\" pada elemen <%s>"
 
-#: src/theme-parser.c:3210
+#: ../src/theme-parser.c:3210
 #, c-format
 msgid "No \"position\" attribute on <%s> element"
 msgstr "Tidak dijumpai atribut \"position\" pada elemen <%s>"
 
-#: src/theme-parser.c:3219
+#: ../src/theme-parser.c:3219
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "Posisi \"%s\" tidak dikenal untuk bagian frame"
 
-#: src/theme-parser.c:3227
+#: ../src/theme-parser.c:3227
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "Gaya frame sudah memiliki bagian pada posisi %s"
 
-#: src/theme-parser.c:3272
+#: ../src/theme-parser.c:3272
 #, c-format
 msgid "No \"function\" attribute on <%s> element"
 msgstr "Tidak dijumpai atribut \"function\" pada elemen <%s>"
 
-#: src/theme-parser.c:3280 src/theme-parser.c:3384
+#: ../src/theme-parser.c:3280 ../src/theme-parser.c:3384
 #, c-format
 msgid "No \"state\" attribute on <%s> element"
 msgstr "Tidak dijumpai atribut \"state\" pada elemen <%s>"
 
-#: src/theme-parser.c:3289
+#: ../src/theme-parser.c:3289
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "Fungsi \"%s\" tidak dikenal untuk tombol"
 
-#: src/theme-parser.c:3298
+#: ../src/theme-parser.c:3298
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "Kondisi \"%s\" tidak dikenal untuk tombol"
 
-#: src/theme-parser.c:3306
+#: ../src/theme-parser.c:3306
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
-msgstr "Gaya frame sudah memiliki tombol untuk fungsi %s kondisi %s"
+msgstr "Gaya bingkai sudah memiliki tombol untuk fungsi %s kondisi %s"
 
-#: src/theme-parser.c:3376
+#: ../src/theme-parser.c:3376
 #, c-format
 msgid "No \"focus\" attribute on <%s> element"
 msgstr "Tidak dijumpai atribut \"focus\" pada elemen <%s>"
 
-#: src/theme-parser.c:3392
+#: ../src/theme-parser.c:3392
 #, c-format
 msgid "No \"style\" attribute on <%s> element"
 msgstr "Tidak dijumpai atribut \"style\" pada elemen <%s>"
 
-#: src/theme-parser.c:3401
+#: ../src/theme-parser.c:3401
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "\"%s\" bukan nilai yang benar untuk atribut focus"
 
-#: src/theme-parser.c:3410
+#: ../src/theme-parser.c:3410
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "\"%s\" bukan nilai yang benar untuk atribut state"
 
-#: src/theme-parser.c:3420
+#: ../src/theme-parser.c:3420
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "Gaya bernama \"%s\" belum didefinisikan"
 
-#: src/theme-parser.c:3430
+#: ../src/theme-parser.c:3430
 #, c-format
 msgid "No \"resize\" attribute on <%s> element"
 msgstr "Tidak dijumpai atribut \"resize\" pada elemen <%s>"
 
-#: src/theme-parser.c:3440
+#: ../src/theme-parser.c:3440
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "\"%s\" bukan nilai yang benar untuk atribut resize"
 
-#: src/theme-parser.c:3450
+#: ../src/theme-parser.c:3450
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
@@ -2697,17 +2655,18 @@ msgstr ""
 "Atribut \"resize\" tidak boleh ada pada elemen <%s> untuk kondisi ukuran "
 "window maksimum/tergulung"
 
-#: src/theme-parser.c:3464
+#: ../src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "Gaya sudah menjelaskan kondisi %s resize %s focus %s"
 
-#: src/theme-parser.c:3475 src/theme-parser.c:3486 src/theme-parser.c:3497
+#: ../src/theme-parser.c:3475 ../src/theme-parser.c:3486
+#: ../src/theme-parser.c:3497
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "Gaya sudah menjelaskan kondisi %s focus %s"
 
-#: src/theme-parser.c:3536
+#: ../src/theme-parser.c:3536
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -2715,7 +2674,7 @@ msgstr ""
 "Tidak boleh ada dua draw_ops untuk elemen <piece> (tema menyebutkan atribut "
 "draw_ops dan juga elemen <draw_ops> atau meyebutkan dua elemen tersebut "
 
-#: src/theme-parser.c:3574
+#: ../src/theme-parser.c:3574
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -2723,7 +2682,7 @@ msgstr ""
 "Tidak boleh ada dua draw_ops untuk elemen <button> (tema menyebutkan atribut "
 "draw_ops dan juga elemen <draw_ops> atau meyebutkan dua elemen tersebut "
 
-#: src/theme-parser.c:3612
+#: ../src/theme-parser.c:3612
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
@@ -2732,237 +2691,238 @@ msgstr ""
 "atribut draw_ops dan juga elemen <draw_ops> atau meyebutkan dua elemen "
 "tersebut "
 
-#: src/theme-parser.c:3659
+#: ../src/theme-parser.c:3659
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "Elemen tema paling luar haruslah <metacity_theme> dan bukan <%s>"
 
-#: src/theme-parser.c:3679
+#: ../src/theme-parser.c:3679
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
 "Elemen <%s> tidak diperbolehkan berada elemen name/author/date/description"
 
-#: src/theme-parser.c:3684
+#: ../src/theme-parser.c:3684
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "Elemen <%s> tidak boleh ada dalam elemen <constat>"
 
-#: src/theme-parser.c:3696
+#: ../src/theme-parser.c:3696
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
 "Elemen <%s> tidak boleh ada di dalam elemen distance/border/aspec_ratio"
 
-#: src/theme-parser.c:3718
+#: ../src/theme-parser.c:3718
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "Elemen <%s> tidak boleh ada di dalam elemen operasi gambar"
 
-#: src/theme-parser.c:3728 src/theme-parser.c:3758 src/theme-parser.c:3763
+#: ../src/theme-parser.c:3728 ../src/theme-parser.c:3758
+#: ../src/theme-parser.c:3763
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "Elemen <%s> tidak boleh ada di dalam elemen <%s>"
 
-#: src/theme-parser.c:3984
+#: ../src/theme-parser.c:3984
 msgid "No draw_ops provided for frame piece"
 msgstr "Tidak ada draw_ops yang disediakan untuk bagian frame"
 
-#: src/theme-parser.c:3999
+#: ../src/theme-parser.c:3999
 msgid "No draw_ops provided for button"
 msgstr "Tidak ada draw_ops yang disediakan untuk tombol"
 
-#: src/theme-parser.c:4014
+#: ../src/theme-parser.c:4014
 msgid "No draw_ops provided for menu icon"
 msgstr "Tidak ada draw_ops yang disediakan untuk ikon menu "
 
-#: src/theme-parser.c:4054
+#: ../src/theme-parser.c:4054
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "Tidak boleh ada teks di dalam elemen <%s>"
 
-#: src/theme-parser.c:4109
+#: ../src/theme-parser.c:4109
 msgid "<name> specified twice for this theme"
 msgstr "<name> disebutkan dua kali pada tema ini"
 
-#: src/theme-parser.c:4120
+#: ../src/theme-parser.c:4120
 msgid "<author> specified twice for this theme"
 msgstr "<author> disebutkan dua kali pada tema ini"
 
-#: src/theme-parser.c:4131
+#: ../src/theme-parser.c:4131
 msgid "<copyright> specified twice for this theme"
 msgstr "<copyright> disebutkan dua kali pada tema ini"
 
-#: src/theme-parser.c:4142
+#: ../src/theme-parser.c:4142
 msgid "<date> specified twice for this theme"
 msgstr "<date> disebutkan dua kali pada tema ini"
 
-#: src/theme-parser.c:4153
+#: ../src/theme-parser.c:4153
 msgid "<description> specified twice for this theme"
 msgstr "<description> disebutkan dua kali pada tema ini"
 
-#: src/theme-parser.c:4348
+#: ../src/theme-parser.c:4348
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
-msgstr "Gagal membaca tema dari file %s: %s\n"
+msgstr "Gagal membaca tema dari berkas %s: %s\n"
 
-#: src/theme-parser.c:4403
+#: ../src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr "File tema %s tidak berisi akar elemen <metacity_theme>"
+msgstr "Berkas tema %s tidak berisi akar elemen <metacity_theme>"
 
-#: src/theme-viewer.c:70
+#: ../src/theme-viewer.c:70
 msgid "/_Windows"
 msgstr "/_Jendela"
 
-#: src/theme-viewer.c:71
+#: ../src/theme-viewer.c:71
 msgid "/Windows/tearoff"
-msgstr "/Jendela/tearoff"
+msgstr "/Jendela/sobek"
 
-#: src/theme-viewer.c:72
+#: ../src/theme-viewer.c:72
 msgid "/Windows/_Dialog"
 msgstr "/Jendela/_Dialog"
 
-#: src/theme-viewer.c:73
+#: ../src/theme-viewer.c:73
 msgid "/Windows/_Modal dialog"
 msgstr "/Jendela/Dialog _Modal"
 
-#: src/theme-viewer.c:74
+#: ../src/theme-viewer.c:74
 msgid "/Windows/_Utility"
 msgstr "/Jendela/_Perkakas"
 
-#: src/theme-viewer.c:75
+#: ../src/theme-viewer.c:75
 msgid "/Windows/_Splashscreen"
-msgstr "/Jendela/Layar _pembua"
+msgstr "/Jendela/Layar _pembuka"
 
-#: src/theme-viewer.c:76
+#: ../src/theme-viewer.c:76
 msgid "/Windows/_Top dock"
 msgstr "/Jendela/Dok a_tas"
 
-#: src/theme-viewer.c:77
+#: ../src/theme-viewer.c:77
 msgid "/Windows/_Bottom dock"
 msgstr "/Jendela/Dok _Bawah"
 
-#: src/theme-viewer.c:78
+#: ../src/theme-viewer.c:78
 msgid "/Windows/_Left dock"
 msgstr "/Jendela/Dok k_iri"
 
-#: src/theme-viewer.c:79
+#: ../src/theme-viewer.c:79
 msgid "/Windows/_Right dock"
 msgstr "/Jendela/Dok kana_n"
 
-#: src/theme-viewer.c:80
+#: ../src/theme-viewer.c:80
 msgid "/Windows/_All docks"
 msgstr "/Jendela/Semu_a dok"
 
-#: src/theme-viewer.c:81
+#: ../src/theme-viewer.c:81
 msgid "/Windows/Des_ktop"
 msgstr "/Jendela/Des_ktop"
 
-#: src/theme-viewer.c:131
+#: ../src/theme-viewer.c:131
 msgid "Open another one of these windows"
 msgstr "Buka lagi jendela semacam ini"
 
-#: src/theme-viewer.c:138
+#: ../src/theme-viewer.c:138
 msgid "This is a demo button with an 'open' icon"
 msgstr "Ini contoh tombol dengan ikon 'open'"
 
-#: src/theme-viewer.c:145
+#: ../src/theme-viewer.c:145
 msgid "This is a demo button with a 'quit' icon"
 msgstr "Ini contoh tombol dengan ikon 'quit'"
 
-#: src/theme-viewer.c:241
+#: ../src/theme-viewer.c:241
 msgid "This is a sample message in a sample dialog"
 msgstr "Ini contoh pesan pada suatu dialog"
 
-#: src/theme-viewer.c:324
+#: ../src/theme-viewer.c:324
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Item menu %d\n"
 
-#: src/theme-viewer.c:358
+#: ../src/theme-viewer.c:358
 msgid "Border-only window"
 msgstr "Jendela dengan garis pembatas"
 
-#: src/theme-viewer.c:360
+#: ../src/theme-viewer.c:360
 msgid "Bar"
 msgstr "Kotak"
 
-#: src/theme-viewer.c:377
+#: ../src/theme-viewer.c:377
 msgid "Normal Application Window"
 msgstr "Jendela Aplikasi Normal"
 
-#: src/theme-viewer.c:382
+#: ../src/theme-viewer.c:382
 msgid "Dialog Box"
 msgstr "Kotak Dialog"
 
-#: src/theme-viewer.c:387
+#: ../src/theme-viewer.c:387
 msgid "Modal Dialog Box"
 msgstr "Kotak Dialog Modal"
 
-#: src/theme-viewer.c:392
+#: ../src/theme-viewer.c:392
 msgid "Utility Palette"
 msgstr "Kotak Perkakas"
 
-#: src/theme-viewer.c:397
+#: ../src/theme-viewer.c:397
 msgid "Torn-off Menu"
 msgstr "Menu Dapat Dilepas"
 
-#: src/theme-viewer.c:402
+#: ../src/theme-viewer.c:402
 msgid "Border"
 msgstr "Batas"
 
-#: src/theme-viewer.c:731
+#: ../src/theme-viewer.c:731
 #, c-format
 msgid "Button layout test %d"
 msgstr "Tes komposisi tombol %d"
 
-#: src/theme-viewer.c:760
+#: ../src/theme-viewer.c:760
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "lama waktu menggambar satu bingkai jendela %g milidetik"
 
-#: src/theme-viewer.c:803
+#: ../src/theme-viewer.c:803
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Cara pakai: metacity-theme-viewer [NAMA TEMA]\n"
 
-#: src/theme-viewer.c:810
+#: ../src/theme-viewer.c:810
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Ada error saat membaca tema: %s\n"
 
-#: src/theme-viewer.c:816
+#: ../src/theme-viewer.c:816
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Tema \"%s\" dibuka dalam %g detik\n"
 
-#: src/theme-viewer.c:839
+#: ../src/theme-viewer.c:839
 msgid "Normal Title Font"
 msgstr "Judul dengan huruf normal"
 
-#: src/theme-viewer.c:845
+#: ../src/theme-viewer.c:845
 msgid "Small Title Font"
 msgstr "Judul dengan huruf ukuran kecil"
 
-#: src/theme-viewer.c:851
+#: ../src/theme-viewer.c:851
 msgid "Large Title Font"
 msgstr "Judul Raksasa"
 
-#: src/theme-viewer.c:856
+#: ../src/theme-viewer.c:856
 msgid "Button Layouts"
 msgstr "Komposisi Tombol"
 
-#: src/theme-viewer.c:861
+#: ../src/theme-viewer.c:861
 msgid "Benchmark"
 msgstr "Pengukuran"
 
-#: src/theme-viewer.c:908
+#: ../src/theme-viewer.c:908
 msgid "Window Title Goes Here"
 msgstr "Ini tempat judul jendela"
 
-#: src/theme-viewer.c:1012
+#: ../src/theme-viewer.c:1012
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -2972,83 +2932,83 @@ msgstr ""
 "%d frame dibuat dalam %g detik dalam waktu klien (%g milidetik per frame) "
 "dan %g detik dalam waktu sebenarnya (%g milidetik per frame)\n"
 
-#: src/theme-viewer.c:1227
+#: ../src/theme-viewer.c:1227
 msgid "position expression test returned TRUE but set error"
 msgstr "tes ekspresi posisi berakhir TRUE tapi justru ada error"
 
-#: src/theme-viewer.c:1229
+#: ../src/theme-viewer.c:1229
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "tes ekspresi posisi berakhir FALSE tapi tidak ada error"
 
-#: src/theme-viewer.c:1233
+#: ../src/theme-viewer.c:1233
 msgid "Error was expected but none given"
 msgstr "Seharusnya ada error, tapi ini kok tidak ada"
 
-#: src/theme-viewer.c:1235
+#: ../src/theme-viewer.c:1235
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Seharunya ada error %d, tapi yang terjadi %d"
 
-#: src/theme-viewer.c:1241
+#: ../src/theme-viewer.c:1241
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Seharusnya tidak ada error, tapi ini tiba-tiba ada error: %s"
 
-#: src/theme-viewer.c:1245
+#: ../src/theme-viewer.c:1245
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "nilai x sebelumnya %d, padahal seharusnya %d"
 
-#: src/theme-viewer.c:1248
+#: ../src/theme-viewer.c:1248
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "nilai y sebelumnya %d, padahal seharusnya %d"
 
-#: src/theme-viewer.c:1310
+#: ../src/theme-viewer.c:1310
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "ekspresi koordinat %d diambil dalam %g detik (rata-rata %g detik)\n"
 
-#: src/theme.c:202
+#: ../src/theme.c:202
 msgid "top"
 msgstr "atas"
 
-#: src/theme.c:204
+#: ../src/theme.c:204
 msgid "bottom"
 msgstr "bawah"
 
-#: src/theme.c:206
+#: ../src/theme.c:206
 msgid "left"
 msgstr "kiri"
 
-#: src/theme.c:208
+#: ../src/theme.c:208
 msgid "right"
 msgstr "kanan"
 
-#: src/theme.c:222
+#: ../src/theme.c:222
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "ukuran frame tidak menyebutkan dimensi \"%s\""
 
-#: src/theme.c:241
+#: ../src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "ukuran frame tidak menyebutkan dimensi \"%s\" untuk batas \"%s\""
 
-#: src/theme.c:278
+#: ../src/theme.c:278
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "Aspek rasio tombol %g tidak wajar"
 
-#: src/theme.c:290
+#: ../src/theme.c:290
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Ukuran frame tidak menyebutkan ukuran tombol"
 
-#: src/theme.c:849
+#: ../src/theme.c:843
 msgid "Gradients should have at least two colors"
 msgstr "Gradien harus paling tidak ada dua warna"
 
-#: src/theme.c:975
+#: ../src/theme.c:969
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -3057,7 +3017,7 @@ msgstr ""
 "Spesifikasi warna GTK harus memiliki kondisi pada kurung, misal gtk:fg"
 "[NORMAL] dengan NORMAL adalah jenis kondisinya, tidak dapat membaca \"%s\""
 
-#: src/theme.c:989
+#: ../src/theme.c:983
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -3066,17 +3026,17 @@ msgstr ""
 "Spesifikasi warna GTK harus memiliki kurung tutup pada kondisinya, misal gtk:"
 "fg[NORMAL] dengan NORMAL adalah jenis kondisinya, tidak dapat membaca \"%s\""
 
-#: src/theme.c:1000
+#: ../src/theme.c:994
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Kondisi \"%s\" tidak benar pada spesifikasi warna"
 
-#: src/theme.c:1013
+#: ../src/theme.c:1007
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Komponen warna \"%s\" tidak benar pada spesifikasi warna"
 
-#: src/theme.c:1043
+#: ../src/theme.c:1037
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -3085,19 +3045,19 @@ msgstr ""
 "Format pencampuran adalah \"blend/bg_color/fg_color/alpha\", \"%s\" bukan "
 "ditulis dalam format yang benar"
 
-#: src/theme.c:1054
+#: ../src/theme.c:1048
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Tidak dapat membaca nilai alpha \"%s\" pada pencampuran warna"
 
-#: src/theme.c:1064
+#: ../src/theme.c:1058
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr ""
 "Nilai alpha \"%s\" pada warna yang dicampur tidak ada dalam rentang 0.0 dan "
 "1.0"
 
-#: src/theme.c:1111
+#: ../src/theme.c:1105
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
@@ -3105,27 +3065,27 @@ msgstr ""
 "Format bayangan adalah \"shade/base_color/factor\", \"%s\" ditulis dalam "
 "format yang keliru"
 
-#: src/theme.c:1122
+#: ../src/theme.c:1116
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Tidak dapat membaca faktor bayangan \"%s\" pada warna berbayang"
 
-#: src/theme.c:1132
+#: ../src/theme.c:1126
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Faktor bayangan \"%s\" pada warna berbayang bernilai negatif"
 
-#: src/theme.c:1161
+#: ../src/theme.c:1155
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Tidak dapat membaca warna \"%s\""
 
-#: src/theme.c:1423
+#: ../src/theme.c:1417
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Ekspresi koordinat berisi karakter '%s' yang tidak diperbolehkan"
 
-#: src/theme.c:1450
+#: ../src/theme.c:1444
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -3133,12 +3093,12 @@ msgid ""
 msgstr ""
 "Ekspresi koordinat berisi angka floating point '%s' yang tidak dapat dibaca"
 
-#: src/theme.c:1464
+#: ../src/theme.c:1458
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "Ekspresi koordinat berisi integer '%s' yang tidak dapat dibaca"
 
-#: src/theme.c:1531
+#: ../src/theme.c:1525
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -3146,36 +3106,36 @@ msgid ""
 msgstr ""
 "Ekspresi koordinat berisi operator tak dikenal pada awal teks berikut: \"%s\""
 
-#: src/theme.c:1588
+#: ../src/theme.c:1582
 msgid "Coordinate expression was empty or not understood"
 msgstr "Ekspresi koordinat kosong atau tidak dapat dimengerti"
 
-#: src/theme.c:1731 src/theme.c:1741 src/theme.c:1775
+#: ../src/theme.c:1725 ../src/theme.c:1735 ../src/theme.c:1769
 msgid "Coordinate expression results in division by zero"
-msgstr "Ekspresi koordinat menghasilkan pembagiuan dengan nol"
+msgstr "Ekspresi koordinat menghasilkan pembagian dengan nol"
 
-#: src/theme.c:1783
+#: ../src/theme.c:1777
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "Ekspresi koordinat menggunakan operator mod pada angka bilangan nyata"
 
-#: src/theme.c:1840
+#: ../src/theme.c:1834
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Ekspresi koordinat menggunakan operator \"%s\" tanpa adanya operan"
 
-#: src/theme.c:1849
+#: ../src/theme.c:1843
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Ekspresi koordinat menggunakan operand tanpa operator"
 
-#: src/theme.c:1857
+#: ../src/theme.c:1851
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr ""
 "Ekspresi koordinat diakhiri dengan operator, seharusnya diakhiri dengan "
 "operand"
 
-#: src/theme.c:1867
+#: ../src/theme.c:1861
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -3184,7 +3144,7 @@ msgstr ""
 "Ekspresi koordinat memiliki operator \"%c\" diikuti operator \"%c\" tanpa "
 "adanya operand di antarany"
 
-#: src/theme.c:1986
+#: ../src/theme.c:1980
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
@@ -3192,30 +3152,30 @@ msgstr ""
 "Ekspresi koordinat mengalami overflow pada buffernya, ini merupakan bug "
 "Metacity, namun sepertinya ekspresinya terlalu besar."
 
-#: src/theme.c:2015
+#: ../src/theme.c:2009
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "Terdapat kurung tutup tanpa kurung buka pada ekspresi koordinat"
 
-#: src/theme.c:2078
+#: ../src/theme.c:2072
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr ""
 "Ada variabel atau konstanta \"%s\" tidak diketahui pada ekspresi koordinat"
 
-#: src/theme.c:2135
+#: ../src/theme.c:2129
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "Terdapat kurung buka tanpa kurung tutup pada ekspresi koordinat "
 
-#: src/theme.c:2146
+#: ../src/theme.c:2140
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Ekspresi koordinat sepertinya tidak memiliki operator atau operan"
 
-#: src/theme.c:2390 src/theme.c:2412 src/theme.c:2433
+#: ../src/theme.c:2384 ../src/theme.c:2406 ../src/theme.c:2427
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Tema berisi ekspresi \"%s\" yang menghasilkan error: %s\n"
 
-#: src/theme.c:3919
+#: ../src/theme.c:3913
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3224,25 +3184,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> tidak "
 "disebutkan pada gaya frame ini"
 
-#: src/theme.c:4369 src/theme.c:4401
+#: ../src/theme.c:4363 ../src/theme.c:4395
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> tidak ada"
 
-#: src/theme.c:4452
+#: ../src/theme.c:4446
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Gagal membuka tema \"%s\": %s\n"
 
-#: src/theme.c:4598 src/theme.c:4605 src/theme.c:4612 src/theme.c:4619
-#: src/theme.c:4626
+#: ../src/theme.c:4592 ../src/theme.c:4599 ../src/theme.c:4606
+#: ../src/theme.c:4613 ../src/theme.c:4620
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Tidak ada <%s> yang ditentukan untuk tema \"%s\""
 
-#: src/theme.c:4636
+#: ../src/theme.c:4630
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3251,7 +3211,7 @@ msgstr ""
 "Tidak ada gaya frame untuk tipe window \"%s\" pada tema \"%s\". Tambah dulu "
 "elemen <window type=\"%s\" style_set=\"whatever\"/>"
 
-#: src/theme.c:4658
+#: ../src/theme.c:4652
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3260,62 +3220,62 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> harus "
 "disebutkan pada tema ini"
 
-#: src/theme.c:5047 src/theme.c:5109
+#: ../src/theme.c:5041 ../src/theme.c:5103
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr "Konstanta buatan user harus dimulai dengan huruf besar: \"%s\" tidak"
+msgstr "Konstanta buatan pengguna harus dimulai dengan huruf besar: \"%s\" tidak"
 
-#: src/theme.c:5055 src/theme.c:5117
+#: ../src/theme.c:5049 ../src/theme.c:5111
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanta \"%s\" telah didefinisikan sebelumnya"
 
-#: src/util.c:93
+#: ../src/util.c:93
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Gagal membuka log debug: %s\n"
 
-#: src/util.c:103
+#: ../src/util.c:103
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "Gagal melakukan fdopen pada file log %s: %s\n"
+msgstr "Gagal melakukan fdopen pada berkas log %s: %s\n"
 
-#: src/util.c:109
+#: ../src/util.c:109
 #, c-format
 msgid "Opened log file %s\n"
-msgstr "Log file yang dibuka %s\n"
+msgstr "Berkas log yang dibuka %s\n"
 
-#: src/util.c:203
+#: ../src/util.c:203
 msgid "Window manager: "
-msgstr "Manajer jendela: "
+msgstr "Pengatur jendela: "
 
-#: src/util.c:349
+#: ../src/util.c:349
 msgid "Bug in window manager: "
-msgstr "Bug pada manajer jendela: "
+msgstr "Bug pada pengatur jendela: "
 
-#: src/util.c:378
+#: ../src/util.c:378
 msgid "Window manager warning: "
-msgstr "Peringatan manajer jendela: "
+msgstr "Peringatan pengatur jendela: "
 
-#: src/util.c:402
+#: ../src/util.c:402
 msgid "Window manager error: "
-msgstr "Eror manajer jendela: "
+msgstr "Eror pengatur jendela: "
 
-#: src/window-props.c:162
+#: ../src/window-props.c:162
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikasi telah membuat _NET_WM_PID %ld bohongan\n"
 
 #. first time through
-#: src/window.c:5197
+#: ../src/window.c:5205
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
-"Window %s menyetel SM_CLIENT_ID pada dirinya sendiri, padahal seharusnya "
-"disetel pada window WM_CLIENT_LEADER sesuai aturan ICCCM.\n"
+"Jendela %s menyetel SM_CLIENT_ID pada dirinya sendiri, padahal seharusnya "
+"disetel pada jendela WM_CLIENT_LEADER sesuai aturan ICCCM.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -3324,7 +3284,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5868
+#: ../src/window.c:5876
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3334,7 +3294,7 @@ msgstr ""
 "ukurannya, sedangkan ukuran minimalnya adalah %d x %d dan maksimal %d x %d "
 "yang tidak masuk di akal.\n"
 
-#: src/xprops.c:153
+#: ../src/xprops.c:153
 #, c-format
 msgid ""
 "Window 0x%lx has property %s\n"
@@ -3346,20 +3306,30 @@ msgstr ""
 "Jendela 0x%lx memiliki properti %s\n"
 "yang seharusnya memiliki tipe %s format %d.\n"
 "Sekarang dia memiliki tipe %s format %d n_items %d.\n"
-"Sepertinya ini adalah bug aplikasinya, bukan bug manajer window.\n"
-"Judul windownya adalah \"%s\" class=\"%s\" dan bernama=\"%s\"\n"
+"Sepertinya ini adalah bug aplikasinya, bukan bug pengatur jendela.\n"
+"Judul jendelanya adalah \"%s\" class=\"%s\" dan bernama=\"%s\"\n"
 
-#: src/xprops.c:399
+#: ../src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Properti %s pada jendela 0x%lx berisi karakter UTF-8 yang salah\n"
 
-#: src/xprops.c:482
+#: ../src/xprops.c:482
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Properti %s pada jendela 0x%lx di obyek %d berisi karakter UTF-8 yang salah\n"
+
+#~ msgid ""
+#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
+#~ "display=DISPLAY] [--replace] [--version]\n"
+#~ msgstr ""
+#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
+#~ "display=DISPLAY] [--replace] [--version]\n"
+
+#~ msgid "No \"%s\" attribute on element <%s>"
+#~ msgstr "Tidak dijumpai atribut \"%s\" pada elemen <%s>"
 
 #~ msgid "Put on _All Workspaces"
 #~ msgstr "Letakkan p_ada semua area kerja"
