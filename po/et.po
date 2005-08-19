@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-06-01 14:51+0000\n"
-"PO-Revision-Date: 2005-07-11 12:49+0300\n"
+"PO-Revision-Date: 2005-08-18 13:20+0300\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -65,7 +65,7 @@ msgstr ""
 #: ../src/delete.c:452
 #, c-format
 msgid "Failed to get hostname: %s\n"
-msgstr ""
+msgstr "Tõrge hostimine hankimisel: %s\n"
 
 #: ../src/display.c:316
 #, c-format
@@ -602,7 +602,7 @@ msgstr "Käivita terminal"
 
 #: ../src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
-msgstr ""
+msgstr "Paneelimenüü näitamine"
 
 #: ../src/metacity.schemas.in.h:62
 msgid "Show the panel run application dialog"
@@ -614,51 +614,51 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:64
 msgid "Switch to workspace 1"
-msgstr "Liigu 1. tööalale"
+msgstr "Liikumine 1. tööalale"
 
 #: ../src/metacity.schemas.in.h:65
 msgid "Switch to workspace 10"
-msgstr "Liigu 10. tööalale"
+msgstr "Liikumine 10. tööalale"
 
 #: ../src/metacity.schemas.in.h:66
 msgid "Switch to workspace 11"
-msgstr "Liigu 11. tööalale"
+msgstr "Liikumine 11. tööalale"
 
 #: ../src/metacity.schemas.in.h:67
 msgid "Switch to workspace 12"
-msgstr "Liigu 12. tööalale"
+msgstr "Liikumine 12. tööalale"
 
 #: ../src/metacity.schemas.in.h:68
 msgid "Switch to workspace 2"
-msgstr "Liigu 2. tööalale"
+msgstr "Liikumine 2. tööalale"
 
 #: ../src/metacity.schemas.in.h:69
 msgid "Switch to workspace 3"
-msgstr "Liigu 3. tööalale"
+msgstr "Liikumine 3. tööalale"
 
 #: ../src/metacity.schemas.in.h:70
 msgid "Switch to workspace 4"
-msgstr "Liigu 4. tööalale"
+msgstr "Liikumine 4. tööalale"
 
 #: ../src/metacity.schemas.in.h:71
 msgid "Switch to workspace 5"
-msgstr "Liigu 5. tööalale"
+msgstr "Liikumine 5. tööalale"
 
 #: ../src/metacity.schemas.in.h:72
 msgid "Switch to workspace 6"
-msgstr "Liigu 6. tööalale"
+msgstr "Liikumine 6. tööalale"
 
 #: ../src/metacity.schemas.in.h:73
 msgid "Switch to workspace 7"
-msgstr "Liigu 7. tööalale"
+msgstr "Liikumine 7. tööalale"
 
 #: ../src/metacity.schemas.in.h:74
 msgid "Switch to workspace 8"
-msgstr "Liigu 8. tööalale"
+msgstr "Liikumine 8. tööalale"
 
 #: ../src/metacity.schemas.in.h:75
 msgid "Switch to workspace 9"
-msgstr "Liigu 9. tööalale"
+msgstr "Liikumine 9. tööalale"
 
 #: ../src/metacity.schemas.in.h:76
 msgid "Switch to workspace above this one"
@@ -682,11 +682,11 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:81
 msgid "Take a screenshot"
-msgstr ""
+msgstr "Kuvatõmmise võtmine"
 
 #: ../src/metacity.schemas.in.h:82
 msgid "Take a screenshot of a window"
-msgstr ""
+msgstr "Kuvatõmmise võtmine aknast"
 
 #: ../src/metacity.schemas.in.h:83
 msgid "Tells Metacity how to implement the visual indication that the system bell or another application 'bell' indicator has been rung. Currently there are two valid values, \"fullscreen\", which causes a fullscreen white-black flash, and \"frame_flash\" which causes the titlebar of the application which sent the bell signal to flash. If the application which sent the bell is unknown (as is usually the case for the default \"system beep\"), the currently focused window's titlebar is flashed."
@@ -1207,7 +1207,7 @@ msgstr ""
 #: ../src/theme-parser.c:242
 #, c-format
 msgid "Line %d character %d: %s"
-msgstr ""
+msgstr "Rida %d, märk %d: %s"
 
 #: ../src/theme-parser.c:396
 #, c-format
@@ -1223,12 +1223,12 @@ msgstr ""
 #: ../src/theme-parser.c:485
 #, c-format
 msgid "Integer %ld must be positive"
-msgstr ""
+msgstr "Täisarv %ld peab olema positiivne"
 
 #: ../src/theme-parser.c:493
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
-msgstr ""
+msgstr "Täisarv %ld on liiga suur, praegu on suurim lubatud väärtus %d"
 
 #: ../src/theme-parser.c:521
 #: ../src/theme-parser.c:602
@@ -1240,12 +1240,12 @@ msgstr ""
 #: ../src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr ""
+msgstr "Tõeväärtused peavad olema kas \"true\" või \"false\" aga mitte \"%s\""
 
 #: ../src/theme-parser.c:572
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr ""
+msgstr "Nurk peab olema 0.0 ja 360.0 vahel, oli aga %g\n"
 
 #: ../src/theme-parser.c:638
 #, c-format
