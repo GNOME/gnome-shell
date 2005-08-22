@@ -159,8 +159,11 @@ ALL_LINGUAS="am ar az be bg bn bs ca cs cy da de el en_CA en_GB es et eu fa fi f
 AM_GLIB_GNU_GETTEXT
 
 ## here we get the flags we'll actually use
-PKG_CHECK_MODULES(METACITY_MESSAGE, gtk+-2.0 >= 2.2.0)
-PKG_CHECK_MODULES(METACITY_WINDOW_DEMO, gtk+-2.0 >= 2.2.0)
+# GOptionEntry requires	glib-2.6.0    
+PKG_CHECK_MODULES(ALL, glib-2.0 >= 2.6.0)
+# gtk_window_set_icon_name requires gtk2+-2.60
+PKG_CHECK_MODULES(METACITY_MESSAGE, gtk+-2.0 >= 2.6.0)
+PKG_CHECK_MODULES(METACITY_WINDOW_DEMO, gtk+-2.0 >= 2.6.0)
 
 if $PKG_CONFIG --atleast-version 1.2.0 pangoxft; then
    echo "pangoxft found"
