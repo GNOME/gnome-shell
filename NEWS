@@ -1,3 +1,19 @@
+2.11.3
+==
+
+Thanks to Björn Lindqvist and Elijah Newren for improvements in
+this release.
+
+ - Check for the right versions of glib and gtk+ (Björn) [#314116]
+ - Avoid obscuring centered-on-desktop windows which are denied focus
+   (Elijah) [#313234]
+
+Translations
+  Vladimir Petkov (bg), Jordi Mallach (ca), Kostas Papadimas (el),
+  Ivar Smolin (et), Gabor Kelemen (hu), Mohammad DAMT (id), Duarte
+  Loreto (pt), Mugurel Tudor (ro), Laurent Dhima (sq), Maxim
+  Dziumanenko (uk)
+
 2.11.2
 ==
 

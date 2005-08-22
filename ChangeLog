@@ -1,5 +1,9 @@
 2005-08-22  Elijah Newren  <newren@gmail.com>
 
+	* NEWS:	2.11.3 release
+
+2005-08-22  Elijah Newren  <newren@gmail.com>
+
 	* configure.in: Patch from Björn Lindqvist to check for the
 	appropriate versions of glib and gtk.  Fixes #314116.
 
