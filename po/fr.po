@@ -10,10 +10,10 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.10.3\n"
+"Project-Id-Version: metacity 2.11.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-17 19:23+0200\n"
-"PO-Revision-Date: 2005-07-17 19:14+0200\n"
+"POT-Creation-Date: 2005-08-28 13:56+0200\n"
+"PO-Revision-Date: 2005-08-28 13:51+0200\n"
 "Last-Translator: Christophe Merlet (RedFox) <redfox@redfoxcenter.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -120,19 +120,19 @@ msgstr ""
 "Un autre programme utilise déjà la clé %s avec les modificateurs %x comme "
 "liaisons\n"
 
-#: src/keybindings.c:2535
+#: src/keybindings.c:2620
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Erreur pendant le lancement de metacity-dialog pour afficher un message "
 "d'erreur pour la commande : %s\n"
 
-#: src/keybindings.c:2640
+#: src/keybindings.c:2725
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Aucune commande %d n'a été définie.\n"
 
-#: src/keybindings.c:3485
+#: src/keybindings.c:3570
 msgid "No terminal command has been defined.\n"
 msgstr "Aucune commande de terminal n'a été définie.\n"
 
@@ -154,27 +154,28 @@ msgstr ""
 
 #: src/main.c:257
 msgid "Disable connection to session manager"
-msgstr ""
+msgstr "Désactiver la connexion au gestionnaire de sessions"
 
 #: src/main.c:263
 msgid "Replace the running window manager with Metacity"
 msgstr ""
+"Remplacer le gestionnaire de fenêtres en cours de fonctionnement par Metacity"
 
 #: src/main.c:269
 msgid "Specify session management ID"
-msgstr ""
+msgstr "Spécifier l'ID de gestion de sessions"
 
 #: src/main.c:274
 msgid "X Display to use"
-msgstr ""
+msgstr "Affichage X à utiliser"
 
 #: src/main.c:280
 msgid "Initialize session from savefile"
-msgstr ""
+msgstr "Initialiser la session depuis le fichier de sauvegarde"
 
 #: src/main.c:286
 msgid "Print version"
-msgstr ""
+msgstr "Imprimer la version"
 
 #: src/main.c:440
 #, c-format
@@ -376,19 +377,19 @@ msgstr ""
 "Forcer cette application à quitter causera la perte de toutes les "
 "modifications non enregistrées."
 
-#: src/metacity-dialog.c:128
+#: src/metacity-dialog.c:129
 msgid "_Force Quit"
 msgstr "_Forcer à quitter"
 
-#: src/metacity-dialog.c:225
+#: src/metacity-dialog.c:226
 msgid "Title"
 msgstr "Titre"
 
-#: src/metacity-dialog.c:237
+#: src/metacity-dialog.c:238
 msgid "Class"
 msgstr "Classe"
 
-#: src/metacity-dialog.c:263
+#: src/metacity-dialog.c:264
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -397,7 +398,7 @@ msgstr ""
 "configuration courante » et devront être redémarrées manuellement à la "
 "prochaine connexion."
 
-#: src/metacity-dialog.c:328
+#: src/metacity-dialog.c:330
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2342,15 +2343,11 @@ msgstr ""
 "Échelle de titre non valide « %s » (elle doit avoir l'une des valeurs "
 "suivantes : xx-small, x-small, small, medium,large, x-large, xx-large)\n"
 
-#: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
-#: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
-#, c-format
-msgid "No \"%s\" attribute on element <%s>"
-msgstr "Aucun attribut « %s » sur l'élément <%s>"
-
-#: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
-#: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
-#: src/theme-parser.c:1126 src/theme-parser.c:1134
+#: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:807
+#: src/theme-parser.c:897 src/theme-parser.c:935 src/theme-parser.c:1012
+#: src/theme-parser.c:1062 src/theme-parser.c:1070 src/theme-parser.c:1126
+#: src/theme-parser.c:1134 src/theme-parser.c:2936 src/theme-parser.c:3025
+#: src/theme-parser.c:3032 src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
 msgstr "Aucun attribut « %s » sur l'élément <%s>"
@@ -3348,7 +3345,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "L'application a défini un faux _NET_WM_PID %ld\n"
 
 #. first time through
-#: src/window.c:5197
+#: src/window.c:5205
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3364,7 +3361,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5868
+#: src/window.c:5876
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3403,10 +3400,3 @@ msgid ""
 msgstr ""
 "La propriété %s de la fenêtre 0x%lx contient un code UTF-8 non valide pour "
 "l'élément %d dans la liste\n"
-
-#~ msgid ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-#~ "display=DISPLAY] [--replace] [--version]\n"
-#~ msgstr ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=NOMDEFICHIER] "
-#~ "[--display=VISUEL] [--replace] [--version]\n"
