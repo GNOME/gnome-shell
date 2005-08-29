@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-06-27 17:21-0600\n"
-"PO-Revision-Date: 2004-09-12 16:38+0100\n"
-"Last-Translator: Dafydd Harries <daf@muse.19inch.net>\n"
+"POT-Creation-Date: 2005-08-29 11:04+0100\n"
+"PO-Revision-Date: 2005-08-29 17:08+0100\n"
+"Last-Translator: Bryn Salisbury <bryn@randomlyevil.org.uk>\n"
 "Language-Team: Cymraeg <gnome-cy@pengwyn.linux.org.uk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -59,7 +59,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Methu cyrchu'r enw gwesteiwr: %s\n"
 
-#: src/display.c:316
+#: src/display.c:319
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Methu agor y dangosydd System Ffenestri X '%s'\n"
@@ -109,32 +109,23 @@ msgstr ""
 "Mae rhaglen arall yn defnyddio'r bysell %s gyfa'r addasyddion %x fel "
 "rhwymiad eisioes\n"
 
-#: src/keybindings.c:2535
+#: src/keybindings.c:2620
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Gwall wrth lansio metacity-dialog er mwyn argraffu gwall ynghylch gorchymyn: "
 "%s\n"
 
-#: src/keybindings.c:2640
+#: src/keybindings.c:2725
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Does dim gorchmyn %d wedi ei ddiffinio.\n"
 
-#: src/keybindings.c:3485
-#, fuzzy
+#: src/keybindings.c:3570
 msgid "No terminal command has been defined.\n"
-msgstr "Does dim gorchmyn %d wedi ei ddiffinio.\n"
+msgstr "Does dim gorchmyn wedi ei ddiffinio.\n"
 
 #: src/main.c:69
-msgid ""
-"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-"display=DISPLAY] [--replace] [--version]\n"
-msgstr ""
-"metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=ENWFFEIL] [--"
-"display=DANGOSYDD] [--replace] [--version]\n"
-
-#: src/main.c:76
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -150,12 +141,36 @@ msgstr ""
 "AR\n"
 "GYFER PWRPAS PENODOL.\n"
 
-#: src/main.c:443
+#: src/main.c:257
+msgid "Disable connection to session manager"
+msgstr "Analluogi cysylltiad i'r rheolwr sesiwn"
+
+#: src/main.c:263
+msgid "Replace the running window manager with Metacity"
+msgstr "Amnewid y rheolwr ffenestri sy'n rhedeg gyda Metacity"
+
+#: src/main.c:269
+msgid "Specify session management ID"
+msgstr "Penodi ID rheolaeth sesiwn"
+
+#: src/main.c:274
+msgid "X Display to use"
+msgstr "Dangosydd X i'w defnyddio"
+
+#: src/main.c:280
+msgid "Initialize session from savefile"
+msgstr "Cychwyn sesiwn o ffeil"
+
+#: src/main.c:286
+msgid "Print version"
+msgstr "Argraffu fersiwn"
+
+#: src/main.c:440
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Methwyd chwilio'r cyfeiriadur thema: %s\n"
 
-#: src/main.c:459
+#: src/main.c:456
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -163,7 +178,7 @@ msgstr ""
 "Methu canfod thema! Sicrhewch fod %s yn bodoli ac yn cynnwys y themâu "
 "arferol."
 
-#: src/main.c:521
+#: src/main.c:518
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Methu ailddechrau: %s\n"
@@ -207,12 +222,10 @@ msgstr "_Cau"
 
 #. separator
 #: src/menu.c:66
-#, fuzzy
 msgid "_Always on Visible Workspace"
-msgstr "Ar y Gweithfan _Yma'n Unig"
+msgstr "Pob tro ar y Weithfan Weladwy"
 
 #: src/menu.c:67
-#, fuzzy
 msgid "_Only on This Workspace"
 msgstr "Ar y Gweithfan _Yma'n Unig"
 
@@ -232,7 +245,7 @@ msgstr "Symud at i _Fyny'r Gweithfan"
 msgid "Move to Workspace _Down"
 msgstr "Symud at i _Lawr y Gweithfan"
 
-#: src/menu.c:162 src/prefs.c:1996
+#: src/menu.c:162 src/prefs.c:2106
 #, c-format
 msgid "Workspace %d"
 msgstr "Gweithfan %d"
@@ -352,19 +365,19 @@ msgstr ""
 "Mi fydd gorfodi y rhaglen hwn i derfynu yn colli unrhyw newidiad sydd heb ei "
 "gadw "
 
-#: src/metacity-dialog.c:128
+#: src/metacity-dialog.c:129
 msgid "_Force Quit"
 msgstr "Gor_fodu Gadael"
 
-#: src/metacity-dialog.c:225
+#: src/metacity-dialog.c:226
 msgid "Title"
 msgstr "Teitl"
 
-#: src/metacity-dialog.c:237
+#: src/metacity-dialog.c:238
 msgid "Class"
 msgstr "Dosbarth"
 
-#: src/metacity-dialog.c:263
+#: src/metacity-dialog.c:264
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -372,7 +385,7 @@ msgstr ""
 "Dyw'r ffenestri yma ddim yn cynnal \"arbed y gosodiad cyfredol\" a bydd "
 "rhaid eu ail-ddechrau gyda llaw y tro nesaf rydych yn mewngofnodi."
 
-#: src/metacity-dialog.c:328
+#: src/metacity-dialog.c:330
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -508,7 +521,6 @@ msgstr ""
 "rhaglen am teitlau ffenestr."
 
 #: src/metacity.schemas.in.h:19
-#, fuzzy
 msgid ""
 "If true, metacity will give the user less feedback and less sense of "
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
@@ -522,7 +534,8 @@ msgstr ""
 "animeiddiadau, a dulliau eraill. Mae hyn yn ostyngiad sylweddol mewn lefelau "
 "hawster defnyddio ar gyfer y rhan fwyaf o ddefnyddwyr, ond gall alluogi i "
 "hen rhaglenni a gweinyddywr terfynell weithredu pan fasent yn anymarferol "
-"fel arall."
+"fel arall. Ond, mae'r ffrâmiau gwifren wedi eu hanalluogi tra bo hygyrchedd "
+"ymlaen i nadu torri y penfwrdd."
 
 #: src/metacity.schemas.in.h:20
 msgid ""
@@ -711,7 +724,7 @@ msgstr "Gweithredu gorchymyn gosodedig"
 
 #: src/metacity.schemas.in.h:60
 msgid "Run a terminal"
-msgstr ""
+msgstr "Dechrau terfynell"
 
 #: src/metacity.schemas.in.h:61
 msgid "Show the panel menu"
@@ -1211,7 +1224,6 @@ msgstr ""
 "\"disabled\", ni fydd bysellrwymiad ar gyfer y gweithred hwn."
 
 #: src/metacity.schemas.in.h:109
-#, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1223,8 +1235,8 @@ msgstr ""
 "\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn eithaf "
 "rhyddfrydol ac mae'n caniatau prif lythrennau a llythrennau bach, ac hefyd "
 "talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n osod y "
-"gosodiad i'r llinyn arbennig \"disabled\", ni fydd furfosodiad bysellfwrdd "
-"i'r gweithred hwn."
+"gosodiad i'r llinyn arbennig \"disabled\", ni fydd bysellrhwymiad "
+"ar gyfer y gweithred hwn."
 
 #: src/metacity.schemas.in.h:110
 msgid ""
@@ -1727,7 +1739,6 @@ msgstr ""
 "bysellrwymiad ar gyfer y gweithred hwn."
 
 #: src/metacity.schemas.in.h:142
-#, fuzzy
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1735,7 +1746,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Y bysellrwymiad sy'n dangos prif ddewislen y panel. Y mae'r fformat fel "
+"Y bysellrwymiad sy'n cychwyn terfynell. Y mae'r fformat fel "
 "\"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd "
 "yn eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a lythrennau bach, "
 "ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
@@ -1975,17 +1986,17 @@ msgstr "Modd ffocysu ffenestri"
 msgid "Window title font"
 msgstr "Ffont teitl ffenestri"
 
-#: src/prefs.c:501 src/prefs.c:517 src/prefs.c:533 src/prefs.c:549
-#: src/prefs.c:565 src/prefs.c:585 src/prefs.c:601 src/prefs.c:617
-#: src/prefs.c:633 src/prefs.c:649 src/prefs.c:665 src/prefs.c:681
-#: src/prefs.c:697 src/prefs.c:714 src/prefs.c:730 src/prefs.c:746
-#: src/prefs.c:762 src/prefs.c:778 src/prefs.c:793 src/prefs.c:808
-#: src/prefs.c:823 src/prefs.c:839
+#: src/prefs.c:528 src/prefs.c:544 src/prefs.c:560 src/prefs.c:576
+#: src/prefs.c:592 src/prefs.c:612 src/prefs.c:628 src/prefs.c:644
+#: src/prefs.c:660 src/prefs.c:676 src/prefs.c:692 src/prefs.c:708
+#: src/prefs.c:724 src/prefs.c:741 src/prefs.c:757 src/prefs.c:773
+#: src/prefs.c:789 src/prefs.c:805 src/prefs.c:820 src/prefs.c:835
+#: src/prefs.c:850 src/prefs.c:866 src/prefs.c:882 src/prefs.c:898
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Y mae allwedd GConf \"%s\" wedi ei osod yn fath annilys\n"
 
-#: src/prefs.c:884
+#: src/prefs.c:943
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1994,17 +2005,17 @@ msgstr ""
 "Nid yw \"%s\" sydd wedi ei ddarganfod yn y cronfa cyfluniad yn werth ddilys "
 "ar gyfer addasydd botwm llygoden\n"
 
-#: src/prefs.c:908 src/prefs.c:1318
+#: src/prefs.c:967 src/prefs.c:1428
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Y mae allwedd GConf '%s' wedi ei gosod yn werth annilys\n"
 
-#: src/prefs.c:1035
+#: src/prefs.c:1145
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Ni all gramadegu'r disgrifiad ffont \"%s\" o'r allwedd GConf %s\n"
 
-#: src/prefs.c:1220
+#: src/prefs.c:1330
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2013,7 +2024,7 @@ msgstr ""
 "Nid yw %d sydd wedi ei gadw tu fewn i allwedd GConf %s yn nifer rhesymol o "
 "weithfannau, %d yw'r cyfanswm cyfredol\n"
 
-#: src/prefs.c:1280
+#: src/prefs.c:1390
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2021,19 +2032,19 @@ msgstr ""
 "Mae cywiriadau ar gyfer rhaglenni torredig wedi ei analluogi. Efallai ni "
 "fydd rhai rhaglenni yn ymddwyn yn gywir.\n"
 
-#: src/prefs.c:1345
+#: src/prefs.c:1455
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
 "Y mae %d, sydd wedi ei gadw tu fewn i allwedd GConf %s, tu allan o'r "
 "amrediad 0 i %d\n"
 
-#: src/prefs.c:1479
+#: src/prefs.c:1589
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Gwall wrth osod y nifer o weithfannau i %d: %s\n"
 
-#: src/prefs.c:1723
+#: src/prefs.c:1833
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2042,7 +2053,7 @@ msgstr ""
 "Nid yw \"%s\" sydd wedi ei ddarganfod yn y cronfa cyfluniad yn werth ddilys "
 "ar gyfer y rhwymiad bysell \"%s\"\n"
 
-#: src/prefs.c:2077
+#: src/prefs.c:2187
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Gwall wrth osod enw gweithle %d i \"%s\": %s\n"
@@ -2213,15 +2224,11 @@ msgstr ""
 "Maint teitl annilys \"%s\" (rhaid ei fod yn un o xx-small, x-small, small, "
 "medium, large, x-large, xx-large)\n"
 
-#: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:2936
-#: src/theme-parser.c:3025 src/theme-parser.c:3032 src/theme-parser.c:3039
-#, c-format
-msgid "No \"%s\" attribute on element <%s>"
-msgstr "Dim priodwedd \"%s\" gan elfen <%s>"
-
-#: src/theme-parser.c:807 src/theme-parser.c:897 src/theme-parser.c:935
-#: src/theme-parser.c:1012 src/theme-parser.c:1062 src/theme-parser.c:1070
-#: src/theme-parser.c:1126 src/theme-parser.c:1134
+#: src/theme-parser.c:729 src/theme-parser.c:737 src/theme-parser.c:807
+#: src/theme-parser.c:897 src/theme-parser.c:935 src/theme-parser.c:1012
+#: src/theme-parser.c:1062 src/theme-parser.c:1070 src/theme-parser.c:1126
+#: src/theme-parser.c:1134 src/theme-parser.c:2936 src/theme-parser.c:3025
+#: src/theme-parser.c:3032 src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
 msgstr "Dim priodwedd \"%s\" gan elfen <%s>"
@@ -2913,11 +2920,11 @@ msgstr "Nid yw'r cymhareb agwedd botwm %g yn rhesymol"
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Nif yw'r geometreg ffrâm yn penodi maint botymau"
 
-#: src/theme.c:849
+#: src/theme.c:843
 msgid "Gradients should have at least two colors"
 msgstr "Dylid graddfa cael o leiaf dwy liw"
 
-#: src/theme.c:975
+#: src/theme.c:969
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -2926,7 +2933,7 @@ msgstr ""
 "Rhaid i benodiad lliw GTK cael cyflwr tu fewn i bracedi, e.e. gtk:fg[NORMAL] "
 "lle mae NORMAL yw'r cyflwr; ni all gramadegu \"%s\""
 
-#: src/theme.c:989
+#: src/theme.c:983
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -2935,17 +2942,17 @@ msgstr ""
 "Rhaid i benodiad lliw GTK gael braced cau e.e. gtk:fg[NORMAL] lle NORMAL "
 "yw'r cyflwr; ni allwyd gramadegu \"%s\""
 
-#: src/theme.c:1000
+#: src/theme.c:994
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Wedi methu deall y cyflwr \"%s\" yn y penodiad lliw"
 
-#: src/theme.c:1013
+#: src/theme.c:1007
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Wedi methu deall y gydran lliw \"%s\" yn y penodiad lliw"
 
-#: src/theme.c:1043
+#: src/theme.c:1037
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -2954,17 +2961,17 @@ msgstr ""
 "\"blend/bg_color/fg_color/alpha\" yw'r fformat cyfuno, nid yw \"%s\" yn "
 "cytuno a'r fformat"
 
-#: src/theme.c:1054
+#: src/theme.c:1048
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Wedi methu gramadegu'r gwerth alffa \"%s\" yn y lliw cyfunedig"
 
-#: src/theme.c:1064
+#: src/theme.c:1058
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "Nid yw'r gwerth alffa \"%s\" yn y lliw cyfunedig rhwng 0.0 ac 1.0"
 
-#: src/theme.c:1111
+#: src/theme.c:1105
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
@@ -2972,27 +2979,27 @@ msgstr ""
 "\"shade/base_color/factor\" yw'r fformat cysgod, nid yw \"%s\" yn cytuno a'r "
 "fformat"
 
-#: src/theme.c:1122
+#: src/theme.c:1116
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Methwyd gramadegu ffactor cysgod \"%s\" mewn lliw wedi cysgodi"
 
-#: src/theme.c:1132
+#: src/theme.c:1126
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Mae'r ffactor cysgod \"%s\" mewn lliw wedi cysgodi yn negatif"
 
-#: src/theme.c:1161
+#: src/theme.c:1155
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Methu dehongli'r lliw \"%s\""
 
-#: src/theme.c:1423
+#: src/theme.c:1417
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Mae'r mynegiad cydfesuryn yn cynnwys y nod '%s'. Ni chaniateir hyn."
 
-#: src/theme.c:1450
+#: src/theme.c:1444
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -3001,14 +3008,14 @@ msgstr ""
 "Mae'r mynegiad cydfesuryn yn cynnwys rhif pwynt arnawf '%s' sydd ddim yn "
 "posib i gramadegu."
 
-#: src/theme.c:1464
+#: src/theme.c:1458
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
 "Mae'r mynegiad cydfesuryn yn cynnwys cyfanrhif  '%s' sydd ddim yn posib i "
 "gramadegu."
 
-#: src/theme.c:1531
+#: src/theme.c:1525
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -3017,37 +3024,37 @@ msgstr ""
 "Mae'r mynegiad cydfesuryn yn cynnwys gweithredwr anhysbys ar dechrau'r "
 "testun hwn: \"%s\""
 
-#: src/theme.c:1588
+#: src/theme.c:1582
 msgid "Coordinate expression was empty or not understood"
 msgstr "Mae'r mynegiad cydfesuryn yn gwag neu nid wedi deall"
 
-#: src/theme.c:1731 src/theme.c:1741 src/theme.c:1775
+#: src/theme.c:1725 src/theme.c:1735 src/theme.c:1769
 msgid "Coordinate expression results in division by zero"
 msgstr "Mae'r mynegiant cyfesurun yn"
 
-#: src/theme.c:1783
+#: src/theme.c:1777
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Mae'r mynegiad cydfesuryn yn ceisio defnyddio'r gweithredwr 'mod' ar rhif "
 "pwynt arnawf"
 
-#: src/theme.c:1840
+#: src/theme.c:1834
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "Roedd gan y mynegiant cyfesurun weithredydd \"%s\" lle disgwylwyd operand"
 
-#: src/theme.c:1849
+#: src/theme.c:1843
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Roedd gan y meynegiant cyfesurun operand lle disgwylwyd gweithredydd"
 
-#: src/theme.c:1857
+#: src/theme.c:1851
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Gorffenodd y mynegiant cyfesurun efo gweithredydd yn lle operand"
 
-#: src/theme.c:1867
+#: src/theme.c:1861
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -3056,7 +3063,7 @@ msgstr ""
 "Mae gan fynegiant cyfesurun y gweithredydd \"%c\" yn dilyn y gweithredydd "
 "\"% c\" efo dim operand rhyngddynt"
 
-#: src/theme.c:1986
+#: src/theme.c:1980
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
@@ -3065,31 +3072,31 @@ msgstr ""
 "nam Metacity, ond ydych chi'n siwr eich fod chi'n angen mynegiad anferth fel "
 "hynny?"
 
-#: src/theme.c:2015
+#: src/theme.c:2009
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "Roedd gan y mynegiant cyfesurun cromfach cau heb gromfach agor"
 
-#: src/theme.c:2078
+#: src/theme.c:2072
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Roedd gan y mynegiant cyfesurun gysonyn neu newidyn anhysbys \"%s\""
 
-#: src/theme.c:2135
+#: src/theme.c:2129
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "Roedd gan y mynegiant cyfesurun cromfach agor heb gromfach cau"
 
-#: src/theme.c:2146
+#: src/theme.c:2140
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr ""
 "Ymddengys nad oes gan y mynegiant cyfesurun unrhyw weithredyddion neu "
 "operandau"
 
-#: src/theme.c:2390 src/theme.c:2412 src/theme.c:2433
+#: src/theme.c:2384 src/theme.c:2406 src/theme.c:2427
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Roedd y thema yn cynnwys mynegiant \"%s\" a achosodd gwall: %s\n"
 
-#: src/theme.c:3919
+#: src/theme.c:3913
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3098,7 +3105,7 @@ msgstr ""
 "Rhaid penodi <button function=\"%s\" state=\"%s\" draw_ops=\"rhywbeth\"/> ar "
 "gyfer yr arddull ffrâm hwn"
 
-#: src/theme.c:4369 src/theme.c:4401
+#: src/theme.c:4363 src/theme.c:4395
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
@@ -3106,18 +3113,18 @@ msgstr ""
 "Mae yna <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"rhywbwth\"/> "
 "ar goll"
 
-#: src/theme.c:4452
+#: src/theme.c:4446
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Methu llwytho'r thema \"%s\": %s\n"
 
-#: src/theme.c:4598 src/theme.c:4605 src/theme.c:4612 src/theme.c:4619
-#: src/theme.c:4626
+#: src/theme.c:4592 src/theme.c:4599 src/theme.c:4606 src/theme.c:4613
+#: src/theme.c:4620
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Dim <%s> wedi ei osod ar gyfer y thema \"%s\""
 
-#: src/theme.c:4636
+#: src/theme.c:4630
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3126,7 +3133,7 @@ msgstr ""
 "Dim arddull ffrâm wedi ei osod ar gyfer y math ffenest \"%s\" yn y thema \"%s"
 "\", ychwanegwch elfen <window type=\"%s\" style_set\"beth bynnag\"/>"
 
-#: src/theme.c:4658
+#: src/theme.c:4652
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3135,7 +3142,7 @@ msgstr ""
 "rhaid penodi <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"rhywbeth\"> "
 "ar gyfer y thema hwn"
 
-#: src/theme.c:5047 src/theme.c:5109
+#: src/theme.c:5041 src/theme.c:5103
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -3143,7 +3150,7 @@ msgstr ""
 "Mae'n rhaid i gysonion a ddiffiniwyd gan y defnyddiwr gychwyn efo "
 "priflythyren; nid yw \"%s\""
 
-#: src/theme.c:5055 src/theme.c:5117
+#: src/theme.c:5049 src/theme.c:5111
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Diffiniwyd y cysonyn \"%s\" eisioes"
@@ -3185,7 +3192,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Gosododd rhaglen _NET_WM_PID drŵg %ld\n"
 
 #. first time through
-#: src/window.c:5197
+#: src/window.c:5205
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3201,7 +3208,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: src/window.c:5868
+#: src/window.c:5876
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3238,6 +3245,16 @@ msgid ""
 msgstr ""
 "Roedd y priodwedd %s ar y ffenest 0x%lx yn cynnwys UTF-8 annilys ar gyfer "
 "eitem %d yn y rhestr\n"
+
+#~ msgid ""
+#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
+#~ "display=DISPLAY] [--replace] [--version]\n"
+#~ msgstr ""
+#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=ENWFFEIL] [--"
+#~ "display=DANGOSYDD] [--replace] [--version]\n"
+
+#~ msgid "No \"%s\" attribute on element <%s>"
+#~ msgstr "Dim priodwedd \"%s\" gan elfen <%s>"
 
 #~ msgid "Put on _All Workspaces"
 #~ msgstr "Rhoi ar _Pob Gweithfan"
