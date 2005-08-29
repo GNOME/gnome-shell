@@ -556,7 +556,7 @@ msgstr ""
 "Anwendungen weitergereicht. Die Existenz dieser Einstellung ist etwas "
 "fragwürdig, jedoch besser als all die spezifischen Details der anwendungs- "
 "und fensterorientierten Modi einzeln vorzuhalten, so zum Beispiel ob Klicks "
-"durchgereicht werden. Desweiteren ist der anwendungsorientierte Modus "
+"durchgereicht werden. Des Weiteren ist der anwendungsorientierte Modus "
 "momentan in weiten Teilen nicht implementiert."
 
 #: src/metacity.schemas.in.h:21
