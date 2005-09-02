@@ -853,6 +853,10 @@ meta_window_place (MetaWindow        *window,
           goto done;
         }
     }
+  
+  meta_screen_get_natural_xinerama_list (window->screen,
+					 &xineramas_list,
+					 &n_xineramas);
 
   /* FIXME UTILITY with transient set should be stacked up
    * on the sides of the parent window or something.
@@ -916,10 +920,6 @@ meta_window_place (MetaWindow        *window,
   /* "Origin" placement algorithm */
   x = xi->x_origin;
   y = xi->y_origin;
-
-  meta_screen_get_natural_xinerama_list (window->screen,
-					 &xineramas_list,
-					 &n_xineramas);
 
   if (find_first_fit (window, fgeom, windows,
                       xineramas_list, n_xineramas,

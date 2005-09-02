@@ -1,3 +1,10 @@
+2005-09-02  Brent Smith  <gnome@nextreality.net>
+
+	* src/place.c: (meta_window_place): Moved the call to
+	meta_screen_get_natural_xinerama_list to earlier in
+	function so that xineramas_list is allocated before
+	find_first_fit is called.  Fixes #315000
+
 2005-08-22  Elijah Newren  <newren@gmail.com>
 
 	* configure.in: post-release version bump to 2.11.5
