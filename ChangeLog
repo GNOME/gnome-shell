@@ -1,3 +1,8 @@
+2005-09-03  Elijah Newren  <newren@gmail.com>
+
+	* HACKING: Add tips on how to more easily get the ids of windows,
+	and how to shorten xprop output.
+
 2005-09-02  Brent Smith  <gnome@nextreality.net>
 
 	* src/place.c: (meta_window_place): Moved the call to

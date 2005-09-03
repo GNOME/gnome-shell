@@ -69,16 +69,22 @@ Relevant standards and X properties
     xprop
   in a terminal and click on one of the windows on your screen.  That gives
   you the x properties for that window.  Look through them and get a basic
-  idea of what's there for kicks.  Next, try running
+  idea of what's there for kicks.  Note that you can get rid of some of the
+  verboseness by grepping out the _NET_WM_ICON stuff, i.e.
+    xprop | grep -v _NET_WM_ICON
+  Next, try running
     xprop -root
   in a terminal.  There's all the properties of the root window (which you
-  can think of as the "main" window).  You can also manually specify
-  individual windows that you want the properties of with
+  can think of as the "main" Xserver window).  You can also manually
+  specify individual windows that you want the properties of with
     xprop -id <id>
-  if you know the id of the window in question (you can get this from the
-  _NET_CLIENT_STACKING property of the root window).  Finally, it can also
-  be useful to add "-spy" (without the quotes) to the xprop command to get
-  it to continually monitor that window and report any changes to you.
+  if you know the id of the window in question.  You can get the id of a
+  given window by either running xwininfo, e.g.
+    xwininfo | grep "Window id" | cut -f 4 -d ' '
+  or by looking at the _NET_CLIENT_STACKING property of the root
+  window.  Finally, it can also be useful to add "-spy" (without the
+  quotes) to the xprop command to get it to continually monitor that
+  window and report any changes to you.
 
 Debugging information
   Trying to run a window manager under a typical debugger, such as gdb,
