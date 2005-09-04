@@ -1,3 +1,7 @@
+2005-09-04  Danilo Šegan  <danilo@gnome.org>
+
+	* configure.in: Added Armenian (hy) to ALL_LINGUAS.
+
 2005-09-03  Elijah Newren  <newren@gmail.com>
 
 	* HACKING: Add tips on how to more easily get the ids of windows,
