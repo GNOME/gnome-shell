@@ -5,10 +5,10 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity GNOME 2.10\n"
+"Project-Id-Version: metacity GNOME HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-07-23 06:42+0000\n"
-"PO-Revision-Date: 2005-07-23 20:48+0930\n"
+"PO-Revision-Date: 2005-09-16 17:14+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -217,7 +217,7 @@ msgstr "Đổi _cỡ"
 #. separator
 #: ../src/menu.c:64
 msgid "_Close"
-msgstr "Đón_g"
+msgstr "_Đóng"
 
 #. separator
 #: ../src/menu.c:66
@@ -537,10 +537,10 @@ msgid ""
 msgstr ""
 "Nếu bật thì trình metacity sẽ cho người dùng xem phản hồi ít hơn và cảm nhận "
 "«thao tác trực tiếp» ít hơn, bằng cách dùng đường viền, tránh hoạt ảnh, hoặc "
-"phương tiện khác. Phần lớn người dùng sẽ thấy biết tính hữu dụng đã giảm "
+"vật chứa khác. Phần lớn người dùng sẽ thấy biết tính hữu dụng đã giảm "
 "xuống, nhưng mà có lẽ tùy chọn này sẽ cho phép ứng dụng cũ hơn và trình phục "
 "vụ thiết bị cuối hoạt động, lúc ấy nếu không có tùy chọn này thì là không "
-"thực tế. Tuy nhiên, tính năng đường viền bị tắt khi khả năng truy cập được "
+"thực tế. Tuy nhiên, tính năng đường viền đã tắt khi khả năng truy cập được "
 "bật, để tránh phá màn hình nền cách lạ."
 
 #: ../src/metacity.schemas.in.h:20
@@ -1980,7 +1980,7 @@ msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
-"Khả năng chỉnh sửa cho các ứng dụng không theo chuẩn đã bị tắt. Vài ứng dụng "
+"Khả năng chỉnh sửa cho các ứng dụng không theo chuẩn đã đã tắt. Vài ứng dụng "
 "có thể sẽ xử sự không đúng.\n"
 
 #: ../src/prefs.c:1455
@@ -2038,7 +2038,7 @@ msgstr ""
 #: ../src/screen.c:506
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "Màn hình %d trên bộ trình bày « %s » đã có bộ quản lý cửa sổ rồi.\n"
+msgstr "Màn hình %d trên bộ trình bày « %s » đã có bộ quản lý cửa sổ.\n"
 
 #: ../src/screen.c:716
 #, c-format
@@ -2077,7 +2077,7 @@ msgstr "Lỗi phân tích tập tin phiên làm việc đã lưu: %s\n"
 
 #: ../src/session.c:1217
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr "Thấy thuộc tính <metacity_session>, nhưng đã có session ID rồi."
+msgstr "Thấy thuộc tính <metacity_session>, nhưng đã có session ID."
 
 #: ../src/session.c:1230
 #, c-format
@@ -2511,7 +2511,7 @@ msgstr "Không có thuộc tính «focus» (tiêu điểm) trong phần tử <%s
 #: ../src/theme-parser.c:3392
 #, c-format
 msgid "No \"style\" attribute on <%s> element"
-msgstr "Không có thuộc tính «style» (kiểu dạng) trong phần tử <%s>."
+msgstr "Không có thuộc tính «style» (kiểu dáng) trong phần tử <%s>."
 
 #: ../src/theme-parser.c:3401
 #, c-format
@@ -2526,7 +2526,7 @@ msgstr "« %s » không phải là giá trị trạng thái hợp lệ."
 #: ../src/theme-parser.c:3420
 #, c-format
 msgid "A style called \"%s\" has not been defined"
-msgstr "Chưa định nghĩa kiểu dạng « %s »."
+msgstr "Chưa định nghĩa kiểu dáng « %s »."
 
 #: ../src/theme-parser.c:3430
 #, c-format
@@ -3076,7 +3076,7 @@ msgid ""
 "specified for this frame style"
 msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"gì đó\"/> phải xác định cho "
-"kiểu dạng khung này."
+"kiểu dáng khung này."
 
 #: ../src/theme.c:4363 ../src/theme.c:4395
 #, c-format
@@ -3122,7 +3122,7 @@ msgstr "Hằng tự định nghĩa phải bắt đầu bằng ký tự hoa; « %
 #: ../src/theme.c:5049 ../src/theme.c:5111
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr "Hằng « %s » đã được định nghĩa rồi."
+msgstr "Hằng « %s » đã được định nghĩa."
 
 #: ../src/util.c:93
 #, c-format
@@ -3184,8 +3184,7 @@ msgid ""
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
 "Cửa sổ « %s » gọi ý «MWM» nói rằng nó không thể bị thay đổi kích thước, nhưng "
-"đặt kích thước tối thiểu «%d x %d» và tối đa «%d x %d»; điều này có vẻ không "
-"hợp lý lắm.\n"
+"đặt kích thước tối thiểu «%d x %d» và tối đa «%d x %d»; điều này có vẻ cũng hơi hợp lý.\n"
 
 #: ../src/xprops.c:153
 #, c-format
