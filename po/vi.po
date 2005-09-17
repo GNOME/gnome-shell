@@ -2261,7 +2261,7 @@ msgstr "Chưa định nghĩa <draw_ops> với tên « %s »."
 #: ../src/theme-parser.c:3591 ../src/theme-parser.c:3629
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
-msgstr "Kông cho phép phần tử <%s> dưới <%s>."
+msgstr "Không cho phép phần tử <%s> dưới <%s>."
 
 #: ../src/theme-parser.c:1282 ../src/theme-parser.c:1369
 #: ../src/theme-parser.c:1439
