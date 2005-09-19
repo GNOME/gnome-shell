@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-20 23:28+0200\n"
+"POT-Creation-Date: 2005-09-19 12:30+0200\n"
 "PO-Revision-Date: 2005-07-20 23:36+0200\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -111,17 +111,17 @@ msgid ""
 msgstr ""
 "Iný program už používa kláves %s s modifikátormi %x ako klávesovú skratku.\n"
 
-#: ../src/keybindings.c:2535
+#: ../src/keybindings.c:2620
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "Chyba pri spustení dialógu metacity pre zobrazenie chyby príkazu: %s\n"
 
-#: ../src/keybindings.c:2640
+#: ../src/keybindings.c:2725
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Nedefinovaný príkaz %d.\n"
 
-#: ../src/keybindings.c:3485
+#: ../src/keybindings.c:3570
 msgid "No terminal command has been defined.\n"
 msgstr "Nebol definovaný terminálový príkaz.\n"
 
@@ -361,19 +361,19 @@ msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr "Vynútené ukončenie tejto aplikácie spôsobí stratu neuložených zmien."
 
-#: ../src/metacity-dialog.c:128
+#: ../src/metacity-dialog.c:129
 msgid "_Force Quit"
 msgstr "_Vynútiť ukončenie"
 
-#: ../src/metacity-dialog.c:225
+#: ../src/metacity-dialog.c:226
 msgid "Title"
 msgstr "Titulok"
 
-#: ../src/metacity-dialog.c:237
+#: ../src/metacity-dialog.c:238
 msgid "Class"
 msgstr "Trieda"
 
-#: ../src/metacity-dialog.c:263
+#: ../src/metacity-dialog.c:264
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -381,7 +381,7 @@ msgstr ""
 "Tieto okná nepodporujú \"uložiť aktuálne nastavenie\n"
 " a pri budúcom prihlásení ich budete musieť znovu spustiť ručne."
 
-#: ../src/metacity-dialog.c:328
+#: ../src/metacity-dialog.c:330
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -521,12 +521,12 @@ msgid ""
 "otherwise be impractical. However, the wireframe feature is disabled when "
 "accessibility is on to avoid weird desktop breakages."
 msgstr ""
-"Ak je true, metacity bude poskytovať používateľovi menej spätnej väzby a menší "
-"pocit \"priameho ovládania\" pomocou obrysov, vynechaním animácií, alebo inak. "
-"Toto je výrazné zníženie použiteľnosti pre veľa používateľov, ale môže umožniť "
-"pracovať starým aplikáciam a terminálovým serverom, ktoré by inak boli prakticky "
-"nepoužiteľné. Avšak obrysy nebudú povolené pri zapnutej použiteľnosti, aby sa "
-"zabránilo čudným poškodeniam pracovnej plochy."
+"Ak je true, metacity bude poskytovať používateľovi menej spätnej väzby a "
+"menší pocit \"priameho ovládania\" pomocou obrysov, vynechaním animácií, "
+"alebo inak. Toto je výrazné zníženie použiteľnosti pre veľa používateľov, "
+"ale môže umožniť pracovať starým aplikáciam a terminálovým serverom, ktoré "
+"by inak boli prakticky nepoužiteľné. Avšak obrysy nebudú povolené pri "
+"zapnutej použiteľnosti, aby sa zabránilo čudným poškodeniam pracovnej plochy."
 
 #: ../src/metacity.schemas.in.h:20
 msgid ""
@@ -2170,16 +2170,12 @@ msgstr ""
 "x-large,xx-large)\n"
 
 #: ../src/theme-parser.c:729 ../src/theme-parser.c:737
-#: ../src/theme-parser.c:2936 ../src/theme-parser.c:3025
-#: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
-#, c-format
-msgid "No \"%s\" attribute on element <%s>"
-msgstr "Chýbajúci atribút \"%s\" v elemente %s"
-
 #: ../src/theme-parser.c:807 ../src/theme-parser.c:897
 #: ../src/theme-parser.c:935 ../src/theme-parser.c:1012
 #: ../src/theme-parser.c:1062 ../src/theme-parser.c:1070
 #: ../src/theme-parser.c:1126 ../src/theme-parser.c:1134
+#: ../src/theme-parser.c:2936 ../src/theme-parser.c:3025
+#: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
 msgstr "Chýbajúci atribút \"%s\" v elemente %s"
@@ -3140,7 +3136,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikácia nastavila neplatné _NET_WM_PID %ld\n"
 
 #. first time through
-#: ../src/window.c:5197
+#: ../src/window.c:5205
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3156,7 +3152,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5868
+#: ../src/window.c:5876
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"

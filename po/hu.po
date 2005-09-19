@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.hu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-14 06:49+0000\n"
+"POT-Creation-Date: 2005-09-19 12:30+0200\n"
 "PO-Revision-Date: 2005-08-14 13:42+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <gnome@gnome.hu>\n"
@@ -27,7 +27,8 @@ msgstr "Használat: %s\n"
 
 #: ../src/tools/metacity-message.c:176 ../src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "A Metacity ablakkezelőt a bőbeszédű mód támogatása nélkül fordították\n"
+msgstr ""
+"A Metacity ablakkezelőt a bőbeszédű mód támogatása nélkül fordították\n"
 
 #: ../src/delete.c:63 ../src/delete.c:90 ../src/metacity-dialog.c:70
 #: ../src/theme-parser.c:467
@@ -39,12 +40,14 @@ msgstr "\"%s\" nem értelmezhető egész számként"
 #: ../src/theme-parser.c:476 ../src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Nem lehetett \"%s\" zárókaraktereket értelmezni a(z) \"%s\" karakterláncban"
+msgstr ""
+"Nem lehetett \"%s\" zárókaraktereket értelmezni a(z) \"%s\" karakterláncban"
 
 #: ../src/delete.c:128
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Nem sikerült elemezni a(z) \"%s\" üzenetet a párbeszédablak folyamatból\n"
+msgstr ""
+"Nem sikerült elemezni a(z) \"%s\" üzenetet a párbeszédablak folyamatból\n"
 
 #: ../src/delete.c:263
 #, c-format
@@ -55,7 +58,8 @@ msgstr ""
 
 #: ../src/delete.c:344
 #, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 "Nem sikerült elindítani a program kilövéséről kérdező metacity "
 "párbeszédablakot: %s\n"
@@ -178,7 +182,8 @@ msgstr "Témakönyvtár beolvasása sikertelen: %s\n"
 
 #: ../src/main.c:456
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 "Nem sikerült találni egy témát sem! Bizonyosodjon meg róla hogy %s létezik "
 "és tartalmazza a szokásos témákat."
@@ -364,8 +369,10 @@ msgid "The window \"%s\" is not responding."
 msgstr "A(z) \"%s\" ablak nem válaszol."
 
 #: ../src/metacity-dialog.c:118
-msgid "Forcing this application to quit will cause you to lose any unsaved changes."
-msgstr "Ha erőszakkal bezárja az alkalmazást, minden mentetlen változtatás elvész."
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
+msgstr ""
+"Ha erőszakkal bezárja az alkalmazást, minden mentetlen változtatás elvész."
 
 #: ../src/metacity-dialog.c:129
 msgid "_Force Quit"
@@ -592,7 +599,8 @@ msgstr "Ablak minimalizálása"
 
 #: ../src/metacity.schemas.in.h:27
 msgid "Modifier to use for modified window click actions"
-msgstr "Módosító, amellyel a módosított ablakra kattintás műveletek használhatók"
+msgstr ""
+"Módosító, amellyel a módosított ablakra kattintás műveletek használhatók"
 
 #: ../src/metacity.schemas.in.h:28
 msgid "Move backward between panels and the desktop immediately"
@@ -2075,7 +2083,8 @@ msgstr ""
 #: ../src/prefs.c:1455
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr "%d, ami a(z) %s GConf kulcsban van tárolva, a 0 - %d tartományon kívül van\n"
+msgstr ""
+"%d, ami a(z) %s GConf kulcsban van tárolva, a 0 - %d tartományon kívül van\n"
 
 #: ../src/prefs.c:1589
 #, c-format
@@ -2094,7 +2103,8 @@ msgstr ""
 #: ../src/prefs.c:2187
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "Hiba a(z) %d. munkaterület nevének beállításánál a következőre: \"%s\": %s\n"
+msgstr ""
+"Hiba a(z) %d. munkaterület nevének beállításánál a következőre: \"%s\": %s\n"
 
 #: ../src/resizepopup.c:126
 #, c-format
@@ -2118,7 +2128,8 @@ msgstr ""
 
 #: ../src/screen.c:448
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Nem sikerült beolvasni az ablakkezelő kiválasztását a(z) %d képernyőn a(z) "
 "\"%s\" megjelenítőn\n"
@@ -2241,7 +2252,8 @@ msgstr "Nem sikerült feldolgozni a(z) \"%s\"-t lebegőpontos számként"
 #: ../src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "A logikai értékek \"true\" vagy \"false\" kell legyenek, nem pedig \"%s\""
+msgstr ""
+"A logikai értékek \"true\" vagy \"false\" kell legyenek, nem pedig \"%s\""
 
 #: ../src/theme-parser.c:572
 #, c-format
@@ -2357,7 +2369,8 @@ msgstr "A(z) <%s> elemnek nincs \"value\" attribútuma"
 
 #: ../src/theme-parser.c:1320 ../src/theme-parser.c:1334
 #: ../src/theme-parser.c:1393
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid ""
+"Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 "Nem lehet egyszerre megadni a button_width/button_height paramétereket és a "
 "gombok méretarányát"
@@ -2581,7 +2594,8 @@ msgstr "\"%s\" állapot ismeretlen a gombhoz"
 #: ../src/theme-parser.c:3306
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
-msgstr "A keretstílusnak már van gombja a(z) \"%s\" funkcióra a(z) \"%s\" állapotban"
+msgstr ""
+"A keretstílusnak már van gombja a(z) \"%s\" funkcióra a(z) \"%s\" állapotban"
 
 #: ../src/theme-parser.c:3376
 #, c-format
@@ -2630,7 +2644,8 @@ msgstr ""
 #: ../src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr "%s állapothoz, %s átméretezéshez és %s fókuszhoz már meg van határozva stílus"
+msgstr ""
+"%s állapothoz, %s átméretezéshez és %s fókuszhoz már meg van határozva stílus"
 
 #: ../src/theme-parser.c:3475 ../src/theme-parser.c:3486
 #: ../src/theme-parser.c:3497
@@ -2670,8 +2685,10 @@ msgstr "A téma legkülső eleme <metacity_theme> kell legyen, nem pedig <%s>"
 
 #: ../src/theme-parser.c:3679
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
-msgstr "A(z) <%s> elem nem megengedett egy name/author/date/description elemen belül"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
+msgstr ""
+"A(z) <%s> elem nem megengedett egy name/author/date/description elemen belül"
 
 #: ../src/theme-parser.c:3684
 #, c-format
@@ -2680,8 +2697,10 @@ msgstr "A(z) <%s> elem nem megengedett egy <constant> elemen belül"
 
 #: ../src/theme-parser.c:3696
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr "<%s> elem nem megengedett egy distance/border/aspect_ratio elemen belül"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr ""
+"<%s> elem nem megengedett egy distance/border/aspect_ratio elemen belül"
 
 #: ../src/theme-parser.c:3718
 #, c-format
@@ -2907,7 +2926,8 @@ msgstr "a pozíció kifejezés teszt IGAZ értéket adott vissza, de hiba tört�
 
 #: ../src/theme-viewer.c:1229
 msgid "position expression test returned FALSE but didn't set error"
-msgstr "a pozíció kifejezés teszt HAMIS értéket adott vissza, de nem történt hiba"
+msgstr ""
+"a pozíció kifejezés teszt HAMIS értéket adott vissza, de nem történt hiba"
 
 #: ../src/theme-viewer.c:1233
 msgid "Error was expected but none given"
@@ -3029,13 +3049,16 @@ msgstr "A(z) \"%s\" alfa érték a kevert színben nem 0.0 és 1.0 között van"
 
 #: ../src/theme.c:1105
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr "Az árnyék formátuma: \"shade/base_color/factor\", \"%s\" nem felel meg ennek"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr ""
+"Az árnyék formátuma: \"shade/base_color/factor\", \"%s\" nem felel meg ennek"
 
 #: ../src/theme.c:1116
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "Nem sikerült a(z) \"%s\" árnyéktényezőt feldolgozni az árnyékolt színben"
+msgstr ""
+"Nem sikerült a(z) \"%s\" árnyéktényezőt feldolgozni az árnyékolt színben"
 
 #: ../src/theme.c:1126
 #, c-format
@@ -3086,12 +3109,15 @@ msgid "Coordinate expression results in division by zero"
 msgstr "A koordinátakifejezés nullával való osztást okozott."
 
 #: ../src/theme.c:1777
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr "A koordinátakifejezés mod operátort próbált használni lebegőpontos számon"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
+msgstr ""
+"A koordinátakifejezés mod operátort próbált használni lebegőpontos számon"
 
 #: ../src/theme.c:1834
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "A koordinátakifejezésben egy operandus helyén \"%s\" operátor volt"
 
 #: ../src/theme.c:1843
@@ -3134,7 +3160,8 @@ msgstr "A koordinátakifejezésben kezdő zárójel szerepelt záró nélkül"
 
 #: ../src/theme.c:2140
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr "A koordinátakifejezésben úgy tűnik nincsenek sem operátorok, sem operandusok"
+msgstr ""
+"A koordinátakifejezésben úgy tűnik nincsenek sem operátorok, sem operandusok"
 
 #: ../src/theme.c:2384 ../src/theme.c:2406 ../src/theme.c:2427
 #, c-format
@@ -3152,8 +3179,10 @@ msgstr ""
 
 #: ../src/theme.c:4363 ../src/theme.c:4395
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "Hiányzó <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"bármi\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"Hiányzó <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"bármi\"/>"
 
 #: ../src/theme.c:4446
 #, c-format
@@ -3186,7 +3215,8 @@ msgstr ""
 
 #: ../src/theme.c:5041 ../src/theme.c:5103
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "A felhasználó által meghatározott konstansoknak nagybetűvel kell kezdődniük, "
 "a(z) \"%s\" nem ilyen"
@@ -3277,12 +3307,13 @@ msgstr ""
 #: ../src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "A(z) %s tulajdonság a 0x%lx ablakon érvénytelen UTF-8 adatot tartalmazott\n"
+msgstr ""
+"A(z) %s tulajdonság a 0x%lx ablakon érvénytelen UTF-8 adatot tartalmazott\n"
 
 #: ../src/xprops.c:482
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "A(z) %s tulajdonság a 0x%lx ablakon érvénytelen UTF-8 adatot tartalmazott a "
 "lista %d. elemében\n"
-

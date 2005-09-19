@@ -8,13 +8,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-01 22:39+0000\n"
+"POT-Creation-Date: 2005-09-19 12:30+0200\n"
 "PO-Revision-Date: 2005-08-02 20:35+0800\n"
 "Last-Translator: Woodman Tuen <wmtuen@gmail.com>\n"
 "Language-Team: Chinese/Traditional <community@linuxhall.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: ../src/tools/metacity-message.c:150
 #, c-format
@@ -103,20 +103,19 @@ msgstr "視窗還原最大化"
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr ""
-"其它程式已經使用了按鍵 %s 加上特殊按鍵 %x 作為按鍵組合\n"
+msgstr "其它程式已經使用了按鍵 %s 加上特殊按鍵 %x 作為按鍵組合\n"
 
-#: ../src/keybindings.c:2535
+#: ../src/keybindings.c:2620
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "當嘗試啟動 metacity-dialog 來顯示某指令的錯誤訊息時出現錯誤：%s\n"
 
-#: ../src/keybindings.c:2640
+#: ../src/keybindings.c:2725
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "並未定義任何指令 %d。\n"
 
-#: ../src/keybindings.c:3485
+#: ../src/keybindings.c:3570
 msgid "No terminal command has been defined.\n"
 msgstr "沒有定義任何終端機指令。\n"
 
@@ -353,8 +352,7 @@ msgstr "視窗“%s”沒有回應。"
 #: ../src/metacity-dialog.c:118
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
-msgstr ""
-"強制結束本程式會失去所有未儲存的資料。"
+msgstr "強制結束本程式會失去所有未儲存的資料。"
 
 #: ../src/metacity-dialog.c:129
 msgid "_Force Quit"
@@ -372,8 +370,7 @@ msgstr "分類"
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
-msgstr ""
-"這些視窗不支援「儲存目前的設定」，必須在下次登入後自行啟動。"
+msgstr "這些視窗不支援「儲存目前的設定」，必須在下次登入後自行啟動。"
 
 #: ../src/metacity-dialog.c:330
 #, c-format
@@ -1877,8 +1874,7 @@ msgstr "將工作區數目設定為 %d 個時出現錯誤：%s\n"
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
-msgstr ""
-"組態資料庫中的“%s”不是按鍵組合“%s”的有效設定值\n"
+msgstr "組態資料庫中的“%s”不是按鍵組合“%s”的有效設定值\n"
 
 #: ../src/prefs.c:2187
 #, c-format
@@ -2049,16 +2045,12 @@ msgstr ""
 "x-large、xx-large 其中一個)\n"
 
 #: ../src/theme-parser.c:729 ../src/theme-parser.c:737
-#: ../src/theme-parser.c:2936 ../src/theme-parser.c:3025
-#: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
-#, c-format
-msgid "No \"%s\" attribute on element <%s>"
-msgstr "沒有任何“%s”屬性出現在 <%s> 元素內"
-
 #: ../src/theme-parser.c:807 ../src/theme-parser.c:897
 #: ../src/theme-parser.c:935 ../src/theme-parser.c:1012
 #: ../src/theme-parser.c:1062 ../src/theme-parser.c:1070
 #: ../src/theme-parser.c:1126 ../src/theme-parser.c:1134
+#: ../src/theme-parser.c:2936 ../src/theme-parser.c:3025
+#: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
 msgstr "沒有任何“%s”屬性出現在 <%s> 元素內"
@@ -3058,34 +3050,3 @@ msgstr "視窗 0x%2$lx 的屬性 %1$s 中含有無效的 UTF-8 資料\n"
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "視窗 0x%2$lx 的屬性清單 %1$s 的第 %3$d 個項目含有無效的 UTF-8 資料\n"
-
-#~ msgid ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-#~ "display=DISPLAY] [--replace] [--version]\n"
-#~ msgstr ""
-#~ "metacity [--disable-sm] [--sm-client-id=識別碼] [--sm-save-file=檔案名稱] "
-#~ "[--display=DISPLAY] [--replace] [--version]\n"
-
-#~ msgid "Put on _All Workspaces"
-#~ msgstr "放在所有工作區中(_A)"
-
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "選擇如何令視窗獲取輸入焦點"
-
-#~ msgid "Window Focus"
-#~ msgstr "視窗焦點"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "按滑鼠按鈕方可獲得輸入焦點(_K)"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "焦點運作方式："
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "視窗焦點偏好設定"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "輸入焦點跟隨鼠標移動(_P)"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "當視窗獲取輸入焦點後會自動覆蓋其它視窗(_R)"

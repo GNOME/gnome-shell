@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-03 21:07+0200\n"
+"POT-Creation-Date: 2005-09-19 12:30+0200\n"
 "PO-Revision-Date: 2005-09-03 21:08+0200\n"
 "Last-Translator: Данило Шеган <danilo@prevod.org>\n"
 "Language-Team: Serbian (sr) <gnom@prevod.org>\n"
@@ -3234,62 +3234,3 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Особина %s прозора 0x%lx садржи неисправан UTF-8 за ставку %d у листи\n"
-
-#~ msgid ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-#~ "display=DISPLAY] [--replace] [--version]\n"
-#~ msgstr ""
-#~ "metacity [--sm-disable] [--sm-client-id=ИД] [--sm-save-file=ИМЕ-ДАТОТЕКЕ] "
-#~ "[--display=ЕКРАН] [--replace] [--version]\n"
-
-#~ msgid "No \"%s\" attribute on element <%s>"
-#~ msgstr "Не постоји атрибут „%s“ у елементу <%s>"
-
-#~ msgid "Put on _All Workspaces"
-#~ msgstr "Постави на све радне површине"
-
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "Изаберизе како желите да дате фокус прозору"
-
-#~ msgid "Window Focus"
-#~ msgstr "Фокус прозора"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "Кликни да даш фокус"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "Понашање фокуса:"
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "Подешавања фокуса прозора"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "Покажи да даш фокус"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "Подигни прозор по фокусирању"
-
-#~ msgid ""
-#~ "Failed to a open connection to a session manager, so window positions "
-#~ "will not be saved: %s\n"
-#~ msgstr ""
-#~ "Нисам успео да отворим конекцију ка менаџеру сесије, тако да положаји "
-#~ "прозора неће бити сачувани: %s\n"
-
-#~ msgid "Only on %s"
-#~ msgstr "Само на %s"
-
-#~ msgid "Move to %s"
-#~ msgstr "Премести на %s"
-
-#~ msgid ""
-#~ "The window \"%s\" is not responding.\n"
-#~ "Force this application to exit?\n"
-#~ "(Any open documents will be lost.)"
-#~ msgstr ""
-#~ "Прозор \"%s\" не одговара на упите.\n"
-#~ "Да ли да присилим програм да се затвори?\n"
-#~ "(Сви отворени документи биће изгубљени.)"
-
-#~ msgid "Kill application"
-#~ msgstr "Убиј програм"

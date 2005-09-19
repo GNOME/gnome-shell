@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-30 23:33+0300\n"
+"POT-Creation-Date: 2005-09-19 12:30+0200\n"
 "PO-Revision-Date: 2005-08-30 23:35+0300\n"
 "Last-Translator: Žygimantas Beručka <uid0@akl.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -3285,37 +3285,3 @@ msgid ""
 msgstr ""
 "Požymis %s lange 0x%lx naudoja nepriimtinus UTF-8 simbolius sąrašo punkte %"
 "d\n"
-
-#~ msgid ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-#~ "display=DISPLAY] [--replace] [--version]\n"
-#~ msgstr ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=BYLOS VARDAS] "
-#~ "[--display=EKRANAS] [--replace] [--version]\n"
-
-#~ msgid "No \"%s\" attribute on element <%s>"
-#~ msgstr "Elemente <%2$s> trūksta požymio \"%1$s\""
-
-#~ msgid "Put on _All Workspaces"
-#~ msgstr "P_atalpinti visuose darbo laukuose"
-
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "Pasirinkite kaip aktyvuoti langus"
-
-#~ msgid "Window Focus"
-#~ msgstr "Langų aktyvavimas"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "A_ktyvuoja spragtelėjimas"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "Aktyvavimo elgsena:"
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "Langų aktyvavimo nustatymai"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "Ak_tyvuoja užvedimas"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "Iš_kelti langus aktyvuojant"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-11 17:11+0100\n"
+"POT-Creation-Date: 2005-09-19 12:30+0200\n"
 "PO-Revision-Date: 2005-08-11 17:15+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -3279,44 +3279,3 @@ msgid ""
 msgstr ""
 "Propriedade %s na janela 0x%lx continha UTF-8 inválido para item %d na "
 "lista\n"
-
-#~ msgid ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-#~ "display=DISPLAY] [--replace] [--version]\n"
-#~ msgstr ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=NOMEFICHEIRO] "
-#~ "[--display=ECRA] [--replace] [--version]\n"
-
-#~ msgid "No \"%s\" attribute on element <%s>"
-#~ msgstr "Nenhum atributo \"%s\" no elemento <%s>"
-
-#~ msgid "Put on _All Workspaces"
-#~ msgstr "Colocar em _Todas as Áreas de Trabalho"
-
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "Seleccione como dar foco a uma janela"
-
-#~ msgid "Window Focus"
-#~ msgstr "Foco de Janela"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "_Clicar para dar foco"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "Comportamento de foco:"
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "Preferências de Foco de Janela"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "A_pontar para dar foco"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "_Elevar janela ao dar foco"
-
-#~ msgid ""
-#~ "Failed to a open connection to a session manager, so window positions "
-#~ "will not be saved: %s\n"
-#~ msgstr ""
-#~ "Falha ao abrir uma ligação a um gestor de sessões pelo que as posições "
-#~ "das janelas não serão gravadas: %s\n"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-30 16:51+0200\n"
+"POT-Creation-Date: 2005-09-19 12:30+0200\n"
 "PO-Revision-Date: 2005-08-30 16:56+0200\n"
 "Last-Translator: Hendrik Richter <hendi@gnome-de.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -3330,37 +3330,3 @@ msgid ""
 msgstr ""
 "Eigenschaft %s auf Fenster 0x%lx enthielt ungültiges UTF-8 für Objekt %d in "
 "der Liste\n"
-
-#~ msgid ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-#~ "display=DISPLAY] [--replace] [--version]\n"
-#~ msgstr ""
-#~ "metacity [--sm-disable] [--sm-client-id=KENNUNG] [--sm-save-"
-#~ "file=DATEINAME] [--display=ANZEIGE] [--replace] [--version]\n"
-
-#~ msgid "No \"%s\" attribute on element <%s>"
-#~ msgstr "Kein »%s«-Attribut in Element <%s>"
-
-#~ msgid "Put on _All Workspaces"
-#~ msgstr "Auf _alle Arbeitsflächen legen"
-
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "Festlegen, wie der Fokus zwischen Fenstern durchgereicht wird"
-
-#~ msgid "Window Focus"
-#~ msgstr "Fensterfokus"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "_Klicken, um den Fokus zu übergeben"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "Fokusverhalten:"
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "Fensterfokus-Einstellungen"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "_Zeigen, um den Fokus zu übergeben"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "Fenster beim Fokussieren _anheben"

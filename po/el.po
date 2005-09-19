@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-13 13:11+0300\n"
+"POT-Creation-Date: 2005-09-19 12:30+0200\n"
 "PO-Revision-Date: 2005-08-13 13:11+0300\n"
 "Last-Translator: Kostas Papadimas <pkst@gnome.org>\n"
 "Language-Team:  <nls@tux.hellug.gr>\n"
@@ -3304,38 +3304,3 @@ msgid ""
 msgstr ""
 "Η ιδιότητα %s στο παράθυρο 0x%lx περιείχε μη έγκυρο UTF-8\n"
 " για το αντικείμενο %d στη λίστα\n"
-
-#~ msgid "No \"%s\" attribute on element <%s>"
-#~ msgstr "Δεν υπάρχει γνώρισμα \"%s\" στο στοιχείο <%s>"
-
-#~ msgid ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-#~ "display=DISPLAY] [--replace] [--version]\n"
-#~ msgstr ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-#~ "display=DISPLAY] [--replace] [--version]\n"
-
-#
-#~ msgid "Put on _All Workspaces"
-#~ msgstr "Τοποθέτηση σε _Όλους τους Χώρους Εργασίας"
-
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "Επιλέξτε τον τρόπο που θα εστιάζετε σε παράθυρα"
-
-#~ msgid "Window Focus"
-#~ msgstr "Εστίαση Παραθύρου"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "Κλί_κ για να εστιάσετε"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "Συμπεριφορά εστίασης:"
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "Προτιμήσεις Εστίασης Παραθύρου"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "_Σημείο για να εστιάσετε"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "_Ανασήκωση παραθύρων κατά την εστίαση"

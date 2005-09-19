@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-28 15:03+0200\n"
+"POT-Creation-Date: 2005-09-19 12:30+0200\n"
 "PO-Revision-Date: 2003-06-30 09:13+0100\n"
 "Last-Translator: Gnome PL Team <translators@gnomepl.org>\n"
 "Language-Team: Polish <translation-team-pl@lists.sourceforge.net>\n"
@@ -114,19 +114,19 @@ msgstr ""
 "Skrótu klawiszowego z klawiszem %s i modyfikatorami %x używa już inny "
 "program\n"
 
-#: ../src/keybindings.c:2535
+#: ../src/keybindings.c:2620
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Przy uruchamianiu metacity-dialog (informującego o błędzie dotyczącym "
 "polecenia) wystąpił błąd: %s\n"
 
-#: ../src/keybindings.c:2640
+#: ../src/keybindings.c:2725
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Nie zdefiniowano polecenia %d.\n"
 
-#: ../src/keybindings.c:3485
+#: ../src/keybindings.c:3570
 msgid "No terminal command has been defined.\n"
 msgstr "Nie zdefiniowano polecenia terminala.\n"
 
@@ -369,19 +369,19 @@ msgid ""
 msgstr ""
 "Wymuszenie zakończenia tej aplikacji spowoduje utratę niezapisanych zmian."
 
-#: ../src/metacity-dialog.c:128
+#: ../src/metacity-dialog.c:129
 msgid "_Force Quit"
 msgstr "_Wymuś zakończenie"
 
-#: ../src/metacity-dialog.c:225
+#: ../src/metacity-dialog.c:226
 msgid "Title"
 msgstr "Tytuł"
 
-#: ../src/metacity-dialog.c:237
+#: ../src/metacity-dialog.c:238
 msgid "Class"
 msgstr "Klasa"
 
-#: ../src/metacity-dialog.c:263
+#: ../src/metacity-dialog.c:264
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -389,7 +389,7 @@ msgstr ""
 "Te okna nie obsługują opcji zapisu aktualnego stanu (\"save current setup"
 "\"), więc przy następnym zalogowaniu będą musiały być uruchomione ręcznie."
 
-#: ../src/metacity-dialog.c:328
+#: ../src/metacity-dialog.c:330
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2288,16 +2288,12 @@ msgstr ""
 "small, small, medium, large, x-large, xx-large)\n"
 
 #: ../src/theme-parser.c:729 ../src/theme-parser.c:737
-#: ../src/theme-parser.c:2936 ../src/theme-parser.c:3025
-#: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
-#, c-format
-msgid "No \"%s\" attribute on element <%s>"
-msgstr "Brak atrybutu \"%s\" wewnątrz elementu <%s>"
-
 #: ../src/theme-parser.c:807 ../src/theme-parser.c:897
 #: ../src/theme-parser.c:935 ../src/theme-parser.c:1012
 #: ../src/theme-parser.c:1062 ../src/theme-parser.c:1070
 #: ../src/theme-parser.c:1126 ../src/theme-parser.c:1134
+#: ../src/theme-parser.c:2936 ../src/theme-parser.c:3025
+#: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
 msgstr "Brak atrybutu \"%s\" wewnątrz elementu <%s>"
@@ -3351,47 +3347,3 @@ msgid ""
 msgstr ""
 "Własność %s odnosząca się do okna 0x%lx zawiera niepoprawną sekwencję UTF-8 "
 "w %d. elemencie listy\n"
-
-#~ msgid ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-#~ "display=DISPLAY] [--replace] [--version]\n"
-#~ msgstr ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=NAZWA_PLIKU] "
-#~ "[--display=EKRAN] [--replace] [--version]\n"
-
-#~ msgid "Put on _All Workspaces"
-#~ msgstr "Na _wszystkich obszarach roboczych"
-
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "Sposób przekazywania skupienia do okien"
-
-#~ msgid "Window Focus"
-#~ msgstr "Skupienie okna"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "Przekazanie skupienia po _kliknięciu"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "Zachowanie skupienia:"
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "Ustawienia zachowania się skupienia okna"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "Przekazanie skupienia po _wskazaniu"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "Wysuwanie _okna po otrzymaniu skupienia"
-
-#~ msgid ""
-#~ "Failed to a open connection to a session manager, so window positions "
-#~ "will not be saved: %s\n"
-#~ msgstr ""
-#~ "Nie można nawiązać połączenia z menedżerem sesji, w związku z czym nie "
-#~ "zostaną zapisane położenia okien: %s\n"
-
-#~ msgid "Only on %s"
-#~ msgstr "Tylko na obszarze %s"
-
-#~ msgid "Move to %s"
-#~ msgstr "Przenieś na obszar %s"

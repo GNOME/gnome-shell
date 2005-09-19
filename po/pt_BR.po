@@ -9,13 +9,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-25 14:42+0000\n"
+"POT-Creation-Date: 2005-09-19 12:30+0200\n"
 "PO-Revision-Date: 2005-07-26 12:08-0300\n"
 "Last-Translator: Afonso Celso Medina <afmedina@uol.com.br>\n"
 "Language-Team: Portuguese/Brazil\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: ../src/tools/metacity-message.c:150
 #, c-format
@@ -36,7 +36,8 @@ msgstr "Impossível analisar \"%s\" como um inteiro"
 #: ../src/theme-parser.c:476 ../src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Os caracteres à direita \"%s\" na string \"%s\" não foram compreendidos"
+msgstr ""
+"Os caracteres à direita \"%s\" na string \"%s\" não foram compreendidos"
 
 #: ../src/delete.c:128
 #, c-format
@@ -111,18 +112,19 @@ msgstr ""
 "Algum outro programa já está usando a chave %s com modificadores %x como uma "
 "vinculação\n"
 
-#: ../src/keybindings.c:2535
+#: ../src/keybindings.c:2620
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
-msgstr "Erro ao abrir um diálogo do Metacity para exibir uma mensagem de erro sobre um "
-"comando: %s\n"
+msgstr ""
+"Erro ao abrir um diálogo do Metacity para exibir uma mensagem de erro sobre "
+"um comando: %s\n"
 
-#: ../src/keybindings.c:2640
+#: ../src/keybindings.c:2725
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Nenhum comando %d foi definido.\n"
 
-#: ../src/keybindings.c:3485
+#: ../src/keybindings.c:3570
 msgid "No terminal command has been defined.\n"
 msgstr "Nenhum comando de terminal foi definido.\n"
 
@@ -175,7 +177,8 @@ msgstr "Falha ao varrer a pasta de temas: %s\n"
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr "Nenhum tema encontrado! Verifique se %s existe e contém os temas comuns."
+msgstr ""
+"Nenhum tema encontrado! Verifique se %s existe e contém os temas comuns."
 
 #: ../src/main.c:518
 #, c-format
@@ -364,19 +367,19 @@ msgstr ""
 "Forçar esta aplicação a sair, causará a perda de todas as alterações não "
 "salvas."
 
-#: ../src/metacity-dialog.c:128
+#: ../src/metacity-dialog.c:129
 msgid "_Force Quit"
 msgstr "_Forçar Sair"
 
-#: ../src/metacity-dialog.c:225
+#: ../src/metacity-dialog.c:226
 msgid "Title"
 msgstr "Título"
 
-#: ../src/metacity-dialog.c:237
+#: ../src/metacity-dialog.c:238
 msgid "Class"
 msgstr "Classe"
 
-#: ../src/metacity-dialog.c:263
+#: ../src/metacity-dialog.c:264
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -385,7 +388,7 @@ msgstr ""
 "\" e precisarão ser reiniciadas manualmente na próxima vez que você efetuar "
 "login."
 
-#: ../src/metacity-dialog.c:328
+#: ../src/metacity-dialog.c:330
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -417,9 +420,9 @@ msgstr ""
 "título das janelas. No entanto, o tamanho da descrição só será usado se a "
 "opção titlebar_font_size estiver definida como 0. Além disso, essa opção "
 "estará desabilitada se a opção titlebar_uses_desktop_font estiver definida "
-"como verdadeira. Por padrão, a opção titlebar_font não está definida, fazendo "
-"com que o Metacity retorne à fonte da área de trabalho mesmo que a opção "
-"titlebar_uses_desktop_font seja falsa."
+"como verdadeira. Por padrão, a opção titlebar_font não está definida, "
+"fazendo com que o Metacity retorne à fonte da área de trabalho mesmo que a "
+"opção titlebar_uses_desktop_font seja falsa."
 
 #: ../src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
@@ -518,8 +521,8 @@ msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
 msgstr ""
-"Se verdadeiro, ignore a opção titlebar_font e use a fonte da "
-"aplicação padrão para os títulos das janelas."
+"Se verdadeiro, ignore a opção titlebar_font e use a fonte da aplicação "
+"padrão para os títulos das janelas."
 
 #: ../src/metacity.schemas.in.h:19
 msgid ""
@@ -536,8 +539,8 @@ msgstr ""
 "uma redução significativa na usabilidade para muitos usuários, mas pode "
 "possibilitar o funcionamento de aplicações legadas e servidores de terminal "
 "quando, de outra forma, isso seria impraticável.  Entretanto, o recurso de "
-"bordas fica desabilitado quando a acessibilidade estiver ligada, para "
-"evitar quebras estranhas da área de trabalho."
+"bordas fica desabilitado quando a acessibilidade estiver ligada, para evitar "
+"quebras estranhas da área de trabalho."
 
 #: ../src/metacity.schemas.in.h:20
 msgid ""
@@ -553,8 +556,8 @@ msgid ""
 msgstr ""
 "Se verdadeiro, o Metacity funcionará em termos de aplicações, em vez de "
 "janelas. O conceito é um pouco abstrato, mas, em geral, uma instalação "
-"baseada em aplicação assemelha-se mais ao Mac do que ao Windows. Quando "
-"você focaliza uma janela no modo baseado em aplicação, todas as janelas da "
+"baseada em aplicação assemelha-se mais ao Mac do que ao Windows. Quando você "
+"focaliza uma janela no modo baseado em aplicação, todas as janelas da "
 "aplicação são elevadas. Além disso, no modo baseado em aplicação, os cliques "
 "no foco não afetam as janelas de outras aplicações. A existência dessa "
 "configuração é de certa forma questionável. Mas é preferível do que ter as "
@@ -593,13 +596,15 @@ msgstr "Modificador a ser usado para ações modificadas de clique em janela"
 
 #: ../src/metacity.schemas.in.h:28
 msgid "Move backward between panels and the desktop immediately"
-msgstr "Mover na direção contrária entre os painéis e a área de trabalho imediatamente"
+msgstr ""
+"Mover na direção contrária entre os painéis e a área de trabalho "
+"imediatamente"
 
 #: ../src/metacity.schemas.in.h:29
 msgid "Move backwards between panels and the desktop with popup"
 msgstr ""
-"Mover na direção contrária entre os painéis e a área de trabalho usando uma janela "
-"popup"
+"Mover na direção contrária entre os painéis e a área de trabalho usando uma "
+"janela popup"
 
 #: ../src/metacity.schemas.in.h:30
 msgid "Move backwards between windows immediately"
@@ -623,7 +628,8 @@ msgstr "Mover entre janelas usando uma janela popup"
 
 #: ../src/metacity.schemas.in.h:35
 msgid "Move focus backwards between windows using popup display"
-msgstr "Mover o foco na direção contrária entre janelas usando uma janela popup"
+msgstr ""
+"Mover o foco na direção contrária entre janelas usando uma janela popup"
 
 #: ../src/metacity.schemas.in.h:36
 msgid "Move window"
@@ -764,11 +770,11 @@ msgstr ""
 "diálogo para que os menus possam funcionar nas aplicações Java quebradas. Há "
 "vários outros exemplos como esse. Essa opção coloca o Metacity no modo de "
 "correção completa, o que poderá fornecer uma UI um pouco mais amigável se "
-"você não precisar executar nenhuma aplicação quebrada. Infelizmente, "
-"as alternativas devem estar habilitadas por padrão; o mundo é cruel. "
-"Algumas das alternativas aplicam-se às limitações nas próprias "
-"especificações; portanto, algumas vezes, não será possível corrigir um erro "
-"no modo sem alternativas sem que uma especificação seja corrigida."
+"você não precisar executar nenhuma aplicação quebrada. Infelizmente, as "
+"alternativas devem estar habilitadas por padrão; o mundo é cruel. Algumas "
+"das alternativas aplicam-se às limitações nas próprias especificações; "
+"portanto, algumas vezes, não será possível corrigir um erro no modo sem "
+"alternativas sem que uma especificação seja corrigida."
 
 #: ../src/metacity.schemas.in.h:64
 msgid "Switch to workspace 1"
@@ -933,12 +939,12 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"A vinculação de teclas que troca para a área de trabalho abaixo da atual. "
-"O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;"
-"F1. O analisador é bastante flexível, permitindo letras minúsculas ou "
-"maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
-"definir a opção como o valor especial \"disabled\", não haverá vinculação de "
-"teclas para essa ação."
+"A vinculação de teclas que troca para a área de trabalho abaixo da atual. O "
+"formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+"O analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas "
+"e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
+"opção como o valor especial \"disabled\", não haverá vinculação de teclas "
+"para essa ação."
 
 #: ../src/metacity.schemas.in.h:90
 msgid ""
@@ -965,12 +971,12 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"A vinculação de teclas que troca para a área de trabalho à direita da "
-"atual. O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1\". O analisador é bastante flexível, permitindo letras minúsculas "
-"ou maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se "
-"você definir a opção como o valor especial \"disabled\", não haverá "
-"vinculação de teclas para essa ação."
+"A vinculação de teclas que troca para a área de trabalho à direita da atual. "
+"O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". O analisador é bastante flexível, permitindo letras minúsculas ou "
+"maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
+"definir a opção como o valor especial \"disabled\", não haverá vinculação de "
+"teclas para essa ação."
 
 #: ../src/metacity.schemas.in.h:92
 msgid ""
@@ -1210,8 +1216,8 @@ msgstr ""
 "começar a redimensionar uma janela usando o teclado. O formato é semelhante "
 "a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é "
 "bastante flexível, permitindo letras minúsculas ou maiúsculas e abreviações, "
-"como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o valor especial "
-"\"disabled\", não haverá vinculação de teclas para essa ação."
+"como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o "
+"valor especial \"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: ../src/metacity.schemas.in.h:108
 msgid ""
@@ -1223,11 +1229,11 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas usada para ocultar todas as janelas normais e definir "
-"o foco como o plano de fundo da área de trabalho. O formato é semelhante "
-"a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é bastante "
-"flexível, permitindo letras minúsculas ou maiúsculas e abreviações, como "
-"\"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o valor "
-"especial \"disabled\", não haverá vinculação de teclas para essa ação."
+"o foco como o plano de fundo da área de trabalho. O formato é semelhante a "
+"\"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é "
+"bastante flexível, permitindo letras minúsculas ou maiúsculas e abreviações, "
+"como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o "
+"valor especial \"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: ../src/metacity.schemas.in.h:109
 msgid ""
@@ -1513,10 +1519,10 @@ msgid ""
 msgstr ""
 "A vinculação de teclas usada para alternar o foco na direção contrária entre "
 "painéis e a área de trabalho usando uma janela popup. O formato é semelhante "
-"a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é bastante "
-"flexível, permitindo letras minúsculas ou maiúsculas e abreviações, como "
-"\"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como a string "
-"especial \"disabled\", não haverá vinculação de teclas para essa ação."
+"a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é "
+"bastante flexível, permitindo letras minúsculas ou maiúsculas e abreviações, "
+"como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como a "
+"string especial \"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: ../src/metacity.schemas.in.h:128
 msgid ""
@@ -1528,11 +1534,11 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "A vinculação de teclas usada para alternar o foco na direção contrária entre "
-"painéis e a área de trabalho, sem uma janela popup. O formato é semelhante "
-"a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é bastante "
-"flexível, permitindo letras minúsculas ou maiúsculas e abreviações, como "
-"\"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o valor "
-"especial \"disabled\", não haverá vinculação de teclas para essa ação."
+"painéis e a área de trabalho, sem uma janela popup. O formato é semelhante a "
+"\"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é "
+"bastante flexível, permitindo letras minúsculas ou maiúsculas e abreviações, "
+"como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o "
+"valor especial \"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: ../src/metacity.schemas.in.h:129
 msgid ""
@@ -1578,11 +1584,11 @@ msgid ""
 "no keybinding for this action."
 msgstr ""
 "A vinculação de teclas usada para alternar o foco entre painéis e a área de "
-"trabalho, usando uma janela popup. O formato é semelhante a \"&lt;Control&gt;a\" "
-"ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é bastante flexível, permitindo "
-"letras minúsculas ou maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;"
-"Ctrl&gt;\". Se você definir a opção como o valor especial \"disabled\", não "
-"haverá vinculação de teclas para essa ação."
+"trabalho, usando uma janela popup. O formato é semelhante a \"&lt;Control&gt;"
+"a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é bastante flexível, "
+"permitindo letras minúsculas ou maiúsculas e abreviações, como \"&lt;Ctl&gt;"
+"\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o valor especial "
+"\"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: ../src/metacity.schemas.in.h:132
 msgid ""
@@ -1594,11 +1600,11 @@ msgid ""
 "no keybinding for this action."
 msgstr ""
 "A vinculação de teclas usada para alternar o foco entre painéis e a área de "
-"trabalho, sem uma janela popup. O formato é semelhante a \"&lt;Control&gt;a\" "
-"ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é bastante flexível, permitindo "
-"letras minúsculas ou maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;"
-"Ctrl&gt;\". Se você definir a opção como o valor especial \"disabled\", não "
-"haverá vinculação de teclas para essa ação."
+"trabalho, sem uma janela popup. O formato é semelhante a \"&lt;Control&gt;a"
+"\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é bastante flexível, "
+"permitindo letras minúsculas ou maiúsculas e abreviações, como \"&lt;Ctl&gt;"
+"\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o valor especial "
+"\"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: ../src/metacity.schemas.in.h:133
 msgid ""
@@ -1634,8 +1640,8 @@ msgstr ""
 "essa vinculação reverte a direção do movimento. O formato é semelhante a "
 "\"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O analisador é "
 "bastante flexível, permitindo letras minúsculas ou maiúsculas e abreviações, "
-"como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o valor "
-"especial \"disabled\", não haverá vinculação de teclas para essa ação."
+"como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a opção como o "
+"valor especial \"disabled\", não haverá vinculação de teclas para essa ação."
 
 #: ../src/metacity.schemas.in.h:135
 msgid ""
@@ -1646,13 +1652,13 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"A vinculação de teclas usada para alternar para o modo sempre no topo. "
-"A janela que está sempre no topo será sempre visível sobre outras janelas. "
-"O formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-"O analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas "
-"e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\", não haverá vinculação de teclas "
-"para essa ação."
+"A vinculação de teclas usada para alternar para o modo sempre no topo. A "
+"janela que está sempre no topo será sempre visível sobre outras janelas. O "
+"formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". O analisador é bastante flexível, permitindo letras minúsculas ou "
+"maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
+"definir a opção como o valor especial \"disabled\", não haverá vinculação de "
+"teclas para essa ação."
 
 #: ../src/metacity.schemas.in.h:136
 msgid ""
@@ -1662,12 +1668,12 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"A vinculação de teclas usada para alternar para o modo de tela inteira. O formato "
-"é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
-"analisador é bastante flexível, permitindo letras minúsculas ou maiúsculas e "
-"abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você definir a "
-"opção como o valor especial \"disabled\", não haverá vinculação de teclas "
-"para essa ação."
+"A vinculação de teclas usada para alternar para o modo de tela inteira. O "
+"formato é semelhante a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". O analisador é bastante flexível, permitindo letras minúsculas ou "
+"maiúsculas e abreviações, como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;\". Se você "
+"definir a opção como o valor especial \"disabled\", não haverá vinculação de "
+"teclas para essa ação."
 
 #: ../src/metacity.schemas.in.h:137
 msgid ""
@@ -1828,8 +1834,8 @@ msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
 msgstr ""
-"O atraso antes de uma janela ser elevada, se auto_raise estiver "
-"definido como verdadeiro. O atraso é fornecido em milésimos de segundo."
+"O atraso antes de uma janela ser elevada, se auto_raise estiver definido "
+"como verdadeiro. O atraso é fornecido em milésimos de segundo."
 
 #: ../src/metacity.schemas.in.h:150
 msgid ""
@@ -1940,8 +1946,8 @@ msgid ""
 "window, and 'toggle_maximize' which will maximize/unmaximize the window."
 msgstr ""
 "Essa opção determina os efeitos do duplo-clique na barra de título. As "
-"opções válidas são 'toggle_shaded', que irá sombrear ou não a "
-"janela, e 'toggle_maximize', que irá maximizar/desmaximizar a janela."
+"opções válidas são 'toggle_shaded', que irá sombrear ou não a janela, e "
+"'toggle_maximize', que irá maximizar/desmaximizar a janela."
 
 #: ../src/metacity.schemas.in.h:158
 msgid "Toggle always on top state"
@@ -2090,8 +2096,8 @@ msgstr ""
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
-"Impossível obter a seleção do gerenciador de janelas na exibição \"%2$s"
-"\" da tela %1$d\n"
+"Impossível obter a seleção do gerenciador de janelas na exibição \"%2$s\" da "
+"tela %1$d\n"
 
 #: ../src/screen.c:506
 #, c-format
@@ -2172,8 +2178,8 @@ msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr ""
-"Erro ao lançar o diálogo do Metacity para avisar sobre as aplicações que "
-"não oferecem suporte ao gerenciamento de sessão: %s\n"
+"Erro ao lançar o diálogo do Metacity para avisar sobre as aplicações que não "
+"oferecem suporte ao gerenciamento de sessão: %s\n"
 
 #: ../src/theme-parser.c:224 ../src/theme-parser.c:242
 #, c-format
@@ -2219,7 +2225,8 @@ msgstr "O ângulo deve estar entre 0,0 e 360,0 e era %g\n"
 #: ../src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr "Alfa deve estar entre 0,0 (invisível) e 1,0 (totalmente opaco) e era %g\n"
+msgstr ""
+"Alfa deve estar entre 0,0 (invisível) e 1,0 (totalmente opaco) e era %g\n"
 
 #: ../src/theme-parser.c:684
 #, c-format
@@ -2231,16 +2238,12 @@ msgstr ""
 "pequena, média, grande, extra grande ou super grande)\n"
 
 #: ../src/theme-parser.c:729 ../src/theme-parser.c:737
-#: ../src/theme-parser.c:2936 ../src/theme-parser.c:3025
-#: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
-#, c-format
-msgid "No \"%s\" attribute on element <%s>"
-msgstr "Nenhum atributo \"%s\" no elemento <%s>"
-
 #: ../src/theme-parser.c:807 ../src/theme-parser.c:897
 #: ../src/theme-parser.c:935 ../src/theme-parser.c:1012
 #: ../src/theme-parser.c:1062 ../src/theme-parser.c:1070
 #: ../src/theme-parser.c:1126 ../src/theme-parser.c:1134
+#: ../src/theme-parser.c:2936 ../src/theme-parser.c:3025
+#: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
 msgstr "Nenhum atributo \"%s\" no elemento <%s>"
@@ -3150,8 +3153,7 @@ msgstr ""
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
-"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> "
-"ausente"
+"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> ausente"
 
 #: ../src/theme.c:4446
 #, c-format
@@ -3179,8 +3181,8 @@ msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 msgstr ""
-"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> deve "
-"ser especificado para este tema"
+"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> deve ser "
+"especificado para este tema"
 
 #: ../src/theme.c:5041 ../src/theme.c:5103
 #, c-format
@@ -3286,47 +3288,3 @@ msgid ""
 msgstr ""
 "A propriedade %s na janela 0x%lx continha UTF-8 inválido para o item %d da "
 "lista\n"
-
-#~ msgid ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-#~ "display=DISPLAY] [--replace] [--version]\n"
-#~ msgstr ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=ARQUIVO] [--"
-#~ "display=DISPLAY] [--replace] [--version]\n"
-
-#~ msgid "Put on _All Workspaces"
-#~ msgstr "Colocar em _Todas as Ãreas de Trabalho"
-
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "Seleciona como dar foco a janelas"
-
-#~ msgid "Window Focus"
-#~ msgstr "Foco da Janela"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "Cliq_ue para focalizar"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "Comportamento do foco:"
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "PreferÃªncias de Foco de Janela"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "A_ponte para focalizar"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "_Elevar a janela focalizada"
-
-#~ msgid ""
-#~ "Failed to a open connection to a session manager, so window positions "
-#~ "will not be saved: %s\n"
-#~ msgstr ""
-#~ "Falha em uma conexÃ£o aberta com um gerenciador de sessÃ£o; portanto, as "
-#~ "posiÃ§Ãµes das janelas nÃ£o serÃ£o salvas: %s\n"
-
-#~ msgid "Only on %s"
-#~ msgstr "Apenas na %s"
-
-#~ msgid "Move to %s"
-#~ msgstr "Mover para %s"

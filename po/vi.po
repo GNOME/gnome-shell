@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity GNOME HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-23 06:42+0000\n"
+"POT-Creation-Date: 2005-09-19 12:30+0200\n"
 "PO-Revision-Date: 2005-09-16 17:14+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
@@ -108,20 +108,21 @@ msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr ""
-"Một chương trình khác đã dùng phím « %s » với phím bổ trợ «%x» như là tổ hợp.\n"
+"Một chương trình khác đã dùng phím « %s » với phím bổ trợ «%x» như là tổ "
+"hợp.\n"
 
-#: ../src/keybindings.c:2535
+#: ../src/keybindings.c:2620
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Gặp lỗi khi khởi chạy «metacity-dialog» để in thông báo lỗi về lệnh: %s\n"
 
-#: ../src/keybindings.c:2640
+#: ../src/keybindings.c:2725
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Không có lệnh «%d» nào được định nghĩa.\n"
 
-#: ../src/keybindings.c:3485
+#: ../src/keybindings.c:3570
 msgid "No terminal command has been defined.\n"
 msgstr "Không có lệnh thiết bị cuối nào được định nghĩa.\n"
 
@@ -370,19 +371,19 @@ msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr "Việc buộc thoát ứng dụng này sẽ làm mất những thông tin chưa được lưu."
 
-#: ../src/metacity-dialog.c:128
+#: ../src/metacity-dialog.c:129
 msgid "_Force Quit"
 msgstr "_Buộc thoát"
 
-#: ../src/metacity-dialog.c:225
+#: ../src/metacity-dialog.c:226
 msgid "Title"
 msgstr "Tựa đề"
 
-#: ../src/metacity-dialog.c:237
+#: ../src/metacity-dialog.c:238
 msgid "Class"
 msgstr "Hàng"
 
-#: ../src/metacity-dialog.c:263
+#: ../src/metacity-dialog.c:264
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -390,7 +391,7 @@ msgstr ""
 "Những cửa sổ này không hỗ trợ «lưu thiết lập hiện thời» và sẽ phải khởi động "
 "lại bằng tay lần kế bạn đăng nhập."
 
-#: ../src/metacity-dialog.c:328
+#: ../src/metacity-dialog.c:330
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -537,11 +538,11 @@ msgid ""
 msgstr ""
 "Nếu bật thì trình metacity sẽ cho người dùng xem phản hồi ít hơn và cảm nhận "
 "«thao tác trực tiếp» ít hơn, bằng cách dùng đường viền, tránh hoạt ảnh, hoặc "
-"vật chứa khác. Phần lớn người dùng sẽ thấy biết tính hữu dụng đã giảm "
-"xuống, nhưng mà có lẽ tùy chọn này sẽ cho phép ứng dụng cũ hơn và trình phục "
-"vụ thiết bị cuối hoạt động, lúc ấy nếu không có tùy chọn này thì là không "
-"thực tế. Tuy nhiên, tính năng đường viền đã tắt khi khả năng truy cập được "
-"bật, để tránh phá màn hình nền cách lạ."
+"vật chứa khác. Phần lớn người dùng sẽ thấy biết tính hữu dụng đã giảm xuống, "
+"nhưng mà có lẽ tùy chọn này sẽ cho phép ứng dụng cũ hơn và trình phục vụ "
+"thiết bị cuối hoạt động, lúc ấy nếu không có tùy chọn này thì là không thực "
+"tế. Tuy nhiên, tính năng đường viền đã tắt khi khả năng truy cập được bật, "
+"để tránh phá màn hình nền cách lạ."
 
 #: ../src/metacity.schemas.in.h:20
 msgid ""
@@ -1953,8 +1954,8 @@ msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr ""
-"Tìm thấy « %s » trong cơ sở dữ liệu cấu hình không phải giá trị hợp lệ cho bộ "
-"biến đổi nút chuột.\n"
+"Tìm thấy « %s » trong cơ sở dữ liệu cấu hình không phải giá trị hợp lệ cho "
+"bộ biến đổi nút chuột.\n"
 
 #: ../src/prefs.c:967 ../src/prefs.c:1428
 #, c-format
@@ -1986,7 +1987,8 @@ msgstr ""
 #: ../src/prefs.c:1455
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr "«%d» được lưu trong khóa GConf « %s » nằm ngoài phạm vi từ 0 tới «%d».\n"
+msgstr ""
+"«%d» được lưu trong khóa GConf « %s » nằm ngoài phạm vi từ 0 tới «%d».\n"
 
 #: ../src/prefs.c:1589
 #, c-format
@@ -1999,8 +2001,8 @@ msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr ""
-"Tìm thấy « %s » trong cơ sở dữ liệu cấu hình không phải giá trị hợp lệ cho tổ "
-"hợp phím « %s ».\n"
+"Tìm thấy « %s » trong cơ sở dữ liệu cấu hình không phải giá trị hợp lệ cho "
+"tổ hợp phím « %s ».\n"
 
 #: ../src/prefs.c:2187
 #, c-format
@@ -2024,8 +2026,8 @@ msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
-"Màn hình %d trên bộ trình bày « %s » đã có bộ quản lý cửa sổ rồi; hãy thử dùng "
-"tùy chọn «--replace» để _thay thế_ bộ quản lý cửa sổ đang dùng.\n"
+"Màn hình %d trên bộ trình bày « %s » đã có bộ quản lý cửa sổ rồi; hãy thử "
+"dùng tùy chọn «--replace» để _thay thế_ bộ quản lý cửa sổ đang dùng.\n"
 
 #: ../src/screen.c:448
 #, c-format
@@ -2182,16 +2184,12 @@ msgstr ""
 " • xx-large\t\tto lớn.\n"
 
 #: ../src/theme-parser.c:729 ../src/theme-parser.c:737
-#: ../src/theme-parser.c:2936 ../src/theme-parser.c:3025
-#: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
-#, c-format
-msgid "No \"%s\" attribute on element <%s>"
-msgstr "Không có thuộc tính « %s » trong phần tử <%s>."
-
 #: ../src/theme-parser.c:807 ../src/theme-parser.c:897
 #: ../src/theme-parser.c:935 ../src/theme-parser.c:1012
 #: ../src/theme-parser.c:1062 ../src/theme-parser.c:1070
 #: ../src/theme-parser.c:1126 ../src/theme-parser.c:1134
+#: ../src/theme-parser.c:2936 ../src/theme-parser.c:3025
+#: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
 msgstr "Không có thuộc tính « %s » trong phần tử <%s>."
@@ -2551,7 +2549,8 @@ msgstr ""
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr ""
-"Kiểu dạng đã được xác định cho trạng thái « %s » đổi cỡ « %s » tiêu điểm « %s »."
+"Kiểu dạng đã được xác định cho trạng thái « %s » đổi cỡ « %s » tiêu điểm « %"
+"s »."
 
 #: ../src/theme-parser.c:3475 ../src/theme-parser.c:3486
 #: ../src/theme-parser.c:3497
@@ -2940,8 +2939,8 @@ msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr ""
-"Dạng pha trộn là «blend/bg_color/fg_color/alpha», « %s » không tuân theo dạng "
-"thức đó."
+"Dạng pha trộn là «blend/bg_color/fg_color/alpha», « %s » không tuân theo "
+"dạng thức đó."
 
 #: ../src/theme.c:1048
 #, c-format
@@ -2958,8 +2957,8 @@ msgstr "Giá trị alpha « %s » trong màu pha trộn không nằm giữa 0.0 
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
-"Dạng thức bóng là «shade/base_color/factor», « %s » không tuân theo dạng thức "
-"đó."
+"Dạng thức bóng là «shade/base_color/factor», « %s » không tuân theo dạng "
+"thức đó."
 
 #: ../src/theme.c:1116
 #, c-format
@@ -3101,8 +3100,8 @@ msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
-"Chưa đặt kiểu khung cho loại cửa sổ « %s » trong sắc thái « %s », hãy thêm phần "
-"tử <window type=\"%s\" style_set=\"gì đó\"/>."
+"Chưa đặt kiểu khung cho loại cửa sổ « %s » trong sắc thái « %s », hãy thêm "
+"phần tử <window type=\"%s\" style_set=\"gì đó\"/>."
 
 #: ../src/theme.c:4652
 #, c-format
@@ -3161,7 +3160,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Ứng dụng đặt «_NET_WM_PID» giả «%ld».\n"
 
 #. first time through
-#: ../src/window.c:5197
+#: ../src/window.c:5205
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3177,14 +3176,15 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5868
+#: ../src/window.c:5876
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
-"Cửa sổ « %s » gọi ý «MWM» nói rằng nó không thể bị thay đổi kích thước, nhưng "
-"đặt kích thước tối thiểu «%d x %d» và tối đa «%d x %d»; điều này có vẻ cũng hơi hợp lý.\n"
+"Cửa sổ « %s » gọi ý «MWM» nói rằng nó không thể bị thay đổi kích thước, "
+"nhưng đặt kích thước tối thiểu «%d x %d» và tối đa «%d x %d»; điều này có vẻ "
+"cũng hơi hợp lý.\n"
 
 #: ../src/xprops.c:153
 #, c-format
@@ -3211,18 +3211,5 @@ msgstr "Thuộc tính « %s » trên cửa sổ «0x%lx» chứa chuỗi UTF-8 s
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
-"Thuộc tính « %s » trên cửa sổ «0x%lx» chứa chuỗi UTF-8 sai cho mục «%d» trong "
-"danh sách.\n"
-
-#~ msgid ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-#~ "display=DISPLAY] [--replace] [--version]\n"
-#~ msgstr ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=TÊN_TẬP_TIN] "
-#~ "[--display=BỘ_TRÌNH_BÀY] [--replace] [--version]\n"
-#~ "(disable: tắt\n"
-#~ "client ID: mã nhận diện khách\n"
-#~ "save file: lưu tập tin\n"
-#~ "display: bộ trình bày\n"
-#~ "replace: thay thế\n"
-#~ "version: phiên bản)\n"
+"Thuộc tính « %s » trên cửa sổ «0x%lx» chứa chuỗi UTF-8 sai cho mục «%d» "
+"trong danh sách.\n"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-30 15:39+0000\n"
+"POT-Creation-Date: 2005-09-19 12:30+0200\n"
 "PO-Revision-Date: 2005-07-31 01:18+0300\n"
 "Last-Translator: Yuval Tanny\n"
 "Language-Team: Hebrew <he@li.org>\n"
@@ -51,7 +51,8 @@ msgstr "שגיאה בקריאה מתהליך הצגת תיבת דו-שיח: %s\n
 
 #: ../src/delete.c:344
 #, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "שגיאה בהפעלת תיבת דו-שיח של מטאסיטי השואלת אם להרוג יישום: %s\n"
 
 #: ../src/delete.c:452
@@ -107,17 +108,17 @@ msgid ""
 "binding\n"
 msgstr "תוכנית אחרת כבר משתמשת במקש %s עם המקש %x כצירוף\n"
 
-#: ../src/keybindings.c:2535
+#: ../src/keybindings.c:2620
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "שגיאה בהפעלת תיבת דו-שיח של מטאסיטי כדי להדפיס שגיאה על הפקודה: %s\n"
 
-#: ../src/keybindings.c:2640
+#: ../src/keybindings.c:2725
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "אף פקודה %d לא הוגדרה.\n"
 
-#: ../src/keybindings.c:3485
+#: ../src/keybindings.c:3570
 msgid "No terminal command has been defined.\n"
 msgstr "אף פקודת מסוף לא הוגדרה.\n"
 
@@ -166,7 +167,8 @@ msgstr "נכשל בטעינת ערכת נושא \"%s\": %s\n"
 
 #: ../src/main.c:456
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr "לא ניתן למצוא ערכת נושא! ודא כי %s קיים ומכיל את ערכות הנושא הרגילות."
 
 #: ../src/main.c:518
@@ -350,7 +352,8 @@ msgid "The window \"%s\" is not responding."
 msgstr "החלון \"%s\" אינו מגיב"
 
 #: ../src/metacity-dialog.c:118
-msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr "להכריח את ישום זה לסיים יגרום לאיבוד שינויים שלא נשמרו"
 
 #: ../src/metacity-dialog.c:129
@@ -369,7 +372,9 @@ msgstr "מחלקה"
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
-msgstr "חלון זה אינו תומך ב\"שמירת ההגדרות הנוכחיות\", ויהיה צורך באתחול ידני בכניסה הבאה שלך."
+msgstr ""
+"חלון זה אינו תומך ב\"שמירת ההגדרות הנוכחיות\", ויהיה צורך באתחול ידני בכניסה "
+"הבאה שלך."
 
 #: ../src/metacity-dialog.c:330
 #, c-format
@@ -1575,7 +1580,8 @@ msgstr ""
 
 #: ../src/screen.c:448
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 
 #: ../src/screen.c:506
@@ -1714,16 +1720,12 @@ msgid ""
 msgstr ""
 
 #: ../src/theme-parser.c:729 ../src/theme-parser.c:737
-#: ../src/theme-parser.c:2936 ../src/theme-parser.c:3025
-#: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
-#, c-format
-msgid "No \"%s\" attribute on element <%s>"
-msgstr ""
-
 #: ../src/theme-parser.c:807 ../src/theme-parser.c:897
 #: ../src/theme-parser.c:935 ../src/theme-parser.c:1012
 #: ../src/theme-parser.c:1062 ../src/theme-parser.c:1070
 #: ../src/theme-parser.c:1126 ../src/theme-parser.c:1134
+#: ../src/theme-parser.c:2936 ../src/theme-parser.c:3025
+#: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
 msgstr ""
@@ -1808,7 +1810,8 @@ msgstr ""
 
 #: ../src/theme-parser.c:1320 ../src/theme-parser.c:1334
 #: ../src/theme-parser.c:1393
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid ""
+"Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 
 #: ../src/theme-parser.c:1343
@@ -2110,7 +2113,8 @@ msgstr ""
 
 #: ../src/theme-parser.c:3679
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
 
 #: ../src/theme-parser.c:3684
@@ -2120,7 +2124,8 @@ msgstr ""
 
 #: ../src/theme-parser.c:3696
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
 
 #: ../src/theme-parser.c:3718
@@ -2457,7 +2462,8 @@ msgstr ""
 
 #: ../src/theme.c:1105
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 
 #: ../src/theme.c:1116
@@ -2508,12 +2514,14 @@ msgid "Coordinate expression results in division by zero"
 msgstr ""
 
 #: ../src/theme.c:1777
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 
 #: ../src/theme.c:1834
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 
 #: ../src/theme.c:1843
@@ -2570,8 +2578,10 @@ msgstr ""
 
 #: ../src/theme.c:4363 ../src/theme.c:4395
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "חסר <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"חסר <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: ../src/theme.c:4446
 #, c-format
@@ -2602,7 +2612,8 @@ msgstr ""
 
 #: ../src/theme.c:5041 ../src/theme.c:5103
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "קבועים מותאמים-אישית חייבים להתחיל באות גדולה; \"%s\" לא"
 
 #: ../src/theme.c:5049 ../src/theme.c:5111
@@ -2685,6 +2696,6 @@ msgstr "המאפיין %s של החלון 0x%lx מכיל UTF-8 לא תקני\n"
 
 #: ../src/xprops.c:482
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "המאפיין %s של החלון 0x%lx מכיל UTF-8 לא תקני לפריט %d ברשימה\n"
-

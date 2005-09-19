@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-19 13:43+0000\n"
+"POT-Creation-Date: 2005-09-19 12:30+0200\n"
 "PO-Revision-Date: 2005-08-19 16:17+0100\n"
 "Last-Translator: Michiel Sikkes <michiels@gnome.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -3262,50 +3262,3 @@ msgid ""
 msgstr ""
 "Eigenschap %s bij venster 0x%lx bevat ongeldige UTF-8 voor item %d van de "
 "lijst\n"
-
-#~ msgid ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-#~ "display=DISPLAY] [--replace] [--version]\n"
-#~ msgstr ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=BESTANDSNAAM] "
-#~ "[--display=DISPLAY] [--replace] [--version]\n"
-
-#~ msgid "No \"%s\" attribute on element <%s>"
-#~ msgstr "Geen \"%s\" attribuut op element <%s>"
-
-#~ msgid "Put on _All Workspaces"
-#~ msgstr "Op _alle werkbladen tonen"
-
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "Kiezen hoe u vensters aandacht geeft"
-
-#~ msgid "Window Focus"
-#~ msgstr "Vensteraandacht"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "_Klikken voor het geven van aandacht"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "Aandachtgedrag:"
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "Vensteraandacht voorkeuren"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "_Aanwijzen voor het geven van aandacht"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "Venster _verhogen bij aandacht"
-
-#~ msgid ""
-#~ "Failed to a open connection to a session manager, so window positions "
-#~ "will not be saved: %s\n"
-#~ msgstr ""
-#~ "Kon geen verbinding maken met een sessiemanager, dus vensterposities "
-#~ "zullen niet worden opgeslagen: %s\n"
-
-#~ msgid "Only on %s"
-#~ msgstr "Alleen op %s"
-
-#~ msgid "Move to %s"
-#~ msgstr "Verplaatsen naar %s"

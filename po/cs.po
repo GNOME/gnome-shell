@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-07-13 14:30+0000\n"
+"POT-Creation-Date: 2005-09-19 12:30+0200\n"
 "PO-Revision-Date: 2005-07-14 10:51+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -106,17 +106,17 @@ msgid ""
 msgstr ""
 "Klávesu %s s modifikátory %x již jako zkratku používá nějaký jiný program\n"
 
-#: ../src/keybindings.c:2535
+#: ../src/keybindings.c:2620
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "Chyba při spouštění metacity-dialog pro výpis chyby o příkazu: %s\n"
 
-#: ../src/keybindings.c:2640
+#: ../src/keybindings.c:2725
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Nebyl definován příkaz %d.\n"
 
-#: ../src/keybindings.c:3485
+#: ../src/keybindings.c:3570
 msgid "No terminal command has been defined.\n"
 msgstr "Nebyl definován příkaz terminálu.\n"
 
@@ -358,19 +358,19 @@ msgid ""
 msgstr ""
 "Vynucené ukončení této aplikace způsobí, že přijdete o neuložené změny."
 
-#: ../src/metacity-dialog.c:128
+#: ../src/metacity-dialog.c:129
 msgid "_Force Quit"
 msgstr "_Vynutit ukončení"
 
-#: ../src/metacity-dialog.c:225
+#: ../src/metacity-dialog.c:226
 msgid "Title"
 msgstr "Nadpis"
 
-#: ../src/metacity-dialog.c:237
+#: ../src/metacity-dialog.c:238
 msgid "Class"
 msgstr "Třída"
 
-#: ../src/metacity-dialog.c:263
+#: ../src/metacity-dialog.c:264
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -378,7 +378,7 @@ msgstr ""
 "Tyto okna nepodporují \"uložit aktuální nastavení\" a po vašem příštím "
 "přihlášení je budete muset spustit ručně."
 
-#: ../src/metacity-dialog.c:328
+#: ../src/metacity-dialog.c:330
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2153,16 +2153,12 @@ msgstr ""
 "large, x-large, xx-large)\n"
 
 #: ../src/theme-parser.c:729 ../src/theme-parser.c:737
-#: ../src/theme-parser.c:2936 ../src/theme-parser.c:3025
-#: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
-#, c-format
-msgid "No \"%s\" attribute on element <%s>"
-msgstr "Chybí atribut \"%s\" v elementu <%s>"
-
 #: ../src/theme-parser.c:807 ../src/theme-parser.c:897
 #: ../src/theme-parser.c:935 ../src/theme-parser.c:1012
 #: ../src/theme-parser.c:1062 ../src/theme-parser.c:1070
 #: ../src/theme-parser.c:1126 ../src/theme-parser.c:1134
+#: ../src/theme-parser.c:2936 ../src/theme-parser.c:3025
+#: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
 msgstr "Chybí atribut \"%s\" v elementu <%s>"
@@ -2862,11 +2858,11 @@ msgstr "Aspect ratio tlačítka %g není rozumné"
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Geometrie rámu nedefinuje velikost tlačítek"
 
-#: ../src/theme.c:849
+#: ../src/theme.c:843
 msgid "Gradients should have at least two colors"
 msgstr "Gradienty by měly mít alespoň dvě barvy"
 
-#: ../src/theme.c:975
+#: ../src/theme.c:969
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -2875,7 +2871,7 @@ msgstr ""
 "Specifikace barvy GTK musí mít stav v hranatých závorkách, např. gtk:fg"
 "[NORMAL], kde NORMAL je stav; nemohu parsovat \"%s\""
 
-#: ../src/theme.c:989
+#: ../src/theme.c:983
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -2884,17 +2880,17 @@ msgstr ""
 "Specifikace barvy GTK musí mít za stavem pravou v hranatou závorku, např. "
 "gtk:fg[NORMAL], kde NORMAL je stav; nemohu parsovat \"%s\""
 
-#: ../src/theme.c:1000
+#: ../src/theme.c:994
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Nerozumím stavu \"%s\" ve specifikaci barvy"
 
-#: ../src/theme.c:1013
+#: ../src/theme.c:1007
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Nerozumím barevné komponentě \"%s\" ve specifikaci barvy"
 
-#: ../src/theme.c:1043
+#: ../src/theme.c:1037
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -2903,44 +2899,44 @@ msgstr ""
 "Formát prolínání je \"blend/bg_color/fg_color/alpha\", \"%s\" tomuto formátu "
 "neodpovídá"
 
-#: ../src/theme.c:1054
+#: ../src/theme.c:1048
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Nemohu parsovat hodnotu alfa \"%s\" v prolínané barvě"
 
-#: ../src/theme.c:1064
+#: ../src/theme.c:1058
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "Hodnota alfa \"%s\" v prolínané barvě není mezi 0.0 a 1.0"
 
-#: ../src/theme.c:1111
+#: ../src/theme.c:1105
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "Formát stínu je \"shade/base_color_factor\", \"%s\" tomuto formátu neodpovídá"
 
-#: ../src/theme.c:1122
+#: ../src/theme.c:1116
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Nemohu parsovat faktor stínu \"%s\" ve stínované barvě"
 
-#: ../src/theme.c:1132
+#: ../src/theme.c:1126
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Faktor stínu \"%s\" ve stínované barvě je záporný"
 
-#: ../src/theme.c:1161
+#: ../src/theme.c:1155
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Nemohu parsovat barvu \"%s\""
 
-#: ../src/theme.c:1423
+#: ../src/theme.c:1417
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Souřadnicový výraz obsahuje nepovolený znak '%s'"
 
-#: ../src/theme.c:1450
+#: ../src/theme.c:1444
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -2949,12 +2945,12 @@ msgstr ""
 "Souřadnicový výraz obsahuje číslo s pohyblivou řádovou čárkou '%s', které "
 "nemohu parsovat"
 
-#: ../src/theme.c:1464
+#: ../src/theme.c:1458
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "Souřadnicový výraz obsahuje celé číslo '%s', které nemohu parsovat"
 
-#: ../src/theme.c:1531
+#: ../src/theme.c:1525
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -2962,37 +2958,37 @@ msgid ""
 msgstr ""
 "Souřadnicový výraz obsahuje na začátku textu neznámý operátor: \"%s\": "
 
-#: ../src/theme.c:1588
+#: ../src/theme.c:1582
 msgid "Coordinate expression was empty or not understood"
 msgstr "Souřadnicový výraz byl prázdný nebo mu nerozumím"
 
-#: ../src/theme.c:1731 ../src/theme.c:1741 ../src/theme.c:1775
+#: ../src/theme.c:1725 ../src/theme.c:1735 ../src/theme.c:1769
 msgid "Coordinate expression results in division by zero"
 msgstr "Souřadnicový výraz způsobil dělení nulou"
 
-#: ../src/theme.c:1783
+#: ../src/theme.c:1777
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Souřadnicový výraz chce použít operátor mod na číslo s pohyblivou řádovou "
 "čárkou"
 
-#: ../src/theme.c:1840
+#: ../src/theme.c:1834
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "Souřadnicový výraz má na místě, kde byl očekáván operand, operátor \"%s\""
 
-#: ../src/theme.c:1849
+#: ../src/theme.c:1843
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Souřadnicový výraz má operand tam, kde byl očekáván operátor"
 
-#: ../src/theme.c:1857
+#: ../src/theme.c:1851
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Souřadnicový výraz končí operátorem místo operandu"
 
-#: ../src/theme.c:1867
+#: ../src/theme.c:1861
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -3001,7 +2997,7 @@ msgstr ""
 "Souřadnicový výraz má operátor \"%c\" za operátorem \"%c\" bez operandu mezi "
 "nimi"
 
-#: ../src/theme.c:1986
+#: ../src/theme.c:1980
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
@@ -3010,29 +3006,29 @@ msgstr ""
 "skutečnosti chyba Metacity, ale jste si jisti že potřebujete tak obrovský "
 "výraz?"
 
-#: ../src/theme.c:2015
+#: ../src/theme.c:2009
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "Souřadnicový výraz má pravou závorku bez levé závorky"
 
-#: ../src/theme.c:2078
+#: ../src/theme.c:2072
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Souřadnicový výraz má neznámou proměnnou nebo konstantu \"%s\""
 
-#: ../src/theme.c:2135
+#: ../src/theme.c:2129
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "Souřadnicový výraz má levou závorku bez pravé závorky"
 
-#: ../src/theme.c:2146
+#: ../src/theme.c:2140
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Souřadnicový výraz zřejmě nemá žádné operátory nebo operandy"
 
-#: ../src/theme.c:2390 ../src/theme.c:2412 ../src/theme.c:2433
+#: ../src/theme.c:2384 ../src/theme.c:2406 ../src/theme.c:2427
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Téma obsahuje výraz \"%s\", který způsobil chybu: %s\n"
 
-#: ../src/theme.c:3919
+#: ../src/theme.c:3913
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3041,25 +3037,25 @@ msgstr ""
 "Pro tento styl rámu musí být zadáno <button function=\"%s\" state=\"%s\" "
 "draw_ops=\"whatever\"/>"
 
-#: ../src/theme.c:4369 ../src/theme.c:4401
+#: ../src/theme.c:4363 ../src/theme.c:4395
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Chybí <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: ../src/theme.c:4452
+#: ../src/theme.c:4446
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Nemohu načíst téma \"%s\": %s\n"
 
-#: ../src/theme.c:4598 ../src/theme.c:4605 ../src/theme.c:4612
-#: ../src/theme.c:4619 ../src/theme.c:4626
+#: ../src/theme.c:4592 ../src/theme.c:4599 ../src/theme.c:4606
+#: ../src/theme.c:4613 ../src/theme.c:4620
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Není nastaveno <%s> pro téma \"%s\""
 
-#: ../src/theme.c:4636
+#: ../src/theme.c:4630
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3068,7 +3064,7 @@ msgstr ""
 "Pro typ okna \"%s\" tématu \"%s\" není nastaven typ rámu, přidejte element "
 "<window type=\"%s\" style_set=\"whatever\"/>"
 
-#: ../src/theme.c:4658
+#: ../src/theme.c:4652
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3077,7 +3073,7 @@ msgstr ""
 "Pro toto téma musí být definováno <menu_icon function=\"%s\" state=\"%s\" "
 "draw_ops=\"whatever\"/>"
 
-#: ../src/theme.c:5047 ../src/theme.c:5109
+#: ../src/theme.c:5041 ../src/theme.c:5103
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -3085,7 +3081,7 @@ msgstr ""
 "Uživatelem-definované konstanty musí začínat velkým písmenem; \"%s\" toto "
 "nesplňuje"
 
-#: ../src/theme.c:5055 ../src/theme.c:5117
+#: ../src/theme.c:5049 ../src/theme.c:5111
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanta \"%s\" již byla definována"
@@ -3127,7 +3123,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikace nastavila neplatný _NET_WM_PID %ld\n"
 
 #. first time through
-#: ../src/window.c:5197
+#: ../src/window.c:5205
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3143,7 +3139,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5868
+#: ../src/window.c:5876
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3178,44 +3174,3 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Vlastnost %s okna 0x%lx obsahovala neplatné UTF-8 pro položku %d seznamu\n"
-
-#~ msgid ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-#~ "display=DISPLAY] [--replace] [--version]\n"
-#~ msgstr ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=SOUBOR] [--"
-#~ "display=DISPLEJ] [--replace] [--version]\n"
-
-#~ msgid "Put on _All Workspaces"
-#~ msgstr "Na _všechny plochy"
-
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "Zvolit, jak aktivovat okna"
-
-#~ msgid "Window Focus"
-#~ msgstr "Aktivace oken"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "Aktivace _kliknutím"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "Aktivace oken:"
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "Nastavení aktivace oken"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "Aktivace _ukázáním"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "_Zvýšit okno při aktivaci"
-
-#~ msgid ""
-#~ "Failed to a open connection to a session manager, so window positions "
-#~ "will not be saved: %s\n"
-#~ msgstr ""
-#~ "Nemohu otevřít spojení k správci sezení, takže pozice oken nebudou "
-#~ "uloženy: %s\n"
-
-#~ msgid "Only on %s"
-#~ msgstr "Jen na %s"

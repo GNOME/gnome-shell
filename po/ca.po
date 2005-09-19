@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.9.91\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-20 16:00+0200\n"
+"POT-Creation-Date: 2005-09-19 12:30+0200\n"
 "PO-Revision-Date: 2005-08-20 15:58+0200\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
@@ -3243,56 +3243,3 @@ msgid ""
 msgstr ""
 "La propietat %s en la finestra 0x%lx contenia UTF-8 invàlid per a l'element %"
 "d en la lista\n"
-
-#~ msgid ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-#~ "display=DISPLAY] [--replace] [--version]\n"
-#~ msgstr ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=NOM DE "
-#~ "FITXER] [--display=PANTALLA] [--replace] [--version]\n"
-
-#~ msgid "No \"%s\" attribute on element <%s>"
-#~ msgstr "Cap atribut \"%s\" en l'element <%s>"
-
-#~ msgid "Put on _All Workspaces"
-#~ msgstr "Posa-ho en _tots els espais de treball"
-
-#~ msgid "Select how to give focus to windows"
-#~ msgstr "Selecciona com donar el focus a les finestres"
-
-#~ msgid "Window Focus"
-#~ msgstr "Focus de les finestres"
-
-#~ msgid "Clic_k to give focus"
-#~ msgstr "_Clic per a obtindre el focus"
-
-#~ msgid "Focus behavior:"
-#~ msgstr "Comportament del focus:"
-
-#~ msgid "Window Focus Preferences"
-#~ msgstr "Preferències del focus de les finestres"
-
-#~ msgid "_Point to give focus"
-#~ msgstr "A_punta per a obtindre el focus"
-
-#~ msgid "_Raise window on focus"
-#~ msgstr "_Alça la finestra amb el focus"
-
-#~ msgid ""
-#~ "Failed to a open connection to a session manager, so window positions "
-#~ "will not be saved: %s\n"
-#~ msgstr ""
-#~ "No s'ha pogut obrir una connexió al gestor de sessions, aixì que les "
-#~ "posicions de les finestres no es desaran: %s\n"
-
-#~ msgid ""
-#~ "The window \"%s\" is not responding.\n"
-#~ "Force this application to exit?\n"
-#~ "(Any open documents will be lost.)"
-#~ msgstr ""
-#~ "La finestra «%s» no respon.\n"
-#~ "Voleu sortir d'aquesta aplicació?\n"
-#~ "(Es perdrà qualsevol document obert.)"
-
-#~ msgid "Kill application"
-#~ msgstr "Finalitza l'aplicació"

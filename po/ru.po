@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-02 06:44+0000\n"
+"POT-Creation-Date: 2005-09-19 12:30+0200\n"
 "PO-Revision-Date: 2005-09-02 13:41+0300\n"
 "Last-Translator: Leonid Kanter <leon@asplinux.ru>\n"
 "Language-Team:  <gnome-cyr@gnome.org>\n"
@@ -17,7 +17,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.10.2\n"
-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../src/tools/metacity-message.c:150
 #, c-format
@@ -52,7 +53,8 @@ msgstr "Произошла ошибка чтения из процесса от�
 
 #: ../src/delete.c:344
 #, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 "Произошла ошибка загрузки диалога Metacity для запроса на уничтожение "
 "приложения: %s\n"
@@ -81,7 +83,8 @@ msgstr ""
 #: ../src/errors.c:238
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr "Произошла неустранимая ошибка ввода-вывода %d (%s) на дисплее \"%s\".\n"
+msgstr ""
+"Произошла неустранимая ошибка ввода-вывода %d (%s) на дисплее \"%s\".\n"
 
 #: ../src/frames.c:1125
 msgid "Close Window"
@@ -176,7 +179,8 @@ msgstr "Сбой при сканировании каталога тем: %s\n"
 
 #: ../src/main.c:456
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 "Не удалось найти тему! Убедитесь, что каталог \"%s\" существует и содержит "
 "обычные темы."
@@ -362,7 +366,8 @@ msgid "The window \"%s\" is not responding."
 msgstr "Окно \"%s\" не отвечает."
 
 #: ../src/metacity-dialog.c:118
-msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Принудительное завершение приложения вызовет потерю всех несохраненных "
 "изменений."
@@ -491,7 +496,8 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:14
 msgid "Disable misfeatures that are required by old or broken applications"
-msgstr "Отключить неправильные свойства, нужные старым или поврежденным приложениям"
+msgstr ""
+"Отключить неправильные свойства, нужные старым или поврежденным приложениям"
 
 #: ../src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
@@ -592,7 +598,8 @@ msgstr "Модификатор для действий по щелчку мыш�
 
 #: ../src/metacity.schemas.in.h:28
 msgid "Move backward between panels and the desktop immediately"
-msgstr "Переключить обратно фокус ввода между панелями и рабочим столом немедленно"
+msgstr ""
+"Переключить обратно фокус ввода между панелями и рабочим столом немедленно"
 
 #: ../src/metacity.schemas.in.h:29
 msgid "Move backwards between panels and the desktop with popup"
@@ -624,7 +631,8 @@ msgstr "Переключить фокус ввода между окнами ч�
 
 #: ../src/metacity.schemas.in.h:35
 msgid "Move focus backwards between windows using popup display"
-msgstr "Переключить фокус ввода между окнами с использованием всплывающего окна"
+msgstr ""
+"Переключить фокус ввода между окнами с использованием всплывающего окна"
 
 #: ../src/metacity.schemas.in.h:36
 msgid "Move window"
@@ -714,7 +722,8 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:56
 msgid "Raise obscured window, otherwise lower"
-msgstr "Поместить на передний план, если заслонено другими, иначе поместить на задний"
+msgstr ""
+"Поместить на передний план, если заслонено другими, иначе поместить на задний"
 
 #: ../src/metacity.schemas.in.h:57
 msgid "Raise window above other windows"
@@ -2096,7 +2105,8 @@ msgstr ""
 
 #: ../src/screen.c:448
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Не удалось выбрать менеджер окон на экране %d дисплея \"%s\"\n"
 
 #: ../src/screen.c:506
@@ -2331,7 +2341,8 @@ msgstr "Отсутствует атрибут \"value\" для элемента 
 
 #: ../src/theme-parser.c:1320 ../src/theme-parser.c:1334
 #: ../src/theme-parser.c:1393
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid ""
+"Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 "Невозможно задать параметры button_width/button_height и коэффициент "
 "пропорциональности для кнопок"
@@ -2643,7 +2654,8 @@ msgstr "Внешний элемент в теме должен быть <metacit
 
 #: ../src/theme-parser.c:3679
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
 "Использование элемента <%s> внутри элементов  name/author/date/description "
 "недопустимо"
@@ -2655,7 +2667,8 @@ msgstr "Использование элемента <%s> внутри элеме
 
 #: ../src/theme-parser.c:3696
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
 "Использование элемента <%s> внутри элементов distance/border/aspect_ratio "
 "недопустимо"
@@ -2997,7 +3010,8 @@ msgstr ""
 #: ../src/theme.c:1048
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr "Не удалось выполнить разбор значения альфа-канала \"%s\" в смешанном цвете"
+msgstr ""
+"Не удалось выполнить разбор значения альфа-канала \"%s\" в смешанном цвете"
 
 #: ../src/theme.c:1058
 #, c-format
@@ -3008,8 +3022,10 @@ msgstr ""
 
 #: ../src/theme.c:1105
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr "Формат тени - \"shade/base_color/factor\", \"%s\" не соответствует формату"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr ""
+"Формат тени - \"shade/base_color/factor\", \"%s\" не соответствует формату"
 
 #: ../src/theme.c:1116
 #, c-format
@@ -3029,7 +3045,8 @@ msgstr "Не удалось выполнить разбор цвета \"%s\""
 #: ../src/theme.c:1417
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "Выражение координаты содержит символ '%s', запрещенный для использования"
+msgstr ""
+"Выражение координаты содержит символ '%s', запрещенный для использования"
 
 #: ../src/theme.c:1444
 #, c-format
@@ -3065,21 +3082,24 @@ msgid "Coordinate expression results in division by zero"
 msgstr "Вычисление выражения координаты привело к делению на ноль"
 
 #: ../src/theme.c:1777
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Выражение координаты пытается использовать оператор взятия остатка от "
 "деления для числа с плавающей запятой"
 
 #: ../src/theme.c:1834
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "В выражении координаты используется оператор \"%s\", там где должен быть "
 "операнд"
 
 #: ../src/theme.c:1843
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr "В выражении координаты используется операнд, там где должен быть оператор"
+msgstr ""
+"В выражении координаты используется операнд, там где должен быть оператор"
 
 #: ../src/theme.c:1851
 msgid "Coordinate expression ended with an operator instead of an operand"
@@ -3139,7 +3159,8 @@ msgstr ""
 
 #: ../src/theme.c:4363 ../src/theme.c:4395
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Отсутствует <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"что-нибудь"
 "\"/>"
@@ -3175,7 +3196,8 @@ msgstr ""
 
 #: ../src/theme.c:5041 ../src/theme.c:5103
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Константы, заданные пользователем, должны начинаться с заглавной буквы; \"%s"
 "\" не начинается с заглавной буквы"
@@ -3221,7 +3243,8 @@ msgstr "Ошибка менеджера окон: "
 #: ../src/window-props.c:162
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
-msgstr "Приложение установило неправильное значение параметра _NET_WM_PID %ld\n"
+msgstr ""
+"Приложение установило неправильное значение параметра _NET_WM_PID %ld\n"
 
 #. first time through
 #: ../src/window.c:5205
@@ -3272,8 +3295,8 @@ msgstr "Свойство \"%s\" для окна 0x%lx содержало нед�
 
 #: ../src/xprops.c:482
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Свойство \"%s\" для окна 0x%lx содержало недопустимые данные UTF-8 для "
 "элемента %d в списке\n"
-

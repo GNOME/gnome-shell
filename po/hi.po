@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.hi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-01 06:45+0000\n"
+"POT-Creation-Date: 2005-09-19 12:30+0200\n"
 "PO-Revision-Date: 2005-08-01 14:15+0530\n"
 "Last-Translator: Rajesh Ranjan <rranjan@redhat.com>\n"
 "Language-Team: Hindi <fedora-trans-hi@redhat.com>\n"
@@ -18,7 +18,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.9.1\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"\n"
 "\n"
 "\n"
 
@@ -55,8 +56,10 @@ msgstr "संवाद प्रदर्शक प्रक्रिया: %s
 
 #: ../src/delete.c:344
 #, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr "किसी अनुप्रयोग को खत्म करने के लिए पूछने हेतु मेटासिटी-संवाद  प्रारंभ करने में त्रुटि: %s\n"
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgstr ""
+"किसी अनुप्रयोग को खत्म करने के लिए पूछने हेतु मेटासिटी-संवाद  प्रारंभ करने में त्रुटि: %s\n"
 
 #: ../src/delete.c:452
 #, c-format
@@ -109,19 +112,20 @@ msgstr "विंडो अधिकतम खत्म करें"
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr "कोई अन्य प्रोग्राम पहले से ही कुंजी %s उपयोग में ले रहा है, परिवर्धक %x बाइंडिंग के रूप में \n"
+msgstr ""
+"कोई अन्य प्रोग्राम पहले से ही कुंजी %s उपयोग में ले रहा है, परिवर्धक %x बाइंडिंग के रूप में \n"
 
-#: ../src/keybindings.c:2535
+#: ../src/keybindings.c:2620
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "कमांड: %s  हेतु हुई त्रुटि मुद्रण हेतु मेटासिटी-संवाद प्रारंभ करने में त्रुटि हुई\n"
 
-#: ../src/keybindings.c:2640
+#: ../src/keybindings.c:2725
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "कोई कमांड %d पारिभाषित नहीं है.\n"
 
-#: ../src/keybindings.c:3485
+#: ../src/keybindings.c:3570
 msgid "No terminal command has been defined.\n"
 msgstr "कोई टर्मिनल कमांड पारिभाषित नहीं है.\n"
 
@@ -171,7 +175,8 @@ msgstr "प्रसंग डिरेक्ट्री स्कैन कर
 
 #: ../src/main.c:456
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr "प्रसंग नहीं ढूंढ सका! सुनिश्चित हों कि %s मौज़ूद है, तथा इसमें सामान्य प्रसंग हैं."
 
 #: ../src/main.c:518
@@ -392,7 +397,8 @@ msgid "The window \"%s\" is not responding."
 msgstr "विंडो \"%s\" कोई प्रतिक्रिया नही दे रहा है."
 
 #: ../src/metacity-dialog.c:118
-msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr "इस अनुप्रयोग को जबरदस्ती बन्द करने पर आप अपने सहेजे नहीं गए परिवर्तनों को खो देंगे"
 
 #: ../src/metacity-dialog.c:129
@@ -2027,7 +2033,8 @@ msgstr ""
 
 #: ../src/screen.c:448
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "स्क्रीन %d प्रदर्शक \"%s\" पर विंडो प्रबंधक चयन प्राप्त नहीं कर सका\n"
 
 #: ../src/screen.c:506
@@ -2168,16 +2175,12 @@ msgstr ""
 "large,x-large,xx-large)\n"
 
 #: ../src/theme-parser.c:729 ../src/theme-parser.c:737
-#: ../src/theme-parser.c:2936 ../src/theme-parser.c:3025
-#: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
-#, c-format
-msgid "No \"%s\" attribute on element <%s>"
-msgstr "कोई \"%s\" गुण, तत्व <%s> पर नहीं"
-
 #: ../src/theme-parser.c:807 ../src/theme-parser.c:897
 #: ../src/theme-parser.c:935 ../src/theme-parser.c:1012
 #: ../src/theme-parser.c:1062 ../src/theme-parser.c:1070
 #: ../src/theme-parser.c:1126 ../src/theme-parser.c:1134
+#: ../src/theme-parser.c:2936 ../src/theme-parser.c:3025
+#: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
 msgstr "कोई \"%s\" गुण <%s>  तत्व पर नहीं"
@@ -2262,7 +2265,8 @@ msgstr "कोई \"मान\" गुण तत्व <%s> पर नहीं 
 
 #: ../src/theme-parser.c:1320 ../src/theme-parser.c:1334
 #: ../src/theme-parser.c:1393
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid ""
+"Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr "बटनों हेतु बटन-चौड़ाई/बटन-ऊँचाई दोनों ही तथा आकार अनुपात निर्दिष्ट नहीं कर सका"
 
 #: ../src/theme-parser.c:1343
@@ -2570,7 +2574,8 @@ msgstr "प्रसंग का सबसे बाहरी तत्व <म
 
 #: ../src/theme-parser.c:3679
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "तत्व <%s>, एक name/author/date/description  तत्व के भीतर स्वीकार्य नहीं है"
 
 #: ../src/theme-parser.c:3684
@@ -2580,7 +2585,8 @@ msgstr "तत्व <%s> <स्थिरांक> तत्व के भी�
 
 #: ../src/theme-parser.c:3696
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "तत्व <%s>, distance/border/aspect_ratio  तत्व के भीतर स्वीकार्य नहीं है"
 
 #: ../src/theme-parser.c:3718
@@ -2925,8 +2931,10 @@ msgstr "अल्फा मूल्य \"%s\" ब्लेंडेड रं�
 
 #: ../src/theme.c:1105
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr "शेड फॉर्मेट है \"shade/base_color/factor\", \"%s\" जो फॉर्मेट के अनुरूप नहीं होता"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr ""
+"शेड फॉर्मेट है \"shade/base_color/factor\", \"%s\" जो फॉर्मेट के अनुरूप नहीं होता"
 
 #: ../src/theme.c:1116
 #, c-format
@@ -2976,12 +2984,14 @@ msgid "Coordinate expression results in division by zero"
 msgstr "कोआर्डिनेट एक्सप्रेशन परिणाम शून्य से भाजक के रूप में मिला"
 
 #: ../src/theme.c:1777
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "कोआर्डिनेट एक्सप्रेशन, फ्लोटिंग पाइंट नम्बर पर माड आपरेटर के उपयोग की कोशिश में"
 
 #: ../src/theme.c:1834
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "कोआर्डिनेट एक्सप्रेशन में एक आपरेटर \"%s\" है जबकि आपरेंड वांछित है"
 
 #: ../src/theme.c:1843
@@ -2997,7 +3007,8 @@ msgstr "कोआर्डिनेट एक्सप्रेशन एक आ
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
-msgstr "कोआर्डिनेट एक्सप्रेशन में आपरेटर \"%c\" के बाद आपरेटर \"%c\" है बीच में कोई आपरेण्ड नहीं है"
+msgstr ""
+"कोआर्डिनेट एक्सप्रेशन में आपरेटर \"%c\" के बाद आपरेटर \"%c\" है बीच में कोई आपरेण्ड नहीं है"
 
 #: ../src/theme.c:1980
 msgid ""
@@ -3040,8 +3051,10 @@ msgstr ""
 
 #: ../src/theme.c:4363 ../src/theme.c:4395
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "नहीं है <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"नहीं है <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: ../src/theme.c:4446
 #, c-format
@@ -3074,7 +3087,8 @@ msgstr ""
 
 #: ../src/theme.c:5041 ../src/theme.c:5103
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "उपयोगकर्ता द्वारा पारिभाषित स्थिरांक बड़े अक्षर से शुरू होने चाहिएँ, जो \"%s\" नहीं हो "
 "रहा है"
@@ -3176,6 +3190,6 @@ msgstr "गुण %s विंडो 0x%lx में अवैध यूटी�
 
 #: ../src/xprops.c:482
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "गुण %s विंडो 0x%lx पर %d वस्तुओं हेतु सूची में अवैध यूटीएफ़-8 है\n"
-

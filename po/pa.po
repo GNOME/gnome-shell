@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-02 14:44+0000\n"
+"POT-Creation-Date: 2005-09-19 12:30+0200\n"
 "PO-Revision-Date: 2005-09-02 01:13+0530\n"
 "Last-Translator: Amanpreet Singh Alam <amanpreetalam@yahoo.com>\n"
 "Language-Team: Punjabi <fedora-trans-pa@redhat.com>\n"
@@ -57,7 +57,8 @@ msgstr "ਵਾਰਤਾਲਾਪ ਵਿਖਾਵੇ ਵਾਲੇ ਕਾਰਜ �
 
 #: ../src/delete.c:344
 #, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "ਕਾਰਜ ਖਤਮ ਕਰਨ ਲਈ ਪੁੱਛਣ ਵਾਲੇ ਮੈਟਾਸਿਟੀ ਵਾਰਤਾਲਾਪ ਨੂੰ ਸ਼ੁਰੂ ਕਰਨ ਵਿੱਚ ਗਲਤੀ:%s\n"
 
 #: ../src/delete.c:452
@@ -172,7 +173,8 @@ msgstr "ਸਰੂਪ ਡਾਇਰੈਕਟਰੀ ਦੀ ਜਾਂਚ ਅਸਫ�
 
 #: ../src/main.c:456
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr "ਸਰੂਪ ਨਹੀ ਲੱਭ ਸਕਿਆ! ਯਕੀਨੀ ਬਣਾਓ ਕਿ %s ਮੌਜੂਦ ਹੈ ਅਤੇ ਇਸ ਵਿਚ ਵਰਤਣ ਵਾਲੇ ਸਰੂਪ ਹਨ।"
 
 #: ../src/main.c:518
@@ -356,7 +358,8 @@ msgid "The window \"%s\" is not responding."
 msgstr "ਝਰੋਖਾ \"%s\" ਜਵਾਬ ਨਹੀ ਦਿੰਦਾ।"
 
 #: ../src/metacity-dialog.c:118
-msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr "ਇਸ ਕਾਰਜ ਤੋਂ ਬਾਹਰ ਆਉਣ ਨਾਲ ਨਾ ਸੰਭਾਲੀ ਤਬਦੀਲੀ ਗੁੰਮ ਜਾਏਗੀ।"
 
 #: ../src/metacity-dialog.c:129
@@ -500,7 +503,8 @@ msgstr ""
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
-msgstr "ਜੇ ਯੋਗ ਹੈ, ਸਿਰਲੇਖ ਪੱਟੀ ਫੋਟ ਚੋਣ ਨੂੰ ਅਣਡਿੱਠ ਕਰੋ, ਅਤੇ ਝਰੋਖਾ ਸਿਰਲੇਖ ਵਾਸਤੇ ਮਿਆਰੀ ਕਾਰਜ ਅੱਖਰ ਵਰਤੋਂ।"
+msgstr ""
+"ਜੇ ਯੋਗ ਹੈ, ਸਿਰਲੇਖ ਪੱਟੀ ਫੋਟ ਚੋਣ ਨੂੰ ਅਣਡਿੱਠ ਕਰੋ, ਅਤੇ ਝਰੋਖਾ ਸਿਰਲੇਖ ਵਾਸਤੇ ਮਿਆਰੀ ਕਾਰਜ ਅੱਖਰ ਵਰਤੋਂ।"
 
 #: ../src/metacity.schemas.in.h:19
 msgid ""
@@ -1714,7 +1718,8 @@ msgstr "ਸਰੂਪ ਝਰੋਖੇ ਦੇ ਹਾਸ਼ੀਏ, ਸਿਰਲੇਖ 
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
-msgstr "ਝਰੋਖਾ ਉਠਾਉਣ ਤੋਂ ਪਹਿਲਾਂ ਵਕਫਾ ਜੇ ਸਵੈ-ਉਠਾਊ ਯੋਗ ਕੀਤੀ ਹੈ। ਵਕਫਾ ਸਕਿੰਟ ਦੇ ਹਜਾਰਵੇਂ ਵਿੱਚ ਦਿੱਤਾ ਹੈ।"
+msgstr ""
+"ਝਰੋਖਾ ਉਠਾਉਣ ਤੋਂ ਪਹਿਲਾਂ ਵਕਫਾ ਜੇ ਸਵੈ-ਉਠਾਊ ਯੋਗ ਕੀਤੀ ਹੈ। ਵਕਫਾ ਸਕਿੰਟ ਦੇ ਹਜਾਰਵੇਂ ਵਿੱਚ ਦਿੱਤਾ ਹੈ।"
 
 #: ../src/metacity.schemas.in.h:150
 msgid ""
@@ -1951,7 +1956,8 @@ msgstr ""
 
 #: ../src/screen.c:448
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "%d ਪਰਦੇ ਤੇ ਦਰਿਸ਼ \"%s\" ਉੱਪਰ ਝਰੋਖਾ ਪ੍ਰਬੰਧਕ ਚੋਣ ਉਪਲੱਬਧ ਨਹੀਂ ਹੋ ਸਕੀ\n"
 
 #: ../src/screen.c:506
@@ -2180,7 +2186,8 @@ msgstr "<%s> ਅੰਸ਼ ਉੱਪਰ ਕੋਈ \"ਕੀਮਤ\" ਗੁਣ ਨਹ�
 
 #: ../src/theme-parser.c:1320 ../src/theme-parser.c:1334
 #: ../src/theme-parser.c:1393
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid ""
+"Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr "ਬਟਨਾਂ ਲਈ ਦੋਨੋਂ ਬਟਨ ਚੌੜਾਈ/ਬਟਨ ਉਚਾਈ ਅਤੇ ਰੂਪ ਅਨੁਪਾਤ ਨਿਰਧਾਰਿਤ ਨਹੀਂ ਹੋ ਸਕਿਆ"
 
 #: ../src/theme-parser.c:1343
@@ -2488,7 +2495,8 @@ msgstr "ਸਰੂਪ ਵਿੱਚ ਸਭ ਤੋਂ ਬਾਹਰੀ ਅੰਸ਼ <�
 
 #: ../src/theme-parser.c:3679
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "<%s> ਅੰਸ਼ ਨੂੰ ਨਾਂ/ਲੇਖਕ/ਮਿਤੀ/ਵਰਨਣ ਅੰਸ਼ ਵਿੱਚ ਇਜਾਜ਼ਤ ਨਹੀਂ ਹੈ"
 
 #: ../src/theme-parser.c:3684
@@ -2498,7 +2506,8 @@ msgstr "<%s> ਅੰਸ਼ ਨੂੰ <ਸਥਿਰ> ਅੰਸ਼ ਵਿੱਚ ਇਜਾ
 
 #: ../src/theme-parser.c:3696
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "<%s> ਅੰਸ਼ ਨੂੰ ਫਾਸਲਾ/ਹਾਸ਼ੀਆ/ਅਕਾਰ ਅਨੁਪਾਤ ਅੰਸ਼ ਵਿੱਚ ਇਜਾਜ਼ਤ ਨਹੀਂ ਹੈ"
 
 #: ../src/theme-parser.c:3718
@@ -2841,7 +2850,8 @@ msgstr "ਧੁੰਦਲੇ ਰੰਗ ਵਿੱਚ ਐਲਫਾ ਕੀਮਤ \"%s
 
 #: ../src/theme.c:1105
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "ਰੰਗਤ ਬਣਤਰ \"ਰੰਗਤ/ਆਧਾਰ_ਰੰਗ/ਗੁਣਨਖੰਡ\" ਹੈ, \"%s\" ਬਣਤਰ ਵਿੱਚ ਠੀਕ ਨਹੀਂ ਆਉਦੀ"
 
 #: ../src/theme.c:1116
@@ -2892,12 +2902,14 @@ msgid "Coordinate expression results in division by zero"
 msgstr "ਤਾਲਮੇਲ ਸਮੀਕਰਨ ਦੇ ਨਤੀਜੇ ਵਜੋਂ ਜੀਰੋ ਨਾਲ ਭਾਗ ਹੈ"
 
 #: ../src/theme.c:1777
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "ਤਾਲਮੇਲ ਸਮੀਕਰਨ ਦਸ਼ਮਲਵ ਅੰਕ ਉੱਪਰ ਮਾਡ(mod)ਆਪ੍ਰੇਟਰ ਵਰਤਣ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰਦਾ ਹੈ"
 
 #: ../src/theme.c:1834
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "ਤਾਲਮੇਲ ਸਮੀਕਰਨ ਵਿੱਚ ਆਪ੍ਰੇਟਰ \"%s\" ਹੈ ਜਿੱਥੇ ਪ੍ਰਭਾਵੀ ਅੰਕ ਦੀ ਉਮੀਦ ਸੀ"
 
 #: ../src/theme.c:1843
@@ -2913,7 +2925,8 @@ msgstr "ਤਾਲਮੇਲ ਸਮੀਕਰਨ ਦੀ ਸਮਾਪਤੀ ਆਪ�
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
-msgstr "ਤਾਲਮੇਲ ਸਮੀਕਰਨ ਵਿੱਚ ਵਿਚਕਾਰ ਪ੍ਰਭਾਵੀ ਅੰਕ ਤੋਂ ਬਿਨਾਂ  ਆਪ੍ਰੇਟਰ \"%c\" ਤੋਂ ਬਾਅਦ ਆਪ੍ਰੇਟਰ \"%c\" ਹੈ "
+msgstr ""
+"ਤਾਲਮੇਲ ਸਮੀਕਰਨ ਵਿੱਚ ਵਿਚਕਾਰ ਪ੍ਰਭਾਵੀ ਅੰਕ ਤੋਂ ਬਿਨਾਂ  ਆਪ੍ਰੇਟਰ \"%c\" ਤੋਂ ਬਾਅਦ ਆਪ੍ਰੇਟਰ \"%c\" ਹੈ "
 
 #: ../src/theme.c:1980
 msgid ""
@@ -2934,7 +2947,8 @@ msgstr "ਤਾਲਮੇਲ ਸਮੀਕਰਨ ਵਿੱਚ ਅਣਪਛਾਤਾ
 
 #: ../src/theme.c:2129
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "ਤਾਲਮੇਲ ਸਮੀਕਰਨ ਵਿੱਚ ਕੋਈ ਬੰਦ ਬਰੈਕਟ (parenthesis) ਨਾ ਹੋਣ ਕਰਕੇ ਖੁੱਲੀ ਬਰੈਕਟ(parenthesis) ਸੀ"
+msgstr ""
+"ਤਾਲਮੇਲ ਸਮੀਕਰਨ ਵਿੱਚ ਕੋਈ ਬੰਦ ਬਰੈਕਟ (parenthesis) ਨਾ ਹੋਣ ਕਰਕੇ ਖੁੱਲੀ ਬਰੈਕਟ(parenthesis) ਸੀ"
 
 #: ../src/theme.c:2140
 msgid "Coordinate expression doesn't seem to have any operators or operands"
@@ -2956,7 +2970,8 @@ msgstr ""
 
 #: ../src/theme.c:4363 ../src/theme.c:4395
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr "ਗੁੰਮ <ਫਰੇਮ ਅਵਸਥਾ=\"%s\" ਮੁੜ ਆਕਾਰ =\"%s\" ਕੇਂਦਰ=\"%s\" ਨਮੂਨਾ=\"ਕੋਈ ਵੀ\"/>"
 
 #: ../src/theme.c:4446
@@ -2990,7 +3005,8 @@ msgstr ""
 
 #: ../src/theme.c:5041 ../src/theme.c:5103
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "ਉਪਯੋਗੀ ਦੁਆਰਾ ਪਰਭਾਸ਼ਿਤ ਸਥਿਰ ਵੱਡੇ ਅੱਖਰ ਨਾਲ ਸ਼ੁਰੂ ਹੋਣ; \"%s\" ਨਹੀਂ ਹੁੰਦੇ"
 
 #: ../src/theme.c:5049 ../src/theme.c:5111
@@ -3082,6 +3098,6 @@ msgstr "ਵਿਸ਼ੇਸ਼ਤਾ %s ਝਰੋਖੇ 0x%lx ਵਿੱਚ ਅਯੋਗ
 
 #: ../src/xprops.c:482
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "%s ਵਿਸ਼ੇਸ਼ਤਾ 0x%lx ਝਰੋਖੇ ਉੱਪਰ ਵਿੱਚ ਲੜੀ ਵਿਚਲੇ ਮੈਂਬਰ %d ਲਈ ਅਯੋਗ UTF-8 ਸ਼ਾਮਿਲ ਹੈ\n"
-
