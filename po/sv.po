@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-19 12:30+0200\n"
-"PO-Revision-Date: 2005-01-31 23:18+0100\n"
+"POT-Creation-Date: 2005-09-20 21:58+0200\n"
+"PO-Revision-Date: 2005-09-20 21:55+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -144,27 +144,27 @@ msgstr ""
 
 #: ../src/main.c:257
 msgid "Disable connection to session manager"
-msgstr ""
+msgstr "Inaktivera anslutning till sessionshanteraren"
 
 #: ../src/main.c:263
 msgid "Replace the running window manager with Metacity"
-msgstr ""
+msgstr "Ersätt den körande fönsterhanteraren med Metacity"
 
 #: ../src/main.c:269
 msgid "Specify session management ID"
-msgstr ""
+msgstr "Ange sessionshanteringsid"
 
 #: ../src/main.c:274
 msgid "X Display to use"
-msgstr ""
+msgstr "X-display att använda"
 
 #: ../src/main.c:280
 msgid "Initialize session from savefile"
-msgstr ""
+msgstr "Initiera session från sparandefil"
 
 #: ../src/main.c:286
 msgid "Print version"
-msgstr ""
+msgstr "Skriv ut version"
 
 #: ../src/main.c:440
 #, c-format
