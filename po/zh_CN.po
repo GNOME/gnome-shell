@@ -224,19 +224,19 @@ msgstr "只在此工作区(_O)"
 
 #: ../src/menu.c:68
 msgid "Move to Workspace _Left"
-msgstr "移动到工作区左侧(_L)"
+msgstr "移动到左侧工作区(_L)"
 
 #: ../src/menu.c:69
 msgid "Move to Workspace R_ight"
-msgstr "移动到工作区右侧(_I)"
+msgstr "移动到右侧工作区(_I)"
 
 #: ../src/menu.c:70
 msgid "Move to Workspace _Up"
-msgstr "移动到工作区上侧(_U)"
+msgstr "移动到上侧工作区(_U)"
 
 #: ../src/menu.c:71
 msgid "Move to Workspace _Down"
-msgstr "移动到工作区下侧(_D)"
+msgstr "移动到下侧工作区(_D)"
 
 #: ../src/menu.c:162 ../src/prefs.c:2106
 #, c-format
