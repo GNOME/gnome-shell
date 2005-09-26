@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.3.55\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-19 12:30+0200\n"
-"PO-Revision-Date: 2005-02-15 09:14+0100\n"
+"POT-Creation-Date: 2005-09-26 22:05+0200\n"
+"PO-Revision-Date: 2005-07-30 14:43+0200\n"
 "Last-Translator: Luca Ferretti <elle.uca@infinito.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -144,27 +144,27 @@ msgstr ""
 
 #: ../src/main.c:257
 msgid "Disable connection to session manager"
-msgstr ""
+msgstr "Disabilita la connessione al gestore di sessione"
 
 #: ../src/main.c:263
 msgid "Replace the running window manager with Metacity"
-msgstr ""
+msgstr "Sostituisce il window manager in esecuzione con Metacity"
 
 #: ../src/main.c:269
 msgid "Specify session management ID"
-msgstr ""
+msgstr "Specifica l'ID di gestione sessione"
 
 #: ../src/main.c:274
 msgid "X Display to use"
-msgstr ""
+msgstr "Display X da usare"
 
 #: ../src/main.c:280
 msgid "Initialize session from savefile"
-msgstr ""
+msgstr "Inizializza la sessione da file salvato"
 
 #: ../src/main.c:286
 msgid "Print version"
-msgstr ""
+msgstr "Stampa la versione"
 
 #: ../src/main.c:440
 #, c-format
@@ -3289,3 +3289,6 @@ msgid ""
 msgstr ""
 "La proprietà %s della finestra 0x%lx contiene UTF-8 non valido per "
 "l'elemento %d nella lista\n"
+
+#~ msgid "No \"%s\" attribute on element <%s>"
+#~ msgstr "Nessun attributo «%s» nell'elemento <%s>"
