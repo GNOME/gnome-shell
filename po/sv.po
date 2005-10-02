@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-20 21:58+0200\n"
+"POT-Creation-Date: 2005-10-02 23:35+0200\n"
 "PO-Revision-Date: 2005-09-20 21:55+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -3301,3 +3301,417 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Egenskap %s på fönster 0x%lx innehöll ogiltig UTF-8 för objekt %d i listan\n"
+
+#~ msgid ""
+#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
+#~ "display=DISPLAY] [--replace] [--version]\n"
+#~ msgstr ""
+#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILNAMN] [--"
+#~ "display=DISPLAY] [--replace] [--version]\n"
+
+# SUN CHANGED MESSAGE
+#~ msgid "No \"%s\" attribute on element <%s>"
+#~ msgstr "Inget \"%s\"-attribut i element <%s>"
+
+#~ msgid ""
+#~ "If true, metacity will give the user less feedback and less sense of "
+#~ "\"direct manipulation\", by using wireframes, avoiding animations, or "
+#~ "other means. This is a significant reduction in usability for many users, "
+#~ "but may allow legacy applications and terminal servers to function when "
+#~ "they would otherwise be impractical. However, the wireframe feature is "
+#~ "disabled when accessibility is on to avoid weird desktop breakages"
+#~ msgstr ""
+#~ "Om detta är sant kommer metacity att ge användaren mindre återkoppling "
+#~ "och mindre känsla av \"direktmanipulering\" genom att använda trådramar, "
+#~ "undvika animationer, och andra sätt. Detta är en betydande minskning av "
+#~ "användbarheten för många användare, men kan tillåta äldre program och "
+#~ "terminalservrar att fungera i de fall de annars skulle varit olämpliga."
+#~ "Funktionaliteten med trådramar är dock inaktiverad då tillgänglighet är "
+#~ "på för att undvika konstiga skrivbordsfel"
+
+#~ msgid "_Always on Current Workspace"
+#~ msgstr "_Alltid på aktuell arbetsyta"
+
+#~ msgid "Put on _All Workspaces"
+#~ msgstr "Placera på _alla arbetsytor"
+
+#~ msgid ""
+#~ "The keybinding used to maximize a window The format looks like \"&lt;"
+#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+#~ "liberal and allows lower or upper case, and also abbreviations such as "
+#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+#~ "special string \"disabled\", then there will be no keybinding for this "
+#~ "action."
+#~ msgstr ""
+#~ "Tangentbindningen som används för att maximera ett fönster. Formatet ser "
+#~ "ut som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken "
+#~ "är ganska tillåtande och tillåter gemener och versaler och även "
+#~ "förkortningar som \"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in "
+#~ "alternativet till specialsträngen \"disabled\" kommer det inte att finnas "
+#~ "en tangentbindning för denna åtgärd."
+
+#~ msgid "Select how to give focus to windows"
+#~ msgstr "Välj hur fokus ska ges till fönster"
+
+#~ msgid "Window Focus"
+#~ msgstr "Fönsterfokus"
+
+#~ msgid "Clic_k to give focus"
+#~ msgstr "Klic_ka för att ge fokus"
+
+#~ msgid "Focus behavior:"
+#~ msgstr "Fokusbeteende:"
+
+#~ msgid "Window Focus Preferences"
+#~ msgstr "Inställningar för fönsterfokus"
+
+#~ msgid "_Point to give focus"
+#~ msgstr "_Peka för att ge fokus"
+
+#~ msgid "_Raise window on focus"
+#~ msgstr "_Höj fönster vid fokus"
+
+#~ msgid ""
+#~ "The keybinding which display's the panel's \"Run Application\" dialog "
+#~ "box. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
+#~ "Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
+#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
+#~ "you set the option to the special string \"disabled\", then there will be "
+#~ "no keybinding for this action."
+#~ msgstr ""
+#~ "Tangentbindningen som visar panelens \"Kör program\"-dialogruta. Formatet "
+#~ "ser ut som \"&lt;Control&gt;a\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1. "
+#~ "Tolken är ganska tillåtande och tillåter gemener och versaler och även "
+#~ "förkortningar som \"&lt;Ctl&gt;\" och \"&lt;Ctrl&gt;\". Om du ställer in "
+#~ "alternativet till specialsträngen \"disabled\" kommer det inte att finnas "
+#~ "en tangentbindning för denna åtgärd."
+
+#~ msgid "Close a window"
+#~ msgstr "Stäng ett fönster"
+
+#~ msgid "Maximize a window"
+#~ msgstr "Maximera ett fönster"
+
+#~ msgid "Minimize a window"
+#~ msgstr "Minimera ett fönster"
+
+#~ msgid "Move a window"
+#~ msgstr "Flytta ett fönster"
+
+#~ msgid "Resize a window"
+#~ msgstr "Ändra storlek på ett fönster"
+
+#~ msgid "Unmaximize a window"
+#~ msgstr "Avmaximera ett fönster"
+
+#~ msgid ""
+#~ "Failed to a open connection to a session manager, so window positions "
+#~ "will not be saved: %s\n"
+#~ msgstr ""
+#~ "Misslyckades med att öppna en anslutning till en sessionshanterare, så "
+#~ "fönsterpositioner kommer inte att sparas: %s\n"
+
+#~ msgid "Failed to scan themes directory : %s\n"
+#~ msgstr "Misslyckades med att genomsöka temakatalogen: %s\n"
+
+#~ msgid "On Top"
+#~ msgstr "Överst"
+
+#~ msgid "_Windows"
+#~ msgstr "_Fönster"
+
+#~ msgid "Windows"
+#~ msgstr "Fönster"
+
+#~ msgid "Only on %s"
+#~ msgstr "Endast på %s"
+
+#~ msgid "Move to %s"
+#~ msgstr "Flytta till %s"
+
+#~ msgid ""
+#~ "<b>The window \"%s\" is not responding.</b>\n"
+#~ "\n"
+#~ "Forcing this application to quit will cause you to lose any unsaved "
+#~ "changes."
+#~ msgstr ""
+#~ "<b>Fönstret \"%s\" svarar inte.</b>\n"
+#~ "\n"
+#~ "Att tvinga detta program att avsluta kommer att göra att alla osparade "
+#~ "ändringar går förlorade."
+
+#~ msgid "Kill application"
+#~ msgstr "Döda program"
+
+#~ msgid ""
+#~ "Tells Metacity how to implement the visual indication that the system "
+#~ "bell or another application 'bell' indicator has been rung. Currently "
+#~ "there are two valid values, \"fullscreen\", which causes a fullscreen "
+#~ "white-black flash, and \"frame_flash\" which causes the titlebar of the "
+#~ "application which sent the bell signal to flash. If the application which "
+#~ "sent the bell is unknown (as is usually the case for the default \"system "
+#~ "beep\"), the currently focussed window's titlebar is flashed."
+#~ msgstr ""
+#~ "Talar om för Metacity hur den synliga indikeringen att systemsignalen "
+#~ "eller en annan programsignal har ljudit ska implementeras. För tillfället "
+#~ "finns det två giltiga värden, \"fullscreen\", som genererar en svartvit "
+#~ "blinkning i helskärmsformat, och \"frame_flash\" som gör att titelraden "
+#~ "på programmet som skickade signalen blinkar. Om programmet som skickade "
+#~ "signalen är okänd (vilket normalt är fallet för \"standardsystempipet\"), "
+#~ "blinkas titelraden på det för tillfället fokuserade fönstret."
+
+#~ msgid ""
+#~ "Window 0x%lx has property %s\n"
+#~ "that was expected to have type %s format %d\n"
+#~ "and actually has type %s format %d n_items %d.\n"
+#~ "This is most likely an application bug not a window manager bug.\n"
+#~ "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
+#~ msgstr ""
+#~ "Fönster 0x%lx har egenskap %s\n"
+#~ "som förväntades ha typen %s format %d\n"
+#~ "och har i verkligheten typ %s format %d n_items %d.\n"
+#~ "Det här är sannolikt ett programfel och inte ett fel i "
+#~ "fönsterhanteraren.\n"
+#~ "Fönstret har titeln=\"%s\" klass=\"%s\" namn=\"%s\"\n"
+
+#~ msgid ""
+#~ "Window 0x%lx has property %s\n"
+#~ "that was expected to have type %s format %d\n"
+#~ "and actually has type %s format %d n_items %d.\n"
+#~ "This is most likely an application bug and not a window manager bug.\n"
+#~ "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
+#~ msgstr ""
+#~ "Fönster 0x%lx har egenskap %s\n"
+#~ "som förväntades ha typen %s format %d\n"
+#~ "och har i verkligheten typ %s format %d n_items %d.\n"
+#~ "Det här är sannolikt ett programfel och inte ett fel i "
+#~ "fönsterhanteraren.\n"
+#~ "Fönstret har titeln=\"%s\" klass=\"%s\" namn=\"%s\"\n"
+
+#~ msgid "Workspace %u"
+#~ msgstr "Arbetsyta %u"
+
+#~ msgid "Move focus backwards between panels and the desktop immediately"
+#~ msgstr "Flytta fokus baklänges mellan paneler och skrivbordet omedelbart"
+
+#~ msgid "_Shade"
+#~ msgstr "Sk_ugga"
+
+#~ msgid "Un_shade"
+#~ msgstr "Avsk_ugga"
+
+#~ msgid "No <name> set for theme \"%s\""
+#~ msgstr "Inget <name> angivet för temat \"%s\""
+
+#~ msgid "No <author> set for theme \"%s\""
+#~ msgstr "Inget <author> angivet för temat \"%s\""
+
+#~ msgid "No <date> set for theme \"%s\""
+#~ msgstr "Inget <date> angivet för temat \"%s\""
+
+#~ msgid "No <description> set for theme \"%s\""
+#~ msgstr "Inget <description> angivet för temat \"%s\""
+
+#~ msgid "No <copyright> set for theme \"%s\""
+#~ msgstr "Inget <copyright> angivet för temat \"%s\""
+
+#~ msgid "Change how focus is moved from one window to another"
+#~ msgstr "Ändra hur fokus flyttas från ett fönster till ett annat"
+
+#~ msgid "Window manager"
+#~ msgstr "Fönsterhanterare"
+
+#~ msgid ""
+#~ "The keybinding used to maximize a window. The format looks like "
+#~ "\"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and "
+#~ "allows lower or upper case, and also abbreviations such as \"<Ctl>\" and "
+#~ "\"<Ctrl>\". If you set the option to the special string \"disabled\", "
+#~ "then there will be no keybinding for this action."
+#~ msgstr ""
+#~ "Tangentbindningen som används för att maximera ett fönster. Formatet ser "
+#~ "ut som \"<Control>\" eller \"<Shift><Alt>F1\". Tolken är ganska "
+#~ "tillåtande och tillåter gemener och versaler och även förkortningar som "
+#~ "\"<Ctl>\" och \"<Ctrl>\". Om du ställer in alternativet till "
+#~ "specialsträngen \"disabled\" kommer det inte att finnas en "
+#~ "tangentbindning för denna åtgärd."
+
+#~ msgid ""
+#~ "The keybinding used to unmaximize a window. The format looks like "
+#~ "\"<Control>a\" or \"<Shift><Alt>F1. The parser is fairly liberal and "
+#~ "allows lower or upper case, and also abbreviations such as \"<Ctl>\" and "
+#~ "\"<Ctrl>\". If you set the option to the special string \"disabled\", "
+#~ "then there will be no keybinding for this action."
+#~ msgstr ""
+#~ "Tangentbindningen som används för att avmaximera ett fönster. Formatet "
+#~ "ser ut som \"<Control>a\" eller \"<Shift><Alt>F1\". Tolken är ganska "
+#~ "tillåtande och tillåter gemener och versaler och även förkortningar som "
+#~ "\"<Ctl>\" och \"<Ctrl>\". Om du ställer in alternativet till "
+#~ "specialsträngen \"disabled\" kommer det inte att finnas en "
+#~ "tangentbindning för denna åtgärd."
+
+#~ msgid "Workspace %d\n"
+#~ msgstr "Arbetsyta %d\n"
+
+#~ msgid ""
+#~ "The keybinding that runs the correspondingly-numbered command in /apps/"
+#~ "metacity/keybinding_commands. The format looks like \"&lt;Control&gt;a\" "
+#~ "or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows "
+#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
+#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
+#~ "\", then there will be no keybinding for this action."
+#~ msgstr ""
+#~ "Tangentbindningen som kör det på motsvarande sätt numrerade kommandot i /"
+#~ "apps/metacity/keybinding_commands. Formatet ser ut som \"&lt;Control&gt;a"
+#~ "\" eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är ganska tillåtande och "
+#~ "tillåter gemener och versaler och även förkortningar som \"&lt;Ctl&gt;\" "
+#~ "och \"&lt;Ctrl&gt;\". Om du ställer in alternativet till specialsträngen "
+#~ "\"disabled\" kommer det inte att finnas en tangentbindning för denna "
+#~ "åtgärd."
+
+#~ msgid "Move focus to the previously-focused window"
+#~ msgstr "Flytta fokus till det tidigare fokuserade fönstret"
+
+#~ msgid ""
+#~ "The keybinding used to move focus back to the window which last had the "
+#~ "focus. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
+#~ "Alt&gt;F1. The parser is fairly liberal and allows lower or upper case, "
+#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
+#~ "you set the option to the special string \"disabled\", then there will be "
+#~ "no keybinding for this action."
+#~ msgstr ""
+#~ "Tangentbindningen som används för att flytta fokus tillbaka till det "
+#~ "fönster som senast hade fokus. Formatet ser ut som \"&lt;Control&gt;a\" "
+#~ "eller \"&lt;Shift&gt;&lt;Alt&gt;F1\". Tolken är ganska tillåtande och "
+#~ "tillåter gemener och versaler och även förkortningar som \"&lt;Ctl&gt;\" "
+#~ "och \"&lt;Ctrl&gt;\". Om du ställer in alternativet till specialsträngen "
+#~ "\"disabled\" kommer det inte att finnas en tangentbindning för denna "
+#~ "åtgärd."
+
+#~ msgid "No \"name\" attribute on <%s> element"
+#~ msgstr "Inget \"name\"-attribut i <%s>-element"
+
+#~ msgid "No \"type\" attribute on <%s> element"
+#~ msgstr "Inget \"type\"-attribut i <%s>-element"
+
+#~ msgid "No \"style_set\" attribute on <%s> element"
+#~ msgstr "Inget \"style_set\"-attribut i <%s>-element"
+
+#~ msgid "Element <%s> is not allowed below <metacity_theme>"
+#~ msgstr "Elementet <%s> är inte tillåtet under <metacity_theme>"
+
+#~ msgid "Element <%s> is not allowed below <info>"
+#~ msgstr "Elementet <%s> är inte tillåtet under <info>"
+
+#~ msgid "Element <%s> is not allowed below <frame_geometry>"
+#~ msgstr "Elementet <%s> är inte tillåtet under <frame_geometry>"
+
+#~ msgid "Element <%s> is not allowed below <draw_ops>"
+#~ msgstr "Elementet <%s> är inte tillåtet under <draw_ops>"
+
+#~ msgid "Element <%s> is not allowed below <gradient>"
+#~ msgstr "Elementet <%s> är inte tillåtet under <gradient>"
+
+#~ msgid "Element <%s> is not allowed below <frame_style>"
+#~ msgstr "Elementet <%s> är inte tillåtet under <frame_style>"
+
+#~ msgid "Element <%s> is not allowed below <frame_style_set>"
+#~ msgstr "Elementet <%s> är inte tillåtet under <frame_style_set>"
+
+#~ msgid "Element <%s> is not allowed below <piece>"
+#~ msgstr "Elementet <%s> är inte tillåtet under <piece>"
+
+#~ msgid "Element <%s> is not allowed inside a <color> element"
+#~ msgstr "Elementet <%s> är inte tillåtet inuti ett <color>-element"
+
+#~ msgid "Element <%s> is not allowed inside a <frame> element"
+#~ msgstr "Elementet <%s> är inte tillåtet inuti ett <frame>-element"
+
+#~ msgid "Element <%s> is not allowed inside a <window> element"
+#~ msgstr "Elementet <%s> är inte tillåtet inuti ett <window>-element"
+
+#~ msgid ""
+#~ "Window %s sets max width %d less than min width %d, disabling resize\n"
+#~ msgstr ""
+#~ "Fönstret %s ställer in största bredden %d mindre än minsta bredden %d, "
+#~ "stänger av storleksändring\n"
+
+#~ msgid ""
+#~ "Window %s sets max height %d less than min height %d, disabling resize\n"
+#~ msgstr ""
+#~ "Fönstret %s ställer in största höjden %d mindre än minsta höjden %d, "
+#~ "stänger av storleksändring\n"
+
+#~ msgid "Left edge"
+#~ msgstr "Vänsterkant"
+
+#~ msgid "Left window edge width"
+#~ msgstr "Bredd på vänster fönsterkant"
+
+#~ msgid "Right edge"
+#~ msgstr "Högerkant"
+
+#~ msgid "Right window edge width"
+#~ msgstr "Bredd på höger fönsterkant"
+
+#~ msgid "Bottom edge"
+#~ msgstr "Nederkant"
+
+#~ msgid "Bottom window edge height"
+#~ msgstr "Höjd på nedre fönsterkant"
+
+#~ msgid "Title border"
+#~ msgstr "Titelram"
+
+#~ msgid "Border around title area"
+#~ msgstr "Ram runt titelområdet"
+
+#~ msgid "Text border"
+#~ msgstr "Textram"
+
+#~ msgid "Spacer padding"
+#~ msgstr "Utfyllnadsmellanrum"
+
+#~ msgid "Padding on either side of spacer"
+#~ msgstr "Utfyllnad på varje sida om utfyllare"
+
+#~ msgid "Spacer width"
+#~ msgstr "Utfyllnadsbredd"
+
+#~ msgid "Width of spacer"
+#~ msgstr "Bredd på utfyllnad"
+
+#~ msgid "Spacer height"
+#~ msgstr "Utfyllnadshöjd"
+
+#~ msgid "Height of spacer"
+#~ msgstr "Höjd på utfyllnad"
+
+#~ msgid "Right inset"
+#~ msgstr "Höger infällning"
+
+#~ msgid "Distance of buttons from right edge of frame"
+#~ msgstr "Avstånd på knappar från högerkanten på ramen"
+
+#~ msgid "Left inset"
+#~ msgstr "Vänster infällning"
+
+#~ msgid "Distance of menu button from left edge of frame"
+#~ msgstr "Avstånd på menyknapp från vänsterkanten på ramen"
+
+#~ msgid "Width of buttons"
+#~ msgstr "Bredd på knappar"
+
+#~ msgid "Button height"
+#~ msgstr "Knapphöjd"
+
+#~ msgid "Height of buttons"
+#~ msgstr "Höjd på knappar"
+
+#~ msgid "Border around buttons"
+#~ msgstr "Ram runt knappar"
+
+#~ msgid "Inner button border"
+#~ msgstr "Inre knappram"
+
+#~ msgid "Border around the icon inside buttons"
+#~ msgstr "Ram runt ikonen inuti knappar"
