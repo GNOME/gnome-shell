@@ -90,6 +90,16 @@
           If true, and the focus mode is either "sloppy" or "mouse"
 	  then the focused window will be automatically raised after a 
 	  delay (the delay is specified by the auto_raise_delay key).
+
+          This preference is poorly named, but kept for backwards
+          compatibility.  To try to be more clear (at least to the
+          technically inclined), its meaning is "automatically raise
+          the window following a timeout which is triggered by
+          non-grabbed mouse entry in sloppy or mouse focus modes".  It
+          is unrelated to clicking behavior (i.e. this is not related
+          to raise-on-click/orthogonal-raise).  It is unrelated to
+          entering a window during drag and drop (because that results
+          in the application grabbing the mouse)
          </long>
       </locale>
     </schema>

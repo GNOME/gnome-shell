@@ -1,5 +1,10 @@
 2005-10-03  Elijah Newren  <newren@gmail.com>
 
+	* src/metacity.schemas.in: clarify the meaning of the auto_raise
+	preference.  Fixes one of the issues in #312421.
+
+2005-10-03  Elijah Newren  <newren@gmail.com>
+
 	Patch from Ross Cohen to make alt-esc consistent with alt-tab by
 	leaving stacking of unselected windows unchanged.  Fixes #314285.
 
