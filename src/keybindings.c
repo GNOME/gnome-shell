@@ -2528,7 +2528,10 @@ process_tab_grab (MetaDisplay *display,
            */
           Window target_xwindow;
           MetaWindow *target_window;
-          
+
+          meta_stack_set_positions (screen->stack,
+                                    display->grab_old_window_stacking);
+
           target_xwindow =
             (Window) meta_ui_tab_popup_get_selected (screen->tab_popup);
           target_window =
