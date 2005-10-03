@@ -1,3 +1,19 @@
+2.12.1
+==
+
+Thanks to Ray Strode, Havoc Pennington, and Elijah Newren for
+improvements in this release.
+
+ - Truncate ridiculously long titles to avoid crashing or letting the
+   pager crash (Ray, Havoc, Elijah) [#315070]
+ - Get the tabbing window outline to work with gtk+ 2.8.4 again
+   (Elijah) [#317528]
+
+Translations
+  Mahay Alam Khan (bn), Francisco Javier F. Serrador (es), Ivar Smolin (et),
+  Iñaki Larrañaga Murgoitio (eu), Luca Ferretti (it), Christian Rose (sv),
+  Clytie Siddall (vi), Funda Wang (zh_CN)
+
 2.12.0
 ==
 
