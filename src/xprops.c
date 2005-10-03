@@ -524,6 +524,20 @@ meta_prop_get_utf8_list (MetaDisplay   *display,
   return utf8_list_from_results (&results, str_p, n_str_p);
 }
 
+void
+meta_prop_set_utf8_string_hint (MetaDisplay *display,
+                                Window xwindow,
+                                Atom atom,
+                                const char *val)
+{
+  meta_error_trap_push (display);
+  XChangeProperty (display->xdisplay, 
+                   xwindow, atom,
+                   display->atom_utf8_string, 
+                   8, PropModeReplace, (guchar*) val, strlen (val));
+  meta_error_trap_pop (display, FALSE);
+}
+
 static gboolean
 window_from_results (GetPropertyResults *results,
                      Window             *window_p)

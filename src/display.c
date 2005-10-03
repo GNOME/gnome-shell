@@ -122,20 +122,6 @@ static void    sanity_check_timestamps   (MetaDisplay *display,
                                           Time         known_good_timestamp);
 
 static void
-set_utf8_string_hint (MetaDisplay *display,
-                      Window xwindow,
-                      Atom atom,
-                      const char *val)
-{
-  meta_error_trap_push (display);
-  XChangeProperty (display->xdisplay, 
-                   xwindow, atom,
-                   display->atom_utf8_string, 
-                   8, PropModeReplace, (guchar*) val, strlen (val));
-  meta_error_trap_pop (display, FALSE);
-}
-
-static void
 ping_data_free (MetaPingData *ping_data)
 {
   /* Remove the timeout */
@@ -302,7 +288,9 @@ meta_display_open (const char *name)
     "_NET_MOVERESIZE_WINDOW",
     "_NET_DESKTOP_GEOMETRY",
     "_NET_DESKTOP_VIEWPORT",
-    "_METACITY_VERSION"
+    "_METACITY_VERSION",
+    "_NET_WM_VISIBLE_NAME",
+    "_NET_WM_VISIBLE_ICON_NAME"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -460,6 +448,8 @@ meta_display_open (const char *name)
   display->atom_net_desktop_geometry = atoms[89];
   display->atom_net_desktop_viewport = atoms[90];
   display->atom_metacity_version = atoms[91];
+  display->atom_net_wm_visible_name = atoms[92];
+  display->atom_net_wm_visible_icon_name = atoms[93];
 
   display->prop_hooks = NULL;
   meta_display_init_window_prop_hooks (display);
@@ -637,15 +627,15 @@ meta_display_open (const char *name)
     display->leader_window = meta_create_offscreen_window (display->xdisplay,
                                                            DefaultRootWindow (display->xdisplay));                                                           
 
-    set_utf8_string_hint (display,
-                          display->leader_window,
-                          display->atom_net_wm_name,
-                          "Metacity");
+    meta_prop_set_utf8_string_hint (display,
+                                    display->leader_window,
+                                    display->atom_net_wm_name,
+                                    "Metacity");
     
-    set_utf8_string_hint (display,
-                          display->leader_window,
-                          display->atom_metacity_version,
-                          VERSION);
+    meta_prop_set_utf8_string_hint (display,
+                                    display->leader_window,
+                                    display->atom_metacity_version,
+                                    VERSION);
 
     data[0] = display->leader_window;
     XChangeProperty (display->xdisplay,

@@ -1,5 +1,30 @@
 2005-10-03  Elijah Newren  <newren@gmail.com>
 
+	Truncate ridiculously long titles to avoid crashing or letting the
+	pager crash.  Based on patch from Ray, incorporating suggestions
+	from Havoc and some extensions of my own.  Fixes #315070.
+
+	* src/display.c (set_utf8_string_hint, meta_display_open):
+	* src/xprops.[ch] (meta_prop_set_utf8_string_hint):
+	Move set_utf8_string_hint() to props.[ch], namespace it
+	("meta_prop_"), and make it public
+
+	* src/tabpopup.c (utf8_strndup, meta_ui_tab_popup_new):
+	* src/util.[ch] (meta_g_utf8_strndup):
+	Move utf8_strndup() to util.[ch], namespace it ("meta_g_"), and
+	make it public
+
+	* src/display.c (meta_display_open):
+	* src/display.h (struct _MetaDisplay):
+	add net_wm_visible_name and net_wm_visible_icon_name atoms to the
+	list of atoms we work with
+
+	* src/window-props.c (set_window_title, set_icon_title): If title
+	length is greater than 512, truncate it and set
+	_NET_WM_VISIBLE_NAME or _NET_WM_VISIBLE_ICON_NAME accordingly
+
+2005-10-03  Elijah Newren  <newren@gmail.com>
+
 	Get the tabbing window outline to work with gtk+ 2.8.4 again.
 	Fixes #317528.
 

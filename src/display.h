@@ -183,6 +183,8 @@ struct _MetaDisplay
   Atom atom_net_desktop_geometry;
   Atom atom_net_desktop_viewport;
   Atom atom_metacity_version;
+  Atom atom_net_wm_visible_name;
+  Atom atom_net_wm_visible_icon_name;
 
   /* This is the actual window from focus events,
    * not the one we last set

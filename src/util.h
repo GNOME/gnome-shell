@@ -88,6 +88,7 @@ void meta_print_backtrace (void);
 #define _(x) dgettext (GETTEXT_PACKAGE, x)
 #define N_(x) x
 
+char* meta_g_utf8_strndup (const gchar *src, gsize n);
 
 /* To disable verbose mode, we make these functions into no-ops */
 #ifdef WITH_VERBOSE_MODE

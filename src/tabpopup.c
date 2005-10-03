@@ -98,20 +98,6 @@ outline_window_expose (GtkWidget      *widget,
   return FALSE;
 }
 
-static char*
-utf8_strndup (const char *src,
-              int         n)
-{
-  const gchar *s = src;
-  while (n && *s)
-    {
-      s = g_utf8_next_char (s);
-      n--;
-    }
-
-  return g_strndup (src, s - src);
-}
-
 static GdkPixbuf*
 dimm_icon (GdkPixbuf *pixbuf)
 {
@@ -238,7 +224,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
               tmp = markup;
             }
             
-          te->title = utf8_strndup (tmp, max_chars_per_title);
+          te->title = meta_g_utf8_strndup (tmp, max_chars_per_title);
           g_free (tmp);
         }
       te->widget = NULL;

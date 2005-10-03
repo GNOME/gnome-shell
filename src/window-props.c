@@ -190,6 +190,8 @@ reload_net_wm_user_time (MetaWindow    *window,
     }
 }
 
+#define MAX_TITLE_LENGTH 512
+
 static void
 set_window_title (MetaWindow *window,
                   const char *title)
@@ -200,8 +202,16 @@ set_window_title (MetaWindow *window,
   
   if (title == NULL)
     window->title = g_strdup ("");
-  else
+  else if (g_utf8_strlen (title, MAX_TITLE_LENGTH + 1) <= MAX_TITLE_LENGTH)
     window->title = g_strdup (title);
+  else
+    {
+      window->title = meta_g_utf8_strndup (title, MAX_TITLE_LENGTH);
+      meta_prop_set_utf8_string_hint (window->display,
+                                      window->xwindow,
+                                      window->display->atom_net_wm_visible_name,
+                                      window->title);
+    }
   
   /* strndup is a hack since GNU libc has broken %.10s */
   str = g_strndup (window->title, 10);
@@ -285,8 +295,17 @@ set_icon_title (MetaWindow *window,
   
   if (title == NULL)
     window->icon_name = g_strdup ("");
-  else
+  else if (g_utf8_strlen (title, MAX_TITLE_LENGTH + 1) <= MAX_TITLE_LENGTH)
     window->icon_name = g_strdup (title);
+  else
+    {
+      window->icon_name = meta_g_utf8_strndup (title, MAX_TITLE_LENGTH);
+      meta_prop_set_utf8_string_hint (window->display,
+                                      window->xwindow,
+                                      window->display->atom_net_wm_visible_icon_name,
+                                      window->icon_name);
+    }
+
 }
 
 static void

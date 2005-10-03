@@ -161,6 +161,20 @@ meta_set_replace_current_wm (gboolean setting)
   replace_current = setting;
 }
 
+char *
+meta_g_utf8_strndup (const gchar *src,
+                     gsize        n)
+{
+  const gchar *s = src;
+  while (n && *s)
+    {
+      s = g_utf8_next_char (s);
+      n--;
+    }
+
+  return g_strndup (src, s - src);
+}
+
 static int
 utf8_fputs (const char *str,
             FILE       *f)
