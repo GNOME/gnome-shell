@@ -2434,6 +2434,8 @@ process_tab_grab (MetaDisplay *display,
       
       if (target_window)
         {
+          target_window->tab_unminimized = FALSE;
+
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Activating target window\n");
 
@@ -2501,6 +2503,13 @@ process_tab_grab (MetaDisplay *display,
   
   if (key_used)
     {
+      Window      prev_xwindow;
+      MetaWindow *prev_window;
+      prev_xwindow =
+        (Window) meta_ui_tab_popup_get_selected (screen->tab_popup);
+      prev_window =
+        meta_display_lookup_x_window (display, prev_xwindow);
+
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Key pressed, moving tab focus in popup\n");
 
@@ -2525,14 +2534,25 @@ process_tab_grab (MetaDisplay *display,
           target_window =
             meta_display_lookup_x_window (display, target_xwindow);
           
+          if (prev_window && prev_window->tab_unminimized)
+            {
+              prev_window->tab_unminimized = FALSE;
+              meta_window_minimize (prev_window);
+            }
+
           if (target_window)
             {
               meta_window_raise (target_window);
+              target_window->tab_unminimized = target_window->minimized;
+              meta_window_unminimize (target_window);
             }
         }
     }
   else
     {
+      Window      prev_xwindow;
+      MetaWindow *prev_window;
+
       /* end grab */
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Ending tabbing/cycling, uninteresting key pressed\n");
@@ -2541,6 +2561,17 @@ process_tab_grab (MetaDisplay *display,
                   "Syncing to old stack positions.\n");
       meta_stack_set_positions (screen->stack,
                                 screen->display->grab_old_window_stacking);
+
+      prev_xwindow =
+        (Window) meta_ui_tab_popup_get_selected (screen->tab_popup);
+      prev_window =
+        meta_display_lookup_x_window (display, prev_xwindow);
+
+      if (prev_window && prev_window->tab_unminimized)
+        {
+          meta_window_minimize (prev_window);
+          prev_window->tab_unminimized = FALSE;
+        }
     }
   
   return key_used;
@@ -3099,7 +3130,12 @@ do_choose_window (MetaDisplay    *display,
                 meta_ui_tab_popup_set_showing (screen->tab_popup,
                                                TRUE);
               else
-                meta_window_raise (initial_selection);
+                {
+                  meta_window_raise (initial_selection);
+                  initial_selection->tab_unminimized = 
+                    initial_selection->minimized;
+                  meta_window_unminimize (initial_selection);
+                }
             }
         }
     }

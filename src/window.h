@@ -124,6 +124,7 @@ struct _MetaWindow
 
   /* Minimize is the state controlled by the minimize button */
   guint minimized : 1;
+  guint tab_unminimized : 1;
 
   /* Whether the window is mapped; actual server-side state
    * see also unmaps_pending

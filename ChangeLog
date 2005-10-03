@@ -1,5 +1,22 @@
 2005-10-03  Elijah Newren  <newren@gmail.com>
 
+	Patch from Ross Cohen to make alt-esc (show windows instantly)
+	actually show minimized windows too.  Fixes #107072.
+
+	* src/keybindings.c (process_tab_grab): initialize tab_unminimized
+	to FALSE for the target window when starting the grab, when
+	advancing through the list check to find the previous window and
+	re-minimize it if it was tab-unminimized, unminimize the new
+	window we're alt-esc'ing to if it's minimized, (do_choose_window):
+	raise and unminimize the initial window as well in alt-esc'ing
+
+	* src/window.h (struct _MetaWindow): add a tab_unminimized field
+
+	* src/window.c (meta_window_new_with_attrs): initialize
+	tab_unminimized to false
+
+2005-10-03  Elijah Newren  <newren@gmail.com>
+
 	Branched for Gnome 2.13.  :-)
 	
 	* configure.in: bump version to 2.13.0.  Add UNSTABLE warning.
