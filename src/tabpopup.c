@@ -808,6 +808,40 @@ meta_select_workspace_class_init (MetaSelectWorkspaceClass *klass)
   widget_class->expose_event = meta_select_workspace_expose_event;
 }
 
+/**
+ * meta_convert_meta_to_wnck() converts a MetaWindow to a
+ * WnckWindowDisplayInfo window that is used to build a thumbnail of a
+ * workspace.
+ **/
+static WnckWindowDisplayInfo
+meta_convert_meta_to_wnck (MetaWindow *window, MetaScreen *screen)
+{
+  WnckWindowDisplayInfo wnck_window;
+  wnck_window.icon = window->icon;
+  wnck_window.mini_icon = window->mini_icon;
+  
+  wnck_window.is_active = FALSE;
+  if (window == window->display->expected_focus_window)
+    wnck_window.is_active = TRUE;
+
+  if (window->frame)
+    {
+      wnck_window.x = window->frame->rect.x;
+      wnck_window.y = window->frame->rect.y;
+      wnck_window.width = window->frame->rect.width;
+      wnck_window.height = window->frame->rect.height;
+    }
+  else
+    {
+      wnck_window.x = window->rect.x;
+      wnck_window.y = window->rect.y;
+      wnck_window.width = window->rect.width;
+      wnck_window.height = window->rect.height;
+    }
+  return wnck_window;
+}
+
+
 static gboolean
 meta_select_workspace_expose_event (GtkWidget      *widget,
                                     GdkEventExpose *event)
@@ -836,7 +870,7 @@ meta_select_workspace_expose_event (GtkWidget      *widget,
                           workspace != workspace->screen->active_workspace;
 
       if (window->skip_pager || 
-          window->minimized || 
+          !meta_window_showing_on_its_workspace (window) ||
           window->unmaps_pending ||
           ignoreable_sticky)
         {
@@ -844,26 +878,7 @@ meta_select_workspace_expose_event (GtkWidget      *widget,
         }
       else
         {
-          windows[i].icon = window->icon;
-          windows[i].mini_icon = window->mini_icon;
-          windows[i].is_active = 
-            (window == window->display->expected_focus_window);
-
-          if (window->frame)
-            {
-              windows[i].x = window->frame->rect.x;
-              windows[i].y = window->frame->rect.y;
-              windows[i].width = window->frame->rect.width;
-              windows[i].height = window->frame->rect.height;
-            }
-          else
-            {                
-              windows[i].x = window->rect.x;
-              windows[i].y = window->rect.y;
-              windows[i].width = window->rect.width;
-              windows[i].height = window->rect.height;
-            }
-
+          windows[i] = meta_convert_meta_to_wnck (window, workspace->screen);
           i++;
         }
       tmp = tmp->next;

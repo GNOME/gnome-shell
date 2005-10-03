@@ -910,7 +910,7 @@ focus_ancestor_or_mru_window (MetaWorkspace *workspace,
       MetaWindow* tmp_window;
       tmp_window = ((MetaWindow*) tmp->data);
       if (tmp_window != not_this_one           &&
-          !tmp_window->minimized               &&
+          meta_window_showing_on_its_workspace (tmp_window) &&
           tmp_window->type != META_WINDOW_DOCK &&
           tmp_window->type != META_WINDOW_DESKTOP)
         {

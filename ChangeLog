@@ -1,5 +1,22 @@
 2005-10-03  Elijah Newren  <newren@gmail.com>
 
+	Patch from Björn Lindqvist fix the workspace switcher tabpopup to
+	display the right windows and to fix the
+	pick-a-new-window-to-focus algorithm in order to not select
+	windows that aren't showing.  Fixes #170475.
+
+	* src/tabpopup.c (meta_convert_meta_to_wnck,
+	meta_select_workspace_expose_event): factor out conversion code
+	from meta_select_workspace_expose_event() into the new
+	meta_convert_meta_to_wnck() function
+
+	* src/tabpopup.c (meta_select_workspace_expose_event):
+	* src/workspace.c (focus_ancestor_or_mru_window):
+	replace the buggy window->minimized logic with
+	!meta_window_showing_on_its_workspace (window)
+
+2005-10-03  Elijah Newren  <newren@gmail.com>
+
 	Patch from Björn Lindqvist to have ancestors come along with the
 	transient when moving the window from one workspace to another.
 	Fixes #314977.
