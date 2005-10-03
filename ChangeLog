@@ -1,3 +1,13 @@
+2005-10-03  Elijah Newren  <newren@gmail.com>
+
+	Get the tabbing window outline to work with gtk+ 2.8.4 again.
+	Fixes #317528.
+
+	* src/tabpopup.c (display_entry): gtk+ 2.8.4 needs to know the
+	mapped state of its windows (see bug 316180), and since we
+	manually map with gdk_window_show_unraised() we need to manually
+	set the mapped state too
+
 2005-09-05  Elijah Newren  <newren@gmail.com>
 
 	* configure.in: post-release version bump to 2.12.1

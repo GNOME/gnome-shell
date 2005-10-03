@@ -485,8 +485,11 @@ display_entry (MetaTabPopup *popup,
       gdk_region_destroy (region);
   
       /* This should piss off gtk a bit, but we don't want to raise
-       * above the tab popup
+       * above the tab popup.  So, instead of calling gtk_widget_show,
+       * we manually set the window as mapped and then manually map it
+       * with gdk functions.
        */
+      GTK_WIDGET_SET_FLAGS (popup->outline_window, GTK_MAPPED);
       gdk_window_show_unraised (popup->outline_window->window);
     }
 
