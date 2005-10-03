@@ -322,11 +322,8 @@ invalidate_cache (MetaFrames *frames,
   if (pixels->bottom)
     g_object_unref (pixels->bottom);
   
-  pixels->top = NULL;
-  pixels->bottom = NULL;
-  pixels->right = NULL;
-  pixels->left = NULL;
-
+  g_free (pixels);
+  
   g_hash_table_remove (frames->cache, frame);
 }
 

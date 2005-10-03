@@ -77,6 +77,7 @@ meta_bell_flash_screen (MetaDisplay *display,
       XFlush (display->xdisplay);
       XSync (display->xdisplay, False);
       XUnmapWindow (display->xdisplay, screen->flash_window);
+      XFreeGC (display->xdisplay, gc);
     }
 
   if (meta_prefs_get_focus_mode () != META_FOCUS_MODE_CLICK &&

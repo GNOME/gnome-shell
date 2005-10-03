@@ -6219,6 +6219,8 @@ meta_window_show_menu (MetaWindow *window,
         ops |= META_MENU_OP_MOVE_DOWN;
     }
 
+  meta_screen_free_workspace_layout (&layout);
+
   if (window->maximized)
     ops |= META_MENU_OP_UNMAXIMIZE;
   else

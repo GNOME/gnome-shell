@@ -1,5 +1,17 @@
 2005-10-03  Elijah Newren  <newren@gmail.com>
 
+	A combination of a couple memory leaks fixes, from Kjartan,
+	Soeren, and I.  Fixes #313030.
+
+	* src/bell.c (meta_bell_flash_screen): call XFreeGC()
+
+	* src/frames.c (invalidate_cache): free pixels
+
+	* src/window.c (meta_window_show_menu): call
+	meta_screen_free_workspace_layout()
+
+2005-10-03  Elijah Newren  <newren@gmail.com>
+
 	Patch from Björn Lindqvist fix the workspace switcher tabpopup to
 	display the right windows and to fix the
 	pick-a-new-window-to-focus algorithm in order to not select
