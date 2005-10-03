@@ -1,5 +1,14 @@
 2005-10-03  Elijah Newren  <newren@gmail.com>
 
+	Patch from Björn Lindqvist to have ancestors come along with the
+	transient when moving the window from one workspace to another.
+	Fixes #314977.
+
+	* src/window.c (meta_window_change_workspace): have all ancestors
+	change workspaces too
+
+2005-10-03  Elijah Newren  <newren@gmail.com>
+
 	* configure.in: post-release version bump to 2.12.2
 
 2005-10-03  Elijah Newren  <newren@gmail.com>

@@ -3628,6 +3628,8 @@ meta_window_change_workspace (MetaWindow    *window,
 
   meta_window_foreach_transient (window, change_workspace_foreach,
                                  workspace);
+  meta_window_foreach_ancestor (window, change_workspace_foreach,
+                                workspace);
 }
 
 static void
