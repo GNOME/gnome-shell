@@ -2,7 +2,7 @@ AC_PREREQ(2.50)
 
 # Fibonacci sequence for micro version numbering:
 # 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987
-AC_INIT([metacity], [2.12.2],
+AC_INIT([metacity], [2.13.0],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=metacity])
 
 AC_CONFIG_SRCDIR(src/display.c)
@@ -517,5 +517,5 @@ metacity-$VERSION:
 	Render:                   ${have_xrender}
 	Xcursor:                  ${have_xcursor}
 "
-#echo "This is the UNSTABLE branch of metacity"
-#echo "Use 2.10.x for stable (gnome-2-10 branch in CVS)"
+echo "This is the UNSTABLE branch of metacity"
+echo "Use 2.12.x for stable (gnome-2-12 branch in CVS)"

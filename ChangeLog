@@ -1,5 +1,12 @@
 2005-10-03  Elijah Newren  <newren@gmail.com>
 
+	Branched for Gnome 2.13.  :-)
+	
+	* configure.in: bump version to 2.13.0.  Add UNSTABLE warning.
+	* README: add 2.13.x to the list of unstable branches
+
+2005-10-03  Elijah Newren  <newren@gmail.com>
+
 	A combination of a couple memory leaks fixes, from Kjartan,
 	Soeren, and I.  Fixes #313030.
 
