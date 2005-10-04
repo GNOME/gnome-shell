@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-19 12:30+0200\n"
-"PO-Revision-Date: 2005-08-10 22:31+0300\n"
+"POT-Creation-Date: 2005-10-04 10:48+0300\n"
+"PO-Revision-Date: 2005-10-04 10:48+0300\n"
 "Last-Translator: Vladimir Petkov <vpetkov@i-space.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "MIME-Version: 1.0\n"
@@ -62,7 +62,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Неуспех при получаването на името на хоста: %s\n"
 
-#: ../src/display.c:319
+#: ../src/display.c:307
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Неуспех при отварянето на дисплея на X Window „%s“\n"
@@ -83,23 +83,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Фатална вх./изх. грешка %d (%s) на дисплей „%s“.\n"
 
-#: ../src/frames.c:1125
+#: ../src/frames.c:1122
 msgid "Close Window"
 msgstr "Затваряне на прозореца"
 
-#: ../src/frames.c:1128
+#: ../src/frames.c:1125
 msgid "Window Menu"
 msgstr "Меню за прозорците"
 
-#: ../src/frames.c:1131
+#: ../src/frames.c:1128
 msgid "Minimize Window"
 msgstr "Минимизиране на прозореца"
 
-#: ../src/frames.c:1134
+#: ../src/frames.c:1131
 msgid "Maximize Window"
 msgstr "Максимизиране на прозореца"
 
-#: ../src/frames.c:1137
+#: ../src/frames.c:1134
 msgid "Unmaximize Window"
 msgstr "Демаксимизиране на прозореца"
 
@@ -110,19 +110,19 @@ msgid ""
 "binding\n"
 msgstr "Някоя друга програма използва бързия клавиш %s с модификатори %x\n"
 
-#: ../src/keybindings.c:2620
+#: ../src/keybindings.c:2654
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Грешка при стартиране на диалоговия прозорец на Metacity, за отпечатване на "
 "грешка за команда: %s\n"
 
-#: ../src/keybindings.c:2725
+#: ../src/keybindings.c:2759
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Не е дефинирана команда %d.\n"
 
-#: ../src/keybindings.c:3570
+#: ../src/keybindings.c:3609
 msgid "No terminal command has been defined.\n"
 msgstr "Не е дефинирана команда за терминал.\n"
 
@@ -508,11 +508,29 @@ msgstr "Скриване на всички прозорци и фокусира�
 msgid ""
 "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 "focused window will be automatically raised after a delay (the delay is "
-"specified by the auto_raise_delay key)."
+"specified by the auto_raise_delay key). This preference is poorly named, but "
+"kept for backwards compatibility. To try to be more clear (at least to the "
+"technically inclined), its meaning is \"automatically raise the window "
+"following a timeout which is triggered by non-grabbed mouse entry in sloppy "
+"or mouse focus modes\". It is unrelated to clicking behavior (i.e. this is "
+"not related to raise-on-click/orthogonal-raise). It is unrelated to entering "
+"a window during drag and drop (because that results in the application "
+"grabbing the mouse)"
 msgstr ""
-"Ако е зададено като истина и фокусът е или „sloppy“, или „mouse“, "
-"фокусираният прозорец ще се издигне автоматично след забавяне (указано в "
-"ключа auto_raise_delay)."
+"Ако е включено и начинът за фокусиране е „sloppy“ или „mouse“, тогава "
+"фокусираният прозорец ще бъде автоматично издигнат след определен интервал, "
+"който е зададен в ключа auto_raise_delay. Тази настройка действително е "
+"неподходящо наименувана, но е запазена, за да се поддържа съвместимост с "
+"предишните версии на програмата. За да бъдем по-коректни (поне пред по-"
+"технически ориентираните потребители), значението на тази настройка е "
+"«автоматично издигане на прозореца след определен интервал, което се "
+"задейства от влизането на курсора в рамките на прозореца при режими на "
+"фокусиране „sloppy“ и „mouse“, без прозорецът да е поел входа на мишката "
+"(напр. не е бил натиснат клавиш на мишката в рамките на прозореца)». Както "
+"казахме - това поведение не е свързано с натискането на бутоните на мишката "
+"при автоматичното издигане на прозорец при натискане на бутон. Поведението "
+"не е свързано и с навлизането на курсора на мишката при действие на "
+"провлачване и пускане, защото при него прозорецът поема входа на мишката."
 
 #: ../src/metacity.schemas.in.h:18
 msgid ""
@@ -3151,19 +3169,19 @@ msgstr "Неуспех при изпълнението на fdopen() върху 
 msgid "Opened log file %s\n"
 msgstr "Отворен е журналния файл %s\n"
 
-#: ../src/util.c:203
+#: ../src/util.c:217
 msgid "Window manager: "
 msgstr "Мениджър на прозорци: "
 
-#: ../src/util.c:349
+#: ../src/util.c:363
 msgid "Bug in window manager: "
 msgstr "Грешка в мениджъра на прозорци: "
 
-#: ../src/util.c:378
+#: ../src/util.c:392
 msgid "Window manager warning: "
 msgstr "Предупреждение от мениджъра на прозорци: "
 
-#: ../src/util.c:402
+#: ../src/util.c:416
 msgid "Window manager error: "
 msgstr "Грешка от мениджъра на прозорци: "
 
@@ -3173,7 +3191,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Приложението зададе неверен _NET_WM_PID %ld\n"
 
 #. first time through
-#: ../src/window.c:5205
+#: ../src/window.c:5208
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3189,7 +3207,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5876
+#: ../src/window.c:5879
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3226,3 +3244,12 @@ msgid ""
 msgstr ""
 "Свойството %s на прозореца 0x%lx съдържа невалиден UTF-8 за елемента %d в "
 "списъка\n"
+
+#~ msgid ""
+#~ "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
+#~ "focused window will be automatically raised after a delay (the delay is "
+#~ "specified by the auto_raise_delay key)."
+#~ msgstr ""
+#~ "Ако е зададено като истина и фокусът е или „sloppy“, или „mouse“, "
+#~ "фокусираният прозорец ще се издигне автоматично след забавяне (указано в "
+#~ "ключа auto_raise_delay)."
