@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-19 12:30+0200\n"
-"PO-Revision-Date: 2005-07-23 16:10+0800\n"
+"POT-Creation-Date: 2005-10-04 05:44+0200\n"
+"PO-Revision-Date: 2005-10-04 14:46+0800\n"
 "Last-Translator: Funda Wang <fundawang@linux.net.cn>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
@@ -60,7 +60,7 @@ msgstr "启动 metacity-dialog 查询有关杀死应用程序的情况时出错�
 msgid "Failed to get hostname: %s\n"
 msgstr "无法获取主机名：%s\n"
 
-#: ../src/display.c:319
+#: ../src/display.c:307
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "无法打开 X Window System 显示“%s”\n"
@@ -81,23 +81,23 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "严重的 IO 错误 %d (%s) 出现在显示“%s”上。\n"
 
-#: ../src/frames.c:1125
+#: ../src/frames.c:1122
 msgid "Close Window"
 msgstr "关闭窗口"
 
-#: ../src/frames.c:1128
+#: ../src/frames.c:1125
 msgid "Window Menu"
 msgstr "窗口菜单"
 
-#: ../src/frames.c:1131
+#: ../src/frames.c:1128
 msgid "Minimize Window"
 msgstr "最小化窗口"
 
-#: ../src/frames.c:1134
+#: ../src/frames.c:1131
 msgid "Maximize Window"
 msgstr "最大化窗口"
 
-#: ../src/frames.c:1137
+#: ../src/frames.c:1134
 msgid "Unmaximize Window"
 msgstr "取消最大化窗口"
 
@@ -108,17 +108,17 @@ msgid ""
 "binding\n"
 msgstr "某个其它程序已经将按键 %s 和修饰键 %x 配合使用作为一种组合\n"
 
-#: ../src/keybindings.c:2620
+#: ../src/keybindings.c:2654
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "用 metacity-dialog 输出一个命令错误消息时出错：%s\n"
 
-#: ../src/keybindings.c:2725
+#: ../src/keybindings.c:2759
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "命令 %d 尚未定义。\n"
 
-#: ../src/keybindings.c:3570
+#: ../src/keybindings.c:3609
 msgid "No terminal command has been defined.\n"
 msgstr "终端命令尚未定义。\n"
 
@@ -400,10 +400,10 @@ msgid ""
 "is unset, causing Metacity to fall back to the desktop font even if "
 "titlebar_uses_desktop_font is false."
 msgstr ""
-"字体说明字符串描述窗口工具栏的字体。但是，只有在titlebar_font_size 选项设置"
+"字体说明字符串描述窗口工具栏的字体。但是，只有在 titlebar_font_size 选项设置"
 "为 0 时，才使用该说明中的字体大小。同时，如果 titlebar_uses_desktop_font 选项"
 "设置为真，则禁用该选项。默认情况下不设置 titlebar_font。这样，即使 "
-"titlebar_uses_desktop_font 为假， Metacity 也会退回为桌面字体。"
+"titlebar_uses_desktop_font 为假，Metacity 也会退回为桌面字体。"
 
 #: ../src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
@@ -485,10 +485,21 @@ msgstr "隐藏所有窗口并聚焦桌面"
 msgid ""
 "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 "focused window will be automatically raised after a delay (the delay is "
-"specified by the auto_raise_delay key)."
+"specified by the auto_raise_delay key). This preference is poorly named, but "
+"kept for backwards compatibility. To try to be more clear (at least to the "
+"technically inclined), its meaning is \"automatically raise the window "
+"following a timeout which is triggered by non-grabbed mouse entry in sloppy "
+"or mouse focus modes\". It is unrelated to clicking behavior (i.e. this is "
+"not related to raise-on-click/orthogonal-raise). It is unrelated to entering "
+"a window during drag and drop (because that results in the application "
+"grabbing the mouse)"
 msgstr ""
-"如果为 true，并且聚焦模式为“sloppy”或“mouse”，那么聚焦的窗口将在一段延迟后被"
-"自动提升(该延迟时间由 auto_raise_delay 关键字指定)。"
+"如果为 true，而聚焦模式为“sloppy”或“mouse”，那么聚焦的窗口将会在指定延迟后"
+"自动升起，延迟的时间由 auto_raise_delay 键指定。此首选项的名称会有点混淆，只不过"
+"为了保持向后的兼容性。如果说得更清楚一点(至少从技术层面上)，其含义是“在 sloppy "
+"或 mouse 聚焦模式中非拖曳鼠标项所触发的延迟之后自动升起窗口”。此选项与单击行为"
+"并没有什么关系(也就是说，此选项并不是单击时升起)。它也与拖放时进入窗口无关(因为"
+"拖放时将导致应用程序抓取到鼠标)"
 
 #: ../src/metacity.schemas.in.h:18
 msgid ""
@@ -2963,19 +2974,19 @@ msgstr "无法对日志文件 %s 进行 fdopen() 操作：%s\n"
 msgid "Opened log file %s\n"
 msgstr "打开的日志文件 %s\n"
 
-#: ../src/util.c:203
+#: ../src/util.c:217
 msgid "Window manager: "
 msgstr "窗口管理器："
 
-#: ../src/util.c:349
+#: ../src/util.c:363
 msgid "Bug in window manager: "
 msgstr "窗口管理器中的错误："
 
-#: ../src/util.c:378
+#: ../src/util.c:392
 msgid "Window manager warning: "
 msgstr "窗口管理器警告："
 
-#: ../src/util.c:402
+#: ../src/util.c:416
 msgid "Window manager error: "
 msgstr "窗口管理器错误："
 
@@ -2985,7 +2996,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "应用程序设置一个假的 _NET_WM_PID %ld\n"
 
 #. first time through
-#: ../src/window.c:5205
+#: ../src/window.c:5208
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3001,7 +3012,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5876
+#: ../src/window.c:5879
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3035,3 +3046,4 @@ msgstr "窗口 0x%2$lx 上的属性 %1$s 包含无效的 UTF-8\n"
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "窗口 0x%2$lx 上的属性 %1$s 为列表中的条目 %3$d 包含无效的 UTF-8\n"
+
