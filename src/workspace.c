@@ -237,8 +237,8 @@ meta_workspace_relocate_windows (MetaWorkspace *workspace,
     {
       MetaWindow *window = tmp->data;
 
-      meta_workspace_add_window (new_home, window);
       meta_workspace_remove_window (workspace, window);
+      meta_workspace_add_window (new_home, window);
       
       tmp = tmp->next;
     }
