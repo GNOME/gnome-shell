@@ -3,6 +3,7 @@
 /* 
  * Copyright (C) 2001 Havoc Pennington, 99% copied from wrlib in
  * WindowMaker, Copyright (C) 1997-2000 Dan Pascu and Alfredo Kojima
+ * Copyright (C) 2005 Elijah Newren
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

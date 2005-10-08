@@ -2,6 +2,7 @@
 
 /* 
  * Copyright (C) 2001, 2002, 2003 Red Hat, Inc.
+ * Copyright (C) 2004, 2005 Elijah Newren
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
