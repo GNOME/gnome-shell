@@ -1,3 +1,9 @@
+2005-10-13  Muktha  <muktha.narayan@wipro.com>
+
+	* src/themes/Simple/metacity-theme-1.xml: Make the unfocussed
+	Simple window border visible with high contrast inverse theme.
+	Fixes #121361.
+
 2005-10-08  Elijah Newren  <newren@gmail.com>
 
 	Fix a crash that occurs when removing some virtual desktops and

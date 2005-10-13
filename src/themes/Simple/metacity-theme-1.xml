@@ -88,7 +88,12 @@
 </draw_ops>
 
 <draw_ops name="minimize_button">
-  <image filename="minimize.png" x="0" y="0" width="object_width" height="object_height"/>
+  <line color="gtk:fg[NORMAL]"
+        x1="ButtonIPad"
+        y1="height - ButtonIPad - ThickLineWidth + 3"
+        x2="width"
+        y2="height - ButtonIPad - ThickLineWidth + 3"
+        width="2"/>
 </draw_ops>
 
 <draw_ops name="minimize_button_pressed">
@@ -97,7 +102,12 @@
 </draw_ops>
 
 <draw_ops name="maximize_button">
-  <image filename="maximize.png" x="0" y="0" width="object_width" height="object_height"/>
+  <rectangle color="gtk:fg[NORMAL]" filled="false"
+             x="ButtonIPad" y="ButtonIPad" width="width-ButtonIPad*2 + 2" 
+             height="height-ButtonIPad*2 + 1"/>
+  <line color="gtk:fg[NORMAL]" width="2"
+        x1="ButtonIPad" y1="ButtonIPad+1" x2="width-ButtonIPad + 2" 
+        y2="ButtonIPad+2"/>
 </draw_ops>
 
 <draw_ops name="maximize_button_pressed">
@@ -105,8 +115,23 @@
   <include name="maximize_button"/>
 </draw_ops>
 
+<draw_ops name="mini_window_icon">
+  <rectangle color="gtk:bg[NORMAL]" filled="true"
+             x="0" y="0" width="width-1" height="height-1"/>
+  <rectangle color="gtk:fg[NORMAL]" filled="false"
+             x="0" y="0" width="width-1" height="height-1"/>
+  <line color="gtk:fg[NORMAL]" width="2" x1="0" y1="1" x2="width" y2="1"/>
+</draw_ops>
+
 <draw_ops name="restore_button">
-  <image filename="maximized.png" x="0" y="0" width="object_width" height="object_height"/>
+  <include name="mini_window_icon"
+           x="3 + ButtonIPad" y="3 + ButtonIPad"
+           width="width - 5 - ButtonIPad"
+           height="height - 5 - ButtonIPad"/>
+  <include name="mini_window_icon"
+           x="ButtonIPad" y="ButtonIPad"
+           width="width - 5 - ButtonIPad"
+           height="height - 5 - ButtonIPad"/>
 </draw_ops>
 
 <draw_ops name="restore_button_pressed">
@@ -115,7 +140,12 @@
 </draw_ops>
 
 <draw_ops name="close_button">
-  <image filename="close.png" x="0" y="0" width="object_width" height="object_height"/>
+  <line color="gtk:fg[NORMAL]"
+        x1="ButtonIPad" y1="ButtonIPad"
+        x2="width - ButtonIPad + 1" y2="height - ButtonIPad + 1" width="3"/>
+  <line color="gtk:fg[NORMAL]"
+        x1="ButtonIPad - 1" y1="height - ButtonIPad"
+        x2="width - ButtonIPad + 1" y2="ButtonIPad" width="3"/>
 </draw_ops>
 
 <draw_ops name="close_button_pressed">
@@ -193,7 +223,7 @@
 
 <draw_ops name="title_text">
   <clip x="0" y="0" width="width-SpacerWidth" height="height"/>
-  <title color="blend/gtk:dark[NORMAL]/#000000/0.5"
+  <title color="gtk:fg[NORMAL]"
          x="(0 `max` (width-title_width-mini_icon_width-IconTitleSpacing)) / 2 + mini_icon_width + IconTitleSpacing"
          y="((height - title_height) / 2) `max` 0"/>
 </draw_ops>
