@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-14 13:42+0200\n"
+"POT-Creation-Date: 2005-10-15 12:40+0200\n"
 "PO-Revision-Date: 2005-08-19 16:17+0100\n"
 "Last-Translator: Michiel Sikkes <michiels@gnome.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -26,33 +26,33 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr "Gebruik: %s\n"
 
-#: ../src/tools/metacity-message.c:176 ../src/util.c:129
+#: ../src/tools/metacity-message.c:176 ../src/util.c:128
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity is gecompileerd zonder ondersteuning voor verbose-mode\n"
 
-#: ../src/delete.c:64 ../src/delete.c:91 ../src/metacity-dialog.c:71
+#: ../src/delete.c:63 ../src/delete.c:90 ../src/metacity-dialog.c:70
 #: ../src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Kon \"%s\" niet verwerken als geheel getal"
 
-#: ../src/delete.c:71 ../src/delete.c:98 ../src/metacity-dialog.c:78
+#: ../src/delete.c:70 ../src/delete.c:97 ../src/metacity-dialog.c:77
 #: ../src/theme-parser.c:476 ../src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Niet begrepen: de laatste tekens \"%s\" in tekenreeks \"%s\""
 
-#: ../src/delete.c:129
+#: ../src/delete.c:128
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Verwerken bericht \"%s\" van dialoogvenster-proces mislukt\n"
 
-#: ../src/delete.c:264
+#: ../src/delete.c:263
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Fout bij lezen van dialoogvenster-proces: %s\n"
 
-#: ../src/delete.c:345
+#: ../src/delete.c:344
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -60,12 +60,12 @@ msgstr ""
 "Fout bij het opstarten van het metacity-dialoogvenster waarbij gevraagd "
 "wordt naar het vernietigen van een toepassing: %s\n"
 
-#: ../src/delete.c:453
+#: ../src/delete.c:452
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Ophalen hostnaam mislukt: %s\n"
 
-#: ../src/display.c:308
+#: ../src/display.c:307
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Openen van X Window System display '%s' mislukt\n"
@@ -107,7 +107,7 @@ msgid "Unmaximize Window"
 msgstr "Venster herstellen"
 
 # Gebruik controletoets als vertaling van modifier (Ctrl/Shift/Alt/Esc)
-#: ../src/keybindings.c:995
+#: ../src/keybindings.c:994
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -116,19 +116,19 @@ msgstr ""
 "Een ander programma gebruikt reeds de %s-toets met controletoets %x als "
 "toetsbinding\n"
 
-#: ../src/keybindings.c:2655
+#: ../src/keybindings.c:2620
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Fout bij het starten van een metacity-dialoogvenster om een foutmelding te "
 "tonen over een opdracht: %s\n"
 
-#: ../src/keybindings.c:2760
+#: ../src/keybindings.c:2725
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Er is geen opdracht %d gedefinieerd.\n"
 
-#: ../src/keybindings.c:3610
+#: ../src/keybindings.c:3570
 msgid "No terminal command has been defined.\n"
 msgstr "Er is geen opdracht voor de terminal gedefinieerd.\n"
 
@@ -359,31 +359,31 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: ../src/metacity-dialog.c:111
+#: ../src/metacity-dialog.c:110
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "Het venster \"%s\" reageert niet."
 
-#: ../src/metacity-dialog.c:119
+#: ../src/metacity-dialog.c:118
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Als u deze toepassing geforceerd afsluit zullen alle niet opgeslagen "
 "veranderingen verloren gaan."
 
-#: ../src/metacity-dialog.c:130
+#: ../src/metacity-dialog.c:129
 msgid "_Force Quit"
 msgstr "Ge_forceerd afsluiten"
 
-#: ../src/metacity-dialog.c:227
+#: ../src/metacity-dialog.c:226
 msgid "Title"
 msgstr "Titel"
 
-#: ../src/metacity-dialog.c:239
+#: ../src/metacity-dialog.c:238
 msgid "Class"
 msgstr "Klasse"
 
-#: ../src/metacity-dialog.c:265
+#: ../src/metacity-dialog.c:264
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -391,7 +391,7 @@ msgstr ""
 "Deze vensters ondersteunen niet \"huidige instellingen opslaan\" en zullen "
 "bij een volgende sessie opnieuw moeten worden opgestart."
 
-#: ../src/metacity-dialog.c:331
+#: ../src/metacity-dialog.c:330
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -513,15 +513,11 @@ msgstr "Alle vensters verbergen en het bureaublad de aandacht geven"
 msgid ""
 "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 "focused window will be automatically raised after a delay (the delay is "
-"specified by the auto_raise_delay key). This preference is poorly named, but "
-"kept for backwards compatibility. To try to be more clear (at least to the "
-"technically inclined), its meaning is \"automatically raise the window "
-"following a timeout which is triggered by non-grabbed mouse entry in sloppy "
-"or mouse focus modes\". It is unrelated to clicking behavior (i.e. this is "
-"not related to raise-on-click/orthogonal-raise). It is unrelated to entering "
-"a window during drag and drop (because that results in the application "
-"grabbing the mouse)"
+"specified by the auto_raise_delay key)."
 msgstr ""
+"Indien waar, en de aandachtsmodus is ofwel \"slap\" of \"muis\", zal het "
+"aandachtsvenster na een bepaalde tijd automatisch worden verhoogd (de "
+"vertraging wordt gespecificieerd met de auto_raise_delay-toets)."
 
 #: ../src/metacity.schemas.in.h:18
 msgid ""
@@ -2056,12 +2052,12 @@ msgstr "Fout bij het instellen van de naam voor werkblad %d op \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/screen.c:409
+#: ../src/screen.c:408
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Scherm %d op display '%s' is ongeldig\n"
 
-#: ../src/screen.c:425
+#: ../src/screen.c:424
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2070,88 +2066,88 @@ msgstr ""
 "Scherm %d op display \"%s\" heeft al een windowmanager; probeer de optie: --"
 "replace te gebruiken om de huidige windowmanager te vervangen.\n"
 
-#: ../src/screen.c:449
+#: ../src/screen.c:448
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Kon windowmanager-selectie niet verkrijgen op scherm %d display \"%s\"\n"
 
-#: ../src/screen.c:507
+#: ../src/screen.c:506
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Scherm %d op display \"%s\" heeft al een windowmanager\n"
 
-#: ../src/screen.c:717
+#: ../src/screen.c:716
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kon scherm %d op display \"%s\" niet vrijmaken\n"
 
-#: ../src/session.c:885 ../src/session.c:892
+#: ../src/session.c:884 ../src/session.c:891
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Kon map '%s' niet aanmaken: %s\n"
 
-#: ../src/session.c:902
+#: ../src/session.c:901
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Kon sessiebestand '%s' niet openen voor schrijven: %s\n"
 
-#: ../src/session.c:1054
+#: ../src/session.c:1053
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Fout bij schrijven sessiebestand '%s': %s\n"
 
-#: ../src/session.c:1059
+#: ../src/session.c:1058
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Fout bij sluiten sessiebestand '%s': %s\n"
 
-#: ../src/session.c:1134
+#: ../src/session.c:1133
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Lezen van opgeslagen sessiebestand %s mislukt: %s\n"
 
-#: ../src/session.c:1169
+#: ../src/session.c:1168
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Verwerken van opgeslagen sessiebestand mislukt: %s\n"
 
-#: ../src/session.c:1218
+#: ../src/session.c:1217
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
 "<metacity_session> attribuut opgemerkt maar we hebben reeds de sessie-ID"
 
-#: ../src/session.c:1231
+#: ../src/session.c:1230
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Onbekend attribuut %s op <metacity_session> element"
 
-#: ../src/session.c:1248
+#: ../src/session.c:1247
 msgid "nested <window> tag"
 msgstr "ingebedde <window> markering"
 
-#: ../src/session.c:1306 ../src/session.c:1338
+#: ../src/session.c:1305 ../src/session.c:1337
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Onbekend attribuut %s op <window> element"
 
-#: ../src/session.c:1410
+#: ../src/session.c:1409
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Onbekend attribuut %s op <maximized> element"
 
-#: ../src/session.c:1470
+#: ../src/session.c:1469
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Onbekend attribuut %s op <geometry> element"
 
-#: ../src/session.c:1490
+#: ../src/session.c:1489
 #, c-format
 msgid "Unknown element %s"
 msgstr "Onbekend element %s"
 
-#: ../src/session.c:1962
+#: ../src/session.c:1961
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3175,44 +3171,44 @@ msgstr ""
 msgid "Constant \"%s\" has already been defined"
 msgstr "Constante \"%s\" is reeds gedefinieerd"
 
-#: ../src/util.c:94
+#: ../src/util.c:93
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Debug-logboek openen mislukt: %s\n"
 
-#: ../src/util.c:104
+#: ../src/util.c:103
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Logboek %s openen via fdopen() mislukt: %s\n"
 
-#: ../src/util.c:110
+#: ../src/util.c:109
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Logboek %s geopend\n"
 
-#: ../src/util.c:218
+#: ../src/util.c:217
 msgid "Window manager: "
 msgstr "Windowmanager:"
 
-#: ../src/util.c:364
+#: ../src/util.c:363
 msgid "Bug in window manager: "
 msgstr "Fout in windowmanager:"
 
-#: ../src/util.c:393
+#: ../src/util.c:392
 msgid "Window manager warning: "
 msgstr "Windowmanager waarschuwing:"
 
-#: ../src/util.c:417
+#: ../src/util.c:416
 msgid "Window manager error: "
 msgstr "Windowmanager fout:"
 
-#: ../src/window-props.c:163
+#: ../src/window-props.c:162
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Toepassing heeft een overbodige _NET_WM_PID %ld ingesteld\n"
 
 #. first time through
-#: ../src/window.c:5209
+#: ../src/window.c:5207
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3228,7 +3224,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5880
+#: ../src/window.c:5878
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3266,12 +3262,3 @@ msgid ""
 msgstr ""
 "Eigenschap %s bij venster 0x%lx bevat ongeldige UTF-8 voor item %d van de "
 "lijst\n"
-
-#~ msgid ""
-#~ "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
-#~ "focused window will be automatically raised after a delay (the delay is "
-#~ "specified by the auto_raise_delay key)."
-#~ msgstr ""
-#~ "Indien waar, en de aandachtsmodus is ofwel \"slap\" of \"muis\", zal het "
-#~ "aandachtsvenster na een bepaalde tijd automatisch worden verhoogd (de "
-#~ "vertraging wordt gespecificieerd met de auto_raise_delay-toets)."
