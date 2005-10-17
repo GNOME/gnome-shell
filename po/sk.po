@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-19 12:30+0200\n"
-"PO-Revision-Date: 2005-07-20 23:36+0200\n"
+"POT-Creation-Date: 2005-10-17 06:12+0200\n"
+"PO-Revision-Date: 2005-10-17 06:27+0200\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
@@ -26,44 +26,44 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr "Použitie: %s\n"
 
-#: ../src/tools/metacity-message.c:176 ../src/util.c:128
+#: ../src/tools/metacity-message.c:176 ../src/util.c:129
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity bol skompilovaný bez podpory zobrazovania informácií\n"
 
-#: ../src/delete.c:63 ../src/delete.c:90 ../src/metacity-dialog.c:70
+#: ../src/delete.c:64 ../src/delete.c:91 ../src/metacity-dialog.c:71
 #: ../src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Nepodarilo sa spracovať \"%s\" ako celé číslo"
 
-#: ../src/delete.c:70 ../src/delete.c:97 ../src/metacity-dialog.c:77
+#: ../src/delete.c:71 ../src/delete.c:98 ../src/metacity-dialog.c:78
 #: ../src/theme-parser.c:476 ../src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Nerozpoznané znaky na konci \"%s\" v reťazci \"%s\""
 
-#: ../src/delete.c:128
+#: ../src/delete.c:129
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Nepodarilo sa spracovať správu \"%s\" z dialógového procesu\n"
 
-#: ../src/delete.c:263
+#: ../src/delete.c:264
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Chyba pri čítaní z procesu pre zobrazenie dialógu: %s\n"
 
-#: ../src/delete.c:344
+#: ../src/delete.c:345
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "Chyba pri spustení dialógu metacity pre zabitie aplikácie: %s\n"
 
-#: ../src/delete.c:452
+#: ../src/delete.c:453
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Nepodarilo sa získať meno hostiteľa: %s\n"
 
-#: ../src/display.c:319
+#: ../src/display.c:308
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nepodarilo sa otvoriť displej X Window '%s'\n"
@@ -83,27 +83,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Kritická chyba V/V %d (%s) na displeji '%s'\n"
 
-#: ../src/frames.c:1125
+#: ../src/frames.c:1122
 msgid "Close Window"
 msgstr "Zavrieť okno"
 
-#: ../src/frames.c:1128
+#: ../src/frames.c:1125
 msgid "Window Menu"
 msgstr "Menu okna"
 
-#: ../src/frames.c:1131
+#: ../src/frames.c:1128
 msgid "Minimize Window"
 msgstr "Minimalizovať okno"
 
-#: ../src/frames.c:1134
+#: ../src/frames.c:1131
 msgid "Maximize Window"
 msgstr "Maximalizovať okno"
 
-#: ../src/frames.c:1137
+#: ../src/frames.c:1134
 msgid "Unmaximize Window"
 msgstr "Odmaximalizovať okno"
 
-#: ../src/keybindings.c:994
+#: ../src/keybindings.c:995
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -111,17 +111,17 @@ msgid ""
 msgstr ""
 "Iný program už používa kláves %s s modifikátormi %x ako klávesovú skratku.\n"
 
-#: ../src/keybindings.c:2620
+#: ../src/keybindings.c:2655
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "Chyba pri spustení dialógu metacity pre zobrazenie chyby príkazu: %s\n"
 
-#: ../src/keybindings.c:2725
+#: ../src/keybindings.c:2760
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Nedefinovaný príkaz %d.\n"
 
-#: ../src/keybindings.c:3570
+#: ../src/keybindings.c:3610
 msgid "No terminal command has been defined.\n"
 msgstr "Nebol definovaný terminálový príkaz.\n"
 
@@ -351,29 +351,29 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: ../src/metacity-dialog.c:110
+#: ../src/metacity-dialog.c:111
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "Okno \"%s\" neodpovedá."
 
-#: ../src/metacity-dialog.c:118
+#: ../src/metacity-dialog.c:119
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr "Vynútené ukončenie tejto aplikácie spôsobí stratu neuložených zmien."
 
-#: ../src/metacity-dialog.c:129
+#: ../src/metacity-dialog.c:130
 msgid "_Force Quit"
 msgstr "_Vynútiť ukončenie"
 
-#: ../src/metacity-dialog.c:226
+#: ../src/metacity-dialog.c:227
 msgid "Title"
 msgstr "Titulok"
 
-#: ../src/metacity-dialog.c:238
+#: ../src/metacity-dialog.c:239
 msgid "Class"
 msgstr "Trieda"
 
-#: ../src/metacity-dialog.c:264
+#: ../src/metacity-dialog.c:265
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -381,7 +381,7 @@ msgstr ""
 "Tieto okná nepodporujú \"uložiť aktuálne nastavenie\n"
 " a pri budúcom prihlásení ich budete musieť znovu spustiť ručne."
 
-#: ../src/metacity-dialog.c:330
+#: ../src/metacity-dialog.c:331
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -498,11 +498,25 @@ msgstr "Skryť všetky okná a aktivovať plochu"
 msgid ""
 "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 "focused window will be automatically raised after a delay (the delay is "
-"specified by the auto_raise_delay key)."
+"specified by the auto_raise_delay key). This preference is poorly named, but "
+"kept for backwards compatibility. To try to be more clear (at least to the "
+"technically inclined), its meaning is \"automatically raise the window "
+"following a timeout which is triggered by non-grabbed mouse entry in sloppy "
+"or mouse focus modes\". It is unrelated to clicking behavior (i.e. this is "
+"not related to raise-on-click/orthogonal-raise). It is unrelated to entering "
+"a window during drag and drop (because that results in the application "
+"grabbing the mouse)"
 msgstr ""
-"Ak je true a režim aktivácie je buď \"sloppy\" alebo \"mouse\", aktívne okno "
-"sa automaticky po danej dobe posunie dopredu (čakanie je nastavené v kľúči "
-"auto_raise_delay)."
+"Ak je true a režim aktivácie je buď \"sloppy\" alebo \"mouse\", aktívne "
+"okno sa automaticky po danej dobe posunie dopredu (čakanie je nastavené v "
+"kľúči auto_raise_delay). Táto predvoľba je zle pomenovaná, ale je ponechaná "
+"pre spätnú kompatibilitu. Aby to bolo viac jasné (aspoň po technickej stránke), "
+"jej význam je \"automaticky presunúť okno nad ostatné po uplynutí časového "
+"limitu, ktorý je spustený nezachyteným vstupom myši v režimoch aktivácie 'sloppy' "
+"alebo 'mouse'\". Nemá to vzťah k správaniu sa klikania (t.j. nemá to vzťah k "
+"posunúť-dopredu-pri-kliknutí/ortogonálne-posunutie-dopredu). Nemá to vzťah k "
+"vstupu do okna počas 'presuň a pusť' (pretože to má za následok zachytenie myši "
+"aplikáciou)"
 
 #: ../src/metacity.schemas.in.h:18
 msgid ""
@@ -2009,12 +2023,12 @@ msgstr "Chyba pri nastavovaní mena pracovnej plochy %d na \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/screen.c:408
+#: ../src/screen.c:409
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Obrazovka %d na displeji '%s' nie je platná\n"
 
-#: ../src/screen.c:424
+#: ../src/screen.c:425
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2023,7 +2037,7 @@ msgstr ""
 "Obrazovka %d na displeji \"%s\" už má správcu okien. Skúste použiť prepínač "
 "--replace, aby sa aktuálny správca predefinoval.\n"
 
-#: ../src/screen.c:448
+#: ../src/screen.c:449
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -2031,80 +2045,80 @@ msgstr ""
 "Nepodarilo sa získať výber správcu okien pre obrazovku %d na displeji \"%s"
 "\".\n"
 
-#: ../src/screen.c:506
+#: ../src/screen.c:507
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Obrazovka %d na displeji \"%s\" už má správcu okien\n"
 
-#: ../src/screen.c:716
+#: ../src/screen.c:717
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nepodarilo sa uvoľniť obrazovku %d na displeji \"%s\"\n"
 
-#: ../src/session.c:884 ../src/session.c:891
+#: ../src/session.c:885 ../src/session.c:892
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Nepodarilo sa vytvoriť priečinok '%s': %s\n"
 
-#: ../src/session.c:901
+#: ../src/session.c:902
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Nepodarilo sa otvoriť súbor sedenia '%s' pre zápis: %s\n"
 
-#: ../src/session.c:1053
+#: ../src/session.c:1054
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Chyba pri zápise súboru sedenia '%s': %s\n"
 
-#: ../src/session.c:1058
+#: ../src/session.c:1059
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Chyba pri zatváraní súboru sedenia '%s': %s\n"
 
-#: ../src/session.c:1133
+#: ../src/session.c:1134
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Nepodarilo sa prečítať uložený súbor sedenia %s: %s\n"
 
-#: ../src/session.c:1168
+#: ../src/session.c:1169
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Nepodarilo sa spracovať uložený súbor sedenia: %s\n"
 
-#: ../src/session.c:1217
+#: ../src/session.c:1218
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "Nájdený atribút <metacity_session>, ale ID sedenia už je nastavené"
 
-#: ../src/session.c:1230
+#: ../src/session.c:1231
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Neznámy atribút %s v elemente <metacity_session>"
 
-#: ../src/session.c:1247
+#: ../src/session.c:1248
 msgid "nested <window> tag"
 msgstr "vnorená značka <window>"
 
-#: ../src/session.c:1305 ../src/session.c:1337
+#: ../src/session.c:1306 ../src/session.c:1338
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Neznámy atribúť %s v elemente <window>"
 
-#: ../src/session.c:1409
+#: ../src/session.c:1410
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Neznámy atribút %s v elemente <maximized>"
 
-#: ../src/session.c:1469
+#: ../src/session.c:1470
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Neznámy atribúť %s v elemente <geometry>"
 
-#: ../src/session.c:1489
+#: ../src/session.c:1490
 #, c-format
 msgid "Unknown element %s"
 msgstr "Neznámy element %s"
 
-#: ../src/session.c:1961
+#: ../src/session.c:1962
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3099,44 +3113,44 @@ msgstr "Používateľské konštanty musia začítať veľkým písmenom, \"%s\"
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konštanta \"%s\" už je definovaná"
 
-#: ../src/util.c:93
+#: ../src/util.c:94
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Nepodarilo sa otvoriť záznam pre ladenie: %s\n"
 
-#: ../src/util.c:103
+#: ../src/util.c:104
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Nepodarilo sa otvoriť súbor so záznamom pomocou fdopen() %s: %s\n"
 
-#: ../src/util.c:109
+#: ../src/util.c:110
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Otvorený súbor so záznamom %s\n"
 
-#: ../src/util.c:203
+#: ../src/util.c:218
 msgid "Window manager: "
 msgstr "Správca okien:"
 
-#: ../src/util.c:349
+#: ../src/util.c:364
 msgid "Bug in window manager: "
 msgstr "Chyba v správcovi okien:"
 
-#: ../src/util.c:378
+#: ../src/util.c:393
 msgid "Window manager warning: "
 msgstr "Varovanie správcu okien:"
 
-#: ../src/util.c:402
+#: ../src/util.c:417
 msgid "Window manager error: "
 msgstr "Chyba správcu okien:"
 
-#: ../src/window-props.c:162
+#: ../src/window-props.c:163
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikácia nastavila neplatné _NET_WM_PID %ld\n"
 
 #. first time through
-#: ../src/window.c:5205
+#: ../src/window.c:5209
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3152,7 +3166,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5876
+#: ../src/window.c:5880
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
