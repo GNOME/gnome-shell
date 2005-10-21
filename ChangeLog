@@ -1,3 +1,8 @@
+2005-10-20  Elijah Newren  <newren@gmail.com>
+
+	* HACKING: Clarify why METACITY_VERBOSE=1 is bad without
+	META_USE_LOGFILE=1; point to bug 305091 for details.
+
 2005-10-13  Muktha  <muktha.narayan@wipro.com>
 
 	* src/themes/Simple/metacity-theme-1.xml: Make the unfocussed
