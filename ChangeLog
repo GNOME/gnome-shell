@@ -1,3 +1,15 @@
+2005-10-23  Elijah Newren  <newren@gmail.com>
+
+	Fix edge snapping for multi-screen (non-xinerama) setups.  #319425
+
+	* src/place.c (get_windows_showing_on_same_screen,
+	get_vertical_edges, get_horizontal_edges): rename
+	get_windows_on_same_workspace() to
+	get_windows_showing_on_same_screen()
+	
+	* src/place.c (get_windows_showing_on_same_screen): exclude windows
+	in the list that are on a different screen
+
 2005-10-20  Elijah Newren  <newren@gmail.com>
 
 	* HACKING: Clarify why METACITY_VERBOSE=1 is bad without
