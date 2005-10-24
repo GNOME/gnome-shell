@@ -1,3 +1,7 @@
+2005-10-24  Elijah Newren  <newren@gmail.com>
+
+	* NEWS:	2.13.0 release
+
 2005-10-23  Elijah Newren  <newren@gmail.com>
 
 	Fix edge snapping for multi-screen (non-xinerama) setups.  #319425

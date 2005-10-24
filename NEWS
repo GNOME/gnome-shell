@@ -1,3 +1,33 @@
+2.13.0
+==
+
+Thanks to Björn Lindqvist, Kjartan Maraas, Søren Sandmann,
+Elijah Newren, Ross Cohen, and Muktha for improvements in this release
+since 2.12.1.
+
+ - Mave ancestors come along with the transient when moving the window from
+   one workspace to another (Björn Lindqvist) [#314977]
+ - Fix the workspace switcher tabpopup to display the right windows and to
+   fix the pick-a-new-window-to-focus algorithm in order to not select
+   windows that aren't showing (Björn Lindqvist) [#170475]
+ - Fix a couple memory leaks (Kjartan, Søren, Elijah) [#313030]
+ - Make alt-esc (the "switch between windows immediately" keybinding)
+   actually show minimized windows too (Ross) [#107072]
+ - Make alt-esc consistent with alt-tab by leaving stacking of unselected
+   windows unchanged (Ross) [#314285]
+ - Clarify the meaning of the auto_raise preference (Elijah) [#312421]
+ - Fix a crash that occurs when removing some virtual desktops and windows
+   happen to be on those desktops (Elijah) [#318306]
+ - Make the unfocussed Simple window border visible with high contrast
+   inverse theme (Muktha) [#121361]
+ - Fix edge snapping for multi-screen (non-xinerama) setups (Elijah)
+   [#319425]
+
+Translations
+  Vladimir Petkov (bg), Kostas Papadimas (el), Adam Weinberger (en_CA),
+  Ivar Smolin (et), Michiel Sikkes (nl), Marcel Telka (sk), Funda 
+  Wang (zh_CN)
+
 2.12.1
 ==
 
