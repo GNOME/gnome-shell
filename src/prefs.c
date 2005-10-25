@@ -1558,6 +1558,12 @@ meta_preference_to_string (MetaPreference pref)
     case META_PREF_GNOME_ACCESSIBILITY:
       return "GNOME_ACCESSIBILTY";
       break;
+    case META_PREF_CURSOR_THEME:
+      return "CURSOR_THEME";
+      break;
+    case META_PREF_CURSOR_SIZE:
+      return "CURSOR_SIZE";
+      break;
     }
 
   return "(unknown)";

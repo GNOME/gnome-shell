@@ -1,3 +1,9 @@
+2005-10-25  Philip O'Brien  <philip.obrien@dal.ca>
+
+	* src/prefs.c (meta_preference_to_string): add handling for
+	META_PREF_CURSOR_THEME and META_PREF_CURSOR_SIZE for more complete
+	debug info
+
 2005-10-24  Elijah Newren  <newren@gmail.com>
 
 	* configure.in: post-release version bump to 2.13.1
