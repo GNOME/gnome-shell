@@ -1,3 +1,8 @@
+2005-10-29  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* src/eventqueue.c: (meta_event_queue_new): Merge fix
+	for bug #320050 from stable.
+
 2005-10-27  Erdal Ronahi  <erdal.ronahi@gmail.com>
 
 	* configure.in: Added ku (Kurdish) to ALL_LINGUAS

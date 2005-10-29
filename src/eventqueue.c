@@ -71,7 +71,8 @@ meta_event_queue_new (Display *display, MetaEventQueueFunc func, gpointer data)
   g_source_set_callback (source, (GSourceFunc) func, data, NULL);
   
   g_source_attach (source, NULL);
-  
+  g_source_unref (source);
+
   return eq;
 }
 
