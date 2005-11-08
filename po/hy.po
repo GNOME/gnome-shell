@@ -90,7 +90,7 @@ msgstr "Պատուհանի մենյու"
 
 #: ../src/frames.c:1131
 msgid "Minimize Window"
-msgstr "Պատուհանը փոքրացնել"
+msgstr "Պատուհանը իջեցնել"
 
 #: ../src/frames.c:1134
 msgid "Maximize Window"
@@ -586,7 +586,7 @@ msgstr "Պատուհանը մեծացնել ուղղահայաց ուղղութ�
 
 #: ../src/metacity.schemas.in.h:26
 msgid "Minimize window"
-msgstr "Պատուհանը փոքրացնել"
+msgstr "Պատուհանը իջեցնել"
 
 #: ../src/metacity.schemas.in.h:27
 msgid "Modifier to use for modified window click actions"
