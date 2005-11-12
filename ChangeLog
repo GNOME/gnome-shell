@@ -1,3 +1,11 @@
+2005-11-11 Aidan Delaney <a.j.delaney@brighton.ac.uk>
+
+       * src/tabpopup.h: (struct _MetaTabEntry):
+       * src/tabpopup.c: (meta_ui_tab_popup_new):
+       * src/screen.c: (meta_screen_ensure_tab_popup):
+       Changed the 'minimized' field of the MetaTabEntry struct to
+       'hidden'.  Fixes reopened bug #168455.
+
 2005-10-29  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* src/eventqueue.c: (meta_event_queue_new): Merge fix

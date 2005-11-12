@@ -40,7 +40,7 @@ struct _MetaTabEntry
   int              x, y, width, height;
   int              inner_x, inner_y, inner_width, inner_height;
   guint            blank : 1;
-  guint            minimized : 1;
+  guint            hidden : 1;
   guint            demands_attention : 1;
 };
 

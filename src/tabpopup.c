@@ -206,7 +206,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
       if (entries[i].title)
         {
           gchar *tmp;
-          if (entries[i].minimized)
+          if (entries[i].hidden)
             {
               tmp = g_strdup_printf ("[%s]", entries[i].title);
             }
@@ -235,7 +235,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
       if (te->icon)
         {
           g_object_ref (G_OBJECT (te->icon));
-          if (entries[i].minimized)
+          if (entries[i].hidden)
             te->dimmed_icon = dimm_icon (entries[i].icon);
         }
 
