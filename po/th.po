@@ -11,58 +11,58 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-19 12:30+0200\n"
-"PO-Revision-Date: 2005-07-17 09:22+0700\n"
+"POT-Creation-Date: 2005-11-13 12:52+0700\n"
+"PO-Revision-Date: 2005-11-13 13:10+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <L10n@opentle.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=1; plural=0;"
 
 #: ../src/tools/metacity-message.c:150
 #, c-format
 msgid "Usage: %s\n"
 msgstr "วิธีใช้: %s\n"
 
-#: ../src/tools/metacity-message.c:176 ../src/util.c:128
+#: ../src/tools/metacity-message.c:176 ../src/util.c:129
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity ถูกคอมไพล์โดยไม่ได้เลือกรองรับโหมด verbose\n"
 
-#: ../src/delete.c:63 ../src/delete.c:90 ../src/metacity-dialog.c:70
+#: ../src/delete.c:64 ../src/delete.c:91 ../src/metacity-dialog.c:71
 #: ../src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "ไม่สามารถแปลง \"%s\" เป็นเลขจำนวนเต็ม"
 
-#: ../src/delete.c:70 ../src/delete.c:97 ../src/metacity-dialog.c:77
+#: ../src/delete.c:71 ../src/delete.c:98 ../src/metacity-dialog.c:78
 #: ../src/theme-parser.c:476 ../src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "ไม่เข้าใจตัวอักษร \"%s\" ที่ข้างท้ายข้อความ \"%s\""
 
-#: ../src/delete.c:128
+#: ../src/delete.c:129
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "ไม่เข้าใจข้อความ \"%s\" จากหน้าต่างโต้ตอบ\n"
 
-#: ../src/delete.c:263
+#: ../src/delete.c:264
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "เกิดข้อผิดพลาดขณะอ่านจากหน้าต่างโต้ตอบ: %s\n"
 
-#: ../src/delete.c:344
+#: ../src/delete.c:345
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "เกิดข้อผิดพลาด ขณะเปิดหน้าต่าง ถามการฆ่าโปรแกรม: %s\n"
 
-#: ../src/delete.c:452
+#: ../src/delete.c:453
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "ไม่สามารถอ่านชื่อโฮสต์: %s\n"
 
-#: ../src/display.c:319
+#: ../src/display.c:308
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "ไม่สามารถเปิด display '%s' ของระบบ X Window\n"
@@ -82,44 +82,44 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "เกิดข้อผิดพลาดสาหัส %d (%s) ในการอ่านเขียนข้อมูลจาก display '%s'\n"
 
-#: ../src/frames.c:1125
+#: ../src/frames.c:1122
 msgid "Close Window"
 msgstr "ปิดหน้าต่าง"
 
-#: ../src/frames.c:1128
+#: ../src/frames.c:1125
 msgid "Window Menu"
 msgstr "เมนูหน้าต่าง"
 
-#: ../src/frames.c:1131
+#: ../src/frames.c:1128
 msgid "Minimize Window"
 msgstr "ย่อหน้าต่างหาย"
 
-#: ../src/frames.c:1134
+#: ../src/frames.c:1131
 msgid "Maximize Window"
 msgstr "ขยายหน้าต่างเต็ม"
 
-#: ../src/frames.c:1137
+#: ../src/frames.c:1134
 msgid "Unmaximize Window"
 msgstr "เลิกขยายหน้าต่างเต็ม"
 
-#: ../src/keybindings.c:994
+#: ../src/keybindings.c:995
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "โปรแกรมอื่นกำลังใช้ปุ่ม %s ร่วมกับปุ่ม %x เป็นปุ่มลัดอยู่แล้ว\n"
 
-#: ../src/keybindings.c:2620
+#: ../src/keybindings.c:2655
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "ไม่สามารถเปิดหน้าต่างโต้ตอบ เพื่อแสดงข้อผิดพลาดของคำสั่ง: %s\n"
 
-#: ../src/keybindings.c:2725
+#: ../src/keybindings.c:2760
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "คำสั่ง %d ยังไม่ได้ถูกกำหนด\n"
 
-#: ../src/keybindings.c:3570
+#: ../src/keybindings.c:3610
 msgid "No terminal command has been defined.\n"
 msgstr "คำสั่งเปิดเทอร์มินัลยังไม่ได้ถูกกำหนด\n"
 
@@ -241,7 +241,7 @@ msgstr "ย้ายไปพื้นที่ทำงาน_บน"
 msgid "Move to Workspace _Down"
 msgstr "ย้ายไปพื้นที่ทำงาน_ล่าง"
 
-#: ../src/menu.c:162 ../src/prefs.c:2106
+#: ../src/menu.c:162 ../src/prefs.c:2112
 #, c-format
 msgid "Workspace %d"
 msgstr "พื้นที่ทำงาน %d"
@@ -349,29 +349,29 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: ../src/metacity-dialog.c:110
+#: ../src/metacity-dialog.c:111
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "หน้าต่าง \"%s\" ไม่ตอบสนอง"
 
-#: ../src/metacity-dialog.c:118
+#: ../src/metacity-dialog.c:119
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr "ถ้าบังคับออกจากโปรแกรมนี้ ข้อมูลที่ยังไม่ได้ถูกบันทึกจะสูญหาย"
 
-#: ../src/metacity-dialog.c:129
+#: ../src/metacity-dialog.c:130
 msgid "_Force Quit"
 msgstr "_บังคับออก"
 
-#: ../src/metacity-dialog.c:226
+#: ../src/metacity-dialog.c:227
 msgid "Title"
 msgstr "หัวหน้าต่าง"
 
-#: ../src/metacity-dialog.c:238
+#: ../src/metacity-dialog.c:239
 msgid "Class"
 msgstr "คลาส"
 
-#: ../src/metacity-dialog.c:264
+#: ../src/metacity-dialog.c:265
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -379,7 +379,7 @@ msgstr ""
 "หน้าต่างเหล่านี้ไม่สนับสนุนการ \"บันทึกค่าตั้งปัจจุบัน\" และคุณต้องเรียกใช้มันใหม่เอง "
 "เมื่อคุณเข้าสู่ระบบครั้งต่อไป"
 
-#: ../src/metacity-dialog.c:330
+#: ../src/metacity-dialog.c:331
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -492,11 +492,27 @@ msgstr "ซ่อนหน้าต่างทั้งหมดแล้วโ
 msgid ""
 "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 "focused window will be automatically raised after a delay (the delay is "
-"specified by the auto_raise_delay key)."
+"specified by the auto_raise_delay key). This preference is poorly named, but "
+"kept for backwards compatibility. To try to be more clear (at least to the "
+"technically inclined), its meaning is \"automatically raise the window "
+"following a timeout which is triggered by non-grabbed mouse entry in sloppy "
+"or mouse focus modes\". It is unrelated to clicking behavior (i.e. this is "
+"not related to raise-on-click/orthogonal-raise). It is unrelated to entering "
+"a window during drag and drop (because that results in the application "
+"grabbing the mouse)"
 msgstr ""
-"ถ้ามีค่าเป็นจริงและโหมดโฟกัสเป็น \"sloppy\" หรือ \"mouse\" อย่างใดอย่างหนึ่งแล้ว "
-"หน้าต่างที่ถูกโฟกัสจะถูกยกมาด้านหน้าโดยอัตโนมัติ หลังจากหน่วงเวลาเป็นระยะเวลาตามที่ระบุในคีย์ "
-"auto_raise_delay"
+"ถ้าเป็นจริง และโหมดโฟกัสหน้าต่างเป็น \"sloppy\" หรือ \"mouse\" "
+"จะยกหน้าต่างที่ได้โฟกัสขึ้นมาโดยอัตโนมัติหลังจากหน่วงเวลาระยะหนึ่ง "
+"(กำหนดเวลาที่หน่วงโดยคีย์ auto_raise_delay) "
+"ค่าตั้งนี้ตั้งชื่อค่อนข้างแย่ แต่ก็เก็บชื่อไว้เพื่อความเข้ากันได้กับรุ่นเก่า "
+"ถ้าจะให้ชัดเจนกว่านี้ (อย่างน้อยก็สำหรับผู้มีความรู้ทางเทคนิค) "
+"ความหมายของมันก็คือ \"ยกหน้าต่างขึ้นมาโดยอัตโนมัติหลังการหน่วงเวลา "
+"ซึ่งเริ่มจับเวลาเมื่อมีการเลื่อนเมาส์เข้ามาในหน้าต่างขณะใช้โหมดโฟกัสหน้าต่างแบบ "
+"sloppy หรือ mouse โดยขณะนั้นไม่มีหน้าต่างอื่นยึดเมาส์อยู่\" "
+"การยกหน้าต่างดังกล่าว ไม่เกี่ยวกับพฤติกรรมการคลิก (กล่าวคือ ไม่เกี่ยวกับ"
+"การยกหน้าต่างขึ้นเมื่อถูกคลิก หรือการยกหน้าต่างขึ้นตามลำดับ) "
+"และไม่เกี่ยวกับการเลื่อนเมาส์เข้าสู่หน้าต่างระหว่างการลากวาง "
+"(เพราะนั่นหมายความว่าโปรแกรมหนึ่งกำลังยึดเมาส์ไว้ใช้อยู่)"
 
 #: ../src/metacity.schemas.in.h:18
 msgid ""
@@ -1889,19 +1905,19 @@ msgstr ""
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d ใน GConf คีย์ %s ต้องอยู่ระหว่าง 0 และ %d\n"
 
-#: ../src/prefs.c:1589
+#: ../src/prefs.c:1595
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "ไม่สามารถตั้งจำนวนพื้นที่ทำงานเป็น %d: %s\n"
 
-#: ../src/prefs.c:1833
+#: ../src/prefs.c:1839
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "\"%s\" ที่พบในฐานข้อมูลค่าปรับแต่ง ไม่สามารถใช้เป็นปุ่มลัด \"%s\"\n"
 
-#: ../src/prefs.c:2187
+#: ../src/prefs.c:2193
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "ไม่สามารถตั้งชื่อพื้นที่ทำงาน %d เป็น %s: %s\n"
@@ -1911,12 +1927,12 @@ msgstr "ไม่สามารถตั้งชื่อพื้นที่
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/screen.c:408
+#: ../src/screen.c:409
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "screen %d บน display '%s' ใช้ไม่ได้\n"
 
-#: ../src/screen.c:424
+#: ../src/screen.c:425
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1925,86 +1941,86 @@ msgstr ""
 "screen %d บน display \"%s\" มีตัวจัดการหน้าต่างอยู่แล้ว ลองใช้ตัวเลือก --replace "
 "ถ้าต้องการแทนที่ตัวจัดการหน้าต่างปัจจุบัน\n"
 
-#: ../src/screen.c:448
+#: ../src/screen.c:449
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "ไม่สามารถอ่านค่าตัวจัดการหน้าต่างจาก screen %d display \"%s\" ได้\n"
 
-#: ../src/screen.c:506
+#: ../src/screen.c:507
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "screen %d บน display \"%s\" มีตัวจัดการหน้าต่างอยู่แล้ว\n"
 
-#: ../src/screen.c:716
+#: ../src/screen.c:717
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "ไม่สามารถปล่อยการควบคุม screen %d บน display \"%s\"\n"
 
-#: ../src/session.c:884 ../src/session.c:891
+#: ../src/session.c:885 ../src/session.c:892
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "ไม่สามารถสร้างโฟลเดอร์ '%s': %s\n"
 
-#: ../src/session.c:901
+#: ../src/session.c:902
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "ไม่สามารถเปิดแฟ้มวาระ '%s' สำหรับเขียน: %s\n"
 
-#: ../src/session.c:1053
+#: ../src/session.c:1054
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "ไม่สามารถเขียนลงแฟ้มวาระ '%s': %s\n"
 
-#: ../src/session.c:1058
+#: ../src/session.c:1059
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "ไม่สามารถปิดแฟ้มวาระ '%s': %s\n"
 
-#: ../src/session.c:1133
+#: ../src/session.c:1134
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "ไม่สามารถอ่านแฟ้มวาระที่บันทึกไว้ %s: %s\n"
 
-#: ../src/session.c:1168
+#: ../src/session.c:1169
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "ไม่เข้าใจแฟ้มวาระที่บันทึกไว้: %s\n"
 
-#: ../src/session.c:1217
+#: ../src/session.c:1218
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "พบแอตทริบิวต์ <metacity_session> แต่ว่ามี ID วาระอยู่แล้ว"
 
-#: ../src/session.c:1230
+#: ../src/session.c:1231
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "ไม่รู้จักแอตทริบิวต์ %s ในอีลิเมนต์ <metacity_session>"
 
-#: ../src/session.c:1247
+#: ../src/session.c:1248
 msgid "nested <window> tag"
 msgstr "มีแท็ก <window> ซ้อนด้านใน"
 
-#: ../src/session.c:1305 ../src/session.c:1337
+#: ../src/session.c:1306 ../src/session.c:1338
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "ไม่รู้จักแอตทริบิวต์ %s ในอีลิเมนต์ <window>"
 
-#: ../src/session.c:1409
+#: ../src/session.c:1410
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "ไม่รู้จักแอตทริบิวต์ %s ในอีลิเมนต์ <maximized>"
 
-#: ../src/session.c:1469
+#: ../src/session.c:1470
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "ไม่รู้จักแอตทริบิวต์ %s ในอีลิเมนต์ <geometry>"
 
-#: ../src/session.c:1489
+#: ../src/session.c:1490
 #, c-format
 msgid "Unknown element %s"
 msgstr "ไม่รู้จักอีลิเมนต์ %s"
 
-#: ../src/session.c:1961
+#: ../src/session.c:1962
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2989,44 +3005,44 @@ msgstr "ค่าคงที่ที่ผู้ใช้กำหนดเอ
 msgid "Constant \"%s\" has already been defined"
 msgstr "ค่าคงที่ \"%s\" ถูกกำหนดไว้แล้ว"
 
-#: ../src/util.c:93
+#: ../src/util.c:94
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "เปิดล็อกไฟล์เพื่อการดีบักไม่สำเร็จ: %s\n"
 
-#: ../src/util.c:103
+#: ../src/util.c:104
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "fdopen() ล็อกไฟล์ %s ไม่สำเร็จ: %s\n"
 
-#: ../src/util.c:109
+#: ../src/util.c:110
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "เปิดล็อกไฟล์ %s เรียบร้อยแล้ว\n"
 
-#: ../src/util.c:203
+#: ../src/util.c:218
 msgid "Window manager: "
 msgstr "ตัวจัดการหน้าต่าง: "
 
-#: ../src/util.c:349
+#: ../src/util.c:364
 msgid "Bug in window manager: "
 msgstr "บักในตัวจัดการหน้าต่าง: "
 
-#: ../src/util.c:378
+#: ../src/util.c:393
 msgid "Window manager warning: "
 msgstr "คำเตือนในตัวจัดการหน้าต่าง: "
 
-#: ../src/util.c:402
+#: ../src/util.c:417
 msgid "Window manager error: "
 msgstr "เกิดข้อผิดพลาดในตัวจัดการหน้าต่าง: "
 
-#: ../src/window-props.c:162
+#: ../src/window-props.c:163
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "โปรแกรมประยุกต์ตั้งค่า _NET_WM_PID เป็น %ld ซึ่งไม่มีอยู่จริง\n"
 
 #. first time through
-#: ../src/window.c:5205
+#: ../src/window.c:5209
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3042,7 +3058,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5876
+#: ../src/window.c:5880
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3077,3 +3093,12 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "คุณสมบัติ %s ของหน้าต่าง 0x%lx มีค่าที่ไม่ใช่ UTF-8 ที่ถูกต้องสำหรับหัวข้อที่ %d ในรายการ\n"
+
+#~ msgid ""
+#~ "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
+#~ "focused window will be automatically raised after a delay (the delay is "
+#~ "specified by the auto_raise_delay key)."
+#~ msgstr ""
+#~ "ถ้ามีค่าเป็นจริงและโหมดโฟกัสเป็น \"sloppy\" หรือ \"mouse\" อย่างใดอย่างหนึ่งแล้ว "
+#~ "หน้าต่างที่ถูกโฟกัสจะถูกยกมาด้านหน้าโดยอัตโนมัติ หลังจากหน่วงเวลาเป็นระยะเวลาตามที่ระบุในคีย์ "
+#~ "auto_raise_delay"
