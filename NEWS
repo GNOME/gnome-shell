@@ -1,3 +1,20 @@
+2.13.1
+==
+
+Thanks to Philip O'Brien, Kjartan Maraas, and Aidan Delaney for
+improvements in this release.
+
+ - add handling for META_PREF_CURSOR_THEME and META_PREF_CURSOR_SIZE
+   for more complete debug info (Philip) [#318976]
+ - Remove possible g_source leak in #ifdef'd out code, in case anyone uses
+   it in the future (Kjartan) [#320050]
+ - Changed the 'minimized' field of the MetaTabEntry struct to 'hidden'
+   (Aidan) [#168455]
+
+Translations
+  Miloslav Trmac (cs), Francisco Javier F. Serrador (es), Takeshi AIHANA (ja),
+  Erdal Ronahi (ku), Theppitak Karoonboonyanan (th)
+
 2.13.0
 ==
 
@@ -6,10 +23,10 @@ Elijah Newren, Ross Cohen, and Muktha for improvements in this release
 since 2.12.1.
 
  - Mave ancestors come along with the transient when moving the window from
-   one workspace to another (Björn Lindqvist) [#314977]
+   one workspace to another (Björn) [#314977]
  - Fix the workspace switcher tabpopup to display the right windows and to
    fix the pick-a-new-window-to-focus algorithm in order to not select
-   windows that aren't showing (Björn Lindqvist) [#170475]
+   windows that aren't showing (Björn) [#170475]
  - Fix a couple memory leaks (Kjartan, Søren, Elijah) [#313030]
  - Make alt-esc (the "switch between windows immediately" keybinding)
    actually show minimized windows too (Ross) [#107072]

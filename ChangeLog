@@ -1,4 +1,8 @@
-2005-11-11 Aidan Delaney <a.j.delaney@brighton.ac.uk>
+2005-11-14  Elijah Newren  <newren@gmail.com>
+
+	* NEWS:	2.13.1 release
+
+2005-11-11  Aidan Delaney  <a.j.delaney@brighton.ac.uk>
 
        * src/tabpopup.h: (struct _MetaTabEntry):
        * src/tabpopup.c: (meta_ui_tab_popup_new):
