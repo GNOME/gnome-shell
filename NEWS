@@ -24,6 +24,7 @@ Bugs fixed:
             get_outermost_onscreen_positions() forgets to include
             decorations)
   unfiled - keyboard snap-moving and snap-resizing snap to hidden edges
+    86644 - resize should have a shift option like move does
    109553 - gravity w/ simultaneous move & resize doesn't work
    113601 - maximize vertical and horizontal should toggle and be
             constrained
