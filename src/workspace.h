@@ -2,7 +2,7 @@
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
- * Copyright (C) 2004 Elijah Newren
+ * Copyright (C) 2004, 2005 Elijah Newren
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -43,12 +43,13 @@ struct _MetaWorkspace
   GList *windows;
   GList *mru_list;
 
-  MetaRectangle all_work_areas;
-  MetaRectangle *work_areas;
-  GSList *left_struts;
-  GSList *right_struts;
-  GSList *top_struts;
-  GSList *bottom_struts;
+  MetaRectangle work_area_screen;
+  MetaRectangle *work_area_xinerama;
+  GList  *screen_region;
+  GList  **xinerama_region;
+  GList  *screen_edges;
+  GList  *xinerama_edges;
+  GSList *all_struts;
   guint work_areas_invalid : 1;
 
   guint showing_desktop : 1;
@@ -76,6 +77,11 @@ void meta_workspace_invalidate_work_area (MetaWorkspace *workspace);
 void meta_workspace_get_work_area_for_xinerama  (MetaWorkspace *workspace,
                                                  int            which_xinerama,
                                                  MetaRectangle *area);
+void meta_workspace_get_work_area_all_xineramas (MetaWorkspace *workspace,
+                                                 MetaRectangle *area);
+GList* meta_workspace_get_onscreen_region       (MetaWorkspace *workspace);
+GList* meta_workspace_get_onxinerama_region     (MetaWorkspace *workspace,
+                                                 int            which_xinerama);
 void meta_workspace_get_work_area_all_xineramas (MetaWorkspace *workspace,
                                                  MetaRectangle *area);
 

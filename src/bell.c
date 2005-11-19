@@ -30,8 +30,8 @@ meta_bell_flash_screen (MetaDisplay *display,
 			MetaScreen  *screen)
 {
   Window root = screen->xroot;
-  int width = screen->width;
-  int height = screen->height;
+  int width = screen->rect.width;
+  int height = screen->rect.height;
   
   if (screen->flash_window == None)
     {

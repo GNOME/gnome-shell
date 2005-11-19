@@ -2,6 +2,7 @@
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
+ * Copyright (C) 2005 Elijah Newren
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -30,6 +31,9 @@ void meta_core_get_client_size (Display *xdisplay,
                                 Window   frame_xwindow,
                                 int     *width,
                                 int     *height);
+
+gboolean meta_core_titlebar_is_onscreen (Display *xdisplay,
+                                         Window   frame_xwindow);
 
 Window meta_core_get_client_xwindow (Display *xdisplay,
                                      Window   frame_xwindow);

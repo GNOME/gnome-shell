@@ -3,7 +3,7 @@
 /* 
  * Copyright (C) 2001 Havoc Pennington (some code in here from
  * libgnomeui, (C) Tom Tromey, Carsten Schaar)
- * Copyright (C) 2004 Elijah Newren
+ * Copyright (C) 2004, 2005 Elijah Newren
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -728,47 +728,6 @@ window_type_from_string (const char *str)
     return META_WINDOW_NORMAL;
 }
 
-static const char*
-window_gravity_to_string (int gravity)
-{
-  switch (gravity)
-    {
-    case NorthWestGravity:
-      return "NorthWestGravity";
-      break;
-    case NorthGravity:
-      return "NorthGravity";
-      break;
-    case NorthEastGravity:
-      return "NorthEastGravity";
-      break;
-    case WestGravity:
-      return "WestGravity";
-      break;
-    case CenterGravity:
-      return "CenterGravity";
-      break;
-    case EastGravity:
-      return "EastGravity";
-      break;
-    case SouthWestGravity:
-      return "SouthWestGravity";
-      break;
-    case SouthGravity:
-      return "SouthGravity";
-      break;
-    case SouthEastGravity:
-      return "SouthEastGravity";
-      break;
-    case StaticGravity:
-      return "StaticGravity";
-      break;
-    default:
-      return "NorthWestGravity";
-      break;
-    }
-}
-  
 static int
 window_gravity_from_string (const char *str)
 {
@@ -995,7 +954,7 @@ save_state (void)
                 fputs ("    <minimized/>\n", outfile);
 
               /* Maximized */
-              if (window->maximized)
+              if (META_WINDOW_MAXIMIZED (window))
 		{
                   fprintf (outfile,
                            "    <maximized saved_x=\"%d\" saved_y=\"%d\" saved_width=\"%d\" saved_height=\"%d\"/>\n", 
@@ -1021,7 +980,7 @@ save_state (void)
                 fprintf (outfile,
                          "    <geometry x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" gravity=\"%s\"/>\n",
                          x, y, w, h,
-                         window_gravity_to_string (window->size_hints.win_gravity));
+                         meta_gravity_to_string (window->size_hints.win_gravity));
               }
               
               fputs ("  </window>\n", outfile);
@@ -1480,7 +1439,7 @@ start_element_handler  (GMarkupParseContext *context,
                   pd->info->rect.y,
                   pd->info->rect.width,
                   pd->info->rect.height,
-                  window_gravity_to_string (pd->info->gravity));
+                  meta_gravity_to_string (pd->info->gravity));
     }
   else
     {

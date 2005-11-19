@@ -3,7 +3,7 @@
 /* 
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2003 Rob Adams
- * Copyright (C) 2004 Elijah Newren
+ * Copyright (C) 2004, 2005 Elijah Newren
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -47,6 +47,23 @@ meta_core_get_client_size (Display *xdisplay,
   if (height)
     *height = window->rect.height;
 }
+
+gboolean
+meta_core_titlebar_is_onscreen (Display *xdisplay,
+                                Window   frame_xwindow)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  if (window == NULL || window->frame == NULL)
+    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+
+  return meta_window_titlebar_is_onscreen (window);  
+}
+
 
 Window
 meta_core_get_client_xwindow (Display *xdisplay,
@@ -371,7 +388,8 @@ meta_core_maximize (Display *xdisplay,
   if (window == NULL || window->frame == NULL)
     meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
 
-  meta_window_maximize (window);
+  meta_window_maximize (window, 
+                        META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL);
 }
 
 void
@@ -387,10 +405,12 @@ meta_core_toggle_maximize (Display *xdisplay,
   if (window == NULL || window->frame == NULL)
     meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
 
-  if (window->maximized)
-    meta_window_unmaximize (window);
+  if (META_WINDOW_MAXIMIZED (window))
+    meta_window_unmaximize (window, 
+                            META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL);
   else
-    meta_window_maximize (window);
+    meta_window_maximize (window,
+                          META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL);
 }
 
 void
@@ -406,7 +426,8 @@ meta_core_unmaximize (Display *xdisplay,
   if (window == NULL || window->frame == NULL)
     meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
 
-  meta_window_unmaximize (window);
+  meta_window_unmaximize (window,
+                          META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL);
 }
 
 void
@@ -691,6 +712,9 @@ meta_core_get_menu_accelerator (MetaMenuOp           menu_op,
     case META_MENU_OP_MOVE_DOWN:
       name = META_KEYBINDING_MOVE_WORKSPACE_DOWN;
       break;
+    case META_MENU_OP_RECOVER:
+      /* No keybinding for this one */
+      break;
     }
 
   if (name)
@@ -852,9 +876,9 @@ meta_core_get_screen_size (Display *xdisplay,
     meta_bug ("No such frame window 0x%lx!\n", frame_on_screen);  
 
   if (width)
-    *width = window->screen->width;
+    *width = window->screen->rect.width;
   if (height)
-    *height = window->screen->height;
+    *height = window->screen->rect.height;
 }
 
 void

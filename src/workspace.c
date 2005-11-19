@@ -57,17 +57,19 @@ meta_workspace_new (MetaScreen *screen)
   workspace->mru_list = NULL;
   meta_screen_foreach_window (screen, maybe_add_to_list, &workspace->mru_list);
 
-  workspace->work_areas = NULL;
   workspace->work_areas_invalid = TRUE;
-  workspace->all_work_areas.x = 0;
-  workspace->all_work_areas.y = 0;
-  workspace->all_work_areas.width = 0;
-  workspace->all_work_areas.height = 0;
+  workspace->work_area_xinerama = NULL;
+  workspace->work_area_screen.x = 0;
+  workspace->work_area_screen.y = 0;
+  workspace->work_area_screen.width = 0;
+  workspace->work_area_screen.height = 0;
 
-  workspace->left_struts = NULL;
-  workspace->right_struts = NULL;
-  workspace->top_struts = NULL;
-  workspace->bottom_struts = NULL;
+  workspace->screen_region = NULL;
+  workspace->xinerama_region = NULL;
+  workspace->screen_edges = NULL;
+  workspace->xinerama_edges = NULL;
+
+  workspace->all_struts = NULL;
 
   workspace->showing_desktop = FALSE;
   
@@ -79,6 +81,7 @@ meta_workspace_free (MetaWorkspace *workspace)
 {
   GList *tmp;
   MetaScreen *screen;
+  int i;
 
   g_return_if_fail (workspace != workspace->screen->active_workspace);
 
@@ -107,13 +110,17 @@ meta_workspace_free (MetaWorkspace *workspace)
   workspace->screen->workspaces =
     g_list_remove (workspace->screen->workspaces, workspace);
   
-  g_free (workspace->work_areas);
+  g_free (workspace->work_area_xinerama);
 
   g_list_free (workspace->mru_list);
-  g_slist_free (workspace->left_struts);
-  g_slist_free (workspace->right_struts);
-  g_slist_free (workspace->top_struts);
-  g_slist_free (workspace->bottom_struts);
+  g_slist_free (workspace->all_struts);
+
+  for (i = 0; i < screen->n_xinerama_infos; i++)
+    meta_rectangle_free_list_and_elements (workspace->xinerama_region[i]);
+  g_free (workspace->xinerama_region);
+  meta_rectangle_free_list_and_elements (workspace->screen_region);
+  meta_rectangle_free_list_and_elements (workspace->screen_edges);
+  meta_rectangle_free_list_and_elements (workspace->xinerama_edges);
 
   g_free (workspace);
 
@@ -429,6 +436,7 @@ meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
 {
   GList *tmp;
   GList *windows;
+  int i;
   
   if (workspace->work_areas_invalid)
     {
@@ -442,17 +450,22 @@ meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
               "Invalidating work area for workspace %d\n",
               meta_workspace_index (workspace));
 
-  g_free (workspace->work_areas);
-  workspace->work_areas = NULL;
+  g_free (workspace->work_area_xinerama);
+  workspace->work_area_xinerama = NULL;
       
-  g_slist_free (workspace->left_struts);
-  workspace->left_struts = NULL;
-  g_slist_free (workspace->right_struts);
-  workspace->right_struts = NULL;
-  g_slist_free (workspace->top_struts);
-  workspace->top_struts = NULL;
-  g_slist_free (workspace->bottom_struts);
-  workspace->bottom_struts = NULL;
+  g_slist_free (workspace->all_struts);
+  workspace->all_struts = NULL;
+
+  for (i = 0; i < workspace->screen->n_xinerama_infos; i++)
+    meta_rectangle_free_list_and_elements (workspace->xinerama_region[i]);
+  g_free (workspace->xinerama_region);
+  meta_rectangle_free_list_and_elements (workspace->screen_region);
+  meta_rectangle_free_list_and_elements (workspace->screen_edges);
+  meta_rectangle_free_list_and_elements (workspace->xinerama_edges);
+  workspace->xinerama_region = NULL;
+  workspace->screen_region = NULL;
+  workspace->screen_edges = NULL;
+  workspace->xinerama_edges = NULL;
   
   workspace->work_areas_invalid = TRUE;
 
@@ -491,16 +504,17 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
   if (!workspace->work_areas_invalid)
     return;
 
-  g_assert (workspace->top_struts == NULL);
-  g_assert (workspace->bottom_struts == NULL);
-  g_assert (workspace->left_struts == NULL);
-  g_assert (workspace->right_struts == NULL);
+  g_assert (workspace->all_struts == NULL);
+  g_assert (workspace->xinerama_region == NULL);
+  g_assert (workspace->screen_region == NULL);
+  g_assert (workspace->screen_edges == NULL);
+  g_assert (workspace->xinerama_edges == NULL);
   
   windows = meta_workspace_list_windows (workspace);
 
-  g_free (workspace->work_areas);
-  workspace->work_areas = g_new (MetaRectangle,
-                                 workspace->screen->n_xinerama_infos);
+  g_free (workspace->work_area_xinerama);
+  workspace->work_area_xinerama = g_new (MetaRectangle,
+                                         workspace->screen->n_xinerama_infos);
       
   i = 0;
   while (i < workspace->screen->n_xinerama_infos)
@@ -528,67 +542,63 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
 
               if ((i == 0) && (w->struts->left.width > 0))
                 {
-                  workspace->left_struts = g_slist_prepend (workspace->left_struts,
-                                                            &w->struts->left);
+                  workspace->all_struts = g_slist_prepend (workspace->all_struts,
+                                                           &w->struts->left);
                 }
 
-              if (meta_screen_rect_intersects_xinerama (w->screen,
-                                                        &w->struts->left,
-                                                        i))
+              if (meta_rectangle_overlap (&w->screen->xinerama_infos[i].rect,
+                                          &w->struts->left))
                 {
                   left_strut = MAX (left_strut, 
                                     w->struts->left.width - 
-                                    workspace->screen->xinerama_infos[i].x_origin);
+                                    workspace->screen->xinerama_infos[i].rect.x);
                   all_left_strut = MAX (all_left_strut, w->struts->left.width);
                 }
 
               if ((i == 0) && (w->struts->right.width > 0))
                 {
-                  workspace->right_struts = g_slist_prepend (workspace->right_struts,
-                                                             &w->struts->right);
+                  workspace->all_struts = g_slist_prepend (workspace->all_struts,
+                                                           &w->struts->right);
                 }
 
-              if (meta_screen_rect_intersects_xinerama (w->screen,
-                                                        &w->struts->right,
-                                                        i))
+              if (meta_rectangle_overlap (&w->screen->xinerama_infos[i].rect,
+                                          &w->struts->right))
                 {
                   right_strut = MAX (right_strut, w->struts->right.width - 
-                                     workspace->screen->width + 
-                                     workspace->screen->xinerama_infos[i].width +
-                                     workspace->screen->xinerama_infos[i].x_origin);
+                                     workspace->screen->rect.width + 
+                                     workspace->screen->xinerama_infos[i].rect.width +
+                                     workspace->screen->xinerama_infos[i].rect.x);
                   all_right_strut = MAX (all_right_strut, w->struts->right.width);
                 }
 
               if ((i == 0) && (w->struts->top.height > 0))
                 {
-                  workspace->top_struts = g_slist_prepend (workspace->top_struts,
+                  workspace->all_struts = g_slist_prepend (workspace->all_struts,
                                                            &w->struts->top);
                 }
 
-              if (meta_screen_rect_intersects_xinerama (w->screen,
-                                                        &w->struts->top,
-                                                        i))
+              if (meta_rectangle_overlap (&w->screen->xinerama_infos[i].rect,
+                                          &w->struts->top))
                 {
                   top_strut = MAX (top_strut,
                                    w->struts->top.height - 
-                                   workspace->screen->xinerama_infos[i].y_origin);
+                                   workspace->screen->xinerama_infos[i].rect.y);
                   all_top_strut = MAX (all_top_strut, w->struts->top.height);
                 }
 
               if ((i == 0) && (w->struts->bottom.height > 0))
                 {
-                  workspace->bottom_struts = g_slist_prepend (workspace->bottom_struts,
-                                                              &w->struts->bottom);
+                  workspace->all_struts = g_slist_prepend (workspace->all_struts,
+                                                           &w->struts->bottom);
                 }
 
-              if (meta_screen_rect_intersects_xinerama (w->screen,
-                                                        &w->struts->bottom,
-                                                        i))
+              if (meta_rectangle_overlap (&w->screen->xinerama_infos[i].rect,
+                                          &w->struts->bottom))
                 {
                   bottom_strut = MAX (bottom_strut, w->struts->bottom.height - 
-                                     workspace->screen->height + 
-                                     workspace->screen->xinerama_infos[i].height +
-                                     workspace->screen->xinerama_infos[i].y_origin);
+                                      workspace->screen->rect.height + 
+                                      workspace->screen->xinerama_infos[i].rect.height +
+                                      workspace->screen->xinerama_infos[i].rect.y);
                   all_bottom_strut = MAX (all_bottom_strut, w->struts->bottom.height);
                 }
             }
@@ -600,36 +610,36 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
 #define MIN_SANE_AREA 100
       
       if ((left_strut + right_strut) > 
-          (workspace->screen->xinerama_infos[i].width - MIN_SANE_AREA))
+          (workspace->screen->xinerama_infos[i].rect.width - MIN_SANE_AREA))
         {
           meta_topic (META_DEBUG_WORKAREA,
                       "Making left/right struts %d %d sane xinerama %d\n",
                       left_strut, right_strut, i);
-          left_strut = (workspace->screen->xinerama_infos[i].width - 
+          left_strut = (workspace->screen->xinerama_infos[i].rect.width - 
                         MIN_SANE_AREA) / 2;
           right_strut = left_strut;
         }
 
       if ((top_strut + bottom_strut) > 
-          (workspace->screen->xinerama_infos[i].height - MIN_SANE_AREA))
+          (workspace->screen->xinerama_infos[i].rect.height - MIN_SANE_AREA))
         {
           meta_topic (META_DEBUG_WORKAREA,
                       "Making top/bottom struts %d %d sane xinerama %d\n",
                       top_strut, bottom_strut, i);
-          top_strut = (workspace->screen->xinerama_infos[i].height - 
+          top_strut = (workspace->screen->xinerama_infos[i].rect.height - 
                        MIN_SANE_AREA) / 2;
           bottom_strut = top_strut;
         }
 
-      workspace->work_areas[i].x = 
-        left_strut + workspace->screen->xinerama_infos[i].x_origin;
-      workspace->work_areas[i].y = top_strut + 
-        workspace->screen->xinerama_infos[i].y_origin;
-      workspace->work_areas[i].width = 
-        workspace->screen->xinerama_infos[i].width - 
+      workspace->work_area_xinerama[i].x = 
+        left_strut + workspace->screen->xinerama_infos[i].rect.x;
+      workspace->work_area_xinerama[i].y = top_strut + 
+        workspace->screen->xinerama_infos[i].rect.y;
+      workspace->work_area_xinerama[i].width = 
+        workspace->screen->xinerama_infos[i].rect.width - 
         left_strut - right_strut;
-      workspace->work_areas[i].height = 
-        workspace->screen->xinerama_infos[i].height - 
+      workspace->work_area_xinerama[i].height = 
+        workspace->screen->xinerama_infos[i].rect.height - 
         top_strut - bottom_strut;
 
       meta_topic (META_DEBUG_WORKAREA,
@@ -637,10 +647,10 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
                   "xinerama %d: %d,%d %d x %d\n",
                   meta_workspace_index (workspace),
                   i,
-                  workspace->work_areas[i].x,
-                  workspace->work_areas[i].y,
-                  workspace->work_areas[i].width,
-                  workspace->work_areas[i].height);
+                  workspace->work_area_xinerama[i].x,
+                  workspace->work_area_xinerama[i].y,
+                  workspace->work_area_xinerama[i].width,
+                  workspace->work_area_xinerama[i].height);
 
       ++i;
     }
@@ -648,41 +658,91 @@ ensure_work_areas_validated (MetaWorkspace *workspace)
   g_list_free (windows);
 
   if ((all_left_strut + all_right_strut) > 
-      (workspace->screen->width - MIN_SANE_AREA))
+      (workspace->screen->rect.width - MIN_SANE_AREA))
     {
       meta_topic (META_DEBUG_WORKAREA,
                   "Making screen-wide left/right struts %d %d sane\n",
                   all_left_strut, all_right_strut);
-      all_left_strut = (workspace->screen->width - MIN_SANE_AREA) / 2;
+      all_left_strut = (workspace->screen->rect.width - MIN_SANE_AREA) / 2;
       all_right_strut = all_left_strut;
     }
       
   if ((all_top_strut + all_bottom_strut) > 
-      (workspace->screen->height - MIN_SANE_AREA))
+      (workspace->screen->rect.height - MIN_SANE_AREA))
     {
       meta_topic (META_DEBUG_WORKAREA,
                   "Making top/bottom struts %d %d sane\n",
                   all_top_strut, all_bottom_strut);
-      all_top_strut = (workspace->screen->height - MIN_SANE_AREA) / 2;
+      all_top_strut = (workspace->screen->rect.height - MIN_SANE_AREA) / 2;
       all_bottom_strut = all_top_strut;
     }
       
-  workspace->all_work_areas.x = all_left_strut;
-  workspace->all_work_areas.y = all_top_strut;
-  workspace->all_work_areas.width = 
-    workspace->screen->width - all_left_strut - all_right_strut;
-  workspace->all_work_areas.height = 
-    workspace->screen->height - all_top_strut - all_bottom_strut;
-  
+  workspace->work_area_screen.x = all_left_strut;
+  workspace->work_area_screen.y = all_top_strut;
+  workspace->work_area_screen.width = 
+    workspace->screen->rect.width - all_left_strut - all_right_strut;
+  workspace->work_area_screen.height = 
+    workspace->screen->rect.height - all_top_strut - all_bottom_strut;
+
+  /* Now cache the spanning rects for the onscreen and
+   * on-single-xinerama regions
+   */  
+  g_assert (workspace->xinerama_region == NULL);
+  g_assert (workspace->screen_region   == NULL);
+
+  workspace->xinerama_region = g_new (GList*,
+                                      workspace->screen->n_xinerama_infos);
+  for (i = 0; i < workspace->screen->n_xinerama_infos; i++)
+    {
+      workspace->xinerama_region[i] =
+        meta_rectangle_get_minimal_spanning_set_for_region (
+          &workspace->screen->xinerama_infos[i].rect,
+          workspace->all_struts);
+    }
+  workspace->screen_region =
+    meta_rectangle_get_minimal_spanning_set_for_region (
+      &workspace->screen->rect,
+      workspace->all_struts);
+  /* Since get_minimal_spanning_set_for_region() doesn't do the
+   * MIN_SANE_AREA thing, manually account for it.  Note that it's okay if
+   * get_minimal_spanning_set_for_region() returns a very small region--all
+   * we really need here is a 1x1 region that corresponds to somewhere on
+   * the monitor for the partially onscreen constraint.  If we don't get
+   * anything, though, we use work_area_screen just for convenience.
+   */
+  if (workspace->screen_region == NULL)
+    {
+      MetaRectangle *nonempty_region;
+      nonempty_region = g_new (MetaRectangle, 1);
+      *nonempty_region = workspace->work_area_screen;
+      workspace->screen_region = g_list_prepend (NULL, nonempty_region);
+    }
+
+  /* Now cache the screen and xinerama edges for edge resistance and snapping */
+  g_assert (workspace->screen_edges    == NULL);
+  g_assert (workspace->xinerama_edges  == NULL);
+  workspace->screen_edges =
+    meta_rectangle_find_onscreen_edges (&workspace->screen->rect,
+                                        workspace->all_struts);
+  tmp = NULL;
+  for (i = 0; i < workspace->screen->n_xinerama_infos; i++)
+    tmp = g_list_prepend (tmp, &workspace->screen->xinerama_infos[i].rect);
+  workspace->xinerama_edges =
+    meta_rectangle_find_nonintersected_xinerama_edges (tmp,
+                                                       workspace->all_struts);
+  g_list_free (tmp);
+
+
+  /* We're all done, YAAY!  Record that everything has been validated. */
   workspace->work_areas_invalid = FALSE;
 
   meta_topic (META_DEBUG_WORKAREA,
               "Computed work area for workspace %d: %d,%d %d x %d\n",
               meta_workspace_index (workspace),
-              workspace->all_work_areas.x,
-              workspace->all_work_areas.y,
-              workspace->all_work_areas.width,
-              workspace->all_work_areas.height);    
+              workspace->work_area_screen.x,
+              workspace->work_area_screen.y,
+              workspace->work_area_screen.width,
+              workspace->work_area_screen.height);    
 }
 
 void
@@ -695,7 +755,7 @@ meta_workspace_get_work_area_for_xinerama (MetaWorkspace *workspace,
   ensure_work_areas_validated (workspace);
   g_assert (which_xinerama < workspace->screen->n_xinerama_infos);
   
-  *area = workspace->work_areas[which_xinerama];
+  *area = workspace->work_area_xinerama[which_xinerama];
 }
 
 void
@@ -704,7 +764,24 @@ meta_workspace_get_work_area_all_xineramas (MetaWorkspace *workspace,
 {
   ensure_work_areas_validated (workspace);
   
-  *area = workspace->all_work_areas;
+  *area = workspace->work_area_screen;
+}
+
+GList*
+meta_workspace_get_onscreen_region (MetaWorkspace *workspace)
+{
+  ensure_work_areas_validated (workspace);
+
+  return workspace->screen_region;
+}
+
+GList*
+meta_workspace_get_onxinerama_region (MetaWorkspace *workspace,
+                                      int            which_xinerama)
+{
+  ensure_work_areas_validated (workspace);
+
+  return workspace->xinerama_region[which_xinerama];
 }
 
 #ifdef WITH_VERBOSE_MODE

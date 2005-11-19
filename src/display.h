@@ -33,6 +33,7 @@
 #include <X11/Xlib.h>
 #include "eventqueue.h"
 #include "common.h"
+#include "boxes.h"
 
 #ifdef HAVE_STARTUP_NOTIFICATION
 #include <libsn/sn.h>
@@ -43,17 +44,6 @@
 #endif
 
 #define meta_XFree(p) do { if ((p)) XFree ((p)); } while (0)
-
-/* this doesn't really belong here, oh well. */
-typedef struct _MetaRectangle MetaRectangle;
-
-struct _MetaRectangle
-{
-  int x;
-  int y;
-  int width;
-  int height;
-};
 
 typedef struct MetaCompositor  MetaCompositor;
 typedef struct _MetaDisplay    MetaDisplay;
@@ -67,6 +57,8 @@ typedef struct _MetaWorkspace  MetaWorkspace;
 
 typedef struct _MetaWindowPropHooks MetaWindowPropHooks;
 typedef struct _MetaGroupPropHooks  MetaGroupPropHooks;
+
+typedef struct MetaEdgeResistanceData MetaEdgeResistanceData;
 
 typedef void (* MetaWindowPingFunc) (MetaDisplay *display,
 				     Window       xwindow,
@@ -280,6 +272,7 @@ struct _MetaDisplay
   int         grab_wireframe_last_display_width;
   int         grab_wireframe_last_display_height;
   GList*      grab_old_window_stacking;
+  MetaEdgeResistanceData *grab_edge_resistance_data;
   
   /* we use property updates as sentinels for certain window focus events
    * to avoid some race conditions on EnterNotify events
@@ -350,6 +343,7 @@ struct _MetaDisplay
   int render_error_base;
 #endif
 #ifdef HAVE_XSYNC
+  unsigned int grab_last_user_action_was_snap;
   unsigned int have_xsync : 1;
 #define META_DISPLAY_HAS_XSYNC(display) ((display)->have_xsync)
 #else
@@ -459,6 +453,10 @@ void meta_display_grab_focus_window_button   (MetaDisplay *display,
 void meta_display_ungrab_focus_window_button (MetaDisplay *display,
                                               MetaWindow  *window);
 
+/* Next two functions are defined in edge-resistance.c */
+void meta_display_compute_resistance_and_snapping_edges (MetaDisplay *display);
+void meta_display_cleanup_edges                         (MetaDisplay *display);
+
 /* make a request to ensure the event serial has changed */
 void     meta_display_increment_event_serial (MetaDisplay *display);
 
@@ -490,8 +488,6 @@ typedef enum
 {
   META_TAB_LIST_NORMAL,
   META_TAB_LIST_DOCKS
-  
-
 } MetaTabList;
 
 GList* meta_display_get_tab_list (MetaDisplay   *display,
@@ -515,12 +511,6 @@ int meta_resize_gravity_from_grab_op (MetaGrabOp op);
 
 gboolean meta_grab_op_is_moving   (MetaGrabOp op);
 gboolean meta_grab_op_is_resizing (MetaGrabOp op);
-
-gboolean meta_rectangle_intersect (MetaRectangle *src1,
-                                   MetaRectangle *src2,
-                                   MetaRectangle *dest);
-gboolean meta_rectangle_equal (const MetaRectangle *src1,
-                               const MetaRectangle *src2);
 
 void meta_display_devirtualize_modifiers (MetaDisplay        *display,
                                           MetaVirtualModifier modifiers,

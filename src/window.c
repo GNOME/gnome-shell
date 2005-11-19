@@ -24,6 +24,7 @@
 
 #include <config.h>
 #include "window.h"
+#include "edge-resistance.h"
 #include "util.h"
 #include "frame.h"
 #include "errors.h"
@@ -47,13 +48,6 @@
 #ifdef HAVE_SHAPE
 #include <X11/extensions/shape.h>
 #endif
-
-typedef enum
-{
-  META_IS_CONFIGURE_REQUEST = 1 << 0,
-  META_DO_GRAVITY_ADJUST    = 1 << 1,
-  META_USER_MOVE_RESIZE     = 1 << 2
-} MetaMoveResizeFlags;
 
 static int destroying_windows_disallowed = 0;
 
@@ -94,6 +88,19 @@ static void     ensure_mru_position_after (MetaWindow *window,
 
 
 void meta_window_move_resize_now (MetaWindow  *window);
+
+static void     update_move           (MetaWindow   *window,
+                                       gboolean      snap,
+                                       int           x,
+                                       int           y);
+static gboolean update_move_timeout   (gpointer data);
+static void     update_resize         (MetaWindow   *window,
+                                       gboolean      snap,
+                                       int           x,
+                                       int           y,
+                                       gboolean      force);
+static gboolean update_resize_timeout (gpointer data);
+
 
 /* FIXME we need an abstraction that covers all these queues. */   
 
@@ -395,7 +402,6 @@ meta_window_new_with_attrs (MetaDisplay       *display,
 
   window->has_shape = has_shape;
   
-  /* Remember this rect is the actual window size */
   window->rect.x = attrs->x;
   window->rect.y = attrs->y;
   window->rect.width = attrs->width;
@@ -431,9 +437,13 @@ meta_window_new_with_attrs (MetaDisplay       *display,
 
   window->user_has_move_resized = FALSE;
   
-  window->maximized = FALSE;
-  window->maximize_after_placement = FALSE;
+  window->maximized_horizontally = FALSE;
+  window->maximized_vertically = FALSE;
+  window->maximize_horizontally_after_placement = FALSE;
+  window->maximize_vertically_after_placement = FALSE;
   window->fullscreen = FALSE;
+  window->require_fully_onscreen = TRUE;
+  window->require_on_single_xinerama = TRUE;
   window->on_all_workspaces = FALSE;
   window->shaded = FALSE;
   window->initially_iconic = FALSE;
@@ -688,9 +698,11 @@ meta_window_new_with_attrs (MetaDisplay       *display,
    * passing TRUE for is_configure_request, ICCCM says
    * initial map is handled same as configure request
    */
+  MetaMoveResizeFlags flags = 
+    META_IS_CONFIGURE_REQUEST | META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
   meta_window_move_resize_internal (window,
-                                    META_IS_CONFIGURE_REQUEST,
-                                    NorthWestGravity,
+                                    flags,
+                                    window->size_hints.win_gravity,
                                     window->size_hints.x,
                                     window->size_hints.y,
                                     window->size_hints.width,
@@ -769,8 +781,10 @@ meta_window_apply_session_info (MetaWindow *window,
                   info->maximized, window->desc);
       
       if (window->has_maximize_func && info->maximized)
-	{
-	  meta_window_maximize (window);
+        {
+          meta_window_maximize (window, 
+                                META_MAXIMIZE_HORIZONTAL |
+                                META_MAXIMIZE_VERTICAL);
 
           if (info->saved_rect_set)
             {
@@ -866,9 +880,11 @@ meta_window_apply_session_info (MetaWindow *window,
                   "Restoring pos %d,%d size %d x %d for %s\n",
                   x, y, w, h, window->desc);
       
+      MetaMoveResizeFlags flags = 
+        META_DO_GRAVITY_ADJUST | META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
       meta_window_move_resize_internal (window,
-                                        META_DO_GRAVITY_ADJUST,
-                                        NorthWestGravity,
+                                        flags,
+                                        window->size_hints.win_gravity,
                                         x, y, w, h);
     }
 }
@@ -961,8 +977,9 @@ meta_window_free (MetaWindow  *window)
   if (window->display->focus_window == window)
     window->display->focus_window = NULL;
 
-  if (window->maximized)
-    meta_window_unmaximize (window);
+  if (window->maximized_horizontally || window->maximized_vertically)
+    meta_window_unmaximize (window,
+                            META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL);
   
   meta_window_unqueue_calc_showing (window);
   meta_window_unqueue_move_resize (window);
@@ -1130,10 +1147,13 @@ set_net_wm_state (MetaWindow *window)
       data[i] = window->display->atom_net_wm_state_skip_taskbar;
       ++i;
     }
-  if (window->maximized)
+  if (window->maximized_horizontally)
     {
       data[i] = window->display->atom_net_wm_state_maximized_horz;
       ++i;
+    }
+  if (window->maximized_vertically)
+    {
       data[i] = window->display->atom_net_wm_state_maximized_vert;
       ++i;
     }
@@ -1326,8 +1346,8 @@ implement_showing (MetaWindow *window,
               /* just animate into the corner somehow - maybe
                * not a good idea...
                */              
-              icon_rect.x = window->screen->width;
-              icon_rect.y = window->screen->height;
+              icon_rect.x = window->screen->rect.width;
+              icon_rect.y = window->screen->rect.height;
               icon_rect.width = 1;
               icon_rect.height = 1;
             }
@@ -1984,53 +2004,93 @@ meta_window_unminimize (MetaWindow  *window)
 static void
 meta_window_save_rect (MetaWindow *window)
 {
-  if (!(window->maximized || window->fullscreen))
+  if (!(META_WINDOW_MAXIMIZED (window) || window->fullscreen))
     {
       /* save size/pos as appropriate args for move_resize */
-      window->saved_rect = window->rect;
-      if (window->frame)
+      if (!window->maximized_horizontally)
         {
-          window->saved_rect.x += window->frame->rect.x;
-          window->saved_rect.y += window->frame->rect.y;
+          window->saved_rect.x      = window->rect.x;
+          window->saved_rect.width  = window->rect.width;
+          if (window->frame)
+            window->saved_rect.x   += window->frame->rect.x;
+        }
+      if (!window->maximized_vertically)
+        {
+          window->saved_rect.y      = window->rect.y;
+          window->saved_rect.height = window->rect.height;
+          if (window->frame)
+            window->saved_rect.y   += window->frame->rect.y;
         }
     }
 }
 
 void
-meta_window_maximize_internal (MetaWindow    *window,
-                               MetaRectangle *saved_rect)
+meta_window_maximize_internal (MetaWindow        *window,
+                               MetaMaximizeFlags  directions,
+                               MetaRectangle     *saved_rect)
 {
+  /* At least one of the two directions ought to be set */
+  gboolean maximize_horizontally, maximize_vertically;
+  maximize_horizontally = directions & META_MAXIMIZE_HORIZONTAL;
+  maximize_vertically   = directions & META_MAXIMIZE_VERTICAL;
+  g_assert (maximize_horizontally || maximize_vertically);
+
   meta_topic (META_DEBUG_WINDOW_OPS,
-              "Maximizing %s\n", window->desc);
+              "Maximizing %s%s\n",
+              window->desc,
+              maximize_horizontally && maximize_vertically ? "" :
+                maximize_horizontally ? " horizontally" :
+                  maximize_vertically ? " vertically" : "BUGGGGG");
   
   if (saved_rect != NULL)
     window->saved_rect = *saved_rect;
   else
     meta_window_save_rect (window);
   
-  window->maximized = TRUE;
+  window->maximized_horizontally = 
+    window->maximized_horizontally || maximize_horizontally;
+  window->maximized_vertically = 
+    window->maximized_vertically   || maximize_vertically;
   
   recalc_window_features (window);
   set_net_wm_state (window);
 }
 
 void
-meta_window_maximize (MetaWindow  *window)
+meta_window_maximize (MetaWindow        *window,
+                      MetaMaximizeFlags  directions)
 {
-  if (!window->maximized)
+  /* At least one of the two directions ought to be set */
+  gboolean maximize_horizontally, maximize_vertically;
+  maximize_horizontally = directions & META_MAXIMIZE_HORIZONTAL;
+  maximize_vertically   = directions & META_MAXIMIZE_VERTICAL;
+  g_assert (maximize_horizontally || maximize_vertically);
+
+  /* Only do something if the window isn't already maximized in the
+   * given direction(s).
+   */
+  if ((maximize_horizontally && !window->maximized_horizontally) ||
+      (maximize_vertically   && !window->maximized_vertically))
     {
-      if (window->shaded)
+      if (window->shaded && maximize_vertically)
         meta_window_unshade (window);
       
       /* if the window hasn't been placed yet, we'll maximize it then
        */
       if (!window->placed)
 	{
-	  window->maximize_after_placement = TRUE;
+	  window->maximize_horizontally_after_placement = 
+            window->maximize_horizontally_after_placement || 
+            maximize_horizontally;
+	  window->maximize_vertically_after_placement = 
+            window->maximize_vertically_after_placement || 
+            maximize_vertically;
 	  return;
 	}
 
-      meta_window_maximize_internal (window, NULL);
+      meta_window_maximize_internal (window, 
+                                     directions,
+                                     NULL);
 
       /* move_resize with new maximization constraints
        */
@@ -2039,14 +2099,32 @@ meta_window_maximize (MetaWindow  *window)
 }
 
 void
-meta_window_unmaximize (MetaWindow  *window)
+meta_window_unmaximize (MetaWindow        *window,
+                        MetaMaximizeFlags  directions)
 {
-  if (window->maximized)
+  /* At least one of the two directions ought to be set */
+  gboolean unmaximize_horizontally, unmaximize_vertically;
+  unmaximize_horizontally = directions & META_MAXIMIZE_HORIZONTAL;
+  unmaximize_vertically   = directions & META_MAXIMIZE_VERTICAL;
+  g_assert (unmaximize_horizontally || unmaximize_vertically);
+
+  /* Only do something if the window isn't already maximized in the
+   * given direction(s).
+   */
+  if ((unmaximize_horizontally && window->maximized_horizontally) ||
+      (unmaximize_vertically   && window->maximized_vertically))
     {
       meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Unmaximizing %s\n", window->desc);
+                  "Unmaximizing %s%s\n",
+                  window->desc,
+                  unmaximize_horizontally && unmaximize_vertically ? "" :
+                    unmaximize_horizontally ? " horizontally" :
+                      unmaximize_vertically ? " vertically" : "BUGGGGG");
       
-      window->maximized = FALSE;
+      window->maximized_horizontally = 
+        window->maximized_horizontally && !unmaximize_horizontally;
+      window->maximized_vertically = 
+        window->maximized_vertically   && !unmaximize_vertically;
 
       /* When we unmaximize, if we're doing a mouse move also we could
        * get the window suddenly jumping to the upper left corner of
@@ -2283,19 +2361,17 @@ meta_window_activate (MetaWindow *window,
   meta_window_focus (window, timestamp);
 }
 
-/* returns values suitable for meta_window_move
- * i.e. static gravity
+/* Manually fix all the weirdness explained in the big comment at the
+ * beginning of meta_window_move_resize_internal() giving positions
+ * expected by meta_window_constrain (i.e. positions & sizes of the
+ * internal or client window).
  */
 static void
 adjust_for_gravity (MetaWindow        *window,
                     MetaFrameGeometry *fgeom,
                     gboolean           coords_assume_border,
-                    int                x,
-                    int                y,
-                    int                width,
-                    int                height,
-                    int               *xp,
-                    int               *yp)
+                    int                gravity,
+                    MetaRectangle     *rect)
 {
   int ref_x, ref_y;
   int bw;
@@ -2311,15 +2387,15 @@ adjust_for_gravity (MetaWindow        *window,
     {
       child_x = fgeom->left_width;
       child_y = fgeom->top_height;
-      frame_width = child_x + width + fgeom->right_width;
-      frame_height = child_y + height + fgeom->bottom_height;
+      frame_width = child_x + rect->width + fgeom->right_width;
+      frame_height = child_y + rect->height + fgeom->bottom_height;
     }
   else
     {
       child_x = 0;
       child_y = 0;
-      frame_width = width;
-      frame_height = height;
+      frame_width = rect->width;
+      frame_height = rect->height;
     }
   
   /* We're computing position to pass to window_move, which is
@@ -2329,93 +2405,93 @@ adjust_for_gravity (MetaWindow        *window,
    * their formulas assume we're honoring the border width, rather
    * than compensating for having turned it off)
    */
-  switch (window->size_hints.win_gravity)
+  switch (gravity)
     {
     case NorthWestGravity:
-      ref_x = x;
-      ref_y = y;
+      ref_x = rect->x;
+      ref_y = rect->y;
       break;
     case NorthGravity:
-      ref_x = x + width / 2 + bw;
-      ref_y = y;
+      ref_x = rect->x + rect->width / 2 + bw;
+      ref_y = rect->y;
       break;
     case NorthEastGravity:
-      ref_x = x + width + bw * 2;
-      ref_y = y;
+      ref_x = rect->x + rect->width + bw * 2;
+      ref_y = rect->y;
       break;
     case WestGravity:
-      ref_x = x;
-      ref_y = y + height / 2 + bw;
+      ref_x = rect->x;
+      ref_y = rect->y + rect->height / 2 + bw;
       break;
     case CenterGravity:
-      ref_x = x + width / 2 + bw;
-      ref_y = y + height / 2 + bw;
+      ref_x = rect->x + rect->width / 2 + bw;
+      ref_y = rect->y + rect->height / 2 + bw;
       break;
     case EastGravity:
-      ref_x = x + width + bw * 2;
-      ref_y = y + height / 2 + bw;
+      ref_x = rect->x + rect->width + bw * 2;
+      ref_y = rect->y + rect->height / 2 + bw;
       break;
     case SouthWestGravity:
-      ref_x = x;
-      ref_y = y + height + bw * 2;
+      ref_x = rect->x;
+      ref_y = rect->y + rect->height + bw * 2;
       break;
     case SouthGravity:
-      ref_x = x + width / 2 + bw;
-      ref_y = y + height + bw * 2;
+      ref_x = rect->x + rect->width / 2 + bw;
+      ref_y = rect->y + rect->height + bw * 2;
       break;
     case SouthEastGravity:
-      ref_x = x + width + bw * 2;
-      ref_y = y + height + bw * 2;
+      ref_x = rect->x + rect->width + bw * 2;
+      ref_y = rect->y + rect->height + bw * 2;
       break;
     case StaticGravity:
     default:
-      ref_x = x;
-      ref_y = y;
+      ref_x = rect->x;
+      ref_y = rect->y;
       break;
     }
 
-  switch (window->size_hints.win_gravity)
+  switch (gravity)
     {
     case NorthWestGravity:
-      *xp = ref_x + child_x;
-      *yp = ref_y + child_y;
+      rect->x = ref_x + child_x;
+      rect->y = ref_y + child_y;
       break;
     case NorthGravity:
-      *xp = ref_x - frame_width / 2 + child_x;
-      *yp = ref_y + child_y;
+      rect->x = ref_x - frame_width / 2 + child_x;
+      rect->y = ref_y + child_y;
       break;
     case NorthEastGravity:
-      *xp = ref_x - frame_width + child_x;
-      *yp = ref_y + child_y;
+      rect->x = ref_x - frame_width + child_x;
+      rect->y = ref_y + child_y;
       break;
     case WestGravity:
-      *xp = ref_x + child_x;
-      *yp = ref_y - frame_height / 2 + child_y;
+      rect->x = ref_x + child_x;
+      rect->y = ref_y - frame_height / 2 + child_y;
       break;
     case CenterGravity:
-      *xp = ref_x - frame_width / 2 + child_x;
-      *yp = ref_y - frame_height / 2 + child_y;
+      rect->x = ref_x - frame_width / 2 + child_x;
+      rect->y = ref_y - frame_height / 2 + child_y;
       break;
     case EastGravity:
-      *xp = ref_x - frame_width + child_x;
-      *yp = ref_y - frame_height / 2 + child_y;
+      rect->x = ref_x - frame_width + child_x;
+      rect->y = ref_y - frame_height / 2 + child_y;
       break;
     case SouthWestGravity:
-      *xp = ref_x + child_x;
-      *yp = ref_y - frame_height + child_y;
+      rect->x = ref_x + child_x;
+      rect->y = ref_y - frame_height + child_y;
       break;
     case SouthGravity:
-      *xp = ref_x - frame_width / 2 + child_x;
-      *yp = ref_y - frame_height + child_y;
+      rect->x = ref_x - frame_width / 2 + child_x;
+      rect->y = ref_y - frame_height + child_y;
       break;
     case SouthEastGravity:
-      *xp = ref_x - frame_width + child_x;
-      *yp = ref_y - frame_height + child_y;
+      rect->x = ref_x - frame_width + child_x;
+      rect->y = ref_y - frame_height + child_y;
       break;
     case StaticGravity:
     default:
-      *xp = ref_x;
-      *yp = ref_y;
+      rect->x = ref_x;
+      rect->y = ref_y;
       break;
     }
 }
@@ -2424,47 +2500,6 @@ static gboolean
 static_gravity_works (MetaDisplay *display)
 {
   return display->static_gravity_works;
-}
-
-static void
-get_mouse_deltas_for_resize (MetaWindow *window,
-                             int         resize_gravity,
-                             int         w,
-                             int         h,
-                             int        *x_delta,
-                             int        *y_delta)
-{
-  switch (meta_x_direction_from_gravity (resize_gravity))
-    {
-    case META_RESIZE_LEFT_OR_TOP:
-      *x_delta = window->rect.width - w;
-      break;
-    case META_RESIZE_RIGHT_OR_BOTTOM:
-      *x_delta = w - window->rect.width;
-      break;
-    case META_RESIZE_CENTER:
-      /* FIXME this implies that with center gravity you have to grow
-       * in increments of two
-       */
-      *x_delta = (w - window->rect.width) / 2;
-      break;
-    }
-  
-  switch (meta_y_direction_from_gravity (resize_gravity))
-    {
-    case META_RESIZE_LEFT_OR_TOP:
-      *y_delta = window->rect.height - h;
-      break;
-    case META_RESIZE_RIGHT_OR_BOTTOM:
-      *y_delta = h - window->rect.height;
-      break;
-    case META_RESIZE_CENTER:
-      /* FIXME this implies that with center gravity you have to grow
-       * in increments of two
-       */
-      *y_delta = (h - window->rect.height) / 2;
-      break;
-    }
 }
 
 #ifdef HAVE_XSYNC
@@ -2506,6 +2541,41 @@ meta_window_move_resize_internal (MetaWindow  *window,
                                   int          w,
                                   int          h)
 {
+  /* meta_window_move_resize_internal gets called with very different
+   * meanings for root_x_nw and root_y_nw.  w & h are always the area of
+   * the inner or client window (i.e. excluding the frame) and the
+   * resize_gravity is always the gravity associated with the resize or
+   * move_resize request (the gravity is ignored for move-only operations).
+   * But the location is different because of how this function gets
+   * called; note that in all cases what we want to find out is the upper
+   * left corner of the position of the inner window:
+   *
+   *   Case | Called from (flags; resize_gravity)
+   *   -----+-----------------------------------------------
+   *    1   | A resize only ConfigureRequest
+   *    1   | meta_window_resize
+   *    1   | meta_window_resize_with_gravity
+   *    2   | New window
+   *    2   | Session restore
+   *    2   | A not-resize-only ConfigureRequest
+   *    3   | meta_window_move
+   *    3   | meta_window_move_resize
+   *    4   | various functions via handle_net_moveresize_window() in display.c
+   *
+   * For each of the cases, root_x_nw and root_y_nw must be treated as follows:
+   *
+   *   (1) They should be entirely ignored; instead the previous position
+   *       and size of the window should be resized according to the given
+   *       gravity in order to determine the new position of the window.
+   *   (2) Needs to be fixed up by adjust_for_gravity() as these
+   *       coordinates are relative to some corner or side of the outer
+   *       window (except for the case of StaticGravity) and we want to
+   *       know the location of the upper left corner of the inner window.
+   *   (3) These values are already the desired positon of the NW corner
+   *       of the inner window
+   *   (4) The place that calls this function this way must be fixed; it is
+   *       wrong.
+   */
   XWindowChanges values;
   unsigned int mask;
   gboolean need_configure_notify;
@@ -2528,14 +2598,15 @@ meta_window_move_resize_internal (MetaWindow  *window,
    */
   int client_move_x;
   int client_move_y;
-  int x_delta;
-  int y_delta;
   MetaRectangle new_rect;
   MetaRectangle old_rect;
   
   is_configure_request = (flags & META_IS_CONFIGURE_REQUEST) != 0;
   do_gravity_adjust = (flags & META_DO_GRAVITY_ADJUST) != 0;
-  is_user_action = (flags & META_USER_MOVE_RESIZE) != 0;
+  is_user_action = (flags & META_IS_USER_ACTION) != 0;
+
+  /* The action has to be a move or a resize or both... */
+  g_assert (flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION));
   
   /* We don't need it in the idle queue anymore. */
   meta_window_unqueue_move_resize (window);
@@ -2553,8 +2624,30 @@ meta_window_move_resize_internal (MetaWindow  *window,
   if (window->frame)
     meta_frame_calc_geometry (window->frame,
                               &fgeom);
-  
-  if (is_configure_request || do_gravity_adjust)
+
+  new_rect.x = root_x_nw;
+  new_rect.y = root_y_nw;
+  new_rect.width  = w;
+  new_rect.height = h;
+
+  /* If this is a resize only, the position should be ignored and
+   * instead obtained by resizing the old rectangle according to the
+   * relevant gravity.
+   */
+  if ((flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION)) == 
+      META_IS_RESIZE_ACTION)
+    { 
+      meta_rectangle_resize_with_gravity (&old_rect,
+                                          &new_rect,
+                                          resize_gravity,
+                                          new_rect.width,
+                                          new_rect.height);
+
+      meta_topic (META_DEBUG_GEOMETRY,
+                  "Compensated for gravity in resize action; new pos %d,%d\n",
+                  new_rect.x, new_rect.y);
+    }
+  else if (is_configure_request || do_gravity_adjust)
     {      
       adjust_for_gravity (window,
                           window->frame ? &fgeom : NULL,
@@ -2562,29 +2655,20 @@ meta_window_move_resize_internal (MetaWindow  *window,
                            * the border width existed
                            */
                           is_configure_request,
-                          root_x_nw,
-                          root_y_nw,
-                          w, h,
-                          &root_x_nw,
-                          &root_y_nw);
-      
+                          window->size_hints.win_gravity,
+                          &new_rect);
+
       meta_topic (META_DEBUG_GEOMETRY,
-                  "Compensated position for gravity, new pos %d,%d\n",
-                  root_x_nw, root_y_nw);
+                  "Compensated for configure_request/do_gravity_adjust needing "
+                  "weird positioning; new pos %d,%d\n",
+                  new_rect.x, new_rect.y);
     }
 
-  get_mouse_deltas_for_resize (window, resize_gravity, w, h,
-                               &x_delta, &y_delta);
-  
   meta_window_constrain (window,
                          window->frame ? &fgeom : NULL,
+                         flags,
+                         resize_gravity,
                          &old_rect,
-                         root_x_nw - old_rect.x,
-                         root_y_nw - old_rect.y,
-                         meta_x_direction_from_gravity (resize_gravity),
-                         x_delta,
-                         meta_y_direction_from_gravity (resize_gravity),
-                         y_delta,
                          &new_rect);
 
   w = new_rect.width;
@@ -2908,8 +2992,10 @@ meta_window_resize (MetaWindow  *window,
 
   meta_window_get_position (window, &x, &y);
   
+  MetaMoveResizeFlags flags = 
+    (user_op ? META_IS_USER_ACTION : 0) | META_IS_RESIZE_ACTION;
   meta_window_move_resize_internal (window,
-                                    user_op ? META_USER_MOVE_RESIZE : 0,
+                                    flags,
                                     NorthWestGravity,
                                     x, y, w, h);
 }
@@ -2920,8 +3006,10 @@ meta_window_move (MetaWindow  *window,
                   int          root_x_nw,
                   int          root_y_nw)
 {
+  MetaMoveResizeFlags flags = 
+    (user_op ? META_IS_USER_ACTION : 0) | META_IS_MOVE_ACTION;
   meta_window_move_resize_internal (window,
-                                    user_op ? META_USER_MOVE_RESIZE : 0,
+                                    flags,
                                     NorthWestGravity,
                                     root_x_nw, root_y_nw,
                                     window->rect.width,
@@ -2936,8 +3024,11 @@ meta_window_move_resize (MetaWindow  *window,
                          int          w,
                          int          h)
 {
+  MetaMoveResizeFlags flags = 
+    (user_op ? META_IS_USER_ACTION : 0) | 
+    META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
   meta_window_move_resize_internal (window,
-                                    user_op ? META_USER_MOVE_RESIZE : 0,
+                                    flags,
                                     NorthWestGravity,
                                     root_x_nw, root_y_nw,
                                     w, h);
@@ -2954,8 +3045,10 @@ meta_window_resize_with_gravity (MetaWindow *window,
 
   meta_window_get_position (window, &x, &y);
   
+  MetaMoveResizeFlags flags = 
+    (user_op ? META_IS_USER_ACTION : 0) | META_IS_RESIZE_ACTION;
   meta_window_move_resize_internal (window,
-                                    user_op ? META_USER_MOVE_RESIZE : 0,
+                                    flags,
                                     gravity,
                                     x, y, w, h);
 }
@@ -2979,94 +3072,6 @@ meta_window_move_resize_now (MetaWindow  *window)
   meta_window_move_resize (window, FALSE, x, y,
                            window->rect.width,
                            window->rect.height);
-}
-
-static void
-check_maximize_to_work_area (MetaWindow          *window,
-                             const MetaRectangle *work_area)
-{
-  /* If we now fill the screen, maximize.
-   * the point here is that fill horz + fill vert = maximized
-   */
-  MetaRectangle rect;
-
-  if (!window->has_maximize_func)
-    return;
-  
-  meta_window_get_outer_rect (window, &rect);
-
-  /* The logic in this if is basically:
-   *   if window's left side is at far left or offscreen AND
-   *      window's bottom side is far top or offscreen AND
-   *      window's right side is at far right or offscreen AND
-   *      window's bottom side is at far bottom or offscreen
-   * except that we maximize windows with a size increment hint (e.g.
-   * terminals) should be maximized if they are "sufficiently close"
-   * to the above criteria...
-   */
-  if ( rect.x <= work_area->x &&
-       rect.y <= work_area->y &&
-       (((work_area->width + work_area->x) - (rect.width + rect.x)) <
-        window->size_hints.width_inc) &&
-       (((work_area->height + work_area->y) - (rect.height + rect.y)) <
-        window->size_hints.height_inc) )
-    meta_window_maximize (window);
-}
-
-void
-meta_window_fill_horizontal (MetaWindow  *window)
-{
-  MetaRectangle work_area;
-  int x, y, w, h;
-  
-  meta_window_get_user_position (window, &x, &y);
-
-  w = window->rect.width;
-  h = window->rect.height;
-  
-  meta_window_get_work_area_current_xinerama (window, &work_area);
-  
-  x = work_area.x;
-  w = work_area.width;
-  
-  if (window->frame != NULL)
-    {
-      x += window->frame->child_x;
-      w -= (window->frame->child_x + window->frame->right_width);
-    }
-  
-  meta_window_move_resize (window, TRUE,
-                           x, y, w, h);
-
-  check_maximize_to_work_area (window, &work_area);
-}
-
-void
-meta_window_fill_vertical (MetaWindow  *window)
-{
-  MetaRectangle work_area;
-  int x, y, w, h;
-  
-  meta_window_get_user_position (window, &x, &y);
-
-  w = window->rect.width;
-  h = window->rect.height;
-
-  meta_window_get_work_area_current_xinerama (window, &work_area);
-
-  y = work_area.y;
-  h = work_area.height;
-  
-  if (window->frame != NULL)
-    {
-      y += window->frame->child_y;
-      h -= (window->frame->child_y + window->frame->bottom_height);
-    }
-  
-  meta_window_move_resize (window, TRUE,
-                           x, y, w, h);
-
-  check_maximize_to_work_area (window, &work_area);
 }
 
 static guint move_resize_idle = 0;
@@ -3380,12 +3385,9 @@ meta_window_begin_wireframe (MetaWindow *window)
   int display_width, display_height;
 
   window->display->grab_wireframe_rect = window->rect;
-
-  if (window->frame)
-    {
-      window->display->grab_wireframe_rect.x += window->frame->rect.x;
-      window->display->grab_wireframe_rect.y += window->frame->rect.y;
-    }
+  meta_window_get_position (window, 
+                            &window->display->grab_wireframe_rect.x,
+                            &window->display->grab_wireframe_rect.y);
 
   meta_window_get_xor_rect (window, &window->display->grab_wireframe_rect,
                             &new_xor);
@@ -4046,15 +4048,28 @@ meta_window_configure_request (MetaWindow *window,
    * don't make too much sense. I think I am doing the math in a couple
    * places and could do it in only one function, and remove some of the
    * move_resize_internal arguments.
+   *
+   * UPDATE (2005-09-17): See the huge comment at the beginning of
+   * meta_window_move_resize_internal() which explains why the current
+   * setup requires the only_resize thing.  Yeah, it'd be much better to
+   * have a different setup for meta_window_move_resize_internal()...
    */
   
-  meta_window_move_resize_internal (window, META_IS_CONFIGURE_REQUEST,
-                                    only_resize ?
-                                    window->size_hints.win_gravity : NorthWestGravity,
-                                    window->size_hints.x,
-                                    window->size_hints.y,
-                                    window->size_hints.width,
-                                    window->size_hints.height);
+  MetaMoveResizeFlags flags = 
+    META_IS_CONFIGURE_REQUEST;
+  if (event->xconfigurerequest.value_mask & (CWX | CWY))
+    flags |= META_IS_MOVE_ACTION;
+  if (event->xconfigurerequest.value_mask & (CWWidth | CWHeight))
+    flags |= META_IS_RESIZE_ACTION;
+
+  if (flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION))
+    meta_window_move_resize_internal (window, 
+                                      flags,
+                                      window->size_hints.win_gravity,
+                                      window->size_hints.x,
+                                      window->size_hints.y,
+                                      window->size_hints.width,
+                                      window->size_hints.height);
 
   /* Handle stacking. We only handle raises/lowers, mostly because
    * stack.c really can't deal with anything else.  I guess we'll fix
@@ -4259,18 +4274,31 @@ meta_window_client_message (MetaWindow *window,
         }
       
       if (first == display->atom_net_wm_state_maximized_horz ||
-          second == display->atom_net_wm_state_maximized_horz ||
-          first == display->atom_net_wm_state_maximized_vert ||
+          second == display->atom_net_wm_state_maximized_horz)
+        {
+          gboolean max;
+
+          max = (action == _NET_WM_STATE_ADD ||
+                 (action == _NET_WM_STATE_TOGGLE && 
+                  !window->maximized_horizontally));
+          if (max && window->has_maximize_func)
+            meta_window_maximize (window, META_MAXIMIZE_HORIZONTAL);
+          else
+            meta_window_unmaximize (window, META_MAXIMIZE_HORIZONTAL);
+        }
+
+      if (first == display->atom_net_wm_state_maximized_vert ||
           second == display->atom_net_wm_state_maximized_vert)
         {
           gboolean max;
 
           max = (action == _NET_WM_STATE_ADD ||
-                 (action == _NET_WM_STATE_TOGGLE && !window->maximized));
+                 (action == _NET_WM_STATE_TOGGLE && 
+                  !window->maximized_vertically));
           if (max && window->has_maximize_func)
-            meta_window_maximize (window);
+            meta_window_maximize (window, META_MAXIMIZE_VERTICAL);
           else
-            meta_window_unmaximize (window);
+            meta_window_unmaximize (window, META_MAXIMIZE_VERTICAL);
         }
 
       if (first == display->atom_net_wm_state_modal ||
@@ -4886,7 +4914,8 @@ update_net_wm_state (MetaWindow *window)
   Atom *atoms;
 
   window->shaded = FALSE;
-  window->maximized = FALSE;
+  window->maximized_horizontally = FALSE;
+  window->maximized_vertically = FALSE;
   window->wm_state_modal = FALSE;
   window->wm_state_skip_taskbar = FALSE;
   window->wm_state_skip_pager = FALSE;
@@ -4906,9 +4935,9 @@ update_net_wm_state (MetaWindow *window)
           if (atoms[i] == window->display->atom_net_wm_state_shaded)
             window->shaded = TRUE;
           else if (atoms[i] == window->display->atom_net_wm_state_maximized_horz)
-            window->maximize_after_placement = TRUE;
+            window->maximize_horizontally_after_placement = TRUE;
           else if (atoms[i] == window->display->atom_net_wm_state_maximized_vert)
-            window->maximize_after_placement = TRUE;
+            window->maximize_vertically_after_placement = TRUE;
           else if (atoms[i] == window->display->atom_net_wm_state_modal)
             window->wm_state_modal = TRUE;
           else if (atoms[i] == window->display->atom_net_wm_state_skip_taskbar)
@@ -5526,15 +5555,6 @@ meta_window_update_struts (MetaWindow *window)
   MetaRectangle new_top;
   MetaRectangle new_bottom;
 
-  /**
-   * This gap must be kept to at least 75 pixels, since otherwise
-   * struts on opposite sides of the screen left/right could interfere
-   * in each other in a way that makes it so there is no feasible
-   * solution to the constraint satisfaction problem.  See
-   * constraints.c.
-   */
-#define MIN_EMPTY (76)
-  
   meta_verbose ("Updating struts for %s\n", window->desc);
   
   if (window->struts)
@@ -5551,25 +5571,19 @@ meta_window_update_struts (MetaWindow *window)
     }
 
   new_has_struts = FALSE;
+  new_left = window->screen->rect;
   new_left.width = 0;
-  new_left.x = 0;
-  new_left.y = 0;
-  new_left.height = window->screen->height;
 
+  new_right = window->screen->rect;
   new_right.width = 0;
-  new_right.x = window->screen->width;
-  new_right.y = 0;
-  new_right.height = window->screen->height;
+  new_right.x = window->screen->rect.width;
 
+  new_top = window->screen->rect;
   new_top.height = 0;
-  new_top.y = 0;
-  new_top.x = 0;
-  new_top.width = window->screen->width;
 
+  new_bottom = window->screen->rect;
   new_bottom.height = 0;
-  new_bottom.y = window->screen->height;
-  new_bottom.x = 0;
-  new_bottom.width = window->screen->width;
+  new_bottom.y = window->screen->rect.height;
   
   if (meta_prop_get_cardinal_list (window->display,
                                    window->xwindow,
@@ -5583,20 +5597,13 @@ meta_window_update_struts (MetaWindow *window)
         }
       else
         {
-          int gap;
-          gap = window->screen->width - struts[0] - struts[1];
-          gap -= MIN_EMPTY;
           new_has_struts = TRUE;
-          new_left.width = (int) struts[0] + MIN (0, gap/2);
-          new_right.width = (int) struts[1] + MIN (0, gap/2);
-          gap = window->screen->height - struts[2] - struts[3];
-          gap -= MIN_EMPTY;
-          new_top.height = (int)struts[2] + MIN (0, gap/2);
-          new_bottom.height = (int)struts[3] + MIN (0, gap/2);
-          new_right.x = window->screen->width - 
-            new_right.width;
-          new_bottom.y = window->screen->height - 
-            new_bottom.height;
+          new_left.width = (int) struts[0];
+          new_right.width = (int) struts[1];
+          new_top.height = (int)struts[2];
+          new_bottom.height = (int)struts[3];
+          new_right.x  = window->screen->rect.width  - new_right.width;
+          new_bottom.y = window->screen->rect.height - new_bottom.height;
           new_left.y = struts[4];
           new_left.height = struts[5] - new_left.y + 1;
           new_right.y = struts[6];
@@ -5636,22 +5643,13 @@ meta_window_update_struts (MetaWindow *window)
             }
           else
             {
-              int gap;
-              gap = window->screen->width - struts[0] - struts[1];
-              gap -= MIN_EMPTY;
               new_has_struts = TRUE;
-              new_left.width = (int) struts[0] + MIN (0, gap/2);
-              new_right.width = (int) struts[1] + MIN (0, gap/2);
-              gap = window->screen->height - struts[2] - struts[3];
-              gap -= MIN_EMPTY;
-              new_top.height = (int)struts[2] + MIN (0, gap/2);
-              new_bottom.height = (int)struts[3] + MIN (0, gap/2);
-              new_left.x = 0;
-              new_right.x = window->screen->width - 
-                new_right.width;
-              new_top.y = 0;
-              new_bottom.y = window->screen->height -
-                new_bottom.height;
+              new_left.width = (int) struts[0];
+              new_right.width = (int) struts[1];
+              new_top.height = (int)struts[2];
+              new_bottom.height = (int)struts[3];
+              new_right.x  = window->screen->rect.width  - new_right.width;
+              new_bottom.y = window->screen->rect.height - new_bottom.height;
               
               meta_verbose ("_NET_WM_STRUT struts %d %d %d %d for window %s\n",
                             new_left.width,
@@ -5933,8 +5931,8 @@ recalc_window_features (MetaWindow *window)
        * is entire screen size (kind of broken, because we
        * actually fullscreen to xinerama head size not screen size)
        */
-      if (window->size_hints.min_width == window->screen->width &&
-          window->size_hints.min_height == window->screen->height &&
+      if (window->size_hints.min_width == window->screen->rect.width &&
+          window->size_hints.min_height == window->screen->rect.height &&
           !window->decorated)
         ; /* leave fullscreen available */
       else
@@ -6070,11 +6068,15 @@ menu_callback (MetaWindowMenu *menu,
           break;
 
         case META_MENU_OP_UNMAXIMIZE:
-          meta_window_unmaximize (window);
+          meta_window_unmaximize (window,
+                                  META_MAXIMIZE_HORIZONTAL |
+                                  META_MAXIMIZE_VERTICAL);
           break;
       
         case META_MENU_OP_MAXIMIZE:
-          meta_window_maximize (window);
+          meta_window_maximize (window,
+                                META_MAXIMIZE_HORIZONTAL |
+                                META_MAXIMIZE_VERTICAL);
           break;
 
         case META_MENU_OP_UNSHADE:
@@ -6137,6 +6139,10 @@ menu_callback (MetaWindowMenu *menu,
                                      META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN,
                                      meta_display_get_current_time (window->display));
           break;
+
+        case META_MENU_OP_RECOVER:
+          meta_window_shove_titlebar_onscreen (window);
+          break;
           
         case 0:
           /* nothing */
@@ -6196,6 +6202,11 @@ meta_window_show_menu (MetaWindow *window,
 
   ops |= (META_MENU_OP_DELETE | META_MENU_OP_MINIMIZE | META_MENU_OP_MOVE | META_MENU_OP_RESIZE);
 
+  if (!meta_window_titlebar_is_onscreen (window) &&
+      window->type != META_WINDOW_DOCK &&
+      window->type != META_WINDOW_DESKTOP)
+    ops |= META_MENU_OP_RECOVER;
+
   n_workspaces = meta_screen_get_n_workspaces (window->screen);
 
   if (n_workspaces > 1)
@@ -6223,7 +6234,7 @@ meta_window_show_menu (MetaWindow *window,
 
   meta_screen_free_workspace_layout (&layout);
 
-  if (window->maximized)
+  if (META_WINDOW_MAXIMIZED (window))
     ops |= META_MENU_OP_UNMAXIMIZE;
   else
     ops |= META_MENU_OP_MAXIMIZE;
@@ -6293,6 +6304,98 @@ meta_window_show_menu (MetaWindow *window,
   meta_verbose ("Popping up window menu for %s\n", window->desc);
   
   meta_ui_window_menu_popup (menu, root_x, root_y, button, timestamp);
+}
+
+void
+meta_window_shove_titlebar_onscreen (MetaWindow *window)
+{
+  MetaRectangle  outer_rect;
+  GList         *onscreen_region;
+  int            horiz_amount, vert_amount;
+  int            newx, newy;
+
+  /* If there's no titlebar, don't bother */
+  if (!window->frame)
+    return;
+
+  /* Get the basic info we need */
+  meta_window_get_outer_rect (window, &outer_rect);
+  onscreen_region = window->screen->active_workspace->screen_region;
+
+  /* Extend the region (just in case the window is too big to fit on the
+   * screen), then shove the window on screen, then return the region to
+   * normal.
+   */
+  horiz_amount = outer_rect.width;
+  vert_amount  = outer_rect.height;
+  meta_rectangle_expand_region (onscreen_region,
+                                horiz_amount,
+                                horiz_amount, 
+                                0,
+                                vert_amount);
+  meta_rectangle_shove_into_region(onscreen_region,
+                                   FIXED_DIRECTION_X,
+                                   &outer_rect);
+  meta_rectangle_expand_region (onscreen_region,
+                                -horiz_amount,
+                                -horiz_amount, 
+                                0,
+                                -vert_amount);
+
+  newx = outer_rect.x + window->frame->child_x;
+  newy = outer_rect.y + window->frame->child_y;
+  meta_window_move_resize (window,
+                           TRUE,
+                           newx,
+                           newy,
+                           window->rect.width, 
+                           window->rect.height);
+}
+
+gboolean
+meta_window_titlebar_is_onscreen (MetaWindow *window)
+{
+  MetaRectangle  titlebar_rect;
+  GList         *onscreen_region;
+  int            titlebar_size;
+  gboolean       is_onscreen;
+
+  const int min_height_needed  = 8;
+  const int min_width_percent  = 0.5;
+  const int min_width_absolute = 50;
+
+  /* Titlebar can't be offscreen if there is no titlebar... */
+  if (!window->frame)
+    return FALSE;
+  
+  /* Get the rectangle corresponding to the titlebar */
+  meta_window_get_outer_rect (window, &titlebar_rect);
+  titlebar_rect.height = window->frame->child_y;
+  titlebar_size = meta_rectangle_area (&titlebar_rect);
+
+  /* Run through the spanning rectangles for the screen and see if one of
+   * them overlaps with the titlebar sufficiently to consider it onscreen.
+   */
+  is_onscreen = FALSE;
+  onscreen_region = window->screen->active_workspace->screen_region;
+  while (onscreen_region)
+    {
+      MetaRectangle *spanning_rect = onscreen_region->data;
+      MetaRectangle overlap;
+      
+      meta_rectangle_intersect (&titlebar_rect, spanning_rect, &overlap);
+      if (overlap.height > MIN (titlebar_rect.height, min_height_needed) &&
+          overlap.width  > MIN (titlebar_rect.width * min_width_percent, 
+                                min_width_absolute))
+        {
+          is_onscreen = TRUE;
+          break;
+        }
+        
+      onscreen_region = onscreen_region->next;
+    }
+
+  return is_onscreen;
 }
 
 static double
@@ -6385,14 +6488,28 @@ check_moveresize_frequency (MetaWindow *window,
     }
 }
 
+static gboolean
+update_move_timeout (gpointer data)
+{
+  MetaWindow *window = data;
+
+  update_move (window, 
+               window->display->grab_last_user_action_was_snap,
+               window->display->grab_latest_motion_x,
+               window->display->grab_latest_motion_y);
+
+  return FALSE;
+}
+
 static void
 update_move (MetaWindow  *window,
-             unsigned int mask,
+             gboolean     snap,
              int          x,
              int          y)
 {
   int dx, dy;
   int new_x, new_y;
+  MetaRectangle old;
   int shake_threshold;
   
   window->display->grab_latest_motion_x = x;
@@ -6411,7 +6528,14 @@ update_move (MetaWindow  *window,
                 window->display->grab_anchor_window_pos.x,
                 window->display->grab_anchor_window_pos.y,
                 dx, dy);
-  
+
+  /* Don't bother doing anything if no move has been specified.  (This
+   * happens often, even in keyboard moving, due to the warping of the
+   * pointer.
+   */
+  if (dx == 0 && dy == 0)
+    return;
+
   /* shake loose (unmaximize) maximized window if dragged beyond the threshold
    * in the Y direction. You can't pull a window loose via X motion.
    */
@@ -6420,7 +6544,7 @@ update_move (MetaWindow  *window,
   shake_threshold = meta_ui_get_drag_threshold (window->screen->ui) *
     DRAG_THRESHOLD_TO_SHAKE_THRESHOLD_FACTOR;
     
-  if (window->maximized && ABS (dy) >= shake_threshold)
+  if (META_WINDOW_MAXIMIZED (window) && ABS (dy) >= shake_threshold)
     {
       double prop;
 
@@ -6446,14 +6570,16 @@ update_move (MetaWindow  *window,
       window->display->grab_anchor_root_x = x;
       window->display->grab_anchor_root_y = y;
 
-      meta_window_unmaximize (window);
+      meta_window_unmaximize (window,
+                              META_MAXIMIZE_HORIZONTAL |
+                              META_MAXIMIZE_VERTICAL);
 
       return;
     }
   /* remaximize window on an other xinerama monitor if window has
    * been shaken loose or it is still maximized (then move straight)
    */
-  else if (window->shaken_loose || window->maximized)
+  else if (window->shaken_loose || META_WINDOW_MAXIMIZED (window))
     {
       const MetaXineramaScreenInfo *wxinerama;
       MetaRectangle work_area;
@@ -6485,7 +6611,9 @@ update_move (MetaWindow  *window,
                       window->saved_rect.y += window->frame->child_y;
                     }
 
-                  meta_window_unmaximize (window);
+                  meta_window_unmaximize (window,
+                                          META_MAXIMIZE_HORIZONTAL |
+                                          META_MAXIMIZE_VERTICAL);
                 }
 
               window->display->grab_initial_window_pos = work_area;
@@ -6493,26 +6621,38 @@ update_move (MetaWindow  *window,
               window->display->grab_anchor_root_y = y;
               window->shaken_loose = FALSE;
               
-              meta_window_maximize (window);
+              meta_window_maximize (window,
+                                    META_MAXIMIZE_HORIZONTAL |
+                                    META_MAXIMIZE_VERTICAL);
 
               return;
             }
         }
     }
 
-  /* don't allow a maximized window to move */
-  if (window->maximized)
-    return;
-
-  if (mask & ShiftMask)
+  if (window->display->grab_wireframe_active)
+    old = window->display->grab_wireframe_rect;
+  else
     {
-      /* snap to edges */
-      if (dy != 0)
-        new_x = meta_window_find_nearest_vertical_edge (window, new_x);
-
-      if (dx != 0)
-        new_y = meta_window_find_nearest_horizontal_edge (window, new_y);
+      old = window->rect;
+      meta_window_get_position (window, &old.x, &old.y);
     }
+
+  /* Don't allow movement in the maximized directions */
+  if (window->maximized_horizontally)
+    new_x = old.x;
+  if (window->maximized_vertically)
+    new_y = old.y;
+
+  /* Do any edge resistance/snapping */
+  meta_window_edge_resistance_for_move (window, 
+                                        old.x,
+                                        old.y,
+                                        &new_x,
+                                        &new_y,
+                                        update_move_timeout,
+                                        snap,
+                                        FALSE);
 
   if (window->display->grab_wireframe_active)
     meta_window_update_wireframe (window, new_x, new_y, 
@@ -6522,25 +6662,22 @@ update_move (MetaWindow  *window,
     meta_window_move (window, TRUE, new_x, new_y);
 }
 
-static void update_resize (MetaWindow *window,
-			   int         x,
-			   int         y,
-			   gboolean    force);
-
 static gboolean
 update_resize_timeout (gpointer data)
 {
   MetaWindow *window = data;
 
   update_resize (window, 
-		 window->display->grab_latest_motion_x,
-		 window->display->grab_latest_motion_y,
-		 TRUE);
+                 window->display->grab_last_user_action_was_snap,
+                 window->display->grab_latest_motion_x,
+                 window->display->grab_latest_motion_y,
+                 TRUE);
   return FALSE;
 }
 
 static void
 update_resize (MetaWindow *window,
+               gboolean    snap,
                int x, int y,
 	       gboolean force)
 {
@@ -6560,6 +6697,13 @@ update_resize (MetaWindow *window,
   new_w = window->display->grab_anchor_window_pos.width;
   new_h = window->display->grab_anchor_window_pos.height;
 
+  /* Don't bother doing anything if no move has been specified.  (This
+   * happens often, even in keyboard resizing, due to the warping of the
+   * pointer.
+   */
+  if (dx == 0 && dy == 0)
+    return;
+  
   /* FIXME this is only used in wireframe mode */
   new_x = window->display->grab_anchor_window_pos.x;
   new_y = window->display->grab_anchor_window_pos.y;
@@ -6608,6 +6752,11 @@ update_resize (MetaWindow *window,
         }
     }
   
+  /* FIXME: This stupidity only needed because of wireframe mode and
+   * the fact that wireframe isn't making use of
+   * meta_rectangle_resize_with_gravity().  If we were to use that, we
+   * could just increment new_w and new_h by dx and dy in all cases.
+   */
   switch (window->display->grab_op)
     {
     case META_GRAB_OP_RESIZING_SE:
@@ -6680,12 +6829,46 @@ update_resize (MetaWindow *window,
       window->display->grab_resize_timeout_id = 0;
     }
   
-  old = window->rect;
+  if (window->display->grab_wireframe_active)
+    old = window->display->grab_wireframe_rect;
+  else
+    old = window->rect;  /* Don't actually care about x,y */
+
+  /* One sided resizing ought to actually be one-sided, despite the fact that
+   * aspect ratio windows don't interact nicely with the above stuff.  So,
+   * to avoid some nasty flicker, we enforce that.
+   */
+  switch (window->display->grab_op)
+    {
+    case META_GRAB_OP_RESIZING_S:
+    case META_GRAB_OP_RESIZING_N:
+      new_w = old.width;
+      break;
+      
+    case META_GRAB_OP_RESIZING_E:
+    case META_GRAB_OP_RESIZING_W:
+      new_h = old.height;
+      break;
+
+    default:
+      break;
+    }
 
   /* compute gravity of client during operation */
   gravity = meta_resize_gravity_from_grab_op (window->display->grab_op);
   g_assert (gravity >= 0);
   
+  /* Do any edge resistance/snapping */
+  meta_window_edge_resistance_for_resize (window,
+                                          old.width,
+                                          old.height,
+                                          &new_w,
+                                          &new_h,
+                                          gravity,
+                                          update_resize_timeout,
+                                          snap,
+                                          FALSE);
+
   if (window->display->grab_wireframe_active)
     {
       if ((new_x + new_w <= new_x) || (new_y + new_h <= new_y))
@@ -6702,7 +6885,11 @@ update_resize (MetaWindow *window,
     }
   else
     {
-      meta_window_resize_with_gravity (window, TRUE, new_w, new_h, gravity);
+      /* We don't need to update unless the specified width and height
+       * are actually different from what we had before.
+       */
+      if (old.width != new_w || old.height != new_h)
+        meta_window_resize_with_gravity (window, TRUE, new_w, new_h, gravity);
     }
 
   /* Store the latest resize time, if we actually resized. */
@@ -6831,6 +7018,7 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
         case META_GRAB_OP_KEYBOARD_RESIZING_NW:
           /* no pointer round trip here, to keep in sync */
           update_resize (window,
+                         window->display->grab_last_user_action_was_snap,
                          window->display->grab_latest_motion_x,
                          window->display->grab_latest_motion_y,
 			 TRUE);
@@ -6844,20 +7032,29 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
   
   switch (event->type)
     {
-    case ButtonRelease:      
-      if (meta_grab_op_is_moving (window->display->grab_op))
+    case ButtonRelease:
+      /* If the user was snap moving then ignore the button release
+       * because they may have let go of shift before releasing the
+       * mouse button and they almost certainly do not want a
+       * non-snapped movement to occur from the button release.
+       */
+      if (!window->display->grab_last_user_action_was_snap)
         {
-          if (event->xbutton.root == window->screen->xroot)
-            update_move (window, event->xbutton.state,
-                         event->xbutton.x_root, event->xbutton.y_root);
-        }
-      else if (meta_grab_op_is_resizing (window->display->grab_op))
-        {
-          if (event->xbutton.root == window->screen->xroot)
-            update_resize (window,
-			   event->xbutton.x_root,
-			   event->xbutton.y_root,
-			   TRUE);
+          if (meta_grab_op_is_moving (window->display->grab_op))
+            {
+              if (event->xbutton.root == window->screen->xroot)
+                update_move (window, event->xbutton.state & ShiftMask,
+                             event->xbutton.x_root, event->xbutton.y_root);
+            }
+          else if (meta_grab_op_is_resizing (window->display->grab_op))
+            {
+              if (event->xbutton.root == window->screen->xroot)
+                update_resize (window,
+                               event->xbutton.state & ShiftMask,
+                               event->xbutton.x_root,
+                               event->xbutton.y_root,
+                               TRUE);
+            }
         }
 
       meta_display_end_grab_op (window->display, event->xbutton.time);
@@ -6871,7 +7068,7 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
               if (check_use_this_motion_notify (window,
                                                 event))
                 update_move (window,
-                             event->xmotion.state,
+                             event->xmotion.state & ShiftMask,
                              event->xmotion.x_root,
                              event->xmotion.y_root);
             }
@@ -6883,32 +7080,14 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
               if (check_use_this_motion_notify (window,
                                                 event))
                 update_resize (window,
+                               event->xmotion.state & ShiftMask,
                                event->xmotion.x_root,
                                event->xmotion.y_root,
-			       FALSE);
+                               FALSE);
             }
         }
       break;
 
-    case EnterNotify:
-    case LeaveNotify:
-      if (meta_grab_op_is_moving (window->display->grab_op))
-        {
-          if (event->xcrossing.root == window->screen->xroot)
-            update_move (window,
-                         event->xcrossing.state,
-                         event->xcrossing.x_root,
-                         event->xcrossing.y_root);
-        }
-      else if (meta_grab_op_is_resizing (window->display->grab_op))
-        {
-          if (event->xcrossing.root == window->screen->xroot)
-            update_resize (window,
-                           event->xcrossing.x_root,
-                           event->xcrossing.y_root,
-			   FALSE);
-        }
-      break;
     default:
       break;
     }
@@ -6939,54 +7118,26 @@ get_work_area_xinerama (MetaWindow    *window,
                         MetaRectangle *area,
                         int            which_xinerama)
 {
-  MetaRectangle space_area;
   GList *tmp;  
-  int left_strut;
-  int right_strut;
-  int top_strut;
-  int bottom_strut;  
-  int xinerama_origin_x;
-  int xinerama_origin_y;
-  int xinerama_width;
-  int xinerama_height;
   
   g_assert (which_xinerama >= 0);
 
-  xinerama_origin_x = window->screen->xinerama_infos[which_xinerama].x_origin;
-  xinerama_origin_y = window->screen->xinerama_infos[which_xinerama].y_origin;
-  xinerama_width = window->screen->xinerama_infos[which_xinerama].width;
-  xinerama_height = window->screen->xinerama_infos[which_xinerama].height;
-  
-  left_strut = 0;
-  right_strut = 0;
-  top_strut = 0;
-  bottom_strut = 0;
+  /* Initialize to the whole xinerama */
+  *area = window->screen->xinerama_infos[which_xinerama].rect;
   
   tmp = meta_window_get_workspaces (window);  
   while (tmp != NULL)
     {
+      MetaRectangle workspace_work_area;
       meta_workspace_get_work_area_for_xinerama (tmp->data,
                                                  which_xinerama,
-                                                 &space_area);
-
-      left_strut = MAX (left_strut, space_area.x - xinerama_origin_x);
-      right_strut = MAX (right_strut,
-			 (xinerama_width - 
-			  (space_area.x - xinerama_origin_x) - 
-			  space_area.width));
-      top_strut = MAX (top_strut, space_area.y - xinerama_origin_y);
-      bottom_strut = MAX (bottom_strut,
-			  (xinerama_height - 
-			   (space_area.y - xinerama_origin_y) - 
-			   space_area.height));
+                                                 &workspace_work_area);
+      meta_rectangle_intersect (area,
+                                &workspace_work_area,
+                                area);
       tmp = tmp->next;
     }
   
-  area->x = xinerama_origin_x + left_strut;
-  area->y = xinerama_origin_y + top_strut;
-  area->width = xinerama_width - left_strut - right_strut;
-  area->height = xinerama_height - top_strut - bottom_strut;
-
   meta_topic (META_DEBUG_WORKAREA,
               "Window %s xinerama %d has work area %d,%d %d x %d\n",
               window->desc, which_xinerama,
@@ -7022,50 +7173,22 @@ void
 meta_window_get_work_area_all_xineramas (MetaWindow    *window,
                                          MetaRectangle *area)
 {
-  MetaRectangle space_area;
   GList *tmp;  
-  int left_strut;
-  int right_strut;
-  int top_strut;
-  int bottom_strut;  
-  int screen_origin_x;
-  int screen_origin_y;
-  int screen_width;
-  int screen_height;
 
-  screen_origin_x = 0;
-  screen_origin_y = 0;
-  screen_width = window->screen->width;
-  screen_height = window->screen->height;
-  
-  left_strut = 0;
-  right_strut = 0;
-  top_strut = 0;
-  bottom_strut = 0;
+  /* Initialize to the whole screen */
+  *area = window->screen->rect;
   
   tmp = meta_window_get_workspaces (window);  
   while (tmp != NULL)
     {
+      MetaRectangle workspace_work_area;
       meta_workspace_get_work_area_all_xineramas (tmp->data,
-                                                  &space_area);
-
-      left_strut = MAX (left_strut, space_area.x - screen_origin_x);
-      right_strut = MAX (right_strut,
-			 (screen_width - 
-			  (space_area.x - screen_origin_x) - 
-			  space_area.width));
-      top_strut = MAX (top_strut, space_area.y - screen_origin_y);
-      bottom_strut = MAX (bottom_strut,
-			  (screen_height - 
-			   (space_area.y - screen_origin_y) - 
-			   space_area.height));      
+                                                  &workspace_work_area);
+      meta_rectangle_intersect (area,
+                                &workspace_work_area,
+                                area);
       tmp = tmp->next;
     }
-  
-  area->x = screen_origin_x + left_strut;
-  area->y = screen_origin_y + top_strut;
-  area->width = screen_width - left_strut - right_strut;
-  area->height = screen_height - top_strut - bottom_strut;
 
   meta_topic (META_DEBUG_WORKAREA,
               "Window %s has whole-screen work area %d,%d %d x %d\n",
@@ -7378,12 +7501,35 @@ warp_grab_pointer (MetaWindow          *window,
 
   *x += rect.x;
   *y += rect.y;
+
+  /* Avoid weird bouncing at the screen edge; see bug 154706 */
+  *x = CLAMP (*x, 0, window->screen->rect.width-1);
+  *y = CLAMP (*y, 0, window->screen->rect.height-1);
   
   meta_error_trap_push_with_return (window->display);
 
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Warping pointer to %d,%d with window at %d,%d\n",
               *x, *y, rect.x, rect.y);
+
+  /* Need to update the grab positions so that the MotionNotify and other
+   * events generated by the XWarpPointer() call below don't cause complete
+   * funkiness.  See bug 124582 and bug 122670.
+   */
+  window->display->grab_anchor_root_x = *x;
+  window->display->grab_anchor_root_y = *y;
+  window->display->grab_latest_motion_x = *x;
+  window->display->grab_latest_motion_y = *y;
+  if (window->display->grab_wireframe_active)
+    window->display->grab_anchor_window_pos = 
+      window->display->grab_wireframe_rect;
+  else
+    {
+      window->display->grab_anchor_window_pos = window->rect;
+      meta_window_get_position (window,
+                                &window->display->grab_anchor_window_pos.x,
+                                &window->display->grab_anchor_window_pos.y);
+    }
   
   XWarpPointer (window->display->xdisplay,
                 None,
@@ -7443,33 +7589,6 @@ meta_window_update_keyboard_resize (MetaWindow *window,
                      window->display->grab_op,
                      &x, &y);
 
-  {
-    /* As we warped the pointer, we have to reset the anchor state,
-     * since if the mouse moves we want to use those events to do the
-     * right thing. Also, this means that the motion notify
-     * from the pointer warp comes back as a no-op.
-     */
-    int dx, dy;
-
-    dx = x - window->display->grab_anchor_root_x;
-    dy = y - window->display->grab_anchor_root_y;
-    
-    window->display->grab_anchor_root_x += dx;
-    window->display->grab_anchor_root_y += dy;
-    if (window->display->grab_wireframe_active)
-      {
-        window->display->grab_anchor_window_pos =
-          window->display->grab_wireframe_rect;
-      }
-    else
-      {
-        window->display->grab_anchor_window_pos = window->rect;
-        meta_window_get_position (window,
-                                  &window->display->grab_anchor_window_pos.x,
-                                  &window->display->grab_anchor_window_pos.y);
-      }
-  }
-  
   if (update_cursor)
     {
       meta_display_set_grab_op_cursor (window->display,

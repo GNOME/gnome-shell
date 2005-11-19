@@ -15,6 +15,7 @@ ltconfig
 ltmain.sh
 stamp-h
 stamp-h.in
+stamp-h1
 stamp.h
 version.h
 config.h.in

@@ -2,6 +2,7 @@
 
 /* 
  * Copyright (C) 2001 Havoc Pennington
+ * Copyright (C) 2005 Elijah Newren
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -24,6 +25,7 @@
 
 /* Don't include gtk.h or gdk.h here */
 #include "common.h"
+#include "boxes.h"
 #include <X11/Xlib.h>
 #include <glib.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
@@ -37,8 +39,8 @@ struct _MetaTabEntry
   MetaTabEntryKey  key;  
   const char      *title;
   GdkPixbuf       *icon;
-  int              x, y, width, height;
-  int              inner_x, inner_y, inner_width, inner_height;
+  MetaRectangle    rect;
+  MetaRectangle    inner_rect;
   guint            blank : 1;
   guint            hidden : 1;
   guint            demands_attention : 1;

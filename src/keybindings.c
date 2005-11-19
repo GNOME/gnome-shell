@@ -26,6 +26,7 @@
 #include "keybindings.h"
 #include "workspace.h"
 #include "errors.h"
+#include "edge-resistance.h"
 #include "ui.h"
 #include "frame.h"
 #include "place.h"
@@ -1690,8 +1691,6 @@ process_keyboard_move_grab (MetaDisplay *display,
   int x, y;
   int incr;
   gboolean smart_snap;
-  int edge;
-  int candidate_position;
   
   handled = FALSE;
 
@@ -1719,7 +1718,7 @@ process_keyboard_move_grab (MetaDisplay *display,
 #define NORMAL_INCREMENT 10
 
   if (smart_snap)
-    incr = 0;
+    incr = 1;
   else if (event->xkey.state & ControlMask)
     incr = SMALL_INCREMENT;
   else
@@ -1754,18 +1753,6 @@ process_keyboard_move_grab (MetaDisplay *display,
     case XK_Up:
     case XK_KP_Up:
       y -= incr;
-
-      edge = meta_window_find_next_horizontal_edge (window, 
-                                                    META_WINDOW_EDGE_TOP,
-                                                    FALSE);
-      if (window->frame)
-        candidate_position = edge + window->frame->child_y;
-      else
-        candidate_position = edge;
-
-      if (smart_snap || ((candidate_position > y) && ABS (candidate_position - y) < incr))
-        y = candidate_position;
-
       handled = TRUE;
       break;
     case XK_KP_End:
@@ -1773,18 +1760,6 @@ process_keyboard_move_grab (MetaDisplay *display,
     case XK_Down:
     case XK_KP_Down:
       y += incr;
-
-      edge = meta_window_find_next_horizontal_edge (window, 
-                                                    META_WINDOW_EDGE_BOTTOM,
-                                                    TRUE);
-      if (window->frame)
-        candidate_position = edge - window->frame->bottom_height - window->rect.height;
-      else
-        candidate_position = edge - window->rect.height;
-
-      if (smart_snap || ((candidate_position < y) && ABS (candidate_position - y) < incr))
-        y = candidate_position;
-
       handled = TRUE;
       break;
     }
@@ -1796,19 +1771,6 @@ process_keyboard_move_grab (MetaDisplay *display,
     case XK_Left:
     case XK_KP_Left:
       x -= incr;
-
-      edge = meta_window_find_next_vertical_edge (window, 
-                                                  META_WINDOW_EDGE_LEFT,
-                                                  FALSE);
-      if (window->frame)
-        candidate_position = edge + window->frame->child_x;
-      else
-        candidate_position = edge;
-
-      if (smart_snap || 
-          ((candidate_position > x) && ABS (candidate_position - x) < incr))
-        x = candidate_position;
-
       handled = TRUE;
       break;
     case XK_KP_Prior:
@@ -1816,27 +1778,34 @@ process_keyboard_move_grab (MetaDisplay *display,
     case XK_Right:
     case XK_KP_Right:
       x += incr;
-
-      edge = meta_window_find_next_vertical_edge (window, 
-                                                  META_WINDOW_EDGE_RIGHT,
-                                                  TRUE);
-      if (window->frame)
-        candidate_position = edge - window->frame->right_width - window->rect.width;
-      else
-        candidate_position = edge - window->rect.width;
-      
-      if (smart_snap || ((candidate_position < x) && ABS (candidate_position - x) < incr))
-        x = candidate_position;
-
       handled = TRUE;
       break;
     }
 
   if (handled)
     {
+      MetaRectangle old_rect;
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Computed new window location %d,%d due to keypress\n",
                   x, y);
+
+      if (display->grab_wireframe_active)
+        old_rect = display->grab_wireframe_rect;
+      else
+        {
+          old_rect = window->rect;
+          meta_window_get_position (window, &old_rect.x, &old_rect.y);
+        }
+
+      meta_window_edge_resistance_for_move (window, 
+                                            old_rect.x,
+                                            old_rect.y,
+                                            &x,
+                                            &y,
+                                            NULL,
+                                            smart_snap,
+                                            TRUE);
+
       if (display->grab_wireframe_active)
         {
           meta_window_update_wireframe (window, x, y,
@@ -1986,13 +1955,9 @@ process_keyboard_resize_grab (MetaDisplay *display,
   gboolean handled;
   int height_inc;
   int width_inc;
-  int x, y;
-  int orig_x, orig_y;
   int width, height;
   gboolean smart_snap;
-  int edge;
   int gravity;
-  int candidate_position;
   
   handled = FALSE;
 
@@ -2029,20 +1994,14 @@ process_keyboard_resize_grab (MetaDisplay *display,
 
   if (display->grab_wireframe_active)
     {
-      orig_x = display->grab_wireframe_rect.x;
-      orig_y = display->grab_wireframe_rect.y;
       width = display->grab_wireframe_rect.width;
       height = display->grab_wireframe_rect.height;
     }
   else
     {
-      meta_window_get_position (window, &orig_x, &orig_y);
       width = window->rect.width;
       height = window->rect.height;
     }
-
-  x = orig_x;
-  y = orig_y;
 
   gravity = meta_resize_gravity_from_grab_op (display->grab_op);
 
@@ -2053,40 +2012,28 @@ process_keyboard_resize_grab (MetaDisplay *display,
 
   if (smart_snap)
     {
-      height_inc = 0;
-      width_inc = 0;
+      height_inc = 1;
+      width_inc = 1;
     }
   else if (event->xkey.state & ControlMask)
     {
-      if (window->size_hints.width_inc > 1)
-        width_inc = window->size_hints.width_inc;
-      else
-        width_inc = SMALL_INCREMENT;
-
-      if (window->size_hints.height_inc > 1)
-        height_inc = window->size_hints.height_inc;
-      else
-        height_inc = SMALL_INCREMENT;
+      width_inc = SMALL_INCREMENT;
+      height_inc = SMALL_INCREMENT;
     }  
   else
     {
-      if (window->size_hints.width_inc > 1)
-        width_inc = window->size_hints.width_inc;
-      else
-        width_inc = NORMAL_INCREMENT;
-
-      if (window->size_hints.height_inc > 1)
-        height_inc = window->size_hints.height_inc;
-      else
-        height_inc = NORMAL_INCREMENT;
+      width_inc = NORMAL_INCREMENT;
+      height_inc = NORMAL_INCREMENT;
     }
-  
-  /* When moving by increments, we still snap to edges if the move
-   * to the edge is smaller than the increment. This is because
-   * Shift + arrow to snap is sort of a hidden feature. This way
-   * people using just arrows shouldn't get too frustrated.
+
+  /* If this is a resize increment window, make the amount we resize
+   * the window by match that amount (well, unless snap resizing...)
    */
-      
+  if (window->size_hints.width_inc > 1)
+    width_inc = window->size_hints.width_inc;
+  if (window->size_hints.height_inc > 1)
+    height_inc = window->size_hints.height_inc;
+  
   switch (keysym)
     {
     case XK_Up:
@@ -2097,49 +2044,14 @@ process_keyboard_resize_grab (MetaDisplay *display,
         case NorthWestGravity:
         case NorthEastGravity:
           /* Move bottom edge up */
-          edge = meta_window_find_next_horizontal_edge (window, 
-                                                        META_WINDOW_EDGE_BOTTOM,
-                                                        FALSE);
-
-          if (window->frame)
-            candidate_position = edge - window->frame->bottom_height;
-          else
-            candidate_position = edge;
-
-          if (smart_snap || 
-              ((candidate_position > (y + (height - height_inc))) &&
-               ABS (candidate_position - (y + (height - height_inc))) < height_inc))
-            {
-              if (candidate_position - y > 0)
-                height = candidate_position - y;
-            }
-          else if (height - height_inc > 0)
-            {
-              height -= height_inc;
-            }
-
-          handled = TRUE;
+          height -= height_inc;
           break;
 
         case SouthGravity:
         case SouthWestGravity:
         case SouthEastGravity:
           /* Move top edge up */
-          y -= height_inc;
-
-          edge = meta_window_find_next_horizontal_edge (window, 
-                                                        META_WINDOW_EDGE_TOP,
-                                                        FALSE);          
-
-          if (window->frame)
-            candidate_position = edge + window->frame->child_y;
-          else
-            candidate_position = edge;
-
-          if (smart_snap || ((candidate_position > y) && ABS (candidate_position - y) < height_inc))
-            y = candidate_position;
-
-          height += (orig_y - y);
+          height += height_inc;
           break;
 
         case EastGravity:
@@ -2161,49 +2073,13 @@ process_keyboard_resize_grab (MetaDisplay *display,
         case NorthEastGravity:
           /* Move bottom edge down */
           height += height_inc;
-
-          edge = meta_window_find_next_horizontal_edge (window,
-                                                        META_WINDOW_EDGE_BOTTOM,
-                                                        TRUE);
-
-          if (window->frame)
-            candidate_position = edge - window->frame->bottom_height;
-          else
-            candidate_position = edge;
-
-          if (smart_snap || ((candidate_position < (y+height)) &&
-                             ABS (candidate_position - (y+height)) < height_inc))
-            height = candidate_position - y;
           break;
 
         case SouthGravity:
         case SouthWestGravity:
         case SouthEastGravity:
           /* Move top edge down */
-          edge = meta_window_find_next_horizontal_edge (window, 
-                                                        META_WINDOW_EDGE_TOP,
-                                                        TRUE);
-
-          if (window->frame)
-            candidate_position = edge + window->frame->child_y;
-          else
-            candidate_position = edge;
-
-          if (smart_snap || 
-              ((candidate_position < (y + height_inc)) && 
-               ABS (candidate_position - (y + height_inc)) < height_inc))
-            {
-              if (height - (candidate_position - orig_y) > 0)
-                {
-                  y = candidate_position;
-                  height -= (y - orig_y);
-                }
-            }
-          else if (height - ((y + height_inc) - orig_y) > 0)
-            {
-              y += height_inc;
-              height -= (y - orig_y);
-            }
+          height -= height_inc;
           break;
 
         case EastGravity:
@@ -2223,50 +2099,15 @@ process_keyboard_resize_grab (MetaDisplay *display,
         case EastGravity:
         case SouthEastGravity:
         case NorthEastGravity:
-          x -= width_inc;
-
           /* Move left edge left */
-          edge = meta_window_find_next_vertical_edge (window, 
-                                                      META_WINDOW_EDGE_LEFT,
-                                                      FALSE);
-
-          if (window->frame)
-            candidate_position = edge + window->frame->child_x;
-          else
-            candidate_position = edge;
-
-          if (smart_snap || ((candidate_position > x) && ABS (candidate_position - x) < width_inc))
-              x = candidate_position;
-
-          width += (orig_x - x);
+          width += width_inc;
           break;
 
         case WestGravity:
         case SouthWestGravity:
         case NorthWestGravity:
           /* Move right edge left */
-          edge = meta_window_find_next_vertical_edge (window, 
-                                                      META_WINDOW_EDGE_RIGHT,
-                                                      FALSE);
-
-          if (window->frame)
-            candidate_position = edge - window->frame->right_width;
-          else
-            candidate_position = edge;
-
-          if (smart_snap || 
-              ((candidate_position > (x + (width - width_inc))) &&
-               ABS (candidate_position - (x + (width - width_inc))) < width_inc))
-            {
-              if (candidate_position - x > 0)
-                width = candidate_position - x;
-            }
-          else if (width - width_inc > 0)
-            {
-              width -= width_inc;
-            }
-
-          handled = TRUE;
+          width -= width_inc;
           break;
 
         case NorthGravity:
@@ -2287,30 +2128,7 @@ process_keyboard_resize_grab (MetaDisplay *display,
         case SouthEastGravity:
         case NorthEastGravity:
           /* Move left edge right */
-          edge = meta_window_find_next_vertical_edge (window, 
-                                                      META_WINDOW_EDGE_LEFT,
-                                                      TRUE);
-
-          if (window->frame)
-            candidate_position = edge + window->frame->child_x;
-          else
-            candidate_position = edge;
-
-          if (smart_snap || 
-              ((candidate_position < (x + width_inc)) && 
-               ABS (candidate_position - (x + width_inc)) < width_inc))
-            {
-              if (width - (candidate_position - orig_x) > 0)
-                {
-                  x = candidate_position;
-                  width -= (x - orig_x);
-                }
-            }
-          else if (width - ((x + width_inc) - orig_x) > 0)
-            {
-              x += width_inc;
-              width -= (x - orig_x);
-            }
+          width -= width_inc;
           break;
 
         case WestGravity:
@@ -2318,21 +2136,6 @@ process_keyboard_resize_grab (MetaDisplay *display,
         case NorthWestGravity:
           /* Move right edge right */
           width += width_inc;
-
-          edge = meta_window_find_next_vertical_edge (window, 
-                                                      META_WINDOW_EDGE_RIGHT,
-                                                      TRUE);
-
-          if (window->frame)
-            candidate_position = edge - window->frame->right_width;
-          else
-            candidate_position = edge;
-
-          if (smart_snap || ((candidate_position > (x+width)) &&
-                             ABS (candidate_position - (x+width)) < width_inc))
-            width = candidate_position - x;
-
-          handled = TRUE;
           break;
 
         case NorthGravity:
@@ -2357,17 +2160,53 @@ process_keyboard_resize_grab (MetaDisplay *display,
   
   if (handled)
     {
+      MetaRectangle old_rect;
       meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Computed new window location %d,%d %dx%d due to keypress\n",
-                  x, y, width, height);
+                  "Computed new window size due to keypress: "
+                  "%dx%d, gravity %s\n",
+                  width, height, meta_gravity_to_string (gravity));
       
       if (display->grab_wireframe_active)
+        old_rect = display->grab_wireframe_rect;
+      else
+        old_rect = window->rect;  /* Don't actually care about x,y */
+
+      /* Do any edge resistance/snapping */
+      meta_window_edge_resistance_for_resize (window,
+                                              old_rect.width,
+                                              old_rect.height,
+                                              &width,
+                                              &height,
+                                              gravity,
+                                              NULL,
+                                              smart_snap,
+                                              TRUE);
+
+      if (display->grab_wireframe_active)
         {
-          meta_window_update_wireframe (window, x, y, width, height);
+          MetaRectangle new_position;
+          meta_rectangle_resize_with_gravity (&display->grab_wireframe_rect, 
+                                              &new_position,
+                                              gravity,
+                                              width,
+                                              height);
+          meta_window_update_wireframe (window, 
+                                        new_position.x,
+                                        new_position.y,
+                                        new_position.width, 
+                                        new_position.height);
         }
       else
         {
-          meta_window_move_resize (window, TRUE, x, y, width, height);
+          /* We don't need to update unless the specified width and height
+           * are actually different from what we had before.
+           */
+          if (window->rect.width != width || window->rect.height != height)
+            meta_window_resize_with_gravity (window, 
+                                             TRUE,
+                                             width,
+                                             height,
+                                             gravity);
         }
       meta_window_update_keyboard_resize (window, FALSE);
     }
@@ -2782,10 +2621,12 @@ handle_maximize_vert (MetaDisplay    *display,
                       XEvent         *event,
                       MetaKeyBinding *binding)
 {
-  if (window)
+  if (window && window->has_resize_func)
     {
-      if (window->has_resize_func)
-        meta_window_fill_vertical (window);
+      if (window->maximized_vertically)
+        meta_window_unmaximize (window, META_MAXIMIZE_VERTICAL);
+      else
+        meta_window_maximize (window, META_MAXIMIZE_VERTICAL);
     }
 }
 
@@ -2796,10 +2637,12 @@ handle_maximize_horiz (MetaDisplay    *display,
                        XEvent         *event,
                        MetaKeyBinding *binding)
 {
-  if (window)
+  if (window && window->has_resize_func)
     {
-      if (window->has_resize_func)
-        meta_window_fill_horizontal (window);
+      if (window->maximized_horizontally)
+        meta_window_unmaximize (window, META_MAXIMIZE_HORIZONTAL);
+      else
+        meta_window_maximize (window, META_MAXIMIZE_HORIZONTAL);
     }
 }
 
@@ -3230,10 +3073,14 @@ handle_toggle_maximize    (MetaDisplay    *display,
 {
   if (window)
     {
-      if (window->maximized)
-        meta_window_unmaximize (window);
+      if (META_WINDOW_MAXIMIZED (window))
+        meta_window_unmaximize (window,
+                                META_MAXIMIZE_HORIZONTAL |
+                                META_MAXIMIZE_VERTICAL);
       else if (window->has_maximize_func)
-        meta_window_maximize (window);
+        meta_window_maximize (window,
+                              META_MAXIMIZE_HORIZONTAL |
+                              META_MAXIMIZE_VERTICAL);
     }
 }
 
@@ -3247,7 +3094,9 @@ handle_maximize           (MetaDisplay    *display,
   if (window)
     {
       if (window->has_maximize_func)
-        meta_window_maximize (window);
+        meta_window_maximize (window,
+                              META_MAXIMIZE_HORIZONTAL |
+                              META_MAXIMIZE_VERTICAL);
     }
 }
 
@@ -3260,8 +3109,10 @@ handle_unmaximize         (MetaDisplay    *display,
 {
   if (window)
     {
-      if (window->maximized)
-        meta_window_unmaximize (window);
+      if (window->maximized_vertically || window->maximized_horizontally)
+        meta_window_unmaximize (window,
+                                META_MAXIMIZE_HORIZONTAL |
+                                META_MAXIMIZE_VERTICAL);
     }
 }
 

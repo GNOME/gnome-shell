@@ -6,7 +6,7 @@
  * Some ICCCM manager selection code derived from fvwm2,
  * Copyright (C) 2001 Dominik Vogt, Matthias Clasen, and fvwm2 team
  * Copyright (C) 2003 Rob Adams
- * Copyright (C) 2004 Elijah Newren
+ * Copyright (C) 2004, 2005 Elijah Newren
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -221,18 +221,18 @@ reload_xinerama_infos (MetaScreen *screen)
           while (i < n_infos)
             {
               screen->xinerama_infos[i].number = infos[i].screen_number;
-              screen->xinerama_infos[i].x_origin = infos[i].x_org;
-              screen->xinerama_infos[i].y_origin = infos[i].y_org;
-              screen->xinerama_infos[i].width = infos[i].width;
-              screen->xinerama_infos[i].height = infos[i].height;
+              screen->xinerama_infos[i].rect.x = infos[i].x_org;
+              screen->xinerama_infos[i].rect.y = infos[i].y_org;
+              screen->xinerama_infos[i].rect.width = infos[i].width;
+              screen->xinerama_infos[i].rect.height = infos[i].height;
 
               meta_topic (META_DEBUG_XINERAMA,
                           "Xinerama %d is %d,%d %d x %d\n",
                           screen->xinerama_infos[i].number,
-                          screen->xinerama_infos[i].x_origin,
-                          screen->xinerama_infos[i].y_origin,
-                          screen->xinerama_infos[i].width,
-                          screen->xinerama_infos[i].height);              
+                          screen->xinerama_infos[i].rect.x,
+                          screen->xinerama_infos[i].rect.y,
+                          screen->xinerama_infos[i].rect.width,
+                          screen->xinerama_infos[i].rect.height);
               
               ++i;
             }
@@ -282,18 +282,18 @@ reload_xinerama_infos (MetaScreen *screen)
           while (i < n_monitors)
             {
               screen->xinerama_infos[i].number = i;
-              screen->xinerama_infos[i].x_origin = monitors[i].x;
-	      screen->xinerama_infos[i].y_origin = monitors[i].y;
-	      screen->xinerama_infos[i].width = monitors[i].width;
-	      screen->xinerama_infos[i].height = monitors[i].height;
+              screen->xinerama_infos[i].rect.x = monitors[i].x;
+              screen->xinerama_infos[i].rect.y = monitors[i].y;
+              screen->xinerama_infos[i].rect.width = monitors[i].width;
+              screen->xinerama_infos[i].rect.height = monitors[i].height;
 
               meta_topic (META_DEBUG_XINERAMA,
                           "Xinerama %d is %d,%d %d x %d\n",
                           screen->xinerama_infos[i].number,
-                          screen->xinerama_infos[i].x_origin,
-                          screen->xinerama_infos[i].y_origin,
-                          screen->xinerama_infos[i].width,
-                          screen->xinerama_infos[i].height);              
+                          screen->xinerama_infos[i].rect.x,
+                          screen->xinerama_infos[i].rect.y,
+                          screen->xinerama_infos[i].rect.width,
+                          screen->xinerama_infos[i].rect.height);              
               
               ++i;
             }
@@ -325,16 +325,13 @@ reload_xinerama_infos (MetaScreen *screen)
           screen->n_xinerama_infos = 2;
           
           screen->xinerama_infos[0].number = 0;
-          screen->xinerama_infos[0].x_origin = 0;
-          screen->xinerama_infos[0].y_origin = 0;
-          screen->xinerama_infos[0].width = screen->width / 2;
-          screen->xinerama_infos[0].height = screen->height;
+          screen->xinerama_infos[0].rect = screen->rect;
+          screen->xinerama_infos[0].rect.width = screen->rect.width / 2;
 
           screen->xinerama_infos[1].number = 1;
-          screen->xinerama_infos[1].x_origin = screen->width / 2;
-          screen->xinerama_infos[1].y_origin = 0;
-          screen->xinerama_infos[1].width = screen->width / 2 + screen->width % 2;
-          screen->xinerama_infos[1].height = screen->height;
+          screen->xinerama_infos[1].rect = screen->rect;
+          screen->xinerama_infos[1].rect.x = screen->rect.width / 2;
+          screen->xinerama_infos[1].rect.width = screen->rect.width / 2;
         }
       else
         {
@@ -345,10 +342,7 @@ reload_xinerama_infos (MetaScreen *screen)
           screen->n_xinerama_infos = 1;
           
           screen->xinerama_infos[0].number = 0;
-          screen->xinerama_infos[0].x_origin = 0;
-          screen->xinerama_infos[0].y_origin = 0;
-          screen->xinerama_infos[0].width = screen->width;
-          screen->xinerama_infos[0].height = screen->height;
+          screen->xinerama_infos[0].rect = screen->rect;
         }
     }
 
@@ -520,8 +514,9 @@ meta_screen_new (MetaDisplay *display,
   screen->screen_name = get_screen_name (display, number);
   screen->xscreen = ScreenOfDisplay (xdisplay, number);
   screen->xroot = xroot;
-  screen->width = WidthOfScreen (screen->xscreen);
-  screen->height = HeightOfScreen (screen->xscreen);
+  screen->rect.x = screen->rect.y = 0;
+  screen->rect.width = WidthOfScreen (screen->xscreen);
+  screen->rect.height = HeightOfScreen (screen->xscreen);
   screen->current_cursor = -1; /* invalid/unset */
   screen->default_xvisual = DefaultVisualOfScreen (screen->xscreen);
   screen->default_depth = DefaultDepthOfScreen (screen->xscreen);
@@ -1015,8 +1010,8 @@ set_desktop_geometry_hint (MetaScreen *screen)
   if (screen->closing > 0)
     return;
 
-  data[0] = screen->width;
-  data[1] = screen->height;
+  data[0] = screen->rect.width;
+  data[1] = screen->rect.height;
 
   meta_verbose ("Setting _NET_DESKTOP_GEOMETRY to %ld, %ld\n", data[0], data[1]);
 
@@ -1212,10 +1207,7 @@ meta_screen_ensure_tab_popup (MetaScreen *screen,
       if (!window->minimized || !meta_window_get_icon_geometry (window, &r))
         meta_window_get_outer_rect (window, &r);
       
-      entries[i].x = r.x;
-      entries[i].y = r.y;
-      entries[i].width = r.width;
-      entries[i].height = r.height;
+      entries[i].rect = r;
 
       /* Find inside of highlight rectangle to be used
        * when window is outlined for tabbing.
@@ -1229,19 +1221,19 @@ meta_screen_ensure_tab_popup (MetaScreen *screen,
           int south = window->frame->rect.height - window->frame->child_y -
             window->rect.height;
           int east = window->frame->child_x;
-          entries[i].inner_x = east;
-          entries[i].inner_y = south;
-          entries[i].inner_width = window->rect.width;
-          entries[i].inner_height = window->frame->rect.height - south * 2;
+          entries[i].inner_rect.x = east;
+          entries[i].inner_rect.y = south;
+          entries[i].inner_rect.width = window->rect.width;
+          entries[i].inner_rect.height = window->frame->rect.height - south * 2;
         }
       else
         {
           /* Use an arbitrary border size */
 #define OUTLINE_WIDTH 5
-          entries[i].inner_x = OUTLINE_WIDTH;
-          entries[i].inner_y = OUTLINE_WIDTH;
-          entries[i].inner_width = window->rect.width - OUTLINE_WIDTH * 2;
-          entries[i].inner_height = window->rect.height - OUTLINE_WIDTH * 2;
+          entries[i].inner_rect.x = OUTLINE_WIDTH;
+          entries[i].inner_rect.y = OUTLINE_WIDTH;
+          entries[i].inner_rect.width = window->rect.width - OUTLINE_WIDTH * 2;
+          entries[i].inner_rect.height = window->rect.height - OUTLINE_WIDTH * 2;
         }
       
       ++i;
@@ -1376,26 +1368,20 @@ meta_screen_get_xinerama_for_rect (MetaScreen    *screen,
   best_xinerama = 0;
   xinerama_score = 0;
 
-  i = 0;
-  while (i < screen->n_xinerama_infos)
+  for (i = 0; i < screen->n_xinerama_infos; i++)
     {
-      MetaRectangle dest, screen_info;
-      
-      screen_info.x = screen->xinerama_infos[i].x_origin;
-      screen_info.y = screen->xinerama_infos[i].y_origin;
-      screen_info.width = screen->xinerama_infos[i].width;
-      screen_info.height = screen->xinerama_infos[i].height;
-      
-      if (meta_rectangle_intersect (&screen_info, rect, &dest))
+      MetaRectangle dest;
+      if (meta_rectangle_intersect (&screen->xinerama_infos[i].rect,
+                                    rect,
+                                    &dest))
         {
-          if (dest.width * dest.height > xinerama_score)
+          int cur = meta_rectangle_area (&dest);
+          if (cur > xinerama_score)
             {
-              xinerama_score = dest.width * dest.height;
+              xinerama_score = cur;
               best_xinerama = i;
             }
         }
-      
-      ++i;
     }
 
   return &screen->xinerama_infos[best_xinerama];
@@ -1425,22 +1411,18 @@ meta_screen_get_xinerama_neighbor (MetaScreen         *screen,
     {
       current = screen->xinerama_infos + i;
 
-      if (((direction == META_SCREEN_RIGHT) && 
-           (current->x_origin == input->x_origin + input->width) &&
-           (current->y_origin >= input->y_origin) &&
-           (current->y_origin <= input->y_origin+input->height)) ||
-          ((direction == META_SCREEN_LEFT) && 
-           (input->x_origin == current->x_origin + current->width) &&
-           (current->y_origin >= input->y_origin) &&
-           (current->y_origin <= input->y_origin + input->height)) ||
-          ((direction == META_SCREEN_UP) && 
-           (input->y_origin == current->y_origin + current->height) &&
-           (current->x_origin >= input->x_origin) &&
-           (current->x_origin <= input->x_origin + input->width)) ||
-          ((direction == META_SCREEN_DOWN) && 
-           (current->y_origin == input->y_origin + input->height) &&
-           (current->x_origin >= input->x_origin) &&
-           (current->x_origin <= input->x_origin + input->width)))
+      if ((direction == META_SCREEN_RIGHT && 
+           current->rect.x == input->rect.x + input->rect.width &&
+           meta_rectangle_vert_overlap(&current->rect, &input->rect)) ||
+          (direction == META_SCREEN_LEFT && 
+           input->rect.x == current->rect.x + current->rect.width &&
+           meta_rectangle_vert_overlap(&current->rect, &input->rect)) ||
+          (direction == META_SCREEN_UP && 
+           input->rect.y == current->rect.y + current->rect.height &&
+           meta_rectangle_horiz_overlap(&current->rect, &input->rect)) ||
+          (direction == META_SCREEN_DOWN && 
+           current->rect.y == input->rect.y + input->rect.height &&
+           meta_rectangle_horiz_overlap(&current->rect, &input->rect)))
         {
           return current;
         }
@@ -1544,24 +1526,6 @@ meta_screen_get_natural_xinerama_list (MetaScreen *screen,
   g_queue_free (xinerama_queue);
 }
 
-gboolean
-meta_screen_rect_intersects_xinerama (MetaScreen    *screen,
-                                      MetaRectangle *rect,
-                                      int            which_xinerama)
-{
-  MetaRectangle dest, screen_rect;
-  
-  screen_rect.x = screen->xinerama_infos[which_xinerama].x_origin;
-  screen_rect.y = screen->xinerama_infos[which_xinerama].y_origin;
-  screen_rect.width = screen->xinerama_infos[which_xinerama].width;
-  screen_rect.height = screen->xinerama_infos[which_xinerama].height;
-  
-  if (meta_rectangle_intersect (&screen_rect, rect, &dest))
-    return TRUE;
-
-  return FALSE;
-}
-
 const MetaXineramaScreenInfo*
 meta_screen_get_current_xinerama (MetaScreen *screen)
 {
@@ -1574,39 +1538,33 @@ meta_screen_get_current_xinerama (MetaScreen *screen)
   if (screen->display->xinerama_cache_invalidated)
     {
       Window root_return, child_return;
-      int root_x_return, root_y_return;
       int win_x_return, win_y_return;
       unsigned int mask_return;
       int i;
+      MetaRectangle pointer_position;
       
       screen->display->xinerama_cache_invalidated = FALSE;
       
+      pointer_position.width = pointer_position.height = 1;
       XQueryPointer (screen->display->xdisplay,
                      screen->xroot,
                      &root_return,
                      &child_return,
-                     &root_x_return,
-                     &root_y_return,
+                     &pointer_position.x,
+                     &pointer_position.y,
                      &win_x_return,
                      &win_y_return,
                      &mask_return);
 
       screen->last_xinerama_index = 0;
-      i = 0;
-      while (i < screen->n_xinerama_infos)
+      for (i = 0; i < screen->n_xinerama_infos; i++)
         {
-          if ((root_x_return >= screen->xinerama_infos[i].x_origin &&
-               root_x_return < (screen->xinerama_infos[i].x_origin + 
-                                screen->xinerama_infos[i].width) &&
-               root_y_return >= screen->xinerama_infos[i].y_origin &&
-               root_y_return < (screen->xinerama_infos[i].y_origin + 
-                                screen->xinerama_infos[i].height)))
-          {
-            screen->last_xinerama_index = i;
-            break;
-          }
-          
-          ++i;
+          if (meta_rectangle_contains_rect (&screen->xinerama_infos[i].rect,
+                                            &pointer_position))
+            {
+              screen->last_xinerama_index = i;
+              break;
+            }
         }
       
       meta_topic (META_DEBUG_XINERAMA,
@@ -2201,8 +2159,8 @@ meta_screen_resize (MetaScreen *screen,
                     int         width,
                     int         height)
 {  
-  screen->width = width;
-  screen->height = height;
+  screen->rect.width = width;
+  screen->rect.height = height;
 
   reload_xinerama_infos (screen);
   set_desktop_geometry_hint (screen);

@@ -13,6 +13,8 @@ metacity_SOURCES= 				\
 	async-getprop.h				\
 	bell.h					\
 	bell.c					\
+	boxes.h					\
+	boxes.c					\
 	common.h				\
 	compositor.c				\
 	compositor.h				\
@@ -25,6 +27,8 @@ metacity_SOURCES= 				\
 	display.h				\
 	draw-workspace.c			\
 	draw-workspace.h			\
+	edge-resistance.c			\
+	edge-resistance.h			\
 	effects.c				\
 	effects.h				\
 	errors.c				\
@@ -133,11 +137,13 @@ metacity_LDADD=@METACITY_LIBS@ $(EFENCE)
 metacity_theme_viewer_LDADD= @METACITY_LIBS@ libmetacity-private.la
 metacity_dialog_LDADD=@METACITY_LIBS@
 
+testboxes_SOURCES=util.h util.c boxes.h boxes.c testboxes.c
 testgradient_SOURCES=gradient.h gradient.c testgradient.c
 testasyncgetprop_SOURCES=async-getprop.h async-getprop.c testasyncgetprop.c
 
-noinst_PROGRAMS=testgradient testasyncgetprop
+noinst_PROGRAMS=testboxes testgradient testasyncgetprop
 
+testboxes_LDADD= @METACITY_LIBS@
 testgradient_LDADD= @METACITY_LIBS@
 testasyncgetprop_LDADD= @METACITY_LIBS@
 

@@ -1,0 +1,283 @@
+File contents:
+  Basic Ideas
+  Important points to remember
+  Explanation of fields in the ConstraintInfo struct
+  Gory details of resize_gravity vs. fixed_directions
+
+IMPORTANT NOTE: There's a big comment at the top of constraints.c
+explaining how to add extra constraints or tweak others.  Read it.  I put
+that information there because it may be enough information by itself for
+people to hack on constraints.c.  I won't duplicate that information in
+this file; this file is for deeper details.
+
+
+---------------------------------------------------------------------------
+Basic Ideas
+---------------------------------------------------------------------------
+There are a couple basic ideas behind how this constraints.c code works and
+why it works that way:
+
+  1) Split the low-level error-prone operations into a special file
+  2) Add robustness by prioritizing constraints
+  3) Make use of a minimal spanning set of rectangles for the
+     "onscreen region" (screen minus struts).
+  4) Constraints can be user-action vs app-action oriented
+  5) Avoid over-complification  ;-)
+
+Some more details explaining these basic ideas:
+
+  1) Split tedious operations out
+
+     boxes.[ch] have been added which contain many common, tedious, and
+     error-prone operations.  I find that this separation helps a lot for
+     managing the complexity and ensuring that things work correctly.
+     Also, note that testboxes.c thoroughly tests all functionality in
+     boxes.[ch] and a testboxes program is automatically compiled.
+
+     Note that functions have also been added to this file to handle some
+     of the tedium necessary for edge resistance as well.
+
+  2) Prioritize constraints
+
+     In the old code, if each and every constraint could not be
+     simultaneously satisfied, then it would result in some
+     difficult-to-predict set of constraints being violated.  This was
+     because constraints were applied in order, with the possibility for
+     each making changes that violated previous constraints, with no
+     checking done at the end.
+
+     Now, all constraints have an associated priority, defined in the
+     ConstraintPriority enum near the top of constraints.c.  The
+     constraints are all applied, and then are all checked; if not all are
+     satisfied then the least important constraints are dropped and the
+     process is repeated.  This ensures that the most important constraints
+     are satisfied.
+
+     A special note to make here is that if any one given constraint is
+     impossible to satisfy even individually (e.g. if minimum size hints
+     specify a larger window than the screen size, making the
+     fully-onscreen constraint impossible to satisfy) then we treat the
+     constraint as being satisfied.  This sounds counter-intuitive, but the
+     idea is that we want to satisfy as many constraints as possible and if
+     we treat it as a violation then all constraints with a lesser priority
+     also get dropped along with the impossible to satisfy one.
+
+  3) Using maximal/spanning rectangles
+
+     The constraints rely heavily on something I call spanning rectangles
+     (which Soeren referred to as maximal rectangles, a name which I think
+     I like better but I don't want to go change all the code now).  These
+     spanning rectangles have the property that a window will fit on the
+     screen if and only if it fits within at least one of the rectangles.
+     Soeren had an alternative way of describing these rectangles, namely
+     that they were rectangles with the property that if you made any of
+     them larger in any direction, they would overlap with struts or be
+     offscreen (with the implicit assumption that there are enough of these
+     rectangles that combined they cover all relevant parts of the screen).
+     Note that, by necessity, these spanning/maximal rectangles will often
+     overlap each other.
+
+     Such a list makes it relatively easy to define operations like
+     window-is-onscreen or clamp-window-to-region or
+     shove-window-into-region.  Since we have a on-single-xinerama
+     constraint in addition to the onscreen constraint(s), we cache
+     number_xineramas + 1 of these lists in the workspace.  These lists
+     then only need to be updated whenever the workarea is (e.g. when strut
+     list change or screen or xinerama size changes).
+
+  4) Constraints can be user-action vs app-action oriented
+
+     Such differentiation requires special care for the constraints to be
+     consistent; e.g. if the user does something and one constraint
+     applies, then the app does something you have to be careful that the
+     constraint on the app action doesn't result in some jarring motion.
+
+     In particular, the constraints currently allow offscreen movement or
+     resizing for user actions only.  The way consistency is handled is
+     that at the end of the constraints, update_onscreen_requirements()
+     checks to see if the window is offscreen or split across xineramas and
+     updates window->require_fully_onscreen and
+     window->require_on_single_xinerama appropriately.
+
+  5) Avoid over-complification
+
+     The previous code tried to reform the constraints into terms of a
+     single variable.  This made the code rather difficult to
+     understand. ("This is a rather complicated fix for an obscure bug
+     that happened when resizing a window and encountering a constraint
+     such as the top edge of the screen.")  It also failed, even on the
+     very example for which it used as justification for the complexity
+     (bug 312104 -- when keyboard resizing the top of the window,
+     Metacity extends the bottom once the titlebar hits the top panel),
+     though the reason why it failed is somewhat mysterious as it should
+     have worked.  Further, it didn't really reform the constraints in
+     terms of a single variable -- there was both an x_move_delta and an
+     x_resize_delta, and the existence of both caused bug 109553
+     (gravity with simultaneous move and resize doesn't work)
+
+
+---------------------------------------------------------------------------
+Important points to remember
+---------------------------------------------------------------------------
+
+  - Inner vs Outer window
+
+    Note that because of how configure requests work and
+    meta_window_move_resize_internal() and friends are set up, that the
+    rectangles passed to meta_window_constrain() are with respect to inner
+    window positions instead of outer window positions (meaning that window
+    manager decorations are not included in the position/size).  For the
+    constraints that need to be enforced with respect to outer window
+    positions, you'll need to make use of the extend_by_frame() and
+    unextend_by_frame() functions.
+
+  - meta_window_move_resize_internal() accepts a really hairy set of
+    inputs.  See the huge comment at the beginning of that function.
+    constraints gets screwed up if that function can't sanitize the input,
+    so be very careful about that.  It used to be pretty busted.
+
+
+---------------------------------------------------------------------------
+Explanation of fields in the ConstraintInfo strut
+---------------------------------------------------------------------------
+
+As of the time of this writing, ConstraintInfo had the following fields:
+  orig
+  current
+  fgeom
+  action_type
+  is_user_action
+  resize_gravity
+  fixed_directions
+  work_area_xinerama
+  entire_xinerama
+  usable_screen_region
+  usable_xinerama_region
+
+A brief description of each and/or pointers to more information are found
+below:
+  orig
+    The previous position and size of the window, ignoring any window
+    decorations
+  current
+    The requested position and size of the window, ignoring any window
+    decorations.  This rectangle gets modified by the various constraints
+    to specify the allowed position closest to the requested position.
+  fgeom
+    The geometry of the window frame (i.e. "decorations"), if it exists.
+    Otherwise, it's a dummy 0-size frame for convenience (i.e. this pointer
+    is guaranteed to be non-NULL so you don't have to do the stupid check).
+  action_type
+    Whether the action being constrained is a move, resize, or a combined
+    move and resize.  Some constraints can run faster with this information
+    (e.g. constraining size increment hints or min size hints don't need to
+    do anything for pure move operations).  This may also be used for
+    providing slightly different behavior (e.g. clip-to-region instead of
+    shove-into-region for resize vs. moving operations), but doesn't
+    currently have a lot of use for this.
+  is_user_action
+    Used to determine whether the action being constrained is a user
+    action.  If so, certain parts of the constraint may be relaxed.  Note
+    that this requires care to get right; see item 4 of the basic ideas
+    section for more details.
+  resize_gravity
+    The gravity used in the resize operation, used in order to make sure
+    windows are resized correctly if constraints specify that their size
+    must be modified.  Explained further in the resize_gravity
+    vs. fixed_directions section.
+  fixed_directions
+    There may be multiple solutions to shoving a window back onscreen.
+    Typically, the shortest distance used is the solution picked, but if
+    e.g. an application only moved its window in a single direction, it's
+    more desirable that the window is shoved back in that direction than in
+    a different one.  fixed_directions facilitates that.  Explained further
+    in the resize_gravity vs. fixed_directions section.
+  work_area_xinerama
+    This region is defined in the workspace and just cached here for
+    convenience.  It is basically the area obtained by taking the current
+    xinerama, treating all partial struts as full struts, and then
+    subtracting all struts from the current xinerama region.  Useful
+    e.g. for enforcing maximization constraints.
+  entire_xinerama
+    Just a cache of the rectangle corresponding to the entire current
+    xinerama, including struts.  Useful e.g. for enforcing fullscreen
+    constraints.
+  usable_screen_region
+    The set of maximal/spanning rectangles for the entire screen; this
+    region doesn't overlap with any struts and helps to enforce
+    e.g. onscreen constraints.
+  usable_xinerama_region
+    The set of maximal/spanning rectangles for the current xinerama; this
+    region doesn't overlap with any struts on the xinerama and helps to
+    enforce e.g. the on-single-xinerama constraint.
+
+
+---------------------------------------------------------------------------
+Gory details of resize_gravity vs. fixed_directions
+---------------------------------------------------------------------------
+
+Note that although resize_gravity and fixed_directions look similar, they
+are used for different purposes:
+
+  - resize_gravity is only for resize operations and is used for
+    constraints unrelated to keeping a window within a certain region
+  - fixed_directions is for both move and resize operations and is
+    specifically for keeping a window within a specified region.
+
+Examples of where each are used:
+
+  - If a window is simultaneously moved and resized to the southeast corner
+    with SouthEastGravity, but it turns out that the window was sized to
+    something smaller than the minimum size hint, then the size_hints
+    constraint should resize the window using the resize_gravity to ensure
+    that the southeast corner doesn't move.
+  - If an application resizes itself so that it grows downward only (which
+    I note could be using any of three different gravities, most likely
+    NorthWest), and happens to put the southeast part of the window under a
+    partial strut, then the window needs to be forced back on screen.
+    (Yes, shoved onscreen and not clipped; see bug 136307).  It may be the
+    case that moving the window to the left results in less movement of the
+    window than moving the window up, which, in the absence of fixed
+    directions would cause us to chose moving to the left.  But since the
+    user knows that only the height of the window is changing, they would
+    find moving to the left weird (especially if this were a dialog that
+    had been centered on its parent).  It'd be better to shove the window
+    upwards so we make sure to keep the left and right sides fixed in this
+    case.  Note that moving the window upwards (or leftwards) is probably
+    totally against the gravity in this case; but that's okay because
+    gravity typically assumes there's more than enough onscreen space for
+    the resize and we only override the gravity when that assumption is
+    wrong.
+
+For the paranoid, a fixed directions might give an impossible to fulfill
+constraint (I don't think that's true currently in the code, but I haven't
+thought it through in a while).  If this ever becomes a problem, it should
+be relatively simple to throw out the fixed directions when this happens
+and rerun the constraint.  Of course, it might be better to rethink things
+to just avoid such a problem.
+
+The nitty gritty of what gets fixed:
+  User move:
+    in x direction - y direction fixed
+    in y direction - x direction fixed
+    in both dirs.  - neither direction fixed
+  User resize: (note that for clipping, only 1 side ever changed)
+    in x direction - y direction fixed (technically opposite x side fixed too)
+    in y direction - x direction fixed (technically opposite y side fixed too)
+    in both dirs.  - neither direction fixed
+  App move:
+    in x direction - y direction fixed
+    in y direction - x direction fixed
+    in both dirs.  - neither direction fixed
+  App resize
+    in x direction - y direction fixed
+    in y direction - x direction fixed
+    in 2 parallel directions (center side gravity) - other dir. fixed
+    in 2 orthogonal directions (corner gravity) - neither dir. fixed
+    in 3 or 4 directions (a center-like gravity) - neither dir. fixed
+  Move & resize
+    Treat like resize case though this will usually mean all four sides
+    change and result in neither direction being fixed
+  Note that in all cases, if neither direction moves it is likely do to a
+  change in struts and thus neither direction should be fixed despite the
+  lack of movement.

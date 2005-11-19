@@ -29,6 +29,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
+#include <X11/Xutil.h>  /* Just for the definition of the various gravities */
 
 #ifdef HAVE_BACKTRACE
 #include <execinfo.h>
@@ -463,4 +464,45 @@ meta_unsigned_long_hash  (gconstpointer v)
 #else
   return val;
 #endif
+}
+
+const char*
+meta_gravity_to_string (int gravity)
+{
+  switch (gravity)
+    {
+    case NorthWestGravity:
+      return "NorthWestGravity";
+      break;
+    case NorthGravity:
+      return "NorthGravity";
+      break;
+    case NorthEastGravity:
+      return "NorthEastGravity";
+      break;
+    case WestGravity:
+      return "WestGravity";
+      break;
+    case CenterGravity:
+      return "CenterGravity";
+      break;
+    case EastGravity:
+      return "EastGravity";
+      break;
+    case SouthWestGravity:
+      return "SouthWestGravity";
+      break;
+    case SouthGravity:
+      return "SouthGravity";
+      break;
+    case SouthEastGravity:
+      return "SouthEastGravity";
+      break;
+    case StaticGravity:
+      return "StaticGravity";
+      break;
+    default:
+      return "NorthWestGravity";
+      break;
+    }
 }

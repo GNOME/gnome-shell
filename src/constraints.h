@@ -2,6 +2,7 @@
 
 /* 
  * Copyright (C) 2002 Red Hat, Inc.
+ * Copyright (C) 2005 Elijah Newren
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -28,32 +29,18 @@
 
 typedef enum
 {
-  META_RESIZE_LEFT_OR_TOP,
-  META_RESIZE_CENTER,
-  META_RESIZE_RIGHT_OR_BOTTOM
-} MetaResizeDirection;
+  META_IS_CONFIGURE_REQUEST = 1 << 0,
+  META_DO_GRAVITY_ADJUST    = 1 << 1,
+  META_IS_USER_ACTION       = 1 << 2,
+  META_IS_MOVE_ACTION       = 1 << 3,
+  META_IS_RESIZE_ACTION     = 1 << 4
+} MetaMoveResizeFlags;
 
 void meta_window_constrain (MetaWindow          *window,
-                            MetaFrameGeometry   *fgeom,
+                            MetaFrameGeometry   *orig_fgeom,
+                            MetaMoveResizeFlags  flags,
+                            int                  resize_gravity,
                             const MetaRectangle *orig,
-                            int                  x_move_delta,
-                            int                  y_move_delta,
-                            MetaResizeDirection  x_direction,
-                            int                  x_delta,
-                            MetaResizeDirection  y_direction,
-                            int                  y_delta,
                             MetaRectangle       *new);
 
-MetaResizeDirection meta_x_direction_from_gravity (int gravity);
-MetaResizeDirection meta_y_direction_from_gravity (int gravity);
-
 #endif /* META_CONSTRAINTS_H */
-
-
-
-
-
-
-
-
-

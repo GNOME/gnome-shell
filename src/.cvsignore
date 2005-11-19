@@ -5,6 +5,7 @@ Makefile
 metacity
 metacity-theme-viewer
 metacity-dialog
+testboxes
 testgradient
 inlinepixbufs.h
 metacity.desktop

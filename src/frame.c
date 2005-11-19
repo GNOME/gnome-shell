@@ -3,6 +3,7 @@
 /* 
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2003, 2004 Red Hat, Inc.
+ * Copyright (C) 2005 Elijah Newren
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -264,7 +265,10 @@ meta_frame_get_flags (MetaFrame *frame)
   if (frame->window->on_all_workspaces)
     flags |= META_FRAME_STUCK;
 
-  if (frame->window->maximized)
+  /* FIXME: Should we have some kind of UI for windows that are just vertically
+   * maximized or just horizontally maximized?
+   */
+  if (META_WINDOW_MAXIMIZED (frame->window))
     flags |= META_FRAME_MAXIMIZED;
 
   if (frame->window->fullscreen)

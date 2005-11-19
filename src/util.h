@@ -85,6 +85,8 @@ guint meta_unsigned_long_hash  (gconstpointer v);
 
 void meta_print_backtrace (void);
 
+const char* meta_gravity_to_string (int gravity);
+
 #include <libintl.h>
 #define _(x) dgettext (GETTEXT_PACKAGE, x)
 #define N_(x) x

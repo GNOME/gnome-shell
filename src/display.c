@@ -519,6 +519,8 @@ meta_display_open (const char *name)
   display->grab_screen = NULL;
   display->grab_resize_popup = NULL;
 
+  display->grab_edge_resistance_data = NULL;
+
 #ifdef HAVE_XSYNC
   {
     int major, minor;
@@ -1336,6 +1338,15 @@ handle_net_moveresize_window (MetaDisplay* display,
 
   if (window)
     {
+      /* FIXME!!!!  I'm pretty sure this is wrong except _maybe_ for the
+       * resize-only case; see comment at beginning of
+       * meta_window_move_resize_internal().  Basically, this should act
+       * like a configure request--meaning that it should count as an app
+       * specified change instead of a user one, and the position needs to
+       * be fixed up with adjust_for_gravity().  In particular,
+       * meta_window_resize_with_gravity(), meta_window_resize(), and
+       * meta_window_move_resize() should probably NOT be called.
+       */
       meta_window_get_gravity_position (window, &x, &y);
       width = window->rect.width;
       height = window->rect.height;
@@ -1391,10 +1402,14 @@ handle_net_restack_window (MetaDisplay* display,
 
   if (window)
     {
-      /*
-       * The EWMH includes a sibling for the restack request, but we
-       * don't currently support these types of raises.
+      /* FIXME: The EWMH includes a sibling for the restack request, but we
+       * (stupidly) don't currently support these types of raises.
        *
+       * Also, unconditionally following these is REALLY stupid--we should
+       * combine this code with the stuff in
+       * meta_window_configure_request() which is smart about whether to
+       * follow the request or do something else (though not smart enough
+       * and is also too stupid to handle the sibling stuff).
        */
       switch (event->xclient.data.l[2])
         {
@@ -1670,36 +1685,49 @@ event_callback (XEvent   *event,
             {
               if (window->has_resize_func)
                 {
-                  gboolean north;
-                  gboolean west;
+                  gboolean north, south;
+                  gboolean west, east;
                   int root_x, root_y;
                   MetaGrabOp op;
 
                   meta_window_get_position (window, &root_x, &root_y);
 
-                  west = event->xbutton.x_root < (root_x + window->rect.width / 2);
-                  north = event->xbutton.y_root < (root_y + window->rect.height / 2);
+                  west = event->xbutton.x_root <  (root_x + 1 * window->rect.width  / 3);
+                  east = event->xbutton.x_root >  (root_x + 2 * window->rect.width  / 3);
+                  north = event->xbutton.y_root < (root_y + 1 * window->rect.height / 3);
+                  south = event->xbutton.y_root > (root_y + 2 * window->rect.height / 3);
 
-                  if (west && north)
+                  if (north && west)
                     op = META_GRAB_OP_RESIZING_NW;
-                  else if (west)
-                    op = META_GRAB_OP_RESIZING_SW;
-                  else if (north)
+                  else if (north && east)
                     op = META_GRAB_OP_RESIZING_NE;
-                  else
+                  else if (south && west)
+                    op = META_GRAB_OP_RESIZING_SW;
+                  else if (south && east)
                     op = META_GRAB_OP_RESIZING_SE;
+                  else if (north)
+                    op = META_GRAB_OP_RESIZING_N;
+                  else if (west)
+                    op = META_GRAB_OP_RESIZING_W;
+                  else if (east)
+                    op = META_GRAB_OP_RESIZING_E;
+                  else if (south)
+                    op = META_GRAB_OP_RESIZING_S;
+                  else /* Middle region is no-op to avoid user triggering wrong action */
+                    op = META_GRAB_OP_NONE;
                   
-                  meta_display_begin_grab_op (display,
-                                              window->screen,
-                                              window,
-                                              op,
-                                              TRUE,
-                                              event->xbutton.serial,
-                                              event->xbutton.button,
-                                              0,
-                                              event->xbutton.time,
-                                              event->xbutton.x_root,
-                                              event->xbutton.y_root);
+                  if (op != META_GRAB_OP_NONE)
+                    meta_display_begin_grab_op (display,
+                                                window->screen,
+                                                window,
+                                                op,
+                                                TRUE,
+                                                event->xbutton.serial,
+                                                event->xbutton.button,
+                                                0,
+                                                event->xbutton.time,
+                                                event->xbutton.x_root,
+                                                event->xbutton.y_root);
                 }
             }
           else if (event->xbutton.button == 3)
@@ -3244,6 +3272,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_old_window_stacking = NULL;
 #ifdef HAVE_XSYNC
   display->grab_sync_request_alarm = None;
+  display->grab_last_user_action_was_snap = FALSE;
 #endif
   display->grab_was_cancelled = FALSE;
   
@@ -3335,6 +3364,18 @@ meta_display_begin_grab_op (MetaDisplay *display,
   g_assert (display->grab_window != NULL || display->grab_screen != NULL);
   g_assert (display->grab_op != META_GRAB_OP_NONE);
 
+  /* If this is a move or resize, cache the window edges for
+   * resistance/snapping
+   */
+  if (meta_grab_op_is_resizing (display->grab_op) || 
+      meta_grab_op_is_moving (display->grab_op))
+    {
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Computing edges to resist-movement or snap-to for %s.\n",
+                  window->desc);
+      meta_display_compute_resistance_and_snapping_edges (display);
+    }
+
   /* Save the old stacking */
   if (GRAB_OP_IS_WINDOW_SWITCH (display->grab_op))
     {
@@ -3408,6 +3449,15 @@ meta_display_end_grab_op (MetaDisplay *display,
       display->ungrab_should_not_cause_focus_window = display->grab_xwindow;
     }
   
+  /* If this was a move or resize clear out the edge cache */
+  if (meta_grab_op_is_resizing (display->grab_op) || 
+      meta_grab_op_is_moving (display->grab_op))
+    {
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "Clearing out the edges for resistance/snapping");
+      meta_display_cleanup_edges (display);
+    }
+
   if (display->grab_old_window_stacking != NULL)
     {
       meta_topic (META_DEBUG_WINDOW_OPS,
@@ -4274,53 +4324,6 @@ meta_resize_gravity_from_grab_op (MetaGrabOp op)
     }
 
   return gravity;
-}
-
-gboolean
-meta_rectangle_intersect (MetaRectangle *src1,
-			  MetaRectangle *src2,
-			  MetaRectangle *dest)
-{
-  int dest_x, dest_y;
-  int dest_w, dest_h;
-  int return_val;
-
-  g_return_val_if_fail (src1 != NULL, FALSE);
-  g_return_val_if_fail (src2 != NULL, FALSE);
-  g_return_val_if_fail (dest != NULL, FALSE);
-
-  return_val = FALSE;
-
-  dest_x = MAX (src1->x, src2->x);
-  dest_y = MAX (src1->y, src2->y);
-  dest_w = MIN (src1->x + src1->width, src2->x + src2->width) - dest_x;
-  dest_h = MIN (src1->y + src1->height, src2->y + src2->height) - dest_y;
-  
-  if (dest_w > 0 && dest_h > 0)
-    {
-      dest->x = dest_x;
-      dest->y = dest_y;
-      dest->width = dest_w;
-      dest->height = dest_h;
-      return_val = TRUE;
-    }
-  else
-    {
-      dest->width = 0;
-      dest->height = 0;
-    }
-
-  return return_val;
-}
-
-gboolean
-meta_rectangle_equal (const MetaRectangle *src1,
-                      const MetaRectangle *src2)
-{
-  return ((src1->x == src2->x) &&
-          (src1->y == src2->y) &&
-          (src1->width == src2->width) &&
-          (src1->height == src2->height));
 }
 
 static MetaScreen*

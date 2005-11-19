@@ -3,6 +3,7 @@
 /* 
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2003 Red Hat, Inc.
+ * Copyright (C) 2005 Elijah Newren
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -1441,16 +1442,25 @@ meta_frames_button_press_event (GtkWidget      *widget,
           break;
         }
 
-      meta_core_begin_grab_op (gdk_display,
-                               frame->xwindow,
-                               op,
-                               TRUE,
-                               meta_ui_get_last_event_serial (gdk_display),
-                               event->button,
-                               0,
-                               event->time,
-                               event->x_root,
-                               event->y_root);
+      if (!meta_core_titlebar_is_onscreen (gdk_display,
+                                           frame->xwindow))
+        meta_core_show_window_menu (gdk_display,
+                                    frame->xwindow,
+                                    event->x_root,
+                                    event->y_root,
+                                    event->button,
+                                    event->time);
+      else
+        meta_core_begin_grab_op (gdk_display,
+                                 frame->xwindow,
+                                 op,
+                                 TRUE,
+                                 meta_ui_get_last_event_serial (gdk_display),
+                                 event->button,
+                                 0,
+                                 event->time,
+                                 event->x_root,
+                                 event->y_root);
     }
   else if (control == META_FRAME_CONTROL_TITLE &&
            event->button == 1)

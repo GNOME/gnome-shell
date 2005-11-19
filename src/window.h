@@ -52,6 +52,12 @@ typedef enum
   META_WINDOW_SPLASHSCREEN
 } MetaWindowType;
 
+typedef enum
+{
+  META_MAXIMIZE_HORIZONTAL = 1 << 0,
+  META_MAXIMIZE_VERTICAL   = 1 << 1
+} MetaMaximizeFlags;
+
 struct _MetaStruts
 {
   /* struts */
@@ -108,8 +114,10 @@ struct _MetaWindow
   Time initial_timestamp;  
   
   /* Whether we're maximized */
-  guint maximized : 1;
-  guint maximize_after_placement : 1;
+  guint maximized_horizontally : 1;
+  guint maximized_vertically : 1;
+  guint maximize_horizontally_after_placement : 1;
+  guint maximize_vertically_after_placement : 1;
 
   /* Whether we're shaded */
   guint shaded : 1;
@@ -117,6 +125,12 @@ struct _MetaWindow
   /* Whether we're fullscreen */
   guint fullscreen : 1;
   
+  /* Whether we're trying to constrain the window to be fully onscreen */
+  guint require_fully_onscreen : 1;
+
+  /* Whether we're trying to constrain the window to be on a single xinerama */
+  guint require_on_single_xinerama : 1;
+
   /* Whether we're sticky in the multi-workspace sense
    * (vs. the not-scroll-with-viewport sense, we don't
    * have no stupid viewports)
@@ -287,25 +301,29 @@ struct _MetaWindow
   /* The size we set the window to last (i.e. what we believe
    * to be its actual size on the server). The x, y are
    * the actual server-side x,y so are relative to the frame
-   * or the root window as appropriate.
+   * (meaning that they just hold the frame width and height) 
+   * or the root window (meaning they specify the location
+   * of the top left of the inner window) as appropriate.
    */
   MetaRectangle rect;
 
-  /* The geometry to restore when we unmaximize.
-   * The position is in root window coords, even if
-   * there's a frame, which contrasts with window->rect
-   * above.
+  /* The geometry to restore when we unmaximize.  The position is in
+   * root window coords, even if there's a frame, which contrasts with
+   * window->rect above.  Note that this gives the position and size
+   * of the client window (i.e. ignoring the frame).
    */
   MetaRectangle saved_rect;
 
   /* This is the geometry the window had after the last user-initiated
    * move/resize operations. We use this whenever we are moving the
-   * implicitly (for example, if we move to avoid a panel, we
-   * can snap back to this position if the panel moves again)
+   * implicitly (for example, if we move to avoid a panel, we can snap
+   * back to this position if the panel moves again).  Note that this
+   * gives the position and size of the client window (i.e. ignoring
+   * the frame).
    *
    * Position valid if user_has_moved, size valid if user_has_resized
    *
-   * Position always in root coords, unlike window->rect
+   * Position always in root coords, unlike window->rect.
    */
   MetaRectangle user_rect;
   
@@ -330,8 +348,10 @@ struct _MetaWindow
  * the dynamic window state such as "maximized", not just the
  * window's type
  */
+#define META_WINDOW_MAXIMIZED(w)       ((w)->maximized_horizontally && \
+                                        (w)->maximized_vertically)
 #define META_WINDOW_ALLOWS_MOVE(w)     ((w)->has_move_func && !(w)->fullscreen)
-#define META_WINDOW_ALLOWS_RESIZE_EXCEPT_HINTS(w)   ((w)->has_resize_func && !(w)->maximized && !(w)->fullscreen && !(w)->shaded)
+#define META_WINDOW_ALLOWS_RESIZE_EXCEPT_HINTS(w)   ((w)->has_resize_func && !META_WINDOW_MAXIMIZED (w) && !(w)->fullscreen && !(w)->shaded)
 #define META_WINDOW_ALLOWS_RESIZE(w)   (META_WINDOW_ALLOWS_RESIZE_EXCEPT_HINTS (w) &&                \
                                         (((w)->size_hints.min_width < (w)->size_hints.max_width) ||  \
                                          ((w)->size_hints.min_height < (w)->size_hints.max_height)))
@@ -350,10 +370,13 @@ void        meta_window_calc_showing       (MetaWindow  *window);
 void        meta_window_queue_calc_showing (MetaWindow  *window);
 void        meta_window_minimize           (MetaWindow  *window);
 void        meta_window_unminimize         (MetaWindow  *window);
-void        meta_window_maximize           (MetaWindow  *window);
-void        meta_window_maximize_internal  (MetaWindow    *window,
-                                            MetaRectangle *saved_rect);
-void        meta_window_unmaximize         (MetaWindow  *window);
+void        meta_window_maximize           (MetaWindow        *window,
+                                            MetaMaximizeFlags  directions);
+void        meta_window_maximize_internal  (MetaWindow        *window,
+                                            MetaMaximizeFlags  directions,
+                                            MetaRectangle     *saved_rect);
+void        meta_window_unmaximize         (MetaWindow        *window,
+                                            MetaMaximizeFlags  directions);
 void        meta_window_make_above         (MetaWindow  *window);
 void        meta_window_unmake_above       (MetaWindow  *window);
 void        meta_window_shade              (MetaWindow  *window);
@@ -389,9 +412,6 @@ void        meta_window_resize_with_gravity (MetaWindow  *window,
                                              int          h,
                                              int          gravity);
 
-
-void        meta_window_fill_horizontal     (MetaWindow  *window);
-void        meta_window_fill_vertical       (MetaWindow  *window);
 
 /* Return whether the window would be showing if we were on its workspace */
 gboolean    meta_window_showing_on_its_workspace (MetaWindow *window);
@@ -476,6 +496,9 @@ void meta_window_show_menu (MetaWindow *window,
                             int         root_y,
                             int         button,
                             Time        timestamp);
+
+gboolean meta_window_titlebar_is_onscreen    (MetaWindow *window);
+void     meta_window_shove_titlebar_onscreen (MetaWindow *window);
 
 void meta_window_set_gravity (MetaWindow *window,
                               int         gravity);

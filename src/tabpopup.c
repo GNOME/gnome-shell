@@ -241,15 +241,15 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
 
       if (outline)
         {
-          te->rect.x = entries[i].x;
-          te->rect.y = entries[i].y;
-          te->rect.width = entries[i].width;
-          te->rect.height = entries[i].height;
+          te->rect.x = entries[i].rect.x;
+          te->rect.y = entries[i].rect.y;
+          te->rect.width = entries[i].rect.width;
+          te->rect.height = entries[i].rect.height;
 
-          te->inner_rect.x = entries[i].inner_x;
-          te->inner_rect.y = entries[i].inner_y;
-          te->inner_rect.width = entries[i].inner_width;
-          te->inner_rect.height = entries[i].inner_height;
+          te->inner_rect.x = entries[i].inner_rect.x;
+          te->inner_rect.y = entries[i].inner_rect.y;
+          te->inner_rect.width = entries[i].inner_rect.width;
+          te->inner_rect.height = entries[i].inner_rect.height;
         }
 
       tab_entries = g_list_prepend (tab_entries, te);
@@ -739,7 +739,8 @@ selectable_workspace_new (MetaWorkspace *workspace)
   
   widget = g_object_new (meta_select_workspace_get_type (), NULL);
 
-  screen_aspect = (double) workspace->screen->height / (double) workspace->screen->width;
+  screen_aspect = (double) workspace->screen->rect.height /
+                  (double) workspace->screen->rect.width;
   
   /* account for select rect */ 
   gtk_widget_set_size_request (widget,
@@ -893,8 +894,8 @@ meta_select_workspace_expose_event (GtkWidget      *widget,
                        SELECT_OUTLINE_WIDTH,
                        widget->allocation.width - SELECT_OUTLINE_WIDTH * 2,
                        widget->allocation.height - SELECT_OUTLINE_WIDTH * 2,
-                       workspace->screen->width,
-                       workspace->screen->height,
+                       workspace->screen->rect.width,
+                       workspace->screen->rect.height,
                        NULL,
                        (workspace->screen->active_workspace == workspace),
                        windows,
