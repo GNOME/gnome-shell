@@ -1,3 +1,116 @@
+2.13.2
+==
+
+This release just contains a merge of all the changes on the
+constraints_experiments branch.
+
+Thanks to Havoc Pennington for reviewing the gargantuan patch and
+suggesting lots of little fixes for making it better, to Rob Adams and
+Soeren Sandmann for grilling me on how some of the difficult internals work
+-- allowing me to improve the documentation, to Olav Vitters for finding an
+easy-to-fix crasher bug in early testing and for repeatedly extending my
+deadline for switching from working on Metacity to Bugzilla, to Ray Strode
+for finding two crashers and fixing one of them in early testing, to Bryan
+Clark for usability advice, to Davyd Madeley and Christian Kellner for
+testing Xinerama stuff, to Sebastien Bacher for packaging an early version
+and finding some obscure bugs (that I unfortunately still can't duplicate
+and will probably still need to fix once I can),
+
+Bugs fixed:
+  unfiled - constraints.c is overly complicated[1]
+  unfiled - constraints.c is not robust when all constraints cannot
+            simultaneously be met (constraints need to be prioritized)
+  unfiled - keep-titlebar-onscreen constraint is decoration unaware (since
+            get_outermost_onscreen_positions() forgets to include
+            decorations)
+  unfiled - keyboard snap-moving and snap-resizing snap to hidden edges
+   109553 - gravity w/ simultaneous move & resize doesn't work
+   113601 - maximize vertical and horizontal should toggle and be
+            constrained
+   122196 - windows show up under vertical panels
+   122670 - jerky/random resizing of window via keyboard[2]
+   124582 - keyboard and mouse snap-resizing and snap-moving erroneously
+            moves the window multidimensionally
+   136307 - don't allow apps to resize themselves off the screen (*cough*
+            filechooser *cough*)
+   142016, 143784 - windows should not span multiple xineramas unless
+            placed there by the user
+   143145 - clamp new windows to screensize and force them onscreen, if
+            they'll fit
+   144126 - Handle pathological strut lists sanely[3]
+   149867 - fixed aspect ratio windows are difficult to resize[4]
+   152898 - make screen edges consistent; allow easy slamming of windows
+            into the left, right, and bottom edges of the screen too.
+   154706 - bouncing weirdness at screen edge with keyboard moving or
+            resizing
+   156699 - avoid struts when placing windows, if possible (nasty a11y
+            blocker)
+   302456 - dragging offscreen too restrictive
+   304857 - wireframe moving off the top of the screen is misleading
+   308521 - make uni-directional resizing easier with alt-middle-drag and
+            prevent the occasional super annoying resize-the-wrong-side(s)
+            behavior
+   312007 - snap-resize moves windows with a minimum size constraint
+   312104 - resizing the top of a window can cause the bottom to grow
+   319351 - don't instantly snap on mouse-move-snapping, remove
+            braindeadedness of having order of releasing shift and
+            releasing button press matter so much
+
+   [1] fixed in my opinion, anyway.
+   [2] Actually, it's not totally fixed--it's just annoying
+       instead of almost completely unusable.  Matthias had a
+       suggestion that may fix the remainder of the problems (see
+       http://tinyurl.com/bwzuu).
+   [3] This bug was originally about not-quite-so-pathological
+       cases but was left open for the worse cases. The code from
+       the branch handles the remainder of the cases mentioned in
+       this bug.
+   [4] Actually, although it's far better there's still some minor
+       issues left: a slight drift that's only noticeable after
+       lots of resizing, and potential problems with partially
+       onscreen constraints due to not clearing any
+       fixed_directions flags (aspect ratio windows get resized in
+       both directions and thus aren't fixed in one of them)
+        
+New feature:
+  81704 - edge resistance for user move and resize operations; in
+          particular 3 different kinds of resistance are implemented:
+     Pixel-Distance: window movement is resisted when it aligns with an
+       edge unless the movement is greater than a threshold number of
+       pixels
+     Timeout: window movement past an edge is prevented until a certain
+       amount of time has elapsed during the operation since the first
+       request to move it past that edge
+     Keyboard-Buildup: when moving or resizing with the keyboard, once a
+       window is aligned with a certain edge it cannot move past until the
+       correct direction has been pressed enough times (e.g. 2 or 3 times)
+
+Major code changes:
+  - constraints.c has been rewritten; very few lines of code from the old
+    version remain.  There is a comment near the top of the function
+    explaining the basics of how the new framework works.  A more detailed
+    explanation can be found in doc/how-constraints-works.txt
+  - edge-resistance.[ch] are new files implementing edge-resistance.
+  - boxes.[ch] are new files containing low-level error-prone functions
+    used heavily in constraints.c and edge-resistance.c, among various
+    places throughout the code.  testboxes.c contains a thorough testsuite
+    for the boxes.[ch] functions compiled into a program, testboxes.
+  - meta_window_move_resize_internal() *must* be told the gravity of the
+    associated operation (if it's just a move operation, the gravity will
+    be ignored, but for resize and move+resize the correct value is needed)
+  - the craziness of different values that
+    meta_window_move_resize_internal() accepts has been documented in a
+    large comment at the beginning of the function.  It may be possible to
+    clean this up some, but until then things will remain as they were
+    before--caller beware.
+  - screen and xinerama usable areas (i.e. places not covered by
+    e.g. panels) are cached in the workspace now, as are the screen and
+    xinerama edges.  These get updated with the workarea in
+    src/workspace.c:ensure_work_areas_validated()
+
+Translation
+  Michiel Sikkes (nl)
+
 2.13.1
 ==
 

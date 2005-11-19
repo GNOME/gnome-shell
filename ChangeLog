@@ -1,3 +1,7 @@
+2005-11-19  Elijah Newren  <newren@gmail.com>
+
+	* NEWS:	2.13.2 release
+
 2005-11-18  Elijah Newren  <newren@gmail.com>
 
 	Merge of all the changes on the constraints_experiments branch.
