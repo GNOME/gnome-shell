@@ -334,15 +334,21 @@ apply_edge_resistance (MetaWindow                *window,
   gboolean increasing = new_pos > old_pos;
   int      increment = increasing ? 1 : -1;
 
-  const int PIXEL_DISTANCE_THRESHOLD_WINDOW   = 16;
-  const int PIXEL_DISTANCE_THRESHOLD_XINERAMA = 32;
-  const int PIXEL_DISTANCE_THRESHOLD_SCREEN   = 32;
+  const int PIXEL_DISTANCE_THRESHOLD_TOWARDS_WINDOW    = 16;
+  const int PIXEL_DISTANCE_THRESHOLD_AWAYFROM_WINDOW   =  8;
+  const int PIXEL_DISTANCE_THRESHOLD_TOWARDS_XINERAMA  = 32;
+  const int PIXEL_DISTANCE_THRESHOLD_AWAYFROM_XINERAMA =  8;
+  const int PIXEL_DISTANCE_THRESHOLD_TOWARDS_SCREEN    = 32;
+  const int PIXEL_DISTANCE_THRESHOLD_AWAYFROM_SCREEN   =  8;
   const int TIMEOUT_RESISTANCE_LENGTH_MS_WINDOW   =   0;
   const int TIMEOUT_RESISTANCE_LENGTH_MS_XINERAMA = 100;
   const int TIMEOUT_RESISTANCE_LENGTH_MS_SCREEN   = 750;
-  const int KEYBOARD_BUILDUP_THRESHOLD_WINDOW   = 16;
-  const int KEYBOARD_BUILDUP_THRESHOLD_XINERAMA = 24;
-  const int KEYBOARD_BUILDUP_THRESHOLD_SCREEN   = 32;
+  const int KEYBOARD_BUILDUP_THRESHOLD_TOWARDS_WINDOW    = 16;
+  const int KEYBOARD_BUILDUP_THRESHOLD_AWAYFROM_WINDOW   = 16;
+  const int KEYBOARD_BUILDUP_THRESHOLD_TOWARDS_XINERAMA  = 24;
+  const int KEYBOARD_BUILDUP_THRESHOLD_AWAYFROM_XINERAMA = 16;
+  const int KEYBOARD_BUILDUP_THRESHOLD_TOWARDS_SCREEN    = 32;
+  const int KEYBOARD_BUILDUP_THRESHOLD_AWAYFROM_SCREEN   = 16;
 
   /* Quit if no movement was specified */
   if (old_pos == new_pos)
@@ -404,13 +410,22 @@ apply_edge_resistance (MetaWindow                *window,
           switch (edge->edge_type)
             {
             case META_EDGE_WINDOW:
-              resistance = KEYBOARD_BUILDUP_THRESHOLD_WINDOW;
+              if (movement_towards_edge (edge->side_type, increment))
+                resistance = KEYBOARD_BUILDUP_THRESHOLD_TOWARDS_WINDOW;
+              else
+                resistance = KEYBOARD_BUILDUP_THRESHOLD_AWAYFROM_WINDOW;
               break;
             case META_EDGE_XINERAMA:
-              resistance = KEYBOARD_BUILDUP_THRESHOLD_XINERAMA;
+              if (movement_towards_edge (edge->side_type, increment))
+                resistance = KEYBOARD_BUILDUP_THRESHOLD_TOWARDS_XINERAMA;
+              else
+                resistance = KEYBOARD_BUILDUP_THRESHOLD_AWAYFROM_XINERAMA;
               break;
             case META_EDGE_SCREEN:
-              resistance = KEYBOARD_BUILDUP_THRESHOLD_SCREEN;
+              if (movement_towards_edge (edge->side_type, increment))
+                resistance = KEYBOARD_BUILDUP_THRESHOLD_TOWARDS_SCREEN;
+              else
+                resistance = KEYBOARD_BUILDUP_THRESHOLD_AWAYFROM_SCREEN;
               break;
             }
 
@@ -518,13 +533,22 @@ apply_edge_resistance (MetaWindow                *window,
           switch (edge->edge_type)
             {
             case META_EDGE_WINDOW:
-              threshold = PIXEL_DISTANCE_THRESHOLD_WINDOW;
+              if (movement_towards_edge (edge->side_type, increment))
+                threshold = PIXEL_DISTANCE_THRESHOLD_TOWARDS_WINDOW;
+              else
+                threshold = PIXEL_DISTANCE_THRESHOLD_AWAYFROM_WINDOW;
               break;
             case META_EDGE_XINERAMA:
-              threshold = PIXEL_DISTANCE_THRESHOLD_XINERAMA;
+              if (movement_towards_edge (edge->side_type, increment))
+                threshold = PIXEL_DISTANCE_THRESHOLD_TOWARDS_XINERAMA;
+              else
+                threshold = PIXEL_DISTANCE_THRESHOLD_AWAYFROM_XINERAMA;
               break;
             case META_EDGE_SCREEN:
-              threshold = PIXEL_DISTANCE_THRESHOLD_SCREEN;
+              if (movement_towards_edge (edge->side_type, increment))
+                threshold = PIXEL_DISTANCE_THRESHOLD_TOWARDS_SCREEN;
+              else
+                threshold = PIXEL_DISTANCE_THRESHOLD_AWAYFROM_SCREEN;
               break;
             }
 

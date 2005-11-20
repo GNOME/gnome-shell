@@ -1,5 +1,11 @@
 2005-11-19  Elijah Newren  <newren@gmail.com>
 
+	* src/edge-resistance.c (apply_edge_resistance): differentiate
+	between movement towards an edge and movement away from one.  Pick
+	smaller constants for movement away from an edge.
+
+2005-11-19  Elijah Newren  <newren@gmail.com>
+
 	* configure.in: post-release version bump to 2.13.3
 
 2005-11-19  Elijah Newren  <newren@gmail.com>
