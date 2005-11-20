@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-29 00:05+0900\n"
-"PO-Revision-Date: 2005-10-29 00:04+0900\n"
+"POT-Creation-Date: 2005-11-20 11:57+0900\n"
+"PO-Revision-Date: 2005-11-20 11:56+0900\n"
 "Last-Translator: Takeshi AIHANA <aihana@gnome.gr.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr "用法: %s\n"
 
-#: ../src/tools/metacity-message.c:176 ../src/util.c:129
+#: ../src/tools/metacity-message.c:176 ../src/util.c:130
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "この metacity は verbose モードをサポートしていません\n"
 
@@ -82,27 +82,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "致命的なIOエラー %d (%s) - ディスプレイ '%s' が発生しました。\n"
 
-#: ../src/frames.c:1122
+#: ../src/frames.c:1123
 msgid "Close Window"
 msgstr "ウィンドウを閉じます"
 
-#: ../src/frames.c:1125
+#: ../src/frames.c:1126
 msgid "Window Menu"
 msgstr "ウィンドウ・メニューを表示します"
 
-#: ../src/frames.c:1128
+#: ../src/frames.c:1129
 msgid "Minimize Window"
 msgstr "ウィンドウを最小化します"
 
-#: ../src/frames.c:1131
+#: ../src/frames.c:1132
 msgid "Maximize Window"
 msgstr "ウィンドウを最大化します"
 
-#: ../src/frames.c:1134
+#: ../src/frames.c:1135
 msgid "Unmaximize Window"
 msgstr "ウィンドウを元のサイズに戻します"
 
-#: ../src/keybindings.c:995
+#: ../src/keybindings.c:996
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -111,19 +111,19 @@ msgstr ""
 "既にバインディングとして別のプログラムでキー %s (修飾キー %x) を使っていま"
 "す\n"
 
-#: ../src/keybindings.c:2655
+#: ../src/keybindings.c:2494
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "コマンドのエラーを表示する metacity-dialog を起動する際にエラーが発生しまし"
 "た: %s\n"
 
-#: ../src/keybindings.c:2760
+#: ../src/keybindings.c:2599
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "コマンド %d は定義されていません。\n"
 
-#: ../src/keybindings.c:3610
+#: ../src/keybindings.c:3461
 msgid "No terminal command has been defined.\n"
 msgstr "端末を起動するコマンドが定義されていません。\n"
 
@@ -185,83 +185,87 @@ msgstr ""
 msgid "Failed to restart: %s\n"
 msgstr "再起動に失敗しました: %s\n"
 
-#: ../src/menu.c:54
+#: ../src/menu.c:55
 msgid "Mi_nimize"
 msgstr "最小化(_N)"
 
-#: ../src/menu.c:55
+#: ../src/menu.c:56
 msgid "Ma_ximize"
 msgstr "最大化(_X)"
 
-#: ../src/menu.c:56
+#: ../src/menu.c:57
 msgid "Unma_ximize"
 msgstr "元のサイズに戻す(_X)"
 
-#: ../src/menu.c:57
+#: ../src/menu.c:58
 msgid "Roll _Up"
 msgstr "巻き上げる(_U)"
 
-#: ../src/menu.c:58
+#: ../src/menu.c:59
 msgid "_Unroll"
 msgstr "展開する(_U)"
 
-#: ../src/menu.c:59 ../src/menu.c:60
+#: ../src/menu.c:60 ../src/menu.c:61
 msgid "On _Top"
 msgstr "最前面へ(_T)"
 
-#: ../src/menu.c:61
+#: ../src/menu.c:62
 msgid "_Move"
 msgstr "移動(_M)"
 
-#: ../src/menu.c:62
+#: ../src/menu.c:63
 msgid "_Resize"
 msgstr "サイズの変更(_R)"
 
-#. separator
 #: ../src/menu.c:64
+msgid "Move Titlebar On_screen"
+msgstr "画面上でタイトルバーを移動する(_S)"
+
+#. separator
+#: ../src/menu.c:66
 msgid "_Close"
 msgstr "閉じる(_C)"
 
 #. separator
-#: ../src/menu.c:66
+#: ../src/menu.c:68
 msgid "_Always on Visible Workspace"
 msgstr "全てのワークスペースに配置する(_A)"
 
-#: ../src/menu.c:67
+#: ../src/menu.c:69
 msgid "_Only on This Workspace"
 msgstr "現在のワークスペースのみ(_O)"
 
-#: ../src/menu.c:68
+#: ../src/menu.c:70
 msgid "Move to Workspace _Left"
 msgstr "左のワークスペースへ移動する(_L)"
 
-#: ../src/menu.c:69
+#: ../src/menu.c:71
 msgid "Move to Workspace R_ight"
 msgstr "右のワークスペースへ移動する(_I)"
 
-#: ../src/menu.c:70
+#: ../src/menu.c:72
 msgid "Move to Workspace _Up"
 msgstr "上のワークスペースへ移動する(_U)"
 
-#: ../src/menu.c:71
+#: ../src/menu.c:73
 msgid "Move to Workspace _Down"
 msgstr "下のワークスペースへ移動する(_D)"
 
-#: ../src/menu.c:162 ../src/prefs.c:2112
+#: ../src/menu.c:164 ../src/prefs.c:2112
 #, c-format
 msgid "Workspace %d"
 msgstr "ワークスペース %d"
 
-#: ../src/menu.c:171
+#: ../src/menu.c:173
 msgid "Workspace 1_0"
 msgstr "ワークスペース 1_0"
 
-#: ../src/menu.c:173
+#: ../src/menu.c:175
 #, c-format
 msgid "Workspace %s%d"
 msgstr "ワークスペース %s%d"
 
-#: ../src/menu.c:368
+#: ../src/menu.c:370
 msgid "Move to Another _Workspace"
 msgstr "別のワークスペースへ移動する(_W)"
 
@@ -2051,12 +2055,12 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/screen.c:409
+#: ../src/screen.c:403
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "ディスプレイ '%2$s' 上のスクリーン %1$d は無効です\n"
 
-#: ../src/screen.c:425
+#: ../src/screen.c:419
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2066,7 +2070,7 @@ msgstr ""
 "ています; 現在のウィンドウマネージャを上書きするために--replace オプションの"
 "使用を試してください。\n"
 
-#: ../src/screen.c:449
+#: ../src/screen.c:443
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -2074,84 +2078,84 @@ msgstr ""
 "ディスプレイ \"%2$s\" 上のスクリーン %1$d でウィンドウマネージャの選択を取得"
 "できませんでした\n"
 
-#: ../src/screen.c:507
+#: ../src/screen.c:501
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr ""
 "ディスプレイ \"%2$s\" 上のスクリーン %1$d はすでにウィンドウマネージャを持っ"
 "ています\n"
 
-#: ../src/screen.c:717
+#: ../src/screen.c:712
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "ディスプレイ \"%2$s\" 上のスクリーン %1$d を解放できませんでした\n"
 
-#: ../src/session.c:885 ../src/session.c:892
+#: ../src/session.c:844 ../src/session.c:851
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "ディレクトリ '%s' を作成できませんでした : %s\n"
 
-#: ../src/session.c:902
+#: ../src/session.c:861
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr ""
 "書き込みのためのセッションファイル '%s' をオープンできませんでした: %s\n"
 
-#: ../src/session.c:1054
+#: ../src/session.c:1013
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "セッションファイル '%s' を書き込み中にエラーが発生しました: %s\n"
 
-#: ../src/session.c:1059
+#: ../src/session.c:1018
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "セッションファイル '%s' のクローズ中にエラーが発生しました: %s\n"
 
-#: ../src/session.c:1134
+#: ../src/session.c:1093
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "保存されたセッションファイル %s の読み込みに失敗しました: %s\n"
 
-#: ../src/session.c:1169
+#: ../src/session.c:1128
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "保存されたセッションファイルのパースに失敗しました: %s\n"
 
-#: ../src/session.c:1218
+#: ../src/session.c:1177
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
 "<metacity_session> 属性は見られますが，すでにセッションIDを持っています"
 
-#: ../src/session.c:1231
+#: ../src/session.c:1190
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "<metacity_session> エレメントに不明な属性 %s があります"
 
-#: ../src/session.c:1248
+#: ../src/session.c:1207
 msgid "nested <window> tag"
 msgstr "<window> タグがネストされています"
 
-#: ../src/session.c:1306 ../src/session.c:1338
+#: ../src/session.c:1265 ../src/session.c:1297
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "<window> エレメントに不明な属性 %s があります"
 
-#: ../src/session.c:1410
+#: ../src/session.c:1369
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "<maximized> エレメントに不明な属性 %s があります"
 
-#: ../src/session.c:1470
+#: ../src/session.c:1429
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "<geometry> エレメントに不明な属性 %s があります"
 
-#: ../src/session.c:1490
+#: ../src/session.c:1449
 #, c-format
 msgid "Unknown element %s"
 msgstr "不明なエレメント %s があります"
 
-#: ../src/session.c:1962
+#: ../src/session.c:1921
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3160,34 +3164,34 @@ msgstr "ユーザ定義の定数は大文字で始まらなければなりませ
 msgid "Constant \"%s\" has already been defined"
 msgstr "定数 \"%s\" は既に定義されています"
 
-#: ../src/util.c:94
+#: ../src/util.c:95
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "デバッグログのオープンに失敗しました: %s\n"
 
-#: ../src/util.c:104
+#: ../src/util.c:105
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "ログファイル %s の fdopen() に失敗しました: %s\n"
 
-#: ../src/util.c:110
+#: ../src/util.c:111
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "ログファイル %s をオープンしました\n"
 
-#: ../src/util.c:218
+#: ../src/util.c:219
 msgid "Window manager: "
 msgstr "ウィンドウマネージャ: "
 
-#: ../src/util.c:364
+#: ../src/util.c:365
 msgid "Bug in window manager: "
 msgstr "ウィンドウマネージャのバグ: "
 
-#: ../src/util.c:393
+#: ../src/util.c:394
 msgid "Window manager warning: "
 msgstr "ウィンドウマネージャの警告: "
 
-#: ../src/util.c:417
+#: ../src/util.c:418
 msgid "Window manager error: "
 msgstr "ウィンドウマネージャのエラー: "
 
@@ -3197,7 +3201,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "アプリケーションは偽物の _NET_WM_PID %ld を設定しました\n"
 
 #. first time through
-#: ../src/window.c:5209
+#: ../src/window.c:5238
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3213,7 +3217,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5880
+#: ../src/window.c:5878
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
