@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-screensaver\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-28 22:00+0200\n"
-"PO-Revision-Date: 2005-10-28 22:06+0200\n"
+"POT-Creation-Date: 2005-11-20 18:11+0100\n"
+"PO-Revision-Date: 2005-11-20 19:02+0100\n"
 "Last-Translator: Francisco Javier F. Serrador <serrador@cvs.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +25,7 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr "Uso: %s\n"
 
-#: ../src/tools/metacity-message.c:176 ../src/util.c:129
+#: ../src/tools/metacity-message.c:176 ../src/util.c:130
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity fue compilado sin soporte para modo prolijo\n"
 
@@ -68,7 +68,7 @@ msgstr "Ocurrió un error al obtener el nombre del host: %s\n"
 #: ../src/display.c:308
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr "Ocurrió un error al abrir la pantalla del X Window System «%s»\n"
+msgstr "Ocurrió un error al abrir la pantalla de X Window System «%s»\n"
 
 #: ../src/errors.c:231
 #, c-format
@@ -86,27 +86,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Error fatal de E/S %d (%s) en la pantalla «%s».\n"
 
-#: ../src/frames.c:1122
+#: ../src/frames.c:1123
 msgid "Close Window"
 msgstr "Cerrar la ventana"
 
-#: ../src/frames.c:1125
+#: ../src/frames.c:1126
 msgid "Window Menu"
 msgstr "Menú de la ventana"
 
-#: ../src/frames.c:1128
+#: ../src/frames.c:1129
 msgid "Minimize Window"
 msgstr "Minimizar la ventana"
 
-#: ../src/frames.c:1131
+#: ../src/frames.c:1132
 msgid "Maximize Window"
 msgstr "Maximizar la ventana"
 
-#: ../src/frames.c:1134
+#: ../src/frames.c:1135
 msgid "Unmaximize Window"
 msgstr "Restaurar la ventana"
 
-#: ../src/keybindings.c:995
+#: ../src/keybindings.c:996
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -115,19 +115,19 @@ msgstr ""
 "Algún otro programa ya está usando la clave %s con el modificador %x como "
 "una vinculación\n"
 
-#: ../src/keybindings.c:2655
+#: ../src/keybindings.c:2494
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Ocurrió un error al lanzar metacity-dialog para imprimir un error acerca de "
 "un comando: %s\n"
 
-#: ../src/keybindings.c:2760
+#: ../src/keybindings.c:2599
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "No ha sido definido ningún comando %d.\n"
 
-#: ../src/keybindings.c:3610
+#: ../src/keybindings.c:3461
 msgid "No terminal command has been defined.\n"
 msgstr "No ha sido definido ningún comando de terminal.\n"
 
@@ -142,9 +142,7 @@ msgid ""
 msgstr ""
 "metacity %s\n"
 "Copyright © 2001-2002 Havoc Pennington, Red Hat, Inc., y otros\n"
-"Este programa es software libre ; vea el código fuente para obtener las "
-"condiciones de copia. NO se proporciona ninguna garantía ; ni de "
-"MERCANTILIDAD O DE IDONEIDAD PARA UN PROPÓSITO PARTICULAR.\n"
+"Este programa es software libre; vea el código fuente para obtener las condiciones de copia. NO se proporciona ninguna garantía; ni de MERCANTILIDAD O DE IDONEIDAD PARA UN PROPÓSITO PARTICULAR.\n"
 
 #: ../src/main.c:257
 msgid "Disable connection to session manager"
@@ -179,94 +177,96 @@ msgstr "Falló al inspeccionar el directorio de temas: %s\n"
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr ""
-"¡No se ha podido encontrar un tema!. Asegúrese de que %s existe y contiene "
-"los temas usuales."
+msgstr "No se ha podido encontrar un tema. Asegúrese de que %s existe y contiene los temas usuales."
 
 #: ../src/main.c:518
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Ocurrió un error al reiniciar: %s\n"
 
-#: ../src/menu.c:54
+#: ../src/menu.c:55
 msgid "Mi_nimize"
 msgstr "Mi_nimizar"
 
-#: ../src/menu.c:55
+#: ../src/menu.c:56
 msgid "Ma_ximize"
 msgstr "Ma_ximizar"
 
-#: ../src/menu.c:56
+#: ../src/menu.c:57
 msgid "Unma_ximize"
 msgstr "_Restaurar"
 
-#: ../src/menu.c:57
+#: ../src/menu.c:58
 msgid "Roll _Up"
 msgstr "_Enrollar"
 
-#: ../src/menu.c:58
+#: ../src/menu.c:59
 msgid "_Unroll"
 msgstr "De_senrollar"
 
-#: ../src/menu.c:59 ../src/menu.c:60
+#: ../src/menu.c:60 ../src/menu.c:61
 msgid "On _Top"
 msgstr "En_cima"
 
-#: ../src/menu.c:61
+#: ../src/menu.c:62
 msgid "_Move"
 msgstr "_Mover"
 
-#: ../src/menu.c:62
+#: ../src/menu.c:63
 msgid "_Resize"
 msgstr "Re_dimensionar"
 
-#. separator
 #: ../src/menu.c:64
+msgid "Move Titlebar On_screen"
+msgstr "Mover la barra de título a la _pantalla"
+
+#. separator
+#: ../src/menu.c:66
 msgid "_Close"
 msgstr "_Cerrar"
 
 #. separator
-#: ../src/menu.c:66
-msgid "_Always on Visible Workspace"
-msgstr "_Siempre en el espacio de trabajo visible"
-
-#: ../src/menu.c:67
-msgid "_Only on This Workspace"
-msgstr "_Sólo en este espacio de trabajo"
-
 #: ../src/menu.c:68
+msgid "_Always on Visible Workspace"
+msgstr "_Siempre en el área de trabajo visible"
+
+#: ../src/menu.c:69
+msgid "_Only on This Workspace"
+msgstr "_Sólo en este área de trabajo"
+
+#: ../src/menu.c:70
 msgid "Move to Workspace _Left"
 msgstr "Mover al área de trabajo de la _izquierda"
 
-#: ../src/menu.c:69
+#: ../src/menu.c:71
 msgid "Move to Workspace R_ight"
 msgstr "Mover al área de trabajo de la _derecha"
 
-#: ../src/menu.c:70
+#: ../src/menu.c:72
 msgid "Move to Workspace _Up"
 msgstr "Mover al área de trabajo de _arriba"
 
-#: ../src/menu.c:71
+#: ../src/menu.c:73
 msgid "Move to Workspace _Down"
 msgstr "Mover al área de trabajo de a_bajo"
 
-#: ../src/menu.c:162 ../src/prefs.c:2112
+#: ../src/menu.c:164 ../src/prefs.c:2112
 #, c-format
 msgid "Workspace %d"
-msgstr "Espacio de trabajo %d"
-
-#: ../src/menu.c:171
-msgid "Workspace 1_0"
-msgstr "Espacio de trabajo 1_0"
+msgstr "Área de trabajo %d"
 
 #: ../src/menu.c:173
+msgid "Workspace 1_0"
+msgstr "Área de trabajo 1_0"
+
+#: ../src/menu.c:175
 #, c-format
 msgid "Workspace %s%d"
-msgstr "Espacio de trabajo %s%d"
+msgstr "Área de trabajo %s%d"
 
-#: ../src/menu.c:368
+#: ../src/menu.c:370
 msgid "Move to Another _Workspace"
-msgstr "Mover a otro _espacio de trabajo"
+msgstr "Mover a otro _área de trabajo"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -504,7 +504,7 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:15
 msgid "Enable Visual Bell"
-msgstr "Habilitar campana visual"
+msgstr "Activar la campana visual"
 
 #: ../src/metacity.schemas.in.h:16
 msgid "Hide all windows and focus desktop"
@@ -522,7 +522,18 @@ msgid ""
 "not related to raise-on-click/orthogonal-raise). It is unrelated to entering "
 "a window during drag and drop (because that results in the application "
 "grabbing the mouse)"
-msgstr "Si es «true», y el modo del foco es o «sloppy» o «mouse» entonces la ventana enfocada se levantará automáticamente después de un retardo (el retardo se especifica por la clave auto_raise_delay). Esta preferencia tiene un nombre poco significativo, pero se mantiene por compatibilidad hacia atrás. Para intentar ser más claro (al menos para los técnicos), su significado es «elevar automáticamente la ventana sguiendo un retardo que se dispara por una entrada del ratón en los modos de foco sloppy o mouse». No tiene ninguna relación con el comportamiento al pulsar (esto no está relacionado con raise-on-click/orthogonal-raise). No está relacionado con introducir una ventana al arrastrar y soltar (porque eso resulta en la aplicación obteniendo el ratón.)"
+msgstr ""
+"Si es «true», y el modo del foco es o «sloppy» o «mouse» entonces la ventana "
+"enfocada se levantará automáticamente después de un retardo (el retardo se "
+"especifica por la clave auto_raise_delay). Esta preferencia tiene un nombre "
+"poco significativo, pero se mantiene por compatibilidad hacia atrás. Para "
+"intentar ser más claro (al menos para los técnicos), su significado es "
+"«elevar automáticamente la ventana sguiendo un retardo que se dispara por "
+"una entrada del ratón en los modos de foco sloppy o mouse». No tiene ninguna "
+"relación con el comportamiento al pulsar (esto no está relacionado con raise-"
+"on-click/orthogonal-raise). No está relacionado con introducir una ventana "
+"al arrastrar y soltar (porque eso resulta en la aplicación obteniendo el "
+"ratón.)"
 
 #: ../src/metacity.schemas.in.h:18
 msgid ""
@@ -580,7 +591,7 @@ msgstr "Si es «true», reducir usabilidad para menos uso de recursos"
 
 #: ../src/metacity.schemas.in.h:22
 msgid "Lower window below other windows"
-msgstr "Bajar ventana por debajo de otras ventanas"
+msgstr "Bajar la ventana por debajo de otras ventanas"
 
 #: ../src/metacity.schemas.in.h:23
 msgid "Maximize window"
@@ -606,36 +617,35 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:28
 msgid "Move backward between panels and the desktop immediately"
-msgstr "Moverse hacia atrás entre paneles y escritorio inmediatamente"
+msgstr "Retroceder entre los paneles y el escritorio inmediatamente"
 
 #: ../src/metacity.schemas.in.h:29
 msgid "Move backwards between panels and the desktop with popup"
-msgstr "Moverse hacia atrás entre paneles y escritorio con emergente"
+msgstr "Retroceder entre los paneles y escritorio con emergente"
 
 #: ../src/metacity.schemas.in.h:30
 msgid "Move backwards between windows immediately"
-msgstr "Moverse hacia atrás entre ventanas inmediatamente"
+msgstr "Retroceder entre las ventanas inmediatamente"
 
 #: ../src/metacity.schemas.in.h:31
 msgid "Move between panels and the desktop immediately"
-msgstr "Moverse entre paneles y escritorio inmediatamente"
+msgstr "Moverse entre los paneles y el escritorio inmediatamente"
 
 #: ../src/metacity.schemas.in.h:32
 msgid "Move between panels and the desktop with popup"
-msgstr "Moverse entre paneles y escritorio con emergente"
+msgstr "Moverse entre los paneles y el escritorio con emergente"
 
 #: ../src/metacity.schemas.in.h:33
 msgid "Move between windows immediately"
-msgstr "Moverse entre ventanas inmediatamente"
+msgstr "Moverse entre las ventanas inmediatamente"
 
 #: ../src/metacity.schemas.in.h:34
 msgid "Move between windows with popup"
-msgstr "Moverse entre ventanas con una ventana emergente"
+msgstr "Moverse entre las ventanas con una ventana emergente"
 
 #: ../src/metacity.schemas.in.h:35
 msgid "Move focus backwards between windows using popup display"
-msgstr ""
-"Mover el foco hacia atrás entre ventanas mostrando una ventana emergente"
+msgstr "Mover el foco hacia atrás entre ventanas mostrando una ventana emergente"
 
 #: ../src/metacity.schemas.in.h:36
 msgid "Move window"
@@ -643,19 +653,19 @@ msgstr "Mover la ventana"
 
 #: ../src/metacity.schemas.in.h:37
 msgid "Move window one workspace down"
-msgstr "Mover la ventana un espacio de trabajo hacia abajo"
+msgstr "Bajar la ventana un área de trabajo"
 
 #: ../src/metacity.schemas.in.h:38
 msgid "Move window one workspace to the left"
-msgstr "Mover la ventana un espacio de trabajo hacia la izquierda"
+msgstr "Mover la ventana un área de trabajo a la izquierda"
 
 #: ../src/metacity.schemas.in.h:39
 msgid "Move window one workspace to the right"
-msgstr "Mover la ventana un espacio de trabajo hacia la derecha"
+msgstr "Mover la ventana un área de trabajo a la derecha"
 
 #: ../src/metacity.schemas.in.h:40
 msgid "Move window one workspace up"
-msgstr "Mover la ventana un espacio de trabajo hacia arriba"
+msgstr "Subir la ventana un área de trabajo"
 
 #: ../src/metacity.schemas.in.h:41
 msgid "Move window to workspace 1"
@@ -707,33 +717,30 @@ msgstr "Mover la ventana al área de trabajo 9"
 
 #: ../src/metacity.schemas.in.h:53
 msgid "Name of workspace"
-msgstr "Nombre del espacio de trabajo"
+msgstr "Nombre del área de trabajo"
 
 #: ../src/metacity.schemas.in.h:54
 msgid "Number of workspaces"
-msgstr "Número de espacios de trabajo"
+msgstr "Número de áreas de trabajo"
 
 #: ../src/metacity.schemas.in.h:55
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum (to "
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
-msgstr ""
-"Número de espacios de trabajo. Debe ser mayor que cero y tener un máximo "
-"fijo (para prevenir la destrucción accidental de su escritorio al "
-"configurarlo con 34 millones de espacios de trabajo)."
+msgstr "Número de áreas de trabajo. Debe ser mayor que cero, y tiene un máximo fijo (para prevenir la destrucción accidental de su escritorio al pedir 34 millones de áreas de trabajo)."
 
 #: ../src/metacity.schemas.in.h:56
 msgid "Raise obscured window, otherwise lower"
-msgstr "Subir una ventana ocultada, en otro caso bajarla"
+msgstr "Levanta una ventana ocultada, en otro caso bajarla"
 
 #: ../src/metacity.schemas.in.h:57
 msgid "Raise window above other windows"
-msgstr "Subir la ventana por encima de otras ventanas"
+msgstr "Levanta la ventana por encima de otras ventanas"
 
 #: ../src/metacity.schemas.in.h:58
 msgid "Resize window"
-msgstr "Redimensionar la ventana"
+msgstr "Redimensiona la ventana"
 
 #: ../src/metacity.schemas.in.h:59
 msgid "Run a defined command"
@@ -2098,12 +2105,12 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/screen.c:409
+#: ../src/screen.c:403
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "La ventana %d en la pantalla «%s» no es válida\n"
 
-#: ../src/screen.c:425
+#: ../src/screen.c:419
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2112,7 +2119,7 @@ msgstr ""
 "La ventana %d en la pantalla «%s» ya tiene un gestor de ventanas, intente "
 "usar la opción «--replace» para reemplazar el gestor de ventanas activo.\n"
 
-#: ../src/screen.c:449
+#: ../src/screen.c:443
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -2120,82 +2127,82 @@ msgstr ""
 "No se ha podido obtener la selección del gestor de ventanas en la ventana %d "
 "en la pantalla «%s»\n"
 
-#: ../src/screen.c:507
+#: ../src/screen.c:501
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "La ventana %d en la pantalla «%s» ya tiene un gestor de ventanas\n"
 
-#: ../src/screen.c:717
+#: ../src/screen.c:712
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "No se ha podido liberar el monitor %d en la pantalla «%s»\n"
 
-#: ../src/session.c:885 ../src/session.c:892
+#: ../src/session.c:844 ../src/session.c:851
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "No se ha podido crear el directorio «%s»: %s\n"
 
-#: ../src/session.c:902
+#: ../src/session.c:861
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "No se ha podido abrir para escritura el archivo de sesión «%s»: %s\n"
 
-#: ../src/session.c:1054
+#: ../src/session.c:1013
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Ocurrió un error al escribir en el archivo de sesión «%s»: %s\n"
 
-#: ../src/session.c:1059
+#: ../src/session.c:1018
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Ocurrió un error al cerrar el archivo de sesión «%s»: %s\n"
 
-#: ../src/session.c:1134
+#: ../src/session.c:1093
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Ocurrió un error al leer el archivo de sesión guardado %s: %s\n"
 
-#: ../src/session.c:1169
+#: ../src/session.c:1128
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Ocurrió un error al interpretar el archivo de sesión guardado: %s\n"
 
-#: ../src/session.c:1218
+#: ../src/session.c:1177
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
 "El atributo <metacity_session> ha sido visto pero ya tenemos el ID de la "
 "sesión"
 
-#: ../src/session.c:1231
+#: ../src/session.c:1190
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Atributo desconocido %s en el elemento <metacity_session>"
 
-#: ../src/session.c:1248
+#: ../src/session.c:1207
 msgid "nested <window> tag"
 msgstr "etiqueta <window> anidada"
 
-#: ../src/session.c:1306 ../src/session.c:1338
+#: ../src/session.c:1265 ../src/session.c:1297
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Atributo desconocido %s en el elemento <window>"
 
-#: ../src/session.c:1410
+#: ../src/session.c:1369
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Atributo desconocido %s en el elemento <maximized>"
 
-#: ../src/session.c:1470
+#: ../src/session.c:1429
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Atributo desconocido %s en el elemento <geometry>"
 
-#: ../src/session.c:1490
+#: ../src/session.c:1449
 #, c-format
 msgid "Unknown element %s"
 msgstr "Elemento desconocido %s"
 
-#: ../src/session.c:1962
+#: ../src/session.c:1921
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2225,15 +2232,15 @@ msgid "Integer %ld must be positive"
 msgstr "El entero %ld debe ser positivo"
 
 #: ../src/theme-parser.c:493
-#, c-format
+#, c-format, fuzzy
 msgid "Integer %ld is too large, current max is %d"
-msgstr "El entero %ld es demasiado grande. El máximo actual es %d"
+msgstr "El entero %ld es demasiado grande, el máximo actual es %d"
 
 #: ../src/theme-parser.c:521 ../src/theme-parser.c:602
 #: ../src/theme-parser.c:626
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
-msgstr "No se ha podido interpretar «%s» como un número de punto flotante"
+msgstr "No se ha podido interpretar «%s» como un número de coma flotante"
 
 #: ../src/theme-parser.c:552
 #, c-format
@@ -2243,7 +2250,7 @@ msgstr "Los valores booleanos deben ser «true» o «false» no «%s»"
 #: ../src/theme-parser.c:572
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr "El ángulo debe estar entre 0.0 y 360.9, fue %g\n"
+msgstr "El ángulo debe estar entre 0.0 y 360.0, fue %g\n"
 
 #: ../src/theme-parser.c:638
 #, c-format
@@ -2298,7 +2305,7 @@ msgstr ""
 #: ../src/theme-parser.c:1080
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr "Tipo desconocido «%s» en el elemento <%s>"
+msgstr "Tipo «%s» desconocido en el elemento <%s>"
 
 #: ../src/theme-parser.c:1091
 #, c-format
@@ -2313,12 +2320,12 @@ msgstr "El tipo de ventana «%s» ya ha sido asignado a un conjunto de estilo"
 #: ../src/theme-parser.c:1143
 #, c-format
 msgid "Unknown function \"%s\" for menu icon"
-msgstr "Función desconocida «%s» para el icono del menú"
+msgstr "Función «%s» desconocida para el icono del menú"
 
 #: ../src/theme-parser.c:1152
 #, c-format
 msgid "Unknown state \"%s\" for menu icon"
-msgstr "Estado desconocido «%s» para el icono del menú"
+msgstr "Estado «%s» desconocido para el icono del menú"
 
 #: ../src/theme-parser.c:1160
 #, c-format
@@ -2329,7 +2336,7 @@ msgstr "El tema ya tiene un icono de menú para la función %s estado %s"
 #: ../src/theme-parser.c:3323
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr "No se ha definida una <draw_ops> con el nombre «%s»"
+msgstr "No se ha definido ninguna <draw_ops> con el nombre «%s»"
 
 #: ../src/theme-parser.c:1192 ../src/theme-parser.c:1256
 #: ../src/theme-parser.c:1545 ../src/theme-parser.c:3124
@@ -2338,18 +2345,18 @@ msgstr "No se ha definida una <draw_ops> con el nombre «%s»"
 #: ../src/theme-parser.c:3591 ../src/theme-parser.c:3629
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
-msgstr "El elemento <%s> no esta permitido debajo de <%s>"
+msgstr "El elemento <%s> no está permitido debajo de <%s>"
 
 #: ../src/theme-parser.c:1282 ../src/theme-parser.c:1369
 #: ../src/theme-parser.c:1439
 #, c-format
 msgid "No \"name\" attribute on element <%s>"
-msgstr "No hay atributo «name» en el elemento <%s>"
+msgstr "No hay atributo \"name\" en el elemento <%s>"
 
 #: ../src/theme-parser.c:1289 ../src/theme-parser.c:1376
 #, c-format
 msgid "No \"value\" attribute on element <%s>"
-msgstr "No hay atributo «value» en el elemento <%s>"
+msgstr "No hay atributo \"value\" en el elemento <%s>"
 
 #: ../src/theme-parser.c:1320 ../src/theme-parser.c:1334
 #: ../src/theme-parser.c:1393
@@ -2372,22 +2379,22 @@ msgstr "La proporción «%s» es desconocido"
 #: ../src/theme-parser.c:1446
 #, c-format
 msgid "No \"top\" attribute on element <%s>"
-msgstr "No hay atributo «top» en el elemento <%s>"
+msgstr "No hay atributo \"top\" en el elemento <%s>"
 
 #: ../src/theme-parser.c:1453
 #, c-format
 msgid "No \"bottom\" attribute on element <%s>"
-msgstr "No hay atributo «bottom» en el elemento <%s>"
+msgstr "No hay atributo \"bottom\" en el elemento <%s>"
 
 #: ../src/theme-parser.c:1460
 #, c-format
 msgid "No \"left\" attribute on element <%s>"
-msgstr "No hay atributo «left» en el elemento <%s>"
+msgstr "No hay atributo \"left\" en el elemento <%s>"
 
 #: ../src/theme-parser.c:1467
 #, c-format
 msgid "No \"right\" attribute on element <%s>"
-msgstr "No hay atributo «right» en el elemento <%s>"
+msgstr "No hay atributo \"right\" en el elemento <%s>"
 
 #: ../src/theme-parser.c:1499
 #, c-format
@@ -3149,21 +3156,16 @@ msgstr ""
 
 #: ../src/theme.c:2009
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
-"La expresión de coordenadas tiene un paréntesis cerrado sin un paréntesis "
-"abierto"
+msgstr "La expresión de coordenadas tenía un paréntesis cerrado sin un paréntesis abierto"
 
 #: ../src/theme.c:2072
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr ""
-"La expresión de coordenadas tiene una variable o constante desconocida «%s»"
+msgstr "La expresión de coordenadas tenía una variable o constante desconocida «%s»"
 
 #: ../src/theme.c:2129
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
-"La expresión de coordenadas tiene un paréntesis abierto sin un paréntesis "
-"cerrado"
+msgstr "La expresión de coordenadas tenía un paréntesis abierto sin un paréntesis cerrado"
 
 #: ../src/theme.c:2140
 msgid "Coordinate expression doesn't seem to have any operators or operands"
@@ -3232,34 +3234,35 @@ msgstr ""
 msgid "Constant \"%s\" has already been defined"
 msgstr "La constante «%s» ya ha sido definida"
 
-#: ../src/util.c:94
+#: ../src/util.c:95
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Ocurrió un error al abrir el registro de errores: %s\n"
 
-#: ../src/util.c:104
+#: ../src/util.c:105
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Ocurrió un error al hacer fdopen() en el archivo de registro %s: %s\n"
 
-#: ../src/util.c:110
+#: ../src/util.c:111
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Archivo de registro %s abierto\n"
 
-#: ../src/util.c:218
+#: ../src/util.c:219
 msgid "Window manager: "
 msgstr "Administrador de ventanas: "
 
-#: ../src/util.c:364
+# Diferenciar de eRRor en el gestor de ventanas, más abajo
+#: ../src/util.c:365
 msgid "Bug in window manager: "
 msgstr "Error en el gestor de ventanas: "
 
-#: ../src/util.c:393
+#: ../src/util.c:394
 msgid "Window manager warning: "
 msgstr "Advertencia del gestor de ventanas: "
 
-#: ../src/util.c:417
+#: ../src/util.c:418
 msgid "Window manager error: "
 msgstr "Error del gestor de ventanas: "
 
@@ -3269,7 +3272,7 @@ msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "La aplicación configuró un _NET_WM_PID %ld erróneo\n"
 
 #. first time through
-#: ../src/window.c:5209
+#: ../src/window.c:5238
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3285,7 +3288,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5880
+#: ../src/window.c:5878
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
