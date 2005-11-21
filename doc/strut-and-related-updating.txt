@@ -1,8 +1,8 @@
-How updates happen for struts, workareas, and screen/xinerama regions/edges
+How updates happen for struts, workareas, and screen/xinerama regions/edges:
   One of three things causes meta_window_update_struts to be called
     (a) initial window map (window.c:meta_window_new_with_attrs())
     (b) update of _net_wm_strut* properties (window.c:process_property_notify())
-    (c) screen.c (meta_screen_resize_func())
+    (c) screen resizes (e.g. via xrandr; from screen.c:meta_screen_resize_func())
   meta_window_update_struts (MetaWindow *window)
     - Gets new list of struts from window properties
     - Makes sure window doesn't single-handedly fill the screen
@@ -13,7 +13,7 @@ How updates happen for struts, workareas, and screen/xinerama regions/edges
     - Cleans out all strut lists
     - queues all windows for resizing
     - Calls meta_screen_queue_workarea_recalc (workspace->screen);
-  meta_screen_queue_workarea_recalc ()
+  meta_screen_queue_workarea_recalc()
     - Adds set_work_area_idle_func() as an idle handler
 
   set_work_area_idle_func()
@@ -34,6 +34,7 @@ How updates happen for struts, workareas, and screen/xinerama regions/edges
     - Make sure there's a non-empty screen workarea
     - Record the screen workarea
     - Cache the spanning rects for the screen and xinerama regions
+    - Cache the screen and xinerama edges
 
   Alternatively to all the above, if the idle function for the screen
   has not yet fired, constraints.c:setup_constraint_info() can call
