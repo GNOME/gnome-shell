@@ -1,0 +1,53 @@
+How updates happen for struts, workareas, and screen/xinerama regions/edges
+  One of three things causes meta_window_update_struts to be called
+    (a) initial window map (window.c:meta_window_new_with_attrs())
+    (b) update of _net_wm_strut* properties (window.c:process_property_notify())
+    (c) screen.c (meta_screen_resize_func())
+  meta_window_update_struts (MetaWindow *window)
+    - Gets new list of struts from window properties
+    - Makes sure window doesn't single-handedly fill the screen
+    - records new struts if different and calls invalidate_work_areas()
+  invalidate_work_areas ()
+    - Calls meta_workspace_invalidate_work_area() for each workspace it's on
+  meta_workspace_invalidate_work_area()
+    - Cleans out all strut lists
+    - queues all windows for resizing
+    - Calls meta_screen_queue_workarea_recalc (workspace->screen);
+  meta_screen_queue_workarea_recalc ()
+    - Adds set_work_area_idle_func() as an idle handler
+
+  set_work_area_idle_func()
+    - Calls set_work_area_hint()
+  set_work_area_hint()
+    - Calls meta_workspace_get_work_area_all_xineramas()
+    - Sets _NET_WORKAREA property
+  meta_workspace_get_work_area_all_xineramas()
+    - Calls ensure_work_areas_validated()
+  ensure_work_areas_validated()
+    - Loops over xineramas
+      - Loops over windows, then struts:
+        - Adds struts to list first time through xinerama loop
+        - Find the amount of the strut on the given xinerama for <dir>_strut
+        - Just max the amount of the strut with the all_<dir>_strut
+      - Makes sure there's a non-empty xinerama workarea
+      - Record the xinerama workarea
+    - Make sure there's a non-empty screen workarea
+    - Record the screen workarea
+    - Cache the spanning rects for the screen and xinerama regions
+
+  Alternatively to all the above, if the idle function for the screen
+  has not yet fired, constraints.c:setup_constraint_info() can call
+  either workspace.c:meta_workspace_get_onscreen_region() or
+  workspace.c:meta_workspace_get_onxinerama_region() which in turn
+  call workspace.c:ensure_work_areas_validated().
+
+Meaning of related functions that might be difficult to tell apart:
+  screen.c:meta_screen_get_current_xinerama ()
+    - Finds out which xinerama the mouse is on with an XQueryPointer
+  window.c:meta_window_get_work_area_current_xinerama()
+  window.c:meta_window_get_work_area_for_xinerama()
+  window.c:meta_window_get_work_area_all_xineramas ()
+    - All three are for finding the intersection of workareas across
+      multiple workspaces so that placement of windows can be
+      determined in such a way that they remain in the workarea for
+      all workspaces that they are on.
