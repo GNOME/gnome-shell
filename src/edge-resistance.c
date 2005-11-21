@@ -1112,7 +1112,7 @@ meta_display_compute_resistance_and_snapping_edges (MetaDisplay *display)
            * stacking position than this one.
            */
           while (rem_win_stacking && 
-                 stack_position >= (int)rem_win_stacking->data)
+                 stack_position >= GPOINTER_TO_INT (rem_win_stacking->data))
             {
               rem_windows      = rem_windows->next;
               rem_win_stacking = rem_win_stacking->next;

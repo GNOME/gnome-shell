@@ -1,3 +1,9 @@
+2005-11-21  Davyd Madeley  <davyd@fugro-fsi.com.au>
+
+	* src/edge-resistance.c (meta_display_compute_resistance_and_snap):
+	  Use GPOINTER_TO_INT() macro instead of cast to allow compilation on
+	  64-bit architectures without warning.
+
 2005-11-19  Elijah Newren  <newren@gmail.com>
 
 	* src/edge-resistance.c (apply_edge_resistance): differentiate
