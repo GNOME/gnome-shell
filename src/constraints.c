@@ -441,6 +441,11 @@ place_window_if_needed(MetaWindow     *window,
       meta_window_get_work_area_for_xinerama (window,
                                               xinerama_info->number,
                                               &info->work_area_xinerama);
+      MetaWorkspace *cur_workspace = window->screen->active_workspace;
+      info->usable_xinerama_region = 
+        meta_workspace_get_onxinerama_region (cur_workspace, 
+                                              xinerama_info->number);
+
 
       info->current.x = placed_rect.x;
       info->current.y = placed_rect.y;

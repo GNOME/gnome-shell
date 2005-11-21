@@ -1,11 +1,17 @@
 2005-11-21  Elijah Newren  <newren@gmail.com>
 
+	* src/constraints.c (place_window_if_needed): When updating the
+	xinerama due to placement, update which maximal/spanning rect set
+	to use as well
+	
+2005-11-21  Elijah Newren  <newren@gmail.com>
+
 	* doc/strut-and-related-updating.txt: It took me a little while to
 	figure out how struts & workareas are updated and to learn what
 	all the related functions were used for so I thought I'd clean up
 	my notes and make them available.  This will probably be more
 	useful now since regions and edges are also computed and stored at
-	the some time as the workareas.
+	the same time as the workareas.
 
 2005-11-20  Elijah Newren  <newren@gmail.com>
 
