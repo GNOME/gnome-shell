@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-screensaver\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-20 18:11+0100\n"
-"PO-Revision-Date: 2005-11-20 19:02+0100\n"
+"POT-Creation-Date: 2005-11-21 23:19+0100\n"
+"PO-Revision-Date: 2005-11-21 23:19+0100\n"
 "Last-Translator: Francisco Javier F. Serrador <serrador@cvs.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -142,7 +142,9 @@ msgid ""
 msgstr ""
 "metacity %s\n"
 "Copyright © 2001-2002 Havoc Pennington, Red Hat, Inc., y otros\n"
-"Este programa es software libre; vea el código fuente para obtener las condiciones de copia. NO se proporciona ninguna garantía; ni de MERCANTILIDAD O DE IDONEIDAD PARA UN PROPÓSITO PARTICULAR.\n"
+"Este programa es software libre; vea el código fuente para obtener las "
+"condiciones de copia. NO se proporciona ninguna garantía; ni de "
+"MERCANTILIDAD O DE IDONEIDAD PARA UN PROPÓSITO PARTICULAR.\n"
 
 #: ../src/main.c:257
 msgid "Disable connection to session manager"
@@ -177,7 +179,9 @@ msgstr "Falló al inspeccionar el directorio de temas: %s\n"
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr "No se ha podido encontrar un tema. Asegúrese de que %s existe y contiene los temas usuales."
+msgstr ""
+"No se ha podido encontrar un tema. Asegúrese de que %s existe y contiene los "
+"temas usuales."
 
 #: ../src/main.c:518
 #, c-format
@@ -645,7 +649,8 @@ msgstr "Moverse entre las ventanas con una ventana emergente"
 
 #: ../src/metacity.schemas.in.h:35
 msgid "Move focus backwards between windows using popup display"
-msgstr "Mover el foco hacia atrás entre ventanas mostrando una ventana emergente"
+msgstr ""
+"Mover el foco hacia atrás entre ventanas mostrando una ventana emergente"
 
 #: ../src/metacity.schemas.in.h:36
 msgid "Move window"
@@ -728,7 +733,10 @@ msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum (to "
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
-msgstr "Número de áreas de trabajo. Debe ser mayor que cero, y tiene un máximo fijo (para prevenir la destrucción accidental de su escritorio al pedir 34 millones de áreas de trabajo)."
+msgstr ""
+"Número de áreas de trabajo. Debe ser mayor que cero, y tiene un máximo fijo "
+"(para prevenir la destrucción accidental de su escritorio al pedir 34 "
+"millones de áreas de trabajo)."
 
 #: ../src/metacity.schemas.in.h:56
 msgid "Raise obscured window, otherwise lower"
@@ -2232,7 +2240,7 @@ msgid "Integer %ld must be positive"
 msgstr "El entero %ld debe ser positivo"
 
 #: ../src/theme-parser.c:493
-#, c-format, fuzzy
+#, c-format
 msgid "Integer %ld is too large, current max is %d"
 msgstr "El entero %ld es demasiado grande, el máximo actual es %d"
 
@@ -3156,16 +3164,21 @@ msgstr ""
 
 #: ../src/theme.c:2009
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr "La expresión de coordenadas tenía un paréntesis cerrado sin un paréntesis abierto"
+msgstr ""
+"La expresión de coordenadas tenía un paréntesis cerrado sin un paréntesis "
+"abierto"
 
 #: ../src/theme.c:2072
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "La expresión de coordenadas tenía una variable o constante desconocida «%s»"
+msgstr ""
+"La expresión de coordenadas tenía una variable o constante desconocida «%s»"
 
 #: ../src/theme.c:2129
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "La expresión de coordenadas tenía un paréntesis abierto sin un paréntesis cerrado"
+msgstr ""
+"La expresión de coordenadas tenía un paréntesis abierto sin un paréntesis "
+"cerrado"
 
 #: ../src/theme.c:2140
 msgid "Coordinate expression doesn't seem to have any operators or operands"
