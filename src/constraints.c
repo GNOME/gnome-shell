@@ -471,10 +471,6 @@ place_window_if_needed(MetaWindow     *window,
                    .083 * info->work_area_xinerama.height;
         }
 
-      /* maximization may have changed frame geometry */
-      if (window->frame && !window->fullscreen)
-        meta_frame_calc_geometry (window->frame, info->fgeom);
-
       if (window->maximize_horizontally_after_placement &&
           window->maximize_vertically_after_placement)
         meta_window_maximize_internal (window,   
@@ -495,6 +491,10 @@ place_window_if_needed(MetaWindow     *window,
           info->current.height = info->work_area_xinerama.height
             - info->fgeom->top_height - info->fgeom->bottom_height;
         }
+
+      /* maximization may have changed frame geometry */
+      if (window->frame && !window->fullscreen)
+        meta_frame_calc_geometry (window->frame, info->fgeom);
 
       window->maximize_horizontally_after_placement = FALSE;
       window->maximize_vertically_after_placement = FALSE;

@@ -1,3 +1,9 @@
+2005-11-20  Elijah Newren  <newren@gmail.com>
+
+	* src/constraints.c (place_window_if_needed): compute the frame
+	geometry due to maximization only after actually maximizing.
+	Fixes #321902.
+
 2005-11-21  Davyd Madeley  <davyd@fugro-fsi.com.au>
 
 	* src/edge-resistance.c (meta_display_compute_resistance_and_snap):
