@@ -1058,12 +1058,21 @@ constrain_partially_onscreen (MetaWindow         *window,
    * Then, the amount that is allowed off is just the window size minus
    * this amount.
    */
+  int top_amount, bottom_amount;
   int horiz_amount = info->current.width  / 4;
   int vert_amount  = info->current.height / 4;
   horiz_amount = CLAMP (horiz_amount, 10, 75);
   vert_amount  = CLAMP (vert_amount,  10, 75);
   horiz_amount = info->current.width - horiz_amount;
   vert_amount  = info->current.height - vert_amount;
+  top_amount = vert_amount;
+  /* Allow the titlebar to touch the bottom panel;  If there is no titlebar,
+   * require vert_amount to remain on the screen.
+   */
+  if (window->frame)
+    bottom_amount = info->current.height + info->fgeom->bottom_height;
+  else
+    bottom_amount = vert_amount;
 
   /* Extend the region, have a helper function handle the constraint,
    * then return the region to its original size.
@@ -1071,8 +1080,8 @@ constrain_partially_onscreen (MetaWindow         *window,
   meta_rectangle_expand_region (info->usable_screen_region,
                                 horiz_amount,
                                 horiz_amount, 
-                                vert_amount,
-                                vert_amount);
+                                top_amount,
+                                bottom_amount);
   gboolean retval =
     do_screen_and_xinerama_relative_constraints (window, 
                                                  info->usable_screen_region,
@@ -1081,8 +1090,8 @@ constrain_partially_onscreen (MetaWindow         *window,
   meta_rectangle_expand_region (info->usable_screen_region,
                                 -horiz_amount,
                                 -horiz_amount, 
-                                -vert_amount,
-                                -vert_amount);
+                                -top_amount,
+                                -bottom_amount);
 
   return retval;
 }

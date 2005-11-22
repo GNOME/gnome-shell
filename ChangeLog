@@ -1,8 +1,15 @@
 2005-11-21  Elijah Newren  <newren@gmail.com>
 
+	* src/constraints.c (constrain_partially_onscreen): Relax the
+	partially onscreen constraint to allow the titlebar to touch the
+	bottom panel in order to make the new constraints code function
+	the same as the old version.  Fixes #322071.
+	
+2005-11-21  Elijah Newren  <newren@gmail.com>
+
 	* src/constraints.c (place_window_if_needed): When updating the
 	xinerama due to placement, update which maximal/spanning rect set
-	to use as well
+	to use as well.  Fixes #322068.
 	
 2005-11-21  Elijah Newren  <newren@gmail.com>
 
