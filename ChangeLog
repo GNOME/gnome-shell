@@ -1,5 +1,9 @@
 2005-11-22  Elijah Newren  <newren@gmail.com>
 
+	* NEWS:	2.13.3 release
+
+2005-11-22  Elijah Newren  <newren@gmail.com>
+
 	Don't allow removing a window from maximized or fullscreened state
 	to place the titlebar under the top panel.  Fixes #322075.
 

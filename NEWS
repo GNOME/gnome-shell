@@ -1,3 +1,34 @@
+2.13.3
+==
+
+This is a special edition release just for gicmo, code-named 'elijah,
+please do a release so magic seb can bring it to me'.  It fixes a
+number of issues due to the major constraints changes found since the
+last release.
+
+Thanks to Davyd Madeley and Elijah Newren for improvements in this release.
+
+ - Differentiate between movement towards an edge and movement away from
+   one for edge-resistance.  Pick smaller constants for movement away from
+   an edge (Elijah)
+ - Use GPOINTER_TO_INT() macro instead of cast to allow compilation on
+   64-bit architectures without warning (Davyd)
+ - compute the frame geometry due to maximization only after actually
+   maximizing (Elijah) [#321902]
+ - add some developer documentation on updating struts, workareas, regions,
+   and edges (Elijah)
+ - When updating the xinerama due to placement, update which
+   maximal/spanning rect set to use as well (Elijah) [#322068]
+ - Relax the partially onscreen constraint to allow the titlebar to touch
+   the bottom panel in order to make the new constraints code function the
+   same as the old version (Elijah) [#322071]
+ - Don't allow removing a window from maximized or fullscreened state to
+   place the titlebar under the top panel (Elijah) [#322075]
+
+Translations
+  Vladimir Petkov (bg), Francisco Javier F. Serrador (es), Ignacio Casal
+  Quinteiro (gl), Takeshi AIHANA (ja), Theppitak Karoonboonyanan (th)
+
 2.13.2
 ==
 
