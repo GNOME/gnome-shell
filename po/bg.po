@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-10-04 10:48+0300\n"
-"PO-Revision-Date: 2005-10-04 10:48+0300\n"
+"POT-Creation-Date: 2005-11-22 17:59+0200\n"
+"PO-Revision-Date: 2005-11-22 18:00+0200\n"
 "Last-Translator: Vladimir Petkov <vpetkov@i-space.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "MIME-Version: 1.0\n"
@@ -23,33 +23,33 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr "Употреба: %s\n"
 
-#: ../src/tools/metacity-message.c:176 ../src/util.c:128
+#: ../src/tools/metacity-message.c:176 ../src/util.c:130
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity е компилиран без поддръжка на подробен режим\n"
 
-#: ../src/delete.c:63 ../src/delete.c:90 ../src/metacity-dialog.c:70
+#: ../src/delete.c:64 ../src/delete.c:91 ../src/metacity-dialog.c:71
 #: ../src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "„%s“ не може да се анализира като цяло число"
 
-#: ../src/delete.c:70 ../src/delete.c:97 ../src/metacity-dialog.c:77
+#: ../src/delete.c:71 ../src/delete.c:98 ../src/metacity-dialog.c:78
 #: ../src/theme-parser.c:476 ../src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Крайните символи „%s“ в низа „%s“ са неразбираеми"
 
-#: ../src/delete.c:128
+#: ../src/delete.c:129
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Неуспех при анализа на съобщението „%s“ от диалоговия процес\n"
 
-#: ../src/delete.c:263
+#: ../src/delete.c:264
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Грешка при четене от процеса за изобразяване на диалога: %s\n"
 
-#: ../src/delete.c:344
+#: ../src/delete.c:345
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -57,12 +57,12 @@ msgstr ""
 "Грешка при стартиране на диалога на Metacity, който пита дали да се убие "
 "приложението: %s\n"
 
-#: ../src/delete.c:452
+#: ../src/delete.c:453
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Неуспех при получаването на името на хоста: %s\n"
 
-#: ../src/display.c:307
+#: ../src/display.c:308
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Неуспех при отварянето на дисплея на X Window „%s“\n"
@@ -83,46 +83,46 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Фатална вх./изх. грешка %d (%s) на дисплей „%s“.\n"
 
-#: ../src/frames.c:1122
+#: ../src/frames.c:1123
 msgid "Close Window"
 msgstr "Затваряне на прозореца"
 
-#: ../src/frames.c:1125
+#: ../src/frames.c:1126
 msgid "Window Menu"
 msgstr "Меню за прозорците"
 
-#: ../src/frames.c:1128
+#: ../src/frames.c:1129
 msgid "Minimize Window"
 msgstr "Минимизиране на прозореца"
 
-#: ../src/frames.c:1131
+#: ../src/frames.c:1132
 msgid "Maximize Window"
 msgstr "Максимизиране на прозореца"
 
-#: ../src/frames.c:1134
+#: ../src/frames.c:1135
 msgid "Unmaximize Window"
 msgstr "Демаксимизиране на прозореца"
 
-#: ../src/keybindings.c:994
+#: ../src/keybindings.c:996
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "Някоя друга програма използва бързия клавиш %s с модификатори %x\n"
 
-#: ../src/keybindings.c:2654
+#: ../src/keybindings.c:2494
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Грешка при стартиране на диалоговия прозорец на Metacity, за отпечатване на "
 "грешка за команда: %s\n"
 
-#: ../src/keybindings.c:2759
+#: ../src/keybindings.c:2599
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Не е дефинирана команда %d.\n"
 
-#: ../src/keybindings.c:3609
+#: ../src/keybindings.c:3461
 msgid "No terminal command has been defined.\n"
 msgstr "Не е дефинирана команда за терминал.\n"
 
@@ -184,83 +184,87 @@ msgstr ""
 msgid "Failed to restart: %s\n"
 msgstr "Неуспех при рестартиране: %s\n"
 
-#: ../src/menu.c:54
+#: ../src/menu.c:55
 msgid "Mi_nimize"
 msgstr "Ми_нимизиране"
 
-#: ../src/menu.c:55
+#: ../src/menu.c:56
 msgid "Ma_ximize"
 msgstr "_Максимизиране"
 
-#: ../src/menu.c:56
+#: ../src/menu.c:57
 msgid "Unma_ximize"
 msgstr "_Демаксимизиране"
 
-#: ../src/menu.c:57
+#: ../src/menu.c:58
 msgid "Roll _Up"
 msgstr "На_виване"
 
-#: ../src/menu.c:58
+#: ../src/menu.c:59
 msgid "_Unroll"
 msgstr "_Развиване"
 
-#: ../src/menu.c:59 ../src/menu.c:60
+#: ../src/menu.c:60 ../src/menu.c:61
 msgid "On _Top"
 msgstr "_Отгоре"
 
-#: ../src/menu.c:61
+#: ../src/menu.c:62
 msgid "_Move"
 msgstr "_Преместване"
 
-#: ../src/menu.c:62
+#: ../src/menu.c:63
 msgid "_Resize"
 msgstr "_Оразмеряване"
 
-#. separator
 #: ../src/menu.c:64
+msgid "Move Titlebar On_screen"
+msgstr "Преместване на лентата за заглавието по _екрана"
+
+#. separator
+#: ../src/menu.c:66
 msgid "_Close"
 msgstr "_Затваряне"
 
 #. separator
-#: ../src/menu.c:66
+#: ../src/menu.c:68
 msgid "_Always on Visible Workspace"
 msgstr "_Винаги на видимия работен плот"
 
-#: ../src/menu.c:67
+#: ../src/menu.c:69
 msgid "_Only on This Workspace"
 msgstr "_Само на този работен плот"
 
-#: ../src/menu.c:68
+#: ../src/menu.c:70
 msgid "Move to Workspace _Left"
 msgstr "Преместване в _левия работен плот"
 
-#: ../src/menu.c:69
+#: ../src/menu.c:71
 msgid "Move to Workspace R_ight"
 msgstr "Преместване в _десния работен плот"
 
-#: ../src/menu.c:70
+#: ../src/menu.c:72
 msgid "Move to Workspace _Up"
 msgstr "Преместване в _горния работен плот"
 
-#: ../src/menu.c:71
+#: ../src/menu.c:73
 msgid "Move to Workspace _Down"
 msgstr "Преместване в _долния работен плот"
 
-#: ../src/menu.c:162 ../src/prefs.c:2106
+#: ../src/menu.c:164 ../src/prefs.c:2112
 #, c-format
 msgid "Workspace %d"
 msgstr "Работен плот %d"
 
-#: ../src/menu.c:171
+#: ../src/menu.c:173
 msgid "Workspace 1_0"
 msgstr "Работен плот 1_0"
 
-#: ../src/menu.c:173
+#: ../src/menu.c:175
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Работен плот %s%d"
 
-#: ../src/menu.c:368
+#: ../src/menu.c:370
 msgid "Move to Another _Workspace"
 msgstr "Преместване в друг _работен плот"
 
@@ -354,31 +358,31 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: ../src/metacity-dialog.c:110
+#: ../src/metacity-dialog.c:111
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "Прозорецът „%s“ не отговаря."
 
-#: ../src/metacity-dialog.c:118
+#: ../src/metacity-dialog.c:119
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Принудителното спиране на тази програма, ще доведе до загуба на всички "
 "незапазени промени."
 
-#: ../src/metacity-dialog.c:129
+#: ../src/metacity-dialog.c:130
 msgid "_Force Quit"
 msgstr "_Принудително спиране"
 
-#: ../src/metacity-dialog.c:226
+#: ../src/metacity-dialog.c:227
 msgid "Title"
 msgstr "Заглавие"
 
-#: ../src/metacity-dialog.c:238
+#: ../src/metacity-dialog.c:239
 msgid "Class"
 msgstr "Клас"
 
-#: ../src/metacity-dialog.c:264
+#: ../src/metacity-dialog.c:265
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -386,7 +390,7 @@ msgstr ""
 "Тези прозорци не поддържат операцията по записване на текущото състояние и "
 "ще трябва да се стартират ръчно при следващото Ви влизане."
 
-#: ../src/metacity-dialog.c:330
+#: ../src/metacity-dialog.c:331
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -2021,12 +2025,12 @@ msgstr ""
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "Стойността %d записана в GConf ключа %s е извън обхвата от 0 до %d\n"
 
-#: ../src/prefs.c:1589
+#: ../src/prefs.c:1595
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Грешка при задаване на броя на работни места да е %d: %s\n"
 
-#: ../src/prefs.c:1833
+#: ../src/prefs.c:1839
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2035,7 +2039,7 @@ msgstr ""
 "Низът „%s“ открит в базата данни с настройки е невалиден за стойност на "
 "клавишната комбинация „%s“\n"
 
-#: ../src/prefs.c:2187
+#: ../src/prefs.c:2193
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Грешка при задаване на името на работното място %d да е „%s“: %s\n"
@@ -2045,12 +2049,12 @@ msgstr "Грешка при задаване на името на работно
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/screen.c:408
+#: ../src/screen.c:403
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Екранът %d на дисплей '%s' е невалиден\n"
 
-#: ../src/screen.c:424
+#: ../src/screen.c:419
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2059,7 +2063,7 @@ msgstr ""
 "Екранът %d на дисплей „%s“ вече има мениджър на прозорци; пробвайте с "
 "опцията --replace да го замените.\n"
 
-#: ../src/screen.c:448
+#: ../src/screen.c:443
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -2067,80 +2071,80 @@ msgstr ""
 "Неуспех при получаването на избрания мениджър за прозорци на екран %d, "
 "дисплей „%s“\n"
 
-#: ../src/screen.c:506
+#: ../src/screen.c:501
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Екран %d на дисплей „%s“ вече има мениджър за прозорци\n"
 
-#: ../src/screen.c:716
+#: ../src/screen.c:712
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Неуспех при отстъпването на екран %d на дисплей „%s“\n"
 
-#: ../src/session.c:884 ../src/session.c:891
+#: ../src/session.c:844 ../src/session.c:851
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Неуспех при създаването на директорията „%s“: %s\n"
 
-#: ../src/session.c:901
+#: ../src/session.c:861
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Неуспех при отварянето на сесийния файл „%s“ за запис: %s\n"
 
-#: ../src/session.c:1053
+#: ../src/session.c:1013
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Грешка при записване на сесийния файл „%s“: %s\n"
 
-#: ../src/session.c:1058
+#: ../src/session.c:1018
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Грешка при затваряне на сесийния файл „%s“: %s\n"
 
-#: ../src/session.c:1133
+#: ../src/session.c:1093
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Неуспех при прочитането на записания сесиен файл %s: %s\n"
 
-#: ../src/session.c:1168
+#: ../src/session.c:1128
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Неуспех при анализирането на записания сесиен файл: %s\n"
 
-#: ../src/session.c:1217
+#: ../src/session.c:1177
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "Атрибутът <metacity_session> е видян, но вече имаме сесийния ID"
 
-#: ../src/session.c:1230
+#: ../src/session.c:1190
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Непознат атрибут %s на елемента <metacity_session>"
 
-#: ../src/session.c:1247
+#: ../src/session.c:1207
 msgid "nested <window> tag"
 msgstr "вложен етикет <window>"
 
-#: ../src/session.c:1305 ../src/session.c:1337
+#: ../src/session.c:1265 ../src/session.c:1297
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Непознат атрибут %s на елемента <window>"
 
-#: ../src/session.c:1409
+#: ../src/session.c:1369
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Непознат атрибут %s на елемента <maximized>"
 
-#: ../src/session.c:1469
+#: ../src/session.c:1429
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Непознат атрибут %s на елемента <geometry>"
 
-#: ../src/session.c:1489
+#: ../src/session.c:1449
 #, c-format
 msgid "Unknown element %s"
 msgstr "Непознат елемент %s"
 
-#: ../src/session.c:1961
+#: ../src/session.c:1921
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3154,44 +3158,44 @@ msgstr ""
 msgid "Constant \"%s\" has already been defined"
 msgstr "Константата „%s“ вече е дефинирана"
 
-#: ../src/util.c:93
+#: ../src/util.c:95
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Неуспех при отварянето на журнала за изчистване на грешки: %s\n"
 
-#: ../src/util.c:103
+#: ../src/util.c:105
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Неуспех при изпълнението на fdopen() върху журналния файл %s: %s\n"
 
-#: ../src/util.c:109
+#: ../src/util.c:111
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Отворен е журналния файл %s\n"
 
-#: ../src/util.c:217
+#: ../src/util.c:219
 msgid "Window manager: "
 msgstr "Мениджър на прозорци: "
 
-#: ../src/util.c:363
+#: ../src/util.c:365
 msgid "Bug in window manager: "
 msgstr "Грешка в мениджъра на прозорци: "
 
-#: ../src/util.c:392
+#: ../src/util.c:394
 msgid "Window manager warning: "
 msgstr "Предупреждение от мениджъра на прозорци: "
 
-#: ../src/util.c:416
+#: ../src/util.c:418
 msgid "Window manager error: "
 msgstr "Грешка от мениджъра на прозорци: "
 
-#: ../src/window-props.c:162
+#: ../src/window-props.c:163
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Приложението зададе неверен _NET_WM_PID %ld\n"
 
 #. first time through
-#: ../src/window.c:5208
+#: ../src/window.c:5238
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3207,7 +3211,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5879
+#: ../src/window.c:5878
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3244,12 +3248,3 @@ msgid ""
 msgstr ""
 "Свойството %s на прозореца 0x%lx съдържа невалиден UTF-8 за елемента %d в "
 "списъка\n"
-
-#~ msgid ""
-#~ "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
-#~ "focused window will be automatically raised after a delay (the delay is "
-#~ "specified by the auto_raise_delay key)."
-#~ msgstr ""
-#~ "Ако е зададено като истина и фокусът е или „sloppy“, или „mouse“, "
-#~ "фокусираният прозорец ще се издигне автоматично след забавяне (указано в "
-#~ "ключа auto_raise_delay)."
