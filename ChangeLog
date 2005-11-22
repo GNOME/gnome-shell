@@ -1,3 +1,18 @@
+2005-11-22  Elijah Newren  <newren@gmail.com>
+
+	Don't allow removing a window from maximized or fullscreened state
+	to place the titlebar under the top panel.  Fixes #322075.
+
+	* src/display.c (handle_net_moveresize_window): fix up previous
+	comments now that I know a little more, modify the code just
+	slightly to clarify that this is NOT a manual user move/resize
+	operation
+
+	* src/window.c (meta_window_unmaximize,
+	  meta_window_unmake_fullscreen,
+	  meta_window_shove_titlebar_onscreen):
+	don't claim that these are manual user move/resize operations
+
 2005-11-21  Elijah Newren  <newren@gmail.com>
 
 	* src/constraints.c (constrain_partially_onscreen): Relax the

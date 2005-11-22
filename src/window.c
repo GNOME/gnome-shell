@@ -2138,7 +2138,7 @@ meta_window_unmaximize (MetaWindow        *window,
         }
 
       meta_window_move_resize (window,
-                               TRUE,
+                               FALSE,
                                window->saved_rect.x,
                                window->saved_rect.y,
                                window->saved_rect.width,
@@ -2213,7 +2213,7 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
       window->fullscreen = FALSE;
 
       meta_window_move_resize (window,
-                               TRUE,
+                               FALSE,
                                window->saved_rect.x,
                                window->saved_rect.y,
                                window->saved_rect.width,
@@ -6345,7 +6345,7 @@ meta_window_shove_titlebar_onscreen (MetaWindow *window)
   newx = outer_rect.x + window->frame->child_x;
   newy = outer_rect.y + window->frame->child_y;
   meta_window_move_resize (window,
-                           TRUE,
+                           FALSE,
                            newx,
                            newy,
                            window->rect.width, 

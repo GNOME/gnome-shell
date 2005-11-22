@@ -1338,14 +1338,12 @@ handle_net_moveresize_window (MetaDisplay* display,
 
   if (window)
     {
-      /* FIXME!!!!  I'm pretty sure this is wrong except _maybe_ for the
-       * resize-only case; see comment at beginning of
-       * meta_window_move_resize_internal().  Basically, this should act
-       * like a configure request--meaning that it should count as an app
-       * specified change instead of a user one, and the position needs to
-       * be fixed up with adjust_for_gravity().  In particular,
-       * meta_window_resize_with_gravity(), meta_window_resize(), and
-       * meta_window_move_resize() should probably NOT be called.
+      /* FIXME!!!!  This function is _wrong_ except for the resize-only
+       * case.  Even then, it sucks to special case the code instead of
+       * factoring out common functionality with the configure reqest
+       * handling, especially since the EWMH says this message should be
+       * treated identically to a configure request with the exception of
+       * having a special gravity specified.
        */
       meta_window_get_gravity_position (window, &x, &y);
       width = window->rect.width;
@@ -1369,20 +1367,20 @@ handle_net_moveresize_window (MetaDisplay* display,
         {
           if (gravity)
 	    meta_window_resize_with_gravity (window,
-					     TRUE,
+					     FALSE,
 					     width,
 					     height,
 					     gravity);
           else
             meta_window_resize (window,
-				TRUE,
+				FALSE,
 				width,
 				height);
         }
       else
         {
           meta_window_move_resize (window,
-                                   TRUE,
+                                   FALSE,
                                    x,
                                    y,
                                    width,
