@@ -26,6 +26,8 @@
 #include "frame.h"
 #include "group.h"
 #include <X11/Xatom.h>
+#include <unistd.h>
+#include <string.h>
 
 typedef void (* InitValueFunc)   (MetaDisplay   *display,
                                   Atom           property,
@@ -193,26 +195,60 @@ reload_net_wm_user_time (MetaWindow    *window,
 
 #define MAX_TITLE_LENGTH 512
 
+/**
+ * Called by set_window_title and set_icon_title to set the value of
+ * *target to title. It required and atom is set, it will update the
+ * appropriate property.
+ *
+ * Returns TRUE if a new title was set.
+ */
+static gboolean
+set_title_text (MetaWindow *window, const char *title, Atom atom, char **target)
+{
+  char hostname[HOST_NAME_MAX + 1];
+  gboolean modified = FALSE;
+  
+  if (!target)
+    return FALSE;
+  
+  g_free (*target);
+  
+  if (!title)
+    *target = g_strdup ("");
+  else if (g_utf8_strlen (title, MAX_TITLE_LENGTH + 1) > MAX_TITLE_LENGTH)
+    {
+      *target = meta_g_utf8_strndup (title, MAX_TITLE_LENGTH);
+      modified = TRUE;
+    }
+  /* if WM_CLIENT_MACHINE indicates this machine is on a remote host
+   * lets place that hostname in the title */
+  else if (window->wm_client_machine &&
+           !gethostname (hostname, HOST_NAME_MAX + 1) &&
+           strcmp (hostname, window->wm_client_machine))
+    {
+      *target = g_strdup_printf ("%s (on %s)",
+                      title, window->wm_client_machine);
+      modified = TRUE;
+    }
+  else
+    *target = g_strdup (title);
+
+  if (modified && atom != None)
+    meta_prop_set_utf8_string_hint (window->display,
+                                      window->xwindow,
+                                      atom, *target);
+
+  return modified;
+}
+
 static void
 set_window_title (MetaWindow *window,
                   const char *title)
 {
   char *str;
-  
-  g_free (window->title);
-  
-  if (title == NULL)
-    window->title = g_strdup ("");
-  else if (g_utf8_strlen (title, MAX_TITLE_LENGTH + 1) <= MAX_TITLE_LENGTH)
-    window->title = g_strdup (title);
-  else
-    {
-      window->title = meta_g_utf8_strndup (title, MAX_TITLE_LENGTH);
-      meta_prop_set_utf8_string_hint (window->display,
-                                      window->xwindow,
-                                      window->display->atom_net_wm_visible_name,
-                                      window->title);
-    }
+ 
+  set_title_text (window, title, window->display->atom_net_wm_visible_name,
+                  &window->title);
   
   /* strndup is a hack since GNU libc has broken %.10s */
   str = g_strndup (window->title, 10);
@@ -292,21 +328,8 @@ static void
 set_icon_title (MetaWindow *window,
                 const char *title)
 {
-  g_free (window->icon_name);
-  
-  if (title == NULL)
-    window->icon_name = g_strdup ("");
-  else if (g_utf8_strlen (title, MAX_TITLE_LENGTH + 1) <= MAX_TITLE_LENGTH)
-    window->icon_name = g_strdup (title);
-  else
-    {
-      window->icon_name = meta_g_utf8_strndup (title, MAX_TITLE_LENGTH);
-      meta_prop_set_utf8_string_hint (window->display,
-                                      window->xwindow,
-                                      window->display->atom_net_wm_visible_icon_name,
-                                      window->icon_name);
-    }
-
+  set_title_text (window, title, window->display->atom_net_wm_visible_icon_name,
+                  &window->icon_name);
 }
 
 static void

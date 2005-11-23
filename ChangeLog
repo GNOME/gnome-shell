@@ -1,3 +1,8 @@
+2005-11-24  Davyd Madeley  <davyd@fugro-fsi.com.au>
+
+	* src/window-props.c: display hostname in titlebar for remote X
+	  clients. Closes bug #322202.
+
 2005-11-22  Elijah Newren  <newren@gmail.com>
 
 	* configure.in: post-release version bump to 2.13.5
