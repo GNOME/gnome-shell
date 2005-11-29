@@ -55,7 +55,7 @@ typedef enum
   META_SCREEN_RIGHT
 } MetaScreenDirection;
 
-#define META_WIREFRAME_XOR_LINE_WIDTH 5
+#define META_WIREFRAME_XOR_LINE_WIDTH 2
 
 struct _MetaScreen
 {

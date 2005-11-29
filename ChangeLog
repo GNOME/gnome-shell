@@ -1,3 +1,8 @@
+2005-11-29  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* src/screen.h: Make the wireframe a bit slimmer.
+	Closes bug #320051.
+
 2005-11-24  Davyd Madeley  <davyd@fugro-fsi.com.au>
 
 	* src/window-props.c: display hostname in titlebar for remote X
