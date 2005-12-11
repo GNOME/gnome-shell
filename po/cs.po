@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-02 14:35+0100\n"
-"PO-Revision-Date: 2005-11-02 23:31+0100\n"
+"POT-Creation-Date: 2005-12-11 14:57+0100\n"
+"PO-Revision-Date: 2005-12-11 22:37+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr "Použití: %s\n"
 
-#: ../src/tools/metacity-message.c:176 ../src/util.c:129
+#: ../src/tools/metacity-message.c:176 ../src/util.c:130
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity byl přeložen bez podpory pro podrobný režim\n"
 
@@ -78,27 +78,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatální chyba IO %d (%s) na displeji '%s'.\n"
 
-#: ../src/frames.c:1122
+#: ../src/frames.c:1123
 msgid "Close Window"
 msgstr "Zavřít okno"
 
-#: ../src/frames.c:1125
+#: ../src/frames.c:1126
 msgid "Window Menu"
 msgstr "Menu okna"
 
-#: ../src/frames.c:1128
+#: ../src/frames.c:1129
 msgid "Minimize Window"
 msgstr "Minimalizovat okno"
 
-#: ../src/frames.c:1131
+#: ../src/frames.c:1132
 msgid "Maximize Window"
 msgstr "Maximalizovat okno"
 
-#: ../src/frames.c:1134
+#: ../src/frames.c:1135
 msgid "Unmaximize Window"
 msgstr "Demaximalizovat okno"
 
-#: ../src/keybindings.c:995
+#: ../src/keybindings.c:996
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -106,17 +106,17 @@ msgid ""
 msgstr ""
 "Klávesu %s s modifikátory %x již jako zkratku používá nějaký jiný program\n"
 
-#: ../src/keybindings.c:2655
+#: ../src/keybindings.c:2494
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "Chyba při spouštění metacity-dialog pro výpis chyby o příkazu: %s\n"
 
-#: ../src/keybindings.c:2760
+#: ../src/keybindings.c:2599
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Nebyl definován příkaz %d.\n"
 
-#: ../src/keybindings.c:3610
+#: ../src/keybindings.c:3461
 msgid "No terminal command has been defined.\n"
 msgstr "Nebyl definován příkaz terminálu.\n"
 
@@ -177,83 +177,87 @@ msgstr ""
 msgid "Failed to restart: %s\n"
 msgstr "Nemohu se restartovat: %s\n"
 
-#: ../src/menu.c:54
+#: ../src/menu.c:55
 msgid "Mi_nimize"
 msgstr "Mi_nimalizovat"
 
-#: ../src/menu.c:55
+#: ../src/menu.c:56
 msgid "Ma_ximize"
 msgstr "Ma_ximalizovat"
 
-#: ../src/menu.c:56
+#: ../src/menu.c:57
 msgid "Unma_ximize"
 msgstr "Dema_ximalizovat"
 
-#: ../src/menu.c:57
+#: ../src/menu.c:58
 msgid "Roll _Up"
 msgstr "Za_rolovat"
 
-#: ../src/menu.c:58
+#: ../src/menu.c:59
 msgid "_Unroll"
 msgstr "Vy_rolovat"
 
-#: ../src/menu.c:59 ../src/menu.c:60
+#: ../src/menu.c:60 ../src/menu.c:61
 msgid "On _Top"
 msgstr "Na_hoře"
 
-#: ../src/menu.c:61
+#: ../src/menu.c:62
 msgid "_Move"
 msgstr "_Přesunout"
 
-#: ../src/menu.c:62
+#: ../src/menu.c:63
 msgid "_Resize"
 msgstr "Změnit _velikost"
 
-#. separator
 #: ../src/menu.c:64
+msgid "Move Titlebar On_screen"
+msgstr "Posunout nadpis okna na _obrazovku"
+
+#. separator
+#: ../src/menu.c:66
 msgid "_Close"
 msgstr "_Zavřít"
 
 #. separator
-#: ../src/menu.c:66
+#: ../src/menu.c:68
 msgid "_Always on Visible Workspace"
 msgstr "_Vždy na viditelné ploše"
 
-#: ../src/menu.c:67
+#: ../src/menu.c:69
 msgid "_Only on This Workspace"
 msgstr "_Jen na této ploše"
 
-#: ../src/menu.c:68
+#: ../src/menu.c:70
 msgid "Move to Workspace _Left"
 msgstr "Přesunout na plochu v_levo"
 
-#: ../src/menu.c:69
+#: ../src/menu.c:71
 msgid "Move to Workspace R_ight"
 msgstr "Přesunout na plochu v_pravo"
 
-#: ../src/menu.c:70
+#: ../src/menu.c:72
 msgid "Move to Workspace _Up"
 msgstr "Přesunout na plochu _nahoře"
 
-#: ../src/menu.c:71
+#: ../src/menu.c:73
 msgid "Move to Workspace _Down"
 msgstr "Přesunout na plochu _dole"
 
-#: ../src/menu.c:162 ../src/prefs.c:2112
+#: ../src/menu.c:164 ../src/prefs.c:2112
 #, c-format
 msgid "Workspace %d"
 msgstr "Plocha %d"
 
-#: ../src/menu.c:171
+#: ../src/menu.c:173
 msgid "Workspace 1_0"
 msgstr "Plocha 1_0"
 
-#: ../src/menu.c:173
+#: ../src/menu.c:175
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Plocha %s%d"
 
-#: ../src/menu.c:368
+#: ../src/menu.c:370
 msgid "Move to Another _Workspace"
 msgstr "Přesunout na _jinou plochu"
 
@@ -503,7 +507,15 @@ msgid ""
 "not related to raise-on-click/orthogonal-raise). It is unrelated to entering "
 "a window during drag and drop (because that results in the application "
 "grabbing the mouse)"
-msgstr "Je-li true a mód aktivace je buď \"sloppy\" nebo \"mouse\", tak bude aktivní okno automaticky po zpoždění zvýšeno (zpoždění je určeno v klíči auto_raise_delay). Toto nastavení má špatný název, ale je zachováno pro zpětnou kompatibilitu. Přesněji (aspoň pro ty s technickým sklonem), jeho význam je \"automaticky zvýšit okno po uplynutí času od nezachyceného vstupu myši v režimu aktivace sloppy nebo mouse\". Neouvisí s chováním při kliknutí (tj. nesouvisí se zvýšením při kliknutí/ortogonálním zvýšením). Nesouvisí se vstupem do okna při tažení myší (protože to způsobí, že aplikace zachytí myš)"
+msgstr ""
+"Je-li true a mód aktivace je buď \"sloppy\" nebo \"mouse\", tak bude aktivní "
+"okno automaticky po zpoždění zvýšeno (zpoždění je určeno v klíči "
+"auto_raise_delay). Toto nastavení má špatný název, ale je zachováno pro "
+"zpětnou kompatibilitu. Přesněji (aspoň pro ty s technickým sklonem), jeho "
+"význam je \"automaticky zvýšit okno po uplynutí času od nezachyceného vstupu "
+"myši v režimu aktivace sloppy nebo mouse\". Neouvisí s chováním při kliknutí "
+"(tj. nesouvisí se zvýšením při kliknutí/ortogonálním zvýšením). Nesouvisí se "
+"vstupem do okna při tažení myší (protože to způsobí, že aplikace zachytí myš)"
 
 #: ../src/metacity.schemas.in.h:18
 msgid ""
@@ -1998,12 +2010,12 @@ msgstr "Chyba při nastavování jména plochy %d na \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d × %d"
 
-#: ../src/screen.c:409
+#: ../src/screen.c:403
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Obrazovka %d na displeji '%s' je neplatná\n"
 
-#: ../src/screen.c:425
+#: ../src/screen.c:419
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2012,86 +2024,86 @@ msgstr ""
 "Obrazovka %d na displeji \"%s\" již má manažera oken; zkuste nahradit "
 "aktuálního manažera oken pomocí volby --replace.\n"
 
-#: ../src/screen.c:449
+#: ../src/screen.c:443
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Nemohu získat výběr manažera oken na obrazovce %d displeje \"%s\"\n"
 
-#: ../src/screen.c:507
+#: ../src/screen.c:501
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Obrazovka %d na displeji \"%s\" již má manažera oken\n"
 
-#: ../src/screen.c:717
+#: ../src/screen.c:712
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nemohu uvolnit obrazovku %d na displeji \"%s\"\n"
 
-#: ../src/session.c:885 ../src/session.c:892
+#: ../src/session.c:844 ../src/session.c:851
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Nemohu vytvořit adresář '%s': %s\n"
 
-#: ../src/session.c:902
+#: ../src/session.c:861
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Nemohu otevřít soubor sezení '%s' pro zápis: %s\n"
 
-#: ../src/session.c:1054
+#: ../src/session.c:1013
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Chyba při zápisu souboru sezení '%s': %s\n"
 
-#: ../src/session.c:1059
+#: ../src/session.c:1018
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Chyba při zavírání souboru sezení '%s': %s\n"
 
-#: ../src/session.c:1134
+#: ../src/session.c:1093
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Chyba při čtení uloženého souboru sezení %s: %s\n"
 
-#: ../src/session.c:1169
+#: ../src/session.c:1128
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Chyba při parsování uloženého souboru sezení: %s\n"
 
-#: ../src/session.c:1218
+#: ../src/session.c:1177
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "našel jsem atribut <metacity_session>, ale ID sezení už máme"
 
-#: ../src/session.c:1231
+#: ../src/session.c:1190
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Neznámý atribut %s elementu <metacity_session>"
 
-#: ../src/session.c:1248
+#: ../src/session.c:1207
 msgid "nested <window> tag"
 msgstr "vnořená značka <window>"
 
-#: ../src/session.c:1306 ../src/session.c:1338
+#: ../src/session.c:1265 ../src/session.c:1297
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Neznámý atribut %s elementu <window>"
 
-#: ../src/session.c:1410
+#: ../src/session.c:1369
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Neznámý atribut %s elementu <maximized>"
 
-#: ../src/session.c:1470
+#: ../src/session.c:1429
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Neznámý atribut %s elementu <geometry>"
 
-#: ../src/session.c:1490
+#: ../src/session.c:1449
 #, c-format
 msgid "Unknown element %s"
 msgstr "Neznámý element %s"
 
-#: ../src/session.c:1962
+#: ../src/session.c:1921
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3090,44 +3102,44 @@ msgstr ""
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanta \"%s\" již byla definována"
 
-#: ../src/util.c:94
+#: ../src/util.c:95
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Nemohu otevřít ladicí záznam: %s\n"
 
-#: ../src/util.c:104
+#: ../src/util.c:105
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Nemohu fdopen () soubor záznamu %s: %s\n"
 
-#: ../src/util.c:110
+#: ../src/util.c:111
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Otevřen soubor záznamu %s\n"
 
-#: ../src/util.c:218
+#: ../src/util.c:219
 msgid "Window manager: "
 msgstr "Manažer oken: "
 
-#: ../src/util.c:364
+#: ../src/util.c:365
 msgid "Bug in window manager: "
 msgstr "Chyba v manažeru oken: "
 
-#: ../src/util.c:393
+#: ../src/util.c:394
 msgid "Window manager warning: "
 msgstr "Varování manažera oken: "
 
-#: ../src/util.c:417
+#: ../src/util.c:418
 msgid "Window manager error: "
 msgstr "Chyba manažera oken: "
 
-#: ../src/window-props.c:163
+#: ../src/window-props.c:165
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Aplikace nastavila neplatný _NET_WM_PID %ld\n"
 
 #. first time through
-#: ../src/window.c:5209
+#: ../src/window.c:5238
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3143,7 +3155,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5880
+#: ../src/window.c:5878
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
