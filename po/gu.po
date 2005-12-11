@@ -4,15 +4,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-19 12:30+0200\n"
-"PO-Revision-Date: 2005-07-21 12:22+0530\n"
+"POT-Creation-Date: 2005-12-11 07:01+0100\n"
+"PO-Revision-Date: 2005-12-11 16:55+0530\n"
 "Last-Translator: Ankit Patel <ankit644@yahoo.com>\n"
 "Language-Team: Gujarati <indianoss-gujarati@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.9.1\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
 "\n"
 
 #: ../src/tools/metacity-message.c:150
@@ -20,44 +20,43 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr "વપરાશ: %s\n"
 
-#: ../src/tools/metacity-message.c:176 ../src/util.c:128
+#: ../src/tools/metacity-message.c:176 ../src/util.c:130
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "મેટાસીટીને વર્ણનિય પદ્ધતિના આધાર વગર કમ્પાઈલ કરાયુ હતુ\n"
 
-#: ../src/delete.c:63 ../src/delete.c:90 ../src/metacity-dialog.c:70
+#: ../src/delete.c:64 ../src/delete.c:91 ../src/metacity-dialog.c:71
 #: ../src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "\"%s\" ને પૂર્ણાંક તરીકે પદચ્છેદ કરી શકાયુ નહિ"
 
-#: ../src/delete.c:70 ../src/delete.c:97 ../src/metacity-dialog.c:77
+#: ../src/delete.c:71 ../src/delete.c:98 ../src/metacity-dialog.c:78
 #: ../src/theme-parser.c:476 ../src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "શબ્દમાળા \"%s\" માં પૂંછડિયા અક્ષરો \"%s\" સમજી શકાયા નહિં"
 
-#: ../src/delete.c:128
+#: ../src/delete.c:129
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "સંવાદ પ્રક્રિયામાંથી \"%s\" સંદેશો પદચ્છેદ કરવામાં નિષ્ફળ\n"
 
-#: ../src/delete.c:263
+#: ../src/delete.c:264
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "સંવાદ દર્શાવનાર પ્રક્રિયામાંથી વાંચવામાં ભૂલ: %s\n"
 
-#: ../src/delete.c:344
+#: ../src/delete.c:345
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "કાર્યક્રમને મૃત કરવા માટે પૂછવા માટે મેટાસીટી-સંવાદ શરુ કરવામાં ભૂલ: %s\n"
 
-#: ../src/delete.c:452
+#: ../src/delete.c:453
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "યજમાનનું નામ મેળવવામાં નિષ્ફળ: %s\n"
 
-#: ../src/display.c:319
+#: ../src/display.c:308
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X વિન્ડો સિસ્ટમ ડિસ્પ્લે '%s' ને ખોલવામાં નિષ્ફળ\n"
@@ -78,44 +77,44 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "ઘાતક IO ભૂલ %d (%s) %s ડિસ્પ્લે પર.\n"
 
-#: ../src/frames.c:1125
+#: ../src/frames.c:1123
 msgid "Close Window"
 msgstr "વિન્ડો બંધ કરો"
 
-#: ../src/frames.c:1128
+#: ../src/frames.c:1126
 msgid "Window Menu"
 msgstr "વિન્ડોનું મેનુ"
 
-#: ../src/frames.c:1131
+#: ../src/frames.c:1129
 msgid "Minimize Window"
 msgstr "વિન્ડોને ન્યૂનત્તમ સ્થિતિમાં લાવો"
 
-#: ../src/frames.c:1134
+#: ../src/frames.c:1132
 msgid "Maximize Window"
 msgstr "વિન્ડોને મહત્તમ સ્થિતિમાં લાવો"
 
-#: ../src/frames.c:1137
+#: ../src/frames.c:1135
 msgid "Unmaximize Window"
 msgstr "વિન્ડોને મહત્તમ સ્થિતિમાંથી પાછી લાવો"
 
-#: ../src/keybindings.c:994
+#: ../src/keybindings.c:996
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "કોઈ બીજો કાર્યક્રમ પહેલેથીજ કી %s ને બદલનાર %x સાથે જોડાણ તરીકે વાપરી રહ્યુ છે\n"
 
-#: ../src/keybindings.c:2620
+#: ../src/keybindings.c:2494
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "આદેશ વિશેની ભૂલ છાપવા માટે મેટાસીટી-સંવાદને શરુ કરવામાં ભૂલ: %s\n"
 
-#: ../src/keybindings.c:2725
+#: ../src/keybindings.c:2599
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "કોઈ આદેશ %d વ્યાખ્યાયિત કરાયો નથી.\n"
 
-#: ../src/keybindings.c:3570
+#: ../src/keybindings.c:3461
 msgid "No terminal command has been defined.\n"
 msgstr "કોઈ ટર્મિનલ આદેશ વ્યાખ્યાયિત નથી.\n"
 
@@ -165,8 +164,7 @@ msgstr "થીમની ડિરેક્ટરી જોવામાં નિ
 
 #: ../src/main.c:456
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr "થીમ શોધી શકાઈ નહિં! ખાતરી કરો કે %s અસ્તિત્વ ધરાવે છે અને તેમાં સામાન્ય થીમ છે."
 
 #: ../src/main.c:518
@@ -174,83 +172,87 @@ msgstr "થીમ શોધી શકાઈ નહિં! ખાતરી કર
 msgid "Failed to restart: %s\n"
 msgstr "ફરીથી શરુ કરવામાં નિષ્ફળ: %s\n"
 
-#: ../src/menu.c:54
+#: ../src/menu.c:55
 msgid "Mi_nimize"
 msgstr "ન્યૂનત્તમ કરો (_N)"
 
-#: ../src/menu.c:55
+#: ../src/menu.c:56
 msgid "Ma_ximize"
 msgstr "મહત્તમ કરો (_x)"
 
-#: ../src/menu.c:56
+#: ../src/menu.c:57
 msgid "Unma_ximize"
 msgstr "મહત્તમમાંથી પાછા ફરો (_x)"
 
-#: ../src/menu.c:57
+#: ../src/menu.c:58
 msgid "Roll _Up"
 msgstr "વીંટી લો (_U)"
 
-#: ../src/menu.c:58
+#: ../src/menu.c:59
 msgid "_Unroll"
 msgstr "ખોલી કાઢો (_U)"
 
-#: ../src/menu.c:59 ../src/menu.c:60
+#: ../src/menu.c:60 ../src/menu.c:61
 msgid "On _Top"
 msgstr "ઉપરની બાજુએ (_T)"
 
-#: ../src/menu.c:61
+#: ../src/menu.c:62
 msgid "_Move"
 msgstr "ખસાડો (_M)"
 
-#: ../src/menu.c:62
+#: ../src/menu.c:63
 msgid "_Resize"
 msgstr "માપ બદલો (_R)"
 
-#. separator
 #: ../src/menu.c:64
+msgid "Move Titlebar On_screen"
+msgstr "શીર્ષકપટ્ટી સ્ક્રીન પર ખસેડો (_s)"
+
+#. separator
+#: ../src/menu.c:66
 msgid "_Close"
 msgstr "બંધ કરો (_C)"
 
 #. separator
-#: ../src/menu.c:66
+#: ../src/menu.c:68
 msgid "_Always on Visible Workspace"
 msgstr "હંમેશા દ્રશ્ય કામ કરવાની જગ્યા પર (_A)"
 
-#: ../src/menu.c:67
+#: ../src/menu.c:69
 msgid "_Only on This Workspace"
 msgstr "માત્ર આ કામ કરવાની જગ્યા પર જ (_O)"
 
-#: ../src/menu.c:68
+#: ../src/menu.c:70
 msgid "Move to Workspace _Left"
 msgstr "કામ કરવાની જગ્યાને ડાબે ખસેડો (_L)"
 
-#: ../src/menu.c:69
+#: ../src/menu.c:71
 msgid "Move to Workspace R_ight"
 msgstr "કામ કરવાની જગ્યાને જમણે ખસેડો (_i)"
 
-#: ../src/menu.c:70
+#: ../src/menu.c:72
 msgid "Move to Workspace _Up"
 msgstr "કામ કરવાની જગ્યાને ઉપર ખસેડો (_U)"
 
-#: ../src/menu.c:71
+#: ../src/menu.c:73
 msgid "Move to Workspace _Down"
 msgstr "કામ કરવાની જગ્યાને ડાબે ખસેડો (_D)"
 
-#: ../src/menu.c:162 ../src/prefs.c:2106
+#: ../src/menu.c:164 ../src/prefs.c:2112
 #, c-format
 msgid "Workspace %d"
 msgstr "કામ કરવાની જગ્યા %d"
 
-#: ../src/menu.c:171
+#: ../src/menu.c:173
 msgid "Workspace 1_0"
 msgstr "કામ કરવાની જગ્યા ૧_૦"
 
-#: ../src/menu.c:173
+#: ../src/menu.c:175
 #, c-format
 msgid "Workspace %s%d"
 msgstr "કામ કરવાની જગ્યા %s%d"
 
-#: ../src/menu.c:368
+#: ../src/menu.c:370
 msgid "Move to Another _Workspace"
 msgstr "બીજી કામ કરવાની જગ્યામાં ખસેડો"
 
@@ -344,32 +346,31 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: ../src/metacity-dialog.c:110
+#: ../src/metacity-dialog.c:111
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "વિન્ડો \"%s\" જવાબ આપી રહ્યું નથી."
 
-#: ../src/metacity-dialog.c:118
-msgid ""
-"Forcing this application to quit will cause you to lose any unsaved changes."
+#: ../src/metacity-dialog.c:119
+msgid "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr "આ કાર્યક્રમને જબરદસ્તી બંધ કરવાથી કોઈપણ અસંગ્રહિત બદલાવો ખોરવાઈ જશે."
 
-#: ../src/metacity-dialog.c:129
+#: ../src/metacity-dialog.c:130
 msgid "_Force Quit"
 msgstr "જબરદસ્તી બહાર કાઢો (_F)"
 
 # #-#-#-#-#  libgnomeui.HEAD.hi.po (libgnomeui-2.0.hi)  #-#-#-#-#
 # libgnomeui/gnome-druid-page-standard.c:121
 # libgnomeui/gnome-font-picker.c:155
-#: ../src/metacity-dialog.c:226
+#: ../src/metacity-dialog.c:227
 msgid "Title"
 msgstr "શીર્ષક"
 
-#: ../src/metacity-dialog.c:238
+#: ../src/metacity-dialog.c:239
 msgid "Class"
 msgstr "વર્ગ"
 
-#: ../src/metacity-dialog.c:264
+#: ../src/metacity-dialog.c:265
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -377,7 +378,7 @@ msgstr ""
 "આ બધી વિન્ડો \"વર્તમાન સુયોજનનો સંગ્રહ કરો\" ને આધાર આપતી નથી અને બીજી વખત તમે પ્રવેશ "
 "કરો ત્યારે જાતે જ ફરી શરુ કરવું પડશે."
 
-#: ../src/metacity-dialog.c:330
+#: ../src/metacity-dialog.c:331
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -491,11 +492,15 @@ msgstr "બધી વિન્ડોને સંતાડીને ડેસ્
 msgid ""
 "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 "focused window will be automatically raised after a delay (the delay is "
-"specified by the auto_raise_delay key)."
-msgstr ""
-"જો ખરુ હોય અને પ્રકાશનની સ્થિતિ \"સ્લોપી\"  અથવા  \"માઉસ\"  હોય તો પ્રકાશન કરાયેલી "
-"વિન્ડો આપોઆપ અમુક વિલંબ પછી મોટી થઈ જશે. ('આપોઆપ_વિલંબ_વધારો' કીદ્વારા વિલંબ સ્પષ્ટ "
-"કરાય છે)."
+"specified by the auto_raise_delay key). This preference is poorly named, but "
+"kept for backwards compatibility. To try to be more clear (at least to the "
+"technically inclined), its meaning is \"automatically raise the window "
+"following a timeout which is triggered by non-grabbed mouse entry in sloppy "
+"or mouse focus modes\". It is unrelated to clicking behavior (i.e. this is "
+"not related to raise-on-click/orthogonal-raise). It is unrelated to entering "
+"a window during drag and drop (because that results in the application "
+"grabbing the mouse)"
+msgstr "જો સાચું હોય, અને ફોક્સ સ્થિતિ એ ક્યાં તો \"સ્લોપી\" અથવા \"માઉસ\" હોય તો પછી ફોકસ થયેલ વિન્ડો વિલંબ (વિલંબ auto_raise_delay key દ્વારા સ્પષ્ટ થાય છે) પછી આપોઆપ વધારાય છે. આ પસંદગીઓ ખરાબ રીતે નામ અપાયેલ છે, પરંતુ પાછળનાંને આધાર આપવા માટે સચવાયેલ છે. વધુ સ્પષ્ટ બનવા માટે (ઓછામાં ઓછું ટેક્નીકલ રીતે ઓળંગીને), તેનો અર્થ એ \"સમયસમાપ્તિ પછી આપોઆપ વિન્ડો વધારો કે જે પકડાયા-વિનાના માઉસ પ્રવેશ દ્વારા બદલાયેલ છે કે જે સ્લોપી અથવા માઉસ ફોકસ સ્થિતિમાં છે.\" છે. તે ક્લિક કરવાની વર્તણૂક સાથે અસંબંધિત છે (એટલે કે આ ક્લિક-પર-વધારો/ઊભું-વધારો સાથે સંબંધિત નથી). ખેંચો અને મૂકો દરમ્યાન વિન્ડો દાખલ કરવા કરતાં તે અસંબંધિત છે (કારણ કે તે માઉસને પકડવાના કાર્યક્રમમાં પરિણમે છે)"
 
 #: ../src/metacity.schemas.in.h:18
 msgid ""
@@ -1912,8 +1917,7 @@ msgstr "જીકોન્ફ કી \"%s\" એ અયોગ્ય પ્રક�
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
-msgstr ""
-"માઉસ બટનની કિંમત બદલવા માટે રુપરેખાના ડેટાબેઝમાંથી મળેલ કિંમત \"%s\" એ યોગ્ય નથી\n"
+msgstr "માઉસ બટનની કિંમત બદલવા માટે રુપરેખાના ડેટાબેઝમાંથી મળેલ કિંમત \"%s\" એ યોગ્ય નથી\n"
 
 #: ../src/prefs.c:967 ../src/prefs.c:1428
 #, c-format
@@ -1947,19 +1951,19 @@ msgstr ""
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d એ જીકોન્ફ કી %s માં સંગ્રહિત ૦ થી %d ની સીમાની બહાર છે\n"
 
-#: ../src/prefs.c:1589
+#: ../src/prefs.c:1595
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "કામ કરવાની જગ્યાની સંખ્યા %d નક્કી કરવામાં ભૂલ થઈ: %s\n"
 
-#: ../src/prefs.c:1833
+#: ../src/prefs.c:1839
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "કી જોડાણ \"%s\" માટે રુપરેખાના ડેટાબેઝ \"%s\" માં મળેલ કિંમત યોગ્ય નથી\n"
 
-#: ../src/prefs.c:2187
+#: ../src/prefs.c:2193
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "કામ કરવાની જગ્યા %d ને \"%s\" નું નામ બદલવામાં ભૂલ થઈ: %s\n"
@@ -1969,12 +1973,12 @@ msgstr "કામ કરવાની જગ્યા %d ને \"%s\" નું 
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/screen.c:408
+#: ../src/screen.c:403
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "સ્ક્રીન %d કે જે ડિસ્પ્લે '%s' પર છે એ અયોગ્ય છે\n"
 
-#: ../src/screen.c:424
+#: ../src/screen.c:419
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -1983,87 +1987,85 @@ msgstr ""
 "સ્ક્રીન %d કે જે ડિસ્પ્લે \"%s\" પર છે ત્યાં પહેલેથીજ વિન્ડો વ્યવસ્થાપક છે, --replace "
 "વિક્લ્પનો ઉપયોગ કરીને વિન્ડો વ્યવસ્થાપકને બદલવાનો પ્રયત્ન કરો.\n"
 
-#: ../src/screen.c:448
+#: ../src/screen.c:443
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr ""
-"સ્ક્રીન %d કે જે ડિસ્પ્લે \"%s\" પર છે તે વિન્ડો વ્યવસ્થાપકની પસંદગીને મેળવી શકાતી નથી\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr "સ્ક્રીન %d કે જે ડિસ્પ્લે \"%s\" પર છે તે વિન્ડો વ્યવસ્થાપકની પસંદગીને મેળવી શકાતી નથી\n"
 
-#: ../src/screen.c:506
+#: ../src/screen.c:501
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "સ્ક્રીન %d કે જે ડિસ્પ્લે \"%s\" પર છે ત્યાં પહેલેથીજ વિન્ડો વ્યવસ્થાપક છે\n"
 
-#: ../src/screen.c:716
+#: ../src/screen.c:712
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "સ્ક્રીન %d કે જે ડિસ્પ્લે \"%s\" પર છે તેને દૂર કરી શકાતી નથી\n"
 
-#: ../src/session.c:884 ../src/session.c:891
+#: ../src/session.c:844 ../src/session.c:851
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "ડિરેક્ટરી '%s' બનાવી શકાતી નથી: %s\n"
 
-#: ../src/session.c:901
+#: ../src/session.c:861
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "સત્રની ફાઈલ '%s' ને લખવા માટે ખોલી શકાતી નથી: %s\n"
 
-#: ../src/session.c:1053
+#: ../src/session.c:1013
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "સત્રની ફાઈલ '%s' ને લખવામાં ભૂલ: %s\n"
 
-#: ../src/session.c:1058
+#: ../src/session.c:1018
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "સત્રની ફાઈલ '%s' ને બંધ કરવામાં ભૂલ: %s\n"
 
-#: ../src/session.c:1133
+#: ../src/session.c:1093
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "સંગ્રહિત સત્રની ફાઈલ '%s' ને વાંચવામાં ભૂલ: %s\n"
 
-#: ../src/session.c:1168
+#: ../src/session.c:1128
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "સંગ્રહિત સત્રની ફાઈલ ને પદચ્છેદ કરવામાં ભૂલ: %s\n"
 
-#: ../src/session.c:1217
+#: ../src/session.c:1177
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session> લક્ષણ દેખાય છે પરંતુ આપણી પાસે પહેલેથી જ સત્ર ID છે"
 
-#: ../src/session.c:1230
+#: ../src/session.c:1190
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
-msgstr "અજાણ્યુ લક્ષણ %s એ <metacity_session> વસ્તુ પર "
+msgstr "અજાણ્યુ લક્ષણ %s એ <metacity_session> વસ્તુ પર"
 
-#: ../src/session.c:1247
+#: ../src/session.c:1207
 msgid "nested <window> tag"
 msgstr "પુનરાવર્તિત <window> નિશાની"
 
-#: ../src/session.c:1305 ../src/session.c:1337
+#: ../src/session.c:1265 ../src/session.c:1297
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "અજાણ્યું લક્ષણ %s એ <window> વસ્તુ પર"
 
-#: ../src/session.c:1409
+#: ../src/session.c:1369
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "અજાણ્યું લક્ષણ %s એ <maximized> વસ્તુ પર"
 
-#: ../src/session.c:1469
+#: ../src/session.c:1429
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "અજાણ્યું લક્ષણ %s એ <geometry> વસ્તુ પર"
 
-#: ../src/session.c:1489
+#: ../src/session.c:1449
 #, c-format
 msgid "Unknown element %s"
 msgstr "અજાણી વસ્તુ %s"
 
-#: ../src/session.c:1961
+#: ../src/session.c:1921
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2218,8 +2220,7 @@ msgstr "કોઈ \"કિંમત\" લક્ષણ વસ્તુ <%s> પ�
 
 #: ../src/theme-parser.c:1320 ../src/theme-parser.c:1334
 #: ../src/theme-parser.c:1393
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr "બટન માટે બટન_પહોળાઈ/બટન_ઊંચાઈ અને ધારેલુ પ્રમાણ બંનેને સ્પષ્ટ કરી શકાતા નથી"
 
 #: ../src/theme-parser.c:1343
@@ -2500,25 +2501,19 @@ msgstr "સ્થિતિ %s પ્રકાશન %s માટે પહેલ
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"<piece> વસ્તુ માટે બે draw_ops ના હોઈ શકે (થીમે draw_ops લક્ષણ તથા <draw_ops> વસ્તુ "
-"પણ સ્પષ્ટ કર્યો, અથવા બંને વસ્તુઓ સ્પષ્ટ કર્યા)"
+msgstr "<piece> વસ્તુ માટે બે draw_ops ના હોઈ શકે (થીમે draw_ops લક્ષણ તથા <draw_ops> વસ્તુ પણ સ્પષ્ટ કર્યો, અથવા બંને વસ્તુઓ સ્પષ્ટ કર્યા)"
 
 #: ../src/theme-parser.c:3574
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"<button> વસ્તુ માટે બે draw_ops ના હોઈ શકે (થીમે draw_ops લક્ષણ તથા <draw_ops> વસ્તુ "
-"પણ સ્પષ્ટ કર્યો, અથવા બંને વસ્તુઓ સ્પષ્ટ કર્યા)"
+msgstr "<button> વસ્તુ માટે બે draw_ops ના હોઈ શકે (થીમે draw_ops લક્ષણ તથા <draw_ops> વસ્તુ પણ સ્પષ્ટ કર્યો, અથવા બંને વસ્તુઓ સ્પષ્ટ કર્યા)"
 
 #: ../src/theme-parser.c:3612
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"<menu_icon> વસ્તુ માટે બે draw_ops ના હોઈ શકે (થીમે draw_ops લક્ષણ તથા <draw_ops> "
-"વસ્તુ પણ સ્પષ્ટ કર્યો, અથવા બંને વસ્તુઓ સ્પષ્ટ કર્યા)"
+msgstr "<menu_icon> વસ્તુ માટે બે draw_ops ના હોઈ શકે (થીમે draw_ops લક્ષણ તથા <draw_ops> વસ્તુ પણ સ્પષ્ટ કર્યો, અથવા બંને વસ્તુઓ સ્પષ્ટ કર્યા)"
 
 #: ../src/theme-parser.c:3659
 #, c-format
@@ -2527,8 +2522,7 @@ msgstr "થીમની સૌથી બહારની વસ્તુ <metacit
 
 #: ../src/theme-parser.c:3679
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "વસ્તુ <%s> name/author/date/description ની અંદર સ્વીકાર્ય નથી"
 
 #: ../src/theme-parser.c:3684
@@ -2538,8 +2532,7 @@ msgstr "વસ્તુ <%s> એ <constant> વસ્તુની અંદર �
 
 #: ../src/theme-parser.c:3696
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "વસ્તુ <%s> એ distance/border/aspect_ratio વસ્તુની અંદર સ્વીકાર્ય નથી"
 
 #: ../src/theme-parser.c:3718
@@ -2868,8 +2861,7 @@ msgstr "રંગના સ્પષ્ટીકરણમાં રંગની 
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
-msgstr ""
-"\"blend/bg_color/fg_color/alpha\" એ મિશ્રિત માળખું છે, \"%s\" માળખામાં બેસતું નથી "
+msgstr "\"blend/bg_color/fg_color/alpha\" એ મિશ્રિત માળખું છે, \"%s\" માળખામાં બેસતું નથી "
 
 #: ../src/theme.c:1048
 #, c-format
@@ -2883,8 +2875,7 @@ msgstr "મિશ્રિત રંગમાં આલ્ફાની કિં
 
 #: ../src/theme.c:1105
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "છાયાનું માળખું \"shade/base_color/factor\" છે, \"%s\" માળખામાં બેસતુ નથી"
 
 #: ../src/theme.c:1116
@@ -2935,14 +2926,12 @@ msgid "Coordinate expression results in division by zero"
 msgstr "યામાક્ષ સમીકરણ શૂન્ય વડે ભાગાકારમાં પરિણમશે"
 
 #: ../src/theme.c:1777
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "યામાક્ષ સમીકરણ અપૂર્ણાંક સંખ્યાની ઉપર શેષ કારકનો ઉપયોગ કરવાનો પ્રયત્ન કરે છે"
 
 #: ../src/theme.c:1834
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "યામાક્ષ સમીકરણ માટે \"%s\" કારક છે જેના માટે ઓપરન્ડ હોવા જોઈએ"
 
 #: ../src/theme.c:1843
@@ -2958,8 +2947,7 @@ msgstr "યામાક્ષ સમીકરણનો અંત ઓપરન્
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
-msgstr ""
-"યામાક્ષ સમીકરણમાં \"%c\" કારક પછી તરત જ \"%c\" કારક છે જેમની વચ્ચે કોઈ ઓપરન્ડ નથી"
+msgstr "યામાક્ષ સમીકરણમાં \"%c\" કારક પછી તરત જ \"%c\" કારક છે જેમની વચ્ચે કોઈ ઓપરન્ડ નથી"
 
 #: ../src/theme.c:1980
 msgid ""
@@ -3002,10 +2990,8 @@ msgstr ""
 
 #: ../src/theme.c:4363 ../src/theme.c:4395
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> ખોવાય છે"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> ખોવાય છે"
 
 #: ../src/theme.c:4446
 #, c-format
@@ -3038,8 +3024,7 @@ msgstr ""
 
 #: ../src/theme.c:5041 ../src/theme.c:5103
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "વપરાશકર્તા દ્વારા વ્યાખ્યાયિત અચલો મોટા અક્ષરથી જ શરુ થવા જોઈએ; \"%s\" નહિં"
 
 #: ../src/theme.c:5049 ../src/theme.c:5111
@@ -3047,44 +3032,44 @@ msgstr "વપરાશકર્તા દ્વારા વ્યાખ્ય�
 msgid "Constant \"%s\" has already been defined"
 msgstr "અચલ \"%s\" પહેલેથી જ વ્યાખ્યાયિત છે"
 
-#: ../src/util.c:93
+#: ../src/util.c:95
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "ભૂલ શોધવા માટેનું નોંધપત્ર ખોલવામાં નિષ્ફળ: %s\n"
 
-#: ../src/util.c:103
+#: ../src/util.c:105
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "fdopen() નોંધપત્ર ફાઈલ %s ખોલવામાં નિષ્ફળ: %s\n"
 
-#: ../src/util.c:109
+#: ../src/util.c:111
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "પ્રવેશ ફાઈલ %s ખૂલેલી છે\n"
 
-#: ../src/util.c:203
+#: ../src/util.c:219
 msgid "Window manager: "
 msgstr "વિન્ડો વ્યવસ્થાપક: "
 
-#: ../src/util.c:349
+#: ../src/util.c:365
 msgid "Bug in window manager: "
 msgstr "વિન્ડો વ્યવસ્થાપકમાં ભૂલ: "
 
-#: ../src/util.c:378
+#: ../src/util.c:394
 msgid "Window manager warning: "
 msgstr "વિન્ડો વ્યવસ્થાપકની ચેતવણી: "
 
-#: ../src/util.c:402
+#: ../src/util.c:418
 msgid "Window manager error: "
 msgstr "વિન્ડો વ્યવસ્થાપકની ભૂલ: "
 
-#: ../src/window-props.c:162
+#: ../src/window-props.c:165
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "કાર્યક્રમે ખોટી ગોઠવણી _NET_WM_PID %ld કરી છે\n"
 
 #. first time through
-#: ../src/window.c:5205
+#: ../src/window.c:5238
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3100,7 +3085,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5876
+#: ../src/window.c:5878
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3131,6 +3116,6 @@ msgstr "ગુણધર્મ %s વિન્ડો 0x%lx પર અયોગ્
 
 #: ../src/xprops.c:482
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "ગુણધર્મ %s વિન્ડો 0x%lx પર યાદીમાં %d વસ્તુ પર અયોગ્ય UTF-8 ધરાવે છે\n"
+
