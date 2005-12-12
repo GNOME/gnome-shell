@@ -1,3 +1,9 @@
+2005-12-12  Elijah Newren  <newren@gmail.com>
+
+	* src/window.c (update_net_frame_extents): make the debugging
+	message actually correspond to the code.  Patch from Björn
+	Lindqvist.  Fixes #322051.
+
 2005-11-29  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* src/screen.h: Make the wireframe a bit slimmer.

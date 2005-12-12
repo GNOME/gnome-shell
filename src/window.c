@@ -3769,7 +3769,7 @@ update_net_frame_extents (MetaWindow *window)
 
   meta_topic (META_DEBUG_GEOMETRY,
               "Setting _NET_FRAME_EXTENTS on managed window 0x%lx "
-              "to top = %ld, left = %ld, bottom = %ld, right = %ld\n",
+              "to left = %ld, right = %ld, top = %ld, bottom = %ld\n",
               window->xwindow, data[0], data[1], data[2], data[3]);
 
   meta_error_trap_push (window->display);
