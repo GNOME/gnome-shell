@@ -1,5 +1,9 @@
 2005-12-12  Elijah Newren  <newren@gmail.com>
 
+	* configure.in: post-release version bump to 2.13.8
+
+2005-12-12  Elijah Newren  <newren@gmail.com>
+
 	* NEWS:	2.13.5 release
 
 2005-12-12  Elijah Newren  <newren@gmail.com>
