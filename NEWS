@@ -1,3 +1,18 @@
+2.13.5
+==
+
+Thanks to Davyd Madeley, Kjartan Maraas, and Björn Lindqvist for
+improvements in this release.
+
+ - Make a debugging message actually correspond to the code (Björn)
+   [#322051]
+ - Make the wireframe a bit slimmer (Kjartan) [#320051]
+ - Display hostname in titlebar for remote X clients (Davyd) [#322202]
+
+Translations
+  Miloslav Trmac (cs), Adam Weinberger (en_CA), Ankit Patel (gu),
+  Kjartan Maraas (nb), Kjartan Maraas (no), Marcel Telka (sk)
+
 2.13.3
 ==
 

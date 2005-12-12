@@ -1,5 +1,9 @@
 2005-12-12  Elijah Newren  <newren@gmail.com>
 
+	* NEWS:	2.13.5 release
+
+2005-12-12  Elijah Newren  <newren@gmail.com>
+
 	* src/window.c (update_net_frame_extents): make the debugging
 	message actually correspond to the code.  Patch from Björn
 	Lindqvist.  Fixes #322051.
