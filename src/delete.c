@@ -248,7 +248,7 @@ io_from_ping_dialog (GIOChannel   *channel,
   if (condition & G_IO_IN)
     {
       char *str;
-      int len;
+      unsigned int len;
       GError *err;
 
       /* Go ahead and block for all data from child */

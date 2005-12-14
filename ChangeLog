@@ -1,3 +1,11 @@
+2005-12-13  Kang Jeong-Hee  <Keizi@mail.co.kr>
+
+	* src/compositor.c: replace old call to width and height
+	of MetaScreen struct with rect.width and rect.height.
+	Now compile ok.
+	* src/delete.c: make an int variable into unsigned int.
+	Now compile warning has gone.
+
 2005-12-12  Elijah Newren  <newren@gmail.com>
 
 	* configure.in: post-release version bump to 2.13.8

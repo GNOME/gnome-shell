@@ -336,8 +336,8 @@ paint_screen (MetaCompositor *compositor,
 
       r.x = 0;
       r.y = 0;
-      r.width = screen->width;
-      r.height = screen->height;
+      r.width = screen->rect.width;
+      r.height = screen->rect.height;
       
       region = XFixesCreateRegion (xdisplay, &r, 1);
     }
@@ -351,8 +351,8 @@ paint_screen (MetaCompositor *compositor,
     }
 
   buffer_pixmap = XCreatePixmap (xdisplay, screen->xroot,
-                                 screen->width,
-                                 screen->height,
+                                 screen->rect.width,
+                                 screen->rect.height,
                                  DefaultDepth (xdisplay,
                                                screen->number));
 
@@ -360,7 +360,7 @@ paint_screen (MetaCompositor *compositor,
   XSetForeground (xdisplay, gc, WhitePixel (xdisplay, screen->number));
   XFixesSetGCClipRegion (xdisplay, gc, 0, 0, region);
   XFillRectangle (xdisplay, buffer_pixmap, gc, 0, 0,
-                  screen->width, screen->height);
+                  screen->rect.width, screen->rect.height);
   
   format = XRenderFindVisualFormat (xdisplay,
                                     DefaultVisual (xdisplay,
@@ -473,7 +473,7 @@ paint_screen (MetaCompositor *compositor,
   XRenderComposite (xdisplay, PictOpSrc, buffer_picture, None,
                     screen->root_picture,
                     0, 0, 0, 0, 0, 0,
-                    screen->width, screen->height);
+                    screen->rect.width, screen->rect.height);
   
   XFixesDestroyRegion (xdisplay, region);
   XFreePixmap (xdisplay, buffer_pixmap);
@@ -782,8 +782,8 @@ process_expose (MetaCompositor     *compositor,
 
   r.x = 0;
   r.y = 0;
-  r.width = screen->width;
-  r.height = screen->height;
+  r.width = screen->rect.width;
+  r.height = screen->rect.height;
   region = XFixesCreateRegion (compositor->display->xdisplay, &r, 1);
   
   merge_and_destroy_damage_region (compositor, screen, region);
@@ -1288,8 +1288,8 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   /* Damage the whole screen */
   r.x = 0;
   r.y = 0;
-  r.width = screen->width;
-  r.height = screen->height;
+  r.width = screen->rect.width;
+  r.height = screen->rect.height;
 
   merge_and_destroy_damage_region (compositor,
                                    screen,
