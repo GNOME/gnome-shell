@@ -577,14 +577,16 @@ meta_screen_new (MetaDisplay *display,
   reload_xinerama_infos (screen);
   
   meta_screen_set_cursor (screen, META_CURSOR_DEFAULT);
+  
+  if (display->no_focus_window == None)
+    {
+      display->no_focus_window = meta_create_offscreen_window (display->xdisplay,
+                                                               screen->xroot);
 
-  /* Handle creating a no_focus_window for this screen */  
-  screen->no_focus_window = meta_create_offscreen_window (display->xdisplay,
-                                                          screen->xroot);
-  XSelectInput (display->xdisplay, screen->no_focus_window,
-                FocusChangeMask | KeyPressMask | KeyReleaseMask);
-  XMapWindow (display->xdisplay, screen->no_focus_window);
-  /* Done with no_focus_window stuff */
+      XSelectInput (display->xdisplay, display->no_focus_window,
+                    FocusChangeMask | KeyPressMask | KeyReleaseMask);
+      XMapWindow (display->xdisplay, display->no_focus_window);
+    }
   
   set_wm_icon_size_hint (screen);
   

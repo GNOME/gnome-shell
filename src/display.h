@@ -216,6 +216,11 @@ struct _MetaDisplay
                               XErrorEvent *error);  
   int server_grab_count;
 
+  /* This window holds the focus when we don't want to focus
+   * any actual clients
+   */
+  Window no_focus_window;
+  
   /* for double click */
   Time last_button_time;
   Window last_button_xwindow;
@@ -408,9 +413,6 @@ void        meta_display_register_x_window   (MetaDisplay *display,
                                               MetaWindow  *window);
 void        meta_display_unregister_x_window (MetaDisplay *display,
                                               Window       xwindow);
-/* Return whether the xwindow is a no focus window for any of the screens */
-gboolean    meta_display_xwindow_is_a_no_focus_window (MetaDisplay *display,
-                                                       Window xwindow);
 
 GSList*     meta_display_list_windows        (MetaDisplay *display);
 
@@ -537,7 +539,6 @@ void meta_display_set_input_focus_window   (MetaDisplay *display,
  * same as meta_display_set_input_focus_window
  */
 void meta_display_focus_the_no_focus_window (MetaDisplay *display, 
-                                             MetaScreen  *screen,
                                              Time         timestamp);
 
 void meta_display_queue_autoraise_callback  (MetaDisplay *display,
