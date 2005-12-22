@@ -72,6 +72,11 @@ struct _MetaScreen
   
   MetaWorkspace *active_workspace;
 
+  /* This window holds the focus when we don't want to focus
+   * any actual clients
+   */
+  Window no_focus_window;
+  
   GList *workspaces;
 
   MetaStack *stack;

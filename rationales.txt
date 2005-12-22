@@ -60,3 +60,5 @@ moving/resizing (constraints): http://bugzilla.gnome.org/show_bug.cgi?id=155458
              window placement: http://bugzilla.gnome.org/show_bug.cgi?id=155460
    logout/system-monitor keys: http://bugzilla.gnome.org/show_bug.cgi?id=155462
                 modal dialogs: http://bugzilla.gnome.org/show_bug.cgi?id=164841
+     multi-head sans xinerama: http://bugzilla.gnome.org/show_bug.cgi?id=324772
+                     xinerama: http://bugzilla.gnome.org/show_bug.cgi?id=324773
