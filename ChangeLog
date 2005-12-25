@@ -1,3 +1,7 @@
+2005-12-25  Kang Jeong-Hee  <Keizi@mail.co.kr>
+
+	* po/ko.po: Updated Korean translation.
+
 2005-12-13  Kang Jeong-Hee  <Keizi@mail.co.kr>
 
 	* src/compositor.c: replace old call to width and height
