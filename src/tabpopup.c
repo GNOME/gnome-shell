@@ -208,11 +208,11 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
           gchar *tmp;
           if (entries[i].hidden)
             {
-              tmp = g_strdup_printf ("[%s]", entries[i].title);
+              tmp = g_markup_printf_escaped ("[%s]", entries[i].title);
             }
           else 
             {
-              tmp = g_strdup (entries[i].title);
+              tmp = g_markup_printf_escaped ("%s", entries[i].title);
             }
           
           if (entries[i].demands_attention) 

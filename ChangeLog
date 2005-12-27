@@ -1,3 +1,8 @@
+2005-12-27  Elijah Newren  <newren@gmail.com>
+
+	* src/tabpopup.c (meta_ui_tab_popup_new): since the title is going
+	to be treated as markup, escape it.  Fixes #324846.
+
 2005-12-25  Kang Jeong-Hee  <Keizi@mail.co.kr>
 
 	* po/ko.po: Updated Korean translation.
