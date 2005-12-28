@@ -1,5 +1,29 @@
 2005-12-27  Elijah Newren  <newren@gmail.com>
 
+	Make the workspace switcher work with dual-head (non-xinerama)
+	setups.  Fixes #319423.
+
+	* src/display.c (meta_display_open, event_callback,
+	  meta_display_focus_the_no_focus_window):
+	* src/display.h (struct MetaDisplay,
+	  meta_display_focus_the_no_focus_window):
+	* src/keybindings.c (primary_modifier_still_pressed):
+	* src/screen.c (meta_screen_new):
+	* src/screen.h (struct MetaScreen):
+	* src/window.c (meta_window_new_with_attrs, meta_window_show):
+	* src/workspace.c (meta_workspace_focus_default_window):
+	Replace display->no_focus_window with a no_focus_window for each
+	screen.
+
+	* src/display.[ch] (meta_display_xwindow_is_a_no_focus_window,
+	  event_callback):
+	* src/window.c (meta_window_new_with_attrs):
+	New utility function, meta_display_xwindow_is_a_no_focus_window(),
+	for checking if the given xwindow is a no_focus_window for one of
+	the screens.
+
+2005-12-27  Elijah Newren  <newren@gmail.com>
+
 	* src/tabpopup.c (meta_ui_tab_popup_new): since the title is going
 	to be treated as markup, escape it.  Fixes #324846.
 

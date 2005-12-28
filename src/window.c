@@ -241,7 +241,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   
   meta_verbose ("Attempting to manage 0x%lx\n", xwindow);
 
-  if (xwindow == display->no_focus_window)
+  if (meta_display_xwindow_is_a_no_focus_window (display, xwindow))
     {
       meta_verbose ("Not managing no_focus_window 0x%lx\n",
                     xwindow);
@@ -1763,7 +1763,7 @@ meta_window_show (MetaWindow *window)
                       "ancestor.\n",
                       window->display->focus_window->desc, window->desc);
 
-          meta_display_focus_the_no_focus_window (window->display, meta_display_get_current_time_roundtrip (window->display));
+          meta_display_focus_the_no_focus_window (window->display, window->screen, meta_display_get_current_time_roundtrip (window->display));
         }
       else
         {

@@ -925,6 +925,7 @@ meta_workspace_focus_default_window (MetaWorkspace *workspace,
                       "Setting focus to no_focus_window, since no valid "
                       "window to focus found.\n");
           meta_display_focus_the_no_focus_window (workspace->screen->display,
+                                                  workspace->screen,
                                                   timestamp);
         }
     }
@@ -1014,6 +1015,7 @@ focus_ancestor_or_mru_window (MetaWorkspace *workspace,
     {
       meta_topic (META_DEBUG_FOCUS, "No MRU window to focus found; focusing no_focus_window.\n");
       meta_display_focus_the_no_focus_window (workspace->screen->display,
+                                              workspace->screen,
                                               timestamp);
     }
 }
