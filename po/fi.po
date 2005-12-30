@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-19 12:30+0200\n"
-"PO-Revision-Date: 2005-07-24 21:12+0300\n"
+"POT-Creation-Date: 2005-12-30 15:53+0200\n"
+"PO-Revision-Date: 2005-12-30 15:59+0200\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -22,33 +22,33 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr "Käyttö: %s\n"
 
-#: ../src/tools/metacity-message.c:176 ../src/util.c:128
+#: ../src/tools/metacity-message.c:176 ../src/util.c:130
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity on käännetty ilman tukea monisanaisille ilmoituksille\n"
 
-#: ../src/delete.c:63 ../src/delete.c:90 ../src/metacity-dialog.c:70
+#: ../src/delete.c:64 ../src/delete.c:91 ../src/metacity-dialog.c:71
 #: ../src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "\"%s\" ei jäsentynyt kokonaisluvuksi"
 
-#: ../src/delete.c:70 ../src/delete.c:97 ../src/metacity-dialog.c:77
+#: ../src/delete.c:71 ../src/delete.c:98 ../src/metacity-dialog.c:78
 #: ../src/theme-parser.c:476 ../src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Perässä olevat merkit \"%s\" merkkijonossa \"%s\" eivät ole järkeviä"
 
-#: ../src/delete.c:128
+#: ../src/delete.c:129
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Valintaikkunaprosessilta tullut viesti \"%s\" ei jäsenny\n"
 
-#: ../src/delete.c:263
+#: ../src/delete.c:264
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Virhe valintaikkunan näyttämisprosessilta lukemisessa: %s\n"
 
-#: ../src/delete.c:344
+#: ../src/delete.c:345
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -56,12 +56,12 @@ msgstr ""
 "Virhe metacity-dialogin käynnistämisessä sovelluksen tappamisesta kysymistä "
 "varten: %s\n"
 
-#: ../src/delete.c:452
+#: ../src/delete.c:453
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Isäntänimen haku epäonnistui: %s\n"
 
-#: ../src/display.c:319
+#: ../src/display.c:308
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X-ikkunointijärjestelmän näytön \"%s\" avaaminen epäonnistui\n"
@@ -82,27 +82,27 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Vakava IO-virhe %d (%s) näytöllä \"%s\".\n"
 
-#: ../src/frames.c:1125
+#: ../src/frames.c:1123
 msgid "Close Window"
 msgstr "Sulje ikkuna"
 
-#: ../src/frames.c:1128
+#: ../src/frames.c:1126
 msgid "Window Menu"
 msgstr "Ikkunavalikko"
 
-#: ../src/frames.c:1131
+#: ../src/frames.c:1129
 msgid "Minimize Window"
 msgstr "Pienennä ikkuna"
 
-#: ../src/frames.c:1134
+#: ../src/frames.c:1132
 msgid "Maximize Window"
 msgstr "Suurenna ikkuna"
 
-#: ../src/frames.c:1137
+#: ../src/frames.c:1135
 msgid "Unmaximize Window"
 msgstr "Palauta ikkuna"
 
-#: ../src/keybindings.c:994
+#: ../src/keybindings.c:996
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -110,19 +110,19 @@ msgid ""
 msgstr ""
 "Jokin muu ohjelma käyttää jo näppäintä %s muunnoksin %x pikanäppäimenään\n"
 
-#: ../src/keybindings.c:2620
+#: ../src/keybindings.c:2498
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Virhe metacity-dialogin käynnistämisessä komennon virheen tulostamista "
 "varten: %s\n"
 
-#: ../src/keybindings.c:2725
+#: ../src/keybindings.c:2603
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Mitään komentoa %d ei ole määritelty.\n"
 
-#: ../src/keybindings.c:3570
+#: ../src/keybindings.c:3465
 msgid "No terminal command has been defined.\n"
 msgstr "Mitään päätteen komentoa ei ole määritelty.\n"
 
@@ -183,83 +183,87 @@ msgstr ""
 msgid "Failed to restart: %s\n"
 msgstr "Uudelleenkäynnistys epäonnistui: %s\n"
 
-#: ../src/menu.c:54
+#: ../src/menu.c:55
 msgid "Mi_nimize"
 msgstr "_Pienennä"
 
-#: ../src/menu.c:55
+#: ../src/menu.c:56
 msgid "Ma_ximize"
 msgstr "_Suurenna"
 
-#: ../src/menu.c:56
+#: ../src/menu.c:57
 msgid "Unma_ximize"
 msgstr "_Palauta"
 
-#: ../src/menu.c:57
+#: ../src/menu.c:58
 msgid "Roll _Up"
 msgstr "_Rullaa ylös"
 
-#: ../src/menu.c:58
+#: ../src/menu.c:59
 msgid "_Unroll"
 msgstr "_Rullaa alas"
 
-#: ../src/menu.c:59 ../src/menu.c:60
+#: ../src/menu.c:60 ../src/menu.c:61
 msgid "On _Top"
 msgstr "_Päällimmäisenä"
 
-#: ../src/menu.c:61
+#: ../src/menu.c:62
 msgid "_Move"
 msgstr "S_iirrä"
 
-#: ../src/menu.c:62
+#: ../src/menu.c:63
 msgid "_Resize"
 msgstr "_Muuta kokoa"
 
-#. separator
 #: ../src/menu.c:64
+msgid "Move Titlebar On_screen"
+msgstr "Siirrä otsikkopalkkia _näytöllä"
+
+#. separator
+#: ../src/menu.c:66
 msgid "_Close"
 msgstr "_Sulje"
 
 #. separator
-#: ../src/menu.c:66
+#: ../src/menu.c:68
 msgid "_Always on Visible Workspace"
 msgstr "Näytä _aina tässä työtilassa"
 
-#: ../src/menu.c:67
+#: ../src/menu.c:69
 msgid "_Only on This Workspace"
 msgstr "Näytä vain _tässä työtilassa"
 
-#: ../src/menu.c:68
+#: ../src/menu.c:70
 msgid "Move to Workspace _Left"
 msgstr "Siirrä _vasempaan työtilaan"
 
-#: ../src/menu.c:69
+#: ../src/menu.c:71
 msgid "Move to Workspace R_ight"
 msgstr "Siirrä _oikeaan työtilaan"
 
-#: ../src/menu.c:70
+#: ../src/menu.c:72
 msgid "Move to Workspace _Up"
 msgstr "Siirry _ylläolevaan työtilaan"
 
-#: ../src/menu.c:71
+#: ../src/menu.c:73
 msgid "Move to Workspace _Down"
 msgstr "Siirrä _alla olevaan työtilaan"
 
-#: ../src/menu.c:162 ../src/prefs.c:2106
+#: ../src/menu.c:164 ../src/prefs.c:2112
 #, c-format
 msgid "Workspace %d"
 msgstr "Työtila %d"
 
-#: ../src/menu.c:171
+#: ../src/menu.c:173
 msgid "Workspace 1_0"
 msgstr "Työtila 1_0"
 
-#: ../src/menu.c:173
+#: ../src/menu.c:175
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Työtila %s%d"
 
-#: ../src/menu.c:368
+#: ../src/menu.c:370
 msgid "Move to Another _Workspace"
 msgstr "Siirrä toiseen t_yötilaan"
 
@@ -353,31 +357,31 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: ../src/metacity-dialog.c:110
+#: ../src/metacity-dialog.c:111
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "Ikkuna \"%s\" ei vastaa."
 
-#: ../src/metacity-dialog.c:118
+#: ../src/metacity-dialog.c:119
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Tämän sovelluksen sulkeminen väkisin saa tallentamattomat muutokset "
 "katoamaan."
 
-#: ../src/metacity-dialog.c:129
+#: ../src/metacity-dialog.c:130
 msgid "_Force Quit"
 msgstr "Sulje _väkisin"
 
-#: ../src/metacity-dialog.c:226
+#: ../src/metacity-dialog.c:227
 msgid "Title"
 msgstr "Otsikko"
 
-#: ../src/metacity-dialog.c:238
+#: ../src/metacity-dialog.c:239
 msgid "Class"
 msgstr "Luokka"
 
-#: ../src/metacity-dialog.c:264
+#: ../src/metacity-dialog.c:265
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -385,7 +389,7 @@ msgstr ""
 "Nämä ikkunat eivät ymmärrä \"tallenna nykyinen tila\"-komentoa, ja ne täytyy "
 "käynnistää käsin uudelleen kun kirjaudut seuraavan kerran sisään."
 
-#: ../src/metacity-dialog.c:330
+#: ../src/metacity-dialog.c:331
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -505,11 +509,25 @@ msgstr "Piilota kaikki ikkunat ja kohdista työpöytä"
 msgid ""
 "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 "focused window will be automatically raised after a delay (the delay is "
-"specified by the auto_raise_delay key)."
+"specified by the auto_raise_delay key). This preference is poorly named, but "
+"kept for backwards compatibility. To try to be more clear (at least to the "
+"technically inclined), its meaning is \"automatically raise the window "
+"following a timeout which is triggered by non-grabbed mouse entry in sloppy "
+"or mouse focus modes\". It is unrelated to clicking behavior (i.e. this is "
+"not related to raise-on-click/orthogonal-raise). It is unrelated to entering "
+"a window during drag and drop (because that results in the application "
+"grabbing the mouse)"
 msgstr ""
-"Jos tosi, ja kohdistustapa on joko \"sloppy\" tai \"mouse\", niin "
-"kohdistettu ikkuna nousee itsestään viiveen jälkeen (viive määritelty "
-"avaimessa auto_raise_delay)."
+"Jos arvo on \"true\" ja kohdistustapa on joko \"sloppy\" tai \"mouse\", "
+"nostetaan kohdistettu ikkuna päällimmäiseksi viiveen jälkeen "
+"automaattisesti. Viive määritellään avaimessa \"auto_raise_delay\". Tämä "
+"asetus on huonosti nimetty, mutta nimi pidetään yhteensopivuuden takia "
+"samana. Täsmällisemmin selitettynä tämän selitys on \"nosta ikkuna "
+"automaattisesti päällimmäiseksi aikaviiveellä, joka lasketaan hetkestä "
+"kun hiiri siirtyy ikkunan päälle tilan ollessa \"sloppy\" tai \"mouse\"."
+"Tämä asetus ei liity ikkunan napsautuksen toimintatapaan, eikä se liity "
+"ikkunaan siirtymiseen siirron ja raahauksen aikana, koska se aiheuttaa "
+"kohdeikkunan tarttuvan hiireen joka tapauksessa." 
 
 #: ../src/metacity.schemas.in.h:18
 msgid ""
@@ -1985,12 +2003,12 @@ msgstr ""
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d, joka on GConf-avaimessa %s, ei ole välillä 0 - %d\n"
 
-#: ../src/prefs.c:1589
+#: ../src/prefs.c:1595
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Virhe työtilojen määrän asettamisessa arvoon %d: %s\n"
 
-#: ../src/prefs.c:1833
+#: ../src/prefs.c:1839
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1999,7 +2017,7 @@ msgstr ""
 "\"%s\", joka on asetustietokannassa, ei ole kelvollinen näppäinsidonnan \"%s"
 "\" arvo\n"
 
-#: ../src/prefs.c:2187
+#: ../src/prefs.c:2193
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Virhe työtilan %d nimen asettamisessa nimeksi \"%s\": %s\n"
@@ -2009,12 +2027,12 @@ msgstr "Virhe työtilan %d nimen asettamisessa nimeksi \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d × %d"
 
-#: ../src/screen.c:408
+#: ../src/screen.c:403
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Näytön \"%2$s\" ruutu %1$d ei ole kelvollinen\n"
 
-#: ../src/screen.c:424
+#: ../src/screen.c:419
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2023,7 +2041,7 @@ msgstr ""
 "Näytön \"%2$s\" ruudulla %1$d on jo ikkunointiohjelma: kokeile valitsinta --"
 "replace, jos haluat korvata nykyisen ikkunointiohjelman.\n"
 
-#: ../src/screen.c:448
+#: ../src/screen.c:443
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -2031,81 +2049,81 @@ msgstr ""
 "Näytön \"%2$s\" ruudun %1$d ikkunointiohjelman valinnan hankkiminen "
 "epäonnistui\n"
 
-#: ../src/screen.c:506
+#: ../src/screen.c:501
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Näytön \"%2$s\" ruudulla %1$d on jo ikkunointiohjelma\n"
 
-#: ../src/screen.c:716
+#: ../src/screen.c:710
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Näytön \"%2$s\" ruudun %1$d vapauttaminen ei onnistunut\n"
 
-#: ../src/session.c:884 ../src/session.c:891
+#: ../src/session.c:844 ../src/session.c:851
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Kansion \"%s\" luominen ei onnistunut: %s\n"
 
-#: ../src/session.c:901
+#: ../src/session.c:861
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr ""
 "Istuntotiedoston \"%s\" avaaminen kirjoittamista varten ei onnistunut: %s\n"
 
-#: ../src/session.c:1053
+#: ../src/session.c:1013
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Virhe istuntotiedoston \"%s\" kirjoittamisessa: %s\n"
 
-#: ../src/session.c:1058
+#: ../src/session.c:1018
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Virhe istuntotiedoston \"%s\" sulkemisessa: %s\n"
 
-#: ../src/session.c:1133
+#: ../src/session.c:1093
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Tallennetun istuntotiedoston \"%s\" luku epäonnistui: %s\n"
 
-#: ../src/session.c:1168
+#: ../src/session.c:1128
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Tallennetun istuntotiedoston jäsennys epäonnistui: %s\n"
 
-#: ../src/session.c:1217
+#: ../src/session.c:1177
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session>-määre havaittu, mutta istunnon ID on jo selvinnyt"
 
-#: ../src/session.c:1230
+#: ../src/session.c:1190
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "<metacity_session>-elementin määre %s on tuntematon"
 
-#: ../src/session.c:1247
+#: ../src/session.c:1207
 msgid "nested <window> tag"
 msgstr "sisäkkäiset <window>-laput"
 
-#: ../src/session.c:1305 ../src/session.c:1337
+#: ../src/session.c:1265 ../src/session.c:1297
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Tuntematon <window>-elementin määre %s"
 
-#: ../src/session.c:1409
+#: ../src/session.c:1369
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Tuntematon <maximized>-elementin määre %s"
 
-#: ../src/session.c:1469
+#: ../src/session.c:1429
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Tuntematon <geometry>-elementin määre %s"
 
-#: ../src/session.c:1489
+#: ../src/session.c:1449
 #, c-format
 msgid "Unknown element %s"
 msgstr "Tuntematon elementti %s"
 
-#: ../src/session.c:1961
+#: ../src/session.c:1921
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3114,44 +3132,44 @@ msgstr ""
 msgid "Constant \"%s\" has already been defined"
 msgstr "Vakio \"%s\" on jo määritelty"
 
-#: ../src/util.c:93
+#: ../src/util.c:95
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Vianetsintälokin avaaminen epäonnistui: %s\n"
 
-#: ../src/util.c:103
+#: ../src/util.c:105
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Lokitiedoston \"%s\" fdopen() epäonnistui: %s\n"
 
-#: ../src/util.c:109
+#: ../src/util.c:111
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Lokitiedosto %s avattu\n"
 
-#: ../src/util.c:203
+#: ../src/util.c:219
 msgid "Window manager: "
 msgstr "Ikkunointiohjelma:"
 
-#: ../src/util.c:349
+#: ../src/util.c:365
 msgid "Bug in window manager: "
 msgstr "Vika ikkunointiohjelmassa."
 
-#: ../src/util.c:378
+#: ../src/util.c:394
 msgid "Window manager warning: "
 msgstr "Ikkunointiohjelman varoitus:"
 
-#: ../src/util.c:402
+#: ../src/util.c:418
 msgid "Window manager error: "
 msgstr "Ikkunointiohjelmavirhe:"
 
-#: ../src/window-props.c:162
+#: ../src/window-props.c:165
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Sovellus asetti virheellisen _NET_WM_PID:n %ld\n"
 
 #. first time through
-#: ../src/window.c:5205
+#: ../src/window.c:5238
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3167,7 +3185,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5876
+#: ../src/window.c:5878
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3204,3 +3222,12 @@ msgid ""
 msgstr ""
 "Ikkunan 0x%2$lx ominaisuus %1$s sisälsi virheellistä UTF-8:aa luettelon "
 "kohdassa %3$d\n"
+
+#~ msgid ""
+#~ "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
+#~ "focused window will be automatically raised after a delay (the delay is "
+#~ "specified by the auto_raise_delay key)."
+#~ msgstr ""
+#~ "Jos tosi, ja kohdistustapa on joko \"sloppy\" tai \"mouse\", niin "
+#~ "kohdistettu ikkuna nousee itsestään viiveen jälkeen (viive määritelty "
+#~ "avaimessa auto_raise_delay)."
