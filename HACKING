@@ -184,6 +184,13 @@ Debugging information
       metacity-message restart
       metacity-message enable-keybindings
       metacity-message disable-keybindings
+    The first of these is useful for testing themes, the second is just
+    another way (besides the --restart flag to metacity itself) of
+    restarting metacity, and the third is useful for testing Metacity when
+    running it under an Xnest (typically, the Metacity under the Xnest
+    wouldn't get keybinding notifications--making keyboard navigation not
+    work--but if you disable the keybindings for the global Metacity then
+    the Metacity under the Xnest can then get those keybinding notifications).
 
   metacity-window-demo
     metacity-window-demo is good for trying behavior of various kinds
