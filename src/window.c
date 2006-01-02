@@ -6894,11 +6894,8 @@ update_resize (MetaWindow *window,
     }
 
   /* Store the latest resize time, if we actually resized. */
-  if (window->rect.width != old.width &&
-      window->rect.height != old.height)
-    {
-      g_get_current_time (&window->display->grab_last_moveresize_time);
-    }
+  if (window->rect.width != old.width || window->rect.height != old.height)
+    g_get_current_time (&window->display->grab_last_moveresize_time);
 }
 
 typedef struct
