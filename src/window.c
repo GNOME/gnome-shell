@@ -231,6 +231,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   MetaWorkspace *space;
   gulong existing_wm_state;
   gulong event_mask;
+  MetaMoveResizeFlags flags;
 #define N_INITIAL_PROPS 13
   Atom initial_props[N_INITIAL_PROPS];
   int i;
@@ -698,7 +699,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
    * passing TRUE for is_configure_request, ICCCM says
    * initial map is handled same as configure request
    */
-  MetaMoveResizeFlags flags = 
+  flags =
     META_IS_CONFIGURE_REQUEST | META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
   meta_window_move_resize_internal (window,
                                     flags,
@@ -862,6 +863,7 @@ meta_window_apply_session_info (MetaWindow *window,
   if (info->geometry_set)
     {
       int x, y, w, h;
+      MetaMoveResizeFlags flags;
       
       window->placed = TRUE; /* don't do placement algorithms later */
 
@@ -880,8 +882,7 @@ meta_window_apply_session_info (MetaWindow *window,
                   "Restoring pos %d,%d size %d x %d for %s\n",
                   x, y, w, h, window->desc);
       
-      MetaMoveResizeFlags flags = 
-        META_DO_GRAVITY_ADJUST | META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
+      flags = META_DO_GRAVITY_ADJUST | META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION;
       meta_window_move_resize_internal (window,
                                         flags,
                                         window->size_hints.win_gravity,
@@ -2989,11 +2990,11 @@ meta_window_resize (MetaWindow  *window,
                     int          h)
 {
   int x, y;
+  MetaMoveResizeFlags flags;
 
   meta_window_get_position (window, &x, &y);
   
-  MetaMoveResizeFlags flags = 
-    (user_op ? META_IS_USER_ACTION : 0) | META_IS_RESIZE_ACTION;
+  flags = (user_op ? META_IS_USER_ACTION : 0) | META_IS_RESIZE_ACTION;
   meta_window_move_resize_internal (window,
                                     flags,
                                     NorthWestGravity,
@@ -3042,11 +3043,11 @@ meta_window_resize_with_gravity (MetaWindow *window,
                                  int          gravity)
 {
   int x, y;
+  MetaMoveResizeFlags flags;
 
   meta_window_get_position (window, &x, &y);
   
-  MetaMoveResizeFlags flags = 
-    (user_op ? META_IS_USER_ACTION : 0) | META_IS_RESIZE_ACTION;
+  flags = (user_op ? META_IS_USER_ACTION : 0) | META_IS_RESIZE_ACTION;
   meta_window_move_resize_internal (window,
                                     flags,
                                     gravity,
@@ -3916,6 +3917,7 @@ meta_window_configure_request (MetaWindow *window,
   gboolean only_resize;
   gboolean allow_position_change;
   gboolean in_grab_op;
+  MetaMoveResizeFlags flags;
 
   /* We ignore configure requests while the user is moving/resizing
    * the window, since these represent the app sucking and fighting
@@ -4055,8 +4057,7 @@ meta_window_configure_request (MetaWindow *window,
    * have a different setup for meta_window_move_resize_internal()...
    */
   
-  MetaMoveResizeFlags flags = 
-    META_IS_CONFIGURE_REQUEST;
+  flags = META_IS_CONFIGURE_REQUEST;
   if (event->xconfigurerequest.value_mask & (CWX | CWY))
     flags |= META_IS_MOVE_ACTION;
   if (event->xconfigurerequest.value_mask & (CWWidth | CWHeight))

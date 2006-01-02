@@ -187,6 +187,7 @@ find_nearest_position (const GArray        *edges,
   int compare;
   MetaEdge *edge;
   int best, best_dist, i;
+  gboolean edges_align;
 
   /* Initialize mid, edge, & compare in the off change that the array only
    * has one element.
@@ -223,7 +224,7 @@ find_nearest_position (const GArray        *edges,
   /* Start the search at mid */
   edge = g_array_index (edges, MetaEdge*, mid);
   compare = horizontal ? edge->rect.x : edge->rect.y;
-  gboolean edges_align = horizontal ? 
+  edges_align = horizontal ? 
     meta_rectangle_vert_overlap (&edge->rect, new_rect) :
     meta_rectangle_horiz_overlap (&edge->rect, new_rect);
   if (edges_align &&
@@ -243,7 +244,7 @@ find_nearest_position (const GArray        *edges,
       edge = g_array_index (edges, MetaEdge*, i);
       compare = horizontal ? edge->rect.x : edge->rect.y;
   
-      gboolean edges_align = horizontal ? 
+      edges_align = horizontal ? 
         meta_rectangle_vert_overlap (&edge->rect, new_rect) :
         meta_rectangle_horiz_overlap (&edge->rect, new_rect);
 
@@ -267,7 +268,7 @@ find_nearest_position (const GArray        *edges,
       edge = g_array_index (edges, MetaEdge*, i);
       compare = horizontal ? edge->rect.x : edge->rect.y;
   
-      gboolean edges_align = horizontal ? 
+      edges_align = horizontal ? 
         meta_rectangle_vert_overlap (&edge->rect, new_rect) :
         meta_rectangle_horiz_overlap (&edge->rect, new_rect);
 
@@ -398,6 +399,8 @@ apply_edge_resistance (MetaWindow                *window,
       /* Rest is easier to read if we split on keyboard vs. mouse op */
       if (keyboard_op)
         {
+          int resistance, threshold;
+
           /* KEYBOARD ENERGY BUILDUP RESISTANCE: If the user has is moving
            * fast enough or has already built up enough "energy", then let
            * the user past the edge, otherwise stop at this edge.  If the
@@ -406,7 +409,7 @@ apply_edge_resistance (MetaWindow                *window,
            */
 
           /* First, determine the amount of the resistance */
-          int resistance = 0;
+          resistance = 0;
           switch (edge->edge_type)
             {
             case META_EDGE_WINDOW:
@@ -441,7 +444,7 @@ apply_edge_resistance (MetaWindow                *window,
             }
 
           /* Determine the threshold */
-          int threshold = resistance - resistance_data->keyboard_buildup;
+          threshold = resistance - resistance_data->keyboard_buildup;
 
           /* See if threshold hasn't been met yet or not */
           if (ABS (compare - new_pos) < threshold)
@@ -466,6 +469,8 @@ apply_edge_resistance (MetaWindow                *window,
         }
       else /* mouse op */
         {
+          int threshold;
+
           /* INFINITE RESISTANCE for screen edges under certain cases; If
            * the edge is relevant and we're moving towards it and it's a
            * screen edge and infinite resistance has been requested for
@@ -529,7 +534,7 @@ apply_edge_resistance (MetaWindow                *window,
            */
 
           /* First, determine the threshold */
-          int threshold = 0;
+          threshold = 0;
           switch (edge->edge_type)
             {
             case META_EDGE_WINDOW:
@@ -750,9 +755,10 @@ apply_edge_resistance_to_each_side (MetaDisplay         *display,
 void
 meta_display_cleanup_edges (MetaDisplay *display)
 {
-  MetaEdgeResistanceData *edge_data = display->grab_edge_resistance_data;
-  g_assert (edge_data != NULL);
   guint i,j;
+  MetaEdgeResistanceData *edge_data = display->grab_edge_resistance_data;
+
+  g_assert (edge_data != NULL);
 
   /* We first need to clean out any window edges */
   for (i = 0; i < 4; i++)

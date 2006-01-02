@@ -55,11 +55,12 @@ meta_rectangle_region_to_string (GList      *region,
    */
   char rect_string[RECT_LENGTH];
 
+  GList *tmp = region;
+  char *cur = output;
+
   if (region == NULL)
     snprintf (output, 10, "(EMPTY)");
 
-  char *cur = output;
-  GList *tmp = region;
   while (tmp)
     {
       MetaRectangle *rect = tmp->data;
@@ -107,11 +108,12 @@ meta_rectangle_edge_list_to_string (GList      *edge_list,
    */
   char rect_string[EDGE_LENGTH];
 
+  char *cur = output;
+  GList *tmp = edge_list;
+
   if (edge_list == NULL)
     snprintf (output, 10, "(EMPTY)");
 
-  char *cur = output;
-  GList *tmp = edge_list;
   while (tmp)
     {
       MetaEdge      *edge = tmp->data;
@@ -1453,11 +1455,12 @@ fix_up_edges (MetaRectangle *strut,        MetaEdge *edge,
           /* If this is the edge that overlaps, then we need to split it */
           if (edges_overlap (cur, &overlap))
             {
+              GList *delete_me = tmp;
+
               /* Split this edge into some new ones */
               *strut_edges = split_edge (*strut_edges, cur, &overlap);
 
               /* Delete the old one */
-              GList *delete_me = tmp;
               tmp = tmp->next;
               g_free (cur);
               *strut_edges = g_list_delete_link (*strut_edges, delete_me);

@@ -706,11 +706,11 @@ test_clamping_to_region ()
   MetaRectangle rect;
   MetaRectangle min_size;
   FixedDirections fixed_directions;
+  int i;
 
   min_size.height = min_size.width = 1;
   fixed_directions = 0;
 
-  int i;
   region = get_screen_region (3);
   for (i = 0; i < NUM_RANDOM_RUNS; i++)
     {
@@ -817,11 +817,9 @@ test_clipping_to_region ()
 {
   GList* region;
   MetaRectangle rect, temp;
-  FixedDirections fixed_directions;
-
-  fixed_directions = 0;
-
+  FixedDirections fixed_directions = 0;
   int i;
+
   region = get_screen_region (3);
   for (i = 0; i < NUM_RANDOM_RUNS; i++)
     {
@@ -881,11 +879,9 @@ test_shoving_into_region ()
 {
   GList* region;
   MetaRectangle rect, temp;
-  FixedDirections fixed_directions;
-
-  fixed_directions = 0;
-
+  FixedDirections fixed_directions = 0;
   int i;
+
   region = get_screen_region (3);
   for (i = 0; i < NUM_RANDOM_RUNS; i++)
     {

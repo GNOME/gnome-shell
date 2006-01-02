@@ -1,5 +1,28 @@
 2006-01-02  Elijah Newren  <newren@gmail.com>
 
+	Patch from Jens Granseuer to fix build with gcc 2.95.  #322622.
+
+	* src/boxes.c (meta_rectangle_region_to_string,
+	  meta_rectangle_edge_list_to_string, fix_up_edges):
+	* src/constraints.c (meta_window_constrain, setup_constraint_info,
+	  place_window_if_needed, constrain_maximization,
+	  constrain_fullscreen, constrain_size_increments,
+	  constrain_size_limits, constrain_aspect_ratio,
+	  do_screen_and_xinerama_relative_constrai,
+	  constrain_to_single_xinerama, constrain_fully_onscreen,
+	  constrain_partially_onscreen):
+	* src/edge-resistance.c (find_nearest_position,
+	  apply_edge_resistance, apply_edge_resistance_to_each_side):
+	* src/testboxes.c (test_clamping_to_region,
+	  test_clipping_to_region, test_shoving_into_region):
+	* src/window.c (meta_window_new_with_attrs,
+	  meta_window_apply_session_info, meta_window_resize,
+	  meta_window_resize_with_gravity, meta_window_configure_request):
+
+	Remove C99 style variable initiailization
+
+2006-01-02  Elijah Newren  <newren@gmail.com>
+
 	* configure.in: post-release version bump to 2.13.13
 
 2006-01-02  Elijah Newren  <newren@gmail.com>
