@@ -1,3 +1,18 @@
+2.13.8
+==
+
+Thanks to Kang Jeong-Hee and Elijah Newren for improvements in this
+release.
+
+ - Fix some compilation warnings and issues (Kang)
+ - Escape the title since it is going to be treated as Markup (Elijah)
+   [#324846]
+ - Make the workspace switcher work with dual-head (non-xinerama)
+   setups (Elijah) [#319423]
+
+Translations
+  Ilkka Tuohela (fi), Ankit Patel (gu), Kang Joeng-Hee (ko)
+
 2.13.5
 ==
 
