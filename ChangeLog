@@ -1,5 +1,13 @@
 2006-01-09  Elijah Newren  <newren@gmail.com>
 
+	Fix reduced resources resize handling for windows with sizing or
+	resizing constraints.  #325774.
+
+	* src/display.c (meta_display_end_grab_op): Provide constraints.c
+	with the correct gravity information.
+	
+2006-01-09  Elijah Newren  <newren@gmail.com>
+
 	Be more strict about what is considered a valid region with
 	partial struts.  Fixes #322070.
 

@@ -3496,12 +3496,19 @@ meta_display_end_grab_op (MetaDisplay *display,
       meta_window_end_wireframe (display->grab_window);
 
       if (!display->grab_was_cancelled)
-        meta_window_move_resize (display->grab_window,
-                                 TRUE,
-                                 display->grab_wireframe_rect.x,
-                                 display->grab_wireframe_rect.y,
-                                 display->grab_wireframe_rect.width,
-                                 display->grab_wireframe_rect.height);
+        {
+          if (meta_grab_op_is_moving (display->grab_op))
+            meta_window_move (display->grab_window,
+                              TRUE,
+                              display->grab_wireframe_rect.x,
+                              display->grab_wireframe_rect.y);
+          if (meta_grab_op_is_resizing (display->grab_op))
+            meta_window_resize_with_gravity (display->grab_window,
+                                             TRUE,
+                                             display->grab_wireframe_rect.width,
+                                             display->grab_wireframe_rect.height,
+                                             meta_resize_gravity_from_grab_op (display->grab_op));
+        }
       meta_window_calc_showing (display->grab_window);
     }
 
