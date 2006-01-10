@@ -269,7 +269,8 @@ meta_core_user_lower_and_unfocus (Display *xdisplay,
   
   meta_window_lower (window);
 
-  if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
+  if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK &&
+      meta_prefs_get_raise_on_click ())
     {
       /* Move window to the back of the focusing workspace's MRU list.
        * Do extra sanity checks to avoid possible race conditions.
@@ -611,7 +612,8 @@ meta_core_show_window_menu (Display *xdisplay,
   if (window == NULL || window->frame == NULL)
     meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
 
-  meta_window_raise (window);
+  if (meta_prefs_get_raise_on_click ())
+    meta_window_raise (window);
   meta_window_focus (window, timestamp);
 
   meta_window_show_menu (window, root_x, root_y, button, timestamp);

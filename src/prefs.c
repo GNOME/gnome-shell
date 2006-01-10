@@ -41,6 +41,7 @@
  */
 #define KEY_MOUSE_BUTTON_MODS "/apps/metacity/general/mouse_button_modifier"
 #define KEY_FOCUS_MODE "/apps/metacity/general/focus_mode"
+#define KEY_RAISE_ON_CLICK "/apps/metacity/general/raise_on_click"
 #define KEY_ACTION_DOUBLE_CLICK_TITLEBAR "/apps/metacity/general/action_double_click_titlebar"
 #define KEY_AUTO_RAISE "/apps/metacity/general/auto_raise"
 #define KEY_AUTO_RAISE_DELAY "/apps/metacity/general/auto_raise_delay"
@@ -80,6 +81,7 @@ static gboolean use_system_font = TRUE;
 static PangoFontDescription *titlebar_font = NULL;
 static MetaVirtualModifier mouse_button_mods = Mod1Mask;
 static MetaFocusMode focus_mode = META_FOCUS_MODE_CLICK;
+static gboolean raise_on_click = TRUE;
 static char* current_theme = NULL;
 static int num_workspaces = 4;
 static MetaActionDoubleClickTitlebar action_double_click_titlebar =
@@ -123,6 +125,7 @@ static gboolean update_use_system_font   (gboolean    value);
 static gboolean update_titlebar_font      (const char *value);
 static gboolean update_mouse_button_mods  (const char *value);
 static gboolean update_focus_mode         (const char *value);
+static gboolean update_raise_on_click     (gboolean    value);
 static gboolean update_theme              (const char *value);
 static gboolean update_visual_bell        (gboolean v1, gboolean v2);
 static gboolean update_visual_bell_type   (const char *value);
@@ -346,6 +349,11 @@ meta_prefs_init (void)
   update_focus_mode (str_val);
   g_free (str_val);  
 
+  bool_val = gconf_client_get_bool (default_client, KEY_RAISE_ON_CLICK,
+				    &err);
+  cleanup_error (&err);
+  update_raise_on_click (bool_val);
+  
   str_val = gconf_client_get_string (default_client,
                                      KEY_ACTION_DOUBLE_CLICK_TITLEBAR,
 				     &err);
@@ -550,6 +558,22 @@ change_notify (GConfClient    *client,
 
       if (update_focus_mode (str))
         queue_changed (META_PREF_FOCUS_MODE);
+    }
+  else if (strcmp (key, KEY_RAISE_ON_CLICK) == 0)
+    {
+      gboolean b;
+
+      if (value && value->type != GCONF_VALUE_BOOL)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                        KEY_RAISE_ON_CLICK);
+          goto out;
+        }
+
+      b = value ? gconf_value_get_bool (value) : TRUE;
+      
+      if (update_raise_on_click (b))
+        queue_changed (META_PREF_RAISE_ON_CLICK);
     }
   else if (strcmp (key, KEY_THEME) == 0)
     {
@@ -974,6 +998,18 @@ update_focus_mode (const char *value)
 
 #ifdef HAVE_GCONF
 static gboolean
+update_raise_on_click (gboolean value)
+{
+  gboolean old = raise_on_click;
+
+  raise_on_click = value;
+
+  return old != value;
+}
+#endif /* HAVE_GCONF */
+
+#ifdef HAVE_GCONF
+static gboolean
 update_theme (const char *value)
 {
   char *old_theme;
@@ -1016,6 +1052,15 @@ MetaFocusMode
 meta_prefs_get_focus_mode (void)
 {
   return focus_mode;
+}
+
+gboolean
+meta_prefs_get_raise_on_click (void)
+{
+  /* Force raise_on_click on for click-to-focus, as requested by Havoc
+   * in #326156.
+   */
+  return raise_on_click || focus_mode == META_FOCUS_MODE_CLICK;
 }
 
 const char*
@@ -1496,6 +1541,9 @@ meta_preference_to_string (MetaPreference pref)
     case META_PREF_FOCUS_MODE:
       return "FOCUS_MODE";
 
+    case META_PREF_RAISE_ON_CLICK:
+      return "RAISE_ON_CLICK";
+      
     case META_PREF_THEME:
       return "THEME";
 

@@ -1,5 +1,40 @@
 2006-01-10  Elijah Newren  <newren@gmail.com>
 
+	Add a raise on click option, basically only because all the major
+	distros are patching it in anyway.  See #326156.
+
+	* src/metacity.schemas.in: add the new gconf key and explanation
+
+	* src/prefs.[ch] (#define KEY_RAISE_ON_CLICK, static gboolean
+	  raise_on_click, update_raise_on_click, meta_prefs_init,
+	  change_notify, meta_prefs_get_raise_on_click,
+	  meta_preference_to_string):
+	Add all the normal preference handling stuff for this new
+	raise-on-click option.
+
+	* src/core.c (meta_core_show_window_menu):
+	* src/display.c (event_callback, meta_display_begin_grab_op):
+	* src/window.c (window_activate, meta_window_configure_request, ):
+	Only raise the window if in raise_on_click mode.
+
+	* src/display.c (meta_display_begin_grab_op,
+	  meta_display_end_grab_op, meta_display_check_threshold_reached):
+	* src/display.h (struct MetaDisplay):
+	* src/window.c (meta_window_handle_mouse_grab_op_event):
+	if not in raise-on-click mode only raise on button release if the
+	click didn't start a move or resize operation; needs a few extra
+	MetaDisplay fields to handle this
+
+	* src/core.c (meta_core_user_lower_and_unfocus):
+	no need to do the MRU shuffling if not maintaining the stacking
+	order == MRU order invariant
+
+	* src/frames.c (meta_frames_button_press_event):
+	* src/window.c (meta_window_begin_grab_op):
+	remove an unneeded window raising that is already handled elsewhere
+
+2006-01-10  Elijah Newren  <newren@gmail.com>
+
 	Don't "steal" focus from terminal windows for new window mappings
 	as the difference in usage between terminals and other apps seems
 	to suggest this difference in treatment.  See #326159 for details,

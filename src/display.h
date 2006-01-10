@@ -261,6 +261,8 @@ struct _MetaDisplay
   MetaRectangle grab_wireframe_rect;
   MetaRectangle grab_wireframe_last_xor_rect;
   MetaRectangle grab_initial_window_pos;
+  int         grab_initial_x, grab_initial_y;
+  gboolean    grab_threshold_movement_reached;
   MetaResizePopup *grab_resize_popup;
   GTimeVal    grab_last_moveresize_time;
   Time        grab_motion_notify_time;
@@ -441,6 +443,9 @@ gboolean meta_display_begin_grab_op (MetaDisplay *display,
 void     meta_display_end_grab_op   (MetaDisplay *display,
                                      Time         timestamp);
 
+void    meta_display_check_threshold_reached (MetaDisplay *display,
+                                              int          x,
+                                              int          y);
 void     meta_display_grab_window_buttons    (MetaDisplay *display,
                                               Window       xwindow);
 void     meta_display_ungrab_window_buttons  (MetaDisplay *display,

@@ -1953,17 +1953,19 @@ meta_window_show (MetaWindow *window)
               ensure_mru_position_after (window, focus_window);
 
               /* We don't want the denied-focus window to obscure the focus
-               * window, and in click-to-focus-mode we want to maintain the
-               * invariant that MRU order == stacking order.  The need for
-               * this if comes from the fact that in sloppy/mouse focus the
-               * focus window may not overlap other windows and also can be
-               * considered "below" them; this combination means that placing
-               * the denied-focus window "below" the focus window in the
-               * stack when it doesn't overlap it confusingly places that new
-               * window below a lot of other windows.
+               * window, and if we're in both click-to-focus mode and
+               * raise-on-click mode then we want to maintain the invariant
+               * that MRU order == stacking order.  The need for this if
+               * comes from the fact that in sloppy/mouse focus the focus
+               * window may not overlap other windows and also can be
+               * considered "below" them; this combination means that
+               * placing the denied-focus window "below" the focus window
+               * in the stack when it doesn't overlap it confusingly places
+               * that new window below a lot of other windows.
                */
               if (overlap || 
-                  meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
+                  (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK &&
+                   meta_prefs_get_raise_on_click ()))
                 meta_window_stack_just_below (window, focus_window);
 
               /* If the window will be obscured by the focus window, then the
@@ -2466,8 +2468,11 @@ window_activate (MetaWindow     *window,
     meta_window_unshade (window);
 
   unminimize_window_and_all_transient_parents (window);
-  
-  meta_window_raise (window);
+
+  if (meta_prefs_get_raise_on_click () ||
+      source_indication == META_CLIENT_TYPE_PAGER)
+    meta_window_raise (window);
+
   meta_topic (META_DEBUG_FOCUS,
               "Focusing window %s due to activation\n",
               window->desc);
@@ -4217,7 +4222,8 @@ meta_window_configure_request (MetaWindow *window,
     {
       MetaWindow *active_window;
       active_window = window->display->expected_focus_window;
-      if (meta_prefs_get_disable_workarounds ())
+      if (meta_prefs_get_disable_workarounds () ||
+          !meta_prefs_get_raise_on_click ())
         {
           meta_topic (META_DEBUG_STACK,
                       "%s sent an xconfigure stacking request; this is "
@@ -7156,6 +7162,9 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
   switch (event->type)
     {
     case ButtonRelease:
+      meta_display_check_threshold_reached (window->display,
+                                            event->xbutton.x_root,
+                                            event->xbutton.y_root);
       /* If the user was snap moving then ignore the button release
        * because they may have let go of shift before releasing the
        * mouse button and they almost certainly do not want a
@@ -7184,6 +7193,9 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
       break;    
 
     case MotionNotify:
+      meta_display_check_threshold_reached (window->display,
+                                            event->xmotion.x_root,
+                                            event->xmotion.y_root);
       if (meta_grab_op_is_moving (window->display->grab_op))
         {
           if (event->xmotion.root == window->screen->xroot)
@@ -7680,8 +7692,6 @@ meta_window_begin_grab_op (MetaWindow *window,
 
   grab_start_serial = XNextRequest (window->display->xdisplay);
   
-  meta_window_raise (window);
-
   warp_grab_pointer (window,
                      op, &x, &y);
 

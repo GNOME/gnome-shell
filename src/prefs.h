@@ -30,6 +30,7 @@ typedef enum
 {
   META_PREF_MOUSE_BUTTON_MODS,
   META_PREF_FOCUS_MODE,
+  META_PREF_RAISE_ON_CLICK,
   META_PREF_ACTION_DOUBLE_CLICK_TITLEBAR,
   META_PREF_AUTO_RAISE,
   META_PREF_AUTO_RAISE_DELAY,
@@ -66,6 +67,7 @@ const char* meta_preference_to_string (MetaPreference pref);
 
 MetaVirtualModifier         meta_prefs_get_mouse_button_mods  (void);
 MetaFocusMode               meta_prefs_get_focus_mode         (void);
+gboolean                    meta_prefs_get_raise_on_click     (void);
 const char*                 meta_prefs_get_theme              (void);
 /* returns NULL if GTK default should be used */
 const PangoFontDescription* meta_prefs_get_titlebar_font      (void);

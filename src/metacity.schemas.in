@@ -62,6 +62,30 @@
     </schema>
 
     <schema>
+      <key>/schemas/apps/metacity/general/raise_on_click</key>
+      <applyto>/apps/metacity/general/raise_on_click</applyto>
+      <owner>metacity</owner>
+      <type>bool</type>
+      <default>true</default>
+      <locale name="C">
+         <short>Whether raising should be a side-effect of other user
+                interactions</short>
+         <long>
+           Many actions (e.g. clicking in the client area, moving or
+           resizing the window) normally raise the window as a side-effect.
+           Set this option to false to decouple raising from other user
+           interactions.  When false, windows can still be raised by an
+           alt-left-click anywhere on the window or a normal click on the
+           window decorations (assuming such clicks aren't used to start a
+           move or resize operation).  Special messages, such as activation
+           requests from pagers, may also raise windows when this option is
+           false.  This option is currently disabled in click-to-focus
+           mode.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
       <key>/schemas/apps/metacity/general/action_double_click_titlebar</key>
       <applyto>/apps/metacity/general/action_double_click_titlebar</applyto>
       <owner>metacity</owner>

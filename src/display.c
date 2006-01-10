@@ -1656,15 +1656,11 @@ event_callback (XEvent   *event,
                */
               if (!frame_was_receiver)
                 {
-                  /* Raise on clicking the client area always or only
-                   * in click to focus mode? The debate rages.
-                   * Feel free to change TRUE to FALSE or vice versa
-                   */
-                  if (TRUE /* meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK */) 
+                  if (meta_prefs_get_raise_on_click ()) 
                     meta_window_raise (window);
                   else
                     meta_topic (META_DEBUG_FOCUS,
-                                "Not raising window on click due to mouse/sloppy focus mode\n");
+                                "Not raising window on click due to don't-raise-on-click option\n");
 
                   /* Don't focus panels--they must explicitly request focus.
                    * See bug 160470
@@ -1735,6 +1731,8 @@ event_callback (XEvent   *event,
             }
           else if (event->xbutton.button == 3)
             {
+              if (meta_prefs_get_raise_on_click ())
+                meta_window_raise (window);
               meta_window_show_menu (window,
                                      event->xbutton.x_root,
                                      event->xbutton.y_root,
@@ -3227,6 +3225,19 @@ meta_display_begin_grab_op (MetaDisplay *display,
       return FALSE;
     }
 
+  if (window &&
+      (meta_grab_op_is_moving (op) || meta_grab_op_is_resizing (op)))
+    {
+      if (meta_prefs_get_raise_on_click ())
+        meta_window_raise (window);
+      else
+        {
+          display->grab_initial_x = root_x;
+          display->grab_initial_y = root_y;
+          display->grab_threshold_movement_reached = FALSE;
+        }
+    }
+
   /* We'll ignore any events < this serial. */
   if (pointer_already_grabbed)
     display->grab_start_serial = event_serial;
@@ -3470,6 +3481,21 @@ meta_display_end_grab_op (MetaDisplay *display,
   if (display->grab_window != NULL)
     display->grab_window->shaken_loose = FALSE;
   
+  if (display->grab_window != NULL &&
+      !meta_prefs_get_raise_on_click () &&
+      (meta_grab_op_is_moving (display->grab_op) ||
+       meta_grab_op_is_resizing (display->grab_op)))
+    {
+      /* Only raise the window in orthogonal raise
+       * ('do-not-raise-on-click') mode if the user didn't try to move
+       * or resize the given window by at least a threshold amount.
+       * For raise on click mode, the window was raised at the
+       * beginning of the grab_op.
+       */
+      if (!display->grab_threshold_movement_reached)
+        meta_window_raise (display->grab_window);
+    }
+
   if (GRAB_OP_IS_WINDOW_SWITCH (display->grab_op) ||
       display->grab_op == META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING)
     {
@@ -3572,6 +3598,20 @@ meta_display_end_grab_op (MetaDisplay *display,
       g_source_remove (display->grab_resize_timeout_id);
       display->grab_resize_timeout_id = 0;
     }
+}
+
+void
+meta_display_check_threshold_reached (MetaDisplay *display,
+                                      int          x,
+                                      int          y)
+{
+  /* Don't bother doing the check again if we've already reached the threshold */
+  if (display->grab_threshold_movement_reached)
+    return;
+
+  if (ABS (display->grab_initial_x - x) >= 8 ||
+      ABS (display->grab_initial_y - y) >= 8)
+    display->grab_threshold_movement_reached = TRUE;
 }
 
 static void

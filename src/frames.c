@@ -1261,13 +1261,11 @@ meta_frames_button_press_event (GtkWidget      *widget,
   
   control = get_control (frames, frame, event->x, event->y);
 
-  /* raise/focus on click, even if click was on client area */
+  /* focus on click, even if click was on client area */
   if (event->button == 1 &&
       !(control == META_FRAME_CONTROL_MINIMIZE ||
         control == META_FRAME_CONTROL_DELETE))
     {
-      meta_core_user_raise (gdk_display,
-                            frame->xwindow);
       meta_topic (META_DEBUG_FOCUS,
                   "Focusing window with frame 0x%lx due to button 1 press\n",
                   frame->xwindow);
