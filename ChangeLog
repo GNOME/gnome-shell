@@ -1,5 +1,11 @@
 2006-01-09  Elijah Newren  <newren@gmail.com>
 
+	* src/edge-resistance.c (apply_edge_resistance): Make extra
+	timeout edge resistance apply even if one edge already offscreen.
+	Fixes another of the zillions of issues covered in #321905.
+
+2006-01-09  Elijah Newren  <newren@gmail.com>
+
 	Allow edge resistance at both sides of a window and also when
 	edges don't overlap but are a single pixel away from doing so.
 	Fixes one of the zillions of issues covered in #321905.

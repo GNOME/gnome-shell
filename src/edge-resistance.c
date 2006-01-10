@@ -495,12 +495,10 @@ apply_edge_resistance (MetaWindow                *window,
                   timeout_length_ms = TIMEOUT_RESISTANCE_LENGTH_MS_WINDOW;
                   break;
                 case META_EDGE_XINERAMA:
-                  if (window->require_on_single_xinerama)
-                    timeout_length_ms = TIMEOUT_RESISTANCE_LENGTH_MS_XINERAMA;
+                  timeout_length_ms = TIMEOUT_RESISTANCE_LENGTH_MS_XINERAMA;
                   break;
                 case META_EDGE_SCREEN:
-                  if (window->require_fully_onscreen)
-                    timeout_length_ms = TIMEOUT_RESISTANCE_LENGTH_MS_SCREEN;
+                  timeout_length_ms = TIMEOUT_RESISTANCE_LENGTH_MS_SCREEN;
                   break;
                 }
 
