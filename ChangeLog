@@ -1,5 +1,11 @@
 2006-01-09  Elijah Newren  <newren@gmail.com>
 
+	* src/edge-resistance.c (apply_edge_resistance): Remove the
+	"pull-away" edge resistance.  Fixes another of the zillions of
+	issues covered in #321905.
+
+2006-01-09  Elijah Newren  <newren@gmail.com>
+
 	* src/edge-resistance.c (apply_edge_resistance): Revert to the old
 	edge resistance behavior for keyboard movement/resizing based
 	resistance.  Not only makes the code much simpler and shorter, but
