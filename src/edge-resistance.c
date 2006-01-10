@@ -224,9 +224,7 @@ find_nearest_position (const GArray        *edges,
   /* Start the search at mid */
   edge = g_array_index (edges, MetaEdge*, mid);
   compare = horizontal ? edge->rect.x : edge->rect.y;
-  edges_align = horizontal ? 
-    meta_rectangle_vert_overlap (&edge->rect, new_rect) :
-    meta_rectangle_horiz_overlap (&edge->rect, new_rect);
+  edges_align = meta_rectangle_edge_aligns (new_rect, edge);
   if (edges_align &&
       (!only_forward || !points_on_same_side (position, compare, old_position)))
     {
@@ -322,6 +320,7 @@ static int
 apply_edge_resistance (MetaWindow                *window,
                        int                        old_pos,
                        int                        new_pos,
+                       const MetaRectangle       *old_rect,
                        const MetaRectangle       *new_rect,
                        GArray                    *edges,
                        ResistanceDataForAnEdge   *resistance_data,
@@ -384,9 +383,8 @@ apply_edge_resistance (MetaWindow                *window,
       int       compare = xdir ? edge->rect.x : edge->rect.y;
 
       /* Find out if this edge is relevant */
-      edges_align = xdir ? 
-        meta_rectangle_vert_overlap (&edge->rect, new_rect) :
-        meta_rectangle_horiz_overlap (&edge->rect, new_rect);
+      edges_align = meta_rectangle_edge_aligns (new_rect, edge)  ||
+                    meta_rectangle_edge_aligns (old_rect, edge);
 
       /* Nothing to do unless the edges align */
       if (!edges_align)
@@ -578,50 +576,21 @@ static int
 apply_edge_snapping (int                  old_pos,
                      int                  new_pos,
                      const MetaRectangle *new_rect,
-                     GArray              *edges1,
-                     GArray              *edges2,
+                     GArray              *edges,
                      gboolean             xdir,
                      gboolean             keyboard_op)
 {
-  int pos1, pos2;
-  int best;
+  int snap_to;
 
   if (old_pos == new_pos)
     return new_pos;
 
-  /* We look at two sets of edges (e.g. left and right) individually
-   * finding the nearest position among each set of edges and then later
-   * finding the better of these two bests.
-   */
-  pos1 = find_nearest_position (edges1,
-                                new_pos,
-                                old_pos,
-                                new_rect,
-                                xdir,
-                                keyboard_op);
-  pos2 = find_nearest_position (edges2,
-                                new_pos,
-                                old_pos,
-                                new_rect,
-                                xdir,
-                                keyboard_op);
-
-  /* For keyboard snapping, ignore either pos1 or pos2 if they aren't in the
-   * right direction.
-   */
-  if (keyboard_op)
-    {
-      if (!points_on_same_side (old_pos, pos1, new_pos))
-        return pos2;
-      if (!points_on_same_side (old_pos, pos2, new_pos))
-        return pos1;
-    }
-
-  /* Find the better of pos1 and pos2 and return it */
-  if (ABS (pos1 - new_pos) < ABS (pos2 - new_pos))
-    best = pos1;
-  else
-    best = pos2;
+  snap_to = find_nearest_position (edges,
+                                   new_pos,
+                                   old_pos,
+                                   new_rect,
+                                   xdir,
+                                   keyboard_op);
 
   /* If mouse snap-moving, the user could easily accidentally move just a
    * couple pixels in a direction they didn't mean to move; so ignore snap
@@ -629,12 +598,12 @@ apply_edge_snapping (int                  old_pos,
    * anyway.
    */
   if (!keyboard_op &&
-      ABS (best - old_pos) >= 8 &&
+      ABS (snap_to - old_pos) >= 8 &&
       ABS (new_pos - old_pos) < 8)
     return old_pos;
   else
-    /* Otherwise, return the best of the snapping positions found */
-    return best;
+    /* Otherwise, return the snapping position found */
+    return snap_to;
 }
 
 /* This function takes the position (including any frame) of the window and
@@ -673,14 +642,12 @@ apply_edge_resistance_to_each_side (MetaDisplay         *display,
                                         BOX_LEFT (*new_outer),
                                         new_outer,
                                         edge_data->left_edges,
-                                        edge_data->right_edges,
                                         TRUE,
                                         keyboard_op);
 
       new_right  = apply_edge_snapping (BOX_RIGHT (*old_outer),
                                         BOX_RIGHT (*new_outer),
                                         new_outer,
-                                        edge_data->left_edges,
                                         edge_data->right_edges,
                                         TRUE,
                                         keyboard_op);
@@ -689,14 +656,12 @@ apply_edge_resistance_to_each_side (MetaDisplay         *display,
                                         BOX_TOP (*new_outer),
                                         new_outer,
                                         edge_data->top_edges,
-                                        edge_data->bottom_edges,
                                         FALSE,
                                         keyboard_op);
 
       new_bottom = apply_edge_snapping (BOX_BOTTOM (*old_outer),
                                         BOX_BOTTOM (*new_outer),
                                         new_outer,
-                                        edge_data->top_edges,
                                         edge_data->bottom_edges,
                                         FALSE,
                                         keyboard_op);
@@ -707,6 +672,7 @@ apply_edge_resistance_to_each_side (MetaDisplay         *display,
       new_left   = apply_edge_resistance (window,
                                           BOX_LEFT (*old_outer),
                                           BOX_LEFT (*new_outer),
+                                          old_outer,
                                           new_outer,
                                           edge_data->left_edges,
                                           &edge_data->left_data,
@@ -716,6 +682,7 @@ apply_edge_resistance_to_each_side (MetaDisplay         *display,
       new_right  = apply_edge_resistance (window,
                                           BOX_RIGHT (*old_outer),
                                           BOX_RIGHT (*new_outer),
+                                          old_outer,
                                           new_outer,
                                           edge_data->right_edges,
                                           &edge_data->right_data,
@@ -725,6 +692,7 @@ apply_edge_resistance_to_each_side (MetaDisplay         *display,
       new_top    = apply_edge_resistance (window,
                                           BOX_TOP (*old_outer),
                                           BOX_TOP (*new_outer),
+                                          old_outer,
                                           new_outer,
                                           edge_data->top_edges,
                                           &edge_data->top_data,
@@ -734,6 +702,7 @@ apply_edge_resistance_to_each_side (MetaDisplay         *display,
       new_bottom = apply_edge_resistance (window,
                                           BOX_BOTTOM (*old_outer),
                                           BOX_BOTTOM (*new_outer),
+                                          old_outer,
                                           new_outer,
                                           edge_data->bottom_edges,
                                           &edge_data->bottom_data,
@@ -764,19 +733,24 @@ meta_display_cleanup_edges (MetaDisplay *display)
   for (i = 0; i < 4; i++)
     {
       GArray *tmp = NULL;
+      MetaDirection dir;
       switch (i)
         {
         case 0:
           tmp = edge_data->left_edges;
+          dir = META_DIRECTION_LEFT;
           break;
         case 1:
           tmp = edge_data->right_edges;
+          dir = META_DIRECTION_RIGHT;
           break;
         case 2:
           tmp = edge_data->top_edges;
+          dir = META_DIRECTION_TOP;
           break;
         case 3:
           tmp = edge_data->bottom_edges;
+          dir = META_DIRECTION_BOTTOM;
           break;
         default:
           g_assert_not_reached ();
@@ -785,7 +759,8 @@ meta_display_cleanup_edges (MetaDisplay *display)
       for (j = 0; j < tmp->len; j++)
         {
           MetaEdge *edge = g_array_index (tmp, MetaEdge*, j);
-          if (edge->edge_type == META_EDGE_WINDOW)
+          if (edge->edge_type == META_EDGE_WINDOW &&
+              edge->side_type == dir)
             g_free (edge);
         }
     }
@@ -820,7 +795,7 @@ stupid_sort_requiring_extra_pointer_dereference (gconstpointer a,
 {
   const MetaEdge * const *a_edge = a;
   const MetaEdge * const *b_edge = b;
-  return meta_rectangle_edge_cmp (*a_edge, *b_edge);
+  return meta_rectangle_edge_cmp_ignore_type (*a_edge, *b_edge);
 }
 
 static void
@@ -889,24 +864,23 @@ cache_edges (MetaDisplay *display,
   edge_data->left_edges   = g_array_sized_new (FALSE,
                                                FALSE,
                                                sizeof(MetaEdge*),
-                                               num_left);
+                                               num_left + num_right);
   edge_data->right_edges  = g_array_sized_new (FALSE,
                                                FALSE,
                                                sizeof(MetaEdge*),
-                                               num_right);
+                                               num_left + num_right);
   edge_data->top_edges    = g_array_sized_new (FALSE,
                                                FALSE,
                                                sizeof(MetaEdge*),
-                                               num_top);
+                                               num_top + num_bottom);
   edge_data->bottom_edges = g_array_sized_new (FALSE,
                                                FALSE,
                                                sizeof(MetaEdge*),
-                                               num_bottom);
+                                               num_top + num_bottom);
 
   /*
    * 3rd: Add the edges to the arrays
    */
-  num_left = num_right = num_top = num_bottom = 0;
   for (i = 0; i < 3; i++)
     {
       tmp = NULL;
@@ -931,15 +905,13 @@ cache_edges (MetaDisplay *display,
           switch (edge->side_type)
             {
             case META_DIRECTION_LEFT:
-              g_array_append_val (edge_data->left_edges, edge);
-              break;
             case META_DIRECTION_RIGHT:
+              g_array_append_val (edge_data->left_edges, edge);
               g_array_append_val (edge_data->right_edges, edge);
               break;
             case META_DIRECTION_TOP:
-              g_array_append_val (edge_data->top_edges, edge);
-              break;
             case META_DIRECTION_BOTTOM:
+              g_array_append_val (edge_data->top_edges, edge);
               g_array_append_val (edge_data->bottom_edges, edge);
               break;
             default:

@@ -1012,6 +1012,30 @@ meta_rectangle_find_linepoint_closest_to_point (double x1,
 /*                                                                         */
 /***************************************************************************/
 
+gboolean
+meta_rectangle_edge_aligns (const MetaRectangle *rect, const MetaEdge *edge)
+{
+  /* The reason for the usage of <= below instead of < is because we are
+   * interested in in-the-way-or-adject'ness.  So, a left (i.e. vertical
+   * edge) occupying y positions 0-9 (which has a y of 0 and a height of
+   * 10) and a rectangle with top at y=10 would be considered to "align" by
+   * this function.
+   */
+  switch (edge->side_type)
+    {
+    case META_DIRECTION_LEFT:
+    case META_DIRECTION_RIGHT:
+      return BOX_TOP (*rect)      <= BOX_BOTTOM (edge->rect) &&
+             BOX_TOP (edge->rect) <= BOX_BOTTOM (*rect);
+    case META_DIRECTION_TOP:
+    case META_DIRECTION_BOTTOM:
+      return BOX_LEFT (*rect)      <= BOX_RIGHT (edge->rect) &&
+             BOX_LEFT (edge->rect) <= BOX_RIGHT (*rect);
+    }
+
+  g_assert_not_reached ();
+}
+
 static GList*
 get_rect_minus_overlap (const GList   *rect_in_list, 
                         MetaRectangle *overlap)
@@ -1175,6 +1199,50 @@ get_disjoint_strut_list_in_region (const GSList        *old_struts,
   return struts;
 }
 
+gint
+meta_rectangle_edge_cmp_ignore_type (gconstpointer a, gconstpointer b)
+{
+  const MetaEdge *a_edge_rect = (gconstpointer) a;
+  const MetaEdge *b_edge_rect = (gconstpointer) b;
+
+  /* Edges must be both vertical or both horizontal, or it doesn't make
+   * sense to compare them.
+   */
+  g_assert ((a_edge_rect->rect.width  == 0 && b_edge_rect->rect.width == 0) ||
+            (a_edge_rect->rect.height == 0 && b_edge_rect->rect.height == 0));
+
+  int a_compare, b_compare;
+
+  a_compare = b_compare = 0;  /* gcc-3.4.2 sucks at figuring initialized'ness */
+
+  if (a_edge_rect->side_type == META_DIRECTION_LEFT ||
+      a_edge_rect->side_type == META_DIRECTION_RIGHT)
+    {
+      a_compare = a_edge_rect->rect.x;
+      b_compare = b_edge_rect->rect.x;
+      if (a_compare == b_compare)
+        {
+          a_compare = a_edge_rect->rect.y;
+          b_compare = b_edge_rect->rect.y;
+        }
+    }
+  else if (a_edge_rect->side_type == META_DIRECTION_TOP ||
+           a_edge_rect->side_type == META_DIRECTION_BOTTOM)
+    {
+      a_compare = a_edge_rect->rect.y;
+      b_compare = b_edge_rect->rect.y;
+      if (a_compare == b_compare)
+        {
+          a_compare = a_edge_rect->rect.x;
+          b_compare = b_edge_rect->rect.x;
+        }
+    }
+  else
+    g_assert ("Some idiot wanted to sort sides of different types.\n");
+
+  return a_compare - b_compare; /* positive value denotes a > b ... */
+}
+
 /* To make things easily testable, provide a nice way of sorting edges */
 gint
 meta_rectangle_edge_cmp (gconstpointer a, gconstpointer b)
@@ -1188,32 +1256,7 @@ meta_rectangle_edge_cmp (gconstpointer a, gconstpointer b)
   b_compare = b_edge_rect->side_type;
 
   if (a_compare == b_compare)
-    {
-      if (a_edge_rect->side_type == META_DIRECTION_LEFT ||
-          a_edge_rect->side_type == META_DIRECTION_RIGHT)
-        {
-          a_compare = a_edge_rect->rect.x;
-          b_compare = b_edge_rect->rect.x;
-          if (a_compare == b_compare)
-            {
-              a_compare = a_edge_rect->rect.y;
-              b_compare = b_edge_rect->rect.y;
-            }
-        }
-      else if (a_edge_rect->side_type == META_DIRECTION_TOP ||
-               a_edge_rect->side_type == META_DIRECTION_BOTTOM)
-        {
-          a_compare = a_edge_rect->rect.y;
-          b_compare = b_edge_rect->rect.y;
-          if (a_compare == b_compare)
-            {
-              a_compare = a_edge_rect->rect.x;
-              b_compare = b_edge_rect->rect.x;
-            }
-        }
-      else
-        g_assert ("Some idiot wanted to sort sides of different types.\n");
-    }
+    return meta_rectangle_edge_cmp_ignore_type (a, b);
 
   return a_compare - b_compare; /* positive value denotes a > b ... */
 }

@@ -1,5 +1,39 @@
 2006-01-09  Elijah Newren  <newren@gmail.com>
 
+	Allow edge resistance at both sides of a window and also when
+	edges don't overlap but are a single pixel away from doing so.
+	Fixes one of the zillions of issues covered in #321905.
+
+	* src/boxes.[ch]:
+	(meta_rectangle_edges_align):
+	new function to handle the overlap or off by one determining
+	whether edge resistance should kick in for an edge.
+
+	(meta_rectangle_edge_cmp_ignore_type):
+	new function to sort edges but ignore the type so that e.g. left &
+	right edges of windows can be used interchangeably.
+
+	(meta_rectangle_edge_cmp): 
+	now uses meta_rectangle_edge_cmp_ignore_type() to do most the work
+	and just adds an extra condition
+
+	* src/edge-resistance.c:
+	(find_nearest_position):
+	use meta_rectangle_edges_align() now to determine whether the
+	edges align,
+
+	(apply_edge_resistance, apply_edge_resistance_to_each_side):
+	have the edge resistance kick in if either the beginning or ending
+	positions would cause overlap in the given direction -- fixes an
+	uncommon but annoying corner case,
+	
+	(apply_edge_snapping, apply_edge_resistance_to_each_side,
+	 meta_display_cleanup_edges,
+	 stupid_sort_requiring_extra_pointer_dereference, cache_edges):
+	mix edges from both sides now
+	
+2006-01-09  Elijah Newren  <newren@gmail.com>
+
 	Plug a few leaks.  Fixes #309178.
 
 	* src/main.c (main): remove an unneeded g_set_prgname() call, free

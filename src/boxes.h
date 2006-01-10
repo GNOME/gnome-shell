@@ -211,10 +211,22 @@ void meta_rectangle_find_linepoint_closest_to_point (double x1,    double y1,
 /*                                                                         */
 /***************************************************************************/
 
+/* Return whether an edge overlaps or is adjacent to the rectangle in the
+ * nonzero-width dimension of the edge.
+ */
+gboolean meta_rectangle_edge_aligns (const MetaRectangle *rect, 
+                                     const MetaEdge      *edge);
+
 /* Compare two edges, so that sorting functions can put a list of edges in
  * canonical order.
  */
 gint   meta_rectangle_edge_cmp (gconstpointer a, gconstpointer b);
+
+/* Compare two edges, so that sorting functions can put a list of edges in
+ * order.  This function doesn't separate left edges first, then right edges,
+ * etc., but rather compares only upon location.
+ */
+gint   meta_rectangle_edge_cmp_ignore_type (gconstpointer a, gconstpointer b);
 
 /* Removes an parts of edges in the given list that intersect any box in the
  * given rectangle list.  Returns the result.
