@@ -1,5 +1,9 @@
 2006-01-10  Elijah Newren  <newren@gmail.com>
 
+	* NEWS:	2.13.13 release
+
+2006-01-10  Elijah Newren  <newren@gmail.com>
+
 	* src/bell.c:
 	* src/boxes.c:
 	* src/boxes.h:

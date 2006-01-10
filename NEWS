@@ -1,3 +1,42 @@
+2.13.13
+==
+
+Thanks to Jens Granseuer, Björn Lindqvist, and Elijah Newren for
+improvements in this release.
+
+ - Remove C99 style variable initiailization (Jens) [#322622]
+ - Fix a logic error (Björn) [#322149]
+ - Plug a few leaks (Elijah) [#309178]
+ - Allow edge resistance at both sides of a window and also when edges
+   don't overlap but are a single pixel away from doing so (Elijah)
+   [part of #321905]
+ - Remove the timeout resistance at screen/xinerama edges (Elijah)
+   [part of #321905]
+ - Revert to the old edge resistance behavior for keyboard
+   movement/resizing based resistance (Elijah) [part of #321905]
+ - Remove the "pull-away" edge resistance (Elijah) [part of #321905]
+ - Avoid crashing when visual bell is in use and focus window is
+   closed (Elijah) [#322031]
+ - Be more strict about what is considered a valid region with partial
+   struts (Elijah) [#322070]
+ - Fix reduced resources resize handling for windows with sizing or
+   resizing constraints (Elijah) [#325774]
+ - Fix window outline for minimized windows when using alt-esc
+   (Elijah) [#325092]
+ - Make the taskbar less flash happy and fix up some related stacking
+   issues (Elijah) [#326035]
+ - More thorough handling of source indication (Elijah) [part of #326041]
+ - Don't "steal" focus from terminal windows for new window mappings
+   as the difference in usage between terminals and other apps seems
+   to suggest this difference in treatment.  See bug #326159 for
+   details, feedback welcome (Elijah) [#326159]
+ - Add a raise on click option, basically only because all the major
+   distros are patching it in anyway (though each and every one of
+   them has bugs in their implementations).  (Elijah) [#326156]
+
+Translations
+  Kjartan Maraas (nb), Kjartan Maraas (no)
+
 2.13.8
 ==
 
