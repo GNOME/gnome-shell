@@ -1,5 +1,11 @@
 2006-01-09  Elijah Newren  <newren@gmail.com>
 
+	* src/bell.c (meta_bell_notify_frame_destroy): Use the right
+	function to remove the timeout so that we don't crash if removed
+	at an inopportune time.  Fixes #322031.
+
+2006-01-09  Elijah Newren  <newren@gmail.com>
+
 	* src/edge-resistance.c (apply_edge_resistance): Remove the
 	"pull-away" edge resistance.  Fixes another of the zillions of
 	issues covered in #321905.

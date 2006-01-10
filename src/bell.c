@@ -252,5 +252,5 @@ void
 meta_bell_notify_frame_destroy (MetaFrame *frame)
 {
   if (frame->is_flashing) 
-    g_idle_remove_by_data (frame);
+    g_source_remove_by_funcs_user_data (&g_timeout_funcs, frame);
 }
