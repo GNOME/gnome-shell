@@ -2354,19 +2354,28 @@ unminimize_window_and_all_transient_parents (MetaWindow *window)
   meta_window_foreach_ancestor (window, unminimize_func, NULL);
 }
 
-void
-meta_window_activate (MetaWindow *window,
-                      guint32     timestamp)
+static void
+window_activate (MetaWindow     *window,
+                 guint32         timestamp,
+                 MetaClientType  source_indication)
 {
+  gboolean can_ignore_outdated_timestamps;
   meta_topic (META_DEBUG_FOCUS,
-              "_NET_ACTIVE_WINDOW message sent for %s at time %lu.\n",
-              window->desc, (unsigned long)timestamp);
+              "_NET_ACTIVE_WINDOW message sent for %s at time %lu "
+              "by client type %u.\n",
+              window->desc, (unsigned long)timestamp, source_indication);
 
-  /* Older EWMH spec didn't specify a timestamp, so it can be 0 and we
-   * have to treat that as a new request.
+  /* Older EWMH spec didn't specify a timestamp; we decide to honor these only
+   * if the app specifies that it is a pager.
+   *
+   * Update: Unconditionally honor 0 timestamps for now; we'll fight
+   * that battle later.  Just remove the "FALSE &&" in order to only
+   * honor 0 timestamps for pagers.
    */
+  can_ignore_outdated_timestamps =
+    (timestamp != 0 || (FALSE && source_indication != META_CLIENT_TYPE_PAGER));
   if (XSERVER_TIME_IS_BEFORE (timestamp, window->display->last_user_time) &&
-      timestamp != 0)
+      can_ignore_outdated_timestamps)
     {
       meta_topic (META_DEBUG_FOCUS,
                   "last_user_time (%lu) is more recent; ignoring "
@@ -2376,9 +2385,13 @@ meta_window_activate (MetaWindow *window,
       set_net_wm_state (window);
       return;
     }
-  
-  if (timestamp == 0)
+
+  /* For those stupid pagers, get a valid timestamp and show a warning */  
+  if (timestamp == 0) {
+    meta_warning ("meta_window_activate called by a pager with a 0 timestamp; "
+                  "the pager needs to be fixed.\n");
     timestamp = meta_display_get_current_time_roundtrip (window->display);
+  }
 
   meta_window_set_user_time (window, timestamp);
 
@@ -2401,6 +2414,21 @@ meta_window_activate (MetaWindow *window,
               "Focusing window %s due to activation\n",
               window->desc);
   meta_window_focus (window, timestamp);
+}
+
+/* This function exists since most of the functionality in window_activate
+ * is useful for Metacity, but Metacity shouldn't need to specify a client
+ * type for itself.  ;-)
+ */
+void
+meta_window_activate (MetaWindow     *window,
+                      guint32         timestamp)
+{
+  /* We're not really a pager, but the behavior we want is the same as if
+   * we were such.  If we change the pager behavior later, we could revisit
+   * this and just add extra flags to window_activate.
+   */
+  window_activate (window, timestamp, META_CLIENT_TYPE_PAGER);
 }
 
 /* Manually fix all the weirdness explained in the big comment at the
@@ -4548,25 +4576,23 @@ meta_window_client_message (MetaWindow *window,
   else if (event->xclient.message_type ==
            display->atom_net_active_window)
     {
+      MetaClientType source_indication;
+      guint32        timestamp;
+
       meta_verbose ("_NET_ACTIVE_WINDOW request for window '%s', activating\n",
                     window->desc);
 
-      if (event->xclient.data.l[0] != 0)
-        {
-          /* Client supports newer _NET_ACTIVE_WINDOW with a
-           * convenient timestamp
-           */
-          meta_window_activate (window,
-                                event->xclient.data.l[1]);
-          
-        }
-      else
-        {
-          /* Client using older EWMH _NET_ACTIVE_WINDOW without a
-           * timestamp
-           */
-          meta_window_activate (window, meta_display_get_current_time (window->display));
-        }
+      source_indication = event->xclient.data.l[0];
+      timestamp = event->xclient.data.l[1];
+
+      if (source_indication > META_CLIENT_TYPE_MAX_RECOGNIZED)
+        source_indication = META_CLIENT_TYPE_UNKNOWN;
+
+      if (timestamp == 0)
+        /* Client using older EWMH _NET_ACTIVE_WINDOW without a timestamp */
+        timestamp = meta_display_get_current_time (window->display);
+
+      window_activate (window, timestamp, source_indication);
       return TRUE;
     }
   

@@ -1,5 +1,19 @@
 2006-01-09  Elijah Newren  <newren@gmail.com>
 
+	More thorough handling of source indication.  Part of #326041.
+	
+	* src/window.c (window_activate): new function based off the old
+	meta_window_activate but which also takes source indication into
+	account, (meta_window_active): just call window_activate() with
+	the necessary source indication to get the behavior wanted,
+	(meta_window_client_message): check source indication too for
+	_net_active_window messages
+
+	* src/window.h (enum MetaClientType): convenience enum for source
+	indication handling
+	
+2006-01-09  Elijah Newren  <newren@gmail.com>
+
 	Make the taskbar less flash happy and fix up some related stacking
 	issues.  #326035.
 

@@ -58,6 +58,13 @@ typedef enum
   META_MAXIMIZE_VERTICAL   = 1 << 1
 } MetaMaximizeFlags;
 
+typedef enum {
+  META_CLIENT_TYPE_UNKNOWN = 0,
+  META_CLIENT_TYPE_APPLICATION = 1,
+  META_CLIENT_TYPE_PAGER = 2,
+  META_CLIENT_TYPE_MAX_RECOGNIZED = 2
+} MetaClientType;
+
 struct _MetaStruts
 {
   /* struts */
