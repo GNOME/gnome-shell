@@ -1,3 +1,10 @@
+2006-01-09  Elijah Newren  <newren@gmail.com>
+
+	Plug a few leaks.  Fixes #309178.
+
+	* src/main.c (main): remove an unneeded g_set_prgname() call, free
+	some strings allocated by the GOptions parsing
+	
 2006-01-02  Elijah Newren  <newren@gmail.com>
 
 	Patch from Björn Lindqvist to fix a logic error.  #322149.

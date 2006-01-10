@@ -330,8 +330,6 @@ main (int argc, char **argv)
   sigset_t empty_mask;
   MetaArguments meta_args;
 
-  g_set_prgname (argv[0]);
-  
   if (setlocale (LC_ALL, "") == NULL)
     meta_warning ("Locale not understood by C library, internationalization will not work\n");
   
@@ -462,6 +460,16 @@ main (int argc, char **argv)
    */
   if (!meta_args.disable_sm)
     meta_session_init (meta_args.client_id, meta_args.save_file);
+
+  /* Free memory possibly allocated by the argument parsing which are
+   * no longer needed.
+   */
+  if (meta_args.save_file)
+    g_free (meta_args.save_file);
+  if (meta_args.display_name)
+    g_free (meta_args.display_name);
+  if (meta_args.client_id)
+    g_free (meta_args.client_id);
   
   if (!meta_display_open (NULL))
     meta_exit (META_EXIT_ERROR);
