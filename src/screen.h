@@ -146,8 +146,8 @@ void          meta_screen_set_cursor          (MetaScreen                 *scree
 void          meta_screen_update_cursor       (MetaScreen                 *screen);
 
 void          meta_screen_ensure_tab_popup    (MetaScreen                 *screen,
-                                               MetaTabList                 type);
-
+                                               MetaTabList                 list_type,
+                                               MetaTabShowType             show_type);
 void          meta_screen_ensure_workspace_popup (MetaScreen *screen);
 
 MetaWindow*   meta_screen_get_mouse_window     (MetaScreen                 *screen,

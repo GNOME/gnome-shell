@@ -3413,15 +3413,25 @@ meta_display_begin_grab_op (MetaDisplay *display,
   switch (op)
     {
     case META_GRAB_OP_KEYBOARD_TABBING_NORMAL:
+      meta_screen_ensure_tab_popup (screen,
+                                    META_TAB_LIST_NORMAL,
+                                    META_TAB_SHOW_ICON);
+      break;
     case META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL:
       meta_screen_ensure_tab_popup (screen,
-                                    META_TAB_LIST_NORMAL);
+                                    META_TAB_LIST_NORMAL,
+                                    META_TAB_SHOW_INSTANTLY);
       break;
 
     case META_GRAB_OP_KEYBOARD_TABBING_DOCK:
+      meta_screen_ensure_tab_popup (screen,
+                                    META_TAB_LIST_DOCKS,
+                                    META_TAB_SHOW_ICON);
+      break;
     case META_GRAB_OP_KEYBOARD_ESCAPING_DOCK:
       meta_screen_ensure_tab_popup (screen,
-                                    META_TAB_LIST_DOCKS);
+                                    META_TAB_LIST_DOCKS,
+                                    META_TAB_SHOW_INSTANTLY);
       break;
       
     case META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING:

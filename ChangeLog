@@ -1,5 +1,22 @@
 2006-01-09  Elijah Newren  <newren@gmail.com>
 
+	Fix window outline for minimized windows when using alt-esc.
+	#325092.
+
+	* src/display.c (meta_display_begin_grab_op): Specify the showing
+	type of tabbing operation (Alt tab vs. alt-esc) in addition to the
+	listing type of tabbing operation (docks vs normal windows) to
+	meta_screen_ensure_tab_popup().
+
+	* src/display.h (enum MetaTabShowType): new convenience enum
+
+	* src/screen.[ch] (meta_screen_ensure_tab_popup): require the
+	showing type be specified in addition to the tabbing type; put the
+	outline around the window instead of the icon when in alt-esc
+	mode.
+
+2006-01-09  Elijah Newren  <newren@gmail.com>
+
 	Fix reduced resources resize handling for windows with sizing or
 	resizing constraints.  #325774.
 

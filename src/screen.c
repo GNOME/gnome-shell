@@ -1162,8 +1162,9 @@ meta_screen_update_cursor (MetaScreen *screen)
 }
 
 void
-meta_screen_ensure_tab_popup (MetaScreen *screen,
-                              MetaTabList type)
+meta_screen_ensure_tab_popup (MetaScreen      *screen,
+                              MetaTabList      list_type,
+                              MetaTabShowType  show_type)
 {
   MetaTabEntry *entries;
   GList *tab_list;
@@ -1175,7 +1176,7 @@ meta_screen_ensure_tab_popup (MetaScreen *screen,
     return;
 
   tab_list = meta_display_get_tab_list (screen->display,
-                                        type,
+                                        list_type,
                                         screen,
                                         screen->active_workspace);
   
@@ -1202,7 +1203,9 @@ meta_screen_ensure_tab_popup (MetaScreen *screen,
       entries[i].hidden = !meta_window_showing_on_its_workspace (window);
       entries[i].demands_attention = window->wm_state_demands_attention;
       
-      if (!window->minimized || !meta_window_get_icon_geometry (window, &r))
+      if (show_type == META_TAB_SHOW_INSTANTLY ||
+          !window->minimized                   ||
+          !meta_window_get_icon_geometry (window, &r))
         meta_window_get_outer_rect (window, &r);
       
       entries[i].rect = r;

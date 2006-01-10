@@ -488,6 +488,12 @@ typedef enum
   META_TAB_LIST_DOCKS
 } MetaTabList;
 
+typedef enum
+{
+  META_TAB_SHOW_ICON,      /* Alt-Tab mode */
+  META_TAB_SHOW_INSTANTLY  /* Alt-Esc mode */
+} MetaTabShowType;
+
 GList* meta_display_get_tab_list (MetaDisplay   *display,
                                   MetaTabList    type,
                                   MetaScreen    *screen,
