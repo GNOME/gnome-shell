@@ -1,5 +1,27 @@
 2006-01-10  Elijah Newren  <newren@gmail.com>
 
+	* src/bell.c:
+	* src/boxes.c:
+	* src/boxes.h:
+	* src/constraints.c:
+	* src/core.c:
+	* src/display.c:
+	* src/display.h:
+	* src/edge-resistance.c:
+	* src/frames.c:
+	* src/keybindings.c:
+	* src/main.c:
+	* src/prefs.c:
+	* src/prefs.h:
+	* src/screen.c:
+	* src/screen.h:
+	* src/window.c:
+	* src/window.h:
+	Whoops, I forgot to keep my copyright info updated with my previous
+	commits as Havoc had asked me to do.  Doing that now...
+
+2006-01-10  Elijah Newren  <newren@gmail.com>
+
 	Add a raise on click option, basically only because all the major
 	distros are patching it in anyway.  See #326156.
 

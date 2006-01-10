@@ -4,7 +4,7 @@
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2002, 2003, 2004 Red Hat, Inc.
  * Copyright (C) 2003, 2004 Rob Adams
- * Copyright (C) 2004, 2005 Elijah Newren
+ * Copyright (C) 2004-2006 Elijah Newren
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
