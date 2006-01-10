@@ -1,5 +1,17 @@
 2006-01-09  Elijah Newren  <newren@gmail.com>
 
+	Make the taskbar less flash happy and fix up some related stacking
+	issues.  #326035.
+
+	* src/window.c (windows_overlap): new function,
+	(meta_window_show): if a window is denied focus but doesn't
+	overlap with the focus window there is no need to set the demands
+	attention hint nor stack that window below the focus window,
+	(meta_window_get_outer_rect): we're not modifying the window so
+	declare it to be const
+
+2006-01-09  Elijah Newren  <newren@gmail.com>
+
 	Fix window outline for minimized windows when using alt-esc.
 	#325092.
 

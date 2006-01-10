@@ -1724,6 +1724,15 @@ window_state_on_map (MetaWindow *window,
     }
 }
 
+static gboolean
+windows_overlap (const MetaWindow *w1, const MetaWindow *w2)
+{
+  MetaRectangle w1rect, w2rect;
+  meta_window_get_outer_rect (w1, &w1rect);
+  meta_window_get_outer_rect (w2, &w2rect);
+  return meta_rectangle_overlap (&w1rect, &w2rect);
+}
+
 void
 meta_window_show (MetaWindow *window)
 {
@@ -1731,14 +1740,18 @@ meta_window_show (MetaWindow *window)
   gboolean did_show;
   gboolean takes_focus_on_map;
   gboolean place_on_top_on_map;
+  gboolean needs_stacking_adjustment;
+  MetaWindow *focus_window;
 
   meta_topic (META_DEBUG_WINDOW_STATE,
               "Showing window %s, shaded: %d iconic: %d placed: %d\n",
               window->desc, window->shaded, window->iconic, window->placed);
 
+  focus_window = window->display->focus_window;  /* May be NULL! */
   did_show = FALSE;
   did_placement = FALSE;
   window_state_on_map (window, &takes_focus_on_map, &place_on_top_on_map);
+  needs_stacking_adjustment = FALSE;
 
   meta_topic (META_DEBUG_WINDOW_STATE,
               "Window %s %s focus on map, and %s place on top on map.\n",
@@ -1747,12 +1760,11 @@ meta_window_show (MetaWindow *window)
               place_on_top_on_map ? "does" : "does not");
 
   if ( !takes_focus_on_map &&
-       window->display->focus_window != NULL &&
+       focus_window != NULL &&
        !place_on_top_on_map &&
        window->showing_for_first_time )
     {
-      if (meta_window_is_ancestor_of_transient (window->display->focus_window,
-                                                window))
+      if (meta_window_is_ancestor_of_transient (focus_window, window))
         {
           /* This happens for error dialogs or alerts; these need to remain on
            * top, but it would be confusing to have its ancestor remain
@@ -1762,14 +1774,13 @@ meta_window_show (MetaWindow *window)
                       "The focus window %s is an ancestor of the newly mapped "
                       "window %s which isn't being focused.  Unfocusing the "
                       "ancestor.\n",
-                      window->display->focus_window->desc, window->desc);
+                      focus_window->desc, window->desc);
 
           meta_display_focus_the_no_focus_window (window->display, window->screen, meta_display_get_current_time_roundtrip (window->display));
         }
       else
         {
-          meta_window_stack_just_below (window, window->display->focus_window);
-          ensure_mru_position_after (window, window->display->focus_window);
+          needs_stacking_adjustment = TRUE;
           if (!window->placed)
             window->denied_focus_and_not_transient = TRUE;
         }
@@ -1869,11 +1880,41 @@ meta_window_show (MetaWindow *window)
         }
       else
         {
-          /* Only set the demands attention hint if the window doesn't
-           * take focus on map and it isn't placed on top on map.
+          /* This window isn't getting focus on map.  We may need to do some
+           * special handing with it in regards to
+           *   - the stacking of the window
+           *   - the MRU position of the window
+           *   - the demands attention setting of the window
            */
-          if (!place_on_top_on_map)
-            window->wm_state_demands_attention = TRUE;
+          if (!place_on_top_on_map && needs_stacking_adjustment)
+            {
+              g_assert (focus_window != NULL);
+              gboolean overlap = windows_overlap (window, focus_window);
+
+              /* We want alt tab to go to the denied-focus window */
+              ensure_mru_position_after (window, focus_window);
+
+              /* We don't want the denied-focus window to obscure the focus
+               * window, and in click-to-focus-mode we want to maintain the
+               * invariant that MRU order == stacking order.  The need for
+               * this if comes from the fact that in sloppy/mouse focus the
+               * focus window may not overlap other windows and also can be
+               * considered "below" them; this combination means that placing
+               * the denied-focus window "below" the focus window in the
+               * stack when it doesn't overlap it confusingly places that new
+               * window below a lot of other windows.
+               */
+              if (overlap || 
+                  meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
+                meta_window_stack_just_below (window, focus_window);
+
+              /* If the window will be obscured by the focus window, then the
+               * user might not notice the window appearing so set the
+               * demands attention hint.
+               */
+              if (overlap)
+                window->wm_state_demands_attention = TRUE;
+            }
 
           /* Prevent EnterNotify events in sloppy/mouse focus from
            * erroneously focusing the window that had been denied
@@ -3317,8 +3358,8 @@ meta_window_get_geometry (MetaWindow  *window,
 }
 
 void
-meta_window_get_outer_rect (MetaWindow    *window,
-                            MetaRectangle *rect)
+meta_window_get_outer_rect (const MetaWindow *window,
+                            MetaRectangle    *rect)
 {
   if (window->frame)
     *rect = window->frame->rect;
