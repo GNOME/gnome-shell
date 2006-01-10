@@ -1046,7 +1046,9 @@ constrain_partially_onscreen (MetaWindow         *window,
                               gboolean            check_only)
 {
   gboolean retval;
-  int top_amount, bottom_amount, horiz_amount, vert_amount;
+  int top_amount, bottom_amount;
+  int horiz_amount_offscreen, vert_amount_offscreen;
+  int horiz_amount_onscreen,  vert_amount_onscreen;
 
   if (priority > PRIORITY_PARTIALLY_VISIBLE_ON_WORKAREA)
     return TRUE;
@@ -1066,39 +1068,46 @@ constrain_partially_onscreen (MetaWindow         *window,
    * Then, the amount that is allowed off is just the window size minus
    * this amount.
    */
-  horiz_amount = info->current.width  / 4;
-  vert_amount  = info->current.height / 4;
-  horiz_amount = CLAMP (horiz_amount, 10, 75);
-  vert_amount  = CLAMP (vert_amount,  10, 75);
-  horiz_amount = info->current.width - horiz_amount;
-  vert_amount  = info->current.height - vert_amount;
-  top_amount = vert_amount;
+  horiz_amount_onscreen = info->current.width  / 4;
+  vert_amount_onscreen  = info->current.height / 4;
+  horiz_amount_onscreen = CLAMP (horiz_amount_onscreen, 10, 75);
+  vert_amount_onscreen  = CLAMP (vert_amount_onscreen,  10, 75);
+  horiz_amount_offscreen = info->current.width - horiz_amount_onscreen;
+  vert_amount_offscreen  = info->current.height - vert_amount_onscreen;
+  top_amount = vert_amount_offscreen;
   /* Allow the titlebar to touch the bottom panel;  If there is no titlebar,
    * require vert_amount to remain on the screen.
    */
   if (window->frame)
-    bottom_amount = info->current.height + info->fgeom->bottom_height;
+    {
+      bottom_amount = info->current.height + info->fgeom->bottom_height;
+      vert_amount_onscreen = info->fgeom->top_height;
+    }
   else
-    bottom_amount = vert_amount;
+    bottom_amount = vert_amount_offscreen;
 
   /* Extend the region, have a helper function handle the constraint,
    * then return the region to its original size.
    */
-  meta_rectangle_expand_region (info->usable_screen_region,
-                                horiz_amount,
-                                horiz_amount, 
-                                top_amount,
-                                bottom_amount);
+  meta_rectangle_expand_region_conditionally (info->usable_screen_region,
+                                              horiz_amount_offscreen,
+                                              horiz_amount_offscreen, 
+                                              top_amount,
+                                              bottom_amount,
+                                              horiz_amount_onscreen,
+                                              vert_amount_onscreen);
   retval =
     do_screen_and_xinerama_relative_constraints (window, 
                                                  info->usable_screen_region,
                                                  info,
                                                  check_only);
-  meta_rectangle_expand_region (info->usable_screen_region,
-                                -horiz_amount,
-                                -horiz_amount, 
-                                -top_amount,
-                                -bottom_amount);
+  meta_rectangle_expand_region_conditionally (info->usable_screen_region,
+                                              -horiz_amount_offscreen,
+                                              -horiz_amount_offscreen,
+                                              -top_amount,
+                                              -bottom_amount,
+                                              horiz_amount_onscreen,
+                                              vert_amount_onscreen);
 
   return retval;
 }

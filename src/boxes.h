@@ -146,11 +146,23 @@ GList*   meta_rectangle_get_minimal_spanning_set_for_region (
                                          const MetaRectangle *basic_rect,
                                          const GSList        *all_struts);
 
+/* Expand all rectangles in region by the given amount on each side */
 GList*   meta_rectangle_expand_region   (GList               *region,
                                          const int            left_expand,
                                          const int            right_expand,
                                          const int            top_expand,
                                          const int            bottom_expand);
+/* Same as for meta_rectangle_expand_region except that rectangles not at
+ * least min_x or min_y in size are not expanded in that direction
+ */
+GList*   meta_rectangle_expand_region_conditionally (
+                                         GList                *region,
+                                         const int            left_expand,
+                                         const int            right_expand,
+                                         const int            top_expand,
+                                         const int            bottom_expand,
+                                         const int            min_x,
+                                         const int            min_y);
 
 /* Free the list created by
  *   meta_rectangle_get_minimal_spanning_set_for_region()

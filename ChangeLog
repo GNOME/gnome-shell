@@ -1,5 +1,25 @@
 2006-01-09  Elijah Newren  <newren@gmail.com>
 
+	Be more strict about what is considered a valid region with
+	partial struts.  Fixes #322070.
+
+	* src/boxes.[ch]:
+	(meta_rectangle_expand_region_conditionally):
+	new function behaving like meta_rectangle_expand_region() but
+	which only does so when the width and height of the rectangles
+	meet a certain threshold
+
+	(replace_rect_with_list):
+	Remove a compiling warning
+
+	* src/constraints.c:
+	(constrain_partially_onscreen):
+	provide minimum thresholds in each direction for the size of the
+	rectangles to avoid cases where only a single pixel thick layer of
+	a window might be showing
+
+2006-01-09  Elijah Newren  <newren@gmail.com>
+
 	* src/bell.c (meta_bell_notify_frame_destroy): Use the right
 	function to remove the timeout so that we don't crash if removed
 	at an inopportune time.  Fixes #322031.

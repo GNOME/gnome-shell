@@ -622,15 +622,38 @@ meta_rectangle_expand_region (GList     *region,
                               const int  top_expand,
                               const int  bottom_expand)
 {
-  /* Now it's time to do the directional expansion */
+  return meta_rectangle_expand_region_conditionally (region,
+                                                     left_expand,
+                                                     right_expand,
+                                                     top_expand,
+                                                     bottom_expand,
+                                                     0,
+                                                     0);
+}
+
+GList*
+meta_rectangle_expand_region_conditionally (GList     *region,
+                                            const int  left_expand,
+                                            const int  right_expand,
+                                            const int  top_expand,
+                                            const int  bottom_expand,
+                                            const int  min_x,
+                                            const int  min_y)
+{
   GList *tmp_list = region;
   while (tmp_list)
     {
       MetaRectangle *rect = (MetaRectangle*) tmp_list->data;
-      rect->x      -= left_expand;
-      rect->width  += (left_expand + right_expand);
-      rect->y      -= top_expand;
-      rect->height += (top_expand + bottom_expand);
+      if (rect->width >= min_x)
+        {
+          rect->x      -= left_expand;
+          rect->width  += (left_expand + right_expand);
+        }
+      if (rect->height >= min_y)
+        {
+          rect->y      -= top_expand;
+          rect->height += (top_expand + bottom_expand);
+        }
       tmp_list = tmp_list->next;
     }
 
@@ -1091,8 +1114,7 @@ replace_rect_with_list (GList *old_element,
   if (!new_list)
     {
       /* If there is no new list, just remove the old_element */
-      ret = old_element->next;
-      g_list_remove_link (old_element, old_element);
+      ret = g_list_remove_link (old_element, old_element);
     }
   else
     {
