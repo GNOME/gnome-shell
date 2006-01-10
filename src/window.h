@@ -426,6 +426,9 @@ gboolean    meta_window_showing_on_its_workspace (MetaWindow *window);
 /* Return whether the window should be currently mapped */
 gboolean    meta_window_should_be_showing   (MetaWindow  *window);
 
+/* See warning in window.c about this function */
+gboolean    __window_is_terminal (MetaWindow *window);
+
 /* This recalcs the window/frame size, and recalcs the frame
  * size/contents as well.
  */

@@ -1675,6 +1675,45 @@ intervening_user_event_occurred (MetaWindow *window)
     }
 }
 
+/* This function is an ugly hack.  It's experimental in nature and ought to be
+ * replaced by a real hint from the app to the WM if we decide the experimental
+ * behavior is worthwhile.  The basic idea is to get more feedback about how
+ * usage scenarios of "strict" focus users and what they expect.  See #326159.
+ */
+gboolean
+__window_is_terminal (MetaWindow *window)
+{
+  if (window == NULL)
+    return FALSE;
+
+  /* gnome-terminal -- if you couldn't guess */
+  if (strcmp (window->res_name, "gnome-terminal") == 0)
+    return TRUE;
+  /* xterm, rxvt, aterm */
+  else if (strcmp (window->res_name, "XTerm") == 0)
+    return TRUE;
+  /* konsole, KDE's terminal program */
+  else if (strcmp (window->res_name, "Konsole") == 0)
+    return TRUE;
+  /* rxvt-unicode */
+  else if (strcmp (window->res_name, "URxvt") == 0)
+    return TRUE;
+  /* eterm */
+  else if (strcmp (window->res_name, "Eterm") == 0)
+    return TRUE;
+  /* KTerm -- some terminal not KDE based; so not like Konsole */
+  else if (strcmp (window->res_name, "KTerm") == 0)
+    return TRUE;
+  /* Multi-gnome-terminal */
+  else if (strcmp (window->res_name, "Multi-gnome-terminal") == 0)
+    return TRUE;
+  /* mlterm ("multi lingual terminal emulator on X") */
+  else if (strcmp (window->res_name, "mlterm") == 0)
+    return TRUE;
+
+  return FALSE;
+}
+
 /* This function determines what state the window should have assuming that it
  * and the focus_window have no relation
  */
@@ -1697,6 +1736,25 @@ window_state_on_map (MetaWindow *window,
     {
       *takes_focus = FALSE;
       return;
+    }
+
+  /* Terminal usage is different; users typically intend to launch
+   * many apps in quick succession or to just view things in the new
+   * window while still interacting with the terminal.  Therefore,
+   * apps launched from the terminal should not take focus.  This
+   * isn't quite the same as not allowing focus to transfer from
+   * terminals due to new window map, but the latter is a much easier
+   * approximation to enforce so we do that.
+   */
+  if (*takes_focus &&
+      __window_is_terminal (window->display->focus_window) &&
+      !meta_window_is_ancestor_of_transient (window->display->focus_window,
+                                             window))
+    {
+      meta_topic (META_DEBUG_FOCUS,
+                  "focus_window is terminal; not focusing new window.\n");
+      *takes_focus = FALSE;
+      *places_on_top = FALSE;
     }
 
   switch (window->type)

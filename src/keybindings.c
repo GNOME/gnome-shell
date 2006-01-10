@@ -2809,6 +2809,13 @@ handle_panel_keybinding (MetaDisplay    *display,
       break;
     case META_KEYBINDING_ACTION_PANEL_RUN_DIALOG:
       action_atom = display->atom_gnome_panel_action_run_dialog;
+      /* We want the dialog to take focus from a terminal since this
+       * should be considered an explicit focus transfer.
+       */
+      if (__window_is_terminal (display->focus_window))
+        meta_display_focus_the_no_focus_window (display, 
+                                                screen,
+                                                event->xkey.time);
       break;
     default:
       return;

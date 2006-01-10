@@ -1,3 +1,22 @@
+2006-01-10  Elijah Newren  <newren@gmail.com>
+
+	Don't "steal" focus from terminal windows for new window mappings
+	as the difference in usage between terminals and other apps seems
+	to suggest this difference in treatment.  See #326159 for details,
+	feedback welcome.
+
+	* src/window.[ch] (__window_is_terminal): New function, currently
+	an ugly hack and should be replaced by a new property set by
+	applications if the behavior works to our liking,
+	(window_state_on_map): don't transfer focus to new windows from
+	terminals unless the new window is a transient of the focused
+	terminal
+
+	* src/keybindigns.c (handle_panel_keybinding): panel run dialog
+	keybinding should be counted as an explicit transfer of focus to
+	the new window, so override the
+	don't-transfer-focus-from-terminals in this case
+
 2006-01-09  Elijah Newren  <newren@gmail.com>
 
 	More thorough handling of source indication.  Part of #326041.
