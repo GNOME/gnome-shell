@@ -329,8 +329,6 @@ apply_edge_resistance (MetaWindow                *window,
                        gboolean                   keyboard_op)
 {
   int i, begin, end;
-  gboolean okay_to_clear_keyboard_buildup = FALSE;
-  int      keyboard_buildup_edge = G_MAXINT;
   gboolean increasing = new_pos > old_pos;
   int      increment = increasing ? 1 : -1;
 
@@ -343,12 +341,6 @@ apply_edge_resistance (MetaWindow                *window,
   const int TIMEOUT_RESISTANCE_LENGTH_MS_WINDOW   =   0;
   const int TIMEOUT_RESISTANCE_LENGTH_MS_XINERAMA =   0;
   const int TIMEOUT_RESISTANCE_LENGTH_MS_SCREEN   =   0;
-  const int KEYBOARD_BUILDUP_THRESHOLD_TOWARDS_WINDOW    = 16;
-  const int KEYBOARD_BUILDUP_THRESHOLD_AWAYFROM_WINDOW   = 16;
-  const int KEYBOARD_BUILDUP_THRESHOLD_TOWARDS_XINERAMA  = 24;
-  const int KEYBOARD_BUILDUP_THRESHOLD_AWAYFROM_XINERAMA = 16;
-  const int KEYBOARD_BUILDUP_THRESHOLD_TOWARDS_SCREEN    = 32;
-  const int KEYBOARD_BUILDUP_THRESHOLD_AWAYFROM_SCREEN   = 16;
 
   /* Quit if no movement was specified */
   if (old_pos == new_pos)
@@ -397,73 +389,9 @@ apply_edge_resistance (MetaWindow                *window,
       /* Rest is easier to read if we split on keyboard vs. mouse op */
       if (keyboard_op)
         {
-          int resistance, threshold;
-
-          /* KEYBOARD ENERGY BUILDUP RESISTANCE: If the user has is moving
-           * fast enough or has already built up enough "energy", then let
-           * the user past the edge, otherwise stop at this edge.  If the
-           * user was previously stopped at this edge, add movement amount
-           * to the built up energy.
-           */
-
-          /* First, determine the amount of the resistance */
-          resistance = 0;
-          switch (edge->edge_type)
-            {
-            case META_EDGE_WINDOW:
-              if (movement_towards_edge (edge->side_type, increment))
-                resistance = KEYBOARD_BUILDUP_THRESHOLD_TOWARDS_WINDOW;
-              else
-                resistance = KEYBOARD_BUILDUP_THRESHOLD_AWAYFROM_WINDOW;
-              break;
-            case META_EDGE_XINERAMA:
-              if (movement_towards_edge (edge->side_type, increment))
-                resistance = KEYBOARD_BUILDUP_THRESHOLD_TOWARDS_XINERAMA;
-              else
-                resistance = KEYBOARD_BUILDUP_THRESHOLD_AWAYFROM_XINERAMA;
-              break;
-            case META_EDGE_SCREEN:
-              if (movement_towards_edge (edge->side_type, increment))
-                resistance = KEYBOARD_BUILDUP_THRESHOLD_TOWARDS_SCREEN;
-              else
-                resistance = KEYBOARD_BUILDUP_THRESHOLD_AWAYFROM_SCREEN;
-              break;
-            }
-
-          /* Clear any previous buildup if we've run into an edge at a
-           * different location than what we were building up on before.
-           * See below for more details where these get set.
-           */
-          if (okay_to_clear_keyboard_buildup &&
-              compare != keyboard_buildup_edge)
-            {
-              okay_to_clear_keyboard_buildup = FALSE;
-              resistance_data->keyboard_buildup = 0;
-            }
-
-          /* Determine the threshold */
-          threshold = resistance - resistance_data->keyboard_buildup;
-
-          /* See if threshold hasn't been met yet or not */
-          if (ABS (compare - new_pos) < threshold)
-            {
-              if (resistance_data->keyboard_buildup != 0)
-                resistance_data->keyboard_buildup += ABS (new_pos - compare);
-              else
-                resistance_data->keyboard_buildup = 1; /* 0 causes stuckage */
-              return compare;
-            }
-          else
-            {
-              /* It may be the case that there are two windows with edges
-               * at the same location.  If so, the buildup ought to count
-               * towards both edges.  So we just not that it's okay to
-               * clear the buildup once we find an edge at a different
-               * location.
-               */
-              okay_to_clear_keyboard_buildup = TRUE;
-              keyboard_buildup_edge = compare;
-            }
+          if ((old_pos < compare && compare < new_pos) ||
+              (old_pos > compare && compare > new_pos))
+            return compare;
         }
       else /* mouse op */
         {
@@ -560,12 +488,6 @@ apply_edge_resistance (MetaWindow                *window,
       /* Go to the next edge in the range */
       i += increment;
     }
-
-  /* If we didn't run into any new edges in keyboard buildup but had moved
-   * far enough to get past the last one, clear the buildup
-   */
-  if (okay_to_clear_keyboard_buildup && new_pos != keyboard_buildup_edge)
-    resistance_data->keyboard_buildup = 0;
 
   return new_pos;
 }
