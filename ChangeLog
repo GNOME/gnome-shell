@@ -1,3 +1,16 @@
+2006-01-11  Elijah Newren  <newren gmail com>
+
+	* src/textboxes.c (test_area, test_intersect, test_equal,
+	  test_overlap_funcs, test_basic_fitting, test_merge_regions,
+	  test_regions_okay, test_region_fitting, test_clamping_to_region,
+	  test_clipping_to_region, test_shoving_into_region,
+	  test_find_onscreen_edges,
+	  test_find_nonintersected_xinerama_edges, test_gravity_resize,
+	  test_find_closest_point_to_line):
+	Replace __PRETTY_FUNCTION__ with G_STRFUNC, because lesser
+	compilers don't support the former.  Caught by Damien Carbery, fix
+	suggested by Ray Strode.  #326281.
+
 2006-01-10  Elijah Newren  <newren@gmail.com>
 
 	* configure.in: post-release version bump to 2.13.21

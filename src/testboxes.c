@@ -100,7 +100,7 @@ test_area ()
   temp = meta_rect (0, 0, 5, 7);
   g_assert (meta_rectangle_area (&temp) == 35);
 
-  printf ("%s passed.\n", __PRETTY_FUNCTION__);
+  printf ("%s passed.\n", G_STRFUNC);
 }
 
 static void
@@ -128,7 +128,7 @@ test_intersect ()
   meta_rectangle_intersect (&b, &d, &b);
   g_assert (meta_rectangle_equal (&b, &b_intersect_d));
 
-  printf ("%s passed.\n", __PRETTY_FUNCTION__);
+  printf ("%s passed.\n", G_STRFUNC);
 }
 
 static void
@@ -147,7 +147,7 @@ test_equal ()
   g_assert (!meta_rectangle_equal (&a, &e));
   g_assert (!meta_rectangle_equal (&a, &f));
 
-  printf ("%s passed.\n", __PRETTY_FUNCTION__);
+  printf ("%s passed.\n", G_STRFUNC);
 }
 
 static void
@@ -170,7 +170,7 @@ test_overlap_funcs ()
   g_assert (!meta_rectangle_horiz_overlap (&temp1, &temp2));
   g_assert ( meta_rectangle_vert_overlap (&temp1, &temp2));
 
-  printf ("%s passed.\n", __PRETTY_FUNCTION__);
+  printf ("%s passed.\n", G_STRFUNC);
 }
 
 static void
@@ -208,7 +208,7 @@ test_basic_fitting ()
   g_assert ( meta_rectangle_could_fit_rect (&temp1, &temp3));
   g_assert (!meta_rectangle_could_fit_rect (&temp3, &temp2));
 
-  printf ("%s passed.\n", __PRETTY_FUNCTION__);
+  printf ("%s passed.\n", G_STRFUNC);
 }
 
 static void
@@ -513,7 +513,7 @@ test_merge_regions ()
   meta_rectangle_free_spanning_set (region);
   region = NULL;
 
-  printf ("%s passed.\n", __PRETTY_FUNCTION__);
+  printf ("%s passed.\n", G_STRFUNC);
 }
 #endif
 
@@ -652,7 +652,7 @@ test_regions_okay ()
    *   - Create random struts and check the regions somehow
    */
 
-  printf ("%s passed.\n", __PRETTY_FUNCTION__);
+  printf ("%s passed.\n", G_STRFUNC);
 }
 
 static void
@@ -696,7 +696,7 @@ test_region_fitting ()
 
   meta_rectangle_free_list_and_elements (region);
 
-  printf ("%s passed.\n", __PRETTY_FUNCTION__);
+  printf ("%s passed.\n", G_STRFUNC);
 }
 
 static void
@@ -788,7 +788,7 @@ test_clamping_to_region ()
 
   meta_rectangle_free_list_and_elements (region);
 
-  printf ("%s passed.\n", __PRETTY_FUNCTION__);
+  printf ("%s passed.\n", G_STRFUNC);
 }
 
 static gboolean
@@ -871,7 +871,7 @@ test_clipping_to_region ()
 
   meta_rectangle_free_list_and_elements (region);
 
-  printf ("%s passed.\n", __PRETTY_FUNCTION__);
+  printf ("%s passed.\n", G_STRFUNC);
 }
 
 static void
@@ -941,7 +941,7 @@ test_shoving_into_region ()
 
   meta_rectangle_free_list_and_elements (region);
 
-  printf ("%s passed.\n", __PRETTY_FUNCTION__);
+  printf ("%s passed.\n", G_STRFUNC);
 }
 
 static void
@@ -1121,7 +1121,7 @@ test_find_onscreen_edges ()
   meta_rectangle_free_list_and_elements (tmp);
   meta_rectangle_free_list_and_elements (edges);
 
-  printf ("%s passed.\n", __PRETTY_FUNCTION__);
+  printf ("%s passed.\n", G_STRFUNC);
 }
 
 static void
@@ -1210,7 +1210,7 @@ test_find_nonintersected_xinerama_edges ()
   meta_rectangle_free_list_and_elements (tmp);
   meta_rectangle_free_list_and_elements (edges);
 
-  printf ("%s passed.\n", __PRETTY_FUNCTION__);
+  printf ("%s passed.\n", G_STRFUNC);
 }
 
 static void
@@ -1311,7 +1311,7 @@ test_gravity_resize ()
                                       211);
   g_assert (meta_rectangle_equal (&rect, &temp));
 
-  printf ("%s passed.\n", __PRETTY_FUNCTION__);
+  printf ("%s passed.\n", G_STRFUNC);
 }
 
 static void
@@ -1363,7 +1363,7 @@ test_find_closest_point_to_line ()
                                                   &rx, &ry);
   g_assert (rx == answer_x && ry == answer_y);
 
-  printf ("%s passed.\n", __PRETTY_FUNCTION__);
+  printf ("%s passed.\n", G_STRFUNC);
 }
 
 int
