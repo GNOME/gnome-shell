@@ -55,6 +55,7 @@ typedef struct
   /* top of stack is first in list */
   GList *compositor_windows;
   WsWindow *glw;
+  int idle_id;
 } ScreenInfo;
 
 struct MetaCompositor
@@ -542,6 +543,59 @@ wavy (double time,
   m++;
 }
 
+static gboolean
+update (gpointer data)
+{
+  MetaScreen *screen = data;
+  ScreenInfo *scr_info = screen->compositor_data;
+  WsWindow *gl_window = scr_info->glw;
+  
+  glMatrixMode (GL_MODELVIEW);
+  glLoadIdentity ();
+  gluOrtho2D (0, 1.0, 0.0, 1.0);
+  
+  ws_window_raise (gl_window);
+  
+  glClearColor (0.0, 0.5, 0.5, 0.0);
+  glClear (GL_COLOR_BUFFER_BIT);
+  
+  glColor4f (1.0, 0.0, 0.0, 1.0);
+  
+  glDisable (GL_TEXTURE_2D);
+  
+  glBegin (GL_QUADS);
+  
+  glVertex2f (0.2, 0.2);
+  glVertex2f (0.2, 0.4);
+  glVertex2f (0.4, 0.4);
+  glVertex2f (0.4, 0.2);
+  
+  glEnd ();
+  
+  glEnable (GL_TEXTURE_2D);
+  draw_windows (screen, scr_info->compositor_windows);
+  
+  /* FIXME: we should probably grab the server around the raise/swap */
+  
+  ws_window_gl_swap_buffers (gl_window);
+
+  scr_info->idle_id = 0;
+  
+  return FALSE;
+}
+
+static void
+do_repaint (DrawableNode *node, gpointer data)
+{
+    MetaScreen *screen = data;
+    ScreenInfo *scr_info = screen->compositor_data;
+
+    g_print ("do repaint\n");
+    
+    if (!scr_info->idle_id)
+	scr_info->idle_id = g_idle_add (update, screen);
+}
+
 /* This is called when metacity does its XQueryTree() on startup
  * and when a new window is mapped.
  */
@@ -586,6 +640,8 @@ meta_compositor_add_window (MetaCompositor    *compositor,
   else
     {
       node = drawable_node_new (drawable);
+
+      drawable_node_set_damage_func (node, do_repaint, screen);
       
 #if 0
       drawable_node_set_deformation_func (node, wavy, NULL);
@@ -640,54 +696,6 @@ meta_compositor_remove_window (MetaCompositor    *compositor,
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 }
 
-typedef struct Info
-{
-  MetaScreen  *screen;
-  WsWindow	*window;
-} Info;
-
-static gboolean
-update (gpointer data)
-{
-  Info *info = data;
-
-  MetaScreen *screen = info->screen;
-  ScreenInfo *scr_info = screen->compositor_data;
-  WsWindow *gl_window = info->window;
-  
-  glMatrixMode (GL_MODELVIEW);
-  glLoadIdentity ();
-  gluOrtho2D (0, 1.0, 0.0, 1.0);
-  
-  ws_window_raise (gl_window);
-  
-  glClearColor (0.0, 0.5, 0.5, 0.0);
-  glClear (GL_COLOR_BUFFER_BIT);
-  
-  glColor4f (1.0, 0.0, 0.0, 1.0);
-  
-  glDisable (GL_TEXTURE_2D);
-  
-  glBegin (GL_QUADS);
-  
-  glVertex2f (0.2, 0.2);
-  glVertex2f (0.2, 0.4);
-  glVertex2f (0.4, 0.4);
-  glVertex2f (0.4, 0.2);
-  
-  glEnd ();
-  
-  
-  glEnable (GL_TEXTURE_2D);
-  draw_windows (screen, scr_info->compositor_windows);
-  
-  /* FIXME: we should probably grab the server around the raise/swap */
-  
-  ws_window_gl_swap_buffers (gl_window);
-  
-  return TRUE;
-}
-
 void
 meta_compositor_manage_screen (MetaCompositor *compositor,
                                MetaScreen     *screen)
@@ -698,11 +706,11 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   WsScreen *ws_screen =
       ws_screen_get_from_number (compositor->ws, screen->number);
   WsWindow *root = ws_screen_get_root_window (ws_screen);
-  Info *info;
   WsRegion *region;
   
   scr_info->glw = ws_window_new_gl (root);
   scr_info->compositor_windows = NULL;
+  scr_info->idle_id = 0;
 
   g_print ("setting compositor_data for screen %p to %p\n", screen, scr_info);
   screen->compositor_data = scr_info;
@@ -723,12 +731,7 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   
   ws_sync (compositor->ws);
   
-  info = g_new (Info, 1);
-  info->window = scr_info->glw;
-  info->screen = screen;
-  
-  g_idle_add (update,
-	      info);
+  g_idle_add (update, screen);
   
 #endif
 }
