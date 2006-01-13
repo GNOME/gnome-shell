@@ -1,3 +1,10 @@
+2006-01-13  Elijah Newren  <newren gmail com>
+
+	Patch from Damien Carbery.  Fixes #326746.
+
+	* src/util.c: explicitly #include Xlib.h to fix a compilation
+	issue on Solaris.
+
 Fri Jan 13 14:40:19 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* configure.in: Add a dependency on libcm when building with
