@@ -41,6 +41,7 @@
 #include "group.h"
 #include "window-props.h"
 #include "constraints.h"
+#include "compositor.h"
 
 #include <X11/Xatom.h>
 #include <string.h>
@@ -1313,6 +1314,21 @@ meta_window_should_be_showing (MetaWindow  *window)
 }
 
 static void
+finish_minimize (gpointer data)
+{
+  MetaWindow *window = data;
+  
+  meta_window_hide (window);
+  if (window->has_focus)
+    {
+      meta_workspace_focus_default_window
+	(window->screen->active_workspace,
+	 window,
+	 meta_display_get_current_time_roundtrip (window->display));
+    }
+}
+
+static void
 implement_showing (MetaWindow *window,
                    gboolean    showing)
 {
@@ -1354,16 +1370,34 @@ implement_showing (MetaWindow *window,
             }
 
           meta_window_get_outer_rect (window, &window_rect);
-          
-          /* Draw a nice cool animation */
-          meta_effects_draw_box_animation (window->screen,
-                                           &window_rect,
-                                           &icon_rect,
-                                           META_MINIMIZE_ANIMATION_LENGTH,
-                                           META_BOX_ANIM_SCALE);
-	}
 
-      meta_window_hide (window);
+	  if (window->display->compositor)
+	    {
+	      /* Draw a nice cool animation */
+	      meta_compositor_minimize (window->display->compositor,
+					window,
+					icon_rect.x,
+					icon_rect.y,
+					icon_rect.width,
+					icon_rect.height,
+					finish_minimize,
+					window);
+	    }
+	  else
+	    {
+	      meta_effects_draw_box_animation (window->screen,
+					       &window_rect,
+					       &icon_rect,
+					       META_MINIMIZE_ANIMATION_LENGTH,
+					       META_BOX_ANIM_SCALE);
+
+	      finish_minimize (window);
+	  }
+	}
+      else
+	{
+	  finish_minimize (window);
+	}
     }
   else
     {
@@ -2000,7 +2034,7 @@ meta_window_show (MetaWindow *window)
     }
 }
 
-void
+static void
 meta_window_hide (MetaWindow *window)
 {
   gboolean did_hide;
@@ -2078,7 +2112,6 @@ meta_window_minimize (MetaWindow  *window)
           meta_topic (META_DEBUG_FOCUS,
                       "Focusing default window due to minimization of focus window %s\n",
                       window->desc);
-          meta_workspace_focus_default_window (window->screen->active_workspace, window, meta_display_get_current_time_roundtrip (window->display));
         }
       else
         {

@@ -222,7 +222,7 @@ fi
 
 if test x$have_xcomposite = xyes; then
   echo "Building with CompositeExt"
-  METACITY_PC_MODULES="$METACITY_PC_MODULES xcomposite >= $XCOMPOSITE_VERSION xfixes xrender xdamage"
+  METACITY_PC_MODULES="$METACITY_PC_MODULES xcomposite >= $XCOMPOSITE_VERSION xfixes xrender xdamage cm"
   AC_DEFINE(HAVE_COMPOSITE_EXTENSIONS, , [Building with compositing manager support])
 
   ## force on render also

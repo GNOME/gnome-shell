@@ -1,3 +1,31 @@
+Fri Jan 13 14:40:19 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* configure.in: Add a dependency on libcm when building with
+	compositor.
+
+	* src/window.c (meta_window_hide): Make this function static.
+
+	* src/window.c (implement_showing): Use meta_compositor_minimize()
+	to do a weird minimize effect.
+
+	* src/compositor.[ch]: Beginning of new GL based compositor.
+	
+	* src/screen.h (struct _MetaScreen): Add void pointer to
+	compositor data. 
+
+	* src/screen.c (meta_screen_new): Remove obsolete compositor
+	stuff; initialize compositor_data. Don't composite manage screen
+	out of this function.
+
+	* src/errors.c (x_error_handler): Check that display is non-NULL
+	before using it. Add comment about how that can happen.
+
+	* src/display.c (meta_display_{begin,end}_grab_op): Remove
+	explicity damage of windows. 
+
+	* src/display.c (meta_display_open): Composite manage all the
+	screens. 
+
 2006-01-11  Elijah Newren  <newren gmail com>
 
 	* src/textboxes.c (test_area, test_intersect, test_equal,

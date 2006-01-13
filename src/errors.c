@@ -97,7 +97,6 @@ meta_error_trap_pop_internal  (MetaDisplay *display,
                                       XErrorEvent *);
 
       restored_error_handler = XSetErrorHandler (x_error_handler);
-      g_assert (restored_error_handler == x_error_handler);
 
       /* remove this */
       display->error_trap_handler = NULL;
@@ -183,8 +182,11 @@ x_error_handler (Display     *xdisplay,
   XGetErrorText (xdisplay, error->error_code, buf, 63);  
 
   display = meta_display_for_x_display (xdisplay);
-  
-  if (display->error_traps > 0)
+
+  /* Display can be NULL here because the compositing manager
+   * has its own Display, but Xlib only has one global error handler
+   */
+  if (display && display->error_traps > 0)
     {
       /* we're in an error trap, chain to the trap handler
        * saved from GDK

@@ -116,12 +116,8 @@ struct _MetaScreen
   /* gc for XOR on root window */
   GC root_xor_gc;
 
-  /* Managed by compositor.c; top of stack is first in list */
-  GList *compositor_windows;
-  XID root_picture;
-  XID damage_region;
-  XID trans_pixmap;
-  XID trans_picture;
+  /* Managed by compositor.c */
+  gpointer compositor_data;
 };
 
 MetaScreen*   meta_screen_new                 (MetaDisplay                *display,

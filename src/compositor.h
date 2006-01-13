@@ -25,6 +25,10 @@
 #include "util.h"
 #include "display.h"
 
+#include <X11/extensions/Xfixes.h>
+
+typedef void (* MetaMinimizeFinishedFunc) (gpointer data);
+
 MetaCompositor* meta_compositor_new           (MetaDisplay       *display);
 void            meta_compositor_unref         (MetaCompositor    *compositor);
 void            meta_compositor_process_event (MetaCompositor    *compositor,
@@ -35,22 +39,21 @@ void            meta_compositor_add_window    (MetaCompositor    *compositor,
                                                XWindowAttributes *attrs);
 void            meta_compositor_remove_window (MetaCompositor    *compositor,
                                                Window             xwindow);
+void		meta_compositor_set_debug_updates (MetaCompositor *compositor,
+						   gboolean	   debug_updates);
 
 void meta_compositor_manage_screen   (MetaCompositor *compositor,
                                       MetaScreen     *screen);
 void meta_compositor_unmanage_screen (MetaCompositor *compositor,
                                       MetaScreen     *screen);
 
-void meta_compositor_damage_window   (MetaCompositor *compositor,
-                                      MetaWindow     *window);
+void meta_compositor_minimize (MetaCompositor           *compositor,
+			       MetaWindow               *window,
+			       int                       x,
+			       int                       y,
+			       int                       width,
+			       int                       height,
+			       MetaMinimizeFinishedFunc  finished_cb,
+			       gpointer                  finished_data);
 
 #endif /* META_COMPOSITOR_H */
-
-
-
-
-
-
-
-
-

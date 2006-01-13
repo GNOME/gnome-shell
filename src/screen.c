@@ -534,13 +534,8 @@ meta_screen_new (MetaDisplay *display,
   screen->columns_of_workspaces = -1;
   screen->vertical_workspaces = FALSE;
   screen->starting_corner = META_SCREEN_TOPLEFT;
+  screen->compositor_data = NULL;
 
-  screen->compositor_windows = NULL;
-  screen->damage_region = None;
-  screen->root_picture = None;
-  screen->trans_pixmap = None;
-  screen->trans_picture = None;
-  
   {
     XFontStruct *font_info;
     XGCValues gc_values;
@@ -652,9 +647,6 @@ meta_screen_new (MetaDisplay *display,
       meta_workspace_activate (space, timestamp);
   }
 
-  meta_compositor_manage_screen (screen->display->compositor,
-                                 screen);
-  
   meta_verbose ("Added screen %d ('%s') root 0x%lx\n",
                 screen->number, screen->screen_name, screen->xroot);
   

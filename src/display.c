@@ -689,7 +689,22 @@ meta_display_open (const char *name)
   tmp = display->screens;
   while (tmp != NULL)
     {
-      meta_screen_manage_all_windows (tmp->data);
+      MetaScreen *screen = tmp->data;
+	
+      /* The compositing manager opens its own connection to the X server
+       * and uses the XTest extension to ignore grabs. However, it also
+       * uses GL which opens yet another connection to the X server. With
+       * this ungrab/grab we would block indefinitely in XOpenDisplay().
+       */
+      meta_display_ungrab (display);
+      
+      meta_compositor_manage_screen (screen->display->compositor,
+				     screen);
+
+      meta_display_grab (display);
+  
+      meta_screen_manage_all_windows (screen);
+
       tmp = tmp->next;
     }
 
@@ -811,7 +826,7 @@ void
 meta_display_close (MetaDisplay *display)
 {
   GSList *tmp;
-  
+
   if (display->error_traps > 0)
     meta_bug ("Display closed with error traps pending\n");
 
@@ -3456,12 +3471,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
   if (display->grab_window)
     {
       meta_window_refresh_resize_popup (display->grab_window);
-
-      /* repaint window in case we draw it differently
-       * when grabbed
-       */
-      meta_compositor_damage_window (display->compositor,
-                                     display->grab_window);
     }
   
   return TRUE;
@@ -3574,13 +3583,6 @@ meta_display_end_grab_op (MetaDisplay *display,
       display->grab_sync_request_alarm = None;
     }
 #endif /* HAVE_XSYNC */
-
-  /* repaint window in case the grab op drew it in a
-   * nonstandard way such as transparent or wireframe
-   */
-  if (display->grab_window != NULL)
-    meta_compositor_damage_window (display->compositor,
-                                   display->grab_window);
   
   display->grab_window = NULL;
   display->grab_screen = NULL;
