@@ -1,3 +1,8 @@
+2006-01-14  Elijah Newren  <newren gmail com>
+
+	* src/compositor.[ch]: fix compilation when
+	HAVE_COMPOSITE_EXTENSIONS is undefined.  #326912
+
 Fri Jan 13 16:37:26 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/compositor.c (update): Only update on damage events. 

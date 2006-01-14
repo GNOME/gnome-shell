@@ -28,27 +28,27 @@
 
 #include <math.h>
 
+#ifdef HAVE_COMPOSITE_EXTENSIONS
 #include <cm/node.h>
 #include <cm/drawable-node.h>
 
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glx.h>
-#include <X11/extensions/shape.h>
 
 #include <cm/ws.h>
 #include <cm/wsint.h>
 
-
-#ifdef HAVE_COMPOSITE_EXTENSIONS
+#include <X11/extensions/shape.h>
 #include <X11/extensions/Xcomposite.h>
 #include <X11/extensions/Xdamage.h>
+#include <X11/extensions/Xfixes.h>
 #include <X11/extensions/Xrender.h>
-
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 #define FRAME_INTERVAL_MILLISECONDS ((int)(1000.0/40.0))
 
+#ifdef HAVE_COMPOSITE_EXTENSIONS
 /* Screen specific information */
 typedef struct
 {
@@ -77,6 +77,7 @@ struct MetaCompositor
   
   GList *ignored_damage;
 };
+#endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 static void
@@ -120,7 +121,9 @@ void
 meta_compositor_set_debug_updates (MetaCompositor *compositor,
 				   gboolean	   debug_updates)
 {
+#ifdef HAVE_COMPOSITE_EXTENSIONS
   compositor->debug_updates = !!debug_updates;
+#endif /* HAVE_COMPOSITE_EXTENSIONS */
 }
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
@@ -168,7 +171,6 @@ draw_windows (MetaScreen *screen,
   draw_windows (screen, list->next);
   node->render (node);
 }
-#endif
 
 static MetaScreen *
 node_get_screen (Display *dpy,
@@ -219,7 +221,6 @@ handle_restacking (MetaCompositor *compositor,
     }
 }
 
-#ifdef HAVE_COMPOSITE_EXTENSIONS
 static void
 process_configure_notify (MetaCompositor  *compositor,
                           XConfigureEvent *event)
@@ -526,6 +527,7 @@ meta_compositor_process_event (MetaCompositor *compositor,
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 }
 
+#ifdef HAVE_COMPOSITE_EXTENSIONS
 static void
 wavy (double time,
       double in_x, double in_y,
@@ -595,6 +597,7 @@ do_repaint (DrawableNode *node, gpointer data)
     if (!scr_info->idle_id)
 	scr_info->idle_id = g_idle_add (update, screen);
 }
+#endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 /* This is called when metacity does its XQueryTree() on startup
  * and when a new window is mapped.
@@ -740,9 +743,9 @@ void
 meta_compositor_unmanage_screen (MetaCompositor *compositor,
                                  MetaScreen     *screen)
 {
+#ifdef HAVE_COMPOSITE_EXTENSIONS  
   ScreenInfo *scr_info = screen->compositor_data;
   
-#ifdef HAVE_COMPOSITE_EXTENSIONS  
   if (!compositor->enabled)
     return; /* no extension */
   
@@ -757,6 +760,7 @@ meta_compositor_unmanage_screen (MetaCompositor *compositor,
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 }
 
+#ifdef HAVE_COMPOSITE_EXTENSIONS  
 static DrawableNode *
 window_to_node (MetaCompositor *compositor,
 		MetaWindow *window)
@@ -859,6 +863,7 @@ convert (MetaScreen *screen,
   rect->width = width / (double)screen->rect.width;
   rect->height = height / (double)screen->rect.height;
 }
+#endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 void
 meta_compositor_minimize (MetaCompositor           *compositor,
@@ -898,10 +903,4 @@ meta_compositor_minimize (MetaCompositor           *compositor,
   
   drawable_node_set_deformation_func (node, minimize_deformation, info);
 #endif
-}
-
-MetaDisplay *
-meta_compositor_get_display (MetaCompositor *compositor)
-{
-  return compositor->display;
 }

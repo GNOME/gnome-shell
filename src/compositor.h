@@ -25,8 +25,6 @@
 #include "util.h"
 #include "display.h"
 
-#include <X11/extensions/Xfixes.h>
-
 typedef void (* MetaMinimizeFinishedFunc) (gpointer data);
 
 MetaCompositor* meta_compositor_new           (MetaDisplay       *display);
