@@ -336,6 +336,8 @@ meta_display_open (const char *name)
   display->grab_old_window_stacking = NULL;
 
   display->mouse_mode = TRUE; /* Only relevant for mouse or sloppy focus */
+  display->allow_terminal_deactivation = TRUE; /* Only relevant for when a
+                                                  terminal has the focus */
 
 #ifdef HAVE_XSYNC
   display->grab_sync_request_alarm = None;
@@ -1687,6 +1689,11 @@ event_callback (XEvent   *event,
                                   window->desc, event->xbutton.button);
                       meta_window_focus (window, event->xbutton.time);
                     }
+                  else
+                    /* However, do allow terminals to lose focus due to new
+                     * window mappings after the user clicks on a panel.
+                     */
+                    display->allow_terminal_deactivation = TRUE;
                 }
               
               /* you can move on alt-click but not on

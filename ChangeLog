@@ -1,5 +1,28 @@
 2006-01-15  Elijah Newren  <newren@gmail.com>
 
+	Fix accidental overzealous focus holding by the terminal
+	introduced by the original patch in bug 326159.  Windows launched
+	from panel icons, the panel menu, or global keybindings should get
+	focus now.  #326159.
+
+	* src/display.c (meta_display_open, event_callback): 
+	* src/display.h (struct MetaDisplay):
+	* src/keybindings.c (process_event):
+	* src/window.c (meta_window_set_user_time):
+	Add a new allow_terminal_deactivation field to MetaDisplay and use
+	it to track whether the user's last action was interaction with
+	the terminal or some outside action (global keybinding, clicking
+	on a dock, etc.) likely to launch a new window.
+
+	* src/window.c (window_state_on_map):
+	Allow the focus switch from a terminal to something else if
+	allow_terminal_deactiviation is true.
+
+	* src/keybindings.c (handle_panel_keybinding):
+	Remove some unneeded code.
+
+2006-01-15  Elijah Newren  <newren@gmail.com>
+
 	Patch from Jens Granseuer to fix more build issues with gcc 2.95.
 	#327050.
 

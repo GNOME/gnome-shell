@@ -1781,6 +1781,7 @@ window_state_on_map (MetaWindow *window,
    * approximation to enforce so we do that.
    */
   if (*takes_focus &&
+      !window->display->allow_terminal_deactivation &&
       __window_is_terminal (window->display->focus_window) &&
       !meta_window_is_ancestor_of_transient (window->display->focus_window,
                                              window))
@@ -7886,5 +7887,11 @@ meta_window_set_user_time (MetaWindow *window,
       window->net_wm_user_time = timestamp;
       if (XSERVER_TIME_IS_BEFORE (window->display->last_user_time, timestamp))
         window->display->last_user_time = timestamp;
+
+      /* If this is a terminal, user interaction with it means the user likely
+       * doesn't want to have focus transferred for now due to new windows.
+       */
+      if (__window_is_terminal (window))
+        window->display->allow_terminal_deactivation = FALSE;
     }
 }
