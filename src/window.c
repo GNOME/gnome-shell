@@ -1717,7 +1717,7 @@ intervening_user_event_occurred (MetaWindow *window)
 gboolean
 __window_is_terminal (MetaWindow *window)
 {
-  if (window == NULL)
+  if (window == NULL || window->res_name == NULL)
     return FALSE;
 
   /* gnome-terminal -- if you couldn't guess */

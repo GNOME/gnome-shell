@@ -1,5 +1,10 @@
 2006-01-14  Elijah Newren  <newren gmail com>
 
+	* src/window.c (__window_is_terminal): Don't dereference a NULL
+	string.  Fixes #327013.
+
+2006-01-14  Elijah Newren  <newren gmail com>
+
 	* src/compositor.[ch]: fix compilation when
 	HAVE_COMPOSITE_EXTENSIONS is undefined.  #326912
 
