@@ -1,3 +1,12 @@
+2006-01-15  Elijah Newren  <newren@gmail.com>
+
+	Patch from Jens Granseuer to fix more build issues with gcc 2.95.
+	#327050.
+
+	* src/boxes.c (meta_rectangle_edge_cmp_ignore_type):
+	* src/window.c (meta_window_show):
+	Remove C99 style variable initiailization
+
 2006-01-14  Elijah Newren  <newren gmail com>
 
 	* src/window.c (__window_is_terminal): Don't dereference a NULL

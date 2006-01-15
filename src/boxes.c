@@ -1226,14 +1226,13 @@ meta_rectangle_edge_cmp_ignore_type (gconstpointer a, gconstpointer b)
 {
   const MetaEdge *a_edge_rect = (gconstpointer) a;
   const MetaEdge *b_edge_rect = (gconstpointer) b;
+  int a_compare, b_compare;
 
   /* Edges must be both vertical or both horizontal, or it doesn't make
    * sense to compare them.
    */
   g_assert ((a_edge_rect->rect.width  == 0 && b_edge_rect->rect.width == 0) ||
             (a_edge_rect->rect.height == 0 && b_edge_rect->rect.height == 0));
-
-  int a_compare, b_compare;
 
   a_compare = b_compare = 0;  /* gcc-3.4.2 sucks at figuring initialized'ness */
 

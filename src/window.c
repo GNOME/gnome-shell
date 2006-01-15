@@ -1980,8 +1980,9 @@ meta_window_show (MetaWindow *window)
            */
           if (!place_on_top_on_map && needs_stacking_adjustment)
             {
+              gboolean overlap;
               g_assert (focus_window != NULL);
-              gboolean overlap = windows_overlap (window, focus_window);
+              overlap = windows_overlap (window, focus_window);
 
               /* We want alt tab to go to the denied-focus window */
               ensure_mru_position_after (window, focus_window);
