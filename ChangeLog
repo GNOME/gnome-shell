@@ -1,3 +1,9 @@
+2006-01-15  Kyle Ambroff  <kambroff@csus.edu>
+
+	* src/workspace.c (focus_ancestor_or_mru_window): 
+	If no valid window is found in the MRU list, then set focus to the
+	desktop window. (#317405)
+
 2006-01-15  Elijah Newren  <newren@gmail.com>
 
 	Fix accidental overzealous focus holding by the terminal

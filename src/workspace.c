@@ -950,6 +950,7 @@ focus_ancestor_or_mru_window (MetaWorkspace *workspace,
                               Time           timestamp)
 {
   MetaWindow *window = NULL;
+  MetaWindow *desktop_window = NULL;
   GList *tmp;
 
   if (not_this_one)
@@ -994,11 +995,23 @@ focus_ancestor_or_mru_window (MetaWorkspace *workspace,
           tmp_window->type != META_WINDOW_DESKTOP)
         {
           window = tmp->data;
-	  break;
+          break;
+        }
+      else if (tmp_window != not_this_one      &&
+               desktop_window == NULL          &&
+               meta_window_showing_on_its_workspace (tmp_window) &&
+               tmp_window->type == META_WINDOW_DESKTOP)
+        {
+          /* Found the most recently used desktop window */
+          desktop_window = tmp_window;
         }
 
       tmp = tmp->next;
     }
+
+  /* If no window was found, default to the MRU desktop-window */
+  if (window == NULL)
+    window = desktop_window;
 
   if (window)
     {
