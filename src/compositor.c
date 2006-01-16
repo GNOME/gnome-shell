@@ -580,8 +580,11 @@ update (gpointer data)
   /* FIXME: we should probably grab the server around the raise/swap */
   
   ws_window_gl_swap_buffers (gl_window);
+  glFinish();
 
   scr_info->idle_id = 0;
+
+  g_print ("returning FALSE\n");
   
   return FALSE;
 }
@@ -733,8 +736,6 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   ws_window_map (scr_info->glw);
   
   ws_sync (compositor->ws);
-  
-  g_idle_add (update, screen);
   
 #endif
 }

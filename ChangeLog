@@ -1,3 +1,8 @@
+Mon Jan 16 11:55:20 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/compositor.c (meta_compositor_manage_screen): Really turn
+	off draw-in-a-loop.
+
 2006-01-15  Kyle Ambroff  <kambroff@csus.edu>
 
 	* src/workspace.c (focus_ancestor_or_mru_window): 
