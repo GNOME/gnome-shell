@@ -1,3 +1,31 @@
+2.13.21
+==
+
+Thanks to Damien Carbery, Ray Strode, Søren Sandmann, Elijah
+Newren, Jens Granseuer, and Kyle Ambroff for improvements in this
+release.
+
+  - Fix Solaris compilation issues (Ray, Damien) [#326281, #326746]
+  - Merge compositor work from branches to get the beginnings of an openGL
+    based compositor.  Still not ready and thus disabled by default.
+    (Søren)
+  - Composite fixes: Only update composite on damage events (Søren), get
+    non-composite compilation working again (Elijah), Really turn off
+    draw-in-a-loop (Søren)
+  - Don't dereference a NULL string (Elijah) [#327013]
+  - GCC 2.95 fix; remove more C99 style variable initiailizations (Jens)
+    [#327050]
+  - Fix accidental overzealous focus holding by the terminal (introduced in
+    last release) so that windows launched from panel icons, the panel
+    menu, or global keybindings should get focus now.  (Elijah) [#326159]
+  - If no valid window is found in the MRU list, then set focus to the
+    desktop window. (Kyle) [#317405]
+
+Translations
+  Adam Weinberger (en_CA), Francisco Javier F. Serrador (es), Ankit
+  Patel (gu), Takeshi AIHANA (ja), Theppitak Karoonboonyanan (th),
+  Clytie Siddall (vi)
+
 2.13.13
 ==
 
