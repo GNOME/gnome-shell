@@ -1,8 +1,14 @@
-2006-01-16  Elijah Newren  <newren@gmail.com>
+2006-01-16  Elijah Newren  <newren gmail com>
+
+	* src/window-props.c: manually define HOST_NAME_MAX if not already
+	defined to fix Solaris compilation issue.  Caught by Damien
+	Carbery, patch from Havoc.  #326745
+
+2006-01-16  Elijah Newren  <newren gmail.com>
 
 	* configure.in: post-release version bump to 2.13.34
 
-2006-01-16  Elijah Newren  <newren@gmail.com>
+2006-01-16  Elijah Newren  <newren gmail com>
 
 	* NEWS:	2.13.21 release
 
@@ -17,7 +23,7 @@ Mon Jan 16 11:55:20 2006  Søren Sandmann  <sandmann@redhat.com>
 	If no valid window is found in the MRU list, then set focus to the
 	desktop window. (#317405)
 
-2006-01-15  Elijah Newren  <newren@gmail.com>
+2006-01-15  Elijah Newren  <newren gmail com>
 
 	Fix accidental overzealous focus holding by the terminal
 	introduced by the original patch in bug 326159.  Windows launched
@@ -40,7 +46,7 @@ Mon Jan 16 11:55:20 2006  Søren Sandmann  <sandmann@redhat.com>
 	* src/keybindings.c (handle_panel_keybinding):
 	Remove some unneeded code.
 
-2006-01-15  Elijah Newren  <newren@gmail.com>
+2006-01-15  Elijah Newren  <newren gmail com>
 
 	Patch from Jens Granseuer to fix more build issues with gcc 2.95.
 	#327050.

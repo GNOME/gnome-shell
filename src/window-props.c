@@ -28,6 +28,10 @@
 #include <X11/Xatom.h>
 #include <unistd.h>
 #include <string.h>
+#ifndef HOST_NAME_MAX
+/* Solaris headers apparently don't define this so do so manually; #326745 */
+#define HOST_NAME_MAX 255
+#endif
 
 typedef void (* InitValueFunc)   (MetaDisplay   *display,
                                   Atom           property,
