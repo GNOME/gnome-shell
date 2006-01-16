@@ -1,5 +1,9 @@
 2006-01-16  Elijah Newren  <newren@gmail.com>
 
+	* configure.in: post-release version bump to 2.13.34
+
+2006-01-16  Elijah Newren  <newren@gmail.com>
+
 	* NEWS:	2.13.21 release
 
 Mon Jan 16 11:55:20 2006  Søren Sandmann  <sandmann@redhat.com>
