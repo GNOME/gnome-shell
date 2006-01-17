@@ -1,3 +1,7 @@
+Tue Jan 17 17:25:29 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/compositor.c: Port to changes in libcm.
+
 2006-01-16  Elijah Newren  <newren gmail com>
 
 	* src/window-props.c: manually define HOST_NAME_MAX if not already

@@ -83,9 +83,9 @@ struct MetaCompositor
 static void
 free_window_hash_value (void *v)
 {
-  DrawableNode *drawable_node = v;
+  CmDrawableNode *drawable_node = v;
   
-  drawable_node_unref (drawable_node);
+  g_object_unref (G_OBJECT (drawable_node));
 }
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
@@ -161,7 +161,7 @@ static void
 draw_windows (MetaScreen *screen,
 	      GList      *list)
 {
-  Node *node;
+  CmNode *node;
   
   if (!list)
     return;
@@ -169,12 +169,17 @@ draw_windows (MetaScreen *screen,
   node = list->data;
   
   draw_windows (screen, list->next);
-  node->render (node);
+
+#if 0
+  g_print ("rendering: %p\n", node);
+#endif
+  
+  cm_node_render (node);
 }
 
 static MetaScreen *
 node_get_screen (Display *dpy,
-		 DrawableNode *node)
+		 CmDrawableNode *node)
 {
   /* FIXME: we should probably have a reverse mapping
    * from nodes to screens
@@ -186,8 +191,8 @@ node_get_screen (Display *dpy,
 
 static void
 handle_restacking (MetaCompositor *compositor,
-		   DrawableNode *node,
-		   DrawableNode *above)
+		   CmDrawableNode *node,
+		   CmDrawableNode *above)
 {
   GList *window_link, *above_link;
   MetaScreen *screen;
@@ -226,9 +231,9 @@ process_configure_notify (MetaCompositor  *compositor,
                           XConfigureEvent *event)
 {
   WsWindow *above_window;
-  DrawableNode *node = g_hash_table_lookup (compositor->window_hash,
+  CmDrawableNode *node = g_hash_table_lookup (compositor->window_hash,
 					    &event->window);
-  DrawableNode *above_node;
+  CmDrawableNode *above_node;
   MetaScreen *screen;
   ScreenInfo *scr_info;
   
@@ -270,7 +275,7 @@ static void
 process_map (MetaCompositor     *compositor,
              XMapEvent          *event)
 {
-  DrawableNode *node;
+  CmDrawableNode *node;
   MetaScreen *screen;
   
   /* See if window was mapped as child of root */
@@ -309,7 +314,7 @@ process_map (MetaCompositor     *compositor,
     }
   else
     {
-      drawable_node_set_viewable (node, TRUE);
+      cm_drawable_node_set_viewable (node, TRUE);
     }
   
   /* We don't actually need to invalidate anything, because we will
@@ -324,7 +329,7 @@ static void
 process_unmap (MetaCompositor     *compositor,
                XUnmapEvent        *event)
 {
-  DrawableNode *node;
+  CmDrawableNode *node;
   MetaScreen *screen;
   
   /* See if window was unmapped as child of root */
@@ -343,7 +348,7 @@ process_unmap (MetaCompositor     *compositor,
 			      &event->window);
   if (node != NULL)
     {
-      drawable_node_set_viewable (node, FALSE);
+      cm_drawable_node_set_viewable (node, FALSE);
     }
 }
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
@@ -423,7 +428,7 @@ process_reparent (MetaCompositor      *compositor,
    */
   MetaScreen *event_screen;
   MetaScreen *parent_screen;
-  DrawableNode *node;
+  CmDrawableNode *node;
   XWindowAttributes attrs;
   
   event_screen = meta_display_screen_for_root (compositor->display,
@@ -584,18 +589,16 @@ update (gpointer data)
 
   scr_info->idle_id = 0;
 
-  g_print ("returning FALSE\n");
-  
   return FALSE;
 }
 
 static void
-do_repaint (DrawableNode *node, gpointer data)
+do_repaint (CmDrawableNode *node, gpointer data)
 {
     MetaScreen *screen = data;
     ScreenInfo *scr_info = screen->compositor_data;
 
-    g_print ("do repaint\n");
+    g_print ("queueing repaint for %p\n", node);
     
     if (!scr_info->idle_id)
 	scr_info->idle_id = g_idle_add (update, screen);
@@ -611,7 +614,7 @@ meta_compositor_add_window (MetaCompositor    *compositor,
                             XWindowAttributes *attrs)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  DrawableNode *node;
+  CmDrawableNode *node;
   MetaScreen *screen;
   WsDrawable *drawable;
   ScreenInfo *scr_info;
@@ -645,9 +648,9 @@ meta_compositor_add_window (MetaCompositor    *compositor,
     }
   else
     {
-      node = drawable_node_new (drawable);
+      node = cm_drawable_node_new (drawable);
 
-      drawable_node_set_damage_func (node, do_repaint, screen);
+      cm_drawable_node_set_damage_func (node, do_repaint, screen);
       
 #if 0
       drawable_node_set_deformation_func (node, wavy, NULL);
@@ -672,7 +675,7 @@ meta_compositor_remove_window (MetaCompositor    *compositor,
                                Window             xwindow)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  DrawableNode *node;
+  CmDrawableNode *node;
   MetaScreen *screen;
   ScreenInfo *scr_info;
   
@@ -752,7 +755,7 @@ meta_compositor_unmanage_screen (MetaCompositor *compositor,
   
   while (scr_info->compositor_windows != NULL)
     {
-      DrawableNode *node = scr_info->compositor_windows->data;
+      CmDrawableNode *node = scr_info->compositor_windows->data;
       
       meta_compositor_remove_window (compositor, node->drawable->xid);
     }
@@ -762,12 +765,12 @@ meta_compositor_unmanage_screen (MetaCompositor *compositor,
 }
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS  
-static DrawableNode *
+static CmDrawableNode *
 window_to_node (MetaCompositor *compositor,
 		MetaWindow *window)
 {
   Window xwindow;
-  DrawableNode *node;
+  CmDrawableNode *node;
   
   if (window->frame)
     xwindow = window->frame->xwindow;
@@ -791,7 +794,7 @@ typedef struct
 typedef struct
 {
   MetaWindow *window;
-  DrawableNode *node;
+  CmDrawableNode *node;
   
   DoubleRect start;
   DoubleRect target;
@@ -814,7 +817,7 @@ stop_minimize (gpointer data)
 {
   MiniInfo *info = data;
   
-  drawable_node_set_deformation_func (info->node, NULL, NULL);
+  cm_drawable_node_set_deformation_func (info->node, NULL, NULL);
   
   if (info->finished_func)
     info->finished_func (info->finished_data);
@@ -878,7 +881,7 @@ meta_compositor_minimize (MetaCompositor           *compositor,
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   MiniInfo *info = g_new (MiniInfo, 1);
-  DrawableNode *node = window_to_node (compositor, window);
+  CmDrawableNode *node = window_to_node (compositor, window);
   WsRectangle start;
   MetaScreen *screen = window->screen;
   
@@ -902,6 +905,6 @@ meta_compositor_minimize (MetaCompositor           *compositor,
   info->finished_func = finished;
   info->finished_data = data;
   
-  drawable_node_set_deformation_func (node, minimize_deformation, info);
+  cm_drawable_node_set_deformation_func (node, minimize_deformation, info);
 #endif
 }
