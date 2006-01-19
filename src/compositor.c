@@ -53,16 +53,16 @@
 typedef struct
 {
   /* top of stack is first in list */
-  GList *compositor_windows;
+  GList *compositor_nodes;
   WsWindow *glw;
   int idle_id;
 } ScreenInfo;
 
 struct MetaCompositor
 {
-  MetaDisplay *display;
+  MetaDisplay *meta_display;
   
-  Ws *ws;
+  WsDisplay *display;
   
   GHashTable *window_hash;
   
@@ -97,12 +97,12 @@ meta_compositor_new (MetaDisplay *display)
   
   compositor = g_new0 (MetaCompositor, 1);
   
-  compositor->ws = ws_new (NULL);
+  compositor->display = ws_display_new (NULL);
   
-  ws_init_test (compositor->ws);
-  ws_set_ignore_grabs (compositor->ws, TRUE);
+  ws_display_init_test (compositor->display);
+  ws_display_set_ignore_grabs (compositor->display, TRUE);
   
-  compositor->display = display;
+  compositor->meta_display = display;
   
   compositor->window_hash = g_hash_table_new_full (meta_unsigned_long_hash,
 						   meta_unsigned_long_equal,
@@ -198,11 +198,11 @@ handle_restacking (MetaCompositor *compositor,
   MetaScreen *screen;
   ScreenInfo *scr_info;
   
-  screen = node_get_screen (compositor->display->xdisplay, node);
+  screen = node_get_screen (compositor->meta_display->xdisplay, node);
   scr_info = screen->compositor_data;
   
-  window_link = g_list_find (scr_info->compositor_windows, node);
-  above_link  = g_list_find (scr_info->compositor_windows, above);
+  window_link = g_list_find (scr_info->compositor_nodes, node);
+  above_link  = g_list_find (scr_info->compositor_nodes, above);
   
   if (!window_link || !above_link)
     return;
@@ -219,10 +219,10 @@ handle_restacking (MetaCompositor *compositor,
     {
       ScreenInfo *scr_info = screen->compositor_data;
       
-      scr_info->compositor_windows =
-	g_list_delete_link (scr_info->compositor_windows, window_link);
-      scr_info->compositor_windows =
-	g_list_insert_before (scr_info->compositor_windows, above_link, node);
+      scr_info->compositor_nodes =
+	g_list_delete_link (scr_info->compositor_nodes, window_link);
+      scr_info->compositor_nodes =
+	g_list_insert_before (scr_info->compositor_nodes, above_link, node);
     }
 }
 
@@ -240,14 +240,14 @@ process_configure_notify (MetaCompositor  *compositor,
   if (!node)
     return;
   
-  screen = node_get_screen (compositor->display->xdisplay, node);
+  screen = node_get_screen (compositor->meta_display->xdisplay, node);
   scr_info = screen->compositor_data;
   
-  above_window = ws_window_lookup (node->drawable->ws, event->above);
+  above_window = ws_window_lookup (node->drawable->display, event->above);
   
   if (above_window == scr_info->glw)
     {
-      above_node = scr_info->compositor_windows->data;
+      above_node = scr_info->compositor_nodes->data;
     }
   else
     {
@@ -279,7 +279,7 @@ process_map (MetaCompositor     *compositor,
   MetaScreen *screen;
   
   /* See if window was mapped as child of root */
-  screen = meta_display_screen_for_root (compositor->display,
+  screen = meta_display_screen_for_root (compositor->meta_display,
 					 event->event);
   
   if (screen == NULL)
@@ -296,12 +296,12 @@ process_map (MetaCompositor     *compositor,
     {
       XWindowAttributes attrs;
       
-      meta_error_trap_push_with_return (compositor->display);
+      meta_error_trap_push_with_return (compositor->meta_display);
       
-      XGetWindowAttributes (compositor->display->xdisplay,
+      XGetWindowAttributes (compositor->meta_display->xdisplay,
 			    event->window, &attrs);
       
-      if (meta_error_trap_pop_with_return (compositor->display, TRUE) != Success)
+      if (meta_error_trap_pop_with_return (compositor->meta_display, TRUE) != Success)
         {
 	  meta_topic (META_DEBUG_COMPOSITOR, "Failed to get attributes for window 0x%lx\n",
 		      event->window);
@@ -333,7 +333,7 @@ process_unmap (MetaCompositor     *compositor,
   MetaScreen *screen;
   
   /* See if window was unmapped as child of root */
-  screen = meta_display_screen_for_root (compositor->display,
+  screen = meta_display_screen_for_root (compositor->meta_display,
 					 event->event);
   
   if (screen == NULL)
@@ -361,7 +361,7 @@ process_create (MetaCompositor     *compositor,
   MetaScreen *screen;
   XWindowAttributes attrs;
   
-  screen = meta_display_screen_for_root (compositor->display,
+  screen = meta_display_screen_for_root (compositor->meta_display,
 					 event->parent);
   
   if (screen == NULL)
@@ -372,12 +372,12 @@ process_create (MetaCompositor     *compositor,
       return;
     }
   
-  meta_error_trap_push_with_return (compositor->display);
+  meta_error_trap_push_with_return (compositor->meta_display);
   
-  XGetWindowAttributes (compositor->display->xdisplay,
+  XGetWindowAttributes (compositor->meta_display->xdisplay,
 			event->window, &attrs);
   
-  if (meta_error_trap_pop_with_return (compositor->display, TRUE) != Success)
+  if (meta_error_trap_pop_with_return (compositor->meta_display, TRUE) != Success)
     {
       meta_topic (META_DEBUG_COMPOSITOR, "Failed to get attributes for window 0x%lx\n",
 		  event->window);
@@ -400,7 +400,7 @@ process_destroy (MetaCompositor      *compositor,
 {
   MetaScreen *screen;
   
-  screen = meta_display_screen_for_root (compositor->display,
+  screen = meta_display_screen_for_root (compositor->meta_display,
 					 event->event);
   
   if (screen == NULL)
@@ -431,7 +431,7 @@ process_reparent (MetaCompositor      *compositor,
   CmDrawableNode *node;
   XWindowAttributes attrs;
   
-  event_screen = meta_display_screen_for_root (compositor->display,
+  event_screen = meta_display_screen_for_root (compositor->meta_display,
 					       event->event);
   
   if (event_screen == NULL)
@@ -446,7 +446,7 @@ process_reparent (MetaCompositor      *compositor,
 	      "Reparent window 0x%lx new parent 0x%lx received on 0x%lx\n",
 	      event->window, event->parent, event->event);
   
-  parent_screen = meta_display_screen_for_root (compositor->display,
+  parent_screen = meta_display_screen_for_root (compositor->meta_display,
 						event->parent);
   
   if (parent_screen == NULL)
@@ -461,12 +461,12 @@ process_reparent (MetaCompositor      *compositor,
   node = g_hash_table_lookup (compositor->window_hash,
 			      &event->window);
   
-  meta_error_trap_push_with_return (compositor->display);
+  meta_error_trap_push_with_return (compositor->meta_display);
   
-  XGetWindowAttributes (compositor->display->xdisplay,
+  XGetWindowAttributes (compositor->meta_display->xdisplay,
 			event->window, &attrs);
   
-  if (meta_error_trap_pop_with_return (compositor->display, TRUE) != Success)
+  if (meta_error_trap_pop_with_return (compositor->meta_display, TRUE) != Success)
     {
       meta_topic (META_DEBUG_COMPOSITOR, "Failed to get attributes for window 0x%lx\n",
 		  event->window);
@@ -561,8 +561,6 @@ update (gpointer data)
   glLoadIdentity ();
   gluOrtho2D (0, 1.0, 0.0, 1.0);
   
-  ws_window_raise (gl_window);
-  
   glClearColor (0.0, 0.5, 0.5, 0.0);
   glClear (GL_COLOR_BUFFER_BIT);
   
@@ -579,14 +577,25 @@ update (gpointer data)
   
   glEnd ();
   
+  ws_window_raise (gl_window);
+  
   glEnable (GL_TEXTURE_2D);
-  draw_windows (screen, scr_info->compositor_windows);
+  draw_windows (screen, scr_info->compositor_nodes);
   
   /* FIXME: we should probably grab the server around the raise/swap */
+
+#if 0
+  ws_display_grab (ws_drawable_get_display ((WsDrawable *)gl_window));
+#endif
+  
   
   ws_window_gl_swap_buffers (gl_window);
   glFinish();
 
+#if 0
+  ws_display_ungrab (ws_drawable_get_display ((WsDrawable *)gl_window));
+#endif
+  
   scr_info->idle_id = 0;
 
   return FALSE;
@@ -598,7 +607,9 @@ do_repaint (CmDrawableNode *node, gpointer data)
     MetaScreen *screen = data;
     ScreenInfo *scr_info = screen->compositor_data;
 
+#if 0
     g_print ("queueing repaint for %p\n", node);
+#endif
     
     if (!scr_info->idle_id)
 	scr_info->idle_id = g_idle_add (update, screen);
@@ -635,7 +646,7 @@ meta_compositor_add_window (MetaCompositor    *compositor,
       return;
     }
   
-  drawable = (WsDrawable *)ws_window_lookup (compositor->ws, xwindow);
+  drawable = (WsDrawable *)ws_window_lookup (compositor->display, xwindow);
 
   scr_info = screen->compositor_data;
 
@@ -664,8 +675,8 @@ meta_compositor_add_window (MetaCompositor    *compositor,
   /* assume cwindow is at the top of the stack as it was either just
    * created or just reparented to the root window
    */
-  scr_info->compositor_windows = g_list_prepend (scr_info->compositor_windows,
-						 node);
+  scr_info->compositor_nodes = g_list_prepend (scr_info->compositor_nodes,
+					       node);
   
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 }
@@ -692,10 +703,10 @@ meta_compositor_remove_window (MetaCompositor    *compositor,
       return;
     }
   
-  screen = node_get_screen (compositor->display->xdisplay, node);
+  screen = node_get_screen (compositor->meta_display->xdisplay, node);
   scr_info = screen->compositor_data;
   
-  scr_info->compositor_windows = g_list_remove (scr_info->compositor_windows,
+  scr_info->compositor_nodes = g_list_remove (scr_info->compositor_nodes,
 					      node);
   
   /* Frees node as side effect */
@@ -713,32 +724,32 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   ScreenInfo *scr_info = g_new0 (ScreenInfo, 1);
   
   WsScreen *ws_screen =
-      ws_screen_get_from_number (compositor->ws, screen->number);
+      ws_display_get_screen_from_number (compositor->display, screen->number);
   WsWindow *root = ws_screen_get_root_window (ws_screen);
   WsRegion *region;
   
   scr_info->glw = ws_window_new_gl (root);
-  scr_info->compositor_windows = NULL;
+  scr_info->compositor_nodes = NULL;
   scr_info->idle_id = 0;
 
   g_print ("setting compositor_data for screen %p to %p\n", screen, scr_info);
   screen->compositor_data = scr_info;
   
-  ws_init_composite (compositor->ws);
-  ws_init_damage (compositor->ws);
-  ws_init_fixes (compositor->ws);
+  ws_display_init_composite (compositor->display);
+  ws_display_init_damage (compositor->display);
+  ws_display_init_fixes (compositor->display);
   
   ws_window_redirect_subwindows (root);
   ws_window_set_override_redirect (scr_info->glw, TRUE);
   ws_window_unredirect (scr_info->glw);
   
-  region = ws_region_new (compositor->ws);
+  region = ws_region_new (compositor->display);
   ws_window_set_input_shape (scr_info->glw, region);
   ws_region_unref (region);
   
   ws_window_map (scr_info->glw);
   
-  ws_sync (compositor->ws);
+  ws_display_sync (compositor->display);
   
 #endif
 }
@@ -753,9 +764,9 @@ meta_compositor_unmanage_screen (MetaCompositor *compositor,
   if (!compositor->enabled)
     return; /* no extension */
   
-  while (scr_info->compositor_windows != NULL)
+  while (scr_info->compositor_nodes != NULL)
     {
-      CmDrawableNode *node = scr_info->compositor_windows->data;
+      CmDrawableNode *node = scr_info->compositor_nodes->data;
       
       meta_compositor_remove_window (compositor, node->drawable->xid);
     }
