@@ -1,3 +1,8 @@
+Thu Jan 19 18:05:47 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/compositor.c (meta_compositor_manage_screen):
+	g_object_unref() rather than ws_region_unref().
+
 Thu Jan 19 16:50:50 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/compositor.c: Port to changes in libcm

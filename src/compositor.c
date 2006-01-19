@@ -582,7 +582,8 @@ update (gpointer data)
   glEnable (GL_TEXTURE_2D);
   draw_windows (screen, scr_info->compositor_nodes);
   
-  /* FIXME: we should probably grab the server around the raise/swap */
+  /* FIXME: we should probably grab the server around the raise/swap
+   */
 
 #if 0
   ws_display_grab (ws_drawable_get_display ((WsDrawable *)gl_window));
@@ -745,7 +746,7 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   
   region = ws_region_new (compositor->display);
   ws_window_set_input_shape (scr_info->glw, region);
-  ws_region_unref (region);
+  g_object_unref (G_OBJECT (region));
   
   ws_window_map (scr_info->glw);
   
