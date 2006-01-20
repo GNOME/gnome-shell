@@ -646,10 +646,13 @@ meta_display_cleanup_edges (MetaDisplay *display)
 {
   guint i,j;
   MetaEdgeResistanceData *edge_data = display->grab_edge_resistance_data;
+  GHashTable *edges_to_be_freed;
 
   g_assert (edge_data != NULL);
 
   /* We first need to clean out any window edges */
+  edges_to_be_freed = g_hash_table_new_full (g_direct_hash, g_direct_equal,
+                                             g_free, NULL);
   for (i = 0; i < 4; i++)
     {
       GArray *tmp = NULL;
@@ -681,15 +684,29 @@ meta_display_cleanup_edges (MetaDisplay *display)
           MetaEdge *edge = g_array_index (tmp, MetaEdge*, j);
           if (edge->edge_type == META_EDGE_WINDOW &&
               edge->side_type == dir)
-            g_free (edge);
+            {
+              /* The same edge will appear in two arrays, and we can't free
+               * it yet we still need to compare edge->side_type for the other
+               * array that it is in.  So store it in a hash table for later
+               * freeing.  Could also do this in a simple linked list.
+               */
+              g_hash_table_insert (edges_to_be_freed, edge, edge);
+            }
         }
     }
+
+  /* Now free all the window edges (the key destroy function is g_free) */
+  g_hash_table_destroy (edges_to_be_freed);
 
   /* Now free the arrays and data */
   g_array_free (edge_data->left_edges, TRUE);
   g_array_free (edge_data->right_edges, TRUE);
   g_array_free (edge_data->top_edges, TRUE);
   g_array_free (edge_data->bottom_edges, TRUE);
+  edge_data->left_edges = NULL;
+  edge_data->right_edges = NULL;
+  edge_data->top_edges = NULL;
+  edge_data->bottom_edges = NULL;
 
   /* Cleanup the timeouts */
   if (edge_data->left_data.timeout_setup   &&

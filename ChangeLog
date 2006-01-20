@@ -1,5 +1,15 @@
 2006-01-20  Elijah Newren  <newren gmail com>
 
+	Patch from Søren to fix some reading-from-free'd-data errors.
+	#327575
+
+	* src/edge-resistance.c (meta_display_cleanup_edges): store the
+	edges in a hash table so that we can still read their values
+	within the loop from the other array they are stored in, then free
+	them all at the end.
+	
+2006-01-20  Elijah Newren  <newren gmail com>
+
 	Fix various initialization and default issues, especially for
 	--disable-gconf.  Make --disable-gconf actually work.  #326661.
 
