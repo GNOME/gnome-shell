@@ -1,5 +1,14 @@
 2006-01-20  Elijah Newren  <newren gmail com>
 
+	Avoid flashing when closing a maximized window.  Fixes #317254.
+
+	* src/window.c (unmaximize_window_before_freeing): new function
+	that just fixes the net_wm_state and sends a configure_notify,
+	(meta_window_free): use unmaximize_window_before_freeing() instead
+	of meta_window_unmaximize() to avoid flicker
+	
+2006-01-20  Elijah Newren  <newren gmail com>
+
 	Fix unitialized value problem when in raise-on-click mode.  Søren,
 	#327572.
 

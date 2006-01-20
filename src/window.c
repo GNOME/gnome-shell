@@ -119,6 +119,8 @@ static gboolean queue_calc_showing_func (MetaWindow *window,
 static void meta_window_apply_session_info (MetaWindow                  *window,
                                             const MetaWindowSessionInfo *info);
 
+static void     unmaximize_window_before_freeing (MetaWindow        *window);
+
 #ifdef WITH_VERBOSE_MODE
 static const char*
 wm_state_to_string (int state)
@@ -977,9 +979,7 @@ meta_window_free (MetaWindow  *window)
   if (window->display->focus_window == window)
     window->display->focus_window = NULL;
 
-  if (window->maximized_horizontally || window->maximized_vertically)
-    meta_window_unmaximize (window,
-                            META_MAXIMIZE_HORIZONTAL | META_MAXIMIZE_VERTICAL);
+  unmaximize_window_before_freeing (window);
   
   meta_window_unqueue_calc_showing (window);
   meta_window_unqueue_move_resize (window);
@@ -2228,6 +2228,21 @@ meta_window_maximize (MetaWindow        *window,
        */
       meta_window_queue_move_resize (window);
     }
+}
+
+static void
+unmaximize_window_before_freeing (MetaWindow        *window)
+{
+  meta_topic (META_DEBUG_WINDOW_OPS,
+              "Unmaximizing %s just before freeing\n",
+              window->desc);
+      
+  window->rect = window->saved_rect;
+  send_configure_notify (window);
+
+  window->maximized_horizontally = FALSE;
+  window->maximized_vertically = FALSE;
+  set_net_wm_state (window);
 }
 
 void
