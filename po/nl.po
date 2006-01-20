@@ -1,8 +1,9 @@
 # Dutch translation of metacity.
 # Copyright (C) 2003 The Free Software Foundation, Inc.
 # This file is distributed under the same license as the metacity package.
-# Tino Meinen <a.t.meinen@chello.nl>, 2003, 2004
+# Tino Meinen <a.t.meinen@chello.nl>, 2003, 2004, 2006
 # Reinout van Schouwen <reinout@cs.vu.nl>, 2003, 2005.
+# Michiel Sikkes <michiels@gnome.org>, 2005.
 # -------------------------------------------
 # Unroll -> Uitrollen of afrollen?
 # draw_ops?
@@ -12,9 +13,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-11-10 07:54+0100\n"
-"PO-Revision-Date: 2005-08-19 16:17+0100\n"
-"Last-Translator: Michiel Sikkes <michiels@gnome.org>\n"
+"POT-Creation-Date: 2006-01-19 07:22+0100\n"
+"PO-Revision-Date: 2006-01-19 14:11+0100\n"
+"Last-Translator: Tino Meinen <a.t.meinen@chello.nl> \n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +27,7 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr "Gebruik: %s\n"
 
-#: ../src/tools/metacity-message.c:176 ../src/util.c:129
+#: ../src/tools/metacity-message.c:176 ../src/util.c:131
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity is gecompileerd zonder ondersteuning voor verbose-mode\n"
 
@@ -70,7 +71,7 @@ msgstr "Ophalen hostnaam mislukt: %s\n"
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Openen van X Window System display '%s' mislukt\n"
 
-#: ../src/errors.c:231
+#: ../src/errors.c:233
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -81,33 +82,33 @@ msgstr ""
 "waarschijnlijk is de X-server uitgezet of heeft u de window-manager "
 "vernietigd.\n"
 
-#: ../src/errors.c:238
+#: ../src/errors.c:240
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatale IO-fout %d (%s) op display '%s'.\n"
 
-#: ../src/frames.c:1122
+#: ../src/frames.c:1123
 msgid "Close Window"
 msgstr "Venster sluiten"
 
-#: ../src/frames.c:1125
+#: ../src/frames.c:1126
 msgid "Window Menu"
 msgstr "Venstermenu"
 
-#: ../src/frames.c:1128
+#: ../src/frames.c:1129
 msgid "Minimize Window"
 msgstr "Venster minimaliseren"
 
-#: ../src/frames.c:1131
+#: ../src/frames.c:1132
 msgid "Maximize Window"
 msgstr "Venster maximaliseren"
 
-#: ../src/frames.c:1134
+#: ../src/frames.c:1135
 msgid "Unmaximize Window"
 msgstr "Venster herstellen"
 
 # Gebruik controletoets als vertaling van modifier (Ctrl/Shift/Alt/Esc)
-#: ../src/keybindings.c:995
+#: ../src/keybindings.c:996
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -116,23 +117,23 @@ msgstr ""
 "Een ander programma gebruikt reeds de %s-toets met controletoets %x als "
 "toetsbinding\n"
 
-#: ../src/keybindings.c:2655
+#: ../src/keybindings.c:2504
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Fout bij het starten van een metacity-dialoogvenster om een foutmelding te "
 "tonen over een opdracht: %s\n"
 
-#: ../src/keybindings.c:2760
+#: ../src/keybindings.c:2609
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Er is geen opdracht %d gedefinieerd.\n"
 
-#: ../src/keybindings.c:3610
+#: ../src/keybindings.c:3471
 msgid "No terminal command has been defined.\n"
 msgstr "Er is geen opdracht voor de terminal gedefinieerd.\n"
 
-#: ../src/main.c:69
+#: ../src/main.c:70
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -147,36 +148,36 @@ msgstr ""
 "Er is GEEN garantie; zelfs niet voor VERKOOPBAARHEID of GESCHIKTHEID VOOR "
 "EEN BEPAALD DOEL.\n"
 
-#: ../src/main.c:257
+#: ../src/main.c:258
 msgid "Disable connection to session manager"
 msgstr "Schakel verbinding met sessiebeheerder uit"
 
-#: ../src/main.c:263
+#: ../src/main.c:264
 msgid "Replace the running window manager with Metacity"
 msgstr "Vervang de huidige draaiende schermbeheerder met Metacity"
 
-#: ../src/main.c:269
+#: ../src/main.c:270
 msgid "Specify session management ID"
 msgstr "Specifieer sessiebeheer-ID"
 
-#: ../src/main.c:274
+#: ../src/main.c:275
 msgid "X Display to use"
 msgstr "Te gebruiken X weergave"
 
-#: ../src/main.c:280
+#: ../src/main.c:281
 msgid "Initialize session from savefile"
 msgstr "Initialiseer sessie van opslagbestand"
 
-#: ../src/main.c:286
+#: ../src/main.c:287
 msgid "Print version"
 msgstr "Print versie"
 
-#: ../src/main.c:440
+#: ../src/main.c:439
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Kon themamap niet scannen: %s\n"
 
-#: ../src/main.c:456
+#: ../src/main.c:455
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -184,88 +185,92 @@ msgstr ""
 "Kon geen thema vinden! Zorg ervoor dat %s bestaat en de gebruikelijke "
 "thema's bevat."
 
-#: ../src/main.c:518
+#: ../src/main.c:527
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Herstarten mislukt: %s\n"
 
-#: ../src/menu.c:54
+#: ../src/menu.c:55
 msgid "Mi_nimize"
 msgstr "Mi_nimaliseren"
 
-#: ../src/menu.c:55
+#: ../src/menu.c:56
 msgid "Ma_ximize"
 msgstr "Ma_ximaliseren"
 
-#: ../src/menu.c:56
+#: ../src/menu.c:57
 msgid "Unma_ximize"
 msgstr "_Herstellen"
 
-#: ../src/menu.c:57
+#: ../src/menu.c:58
 msgid "Roll _Up"
 msgstr "_Oprollen"
 
-#: ../src/menu.c:58
+#: ../src/menu.c:59
 msgid "_Unroll"
 msgstr "_Uitrollen"
 
-#: ../src/menu.c:59 ../src/menu.c:60
+#: ../src/menu.c:60 ../src/menu.c:61
 msgid "On _Top"
 msgstr "_Bovenop"
 
-#: ../src/menu.c:61
+#: ../src/menu.c:62
 msgid "_Move"
 msgstr "_Verplaatsen"
 
-#: ../src/menu.c:62
+#: ../src/menu.c:63
 msgid "_Resize"
 msgstr "Afmetingen _wijzigen"
 
-#. separator
 #: ../src/menu.c:64
+msgid "Move Titlebar On_screen"
+msgstr "_Titelbalk op scherm verplaatsen"
+
+#. separator
+#: ../src/menu.c:66
 msgid "_Close"
 msgstr "Sl_uiten"
 
 #. separator
-#: ../src/menu.c:66
+#: ../src/menu.c:68
 msgid "_Always on Visible Workspace"
 msgstr "Op _alle werkbladen zichtbaar"
 
-#: ../src/menu.c:67
+#: ../src/menu.c:69
 msgid "_Only on This Workspace"
 msgstr "_Alleen op dit werkblad"
 
-#: ../src/menu.c:68
+#: ../src/menu.c:70
 msgid "Move to Workspace _Left"
 msgstr "Verplaatsen naar werkblad lin_ks"
 
-#: ../src/menu.c:69
+#: ../src/menu.c:71
 msgid "Move to Workspace R_ight"
 msgstr "Verplaatsen naar werkblad _rechts"
 
-#: ../src/menu.c:70
+#: ../src/menu.c:72
 msgid "Move to Workspace _Up"
 msgstr "Verplaatsen naar werkblad hierbov_en"
 
-#: ../src/menu.c:71
+#: ../src/menu.c:73
 msgid "Move to Workspace _Down"
 msgstr "Verplaatsen naar werkblad hier_onder"
 
-#: ../src/menu.c:162 ../src/prefs.c:2112
+#: ../src/menu.c:164 ../src/prefs.c:2161
 #, c-format
 msgid "Workspace %d"
 msgstr "Werkblad %d"
 
-#: ../src/menu.c:171
+#: ../src/menu.c:173
 msgid "Workspace 1_0"
 msgstr "Werkblad 1_0"
 
-#: ../src/menu.c:173
+#: ../src/menu.c:175
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Werkblad %s%d"
 
-#: ../src/menu.c:368
+#: ../src/menu.c:370
 msgid "Move to Another _Workspace"
 msgstr "Naar ander werkblad ver_plaatsen"
 
@@ -521,7 +526,7 @@ msgid ""
 "not related to raise-on-click/orthogonal-raise). It is unrelated to entering "
 "a window during drag and drop (because that results in the application "
 "grabbing the mouse)"
-msgstr ""
+msgstr "Indien waar, en de aandachtsmodus is \"sloppy\" of \"mouse\" dan zal het venster dat de aandacht heeft, na een korte tijd, automatisch naar voren gebracht worden. De wachttijd wordt gegeven door de sleutel: auto_raise_delay. Deze instelling is niet erg handig benoemd, maar wordt zo gehouden vanwege compatibiliteit met oudere versies. Om duidelijker te zijn (tenmiste voor de technisch onderlegden onder ons) is de juiste betekenis: \"automatisch het venster naar voren brengen na een tijdslimiet die getriggered wordt door een 'non-grabbed mouse entry' in 'sloppy' of 'mouse focus' modi\". Het heeft geen verband met klik-gedrag. (Het staat dus los van raise-on-click/orthogonal-raise). Het heeft ook geen verband met het binnengaan van een venster bij een sleepactie (omdat bij zo'n actie de toepassing de muis pakt)."
 
 #: ../src/metacity.schemas.in.h:18
 msgid ""
@@ -578,139 +583,151 @@ msgid "Lower window below other windows"
 msgstr "Venster verlagen onder andere vensters"
 
 #: ../src/metacity.schemas.in.h:23
+msgid ""
+"Many actions (e.g. clicking in the client area, moving or resizing the "
+"window) normally raise the window as a side-effect. Set this option to false "
+"to decouple raising from other user interactions. When false, windows can "
+"still be raised by an alt-left-click anywhere on the window or a normal "
+"click on the window decorations (assuming such clicks aren't used to start a "
+"move or resize operation). Special messages, such as activation requests "
+"from pagers, may also raise windows when this option is false. This option "
+"is currently disabled in click-to-focus mode."
+msgstr "Veel acties (bijvoorbeeld klikken in het client-gebied, verplaatsen of de grootte van het venster aanpassen) hebben als bijwerking dat het venster naar voren wordt gebracht. Zet deze optie op onwaar (false) om het naar voren brengen los te laten staan van andere gebruikersinteracties. Bij onwaar (false) kunnen vensters evengoed nog naar voren worden gebracht door een Alt-links-klik op een willekeurige plaats in het venster, of een gewone links-klik op de decoratie van het venster (de rand), aangenomen dat zo'n klik niet gebruikt word om het venster te verplaatsen of de grootte te wijzigen. Bijzondere berichten, zoals activeringsverzoeken van pagers, mogen het venster ook naar voren brengen wanneer deze optie onwaar is. Deze optie is momenteel uitgezet in click-to-focus modus."
+
+#: ../src/metacity.schemas.in.h:24
 msgid "Maximize window"
 msgstr "Venster maximaliseren"
 
-#: ../src/metacity.schemas.in.h:24
+#: ../src/metacity.schemas.in.h:25
 msgid "Maximize window horizontally"
 msgstr "Een venster horizontaal maximaliseren"
 
-#: ../src/metacity.schemas.in.h:25
+#: ../src/metacity.schemas.in.h:26
 msgid "Maximize window vertically"
 msgstr "Een venster vertikaal maximaliseren"
 
-#: ../src/metacity.schemas.in.h:26
+#: ../src/metacity.schemas.in.h:27
 msgid "Minimize window"
 msgstr "Venster minimaliseren"
 
-#: ../src/metacity.schemas.in.h:27
+#: ../src/metacity.schemas.in.h:28
 msgid "Modifier to use for modified window click actions"
 msgstr "Controletoets voor aangepaste venster-klik acties"
 
 # immediately, mogelijk vertalen met: 'met direct effect', maar kan volgens
 # mij ongestraft weggelaten worden
-#: ../src/metacity.schemas.in.h:28
+#: ../src/metacity.schemas.in.h:29
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Achterwaarts bewegen tussen panelen en het bureaublad"
 
-#: ../src/metacity.schemas.in.h:29
+#: ../src/metacity.schemas.in.h:30
 msgid "Move backwards between panels and the desktop with popup"
 msgstr ""
 "Achterwaarts bewegen tussen vensters en het bureaublad middels een popup"
 
-#: ../src/metacity.schemas.in.h:30
+#: ../src/metacity.schemas.in.h:31
 msgid "Move backwards between windows immediately"
 msgstr "Achterwaarts bewegen tussen vensters"
 
-#: ../src/metacity.schemas.in.h:31
+#: ../src/metacity.schemas.in.h:32
 msgid "Move between panels and the desktop immediately"
 msgstr "Bewegen tussen panelen en het bureaublad"
 
-#: ../src/metacity.schemas.in.h:32
+#: ../src/metacity.schemas.in.h:33
 msgid "Move between panels and the desktop with popup"
 msgstr "Bewegen tussen panelen en het bureaublad middels een popup"
 
-#: ../src/metacity.schemas.in.h:33
+#: ../src/metacity.schemas.in.h:34
 msgid "Move between windows immediately"
 msgstr "Bewegen tussen vensters"
 
-#: ../src/metacity.schemas.in.h:34
+#: ../src/metacity.schemas.in.h:35
 msgid "Move between windows with popup"
 msgstr "Bewegen tussen vensters middels een popup"
 
-#: ../src/metacity.schemas.in.h:35
+#: ../src/metacity.schemas.in.h:36
 msgid "Move focus backwards between windows using popup display"
 msgstr ""
 "Achterwaarts de aandacht verplaatsen tussen vensters middels een popup-"
 "venster"
 
-#: ../src/metacity.schemas.in.h:36
+#: ../src/metacity.schemas.in.h:37
 msgid "Move window"
 msgstr "Venster verplaatsen"
 
-#: ../src/metacity.schemas.in.h:37
+#: ../src/metacity.schemas.in.h:38
 msgid "Move window one workspace down"
 msgstr "Venster één werkblad naar beneden verplaatsen"
 
-#: ../src/metacity.schemas.in.h:38
+#: ../src/metacity.schemas.in.h:39
 msgid "Move window one workspace to the left"
 msgstr "Venster één werkblad naar links verplaatsen"
 
-#: ../src/metacity.schemas.in.h:39
+#: ../src/metacity.schemas.in.h:40
 msgid "Move window one workspace to the right"
 msgstr "Venster één werkblad naar rechts verplaatsen"
 
-#: ../src/metacity.schemas.in.h:40
+#: ../src/metacity.schemas.in.h:41
 msgid "Move window one workspace up"
 msgstr "Venster één werkblad naar boven verplaatsen"
 
-#: ../src/metacity.schemas.in.h:41
+#: ../src/metacity.schemas.in.h:42
 msgid "Move window to workspace 1"
 msgstr "Venster verplaatsen naar werkblad 1"
 
-#: ../src/metacity.schemas.in.h:42
+#: ../src/metacity.schemas.in.h:43
 msgid "Move window to workspace 10"
 msgstr "Venster verplaatsen naar werkblad 10"
 
-#: ../src/metacity.schemas.in.h:43
+#: ../src/metacity.schemas.in.h:44
 msgid "Move window to workspace 11"
 msgstr "Venster verplaatsen naar werkblad 11"
 
-#: ../src/metacity.schemas.in.h:44
+#: ../src/metacity.schemas.in.h:45
 msgid "Move window to workspace 12"
 msgstr "Venster verplaatsen naar werkblad 12"
 
-#: ../src/metacity.schemas.in.h:45
+#: ../src/metacity.schemas.in.h:46
 msgid "Move window to workspace 2"
 msgstr "Venster verplaatsen naar werkblad 2"
 
-#: ../src/metacity.schemas.in.h:46
+#: ../src/metacity.schemas.in.h:47
 msgid "Move window to workspace 3"
 msgstr "Venster verplaatsen naar werkblad 3"
 
-#: ../src/metacity.schemas.in.h:47
+#: ../src/metacity.schemas.in.h:48
 msgid "Move window to workspace 4"
 msgstr "Venster verplaatsen naar werkblad 4"
 
-#: ../src/metacity.schemas.in.h:48
+#: ../src/metacity.schemas.in.h:49
 msgid "Move window to workspace 5"
 msgstr "Venster verplaatsen naar werkblad 5"
 
-#: ../src/metacity.schemas.in.h:49
+#: ../src/metacity.schemas.in.h:50
 msgid "Move window to workspace 6"
 msgstr "Venster verplaatsen naar werkblad 6"
 
-#: ../src/metacity.schemas.in.h:50
+#: ../src/metacity.schemas.in.h:51
 msgid "Move window to workspace 7"
 msgstr "Venster verplaatsen naar werkblad 7"
 
-#: ../src/metacity.schemas.in.h:51
+#: ../src/metacity.schemas.in.h:52
 msgid "Move window to workspace 8"
 msgstr "Venster verplaatsen naar werkblad 8"
 
-#: ../src/metacity.schemas.in.h:52
+#: ../src/metacity.schemas.in.h:53
 msgid "Move window to workspace 9"
 msgstr "Venster verplaatsen naar werkblad 9"
 
-#: ../src/metacity.schemas.in.h:53
+#: ../src/metacity.schemas.in.h:54
 msgid "Name of workspace"
 msgstr "Werkbladnaam"
 
-#: ../src/metacity.schemas.in.h:54
+#: ../src/metacity.schemas.in.h:55
 msgid "Number of workspaces"
 msgstr "Aantal werkbladen"
 
-#: ../src/metacity.schemas.in.h:55
+#: ../src/metacity.schemas.in.h:56
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum (to "
 "prevent accidentally destroying your desktop by asking for 34 million "
@@ -720,36 +737,36 @@ msgstr ""
 "te voorkomen dat u per ongeluk uw bureablad vernietigt, door te vragen om 34 "
 "miljoen werkbladen)."
 
-#: ../src/metacity.schemas.in.h:56
+#: ../src/metacity.schemas.in.h:57
 msgid "Raise obscured window, otherwise lower"
 msgstr "Bedekt venster verhogen, anders verlagen"
 
-#: ../src/metacity.schemas.in.h:57
+#: ../src/metacity.schemas.in.h:58
 msgid "Raise window above other windows"
 msgstr "Venster verhogen boven andere vensters"
 
-#: ../src/metacity.schemas.in.h:58
+#: ../src/metacity.schemas.in.h:59
 msgid "Resize window"
 msgstr "Venstergrootte veranderen"
 
-#: ../src/metacity.schemas.in.h:59
+#: ../src/metacity.schemas.in.h:60
 msgid "Run a defined command"
 msgstr "Voorgedefineerde opdracht uitvoeren"
 
 # Terminal opstarten/Een terminal opstarten
-#: ../src/metacity.schemas.in.h:60
+#: ../src/metacity.schemas.in.h:61
 msgid "Run a terminal"
 msgstr "Een terminal opstarten"
 
-#: ../src/metacity.schemas.in.h:61
+#: ../src/metacity.schemas.in.h:62
 msgid "Show the panel menu"
 msgstr "Het paneelmenu tonen"
 
-#: ../src/metacity.schemas.in.h:62
+#: ../src/metacity.schemas.in.h:63
 msgid "Show the panel run application dialog"
 msgstr "Het paneeldialoogvenster toepassing uitvoeren tonen"
 
-#: ../src/metacity.schemas.in.h:63
+#: ../src/metacity.schemas.in.h:64
 msgid ""
 "Some applications break specifications in ways that result in window manager "
 "misfeatures. For example, ideally Metacity would place all dialogs in a "
@@ -780,83 +797,83 @@ msgstr ""
 "een probleem in de 'geen trucs'-modus soms niet te repareren zonder een "
 "aanvulling te schrijven op de specificatie."
 
-#: ../src/metacity.schemas.in.h:64
+#: ../src/metacity.schemas.in.h:65
 msgid "Switch to workspace 1"
 msgstr "Schakelen naar werkblad 1"
 
-#: ../src/metacity.schemas.in.h:65
+#: ../src/metacity.schemas.in.h:66
 msgid "Switch to workspace 10"
 msgstr "Schakelen naar werkblad 10"
 
-#: ../src/metacity.schemas.in.h:66
+#: ../src/metacity.schemas.in.h:67
 msgid "Switch to workspace 11"
 msgstr "Schakelen naar werkblad 11"
 
-#: ../src/metacity.schemas.in.h:67
+#: ../src/metacity.schemas.in.h:68
 msgid "Switch to workspace 12"
 msgstr "Schakelen naar werkblad 12"
 
-#: ../src/metacity.schemas.in.h:68
+#: ../src/metacity.schemas.in.h:69
 msgid "Switch to workspace 2"
 msgstr "Schakelen naar werkblad 2"
 
-#: ../src/metacity.schemas.in.h:69
+#: ../src/metacity.schemas.in.h:70
 msgid "Switch to workspace 3"
 msgstr "Schakelen naar werkblad 3"
 
-#: ../src/metacity.schemas.in.h:70
+#: ../src/metacity.schemas.in.h:71
 msgid "Switch to workspace 4"
 msgstr "Schakelen naar werkblad 4"
 
-#: ../src/metacity.schemas.in.h:71
+#: ../src/metacity.schemas.in.h:72
 msgid "Switch to workspace 5"
 msgstr "Schakelen naar werkblad 5"
 
-#: ../src/metacity.schemas.in.h:72
+#: ../src/metacity.schemas.in.h:73
 msgid "Switch to workspace 6"
 msgstr "Schakelen naar werkblad 6"
 
-#: ../src/metacity.schemas.in.h:73
+#: ../src/metacity.schemas.in.h:74
 msgid "Switch to workspace 7"
 msgstr "Schakelen naar werkblad 7"
 
-#: ../src/metacity.schemas.in.h:74
+#: ../src/metacity.schemas.in.h:75
 msgid "Switch to workspace 8"
 msgstr "Schakelen naar werkblad 8"
 
-#: ../src/metacity.schemas.in.h:75
+#: ../src/metacity.schemas.in.h:76
 msgid "Switch to workspace 9"
 msgstr "Schakelen naar werkblad 9"
 
-#: ../src/metacity.schemas.in.h:76
+#: ../src/metacity.schemas.in.h:77
 msgid "Switch to workspace above this one"
 msgstr "Schakelen naar werkblad boven huidige"
 
-#: ../src/metacity.schemas.in.h:77
+#: ../src/metacity.schemas.in.h:78
 msgid "Switch to workspace below this one"
 msgstr "Schakelen naar werkblad onder huidige"
 
-#: ../src/metacity.schemas.in.h:78
+#: ../src/metacity.schemas.in.h:79
 msgid "Switch to workspace on the left"
 msgstr "Schakelen naar werkblad aan de linkerkant"
 
-#: ../src/metacity.schemas.in.h:79
+#: ../src/metacity.schemas.in.h:80
 msgid "Switch to workspace on the right"
 msgstr "Schakelen naar werkblad aan de rechterkant"
 
-#: ../src/metacity.schemas.in.h:80
+#: ../src/metacity.schemas.in.h:81
 msgid "System Bell is Audible"
 msgstr "Systeembel is hoorbaar"
 
-#: ../src/metacity.schemas.in.h:81
+#: ../src/metacity.schemas.in.h:82
 msgid "Take a screenshot"
 msgstr "Een schermafdruk maken"
 
-#: ../src/metacity.schemas.in.h:82
+#: ../src/metacity.schemas.in.h:83
 msgid "Take a screenshot of a window"
 msgstr "Een schermafdruk van een venster maken"
 
-#: ../src/metacity.schemas.in.h:83
+#: ../src/metacity.schemas.in.h:84
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
 "or another application 'bell' indicator has been rung. Currently there are "
@@ -874,7 +891,7 @@ msgstr ""
 "onbekend is (wat meestal het geval is bij de standaard \"systeem-piep\"), "
 "zal de titelbalk van het huidige scherm dat de focus heeft opflitsen."
 
-#: ../src/metacity.schemas.in.h:84
+#: ../src/metacity.schemas.in.h:85
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
@@ -884,7 +901,7 @@ msgstr ""
 "toetskoppelingen die corresponderen met deze opdrachten. Het intoetsen van "
 "de toetskoppeling voor run_command_N zal de opdracht command_N uitvoeren."
 
-#: ../src/metacity.schemas.in.h:85
+#: ../src/metacity.schemas.in.h:86
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
@@ -893,7 +910,7 @@ msgstr ""
 "definieert een toetskoppeling waardoor de opdracht in deze instelling wordt "
 "uitgevoerd."
 
-#: ../src/metacity.schemas.in.h:86
+#: ../src/metacity.schemas.in.h:87
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
@@ -903,7 +920,7 @@ msgstr ""
 "definieert een toetskoppeling waardoor de opdracht in deze instelling wordt "
 "uitgevoerd."
 
-#: ../src/metacity.schemas.in.h:87
+#: ../src/metacity.schemas.in.h:88
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -919,7 +936,7 @@ msgstr ""
 "Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:88
+#: ../src/metacity.schemas.in.h:89
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -935,7 +952,7 @@ msgstr ""
 "speciale tekenreeks \"uitgeschakeld\", dan zal deze actie geen "
 "toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:89
+#: ../src/metacity.schemas.in.h:90
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -951,7 +968,7 @@ msgstr ""
 "speciale tekenreeks \"uitgeschakeld\", dan zal deze actie geen "
 "toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:90
+#: ../src/metacity.schemas.in.h:91
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -967,7 +984,7 @@ msgstr ""
 "instelt op de speciale tekenreeks \"uitgeschakeld\", dan zal deze actie geen "
 "toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:91
+#: ../src/metacity.schemas.in.h:92
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -983,7 +1000,7 @@ msgstr ""
 "instelt op de speciale tekenreeks \"uitgeschakeld\", dan zal deze actie geen "
 "toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:92
+#: ../src/metacity.schemas.in.h:93
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -997,7 +1014,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:93
+#: ../src/metacity.schemas.in.h:94
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1011,7 +1028,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:94
+#: ../src/metacity.schemas.in.h:95
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1025,7 +1042,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:95
+#: ../src/metacity.schemas.in.h:96
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1039,7 +1056,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:96
+#: ../src/metacity.schemas.in.h:97
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1053,7 +1070,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:97
+#: ../src/metacity.schemas.in.h:98
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1067,7 +1084,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:98
+#: ../src/metacity.schemas.in.h:99
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1081,7 +1098,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:99
+#: ../src/metacity.schemas.in.h:100
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1095,7 +1112,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:100
+#: ../src/metacity.schemas.in.h:101
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1109,7 +1126,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:101
+#: ../src/metacity.schemas.in.h:102
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1123,7 +1140,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:102
+#: ../src/metacity.schemas.in.h:103
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1137,7 +1154,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:103
+#: ../src/metacity.schemas.in.h:104
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1151,7 +1168,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:104
+#: ../src/metacity.schemas.in.h:105
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1165,7 +1182,7 @@ msgstr ""
 "\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:105
+#: ../src/metacity.schemas.in.h:106
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1179,7 +1196,7 @@ msgstr ""
 "\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:106
+#: ../src/metacity.schemas.in.h:107
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1195,7 +1212,7 @@ msgstr ""
 "Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:107
+#: ../src/metacity.schemas.in.h:108
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1211,7 +1228,7 @@ msgstr ""
 "Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale "
 "tekenreeks \"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:108
+#: ../src/metacity.schemas.in.h:109
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1227,7 +1244,7 @@ msgstr ""
 "\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:109
+#: ../src/metacity.schemas.in.h:110
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1241,7 +1258,7 @@ msgstr ""
 "\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:110
+#: ../src/metacity.schemas.in.h:111
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1255,7 +1272,7 @@ msgstr ""
 "\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:111
+#: ../src/metacity.schemas.in.h:112
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -1271,7 +1288,7 @@ msgstr ""
 "speciale tekenreeks \"uitgeschakeld\", dan zal deze actie geen "
 "toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:112
+#: ../src/metacity.schemas.in.h:113
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1287,7 +1304,7 @@ msgstr ""
 "speciale tekenreeks \"uitgeschakeld\", dan zal deze actie geen "
 "toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:113
+#: ../src/metacity.schemas.in.h:114
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1303,7 +1320,7 @@ msgstr ""
 "speciale tekenreeks \"uitgeschakeld\", dan zal deze actie geen "
 "toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:114
+#: ../src/metacity.schemas.in.h:115
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1318,7 +1335,7 @@ msgstr ""
 "speciale tekenreeks \"uitgeschakeld\", dan zal deze actie geen "
 "toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:115
+#: ../src/metacity.schemas.in.h:116
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1332,7 +1349,7 @@ msgstr ""
 "Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale "
 "tekenreeks \"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:116
+#: ../src/metacity.schemas.in.h:117
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1347,7 +1364,7 @@ msgstr ""
 "speciale tekenreeks \"uitgeschakeld\", dan zal deze actie geen "
 "toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:117
+#: ../src/metacity.schemas.in.h:118
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1362,7 +1379,7 @@ msgstr ""
 "speciale tekenreeks \"uitgeschakeld\", dan zal deze actie geen "
 "toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:118
+#: ../src/metacity.schemas.in.h:119
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1377,7 +1394,7 @@ msgstr ""
 "speciale tekenreeks \"uitgeschakeld\", dan zal deze actie geen "
 "toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:119
+#: ../src/metacity.schemas.in.h:120
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1391,7 +1408,7 @@ msgstr ""
 "Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale "
 "tekenreeks \"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:120
+#: ../src/metacity.schemas.in.h:121
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1405,7 +1422,7 @@ msgstr ""
 "Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale "
 "tekenreeks \"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:121
+#: ../src/metacity.schemas.in.h:122
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1419,7 +1436,7 @@ msgstr ""
 "Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale "
 "tekenreeks \"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:122
+#: ../src/metacity.schemas.in.h:123
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1433,7 +1450,7 @@ msgstr ""
 "Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale "
 "tekenreeks \"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:123
+#: ../src/metacity.schemas.in.h:124
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1447,7 +1464,7 @@ msgstr ""
 "Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale "
 "tekenreeks \"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:124
+#: ../src/metacity.schemas.in.h:125
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1461,7 +1478,7 @@ msgstr ""
 "Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale "
 "tekenreeks \"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:125
+#: ../src/metacity.schemas.in.h:126
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1475,7 +1492,7 @@ msgstr ""
 "Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale "
 "tekenreeks \"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:126
+#: ../src/metacity.schemas.in.h:127
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1489,7 +1506,7 @@ msgstr ""
 "Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale "
 "tekenreeks \"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:127
+#: ../src/metacity.schemas.in.h:128
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1505,7 +1522,7 @@ msgstr ""
 "\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:128
+#: ../src/metacity.schemas.in.h:129
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1521,7 +1538,7 @@ msgstr ""
 "Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:129
+#: ../src/metacity.schemas.in.h:130
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1540,7 +1557,7 @@ msgstr ""
 "optie instelt op de speciale tekenreeks \"uitgeschakeld\", dan zal deze "
 "actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:130
+#: ../src/metacity.schemas.in.h:131
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1559,7 +1576,7 @@ msgstr ""
 "instelt op de speciale tekenreeks \"uitgeschakeld\", dan zal deze actie geen "
 "toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:131
+#: ../src/metacity.schemas.in.h:132
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1575,7 +1592,7 @@ msgstr ""
 "Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:132
+#: ../src/metacity.schemas.in.h:133
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1591,7 +1608,7 @@ msgstr ""
 "Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:133
+#: ../src/metacity.schemas.in.h:134
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1610,7 +1627,7 @@ msgstr ""
 "Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale "
 "tekenreeks \"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:134
+#: ../src/metacity.schemas.in.h:135
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1629,7 +1646,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:135
+#: ../src/metacity.schemas.in.h:136
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1646,7 +1663,7 @@ msgstr ""
 "instelt op de speciale tekenreeks \"uitgeschakeld\", dan zal deze actie geen "
 "toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:136
+#: ../src/metacity.schemas.in.h:137
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1660,7 +1677,7 @@ msgstr ""
 "Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale "
 "tekenreeks \"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:137
+#: ../src/metacity.schemas.in.h:138
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1675,7 +1692,7 @@ msgstr ""
 "speciale tekenreeks \"uitgeschakeld\", dan zal deze actie geen "
 "toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:138
+#: ../src/metacity.schemas.in.h:139
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1690,7 +1707,7 @@ msgstr ""
 "speciale tekenreeks \"uitgeschakeld\", dan zal deze actie geen "
 "toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:139
+#: ../src/metacity.schemas.in.h:140
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1707,7 +1724,7 @@ msgstr ""
 "instelt op de speciale tekenreeks \"uitgeschakeld\", dan zal deze actie geen "
 "toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:140
+#: ../src/metacity.schemas.in.h:141
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1721,7 +1738,7 @@ msgstr ""
 "\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:141
+#: ../src/metacity.schemas.in.h:142
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1737,7 +1754,7 @@ msgstr ""
 "optie instelt op de speciale tekenreeks \"uitgeschakeld\", dan zal deze "
 "actie niet aan een toets zijn gebonden."
 
-#: ../src/metacity.schemas.in.h:142
+#: ../src/metacity.schemas.in.h:143
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1751,7 +1768,7 @@ msgstr ""
 "Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale "
 "tekenreeks \"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:143
+#: ../src/metacity.schemas.in.h:144
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1767,7 +1784,7 @@ msgstr ""
 "speciale tekenreeks \"uitgeschakeld\", dan zal deze actie geen "
 "toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:144
+#: ../src/metacity.schemas.in.h:145
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1782,7 +1799,7 @@ msgstr ""
 "\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:145
+#: ../src/metacity.schemas.in.h:146
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1796,22 +1813,22 @@ msgstr ""
 "Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale "
 "tekenreeks \"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:146
+#: ../src/metacity.schemas.in.h:147
 msgid "The name of a workspace."
 msgstr "De naam van een werkblad."
 
-#: ../src/metacity.schemas.in.h:147
+#: ../src/metacity.schemas.in.h:148
 msgid "The screenshot command"
 msgstr "De opdracht voor schermafdruk"
 
-#: ../src/metacity.schemas.in.h:148
+#: ../src/metacity.schemas.in.h:149
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr ""
 "Het thema bepaalt het uiterlijk van vensterranden, titelbalk, enzovoort."
 
-#: ../src/metacity.schemas.in.h:149
+#: ../src/metacity.schemas.in.h:150
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -1819,7 +1836,7 @@ msgstr ""
 "De wachttijd alvorens een venster te verhogen als auto_raise op 'true' "
 "staat. De wachttijd is gegeven in duizendsten van seconden."
 
-#: ../src/metacity.schemas.in.h:150
+#: ../src/metacity.schemas.in.h:151
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1834,11 +1851,11 @@ msgstr ""
 "vensters aandacht krijgen wanneer de muispijl het venster binnenkomt en "
 "aandacht verliezen wanneer de muispijl het venster verlaat."
 
-#: ../src/metacity.schemas.in.h:151
+#: ../src/metacity.schemas.in.h:152
 msgid "The window screenshot command"
 msgstr "De opdracht voor venster-schermafdruk"
 
-#: ../src/metacity.schemas.in.h:152
+#: ../src/metacity.schemas.in.h:153
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1859,7 +1876,7 @@ msgstr ""
 "speciale tekenreeks \"uitgeschakeld\", dan zal deze actie geen "
 "toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:153
+#: ../src/metacity.schemas.in.h:154
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1873,7 +1890,7 @@ msgstr ""
 "Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale "
 "tekenreeks \"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:154
+#: ../src/metacity.schemas.in.h:155
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1887,7 +1904,7 @@ msgstr ""
 "Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de speciale "
 "tekenreeks \"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:155
+#: ../src/metacity.schemas.in.h:156
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1903,7 +1920,7 @@ msgstr ""
 "Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:156
+#: ../src/metacity.schemas.in.h:157
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1919,7 +1936,7 @@ msgstr ""
 "Ctrl&gt;\". Indien u de optie instelt op de speciale tekenreeks "
 "\"uitgeschakeld\", dan zal deze actie geen toetskoppeling kennen."
 
-#: ../src/metacity.schemas.in.h:157
+#: ../src/metacity.schemas.in.h:158
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -1930,27 +1947,27 @@ msgstr ""
 "afrollen, en 'toggle_maximize' welke het venster zal maximaliseren/"
 "herstellen."
 
-#: ../src/metacity.schemas.in.h:158
+#: ../src/metacity.schemas.in.h:159
 msgid "Toggle always on top state"
 msgstr "\"Altijd boven\"-staat omschakelen"
 
-#: ../src/metacity.schemas.in.h:159
+#: ../src/metacity.schemas.in.h:160
 msgid "Toggle fullscreen mode"
 msgstr "Volledig scherm-modus omschakelen"
 
-#: ../src/metacity.schemas.in.h:160
+#: ../src/metacity.schemas.in.h:161
 msgid "Toggle maximization state"
 msgstr "Maximalisatiestaat omschakelen"
 
-#: ../src/metacity.schemas.in.h:161
+#: ../src/metacity.schemas.in.h:162
 msgid "Toggle shaded state"
 msgstr "Opgerold-staat omschakelen"
 
-#: ../src/metacity.schemas.in.h:162
+#: ../src/metacity.schemas.in.h:163
 msgid "Toggle window on all workspaces"
 msgstr "Venster op alle werkbladen omschakelen"
 
-#: ../src/metacity.schemas.in.h:163
+#: ../src/metacity.schemas.in.h:164
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
@@ -1960,37 +1977,42 @@ msgstr ""
 "'bel' of 'piepje' geeft; handig voor slechthorenden of voor gebruik in "
 "omgevingen met veel lawaai, of wanneer de 'hoorbare bel' uitstaat."
 
-#: ../src/metacity.schemas.in.h:164
+#: ../src/metacity.schemas.in.h:165
 msgid "Unmaximize window"
 msgstr "Vensterformaat herstellen"
 
-#: ../src/metacity.schemas.in.h:165
+#: ../src/metacity.schemas.in.h:166
 msgid "Use standard system font in window titles"
 msgstr "Standaard systeemlettertype gebruiken in venstertitels"
 
-#: ../src/metacity.schemas.in.h:166
+#: ../src/metacity.schemas.in.h:167
 msgid "Visual Bell Type"
 msgstr "Visuele bel type"
 
-#: ../src/metacity.schemas.in.h:167
+#: ../src/metacity.schemas.in.h:168
+msgid "Whether raising should be a side-effect of other user interactions"
+msgstr "Of het naar voren brengen een bijeffect is van andere gebruikersinteracties"
+
+#: ../src/metacity.schemas.in.h:169
 msgid "Window focus mode"
 msgstr "Vensteraandacht-modus"
 
-#: ../src/metacity.schemas.in.h:168
+#: ../src/metacity.schemas.in.h:170
 msgid "Window title font"
 msgstr "Venstertitellettertype"
 
-#: ../src/prefs.c:528 ../src/prefs.c:544 ../src/prefs.c:560 ../src/prefs.c:576
-#: ../src/prefs.c:592 ../src/prefs.c:612 ../src/prefs.c:628 ../src/prefs.c:644
-#: ../src/prefs.c:660 ../src/prefs.c:676 ../src/prefs.c:692 ../src/prefs.c:708
-#: ../src/prefs.c:724 ../src/prefs.c:741 ../src/prefs.c:757 ../src/prefs.c:773
-#: ../src/prefs.c:789 ../src/prefs.c:805 ../src/prefs.c:820 ../src/prefs.c:835
-#: ../src/prefs.c:850 ../src/prefs.c:866 ../src/prefs.c:882 ../src/prefs.c:898
+#: ../src/prefs.c:537 ../src/prefs.c:553 ../src/prefs.c:569 ../src/prefs.c:585
+#: ../src/prefs.c:601 ../src/prefs.c:617 ../src/prefs.c:637 ../src/prefs.c:653
+#: ../src/prefs.c:669 ../src/prefs.c:685 ../src/prefs.c:701 ../src/prefs.c:717
+#: ../src/prefs.c:733 ../src/prefs.c:749 ../src/prefs.c:766 ../src/prefs.c:782
+#: ../src/prefs.c:798 ../src/prefs.c:814 ../src/prefs.c:830 ../src/prefs.c:845
+#: ../src/prefs.c:860 ../src/prefs.c:875 ../src/prefs.c:891 ../src/prefs.c:907
+#: ../src/prefs.c:923
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-sleutel \"%s\" is op een ongeldig type ingesteld\n"
 
-#: ../src/prefs.c:943
+#: ../src/prefs.c:968
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1999,18 +2021,18 @@ msgstr ""
 "\"%s\", gevonden in de configuratiedatabase, is geen geldige waarde voor de "
 "muisknop-optietoets\n"
 
-#: ../src/prefs.c:967 ../src/prefs.c:1428
+#: ../src/prefs.c:992 ../src/prefs.c:1474
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-sleutel '%s' is ingesteld op een ongeldige waarde\n"
 
-#: ../src/prefs.c:1145
+#: ../src/prefs.c:1191
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "Kon lettertypebeschrijving \"%s\" niet verwerken van Gconf-sleutel %s\n"
 
-#: ../src/prefs.c:1330
+#: ../src/prefs.c:1376
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2019,7 +2041,7 @@ msgstr ""
 "%d opgeslagen in GConf-sleutel %s is geen redelijk aantal werkbladen, "
 "huidige maximum is %d\n"
 
-#: ../src/prefs.c:1390
+#: ../src/prefs.c:1436
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2027,17 +2049,17 @@ msgstr ""
 "Werkoplossing voor gebroken toepassingen uitgezet. Bepaalde toepassingen "
 "zullen niet naar behoren functioneren.\n"
 
-#: ../src/prefs.c:1455
+#: ../src/prefs.c:1501
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d opgeslagen in GConf-sleutel %s valt buiten het bereik 0 %d\n"
 
-#: ../src/prefs.c:1595
+#: ../src/prefs.c:1644
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fout bij het instellen van het aantal werkbladen op %d: %s\n"
 
-#: ../src/prefs.c:1839
+#: ../src/prefs.c:1888
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2046,7 +2068,7 @@ msgstr ""
 "\"%s\" in de configuratiedatabase is geen geldige waarde voor toetsbinding "
 "\"%s\"\n"
 
-#: ../src/prefs.c:2193
+#: ../src/prefs.c:2242
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fout bij het instellen van de naam voor werkblad %d op \"%s\": %s\n"
@@ -2056,12 +2078,12 @@ msgstr "Fout bij het instellen van de naam voor werkblad %d op \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/screen.c:409
+#: ../src/screen.c:403
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Scherm %d op display '%s' is ongeldig\n"
 
-#: ../src/screen.c:425
+#: ../src/screen.c:419
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2070,88 +2092,88 @@ msgstr ""
 "Scherm %d op display \"%s\" heeft al een windowmanager; probeer de optie: --"
 "replace te gebruiken om de huidige windowmanager te vervangen.\n"
 
-#: ../src/screen.c:449
+#: ../src/screen.c:443
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Kon windowmanager-selectie niet verkrijgen op scherm %d display \"%s\"\n"
 
-#: ../src/screen.c:507
+#: ../src/screen.c:501
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Scherm %d op display \"%s\" heeft al een windowmanager\n"
 
-#: ../src/screen.c:717
+#: ../src/screen.c:702
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Kon scherm %d op display \"%s\" niet vrijmaken\n"
 
-#: ../src/session.c:885 ../src/session.c:892
+#: ../src/session.c:844 ../src/session.c:851
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Kon map '%s' niet aanmaken: %s\n"
 
-#: ../src/session.c:902
+#: ../src/session.c:861
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Kon sessiebestand '%s' niet openen voor schrijven: %s\n"
 
-#: ../src/session.c:1054
+#: ../src/session.c:1013
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Fout bij schrijven sessiebestand '%s': %s\n"
 
-#: ../src/session.c:1059
+#: ../src/session.c:1018
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Fout bij sluiten sessiebestand '%s': %s\n"
 
-#: ../src/session.c:1134
+#: ../src/session.c:1093
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Lezen van opgeslagen sessiebestand %s mislukt: %s\n"
 
-#: ../src/session.c:1169
+#: ../src/session.c:1128
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Verwerken van opgeslagen sessiebestand mislukt: %s\n"
 
-#: ../src/session.c:1218
+#: ../src/session.c:1177
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
 "<metacity_session> attribuut opgemerkt maar we hebben reeds de sessie-ID"
 
-#: ../src/session.c:1231
+#: ../src/session.c:1190
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Onbekend attribuut %s op <metacity_session> element"
 
-#: ../src/session.c:1248
+#: ../src/session.c:1207
 msgid "nested <window> tag"
 msgstr "ingebedde <window> markering"
 
-#: ../src/session.c:1306 ../src/session.c:1338
+#: ../src/session.c:1265 ../src/session.c:1297
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Onbekend attribuut %s op <window> element"
 
-#: ../src/session.c:1410
+#: ../src/session.c:1369
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Onbekend attribuut %s op <maximized> element"
 
-#: ../src/session.c:1470
+#: ../src/session.c:1429
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Onbekend attribuut %s op <geometry> element"
 
-#: ../src/session.c:1490
+#: ../src/session.c:1449
 #, c-format
 msgid "Unknown element %s"
 msgstr "Onbekend element %s"
 
-#: ../src/session.c:1962
+#: ../src/session.c:1921
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -3175,44 +3197,44 @@ msgstr ""
 msgid "Constant \"%s\" has already been defined"
 msgstr "Constante \"%s\" is reeds gedefinieerd"
 
-#: ../src/util.c:94
+#: ../src/util.c:96
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Debug-logboek openen mislukt: %s\n"
 
-#: ../src/util.c:104
+#: ../src/util.c:106
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Logboek %s openen via fdopen() mislukt: %s\n"
 
-#: ../src/util.c:110
+#: ../src/util.c:112
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Logboek %s geopend\n"
 
-#: ../src/util.c:218
+#: ../src/util.c:220
 msgid "Window manager: "
 msgstr "Windowmanager:"
 
-#: ../src/util.c:364
+#: ../src/util.c:366
 msgid "Bug in window manager: "
 msgstr "Fout in windowmanager:"
 
-#: ../src/util.c:393
+#: ../src/util.c:395
 msgid "Window manager warning: "
 msgstr "Windowmanager waarschuwing:"
 
-#: ../src/util.c:417
+#: ../src/util.c:419
 msgid "Window manager error: "
 msgstr "Windowmanager fout:"
 
-#: ../src/window-props.c:163
+#: ../src/window-props.c:169
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %ld\n"
 msgstr "Toepassing heeft een overbodige _NET_WM_PID %ld ingesteld\n"
 
 #. first time through
-#: ../src/window.c:5209
+#: ../src/window.c:5405
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3228,7 +3250,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5880
+#: ../src/window.c:6045
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
