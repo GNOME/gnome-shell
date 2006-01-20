@@ -1196,38 +1196,50 @@ meta_screen_ensure_tab_popup (MetaScreen      *screen,
       entries[i].demands_attention = window->wm_state_demands_attention;
       
       if (show_type == META_TAB_SHOW_INSTANTLY ||
-          !window->minimized                   ||
+          !entries[i].hidden                   ||
           !meta_window_get_icon_geometry (window, &r))
         meta_window_get_outer_rect (window, &r);
       
       entries[i].rect = r;
 
-      /* Find inside of highlight rectangle to be used
-       * when window is outlined for tabbing.
-       * This should be the size of the east/west frame,
-       * and the size of the south frame, on those sides.
-       * on the top it should be the size of the south frame
+      /* Find inside of highlight rectangle to be used when window is
+       * outlined for tabbing.  This should be the size of the
+       * east/west frame, and the size of the south frame, on those
+       * sides.  On the top it should be the size of the south frame
        * edge.
        */
-      if (window->frame)
-        {
-          int south = window->frame->rect.height - window->frame->child_y -
-            window->rect.height;
-          int east = window->frame->child_x;
-          entries[i].inner_rect.x = east;
-          entries[i].inner_rect.y = south;
-          entries[i].inner_rect.width = window->rect.width;
-          entries[i].inner_rect.height = window->frame->rect.height - south * 2;
-        }
-      else
-        {
-          /* Use an arbitrary border size */
 #define OUTLINE_WIDTH 5
-          entries[i].inner_rect.x = OUTLINE_WIDTH;
-          entries[i].inner_rect.y = OUTLINE_WIDTH;
-          entries[i].inner_rect.width = window->rect.width - OUTLINE_WIDTH * 2;
-          entries[i].inner_rect.height = window->rect.height - OUTLINE_WIDTH * 2;
-        }
+      /* Top side */
+      if (!entries[i].hidden &&
+          window->frame && window->frame->bottom_height > 0 &&
+          window->frame->child_y >= window->frame->bottom_height)
+        entries[i].inner_rect.y = window->frame->bottom_height;
+      else
+        entries[i].inner_rect.y = OUTLINE_WIDTH;
+
+      /* Bottom side */
+      if (!entries[i].hidden &&
+          window->frame && window->frame->bottom_height != 0)
+        entries[i].inner_rect.height = r.height
+          - entries[i].inner_rect.y - window->frame->bottom_height;
+      else
+        entries[i].inner_rect.height = r.height
+          - entries[i].inner_rect.y - OUTLINE_WIDTH;
+
+      /* Left side */
+      if (!entries[i].hidden && window->frame && window->frame->child_x != 0)
+        entries[i].inner_rect.x = window->frame->child_x;
+      else
+        entries[i].inner_rect.x = OUTLINE_WIDTH;
+
+      /* Right side */
+      if (!entries[i].hidden &&
+          window->frame && window->frame->right_width != 0)
+        entries[i].inner_rect.width = r.width
+          - entries[i].inner_rect.x - window->frame->right_width;
+      else
+        entries[i].inner_rect.width = r.width
+          - entries[i].inner_rect.x - OUTLINE_WIDTH;
       
       ++i;
       tmp = tmp->next;
