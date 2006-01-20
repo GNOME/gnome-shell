@@ -1,5 +1,17 @@
 2006-01-20  Elijah Newren  <newren gmail com>
 
+	Fix unitialized value problem when in raise-on-click mode.  Søren,
+	#327572.
+
+	* src/display.c (meta_display_check_threshold_reached): make
+	function be a no op if raise_on_click!=FALSE
+	
+	* src/display.h (struct MetaDisplay): point out that
+	grab_initial_[xy] and grab_threshold_movement_reached are only for
+	raise_on_click==FALSE mode.
+
+2006-01-20  Elijah Newren  <newren gmail com>
+
 	Patch from Søren to fix some reading-from-free'd-data errors.
 	#327575
 

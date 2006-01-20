@@ -269,8 +269,8 @@ struct _MetaDisplay
   MetaRectangle grab_wireframe_rect;
   MetaRectangle grab_wireframe_last_xor_rect;
   MetaRectangle grab_initial_window_pos;
-  int         grab_initial_x, grab_initial_y;
-  gboolean    grab_threshold_movement_reached;
+  int         grab_initial_x, grab_initial_y;  /* These are only relevant for */
+  gboolean    grab_threshold_movement_reached; /* raise_on_click == FALSE.    */
   MetaResizePopup *grab_resize_popup;
   GTimeVal    grab_last_moveresize_time;
   Time        grab_motion_notify_time;
