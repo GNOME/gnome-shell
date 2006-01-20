@@ -1,5 +1,14 @@
 2006-01-20  Elijah Newren  <newren gmail com>
 
+	More careful error handling of values returned by GConf.  Fixes
+	#326615.
+
+	* src/prefs.c (get_bool): new helper function, (meta_prefs_init):
+	use get_bool to handle the case of a gconf key not existing,
+	(update_cursor_size): sanity check for sane values
+
+2006-01-20  Elijah Newren  <newren gmail com>
+
 	Prevent rapidly repeated visual bells from hanging metacity.
 	Fixes #322032.
 

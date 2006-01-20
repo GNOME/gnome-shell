@@ -301,6 +301,29 @@ cleanup_error (GError **error)
       *error = NULL;
     }
 }
+
+/* get_bool returns TRUE if *val is filled in, FALSE otherwise */
+static gboolean
+get_bool (const char *key, gboolean *val)
+{
+  GError     *err = NULL;
+  GConfValue *value;
+  gboolean    filled_in = FALSE;
+
+  value = gconf_client_get (default_client, key, &err);
+  cleanup_error (&err);
+  if (value)
+    {
+      if (value->type == GCONF_VALUE_BOOL)
+        {
+          *val = gconf_value_get_bool (value);
+          filled_in = TRUE;
+        }
+      gconf_value_free (value);
+    }
+
+  return filled_in;
+}
 #endif /* HAVE_GCONF */
 
 void
@@ -350,10 +373,8 @@ meta_prefs_init (void)
   update_focus_mode (str_val);
   g_free (str_val);  
 
-  bool_val = gconf_client_get_bool (default_client, KEY_RAISE_ON_CLICK,
-				    &err);
-  cleanup_error (&err);
-  update_raise_on_click (bool_val);
+  if (get_bool (KEY_RAISE_ON_CLICK, &bool_val))
+    update_raise_on_click (bool_val);
   
   str_val = gconf_client_get_string (default_client,
                                      KEY_ACTION_DOUBLE_CLICK_TITLEBAR,
@@ -362,11 +383,15 @@ meta_prefs_init (void)
   update_action_double_click_titlebar (str_val);
   g_free (str_val);
 
-  bool_val = gconf_client_get_bool (default_client, KEY_AUTO_RAISE,
-				    &err);
-  cleanup_error (&err);
-  update_auto_raise (bool_val);
+  if (get_bool (KEY_AUTO_RAISE, &bool_val))
+    update_auto_raise (bool_val);
 
+  /* FIXME: Since auto_raise_delay of 0 is valid and gconf_client_get_int
+   * silently returns that value when KEY_AUTO_RAISE_DELAY doesn't exist,
+   * we should be using gconf_client_get() instead if we cared about
+   * careful error checking of the key-doesn't-exist case.  Since this
+   * setting is crap, though, I'm adding a FIXME instead of fixing it.  ;-)
+   */
   int_val = gconf_client_get_int (default_client, KEY_AUTO_RAISE_DELAY,
 				  &err);
   cleanup_error (&err);
@@ -384,10 +409,8 @@ meta_prefs_init (void)
    * just lazy. But they keys ought to be set, anyhow.
    */
   
-  bool_val = gconf_client_get_bool (default_client, KEY_USE_SYSTEM_FONT,
-                                    &err);
-  cleanup_error (&err);
-  update_use_system_font (bool_val);  
+  if (get_bool (KEY_USE_SYSTEM_FONT, &bool_val))
+    update_use_system_font (bool_val);
   
   str_val = gconf_client_get_string (default_client, KEY_TITLEBAR_FONT,
                                      &err);
@@ -400,15 +423,11 @@ meta_prefs_init (void)
   cleanup_error (&err);
   update_num_workspaces (int_val);
 
-  bool_val = gconf_client_get_bool (default_client, KEY_APPLICATION_BASED,
-                                    &err);
-  cleanup_error (&err);
-  update_application_based (bool_val);
+  if (get_bool (KEY_APPLICATION_BASED, &bool_val))
+    update_application_based (bool_val);
 
-  bool_val = gconf_client_get_bool (default_client, KEY_DISABLE_WORKAROUNDS,
-                                    &err);
-  cleanup_error (&err);
-  update_disable_workarounds (bool_val);
+  if (get_bool (KEY_DISABLE_WORKAROUNDS, &bool_val))
+    update_disable_workarounds (bool_val);
 
   str_val = gconf_client_get_string (default_client, KEY_BUTTON_LAYOUT,
                                      &err);
@@ -416,13 +435,9 @@ meta_prefs_init (void)
   update_button_layout (str_val);
   g_free (str_val);
   
-  bool_val = gconf_client_get_bool (default_client, KEY_VISUAL_BELL,
-                                    &err);
-  cleanup_error (&err);
-  bool_val_2 = gconf_client_get_bool (default_client, KEY_AUDIBLE_BELL,
-                                    &err);
-  cleanup_error (&err);
-  update_visual_bell (bool_val, bool_val_2);
+  if (get_bool (KEY_VISUAL_BELL,  &bool_val) ||
+      get_bool (KEY_AUDIBLE_BELL, &bool_val_2))
+    update_visual_bell (bool_val, bool_val_2);
 
   str_val = gconf_client_get_string (default_client, KEY_VISUAL_BELL_TYPE,
                                      &err);
@@ -430,10 +445,8 @@ meta_prefs_init (void)
   update_visual_bell_type (str_val);
   g_free (str_val);
 
-  bool_val = gconf_client_get_bool (default_client, KEY_REDUCED_RESOURCES,
-				    &err);
-  cleanup_error (&err);
-  update_reduced_resources (bool_val);
+  if (get_bool (KEY_REDUCED_RESOURCES, &bool_val))
+    update_reduced_resources (bool_val);
 
   str_val = gconf_client_get_string (default_client, KEY_TERMINAL_COMMAND,
                                      &err);
@@ -441,11 +454,8 @@ meta_prefs_init (void)
   update_terminal_command (str_val);
   g_free (str_val);
 
-  bool_val = gconf_client_get_bool (default_client, KEY_GNOME_ACCESSIBILITY,
-                                    &err);
-  
-  cleanup_error (&err);
-  update_gnome_accessibility (bool_val);
+  if (get_bool (KEY_GNOME_ACCESSIBILITY, &bool_val))
+    update_gnome_accessibility (bool_val);
 
   str_val = gconf_client_get_string (default_client, KEY_CURSOR_THEME,
                                      &err);
@@ -1109,7 +1119,11 @@ update_cursor_size (int value)
 {
   int old = cursor_size;
 
-  cursor_size = value;
+  if (value >= 1 && value <= 128)
+    cursor_size = value;
+  else
+    meta_warning (_("%d stored in GConf key %s is not a reasonable cursor_size; must be in the range 1..128\n"),
+                    value, KEY_CURSOR_SIZE);
 
   return old != value;
 }
