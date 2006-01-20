@@ -1,3 +1,8 @@
+<!-- WARNING: If you change _any_ defaults here, you MUST update the
+     corresponding static global var in prefs.c so that
+     running-without-GConf has the same defaults as running with
+     GConf. -->
+
 <gconfschemafile>
   <schemalist>
 
@@ -300,14 +305,14 @@
       <locale name="C">
          <short>If true, trade off usability for less resource usage</short>
          <long>
-          If true, metacity will give the user less feedback and 
-        less sense of "direct manipulation", by using wireframes, 
-        avoiding animations, or other means. This is a significant 
-        reduction in usability for many users, but may allow 
-        legacy applications and terminal servers to function 
-        when they would otherwise be impractical. However, the wireframe
-        feature is disabled when accessibility is on to avoid weird desktop
-        breakages.
+           If true, metacity will give the user less feedback and less
+           sense of "direct manipulation", by using wireframes,
+           avoiding animations, or other means. This is a significant
+           reduction in usability for many users, but may allow legacy
+           applications and terminal servers to function when they
+           would otherwise be impractical. However, the wireframe
+           feature is disabled when accessibility is on to avoid weird
+           desktop breakages.
          </long>
       </locale>
     </schema>

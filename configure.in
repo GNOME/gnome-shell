@@ -463,6 +463,9 @@ if test x$enable_gconf = xyes; then
    fi
 
    AM_GCONF_SOURCE_2
+else
+  GCONF_SCHEMAS_INSTALL_TRUE='#'
+  GCONF_SCHEMAS_INSTALL_FALSE=
 fi
 
 AC_CONFIG_FILES([

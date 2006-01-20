@@ -1,5 +1,27 @@
 2006-01-20  Elijah Newren  <newren gmail com>
 
+	Fix various initialization and default issues, especially for
+	--disable-gconf.  Make --disable-gconf actually work.  #326661.
+
+	* configure.in: Fix compilation with --disable-gconf
+	* src/metacity.schemas.in: Add a note that if any defaults are
+	  changed in this file, src/prefs.c may need to be updated to
+	  reflect the change
+	* src/prefs.c: set various static global vars to the right default
+	value, (meta_prefs_init): get the titlebar_font and current_theme
+	handled better when not using gconf, (struct MetaSimpleKeyMapping,
+	screen_string_bindings, window_string_bindings): helper vars to
+	allow some keybindings to work even without gconf,
+	(init_bindings): initialize bindings for the without-gconf case
+	too, (init_commands): make sure these are all NULL for the
+	non-gconf case so that we don't access random memory,
+	(init_workspace_names): just give these all a default name for the
+	non-gconf case,
+	(meta_prefs_change_workspace_name): actually change the name for
+	the non-gconf case too
+	
+2006-01-20  Elijah Newren  <newren gmail com>
+
 	More careful error handling of values returned by GConf.  Fixes
 	#326615.
 

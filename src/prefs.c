@@ -78,7 +78,7 @@ static guint changed_idle;
 #endif
 static GList *listeners = NULL;
 
-static gboolean use_system_font = TRUE;
+static gboolean use_system_font = FALSE;
 static PangoFontDescription *titlebar_font = NULL;
 static MetaVirtualModifier mouse_button_mods = Mod1Mask;
 static MetaFocusMode focus_mode = META_FOCUS_MODE_CLICK;
@@ -86,19 +86,19 @@ static gboolean raise_on_click = TRUE;
 static char* current_theme = NULL;
 static int num_workspaces = 4;
 static MetaActionDoubleClickTitlebar action_double_click_titlebar =
-    META_ACTION_DOUBLE_CLICK_TITLEBAR_TOGGLE_SHADE;
+    META_ACTION_DOUBLE_CLICK_TITLEBAR_TOGGLE_MAXIMIZE;
 static gboolean application_based = FALSE;
 static gboolean disable_workarounds = FALSE;
 static gboolean auto_raise = FALSE;
 static gboolean auto_raise_delay = 500;
-static gboolean provide_visual_bell = TRUE;
+static gboolean provide_visual_bell = FALSE;
 static gboolean bell_is_audible = TRUE;
 static gboolean reduced_resources = FALSE;
 static gboolean gnome_accessibility = FALSE;
 static char *cursor_theme = NULL;
 static int   cursor_size = 24;
 
-static MetaVisualBellType visual_bell_type = META_VISUAL_BELL_INVALID;
+static MetaVisualBellType visual_bell_type = META_VISUAL_BELL_FULLSCREEN_FLASH;
 static MetaButtonLayout button_layout = {
   {
     META_BUTTON_FUNCTION_MENU,
@@ -122,7 +122,7 @@ static char *terminal_command = NULL;
 static char *workspace_names[MAX_REASONABLE_WORKSPACES] = { NULL, };
 
 #ifdef HAVE_GCONF
-static gboolean update_use_system_font   (gboolean    value);
+static gboolean update_use_system_font    (gboolean    value);
 static gboolean update_titlebar_font      (const char *value);
 static gboolean update_mouse_button_mods  (const char *value);
 static gboolean update_focus_mode         (const char *value);
@@ -141,8 +141,6 @@ static gboolean update_window_binding     (const char *name,
                                            const char *value);
 static gboolean update_screen_binding     (const char *name,
                                            const char *value);
-static gboolean update_binding            (MetaKeyPref *binding,
-                                           const char  *value);
 static gboolean update_command            (const char  *name,
                                            const char  *value);
 static gboolean update_terminal_command   (const char *value);
@@ -162,6 +160,8 @@ static char* gconf_key_for_workspace_name (int i);
 
 static void queue_changed (MetaPreference  pref);
 #endif /* HAVE_GCONF */
+static gboolean update_binding            (MetaKeyPref *binding,
+                                           const char  *value);
 
 static void     init_bindings             (void);
 static void     init_commands             (void);
@@ -467,6 +467,14 @@ meta_prefs_init (void)
                                   &err);
   cleanup_error (&err);
   update_cursor_size (int_val);
+#else  /* HAVE_GCONF */
+  /* Set defaults for some values that can't be set at initialization time of
+   * the static globals.  In the case of the theme, note that there is code
+   * elsewhere that will do everything possible to fallback to an existing theme
+   * if the one here does not exist.
+   */
+  titlebar_font = pango_font_description_from_string ("Sans Bold 10");
+  current_theme = g_strdup ("Atlanta");
 #endif /* HAVE_GCONF */
   
   /* Load keybindings prefs */
@@ -1173,7 +1181,6 @@ update_visual_bell_type (const char *value)
 
   return (visual_bell_type != old_bell_type);
 }
-#endif /* HAVE_GCONF */
 
 static gboolean
 update_visual_bell (gboolean visual_bell, gboolean audible_bell)
@@ -1189,6 +1196,7 @@ update_visual_bell (gboolean visual_bell, gboolean audible_bell)
 
   return has_changed;
 }
+#endif /* HAVE_GCONF */
 
 #ifdef HAVE_GCONF
 static gboolean
@@ -1761,6 +1769,52 @@ static MetaKeyPref window_bindings[] = {
   { NULL, 0, 0, FALSE }
 };
 
+#ifndef HAVE_GCONF
+typedef struct
+{
+  const char *name;
+  const char *keybinding;
+} MetaSimpleKeyMapping;
+
+/* Name field must occur in the same order as screen_bindings, though entries
+ * can be skipped
+ */
+static MetaSimpleKeyMapping screen_string_bindings[] = {
+  { META_KEYBINDING_WORKSPACE_LEFT,         "<Control><Alt>Left"         },
+  { META_KEYBINDING_WORKSPACE_RIGHT,        "<Control><Alt>Right"        },
+  { META_KEYBINDING_WORKSPACE_UP,           "<Control><Alt>Up"           },
+  { META_KEYBINDING_WORKSPACE_DOWN,         "<Control><Alt>Down"         },
+  { META_KEYBINDING_SWITCH_WINDOWS,         "<Alt>Tab"                   },
+  { META_KEYBINDING_SWITCH_PANELS,          "<Control><Alt>Tab"          },
+  { META_KEYBINDING_CYCLE_WINDOWS,          "<Alt>Escape"                },
+  { META_KEYBINDING_CYCLE_PANELS,           "<Control><Alt>Escape"       },
+  { META_KEYBINDING_SHOW_DESKTOP,           "<Control><Alt>d"            },
+  { META_KEYBINDING_PANEL_MAIN_MENU,        "<Alt>F1"                    },
+  { META_KEYBINDING_PANEL_RUN_DIALOG,       "<Alt>F2"                    },
+  { META_KEYBINDING_COMMAND_SCREENSHOT,     "Print"                      },
+  { META_KEYBINDING_COMMAND_WIN_SCREENSHOT, "<Alt>Print"                 },
+  { NULL,                                   NULL                         }
+};
+
+/* Name field must occur in the same order as window_bindings, though entries
+ * can be skipped
+ */
+static MetaSimpleKeyMapping window_string_bindings[] = {
+  { META_KEYBINDING_WINDOW_MENU,            "<Alt>Print"                 },
+  { META_KEYBINDING_MAXIMIZE,               "<Alt>F10"                   },
+  { META_KEYBINDING_UNMAXIMIZE,             "<Alt>F5"                    },
+  { META_KEYBINDING_MINIMIZE,               "<Alt>F9"                    },
+  { META_KEYBINDING_CLOSE,                  "<Alt>F4"                    },
+  { META_KEYBINDING_BEGIN_MOVE,             "<Alt>F7"                    },
+  { META_KEYBINDING_BEGIN_RESIZE,           "<Alt>F8"                    },
+  { META_KEYBINDING_MOVE_WORKSPACE_LEFT,    "<Control><Shift><Alt>Left"  },
+  { META_KEYBINDING_MOVE_WORKSPACE_RIGHT,   "<Control><Shift><Alt>Right" },
+  { META_KEYBINDING_MOVE_WORKSPACE_UP,      "<Control><Shift><Alt>Up"    },
+  { META_KEYBINDING_MOVE_WORKSPACE_DOWN,    "<Control><Shift><Alt>Down"  },
+  { NULL,                                   NULL                         }
+};
+#endif /* NOT HAVE_GCONF */
+
 static void
 init_bindings (void)
 {
@@ -1809,6 +1863,42 @@ init_bindings (void)
 
       ++i;
     }
+#else /* HAVE_GCONF */
+  int i = 0;
+  int which = 0;
+  while (window_string_bindings[i].name)
+    {
+      /* Find which window_bindings entry this window_string_bindings entry
+       * corresponds to.
+       */
+      while (strcmp(window_bindings[which].name, 
+                    window_string_bindings[i].name) != 0)
+        which++;
+
+      /* Set the binding */
+      update_binding (&window_bindings[which],
+                      window_string_bindings[i].keybinding);
+
+      ++i;
+    }
+
+  i = 0;
+  which = 0;
+  while (screen_string_bindings[i].name)
+    {
+      /* Find which window_bindings entry this window_string_bindings entry
+       * corresponds to.
+       */
+      while (strcmp(screen_bindings[which].name, 
+                    screen_string_bindings[i].name) != 0)
+        which++;
+
+      /* Set the binding */
+      update_binding (&screen_bindings[which], 
+                      screen_string_bindings[i].keybinding);
+
+      ++i;
+    }
 #endif /* HAVE_GCONF */
 }
 
@@ -1838,6 +1928,10 @@ init_commands (void)
 
       ++i;
     }
+#else
+  int i;
+  for (i = 0; i < MAX_COMMANDS; i++)
+    commands[i] = NULL;
 #endif /* HAVE_GCONF */
 }
 
@@ -1869,10 +1963,16 @@ init_workspace_names (void)
 
       ++i;
     }
+#else
+  int i;
+  for (i = 0; i < MAX_REASONABLE_WORKSPACES; i++)
+    workspace_names[i] = g_strdup_printf (_("Workspace %d"), i + 1);
+
+  meta_topic (META_DEBUG_PREFS,
+              "Initialized workspace names\n");
 #endif /* HAVE_GCONF */
 }
 
-#ifdef HAVE_GCONF
 static gboolean
 update_binding (MetaKeyPref *binding,
                 const char  *value)
@@ -1920,6 +2020,7 @@ update_binding (MetaKeyPref *binding,
   return changed;
 }
 
+#ifdef HAVE_GCONF
 static const gchar*
 relative_key (const gchar* key)
 {
@@ -2254,6 +2355,9 @@ meta_prefs_change_workspace_name (int         i,
     }
   
   g_free (key);
+#else
+  g_free (workspace_names[i]);
+  workspace_names[i] = g_strdup (name);
 #endif /* HAVE_GCONF */
 }
 
