@@ -88,7 +88,7 @@ static void     ensure_mru_position_after (MetaWindow *window,
                                            MetaWindow *after_this_one);
 
 
-void meta_window_move_resize_now (MetaWindow  *window);
+static void meta_window_move_resize_now (MetaWindow  *window);
 
 static void     update_move           (MetaWindow   *window,
                                        gboolean      snap,
@@ -105,15 +105,13 @@ static gboolean update_resize_timeout (gpointer data);
 
 /* FIXME we need an abstraction that covers all these queues. */   
 
-void meta_window_unqueue_calc_showing (MetaWindow *window);
-void meta_window_flush_calc_showing   (MetaWindow *window);
+static void meta_window_unqueue_calc_showing (MetaWindow *window);
+static void meta_window_flush_calc_showing   (MetaWindow *window);
 
-void meta_window_unqueue_move_resize  (MetaWindow *window);
-void meta_window_flush_move_resize    (MetaWindow *window);
+static void meta_window_unqueue_move_resize  (MetaWindow *window);
 
 static void meta_window_update_icon_now (MetaWindow *window);
-void meta_window_unqueue_update_icon    (MetaWindow *window);
-void meta_window_flush_update_icon      (MetaWindow *window);
+static void meta_window_unqueue_update_icon    (MetaWindow *window);
 
 static gboolean queue_calc_showing_func (MetaWindow *window,
                                          void       *data);
@@ -326,7 +324,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
       has_shape = bounding_shaped != FALSE;
 
       meta_topic (META_DEBUG_SHAPES,
-                  "Window has_shape = %d extents %d,%d %d x %d\n",
+                  "Window has_shape = %d extents %d,%d %u x %u\n",
                   has_shape, x_bounding, y_bounding,
                   w_bounding, h_bounding);
     }
@@ -1569,7 +1567,7 @@ idle_calc_showing (gpointer data)
   return FALSE;
 }
 
-void
+static void
 meta_window_unqueue_calc_showing (MetaWindow *window)
 {
   if (!window->calc_showing_queued)
@@ -1593,7 +1591,7 @@ meta_window_unqueue_calc_showing (MetaWindow *window)
     }
 }
 
-void
+static void
 meta_window_flush_calc_showing (MetaWindow *window)
 {
   if (window->calc_showing_queued)
@@ -1829,7 +1827,6 @@ windows_overlap (const MetaWindow *w1, const MetaWindow *w2)
 void
 meta_window_show (MetaWindow *window)
 {
-  gboolean did_placement;
   gboolean did_show;
   gboolean takes_focus_on_map;
   gboolean place_on_top_on_map;
@@ -1842,7 +1839,6 @@ meta_window_show (MetaWindow *window)
 
   focus_window = window->display->focus_window;  /* May be NULL! */
   did_show = FALSE;
-  did_placement = FALSE;
   window_state_on_map (window, &takes_focus_on_map, &place_on_top_on_map);
   needs_stacking_adjustment = FALSE;
 
@@ -1898,7 +1894,6 @@ meta_window_show (MetaWindow *window)
        * still get placed when they are ultimately shown.
        */
       window->placed = TRUE;
-      did_placement = TRUE;
 
       /* Don't want to accidentally reuse the fact that we had been denied
        * focus in any future constraints unless we're denied focus again.
@@ -3221,7 +3216,7 @@ meta_window_resize_with_gravity (MetaWindow *window,
                                     x, y, w, h);
 }
 
-void
+static void
 meta_window_move_resize_now (MetaWindow  *window)
 {
   int x, y;
@@ -3284,7 +3279,7 @@ idle_move_resize (gpointer data)
   return FALSE;
 }
 
-void
+static void
 meta_window_unqueue_move_resize (MetaWindow *window)
 {
   if (!window->move_resize_queued)
@@ -3305,16 +3300,6 @@ meta_window_unqueue_move_resize (MetaWindow *window)
     {
       g_source_remove (move_resize_idle);
       move_resize_idle = 0;
-    }
-}
-
-void
-meta_window_flush_move_resize (MetaWindow *window)
-{
-  if (window->move_resize_queued)
-    {
-      meta_window_unqueue_move_resize (window);
-      meta_window_move_resize_now (window);
     }
 }
 
@@ -3937,7 +3922,7 @@ update_net_frame_extents (MetaWindow *window)
 
   meta_topic (META_DEBUG_GEOMETRY,
               "Setting _NET_FRAME_EXTENTS on managed window 0x%lx "
-              "to left = %ld, right = %ld, top = %ld, bottom = %ld\n",
+              "to left = %lu, right = %lu, top = %lu, bottom = %lu\n",
               window->xwindow, data[0], data[1], data[2], data[3]);
 
   meta_error_trap_push (window->display);
@@ -3964,7 +3949,7 @@ meta_window_set_current_workspace_hint (MetaWindow *window)
   
   data[0] = meta_window_get_net_wm_desktop (window);
 
-  meta_verbose ("Setting _NET_WM_DESKTOP of %s to %ld\n",
+  meta_verbose ("Setting _NET_WM_DESKTOP of %s to %lu\n",
                 window->desc, data[0]);
   
   meta_error_trap_push (window->display);
@@ -4174,7 +4159,7 @@ meta_window_configure_request (MetaWindow *window,
   else
     {
       meta_topic (META_DEBUG_GEOMETRY,
-		  "Not allowing position change for window %s PPosition 0x%lx USPosition 0x%lx type %d\n", 
+		  "Not allowing position change for window %s PPosition 0x%lx USPosition 0x%lx type %u\n", 
 		  window->desc, window->size_hints.flags & PPosition, 
 		  window->size_hints.flags & USPosition,
 		  window->type);     
@@ -4407,7 +4392,7 @@ meta_window_client_message (MetaWindow *window,
           if (meta_error_trap_pop_with_return (display, TRUE) != Success)
             str2 = NULL;
           
-          meta_verbose ("Request to change _NET_WM_STATE action %ld atom1: %s atom2: %s\n",
+          meta_verbose ("Request to change _NET_WM_STATE action %lu atom1: %s atom2: %s\n",
                         action,
                         str1 ? str1 : "(unknown)",
                         str2 ? str2 : "(unknown)");
@@ -5626,7 +5611,7 @@ idle_update_icon (gpointer data)
   return FALSE;
 }
 
-void
+static void
 meta_window_unqueue_update_icon (MetaWindow *window)
 {
   if (!window->update_icon_queued)
@@ -5647,16 +5632,6 @@ meta_window_unqueue_update_icon (MetaWindow *window)
     {
       g_source_remove (update_icon_idle);
       update_icon_idle = 0;
-    }
-}
-
-void
-meta_window_flush_update_icon (MetaWindow *window)
-{
-  if (window->update_icon_queued)
-    {
-      meta_window_unqueue_update_icon (window);
-      meta_window_update_icon_now (window);
     }
 }
 
@@ -5911,7 +5886,7 @@ recalc_window_type (MetaWindow *window)
       window->wm_state_modal)
     window->type = META_WINDOW_MODAL_DIALOG;
   
-  meta_verbose ("Calculated type %d for %s, old type %d\n",
+  meta_verbose ("Calculated type %u for %s, old type %u\n",
                 window->type, window->desc, old_type);
 
   if (old_type != window->type)
@@ -6221,7 +6196,7 @@ menu_callback (MetaWindowMenu *menu,
   
   if (window != NULL) /* window can be NULL */
     {
-      meta_verbose ("Menu op %d on %s\n", op, window->desc);
+      meta_verbose ("Menu op %u on %s\n", op, window->desc);
       
       /* op can be 0 for none */
       switch (op)

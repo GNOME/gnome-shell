@@ -62,10 +62,8 @@ static void
 meta_preview_class_init (MetaPreviewClass *class)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (class);
-  GtkObjectClass *object_class;
   GtkWidgetClass *widget_class;
 
-  object_class = (GtkObjectClass*) class;
   widget_class = (GtkWidgetClass*) class;
   parent_class = gtk_type_class (GTK_TYPE_BIN);
 
@@ -128,10 +126,6 @@ meta_preview_new (void)
 static void
 meta_preview_finalize (GObject *object)
 {
-  MetaPreview *preview;
-
-  preview = META_PREVIEW (object);
-  
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 

@@ -26,7 +26,7 @@
 
 static GtkWidget* do_appwindow (void);
 
-gboolean aspect_on;
+static gboolean aspect_on;
 
 static void
 set_gdk_window_struts (GdkWindow *window,

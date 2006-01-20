@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int gravities[10] = {
+static int gravities[10] = {
   NorthWestGravity, 
   NorthGravity,  
   NorthEastGravity,
@@ -21,19 +21,19 @@ typedef struct
   int x, y, width, height;
 } Rectangle;
 
-Window windows[10];
-int doubled[10] = { 0, };
-Rectangle window_rects[10];
+static Window windows[10];
+static int doubled[10] = { 0, };
+static Rectangle window_rects[10];
 
 #define WINDOW_WIDTH 100
 #define WINDOW_HEIGHT 100
 
-int x_offset[3] = { 0, - WINDOW_WIDTH/2,  -WINDOW_WIDTH };
-int y_offset[3] = { 0, - WINDOW_HEIGHT/2,  -WINDOW_HEIGHT };
-double screen_x_fraction[3] = { 0, 0.5, 1.0 };
-double screen_y_fraction[3] = { 0, 0.5, 1.0 };
-int screen_width;
-int screen_height;
+static int x_offset[3] = { 0, - WINDOW_WIDTH/2,  -WINDOW_WIDTH };
+static int y_offset[3] = { 0, - WINDOW_HEIGHT/2,  -WINDOW_HEIGHT };
+static double screen_x_fraction[3] = { 0, 0.5, 1.0 };
+static double screen_y_fraction[3] = { 0, 0.5, 1.0 };
+static int screen_width;
+static int screen_height;
 
 static const char*
 window_gravity_to_string (int gravity)
@@ -42,37 +42,26 @@ window_gravity_to_string (int gravity)
     {
     case NorthWestGravity:
       return "NorthWestGravity";
-      break;
     case NorthGravity:
       return "NorthGravity";
-      break;
     case NorthEastGravity:
       return "NorthEastGravity";
-      break;
     case WestGravity:
       return "WestGravity";
-      break;
     case CenterGravity:
       return "CenterGravity";
-      break;
     case EastGravity:
       return "EastGravity";
-      break;
     case SouthWestGravity:
       return "SouthWestGravity";
-      break;
     case SouthGravity:
       return "SouthGravity";
-      break;
     case SouthEastGravity:
       return "SouthEastGravity";
-      break;
     case StaticGravity:
       return "StaticGravity";
-      break;
     default:
       return "NorthWestGravity";
-      break;
     }
 }
 
@@ -311,7 +300,9 @@ int main (int argc, char **argv)
             }
 	}
     }
-  
-  return 0;
+
+  /* This program has an infinite loop above so a return statement would
+   * just cause compiler warnings.
+   */
 }
 

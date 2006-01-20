@@ -982,7 +982,7 @@ set_number_of_spaces_hint (MetaScreen *screen,
 
   data[0] = n_spaces;
 
-  meta_verbose ("Setting _NET_NUMBER_OF_DESKTOPS to %ld\n", data[0]);
+  meta_verbose ("Setting _NET_NUMBER_OF_DESKTOPS to %lu\n", data[0]);
 
   meta_error_trap_push (screen->display);
   XChangeProperty (screen->display->xdisplay, screen->xroot,
@@ -1003,7 +1003,7 @@ set_desktop_geometry_hint (MetaScreen *screen)
   data[0] = screen->rect.width;
   data[1] = screen->rect.height;
 
-  meta_verbose ("Setting _NET_DESKTOP_GEOMETRY to %ld, %ld\n", data[0], data[1]);
+  meta_verbose ("Setting _NET_DESKTOP_GEOMETRY to %lu, %lu\n", data[0], data[1]);
 
   meta_error_trap_push (screen->display);
   XChangeProperty (screen->display->xdisplay, screen->xroot,
@@ -1672,7 +1672,7 @@ meta_screen_update_workspace_layout (MetaScreen *screen)
       meta_XFree (list);
     }
 
-  meta_verbose ("Workspace layout rows = %d cols = %d orientation = %d starting corner = %d\n",
+  meta_verbose ("Workspace layout rows = %d cols = %d orientation = %d starting corner = %u\n",
                 screen->rows_of_workspaces,
                 screen->columns_of_workspaces,
                 screen->vertical_workspaces,

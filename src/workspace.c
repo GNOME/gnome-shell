@@ -421,7 +421,7 @@ set_active_space_hint (MetaScreen *screen)
   
   data[0] = meta_workspace_index (screen->active_workspace);
 
-  meta_verbose ("Setting _NET_CURRENT_DESKTOP to %ld\n", data[0]);
+  meta_verbose ("Setting _NET_CURRENT_DESKTOP to %lu\n", data[0]);
   
   meta_error_trap_push (screen->display);
   XChangeProperty (screen->display->xdisplay, screen->xroot,

@@ -738,7 +738,6 @@ meta_window_place (MetaWindow        *window,
     case META_WINDOW_MENU:
     case META_WINDOW_UTILITY:
       goto done_no_constraints;
-      break;
     }
   
   if (meta_prefs_get_disable_workarounds ())

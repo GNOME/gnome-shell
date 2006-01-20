@@ -61,7 +61,9 @@ static GtkWidget *previews[META_FRAME_TYPE_LAST*FONT_SIZE_LAST + BUTTON_LAYOUT_C
 static double milliseconds_to_draw_frame = 0.0;
 
 static void run_position_expression_tests (void);
+#if 0
 static void run_position_expression_timings (void);
+#endif
 static void run_theme_benchmark (void);
 
 
@@ -90,7 +92,6 @@ normal_contents (void)
   GtkWidget *statusbar;
   GtkWidget *contents;
   GtkWidget *sw;
-  GtkTextBuffer *buffer;
   GtkItemFactory *item_factory;
       
   table = gtk_table_new (1, 4, FALSE);
@@ -193,9 +194,6 @@ normal_contents (void)
                     0, 1,                   3, 4,
                     GTK_EXPAND | GTK_FILL,  0,
                     0,                      0);
-
-  /* Show text widget info in the statusbar */
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (contents));
 
   gtk_widget_show_all (table);
 
@@ -376,32 +374,26 @@ get_window_contents (MetaFrameType  type,
     case META_FRAME_TYPE_NORMAL:
       *title = _("Normal Application Window");
       return normal_contents ();
-      break;
 
     case META_FRAME_TYPE_DIALOG:
       *title = _("Dialog Box");
       return dialog_contents ();
-      break;
 
     case META_FRAME_TYPE_MODAL_DIALOG:
       *title = _("Modal Dialog Box");
       return dialog_contents ();
-      break;
 
     case META_FRAME_TYPE_UTILITY:
       *title = _("Utility Palette");
       return utility_contents ();
-      break;
 
     case META_FRAME_TYPE_MENU:
       *title = _("Torn-off Menu");
       return menu_contents ();
-      break;
 
     case META_FRAME_TYPE_BORDER:
       *title = _("Border");
       return border_only_contents ();
-      break;
       
     case META_FRAME_TYPE_LAST:
       g_assert_not_reached ();
@@ -1255,6 +1247,7 @@ run_position_expression_tests (void)
     }
 }
 
+#if 0
 static void
 run_position_expression_timings (void)
 {
@@ -1313,3 +1306,4 @@ run_position_expression_timings (void)
            ((double)end - (double)start) / CLOCKS_PER_SEC / (double) ITERATIONS);
 
 }
+#endif

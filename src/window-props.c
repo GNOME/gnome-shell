@@ -166,7 +166,7 @@ reload_net_wm_pid (MetaWindow    *window,
       gulong cardinal = (int) value->v.cardinal;
       
       if (cardinal <= 0)
-        meta_warning (_("Application set a bogus _NET_WM_PID %ld\n"),
+        meta_warning (_("Application set a bogus _NET_WM_PID %lu\n"),
                       cardinal);
       else
         {

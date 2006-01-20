@@ -49,7 +49,6 @@ static void  meta_accel_label_update          (MetaAccelLabel *accel_label);
 static int   meta_accel_label_get_accel_width (MetaAccelLabel *accel_label);
 
 
-static MetaAccelLabelClass *accel_label_class = NULL;
 static GtkLabelClass *parent_class = NULL;
 
 
@@ -85,7 +84,6 @@ meta_accel_label_class_init (MetaAccelLabelClass *class)
   GtkObjectClass *object_class = GTK_OBJECT_CLASS (class);
   GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (class);
 
-  accel_label_class = class;
   parent_class = g_type_class_peek_parent (class);
 
   gobject_class->finalize = meta_accel_label_finalize;

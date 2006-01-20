@@ -522,7 +522,6 @@ ag_task_create (Display *dpy,
 {
   AgGetPropertyTask *task;
   xGetPropertyReq *req;
-  xError error;
   AgPerDisplayData *dd;  
   
   /* Fire up our request */
@@ -542,8 +541,6 @@ ag_task_create (Display *dpy,
   req->delete = delete;
   req->longOffset = offset;
   req->longLength = length;
-
-  error.sequenceNumber = dpy->request;
 
   /* Queue up our async task */
   task = Xcalloc (1, sizeof (AgGetPropertyTask));

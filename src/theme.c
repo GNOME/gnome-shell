@@ -289,7 +289,6 @@ meta_frame_layout_validate (const MetaFrameLayout *layout,
                    META_THEME_ERROR_FRAME_GEOMETRY,
                    _("Frame geometry does not specify size of buttons"));
       return FALSE;
-      break;
     }
 
   CHECK_GEOMETRY_BORDER (button_border);
@@ -1776,7 +1775,6 @@ do_operation (PosExpr *a,
                        META_THEME_ERROR_MOD_ON_FLOAT,
                        _("Coordinate expression tries to use mod operator on a floating-point number"));
           return FALSE;
-          break;
         case POS_OP_ADD:
           a->d.double_val = a->d.double_val + b->d.double_val;
           break;
@@ -2008,7 +2006,6 @@ pos_eval_helper (PosToken                   *tokens,
                            META_THEME_ERROR_BAD_PARENS,
                            _("Coordinate expression had a close parenthesis with no open parenthesis"));
               return FALSE;
-              break;
 
             case POS_TOKEN_VARIABLE:
               exprs[n_exprs].type = POS_EXPR_INT;

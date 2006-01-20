@@ -621,12 +621,8 @@ meta_display_open (const char *name)
    * that will follow.
    */
   {
-    XSetWindowAttributes attrs;
     gulong data[1];
     XEvent event;
-
-    attrs.event_mask = PropertyChangeMask;
-    attrs.override_redirect = True;
 
     display->leader_window = meta_create_offscreen_window (display->xdisplay,
                                                            DefaultRootWindow (display->xdisplay));                                                           
@@ -1067,7 +1063,6 @@ grab_op_is_mouse (MetaGrabOp op)
     case META_GRAB_OP_KEYBOARD_RESIZING_NW:
     case META_GRAB_OP_KEYBOARD_MOVING:
       return TRUE;
-      break;
 
     default:
       return FALSE;
@@ -1095,7 +1090,6 @@ grab_op_is_keyboard (MetaGrabOp op)
     case META_GRAB_OP_KEYBOARD_ESCAPING_DOCK:
     case META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING:
       return TRUE;
-      break;
 
     default:
       return FALSE;
@@ -1125,7 +1119,6 @@ meta_grab_op_is_resizing (MetaGrabOp op)
     case META_GRAB_OP_KEYBOARD_RESIZING_SW:
     case META_GRAB_OP_KEYBOARD_RESIZING_NW:
       return TRUE;
-      break;
 
     default:
       return FALSE;
@@ -1140,7 +1133,6 @@ meta_grab_op_is_moving (MetaGrabOp op)
     case META_GRAB_OP_MOVING:
     case META_GRAB_OP_KEYBOARD_MOVING:
       return TRUE;
-      break;
       
     default:
       return FALSE;
@@ -1267,6 +1259,7 @@ window_raise_with_delay_callback (void *data)
       Window root, child;
       unsigned int mask;
       gboolean same_screen;
+      gboolean point_in_window;
 
       meta_error_trap_push (window->display);
       same_screen = XQueryPointer (window->display->xdisplay,
@@ -1275,8 +1268,10 @@ window_raise_with_delay_callback (void *data)
 				   &root_x, &root_y, &x, &y, &mask);
       meta_error_trap_pop (window->display, TRUE);
 
-      if ((window->frame && POINT_IN_RECT (root_x, root_y, window->frame->rect)) ||
-	  (window->frame == NULL && POINT_IN_RECT (root_x, root_y, window->rect)))
+      point_in_window = 
+        (window->frame && POINT_IN_RECT (root_x, root_y, window->frame->rect)) ||
+        (window->frame == NULL && POINT_IN_RECT (root_x, root_y, window->rect));
+      if (same_screen && point_in_window)
 	meta_window_raise (window);
       else
 	meta_topic (META_DEBUG_FOCUS, 
@@ -1629,7 +1624,7 @@ event_callback (XEvent   *event,
           grab_op_is_keyboard (display->grab_op))
         {
           meta_topic (META_DEBUG_WINDOW_OPS,
-                      "Ending grab op %d on window %s due to button press\n",
+                      "Ending grab op %u on window %s due to button press\n",
                       display->grab_op,
                       (display->grab_window ?
                        display->grab_window->desc : 
@@ -1685,7 +1680,7 @@ event_callback (XEvent   *event,
 		  if (window->type != META_WINDOW_DOCK)
                     {
                       meta_topic (META_DEBUG_FOCUS,
-                                  "Focusing %s due to unmodified button %d press (display.c)\n",
+                                  "Focusing %s due to unmodified button %u press (display.c)\n",
                                   window->desc, event->xbutton.button);
                       meta_window_focus (window, event->xbutton.time);
                     }
@@ -2200,7 +2195,6 @@ event_callback (XEvent   *event,
        * closing the display... so return right away.
        */
       return FALSE;
-      break;
     case SelectionRequest:
       process_selection_request (display, event);
       break;
@@ -2699,7 +2693,7 @@ meta_spew_event (MetaDisplay *display,
       break;
     case ButtonPress:
       name = "ButtonPress";
-      extra = g_strdup_printf ("button %d state 0x%x x %d y %d root 0x%lx same_screen %d",
+      extra = g_strdup_printf ("button %u state 0x%x x %d y %d root 0x%lx same_screen %d",
                                event->xbutton.button,
                                event->xbutton.state,
                                event->xbutton.x,
@@ -2709,7 +2703,7 @@ meta_spew_event (MetaDisplay *display,
       break;
     case ButtonRelease:
       name = "ButtonRelease";
-      extra = g_strdup_printf ("button %d state 0x%x x %d y %d root 0x%lx same_screen %d",
+      extra = g_strdup_printf ("button %u state 0x%x x %d y %d root 0x%lx same_screen %d",
                                event->xbutton.button,
                                event->xbutton.state,
                                event->xbutton.x,
@@ -2951,7 +2945,7 @@ meta_spew_event (MetaDisplay *display,
 
             extra =
               g_strdup_printf ("kind: %s "
-                               "x: %d y: %d w: %d h: %d "
+                               "x: %d y: %d w: %u h: %u "
                                "shaped: %d",
                                sev->kind == ShapeBounding ?
                                "ShapeBounding" :
@@ -3235,13 +3229,13 @@ meta_display_begin_grab_op (MetaDisplay *display,
   Window grab_xwindow;
   
   meta_topic (META_DEBUG_WINDOW_OPS,
-              "Doing grab op %d on window %s button %d pointer already grabbed: %d pointer pos %d,%d\n",
+              "Doing grab op %u on window %s button %d pointer already grabbed: %d pointer pos %d,%d\n",
               op, window ? window->desc : "none", button, pointer_already_grabbed,
               root_x, root_y);
   
   if (display->grab_op != META_GRAB_OP_NONE)
     {
-      meta_warning ("Attempt to perform window operation %d on window %s when operation %d on %s already in effect\n",
+      meta_warning ("Attempt to perform window operation %u on window %s when operation %u on %s already in effect\n",
                     op, window ? window->desc : "none", display->grab_op,
                     display->grab_window ? display->grab_window->desc : "none");
       return FALSE;
@@ -3414,7 +3408,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
     }
   
   meta_topic (META_DEBUG_WINDOW_OPS,
-              "Grab op %d on window %s successful\n",
+              "Grab op %u on window %s successful\n",
               display->grab_op, window ? window->desc : "(null)");
 
   g_assert (display->grab_window != NULL || display->grab_screen != NULL);
@@ -3488,7 +3482,7 @@ meta_display_end_grab_op (MetaDisplay *display,
                           Time         timestamp)
 {
   meta_topic (META_DEBUG_WINDOW_OPS,
-              "Ending grab op %d at time %lu\n", display->grab_op,
+              "Ending grab op %u at time %lu\n", display->grab_op,
               (unsigned long) timestamp);
   
   if (display->grab_op == META_GRAB_OP_NONE)
@@ -4087,7 +4081,7 @@ process_request_frame_extents (MetaDisplay    *display,
 
   meta_topic (META_DEBUG_GEOMETRY,
               "Setting _NET_FRAME_EXTENTS on unmanaged window 0x%lx "
-              "to top = %ld, left = %ld, bottom = %ld, right = %ld\n",
+              "to top = %lu, left = %lu, bottom = %lu, right = %lu\n",
               xwindow, data[0], data[1], data[2], data[3]);
 
   meta_error_trap_push (display);
@@ -4309,6 +4303,7 @@ meta_display_get_tab_next (MetaDisplay   *display,
 {
   gboolean skip;
   GList *tab_list;
+  MetaWindow *ret;
   tab_list = meta_display_get_tab_list(display,
                                        type,
                                        screen,
@@ -4322,27 +4317,30 @@ meta_display_get_tab_next (MetaDisplay   *display,
       g_assert (window->display == display);
       
       if (backward)
-        return find_tab_backward (display, type, screen, workspace,
-                                  g_list_find (tab_list,
-                                               window),
-                                  TRUE);
-      else
-        return find_tab_forward (display, type, screen, workspace,
+        ret = find_tab_backward (display, type, screen, workspace,
                                  g_list_find (tab_list,
                                               window),
                                  TRUE);
+      else
+        ret = find_tab_forward (display, type, screen, workspace,
+                                g_list_find (tab_list,
+                                             window),
+                                TRUE);
+    }
+  else
+    {
+      skip = display->focus_window != NULL && 
+             IN_TAB_CHAIN (display->focus_window, type);
+      if (backward)
+        ret = find_tab_backward (display, type, screen, workspace,
+                                 tab_list, skip);
+      else
+        ret = find_tab_forward (display, type, screen, workspace,
+                                tab_list, skip);
     }
 
-  skip = display->focus_window != NULL && 
-         IN_TAB_CHAIN (display->focus_window, type);
-  if (backward)
-    return find_tab_backward (display, type, screen, workspace,
-                              tab_list, skip);
-  else
-    return find_tab_forward (display, type, screen, workspace,
-                             tab_list, skip);
-
   g_list_free (tab_list);
+  return ret;
 }
 
 MetaWindow*
@@ -4845,9 +4843,6 @@ timestamp_too_old (MetaDisplay *display,
    * a future time (though we would want to rename to 
    * timestamp_too_old_or_in_future).
    */
-
-  MetaWindow *focus_window;
-  focus_window = display->focus_window;
 
   if (*timestamp == CurrentTime)
     {

@@ -1583,36 +1583,30 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_BUTTON_LAYOUT:
       return "BUTTON_LAYOUT";
-      break;
 
     case META_PREF_WORKSPACE_NAMES:
       return "WORKSPACE_NAMES";
-      break;
 
     case META_PREF_VISUAL_BELL:
       return "VISUAL_BELL";
-      break;
 
     case META_PREF_AUDIBLE_BELL:
       return "AUDIBLE_BELL";
-      break;
 
     case META_PREF_VISUAL_BELL_TYPE:
       return "VISUAL_BELL_TYPE";
-      break;
 
     case META_PREF_REDUCED_RESOURCES:
       return "REDUCED_RESOURCES";
-      break;
+
     case META_PREF_GNOME_ACCESSIBILITY:
       return "GNOME_ACCESSIBILTY";
-      break;
+
     case META_PREF_CURSOR_THEME:
       return "CURSOR_THEME";
-      break;
+
     case META_PREF_CURSOR_SIZE:
       return "CURSOR_SIZE";
-      break;
     }
 
   return "(unknown)";

@@ -1,5 +1,39 @@
 2006-01-20  Elijah Newren  <newren gmail com>
 
+	* src/async-getprop.c:
+	* src/common.h:
+	* src/display.c:
+	* src/eggaccelerators.c:
+	* src/frames.c:
+	* src/gradient.c:
+	* src/iconcache.c:
+	* src/keybindings.c:
+	* src/metaaccellabel.c:
+	* src/place.c:
+	* src/prefs.c:
+	* src/preview-widget.c:
+	* src/screen.c:
+	* src/session.c:
+	* src/stack.c:
+	* src/tabpopup.c:
+	* src/theme-viewer.c:
+	* src/theme.c:
+	* src/window-props.c:
+	* src/window.c:
+	* src/workspace.c:
+	* src/tools/metacity-window-demo.c:
+	* src/wm-tester/test-gravity.c:
+	* src/wm-tester/test-resizing.c:
+	* src/wm-tester/test-size-hints.c:
+	Patch from Kjartan Maraas to fix a lot of tiny issues (unused
+	variable removal, making unused variables used again, correction
+	of types passed/declared for printf arguments, removal of unneeded
+	breaks and returns, dead code removal, dead code revival, renaming
+	to prevent shadowed variables, declaring unexported functions as
+	static) spotted by the intel compiler.  #321439
+
+2006-01-20  Elijah Newren  <newren gmail com>
+
 	Patch from Björn Lindqvist to fix #98340.
 
 	* src/screen.c (meta_screen_ensure_tab_popup): Make sure an

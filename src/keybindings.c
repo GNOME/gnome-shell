@@ -1684,7 +1684,7 @@ meta_display_process_key_event (MetaDisplay *display,
   if (!handled)
     {
       meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Ending grab op %d on key event sym %s\n",
+                  "Ending grab op %u on key event sym %s\n",
                   display->grab_op, XKeysymToString (keysym));
       meta_display_end_grab_op (display, event->xkey.time);
     }
@@ -2912,7 +2912,7 @@ do_choose_window (MetaDisplay    *display,
   type = GPOINTER_TO_INT (binding->handler->data);
   
   meta_topic (META_DEBUG_KEYBINDINGS,
-              "Tab list = %d show_popup = %d\n", type, show_popup);
+              "Tab list = %u show_popup = %d\n", type, show_popup);
   
   /* reverse direction if shift is down */
   if (event->xkey.state & ShiftMask)

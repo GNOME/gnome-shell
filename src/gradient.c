@@ -401,8 +401,6 @@ meta_gradient_create_diagonal (int width, int height,
   int j;
   float a, offset;
   unsigned char *ptr;
-  int r0, g0, b0;
-  int rf, gf, bf;
   unsigned char *pixels;
   int rowstride;
   
@@ -425,13 +423,6 @@ meta_gradient_create_diagonal (int width, int height,
       return NULL;
     }
 
-  r0 = (guchar) (from->red / 256.0);
-  g0 = (guchar) (from->green / 256.0);
-  b0 = (guchar) (from->blue / 256.0);
-  rf = (guchar) (to->red / 256.0);
-  gf = (guchar) (to->green / 256.0);
-  bf = (guchar) (to->blue / 256.0);
-  
   ptr = gdk_pixbuf_get_pixels (tmp);
 
   a = ((float)(width - 1))/((float)(height - 1));

@@ -673,31 +673,22 @@ window_type_to_string (MetaWindowType type)
     {
     case META_WINDOW_NORMAL:
       return "normal";
-      break;
     case META_WINDOW_DESKTOP:
       return "desktop";
-      break;
     case META_WINDOW_DOCK:
       return "dock";
-      break;
     case META_WINDOW_DIALOG:
       return "dialog";
-      break;
     case META_WINDOW_MODAL_DIALOG:
       return "modal_dialog";
-      break;
     case META_WINDOW_TOOLBAR:
       return "toolbar";
-      break;
     case META_WINDOW_MENU:
       return "menu";
-      break;
     case META_WINDOW_SPLASHSCREEN:
       return "splashscreen";
-      break;
     case META_WINDOW_UTILITY:
       return "utility";
-      break;
     }
 
   return "";
@@ -1485,10 +1476,6 @@ text_handler           (GMarkupParseContext *context,
                         gpointer             user_data,
                         GError             **error)
 {
-  ParseData *pd;
-
-  pd = user_data;
-  
   /* Right now we don't have any elements where we care about their
    * content
    */
@@ -1617,8 +1604,6 @@ find_best_match (GSList     *infos,
     return matching_type;
   else
     return infos->data;
-  
-  return NULL;
 }
 
 const MetaWindowSessionInfo*

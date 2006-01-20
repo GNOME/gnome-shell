@@ -205,28 +205,28 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
       te->title = NULL;
       if (entries[i].title)
         {
-          gchar *tmp;
+          gchar *temp;
           if (entries[i].hidden)
             {
-              tmp = g_markup_printf_escaped ("[%s]", entries[i].title);
+              temp = g_markup_printf_escaped ("[%s]", entries[i].title);
             }
           else 
             {
-              tmp = g_markup_printf_escaped ("%s", entries[i].title);
+              temp = g_markup_printf_escaped ("%s", entries[i].title);
             }
           
           if (entries[i].demands_attention) 
             {
               gchar *escaped, *markup;
-              escaped = g_markup_escape_text (tmp, -1);
+              escaped = g_markup_escape_text (temp, -1);
               markup = g_strdup_printf ("<b>%s</b>", escaped);
               g_free (escaped);
-              g_free (tmp);
-              tmp = markup;
+              g_free (temp);
+              temp = markup;
             }
             
-          te->title = meta_g_utf8_strndup (tmp, max_chars_per_title);
-          g_free (tmp);
+          te->title = meta_g_utf8_strndup (temp, max_chars_per_title);
+          g_free (temp);
         }
       te->widget = NULL;
       te->icon = entries[i].icon;

@@ -128,7 +128,9 @@ main (int argc, char **argv)
           redraw_pending = FALSE;
         }
     }
-  
-  return 0;
+
+  /* This program has an infinite loop above so a return statement would
+   * just cause compiler warnings.
+   */
 }
 

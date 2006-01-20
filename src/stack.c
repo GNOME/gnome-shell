@@ -367,13 +367,13 @@ compute_layer (MetaWindow *window)
       if (group_max > window->layer)
         {
           meta_topic (META_DEBUG_STACK,
-                      "Promoting window %s from layer %d to %d due to group membership\n",
+                      "Promoting window %s from layer %u to %u due to group membership\n",
                       window->desc, window->layer, group_max);
           window->layer = group_max;
         }
     }
 
-  meta_topic (META_DEBUG_STACK, "Window %s on layer %d type = %d has_focus = %d\n",
+  meta_topic (META_DEBUG_STACK, "Window %s on layer %u type = %u has_focus = %d\n",
               window->desc, window->layer,
               window->type, window->has_focus);
 }
@@ -667,7 +667,7 @@ ensure_above (MetaWindow *above,
       above->layer < below->layer)
     {
       meta_topic (META_DEBUG_STACK,
-		  "Promoting window %s from layer %d to %d due to contraint\n",
+		  "Promoting window %s from layer %u to %u due to contraint\n",
 		  above->desc, above->layer, below->layer);
       above->layer = below->layer;
     }
@@ -887,7 +887,7 @@ meta_stack_ensure_sorted (MetaStack *stack)
           if (w->layer != old_layer)
             {
               meta_topic (META_DEBUG_STACK,
-                          "Window %s moved from layer %d to %d\n",
+                          "Window %s moved from layer %u to %u\n",
                           w->desc, old_layer, w->layer);
               
               stack->need_resort = TRUE;
@@ -939,7 +939,7 @@ raise_window_relative_to_managed_windows (MetaScreen *screen,
 
   Window ignored1, ignored2;
   Window *children;
-  int n_children;
+  unsigned int n_children;
   int i;
 
   /* Normally XQueryTree() means "must grab server" but here
@@ -1063,7 +1063,7 @@ meta_stack_sync_to_server (MetaStack *stack)
       else
         g_array_append_val (root_children_stacked, w->xwindow);
       
-      meta_topic (META_DEBUG_STACK, "%d:%d - %s ", w->layer, w->stack_position, w->desc);
+      meta_topic (META_DEBUG_STACK, "%u:%d - %s ", w->layer, w->stack_position, w->desc);
           
       tmp = tmp->next;
     }
@@ -1073,12 +1073,12 @@ meta_stack_sync_to_server (MetaStack *stack)
 
   /* All windows should be in some stacking order */
   if (stacked->len != stack->windows->len)
-    meta_bug ("%d windows stacked, %d windows exist in stack\n",
+    meta_bug ("%u windows stacked, %u windows exist in stack\n",
               stacked->len, stack->windows->len);
   
   /* Sync to server */
 
-  meta_topic (META_DEBUG_STACK, "Restacking %d windows\n",
+  meta_topic (META_DEBUG_STACK, "Restacking %u windows\n",
               root_children_stacked->len);
   
   meta_error_trap_push (stack->screen->display);

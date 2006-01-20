@@ -640,10 +640,6 @@ meta_frames_unmanage_window (MetaFrames *frames,
 static void
 meta_frames_realize (GtkWidget *widget)
 {
-  MetaFrames *frames;
-
-  frames = META_FRAMES (widget);
-  
   if (GTK_WIDGET_CLASS (parent_class)->realize)
     GTK_WIDGET_CLASS (parent_class)->realize (widget);
 }
@@ -651,10 +647,6 @@ meta_frames_realize (GtkWidget *widget)
 static void
 meta_frames_unrealize (GtkWidget *widget)
 {
-  MetaFrames *frames;
-
-  frames = META_FRAMES (widget);
-  
   if (GTK_WIDGET_CLASS (parent_class)->unrealize)
     GTK_WIDGET_CLASS (parent_class)->unrealize (widget);
 }
@@ -709,11 +701,8 @@ void
 meta_frames_reset_bg (MetaFrames *frames,
                       Window  xwindow)
 {
-  GtkWidget *widget;
   MetaUIFrame *frame;
   
-  widget = GTK_WIDGET (frames);
-
   frame = meta_frames_lookup_window (frames, xwindow);
 
   meta_frames_set_window_background (frames, frame);
@@ -736,11 +725,8 @@ meta_frames_unflicker_bg (MetaFrames *frames,
                           int         target_width,
                           int         target_height)
 {
-  GtkWidget *widget;
   MetaUIFrame *frame;
   
-  widget = GTK_WIDGET (frames);
-
   frame = meta_frames_lookup_window (frames, xwindow);
   g_return_if_fail (frame != NULL);
 
@@ -766,15 +752,12 @@ meta_frames_apply_shapes (MetaFrames *frames,
 {
 #ifdef HAVE_SHAPE
   /* Apply shapes as if window had new_window_width, new_window_height */
-  GtkWidget *widget;
   MetaUIFrame *frame;
   MetaFrameGeometry fgeom;
   XRectangle xrect;
   Region corners_xregion;
   Region window_xregion;
   
-  widget = GTK_WIDGET (frames);
-
   frame = meta_frames_lookup_window (frames, xwindow);
   g_return_if_fail (frame != NULL);
 
@@ -1036,11 +1019,8 @@ void
 meta_frames_queue_draw (MetaFrames *frames,
                         Window      xwindow)
 {
-  GtkWidget *widget;
   MetaUIFrame *frame;
   
-  widget = GTK_WIDGET (frames);
-
   frame = meta_frames_lookup_window (frames, xwindow);
 
   invalidate_whole_window (frames, frame);
@@ -1051,11 +1031,8 @@ meta_frames_set_title (MetaFrames *frames,
                        Window      xwindow,
                        const char *title)
 {
-  GtkWidget *widget;
   MetaUIFrame *frame;
   
-  widget = GTK_WIDGET (frames);
-
   frame = meta_frames_lookup_window (frames, xwindow);
 
   g_assert (frame);
@@ -1076,11 +1053,8 @@ void
 meta_frames_repaint_frame (MetaFrames *frames,
                            Window      xwindow)
 {
-  GtkWidget *widget;
   MetaUIFrame *frame;
   
-  widget = GTK_WIDGET (frames);
-
   frame = meta_frames_lookup_window (frames, xwindow);
 
   g_assert (frame);
@@ -1307,8 +1281,6 @@ meta_frames_button_press_event (GtkWidget      *widget,
           
         case META_ACTION_DOUBLE_CLICK_TITLEBAR_TOGGLE_MAXIMIZE:
           {
-            MetaFrameFlags flags;
-            
             flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
             
             if (flags & META_FRAME_ALLOWS_MAXIMIZE)
@@ -1628,7 +1600,7 @@ meta_frames_update_prelit_control (MetaFrames      *frames,
   MetaFrameControl old_control;
   MetaCursor cursor;
 
-  meta_verbose ("Updating prelit control from %d to %d\n",
+  meta_verbose ("Updating prelit control from %u to %u\n",
                 frame->prelit_control, control);
   
   cursor = META_CURSOR_DEFAULT;
