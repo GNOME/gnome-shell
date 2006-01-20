@@ -286,6 +286,7 @@ struct _MetaDisplay
 
 #ifdef HAVE_XKB
   int         xkb_base_event_type;
+  Time        last_bell_time;
 #endif
 #ifdef HAVE_XSYNC
   /* alarm monitoring client's _NET_WM_SYNC_REQUEST_COUNTER */
@@ -381,13 +382,13 @@ struct _MetaDisplay
  * the result.
  */
 #define XSERVER_TIME_IS_BEFORE_ASSUMING_REAL_TIMESTAMPS(time1, time2) \
-  ( (( time1 < time2 ) && ( time2 - time1 < ((guint32)-1)/2 )) ||     \
-    (( time1 > time2 ) && ( time1 - time2 > ((guint32)-1)/2 ))        \
+  ( (( (time1) < (time2) ) && ( (time2) - (time1) < ((guint32)-1)/2 )) ||     \
+    (( (time1) > (time2) ) && ( (time1) - (time2) > ((guint32)-1)/2 ))        \
   )
 #define XSERVER_TIME_IS_BEFORE(time1, time2)                          \
-  ( time1 == 0 ||                                                     \
+  ( (time1) == 0 ||                                                     \
     (XSERVER_TIME_IS_BEFORE_ASSUMING_REAL_TIMESTAMPS(time1, time2) && \
-     time2 != 0)                                                      \
+     (time2) != 0)                                                      \
   )
 
 gboolean      meta_display_open                (const char  *name);

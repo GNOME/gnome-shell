@@ -514,6 +514,8 @@ meta_display_open (const char *name)
   display->grab_resize_timeout_id = 0;
   display->grab_have_keyboard = FALSE;
   
+  display->last_bell_time = 0;
+
   display->grab_op = META_GRAB_OP_NONE;
   display->grab_wireframe_active = FALSE;
   display->grab_window = NULL;
@@ -2366,7 +2368,12 @@ event_callback (XEvent   *event,
 	  switch (xkb_ev->xkb_type)
 	    {
 	    case XkbBellNotify:
-	      meta_bell_notify (display, xkb_ev);
+              if (XSERVER_TIME_IS_BEFORE(display->last_bell_time,
+                                         xkb_ev->time - 1000))
+                {
+                  display->last_bell_time = xkb_ev->time;
+                  meta_bell_notify (display, xkb_ev);
+                }
 	      break;
 	    }
 	}

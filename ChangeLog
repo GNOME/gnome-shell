@@ -1,5 +1,18 @@
 2006-01-20  Elijah Newren  <newren gmail com>
 
+	Prevent rapidly repeated visual bells from hanging metacity.
+	Fixes #322032.
+
+	* src/display.h (struct MetaDisplay): add a last_bell_time field,
+	(XSERVER_TIME_IS_BEFORE_ASSUMING_REAL_TIMESTAMPS macro,
+	XERVER_TIME_IS_BEFORE macro): add parentheses around usage of
+	macro parameter
+
+	* src/display.c (meta_display_open): initialize last_bell_time,
+	(event_callback): don't allow more than one bell per second
+	
+2006-01-20  Elijah Newren  <newren gmail com>
+
 	* src/async-getprop.c:
 	* src/common.h:
 	* src/display.c:
