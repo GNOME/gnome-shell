@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2003, 2004 Red Hat, Inc.
+ * Copyright (C) 2003, 2004, 2005, 2006 Red Hat, Inc.
  * Copyright (C) 2003 Keith Packard
  * 
  * This program is free software; you can redistribute it and/or
@@ -209,7 +209,7 @@ handle_restacking (MetaCompositor *compositor,
   
   if (window_link == above_link)
     {
-      /* This can happen if the topmost window is raise above
+      /* This can happen if the topmost window is raised above
        * the GL window
        */
       return;
@@ -243,7 +243,8 @@ process_configure_notify (MetaCompositor  *compositor,
   screen = node_get_screen (compositor->meta_display->xdisplay, node);
   scr_info = screen->compositor_data;
   
-  above_window = ws_window_lookup (node->drawable->display, event->above);
+  above_window = ws_window_lookup (WS_RESOURCE (node->drawable)->display,
+				   event->above);
   
   if (above_window == scr_info->glw)
     {
@@ -277,6 +278,10 @@ process_map (MetaCompositor     *compositor,
 {
   CmDrawableNode *node;
   MetaScreen *screen;
+
+  /* FIXME: do we sometimes get mapnotifies for windows that are
+   * not (direct) children of the root?
+   */
   
   /* See if window was mapped as child of root */
   screen = meta_display_screen_for_root (compositor->meta_display,
@@ -589,7 +594,6 @@ update (gpointer data)
   ws_display_grab (ws_drawable_get_display ((WsDrawable *)gl_window));
 #endif
   
-  
   ws_window_gl_swap_buffers (gl_window);
   glFinish();
 
@@ -603,7 +607,7 @@ update (gpointer data)
 }
 
 static void
-do_repaint (CmDrawableNode *node, gpointer data)
+queue_repaint (CmDrawableNode *node, gpointer data)
 {
     MetaScreen *screen = data;
     ScreenInfo *scr_info = screen->compositor_data;
@@ -613,7 +617,11 @@ do_repaint (CmDrawableNode *node, gpointer data)
 #endif
     
     if (!scr_info->idle_id)
+    {
+	g_print ("paint\n");
+  
 	scr_info->idle_id = g_idle_add (update, screen);
+    }
 }
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
@@ -662,7 +670,7 @@ meta_compositor_add_window (MetaCompositor    *compositor,
     {
       node = cm_drawable_node_new (drawable);
 
-      cm_drawable_node_set_damage_func (node, do_repaint, screen);
+      cm_drawable_node_set_damage_func (node, queue_repaint, screen);
       
 #if 0
       drawable_node_set_deformation_func (node, wavy, NULL);
@@ -671,7 +679,7 @@ meta_compositor_add_window (MetaCompositor    *compositor,
   
   /* FIXME: we should probably just store xid's directly */
   g_hash_table_insert (compositor->window_hash,
-		       &(node->drawable->xid), node);
+		       &(WS_RESOURCE (node->drawable)->xid), node);
   
   /* assume cwindow is at the top of the stack as it was either just
    * created or just reparented to the root window
@@ -769,7 +777,8 @@ meta_compositor_unmanage_screen (MetaCompositor *compositor,
     {
       CmDrawableNode *node = scr_info->compositor_nodes->data;
       
-      meta_compositor_remove_window (compositor, node->drawable->xid);
+      meta_compositor_remove_window (compositor,
+				     WS_RESOURCE (node->drawable)->xid);
     }
   /* FIXME: free scr_info */
   
@@ -813,6 +822,7 @@ typedef struct
   
   double start_time;
   int idle_id;
+    int repaint_id;
 
   MetaMinimizeFinishedFunc finished_func;
   gpointer		   finished_data;
@@ -829,11 +839,13 @@ stop_minimize (gpointer data)
 {
   MiniInfo *info = data;
   
-  cm_drawable_node_set_deformation_func (info->node, NULL, NULL);
+  g_source_remove (info->repaint_id);
   
+  cm_drawable_node_set_deformation_func (info->node, NULL, NULL);
+
   if (info->finished_func)
     info->finished_func (info->finished_data);
-  
+
   g_free (info);
   
   return FALSE;
@@ -860,13 +872,23 @@ minimize_deformation (gdouble time,
   
   *out_x = interpolate (pos, in_x, info->target.x + info->target.width * ((in_x - info->start.x)  / info->start.width), 10 * in_y);
   *out_y = interpolate (pos, in_y, info->target.y + info->target.height * ((in_y - info->start.y)  / info->start.height), 1.0);
-  
+
   if (elapsed > MINIMIZE_TIME)
     {
       g_assert (info->node);
       if (!info->idle_id)
 	info->idle_id = g_idle_add (stop_minimize, info);
     }
+}
+
+static gboolean
+do_minimize_animation (gpointer data)
+{
+    MiniInfo *info = data;
+    
+    queue_repaint (info->node,
+		   node_get_screen (info->window->display->xdisplay,
+				    info->node));
 }
 
 static void
@@ -918,5 +940,8 @@ meta_compositor_minimize (MetaCompositor           *compositor,
   info->finished_data = data;
   
   cm_drawable_node_set_deformation_func (node, minimize_deformation, info);
+
+  info->repaint_id = g_idle_add (do_minimize_animation, info);
+  
 #endif
 }

@@ -1,3 +1,7 @@
+Fri Jan 20 16:42:25 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/compositor.c: Make minimize animation update again.
+
 Thu Jan 19 18:05:47 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/compositor.c (meta_compositor_manage_screen):
