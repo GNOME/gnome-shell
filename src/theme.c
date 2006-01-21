@@ -4533,12 +4533,20 @@ meta_theme_free (MetaTheme *theme)
   g_free (theme->author);
   g_free (theme->copyright);
 
-  g_hash_table_destroy (theme->integer_constants);
-  g_hash_table_destroy (theme->images_by_filename);
-  g_hash_table_destroy (theme->layouts_by_name);
-  g_hash_table_destroy (theme->draw_op_lists_by_name);
-  g_hash_table_destroy (theme->styles_by_name);
-  g_hash_table_destroy (theme->style_sets_by_name);
+  /* be more careful when destroying the theme hash tables,
+     since they are only constructed as needed, and may be NULL. */
+  if (theme->integer_constants)
+    g_hash_table_destroy (theme->integer_constants);
+  if (theme->images_by_filename)
+    g_hash_table_destroy (theme->images_by_filename);
+  if (theme->layouts_by_name)
+    g_hash_table_destroy (theme->layouts_by_name);
+  if (theme->draw_op_lists_by_name)  
+    g_hash_table_destroy (theme->draw_op_lists_by_name);
+  if (theme->styles_by_name)  
+    g_hash_table_destroy (theme->styles_by_name);
+  if (theme->style_sets_by_name)  
+    g_hash_table_destroy (theme->style_sets_by_name);
 
   i = 0;
   while (i < META_FRAME_TYPE_LAST)

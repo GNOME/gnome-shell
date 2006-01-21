@@ -1,5 +1,14 @@
 2006-01-21  Elijah Newren  <newren gmail com>
 
+	Patch from Christian Kirbach to prevent a critical warning crasher
+	when switching themes.  #327847.
+
+	* src/theme.c (meta_theme_free): since themes are only constructed
+	as needed and may be NULL, check for that before freeing theme
+	hash tables
+
+2006-01-21  Elijah Newren  <newren gmail com>
+
 	* src/common.h (enum MetaActionDoubleClickTitlebar):
 	* src/frames.c (meta_frames_button_press_event):
 	* src/prefs.c (action_double_click_titlebar_from_string):
