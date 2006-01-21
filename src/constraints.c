@@ -351,6 +351,12 @@ setup_constraint_info (ConstraintInfo      *info,
 
   info->resize_gravity = resize_gravity;
 
+  /* FIXME: fixed_directions might be more sane if we (a) made it
+   * depend on the grab_op type instead of current amount of movement
+   * (thus implying that it only has effect when user_action is true,
+   * and (b) ignored it for aspect ratio windows -- at least in those
+   * cases where both directions do actually change size.
+   */
   info->fixed_directions = 0;
   /* If x directions don't change but either y direction does */
   if ( orig->x == new->x && orig->x + orig->width  == new->x + new->width   &&
@@ -364,6 +370,14 @@ setup_constraint_info (ConstraintInfo      *info,
     {
       info->fixed_directions = FIXED_DIRECTION_Y;
     }
+  /* The point of fixed directions is just that "move to nearest valid
+   * position" is sometimes a poorer choice than "move to nearest
+   * valid position but only change this coordinate" for windows the
+   * user is explicitly moving.  This isn't ever true for things that
+   * aren't explicit user interaction, though, so just clear it out.
+   */
+  if (!info->is_user_action)
+    info->fixed_directions = 0;
 
   meta_window_get_work_area_current_xinerama (window, &info->work_area_xinerama);
 
