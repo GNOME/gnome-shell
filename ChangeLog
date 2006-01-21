@@ -1,5 +1,9 @@
 2006-01-20  Elijah Newren  <newren gmail com>
 
+	* NEWS:	2.13.34 release
+
+2006-01-20  Elijah Newren  <newren gmail com>
+
 	* src/constraints.c (setup_constraint_info): fixed_directions is
 	only meant for explicit user interactions; disable it for
 	everything else.  There are other bugs and improvements that could

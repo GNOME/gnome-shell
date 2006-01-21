@@ -1,3 +1,39 @@
+2.13.34
+==
+
+Thanks to Damien Carbery, Havoc Pennington, Søren Sandmann,
+Björn Lindqvist, Kjartan Maraas, Elijah Newren for improvements in
+this release.
+
+ - manually define HOST_NAME_MAX if not already defined to fix Solaris
+   compilation issue (Damien, Havoc) [#326745]
+ - compositor improvements: port to changes in libcm, do it again, fix
+   unrefing, make minimize animation update again (all done by Søren)
+ - make sure an outline border is shown even if a window decoration's
+   width is 0 (Björn) [#98340]
+ - correctly handle window alt-tab outlines in showing desktop mode
+   (Björn) [#98340]
+ - fix lots of tiny issues spotted by the intel compiler (Kjartan)
+   [#321439]
+ - prevent rapidly repeated visual bells from hanging metacity
+   (Elijah) [#322032]
+ - more careful error handling of values returned by GConf (Elijah)
+   [#326615]
+ - fix various initialization and default issues, especially for
+   running with --disable-gconf.  Make --disable-gconf actually work.
+   (Elijah) [#326661]
+ - fix some reading-from-free'd-data errors (Søren) [#327575]
+ - fix an unitialized value problem when in raise-on-click mode
+   (Søren) [#327572]
+ - avoid flashing original-sized window when closing a maximized
+   window (Elijah) [#317254]
+ - prevent windows from sometimes getting shoved and smashed by
+   sliding (and possibly auto-hiding) panels (Elijah) [#327822]
+
+Translations
+  Ilkka Tuohela (fi), Ignacio Casal Quinteiro (gl), Tino Meinen (nl),
+  Funda Wang (zh_CN)
+
 2.13.21
 ==
 
