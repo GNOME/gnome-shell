@@ -1,3 +1,13 @@
+2006-01-21  Elijah Newren  <newren gmail com>
+
+	* src/common.h (enum MetaActionDoubleClickTitlebar):
+	* src/frames.c (meta_frames_button_press_event):
+	* src/prefs.c (action_double_click_titlebar_from_string):
+	* src/metacity.schemas.in:
+	Patch from Dick Marinus to add a minimize
+	double-click-titlebar-action; slightly modified to also include a
+	none action.  #300210.
+	
 2006-01-20  Elijah Newren  <newren gmail.com>
 
 	* configure.in: post-release version bump to 2.13.55

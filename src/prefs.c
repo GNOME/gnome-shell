@@ -1477,6 +1477,10 @@ action_double_click_titlebar_from_string (const char *str)
     return META_ACTION_DOUBLE_CLICK_TITLEBAR_TOGGLE_SHADE;
   else if (strcmp (str, "toggle_maximize") == 0)
     return META_ACTION_DOUBLE_CLICK_TITLEBAR_TOGGLE_MAXIMIZE;
+  else if (strcmp (str, "minimize") == 0)
+    return META_ACTION_DOUBLE_CLICK_TITLEBAR_MINIMIZE;
+  else if (strcmp (str, "none") == 0)
+    return META_ACTION_DOUBLE_CLICK_TITLEBAR_NONE;
   else
     return META_ACTION_DOUBLE_CLICK_TITLEBAR_LAST;
 }
