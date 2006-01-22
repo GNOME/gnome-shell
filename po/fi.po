@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-21 21:45+0200\n"
-"PO-Revision-Date: 2006-01-21 21:45:0200\n"
+"POT-Creation-Date: 2006-01-22 09:29+0200\n"
+"PO-Revision-Date: 2006-01-22 09:32:0200\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -249,7 +249,7 @@ msgstr "Siirry _ylläolevaan työtilaan"
 msgid "Move to Workspace _Down"
 msgstr "Siirrä _alla olevaan työtilaan"
 
-#: ../src/menu.c:164 ../src/prefs.c:1969 ../src/prefs.c:2270
+#: ../src/menu.c:164 ../src/prefs.c:1973 ../src/prefs.c:2274
 #, c-format
 msgid "Workspace %d"
 msgstr "Työtila %d"
@@ -1918,12 +1918,15 @@ msgstr ""
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, and 'toggle_maximize' which will maximize/unmaximize the window."
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'minimize' which will minimize the window, and 'none' which will not do "
+"anything."
 msgstr ""
-"Tämä valinta määrittelee otsikkopalkin kaksoisnapsautuksen toiminnan. "
-"Nykyisiä kelvollisia valintoja ovat \"toggle_shade\", joka rullaa ikkunan "
-"tai avaa rullauksen, ja \"toggle_maximize\", joka suurentaa tai palauttaa "
-"ikkunan."
+"Tämä valinta määrittelee otsikkopalkin kaksoisnapsautuksen toiminnon. "
+"Tällä hetkellä mahdolliset toiminnot ovat \"toggle_shade\", joka rullaa "
+"ikkunan ylös tai avaa rullauksen, \"toggle_maximize\", joka suurentaa tai "
+"palauttaa ikkunan, \"minimize\", joka pienentää ikkunan tai \"none\" joka "
+"ei tee mitään."
 
 #: ../src/metacity.schemas.in.h:159
 msgid "Toggle always on top state"
@@ -1998,7 +2001,7 @@ msgid ""
 msgstr ""
 "Asetustietokannassa oleva \"%s\" ei ole kelvollinen hiiren muunnosnäppäin\n"
 
-#: ../src/prefs.c:1010 ../src/prefs.c:1496
+#: ../src/prefs.c:1010 ../src/prefs.c:1500
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-avain \"%s\" on asetettu arvoltaan vääräksi\n"
@@ -2034,17 +2037,17 @@ msgstr ""
 "Rikkinäisten sovellusten kiertotiet eivät ole käytössä. Jotkin sovellukset "
 "eivät välttämättä käyttäydy kunnolla.\n"
 
-#: ../src/prefs.c:1523
+#: ../src/prefs.c:1527
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d, joka on GConf-avaimessa %s, ei ole välillä 0 - %d\n"
 
-#: ../src/prefs.c:1660
+#: ../src/prefs.c:1664
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Virhe työtilojen määrän asettamisessa arvoon %d: %s\n"
 
-#: ../src/prefs.c:1996
+#: ../src/prefs.c:2000
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2053,7 +2056,7 @@ msgstr ""
 "\"%s\", joka on asetustietokannassa, ei ole kelvollinen näppäinsidonnan \"%s"
 "\" arvo\n"
 
-#: ../src/prefs.c:2351
+#: ../src/prefs.c:2355
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Virhe työtilan %d nimen asettamisessa nimeksi \"%s\": %s\n"
@@ -3131,13 +3134,13 @@ msgstr ""
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Teeman \"%s\" lataaminen epäonnistui: %s\n"
 
-#: ../src/theme.c:4589 ../src/theme.c:4596 ../src/theme.c:4603
-#: ../src/theme.c:4610 ../src/theme.c:4617
+#: ../src/theme.c:4597 ../src/theme.c:4604 ../src/theme.c:4611
+#: ../src/theme.c:4618 ../src/theme.c:4625
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "<%s> ei ole asetettu teemaa \"%s\" varten"
 
-#: ../src/theme.c:4627
+#: ../src/theme.c:4635
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3146,7 +3149,7 @@ msgstr ""
 "Ikkunatyypille \"%s\" ei ole asetettu kehystyyliä teemassa \"%s\". Lisää "
 "<window type=\"%s\" style_set=\"mikä lienee\"/>-elementti."
 
-#: ../src/theme.c:4649
+#: ../src/theme.c:4657
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3155,7 +3158,7 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"mikä lienee\"/> täytyy "
 "olla määritelty tätä teemaa varten"
 
-#: ../src/theme.c:5038 ../src/theme.c:5100
+#: ../src/theme.c:5046 ../src/theme.c:5108
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -3163,7 +3166,7 @@ msgstr ""
 "Käyttäjän määrittelemien vakioiden täytyy alkaa isolla kirjaimella; \"%s\" "
 "ei ala"
 
-#: ../src/theme.c:5046 ../src/theme.c:5108
+#: ../src/theme.c:5054 ../src/theme.c:5116
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Vakio \"%s\" on jo määritelty"
