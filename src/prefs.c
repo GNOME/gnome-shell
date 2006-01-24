@@ -434,11 +434,14 @@ meta_prefs_init (void)
   cleanup_error (&err);
   update_button_layout (str_val);
   g_free (str_val);
-  
-  if (get_bool (KEY_VISUAL_BELL,  &bool_val) ||
-      get_bool (KEY_AUDIBLE_BELL, &bool_val_2))
-    update_visual_bell (bool_val, bool_val_2);
 
+  bool_val = provide_visual_bell;
+  bool_val_2 = bell_is_audible;
+  gboolean update_visual = get_bool (KEY_VISUAL_BELL,  &bool_val);
+  gboolean update_audible = get_bool (KEY_AUDIBLE_BELL, &bool_val_2);
+  if (update_visual || update_audible)
+    update_visual_bell (bool_val, bool_val_2);
+      
   str_val = gconf_client_get_string (default_client, KEY_VISUAL_BELL_TYPE,
                                      &err);
   cleanup_error (&err);

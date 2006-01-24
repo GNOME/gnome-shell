@@ -1,3 +1,12 @@
+2006-01-23  Elijah Newren  <newren gmail com>
+
+	* src/display.c (meta_display_check_threshold_reached): change the
+	order of the ||'ed items in the if to avoid using an uninitialized
+	value
+
+	* src/prefs.c (meta_prefs_init): fix a couple uninitialized value
+	problems
+
 2006-01-21  Elijah Newren  <newren gmail com>
 
 	Patch from Christian Kirbach to prevent a critical warning crasher

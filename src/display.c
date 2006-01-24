@@ -3616,8 +3616,8 @@ meta_display_check_threshold_reached (MetaDisplay *display,
                                       int          y)
 {
   /* Don't bother doing the check again if we've already reached the threshold */
-  if (display->grab_threshold_movement_reached ||
-      meta_prefs_get_raise_on_click ())
+  if (meta_prefs_get_raise_on_click () ||
+      display->grab_threshold_movement_reached)
     return;
 
   if (ABS (display->grab_initial_x - x) >= 8 ||
