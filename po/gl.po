@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-21 01:04+0100\n"
-"PO-Revision-Date: 2006-01-21 01:06+0100\n"
+"POT-Creation-Date: 2006-01-24 21:16+0100\n"
+"PO-Revision-Date: 2006-01-24 21:17+0100\n"
 "Last-Translator: Ignacio Casal Quinteiro <nacho.resa@gmail.com>\n"
 "Language-Team: Galego\n"
 "MIME-Version: 1.0\n"
@@ -251,7 +251,7 @@ msgstr "Mover ao escritorio de _arriba"
 msgid "Move to Workspace _Down"
 msgstr "Mover ao escritorio de abai_xo"
 
-#: ../src/menu.c:164 ../src/prefs.c:1969 ../src/prefs.c:2270
+#: ../src/menu.c:164 ../src/prefs.c:1976 ../src/prefs.c:2277
 #, c-format
 msgid "Workspace %d"
 msgstr "Escritorio de traballo %d"
@@ -1992,11 +1992,14 @@ msgstr ""
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, and 'toggle_maximize' which will maximize/unmaximize the window."
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'minimize' which will minimize the window, and 'none' which will not do "
+"anything."
 msgstr ""
 "Esta opción determina os efectos do dobre click na barra de títulos. As "
 "opcións válidas actualmente son 'toggle_shade', que enrola/desenrola a "
-"fiestra, e 'toggle_maximize' que maximiza ou minimiza a fiestra."
+"fiestra, 'toggle_maximize' que maximiza ou minimiza a fiestra, 'minimize' "
+"que minimiza a fiestra, e 'none' que non fai nada."
 
 #: ../src/metacity.schemas.in.h:159
 msgid "Toggle always on top state"
@@ -2052,18 +2055,18 @@ msgstr "Modo de foco da fiestra"
 msgid "Window title font"
 msgstr "Fonte do título da fiestra"
 
-#: ../src/prefs.c:555 ../src/prefs.c:571 ../src/prefs.c:587 ../src/prefs.c:603
-#: ../src/prefs.c:619 ../src/prefs.c:635 ../src/prefs.c:655 ../src/prefs.c:671
-#: ../src/prefs.c:687 ../src/prefs.c:703 ../src/prefs.c:719 ../src/prefs.c:735
-#: ../src/prefs.c:751 ../src/prefs.c:767 ../src/prefs.c:784 ../src/prefs.c:800
-#: ../src/prefs.c:816 ../src/prefs.c:832 ../src/prefs.c:848 ../src/prefs.c:863
-#: ../src/prefs.c:878 ../src/prefs.c:893 ../src/prefs.c:909 ../src/prefs.c:925
-#: ../src/prefs.c:941
+#: ../src/prefs.c:558 ../src/prefs.c:574 ../src/prefs.c:590 ../src/prefs.c:606
+#: ../src/prefs.c:622 ../src/prefs.c:638 ../src/prefs.c:658 ../src/prefs.c:674
+#: ../src/prefs.c:690 ../src/prefs.c:706 ../src/prefs.c:722 ../src/prefs.c:738
+#: ../src/prefs.c:754 ../src/prefs.c:770 ../src/prefs.c:787 ../src/prefs.c:803
+#: ../src/prefs.c:819 ../src/prefs.c:835 ../src/prefs.c:851 ../src/prefs.c:866
+#: ../src/prefs.c:881 ../src/prefs.c:896 ../src/prefs.c:912 ../src/prefs.c:928
+#: ../src/prefs.c:944
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "A clave GConf \"%s\" está configurada cun tipo inválido\n"
 
-#: ../src/prefs.c:986
+#: ../src/prefs.c:989
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2072,24 +2075,26 @@ msgstr ""
 "\"%s\" atopado na base de datos de configuración non é un valor válido para "
 "o modificador do botón do rato\n"
 
-#: ../src/prefs.c:1010 ../src/prefs.c:1496
+#: ../src/prefs.c:1013 ../src/prefs.c:1503
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "A clave GConf '%s' está configurada cun valor inválido\n"
 
-#: ../src/prefs.c:1133
+#: ../src/prefs.c:1136
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
 "range 1..128\n"
-msgstr "%d almacenado na clave GConf %s non é un _tamaño de cursor razoable, debe estar no rango entre 1..128\n"
+msgstr ""
+"%d almacenado na clave GConf %s non é un _tamaño de cursor razoable, debe "
+"estar no rango entre 1..128\n"
 
-#: ../src/prefs.c:1213
+#: ../src/prefs.c:1216
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Non se puido analizar a descripción da fonte \"%s\" da clave GConf %s\n"
 
-#: ../src/prefs.c:1398
+#: ../src/prefs.c:1401
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2098,7 +2103,7 @@ msgstr ""
 "%d almacenado na clave GConf %s non é un número razoable de espacios de "
 "traballo. O máximo despoñible é de %d\n"
 
-#: ../src/prefs.c:1458
+#: ../src/prefs.c:1461
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2106,17 +2111,17 @@ msgstr ""
 "Os arreglos para aplicacións rotas desabilitáronse. Algunhas aplicacións "
 "poderán non comportarse correctamente.\n"
 
-#: ../src/prefs.c:1523
+#: ../src/prefs.c:1530
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d almacenado na clave GConf %s está fora de rango 0 ata %d\n"
 
-#: ../src/prefs.c:1660
+#: ../src/prefs.c:1667
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Erro establecendo o número de espacios de traballo a %d: %s\n"
 
-#: ../src/prefs.c:1996
+#: ../src/prefs.c:2003
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2125,7 +2130,7 @@ msgstr ""
 "\"%s\" atopado na base de datos de configuración no é un valor válido para a "
 "combinación de teclas \"%s\"\n"
 
-#: ../src/prefs.c:2351
+#: ../src/prefs.c:2358
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Erro ao establecer o nome do escritorio de traballo %d como \"%s\": %s\n"
@@ -3197,13 +3202,13 @@ msgstr "Falta <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Fallo ao cargar o tema \"%s\": %s\n"
 
-#: ../src/theme.c:4589 ../src/theme.c:4596 ../src/theme.c:4603
-#: ../src/theme.c:4610 ../src/theme.c:4617
+#: ../src/theme.c:4597 ../src/theme.c:4604 ../src/theme.c:4611
+#: ../src/theme.c:4618 ../src/theme.c:4625
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Non se configurou <%s> para o tema \"%s\""
 
-#: ../src/theme.c:4627
+#: ../src/theme.c:4635
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3212,7 +3217,7 @@ msgstr ""
 "Non hai un estilo de marco para o tipo de fiestra \"%s\" no tema \"%s\", "
 "engada un elemento <window type=\"%s\" style_set=\"whatever\"/>"
 
-#: ../src/theme.c:4649
+#: ../src/theme.c:4657
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3221,14 +3226,14 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> debe ser "
 "especificado para este tema"
 
-#: ../src/theme.c:5038 ../src/theme.c:5100
+#: ../src/theme.c:5046 ../src/theme.c:5108
 #, c-format
 msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "As constante definidas polo usuario deben comezar cunha letra maiúscula; \"%s"
 "\" non o fai"
 
-#: ../src/theme.c:5046 ../src/theme.c:5108
+#: ../src/theme.c:5054 ../src/theme.c:5116
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "A constante \"%s\" xa foi definida"
