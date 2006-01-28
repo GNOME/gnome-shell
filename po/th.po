@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-11 21:37+0700\n"
-"PO-Revision-Date: 2006-01-11 21:53+0700\n"
+"POT-Creation-Date: 2006-01-28 17:45+0700\n"
+"PO-Revision-Date: 2006-01-28 17:53+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <L10n@opentle.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +25,7 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr "วิธีใช้: %s\n"
 
-#: ../src/tools/metacity-message.c:176 ../src/util.c:130
+#: ../src/tools/metacity-message.c:176 ../src/util.c:131
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity ถูกคอมไพล์โดยไม่ได้เลือกรองรับโหมด verbose\n"
 
@@ -67,7 +67,7 @@ msgstr "ไม่สามารถอ่านชื่อโฮสต์: %s\n
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "ไม่สามารถเปิดดิสเพลย์ '%s' ของระบบ X Window\n"
 
-#: ../src/errors.c:231
+#: ../src/errors.c:233
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -77,28 +77,28 @@ msgstr ""
 "ขาดการติดต่อจากดิสเพลย์ '%s';\n"
 "X เซิร์ฟเวอร์อาจจะถูกปิด หรือคุณอาจฆ่าโปรแกรมจัดการหน้าต่างไป\n"
 
-#: ../src/errors.c:238
+#: ../src/errors.c:240
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "เกิดข้อผิดพลาดร้ายแรง %d (%s) ในการอ่านเขียนข้อมูลจากดิสเพลย์'%s'\n"
 
-#: ../src/frames.c:1123
+#: ../src/frames.c:1097
 msgid "Close Window"
 msgstr "ปิดหน้าต่าง"
 
-#: ../src/frames.c:1126
+#: ../src/frames.c:1100
 msgid "Window Menu"
 msgstr "เมนูหน้าต่าง"
 
-#: ../src/frames.c:1129
+#: ../src/frames.c:1103
 msgid "Minimize Window"
 msgstr "ย่อหน้าต่างหาย"
 
-#: ../src/frames.c:1132
+#: ../src/frames.c:1106
 msgid "Maximize Window"
 msgstr "ขยายหน้าต่างเต็ม"
 
-#: ../src/frames.c:1135
+#: ../src/frames.c:1109
 msgid "Unmaximize Window"
 msgstr "เลิกขยายหน้าต่างเต็ม"
 
@@ -109,17 +109,17 @@ msgid ""
 "binding\n"
 msgstr "โปรแกรมอื่นกำลังใช้ปุ่ม %s ร่วมกับปุ่ม %x เป็นปุ่มลัดอยู่แล้ว\n"
 
-#: ../src/keybindings.c:2498
+#: ../src/keybindings.c:2504
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "ไม่สามารถเปิดกล่องโต้ตอบ เพื่อแสดงข้อผิดพลาดของคำสั่ง: %s\n"
 
-#: ../src/keybindings.c:2603
+#: ../src/keybindings.c:2609
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "คำสั่ง %d ยังไม่ได้ถูกกำหนด\n"
 
-#: ../src/keybindings.c:3472
+#: ../src/keybindings.c:3471
 msgid "No terminal command has been defined.\n"
 msgstr "คำสั่งเปิดเทอร์มินัลยังไม่ได้ถูกกำหนด\n"
 
@@ -245,7 +245,7 @@ msgstr "ย้ายไปพื้นที่ทำงาน_บน"
 msgid "Move to Workspace _Down"
 msgstr "ย้ายไปพื้นที่ทำงาน_ล่าง"
 
-#: ../src/menu.c:164 ../src/prefs.c:2161
+#: ../src/menu.c:164 ../src/prefs.c:1976 ../src/prefs.c:2277
 #, c-format
 msgid "Workspace %d"
 msgstr "พื้นที่ทำงาน %d"
@@ -268,7 +268,7 @@ msgstr "ย้ายไป_พื้นที่ทำงานอื่น"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:105
+#: ../src/metaaccellabel.c:103
 msgid "Shift"
 msgstr "Shift"
 
@@ -277,7 +277,7 @@ msgstr "Shift"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:111
+#: ../src/metaaccellabel.c:109
 msgid "Ctrl"
 msgstr "Ctrl"
 
@@ -286,7 +286,7 @@ msgstr "Ctrl"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:117
+#: ../src/metaaccellabel.c:115
 msgid "Alt"
 msgstr "Alt"
 
@@ -295,7 +295,7 @@ msgstr "Alt"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:123
+#: ../src/metaaccellabel.c:121
 msgid "Meta"
 msgstr "Meta"
 
@@ -304,7 +304,7 @@ msgstr "Meta"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:129
+#: ../src/metaaccellabel.c:127
 msgid "Super"
 msgstr "Super"
 
@@ -313,7 +313,7 @@ msgstr "Super"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:135
+#: ../src/metaaccellabel.c:133
 msgid "Hyper"
 msgstr "Hyper"
 
@@ -322,7 +322,7 @@ msgstr "Hyper"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:141
+#: ../src/metaaccellabel.c:139
 msgid "Mod2"
 msgstr "Mod2"
 
@@ -331,7 +331,7 @@ msgstr "Mod2"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:147
+#: ../src/metaaccellabel.c:145
 msgid "Mod3"
 msgstr "Mod3"
 
@@ -340,7 +340,7 @@ msgstr "Mod3"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:153
+#: ../src/metaaccellabel.c:151
 msgid "Mod4"
 msgstr "Mod4"
 
@@ -349,7 +349,7 @@ msgstr "Mod4"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:159
+#: ../src/metaaccellabel.c:157
 msgid "Mod5"
 msgstr "Mod5"
 
@@ -1823,11 +1823,14 @@ msgstr ""
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, and 'toggle_maximize' which will maximize/unmaximize the window."
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'minimize' which will minimize the window, and 'none' which will not do "
+"anything."
 msgstr ""
 "ตัวเลือกนี้เลือกการปฏิบัติเมื่อดับเบิลคลิกที่แถบหัวหน้าต่าง ค่าตัวเลือกที่เป็นไปได้ในขณะนี้คือ "
-"'toggle_shade' ซึ่งจะม้วนหรือคลี่หน้าต่าง และ 'toggle_maximize' "
-"ซึ่งจะขยายหรือยกเลิกการขยายหน้าต่างให้เต็มพื้นโต๊ะ"
+"'toggle_shade' ซึ่งจะม้วนหรือคลี่หน้าต่าง, 'toggle_maximize' "
+"ซึ่งจะขยายหรือยกเลิกการขยายหน้าต่างให้เต็มพื้นโต๊ะ, 'minimize' ซึ่งจะย่อหน้าต่างหาย "
+"และ 'none' ซึ่งจะไม่ทำอะไรเลย"
 
 #: ../src/metacity.schemas.in.h:159
 msgid "Toggle always on top state"
@@ -1882,42 +1885,50 @@ msgstr "โหมดโฟกัสหน้าต่าง"
 msgid "Window title font"
 msgstr "แบบอักษรหัวหน้าต่าง"
 
-#: ../src/prefs.c:537 ../src/prefs.c:553 ../src/prefs.c:569 ../src/prefs.c:585
-#: ../src/prefs.c:601 ../src/prefs.c:617 ../src/prefs.c:637 ../src/prefs.c:653
-#: ../src/prefs.c:669 ../src/prefs.c:685 ../src/prefs.c:701 ../src/prefs.c:717
-#: ../src/prefs.c:733 ../src/prefs.c:749 ../src/prefs.c:766 ../src/prefs.c:782
-#: ../src/prefs.c:798 ../src/prefs.c:814 ../src/prefs.c:830 ../src/prefs.c:845
-#: ../src/prefs.c:860 ../src/prefs.c:875 ../src/prefs.c:891 ../src/prefs.c:907
-#: ../src/prefs.c:923
+#: ../src/prefs.c:558 ../src/prefs.c:574 ../src/prefs.c:590 ../src/prefs.c:606
+#: ../src/prefs.c:622 ../src/prefs.c:638 ../src/prefs.c:658 ../src/prefs.c:674
+#: ../src/prefs.c:690 ../src/prefs.c:706 ../src/prefs.c:722 ../src/prefs.c:738
+#: ../src/prefs.c:754 ../src/prefs.c:770 ../src/prefs.c:787 ../src/prefs.c:803
+#: ../src/prefs.c:819 ../src/prefs.c:835 ../src/prefs.c:851 ../src/prefs.c:866
+#: ../src/prefs.c:881 ../src/prefs.c:896 ../src/prefs.c:912 ../src/prefs.c:928
+#: ../src/prefs.c:944
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf คีย์ \"%s\" ถูกตั้งค่าเป็นชนิดที่ใช้ไม่ได้\n"
 
-#: ../src/prefs.c:968
+#: ../src/prefs.c:989
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr "\"%s\" ที่พบในฐานข้อมูลข้อปรับแต่ง ใช้เป็นปุ่มใช้ร่วมสำหรับเมาส์ไม่ได้\n"
 
-#: ../src/prefs.c:992 ../src/prefs.c:1474
+#: ../src/prefs.c:1013 ../src/prefs.c:1503
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf คีย์ '%s' ถูกตั้งค่าเป็นค่าที่ใช้ไม่ได้\n"
 
-#: ../src/prefs.c:1191
+#: ../src/prefs.c:1136
+#, c-format
+msgid ""
+"%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
+"range 1..128\n"
+msgstr ""
+"%d ใน GConf คีย์ %s ไม่ใช่ขนาดเคอร์เซอร์ที่สมเหตุสมผล ค่าดังกล่าวควรอยู่ในช่วง 1..128\n"
+
+#: ../src/prefs.c:1216
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "ไม่เข้าใจคำบรรยายแบบตัวอักษร \"%s\" จาก GConf คีย์ %s\n"
 
-#: ../src/prefs.c:1376
+#: ../src/prefs.c:1401
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
-msgstr "%d ใน GConf คีย์ %s ไม่ใช่จำนวนพื้นที่ทำงาน ที่สมเหตุสมผล สามารถตั้งได้มากสุดเป็น %d\n"
+msgstr "%d ใน GConf คีย์ %s ไม่ใช่จำนวนพื้นที่ทำงานที่สมเหตุสมผล สามารถตั้งได้มากสุดเป็น %d\n"
 
-#: ../src/prefs.c:1436
+#: ../src/prefs.c:1461
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1925,24 +1936,24 @@ msgstr ""
 "ปิดการแก้ขัดที่เตรียมไว้สำหรับโปรแกรมเสียๆ บางโปรแกรมแล้ว "
 "ซึ่งอาจทำให้โปรแกรมเหล่านี้ทำงานไม่ปกติ\n"
 
-#: ../src/prefs.c:1501
+#: ../src/prefs.c:1530
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d ใน GConf คีย์ %s ต้องอยู่ระหว่าง 0 และ %d\n"
 
-#: ../src/prefs.c:1644
+#: ../src/prefs.c:1667
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "ไม่สามารถตั้งจำนวนพื้นที่ทำงานเป็น %d: %s\n"
 
-#: ../src/prefs.c:1888
+#: ../src/prefs.c:2003
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "\"%s\" ที่พบในฐานข้อมูลค่าปรับแต่ง ไม่สามารถใช้เป็นปุ่มลัด \"%s\"\n"
 
-#: ../src/prefs.c:2242
+#: ../src/prefs.c:2358
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "ไม่สามารถตั้งชื่อพื้นที่ทำงาน %d เป็น %s: %s\n"
@@ -1977,75 +1988,75 @@ msgstr "ไม่สามารถอ่านค่าโปรแกรมจ
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "สกรีน %d บนดิสเพลย์ \"%s\" มีโปรแกรมจัดการหน้าต่างอยู่แล้ว\n"
 
-#: ../src/screen.c:710
+#: ../src/screen.c:702
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "ไม่สามารถปล่อยการควบคุมสกรีน %d บนดิสเพลย์ \"%s\"\n"
 
-#: ../src/session.c:844 ../src/session.c:851
+#: ../src/session.c:835 ../src/session.c:842
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "ไม่สามารถสร้างโฟลเดอร์ '%s': %s\n"
 
-#: ../src/session.c:861
+#: ../src/session.c:852
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "ไม่สามารถเปิดแฟ้มวาระ '%s' สำหรับเขียน: %s\n"
 
-#: ../src/session.c:1013
+#: ../src/session.c:1004
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "ไม่สามารถเขียนลงแฟ้มวาระ '%s': %s\n"
 
-#: ../src/session.c:1018
+#: ../src/session.c:1009
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "ไม่สามารถปิดแฟ้มวาระ '%s': %s\n"
 
-#: ../src/session.c:1093
+#: ../src/session.c:1084
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "ไม่สามารถอ่านแฟ้มวาระที่บันทึกไว้ %s: %s\n"
 
-#: ../src/session.c:1128
+#: ../src/session.c:1119
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "ไม่เข้าใจแฟ้มวาระที่บันทึกไว้: %s\n"
 
-#: ../src/session.c:1177
+#: ../src/session.c:1168
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "พบแอตทริบิวต์ <metacity_session> แต่ว่ามี ID วาระอยู่แล้ว"
 
-#: ../src/session.c:1190
+#: ../src/session.c:1181
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "ไม่รู้จักแอตทริบิวต์ %s ในอีลิเมนต์ <metacity_session>"
 
-#: ../src/session.c:1207
+#: ../src/session.c:1198
 msgid "nested <window> tag"
 msgstr "มีแท็ก <window> ซ้อนด้านใน"
 
-#: ../src/session.c:1265 ../src/session.c:1297
+#: ../src/session.c:1256 ../src/session.c:1288
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "ไม่รู้จักแอตทริบิวต์ %s ในอีลิเมนต์ <window>"
 
-#: ../src/session.c:1369
+#: ../src/session.c:1360
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "ไม่รู้จักแอตทริบิวต์ %s ในอีลิเมนต์ <maximized>"
 
-#: ../src/session.c:1429
+#: ../src/session.c:1420
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "ไม่รู้จักแอตทริบิวต์ %s ในอีลิเมนต์ <geometry>"
 
-#: ../src/session.c:1449
+#: ../src/session.c:1440
 #, c-format
 msgid "Unknown element %s"
 msgstr "ไม่รู้จักอีลิเมนต์ %s"
 
-#: ../src/session.c:1921
+#: ../src/session.c:1906
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2582,156 +2593,156 @@ msgstr "ไม่สามารถอ่านชุดตกแต่งจา
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "แฟ้มชุดตกแต่ง %s ไม่มีอีลิเมนต์ราก <metacity_theme>"
 
-#: ../src/theme-viewer.c:70
+#: ../src/theme-viewer.c:72
 msgid "/_Windows"
 msgstr "_หน้าต่าง"
 
-#: ../src/theme-viewer.c:71
+#: ../src/theme-viewer.c:73
 msgid "/Windows/tearoff"
 msgstr "/หน้าต่าง/ฉีกออก"
 
-#: ../src/theme-viewer.c:72
+#: ../src/theme-viewer.c:74
 msgid "/Windows/_Dialog"
 msgstr "/หน้าต่าง/โ_ต้ตอบ"
 
-#: ../src/theme-viewer.c:73
+#: ../src/theme-viewer.c:75
 msgid "/Windows/_Modal dialog"
 msgstr "/หน้าต่าง/โต้ตอบแบบโ_มดอล"
 
-#: ../src/theme-viewer.c:74
+#: ../src/theme-viewer.c:76
 msgid "/Windows/_Utility"
 msgstr "/หน้าต่าง/_อรรถประโยชน์"
 
-#: ../src/theme-viewer.c:75
+#: ../src/theme-viewer.c:77
 msgid "/Windows/_Splashscreen"
 msgstr "/หน้าต่าง/_ภาพเริ่มโปรแกรม"
 
-#: ../src/theme-viewer.c:76
+#: ../src/theme-viewer.c:78
 msgid "/Windows/_Top dock"
 msgstr "/หน้าต่าง/ท่าเทียบ_บน"
 
-#: ../src/theme-viewer.c:77
+#: ../src/theme-viewer.c:79
 msgid "/Windows/_Bottom dock"
 msgstr "/หน้าต่าง/ท่าเทียบ_ล่าง"
 
-#: ../src/theme-viewer.c:78
+#: ../src/theme-viewer.c:80
 msgid "/Windows/_Left dock"
 msgstr "/หน้าต่าง/ท่าเทียบซ้_าย"
 
-#: ../src/theme-viewer.c:79
+#: ../src/theme-viewer.c:81
 msgid "/Windows/_Right dock"
 msgstr "/หน้าต่าง/ท่าเทียบข_วา"
 
-#: ../src/theme-viewer.c:80
+#: ../src/theme-viewer.c:82
 msgid "/Windows/_All docks"
 msgstr "/หน้าต่าง/ท่าเทียบ_ทั้งหมด"
 
-#: ../src/theme-viewer.c:81
+#: ../src/theme-viewer.c:83
 msgid "/Windows/Des_ktop"
 msgstr "/หน้าต่าง/_พื้นโต๊ะ"
 
-#: ../src/theme-viewer.c:131
+#: ../src/theme-viewer.c:132
 msgid "Open another one of these windows"
 msgstr "เปิดหน้าต่างอย่างนี้อีกบาน"
 
-#: ../src/theme-viewer.c:138
+#: ../src/theme-viewer.c:139
 msgid "This is a demo button with an 'open' icon"
 msgstr "นี่เป็นปุ่มตัวอย่างพร้อมกับไอคอน 'เปิด'"
 
-#: ../src/theme-viewer.c:145
+#: ../src/theme-viewer.c:146
 msgid "This is a demo button with a 'quit' icon"
 msgstr "นี่เป็นปุ่มตัวอย่างพร้อมกับไอคอน 'ออก'"
 
-#: ../src/theme-viewer.c:241
+#: ../src/theme-viewer.c:239
 msgid "This is a sample message in a sample dialog"
 msgstr "นี่เป็นข้อความตัวอย่างในกล่องโต้ตอบตัวอย่าง"
 
-#: ../src/theme-viewer.c:324
+#: ../src/theme-viewer.c:322
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "รายการเมนูตัวอย่าง %d\n"
 
-#: ../src/theme-viewer.c:358
+#: ../src/theme-viewer.c:356
 msgid "Border-only window"
 msgstr "หน้าต่างที่มีแต่ขอบ"
 
-#: ../src/theme-viewer.c:360
+#: ../src/theme-viewer.c:358
 msgid "Bar"
 msgstr "แถบ"
 
-#: ../src/theme-viewer.c:377
+#: ../src/theme-viewer.c:375
 msgid "Normal Application Window"
 msgstr "หน้าต่างโปรแกรมปกติ"
 
-#: ../src/theme-viewer.c:382
+#: ../src/theme-viewer.c:379
 msgid "Dialog Box"
 msgstr "กล่องโต้ตอบ"
 
-#: ../src/theme-viewer.c:387
+#: ../src/theme-viewer.c:383
 msgid "Modal Dialog Box"
 msgstr "กล่องโต้ตอบแบบโมดัล"
 
-#: ../src/theme-viewer.c:392
+#: ../src/theme-viewer.c:387
 msgid "Utility Palette"
 msgstr "แผงอุปกรณ์"
 
-#: ../src/theme-viewer.c:397
+#: ../src/theme-viewer.c:391
 msgid "Torn-off Menu"
 msgstr "เมนูที่ฉีกออกมา"
 
-#: ../src/theme-viewer.c:402
+#: ../src/theme-viewer.c:395
 msgid "Border"
 msgstr "ขอบ"
 
-#: ../src/theme-viewer.c:731
+#: ../src/theme-viewer.c:723
 #, c-format
 msgid "Button layout test %d"
 msgstr "ทดสอบการเรียงปุ่มครั้งที่ %d"
 
-#: ../src/theme-viewer.c:760
+#: ../src/theme-viewer.c:752
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "ใช้เวลา %g มิลลิวินาทีในการวาดหนึ่งเฟรมหน้าต่าง"
 
-#: ../src/theme-viewer.c:803
+#: ../src/theme-viewer.c:795
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "วิธีใช้: metacity-theme-viewer [ชื่อชุดตกแต่ง]\n"
 
-#: ../src/theme-viewer.c:810
+#: ../src/theme-viewer.c:802
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "ไม่สามารถโหลดชุดตกแต่ง: %s\n"
 
-#: ../src/theme-viewer.c:816
+#: ../src/theme-viewer.c:808
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "อ่านชุดตกแต่ง \"%s\" เสร็จใน %g วินาที\n"
 
-#: ../src/theme-viewer.c:839
+#: ../src/theme-viewer.c:831
 msgid "Normal Title Font"
 msgstr "อักษรหัวหน้าต่างปกติ"
 
-#: ../src/theme-viewer.c:845
+#: ../src/theme-viewer.c:837
 msgid "Small Title Font"
 msgstr "อักษรหัวหน้าต่างเล็ก"
 
-#: ../src/theme-viewer.c:851
+#: ../src/theme-viewer.c:843
 msgid "Large Title Font"
 msgstr "อักษรหัวหน้าต่างใหญ่"
 
-#: ../src/theme-viewer.c:856
+#: ../src/theme-viewer.c:848
 msgid "Button Layouts"
 msgstr "การจัดเรียงปุ่ม"
 
-#: ../src/theme-viewer.c:861
+#: ../src/theme-viewer.c:853
 msgid "Benchmark"
 msgstr "ความเร็ว"
 
-#: ../src/theme-viewer.c:908
+#: ../src/theme-viewer.c:900
 msgid "Window Title Goes Here"
 msgstr "ชื่อหน้าต่างอยู่ตรงนี้"
 
-#: ../src/theme-viewer.c:1012
+#: ../src/theme-viewer.c:1004
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -2741,39 +2752,39 @@ msgstr ""
 "วาด %d เฟรม โดยใช้เวลาที่ไคลเอนท์ทั้งหมด %g วินาที (%g มิลลิวินาทีต่อเฟรม) และ %g "
 "วินาทีตามเวลานาฬิกาจริงซึ่งรวมการติดต่อกับ X เซิร์ฟเวอร์ด้วย (%g มิลลิวินาทีต่อเฟรม)\n"
 
-#: ../src/theme-viewer.c:1227
+#: ../src/theme-viewer.c:1219
 msgid "position expression test returned TRUE but set error"
 msgstr "การทดสอบนิพจน์ตำแหน่งให้ค่าจริง แต่มีรหัสข้อผิดพลาด"
 
-#: ../src/theme-viewer.c:1229
+#: ../src/theme-viewer.c:1221
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "การทดสอบนิพจน์ตำแหน่งให้ค่าเท็จ·แต่ไม่มีรหัสข้อผิดพลาด"
 
-#: ../src/theme-viewer.c:1233
+#: ../src/theme-viewer.c:1225
 msgid "Error was expected but none given"
 msgstr "คาดหวังว่าจะเจอข้อผิดพลาด แต่ก็ไม่มีข้อมูล"
 
-#: ../src/theme-viewer.c:1235
+#: ../src/theme-viewer.c:1227
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "คาดหวังว่าจะเจอข้อผิดพลาด %d แต่พบข้อผิดพลาด %d แทน"
 
-#: ../src/theme-viewer.c:1241
+#: ../src/theme-viewer.c:1233
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "ไม่ได้คาดหวังว่าจะเจอข้อผิดพลาด แต่กลับมี: %s"
 
-#: ../src/theme-viewer.c:1245
+#: ../src/theme-viewer.c:1237
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "ค่าของ x เป็น %d แต่ที่คาดหวังไว้น่าจะเป็น %d"
 
-#: ../src/theme-viewer.c:1248
+#: ../src/theme-viewer.c:1240
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "ค่าของ·y·เป็น·%d·แต่ที่คาดหวังไว้น่าจะเป็น·%d"
 
-#: ../src/theme-viewer.c:1310
+#: ../src/theme-viewer.c:1303
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "แจงค่านิพจน์พิกัดทั้งหมด %d นิพจน์ ในเวลา %g วินาที (%g วินาทีโดยเฉลี่ย)\n"
@@ -2813,11 +2824,11 @@ msgstr "ค่า aspect ratio %g ของปุ่มไม่สมเหต�
 msgid "Frame geometry does not specify size of buttons"
 msgstr "ค่าเรขาคณิตของเฟรมไม่ได้ระบุขนาดของปุ่ม"
 
-#: ../src/theme.c:843
+#: ../src/theme.c:842
 msgid "Gradients should have at least two colors"
 msgstr "การไล่สีควรใช้อย่างน้อยสองสี"
 
-#: ../src/theme.c:969
+#: ../src/theme.c:968
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -2826,7 +2837,7 @@ msgstr ""
 "การกำหนดสี GTK ต้องเขียนสถานะในวงเล็บเหลี่ยม เช่น gtk:fg[NORMAL] เมื่อ NORMAL "
 "เป็นสถานะ; ไม่สามารถแจงค่า \"%s\""
 
-#: ../src/theme.c:983
+#: ../src/theme.c:982
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -2835,17 +2846,17 @@ msgstr ""
 "การกำหนดสี·GTK·ต้องมีวงเล็บเหลี่ยมปิดหลังสถานะด้วย·เช่น·gtk:fg[NORMAL]"
 "·เมื่อ·NORMAL·เป็นสถานะ;·ไม่สามารถแจงค่า·\"%s\""
 
-#: ../src/theme.c:994
+#: ../src/theme.c:993
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "ไม่เข้าใจสถานะ \"%s\" ในการระบุสี"
 
-#: ../src/theme.c:1007
+#: ../src/theme.c:1006
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "ไม่เข้าใจองค์ประกอบ \"%s\" ในการระบุสี"
 
-#: ../src/theme.c:1037
+#: ../src/theme.c:1036
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -2853,89 +2864,89 @@ msgid ""
 msgstr ""
 "รูปแบบการเกลี่ยสีคือ \"blend/bg_color/fg_color/alpha\", ค่า \"%s\" ไม่ตรงกับรูปแบบ"
 
-#: ../src/theme.c:1048
+#: ../src/theme.c:1047
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "ไม่สามารถแจงค่าอัลฟา \"%s\" ในการเกลี่ยสี"
 
-#: ../src/theme.c:1058
+#: ../src/theme.c:1057
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "ค่าอัลฟา \"%s\" ในการเกลี่ยสีไม่อยู่ระหว่าง 0.0 และ 1.0"
 
-#: ../src/theme.c:1105
+#: ../src/theme.c:1104
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "รูปแบบของเฉดสีคือ \"shade/base_color/factor \", \"%s\" ไม่ตรงกับรูปแบบ"
 
-#: ../src/theme.c:1116
+#: ../src/theme.c:1115
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "ไม่สามารถแจงค่าตัวคูณของเฉด \"%s\" ในเฉดสี"
 
-#: ../src/theme.c:1126
+#: ../src/theme.c:1125
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "ตัวคูณเฉดสี \"%s\" ในเฉดสีเป็นค่าลบ"
 
-#: ../src/theme.c:1155
+#: ../src/theme.c:1154
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "ไม่เข้าใจสี \"%s\""
 
-#: ../src/theme.c:1417
+#: ../src/theme.c:1416
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "นิพจน์พิกัดมีอักขระ'%s' ซึ่งไม่อนุญาตให้ใช้"
 
-#: ../src/theme.c:1444
+#: ../src/theme.c:1443
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "นิพจน์พิกัดมีเลขจุดทศนิยม '%s'·ที่แจงค่าไม่ได้"
 
-#: ../src/theme.c:1458
+#: ../src/theme.c:1457
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "นิพจน์พิกัดมีเลขจำนวนเต็ม·'%s' ที่แจงค่าไม่ได้"
 
-#: ../src/theme.c:1525
+#: ../src/theme.c:1524
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr "นิพจน์พิกัดมีเครื่องหมายดำเนินการที่ไม่รู้จัก เริ่มจากตำแหน่ง·\"%s\""
 
-#: ../src/theme.c:1582
+#: ../src/theme.c:1581
 msgid "Coordinate expression was empty or not understood"
 msgstr "นิพจน์พิกัดว่างเปล่าหรือไม่สามารถเข้าใจ"
 
-#: ../src/theme.c:1725 ../src/theme.c:1735 ../src/theme.c:1769
+#: ../src/theme.c:1724 ../src/theme.c:1734 ../src/theme.c:1768
 msgid "Coordinate expression results in division by zero"
 msgstr "นิพจน์พิกัดมีผลลัพธ์ที่เป็นการหารด้วยศูนย์"
 
-#: ../src/theme.c:1777
+#: ../src/theme.c:1776
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "นิพจน์พิกัดพยายามใช้ตัวดำเนินการ mod กับตัวเลขจุดทศนิยม"
 
-#: ../src/theme.c:1834
+#: ../src/theme.c:1832
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "นิพจน์พิกัดมีตัวดำเนินการ\"%s\" ในที่ที่ควรจะเป็นตัวถูกดำเนินการ"
 
-#: ../src/theme.c:1843
+#: ../src/theme.c:1841
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "นิพจน์พิกัดมีตัวถูกดำเนินการในที่ที่ควรจะเป็นตัวดำเนินการ"
 
-#: ../src/theme.c:1851
+#: ../src/theme.c:1849
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "นิพจน์พิกัดจบด้วยตัวดำเนินการแทนที่จะเป็นตัวถูกดำเนินการ"
 
-#: ../src/theme.c:1861
+#: ../src/theme.c:1859
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -2943,7 +2954,7 @@ msgid ""
 msgstr ""
 "นิพจน์พิกัดมีตัวดำเนินการ\"%c\" ตามหลังตัวดำเนินการ \"%c\" โดยไม่มีตัวถูกดำเนินการคั่นกลาง"
 
-#: ../src/theme.c:1980
+#: ../src/theme.c:1978
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
@@ -2951,29 +2962,29 @@ msgstr ""
 "ตัวแจงค่านิพจน์พิกัดทำข้อมูลล้น ความจริงแล้วนี่ถือเป็นบั๊กของ Metacity "
 "แต่คุณแน่ใจหรือว่าคุณต้องการนิพจน์ที่ใหญ่มหึมาเช่นนี้?"
 
-#: ../src/theme.c:2009
+#: ../src/theme.c:2007
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "นิพจน์พิกัดมีวงเล็บปิดโดยไม่มีวงเล็บเปิด"
 
-#: ../src/theme.c:2072
+#: ../src/theme.c:2069
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "นิพจน์พิกัดมีตัวแปรหรือค่าคงที่ \"%s\" ที่ไม่รู้จัก"
 
-#: ../src/theme.c:2129
+#: ../src/theme.c:2126
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "นิพจน์พิกัดมีวงเล็บเปิดโดยไม่มีวงเล็บปิด"
 
-#: ../src/theme.c:2140
+#: ../src/theme.c:2137
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "นิพจน์พิกัดท่าทางจะไม่มีตัวดำเนินการหรือตัวถูกดำเนินการเลย"
 
-#: ../src/theme.c:2384 ../src/theme.c:2406 ../src/theme.c:2427
+#: ../src/theme.c:2381 ../src/theme.c:2403 ../src/theme.c:2424
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "ชุดตกแต่งมีนิพจน์ \"%s\" ซึ่งทำให้เกิดข้อผิดพลาด: %s\n"
 
-#: ../src/theme.c:3913
+#: ../src/theme.c:3910
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2982,25 +2993,25 @@ msgstr ""
 "ต้องระบุ <button function =\"%s\" state=\"%s\" draw_ops=\"อะไรก็ตามแต่\"/> "
 "สำหรับรูปแบบเฟรมด้วย"
 
-#: ../src/theme.c:4363 ../src/theme.c:4395
+#: ../src/theme.c:4360 ../src/theme.c:4392
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "ขาด <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"อะไรก็ตามแต่\"/>"
 
-#: ../src/theme.c:4446
+#: ../src/theme.c:4443
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "โหลดชุดตกแต่ง \"%s\" ล้มเหลว: %s\n"
 
-#: ../src/theme.c:4592 ../src/theme.c:4599 ../src/theme.c:4606
-#: ../src/theme.c:4613 ../src/theme.c:4620
+#: ../src/theme.c:4597 ../src/theme.c:4604 ../src/theme.c:4611
+#: ../src/theme.c:4618 ../src/theme.c:4625
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "ไม่ได้กำหนดค่า <%s> สำหรับชุดตกแต่ง \"%s\""
 
-#: ../src/theme.c:4630
+#: ../src/theme.c:4635
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3009,7 +3020,7 @@ msgstr ""
 "ไม่ได้กำหนดรูปแบบเฟรมสำหรับชนิดหน้าต่าง \"%s\" ในชุดตกแต่ง \"%s\", กรุณาเพิ่มอีลิเมนต์ "
 "<window type=\"%s\" style_set=\"อะไรก็ตามแต่\"/>"
 
-#: ../src/theme.c:4652
+#: ../src/theme.c:4657
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3018,55 +3029,55 @@ msgstr ""
 "ต้องระบุ <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"อะไรก็ตามแต่\"/> "
 "สำหรับชุดตกแต่งนี้"
 
-#: ../src/theme.c:5041 ../src/theme.c:5103
+#: ../src/theme.c:5046 ../src/theme.c:5108
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "ค่าคงที่ที่ผู้ใช้กำหนดเองต้องเริ่มต้นด้วยอักษรตัวใหญ่; แต่ \"%s\" ไม่ได้เป็นตามนั้น"
 
-#: ../src/theme.c:5049 ../src/theme.c:5111
+#: ../src/theme.c:5054 ../src/theme.c:5116
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "ค่าคงที่ \"%s\" ถูกกำหนดไว้แล้ว"
 
-#: ../src/util.c:95
+#: ../src/util.c:96
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "เปิดล็อกไฟล์เพื่อการดีบั๊กไม่สำเร็จ: %s\n"
 
-#: ../src/util.c:105
+#: ../src/util.c:106
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "fdopen() ล็อกไฟล์ %s ไม่สำเร็จ: %s\n"
 
-#: ../src/util.c:111
+#: ../src/util.c:112
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "เปิดล็อกไฟล์ %s เรียบร้อยแล้ว\n"
 
-#: ../src/util.c:219
+#: ../src/util.c:220
 msgid "Window manager: "
 msgstr "โปรแกรมจัดการหน้าต่าง: "
 
-#: ../src/util.c:365
+#: ../src/util.c:366
 msgid "Bug in window manager: "
 msgstr "บั๊กในโปรแกรมจัดการหน้าต่าง: "
 
-#: ../src/util.c:394
+#: ../src/util.c:395
 msgid "Window manager warning: "
 msgstr "คำเตือนในโปรแกรมจัดการหน้าต่าง: "
 
-#: ../src/util.c:418
+#: ../src/util.c:419
 msgid "Window manager error: "
 msgstr "เกิดข้อผิดพลาดในโปรแกรมจัดการหน้าต่าง: "
 
-#: ../src/window-props.c:165
+#: ../src/window-props.c:169
 #, c-format
-msgid "Application set a bogus _NET_WM_PID %ld\n"
-msgstr "โปรแกรมประยุกต์ตั้งค่า _NET_WM_PID เป็น %ld ซึ่งไม่มีอยู่จริง\n"
+msgid "Application set a bogus _NET_WM_PID %lu\n"
+msgstr "โปรแกรมประยุกต์ตั้งค่า _NET_WM_PID เป็น %lu ซึ่งไม่มีอยู่จริง\n"
 
 #. first time through
-#: ../src/window.c:5370
+#: ../src/window.c:5405
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3082,7 +3093,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6010
+#: ../src/window.c:6035
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
