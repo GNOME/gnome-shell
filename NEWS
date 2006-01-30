@@ -9,9 +9,15 @@ improvements in this release.
  - Prevent a critical warning crasher when switching themes
    (Christian) [#327847]
  - Fix some uninitialized value problems (Elijah)
-
  - If the mouse enters a window on a different screen, activate the
    default window on the new screen (Elijah) [#319348]
+
+Translations
+  Jordi Mallach (ca), Adam Weinberger (en_CA), Francisco Javier
+  F. Serrador (es), Ilkka Tuohela (fi), Ignacio Casal Quinteiro (gl),
+  Ankit Patel (gu), Kjartan Maraas (nb), Kjartan Maraas (no), Evandro
+  Fernandes Giovanini (pt_BR), Theppitak Karoonboonyanan (th), Clytie
+  Siddall (vi), Funda Wang (zh_CN)
 
 2.13.34
 ==
