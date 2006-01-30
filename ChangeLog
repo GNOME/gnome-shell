@@ -1,3 +1,13 @@
+2006-01-30  Elijah Newren  <newren gmail com>
+
+	* src/display.[ch] (struct MetaDisplay), meta_display_open,
+	meta_display_set_input_focus_window,
+	meta_display_focus_the_no_focus_window): Track the active_screen,
+	(event_callback): If the mouse enters a window on a different
+	screen, activate the default window on the new screen.  May need
+	to be modified for click-to-focus; we'll wait for feedback.  Fixes
+	#319348.
+
 2006-01-23  Elijah Newren  <newren gmail com>
 
 	* src/display.c (meta_display_check_threshold_reached): change the

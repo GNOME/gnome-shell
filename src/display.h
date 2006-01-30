@@ -218,6 +218,7 @@ struct _MetaDisplay
   guint error_trap_synced_at_last_pop : 1;
   MetaEventQueue *events;
   GSList *screens;
+  MetaScreen *active_screen;
   GHashTable *window_ids;
   int error_traps;
   int (* error_trap_handler) (Display     *display,

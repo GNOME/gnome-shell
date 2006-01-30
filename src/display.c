@@ -472,6 +472,7 @@ meta_display_open (const char *name)
   display->window_menu = NULL;
   
   display->screens = NULL;
+  display->active_screen = NULL;
   
 #ifdef HAVE_STARTUP_NOTIFICATION
   display->sn_display = sn_display_new (display->xdisplay,
@@ -1822,9 +1823,30 @@ event_callback (XEvent   *event,
       if (display->grab_window == window &&
           event->xany.serial >= display->grab_start_serial &&
           grab_op_is_mouse (display->grab_op))
-        meta_window_handle_mouse_grab_op_event (window, event);
-      /* do this even if window->has_focus to avoid races */
-      else if (window && !serial_is_ignored (display, event->xany.serial) &&
+        {
+          meta_window_handle_mouse_grab_op_event (window, event);
+          break;
+        }
+
+      /* If the mouse switches screens, active the default window on the new
+       * screen; this will make keybindings and workspace-launched items
+       * actually appear on the right screen.
+       */
+      if (display->active_screen != 
+          meta_display_screen_for_root (display, event->xcrossing.root))
+        {
+          MetaScreen *new_screen;
+          new_screen = meta_display_screen_for_root (display, 
+                                                     event->xcrossing.root);
+          meta_workspace_focus_default_window (new_screen->active_workspace, 
+                                               NULL,
+                                               event->xcrossing.time);
+        }
+
+      /* Check if we've entered a window; do this even if window->has_focus to
+       * avoid races.
+       */
+      if (window && !serial_is_ignored (display, event->xany.serial) &&
                event->xcrossing.mode != NotifyGrab && 
                event->xcrossing.mode != NotifyUngrab &&
                event->xcrossing.detail != NotifyInferior &&
@@ -4908,6 +4930,7 @@ meta_display_set_input_focus_window (MetaDisplay *display,
                   timestamp);
   display->expected_focus_window = window;
   display->last_focus_time = timestamp;
+  display->active_screen = window->screen;
 
   if (window != display->autoraise_window)
     meta_display_remove_autoraise_callback (window->display);
@@ -4927,6 +4950,7 @@ meta_display_focus_the_no_focus_window (MetaDisplay *display,
                   timestamp);
   display->expected_focus_window = NULL;
   display->last_focus_time = timestamp;
+  display->active_screen = screen;
 
   meta_display_remove_autoraise_callback (display);
 }
