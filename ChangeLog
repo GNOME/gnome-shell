@@ -1,5 +1,9 @@
 2006-01-30  Elijah Newren  <newren gmail com>
 
+	* NEWS:	2.13.55 release
+
+2006-01-30  Elijah Newren  <newren gmail com>
+
 	* src/display.[ch] (struct MetaDisplay), meta_display_open,
 	meta_display_set_input_focus_window,
 	meta_display_focus_the_no_focus_window): Track the active_screen,

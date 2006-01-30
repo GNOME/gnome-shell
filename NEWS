@@ -1,3 +1,18 @@
+2.13.55
+==
+
+Thanks to Dick Marinus, Christian Kirbach, and Elijah Newren for
+improvements in this release.
+
+ - Add a minimize and none double-click-titlebar-action (Dick)
+   [#300210]
+ - Prevent a critical warning crasher when switching themes
+   (Christian) [#327847]
+ - Fix some uninitialized value problems (Elijah)
+
+ - If the mouse enters a window on a different screen, activate the
+   default window on the new screen (Elijah) [#319348]
+
 2.13.34
 ==
 
