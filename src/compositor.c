@@ -98,6 +98,9 @@ meta_compositor_new (MetaDisplay *display)
   compositor = g_new0 (MetaCompositor, 1);
   
   compositor->display = ws_display_new (NULL);
+
+  ws_display_set_synchronize (compositor->display,
+			      getenv ("METACITY_SYNC") != NULL);
   
   ws_display_init_test (compositor->display);
   ws_display_set_ignore_grabs (compositor->display, TRUE);
@@ -232,13 +235,21 @@ process_configure_notify (MetaCompositor  *compositor,
 {
   WsWindow *above_window;
   CmDrawableNode *node = g_hash_table_lookup (compositor->window_hash,
-					    &event->window);
+					      &event->window);
   CmDrawableNode *above_node;
   MetaScreen *screen;
   ScreenInfo *scr_info;
   
+#if 0
+  g_print ("processing configure\n");
+#endif
+  
   if (!node)
     return;
+
+#if 0
+  g_print ("we do now have a node\n");
+#endif
   
   screen = node_get_screen (compositor->meta_display->xdisplay, node);
   scr_info = screen->compositor_data;
@@ -286,7 +297,7 @@ process_map (MetaCompositor     *compositor,
   /* See if window was mapped as child of root */
   screen = meta_display_screen_for_root (compositor->meta_display,
 					 event->event);
-  
+
   if (screen == NULL)
     {
       meta_topic (META_DEBUG_COMPOSITOR,
@@ -294,6 +305,8 @@ process_map (MetaCompositor     *compositor,
 		  event->event, event->window);
       return; /* MapNotify wasn't for a child of the root */
     }
+  
+  g_print ("processing map for %lx\n", event->window);
   
   node = g_hash_table_lookup (compositor->window_hash,
 			      &event->window);
@@ -320,8 +333,10 @@ process_map (MetaCompositor     *compositor,
   else
     {
       cm_drawable_node_set_viewable (node, TRUE);
+
+      cm_drawable_node_update_pixmap (node);
     }
-  
+
   /* We don't actually need to invalidate anything, because we will
    * get damage events as the server fills the background and the client
    * draws the window
@@ -336,7 +351,7 @@ process_unmap (MetaCompositor     *compositor,
 {
   CmDrawableNode *node;
   MetaScreen *screen;
-  
+
   /* See if window was unmapped as child of root */
   screen = meta_display_screen_for_root (compositor->meta_display,
 					 event->event);
@@ -348,6 +363,8 @@ process_unmap (MetaCompositor     *compositor,
 		  event->event, event->window);
       return; /* UnmapNotify wasn't for a child of the root */
     }
+  
+  g_print ("processing unmap on %lx\n", event->window);
   
   node = g_hash_table_lookup (compositor->window_hash,
 			      &event->window);
@@ -389,7 +406,7 @@ process_create (MetaCompositor     *compositor,
     }
   else
     {
-      meta_topic (META_DEBUG_COMPOSITOR,
+	g_print (//META_DEBUG_COMPOSITOR,
 		  "Create window 0x%lx, adding\n", event->window);
       
       meta_compositor_add_window (compositor,
@@ -438,7 +455,7 @@ process_reparent (MetaCompositor      *compositor,
   
   event_screen = meta_display_screen_for_root (compositor->meta_display,
 					       event->event);
-  
+
   if (event_screen == NULL)
     {
       meta_topic (META_DEBUG_COMPOSITOR,
@@ -447,7 +464,7 @@ process_reparent (MetaCompositor      *compositor,
       return;
     }
   
-  meta_topic (META_DEBUG_COMPOSITOR,
+  g_print (//META_DEBUG_COMPOSITOR,
 	      "Reparent window 0x%lx new parent 0x%lx received on 0x%lx\n",
 	      event->window, event->parent, event->event);
   
@@ -555,6 +572,34 @@ wavy (double time,
   m++;
 }
 
+static void
+update_frame_counter (void)
+{
+#define BUFSIZE 128
+    static GTimer *timer;
+    static double buffer [BUFSIZE];
+    static int next = 0;
+
+    if (!timer)
+	timer = g_timer_new ();
+
+    buffer[next++] = g_timer_elapsed (timer, NULL);
+
+    if (next == BUFSIZE)
+    {
+	int i;
+	double total;
+	
+	next = 0;
+
+	total = 0.0;
+	for (i = 1; i < BUFSIZE; ++i)
+	    total += buffer[i] - buffer[i - 1];
+
+	g_print ("frames per second: %f\n", 1 / (total / (BUFSIZE - 1)));
+    }
+}
+
 static gboolean
 update (gpointer data)
 {
@@ -564,14 +609,32 @@ update (gpointer data)
   
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity ();
-  gluOrtho2D (0, 1.0, 0.0, 1.0);
+  gluOrtho2D (0, 1600, 1200, 0);
+
+#if 0
+  glColor4f (1.0, 1.0, 1.0, 1.0);
+  glBegin (GL_QUADS);
+  glVertex2f (0.0, 0.0);
+  glVertex2f (1600.0, 0.0);
+  glVertex2f (1600.0, 1200.0);
+  glVertex2f (0.0, 1200.0);
+  glEnd ();
+#endif
+      
+
   
-  glClearColor (0.0, 0.5, 0.5, 0.0);
-  glClear (GL_COLOR_BUFFER_BIT);
+#if 0
+#endif
+#if 0
+  glClear (GL_DEPTH_BUFFER_BIT);
+#endif
+
+#if 0
   
   glColor4f (1.0, 0.0, 0.0, 1.0);
   
   glDisable (GL_TEXTURE_2D);
+  glDisable (GL_DEPTH_TEST);
   
   glBegin (GL_QUADS);
   
@@ -581,10 +644,20 @@ update (gpointer data)
   glVertex2f (0.4, 0.2);
   
   glEnd ();
+#endif
   
+#if 0
+  glClearColor (1.0, 1.0, 1.0, 1.0);
+  glClear (GL_COLOR_BUFFER_BIT);
+#endif
+  
+#if 0
+  glEnable (GL_TEXTURE_2D);
+#endif
+  glDisable (GL_TEXTURE_2D);
+  glDisable (GL_DEPTH_TEST);
   ws_window_raise (gl_window);
   
-  glEnable (GL_TEXTURE_2D);
   draw_windows (screen, scr_info->compositor_nodes);
   
   /* FIXME: we should probably grab the server around the raise/swap
@@ -593,9 +666,13 @@ update (gpointer data)
 #if 0
   ws_display_grab (ws_drawable_get_display ((WsDrawable *)gl_window));
 #endif
-  
+
   ws_window_gl_swap_buffers (gl_window);
+#if 0
   glFinish();
+#endif
+
+  update_frame_counter ();
 
 #if 0
   ws_display_ungrab (ws_drawable_get_display ((WsDrawable *)gl_window));
@@ -613,17 +690,40 @@ queue_repaint (CmDrawableNode *node, gpointer data)
     ScreenInfo *scr_info = screen->compositor_data;
 
 #if 0
-    g_print ("queueing repaint for %p\n", node);
+    g_print ("metacity queueing repaint for %p\n", node);
 #endif
     
     if (!scr_info->idle_id)
     {
-	g_print ("paint\n");
-  
 	scr_info->idle_id = g_idle_add (update, screen);
+#if 0
+	g_print ("done\n");
+#endif
+    }
+    else
+    {
+#if 0
+	g_print ("one was queued already\n");
+#endif
     }
 }
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
+
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+static void
+dump_stacking_order (GList *nodes)
+{
+    GList *list;
+
+    for (list = nodes; list != NULL; list = list->next)
+    {
+	CmDrawableNode *node = list->data;
+	
+	g_print ("%lx, ", WS_RESOURCE_XID (node->drawable));
+    }
+    g_print ("\n");
+}
+#endif
 
 /* This is called when metacity does its XQueryTree() on startup
  * and when a new window is mapped.
@@ -648,34 +748,46 @@ meta_compositor_add_window (MetaCompositor    *compositor,
   node = g_hash_table_lookup (compositor->window_hash,
 			      &xwindow);
   
+  g_print ("adding %lx\n", xwindow);
+  
   if (node != NULL)
     {
+	g_print ("window %lx already added\n", xwindow);
       meta_topic (META_DEBUG_COMPOSITOR,
 		  "Window 0x%lx already added\n", xwindow);
       return;
     }
+
+  ws_display_begin_error_trap (compositor->display);
   
   drawable = (WsDrawable *)ws_window_lookup (compositor->display, xwindow);
 
   scr_info = screen->compositor_data;
 
+  ws_display_end_error_trap (compositor->display);
+
+  if (!drawable)
+      return;
+  
   g_assert (scr_info);
+
+  ws_display_begin_error_trap (compositor->display);
   
   if (ws_window_query_input_only ((WsWindow *)drawable) ||
       drawable == (WsDrawable *)scr_info->glw)
     {
+	ws_display_end_error_trap (compositor->display);
       return;
     }
-  else
-    {
-      node = cm_drawable_node_new (drawable);
 
-      cm_drawable_node_set_damage_func (node, queue_repaint, screen);
-      
+  ws_display_end_error_trap (compositor->display);
+
+  node = cm_drawable_node_new (drawable);
+  
+  cm_drawable_node_set_damage_func (node, queue_repaint, screen);
 #if 0
-      drawable_node_set_deformation_func (node, wavy, NULL);
+  drawable_node_set_deformation_func (node, wavy, NULL);
 #endif
-    }
   
   /* FIXME: we should probably just store xid's directly */
   g_hash_table_insert (compositor->window_hash,
@@ -686,10 +798,11 @@ meta_compositor_add_window (MetaCompositor    *compositor,
    */
   scr_info->compositor_nodes = g_list_prepend (scr_info->compositor_nodes,
 					       node);
+
+  dump_stacking_order (scr_info->compositor_nodes);
   
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 }
-
 void
 meta_compositor_remove_window (MetaCompositor    *compositor,
                                Window             xwindow)
@@ -759,6 +872,10 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   ws_window_map (scr_info->glw);
   
   ws_display_sync (compositor->display);
+
+#if 0
+  children = ws_window_list_children (root);
+#endif
   
 #endif
 }
@@ -814,18 +931,11 @@ typedef struct
 
 typedef struct
 {
-  MetaWindow *window;
-  CmDrawableNode *node;
-  
-  DoubleRect start;
-  DoubleRect target;
-  
-  double start_time;
-  int idle_id;
-    int repaint_id;
-
-  MetaMinimizeFinishedFunc finished_func;
-  gpointer		   finished_data;
+    CmDrawableNode *node;
+    GTimer *timer;
+    
+    MetaMinimizeFinishedFunc finished_func;
+    gpointer		     finished_data;
 } MiniInfo;
 
 static gdouble
@@ -834,6 +944,7 @@ interpolate (gdouble t, gdouble begin, gdouble end, double power)
   return (begin + (end - begin) * pow (t, power));
 }
 
+#if 0
 static gboolean
 stop_minimize (gpointer data)
 {
@@ -850,7 +961,9 @@ stop_minimize (gpointer data)
   
   return FALSE;
 }
+#endif
 
+#if 0
 static void
 minimize_deformation (gdouble time,
 		      double in_x,
@@ -880,15 +993,44 @@ minimize_deformation (gdouble time,
 	info->idle_id = g_idle_add (stop_minimize, info);
     }
 }
+#endif
 
 static gboolean
 do_minimize_animation (gpointer data)
 {
     MiniInfo *info = data;
+    double elapsed;
+
+#define FADE_TIME 0.3
+
+    elapsed = g_timer_elapsed (info->timer, NULL);
+
+    if (elapsed > FADE_TIME)
+	elapsed = FADE_TIME;
     
+    cm_drawable_node_set_alpha (info->node, (FADE_TIME - elapsed) / FADE_TIME);
+
+    if (elapsed >= FADE_TIME)
+    {
+	if (info->finished_func)
+	    info->finished_func (info->finished_data);
+
+	cm_drawable_node_set_viewable (info->node, FALSE);
+
+	cm_drawable_node_set_alpha (info->node, 1.0);
+	
+	return FALSE;
+    }
+    else
+    {
+	return TRUE;
+    }
+    
+#if 0
     queue_repaint (info->node,
 		   node_get_screen (info->window->display->xdisplay,
 				    info->node));
+#endif
 }
 
 static void
@@ -918,30 +1060,18 @@ meta_compositor_minimize (MetaCompositor           *compositor,
   CmDrawableNode *node = window_to_node (compositor, window);
   WsRectangle start;
   MetaScreen *screen = window->screen;
-  
+
   info->node = node;
-  
-  info->idle_id = 0;
-  
-  ws_drawable_query_geometry (node->drawable, &start);
-  
-  convert (screen, start.x, start.y, start.width, start.height,
-	   &info->start);
-  convert (screen, x, y, width, height,
-	   &info->target);
-  
-  info->window = window;
-  
-  info->target.y = 1 - info->target.y;
-  
-  info->start_time = -1;
+  info->timer = g_timer_new ();
 
   info->finished_func = finished;
   info->finished_data = data;
   
+#if 0
   cm_drawable_node_set_deformation_func (node, minimize_deformation, info);
+#endif
 
-  info->repaint_id = g_idle_add (do_minimize_animation, info);
+  g_idle_add (do_minimize_animation, info);
   
 #endif
 }
