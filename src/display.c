@@ -1607,9 +1607,21 @@ event_callback (XEvent   *event,
 
   if (window && ((event->type == KeyPress) || (event->type == ButtonPress)))
     {
-      g_assert (CurrentTime != display->current_time);
-      meta_window_set_user_time (window, display->current_time);
-      sanity_check_timestamps (display, display->current_time);
+      if (CurrentTime == display->current_time)
+        {
+          /* We can't use missing (i.e. invalid) timestamps to set user time,
+           * nor do we want to use them to sanity check other timestamps.
+           * See bug 313490 for more details.
+           */
+          meta_warning ("Event has no timestamp! You may be using a broken "
+                        "program such as xse.  Please ask the authors of that "
+                        "program to fix it.\n");
+        }
+      else
+        {
+          meta_window_set_user_time (window, display->current_time);
+          sanity_check_timestamps (display, display->current_time);
+        }
     }
   
   switch (event->type)

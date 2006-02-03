@@ -1,3 +1,9 @@
+2006-02-03  Thomas Thurman <thomas thurman org uk>
+
+        * src/display.c (event_callback): produce warning when invalid
+        events with no timestamp are received, rather than failing an
+        assertion
+
 Thu Feb  2 17:58:22 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* compositor.c (process_map): update the pixmap.
