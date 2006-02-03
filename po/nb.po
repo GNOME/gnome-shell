@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.13.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-22 20:12+0100\n"
-"PO-Revision-Date: 2006-01-22 20:14+0100\n"
+"POT-Creation-Date: 2006-02-03 18:59+0100\n"
+"PO-Revision-Date: 2006-02-03 19:08+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -246,7 +246,7 @@ msgstr "Flytt til arbeidsområdet _over"
 msgid "Move to Workspace _Down"
 msgstr "Flytt til arbeidsområdet ne_denfor"
 
-#: ../src/menu.c:164 ../src/prefs.c:1973 ../src/prefs.c:2274
+#: ../src/menu.c:164 ../src/prefs.c:1976 ../src/prefs.c:2277
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbeidsområde %d"
@@ -1925,17 +1925,13 @@ msgstr ""
 "tastebinding for denne handlingen."
 
 #: ../src/metacity.schemas.in.h:158
-#, fuzzy
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, 'toggle_maximize' which will maximize/unmaximize the window, "
 "'minimize' which will minimize the window, and 'none' which will not do "
 "anything."
-msgstr ""
-"Dette alternativet bestemmer effekten av dobbeltklikk på tittellinjen. "
-"Gyldige alternativer er «toggle_shade», hvilket vil rulle ned/opp vinduet, "
-"og «toggle_maximizes» som vil maksimere/gjenopprette vinduet."
+msgstr "Dette alternativet bestemmer effekten av dobbeltklikk på tittellinjen. Gyldige alternativer er «toggle_shade», hvilket vil rulle ned/opp vinduet, «toggle_maximizes» som vil maksimere/gjenopprette vinduet, «toggle_minimize», som vil minimere vinduet, og «none» som ikke gjør noen ting."
 
 #: ../src/metacity.schemas.in.h:159
 msgid "Toggle always on top state"
@@ -1981,7 +1977,7 @@ msgstr "Type synlig klokke"
 
 #: ../src/metacity.schemas.in.h:168
 msgid "Whether raising should be a side-effect of other user interactions"
-msgstr ""
+msgstr "Om heving skal være en sideeffekt av andre handlinger brukeren utfører"
 
 #: ../src/metacity.schemas.in.h:169
 msgid "Window focus mode"
@@ -1991,18 +1987,18 @@ msgstr "Fokuseringsmodus for vindu"
 msgid "Window title font"
 msgstr "Skrift for vindutittel"
 
-#: ../src/prefs.c:555 ../src/prefs.c:571 ../src/prefs.c:587 ../src/prefs.c:603
-#: ../src/prefs.c:619 ../src/prefs.c:635 ../src/prefs.c:655 ../src/prefs.c:671
-#: ../src/prefs.c:687 ../src/prefs.c:703 ../src/prefs.c:719 ../src/prefs.c:735
-#: ../src/prefs.c:751 ../src/prefs.c:767 ../src/prefs.c:784 ../src/prefs.c:800
-#: ../src/prefs.c:816 ../src/prefs.c:832 ../src/prefs.c:848 ../src/prefs.c:863
-#: ../src/prefs.c:878 ../src/prefs.c:893 ../src/prefs.c:909 ../src/prefs.c:925
-#: ../src/prefs.c:941
+#: ../src/prefs.c:558 ../src/prefs.c:574 ../src/prefs.c:590 ../src/prefs.c:606
+#: ../src/prefs.c:622 ../src/prefs.c:638 ../src/prefs.c:658 ../src/prefs.c:674
+#: ../src/prefs.c:690 ../src/prefs.c:706 ../src/prefs.c:722 ../src/prefs.c:738
+#: ../src/prefs.c:754 ../src/prefs.c:770 ../src/prefs.c:787 ../src/prefs.c:803
+#: ../src/prefs.c:819 ../src/prefs.c:835 ../src/prefs.c:851 ../src/prefs.c:866
+#: ../src/prefs.c:881 ../src/prefs.c:896 ../src/prefs.c:912 ../src/prefs.c:928
+#: ../src/prefs.c:944
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-nøkkel «%s» er satt til en ugyldig type\n"
 
-#: ../src/prefs.c:986
+#: ../src/prefs.c:989
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2011,24 +2007,26 @@ msgstr ""
 "«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for endring av "
 "musknapp\n"
 
-#: ../src/prefs.c:1010 ../src/prefs.c:1500
+#: ../src/prefs.c:1013 ../src/prefs.c:1503
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-nøkkel «%s» er satt til en ugyldig verdi\n"
 
-#: ../src/prefs.c:1133
+#: ../src/prefs.c:1136
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
 "range 1..128\n"
-msgstr "%d lagret i GConf-nøkkel %s er ikke en fornuftig verdi for cursor_size. Må være i området 1..128\n"
+msgstr ""
+"%d lagret i GConf-nøkkel %s er ikke en fornuftig verdi for cursor_size. Må "
+"være i området 1..128\n"
 
-#: ../src/prefs.c:1213
+#: ../src/prefs.c:1216
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Kunne ikke tolke skriftbeskrivelsen «%s» fra GConf-nøkkel %s\n"
 
-#: ../src/prefs.c:1398
+#: ../src/prefs.c:1401
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2037,7 +2035,7 @@ msgstr ""
 "%d lagret i GConf-nøkkel %s er ikke et lesbart antall arbeidsområder, aktivt "
 "maksimum er %d\n"
 
-#: ../src/prefs.c:1458
+#: ../src/prefs.c:1461
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2045,17 +2043,17 @@ msgstr ""
 "Funksjonalitet for å gå rundt ødelagte programmer er deaktivert. Noen "
 "programmer vil kanskje ikke oppføre seg korrekt.\n"
 
-#: ../src/prefs.c:1527
+#: ../src/prefs.c:1530
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d lagret i GConf-nøkkel %s er utenfor området 0 til %d\n"
 
-#: ../src/prefs.c:1664
+#: ../src/prefs.c:1667
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Feil under spesifisering av antall arbeidsområder til %d: %s\n"
 
-#: ../src/prefs.c:2000
+#: ../src/prefs.c:2003
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2064,7 +2062,7 @@ msgstr ""
 "«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for "
 "tastaturbinding «%s»\n"
 
-#: ../src/prefs.c:2355
+#: ../src/prefs.c:2358
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Feil under setting av navn på arbeidsområde %d til «%s»: %s\n"
