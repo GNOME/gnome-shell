@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-23 07:31+0100\n"
-"PO-Revision-Date: 2006-01-23 15:11+0800\n"
+"POT-Creation-Date: 2006-02-05 15:45+0100\n"
+"PO-Revision-Date: 2006-02-06 02:55+0800\n"
 "Last-Translator: Funda Wang <fundawang@linux.net.cn>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
@@ -242,7 +242,7 @@ msgstr "移动到上侧工作区(_U)"
 msgid "Move to Workspace _Down"
 msgstr "移动到下侧工作区(_D)"
 
-#: ../src/menu.c:164 ../src/prefs.c:1973 ../src/prefs.c:2274
+#: ../src/menu.c:164 ../src/prefs.c:1976 ../src/prefs.c:2277
 #, c-format
 msgid "Workspace %d"
 msgstr "工作区 %d"
@@ -1788,8 +1788,9 @@ msgid ""
 "'minimize' which will minimize the window, and 'none' which will not do "
 "anything."
 msgstr ""
-"这个选项决定在标题栏上双击的效果。当前有效的选项包括，“toggle_shade”将卷起/展开窗"
-"口，“toggle_maximize”将最大化/还原窗口，“minimize”将最小化窗口，而“none”将不执行任何操作。"
+"这个选项决定在标题栏上双击的效果。当前有效的选项包括，“toggle_shade”将卷起/展"
+"开窗口，“toggle_maximize”将最大化/还原窗口，“minimize”将最小化窗口，"
+"而“none”将不执行任何操作。"
 
 #: ../src/metacity.schemas.in.h:159
 msgid "Toggle always on top state"
@@ -1844,44 +1845,43 @@ msgstr "窗口焦点模式"
 msgid "Window title font"
 msgstr "窗口标题字体"
 
-#: ../src/prefs.c:555 ../src/prefs.c:571 ../src/prefs.c:587 ../src/prefs.c:603
-#: ../src/prefs.c:619 ../src/prefs.c:635 ../src/prefs.c:655 ../src/prefs.c:671
-#: ../src/prefs.c:687 ../src/prefs.c:703 ../src/prefs.c:719 ../src/prefs.c:735
-#: ../src/prefs.c:751 ../src/prefs.c:767 ../src/prefs.c:784 ../src/prefs.c:800
-#: ../src/prefs.c:816 ../src/prefs.c:832 ../src/prefs.c:848 ../src/prefs.c:863
-#: ../src/prefs.c:878 ../src/prefs.c:893 ../src/prefs.c:909 ../src/prefs.c:925
-#: ../src/prefs.c:941
+#: ../src/prefs.c:558 ../src/prefs.c:574 ../src/prefs.c:590 ../src/prefs.c:606
+#: ../src/prefs.c:622 ../src/prefs.c:638 ../src/prefs.c:658 ../src/prefs.c:674
+#: ../src/prefs.c:690 ../src/prefs.c:706 ../src/prefs.c:722 ../src/prefs.c:738
+#: ../src/prefs.c:754 ../src/prefs.c:770 ../src/prefs.c:787 ../src/prefs.c:803
+#: ../src/prefs.c:819 ../src/prefs.c:835 ../src/prefs.c:851 ../src/prefs.c:866
+#: ../src/prefs.c:881 ../src/prefs.c:896 ../src/prefs.c:912 ../src/prefs.c:928
+#: ../src/prefs.c:944
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf 关键字“%s”被设置为无效的类型\n"
 
-#: ../src/prefs.c:986
+#: ../src/prefs.c:989
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr "在配置数据库中找到的“%s”不是鼠标按钮修饰键的有效值\n"
 
-#: ../src/prefs.c:1010 ../src/prefs.c:1500
+#: ../src/prefs.c:1013 ../src/prefs.c:1503
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf 关键字“%s”被设置为无效值\n"
 
-#: ../src/prefs.c:1133
-#, fuzzy, c-format
+#: ../src/prefs.c:1136
+#, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
 "range 1..128\n"
 msgstr ""
-"存储在 GConf 关键字 %2$s 中的值 %1$d 不是一个合理的工作区数量，当前最大值为 %"
-"3$d\n"
+"存储在 GConf 关键字 %2$s 中的值 %1$d 不是一个合理的光标大小；必须介于 1 到 128\n"
 
-#: ../src/prefs.c:1213
+#: ../src/prefs.c:1216
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "无法解析字体说明“%s”(来自 GConf 关键字 %s)\n"
 
-#: ../src/prefs.c:1398
+#: ../src/prefs.c:1401
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1890,30 +1890,30 @@ msgstr ""
 "存储在 GConf 关键字 %2$s 中的值 %1$d 不是一个合理的工作区数量，当前最大值为 %"
 "3$d\n"
 
-#: ../src/prefs.c:1458
+#: ../src/prefs.c:1461
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr "有缺陷的应用程序的工作区已禁用。某些应用程序可能无法正常运行。\n"
 
-#: ../src/prefs.c:1527
+#: ../src/prefs.c:1530
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "存储在 GConf 关键字 %2$s 中的值 %1$d 超出了 0 到 %3$d 的范围\n"
 
-#: ../src/prefs.c:1664
+#: ../src/prefs.c:1667
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "将工作区数量设置为 %d 时出错：%s\n"
 
-#: ../src/prefs.c:2000
+#: ../src/prefs.c:2003
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "在配置数据库中找到的“%s”不是按键组合“%s”的有效值\n"
 
-#: ../src/prefs.c:2355
+#: ../src/prefs.c:2358
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "将工作区 %d 的名称设置为“%s”时出错：%s\n"
