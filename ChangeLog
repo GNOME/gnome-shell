@@ -1,3 +1,8 @@
+Mon Feb  6 17:45:39 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/compositor.c: New fancy minimize animation. Fade windows in
+	and out.
+
 2006-02-03  Thomas Thurman <thomas thurman org uk>
 
         * src/display.c (event_callback): produce warning when invalid

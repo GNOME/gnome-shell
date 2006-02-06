@@ -107,10 +107,11 @@ meta_compositor_new (MetaDisplay *display)
   
   compositor->meta_display = display;
   
-  compositor->window_hash = g_hash_table_new_full (meta_unsigned_long_hash,
-						   meta_unsigned_long_equal,
-						   NULL,
-						   free_window_hash_value);
+  compositor->window_hash = g_hash_table_new_full (
+      meta_unsigned_long_hash,
+      meta_unsigned_long_equal,
+      NULL,
+      free_window_hash_value);
   
   compositor->enabled = TRUE;
   
@@ -217,6 +218,8 @@ handle_restacking (MetaCompositor *compositor,
        */
       return;
     }
+
+  g_print ("restacking\n");
   
   if (window_link->next != above_link)
     {
@@ -282,6 +285,70 @@ process_expose (MetaCompositor     *compositor,
 
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
+static void queue_repaint (CmDrawableNode *node, gpointer data);
+
+typedef struct
+{
+    CmDrawableNode *node;
+    GTimer	   *timer;
+} FadeInfo;
+
+#define FADE_TIME 0.3
+
+static gboolean
+fade_in (gpointer data)
+{
+    FadeInfo *info = data;
+    gdouble elapsed = g_timer_elapsed (info->timer, NULL);
+    gdouble alpha;
+
+    if (elapsed > FADE_TIME)
+	alpha = 1.0;
+    else
+	alpha = elapsed / FADE_TIME;
+
+    cm_drawable_node_set_alpha (info->node, alpha);
+
+    if (elapsed >= FADE_TIME)
+    {
+	g_object_unref (info->node);
+	return FALSE;
+    }
+    else
+    {
+	return TRUE;
+    }
+}
+
+static gboolean
+fade_out (gpointer data)
+{
+    FadeInfo *info = data;
+    gdouble elapsed = g_timer_elapsed (info->timer, NULL);
+    gdouble alpha;
+
+    if (elapsed > FADE_TIME)
+	alpha = 0.0;
+    else
+	alpha = 1 - (elapsed / FADE_TIME);
+
+    cm_drawable_node_set_alpha (info->node, alpha);
+
+    g_print ("fade out: %f\n", alpha);
+    
+    if (elapsed >= FADE_TIME)
+    {
+	cm_drawable_node_set_viewable (info->node, FALSE);
+
+	g_object_unref (info->node);
+	return FALSE;
+    }
+    else
+    {
+	return TRUE;
+    }
+}
+
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 static void
 process_map (MetaCompositor     *compositor,
@@ -332,15 +399,21 @@ process_map (MetaCompositor     *compositor,
     }
   else
     {
-      cm_drawable_node_set_viewable (node, TRUE);
-
       cm_drawable_node_update_pixmap (node);
+
+      cm_drawable_node_set_alpha (node, 0.0);
+      
+      FadeInfo *info = g_new (FadeInfo, 1);
+      
+      info->node = g_object_ref (node);
+      info->timer = g_timer_new ();
+      
+      g_idle_add (fade_in, info);
+      
+      cm_drawable_node_set_viewable (node, TRUE);
     }
 
-  /* We don't actually need to invalidate anything, because we will
-   * get damage events as the server fills the background and the client
-   * draws the window
-   */
+  queue_repaint (node, screen);
 }
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
@@ -370,8 +443,15 @@ process_unmap (MetaCompositor     *compositor,
 			      &event->window);
   if (node != NULL)
     {
-      cm_drawable_node_set_viewable (node, FALSE);
+      FadeInfo *info = g_new (FadeInfo, 1);
+      
+      info->node = g_object_ref (node);
+      info->timer = g_timer_new ();
+      
+      g_idle_add (fade_out, info);
     }
+  
+  queue_repaint (node, screen);
 }
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
@@ -606,11 +686,9 @@ update (gpointer data)
   MetaScreen *screen = data;
   ScreenInfo *scr_info = screen->compositor_data;
   WsWindow *gl_window = scr_info->glw;
-  
-  glMatrixMode (GL_MODELVIEW);
-  glLoadIdentity ();
-  gluOrtho2D (0, 1600, 1200, 0);
 
+  glViewport (0, 0, screen->rect.width, screen->rect.height);
+  
 #if 0
   glColor4f (1.0, 1.0, 1.0, 1.0);
   glBegin (GL_QUADS);
@@ -620,8 +698,6 @@ update (gpointer data)
   glVertex2f (0.0, 1200.0);
   glEnd ();
 #endif
-      
-
   
 #if 0
 #endif
@@ -630,7 +706,6 @@ update (gpointer data)
 #endif
 
 #if 0
-  
   glColor4f (1.0, 0.0, 0.0, 1.0);
   
   glDisable (GL_TEXTURE_2D);
@@ -667,10 +742,11 @@ update (gpointer data)
   ws_display_grab (ws_drawable_get_display ((WsDrawable *)gl_window));
 #endif
 
+  g_print ("swap buffers\n");
   ws_window_gl_swap_buffers (gl_window);
-#if 0
+  g_print ("finish\n");
   glFinish();
-#endif
+  g_print ("after finish\n");
 
   update_frame_counter ();
 
@@ -849,7 +925,13 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
       ws_display_get_screen_from_number (compositor->display, screen->number);
   WsWindow *root = ws_screen_get_root_window (ws_screen);
   WsRegion *region;
-  
+  Window current_cm_sn_owner;
+  WsWindow *new_cm_sn_owner;
+  Display *xdisplay;
+  Atom cm_sn_atom;
+  char buf[128];
+  Atom atom;
+
   scr_info->glw = ws_window_new_gl (root);
   scr_info->compositor_nodes = NULL;
   scr_info->idle_id = 0;
@@ -868,6 +950,22 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   region = ws_region_new (compositor->display);
   ws_window_set_input_shape (scr_info->glw, region);
   g_object_unref (G_OBJECT (region));
+
+  xdisplay = WS_RESOURCE_XDISPLAY (ws_screen);
+  snprintf(buf, sizeof(buf), "CM_S%d", screen->number);
+  cm_sn_atom = XInternAtom (xdisplay, buf, False);
+  current_cm_sn_owner = XGetSelectionOwner (xdisplay, cm_sn_atom);
+
+  if (current_cm_sn_owner != None)
+  {
+      meta_warning (_("Screen %d on display \"%s\" already has a compositing manager\n"),
+		    screen->number, ",madgh");
+  }
+  
+  new_cm_sn_owner = ws_screen_get_root_window (ws_screen);
+
+  XSetSelectionOwner (xdisplay, cm_sn_atom, WS_RESOURCE_XID (new_cm_sn_owner),
+                      CurrentTime);
   
   ws_window_map (scr_info->glw);
   
@@ -929,20 +1027,13 @@ typedef struct
   double height;
 } DoubleRect;
 
-typedef struct
-{
-    CmDrawableNode *node;
-    GTimer *timer;
-    
-    MetaMinimizeFinishedFunc finished_func;
-    gpointer		     finished_data;
-} MiniInfo;
-
+#if 0
 static gdouble
 interpolate (gdouble t, gdouble begin, gdouble end, double power)
 {
   return (begin + (end - begin) * pow (t, power));
 }
+#endif
 
 #if 0
 static gboolean
@@ -995,31 +1086,293 @@ minimize_deformation (gdouble time,
 }
 #endif
 
+static gdouble
+interpolate (gdouble t, gdouble begin, gdouble end, double power)
+{
+  return (begin + (end - begin) * pow (t, power));
+}
+
+static void
+interpolate_rectangle (gdouble		t,
+		       WsRectangle *	from,
+		       WsRectangle *	to,
+		       WsRectangle *	result)
+{
+    if (!result)
+	return;
+
+    result->x = interpolate (t, from->x, to->x, 1);
+    result->y = interpolate (t, from->y, to->y, 1);
+    result->width = interpolate (t, from->width, to->width, 1);
+    result->height = interpolate (t, from->height, to->height, 1);
+}
+
+typedef struct
+{
+    CmDrawableNode *node;
+    GTimer *timer;
+
+    MetaCompositor *compositor;
+    ScreenInfo *scr_info;
+    
+    MetaMinimizeFinishedFunc finished_func;
+    gpointer		     finished_data;
+
+    gdouble	aspect_ratio;
+    
+    WsRectangle current_geometry;
+    WsRectangle target_geometry;
+    gdouble	 current_alpha;
+    gdouble	 target_alpha;
+
+    int		button_x;
+    int		button_y;
+    int		button_width;
+    int		button_height;
+    
+    /* FIXME: maybe would be simpler if all of this was an array */
+    gboolean phase_1_started;
+    gboolean phase_2_started;
+    gboolean phase_3_started;
+    gboolean phase_4_started;
+    gboolean phase_5_started;
+} MiniInfo;
+
+static void
+set_geometry (MiniInfo *info, gdouble elapsed)
+{
+    WsRectangle rect;
+
+    interpolate_rectangle (elapsed, &info->current_geometry, &info->target_geometry, &rect);
+
+    g_print ("y: %d %d  (%f  => %d)\n", info->current_geometry.y, info->target_geometry.y,
+	     elapsed, rect.y);
+    
+    g_print ("setting: %d %d %d %d\n", rect.x, rect.y, rect.width, rect.height);
+    
+    cm_drawable_node_set_geometry (info->node,
+				   rect.x, rect.y,
+				   rect.width, rect.height);
+}
+
+static int
+center (gdouble what, gdouble in)
+{
+    return (in - what) / 2.0 + 0.5;
+}
+
+static void
+run_phase_1 (MiniInfo *info, gdouble elapsed)
+{
+    if (!info->phase_1_started)
+    {
+	GList *next;
+	g_print ("starting phase 1\n");
+	info->phase_1_started = TRUE;
+
+	info->current_geometry.x = info->node->real_x;
+	info->current_geometry.y = info->node->real_y;
+	info->current_geometry.width = info->node->real_width;
+	info->current_geometry.height = info->node->real_height;
+
+	info->target_geometry.height = info->button_height;
+	info->target_geometry.width = info->button_height * info->aspect_ratio;
+	info->target_geometry.x = info->button_x + center (info->target_geometry.width, info->button_width);
+	info->target_geometry.y = info->node->real_y + center (info->button_height, info->node->real_height);
+
+	handle_restacking (info->compositor, info->node,
+			   info->scr_info->compositor_nodes->data);
+    }
+
+    set_geometry (info, elapsed);
+}
+
+static void
+run_phase_2 (MiniInfo *info, gdouble elapsed)
+{
+#define WOBBLE_FACTOR 3
+    
+    if (!info->phase_2_started)
+    {
+	WsRectangle cur = info->target_geometry;
+
+	g_print ("starting phase 2\n");
+
+	info->phase_2_started = TRUE;
+	
+	info->current_geometry = cur;
+	
+	info->target_geometry.x = cur.x + center (WOBBLE_FACTOR * cur.width, cur.width);
+	info->target_geometry.y = cur.y + center (WOBBLE_FACTOR * cur.height, cur.height);
+	info->target_geometry.width = cur.width * WOBBLE_FACTOR;
+	info->target_geometry.height = cur.height * WOBBLE_FACTOR;
+    }
+
+    set_geometry (info, elapsed);
+}
+
+static void
+run_phase_3 (MiniInfo *info, gdouble elapsed)
+{
+    if (!info->phase_3_started)
+    {
+	WsRectangle cur = info->target_geometry;
+	
+	g_print ("starting phase 3\n");
+	info->phase_3_started = TRUE;
+
+	info->current_geometry = cur;
+
+	info->target_geometry.height = info->button_height;
+	info->target_geometry.width = info->button_height * info->aspect_ratio;
+	info->target_geometry.x = info->button_x + center (info->target_geometry.width, info->button_width);
+	info->target_geometry.y = info->node->real_y + center (info->button_height, info->node->real_height);
+    }
+
+    set_geometry (info, elapsed);
+}
+
+static void
+run_phase_4 (MiniInfo *info, gdouble elapsed)
+{
+    if (!info->phase_4_started)
+    {
+	WsRectangle cur = info->target_geometry;
+	
+	g_print ("starting phase 4\n");
+	info->phase_4_started = TRUE;
+
+	info->current_geometry = cur;
+
+	info->target_geometry.height = info->button_height;
+	info->target_geometry.width = info->button_height * info->aspect_ratio;
+	info->target_geometry.x = cur.x;
+	g_print ("button y: %d\n", info->button_y);
+	info->target_geometry.y = info->button_y;
+    }
+
+    set_geometry (info, elapsed);
+}
+
+static void
+run_phase_5 (MiniInfo *info, gdouble elapsed)
+{
+    if (!info->phase_5_started)
+    {
+	WsRectangle cur = info->target_geometry;
+
+	g_print ("starting phase 5\n");
+	info->phase_5_started = TRUE;
+
+	info->current_geometry = cur;
+	info->target_geometry.x = info->button_x;
+	info->target_geometry.y = info->button_y;
+	info->target_geometry.width = info->button_width;
+	info->target_geometry.height = info->button_height;
+    }
+
+    set_geometry (info, elapsed);
+
+    cm_drawable_node_set_alpha (info->node, 1 - elapsed);
+}
+
+static gboolean
+run_animation_01 (gpointer data)
+{
+    MiniInfo *info = data;
+    gdouble elapsed;
+
+    elapsed = g_timer_elapsed (info->timer, NULL);
+
+#define PHASE_0		0.0
+#define PHASE_1		0.225		/* scale to size of button */
+#define PHASE_2		0.325		/* scale up a little */
+#define PHASE_3		0.425		/* scale back a little */
+#define PHASE_4		0.650		/* move to button */
+#define PHASE_5		1.0		/* fade out */
+
+    if (elapsed < PHASE_1)
+    {
+	/* phase one */
+	run_phase_1 (info, (elapsed - PHASE_0)/(PHASE_1 - PHASE_0));
+    }
+    else if (elapsed < PHASE_2)
+    {
+	/* phase two */
+	run_phase_2 (info, (elapsed - PHASE_1)/(PHASE_2 - PHASE_1));
+    }
+    else if (elapsed < PHASE_3)
+    {
+	/* phase three */
+	run_phase_3 (info, (elapsed - PHASE_2)/(PHASE_3 - PHASE_2));
+    }
+    else if (elapsed < PHASE_4)
+    {
+	/* phase four */
+	run_phase_4 (info, (elapsed - PHASE_3)/(PHASE_4 - PHASE_3));
+    }
+    else if (elapsed < PHASE_5)
+    {
+	/* phase five */
+	run_phase_5 (info, (elapsed - PHASE_4)/(PHASE_5 - PHASE_4));
+    }
+    else 
+    {
+	cm_drawable_node_set_viewable (info->node, FALSE);
+
+	cm_drawable_node_unset_geometry (info->node);
+	
+	cm_drawable_node_set_alpha (info->node, 1.0);
+	
+	if (info->finished_func)
+	    info->finished_func (info->finished_data);
+
+	return FALSE;
+    }
+
+    return TRUE;
+}
+
+#if 0
 static gboolean
 do_minimize_animation (gpointer data)
 {
     MiniInfo *info = data;
     double elapsed;
+    gboolean done = FALSE;
 
-#define FADE_TIME 0.3
+#define FADE_TIME 0.5
 
     elapsed = g_timer_elapsed (info->timer, NULL);
-
-    if (elapsed > FADE_TIME)
-	elapsed = FADE_TIME;
+    elapsed = elapsed / FADE_TIME;
     
-    cm_drawable_node_set_alpha (info->node, (FADE_TIME - elapsed) / FADE_TIME);
-
-    if (elapsed >= FADE_TIME)
+    if (elapsed >= 1.0)
     {
-	if (info->finished_func)
-	    info->finished_func (info->finished_data);
+	elapsed = 1.0;
+	done = TRUE;
+    }
 
-	cm_drawable_node_set_viewable (info->node, FALSE);
+    g_print ("%f\n", elapsed);
 
-	cm_drawable_node_set_alpha (info->node, 1.0);
-	
+    cm_drawable_node_set_geometry (info->node,
+				   info->node->real_x + interpolate (elapsed, 0, info->node->real_width / 2, 1),
+				   info->node->real_y + interpolate (elapsed, 0, info->node->real_height / 2, 1),
+				   interpolate (elapsed, info->node->real_width, 0, 1),
+				   interpolate (elapsed, info->node->real_height, 0, 1));
+
+    if (done)
 	return FALSE;
+    
+#if 0
+    g_print ("inter: %f %f %f\n", 0, 735, interpolate (0.0, 735.0, 0.5, 1.0));
+    
+    g_print ("inter x .5: %f (%d %d)\n", info->node->real_x + interpolate (0, info->node->real_width / 2, .5, 1), 0, info->node->real_width);
+#endif
+    
+    cm_drawable_node_set_alpha (info->node, 1 - elapsed);
+
+    if (done)
+    {
     }
     else
     {
@@ -1032,6 +1385,7 @@ do_minimize_animation (gpointer data)
 				    info->node));
 #endif
 }
+#endif
 
 static void
 convert (MetaScreen *screen,
@@ -1066,12 +1420,28 @@ meta_compositor_minimize (MetaCompositor           *compositor,
 
   info->finished_func = finished;
   info->finished_data = data;
+
+  info->phase_1_started = FALSE;
+  info->phase_2_started = FALSE;
+  info->phase_3_started = FALSE;
+  info->phase_4_started = FALSE;
+  info->phase_5_started = FALSE;
+
+  info->button_x = x;
+  info->button_y = y;
+  info->button_width = width;
+  info->button_height = height;
+
+  info->compositor = compositor;
+  info->scr_info = screen->compositor_data;
   
 #if 0
   cm_drawable_node_set_deformation_func (node, minimize_deformation, info);
 #endif
 
-  g_idle_add (do_minimize_animation, info);
+  info->aspect_ratio = 1.3;
+  
+  g_idle_add (run_animation_01, info);
   
 #endif
 }
