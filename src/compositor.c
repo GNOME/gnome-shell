@@ -285,6 +285,7 @@ process_expose (MetaCompositor     *compositor,
 
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
+#ifdef HAVE_COMPOSITE_EXTENSIONS
 static void queue_repaint (CmDrawableNode *node, gpointer data);
 
 typedef struct
@@ -348,6 +349,7 @@ fade_out (gpointer data)
 	return TRUE;
     }
 }
+#endif
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 static void

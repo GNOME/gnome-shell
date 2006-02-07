@@ -1,3 +1,7 @@
+Tue Feb  7 00:58:05 2006  Soeren Sandmann  <sandmann@redhat.com>
+
+	* src/compositor.c: Wrap fade code in #ifdef HAVE_COMPOSITE_EXTENSIONS
+
 Mon Feb  6 17:45:39 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/compositor.c: New fancy minimize animation. Fade windows in
