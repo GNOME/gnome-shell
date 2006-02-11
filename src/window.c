@@ -5466,17 +5466,6 @@ update_transient_for (MetaWindow *window)
   meta_stack_update_transient (window->screen->stack, window);
 }
 
-/* some legacy cruft */
-typedef enum
-{
-  WIN_LAYER_DESKTOP     = 0,
-  WIN_LAYER_BELOW       = 2,
-  WIN_LAYER_NORMAL      = 4,
-  WIN_LAYER_ONTOP       = 6,
-  WIN_LAYER_DOCK        = 8,
-  WIN_LAYER_ABOVE_DOCK  = 10
-} GnomeWinLayer;
-
 static void
 update_net_wm_type (MetaWindow *window)
 {

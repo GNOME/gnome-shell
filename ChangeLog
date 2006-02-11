@@ -1,3 +1,8 @@
+2006-02-11  Elijah Newren  <newren gmail com>
+
+	* src/window.c (enum GnomeWinLayer): remove this legacy cruft that
+	we stopped using years ago
+
 2006-02-10  Thomas Thurman <thomas thurman org uk>
 
 	Avoid a memory leak when checking which workspace(s) a window is
