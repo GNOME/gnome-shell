@@ -645,6 +645,8 @@ test_regions_okay ()
   /*************************************************************/
   /* Make sure test region 5 has the right spanning rectangles */
   /*************************************************************/  
+  printf ("The next test intentionally causes a warning, "
+          "but it can be ignored.\n");
   region = get_screen_region (5);
   verify_lists_are_equal (region, NULL);
 
@@ -751,6 +753,8 @@ test_clamping_to_region ()
                                            &min_size);
   g_assert (rect.width == 400 && rect.height == 1180);
 
+  printf ("The next test intentionally causes a warning, "
+          "but it can be ignored.\n");
   rect = meta_rect (50, 50, 10000, 10000);
   min_size.width = 600;  min_size.height = 1170;
   meta_rectangle_clamp_to_fit_into_region (region,
@@ -777,6 +781,8 @@ test_clamping_to_region ()
                                            &min_size);
   g_assert (rect.width == 400 && rect.height == 1100);
 
+  printf ("The next test intentionally causes a warning, "
+          "but it can be ignored.\n");
   rect = meta_rect (300, 70, 999999, 999999);
   min_size.width = 100;  min_size.height = 200;
   fixed_directions = FIXED_DIRECTION_Y;
