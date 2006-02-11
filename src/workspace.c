@@ -68,6 +68,7 @@ meta_workspace_new (MetaScreen *screen)
   workspace->xinerama_region = NULL;
   workspace->screen_edges = NULL;
   workspace->xinerama_edges = NULL;
+  workspace->list_containing_self = g_list_prepend (NULL, workspace);
 
   workspace->all_struts = NULL;
 
@@ -114,6 +115,7 @@ meta_workspace_free (MetaWorkspace *workspace)
 
   g_list_free (workspace->mru_list);
   g_slist_free (workspace->all_struts);
+  g_list_free (workspace->list_containing_self);
 
   for (i = 0; i < screen->n_xinerama_infos; i++)
     meta_rectangle_free_list_and_elements (workspace->xinerama_region[i]);

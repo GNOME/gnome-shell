@@ -1,3 +1,16 @@
+2006-02-10  Thomas Thurman <thomas thurman org uk>
+
+	Avoid a memory leak when checking which workspace(s) a window is
+	on.  Fixes #322059.
+
+        * src/workspace.h (struct MetaWorkspace):
+        * src/workspace.c (meta_workspace_new, meta_workspace_free):
+	added list_containing_self member to MetaWorkspace
+
+        * src/window.c (meta_window_get_workspaces): use
+	window->workspace->list_containing_self instead of allocating (and
+	leaking) such a list on the fly.
+
 2006-02-09  Thomas Thurman <thomas thurman org uk>
 
         * src/testboxes.c (test_regions_okay, test_clamping_to_region):

@@ -43,6 +43,8 @@ struct _MetaWorkspace
   GList *windows;
   GList *mru_list;
 
+  GList  *list_containing_self;
+
   MetaRectangle work_area_screen;
   MetaRectangle *work_area_xinerama;
   GList  *screen_region;

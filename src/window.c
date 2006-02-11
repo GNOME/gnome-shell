@@ -5677,7 +5677,7 @@ meta_window_get_workspaces (MetaWindow *window)
   if (window->on_all_workspaces)
     return window->screen->workspaces;
   else
-    return g_list_prepend (NULL, window->workspace);
+    return window->workspace->list_containing_self;
 }
 
 static void
