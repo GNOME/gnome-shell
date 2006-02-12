@@ -1,5 +1,12 @@
 2006-02-11  Elijah Newren  <newren gmail com>
 
+	Add a man page for metacity.  Original version taken from Debian
+	(written by Thom May and Akira Tagoh) and updated by Luke Morton
+	and Philip O'Brien.  Necessary auto-fu supplied by Philip O'Brien.
+	Fixes #321279.
+
+2006-02-11  Elijah Newren  <newren gmail com>
+
 	* src/stack.h (enum MetaStackLayer):
 	* src/stack.c (get_standalone_layer):
 	actually use META_LAYER_TOP but just manually make it equal to
