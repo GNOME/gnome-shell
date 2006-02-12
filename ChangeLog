@@ -1,3 +1,11 @@
+2006-02-11  Thomas Thurman <thomas thurman org uk>
+
+        Disable alt-f7 if a window can't be moved, and alt-f8 if it
+        can't be resized.  Fixes #328920.
+
+        * src/keybindings.c (handle_begin_move, handle_begin_resize):
+        check window->has_*_func before beginning operation
+
 2006-02-11  Elijah Newren  <newren gmail com>
 
 	Add a man page for metacity.  Original version taken from Debian

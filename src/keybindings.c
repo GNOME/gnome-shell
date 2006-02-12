@@ -3173,7 +3173,7 @@ handle_begin_move         (MetaDisplay    *display,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  if (window)
+  if (window && window->has_move_func)
     {
       meta_window_begin_grab_op (window,
                                  META_GRAB_OP_KEYBOARD_MOVING,
@@ -3188,7 +3188,7 @@ handle_begin_resize       (MetaDisplay    *display,
                            XEvent         *event,
                            MetaKeyBinding *binding)
 {
-  if (window)
+  if (window && window->has_resize_func)
     {
       meta_window_begin_grab_op (window,
                                  META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN,
