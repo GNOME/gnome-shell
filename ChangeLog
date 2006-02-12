@@ -1,5 +1,13 @@
 2006-02-11  Elijah Newren  <newren gmail com>
 
+	* src/stack.h (enum MetaStackLayer):
+	* src/stack.c (get_standalone_layer):
+	actually use META_LAYER_TOP but just manually make it equal to
+	META_LAYER_DOCK.  Add a note point to the EWMH for why we do this.
+	#330717
+	
+2006-02-11  Elijah Newren  <newren gmail com>
+
 	* src/window.c (enum GnomeWinLayer): remove this legacy cruft that
 	we stopped using years ago
 

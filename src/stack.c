@@ -292,7 +292,7 @@ get_standalone_layer (MetaWindow *window)
                                                 window->display->expected_focus_window))))
         layer = META_LAYER_FULLSCREEN;
       else if (window->wm_state_above)
-        layer = META_LAYER_DOCK;
+        layer = META_LAYER_TOP;
       else
         layer = META_LAYER_NORMAL;
       break;
