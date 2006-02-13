@@ -1,5 +1,9 @@
 2006-02-13  Elijah Newren  <newren gmail com>
 
+	* NEWS:	2.13.89 release
+
+2006-02-13  Elijah Newren  <newren gmail com>
+
 	* src/keybindings.c (process_tab_grab):
 	We had that prev_window code in multiple places and it was all
 	identical.  Let's just stick it in one place to make the function

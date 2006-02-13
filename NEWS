@@ -1,3 +1,27 @@
+2.13.89
+==
+
+Thanks to Søren Sandmann, Thomas Thurman, Thom May, Akira Tagoh,
+Luke Morton, and Philip O'Brien for improvements in this release.
+
+ - Compositor improvements [remember that the compositor is still
+   disabled by default]: New fancy minimize animation that fades in
+   and out, new debug stuff, various bug fixes (Søren)
+ - When buggy apps create synthetic button or keypresses without a
+   timestamp, produce a warning instead of failing an assertion
+   (Thomas) [#313490]
+ - Avoid a memory leak when checking which workspace(s) a window is
+   on (Thomas) [#322059]
+ - Add a man page for metacity (Thom, Akira, Luke, Philip) [#321279]
+ - Disable alt-f7 if a window can't be moved, and alt-f8 if it can't
+   be resized (Thomas) [#328920]
+ - Allow alt-escape to cancel alt-tabbing, and vice versa (Thomas)
+   [#141425]
+
+Translations
+  Miloslav Trmac (cs), Kjartan Maraas (nb), Tino Meinen (nl), 
+  Kjartan Maraas (no), Слободан Д. Средојевић (sr), Funda Wang (zh_CN)
+
 2.13.55
 ==
 
