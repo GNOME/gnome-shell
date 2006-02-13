@@ -1,3 +1,9 @@
+2006-02-13  Thomas Thurman <thomas thurman org uk>
+
+	* src/keybindings.c (process_tab_grab):
+	Allow alt-escape to cancel alt-tabbing, and vice versa.  Fixes
+	#141425.
+
 2006-02-11  Thomas Thurman <thomas thurman org uk>
 
         Disable alt-f7 if a window can't be moved, and alt-f8 if it

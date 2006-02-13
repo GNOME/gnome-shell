@@ -2317,10 +2317,59 @@ process_tab_grab (MetaDisplay *display,
                                           keysym,
                                           display->grab_mask);
 
-  /* FIXME weird side effect here is that you can use the Escape
-   * key while tabbing, or the tab key while escaping
+  /* Cancel when alt-Escape is pressed during using alt-Tab, and vice
+   * versa.
    */
-  
+  switch (action)
+    {
+    case META_KEYBINDING_ACTION_CYCLE_PANELS:
+    case META_KEYBINDING_ACTION_CYCLE_WINDOWS:
+    case META_KEYBINDING_ACTION_CYCLE_PANELS_BACKWARD:
+    case META_KEYBINDING_ACTION_CYCLE_WINDOWS_BACKWARD:
+      /* CYCLE_* are traditionally Escape-based actions,
+       * and should cancel traditionally Tab-based ones.
+       */
+      if (display->grab_op == META_GRAB_OP_KEYBOARD_TABBING_NORMAL ||
+          display->grab_op == META_GRAB_OP_KEYBOARD_TABBING_DOCK)
+        {
+          return FALSE;
+        }
+      break;
+    case META_KEYBINDING_ACTION_SWITCH_PANELS:
+    case META_KEYBINDING_ACTION_SWITCH_WINDOWS:
+    case META_KEYBINDING_ACTION_SWITCH_PANELS_BACKWARD:
+    case META_KEYBINDING_ACTION_SWITCH_WINDOWS_BACKWARD:
+      /* SWITCH_* are traditionally Tab-based actions,
+       * and should cancel traditionally Escape-based ones.
+       */
+      if (display->grab_op == META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL ||
+          display->grab_op == META_GRAB_OP_KEYBOARD_ESCAPING_DOCK)
+        {
+          /* Also, we must re-lower and re-minimize whatever window
+           * we'd previously raised and unminimized.
+           */
+          Window      prev_xwindow;
+          MetaWindow *prev_window;
+          meta_stack_set_positions (screen->stack,
+                                    screen->display->grab_old_window_stacking);
+
+          prev_xwindow =
+                 (Window) meta_ui_tab_popup_get_selected (screen->tab_popup);
+          prev_window =
+                 meta_display_lookup_x_window (display, prev_xwindow);
+
+          if (prev_window && prev_window->tab_unminimized)
+            {
+              meta_window_minimize (prev_window);
+              prev_window->tab_unminimized = FALSE;
+            }
+          return FALSE;
+        }
+      break;
+    default:
+      break;
+    }
+   
   popup_not_showing = FALSE;
   key_used = FALSE;
   backward = FALSE;
