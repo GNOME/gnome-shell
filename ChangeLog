@@ -1,10 +1,17 @@
-2006-02-13  Thomas Thurman <thomas thurman org uk>
+2006-02-13  Elijah Newren  <newren gmail com>
+
+	* src/keybindings.c (process_tab_grab):
+	We had that prev_window code in multiple places and it was all
+	identical.  Let's just stick it in one place to make the function
+	easier to read.
+
+2006-02-13  Thomas Thurman  <thomas thurman org uk>
 
 	* src/keybindings.c (process_tab_grab):
 	Allow alt-escape to cancel alt-tabbing, and vice versa.  Fixes
 	#141425.
 
-2006-02-11  Thomas Thurman <thomas thurman org uk>
+2006-02-11  Thomas Thurman  <thomas thurman org uk>
 
         Disable alt-f7 if a window can't be moved, and alt-f8 if it
         can't be resized.  Fixes #328920.
@@ -32,7 +39,7 @@
 	* src/window.c (enum GnomeWinLayer): remove this legacy cruft that
 	we stopped using years ago
 
-2006-02-10  Thomas Thurman <thomas thurman org uk>
+2006-02-10  Thomas Thurman  <thomas thurman org uk>
 
 	Avoid a memory leak when checking which workspace(s) a window is
 	on.  Fixes #322059.
@@ -45,7 +52,7 @@
 	window->workspace->list_containing_self instead of allocating (and
 	leaking) such a list on the fly.
 
-2006-02-09  Thomas Thurman <thomas thurman org uk>
+2006-02-09  Thomas Thurman  <thomas thurman org uk>
 
         * src/testboxes.c (test_regions_okay, test_clamping_to_region):
         add messages to explain that warnings are harmless
@@ -59,7 +66,7 @@ Mon Feb  6 17:45:39 2006  Søren Sandmann  <sandmann@redhat.com>
 	* src/compositor.c: New fancy minimize animation. Fade windows in
 	and out.
 
-2006-02-03  Thomas Thurman <thomas thurman org uk>
+2006-02-03  Thomas Thurman  <thomas thurman org uk>
 
         * src/display.c (event_callback): produce warning when invalid
         events with no timestamp are received, rather than failing an

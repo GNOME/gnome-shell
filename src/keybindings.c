@@ -2261,6 +2261,8 @@ process_tab_grab (MetaDisplay *display,
   gboolean popup_not_showing;
   gboolean backward;
   gboolean key_used;
+  Window      prev_xwindow;
+  MetaWindow *prev_window;
 
   if (screen != display->grab_screen)
     return FALSE;
@@ -2313,6 +2315,8 @@ process_tab_grab (MetaDisplay *display,
   if (is_modifier (display, event->xkey.keycode))
     return TRUE;
 
+  prev_xwindow = (Window) meta_ui_tab_popup_get_selected (screen->tab_popup);
+  prev_window  = meta_display_lookup_x_window (display, prev_xwindow);
   action = display_get_keybinding_action (display,
                                           keysym,
                                           display->grab_mask);
@@ -2348,16 +2352,8 @@ process_tab_grab (MetaDisplay *display,
           /* Also, we must re-lower and re-minimize whatever window
            * we'd previously raised and unminimized.
            */
-          Window      prev_xwindow;
-          MetaWindow *prev_window;
           meta_stack_set_positions (screen->stack,
                                     screen->display->grab_old_window_stacking);
-
-          prev_xwindow =
-                 (Window) meta_ui_tab_popup_get_selected (screen->tab_popup);
-          prev_window =
-                 meta_display_lookup_x_window (display, prev_xwindow);
-
           if (prev_window && prev_window->tab_unminimized)
             {
               meta_window_minimize (prev_window);
@@ -2402,13 +2398,6 @@ process_tab_grab (MetaDisplay *display,
   
   if (key_used)
     {
-      Window      prev_xwindow;
-      MetaWindow *prev_window;
-      prev_xwindow =
-        (Window) meta_ui_tab_popup_get_selected (screen->tab_popup);
-      prev_window =
-        meta_display_lookup_x_window (display, prev_xwindow);
-
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Key pressed, moving tab focus in popup\n");
 
@@ -2452,9 +2441,6 @@ process_tab_grab (MetaDisplay *display,
     }
   else
     {
-      Window      prev_xwindow;
-      MetaWindow *prev_window;
-
       /* end grab */
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "Ending tabbing/cycling, uninteresting key pressed\n");
@@ -2463,11 +2449,6 @@ process_tab_grab (MetaDisplay *display,
                   "Syncing to old stack positions.\n");
       meta_stack_set_positions (screen->stack,
                                 screen->display->grab_old_window_stacking);
-
-      prev_xwindow =
-        (Window) meta_ui_tab_popup_get_selected (screen->tab_popup);
-      prev_window =
-        meta_display_lookup_x_window (display, prev_xwindow);
 
       if (prev_window && prev_window->tab_unminimized)
         {
