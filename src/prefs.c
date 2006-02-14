@@ -334,6 +334,8 @@ meta_prefs_init (void)
   char *str_val;
   int int_val;
   gboolean bool_val, bool_val_2;
+  gboolean update_visual;
+  gboolean update_audible;
   
   if (default_client != NULL)
     return;
@@ -437,8 +439,8 @@ meta_prefs_init (void)
 
   bool_val = provide_visual_bell;
   bool_val_2 = bell_is_audible;
-  gboolean update_visual = get_bool (KEY_VISUAL_BELL,  &bool_val);
-  gboolean update_audible = get_bool (KEY_AUDIBLE_BELL, &bool_val_2);
+  update_visual = get_bool (KEY_VISUAL_BELL,  &bool_val);
+  update_audible = get_bool (KEY_AUDIBLE_BELL, &bool_val_2);
   if (update_visual || update_audible)
     update_visual_bell (bool_val, bool_val_2);
       

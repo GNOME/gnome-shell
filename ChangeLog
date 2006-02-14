@@ -1,3 +1,11 @@
+2006-02-14  Elijah Newren  <newren gmail com>
+
+	Patch from Jens Granseuer to fix more build issues with gcc 2.95.
+	#331166.
+
+	* src/prefs.c (meta_prefs_init):
+	Remove C99 style variable initiailization
+
 2006-02-13  Elijah Newren  <newren gmail com>
 
 	* configure.in: post-release version bump to 2.13.144
