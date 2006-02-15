@@ -25,7 +25,7 @@
 #include "util.h"
 #include "display.h"
 
-typedef void (* MetaMinimizeFinishedFunc) (gpointer data);
+typedef void (* MetaAnimationFinishedFunc) (gpointer data);
 
 MetaCompositor* meta_compositor_new           (MetaDisplay       *display);
 void            meta_compositor_unref         (MetaCompositor    *compositor);
@@ -45,13 +45,27 @@ void meta_compositor_manage_screen   (MetaCompositor *compositor,
 void meta_compositor_unmanage_screen (MetaCompositor *compositor,
                                       MetaScreen     *screen);
 
-void meta_compositor_minimize (MetaCompositor           *compositor,
-			       MetaWindow               *window,
-			       int                       x,
-			       int                       y,
-			       int                       width,
-			       int                       height,
-			       MetaMinimizeFinishedFunc  finished_cb,
-			       gpointer                  finished_data);
+void meta_compositor_minimize (MetaCompositor            *compositor,
+			       MetaWindow                *window,
+			       int                        x,
+			       int                        y,
+			       int                        width,
+			       int                        height,
+			       MetaAnimationFinishedFunc  finished_cb,
+			       gpointer                   finished_data);
+
+void
+meta_compositor_unminimize (MetaCompositor            *compositor,
+			    MetaWindow                *window,
+			    int                        x,
+			    int                        y,
+			    int                        width,
+			    int                        height,
+			    MetaAnimationFinishedFunc  finished,
+			    gpointer                   data);
+void
+meta_compositor_set_updates (MetaCompositor *compositor,
+			     MetaWindow *window,
+			     gboolean updates);
 
 #endif /* META_COMPOSITOR_H */

@@ -1333,14 +1333,14 @@ implement_showing (MetaWindow *window,
   /* Actually show/hide the window */
   meta_verbose ("Implement showing = %d for window %s\n",
                 showing, window->desc);
-  
+   
   if (!showing)
     {
       gboolean on_workspace;
-
+      
       on_workspace = meta_window_located_on_workspace (window, 
                                                        window->screen->active_workspace);
-  
+      
       /* Really this effects code should probably
        * be in meta_window_hide so the window->mapped
        * test isn't duplicated here. Anyhow, we animate
@@ -1390,7 +1390,7 @@ implement_showing (MetaWindow *window,
 					       META_BOX_ANIM_SCALE);
 
 	      finish_minimize (window);
-	  }
+	    }
 	}
       else
 	{
@@ -3096,6 +3096,10 @@ meta_window_move_resize_internal (MetaWindow  *window,
 	  window->sync_request_time.tv_usec == 0 &&
 	  window->sync_request_time.tv_sec == 0)
 	{
+	  /* turn off updating */	
+	  if (window->display->compositor)
+	    meta_compositor_set_updates (window->display->compositor, window, FALSE);
+
 	  send_sync_request (window);
 	}
 #endif
@@ -6967,6 +6971,10 @@ update_resize (MetaWindow *window,
 
       return;
     }
+
+  /* If we get here, it means the client should have redrawn itself */
+  if (window->display->compositor)
+    meta_compositor_set_updates (window->display->compositor, window, TRUE);
 
   /* Remove any scheduled compensation events */
   if (window->display->grab_resize_timeout_id)

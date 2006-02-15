@@ -1,3 +1,16 @@
+Wed Feb 15 14:47:50 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/compositor.c (meta_compositor_unminimize): Add unused wobbly
+	unminimize animation by Kristian
+
+	* src/compositor.c (meta_compositor_minimize): Add wobbly minimize
+	animation by Kristian.
+
+	* src/compositor.c: Add support for turning updates on and off.
+
+	* src/window.c (meta_window_move_resize_internal): Use
+	sync counter to make composited resizing tear free
+
 2006-02-14  Elijah Newren  <newren gmail com>
 
 	Patch from Jens Granseuer to fix more build issues with gcc 2.95.
