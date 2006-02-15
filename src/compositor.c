@@ -90,6 +90,8 @@ free_window_hash_value (void *v)
 }
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
+static WsDisplay *compositor_display;
+
 MetaCompositor*
 meta_compositor_new (MetaDisplay *display)
 {
@@ -98,9 +100,11 @@ meta_compositor_new (MetaDisplay *display)
   
   compositor = g_new0 (MetaCompositor, 1);
   
-  compositor->display = ws_display_new (NULL);
-
-  ws_display_set_synchronize (compositor->display,
+  if (!compositor_display)
+    compositor_display = ws_display_new (NULL);
+  compositor->display = compositor_display;
+  
+  ws_display_set_synchronize (compositor_display,
 			      getenv ("METACITY_SYNC") != NULL);
   
   ws_display_init_test (compositor->display);
@@ -109,10 +113,10 @@ meta_compositor_new (MetaDisplay *display)
   compositor->meta_display = display;
   
   compositor->window_hash = g_hash_table_new_full (
-      meta_unsigned_long_hash,
-      meta_unsigned_long_equal,
-      NULL,
-      free_window_hash_value);
+						   meta_unsigned_long_hash,
+						   meta_unsigned_long_equal,
+						   NULL,
+						   free_window_hash_value);
   
   compositor->enabled = TRUE;
   
@@ -174,7 +178,7 @@ draw_windows (MetaScreen *screen,
   node = list->data;
   
   draw_windows (screen, list->next);
-
+  
 #if 0
   g_print ("rendering: %p\n", node);
 #endif
@@ -219,7 +223,7 @@ handle_restacking (MetaCompositor *compositor,
        */
       return;
     }
-
+  
 #if 0
   g_print ("restacking\n");
 #endif
@@ -252,7 +256,7 @@ process_configure_notify (MetaCompositor  *compositor,
   
   if (!node)
     return;
-
+  
 #if 0
   g_print ("we do now have a node\n");
 #endif
@@ -293,8 +297,8 @@ static void queue_repaint (CmDrawableNode *node, gpointer data);
 
 typedef struct
 {
-    CmDrawableNode *node;
-    GTimer	   *timer;
+  CmDrawableNode *node;
+  GTimer	   *timer;
 } FadeInfo;
 
 #define FADE_TIME 0.3
@@ -302,56 +306,56 @@ typedef struct
 static gboolean
 fade_in (gpointer data)
 {
-    FadeInfo *info = data;
-    gdouble elapsed = g_timer_elapsed (info->timer, NULL);
-    gdouble alpha;
-
-    if (elapsed > FADE_TIME)
-	alpha = 1.0;
-    else
-	alpha = elapsed / FADE_TIME;
-
-    cm_drawable_node_set_alpha (info->node, alpha);
-
-    if (elapsed >= FADE_TIME)
+  FadeInfo *info = data;
+  gdouble elapsed = g_timer_elapsed (info->timer, NULL);
+  gdouble alpha;
+  
+  if (elapsed > FADE_TIME)
+    alpha = 1.0;
+  else
+    alpha = elapsed / FADE_TIME;
+  
+  cm_drawable_node_set_alpha (info->node, alpha);
+  
+  if (elapsed >= FADE_TIME)
     {
-	g_object_unref (info->node);
-	return FALSE;
+      g_object_unref (info->node);
+      return FALSE;
     }
-    else
+  else
     {
-	return TRUE;
+      return TRUE;
     }
 }
 
 static gboolean
 fade_out (gpointer data)
 {
-    FadeInfo *info = data;
-    gdouble elapsed = g_timer_elapsed (info->timer, NULL);
-    gdouble alpha;
-
-    if (elapsed > FADE_TIME)
-	alpha = 0.0;
-    else
-	alpha = 1 - (elapsed / FADE_TIME);
-
-    cm_drawable_node_set_alpha (info->node, alpha);
-
+  FadeInfo *info = data;
+  gdouble elapsed = g_timer_elapsed (info->timer, NULL);
+  gdouble alpha;
+  
+  if (elapsed > FADE_TIME)
+    alpha = 0.0;
+  else
+    alpha = 1 - (elapsed / FADE_TIME);
+  
+  cm_drawable_node_set_alpha (info->node, alpha);
+  
 #if 0
-    g_print ("fade out: %f\n", alpha);
+  g_print ("fade out: %f\n", alpha);
 #endif
-    
-    if (elapsed >= FADE_TIME)
+  
+  if (elapsed >= FADE_TIME)
     {
-	cm_drawable_node_set_viewable (info->node, FALSE);
-
-	g_object_unref (info->node);
-	return FALSE;
+      cm_drawable_node_set_viewable (info->node, FALSE);
+      
+      g_object_unref (info->node);
+      return FALSE;
     }
-    else
+  else
     {
-	return TRUE;
+      return TRUE;
     }
 }
 #endif
@@ -363,7 +367,7 @@ process_map (MetaCompositor     *compositor,
 {
   CmDrawableNode *node;
   MetaScreen *screen;
-
+  
   /* FIXME: do we sometimes get mapnotifies for windows that are
    * not (direct) children of the root?
    */
@@ -371,7 +375,7 @@ process_map (MetaCompositor     *compositor,
   /* See if window was mapped as child of root */
   screen = meta_display_screen_for_root (compositor->meta_display,
 					 event->event);
-
+  
   if (screen == NULL)
     {
       meta_topic (META_DEBUG_COMPOSITOR,
@@ -409,7 +413,7 @@ process_map (MetaCompositor     *compositor,
   else
     {
       cm_drawable_node_update_pixmap (node);
-
+      
       cm_drawable_node_set_alpha (node, 1.0);
       
       FadeInfo *info = g_new (FadeInfo, 1);
@@ -419,7 +423,7 @@ process_map (MetaCompositor     *compositor,
       
       cm_drawable_node_set_viewable (node, TRUE);
     }
-
+  
   queue_repaint (node, screen);
 }
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
@@ -431,7 +435,7 @@ process_unmap (MetaCompositor     *compositor,
 {
   CmDrawableNode *node;
   MetaScreen *screen;
-
+  
   /* See if window was unmapped as child of root */
   screen = meta_display_screen_for_root (compositor->meta_display,
 					 event->event);
@@ -447,7 +451,7 @@ process_unmap (MetaCompositor     *compositor,
 #if 0
   g_print ("processing unmap on %lx\n", event->window);
 #endif
- 
+  
   node = g_hash_table_lookup (compositor->window_hash,
 			      &event->window);
   if (node != NULL)
@@ -496,10 +500,10 @@ process_create (MetaCompositor     *compositor,
   else
     {
 #if 0
-	g_print (//META_DEBUG_COMPOSITOR,
-	    "Create window 0x%lx, adding\n", event->window);
+      g_print (//META_DEBUG_COMPOSITOR,
+	       "Create window 0x%lx, adding\n", event->window);
 #endif
-	
+      
       meta_compositor_add_window (compositor,
 				  event->window, &attrs);
     }
@@ -546,7 +550,7 @@ process_reparent (MetaCompositor      *compositor,
   
   event_screen = meta_display_screen_for_root (compositor->meta_display,
 					       event->event);
-
+  
   if (event_screen == NULL)
     {
       meta_topic (META_DEBUG_COMPOSITOR,
@@ -557,8 +561,8 @@ process_reparent (MetaCompositor      *compositor,
   
 #if 0
   g_print (//META_DEBUG_COMPOSITOR,
-      "Reparent window 0x%lx new parent 0x%lx received on 0x%lx\n",
-      event->window, event->parent, event->event);
+	   "Reparent window 0x%lx new parent 0x%lx received on 0x%lx\n",
+	   event->window, event->parent, event->event);
 #endif
   
   parent_screen = meta_display_screen_for_root (compositor->meta_display,
@@ -669,27 +673,27 @@ static void
 update_frame_counter (void)
 {
 #define BUFSIZE 128
-    static GTimer *timer;
-    static double buffer [BUFSIZE];
-    static int next = 0;
-
-    if (!timer)
-	timer = g_timer_new ();
-
-    buffer[next++] = g_timer_elapsed (timer, NULL);
-
-    if (next == BUFSIZE)
+  static GTimer *timer;
+  static double buffer [BUFSIZE];
+  static int next = 0;
+  
+  if (!timer)
+    timer = g_timer_new ();
+  
+  buffer[next++] = g_timer_elapsed (timer, NULL);
+  
+  if (next == BUFSIZE)
     {
-	int i;
-	double total;
-	
-	next = 0;
-
-	total = 0.0;
-	for (i = 1; i < BUFSIZE; ++i)
-	    total += buffer[i] - buffer[i - 1];
-
-	g_print ("frames per second: %f\n", 1 / (total / (BUFSIZE - 1)));
+      int i;
+      double total;
+      
+      next = 0;
+      
+      total = 0.0;
+      for (i = 1; i < BUFSIZE; ++i)
+	total += buffer[i] - buffer[i - 1];
+      
+      g_print ("frames per second: %f\n", 1 / (total / (BUFSIZE - 1)));
     }
 }
 
@@ -699,7 +703,7 @@ update (gpointer data)
   MetaScreen *screen = data;
   ScreenInfo *scr_info = screen->compositor_data;
   WsWindow *gl_window = scr_info->glw;
-
+  
   glViewport (0, 0, screen->rect.width, screen->rect.height);
   
 #if 0
@@ -717,7 +721,7 @@ update (gpointer data)
 #if 0
   glClear (GL_DEPTH_BUFFER_BIT);
 #endif
-
+  
 #if 0
   glColor4f (1.0, 0.0, 0.0, 1.0);
   
@@ -750,46 +754,52 @@ update (gpointer data)
   
   /* FIXME: we should probably grab the server around the raise/swap
    */
-
+  
 #if 0
   ws_display_grab (ws_drawable_get_display ((WsDrawable *)gl_window));
 #endif
-
+  
   ws_window_gl_swap_buffers (gl_window);
   glFinish();
-
+  
   update_frame_counter ();
-
+  
 #if 0
   ws_display_ungrab (ws_drawable_get_display ((WsDrawable *)gl_window));
 #endif
   
   scr_info->idle_id = 0;
-
+  
   return FALSE;
 }
 
 static void
 queue_repaint (CmDrawableNode *node, gpointer data)
 {
-    MetaScreen *screen = data;
-    ScreenInfo *scr_info = screen->compositor_data;
-
+  MetaScreen *screen = data;
+  ScreenInfo *scr_info = screen->compositor_data;
+  
 #if 0
-    g_print ("metacity queueing repaint for %p\n", node);
+  g_print ("metacity queueing repaint for %p\n", node);
 #endif
-    
-    if (!scr_info->idle_id)
+  
+  if (!scr_info)
     {
-	scr_info->idle_id = g_idle_add (update, screen);
+      /* compositor has been turned off */
+      return;
+    }
+  
+  if (!scr_info->idle_id)
+    {
+      scr_info->idle_id = g_idle_add (update, screen);
 #if 0
-	g_print ("done\n");
+      g_print ("done\n");
 #endif
     }
-    else
+  else
     {
 #if 0
-	g_print ("one was queued already\n");
+      g_print ("one was queued already\n");
 #endif
     }
 }
@@ -799,15 +809,15 @@ queue_repaint (CmDrawableNode *node, gpointer data)
 static void
 dump_stacking_order (GList *nodes)
 {
-    GList *list;
-
-    for (list = nodes; list != NULL; list = list->next)
+  GList *list;
+  
+  for (list = nodes; list != NULL; list = list->next)
     {
-	CmDrawableNode *node = list->data;
-	
-	g_print ("%lx, ", WS_RESOURCE_XID (node->drawable));
+      CmDrawableNode *node = list->data;
+      
+      g_print ("%lx, ", WS_RESOURCE_XID (node->drawable));
     }
-    g_print ("\n");
+  g_print ("\n");
 }
 #endif
 
@@ -838,36 +848,36 @@ meta_compositor_add_window (MetaCompositor    *compositor,
   
   if (node != NULL)
     {
-	g_print ("window %lx already added\n", xwindow);
+      g_print ("window %lx already added\n", xwindow);
       meta_topic (META_DEBUG_COMPOSITOR,
 		  "Window 0x%lx already added\n", xwindow);
       return;
     }
-
+  
   ws_display_begin_error_trap (compositor->display);
   
   drawable = (WsDrawable *)ws_window_lookup (compositor->display, xwindow);
-
+  
   scr_info = screen->compositor_data;
-
+  
   ws_display_end_error_trap (compositor->display);
-
+  
   if (!drawable)
-      return;
+    return;
   
   g_assert (scr_info);
-
+  
   ws_display_begin_error_trap (compositor->display);
   
   if (ws_window_query_input_only ((WsWindow *)drawable) ||
       drawable == (WsDrawable *)scr_info->glw)
     {
-	ws_display_end_error_trap (compositor->display);
+      ws_display_end_error_trap (compositor->display);
       return;
     }
-
+  
   ws_display_end_error_trap (compositor->display);
-
+  
   node = cm_drawable_node_new (drawable);
   
   cm_drawable_node_set_damage_func (node, queue_repaint, screen);
@@ -884,7 +894,7 @@ meta_compositor_add_window (MetaCompositor    *compositor,
    */
   scr_info->compositor_nodes = g_list_prepend (scr_info->compositor_nodes,
 					       node);
-
+  
   dump_stacking_order (scr_info->compositor_nodes);
   
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
@@ -932,7 +942,7 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   ScreenInfo *scr_info = g_new0 (ScreenInfo, 1);
   
   WsScreen *ws_screen =
-      ws_display_get_screen_from_number (compositor->display, screen->number);
+    ws_display_get_screen_from_number (compositor->display, screen->number);
   WsWindow *root = ws_screen_get_root_window (ws_screen);
   WsRegion *region;
   Window current_cm_sn_owner;
@@ -940,11 +950,11 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   Display *xdisplay;
   Atom cm_sn_atom;
   char buf[128];
-
-  scr_info->glw = ws_window_new_gl (root);
+  
+  scr_info->glw = ws_screen_get_gl_window (ws_screen);
   scr_info->compositor_nodes = NULL;
   scr_info->idle_id = 0;
-
+  
   g_print ("setting compositor_data for screen %p to %p\n", screen, scr_info);
   screen->compositor_data = scr_info;
   
@@ -959,27 +969,27 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   region = ws_region_new (compositor->display);
   ws_window_set_input_shape (scr_info->glw, region);
   g_object_unref (G_OBJECT (region));
-
+  
   xdisplay = WS_RESOURCE_XDISPLAY (ws_screen);
   snprintf(buf, sizeof(buf), "CM_S%d", screen->number);
   cm_sn_atom = XInternAtom (xdisplay, buf, False);
   current_cm_sn_owner = XGetSelectionOwner (xdisplay, cm_sn_atom);
-
+  
   if (current_cm_sn_owner != None)
-  {
+    {
       meta_warning (_("Screen %d on display \"%s\" already has a compositing manager\n"),
 		    screen->number, ",madgh");
-  }
+    }
   
   new_cm_sn_owner = ws_screen_get_root_window (ws_screen);
-
+  
   XSetSelectionOwner (xdisplay, cm_sn_atom, WS_RESOURCE_XID (new_cm_sn_owner),
-                      CurrentTime);
+		      CurrentTime);
   
   ws_window_map (scr_info->glw);
   
   ws_display_sync (compositor->display);
-
+  
 #if 0
   children = ws_window_list_children (root);
 #endif
@@ -993,6 +1003,9 @@ meta_compositor_unmanage_screen (MetaCompositor *compositor,
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS  
   ScreenInfo *scr_info = screen->compositor_data;
+  WsScreen *ws_screen =
+    ws_display_get_screen_from_number (compositor->display, screen->number);
+  WsWindow *root = ws_screen_get_root_window (ws_screen);
   
   if (!compositor->enabled)
     return; /* no extension */
@@ -1004,7 +1017,13 @@ meta_compositor_unmanage_screen (MetaCompositor *compositor,
       meta_compositor_remove_window (compositor,
 				     WS_RESOURCE (node->drawable)->xid);
     }
-  /* FIXME: free scr_info */
+  
+  ws_window_raise (scr_info->glw);
+  
+  ws_window_unredirect_subwindows (root);
+  ws_window_unmap (scr_info->glw);
+  
+  screen->compositor_data = NULL;
   
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 }
@@ -1054,10 +1073,10 @@ stop_minimize (gpointer data)
   g_source_remove (info->repaint_id);
   
   cm_drawable_node_set_deformation_func (info->node, NULL, NULL);
-
+  
   if (info->finished_func)
     info->finished_func (info->finished_data);
-
+  
   g_free (info);
   
   return FALSE;
@@ -1086,7 +1105,7 @@ minimize_deformation (gdouble time,
   
   *out_x = interpolate (pos, in_x, info->target.x + info->target.width * ((in_x - info->start.x)  / info->start.width), 10 * in_y);
   *out_y = interpolate (pos, in_y, info->target.y + info->target.height * ((in_y - info->start.y)  / info->start.height), 1.0);
-
+  
   if (elapsed > MINIMIZE_TIME)
     {
       g_assert (info->node);
@@ -1108,13 +1127,13 @@ interpolate_rectangle (gdouble		t,
 		       WsRectangle *	to,
 		       WsRectangle *	result)
 {
-    if (!result)
-	return;
-
-    result->x = interpolate (t, from->x, to->x, 1);
-    result->y = interpolate (t, from->y, to->y, 1);
-    result->width = interpolate (t, from->width, to->width, 1);
-    result->height = interpolate (t, from->height, to->height, 1);
+  if (!result)
+    return;
+  
+  result->x = interpolate (t, from->x, to->x, 1);
+  result->y = interpolate (t, from->y, to->y, 1);
+  result->width = interpolate (t, from->width, to->width, 1);
+  result->height = interpolate (t, from->height, to->height, 1);
 }
 
 #define MINIMIZE_STYLE 3
@@ -1142,228 +1161,228 @@ meta_compositor_minimize (MetaCompositor           *compositor,
 
 typedef struct
 {
-    CmDrawableNode *node;
-    GTimer *timer;
-
-    MetaCompositor *compositor;
-    ScreenInfo *scr_info;
-    
-    MetaMinimizeFinishedFunc finished_func;
-    gpointer		     finished_data;
-
-    gdouble	aspect_ratio;
-    
-    WsRectangle current_geometry;
-    WsRectangle target_geometry;
-    gdouble	 current_alpha;
-    gdouble	 target_alpha;
-
-    int		button_x;
-    int		button_y;
-    int		button_width;
-    int		button_height;
-    
-    /* FIXME: maybe would be simpler if all of this was an array */
-    gboolean phase_1_started;
-    gboolean phase_2_started;
-    gboolean phase_3_started;
-    gboolean phase_4_started;
-    gboolean phase_5_started;
+  CmDrawableNode *node;
+  GTimer *timer;
+  
+  MetaCompositor *compositor;
+  ScreenInfo *scr_info;
+  
+  MetaMinimizeFinishedFunc finished_func;
+  gpointer		     finished_data;
+  
+  gdouble	aspect_ratio;
+  
+  WsRectangle current_geometry;
+  WsRectangle target_geometry;
+  gdouble	 current_alpha;
+  gdouble	 target_alpha;
+  
+  int		button_x;
+  int		button_y;
+  int		button_width;
+  int		button_height;
+  
+  /* FIXME: maybe would be simpler if all of this was an array */
+  gboolean phase_1_started;
+  gboolean phase_2_started;
+  gboolean phase_3_started;
+  gboolean phase_4_started;
+  gboolean phase_5_started;
 } MiniInfo;
 
 static void
 set_geometry (MiniInfo *info, gdouble elapsed)
 {
-    WsRectangle rect;
-
-    interpolate_rectangle (elapsed, &info->current_geometry, &info->target_geometry, &rect);
-
-    g_print ("y: %d %d  (%f  => %d)\n", info->current_geometry.y, info->target_geometry.y,
-	     elapsed, rect.y);
-    
-    g_print ("setting: %d %d %d %d\n", rect.x, rect.y, rect.width, rect.height);
-    
-    cm_drawable_node_set_geometry (info->node,
-				   rect.x, rect.y,
-				   rect.width, rect.height);
+  WsRectangle rect;
+  
+  interpolate_rectangle (elapsed, &info->current_geometry, &info->target_geometry, &rect);
+  
+  g_print ("y: %d %d  (%f  => %d)\n", info->current_geometry.y, info->target_geometry.y,
+	   elapsed, rect.y);
+  
+  g_print ("setting: %d %d %d %d\n", rect.x, rect.y, rect.width, rect.height);
+  
+  cm_drawable_node_set_geometry (info->node,
+				 rect.x, rect.y,
+				 rect.width, rect.height);
 }
 
 static int
 center (gdouble what, gdouble in)
 {
-    return (in - what) / 2.0 + 0.5;
+  return (in - what) / 2.0 + 0.5;
 }
 
 static void
 run_phase_1 (MiniInfo *info, gdouble elapsed)
 {
-    if (!info->phase_1_started)
+  if (!info->phase_1_started)
     {
-	GList *next;
-	g_print ("starting phase 1\n");
-	info->phase_1_started = TRUE;
-
-	info->current_geometry.x = info->node->real_x;
-	info->current_geometry.y = info->node->real_y;
-	info->current_geometry.width = info->node->real_width;
-	info->current_geometry.height = info->node->real_height;
-
-	info->target_geometry.height = info->button_height;
-	info->target_geometry.width = info->button_height * info->aspect_ratio;
-	info->target_geometry.x = info->button_x + center (info->target_geometry.width, info->button_width);
-	info->target_geometry.y = info->node->real_y + center (info->button_height, info->node->real_height);
-
-	handle_restacking (info->compositor, info->node,
-			   info->scr_info->compositor_nodes->data);
+      GList *next;
+      g_print ("starting phase 1\n");
+      info->phase_1_started = TRUE;
+      
+      info->current_geometry.x = info->node->real_x;
+      info->current_geometry.y = info->node->real_y;
+      info->current_geometry.width = info->node->real_width;
+      info->current_geometry.height = info->node->real_height;
+      
+      info->target_geometry.height = info->button_height;
+      info->target_geometry.width = info->button_height * info->aspect_ratio;
+      info->target_geometry.x = info->button_x + center (info->target_geometry.width, info->button_width);
+      info->target_geometry.y = info->node->real_y + center (info->button_height, info->node->real_height);
+      
+      handle_restacking (info->compositor, info->node,
+			 info->scr_info->compositor_nodes->data);
     }
-
-    set_geometry (info, elapsed);
+  
+  set_geometry (info, elapsed);
 }
 
 static void
 run_phase_2 (MiniInfo *info, gdouble elapsed)
 {
 #define WOBBLE_FACTOR 3
-    
-    if (!info->phase_2_started)
+  
+  if (!info->phase_2_started)
     {
-	WsRectangle cur = info->target_geometry;
-
-	g_print ("starting phase 2\n");
-
-	info->phase_2_started = TRUE;
-	
-	info->current_geometry = cur;
-	
-	info->target_geometry.x = cur.x + center (WOBBLE_FACTOR * cur.width, cur.width);
-	info->target_geometry.y = cur.y + center (WOBBLE_FACTOR * cur.height, cur.height);
-	info->target_geometry.width = cur.width * WOBBLE_FACTOR;
-	info->target_geometry.height = cur.height * WOBBLE_FACTOR;
+      WsRectangle cur = info->target_geometry;
+      
+      g_print ("starting phase 2\n");
+      
+      info->phase_2_started = TRUE;
+      
+      info->current_geometry = cur;
+      
+      info->target_geometry.x = cur.x + center (WOBBLE_FACTOR * cur.width, cur.width);
+      info->target_geometry.y = cur.y + center (WOBBLE_FACTOR * cur.height, cur.height);
+      info->target_geometry.width = cur.width * WOBBLE_FACTOR;
+      info->target_geometry.height = cur.height * WOBBLE_FACTOR;
     }
-
-    set_geometry (info, elapsed);
+  
+  set_geometry (info, elapsed);
 }
 
 static void
 run_phase_3 (MiniInfo *info, gdouble elapsed)
 {
-    if (!info->phase_3_started)
+  if (!info->phase_3_started)
     {
-	WsRectangle cur = info->target_geometry;
-	
-	g_print ("starting phase 3\n");
-	info->phase_3_started = TRUE;
-
-	info->current_geometry = cur;
-
-	info->target_geometry.height = info->button_height;
-	info->target_geometry.width = info->button_height * info->aspect_ratio;
-	info->target_geometry.x = info->button_x + center (info->target_geometry.width, info->button_width);
-	info->target_geometry.y = info->node->real_y + center (info->button_height, info->node->real_height);
+      WsRectangle cur = info->target_geometry;
+      
+      g_print ("starting phase 3\n");
+      info->phase_3_started = TRUE;
+      
+      info->current_geometry = cur;
+      
+      info->target_geometry.height = info->button_height;
+      info->target_geometry.width = info->button_height * info->aspect_ratio;
+      info->target_geometry.x = info->button_x + center (info->target_geometry.width, info->button_width);
+      info->target_geometry.y = info->node->real_y + center (info->button_height, info->node->real_height);
     }
-
-    set_geometry (info, elapsed);
+  
+  set_geometry (info, elapsed);
 }
 
 static void
 run_phase_4 (MiniInfo *info, gdouble elapsed)
 {
-    if (!info->phase_4_started)
+  if (!info->phase_4_started)
     {
-	WsRectangle cur = info->target_geometry;
-	
-	g_print ("starting phase 4\n");
-	info->phase_4_started = TRUE;
-
-	info->current_geometry = cur;
-
-	info->target_geometry.height = info->button_height;
-	info->target_geometry.width = info->button_height * info->aspect_ratio;
-	info->target_geometry.x = cur.x;
-	g_print ("button y: %d\n", info->button_y);
-	info->target_geometry.y = info->button_y;
+      WsRectangle cur = info->target_geometry;
+      
+      g_print ("starting phase 4\n");
+      info->phase_4_started = TRUE;
+      
+      info->current_geometry = cur;
+      
+      info->target_geometry.height = info->button_height;
+      info->target_geometry.width = info->button_height * info->aspect_ratio;
+      info->target_geometry.x = cur.x;
+      g_print ("button y: %d\n", info->button_y);
+      info->target_geometry.y = info->button_y;
     }
-
-    set_geometry (info, elapsed);
+  
+  set_geometry (info, elapsed);
 }
 
 static void
 run_phase_5 (MiniInfo *info, gdouble elapsed)
 {
-    if (!info->phase_5_started)
+  if (!info->phase_5_started)
     {
-	WsRectangle cur = info->target_geometry;
-
-	g_print ("starting phase 5\n");
-	info->phase_5_started = TRUE;
-
-	info->current_geometry = cur;
-	info->target_geometry.x = info->button_x;
-	info->target_geometry.y = info->button_y;
-	info->target_geometry.width = info->button_width;
-	info->target_geometry.height = info->button_height;
+      WsRectangle cur = info->target_geometry;
+      
+      g_print ("starting phase 5\n");
+      info->phase_5_started = TRUE;
+      
+      info->current_geometry = cur;
+      info->target_geometry.x = info->button_x;
+      info->target_geometry.y = info->button_y;
+      info->target_geometry.width = info->button_width;
+      info->target_geometry.height = info->button_height;
     }
-
-    set_geometry (info, elapsed);
-
-    cm_drawable_node_set_alpha (info->node, 1 - elapsed);
+  
+  set_geometry (info, elapsed);
+  
+  cm_drawable_node_set_alpha (info->node, 1 - elapsed);
 }
 
 static gboolean
 run_animation_01 (gpointer data)
 {
-    MiniInfo *info = data;
-    gdouble elapsed;
-
-    elapsed = g_timer_elapsed (info->timer, NULL);
-
+  MiniInfo *info = data;
+  gdouble elapsed;
+  
+  elapsed = g_timer_elapsed (info->timer, NULL);
+  
 #define PHASE_0		0.0
 #define PHASE_1		0.225		/* scale to size of button */
 #define PHASE_2		0.325		/* scale up a little */
 #define PHASE_3		0.425		/* scale back a little */
 #define PHASE_4		0.650		/* move to button */
 #define PHASE_5		1.0		/* fade out */
-
-    if (elapsed < PHASE_1)
+  
+  if (elapsed < PHASE_1)
     {
-	/* phase one */
-	run_phase_1 (info, (elapsed - PHASE_0)/(PHASE_1 - PHASE_0));
+      /* phase one */
+      run_phase_1 (info, (elapsed - PHASE_0)/(PHASE_1 - PHASE_0));
     }
-    else if (elapsed < PHASE_2)
+  else if (elapsed < PHASE_2)
     {
-	/* phase two */
-	run_phase_2 (info, (elapsed - PHASE_1)/(PHASE_2 - PHASE_1));
+      /* phase two */
+      run_phase_2 (info, (elapsed - PHASE_1)/(PHASE_2 - PHASE_1));
     }
-    else if (elapsed < PHASE_3)
+  else if (elapsed < PHASE_3)
     {
-	/* phase three */
-	run_phase_3 (info, (elapsed - PHASE_2)/(PHASE_3 - PHASE_2));
+      /* phase three */
+      run_phase_3 (info, (elapsed - PHASE_2)/(PHASE_3 - PHASE_2));
     }
-    else if (elapsed < PHASE_4)
+  else if (elapsed < PHASE_4)
     {
-	/* phase four */
-	run_phase_4 (info, (elapsed - PHASE_3)/(PHASE_4 - PHASE_3));
+      /* phase four */
+      run_phase_4 (info, (elapsed - PHASE_3)/(PHASE_4 - PHASE_3));
     }
-    else if (elapsed < PHASE_5)
+  else if (elapsed < PHASE_5)
     {
-	/* phase five */
-	run_phase_5 (info, (elapsed - PHASE_4)/(PHASE_5 - PHASE_4));
+      /* phase five */
+      run_phase_5 (info, (elapsed - PHASE_4)/(PHASE_5 - PHASE_4));
     }
-    else 
+  else 
     {
-	cm_drawable_node_set_viewable (info->node, FALSE);
-
-	cm_drawable_node_unset_geometry (info->node);
-	
-	cm_drawable_node_set_alpha (info->node, 1.0);
-	
-	if (info->finished_func)
-	    info->finished_func (info->finished_data);
-
-	return FALSE;
+      cm_drawable_node_set_viewable (info->node, FALSE);
+      
+      cm_drawable_node_unset_geometry (info->node);
+      
+      cm_drawable_node_set_alpha (info->node, 1.0);
+      
+      if (info->finished_func)
+	info->finished_func (info->finished_data);
+      
+      return FALSE;
     }
-
-    return TRUE;
+  
+  return TRUE;
 }
 
 void
@@ -1380,31 +1399,31 @@ meta_compositor_minimize (MetaCompositor           *compositor,
   CmDrawableNode *node = window_to_node (compositor, window);
   WsRectangle start;
   MetaScreen *screen = window->screen;
-
+  
   info->node = node;
   info->timer = g_timer_new ();
-
+  
   info->finished_func = finished;
   info->finished_data = data;
-
+  
   info->phase_1_started = FALSE;
   info->phase_2_started = FALSE;
   info->phase_3_started = FALSE;
   info->phase_4_started = FALSE;
   info->phase_5_started = FALSE;
-
+  
   info->button_x = x;
   info->button_y = y;
   info->button_width = width;
   info->button_height = height;
-
+  
   info->compositor = compositor;
   info->scr_info = screen->compositor_data;
   
 #if 0
   cm_drawable_node_set_deformation_func (node, minimize_deformation, info);
 #endif
-
+  
   info->aspect_ratio = 1.3;
   
   g_idle_add (run_animation_01, info);
@@ -1429,52 +1448,52 @@ meta_compositor_unminimize (MetaCompositor           *compositor,
 static gboolean
 do_minimize_animation (gpointer data)
 {
-    MiniInfo *info = data;
-    double elapsed;
-    gboolean done = FALSE;
-
+  MiniInfo *info = data;
+  double elapsed;
+  gboolean done = FALSE;
+  
 #define FADE_TIME 0.5
-
-    elapsed = g_timer_elapsed (info->timer, NULL);
-    elapsed = elapsed / FADE_TIME;
-    
-    if (elapsed >= 1.0)
+  
+  elapsed = g_timer_elapsed (info->timer, NULL);
+  elapsed = elapsed / FADE_TIME;
+  
+  if (elapsed >= 1.0)
     {
-	elapsed = 1.0;
-	done = TRUE;
+      elapsed = 1.0;
+      done = TRUE;
     }
-
-    g_print ("%f\n", elapsed);
-
-    cm_drawable_node_set_geometry (info->node,
-				   info->node->real_x + interpolate (elapsed, 0, info->node->real_width / 2, 1),
-				   info->node->real_y + interpolate (elapsed, 0, info->node->real_height / 2, 1),
-				   interpolate (elapsed, info->node->real_width, 0, 1),
-				   interpolate (elapsed, info->node->real_height, 0, 1));
-
-    if (done)
-	return FALSE;
-    
+  
+  g_print ("%f\n", elapsed);
+  
+  cm_drawable_node_set_geometry (info->node,
+				 info->node->real_x + interpolate (elapsed, 0, info->node->real_width / 2, 1),
+				 info->node->real_y + interpolate (elapsed, 0, info->node->real_height / 2, 1),
+				 interpolate (elapsed, info->node->real_width, 0, 1),
+				 interpolate (elapsed, info->node->real_height, 0, 1));
+  
+  if (done)
+    return FALSE;
+  
 #if 0
-    g_print ("inter: %f %f %f\n", 0, 735, interpolate (0.0, 735.0, 0.5, 1.0));
-    
-    g_print ("inter x .5: %f (%d %d)\n", info->node->real_x + interpolate (0, info->node->real_width / 2, .5, 1), 0, info->node->real_width);
+  g_print ("inter: %f %f %f\n", 0, 735, interpolate (0.0, 735.0, 0.5, 1.0));
+  
+  g_print ("inter x .5: %f (%d %d)\n", info->node->real_x + interpolate (0, info->node->real_width / 2, .5, 1), 0, info->node->real_width);
 #endif
-    
-    cm_drawable_node_set_alpha (info->node, 1 - elapsed);
-
-    if (done)
+  
+  cm_drawable_node_set_alpha (info->node, 1 - elapsed);
+  
+  if (done)
     {
     }
-    else
+  else
     {
-	return TRUE;
+      return TRUE;
     }
-    
+  
 #if 0
-    queue_repaint (info->node,
-		   node_get_screen (info->window->display->xdisplay,
-				    info->node));
+  queue_repaint (info->node,
+		 node_get_screen (info->window->display->xdisplay,
+				  info->node));
 #endif
 }
 #endif
@@ -1512,29 +1531,29 @@ struct Spring {
 
 struct Object {
   Vector force;
-
+  
   Point position;
   Vector velocity;
-
+  
   double mass;
   double theta;
-
+  
   int immobile;
 };
 
 struct Model {
   int num_objects;
   Object objects[MODEL_MAX_OBJECTS];
-
+  
   int num_springs;
   Spring springs[MODEL_MAX_SPRINGS];
-
+  
   Object *anchor_object;
   Vector anchor_offset;
-
+  
   double friction;/* Friction constant */
   double k;/* Spring constant */
-
+  
   double last_time;
   double steps;
 };
@@ -1542,23 +1561,23 @@ struct Model {
 
 typedef struct
 {
-    CmDrawableNode *node;
-    GTimer *timer;
-    gboolean expand;
-
-    MetaCompositor *compositor;
-    ScreenInfo *scr_info;
-    MetaRectangle rect;
-
-    MetaAnimationFinishedFunc finished_func;
-    gpointer		      finished_data;
-
-    Model	model;
-
-    int		button_x;
-    int		button_y;
-    int		button_width;
-    int		button_height;
+  CmDrawableNode *node;
+  GTimer *timer;
+  gboolean expand;
+  
+  MetaCompositor *compositor;
+  ScreenInfo *scr_info;
+  MetaRectangle rect;
+  
+  MetaAnimationFinishedFunc finished_func;
+  gpointer		      finished_data;
+  
+  Model	model;
+  
+  int		button_x;
+  int		button_y;
+  int		button_width;
+  int		button_height;
 } MiniInfo;
 
 static void
@@ -1568,15 +1587,15 @@ object_init (Object *object,
 {
   object->position.x = position_x;
   object->position.y = position_y;
-
+  
   object->velocity.x = velocity_x;
   object->velocity.y = velocity_y;
-
+  
   object->mass = mass;
-
+  
   object->force.x = 0;
   object->force.y = 0;
-
+  
   object->immobile = 0;
 }
 
@@ -1597,12 +1616,12 @@ model_add_spring (Model *model,
 		  double offset_x, double offset_y)
 {
   Spring *spring;
-
+  
   g_assert (model->num_springs < MODEL_MAX_SPRINGS);
-
+  
   spring = &model->springs[model->num_springs];
   model->num_springs++;
-
+  
   spring_init (spring, object_a, object_b, offset_x, offset_y);
 }
 
@@ -1611,11 +1630,11 @@ model_init_grid (Model *model, MetaRectangle *rect, gboolean expand)
 {
   int x, y, i, v_x, v_y;
   int hpad, vpad;
-
+  
   model->num_objects = MODEL_MAX_OBJECTS;
-
+  
   model->num_springs = 0;
-
+  
   i = 0;
   if (expand) {
     hpad = rect->width / 3;
@@ -1625,13 +1644,13 @@ model_init_grid (Model *model, MetaRectangle *rect, gboolean expand)
     hpad = rect->width / 6;
     vpad = rect->height / 6;
   }
-    
+  
   for (y = 0; y < GRID_HEIGHT; y++)
     for (x = 0; x < GRID_WIDTH; x++) {
-
+      
       v_x = random() % 40 - 20;
       v_y = random() % 40 - 20;
-
+      
       if (expand)
 	object_init (&model->objects[i],
 		     rect->x + x * rect->width / 6 + rect->width / 4,
@@ -1642,20 +1661,20 @@ model_init_grid (Model *model, MetaRectangle *rect, gboolean expand)
 		     rect->x + x * rect->width / 3,
 		     rect->y + y * rect->height / 3,
 		     v_x, v_y, 20);
-
+      
       
       if (x > 0)
 	model_add_spring (model,
 			  &model->objects[i - 1],
 			  &model->objects[i],
 			  hpad, 0);
-
+      
       if (y > 0)
 	model_add_spring (model,
 			  &model->objects[i - GRID_WIDTH],
 			  &model->objects[i],
 			  0, vpad);
-
+      
       i++;
     }
 }
@@ -1664,10 +1683,10 @@ static void
 model_init (Model *model, MetaRectangle *rect, gboolean expand)
 {
   model->anchor_object = NULL;
-
+  
   model->k        = DEFAULT_SPRING_K;
   model->friction = DEFAULT_FRICTION;
-
+  
   model_init_grid (model, rect, expand);
   model->steps = 0;
   model->last_time = 0;
@@ -1700,10 +1719,10 @@ spring_exert_forces (Spring *spring, double k)
 {
   Vector da, db;
   Vector a, b;
-
+  
   a = spring->a->position;
   b = spring->b->position;
-
+  
   /* A nice vector diagram would likely help here, but my ASCII-art
    * skills aren't up to the task. Here's how to make your own
    * diagram:
@@ -1716,15 +1735,15 @@ spring_exert_forces (Spring *spring, double k)
    *
    * The math below should be easy to verify from the diagram.
    */
-
+  
   da.x = 0.5 * (b.x - a.x - spring->offset.x);
   da.y = 0.5 * (b.y - a.y - spring->offset.y);
-
+  
   db.x = 0.5 * (a.x - b.x + spring->offset.x);
   db.y = 0.5 * (a.y - b.y + spring->offset.y);
-
+  
   object_apply_force (spring->a, k *da.x, k * da.y);
-
+  
   object_apply_force (spring->b, k * db.x, k * db.y);
 }
 
@@ -1732,27 +1751,27 @@ static void
 model_step_object (Model *model, Object *object)
 {
   Vector acceleration;
-
+  
   object->theta += 0.05;
-
+  
   /* Slow down due to friction. */
   object->force.x -= model->friction * object->velocity.x;
   object->force.y -= model->friction * object->velocity.y;
-
+  
   acceleration.x = object->force.x / object->mass;
   acceleration.y = object->force.y / object->mass;
-
+  
   if (object->immobile) {
     object->velocity.x = 0;
     object->velocity.y = 0;
   } else {
     object->velocity.x += acceleration.x;
     object->velocity.y += acceleration.y;
-
+    
     object->position.x += object->velocity.x;
     object->position.y += object->velocity.y;
   }
-
+  
   object->force.x = 0.0;
   object->force.y = 0.0;
 }
@@ -1761,10 +1780,10 @@ static void
 model_step (Model *model)
 {
   int i;
-
+  
   for (i = 0; i < model->num_springs; i++)
     spring_exert_forces (&model->springs[i], model->k);
-
+  
   for (i = 0; i < model->num_objects; i++)
     model_step_object (model, &model->objects[i]);
 }
@@ -1774,57 +1793,57 @@ model_step (Model *model)
 static gboolean
 run_animation (gpointer data)
 {
-    MiniInfo *info = data;
-    gdouble t, blend;
-    CmPoint points[4][4];
-    int i, j, steps, target_x, target_y;
-
-    t = g_timer_elapsed (info->timer, NULL);
-
-    info->model.steps += (t - info->model.last_time) / 0.03;
-    info->model.last_time = t;
-    steps = floor(info->model.steps);
-    info->model.steps -= steps;
+  MiniInfo *info = data;
+  gdouble t, blend;
+  CmPoint points[4][4];
+  int i, j, steps, target_x, target_y;
+  
+  t = g_timer_elapsed (info->timer, NULL);
+  
+  info->model.steps += (t - info->model.last_time) / 0.03;
+  info->model.last_time = t;
+  steps = floor(info->model.steps);
+  info->model.steps -= steps;
+  
+  for (i = 0; i < steps; i++)
+    model_step (&info->model);
+  
+  if (info->expand)
+    blend = t / WOBBLE_TIME;
+  else
+    blend = 0;
+  
+  for (i = 0; i < 4; i++)
+    for (j = 0; j < 4; j++) {
+      target_x = info->node->real_x + i * info->node->real_width / 3;
+      target_y = info->node->real_y + j * info->node->real_height / 3;
+      
+      points[j][i].x =
+	(1 - blend) * info->model.objects[j * 4 + i].position.x +
+	blend * target_x;
+      points[j][i].y =
+	(1 - blend) * info->model.objects[j * 4 + i].position.y +
+	blend * target_y;
+    }
+  
+  cm_drawable_node_set_patch (info->node, points);
+  if (info->expand)
+    cm_drawable_node_set_alpha (info->node, t / WOBBLE_TIME);
+  else
+    cm_drawable_node_set_alpha (info->node, 1.0 - t / WOBBLE_TIME);
+  
+  if (t > WOBBLE_TIME) {
+    cm_drawable_node_set_viewable (info->node, info->expand);
+    cm_drawable_node_unset_geometry (info->node);
+    cm_drawable_node_set_alpha (info->node, 1.0);
     
-    for (i = 0; i < steps; i++)
-      model_step (&info->model);
-
-    if (info->expand)
-      blend = t / WOBBLE_TIME;
-    else
-      blend = 0;
-
-    for (i = 0; i < 4; i++)
-      for (j = 0; j < 4; j++) {
-	target_x = info->node->real_x + i * info->node->real_width / 3;
-	target_y = info->node->real_y + j * info->node->real_height / 3;
-
-	points[j][i].x =
-	  (1 - blend) * info->model.objects[j * 4 + i].position.x +
-	  blend * target_x;
-	points[j][i].y =
-	  (1 - blend) * info->model.objects[j * 4 + i].position.y +
-	  blend * target_y;
-      }
-
-    cm_drawable_node_set_patch (info->node, points);
-    if (info->expand)
-      cm_drawable_node_set_alpha (info->node, t / WOBBLE_TIME);
-    else
-      cm_drawable_node_set_alpha (info->node, 1.0 - t / WOBBLE_TIME);
-
-    if (t > WOBBLE_TIME) {
-	cm_drawable_node_set_viewable (info->node, info->expand);
-	cm_drawable_node_unset_geometry (info->node);
-	cm_drawable_node_set_alpha (info->node, 1.0);
-
-	if (info->finished_func)
-	    info->finished_func (info->finished_data);
-	return FALSE;
-    }
-    else {
-      return TRUE;
-    }
+    if (info->finished_func)
+      info->finished_func (info->finished_data);
+    return FALSE;
+  }
+  else {
+    return TRUE;
+  }
 }
 
 void
@@ -1840,23 +1859,23 @@ meta_compositor_minimize (MetaCompositor            *compositor,
   MiniInfo *info = g_new (MiniInfo, 1);
   CmDrawableNode *node = window_to_node (compositor, window);
   MetaScreen *screen = window->screen;
-
+  
   info->node = node;
   info->timer = g_timer_new ();
-
+  
   info->finished_func = finished;
   info->finished_data = data;
-
+  
   info->rect = window->user_rect;
-
+  
   model_init (&info->model, &info->rect, FALSE);
-
+  
   info->expand = FALSE;
   info->button_x = x;
   info->button_y = y;
   info->button_width = width;
   info->button_height = height;
-
+  
   info->compositor = compositor;
   info->scr_info = screen->compositor_data;
   
@@ -1876,23 +1895,23 @@ meta_compositor_unminimize (MetaCompositor            *compositor,
   MiniInfo *info = g_new (MiniInfo, 1);
   CmDrawableNode *node = window_to_node (compositor, window);
   MetaScreen *screen = window->screen;
-
+  
   info->node = node;
   info->timer = g_timer_new ();
-
+  
   info->finished_func = finished;
   info->finished_data = data;
-
+  
   info->rect = window->user_rect;
-
+  
   model_init (&info->model, &info->rect, TRUE);
-
+  
   info->expand = TRUE;
   info->button_x = x;
   info->button_y = y;
   info->button_width = width;
   info->button_height = height;
-
+  
   info->compositor = compositor;
   info->scr_info = screen->compositor_data;
   
@@ -1905,12 +1924,12 @@ meta_compositor_set_updates (MetaCompositor *compositor,
 			     gboolean updates)
 {
   CmDrawableNode *node = window_to_node (compositor, window);
-
+  
   if (node)
     {
       g_print ("turning updates %s\n", updates? "on" : "off");
       cm_drawable_node_set_updates (node, updates);
-
+      
       update (window->screen);
     }
 }
@@ -1942,7 +1961,7 @@ blow_up (gpointer data)
       cm_drawable_node_set_viewable (info->node, FALSE);
       return FALSE;
     }
-
+  
   for (i = 0; i < 4; ++i)
     {
       for (j = 0; j < 4; ++j)
@@ -1951,9 +1970,9 @@ blow_up (gpointer data)
 	  points[i][j].y = info->node->real_y + i;
 	}
     }
-
+  
   cm_drawable_node_set_patch (info->node, points);
-
+  
   return TRUE;
 }
 
@@ -1965,7 +1984,7 @@ meta_compositor_delete_window (MetaCompositor *compositor,
 {
   CmDrawableNode *node;
   BalloonInfo *info = g_new (BalloonInfo, 1);
-
+  
   node = window_to_node (compositor, window);
   
   if (!node)
@@ -1973,11 +1992,30 @@ meta_compositor_delete_window (MetaCompositor *compositor,
       finished (data);
       return;
     }
-
+  
   info->finished = finished;
   info->finished_data = data;
   info->timer = g_timer_new ();
   g_idle_add (blow_up, info);
+}
+
+
+
+void
+meta_compositor_destroy (MetaCompositor *compositor)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS 
+  GSList *list;
+  
+#if 0
+  /* FIXME */
+  ws_display_free (compositor->display);
+#endif
+  
+  g_hash_table_destroy (compositor->window_hash);
+  
+  g_free (compositor);
+#endif
 }
 
 #endif

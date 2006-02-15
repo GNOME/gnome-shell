@@ -67,5 +67,7 @@ void
 meta_compositor_set_updates (MetaCompositor *compositor,
 			     MetaWindow *window,
 			     gboolean updates);
+void
+meta_compositor_destroy (MetaCompositor *compositor);
 
 #endif /* META_COMPOSITOR_H */

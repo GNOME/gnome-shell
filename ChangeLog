@@ -1,3 +1,8 @@
+Wed Feb 15 18:42:03 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/compositor.[ch]: Add code to destroy compositor. Implement
+	unmanage_screen() functionality.
+
 Wed Feb 15 14:47:50 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/compositor.c (meta_compositor_unminimize): Add unused wobbly
