@@ -731,62 +731,104 @@ meta_screen_free (MetaScreen *screen)
   meta_display_ungrab (display);
 }
 
-void
-meta_screen_manage_all_windows (MetaScreen *screen)
+typedef struct
+{
+  Window		xwindow;
+  XWindowAttributes	attrs;
+} WindowInfo;
+
+static GList *
+list_windows (MetaScreen *screen)
 {
   Window ignored1, ignored2;
   Window *children;
-  int n_children;
-  int i;
+  guint n_children, i;
+  GList *result;
 
-  /* Must grab server to avoid obvious race condition */
-  meta_display_grab (screen->display);
-
-  meta_error_trap_push_with_return (screen->display);
-  
   XQueryTree (screen->display->xdisplay,
               screen->xroot,
               &ignored1, &ignored2, &children, &n_children);
 
-  if (meta_error_trap_pop_with_return (screen->display, TRUE) != Success)
+  result = NULL;
+  for (i = 0; i < n_children; ++i)
     {
-      meta_display_ungrab (screen->display);
-      return;
-    }
+      WindowInfo *info = g_new0 (WindowInfo, 1);
 
-  meta_stack_freeze (screen->stack);
-  i = 0;
-  while (i < n_children)
-    {
-      XWindowAttributes attrs;
-      
       meta_error_trap_push_with_return (screen->display);
       
       XGetWindowAttributes (screen->display->xdisplay,
-                            children[i], &attrs);
-      
-      if (meta_error_trap_pop_with_return (screen->display, TRUE) != Success)
-        {
+                            children[i], &info->attrs);
+
+      if (meta_error_trap_pop_with_return (screen->display, TRUE))
+	{
           meta_verbose ("Failed to get attributes for window 0x%lx\n",
                         children[i]);
+	  g_free (info);
         }
       else
         {
-          meta_window_new_with_attrs (screen->display, children[i], TRUE,
-                                      &attrs);
+	  info->xwindow = children[i];
+	}
 
-          meta_compositor_add_window (screen->display->compositor,
-                                      children[i], &attrs);
-        }
+      result = g_list_prepend (result, info);
+    }
 
-      ++i;
+  if (children)
+    XFree (children);
+
+  return g_list_reverse (result);
+}
+
+void
+meta_screen_manage_all_windows (MetaScreen *screen)
+{
+  GList *windows;
+  GList *list;
+
+  meta_display_grab (screen->display);
+  
+  windows = list_windows (screen);
+
+  meta_stack_freeze (screen->stack);
+  for (list = windows; list != NULL; list = list->next)
+    {
+      WindowInfo *info = list->data;
+
+      meta_window_new_with_attrs (screen->display, info->xwindow, TRUE,
+				  &info->attrs);
     }
   meta_stack_thaw (screen->stack);
 
+  g_list_foreach (windows, (GFunc)g_free, NULL);
+  g_list_free (windows);
+
   meta_display_ungrab (screen->display);
+}
+
+void
+meta_screen_composite_all_windows (MetaScreen *screen)
+{
+  GList *windows, *list;
+
+  if (!screen->display->compositor)
+    return;
   
-  if (children)
-    XFree (children);
+  windows = list_windows (screen);
+
+  meta_stack_freeze (screen->stack);
+
+  for (list = windows; list != NULL; list = list->next)
+    {
+      WindowInfo *info = list->data;
+
+      meta_compositor_add_window (screen->display->compositor,
+				  info->xwindow, &info->attrs);
+    }
+
+  meta_stack_thaw (screen->stack);
+
+  g_list_foreach (windows, (GFunc)g_free, NULL);
+  g_list_free (windows);
 }
 
 MetaScreen*

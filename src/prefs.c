@@ -70,6 +70,7 @@
 #define KEY_VISUAL_BELL_TYPE "/apps/metacity/general/visual_bell_type"
 #define KEY_CURSOR_THEME "/desktop/gnome/peripherals/mouse/cursor_theme"
 #define KEY_CURSOR_SIZE "/desktop/gnome/peripherals/mouse/cursor_size"
+#define KEY_COMPOSITING_MANAGER "/apps/metacity/general/compositing_manager"
 
 #ifdef HAVE_GCONF
 static GConfClient *default_client = NULL;
@@ -97,6 +98,7 @@ static gboolean reduced_resources = FALSE;
 static gboolean gnome_accessibility = FALSE;
 static char *cursor_theme = NULL;
 static int   cursor_size = 24;
+static gboolean compositing_manager = FALSE;
 
 static MetaVisualBellType visual_bell_type = META_VISUAL_BELL_FULLSCREEN_FLASH;
 static MetaButtonLayout button_layout = {
@@ -150,6 +152,7 @@ static gboolean update_reduced_resources  (gboolean     value);
 static gboolean update_gnome_accessibility  (gboolean     value);
 static gboolean update_cursor_theme       (const char *value);
 static gboolean update_cursor_size        (int size);
+static gboolean update_compositing_manager (gboolean	value);
 
 static void change_notify (GConfClient    *client,
                            guint           cnxn_id,
@@ -443,7 +446,11 @@ meta_prefs_init (void)
   update_audible = get_bool (KEY_AUDIBLE_BELL, &bool_val_2);
   if (update_visual || update_audible)
     update_visual_bell (bool_val, bool_val_2);
-      
+
+  bool_val = compositing_manager;
+  if (get_bool (KEY_COMPOSITING_MANAGER, &bool_val))
+    update_compositing_manager (bool_val);
+  
   str_val = gconf_client_get_string (default_client, KEY_VISUAL_BELL_TYPE,
                                      &err);
   cleanup_error (&err);
@@ -952,6 +959,22 @@ change_notify (GConfClient    *client,
 
       if (update_cursor_size (d))
 	queue_changed (META_PREF_CURSOR_SIZE);
+    }
+  else if (strcmp (key, KEY_COMPOSITING_MANAGER) == 0)
+    {
+      gboolean b;
+
+      if (value && value->type != GCONF_VALUE_BOOL)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                       KEY_COMPOSITING_MANAGER);
+          goto out;
+        }
+
+      b = value ? gconf_value_get_bool (value) : compositing_manager;
+
+      if (update_compositing_manager (b))
+        queue_changed (META_PREF_COMPOSITING_MANAGER);
     }
   else
     {
@@ -1638,6 +1661,9 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_CURSOR_SIZE:
       return "CURSOR_SIZE";
+
+    case META_PREF_COMPOSITING_MANAGER:
+      return "COMPOSITING_MANAGER";
     }
 
   return "(unknown)";
@@ -2491,4 +2517,22 @@ meta_prefs_get_window_binding (const char          *name,
     }
 
   g_assert_not_reached ();
+}
+
+#ifdef HAVE_GCONF
+static gboolean
+update_compositing_manager (gboolean value)
+{
+  gboolean old = compositing_manager;
+
+  compositing_manager = value;
+  
+  return old != compositing_manager;
+}
+#endif
+
+gboolean
+meta_prefs_get_compositing_manager (void)
+{
+  return compositing_manager;
 }

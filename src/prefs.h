@@ -52,7 +52,8 @@ typedef enum
   META_PREF_REDUCED_RESOURCES,
   META_PREF_GNOME_ACCESSIBILITY,
   META_PREF_CURSOR_THEME,
-  META_PREF_CURSOR_SIZE
+  META_PREF_CURSOR_SIZE,
+  META_PREF_COMPOSITING_MANAGER
 } MetaPreference;
 
 typedef void (* MetaPrefsChangedFunc) (MetaPreference pref,
@@ -98,6 +99,7 @@ void        meta_prefs_change_workspace_name (int         i,
 
 const char* meta_prefs_get_cursor_theme      (void);
 int         meta_prefs_get_cursor_size       (void);
+gboolean    meta_prefs_get_compositing_manager (void);
 
 /* Screen bindings */
 #define META_KEYBINDING_WORKSPACE_1              "switch_to_workspace_1"

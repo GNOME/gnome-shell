@@ -205,6 +205,6 @@ void     meta_screen_update_showing_desktop_hint          (MetaScreen *screen);
 
 void     meta_screen_apply_startup_properties (MetaScreen *screen,
                                                MetaWindow *window);
-
+void	 meta_screen_composite_all_windows (MetaScreen *screen);
 
 #endif

@@ -185,6 +185,48 @@ sn_error_trap_pop (SnDisplay *sn_display,
 }
 #endif
 
+static void
+enable_compositor (MetaDisplay *display)
+{
+  GSList *list;
+
+  if (!display->compositor)
+      display->compositor = meta_compositor_new (display);
+
+  if (!display->compositor)
+    return;
+  
+  for (list = display->screens; list != NULL; list = list->next)
+    {
+      MetaScreen *screen = list->data;
+      
+      meta_compositor_manage_screen (screen->display->compositor,
+				     screen);
+
+      meta_screen_composite_all_windows (screen);
+    }
+}
+
+static void
+disable_compositor (MetaDisplay *display)
+{
+  GSList *list;
+  
+  if (!display->compositor)
+    return;
+  
+  for (list = display->screens; list != NULL; list = list->next)
+    {
+      MetaScreen *screen = list->data;
+      
+      meta_compositor_unmanage_screen (screen->display->compositor,
+				       screen);
+    }
+  
+  meta_compositor_destroy (display->compositor);
+  display->compositor = NULL;
+}
+
 gboolean
 meta_display_open (const char *name)
 {
@@ -657,7 +699,7 @@ meta_display_open (const char *name)
 
   display->last_focus_time = timestamp;
   display->last_user_time = timestamp;
-  display->compositor = meta_compositor_new (display);
+  display->compositor = NULL;
   
   screens = NULL;
   
@@ -692,18 +734,6 @@ meta_display_open (const char *name)
     {
       MetaScreen *screen = tmp->data;
 	
-      /* The compositing manager opens its own connection to the X server
-       * and uses the XTest extension to ignore grabs. However, it also
-       * uses GL which opens yet another connection to the X server. With
-       * this ungrab/grab we would block indefinitely in XOpenDisplay().
-       */
-      meta_display_ungrab (display);
-      
-      meta_compositor_manage_screen (screen->display->compositor,
-				     screen);
-
-      meta_display_grab (display);
-  
       meta_screen_manage_all_windows (screen);
 
       tmp = tmp->next;
@@ -748,6 +778,9 @@ meta_display_open (const char *name)
   }
   
   meta_display_ungrab (display);  
+
+  if (meta_prefs_get_compositing_manager ())
+    enable_compositor (display);
   
   return TRUE;
 }
@@ -2415,9 +2448,12 @@ event_callback (XEvent   *event,
       break;
     }
 
-  meta_compositor_process_event (display->compositor,
-                                 event,
-                                 window);
+  if (display->compositor)
+    {
+      meta_compositor_process_event (display->compositor,
+				     event,
+				     window);
+    }
   
   display->current_time = CurrentTime;
   return filter_out_event;
@@ -4752,6 +4788,8 @@ static void
 prefs_changed_callback (MetaPreference pref,
                         void          *data)
 {
+  MetaDisplay *display = data;
+  
   /* It may not be obvious why we regrab on focus mode
    * change; it's because we handle focus clicks a
    * bit differently for the different focus modes.
@@ -4793,8 +4831,16 @@ prefs_changed_callback (MetaPreference pref,
     }
   else if (pref == META_PREF_AUDIBLE_BELL)
     {
-      MetaDisplay *display = data;
       meta_bell_set_audible (display, meta_prefs_bell_is_audible ());
+    }
+  else if (pref == META_PREF_COMPOSITING_MANAGER)
+    {
+      gboolean cm = meta_prefs_get_compositing_manager ();
+
+      if (cm)
+	enable_compositor (display);
+      else
+	disable_compositor (display);
     }
 }
 

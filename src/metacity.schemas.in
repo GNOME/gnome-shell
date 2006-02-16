@@ -269,6 +269,20 @@
     </schema>
 
     <schema>
+      <key>/schemas/apps/metacity/general/compositing_manager</key>
+      <applyto>/apps/metacity/general/compositing_manager</applyto>
+      <owner>metacity</owner>
+      <type>boolean</type>
+      <default>FALSE</default>
+      <locale name="C">
+         <short>Compositing Manager</short>
+         <long>
+	Determines whether Metacity is a compositing manager.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
       <key>/schemas/apps/metacity/workspace_names/name</key>
       <applyto>/apps/metacity/workspace_names/name_1</applyto>
       <applyto>/apps/metacity/workspace_names/name_2</applyto>

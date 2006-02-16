@@ -1,3 +1,19 @@
+Thu Feb 16 15:24:42 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/screen.c (meta_screen_composite_all_windows): New function.
+
+	* src/prefs.[ch], src/metacity.schemas.in: Add new
+	compositing_manager key.
+
+	* src/display.c (prefs_changed_callback): Handle
+	META_PREF_COMPOSITOR_MANAGER
+
+	* src/display.c (event_callback): Only call
+	meta_compositor_process_event() if there is in fact a compositor.
+
+	* src/display.c (enable/disable_compositor): Add code to
+	enable/disable compositor at runtime
+
 Wed Feb 15 18:42:03 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/compositor.[ch]: Add code to destroy compositor. Implement
