@@ -88,9 +88,9 @@ free_window_hash_value (void *v)
   
   g_object_unref (G_OBJECT (drawable_node));
 }
-#endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 static WsDisplay *compositor_display;
+#endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 MetaCompositor*
 meta_compositor_new (MetaDisplay *display)
@@ -1113,7 +1113,6 @@ minimize_deformation (gdouble time,
 	info->idle_id = g_idle_add (stop_minimize, info);
     }
 }
-#endif
 
 static gdouble
 interpolate (gdouble t, gdouble begin, gdouble end, double power)
@@ -1441,6 +1440,7 @@ meta_compositor_unminimize (MetaCompositor           *compositor,
 {
   finished(data);
 }
+#endif
 
 #elif MINIMIZE_STYLE == 2
 
@@ -1845,6 +1845,7 @@ run_animation (gpointer data)
     return TRUE;
   }
 }
+#endif
 
 void
 meta_compositor_minimize (MetaCompositor            *compositor,
@@ -1856,6 +1857,7 @@ meta_compositor_minimize (MetaCompositor            *compositor,
 			  MetaAnimationFinishedFunc  finished,
 			  gpointer                   data)
 {
+#ifdef HAVE_COMPOSITE_EXTENSIONS
   MiniInfo *info = g_new (MiniInfo, 1);
   CmDrawableNode *node = window_to_node (compositor, window);
   MetaScreen *screen = window->screen;
@@ -1880,6 +1882,7 @@ meta_compositor_minimize (MetaCompositor            *compositor,
   info->scr_info = screen->compositor_data;
   
   g_idle_add (run_animation, info);
+#endif
 }
 
 void
@@ -1892,6 +1895,7 @@ meta_compositor_unminimize (MetaCompositor            *compositor,
 			    MetaAnimationFinishedFunc  finished,
 			    gpointer                   data)
 {
+#ifdef HAVE_COMPOSITE_EXTENSIONS
   MiniInfo *info = g_new (MiniInfo, 1);
   CmDrawableNode *node = window_to_node (compositor, window);
   MetaScreen *screen = window->screen;
@@ -1916,6 +1920,7 @@ meta_compositor_unminimize (MetaCompositor            *compositor,
   info->scr_info = screen->compositor_data;
   
   g_idle_add (run_animation, info);
+#endif
 }
 
 void
@@ -1923,6 +1928,7 @@ meta_compositor_set_updates (MetaCompositor *compositor,
 			     MetaWindow *window,
 			     gboolean updates)
 {
+#ifdef HAVE_COMPOSITE_EXTENSIONS
   CmDrawableNode *node = window_to_node (compositor, window);
   
   if (node)
@@ -1932,9 +1938,9 @@ meta_compositor_set_updates (MetaCompositor *compositor,
       
       update (window->screen);
     }
+#endif
 }
 
-#endif
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 
@@ -1999,7 +2005,7 @@ meta_compositor_delete_window (MetaCompositor *compositor,
   g_idle_add (blow_up, info);
 }
 
-
+#endif
 
 void
 meta_compositor_destroy (MetaCompositor *compositor)
@@ -2017,5 +2023,3 @@ meta_compositor_destroy (MetaCompositor *compositor)
   g_free (compositor);
 #endif
 }
-
-#endif

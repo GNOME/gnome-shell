@@ -1,3 +1,7 @@
+Thu Feb 16 15:54:48 2006  Søren Sandmann  <sandmann@redhat.com>
+
+       * src/compositor.c: Insert #ifdef's to make it build again
+
 Thu Feb 16 15:24:42 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/screen.c (meta_screen_composite_all_windows): New function.
