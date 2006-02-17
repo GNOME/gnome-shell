@@ -665,8 +665,11 @@ meta_screen_free (MetaScreen *screen)
   
   meta_display_grab (display);
 
-  meta_compositor_unmanage_screen (screen->display->compositor,
-                                   screen);
+  if (screen->display->compositor)
+    {
+      meta_compositor_unmanage_screen (screen->display->compositor,
+				       screen);
+    }
   
   meta_display_unmanage_windows_for_screen (display, screen);
   

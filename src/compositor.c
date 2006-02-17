@@ -101,7 +101,27 @@ meta_compositor_new (MetaDisplay *display)
   compositor = g_new0 (MetaCompositor, 1);
   
   if (!compositor_display)
-    compositor_display = ws_display_new (NULL);
+    {
+      gboolean has_extensions;
+      
+      compositor_display = ws_display_new (NULL);
+
+      has_extensions = 
+	ws_display_init_composite (compositor_display) &&
+	ws_display_init_damage    (compositor_display) &&
+	ws_display_init_fixes	  (compositor_display) &&
+	ws_display_init_test      (compositor_display);
+      
+      if (!has_extensions)
+	{
+	  g_warning ("Disabling compositor since the server is missing at "
+		     "least one of the COMPOSITE, DAMAGE, FIXES or TEST "
+		     "extensions");
+	  
+	  return NULL;
+	}
+    }
+  
   compositor->display = compositor_display;
   
   ws_display_set_synchronize (compositor_display,

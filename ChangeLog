@@ -1,3 +1,11 @@
+Fri Feb 17 11:56:35 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/screen.c (meta_screen_free): Only uncomposite the screen if
+	there is a compositor.
+
+	* src/compositor.c (meta_compositor_new): Warn and fail if the
+	server doesn't have composite
+
 Thu Feb 16 18:57:48 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/compositor.c: Fix the build when --enable-compositor is
