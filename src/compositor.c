@@ -1113,6 +1113,9 @@ minimize_deformation (gdouble time,
 	info->idle_id = g_idle_add (stop_minimize, info);
     }
 }
+#endif
+
+#ifdef HAVE_COMPOSITE_EXTENSIONS
 
 static gdouble
 interpolate (gdouble t, gdouble begin, gdouble end, double power)
@@ -1135,6 +1138,8 @@ interpolate_rectangle (gdouble		t,
   result->height = interpolate (t, from->height, to->height, 1);
 }
 
+#endif
+
 #define MINIMIZE_STYLE 3
 
 #ifndef HAVE_COMPOSITE_EXTENSIONS
@@ -1151,7 +1156,7 @@ meta_compositor_minimize (MetaCompositor           *compositor,
 			  int                       y,
 			  int                       width,
 			  int                       height,
-			  MetaMinimizeFinishedFunc  finished,
+			  MetaAnimationFinishedFunc  finished,
 			  gpointer                  data)
 {
 }
@@ -1440,7 +1445,6 @@ meta_compositor_unminimize (MetaCompositor           *compositor,
 {
   finished(data);
 }
-#endif
 
 #elif MINIMIZE_STYLE == 2
 
@@ -1845,7 +1849,6 @@ run_animation (gpointer data)
     return TRUE;
   }
 }
-#endif
 
 void
 meta_compositor_minimize (MetaCompositor            *compositor,
@@ -1884,6 +1887,7 @@ meta_compositor_minimize (MetaCompositor            *compositor,
   g_idle_add (run_animation, info);
 #endif
 }
+#endif
 
 void
 meta_compositor_unminimize (MetaCompositor            *compositor,

@@ -1,3 +1,8 @@
+Thu Feb 16 18:57:48 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/compositor.c: Fix the build when --enable-compositor is
+	there.
+
 Thu Feb 16 15:54:48 2006  Søren Sandmann  <sandmann@redhat.com>
 
        * src/compositor.c: Insert #ifdef's to make it build again
