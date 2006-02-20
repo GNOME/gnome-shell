@@ -1,3 +1,11 @@
+2006-02-19  Thomas Thurman  <thomas thurman org uk>
+
+        Removed "move to another workspace" menu when there are
+        exactly two workspaces.  Fixes #151183.
+
+        * src/menu.c (meta_window_menu_new): clear
+        META_MENU_OP_WORKSPACES bit when n_workspaces==2
+
 Fri Feb 17 11:56:35 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/screen.c (meta_screen_free): Only uncomposite the screen if
