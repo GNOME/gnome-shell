@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-23 07:31+0100\n"
-"PO-Revision-Date: 2006-01-23 15:06+0530\n"
+"POT-Creation-Date: 2006-02-19 19:35+0100\n"
+"PO-Revision-Date: 2006-02-20 16:26+0530\n"
 "Last-Translator: Ankit Patel <ankit644@yahoo.com>\n"
 "Language-Team: Gujarati <indianoss-gujarati@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -13,6 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.9.1\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -58,7 +59,7 @@ msgstr "કાર્યક્રમને મૃત કરવા માટે �
 msgid "Failed to get hostname: %s\n"
 msgstr "યજમાનનું નામ મેળવવામાં નિષ્ફળ: %s\n"
 
-#: ../src/display.c:308
+#: ../src/display.c:350
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X વિન્ડો સિસ્ટમ ડિસ્પ્લે '%s' ને ખોલવામાં નિષ્ફળ\n"
@@ -106,17 +107,17 @@ msgid ""
 "binding\n"
 msgstr "કોઈ બીજો કાર્યક્રમ પહેલેથીજ કી %s ને બદલનાર %x સાથે જોડાણ તરીકે વાપરી રહ્યુ છે\n"
 
-#: ../src/keybindings.c:2504
+#: ../src/keybindings.c:2534
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "આદેશ વિશેની ભૂલ છાપવા માટે મેટાસીટી-સંવાદને શરુ કરવામાં ભૂલ: %s\n"
 
-#: ../src/keybindings.c:2609
+#: ../src/keybindings.c:2639
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "કોઈ આદેશ %d વ્યાખ્યાયિત કરાયો નથી.\n"
 
-#: ../src/keybindings.c:3471
+#: ../src/keybindings.c:3501
 msgid "No terminal command has been defined.\n"
 msgstr "કોઈ ટર્મિનલ આદેશ વ્યાખ્યાયિત નથી.\n"
 
@@ -240,7 +241,7 @@ msgstr "કામ કરવાની જગ્યાને ઉપર ખસે�
 msgid "Move to Workspace _Down"
 msgstr "કામ કરવાની જગ્યાને ડાબે ખસેડો (_D)"
 
-#: ../src/menu.c:164 ../src/prefs.c:1973 ../src/prefs.c:2274
+#: ../src/menu.c:164 ../src/prefs.c:2004 ../src/prefs.c:2305
 #, c-format
 msgid "Workspace %d"
 msgstr "કામ કરવાની જગ્યા %d"
@@ -463,14 +464,22 @@ msgid "Commands to run in response to keybindings"
 msgstr "કી જોડાણના વળતા જવાબમાં ચલાવવા માટેનો આદેશ"
 
 #: ../src/metacity.schemas.in.h:11
+msgid "Compositing Manager"
+msgstr "કમ્પોઝીશન વ્યવસ્થાપક"
+
+#: ../src/metacity.schemas.in.h:12
 msgid "Current theme"
 msgstr "વર્તમાન થીમ"
 
-#: ../src/metacity.schemas.in.h:12
+#: ../src/metacity.schemas.in.h:13
 msgid "Delay in milliseconds for the auto raise option"
 msgstr "'આપોઆપ વધારો' વિકલ્પ માટે મિલિસેકન્ડોમાં વિલંબ"
 
-#: ../src/metacity.schemas.in.h:13
+#: ../src/metacity.schemas.in.h:14
+msgid "Determines whether Metacity is a compositing manager."
+msgstr "શું મેટાસીટી એ કમ્પોઝીટીંગ વ્યવસ્થાપક છે કે નહિં તે નક્કી કરે છે."
+
+#: ../src/metacity.schemas.in.h:15
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
@@ -478,19 +487,19 @@ msgstr ""
 "નક્કી કરો કે કાર્યક્રમ કે પછી સિસ્ટમ સાંભળી શકાય તેવા 'બીપ' ઉત્પન્ન કરી શકે છે કે નહિં; "
 "શાંત 'બીપ' ચલાવવા માટે 'દેખીતી ઘંટડી' સાથે કદાચ વાપરી શકાય."
 
-#: ../src/metacity.schemas.in.h:14
+#: ../src/metacity.schemas.in.h:16
 msgid "Disable misfeatures that are required by old or broken applications"
 msgstr "જૂના અથવા બગડેલા કાર્યક્રમ દ્વારા જરુરી ખરાબ લક્ષણોને નિષ્ક્રિય કરો"
 
-#: ../src/metacity.schemas.in.h:15
+#: ../src/metacity.schemas.in.h:17
 msgid "Enable Visual Bell"
 msgstr "'દેખીતી ઘંટડી' ને સક્રિય કરો"
 
-#: ../src/metacity.schemas.in.h:16
+#: ../src/metacity.schemas.in.h:18
 msgid "Hide all windows and focus desktop"
 msgstr "બધી વિન્ડોને સંતાડીને ડેસ્કટોપ પ્રકાશન કરો"
 
-#: ../src/metacity.schemas.in.h:17
+#: ../src/metacity.schemas.in.h:19
 msgid ""
 "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 "focused window will be automatically raised after a delay (the delay is "
@@ -512,7 +521,7 @@ msgstr ""
 "ઊભું-વધારો સાથે સંબંધિત નથી). ખેંચો અને મૂકો દરમ્યાન વિન્ડો દાખલ કરવા કરતાં તે અસંબંધિત છે "
 "(કારણ કે તે માઉસને પકડવાના કાર્યક્રમમાં પરિણમે છે)"
 
-#: ../src/metacity.schemas.in.h:18
+#: ../src/metacity.schemas.in.h:20
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
@@ -520,7 +529,7 @@ msgstr ""
 "જો ખરુ હોય તો, શીર્ષકપટ્ટી_ફોન્ટ વિકલ્પને અવગણી દો અને વિન્ડો શીર્ષકો માટે મૂળભૂત "
 "કાર્યક્રમ ફોન્ટ વાપરો."
 
-#: ../src/metacity.schemas.in.h:19
+#: ../src/metacity.schemas.in.h:21
 msgid ""
 "If true, metacity will give the user less feedback and less sense of "
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
@@ -535,7 +544,7 @@ msgstr ""
 "આપવા માટે પરવાનગી આપી શકે જ્યારે તેઓ બિનપ્રાયોગિક હોય. તેમછતાં પણ, વાયરફ્રેમ લાક્ષણિકતા "
 "નિષ્ક્રિય કરેલ હોય છે જ્યારે સુલભતા એ વાયર્ડ ડેસ્કટોપ બ્રેકેજો પર ટાળવા માટે હોય."
 
-#: ../src/metacity.schemas.in.h:20
+#: ../src/metacity.schemas.in.h:22
 msgid ""
 "If true, then Metacity works in terms of applications rather than windows. "
 "The concept is a bit abstract, but in general an application-based setup is "
@@ -556,15 +565,15 @@ msgstr ""
 "હોવા કરતા સારુ છે. દા.ત. ક્લિક ને આગળ ધપાવવી છે કે નહિ. કાર્યક્રમ-આધારિત સ્થિતિએ મોટે "
 "ભાગે આ ક્ષણે અમલમાં મૂકાયેલું નથી."
 
-#: ../src/metacity.schemas.in.h:21
+#: ../src/metacity.schemas.in.h:23
 msgid "If true, trade off usability for less resource usage"
 msgstr "જો સાચુ હોય તો, સ્રોતોના ઓછો વપરાશ કરવાથી ઉપયોગિતા ઘટશે"
 
-#: ../src/metacity.schemas.in.h:22
+#: ../src/metacity.schemas.in.h:24
 msgid "Lower window below other windows"
 msgstr "બીજી વિન્ડો નીચેની વિન્ડોને નાની કરો"
 
-#: ../src/metacity.schemas.in.h:23
+#: ../src/metacity.schemas.in.h:25
 msgid ""
 "Many actions (e.g. clicking in the client area, moving or resizing the "
 "window) normally raise the window as a side-effect. Set this option to false "
@@ -583,135 +592,135 @@ msgstr ""
 "અરજીઓ, પણ જ્યારે આ વિકલ્પ ખોટો હોય ત્યારે વિન્ડોને મોટી કરે છે. આ વિકલ્પ વર્તમાનમાં ક્લિક-"
 "થી-ફોકસ સ્થિતિમાં નિષ્ક્રિય કરેલ છે."
 
-#: ../src/metacity.schemas.in.h:24
+#: ../src/metacity.schemas.in.h:26
 msgid "Maximize window"
 msgstr "વિન્ડોને મહત્તમ સ્થિતિમાં લાવો"
 
-#: ../src/metacity.schemas.in.h:25
+#: ../src/metacity.schemas.in.h:27
 msgid "Maximize window horizontally"
 msgstr "વિન્ડોને આડી દિશામાં મોટી કરો"
 
-#: ../src/metacity.schemas.in.h:26
+#: ../src/metacity.schemas.in.h:28
 msgid "Maximize window vertically"
 msgstr "વિન્ડોને ઉભી દિશામાં મોટી કરો"
 
-#: ../src/metacity.schemas.in.h:27
+#: ../src/metacity.schemas.in.h:29
 msgid "Minimize window"
 msgstr "વિન્ડોને ન્યૂનત્તમ સ્થિતિમાં લાવો"
 
-#: ../src/metacity.schemas.in.h:28
+#: ../src/metacity.schemas.in.h:30
 msgid "Modifier to use for modified window click actions"
 msgstr "બદલેલી વિન્ડોની ક્લિક ક્રિયાઓ માટે વાપરવાનું બદલનાર"
 
-#: ../src/metacity.schemas.in.h:29
+#: ../src/metacity.schemas.in.h:31
 msgid "Move backward between panels and the desktop immediately"
 msgstr "તરત જ પેનલ તથા ડેસ્કટોપ વચ્ચે પાછા ફરો"
 
-#: ../src/metacity.schemas.in.h:30
+#: ../src/metacity.schemas.in.h:32
 msgid "Move backwards between panels and the desktop with popup"
 msgstr "પેનલ તથા ડેસ્કટોપ વચ્ચે પોપ-અપ સાથે પાછા ફરો"
 
-#: ../src/metacity.schemas.in.h:31
+#: ../src/metacity.schemas.in.h:33
 msgid "Move backwards between windows immediately"
 msgstr "તરત જ પેનલ અને ડેસ્કટોપ વચ્ચે ખસો"
 
-#: ../src/metacity.schemas.in.h:32
+#: ../src/metacity.schemas.in.h:34
 msgid "Move between panels and the desktop immediately"
 msgstr "તરત જ પેનલ તથા ડેસ્કટોપ વચ્ચે ખસો"
 
-#: ../src/metacity.schemas.in.h:33
+#: ../src/metacity.schemas.in.h:35
 msgid "Move between panels and the desktop with popup"
 msgstr "પેનલ તથા ડેસ્કટોપ વચ્ચે પોપ-અપ સાથે ખસો"
 
-#: ../src/metacity.schemas.in.h:34
+#: ../src/metacity.schemas.in.h:36
 msgid "Move between windows immediately"
 msgstr "તરત જ બધી વિન્ડો વચ્ચે ખસો"
 
-#: ../src/metacity.schemas.in.h:35
+#: ../src/metacity.schemas.in.h:37
 msgid "Move between windows with popup"
 msgstr "બધી વિન્ડો વચ્ચે પોપ-અપ સાથે ખસો"
 
-#: ../src/metacity.schemas.in.h:36
+#: ../src/metacity.schemas.in.h:38
 msgid "Move focus backwards between windows using popup display"
 msgstr "પોપ-અપ ડિસ્પ્લેનો ઉપયોગ કરી પ્રકાશનને બધી વિન્ડો વચ્ચે પાછળ ખસાડો"
 
-#: ../src/metacity.schemas.in.h:37
+#: ../src/metacity.schemas.in.h:39
 msgid "Move window"
 msgstr "વિન્ડોને ખસાડો"
 
-#: ../src/metacity.schemas.in.h:38
+#: ../src/metacity.schemas.in.h:40
 msgid "Move window one workspace down"
 msgstr "વિન્ડોને નીચેની કામ કરવાની જગ્ચામાં લાવો"
 
-#: ../src/metacity.schemas.in.h:39
+#: ../src/metacity.schemas.in.h:41
 msgid "Move window one workspace to the left"
 msgstr "વિન્ડોને ડાબી બાજુની કામ કરવાની જગ્યામાં લાવો"
 
-#: ../src/metacity.schemas.in.h:40
+#: ../src/metacity.schemas.in.h:42
 msgid "Move window one workspace to the right"
 msgstr "વિન્ડોને જમણી બાજુની કામ કરવાની જગ્યામાં લાવો"
 
-#: ../src/metacity.schemas.in.h:41
+#: ../src/metacity.schemas.in.h:43
 msgid "Move window one workspace up"
 msgstr "વિન્ડોને ઉપરની બાજુની કામ કરવાની જગ્યામાં લાવો"
 
-#: ../src/metacity.schemas.in.h:42
+#: ../src/metacity.schemas.in.h:44
 msgid "Move window to workspace 1"
 msgstr "વિન્ડોને કામ કરવાની જગ્યા ૧ માં લઈ જાઓ"
 
-#: ../src/metacity.schemas.in.h:43
+#: ../src/metacity.schemas.in.h:45
 msgid "Move window to workspace 10"
 msgstr "વિન્ડોને કામ કરવાની જગ્યા ૧૦ માં લઈ જાઓ"
 
-#: ../src/metacity.schemas.in.h:44
+#: ../src/metacity.schemas.in.h:46
 msgid "Move window to workspace 11"
 msgstr "વિન્ડોને કામ કરવાની જગ્યા ૧૧ માં લઈ જાઓ"
 
-#: ../src/metacity.schemas.in.h:45
+#: ../src/metacity.schemas.in.h:47
 msgid "Move window to workspace 12"
 msgstr "વિન્ડોને કામ કરવાની જગ્યા ૧૨ માં લઈ જાઓ"
 
-#: ../src/metacity.schemas.in.h:46
+#: ../src/metacity.schemas.in.h:48
 msgid "Move window to workspace 2"
 msgstr "વિન્ડોને કામ કરવાની જગ્યા ૨ માં લઈ જાઓ"
 
-#: ../src/metacity.schemas.in.h:47
+#: ../src/metacity.schemas.in.h:49
 msgid "Move window to workspace 3"
 msgstr "વિન્ડોને કામ કરવાની જગ્યા ૩ માં લઈ જાઓ"
 
-#: ../src/metacity.schemas.in.h:48
+#: ../src/metacity.schemas.in.h:50
 msgid "Move window to workspace 4"
 msgstr "વિન્ડોને કામ કરવાની જગ્યા ૪ માં લઈ જાઓ"
 
-#: ../src/metacity.schemas.in.h:49
+#: ../src/metacity.schemas.in.h:51
 msgid "Move window to workspace 5"
 msgstr "વિન્ડોને કામ કરવાની જગ્યા ૫ માં લઈ જાઓ"
 
-#: ../src/metacity.schemas.in.h:50
+#: ../src/metacity.schemas.in.h:52
 msgid "Move window to workspace 6"
 msgstr "વિન્ડોને કામ કરવાની જગ્યા ૬ માં લઈ જાઓ"
 
-#: ../src/metacity.schemas.in.h:51
+#: ../src/metacity.schemas.in.h:53
 msgid "Move window to workspace 7"
 msgstr "વિન્ડોને કામ કરવાની જગ્યા ૭ માં લઈ જાઓ"
 
-#: ../src/metacity.schemas.in.h:52
+#: ../src/metacity.schemas.in.h:54
 msgid "Move window to workspace 8"
 msgstr "વિન્ડોને કામ કરવાની જગ્યા ૮ માં લઈ જાઓ"
 
-#: ../src/metacity.schemas.in.h:53
+#: ../src/metacity.schemas.in.h:55
 msgid "Move window to workspace 9"
 msgstr "વિન્ડોને કામ કરવાની જગ્યા ૯ માં લઈ જાઓ"
 
-#: ../src/metacity.schemas.in.h:54
+#: ../src/metacity.schemas.in.h:56
 msgid "Name of workspace"
 msgstr "કામ કરવાની જગ્યાનુ નામ"
 
-#: ../src/metacity.schemas.in.h:55
+#: ../src/metacity.schemas.in.h:57
 msgid "Number of workspaces"
 msgstr "કામ કરવા માટેની જગ્યાઓની સંખ્યા"
 
-#: ../src/metacity.schemas.in.h:56
+#: ../src/metacity.schemas.in.h:58
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum (to "
 "prevent accidentally destroying your desktop by asking for 34 million "
@@ -721,35 +730,35 @@ msgstr ""
 "છે (૩૪ મિલિયન કામ કરવાની જગ્યાઓની માંગ કરવાથી થતા તમારા ડેસ્કટોપ ના આકસ્મિક નાશથી "
 "બચવા માટે)."
 
-#: ../src/metacity.schemas.in.h:57
+#: ../src/metacity.schemas.in.h:59
 msgid "Raise obscured window, otherwise lower"
 msgstr "અજ્ઞાત વિન્ડો મોટી કરો, નહિંતર નાની કરો"
 
-#: ../src/metacity.schemas.in.h:58
+#: ../src/metacity.schemas.in.h:60
 msgid "Raise window above other windows"
 msgstr "વિન્ડોને બીજી બધી વિન્ડોની ઉપર લાવો"
 
-#: ../src/metacity.schemas.in.h:59
+#: ../src/metacity.schemas.in.h:61
 msgid "Resize window"
 msgstr "વિન્ડોનુ માપ બદલો"
 
-#: ../src/metacity.schemas.in.h:60
+#: ../src/metacity.schemas.in.h:62
 msgid "Run a defined command"
 msgstr "વ્યાખ્યાયિત આદેશ ચલાવો"
 
-#: ../src/metacity.schemas.in.h:61
+#: ../src/metacity.schemas.in.h:63
 msgid "Run a terminal"
 msgstr "ટર્મિનલમાં ચલાવો"
 
-#: ../src/metacity.schemas.in.h:62
+#: ../src/metacity.schemas.in.h:64
 msgid "Show the panel menu"
 msgstr "પેનલનુ મેનુ દર્શાવો"
 
-#: ../src/metacity.schemas.in.h:63
+#: ../src/metacity.schemas.in.h:65
 msgid "Show the panel run application dialog"
 msgstr "પેનલ ચલાવવા માટેના સંવાદ દર્શાવો"
 
-#: ../src/metacity.schemas.in.h:64
+#: ../src/metacity.schemas.in.h:66
 msgid ""
 "Some applications break specifications in ways that result in window manager "
 "misfeatures. For example, ideally Metacity would place all dialogs in a "
@@ -774,83 +783,83 @@ msgstr ""
 "આસપાસના કાર્યોમાંના અમુકે તેમની પોતાની સ્પષ્ટીકરણની મર્યાદાઓ માટેના આસપાસનાં કાર્યો છે. "
 "એટલા માટે અમુક વાર સ્પષ્ટીકરણને સુધાર્યા વિના બગ વર્કઅરાઉન્ડ સ્થિતિમાં સુધારી શકાતો નથી."
 
-#: ../src/metacity.schemas.in.h:65
+#: ../src/metacity.schemas.in.h:67
 msgid "Switch to workspace 1"
 msgstr "કામ કરવાની જગ્યા ૧ માં જાઓ"
 
-#: ../src/metacity.schemas.in.h:66
+#: ../src/metacity.schemas.in.h:68
 msgid "Switch to workspace 10"
 msgstr "કામ કરવાની જગ્યા ૧૦ માં જાઓ"
 
-#: ../src/metacity.schemas.in.h:67
+#: ../src/metacity.schemas.in.h:69
 msgid "Switch to workspace 11"
 msgstr "કામ કરવાની જગ્યા ૧૧ માં જાઓ"
 
-#: ../src/metacity.schemas.in.h:68
+#: ../src/metacity.schemas.in.h:70
 msgid "Switch to workspace 12"
 msgstr "કામ કરવાની જગ્યા ૧૨ માં જાઓ"
 
-#: ../src/metacity.schemas.in.h:69
+#: ../src/metacity.schemas.in.h:71
 msgid "Switch to workspace 2"
 msgstr "કામ કરવાની જગ્યા ૨ માં જાઓ"
 
-#: ../src/metacity.schemas.in.h:70
+#: ../src/metacity.schemas.in.h:72
 msgid "Switch to workspace 3"
 msgstr "કામ કરવાની જગ્યા ૩ માં જાઓ"
 
-#: ../src/metacity.schemas.in.h:71
+#: ../src/metacity.schemas.in.h:73
 msgid "Switch to workspace 4"
 msgstr "કામ કરવાની જગ્યા ૪ માં જાઓ"
 
-#: ../src/metacity.schemas.in.h:72
+#: ../src/metacity.schemas.in.h:74
 msgid "Switch to workspace 5"
 msgstr "કામ કરવાની જગ્યા ૫ માં જાઓ"
 
-#: ../src/metacity.schemas.in.h:73
+#: ../src/metacity.schemas.in.h:75
 msgid "Switch to workspace 6"
 msgstr "કામ કરવાની જગ્યા ૬ માં જાઓ"
 
-#: ../src/metacity.schemas.in.h:74
+#: ../src/metacity.schemas.in.h:76
 msgid "Switch to workspace 7"
 msgstr "કામ કરવાની જગ્યા ૭ માં જાઓ"
 
-#: ../src/metacity.schemas.in.h:75
+#: ../src/metacity.schemas.in.h:77
 msgid "Switch to workspace 8"
 msgstr "કામ કરવાની જગ્યા ૮ માં જાઓ"
 
-#: ../src/metacity.schemas.in.h:76
+#: ../src/metacity.schemas.in.h:78
 msgid "Switch to workspace 9"
 msgstr "કામ કરવાની જગ્યા ૯ માં જાઓ"
 
-#: ../src/metacity.schemas.in.h:77
+#: ../src/metacity.schemas.in.h:79
 msgid "Switch to workspace above this one"
 msgstr "આની ઉપરની કામ કરવાની જગ્યામાં જાઓ"
 
-#: ../src/metacity.schemas.in.h:78
+#: ../src/metacity.schemas.in.h:80
 msgid "Switch to workspace below this one"
 msgstr "આની નીચેની કામ કરવાની જગ્યામાં જાઓ"
 
-#: ../src/metacity.schemas.in.h:79
+#: ../src/metacity.schemas.in.h:81
 msgid "Switch to workspace on the left"
 msgstr "આની ડાબી બાજુની કામ કરવાની જગ્યામાં જાઓ"
 
-#: ../src/metacity.schemas.in.h:80
+#: ../src/metacity.schemas.in.h:82
 msgid "Switch to workspace on the right"
 msgstr "આની જમણી બાજુની કામ કરવાની જગ્યામાં જાઓ"
 
-#: ../src/metacity.schemas.in.h:81
+#: ../src/metacity.schemas.in.h:83
 msgid "System Bell is Audible"
 msgstr "સિસ્ટમની ઘંટડી સાંભળી શકાય તેવી છે"
 
-#: ../src/metacity.schemas.in.h:82
+#: ../src/metacity.schemas.in.h:84
 msgid "Take a screenshot"
 msgstr "ફોટો લો"
 
-#: ../src/metacity.schemas.in.h:83
+#: ../src/metacity.schemas.in.h:85
 msgid "Take a screenshot of a window"
 msgstr "વિન્ડોનો ફોટો લો"
 
-#: ../src/metacity.schemas.in.h:84
+#: ../src/metacity.schemas.in.h:86
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
 "or another application 'bell' indicator has been rung. Currently there are "
@@ -867,7 +876,7 @@ msgstr ""
 "(જેમકે ખાસ કરીને મૂળભૂત કિસ્સા માટે \"સિસ્ટમ બીપ\" હોય છે), વર્તમાન પ્રકાશન વિન્ડોની "
 "શિર્ષકપટ્ટી પર ફ્લેશ કરશે."
 
-#: ../src/metacity.schemas.in.h:85
+#: ../src/metacity.schemas.in.h:87
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
@@ -876,7 +885,7 @@ msgstr ""
 "/apps/metacity/global_keybindings/run_command_N કી આદેશ સાથે સંકળાયેલા કી જોડાણને "
 "વ્યાખ્યાયિત કરે છે. run_command_N માટેના કી જોડાણ દબાવતાં command_N ને ચલાવશે."
 
-#: ../src/metacity.schemas.in.h:86
+#: ../src/metacity.schemas.in.h:88
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
@@ -884,7 +893,7 @@ msgstr ""
 "/apps/metacity/global_keybindings/run_command_screenshot કી જોડાણને વ્યાખ્યાયિત "
 "કરે છે જે આ સુયોજન દ્વારા સ્પષ્ટ કરાયેલા આદેશને જગાડે છે."
 
-#: ../src/metacity.schemas.in.h:87
+#: ../src/metacity.schemas.in.h:89
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
@@ -893,7 +902,7 @@ msgstr ""
 "/apps/metacity/global_keybindings/run_command_window_screenshot કી જોડાણને  "
 "વ્યાખ્યાયિત કરે છે જે આ સુયોજન દ્વારા સ્પષ્ટ કરાયેલા આદેશને જગાડે છે."
 
-#: ../src/metacity.schemas.in.h:88
+#: ../src/metacity.schemas.in.h:90
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -908,7 +917,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" અને \"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત "
 "કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:89
+#: ../src/metacity.schemas.in.h:91
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -923,7 +932,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" અને \"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત "
 "કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:90
+#: ../src/metacity.schemas.in.h:92
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -938,7 +947,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" અને \"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત "
 "કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:91
+#: ../src/metacity.schemas.in.h:93
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -953,7 +962,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" અને \"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત "
 "કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:92
+#: ../src/metacity.schemas.in.h:94
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -968,7 +977,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" અને \"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત "
 "કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:93
+#: ../src/metacity.schemas.in.h:95
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -982,7 +991,7 @@ msgstr ""
 "તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે "
 "કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:94
+#: ../src/metacity.schemas.in.h:96
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -996,7 +1005,7 @@ msgstr ""
 "તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે "
 "કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:95
+#: ../src/metacity.schemas.in.h:97
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1010,7 +1019,7 @@ msgstr ""
 "તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે "
 "કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:96
+#: ../src/metacity.schemas.in.h:98
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1024,7 +1033,7 @@ msgstr ""
 "તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે "
 "કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:97
+#: ../src/metacity.schemas.in.h:99
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1038,7 +1047,7 @@ msgstr ""
 "તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે "
 "કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:98
+#: ../src/metacity.schemas.in.h:100
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1052,7 +1061,7 @@ msgstr ""
 "તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે "
 "કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:99
+#: ../src/metacity.schemas.in.h:101
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1066,7 +1075,7 @@ msgstr ""
 "તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે "
 "કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:100
+#: ../src/metacity.schemas.in.h:102
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1080,7 +1089,7 @@ msgstr ""
 "તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે "
 "કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:101
+#: ../src/metacity.schemas.in.h:103
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1094,7 +1103,7 @@ msgstr ""
 "તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે "
 "કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:102
+#: ../src/metacity.schemas.in.h:104
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1108,7 +1117,7 @@ msgstr ""
 "તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે "
 "કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:103
+#: ../src/metacity.schemas.in.h:105
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1122,7 +1131,7 @@ msgstr ""
 "તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે "
 "કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:104
+#: ../src/metacity.schemas.in.h:106
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1136,7 +1145,7 @@ msgstr ""
 "તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે "
 "કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:105
+#: ../src/metacity.schemas.in.h:107
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1150,7 +1159,7 @@ msgstr ""
 "Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો "
 "આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:106
+#: ../src/metacity.schemas.in.h:108
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1164,7 +1173,7 @@ msgstr ""
 "તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે "
 "કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:107
+#: ../src/metacity.schemas.in.h:109
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1179,7 +1188,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" અને \"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત "
 "કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:108
+#: ../src/metacity.schemas.in.h:110
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1194,7 +1203,7 @@ msgstr ""
 "નામ કે જે-  \"&lt;Ctl&gt;\" અને \"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા "
 "તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:109
+#: ../src/metacity.schemas.in.h:111
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1209,7 +1218,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" અને \"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત "
 "કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:110
+#: ../src/metacity.schemas.in.h:112
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1223,7 +1232,7 @@ msgstr ""
 "ને પણ પરવાનગી આપે છે. જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા \"નિષ્ક્રિય\" સુયોજિત કરો, તો "
 "પછી ત્યાંકોઈ કીજોડાણ આ ક્રિયા માટે નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:111
+#: ../src/metacity.schemas.in.h:113
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1237,7 +1246,7 @@ msgstr ""
 "તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે "
 "કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:112
+#: ../src/metacity.schemas.in.h:114
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -1252,7 +1261,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:113
+#: ../src/metacity.schemas.in.h:115
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1267,7 +1276,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:114
+#: ../src/metacity.schemas.in.h:116
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1282,7 +1291,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:115
+#: ../src/metacity.schemas.in.h:117
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1296,7 +1305,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:116
+#: ../src/metacity.schemas.in.h:118
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1310,7 +1319,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:117
+#: ../src/metacity.schemas.in.h:119
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1324,7 +1333,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:118
+#: ../src/metacity.schemas.in.h:120
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1338,7 +1347,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:119
+#: ../src/metacity.schemas.in.h:121
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1352,7 +1361,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:120
+#: ../src/metacity.schemas.in.h:122
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1366,7 +1375,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:121
+#: ../src/metacity.schemas.in.h:123
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1380,7 +1389,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:122
+#: ../src/metacity.schemas.in.h:124
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1394,7 +1403,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:123
+#: ../src/metacity.schemas.in.h:125
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1408,7 +1417,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:124
+#: ../src/metacity.schemas.in.h:126
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1422,7 +1431,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:125
+#: ../src/metacity.schemas.in.h:127
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1436,7 +1445,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:126
+#: ../src/metacity.schemas.in.h:128
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1450,7 +1459,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:127
+#: ../src/metacity.schemas.in.h:129
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1464,7 +1473,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:128
+#: ../src/metacity.schemas.in.h:130
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1479,7 +1488,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" અને \"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત "
 "કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:129
+#: ../src/metacity.schemas.in.h:131
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1494,7 +1503,7 @@ msgstr ""
 "નામ કે જે-  \"&lt;Ctl&gt;\" અને \"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા "
 "તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:130
+#: ../src/metacity.schemas.in.h:132
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1511,7 +1520,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:131
+#: ../src/metacity.schemas.in.h:133
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1528,7 +1537,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:132
+#: ../src/metacity.schemas.in.h:134
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1543,7 +1552,7 @@ msgstr ""
 "નામ કે જે-  \"&lt;Ctl&gt;\" અને \"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા "
 "તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:133
+#: ../src/metacity.schemas.in.h:135
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1558,7 +1567,7 @@ msgstr ""
 "નામ કે જે-  \"&lt;Ctl&gt;\" અને \"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા "
 "તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:134
+#: ../src/metacity.schemas.in.h:136
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1576,7 +1585,7 @@ msgstr ""
 "વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ "
 "કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:135
+#: ../src/metacity.schemas.in.h:137
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1594,7 +1603,7 @@ msgstr ""
 "વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી "
 "જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:136
+#: ../src/metacity.schemas.in.h:138
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1610,7 +1619,7 @@ msgstr ""
 "વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી "
 "જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:137
+#: ../src/metacity.schemas.in.h:139
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1624,7 +1633,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:138
+#: ../src/metacity.schemas.in.h:140
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1638,7 +1647,7 @@ msgstr ""
 "Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો "
 "આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:139
+#: ../src/metacity.schemas.in.h:141
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1652,7 +1661,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:140
+#: ../src/metacity.schemas.in.h:142
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1668,7 +1677,7 @@ msgstr ""
 "વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી "
 "જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:141
+#: ../src/metacity.schemas.in.h:143
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1682,7 +1691,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:142
+#: ../src/metacity.schemas.in.h:144
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1697,7 +1706,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled"
 "\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:143
+#: ../src/metacity.schemas.in.h:145
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1711,7 +1720,7 @@ msgstr ""
 "જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા \"નિષ્ક્રિય\" તરીકે સુયોજિત કરો, તો પછી ત્યાં આ ક્રિય "
 "માટે કોઈ કીજોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:144
+#: ../src/metacity.schemas.in.h:146
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1726,7 +1735,7 @@ msgstr ""
 "Ctl&gt;\" અને \"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી "
 "હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:145
+#: ../src/metacity.schemas.in.h:147
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1741,7 +1750,7 @@ msgstr ""
 "Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો "
 "આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:146
+#: ../src/metacity.schemas.in.h:148
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1755,21 +1764,21 @@ msgstr ""
 "વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ "
 "કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:147
+#: ../src/metacity.schemas.in.h:149
 msgid "The name of a workspace."
 msgstr "કામ કરવાની જગ્યાનું નામ."
 
-#: ../src/metacity.schemas.in.h:148
+#: ../src/metacity.schemas.in.h:150
 msgid "The screenshot command"
 msgstr "ફોટો પાડવા માટેનો આદેશ"
 
-#: ../src/metacity.schemas.in.h:149
+#: ../src/metacity.schemas.in.h:151
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr "થીમ વિન્ડોની કિનારી, શીર્ષકપટ્ટી અને બીજી બધી વસ્તુઓના દેખાવને નક્કી કરે છે."
 
-#: ../src/metacity.schemas.in.h:150
+#: ../src/metacity.schemas.in.h:152
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -1777,7 +1786,7 @@ msgstr ""
 "જો auto_raise એ સાચું હોય એ રીતે ગોઠવાયેલુ હોય તો વિન્ડોનો વધારો કરવામાં લાગતો "
 "વિલંબ. વિલંબને સેકન્ડના હજારમા ભાગમાં આપેલો છે."
 
-#: ../src/metacity.schemas.in.h:151
+#: ../src/metacity.schemas.in.h:153
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1790,11 +1799,11 @@ msgstr ""
 "માઉસ જે વિન્ડોમાં જાય તે પ્રકાશનમાં આપે, અને \"mouse\" એટલે કે વિન્ડોમાં માઉસ આપતા તે "
 "પ્રકાશનમાં આવે છે. અને માઉસ જતુ રહેતાં તે પ્રકાશનમાં નથી રહેતી."
 
-#: ../src/metacity.schemas.in.h:152
+#: ../src/metacity.schemas.in.h:154
 msgid "The window screenshot command"
 msgstr "વિન્ડોના ફોટો પાડવા માટેનાે આદેશ"
 
-#: ../src/metacity.schemas.in.h:153
+#: ../src/metacity.schemas.in.h:155
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1813,7 +1822,7 @@ msgstr ""
 "Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો "
 "આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:154
+#: ../src/metacity.schemas.in.h:156
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1827,7 +1836,7 @@ msgstr ""
 "Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો "
 "આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:155
+#: ../src/metacity.schemas.in.h:157
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1841,7 +1850,7 @@ msgstr ""
 "Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો "
 "આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:156
+#: ../src/metacity.schemas.in.h:158
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1856,7 +1865,7 @@ msgstr ""
 "Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો "
 "આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:157
+#: ../src/metacity.schemas.in.h:159
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1871,36 +1880,40 @@ msgstr ""
 "Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો "
 "આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
-#: ../src/metacity.schemas.in.h:158
+#: ../src/metacity.schemas.in.h:160
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, 'toggle_maximize' which will maximize/unmaximize the window, "
 "'minimize' which will minimize the window, and 'none' which will not do "
 "anything."
-msgstr "આ વિકલ્પ શીર્ષક પટ્ટી પર બેવડું-ક્લિક કરવાથી થતી અસરોને વર્ણવે છે. 'toggle_shade' એ વર્તમાન માન્ય વિકલ્પો છે, કે જે વિન્ડોને છાયામાં લાવે/નહિં લાવે, 'toggle_maximize' કે જે વિન્ડોને મહત્તમ બનાવે/મહત્તમમાંથી પાછી લાવે, 'minimize' કે જે વિન્ડોને ન્યૂનતમ બનાવે/ન્યૂનતમમાંથી પાછી લાવે છે, અને 'none' કે જે કંઈ કરશે નહિં."
+msgstr ""
+"આ વિકલ્પ શીર્ષક પટ્ટી પર બેવડું-ક્લિક કરવાથી થતી અસરોને વર્ણવે છે. 'toggle_shade' એ "
+"વર્તમાન માન્ય વિકલ્પો છે, કે જે વિન્ડોને છાયામાં લાવે/નહિં લાવે, 'toggle_maximize' કે જે "
+"વિન્ડોને મહત્તમ બનાવે/મહત્તમમાંથી પાછી લાવે, 'minimize' કે જે વિન્ડોને ન્યૂનતમ બનાવે/"
+"ન્યૂનતમમાંથી પાછી લાવે છે, અને 'none' કે જે કંઈ કરશે નહિં."
 
-#: ../src/metacity.schemas.in.h:159
+#: ../src/metacity.schemas.in.h:161
 msgid "Toggle always on top state"
 msgstr "ફેરબદલી હંમેશા ઉપરની સ્થિતિમાં કરો"
 
-#: ../src/metacity.schemas.in.h:160
+#: ../src/metacity.schemas.in.h:162
 msgid "Toggle fullscreen mode"
 msgstr "આખી સ્ક્રીન કરવાની સ્થિતિમાં ફેરબદલી"
 
-#: ../src/metacity.schemas.in.h:161
+#: ../src/metacity.schemas.in.h:163
 msgid "Toggle maximization state"
 msgstr "મહત્તમ કરવાની સ્થિતિમાં ફેરબદલી"
 
-#: ../src/metacity.schemas.in.h:162
+#: ../src/metacity.schemas.in.h:164
 msgid "Toggle shaded state"
 msgstr "છાયાંકિત કરવાની સ્થિતિમાં ફેરબદલી"
 
-#: ../src/metacity.schemas.in.h:163
+#: ../src/metacity.schemas.in.h:165
 msgid "Toggle window on all workspaces"
 msgstr "બધી કામ કરવાની જગ્યામાં વિન્ડોની ફેરબદલી"
 
-#: ../src/metacity.schemas.in.h:164
+#: ../src/metacity.schemas.in.h:166
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
@@ -1910,66 +1923,68 @@ msgstr ""
 "સાંભળવાનું મુશ્કેલ હોય અથવા ભારે ઘોંઘાટવાળુ વાતાવરણ હોય અથવા 'audible bell' બંધ હોય "
 "ત્યારે ઉપયોગી નીવડે."
 
-#: ../src/metacity.schemas.in.h:165
+#: ../src/metacity.schemas.in.h:167
 msgid "Unmaximize window"
 msgstr "વિન્ડોને મહત્તમ સ્થિતિમાંથી પાછી લાવો"
 
-#: ../src/metacity.schemas.in.h:166
+#: ../src/metacity.schemas.in.h:168
 msgid "Use standard system font in window titles"
 msgstr "વિન્ડોના શીર્ષક માટે મૂળભૂત સિસ્ટમના ફોન્ટનો ઉપયોગ કરો"
 
-#: ../src/metacity.schemas.in.h:167
+#: ../src/metacity.schemas.in.h:169
 msgid "Visual Bell Type"
 msgstr "દેખાતી ઘંટડીનો પ્રકાર"
 
-#: ../src/metacity.schemas.in.h:168
+#: ../src/metacity.schemas.in.h:170
 msgid "Whether raising should be a side-effect of other user interactions"
 msgstr "શું વધારવાનું અન્ય વપરાશકર્તા સંપર્કોની આડ-અસર હોવી જોઈએ"
 
-#: ../src/metacity.schemas.in.h:169
+#: ../src/metacity.schemas.in.h:171
 msgid "Window focus mode"
 msgstr "વિન્ડોની પ્રકાશન સ્થિતિ"
 
-#: ../src/metacity.schemas.in.h:170
+#: ../src/metacity.schemas.in.h:172
 msgid "Window title font"
 msgstr "વિન્ડોના શીર્ષકના ફોન્ટ"
 
-#: ../src/prefs.c:555 ../src/prefs.c:571 ../src/prefs.c:587 ../src/prefs.c:603
-#: ../src/prefs.c:619 ../src/prefs.c:635 ../src/prefs.c:655 ../src/prefs.c:671
-#: ../src/prefs.c:687 ../src/prefs.c:703 ../src/prefs.c:719 ../src/prefs.c:735
-#: ../src/prefs.c:751 ../src/prefs.c:767 ../src/prefs.c:784 ../src/prefs.c:800
-#: ../src/prefs.c:816 ../src/prefs.c:832 ../src/prefs.c:848 ../src/prefs.c:863
-#: ../src/prefs.c:878 ../src/prefs.c:893 ../src/prefs.c:909 ../src/prefs.c:925
-#: ../src/prefs.c:941
+#: ../src/prefs.c:567 ../src/prefs.c:583 ../src/prefs.c:599 ../src/prefs.c:615
+#: ../src/prefs.c:631 ../src/prefs.c:647 ../src/prefs.c:667 ../src/prefs.c:683
+#: ../src/prefs.c:699 ../src/prefs.c:715 ../src/prefs.c:731 ../src/prefs.c:747
+#: ../src/prefs.c:763 ../src/prefs.c:779 ../src/prefs.c:796 ../src/prefs.c:812
+#: ../src/prefs.c:828 ../src/prefs.c:844 ../src/prefs.c:860 ../src/prefs.c:875
+#: ../src/prefs.c:890 ../src/prefs.c:905 ../src/prefs.c:921 ../src/prefs.c:937
+#: ../src/prefs.c:953 ../src/prefs.c:969
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "જીકોન્ફ કી \"%s\" એ અયોગ્ય પ્રકારમાં ગોઠવાયેલી છે\n"
 
-#: ../src/prefs.c:986
+#: ../src/prefs.c:1014
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr "માઉસ બટનની કિંમત બદલવા માટે રુપરેખાના ડેટાબેઝમાંથી મળેલ કિંમત \"%s\" એ યોગ્ય નથી\n"
 
-#: ../src/prefs.c:1010 ../src/prefs.c:1500
+#: ../src/prefs.c:1038 ../src/prefs.c:1528
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "જીકોન્ફ કી '%s' એ અયોગ્ય કિંમતમાં ગોઠવાયેલી છે\n"
 
-#: ../src/prefs.c:1133
+#: ../src/prefs.c:1161
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
 "range 1..128\n"
-msgstr "%d એ જીકોન્ફ કી %s માં સંગ્રહાયેલ છે કે જે કારણવાળું કર્સર માપ નથી; તે 1..128 વિસ્તારમાં હોવું જ જોઈએ (_s)\n"
+msgstr ""
+"%d એ જીકોન્ફ કી %s માં સંગ્રહાયેલ છે કે જે કારણવાળું કર્સર માપ નથી; તે 1..128 વિસ્તારમાં "
+"હોવું જ જોઈએ (_s)\n"
 
-#: ../src/prefs.c:1213
+#: ../src/prefs.c:1241
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "\"%s\" ફોન્ટના વર્ણનને જીકોન્ફ કી %s માંથી પદચ્છેદ કરી શકાતા નથી\n"
 
-#: ../src/prefs.c:1398
+#: ../src/prefs.c:1426
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1978,7 +1993,7 @@ msgstr ""
 "%d એ જીકોન્ફ કી %s માં સંગ્રહિત યોગ્ય કામ કરવાની જગ્યાની સંખ્યા નથી, વર્તમાન મહત્તમ %d "
 "છે\n"
 
-#: ../src/prefs.c:1458
+#: ../src/prefs.c:1486
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1986,24 +2001,24 @@ msgstr ""
 "બગડેલા કાર્યક્રમો માટે આસપાસના કાર્યો નિષ્ક્રિય કરેલા છે. કદાચ કેટલાક કાર્યક્રમો યોગ્ય "
 "રીતે નહિ વર્તતા હોય.\n"
 
-#: ../src/prefs.c:1527
+#: ../src/prefs.c:1555
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d એ જીકોન્ફ કી %s માં સંગ્રહિત ૦ થી %d ની સીમાની બહાર છે\n"
 
-#: ../src/prefs.c:1664
+#: ../src/prefs.c:1695
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "કામ કરવાની જગ્યાની સંખ્યા %d નક્કી કરવામાં ભૂલ થઈ: %s\n"
 
-#: ../src/prefs.c:2000
+#: ../src/prefs.c:2031
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "કી જોડાણ \"%s\" માટે રુપરેખાના ડેટાબેઝ \"%s\" માં મળેલ કિંમત યોગ્ય નથી\n"
 
-#: ../src/prefs.c:2355
+#: ../src/prefs.c:2386
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "કામ કરવાની જગ્યા %d ને \"%s\" નું નામ બદલવામાં ભૂલ થઈ: %s\n"
@@ -2037,7 +2052,7 @@ msgstr "સ્ક્રીન %d કે જે ડિસ્પ્લે \"%s\" �
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "સ્ક્રીન %d કે જે ડિસ્પ્લે \"%s\" પર છે ત્યાં પહેલેથીજ વિન્ડો વ્યવસ્થાપક છે\n"
 
-#: ../src/screen.c:702
+#: ../src/screen.c:705
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "સ્ક્રીન %d કે જે ડિસ્પ્લે \"%s\" પર છે તેને દૂર કરી શકાતી નથી\n"
@@ -3115,7 +3130,7 @@ msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "કાર્યક્રમ એ ખોટું _NET_WM_PID %lu સુયોજિત કર્યું છે\n"
 
 #. first time through
-#: ../src/window.c:5405
+#: ../src/window.c:5409
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3131,7 +3146,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6035
+#: ../src/window.c:6028
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
