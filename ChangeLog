@@ -1,3 +1,11 @@
+Thu Feb 23 15:40:52 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/compositor.c (meta_compositor_manage_screen): Don't attempt
+	to manage the screen if it already is managed.
+
+	* src/compositor.c (meta_compositor_unmanage_screen): Synchronize
+	the display. 
+
 2006-02-19  Thomas Thurman  <thomas thurman org uk>
 
         Removed "move to another workspace" menu when there are

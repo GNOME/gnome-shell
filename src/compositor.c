@@ -120,6 +120,8 @@ meta_compositor_new (MetaDisplay *display)
 	  
 	  return NULL;
 	}
+
+      ws_display_set_ignore_grabs (compositor_display, TRUE);
     }
   
   compositor->display = compositor_display;
@@ -127,16 +129,13 @@ meta_compositor_new (MetaDisplay *display)
   ws_display_set_synchronize (compositor_display,
 			      getenv ("METACITY_SYNC") != NULL);
   
-  ws_display_init_test (compositor->display);
-  ws_display_set_ignore_grabs (compositor->display, TRUE);
-  
   compositor->meta_display = display;
   
-  compositor->window_hash = g_hash_table_new_full (
-						   meta_unsigned_long_hash,
-						   meta_unsigned_long_equal,
-						   NULL,
-						   free_window_hash_value);
+  compositor->window_hash =
+      g_hash_table_new_full (meta_unsigned_long_hash,
+			     meta_unsigned_long_equal,
+			     NULL,
+			     free_window_hash_value);
   
   compositor->enabled = TRUE;
   
@@ -203,7 +202,7 @@ draw_windows (MetaScreen *screen,
   g_print ("rendering: %p\n", node);
 #endif
   
-  cm_node_render (node);
+  cm_node_render (node, NULL);
 }
 
 static MetaScreen *
@@ -864,7 +863,9 @@ meta_compositor_add_window (MetaCompositor    *compositor,
   node = g_hash_table_lookup (compositor->window_hash,
 			      &xwindow);
   
+#if 0
   g_print ("adding %lx\n", xwindow);
+#endif
   
   if (node != NULL)
     {
@@ -915,7 +916,9 @@ meta_compositor_add_window (MetaCompositor    *compositor,
   scr_info->compositor_nodes = g_list_prepend (scr_info->compositor_nodes,
 					       node);
   
+#if 0
   dump_stacking_order (scr_info->compositor_nodes);
+#endif
   
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 }
@@ -970,6 +973,9 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   Display *xdisplay;
   Atom cm_sn_atom;
   char buf[128];
+
+  if (screen->compositor_data)
+      return;
   
   scr_info->glw = ws_screen_get_gl_window (ws_screen);
   scr_info->compositor_nodes = NULL;
@@ -981,7 +987,8 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   ws_display_init_composite (compositor->display);
   ws_display_init_damage (compositor->display);
   ws_display_init_fixes (compositor->display);
-  
+
+  g_print ("redirecting\n");
   ws_window_redirect_subwindows (root);
   ws_window_set_override_redirect (scr_info->glw, TRUE);
   ws_window_unredirect (scr_info->glw);
@@ -990,7 +997,7 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   ws_window_set_input_shape (scr_info->glw, region);
   g_object_unref (G_OBJECT (region));
   
-  xdisplay = WS_RESOURCE_XDISPLAY (ws_screen);
+  xdisplay = ws_screen->display->xdisplay;
   snprintf(buf, sizeof(buf), "CM_S%d", screen->number);
   cm_sn_atom = XInternAtom (xdisplay, buf, False);
   current_cm_sn_owner = XGetSelectionOwner (xdisplay, cm_sn_atom);
@@ -1039,9 +1046,17 @@ meta_compositor_unmanage_screen (MetaCompositor *compositor,
     }
   
   ws_window_raise (scr_info->glw);
-  
+
+  g_print ("unredirecting\n");
   ws_window_unredirect_subwindows (root);
   ws_window_unmap (scr_info->glw);
+
+  /* We need to sync here, because if someone is furiously
+   * clicking the 'compositing manager' check box, we might
+   * attempt to redirect the window again before this unredirect
+   * has reached the server
+   */
+  ws_display_sync (compositor->display);
   
   screen->compositor_data = NULL;
   
@@ -1160,7 +1175,7 @@ interpolate_rectangle (gdouble		t,
 
 #endif
 
-#define MINIMIZE_STYLE 3
+#define MINIMIZE_STYLE 1
 
 #ifndef HAVE_COMPOSITE_EXTENSIONS
 #undef MINIMIZE_STYLE
@@ -1191,7 +1206,7 @@ typedef struct
   MetaCompositor *compositor;
   ScreenInfo *scr_info;
   
-  MetaMinimizeFinishedFunc finished_func;
+  MetaAnimationFinishedFunc finished_func;
   gpointer		     finished_data;
   
   gdouble	aspect_ratio;
@@ -1242,8 +1257,9 @@ run_phase_1 (MiniInfo *info, gdouble elapsed)
 {
   if (!info->phase_1_started)
     {
-      GList *next;
+#if 0
       g_print ("starting phase 1\n");
+#endif
       info->phase_1_started = TRUE;
       
       info->current_geometry.x = info->node->real_x;
@@ -1416,7 +1432,7 @@ meta_compositor_minimize (MetaCompositor           *compositor,
 			  int                       y,
 			  int                       width,
 			  int                       height,
-			  MetaMinimizeFinishedFunc  finished,
+			  MetaAnimationFinishedFunc  finished,
 			  gpointer                  data)
 {
   MiniInfo *info = g_new (MiniInfo, 1);
@@ -1460,7 +1476,7 @@ meta_compositor_unminimize (MetaCompositor           *compositor,
 			    int                       y,
 			    int                       width,
 			    int                       height,
-			    MetaMinimizeFinishedFunc  finished,
+			    MetaAnimationFinishedFunc  finished,
 			    gpointer                  data)
 {
   finished(data);
@@ -1907,7 +1923,6 @@ meta_compositor_minimize (MetaCompositor            *compositor,
   g_idle_add (run_animation, info);
 #endif
 }
-#endif
 
 void
 meta_compositor_unminimize (MetaCompositor            *compositor,
@@ -1946,6 +1961,8 @@ meta_compositor_unminimize (MetaCompositor            *compositor,
   g_idle_add (run_animation, info);
 #endif
 }
+
+#endif
 
 void
 meta_compositor_set_updates (MetaCompositor *compositor,
