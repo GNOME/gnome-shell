@@ -1,3 +1,13 @@
+Sat Feb 25 11:46:14 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/display.c (meta_display_begin_grab_op): Call
+	meta_compositor_begin_move if there is a compositor
+
+	* src/compositor.c (meta_compositor_begin/update/end_move):
+	Implement those functions.
+
+	* src/spring-model.[ch]: New files
+	
 Thu Feb 23 15:40:52 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/compositor.c (meta_compositor_manage_screen): Don't attempt

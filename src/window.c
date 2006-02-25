@@ -39,6 +39,7 @@
 #include "resizepopup.h"
 #include "xprops.h"
 #include "group.h"
+#include "flash.h"
 #include "window-props.h"
 #include "constraints.h"
 #include "compositor.h"
@@ -6661,22 +6662,23 @@ update_move (MetaWindow  *window,
   int new_x, new_y;
   MetaRectangle old;
   int shake_threshold;
+  MetaDisplay *display = window->display;
   
-  window->display->grab_latest_motion_x = x;
-  window->display->grab_latest_motion_y = y;
+  display->grab_latest_motion_x = x;
+  display->grab_latest_motion_y = y;
   
-  dx = x - window->display->grab_anchor_root_x;
-  dy = y - window->display->grab_anchor_root_y;
+  dx = x - display->grab_anchor_root_x;
+  dy = y - display->grab_anchor_root_y;
 
-  new_x = window->display->grab_anchor_window_pos.x + dx;
-  new_y = window->display->grab_anchor_window_pos.y + dy;
+  new_x = display->grab_anchor_window_pos.x + dx;
+  new_y = display->grab_anchor_window_pos.y + dy;
 
   meta_verbose ("x,y = %d,%d anchor ptr %d,%d anchor pos %d,%d dx,dy %d,%d\n",
                 x, y,
-                window->display->grab_anchor_root_x,
-                window->display->grab_anchor_root_y,
-                window->display->grab_anchor_window_pos.x,
-                window->display->grab_anchor_window_pos.y,
+                display->grab_anchor_root_x,
+                display->grab_anchor_root_y,
+                display->grab_anchor_window_pos.x,
+                display->grab_anchor_window_pos.y,
                 dx, dy);
 
   /* Don't bother doing anything if no move has been specified.  (This
@@ -6703,22 +6705,22 @@ update_move (MetaWindow  *window,
                   
       /* move the unmaximized window to the cursor */
       prop = 
-        ((double)(x - window->display->grab_initial_window_pos.x)) / 
-        ((double)window->display->grab_initial_window_pos.width);
+        ((double)(x - display->grab_initial_window_pos.x)) / 
+        ((double)display->grab_initial_window_pos.width);
 
-      window->display->grab_initial_window_pos.x = 
+      display->grab_initial_window_pos.x = 
         x - window->saved_rect.width * prop;
-      window->display->grab_initial_window_pos.y = y;
+      display->grab_initial_window_pos.y = y;
 
       if (window->frame)
         {
-          window->display->grab_initial_window_pos.y += window->frame->child_y / 2;
+          display->grab_initial_window_pos.y += window->frame->child_y / 2;
         }
 
-      window->saved_rect.x = window->display->grab_initial_window_pos.x;
-      window->saved_rect.y = window->display->grab_initial_window_pos.y;
-      window->display->grab_anchor_root_x = x;
-      window->display->grab_anchor_root_y = y;
+      window->saved_rect.x = display->grab_initial_window_pos.x;
+      window->saved_rect.y = display->grab_initial_window_pos.y;
+      display->grab_anchor_root_x = x;
+      display->grab_anchor_root_y = y;
 
       meta_window_unmaximize (window,
                               META_MAXIMIZE_HORIZONTAL |
@@ -6766,9 +6768,9 @@ update_move (MetaWindow  *window,
                                           META_MAXIMIZE_VERTICAL);
                 }
 
-              window->display->grab_initial_window_pos = work_area;
-              window->display->grab_anchor_root_x = x;
-              window->display->grab_anchor_root_y = y;
+              display->grab_initial_window_pos = work_area;
+              display->grab_anchor_root_x = x;
+              display->grab_anchor_root_y = y;
               window->shaken_loose = FALSE;
               
               meta_window_maximize (window,
@@ -6780,8 +6782,8 @@ update_move (MetaWindow  *window,
         }
     }
 
-  if (window->display->grab_wireframe_active)
-    old = window->display->grab_wireframe_rect;
+  if (display->grab_wireframe_active)
+    old = display->grab_wireframe_rect;
   else
     {
       old = window->rect;
@@ -6804,10 +6806,19 @@ update_move (MetaWindow  *window,
                                         snap,
                                         FALSE);
 
-  if (window->display->grab_wireframe_active)
+  if (display->compositor)
+    {
+      int root_x = new_x - display->grab_anchor_window_pos.x + display->grab_anchor_root_x;
+      int root_y = new_y - display->grab_anchor_window_pos.y + display->grab_anchor_root_y;
+      
+      meta_compositor_update_move (display->compositor,
+				   window, root_x, root_y);
+    }
+  
+  if (display->grab_wireframe_active)
     meta_window_update_wireframe (window, new_x, new_y, 
-                                  window->display->grab_wireframe_rect.width,
-                                  window->display->grab_wireframe_rect.height);
+                                  display->grab_wireframe_rect.width,
+                                  display->grab_wireframe_rect.height);
   else
     meta_window_move (window, TRUE, new_x, new_y);
 }

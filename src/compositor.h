@@ -70,4 +70,14 @@ meta_compositor_set_updates (MetaCompositor *compositor,
 void
 meta_compositor_destroy (MetaCompositor *compositor);
 
+void meta_compositor_begin_move (MetaCompositor *compositor,
+				 MetaWindow *window,
+				 MetaRectangle *initial,
+				 int grab_x, int grab_y);
+void meta_compositor_update_move (MetaCompositor *compositor,
+				  MetaWindow *window,
+				  int x, int y);
+void meta_compositor_end_move (MetaCompositor *compositor,
+			       MetaWindow *window);
+
 #endif /* META_COMPOSITOR_H */

@@ -70,6 +70,8 @@ metacity_SOURCES= 				\
 	screen.h				\
 	session.c				\
 	session.h				\
+	spring-model.c				\
+	spring-model.h				\
 	stack.c					\
 	stack.h					\
 	tabpopup.c				\

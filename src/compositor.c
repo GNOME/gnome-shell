@@ -32,7 +32,6 @@
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 #include <cm/node.h>
 #include <cm/drawable-node.h>
-
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glx.h>
@@ -45,6 +44,7 @@
 #include <X11/extensions/Xdamage.h>
 #include <X11/extensions/Xfixes.h>
 #include <X11/extensions/Xrender.h>
+#include "spring-model.h"
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 #define FRAME_INTERVAL_MILLISECONDS ((int)(1000.0/40.0))
@@ -58,6 +58,8 @@ typedef struct
   WsWindow *glw;
   int idle_id;
 } ScreenInfo;
+
+typedef struct MoveInfo MoveInfo;
 
 struct MetaCompositor
 {
@@ -77,6 +79,8 @@ struct MetaCompositor
   guint debug_updates : 1;
   
   GList *ignored_damage;
+  
+  MoveInfo *move_info;
 };
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
@@ -105,7 +109,7 @@ meta_compositor_new (MetaDisplay *display)
       gboolean has_extensions;
       
       compositor_display = ws_display_new (NULL);
-
+      
       has_extensions = 
 	ws_display_init_composite (compositor_display) &&
 	ws_display_init_damage    (compositor_display) &&
@@ -120,7 +124,7 @@ meta_compositor_new (MetaDisplay *display)
 	  
 	  return NULL;
 	}
-
+      
       ws_display_set_ignore_grabs (compositor_display, TRUE);
     }
   
@@ -132,10 +136,10 @@ meta_compositor_new (MetaDisplay *display)
   compositor->meta_display = display;
   
   compositor->window_hash =
-      g_hash_table_new_full (meta_unsigned_long_hash,
-			     meta_unsigned_long_equal,
-			     NULL,
-			     free_window_hash_value);
+    g_hash_table_new_full (meta_unsigned_long_hash,
+			   meta_unsigned_long_equal,
+			   NULL,
+			   free_window_hash_value);
   
   compositor->enabled = TRUE;
   
@@ -295,6 +299,11 @@ process_configure_notify (MetaCompositor  *compositor,
       above_node = g_hash_table_lookup (compositor->window_hash,
 					&event->above);
     }
+  
+#if 0
+  cm_drawable_node_set_size (node,
+			     event->x, event->y, event->width, event->height);
+#endif
   
   handle_restacking (compositor, node, above_node);
 }
@@ -757,10 +766,8 @@ update (gpointer data)
   glEnd ();
 #endif
   
-#if 0
   glClearColor (0.0, 0.0, 0.0, 0.0);
   glClear (GL_COLOR_BUFFER_BIT);
-#endif
   
 #if 0
   glEnable (GL_TEXTURE_2D);
@@ -973,9 +980,9 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   Display *xdisplay;
   Atom cm_sn_atom;
   char buf[128];
-
+  
   if (screen->compositor_data)
-      return;
+    return;
   
   scr_info->glw = ws_screen_get_gl_window (ws_screen);
   scr_info->compositor_nodes = NULL;
@@ -987,7 +994,7 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   ws_display_init_composite (compositor->display);
   ws_display_init_damage (compositor->display);
   ws_display_init_fixes (compositor->display);
-
+  
   g_print ("redirecting\n");
   ws_window_redirect_subwindows (root);
   ws_window_set_override_redirect (scr_info->glw, TRUE);
@@ -1046,11 +1053,11 @@ meta_compositor_unmanage_screen (MetaCompositor *compositor,
     }
   
   ws_window_raise (scr_info->glw);
-
+  
   g_print ("unredirecting\n");
   ws_window_unredirect_subwindows (root);
   ws_window_unmap (scr_info->glw);
-
+  
   /* We need to sync here, because if someone is furiously
    * clicking the 'compositing manager' check box, we might
    * attempt to redirect the window again before this unredirect
@@ -1175,7 +1182,7 @@ interpolate_rectangle (gdouble		t,
 
 #endif
 
-#define MINIMIZE_STYLE 1
+#define MINIMIZE_STYLE 3
 
 #ifndef HAVE_COMPOSITE_EXTENSIONS
 #undef MINIMIZE_STYLE
@@ -1236,10 +1243,12 @@ set_geometry (MiniInfo *info, gdouble elapsed)
   
   interpolate_rectangle (elapsed, &info->current_geometry, &info->target_geometry, &rect);
   
+#if 0
   g_print ("y: %d %d  (%f  => %d)\n", info->current_geometry.y, info->target_geometry.y,
 	   elapsed, rect.y);
   
   g_print ("setting: %d %d %d %d\n", rect.x, rect.y, rect.width, rect.height);
+#endif
   
   cm_drawable_node_set_geometry (info->node,
 				 rect.x, rect.y,
@@ -1412,7 +1421,7 @@ run_animation_01 (gpointer data)
     {
       cm_drawable_node_set_viewable (info->node, FALSE);
       
-      cm_drawable_node_unset_geometry (info->node);
+      cm_drawable_node_unset_geometry (info->node); 
       
       cm_drawable_node_set_alpha (info->node, 1.0);
       
@@ -1540,65 +1549,6 @@ do_minimize_animation (gpointer data)
 
 #elif MINIMIZE_STYLE == 3
 
-
-typedef struct XYPair Point;
-typedef struct XYPair Vector;
-typedef struct Spring Spring;
-typedef struct Object Object;
-typedef struct Model Model;
-
-struct XYPair {
-  double x, y;
-};
-
-#define GRID_WIDTH  4
-#define GRID_HEIGHT 4
-
-#define MODEL_MAX_OBJECTS (GRID_WIDTH * GRID_HEIGHT)
-#define MODEL_MAX_SPRINGS (MODEL_MAX_OBJECTS * 2)
-
-#define DEFAULT_SPRING_K  5.0
-#define DEFAULT_FRICTION  1.4
-
-struct Spring {
-  Object *a;
-  Object *b;
-  /* Spring position at rest, from a to b:
-     offset = b.position - a.position
-  */
-  Vector offset;
-};
-
-struct Object {
-  Vector force;
-  
-  Point position;
-  Vector velocity;
-  
-  double mass;
-  double theta;
-  
-  int immobile;
-};
-
-struct Model {
-  int num_objects;
-  Object objects[MODEL_MAX_OBJECTS];
-  
-  int num_springs;
-  Spring springs[MODEL_MAX_SPRINGS];
-  
-  Object *anchor_object;
-  Vector anchor_offset;
-  
-  double friction;/* Friction constant */
-  double k;/* Spring constant */
-  
-  double last_time;
-  double steps;
-};
-
-
 typedef struct
 {
   CmDrawableNode *node;
@@ -1606,13 +1556,14 @@ typedef struct
   gboolean expand;
   
   MetaCompositor *compositor;
-  ScreenInfo *scr_info;
+  MetaScreen *screen;
   MetaRectangle rect;
+  double last_time;
   
   MetaAnimationFinishedFunc finished_func;
   gpointer		      finished_data;
   
-  Model	model;
+  Model	*model;
   
   int		button_x;
   int		button_y;
@@ -1620,270 +1571,96 @@ typedef struct
   int		button_height;
 } MiniInfo;
 
-static void
-object_init (Object *object,
-	     double position_x, double position_y,
-	     double velocity_x, double velocity_y, double mass)
-{
-  object->position.x = position_x;
-  object->position.y = position_y;
-  
-  object->velocity.x = velocity_x;
-  object->velocity.y = velocity_y;
-  
-  object->mass = mass;
-  
-  object->force.x = 0;
-  object->force.y = 0;
-  
-  object->immobile = 0;
-}
-
-static void
-spring_init (Spring *spring,
-	     Object *object_a, Object *object_b,
-	     double offset_x, double offset_y)
-{
-  spring->a = object_a;
-  spring->b = object_b;
-  spring->offset.x = offset_x;
-  spring->offset.y = offset_y;
-}
-
-static void
-model_add_spring (Model *model,
-		  Object *object_a, Object *object_b,
-		  double offset_x, double offset_y)
-{
-  Spring *spring;
-  
-  g_assert (model->num_springs < MODEL_MAX_SPRINGS);
-  
-  spring = &model->springs[model->num_springs];
-  model->num_springs++;
-  
-  spring_init (spring, object_a, object_b, offset_x, offset_y);
-}
-
-static void
-model_init_grid (Model *model, MetaRectangle *rect, gboolean expand)
-{
-  int x, y, i, v_x, v_y;
-  int hpad, vpad;
-  
-  model->num_objects = MODEL_MAX_OBJECTS;
-  
-  model->num_springs = 0;
-  
-  i = 0;
-  if (expand) {
-    hpad = rect->width / 3;
-    vpad = rect->height / 3;
-  }
-  else {
-    hpad = rect->width / 6;
-    vpad = rect->height / 6;
-  }
-  
-  for (y = 0; y < GRID_HEIGHT; y++)
-    for (x = 0; x < GRID_WIDTH; x++) {
-      
-      v_x = random() % 40 - 20;
-      v_y = random() % 40 - 20;
-      
-      if (expand)
-	object_init (&model->objects[i],
-		     rect->x + x * rect->width / 6 + rect->width / 4,
-		     rect->y + y * rect->height / 6 + rect->height / 4,
-		     v_x, v_y, 20);
-      else
-	object_init (&model->objects[i],
-		     rect->x + x * rect->width / 3,
-		     rect->y + y * rect->height / 3,
-		     v_x, v_y, 20);
-      
-      
-      if (x > 0)
-	model_add_spring (model,
-			  &model->objects[i - 1],
-			  &model->objects[i],
-			  hpad, 0);
-      
-      if (y > 0)
-	model_add_spring (model,
-			  &model->objects[i - GRID_WIDTH],
-			  &model->objects[i],
-			  0, vpad);
-      
-      i++;
-    }
-}
-
-static void
-model_init (Model *model, MetaRectangle *rect, gboolean expand)
-{
-  model->anchor_object = NULL;
-  
-  model->k        = DEFAULT_SPRING_K;
-  model->friction = DEFAULT_FRICTION;
-  
-  model_init_grid (model, rect, expand);
-  model->steps = 0;
-  model->last_time = 0;
-}
-
-static void
-object_apply_force (Object *object, double fx, double fy)
-{
-  object->force.x += fx;
-  object->force.y += fy;
-}
-
-/* The model here can be understood as a rigid body of the spring's
- * rest shape, centered on the vector between the two object
- * positions. This rigid body is then connected by linear-force
- * springs to each object. This model does degnerate into a simple
- * spring for linear displacements, and does something reasonable for
- * rotation.
- *
- * There are other possibilities for handling the rotation of the
- * spring, and it might be interesting to explore something which has
- * better length-preserving properties. For example, with the current
- * model, an initial 180 degree rotation of the spring results in the
- * spring collapsing down to 0 size before expanding back to it's
- * natural size again.
- */
-
-static void
-spring_exert_forces (Spring *spring, double k)
-{
-  Vector da, db;
-  Vector a, b;
-  
-  a = spring->a->position;
-  b = spring->b->position;
-  
-  /* A nice vector diagram would likely help here, but my ASCII-art
-   * skills aren't up to the task. Here's how to make your own
-   * diagram:
-   *
-   * Draw a and b, and the vector AB from a to b
-   * Find the center of AB
-   * Draw spring->offset so that its center point is on the center of AB
-   * Draw da from a to the initial point of spring->offset
-   * Draw db from b to the final point of spring->offset
-   *
-   * The math below should be easy to verify from the diagram.
-   */
-  
-  da.x = 0.5 * (b.x - a.x - spring->offset.x);
-  da.y = 0.5 * (b.y - a.y - spring->offset.y);
-  
-  db.x = 0.5 * (a.x - b.x + spring->offset.x);
-  db.y = 0.5 * (a.y - b.y + spring->offset.y);
-  
-  object_apply_force (spring->a, k *da.x, k * da.y);
-  
-  object_apply_force (spring->b, k * db.x, k * db.y);
-}
-
-static void
-model_step_object (Model *model, Object *object)
-{
-  Vector acceleration;
-  
-  object->theta += 0.05;
-  
-  /* Slow down due to friction. */
-  object->force.x -= model->friction * object->velocity.x;
-  object->force.y -= model->friction * object->velocity.y;
-  
-  acceleration.x = object->force.x / object->mass;
-  acceleration.y = object->force.y / object->mass;
-  
-  if (object->immobile) {
-    object->velocity.x = 0;
-    object->velocity.y = 0;
-  } else {
-    object->velocity.x += acceleration.x;
-    object->velocity.y += acceleration.y;
-    
-    object->position.x += object->velocity.x;
-    object->position.y += object->velocity.y;
-  }
-  
-  object->force.x = 0.0;
-  object->force.y = 0.0;
-}
-
-static void
-model_step (Model *model)
-{
-  int i;
-  
-  for (i = 0; i < model->num_springs; i++)
-    spring_exert_forces (&model->springs[i], model->k);
-  
-  for (i = 0; i < model->num_objects; i++)
-    model_step_object (model, &model->objects[i]);
-}
-
 #define WOBBLE_TIME 1.0
+
+static void
+set_patch (CmDrawableNode *node,
+	   Model *model,
+	   gdouble blend,
+	   MetaRectangle *target)
+{
+  int i, j;
+  CmPoint points[4][4];
+  
+  for (i = 0; i < 4; i++)
+    for (j = 0; j < 4; j++)
+      {
+	double obj_x, obj_y;
+	int p_x, p_y;
+	
+	model_get_position (model, i, j, &obj_x, &obj_y);
+	
+#if 0
+	target_x = info->node->real_x + i * info->node->real_width / 3;
+	target_y = info->node->real_y + j * info->node->real_height / 3;
+#endif
+	if (target)
+	  {
+	    p_x = target->x + i * target->width / 3;
+	    p_y = target->y + j * target->height / 3;
+	    
+	    points[j][i].x = (1 - blend) * obj_x + blend * p_x;
+	    points[j][i].y = (1 - blend) * obj_y + blend * p_y;
+	  }
+	else
+	  {
+	    points[j][i].x = obj_x;
+	    points[j][i].y = obj_y;
+	  }
+      }
+  
+  cm_drawable_node_set_patch (node, points);
+}
 
 static gboolean
 run_animation (gpointer data)
 {
   MiniInfo *info = data;
   gdouble t, blend;
-  CmPoint points[4][4];
-  int i, j, steps, target_x, target_y;
+  double n_steps;
+  int i;
   
   t = g_timer_elapsed (info->timer, NULL);
   
-  info->model.steps += (t - info->model.last_time) / 0.03;
-  info->model.last_time = t;
-  steps = floor(info->model.steps);
-  info->model.steps -= steps;
+  n_steps = floor ((t - info->last_time) * 75);
   
-  for (i = 0; i < steps; i++)
-    model_step (&info->model);
+  for (i = 0; i < n_steps; ++i)
+    model_step (info->model);
   
-  if (info->expand)
-    blend = t / WOBBLE_TIME;
-  else
-    blend = 0;
+  if (i > 0)
+    info->last_time = t;
   
-  for (i = 0; i < 4; i++)
-    for (j = 0; j < 4; j++) {
-      target_x = info->node->real_x + i * info->node->real_width / 3;
-      target_y = info->node->real_y + j * info->node->real_height / 3;
-      
-      points[j][i].x =
-	(1 - blend) * info->model.objects[j * 4 + i].position.x +
-	blend * target_x;
-      points[j][i].y =
-	(1 - blend) * info->model.objects[j * 4 + i].position.y +
-	blend * target_y;
-    }
+  blend = t / WOBBLE_TIME;
   
-  cm_drawable_node_set_patch (info->node, points);
+  set_patch (info->node, info->model, 0.0, NULL);
+  
   if (info->expand)
     cm_drawable_node_set_alpha (info->node, t / WOBBLE_TIME);
   else
     cm_drawable_node_set_alpha (info->node, 1.0 - t / WOBBLE_TIME);
   
-  if (t > WOBBLE_TIME) {
-    cm_drawable_node_set_viewable (info->node, info->expand);
-    cm_drawable_node_unset_geometry (info->node);
-    cm_drawable_node_set_alpha (info->node, 1.0);
-    
-    if (info->finished_func)
-      info->finished_func (info->finished_data);
-    return FALSE;
-  }
-  else {
-    return TRUE;
-  }
+  if (t > WOBBLE_TIME)
+    {
+      cm_drawable_node_set_viewable (info->node, info->expand);
+      cm_drawable_node_unset_geometry (info->node);
+      cm_drawable_node_set_alpha (info->node, 1.0);
+      
+      if (info->finished_func)
+	{
+	  info->finished_func (info->finished_data);
+	  
+	  model_destroy (info->model);
+	  info->model = NULL;
+	}
+      
+      return FALSE;
+    }
+  else
+    {
+      queue_repaint (info->node, info->screen);
+      
+      return TRUE;
+    }
 }
 
 void
@@ -1909,7 +1686,9 @@ meta_compositor_minimize (MetaCompositor            *compositor,
   
   info->rect = window->user_rect;
   
-  model_init (&info->model, &info->rect, FALSE);
+  info->model = model_new (&info->rect, FALSE);
+  
+  info->last_time = 0.0;
   
   info->expand = FALSE;
   info->button_x = x;
@@ -1918,7 +1697,7 @@ meta_compositor_minimize (MetaCompositor            *compositor,
   info->button_height = height;
   
   info->compositor = compositor;
-  info->scr_info = screen->compositor_data;
+  info->screen = screen;
   
   g_idle_add (run_animation, info);
 #endif
@@ -1947,7 +1726,7 @@ meta_compositor_unminimize (MetaCompositor            *compositor,
   
   info->rect = window->user_rect;
   
-  model_init (&info->model, &info->rect, TRUE);
+  info->model = model_new (&info->rect, TRUE);
   
   info->expand = TRUE;
   info->button_x = x;
@@ -1956,7 +1735,7 @@ meta_compositor_unminimize (MetaCompositor            *compositor,
   info->button_height = height;
   
   info->compositor = compositor;
-  info->scr_info = screen->compositor_data;
+  info->screen = screen;
   
   g_idle_add (run_animation, info);
 #endif
@@ -2052,7 +1831,9 @@ void
 meta_compositor_destroy (MetaCompositor *compositor)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS 
+#if 0
   GSList *list;
+#endif
   
 #if 0
   /* FIXME */
@@ -2062,5 +1843,124 @@ meta_compositor_destroy (MetaCompositor *compositor)
   g_hash_table_destroy (compositor->window_hash);
   
   g_free (compositor);
+#endif
+}
+
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+
+struct MoveInfo
+{
+  GTimer *timer;
+  gboolean finished;
+  Model *model;
+  MetaScreen *screen;
+  CmDrawableNode *node;
+  gdouble last_time;
+};
+
+#endif
+
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+
+static gboolean
+wobble (gpointer data)
+{
+  MoveInfo *info = data;
+  double t = g_timer_elapsed (info->timer, NULL);
+  
+  if (info->finished && model_is_calm (info->model))
+    {
+      cm_drawable_node_unset_geometry (info->node);
+      g_free (info);
+      info = NULL;
+      return FALSE;
+    }
+  else
+    {
+      int i;
+      int n_steps;
+      n_steps = floor ((t - info->last_time) * 75);
+      
+      for (i = 0; i < n_steps; ++i)
+	model_step (info->model);
+      
+      if (i > 0)
+	info->last_time = t;
+      
+      set_patch (info->node, info->model, 0.0, NULL);
+      
+      queue_repaint (info->node, info->screen);
+      return TRUE;
+    }
+}
+
+#endif
+
+static void
+compute_window_rect (MetaWindow *window,
+		     MetaRectangle *rect)
+{
+  /* FIXME: does metacity include this function somewhere? */
+  
+  if (window->frame)
+    {
+      *rect = window->frame->rect;
+    }
+  else
+    {
+      *rect = window->user_rect;
+    }
+}
+
+void
+meta_compositor_begin_move (MetaCompositor *compositor,
+			    MetaWindow *window,
+			    MetaRectangle *initial,
+			    int grab_x, int grab_y)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  MetaRectangle rect;
+  
+  compositor->move_info = g_new0 (MoveInfo, 1);
+  
+  compositor->move_info->last_time = 0.0;
+  compositor->move_info->timer = g_timer_new ();
+  
+  compute_window_rect (window, &rect);
+  
+#if 0
+  g_print ("init: %d %d\n", initial->x, initial->y);
+  g_print ("window: %d %d\n", window->rect.x, window->rect.y);
+  g_print ("frame: %d %d\n", rect.x, rect.y);
+  g_print ("grab: %d %d\n", grab_x, grab_y);
+#endif
+  
+  compositor->move_info->model = model_new (&rect, TRUE);
+  compositor->move_info->node = window_to_node (window->display->compositor, window);
+  compositor->move_info->screen = window->screen;
+  
+  model_begin_move (compositor->move_info->model, grab_x, grab_y);
+  
+  g_idle_add (wobble, compositor->move_info);
+#endif
+}
+
+void
+meta_compositor_update_move (MetaCompositor *compositor,
+			     MetaWindow *window,
+			     int x, int y)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  model_update_move (compositor->move_info->model, x, y);
+#endif
+}
+
+void
+meta_compositor_end_move (MetaCompositor *compositor,
+			  MetaWindow *window)
+{
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  compositor->move_info->finished = TRUE;
+  compositor->move_info = NULL;
 #endif
 }
