@@ -1,3 +1,7 @@
+Sat Feb 25 14:50:17 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/window.c: Remove include of flash.h
+
 Sat Feb 25 11:46:14 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/display.c (meta_display_begin_grab_op): Call

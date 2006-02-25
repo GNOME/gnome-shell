@@ -39,7 +39,6 @@
 #include "resizepopup.h"
 #include "xprops.h"
 #include "group.h"
-#include "flash.h"
 #include "window-props.h"
 #include "constraints.h"
 #include "compositor.h"
