@@ -1,3 +1,9 @@
+2006-02-27  Elijah Newren  <newren gmail com>
+
+        * configure.in:
+        Patch from Sylvain Bertrand to fix build issues with library
+        search order.  #330695.
+
 Sat Feb 25 14:50:17 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/window.c: Remove include of flash.h
