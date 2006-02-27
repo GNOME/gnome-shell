@@ -123,7 +123,10 @@ meta_window_compute_group (MetaWindow* window)
       
   if (window->display->groups_by_leader)
     {
-      if (window->xgroup_leader != None)
+      if (window->xtransient_for != None)
+        group = g_hash_table_lookup (window->display->groups_by_leader,
+                                     &window->xtransient_for);
+      else if (window->xgroup_leader != None)
         group = g_hash_table_lookup (window->display->groups_by_leader,
                                      &window->xgroup_leader);
       else
@@ -138,7 +141,10 @@ meta_window_compute_group (MetaWindow* window)
     }
   else
     {
-      if (window->xgroup_leader != None)
+      if (window->xtransient_for != None)
+        group = meta_group_new (window->display,
+                                window->xtransient_for);
+      else if (window->xgroup_leader != None)
         group = meta_group_new (window->display,
                                 window->xgroup_leader);
       else

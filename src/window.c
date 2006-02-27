@@ -5468,6 +5468,15 @@ update_transient_for (MetaWindow *window)
 
   /* update stacking constraints */
   meta_stack_update_transient (window->screen->stack, window);
+
+  /* possibly change its group. We treat being a window's transient as
+   * equivalent to making it your group leader, to work around shortcomings
+   * in programs such as xmms-- see #328211.
+   */
+  if (window->xtransient_for != None &&
+      window->xgroup_leader != None &&
+      window->xtransient_for != window->xgroup_leader)
+    meta_window_group_leader_changed (window);
 }
 
 static void

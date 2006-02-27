@@ -1,5 +1,16 @@
 2006-02-27  Elijah Newren  <newren gmail com>
 
+        Patch from Thomas Thurman to work around buggy application
+	grouping with transient windows.  #328211
+
+        * src/group.c (meta_window_compute_group):
+        Put transients in the same group with their parent, always.
+
+        * src/window.c (update_transient_for):
+        Update group too
+
+2006-02-27  Elijah Newren  <newren gmail com>
+
         * configure.in:
         Patch from Sylvain Bertrand to fix build issues with library
         search order.  #330695.
