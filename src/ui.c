@@ -788,6 +788,43 @@ meta_ui_parse_accelerator (const char          *accel,
   return TRUE;
 }
 
+/* Caller responsible for freeing return string of meta_ui_accelerator_name! */
+gchar*
+meta_ui_accelerator_name  (unsigned int        keysym,
+                           MetaVirtualModifier mask)
+{
+  EggVirtualModifierType mods = 0;
+        
+  if (keysym == 0 && mask == 0)
+    {
+      return strdup ("disabled");
+    }
+
+  if (mask & META_VIRTUAL_SHIFT_MASK)
+    mods |= EGG_VIRTUAL_SHIFT_MASK;
+  if (mask & META_VIRTUAL_CONTROL_MASK)
+    mods |= EGG_VIRTUAL_CONTROL_MASK;
+  if (mask & META_VIRTUAL_ALT_MASK)
+    mods |= EGG_VIRTUAL_ALT_MASK;
+  if (mask & META_VIRTUAL_MOD2_MASK)
+    mods |= EGG_VIRTUAL_MOD2_MASK;
+  if (mask & META_VIRTUAL_MOD3_MASK)
+    mods |= EGG_VIRTUAL_MOD3_MASK;
+  if (mask & META_VIRTUAL_MOD4_MASK)
+    mods |= EGG_VIRTUAL_MOD4_MASK;
+  if (mask & META_VIRTUAL_MOD5_MASK)
+    mods |= EGG_VIRTUAL_MOD5_MASK;
+  if (mask & META_VIRTUAL_SUPER_MASK)
+    mods |= EGG_VIRTUAL_SUPER_MASK;
+  if (mask & META_VIRTUAL_HYPER_MASK)
+    mods |= EGG_VIRTUAL_HYPER_MASK;
+  if (mask & META_VIRTUAL_META_MASK)
+    mods |= EGG_VIRTUAL_META_MASK;
+
+  return egg_virtual_accelerator_name (keysym, mods);
+
+}
+
 gboolean
 meta_ui_parse_modifier (const char          *accel,
                         MetaVirtualModifier *mask)

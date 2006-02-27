@@ -1,5 +1,17 @@
 2006-02-27  Elijah Newren  <newren gmail com>
 
+        Patch from Thomas Thurman to prevent setting cycle_windows to
+        keybindings that won't work.  #329676
+
+        * src/prefs.c (update_binding):
+        Make sure that bindings which require a modifier key are set to a
+        keybinding with one or else that the binding is reverted.
+
+        * src/ui.[ch] (meta_ui_accelerator_name):
+        New function
+
+2006-02-27  Elijah Newren  <newren gmail com>
+
         Patch from Thomas Thurman to work around buggy application
 	grouping with transient windows.  #328211
 

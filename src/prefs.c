@@ -2030,7 +2030,69 @@ update_binding (MetaKeyPref *binding,
                       "Failed to parse new gconf value\n");
           meta_warning (_("\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"),
                         value, binding->name);
+
+          return FALSE;
         }
+    }
+
+  /* Bug 329676: Bindings which can be shifted must not have no modifiers,
+   * nor only SHIFT as a modifier.
+   */
+
+  if (binding->add_shift &&
+      0 != keysym &&
+      (META_VIRTUAL_SHIFT_MASK == mods || 0 == mods))
+    {
+      gchar *old_setting;
+      gchar *key;
+      GError *err = NULL;
+      
+      meta_warning ("Cannot bind \"%s\" to %s: it needs a modifier "
+                    "such as Ctrl or Alt.\n",
+                    binding->name,
+                    value);
+
+      old_setting = meta_ui_accelerator_name(
+                      binding->keysym,
+                      binding->modifiers);
+      
+      if (!strcmp(old_setting, value))
+        {
+          /* We were about to set it to the same value
+           * that it had originally! This must be caused
+           * by getting an invalid string back from
+           * meta_ui_accelerator_name. Bail out now
+           * so we don't get into an infinite loop.
+           */
+           return TRUE;
+        }
+
+      meta_warning ("Reverting \"%s\" to %s.\n",
+                    binding->name,
+                    old_setting);
+
+      key = g_strconcat (KEY_SCREEN_BINDINGS_PREFIX, "/",
+                         binding->name, NULL);
+      
+      gconf_client_set_string (gconf_client_get_default (),
+                               key, old_setting, &err);
+
+      if (err)
+        {
+          meta_warning ("Error while reverting keybinding: %s\n",
+                        err->message);
+          g_error_free (err);
+          err = NULL;
+        }
+      
+      g_free (old_setting);
+      g_free (key);
+
+      /* The call to gconf_client_set_string() will cause this function
+       * to be called again with the new value, so there's no need to
+       * carry on.
+       */
+      return TRUE;
     }
   
   changed = FALSE;
