@@ -1,3 +1,8 @@
+Tue Feb 28 14:49:23 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/compositor.c: Put the windows in a stacker rather than
+	do the traversing outselves.
+
 2006-02-27  Elijah Newren  <newren gmail com>
 
         Patch from Thomas Thurman to prevent setting cycle_windows to

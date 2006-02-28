@@ -38,6 +38,9 @@
 
 #include <cm/ws.h>
 #include <cm/wsint.h>
+#include <cm/stacker.h>
+#include <cm/cube.h>
+#include <cm/rotation.h>
 
 #include <X11/extensions/shape.h>
 #include <X11/extensions/Xcomposite.h>
@@ -45,6 +48,7 @@
 #include <X11/extensions/Xfixes.h>
 #include <X11/extensions/Xrender.h>
 #include "spring-model.h"
+#include <cm/state.h>
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 #define FRAME_INTERVAL_MILLISECONDS ((int)(1000.0/40.0))
@@ -79,7 +83,11 @@ struct MetaCompositor
   guint debug_updates : 1;
   
   GList *ignored_damage;
-  
+
+  CmStacker *stacker;
+  CmCube *cube;
+  CmRotation *rotation;
+    
   MoveInfo *move_info;
 };
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
@@ -89,8 +97,6 @@ static void
 free_window_hash_value (void *v)
 {
   CmDrawableNode *drawable_node = v;
-  
-  g_object_unref (G_OBJECT (drawable_node));
 }
 
 static WsDisplay *compositor_display;
@@ -142,7 +148,18 @@ meta_compositor_new (MetaDisplay *display)
 			   free_window_hash_value);
   
   compositor->enabled = TRUE;
-  
+
+  compositor->cube = cm_cube_new ();
+  compositor->stacker = cm_stacker_new ();
+  compositor->rotation = cm_rotation_new (CM_NODE (compositor->cube));
+
+  cm_cube_set_face (compositor->cube, 0, CM_NODE (compositor->stacker));
+  cm_cube_set_face (compositor->cube, 1, CM_NODE (compositor->stacker));
+  cm_cube_set_face (compositor->cube, 2, CM_NODE (compositor->stacker));
+  cm_cube_set_face (compositor->cube, 3, CM_NODE (compositor->stacker));
+  cm_cube_set_face (compositor->cube, 4, CM_NODE (compositor->stacker));
+  cm_cube_set_face (compositor->cube, 5, CM_NODE (compositor->stacker));
+
   return compositor;
 #else /* HAVE_COMPOSITE_EXTENSIONS */
   return NULL;
@@ -205,7 +222,7 @@ draw_windows (MetaScreen *screen,
 #if 0
   g_print ("rendering: %p\n", node);
 #endif
-  
+
   cm_node_render (node, NULL);
 }
 
@@ -260,6 +277,8 @@ handle_restacking (MetaCompositor *compositor,
       scr_info->compositor_nodes =
 	g_list_insert_before (scr_info->compositor_nodes, above_link, node);
     }
+
+  cm_stacker_restack_child (compositor->stacker, CM_NODE (node), CM_NODE (above));
 }
 
 static void
@@ -347,7 +366,6 @@ fade_in (gpointer data)
   
   if (elapsed >= FADE_TIME)
     {
-      g_object_unref (info->node);
       return FALSE;
     }
   else
@@ -376,10 +394,11 @@ fade_out (gpointer data)
   
   if (elapsed >= FADE_TIME)
     {
-      cm_drawable_node_set_viewable (info->node, FALSE);
-      
-      g_object_unref (info->node);
-      return FALSE;
+	g_object_unref (info->node);
+
+	cm_drawable_node_set_viewable (info->node, FALSE);
+
+	return FALSE;
     }
   else
     {
@@ -725,61 +744,80 @@ update_frame_counter (void)
     }
 }
 
+static GTimer *timer;
+
 static gboolean
 update (gpointer data)
 {
   MetaScreen *screen = data;
   ScreenInfo *scr_info = screen->compositor_data;
   WsWindow *gl_window = scr_info->glw;
+  gdouble angle;
   
   glViewport (0, 0, screen->rect.width, screen->rect.height);
-  
+
+  if (!timer)
+    timer = g_timer_new ();
+
 #if 0
-  glColor4f (1.0, 1.0, 1.0, 1.0);
-  glBegin (GL_QUADS);
-  glVertex2f (0.0, 0.0);
-  glVertex2f (1600.0, 0.0);
-  glVertex2f (1600.0, 1200.0);
-  glVertex2f (0.0, 1200.0);
-  glEnd ();
+  g_print ("rotation: %f\n", 360 * g_timer_elapsed (timer, NULL));
+#endif
+
+  angle = g_timer_elapsed (timer, NULL) * 90;
+#if 0
+
+  angle = 180.0;
 #endif
   
-#if 0
-#endif
-#if 0
-  glClear (GL_DEPTH_BUFFER_BIT);
-#endif
-  
-#if 0
-  glColor4f (1.0, 0.0, 0.0, 1.0);
-  
-  glDisable (GL_TEXTURE_2D);
-  glDisable (GL_DEPTH_TEST);
-  
-  glBegin (GL_QUADS);
-  
-  glVertex2f (0.2, 0.2);
-  glVertex2f (0.2, 0.4);
-  glVertex2f (0.4, 0.4);
-  glVertex2f (0.4, 0.2);
-  
-  glEnd ();
-#endif
+  cm_rotation_set_rotation (screen->display->compositor->rotation,
+			    angle,
+			    0.0, 1.0, 0.0);
   
   glClearColor (0.0, 0.0, 0.0, 0.0);
-  glClear (GL_COLOR_BUFFER_BIT);
+  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
-#if 0
-  glEnable (GL_TEXTURE_2D);
-#endif
   glDisable (GL_TEXTURE_2D);
   glDisable (GL_DEPTH_TEST);
   ws_window_raise (gl_window);
+
+#if 0
+  glMatrixMode (GL_MODELVIEW);
   
+  glLoadIdentity();
+#endif
+    
+#if 0
+  glTranslatef (-1.0, -1.0, 0.0);
+#endif
+  
+#if 0
+  glMatrixMode (GL_PROJECTION);
+  glLoadIdentity();
+  gluPerspective( 45.0f, 1.0, 0.1f, 10.0f );
+  
+  glMatrixMode (GL_MODELVIEW);
+  glLoadIdentity();
+  glTranslatef (0, 0, -3);
+  
+  glEnable (GL_DEPTH_TEST);
+#endif
+  
+#if 0
   draw_windows (screen, scr_info->compositor_nodes);
+#endif
   
   /* FIXME: we should probably grab the server around the raise/swap
    */
+  
+  CmState *state = cm_state_new ();
+
+  cm_state_disable_depth_buffer_update (state);
+
+  cm_node_render (CM_NODE (screen->display->compositor->stacker), state);
+  
+  cm_state_enable_depth_buffer_update (state);
+
+  g_object_unref (state);
   
 #if 0
   ws_display_grab (ws_drawable_get_display ((WsDrawable *)gl_window));
@@ -789,10 +827,6 @@ update (gpointer data)
   glFinish();
   
   update_frame_counter ();
-  
-#if 0
-  ws_display_ungrab (ws_drawable_get_display ((WsDrawable *)gl_window));
-#endif
   
   scr_info->idle_id = 0;
   
@@ -907,6 +941,10 @@ meta_compositor_add_window (MetaCompositor    *compositor,
   ws_display_end_error_trap (compositor->display);
   
   node = cm_drawable_node_new (drawable);
+
+  cm_stacker_add_child (compositor->stacker, CM_NODE (node));
+
+  g_object_unref (node);
   
   cm_drawable_node_set_damage_func (node, queue_repaint, screen);
 #if 0
@@ -962,6 +1000,14 @@ meta_compositor_remove_window (MetaCompositor    *compositor,
 		       &xwindow);
   
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
+}
+
+static gboolean
+cont_update (gpointer data)
+{
+    update (data);
+
+    return TRUE;
 }
 
 void
@@ -1023,6 +1069,10 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   ws_window_map (scr_info->glw);
   
   ws_display_sync (compositor->display);
+  
+#if 0
+  g_idle_add (cont_update, screen);
+#endif
   
 #if 0
   children = ws_window_list_children (root);
