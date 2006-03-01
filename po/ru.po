@@ -1,4 +1,5 @@
-# Copyright (C) 2001, 2005 Free Software Foundation, Inc.
+# translation of metacity.HEAD.po to Russian
+# Copyright (C) 2001, 2005, 2006 Free Software Foundation, Inc.
 # Valek Filippov <frob@df.ru>, 2001.
 # Sun G11n <gnome_int_l10n@ireland.sun.com>, 2002.
 # Dmitry G. Mastrukov <dmitry@taurussoft.org>, 2002-2003.
@@ -9,16 +10,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-02-27 15:24+0100\n"
-"PO-Revision-Date: 2005-09-02 13:41+0300\n"
-"Last-Translator: Leonid Kanter <leon@asplinux.ru>\n"
-"Language-Team:  <gnome-cyr@gnome.org>\n"
+"POT-Creation-Date: 2006-03-01 08:49+0100\n"
+"PO-Revision-Date: 2006-03-01 17:02+0200\n"
+"Last-Translator: Leonid Kanter\n"
+"Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.10.2\n"
-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: KBabel 1.11.1\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../src/tools/metacity-message.c:150
 #, c-format
@@ -53,8 +53,7 @@ msgstr "Произошла ошибка чтения из процесса от�
 
 #: ../src/delete.c:345
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 "Произошла ошибка загрузки диалога Metacity для запроса на уничтожение "
 "приложения: %s\n"
@@ -83,8 +82,7 @@ msgstr ""
 #: ../src/errors.c:240
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr ""
-"Произошла неустранимая ошибка ввода-вывода %d (%s) на дисплее \"%s\".\n"
+msgstr "Произошла неустранимая ошибка ввода-вывода %d (%s) на дисплее \"%s\".\n"
 
 #: ../src/frames.c:1097
 msgid "Close Window"
@@ -179,8 +177,7 @@ msgstr "Сбой при сканировании каталога тем: %s\n"
 
 #: ../src/main.c:455
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 "Не удалось найти тему! Убедитесь, что каталог \"%s\" существует и содержит "
 "обычные темы."
@@ -224,7 +221,7 @@ msgstr "_Изменить размер"
 
 #: ../src/menu.c:64
 msgid "Move Titlebar On_screen"
-msgstr ""
+msgstr "Переместить заголовок на _экран"
 
 #. separator
 #: ../src/menu.c:66
@@ -256,7 +253,7 @@ msgstr "Переместить на рабочее место _вверх"
 msgid "Move to Workspace _Down"
 msgstr "Переместить на рабочее место в_низ"
 
-#: ../src/menu.c:164 ../src/prefs.c:2004 ../src/prefs.c:2305
+#: ../src/menu.c:164 ../src/prefs.c:2004 ../src/prefs.c:2367
 #, c-format
 msgid "Workspace %d"
 msgstr "Рабочее место %d"
@@ -370,8 +367,7 @@ msgid "The window \"%s\" is not responding."
 msgstr "Окно \"%s\" не отвечает."
 
 #: ../src/metacity-dialog.c:119
-msgid ""
-"Forcing this application to quit will cause you to lose any unsaved changes."
+msgid "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Принудительное завершение приложения вызовет потерю всех несохраненных "
 "изменений."
@@ -483,7 +479,7 @@ msgstr "Команды для запуска по комбинациям кла�
 
 #: ../src/metacity.schemas.in.h:11
 msgid "Compositing Manager"
-msgstr ""
+msgstr "Менеджер композиции"
 
 #: ../src/metacity.schemas.in.h:12
 msgid "Current theme"
@@ -495,7 +491,7 @@ msgstr "Задержка в миллисекундах для параметра
 
 #: ../src/metacity.schemas.in.h:14
 msgid "Determines whether Metacity is a compositing manager."
-msgstr ""
+msgstr "Определяет, является ли Metacity менеджером композиции."
 
 #: ../src/metacity.schemas.in.h:15
 msgid ""
@@ -508,8 +504,7 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:16
 msgid "Disable misfeatures that are required by old or broken applications"
-msgstr ""
-"Отключить неправильные свойства, нужные старым или поврежденным приложениям"
+msgstr "Отключить неправильные свойства, нужные старым или поврежденным приложениям"
 
 #: ../src/metacity.schemas.in.h:17
 msgid "Enable Visual Bell"
@@ -531,7 +526,7 @@ msgid ""
 "not related to raise-on-click/orthogonal-raise). It is unrelated to entering "
 "a window during drag and drop (because that results in the application "
 "grabbing the mouse)"
-msgstr ""
+msgstr "Если да, и режим фокуса либо \"sloppy\", либо \"mouse\", тогда окно в фокусе будет автоматически поднято по истечении задержки, указанной ключом auto_raise_delay. Этот параметр назван плохо, но оставлен для обратной совместимости."
 
 #: ../src/metacity.schemas.in.h:20
 msgid ""
@@ -601,7 +596,7 @@ msgid ""
 "move or resize operation). Special messages, such as activation requests "
 "from pagers, may also raise windows when this option is false. This option "
 "is currently disabled in click-to-focus mode."
-msgstr ""
+msgstr "Многие действия (например, щелчок на области клиента, перемещение или изменение размеров окна) обычно имеют побочный эффект поднятия окна на передний план. Установите значение этого параметра \"false\", чтобы отделить подъем окна от всех остальных операций. При этом вы всегда сможете поднять окно путём нажатия левой кнопки мыши на любой области окна при нажатом Alt или обычным щелчком по декорации окна. Специальные сообщения, такие как запрос активации от пейджеров, могут также привести к подъему окна, когда этот параметр активен. Параметр не действует в режиме click-to-focus."
 
 #: ../src/metacity.schemas.in.h:26
 msgid "Maximize window"
@@ -625,8 +620,7 @@ msgstr "Модификатор для действий по щелчку мыш�
 
 #: ../src/metacity.schemas.in.h:31
 msgid "Move backward between panels and the desktop immediately"
-msgstr ""
-"Переключить обратно фокус ввода между панелями и рабочим столом немедленно"
+msgstr "Переключить обратно фокус ввода между панелями и рабочим столом немедленно"
 
 #: ../src/metacity.schemas.in.h:32
 msgid "Move backwards between panels and the desktop with popup"
@@ -658,8 +652,7 @@ msgstr "Переключить фокус ввода между окнами ч�
 
 #: ../src/metacity.schemas.in.h:38
 msgid "Move focus backwards between windows using popup display"
-msgstr ""
-"Переключить фокус ввода между окнами с использованием всплывающего окна"
+msgstr "Переключить фокус ввода между окнами с использованием всплывающего окна"
 
 #: ../src/metacity.schemas.in.h:39
 msgid "Move window"
@@ -749,8 +742,7 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:59
 msgid "Raise obscured window, otherwise lower"
-msgstr ""
-"Поместить на передний план, если заслонено другими, иначе поместить на задний"
+msgstr "Поместить на передний план, если заслонено другими, иначе поместить на задний"
 
 #: ../src/metacity.schemas.in.h:60
 msgid "Raise window above other windows"
@@ -1978,17 +1970,13 @@ msgstr ""
 "для этого действия выбрана не будет."
 
 #: ../src/metacity.schemas.in.h:160
-#, fuzzy
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, 'toggle_maximize' which will maximize/unmaximize the window, "
 "'minimize' which will minimize the window, and 'none' which will not do "
 "anything."
-msgstr ""
-"This option determines the effects of double-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, and 'toggle_maximize' which will maximize/unmaximize the window."
+msgstr "Этот параметр определяет действия двойного щелчка на заголовке окна. Текущими допустимыми параметрами являются \"toggle_shade\", который переключает теневое состояние окна, \"toggle_maximize\", который переключает максимизацию окна, и \"none\" - ничего не делать."
 
 #: ../src/metacity.schemas.in.h:161
 msgid "Toggle always on top state"
@@ -2034,7 +2022,7 @@ msgstr "Тип видимого сигнала"
 
 #: ../src/metacity.schemas.in.h:170
 msgid "Whether raising should be a side-effect of other user interactions"
-msgstr ""
+msgstr "Должно ли поднятие окна быть побочным эффектом других действий пользователя"
 
 #: ../src/metacity.schemas.in.h:171
 msgid "Window focus mode"
@@ -2070,13 +2058,11 @@ msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Для ключа системы GConf \"%s\" установлено недопустимое значение\n"
 
 #: ../src/prefs.c:1161
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
 "range 1..128\n"
-msgstr ""
-"Значение %d из ключа системы GConf %s является недопустимым количеством "
-"рабочих областей, текущим максимумом является значение %d\n"
+msgstr "Значение %d из ключа системы GConf %s является недопустимым значением для cursor_size; должно быть в пределах диапазона 1..128\n"
 
 #: ../src/prefs.c:1241
 #, c-format
@@ -2123,7 +2109,7 @@ msgstr ""
 "Значение \"%s\" из базы данных конфигурации является недопустимым значением "
 "для комбинации клавиш \"%s\"\n"
 
-#: ../src/prefs.c:2386
+#: ../src/prefs.c:2448
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Произошла ошибка установки имени рабочего места %d в \"%s\": %s\n"
@@ -2149,8 +2135,7 @@ msgstr ""
 
 #: ../src/screen.c:443
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Не удалось выбрать менеджер окон на экране %d дисплея \"%s\"\n"
 
 #: ../src/screen.c:501
@@ -2385,8 +2370,7 @@ msgstr "Отсутствует атрибут \"value\" для элемента 
 
 #: ../src/theme-parser.c:1320 ../src/theme-parser.c:1334
 #: ../src/theme-parser.c:1393
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 "Невозможно задать параметры button_width/button_height и коэффициент "
 "пропорциональности для кнопок"
@@ -2698,8 +2682,7 @@ msgstr "Внешний элемент в теме должен быть <metacit
 
 #: ../src/theme-parser.c:3679
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
 "Использование элемента <%s> внутри элементов  name/author/date/description "
 "недопустимо"
@@ -2711,8 +2694,7 @@ msgstr "Использование элемента <%s> внутри элеме
 
 #: ../src/theme-parser.c:3696
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
 "Использование элемента <%s> внутри элементов distance/border/aspect_ratio "
 "недопустимо"
@@ -3054,8 +3036,7 @@ msgstr ""
 #: ../src/theme.c:1047
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr ""
-"Не удалось выполнить разбор значения альфа-канала \"%s\" в смешанном цвете"
+msgstr "Не удалось выполнить разбор значения альфа-канала \"%s\" в смешанном цвете"
 
 #: ../src/theme.c:1057
 #, c-format
@@ -3066,10 +3047,8 @@ msgstr ""
 
 #: ../src/theme.c:1104
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-"Формат тени - \"shade/base_color/factor\", \"%s\" не соответствует формату"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr "Формат тени - \"shade/base_color/factor\", \"%s\" не соответствует формату"
 
 #: ../src/theme.c:1115
 #, c-format
@@ -3089,8 +3068,7 @@ msgstr "Не удалось выполнить разбор цвета \"%s\""
 #: ../src/theme.c:1416
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr ""
-"Выражение координаты содержит символ '%s', запрещенный для использования"
+msgstr "Выражение координаты содержит символ '%s', запрещенный для использования"
 
 #: ../src/theme.c:1443
 #, c-format
@@ -3126,24 +3104,21 @@ msgid "Coordinate expression results in division by zero"
 msgstr "Вычисление выражения координаты привело к делению на ноль"
 
 #: ../src/theme.c:1776
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Выражение координаты пытается использовать оператор взятия остатка от "
 "деления для числа с плавающей запятой"
 
 #: ../src/theme.c:1832
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "В выражении координаты используется оператор \"%s\", там где должен быть "
 "операнд"
 
 #: ../src/theme.c:1841
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
-"В выражении координаты используется операнд, там где должен быть оператор"
+msgstr "В выражении координаты используется операнд, там где должен быть оператор"
 
 #: ../src/theme.c:1849
 msgid "Coordinate expression ended with an operator instead of an operand"
@@ -3203,8 +3178,7 @@ msgstr ""
 
 #: ../src/theme.c:4360 ../src/theme.c:4392
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Отсутствует <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"что-нибудь"
 "\"/>"
@@ -3240,8 +3214,7 @@ msgstr ""
 
 #: ../src/theme.c:5046 ../src/theme.c:5108
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Константы, заданные пользователем, должны начинаться с заглавной буквы; \"%s"
 "\" не начинается с заглавной буквы"
@@ -3285,10 +3258,9 @@ msgid "Window manager error: "
 msgstr "Ошибка менеджера окон: "
 
 #: ../src/window-props.c:169
-#, fuzzy, c-format
+#, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
-msgstr ""
-"Приложение установило неправильное значение параметра _NET_WM_PID %ld\n"
+msgstr "Приложение установило неправильное значение параметра _NET_WM_PID %lu\n"
 
 #. first time through
 #: ../src/window.c:5409
@@ -3307,7 +3279,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6028
+#: ../src/window.c:6037
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3339,18 +3311,8 @@ msgstr "Свойство \"%s\" для окна 0x%lx содержало нед�
 
 #: ../src/xprops.c:482
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Свойство \"%s\" для окна 0x%lx содержало недопустимые данные UTF-8 для "
 "элемента %d в списке\n"
 
-#~ msgid ""
-#~ "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
-#~ "focused window will be automatically raised after a delay (the delay is "
-#~ "specified by the auto_raise_delay key)."
-#~ msgstr ""
-#~ "Если выбрано значение Истинно, а для режима активации выбрано значение "
-#~ "\"sloppy\" (\"по указателю\") или \"mouse\" (\"мышь\"), то с небольшой "
-#~ "задержкой автоматически появится (\"всплывёт\") активное окно "
-#~ "(длительность задержки определяется ключом auto_raise_delay)."
