@@ -3,68 +3,72 @@
 # Dafydd Harries <daf@muse.19inch.net>, 2003 2004.
 # Keith Willoughby <keith@flat222.org>, 2003.
 #
+# rhysj: Wedi gyrru Cysill dros y cyfan ar gyfer GNOME 2.14.
+# OND mae nifer o gyfieithiadau sydd angen eu gwella yn y ffeil hon - 
+# fedrai'n dda iawn pe bai rhywun yn medru edrych ar bob llinyn yn
+# ei dro.
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-19 12:30+0200\n"
-"PO-Revision-Date: 2005-08-29 17:08+0100\n"
-"Last-Translator: Bryn Salisbury <bryn@randomlyevil.org.uk>\n"
+"POT-Creation-Date: 2006-03-02 17:53+0000\n"
+"PO-Revision-Date: 2006-03-02 14:02-0000\n"
+"Last-Translator: Rhys Jones <rhys@sucs.org>\n"
 "Language-Team: Cymraeg <gnome-cy@pengwyn.linux.org.uk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8-bit\n"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: ../src/tools/metacity-message.c:150
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Defnydd: %s\n"
 
-#: ../src/tools/metacity-message.c:176 ../src/util.c:128
+#: ../src/tools/metacity-message.c:176 ../src/util.c:131
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Crynhowyd Metacity heb gynhaliaeth ar gyfer modd llafar\n"
 
-#: ../src/delete.c:63 ../src/delete.c:90 ../src/metacity-dialog.c:70
+#: ../src/delete.c:64 ../src/delete.c:91 ../src/metacity-dialog.c:71
 #: ../src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Methu dehongli \"%s\" fel cyfanrif"
 
-#: ../src/delete.c:70 ../src/delete.c:97 ../src/metacity-dialog.c:77
+#: ../src/delete.c:71 ../src/delete.c:98 ../src/metacity-dialog.c:78
 #: ../src/theme-parser.c:476 ../src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Methu deall nodau dilynnol \"%s\" yn y llinyn \"%s\""
+msgstr "Methu deall nodau dilynol \"%s\" yn y llinyn \"%s\""
 
-#: ../src/delete.c:128
+#: ../src/delete.c:129
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Methu dehongli'r neges \"%s\" o broses deialog\n"
+msgstr "Methu dehongli'r neges \"%s\" o broses ddeialog\n"
 
-#: ../src/delete.c:263
+#: ../src/delete.c:264
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Gwall wrth ddarllen o broses dangos deialog: %s\n"
 
-#: ../src/delete.c:344
+#: ../src/delete.c:345
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
-"Gwall wrth lansio metacity-dialog er mwyn gofyn ynghylch terfynnu rhaglen: % "
+"Gwall wrth lansio metacity-dialog er mwyn gofyn ynghylch terfynu rhaglen: % "
 "s\n"
 
-#: ../src/delete.c:452
+#: ../src/delete.c:453
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Methu cyrchu'r enw gwesteiwr: %s\n"
 
-#: ../src/display.c:319
+#: ../src/display.c:350
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Methu agor y dangosydd System Ffenestri X '%s'\n"
 
-#: ../src/errors.c:231
+#: ../src/errors.c:233
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -72,60 +76,60 @@ msgid ""
 "the window manager.\n"
 msgstr ""
 "Collwyd y cysylltiad i'r dangosydd '%s';\n"
-"mwy na thebyg fe derfynnwyd y gweinydd X neu cafodd y rheolydd ffenestri \n"
-"ei derfynnu ganddoch.\n"
+"mwy na thebyg fe derfynwyd y gweinydd X neu fe wnaethoch chi\n"
+"derfynu'r rheolwr ffenestri.\n"
 
-#: ../src/errors.c:238
+#: ../src/errors.c:240
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Gwall IO marwol %d (%s) ar y dangosydd '%s'.\n"
 
-#: ../src/frames.c:1125
+#: ../src/frames.c:1097
 msgid "Close Window"
 msgstr "Cau'r Ffenest"
 
-#: ../src/frames.c:1128
+#: ../src/frames.c:1100
 msgid "Window Menu"
 msgstr "Dewislen Ffenest"
 
-#: ../src/frames.c:1131
+#: ../src/frames.c:1103
 msgid "Minimize Window"
 msgstr "Lleihau'r Ffenest"
 
-#: ../src/frames.c:1134
+#: ../src/frames.c:1106
 msgid "Maximize Window"
 msgstr "Ehangu'r Ffenest"
 
-#: ../src/frames.c:1137
+#: ../src/frames.c:1109
 msgid "Unmaximize Window"
 msgstr "Dadehangu'r Ffenest"
 
-#: ../src/keybindings.c:994
+#: ../src/keybindings.c:996
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr ""
-"Mae rhaglen arall yn defnyddio'r bysell %s gyfa'r addasyddion %x fel "
-"rhwymiad eisioes\n"
+"Mae rhaglen arall yn defnyddio'r fysell %s gyda’r addasyddion %x fel "
+"rhwymiad eisoes\n"
 
-#: ../src/keybindings.c:2620
+#: ../src/keybindings.c:2534
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Gwall wrth lansio metacity-dialog er mwyn argraffu gwall ynghylch gorchymyn: "
 "%s\n"
 
-#: ../src/keybindings.c:2725
+#: ../src/keybindings.c:2639
 #, c-format
 msgid "No command %d has been defined.\n"
-msgstr "Does dim gorchmyn %d wedi ei ddiffinio.\n"
+msgstr "Does dim gorchymyn %d wedi ei ddiffinio.\n"
 
-#: ../src/keybindings.c:3570
+#: ../src/keybindings.c:3501
 msgid "No terminal command has been defined.\n"
-msgstr "Does dim gorchmyn wedi ei ddiffinio.\n"
+msgstr "Does dim gorchymyn wedi ei ddiffinio.\n"
 
-#: ../src/main.c:69
+#: ../src/main.c:70
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -136,41 +140,41 @@ msgid ""
 msgstr ""
 "metacity %s\n"
 "Hawlfraint (C) 2001-2002 Havoc Pennington, Red Hat, Inc., ac eraill\n"
-"Mae hyn yn feddalwedd rhydd; gweler y ffynhonell ar gyfer amodau copïo.\n"
+"Mae hyn yn feddalwedd rhydd; gweler y ffynhonnell ar gyfer amodau copïo.\n"
 "Does DIM gwarant; nid hyd yn oed awgrym o FASNACHEIDDRWYDD nag ADDASRWYDD "
 "AR\n"
 "GYFER PWRPAS PENODOL.\n"
 
-#: ../src/main.c:257
+#: ../src/main.c:258
 msgid "Disable connection to session manager"
 msgstr "Analluogi cysylltiad i'r rheolwr sesiwn"
 
-#: ../src/main.c:263
+#: ../src/main.c:264
 msgid "Replace the running window manager with Metacity"
 msgstr "Amnewid y rheolwr ffenestri sy'n rhedeg gyda Metacity"
 
-#: ../src/main.c:269
+#: ../src/main.c:270
 msgid "Specify session management ID"
 msgstr "Penodi ID rheolaeth sesiwn"
 
-#: ../src/main.c:274
+#: ../src/main.c:275
 msgid "X Display to use"
 msgstr "Dangosydd X i'w defnyddio"
 
-#: ../src/main.c:280
+#: ../src/main.c:281
 msgid "Initialize session from savefile"
 msgstr "Cychwyn sesiwn o ffeil"
 
-#: ../src/main.c:286
+#: ../src/main.c:287
 msgid "Print version"
 msgstr "Argraffu fersiwn"
 
-#: ../src/main.c:440
+#: ../src/main.c:439
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Methwyd chwilio'r cyfeiriadur thema: %s\n"
 
-#: ../src/main.c:456
+#: ../src/main.c:455
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
@@ -178,88 +182,92 @@ msgstr ""
 "Methu canfod thema! Sicrhewch fod %s yn bodoli ac yn cynnwys y themâu "
 "arferol."
 
-#: ../src/main.c:518
+#: ../src/main.c:527
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Methu ailddechrau: %s\n"
 
-#: ../src/menu.c:54
+#: ../src/menu.c:55
 msgid "Mi_nimize"
 msgstr "_Lleihau"
 
-#: ../src/menu.c:55
+#: ../src/menu.c:56
 msgid "Ma_ximize"
 msgstr "_Ehangu"
 
-#: ../src/menu.c:56
+#: ../src/menu.c:57
 msgid "Unma_ximize"
 msgstr "_Dadehangu"
 
-#: ../src/menu.c:57
+#: ../src/menu.c:58
 msgid "Roll _Up"
 msgstr "Rholio i _Fyny"
 
-#: ../src/menu.c:58
+#: ../src/menu.c:59
 msgid "_Unroll"
 msgstr "_Datrholio"
 
-#: ../src/menu.c:59 ../src/menu.c:60
+#: ../src/menu.c:60 ../src/menu.c:61
 msgid "On _Top"
 msgstr "Ar _Ben"
 
-#: ../src/menu.c:61
+#: ../src/menu.c:62
 msgid "_Move"
 msgstr "_Symud"
 
-#: ../src/menu.c:62
+#: ../src/menu.c:63
 msgid "_Resize"
 msgstr "Newid _Maint"
 
-#. separator
 #: ../src/menu.c:64
+msgid "Move Titlebar On_screen"
+msgstr "Symud y Bar Teitl _ar y sgrin"
+
+#. separator
+#: ../src/menu.c:66
 msgid "_Close"
 msgstr "_Cau"
 
 #. separator
-#: ../src/menu.c:66
+#: ../src/menu.c:68
 msgid "_Always on Visible Workspace"
 msgstr "Pob tro ar y Weithfan Weladwy"
 
-#: ../src/menu.c:67
-msgid "_Only on This Workspace"
-msgstr "Ar y Gweithfan _Yma'n Unig"
-
-#: ../src/menu.c:68
-msgid "Move to Workspace _Left"
-msgstr "Symud at _Chwith y Gweithfan"
-
 #: ../src/menu.c:69
-msgid "Move to Workspace R_ight"
-msgstr "Symud at _Dde y Gweithfan"
+msgid "_Only on This Workspace"
+msgstr "Ar y Weithfan _Yma'n Unig"
 
 #: ../src/menu.c:70
-msgid "Move to Workspace _Up"
-msgstr "Symud at i _Fyny'r Gweithfan"
+msgid "Move to Workspace _Left"
+msgstr "Symud at y Weithfan i'r _Chwith"
 
 #: ../src/menu.c:71
-msgid "Move to Workspace _Down"
-msgstr "Symud at i _Lawr y Gweithfan"
+msgid "Move to Workspace R_ight"
+msgstr "Symud at y Weithfan i'r _Dde"
 
-#: ../src/menu.c:162 ../src/prefs.c:2106
+#: ../src/menu.c:72
+msgid "Move to Workspace _Up"
+msgstr "Symud at y Weithfan i _Fyny"
+
+#: ../src/menu.c:73
+msgid "Move to Workspace _Down"
+msgstr "Symud at y Weithfan i _Lawr"
+
+#: ../src/menu.c:164 ../src/prefs.c:2004 ../src/prefs.c:2367
 #, c-format
 msgid "Workspace %d"
 msgstr "Gweithfan %d"
 
-#: ../src/menu.c:171
+#: ../src/menu.c:173
 msgid "Workspace 1_0"
 msgstr "Gweithfan 1_0"
 
-#: ../src/menu.c:173
+#: ../src/menu.c:175
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Gweithfan %s%d"
 
-#: ../src/menu.c:368
+#: ../src/menu.c:373
 msgid "Move to Another _Workspace"
 msgstr "Symud at _Weithfan Arall"
 
@@ -268,7 +276,7 @@ msgstr "Symud at _Weithfan Arall"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:105
+#: ../src/metaaccellabel.c:103
 msgid "Shift"
 msgstr "Shift"
 
@@ -277,7 +285,7 @@ msgstr "Shift"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:111
+#: ../src/metaaccellabel.c:109
 msgid "Ctrl"
 msgstr "Ctrl"
 
@@ -286,7 +294,7 @@ msgstr "Ctrl"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:117
+#: ../src/metaaccellabel.c:115
 msgid "Alt"
 msgstr "Alt"
 
@@ -295,7 +303,7 @@ msgstr "Alt"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:123
+#: ../src/metaaccellabel.c:121
 msgid "Meta"
 msgstr "Meta"
 
@@ -304,7 +312,7 @@ msgstr "Meta"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:129
+#: ../src/metaaccellabel.c:127
 msgid "Super"
 msgstr "Super"
 
@@ -313,7 +321,7 @@ msgstr "Super"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:135
+#: ../src/metaaccellabel.c:133
 msgid "Hyper"
 msgstr "Hyper"
 
@@ -322,7 +330,7 @@ msgstr "Hyper"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:141
+#: ../src/metaaccellabel.c:139
 msgid "Mod2"
 msgstr "Mod2"
 
@@ -331,7 +339,7 @@ msgstr "Mod2"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:147
+#: ../src/metaaccellabel.c:145
 msgid "Mod3"
 msgstr "Mod3"
 
@@ -340,7 +348,7 @@ msgstr "Mod3"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:153
+#: ../src/metaaccellabel.c:151
 msgid "Mod4"
 msgstr "Mod4"
 
@@ -349,43 +357,43 @@ msgstr "Mod4"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:159
+#: ../src/metaaccellabel.c:157
 msgid "Mod5"
 msgstr "Mod5"
 
-#: ../src/metacity-dialog.c:110
+#: ../src/metacity-dialog.c:111
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "Nid yw'r ffenest \"%s\" yn ymateb."
 
-#: ../src/metacity-dialog.c:118
+#: ../src/metacity-dialog.c:119
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
-"Mi fydd gorfodi y rhaglen hwn i derfynu yn colli unrhyw newidiad sydd heb ei "
+"Mi fydd gorfodi'r rhaglen hon i derfynu yn colli unrhyw newidiad sydd heb ei "
 "gadw "
 
-#: ../src/metacity-dialog.c:129
+#: ../src/metacity-dialog.c:130
 msgid "_Force Quit"
-msgstr "Gor_fodu Gadael"
+msgstr "Gor_fodi Gadael"
 
-#: ../src/metacity-dialog.c:226
+#: ../src/metacity-dialog.c:227
 msgid "Title"
 msgstr "Teitl"
 
-#: ../src/metacity-dialog.c:238
+#: ../src/metacity-dialog.c:239
 msgid "Class"
 msgstr "Dosbarth"
 
-#: ../src/metacity-dialog.c:264
+#: ../src/metacity-dialog.c:265
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
 msgstr ""
 "Dyw'r ffenestri yma ddim yn cynnal \"arbed y gosodiad cyfredol\" a bydd "
-"rhaid eu ail-ddechrau gyda llaw y tro nesaf rydych yn mewngofnodi."
+"rhaid eu hail-ddechrau gyda llaw y tro nesaf rydych yn mewngofnodi."
 
-#: ../src/metacity-dialog.c:330
+#: ../src/metacity-dialog.c:331
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -401,7 +409,7 @@ msgstr "Metacity"
 #: ../src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
 msgstr ""
-"(Heb ei weithredoli) Llywio yn gwiethio yn nhermau rhaglenni nid ffenestri"
+"(Heb ei weithredoli) Llywio yn gweithio yn nhermau rhaglenni nid ffenestri"
 
 #: ../src/metacity.schemas.in.h:2
 msgid ""
@@ -416,17 +424,17 @@ msgstr ""
 "Caiff y main o'r disgrifiad ei ddefnyddio ons os mae'r opsiwn "
 "titlebar_font_size wedi ei osod i 0, fodd bynnag. Hefyd, mae'r opsiwn hwn "
 "wedi ei analluogi os mae'r opsiwn titlebar_uses_desktop_font wedi ei osod yn "
-"wir. Yn rhagosodedig, mae titlebar_font wedi ei ddatosod, sy'n achosi i "
+"wir. Yn rhagosodedig, mae titlebar_font wedi ei ddadosod, sy'n achosi i "
 "Metacity i gwympo'n ôl hyd yn oed os mae titlebar_uses_desktop_font yn "
 "anwir. "
 
 #: ../src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
-msgstr "Gweithred pan mae clic ddwbl ar far teitl"
+msgstr "Gweithred pan mae clic dwbl ar far teitl"
 
 #: ../src/metacity.schemas.in.h:4
 msgid "Activate window menu"
-msgstr "Gweithredu'r dewislen ffenest"
+msgstr "Gweithredu'r ddewislen ffenest"
 
 #: ../src/metacity.schemas.in.h:5
 msgid "Arrangement of buttons on the titlebar"
@@ -442,10 +450,10 @@ msgid ""
 "older versions."
 msgstr ""
 "Trefniant botymau ar y bar teitl. Dylai'r gwerth yma fod yn llinyn megis "
-"\"menu:minimize,maximize,close\"; Mae'r colon yn gwahannu cornel chwith y "
-"ffenest o'r gornel dde, a mae enwau y botymau wedi eu gwahannu gan goma. Ni "
+"\"menu:minimize,maximize,close\"; Mae'r colon yn gwahanu cornel chwith y "
+"ffenest o'r gornel dde, ac mae enwau'r botymau wedi eu gwahanu gan goma. Ni "
 "chaniateir botymau dyblyg. Anwybyddir enwau botymau ni adnabyddir fel y "
-"gellir ychwanegu botymau newydd mewn fesiynau dyfodol o Metacity heb dorri "
+"gellir ychwanegu botymau newydd mewn fersiynau dyfodol o Metacity heb dorri "
 "fersiynau hŷn."
 
 #: ../src/metacity.schemas.in.h:7
@@ -459,10 +467,10 @@ msgid ""
 "(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
 "for example."
 msgstr ""
-"Fe fydd clocio ffenest gan ddal y bysell assasu hwn yn symud y ffenest (clic "
-"chwith), newid maint y ffenest (clic ganol), neu'n dangos y dewislen ffenest "
-"(clic dde). Mynegir yr addasydd fel \"&lt;Alt&gt;\" neu \"&lt;Super&gt;\" er "
-"enghraifft."
+"Fe fydd clocio ffenest gan ddal y fysell addasu hon yn symud y ffenest (clic "
+"chwith), newid maint y ffenest (clic ganol), neu'n dangos y ddewislen "
+"ffenest (clic dde). Mynegir yr addasydd fel \"&lt;Alt&gt;\" neu \"&lt;"
+"Super&gt;\" er enghraifft."
 
 #: ../src/metacity.schemas.in.h:9
 msgid "Close window"
@@ -470,57 +478,80 @@ msgstr "Cau ffenest"
 
 #: ../src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
-msgstr "Gorchmynion i'w gweithredu yn ôl bysellrhwymiadau"
+msgstr "Gorchmynion i'w gweithredu yn ôl rhwymiadau bysell"
 
 #: ../src/metacity.schemas.in.h:11
-msgid "Current theme"
-msgstr "Thema cyfredol"
+msgid "Compositing Manager"
+msgstr "Rheolwr Cyfansawdd"
 
 #: ../src/metacity.schemas.in.h:12
-msgid "Delay in milliseconds for the auto raise option"
-msgstr "Saib mewn milfedau eilad ar gyfer yr opsiwn codi awtomatig"
+msgid "Current theme"
+msgstr "Thema gyfredol"
 
 #: ../src/metacity.schemas.in.h:13
+msgid "Delay in milliseconds for the auto raise option"
+msgstr "Saib mewn milfedau eiliad ar gyfer yr opsiwn codi awtomatig"
+
+#: ../src/metacity.schemas.in.h:14
+msgid "Determines whether Metacity is a compositing manager."
+msgstr "Penderfynu a yw Metacity yn rheolwr cyfansawdd"
+
+#: ../src/metacity.schemas.in.h:15
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr ""
 "Penodi a ydi rhaglenni neu'r system yn gallu gwneud 'bîp' clywadwy; gellir "
-"ei ddefnyddio efo 'cloch gweladwy' er mwyn caniatáu 'bîpiau' distaw."
-
-#: ../src/metacity.schemas.in.h:14
-msgid "Disable misfeatures that are required by old or broken applications"
-msgstr ""
-"Analluogi camnodweddion sy'n angenrheidiol ar gyfer rhaglenni sy'n hen neu "
-"wedi torri"
-
-#: ../src/metacity.schemas.in.h:15
-msgid "Enable Visual Bell"
-msgstr "Galluogi Cloch Gweladwy"
+"ei ddefnyddio efo 'cloch weladwy' er mwyn caniatáu 'bîpiau' distaw."
 
 #: ../src/metacity.schemas.in.h:16
+msgid "Disable misfeatures that are required by old or broken applications"
+msgstr ""
+"Analluogi cam-nodweddion sy'n angenrheidiol ar gyfer rhaglenni sy'n hen neu "
+"wedi torri"
+
+#: ../src/metacity.schemas.in.h:17
+msgid "Enable Visual Bell"
+msgstr "Galluogi Cloch Weladwy"
+
+#: ../src/metacity.schemas.in.h:18
 msgid "Hide all windows and focus desktop"
 msgstr "Cuddio pob ffenest a ffocysu'r penbwrdd"
 
-#: ../src/metacity.schemas.in.h:17
+#: ../src/metacity.schemas.in.h:19
 msgid ""
 "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 "focused window will be automatically raised after a delay (the delay is "
-"specified by the auto_raise_delay key)."
+"specified by the auto_raise_delay key). This preference is poorly named, but "
+"kept for backwards compatibility. To try to be more clear (at least to the "
+"technically inclined), its meaning is \"automatically raise the window "
+"following a timeout which is triggered by non-grabbed mouse entry in sloppy "
+"or mouse focus modes\". It is unrelated to clicking behavior (i.e. this is "
+"not related to raise-on-click/orthogonal-raise). It is unrelated to entering "
+"a window during drag and drop (because that results in the application "
+"grabbing the mouse)"
 msgstr ""
-"Os yn wir, and mae'r modd canolbwyntio yn \"sloppy\" neu \"mouse\", mi fydd "
-"y ffenestr canolbwyntiedig un codi'n ymysgogol ar ôl oediad (mae'r oediad "
-"wedi penodi gan yr allwedd auto_raise_delay)"
+"Os yw hyn yn wir, ac os yw'r modd ffocysu naill ai'n \"sloppy\" neu'n \"mouse"
+"\" yna fe fydd y ffenestr sydd wedi ei ffocysu yn cael ei chodi'n awtomatig "
+"ar ôl saib byr (ceir hyd y saib yn yr allwedd auto_raise_delay). Enw gwael "
+"sydd i'r hoffter hwn, ond mae wedi ei gadw er mwyn bod yn gytûn â rhaglenni "
+"hynach. Er mwyn bod yn fwy eglur (o leiaf i'r rhai sy'n dechnegol eu "
+"meddwl), ei ystyr yw \"codi'r ffenest yn awtomatig ar ôl saib sy'n cael ei "
+"sbarduno gan fynediad llygoden heb-gipio yn y modd 'sloppy' neu yn y modd "
+"ffocysu'r llygoden\". Dyw hwn ddim yn dibynnu ar yr ymddygiad clicio (h.y. "
+"dyw hwn ddim yn dibynnu ar godi-ar-glicio/codi-orthogonol). Dyw hwn ddim yn "
+"dibynnu ar fynd i mewn i ffenest yn ystod llusgo a gollwng (am mai'r "
+"canlyniad i hynny yw'r rhaglen yn cipio'r llygoden)"
 
-#: ../src/metacity.schemas.in.h:18
+#: ../src/metacity.schemas.in.h:20
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
 msgstr ""
 "Os yn wir, anwybyddu'r gosodiad titlebar_font, a defnyddio'r ffont safonol y "
-"rhaglen am teitlau ffenestr."
+"rhaglen am deitlau ffenestr."
 
-#: ../src/metacity.schemas.in.h:19
+#: ../src/metacity.schemas.in.h:21
 msgid ""
 "If true, metacity will give the user less feedback and less sense of "
 "\"direct manipulation\", by using wireframes, avoiding animations, or other "
@@ -529,15 +560,15 @@ msgid ""
 "otherwise be impractical. However, the wireframe feature is disabled when "
 "accessibility is on to avoid weird desktop breakages."
 msgstr ""
-"Os yn wir, yn fe dydd metacity yn rhoi llai o adborth i'r defnyddiwr a llai "
-"o brofiad o \"thrin uniongyrchol\", gan ddefnyddio ffrâmiau gwifren, osgoi "
+"Os yn wir, fe fydd metacity yn rhoi llai o adborth i'r defnyddiwr a llai o "
+"brofiad o \"thrin uniongyrchol\", gan ddefnyddio fframiau gwifren, osgoi "
 "animeiddiadau, a dulliau eraill. Mae hyn yn ostyngiad sylweddol mewn lefelau "
 "hawster defnyddio ar gyfer y rhan fwyaf o ddefnyddwyr, ond gall alluogi i "
-"hen rhaglenni a gweinyddywr terfynell weithredu pan fasent yn anymarferol "
-"fel arall. Ond, mae'r ffrâmiau gwifren wedi eu hanalluogi tra bo hygyrchedd "
-"ymlaen i nadu torri y penfwrdd."
+"hen raglenni a gweinyddwyr terfynell weithredu pan fyddent yn anymarferol "
+"fel arall. Ond, mae'r fframiau gwifren wedi eu hanalluogi tra bo hygyrchedd "
+"ymlaen i osgoi torri'r penbwrdd."
 
-#: ../src/metacity.schemas.in.h:20
+#: ../src/metacity.schemas.in.h:22
 msgid ""
 "If true, then Metacity works in terms of applications rather than windows. "
 "The concept is a bit abstract, but in general an application-based setup is "
@@ -551,190 +582,212 @@ msgid ""
 msgstr ""
 "Os yn wir, mae Metacity yn gweithio mewn termau rhaglenni yn lle ffenestri. "
 "Y mae'r cysyniad yn eithaf haniaethol, ond yn gyffredinol mae'r modd rhaglen "
-"mwy fel Mac na Windows. Pan wyt yn canolbwyntio ffenestr mewn y fodd "
-"rhaglen, mi fydd pob ffenestr sy'n perthyn i'r rhaglen yn codi. Hefyd, yn "
-"modd rhaglen, nid yw cliciau canolbwyntiol yn cael eu pasio i ffenestri "
-"rhaglennau eraill. Y mae bodoliad y gosodiad hwn yn dadleuol, ond mae'n well "
-"na cael gosodiadau am pob manyliad y modd rhaglen neu'r modd ffenestr, e.e. "
-"i basio'r cliciau trwodd neu beidio. Hefyd, nid yw modd rhaglen wedi ei "
-"cynheli yn gyfan eto."
+"mwy fel Mac na Windows. Pan wyt yn canolbwyntio ffenestr yn y modd rhaglen, "
+"mi fydd pob ffenestr sy'n perthyn i'r rhaglen yn codi. Hefyd, yn y modd "
+"rhaglen, nid yw cliciau canolbwyntiol yn cael eu pasio i ffenestri rhaglenni "
+"eraill. Y mae bodolaeth y gosodiad hwn yn dadleuol, ond mae'n well na cael "
+"gosodiadau am bob manylyn y modd rhaglen neu'r modd ffenestr, e.e. i basio'r "
+"cliciau trwodd neu beidio. Hefyd, nid yw modd rhaglen wedi ei gynnal yn "
+"llawn eto."
 
-#: ../src/metacity.schemas.in.h:21
+#: ../src/metacity.schemas.in.h:23
 msgid "If true, trade off usability for less resource usage"
 msgstr ""
 "Os yn wir, ffafrio defnyddio llai o adnoddau yn hytrach na hawster defnyddio"
 
-#: ../src/metacity.schemas.in.h:22
+#: ../src/metacity.schemas.in.h:24
 msgid "Lower window below other windows"
 msgstr "Gostwng y ffenest o dan ffenestri eraill"
 
-#: ../src/metacity.schemas.in.h:23
+#: ../src/metacity.schemas.in.h:25
+msgid ""
+"Many actions (e.g. clicking in the client area, moving or resizing the "
+"window) normally raise the window as a side-effect. Set this option to false "
+"to decouple raising from other user interactions. When false, windows can "
+"still be raised by an alt-left-click anywhere on the window or a normal "
+"click on the window decorations (assuming such clicks aren't used to start a "
+"move or resize operation). Special messages, such as activation requests "
+"from pagers, may also raise windows when this option is false. This option "
+"is currently disabled in click-to-focus mode."
+msgstr ""
+"Mae nifer o weithredoedd (e.e. clicio yn ardal y cleient, symud neu newid "
+"maint y ffenestr) yn codi'r ffenestr hefyd, fel sgil effaith. Gosodwch yr "
+"opsiwn hwn yn ffals er mwyn gwneud codi'r ffenestr yn annibynnol o "
+"weithredoedd eraill y defnyddiwr. Pan mae hwn yn ffals, gellir codi'r "
+"ffenestri o hyd drwy wneud alt-clic-chwith ar unrhyw ran o'r ffenestr, neu "
+"glic arferol ar addurniadau'r ffenestr (cyn belled nad yw'r cliciau hynny'n "
+"cychwyn gweithred symud neu newid maint). Mae negeseuon arbennig, er "
+"enghraifft ceisiadau gweithredu o dudalennwyr, hefyd yn medru codi ffenestri "
+"pan fo'r opsiwn hwn yn ffals. Mae'r opsiwn hwn wedi ei analluogi ar hyn o "
+"bryd yn y modd clicio-er-mwyn-ffocysu."
+
+#: ../src/metacity.schemas.in.h:26
 msgid "Maximize window"
 msgstr "Ehangu ffenest"
 
-#: ../src/metacity.schemas.in.h:24
+#: ../src/metacity.schemas.in.h:27
 msgid "Maximize window horizontally"
 msgstr "Ehangu ffenest yn llorweddol"
 
-#: ../src/metacity.schemas.in.h:25
+#: ../src/metacity.schemas.in.h:28
 msgid "Maximize window vertically"
 msgstr "Ehangu ffenest yn fertigol"
 
-#: ../src/metacity.schemas.in.h:26
+#: ../src/metacity.schemas.in.h:29
 msgid "Minimize window"
 msgstr "Lleihau ffenest"
 
-#: ../src/metacity.schemas.in.h:27
+#: ../src/metacity.schemas.in.h:30
 msgid "Modifier to use for modified window click actions"
-msgstr "Addaswr i defnyddio am weithredoedd clic ffenestr addasedig"
+msgstr "Addaswr i ddefnyddio am weithredoedd clic ffenestr addasedig"
 
-#: ../src/metacity.schemas.in.h:28
+#: ../src/metacity.schemas.in.h:31
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Symud yn ôl rhwng y paneli a'r penbwrdd ar unwaith"
 
-#: ../src/metacity.schemas.in.h:29
+#: ../src/metacity.schemas.in.h:32
 msgid "Move backwards between panels and the desktop with popup"
-msgstr "Symud yn ôl rhwng y paneli a'r penbwrd gyda bryslen"
+msgstr "Symud yn ôl rhwng y paneli a'r penbwrdd gyda bryslen"
 
-#: ../src/metacity.schemas.in.h:30
+#: ../src/metacity.schemas.in.h:33
 msgid "Move backwards between windows immediately"
 msgstr "Symud yn ôl rhwng ffenestri ar unwaith"
 
-#: ../src/metacity.schemas.in.h:31
+#: ../src/metacity.schemas.in.h:34
 msgid "Move between panels and the desktop immediately"
 msgstr "Symud rhwng y paneli a'r penbwrdd ar unwaith"
 
-#: ../src/metacity.schemas.in.h:32
+#: ../src/metacity.schemas.in.h:35
 msgid "Move between panels and the desktop with popup"
 msgstr "Symud rhwng y paneli a'r penbwrdd gyda bryslen"
 
-#: ../src/metacity.schemas.in.h:33
+#: ../src/metacity.schemas.in.h:36
 msgid "Move between windows immediately"
 msgstr "Symud rhwng ffenestri ar unwaith"
 
-#: ../src/metacity.schemas.in.h:34
+#: ../src/metacity.schemas.in.h:37
 msgid "Move between windows with popup"
 msgstr "Symud rhwng ffenestri gyda bryslen"
 
-#: ../src/metacity.schemas.in.h:35
+#: ../src/metacity.schemas.in.h:38
 msgid "Move focus backwards between windows using popup display"
 msgstr "Symud ffocws yn ôl rhwng ffenestri gan ddangos bryslen"
 
-#: ../src/metacity.schemas.in.h:36
+#: ../src/metacity.schemas.in.h:39
 msgid "Move window"
 msgstr "Symud ffenest"
 
-#: ../src/metacity.schemas.in.h:37
-msgid "Move window one workspace down"
-msgstr "Symud y ffenest un gweithfan i lawr"
-
-#: ../src/metacity.schemas.in.h:38
-msgid "Move window one workspace to the left"
-msgstr "Symud y ffenest un gweithfan i'r chwith"
-
-#: ../src/metacity.schemas.in.h:39
-msgid "Move window one workspace to the right"
-msgstr "Symud y ffenest un gweithfan i'r dde"
-
 #: ../src/metacity.schemas.in.h:40
-msgid "Move window one workspace up"
-msgstr "Symud y ffenest un gweithfan i fyny"
+msgid "Move window one workspace down"
+msgstr "Symud y ffenest un weithfan i lawr"
 
 #: ../src/metacity.schemas.in.h:41
+msgid "Move window one workspace to the left"
+msgstr "Symud y ffenest un weithfan i'r chwith"
+
+#: ../src/metacity.schemas.in.h:42
+msgid "Move window one workspace to the right"
+msgstr "Symud y ffenest un weithfan i'r dde"
+
+#: ../src/metacity.schemas.in.h:43
+msgid "Move window one workspace up"
+msgstr "Symud y ffenest un weithfan i fyny"
+
+#: ../src/metacity.schemas.in.h:44
 msgid "Move window to workspace 1"
 msgstr "Sumud y ffenest at weithle 1"
 
-#: ../src/metacity.schemas.in.h:42
+#: ../src/metacity.schemas.in.h:45
 msgid "Move window to workspace 10"
 msgstr "Sumud y ffenest at weithle 10"
 
-#: ../src/metacity.schemas.in.h:43
+#: ../src/metacity.schemas.in.h:46
 msgid "Move window to workspace 11"
 msgstr "Sumud y ffenest at weithle 11"
 
-#: ../src/metacity.schemas.in.h:44
+#: ../src/metacity.schemas.in.h:47
 msgid "Move window to workspace 12"
 msgstr "Sumud y ffenest at weithle 12"
 
-#: ../src/metacity.schemas.in.h:45
+#: ../src/metacity.schemas.in.h:48
 msgid "Move window to workspace 2"
 msgstr "Sumud y ffenest at weithle 2"
 
-#: ../src/metacity.schemas.in.h:46
+#: ../src/metacity.schemas.in.h:49
 msgid "Move window to workspace 3"
 msgstr "Sumud y ffenest at weithle 3"
 
-#: ../src/metacity.schemas.in.h:47
+#: ../src/metacity.schemas.in.h:50
 msgid "Move window to workspace 4"
 msgstr "Sumud y ffenest at weithle 4"
 
-#: ../src/metacity.schemas.in.h:48
+#: ../src/metacity.schemas.in.h:51
 msgid "Move window to workspace 5"
 msgstr "Sumud y ffenest at weithle 5"
 
-#: ../src/metacity.schemas.in.h:49
+#: ../src/metacity.schemas.in.h:52
 msgid "Move window to workspace 6"
 msgstr "Sumud y ffenest at weithle 6"
 
-#: ../src/metacity.schemas.in.h:50
+#: ../src/metacity.schemas.in.h:53
 msgid "Move window to workspace 7"
 msgstr "Sumud y ffenest at weithle 7"
 
-#: ../src/metacity.schemas.in.h:51
+#: ../src/metacity.schemas.in.h:54
 msgid "Move window to workspace 8"
 msgstr "Sumud y ffenest at weithle 8"
 
-#: ../src/metacity.schemas.in.h:52
+#: ../src/metacity.schemas.in.h:55
 msgid "Move window to workspace 9"
 msgstr "Sumud y ffenest at weithle 9"
 
-#: ../src/metacity.schemas.in.h:53
+#: ../src/metacity.schemas.in.h:56
 msgid "Name of workspace"
-msgstr "Enw'r gweithfan"
+msgstr "Enw'r weithfan"
 
-#: ../src/metacity.schemas.in.h:54
+#: ../src/metacity.schemas.in.h:57
 msgid "Number of workspaces"
 msgstr "Nifer y gweithfannau"
 
-#: ../src/metacity.schemas.in.h:55
+#: ../src/metacity.schemas.in.h:58
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum (to "
 "prevent accidentally destroying your desktop by asking for 34 million "
 "workspaces)."
 msgstr ""
-"Nifer y gweithfannau. Rhaid ei fod yn fwy na sero, a mae uchafswm gosodedig "
+"Nifer y gweithfannau. Rhaid ei fod yn fwy na sero, ac mae uchafswm gosodedig "
 "(er mwyn rhwystro dinistrio eich penbwrdd yn ddamweiniol gan ofyn am 34 "
 "miliwn o fyrddau gwaith)."
 
-#: ../src/metacity.schemas.in.h:56
+#: ../src/metacity.schemas.in.h:59
 msgid "Raise obscured window, otherwise lower"
-msgstr "Codi ffenest cudd, gostwng fel arall"
+msgstr "Codi ffenest gudd, gostwng fel arall"
 
-#: ../src/metacity.schemas.in.h:57
+#: ../src/metacity.schemas.in.h:60
 msgid "Raise window above other windows"
 msgstr "Codi ffenest uwchben y gweddill"
 
-#: ../src/metacity.schemas.in.h:58
+#: ../src/metacity.schemas.in.h:61
 msgid "Resize window"
 msgstr "Ailfeintio ffenest"
 
-#: ../src/metacity.schemas.in.h:59
+#: ../src/metacity.schemas.in.h:62
 msgid "Run a defined command"
 msgstr "Gweithredu gorchymyn gosodedig"
 
-#: ../src/metacity.schemas.in.h:60
+#: ../src/metacity.schemas.in.h:63
 msgid "Run a terminal"
 msgstr "Dechrau terfynell"
 
-#: ../src/metacity.schemas.in.h:61
+#: ../src/metacity.schemas.in.h:64
 msgid "Show the panel menu"
 msgstr "Dangos dewislen y panel"
 
-#: ../src/metacity.schemas.in.h:62
+#: ../src/metacity.schemas.in.h:65
 msgid "Show the panel run application dialog"
 msgstr "Dangos deialog gweithredu rhaglen y panel"
 
-#: ../src/metacity.schemas.in.h:63
+#: ../src/metacity.schemas.in.h:66
 msgid ""
 "Some applications break specifications in ways that result in window manager "
 "misfeatures. For example, ideally Metacity would place all dialogs in a "
@@ -750,96 +803,96 @@ msgid ""
 "workarounds mode won't be fixable without amending a spec."
 msgstr ""
 "Y mae rhai rhaglenni yn torri penodiadau mewn ffyrdd sy'n achosi cam-"
-"nodweddion rheolyddion ffenestri. Er engrhaifft, yn ddelfrydol byddai "
+"nodweddion rheolyddion ffenestri. Er enghraifft, yn ddelfrydol byddai "
 "Metacity yn lleoli pob ymgom yn ôl lleoliad eu ffenestri rhiant. Mae angen "
 "anwybyddu'r lleoliadau oddi wrth y rhaglen i wneud hyn. Ond, y mae rhai "
-"fersiynnau o Java/Swing yn nodi eu naidlenni yn ymgomau, felly mae'n rhaid i "
-"Metacity analluogi lleoli ymgomau i alluogi i naidlenni weithio mewn "
-"rhaglenni Java torredig. Mae yna aml enghreifftiau fel hyn. Y mae'r dewisiad "
+"fersiynau o Java/Swing yn nodi eu naidlenni yn ddeialogau, felly mae'n rhaid "
+"i Metacity analluogi lleoli deialogau i alluogi i naidlenni weithio mewn "
+"rhaglenni Java toredig. Mae yna aml enghreifftiau fel hyn. Y mae'r dewisiad "
 "hwn yn rhoi Metacity mewn modd Cywir hollol, sy'n rhoi rhyngwyneb mwy "
-"dymunol os nad ydych am redeg rhaglenni torredig. Yn anffodus rhaid "
+"dymunol os nad ydych am redeg rhaglenni toredig. Yn anffodus rhaid "
 "galluogi'r eithriadau yn rhagosodedig; y mae'r byd iawn yn le hyll. Y mae "
 "rhai o'r eithriadau yn gweithio o gwmpas diffygion yn y penodiadau ei "
 "hunain, felly weithiau ni fydd modd trwsio nam yn y modd heb-eithriadau heb "
 "addasu penodiad."
 
-#: ../src/metacity.schemas.in.h:64
+#: ../src/metacity.schemas.in.h:67
 msgid "Switch to workspace 1"
 msgstr "Newid i weithfan 1"
 
-#: ../src/metacity.schemas.in.h:65
+#: ../src/metacity.schemas.in.h:68
 msgid "Switch to workspace 10"
 msgstr "Newid i weithfan 10"
 
-#: ../src/metacity.schemas.in.h:66
+#: ../src/metacity.schemas.in.h:69
 msgid "Switch to workspace 11"
 msgstr "Newid i weithfan 11"
 
-#: ../src/metacity.schemas.in.h:67
+#: ../src/metacity.schemas.in.h:70
 msgid "Switch to workspace 12"
 msgstr "Newid i weithfan 12"
 
-#: ../src/metacity.schemas.in.h:68
+#: ../src/metacity.schemas.in.h:71
 msgid "Switch to workspace 2"
 msgstr "Newid i weithfan 2"
 
-#: ../src/metacity.schemas.in.h:69
+#: ../src/metacity.schemas.in.h:72
 msgid "Switch to workspace 3"
 msgstr "Newid i weithfan 3"
 
-#: ../src/metacity.schemas.in.h:70
+#: ../src/metacity.schemas.in.h:73
 msgid "Switch to workspace 4"
 msgstr "Newid i weithfan 4"
 
-#: ../src/metacity.schemas.in.h:71
+#: ../src/metacity.schemas.in.h:74
 msgid "Switch to workspace 5"
 msgstr "Newid i weithfan 5"
 
-#: ../src/metacity.schemas.in.h:72
+#: ../src/metacity.schemas.in.h:75
 msgid "Switch to workspace 6"
 msgstr "Newid i weithfan 6"
 
-#: ../src/metacity.schemas.in.h:73
+#: ../src/metacity.schemas.in.h:76
 msgid "Switch to workspace 7"
 msgstr "Newid i weithfan 7"
 
-#: ../src/metacity.schemas.in.h:74
+#: ../src/metacity.schemas.in.h:77
 msgid "Switch to workspace 8"
 msgstr "Newid i weithfan 8"
 
-#: ../src/metacity.schemas.in.h:75
+#: ../src/metacity.schemas.in.h:78
 msgid "Switch to workspace 9"
 msgstr "Newid i weithfan 9"
 
-#: ../src/metacity.schemas.in.h:76
-msgid "Switch to workspace above this one"
-msgstr "Newid i'r gweithfan uwchben hwn"
-
-#: ../src/metacity.schemas.in.h:77
-msgid "Switch to workspace below this one"
-msgstr "Newid i'r gweithfan islaw hwn"
-
-#: ../src/metacity.schemas.in.h:78
-msgid "Switch to workspace on the left"
-msgstr "Newid i'r gweithfan i'r chwith"
-
 #: ../src/metacity.schemas.in.h:79
-msgid "Switch to workspace on the right"
-msgstr "Newid i'r gweithfan i'r dde"
+msgid "Switch to workspace above this one"
+msgstr "Newid i'r weithfan uwchben hwn"
 
 #: ../src/metacity.schemas.in.h:80
+msgid "Switch to workspace below this one"
+msgstr "Newid i'r weithfan islaw hwn"
+
+#: ../src/metacity.schemas.in.h:81
+msgid "Switch to workspace on the left"
+msgstr "Newid i'r weithfan i'r chwith"
+
+#: ../src/metacity.schemas.in.h:82
+msgid "Switch to workspace on the right"
+msgstr "Newid i'r weithfan i'r dde"
+
+#: ../src/metacity.schemas.in.h:83
 msgid "System Bell is Audible"
 msgstr "Clock y System yn Glywadwy"
 
-#: ../src/metacity.schemas.in.h:81
+#: ../src/metacity.schemas.in.h:84
 msgid "Take a screenshot"
-msgstr "Cymryd sgrîn-lun"
+msgstr "Tynnu sgrînlun"
 
-#: ../src/metacity.schemas.in.h:82
+#: ../src/metacity.schemas.in.h:85
 msgid "Take a screenshot of a window"
-msgstr "Cymryd sgrîn-lun o ffenest"
+msgstr "Tynnu sgrînlun o ffenest"
 
-#: ../src/metacity.schemas.in.h:83
+#: ../src/metacity.schemas.in.h:86
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
 "or another application 'bell' indicator has been rung. Currently there are "
@@ -849,14 +902,14 @@ msgid ""
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
 msgstr ""
-"Yn dweud sut dylid Metacity hysbysu fod cloch y system neu cloch rhaglen "
-"wedi atseinio. Mae yna dwy werth dilys, \"fullscreen\" sydd yn creu flach "
-"gwyn-du llawn sgrîn, a \"frame_flash\" sy'n gweud i'r bar teitl y rhaglen a "
-"anfonodd y cloch i flachio. Os yw'r rhaglen a anfonodd a cloch yn anhysbys "
-"(fel mae ef am cloch y system) y mae'r bar teitl y rhaglen canolbwyntiol yn "
+"Yn dweud sut dylid Metacity hysbysu fod cloch y system neu gloch rhaglen "
+"wedi atseinio. Mae yna dwy werth dilys, \"fullscreen\" sydd yn creu fflach "
+"gwyn-du llawn sgrin, a \"frame_flash\" sy'n gweud i far teitl y rhaglen a "
+"anfonodd y gloch i fflachio. Os yw'r rhaglen a anfonodd y gloch yn anhysbys "
+"(sy'n digwydd ar gloch y system) y mae bar teitl y rhaglen canolbwyntiol yn "
 "fflachio."
 
-#: ../src/metacity.schemas.in.h:84
+#: ../src/metacity.schemas.in.h:87
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
@@ -866,7 +919,7 @@ msgstr ""
 "bysellrhwymiadau sy'n cyferbynnu i'r gorchmynion hyn. Fe fydd gwasgu'r "
 "bysellrwymiad ar gyfer run_command_N yn gweithredu command_N."
 
-#: ../src/metacity.schemas.in.h:85
+#: ../src/metacity.schemas.in.h:88
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
@@ -875,7 +928,7 @@ msgstr ""
 "diffinio bysellrwymiad sy'n achosi i'r gorchymyn a benodir gan y gosodiad "
 "hwn i gael ei weithredi."
 
-#: ../src/metacity.schemas.in.h:86
+#: ../src/metacity.schemas.in.h:89
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
@@ -885,7 +938,7 @@ msgstr ""
 "run_command_window_screenshot  yn diffinio bysellrwymiad sy'n achosi i'r "
 "gorchymyn a benodir gan y gosodiad hwn i gael ei weithredi."
 
-#: ../src/metacity.schemas.in.h:87
+#: ../src/metacity.schemas.in.h:90
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -894,14 +947,14 @@ msgid ""
 "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
 "then there will be no keybinding for this action."
 msgstr ""
-"Y bysellrwymiad sy'n gweithredu y gorchymyn a'r rhif cyfatebol yn /apps/"
+"Y bysellrwymiad sy'n gweithredu'r gorchymyn a'r rhif cyfatebol yn /apps/"
 "metacity/keybinding_commands. Mae'r fformat yn edrych fel \"&lt;Control&gt;a"
-"\" neu &lt;Shift&gt;&lt;Alt&gt;F1\". Mae'r gramadegydd yn eitha rhyddfrydol "
-"ac mae'n caniatau prif lythrennau a llythrennau bach, ac hefyd talfyriadau "
+"\" neu &lt;Shift&gt;&lt;Alt&gt;F1\". Mae'r gramadegydd yn eithaf rhyddfrydol "
+"ac mae'n caniatáu prif lythrennau a llythrennau bach, a hefyd talfyriadau "
 "fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n gosod yr opsiwn i'r "
-"llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar gyfer y gweithred hwn."
+"llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:88
+#: ../src/metacity.schemas.in.h:91
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -910,14 +963,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Y bysellrwymiad sy'n symud i'r weithfan uwchben y weithfan cyfredol. Y mae'r "
+"Y bysellrwymiad sy'n symud i'r weithfan uwchben y weithfan gyfredol. Y mae'r "
 "fformat fel \"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r  "
-"gramadegydd yn eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a "
-"lythrennau bach, ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;"
+"gramadegydd yn eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a "
+"llythrennau bach, a hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;"
 "\". Os ydych chi'n gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd "
-"bysellrwymiad ar gyfer y gweithred hwn."
+"bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:89
+#: ../src/metacity.schemas.in.h:92
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -926,14 +979,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Y bysellrwymiad sy'n symud i'r weithfan islaw y weithfan cyfredol. Y mae'r "
+"Y bysellrwymiad sy'n symud i'r weithfan islaw'r weithfan gyfredol. Y mae'r "
 "fformat fel \"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r "
-"gramadegydd yn eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a "
-"lythrennau bach, ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;"
+"gramadegydd yn eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a "
+"llythrennau bach, a hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;"
 "\". Os ydych chi'n gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd "
-"bysellrwymiad ar gyfer y gweithred hwn."
+"bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:90
+#: ../src/metacity.schemas.in.h:93
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -942,14 +995,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Y bysellrwymiad sy'n symud i'r gweithfan i'r chwith i'r gweithfan cyfredol. "
-"Y mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y "
-"mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a "
-"llythrennau bach, ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;"
+"Y bysellrwymiad sy'n symud i'r weithfan i'r chwith o'r weithfan gyfredol. Y "
+"mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y "
+"mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a "
+"llythrennau bach, a hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;"
 "\". Os ydych chi'n gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd "
-"bysellrwymiad ar gyfer y gweithred hwn."
+"bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:91
+#: ../src/metacity.schemas.in.h:94
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -958,14 +1011,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Y bysellrwymiad sy'n symud i'r gweithfan i'r dde i'r gweithfan cyfredol. Y "
+"Y bysellrwymiad sy'n symud i'r weithfan i'r dde o'r weithfan gyfredol. Y "
 "mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y "
-"mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a "
-"llythrennau bach, ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;"
+"mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a "
+"llythrennau bach, a hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;"
 "\". Os ydych chi'n gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd "
-"bysellrwymiad ar gyfer y gweithred hwn."
+"bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:92
+#: ../src/metacity.schemas.in.h:95
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -975,12 +1028,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n symud i weithfan 1. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a llythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
-"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd furfosodiad "
-"bysellfwrdd i'r gweithred hwn."
+"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd ffurfweddiad "
+"bysellfwrdd i'r weithred hon."
 
-#: ../src/metacity.schemas.in.h:93
+#: ../src/metacity.schemas.in.h:96
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -990,12 +1043,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n symud i weithfan 10. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a llythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
-"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd furfosodiad "
-"bysellfwrdd i'r gweithred hwn."
+"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd ffurfweddiad "
+"bysellfwrdd i'r weithred hon."
 
-#: ../src/metacity.schemas.in.h:94
+#: ../src/metacity.schemas.in.h:97
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1005,12 +1058,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n symud i weithfan 11. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a llythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
-"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd furfosodiad "
-"bysellfwrdd i'r gweithred hwn."
+"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd ffurfweddiad "
+"bysellfwrdd i'r weithred hon."
 
-#: ../src/metacity.schemas.in.h:95
+#: ../src/metacity.schemas.in.h:98
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1020,12 +1073,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n symud i weithfan 12. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a llythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
-"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd furfosodiad "
-"bysellfwrdd i'r gweithred hwn."
+"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd ffurfweddiad "
+"bysellfwrdd i'r weithred hon."
 
-#: ../src/metacity.schemas.in.h:96
+#: ../src/metacity.schemas.in.h:99
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1035,12 +1088,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n symud i weithfan 2. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a llythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
-"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd furfosodiad "
-"bysellfwrdd i'r gweithred hwn."
+"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd ffurfweddiad "
+"bysellfwrdd i'r weithred hon."
 
-#: ../src/metacity.schemas.in.h:97
+#: ../src/metacity.schemas.in.h:100
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1050,12 +1103,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n symud i weithfan 3. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a llythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
-"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd furfosodiad "
-"bysellfwrdd i'r gweithred hwn."
+"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd ffurfweddiad "
+"bysellfwrdd i'r weithred hon."
 
-#: ../src/metacity.schemas.in.h:98
+#: ../src/metacity.schemas.in.h:101
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1065,12 +1118,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n symud i weithfan 4. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a llythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
-"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd furfosodiad "
-"bysellfwrdd i'r gweithred hwn."
+"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd ffurfweddiad "
+"bysellfwrdd i'r weithred hon."
 
-#: ../src/metacity.schemas.in.h:99
+#: ../src/metacity.schemas.in.h:102
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1080,12 +1133,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n symud i weithfan 5. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a llythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
-"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd furfosodiad "
-"bysellfwrdd i'r gweithred hwn."
+"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd ffurfweddiad "
+"bysellfwrdd i'r weithred hon."
 
-#: ../src/metacity.schemas.in.h:100
+#: ../src/metacity.schemas.in.h:103
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1095,12 +1148,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n symud i weithfan 6. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a llythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
-"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd furfosodiad "
-"bysellfwrdd i'r gweithred hwn."
+"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd ffurfweddiad "
+"bysellfwrdd i'r weithred hon."
 
-#: ../src/metacity.schemas.in.h:101
+#: ../src/metacity.schemas.in.h:104
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1110,12 +1163,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n symud i weithfan 7. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a llythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
-"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd furfosodiad "
-"bysellfwrdd i'r gweithred hwn."
+"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd ffurfweddiad "
+"bysellfwrdd i'r weithred hon."
 
-#: ../src/metacity.schemas.in.h:102
+#: ../src/metacity.schemas.in.h:105
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1125,12 +1178,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n symud i weithfan 8. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a llythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
-"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd furfosodiad "
-"bysellfwrdd i'r gweithred hwn."
+"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd ffurfweddiad "
+"bysellfwrdd i'r weithred hon."
 
-#: ../src/metacity.schemas.in.h:103
+#: ../src/metacity.schemas.in.h:106
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1140,12 +1193,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n symud i weithfan 9. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a llythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
-"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd furfosodiad "
-"bysellfwrdd i'r gweithred hwn."
+"osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd ffurfweddiad "
+"bysellfwrdd i'r weithred hon."
 
-#: ../src/metacity.schemas.in.h:104
+#: ../src/metacity.schemas.in.h:107
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1153,14 +1206,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Y bysellrwymiad sy'n gweithredu'r dewislen ffenestr. Y mae'r fformat fel "
+"Y bysellrwymiad sy'n gweithredu'r ddewislen ffenestr. Y mae'r fformat fel "
 "\"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd "
-"yn eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a lythrennau bach, "
-"ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
-"gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar "
-"gyfer y gweithred hwn."
+"yn eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, "
+"a hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
+"gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd ffurfweddiad "
+"bysellfwrdd i'r weithred hon."
 
-#: ../src/metacity.schemas.in.h:105
+#: ../src/metacity.schemas.in.h:108
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1170,12 +1223,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n cau ffenestr. Y mae'r fformat fel \"&lt;Control&gt;a\" "
 "neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn eithaf rhyddfrydol "
-"ac mae'n caniatau prif lythrennau a llythrennau bach, ac hefyd talfyriadau "
+"ac mae'n caniatáu prif lythrennau a llythrennau bach, a hefyd talfyriadau "
 "fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n osod y gosodiad i'r "
-"llinyn arbennig \"disabled\", ni fydd furfosodiad bysellfwrdd i'r gweithred "
-"hwn."
+"llinyn arbennig \"disabled\", ni fydd ffurfweddiad bysellfwrdd i'r weithred "
+"hon."
 
-#: ../src/metacity.schemas.in.h:106
+#: ../src/metacity.schemas.in.h:109
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1186,12 +1239,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n mynd i'r \"modd symud\" i symud ffenestr â'r "
 "bysellfwrdd . Y mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. Y mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n caniatau "
-"prif lythrennau a llythrennau bach, ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" "
+"&lt;Alt&gt;F1. Y mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n caniatáu "
+"prif lythrennau a llythrennau bach, a hefyd talfyriadau fel \"&lt;Ctl&gt;\" "
 "ac \"&lt;Ctrl&gt;\". Os ydych chi'n gosod yr opsiwn i'r llinyn arbennig "
-"\"disabled\", ni fydd bysellrwymiad ar gyfer y gweithred hwn."
+"\"disabled\", ni fydd bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:107
+#: ../src/metacity.schemas.in.h:110
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1203,11 +1256,11 @@ msgstr ""
 "Y bysellrwymiad sy'n mynd i'r \"modd newid maint\" i newid maint y ffenestr "
 "â'r bysellfwrdd . Y mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n "
-"caniatau prif lythrennau a llythrennau bach, ac hefyd talfyriadau fel \"&lt;"
+"caniatáu prif lythrennau a llythrennau bach, a hefyd talfyriadau fel \"&lt;"
 "Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n gosod yr opsiwn i'r llinyn "
-"arbennig \"disabled\", ni fydd bysellrwymiad ar gyfer y gweithred hwn."
+"arbennig \"disabled\", ni fydd bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:108
+#: ../src/metacity.schemas.in.h:111
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1216,14 +1269,14 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Y bysellrwymiad sy'n cuddio pôb ffenestr a rhoi'r canolbwyntiad i gefndir y "
+"Y bysellrwymiad sy'n cuddio pob ffenestr a rhoi'r canolbwyntiad i gefndir y "
 "penbwrdd. Y mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. Y mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n caniatau prif "
-"lythrennau a llythrennau bach, ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac "
+"Alt&gt;F1. Y mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n caniatáu prif "
+"lythrennau a llythrennau bach, a hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac "
 "\"&lt;Ctrl&gt;\". Os ydych chi'n gosod yr opsiwn i'r llinyn arbennig "
-"\"disabled\", ni fydd bysellrwymiad ar gyfer y gweithred hwn."
+"\"disabled\", ni fydd bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:109
+#: ../src/metacity.schemas.in.h:112
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1233,12 +1286,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n ehangu ffenestr. Y mae'r fformat fel \"&lt;Control&gt;a"
 "\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn eithaf "
-"rhyddfrydol ac mae'n caniatau prif lythrennau a llythrennau bach, ac hefyd "
+"rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a hefyd "
 "talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n osod y "
 "gosodiad i'r llinyn arbennig \"disabled\", ni fydd bysellrhwymiad ar gyfer y "
-"gweithred hwn."
+"weithred hon."
 
-#: ../src/metacity.schemas.in.h:110
+#: ../src/metacity.schemas.in.h:113
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1248,12 +1301,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n lleihau  ffenestr. Y mae'r fformat fel \"&lt;Control&gt;"
 "a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn eithaf "
-"rhyddfrydol ac mae'n caniatau prif lythrennau a llythrennau bach, ac hefyd "
+"rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a hefyd "
 "talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n osod y "
 "gosodiad i'r llinyn arbennig \"disabled\", ni fydd furfosodiad bysellfwrdd "
-"i'r gweithred hwn."
+"i'r weithred hon."
 
-#: ../src/metacity.schemas.in.h:111
+#: ../src/metacity.schemas.in.h:114
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -1262,14 +1315,14 @@ msgid ""
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
 msgstr ""
-"Y bysellrwymiad sy'n symud ffenestr un gweithfan i lawr. Y mae'r fformat fel "
+"Y bysellrwymiad sy'n symud ffenestr un weithfan i lawr. Y mae'r fformat fel "
 "\"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd "
-"yn eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a lythrennau bach, "
-"ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
+"yn eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, "
+"a hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
 "gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar "
-"gyfer y gweithred hwn."
+"gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:112
+#: ../src/metacity.schemas.in.h:115
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1278,14 +1331,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Y bysellrwymiad sy'n symud ffenestr un gweithfan i'r chwith. Y mae'r fformat "
+"Y bysellrwymiad sy'n symud ffenestr un weithfan i'r chwith. Y mae'r fformat "
 "fel \"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r "
-"gramadegydd yn eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a "
-"lythrennau bach, ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;"
+"gramadegydd yn eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a "
+"llythrennau bach, a hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;"
 "\". Os ydych chi'n gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd "
-"bysellrwymiad ar gyfer y gweithred hwn."
+"bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:113
+#: ../src/metacity.schemas.in.h:116
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1294,14 +1347,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Y bysellrwymiad sy'n symud ffenestr un gweithfan i'r dde. Y mae'r fformat "
-"fel \"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r "
-"gramadegydd yn eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a "
-"lythrennau bach, ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;"
-"\". Os ydych chi'n gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd "
-"bysellrwymiad ar gyfer y gweithred hwn."
+"Y bysellrwymiad sy'n symud ffenestr un weithfan i'r dde. Y mae'r fformat fel "
+"\"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd "
+"yn eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, "
+"a hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
+"gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar "
+"gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:114
+#: ../src/metacity.schemas.in.h:117
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1309,14 +1362,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Y bysellrwymiad sy'n symud ffenestr un gweithfan i fyny. Y mae'r fformat fel "
+"Y bysellrwymiad sy'n symud ffenestr un weithfan i fyny. Y mae'r fformat fel "
 "\"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd "
-"yn eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a lythrennau bach, "
-"ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
+"yn eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, "
+"a hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
 "gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar "
-"gyfer y gweithred hwn."
+"gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:115
+#: ../src/metacity.schemas.in.h:118
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1324,14 +1377,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Y bysellrwymiad sy'n symud ffenestr i wethfan 1. Y mae'r fformat fel \"&lt;"
+"Y bysellrwymiad sy'n symud ffenestr i weithfan 1. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a lythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
 "gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar "
-"gyfer y gweithred hwn."
+"gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:116
+#: ../src/metacity.schemas.in.h:119
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1339,14 +1392,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Y bysellrwymiad sy'n symud ffenestr i wethfan 10. Y mae'r fformat fel \"&lt;"
+"Y bysellrwymiad sy'n symud ffenestr i weithfan 10. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a lythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
 "gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar "
-"gyfer y gweithred hwn."
+"gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:117
+#: ../src/metacity.schemas.in.h:120
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1354,14 +1407,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Y bysellrwymiad sy'n symud ffenestr i wethfan 11. Y mae'r fformat fel \"&lt;"
+"Y bysellrwymiad sy'n symud ffenestr i weithfan 11. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a lythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
 "gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar "
-"gyfer y gweithred hwn."
+"gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:118
+#: ../src/metacity.schemas.in.h:121
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1369,14 +1422,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Y bysellrwymiad sy'n symud ffenestr i wethfan 12. Y mae'r fformat fel \"&lt;"
+"Y bysellrwymiad sy'n symud ffenestr i weithfan 12. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a lythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
 "gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar "
-"gyfer y gweithred hwn."
+"gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:119
+#: ../src/metacity.schemas.in.h:122
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1386,12 +1439,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n symud ffenestr i weithfan 2. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a lythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
 "gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar "
-"gyfer y gweithred hwn."
+"gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:120
+#: ../src/metacity.schemas.in.h:123
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1401,12 +1454,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n symud ffenestr i weithfan 3. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a lythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
 "gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar "
-"gyfer y gweithred hwn."
+"gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:121
+#: ../src/metacity.schemas.in.h:124
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1416,12 +1469,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n symud ffenestr i weithfan 4. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a lythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
 "gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar "
-"gyfer y gweithred hwn."
+"gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:122
+#: ../src/metacity.schemas.in.h:125
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1431,12 +1484,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n symud ffenestr i weithfan 5. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a lythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
 "gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar "
-"gyfer y gweithred hwn."
+"gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:123
+#: ../src/metacity.schemas.in.h:126
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1446,12 +1499,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n symud ffenestr i weithfan 6. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a lythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
 "gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar "
-"gyfer y gweithred hwn."
+"gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:124
+#: ../src/metacity.schemas.in.h:127
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1461,12 +1514,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n symud ffenestr i weithfan 7. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a lythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
 "gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar "
-"gyfer y gweithred hwn."
+"gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:125
+#: ../src/metacity.schemas.in.h:128
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1476,12 +1529,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n symud ffenestr i weithfan 8. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a lythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
 "gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar "
-"gyfer y gweithred hwn."
+"gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:126
+#: ../src/metacity.schemas.in.h:129
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1491,12 +1544,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n symud ffenestr i weithfan 9. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a lythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
 "gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar "
-"gyfer y gweithred hwn."
+"gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:127
+#: ../src/metacity.schemas.in.h:130
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1506,13 +1559,13 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "Y bysellrwymiad sy'n symud y canolbwyntiad yn ôl rhwng paneli a'r penbwrdd, "
-"gan defnyddio naidlen. Y mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;"
+"gan ddefnyddio naidlen. Y mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n "
-"caniatau prif lythrennau a llythrennau bach, ac hefyd talfyriadau fel \"&lt;"
+"caniatáu prif lythrennau a llythrennau bach, a hefyd talfyriadau fel \"&lt;"
 "Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n gosod yr opsiwn i'r llinyn "
-"arbennig \"disabled\", ni fydd bysellrwymiad ar gyfer y gweithred hwn."
+"arbennig \"disabled\", ni fydd bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:128
+#: ../src/metacity.schemas.in.h:131
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1522,13 +1575,13 @@ msgid ""
 "will be no keybinding for this action."
 msgstr ""
 "Y bysellrwymiad sy'n symud y canolbwyntiad yn ôl rhwng paneli a'r penbwrdd, "
-"heb defnyddio naidlen. Y mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;"
+"heb ddefnyddio naidlen. Y mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n "
-"caniatau prif lythrennau a llythrennau bach, ac hefyd talfyriadau fel \"&lt;"
+"caniatáu prif lythrennau a llythrennau bach, a hefyd talfyriadau fel \"&lt;"
 "Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n gosod yr opsiwn i'r llinyn "
-"arbennig \"disabled\", ni fydd bysellrwymiad ar gyfer y gweithred hwn."
+"arbennig \"disabled\", ni fydd bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:129
+#: ../src/metacity.schemas.in.h:132
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1539,13 +1592,13 @@ msgid ""
 "no keybinding for this action."
 msgstr ""
 "Y bysellrwymiad sy'n symud y canolbwyntiad yn ôl rhwng ffenestri, heb "
-"defnyddio naidlen. Y mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;"
+"ddefnyddio naidlen. Y mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n "
-"caniatau prif lythrennau a llythrennau bach, ac hefyd talfyriadau fel \"&lt;"
+"caniatáu prif lythrennau a llythrennau bach, a hefyd talfyriadau fel \"&lt;"
 "Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n gosod yr opsiwn i'r llinyn "
-"arbennig \"disabled\", ni fydd bysellrwymiad ar gyfer y gweithred hwn."
+"arbennig \"disabled\", ni fydd bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:130
+#: ../src/metacity.schemas.in.h:133
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1556,13 +1609,13 @@ msgid ""
 "no keybinding for this action."
 msgstr ""
 "Y bysellrwymiad sy'n symud y canolbwyntiad yn ôl rhwng ffenestri, gan "
-"defnyddio naidlen. Y mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;"
+"ddefnyddio naidlen. Y mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n "
-"caniatau prif lythrennau a llythrennau bach, ac hefyd talfyriadau fel \"&lt;"
+"caniatáu prif lythrennau a llythrennau bach, a hefyd talfyriadau fel \"&lt;"
 "Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n gosod yr opsiwn i'r llinyn "
-"arbennig \"disabled\", ni fydd bysellrwymiad ar gyfer y gweithred hwn."
+"arbennig \"disabled\", ni fydd bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:131
+#: ../src/metacity.schemas.in.h:134
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1572,13 +1625,13 @@ msgid ""
 "no keybinding for this action."
 msgstr ""
 "Y bysellrwymiad sy'n symud y canolbwyntiad rhwng paneli a'r penbwrdd, gan "
-"defnyddio naidlen. Y mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;"
+"ddefnyddio naidlen. Y mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n "
-"caniatau prif lythrennau a llythrennau bach, ac hefyd talfyriadau fel \"&lt;"
+"caniatáu prif lythrennau a llythrennau bach, a hefyd talfyriadau fel \"&lt;"
 "Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n gosod yr opsiwn i'r llinyn "
-"arbennig \"disabled\", ni fydd bysellrwymiad ar gyfer y gweithred hwn."
+"arbennig \"disabled\", ni fydd bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:132
+#: ../src/metacity.schemas.in.h:135
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1588,13 +1641,13 @@ msgid ""
 "no keybinding for this action."
 msgstr ""
 "Y bysellrwymiad sy'n symud y canolbwyntiad rhwng paneli a'r penbwrdd, heb "
-"defnyddio naidlen. Y mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;"
+"ddefnyddio naidlen. Y mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n "
-"caniatau prif lythrennau a llythrennau bach, ac hefyd talfyriadau fel \"&lt;"
+"caniatáu prif lythrennau a llythrennau bach, a hefyd talfyriadau fel \"&lt;"
 "Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n gosod yr opsiwn i'r llinyn "
-"arbennig \"disabled\", ni fydd bysellrwymiad ar gyfer y gweithred hwn."
+"arbennig \"disabled\", ni fydd bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:133
+#: ../src/metacity.schemas.in.h:136
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1604,15 +1657,15 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Y bysellrwymiad sy'n symud y canolbwyntiad rhwng ffenestri, heb defnyddio "
-"naidlen (Yn tradoddiadol &lt;Alt&gt;Escape). Y mae'r fformat fel \"&lt;"
+"Y bysellrwymiad sy'n symud y canolbwyntiad rhwng ffenestri, heb ddefnyddio "
+"naidlen (Yn draddodiadol &lt;Alt&gt;Escape). Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a llythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
 "osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd furfosodiad "
-"bysellfwrdd i'r gweithred hwn."
+"bysellfwrdd i'r weithred hon."
 
-#: ../src/metacity.schemas.in.h:134
+#: ../src/metacity.schemas.in.h:137
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1622,15 +1675,15 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Y bysellrwymiad sy'n symud y canolbwyntiad rhwng ffenestri, gan defnyddio "
-"naidlen (Yn tradoddiadol &lt;Alt&gt;Tab). Y mae'r fformat fel \"&lt;"
+"Y bysellrwymiad sy'n symud y canolbwyntiad rhwng ffenestri, gan ddefnyddio "
+"naidlen (Yn draddodiadol &lt;Alt&gt;Tab). Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a llythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
 "osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd furfosodiad "
-"bysellfwrdd i'r gweithred hwn."
+"bysellfwrdd i'r weithred hon."
 
-#: ../src/metacity.schemas.in.h:135
+#: ../src/metacity.schemas.in.h:138
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1642,12 +1695,12 @@ msgstr ""
 "Y bysellrwymiad a ddefnyddir er mwyn toglu *** ar ben. Fe fydd ffenest sydd "
 "wastad ar ben yn weladwy dros ffenestri eraill sy'n gorgyffwrdd. Y mae'r "
 "fformat fel \"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r "
-"gramadegydd yn eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a "
-"lythrennau bach, ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;"
+"gramadegydd yn eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a "
+"llythrennau bach, a hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;"
 "\". Os ydych chi'n gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd "
-"bysellrwymiad ar gyfer y gweithred hwn."
+"bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:136
+#: ../src/metacity.schemas.in.h:139
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1655,14 +1708,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Y bysellrwymiad sy'n toglu modd sgrîn lawn. Y mae'r fformat fel \"&lt;"
+"Y bysellrwymiad sy'n toglu modd sgrin lawn. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a llythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
 "osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd furfosodiad "
-"bysellfwrdd i'r gweithred hwn."
+"bysellfwrdd i'r weithred hon."
 
-#: ../src/metacity.schemas.in.h:137
+#: ../src/metacity.schemas.in.h:140
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1672,12 +1725,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n toglu ehangiad. Y mae'r fformat fel \"&lt;Control&gt;a"
 "\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn eithaf "
-"rhyddfrydol ac mae'n caniatau prif lythrennau a llythrennau bach, ac hefyd "
+"rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a hefyd "
 "talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n osod y "
 "gosodiad i'r llinyn arbennig \"disabled\", ni fydd furfosodiad bysellfwrdd "
-"i'r gweithred hwn."
+"i'r weithred hon."
 
-#: ../src/metacity.schemas.in.h:138
+#: ../src/metacity.schemas.in.h:141
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1685,14 +1738,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Y bysellrwymiad sy'n toglu'r cyflwr rholio/dadrholio. Y mae'r fformat fel "
+"Y bysellrwymiad sy'n toglu'r cyflwr rholio/dadrolio. Y mae'r fformat fel "
 "\"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd "
-"yn eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a lythrennau bach, "
-"ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
+"yn eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, "
+"a hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
 "gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar "
-"gyfer y gweithred hwn."
+"gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:139
+#: ../src/metacity.schemas.in.h:142
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1701,14 +1754,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Y bysellrwymiad sy'n toglu os yw'r ffenestr yn bresennol ar pob gweithfan "
+"Y bysellrwymiad sy'n toglu os yw'r ffenestr yn bresennol ar bob gweithfan "
 "neu un yn unig. Y mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. Y mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n caniatau "
-"prif lythrennau a llythrennau bach, ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" "
+"&lt;Alt&gt;F1. Y mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n caniatáu "
+"prif lythrennau a llythrennau bach, a hefyd talfyriadau fel \"&lt;Ctl&gt;\" "
 "ac \"&lt;Ctrl&gt;\". Os ydych chi'n gosod yr opsiwn i'r llinyn arbennig "
-"\"disabled\", ni fydd bysellrwymiad ar gyfer y gweithred hwn."
+"\"disabled\", ni fydd bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:140
+#: ../src/metacity.schemas.in.h:143
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1718,12 +1771,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n dadehangu y ffenestr. Y mae'r fformat fel \"&lt;"
 "Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn "
-"eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a llythrennau bach, ac "
+"eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a "
 "hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
 "osod y gosodiad i'r llinyn arbennig \"disabled\", ni fydd furfosodiad "
-"bysellfwrdd i'r gweithred hwn."
+"bysellfwrdd i'r weithred hon."
 
-#: ../src/metacity.schemas.in.h:141
+#: ../src/metacity.schemas.in.h:144
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1733,12 +1786,12 @@ msgid ""
 "for this action."
 msgstr ""
 "Y bysellrwymiad sy'n dangos blwch deialog \"Gweithredu Rhaglen\" y panel. Y "
-"mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a "
-"lythrennau bach, ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;"
+"mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a "
+"llythrennau bach, a hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;"
 "\". Os ydych chi'n gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd "
-"bysellrwymiad ar gyfer y gweithred hwn."
+"bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:142
+#: ../src/metacity.schemas.in.h:145
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1748,12 +1801,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n cychwyn terfynell. Y mae'r fformat fel \"&lt;Control&gt;"
 "a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn eithaf "
-"rhyddfrydol ac mae'n caniatau prif lythrennau a lythrennau bach, ac hefyd "
+"rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a hefyd "
 "talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n gosod yr "
 "opsiwn i'r llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar gyfer y "
-"gweithred hwn."
+"weithred hon."
 
-#: ../src/metacity.schemas.in.h:143
+#: ../src/metacity.schemas.in.h:146
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1762,14 +1815,14 @@ msgid ""
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
 msgstr ""
-"Y bysellrwymiad sy'n rhedeg rhaglen sgrînlun y panel i gymryd sgînlun o "
+"Y bysellrwymiad sy'n rhedeg rhaglen sgrînlun y panel i gymryd sgrînlun o "
 "ffenestr. Y mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. Y mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n caniatau prif "
-"lythrennau a llythrennau bach, ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac "
+"Alt&gt;F1. Y mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n caniatáu prif "
+"lythrennau a llythrennau bach, a hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac "
 "\"&lt;Ctrl&gt;\". Os ydych chi'n gosod yr opsiwn i'r llinyn arbennig "
-"\"disabled\", ni fydd bysellrwymiad ar gyfer y gweithred hwn."
+"\"disabled\", ni fydd bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:144
+#: ../src/metacity.schemas.in.h:147
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1780,12 +1833,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n rhedeg rhaglen sgrînlun y panel. Y mae'r fformat fel "
 "\"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd "
-"yn eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a lythrennau bach, "
-"ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
+"yn eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, "
+"a hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
 "gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar "
-"gyfer y gweithred hwn."
+"gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:145
+#: ../src/metacity.schemas.in.h:148
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1795,20 +1848,20 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n dangos prif ddewislen y panel. Y mae'r fformat fel "
 "\"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd "
-"yn eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a lythrennau bach, "
-"ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
+"yn eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, "
+"a hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n "
 "gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd bysellrwymiad ar "
-"gyfer y gweithred hwn."
+"gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:146
+#: ../src/metacity.schemas.in.h:149
 msgid "The name of a workspace."
 msgstr "Enw gweithfan."
 
-#: ../src/metacity.schemas.in.h:147
+#: ../src/metacity.schemas.in.h:150
 msgid "The screenshot command"
-msgstr "Y gorchymyn sgrîn-lun"
+msgstr "Y gorchymyn sgrînlun"
 
-#: ../src/metacity.schemas.in.h:148
+#: ../src/metacity.schemas.in.h:151
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
@@ -1816,7 +1869,7 @@ msgstr ""
 "Mae'r thema yn penodi edrychiad borderi ffenestri, y bar teitl, ac yn y "
 "blaen."
 
-#: ../src/metacity.schemas.in.h:149
+#: ../src/metacity.schemas.in.h:152
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -1824,7 +1877,7 @@ msgstr ""
 "Yr oediad cyn codi ffenestr os yw auto_raise yn wir. Mae'r oediad mewn "
 "milfed eiliad."
 
-#: ../src/metacity.schemas.in.h:150
+#: ../src/metacity.schemas.in.h:153
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1834,16 +1887,16 @@ msgid ""
 msgstr ""
 "Mae'r modd ffocysu yn penodi sut caiff ffenestri eu gweithredu. Mae ganddo "
 "tri gwerth posib; mae \"click\" yn golygu mae'n rhaid i ffenestri gael eu "
-"clicio ar mwyn eu ffocysu; mae \"sloppy\" yn golygu caiff ffenestri ei "
-"ffocysu pan mae'r llygoden yn cyrraedd y ffenest, a mae \"mouse\" yn golygu "
+"clicio er mwyn eu ffocysu; mae \"sloppy\" yn golygu caiff ffenestri ei "
+"ffocysu pan mae'r llygoden yn cyrraedd y ffenest, ac mae \"mouse\" yn golygu "
 "caiff ffenestri eu ffocysu pan mae'r llygoden yn cyrraedd y ffenest a'u "
 "dadffocysu pan mae'r llygoden yn gadael y ffenest."
 
-#: ../src/metacity.schemas.in.h:151
+#: ../src/metacity.schemas.in.h:154
 msgid "The window screenshot command"
-msgstr "Y gorchymyn sgrîn-lun ffenest"
+msgstr "Y gorchymyn sgrînlun ffenest"
 
-#: ../src/metacity.schemas.in.h:152
+#: ../src/metacity.schemas.in.h:155
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1859,12 +1912,12 @@ msgstr ""
 "ffenestr. Os yw'r ffenestr yn hollol weladwy yn barod, mae'n gostwng y "
 "ffenestr yn is na'r ffenestri eraill. Y mae'r fformat fel \"&lt;Control&gt;a"
 "\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r gramadegydd yn eithaf "
-"rhyddfrydol ac mae'n caniatau prif lythrennau a llythrennau bach, ac hefyd "
+"rhyddfrydol ac mae'n caniatáu prif lythrennau a llythrennau bach, a hefyd "
 "talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;\". Os ydych chi'n gosod y "
 "gosodiad i'r llinyn arbennig \"disabled\", ni fydd bysellrwymiad i'r "
-"gweithred hwn."
+"weithred hon."
 
-#: ../src/metacity.schemas.in.h:153
+#: ../src/metacity.schemas.in.h:156
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1874,12 +1927,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n gostwng y ffenestr islaw ffenestri eraill. Y mae'r "
 "fformat fel \"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r "
-"gramadegydd yn eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a "
-"lythrennau bach, ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;"
+"gramadegydd yn eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a "
+"llythrennau bach, a hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;"
 "\". Os ydych chi'n gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd "
-"bysellrwymiad ar gyfer y gweithred hwn."
+"bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:154
+#: ../src/metacity.schemas.in.h:157
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1889,12 +1942,12 @@ msgid ""
 msgstr ""
 "Y bysellrwymiad sy'n codi'r ffenestr uwchben ffenestri eraill. Y mae'r "
 "fformat fel \"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;Alt&gt;F1. Y mae'r "
-"gramadegydd yn eithaf rhyddfrydol ac mae'n caniatau prif lythrennau a "
-"lythrennau bach, ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;"
+"gramadegydd yn eithaf rhyddfrydol ac mae'n caniatáu prif lythrennau a "
+"llythrennau bach, a hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac \"&lt;Ctrl&gt;"
 "\". Os ydych chi'n gosod yr opsiwn i'r llinyn arbennig \"disabled\", ni fydd "
-"bysellrwymiad ar gyfer y gweithred hwn."
+"bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:155
+#: ../src/metacity.schemas.in.h:158
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1903,14 +1956,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Y bysellrwymiad sy'n newid maint y ffenest i lenwi'r holl lle llorweddol "
-"sydd ar gael . Y mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1. Y mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n caniatau "
-"prif lythrennau a llythrennau bach, ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" "
-"ac \"&lt;Ctrl&gt;\". Os ydych chi'n gosod yr opsiwn i'r llinyn arbennig "
-"\"disabled\", ni fydd bysellrwymiad ar gyfer y gweithred hwn."
+"Y bysellrwymiad sy'n newid maint y ffenest i lenwi'r holl le llorweddol sydd "
+"ar gael . Y mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1. Y mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n caniatáu prif "
+"lythrennau a llythrennau bach, a hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac "
+"\"&lt;Ctrl&gt;\". Os ydych chi'n gosod yr opsiwn i'r llinyn arbennig "
+"\"disabled\", ni fydd bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:156
+#: ../src/metacity.schemas.in.h:159
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1919,103 +1972,122 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Y bysellrwymiad sy'n newid maint y ffenest i lenwi'r holl lle fertigol sydd "
+"Y bysellrwymiad sy'n newid maint y ffenest i lenwi'r holl le fertigol sydd "
 "ar gael. Y mae'r fformat fel \"&lt;Control&gt;a\" neu \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. Y mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n caniatau prif "
-"lythrennau a llythrennau bach, ac hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac "
+"Alt&gt;F1. Y mae'r gramadegydd yn eithaf rhyddfrydol ac mae'n caniatáu prif "
+"lythrennau a llythrennau bach, a hefyd talfyriadau fel \"&lt;Ctl&gt;\" ac "
 "\"&lt;Ctrl&gt;\". Os ydych chi'n gosod yr opsiwn i'r llinyn arbennig "
-"\"disabled\", ni fydd bysellrwymiad ar gyfer y gweithred hwn."
+"\"disabled\", ni fydd bysellrwymiad ar gyfer y weithred hon."
 
-#: ../src/metacity.schemas.in.h:157
+#: ../src/metacity.schemas.in.h:160
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, and 'toggle_maximize' which will maximize/unmaximize the window."
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'minimize' which will minimize the window, and 'none' which will not do "
+"anything."
 msgstr ""
 "Mae'r dewisiad hwn yn dewis pa effaith sy'n digwydd pan fo clic dwbl ar y "
-"bar teitl. Dewisiadau dilys yw 'toggle_shade', sy'n rholio'r ffenestr, neu "
-"'toggle_maximize', sy'n ehangu neu lleuhau'r ffenestr."
+"bar teitl. Dewisiadau dilys yw 'toggle_shade', sy'n cysgodi/di-gysgodi'r "
+"ffenestr, 'toggle_maximize' fydd yn ehangu/lleihau'r ffenestr, 'minimize' "
+"fydd yn lleihau'r ffenestr, neu 'none' fydd yn gwneud dim byd."
 
-#: ../src/metacity.schemas.in.h:158
+#: ../src/metacity.schemas.in.h:161
 msgid "Toggle always on top state"
-msgstr "Toglu cyflwr wastad ar ben"
+msgstr "Toglu'r cyflwr o fod ar ben popeth"
 
-#: ../src/metacity.schemas.in.h:159
+#: ../src/metacity.schemas.in.h:162
 msgid "Toggle fullscreen mode"
-msgstr "Toglu cyflwr sgrîn lawn"
+msgstr "Toglu cyflwr sgrin lawn"
 
-#: ../src/metacity.schemas.in.h:160
+#: ../src/metacity.schemas.in.h:163
 msgid "Toggle maximization state"
 msgstr "Toglu cyflwr ehangu"
 
-#: ../src/metacity.schemas.in.h:161
+#: ../src/metacity.schemas.in.h:164
 msgid "Toggle shaded state"
 msgstr "Toglu cyflwr rholio"
 
-#: ../src/metacity.schemas.in.h:162
+#: ../src/metacity.schemas.in.h:165
 msgid "Toggle window on all workspaces"
 msgstr "Toglu ffenestr ar bob gweithfan"
 
-#: ../src/metacity.schemas.in.h:163
+#: ../src/metacity.schemas.in.h:166
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments, or when 'audible bell' is off."
 msgstr ""
-"Yn osod effaith gweledig pan fo'r system, neu rhaglen, yn taro cloch neu "
-"bîp; yn defnyddiol am y trwm ei clyw neu mewn amgylchiadau clochaidd, neu "
-"pan nid oes cloch clywadwy"
+"Yn osod effaith gweledig pan fo'r system, neu raglen, yn taro cloch neu bîp; "
+"yn ddefnyddiol i'r trwm eu clyw neu mewn amgylchiadau swnllyd, neu pan nad "
+"oes cloch glywadwy"
 
-#: ../src/metacity.schemas.in.h:164
+#: ../src/metacity.schemas.in.h:167
 msgid "Unmaximize window"
 msgstr "Dadehangu ffenestr"
 
-#: ../src/metacity.schemas.in.h:165
+#: ../src/metacity.schemas.in.h:168
 msgid "Use standard system font in window titles"
 msgstr "Defnyddiwch ffont system safonol yn nheitlau ffenestri"
 
-#: ../src/metacity.schemas.in.h:166
+#: ../src/metacity.schemas.in.h:169
 msgid "Visual Bell Type"
-msgstr "Math Cloch Gweladwy"
+msgstr "Math Cloch Weladwy"
 
-#: ../src/metacity.schemas.in.h:167
+#: ../src/metacity.schemas.in.h:170
+msgid "Whether raising should be a side-effect of other user interactions"
+msgstr ""
+"A ddylai codi'r ffenestr fod yn sgil effaith gweithrediadau eraill y "
+"defnyddiwr"
+
+#: ../src/metacity.schemas.in.h:171
 msgid "Window focus mode"
 msgstr "Modd ffocysu ffenestri"
 
-#: ../src/metacity.schemas.in.h:168
+#: ../src/metacity.schemas.in.h:172
 msgid "Window title font"
 msgstr "Ffont teitl ffenestri"
 
-#: ../src/prefs.c:528 ../src/prefs.c:544 ../src/prefs.c:560 ../src/prefs.c:576
-#: ../src/prefs.c:592 ../src/prefs.c:612 ../src/prefs.c:628 ../src/prefs.c:644
-#: ../src/prefs.c:660 ../src/prefs.c:676 ../src/prefs.c:692 ../src/prefs.c:708
-#: ../src/prefs.c:724 ../src/prefs.c:741 ../src/prefs.c:757 ../src/prefs.c:773
-#: ../src/prefs.c:789 ../src/prefs.c:805 ../src/prefs.c:820 ../src/prefs.c:835
-#: ../src/prefs.c:850 ../src/prefs.c:866 ../src/prefs.c:882 ../src/prefs.c:898
+#: ../src/prefs.c:567 ../src/prefs.c:583 ../src/prefs.c:599 ../src/prefs.c:615
+#: ../src/prefs.c:631 ../src/prefs.c:647 ../src/prefs.c:667 ../src/prefs.c:683
+#: ../src/prefs.c:699 ../src/prefs.c:715 ../src/prefs.c:731 ../src/prefs.c:747
+#: ../src/prefs.c:763 ../src/prefs.c:779 ../src/prefs.c:796 ../src/prefs.c:812
+#: ../src/prefs.c:828 ../src/prefs.c:844 ../src/prefs.c:860 ../src/prefs.c:875
+#: ../src/prefs.c:890 ../src/prefs.c:905 ../src/prefs.c:921 ../src/prefs.c:937
+#: ../src/prefs.c:953 ../src/prefs.c:969
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Y mae allwedd GConf \"%s\" wedi ei osod yn fath annilys\n"
 
-#: ../src/prefs.c:943
+#: ../src/prefs.c:1014
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr ""
-"Nid yw \"%s\" sydd wedi ei ddarganfod yn y cronfa cyfluniad yn werth ddilys "
+"Nid yw \"%s\" sydd wedi ei ddarganfod yn y gronfa cyfluniad yn werth dilys "
 "ar gyfer addasydd botwm llygoden\n"
 
-#: ../src/prefs.c:967 ../src/prefs.c:1428
+#: ../src/prefs.c:1038 ../src/prefs.c:1528
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Y mae allwedd GConf '%s' wedi ei gosod yn werth annilys\n"
 
-#: ../src/prefs.c:1145
+#: ../src/prefs.c:1161
+#, c-format
+msgid ""
+"%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
+"range 1..128\n"
+msgstr ""
+"Nid yw %d, sydd wedi ei storio yn allwedd GConf %s, yn faint cyrchwr "
+"rhesymol; rhaid iddo fod o fewn yr ystod 1..128\n"
+
+#: ../src/prefs.c:1241
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Ni all gramadegu'r disgrifiad ffont \"%s\" o'r allwedd GConf %s\n"
 
-#: ../src/prefs.c:1330
+#: ../src/prefs.c:1426
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2024,36 +2096,36 @@ msgstr ""
 "Nid yw %d sydd wedi ei gadw tu fewn i allwedd GConf %s yn nifer rhesymol o "
 "weithfannau, %d yw'r cyfanswm cyfredol\n"
 
-#: ../src/prefs.c:1390
+#: ../src/prefs.c:1486
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
-"Mae cywiriadau ar gyfer rhaglenni torredig wedi ei analluogi. Efallai ni "
-"fydd rhai rhaglenni yn ymddwyn yn gywir.\n"
+"Mae cywiriadau ar gyfer rhaglenni toredig wedi ei analluogi. Efallai ni fydd "
+"rhai rhaglenni yn ymddwyn yn gywir.\n"
 
-#: ../src/prefs.c:1455
+#: ../src/prefs.c:1555
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr ""
 "Y mae %d, sydd wedi ei gadw tu fewn i allwedd GConf %s, tu allan o'r "
 "amrediad 0 i %d\n"
 
-#: ../src/prefs.c:1589
+#: ../src/prefs.c:1695
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Gwall wrth osod y nifer o weithfannau i %d: %s\n"
 
-#: ../src/prefs.c:1833
+#: ../src/prefs.c:2031
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr ""
-"Nid yw \"%s\" sydd wedi ei ddarganfod yn y cronfa cyfluniad yn werth ddilys "
+"Nid yw \"%s\" sydd wedi ei ddarganfod yn y gronfa cyfluniad yn werth dilys "
 "ar gyfer y rhwymiad bysell \"%s\"\n"
 
-#: ../src/prefs.c:2187
+#: ../src/prefs.c:2448
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Gwall wrth osod enw gweithle %d i \"%s\": %s\n"
@@ -2063,109 +2135,108 @@ msgstr "Gwall wrth osod enw gweithle %d i \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/screen.c:408
+#: ../src/screen.c:403
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr "Mae sgrîn %d ar y dangosydd '%s' yn annilys\n"
+msgstr "Mae sgrin %d ar y dangosydd '%s' yn annilys\n"
 
-#: ../src/screen.c:424
+#: ../src/screen.c:419
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
-"Y mae gan sgrîn %d ar y dangosydd \"%s\" drefnydd ffenestri yn barod; "
+"Y mae gan sgrin %d ar y dangosydd \"%s\" drefnydd ffenestri yn barod; "
 "ceisiwch yr opsiwn --replace i amnewid y rheolydd ffenestri cyfredol.\n"
 
-#: ../src/screen.c:448
+#: ../src/screen.c:443
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
-"Wedi methu cael dewisiad rheolydd ffenestri ar sgrîn %d dangosydd \"%s\"\n"
+"Wedi methu cael dewisiad rheolydd ffenestri ar sgrin %d dangosydd \"%s\"\n"
 
-#: ../src/screen.c:506
+#: ../src/screen.c:501
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "Mae gan y sgrîn %d ar y dangosydd \"%s\" rheolydd ffenestri eisioes\n"
+msgstr "Mae gan y sgrin %d ar y dangosydd \"%s\" rheolydd ffenestri eisoes\n"
 
-#: ../src/screen.c:716
+#: ../src/screen.c:705
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "Methu rhyddhau sgrîn %d ar y dangosydd \"%s\"\n"
+msgstr "Methu rhyddhau sgrin %d ar y dangosydd \"%s\"\n"
 
-#: ../src/session.c:884 ../src/session.c:891
+#: ../src/session.c:835 ../src/session.c:842
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Methu creu cyfeiriadur '%s': %s\n"
 
-#: ../src/session.c:901
+#: ../src/session.c:852
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Nid oedd modd agor y ffeil sesiwn '%s' ar gyfer ysgrifennu: %s\n"
 
-#: ../src/session.c:1053
+#: ../src/session.c:1004
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Gwall wrth ysgrifennu ffeil sesiwn '%s': %s\n"
 
-#: ../src/session.c:1058
+#: ../src/session.c:1009
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Gwall wrth gau ffeil sesiwn '%s': %s\n"
 
-#: ../src/session.c:1133
+#: ../src/session.c:1084
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
-msgstr "Mehu darllen ffeil sesiwn wedi cadw %s: %s\n"
+msgstr "Methu darllen ffeil sesiwn wedi cadw %s: %s\n"
 
-#: ../src/session.c:1168
+#: ../src/session.c:1119
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr "Methu dehongle ffeil sesiwn wedi cadw: %s\n"
+msgstr "Methu dehongli ffeil sesiwn wedi cadw: %s\n"
 
-#: ../src/session.c:1217
+#: ../src/session.c:1168
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr ""
-"gwelwyd priodwedd <metacity_session> ond mae gennym ID y sesiwn eisioes"
+msgstr "gwelwyd priodwedd <metacity_session> ond mae gennym ID y sesiwn eisoes"
 
-#: ../src/session.c:1230
+#: ../src/session.c:1181
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Priodwedd anhysbys %s gan elfen <metacity_session>"
 
-#: ../src/session.c:1247
+#: ../src/session.c:1198
 msgid "nested <window> tag"
 msgstr "tag <window> nythol"
 
-#: ../src/session.c:1305 ../src/session.c:1337
+#: ../src/session.c:1256 ../src/session.c:1288
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Priodwedd anhysbys %s gan elfen <window>"
 
-#: ../src/session.c:1409
+#: ../src/session.c:1360
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Priodwedd anhysbys %s gan elfen <maximized>"
 
-#: ../src/session.c:1469
+#: ../src/session.c:1420
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Priodwedd anhysbys %s gan elfen <geometry>"
 
-#: ../src/session.c:1489
+#: ../src/session.c:1440
 #, c-format
 msgid "Unknown element %s"
 msgstr "Elfen anhysbys %s"
 
-#: ../src/session.c:1961
+#: ../src/session.c:1906
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr ""
-"Gwall wrth rhedeg metacity-dialog i rhybuddio am rhaglenni sydd ddim yn "
-"cynnal rheolaeth sesiwn: %s\n"
+"Gwall wrth redeg metacity-dialog i rybuddio am raglenni sydd ddim yn cynnal "
+"rheolaeth sesiwn: %s\n"
 
 #: ../src/theme-parser.c:224 ../src/theme-parser.c:242
 #, c-format
@@ -2176,7 +2247,7 @@ msgstr "Llinell %d nod %d: %s"
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr ""
-"Y mae'r briodoledd \"%s\" wedi'i hailadrodd ddwy waith ar yr un elfen <%s>"
+"Y mae'r briodoledd \"%s\" wedi'i hailadrodd dwywaith ar yr un elfen <%s>"
 
 #: ../src/theme-parser.c:414 ../src/theme-parser.c:439
 #, c-format
@@ -2197,24 +2268,24 @@ msgstr "Mae'r cyfanrif %ld yn rhy fawr, %d yw'r gwerth uchaf cyfredol"
 #: ../src/theme-parser.c:626
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
-msgstr "Methu dehongli \"%s\" fel rhif pwynt arnof"
+msgstr "Methu dehongli \"%s\" fel rhif pwynt arnawf"
 
 #: ../src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "Mae'n rhaid i werthoedd Boolaidd fod \"true\" neu \"false\" nid \"%s\""
+msgstr "Mae'n rhaid i werthoedd Boole fod \"true\" neu \"false\" nid \"%s\""
 
 #: ../src/theme-parser.c:572
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
-msgstr "Mae'n rhaid i ongl fod rhwng 0.0 a 360.0, %g ydoedd\n"
+msgstr "Mae'n rhaid i ongl fod rhwng 0.0 a 360.0, %g oedd hyn\n"
 
 #: ../src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr ""
-"Mae'n rhaid i'r alffa bod rhwng 0.0 (anweledig) ac 1.0 (di-draidd), ond "
-"rhoedd %g\n"
+"Mae'n rhaid i'r alffa fod rhwng 0.0 (anweledig) ac 1.0 (di-draidd), ond "
+"rhoddwyd %g\n"
 
 #: ../src/theme-parser.c:684
 #, c-format
@@ -2246,17 +2317,18 @@ msgstr "defnyddiwyd enw <%s> \"%s\" eilwaith"
 #: ../src/theme-parser.c:1032
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr "ni diffiniwyd rhiant <%s> \"%s\""
+msgstr "ni ddiffiniwyd rhiant <%s> \"%s\""
 
 #: ../src/theme-parser.c:968
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr "ni diffniwyd geometreg <%s> \"%s\""
+msgstr "ni ddiffiniwyd geometreg <%s> \"%s\""
 
 #: ../src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr "Mae'n rhaed i <%s> bod naill geometreg, neu rhiant sydd â geometreg"
+msgstr ""
+"Mae'n rhaid i <%s> benodi naill ai geometreg, neu riant sydd â geometreg"
 
 #: ../src/theme-parser.c:1080
 #, c-format
@@ -2271,7 +2343,7 @@ msgstr "style_set \"%s\" anhysbys ar elfen <%s>"
 #: ../src/theme-parser.c:1099
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
-msgstr "Neilltïr set ardull i fath ffenestr \"%s\" yn barod. "
+msgstr "Neilltuir set arddull i fath ffenestr \"%s\" yn barod. "
 
 #: ../src/theme-parser.c:1143
 #, c-format
@@ -2319,8 +2391,8 @@ msgstr "Nid oes priodwedd \"value\" ar elfen <%s>"
 msgid ""
 "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
-"Nid yw'n bosib rhoi button_width/button_height ac hefyd cymhareb agwedd am "
-"botymau."
+"Nid yw'n bosib rhoi button_width/button_height a hefyd cymhareb agwedd am "
+"fotymau."
 
 #: ../src/theme-parser.c:1343
 #, c-format
@@ -2330,7 +2402,7 @@ msgstr "Mae'r pellter \"%s\" yn anhysbys"
 #: ../src/theme-parser.c:1402
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
-msgstr "Mae'r cymhareb agwedd \"%s\" yn anhysbys"
+msgstr "Mae'r gymhareb agwedd \"%s\" yn anhysbys"
 
 #: ../src/theme-parser.c:1446
 #, c-format
@@ -2444,7 +2516,7 @@ msgstr "Nid oes priodwedd \"type\" ar elfen <%s>"
 #: ../src/theme-parser.c:2209
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr "Wedi methi deall gwerth \"%s\" am fath y gradwedd"
+msgstr "Wedi methu deall gwerth \"%s\" am fath y graddiant"
 
 #: ../src/theme-parser.c:2294
 #, c-format
@@ -2454,7 +2526,7 @@ msgstr "Nid oes priodwedd \"filename\" ar elfen <%s>"
 #: ../src/theme-parser.c:2319 ../src/theme-parser.c:2827
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "Wedi methi deall math llenwi \"%s\" am elfen <%s>"
+msgstr "Wedi methu deall math llenwi \"%s\" am elfen <%s>"
 
 #: ../src/theme-parser.c:2462 ../src/theme-parser.c:2595
 #: ../src/theme-parser.c:2700
@@ -2476,17 +2548,17 @@ msgstr "Nid oes priodwedd \"arrow\" ar elfen <%s>"
 #: ../src/theme-parser.c:2739
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr "Wedi methi deall  cyflwr \"%s\" am elfen <%s>"
+msgstr "Wedi methu deall cyflwr \"%s\" am elfen <%s>"
 
 #: ../src/theme-parser.c:2539 ../src/theme-parser.c:2661
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr "Wedi methi deall cysgod \"%s\" am elfen <%s>"
+msgstr "Wedi methu deall cysgod \"%s\" am elfen <%s>"
 
 #: ../src/theme-parser.c:2549
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr "Wedi methi deall saeth \"%s\" am elfen <%s>"
+msgstr "Wedi methu deall saeth \"%s\" am elfen <%s>"
 
 #: ../src/theme-parser.c:2962 ../src/theme-parser.c:3078
 #, c-format
@@ -2496,7 +2568,7 @@ msgstr "Nid oes <draw_ops> o'r enw \"%s\" wedi ei diffinio"
 #: ../src/theme-parser.c:2974 ../src/theme-parser.c:3090
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr "My fydd cynnwys draw_ops \"%s\" yma yn creu cyfeiriad cylchol"
+msgstr "Mi fydd cynnwys draw_ops \"%s\" yma yn creu cyfeiriad cylchol"
 
 #: ../src/theme-parser.c:3153
 #, c-format
@@ -2511,12 +2583,12 @@ msgstr "Nid oes priodwedd \"position\" ar elfen <%s>"
 #: ../src/theme-parser.c:3219
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
-msgstr "Lleoliad anhysbys \"%s\" am darn ffrâm"
+msgstr "Lleoliad anhysbys \"%s\" am ddarn ffrâm"
 
 #: ../src/theme-parser.c:3227
 #, c-format
 msgid "Frame style already has a piece at position %s"
-msgstr "May gan arddull y ffrâm darn yn leoliad %s yn barod"
+msgstr "May gan arddull y ffrâm darn yn lleoliad %s yn barod"
 
 #: ../src/theme-parser.c:3272
 #, c-format
@@ -2531,18 +2603,17 @@ msgstr "Nid oes priodwedd \"state\" ar elfen <%s>"
 #: ../src/theme-parser.c:3289
 #, c-format
 msgid "Unknown function \"%s\" for button"
-msgstr "Ffwythiant anhysbys \"%s\" am botwm"
+msgstr "Ffwythiant anhysbys \"%s\" am fotwm"
 
 #: ../src/theme-parser.c:3298
 #, c-format
 msgid "Unknown state \"%s\" for button"
-msgstr "Cyflwr anhysbys \"%s\" am botwm"
+msgstr "Cyflwr anhysbys \"%s\" am fotwm"
 
 #: ../src/theme-parser.c:3306
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
-msgstr ""
-"Mae'r arddull ffr�m eisioes wedi cael botwm am swyddogaeth %s cyflwr %s"
+msgstr "Mae'r arddull ffrâm eisoes wedi cael botwm am swyddogaeth %s cyflwr %s"
 
 #: ../src/theme-parser.c:3376
 #, c-format
@@ -2557,12 +2628,12 @@ msgstr "Dim priodwedd \"style\" gan elfen <%s>"
 #: ../src/theme-parser.c:3401
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
-msgstr "Nid yw \"%s\" yn gwerth dilys am y briodwedd canolbwyntio"
+msgstr "Nid yw \"%s\" yn werth dilys am y briodwedd canolbwyntio"
 
 #: ../src/theme-parser.c:3410
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
-msgstr "Nid yw \"%s\" yn gwerth dilys am y briodwedd cyflwr"
+msgstr "Nid yw \"%s\" yn werth dilys am y briodwedd cyflwr"
 
 #: ../src/theme-parser.c:3420
 #, c-format
@@ -2577,7 +2648,7 @@ msgstr "Dim priodwedd \"resize\" gan elfen <%s>"
 #: ../src/theme-parser.c:3440
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr "Nid yw \"%s\" yn werth dilys ar gyfer y priodwedd \"resize\""
+msgstr "Nid yw \"%s\" yn werth dilys ar gyfer y briodwedd \"resize\""
 
 #: ../src/theme-parser.c:3450
 #, c-format
@@ -2586,19 +2657,19 @@ msgid ""
 "states"
 msgstr ""
 "Ni ddylid cael priodwedd \"resize\" ar elfen <%s> ar gyfer cyflyrau ehangu/"
-"cysgodedig"
+"wedi cysgodi"
 
 #: ../src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr ""
-"Mae arddull wedi ei benodi eisioes ar gyfer cyflwr %s ailfeintio %s ffocws %s"
+"Mae arddull wedi ei benodi eisoes ar gyfer cyflwr %s ailfeintio %s ffocws %s"
 
 #: ../src/theme-parser.c:3475 ../src/theme-parser.c:3486
 #: ../src/theme-parser.c:3497
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
-msgstr "Mae arddull wedi ei benodi eisioes ar gyfer cyflwr %s ffocws %s"
+msgstr "Mae arddull wedi ei benodi eisoes ar gyfer cyflwr %s ffocws %s"
 
 #: ../src/theme-parser.c:3536
 msgid ""
@@ -2606,7 +2677,7 @@ msgid ""
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
 "Methir cael dau draw_ops ar gyfer elfen <piece> (penododd y thema briodwedd "
-"draw_ops a elfen <draw_ops> hefyd, neu penododd e dwy elfen)"
+"draw_ops ac elfen <draw_ops> hefyd, neu penododd e dwy elfen)"
 
 #: ../src/theme-parser.c:3574
 msgid ""
@@ -2614,7 +2685,7 @@ msgid ""
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
 "Methir cael dau draw_ops ar gyfer elfen <button> (penododd y thema briodwedd "
-"draw_ops a elfen <draw_ops> hefyd, neu penododd e dwy elfen)"
+"draw_ops ac elfen <draw_ops> hefyd, neu penododd e dwy elfen)"
 
 #: ../src/theme-parser.c:3612
 msgid ""
@@ -2622,13 +2693,13 @@ msgid ""
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
 "Methir cael dau draw_ops ar gyfer elfen <piece> (penododd y thema briodwedd "
-"draw_ops a elfen <draw_ops> hefyd, neu penododd e dwy elfen)"
+"draw_ops ac elfen <draw_ops> hefyd, neu penododd e dwy elfen)"
 
 #: ../src/theme-parser.c:3659
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr ""
-"Rhaid i'r elfen mwyaf allanol mewn thema fod yn <metacity_theme> nid <%s>"
+"Rhaid i'r elfen fwyaf allanol mewn thema fod yn <metacity_theme> nid <%s>"
 
 #: ../src/theme-parser.c:3679
 #, c-format
@@ -2677,23 +2748,23 @@ msgstr "Ni chaniateir testun tu fewn i elfen <%s>"
 
 #: ../src/theme-parser.c:4109
 msgid "<name> specified twice for this theme"
-msgstr "<name> wedi ei benodi ddwywaith am y thema hwn"
+msgstr "<name> wedi ei benodi ddwywaith am y thema hon"
 
 #: ../src/theme-parser.c:4120
 msgid "<author> specified twice for this theme"
-msgstr "<author> wedi ei benodi ddwywaith am y thema hwn"
+msgstr "<author> wedi ei benodi ddwywaith am y thema hon"
 
 #: ../src/theme-parser.c:4131
 msgid "<copyright> specified twice for this theme"
-msgstr "<copyright> wedi ei benodi ddwywaith am y thema hwn"
+msgstr "<copyright> wedi ei benodi ddwywaith am y thema hon"
 
 #: ../src/theme-parser.c:4142
 msgid "<date> specified twice for this theme"
-msgstr "<date> wedi ei benodi ddwywaith am y thema hwn"
+msgstr "<date> wedi ei benodi ddwywaith am y thema hon"
 
 #: ../src/theme-parser.c:4153
 msgid "<description> specified twice for this theme"
-msgstr "<description> wedi ei benodi ddwywaith am y thema hwn"
+msgstr "<description> wedi ei benodi ddwywaith am y thema hon"
 
 #: ../src/theme-parser.c:4348
 #, c-format
@@ -2705,156 +2776,156 @@ msgstr "Wedi methu darllen thema oddi wrth ffeil %s: %s\n"
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Nid yw ffeil thema %s yn cynnwys elfen gwraidd <metacity_theme>"
 
-#: ../src/theme-viewer.c:70
+#: ../src/theme-viewer.c:72
 msgid "/_Windows"
-msgstr "/_Ffenstri"
+msgstr "/_Ffenestri"
 
-#: ../src/theme-viewer.c:71
+#: ../src/theme-viewer.c:73
 msgid "/Windows/tearoff"
 msgstr "/Ffenestri/rhwygo"
 
-#: ../src/theme-viewer.c:72
+#: ../src/theme-viewer.c:74
 msgid "/Windows/_Dialog"
 msgstr "/Ffenestri/_Deialog"
 
-#: ../src/theme-viewer.c:73
+#: ../src/theme-viewer.c:75
 msgid "/Windows/_Modal dialog"
-msgstr "/Ffenstri/Deialog _moddol"
+msgstr "/Ffenestri/Deialog _moddol"
 
-#: ../src/theme-viewer.c:74
+#: ../src/theme-viewer.c:76
 msgid "/Windows/_Utility"
 msgstr "/Ffenestri/_Cyfleuster"
 
-#: ../src/theme-viewer.c:75
+#: ../src/theme-viewer.c:77
 msgid "/Windows/_Splashscreen"
-msgstr "/Ffenest/_Sgrîn gychwyn"
+msgstr "/Ffenest/_Sgrin gychwyn"
 
-#: ../src/theme-viewer.c:76
+#: ../src/theme-viewer.c:78
 msgid "/Windows/_Top dock"
 msgstr "/Ffenestri/Doc _pen"
 
-#: ../src/theme-viewer.c:77
+#: ../src/theme-viewer.c:79
 msgid "/Windows/_Bottom dock"
-msgstr "/Ffenstri/Doc _gwaelod"
+msgstr "/Ffenestri/Doc _gwaelod"
 
-#: ../src/theme-viewer.c:78
+#: ../src/theme-viewer.c:80
 msgid "/Windows/_Left dock"
 msgstr "/Ffenestri/Doc _chwith"
 
-#: ../src/theme-viewer.c:79
+#: ../src/theme-viewer.c:81
 msgid "/Windows/_Right dock"
-msgstr "/Ffenstri/Doc _dde"
+msgstr "/Ffenestri/Doc _dde"
 
-#: ../src/theme-viewer.c:80
+#: ../src/theme-viewer.c:82
 msgid "/Windows/_All docks"
 msgstr "/Ffenestri/_Pob doc"
 
-#: ../src/theme-viewer.c:81
+#: ../src/theme-viewer.c:83
 msgid "/Windows/Des_ktop"
 msgstr "/Ffenestri/Pen_bwrdd"
 
-#: ../src/theme-viewer.c:131
+#: ../src/theme-viewer.c:132
 msgid "Open another one of these windows"
-msgstr "Agor un arall o'r ffestri yma"
+msgstr "Agor un arall o'r ffenestri yma"
 
-#: ../src/theme-viewer.c:138
+#: ../src/theme-viewer.c:139
 msgid "This is a demo button with an 'open' icon"
-msgstr "Dyma fotwm prawf gyda eicon 'agor'"
+msgstr "Dyma fotwm prawf gydag eicon 'agor'"
 
-#: ../src/theme-viewer.c:145
+#: ../src/theme-viewer.c:146
 msgid "This is a demo button with a 'quit' icon"
-msgstr "Dyma fotwm prawf gyda eicon 'gadael'"
+msgstr "Dyma fotwm prawf gydag eicon 'gadael'"
 
-#: ../src/theme-viewer.c:241
+#: ../src/theme-viewer.c:239
 msgid "This is a sample message in a sample dialog"
 msgstr "Dyma neges esiampl o fewn deialog esiampl"
 
-#: ../src/theme-viewer.c:324
+#: ../src/theme-viewer.c:322
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Eitem dewislen ffug %d\n"
 
-#: ../src/theme-viewer.c:358
+#: ../src/theme-viewer.c:356
 msgid "Border-only window"
 msgstr "Ffenest amlinell-yn-unig"
 
-#: ../src/theme-viewer.c:360
+#: ../src/theme-viewer.c:358
 msgid "Bar"
 msgstr "Bar"
 
-#: ../src/theme-viewer.c:377
+#: ../src/theme-viewer.c:375
 msgid "Normal Application Window"
 msgstr "Ffenest Rhaglen Normal"
 
-#: ../src/theme-viewer.c:382
+#: ../src/theme-viewer.c:379
 msgid "Dialog Box"
 msgstr "Blwch Deialog"
 
-#: ../src/theme-viewer.c:387
+#: ../src/theme-viewer.c:383
 msgid "Modal Dialog Box"
 msgstr "Blwch Deialog Moddol"
 
-#: ../src/theme-viewer.c:392
+#: ../src/theme-viewer.c:387
 msgid "Utility Palette"
 msgstr "Palet Cyfleuster"
 
-#: ../src/theme-viewer.c:397
+#: ../src/theme-viewer.c:391
 msgid "Torn-off Menu"
 msgstr "Dewislen Wedi ei Rhwygo i Ffwrdd"
 
-#: ../src/theme-viewer.c:402
+#: ../src/theme-viewer.c:395
 msgid "Border"
 msgstr "Amlinell"
 
-#: ../src/theme-viewer.c:731
+#: ../src/theme-viewer.c:723
 #, c-format
 msgid "Button layout test %d"
 msgstr "Prawf lleoli botymau %d"
 
-#: ../src/theme-viewer.c:760
+#: ../src/theme-viewer.c:752
 #, c-format
 msgid "%g milliseconds to draw one window frame"
-msgstr "%g milfed eiliad i arlunio un ffram ffenest"
+msgstr "%g milfed eiliad i arlunio un ffrâm ffenest"
 
-#: ../src/theme-viewer.c:803
+#: ../src/theme-viewer.c:795
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Defnydd: metacity-theme-viewer [ENWTHEMA]\n"
 
-#: ../src/theme-viewer.c:810
+#: ../src/theme-viewer.c:802
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Gwall wrth lwytho thema: %s\n"
 
-#: ../src/theme-viewer.c:816
+#: ../src/theme-viewer.c:808
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Llwythwyd y thema \"%s\" mewn %g eiliad\n"
 
-#: ../src/theme-viewer.c:839
+#: ../src/theme-viewer.c:831
 msgid "Normal Title Font"
 msgstr "Ffont Teitl Normal"
 
-#: ../src/theme-viewer.c:845
+#: ../src/theme-viewer.c:837
 msgid "Small Title Font"
 msgstr "Ffont Teitl Bychan"
 
-#: ../src/theme-viewer.c:851
+#: ../src/theme-viewer.c:843
 msgid "Large Title Font"
 msgstr "Ffont Teitl Mawr"
 
-#: ../src/theme-viewer.c:856
+#: ../src/theme-viewer.c:848
 msgid "Button Layouts"
 msgstr "Llunwedd Botymau"
 
-#: ../src/theme-viewer.c:861
+#: ../src/theme-viewer.c:853
 msgid "Benchmark"
 msgstr "Meincnod"
 
-#: ../src/theme-viewer.c:908
+#: ../src/theme-viewer.c:900
 msgid "Window Title Goes Here"
 msgstr "Mae Teitl y Ffenest yn Mynd Yma"
 
-#: ../src/theme-viewer.c:1012
+#: ../src/theme-viewer.c:1004
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -2865,43 +2936,43 @@ msgstr ""
 "ffrâm) a %g eiliad amser cloc wal yn cynnwys adnoddau gweinydd X (%g milfed "
 "eiliad bob ffrâm)\n"
 
-#: ../src/theme-viewer.c:1227
+#: ../src/theme-viewer.c:1219
 msgid "position expression test returned TRUE but set error"
 msgstr "dychwelodd y mynegiant prawf lleoliad GWIR ond gosododd gwall"
 
-#: ../src/theme-viewer.c:1229
+#: ../src/theme-viewer.c:1221
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "dychwelodd y mynegiant prawf lleoliad ANWIR ond ni osododd gwall"
 
-#: ../src/theme-viewer.c:1233
+#: ../src/theme-viewer.c:1225
 msgid "Error was expected but none given"
 msgstr "Disgwyliwyd gwall ond rhoddwyd dim"
 
-#: ../src/theme-viewer.c:1235
+#: ../src/theme-viewer.c:1227
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Disgwyliwyd y gwall %d ond rhoddwyd %d"
 
-#: ../src/theme-viewer.c:1241
+#: ../src/theme-viewer.c:1233
 #, c-format
 msgid "Error not expected but one was returned: %s"
-msgstr "Ni ddisgwyliwyd gwall ond dychweliwyd un: %s"
+msgstr "Ni ddisgwyliwyd gwall ond dychwelwyd un: %s"
 
-#: ../src/theme-viewer.c:1245
+#: ../src/theme-viewer.c:1237
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "%d oedd y gwerth x, disgwyliwyd %d"
 
-#: ../src/theme-viewer.c:1248
+#: ../src/theme-viewer.c:1240
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "%d oedd y gwerth y, disgwyliwyd %d"
 
-#: ../src/theme-viewer.c:1310
+#: ../src/theme-viewer.c:1303
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
-"%d mynegiant cyfesurun wedi eu gramadegu o fewn %g eiliad (cyfartaledd o %g "
+"%d mynegiant cyfesuryn wedi eu gramadegu o fewn %g eiliad (cyfartaledd o %g "
 "eiliad)\n"
 
 #: ../src/theme.c:202
@@ -2929,31 +3000,31 @@ msgstr "nid yw'r geometreg ffrâm yn penodi dimensiwn \"%s\""
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr ""
-"nid yw'r geometreg ffrâm yn penodi dimensiws \"%s\" ar gyfer border \"%s\""
+"nid yw'r geometreg ffrâm yn penodi dimensiwn \"%s\" ar gyfer border \"%s\""
 
 #: ../src/theme.c:278
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
-msgstr "Nid yw'r cymhareb agwedd botwm %g yn rhesymol"
+msgstr "Nid yw'r gymhareb agwedd botwm %g yn rhesymol"
 
 #: ../src/theme.c:290
 msgid "Frame geometry does not specify size of buttons"
-msgstr "Nif yw'r geometreg ffrâm yn penodi maint botymau"
+msgstr "Nid yw'r geometreg ffrâm yn penodi maint botymau"
 
-#: ../src/theme.c:843
+#: ../src/theme.c:842
 msgid "Gradients should have at least two colors"
-msgstr "Dylid graddfa cael o leiaf dwy liw"
+msgstr "Dylid graddfa cael o leiaf dau liw"
 
-#: ../src/theme.c:969
+#: ../src/theme.c:968
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"Rhaid i benodiad lliw GTK cael cyflwr tu fewn i bracedi, e.e. gtk:fg[NORMAL] "
+"Rhaid i benodiad lliw GTK cael cyflwr tu fewn i fracedi, e.e. gtk:fg[NORMAL] "
 "lle mae NORMAL yw'r cyflwr; ni all gramadegu \"%s\""
 
-#: ../src/theme.c:983
+#: ../src/theme.c:982
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -2962,17 +3033,17 @@ msgstr ""
 "Rhaid i benodiad lliw GTK gael braced cau e.e. gtk:fg[NORMAL] lle NORMAL "
 "yw'r cyflwr; ni allwyd gramadegu \"%s\""
 
-#: ../src/theme.c:994
+#: ../src/theme.c:993
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Wedi methu deall y cyflwr \"%s\" yn y penodiad lliw"
 
-#: ../src/theme.c:1007
+#: ../src/theme.c:1006
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Wedi methu deall y gydran lliw \"%s\" yn y penodiad lliw"
 
-#: ../src/theme.c:1037
+#: ../src/theme.c:1036
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -2981,17 +3052,17 @@ msgstr ""
 "\"blend/bg_color/fg_color/alpha\" yw'r fformat cyfuno, nid yw \"%s\" yn "
 "cytuno a'r fformat"
 
-#: ../src/theme.c:1048
+#: ../src/theme.c:1047
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Wedi methu gramadegu'r gwerth alffa \"%s\" yn y lliw cyfunedig"
 
-#: ../src/theme.c:1058
+#: ../src/theme.c:1057
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "Nid yw'r gwerth alffa \"%s\" yn y lliw cyfunedig rhwng 0.0 ac 1.0"
 
-#: ../src/theme.c:1105
+#: ../src/theme.c:1104
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
@@ -2999,124 +3070,124 @@ msgstr ""
 "\"shade/base_color/factor\" yw'r fformat cysgod, nid yw \"%s\" yn cytuno a'r "
 "fformat"
 
-#: ../src/theme.c:1116
+#: ../src/theme.c:1115
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Methwyd gramadegu ffactor cysgod \"%s\" mewn lliw wedi cysgodi"
 
-#: ../src/theme.c:1126
+#: ../src/theme.c:1125
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Mae'r ffactor cysgod \"%s\" mewn lliw wedi cysgodi yn negatif"
 
-#: ../src/theme.c:1155
+#: ../src/theme.c:1154
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Methu dehongli'r lliw \"%s\""
 
-#: ../src/theme.c:1417
+#: ../src/theme.c:1416
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "Mae'r mynegiad cydfesuryn yn cynnwys y nod '%s'. Ni chaniateir hyn."
+msgstr "Mae'r mynegiad cyfesuryn yn cynnwys y nod '%s'. Ni chaniateir hyn."
 
-#: ../src/theme.c:1444
+#: ../src/theme.c:1443
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr ""
-"Mae'r mynegiad cydfesuryn yn cynnwys rhif pwynt arnawf '%s' sydd ddim yn "
-"posib i gramadegu."
+"Mae'r mynegiad cyfesuryn yn cynnwys rhif pwynt arnawf '%s' sydd ddim yn "
+"bosib ei ramadegu."
 
-#: ../src/theme.c:1458
+#: ../src/theme.c:1457
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
-"Mae'r mynegiad cydfesuryn yn cynnwys cyfanrhif  '%s' sydd ddim yn posib i "
-"gramadegu."
+"Mae'r mynegiad cyfesuryn yn cynnwys cyfanrif  '%s' sydd ddim yn bosib ei "
+"ramadegu."
 
-#: ../src/theme.c:1525
+#: ../src/theme.c:1524
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr ""
-"Mae'r mynegiad cydfesuryn yn cynnwys gweithredwr anhysbys ar dechrau'r "
+"Mae'r mynegiad cyfesuryn yn cynnwys gweithredwr anhysbys ar ddechrau'r "
 "testun hwn: \"%s\""
 
-#: ../src/theme.c:1582
+#: ../src/theme.c:1581
 msgid "Coordinate expression was empty or not understood"
-msgstr "Mae'r mynegiad cydfesuryn yn gwag neu nid wedi deall"
+msgstr "Mae'r mynegiad cyfesuryn yn wag neu heb ei ddeall"
 
-#: ../src/theme.c:1725 ../src/theme.c:1735 ../src/theme.c:1769
+#: ../src/theme.c:1724 ../src/theme.c:1734 ../src/theme.c:1768
 msgid "Coordinate expression results in division by zero"
-msgstr "Mae'r mynegiant cyfesurun yn"
+msgstr "Mae'r mynegiant cyfesuryn yn golygu rhannu â sero"
 
-#: ../src/theme.c:1777
+#: ../src/theme.c:1776
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
-"Mae'r mynegiad cydfesuryn yn ceisio defnyddio'r gweithredwr 'mod' ar rhif "
+"Mae'r mynegiad cyfesuryn yn ceisio defnyddio'r gweithredwr 'mod' ar rif "
 "pwynt arnawf"
 
-#: ../src/theme.c:1834
+#: ../src/theme.c:1832
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
-"Roedd gan y mynegiant cyfesurun weithredydd \"%s\" lle disgwylwyd operand"
+"Roedd gan y mynegiant cyfesuryn weithredydd \"%s\" lle disgwyliwyd operand"
 
-#: ../src/theme.c:1843
+#: ../src/theme.c:1841
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr "Roedd gan y meynegiant cyfesurun operand lle disgwylwyd gweithredydd"
+msgstr "Roedd gan y mynegiant cyfesuryn operand lle disgwyliwyd gweithredydd"
 
-#: ../src/theme.c:1851
+#: ../src/theme.c:1849
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr "Gorffenodd y mynegiant cyfesurun efo gweithredydd yn lle operand"
+msgstr "Gorffennodd y mynegiant cyfesuryn gyda gweithredydd yn lle operand"
 
-#: ../src/theme.c:1861
+#: ../src/theme.c:1859
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
-"Mae gan fynegiant cyfesurun y gweithredydd \"%c\" yn dilyn y gweithredydd "
+"Mae gan fynegiant cyfesuryn y gweithredydd \"%c\" yn dilyn y gweithredydd "
 "\"% c\" efo dim operand rhyngddynt"
 
-#: ../src/theme.c:1980
+#: ../src/theme.c:1978
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
 msgstr ""
-"Y mae'r gramadegydd mynegiadau cydfesuryn wedi gorlifo ei fyffer. Mae hwn yn "
-"nam Metacity, ond ydych chi'n siwr eich fod chi'n angen mynegiad anferth fel "
+"Y mae'r gramadegydd mynegiadau cyfesuryn wedi gorlifo ei fyffer. Mae hwn yn "
+"nam Metacity, ond ydych chi'n siŵr eich bod chi'n angen mynegiad anferth fel "
 "hynny?"
 
-#: ../src/theme.c:2009
+#: ../src/theme.c:2007
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr "Roedd gan y mynegiant cyfesurun cromfach cau heb gromfach agor"
+msgstr "Roedd gan y mynegiant cyfesuryn cromfach cau heb gromfach agor"
 
-#: ../src/theme.c:2072
+#: ../src/theme.c:2069
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "Roedd gan y mynegiant cyfesurun gysonyn neu newidyn anhysbys \"%s\""
+msgstr "Roedd gan y mynegiant cyfesuryn gysonyn neu newidyn anhysbys \"%s\""
 
-#: ../src/theme.c:2129
+#: ../src/theme.c:2126
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "Roedd gan y mynegiant cyfesurun cromfach agor heb gromfach cau"
+msgstr "Roedd gan y mynegiant cyfesuryn cromfach agor heb gromfach cau"
 
-#: ../src/theme.c:2140
+#: ../src/theme.c:2137
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr ""
-"Ymddengys nad oes gan y mynegiant cyfesurun unrhyw weithredyddion neu "
+"Ymddengys nad oes gan y mynegiant cyfesuryn unrhyw weithredyddion neu "
 "operandau"
 
-#: ../src/theme.c:2384 ../src/theme.c:2406 ../src/theme.c:2427
+#: ../src/theme.c:2381 ../src/theme.c:2403 ../src/theme.c:2424
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Roedd y thema yn cynnwys mynegiant \"%s\" a achosodd gwall: %s\n"
 
-#: ../src/theme.c:3913
+#: ../src/theme.c:3910
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3125,7 +3196,7 @@ msgstr ""
 "Rhaid penodi <button function=\"%s\" state=\"%s\" draw_ops=\"rhywbeth\"/> ar "
 "gyfer yr arddull ffrâm hwn"
 
-#: ../src/theme.c:4363 ../src/theme.c:4395
+#: ../src/theme.c:4360 ../src/theme.c:4392
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
@@ -3133,18 +3204,18 @@ msgstr ""
 "Mae yna <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"rhywbwth\"/> "
 "ar goll"
 
-#: ../src/theme.c:4446
+#: ../src/theme.c:4443
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Methu llwytho'r thema \"%s\": %s\n"
 
-#: ../src/theme.c:4592 ../src/theme.c:4599 ../src/theme.c:4606
-#: ../src/theme.c:4613 ../src/theme.c:4620
+#: ../src/theme.c:4597 ../src/theme.c:4604 ../src/theme.c:4611
+#: ../src/theme.c:4618 ../src/theme.c:4625
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Dim <%s> wedi ei osod ar gyfer y thema \"%s\""
 
-#: ../src/theme.c:4630
+#: ../src/theme.c:4635
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3153,16 +3224,16 @@ msgstr ""
 "Dim arddull ffrâm wedi ei osod ar gyfer y math ffenest \"%s\" yn y thema \"%s"
 "\", ychwanegwch elfen <window type=\"%s\" style_set\"beth bynnag\"/>"
 
-#: ../src/theme.c:4652
+#: ../src/theme.c:4657
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 msgstr ""
 "rhaid penodi <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"rhywbeth\"> "
-"ar gyfer y thema hwn"
+"ar gyfer y thema hon"
 
-#: ../src/theme.c:5041 ../src/theme.c:5103
+#: ../src/theme.c:5046 ../src/theme.c:5108
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -3170,56 +3241,56 @@ msgstr ""
 "Mae'n rhaid i gysonion a ddiffiniwyd gan y defnyddiwr gychwyn efo "
 "priflythyren; nid yw \"%s\""
 
-#: ../src/theme.c:5049 ../src/theme.c:5111
+#: ../src/theme.c:5054 ../src/theme.c:5116
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr "Diffiniwyd y cysonyn \"%s\" eisioes"
+msgstr "Diffiniwyd y cysonyn \"%s\" eisoes"
 
-#: ../src/util.c:93
+#: ../src/util.c:96
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Methu agor cofnod datnamu: %s\n"
 
-#: ../src/util.c:103
+#: ../src/util.c:106
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Methu defnyddio fdopen() ar y cofnod %s: %s\n"
 
-#: ../src/util.c:109
+#: ../src/util.c:112
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Agorwyd cofnod %s\n"
 
-#: ../src/util.c:203
+#: ../src/util.c:220
 msgid "Window manager: "
 msgstr "Rheolydd ffenestri: "
 
-#: ../src/util.c:349
+#: ../src/util.c:366
 msgid "Bug in window manager: "
 msgstr "Nam yn y rheolydd ffenestri: "
 
-#: ../src/util.c:378
+#: ../src/util.c:395
 msgid "Window manager warning: "
 msgstr "Rhybudd rheolydd ffenestri: "
 
-#: ../src/util.c:402
+#: ../src/util.c:419
 msgid "Window manager error: "
 msgstr "Gwall rheolydd ffenestri:"
 
-#: ../src/window-props.c:162
+#: ../src/window-props.c:169
 #, c-format
-msgid "Application set a bogus _NET_WM_PID %ld\n"
-msgstr "Gosododd rhaglen _NET_WM_PID drŵg %ld\n"
+msgid "Application set a bogus _NET_WM_PID %lu\n"
+msgstr "Gosododd y rhaglen _NET_WM_PID annilys: %lu\n"
 
 #. first time through
-#: ../src/window.c:5205
+#: ../src/window.c:5409
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
-"Y mae ffenestr %s yn osod SM_CLIENT_ID ar ei hun, un lle ar y ffenestr "
-"WM_CLIENT_LEADER fel mae'n benodi yn yr ICCCM.\n"
+"Y mae ffenestr %s yn gosod SM_CLIENT_ID ar ei hunan, yn lle ar y ffenestr "
+"WM_CLIENT_LEADER fel y penodir yn yr ICCCM.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -3228,7 +3299,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5876
+#: ../src/window.c:6037
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3247,21 +3318,30 @@ msgid ""
 "This is most likely an application bug, not a window manager bug.\n"
 "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
-"Mae gan y ffenest 0x%lx y priodwedd %s\n"
-"a ddisgwylwyd i gael y math %s fformat %d\n"
+"Mae gan y ffenest 0x%lx y briodwedd %s\n"
+"a ddisgwyliwyd i gael y math %s fformat %d\n"
 "ond sydd a'r math %s fformat %d n_items %d.\n"
-"Mae hyn mwy na thebyg yn nam rhaglen, a nid yn nam rheolydd ffenestri.\n"
+"Mae hyn mwy na thebyg yn nam rhaglen, ac nid yn nam rheolydd ffenestri.\n"
 "Mae gan y ffenest teitl=\"%s\" dosbarth=\"%s\" enw=\"%s\"\n"
 
 #: ../src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "Roedd y priodwedd %s ar y ffenest 0x%lx yn cynnwys UTF-8 annilys\n"
+msgstr "Roedd y briodwedd %s ar y ffenest 0x%lx yn cynnwys UTF-8 annilys\n"
 
 #: ../src/xprops.c:482
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
-"Roedd y priodwedd %s ar y ffenest 0x%lx yn cynnwys UTF-8 annilys ar gyfer "
+"Roedd y briodwedd %s ar y ffenest 0x%lx yn cynnwys UTF-8 annilys ar gyfer "
 "eitem %d yn y rhestr\n"
+
+#~ msgid ""
+#~ "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
+#~ "focused window will be automatically raised after a delay (the delay is "
+#~ "specified by the auto_raise_delay key)."
+#~ msgstr ""
+#~ "Os yn wir, and mae'r modd canolbwyntio yn \"sloppy\" neu \"mouse\", mi "
+#~ "fydd y ffenestr ganolbwyntiedig un codi'n ymysgogol ar ôl oediad (mae'r "
+#~ "oediad wedi penodi gan yr allwedd auto_raise_delay)"
