@@ -1319,6 +1319,7 @@ finish_minimize (gpointer data)
   meta_window_hide (window);
   if (window->has_focus)
     {
+	g_print ("focusing something other than %lx\n", window->frame->xwindow);
       meta_workspace_focus_default_window
 	(window->screen->active_workspace,
 	 window,

@@ -49,20 +49,15 @@
 #include <X11/extensions/Xrender.h>
 #include "spring-model.h"
 #include <cm/state.h>
+
+#include "c-screen.h"
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 #define FRAME_INTERVAL_MILLISECONDS ((int)(1000.0/40.0))
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-/* Screen specific information */
-typedef struct
-{
-  /* top of stack is first in list */
-  GList *compositor_nodes;
-  WsWindow *glw;
-  int idle_id;
-} ScreenInfo;
 
+/* Screen specific information */
 typedef struct MoveInfo MoveInfo;
 
 struct MetaCompositor
@@ -70,8 +65,6 @@ struct MetaCompositor
   MetaDisplay *meta_display;
   
   WsDisplay *display;
-  
-  GHashTable *window_hash;
   
   guint repair_idle;
   
@@ -83,26 +76,27 @@ struct MetaCompositor
   guint debug_updates : 1;
   
   GList *ignored_damage;
-
-  CmStacker *stacker;
-  CmCube *cube;
-  CmRotation *rotation;
-    
+  
   MoveInfo *move_info;
 };
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-static void
-free_window_hash_value (void *v)
-{
-  CmDrawableNode *drawable_node = v;
-}
 
 static WsDisplay *compositor_display;
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
-MetaCompositor*
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+static void
+handle_error (Display *dpy, XErrorEvent *ev, gpointer data)
+{
+    WsDisplay *display = data;
+    
+    ws_display_process_error (display, ev);
+}
+#endif
+
+MetaCompositor *
 meta_compositor_new (MetaDisplay *display)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
@@ -115,6 +109,9 @@ meta_compositor_new (MetaDisplay *display)
       gboolean has_extensions;
       
       compositor_display = ws_display_new (NULL);
+
+      meta_errors_register_foreign_display (
+	  compositor_display->xdisplay, handle_error, compositor_display);
       
       has_extensions = 
 	ws_display_init_composite (compositor_display) &&
@@ -141,25 +138,8 @@ meta_compositor_new (MetaDisplay *display)
   
   compositor->meta_display = display;
   
-  compositor->window_hash =
-    g_hash_table_new_full (meta_unsigned_long_hash,
-			   meta_unsigned_long_equal,
-			   NULL,
-			   free_window_hash_value);
-  
   compositor->enabled = TRUE;
-
-  compositor->cube = cm_cube_new ();
-  compositor->stacker = cm_stacker_new ();
-  compositor->rotation = cm_rotation_new (CM_NODE (compositor->cube));
-
-  cm_cube_set_face (compositor->cube, 0, CM_NODE (compositor->stacker));
-  cm_cube_set_face (compositor->cube, 1, CM_NODE (compositor->stacker));
-  cm_cube_set_face (compositor->cube, 2, CM_NODE (compositor->stacker));
-  cm_cube_set_face (compositor->cube, 3, CM_NODE (compositor->stacker));
-  cm_cube_set_face (compositor->cube, 4, CM_NODE (compositor->stacker));
-  cm_cube_set_face (compositor->cube, 5, CM_NODE (compositor->stacker));
-
+  
   return compositor;
 #else /* HAVE_COMPOSITE_EXTENSIONS */
   return NULL;
@@ -198,9 +178,6 @@ meta_compositor_unref (MetaCompositor *compositor)
    */
   remove_repair_idle (compositor);
   
-  if (compositor->window_hash)
-    g_hash_table_destroy (compositor->window_hash);
-  
   g_free (compositor);
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 }
@@ -222,109 +199,37 @@ draw_windows (MetaScreen *screen,
 #if 0
   g_print ("rendering: %p\n", node);
 #endif
-
+  
   cm_node_render (node, NULL);
-}
-
-static MetaScreen *
-node_get_screen (Display *dpy,
-		 CmDrawableNode *node)
-{
-  /* FIXME: we should probably have a reverse mapping
-   * from nodes to screens
-   */
-  
-  Screen *screen = XDefaultScreenOfDisplay (dpy);
-  return meta_screen_for_x_screen (screen);
-}
-
-static void
-handle_restacking (MetaCompositor *compositor,
-		   CmDrawableNode *node,
-		   CmDrawableNode *above)
-{
-  GList *window_link, *above_link;
-  MetaScreen *screen;
-  ScreenInfo *scr_info;
-  
-  screen = node_get_screen (compositor->meta_display->xdisplay, node);
-  scr_info = screen->compositor_data;
-  
-  window_link = g_list_find (scr_info->compositor_nodes, node);
-  above_link  = g_list_find (scr_info->compositor_nodes, above);
-  
-  if (!window_link || !above_link)
-    return;
-  
-  if (window_link == above_link)
-    {
-      /* This can happen if the topmost window is raised above
-       * the GL window
-       */
-      return;
-    }
-  
-#if 0
-  g_print ("restacking\n");
-#endif
-  
-  if (window_link->next != above_link)
-    {
-      ScreenInfo *scr_info = screen->compositor_data;
-      
-      scr_info->compositor_nodes =
-	g_list_delete_link (scr_info->compositor_nodes, window_link);
-      scr_info->compositor_nodes =
-	g_list_insert_before (scr_info->compositor_nodes, above_link, node);
-    }
-
-  cm_stacker_restack_child (compositor->stacker, CM_NODE (node), CM_NODE (above));
 }
 
 static void
 process_configure_notify (MetaCompositor  *compositor,
                           XConfigureEvent *event)
 {
-  WsWindow *above_window;
-  CmDrawableNode *node = g_hash_table_lookup (compositor->window_hash,
-					      &event->window);
-  CmDrawableNode *above_node;
-  MetaScreen *screen;
-  ScreenInfo *scr_info;
-  
+  MetaScreenInfo *minfo = meta_screen_info_get_by_xwindow (event->window);
+
 #if 0
-  g_print ("processing configure\n");
+  g_print ("minfo: %lx => %p\n", event->window, minfo);
+
+  g_print ("configure on %lx (above: %lx)\n", event->window, event->above);
 #endif
   
-  if (!node)
-    return;
-  
+  if (!minfo)
+  {
 #if 0
-  g_print ("we do now have a node\n");
+      g_print (" --- ignoring configure (no screen info)\n");
 #endif
-  
-  screen = node_get_screen (compositor->meta_display->xdisplay, node);
-  scr_info = screen->compositor_data;
-  
-  above_window = ws_window_lookup (WS_RESOURCE (node->drawable)->display,
-				   event->above);
-  
-  if (above_window == scr_info->glw)
-    {
-      above_node = scr_info->compositor_nodes->data;
-    }
-  else
-    {
-      above_node = g_hash_table_lookup (compositor->window_hash,
-					&event->above);
-    }
-  
+      return;
+  }
+
+  meta_screen_info_restack (minfo, event->window, event->above);
 #if 0
-  cm_drawable_node_set_size (node,
-			     event->x, event->y, event->width, event->height);
+  meta_screen_info_set_size (minfo,
+			     event->window,
+			     event->x, event->y,
+			     event->width, event->height);
 #endif
-  
-  handle_restacking (compositor, node, above_node);
 }
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
@@ -340,7 +245,6 @@ process_expose (MetaCompositor     *compositor,
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-static void queue_repaint (CmDrawableNode *node, gpointer data);
 
 typedef struct
 {
@@ -349,30 +253,6 @@ typedef struct
 } FadeInfo;
 
 #define FADE_TIME 0.3
-
-static gboolean
-fade_in (gpointer data)
-{
-  FadeInfo *info = data;
-  gdouble elapsed = g_timer_elapsed (info->timer, NULL);
-  gdouble alpha;
-  
-  if (elapsed > FADE_TIME)
-    alpha = 1.0;
-  else
-    alpha = elapsed / FADE_TIME;
-  
-  cm_drawable_node_set_alpha (info->node, alpha);
-  
-  if (elapsed >= FADE_TIME)
-    {
-      return FALSE;
-    }
-  else
-    {
-      return TRUE;
-    }
-}
 
 static gboolean
 fade_out (gpointer data)
@@ -394,11 +274,11 @@ fade_out (gpointer data)
   
   if (elapsed >= FADE_TIME)
     {
-	g_object_unref (info->node);
-
-	cm_drawable_node_set_viewable (info->node, FALSE);
-
-	return FALSE;
+      g_object_unref (info->node);
+      
+      cm_drawable_node_set_viewable (info->node, FALSE);
+      
+      return FALSE;
     }
   else
     {
@@ -412,7 +292,6 @@ static void
 process_map (MetaCompositor     *compositor,
              XMapEvent          *event)
 {
-  CmDrawableNode *node;
   MetaScreen *screen;
   
   /* FIXME: do we sometimes get mapnotifies for windows that are
@@ -428,51 +307,15 @@ process_map (MetaCompositor     *compositor,
       meta_topic (META_DEBUG_COMPOSITOR,
 		  "MapNotify received on non-root 0x%lx for 0x%lx\n",
 		  event->event, event->window);
-      return; /* MapNotify wasn't for a child of the root */
+      
+      /* MapNotify wasn't for a child of the root */
+      return; 
     }
   
-#if 0
-  g_print ("processing map for %lx\n", event->window);
-#endif
-  
-  node = g_hash_table_lookup (compositor->window_hash,
-			      &event->window);
-  if (node == NULL)
-    {
-      XWindowAttributes attrs;
-      
-      meta_error_trap_push_with_return (compositor->meta_display);
-      
-      XGetWindowAttributes (compositor->meta_display->xdisplay,
-			    event->window, &attrs);
-      
-      if (meta_error_trap_pop_with_return (compositor->meta_display, TRUE) != Success)
-        {
-	  meta_topic (META_DEBUG_COMPOSITOR, "Failed to get attributes for window 0x%lx\n",
-		      event->window);
-        }
-      else
-	{
-	  meta_compositor_add_window (compositor,
-				      event->window, &attrs);
-        }
-    }
-  else
-    {
-      cm_drawable_node_update_pixmap (node);
-      
-      cm_drawable_node_set_alpha (node, 1.0);
-      
-      FadeInfo *info = g_new (FadeInfo, 1);
-      
-      info->node = g_object_ref (node);
-      info->timer = g_timer_new ();
-      
-      cm_drawable_node_set_viewable (node, TRUE);
-    }
-  
-  queue_repaint (node, screen);
+  meta_screen_info_add_window (screen->compositor_data,
+			       event->window);
 }
+
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
@@ -480,7 +323,6 @@ static void
 process_unmap (MetaCompositor     *compositor,
                XUnmapEvent        *event)
 {
-  CmDrawableNode *node;
   MetaScreen *screen;
   
   /* See if window was unmapped as child of root */
@@ -492,27 +334,14 @@ process_unmap (MetaCompositor     *compositor,
       meta_topic (META_DEBUG_COMPOSITOR,
 		  "UnmapNotify received on non-root 0x%lx for 0x%lx\n",
 		  event->event, event->window);
-      return; /* UnmapNotify wasn't for a child of the root */
-    }
-  
-#if 0
-  g_print ("processing unmap on %lx\n", event->window);
-#endif
-  
-  node = g_hash_table_lookup (compositor->window_hash,
-			      &event->window);
-  if (node != NULL)
-    {
-      FadeInfo *info = g_new (FadeInfo, 1);
       
-      info->node = g_object_ref (node);
-      info->timer = g_timer_new ();
-      
-      g_idle_add (fade_out, info);
+      /* UnmapNotify wasn't for a child of the root */
+      return;
     }
-  
-  queue_repaint (node, screen);
+
+  meta_screen_info_unmap (screen->compositor_data, event->window);
 }
+
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
@@ -550,7 +379,6 @@ process_create (MetaCompositor     *compositor,
       g_print (//META_DEBUG_COMPOSITOR,
 	       "Create window 0x%lx, adding\n", event->window);
 #endif
-      
       meta_compositor_add_window (compositor,
 				  event->window, &attrs);
     }
@@ -592,8 +420,6 @@ process_reparent (MetaCompositor      *compositor,
    */
   MetaScreen *event_screen;
   MetaScreen *parent_screen;
-  CmDrawableNode *node;
-  XWindowAttributes attrs;
   
   event_screen = meta_display_screen_for_root (compositor->meta_display,
 					       event->event);
@@ -605,13 +431,7 @@ process_reparent (MetaCompositor      *compositor,
 		  event->event, event->window);
       return;
     }
-  
-#if 0
-  g_print (//META_DEBUG_COMPOSITOR,
-	   "Reparent window 0x%lx new parent 0x%lx received on 0x%lx\n",
-	   event->window, event->parent, event->event);
-#endif
-  
+
   parent_screen = meta_display_screen_for_root (compositor->meta_display,
 						event->parent);
   
@@ -620,32 +440,17 @@ process_reparent (MetaCompositor      *compositor,
       meta_topic (META_DEBUG_COMPOSITOR,
 		  "ReparentNotify 0x%lx to a non-screen or unmanaged screen 0x%lx\n",
 		  event->window, event->parent);
+      
       meta_compositor_remove_window (compositor, event->window);
       return;
     }
-  
-  node = g_hash_table_lookup (compositor->window_hash,
-			      &event->window);
-  
-  meta_error_trap_push_with_return (compositor->meta_display);
-  
-  XGetWindowAttributes (compositor->meta_display->xdisplay,
-			event->window, &attrs);
-  
-  if (meta_error_trap_pop_with_return (compositor->meta_display, TRUE) != Success)
-    {
-      meta_topic (META_DEBUG_COMPOSITOR, "Failed to get attributes for window 0x%lx\n",
-		  event->window);
-    }
   else
     {
-      meta_topic (META_DEBUG_COMPOSITOR,
-		  "Reparent window 0x%lx into screen 0x%lx, adding\n",
-		  event->window, event->parent);
-      meta_compositor_add_window (compositor,
-				  event->window, &attrs);
+      meta_screen_info_raise_window (parent_screen->compositor_data,
+				     event->window);
     }
 }
+
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 void
@@ -716,36 +521,9 @@ wavy (double time,
   m++;
 }
 
-static void
-update_frame_counter (void)
-{
-#define BUFSIZE 128
-  static GTimer *timer;
-  static double buffer [BUFSIZE];
-  static int next = 0;
-  
-  if (!timer)
-    timer = g_timer_new ();
-  
-  buffer[next++] = g_timer_elapsed (timer, NULL);
-  
-  if (next == BUFSIZE)
-    {
-      int i;
-      double total;
-      
-      next = 0;
-      
-      total = 0.0;
-      for (i = 1; i < BUFSIZE; ++i)
-	total += buffer[i] - buffer[i - 1];
-      
-      g_print ("frames per second: %f\n", 1 / (total / (BUFSIZE - 1)));
-    }
-}
-
 static GTimer *timer;
 
+#if 0
 static gboolean
 update (gpointer data)
 {
@@ -755,17 +533,17 @@ update (gpointer data)
   gdouble angle;
   
   glViewport (0, 0, screen->rect.width, screen->rect.height);
-
+  
   if (!timer)
     timer = g_timer_new ();
-
+  
 #if 0
   g_print ("rotation: %f\n", 360 * g_timer_elapsed (timer, NULL));
 #endif
-
+  
   angle = g_timer_elapsed (timer, NULL) * 90;
 #if 0
-
+  
   angle = 180.0;
 #endif
   
@@ -779,13 +557,13 @@ update (gpointer data)
   glDisable (GL_TEXTURE_2D);
   glDisable (GL_DEPTH_TEST);
   ws_window_raise (gl_window);
-
+  
 #if 0
   glMatrixMode (GL_MODELVIEW);
   
   glLoadIdentity();
 #endif
-    
+  
 #if 0
   glTranslatef (-1.0, -1.0, 0.0);
 #endif
@@ -810,13 +588,13 @@ update (gpointer data)
    */
   
   CmState *state = cm_state_new ();
-
+  
   cm_state_disable_depth_buffer_update (state);
-
+  
   cm_node_render (CM_NODE (screen->display->compositor->stacker), state);
   
   cm_state_enable_depth_buffer_update (state);
-
+  
   g_object_unref (state);
   
 #if 0
@@ -832,7 +610,9 @@ update (gpointer data)
   
   return FALSE;
 }
+#endif
 
+#if 0
 static void
 queue_repaint (CmDrawableNode *node, gpointer data)
 {
@@ -864,6 +644,7 @@ queue_repaint (CmDrawableNode *node, gpointer data)
     }
 }
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
+#endif
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 static void
@@ -890,124 +671,22 @@ meta_compositor_add_window (MetaCompositor    *compositor,
                             XWindowAttributes *attrs)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  CmDrawableNode *node;
-  MetaScreen *screen;
-  WsDrawable *drawable;
-  ScreenInfo *scr_info;
+  MetaScreen *screen = meta_screen_for_x_screen (attrs->screen);
+  MetaScreenInfo *minfo = screen->compositor_data;
   
-  if (!compositor->enabled)
-    return; /* no extension */
-  
-  screen = meta_screen_for_x_screen (attrs->screen);
-  g_assert (screen != NULL);
-  
-  node = g_hash_table_lookup (compositor->window_hash,
-			      &xwindow);
-  
-#if 0
-  g_print ("adding %lx\n", xwindow);
+  meta_screen_info_add_window (minfo, xwindow);
 #endif
-  
-  if (node != NULL)
-    {
-      g_print ("window %lx already added\n", xwindow);
-      meta_topic (META_DEBUG_COMPOSITOR,
-		  "Window 0x%lx already added\n", xwindow);
-      return;
-    }
-  
-  ws_display_begin_error_trap (compositor->display);
-  
-  drawable = (WsDrawable *)ws_window_lookup (compositor->display, xwindow);
-  
-  scr_info = screen->compositor_data;
-  
-  ws_display_end_error_trap (compositor->display);
-  
-  if (!drawable)
-    return;
-  
-  g_assert (scr_info);
-  
-  ws_display_begin_error_trap (compositor->display);
-  
-  if (ws_window_query_input_only ((WsWindow *)drawable) ||
-      drawable == (WsDrawable *)scr_info->glw)
-    {
-      ws_display_end_error_trap (compositor->display);
-      return;
-    }
-  
-  ws_display_end_error_trap (compositor->display);
-  
-  node = cm_drawable_node_new (drawable);
-
-  cm_stacker_add_child (compositor->stacker, CM_NODE (node));
-
-  g_object_unref (node);
-  
-  cm_drawable_node_set_damage_func (node, queue_repaint, screen);
-#if 0
-  drawable_node_set_deformation_func (node, wavy, NULL);
-#endif
-  
-  /* FIXME: we should probably just store xid's directly */
-  g_hash_table_insert (compositor->window_hash,
-		       &(WS_RESOURCE (node->drawable)->xid), node);
-  
-  /* assume cwindow is at the top of the stack as it was either just
-   * created or just reparented to the root window
-   */
-  scr_info->compositor_nodes = g_list_prepend (scr_info->compositor_nodes,
-					       node);
-  
-#if 0
-  dump_stacking_order (scr_info->compositor_nodes);
-#endif
-  
-#endif /* HAVE_COMPOSITE_EXTENSIONS */
 }
+
 void
 meta_compositor_remove_window (MetaCompositor    *compositor,
                                Window             xwindow)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  CmDrawableNode *node;
-  MetaScreen *screen;
-  ScreenInfo *scr_info;
+  MetaScreenInfo *minfo;
   
-  if (!compositor->enabled)
-    return; /* no extension */
-  
-  node = g_hash_table_lookup (compositor->window_hash,
-			      &xwindow);
-  
-  if (node == NULL)
-    {
-      meta_topic (META_DEBUG_COMPOSITOR,
-		  "Window 0x%lx already removed\n", xwindow);
-      return;
-    }
-  
-  screen = node_get_screen (compositor->meta_display->xdisplay, node);
-  scr_info = screen->compositor_data;
-  
-  scr_info->compositor_nodes = g_list_remove (scr_info->compositor_nodes,
-					      node);
-  
-  /* Frees node as side effect */
-  g_hash_table_remove (compositor->window_hash,
-		       &xwindow);
-  
+  minfo = meta_screen_info_get_by_xwindow (xwindow);
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
-}
-
-static gboolean
-cont_update (gpointer data)
-{
-    update (data);
-
-    return TRUE;
 }
 
 void
@@ -1015,69 +694,16 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
                                MetaScreen     *screen)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  ScreenInfo *scr_info = g_new0 (ScreenInfo, 1);
-  
-  WsScreen *ws_screen =
-    ws_display_get_screen_from_number (compositor->display, screen->number);
-  WsWindow *root = ws_screen_get_root_window (ws_screen);
-  WsRegion *region;
-  Window current_cm_sn_owner;
-  WsWindow *new_cm_sn_owner;
-  Display *xdisplay;
-  Atom cm_sn_atom;
-  char buf[128];
-  
-  if (screen->compositor_data)
-    return;
-  
-  scr_info->glw = ws_screen_get_gl_window (ws_screen);
-  scr_info->compositor_nodes = NULL;
-  scr_info->idle_id = 0;
-  
-  g_print ("setting compositor_data for screen %p to %p\n", screen, scr_info);
-  screen->compositor_data = scr_info;
-  
-  ws_display_init_composite (compositor->display);
-  ws_display_init_damage (compositor->display);
-  ws_display_init_fixes (compositor->display);
-  
-  g_print ("redirecting\n");
-  ws_window_redirect_subwindows (root);
-  ws_window_set_override_redirect (scr_info->glw, TRUE);
-  ws_window_unredirect (scr_info->glw);
-  
-  region = ws_region_new (compositor->display);
-  ws_window_set_input_shape (scr_info->glw, region);
-  g_object_unref (G_OBJECT (region));
-  
-  xdisplay = ws_screen->display->xdisplay;
-  snprintf(buf, sizeof(buf), "CM_S%d", screen->number);
-  cm_sn_atom = XInternAtom (xdisplay, buf, False);
-  current_cm_sn_owner = XGetSelectionOwner (xdisplay, cm_sn_atom);
-  
-  if (current_cm_sn_owner != None)
-    {
-      meta_warning (_("Screen %d on display \"%s\" already has a compositing manager\n"),
-		    screen->number, ",madgh");
-    }
-  
-  new_cm_sn_owner = ws_screen_get_root_window (ws_screen);
-  
-  XSetSelectionOwner (xdisplay, cm_sn_atom, WS_RESOURCE_XID (new_cm_sn_owner),
-		      CurrentTime);
-  
-  ws_window_map (scr_info->glw);
-  
-  ws_display_sync (compositor->display);
-  
-#if 0
-  g_idle_add (cont_update, screen);
-#endif
-  
-#if 0
-  children = ws_window_list_children (root);
-#endif
-  
+    MetaScreenInfo *info;
+
+    if (screen->compositor_data)
+	return;
+    
+    info = meta_screen_info_new (compositor->display, screen);
+
+    screen->compositor_data = info;
+    
+    meta_screen_info_redirect (info);
 #endif
 }
 
@@ -1085,59 +711,15 @@ void
 meta_compositor_unmanage_screen (MetaCompositor *compositor,
                                  MetaScreen     *screen)
 {
-#ifdef HAVE_COMPOSITE_EXTENSIONS  
-  ScreenInfo *scr_info = screen->compositor_data;
-  WsScreen *ws_screen =
-    ws_display_get_screen_from_number (compositor->display, screen->number);
-  WsWindow *root = ws_screen_get_root_window (ws_screen);
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  MetaScreenInfo *info = screen->compositor_data;
   
-  if (!compositor->enabled)
-    return; /* no extension */
-  
-  while (scr_info->compositor_nodes != NULL)
-    {
-      CmDrawableNode *node = scr_info->compositor_nodes->data;
-      
-      meta_compositor_remove_window (compositor,
-				     WS_RESOURCE (node->drawable)->xid);
-    }
-  
-  ws_window_raise (scr_info->glw);
-  
-  g_print ("unredirecting\n");
-  ws_window_unredirect_subwindows (root);
-  ws_window_unmap (scr_info->glw);
-  
-  /* We need to sync here, because if someone is furiously
-   * clicking the 'compositing manager' check box, we might
-   * attempt to redirect the window again before this unredirect
-   * has reached the server
-   */
-  ws_display_sync (compositor->display);
-  
+  meta_screen_info_unredirect (info);
   screen->compositor_data = NULL;
-  
-#endif /* HAVE_COMPOSITE_EXTENSIONS */
+#endif
 }
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS  
-static CmDrawableNode *
-window_to_node (MetaCompositor *compositor,
-		MetaWindow *window)
-{
-  Window xwindow;
-  CmDrawableNode *node;
-  
-  if (window->frame)
-    xwindow = window->frame->xwindow;
-  else
-    xwindow = window->xwindow;
-  
-  node = g_hash_table_lookup (compositor->window_hash,
-			      &xwindow);
-  
-  return node;
-}
 #endif
 
 typedef struct
@@ -1232,7 +814,7 @@ interpolate_rectangle (gdouble		t,
 
 #endif
 
-#define MINIMIZE_STYLE 3
+#define MINIMIZE_STYLE 1
 
 #ifndef HAVE_COMPOSITE_EXTENSIONS
 #undef MINIMIZE_STYLE
@@ -1257,11 +839,11 @@ meta_compositor_minimize (MetaCompositor           *compositor,
 
 typedef struct
 {
-  CmDrawableNode *node;
+  MetaWindow *window;
   GTimer *timer;
   
   MetaCompositor *compositor;
-  ScreenInfo *scr_info;
+  MetaScreenInfo *scr_info;
   
   MetaAnimationFinishedFunc finished_func;
   gpointer		     finished_data;
@@ -1286,6 +868,15 @@ typedef struct
   gboolean phase_5_started;
 } MiniInfo;
 
+static Window
+get_xid (MetaWindow *window)
+{
+    if (window->frame)
+	return window->frame->xwindow;
+    else
+	return window->xwindow;
+}
+
 static void
 set_geometry (MiniInfo *info, gdouble elapsed)
 {
@@ -1300,9 +891,10 @@ set_geometry (MiniInfo *info, gdouble elapsed)
   g_print ("setting: %d %d %d %d\n", rect.x, rect.y, rect.width, rect.height);
 #endif
   
-  cm_drawable_node_set_geometry (info->node,
-				 rect.x, rect.y,
-				 rect.width, rect.height);
+  meta_screen_info_set_size (info->scr_info,
+			     get_xid (info->window),
+			     rect.x, rect.y,
+			     rect.width, rect.height);
 }
 
 static int
@@ -1320,19 +912,21 @@ run_phase_1 (MiniInfo *info, gdouble elapsed)
       g_print ("starting phase 1\n");
 #endif
       info->phase_1_started = TRUE;
+
+      meta_screen_info_get_real_size (info->scr_info, get_xid (info->window),
+				      &info->current_geometry);
       
+#if 0
       info->current_geometry.x = info->node->real_x;
       info->current_geometry.y = info->node->real_y;
       info->current_geometry.width = info->node->real_width;
       info->current_geometry.height = info->node->real_height;
+#endif
       
       info->target_geometry.height = info->button_height;
       info->target_geometry.width = info->button_height * info->aspect_ratio;
       info->target_geometry.x = info->button_x + center (info->target_geometry.width, info->button_width);
-      info->target_geometry.y = info->node->real_y + center (info->button_height, info->node->real_height);
-      
-      handle_restacking (info->compositor, info->node,
-			 info->scr_info->compositor_nodes->data);
+      info->target_geometry.y = info->current_geometry.y + center (info->button_height, info->current_geometry.height);
     }
   
   set_geometry (info, elapsed);
@@ -1368,6 +962,10 @@ run_phase_3 (MiniInfo *info, gdouble elapsed)
   if (!info->phase_3_started)
     {
       WsRectangle cur = info->target_geometry;
+      WsRectangle real;
+
+      meta_screen_info_get_real_size (info->scr_info, get_xid (info->window),
+				      &real);
       
       g_print ("starting phase 3\n");
       info->phase_3_started = TRUE;
@@ -1377,7 +975,7 @@ run_phase_3 (MiniInfo *info, gdouble elapsed)
       info->target_geometry.height = info->button_height;
       info->target_geometry.width = info->button_height * info->aspect_ratio;
       info->target_geometry.x = info->button_x + center (info->target_geometry.width, info->button_width);
-      info->target_geometry.y = info->node->real_y + center (info->button_height, info->node->real_height);
+      info->target_geometry.y = real.y + center (info->button_height, real.height);
     }
   
   set_geometry (info, elapsed);
@@ -1423,8 +1021,9 @@ run_phase_5 (MiniInfo *info, gdouble elapsed)
     }
   
   set_geometry (info, elapsed);
-  
-  cm_drawable_node_set_alpha (info->node, 1 - elapsed);
+
+  meta_screen_info_set_alpha (info->scr_info,
+			      get_xid (info->window), 1 - elapsed);
 }
 
 static gboolean
@@ -1469,12 +1068,6 @@ run_animation_01 (gpointer data)
     }
   else 
     {
-      cm_drawable_node_set_viewable (info->node, FALSE);
-      
-      cm_drawable_node_unset_geometry (info->node); 
-      
-      cm_drawable_node_set_alpha (info->node, 1.0);
-      
       if (info->finished_func)
 	info->finished_func (info->finished_data);
       
@@ -1495,11 +1088,10 @@ meta_compositor_minimize (MetaCompositor           *compositor,
 			  gpointer                  data)
 {
   MiniInfo *info = g_new (MiniInfo, 1);
-  CmDrawableNode *node = window_to_node (compositor, window);
   WsRectangle start;
   MetaScreen *screen = window->screen;
   
-  info->node = node;
+  info->window = window;
   info->timer = g_timer_new ();
   
   info->finished_func = finished;
@@ -1528,269 +1120,6 @@ meta_compositor_minimize (MetaCompositor           *compositor,
   g_idle_add (run_animation_01, info);
 }
 
-void
-meta_compositor_unminimize (MetaCompositor           *compositor,
-			    MetaWindow               *window,
-			    int                       x,
-			    int                       y,
-			    int                       width,
-			    int                       height,
-			    MetaAnimationFinishedFunc  finished,
-			    gpointer                  data)
-{
-  finished(data);
-}
-
-#elif MINIMIZE_STYLE == 2
-
-#if 0
-static gboolean
-do_minimize_animation (gpointer data)
-{
-  MiniInfo *info = data;
-  double elapsed;
-  gboolean done = FALSE;
-  
-#define FADE_TIME 0.5
-  
-  elapsed = g_timer_elapsed (info->timer, NULL);
-  elapsed = elapsed / FADE_TIME;
-  
-  if (elapsed >= 1.0)
-    {
-      elapsed = 1.0;
-      done = TRUE;
-    }
-  
-  g_print ("%f\n", elapsed);
-  
-  cm_drawable_node_set_geometry (info->node,
-				 info->node->real_x + interpolate (elapsed, 0, info->node->real_width / 2, 1),
-				 info->node->real_y + interpolate (elapsed, 0, info->node->real_height / 2, 1),
-				 interpolate (elapsed, info->node->real_width, 0, 1),
-				 interpolate (elapsed, info->node->real_height, 0, 1));
-  
-  if (done)
-    return FALSE;
-  
-#if 0
-  g_print ("inter: %f %f %f\n", 0, 735, interpolate (0.0, 735.0, 0.5, 1.0));
-  
-  g_print ("inter x .5: %f (%d %d)\n", info->node->real_x + interpolate (0, info->node->real_width / 2, .5, 1), 0, info->node->real_width);
-#endif
-  
-  cm_drawable_node_set_alpha (info->node, 1 - elapsed);
-  
-  if (done)
-    {
-    }
-  else
-    {
-      return TRUE;
-    }
-  
-#if 0
-  queue_repaint (info->node,
-		 node_get_screen (info->window->display->xdisplay,
-				  info->node));
-#endif
-}
-#endif
-
-#elif MINIMIZE_STYLE == 3
-
-typedef struct
-{
-  CmDrawableNode *node;
-  GTimer *timer;
-  gboolean expand;
-  
-  MetaCompositor *compositor;
-  MetaScreen *screen;
-  MetaRectangle rect;
-  double last_time;
-  
-  MetaAnimationFinishedFunc finished_func;
-  gpointer		      finished_data;
-  
-  Model	*model;
-  
-  int		button_x;
-  int		button_y;
-  int		button_width;
-  int		button_height;
-} MiniInfo;
-
-#define WOBBLE_TIME 1.0
-
-static void
-set_patch (CmDrawableNode *node,
-	   Model *model,
-	   gdouble blend,
-	   MetaRectangle *target)
-{
-  int i, j;
-  CmPoint points[4][4];
-  
-  for (i = 0; i < 4; i++)
-    for (j = 0; j < 4; j++)
-      {
-	double obj_x, obj_y;
-	int p_x, p_y;
-	
-	model_get_position (model, i, j, &obj_x, &obj_y);
-	
-#if 0
-	target_x = info->node->real_x + i * info->node->real_width / 3;
-	target_y = info->node->real_y + j * info->node->real_height / 3;
-#endif
-	if (target)
-	  {
-	    p_x = target->x + i * target->width / 3;
-	    p_y = target->y + j * target->height / 3;
-	    
-	    points[j][i].x = (1 - blend) * obj_x + blend * p_x;
-	    points[j][i].y = (1 - blend) * obj_y + blend * p_y;
-	  }
-	else
-	  {
-	    points[j][i].x = obj_x;
-	    points[j][i].y = obj_y;
-	  }
-      }
-  
-  cm_drawable_node_set_patch (node, points);
-}
-
-static gboolean
-run_animation (gpointer data)
-{
-  MiniInfo *info = data;
-  gdouble t, blend;
-  double n_steps;
-  int i;
-  
-  t = g_timer_elapsed (info->timer, NULL);
-  
-  n_steps = floor ((t - info->last_time) * 75);
-  
-  for (i = 0; i < n_steps; ++i)
-    model_step (info->model);
-  
-  if (i > 0)
-    info->last_time = t;
-  
-  blend = t / WOBBLE_TIME;
-  
-  set_patch (info->node, info->model, 0.0, NULL);
-  
-  if (info->expand)
-    cm_drawable_node_set_alpha (info->node, t / WOBBLE_TIME);
-  else
-    cm_drawable_node_set_alpha (info->node, 1.0 - t / WOBBLE_TIME);
-  
-  if (t > WOBBLE_TIME)
-    {
-      cm_drawable_node_set_viewable (info->node, info->expand);
-      cm_drawable_node_unset_geometry (info->node);
-      cm_drawable_node_set_alpha (info->node, 1.0);
-      
-      if (info->finished_func)
-	{
-	  info->finished_func (info->finished_data);
-	  
-	  model_destroy (info->model);
-	  info->model = NULL;
-	}
-      
-      return FALSE;
-    }
-  else
-    {
-      queue_repaint (info->node, info->screen);
-      
-      return TRUE;
-    }
-}
-
-void
-meta_compositor_minimize (MetaCompositor            *compositor,
-			  MetaWindow                *window,
-			  int                        x,
-			  int                        y,
-			  int                        width,
-			  int                        height,
-			  MetaAnimationFinishedFunc  finished,
-			  gpointer                   data)
-{
-#ifdef HAVE_COMPOSITE_EXTENSIONS
-  MiniInfo *info = g_new (MiniInfo, 1);
-  CmDrawableNode *node = window_to_node (compositor, window);
-  MetaScreen *screen = window->screen;
-  
-  info->node = node;
-  info->timer = g_timer_new ();
-  
-  info->finished_func = finished;
-  info->finished_data = data;
-  
-  info->rect = window->user_rect;
-  
-  info->model = model_new (&info->rect, FALSE);
-  
-  info->last_time = 0.0;
-  
-  info->expand = FALSE;
-  info->button_x = x;
-  info->button_y = y;
-  info->button_width = width;
-  info->button_height = height;
-  
-  info->compositor = compositor;
-  info->screen = screen;
-  
-  g_idle_add (run_animation, info);
-#endif
-}
-
-void
-meta_compositor_unminimize (MetaCompositor            *compositor,
-			    MetaWindow                *window,
-			    int                        x,
-			    int                        y,
-			    int                        width,
-			    int                        height,
-			    MetaAnimationFinishedFunc  finished,
-			    gpointer                   data)
-{
-#ifdef HAVE_COMPOSITE_EXTENSIONS
-  MiniInfo *info = g_new (MiniInfo, 1);
-  CmDrawableNode *node = window_to_node (compositor, window);
-  MetaScreen *screen = window->screen;
-  
-  info->node = node;
-  info->timer = g_timer_new ();
-  
-  info->finished_func = finished;
-  info->finished_data = data;
-  
-  info->rect = window->user_rect;
-  
-  info->model = model_new (&info->rect, TRUE);
-  
-  info->expand = TRUE;
-  info->button_x = x;
-  info->button_y = y;
-  info->button_width = width;
-  info->button_height = height;
-  
-  info->compositor = compositor;
-  info->screen = screen;
-  
-  g_idle_add (run_animation, info);
-#endif
-}
-
 #endif
 
 void
@@ -1799,15 +1128,9 @@ meta_compositor_set_updates (MetaCompositor *compositor,
 			     gboolean updates)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  CmDrawableNode *node = window_to_node (compositor, window);
+  MetaScreenInfo *info = window->screen->compositor_data;
   
-  if (node)
-    {
-      g_print ("turning updates %s\n", updates? "on" : "off");
-      cm_drawable_node_set_updates (node, updates);
-      
-      update (window->screen);
-    }
+  meta_screen_info_set_updates (info, get_xid (window), updates);
 #endif
 }
 
@@ -1852,29 +1175,6 @@ blow_up (gpointer data)
   return TRUE;
 }
 
-void
-meta_compositor_delete_window (MetaCompositor *compositor, 
-			       MetaWindow *window,
-			       MetaAnimationFinishedFunc finished,
-			       gpointer data)
-{
-  CmDrawableNode *node;
-  BalloonInfo *info = g_new (BalloonInfo, 1);
-  
-  node = window_to_node (compositor, window);
-  
-  if (!node)
-    {
-      finished (data);
-      return;
-    }
-  
-  info->finished = finished;
-  info->finished_data = data;
-  info->timer = g_timer_new ();
-  g_idle_add (blow_up, info);
-}
-
 #endif
 
 void
@@ -1890,8 +1190,6 @@ meta_compositor_destroy (MetaCompositor *compositor)
   ws_display_free (compositor->display);
 #endif
   
-  g_hash_table_destroy (compositor->window_hash);
-  
   g_free (compositor);
 #endif
 }
@@ -1904,7 +1202,7 @@ struct MoveInfo
   gboolean finished;
   Model *model;
   MetaScreen *screen;
-  CmDrawableNode *node;
+  MetaWindow *window;
   gdouble last_time;
 };
 
@@ -1912,34 +1210,59 @@ struct MoveInfo
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 
+static void
+get_patch_points (Model   *model,
+		  CmPoint  points[4][4])
+{
+  int i, j;
+  
+  for (i = 0; i < 4; i++)
+    {
+      for (j = 0; j < 4; j++)
+	{
+	  double obj_x, obj_y;
+	  
+	  model_get_position (model, i, j, &obj_x, &obj_y);
+	  
+	  points[j][i].x = obj_x;
+	  points[j][i].y = obj_y;
+	}
+    }
+}
+
 static gboolean
 wobble (gpointer data)
 {
   MoveInfo *info = data;
+  MetaScreenInfo *minfo = info->screen->compositor_data;
   double t = g_timer_elapsed (info->timer, NULL);
   
   if (info->finished && model_is_calm (info->model))
     {
-      cm_drawable_node_unset_geometry (info->node);
+      meta_screen_info_unset_patch (minfo, get_xid (info->window));
       g_free (info);
       info = NULL;
+      g_print ("stop wobb\n");
       return FALSE;
     }
   else
     {
       int i;
       int n_steps;
+      CmPoint points[4][4];
       n_steps = floor ((t - info->last_time) * 75);
       
       for (i = 0; i < n_steps; ++i)
 	model_step (info->model);
-      
+
       if (i > 0)
 	info->last_time = t;
       
-      set_patch (info->node, info->model, 0.0, NULL);
+      get_patch_points (info->model, points);
+      meta_screen_info_set_patch (minfo,
+				  get_xid (info->window),
+				  points);
       
-      queue_repaint (info->node, info->screen);
       return TRUE;
     }
 }
@@ -1970,6 +1293,8 @@ meta_compositor_begin_move (MetaCompositor *compositor,
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   MetaRectangle rect;
+
+  g_print ("begin move\n");
   
   compositor->move_info = g_new0 (MoveInfo, 1);
   
@@ -1978,15 +1303,13 @@ meta_compositor_begin_move (MetaCompositor *compositor,
   
   compute_window_rect (window, &rect);
   
-#if 0
   g_print ("init: %d %d\n", initial->x, initial->y);
   g_print ("window: %d %d\n", window->rect.x, window->rect.y);
   g_print ("frame: %d %d\n", rect.x, rect.y);
   g_print ("grab: %d %d\n", grab_x, grab_y);
-#endif
   
   compositor->move_info->model = model_new (&rect, TRUE);
-  compositor->move_info->node = window_to_node (window->display->compositor, window);
+  compositor->move_info->window = window;
   compositor->move_info->screen = window->screen;
   
   model_begin_move (compositor->move_info->model, grab_x, grab_y);

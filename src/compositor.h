@@ -55,15 +55,6 @@ void meta_compositor_minimize (MetaCompositor            *compositor,
 			       gpointer                   finished_data);
 
 void
-meta_compositor_unminimize (MetaCompositor            *compositor,
-			    MetaWindow                *window,
-			    int                        x,
-			    int                        y,
-			    int                        width,
-			    int                        height,
-			    MetaAnimationFinishedFunc  finished,
-			    gpointer                   data);
-void
 meta_compositor_set_updates (MetaCompositor *compositor,
 			     MetaWindow *window,
 			     gboolean updates);

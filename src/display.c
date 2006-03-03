@@ -2142,7 +2142,7 @@ event_callback (XEvent   *event,
       /* Handle screen resize */
       {
 	MetaScreen *screen;
-        
+
         screen = meta_display_screen_for_root (display,
                                                event->xconfigure.window);
 

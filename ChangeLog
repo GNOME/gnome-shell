@@ -1,3 +1,16 @@
+Wed Mar  3 13:25:03 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/compositor.c, src/c-screen.[ch]: Split the ScreenInfo data
+	structure into separate, new files c-screen.[ch].
+	
+	* src/errors.c (x_error_handler): Forward foreign errors to
+	foreign displays.
+
+	* src/errors.c (meta_errors_register_foreign_display): Implement
+	this function
+	
+	* src/errors.h: Add new meta_errors_register_foreign_display()
+
 Tue Feb 28 14:49:23 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/compositor.c: Put the windows in a stacker rather than
