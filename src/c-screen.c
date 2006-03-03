@@ -17,10 +17,9 @@
  * 02111-1307, USA.
  */
 
-#ifdef HAVE_COMPOSITOR_EXTENSIONS
-
 #include <config.h>
 
+#ifdef HAVE_COMPOSITE_EXTENSIONS
 #include <cm/ws.h>
 #include <cm/stacker.h>
 #include <cm/wsint.h>
@@ -160,7 +159,7 @@ meta_screen_info_new (WsDisplay *display,
 		      MetaScreen *screen)
 {
     MetaScreenInfo *scr_info = g_new0 (MetaScreenInfo, 1);
-    WsRegion *region;
+    WsServerRegion *region;
     
     scr_info->screen = ws_display_get_screen_from_number (
 	display, screen->number);
@@ -171,7 +170,7 @@ meta_screen_info_new (WsDisplay *display,
     
     /* FIXME: This should probably happen in libcm */
     ws_window_set_override_redirect (scr_info->gl_window, TRUE);
-    region = ws_region_new (scr_info->display);
+    region = ws_server_region_new (scr_info->display);
     ws_window_set_input_shape (scr_info->gl_window, region);
     g_object_unref (G_OBJECT (region));
     

@@ -1,3 +1,8 @@
+Fri Mar  3 15:31:04 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/c-screen.c (meta_screen_info_new): Update for libcm API
+	change.
+
 Wed Mar  3 13:25:03 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/compositor.c, src/c-screen.[ch]: Split the ScreenInfo data
