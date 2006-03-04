@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-02 22:26+0100\n"
-"PO-Revision-Date: 2006-03-02 23:13+0100\n"
+"POT-Creation-Date: 2006-03-04 11:04+0100\n"
+"PO-Revision-Date: 2006-03-04 11:07+0100\n"
 "Last-Translator: Hendrik Richter <hendrikr@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -68,7 +68,7 @@ msgstr "Rechnername konnte nicht ermittelt werden: %s\n"
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X-Window-Systemanzeige »%s« konnte nicht geöffnet werden\n"
 
-#: ../src/errors.c:233
+#: ../src/errors.c:269
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -79,7 +79,7 @@ msgstr ""
 "wahrscheinlich wurde der X-Server beendet oder Sie haben den Fenstermanager\n"
 "abgewürgt.\n"
 
-#: ../src/errors.c:240
+#: ../src/errors.c:276
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Schwerwiegender E/A-Fehler %d (%s) auf Anzeige »%s«.\n"
@@ -538,15 +538,15 @@ msgid ""
 "a window during drag and drop (because that results in the application "
 "grabbing the mouse)"
 msgstr ""
-"Falls dieser Schlüssel gesetzt ist und der Fokusmodus entweder »sloppy« "
-"oder »mouse« ist, wird das fokussierte Fenster automatisch nach einer "
-"Verzögerung angehoben (Die Zeit wird vom Schlüssel »auto_raise_delay« "
-"angegeben). Diese Einstellung ist schlecht benannt, aber aus Gründen der "
-"Abwärtskompatibilität noch immer vorhanden. Genauer gesagt bedeutet sie: "
-"»Fenster nach einer bestimmten Zeit ohne Mausaktivität automatisch anheben, "
-"wenn der Fokusmodus...«. Dies hat nichts mit dem Klickverhalten oder dem "
-"Erreichen eines Fensters während einer Drag&Drop-Aktion (in diesem Fall "
-"greift die Anwendung auf die Maus zu) zu tun."
+"Falls dieser Schlüssel gesetzt ist und der Fokusmodus entweder »sloppy« oder "
+"»mouse« ist, wird das fokussierte Fenster automatisch nach einer Verzögerung "
+"angehoben (Die Zeit wird vom Schlüssel »auto_raise_delay« angegeben). Diese "
+"Einstellung ist schlecht benannt, aber aus Gründen der Abwärtskompatibilität "
+"noch immer vorhanden. Genauer gesagt bedeutet sie: »Fenster nach einer "
+"bestimmten Zeit ohne Mausaktivität automatisch anheben, wenn der "
+"Fokusmodus...«. Dies hat nichts mit dem Klickverhalten oder dem Erreichen "
+"eines Fensters während einer Drag&Drop-Aktion (in diesem Fall greift die "
+"Anwendung auf die Maus zu) zu tun."
 
 #: ../src/metacity.schemas.in.h:20
 msgid ""
@@ -623,12 +623,12 @@ msgid ""
 msgstr ""
 "Viele Aktionen (wie das Klicken in einer Anwendung, das Verschieben oder "
 "Größeändern eines Fensters) heben das Fenster als Nebeneffekt an. Wenn "
-"dieser Schlüssel nicht gesetzt ist, wird dies verhindert. Fenster können dann "
-"bei gedrückter »Alt«-Taste durch einen Linksklick irgendwo auf das Fenster "
-"oder einem normalen Klick auf die Fensterdekoration angehoben werden, falls "
-"diese Klicks kein Verschieben oder Größeändern auslösen. Spezielle "
-"Nachrichten, wie Aktivierungsanfragen der Fensterliste können bei nicht "
-"gesetztem Schlüssel ebenfalls Fenster anheben. Dieser Schlüssel ist im "
+"dieser Schlüssel nicht gesetzt ist, wird dies verhindert. Fenster können "
+"dann bei gedrückter »Alt«-Taste durch einen Linksklick irgendwo auf das "
+"Fenster oder einem normalen Klick auf die Fensterdekoration angehoben "
+"werden, falls diese Klicks kein Verschieben oder Größeändern auslösen. "
+"Spezielle Nachrichten, wie Aktivierungsanfragen von Pagern können bei "
+"nicht gesetztem Schlüssel ebenfalls Fenster anheben. Dieser Schlüssel ist im "
 "»Klicken-für-Fokus«-Modus momentan deaktiviert."
 
 #: ../src/metacity.schemas.in.h:26
@@ -2024,8 +2024,8 @@ msgid ""
 msgstr ""
 "Dieser Schlüssel legt fest, was bei einem Doppelklick auf die Titelleiste "
 "geschehen soll. Zulässige Werte: »toggle_shade« (Fenster ein- bzw. "
-"ausrollen), »toggle_maximize« (Fenster maximieren bzw. "
-"wiederhergestellen) sowie »none« (nichts tun)."
+"ausrollen), »toggle_maximize« (Fenster maximieren bzw. wiederhergestellen) "
+"sowie »none« (nichts tun)."
 
 #: ../src/metacity.schemas.in.h:161
 msgid "Toggle always on top state"
@@ -3334,7 +3334,7 @@ msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Application hat eine unsinnige _NET_WM_PID %lu angegeben\n"
 
 #. first time through
-#: ../src/window.c:5409
+#: ../src/window.c:5410
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3356,7 +3356,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6037
+#: ../src/window.c:6038
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
