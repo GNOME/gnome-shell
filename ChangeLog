@@ -1,3 +1,8 @@
+2006-03-06  Ryan Lortie  <desrt@desrt.ca>
+
+	* src/window.c (meta_window_free): Only unmaximise window before
+	freeing if the window is actually maximised.  #333563.
+
 Fri Mar  3 15:31:04 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/c-screen.c (meta_screen_info_new): Update for libcm API

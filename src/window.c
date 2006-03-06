@@ -979,7 +979,8 @@ meta_window_free (MetaWindow  *window)
   if (window->display->focus_window == window)
     window->display->focus_window = NULL;
 
-  unmaximize_window_before_freeing (window);
+  if (window->maximized_horizontally || window->maximized_vertically)
+    unmaximize_window_before_freeing (window);
   
   meta_window_unqueue_calc_showing (window);
   meta_window_unqueue_move_resize (window);
