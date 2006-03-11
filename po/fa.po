@@ -1,16 +1,18 @@
 # Persian translation of metacity.
-# Copyright (C) 2003, 2005 Sharif FarsiWeb, Inc.
+# Copyright (C) 2003, 2005, 2006 Sharif FarsiWeb, Inc.
 # Roozbeh Pournader <roozbeh@farsiweb.info>, 2003.
-# Elnaz Sarbar <elnaz@farsiweb.info>, 2005.
+# Elnaz Sarbar <elnaz@farsiweb.info>, 2005, 2006.
+# Meelad Zakaria <meelad@farsiweb.info>, 2006.
+# Farzaneh Sarafraz <farzaneh@farsiweb.info>, 2006.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-19 12:30+0200\n"
-"PO-Revision-Date: 2005-02-28 13:48+0330\n"
-"Last-Translator: Elnaz Sarbar <elnaz@farsiweb.info>\n"
-"Language-Team: Persian <farsi@lists.sharif.edu>\n"
+"POT-Creation-Date: 2006-02-16 09:13+0100\n"
+"PO-Revision-Date: 2006-02-18 16:19+0330\n"
+"Last-Translator: Farzaneh Sarafraz <farzaneh@farsiweb.info>\n"
+"Language-Team: Persian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,33 +22,33 @@ msgstr ""
 msgid "Usage: %s\n"
 msgstr "کاربرد: %s\n"
 
-#: ../src/tools/metacity-message.c:176 ../src/util.c:128
+#: ../src/tools/metacity-message.c:176 ../src/util.c:131
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "متاسیتی بدون پشتیبانی حالت مفصل ترجمه شده است\n"
 
-#: ../src/delete.c:63 ../src/delete.c:90 ../src/metacity-dialog.c:70
+#: ../src/delete.c:64 ../src/delete.c:91 ../src/metacity-dialog.c:71
 #: ../src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "«%s»به عنوان عدد صحیح قابل تجزیه نیست "
 
-#: ../src/delete.c:70 ../src/delete.c:97 ../src/metacity-dialog.c:77
+#: ../src/delete.c:71 ../src/delete.c:98 ../src/metacity-dialog.c:78
 #: ../src/theme-parser.c:476 ../src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "نویسه‌ی «%s» در رشته‌ی «%s» قابل درک نیست"
 
-#: ../src/delete.c:128
+#: ../src/delete.c:129
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "شکست در تجزیه پیغام «%s» از پردازش محاوره\n"
 
-#: ../src/delete.c:263
+#: ../src/delete.c:264
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "خطا در خواندن از پردازش نمایش محاوره: %s\n"
 
-#: ../src/delete.c:344
+#: ../src/delete.c:345
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -54,17 +56,17 @@ msgstr ""
 "خطا در راه‌اندازی metacity-dialog برای پرسش درباره کشتن یک برنامه‌ی کاربردی: %"
 "s\n"
 
-#: ../src/delete.c:452
+#: ../src/delete.c:453
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "شکست در گرفتن نام میزبان: %s\n"
 
-#: ../src/display.c:319
+#: ../src/display.c:308
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "شکست در باز کردن نمایش «%s» سیستم پنجره‌ی X\n"
 
-#: ../src/errors.c:231
+#: ../src/errors.c:233
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -75,32 +77,32 @@ msgstr ""
 "به احتمال زیاد کارگزار X خاموش شده است یا شما مدیر پنجره‌ها را\n"
 "تخریب کرده‌اید یا کشته‌اید.\n"
 
-#: ../src/errors.c:238
+#: ../src/errors.c:240
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "خطای مهلک ورودی/خروجی %Id (%s) هنگام نمایش «%s».\n"
 
-#: ../src/frames.c:1125
+#: ../src/frames.c:1097
 msgid "Close Window"
 msgstr "بستن پنجره"
 
-#: ../src/frames.c:1128
+#: ../src/frames.c:1100
 msgid "Window Menu"
 msgstr "منوی پنجره"
 
-#: ../src/frames.c:1131
+#: ../src/frames.c:1103
 msgid "Minimize Window"
 msgstr "حداقل کردن پنجره"
 
-#: ../src/frames.c:1134
+#: ../src/frames.c:1106
 msgid "Maximize Window"
 msgstr "حداکثر کردن پنجره"
 
-#: ../src/frames.c:1137
+#: ../src/frames.c:1109
 msgid "Unmaximize Window"
 msgstr "ناحداکثر کردن پنجره"
 
-#: ../src/keybindings.c:994
+#: ../src/keybindings.c:996
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -108,21 +110,21 @@ msgid ""
 msgstr ""
 "برنامه‌ی دیگری کلید %s را با تغییردهنده‌های %x برای مقیدسازی به کار می‌برد\n"
 
-#: ../src/keybindings.c:2620
+#: ../src/keybindings.c:2534
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "خطا در راه‌اندازی metacity-dialog برای چاپ خطا درباره‌ی یک فرمان: %s\n"
 
-#: ../src/keybindings.c:2725
+#: ../src/keybindings.c:2639
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr " فرمان %Id تعریف نشده است.\n"
 
-#: ../src/keybindings.c:3570
+#: ../src/keybindings.c:3501
 msgid "No terminal command has been defined.\n"
 msgstr "هیچ فرمان پایانه‌ای تعریف نشده است.\n"
 
-#: ../src/main.c:69
+#: ../src/main.c:70
 #, c-format
 msgid ""
 "metacity %s\n"
@@ -137,123 +139,127 @@ msgstr ""
 "هیچ تضمینی وجود ندارد؛ حتی در مورد قابلیت تجاری یا مناسبت برای\n"
 " یک هدف به خصوص.\n"
 
-#: ../src/main.c:257
+#: ../src/main.c:258
 msgid "Disable connection to session manager"
 msgstr ""
 
-#: ../src/main.c:263
+#: ../src/main.c:264
 msgid "Replace the running window manager with Metacity"
 msgstr ""
 
-#: ../src/main.c:269
+#: ../src/main.c:270
 msgid "Specify session management ID"
 msgstr ""
 
-#: ../src/main.c:274
+#: ../src/main.c:275
 msgid "X Display to use"
 msgstr ""
 
-#: ../src/main.c:280
+#: ../src/main.c:281
 msgid "Initialize session from savefile"
 msgstr ""
 
-#: ../src/main.c:286
+#: ../src/main.c:287
 msgid "Print version"
 msgstr ""
 
-#: ../src/main.c:440
+#: ../src/main.c:439
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "شکست در پویش شاخه‌ی تم‌ها: %s\n"
 
-#: ../src/main.c:456
+#: ../src/main.c:455
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr "تم پیدا نشد! مطمئن شوید %s .وجود دارد و شامل تم‌های معمول است"
 
-#: ../src/main.c:518
+#: ../src/main.c:527
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "شکست در راه‌اندازی مجدد: %s\n"
 
-#: ../src/menu.c:54
+#: ../src/menu.c:55
 msgid "Mi_nimize"
 msgstr "حداقل کردن"
 
-#: ../src/menu.c:55
+#: ../src/menu.c:56
 msgid "Ma_ximize"
 msgstr "حداکثر کردن"
 
-#: ../src/menu.c:56
+#: ../src/menu.c:57
 msgid "Unma_ximize"
 msgstr "ناحداکثر کردن"
 
-#: ../src/menu.c:57
+#: ../src/menu.c:58
 msgid "Roll _Up"
 msgstr "جمع کردن"
 
-#: ../src/menu.c:58
+#: ../src/menu.c:59
 msgid "_Unroll"
 msgstr "پهن کردن"
 
-#: ../src/menu.c:59 ../src/menu.c:60
+#: ../src/menu.c:60 ../src/menu.c:61
 msgid "On _Top"
 msgstr "همیشه رو"
 
-#: ../src/menu.c:61
+#: ../src/menu.c:62
 msgid "_Move"
 msgstr "جابه‌جایی"
 
-#: ../src/menu.c:62
+#: ../src/menu.c:63
 msgid "_Resize"
 msgstr "تغییر اندازه"
 
-#. separator
 #: ../src/menu.c:64
+msgid "Move Titlebar On_screen"
+msgstr ""
+
+#. separator
+#: ../src/menu.c:66
 msgid "_Close"
 msgstr "بستن"
 
 #. separator
-#: ../src/menu.c:66
+#: ../src/menu.c:68
 msgid "_Always on Visible Workspace"
 msgstr "_همیشه در فضای کاری قابل مشاهده"
 
-#: ../src/menu.c:67
+#: ../src/menu.c:69
 msgid "_Only on This Workspace"
 msgstr "_فقط در این فضای کاری"
 
-#: ../src/menu.c:68
+#: ../src/menu.c:70
 msgid "Move to Workspace _Left"
 msgstr "نقل‌مکان به فضای کاری _چپ"
 
-#: ../src/menu.c:69
+#: ../src/menu.c:71
 msgid "Move to Workspace R_ight"
 msgstr "نقل‌مکان به فضای کاری _راست"
 
-#: ../src/menu.c:70
+#: ../src/menu.c:72
 msgid "Move to Workspace _Up"
 msgstr "نقل‌مکان به فضای کاری _بالا "
 
-#: ../src/menu.c:71
+#: ../src/menu.c:73
 msgid "Move to Workspace _Down"
 msgstr "نقل‌مکان به فضای کاری _پایین"
 
-#: ../src/menu.c:162 ../src/prefs.c:2106
+#: ../src/menu.c:164 ../src/prefs.c:1978 ../src/prefs.c:2279
 #, c-format
 msgid "Workspace %d"
 msgstr "فضای کاری %Id"
 
-#: ../src/menu.c:171
+#: ../src/menu.c:173
 msgid "Workspace 1_0"
 msgstr "فضای کاری ۱_۰"
 
-#: ../src/menu.c:173
+#: ../src/menu.c:175
 #, c-format
 msgid "Workspace %s%d"
 msgstr "فضای کاری %s%Id"
 
-#: ../src/menu.c:368
+#: ../src/menu.c:370
 msgid "Move to Another _Workspace"
 msgstr "نقل‌مکان به فضای کاری دیگر"
 
@@ -262,7 +268,7 @@ msgstr "نقل‌مکان به فضای کاری دیگر"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:105
+#: ../src/metaaccellabel.c:103
 msgid "Shift"
 msgstr "تبدیل"
 
@@ -271,7 +277,7 @@ msgstr "تبدیل"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:111
+#: ../src/metaaccellabel.c:109
 msgid "Ctrl"
 msgstr "مهار"
 
@@ -280,7 +286,7 @@ msgstr "مهار"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:117
+#: ../src/metaaccellabel.c:115
 msgid "Alt"
 msgstr "دگرساز"
 
@@ -289,7 +295,7 @@ msgstr "دگرساز"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:123
+#: ../src/metaaccellabel.c:121
 msgid "Meta"
 msgstr "Meta"
 
@@ -298,7 +304,7 @@ msgstr "Meta"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:129
+#: ../src/metaaccellabel.c:127
 msgid "Super"
 msgstr "Super"
 
@@ -307,7 +313,7 @@ msgstr "Super"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:135
+#: ../src/metaaccellabel.c:133
 msgid "Hyper"
 msgstr "Hyper"
 
@@ -316,7 +322,7 @@ msgstr "Hyper"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:141
+#: ../src/metaaccellabel.c:139
 msgid "Mod2"
 msgstr "Mod2"
 
@@ -325,7 +331,7 @@ msgstr "Mod2"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:147
+#: ../src/metaaccellabel.c:145
 msgid "Mod3"
 msgstr "Mod3"
 
@@ -334,7 +340,7 @@ msgstr "Mod3"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:153
+#: ../src/metaaccellabel.c:151
 msgid "Mod4"
 msgstr "Mod4"
 
@@ -343,33 +349,33 @@ msgstr "Mod4"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:159
+#: ../src/metaaccellabel.c:157
 msgid "Mod5"
 msgstr "Mod5"
 
-#: ../src/metacity-dialog.c:110
+#: ../src/metacity-dialog.c:111
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "پنجره‌ی «%s» پاسخ نمی‌دهد."
 
-#: ../src/metacity-dialog.c:118
+#: ../src/metacity-dialog.c:119
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr "اجبار این برنامه به ترک باعث از دست رفتن تغییرات ذخیره نشده می‌شود."
 
-#: ../src/metacity-dialog.c:129
+#: ../src/metacity-dialog.c:130
 msgid "_Force Quit"
 msgstr "ترک اجباری"
 
-#: ../src/metacity-dialog.c:226
+#: ../src/metacity-dialog.c:227
 msgid "Title"
 msgstr "عنوان"
 
-#: ../src/metacity-dialog.c:238
+#: ../src/metacity-dialog.c:239
 msgid "Class"
 msgstr "رده"
 
-#: ../src/metacity-dialog.c:264
+#: ../src/metacity-dialog.c:265
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -377,7 +383,7 @@ msgstr ""
 "این پنجره‌ها «ذخیره‌ی برپاسازی فعلی» را پشتیبانی نمی‌کنند و باید در ورود بعدی "
 "به سیستم به صورت دستی راه‌اندازی مجدد شوند.  "
 
-#: ../src/metacity-dialog.c:330
+#: ../src/metacity-dialog.c:331
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -391,9 +397,8 @@ msgid "Metacity"
 msgstr "متاسیتی"
 
 #: ../src/metacity.schemas.in.h:1
-#, fuzzy
 msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr "(پیاده‌سازی نشده) "
+msgstr "(پیاده‌سازی نشده) ناوش در میان برنامه‌ها کار می‌کند نه پنجره‌ها"
 
 #: ../src/metacity.schemas.in.h:2
 msgid ""
@@ -495,10 +500,15 @@ msgstr "مخفی کردن همه‌ی پنجره‌ها و تمرکز روی ر�
 msgid ""
 "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 "focused window will be automatically raised after a delay (the delay is "
-"specified by the auto_raise_delay key)."
+"specified by the auto_raise_delay key). This preference is poorly named, but "
+"kept for backwards compatibility. To try to be more clear (at least to the "
+"technically inclined), its meaning is \"automatically raise the window "
+"following a timeout which is triggered by non-grabbed mouse entry in sloppy "
+"or mouse focus modes\". It is unrelated to clicking behavior (i.e. this is "
+"not related to raise-on-click/orthogonal-raise). It is unrelated to entering "
+"a window during drag and drop (because that results in the application "
+"grabbing the mouse)"
 msgstr ""
-"اگر درست باشد و حالت تمرکز «sloppy» یا «mouse» باشد، پنجره‌یمورد تمرکز به طور "
-"خودکار بعد از تاخیری که با auto_raise_delay مشخصمی‌شود، پیش کشیده می‌شود."
 
 #: ../src/metacity.schemas.in.h:18
 msgid ""
@@ -556,135 +566,147 @@ msgid "Lower window below other windows"
 msgstr "پایین بردن پنجره زیر پنجره‌های دیگر"
 
 #: ../src/metacity.schemas.in.h:23
+msgid ""
+"Many actions (e.g. clicking in the client area, moving or resizing the "
+"window) normally raise the window as a side-effect. Set this option to false "
+"to decouple raising from other user interactions. When false, windows can "
+"still be raised by an alt-left-click anywhere on the window or a normal "
+"click on the window decorations (assuming such clicks aren't used to start a "
+"move or resize operation). Special messages, such as activation requests "
+"from pagers, may also raise windows when this option is false. This option "
+"is currently disabled in click-to-focus mode."
+msgstr ""
+
+#: ../src/metacity.schemas.in.h:24
 msgid "Maximize window"
 msgstr "حداکثر کردن پنجره"
 
-#: ../src/metacity.schemas.in.h:24
+#: ../src/metacity.schemas.in.h:25
 msgid "Maximize window horizontally"
 msgstr "حداکثر کردن افقی پنجره"
 
-#: ../src/metacity.schemas.in.h:25
+#: ../src/metacity.schemas.in.h:26
 msgid "Maximize window vertically"
 msgstr "حداکثر کردن عمودی پنجره"
 
-#: ../src/metacity.schemas.in.h:26
+#: ../src/metacity.schemas.in.h:27
 msgid "Minimize window"
 msgstr "حداقل کردن پنجره"
 
-#: ../src/metacity.schemas.in.h:27
+#: ../src/metacity.schemas.in.h:28
 msgid "Modifier to use for modified window click actions"
 msgstr ""
 "تغییردهنده‌ای که برای کنش‌های کلیک روی پنجره‌ی تغییر داده شده به کار می‌رود"
 
-#: ../src/metacity.schemas.in.h:28
+#: ../src/metacity.schemas.in.h:29
 msgid "Move backward between panels and the desktop immediately"
 msgstr "جابه‌جایی آنی به عقب بین تابلو و رومیزی"
 
-#: ../src/metacity.schemas.in.h:29
+#: ../src/metacity.schemas.in.h:30
 msgid "Move backwards between panels and the desktop with popup"
 msgstr "جابه‌جایی به عقب بین تابلوها و رومیزی با واشو"
 
-#: ../src/metacity.schemas.in.h:30
+#: ../src/metacity.schemas.in.h:31
 msgid "Move backwards between windows immediately"
 msgstr "جابه‌جایی آنی به عقب بین پنجره‌ها"
 
-#: ../src/metacity.schemas.in.h:31
+#: ../src/metacity.schemas.in.h:32
 msgid "Move between panels and the desktop immediately"
 msgstr "جابه‌جایی آنی بین تابلو و رومیزی"
 
-#: ../src/metacity.schemas.in.h:32
+#: ../src/metacity.schemas.in.h:33
 msgid "Move between panels and the desktop with popup"
 msgstr "جابه‌جایی بین تابلوها و رومیزی با واشو"
 
-#: ../src/metacity.schemas.in.h:33
+#: ../src/metacity.schemas.in.h:34
 msgid "Move between windows immediately"
 msgstr "جابه‌جایی آنی بین پنجره‌ها"
 
-#: ../src/metacity.schemas.in.h:34
+#: ../src/metacity.schemas.in.h:35
 msgid "Move between windows with popup"
 msgstr "جابه‌جایی بین پنجره‌ها با واشو"
 
-#: ../src/metacity.schemas.in.h:35
+#: ../src/metacity.schemas.in.h:36
 msgid "Move focus backwards between windows using popup display"
 msgstr "انتقال تمرکز به عقب بین پنجره‌ها با نمایش واشو"
 
-#: ../src/metacity.schemas.in.h:36
+#: ../src/metacity.schemas.in.h:37
 msgid "Move window"
 msgstr "جابه‌جایی پنجره"
 
-#: ../src/metacity.schemas.in.h:37
+#: ../src/metacity.schemas.in.h:38
 msgid "Move window one workspace down"
 msgstr "جابه‌جایی پنجره به فضای کاری پایینی"
 
-#: ../src/metacity.schemas.in.h:38
+#: ../src/metacity.schemas.in.h:39
 msgid "Move window one workspace to the left"
 msgstr "جابه‌جایی پنجره به فضای کاری چپ "
 
-#: ../src/metacity.schemas.in.h:39
+#: ../src/metacity.schemas.in.h:40
 msgid "Move window one workspace to the right"
 msgstr "جابه‌جایی پنجره به فضای کاری راست"
 
-#: ../src/metacity.schemas.in.h:40
+#: ../src/metacity.schemas.in.h:41
 msgid "Move window one workspace up"
 msgstr "جابه‌جایی پنجره به فضای کاری بالایی"
 
-#: ../src/metacity.schemas.in.h:41
+#: ../src/metacity.schemas.in.h:42
 msgid "Move window to workspace 1"
 msgstr "جابه‌جایی پنجره به فضای کاری ۱"
 
-#: ../src/metacity.schemas.in.h:42
+#: ../src/metacity.schemas.in.h:43
 msgid "Move window to workspace 10"
 msgstr "جابه‌جایی پنجره به فضای کاری ۱۰"
 
-#: ../src/metacity.schemas.in.h:43
+#: ../src/metacity.schemas.in.h:44
 msgid "Move window to workspace 11"
 msgstr "جابه‌جایی پنجره به فضای کاری ۱۱"
 
-#: ../src/metacity.schemas.in.h:44
+#: ../src/metacity.schemas.in.h:45
 msgid "Move window to workspace 12"
 msgstr "جابه‌جایی پنجره به فضای کاری ۱۲"
 
-#: ../src/metacity.schemas.in.h:45
+#: ../src/metacity.schemas.in.h:46
 msgid "Move window to workspace 2"
 msgstr "جابه‌جایی پنجره به فضای کاری ۲"
 
-#: ../src/metacity.schemas.in.h:46
+#: ../src/metacity.schemas.in.h:47
 msgid "Move window to workspace 3"
 msgstr "نقل‌مکان پنجره به فضای کاری ۳"
 
-#: ../src/metacity.schemas.in.h:47
+#: ../src/metacity.schemas.in.h:48
 msgid "Move window to workspace 4"
 msgstr "جابه‌جایی پنجره به فضای کاری ۴"
 
-#: ../src/metacity.schemas.in.h:48
+#: ../src/metacity.schemas.in.h:49
 msgid "Move window to workspace 5"
 msgstr "جابه‌جایی پنجره به فضای کاری ۵"
 
-#: ../src/metacity.schemas.in.h:49
+#: ../src/metacity.schemas.in.h:50
 msgid "Move window to workspace 6"
 msgstr "جابه‌جایی پنجره به فضای کاری ۶"
 
-#: ../src/metacity.schemas.in.h:50
+#: ../src/metacity.schemas.in.h:51
 msgid "Move window to workspace 7"
 msgstr "جابه‌جایی پنجره به فضای کاری ۷"
 
-#: ../src/metacity.schemas.in.h:51
+#: ../src/metacity.schemas.in.h:52
 msgid "Move window to workspace 8"
 msgstr "جابه‌جایی پنجره به فضای کاری ۸"
 
-#: ../src/metacity.schemas.in.h:52
+#: ../src/metacity.schemas.in.h:53
 msgid "Move window to workspace 9"
 msgstr "جابه‌جایی پنجره به فضای کاری ۹"
 
-#: ../src/metacity.schemas.in.h:53
+#: ../src/metacity.schemas.in.h:54
 msgid "Name of workspace"
 msgstr "نام فضای کاری"
 
-#: ../src/metacity.schemas.in.h:54
+#: ../src/metacity.schemas.in.h:55
 msgid "Number of workspaces"
 msgstr "تعداد فضاهای کاری"
 
-#: ../src/metacity.schemas.in.h:55
+#: ../src/metacity.schemas.in.h:56
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum (to "
 "prevent accidentally destroying your desktop by asking for 34 million "
@@ -693,35 +715,35 @@ msgstr ""
 "تعداد فضاهای کاری. باید بیش از صفر باشد و حداکثر مشخصی دارد (برای این که "
 "اتفاقی رومیزی‌تان را با درخواست ۳۴ میلیون فضای کاری از بین نبرید)."
 
-#: ../src/metacity.schemas.in.h:56
+#: ../src/metacity.schemas.in.h:57
 msgid "Raise obscured window, otherwise lower"
 msgstr ""
 
-#: ../src/metacity.schemas.in.h:57
+#: ../src/metacity.schemas.in.h:58
 msgid "Raise window above other windows"
 msgstr "پیش آوردن پنجره روی همه‌ی پنجره‌ها"
 
-#: ../src/metacity.schemas.in.h:58
+#: ../src/metacity.schemas.in.h:59
 msgid "Resize window"
 msgstr "تغییر اندازه‌ی پنجره"
 
-#: ../src/metacity.schemas.in.h:59
+#: ../src/metacity.schemas.in.h:60
 msgid "Run a defined command"
 msgstr "اجرای یک فرمان تعریف شده"
 
-#: ../src/metacity.schemas.in.h:60
+#: ../src/metacity.schemas.in.h:61
 msgid "Run a terminal"
 msgstr "اجرای پایانه"
 
-#: ../src/metacity.schemas.in.h:61
+#: ../src/metacity.schemas.in.h:62
 msgid "Show the panel menu"
 msgstr "نشان دادن منوی تابلو"
 
-#: ../src/metacity.schemas.in.h:62
+#: ../src/metacity.schemas.in.h:63
 msgid "Show the panel run application dialog"
 msgstr "نشان دادن محاوره‌ی اجرای برنامه‌ی تابلو"
 
-#: ../src/metacity.schemas.in.h:63
+#: ../src/metacity.schemas.in.h:64
 msgid ""
 "Some applications break specifications in ways that result in window manager "
 "misfeatures. For example, ideally Metacity would place all dialogs in a "
@@ -749,83 +771,83 @@ msgstr ""
 "کمبودهای خود قواعد جزئی هستند، بنابراین بعضی وقت‌ها اشکال در حالت دور زدن "
 "بدون دستکاری قواعد قبل رفع نیست."
 
-#: ../src/metacity.schemas.in.h:64
+#: ../src/metacity.schemas.in.h:65
 msgid "Switch to workspace 1"
 msgstr "تعویض به فضای کاری ۱"
 
-#: ../src/metacity.schemas.in.h:65
+#: ../src/metacity.schemas.in.h:66
 msgid "Switch to workspace 10"
 msgstr "تعویض به فضای کاری ۱۰"
 
-#: ../src/metacity.schemas.in.h:66
+#: ../src/metacity.schemas.in.h:67
 msgid "Switch to workspace 11"
 msgstr "تعویض به فضای کاری ۱۱"
 
-#: ../src/metacity.schemas.in.h:67
+#: ../src/metacity.schemas.in.h:68
 msgid "Switch to workspace 12"
 msgstr "تعویض به فضای کاری ۱۲"
 
-#: ../src/metacity.schemas.in.h:68
+#: ../src/metacity.schemas.in.h:69
 msgid "Switch to workspace 2"
 msgstr "تعویض به فضای کاری ۲"
 
-#: ../src/metacity.schemas.in.h:69
+#: ../src/metacity.schemas.in.h:70
 msgid "Switch to workspace 3"
 msgstr "تعویض به فضای کاری ۳"
 
-#: ../src/metacity.schemas.in.h:70
+#: ../src/metacity.schemas.in.h:71
 msgid "Switch to workspace 4"
 msgstr "تعویض به فضای کاری ۴"
 
-#: ../src/metacity.schemas.in.h:71
+#: ../src/metacity.schemas.in.h:72
 msgid "Switch to workspace 5"
 msgstr "تعویض به فضای کاری ۵"
 
-#: ../src/metacity.schemas.in.h:72
+#: ../src/metacity.schemas.in.h:73
 msgid "Switch to workspace 6"
 msgstr "تعویض به فضای کاری ۶"
 
-#: ../src/metacity.schemas.in.h:73
+#: ../src/metacity.schemas.in.h:74
 msgid "Switch to workspace 7"
 msgstr "تعویض به فضای کاری ۷"
 
-#: ../src/metacity.schemas.in.h:74
+#: ../src/metacity.schemas.in.h:75
 msgid "Switch to workspace 8"
 msgstr "تعویض به فضای کاری ۸"
 
-#: ../src/metacity.schemas.in.h:75
+#: ../src/metacity.schemas.in.h:76
 msgid "Switch to workspace 9"
 msgstr "تعویض به فضای کاری ۹"
 
-#: ../src/metacity.schemas.in.h:76
+#: ../src/metacity.schemas.in.h:77
 msgid "Switch to workspace above this one"
 msgstr "تعویض به فضای کاری بالایی"
 
-#: ../src/metacity.schemas.in.h:77
+#: ../src/metacity.schemas.in.h:78
 msgid "Switch to workspace below this one"
 msgstr "تعویض به فضای کاری پایینی"
 
-#: ../src/metacity.schemas.in.h:78
+#: ../src/metacity.schemas.in.h:79
 msgid "Switch to workspace on the left"
 msgstr "تعویض به فضای کاری چپ"
 
-#: ../src/metacity.schemas.in.h:79
+#: ../src/metacity.schemas.in.h:80
 msgid "Switch to workspace on the right"
 msgstr "تعویض به فضای کاری راست"
 
-#: ../src/metacity.schemas.in.h:80
+#: ../src/metacity.schemas.in.h:81
 msgid "System Bell is Audible"
 msgstr "زنگ سیستم قابل شنیدن است"
 
-#: ../src/metacity.schemas.in.h:81
+#: ../src/metacity.schemas.in.h:82
 msgid "Take a screenshot"
 msgstr "عکس گرفتن از صفحه"
 
-#: ../src/metacity.schemas.in.h:82
+#: ../src/metacity.schemas.in.h:83
 msgid "Take a screenshot of a window"
 msgstr "عکس گرفتن از پنجره "
 
-#: ../src/metacity.schemas.in.h:83
+#: ../src/metacity.schemas.in.h:84
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
 "or another application 'bell' indicator has been rung. Currently there are "
@@ -843,7 +865,7 @@ msgstr ""
 "مورد برای «بوق سیستم» پیش‌فرض این طور است)، نوار عنوان پنجره‌ای که فعلاً مورد "
 "تمرکز است جرقه می‌زند."
 
-#: ../src/metacity.schemas.in.h:84
+#: ../src/metacity.schemas.in.h:85
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
@@ -853,7 +875,7 @@ msgstr ""
 "می‌کنند که متناظر با این فرمان‌ها هستند. فشار دادن کلید مقید برای "
 "run_command_N، command_N را اجرا خواهد کرد."
 
-#: ../src/metacity.schemas.in.h:85
+#: ../src/metacity.schemas.in.h:86
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
@@ -861,7 +883,7 @@ msgstr ""
 "کلید /apps/metacity/global_keybindings/run_command_screenshot کلید مقیدی "
 "تعریف می‌کند که سبب می‌شود فرمان مشخص شده با این تنظیم احضار شود."
 
-#: ../src/metacity.schemas.in.h:86
+#: ../src/metacity.schemas.in.h:87
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
@@ -870,7 +892,7 @@ msgstr ""
 "کلید /apps/metacity/global_keybindings/run_command_window_screenshot کلید "
 "مقیدی تعریف می‌کند که سبب می‌شود فرمان مشخص شده با این تنظیم احضار شود."
 
-#: ../src/metacity.schemas.in.h:87
+#: ../src/metacity.schemas.in.h:88
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -886,7 +908,7 @@ msgstr ""
 "این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این "
 "کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:88
+#: ../src/metacity.schemas.in.h:89
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -901,7 +923,7 @@ msgstr ""
 "«&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
 "«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:89
+#: ../src/metacity.schemas.in.h:90
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -916,7 +938,7 @@ msgstr ""
 "«&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
 "«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:90
+#: ../src/metacity.schemas.in.h:91
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -931,7 +953,7 @@ msgstr ""
 "«&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
 "«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:91
+#: ../src/metacity.schemas.in.h:92
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -946,7 +968,7 @@ msgstr ""
 "«&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
 "«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:92
+#: ../src/metacity.schemas.in.h:93
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -960,7 +982,7 @@ msgstr ""
 "می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
 "مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:93
+#: ../src/metacity.schemas.in.h:94
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -974,7 +996,7 @@ msgstr ""
 "می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
 "مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:94
+#: ../src/metacity.schemas.in.h:95
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -988,7 +1010,7 @@ msgstr ""
 "می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
 "مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:95
+#: ../src/metacity.schemas.in.h:96
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1002,7 +1024,7 @@ msgstr ""
 "می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
 "مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:96
+#: ../src/metacity.schemas.in.h:97
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1016,7 +1038,7 @@ msgstr ""
 "می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
 "مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:97
+#: ../src/metacity.schemas.in.h:98
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1030,7 +1052,7 @@ msgstr ""
 "می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
 "مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:98
+#: ../src/metacity.schemas.in.h:99
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1044,7 +1066,7 @@ msgstr ""
 "می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
 "مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:99
+#: ../src/metacity.schemas.in.h:100
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1058,7 +1080,7 @@ msgstr ""
 "می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
 "مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:100
+#: ../src/metacity.schemas.in.h:101
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1072,7 +1094,7 @@ msgstr ""
 "می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
 "مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:101
+#: ../src/metacity.schemas.in.h:102
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1086,7 +1108,7 @@ msgstr ""
 "می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
 "مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:102
+#: ../src/metacity.schemas.in.h:103
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1100,7 +1122,7 @@ msgstr ""
 "می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
 "مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:103
+#: ../src/metacity.schemas.in.h:104
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1114,7 +1136,7 @@ msgstr ""
 "می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی«disabled» قرار دهید، کلید مقیدی "
 "برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:104
+#: ../src/metacity.schemas.in.h:105
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1128,7 +1150,7 @@ msgstr ""
 "Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
 "قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:105
+#: ../src/metacity.schemas.in.h:106
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1142,7 +1164,7 @@ msgstr ""
 "Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
 "قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:106
+#: ../src/metacity.schemas.in.h:107
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1158,7 +1180,7 @@ msgstr ""
 "این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این "
 "کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:107
+#: ../src/metacity.schemas.in.h:108
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1174,7 +1196,7 @@ msgstr ""
 "می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
 "مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:108
+#: ../src/metacity.schemas.in.h:109
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1190,7 +1212,7 @@ msgstr ""
 "این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این "
 "کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:109
+#: ../src/metacity.schemas.in.h:110
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1204,7 +1226,7 @@ msgstr ""
 "Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
 "قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:110
+#: ../src/metacity.schemas.in.h:111
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1218,7 +1240,7 @@ msgstr ""
 "Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
 "قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:111
+#: ../src/metacity.schemas.in.h:112
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -1233,7 +1255,7 @@ msgstr ""
 "Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی "
 "ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:112
+#: ../src/metacity.schemas.in.h:113
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1248,7 +1270,7 @@ msgstr ""
 "و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
 "«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:113
+#: ../src/metacity.schemas.in.h:114
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1263,7 +1285,7 @@ msgstr ""
 "Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با  رشته‌ی "
 "ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:114
+#: ../src/metacity.schemas.in.h:115
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1277,7 +1299,7 @@ msgstr ""
 "Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی "
 "ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:115
+#: ../src/metacity.schemas.in.h:116
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1291,7 +1313,7 @@ msgstr ""
 "و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
 "«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:116
+#: ../src/metacity.schemas.in.h:117
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1305,7 +1327,7 @@ msgstr ""
 "و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
 "«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:117
+#: ../src/metacity.schemas.in.h:118
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1319,7 +1341,7 @@ msgstr ""
 "و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
 "«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:118
+#: ../src/metacity.schemas.in.h:119
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1333,7 +1355,7 @@ msgstr ""
 "و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
 "«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:119
+#: ../src/metacity.schemas.in.h:120
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1347,7 +1369,7 @@ msgstr ""
 "و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
 "«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:120
+#: ../src/metacity.schemas.in.h:121
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1361,7 +1383,7 @@ msgstr ""
 "و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
 "«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:121
+#: ../src/metacity.schemas.in.h:122
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1375,7 +1397,7 @@ msgstr ""
 "و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
 "«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:122
+#: ../src/metacity.schemas.in.h:123
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1389,7 +1411,7 @@ msgstr ""
 "و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
 "«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:123
+#: ../src/metacity.schemas.in.h:124
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1403,7 +1425,7 @@ msgstr ""
 "و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
 "«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:124
+#: ../src/metacity.schemas.in.h:125
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1417,7 +1439,7 @@ msgstr ""
 "و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
 "«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:125
+#: ../src/metacity.schemas.in.h:126
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1431,7 +1453,7 @@ msgstr ""
 "و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
 "«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:126
+#: ../src/metacity.schemas.in.h:127
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1445,7 +1467,7 @@ msgstr ""
 "و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی "
 "«disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:127
+#: ../src/metacity.schemas.in.h:128
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1461,7 +1483,7 @@ msgstr ""
 "می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
 "مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:128
+#: ../src/metacity.schemas.in.h:129
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1477,7 +1499,7 @@ msgstr ""
 "می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
 "مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:129
+#: ../src/metacity.schemas.in.h:130
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1495,7 +1517,7 @@ msgstr ""
 "برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود "
 "نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:130
+#: ../src/metacity.schemas.in.h:131
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1513,7 +1535,7 @@ msgstr ""
 "برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود "
 "نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:131
+#: ../src/metacity.schemas.in.h:132
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1529,7 +1551,7 @@ msgstr ""
 "گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش "
 "وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:132
+#: ../src/metacity.schemas.in.h:133
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1545,7 +1567,7 @@ msgstr ""
 "گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش "
 "وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:133
+#: ../src/metacity.schemas.in.h:134
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1562,7 +1584,7 @@ msgstr ""
 "برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود "
 "نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:134
+#: ../src/metacity.schemas.in.h:135
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1580,7 +1602,7 @@ msgstr ""
 "می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
 "مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:135
+#: ../src/metacity.schemas.in.h:136
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1596,7 +1618,7 @@ msgstr ""
 "این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این "
 "کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:136
+#: ../src/metacity.schemas.in.h:137
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1610,7 +1632,7 @@ msgstr ""
 "این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این "
 "کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:137
+#: ../src/metacity.schemas.in.h:138
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1624,7 +1646,7 @@ msgstr ""
 "این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این "
 "کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:138
+#: ../src/metacity.schemas.in.h:139
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1638,7 +1660,7 @@ msgstr ""
 "Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
 "قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:139
+#: ../src/metacity.schemas.in.h:140
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1653,7 +1675,7 @@ msgstr ""
 "Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی "
 "ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:140
+#: ../src/metacity.schemas.in.h:141
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1667,7 +1689,7 @@ msgstr ""
 "Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
 "قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:141
+#: ../src/metacity.schemas.in.h:142
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1682,7 +1704,7 @@ msgstr ""
 "Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی "
 "ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:142
+#: ../src/metacity.schemas.in.h:143
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1696,7 +1718,7 @@ msgstr ""
 "می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
 "مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:143
+#: ../src/metacity.schemas.in.h:144
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1712,7 +1734,7 @@ msgstr ""
 "با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد "
 "داشت."
 
-#: ../src/metacity.schemas.in.h:144
+#: ../src/metacity.schemas.in.h:145
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1727,7 +1749,7 @@ msgstr ""
 "Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
 "قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:145
+#: ../src/metacity.schemas.in.h:146
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1741,22 +1763,22 @@ msgstr ""
 "Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
 "قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:146
+#: ../src/metacity.schemas.in.h:147
 msgid "The name of a workspace."
 msgstr "نام فضای کاری."
 
-#: ../src/metacity.schemas.in.h:147
+#: ../src/metacity.schemas.in.h:148
 msgid "The screenshot command"
 msgstr "فرمان عکس از صفحه"
 
-#: ../src/metacity.schemas.in.h:148
+#: ../src/metacity.schemas.in.h:149
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr ""
-"تم، قیافه‌ی حاشیه‌ی پنجره‌ها، نوار عنوان و چیزهایی از این دست را تعیین می‌کند. "
+"تم، قیافه‌ی کناره‌ی پنجره‌ها، نوار عنوان و چیزهایی از این دست را تعیین می‌کند."
 
-#: ../src/metacity.schemas.in.h:149
+#: ../src/metacity.schemas.in.h:150
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -1764,7 +1786,7 @@ msgstr ""
 "تأخیر زمانی قبل از پیش کشیدن پنجره در صورتی که auto_raise روی درست تنظیم شده "
 "باشد. تأخیر به هزارم ثانیه داده شده است."
 
-#: ../src/metacity.schemas.in.h:150
+#: ../src/metacity.schemas.in.h:151
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1778,11 +1800,11 @@ msgstr ""
 "موشی وارد پنجره‌ای شد تمرکز روی آن قرار بگیرد و وقتی خارج شد تمرکز از روی آن "
 "برداشته شود."
 
-#: ../src/metacity.schemas.in.h:151
+#: ../src/metacity.schemas.in.h:152
 msgid "The window screenshot command"
 msgstr "فرمان عکس از صفحه‌ی پنجره"
 
-#: ../src/metacity.schemas.in.h:152
+#: ../src/metacity.schemas.in.h:153
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another window, it raises the window above other "
@@ -1801,7 +1823,7 @@ msgstr ""
 "Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
 "قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:153
+#: ../src/metacity.schemas.in.h:154
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1815,7 +1837,7 @@ msgstr ""
 "Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
 "قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:154
+#: ../src/metacity.schemas.in.h:155
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1829,7 +1851,7 @@ msgstr ""
 "Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» "
 "قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:155
+#: ../src/metacity.schemas.in.h:156
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1844,7 +1866,7 @@ msgstr ""
 "Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی "
 "ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:156
+#: ../src/metacity.schemas.in.h:157
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1859,37 +1881,40 @@ msgstr ""
 "Ctl&gt;» و «&lt;Ctrl&gt;» را قبول می‌کند. اگر این گزینه را برابر با رشته‌ی "
 "ویژه‌ی «disabled» قرار دهید، کلید مقیدی برای این کنش وجود نخواهد داشت."
 
-#: ../src/metacity.schemas.in.h:157
+#: ../src/metacity.schemas.in.h:158
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, and 'toggle_maximize' which will maximize/unmaximize the window."
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'minimize' which will minimize the window, and 'none' which will not do "
+"anything."
 msgstr ""
-"گزینه‌ای که تأثیر دوبار کلیک روی نوار عنوان را تعیین می‌کند. گزینه‌های معتبر "
-"فعلی «toggle_shade» که پنجره را سایه خورده یا بدون سایه می‌کند و "
-"«toggle_maximize» که پنجره را حداکثر یا ناحداکثر می‌کند هستند."
+"این گزینه تأثیر دوبار کلیک روی نوار عنوان را تعیین می‌کند. گزینه‌های معتبر "
+"فعلی عبارتند از «toggle_shade» که پنجره را سایه خورده یا بدون سایه می‌کند، "
+"«toggle_maximize» که پنجره را حداکثر یا ناحداکثر می‌کند، «minimize»که پنجره "
+"را حداقل می‌کند، و «none» که کاری انجام نمی‌دهد."
 
-#: ../src/metacity.schemas.in.h:158
+#: ../src/metacity.schemas.in.h:159
 msgid "Toggle always on top state"
 msgstr "ضامن همیشه در وضعیت بالایی"
 
-#: ../src/metacity.schemas.in.h:159
+#: ../src/metacity.schemas.in.h:160
 msgid "Toggle fullscreen mode"
 msgstr "ضامن حالت تمام صفحه"
 
-#: ../src/metacity.schemas.in.h:160
+#: ../src/metacity.schemas.in.h:161
 msgid "Toggle maximization state"
 msgstr "ضامن همیشه در وضیعت حداکثر"
 
-#: ../src/metacity.schemas.in.h:161
+#: ../src/metacity.schemas.in.h:162
 msgid "Toggle shaded state"
 msgstr "ضامن وضعیت سایه خورده"
 
-#: ../src/metacity.schemas.in.h:162
+#: ../src/metacity.schemas.in.h:163
 msgid "Toggle window on all workspaces"
 msgstr "ضامن پنجره در تمام فضاهای کاری"
 
-#: ../src/metacity.schemas.in.h:163
+#: ../src/metacity.schemas.in.h:164
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
@@ -1899,37 +1924,42 @@ msgstr ""
 "می‌کند: مفید برای گوش‌های سنگین و برای استفاده در محیط‌های پر سر و صدا یا زمانی "
 "که «زنگ شنیداری» خاموش است."
 
-#: ../src/metacity.schemas.in.h:164
+#: ../src/metacity.schemas.in.h:165
 msgid "Unmaximize window"
 msgstr "ناحداکثر کردن پنجره"
 
-#: ../src/metacity.schemas.in.h:165
+#: ../src/metacity.schemas.in.h:166
 msgid "Use standard system font in window titles"
 msgstr "استفاده از قلم استاندارد سیستم در عنوان پنجره‌ها"
 
-#: ../src/metacity.schemas.in.h:166
+#: ../src/metacity.schemas.in.h:167
 msgid "Visual Bell Type"
 msgstr "نوع زنگ دیداری"
 
-#: ../src/metacity.schemas.in.h:167
+#: ../src/metacity.schemas.in.h:168
+msgid "Whether raising should be a side-effect of other user interactions"
+msgstr ""
+
+#: ../src/metacity.schemas.in.h:169
 msgid "Window focus mode"
 msgstr "حالت تمرکز پنجره"
 
-#: ../src/metacity.schemas.in.h:168
+#: ../src/metacity.schemas.in.h:170
 msgid "Window title font"
 msgstr "قلم عنوان پنجره"
 
-#: ../src/prefs.c:528 ../src/prefs.c:544 ../src/prefs.c:560 ../src/prefs.c:576
-#: ../src/prefs.c:592 ../src/prefs.c:612 ../src/prefs.c:628 ../src/prefs.c:644
-#: ../src/prefs.c:660 ../src/prefs.c:676 ../src/prefs.c:692 ../src/prefs.c:708
-#: ../src/prefs.c:724 ../src/prefs.c:741 ../src/prefs.c:757 ../src/prefs.c:773
-#: ../src/prefs.c:789 ../src/prefs.c:805 ../src/prefs.c:820 ../src/prefs.c:835
-#: ../src/prefs.c:850 ../src/prefs.c:866 ../src/prefs.c:882 ../src/prefs.c:898
+#: ../src/prefs.c:560 ../src/prefs.c:576 ../src/prefs.c:592 ../src/prefs.c:608
+#: ../src/prefs.c:624 ../src/prefs.c:640 ../src/prefs.c:660 ../src/prefs.c:676
+#: ../src/prefs.c:692 ../src/prefs.c:708 ../src/prefs.c:724 ../src/prefs.c:740
+#: ../src/prefs.c:756 ../src/prefs.c:772 ../src/prefs.c:789 ../src/prefs.c:805
+#: ../src/prefs.c:821 ../src/prefs.c:837 ../src/prefs.c:853 ../src/prefs.c:868
+#: ../src/prefs.c:883 ../src/prefs.c:898 ../src/prefs.c:914 ../src/prefs.c:930
+#: ../src/prefs.c:946
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "کلید «%s» GConf از نوع نامعتبری تنظیم شده است\n"
 
-#: ../src/prefs.c:943
+#: ../src/prefs.c:991
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -1938,17 +1968,26 @@ msgstr ""
 "«%s» پیدا شده در پایگاه‌داده‌ی پیکربندی مقدار معتبری برای تغییردهنده‌ی دکمه‌ی "
 "موشی نیست\n"
 
-#: ../src/prefs.c:967 ../src/prefs.c:1428
+#: ../src/prefs.c:1015 ../src/prefs.c:1505
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "کلید \"%s\" GCon به مقدار نامعتبری تنظیم شده است\n"
+msgstr "کلید «%s» GCon به مقدار نامعتبری تنظیم شده است\n"
 
-#: ../src/prefs.c:1145
+#: ../src/prefs.c:1138
+#, c-format
+msgid ""
+"%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
+"range 1..128\n"
+msgstr ""
+"%Id ذخیره شده در کلید %s GConf عدد معقولی برای اندازه‌ی مکان‌نما نیست؛ باید در "
+"محدوده‌ی ۱ تا ۱۲۸ باشد\n"
+
+#: ../src/prefs.c:1218
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "تجزیه‌ی شرح قلم «%s» از کلید GConf %s ممکن نیست\n"
 
-#: ../src/prefs.c:1330
+#: ../src/prefs.c:1403
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1957,7 +1996,7 @@ msgstr ""
 "%Id ذخیره شده در کلید %s GConf عدد معقولی برای تعداد فضاهای کاری نیست، "
 "حداکثر فعلی %Id است\n"
 
-#: ../src/prefs.c:1390
+#: ../src/prefs.c:1463
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1965,17 +2004,17 @@ msgstr ""
 "دور زدن برنامه‌های از کار افتاده، از کار انداخته شده است. بعضی از برنامه‌ها "
 "ممکن است رفتار مناسبی نداشته باشند.\n"
 
-#: ../src/prefs.c:1455
+#: ../src/prefs.c:1532
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%Id ذخیره شده در کلید GConf %s خارج از محدوده‌ی ۰ تا %Id است\n"
 
-#: ../src/prefs.c:1589
+#: ../src/prefs.c:1669
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "خطای تنظیم تعداد فضاهای کاری به %Id: %s\n"
 
-#: ../src/prefs.c:1833
+#: ../src/prefs.c:2005
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -1984,7 +2023,7 @@ msgstr ""
 "«%s» که در پایگاه داده‌ی پیکربندی پیدا شده مقدار معتبری برای کلید مقید «%s» "
 "نیست\n"
 
-#: ../src/prefs.c:2187
+#: ../src/prefs.c:2360
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "خطای تنظیم نام فضای کاری %Id به \"%s\": %s\n"
@@ -1994,12 +2033,12 @@ msgstr "خطای تنظیم نام فضای کاری %Id به \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%Id × %Id"
 
-#: ../src/screen.c:408
+#: ../src/screen.c:403
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "صفحه‌ی %Id روی نمایشگر «%s» نامعتبر است\n"
 
-#: ../src/screen.c:424
+#: ../src/screen.c:419
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2008,86 +2047,86 @@ msgstr ""
 "صفحه‌ی %Id روی نمایشگر «%s» مدیر پنجره‌ها دارد. برای جایگزین کردنمدیر پنجره‌های "
 "فعلی از گزینه‌ی --replace استفاده کنید.\n"
 
-#: ../src/screen.c:448
+#: ../src/screen.c:443
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "انتخاب مدیر پنجره‌ها روی صفحه‌ی %Id نمایش «%s»\n"
 
-#: ../src/screen.c:506
+#: ../src/screen.c:501
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "صفحه‌ی %Id روی نمایشگر «%s» مدیر پنجره دارد\n"
 
-#: ../src/screen.c:716
+#: ../src/screen.c:702
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "آزاد کردن صفحه‌ی %Id روی نمایشگر «%s» ممکن نیست\n"
 
-#: ../src/session.c:884 ../src/session.c:891
+#: ../src/session.c:835 ../src/session.c:842
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "ایجاد شاخه‌ی «%s» ممکن نیست: %s\n"
 
-#: ../src/session.c:901
+#: ../src/session.c:852
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "باز کردن پرونده‌ی نشست «%s» برای نوشتن ممکن نیست: %s\n"
 
-#: ../src/session.c:1053
+#: ../src/session.c:1004
 #, c-format
 msgid "Error writing session file '%s': %s\n"
-msgstr "خطا در نوشتن پرونده‌ی نشست '%s': %s\n"
+msgstr "خطا در نوشتن پرونده‌ی نشست «%s»: %s\n"
 
-#: ../src/session.c:1058
+#: ../src/session.c:1009
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr "خطا در بستن پرونده‌ی نشست '%s': %s\n"
+msgstr "خطا در بستن پرونده‌ی نشست «%s»: %s\n"
 
-#: ../src/session.c:1133
+#: ../src/session.c:1084
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "شکست در خواندن پرونده‌ی نشست ذخیره شده %s: %s\n"
 
-#: ../src/session.c:1168
+#: ../src/session.c:1119
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "شکست در تجزیه‌ی پرونده‌ی نشست ذخیره شده: %s\n"
 
-#: ../src/session.c:1217
+#: ../src/session.c:1168
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "مشخصه‌ی <metacity_session> دیده شد اما شناسه‌ی نشست از قبل موجود بود"
 
-#: ../src/session.c:1230
+#: ../src/session.c:1181
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "مشخصه‌ی %s روی عنصر <metacity_session> نامعلوم است"
 
-#: ../src/session.c:1247
+#: ../src/session.c:1198
 msgid "nested <window> tag"
 msgstr "برچسب <window> تودرتو است"
 
-#: ../src/session.c:1305 ../src/session.c:1337
+#: ../src/session.c:1256 ../src/session.c:1288
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "مشخصه‌ی ‌%s روی عنصر <window> نامعلوم است"
 
-#: ../src/session.c:1409
+#: ../src/session.c:1360
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "مشخصه‌ی ‌%s روی عنصر <maximized> نامعلوم است"
 
-#: ../src/session.c:1469
+#: ../src/session.c:1420
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "مشخصه‌ی ‌%s روی عنصر <geometry> نامعلوم است"
 
-#: ../src/session.c:1489
+#: ../src/session.c:1440
 #, c-format
 msgid "Unknown element %s"
 msgstr "عنصر %s نامعلوم است"
 
-#: ../src/session.c:1961
+#: ../src/session.c:1906
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2160,7 +2199,7 @@ msgstr ""
 #: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
-msgstr "مشخصه‌ی «%s» روی عنصر <%s> وجود ندارد"
+msgstr "عنصر <%2$s> مشخصه‌ی «%1$s» ندارد"
 
 #: ../src/theme-parser.c:837 ../src/theme-parser.c:905
 #: ../src/theme-parser.c:943 ../src/theme-parser.c:1020
@@ -2282,7 +2321,7 @@ msgstr "عنصر <%s> مشخصه‌ی «right» ندارد"
 #: ../src/theme-parser.c:1499
 #, c-format
 msgid "Border \"%s\" is unknown"
-msgstr "حاشیه «%s» نامعلوم است"
+msgstr "کناره‌ی «%s» نامعلوم است"
 
 #: ../src/theme-parser.c:1655 ../src/theme-parser.c:1765
 #: ../src/theme-parser.c:1868 ../src/theme-parser.c:2055
@@ -2629,158 +2668,156 @@ msgstr "شکست در خواندن تم از پرونده‌ی %s: %s\n"
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "پرونده‌ی تم %s شامل یک عنصر <metacity_theme> شاخه نیست"
 
-#: ../src/theme-viewer.c:70
+#: ../src/theme-viewer.c:72
 msgid "/_Windows"
 msgstr "/پنجره‌ها"
 
-#: ../src/theme-viewer.c:71
+#: ../src/theme-viewer.c:73
 msgid "/Windows/tearoff"
 msgstr "پنجره‌ها/کنده‌شدنی"
 
-#: ../src/theme-viewer.c:72
+#: ../src/theme-viewer.c:74
 msgid "/Windows/_Dialog"
 msgstr "/پنجره‌ها/محاوره"
 
-#: ../src/theme-viewer.c:73
+#: ../src/theme-viewer.c:75
 msgid "/Windows/_Modal dialog"
 msgstr "پنجره‌ها/محاوره‌ی وجهی"
 
-#: ../src/theme-viewer.c:74
+#: ../src/theme-viewer.c:76
 msgid "/Windows/_Utility"
 msgstr "پنجره‌ها/برنامه"
 
-#: ../src/theme-viewer.c:75
+#: ../src/theme-viewer.c:77
 msgid "/Windows/_Splashscreen"
 msgstr ""
 
-#: ../src/theme-viewer.c:76
+#: ../src/theme-viewer.c:78
 msgid "/Windows/_Top dock"
 msgstr ""
 
-#: ../src/theme-viewer.c:77
+#: ../src/theme-viewer.c:79
 msgid "/Windows/_Bottom dock"
 msgstr ""
 
-#: ../src/theme-viewer.c:78
+#: ../src/theme-viewer.c:80
 msgid "/Windows/_Left dock"
 msgstr ""
 
-#: ../src/theme-viewer.c:79
+#: ../src/theme-viewer.c:81
 msgid "/Windows/_Right dock"
 msgstr ""
 
-#: ../src/theme-viewer.c:80
+#: ../src/theme-viewer.c:82
 msgid "/Windows/_All docks"
 msgstr ""
 
-#: ../src/theme-viewer.c:81
+#: ../src/theme-viewer.c:83
 msgid "/Windows/Des_ktop"
 msgstr "/پنجره‌ها/رومیزی"
 
-#: ../src/theme-viewer.c:131
+#: ../src/theme-viewer.c:132
 msgid "Open another one of these windows"
 msgstr "یکی دیگر از این پنجره‌ها بازشود"
 
-#: ../src/theme-viewer.c:138
+#: ../src/theme-viewer.c:139
 msgid "This is a demo button with an 'open' icon"
 msgstr "این یک دکمه‌ی نمایشی با شمایل «بازکردن» است"
 
-#: ../src/theme-viewer.c:145
+#: ../src/theme-viewer.c:146
 msgid "This is a demo button with a 'quit' icon"
 msgstr "این یک دکمه‌ی نمایشی با شمایل «ترک» است"
 
-#: ../src/theme-viewer.c:241
+#: ../src/theme-viewer.c:239
 msgid "This is a sample message in a sample dialog"
 msgstr "این یک پیغام نمونه در یک محاوره‌ی نمونه است"
 
-#: ../src/theme-viewer.c:324
+#: ../src/theme-viewer.c:322
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "مورد %Id منوی جعلی\n"
 
-#: ../src/theme-viewer.c:358
-#, fuzzy
+#: ../src/theme-viewer.c:356
 msgid "Border-only window"
-msgstr "پنجره‌ی فقط حاشیه"
+msgstr "پنجره‌ی فقط کناره‌دار"
 
-#: ../src/theme-viewer.c:360
+#: ../src/theme-viewer.c:358
 msgid "Bar"
 msgstr "نوار"
 
-#: ../src/theme-viewer.c:377
+#: ../src/theme-viewer.c:375
 msgid "Normal Application Window"
-msgstr "پنجره عادی برنامه"
+msgstr "پنجره‌ی عادی برنامه"
 
-#: ../src/theme-viewer.c:382
+#: ../src/theme-viewer.c:379
 msgid "Dialog Box"
 msgstr "جعبه‌ی محاوره"
 
-#: ../src/theme-viewer.c:387
-#, fuzzy
+#: ../src/theme-viewer.c:383
 msgid "Modal Dialog Box"
-msgstr "جعبه‌ی محاوره‌ی وجهی"
+msgstr "جعبه‌ی محاوره‌ی چند حالتی"
 
-#: ../src/theme-viewer.c:392
+#: ../src/theme-viewer.c:387
 msgid "Utility Palette"
 msgstr "تخته‌رنگ برنامه‌"
 
-#: ../src/theme-viewer.c:397
+#: ../src/theme-viewer.c:391
 msgid "Torn-off Menu"
 msgstr "منوی کنده شدنی"
 
-#: ../src/theme-viewer.c:402
+#: ../src/theme-viewer.c:395
 msgid "Border"
-msgstr "حاشیه"
+msgstr "کناره"
 
-#: ../src/theme-viewer.c:731
+#: ../src/theme-viewer.c:723
 #, c-format
 msgid "Button layout test %d"
 msgstr "آزمایش %Id چیدمان دکمه‌ها"
 
-#: ../src/theme-viewer.c:760
+#: ../src/theme-viewer.c:752
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%Ig میلی ثانیه برای کشیدن چارچوب یک پنجره"
 
-#: ../src/theme-viewer.c:803
+#: ../src/theme-viewer.c:795
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "کاربرد: metacity-theme-viewer [THEMENAME]\n"
 
-#: ../src/theme-viewer.c:810
+#: ../src/theme-viewer.c:802
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "خطا در بارگذاری تم : %s\n"
 
-#: ../src/theme-viewer.c:816
+#: ../src/theme-viewer.c:808
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "تم‌ «%s» در %Ig ثانیه بارشد\n"
 
-#: ../src/theme-viewer.c:839
+#: ../src/theme-viewer.c:831
 msgid "Normal Title Font"
 msgstr "قلم عنوان عادی"
 
-#: ../src/theme-viewer.c:845
+#: ../src/theme-viewer.c:837
 msgid "Small Title Font"
 msgstr "قلم عنوان ریز"
 
-#: ../src/theme-viewer.c:851
+#: ../src/theme-viewer.c:843
 msgid "Large Title Font"
 msgstr "قلم عنوان درشت"
 
-#: ../src/theme-viewer.c:856
+#: ../src/theme-viewer.c:848
 msgid "Button Layouts"
 msgstr "چیدمان‌های دکمه‌ها"
 
-#: ../src/theme-viewer.c:861
+#: ../src/theme-viewer.c:853
 msgid "Benchmark"
 msgstr "آزمایش محک"
 
-#: ../src/theme-viewer.c:908
+#: ../src/theme-viewer.c:900
 msgid "Window Title Goes Here"
 msgstr "عنوان پنجره اینجا قرار می‌گیرد"
 
-#: ../src/theme-viewer.c:1012
+#: ../src/theme-viewer.c:1004
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -2790,39 +2827,39 @@ msgstr ""
 "%Id چارچوب در %Ig ثانیه‌ی سمت مخدوم (%Ig میلی ثانیه برای هر چارچوب) و %Ig "
 "ثانیه‌ی ساعت دیواری شامل منابع خادم X (%Ig میلی ثانیه برای هر چارچوب)\n"
 
-#: ../src/theme-viewer.c:1227
+#: ../src/theme-viewer.c:1219
 msgid "position expression test returned TRUE but set error"
 msgstr "آزمایش عبارت وضعیت، درست بازگرداند ولی خطا تنظیم کرد"
 
-#: ../src/theme-viewer.c:1229
+#: ../src/theme-viewer.c:1221
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "آزمایش عبارت وضعیت، نادرست بازگرداند ولی خطایی تنظیم نکرد"
 
-#: ../src/theme-viewer.c:1233
+#: ../src/theme-viewer.c:1225
 msgid "Error was expected but none given"
-msgstr "انتظار خطا می‌رفت ولی خطایی مشاهده نشد "
+msgstr "انتظار خطا می‌رفت ولی خطایی مشاهده نشد"
 
-#: ../src/theme-viewer.c:1235
+#: ../src/theme-viewer.c:1227
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "انتظار خطای %Id می‌رفت ولی خطای %Id مشاهده شد"
 
-#: ../src/theme-viewer.c:1241
+#: ../src/theme-viewer.c:1233
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "انتظار خطا نمی‌رفت ولی خطایی برگردانده شد: %s"
 
-#: ../src/theme-viewer.c:1245
+#: ../src/theme-viewer.c:1237
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "مقدار x %Id بود، %Id انتظار می‌رفت"
 
-#: ../src/theme-viewer.c:1248
+#: ../src/theme-viewer.c:1240
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "مقدار y %Id بود، %Id انتظار می‌رفت"
 
-#: ../src/theme-viewer.c:1310
+#: ../src/theme-viewer.c:1303
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%Id عبارت مختصاتی در %Ig ثانیه تجزیه شد (متوسط %Ig ثانیه)\n"
@@ -2851,22 +2888,22 @@ msgstr "پیکربندی ظاهری چارچوب بعد «%s» را مشخص ن�
 #: ../src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "پیکربندی ظاهری چارچوب بعد «%s» را برای حاشیه‌ی «%s» مشخص نمی‌کند"
+msgstr "پیکربندی ظاهری چارچوب بعد «%s» را برای کناره‌ی «%s» مشخص نمی‌کند"
 
 #: ../src/theme.c:278
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
-msgstr "%Ig  به عنوان نسبت طول به عرض دکمه معقول نیست"
+msgstr "%Ig به عنوان نسبت طول به عرض دکمه معقول نیست"
 
 #: ../src/theme.c:290
 msgid "Frame geometry does not specify size of buttons"
 msgstr "پیکربندی ظاهری چارچوب اندازه‌ی دکمه‌ها را مشخص نمی‌کند"
 
-#: ../src/theme.c:843
+#: ../src/theme.c:842
 msgid "Gradients should have at least two colors"
 msgstr "شیب‌ها باید حداقل دو رنگ داشته باشند"
 
-#: ../src/theme.c:969
+#: ../src/theme.c:968
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -2875,7 +2912,7 @@ msgstr ""
 "وضعیت در مشخصه‌ی رنگ GTK باید داخل قلاب نوشته شود، به طور مثال gtk:fg[NORMAL] "
 "که NORMAL وضعیت است: »%s» قابل تجزیه نیست"
 
-#: ../src/theme.c:983
+#: ../src/theme.c:982
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -2884,17 +2921,17 @@ msgstr ""
 "در مشخصه‌ی رنگ GTK باید بعد از وضعیت، قلاب بسته داشته باشد، به طور مثال gtk:fg"
 "[NORMAL] که NORMAL وضعیت است: »%s» قابل تجزیه نیست"
 
-#: ../src/theme.c:994
+#: ../src/theme.c:993
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "وضعیت «%s» در مشخصه‌ی رنگ قابل درک نیست"
 
-#: ../src/theme.c:1007
+#: ../src/theme.c:1006
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "مؤلفه‌ی «%s» در مشخصه‌ی رنگ قابل درک نیست"
 
-#: ../src/theme.c:1037
+#: ../src/theme.c:1036
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -2902,91 +2939,91 @@ msgid ""
 msgstr ""
 "قالب ترکیب «blend/bg_color/fg_color/alpha» است، «%s» در قالب اندازه نمی‌شود"
 
-#: ../src/theme.c:1048
+#: ../src/theme.c:1047
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "ارزش آلفای «%s» در رنگ ترکیب شده قابل تجزیه نیست"
 
-#: ../src/theme.c:1058
+#: ../src/theme.c:1057
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "ارزش آلفای «%s» در رنگ ترکیب شده بین ۰٫۰ و ۱٫۰ نیست"
 
-#: ../src/theme.c:1105
+#: ../src/theme.c:1104
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "قالب سایه «shade/base_color/factor» است، «%s» در قالب اندازه نمی‌شود"
 
-#: ../src/theme.c:1116
+#: ../src/theme.c:1115
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "‌عامل سایه‌ی «%s» در رنگ سایه خورده قابل تجزیه نیست"
 
-#: ../src/theme.c:1126
+#: ../src/theme.c:1125
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "عامل سایه‌ی «%s» در رنگ سایه خورده منفی است"
 
-#: ../src/theme.c:1155
+#: ../src/theme.c:1154
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "رنگ «%s» قابل تجزیه نیست"
 
-#: ../src/theme.c:1417
+#: ../src/theme.c:1416
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "عبارت مختصاتی شامل نویسه‌ی «%s» است که جایز نیست"
 
-#: ../src/theme.c:1444
+#: ../src/theme.c:1443
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "عبارت مختصاتی شامل عدد اعشار ممیز شناور «%s» است که قابل تجزیه نیست"
 
-#: ../src/theme.c:1458
+#: ../src/theme.c:1457
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "عبارت مختصاتی شامل عددصحیح «%s» است که قابل تجزیه نیست"
 
-#: ../src/theme.c:1525
+#: ../src/theme.c:1524
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr "عبارت مختصاتی شامل عملگر نامعلومی در ابتدای متن است: «%s»"
 
-#: ../src/theme.c:1582
+#: ../src/theme.c:1581
 msgid "Coordinate expression was empty or not understood"
 msgstr "عبارت مختصاتی خالی بود یا قابل درک نبود"
 
-#: ../src/theme.c:1725 ../src/theme.c:1735 ../src/theme.c:1769
+#: ../src/theme.c:1724 ../src/theme.c:1734 ../src/theme.c:1768
 msgid "Coordinate expression results in division by zero"
 msgstr "عبارت مختصاتی موجب تقسیم به صفر می‌شود"
 
-#: ../src/theme.c:1777
+#: ../src/theme.c:1776
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "عبارت مختصاتی سعی دارد از عملگر باقی مانده روی عدد اعشاری ممیز شناوری استفاد "
 "کند"
 
-#: ../src/theme.c:1834
+#: ../src/theme.c:1832
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr " عبارت مختصاتی در جایی که انتظار عملوند می‌رفت، عملگر«%s» داشت"
 
-#: ../src/theme.c:1843
+#: ../src/theme.c:1841
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "عبارت مختصاتی در جایی که انتظار عملگر "
 
-#: ../src/theme.c:1851
+#: ../src/theme.c:1849
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "عبارت مختصاتی به جای عملوند با عملگر تمام می‌شود"
 
-#: ../src/theme.c:1861
+#: ../src/theme.c:1859
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -2994,7 +3031,7 @@ msgid ""
 msgstr ""
 "در عبارت مختصاتی، عملگر «%c» بدون هیچ عملوندی به دنبال عملگر «%c» آمده است"
 
-#: ../src/theme.c:1980
+#: ../src/theme.c:1978
 msgid ""
 "Coordinate expression parser overflowed its buffer, this is really a "
 "Metacity bug, but are you sure you need a huge expression like that?"
@@ -3002,29 +3039,29 @@ msgstr ""
 "تجزیه‌گر عبارت مختصاتی میانگیرش را سریز کرد، این واقعاً اشکال متاسیتی است، اما "
 "شما مطمئنید که به چنین عبارت بزرگی نیاز دارید؟"
 
-#: ../src/theme.c:2009
+#: ../src/theme.c:2007
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "عبارت مختصاتی پرانتر بسته‌ای دارد که پرانتز باز ندارد"
 
-#: ../src/theme.c:2072
+#: ../src/theme.c:2069
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "عبارت مختصاتی متغییر یا ثابت «%s» نامعلوم دارد"
 
-#: ../src/theme.c:2129
+#: ../src/theme.c:2126
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "عبارت مختصاتی پرانتر بازی دارد که پرانتز بسته ندارد"
 
-#: ../src/theme.c:2140
+#: ../src/theme.c:2137
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "به نظر نمی‌رسد که عبارت مختصاتی عملگر یا عملوندی داشته باشد"
 
-#: ../src/theme.c:2384 ../src/theme.c:2406 ../src/theme.c:2427
+#: ../src/theme.c:2381 ../src/theme.c:2403 ../src/theme.c:2424
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "تم شامل عبارت «%s» است که منجر به خطا می‌شود: %s\n"
 
-#: ../src/theme.c:3913
+#: ../src/theme.c:3910
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3033,25 +3070,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/>باید برای این "
 "سبک چارچوب مشخص شود"
 
-#: ../src/theme.c:4363 ../src/theme.c:4395
+#: ../src/theme.c:4360 ../src/theme.c:4392
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> نبود"
 
-#: ../src/theme.c:4446
+#: ../src/theme.c:4443
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "شکست در بارکردن تم «%s»: %s\n"
 
-#: ../src/theme.c:4592 ../src/theme.c:4599 ../src/theme.c:4606
-#: ../src/theme.c:4613 ../src/theme.c:4620
+#: ../src/theme.c:4597 ../src/theme.c:4604 ../src/theme.c:4611
+#: ../src/theme.c:4618 ../src/theme.c:4625
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "<%s> برای تم «%s» تنظیم نشده است"
 
-#: ../src/theme.c:4630
+#: ../src/theme.c:4635
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3060,7 +3097,7 @@ msgstr ""
 "سبک جارچوب برای نوع پنجره «%s» در تم «%s» تنظیم نشده است، یک عنصر <window "
 "type=\"%s\" style_set=\"whatever\"/>  اضافه کنید"
 
-#: ../src/theme.c:4652
+#: ../src/theme.c:4657
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3069,7 +3106,7 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> باید برای "
 "این تم مشخص شود "
 
-#: ../src/theme.c:5041 ../src/theme.c:5103
+#: ../src/theme.c:5046 ../src/theme.c:5108
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -3077,49 +3114,49 @@ msgstr ""
 "ثابت‌هایی که کاربر تعریف کرده اسن باید با حروف بزرگ شروع شوند؛ «%s» این طور "
 "نیست "
 
-#: ../src/theme.c:5049 ../src/theme.c:5111
+#: ../src/theme.c:5054 ../src/theme.c:5116
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "ثابت «%s» قبلاً تعریف شده است"
 
-#: ../src/util.c:93
+#: ../src/util.c:96
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "شکست در بازکردن ثبت وقایع اشکال‌زدایی: %s\n"
 
-#: ../src/util.c:103
+#: ../src/util.c:106
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "شکست در انجام fdopen() پرونده‌ی ثبتی %s: %s\n"
 
-#: ../src/util.c:109
+#: ../src/util.c:112
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "پرونده‌ی ثبتی %s باز شد\n"
 
-#: ../src/util.c:203
+#: ../src/util.c:220
 msgid "Window manager: "
 msgstr "مدیر پنجره‌ها: "
 
-#: ../src/util.c:349
+#: ../src/util.c:366
 msgid "Bug in window manager: "
 msgstr "اشکال در مدیر پنجره‌ها: "
 
-#: ../src/util.c:378
+#: ../src/util.c:395
 msgid "Window manager warning: "
 msgstr "هشدار مدیر پنجره‌ها: "
 
-#: ../src/util.c:402
+#: ../src/util.c:419
 msgid "Window manager error: "
 msgstr "خطای مدیر پنجره‌ها: "
 
-#: ../src/window-props.c:162
+#: ../src/window-props.c:169
 #, c-format
-msgid "Application set a bogus _NET_WM_PID %ld\n"
-msgstr "برنامه  _NET_WM_PID %Ild جعلی تنظیم کرده است\n"
+msgid "Application set a bogus _NET_WM_PID %lu\n"
+msgstr "برنامه  _NET_WM_PID %Ilu جعلی تنظیم کرده است\n"
 
 #. first time through
-#: ../src/window.c:5205
+#: ../src/window.c:5409
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3135,7 +3172,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5876
+#: ../src/window.c:6028
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3170,3 +3207,30 @@ msgstr "ویژگی %s روی پنجره‌ی 0x%lx UTf-8 نامعتبر دارد
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "ویژگی %s روی پنجره‌ی 0x%lx برای مورد %Id در فهرست، UTf-8 نامعتبر دارد\n"
+
+#~ msgid ""
+#~ "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
+#~ "focused window will be automatically raised after a delay (the delay is "
+#~ "specified by the auto_raise_delay key)."
+#~ msgstr ""
+#~ "اگر درست باشد و حالت تمرکز «sloppy» یا «mouse» باشد، پنجره‌یمورد تمرکز به "
+#~ "طور خودکار بعد از تاخیری که با auto_raise_delay مشخصمی‌شود، پیش کشیده "
+#~ "می‌شود."
+
+#~ msgid ""
+#~ "The keybinding that runs the correspondingly-numbered command in /apps/"
+#~ "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" "
+#~ "or \"&lt;Shift&gt;&lt;Alt&gt;F1. The parser is fairly liberal and allows "
+#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
+#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
+#~ "\", then there will be no keybinding for this action."
+#~ msgstr ""
+#~ "مقیدسازی کلیدی که فرمان correspondingly-numbered را در ‎/appsmetacity/"
+#~ "keybinding_commands اجرا می‌کند: قالب آن به شکل«&lt;Control&gt;a» یا «&lt;"
+#~ "Shift&gt;&lt;Alt&gt;F1» است. این تجزیه‌گر به نسبت آسان‌گیر است و حروف بزرگ "
+#~ "یا کوچک و خلاصه کردن  به شکل  «&lt;Ctl&gt;» و «&lt;Ctrl&gt;» را قبول "
+#~ "می‌کند. اگر این گزینه را برابر با رشته‌ی ویژه‌ی «disabled» قرار دهید، کلید "
+#~ "مقیدی برای این کنش وجود نخواهد داشت."
+
+#~ msgid "No \"%s\" attribute on element <%s>"
+#~ msgstr "عنصر <%2$s> مشخصه‌ی «%1$s» ندارد"
