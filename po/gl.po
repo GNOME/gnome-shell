@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-02-21 01:07+0100\n"
+"POT-Creation-Date: 2006-03-12 23:54+0100\n"
 "PO-Revision-Date: 2006-02-21 01:08+0100\n"
 "Last-Translator: Ignacio Casal Quinteiro <nacho.resa@gmail.com>\n"
 "Language-Team: Galego <trasno@ceu.fi.udc.es>\n"
@@ -53,7 +53,8 @@ msgstr "Ocorreu un erro lendo desde o proceso de diálogo de pantalla: %s\n"
 
 #: ../src/delete.c:345
 #, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 "Ocorreu un erro ao lanzar metacity-dialog para preguntar acerca de matar "
 "unha aplicación: %s\n"
@@ -68,7 +69,7 @@ msgstr "Fallo ao obter o nome do anfitrión : %s\n"
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Fallo ao abrir o sistema X Window, display '%s'\n"
 
-#: ../src/errors.c:233
+#: ../src/errors.c:269
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -79,7 +80,7 @@ msgstr ""
 "o máis seguro é que se saise do servidor de X ou que\n"
 "matase/destruise o xestor de fiestras.\n"
 
-#: ../src/errors.c:240
+#: ../src/errors.c:276
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Erro fatal de E/S %d (%s) no display '%s'.\n"
@@ -175,7 +176,8 @@ msgstr "Fallou ao escanear o directorio de temas: %s\n"
 
 #: ../src/main.c:455
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
 "Non se puido atopar o tema!. Asegúrese de que %s existe e contén os temas "
 "usuais."
@@ -251,7 +253,7 @@ msgstr "Mover ao escritorio de _arriba"
 msgid "Move to Workspace _Down"
 msgstr "Mover ao escritorio de abai_xo"
 
-#: ../src/menu.c:164 ../src/prefs.c:2004 ../src/prefs.c:2305
+#: ../src/menu.c:164 ../src/prefs.c:2004 ../src/prefs.c:2367
 #, c-format
 msgid "Workspace %d"
 msgstr "Escritorio de traballo %d"
@@ -365,7 +367,8 @@ msgid "The window \"%s\" is not responding."
 msgstr "A fiestra \"%s\" non está respondendo."
 
 #: ../src/metacity-dialog.c:119
-msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Ao forzar o peche desta aplicación perderá calquer cambio que non haxa "
 "gardado."
@@ -649,7 +652,8 @@ msgstr "Moverse hacia atrás entre paneis e o escritorio inmediatamente"
 
 #: ../src/metacity.schemas.in.h:32
 msgid "Move backwards between panels and the desktop with popup"
-msgstr "Moverse hacia atrás entre paneis e o escritorio cunha fiestra emerxente"
+msgstr ""
+"Moverse hacia atrás entre paneis e o escritorio cunha fiestra emerxente"
 
 #: ../src/metacity.schemas.in.h:33
 msgid "Move backwards between windows immediately"
@@ -673,7 +677,8 @@ msgstr "Moverse entre fiestras cunha fiestra emerxente"
 
 #: ../src/metacity.schemas.in.h:38
 msgid "Move focus backwards between windows using popup display"
-msgstr "Mover o foco hacia atrás entre fiestras mostrando unha fiestra emerxente"
+msgstr ""
+"Mover o foco hacia atrás entre fiestras mostrando unha fiestra emerxente"
 
 #: ../src/metacity.schemas.in.h:39
 msgid "Move window"
@@ -1883,7 +1888,8 @@ msgstr "O comando de captura de pantalla"
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
-msgstr "O tema determina a apariencia das bordes da fiestra, o título e demais."
+msgstr ""
+"O tema determina a apariencia das bordes da fiestra, o título e demais."
 
 #: ../src/metacity.schemas.in.h:152
 msgid ""
@@ -2053,7 +2059,8 @@ msgstr "Tipo de campá visual"
 
 #: ../src/metacity.schemas.in.h:170
 msgid "Whether raising should be a side-effect of other user interactions"
-msgstr "Indica se elevar debe ser un efecto lateral doutras interaccións do usuario"
+msgstr ""
+"Indica se elevar debe ser un efecto lateral doutras interaccións do usuario"
 
 #: ../src/metacity.schemas.in.h:171
 msgid "Window focus mode"
@@ -2100,7 +2107,8 @@ msgstr ""
 #: ../src/prefs.c:1241
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "Non se puido analizar a descripción da fonte \"%s\" da clave GConf %s\n"
+msgstr ""
+"Non se puido analizar a descripción da fonte \"%s\" da clave GConf %s\n"
 
 #: ../src/prefs.c:1426
 #, c-format
@@ -2138,10 +2146,11 @@ msgstr ""
 "\"%s\" atopado na base de datos de configuración no é un valor válido para a "
 "combinación de teclas \"%s\"\n"
 
-#: ../src/prefs.c:2386
+#: ../src/prefs.c:2448
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "Erro ao establecer o nome do escritorio de traballo %d como \"%s\": %s\n"
+msgstr ""
+"Erro ao establecer o nome do escritorio de traballo %d como \"%s\": %s\n"
 
 #: ../src/resizepopup.c:126
 #, c-format
@@ -2164,7 +2173,8 @@ msgstr ""
 
 #: ../src/screen.c:443
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Non se puido obter a selección do xestor de fiestras na fiestra %d na "
 "pantalla \"%s\"\n"
@@ -2295,7 +2305,8 @@ msgstr "O ángulo debe estar entre 0.0 e 360.0, foi %g\n"
 #: ../src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr "Alfa debe estar entre 0.0 (invisible) e 1.0 (completamente opaco), foi %g\n"
+msgstr ""
+"Alfa debe estar entre 0.0 (invisible) e 1.0 (completamente opaco), foi %g\n"
 
 #: ../src/theme-parser.c:684
 #, c-format
@@ -2337,7 +2348,8 @@ msgstr "A <%s> xeometría \"%s\" non foi definida"
 #: ../src/theme-parser.c:981
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr "<%s> debe especificar ou unha xeometría ou un pai que teña unha xeometría"
+msgstr ""
+"<%s> debe especificar ou unha xeometría ou un pai que teña unha xeometría"
 
 #: ../src/theme-parser.c:1080
 #, c-format
@@ -2397,7 +2409,8 @@ msgstr "Non hai atributo \"value\" no elemento <%s>"
 
 #: ../src/theme-parser.c:1320 ../src/theme-parser.c:1334
 #: ../src/theme-parser.c:1393
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid ""
+"Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 "Non se pode especificar ambos button_width/button_height e aspect ratio para "
 "os botóns"
@@ -2670,7 +2683,8 @@ msgstr ""
 #: ../src/theme-parser.c:3464
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr "O estilo xa foi especificado para o estado %s redimensionado %s foco %s"
+msgstr ""
+"O estilo xa foi especificado para o estado %s redimensionado %s foco %s"
 
 #: ../src/theme-parser.c:3475 ../src/theme-parser.c:3486
 #: ../src/theme-parser.c:3497
@@ -2712,7 +2726,8 @@ msgstr "O elemento máis externo no tema debe ser <metacity_theme> non <%s>"
 
 #: ../src/theme-parser.c:3679
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
 "O elemento <%s> non está permitido dentro dun elemento name/author/date/"
 "description"
@@ -2724,7 +2739,8 @@ msgstr "O elemento <%s> non está permitido dentro dun elemento <constant>"
 
 #: ../src/theme-parser.c:3696
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
 "O elemento <%s> non está permitido dentro dun elemento distance/border/"
 "aspect_ratio"
@@ -2732,7 +2748,8 @@ msgstr ""
 #: ../src/theme-parser.c:3718
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr "O elemento <%s> non está permitido dentro dun elemento de operación debuxo"
+msgstr ""
+"O elemento <%s> non está permitido dentro dun elemento de operación debuxo"
 
 #: ../src/theme-parser.c:3728 ../src/theme-parser.c:3758
 #: ../src/theme-parser.c:3763
@@ -3010,7 +3027,8 @@ msgstr "a xeometría do marco non especifica a dimensión \"%s\""
 #: ../src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "a xeometría do marco non especifica a dimensión \"%s\" para a borde \"%s\""
+msgstr ""
+"a xeometría do marco non especifica a dimensión \"%s\" para a borde \"%s\""
 
 #: ../src/theme.c:278
 #, c-format
@@ -3074,7 +3092,8 @@ msgstr "O valor alfa \"%s\" na cor misturada non está entre 0.0 e 1.0"
 
 #: ../src/theme.c:1104
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "O formato de sombreado é \"shade/base_color/factor\", \"%s\" non coincide co "
 "formato"
@@ -3097,7 +3116,8 @@ msgstr "Non se puido analizar a cor \"%s\""
 #: ../src/theme.c:1416
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "A expresión de coordenadas contén un carácter '%s' o cal non está permitido"
+msgstr ""
+"A expresión de coordenadas contén un carácter '%s' o cal non está permitido"
 
 #: ../src/theme.c:1443
 #, c-format
@@ -3111,7 +3131,8 @@ msgstr ""
 #: ../src/theme.c:1457
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "A expresión de coordenadas contén un enteiro '%s' que non puido ser analizado"
+msgstr ""
+"A expresión de coordenadas contén un enteiro '%s' que non puido ser analizado"
 
 #: ../src/theme.c:1524
 #, c-format
@@ -3131,21 +3152,24 @@ msgid "Coordinate expression results in division by zero"
 msgstr "A expresión de coordenadas resultou nun erro de división por cero"
 
 #: ../src/theme.c:1776
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "A expresión de coordenadas intentou usar un operador mod cun número de coma "
 "flotante"
 
 #: ../src/theme.c:1832
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "A expresión de coordenadas ten un operador \"%s\" onde se esperaba un "
 "operando"
 
 #: ../src/theme.c:1841
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr "A expresión de coordenadas ten un operando onde se esperaba un operador"
+msgstr ""
+"A expresión de coordenadas ten un operando onde se esperaba un operador"
 
 #: ../src/theme.c:1849
 msgid "Coordinate expression ended with an operator instead of an operand"
@@ -3171,16 +3195,19 @@ msgstr ""
 
 #: ../src/theme.c:2007
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr "A expresión de coordenadas ten un paréntese pechado sen un paréntese aberto"
+msgstr ""
+"A expresión de coordenadas ten un paréntese pechado sen un paréntese aberto"
 
 #: ../src/theme.c:2069
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "A expresión de coordenadas te unha variable ou constante descoñecida \"%s\""
+msgstr ""
+"A expresión de coordenadas te unha variable ou constante descoñecida \"%s\""
 
 #: ../src/theme.c:2126
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "A expresión de coordenadas ten un paréntese aberto sen un paréntese pechado"
+msgstr ""
+"A expresión de coordenadas ten un paréntese aberto sen un paréntese pechado"
 
 #: ../src/theme.c:2137
 msgid "Coordinate expression doesn't seem to have any operators or operands"
@@ -3202,8 +3229,10 @@ msgstr ""
 
 #: ../src/theme.c:4360 ../src/theme.c:4392
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "Falta <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"Falta <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: ../src/theme.c:4443
 #, c-format
@@ -3236,7 +3265,8 @@ msgstr ""
 
 #: ../src/theme.c:5046 ../src/theme.c:5108
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "As constante definidas polo usuario deben comezar cunha letra maiúscula; \"%s"
 "\" non o fai"
@@ -3282,8 +3312,15 @@ msgstr "Erro do xestor de fiestras: "
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "A aplicación configurou un _NET_WM_PID %lu erróneo\n"
 
+#: ../src/window-props.c:233
+#, c-format
+msgid 
+"%s (on %s)"
+msgstr ""
+"%s (en %s)"
+
 #. first time through
-#: ../src/window.c:5409
+#: ../src/window.c:5411
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3299,7 +3336,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6028
+#: ../src/window.c:6039
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3331,8 +3368,8 @@ msgstr "A propiedade %s na fiestra 0x%lx contén UTF-8 inválido\n"
 
 #: ../src/xprops.c:482
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "A propiedade %s na fiestra 0x%lx contén UTF-8 inválido para o elemento %d da "
 "lista\n"
-
