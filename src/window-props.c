@@ -230,7 +230,7 @@ set_title_text (MetaWindow *window, const char *title, Atom atom, char **target)
            !gethostname (hostname, HOST_NAME_MAX + 1) &&
            strcmp (hostname, window->wm_client_machine))
     {
-      *target = g_strdup_printf ("%s (on %s)",
+      *target = g_strdup_printf (_("%s (on %s)"),
                       title, window->wm_client_machine);
       modified = TRUE;
     }
