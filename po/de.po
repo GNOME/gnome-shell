@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-09 19:07+0100\n"
-"PO-Revision-Date: 2006-03-09 21:34+0100\n"
-"Last-Translator: Hendrik Richter <hendrikr@gnome.org>\n"
+"POT-Creation-Date: 2006-03-13 00:21+0100\n"
+"PO-Revision-Date: 2006-03-13 00:18+0100\n"
+"Last-Translator: Frank Arnold <frank@scirocco-5v-turbo.de>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3331,6 +3331,11 @@ msgstr "Fenstermanager-Fehler:"
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Application hat eine unsinnige _NET_WM_PID %lu angegeben\n"
+
+#: ../src/window-props.c:233
+#, c-format
+msgid "%s (on %s)"
+msgstr "%s (auf %s)"
 
 #. first time through
 #: ../src/window.c:5411
