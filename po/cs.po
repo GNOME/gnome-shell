@@ -2,14 +2,15 @@
 # Copyright (C) 2003, 2004, 2005, 2006 Miloslav Trmac <mitr@volny.cz>
 # This file is distributed under the same license as the metacity package.
 # Miloslav Trmac <mitr@volny.cz>, 2002 - 2006.
+# Petr Tomeš <ptomes@gmail.com>, 2002 - 2006.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-02-25 15:31+0100\n"
+"POT-Creation-Date: 2006-03-11 06:57+0100\n"
 "PO-Revision-Date: 2006-02-25 23:51+0100\n"
-"Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
+"Last-Translator: Petr Tomeš <ptomes@gmail.com>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -62,7 +63,7 @@ msgstr "Nemohu získat jméno počítače: %s\n"
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nemohu otevřít displej X Window System '%s'\n"
 
-#: ../src/errors.c:233
+#: ../src/errors.c:269
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -73,7 +74,7 @@ msgstr ""
 "Pravděpodobně byl ukončen X server nebo jste zabili/zničili\n"
 "manažera oken.\n"
 
-#: ../src/errors.c:240
+#: ../src/errors.c:276
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatální chyba IO %d (%s) na displeji '%s'.\n"
@@ -84,7 +85,7 @@ msgstr "Zavřít okno"
 
 #: ../src/frames.c:1100
 msgid "Window Menu"
-msgstr "Menu okna"
+msgstr "Nabídka okna"
 
 #: ../src/frames.c:1103
 msgid "Minimize Window"
@@ -163,14 +164,14 @@ msgstr "Vypsat verzi"
 #: ../src/main.c:439
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
-msgstr "Nemohu prohledat adresář témat: %s\n"
+msgstr "Nemohu prohledat adresář motivů: %s\n"
 
 #: ../src/main.c:455
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr ""
-"Nemohu najít téma! Ujistěte se, že %s existuje a obsahuje obvyklá témata."
+"Nemohu najít motiv! Ujistěte se, že %s existuje a obsahuje obvyklé motivy."
 
 #: ../src/main.c:527
 #, c-format
@@ -243,7 +244,7 @@ msgstr "Přesunout na plochu _nahoře"
 msgid "Move to Workspace _Down"
 msgstr "Přesunout na plochu _dole"
 
-#: ../src/menu.c:164 ../src/prefs.c:2004 ../src/prefs.c:2305
+#: ../src/menu.c:164 ../src/prefs.c:2004 ../src/prefs.c:2367
 #, c-format
 msgid "Workspace %d"
 msgstr "Plocha %d"
@@ -420,7 +421,7 @@ msgstr "Akce při dvojitém kliknutí na nadpis okna"
 
 #: ../src/metacity.schemas.in.h:4
 msgid "Activate window menu"
-msgstr "Aktivovat menu okna"
+msgstr "Aktivovat nabídku okna"
 
 #: ../src/metacity.schemas.in.h:5
 msgid "Arrangement of buttons on the titlebar"
@@ -435,7 +436,7 @@ msgid ""
 "so that buttons can be added in future metacity versions without breaking "
 "older versions."
 msgstr ""
-"Uspořádání tlačítek na nadpisu okna. Hodnota by měla být řetězec jako \"menu:"
+"Uspořádání tlačítek na nadpisu okna. Hodnota by měla být řetězec jako \"nabídka:"
 "minimize,maximize,close\"; dvojtečka odděluje levý a pravý roh okna a jména "
 "tlačítek jsou oddělena čárkami. Opakování tlačítka není dovoleno. Neznámá "
 "jména tlačítek jsou tiše ignorována, aby mohly být v budoucích verzích "
@@ -453,7 +454,7 @@ msgid ""
 "for example."
 msgstr ""
 "Kliknutí na okno při tomto modifikátoru stisknutém okno přesune (levým "
-"tlačítkem), změní jeho velikost (prostředním tlačítkem), nebo zobrazí menu "
+"tlačítkem), změní jeho velikost (prostředním tlačítkem), nebo zobrazí nabídku "
 "okna (pravým tlačítkem). Modifikátor je vyjádřen např. jako \\\"&lt;Alt&gt;\\"
 "\" nebo \\\"&lt;Super&gt;\\\"."
 
@@ -471,7 +472,7 @@ msgstr "Manažer skládání"
 
 #: ../src/metacity.schemas.in.h:12
 msgid "Current theme"
-msgstr "Aktuální téma"
+msgstr "Aktuální motiv"
 
 #: ../src/metacity.schemas.in.h:13
 msgid "Delay in milliseconds for the auto raise option"
@@ -760,7 +761,7 @@ msgstr "Spustit terminál"
 
 #: ../src/metacity.schemas.in.h:64
 msgid "Show the panel menu"
-msgstr "Zobrazit menu panelu"
+msgstr "Zobrazit nabídku panelu"
 
 #: ../src/metacity.schemas.in.h:65
 msgid "Show the panel run application dialog"
@@ -785,8 +786,8 @@ msgstr ""
 "pavlastnosti. Metacity by například v ideálním případě umísťoval všechny "
 "dialog v konzistentní pozici vzhledem k jejich rodičovskému oknu. K tomu je "
 "potřeba ignorovat pozice dialogů určené aplikacím. Ale některé verze Javy/"
-"Swing označují svá kontextová menu jako dialogy, takže Metacity musí zakázat "
-"umísťování dialogů, aby menu v chybných aplikacích v Javě mohla fungovat. "
+"Swing označují své kontextové nabídky jako dialogy, takže Metacity musí zakázat "
+"umísťování dialogů, aby nabídky v chybných aplikacích v Javě mohly fungovat. "
 "Takových příkladů existuje více. Tato volba nastaví Metacity do úplně "
 "správného módu, který možná poskytuje mírně hezčí UI, pokud nepotřebujete "
 "spouštět chybné aplikace. Obcházení chyb musí být bohužel implicitně "
@@ -1170,7 +1171,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Klávesová zkratka pro aktivaci menu okna. Formát je jako \"&lt;Control&gt;a"
+"Klávesová zkratka pro aktivaci nabídky okna. Formát je jako \"&lt;Control&gt;a"
 "\" nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně liberální a dovoluje "
 "malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a \"&lt;Ctrl&gt;\". "
 "Pokud volbu nastavíte na speciální řetězec \"disabled\", tak pro tuto akci "
@@ -1780,7 +1781,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Klávesová zkratka, která zobrazí hlavní menu panelu. Formát je jako \"&lt;"
+"Klávesová zkratka, která zobrazí hlavní nabídku panelu. Formát je jako \"&lt;"
 "Control&gt;a\" nebo \"&lt;Shift&gt;&lt;Alt&gt;F1. Parser je poměrně "
 "liberální a dovoluje malá i velká písmena a zkratky jako \"&lt;Ctl&gt;\" a "
 "\"&lt;Ctrl&gt;\". Pokud volbu nastavíte na speciální řetězec \"disabled\", "
@@ -1798,7 +1799,7 @@ msgstr "Příkaz pro zachycení obrazovky"
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
-msgstr "Téma určuje vzhled okrajů okna, lišty s nadpisem atd."
+msgstr "Motiv určuje vzhled okrajů okna, lišty s nadpisem atd."
 
 #: ../src/metacity.schemas.in.h:152
 msgid ""
@@ -2045,7 +2046,7 @@ msgstr ""
 "\"%s\" nalezené v konfigurační databázi není platná hodnota pro klávesovou "
 "zkratku \"%s\"\n"
 
-#: ../src/prefs.c:2386
+#: ../src/prefs.c:2448
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Chyba při nastavování jména plochy %d na \"%s\": %s\n"
@@ -2264,17 +2265,17 @@ msgstr "Typu okna \"%s\" již byla přiřazena sada stylů"
 #: ../src/theme-parser.c:1143
 #, c-format
 msgid "Unknown function \"%s\" for menu icon"
-msgstr "Neznámá funkce \"%s\" pro ikonu menu"
+msgstr "Neznámá funkce \"%s\" pro ikonu nabídky"
 
 #: ../src/theme-parser.c:1152
 #, c-format
 msgid "Unknown state \"%s\" for menu icon"
-msgstr "Neznámý stav \"%s\" pro ikonu menu"
+msgstr "Neznámý stav \"%s\" pro ikonu nabídky"
 
 #: ../src/theme-parser.c:1160
 #, c-format
 msgid "Theme already has a menu icon for function %s state %s"
-msgstr "Téma již má ikonu menu pro funkci %s stavu %s"
+msgstr "Motiv již má ikonu nabídky pro funkci %s stavu %s"
 
 #: ../src/theme-parser.c:1177 ../src/theme-parser.c:3244
 #: ../src/theme-parser.c:3323
@@ -2589,7 +2590,7 @@ msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Nemohu mít dvě draw_ops pro element <piece> (téma definovalo atribut "
+"Nemohu mít dvě draw_ops pro element <piece> (motiv definoval atribut "
 "draw_ops i element <draw_ops>, nebo definovalo dva elementy)"
 
 #: ../src/theme-parser.c:3574
@@ -2597,7 +2598,7 @@ msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Nemohu mít dvě draw_ops pro element <button> (téma definovalo atribut "
+"Nemohu mít dvě draw_ops pro element <button> (motiv definoval atribut "
 "draw_ops i element <draw_ops>, nebo definovalo dva elementy)"
 
 #: ../src/theme-parser.c:3612
@@ -2605,13 +2606,13 @@ msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Nemohu mít dvě draw_ops pro element <menu_icon> (téma definovalo atribut "
+"Nemohu mít dvě draw_ops pro element <menu_icon> (motiv definoval atribut "
 "draw_ops i element <draw_ops>, nebo definovalo dva elementy)"
 
 #: ../src/theme-parser.c:3659
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr "Vnější element tématu musí být <metacity_theme>, ne <%s>"
+msgstr "Vnější element motivu musí být <metacity_theme>, ne <%s>"
 
 #: ../src/theme-parser.c:3679
 #, c-format
@@ -2651,7 +2652,7 @@ msgstr "Pro tlačítko neposkytnuty draw_ops"
 
 #: ../src/theme-parser.c:4014
 msgid "No draw_ops provided for menu icon"
-msgstr "Pro ikonu menu neposkytnuty draw_ops"
+msgstr "Pro ikonu nabídky neposkytnuty draw_ops"
 
 #: ../src/theme-parser.c:4054
 #, c-format
@@ -2660,33 +2661,33 @@ msgstr "V elementu <%s> není dovolen žádný text"
 
 #: ../src/theme-parser.c:4109
 msgid "<name> specified twice for this theme"
-msgstr "<name> pro toto téma definováno dvakrát"
+msgstr "<name> pro tento motiv definováno dvakrát"
 
 #: ../src/theme-parser.c:4120
 msgid "<author> specified twice for this theme"
-msgstr "<author> pro toto téma definováno dvakrát"
+msgstr "<author> pro tento motiv definováno dvakrát"
 
 #: ../src/theme-parser.c:4131
 msgid "<copyright> specified twice for this theme"
-msgstr "<copyright> pro toto téma definováno dvakrát"
+msgstr "<copyright> pro tento motiv definováno dvakrát"
 
 #: ../src/theme-parser.c:4142
 msgid "<date> specified twice for this theme"
-msgstr "<date> pro toto téma definováno dvakrát"
+msgstr "<date> pro tento motiv definováno dvakrát"
 
 #: ../src/theme-parser.c:4153
 msgid "<description> specified twice for this theme"
-msgstr "<description> pro toto téma definováno dvakrát"
+msgstr "<description> pro tento motiv definováno dvakrát"
 
 #: ../src/theme-parser.c:4348
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
-msgstr "Nemohu číst téma ze souboru %s: %s\n"
+msgstr "Nemohu číst motiv ze souboru %s: %s\n"
 
 #: ../src/theme-parser.c:4403
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr "Soubor tématu %s neobsahoval kořenový element <metacity_theme>"
+msgstr "Soubor motivu %s neobsahoval kořenový element <metacity_theme>"
 
 #: ../src/theme-viewer.c:72
 msgid "/_Windows"
@@ -2755,7 +2756,7 @@ msgstr "Toto je ukázková zpráva v ukázkovém dialogu"
 #: ../src/theme-viewer.c:322
 #, c-format
 msgid "Fake menu item %d\n"
-msgstr "Falešná položka menu %d\n"
+msgstr "Falešná položka nabídky %d\n"
 
 #: ../src/theme-viewer.c:356
 msgid "Border-only window"
@@ -2783,7 +2784,7 @@ msgstr "Paleta nástrojů"
 
 #: ../src/theme-viewer.c:391
 msgid "Torn-off Menu"
-msgstr "Odtržení menu"
+msgstr "Odtržení nabídky"
 
 #: ../src/theme-viewer.c:395
 msgid "Border"
@@ -2801,17 +2802,17 @@ msgstr "%g milisekund na nakreslení jednoho rámu okna"
 
 #: ../src/theme-viewer.c:795
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr "Použití: metacity-theme-viewer [NÁZEVTÉMATU]\n"
+msgstr "Použití: metacity-theme-viewer [NÁZEVMOTIVU]\n"
 
 #: ../src/theme-viewer.c:802
 #, c-format
 msgid "Error loading theme: %s\n"
-msgstr "Chyba při načítání tématu: %s\n"
+msgstr "Chyba při načítání motivu: %s\n"
 
 #: ../src/theme-viewer.c:808
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr "Načteno téma \"%s\" za %g sekund\n"
+msgstr "Načten motiv \"%s\" za %g sekund\n"
 
 #: ../src/theme-viewer.c:831
 msgid "Normal Title Font"
@@ -3087,7 +3088,7 @@ msgstr "Souřadnicový výraz zřejmě nemá žádné operátory nebo operandy"
 #: ../src/theme.c:2381 ../src/theme.c:2403 ../src/theme.c:2424
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr "Téma obsahuje výraz \"%s\", který způsobil chybu: %s\n"
+msgstr "Motiv obsahuje výraz \"%s\", který způsobil chybu: %s\n"
 
 #: ../src/theme.c:3910
 #, c-format
@@ -3108,13 +3109,13 @@ msgstr ""
 #: ../src/theme.c:4443
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr "Nemohu načíst téma \"%s\": %s\n"
+msgstr "Nemohu načíst motiv \"%s\": %s\n"
 
 #: ../src/theme.c:4597 ../src/theme.c:4604 ../src/theme.c:4611
 #: ../src/theme.c:4618 ../src/theme.c:4625
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr "Není nastaveno <%s> pro téma \"%s\""
+msgstr "Není nastaveno <%s> pro motiv \"%s\""
 
 #: ../src/theme.c:4635
 #, c-format
@@ -3122,7 +3123,7 @@ msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
-"Pro typ okna \"%s\" tématu \"%s\" není nastaven typ rámu, přidejte element "
+"Pro typ okna \"%s\" motivu \"%s\" není nastaven typ rámu, přidejte element "
 "<window type=\"%s\" style_set=\"whatever\"/>"
 
 #: ../src/theme.c:4657
@@ -3131,7 +3132,7 @@ msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 msgstr ""
-"Pro toto téma musí být definováno <menu_icon function=\"%s\" state=\"%s\" "
+"Pro tento motiv musí být definováno <menu_icon function=\"%s\" state=\"%s\" "
 "draw_ops=\"whatever\"/>"
 
 #: ../src/theme.c:5046 ../src/theme.c:5108
@@ -3184,7 +3185,7 @@ msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Aplikace nastavila neplatný _NET_WM_PID %lu\n"
 
 #. first time through
-#: ../src/window.c:5409
+#: ../src/window.c:5411
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3200,7 +3201,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6028
+#: ../src/window.c:6039
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
