@@ -1,3 +1,9 @@
+2006-03-13  Elijah Newren  <newren gmail com>
+
+        * README:
+	* configure.in:
+	Update to reflect that we're now targetting 2.15 development.
+
 2006-03-12  Thomas Thurman  <thomas@thurman.org.uk>
 
 	* src/window-props.c (set_title_text): Mark a particular
