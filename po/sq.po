@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-09 15:10+0100\n"
-"PO-Revision-Date: 2006-03-09 17:58+0100\n"
+"POT-Creation-Date: 2006-03-13 07:12+0100\n"
+"PO-Revision-Date: 2006-03-13 12:54+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: Albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -522,12 +522,12 @@ msgid ""
 "a window during drag and drop (because that results in the application "
 "grabbing the mouse)"
 msgstr ""
-"Nëse e vërtetë, dhe modaliteti i fokus është njëri prej \"sloppy\" ose \"mouse\" "
-"atëhere dritarja e fokusuar do të ngrihet automatikisht pas një intervali (intervali "
-"përcaktohet nga vlera e auto_raise_delay). Ky preferim ka një emër jo të "
-"përshtashëm, por ruhet për përputhshmëri me versionet e vjetër. Për të qenë "
-"më të qartë (të paktën nga ana teknike), kuptimi i tij është \"automatikisht "
-"ngri dritaren "
+"Nëse e vërtetë, dhe modaliteti i fokus është njëri prej \"sloppy\" ose "
+"\"mouse\" atëhere dritarja e fokusuar do të ngrihet automatikisht pas një "
+"intervali (intervali përcaktohet nga vlera e auto_raise_delay). Ky preferim "
+"ka një emër jo të përshtashëm, por ruhet për përputhshmëri me versionet e "
+"vjetër. Për të qenë më të qartë (të paktën nga ana teknike), kuptimi i tij "
+"është \"automatikisht ngre dritaren "
 "following a timeout which is triggered by non-grabbed mouse entry in sloppy "
 "or mouse focus modes\". It is unrelated to clicking behavior (i.e. this is "
 "not related to raise-on-click/orthogonal-raise). It is unrelated to entering "
@@ -592,7 +592,6 @@ msgid "Lower window below other windows"
 msgstr "Ul dritaret nën dritaret e tjera"
 
 #: ../src/metacity.schemas.in.h:25
-#, fuzzy
 msgid ""
 "Many actions (e.g. clicking in the client area, moving or resizing the "
 "window) normally raise the window as a side-effect. Set this option to false "
@@ -603,14 +602,15 @@ msgid ""
 "from pagers, may also raise windows when this option is false. This option "
 "is currently disabled in click-to-focus mode."
 msgstr ""
-"Many actions (e.g. clicking in the client area, moving or resizing the "
-"window) normally raise the window as a side-effect. Set this option to false "
-"to decouple raising from other user interactions. When false, windows can "
-"still be raised by an alt-left-click anywhere on the window or a normal "
-"click on the window decorations (assuming such clicks aren't used to start a "
-"move or resize operation). Special messages, such as activation requests "
-"from pagers, may also raise windows when this option is false. This option "
-"is currently disabled in click-to-focus mode."
+"Shumë veprime (si p.sh. klikimi tek zona e klientit, lëvizja apo ndryshimi "
+"i madhësisë së dritares) normlisht ngrejnë dritaren si një efekt-ansor. Vendos "
+"këtë opsion në false për të veçuar ngritjen nga aktivitetet e tjera të përdoruesit. "
+"Kur vendoset në falsë, dritarja mund të vazhdohet të ngrihet me anë të një "
+"klikimi të majtë mousi kudoqoftë në dritare ose një klikim normal tek bordi i "
+"dritares (duke supozuar që klikimet nuk përdoren nga përdoruesi për të filluar "
+"një veprim lëvizje apo ndryshim përmasash). Mesazhet speciale, si p.sh. kërkesa "
+"e aktivimit nga pagers, mund të ngrejë gjithashtu dritaren kur opsioni është vendosur "
+"në false. Ky opsion aktualish nuk është aktiv në modalitetin klik-për-fokus."
 
 #: ../src/metacity.schemas.in.h:26
 msgid "Maximize window"
@@ -1984,7 +1984,9 @@ msgstr "Lloji i sinjalit vizual"
 
 #: ../src/metacity.schemas.in.h:170
 msgid "Whether raising should be a side-effect of other user interactions"
-msgstr "Nëse ngritja duhet të jetë një efekt-anësor i aktiviteteve të tjera të përdoruesit"
+msgstr ""
+"Nëse ngritja duhet të jetë një efekt-anësor i aktiviteteve të tjera të "
+"përdoruesit"
 
 #: ../src/metacity.schemas.in.h:171
 msgid "Window focus mode"
@@ -2025,8 +2027,8 @@ msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
 "range 1..128\n"
 msgstr ""
-"%d e memorizuar në kyçin GConf %s nuk është një cursor_size e arësyeshme, duhet "
-"të jetë në intervalin 1..128\n"
+"%d e memorizuar në kyçin GConf %s nuk është një cursor_size e arësyeshme, "
+"duhet të jetë në intervalin 1..128\n"
 
 #: ../src/prefs.c:1241
 #, c-format
@@ -3212,6 +3214,11 @@ msgstr "Gabim i organizuesit të dritares: "
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Aplikativi ka vendosur një _NET_WM_PID %lu të gabuar\n"
+
+#: ../src/window-props.c:233
+#, c-format
+msgid "%s (on %s)"
+msgstr "%s (në %s)"
 
 #. first time through
 #: ../src/window.c:5411
