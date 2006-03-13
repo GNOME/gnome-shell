@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-02-21 01:49+0100\n"
-"PO-Revision-Date: 2006-02-19 19:48+0100\n"
+"POT-Creation-Date: 2006-03-13 15:52+0100\n"
+"PO-Revision-Date: 2006-03-13 15:52+0100\n"
 "Last-Translator: Slobodan D. Sredojević <slobo@akrep.be>\n"
 "Language-Team: Serbian (sr) <gnom@prevod.org>\n"
 "MIME-Version: 1.0\n"
@@ -67,7 +67,7 @@ msgstr "Nisam uspeo da saznam ime kompjutera: %s\n"
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nisam uspeo da otvorim X Window System  ekran „%s“\n"
 
-#: ../src/errors.c:233
+#: ../src/errors.c:269
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -78,7 +78,7 @@ msgstr ""
 "najverovatnije je da je Iks server ugašen ili da ste ubili\n"
 "menadžer prozora.\n"
 
-#: ../src/errors.c:240
+#: ../src/errors.c:276
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Kobna greška sa izlazom/ulazom: %d (%s) na ekranu „%s“.\n"
@@ -251,7 +251,7 @@ msgstr "Premesti na radni prostor _iznad"
 msgid "Move to Workspace _Down"
 msgstr "Premesti na radni prostor is_pod"
 
-#: ../src/menu.c:164 ../src/prefs.c:2004 ../src/prefs.c:2305
+#: ../src/menu.c:164 ../src/prefs.c:2004 ../src/prefs.c:2367
 #, c-format
 msgid "Workspace %d"
 msgstr "%d. radni prostor"
@@ -2103,7 +2103,7 @@ msgid ""
 "\"%s\"\n"
 msgstr "“%s“ iz baze sa podešavanjima nije ispravna kombinacija tastera „%s“\n"
 
-#: ../src/prefs.c:2386
+#: ../src/prefs.c:2448
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Greška prilikom postavljanja imena za radnu površinu %d u „%s“: %s\n"
@@ -3247,8 +3247,13 @@ msgstr "Greška menadžera prozora: "
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Program je postavio netačan _NET_WM_PID %lu\n"
 
+#: ../src/window-props.c:233
+#, c-format
+msgid "%s (on %s)"
+msgstr "%s (na %s)"
+
 #. first time through
-#: ../src/window.c:5409
+#: ../src/window.c:5411
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3264,7 +3269,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6028
+#: ../src/window.c:6039
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
