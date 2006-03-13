@@ -1,3 +1,8 @@
+2006-03-12  Thomas Thurman  <thomas@thurman.org.uk>
+
+	* src/window-props.c (set_title_text): Mark a particular
+	string for translation.  #334332.
+
 2006-03-06  Ryan Lortie  <desrt@desrt.ca>
 
 	* src/window.c (meta_window_free): Only unmaximise window before
