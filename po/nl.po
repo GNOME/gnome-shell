@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-02-21 07:13+0100\n"
-"PO-Revision-Date: 2006-02-21 10:34+0100\n"
+"POT-Creation-Date: 2006-03-13 07:12+0100\n"
+"PO-Revision-Date: 2006-03-13 14:23+0100\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl> \n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
@@ -71,7 +71,7 @@ msgstr "Ophalen hostnaam mislukt: %s\n"
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Openen van X Window System display '%s' mislukt\n"
 
-#: ../src/errors.c:233
+#: ../src/errors.c:269
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -82,7 +82,7 @@ msgstr ""
 "waarschijnlijk is de X-server uitgezet of heeft u de window-manager "
 "vernietigd.\n"
 
-#: ../src/errors.c:240
+#: ../src/errors.c:276
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatale IO-fout %d (%s) op display '%s'.\n"
@@ -256,7 +256,7 @@ msgstr "Verplaatsen naar werkblad hierbov_en"
 msgid "Move to Workspace _Down"
 msgstr "Verplaatsen naar werkblad hier_onder"
 
-#: ../src/menu.c:164 ../src/prefs.c:2004 ../src/prefs.c:2305
+#: ../src/menu.c:164 ../src/prefs.c:2004 ../src/prefs.c:2367
 #, c-format
 msgid "Workspace %d"
 msgstr "Werkblad %d"
@@ -2114,7 +2114,7 @@ msgstr ""
 "\"%s\" in de configuratiedatabase is geen geldige waarde voor toetsbinding "
 "\"%s\"\n"
 
-#: ../src/prefs.c:2386
+#: ../src/prefs.c:2448
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fout bij het instellen van de naam voor werkblad %d op \"%s\": %s\n"
@@ -3279,8 +3279,13 @@ msgstr "Windowmanager fout:"
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Toepassing heeft een overbodige _NET_WM_PID %lu ingesteld\n"
 
+#: ../src/window-props.c:233
+#, c-format
+msgid "%s (on %s)"
+msgstr "%s (op %s)"
+
 #. first time through
-#: ../src/window.c:5409
+#: ../src/window.c:5411
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3296,7 +3301,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6028
+#: ../src/window.c:6039
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
