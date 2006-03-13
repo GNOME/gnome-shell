@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.14\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-02-23 01:39+0000\n"
-"PO-Revision-Date: 2006-02-23 01:45+0000\n"
+"POT-Creation-Date: 2006-03-13 01:32+0000\n"
+"PO-Revision-Date: 2006-03-13 01:35+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -65,7 +65,7 @@ msgstr "Falha ao obter nome de máquina: %s\n"
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Falha ao abrir ecrã '%s' do Sistema Janelas X\n"
 
-#: ../src/errors.c:233
+#: ../src/errors.c:269
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -76,7 +76,7 @@ msgstr ""
 "provavelmente o servidor X foi desligado ou o gestor de janelas\n"
 "foi morto/destruído por si.\n"
 
-#: ../src/errors.c:240
+#: ../src/errors.c:276
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Erro IO fatal %d (%s) no ecrã '%s'.\n"
@@ -249,7 +249,7 @@ msgstr "Mover para Área de Trabalho _Acima"
 msgid "Move to Workspace _Down"
 msgstr "Mover para Área de Trabalho A_baixo"
 
-#: ../src/menu.c:164 ../src/prefs.c:2004 ../src/prefs.c:2305
+#: ../src/menu.c:164 ../src/prefs.c:2004 ../src/prefs.c:2367
 #, c-format
 msgid "Workspace %d"
 msgstr "Área de Trabalho %d"
@@ -527,15 +527,16 @@ msgid ""
 "grabbing the mouse)"
 msgstr ""
 "Se verdadeiro, e o modo de focus for \"sloppy\" ou \"mouse\" então a janela "
-"com o focus elevar-se-á automaticamente após um atraso (o atraso é especificado "
-"na chave auto_raise_delay). Esta preferência está deficientemente denominada "
-"mas mantida por motivos de retro-compatibilidade. Para tentar ser mais explícito "
-"(pelo menos para os mais técnicos), o seu significado é \"elevar automaticamente "
-"a janela após um período que é iniciado por um rato que não arrasta nada a entrar "
-"numa área, estando em modo sloppy ou mouse\". Isto é independente do comportamento "
-"de clique (não é relacionado com o evelar-ao-clicar/elevação-ortogonal). Não se "
-"relaciona com entrar numa janela durante um processo de arrastar-e-largar (pois "
-"isso resulta na aplicação controlar o rato)"
+"com o focus elevar-se-á automaticamente após um atraso (o atraso é "
+"especificado na chave auto_raise_delay). Esta preferência está "
+"deficientemente denominada mas mantida por motivos de retro-compatibilidade. "
+"Para tentar ser mais explícito (pelo menos para os mais técnicos), o seu "
+"significado é \"elevar automaticamente a janela após um período que é "
+"iniciado por um rato que não arrasta nada a entrar numa área, estando em "
+"modo sloppy ou mouse\". Isto é independente do comportamento de clique (não "
+"é relacionado com o evelar-ao-clicar/elevação-ortogonal). Não se relaciona "
+"com entrar numa janela durante um processo de arrastar-e-largar (pois isso "
+"resulta na aplicação controlar o rato)"
 
 #: ../src/metacity.schemas.in.h:20
 msgid ""
@@ -607,12 +608,12 @@ msgstr ""
 "Muitas acções (por ex. clicar na área de cliente, mover ou redimensionar a "
 "janela) normalmente elevam a janela como efeito secundário. Defina esta "
 "opção como falsa para desassociar o elevar de outras interacções. Quando "
-"falso, as janelas podem ser elevadas fazendo Alt+\"Clique-Esquerdo\" em qualquer "
-"ponto da janela ou com um clique normal nas decorações da janela (pressupondo "
-"que tais cliques não são utilizados para iniciar uma operação de mover ou "
-"redimensionar). Mensagens especiais, tais como pedidos de activação dos "
-"pagers, poderão também elevar janelas quando esta opção é falsa. Esta opção "
-"está actualmente inactiva em modo de clicar-para-focar."
+"falso, as janelas podem ser elevadas fazendo Alt+\"Clique-Esquerdo\" em "
+"qualquer ponto da janela ou com um clique normal nas decorações da janela "
+"(pressupondo que tais cliques não são utilizados para iniciar uma operação "
+"de mover ou redimensionar). Mensagens especiais, tais como pedidos de "
+"activação dos pagers, poderão também elevar janelas quando esta opção é "
+"falsa. Esta opção está actualmente inactiva em modo de clicar-para-focar."
 
 #: ../src/metacity.schemas.in.h:26
 msgid "Maximize window"
@@ -1998,8 +1999,8 @@ msgid ""
 "anything."
 msgstr ""
 "Esta opção determina o efeito do clique-duplo na barra de título. As opções "
-"actualmente válidas são 'toggle_shade', que sombreia/remove sombra na janela, "
-"'toggle_maximize' que maximiza/restaura a janela, 'minimize' que irá "
+"actualmente válidas são 'toggle_shade', que sombreia/remove sombra na "
+"janela, 'toggle_maximize' que maximiza/restaura a janela, 'minimize' que irá "
 "minimizar a janela e 'none' que não fará qualquer acção."
 
 #: ../src/metacity.schemas.in.h:161
@@ -2046,7 +2047,9 @@ msgstr "Tipo de Campainha Visual"
 
 #: ../src/metacity.schemas.in.h:170
 msgid "Whether raising should be a side-effect of other user interactions"
-msgstr "Se elevar deverá ou não ser um efeito secundário de outras acções do utilizador"
+msgstr ""
+"Se elevar deverá ou não ser um efeito secundário de outras acções do "
+"utilizador"
 
 #: ../src/metacity.schemas.in.h:171
 msgid "Window focus mode"
@@ -2087,8 +2090,8 @@ msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
 "range 1..128\n"
 msgstr ""
-"%d armazenado na chave GConf %s não é um cursor_size razoável; tem de ser "
-"um valor no intervalo 1..128\n"
+"%d armazenado na chave GConf %s não é um cursor_size razoável; tem de ser um "
+"valor no intervalo 1..128\n"
 
 #: ../src/prefs.c:1241
 #, c-format
@@ -2131,7 +2134,7 @@ msgstr ""
 "\"%s\" encontrado na base de dados de configuração não é um valor válido "
 "para o atalho de teclado \"%s\"\n"
 
-#: ../src/prefs.c:2386
+#: ../src/prefs.c:2448
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Erro ao definir nome da área de trabalho %d para \"%s\": %s\n"
@@ -3288,8 +3291,13 @@ msgstr "Erro do gestor de janelas: "
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Aplicação definiu um _NET_WM_PID %lu fictício\n"
 
+#: ../src/window-props.c:233
+#, c-format
+msgid "%s (on %s)"
+msgstr "%s (em %s)"
+
 #. first time through
-#: ../src/window.c:5409
+#: ../src/window.c:5411
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3305,7 +3313,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6028
+#: ../src/window.c:6039
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
