@@ -898,6 +898,9 @@ meta_window_free (MetaWindow  *window)
   
   meta_verbose ("Unmanaging 0x%lx\n", window->xwindow);
 
+  if (window->display->compositor)
+    meta_compositor_free_window (window->display->compositor, window);
+  
   if (window->display->window_with_menu == window)
     {
       meta_ui_window_menu_free (window->display->window_menu);
@@ -1320,7 +1323,6 @@ finish_minimize (gpointer data)
   meta_window_hide (window);
   if (window->has_focus)
     {
-	g_print ("focusing something other than %lx\n", window->frame->xwindow);
       meta_workspace_focus_default_window
 	(window->screen->active_workspace,
 	 window,

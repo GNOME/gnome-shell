@@ -224,12 +224,10 @@ process_configure_notify (MetaCompositor  *compositor,
   }
 
   meta_screen_info_restack (minfo, event->window, event->above);
-#if 0
   meta_screen_info_set_size (minfo,
 			     event->window,
 			     event->x, event->y,
 			     event->width, event->height);
-#endif
 }
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
@@ -1134,7 +1132,6 @@ meta_compositor_set_updates (MetaCompositor *compositor,
 #endif
 }
 
-
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 
 #define BALLOON_TIME 2
@@ -1147,49 +1144,12 @@ typedef struct
   GTimer *timer;
 } BalloonInfo;
 
-static gboolean
-blow_up (gpointer data)
-{
-  BalloonInfo *info = data;
-  gdouble elapsed = g_timer_elapsed (info->timer, NULL) / BALLOON_TIME;
-  CmPoint points[4][4];
-  int i, j;
-  
-  if (elapsed > BALLOON_TIME)
-    {
-      cm_drawable_node_set_viewable (info->node, FALSE);
-      return FALSE;
-    }
-  
-  for (i = 0; i < 4; ++i)
-    {
-      for (j = 0; j < 4; ++j)
-	{
-	  points[i][j].x = info->node->real_x + j;
-	  points[i][j].y = info->node->real_y + i;
-	}
-    }
-  
-  cm_drawable_node_set_patch (info->node, points);
-  
-  return TRUE;
-}
-
 #endif
 
 void
 meta_compositor_destroy (MetaCompositor *compositor)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS 
-#if 0
-  GSList *list;
-#endif
-  
-#if 0
-  /* FIXME */
-  ws_display_free (compositor->display);
-#endif
-  
   g_free (compositor);
 #endif
 }
@@ -1204,6 +1164,7 @@ struct MoveInfo
   MetaScreen *screen;
   MetaWindow *window;
   gdouble last_time;
+  gboolean window_destroyed;
 };
 
 #endif
@@ -1236,10 +1197,14 @@ wobble (gpointer data)
   MoveInfo *info = data;
   MetaScreenInfo *minfo = info->screen->compositor_data;
   double t = g_timer_elapsed (info->timer, NULL);
-  
-  if (info->finished && model_is_calm (info->model))
+
+  g_print ("info->window_destroyed: %d\n",
+	   info->window_destroyed);
+  if ((info->finished && model_is_calm (info->model)) ||
+      info->window_destroyed)
     {
-      meta_screen_info_unset_patch (minfo, get_xid (info->window));
+      if (!info->window_destroyed)
+	meta_screen_info_unset_patch (minfo, get_xid (info->window));
       g_free (info);
       info = NULL;
       g_print ("stop wobb\n");
@@ -1291,6 +1256,7 @@ meta_compositor_begin_move (MetaCompositor *compositor,
 			    MetaRectangle *initial,
 			    int grab_x, int grab_y)
 {
+#if 0
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   MetaRectangle rect;
 
@@ -1300,6 +1266,7 @@ meta_compositor_begin_move (MetaCompositor *compositor,
   
   compositor->move_info->last_time = 0.0;
   compositor->move_info->timer = g_timer_new ();
+  compositor->move_info->window_destroyed = FALSE;
   
   compute_window_rect (window, &rect);
   
@@ -1316,6 +1283,7 @@ meta_compositor_begin_move (MetaCompositor *compositor,
   
   g_idle_add (wobble, compositor->move_info);
 #endif
+#endif
 }
 
 void
@@ -1323,8 +1291,10 @@ meta_compositor_update_move (MetaCompositor *compositor,
 			     MetaWindow *window,
 			     int x, int y)
 {
+#if 0
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   model_update_move (compositor->move_info->model, x, y);
+#endif
 #endif
 }
 
@@ -1332,8 +1302,27 @@ void
 meta_compositor_end_move (MetaCompositor *compositor,
 			  MetaWindow *window)
 {
+#if 0
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   compositor->move_info->finished = TRUE;
-  compositor->move_info = NULL;
+#endif
+#endif
+}
+
+
+void
+meta_compositor_free_window (MetaCompositor *compositor,
+			     MetaWindow *window)
+{
+#if 0
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+  g_print ("freeing\n");
+  if (compositor->move_info)
+    {
+      g_print ("setting moveinfo to destroyed\n");
+      compositor->move_info->window_destroyed = TRUE;
+      compositor->move_info = NULL;
+    }
+#endif
 #endif
 }

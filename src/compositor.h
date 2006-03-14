@@ -70,5 +70,9 @@ void meta_compositor_update_move (MetaCompositor *compositor,
 				  int x, int y);
 void meta_compositor_end_move (MetaCompositor *compositor,
 			       MetaWindow *window);
+void meta_compositor_free_window (MetaCompositor *compositor,
+				  MetaWindow *window);
+void meta_compositor_free_window (MetaCompositor *compositor,
+				  MetaWindow *window);
 
 #endif /* META_COMPOSITOR_H */

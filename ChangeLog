@@ -1,3 +1,21 @@
+Tue Mar 14 11:57:46 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/compositor.c: Comment out wobbling
+	
+	* src/compositor.c (blow_up): remove this function
+	
+	* src/compositor.c (process_configure_notify): Uncomment
+	set_size(). 
+
+	* src/c-screen.c (meta_screen_info_set_updates): When updates are
+	true, set all the properties such as size and shape.
+
+	* src/c-screen.c (meta_screen_info_add_window): Create a special
+	WindowInfo structure for each window.
+
+	* src/c-screen.c (meta_screen_info_set_size): Set size and output
+	shape of the drawable node.
+
 2006-03-13  Elijah Newren  <newren gmail com>
 
         * README:

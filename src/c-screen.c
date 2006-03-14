@@ -29,6 +29,15 @@
 #include "screen.h"
 #include "c-screen.h"
 
+typedef struct WindowInfo WindowInfo;
+
+struct WindowInfo
+{
+    Window	xwindow;
+    CmNode     *node;
+    gboolean	updates;
+};
+
 struct MetaScreenInfo
 {
     WsDisplay *display;
@@ -39,8 +48,8 @@ struct MetaScreenInfo
     WsScreen *screen;
     MetaScreen *meta_screen;
     
-    GHashTable *nodes_by_xid;
-
+    GHashTable *window_infos_by_xid;
+    
     int repaint_id;
     int idle_id;
 };
@@ -78,16 +87,16 @@ update_frame_counter (void)
 static void
 dump_stacking_order (GList *nodes)
 {
-  GList *list;
-  
-  for (list = nodes; list != NULL; list = list->next)
+    GList *list;
+    
+    for (list = nodes; list != NULL; list = list->next)
     {
-      CmDrawableNode *node = list->data;
-      
-      if (node)
-	  g_print ("%lx, ", WS_RESOURCE_XID (node->drawable));
+	CmDrawableNode *node = list->data;
+	
+	if (node)
+	    g_print ("%lx, ", WS_RESOURCE_XID (node->drawable));
     }
-  g_print ("\n");
+    g_print ("\n");
 }
 
 static gboolean
@@ -116,7 +125,7 @@ repaint (gpointer data)
     
     ws_window_gl_swap_buffers (info->gl_window);
     glFinish();
-
+    
 #if 0
     dump_stacking_order (info->stacker->children);
 #endif
@@ -125,15 +134,26 @@ repaint (gpointer data)
     return FALSE;
 }
 
+static WindowInfo *
+find_win_info (MetaScreenInfo *info,
+	       Window	       xwindow)
+{
+    WindowInfo *win_info =
+	g_hash_table_lookup (info->window_infos_by_xid, (gpointer)xwindow);
+    
+    return win_info;
+}
+
 static CmNode *
 find_node (MetaScreenInfo *info,
 	   Window	   xwindow)
 {
-    CmNode *node;
+    WindowInfo *win_info = find_win_info (info, xwindow);
     
-    node = g_hash_table_lookup (info->nodes_by_xid, (gpointer)xwindow);
+    if (win_info)
+	return win_info->node;
     
-    return node;
+    return NULL;
 }
 
 static GList *all_screen_infos;
@@ -165,7 +185,9 @@ meta_screen_info_new (WsDisplay *display,
 	display, screen->number);
     scr_info->display = display;
     scr_info->gl_window = ws_screen_get_gl_window (scr_info->screen);
-    scr_info->nodes_by_xid = g_hash_table_new (g_direct_hash, g_direct_equal);
+    scr_info->window_infos_by_xid =
+	g_hash_table_new_full (g_direct_hash, g_direct_equal,
+			       NULL, g_free);
     scr_info->meta_screen = screen;
     
     /* FIXME: This should probably happen in libcm */
@@ -227,7 +249,7 @@ void
 meta_screen_info_redirect (MetaScreenInfo *info)
 {
     WsWindow *root = ws_screen_get_root_window (info->screen);
-
+    
 #if 0
     g_print ("redirecting %lx\n", WS_RESOURCE_XID (root));
 #endif
@@ -253,13 +275,13 @@ meta_screen_info_unredirect (MetaScreenInfo *info)
 #if 0
     g_print ("unredirecting %lx\n", WS_RESOURCE_XID (root));
 #endif
-
+    
     g_signal_handler_disconnect (info->stacker, info->repaint_id);
     g_object_unref (info->stacker);
     
     ws_window_unredirect_subwindows (root);
     ws_window_unmap (info->gl_window);
-
+    
     ws_display_sync (info->display);
 }
 
@@ -277,11 +299,11 @@ meta_screen_info_restack (MetaScreenInfo *info,
 {
     CmNode *window_node = find_node (info, window);
     CmNode *above_node  = find_node (info, above_this);
-
+    
 #if 0
     g_print ("restack %lx over %lx \n", window, above_this);
 #endif
-
+    
 #if 0
     dump_stacking_order (info->stacker->children);
 #endif
@@ -303,7 +325,7 @@ meta_screen_info_restack (MetaScreenInfo *info,
     }
     else
 	g_print ("nothing happened\n");
-
+    
 #if 0
     g_print ("done restacking; new order:\n");
 #endif
@@ -318,7 +340,7 @@ meta_screen_info_raise_window (MetaScreenInfo  *info,
 			       Window           window)
 {
     CmNode *node = find_node (info, window);
-
+    
     if (node)
 	cm_stacker_raise_child (info->stacker, node);
 }
@@ -331,11 +353,36 @@ meta_screen_info_set_size (MetaScreenInfo *info,
 			   gint		   width,
 			   gint		   height)
 {
-    CmNode *node = find_node (info, window);
+    CmDrawableNode *node = CM_DRAWABLE_NODE (find_node (info, window));
+    WindowInfo *winfo = find_win_info (info, window);
+    WsRectangle rect;
+    
+    rect.x = x;
+    rect.y = y;
+    rect.width = width;
+    rect.height = height;
     
     if (node)
-	cm_drawable_node_set_geometry (CM_DRAWABLE_NODE (node),
-				       x, y, width, height);
+    {
+	WsRegion *shape;
+	
+	if (winfo && winfo->updates)
+	{
+	    WsWindow *window = WS_WINDOW (node->drawable);
+	    WsDisplay *display = WS_RESOURCE (window)->display;
+
+	    ws_display_begin_error_trap (display);
+	    
+	    cm_drawable_node_set_geometry (CM_DRAWABLE_NODE (node), &rect);
+	    shape = ws_window_get_output_shape (window);
+	    cm_drawable_node_set_shape (node, shape);
+	    ws_region_destroy (shape);
+	    
+	    cm_drawable_node_update_pixmap (node);
+
+	    ws_display_end_error_trap (display);
+	}
+    }
 }
 
 static void
@@ -351,7 +398,7 @@ print_child_titles (WsWindow *window)
     GList *children = ws_window_query_subwindows (window);
     GList *list;
     int i;
-
+    
     g_print ("window: %lx %s\n", WS_RESOURCE_XID (window), ws_window_query_title (window));
     
     i = 0;
@@ -363,25 +410,39 @@ print_child_titles (WsWindow *window)
     }
 }
 
+static WindowInfo *
+window_info_new (Window xwindow,
+		 CmNode *node)
+{
+    WindowInfo *win_info = g_new0 (WindowInfo, 1);
+    win_info->xwindow = xwindow;
+    win_info->node = node;
+    win_info->updates = TRUE;
+    return win_info;
+}
+
 void
 meta_screen_info_add_window (MetaScreenInfo *info,
 			     Window	     xwindow)
 {
     CmNode *node;
     WsDrawable *drawable;
+    WsRectangle geometry;
     
     ws_display_begin_error_trap (info->display);
     
     node = find_node (info, xwindow);
     drawable = WS_DRAWABLE (ws_window_lookup (info->display, xwindow));
-
+    
     if (node)
 	goto out;
-
+    
     if (ws_window_query_input_only (WS_WINDOW (drawable)))
 	goto out;
     
-    node = CM_NODE (cm_drawable_node_new (drawable));
+    ws_drawable_query_geometry (drawable, &geometry);
+    
+    node = CM_NODE (cm_drawable_node_new (drawable, &geometry));
     
 #if 0
     print_child_titles (WS_WINDOW (drawable));
@@ -389,7 +450,10 @@ meta_screen_info_add_window (MetaScreenInfo *info,
     
     cm_stacker_add_child (info->stacker, node);
     
-    g_hash_table_insert (info->nodes_by_xid, (gpointer)xwindow, node);
+    g_hash_table_insert (info->window_infos_by_xid,
+			 (gpointer)xwindow,
+			 window_info_new (xwindow, node));
+    
     g_object_unref (node);    
     
     info->repaint_id =
@@ -436,10 +500,10 @@ meta_screen_info_remove_window (MetaScreenInfo *info,
 				Window	        xwindow)
 {
     CmNode *node = find_node (info, xwindow);
-
+    
     g_print ("removing %lx\n", xwindow);
     
-    g_hash_table_remove (info->nodes_by_xid, (gpointer)xwindow);
+    g_hash_table_remove (info->window_infos_by_xid, (gpointer)xwindow);
     
     cm_stacker_remove_child (info->stacker, node);
 }
@@ -449,10 +513,29 @@ meta_screen_info_set_updates (MetaScreenInfo *info,
 			      Window	      xwindow,
 			      gboolean	      updates)
 {
-    CmDrawableNode *node = CM_DRAWABLE_NODE (find_node (info, xwindow));
+    WindowInfo *win_info = find_win_info (info, xwindow);
+    CmDrawableNode *node = CM_DRAWABLE_NODE (win_info->node);
+    
+    win_info->updates = updates;
     
     if (node)
 	cm_drawable_node_set_updates (node, updates);
+    
+    if (updates)
+    {
+	WsRectangle rect;
+	WsRegion *shape;
+	WsDisplay *display = WS_RESOURCE (node->drawable)->display;
+	
+	ws_display_begin_error_trap (display);
+	ws_drawable_query_geometry (node->drawable, &rect);
+	cm_drawable_node_update_pixmap (node);
+	cm_drawable_node_set_geometry (node, &rect);
+	shape = ws_window_get_output_shape (WS_WINDOW (node->drawable));
+	cm_drawable_node_set_shape (node, shape);
+	ws_region_destroy (shape);
+	ws_display_end_error_trap (display);
+    }
 }
 
 
@@ -497,10 +580,7 @@ meta_screen_info_get_real_size (MetaScreenInfo *info,
     if (!size)
 	return;
     
-    size->x = node->real_x;
-    size->y = node->real_y;
-    size->width = node->real_width;
-    size->height = node->real_height;
+    cm_drawable_node_get_clipbox (node, size);
 }
 
 void
@@ -508,7 +588,7 @@ meta_screen_info_unmap (MetaScreenInfo *info,
 			Window		xwindow)
 {
     CmDrawableNode *node = CM_DRAWABLE_NODE (find_node (info, xwindow));
-
+    
 #if 0
     g_print ("unmapping: %lx\n", xwindow);
 #endif
