@@ -1,3 +1,16 @@
+Wed Mar 15 16:30:09 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/compositor.c (set_geometry): Use set_target_rect() instead
+	of set_size(). 
+
+	* src/c-screen.c: Add set_target_rect() as a way of scaling windows.
+
+	* src/window.c (meta_window_handle_mouse_grab_op_event): Turn
+	updates on after a button release.
+
+	* src/window.c (meta_window_move_resize_internal): Fix
+	indentation. 
+
 Wed Mar 15 11:34:54 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/c-screen.c (meta_screen_info_add_window): Use unset_patch()

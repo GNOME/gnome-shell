@@ -211,8 +211,11 @@ process_configure_notify (MetaCompositor  *compositor,
 
 #if 0
   g_print ("minfo: %lx => %p\n", event->window, minfo);
+#endif
 
-  g_print ("configure on %lx (above: %lx)\n", event->window, event->above);
+#if 0
+  g_print ("configure on %lx (above: %lx) %d %d %d %d\n", event->window, event->above,
+	   event->x, event->y, event->width, event->height);
 #endif
   
   if (!minfo)
@@ -887,10 +890,8 @@ set_geometry (MiniInfo *info, gdouble elapsed)
   
   g_print ("setting: %d %d %d %d\n", rect.x, rect.y, rect.width, rect.height);
   
-  meta_screen_info_set_size (info->scr_info,
-			     get_xid (info->window),
-			     rect.x, rect.y,
-			     rect.width, rect.height);
+  meta_screen_info_set_target_rect (info->scr_info,
+				    get_xid (info->window), &rect);
 }
 
 static int

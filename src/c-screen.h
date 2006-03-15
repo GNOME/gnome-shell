@@ -38,3 +38,7 @@ void            meta_screen_info_set_alpha (MetaScreenInfo *info,
 void		meta_screen_info_get_real_size (MetaScreenInfo *info,
 						Window xwindow,
 						WsRectangle *size);
+void		meta_screen_info_set_target_rect (MetaScreenInfo *info,
+						  Window xwindow,
+						  WsRectangle *rect);
+

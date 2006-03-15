@@ -3013,9 +3013,9 @@ meta_window_move_resize_internal (MetaWindow  *window,
      change frame's extents property. */
   if (window->frame &&
       (window->frame->child_x != fgeom.left_width ||
-          window->frame->child_y != fgeom.top_height ||
-          window->frame->right_width != fgeom.right_width ||
-          window->frame->bottom_height != fgeom.bottom_height))
+       window->frame->child_y != fgeom.top_height ||
+       window->frame->right_width != fgeom.right_width ||
+       window->frame->bottom_height != fgeom.bottom_height))
     {
       window->frame->child_x = fgeom.left_width;
       window->frame->child_y = fgeom.top_height;
@@ -7231,6 +7231,8 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
                                event->xbutton.x_root,
                                event->xbutton.y_root,
                                TRUE);
+	      if (window->display->compositor)
+		meta_compositor_set_updates (window->display->compositor, window, TRUE);
             }
         }
 

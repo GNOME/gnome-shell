@@ -518,6 +518,10 @@ meta_screen_info_set_updates (MetaScreenInfo *info,
 {
     WindowInfo *win_info = find_win_info (info, xwindow);
     CmDrawableNode *node = CM_DRAWABLE_NODE (win_info->node);
+
+#if 0
+    g_print ("setting updates to %s\n", updates? "on" : "off");
+#endif
     
     win_info->updates = updates;
     
@@ -601,3 +605,15 @@ meta_screen_info_unmap (MetaScreenInfo *info,
 }
 
 #endif
+
+void
+meta_screen_info_set_target_rect (MetaScreenInfo *info,
+				  Window xwindow,
+				  WsRectangle *rect)
+{
+    CmDrawableNode *node = CM_DRAWABLE_NODE (find_node (info, xwindow));
+
+    if (node)
+	cm_drawable_node_set_scale_rect (node, rect);
+}
+
