@@ -882,12 +882,10 @@ set_geometry (MiniInfo *info, gdouble elapsed)
   
   interpolate_rectangle (elapsed, &info->current_geometry, &info->target_geometry, &rect);
   
-#if 0
   g_print ("y: %d %d  (%f  => %d)\n", info->current_geometry.y, info->target_geometry.y,
 	   elapsed, rect.y);
   
   g_print ("setting: %d %d %d %d\n", rect.x, rect.y, rect.width, rect.height);
-#endif
   
   meta_screen_info_set_size (info->scr_info,
 			     get_xid (info->window),

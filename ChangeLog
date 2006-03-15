@@ -1,3 +1,8 @@
+Wed Mar 15 11:34:54 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/c-screen.c (meta_screen_info_add_window): Use unset_patch()
+	instead of unset_geometry().
+
 Tue Mar 14 11:57:46 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/compositor.c: Comment out wobbling

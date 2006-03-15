@@ -372,6 +372,9 @@ meta_screen_info_set_size (MetaScreenInfo *info,
 	    WsDisplay *display = WS_RESOURCE (window)->display;
 
 	    ws_display_begin_error_trap (display);
+
+	    g_print ("meta screen info set: %d %d %d %d\n",
+		     x, y, width, height);
 	    
 	    cm_drawable_node_set_geometry (CM_DRAWABLE_NODE (node), &rect);
 	    shape = ws_window_get_output_shape (window);
@@ -471,7 +474,7 @@ out:
 #if 0
 	    g_print ("mapped\n");
 #endif
-	    cm_drawable_node_unset_geometry (node);
+	    cm_drawable_node_unset_patch (node);
 	    cm_drawable_node_set_alpha (node, 1.0);
 	    cm_drawable_node_set_viewable (node, TRUE);
 	    cm_drawable_node_update_pixmap (node);
@@ -557,7 +560,7 @@ meta_screen_info_unset_patch (MetaScreenInfo *info,
     CmDrawableNode *node = CM_DRAWABLE_NODE (find_node (info, xwindow));
     
     if (node)
-	cm_drawable_node_unset_geometry (node);
+	cm_drawable_node_unset_patch (node);
 }
 
 void
