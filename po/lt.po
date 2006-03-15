@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-02-23 01:24+0200\n"
-"PO-Revision-Date: 2006-02-23 01:24+0200\n"
+"POT-Creation-Date: 2006-03-15 16:17+0200\n"
+"PO-Revision-Date: 2006-03-15 16:21+0200\n"
 "Last-Translator: Žygimantas Beručka <zygis@gnome.org>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
 "MIME-Version: 1.0\n"
@@ -65,25 +65,25 @@ msgstr "Nepavyko gauti kompiuterio vardo: %s\n"
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nepavyko atverti X Window sistemos ekrano '%s'\n"
 
-#: ../src/errors.c:233
+#: ../src/errors.c:269
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
 "most likely the X server was shut down or you killed/destroyed\n"
 "the window manager.\n"
 msgstr ""
-"Prarasta jungtis iki ekrano '%s';\n"
+"Prarastas ryšys su ekranu „%s“;\n"
 "greičiausiai X serveris buvo išjungtas arba Jūs sustabdėte\n"
-"langų tvarkyklę.\n"
+"langų valdyklę.\n"
 
-#: ../src/errors.c:240
+#: ../src/errors.c:276
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Kritinė IO klaida %d (%s) ekrane '%s'.\n"
 
 #: ../src/frames.c:1097
 msgid "Close Window"
-msgstr "Uždaryti langą"
+msgstr "Užverti langą"
 
 #: ../src/frames.c:1100
 msgid "Window Menu"
@@ -145,11 +145,11 @@ msgstr ""
 
 #: ../src/main.c:258
 msgid "Disable connection to session manager"
-msgstr "Išjungti susijungimą su sesijos tvarkykle"
+msgstr "Išjungti susijungimą su sesijos valdykle"
 
 #: ../src/main.c:264
 msgid "Replace the running window manager with Metacity"
-msgstr "Pakeisti veikiančią langų tvarkyklę su Metacity"
+msgstr "Pakeisti veikiančią langų valdyklę su Metacity"
 
 #: ../src/main.c:270
 msgid "Specify session management ID"
@@ -251,7 +251,7 @@ msgstr "Perkelti langą į a_ukštesnįjį darbalaukį"
 msgid "Move to Workspace _Down"
 msgstr "Perkelti langą į ž_emesnįjį darbalaukį"
 
-#: ../src/menu.c:164 ../src/prefs.c:2004 ../src/prefs.c:2305
+#: ../src/menu.c:164 ../src/prefs.c:2004 ../src/prefs.c:2367
 #, c-format
 msgid "Workspace %d"
 msgstr "Darbalaukis %d"
@@ -471,7 +471,7 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:9
 msgid "Close window"
-msgstr "Uždaryti langą"
+msgstr "Užverti langą"
 
 #: ../src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
@@ -481,11 +481,11 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:11
 msgid "Compositing Manager"
-msgstr "Komponuojanti tvarkyklė"
+msgstr "Kompozicijos valdyklė"
 
 #: ../src/metacity.schemas.in.h:12
 msgid "Current theme"
-msgstr "Dabartinė tema"
+msgstr "Esama tema"
 
 #: ../src/metacity.schemas.in.h:13
 msgid "Delay in milliseconds for the auto raise option"
@@ -494,16 +494,16 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:14
 msgid "Determines whether Metacity is a compositing manager."
-msgstr "Nurodo ar Metacity yra komponuojanti tvarkyklė."
+msgstr "Nurodo ar Metacity yra komponuojanti valdyklė."
 
 #: ../src/metacity.schemas.in.h:15
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr ""
-"Nustato, ar programos arba sistema gali generuoti garsinius 'pyptelėjimus'; "
-"gali būti naudojamas kartu su 'vaizdiniu audio signalu' norint generuoti "
-"tylius 'pyptelėjimus'."
+"Nustato, ar programos arba sistema gali generuoti garsinius „pyptelėjimus“; "
+"gali būti naudojamas kartu su „vaizdiniu audio signalu“ norint generuoti "
+"tylius „pyptelėjimus“."
 
 #: ../src/metacity.schemas.in.h:16
 msgid "Disable misfeatures that are required by old or broken applications"
@@ -576,14 +576,14 @@ msgid ""
 "details of application-based vs. window-based, e.g. whether to pass through "
 "clicks. Also, application-based mode is largely unimplemented at the moment."
 msgstr ""
-"Esant teigiamai reikšmei, langų tvarkyklės darbas yra artimesnis darbui su "
-"programomis nei su langais. Terminas yra gana neapibrėžtas, bet trumpai "
+"Esant teigiamai reikšmei, langų valdyklės darbas yra artimesnis darbui su "
+"programomis, nei su langais. Terminas yra gana neapibrėžtas, bet trumpai "
 "kalbant programų režimas yra artimesnis Macintosh operacinei sistemai nei "
 "Windows. Kai jūs aktyvuojate langą programų režime, visi programos langai "
 "bus iškelti. Be to programų režime langų aktyvavimo spragtelėjimai neveikia "
 "langų priklausančių kitoms programoms. Šio nustatymo buvimas yra "
 "diskutuotinas. Tačiau yra paprasčiau turėti vieną nustatymą, kuris nulemia "
-"visas tvarkyklės reakcijas priklausomai nuo pasirinkto programų ar langų "
+"visas valdyklės reakcijas priklausomai nuo pasirinkto programų ar langų "
 "režimo, nei keisti režimą reguliuojant visus tuos nustatymus. Be to programų "
 "režimas yra šiuo metu beveik neįgyvendintas."
 
@@ -801,20 +801,20 @@ msgid ""
 "limitations in the specifications themselves, so sometimes a bug in no-"
 "workarounds mode won't be fixable without amending a spec."
 msgstr ""
-"Dalis programų gali pažeisti langų tvarkyklės specifikacijas. Pavyzdžiui, "
-"idealioje situacijos langų tvarkyklė turėtų visus dialogo langus patalpinti "
+"Dalis programų gali pažeisti langų valdyklės specifikacijas. Pavyzdžiui, "
+"idealioje situacijos langų valdyklė turėtų visus dialogo langus patalpinti "
 "atsižvelgdama į jų pagrindinio lango padėtį. Norint tai pasiekti, reikia "
 "nekreipti dėmesio į programų pateikiamas dialogo langų padėtis. Tačiau dalis "
 "Java/Swing laidų žymi jų išsiskleidžiančius meniu kaip dialogus ir langų "
-"tvarkyklė turi atjungti dialogų padėties valdymą, kad netvarkingose "
+"valdyklė turi atjungti dialogų padėties valdymą, kad netvarkingose "
 "programose veiktų meniu. Yra ir kitų panašaus tipo pavydžių. Šis nustatymas "
-"perveda langų tvarkyklę į klaidų nepripažįstantį darbo režimą, kuris "
+"perveda langų valdyklę į klaidų nepripažįstantį darbo režimą, kuris "
 "garantuoja šiek tiek geresnę vartotojo sąsają, jei jums nereikia dirbti su "
 "nekorektiškai dirbančiomis programomis. Tačiau mes gyvename netobulame "
 "pasaulyje ir pagal nutylėjimą apsauga nuo nekorektiškų programų yra įjungta. "
-"Dalis apsaugos priemonių saugo nuo pačios langų tvarkyklės specifikacijų "
-"netobulumo ir klaida atsiradusi \"tobulame\" režime negali būti pataisyta "
-"neištaisius tvarkyklės specifikacijų."
+"Dalis apsaugos priemonių saugo nuo pačios langų valdyklės specifikacijų "
+"netobulumo ir klaida atsiradusi „tobulame“ režime negali būti pataisyta "
+"neištaisius valdyklės specifikacijų."
 
 #: ../src/metacity.schemas.in.h:67
 msgid "Switch to workspace 1"
@@ -902,7 +902,7 @@ msgid ""
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
 msgstr ""
-"Nustato kaip langų tvarkyklė vykdo vaizdinį signalą suveikus sisteminiam "
+"Nustato kaip langų valdyklė vykdo vaizdinį signalą suveikus sisteminiam "
 "pyptelėjimui arba kokios nors programos pyptelėjimo signalui. Šiuo metu "
 "galimos dvi reikšmės - „fullscreen“, kuris sukuria viso ekrano vaizdo juodai "
 "baltą blykstelėjimą, bei „frame_flash“, kuris sukuria programos, "
@@ -2129,7 +2129,7 @@ msgstr ""
 "„%s“ reikšmė rasta konfiguracijos duomenų bazė yra netinkama klavišų "
 "kombinacijai „%s“\n"
 
-#: ../src/prefs.c:2386
+#: ../src/prefs.c:2448
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Įvyko klaida pervadinant darbo lauką %d į „%s“: %s\n"
@@ -2150,20 +2150,20 @@ msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
-"Ekranas %d vaizduoklyje „%s“ jau turi langų tvarkyklę; pabandykite "
-"pasinaudoti --replace raktu, jei norite pakeisti esamą langų tvarkyklę.\n"
+"Ekranas %d vaizduoklyje „%s“ jau turi langų valdyklę; pabandykite "
+"pasinaudoti --replace raktu, jei norite pakeisti esamą langų valdyklę.\n"
 
 #: ../src/screen.c:443
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
-"Nepavyko aptikti langų tvarkyklės pasirinkimo ekrano %d vaizduoklyje „%s“\n"
+"Nepavyko aptikti langų valdyklės pasirinkimo ekrano %d vaizduoklyje „%s“\n"
 
 #: ../src/screen.c:501
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "Ekranas %d vaizduoklyje „%s“ jau turi langų tvarkyklę\n"
+msgstr "Ekranas %d vaizduoklyje „%s“ jau turi langų valdyklę\n"
 
 #: ../src/screen.c:705
 #, c-format
@@ -2240,7 +2240,7 @@ msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr ""
-"Įvyko klaida paleidžiant langų tvarkyklės dialogo langą, perspėjantį apie "
+"Įvyko klaida paleidžiant langų valdyklės dialogo langą, perspėjantį apie "
 "programas, kurios nepalaiko sesijos valdymo: %s\n"
 
 #: ../src/theme-parser.c:224 ../src/theme-parser.c:242
@@ -3172,7 +3172,7 @@ msgid ""
 "Metacity bug, but are you sure you need a huge expression like that?"
 msgstr ""
 "Koordinačių išraiškos aprodojimo metu buvo viršytas tam skirtas atminties "
-"kiekis. Tai yra langų tvarkyklės klaida, bet ar Jums tikrai reikia tokio "
+"kiekis. Tai yra langų valdyklės klaida, bet ar Jums tikrai reikia tokio "
 "dydžio išraiškos?"
 
 #: ../src/theme.c:2007
@@ -3276,27 +3276,32 @@ msgstr "Atverta žurnalo rinkmena %s\n"
 
 #: ../src/util.c:220
 msgid "Window manager: "
-msgstr "Langų tvarkyklė:"
+msgstr "Langų valdyklė:"
 
 #: ../src/util.c:366
 msgid "Bug in window manager: "
-msgstr "Klaida langų tvarkyklėje:"
+msgstr "Klaida langų valdyklėje:"
 
 #: ../src/util.c:395
 msgid "Window manager warning: "
-msgstr "Langų tvarkyklės perspėjimas:"
+msgstr "Langų valdyklės perspėjimas:"
 
 #: ../src/util.c:419
 msgid "Window manager error: "
-msgstr "Langų tvarkyklės klaida:"
+msgstr "Langų valdyklės klaida:"
 
 #: ../src/window-props.c:169
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Programa nustatė netinkamą _NET_WM_PID %lu\n"
 
+#: ../src/window-props.c:233
+#, c-format
+msgid "%s (on %s)"
+msgstr "%s (kompiuteryje %s)"
+
 #. first time through
-#: ../src/window.c:5409
+#: ../src/window.c:5413
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3312,7 +3317,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6028
+#: ../src/window.c:6041
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3334,8 +3339,8 @@ msgstr ""
 "Langas 0x%lx turi požymį %s\n"
 "kuris turėtų turėti type %s format %d atributus\n"
 "tačiau jis turi type %s format %d n_items %d atributus.\n"
-"Greičiausiai tai yra programos, o ne langų tvarkyklės klaida.\n"
-"Lango turi požymius title=\"%s\" class=\"%s\" name=\"%s\"\n"
+"Greičiausiai tai yra programos, o ne langų valdyklės klaida.\n"
+"Langas turi požymius title=\"%s\" class=\"%s\" name=\"%s\"\n"
 
 #: ../src/xprops.c:399
 #, c-format
@@ -3349,12 +3354,3 @@ msgid ""
 msgstr ""
 "Požymis %s lange 0x%lx naudoja nepriimtinus UTF-8 simbolius sąrašo punkte %"
 "d\n"
-
-#~ msgid ""
-#~ "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
-#~ "focused window will be automatically raised after a delay (the delay is "
-#~ "specified by the auto_raise_delay key)."
-#~ msgstr ""
-#~ "Jei reikšmė teigiama, o aktyvavimo režimas yra \"sloppy\" arba \"mouse\", "
-#~ "tada aktyvuojamas langas bus automatiškai iškeltas po nustatytos "
-#~ "uždelsimo pauzės (uždelsimas nustatomas auto_raise_delay požymiu)."
