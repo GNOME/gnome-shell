@@ -36,6 +36,8 @@ struct WindowInfo
     Window	xwindow;
     CmNode     *node;
     gboolean	updates;
+
+    WsRectangle size;
 };
 
 struct MetaScreenInfo
@@ -108,8 +110,10 @@ repaint (gpointer data)
 		info->meta_screen->rect.width,
 		info->meta_screen->rect.height);
     
-    glClearColor (1.0, 0.8, 0.8, 0.0);
+#if 0
+    glClearColor (1.0, 1.0, 0.8, 0.0);
     glClear (GL_COLOR_BUFFER_BIT);
+#endif
     
     ws_window_raise (info->gl_window);
     
@@ -373,15 +377,23 @@ meta_screen_info_set_size (MetaScreenInfo *info,
 
 	    ws_display_begin_error_trap (display);
 
+#if 0
 	    g_print ("meta screen info set: %d %d %d %d\n",
 		     x, y, width, height);
+#endif
 	    
 	    cm_drawable_node_set_geometry (CM_DRAWABLE_NODE (node), &rect);
 	    shape = ws_window_get_output_shape (window);
 	    cm_drawable_node_set_shape (node, shape);
 	    ws_region_destroy (shape);
-	    
-	    cm_drawable_node_update_pixmap (node);
+
+	    if (rect.width != winfo->size.width ||
+		rect.height != winfo->size.height)
+	    {
+		cm_drawable_node_update_pixmap (node);
+	    }
+
+	    winfo->size = rect;
 
 	    ws_display_end_error_trap (display);
 	}
@@ -442,6 +454,12 @@ meta_screen_info_add_window (MetaScreenInfo *info,
     
     if (ws_window_query_input_only (WS_WINDOW (drawable)))
 	goto out;
+
+    if (WS_WINDOW (drawable) == info->gl_window)
+    {
+	g_print ("gl window\n");
+	goto out;
+    }
     
     ws_drawable_query_geometry (drawable, &geometry);
     

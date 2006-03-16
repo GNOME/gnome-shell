@@ -1,3 +1,8 @@
+Thu Mar 16 14:55:18 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/c-screen.c (struct WindowInfo): Maintain the size of the
+	window.
+
 Wed Mar 15 16:30:09 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/compositor.c (set_geometry): Use set_target_rect() instead
