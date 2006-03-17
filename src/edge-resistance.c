@@ -747,6 +747,31 @@ cache_edges (MetaDisplay *display,
   int i;
 
   /*
+   * 0th: Print debugging information to the log about the edges
+   */
+#ifdef WITH_VERBOSE_MODE
+  if (meta_is_verbose())
+    {
+      int max_edges = MAX (MAX( g_list_length (window_edges), 
+                                g_list_length (xinerama_edges)),
+                           g_list_length (screen_edges));
+      char big_buffer[(EDGE_LENGTH+2)*max_edges];
+
+      meta_rectangle_edge_list_to_string (window_edges, ", ", big_buffer);
+      meta_topic (META_DEBUG_EDGE_RESISTANCE,
+                  "Window edges for resistance  : %s\n", big_buffer);
+
+      meta_rectangle_edge_list_to_string (xinerama_edges, ", ", big_buffer);
+      meta_topic (META_DEBUG_EDGE_RESISTANCE,
+                  "Xinerama edges for resistance: %s\n", big_buffer);
+
+      meta_rectangle_edge_list_to_string (screen_edges, ", ", big_buffer);
+      meta_topic (META_DEBUG_EDGE_RESISTANCE,
+                  "Screen edges for resistance  : %s\n", big_buffer);
+    }
+#endif
+
+  /*
    * 1st: Get the total number of each kind of edge
    */
   num_left = num_right = num_top = num_bottom = 0;
@@ -1163,6 +1188,12 @@ meta_window_edge_resistance_for_move (MetaWindow  *window,
               (BOX_LEFT (*reference) - BOX_LEFT (old_outer));
       *new_y = old_y + smaller_y_change +
               (BOX_TOP (*reference) - BOX_TOP (old_outer));
+
+      meta_topic (META_DEBUG_EDGE_RESISTANCE,
+                  "outer x & y move-to coordinate changed from %d,%d to %d,%d\n",
+                  proposed_outer.x, proposed_outer.y,
+                  old_outer.x + (*new_x - old_x),
+                  old_outer.y + (*new_y - old_y));
     }
 }
 
@@ -1181,7 +1212,7 @@ meta_window_edge_resistance_for_resize (MetaWindow  *window,
                                         gboolean     is_keyboard_op)
 {
   MetaRectangle old_outer, new_outer;
-  int new_outer_width, new_outer_height;
+  int proposed_outer_width, proposed_outer_height;
 
   if (window == window->display->grab_window &&
       window->display->grab_wireframe_active)
@@ -1194,13 +1225,13 @@ meta_window_edge_resistance_for_resize (MetaWindow  *window,
     {
       meta_window_get_outer_rect (window, &old_outer);
     }
-  new_outer_width  = old_outer.width  + (*new_width  - old_width);
-  new_outer_height = old_outer.height + (*new_height - old_height);
+  proposed_outer_width  = old_outer.width  + (*new_width  - old_width);
+  proposed_outer_height = old_outer.height + (*new_height - old_height);
   meta_rectangle_resize_with_gravity (&old_outer, 
                                       &new_outer,
                                       gravity,
-                                      new_outer_width,
-                                      new_outer_height);
+                                      proposed_outer_width,
+                                      proposed_outer_height);
 
   window->display->grab_last_user_action_was_snap = snap;
   if (apply_edge_resistance_to_each_side (window->display,
@@ -1213,5 +1244,10 @@ meta_window_edge_resistance_for_resize (MetaWindow  *window,
     {
       *new_width  = old_width  + (new_outer.width  - old_outer.width);
       *new_height = old_height + (new_outer.height - old_outer.height);
+
+      meta_topic (META_DEBUG_EDGE_RESISTANCE,
+                  "outer width & height got changed from %d,%d to %d,%d\n",
+                  proposed_outer_width, proposed_outer_height,
+                  new_outer.width, new_outer.height);
     }
 }

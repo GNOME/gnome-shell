@@ -1,3 +1,17 @@
+2006-03-16  Elijah Newren  <newren gmail com>
+
+	Add debugging information for edge resistance
+
+	* src/edge-resistance.c (cache_edges): print out the edges that
+	are being cached if in verbose mode,
+	(meta_window_edge_resistance_for_move,
+	meta_window_edge_resistance_for_resize): if edge resistance kicked
+	in then print out a message about it
+	
+	* src/util.c:
+	* src/util.h:
+	Add META_DEBUG_EDGE_RESISTANCE to MetaDebugTopic enum list
+
 Thu Mar 16 14:55:18 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/c-screen.c (struct WindowInfo): Maintain the size of the

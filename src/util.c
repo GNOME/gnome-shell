@@ -303,6 +303,8 @@ topic_name (MetaDebugTopic topic)
       return "SHAPES";
     case META_DEBUG_COMPOSITOR:
       return "COMPOSITOR";
+    case META_DEBUG_EDGE_RESISTANCE:
+      return "EDGE_RESISTANCE";
     }
 
   return "WM";
