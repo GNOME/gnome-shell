@@ -594,7 +594,6 @@ meta_screen_info_set_alpha (MetaScreenInfo *info,
     cm_drawable_node_set_alpha (node, alpha);
 }
 
-
 void
 meta_screen_info_get_real_size (MetaScreenInfo *info,
 				Window xwindow,
@@ -622,8 +621,6 @@ meta_screen_info_unmap (MetaScreenInfo *info,
 	cm_drawable_node_set_viewable (node, FALSE);
 }
 
-#endif
-
 void
 meta_screen_info_set_target_rect (MetaScreenInfo *info,
 				  Window xwindow,
@@ -635,3 +632,4 @@ meta_screen_info_set_target_rect (MetaScreenInfo *info,
 	cm_drawable_node_set_scale_rect (node, rect);
 }
 
+#endif

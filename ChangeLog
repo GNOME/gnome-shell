@@ -1,3 +1,8 @@
+2006-03-16 Soren Sandmann (sandmann@daimi.au.dk)
+
+	* src/c-screen.c (meta_screen_info_set_target_rect): Put inside
+	COMPOSIT_EXTENSIONS
+
 2006-03-03  Thomas Thurman  <thomas@thurman.org.uk>
 
 	Always set _NET_WM_STATE when a window is shown or
