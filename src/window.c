@@ -2021,17 +2021,14 @@ meta_window_show (MetaWindow *window)
         }
     }
 
-  if (did_show)
-    {
-      set_net_wm_state (window);
+  set_net_wm_state (window);
 
-      if (window->struts)
-        {
-          meta_topic (META_DEBUG_WORKAREA,
-                      "Mapped window %s with struts, so invalidating work areas\n",
-                      window->desc);
-          invalidate_work_areas (window);
-        }
+  if (did_show && window->struts)
+    {
+      meta_topic (META_DEBUG_WORKAREA,
+                  "Mapped window %s with struts, so invalidating work areas\n",
+                  window->desc);
+      invalidate_work_areas (window);
     }
 }
 
@@ -2074,17 +2071,14 @@ meta_window_hide (MetaWindow *window)
       set_wm_state (window, IconicState);
     }
   
-  if (did_hide)
-    {
-      set_net_wm_state (window);
+  set_net_wm_state (window);
       
-      if (window->struts)
-        {
-          meta_topic (META_DEBUG_WORKAREA,
-                      "Unmapped window %s with struts, so invalidating work areas\n",
-                      window->desc);
-          invalidate_work_areas (window);
-        }
+  if (did_hide && window->struts)
+    {
+      meta_topic (META_DEBUG_WORKAREA,
+                  "Unmapped window %s with struts, so invalidating work areas\n",
+                  window->desc);
+      invalidate_work_areas (window);
     }
 }
 

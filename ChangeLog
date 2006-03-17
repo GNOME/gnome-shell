@@ -1,3 +1,11 @@
+2006-03-03  Thomas Thurman  <thomas@thurman.org.uk>
+
+	Always set _NET_WM_STATE when a window is shown or
+	hidden, even if it wasn't mapped.
+
+	* src/window.c (meta_window_hide, meta_window_show):
+	call set_net_wm_state unconditionally
+
 2006-03-16  Elijah Newren  <newren gmail com>
 
 	Add debugging information for edge resistance
