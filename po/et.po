@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-03-11 23:18+0100\n"
-"PO-Revision-Date: 2006-03-12 00:30+0200\n"
+"PO-Revision-Date: 2006-03-17 10:14+0200\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -130,6 +130,12 @@ msgid ""
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
+"metacity %s\n"
+"Autoriõigused (C) 2001-2002 Havoc Pennington, Red Hat, Inc., ja teised\n"
+"See protgramm on vaba tarkvara; kopeerimistingimuste kohta vaata\n"
+"programmi lähteteksti. Sellel programmil pole MINGISUGUST GARANTIID;\n"
+"isegi KESKMISE/TAVALISE KVALITEEDI GARANTIID või GARANTIID SOBIVUSELE\n"
+"TEATUD KINDLAKS EESMÄRGIKS.\n"
 
 #: ../src/main.c:258
 msgid "Disable connection to session manager"
@@ -145,7 +151,7 @@ msgstr "Seansihalduse ID kirjeldamine"
 
 #: ../src/main.c:275
 msgid "X Display to use"
-msgstr ""
+msgstr "X'i kuva, mida kasutada"
 
 #: ../src/main.c:281
 msgid "Initialize session from savefile"
