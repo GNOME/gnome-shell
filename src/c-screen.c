@@ -25,6 +25,7 @@
 #include <cm/wsint.h>
 #include <cm/drawable-node.h>
 #include <cm/state.h>
+#include <cm/magnifier.h>
 
 #include "screen.h"
 #include "c-screen.h"
@@ -44,6 +45,7 @@ struct MetaScreenInfo
 {
     WsDisplay *display;
     CmStacker *stacker;
+    CmMagnifier *magnifier;
     
     WsWindow *gl_window;
     
@@ -121,7 +123,7 @@ repaint (gpointer data)
     
     cm_state_disable_depth_buffer_update (state);
     
-    cm_node_render (CM_NODE (info->stacker), state);
+    cm_node_render (CM_NODE (info->magnifier), state);
     
     cm_state_enable_depth_buffer_update (state);
     
@@ -188,17 +190,10 @@ meta_screen_info_new (WsDisplay *display,
     scr_info->screen = ws_display_get_screen_from_number (
 	display, screen->number);
     scr_info->display = display;
-    scr_info->gl_window = ws_screen_get_gl_window (scr_info->screen);
     scr_info->window_infos_by_xid =
 	g_hash_table_new_full (g_direct_hash, g_direct_equal,
 			       NULL, g_free);
     scr_info->meta_screen = screen;
-    
-    /* FIXME: This should probably happen in libcm */
-    ws_window_set_override_redirect (scr_info->gl_window, TRUE);
-    region = ws_server_region_new (scr_info->display);
-    ws_window_set_input_shape (scr_info->gl_window, region);
-    g_object_unref (G_OBJECT (region));
     
     all_screen_infos = g_list_prepend (all_screen_infos, scr_info);
     
@@ -249,16 +244,33 @@ claim_selection (MetaScreenInfo *info)
     return TRUE;
 }
 
+static void
+queue_paint (CmStacker *stacker,
+	     MetaScreenInfo *info)
+{
+    meta_screen_info_queue_paint (info);
+}
+
 void
 meta_screen_info_redirect (MetaScreenInfo *info)
 {
     WsWindow *root = ws_screen_get_root_window (info->screen);
+    WsRectangle source;
+    WsRectangle target;
+    WsRegion *region;
     
 #if 0
     g_print ("redirecting %lx\n", WS_RESOURCE_XID (root));
 #endif
     
     ws_window_redirect_subwindows (root);
+    info->gl_window = ws_screen_get_gl_window (info->screen);
+    /* FIXME: This should probably happen in libcm */
+    ws_window_set_override_redirect (info->gl_window, TRUE);
+    region = ws_server_region_new (info->display);
+    ws_window_set_input_shape (info->gl_window, region);
+    g_object_unref (G_OBJECT (region));
+    
     ws_window_unredirect (info->gl_window);
     
     claim_selection (info);
@@ -266,6 +278,23 @@ meta_screen_info_redirect (MetaScreenInfo *info)
     ws_window_map (info->gl_window);
     
     info->stacker = cm_stacker_new ();
+
+    source.x = 600;
+    source.y = 100;
+    source.width = 400;
+    source.height = 75;
+
+    target.x = 0;
+    target.y = 900;
+    target.width = 1600;
+    target.height = 300;
+    
+    info->magnifier = cm_magnifier_new (info->stacker, &source, &target);
+    cm_magnifier_set_active (info->magnifier, FALSE);
+    
+    info->repaint_id =
+	g_signal_connect (info->magnifier, "need_repaint",
+			  G_CALLBACK (queue_paint), info);
     
     ws_display_sync (info->display);
 }
@@ -401,13 +430,6 @@ meta_screen_info_set_size (MetaScreenInfo *info,
 }
 
 static void
-queue_paint (CmStacker *stacker,
-	     MetaScreenInfo *info)
-{
-    meta_screen_info_queue_paint (info);
-}
-
-static void
 print_child_titles (WsWindow *window)
 {
     GList *children = ws_window_query_subwindows (window);
@@ -476,11 +498,6 @@ meta_screen_info_add_window (MetaScreenInfo *info,
 			 window_info_new (xwindow, node));
     
     g_object_unref (node);    
-    
-    info->repaint_id =
-	g_signal_connect (info->stacker, "need_repaint",
-			  G_CALLBACK (queue_paint), info);
-    
 out:
     if (node)
     {

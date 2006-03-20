@@ -1,3 +1,13 @@
+Mon Mar 20 11:50:44 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/c-screen.c (meta_screen_info_redirect): Put the desktop into
+	a magnifier.
+
+	* src/c-screen.c (struct MetaScreenInfo): Add a CmMagnifier
+
+	* src/c-screen.c (meta_screen_info_redirect): Move some of the gl
+	window related stuff here.
+
 2006-03-16 Soren Sandmann (sandmann@daimi.au.dk)
 
 	* src/c-screen.c (meta_screen_info_set_target_rect): Put inside
