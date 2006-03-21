@@ -5,14 +5,14 @@
 # This file is distributed under the same license as the metacity package.
 # 
 # Tõivo Leedjärv <toivo@linux.ee>, 2004.
-# Ivar Smolin <okul@linux.ee>, 2005
+# Ivar Smolin <okul@linux.ee>, 2005, 2006.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-03-11 23:18+0100\n"
-"PO-Revision-Date: 2006-03-17 10:14+0200\n"
+"PO-Revision-Date: 2006-03-20 20:35+0200\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -221,11 +221,11 @@ msgstr "_Sulge"
 #. separator
 #: ../src/menu.c:68
 msgid "_Always on Visible Workspace"
-msgstr ""
+msgstr "_Alati nähtaval tööalal"
 
 #: ../src/menu.c:69
 msgid "_Only on This Workspace"
-msgstr "Ainult _sellel tööalal"
+msgstr "Ainu_lt sellel tööalal"
 
 #: ../src/menu.c:70
 msgid "Move to Workspace _Left"
@@ -619,51 +619,51 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:44
 msgid "Move window to workspace 1"
-msgstr "Liiguta aken 1. tööalale"
+msgstr "Tõsta aken 1. tööalale"
 
 #: ../src/metacity.schemas.in.h:45
 msgid "Move window to workspace 10"
-msgstr "Liiguta aken 10. tööalale"
+msgstr "Tõsta aken 10. tööalale"
 
 #: ../src/metacity.schemas.in.h:46
 msgid "Move window to workspace 11"
-msgstr "Liiguta aken 11. tööalale"
+msgstr "Tõsta aken 11. tööalale"
 
 #: ../src/metacity.schemas.in.h:47
 msgid "Move window to workspace 12"
-msgstr "Liiguta aken 12. tööalale"
+msgstr "Tõsta aken 12. tööalale"
 
 #: ../src/metacity.schemas.in.h:48
 msgid "Move window to workspace 2"
-msgstr "Liiguta aken 2. tööalale"
+msgstr "Tõsta aken 2. tööalale"
 
 #: ../src/metacity.schemas.in.h:49
 msgid "Move window to workspace 3"
-msgstr "Liiguta aken 3. tööalale"
+msgstr "Tõsta aken 3. tööalale"
 
 #: ../src/metacity.schemas.in.h:50
 msgid "Move window to workspace 4"
-msgstr "Liiguta aken 4. tööalale"
+msgstr "Tõsta aken 4. tööalale"
 
 #: ../src/metacity.schemas.in.h:51
 msgid "Move window to workspace 5"
-msgstr "Liiguta aken 5. tööalale"
+msgstr "Tõsta aken 5. tööalale"
 
 #: ../src/metacity.schemas.in.h:52
 msgid "Move window to workspace 6"
-msgstr "Liiguta aken 6. tööalale"
+msgstr "Tõsta aken 6. tööalale"
 
 #: ../src/metacity.schemas.in.h:53
 msgid "Move window to workspace 7"
-msgstr "Liiguta aken 7. tööalale"
+msgstr "Tõsta aken 7. tööalale"
 
 #: ../src/metacity.schemas.in.h:54
 msgid "Move window to workspace 8"
-msgstr "Liiguta aken 8. tööalale"
+msgstr "Tõsta aken 8. tööalale"
 
 #: ../src/metacity.schemas.in.h:55
 msgid "Move window to workspace 9"
-msgstr "Liiguta aken 9. tööalale"
+msgstr "Tõsta aken 9. tööalale"
 
 #: ../src/metacity.schemas.in.h:56
 msgid "Name of workspace"
@@ -729,67 +729,67 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:67
 msgid "Switch to workspace 1"
-msgstr "Liikumine 1. tööalale"
+msgstr "Lülitumine 1. tööalale"
 
 #: ../src/metacity.schemas.in.h:68
 msgid "Switch to workspace 10"
-msgstr "Liikumine 10. tööalale"
+msgstr "Lülitumine 10. tööalale"
 
 #: ../src/metacity.schemas.in.h:69
 msgid "Switch to workspace 11"
-msgstr "Liikumine 11. tööalale"
+msgstr "Lülitumine 11. tööalale"
 
 #: ../src/metacity.schemas.in.h:70
 msgid "Switch to workspace 12"
-msgstr "Liikumine 12. tööalale"
+msgstr "Lülitumine 12. tööalale"
 
 #: ../src/metacity.schemas.in.h:71
 msgid "Switch to workspace 2"
-msgstr "Liikumine 2. tööalale"
+msgstr "Lülitumine 2. tööalale"
 
 #: ../src/metacity.schemas.in.h:72
 msgid "Switch to workspace 3"
-msgstr "Liikumine 3. tööalale"
+msgstr "Lülitumine 3. tööalale"
 
 #: ../src/metacity.schemas.in.h:73
 msgid "Switch to workspace 4"
-msgstr "Liikumine 4. tööalale"
+msgstr "Lülitumine 4. tööalale"
 
 #: ../src/metacity.schemas.in.h:74
 msgid "Switch to workspace 5"
-msgstr "Liikumine 5. tööalale"
+msgstr "Lülitumine 5. tööalale"
 
 #: ../src/metacity.schemas.in.h:75
 msgid "Switch to workspace 6"
-msgstr "Liikumine 6. tööalale"
+msgstr "Lülitumine 6. tööalale"
 
 #: ../src/metacity.schemas.in.h:76
 msgid "Switch to workspace 7"
-msgstr "Liikumine 7. tööalale"
+msgstr "Lülitumine 7. tööalale"
 
 #: ../src/metacity.schemas.in.h:77
 msgid "Switch to workspace 8"
-msgstr "Liikumine 8. tööalale"
+msgstr "Lülitumine 8. tööalale"
 
 #: ../src/metacity.schemas.in.h:78
 msgid "Switch to workspace 9"
-msgstr "Liikumine 9. tööalale"
+msgstr "Lülitumine 9. tööalale"
 
 #: ../src/metacity.schemas.in.h:79
 msgid "Switch to workspace above this one"
-msgstr ""
+msgstr "Lülitumine selle tööala kohal olevale tööalale"
 
 #: ../src/metacity.schemas.in.h:80
 msgid "Switch to workspace below this one"
-msgstr ""
+msgstr "Lülitumine selle tööala all olevale tööalale"
 
 #: ../src/metacity.schemas.in.h:81
 msgid "Switch to workspace on the left"
-msgstr ""
+msgstr "Lülitumine sellest tööalast vasakul olevale tööalale"
 
 #: ../src/metacity.schemas.in.h:82
 msgid "Switch to workspace on the right"
-msgstr ""
+msgstr "Lülitumine sellest tööalast paremal olevale tööalale"
 
 #: ../src/metacity.schemas.in.h:83
 msgid "System Bell is Audible"
@@ -2224,7 +2224,7 @@ msgstr ""
 #: ../src/theme-parser.c:4348
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
-msgstr ""
+msgstr "Tõrge teema lugemisel failist %s: %s\n"
 
 #: ../src/theme-parser.c:4403
 #, c-format
@@ -2245,11 +2245,11 @@ msgstr "/Aknad/_Dialoog"
 
 #: ../src/theme-viewer.c:75
 msgid "/Windows/_Modal dialog"
-msgstr ""
+msgstr "/Aknad/_Modaalne dialoog"
 
 #: ../src/theme-viewer.c:76
 msgid "/Windows/_Utility"
-msgstr ""
+msgstr "/Aknad/_Utiliit"
 
 #: ../src/theme-viewer.c:77
 msgid "/Windows/_Splashscreen"
@@ -2374,7 +2374,7 @@ msgstr "Nuppude paigutus"
 
 #: ../src/theme-viewer.c:853
 msgid "Benchmark"
-msgstr "Jõudlud"
+msgstr "Jõudlus"
 
 #: ../src/theme-viewer.c:900
 msgid "Window Title Goes Here"
