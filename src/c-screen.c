@@ -555,11 +555,16 @@ meta_screen_info_remove_window (MetaScreenInfo *info,
 {
     CmNode *node = find_node (info, xwindow);
     
+#if 0
     g_print ("removing %lx\n", xwindow);
-    
-    g_hash_table_remove (info->window_infos_by_xid, (gpointer)xwindow);
-    
-    cm_stacker_remove_child (info->stacker, node);
+#endif
+
+    if (node)
+    {
+	g_hash_table_remove (info->window_infos_by_xid, (gpointer)xwindow);
+	
+	cm_stacker_remove_child (info->stacker, node);
+    }
 }
 
 void

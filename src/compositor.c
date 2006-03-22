@@ -395,9 +395,17 @@ process_destroy (MetaCompositor      *compositor,
   
   screen = meta_display_screen_for_root (compositor->meta_display,
 					 event->event);
+
+
+#if 0
+  g_print ("destroywindow\n");
+#endif
   
   if (screen == NULL)
     {
+#if 0
+	g_print ("ignoring\n");
+#endif
       meta_topic (META_DEBUG_COMPOSITOR,
 		  "DestroyNotify received on non-root 0x%lx for 0x%lx\n",
 		  event->event, event->window);
@@ -687,6 +695,9 @@ meta_compositor_remove_window (MetaCompositor    *compositor,
   MetaScreenInfo *minfo;
   
   minfo = meta_screen_info_get_by_xwindow (xwindow);
+
+  if (minfo)
+      meta_screen_info_remove_window (minfo, xwindow);
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 }
 
