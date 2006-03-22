@@ -26,6 +26,7 @@
 #include <cm/drawable-node.h>
 #include <cm/state.h>
 #include <cm/magnifier.h>
+#include <cm/square.h>
 
 #include "screen.h"
 #include "c-screen.h"
@@ -111,13 +112,24 @@ repaint (gpointer data)
     glViewport (0, 0,
 		info->meta_screen->rect.width,
 		info->meta_screen->rect.height);
+
+    glLoadIdentity();
     
 #if 0
-    glClearColor (1.0, 1.0, 0.8, 0.0);
+    glClearColor (1.0, 1.0, 0.8, 1.0);
     glClear (GL_COLOR_BUFFER_BIT);
 #endif
-    
+
     ws_window_raise (info->gl_window);
+
+#if 0
+    glDisable (GL_TEXTURE_2D);
+    glDisable (GL_TEXTURE_RECTANGLE_ARB);
+    glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+    glColor4f (0.0, 1.0, 0.0, 1.0);
+    glRectf (-1.0, -1.0, 1.0, 1.0);
+    glFinish();
+#endif
     
     state = cm_state_new ();
     
@@ -279,14 +291,16 @@ meta_screen_info_redirect (MetaScreenInfo *info)
     
     info->stacker = cm_stacker_new ();
 
+    cm_stacker_add_child (info->stacker, cm_square_new (0.3, 0.3, 0.8, 1.0));
+    
     source.x = 600;
     source.y = 100;
     source.width = 400;
     source.height = 75;
 
-    target.x = 0;
+    target.x = 1300;
     target.y = 900;
-    target.width = 1600;
+    target.width = 300;
     target.height = 300;
     
     info->magnifier = cm_magnifier_new (info->stacker, &source, &target);
@@ -486,6 +500,8 @@ meta_screen_info_add_window (MetaScreenInfo *info,
     ws_drawable_query_geometry (drawable, &geometry);
     
     node = CM_NODE (cm_drawable_node_new (drawable, &geometry));
+
+    cm_drawable_node_set_alpha (node, 1.0);
     
 #if 0
     print_child_titles (WS_WINDOW (drawable));

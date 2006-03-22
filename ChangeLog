@@ -1,3 +1,8 @@
+Wed Mar 22 10:33:21 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/c-screen.c (meta_screen_info_redirect): Put a square below
+	the desktop stack.
+
 Mon Mar 20 11:50:44 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/c-screen.c (meta_screen_info_redirect): Put the desktop into
