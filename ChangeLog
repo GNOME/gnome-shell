@@ -15,6 +15,8 @@
 
 	(meta_display_init_window_prop_hooks): initialise new properties
 
+	Closes #309567.
+
 2006-03-25  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/prefs.c: use g_str_has_prefix instead of a local copy
