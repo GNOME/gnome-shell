@@ -1,3 +1,20 @@
+2006-03-25  Thomas Thurman  <thomas@thurman.org.uk>
+
+	* src/window.c, src/window.h (update_net_wm_state,
+	update_mwm_hints, update_wm_class, update_transient_for):
+	deleted and moved into window-props.c
+	(meta_window_new_with_attrs): added constructing field
+	and four new initial properties (as above)
+	(meta_window_recalc_features,
+	meta_window_recalc_window_type): new functions
+
+	* src/window-props.c (init_net_wm_state, reload_net_wm_state
+	init_mwm_hints, reload_mwm_hints, init_wm_class,
+	reload_mwm_class, init_transient_for, reload_transient_for):
+	new functions, moved in from window.c
+
+	(meta_display_init_window_prop_hooks): initialise new properties
+
 2006-03-25  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/prefs.c: use g_str_has_prefix instead of a local copy

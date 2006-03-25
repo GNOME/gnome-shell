@@ -239,6 +239,9 @@ struct _MetaWindow
   /* Are we in meta_window_free()? */
   guint unmanaging : 1;
 
+  /* Are we in meta_window_new()? */
+  guint constructing : 1;
+  
   /* Are we in the calc_showing queue? */
   guint calc_showing_queued : 1;
 
@@ -568,7 +571,8 @@ gboolean meta_window_get_icon_geometry (MetaWindow    *window,
 
 const char* meta_window_get_startup_id (MetaWindow *window);
 
-void meta_window_recalc_features (MetaWindow *window);
+void meta_window_recalc_features    (MetaWindow *window);
+void meta_window_recalc_window_type (MetaWindow *window);
 
 void meta_window_queue_update_icon (MetaWindow *window);
 

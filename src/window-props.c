@@ -399,6 +399,239 @@ reload_wm_icon_name (MetaWindow    *window,
 }
 
 static void
+init_net_wm_state (MetaDisplay    *display,
+                   Atom            property,
+                   MetaPropValue  *value)
+{
+  value->type = META_PROP_VALUE_ATOM_LIST;
+  value->atom = display->atom_net_wm_state;
+}
+
+static void
+reload_net_wm_state (MetaWindow    *window,
+                     MetaPropValue *value)
+{
+  int i;
+
+  /* We know this is only an initial window creation,
+   * clients don't change the property.
+   */
+
+  window->shaded = FALSE;
+  window->maximized_horizontally = FALSE;
+  window->maximized_vertically = FALSE;
+  window->wm_state_modal = FALSE;
+  window->wm_state_skip_taskbar = FALSE;
+  window->wm_state_skip_pager = FALSE;
+  window->wm_state_above = FALSE;
+  window->wm_state_below = FALSE;
+  window->wm_state_demands_attention = FALSE;
+
+  if (value->type == META_PROP_VALUE_INVALID)
+    return;
+
+  i = 0;
+  while (i < value->v.atom_list.n_atoms)
+    {
+      if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_shaded)
+        window->shaded = TRUE;
+      else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_maximized_horz)
+        window->maximize_horizontally_after_placement = TRUE;
+      else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_maximized_vert)
+        window->maximize_vertically_after_placement = TRUE;
+      else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_modal)
+        window->wm_state_modal = TRUE;
+      else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_skip_taskbar)
+        window->wm_state_skip_taskbar = TRUE;
+      else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_skip_pager)
+        window->wm_state_skip_pager = TRUE;
+      else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_fullscreen)
+        window->fullscreen = TRUE;
+      else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_above)
+        window->wm_state_above = TRUE;
+      else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_below)
+        window->wm_state_below = TRUE;
+      else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_demands_attention)
+        window->wm_state_demands_attention = TRUE;
+
+      ++i;
+    }
+
+  meta_verbose ("Reloaded _NET_WM_STATE for %s\n",
+                window->desc);
+
+  meta_window_recalc_window_type (window);
+}
+
+static void
+init_mwm_hints (MetaDisplay    *display,
+                Atom            property,
+                MetaPropValue  *value)
+{
+  value->type = META_PROP_VALUE_MOTIF_HINTS;
+  value->atom = display->atom_motif_wm_hints;
+}
+
+static void
+reload_mwm_hints (MetaWindow    *window,
+                  MetaPropValue *value)
+{
+  MotifWmHints *hints;
+
+  window->mwm_decorated = TRUE;
+  window->mwm_border_only = FALSE;
+  window->mwm_has_close_func = TRUE;
+  window->mwm_has_minimize_func = TRUE;
+  window->mwm_has_maximize_func = TRUE;
+  window->mwm_has_move_func = TRUE;
+  window->mwm_has_resize_func = TRUE;
+
+  if (value->type == META_PROP_VALUE_INVALID)
+    {
+      meta_verbose ("Window %s has no MWM hints\n", window->desc);
+      meta_window_recalc_features (window);
+      return;
+    }
+
+  hints = value->v.motif_hints;
+
+  /* We support those MWM hints deemed non-stupid */
+
+  meta_verbose ("Window %s has MWM hints\n",
+                window->desc);
+
+  if (hints->flags & MWM_HINTS_DECORATIONS)
+    {
+      meta_verbose ("Window %s sets MWM_HINTS_DECORATIONS 0x%lx\n",
+          window->desc, hints->decorations);
+
+      if (hints->decorations == 0)
+        window->mwm_decorated = FALSE;
+      /* some input methods use this */
+      else if (hints->decorations == MWM_DECOR_BORDER)
+        window->mwm_border_only = TRUE;
+    }
+  else
+    meta_verbose ("Decorations flag unset\n");
+
+  if (hints->flags & MWM_HINTS_FUNCTIONS)
+    {
+      gboolean toggle_value;
+
+      meta_verbose ("Window %s sets MWM_HINTS_FUNCTIONS 0x%lx\n",
+                    window->desc, hints->functions);
+
+      /* If _ALL is specified, then other flags indicate what to turn off;
+       * if ALL is not specified, flags are what to turn on.
+       * at least, I think so
+       */
+
+      if ((hints->functions & MWM_FUNC_ALL) == 0)
+        {
+          toggle_value = TRUE;
+
+          meta_verbose ("Window %s disables all funcs then reenables some\n",
+                        window->desc);
+          window->mwm_has_close_func = FALSE;
+          window->mwm_has_minimize_func = FALSE;
+          window->mwm_has_maximize_func = FALSE;
+          window->mwm_has_move_func = FALSE;
+          window->mwm_has_resize_func = FALSE;
+        }
+      else
+        {
+          meta_verbose ("Window %s enables all funcs then disables some\n",
+                        window->desc);
+          toggle_value = FALSE;
+        }
+
+      if ((hints->functions & MWM_FUNC_CLOSE) != 0)
+        {
+          meta_verbose ("Window %s toggles close via MWM hints\n",
+                        window->desc);
+          window->mwm_has_close_func = toggle_value;
+        }
+      if ((hints->functions & MWM_FUNC_MINIMIZE) != 0)
+        {
+          meta_verbose ("Window %s toggles minimize via MWM hints\n",
+                        window->desc);
+          window->mwm_has_minimize_func = toggle_value;
+        }
+      if ((hints->functions & MWM_FUNC_MAXIMIZE) != 0)
+        {
+          meta_verbose ("Window %s toggles maximize via MWM hints\n",
+                        window->desc);
+          window->mwm_has_maximize_func = toggle_value;
+        }
+      if ((hints->functions & MWM_FUNC_MOVE) != 0)
+        {
+          meta_verbose ("Window %s toggles move via MWM hints\n",
+                        window->desc);
+          window->mwm_has_move_func = toggle_value;
+        }
+      if ((hints->functions & MWM_FUNC_RESIZE) != 0)
+        {
+          meta_verbose ("Window %s toggles resize via MWM hints\n",
+                        window->desc);
+          window->mwm_has_resize_func = toggle_value;
+        }
+    }
+  else
+    meta_verbose ("Functions flag unset\n");
+
+  meta_window_recalc_features (window);
+  
+  /* We do all this anyhow at the end of meta_window_new() */
+  if (!window->constructing)
+    {
+      if (window->decorated)
+        meta_window_ensure_frame (window);
+      else
+        meta_window_destroy_frame (window);
+      
+      meta_window_queue_move_resize (window);
+      /* because ensure/destroy frame may unmap */
+      meta_window_queue_calc_showing (window);
+    }
+}
+
+static void
+init_wm_class (MetaDisplay    *display,
+               Atom            property,
+               MetaPropValue  *value)
+{
+  value->type = META_PROP_VALUE_CLASS_HINT;
+  value->atom = XA_WM_CLASS;
+}
+
+static void
+reload_wm_class (MetaWindow    *window,
+                 MetaPropValue *value)
+{
+  if (window->res_class)
+    g_free (window->res_class);
+  if (window->res_name)
+    g_free (window->res_name);
+
+  window->res_class = NULL;
+  window->res_name = NULL;
+
+  if (value->type != META_PROP_VALUE_INVALID)
+    { 
+      if (value->v.class_hint.res_name)
+        window->res_name = g_strdup (value->v.class_hint.res_name);
+
+      if (value->v.class_hint.res_class)
+        window->res_class = g_strdup (value->v.class_hint.res_class);
+    }
+
+  meta_verbose ("Window %s class: '%s' name: '%s'\n",
+      window->desc,
+      window->res_class ? window->res_class : "none",
+      window->res_name ? window->res_name : "none");
+}
+
+static void
 init_net_wm_desktop (MetaDisplay   *display,
                      Atom           property,
                      MetaPropValue *value)
@@ -879,9 +1112,53 @@ reload_wm_hints (MetaWindow    *window,
   meta_window_queue_move_resize (window);  
 }
 
+static void
+init_transient_for (MetaDisplay   *display,
+                    Atom           property,
+                    MetaPropValue *value)
+{
+  value->type = META_PROP_VALUE_WINDOW;
+  value->atom = XA_WM_TRANSIENT_FOR;
+}
 
+static void
+reload_transient_for (MetaWindow    *window,
+                      MetaPropValue *value)
+{
+  window->xtransient_for = None;
+  
+  if (value->type != META_PROP_VALUE_INVALID)
+    window->xtransient_for = value->v.xwindow;
 
-#define N_HOOKS 24
+  window->transient_parent_is_root_window =
+    window->xtransient_for == window->screen->xroot;
+
+  if (window->xtransient_for != None)
+    meta_verbose ("Window %s transient for 0x%lx (root = %d)\n", window->desc,
+        window->xtransient_for, window->transient_parent_is_root_window);
+  else
+    meta_verbose ("Window %s is not transient\n", window->desc);
+
+  /* may now be a dialog */
+  meta_window_recalc_window_type (window);
+
+  /* update stacking constraints */
+  meta_stack_update_transient (window->screen->stack, window);
+
+  /* possibly change its group. We treat being a window's transient as
+   * equivalent to making it your group leader, to work around shortcomings
+   * in programs such as xmms-- see #328211.
+   */
+  if (window->xtransient_for != None &&
+      window->xgroup_leader != None &&
+      window->xtransient_for != window->xgroup_leader)
+    meta_window_group_leader_changed (window);
+
+  if (!window->constructing)
+    meta_window_queue_move_resize (window);
+}
+
+#define N_HOOKS 25
 
 void
 meta_display_init_window_prop_hooks (MetaDisplay *display)
@@ -937,13 +1214,13 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   ++i;
 
   hooks[i].property = display->atom_net_wm_state;
-  hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
+  hooks[i].init_func = init_net_wm_state;
+  hooks[i].reload_func = reload_net_wm_state;
   ++i;
   
   hooks[i].property = display->atom_motif_wm_hints;
-  hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
+  hooks[i].init_func = init_mwm_hints;
+  hooks[i].reload_func = reload_mwm_hints;
   ++i;
 
   hooks[i].property = display->atom_net_wm_icon_geometry;
@@ -952,8 +1229,8 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   ++i;
 
   hooks[i].property = XA_WM_CLASS;
-  hooks[i].init_func = NULL;
-  hooks[i].reload_func = NULL;
+  hooks[i].init_func = init_wm_class;
+  hooks[i].reload_func = reload_wm_class;
   ++i;
 
   hooks[i].property = display->atom_wm_client_leader;
@@ -1016,6 +1293,11 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   hooks[i].reload_func = reload_wm_hints;
   ++i;
   
+  hooks[i].property = XA_WM_TRANSIENT_FOR;
+  hooks[i].init_func = init_transient_for;
+  hooks[i].reload_func = reload_transient_for;
+  ++i;
+
   if (i != N_HOOKS)
     g_error ("Initialized %d hooks should have been %d\n", i, N_HOOKS);
 }
