@@ -525,26 +525,6 @@ meta_prefs_init (void)
 }
 
 #ifdef HAVE_GCONF
-/* from eel */
-static gboolean
-str_has_prefix (const char *haystack, const char *needle)
-{
-  const char *h, *n;
-  
-  /* Eat one character at a time. */
-  h = haystack == NULL ? "" : haystack;
-  n = needle == NULL ? "" : needle;
-  do
-    {
-      if (*n == '\0') 
-        return TRUE;
-      if (*h == '\0')
-        return FALSE;
-    }
-  while (*h++ == *n++);
-
-  return FALSE;
-}
 
 static void
 change_notify (GConfClient    *client,
@@ -706,7 +686,7 @@ change_notify (GConfClient    *client,
       if (update_disable_workarounds (b))
         queue_changed (META_PREF_DISABLE_WORKAROUNDS);
     }
-  else if (str_has_prefix (key, KEY_WINDOW_BINDINGS_PREFIX))
+  else if (g_str_has_prefix (key, KEY_WINDOW_BINDINGS_PREFIX))
     {
       const char *str;
 
@@ -722,7 +702,7 @@ change_notify (GConfClient    *client,
       if (update_window_binding (key, str))
         queue_changed (META_PREF_WINDOW_KEYBINDINGS);
     }
-  else if (str_has_prefix (key, KEY_SCREEN_BINDINGS_PREFIX))
+  else if (g_str_has_prefix (key, KEY_SCREEN_BINDINGS_PREFIX))
     {
       const char *str;
 
@@ -787,7 +767,7 @@ change_notify (GConfClient    *client,
         queue_changed (META_PREF_AUTO_RAISE_DELAY);
     
     }
-  else if (str_has_prefix (key, KEY_COMMAND_PREFIX))
+  else if (g_str_has_prefix (key, KEY_COMMAND_PREFIX))
     {
       const char *str;
 
@@ -819,7 +799,7 @@ change_notify (GConfClient    *client,
       if (update_terminal_command (str))
         queue_changed (META_PREF_TERMINAL_COMMAND);
     }
-  else if (str_has_prefix (key, KEY_WORKSPACE_NAME_PREFIX))
+  else if (g_str_has_prefix (key, KEY_WORKSPACE_NAME_PREFIX))
     {
       const char *str;
 
