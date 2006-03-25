@@ -1,3 +1,11 @@
+2006-03-16  Ray Strode  <rstrode@redhat.com>
+
+	Add patch from Elijah Newren to fix type
+	for compositing_manager schema entry (bug 335901)
+
+	* src/metacity.schemas.in: Change type from "boolean" to "bool"
+	and default value from "FALSE" to "false"
+
 Wed Mar 22 13:16:48 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/compositor.c (meta_compositor_remove_window): Actually
