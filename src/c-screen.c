@@ -282,8 +282,12 @@ meta_screen_info_redirect (MetaScreenInfo *info)
     region = ws_server_region_new (info->display);
     ws_window_set_input_shape (info->gl_window, region);
     g_object_unref (G_OBJECT (region));
+
+    ws_display_begin_error_trap (info->display);
     
     ws_window_unredirect (info->gl_window);
+
+    ws_display_end_error_trap (info->display);
     
     claim_selection (info);
     
@@ -491,7 +495,8 @@ meta_screen_info_add_window (MetaScreenInfo *info,
     if (ws_window_query_input_only (WS_WINDOW (drawable)))
 	goto out;
 
-    if (WS_WINDOW (drawable) == info->gl_window)
+    if (WS_WINDOW (drawable) == info->gl_window ||
+	WS_WINDOW (drawable) == info->screen->overlay_window)
     {
 	g_print ("gl window\n");
 	goto out;
