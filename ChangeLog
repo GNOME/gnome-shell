@@ -5,7 +5,7 @@
 	* src/window.c (meta_window_show, window_activate,
 	meta_window_focus, meta_window_configure_request,
 	meta_window_client_message): use the new set/unset
-	demands attention functions. Fixes #305822.
+	demands attention functions. Fixes #305882.
 
 2006-03-29  Björn Lindqvist  <bjourne@gmail.com>
 
