@@ -582,4 +582,7 @@ void meta_window_stack_just_below (MetaWindow *window,
 void meta_window_set_user_time (MetaWindow *window,
                                 Time        timestamp);
 
+void meta_window_set_demands_attention (MetaWindow *window);
+
+void meta_window_unset_demands_attention (MetaWindow *window);
 #endif

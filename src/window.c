@@ -2006,6 +2006,11 @@ meta_window_show (MetaWindow *window)
               /* If the window will be obscured by the focus window, then the
                * user might not notice the window appearing so set the
                * demands attention hint.
+               *
+               * We set the hint ourselves rather than calling 
+               * meta_window_set_demands_attention() because that would cause
+               * a recalculation of overlap, and a call to set_net_wm_state()
+               * which we are going to call ourselves here a few lines down.
                */
               if (overlap)
                 window->wm_state_demands_attention = TRUE;
@@ -2484,8 +2489,7 @@ window_activate (MetaWindow     *window,
                   "last_user_time (%lu) is more recent; ignoring "
                   " _NET_ACTIVE_WINDOW message.\n",
                   window->display->last_user_time);
-      window->wm_state_demands_attention = TRUE;
-      set_net_wm_state (window);
+      meta_window_set_demands_attention(window);
       return;
     }
 
@@ -3758,10 +3762,7 @@ meta_window_focus (MetaWindow  *window,
     }
 
   if (window->wm_state_demands_attention)
-    {
-      window->wm_state_demands_attention = FALSE;
-      set_net_wm_state (window);
-    }  
+    meta_window_unset_demands_attention(window);
 }
 
 static void
@@ -4281,10 +4282,7 @@ meta_window_configure_request (MetaWindow *window,
                       active_window->desc,
                       active_window->net_wm_user_time);
           if (event->xconfigurerequest.detail == Above)
-            {
-              window->wm_state_demands_attention = TRUE;
-              set_net_wm_state (window);
-            }
+            meta_window_set_demands_attention(window);
         }
       else
         {
@@ -4530,11 +4528,11 @@ meta_window_client_message (MetaWindow *window,
       if (first == display->atom_net_wm_state_demands_attention ||
           second == display->atom_net_wm_state_demands_attention)
         {
-          window->wm_state_demands_attention = 
-            (action == _NET_WM_STATE_ADD) ||
-            (action == _NET_WM_STATE_TOGGLE && !window->wm_state_demands_attention);
-
-          set_net_wm_state (window);
+          if ((action == _NET_WM_STATE_ADD) ||
+              (action == _NET_WM_STATE_TOGGLE && !window->wm_state_demands_attention))
+            meta_window_set_demands_attention(window);
+          else
+            meta_window_unset_demands_attention(window);
         }
       
       return TRUE;
@@ -7656,3 +7654,72 @@ meta_window_set_user_time (MetaWindow *window,
         window->display->allow_terminal_deactivation = FALSE;
     }
 }
+
+/* Sets the demands_attention hint on a window, but only
+ * if it's at least partially obscured (see #305882).
+ */
+void
+meta_window_set_demands_attention (MetaWindow *window)
+{
+  MetaRectangle candidate_rect, other_rect;
+  GList *stack = window->screen->stack->sorted;
+  MetaWindow *other_window;
+  gboolean obscured = FALSE;
+  
+  /* Does the window have any other window on this workspace
+   * overlapping it?
+   */
+
+  meta_window_get_outer_rect (window, &candidate_rect);
+
+  /* The stack is sorted with the top windows first. */
+  
+  while (stack != NULL && stack->data != window)
+    {
+      other_window = stack->data;
+      stack = stack->next;
+     
+      if (other_window->on_all_workspaces ||
+          window->on_all_workspaces ||
+          other_window->workspace == window->workspace)
+        {
+          meta_window_get_outer_rect (other_window, &other_rect);
+
+          if (meta_rectangle_overlap (&candidate_rect, &other_rect))
+            {
+              obscured = TRUE;
+              break;
+            }
+        }
+    }
+
+  /* If the window's in full view, there's no point setting the flag. */
+  
+  if (!obscured)
+    {
+      meta_topic (META_DEBUG_WINDOW_OPS,
+          "Not marking %s as needing attention because it's in full view\n",
+          window->desc);
+      return;
+    }
+    
+  /* Otherwise, go ahead and set the flag. */
+  
+  meta_topic (META_DEBUG_WINDOW_OPS,
+      "Marking %s as needing attention\n", window->desc);
+
+  window->wm_state_demands_attention = TRUE;
+  set_net_wm_state (window);
+}
+
+void
+meta_window_unset_demands_attention (MetaWindow *window)
+{
+  meta_topic (META_DEBUG_WINDOW_OPS,
+      "Marking %s as not needing attention\n", window->desc);
+  
+  window->wm_state_demands_attention = FALSE;
+  set_net_wm_state (window);
+}
+
+
