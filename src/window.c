@@ -4333,7 +4333,7 @@ meta_window_client_message (MetaWindow *window,
   MetaDisplay *display;
 
   display = window->display;
-  
+
   if (event->xclient.message_type ==
       display->atom_net_close_window)
     {
@@ -7197,7 +7197,7 @@ meta_window_refresh_resize_popup (MetaWindow *window)
   if (window->display->grab_resize_popup != NULL)
     {
       int gravity;
-      int x, y, width, height;
+      MetaRectangle rect;
       MetaFrameGeometry fgeom;
 
       if (window->frame)
@@ -7215,22 +7215,18 @@ meta_window_refresh_resize_popup (MetaWindow *window)
 
       if (window->display->grab_wireframe_active)
         {
-          x = window->display->grab_wireframe_rect.x;
-          y = window->display->grab_wireframe_rect.y;
-          width = window->display->grab_wireframe_rect.width;
-          height = window->display->grab_wireframe_rect.height;
+          rect = window->display->grab_wireframe_rect;
         }
       else
         {
-          meta_window_get_position (window, &x, &y);
-          width = window->rect.width;
-          height = window->rect.height;
+          meta_window_get_position (window, &rect.x, &rect.y);
+          rect.width = window->rect.width;
+          rect.height = window->rect.height;
         }
       
       meta_ui_resize_popup_set (window->display->grab_resize_popup,
                                 gravity,
-                                x, y,
-                                width, height,
+                                rect,
                                 window->size_hints.base_width,
                                 window->size_hints.base_height,
                                 window->size_hints.min_width,

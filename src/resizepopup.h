@@ -23,6 +23,7 @@
 #define META_RESIZEPOPUP_H
 
 /* Don't include gtk.h or gdk.h here */
+#include "boxes.h"
 #include "common.h"
 #include <X11/Xlib.h>
 #include <glib.h>
@@ -33,10 +34,7 @@ MetaResizePopup* meta_ui_resize_popup_new          (Display *display,
 void             meta_ui_resize_popup_free         (MetaResizePopup *popup);
 void             meta_ui_resize_popup_set (MetaResizePopup *popup,
                                            int              resize_gravity,
-                                           int              x,
-                                           int              y,
-                                           int              width,
-                                           int              height,
+                                           MetaRectangle    rect,
                                            int              base_width,
                                            int              base_height,
                                            int              min_width,

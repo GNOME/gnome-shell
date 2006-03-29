@@ -41,10 +41,7 @@ struct _MetaResizePopup
   gboolean showing;
   
   int resize_gravity;
-  int x;
-  int y;
-  int width;
-  int height;
+  MetaRectangle rect;
   int width_inc;
   int height_inc;
   int min_width;
@@ -133,8 +130,8 @@ update_size_window (MetaResizePopup *popup)
 
   gtk_window_get_size (GTK_WINDOW (popup->size_window), &width, &height);
 
-  x = popup->x + (popup->width - width) / 2;
-  y = popup->y + (popup->height - height) / 2;
+  x = popup->rect.x + (popup->rect.width - width) / 2;
+  y = popup->rect.y + (popup->rect.height - height) / 2;
   
   if (GTK_WIDGET_REALIZED (popup->size_window))
     {
@@ -171,10 +168,7 @@ sync_showing (MetaResizePopup *popup)
 void
 meta_ui_resize_popup_set (MetaResizePopup *popup,
                           int              resize_gravity,
-                          int              x,
-                          int              y,
-                          int              width,
-                          int              height,
+                          MetaRectangle    rect,
                           int              base_width,
                           int              base_height,
                           int              min_width,
@@ -193,27 +187,21 @@ meta_ui_resize_popup_set (MetaResizePopup *popup,
 
   need_update_size = FALSE;
   
-  display_w = width - base_width;
+  display_w = rect.width - base_width;
   if (width_inc > 0)
     display_w /= width_inc;
 
-  display_h = height - base_height;
+  display_h = rect.height - base_height;
   if (height_inc > 0)
     display_h /= height_inc;
-  
-  if (popup->x != x ||
-      popup->y != y ||
-      popup->width != width ||
-      popup->height != height ||
+
+  if (!meta_rectangle_equal(&popup->rect, &rect) ||
       display_w != popup->horizontal_size ||
       display_h != popup->vertical_size)
     need_update_size = TRUE;
   
   popup->resize_gravity = resize_gravity;
-  popup->x = x;
-  popup->y = y;
-  popup->width = width;
-  popup->height = height;
+  popup->rect = rect;
   popup->min_width = min_width;
   popup->min_height = min_height;
   popup->width_inc = width_inc;
