@@ -1,3 +1,7 @@
+2006-03-28  Elijah Newren  <newren gmail com>
+
+	* MAINTAINERS: New file.  #335026.  ;-)
+
 Tue Mar 28 09:57:26 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/c-screen.c (meta_screen_info_add_window): Also check for overlay_window.
