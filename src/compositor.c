@@ -76,8 +76,6 @@ struct MetaCompositor
   guint debug_updates : 1;
   
   GList *ignored_damage;
-  
-  MoveInfo *move_info;
 };
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
@@ -1270,6 +1268,8 @@ get_patch_points (Model   *model,
     }
 }
 
+static GList *move_infos;
+
 static gboolean
 wobble (gpointer data)
 {
@@ -1286,9 +1286,12 @@ wobble (gpointer data)
     {
       if (!info->window_destroyed)
 	meta_screen_info_unset_patch (minfo, get_xid (info->window));
+
+      move_infos = g_list_remove (move_infos, info);
       g_free (info);
-      info->compositor->move_info = NULL;
+#if 0
       g_print ("stop wobb\n");
+#endif
       return FALSE;
     }
   else
@@ -1339,15 +1342,18 @@ meta_compositor_begin_move (MetaCompositor *compositor,
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   MetaRectangle rect;
+  MoveInfo *move_info;
 
   g_print ("begin move\n");
   
-  compositor->move_info = g_new0 (MoveInfo, 1);
+  move_info = g_new0 (MoveInfo, 1);
+
+  move_infos = g_list_prepend (move_infos, move_info);
   
-  compositor->move_info->compositor = compositor;
-  compositor->move_info->last_time = 0.0;
-  compositor->move_info->timer = g_timer_new ();
-  compositor->move_info->window_destroyed = FALSE;
+  move_info->compositor = compositor;
+  move_info->last_time = 0.0;
+  move_info->timer = g_timer_new ();
+  move_info->window_destroyed = FALSE;
   
   compute_window_rect (window, &rect);
   
@@ -1358,15 +1364,33 @@ meta_compositor_begin_move (MetaCompositor *compositor,
   g_print ("grab: %d %d\n", grab_x, grab_y);
 #endif
   
-  compositor->move_info->model = model_new (&rect, TRUE);
-  compositor->move_info->window = window;
-  compositor->move_info->screen = window->screen;
+  move_info->model = model_new (&rect, TRUE);
+  move_info->window = window;
+  move_info->screen = window->screen;
   
-  model_begin_move (compositor->move_info->model, grab_x, grab_y);
+  model_begin_move (move_info->model, grab_x, grab_y);
   
-  g_idle_add (wobble, compositor->move_info);
+  g_idle_add (wobble, move_info);
 #endif
 }
+
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+static MoveInfo *
+find_info (MetaWindow *window)
+{
+    GList *list;
+
+    for (list = move_infos; list != NULL; list = list->next)
+    {
+	MoveInfo *info = list->data;
+
+	if (info->window == window)
+	    return info;
+    }
+
+    return NULL;
+}
+#endif
 
 void
 meta_compositor_update_move (MetaCompositor *compositor,
@@ -1374,7 +1398,9 @@ meta_compositor_update_move (MetaCompositor *compositor,
 			     int x, int y)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  model_update_move (compositor->move_info->model, x, y);
+    MoveInfo *move_info = find_info (window);
+
+    model_update_move (move_info->model, x, y);
 #endif
 }
 
@@ -1383,7 +1409,9 @@ meta_compositor_end_move (MetaCompositor *compositor,
 			  MetaWindow *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  compositor->move_info->finished = TRUE;
+    MoveInfo *info = find_info (window);
+
+    info->finished = TRUE;
 #endif
 }
 
@@ -1393,12 +1421,9 @@ meta_compositor_free_window (MetaCompositor *compositor,
 			     MetaWindow *window)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  g_print ("freeing\n");
-  if (compositor->move_info)
-    {
-      g_print ("setting moveinfo to destroyed\n");
-      compositor->move_info->window_destroyed = TRUE;
-      compositor->move_info = NULL;
-    }
+    MoveInfo *info = find_info (window);
+
+    if (info)
+	info->window_destroyed = TRUE;
 #endif
 }
