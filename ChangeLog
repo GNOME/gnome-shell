@@ -1,5 +1,20 @@
 2006-03-29  Elijah Newren  <newren gmail com>
 
+	Fix grouping in the presence of ancestors; caught by Björn.
+	#336184
+
+	* src/group.c (meta_window_compute_group): Use new
+	meta_window_find_root_ancestor() function to get ancestor; for the
+	computed group, use the ancestor's group instead of the ancestor
+	itself
+
+	* src/window.[ch] (meta_window_find_root_ancestor,
+	meta_window_raise): split meta_window_find_root_ancestor()
+	functionality of meta_window_raise() and make it available
+	elsewhere
+
+2006-03-29  Elijah Newren  <newren gmail com>
+
 	* rationales.txt: Add bugs about pointer warping; update
 	raise-on-click ones.
 

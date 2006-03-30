@@ -116,16 +116,21 @@ void
 meta_window_compute_group (MetaWindow* window)
 {
   MetaGroup *group;
+  MetaWindow *ancestor;
 
   /* use window->xwindow if no window->xgroup_leader */
       
   group = NULL;
       
+  /* Determine the ancestor of the window; its group setting will override the
+   * normal grouping rules; see bug 328211.
+   */
+  ancestor = meta_window_find_root_ancestor (window);
+
   if (window->display->groups_by_leader)
     {
-      if (window->xtransient_for != None)
-        group = g_hash_table_lookup (window->display->groups_by_leader,
-                                     &window->xtransient_for);
+      if (ancestor != window)
+        group = ancestor->group;
       else if (window->xgroup_leader != None)
         group = g_hash_table_lookup (window->display->groups_by_leader,
                                      &window->xgroup_leader);
@@ -141,9 +146,9 @@ meta_window_compute_group (MetaWindow* window)
     }
   else
     {
-      if (window->xtransient_for != None)
+      if (ancestor != window && ancestor->xgroup_leader != None)
         group = meta_group_new (window->display,
-                                window->xtransient_for);
+                                ancestor->xgroup_leader);
       else if (window->xgroup_leader != None)
         group = meta_group_new (window->display,
                                 window->xgroup_leader);
@@ -154,8 +159,7 @@ meta_window_compute_group (MetaWindow* window)
       window->group = group;
     }
 
-  window->group->windows = g_slist_prepend (window->group->windows,
-                                                   window);
+  window->group->windows = g_slist_prepend (window->group->windows, window);
 
   meta_topic (META_DEBUG_GROUPS,
               "Adding %s to group with leader 0x%lx\n",

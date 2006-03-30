@@ -3993,12 +3993,20 @@ find_root_ancestor (MetaWindow *window,
   return TRUE;
 }
 
-void
-meta_window_raise (MetaWindow  *window)
+MetaWindow *
+meta_window_find_root_ancestor (MetaWindow *window)
 {
   MetaWindow *ancestor;
   ancestor = window;
   meta_window_foreach_ancestor (window, find_root_ancestor, &ancestor);
+  return ancestor;
+}
+
+void
+meta_window_raise (MetaWindow  *window)
+{
+  MetaWindow *ancestor;
+  ancestor = meta_window_find_root_ancestor (window);
 
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Raising window %s, ancestor of %s\n", 
