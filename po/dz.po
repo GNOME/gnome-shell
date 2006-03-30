@@ -1,0 +1,2296 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: metacity.HEAD.dz\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-03-06 05:24+0100\n"
+"PO-Revision-Date: 2006-03-28 11:12-0500\n"
+"Last-Translator: \n"
+"Language-Team: DZONGKHA <pgeyleg@dit.gov.bt>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2;plural=(n!=1);\n"
+"X-Poedit-Language: Dzongkha\n"
+"X-Poedit-Country: BHUTAN\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../src/tools/metacity-message.c:150
+#, c-format
+msgid "Usage: %s\n"
+msgstr "ལག་ལེན་: %s\n"
+
+#: ../src/tools/metacity-message.c:176
+#: ../src/util.c:128
+msgid "Metacity was compiled without support for verbose mode\n"
+msgstr "མེ་ཊ་སི་ཊི་དེ་ ཚིག་མང་ཐབས་ལམ་གྱི་དོན་ལུ་ རྒྱབ་སྐྱོར་མེད་པའི་ཐོག་ལས་ ཕྱོགས་སྒྲིག་འབད་ནུག\n"
+
+#: ../src/delete.c:63
+#: ../src/delete.c:90
+#: ../src/metacity-dialog.c:70
+#: ../src/theme-parser.c:467
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "\"%s\" དེ་ ཧྲིལ་ཨང་་བཟུམ་ཅིག་སྦེ་ མིང་དཔྱད་འབད་མ་ཚུགས།"
+
+#: ../src/delete.c:70
+#: ../src/delete.c:97
+#: ../src/metacity-dialog.c:77
+#: ../src/theme-parser.c:476
+#: ../src/theme-parser.c:530
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "རྒྱབ་ལུས་ཡིག་འབྲུ་\"%s\" ཚུ་ ཡིག་རྒྱུན་\"%s\" ནང་ ཧ་མ་གོ།"
+
+#: ../src/delete.c:128
+#, c-format
+msgid "Failed to parse message \"%s\" from dialog process\n"
+msgstr "ཌའི་ལོག་ལས་སྦྱོར་ནང་ལས་ འཕྲིན་དོན་\"%s\" མིང་དཔྱད་འབད་མ་ཚུགས། \n"
+
+#: ../src/delete.c:263
+#, c-format
+msgid "Error reading from dialog display process: %s\n"
+msgstr "ཌའི་ལོག་བཀྲམ་སྟོན་ལས་སྦྱོར་:%sནང་ལས་ ལྷག་ནི་ལུ་འཛོལ་བ། \n"
+
+#: ../src/delete.c:344
+#, c-format
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgstr "གློག་རིམ་%sཅིག་ བསད་ནིའི་སྐོར་ལས་ འདྲི་ནིའི་དོན་ལུ་ མེ་ཊ་སི་ཊི་ཌའི་ལོག་ གསར་བཙུགས་འབད་ནི་ལུ་འཛོལ་བ། \n"
+
+#: ../src/delete.c:452
+#, c-format
+msgid "Failed to get hostname: %s\n"
+msgstr "ཧོསིཊི་ནེམ་: %s ལེན་མ་ཚུགས། \n"
+
+#: ../src/display.c:307
+#, c-format
+msgid "Failed to open X Window System display '%s'\n"
+msgstr "ཨེགསི་སྒོ་སྒྲིག་རིམ་ལུགས་ཀྱི་བཀྲམ་སྟོན་'%s' ཁ་ཕྱེ་མ་ཚུགས། \n"
+
+#: ../src/errors.c:231
+#, c-format
+msgid ""
+"Lost connection to the display '%s';\n"
+"most likely the X server was shut down or you killed/destroyed\n"
+"the window manager.\n"
+msgstr ""
+"བཀྲམ་སྟོན་'%s'ལུ་ འབྲེལ་མཐུད་མེདཔ་ཐལ་སོ་ནུག \n"
+" ཨེགསི་སར་བར་དེ་ སྒོ་བསྡམས་ཡོད་པའམ་ ཁྱོད་ཀྱིས་སྒོ་སྒྲིག་འཛིན་སྐྱོང་པ་དེ་ བསད་ཡོདཔ་/རྩ་མེད\n"
+"་བཏང་ཡོདཔ་བཟུམ་ཅིག་འདུག\n"
+
+#: ../src/errors.c:238
+#, c-format
+msgid "Fatal IO error %d (%s) on display '%s'.\n"
+msgstr "ཚབས་ཆེན་ཨའི་ཨོ་གི་འཛོལ་བ་ %d (%s) འདུག་ བཀྲམ་སྟོན་ '%s' གུ \n"
+
+#: ../src/frames.c:1122
+msgid "Close Window"
+msgstr "སྒོ་སྒྲིག་ཁ་བསྡམས།"
+
+#: ../src/frames.c:1125
+msgid "Window Menu"
+msgstr "སྒོ་སྒྲིག་དཀར་ཆག"
+
+#: ../src/frames.c:1128
+msgid "Minimize Window"
+msgstr "སྒོ་སྒྲིག་ཆུང་ཀུ་བཟོ།"
+
+#: ../src/frames.c:1131
+msgid "Maximize Window"
+msgstr "སྒོ་སྒྲིག་སྦོམ་བཟོ།"
+
+#: ../src/frames.c:1134
+msgid "Unmaximize Window"
+msgstr "སྒོ་སྒྲིག་སྦོམ་བཟོ་ནི་བཤོལ།"
+
+#: ../src/keybindings.c:994
+#, c-format
+msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
+msgstr "ལས་རིམ་གཞན་ཅིག་གིས་ ཧེ་མ་ལས་རང་ ལྡེ་མིག་%s དེ་ ལེགས་བཅོས་འབད་མི་%x དང་བཅསཔ་སྦེ་ བཱའིན་ཌིང་བཟུམ་ཅིག་སྦེ་ ལག་ལེན་འཐབ་དོ། \n"
+
+#: ../src/keybindings.c:2624
+#, c-format
+msgid "Error launching metacity-dialog to print an error about a command: %s\n"
+msgstr "བརྡ་བཀོད་: %sཅིག་གི་འཛོལ་བའི་སྐོར་ལས་ དཔར་བསྐུན་འབད་ནིའི་དོན་ལུ་ མེ་ཊ་སི་ཊི་ཌའི་ལོག་ གསར་བཙུགས་འབད་ནི་ལུ་འཛོལ་བ།\n"
+
+#: ../src/keybindings.c:2729
+#, c-format
+msgid "No command %d has been defined.\n"
+msgstr "བརྡ་བཀོད་%dངེས་འཛིན་འབད་འབདཝ་མིན་འདུག\n"
+
+#: ../src/keybindings.c:3574
+msgid "No terminal command has been defined.\n"
+msgstr "ཊར་མི་ནཱལ་བརྡ་བཀོད་ ངེས་འཛིན་འབད་འབདཝ་མིན་འདུག \n"
+
+#: ../src/main.c:69
+#, c-format
+msgid ""
+"metacity %s\n"
+"Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
+"This is free software; see the source for copying conditions.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
+msgstr ""
+"མེ་ཊ་སི་ཊི་ %s\n"
+"འདྲ་བཤུས་དབང་ཆ་(C) །༢༠༠༡-༢༠༠༢ ཧེ་བོཀ་ པེན་ནིང་ཏཱོན་ རེཌི་ཧེཊི་ རྒྱལ་སྤྱི་དང་གཞན་ཚུ། \n"
+"འདི་སྟོང་མར་འཐོབ་པའི་མཉེན་ཆས་ཅིག་ཨིན། འདྲ་བཤུས་བརྐྱབ་ནིའི་ གནས་ཚིག་གི་དོན་ལུ་ འབྱུང་ཁུངས་ལུ་བལྟ། \n"
+"འདི་ལུ་ཉེན་ལེན་མེད། ཐ་ན་སྐྱེལ་འདྲེན་ནམ་ དམིགས་བསལ་གནད་དོན་ཅིག་གི་དོན་ལུ་ བཏུབ་མི་བཏུབ་ཀྱི་ ཉེན་ལེན་ཙམ་ཡང་མེད། \n"
+
+#: ../src/main.c:257
+msgid "Disable connection to session manager"
+msgstr "ལཱ་ཡུན་འཛིན་སྐྱོང་པ་ལུ་ མཐུད་ལམ་མེདཔ་བཟོ།"
+
+#: ../src/main.c:263
+msgid "Replace the running window manager with Metacity"
+msgstr "གཡོག་བཀོལ་བཞིན་ཡོད་མི་ སྒོ་སྒྲིག་འཛིན་སྐྱོང་པའི་ཚབ་ལུ་ མེ་ཊ་སི་ཊི་བཙུགས།"
+
+#: ../src/main.c:269
+msgid "Specify session management ID"
+msgstr "ལཱ་ཡུན་འཛིན་སྐྱོང་པའི་ཨའི་ཌི་ གསལ་བཀོད་འབད།"
+
+#: ../src/main.c:274
+msgid "X Display to use"
+msgstr "ལག་ལེན་འཐབ་ནིའི་ ཨེགསི་བཀྲམ་སྟོན།"
+
+#: ../src/main.c:280
+msgid "Initialize session from savefile"
+msgstr "སེབ་ཕ་ཡེལ་ནང་ལས་ ལཱ་ཡུན་འགོ་འབྱེད་འབད།"
+
+#: ../src/main.c:286
+msgid "Print version"
+msgstr "དཔར་བསྐྲུན་ཐོན་རིམ།"
+
+#: ../src/main.c:440
+#, c-format
+msgid "Failed to scan themes directory: %s\n"
+msgstr "བརྗོད་དོན་སྣོད་ཐོ་: %s ཞིབ་ལྟ་འབད་མ་ཚུགས། \n"
+
+#: ../src/main.c:456
+#, c-format
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgstr "བརྗོད་དོན་ཅིག་ འཚོལ་མ་འཐོབ། %sདེ་ ཡོདཔ་བཟོ་ནི་དང་ དེ་ནང་ཨ་རྟག་་གི་བརྗོད་དོན་ཚུ་ཡོདཔ་ ངེས་གཏན་བཟོ།"
+
+#: ../src/main.c:518
+#, c-format
+msgid "Failed to restart: %s\n"
+msgstr "%s ལོག་འགོ་བཙུགས་མ་ཚུགས། \n"
+
+#: ../src/menu.c:54
+msgid "Mi_nimize"
+msgstr "ཆུང་ཀུ་བཟོ།(_n)"
+
+#: ../src/menu.c:55
+msgid "Ma_ximize"
+msgstr "སྦོམ་བཟོ།(_x)"
+
+#: ../src/menu.c:56
+msgid "Unma_ximize"
+msgstr "སྦོམ་བཟོ་ནི་བཤོལ།(_x)"
+
+#: ../src/menu.c:57
+msgid "Roll _Up"
+msgstr "བསྒྲིལ།(_U)"
+
+#: ../src/menu.c:58
+msgid "_Unroll"
+msgstr "བསྒྲིལ་བཤོལ།(_U)"
+
+#: ../src/menu.c:59
+#: ../src/menu.c:60
+msgid "On _Top"
+msgstr "མགོ་ལུ།(_T)"
+
+#: ../src/menu.c:61
+msgid "_Move"
+msgstr "སྤོ།(_M)"
+
+#: ../src/menu.c:62
+msgid "_Resize"
+msgstr "ཚད་སླར་སྒྲིག(_R)"
+
+#. separator
+#: ../src/menu.c:64
+msgid "_Close"
+msgstr "ཁ་བསྡམས།(_C)"
+
+#. separator
+#: ../src/menu.c:66
+msgid "_Always on Visible Workspace"
+msgstr "ཨ་རྟག་རང་ མཐོང་ཚུགས་པའི་ ལཱ་གི་ས་སྒོ་གུ།(_A)"
+
+#: ../src/menu.c:67
+msgid "_Only on This Workspace"
+msgstr "ལཱ་གི་ས་སྒོ་འདི་རྐྱངམ་གཅིག་གུ།(_O)"
+
+#: ../src/menu.c:68
+msgid "Move to Workspace _Left"
+msgstr "གཡོན་གྱི་ལཱ་གི་ས་སྒོ་ལུ་སྤོ།(_L)"
+
+#: ../src/menu.c:69
+msgid "Move to Workspace R_ight"
+msgstr "གཡས་ཀྱི་ལཱ་གི་ས་སྒོ་ལུ་སྤོ།(_i)"
+
+#: ../src/menu.c:70
+msgid "Move to Workspace _Up"
+msgstr "ལྟག་གི་ལཱ་གི་ས་སྒོ་ལུ་སྤོ།(_U)"
+
+#: ../src/menu.c:71
+msgid "Move to Workspace _Down"
+msgstr "འོག་གི་ལཱ་གི་ས་སྒོ་ལུ་སྤོ།(_D)"
+
+#: ../src/menu.c:162
+#: ../src/prefs.c:2106
+#, c-format
+msgid "Workspace %d"
+msgstr "ལཱ་གི་ས་སྒོ་%d "
+
+#: ../src/menu.c:171
+msgid "Workspace 1_0"
+msgstr "ལཱ་གི་ས་སྒོ་ ༡༠།(_0)"
+
+#: ../src/menu.c:173
+#, c-format
+msgid "Workspace %s%d"
+msgstr "ལཱ་གི་ས་སྒོ་ %s%d"
+
+#: ../src/menu.c:368
+msgid "Move to Another _Workspace"
+msgstr "ལཱ་གི་ས་སྒོ་ གཞན་ཅིག་ལུ་སྤོ།(_W)"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the shift key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/metaaccellabel.c:105
+msgid "Shift"
+msgstr "སོར་ལྡེ།"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the control key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/metaaccellabel.c:111
+msgid "Ctrl"
+msgstr "ཚད་འཛིན།"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the alt key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/metaaccellabel.c:117
+msgid "Alt"
+msgstr "བསྒྱུར་ལྡེ།"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the meta key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/metaaccellabel.c:123
+msgid "Meta"
+msgstr "མེ་ཊ།"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the super key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/metaaccellabel.c:129
+msgid "Super"
+msgstr "ཡང་དག་།"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the hyper key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/metaaccellabel.c:135
+msgid "Hyper"
+msgstr "ཧའི་པར།"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod2 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/metaaccellabel.c:141
+msgid "Mod2"
+msgstr "མོཌི་༢།"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod3 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/metaaccellabel.c:147
+msgid "Mod3"
+msgstr "མོཌི་༣།"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod4 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/metaaccellabel.c:153
+msgid "Mod4"
+msgstr "མོཌི་༤།"
+
+#. This is the text that should appear next to menu accelerators
+#. * that use the mod5 key. If the text on this key isn't typically
+#. * translated on keyboards used for your language, don't translate
+#. * this.
+#.
+#: ../src/metaaccellabel.c:159
+msgid "Mod5"
+msgstr "མོཌི་༥།"
+
+#: ../src/metacity-dialog.c:110
+#, c-format
+msgid "The window \"%s\" is not responding."
+msgstr "སྒོ་སྒྲིག་\"%s\" དེ་གིས་ ངོས་ལན་འབད་མི་བཏུབ་པས།"
+
+#: ../src/metacity-dialog.c:118
+msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+msgstr "གློག་རིམ་འདི་ བང་ཅན་སྦེ་སྤང་བཅུག་པ་ཅིན་ མ་བསྲུངས་པའི་ བསྒྱུར་བཅོས་ཚུ་ བརླག་སྟོར་ཞུགས་འོང་།"
+
+#: ../src/metacity-dialog.c:129
+msgid "_Force Quit"
+msgstr "བང་ཅན་སྦེ་ སྤངས(_F)"
+
+#: ../src/metacity-dialog.c:226
+msgid "Title"
+msgstr "མགོ་མིང་།"
+
+#: ../src/metacity-dialog.c:238
+msgid "Class"
+msgstr "དབྱེ་ཁག"
+
+#: ../src/metacity-dialog.c:264
+msgid "These windows do not support \"save current setup\" and will have to be restarted manually next time you log in."
+msgstr "སྒོ་སྒྲིག་འདི་ཚུ་གིས་ \"save current setup\" ཟེར་མི་ལུ་ རྒྱབ་སྐྱོར་མི་འབད་བས། ཤུལ་ལས་ཁྱོད་ཀྱིས་ ནང་བསྐྱོད་འབདཝ་ད་ ལག་ཐོག་ལས་ ལོག་འགོ་བཙུགས་དགོ"
+
+#: ../src/metacity-dialog.c:330
+#, c-format
+msgid ""
+"There was an error running \"%s\":\n"
+"%s."
+msgstr ""
+"\"%s\"གཡོག་བཀོལ་ནི་ལུ་ འཛོལ་བ་ཅིག་འདུག\n"
+"%s"
+
+#: ../src/metacity.desktop.in.h:1
+msgid "Metacity"
+msgstr "མེ་ཊ་སི་ཊི།"
+
+#: ../src/metacity.schemas.in.h:1
+msgid "(Not implemented) Navigation works in terms of applications not windows"
+msgstr "(ལག་ལེན་མ་འཐབ་པ) སྒོ་སྒྲིག་མིན་པར་ གློག་རིམ་ཨིན་པའི་སྐབས་ལུ་ འགྲུལ་བསྐྱོད་ཀྱིས་ལཱ་འབདཝ་ཨིན།"
+
+#: ../src/metacity.schemas.in.h:2
+msgid "A font description string describing a font for window titlebars. The size from the description will only be used if the titlebar_font_size option is set to 0, however. Also, this option is disabled if the titlebar_uses_desktop_font option is set to true. By default, titlebar_font is unset, causing Metacity to fall back to the desktop font even if titlebar_uses_desktop_font is false."
+msgstr "སྒོ་སྒྲིག་གི་ མགོ་མིང་ཕྲ་རིང་གི་དོན་ལུ་ ཡིག་གཟུགས་ཅིག་གི་ འགྲེལ་བཤད་རྐྱབ་པའི་ ཡིག་གཟུགས་འགྲེལ་བཤད་ཡིག་རྒྱུན་ཅིག་ཨིན་རུང་ མགོ་མིང་ཕྲ་རིང་གི་ ཡིག་གཟུགས་ཚད་ཀྱི་གདམ་ཁ་དེ་ ༠ ལུ་གཞི་སྒྲིག་འབད་ཡོད་པ་ཅིན་རྐྱངམ་གཅིག་ འགྲེལ་བཤད་ནང་ལས་བཀོད་མི་ ཚད་དེ་ལག་ལེན་འཐབ་འོང་། འདི་མ་ཚད་ མགོ་མིང་ཕྲ་རིང་གིས་ ལག་ལེན་འཐབ་མི་ ཌེཀསི་ཊོཔ་ ཡིག་གཟུགས་གདམ་ཁ་དེ་ བདེན་པ་གུ་གཞི་སྒྲིག་འབད་དེ་ཡོད་པ་ཅིན་ གདམ་ཁ་འདི་ ལྕོགས་མིན་འགྱོཝ་ཨིན། སྔོན་སྒྲིག་གི་ཐོག་ལས་ མགོ་མིང་ཡིག་གཟུགས་ སྒྲིག་བཤོལ་འབད་བ་ཅིན་ མགོ་མིང་ཕྲ་རིང་གིས་ ལག་ལེན་འཐབ་མི་ ཌེཀསི་ཊོཔ་ཡིག་གཟུགས་དེ་ རྫུན་པ་ཨིན་རུང་ མེ་ཊ་སི་ཊི་གིས་ ཌེཀསི་ཊོཔ་ཡིག་གཟུགས་དེ་ལུ་ རྒྱབ་ཐག་འབདཝ་ཨིན།"
+
+#: ../src/metacity.schemas.in.h:3
+msgid "Action on title bar double-click"
+msgstr "མགོ་མིང་ཕྲ་རིང་གི་ བྱ་བ་ལུ་ ཨེབ་གཏང་ཐེངས་གཉིས་འབད།"
+
+#: ../src/metacity.schemas.in.h:4
+msgid "Activate window menu"
+msgstr "སྒོ་སྒྲིག་དཀར་ཆག་ ཤུགས་ལྡན་བཟོ།"
+
+#: ../src/metacity.schemas.in.h:5
+msgid "Arrangement of buttons on the titlebar"
+msgstr "མགོ་མིང་ཕྲ་རིང་གུ་ ཨེབ་རྟ་ཚུ་གི་བདེ་ཞིབ།"
+
+#: ../src/metacity.schemas.in.h:6
+msgid "Arrangement of buttons on the titlebar. The value should be a string, such as \"menu:minimize,maximize,close\"; the colon separates the left corner of the window from the right corner, and the button names are comma-separated. Duplicate buttons are not allowed. Unknown button names are silently ignored so that buttons can be added in future metacity versions without breaking older versions."
+msgstr "མགོ་མིང་ཕྲ་རིང་གུ་ ཨེབ་རྟ་ཚུ་གི་བདེ་ཞིབ། བེ་ལུ་དེ་ ཡིག་རྒྱུན་ཅིག་འོང་དགོ་མི་དེ་ཡང་ དཔེར་ན་ \"menu:minimize,maximize,close\";ཟེར་མི་ཚུ་ཨིན། ཀོ་ལཱོན་དེ་གིས་ སྒོ་སྒྲིག་གི་གཡོན་ཟུར་དེ་ གཡས་ཟུར་ལས་ སོ་སོ་འཕྱལཝ་ཨིནམ་ད་ ཨེབ་རྟའི་མིང་ཚུ་ ལྷོད་རྟགས་ཀྱི་འཕྱལ་ཏེ་ཡོད། ཨེབ་རྟ་རྫུན་མ་ཚུ་མི་ཆོག ངོ་མ་ཤེས་པའི་ཨེབ་རྟའི་མིང་ཚུ་ ཁུ་སིམ་སི་སྦེ་ སྣང་མེད་བཞགཔ་ལས་ མ་འོངས་པའི་ མེ་ཊ་སི་ཊི་ཐོན་རིམ་ཚུ་ནང་ ཐོན་རིམ་རྙིངམ་ཚུ་ མེདཔ་མ་གཏང་པར་ ཨེབ་རྟ་ཚུ་ ཁ་སྐོང་བརྐྱབ་ཚུགས་ནི་ཨིན།"
+
+#: ../src/metacity.schemas.in.h:7
+msgid "Automatically raises the focused window"
+msgstr "ཆེད་དམིགས་འབད་མི་ སྒོ་སྒྲིག་དེ་ རང་བཞིན་གྱིས་ ཡར་སེང་འབདཝ་ཨིན།"
+
+#: ../src/metacity.schemas.in.h:8
+msgid "Clicking a window while holding down this modifier key will move the window (left click), resize the window (middle click), or show the window menu (right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" for example."
+msgstr "ལེགས་བཅོས་འབད་མི་ལྡེ་མིག་འདི་འཆང་ཐོག་ལས་ སྒོ་སྒྲིག་ཅིག་གུ་ ཨེབ་གཏང་འབད་བ་ཅིན་ (གཡོན་ལུ་ཨེབ་གཏང་གིས) སྒོ་སྒྲིག་སྤོ་ནི་དང་ (སྦུག་ལུ་ཨེབ་གཏང་གིས་) སྒོ་སྒྲིག་གི་ཚད་གཞི་སླར་སྒྲིག་འབད་ནི་ (གཡས་ལུ་ཨེབ་གཏང་གིས་) སྒོ་སྒྲིག་གི་དཀར་ཆག་སྟོནམ་ཨིན། ལེགས་བཅོས་འབད་མི་དེ་ དཔེར་ན་ \"&lt;Alt&gt;\" ཡང་ན་ \"&lt;Super&gt;\" བཟུམ་སྦེ་ བཀོད་དེ་ཡོད།"
+
+#: ../src/metacity.schemas.in.h:9
+msgid "Close window"
+msgstr "སྒོ་སྒྲིག་ཁ་བསྡམས།"
+
+#: ../src/metacity.schemas.in.h:10
+msgid "Commands to run in response to keybindings"
+msgstr "ཀི་བཱའིན་ཌིངསི་གི་ ངོས་ལན་ལུ་ གཡོག་བཀོལ་ནིའི་ བརྡ་བཀོད་ཚུ།"
+
+#: ../src/metacity.schemas.in.h:11
+msgid "Current theme"
+msgstr "ད་ལྟོའི་བརྗོད་དོན།"
+
+#: ../src/metacity.schemas.in.h:12
+msgid "Delay in milliseconds for the auto raise option"
+msgstr "རང་བཞིན་ཡར་སེང་གདམ་ཁའི་དོན་ལུ་ཕྱིར་འགྱངས་ མི་ལི་སྐར་ཆའི་ནང་།"
+
+#: ../src/metacity.schemas.in.h:13
+msgid "Determines whether applications or the system can generate audible 'beeps'; may be used in conjunction with 'visual bell' to allow silent 'beeps'."
+msgstr "གློག་རིམ་ཚུའམ་ རིམ་ལུགས་དེ་གིས་ གོ་ཚུགས་པའི་བརྡ་སྐད་ བཟོ་བསྐྲུན་འབད་ཚུགས་ག་མི་ཚུགས་ ཐག་བཅདཔ་ཨིན། ཁུ་སིམ་སི་གི་བརྡ་སྐད་ འབྱུང་བཅུག་ནིའི་དོན་ལུ་ མིག་མཐོང་དྲིལ་བརྡ་དང་མཉམ་སྦྲགས་ ལག་ལེན་འཐབ་རུང་བཏུབ།"
+
+#: ../src/metacity.schemas.in.h:14
+msgid "Disable misfeatures that are required by old or broken applications"
+msgstr "གློག་རིམ་རྙིང་པའམ་ མེདཔ་ཐལ་མི་ཚུ་ལུ་མཁོ་བའི་ ཁྱད་རྣམ་ཕྱི་འགྱུར་ཚུ་ ལྕོགས་མིན་བཟོ།"
+
+#: ../src/metacity.schemas.in.h:15
+msgid "Enable Visual Bell"
+msgstr "མཐོང་ཚུགས་པའི་དྲིལ་བརྡ་ ལྕོགས་ཅན་བཟོ།"
+
+#: ../src/metacity.schemas.in.h:16
+msgid "Hide all windows and focus desktop"
+msgstr "སྒོ་སྒྲིག་ཆ་མཉམ་ སྦ་བཞག་ཞིནམ་ལས་ ཌེཀསི་ཊོཔ་ལུ་ ཆེད་དམིགས་འབད།"
+
+#: ../src/metacity.schemas.in.h:17
+msgid "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the focused window will be automatically raised after a delay (the delay is specified by the auto_raise_delay key)."
+msgstr "བདེན་པ་ཨིན་པ་ཅིན་ ཆེད་དམིགས་ཐབས་ལམ་དེ་ \"sloppy\" ཡང་ན་ \"mouse\"  ཨིན་པ་ཅིན་ ཆེད་དམིགས་འབད་མི་སྒོ་སྒྲིག་དེ་ ཕྱིར་འགྱངས་ཅིག་གི་ཤུལ་ལས་ རང་བཞིན་གྱིས་ ཡར་སེང་འགྱོ་འོང་། (ཕྱིར་འགྱངས་དེ་ཡང་ རང་བཞིན་ཡར་སེང་ ཕྱིར་འགྱངས་ལྡེ་མིག་གིས་ གསལ་བཀོད་འབད་འོང་)"
+
+#: ../src/metacity.schemas.in.h:18
+msgid "If true, ignore the titlebar_font option, and use the standard application font for window titles."
+msgstr "བདེན་པ་ཨིན་པ་ཅིན་ མགོ་མིང་ཕྲ་རིང་ ཡིག་གཟུགས་གདམ་ཁ་དེ་ སྣང་མེད་བཞག་སྟེ་ སྒོ་སྒྲིག་མགོ་མིང་གི་དོན་ལུ་ ཚད་ལྡན་གློག་རིམ་ཡིག་གཟུགས་དེ་ ལག་ལེན་འཐབ།(_f)"
+
+#: ../src/metacity.schemas.in.h:19
+msgid "If true, metacity will give the user less feedback and less sense of \"direct manipulation\", by using wireframes, avoiding animations, or other means. This is a significant reduction in usability for many users, but may allow legacy applications and terminal servers to function when they would otherwise be impractical. However, the wireframe feature is disabled when accessibility is on to avoid weird desktop breakages."
+msgstr "བདེན་པ་ཨིན་པ་ཅིན་ མེ་ཊ་སི་ཊི་གིས་ ཝའེར་ཕེརེམསི་ ལག་ལེན་འཐབ་སྡེ་ འགུལ་དཔར་བཟོ་ལས་སྤངས་པའི་སྒོ་ལས་དང་ ཡང་ན་ ཐབས་ལམ་གཞན་གྱི་ཐོག་ལས་ ལག་ལེན་པ་ལུ་ བསམ་ལན་ཉུང་སུ་དང་\"direct manipulation\" ཀྱི་སྣང་བ་ཉུང་སུ་བྱིནམ་ཨིན། འདི་གིས་ལག་ལེན་པ་མང་རབས་ཅིག་ལུ་ ལག་ལེན་ལྕོགས་གྲུབ་ རྒྱ་སྦོམ་སྦེ་རང་ མར་ཕབ་འབདཝ་ཨིན་རུང་ སྔོན་བཤུལ་གློག་རིམ་དང་ ཊར་མི་ནཱལ་སར་བར་ཚུ་ འོས་འབབ་མེད་པའི་དུས་སྐབས་ལུ་ཡང་ ལཱ་འབད་བཅུགཔ་ཨིན། དེ་འབདཝ་ད་ འཛུལ་སྤྱོད་ཨཱོན་ཡོད་པའི་སྐབས་ ཌེཀསི་ཊོཔ་ལུ་ དཀའ་ངལ་བཀག་ཐབས་ལུ་ ཝའེར་ཕེརེམ་ཁྱད་རྣམ་དེ་ ལྕོགས་མིན་བཟོཝ་ཨིན།"
+
+#: ../src/metacity.schemas.in.h:20
+msgid "If true, then Metacity works in terms of applications rather than windows. The concept is a bit abstract, but in general an application-based setup is more like the Mac and less like Windows. When you focus a window in application-based mode, all the windows in the application will be raised. Also, in application-based mode, focus clicks are not passed through to windows in other applications. The existence of this setting is somewhat questionable. But it's better than having settings for all the specific details of application-based vs. window-based, e.g. whether to pass through clicks. Also, application-based mode is largely unimplemented at the moment."
+msgstr "བདེན་པ་ཨིན་པ་ཅིན་ མེ་ཊ་སི་ཊི་གིས་ སྒོ་སྒྲིག་ནང་མིན་པར་ གློག་རིམ་ནང་ལཱ་འབདཝ་ཨིན། བསམ་གཞི་འདི་སོ་སོ་ཅིག་ཨིན་པའི་ཁར་ སྤྱིར་བཏང་ལུ་ གློག་རིམ་ལུ་བརྟེན་པའི་ གཞི་སྒྲིག་དེ་མང་སུ་ཅིག་ གློག་རིག་མེཀ་གི་བཟུམ་དང་ ཉུང་སུ་ཅིག་ ཝིན་ཌོསི་གི་བཟུམ་འོང་ཨིན། གློག་རིམ་ལུ་བརྟེན་པའི་ཐབས་ལམ་ནང་ སྒོ་སྒྲིག་ལུ་ ཆེད་དམིགས་འབདཝ་ད་ གློག་རིམ་ནང་ཡོད་པའི་ སྒོ་སྒྲིག་ཆ་མཉམ་ ཡར་སེང་འབདཝ་ཨིན། དེ་མ་ཚད་ གློག་རིམ་ལུ་བརྟེན་པའི་ཐབས་ལམ་ནང་ ཆེད་དམིགས་ཨེབ་གཏང་ཚུ་ གློག་རིམ་གཞན་གྱི་ སྒོ་སྒྲིག་ཚུ་ལུ་ གཏང་མི་ཚུགས། འདི་གིས་སྦེ་ གཞི་སྒྲིག་འདི་ལུ་ དོགས་པ་ཅིག་ཡོད། ཨིན་རུང་གློག་རིམ་ལུ་བརྟེན་མི་དང་ཕྱདཔ་ད་ སྒོ་སྒྲིག་ལུ་བརྟེན་མི་དེ་ དྲག་པའི་སྐོར་ལས་ དམིགས་བསལ་རྒྱས་བཤད་ཀྱི་དོན་ལུ་ གཞི་སྒྲིག་ཆ་མཉམ་བཞག་ནི་ལས་ འདི་དྲགཔ་ཨིན། དེ་ཡང་དཔེར་ན་ ཨེབ་གཏང་ཚུ་ བརྒྱུད་དེ་གཏང་དགོ་ག་མིན་དགོ་ལྟ་བུ། དེ་མ་ཚད་ ད་རེས་ནངས་པར་ གློག་རིམ་ལུ་བརྟེན་པའི་ཐབས་ལམ་དེ་ རྒྱ་ཆེཝ་སྦེ་ ལག་ལེན་འཐབ་ནི་མེད།"
+
+#: ../src/metacity.schemas.in.h:21
+msgid "If true, trade off usability for less resource usage"
+msgstr "བདེན་པ་ཨིན་པ་ཅིན་ ཐོན་ཁུངས་ཉུང་སུ་ཅིག་ ལག་ལེན་འཐབ་ནིའི་དོན་ལུ་ ལག་ལེན་ལྕོགས་གྲུབ་ ཚོང་འབྲེལ་འཐབ།"
+
+#: ../src/metacity.schemas.in.h:22
+msgid "Lower window below other windows"
+msgstr "སྒོ་སྒྲིག་འདི་ སྒོ་སྒྲིག་གཞན་གྱི་འོག་ལུ་ཕབ།"
+
+#: ../src/metacity.schemas.in.h:23
+msgid "Maximize window"
+msgstr "སྒོ་སྒྲིག་སྦོམ་བཟོ།"
+
+#: ../src/metacity.schemas.in.h:24
+msgid "Maximize window horizontally"
+msgstr "སྒོ་སྒྲིག་ཐད་སྙོམས་སྦེ་ སྦོམ་བཟོ།"
+
+#: ../src/metacity.schemas.in.h:25
+msgid "Maximize window vertically"
+msgstr "སྒོ་སྒྲིག་ཀེར་ཕྲང་སྦེ་ སྦོམ་བཟོ།"
+
+#: ../src/metacity.schemas.in.h:26
+msgid "Minimize window"
+msgstr "སྒོ་སྒྲིག་ཆུང་ཀུ་བཟོ།"
+
+#: ../src/metacity.schemas.in.h:27
+msgid "Modifier to use for modified window click actions"
+msgstr "ལེགས་བཅོས་འབད་མི་ སྒོ་སྒྲིག་ཨེབ་གཏང་གི་ བྱ་བའི་དོན་ལུ་ ལག་ལེན་འཐབ་ནིའི་ ལེགས་བཅོས་འབད་མི།"
+
+#: ../src/metacity.schemas.in.h:28
+msgid "Move backward between panels and the desktop immediately"
+msgstr "པེ་ནཱལསི་དང་ ཌེཀསི་ཊོཔ་གི་བར་ན་ དེ་འཕྲལ་ལས་ རྒྱབ་བཤུད་རྐྱབས།"
+
+#: ../src/metacity.schemas.in.h:29
+msgid "Move backwards between panels and the desktop with popup"
+msgstr "པེ་ནཱལསི་དང་ ཌེཀསི་ཊོཔ་གི་བར་ན་ པོཔ་ཨཔ་གི་ཐོག་ལས་ རྒྱབ་བཤུད་རྐྱབས།"
+
+#: ../src/metacity.schemas.in.h:30
+msgid "Move backwards between windows immediately"
+msgstr "དེ་འཕྲལ་ལས་ སྒོ་སྒྲིག་ཚུ་གི་བར་ན་  རྒྱབ་བཤུད་རྐྱབས།"
+
+#: ../src/metacity.schemas.in.h:31
+msgid "Move between panels and the desktop immediately"
+msgstr "དེ་འཕྲལ་ལས་ པེ་ནཱལསི་དང་ ཌེཀསི་ཊོཔ་གི་བར་ན་  སྤོ་བཤུད་འབད།"
+
+#: ../src/metacity.schemas.in.h:32
+msgid "Move between panels and the desktop with popup"
+msgstr "པེ་ནཱལསི་དང་ ཌེཀསི་ཊོཔ་གི་བར་ན་ པོཔ་ཨཔ་གི་ཐོག་ལས་ སྤོ་བཤུད་འབད།"
+
+#: ../src/metacity.schemas.in.h:33
+msgid "Move between windows immediately"
+msgstr "དེ་འཕྲལ་ལས་ སྒོ་སྒྲིག་ཚུ་གི་བར་ན་  སྤོ་བཤུད་འབད།"
+
+#: ../src/metacity.schemas.in.h:34
+msgid "Move between windows with popup"
+msgstr "སྒོ་སྒྲིག་ཚུ་གི་བར་ན་ པོཔ་ཨཔ་གི་ཐོག་ལས་ སྤོ་བཤུད་འབད།"
+
+#: ../src/metacity.schemas.in.h:35
+msgid "Move focus backwards between windows using popup display"
+msgstr "པོཔ་ཨཔ་བཀྲམ་སྟོན་ ལག་ལེན་འཐབ་པའི་ཐོག་ལས་ སྒོ་སྒྲིག་ཚུ་གི་བར་ན་ ཆེད་དམིགས་རྒྱབ་བཤུད་རྐྱབས།"
+
+#: ../src/metacity.schemas.in.h:36
+msgid "Move window"
+msgstr "སྒོ་སྒྲིག་སྤོ་བཤུད་འབད།"
+
+#: ../src/metacity.schemas.in.h:37
+msgid "Move window one workspace down"
+msgstr "སྒོ་སྒྲིག་དེ་ ལཱ་གི་ས་སྒོ་གཅིག་ འོག་ལུ་སྤོ།"
+
+#: ../src/metacity.schemas.in.h:38
+msgid "Move window one workspace to the left"
+msgstr "སྒོ་སྒྲིག་དེ་ ལཱ་གི་ས་སྒོ་གཅིག་ གཡོན་ལུ་སྤོ།"
+
+#: ../src/metacity.schemas.in.h:39
+msgid "Move window one workspace to the right"
+msgstr "སྒོ་སྒྲིག་དེ་ ལཱ་གི་ས་སྒོ་གཅིག་ གཡས་་ལུ་སྤོ།"
+
+#: ../src/metacity.schemas.in.h:40
+msgid "Move window one workspace up"
+msgstr "སྒོ་སྒྲིག་དེ་ ལཱ་གི་ས་སྒོ་གཅིག་ ལྟག་ལུ་སྤོ།"
+
+#: ../src/metacity.schemas.in.h:41
+msgid "Move window to workspace 1"
+msgstr "སྒོ་སྒྲིག་དེ་ ལཱ་གི་ས་སྒོ་ ༡ པ་ལུ་སྤོ།"
+
+#: ../src/metacity.schemas.in.h:42
+msgid "Move window to workspace 10"
+msgstr "སྒོ་སྒྲིག་དེ་ ལཱ་གི་ས་སྒོ་ ༡༠ པ་ལུ་སྤོ།"
+
+#: ../src/metacity.schemas.in.h:43
+msgid "Move window to workspace 11"
+msgstr "སྒོ་སྒྲིག་དེ་ ལཱ་གི་ས་སྒོ་ ༡༡ པ་ལུ་སྤོ།"
+
+#: ../src/metacity.schemas.in.h:44
+msgid "Move window to workspace 12"
+msgstr "སྒོ་སྒྲིག་དེ་ ལཱ་གི་ས་སྒོ་ ༡༢ པ་ལུ་སྤོ།"
+
+#: ../src/metacity.schemas.in.h:45
+msgid "Move window to workspace 2"
+msgstr "སྒོ་སྒྲིག་དེ་ ལཱ་གི་ས་སྒོ་ ༢ པ་ལུ་སྤོ།"
+
+#: ../src/metacity.schemas.in.h:46
+msgid "Move window to workspace 3"
+msgstr "སྒོ་སྒྲིག་དེ་ ལཱ་གི་ས་སྒོ་ ༣ པ་ལུ་སྤོ།"
+
+#: ../src/metacity.schemas.in.h:47
+msgid "Move window to workspace 4"
+msgstr "སྒོ་སྒྲིག་དེ་ ལཱ་གི་ས་སྒོ་ ༤ པ་ལུ་སྤོ།"
+
+#: ../src/metacity.schemas.in.h:48
+msgid "Move window to workspace 5"
+msgstr "སྒོ་སྒྲིག་དེ་ ལཱ་གི་ས་སྒོ་ ༥ པ་ལུ་སྤོ།"
+
+#: ../src/metacity.schemas.in.h:49
+msgid "Move window to workspace 6"
+msgstr "སྒོ་སྒྲིག་དེ་ ལཱ་གི་ས་སྒོ་ ༦ པ་ལུ་སྤོ།"
+
+#: ../src/metacity.schemas.in.h:50
+msgid "Move window to workspace 7"
+msgstr "སྒོ་སྒྲིག་དེ་ ལཱ་གི་ས་སྒོ་ ༧ པ་ལུ་སྤོ།"
+
+#: ../src/metacity.schemas.in.h:51
+msgid "Move window to workspace 8"
+msgstr "སྒོ་སྒྲིག་དེ་ ལཱ་གི་ས་སྒོ་ ༨ པ་ལུ་སྤོ།"
+
+#: ../src/metacity.schemas.in.h:52
+msgid "Move window to workspace 9"
+msgstr "སྒོ་སྒྲིག་དེ་ ལཱ་གི་ས་སྒོ་ ༩ པ་ལུ་སྤོ།"
+
+#: ../src/metacity.schemas.in.h:53
+msgid "Name of workspace"
+msgstr "ལཱ་གི་ས་སྒོའི་མིང་།"
+
+#: ../src/metacity.schemas.in.h:54
+msgid "Number of workspaces"
+msgstr "ལཱ་གི་ས་སྒོའི་གྲངས།"
+
+#: ../src/metacity.schemas.in.h:55
+msgid "Number of workspaces. Must be more than zero, and has a fixed maximum (to prevent accidentally destroying your desktop by asking for 34 million workspaces)."
+msgstr "ལཱ་གི་ས་སྒོའི་གྲངས། ཀླད་ཀོར་ལས་མངམ་ཅིག་དང་ མང་མཐའ་གཏན་གཏན་ཅིག་དགོ (དེ་ཡང་ལཱ་གི་ས་སྒོ་ས་ཡ་༣༤དགོཔ་སྦེ་བཀོད་པའི་ བར་རྐྱེན་གྱིས་ ཁྱོད་རའི་ཌེཀསི་ཊོཔ་ མེདཔ་གཏང་ནི་ལས་ ཉེན་སྐྱོབ་ཀྱི་དོན་ལུ་ཨིན།"
+
+#: ../src/metacity.schemas.in.h:56
+msgid "Raise obscured window, otherwise lower"
+msgstr "སྒོ་སྒྲིག་རབ་རིབ་དེ་ ཡར་སེང་འབད་ ཡང་ན་ མར་ཕབ་འབད།"
+
+#: ../src/metacity.schemas.in.h:57
+msgid "Raise window above other windows"
+msgstr "སྒོ་སྒྲིག་དེ་ སྒོ་སྒྲིག་གཞན་ཚུ་གི་ལྟག་ལུ་ ཡར་སེང་འབད།"
+
+#: ../src/metacity.schemas.in.h:58
+msgid "Resize window"
+msgstr "སྒོ་སྒྲིག་གི་ ཚད་སླར་སྒྲིག་འབད།"
+
+#: ../src/metacity.schemas.in.h:59
+msgid "Run a defined command"
+msgstr "ངེས་འཛིན་གྱི་བརྡ་བཀོད་ཅིག་ གཡོག་བཀོལ།"
+
+#: ../src/metacity.schemas.in.h:60
+msgid "Run a terminal"
+msgstr "ཊར་མི་ནཱལ་ཅིག་ གཡོག་བཀོལ།"
+
+#: ../src/metacity.schemas.in.h:61
+msgid "Show the panel menu"
+msgstr "པེ་ནཱལ་དཀར་ཆག་སྟོན།"
+
+#: ../src/metacity.schemas.in.h:62
+msgid "Show the panel run application dialog"
+msgstr "པེ་ནཱལ་གྱིས་གཡོག་བཀོལ་བའི་ གློག་རིམ་ཌའི་ལོག་དེ་སྟོན།"
+
+#: ../src/metacity.schemas.in.h:63
+msgid "Some applications break specifications in ways that result in window manager misfeatures. For example, ideally Metacity would place all dialogs in a consistent position with respect to their parent window. This requires ignoring application-specified positions for dialogs. But some versions of Java/Swing mark their popup menus as dialogs, so Metacity has to disable dialog positioning to allow menus to work in broken Java applications. There are several other examples like this. This option puts Metacity in full-on Correct mode, which perhaps gives a moderately nicer UI if you don't need to run any broken apps. Sadly, workarounds must be enabled by default; the real world is an ugly place. Some of the workarounds are workarounds for limitations in the specifications themselves, so sometimes a bug in no-workarounds mode won't be fixable without amending a spec."
+msgstr "གློམ་རིམ་ལ་ལོ་ཅིག་གིས་ གསལ་བཀོད་ཚུ་མེདཔ་གཏང་སྟེ་ སྒོ་སྒྲིག་འཛིན་སྐྱོང་པའི་ཁྱད་རྣམ་ ཕྱི་འགྱུར་བཟོཝ་ཨིན། དཔེར་ན་ མེ་ཊ་སི་ཊི་གིས་ ཌའི་ལོག་ཆ་མཉམ་ རང་སོའི་སྔོན་གྱི་སྒོ་སྒྲིག་དང་འཁྲིལ་ཏེ་ རིམ་མཐུད་གནས་ས་ལུ་ བཞག་ཚུགསཔ་ཨིན། འདི་གི་དོན་ལས་ ཌའི་ལོག་གི་དོན་ལུ་ གསལ་བཀོད་འབད་མི་གནས་ས་ སྣང་མེད་བཟོ་དགོ ཇ་བ་/སུ་ཡིང་གི་ཐོན་རིམ་ ལ་ལོ་ཅིག་གིས་ རང་སོའི་པོཔ་ཨཔ་དཀར་ཆག་ཚུ་ ཌའི་ལོག་སྦེ་ རྟགས་བཀལཝ་ལས་ དཀར་ཆག་ཚུ་གིས་ ཇ་བ་གློག་རིམ་མེདཔ་ཐལ་མི་ཚུ་ ལག་ལེན་འཐབ་བཅུག་ནིའི་དོན་ལུ་ མེ་ཊ་སི་ཊི་གིས་ ཌའི་ལོག་གནས་ས་ ལྕོགས་མིན་བཟོ་དགོ འདི་བཟུམ་གྱི་དཔེ་གཞན་ཡང་ ལེ་ཤ་ཅིག་ཡོད། གདམ་ཁ་འདི་གིས་ མེ་ཊ་སི་ཊི་ ཐབས་ལམ་ངེས་བདེན་ནང་བཙུགསཔ་ལས་ ཁྱོད་ཀྱིས་གློག་རིམ་མེདཔ་ཐལ་མི་ ལག་ལེན་འཐབ་འདོད་མེད་པ་ཅིན་ ཡུ་ཨའི་དེ་བ་དྲགཔ་ཅིག་བྱིནམ་ཨིན། དེ་འབདཝ་ད་ ལཱ་གི་ཉེ་འཁོར་ཚུ་ སྔོན་སྒྲིག་ཐོག་ལས་ ལྕོགས་ཅན་བཟོ་དགོ འཛམ་གླིང་ངོ་མ་དེ་ ས་གནས་བྱང་ཉེས་ཅིག་ཨིན་པས། ཝོརོཀ་ཨེ་རའུནཌི་ ལ་ལོ་ཅིག་ གསལ་བཀོད་ནང་ལུ་རང་ ཚད་བཟོ་བའི་ ཝོརོཀ་ཨེ་རའུནཌི་ཨིནམ་ལས་ གསལ་བཀོད་བསྒྱུར་བཅོས་མ་འབད་བ་ཅིན་ ལཱ་གི་ཉེ་འཁོར་ནང་གི་ རྐྱེན་དེ་ཉམས་བཅོས་འབད་མི་ཚུགསཔ་ཨིན།"
+
+#: ../src/metacity.schemas.in.h:64
+msgid "Switch to workspace 1"
+msgstr "ལཱ་གི་ས་སྒོ་ ༡ པ་ལུ་ སོར་བསྒྱུར་འབད།"
+
+#: ../src/metacity.schemas.in.h:65
+msgid "Switch to workspace 10"
+msgstr "ལཱ་གི་ས་སྒོ་ ༡༠ པ་ལུ་ སོར་བསྒྱུར་འབད།"
+
+#: ../src/metacity.schemas.in.h:66
+msgid "Switch to workspace 11"
+msgstr "ལཱ་གི་ས་སྒོ་ ༡༡ པ་ལུ་ སོར་བསྒྱུར་འབད།"
+
+#: ../src/metacity.schemas.in.h:67
+msgid "Switch to workspace 12"
+msgstr "ལཱ་གི་ས་སྒོ་ ༡༢ པ་ལུ་ སོར་བསྒྱུར་འབད།"
+
+#: ../src/metacity.schemas.in.h:68
+msgid "Switch to workspace 2"
+msgstr "ལཱ་གི་ས་སྒོ་ ༢ པ་ལུ་ སོར་བསྒྱུར་འབད།"
+
+#: ../src/metacity.schemas.in.h:69
+msgid "Switch to workspace 3"
+msgstr "ལཱ་གི་ས་སྒོ་ ༣ པ་ལུ་ སོར་བསྒྱུར་འབད།"
+
+#: ../src/metacity.schemas.in.h:70
+msgid "Switch to workspace 4"
+msgstr "ལཱ་གི་ས་སྒོ་ ༤ པ་ལུ་ སོར་བསྒྱུར་འབད།"
+
+#: ../src/metacity.schemas.in.h:71
+msgid "Switch to workspace 5"
+msgstr "ལཱ་གི་ས་སྒོ་ ༥ པ་ལུ་ སོར་བསྒྱུར་འབད།"
+
+#: ../src/metacity.schemas.in.h:72
+msgid "Switch to workspace 6"
+msgstr "ལཱ་གི་ས་སྒོ་ ༦ པ་ལུ་ སོར་བསྒྱུར་འབད།"
+
+#: ../src/metacity.schemas.in.h:73
+msgid "Switch to workspace 7"
+msgstr "ལཱ་གི་ས་སྒོ་ ༧ པ་ལུ་ སོར་བསྒྱུར་འབད།"
+
+#: ../src/metacity.schemas.in.h:74
+msgid "Switch to workspace 8"
+msgstr "ལཱ་གི་ས་སྒོ་ ༨ པ་ལུ་ སོར་བསྒྱུར་འབད།"
+
+#: ../src/metacity.schemas.in.h:75
+msgid "Switch to workspace 9"
+msgstr "ལཱ་གི་ས་སྒོ་ ༩ པ་ལུ་ སོར་བསྒྱུར་འབད།"
+
+#: ../src/metacity.schemas.in.h:76
+msgid "Switch to workspace above this one"
+msgstr "འདི་གི་ལྟག་གི་ ལཱ་གི་ས་སྒོ་ལུ་ སོར་བསྒྱུར་འབད།"
+
+#: ../src/metacity.schemas.in.h:77
+msgid "Switch to workspace below this one"
+msgstr "འདི་གི་འོག་གི་ ལཱ་གི་ས་སྒོ་ལུ་ སོར་བསྒྱུར་འབད།"
+
+#: ../src/metacity.schemas.in.h:78
+msgid "Switch to workspace on the left"
+msgstr "གཡོན་གྱི་ལཱ་གི་ས་སྒོ་ལུ་ སོར་བསྒྱུར་འབད།"
+
+#: ../src/metacity.schemas.in.h:79
+msgid "Switch to workspace on the right"
+msgstr "གཡས་ཀྱི་ལཱ་གི་ས་སྒོ་ལུ་ སོར་བསྒྱུར་འབད།"
+
+#: ../src/metacity.schemas.in.h:80
+msgid "System Bell is Audible"
+msgstr "རིམ་ལུགས་དྲིལ་བརྡ་དེ་ གོ་ཚུགས་པས།"
+
+#: ../src/metacity.schemas.in.h:81
+msgid "Take a screenshot"
+msgstr "གསལ་གཞིའི་པར་ཅིག་བཏབ།"
+
+#: ../src/metacity.schemas.in.h:82
+msgid "Take a screenshot of a window"
+msgstr "སྒོ་སྒྲིག་གི་ གསལ་གཞིའི་པར་ཅིག་བཏབ།"
+
+#: ../src/metacity.schemas.in.h:83
+msgid "Tells Metacity how to implement the visual indication that the system bell or another application 'bell' indicator has been rung. Currently there are two valid values, \"fullscreen\", which causes a fullscreen white-black flash, and \"frame_flash\" which causes the titlebar of the application which sent the bell signal to flash. If the application which sent the bell is unknown (as is usually the case for the default \"system beep\"), the currently focused window's titlebar is flashed."
+msgstr "མེ་ཊ་སི་ཊི་ལུ་ རིམ་ལུགས་དྲིལ་བརྡའམ་ གློག་རིམ་གཞན་གྱི་བརྡ་མཚོན་པའི་དྲིལ་བརྡ་དེ་ བསིལ་ཡོད་པའི་སྐོར་ལས་ ག་དེ་སྦེ་ ལག་ལེན་འཐབ་ནི་ཨིན་ན་ མིག་མཐོང་བརྡ་སྟོནམ་ཨིན། ད་ལྟོ་ནུས་ཅན་གྱི་བེལུསི་ གཉིས་ཡོད་མི་དེ་ཡང་ \"fullscreen\"ཟེར་མི་གིས་ གསལ་གཞི་གང་བའི་ དཀར་ནག་ཅིག་འཐོན་བཅུག་དོ་ཡོདཔ་དང་ \"frame_flash\" ཟེར་མི་གིས་ དྲིལ་བརྡའི་བརྡ་རྟགས་ རིབ་སྟོན་འབད་མི་ གློག་རིམ་གྱི་མགོ་མིང་ཕྲ་རིང་གི་དེ་ འཐོན་བཅུགཔ་ཨིན། དྲིལ་བརྡ་གཏང་མི་ གློག་རིམ་དེ་ངོ་མ་ཤེས་པ་ཅིན་ (\"system beep\") ད་ལྟོ་ཆེད་དམིགས་འབད་ཡོད་མི་ སྒོ་སྒྲིག་གི་མགོ་མིང་ཕྲ་རིང་དེ་ འཐོནམ་ཨིན།"
+
+#: ../src/metacity.schemas.in.h:84
+msgid "The /apps/metacity/global_keybindings/run_command_N keys define keybindings that correspond to these commands. Pressing the keybinding for run_command_N will execute command_N."
+msgstr "The /apps/metacity/global_keybindings/run_command_N ཟེར་མི་ལྡེ་མིག་ཚུ་གིས་ བརྡ་བཀོད་འདི་ཚུ་དང་ཆ་མཉམ་པའི་ ཀི་བཱའིན་ཌིངསི་ ངེས་འཛིན་འབདཝ་ཨིན། run_command_N ཟེར་མི་གི་ ཀི་བཱའིན་ཌིང་ ཨེབ་པའི་སྐབས་ བརྡ་བཀོད་ཨེན་ ལག་ལེན་འཐབ་ཨིན།"
+
+#: ../src/metacity.schemas.in.h:85
+msgid "The /apps/metacity/global_keybindings/run_command_screenshot key defines a keybinding which causes the command specified by this setting to be invoked."
+msgstr "The /apps/metacity/global_keybindings/run_command_screenshot ལྡེ་མིག་གིས་ གཞི་སྒྲིག་འདི་གི་བརྡ་བཀོད་ཀྱིས་ ལས་བཀོལ་གྱི་དོན་ལུ་ གསལ་བཀོད་འབད་མི་ ཀི་བཱའིན་ཌིང་ཅིག་ ངེས་འཛིན་འབདཝ་ཨིན། "
+
+#: ../src/metacity.schemas.in.h:86
+msgid "The /apps/metacity/global_keybindings/run_command_window_screenshot key defines a keybinding which causes the command specified by this setting to be invoked."
+msgstr "The /apps/metacity/global_keybindings/run_command_window_screenshot ལྡེ་མིག་གིས་ གཞི་སྒྲིག་འདི་གི་བརྡ་བཀོད་ཀྱིས་ ལས་བཀོལ་གྱི་དོན་ལུ་ གསལ་བཀོད་འབད་མི་ ཀི་བཱའིན་ཌིང་ཅིག་ ངེས་འཛིན་འབདཝ་ཨིན། "
+
+#: ../src/metacity.schemas.in.h:87
+msgid "The keybinding that runs the correspondingly-numbered command in /apps/metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "/apps/metacity/keybinding_commands ནང་ལུ་ མཉམ་པའི་ཨང་གྲངས་བཀོད་པའི་བརྡ་བཀོད་ གཡོག་བཀོལ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་  \"&lt;Control&gt;a\"  ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་  \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\"ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\"ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:88
+msgid "The keybinding that switches to the workspace above the current workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ད་ལྟོའི་ལཱ་གི་ས་སྒོའི་ལྟག་གི་ ལཱ་གི་ས་སྒོ་ལུ་ སོར་བསྒྱུར་འབད་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་  \"&lt;Control&gt;a\"ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\"བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་  \"&lt;Ctl&gt;\"  དང་  \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\"ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:89
+msgid "The keybinding that switches to the workspace below the current workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ད་ལྟོའི་ལཱ་གི་ས་སྒོའི་འོག་གི་ ལཱ་གི་ས་སྒོ་ལུ་ སོར་བསྒྱུར་འབད་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\"  ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\"དང་ \"&lt;Ctrl&gt;\"ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\"ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:90
+msgid "The keybinding that switches to the workspace on the left of the current workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ད་ལྟོའི་ལཱ་གི་ས་སྒོའི་གཡོན་གྱི་ ལཱ་གི་ས་སྒོ་ལུ་ སོར་བསྒྱུར་འབད་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\"ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\"ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\"་ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:91
+msgid "The keybinding that switches to the workspace on the right of the current workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ད་ལྟོའི་ལཱ་གི་ས་སྒོའི་གཡས་ཀྱི་ ལཱ་གི་ས་སྒོ་ལུ་ སོར་བསྒྱུར་འབད་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\"་ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:92
+msgid "The keybinding that switches to workspace 1. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ལཱ་གི་ས་སྒོ་ ༡ པ་ལུ་ སོར་བསྒྱུར་འབད་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\"  དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:93
+msgid "The keybinding that switches to workspace 10. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ལཱ་གི་ས་སྒོ་ ༡༠ པ་ལུ་ སོར་བསྒྱུར་འབད་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:94
+msgid "The keybinding that switches to workspace 11. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ལཱ་གི་ས་སྒོ་ ༡༡ པ་ལུ་ སོར་བསྒྱུར་འབད་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\"  ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:95
+msgid "The keybinding that switches to workspace 12. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ལཱ་གི་ས་སྒོ་ ༡༢ པ་ལུ་ སོར་བསྒྱུར་འབད་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་  \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:96
+msgid "The keybinding that switches to workspace 2. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ལཱ་གི་ས་སྒོ་ ༢ པ་ལུ་ སོར་བསྒྱུར་འབད་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:97
+msgid "The keybinding that switches to workspace 3. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ལཱ་གི་ས་སྒོ་ ༣ པ་ལུ་ སོར་བསྒྱུར་འབད་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:98
+msgid "The keybinding that switches to workspace 4. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ལཱ་གི་ས་སྒོ་ ༤ པ་ལུ་ སོར་བསྒྱུར་འབད་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\"  ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:99
+msgid "The keybinding that switches to workspace 5. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ལཱ་གི་ས་སྒོ་ ༥ པ་ལུ་ སོར་བསྒྱུར་འབད་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\"  ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན\"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:100
+msgid "The keybinding that switches to workspace 6. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ལཱ་གི་ས་སྒོ་ ༦ པ་ལུ་ སོར་བསྒྱུར་འབད་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\"  ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:101
+msgid "The keybinding that switches to workspace 7. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ལཱ་གི་ས་སྒོ་ ༧ པ་ལུ་ སོར་བསྒྱུར་འབད་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་  \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:102
+msgid "The keybinding that switches to workspace 8. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ལཱ་གི་ས་སྒོ་ ༨ པ་ལུ་ སོར་བསྒྱུར་འབད་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\"  དང་ \"&lt;Ctrl&gt;\"  ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:103
+msgid "The keybinding that switches to workspace 9. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ལཱ་གི་ས་སྒོ་ ༩ པ་ལུ་ སོར་བསྒྱུར་འབད་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:104
+msgid "The keybinding used to activate the window menu. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་དཀར་ཆག་ ཤུགས་ལྡན་བཟོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\"  ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:105
+msgid "The keybinding used to close a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་ཅིག་ ཁ་བསྡམ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:106
+msgid "The keybinding used to enter \"move mode\" and begin moving a window using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "\"move mode\" བཙུགས་ནི་དང་ ལྡེ་སྒྲོམ་ལག་ལེན་འཐབ་ཐོག་ལས་ སྒོ་སྒྲིག་སྤོ་བཤུད་ འགོ་བཙུགས་འབད་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་\"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:107
+msgid "The keybinding used to enter \"resize mode\" and begin resizing a window using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "\"resize mode\" བཙུགས་ནི་དང་ ལྡེ་སྒྲོམ་ལག་ལེན་འཐབ་ཐོག་ལས་ སྒོ་སྒྲིག་ཅིག་གི་ ཚད་སླར་སྒྲིག་འགོ་བཙུགས་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:108
+msgid "The keybinding used to hide all normal windows and set the focus to the desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྤྱིར་བཏང་གི་སྒོ་སྒྲིག་ཆ་མཉམ་ སྦ་བཞག་ནི་དང་ ཌེཀསི་ཊོཔ་གི་རྒྱབ་གཞི་ལུ་ ཆེད་དམིགས་འབད་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:109
+msgid "The keybinding used to maximize a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་ཅིག་སྦོམ་བཟོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:110
+msgid "The keybinding used to minimize a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་ཅིག་ཆུང་ཀུ་བཟོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:111
+msgid "The keybinding used to move a window one workspace down. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་ཅིག་ ལཱ་གི་ས་སྒོ་གཅིག་གི་ འོག་ལུ་སྤོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:112
+msgid "The keybinding used to move a window one workspace to the left. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་ཅིག་ ལཱ་གི་ས་སྒོ་གཅིག་གི་ གཡོན་ལུ་སྤོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:113
+msgid "The keybinding used to move a window one workspace to the right. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་ཅིག་ ལཱ་གི་ས་སྒོ་གཅིག་གི་ གཡས་ལུ་སྤོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:114
+msgid "The keybinding used to move a window one workspace up. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་ཅིག་ ལཱ་གི་ས་སྒོ་གཅིག་གི་ ལྟག་ལུ་སྤོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:115
+msgid "The keybinding used to move a window to workspace 1. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་ཅིག་ ལཱ་གི་ས་སྒོ་ ༡ པ་ལུ་ སྤོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:116
+msgid "The keybinding used to move a window to workspace 10. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་ཅིག་ ལཱ་གི་ས་སྒོ་ ༡༠ པ་ལུ་ སྤོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:117
+msgid "The keybinding used to move a window to workspace 11. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་ཅིག་ ལཱ་གི་ས་སྒོ་ ༡༡ པ་ལུ་ སྤོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:118
+msgid "The keybinding used to move a window to workspace 12. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་ཅིག་ ལཱ་གི་ས་སྒོ་ ༡༢ པ་ལུ་ སྤོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:119
+msgid "The keybinding used to move a window to workspace 2. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་ཅིག་ ལཱ་གི་ས་སྒོ་ ༢ པ་ལུ་ སྤོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:120
+msgid "The keybinding used to move a window to workspace 3. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་ཅིག་ ལཱ་གི་ས་སྒོ་ ༣ པ་ལུ་ སྤོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:121
+msgid "The keybinding used to move a window to workspace 4. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་ཅིག་ ལཱ་གི་ས་སྒོ་ ༤ པ་ལུ་ སྤོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:122
+msgid "The keybinding used to move a window to workspace 5. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་ཅིག་ ལཱ་གི་ས་སྒོ་ ༥ པ་ལུ་ སྤོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:123
+msgid "The keybinding used to move a window to workspace 6. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་ཅིག་ ལཱ་གི་ས་སྒོ་ ༦ པ་ལུ་ སྤོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:124
+msgid "The keybinding used to move a window to workspace 7. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་ཅིག་ ལཱ་གི་ས་སྒོ་ ༧ པ་ལུ་ སྤོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:125
+msgid "The keybinding used to move a window to workspace 8. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་ཅིག་ ལཱ་གི་ས་སྒོ་ ༨ པ་ལུ་ སྤོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:126
+msgid "The keybinding used to move a window to workspace 9. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་ཅིག་ ལཱ་གི་ས་སྒོ་ ༩ པ་ལུ་ སྤོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:127
+msgid "The keybinding used to move focus backwards between panels and the desktop, using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "པོཔ་ཨཔ་སྒོ་སྒྲིག་ཅིག་ ལག་ལེན་འཐབ་པའི་ཐོག་ལས་ པེ་ནཱལསི་དང་ ཌེཀསི་ཊོཔ་གི་བར་ན་  ཆེད་དམིགས་ རྒྱབ་བསྐྱོད་འབད་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:128
+msgid "The keybinding used to move focus backwards between panels and the desktop, without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "པོཔ་ཨཔ་སྒོ་སྒྲིག་ཅིག་མེད་པར་ པེ་ནཱལསི་དང་ ཌེཀསི་ཊོཔ་གི་བར་ན་  ཆེད་དམིགས་ རྒྱབ་བསྐྱོད་འབད་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:129
+msgid "The keybinding used to move focus backwards between windows without a popup window. Holding \"shift\" together with this binding makes the direction go forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "པོཔ་ཨཔ་སྒོ་སྒྲིག་ཅིག་མེད་པར་ སྒོ་སྒྲིག་ཚུ་གི་བར་ན་  ཆེད་དམིགས་ རྒྱབ་བསྐྱོད་འབད་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། བཱའིན་ཌིང་འདི་གཅིག་ཁར་\"shift\"འཛིན་ཏེ་བཞགཔ་ད་ ལོག་སྟེ་གདོང་བསྐྱོད་འབད་བཅུགཔ་ཨིན། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:130
+msgid "The keybinding used to move focus backwards between windows, using a popup window. Holding \"shift\" together with this binding makes the direction go forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "པོཔ་ཨཔ་སྒོ་སྒྲིག་ཅིག་ ལག་ལེན་འཐབ་པའི་ཐོག་ལས་ སྒོ་སྒྲིག་ཚུ་གི་བར་ན་  ཆེད་དམིགས་ རྒྱབ་བསྐྱོད་འབད་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། བཱའིན་ཌིང་འདི་གཅིག་ཁར་ \"shift\" འཛིན་ཏེ་བཞགཔ་ད་ ལོག་སྟེ་གདོང་བསྐྱོད་འབད་བཅུགཔ་ཨིན། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:131
+msgid "The keybinding used to move focus between panels and the desktop, using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "པོཔ་ཨཔ་སྒོ་སྒྲིག་ཅིག་ ལག་ལེན་འཐབ་སྟེ་ པེ་ནཱལསི་དང་ ཌེཀསི་ཊོཔ་གི་བར་ན་  ཆེད་དམིགས་སྤོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་  \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:132
+msgid "The keybinding used to move focus between panels and the desktop, without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "པོཔ་ཨཔ་སྒོ་སྒྲིག་ཅིག་མེད་པར་ པེ་ནཱལསི་དང་ ཌེཀསི་ཊོཔ་གི་བར་ན་  ཆེད་དམིགས་སྤོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:133
+msgid "The keybinding used to move focus between windows without a popup window. (Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this binding reverses the direction of movement. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "པོཔ་ཨཔ་སྒོ་སྒྲིག་ཅིག་མེད་པར་ སྒོ་སྒྲིག་གི་བར་ན་  ཆེད་དམིགས་སྤོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། (ལམ་ལུགས་ལྟར་དུ་ &lt;Alt&gt;Escape) བཱའིན་ཌིང་འདི་ ལག་ལེན་འཐབ་པའི་སྐབས་ \"shift\" ལྡེ་མིག་འཛིན་བཞགཔ་ད་ བསྒུལ་བསྐྱོད་ཀྱི་ལམ་ཕྱོགས་ རྒྱབ་ལོག་འདབཝ་ཨིན་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:134
+msgid "The keybinding used to move focus between windows, using a popup window. (Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this binding reverses the direction of movement. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "པོཔ་ཨཔ་སྒོ་སྒྲིག་ཅིག་ ལག་ལེན་འཐབ་ཐོག་ལས་ སྒོ་སྒྲིག་གི་བར་ན་  ཆེད་དམིགས་སྤོ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། (ལམ་ལུགས་ལྟར་དུ་ &lt;Alt&gt;Escape་) བཱའིན་ཌིང་འདི་ ལག་ལེན་འཐབ་པའི་སྐབས་ \"shift\" ལྡེ་མིག་འཛིན་བཞགཔ་ད་ བསྒུལ་བསྐྱོད་ཀྱི་ལམ་ཕྱོགས་ རྒྱབ་ལོག་འདབཝ་ཨིན་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:135
+msgid "The keybinding used to toggle always on top. A window that is always on top will always be visible over other overlapping windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ཨ་རྟག་རང་ མགོ་ལུ་སོར་སྟོན་འབད་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། ཨ་རྟག་རང་མགོ་ལུ་ཡོད་མི་ སྒོ་སྒྲིག་དེ་ གཅིག་གི་ལྟག་ལུ་ གཅིག་བརྩེགས་ཏེ་ཡོད་པའི་ སྒོ་སྒྲིག་ཆ་མཉམ་གྱི་ལྟག་ལུ་ མཐོང་ཚུགསཔ་ཨིན། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:136
+msgid "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "གསལ་གཞི་གངམ་གི་ཐབས་ལམ་ སོར་སྟོན་འབད་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:137
+msgid "The keybinding used to toggle maximization. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྦོམ་བཟོའི་སོར་སྟོན་འབད་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:138
+msgid "The keybinding used to toggle shaded/unshaded state. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "གྲིབ་ཅན་/གྲིབ་མེད་གནས་ལུགས་ སོར་སྟོན་འབད་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:139
+msgid "The keybinding used to toggle whether the window is on all workspaces or just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་དེ་ ལཱ་གི་ས་སྒོ་ཆ་མཉམ་ལུ་འོང་དགོཔ་ཨིན་ན་ ས་སྒོ་གཅིག་ལུ་འོང་དགོཔ་ཨིན་ན་ སོར་སྟོན་འབད་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:140
+msgid "The keybinding used to unmaximize a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་སྦོམ་བཟོ་བཤོལ་ནི་ལུ་ ལག་ལེན་འཐབ་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:141
+msgid "The keybinding which display's the panel's \"Run Application\" dialog box. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "པེ་ནཱལ་གྱི་ \"Run Application\" ཟེར་མི་ཌའི་ལོག་བོགསི་ བཀྲམ་སྟོནའ་བད་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:142
+msgid "The keybinding which invokes a terminal. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ཊར་མི་ནཱལ་ཅིག་ ལས་བཀོལ་འབད་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:143
+msgid "The keybinding which invokes the panel's screenshot utility to take a screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "སྒོ་སྒྲིག་གི་པར་ཅིག་བཏབ་ནིའི་དོན་ལུ་ པེ་ནཱལ་གྱི་གསལ་གཞི་པར་གྱི་སྤྱོད་ཆས་ ལས་བཀོལ་འབད་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:144
+msgid "The keybinding which invokes the panel's screenshot utility. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "པེ་ནཱལ་གྱི་གསལ་གཞི་པར་གྱི་སྤྱོད་ཆས་ ལས་བཀོལ་འབད་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:145
+msgid "The keybinding which shows the panel's main menu. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "པེ་ནཱལ་གྱི་ དཀར་ཆག་གཙོ་བོ་དེ་སྟོན་མི་ ཀི་བཱའིན་ཌིང་། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:146
+msgid "The name of a workspace."
+msgstr "ལཱ་གི་ས་སྒོ་ཅིག་གི་མིང་།"
+
+#: ../src/metacity.schemas.in.h:147
+msgid "The screenshot command"
+msgstr "གསལ་གཞིའི་པར་བཏབ་བརྡ་བཀོད།"
+
+#: ../src/metacity.schemas.in.h:148
+msgid "The theme determines the appearance of window borders, titlebar, and so forth."
+msgstr "བརྗོད་དོན་གྱིས་ སྒོ་སྒྲིག་གི་མཐའ་མཚམས་དང་ མགོ་མིང་ཕྲ་རིང་ལ་སོགས་པའི་ འབྱུང་སྣང་ཐག་བཅདཔ་ཨིན་།"
+
+#: ../src/metacity.schemas.in.h:149
+msgid "The time delay before raising a window if auto_raise is set to true. The delay is given in thousandths of a second."
+msgstr "རང་བཞིན་ཡར་སེང་དེ་ བདེན་པ་གུ་གཞི་སྒྲིག་འབད་བ་ཅིན་ སྒོ་སྒྲིག་ཅིག་ ཡར་སེང་མ་འབད་བའི་ཧེ་མར་ ཕྱིར་འགྱངས་ཀྱི་དུས་ཚོད། ཕྱིར་འགྱངས་དེ་ སྐར་ཆའི་སྟོང་ཆ་ནང་ བྱིན་ཏེ་ཡོད།(_r"
+
+#: ../src/metacity.schemas.in.h:150
+msgid "The window focus mode indicates how windows are activated. It has three possible values; \"click\" means windows must be clicked in order to focus them, \"sloppy\" means windows are focused when the mouse enters the window, and \"mouse\" means windows are focused when the mouse enters the window and unfocused when the mouse leaves the window."
+msgstr "སྒོ་སྒྲིག་ཆེད་དམིགས་ཐབས་ལམ་དེ་གིས་ སྒོ་སྒྲིག་དེ་ཚུ་ ཤུགས་ལྡན་བཟོ་ཐངས་ཀྱི་ བརྡ་སྟོནམ་ཨིན། དེ་ལུ་སྲིད་པའི་བེ་ལུསི་གསུམ་ཡོད་མི་ཚུ་ \"click\" ཟེར་མི་དེ་ སྒོ་སྒྲིག་ཚུ་ལུ་ ཆེད་དམིགས་འབད་ནི་ལུ་ སྒོ་སྒྲིག་ཚུ་ལུ་ ཨེབ་གཏང་འབད་དགོཔ་ཨིནམ་ད་ \"sloppy\"  ཟེར་མི་དེ་ མཱའུསི་དེ་ སྒོ་སྒྲིག་ནང་འཛུལཝ་ད་ སྒོ་སྒྲིག་ཚུ་ ཆེད་དམིགས་འབདཝ་ཨིནམ་ད་ \"mouse\" ཟེར་མི་དེ་ མཱའུསི་དེ་སྒོ་སྒྲིག་ནང་འཛུལཝ་ད་ སྒོ་སྒྲིག་ཚུ་ ཆེད་དམིགས་འབད་ནི་དང་ མཱའུསི་ནང་ལས་འཐོན་འགྱོཝ་ད་ ཆེད་དམིགས་བཤོལཝ་ཨིན།"
+
+#: ../src/metacity.schemas.in.h:151
+msgid "The window screenshot command"
+msgstr "སྒོ་སྒྲིག་གི་ གསལ་གཞིའི་པར་བཏབ་ཀྱི་བརྡ་བཀོད།"
+
+#: ../src/metacity.schemas.in.h:152
+msgid "This keybinding changes whether a window is above or below other windows. If the window is covered by another window, it raises the window above other windows. If the window is already fully visible, it lowers the window below other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ཀི་བཱའིན་ཌིང་འདི་གིས་ སྒོ་སྒྲིག་ཅིག་ སྒོ་སྒྲིག་གཞན་ཚུ་གི་ ལྟག་དང་འོག་ལུ་བསྒྱུར་བཅོས་འབདཝ་ཨིན། སྒོ་སྒྲིག་འདི་ སྒོ་སྒྲིག་གཞན་ཅིག་གིས་ སྤུབས་ཏེ་ཡོད་པ་ཅིན་ འདི་གིས་སྒོ་སྒྲིག་དེ་ གཞན་ཚུ་གི་ལྟག་ལུ་ཡར་སེང་འབདཝ་ཨིན། གལ་སྲིད་སྒོ་སྒྲིག་དེ་ ཧེ་མ་ལས་ མཐོངམ་སྦེ་ཡོད་པ་ཅིན་ གཞན་གྱི་འོག་ལུ་ མར་ཕབ་འབདཝ་ཨིན། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:153
+msgid "This keybinding lowers a window below other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ཀི་བཱའིན་ཌིང་འདི་གིས་ སྒོ་སྒྲིག་ཅིག་ སྒོ་སྒྲིག་གཞན་ཚུ་གི་ འོག་ལུ་མར་ཕབ་འབདཝ་ཨིན། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:154
+msgid "This keybinding raises the window above other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ཀི་བཱའིན་ཌིང་འདི་གིས་ སྒོ་སྒྲིག་ཅིག་ སྒོ་སྒྲིག་གཞན་ཚུ་གི་ ལྟག་ལུ་ཡར་སེང་འབདཝ་ཨིན། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:155
+msgid "This keybinding resizes a window to fill available horizontal space. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ཀི་བཱའིན་ཌིང་འདི་གིས་ ཐད་སྙོམས་བར་སྟོང་ནང་ གང་ནིའི་དོན་ལུ་ སྒོ་སྒྲིག་ཅིག་ སླར་ཚད་སྒྲིག་འབདཝ་ཨིན། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:156
+msgid "This keybinding resizes a window to fill available vertical space. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "ཀི་བཱའིན་ཌིང་འདི་གིས་ ཀེར་ཕྲང་བར་སྟོང་ནང་ གང་ནིའི་དོན་ལུ་ སྒོ་སྒྲིག་ཅིག་ སླར་ཚད་སྒྲིག་འབདཝ་ཨིན། རྩ་སྒྲིག་དེ་ \"&lt;Control&gt;a\" ཡང་ན་ \"&lt;Shift&gt;&lt;Alt&gt;F1\" བཟུམ་སྦེ་མཐོངམ་ཨིན། མིང་དཔྱད་འབད་མི་དེ་ སྟབས་བདེ་དྲགས་སྦེ་ ཆུང་ཡིག་གམ་ཆེ་ཡིག་དང་ བསྡུ་ཡིག་དཔེར་ན་ \"&lt;Ctl&gt;\" དང་ \"&lt;Ctrl&gt;\" ཚུ་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་གདམ་ཁ་འདི་ དམིགས་བསལ་ཡིག་རྒྱུན་ \"disabled\" ལུ་ གཞི་སྒྲིག་འབད་བ་ཅིན་ བྱ་བ་འདི་གི་དོན་ལུ་ ཀི་བཱའིན་ཌིང་མི་འོང་།"
+
+#: ../src/metacity.schemas.in.h:157
+msgid "This option determines the effects of double-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, and 'toggle_maximize' which will maximize/unmaximize the window."
+msgstr "གདམ་ཁ་འདི་གིས་ མགོ་མིང་ཕྲ་རིང་གུ་ ཨེབ་གཏང་ཐེངས་གཉིས་འབད་བའི་ ནུས་ཤུགས་ཐག་བཅདཔ་ཨིན། ད་ལྟོའི་ནུས་ལྡན་གདམ་ཁ་ཚུ་ ‘སོར་སྟོན་-ནག་གྲིབ’ ཟེར་མི་གིས་ སྒོ་སྒྲིག་གྲིབ་ཅན་བཟོ་ནི་/གྲིབ་བཤོལ་འབདཝ་ཨིན། ‘སོར་སྟོན་-སྦོམ་བཟོ་ ཟེར་མི་གིས་ སྒོ་སྒྲིག་སྦོམ་བཟོ་ནི་/སྦོམ་བཟོ་ནི་བཤོལཝ་ཨིན།"
+
+#: ../src/metacity.schemas.in.h:158
+msgid "Toggle always on top state"
+msgstr "ཨ་རྟག་རང་ མགོའི་གནས་ལུགས་ལུ་ སོར་སྟོན་འབད།"
+
+#: ../src/metacity.schemas.in.h:159
+msgid "Toggle fullscreen mode"
+msgstr "གསལ་གཞི་གངམ་གི་ཐབས་ལམ་ སོར་སྟོན་འབད།"
+
+#: ../src/metacity.schemas.in.h:160
+msgid "Toggle maximization state"
+msgstr "སྦོམ་བཟོའི་གནས་ལུགས་ སོར་སྟོན་འབད།"
+
+#: ../src/metacity.schemas.in.h:161
+msgid "Toggle shaded state"
+msgstr "གྲིབ་ཅན་གྱི་གནས་ལུགས་ སོར་སྟོན་འབད།"
+
+#: ../src/metacity.schemas.in.h:162
+msgid "Toggle window on all workspaces"
+msgstr "ལཱ་གི་ས་སྒོ་ཆ་མཉམ་ནང་ སྒོ་སྒྲིག་སོར་སྟོན་འབད།"
+
+#: ../src/metacity.schemas.in.h:163
+msgid "Turns on a visual indication when an application or the system issues a 'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy environments, or when 'audible bell' is off."
+msgstr "རྣ་སྐྱོན་ཡོད་མི་དང་ འུར་སྒྲ་ཅན་གྱི་མཐའ་འཁོར་ ཡང་ན་ རྣར་ཉན་དྲིལ་བརྡ་དེ་ ཨོཕ་བརྐྱབས་ཏེ་ཡོད་པའི་སྐབས་ ཕན་པའི་དོན་ལུ་ གློག་རིམ་མམ་ རིམ་ལུགས་ཅིག་གིས་ དྲིལ་བརྡའམ་ བརྡ་སྐད་བྱིན་པའི་སྐབས་ མིག་མཐོང་གི་བརྡ་དོན་ཅིག་གུ་འགྱུརཝ་ཨིན།"
+
+#: ../src/metacity.schemas.in.h:164
+msgid "Unmaximize window"
+msgstr "སྒོ་སྒྲིག་སྦོམ་བཟོ་ནི་བཤོལ།"
+
+#: ../src/metacity.schemas.in.h:165
+msgid "Use standard system font in window titles"
+msgstr "སྒོ་སྒྲིག་གི་མགོ་མིང་ཚུ་ནང་ ཚད་ལྡན་རིམ་ལུགས་ཀྱི་ཡིག་གཟུགས་ ལག་ལེན་འཐབ།"
+
+#: ../src/metacity.schemas.in.h:166
+msgid "Visual Bell Type"
+msgstr "མིག་མཐོང་དྲིལ་བརྡའི་དབྱེ་བ།"
+
+#: ../src/metacity.schemas.in.h:167
+msgid "Window focus mode"
+msgstr "སྒོ་སྒྲིག་ཆེད་དམིགས་ཐབས་ལམ།"
+
+#: ../src/metacity.schemas.in.h:168
+msgid "Window title font"
+msgstr "སྒོ་སྒྲིག་གི་མགོ་མིང་ཡིག་གཟུགས།"
+
+#: ../src/prefs.c:528
+#: ../src/prefs.c:544
+#: ../src/prefs.c:560
+#: ../src/prefs.c:576
+#: ../src/prefs.c:592
+#: ../src/prefs.c:612
+#: ../src/prefs.c:628
+#: ../src/prefs.c:644
+#: ../src/prefs.c:660
+#: ../src/prefs.c:676
+#: ../src/prefs.c:692
+#: ../src/prefs.c:708
+#: ../src/prefs.c:724
+#: ../src/prefs.c:741
+#: ../src/prefs.c:757
+#: ../src/prefs.c:773
+#: ../src/prefs.c:789
+#: ../src/prefs.c:805
+#: ../src/prefs.c:820
+#: ../src/prefs.c:835
+#: ../src/prefs.c:850
+#: ../src/prefs.c:866
+#: ../src/prefs.c:882
+#: ../src/prefs.c:898
+#, c-format
+msgid "GConf key \"%s\" is set to an invalid type\n"
+msgstr "ཇི་ཀཱོནཕ་ལྡེ་མིག་\"%s\" དེ་ ནུས་མེད་དབྱེ་བ་ཅིག་ལུ་ གཞི་སྒྲིག་འབད་ནུག \n"
+
+#: ../src/prefs.c:943
+#, c-format
+msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
+msgstr "རིམ་སྒྲིག་གནད་སྡུད་གཞི་རྟེན་ནང་ཡོད་མི་\"%s\" དེ་ མཱའུསི་ཨེབ་རྟ་ ལེགས་བཅོས་འབད་མིའི་དོན་ལུ་ ནུས་ལྡན་གྱི་བེ་ལུ་ཅིག་མིན་པས།\n"
+
+#: ../src/prefs.c:967
+#: ../src/prefs.c:1428
+#, c-format
+msgid "GConf key '%s' is set to an invalid value\n"
+msgstr "ཇི་ཀཱོནཕ་ལྡེ་མིག་\"%s\" དེ་ ནུས་མེད་བེ་ལུ་ཅིག་ལུ་ གཞི་སྒྲིག་འབད་ནུག \n"
+
+#: ../src/prefs.c:1145
+#, c-format
+msgid "Could not parse font description \"%s\" from GConf key %s\n"
+msgstr "ཇི་ཀཱོནཕ་ལྡེ་མིག་%sནང་ལས་ ཡིག་གཟུགས་འགྲེལ་བཤད་\"%s\" ལུ་ མིང་དཔྱད་འབད་མི་ཚུགས་པས། \n"
+
+#: ../src/prefs.c:1330
+#, c-format
+msgid "%d stored in GConf key %s is not a reasonable number of workspaces, current maximum is %d\n"
+msgstr "%d ཇི་ཀཱོནཕི་ལྡེ་མིག་ %s ནང་བསགས་ཏེ་ཡོད་མི་དེ་ འོས་ལྡན་ལཱ་གི་ས་སྒོའི་གྲངས་ཅིག་མིན་པས། ད་ལྟོའི་མང་མཐའ་དེ་ %dཨིན། \n"
+
+#: ../src/prefs.c:1390
+msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
+msgstr "རྒྱུན་ཆད་གློག་རིམ་ཚུ་གི་དོན་ལུ་ ལཱ་གི་ཉེ་འཁོར་ ལྕོགས་མིན་བཟོ་ཡི། གློག་རིམ་ལ་ལོ་ཅིག་གིས་ ཚུལ་ལྡན་སྦེ་ ལཱ་འབད་མི་བཏུབ་འོང་།\n"
+
+#: ../src/prefs.c:1455
+#, c-format
+msgid "%d stored in GConf key %s is out of range 0 to %d\n"
+msgstr "%d ཇི་ཀཱོནཕི་ལྡེ་མིག་ %s ནང་བསགས་ཏེ་ཡོད་མི་དེ་ ཁྱབ་ཚད་ ༠ ལས་ %d གི་ཕྱི་ཁར་ཨིན་པས།\n"
+
+#: ../src/prefs.c:1589
+#, c-format
+msgid "Error setting number of workspaces to %d: %s\n"
+msgstr "ལཱ་གི་ས་སྒོའི་གྲངས་%d: %sལུ་ གཞི་སྒྲིག་འབད་ནི་ལུ་འཛོལ་བ། \n"
+
+#: ../src/prefs.c:1833
+#, c-format
+msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
+msgstr "རིམ་སྒྲིག་གནད་སྡུད་ནང་ཐོབ་མི་\"%s\" དེ་ ཀི་བཱའིན་ཌིང་\"%s\" གི་དོན་ལུ་ ནུས་ལྡན་བེ་ལུ་ཅིག་མིན་པས།\n"
+
+#: ../src/prefs.c:2187
+#, c-format
+msgid "Error setting name for workspace %d to \"%s\": %s\n"
+msgstr "ལཱ་གི་ས་སྒོ་%d ལས་\"%s\": %sལུ་ གཞི་སྒྲིག་འབད་ནི་ལུ་འཛོལ་བ། \n"
+
+#: ../src/resizepopup.c:126
+#, c-format
+msgid "%d x %d"
+msgstr "%d x %d"
+
+#: ../src/screen.c:408
+#, c-format
+msgid "Screen %d on display '%s' is invalid\n"
+msgstr "གསལ་གཞི་%d གུ་ བཀྲམ་སྟོན་འབད་མི་'%s' དེ་ ནུས་མེད་ཨིན་པས།\n"
+
+#: ../src/screen.c:424
+#, c-format
+msgid "Screen %d on display \"%s\" already has a window manager; try using the --replace option to replace the current window manager.\n"
+msgstr "གསལ་གཞི་%d གུ་ བཀྲམ་སྟོན་འབད་མི་\"%s\" དེ་ལུ་ ཧེ་མ་ལས་རང་ སྒོ་སྒྲིག་འཛིན་སྐྱོང་པ་ཅིག་འདུག --ཚབ་བཙུགས་གདམ་ཁ་དེ་ ལག་ལེན་འཐབ་སྟེ་ ད་ལྟོའི་སྒོ་སྒྲིག་འཛིན་སྐྱོང་པ་དེ་གི་ ཚབ་བཙུགས། \n"
+
+#: ../src/screen.c:448
+#, c-format
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr "གསལ་གཞི་%d གུ་ བཀྲམ་སྟོན་འབད་མི་\"%s\" དེ་ལུ་ སྒོ་སྒྲིག་འཛིན་སྐྱོང་པའི་སེལ་འཐུ་ འཐོབ་མ་ཚུགས།\n"
+
+#: ../src/screen.c:506
+#, c-format
+msgid "Screen %d on display \"%s\" already has a window manager\n"
+msgstr "གསལ་གཞི་%d གུ་ བཀྲམ་སྟོན་འབད་མི་ \"%s\" དེ་ལུ་ ཧེ་མ་ལས་རང་ སྒོ་སྒྲིག་འཛིན་སྐྱོང་པ་ཅིག་འདུག\n"
+
+#: ../src/screen.c:714
+#, c-format
+msgid "Could not release screen %d on display \"%s\"\n"
+msgstr "གསལ་གཞི་%d གུ་ བཀྲམ་སྟོན་འབད་མི་ \"%s\" དེ་ འཛིན་གྲོལ་འབད་མ་ཚུགས།\n"
+
+#: ../src/session.c:884
+#: ../src/session.c:891
+#, c-format
+msgid "Could not create directory '%s': %s\n"
+msgstr "སྣོད་ཐོ་ '%s': %s གསར་བསྐྲུན་འབད་མ་ཚུགས། \n"
+
+#: ../src/session.c:901
+#, c-format
+msgid "Could not open session file '%s' for writing: %s\n"
+msgstr ": %sའབྲི་ནིའི་དོན་ལུ་ ལཱ་ཡུན་ཡིག་སྣོད་'%s' ཁ་ཕྱེ་མ་ཚུགས། \n"
+
+#: ../src/session.c:1053
+#, c-format
+msgid "Error writing session file '%s': %s\n"
+msgstr "ལཱ་ཡུན་ཡིག་སྣོད་ '%s': %s འབྲི་ནི་ལུ་འཛོལ་བ། \n"
+
+#: ../src/session.c:1058
+#, c-format
+msgid "Error closing session file '%s': %s\n"
+msgstr "ལཱ་ཡུན་ཡིག་སྣོད་ '%s': %sཁ་བསྡམ་ནི་ལུ་འཛོལ་བ། \n"
+
+#: ../src/session.c:1133
+#, c-format
+msgid "Failed to read saved session file %s: %s\n"
+msgstr "བསྲུངས་བཞག་མི་ ལཱ་ཡུན་ཡིག་སྣོད་%s: %s ལྷག་མ་ཚུགས། \n"
+
+#: ../src/session.c:1168
+#, c-format
+msgid "Failed to parse saved session file: %s\n"
+msgstr "བསྲུངས་བཞག་མི་ ལཱ་ཡུན་ཡིག་སྣོད་:%s མིང་དཔྱད་འབད་མ་ཚུགས། \n"
+
+#: ../src/session.c:1217
+msgid "<metacity_session> attribute seen but we already have the session ID"
+msgstr "<metacity_session> ཁྱད་ཆོས་མཐོང་ཅི། དེ་འབདཝ་ད་ ང་བཅས་ལུ་ ལཱ་ཡུན་ཨའི་ཌི་ ཧེ་མ་ལས་རང་ཡོད།(_s"
+
+#: ../src/session.c:1230
+#, c-format
+msgid "Unknown attribute %s on <metacity_session> element"
+msgstr " <metacity_session> ཆ་ཤས་གུ་ ངོ་མ་ཤེས་པའི་ཁྱད་ཆོས་%sའདུག(_s"
+
+#: ../src/session.c:1247
+msgid "nested <window> tag"
+msgstr "ནེསི་ཊེཌི་<window>ངོ་རྟགས།"
+
+#: ../src/session.c:1305
+#: ../src/session.c:1337
+#, c-format
+msgid "Unknown attribute %s on <window> element"
+msgstr "<window>གི་ཆ་ཤས་གུ་ མ་ཤེས་པའི་ཁྱད་ཆོས་ %s འདུག"
+
+#: ../src/session.c:1409
+#, c-format
+msgid "Unknown attribute %s on <maximized> element"
+msgstr "<maximized> ཆ་ཤས་གུ་ ངོ་མ་ཤེས་པའི་ཁྱད་ཆོས་ %s འདུག"
+
+#: ../src/session.c:1469
+#, c-format
+msgid "Unknown attribute %s on <geometry> element"
+msgstr "<geometry> ཆ་ཤས་གུ་ ངོ་མ་ཤེས་པའི་ཁྱད་ཆོས་ %s འདུག"
+
+#: ../src/session.c:1489
+#, c-format
+msgid "Unknown element %s"
+msgstr "ངོ་མ་ཤེས་པའི་ཆ་ཤས་ %s "
+
+#: ../src/session.c:1961
+#, c-format
+msgid "Error launching metacity-dialog to warn about apps that don't support session management: %s\n"
+msgstr "ལཱ་ཡུན་འཛིན་སྐྱོང་%sལུ་ རྒྱབ་སྐྱོར་མེད་མི་ གློག་རིམ་སྐོར་ལས་ ཉེན་བརྡ་འབད་ནིའི་ མེ་ཊ་སི་ཊི་ཌའི་ལོག་ གསར་བཙུགས་འབད་ནི་ལུ་འཛོལ་བ། \n"
+
+#: ../src/theme-parser.c:224
+#: ../src/theme-parser.c:242
+#, c-format
+msgid "Line %d character %d: %s"
+msgstr "གྱལ་རིམ་%dཡིག་འབྲུ་%d: %s"
+
+#: ../src/theme-parser.c:396
+#, c-format
+msgid "Attribute \"%s\" repeated twice on the same <%s> element"
+msgstr " ཁྱད་ཆོས་\"%s\" དེ་ ཆ་ཤས་ཅོག་གཅིགཔ་<%s> ལུ་ ཐེངས་གཉིས་ ཡང་བསྐྱར་འབད་ནུག"
+
+#: ../src/theme-parser.c:414
+#: ../src/theme-parser.c:439
+#, c-format
+msgid "Attribute \"%s\" is invalid on <%s> element in this context"
+msgstr "ཁྱད་ཆོས་\"%s\" དེ་ སྐབས་འབབ་འདི་ལུ་ ཆ་ཤས་<%s> ལུ་  ནུས་མེད་ཨིན་པས།"
+
+#: ../src/theme-parser.c:485
+#, c-format
+msgid "Integer %ld must be positive"
+msgstr "ཧྲིལ་ཨང་%ld དེ་ ཡོད་ཆ་ཨིན་དགོ"
+
+#: ../src/theme-parser.c:493
+#, c-format
+msgid "Integer %ld is too large, current max is %d"
+msgstr "ཧྲིལ་ཨང་%ld དེ་ སྦོམ་དྲགས་པས། ད་ལྟོའི་མང་མཐའ་དེ་%dཨིན།"
+
+#: ../src/theme-parser.c:521
+#: ../src/theme-parser.c:602
+#: ../src/theme-parser.c:626
+#, c-format
+msgid "Could not parse \"%s\" as a floating point number"
+msgstr "\"%s\" དེ་ ལྡིང་ཚད་ཨང་གྲངས་བཟུམ་ཅིག་སྦེ་ མིང་དཔྱད་འབད་མ་ཚུགས།"
+
+#: ../src/theme-parser.c:552
+#, c-format
+msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
+msgstr "བུ་ལིན་བེ་ལུ་དེ་ \"true\" ཡང་ན་ \"false\" ཟེར་འོང་དགོ \"%s\" མེན།"
+
+#: ../src/theme-parser.c:572
+#, c-format
+msgid "Angle must be between 0.0 and 360.0, was %g\n"
+msgstr "ཟུར་ཁུག་དེ་ ༠.༠ དང་ ༣༦༠.༠ གི་བར་ན་འོང་དགོ་ དེ་འབདཝ་ད་%gཨིན་པས། \n"
+
+#: ../src/theme-parser.c:638
+#, c-format
+msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
+msgstr "ཨཱལ་ཕ་དེ་ ༠.༠ (མ་མཐོངམ་) དང་ ༡.༠ (རྩ་བ་ལས་སྒྲིབ་ཅན་) གི་བར་ན་འོང་དགོ་ དེ་འབདཝ་ད་%gཨིན་པས། \n"
+
+#: ../src/theme-parser.c:684
+#, c-format
+msgid "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,large,x-large,xx-large)\n"
+msgstr "མགོ་མིང་ཆ་ཚད་\"%s\"ནུས་མེད་ཨིན་པས། (ཧ་ཅང་ཆུང་ཀུ་,ཆུང་སུ་ ཆུང་ཀུ་, བར་མ་ སྦོམ་, སྦོམ་སུ་, ཧ་ཅང་སྦོམ་) འོང་དགོ \n"
+
+#: ../src/theme-parser.c:729
+#: ../src/theme-parser.c:737
+#: ../src/theme-parser.c:807
+#: ../src/theme-parser.c:897
+#: ../src/theme-parser.c:935
+#: ../src/theme-parser.c:1012
+#: ../src/theme-parser.c:1062
+#: ../src/theme-parser.c:1070
+#: ../src/theme-parser.c:1126
+#: ../src/theme-parser.c:1134
+#: ../src/theme-parser.c:2936
+#: ../src/theme-parser.c:3025
+#: ../src/theme-parser.c:3032
+#: ../src/theme-parser.c:3039
+#, c-format
+msgid "No \"%s\" attribute on <%s> element"
+msgstr "ཁྱད་ཆོས་\"%s\"མིན་འདུག་ ཆ་ཤས་<%s>གུ"
+
+#: ../src/theme-parser.c:837
+#: ../src/theme-parser.c:905
+#: ../src/theme-parser.c:943
+#: ../src/theme-parser.c:1020
+#, c-format
+msgid "<%s> name \"%s\" used a second time"
+msgstr "མིང་<%s> གིས་\"%s\" ཐེངས་གཉིས་པ་ ལག་ལེན་འཐབ་ནུག"
+
+#: ../src/theme-parser.c:849
+#: ../src/theme-parser.c:955
+#: ../src/theme-parser.c:1032
+#, c-format
+msgid "<%s> parent \"%s\" has not been defined"
+msgstr "རྩ་ལག་<%s> གིས་\"%s\" ངེས་འཛིན་མ་འབད་བས།"
+
+#: ../src/theme-parser.c:968
+#, c-format
+msgid "<%s> geometry \"%s\" has not been defined"
+msgstr "འཇལ་རྩིས་<%s> གིས་\"%s\" ངེས་འཛིན་མ་འབད་བས།"
+
+#: ../src/theme-parser.c:981
+#, c-format
+msgid "<%s> must specify either a geometry or a parent that has a geometry"
+msgstr "<%s> གིས་ འཇལ་རྩིས་ཅིག་གམ་ འཇལ་རྩིས་ཡོད་པའི་ རྩ་ལག་ཅིག་ གསལ་བཀོད་འབད་དགོ"
+
+#: ../src/theme-parser.c:1080
+#, c-format
+msgid "Unknown type \"%s\" on <%s> element"
+msgstr "ངོ་མ་ཤེས་པའི་དབྱེ་བ་\"%s\" ཆ་ཤས་<%s> གུ"
+
+#: ../src/theme-parser.c:1091
+#, c-format
+msgid "Unknown style_set \"%s\" on <%s> element"
+msgstr "ངོ་མ་ཤེས་པའི་བཟོ་རྣམ་གཞི་སྒྲིག་\"%s\" འདུག་ ཆ་ཤས་<%s> གུ(_s)"
+
+#: ../src/theme-parser.c:1099
+#, c-format
+msgid "Window type \"%s\" has already been assigned a style set"
+msgstr "སྒོ་སྒྲིག་དབྱེ་བ་\"%s\" ལུ་ ཧེ་མ་ལས་རང་ བཟོ་རྣམ་གཞི་སྒྲིག་ཅིག་ འགན་སྤྲོད་འབད་དེ་འདུག"
+
+#: ../src/theme-parser.c:1143
+#, c-format
+msgid "Unknown function \"%s\" for menu icon"
+msgstr "དཀར་ཆག་ངོས་དཔར་དོན་ལུ་ ངོ་མ་ཤེས་པའི་བྱ་ལས་\"%s\" འདུག"
+
+#: ../src/theme-parser.c:1152
+#, c-format
+msgid "Unknown state \"%s\" for menu icon"
+msgstr "དཀར་ཆག་ངོས་དཔར་དོན་ལུ་ ངོ་མ་ཤེས་པའི་གནས་ལུགས་\"%s\" འདུག"
+
+#: ../src/theme-parser.c:1160
+#, c-format
+msgid "Theme already has a menu icon for function %s state %s"
+msgstr "བྱ་ལས་%sགནས་ལུགས་%s གི་དོན་ལས་ བརྗོད་དོན་ལུ་ དཀར་ཆག་ངོས་དཔར་ཅིག་ ཧེ་མ་ལས་རང་འདུག"
+
+#: ../src/theme-parser.c:1177
+#: ../src/theme-parser.c:3244
+#: ../src/theme-parser.c:3323
+#, c-format
+msgid "No <draw_ops> with the name \"%s\" has been defined"
+msgstr "མིང་\"%s\" དང་གཅིག་ཁར་ <draw_ops> ངེས་འཛིན་མ་འབད་བས།"
+
+#: ../src/theme-parser.c:1192
+#: ../src/theme-parser.c:1256
+#: ../src/theme-parser.c:1545
+#: ../src/theme-parser.c:3124
+#: ../src/theme-parser.c:3178
+#: ../src/theme-parser.c:3338
+#: ../src/theme-parser.c:3515
+#: ../src/theme-parser.c:3553
+#: ../src/theme-parser.c:3591
+#: ../src/theme-parser.c:3629
+#, c-format
+msgid "Element <%s> is not allowed below <%s>"
+msgstr "ཆ་ཤས་<%s> དེ་<%s> གི་འོག་ལུ་མི་ཆོག"
+
+#: ../src/theme-parser.c:1282
+#: ../src/theme-parser.c:1369
+#: ../src/theme-parser.c:1439
+#, c-format
+msgid "No \"name\" attribute on element <%s>"
+msgstr "\"name\"  གི་ཁྱད་ཆོས་མིན་འདུག་ ཆ་ཤས་<%s>གུ"
+
+#: ../src/theme-parser.c:1289
+#: ../src/theme-parser.c:1376
+#, c-format
+msgid "No \"value\" attribute on element <%s>"
+msgstr "\"value\" གི་ཁྱད་ཆོས་མིན་འདུག་ ཆ་ཤས་<%s>གུ"
+
+#: ../src/theme-parser.c:1320
+#: ../src/theme-parser.c:1334
+#: ../src/theme-parser.c:1393
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgstr "ཨེབ་རྟ་ཚུ་གི་དོན་ལུ་ རྒྱ་ཚད་/མཐོ་ཚད་དང་ རྣམ་པའི་དཔྱ་ཚད་ཀྱི་ ཨེབ་རྟ་གཉིས་ཆ་རང་ གསལ་བཀོད་འབད་མི་ཚུགས་པས།"
+
+#: ../src/theme-parser.c:1343
+#, c-format
+msgid "Distance \"%s\" is unknown"
+msgstr "རྒྱང་ཚད་\"%s\" ངོ་མི་ཤེས་པས།"
+
+#: ../src/theme-parser.c:1402
+#, c-format
+msgid "Aspect ratio \"%s\" is unknown"
+msgstr "རྣམ་པའི་དཔྱ་ཚད་\"%s\" ངོ་མི་ཤེས་པས།"
+
+#: ../src/theme-parser.c:1446
+#, c-format
+msgid "No \"top\" attribute on element <%s>"
+msgstr "ཆ་ཤས་<%s>གུ \"top\" གི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:1453
+#, c-format
+msgid "No \"bottom\" attribute on element <%s>"
+msgstr "ཆ་ཤས་<%s>གུ \"bottom\" གི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:1460
+#, c-format
+msgid "No \"left\" attribute on element <%s>"
+msgstr "ཆ་ཤས་<%s>གུ་ \"left\" གྱི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:1467
+#, c-format
+msgid "No \"right\" attribute on element <%s>"
+msgstr "ཆ་ཤས་<%s>གུ་ \"right\" ཀྱི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:1499
+#, c-format
+msgid "Border \"%s\" is unknown"
+msgstr "མཐའ་མཚམས་\"%s\" ངོ་མི་ཤེས་པས།"
+
+#: ../src/theme-parser.c:1655
+#: ../src/theme-parser.c:1765
+#: ../src/theme-parser.c:1868
+#: ../src/theme-parser.c:2055
+#: ../src/theme-parser.c:2869
+#, c-format
+msgid "No \"color\" attribute on element <%s>"
+msgstr "ཆ་ཤས་<%s>གུ་ \"color\" གི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:1662
+#, c-format
+msgid "No \"x1\" attribute on element <%s>"
+msgstr "ཆ་ཤས་<%s>གུ་ \"x1\" གི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:1669
+#: ../src/theme-parser.c:2714
+#, c-format
+msgid "No \"y1\" attribute on element <%s>"
+msgstr "ཆ་ཤས་<%s>གུ་ \"y1\" གི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:1676
+#, c-format
+msgid "No \"x2\" attribute on element <%s>"
+msgstr "ཆ་ཤས་<%s>གུ་ \"x2\" ”ཀྱི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:1683
+#: ../src/theme-parser.c:2721
+#, c-format
+msgid "No \"y2\" attribute on element <%s>"
+msgstr "ཆ་ཤས་<%s>གུ་ \"y2\" ཀྱི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:1772
+#: ../src/theme-parser.c:1875
+#: ../src/theme-parser.c:1981
+#: ../src/theme-parser.c:2062
+#: ../src/theme-parser.c:2168
+#: ../src/theme-parser.c:2266
+#: ../src/theme-parser.c:2483
+#: ../src/theme-parser.c:2609
+#: ../src/theme-parser.c:2707
+#: ../src/theme-parser.c:2781
+#: ../src/theme-parser.c:2876
+#, c-format
+msgid "No \"x\" attribute on element <%s>"
+msgstr "ཆ་ཤས་<%s>གུ \"x\" གི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:1779
+#: ../src/theme-parser.c:1882
+#: ../src/theme-parser.c:1988
+#: ../src/theme-parser.c:2069
+#: ../src/theme-parser.c:2175
+#: ../src/theme-parser.c:2273
+#: ../src/theme-parser.c:2490
+#: ../src/theme-parser.c:2616
+#: ../src/theme-parser.c:2788
+#: ../src/theme-parser.c:2883
+#, c-format
+msgid "No \"y\" attribute on element <%s>"
+msgstr "ཆ་ཤས་<%s>གུ་ \"y\" གི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:1786
+#: ../src/theme-parser.c:1889
+#: ../src/theme-parser.c:1995
+#: ../src/theme-parser.c:2076
+#: ../src/theme-parser.c:2182
+#: ../src/theme-parser.c:2280
+#: ../src/theme-parser.c:2497
+#: ../src/theme-parser.c:2623
+#: ../src/theme-parser.c:2795
+#, c-format
+msgid "No \"width\" attribute on element <%s>"
+msgstr "ཆ་ཤས་<%s>གུ་ \"width\" ཀྱི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:1793
+#: ../src/theme-parser.c:1896
+#: ../src/theme-parser.c:2002
+#: ../src/theme-parser.c:2083
+#: ../src/theme-parser.c:2189
+#: ../src/theme-parser.c:2287
+#: ../src/theme-parser.c:2504
+#: ../src/theme-parser.c:2630
+#: ../src/theme-parser.c:2802
+#, c-format
+msgid "No \"height\" attribute on element <%s>"
+msgstr "ཆ་ཤས་<%s>གུ་ \"height\" ཀྱི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:1903
+#, c-format
+msgid "No \"start_angle\" attribute on element <%s>"
+msgstr "ཆ་ཤས་<%s>གུ་ \"start_angle\" གི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:1910
+#, c-format
+msgid "No \"extent_angle\" attribute on element <%s>"
+msgstr "ཆ་ཤས་<%s>གུ་ \"extent_angle\" གི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:2090
+#, c-format
+msgid "No \"alpha\" attribute on element <%s>"
+msgstr "ཆ་ཤས་<%s>གུ་ \"alpha\" གི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:2161
+#, c-format
+msgid "No \"type\" attribute on element <%s>"
+msgstr "ཆ་ཤས་<%s>གུ་ \"type\" གི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:2209
+#, c-format
+msgid "Did not understand value \"%s\" for type of gradient"
+msgstr "སྟེགས་རིས་ཀྱི་ དབྱེ་བའི་དོན་ལུ་ བེ་ལུ་\"%s\" ཧ་མ་གོ"
+
+#: ../src/theme-parser.c:2294
+#, c-format
+msgid "No \"filename\" attribute on element <%s>"
+msgstr "ཆ་ཤས་<%s>གུ་ \"filename\" གི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:2319
+#: ../src/theme-parser.c:2827
+#, c-format
+msgid "Did not understand fill type \"%s\" for <%s> element"
+msgstr "བཀང་ནིའི་དབྱེ་བ་\"%s\" ཧ་མ་གོ་ ཆ་ཤས་<%s>གི་དོན་ལུ།"
+
+#: ../src/theme-parser.c:2462
+#: ../src/theme-parser.c:2595
+#: ../src/theme-parser.c:2700
+#, c-format
+msgid "No \"state\" attribute on element <%s>"
+msgstr "ཆ་ཤས་<%s>གུ་ \"state\" ཀྱི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:2469
+#: ../src/theme-parser.c:2602
+#, c-format
+msgid "No \"shadow\" attribute on element <%s>"
+msgstr "ཆ་ཤས་<%s>གུ་ \"shadow\" ཀྱི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:2476
+#, c-format
+msgid "No \"arrow\" attribute on element <%s>"
+msgstr "ཆ་ཤས་<%s>གུ་ \"arrow\" ཀྱི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:2529
+#: ../src/theme-parser.c:2651
+#: ../src/theme-parser.c:2739
+#, c-format
+msgid "Did not understand state \"%s\" for <%s> element"
+msgstr "གནས་ལུགས་ \"%s\" ཧ་མ་གོ་ ཆ་ཤས་<%s>གི་དོན་ལུ། "
+
+#: ../src/theme-parser.c:2539
+#: ../src/theme-parser.c:2661
+#, c-format
+msgid "Did not understand shadow \"%s\" for <%s> element"
+msgstr "གྲིབ་ཅན་\"%s\" ཧ་མ་གོ་ ཆ་ཤས་<%s>གི་དོན་ལུ"
+
+#: ../src/theme-parser.c:2549
+#, c-format
+msgid "Did not understand arrow \"%s\" for <%s> element"
+msgstr "མདའ་རྟགས་\"%s\" ཧ་མ་གོ་ ཆ་ཤས་<%s>གི་དོན་ལུ།"
+
+#: ../src/theme-parser.c:2962
+#: ../src/theme-parser.c:3078
+#, c-format
+msgid "No <draw_ops> called \"%s\" has been defined"
+msgstr "\"%s\" ཟེར་སླབ་མི་ <draw_ops> ངེས་འཛིན་མ་འབད་བས།"
+
+#: ../src/theme-parser.c:2974
+#: ../src/theme-parser.c:3090
+#, c-format
+msgid "Including draw_ops \"%s\" here would create a circular reference"
+msgstr "ནཱ་ལུ་ཌཱ་ཨོཔསི་ \"%s\" གྲངས་སུ་བཙུགསཔ་ད་  གཞི་བསྟུན་ཐད་སྒོརམ་ཅིག་ གསར་བསྐྲུན་འབད་འོང་།"
+
+#: ../src/theme-parser.c:3153
+#, c-format
+msgid "No \"value\" attribute on <%s> element"
+msgstr "ཆ་ཤས་<%s>གུ་ \"value\" གི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:3210
+#, c-format
+msgid "No \"position\" attribute on <%s> element"
+msgstr "ཆ་ཤས་<%s>གུ \"position\" གི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:3219
+#, c-format
+msgid "Unknown position \"%s\" for frame piece"
+msgstr "གཞི་ཁྲམ་དུམ་བུའི་དོན་ལུ་ ངོ་མི་ཤེས་པའི་གནས་ས་\"%s\" འདུག"
+
+#: ../src/theme-parser.c:3227
+#, c-format
+msgid "Frame style already has a piece at position %s"
+msgstr "གཞི་ཁྲམ་བཟོ་རྣམ་དེ་གི་ གནས་ས་%sལུ་ དུམ་བུ་ཅིག་ ཧེ་མ་ལས་རང་འདུག"
+
+#: ../src/theme-parser.c:3272
+#, c-format
+msgid "No \"function\" attribute on <%s> element"
+msgstr "ཆ་ཤས་<%s>གུ \"function\" གི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:3280
+#: ../src/theme-parser.c:3384
+#, c-format
+msgid "No \"state\" attribute on <%s> element"
+msgstr "ཆ་ཤས་<%s> གུ་ \"state\" གི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:3289
+#, c-format
+msgid "Unknown function \"%s\" for button"
+msgstr "ཨེབ་རྟའི་དོན་ལུ་ ངོ་མ་ཤེས་པའི་བྱ་ལས་\"%s\" འདུག"
+
+#: ../src/theme-parser.c:3298
+#, c-format
+msgid "Unknown state \"%s\" for button"
+msgstr "ཨེབ་རྟའི་དོན་ལུ་ ངོ་མ་ཤེས་པའི་གནས་ལུགས་\"%s\" འདུག"
+
+#: ../src/theme-parser.c:3306
+#, c-format
+msgid "Frame style already has a button for function %s state %s"
+msgstr "བྱ་ལས་%s གནས་ལུགས་%sགི་དོན་ལུ་ གཞི་ཁྲམ་བཟོ་རྣམ་ལུ་ ཨེབ་རྟ་ཅིག་ ཧེ་མ་ལས་རང་འདུག"
+
+#: ../src/theme-parser.c:3376
+#, c-format
+msgid "No \"focus\" attribute on <%s> element"
+msgstr "ཆ་ཤས་<%s>གུ \"focus\" གི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:3392
+#, c-format
+msgid "No \"style\" attribute on <%s> element"
+msgstr "ཆ་ཤས་<%s> གུ་ \"style\" གི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:3401
+#, c-format
+msgid "\"%s\" is not a valid value for focus attribute"
+msgstr "\"%s\" དེ་ ཆེད་དམིགས་ཁྱད་ཆོས་ཀྱི་དོན་ལུ་ ནུས་ལྡན་ལེ་བུ་ཅིག་མིན་པས།"
+
+#: ../src/theme-parser.c:3410
+#, c-format
+msgid "\"%s\" is not a valid value for state attribute"
+msgstr "\"%s\" དེ་ གནས་ལུགས་ཁྱད་ཆོས་ཀྱི་དོན་ལུ་ ནུས་ལྡན་ལེ་བུ་ཅིག་མིན་པས།"
+
+#: ../src/theme-parser.c:3420
+#, c-format
+msgid "A style called \"%s\" has not been defined"
+msgstr "\"%s\" ཟེར་མི་ བཟོ་རྣམ་ཅིག་ ངེས་འཛིན་མ་འབད་བས"
+
+#: ../src/theme-parser.c:3430
+#, c-format
+msgid "No \"resize\" attribute on <%s> element"
+msgstr "ཆ་ཤས་<%s>གུ \"resize\" གི་ཁྱད་ཆོས་མིན་འདུག"
+
+#: ../src/theme-parser.c:3440
+#, c-format
+msgid "\"%s\" is not a valid value for resize attribute"
+msgstr "\"%s\" དེ་ ཚད་གཞི་སླར་སྒྲིག་ ཁྱད་ཆོས་ཀྱི་དོན་ལུ་ ནུས་ལྡན་ལེ་བུ་ཅིག་མིན་པས།"
+
+#: ../src/theme-parser.c:3450
+#, c-format
+msgid "Should not have \"resize\" attribute on <%s> element for maximized/shaded states"
+msgstr "སྦོམ་བཟོ་བཟོཝ་/གྲིབ་ཅན་གནས་ལུགས་ཀྱི་དོན་ལུ་ ཆ་ཤས་<%s> གུ་ \"resize\" ཁྱད་ཆོས་བཞག་ནི་མི་འོང་།"
+
+#: ../src/theme-parser.c:3464
+#, c-format
+msgid "Style has already been specified for state %s resize %s focus %s"
+msgstr "གནས་ལུགས་%s ཚད་གཞི་སླར་སྒྲིག་%s ཆེད་དམིགས་%sགི་དོན་ལུ་ བཟོ་རྣམ་ཧེ་མ་ལས་རང་ གསལ་བཀོད་འབད་ནུག"
+
+#: ../src/theme-parser.c:3475
+#: ../src/theme-parser.c:3486
+#: ../src/theme-parser.c:3497
+#, c-format
+msgid "Style has already been specified for state %s focus %s"
+msgstr "གནས་ལུགས་%s ཆེད་དམིགས་%sགི་དོན་ལུ་ བཟོ་རྣམ་ཧེ་མ་ལས་རང་ གསལ་བཀོད་འབད་ནུག"
+
+#: ../src/theme-parser.c:3536
+msgid "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr "<piece> གྱི་ཆ་ཤས་ཅིག་གི་དོན་ལུ་ ཌཱ་ཨོཔསི་ གཉིས་བཞག་མི་བཏུབ། (བརྗོད་དོན་གྱིས་ ཌཱ་ཨོཔསི་ཁྱད་ཆོས་ཅིག་དང་ <draw_ops> ཆ་ཤས་ཅིག་ ཡང་ན་ ཆ་ཤས་གཉིས་ གསལ་བཀོད་འབད་ནུག"
+
+#: ../src/theme-parser.c:3574
+msgid "Can't have a two draw_ops for a <button> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr "<button> ཆ་ཤས་ཅིག་གི་དོན་ལུ་ ཌཱ་ཨོཔསི་ གཉིས་བཞག་མི་བཏུབ། (བརྗོད་དོན་གྱིས་ ཌཱ་ཨོཔསི་ཁྱད་ཆོས་ཅིག་དང་ <draw_ops>  ཆ་ཤས་ཅིག་ ཡང་ན་ ཆ་ཤས་གཉིས་ གསལ་བཀོད་འབད་ནུག"
+
+#: ../src/theme-parser.c:3612
+msgid "Can't have a two draw_ops for a <menu_icon> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr "<menu_icon> ཆ་ཤས་ཅིག་གི་དོན་ལུ་ ཌཱ་ཨོཔསི་ གཉིས་བཞག་མི་བཏུབ། (བརྗོད་དོན་གྱིས་ ཌཱ་ཨོཔསི་ཁྱད་ཆོས་ཅིག་དང་ <draw_ops> ཆ་ཤས་ཅིག་ ཡང་ན་ ཆ་ཤས་གཉིས་ གསལ་བཀོད་འབད་ནུག)"
+
+#: ../src/theme-parser.c:3659
+#, c-format
+msgid "Outermost element in theme must be <metacity_theme> not <%s>"
+msgstr "བརྗོད་དོན་ནང་ ཕྱི་མཐའི་ཆ་ཤས་དེ་<%s>མེན་པར་ <metacity_theme> འོང་དགོ"
+
+#: ../src/theme-parser.c:3679
+#, c-format
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgstr "ཆ་ཤས་<%s> དེ་ མིང་/རྩོམ་པ་པོ་/ཚེས་གྲངས་/འགྲེལ་བཤད་ ཆ་ཤས་ཅིག་གི་ནང་ན་མི་ཆོག"
+
+#: ../src/theme-parser.c:3684
+#, c-format
+msgid "Element <%s> is not allowed inside a <constant> element"
+msgstr "ཆ་ཤས་<%s> དེ་ <constant> ཆ་ཤས་ཅིག་གི་ནང་ན་མི་ཆོག"
+
+#: ../src/theme-parser.c:3696
+#, c-format
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr "ཆ་ཤས་<%s> དེ་ distance/border/aspect_ratioཅིག་གི་ནང་ན་མི་ཆོག"
+
+#: ../src/theme-parser.c:3718
+#, c-format
+msgid "Element <%s> is not allowed inside a draw operation element"
+msgstr "ཆ་ཤས་<%s> དེ་ ཌཱ་བཀོལ་སྤྱོད་ཀྱི་ ཆ་ཤས་ཅིག་གི་ནང་ན་མི་ཆོག"
+
+#: ../src/theme-parser.c:3728
+#: ../src/theme-parser.c:3758
+#: ../src/theme-parser.c:3763
+#, c-format
+msgid "Element <%s> is not allowed inside a <%s> element"
+msgstr "ཆ་ཤས་<%s> དེ་ ཆ་ཤས་<%s> ཅིག་གི་ནང་ན་མི་ཆོག"
+
+#: ../src/theme-parser.c:3984
+msgid "No draw_ops provided for frame piece"
+msgstr "གཞི་ཁྲམ་དུམ་བུའི་དོན་ལུ་ ཌཱ་ཨོཔསི་ བྱིན་བྱིནམ་མིན་འདུག(_o)"
+
+#: ../src/theme-parser.c:3999
+msgid "No draw_ops provided for button"
+msgstr "ཨེབ་རྟའི་དོན་ལུ་ ཌཱ་ཨོཔསི་ བྱིན་བྱིནམ་མིན་འདུག(_o)"
+
+#: ../src/theme-parser.c:4014
+msgid "No draw_ops provided for menu icon"
+msgstr "དཀར་ཆག་ངོས་དཔར་གྱི་དོན་ལུ་ ཌཱ་ཨོཔསི་ བྱིན་བྱིནམ་མིན་འདུག(_o)"
+
+#: ../src/theme-parser.c:4054
+#, c-format
+msgid "No text is allowed inside element <%s>"
+msgstr "ཆ་ཤས་<%s>གི་ནང་ན་ ཚིག་ཡིག་མི་ཆོག"
+
+#: ../src/theme-parser.c:4109
+msgid "<name> specified twice for this theme"
+msgstr "བརྗོད་དོན་འདི་གི་དོན་ལུ་ <name> ཐེངས་གཉིས་ གསལ་བཀོད་འབད་ནུག"
+
+#: ../src/theme-parser.c:4120
+msgid "<author> specified twice for this theme"
+msgstr "བརྗོད་དོན་འདི་གི་དོན་ལུ་ <author> ཐེངས་གཉིས་ གསལ་བཀོད་འབད་ནུག"
+
+#: ../src/theme-parser.c:4131
+msgid "<copyright> specified twice for this theme"
+msgstr "བརྗོད་དོན་འདི་གི་དོན་ལུ་ <copyright> ཐེངས་གཉིས་ གསལ་བཀོད་འབད་ནུག"
+
+#: ../src/theme-parser.c:4142
+msgid "<date> specified twice for this theme"
+msgstr "བརྗོད་དོན་འདི་གི་དོན་ལུ་<date> ཐེངས་གཉིས་ གསལ་བཀོད་འབད་ནུག"
+
+#: ../src/theme-parser.c:4153
+msgid "<description> specified twice for this theme"
+msgstr "བརྗོད་དོན་འདི་གི་དོན་ལུ་ <description>  ཐེངས་གཉིས་ གསལ་བཀོད་འབད་ནུག"
+
+#: ../src/theme-parser.c:4348
+#, c-format
+msgid "Failed to read theme from file %s: %s\n"
+msgstr "ཡིག་སྣོད་%s: %sནང་ལས་ བརྗོད་དོན་ལྷག་མ་ཚུགས། \n"
+
+#: ../src/theme-parser.c:4403
+#, c-format
+msgid "Theme file %s did not contain a root <metacity_theme> element"
+msgstr "བརྗོད་དོན་ཡིག་སྣོད་%sནང་ལུ་ རྩ་བའི་<metacity_theme> ཆ་ཤས་མིན་འདུག"
+
+#: ../src/theme-viewer.c:70
+msgid "/_Windows"
+msgstr "/སྒོ་སྒྲིག་ཚུ།(_W)"
+
+#: ../src/theme-viewer.c:71
+msgid "/Windows/tearoff"
+msgstr "/སྒོ་སྒྲིག་ཚུ་/ཧྲལ་གཏང་།"
+
+#: ../src/theme-viewer.c:72
+msgid "/Windows/_Dialog"
+msgstr "/སྒོ་སྒྲིག་ཚུ་/ཌའི་ལོག(_D)"
+
+#: ../src/theme-viewer.c:73
+msgid "/Windows/_Modal dialog"
+msgstr "/སྒོ་སྒྲིག་ཚུ་/ཐབས་ལམ་གྱི་ཌའི་ལོག(_M)"
+
+#: ../src/theme-viewer.c:74
+msgid "/Windows/_Utility"
+msgstr "/སྒོ་སྒྲིག་ཚུ་/སྤྱོད་ཆས།(_U)"
+
+#: ../src/theme-viewer.c:75
+msgid "/Windows/_Splashscreen"
+msgstr "/སྒོ་སྒྲིག་ཚུ་/སི་པེལེཤ་སི་ཀིརིན།(_S)"
+
+#: ../src/theme-viewer.c:76
+msgid "/Windows/_Top dock"
+msgstr "/སྒོ་སྒྲིག་ཚུ་/མགོའི་ཌོཀ(_T)"
+
+#: ../src/theme-viewer.c:77
+msgid "/Windows/_Bottom dock"
+msgstr "/སྒོ་སྒྲིག་ཚུ་/མཇུག་གི་ཌོཀ(_B)"
+
+#: ../src/theme-viewer.c:78
+msgid "/Windows/_Left dock"
+msgstr "/སྒོ་སྒྲིག་ཚུ་/གཡོན་གྱི་ཌོཀ(_L)"
+
+#: ../src/theme-viewer.c:79
+msgid "/Windows/_Right dock"
+msgstr "/སྒོ་སྒྲིག་ཚུ་/གཡས་ཀྱི་ཌོཀ(_R)"
+
+#: ../src/theme-viewer.c:80
+msgid "/Windows/_All docks"
+msgstr "/སྒོ་སྒྲིག་ཚུ་/ཌོཀསི་ཆ་མཉམ།(_A)"
+
+#: ../src/theme-viewer.c:81
+msgid "/Windows/Des_ktop"
+msgstr "/སྒོ་སྒྲིག་ཚུ་/ཌེསིཀ་ཊོཔ།(_k)"
+
+#: ../src/theme-viewer.c:131
+msgid "Open another one of these windows"
+msgstr "སྒོ་སྒྲིག་འདི་ཚུ་གི་གྲས་ལས་ གཞན་མི་ཅིག་ཁ་ཕྱེ།"
+
+#: ../src/theme-viewer.c:138
+msgid "This is a demo button with an 'open' icon"
+msgstr "འདི་ 'ཁ་ཕྱེ་ནིའི’ ངོས་དཔར་དང་བཅས་པའི་ ཌེ་མོ་ཨེབ་རྟ་ཅིག་ཨིན།"
+
+#: ../src/theme-viewer.c:145
+msgid "This is a demo button with a 'quit' icon"
+msgstr "འདི་ ‘སྤང་ནིའི་’ ངོས་དཔར་དང་བཅས་པའི་ ཌེ་མོ་ཨེབ་རྟ་ཅིག་ཨིན།"
+
+#: ../src/theme-viewer.c:241
+msgid "This is a sample message in a sample dialog"
+msgstr "འདི་ དཔེ་ཚད་ཌའི་ལོག་ཅིག་ནང་གི་ དཔེ་ཚད་འཕྲིན་དོན་ཅིག་ཨིན།"
+
+#: ../src/theme-viewer.c:324
+#, c-format
+msgid "Fake menu item %d\n"
+msgstr "དཀར་ཆག་རྣམ་གྲངས་ རྫུན་མ་%d \n"
+
+#: ../src/theme-viewer.c:358
+msgid "Border-only window"
+msgstr "མཐའ་མཚམས་རྐྱང་པོའི་སྒོ་སྒྲིག"
+
+#: ../src/theme-viewer.c:360
+msgid "Bar"
+msgstr "ཕྲ་རིང་།"
+
+#: ../src/theme-viewer.c:377
+msgid "Normal Application Window"
+msgstr "སྤྱིར་བཏང་གི་ གློག་རིམ་ཝིན་ཌོ"
+
+#: ../src/theme-viewer.c:382
+msgid "Dialog Box"
+msgstr "ཌའི་ལོག་བོགསི།"
+
+#: ../src/theme-viewer.c:387
+msgid "Modal Dialog Box"
+msgstr "ཐབས་ལམ་གྱི་ ཌའི་ལོག་བོགསི།"
+
+#: ../src/theme-viewer.c:392
+msgid "Utility Palette"
+msgstr "སྤྱོད་ཆས་ཀྱི་པེ་ལེཊི།"
+
+#: ../src/theme-viewer.c:397
+msgid "Torn-off Menu"
+msgstr "ཧྲལ་འགྱོ་མི་ དཀར་ཆག"
+
+#: ../src/theme-viewer.c:402
+msgid "Border"
+msgstr "མཐའ་མཚམས།"
+
+#: ../src/theme-viewer.c:731
+#, c-format
+msgid "Button layout test %d"
+msgstr "ཨེབ་རྟའི་སྒྲིག་བཀོད་བརྟག་ཞིབ་%d"
+
+#: ../src/theme-viewer.c:760
+#, c-format
+msgid "%g milliseconds to draw one window frame"
+msgstr "སྒོ་སྒྲིག་གཞི་ཁྲམ་གཅིག་འབྲི་ནི་ལུ་ མི་ལི་སྐར་ཆ་%g"
+
+#: ../src/theme-viewer.c:803
+msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
+msgstr "ལག་ལེན་: མེ་ཊ་སི་ཊི་བརྗོད་དོན་སྟོན་བྱེད། [བརྗོད་དོན་མིང་] \n"
+
+#: ../src/theme-viewer.c:810
+#, c-format
+msgid "Error loading theme: %s\n"
+msgstr "བརྗོད་དོན་: %sམངོན་གསལ་འབད་ནི་ལུ་འཛོལ་བ། \n"
+
+#: ../src/theme-viewer.c:816
+#, c-format
+msgid "Loaded theme \"%s\" in %g seconds\n"
+msgstr "བརྗོད་དོན་\"%s\"སྐར་ཆ་%g ནང་ མངོན་གསལ་འབད་ཡི། \n"
+
+#: ../src/theme-viewer.c:839
+msgid "Normal Title Font"
+msgstr "སྤྱིར་བཏང་གི་ མགོ་མིང་ཡིག་གཟུགས།"
+
+#: ../src/theme-viewer.c:845
+msgid "Small Title Font"
+msgstr "མགོ་མིང་ཡིག་གཟུགས་ཆུང་ཀུ།"
+
+#: ../src/theme-viewer.c:851
+msgid "Large Title Font"
+msgstr "མགོ་མིང་ཡིག་གཟུགས་ཆེ་བ།"
+
+#: ../src/theme-viewer.c:856
+msgid "Button Layouts"
+msgstr "ཨེབ་རྟའི་སྒྲིག་བཀོད།"
+
+#: ../src/theme-viewer.c:861
+msgid "Benchmark"
+msgstr "གློག་རིག་འཇལ་ཚད།"
+
+#: ../src/theme-viewer.c:908
+msgid "Window Title Goes Here"
+msgstr "སྒོ་སྒྲིག་གི་མགོ་མིང་ ནཱ་ལུ་འགྱོཝ་ཨིན།"
+
+#: ../src/theme-viewer.c:1012
+#, c-format
+msgid "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g seconds wall clock time including X server resources (%g milliseconds per frame)\n"
+msgstr "གཞི་ཁྲམ་%dལེན་ཡི་ ཞབས་ཏོག་སྤྱོད་མི་ཕྱོགས་ཀྱི་སྐར་ཆ་ %gནང། (གཞི་ཁྲམ་རེར་མི་ལི་སྐར་ཆ་%gརེ་) དེ་ལས་ ཨེགསི་སར་བར་ཐོན་ཁུངས་བརྩིས་ཏེ་ ཆེ་འཁོར་ཆུ་ཚོད་ %g ལེན་ཡི། (གཞི་ཁྲམ་རེར་མི་ལི་སྐར་ཆ་ %g རེ)\n"
+
+#: ../src/theme-viewer.c:1227
+msgid "position expression test returned TRUE but set error"
+msgstr "གནས་ས་གསལ་བརྗོད་བརྟག་ཞིབ་ བདེན་པ་སྦེ་ ལོག་བཏང་ཡོད་རུང་ འཛོལ་བ་གཞི་སྒྲིག་འབད་འདུག"
+
+#: ../src/theme-viewer.c:1229
+msgid "position expression test returned FALSE but didn't set error"
+msgstr "གནས་ས་གསལ་བརྗོད་བརྟག་ཞིབ་ རྫུན་པ་སྦེ་ ལོག་བཏང་ཡོད་རུང་ འཛོལ་བ་གཞི་སྒྲིག་མ་འབད་བས།"
+
+#: ../src/theme-viewer.c:1233
+msgid "Error was expected but none given"
+msgstr "འཛོལ་བ་གི་རེ་བ་ཡོད། དེ་འབདཝ་ད་ གཅིག་ཡང་མ་བྱིན་པས།"
+
+#: ../src/theme-viewer.c:1235
+#, c-format
+msgid "Error %d was expected but %d given"
+msgstr "འཛོལ་བ་%d གི་རེ་བ་ཡོད། དེ་འབདཝ་ད་ %d བྱིན་ནུག"
+
+#: ../src/theme-viewer.c:1241
+#, c-format
+msgid "Error not expected but one was returned: %s"
+msgstr "འཛོལ་བ་གི་རེ་བ་མེད། དེ་འབདཝ་ད་ གཅིག་ལོག་བཏང་ནུག %s"
+
+#: ../src/theme-viewer.c:1245
+#, c-format
+msgid "x value was %d, %d was expected"
+msgstr "ཨེགསི་གི་བེ་ལུ་དེ་%dཨིན་པས། %dགི་རེ་བ་བསྐྱེད་ཅི།"
+
+#: ../src/theme-viewer.c:1248
+#, c-format
+msgid "y value was %d, %d was expected"
+msgstr "ཝའི་གི་བེ་ལུ་དེ་%dཨིན་པས། %dགི་རེ་བ་བསྐྱེད་ཅི།"
+
+#: ../src/theme-viewer.c:1310
+#, c-format
+msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
+msgstr "ཆ་སྙོམ་%d གི་གསལ་བརྗོད་དེ་ སྐར་ཆ་%g ནང་ མིང་དཔྱད་འབད་ཡོད། (སྤྱི་སྙོམས་སྐར་ཆ་%g) \n"
+
+#: ../src/theme.c:202
+msgid "top"
+msgstr "མགོ"
+
+#: ../src/theme.c:204
+msgid "bottom"
+msgstr "མཇུག"
+
+#: ../src/theme.c:206
+msgid "left"
+msgstr "གཡོན།"
+
+#: ../src/theme.c:208
+msgid "right"
+msgstr "གཡས།"
+
+#: ../src/theme.c:222
+#, c-format
+msgid "frame geometry does not specify \"%s\" dimension"
+msgstr "གཞི་ཁྲམ་འཇལ་རྩིས་ཀྱིས་ མཚོན་གྲངས་\"%s\" གསལ་བཀོད་མི་འབད་བས།"
+
+#: ../src/theme.c:241
+#, c-format
+msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
+msgstr "གཞི་ཁྲམ་འཇལ་རྩིས་ཀྱིས་ མཐའ་མཚམས་\"%s\"གི་དོན་ལུ་ མཚོན་གྲངས་\"%s\" གསལ་བཀོད་མི་འབད་བས།"
+
+#: ../src/theme.c:278
+#, c-format
+msgid "Button aspect ratio %g is not reasonable"
+msgstr "ཨེབ་རྟའི་རྣམ་པ་གི་ དཔྱ་ཚད་%gདེ་ འོས་ལྡན་མིན་པས།"
+
+#: ../src/theme.c:290
+msgid "Frame geometry does not specify size of buttons"
+msgstr "གཞི་ཁྲམ་འཇལ་རྩིས་ཀྱིས་ ཨེབ་རྟའི་ཚད་ གསལ་བཀོད་མི་འབད་བས།"
+
+#: ../src/theme.c:843
+msgid "Gradients should have at least two colors"
+msgstr "སྟེགས་རིས་ལུ་ ཉུང་ཤོས་རང་ ཚོས་གཞི་གཉིས་འོང་དགོ"
+
+#: ../src/theme.c:969
+#, c-format
+msgid "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr "ཇི་ཊི་ཀེ་ཚོས་གཞིའི་ གསལ་བཀོད་དེ་ལུ་ གནས་ལུགས་དེ་ གུག་ཤད་ནང་འོང་དགོ དེ་ཡང་དཔེར་ན་ ཇི་ཊི་ཀེ་:ཨེཕ་ཇི་[སྤྱིར་བཏང་གི་] བཟུམ་ཨིན། གནས་ལུགས་དེ་ ཨ་རྟག་ཡོད་སར་\"%s\"ལུ་ མིང་དཔྱད་འབད་མ་ཚུགས།"
+
+#: ../src/theme.c:983
+#, c-format
+msgid "GTK color specification must have a close bracket after the state, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr "ཇི་ཊི་ཀེ་ཚོས་གཞིའི་ གསལ་བཀོད་དེ་ལུ་ གནས་ལུགས་ཀྱི་ཤུལ་ལས་ ཁ་བསྡམས་མི་གུག་ཤད་ཅིག་འོང་དགོ དེ་ཡང་དཔེར་ན་ ཇི་ཊི་ཀེ་:ཨེཕ་ཇི་[སྤྱིར་བཏང་གི་] བཟུམ་ཨིན། གནས་ལུགས་དེ་ ཨ་རྟག་ཡོད་སར་\"%s\"ལུ་ མིང་དཔྱད་འབད་མ་ཚུགས།"
+
+#: ../src/theme.c:994
+#, c-format
+msgid "Did not understand state \"%s\" in color specification"
+msgstr "ཚོས་གཞིའི་གསལ་བཀོད་ནང་ གནས་ལུགས་\"%s\"ཧ་མ་གོ"
+
+#: ../src/theme.c:1007
+#, c-format
+msgid "Did not understand color component \"%s\" in color specification"
+msgstr "ཚོས་གཞིའི་གསལ་བཀོད་ནང་ ཚོས་གཞིའི་ཆ་ཤས་\"%s\" ཧ་མ་གོ"
+
+#: ../src/theme.c:1037
+#, c-format
+msgid "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the format"
+msgstr "མཉམ་སྡེབ་རྩ་སྒྲིག་དེ་ \"blend/bg_color/fg_color/alpha\" ཨིན། \"%s\" དེ་ རྩ་སྒྲིག་ནང་མི་ཚུད།"
+
+#: ../src/theme.c:1048
+#, c-format
+msgid "Could not parse alpha value \"%s\" in blended color"
+msgstr "མཉམ་སྡེབ་ཚོས་གཞི་ནང་ ཨཱལ་ཕའི་བེ་ལུ་\"%s\"མིང་དཔྱད་འབད་མ་ཚུགས།"
+
+#: ../src/theme.c:1058
+#, c-format
+msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
+msgstr "མཉམ་སྡེབ་ཚོས་གཞི་ནང་གི་ ཨཱལ་ཕའི་བེ་ལུ་\"%s\" དེ་ ༠.༠ དང་ ༡.༠ གི་བར་ན་མིན་པས།"
+
+#: ../src/theme.c:1105
+#, c-format
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr "གྲིབ་ཅན་རྩ་སྒྲིག་དེ་ \"shade/base_color/factor\" ཨིན། \"%s\" དེ་ རྩ་སྒྲིག་ནང་མི་ཚུད་པས།"
+
+#: ../src/theme.c:1116
+#, c-format
+msgid "Could not parse shade factor \"%s\" in shaded color"
+msgstr "གྲིབ་ཅན་ཚོས་གཞི་ནང་ གྲིབ་ཅན་ཆ་རྐྱེན་\"%s\" མིང་དཔྱད་འབད་མ་ཚུགས།"
+
+#: ../src/theme.c:1126
+#, c-format
+msgid "Shade factor \"%s\" in shaded color is negative"
+msgstr "གྲིབ་ཅན་ཚོས་གཞི་ནང་ གྲིབ་ཅན་ཆ་རྐྱེན་\"%s\"དེ་ མེད་ཆ་ཨིན་པས"
+
+#: ../src/theme.c:1155
+#, c-format
+msgid "Could not parse color \"%s\""
+msgstr "ཚོས་གཞི་\"%s\"མིང་དཔྱད་འབད་མ་ཚུགས།"
+
+#: ../src/theme.c:1417
+#, c-format
+msgid "Coordinate expression contains character '%s' which is not allowed"
+msgstr "ཆ་སྙོམ་གསལ་བརྗོད་ནང་ལུ་ མ་ཆོག་པའི་ཡིག་འབྲུ་'%s' འདུག"
+
+#: ../src/theme.c:1444
+#, c-format
+msgid "Coordinate expression contains floating point number '%s' which could not be parsed"
+msgstr "ཆ་སྙོམ་གསལ་བརྗོད་ནང་ལུ་ མིང་དཔྱད་འབད་མ་ཚུགས་པའི་ ལྡིང་ཚད་ཨང་'%s'འདུག"
+
+#: ../src/theme.c:1458
+#, c-format
+msgid "Coordinate expression contains integer '%s' which could not be parsed"
+msgstr "ཆ་སྙོམ་གསལ་བརྗོད་ནང་ལུ་ མིང་དཔྱད་འབད་མ་ཚུགས་པའི་ ཧྲིལ་ཨང་་'%s'འདུག"
+
+#: ../src/theme.c:1525
+#, c-format
+msgid "Coordinate expression contained unknown operator at the start of this text: \"%s\""
+msgstr "ཆ་སྙོམ་གསལ་བརྗོད་ནང་ལུ་ ཚིག་ཡིག་'%s'འགོ་བཙུགསཔ་ད་ ངོ་མ་ཤེས་པའི་ བཀོལ་སྤྱོད་པ་འདུག "
+
+#: ../src/theme.c:1582
+msgid "Coordinate expression was empty or not understood"
+msgstr "ཆ་སྙོམ་གསལ་བརྗོད་ སྟོངམ་འོང་ནི་དང་ ཡང་ན་ ཧ་མ་གོ་བས།"
+
+#: ../src/theme.c:1725
+#: ../src/theme.c:1735
+#: ../src/theme.c:1769
+msgid "Coordinate expression results in division by zero"
+msgstr "ཆ་སྙོམ་གསལ་བརྗོད་ཀྱིས་ ཀླད་ཀོར་གྱིས་ བགོ་བཤའ་བརྐྱབ་དགོཔ་འབྱུངམ་ཨིན།"
+
+#: ../src/theme.c:1777
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgstr "ཆ་སྙོམ་གསལ་བརྗོད་ཀྱིས་ ཐབས་ལམ་བཀོལ་སྤྱོད་པ་དེ་ ལྡིང་ཚད་ཨང་གྲངས་གུ་ ལག་ལེན་འཐབ་ཐབས་འབདཝ་ཨིན།"
+
+#: ../src/theme.c:1834
+#, c-format
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr "ཆ་སྙོམ་གསལ་བརྗོད་དེ་ལུ་ བཀོལ་སྤྱོད་པ་\"%s\" ཅིག་ཡོད་སར་ ཨོ་པི་རེནཌི་ཅིག་གི་ རེ་བ་བསྐྱེད་ཅི།"
+
+#: ../src/theme.c:1843
+msgid "Coordinate expression had an operand where an operator was expected"
+msgstr "ཆ་སྙོམ་གསལ་བརྗོད་དེ་ལུ་ ཨོ་པི་རེནཌི་ཅིག་ཡོད་སར་ བཀོལ་སྤྱོད་པ་ཅིག་གི་ རེ་བ་བསྐྱེད་ཅི།"
+
+#: ../src/theme.c:1851
+msgid "Coordinate expression ended with an operator instead of an operand"
+msgstr "ཆ་སྙོམ་གསལ་བརྗོད་དེ་ ཨོ་པི་རེནཌི་གིས་ མཇུག་བསྡུ་ནིའི་ཚབ་ལུ་ བཀོལ་སྤྱོད་པ་གིས་ མཇུག་བསྡུ་ནུག"
+
+#: ../src/theme.c:1861
+#, c-format
+msgid "Coordinate expression has operator \"%c\" following operator \"%c\" with no operand in between"
+msgstr "ཆ་སྙོམ་གསལ་བརྗོད་དེ་ལུ་ བར་ན་ཨོ་པི་རེནཌི་མེད་པར་  བཀོལ་སྤྱོད་པ་\"%c\"གི་ཤུལ་བདའ་སྟེ་ བཀོལ་སྤྱོད་པ་\"%c\" འདུག"
+
+#: ../src/theme.c:1980
+msgid "Coordinate expression parser overflowed its buffer, this is really a Metacity bug, but are you sure you need a huge expression like that?"
+msgstr "ཆ་སྙོམ་གསལ་བརྗོད་ མིང་དཔྱད་འབད་མི་དེ་གི་ གནད་ཁོངས་ལུད་སོ་ནུག འདི་མེ་ཊ་སི་ཊི་གི་རྐྱེན་ཅིག་ཨིན་པས། དེ་འབདཝ་ད་ ཁྱོད་ལུ་གསལ་བརྗོད་སྦོམ་དེ་ཅིག་ ངེས་པར་དུ་ དགོཔ་ཡོད་ག?"
+
+#: ../src/theme.c:2009
+msgid "Coordinate expression had a close parenthesis with no open parenthesis"
+msgstr "ཆ་སྙོམ་གསལ་བརྗོད་དེ་ལུ་ གུག་ཤད་ཁ་མ་ཕྱེ་བར་ གུག་ཤད་ཁ་བསྡམས་མི་ཅིག་འདུག"
+
+#: ../src/theme.c:2072
+#, c-format
+msgid "Coordinate expression had unknown variable or constant \"%s\""
+msgstr "ཆ་སྙོམ་གསལ་བརྗོད་ལུ་ ངོ་མ་ཤེས་པའི་ འགྱུར་བ་ཅན་\"%s\"འདུག"
+
+#: ../src/theme.c:2129
+msgid "Coordinate expression had an open parenthesis with no close parenthesis"
+msgstr "ཆ་སྙོམ་གསལ་བརྗོད་དེ་ལུ་ གུག་ཤད་ཁ་ཕྱེ་ཞིནམ་ལས་ ཁ་མ་བསྡམས་ཅིག་འདུག"
+
+#: ../src/theme.c:2140
+msgid "Coordinate expression doesn't seem to have any operators or operands"
+msgstr "ཆ་སྙོམ་གསལ་བརྗོད་དེ་ལུ་ བཀོལ་སྤྱོད་པ་ ཡང་ན་ ཨོ་པི་རེནཌི་ཚུ་ ག་ནི་ཡང་ ཡོད་དོ་བཟུམ་ཅིག་མིན་འདུག"
+
+#: ../src/theme.c:2384
+#: ../src/theme.c:2406
+#: ../src/theme.c:2427
+#, c-format
+msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
+msgstr "བརྗོད་དོན་དེ་ནང་ གསལ་བརྗོད ་\"%s\" ཅིག་ཡོད་མི་ཏེ་ འཛོལ་བ་ %s ལུ་གྱུར་ནུག\n"
+
+#: ../src/theme.c:3913
+#, c-format
+msgid "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this frame style"
+msgstr "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> དེ་ཚུ་ གཞི་ཁྲམ་བཟོ་རྣམ་འདི་གི་དོན་ལུ་ གསལ་བཀོད་འབད་དགོ"
+
+#: ../src/theme.c:4363
+#: ../src/theme.c:4395
+#, c-format
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>བརླག་སྟོར་ཞུགས་ནུག"
+
+#: ../src/theme.c:4446
+#, c-format
+msgid "Failed to load theme \"%s\": %s\n"
+msgstr "བརྗོད་དོན་\"%s\": %s མངོན་གསལ་འབད་མ་ཚུགས། \n"
+
+#: ../src/theme.c:4592
+#: ../src/theme.c:4599
+#: ../src/theme.c:4606
+#: ../src/theme.c:4613
+#: ../src/theme.c:4620
+#, c-format
+msgid "No <%s> set for theme \"%s\""
+msgstr "བརྗོད་དོན་\"%s\"གི་དོན་ལུ་ <%s> གཞི་སྒྲིག་མ་འབད་བས།"
+
+#: ../src/theme.c:4630
+#, c-format
+msgid "No frame style set for window type \"%s\" in theme \"%s\", add a <window type=\"%s\" style_set=\"whatever\"/> element"
+msgstr "བརྗོད་དོན་ \"%s\"ནང་ སྒོ་སྒྲིག་དབྱེ་བ་\"%s\"གི་དོན་ལུ་ གཞི་ཁྲམ་གྱི་བཟོ་རྣམ་ གཞི་སྒྲིག་མ་འབད་བས། <window type=\"%s\" style_set=\"whatever\"/> འབད་མི་ཅིག་ ཆ་ཤས་ཅིག་ ཁ་སྐོང་རྐྱབས།"
+
+#: ../src/theme.c:4652
+#, c-format
+msgid "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this theme"
+msgstr "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> ཚུ་ བརྗོད་དོན་འདི་གི་དོན་ལུ་ གསལ་བཀོད་འབད་དགོ"
+
+#: ../src/theme.c:5041
+#: ../src/theme.c:5103
+#, c-format
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr "ལག་ལེན་པའི་ངེས་འཛིན་ཆད་མེད་དེ་ ཚུགས་ཡིག་ཅིག་གིས་ འགོ་བཙུགས་དགོ \"%s\" གིས་མི་བཏུབ།"
+
+#: ../src/theme.c:5049
+#: ../src/theme.c:5111
+#, c-format
+msgid "Constant \"%s\" has already been defined"
+msgstr "ཆད་མེད་\"%s\" དེ་ ཧེ་མ་ལས་རང་ ངེས་འཛིན་འབད་ནུག"
+
+#: ../src/util.c:93
+#, c-format
+msgid "Failed to open debug log: %s\n"
+msgstr "རྐྱེན་སེལ་དྲན་དེབ་%s ཁ་ཕྱེ་མ་ཚུགས། \n"
+
+#: ../src/util.c:103
+#, c-format
+msgid "Failed to fdopen() log file %s: %s\n"
+msgstr "དྲན་དེབ་ཡིག་སྣོད་%s: %sཨེཕ་ཌི་() ཁ་ཕྱེ་མ་ཚུགས། \n"
+
+#: ../src/util.c:109
+#, c-format
+msgid "Opened log file %s\n"
+msgstr "དྲན་དེབ་ཡིག་སྣོད་%s ཁ་ཕྱེ་ཡོད།\n"
+
+#: ../src/util.c:217
+msgid "Window manager: "
+msgstr "སྒོ་སྒྲིག་འཛིན་སྐྱོང་པ་:"
+
+#: ../src/util.c:363
+msgid "Bug in window manager: "
+msgstr "སྒོ་སྒྲིག་འཛིན་སྐྱོང་པའི་ནང་ལུ་རྐྱེན:"
+
+#: ../src/util.c:392
+msgid "Window manager warning: "
+msgstr "སྒོ་སྒྲིག་འཛིན་སྐྱོང་པའི་ཉེན་བརྡ་:"
+
+#: ../src/util.c:416
+msgid "Window manager error: "
+msgstr "སྒོ་སྒྲིག་འཛིན་སྐྱོང་པའི་འཛོལ་བ་:"
+
+#: ../src/window-props.c:162
+#, c-format
+msgid "Application set a bogus _NET_WM_PID %ld\n"
+msgstr "གློག་རིམ་གྱིས་ རྫུས་མ་  _NET_WM_PID %ld གཞི་སྒྲིག་འབད་ནུག \n"
+
+#. first time through
+#: ../src/window.c:5207
+#, c-format
+msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
+msgstr "སྒོ་སྒྲིག་%s གིས་ SM_CLIENT_ID དེ་ ICCCMནང་ གསལ་བཀོད་འབད་དོ་བཟུམ་ WM_CLIENT_LEADER སྒོ་སྒྲིག་ལུ་ གཞི་སྒྲིག་འབད་ནི་གི་ཚབ་ལུ་ དེ་ཉིད་ལུ་ གཞི་སྒྲིག་འབདཝ་ཨིན། \n"
+
+#. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
+#. * authoritative source for that info. Some apps such as mplayer or
+#. * xine disable resize via MWM but not WM_NORMAL_HINTS, but that
+#. * leads to e.g. us not fullscreening their windows.  Apps that set
+#. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
+#. * about these apps but make them work.
+#.
+#: ../src/window.c:5878
+#, c-format
+msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
+msgstr "སྒོ་སྒྲིག་%s གིས་ དེ་གི་ཚད་གཞི་སླར་སྒྲིག་འབད་མི་བཏུབ་པའི་ བརྡ་སྟོན་ནི་ལུ་ ཨེམ་ཌབ་ལུ་ཨེམ་བརྡ་མཚོན་ཅིག་ གཞི་སྒྲིག་འབདཝ་ཨིན། དེ་འབདཝ་ད་ ཚད་ཀྱི་ཉུང་མཐའ་%d x %d དང་ མང་མཐའ་%d x %d གཞི་སྒྲིག་འབདཝ་ཨིན་རུང་ དེ་ལུ་དོན་དག་ སྦོམ་ཅིག་མེདཔ་ཨིན་པས། \n"
+
+#: ../src/xprops.c:153
+#, c-format
+msgid ""
+"Window 0x%lx has property %s\n"
+"that was expected to have type %s format %d\n"
+"and actually has type %s format %d n_items %d.\n"
+"This is most likely an application bug, not a window manager bug.\n"
+"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
+msgstr ""
+"སྒོ་སྒྲིག་0x%lx ལུ་ རྒྱུ་དངོས་%sའདུག \n"
+"དེ་ལུ་དབྱེ་བ་%sརྩ་སྒྲིག་%dཡོད་དགོ་པའི་རེ་བ་བསྐྱེདཔ་ཨིན་རུང་\n"
+" ངོ་མ་ལུ་དབྱེ་བ་%s རྩ་སྒྲིག་%d དང་ རྣམ་གྲངས་%d འདུག\n"
+"འདི་སྒོ་སྒྲིག་འཛིན་སྐྱོང་པའི་རྐྱེན་མེན་པར་ གློག་རིམ་གྱི་རྐྱེན་ཨིནམ་བཟུམ་ཅིག་འདུག\n"
+" སྒོ་སྒྲིག་དེ་ལུ་མགོ་མིང་=\"%s\" དབྱེ་ཁག་=\"%s\" མིང་ =\"%s\" འདུག \n"
+
+#: ../src/xprops.c:399
+#, c-format
+msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
+msgstr "རྒྱུ་དངོས་ %s ཡོད་མི་ སྒོ་སྒྲིག་ 0x%lx ནང་ལུ་ ནུས་མེད་ཡུ་ཊི་ཨེཕ་-༨ འདུ\n"
+
+#: ../src/xprops.c:482
+#, c-format
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr "རྒྱུ་དངོས་ %s ཡོད་མི་ སྒོ་སྒྲིག་ 0x%lx ནང་ལུ་ ཐོ་ཡིག་ནང་ལུ་རྣམ་གྲངས་  %d གི་དོན་ལས་ ནུས་མེད་ཡུ་ཊི་ཨེཕ་-༨ ཡོད\n"
+
+#~ msgid ""
+#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
+#~ "display=DISPLAY] [--replace] [--version]\n"
+#~ msgstr ""
+#~ "མེ་ཊ་སི་ཊི་ [--ཨེསི་ཨེམ་ ལྕོགས་མིན་] [--ཨེསི་ཨེམ་-ཞབས་ཏོག་སྤྱོད་མིའི་-ཨའི་ཌི་=ཨའི་ཌི་] [ཨེསི་ཨེམ་-"
+#~ "སྲུངས་-ཡིག་སྣོད་=ཡིག་སྣོད་མིང་] [--བཀྲམ་སྟོན་=བཀྲམ་སྟོན་] [--ཚབ་འཙུགས་] [--ཐོན་རིམ] \n"
+#~ msgid "No \"%s\" attribute on element <%s>"
+#~ msgstr "ཁྱད་ཆོས་\"%s\"མིན་འདུག་ ཆ་ཤས་<%s> གུ"
+
