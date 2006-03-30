@@ -39,9 +39,15 @@ workspace wrapping:
   http://bugzilla.gnome.org/show_bug.cgi?id=89315
 
 raise windows on click:
+  http://bugzilla.gnome.org/show_bug.cgi?id=326156
   http://bugzilla.gnome.org/show_bug.cgi?id=86108
   http://bugzilla.gnome.org/show_bug.cgi?id=115072
   http://bugzilla.gnome.org/show_bug.cgi?id=115753
+
+Pointer warping:
+  http://bugzilla.gnome.org/show_bug.cgi?id=134353
+  http://bugzilla.gnome.org/show_bug.cgi?id=134352
+  (Think about tasklist & window selector too; this would be a very bad idea)
 
 
 Tracking bugs

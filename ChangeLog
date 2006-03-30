@@ -1,11 +1,21 @@
+2006-03-29  Elijah Newren  <newren gmail com>
+
+	* rationales.txt: Add bugs about pointer warping; update
+	raise-on-click ones.
+
 2006-03-29  Thomas Thurman   <thomas@thurman.org.uk>
+
+	Abstract out the functions for setting/unsetting demands attention
+	hint and avoid doing it when the window isn't obscured.  Fixes the
+	remainder of #305882.
+
 	* src/window.c, src/window.h (meta_window_set_demands_attention,
-	meta_window_unset_demands_attention): mark a window as needing
-	or not needing the user's attention
+	meta_window_unset_demands_attention): new functions to mark a
+	window as needing or not needing the user's attention
 	* src/window.c (meta_window_show, window_activate,
 	meta_window_focus, meta_window_configure_request,
 	meta_window_client_message): use the new set/unset
-	demands attention functions. Fixes #305882.
+	demands attention functions. 
 
 2006-03-29  Björn Lindqvist  <bjourne@gmail.com>
 
