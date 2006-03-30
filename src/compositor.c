@@ -1243,6 +1243,7 @@ struct MoveInfo
   MetaWindow *window;
   gdouble last_time;
   gboolean window_destroyed;
+  MetaCompositor *compositor;
 };
 
 #endif
@@ -1286,7 +1287,7 @@ wobble (gpointer data)
       if (!info->window_destroyed)
 	meta_screen_info_unset_patch (minfo, get_xid (info->window));
       g_free (info);
-      info = NULL;
+      info->compositor->move_info = NULL;
       g_print ("stop wobb\n");
       return FALSE;
     }
@@ -1343,16 +1344,19 @@ meta_compositor_begin_move (MetaCompositor *compositor,
   
   compositor->move_info = g_new0 (MoveInfo, 1);
   
+  compositor->move_info->compositor = compositor;
   compositor->move_info->last_time = 0.0;
   compositor->move_info->timer = g_timer_new ();
   compositor->move_info->window_destroyed = FALSE;
   
   compute_window_rect (window, &rect);
   
+#if 0
   g_print ("init: %d %d\n", initial->x, initial->y);
   g_print ("window: %d %d\n", window->rect.x, window->rect.y);
   g_print ("frame: %d %d\n", rect.x, rect.y);
   g_print ("grab: %d %d\n", grab_x, grab_y);
+#endif
   
   compositor->move_info->model = model_new (&rect, TRUE);
   compositor->move_info->window = window;

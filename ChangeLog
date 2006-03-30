@@ -1,3 +1,7 @@
+Thu Mar 30 16:38:35 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/compositor.c (meta_compositor_begin_move): Fix an illegal write.
+
 Thu Mar 30 16:13:52 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* composite.c: Turn wobbling back on  Add new explosion effect.
