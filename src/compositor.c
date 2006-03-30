@@ -1085,6 +1085,73 @@ run_animation_01 (gpointer data)
   return TRUE;
 }
 
+#define EXPLODE_TIME 1.0
+
+#define BASE 0.5
+
+static double
+transform (double in)
+{
+    return (pow (BASE, in) - 1) / (BASE - 1);
+}
+
+typedef struct
+{
+    MetaWindow *		window;
+    gdouble			level;
+    GTimer *			timer;
+    MetaAnimationFinishedFunc	func;
+    gpointer			data;
+    MetaScreenInfo *		minfo;
+} ExplodeInfo;
+
+static gboolean
+update_explosion (gpointer data)
+{
+    ExplodeInfo *info = data;
+    gdouble elapsed = g_timer_elapsed (info->timer, NULL);
+    gdouble t = elapsed / EXPLODE_TIME;
+
+    meta_screen_info_set_explode (info->minfo, get_xid (info->window), transform (t));
+
+    if (elapsed > EXPLODE_TIME)
+    {
+	if (info->func)
+	    info->func (info->data);
+	
+	meta_screen_info_hide_window (info->minfo, get_xid (info->window));
+	meta_screen_info_set_explode (info->minfo, get_xid (info->window), 0.0);
+	return FALSE;
+    }
+    else
+    {
+	return TRUE;
+    }
+}
+
+void
+meta_compositor_minimize (MetaCompositor	   *compositor,
+			  MetaWindow               *window,
+			  int                       x,
+			  int                       y,
+			  int                       width,
+			  int                       height,
+			  MetaAnimationFinishedFunc finished,
+			  gpointer                  data)
+{
+    ExplodeInfo *info = g_new0 (ExplodeInfo, 1);
+
+    info->window = window;
+    info->level = 0.0;
+    info->timer = g_timer_new ();
+    info->func = finished;
+    info->data = data;
+    info->minfo = meta_screen_info_get_by_xwindow (get_xid (window));
+    
+    g_idle_add (update_explosion, info);
+}
+
+#if 0
 void
 meta_compositor_minimize (MetaCompositor           *compositor,
 			  MetaWindow               *window,
@@ -1127,6 +1194,7 @@ meta_compositor_minimize (MetaCompositor           *compositor,
   
   g_idle_add (run_animation_01, info);
 }
+#endif
 
 #endif
 
@@ -1208,8 +1276,10 @@ wobble (gpointer data)
   MetaScreenInfo *minfo = info->screen->compositor_data;
   double t = g_timer_elapsed (info->timer, NULL);
 
+#if 0
   g_print ("info->window_destroyed: %d\n",
 	   info->window_destroyed);
+#endif
   if ((info->finished && model_is_calm (info->model)) ||
       info->window_destroyed)
     {
@@ -1266,7 +1336,6 @@ meta_compositor_begin_move (MetaCompositor *compositor,
 			    MetaRectangle *initial,
 			    int grab_x, int grab_y)
 {
-#if 0
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   MetaRectangle rect;
 
@@ -1293,7 +1362,6 @@ meta_compositor_begin_move (MetaCompositor *compositor,
   
   g_idle_add (wobble, compositor->move_info);
 #endif
-#endif
 }
 
 void
@@ -1301,10 +1369,8 @@ meta_compositor_update_move (MetaCompositor *compositor,
 			     MetaWindow *window,
 			     int x, int y)
 {
-#if 0
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   model_update_move (compositor->move_info->model, x, y);
-#endif
 #endif
 }
 
@@ -1312,10 +1378,8 @@ void
 meta_compositor_end_move (MetaCompositor *compositor,
 			  MetaWindow *window)
 {
-#if 0
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   compositor->move_info->finished = TRUE;
-#endif
 #endif
 }
 
@@ -1324,7 +1388,6 @@ void
 meta_compositor_free_window (MetaCompositor *compositor,
 			     MetaWindow *window)
 {
-#if 0
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   g_print ("freeing\n");
   if (compositor->move_info)
@@ -1333,6 +1396,5 @@ meta_compositor_free_window (MetaCompositor *compositor,
       compositor->move_info->window_destroyed = TRUE;
       compositor->move_info = NULL;
     }
-#endif
 #endif
 }

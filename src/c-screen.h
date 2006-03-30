@@ -42,3 +42,8 @@ void		meta_screen_info_set_target_rect (MetaScreenInfo *info,
 						  Window xwindow,
 						  WsRectangle *rect);
 
+void		meta_screen_info_set_explode (MetaScreenInfo *info,
+					      Window xwindow,
+					      gdouble level);
+void		meta_screen_info_hide_window (MetaScreenInfo *info,
+					      Window          xwindow);

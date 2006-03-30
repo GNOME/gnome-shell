@@ -1,3 +1,7 @@
+Thu Mar 30 16:13:52 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* composite.c: Turn wobbling back on  Add new explosion effect.
+
 2006-03-29  Elijah Newren  <newren gmail com>
 
 	Fix grouping in the presence of ancestors; caught by Björn.

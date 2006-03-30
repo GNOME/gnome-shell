@@ -109,6 +109,9 @@ repaint (gpointer data)
 {
     MetaScreenInfo *info = data;
     CmState *state;
+#if 0
+    g_print ("repaint\n");
+#endif
     glViewport (0, 0,
 		info->meta_screen->rect.width,
 		info->meta_screen->rect.height);
@@ -116,7 +119,7 @@ repaint (gpointer data)
     glLoadIdentity();
     
 #if 0
-    glClearColor (1.0, 1.0, 0.8, 1.0);
+    glClearColor (0, 0, 0, 1.0);
     glClear (GL_COLOR_BUFFER_BIT);
 #endif
 
@@ -257,9 +260,12 @@ claim_selection (MetaScreenInfo *info)
 }
 
 static void
-queue_paint (CmStacker *stacker,
+queue_paint (CmNode *node,
 	     MetaScreenInfo *info)
 {
+#if 0
+    g_print ("queueing %s\n", G_OBJECT_TYPE_NAME (node));
+#endif
     meta_screen_info_queue_paint (info);
 }
 
@@ -269,7 +275,7 @@ meta_screen_info_redirect (MetaScreenInfo *info)
     WsWindow *root = ws_screen_get_root_window (info->screen);
     WsRectangle source;
     WsRectangle target;
-    WsRegion *region;
+    WsServerRegion *region;
     
 #if 0
     g_print ("redirecting %lx\n", WS_RESOURCE_XID (root));
@@ -339,6 +345,9 @@ meta_screen_info_unredirect (MetaScreenInfo *info)
 void
 meta_screen_info_queue_paint (MetaScreenInfo *info)
 {
+#if 0
+    g_print ("queuing\n");
+#endif
     if (!info->idle_id)
 	info->idle_id = g_idle_add (repaint, info);
 }
@@ -675,4 +684,31 @@ meta_screen_info_set_target_rect (MetaScreenInfo *info,
 	cm_drawable_node_set_scale_rect (node, rect);
 }
 
+void
+meta_screen_info_set_explode (MetaScreenInfo *info,
+			      Window xwindow,
+			      gdouble level)
+{
+    CmDrawableNode *node = CM_DRAWABLE_NODE (find_node (info, xwindow));
+
+    if (node)
+    {
+#if 0
+	g_print ("level: %f\n", level);
 #endif
+    
+	cm_drawable_node_set_explosion_level (node, level);
+    }
+}
+
+void
+meta_screen_info_hide_window (MetaScreenInfo *info,
+			      Window          xwindow)
+{
+    CmDrawableNode *node = CM_DRAWABLE_NODE (find_node (info, xwindow));
+
+    cm_drawable_node_set_viewable (node, FALSE);
+}
+
+#endif
+
