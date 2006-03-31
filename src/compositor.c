@@ -1344,7 +1344,12 @@ meta_compositor_begin_move (MetaCompositor *compositor,
   MetaRectangle rect;
   MoveInfo *move_info;
 
+#if 0
   g_print ("begin move\n");
+#endif
+
+  if (!g_getenv ("USE_WOBBLY"))
+      return;
   
   move_info = g_new0 (MoveInfo, 1);
 
@@ -1400,6 +1405,9 @@ meta_compositor_update_move (MetaCompositor *compositor,
 #ifdef HAVE_COMPOSITE_EXTENSIONS
     MoveInfo *move_info = find_info (window);
 
+    if (!g_getenv ("USE_WOBBLY"))
+	return;
+
     model_update_move (move_info->model, x, y);
 #endif
 }
@@ -1411,6 +1419,9 @@ meta_compositor_end_move (MetaCompositor *compositor,
 #ifdef HAVE_COMPOSITE_EXTENSIONS
     MoveInfo *info = find_info (window);
 
+    if (!g_getenv ("USE_WOBBLY"))
+	return;
+    
     info->finished = TRUE;
 #endif
 }
@@ -1423,6 +1434,9 @@ meta_compositor_free_window (MetaCompositor *compositor,
 #ifdef HAVE_COMPOSITE_EXTENSIONS
     MoveInfo *info = find_info (window);
 
+    if (!g_getenv ("USE_WOBBLY"))
+	return;
+    
     if (info)
 	info->window_destroyed = TRUE;
 #endif

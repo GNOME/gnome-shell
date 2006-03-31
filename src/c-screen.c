@@ -321,7 +321,11 @@ meta_screen_info_redirect (MetaScreenInfo *info)
     target.height = screen_h / 4;
     
     info->magnifier = cm_magnifier_new (info->stacker, &source, &target);
-    cm_magnifier_set_active (info->magnifier, TRUE);
+
+    if (g_getenv ("USE_MAGNIFIER"))
+	cm_magnifier_set_active (info->magnifier, TRUE);
+    else
+	cm_magnifier_set_active (info->magnifier, FALSE);
     
     info->repaint_id =
 	g_signal_connect (info->magnifier, "need_repaint",
