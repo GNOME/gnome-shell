@@ -1,3 +1,8 @@
+Fri Mar 31 12:13:21 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/c-screen.c (meta_screen_info_redirect): Don't hardcode
+	screen size.
+
 Thu Mar 30 17:01:12 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/compositor.c (struct MetaCompositor): Fix the memory

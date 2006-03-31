@@ -276,6 +276,8 @@ meta_screen_info_redirect (MetaScreenInfo *info)
     WsRectangle source;
     WsRectangle target;
     WsServerRegion *region;
+    int screen_w;
+    int screen_h;
     
 #if 0
     g_print ("redirecting %lx\n", WS_RESOURCE_XID (root));
@@ -302,19 +304,24 @@ meta_screen_info_redirect (MetaScreenInfo *info)
     info->stacker = cm_stacker_new ();
 
     cm_stacker_add_child (info->stacker, cm_square_new (0.3, 0.3, 0.8, 1.0));
-    
-    source.x = 600;
-    source.y = 100;
-    source.width = 400;
-    source.height = 75;
 
-    target.x = 1300;
-    target.y = 900;
-    target.width = 300;
-    target.height = 300;
+    screen_w = ws_screen_get_width (info->screen);
+    screen_h = ws_screen_get_height (info->screen);
+
+    g_print ("width: %d height %d\n", screen_w, screen_h);
+    
+    source.x = (screen_w - (screen_w / 4)) / 2;
+    source.y = screen_h / 16;
+    source.width = screen_w / 4;
+    source.height = screen_h / 16;
+    
+    target.x = 0;
+    target.y = screen_h - screen_h / 4;
+    target.width = screen_w;
+    target.height = screen_h / 4;
     
     info->magnifier = cm_magnifier_new (info->stacker, &source, &target);
-    cm_magnifier_set_active (info->magnifier, FALSE);
+    cm_magnifier_set_active (info->magnifier, TRUE);
     
     info->repaint_id =
 	g_signal_connect (info->magnifier, "need_repaint",
