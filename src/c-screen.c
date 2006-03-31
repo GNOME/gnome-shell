@@ -344,11 +344,14 @@ meta_screen_info_unredirect (MetaScreenInfo *info)
     g_print ("unredirecting %lx\n", WS_RESOURCE_XID (root));
 #endif
     
-    g_signal_handler_disconnect (info->stacker, info->repaint_id);
+    g_signal_handler_disconnect (info->magnifier, info->repaint_id);
     g_object_unref (info->stacker);
     
     ws_window_unredirect_subwindows (root);
+#if 0
     ws_window_unmap (info->gl_window);
+#endif
+    ws_screen_release_gl_window (ws_screen);
     
     ws_display_sync (info->display);
 }

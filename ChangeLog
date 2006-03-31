@@ -1,3 +1,8 @@
+Fri Mar 31 16:44:56 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/c-screen.c (meta_screen_info_unredirect): Release the GL
+	window here. Disconect from the magnifier, not the stacker.
+
 Fri Mar 31 12:24:26 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/c-screen.c (meta_screen_info_redirect): Only use magnifier
