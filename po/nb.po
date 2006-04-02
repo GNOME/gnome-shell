@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.13.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-02-18 14:04+0100\n"
-"PO-Revision-Date: 2006-02-18 14:14+0100\n"
+"POT-Creation-Date: 2006-04-02 14:36+0200\n"
+"PO-Revision-Date: 2006-04-02 14:37+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -63,7 +63,7 @@ msgstr "Feil under henting av vertsnavn: %s\n"
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Feil under åpning av X Window System skjerm «%s»\n"
 
-#: ../src/errors.c:233
+#: ../src/errors.c:269
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -74,7 +74,7 @@ msgstr ""
 "sannsynligvis ble X-tjeneren stengt ned eller kanskje du drepte/ødela\n"
 "vinduhåndtereren.\n"
 
-#: ../src/errors.c:240
+#: ../src/errors.c:276
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatal IU-feil %d (%s) på skjerm «%s».\n"
@@ -246,7 +246,7 @@ msgstr "Flytt til arbeidsområdet _over"
 msgid "Move to Workspace _Down"
 msgstr "Flytt til arbeidsområdet ne_denfor"
 
-#: ../src/menu.c:164 ../src/prefs.c:2004 ../src/prefs.c:2305
+#: ../src/menu.c:164 ../src/prefs.c:1984 ../src/prefs.c:2347
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbeidsområde %d"
@@ -260,7 +260,7 @@ msgstr "Arbeidsområde 1_0"
 msgid "Workspace %s%d"
 msgstr "Arbeidsområde %s%d"
 
-#: ../src/menu.c:370
+#: ../src/menu.c:373
 msgid "Move to Another _Workspace"
 msgstr "Flytt til et annet ar_beidsområde"
 
@@ -590,7 +590,17 @@ msgid ""
 "move or resize operation). Special messages, such as activation requests "
 "from pagers, may also raise windows when this option is false. This option "
 "is currently disabled in click-to-focus mode."
-msgstr "Mange handlinger (f.eks klikk i klientområdet, flytting av eller endring av størrelse på vinduer) hever normalt sett vinduet som en sideeffekt. Sett dette alternativet til «false» for å fjerne koblingen mellom heving av vinduer og andre handlinger. Når denne er satt til «false» kan vinduer fremdeles heves av alt-venstreklikk hvor som helst på vinduet eller et normalt klikk på vindudekorasjonene (det antas at slike klikk ikke brukes til å starte flytting eller endring av størrelse på vinduet). Spesielle meldinger slik som aktiveringsforespørsler fra skrivebordshåndterere kan også heve vinduer når denne nøkkelen er satt til «false». Dette alternativet er deaktivert i klikk-for-fokus modus."
+msgstr ""
+"Mange handlinger (f.eks klikk i klientområdet, flytting av eller endring av "
+"størrelse på vinduer) hever normalt sett vinduet som en sideeffekt. Sett "
+"dette alternativet til «false» for å fjerne koblingen mellom heving av "
+"vinduer og andre handlinger. Når denne er satt til «false» kan vinduer "
+"fremdeles heves av alt-venstreklikk hvor som helst på vinduet eller et "
+"normalt klikk på vindudekorasjonene (det antas at slike klikk ikke brukes "
+"til å starte flytting eller endring av størrelse på vinduet). Spesielle "
+"meldinger slik som aktiveringsforespørsler fra skrivebordshåndterere kan "
+"også heve vinduer når denne nøkkelen er satt til «false». Dette alternativet "
+"er deaktivert i klikk-for-fokus modus."
 
 #: ../src/metacity.schemas.in.h:26
 msgid "Maximize window"
@@ -2000,18 +2010,18 @@ msgstr "Fokuseringsmodus for vindu"
 msgid "Window title font"
 msgstr "Skrift for vindutittel"
 
-#: ../src/prefs.c:567 ../src/prefs.c:583 ../src/prefs.c:599 ../src/prefs.c:615
-#: ../src/prefs.c:631 ../src/prefs.c:647 ../src/prefs.c:667 ../src/prefs.c:683
-#: ../src/prefs.c:699 ../src/prefs.c:715 ../src/prefs.c:731 ../src/prefs.c:747
-#: ../src/prefs.c:763 ../src/prefs.c:779 ../src/prefs.c:796 ../src/prefs.c:812
-#: ../src/prefs.c:828 ../src/prefs.c:844 ../src/prefs.c:860 ../src/prefs.c:875
-#: ../src/prefs.c:890 ../src/prefs.c:905 ../src/prefs.c:921 ../src/prefs.c:937
-#: ../src/prefs.c:953 ../src/prefs.c:969
+#: ../src/prefs.c:547 ../src/prefs.c:563 ../src/prefs.c:579 ../src/prefs.c:595
+#: ../src/prefs.c:611 ../src/prefs.c:627 ../src/prefs.c:647 ../src/prefs.c:663
+#: ../src/prefs.c:679 ../src/prefs.c:695 ../src/prefs.c:711 ../src/prefs.c:727
+#: ../src/prefs.c:743 ../src/prefs.c:759 ../src/prefs.c:776 ../src/prefs.c:792
+#: ../src/prefs.c:808 ../src/prefs.c:824 ../src/prefs.c:840 ../src/prefs.c:855
+#: ../src/prefs.c:870 ../src/prefs.c:885 ../src/prefs.c:901 ../src/prefs.c:917
+#: ../src/prefs.c:933 ../src/prefs.c:949
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-nøkkel «%s» er satt til en ugyldig type\n"
 
-#: ../src/prefs.c:1014
+#: ../src/prefs.c:994
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2020,12 +2030,12 @@ msgstr ""
 "«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for endring av "
 "musknapp\n"
 
-#: ../src/prefs.c:1038 ../src/prefs.c:1528
+#: ../src/prefs.c:1018 ../src/prefs.c:1508
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-nøkkel «%s» er satt til en ugyldig verdi\n"
 
-#: ../src/prefs.c:1161
+#: ../src/prefs.c:1141
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
@@ -2034,12 +2044,12 @@ msgstr ""
 "%d lagret i GConf-nøkkel %s er ikke en fornuftig verdi for cursor_size. Må "
 "være i området 1..128\n"
 
-#: ../src/prefs.c:1241
+#: ../src/prefs.c:1221
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Kunne ikke tolke skriftbeskrivelsen «%s» fra GConf-nøkkel %s\n"
 
-#: ../src/prefs.c:1426
+#: ../src/prefs.c:1406
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2048,7 +2058,7 @@ msgstr ""
 "%d lagret i GConf-nøkkel %s er ikke et lesbart antall arbeidsområder, aktivt "
 "maksimum er %d\n"
 
-#: ../src/prefs.c:1486
+#: ../src/prefs.c:1466
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2056,17 +2066,17 @@ msgstr ""
 "Funksjonalitet for å gå rundt ødelagte programmer er deaktivert. Noen "
 "programmer vil kanskje ikke oppføre seg korrekt.\n"
 
-#: ../src/prefs.c:1555
+#: ../src/prefs.c:1535
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d lagret i GConf-nøkkel %s er utenfor området 0 til %d\n"
 
-#: ../src/prefs.c:1695
+#: ../src/prefs.c:1675
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Feil under spesifisering av antall arbeidsområder til %d: %s\n"
 
-#: ../src/prefs.c:2031
+#: ../src/prefs.c:2011
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2075,12 +2085,12 @@ msgstr ""
 "«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for "
 "tastaturbinding «%s»\n"
 
-#: ../src/prefs.c:2386
+#: ../src/prefs.c:2428
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Feil under setting av navn på arbeidsområde %d til «%s»: %s\n"
 
-#: ../src/resizepopup.c:126
+#: ../src/resizepopup.c:123
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
@@ -3200,15 +3210,15 @@ msgstr "Åpnet loggfil %s\n"
 msgid "Window manager: "
 msgstr "Vindushåndterer: "
 
-#: ../src/util.c:366
+#: ../src/util.c:368
 msgid "Bug in window manager: "
 msgstr "Feil i vindushåndterer: "
 
-#: ../src/util.c:395
+#: ../src/util.c:397
 msgid "Window manager warning: "
 msgstr "Advarsel fra vindushåndterer: "
 
-#: ../src/util.c:419
+#: ../src/util.c:421
 msgid "Window manager error: "
 msgstr "Feil i vindushåndterer: "
 
@@ -3217,8 +3227,13 @@ msgstr "Feil i vindushåndterer: "
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Programmet satte en feil _NET_WM_PID %lu\n"
 
+#: ../src/window-props.c:233
+#, c-format
+msgid "%s (on %s)"
+msgstr "%s (på %s)"
+
 #. first time through
-#: ../src/window.c:5409
+#: ../src/window.c:5204
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3234,7 +3249,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6028
+#: ../src/window.c:5800
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
