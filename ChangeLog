@@ -1,3 +1,12 @@
+2006-04-02  Elijah Newren  <newren gmail com>
+
+	Fix constraints bug causing negative width windows and crashes.
+	#336651
+
+	* src/constraints.c (constrain_partially_onscreen): Don't
+	accidentally shove & resize the window by requiring more pixels to
+	be onscreen than the size of the window.
+
 Fri Mar 31 16:44:56 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/c-screen.c (meta_screen_info_unredirect): Release the GL

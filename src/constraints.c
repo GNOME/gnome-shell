@@ -1080,7 +1080,7 @@ constrain_partially_onscreen (MetaWindow         *window,
    * window width/height but clamp to the range of (10,75) pixels.  This is
    * somewhat of a seat of my pants random guess at what might look good.
    * Then, the amount that is allowed off is just the window size minus
-   * this amount.
+   * this amount (but no less than 0 for tiny windows).
    */
   horiz_amount_onscreen = info->current.width  / 4;
   vert_amount_onscreen  = info->current.height / 4;
@@ -1088,6 +1088,8 @@ constrain_partially_onscreen (MetaWindow         *window,
   vert_amount_onscreen  = CLAMP (vert_amount_onscreen,  10, 75);
   horiz_amount_offscreen = info->current.width - horiz_amount_onscreen;
   vert_amount_offscreen  = info->current.height - vert_amount_onscreen;
+  horiz_amount_offscreen = MAX (horiz_amount_offscreen, 0);
+  vert_amount_offscreen  = MAX (vert_amount_offscreen,  0);
   top_amount = vert_amount_offscreen;
   /* Allow the titlebar to touch the bottom panel;  If there is no titlebar,
    * require vert_amount to remain on the screen.
