@@ -1975,7 +1975,7 @@ pos_eval_helper (PosToken                   *tokens,
         {
           g_set_error (err, META_THEME_ERROR,
                        META_THEME_ERROR_FAILED,
-                       _("Coordinate expression parser overflowed its buffer, this is really a Metacity bug, but are you sure you need a huge expression like that?"));
+                       _("Coordinate expression parser overflowed its buffer."));
           return FALSE;
         }
 

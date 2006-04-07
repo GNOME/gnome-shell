@@ -1,3 +1,10 @@
+2006-03-27  Gora Mohanty  <gmohanty@cvs.gnome.org>
+
+        * src/metacity.schemas.in:
+	* src/theme.c:
+	Changes strings to make them more readable, and more translatable.
+	Fixes #335720.
+
 2006-04-02  Elijah Newren  <newren gmail com>
 
 	Fix constraints bug causing negative width windows and crashes.

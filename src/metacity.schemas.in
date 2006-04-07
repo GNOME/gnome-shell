@@ -54,15 +54,15 @@
       <type>string</type>
       <default>click</default>
       <locale name="C">
-         <short>Window focus mode</short>
-         <long>
+        <short>Window focus mode</short>
+        <long>
           The window focus mode indicates how windows are activated. 
           It has three possible values; "click" means windows must 
           be clicked in order to focus them, "sloppy" means windows
           are focused when the mouse enters the window, and "mouse" means
           windows are focused when the mouse enters the window and 
           unfocused when the mouse leaves the window.
-         </long>
+        </long>
       </locale>
     </schema>
 
@@ -77,15 +77,13 @@
                 interactions</short>
          <long>
            Many actions (e.g. clicking in the client area, moving or
-           resizing the window) normally raise the window as a side-effect.
-           Set this option to false to decouple raising from other user
-           interactions.  When false, windows can still be raised by an
-           alt-left-click anywhere on the window or a normal click on the
-           window decorations (assuming such clicks aren't used to start a
-           move or resize operation).  Special messages, such as activation
-           requests from pagers, may also raise windows when this option is
-           false.  This option is currently disabled in click-to-focus
-           mode.
+           resizing the window) normally raise the window as a
+           side-effect. Set this option to false to decouple raising from
+           other user actions.  Even when this option is false, windows can
+           still be raised by an alt-left-click anywhere on the window, a
+           normal click on the window decorations, or by special messages,
+           such as activation requests from pagers. This option is
+           currently disabled in click-to-focus mode.
          </long>
       </locale>
     </schema>
@@ -115,22 +113,14 @@
       <type>bool</type>
       <default>false</default>
       <locale name="C">
-         <short>Automatically raises the focused window</short>
-         <long>
-          If true, and the focus mode is either "sloppy" or "mouse"
-	  then the focused window will be automatically raised after a 
-	  delay (the delay is specified by the auto_raise_delay key).
-
-          This preference is poorly named, but kept for backwards
-          compatibility.  To try to be more clear (at least to the
-          technically inclined), its meaning is "automatically raise
-          the window following a timeout which is triggered by
-          non-grabbed mouse entry in sloppy or mouse focus modes".  It
-          is unrelated to clicking behavior (i.e. this is not related
-          to raise-on-click/orthogonal-raise).  It is unrelated to
-          entering a window during drag and drop (because that results
-          in the application grabbing the mouse)
-         </long>
+        <short>Automatically raises the focused window</short>
+        <long>
+          If set to true, and the focus mode is either "sloppy" or "mouse"
+          then the focused window will be automatically raised after a
+          delay specified by the auto_raise_delay key. This is not related
+          to clicking on a window to raise it, nor to entering a window
+          during drag-and-drop.
+        </long>
       </locale>
     </schema>
 
@@ -141,11 +131,11 @@
       <type>int</type>
       <default>500</default>
       <locale name="C">
-         <short>Delay in milliseconds for the auto raise option</short>
-         <long>
-	 The time delay before raising a window if auto_raise is 
-	set to true. The delay is given in thousandths of a second.
-         </long>
+        <short>Delay in milliseconds for the auto raise option</short>
+        <long>
+          The time delay before raising a window if auto_raise is set to
+          true. The delay is given in thousandths of a second.
+        </long>
       </locale>
     </schema>
 
@@ -187,17 +177,13 @@
       <type>string</type>
       <default>Sans Bold 10</default>
       <locale name="C">
-         <short>Window title font</short>
-         <long>
+        <short>Window title font</short>
+        <long>
           A font description string describing a font for window
-          titlebars. The size from the description
-          will only be used if the titlebar_font_size option is set 
-          to 0, however. Also, this option is disabled if the
-          titlebar_uses_desktop_font option is set to true.
-          By default, titlebar_font is unset, causing Metacity to fall 
-          back to the desktop font even if titlebar_uses_desktop_font 
-          is false.
-         </long>
+          titlebars. The size from the description will only be used if the
+          titlebar_font_size option is set to 0. Also, this option is
+          disabled if the titlebar_uses_desktop_font option is set to true.
+        </long>
       </locale>
     </schema>
 
@@ -208,12 +194,12 @@
       <type>int</type>
       <default>4</default>
       <locale name="C">
-         <short>Number of workspaces</short>
-         <long>
-          Number of workspaces. Must be more than zero, and 
-          has a fixed maximum (to prevent accidentally destroying 
-          your desktop by asking for 34 million workspaces).
-         </long>
+        <short>Number of workspaces</short>
+        <long>
+          Number of workspaces. Must be more than zero, and has a fixed
+          maximum to prevent making the desktop unusable by accidentally
+          asking for too many workspaces.
+        </long>
       </locale>
     </schema>
 
@@ -224,11 +210,12 @@
       <type>bool</type>
       <default>false</default>
       <locale name="C">
-         <short>Enable Visual Bell</short>
-         <long>Turns on a visual indication when an application or the system
-	issues a 'bell' or 'beep'; useful for the hard-of-hearing and for use
-	in noisy environments, or when 'audible bell' is off.
-         </long>
+        <short>Enable Visual Bell</short>
+        <long>
+          Turns on a visual indication when an application or the system
+          issues a 'bell' or 'beep'; useful for the hard-of-hearing and for
+          use in noisy environments.
+        </long>
       </locale>
     </schema>
 
@@ -239,11 +226,12 @@
       <type>bool</type>
       <default>true</default>
       <locale name="C">
-         <short>System Bell is Audible</short>
-         <long>Determines whether applications or the system can generate audible 
-	'beeps'; may be used in conjunction with 'visual bell' to 
-	allow silent 'beeps'.
-         </long>
+        <short>System Bell is Audible</short>
+        <long>
+          Determines whether applications or the system can generate
+          audible 'beeps'; may be used in conjunction with 'visual bell' to
+          allow silent 'beeps'.
+        </long>
       </locale>
     </schema>
 
@@ -254,17 +242,17 @@
       <type>string</type>
       <default>fullscreen</default>
       <locale name="C">
-         <short>Visual Bell Type</short>
-         <long>
-	Tells Metacity how to implement the visual indication that
-	the system bell or another application 'bell' indicator has
-	been rung.  Currently there are two valid values, "fullscreen",
-	which causes a fullscreen white-black flash, and "frame_flash" which
-	causes the titlebar of the application which sent the bell signal to
-	flash.  If the application which sent the bell is unknown (as is
-	usually the case for the default "system beep"), the currently
-	focused window's titlebar is flashed.
-         </long>
+        <short>Visual Bell Type</short>
+        <long>
+          Tells Metacity how to implement the visual indication that the
+          system bell or another application 'bell' indicator has been
+          rung.  Currently there are two valid values, "fullscreen", which
+          causes a fullscreen white-black flash, and "frame_flash" which
+          causes the titlebar of the application which sent the bell signal
+          to flash.  If the application which sent the bell is unknown (as
+          is usually the case for the default "system beep"), the currently
+          focused window's titlebar is flashed.
+        </long>
       </locale>
     </schema>
 
@@ -320,14 +308,12 @@
       <locale name="C">
          <short>If true, trade off usability for less resource usage</short>
          <long>
-           If true, metacity will give the user less feedback and less
-           sense of "direct manipulation", by using wireframes,
-           avoiding animations, or other means. This is a significant
-           reduction in usability for many users, but may allow legacy
-           applications and terminal servers to function when they
-           would otherwise be impractical. However, the wireframe
-           feature is disabled when accessibility is on to avoid weird
-           desktop breakages.
+           If true, metacity will give the user less feedback by using
+           wireframes, avoiding animations, or other means.  This is a
+           significant reduction in usability for many users, but may allow
+           legacy applications to continue working, and may also be a
+           useful tradeoff for terminal servers.  However, the wireframe
+           feature is disabled when accessibility is on.
          </long>
       </locale>
     </schema>
@@ -386,16 +372,14 @@ you set
       <locale name="C">
          <short>Toggle always on top state</short>
          <long>
-
-          The keybinding used to toggle always on top.  A window that
-	  is always on top will always be visible over other overlapping windows.
-          The format looks like "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1".
-          The parser is
-          fairly liberal and allows lower or upper case, and also
-          abbreviations such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If
-you set
-          the option to the special string "disabled", then there 
-          will be no keybinding for this action.
+          The keybinding used to toggle always on top.  A window that is
+          always on top will always be visible over other overlapping
+          windows.  The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1".  The parser is fairly liberal and
+          allows lower or upper case, and also abbreviations such as
+          "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If you set the option to the
+          special string "disabled", then there will be no keybinding for
+          this action.
          </long>
       </locale>
     </schema>
@@ -975,9 +959,9 @@ you set
          <short>Raise obscured window, otherwise lower</short>
          <long>
             This keybinding changes whether a window is above or below
-            other windows. If the window is covered by another window, it raises
-            the window above other windows. If the window is already fully visible, 
-            it lowers the window below other windows.
+            other windows.  If the window is covered by another one, it
+            raises the window above all others, and if the window is
+            already fully visible, it lowers it below all others.
 
             The format looks like "&lt;Control&gt;a" or
             "&lt;Shift&gt;&lt;Alt&gt;F1".
@@ -1920,22 +1904,17 @@ you set
       <type>bool</type>
       <default>false</default>
       <locale name="C">
-         <short>(Not implemented) Navigation works in terms of applications not windows</short>
-         <long> 
-         If true, then Metacity works in terms of applications rather 
-         than windows. The concept is a bit abstract, but 
-         in general an application-based setup is more like  
-         the Mac and less like Windows. When you focus a window 
-         in application-based mode, all the windows in the 
-         application will be raised. Also, in application-based 
-         mode, focus clicks are not passed through to windows 
-         in other applications. 
-         The existence of this setting is somewhat questionable. 
-         But it's better than having settings for all the specific 
-         details of application-based vs. window-based, e.g. 
-         whether to pass through clicks. Also, application-based mode
-         is largely unimplemented at the moment.
-         </long>
+        <short>(Not implemented) Navigation works in terms of applications not windows</short>
+        <long>
+          If true, then Metacity works in terms of applications rather than
+          windows. The concept is a bit abstract, but in general an
+          application-based setup is more like the Mac and less like
+          Windows. When you focus a window in application-based mode, all
+          the windows in the application will be raised. Also, in
+          application-based mode, focus clicks are not passed through to
+          windows in other applications. Application-based mode is,
+          however, largely unimplemented at the moment.
+        </long>
       </locale>
     </schema>
 
@@ -1946,30 +1925,15 @@ you set
       <type>bool</type>
       <default>false</default>
       <locale name="C">
-         <short>Disable misfeatures that are required by old or broken
-                applications</short>
-         <long> 
-          Some applications break specifications in ways that result
-          in window manager misfeatures. For example, ideally Metacity
-          would place all dialogs in a consistent position with
-          respect to their parent window. This requires ignoring
-          application-specified positions for dialogs. But some
-          versions of Java/Swing mark their popup menus as dialogs, 
-          so Metacity has to disable dialog positioning to allow 
-          menus to work in broken Java applications. There are 
-          several other examples like this.
-
-          This option puts Metacity in full-on Correct mode, which
-          perhaps gives a moderately nicer UI if you don't need to run
-          any broken apps. Sadly, workarounds must be enabled by
-          default; the real world is an ugly place.
-
-          Some of the workarounds are workarounds for limitations in 
-          the specifications themselves, so sometimes a bug 
-          in no-workarounds mode won't be fixable without 
-          amending a spec.
-         </long>
-
+        <short>Disable misfeatures that are required by old or broken
+               applications</short>
+        <long> 
+          Some applications disregard specifications in ways that result in
+          window manager misfeatures. This option puts Metacity in a
+          rigorously correct mode, which gives a more consistent user
+          interface, provided one does not need to run any misbehaving
+          applications.
+        </long>
       </locale>
     </schema>
 
