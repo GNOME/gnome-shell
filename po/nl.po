@@ -11,11 +11,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.2\n"
+"Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-13 07:12+0100\n"
-"PO-Revision-Date: 2006-03-13 14:23+0100\n"
-"Last-Translator: Tino Meinen <a.t.meinen@chello.nl> \n"
+"POT-Creation-Date: 2006-04-09 00:01+0200\n"
+"PO-Revision-Date: 2006-04-09 00:28+0200\n"
+"Last-Translator: Michiel Sikkes <michiel.sikkes@gmail.com> \n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -256,7 +256,7 @@ msgstr "Verplaatsen naar werkblad hierbov_en"
 msgid "Move to Workspace _Down"
 msgstr "Verplaatsen naar werkblad hier_onder"
 
-#: ../src/menu.c:164 ../src/prefs.c:2004 ../src/prefs.c:2367
+#: ../src/menu.c:164 ../src/prefs.c:1984 ../src/prefs.c:2347
 #, c-format
 msgid "Workspace %d"
 msgstr "Werkblad %d"
@@ -419,17 +419,13 @@ msgstr ""
 msgid ""
 "A font description string describing a font for window titlebars. The size "
 "from the description will only be used if the titlebar_font_size option is "
-"set to 0, however. Also, this option is disabled if the "
-"titlebar_uses_desktop_font option is set to true. By default, titlebar_font "
-"is unset, causing Metacity to fall back to the desktop font even if "
-"titlebar_uses_desktop_font is false."
+"set to 0. Also, this option is disabled if the titlebar_uses_desktop_font "
+"option is set to true."
 msgstr ""
-"Een fontbeschrijving voor het lettertype van de venstertitels. De grootte "
-"uit de beschrijving zal echter alleen worden gebruikt als titlebar_font_size "
-"op 0 is gezet. Tevens is deze optie uitgezet als titlebar_uses_desktop_font "
-"op 'waar' (true) staat. Standaard is titlebar_font niet ingesteld, zodat "
-"Metacity terugvalt naar het lettertype voor het bureaublad, zelfs al is "
-"titlebar_uses_desktop_font, onwaar (false)."
+"Een lettertypebeschrijving voor het lettertype van de venstertitels. De "
+"grootte uit de beschrijving zal echter alleen worden gebruikt als "
+"titlebar_font_size op 0 is gezet. Tevens is deze optie uitgezet als "
+"titlebar_uses_desktop_font op 'waar' (true) staat."
 
 #: ../src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
@@ -525,29 +521,16 @@ msgstr "Alle vensters verbergen en het bureaublad de aandacht geven"
 
 #: ../src/metacity.schemas.in.h:19
 msgid ""
-"If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
-"focused window will be automatically raised after a delay (the delay is "
-"specified by the auto_raise_delay key). This preference is poorly named, but "
-"kept for backwards compatibility. To try to be more clear (at least to the "
-"technically inclined), its meaning is \"automatically raise the window "
-"following a timeout which is triggered by non-grabbed mouse entry in sloppy "
-"or mouse focus modes\". It is unrelated to clicking behavior (i.e. this is "
-"not related to raise-on-click/orthogonal-raise). It is unrelated to entering "
-"a window during drag and drop (because that results in the application "
-"grabbing the mouse)"
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focused window will be automatically raised after a delay specified by "
+"the auto_raise_delay key. This is not related to clicking on a window to "
+"raise it, nor to entering a window during drag-and-drop."
 msgstr ""
-"Indien waar, en de aandachtsmodus is \"sloppy\" of \"mouse\" dan zal het "
-"venster dat de aandacht heeft, na een korte tijd, automatisch naar voren "
-"gebracht worden. De wachttijd wordt gegeven door de sleutel: "
-"auto_raise_delay. Deze instelling is niet erg handig benoemd, maar wordt zo "
-"gehouden vanwege compatibiliteit met oudere versies. Om duidelijker te zijn "
-"(tenmiste voor de technisch onderlegden onder ons) is de juiste betekenis: "
-"\"automatisch het venster naar voren brengen na een tijdslimiet die "
-"getriggered wordt door een 'non-grabbed mouse entry' in 'sloppy' of 'mouse "
-"focus' modi\". Het heeft geen verband met klik-gedrag. (Het staat dus los "
-"van raise-on-click/orthogonal-raise). Het heeft ook geen verband met het "
-"binnengaan van een venster bij een sleepactie (omdat bij zo'n actie de "
-"toepassing de muis pakt)."
+"Indien waar, en de aandachtsmodus is ofwel \"slap\" of \"muis\", dan zal het "
+"venster met aandacht na een bepaalde tijd, die ingesteld kan worden met de "
+"auto_raise_delay sleutel. Dit heeft geen invloed bij het aanklikken van een "
+"venster om het te verhogen, en heeft ook geen invloed bij het slepen en "
+"loslaten van items op het venster."
 
 #: ../src/metacity.schemas.in.h:20
 msgid ""
@@ -559,17 +542,18 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:21
 msgid ""
-"If true, metacity will give the user less feedback and less sense of "
-"\"direct manipulation\", by using wireframes, avoiding animations, or other "
-"means. This is a significant reduction in usability for many users, but may "
-"allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical. However, the wireframe feature is disabled when "
-"accessibility is on to avoid weird desktop breakages."
+"If true, metacity will give the user less feedback by using wireframes, "
+"avoiding animations, or other means. This is a significant reduction in "
+"usability for many users, but may allow legacy applications to continue "
+"working, and may also be a useful tradeoff for terminal servers. However, "
+"the wireframe feature is disabled when accessibility is on."
 msgstr ""
 "Indien waar, geeft metacity de gebruiker minder directe terugkoppeling door "
 "raamwerken te gebruiken en animaties te minimaliseren. Dit is een "
-"behoorlijke vermindering van bruikbaarheid, maar kan in sommige situaties "
-"wenselijk zijn."
+"behoorlijke vermindering van bruikbaarheid, maar kan ervoor zorgen dat "
+"oudere toepassingen blijven werken. Ook kan dit een voordeel zijn als er "
+"met terminal servers gewerkt wordt. Echter, de raamwerk functie is "
+"gedeactiveerd indien toegankelijkheid geactiveerd is."
 
 #: ../src/metacity.schemas.in.h:22
 msgid ""
@@ -578,22 +562,16 @@ msgid ""
 "more like the Mac and less like Windows. When you focus a window in "
 "application-based mode, all the windows in the application will be raised. "
 "Also, in application-based mode, focus clicks are not passed through to "
-"windows in other applications. The existence of this setting is somewhat "
-"questionable. But it's better than having settings for all the specific "
-"details of application-based vs. window-based, e.g. whether to pass through "
-"clicks. Also, application-based mode is largely unimplemented at the moment."
+"windows in other applications. Application-based mode is, however, largely "
+"unimplemented at the moment."
 msgstr ""
 "Indien waar, werkt Metacity in termen van toepassingen in plaats van "
 "vensters. Het concept is ietwat abstract, maar een toepassing-gebaseerde "
 "opstelling lijkt meer op een Macintosch dan op Windows. Als u een venster "
 "aandacht geeft in toepassing-gebaseerde modus, zullen alle vensters van de "
 "toepassing verhoogd worden. Tevens geldt dat aandachts-klikken niet worden "
-"doorgegeven naar vensters in andere toepassingen. Het bestaan van deze optie "
-"is ietwat discutabel, maar het is beter dan het hebben van instellingen voor "
-"alle specifieke detail-verschillen tussen toepassing-gebaseerd en windows-"
-"gebaseerd. Bijvoorbeeld of muisklikken moeten worden doorgegeven. Bovendien "
-"is toepassing-gebaseerde modus momenteel grotendeels nog niet "
-"geïmplementeerd."
+"doorgegeven naar vensters in andere toepassingen. De toepassing-gebaseerde "
+"modus is echter voor een groot deel nog niet geïmplementeerd."
 
 #: ../src/metacity.schemas.in.h:23
 msgid "If true, trade off usability for less resource usage"
@@ -607,12 +585,11 @@ msgstr "Venster verlagen onder andere vensters"
 msgid ""
 "Many actions (e.g. clicking in the client area, moving or resizing the "
 "window) normally raise the window as a side-effect. Set this option to false "
-"to decouple raising from other user interactions. When false, windows can "
-"still be raised by an alt-left-click anywhere on the window or a normal "
-"click on the window decorations (assuming such clicks aren't used to start a "
-"move or resize operation). Special messages, such as activation requests "
-"from pagers, may also raise windows when this option is false. This option "
-"is currently disabled in click-to-focus mode."
+"to decouple raising from other user actions. Even when this option is false, "
+"windows can still be raised by an alt-left-click anywhere on the window, a "
+"normal click on the window decorations, or by special messages, such as "
+"activation requests from pagers. This option is currently disabled in click-"
+"to-focus mode."
 msgstr ""
 "Veel acties (bijvoorbeeld klikken in het client-gebied, verplaatsen of de "
 "grootte van het venster aanpassen) hebben als bijwerking dat het venster "
@@ -620,11 +597,9 @@ msgstr ""
 "voren brengen los te laten staan van andere gebruikersinteracties. Bij "
 "onwaar (false) kunnen vensters evengoed nog naar voren worden gebracht door "
 "een Alt-links-klik op een willekeurige plaats in het venster, of een gewone "
-"links-klik op de decoratie van het venster (de rand), aangenomen dat zo'n "
-"klik niet gebruikt word om het venster te verplaatsen of de grootte te "
-"wijzigen. Bijzondere berichten, zoals activeringsverzoeken van pagers, mogen "
-"het venster ook naar voren brengen wanneer deze optie onwaar is. Deze optie "
-"is momenteel uitgezet in click-to-focus modus."
+"links-klik op de decoratie van het venster (de rand en venstertitel), of bij "
+"speciale gebeurtenissen, zoals activatie verzoeken van de werkbladwisselaar. "
+"Deze optie is op dit moment uitgeschakeld in klikken-voor-aandacht modus."
 
 #: ../src/metacity.schemas.in.h:26
 msgid "Maximize window"
@@ -761,13 +736,13 @@ msgstr "Aantal werkbladen"
 
 #: ../src/metacity.schemas.in.h:58
 msgid ""
-"Number of workspaces. Must be more than zero, and has a fixed maximum (to "
-"prevent accidentally destroying your desktop by asking for 34 million "
-"workspaces)."
+"Number of workspaces. Must be more than zero, and has a fixed maximum to "
+"prevent making the desktop unusable by accidentally asking for too many "
+"workspaces."
 msgstr ""
-"Aantal werkbladen. Moet groter zijn dan nul, en heeft een vast maximum (om "
-"te voorkomen dat u per ongeluk uw bureablad vernietigt, door te vragen om 34 "
-"miljoen werkbladen)."
+"Aantal werkbladen. Moet groter zijn dan nul, en heeft een vast maximum om "
+"te voorkomen dat u per ongeluk uw werkomgeving vernietigt, door te vragen om "
+"te veel werkbladen."
 
 #: ../src/metacity.schemas.in.h:59
 msgid "Raise obscured window, otherwise lower"
@@ -800,34 +775,17 @@ msgstr "Het paneeldialoogvenster toepassing uitvoeren tonen"
 
 #: ../src/metacity.schemas.in.h:66
 msgid ""
-"Some applications break specifications in ways that result in window manager "
-"misfeatures. For example, ideally Metacity would place all dialogs in a "
-"consistent position with respect to their parent window. This requires "
-"ignoring application-specified positions for dialogs. But some versions of "
-"Java/Swing mark their popup menus as dialogs, so Metacity has to disable "
-"dialog positioning to allow menus to work in broken Java applications. There "
-"are several other examples like this. This option puts Metacity in full-on "
-"Correct mode, which perhaps gives a moderately nicer UI if you don't need to "
-"run any broken apps. Sadly, workarounds must be enabled by default; the real "
-"world is an ugly place. Some of the workarounds are workarounds for "
-"limitations in the specifications themselves, so sometimes a bug in no-"
-"workarounds mode won't be fixable without amending a spec."
+"Some applications disregard specifications in ways that result in window "
+"manager misfeatures. This option puts Metacity in a rigorously correct mode, "
+"which gives a more consistent user interface, provided one does not need to "
+"run any misbehaving applications."
 msgstr ""
-"Sommige toepassingen overtreden de specificaties zodanig dat de window "
-"manager onjuist functioneert. Bijvoorbeeld: in het ideale geval zou Metacity "
-"alle dialoogvensters in een consistente positie plaatsen ten opzichte van "
-"hun moedervenster. Dit vereist het negeren van door toepassingen aangegeven "
-"posities voor dialoogvensters. Echter, sommige versies van Java/Swing "
-"markeren hun contextmenu's als dialoogvensters, dus moet Metacity "
-"dialoogvensterpositionering uitschakelen zodat menu's in kapotte Java-"
-"toepassingen werken. Er zijn nog meer voorbeelden zoals deze. Deze optie zet "
-"Metacity in volledige 'correct'-modus, welke de gebruiker misschien een iets "
-"vriendelijkere gebruikersinterface geeft indien u niet gedwongen bent "
-"kapotte toepassingen te gebruiken. Helaas moeten de omzeiltrucs standaard "
-"worden ingeschakeld; de buitenwereld is een gemeen oord. Sommige van de "
-"trucs omzeilen beperkingen in de specificaties zelf. Als gevolg daarvan is "
-"een probleem in de 'geen trucs'-modus soms niet te repareren zonder een "
-"aanvulling te schrijven op de specificatie."
+"Sommige toepassingen houden geen rekening met specificaties die als "
+"resultaat hebben dat de vensterbeheerder niet met deze toepassingen om kan "
+"gaan. Deze optie zorgt ervoor dat Metacity in een streng correctie modus  "
+"werkt, die ervoor zorgt dat er een consistentere gebruiksomgeving ontstaat. "
+"Deze optie heeft echter alleen resultaat als er geen applicaties worden "
+"gedraaid die zich niet aan de specificaties houden."
 
 #: ../src/metacity.schemas.in.h:67
 msgid "Switch to workspace 1"
@@ -1890,13 +1848,13 @@ msgstr "De opdracht voor venster-schermafdruk"
 #: ../src/metacity.schemas.in.h:155
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
-"the window is covered by another window, it raises the window above other "
-"windows. If the window is already fully visible, it lowers the window below "
-"other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
+"the window is covered by another one, it raises the window above all others, "
+"and if the window is already fully visible, it lowers it below all others. "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
 msgstr ""
 "Deze toetskoppeling bepaalt of een venster zich boven of onder andere "
 "vensters bevindt. Als het venster bedekt wordt door een ander venster, dan "
@@ -1905,8 +1863,8 @@ msgstr ""
 "Het formaat ziet eruit als\"&lt;Control&gt;a\" of \"&lt;Shift&gt;&lt;Alt&gt;"
 "F1. Hierbij zijn kleine- en hoofdletters toegestaan, evenals afkortingen "
 "zoals \"&lt;Ctl&gt;\" en \"&lt;Ctrl&gt;\". Indien u de optie instelt op de "
-"speciale tekenreeks \"uitgeschakeld\", dan zal deze actie geen "
-"toetskoppeling kennen."
+"speciale tekenreeks \"uitgeschakeld\", dan zal er voor deze actie geen "
+"toetskoppeling bestaan."
 
 #: ../src/metacity.schemas.in.h:156
 msgid ""
@@ -2005,11 +1963,11 @@ msgstr "Venster op alle werkbladen omschakelen"
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
-"environments, or when 'audible bell' is off."
+"environments."
 msgstr ""
 "Geeft een zichtbare indicatie wanneer een toepassing of het systeem een "
-"'bel' of 'piepje' geeft; handig voor slechthorenden of voor gebruik in "
-"omgevingen met veel lawaai, of wanneer de 'hoorbare bel' uitstaat."
+"'bel' of 'piep' geeft; handig voor slechthorenden of voor gebruik in "
+"omgevingen met veel lawaai."
 
 #: ../src/metacity.schemas.in.h:167
 msgid "Unmaximize window"
@@ -2036,18 +1994,18 @@ msgstr "Vensteraandacht-modus"
 msgid "Window title font"
 msgstr "Venstertitellettertype"
 
-#: ../src/prefs.c:567 ../src/prefs.c:583 ../src/prefs.c:599 ../src/prefs.c:615
-#: ../src/prefs.c:631 ../src/prefs.c:647 ../src/prefs.c:667 ../src/prefs.c:683
-#: ../src/prefs.c:699 ../src/prefs.c:715 ../src/prefs.c:731 ../src/prefs.c:747
-#: ../src/prefs.c:763 ../src/prefs.c:779 ../src/prefs.c:796 ../src/prefs.c:812
-#: ../src/prefs.c:828 ../src/prefs.c:844 ../src/prefs.c:860 ../src/prefs.c:875
-#: ../src/prefs.c:890 ../src/prefs.c:905 ../src/prefs.c:921 ../src/prefs.c:937
-#: ../src/prefs.c:953 ../src/prefs.c:969
+#: ../src/prefs.c:547 ../src/prefs.c:563 ../src/prefs.c:579 ../src/prefs.c:595
+#: ../src/prefs.c:611 ../src/prefs.c:627 ../src/prefs.c:647 ../src/prefs.c:663
+#: ../src/prefs.c:679 ../src/prefs.c:695 ../src/prefs.c:711 ../src/prefs.c:727
+#: ../src/prefs.c:743 ../src/prefs.c:759 ../src/prefs.c:776 ../src/prefs.c:792
+#: ../src/prefs.c:808 ../src/prefs.c:824 ../src/prefs.c:840 ../src/prefs.c:855
+#: ../src/prefs.c:870 ../src/prefs.c:885 ../src/prefs.c:901 ../src/prefs.c:917
+#: ../src/prefs.c:933 ../src/prefs.c:949
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-sleutel \"%s\" is op een ongeldig type ingesteld\n"
 
-#: ../src/prefs.c:1014
+#: ../src/prefs.c:994
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2056,14 +2014,14 @@ msgstr ""
 "\"%s\", gevonden in de configuratiedatabase, is geen geldige waarde voor de "
 "muisknop-optietoets\n"
 
-#: ../src/prefs.c:1038 ../src/prefs.c:1528
+#: ../src/prefs.c:1018 ../src/prefs.c:1508
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-sleutel '%s' is ingesteld op een ongeldige waarde\n"
 
 # volgens mij is cursor_size hier niet bedoeld als sneltoets voor cursorsize,
 # is het een onjuist gebruik van een variabele.
-#: ../src/prefs.c:1161
+#: ../src/prefs.c:1141
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
@@ -2072,13 +2030,13 @@ msgstr ""
 "%d opgeslagen in GConf-sleutel %s is geen redelijke grootte voor een cursor; "
 "het moet liggen in het bereik 1 - 128\n"
 
-#: ../src/prefs.c:1241
+#: ../src/prefs.c:1221
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "Kon lettertypebeschrijving \"%s\" niet verwerken van Gconf-sleutel %s\n"
 
-#: ../src/prefs.c:1426
+#: ../src/prefs.c:1406
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2087,7 +2045,7 @@ msgstr ""
 "%d opgeslagen in GConf-sleutel %s is geen redelijk aantal werkbladen, "
 "huidige maximum is %d\n"
 
-#: ../src/prefs.c:1486
+#: ../src/prefs.c:1466
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2095,17 +2053,17 @@ msgstr ""
 "Werkoplossing voor gebroken toepassingen uitgezet. Bepaalde toepassingen "
 "zullen niet naar behoren functioneren.\n"
 
-#: ../src/prefs.c:1555
+#: ../src/prefs.c:1535
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d opgeslagen in GConf-sleutel %s valt buiten het bereik 0 %d\n"
 
-#: ../src/prefs.c:1695
+#: ../src/prefs.c:1675
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fout bij het instellen van het aantal werkbladen op %d: %s\n"
 
-#: ../src/prefs.c:2031
+#: ../src/prefs.c:2011
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2114,12 +2072,12 @@ msgstr ""
 "\"%s\" in de configuratiedatabase is geen geldige waarde voor toetsbinding "
 "\"%s\"\n"
 
-#: ../src/prefs.c:2448
+#: ../src/prefs.c:2428
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fout bij het instellen van de naam voor werkblad %d op \"%s\": %s\n"
 
-#: ../src/resizepopup.c:126
+#: ../src/resizepopup.c:123
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
@@ -3152,13 +3110,11 @@ msgstr ""
 "argument in het midden"
 
 #: ../src/theme.c:1978
-msgid ""
-"Coordinate expression parser overflowed its buffer, this is really a "
-"Metacity bug, but are you sure you need a huge expression like that?"
-msgstr ""
-"Coördinaatuitdrukking-verwerker heeft zijn buffer laten overlopen. Dit is "
-"eigenlijk een Metacity fout, maar weet u wel zeker of u zo'n enorme "
-"uitdrukking nodig heeft?"
+# Dit is zo'n dergelijk moeilijke vertaling als in het Nederlands, dat het
+# Engelse origineel een beter restultaat oplevert.
+#  -- Michiel Sikkes, zo 9 apr 2006
+msgid "Coordinate expression parser overflowed its buffer."
+msgstr "Coordinate experssion parser overflowed its buffer."
 
 #: ../src/theme.c:2007
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
@@ -3262,15 +3218,15 @@ msgstr "Logboek %s geopend\n"
 msgid "Window manager: "
 msgstr "Windowmanager:"
 
-#: ../src/util.c:366
+#: ../src/util.c:368
 msgid "Bug in window manager: "
 msgstr "Fout in windowmanager:"
 
-#: ../src/util.c:395
+#: ../src/util.c:397
 msgid "Window manager warning: "
 msgstr "Windowmanager waarschuwing:"
 
-#: ../src/util.c:419
+#: ../src/util.c:421
 msgid "Window manager error: "
 msgstr "Windowmanager fout:"
 
@@ -3285,7 +3241,7 @@ msgid "%s (on %s)"
 msgstr "%s (op %s)"
 
 #. first time through
-#: ../src/window.c:5411
+#: ../src/window.c:5204
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3301,7 +3257,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6039
+#: ../src/window.c:5800
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3343,8 +3299,64 @@ msgstr ""
 #~ msgid ""
 #~ "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 #~ "focused window will be automatically raised after a delay (the delay is "
-#~ "specified by the auto_raise_delay key)."
+#~ "specified by the auto_raise_delay key). This preference is poorly named, "
+#~ "but kept for backwards compatibility. To try to be more clear (at least "
+#~ "to the technically inclined), its meaning is \"automatically raise the "
+#~ "window following a timeout which is triggered by non-grabbed mouse entry "
+#~ "in sloppy or mouse focus modes\". It is unrelated to clicking behavior (i."
+#~ "e. this is not related to raise-on-click/orthogonal-raise). It is "
+#~ "unrelated to entering a window during drag and drop (because that results "
+#~ "in the application grabbing the mouse)"
 #~ msgstr ""
-#~ "Indien waar, en de aandachtsmodus is ofwel \"slap\" of \"muis\", zal het "
-#~ "aandachtsvenster na een bepaalde tijd automatisch worden verhoogd (de "
-#~ "vertraging wordt gespecificieerd met de auto_raise_delay-toets)."
+#~ "Indien waar, en de aandachtsmodus is \"sloppy\" of \"mouse\" dan zal het "
+#~ "venster dat de aandacht heeft, na een korte tijd, automatisch naar voren "
+#~ "gebracht worden. De wachttijd wordt gegeven door de sleutel: "
+#~ "auto_raise_delay. Deze instelling is niet erg handig benoemd, maar wordt "
+#~ "zo gehouden vanwege compatibiliteit met oudere versies. Om duidelijker te "
+#~ "zijn (tenmiste voor de technisch onderlegden onder ons) is de juiste "
+#~ "betekenis: \"automatisch het venster naar voren brengen na een "
+#~ "tijdslimiet die getriggered wordt door een 'non-grabbed mouse entry' in "
+#~ "'sloppy' of 'mouse focus' modi\". Het heeft geen verband met klik-gedrag. "
+#~ "(Het staat dus los van raise-on-click/orthogonal-raise). Het heeft ook "
+#~ "geen verband met het binnengaan van een venster bij een sleepactie (omdat "
+#~ "bij zo'n actie de toepassing de muis pakt)."
+
+#~ msgid ""
+#~ "Some applications break specifications in ways that result in window "
+#~ "manager misfeatures. For example, ideally Metacity would place all "
+#~ "dialogs in a consistent position with respect to their parent window. "
+#~ "This requires ignoring application-specified positions for dialogs. But "
+#~ "some versions of Java/Swing mark their popup menus as dialogs, so "
+#~ "Metacity has to disable dialog positioning to allow menus to work in "
+#~ "broken Java applications. There are several other examples like this. "
+#~ "This option puts Metacity in full-on Correct mode, which perhaps gives a "
+#~ "moderately nicer UI if you don't need to run any broken apps. Sadly, "
+#~ "workarounds must be enabled by default; the real world is an ugly place. "
+#~ "Some of the workarounds are workarounds for limitations in the "
+#~ "specifications themselves, so sometimes a bug in no-workarounds mode "
+#~ "won't be fixable without amending a spec."
+#~ msgstr ""
+#~ "Sommige toepassingen overtreden de specificaties zodanig dat de window "
+#~ "manager onjuist functioneert. Bijvoorbeeld: in het ideale geval zou "
+#~ "Metacity alle dialoogvensters in een consistente positie plaatsen ten "
+#~ "opzichte van hun moedervenster. Dit vereist het negeren van door "
+#~ "toepassingen aangegeven posities voor dialoogvensters. Echter, sommige "
+#~ "versies van Java/Swing markeren hun contextmenu's als dialoogvensters, "
+#~ "dus moet Metacity dialoogvensterpositionering uitschakelen zodat menu's "
+#~ "in kapotte Java-toepassingen werken. Er zijn nog meer voorbeelden zoals "
+#~ "deze. Deze optie zet Metacity in volledige 'correct'-modus, welke de "
+#~ "gebruiker misschien een iets vriendelijkere gebruikersinterface geeft "
+#~ "indien u niet gedwongen bent kapotte toepassingen te gebruiken. Helaas "
+#~ "moeten de omzeiltrucs standaard worden ingeschakeld; de buitenwereld is "
+#~ "een gemeen oord. Sommige van de trucs omzeilen beperkingen in de "
+#~ "specificaties zelf. Als gevolg daarvan is een probleem in de 'geen trucs'-"
+#~ "modus soms niet te repareren zonder een aanvulling te schrijven op de "
+#~ "specificatie."
+
+#~ msgid ""
+#~ "Coordinate expression parser overflowed its buffer, this is really a "
+#~ "Metacity bug, but are you sure you need a huge expression like that?"
+#~ msgstr ""
+#~ "Coördinaatuitdrukking-verwerker heeft zijn buffer laten overlopen. Dit is "
+#~ "eigenlijk een Metacity fout, maar weet u wel zeker of u zo'n enorme "
+#~ "uitdrukking nodig heeft?"
