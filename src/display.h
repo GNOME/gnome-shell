@@ -225,12 +225,6 @@ struct _MetaDisplay
                               XErrorEvent *error);  
   int server_grab_count;
 
-  /* for double click */
-  Time last_button_time;
-  Window last_button_xwindow;
-  int last_button_num;
-  guint is_double_click : 1;
-
   /* serials of leave/unmap events that may
    * correspond to an enter event we should
    * ignore
@@ -402,7 +396,6 @@ MetaScreen*   meta_display_screen_for_xwindow  (MetaDisplay *display,
                                                 Window       xindow);
 void          meta_display_grab                (MetaDisplay *display);
 void          meta_display_ungrab              (MetaDisplay *display);
-gboolean      meta_display_is_double_click     (MetaDisplay *display);
 
 void          meta_display_unmanage_screen     (MetaDisplay *display,
                                                 MetaScreen  *screen);

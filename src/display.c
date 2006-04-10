@@ -538,11 +538,6 @@ meta_display_open (const char *name)
   display->window_ids = g_hash_table_new (meta_unsigned_long_hash,
                                           meta_unsigned_long_equal);
   
-  display->last_button_time = 0;
-  display->last_button_xwindow = None;
-  display->last_button_num = 0;
-  display->is_double_click = FALSE;
-
   i = 0;
   while (i < N_IGNORED_SERIALS)
     {
@@ -1057,12 +1052,6 @@ meta_displays_list (void)
   return all_displays;
 }
 
-gboolean
-meta_display_is_double_click (MetaDisplay *display)
-{
-  return display->is_double_click;
-}
-
 static gboolean dump_events = TRUE;
 
 #ifndef USE_GDK_DISPLAY
@@ -1345,28 +1334,6 @@ meta_display_queue_autoraise_callback (MetaDisplay *display,
   display->autoraise_window = window;
 }
 
-static int
-double_click_timeout_for_event (MetaDisplay *display,
-                                XEvent      *event)
-{
-  MetaScreen *screen;
-
-  g_assert (event->type == ButtonPress ||
-            event->type == ButtonRelease);
-  
-  screen = meta_display_screen_for_root (display,
-                                         event->xbutton.root);
-  if (screen == NULL)
-    {
-      /* Odd, we aren't managing this screen */
-      meta_warning ("Received button event on root 0x%lx we aren't managing\n",
-                    event->xbutton.root);
-      return 250; /* make up number */
-    }
-  
-  return meta_ui_get_double_click_timeout (screen->ui);
-}                                
-
 #if 0
 static void
 handle_net_moveresize_window (MetaDisplay* display,
@@ -1510,27 +1477,6 @@ event_callback (XEvent   *event,
       if (event->xbutton.button == 4 ||
 	  event->xbutton.button == 5)
 	return FALSE;
-
-      /* mark double click events, kind of a hack, oh well. */
-      if (((int)event->xbutton.button) ==  display->last_button_num &&
-          event->xbutton.window == display->last_button_xwindow &&
-          event->xbutton.time < (display->last_button_time +
-                                 double_click_timeout_for_event (display,
-                                                                 event)))
-        {
-          display->is_double_click = TRUE;
-          meta_topic (META_DEBUG_EVENTS,
-                      "This was the second click of a double click\n");
-
-        }
-      else
-        {
-          display->is_double_click = FALSE;
-        }
-
-      display->last_button_num = event->xbutton.button;
-      display->last_button_xwindow = event->xbutton.window;
-      display->last_button_time = event->xbutton.time;
     }
   else if (event->type == UnmapNotify)
     {

@@ -931,20 +931,6 @@ meta_stock_icons_init (void)
 }
 
 int
-meta_ui_get_double_click_timeout (MetaUI *ui)
-{
-  GtkSettings *settings;
-  int timeout;
-
-  settings = gtk_widget_get_settings (GTK_WIDGET (ui->frames));
-
-  timeout = 250;
-  g_object_get (G_OBJECT (settings), "gtk-double-click-time", &timeout, NULL);
-
-  return timeout;
-}
-
-int
 meta_ui_get_drag_threshold (MetaUI *ui)
 {
   GtkSettings *settings;

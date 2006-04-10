@@ -1,3 +1,15 @@
+2006-04-10  Björn Lindqvist  <bjourne@gmail.com>
+
+	* display.c (meta_display_open, event_callback):
+	* ui.c (meta_ui_get_double_click_timeout):
+	
+	Delete dead code that used to handle double click on the
+	titlebar. Remove the attributes last_button_time,
+	last_button_xwindow, last_button_num and is_double_click from
+	MetaDisplay and the functions meta_ui_get_double_click_timeout()
+	and meta_display_is_double_click() from their respective
+	files. Fixes #337507.
+
 2006-03-27  Gora Mohanty  <gmohanty@cvs.gnome.org>
 
         * src/metacity.schemas.in:
