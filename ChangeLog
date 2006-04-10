@@ -1,3 +1,15 @@
+Mon Apr 10 16:44:51 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/c-screen.c (is_menu): Check if the window is a menu and make
+	it 90% opaque in that case.
+
+	* src/c-screen.c (claim_selection): Handle CM_Sn selection
+	properly. 
+
+	* src/c-screen.c: Remove debug spew
+
+	* src/screen.c (meta_screen_composite_all_windows): Remove debug spew
+
 2006-04-10  Björn Lindqvist  <bjourne@gmail.com>
 
 	* display.c (meta_display_open, event_callback):

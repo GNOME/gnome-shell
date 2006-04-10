@@ -49,6 +49,7 @@ struct MetaScreenInfo
     CmMagnifier *magnifier;
     
     WsWindow *gl_window;
+    WsWindow *root_window;
     
     WsScreen *screen;
     MetaScreen *meta_screen;
@@ -57,6 +58,8 @@ struct MetaScreenInfo
     
     int repaint_id;
     int idle_id;
+
+    WsWindow *selection_window;
 };
 
 #if 0
@@ -200,10 +203,10 @@ meta_screen_info_new (WsDisplay *display,
 		      MetaScreen *screen)
 {
     MetaScreenInfo *scr_info = g_new0 (MetaScreenInfo, 1);
-    WsServerRegion *region;
     
     scr_info->screen = ws_display_get_screen_from_number (
 	display, screen->number);
+    scr_info->root_window = ws_screen_get_root_window (scr_info->screen);
     scr_info->display = display;
     scr_info->window_infos_by_xid =
 	g_hash_table_new_full (g_direct_hash, g_direct_equal,
@@ -215,48 +218,48 @@ meta_screen_info_new (WsDisplay *display,
     return scr_info;
 }
 
-static gboolean
+static char *
+make_selection_name (MetaScreenInfo *info)
+{
+    char *buffer;
+    
+    buffer = g_strdup_printf ("_NET_WM_CM_S%d", info->meta_screen->number);
+
+    return buffer;
+}
+
+static void
+on_selection_clear (WsWindow *window,
+		    WsSelectionClearEvent *event,
+		    gpointer data)
+{
+    MetaScreenInfo *info = data;
+    char *buffer = make_selection_name (info);
+
+    if (strcmp (event->selection, buffer))
+    {
+	/* We lost the selection */
+	meta_screen_info_unredirect (info);
+    }
+}
+
+static WsWindow *
 claim_selection (MetaScreenInfo *info)
 {
-    /* FIXME:
-     *
-     * The plan here is to
-     *
-     *    - Add Selections and Properties as first class objects
-     *      in WS
-     *
-     *    - Use those to
-     *          - claim the selection
-     *          - back off if someone else claims the selection
-     *          - back back in if that someone else disappears
-     *
-     */
-    Display *xdisplay;
-    char *buffer;
-    Atom atom;
-    Window current_cm_sn_owner;
-    WsWindow *new_cm_sn_owner;
+    WsWindow *window = ws_window_new (info->root_window);
+    char *buffer = make_selection_name (info);
+
+#if 0
+    g_print ("selection window: %lx\n", WS_RESOURCE_XID (window));
+#endif
     
-    xdisplay = info->meta_screen->display->xdisplay;
+    ws_window_own_selection (window, buffer, WS_CURRENT_TIME);
+
+    g_signal_connect (window, "selection_clear_event", G_CALLBACK (on_selection_clear), info);
+
+    g_free (buffer);
     
-    buffer = g_strdup_printf ("CM_S%d", info->meta_screen->number);
-    
-    atom = XInternAtom (xdisplay, buffer, False);
-    
-    current_cm_sn_owner = XGetSelectionOwner (xdisplay, atom);
-    
-    if (current_cm_sn_owner != None)
-    {
-	return FALSE;
-    }
-    
-    new_cm_sn_owner = ws_screen_get_root_window (info->screen);
-    
-    XSetSelectionOwner (xdisplay, atom,
-			WS_RESOURCE_XID (new_cm_sn_owner),
-			CurrentTime);
-    
-    return TRUE;
+    return window;
 }
 
 static void
@@ -278,6 +281,7 @@ meta_screen_info_redirect (MetaScreenInfo *info)
     WsServerRegion *region;
     int screen_w;
     int screen_h;
+    CmSquare *square;
     
 #if 0
     g_print ("redirecting %lx\n", WS_RESOURCE_XID (root));
@@ -297,18 +301,24 @@ meta_screen_info_redirect (MetaScreenInfo *info)
 
     ws_display_end_error_trap (info->display);
     
-    claim_selection (info);
+    info->selection_window = claim_selection (info);
     
     ws_window_map (info->gl_window);
     
     info->stacker = cm_stacker_new ();
 
-    cm_stacker_add_child (info->stacker, cm_square_new (0.3, 0.3, 0.8, 1.0));
+    square = cm_square_new (0.3, 0.3, 0.8, 1.0);
+    
+    cm_stacker_add_child (info->stacker, CM_NODE (square));
+
+    g_object_unref (square);
 
     screen_w = ws_screen_get_width (info->screen);
     screen_h = ws_screen_get_height (info->screen);
 
+#if 0
     g_print ("width: %d height %d\n", screen_w, screen_h);
+#endif
     
     source.x = (screen_w - (screen_w / 4)) / 2;
     source.y = screen_h / 16;
@@ -320,8 +330,10 @@ meta_screen_info_redirect (MetaScreenInfo *info)
     target.width = screen_w;
     target.height = screen_h / 4;
     
-    info->magnifier = cm_magnifier_new (info->stacker, &source, &target);
+    info->magnifier = cm_magnifier_new (CM_NODE (info->stacker), &source, &target);
 
+    g_object_unref (info->stacker);
+    
     if (g_getenv ("USE_MAGNIFIER"))
 	cm_magnifier_set_active (info->magnifier, TRUE);
     else
@@ -345,7 +357,7 @@ meta_screen_info_unredirect (MetaScreenInfo *info)
 #endif
     
     g_signal_handler_disconnect (info->magnifier, info->repaint_id);
-    g_object_unref (info->stacker);
+    g_object_unref (info->magnifier);
     
     ws_window_unredirect_subwindows (root);
 #if 0
@@ -354,6 +366,11 @@ meta_screen_info_unredirect (MetaScreenInfo *info)
     ws_screen_release_gl_window (ws_screen);
     
     ws_display_sync (info->display);
+
+    /* FIXME: libcm needs a way to guarantee that a window is destroyed,
+     * without relying on ref counting having it as a side effect
+     */
+    g_object_unref (info->selection_window);
 }
 
 void
@@ -397,8 +414,10 @@ meta_screen_info_restack (MetaScreenInfo *info,
     {
 	cm_stacker_restack_child (info->stacker, window_node, above_node);
     }
+#if 0
     else
 	g_print ("nothing happened\n");
+#endif
     
 #if 0
     g_print ("done restacking; new order:\n");
@@ -499,6 +518,33 @@ window_info_new (Window xwindow,
     return win_info;
 }
 
+static gboolean
+is_menu (WsWindow *window)
+{
+    gchar **types = ws_window_get_property_atom_list (window, "_NET_WM_UNMANAGED_WINDOW_TYPE");
+    int i;
+    gboolean result;
+
+    if (!types)
+	return FALSE;
+
+    result = FALSE;
+    
+    for (i = 0; types[i] != NULL; ++i)
+    {
+	gchar *type = types[i];
+
+	if (strcmp (type, "_NET_WM_UNMANAGED_WINDOW_TYPE_DROPDOWN_MENU") == 0)
+	{
+	    result = TRUE;
+	    break;
+	}
+    }
+
+    g_strfreev (types);
+    return result;
+}
+
 void
 meta_screen_info_add_window (MetaScreenInfo *info,
 			     Window	     xwindow)
@@ -506,12 +552,16 @@ meta_screen_info_add_window (MetaScreenInfo *info,
     CmNode *node;
     WsDrawable *drawable;
     WsRectangle geometry;
+    double alpha = 1.0;
     
     ws_display_begin_error_trap (info->display);
     
     node = find_node (info, xwindow);
+#if 0
+    g_print ("lookup %lx\n", xwindow);
+#endif
     drawable = WS_DRAWABLE (ws_window_lookup (info->display, xwindow));
-    
+
     if (node)
 	goto out;
     
@@ -521,7 +571,9 @@ meta_screen_info_add_window (MetaScreenInfo *info,
     if (WS_WINDOW (drawable) == info->gl_window ||
 	WS_WINDOW (drawable) == info->screen->overlay_window)
     {
+#if 0
 	g_print ("gl window\n");
+#endif
 	goto out;
     }
     
@@ -529,14 +581,17 @@ meta_screen_info_add_window (MetaScreenInfo *info,
     
     node = CM_NODE (cm_drawable_node_new (drawable, &geometry));
 
-    cm_drawable_node_set_alpha (node, 1.0);
+#if 0
+    g_print ("alpha: %f\n", alpha);
+#endif
+    cm_drawable_node_set_alpha (node, alpha);
     
 #if 0
     print_child_titles (WS_WINDOW (drawable));
 #endif
     
     cm_stacker_add_child (info->stacker, node);
-    
+
     g_hash_table_insert (info->window_infos_by_xid,
 			 (gpointer)xwindow,
 			 window_info_new (xwindow, node));
@@ -554,7 +609,25 @@ out:
 	    g_print ("mapped\n");
 #endif
 	    cm_drawable_node_unset_patch (node);
-	    cm_drawable_node_set_alpha (node, 1.0);
+#if 0
+	    g_print ("set alpha %f\n", alpha);
+#endif
+	    
+	    if (is_menu (drawable))
+	    {
+#if 0
+		g_print ("is menu\n");
+#endif
+		alpha = 0.9;
+	    }
+	    else
+	    {
+#if 0
+		g_print ("is not menu\n");
+#endif
+		alpha = 1.0;
+	    }
+	    cm_drawable_node_set_alpha (node, alpha);
 	    cm_drawable_node_set_viewable (node, TRUE);
 	    cm_drawable_node_update_pixmap (node);
 	}
@@ -657,6 +730,9 @@ meta_screen_info_set_alpha (MetaScreenInfo *info,
 			    gdouble alpha)
 {
     CmDrawableNode *node = CM_DRAWABLE_NODE (find_node (info, xwindow));
+#if 0
+    g_print ("alpha: %f\n", alpha);
+#endif
     cm_drawable_node_set_alpha (node, alpha);
 }
 

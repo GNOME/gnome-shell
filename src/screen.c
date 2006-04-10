@@ -816,8 +816,6 @@ meta_screen_composite_all_windows (MetaScreen *screen)
   if (!screen->display->compositor)
     return;
 
-  g_print ("composite all asdf\n");
-  
   windows = list_windows (screen);
 
   meta_stack_freeze (screen->stack);
@@ -826,16 +824,12 @@ meta_screen_composite_all_windows (MetaScreen *screen)
     {
       WindowInfo *info = list->data;
 
-      g_print ("composite all adds window\n");
-      
       meta_compositor_add_window (screen->display->compositor,
 				  info->xwindow, &info->attrs);
     }
 
   meta_stack_thaw (screen->stack);
 
-  g_print ("composite all ends\n");
-  
   g_list_foreach (windows, (GFunc)g_free, NULL);
   g_list_free (windows);
 }

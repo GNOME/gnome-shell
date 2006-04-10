@@ -7729,5 +7729,3 @@ meta_window_unset_demands_attention (MetaWindow *window)
   window->wm_state_demands_attention = FALSE;
   set_net_wm_state (window);
 }
-
-
