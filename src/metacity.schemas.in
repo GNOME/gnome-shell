@@ -67,6 +67,23 @@
     </schema>
 
     <schema>
+      <key>/schemas/apps/metacity/general/focus_new_windows</key>
+      <applyto>/apps/metacity/general/focus_new_windows</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>smart</default>
+      <locale name="C">
+         <short>Control how new windows get focus</short>
+         <long>
+          This option provides additional control over how newly created
+          windows get focus.  It has two possible values; "smart" applies
+          the user's normal focus mode, and "strict" results in windows
+          started from a terminal not being given focus.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
       <key>/schemas/apps/metacity/general/raise_on_click</key>
       <applyto>/apps/metacity/general/raise_on_click</applyto>
       <owner>metacity</owner>

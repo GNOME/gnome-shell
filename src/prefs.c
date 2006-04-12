@@ -42,6 +42,7 @@
  */
 #define KEY_MOUSE_BUTTON_MODS "/apps/metacity/general/mouse_button_modifier"
 #define KEY_FOCUS_MODE "/apps/metacity/general/focus_mode"
+#define KEY_FOCUS_NEW_WINDOWS "/apps/metacity/general/focus_new_windows"
 #define KEY_RAISE_ON_CLICK "/apps/metacity/general/raise_on_click"
 #define KEY_ACTION_DOUBLE_CLICK_TITLEBAR "/apps/metacity/general/action_double_click_titlebar"
 #define KEY_AUTO_RAISE "/apps/metacity/general/auto_raise"
@@ -83,6 +84,7 @@ static gboolean use_system_font = FALSE;
 static PangoFontDescription *titlebar_font = NULL;
 static MetaVirtualModifier mouse_button_mods = Mod1Mask;
 static MetaFocusMode focus_mode = META_FOCUS_MODE_CLICK;
+static MetaFocusNewWindows focus_new_windows = META_FOCUS_NEW_WINDOWS_SMART;
 static gboolean raise_on_click = TRUE;
 static char* current_theme = NULL;
 static int num_workspaces = 4;
@@ -128,6 +130,7 @@ static gboolean update_use_system_font    (gboolean    value);
 static gboolean update_titlebar_font      (const char *value);
 static gboolean update_mouse_button_mods  (const char *value);
 static gboolean update_focus_mode         (const char *value);
+static gboolean update_focus_new_windows  (const char *value);
 static gboolean update_raise_on_click     (gboolean    value);
 static gboolean update_theme              (const char *value);
 static gboolean update_visual_bell        (gboolean v1, gboolean v2);
@@ -378,6 +381,12 @@ meta_prefs_init (void)
   update_focus_mode (str_val);
   g_free (str_val);  
 
+  str_val = gconf_client_get_string (default_client, KEY_FOCUS_NEW_WINDOWS,
+                                     &err);
+  cleanup_error (&err);
+  update_focus_new_windows (str_val);
+  g_free (str_val);  
+
   if (get_bool (KEY_RAISE_ON_CLICK, &bool_val))
     update_raise_on_click (bool_val);
   
@@ -569,6 +578,22 @@ change_notify (GConfClient    *client,
 
       if (update_focus_mode (str))
         queue_changed (META_PREF_FOCUS_MODE);
+    }
+  else if (strcmp (key, KEY_FOCUS_NEW_WINDOWS) == 0)
+    {
+      const char *str;
+
+      if (value && value->type != GCONF_VALUE_STRING)
+        {
+          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                        KEY_FOCUS_NEW_WINDOWS);
+          goto out;
+        }
+      
+      str = value ? gconf_value_get_string (value) : NULL;
+
+      if (update_focus_new_windows (str))
+        queue_changed (META_PREF_FOCUS_NEW_WINDOWS);
     }
   else if (strcmp (key, KEY_RAISE_ON_CLICK) == 0)
     {
@@ -1025,6 +1050,27 @@ update_focus_mode (const char *value)
 
 #ifdef HAVE_GCONF
 static gboolean
+update_focus_new_windows (const char *value)
+{
+  MetaFocusNewWindows old_mode = focus_new_windows;
+  
+  if (value != NULL)
+    {
+      if (g_ascii_strcasecmp (value, "smart") == 0)
+        focus_new_windows = META_FOCUS_NEW_WINDOWS_SMART;
+      else if (g_ascii_strcasecmp (value, "strict") == 0)
+        focus_new_windows = META_FOCUS_NEW_WINDOWS_STRICT;
+      else
+        meta_warning (_("GConf key '%s' is set to an invalid value\n"),
+                      KEY_FOCUS_NEW_WINDOWS);
+    }
+
+  return (old_mode != focus_new_windows);
+}
+#endif /* HAVE_GCONF */
+
+#ifdef HAVE_GCONF
+static gboolean
 update_raise_on_click (gboolean value)
 {
   gboolean old = raise_on_click;
@@ -1079,6 +1125,12 @@ MetaFocusMode
 meta_prefs_get_focus_mode (void)
 {
   return focus_mode;
+}
+
+MetaFocusNewWindows
+meta_prefs_get_focus_new_windows (void)
+{
+  return focus_new_windows;
 }
 
 gboolean
@@ -1575,6 +1627,9 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_FOCUS_MODE:
       return "FOCUS_MODE";
+
+    case META_PREF_FOCUS_NEW_WINDOWS:
+      return "FOCUS_NEW_WINDOWS";
 
     case META_PREF_RAISE_ON_CLICK:
       return "RAISE_ON_CLICK";

@@ -1774,15 +1774,16 @@ window_state_on_map (MetaWindow *window,
       return;
     }
 
-  /* Terminal usage is different; users typically intend to launch
+  /* Terminal usage may be different; some users intend to launch
    * many apps in quick succession or to just view things in the new
-   * window while still interacting with the terminal.  Therefore,
+   * window while still interacting with the terminal.  In that case,
    * apps launched from the terminal should not take focus.  This
    * isn't quite the same as not allowing focus to transfer from
    * terminals due to new window map, but the latter is a much easier
    * approximation to enforce so we do that.
    */
   if (*takes_focus &&
+      meta_prefs_get_focus_new_windows () == META_FOCUS_NEW_WINDOWS_STRICT &&
       !window->display->allow_terminal_deactivation &&
       __window_is_terminal (window->display->focus_window) &&
       !meta_window_is_ancestor_of_transient (window->display->focus_window,
@@ -7658,7 +7659,9 @@ meta_window_set_user_time (MetaWindow *window,
       /* If this is a terminal, user interaction with it means the user likely
        * doesn't want to have focus transferred for now due to new windows.
        */
-      if (__window_is_terminal (window))
+      if (meta_prefs_get_focus_new_windows () ==
+               META_FOCUS_NEW_WINDOWS_STRICT &&
+          __window_is_terminal (window))
         window->display->allow_terminal_deactivation = FALSE;
     }
 }

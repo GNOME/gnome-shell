@@ -204,11 +204,12 @@ struct _MetaDisplay
    */
   guint mouse_mode : 1;
 
-  /* Helper var for strict focus for terminals; only relevant if the focus
-   * window is a terminal.  Typically, we don't allow new windows to take
-   * focus away from a terminal, but if the user explicitly did something
-   * that should allow a different window to gain focus (e.g. global
-   * keybinding or clicking on a dock), then we will allow the transfer.
+  /* Helper var used when focus_new_windows setting is 'strict'; only
+   * relevant in 'strict' mode and if the focus window is a terminal.
+   * In that case, we don't allow new windows to take focus away from
+   * a terminal, but if the user explicitly did something that should
+   * allow a different window to gain focus (e.g. global keybinding or
+   * clicking on a dock), then we will allow the transfer.
    */
   guint allow_terminal_deactivation : 1;
 
