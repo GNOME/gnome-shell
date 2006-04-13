@@ -1,3 +1,8 @@
+Thu Apr 13 12:23:28 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/c-screen.c (meta_screen_info_add_window): Check for both
+	POPUP and DROPDOWN. 
+
 2006-04-13  Björn Lindqvist  <bjourne@gmail.com>
 
 	* src/async-getprop.c, src/async-getprop.h

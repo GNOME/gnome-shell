@@ -519,9 +519,9 @@ window_info_new (Window xwindow,
 }
 
 static gboolean
-is_menu (WsWindow *window)
+has_type (WsWindow *window, const char *check_type)
 {
-    gchar **types = ws_window_get_property_atom_list (window, "_NET_WM_UNMANAGED_WINDOW_TYPE");
+    gchar **types = ws_window_get_property_atom_list (window, "_NET_WM_WINDOW_TYPE");
     int i;
     gboolean result;
 
@@ -534,7 +534,9 @@ is_menu (WsWindow *window)
     {
 	gchar *type = types[i];
 
-	if (strcmp (type, "_NET_WM_UNMANAGED_WINDOW_TYPE_DROPDOWN_MENU") == 0)
+	g_print ("type: %s\n", type);
+	
+	if (strcmp (type, check_type) == 0)
 	{
 	    result = TRUE;
 	    break;
@@ -613,11 +615,15 @@ out:
 	    g_print ("set alpha %f\n", alpha);
 #endif
 	    
-	    if (is_menu (drawable))
+	    if (has_type (drawable, "_NET_WM_WINDOW_TYPE_DROPDOWN_MENU"))
 	    {
 #if 0
 		g_print ("is menu\n");
 #endif
+		alpha = 0.9;
+	    }
+	    else if (has_type (drawable, "_NET_WM_WINDOW_TYPE_POPUP_MENU"))
+	    {
 		alpha = 0.9;
 	    }
 	    else
