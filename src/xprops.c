@@ -391,7 +391,7 @@ utf8_string_from_results (GetPropertyResults *results,
     return FALSE;
 
   if (results->n_items > 0 &&
-      !g_utf8_validate (results->prop, results->n_items, NULL))
+      !g_utf8_validate ((gchar *)results->prop, results->n_items, NULL))
     {
       char *name;
 
@@ -468,7 +468,7 @@ utf8_list_from_results (GetPropertyResults *results,
   
   retval = g_new0 (char*, n_strings + 1);
 
-  p = results->prop;
+  p = (char *)results->prop;
   i = 0;
   while (i < n_strings)
     {
@@ -784,12 +784,12 @@ class_hint_from_results (GetPropertyResults *results,
       return FALSE;
     }
   
-  strcpy (class_hint->res_name, results->prop);
+  strcpy (class_hint->res_name, (char *)results->prop);
 
   if (len_name == (int) results->n_items)
     len_name--;
   
-  len_class = strlen (results->prop + len_name + 1);
+  len_class = strlen ((char *)results->prop + len_name + 1);
   
   if (! (class_hint->res_class = ag_Xmalloc(len_class+1)))
     {
@@ -800,7 +800,7 @@ class_hint_from_results (GetPropertyResults *results,
       return FALSE;
     }
   
-  strcpy (class_hint->res_class, results->prop + len_name + 1);
+  strcpy (class_hint->res_class, (char *)results->prop + len_name + 1);
 
   XFree (results->prop);
   results->prop = NULL;
@@ -1050,7 +1050,7 @@ meta_prop_get_values (MetaDisplay   *display,
                                       &results.type, &results.format,
                                       &results.n_items,
                                       &results.bytes_after,
-                                      (guchar **)&results.prop) != Success ||
+                                      (gchar **)&results.prop) != Success ||
           results.type == None)
         {
           values[i].type = META_PROP_VALUE_INVALID;

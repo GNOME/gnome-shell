@@ -185,7 +185,7 @@ try_get_reply (Display           *xdisplay,
       int actual_format;
       unsigned long n_items;
       unsigned long bytes_after;
-      unsigned char *data;
+      char *data;
       char *name;
       struct timeval current_time;
 
@@ -419,7 +419,7 @@ run_speed_comparison (Display *xdisplay,
           int actual_format;
           unsigned long n_items;
           unsigned long bytes_after;
-          unsigned char *data;
+          char *data;
 
           assert (ag_task_have_reply (task));
           

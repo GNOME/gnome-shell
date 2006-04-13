@@ -465,7 +465,7 @@ reload_modmap (MetaDisplay *display)
       /* get the key code at this point in the map,
        * see if its keysym is one we're interested in
        */
-      unsigned int keycode = modmap->modifiermap[i];
+      int keycode = modmap->modifiermap[i];
       
       if (keycode >= display->min_keycode &&
           keycode <= display->max_keycode)

@@ -45,7 +45,7 @@ Status             ag_task_get_reply_and_free (AgGetPropertyTask  *task,
                                                int                *actual_format,
                                                unsigned long      *nitems,
                                                unsigned long      *bytesafter,
-                                               unsigned char     **prop);
+                                               char              **prop);
 
 Bool     ag_task_have_reply   (AgGetPropertyTask *task);
 Atom     ag_task_get_property (AgGetPropertyTask *task);

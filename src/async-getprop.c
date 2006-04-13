@@ -66,7 +66,7 @@ struct _AgGetPropertyTask
 
   unsigned long  n_items;
   unsigned long  bytes_after;
-  unsigned char *data;
+  char          *data;
 
   Bool have_reply;
 };
@@ -316,7 +316,7 @@ async_get_property_handler (Display *dpy,
           /* there's padding to word boundary */
           netbytes = ALIGN_VALUE (nbytes, 4);
           if (nbytes + 1 > 0 &&
-              (task->data = (unsigned char *) Xmalloc ((unsigned)nbytes + 1)))
+              (task->data = (char *) Xmalloc ((unsigned)nbytes + 1)))
             {
 #ifdef DEBUG_SPEW
               printf ("%s: already read %d bytes using %ld, more eating %ld more\n",
@@ -334,7 +334,7 @@ async_get_property_handler (Display *dpy,
           netbytes = reply->nItems << 1;
           netbytes = ALIGN_VALUE (netbytes, 4); /* align to word boundary */
           if (nbytes + 1 > 0 &&
-              (task->data = (unsigned char *) Xmalloc ((unsigned)nbytes + 1)))
+              (task->data = (char *) Xmalloc ((unsigned)nbytes + 1)))
             {
 #ifdef DEBUG_SPEW
               printf ("%s: already read %d bytes using %ld more, eating %ld more\n",
@@ -351,7 +351,7 @@ async_get_property_handler (Display *dpy,
           nbytes = reply->nItems * sizeof (long);
           netbytes = reply->nItems << 2; /* wire size is always 32 bits though */
           if (nbytes + 1 > 0 &&
-              (task->data = (unsigned char *) Xmalloc ((unsigned)nbytes + 1)))
+              (task->data = (char *) Xmalloc ((unsigned)nbytes + 1)))
             {
 #ifdef DEBUG_SPEW
               printf ("%s: already read %d bytes using %ld more, eating %ld more\n",
@@ -363,9 +363,9 @@ async_get_property_handler (Display *dpy,
                */
               if (sizeof (long) == 8)
                 {
-                  unsigned char *netdata;
-                  unsigned char *lptr;
-                  unsigned char *end_lptr;
+                  char *netdata;
+                  char *lptr;
+                  char *end_lptr;
                   
                   /* Store the 32-bit values in the end of the array */
                   netdata = task->data + nbytes / 2;
@@ -584,7 +584,7 @@ ag_task_get_reply_and_free (AgGetPropertyTask  *task,
                             int                *actual_format,
                             unsigned long      *nitems,
                             unsigned long      *bytesafter,
-                            unsigned char     **prop)
+                            char              **prop)
 {
   Display *dpy;
 

@@ -1,3 +1,24 @@
+2006-04-13  Björn Lindqvist  <bjourne@gmail.com>
+
+	* src/async-getprop.c, src/async-getprop.h
+	(async_get_property_handler, ag_task_get_reply_and_free):
+	* src/testasyncgetprop.c (try_get_reply, run_speed_comparison):
+	Change unsigned chars to chars.
+	
+	* src/display.h (struct MetaDisplay):
+	* src/keybindings.c (reload_modmap):
+	Change unsigned ints to ints.
+	
+        * src/screen.c (set_workspace_names)
+	* src/stack.c (meta_stack_sync_to_server):
+	* src/xprops.c (utf8_string_from_results, utf8_list_from_results,
+	class_hint_from_results, meta_prop_get_values):
+	Introduce casts.
+
+	Add a number of casts and change signedness on a number of
+	variables so that Metacity compiles with many fewer
+	warnings. Fixes #336032.
+
 2006-04-12  Elijah Newren  <newren gmail com>
 
 	Patch from Ron Yorston to add a focus_new_windows option.  Default

@@ -1196,14 +1196,14 @@ meta_stack_sync_to_server (MetaStack *stack)
                    stack->screen->display->atom_net_client_list,
                    XA_WINDOW,
                    32, PropModeReplace,
-                   stack->windows->data,
+                   (unsigned char *)stack->windows->data,
                    stack->windows->len);
   XChangeProperty (stack->screen->display->xdisplay,
                    stack->screen->xroot,
                    stack->screen->display->atom_net_client_list_stacking,
                    XA_WINDOW,
                    32, PropModeReplace,
-                   stacked->data,
+                   (unsigned char *)stacked->data,
                    stacked->len);
 
   g_array_free (stacked, TRUE);

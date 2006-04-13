@@ -1760,7 +1760,7 @@ set_workspace_names (MetaScreen *screen)
                    screen->display->atom_net_desktop_names,
 		   screen->display->atom_utf8_string,
                    8, PropModeReplace,
-		   flattened->str, flattened->len);
+		   (unsigned char *)flattened->str, flattened->len);
   meta_error_trap_pop (screen->display, FALSE);
   
   g_string_free (flattened, TRUE);
