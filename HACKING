@@ -197,11 +197,30 @@ Debugging information
     of window without launching a full desktop.
 
 Technical gotchas to keep in mind
-  Files that include gdk.h or gtk.h are not supposed to include display.h
-  or window.h or other core files.
+  Files that include gdk.h or gtk.h are not supposed to include
+  display.h or window.h or other core files.  Files in the core
+  (display.[hc], window.[hc]) are not supposed to include gdk.h or
+  gtk.h.  Reasons:
 
-  Files in the core (display.[hc], window.[hc]) are not supposed to include
-  gdk.h or gtk.h.
+    "Basically you don't want GDK most of the time. It adds
+    abstractions that cause problems, because they aren't designed to
+    be used in a WM where we do weird stuff (display grabs, and just
+    being the WM). At best GDK adds inefficiency, at worst it breaks
+    things in weird ways where you have to be a GDK guru to figure
+    them out. Owen also told me that they didn't want to start adding
+    a lot of hacks to GDK to let a WM use it; we both agreed back in
+    the mists of time that metacity would only use it for the "UI"
+    bits as it does.
+
+    Having the split in the source code contains and makes very clear
+    the interface between the WM and GDK/GTK. This keeps people from
+    introducing extra GDK/GTK usage when it isn't needed or
+    appropriate. Also, it speeds up the compilation a bit, though this
+    was perhaps more relevant 5 years ago than it is now.
+
+    There was also a very old worry that the GDK stuff might have to
+    be in a separate process to work right; that turned out to be
+    untrue. Though who knows what issues the CM will introduce."
 
   Remember that strings stored in X properties are not in UTF-8, and they
   have to end up in UTF-8 before we try putting them through Pango.

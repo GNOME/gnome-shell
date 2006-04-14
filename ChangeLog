@@ -1,3 +1,9 @@
+2006-04-14  Elijah Newren  <newren gmail com>
+
+	* HACKING: Include reasons why gdk/gtk.h and core includes like
+	display.h/window.h must be kept separate.  Taken from a private
+	email from Havoc.
+
 2006-04-13  Alejandro Andres <fuzzy.alej@gmail.com>
 
 	* README: Fixed broken links.  #333303
