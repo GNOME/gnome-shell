@@ -1,3 +1,7 @@
+2006-04-13  Alejandro Andres <fuzzy.alej@gmail.com>
+
+	* README: Fixed broken links.  #333303
+
 Thu Apr 13 12:23:28 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/c-screen.c (meta_screen_info_add_window): Check for both
@@ -40,9 +44,6 @@ Thu Apr 13 12:23:28 2006  Søren Sandmann  <sandmann@redhat.com>
 	Update docs on allow_terminal_deactivation to note that it is only
 	relevant when focus_new_windows is 'strict'
 	
-	* src/prefs.c:
-	* src/prefs.h:
-
 	* src/metacity.schemas.in: add the new gconf key and explanation
 
 	* src/prefs.[ch] (#define KEY_FOCUS_NEW_WINDOWS, static gboolean

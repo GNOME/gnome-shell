@@ -315,8 +315,8 @@ A: Metacity only stores sizes/positions for apps that are session
    archaic than twm - and you should flame them. ;-)
 
    Docs on session management:
-    ftp://ftp.x.org/pub/R6.4/xc/doc/hardcopy/SM/xsmp.PS.gz
-    ftp://ftp.x.org:21/pub/R6.4/xc/doc/hardcopy/SM/SMlib.PS.gz
+    http://www.fifi.org/doc/xspecs/xsmp.txt.gz
+    http://www.fifi.org/doc/xspecs/SMlib.txt.gz
 
    See also the ICCCM section on SM. For GNOME apps, use the
    GnomeClient object. For a simple example of using libSM directly,
