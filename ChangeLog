@@ -1,3 +1,8 @@
+2006-04-15  Elijah Newren  <newren gmail com>
+
+	* src/display.h: Patch from Andy Morum to fix the build with
+	--disable-xsync.  #336605
+
 2006-04-14  Elijah Newren  <newren gmail com>
 
 	* HACKING: Include instructions on setting up a minimal

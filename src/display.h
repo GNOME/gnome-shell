@@ -274,7 +274,8 @@ struct _MetaDisplay
   int         grab_wireframe_last_display_height;
   GList*      grab_old_window_stacking;
   MetaEdgeResistanceData *grab_edge_resistance_data;
-  
+  unsigned int grab_last_user_action_was_snap;
+
   /* we use property updates as sentinels for certain window focus events
    * to avoid some race conditions on EnterNotify events
    */
@@ -345,7 +346,6 @@ struct _MetaDisplay
   int render_error_base;
 #endif
 #ifdef HAVE_XSYNC
-  unsigned int grab_last_user_action_was_snap;
   unsigned int have_xsync : 1;
 #define META_DISPLAY_HAS_XSYNC(display) ((display)->have_xsync)
 #else
