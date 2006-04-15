@@ -1,5 +1,4 @@
-/* Metacity Keybindings */
-
+/* Metacity Keybindings */ 
 /* 
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2002 Red Hat Inc.
@@ -280,6 +279,14 @@ static const MetaKeyHandler screen_handlers[] = {
     GINT_TO_POINTER (META_TAB_LIST_DOCKS) },
   { META_KEYBINDING_SWITCH_PANELS_BACKWARD, handle_tab_backward,
     GINT_TO_POINTER (META_TAB_LIST_DOCKS) },
+  { META_KEYBINDING_SWITCH_GROUP, handle_tab_forward,
+    GINT_TO_POINTER (META_TAB_LIST_GROUP) },
+  { META_KEYBINDING_SWITCH_GROUP_BACKWARD, handle_tab_backward,
+    GINT_TO_POINTER (META_TAB_LIST_GROUP) },
+  { META_KEYBINDING_CYCLE_GROUP, handle_cycle_forward,
+    GINT_TO_POINTER (META_TAB_LIST_GROUP) },
+  { META_KEYBINDING_CYCLE_GROUP_BACKWARD, handle_cycle_backward,
+    GINT_TO_POINTER (META_TAB_LIST_GROUP) },
   { META_KEYBINDING_CYCLE_WINDOWS, handle_cycle_forward,
     GINT_TO_POINTER (META_TAB_LIST_NORMAL) },
   { META_KEYBINDING_CYCLE_WINDOWS_BACKWARD, handle_cycle_backward,
@@ -1662,8 +1669,10 @@ meta_display_process_key_event (MetaDisplay *display,
 
         case META_GRAB_OP_KEYBOARD_TABBING_NORMAL:
         case META_GRAB_OP_KEYBOARD_TABBING_DOCK:
+        case META_GRAB_OP_KEYBOARD_TABBING_GROUP:
         case META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL:
         case META_GRAB_OP_KEYBOARD_ESCAPING_DOCK:
+        case META_GRAB_OP_KEYBOARD_ESCAPING_GROUP:
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Processing event for keyboard tabbing/cycling\n");
           handled = process_tab_grab (display, screen, event, keysym);
@@ -2333,12 +2342,16 @@ process_tab_grab (MetaDisplay *display,
       /* CYCLE_* are traditionally Escape-based actions,
        * and should cancel traditionally Tab-based ones.
        */
-      if (display->grab_op == META_GRAB_OP_KEYBOARD_TABBING_NORMAL ||
-          display->grab_op == META_GRAB_OP_KEYBOARD_TABBING_DOCK)
+       switch (display->grab_op)
         {
+        case META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL:
+        case META_GRAB_OP_KEYBOARD_ESCAPING_DOCK:
+         /* carry on */
+          break;
+        default:
           return FALSE;
         }
-      break;
+       break;
     case META_KEYBINDING_ACTION_SWITCH_PANELS:
     case META_KEYBINDING_ACTION_SWITCH_WINDOWS:
     case META_KEYBINDING_ACTION_SWITCH_PANELS_BACKWARD:
@@ -2346,9 +2359,13 @@ process_tab_grab (MetaDisplay *display,
       /* SWITCH_* are traditionally Tab-based actions,
        * and should cancel traditionally Escape-based ones.
        */
-      if (display->grab_op == META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL ||
-          display->grab_op == META_GRAB_OP_KEYBOARD_ESCAPING_DOCK)
+      switch (display->grab_op)
         {
+        case META_GRAB_OP_KEYBOARD_TABBING_NORMAL:
+        case META_GRAB_OP_KEYBOARD_TABBING_DOCK:
+          /* carry on */
+          break;
+        default:
           /* Also, we must re-lower and re-minimize whatever window
            * we'd previously raised and unminimized.
            */
@@ -2362,6 +2379,21 @@ process_tab_grab (MetaDisplay *display,
           return FALSE;
         }
       break;
+    case META_KEYBINDING_ACTION_CYCLE_GROUP:
+    case META_KEYBINDING_ACTION_CYCLE_GROUP_BACKWARD:
+    case META_KEYBINDING_ACTION_SWITCH_GROUP:
+    case META_KEYBINDING_ACTION_SWITCH_GROUP_BACKWARD:
+      switch (display->grab_op)
+        {
+        case META_GRAB_OP_KEYBOARD_ESCAPING_GROUP:
+        case META_GRAB_OP_KEYBOARD_TABBING_GROUP:
+          /* carry on */
+             break;
+        default:
+             return FALSE;
+        }
+ 
+      break;
     default:
       break;
     }
@@ -2374,21 +2406,25 @@ process_tab_grab (MetaDisplay *display,
     {
     case META_KEYBINDING_ACTION_CYCLE_PANELS:
     case META_KEYBINDING_ACTION_CYCLE_WINDOWS:
+    case META_KEYBINDING_ACTION_CYCLE_GROUP:
       popup_not_showing = TRUE;
       key_used = TRUE;
       break;
     case META_KEYBINDING_ACTION_CYCLE_PANELS_BACKWARD:
     case META_KEYBINDING_ACTION_CYCLE_WINDOWS_BACKWARD:
+    case META_KEYBINDING_ACTION_CYCLE_GROUP_BACKWARD:
       popup_not_showing = TRUE;
       key_used = TRUE;
       backward = TRUE;
       break;
     case META_KEYBINDING_ACTION_SWITCH_PANELS:
     case META_KEYBINDING_ACTION_SWITCH_WINDOWS:
+    case META_KEYBINDING_ACTION_SWITCH_GROUP:
       key_used = TRUE;
       break;
     case META_KEYBINDING_ACTION_SWITCH_PANELS_BACKWARD:
     case META_KEYBINDING_ACTION_SWITCH_WINDOWS_BACKWARD:
+    case META_KEYBINDING_ACTION_SWITCH_GROUP_BACKWARD:
       key_used = TRUE;
       backward = TRUE;
       break;
@@ -2904,6 +2940,8 @@ tab_op_from_tab_type (MetaTabList type)
       return META_GRAB_OP_KEYBOARD_TABBING_NORMAL;
     case META_TAB_LIST_DOCKS:
       return META_GRAB_OP_KEYBOARD_TABBING_DOCK;
+    case META_TAB_LIST_GROUP:
+      return META_GRAB_OP_KEYBOARD_TABBING_GROUP;
     }
 
   g_assert_not_reached ();
@@ -2920,6 +2958,8 @@ cycle_op_from_tab_type (MetaTabList type)
       return META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL;
     case META_TAB_LIST_DOCKS:
       return META_GRAB_OP_KEYBOARD_ESCAPING_DOCK;
+    case META_TAB_LIST_GROUP:
+      return META_GRAB_OP_KEYBOARD_ESCAPING_GROUP;
     }
 
   g_assert_not_reached ();

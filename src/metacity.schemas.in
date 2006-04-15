@@ -1187,6 +1187,108 @@ you set
     </schema>
 
     <schema>
+      <key>/schemas/apps/metacity/global_keybindings/cycle_group</key>
+      <applyto>/apps/metacity/global_keybindings/cycle_group</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move between windows of an application immediately</short>
+         <long>
+          The keybinding used to move focus between windows of an
+          application without a popup window.
+          Holding the "shift" key while using this binding reverses
+          the direction of movement.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/cycle_group_backward</key>
+      <applyto>/apps/metacity/global_keybindings/cycle_group_backward</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move backwards between windows of an application immediately</short>
+         <long>
+          The keybinding used to move focus backwards between windows
+          of an application without a popup window. Holding "shift"
+          together with this binding makes the direction go forward again.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/switch_group</key>
+      <applyto>/apps/metacity/global_keybindings/switch_group</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>&lt;Alt&gt;F6</default>
+      <locale name="C">
+         <short>Move between windows of an application with popup</short>
+         <long>
+          The keybinding used to move focus between windows of an
+          application, using a popup window.
+          (Traditionally &lt;Alt&gt;F6) Holding the "shift" key
+          while using this binding reverses the direction of movement.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/global_keybindings/switch_group_backward</key>
+      <applyto>/apps/metacity/global_keybindings/switch_group_backward</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>disabled</default>
+      <locale name="C">
+         <short>Move backwards between windows of an application with popup</short>
+         <long>
+          The keybinding used to move focus backwards between windows
+          of an application, using a popup window. Holding "shift"
+          together with this binding makes the direction go forward again.
+
+          The format looks like "&lt;Control&gt;a" or
+          "&lt;Shift&gt;&lt;Alt&gt;F1".
+
+          The parser is fairly liberal and allows lower or upper case,
+          and also abbreviations such as "&lt;Ctl&gt;" and
+          "&lt;Ctrl&gt;". If you set the option to the special string
+          "disabled", then there will be no keybinding for this
+          action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
       <key>/schemas/apps/metacity/global_keybindings/cycle_windows</key>
       <applyto>/apps/metacity/global_keybindings/cycle_windows</applyto>
       <owner>metacity</owner>

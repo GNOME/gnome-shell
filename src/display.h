@@ -494,7 +494,8 @@ gboolean meta_display_window_has_pending_pings (MetaDisplay        *display,
 typedef enum
 {
   META_TAB_LIST_NORMAL,
-  META_TAB_LIST_DOCKS
+  META_TAB_LIST_DOCKS,
+  META_TAB_LIST_GROUP
 } MetaTabList;
 
 typedef enum

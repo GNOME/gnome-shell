@@ -70,8 +70,10 @@
 #define GRAB_OP_IS_WINDOW_SWITCH(g)                     \
         (g == META_GRAB_OP_KEYBOARD_TABBING_NORMAL  ||  \
          g == META_GRAB_OP_KEYBOARD_TABBING_DOCK    ||  \
+         g == META_GRAB_OP_KEYBOARD_TABBING_GROUP   ||  \
          g == META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL ||  \
-         g == META_GRAB_OP_KEYBOARD_ESCAPING_DOCK)
+         g == META_GRAB_OP_KEYBOARD_ESCAPING_DOCK   ||  \
+         g == META_GRAB_OP_KEYBOARD_ESCAPING_GROUP)
 
 typedef struct 
 {
@@ -121,6 +123,8 @@ static void    prefs_changed_callback    (MetaPreference pref,
 
 static void    sanity_check_timestamps   (MetaDisplay *display,
                                           Time         known_good_timestamp);
+
+MetaGroup*     get_focussed_group (MetaDisplay *display);
 
 static void
 ping_data_free (MetaPingData *ping_data)
@@ -1111,8 +1115,10 @@ grab_op_is_keyboard (MetaGrabOp op)
     case META_GRAB_OP_KEYBOARD_RESIZING_NW:
     case META_GRAB_OP_KEYBOARD_TABBING_NORMAL:
     case META_GRAB_OP_KEYBOARD_TABBING_DOCK:
+    case META_GRAB_OP_KEYBOARD_TABBING_GROUP:
     case META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL:
     case META_GRAB_OP_KEYBOARD_ESCAPING_DOCK:
+    case META_GRAB_OP_KEYBOARD_ESCAPING_GROUP:
     case META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING:
       return TRUE;
 
@@ -3493,6 +3499,15 @@ meta_display_begin_grab_op (MetaDisplay *display,
                                     META_TAB_LIST_DOCKS,
                                     META_TAB_SHOW_INSTANTLY);
       break;
+    case META_GRAB_OP_KEYBOARD_TABBING_GROUP:
+      meta_screen_ensure_tab_popup (screen,
+                                    META_TAB_LIST_GROUP,
+                                    META_TAB_SHOW_ICON);
+      break;
+     case META_GRAB_OP_KEYBOARD_ESCAPING_GROUP:
+      meta_screen_ensure_tab_popup (screen,
+                                    META_TAB_LIST_GROUP,
+                                    META_TAB_SHOW_INSTANTLY);
       
     case META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING:
       meta_screen_ensure_workspace_popup (screen);
@@ -4198,7 +4213,18 @@ meta_display_window_has_pending_pings (MetaDisplay *display,
   return FALSE;
 }
 
-#define IN_TAB_CHAIN(w,t) (((t) == META_TAB_LIST_NORMAL && META_WINDOW_IN_NORMAL_TAB_CHAIN (w)) || ((t) == META_TAB_LIST_DOCKS && META_WINDOW_IN_DOCK_TAB_CHAIN (w)))
+MetaGroup*
+get_focussed_group (MetaDisplay *display)
+{
+  if (display->focus_window)
+    return display->focus_window->group;
+  else
+    return NULL;
+}
+
+#define IN_TAB_CHAIN(w,t) (((t) == META_TAB_LIST_NORMAL && META_WINDOW_IN_NORMAL_TAB_CHAIN (w)) \
+    || ((t) == META_TAB_LIST_DOCKS && META_WINDOW_IN_DOCK_TAB_CHAIN (w)) \
+    || ((t) == META_TAB_LIST_GROUP && META_WINDOW_IN_GROUP_TAB_CHAIN (w, get_focussed_group(w->display))))
 
 static MetaWindow*
 find_tab_forward (MetaDisplay   *display,

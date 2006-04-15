@@ -542,6 +542,8 @@ gboolean meta_window_same_application (MetaWindow *window,
   (((w)->input || (w)->take_focus ) && META_WINDOW_IN_NORMAL_TAB_CHAIN_TYPE (w) && (!(w)->skip_taskbar))
 #define META_WINDOW_IN_DOCK_TAB_CHAIN(w) \
   (((w)->input || (w)->take_focus) && ! META_WINDOW_IN_NORMAL_TAB_CHAIN_TYPE (w))
+#define META_WINDOW_IN_GROUP_TAB_CHAIN(w, g) \
+  (((w)->input || (w)->take_focus) && (!g || meta_window_get_group(w)==g))
 
 void meta_window_refresh_resize_popup (MetaWindow *window);
 

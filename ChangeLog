@@ -1,3 +1,20 @@
+2006-04-14  Thomas Thurman   <thomas@thurman.org.uk>
+
+	Add a tabbing function, bound to alt-f6 by default, to cycle
+	through the windows of the current application. Fixes #164831.
+
+	* src/common.h: two new MetaGrabOpts values for group switching
+	* src/display.c (ping_data_free, meta_display_in_grab_op,
+	IN_TAB_CHAIN): adapt to new MetaGrabOpts
+	* src/display.h: new enum value for MetaTabList for group switching
+	* src/keybindings.c (meta_display_process_key_event):
+	adapt to new MetaGrabOpts
+	(process_tab_grab): adapt to new MetaGrabOpts, and use switch
+	statement for cancelling instead of if statement
+	* src/metacity.schemas.in: new keybindings
+	* src/prefs.c, src/prefs.h: handle new keybindings
+	* src/window.h: define META_WINDOW_IN_GROUP_TAB_CHAIN macro
+
 2006-04-14  Elijah Newren  <newren gmail com>
 
 	* HACKING: Include reasons why gdk/gtk.h and core includes like
