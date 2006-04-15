@@ -1,7 +1,7 @@
 2006-04-14  Thomas Thurman   <thomas@thurman.org.uk>
 
 	Add a tabbing function, bound to alt-f6 by default, to cycle
-	through the windows of the current application. Fixes #164831.
+	through the windows of the current application. Fixes #94682.
 
 	* src/common.h: two new MetaGrabOpts values for group switching
 	* src/display.c (ping_data_free, meta_display_in_grab_op,
