@@ -11,6 +11,7 @@ is nonetheless useful.
 
 Overview
   Administrative issues
+  Minimal Building/Testing Environment
   Relevant standards and X properties
   Debugging and testing
     Debugging logs
@@ -33,6 +34,27 @@ Administrative issues
   information on how to make a release.  The only difference from those
   instructions is that the minor version number of a Metacity release
   should always be a number from the Fibonacci sequence.
+
+Minimal Building/Testing Environment
+  You do not need to _install_ a development version of Metacity to
+  build, run and test it; you can run it from some temporary
+  directory.  Also, you do not need to build all of Gnome in order to
+  build a development version of Metacity -- odds are, you can build
+  metacity from CVS without building any other modules.
+
+  As long as you have gtk+ >= 2.6 with your distro, you should be able
+  to install your distro's development packages (e.g. gtk2-devel,
+  GConf2-devel, and startup-notification-devel on Fedora) and be ready
+  to build and test Metacity.  Steps to do so:
+
+  $ cvs -q -z3 -d :pserver:anonymous@anoncvs.gnome.org:/cvs/gnome \
+                  checkout metacity
+  $ cd metacity
+  $ ./autogen.sh --prefix /usr
+  $ make
+  $ ./src/metacity --replace
+
+  Again, note that you do not need to run 'make install'.
 
 Relevant standards and X properties
   There are two documents that describe some basics about how window

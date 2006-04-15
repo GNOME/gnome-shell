@@ -1,3 +1,8 @@
+2006-04-14  Elijah Newren  <newren gmail com>
+
+	* HACKING: Include instructions on setting up a minimal
+	building/testing environment
+
 2006-04-14  Thomas Thurman   <thomas@thurman.org.uk>
 
 	Add a tabbing function, bound to alt-f6 by default, to cycle
