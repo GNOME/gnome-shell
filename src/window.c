@@ -4460,9 +4460,17 @@ meta_window_client_message (MetaWindow *window,
                  (action == _NET_WM_STATE_TOGGLE && 
                   !window->maximized_horizontally));
           if (max && window->has_maximize_func)
-            meta_window_maximize (window, META_MAXIMIZE_HORIZONTAL);
+            {
+              if (meta_prefs_get_raise_on_click ())
+                meta_window_raise (window);
+              meta_window_maximize (window, META_MAXIMIZE_HORIZONTAL);
+            }
           else
-            meta_window_unmaximize (window, META_MAXIMIZE_HORIZONTAL);
+            {
+              if (meta_prefs_get_raise_on_click ())
+                meta_window_raise (window);
+              meta_window_unmaximize (window, META_MAXIMIZE_HORIZONTAL);
+            }
         }
 
       if (first == display->atom_net_wm_state_maximized_vert ||
@@ -4474,9 +4482,17 @@ meta_window_client_message (MetaWindow *window,
                  (action == _NET_WM_STATE_TOGGLE && 
                   !window->maximized_vertically));
           if (max && window->has_maximize_func)
-            meta_window_maximize (window, META_MAXIMIZE_VERTICAL);
+            {
+              if (meta_prefs_get_raise_on_click ())
+                meta_window_raise (window);
+              meta_window_maximize (window, META_MAXIMIZE_VERTICAL);
+            }
           else
-            meta_window_unmaximize (window, META_MAXIMIZE_VERTICAL);
+            {
+              if (meta_prefs_get_raise_on_click ())
+                meta_window_raise (window);
+              meta_window_unmaximize (window, META_MAXIMIZE_VERTICAL);
+            }
         }
 
       if (first == display->atom_net_wm_state_modal ||

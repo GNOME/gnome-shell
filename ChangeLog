@@ -1,5 +1,14 @@
 2006-04-15  Elijah Newren  <newren gmail com>
 
+	Patch from Dan Sanders to fix #335076.
+
+	* src/core.c (meta_core_maximize, meta_core_toggle_maximize,
+	  meta_core_unmaximize):
+	* src/window.c (meta_window_client_message):
+	Raise windows on maximize/unmaximize.
+
+2006-04-15  Elijah Newren  <newren gmail com>
+
 	* src/display.h: Patch from Andy Morum to fix the build with
 	--disable-xsync.  #336605
 
