@@ -116,7 +116,9 @@ static gboolean queue_calc_showing_func (MetaWindow *window,
 static void meta_window_apply_session_info (MetaWindow                  *window,
                                             const MetaWindowSessionInfo *info);
 
-static void     unmaximize_window_before_freeing (MetaWindow        *window);
+static void unmaximize_window_before_freeing (MetaWindow        *window);
+static void unminimize_window_and_all_transient_parents (MetaWindow *window);
+
 
 #ifdef WITH_VERBOSE_MODE
 static const char*
@@ -743,6 +745,10 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   meta_window_foreach_transient (window,
                                  queue_calc_showing_func,
                                  NULL);
+  /* See bug 334899; the window may have minimized ancestors which need to be
+   * shown.
+   */
+  unminimize_window_and_all_transient_parents (window);
 
   meta_error_trap_pop (display, FALSE); /* pop the XSync()-reducing trap */
   meta_display_ungrab (display);
