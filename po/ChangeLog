@@ -1,3 +1,7 @@
+2006-04-17  Josep Puigdemont Casamajó  <josep.puigdemont@gmail.com>
+
+	* ca.po: Updated Catalan translation.
+
 2006-04-16  Funda Wang  <fundawang@linux.net.cn>
 
 	* zh_CN.po: Updated Simplified Chinese translation.
@@ -38,7 +42,7 @@
 
 2006-03-24  Gora Mohanty  <gmohanty@cvs.gnome.org>
 
-        * or.po: Updated Oriya translation.
+	* or.po: Updated Oriya translation.
 
 2006-03-21  Priit Laes  <amd@store20.com>
 
@@ -87,11 +91,11 @@
 
 2006-03-13  Maxim Dziumanenko <mvd@mylinux.ua>
 
-        * uk.po: Updated Ukrainian translation.
+	* uk.po: Updated Ukrainian translation.
 
 2006-03-13  Rajesh Ranjan <rranjan@redhat.com>
 
-        * hi.po: Updated Hindi Translation.
+	* hi.po: Updated Hindi Translation.
 
 2006-03-13  Theppitak Karoonboonyanan  <thep@linux.thai.net>
 
@@ -201,7 +205,7 @@
 
 2006-02-27  Leonid Kanter <leon@asplinux.ru>
 
-        * ru.po: Updated Russian translation
+	* ru.po: Updated Russian translation
 
 2006-02-27  Lasse Bang Mikkelsen  <lbm@fatalerror.dk>
 
@@ -245,7 +249,7 @@
 
 2006-02-01  Ankit Patel  <ankit644@yahoo.com>
 
-        * gu.po: Updated Gujarati Translation.
+	* gu.po: Updated Gujarati Translation.
 
 2006-02-20  Kostas Papadimas  <pkst@gnome.org>
 
@@ -311,7 +315,7 @@
 
 2006-01-23  Ankit Patel  <ankit644@yahoo.com>
 
-        * gu.po: Updated Gujarati Translation.
+	* gu.po: Updated Gujarati Translation.
 
 2006-01-23  Funda Wang  <fundawang@linux.net.cn>
 
@@ -376,7 +380,7 @@
 
 2006-01-11  Ankit Patel  <ankit644@yahoo.com>
 
-        * gu.po: Updated Gujarati Translation.
+	* gu.po: Updated Gujarati Translation.
 
 2006-01-11  Clytie Siddall <clytie@riverland.net.au>
 
@@ -529,7 +533,7 @@
 
 2005-09-16  Clytie Siddall <clytie@riverland.net.au>
 
-        * vi.po: Updated Vietnamese translation.
+	* vi.po: Updated Vietnamese translation.
 
 2005-09-08  Inaki Larranaga  <dooteo@euskalgnu.org>
 
@@ -574,7 +578,7 @@
 
 2005-08-29  Telsa Gwynne  <hobbit@aloss.ukuu.org.uk>
 
-        * cy.po: Updated Welsh translation.
+	* cy.po: Updated Welsh translation.
 
 2005-08-28  Christophe Merlet  <redfox@redfoxcenter.org>
 
@@ -716,7 +720,7 @@
 
 2005-07-08  Clytie Siddall <clytie@riverland.net.au>
 
-        * vi.po: Updated Vietnamese translation.
+	* vi.po: Updated Vietnamese translation.
 
 2004-07-06  Christian Rose  <menthos@menthos.com>
 
@@ -749,7 +753,7 @@
 	* el.po: Updated Greek translation.
 
 2005-05-11 Kostas Papadimas <pkst@gnome.org>
-      
+
 	* el.po: Updated Greek Translation.
 
 2005-05-10  Adi Attar  <aattar@cvs.gnome.org>
@@ -787,7 +791,7 @@
 
 2005-03-31  Steve Murphy  <murf@e-tools.com>
 
-        * rw.po: Added Kinyarwanda translation.
+	* rw.po: Added Kinyarwanda translation.
 
 2005-03-29  Adi Attar  <aattar@cvs.gnome.org>
 

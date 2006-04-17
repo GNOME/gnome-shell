@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.9.91\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-13 19:56+0100\n"
+"POT-Creation-Date: 2006-04-17 12:22+0200\n"
 "PO-Revision-Date: 2006-03-01 01:29+0100\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
@@ -63,7 +63,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "S'ha produït un error en obtenir el nom de l'ordinador central: %s\n"
 
-#: ../src/display.c:350
+#: ../src/display.c:354
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr ""
@@ -105,7 +105,7 @@ msgstr "Maximitza la finestra"
 msgid "Unmaximize Window"
 msgstr "Desmaximitza la finestra"
 
-#: ../src/keybindings.c:996
+#: ../src/keybindings.c:1003
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -114,19 +114,19 @@ msgstr ""
 "Ja hi ha algun altre programa utilitzant la clau %s amb els modificadors %x "
 "com a vinculació\n"
 
-#: ../src/keybindings.c:2534
+#: ../src/keybindings.c:2570
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "S'ha produït un error en executar el metacity-dialog per a mostrar un error "
 "quant a una ordre: %s\n"
 
-#: ../src/keybindings.c:2639
+#: ../src/keybindings.c:2675
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "No s'ha definit cap ordre %d.\n"
 
-#: ../src/keybindings.c:3501
+#: ../src/keybindings.c:3541
 msgid "No terminal command has been defined.\n"
 msgstr "No s'ha definit cap ordre de terminal.\n"
 
@@ -253,7 +253,7 @@ msgstr "Mou a l'espai de treball de _sobre"
 msgid "Move to Workspace _Down"
 msgstr "Mou a l'espai de treball de s_ota"
 
-#: ../src/menu.c:164 ../src/prefs.c:2004 ../src/prefs.c:2367
+#: ../src/menu.c:164 ../src/prefs.c:2044 ../src/prefs.c:2407
 #, c-format
 msgid "Workspace %d"
 msgstr "Espai de treball %d"
@@ -412,13 +412,12 @@ msgstr ""
 "(No implementat) La navegació funciona en termes d'aplicacions, no finestres"
 
 #: ../src/metacity.schemas.in.h:2
+#, fuzzy
 msgid ""
 "A font description string describing a font for window titlebars. The size "
 "from the description will only be used if the titlebar_font_size option is "
-"set to 0, however. Also, this option is disabled if the "
-"titlebar_uses_desktop_font option is set to true. By default, titlebar_font "
-"is unset, causing Metacity to fall back to the desktop font even if "
-"titlebar_uses_desktop_font is false."
+"set to 0. Also, this option is disabled if the titlebar_uses_desktop_font "
+"option is set to true."
 msgstr ""
 "Una cadena de descripció de tipus de lletra que descriu un tipus de lletra "
 "per a les barres de títol de les finestres. La mida de la descripció només "
@@ -486,18 +485,22 @@ msgid "Compositing Manager"
 msgstr "Gestor d'efectes digitals"
 
 #: ../src/metacity.schemas.in.h:12
+msgid "Control how new windows get focus"
+msgstr "Controla de quina manera les finestres noves reben el focus"
+
+#: ../src/metacity.schemas.in.h:13
 msgid "Current theme"
 msgstr "Tema actual"
 
-#: ../src/metacity.schemas.in.h:13
+#: ../src/metacity.schemas.in.h:14
 msgid "Delay in milliseconds for the auto raise option"
 msgstr "Retard en mil·lisegons per a l'opció d'alçat automàtic"
 
-#: ../src/metacity.schemas.in.h:14
+#: ../src/metacity.schemas.in.h:15
 msgid "Determines whether Metacity is a compositing manager."
 msgstr "Determina si el Metacity és un gestor d'efectes digitals."
 
-#: ../src/metacity.schemas.in.h:15
+#: ../src/metacity.schemas.in.h:16
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
@@ -506,46 +509,33 @@ msgstr ""
 "pot utilitzar en conjunció amb «visual bell» per a permetre «sons» "
 "silenciosos."
 
-#: ../src/metacity.schemas.in.h:16
+#: ../src/metacity.schemas.in.h:17
 msgid "Disable misfeatures that are required by old or broken applications"
 msgstr ""
 "Inhabilita funcionalitats que són requerides per aplicacions velles o amb "
 "errors"
 
-#: ../src/metacity.schemas.in.h:17
+#: ../src/metacity.schemas.in.h:18
 msgid "Enable Visual Bell"
 msgstr "Habilita la campana visual"
 
-#: ../src/metacity.schemas.in.h:18
+#: ../src/metacity.schemas.in.h:19
 msgid "Hide all windows and focus desktop"
 msgstr "Amaga totes les finestres i enfoca l'escriptori"
 
-#: ../src/metacity.schemas.in.h:19
-msgid ""
-"If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
-"focused window will be automatically raised after a delay (the delay is "
-"specified by the auto_raise_delay key). This preference is poorly named, but "
-"kept for backwards compatibility. To try to be more clear (at least to the "
-"technically inclined), its meaning is \"automatically raise the window "
-"following a timeout which is triggered by non-grabbed mouse entry in sloppy "
-"or mouse focus modes\". It is unrelated to clicking behavior (i.e. this is "
-"not related to raise-on-click/orthogonal-raise). It is unrelated to entering "
-"a window during drag and drop (because that results in the application "
-"grabbing the mouse)"
-msgstr ""
-"Si és cert, i el mode del focus és «sloppy» o «mouse», aleshores la finestra "
-"enfocada s'alçarà automàticament al cap d'una estona (el temps s'especifica "
-"a la clau auto_raise_delay). Aquesta preferència no està gaire ben batejada, "
-"però es manté per compatibilitat amb versions anteriors. Per ser més clars "
-"(per als més tècnics), significa «alça la finestra automàticament després "
-"d'un temps d'espera, que s'activa per una entrada no capturada del ratolí "
-"quan aquest està en el mode de focus \"sloppy\" o bé \"mouse\"». No té cap "
-"relació amb el comportament del clic (no té relació amb l'alçament amb un "
-"clic/alçament ortogonal). No està relacionat amb entrar a una finestra "
-"durant una opració d'arrossegar i deixar anar (perquè resulta en que "
-"l'aplicació captura el ratolí)"
-
 #: ../src/metacity.schemas.in.h:20
+#, fuzzy
+msgid ""
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focused window will be automatically raised after a delay specified by "
+"the auto_raise_delay key. This is not related to clicking on a window to "
+"raise it, nor to entering a window during drag-and-drop."
+msgstr ""
+"Si és veritat, i el mode de focus és «sloppy» o «mouse», aleshores la "
+"finestra amb el focus s'alçarà automàticament després d'un retard (el retard "
+"s'especifica amb la clau auto_raise_delay)."
+
+#: ../src/metacity.schemas.in.h:21
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
@@ -553,14 +543,14 @@ msgstr ""
 "Si és veritat, ignora l'opció titlebar_font i utilitza el tipus de lletra de "
 "les aplicacions estàndard per als títols de les finestres."
 
-#: ../src/metacity.schemas.in.h:21
+#: ../src/metacity.schemas.in.h:22
+#, fuzzy
 msgid ""
-"If true, metacity will give the user less feedback and less sense of "
-"\"direct manipulation\", by using wireframes, avoiding animations, or other "
-"means. This is a significant reduction in usability for many users, but may "
-"allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical. However, the wireframe feature is disabled when "
-"accessibility is on to avoid weird desktop breakages."
+"If true, metacity will give the user less feedback by using wireframes, "
+"avoiding animations, or other means. This is a significant reduction in "
+"usability for many users, but may allow legacy applications to continue "
+"working, and may also be a useful tradeoff for terminal servers. However, "
+"the wireframe feature is disabled when accessibility is on."
 msgstr ""
 "Sí és vertader, el metacity donarà a l'usuari menys informació i menys "
 "sensació de «manipulació directa» utilitzant marcs amb fils, evitant les "
@@ -571,17 +561,16 @@ msgstr ""
 "l'accessibilitat està habilitada, per a evitar problemes estranys a "
 "l'escriptori."
 
-#: ../src/metacity.schemas.in.h:22
+#: ../src/metacity.schemas.in.h:23
+#, fuzzy
 msgid ""
 "If true, then Metacity works in terms of applications rather than windows. "
 "The concept is a bit abstract, but in general an application-based setup is "
 "more like the Mac and less like Windows. When you focus a window in "
 "application-based mode, all the windows in the application will be raised. "
 "Also, in application-based mode, focus clicks are not passed through to "
-"windows in other applications. The existence of this setting is somewhat "
-"questionable. But it's better than having settings for all the specific "
-"details of application-based vs. window-based, e.g. whether to pass through "
-"clicks. Also, application-based mode is largely unimplemented at the moment."
+"windows in other applications. Application-based mode is, however, largely "
+"unimplemented at the moment."
 msgstr ""
 "Si és veritat, el Metacity treballarà en termes d'aplicacions, en comptes de "
 "finestres. El concepte és un poc abstracte, però en general, una "
@@ -594,24 +583,24 @@ msgstr ""
 "dels dos modes, com per exemple si s'han de passar els clics o no. A més, el "
 "mode basat en aplicacions encara no està massa implementat."
 
-#: ../src/metacity.schemas.in.h:23
+#: ../src/metacity.schemas.in.h:24
 msgid "If true, trade off usability for less resource usage"
 msgstr "Si és vertader, sacrifica usabilitat per a usar menys recursos"
 
-#: ../src/metacity.schemas.in.h:24
+#: ../src/metacity.schemas.in.h:25
 msgid "Lower window below other windows"
 msgstr "Baixa la finestra sota les altres"
 
-#: ../src/metacity.schemas.in.h:25
+#: ../src/metacity.schemas.in.h:26
+#, fuzzy
 msgid ""
 "Many actions (e.g. clicking in the client area, moving or resizing the "
 "window) normally raise the window as a side-effect. Set this option to false "
-"to decouple raising from other user interactions. When false, windows can "
-"still be raised by an alt-left-click anywhere on the window or a normal "
-"click on the window decorations (assuming such clicks aren't used to start a "
-"move or resize operation). Special messages, such as activation requests "
-"from pagers, may also raise windows when this option is false. This option "
-"is currently disabled in click-to-focus mode."
+"to decouple raising from other user actions. Even when this option is false, "
+"windows can still be raised by an alt-left-click anywhere on the window, a "
+"normal click on the window decorations, or by special messages, such as "
+"activation requests from pagers. This option is currently disabled in click-"
+"to-focus mode."
 msgstr ""
 "Moltes accions (p.ex. fer clic a l'àrea del client, moure o canviar la mida "
 "de la finestra) normalment alcen la finestra com a efecte secundari. "
@@ -623,279 +612,278 @@ msgstr ""
 "aquesta opció estigui establera a fals. Aquesta opció està inhabilitada en "
 "el mode d'alçar les finestres amb clic."
 
-#: ../src/metacity.schemas.in.h:26
+#: ../src/metacity.schemas.in.h:27
 msgid "Maximize window"
 msgstr "Maximitza la finestra"
 
-#: ../src/metacity.schemas.in.h:27
+#: ../src/metacity.schemas.in.h:28
 msgid "Maximize window horizontally"
 msgstr "Maximitza la finestra horitzontalment"
 
-#: ../src/metacity.schemas.in.h:28
+#: ../src/metacity.schemas.in.h:29
 msgid "Maximize window vertically"
 msgstr "Maximitza la finestra verticalment"
 
-#: ../src/metacity.schemas.in.h:29
+#: ../src/metacity.schemas.in.h:30
 msgid "Minimize window"
 msgstr "Minimitza la finestra"
 
-#: ../src/metacity.schemas.in.h:30
+#: ../src/metacity.schemas.in.h:31
 msgid "Modifier to use for modified window click actions"
 msgstr "Modificador a usar per a les accions modificades de clic en finestra"
 
-#: ../src/metacity.schemas.in.h:31
+#: ../src/metacity.schemas.in.h:32
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Mou cap enrere entre quadres i l'escriptori immediatament"
 
-#: ../src/metacity.schemas.in.h:32
+#: ../src/metacity.schemas.in.h:33
 msgid "Move backwards between panels and the desktop with popup"
 msgstr "Mou cap enrere entre quadres i l'escriptori amb un diàleg emergent"
 
-#: ../src/metacity.schemas.in.h:33
+#: ../src/metacity.schemas.in.h:34
 msgid "Move backwards between windows immediately"
 msgstr "Mou cap enrere entre finestres immediatament"
 
-#: ../src/metacity.schemas.in.h:34
+#: ../src/metacity.schemas.in.h:35
+#, fuzzy
+msgid "Move backwards between windows of an application immediately"
+msgstr "Mou cap enrere entre finestres immediatament"
+
+#: ../src/metacity.schemas.in.h:36
+#, fuzzy
+msgid "Move backwards between windows of an application with popup"
+msgstr "Mou cap enrere entre quadres i l'escriptori amb un diàleg emergent"
+
+#: ../src/metacity.schemas.in.h:37
 msgid "Move between panels and the desktop immediately"
 msgstr "Mou entre quadres i l'escriptori immediatament"
 
-#: ../src/metacity.schemas.in.h:35
+#: ../src/metacity.schemas.in.h:38
 msgid "Move between panels and the desktop with popup"
 msgstr "Mou entre quadres i l'escriptori amb un diàleg emergent"
 
-#: ../src/metacity.schemas.in.h:36
+#: ../src/metacity.schemas.in.h:39
 msgid "Move between windows immediately"
 msgstr "Mou entre finestres immediatament"
 
-#: ../src/metacity.schemas.in.h:37
+#: ../src/metacity.schemas.in.h:40
+#, fuzzy
+msgid "Move between windows of an application immediately"
+msgstr "Mou entre finestres immediatament"
+
+#: ../src/metacity.schemas.in.h:41
+#, fuzzy
+msgid "Move between windows of an application with popup"
+msgstr "Mou entre finestres amb un diàleg emergent"
+
+#: ../src/metacity.schemas.in.h:42
 msgid "Move between windows with popup"
 msgstr "Mou entre finestres amb un diàleg emergent"
 
-#: ../src/metacity.schemas.in.h:38
+#: ../src/metacity.schemas.in.h:43
 msgid "Move focus backwards between windows using popup display"
 msgstr "Mou el focus cap enrere entre finestres utilitzant un diàleg emergent"
 
-#: ../src/metacity.schemas.in.h:39
+#: ../src/metacity.schemas.in.h:44
 msgid "Move window"
 msgstr "Mou la finestra"
 
-#: ../src/metacity.schemas.in.h:40
+#: ../src/metacity.schemas.in.h:45
 msgid "Move window one workspace down"
 msgstr "Mou la finestra un espai de treball avall"
 
-#: ../src/metacity.schemas.in.h:41
+#: ../src/metacity.schemas.in.h:46
 msgid "Move window one workspace to the left"
 msgstr "Mou la finestra un espai de treball a l'esquerra"
 
-#: ../src/metacity.schemas.in.h:42
+#: ../src/metacity.schemas.in.h:47
 msgid "Move window one workspace to the right"
 msgstr "Mou la finestra un espai de treball a la dreta"
 
-#: ../src/metacity.schemas.in.h:43
+#: ../src/metacity.schemas.in.h:48
 msgid "Move window one workspace up"
 msgstr "Mou la finestra un espai de treball amunt"
 
-#: ../src/metacity.schemas.in.h:44
+#: ../src/metacity.schemas.in.h:49
 msgid "Move window to workspace 1"
 msgstr "Mou la finestra a l'espai de treball 1"
 
-#: ../src/metacity.schemas.in.h:45
+#: ../src/metacity.schemas.in.h:50
 msgid "Move window to workspace 10"
 msgstr "Mou la finestra a l'espai de treball 10"
 
-#: ../src/metacity.schemas.in.h:46
+#: ../src/metacity.schemas.in.h:51
 msgid "Move window to workspace 11"
 msgstr "Mou la finestra a l'espai de treball 11"
 
-#: ../src/metacity.schemas.in.h:47
+#: ../src/metacity.schemas.in.h:52
 msgid "Move window to workspace 12"
 msgstr "Mou la finestra a l'espai de treball 12"
 
-#: ../src/metacity.schemas.in.h:48
+#: ../src/metacity.schemas.in.h:53
 msgid "Move window to workspace 2"
 msgstr "Mou la finestra a l'espai de treball 2"
 
-#: ../src/metacity.schemas.in.h:49
+#: ../src/metacity.schemas.in.h:54
 msgid "Move window to workspace 3"
 msgstr "Mou la finestra a l'espai de treball 3"
 
-#: ../src/metacity.schemas.in.h:50
+#: ../src/metacity.schemas.in.h:55
 msgid "Move window to workspace 4"
 msgstr "Mou la finestra a l'espai de treball 4"
 
-#: ../src/metacity.schemas.in.h:51
+#: ../src/metacity.schemas.in.h:56
 msgid "Move window to workspace 5"
 msgstr "Mou la finestra a l'espai de treball 5"
 
-#: ../src/metacity.schemas.in.h:52
+#: ../src/metacity.schemas.in.h:57
 msgid "Move window to workspace 6"
 msgstr "Mou la finestra a l'espai de treball 6"
 
-#: ../src/metacity.schemas.in.h:53
+#: ../src/metacity.schemas.in.h:58
 msgid "Move window to workspace 7"
 msgstr "Mou la finestra a l'espai de treball 7"
 
-#: ../src/metacity.schemas.in.h:54
+#: ../src/metacity.schemas.in.h:59
 msgid "Move window to workspace 8"
 msgstr "Mou la finestra a l'espai de treball 8"
 
-#: ../src/metacity.schemas.in.h:55
+#: ../src/metacity.schemas.in.h:60
 msgid "Move window to workspace 9"
 msgstr "Mou la finestra a l'espai de treball 9"
 
-#: ../src/metacity.schemas.in.h:56
+#: ../src/metacity.schemas.in.h:61
 msgid "Name of workspace"
 msgstr "Nom de l'espai de treball"
 
-#: ../src/metacity.schemas.in.h:57
+#: ../src/metacity.schemas.in.h:62
 msgid "Number of workspaces"
 msgstr "Número d'espais de treball"
 
-#: ../src/metacity.schemas.in.h:58
+#: ../src/metacity.schemas.in.h:63
+#, fuzzy
 msgid ""
-"Number of workspaces. Must be more than zero, and has a fixed maximum (to "
-"prevent accidentally destroying your desktop by asking for 34 million "
-"workspaces)."
+"Number of workspaces. Must be more than zero, and has a fixed maximum to "
+"prevent making the desktop unusable by accidentally asking for too many "
+"workspaces."
 msgstr ""
 "El nombre d'espais de treball. Ha de ser més gran que zero, i té un màxim "
 "fixe (per a prevenir la destrucció accidental del vostre escriptori si "
 "demaneu massa espais de treball)."
 
-#: ../src/metacity.schemas.in.h:59
+#: ../src/metacity.schemas.in.h:64
 msgid "Raise obscured window, otherwise lower"
 msgstr "Alça una finestra enfosquida, o sinó la baixa"
 
-#: ../src/metacity.schemas.in.h:60
+#: ../src/metacity.schemas.in.h:65
 msgid "Raise window above other windows"
 msgstr "Alça una finestra per damunt de les altres"
 
-#: ../src/metacity.schemas.in.h:61
+#: ../src/metacity.schemas.in.h:66
 msgid "Resize window"
 msgstr "Redimensiona la finestra"
 
-#: ../src/metacity.schemas.in.h:62
+#: ../src/metacity.schemas.in.h:67
 msgid "Run a defined command"
 msgstr "Executa una ordre definida"
 
-#: ../src/metacity.schemas.in.h:63
+#: ../src/metacity.schemas.in.h:68
 msgid "Run a terminal"
 msgstr "Executa un terminal"
 
-#: ../src/metacity.schemas.in.h:64
+#: ../src/metacity.schemas.in.h:69
 msgid "Show the panel menu"
 msgstr "Mostra el menú del quadre"
 
-#: ../src/metacity.schemas.in.h:65
+#: ../src/metacity.schemas.in.h:70
 msgid "Show the panel run application dialog"
 msgstr "Mostra el diàleg d'execució d'aplicacions del quadre"
 
-#: ../src/metacity.schemas.in.h:66
+#: ../src/metacity.schemas.in.h:71
 msgid ""
-"Some applications break specifications in ways that result in window manager "
-"misfeatures. For example, ideally Metacity would place all dialogs in a "
-"consistent position with respect to their parent window. This requires "
-"ignoring application-specified positions for dialogs. But some versions of "
-"Java/Swing mark their popup menus as dialogs, so Metacity has to disable "
-"dialog positioning to allow menus to work in broken Java applications. There "
-"are several other examples like this. This option puts Metacity in full-on "
-"Correct mode, which perhaps gives a moderately nicer UI if you don't need to "
-"run any broken apps. Sadly, workarounds must be enabled by default; the real "
-"world is an ugly place. Some of the workarounds are workarounds for "
-"limitations in the specifications themselves, so sometimes a bug in no-"
-"workarounds mode won't be fixable without amending a spec."
+"Some applications disregard specifications in ways that result in window "
+"manager misfeatures. This option puts Metacity in a rigorously correct mode, "
+"which gives a more consistent user interface, provided one does not need to "
+"run any misbehaving applications."
 msgstr ""
-"Algunes aplicacions trenquen les especificacions de maneres que resulten en "
-"disfuncionalitats dels gestors de finestres. Per exemple, idealment el "
-"Metacity ficarà tots els diàlegs en una posició consistent respecte de les "
-"seves finestres pare. Això requereix ignorar les posicions que especifiquen "
-"les aplicacions per als diàlegs. Tanmateix, algunes versions del Java/Swing "
-"marquen els seus menús emergents com a diàlegs, i Metacity ha de inhabilitar "
-"el posicionament de diàlegs per a què els menús funcionin en les aplicacions "
-"Java amb aquests errors. Hi ha més exemples com aquest. Aquesta opció "
-"estableix Metacity en el mode «completament correcte», que potser donarà una "
-"millor interfície d'usuari si no necessiteu executar cap aplicació amb "
-"errors. Malauradament, aquesta funcionalitat s'ha d'habilitar per defecte. "
-"Algunes de les funcionalitats estan dirigides a limitacions en les mateixes "
-"especificacions, pel que a vegades un error en el mode sense correccions no "
-"es pot solucionar sense canviar l'especificació."
 
-#: ../src/metacity.schemas.in.h:67
+#: ../src/metacity.schemas.in.h:72
 msgid "Switch to workspace 1"
 msgstr "Canvia a l'espai de treball 1"
 
-#: ../src/metacity.schemas.in.h:68
+#: ../src/metacity.schemas.in.h:73
 msgid "Switch to workspace 10"
 msgstr "Canvia a l'espai de treball 10"
 
-#: ../src/metacity.schemas.in.h:69
+#: ../src/metacity.schemas.in.h:74
 msgid "Switch to workspace 11"
 msgstr "Canvia a l'espai de treball 11"
 
-#: ../src/metacity.schemas.in.h:70
+#: ../src/metacity.schemas.in.h:75
 msgid "Switch to workspace 12"
 msgstr "Canvia a l'espai de treball 12"
 
-#: ../src/metacity.schemas.in.h:71
+#: ../src/metacity.schemas.in.h:76
 msgid "Switch to workspace 2"
 msgstr "Canvia a l'espai de treball 2"
 
-#: ../src/metacity.schemas.in.h:72
+#: ../src/metacity.schemas.in.h:77
 msgid "Switch to workspace 3"
 msgstr "Canvia a l'espai de treball 3"
 
-#: ../src/metacity.schemas.in.h:73
+#: ../src/metacity.schemas.in.h:78
 msgid "Switch to workspace 4"
 msgstr "Canvia a l'espai de treball 4"
 
-#: ../src/metacity.schemas.in.h:74
+#: ../src/metacity.schemas.in.h:79
 msgid "Switch to workspace 5"
 msgstr "Canvia a l'espai de treball 5"
 
-#: ../src/metacity.schemas.in.h:75
+#: ../src/metacity.schemas.in.h:80
 msgid "Switch to workspace 6"
 msgstr "Canvia a l'espai de treball 6"
 
-#: ../src/metacity.schemas.in.h:76
+#: ../src/metacity.schemas.in.h:81
 msgid "Switch to workspace 7"
 msgstr "Canvia a l'espai de treball 7"
 
-#: ../src/metacity.schemas.in.h:77
+#: ../src/metacity.schemas.in.h:82
 msgid "Switch to workspace 8"
 msgstr "Canvia a l'espai de treball 8"
 
-#: ../src/metacity.schemas.in.h:78
+#: ../src/metacity.schemas.in.h:83
 msgid "Switch to workspace 9"
 msgstr "Canvia a l'espai de treball 9"
 
-#: ../src/metacity.schemas.in.h:79
+#: ../src/metacity.schemas.in.h:84
 msgid "Switch to workspace above this one"
 msgstr "Canvia a l'espai de treball damunt d'aquest"
 
-#: ../src/metacity.schemas.in.h:80
+#: ../src/metacity.schemas.in.h:85
 msgid "Switch to workspace below this one"
 msgstr "Canvia a l'espai de treball sota aquest"
 
-#: ../src/metacity.schemas.in.h:81
+#: ../src/metacity.schemas.in.h:86
 msgid "Switch to workspace on the left"
 msgstr "Canvia a l'espai de treball de la esquerra"
 
-#: ../src/metacity.schemas.in.h:82
+#: ../src/metacity.schemas.in.h:87
 msgid "Switch to workspace on the right"
 msgstr "Canvia a l'espai de treball a la dreta"
 
-#: ../src/metacity.schemas.in.h:83
+#: ../src/metacity.schemas.in.h:88
 msgid "System Bell is Audible"
 msgstr "La campana del sistema és audible"
 
-#: ../src/metacity.schemas.in.h:84
+#: ../src/metacity.schemas.in.h:89
 msgid "Take a screenshot"
 msgstr "Fes una captura de pantalla"
 
-#: ../src/metacity.schemas.in.h:85
+#: ../src/metacity.schemas.in.h:90
 msgid "Take a screenshot of a window"
 msgstr "Obtén una captura de pantalla d'una finestra"
 
-#: ../src/metacity.schemas.in.h:86
+#: ../src/metacity.schemas.in.h:91
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
 "or another application 'bell' indicator has been rung. Currently there are "
@@ -914,7 +902,7 @@ msgstr ""
 "«sons del sistema» per defecte, la barra del títol de la finestra que tingui "
 "el focus en aquell moment rep un flaix."
 
-#: ../src/metacity.schemas.in.h:87
+#: ../src/metacity.schemas.in.h:92
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
@@ -924,7 +912,7 @@ msgstr ""
 "vinculacions de tecles que corresponen a aquestes ordres. Si es prem la "
 "vinculació per a run_command_N, s'executarà command_N."
 
-#: ../src/metacity.schemas.in.h:88
+#: ../src/metacity.schemas.in.h:93
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
@@ -933,7 +921,7 @@ msgstr ""
 "una vinculació de tecles que fa que s'invoqui l'ordre especificada en "
 "aquesta configuració."
 
-#: ../src/metacity.schemas.in.h:89
+#: ../src/metacity.schemas.in.h:94
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
@@ -943,7 +931,7 @@ msgstr ""
 "estableix una vinculació de tecles que fa que s'invoqui l'ordre especificada "
 "en aquesta configuració."
 
-#: ../src/metacity.schemas.in.h:90
+#: ../src/metacity.schemas.in.h:95
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -959,7 +947,7 @@ msgstr ""
 "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà "
 "cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:91
+#: ../src/metacity.schemas.in.h:96
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -975,7 +963,7 @@ msgstr ""
 "a la cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
 "acció."
 
-#: ../src/metacity.schemas.in.h:92
+#: ../src/metacity.schemas.in.h:97
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -991,7 +979,7 @@ msgstr ""
 "la cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
 "acció."
 
-#: ../src/metacity.schemas.in.h:93
+#: ../src/metacity.schemas.in.h:98
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1007,7 +995,7 @@ msgstr ""
 "establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació "
 "per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:94
+#: ../src/metacity.schemas.in.h:99
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1023,7 +1011,7 @@ msgstr ""
 "establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació "
 "per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:95
+#: ../src/metacity.schemas.in.h:100
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1037,7 +1025,7 @@ msgstr ""
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
 "haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:96
+#: ../src/metacity.schemas.in.h:101
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1051,7 +1039,7 @@ msgstr ""
 "Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
 "«disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:97
+#: ../src/metacity.schemas.in.h:102
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1065,7 +1053,7 @@ msgstr ""
 "Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
 "«disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:98
+#: ../src/metacity.schemas.in.h:103
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1079,7 +1067,7 @@ msgstr ""
 "Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
 "«disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:99
+#: ../src/metacity.schemas.in.h:104
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1093,7 +1081,7 @@ msgstr ""
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
 "haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:100
+#: ../src/metacity.schemas.in.h:105
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1107,7 +1095,7 @@ msgstr ""
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
 "haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:101
+#: ../src/metacity.schemas.in.h:106
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1121,7 +1109,7 @@ msgstr ""
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
 "haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:102
+#: ../src/metacity.schemas.in.h:107
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1135,7 +1123,7 @@ msgstr ""
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
 "haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:103
+#: ../src/metacity.schemas.in.h:108
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1149,7 +1137,7 @@ msgstr ""
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
 "haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:104
+#: ../src/metacity.schemas.in.h:109
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1163,7 +1151,7 @@ msgstr ""
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
 "haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:105
+#: ../src/metacity.schemas.in.h:110
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1177,7 +1165,7 @@ msgstr ""
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
 "haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:106
+#: ../src/metacity.schemas.in.h:111
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1191,7 +1179,7 @@ msgstr ""
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
 "haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:107
+#: ../src/metacity.schemas.in.h:112
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1205,7 +1193,7 @@ msgstr ""
 "Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
 "«disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:108
+#: ../src/metacity.schemas.in.h:113
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1219,7 +1207,7 @@ msgstr ""
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
 "haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:109
+#: ../src/metacity.schemas.in.h:114
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1235,7 +1223,7 @@ msgstr ""
 "establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació "
 "per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:110
+#: ../src/metacity.schemas.in.h:115
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1251,7 +1239,7 @@ msgstr ""
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
 "haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:111
+#: ../src/metacity.schemas.in.h:116
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1267,7 +1255,7 @@ msgstr ""
 "establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació "
 "per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:112
+#: ../src/metacity.schemas.in.h:117
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1281,7 +1269,7 @@ msgstr ""
 "Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
 "«disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:113
+#: ../src/metacity.schemas.in.h:118
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1295,7 +1283,7 @@ msgstr ""
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
 "haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:114
+#: ../src/metacity.schemas.in.h:119
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -1310,7 +1298,7 @@ msgstr ""
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:115
+#: ../src/metacity.schemas.in.h:120
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1326,7 +1314,7 @@ msgstr ""
 "a la cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
 "acció."
 
-#: ../src/metacity.schemas.in.h:116
+#: ../src/metacity.schemas.in.h:121
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1342,7 +1330,7 @@ msgstr ""
 "la cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
 "acció."
 
-#: ../src/metacity.schemas.in.h:117
+#: ../src/metacity.schemas.in.h:122
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1356,7 +1344,7 @@ msgstr ""
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:118
+#: ../src/metacity.schemas.in.h:123
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1370,7 +1358,7 @@ msgstr ""
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:119
+#: ../src/metacity.schemas.in.h:124
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1384,7 +1372,7 @@ msgstr ""
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:120
+#: ../src/metacity.schemas.in.h:125
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1398,7 +1386,7 @@ msgstr ""
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:121
+#: ../src/metacity.schemas.in.h:126
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1412,7 +1400,7 @@ msgstr ""
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:122
+#: ../src/metacity.schemas.in.h:127
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1426,7 +1414,7 @@ msgstr ""
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:123
+#: ../src/metacity.schemas.in.h:128
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1440,7 +1428,7 @@ msgstr ""
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:124
+#: ../src/metacity.schemas.in.h:129
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1454,7 +1442,7 @@ msgstr ""
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:125
+#: ../src/metacity.schemas.in.h:130
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1468,7 +1456,7 @@ msgstr ""
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:126
+#: ../src/metacity.schemas.in.h:131
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1482,7 +1470,7 @@ msgstr ""
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:127
+#: ../src/metacity.schemas.in.h:132
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1496,7 +1484,7 @@ msgstr ""
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:128
+#: ../src/metacity.schemas.in.h:133
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1510,7 +1498,7 @@ msgstr ""
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:129
+#: ../src/metacity.schemas.in.h:134
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1524,7 +1512,7 @@ msgstr ""
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:130
+#: ../src/metacity.schemas.in.h:135
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1540,7 +1528,7 @@ msgstr ""
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
 "haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:131
+#: ../src/metacity.schemas.in.h:136
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1556,7 +1544,43 @@ msgstr ""
 "Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
 "«disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:132
+#: ../src/metacity.schemas.in.h:137
+#, fuzzy
+msgid ""
+"The keybinding used to move focus backwards between windows of an "
+"application without a popup window. Holding \"shift\" together with this "
+"binding makes the direction go forward again. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"La vinculació de tecles que mou el focus cap enrere entre finestres, sense "
+"utilitzar una finestra emergent. El format és semblant a «&lt;Control&gt;a» "
+"o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet "
+"minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;"
+"Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà "
+"cap vinculació per a aquesta acció."
+
+#: ../src/metacity.schemas.in.h:138
+#, fuzzy
+msgid ""
+"The keybinding used to move focus backwards between windows of an "
+"application, using a popup window. Holding \"shift\" together with this "
+"binding makes the direction go forward again. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"La vinculació de tecles que mou el focus cap enrere entre finestres, "
+"utilitzant una finestra emergent. El format és semblant a «&lt;Control&gt;a» "
+"o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet "
+"minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;"
+"Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà "
+"cap vinculació per a aquesta acció."
+
+#: ../src/metacity.schemas.in.h:139
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1573,7 +1597,7 @@ msgstr ""
 "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà "
 "cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:133
+#: ../src/metacity.schemas.in.h:140
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1590,7 +1614,7 @@ msgstr ""
 "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà "
 "cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:134
+#: ../src/metacity.schemas.in.h:141
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1606,7 +1630,7 @@ msgstr ""
 "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà "
 "cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:135
+#: ../src/metacity.schemas.in.h:142
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1622,7 +1646,43 @@ msgstr ""
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
 "haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:136
+#: ../src/metacity.schemas.in.h:143
+#, fuzzy
+msgid ""
+"The keybinding used to move focus between windows of an application without "
+"a popup window. Holding the \"shift\" key while using this binding reverses "
+"the direction of movement. The format looks like \"&lt;Control&gt;a\" or "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
+"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
+"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
+"then there will be no keybinding for this action."
+msgstr ""
+"La vinculació de tecles que mou el focus entre finestres, sense utilitzar "
+"una finestra emergent. El format és semblant a «&lt;Control&gt;a» o «&lt;"
+"Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules "
+"i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
+"establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació "
+"per a aquesta acció."
+
+#: ../src/metacity.schemas.in.h:144
+#, fuzzy
+msgid ""
+"The keybinding used to move focus between windows of an application, using a "
+"popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" key while "
+"using this binding reverses the direction of movement. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"La vinculació de tecles que mou el focus entre finestres, utilitzant una "
+"finestra emergent. El format és semblant a «&lt;Control&gt;a» o «&lt;"
+"Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules "
+"i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
+"establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació "
+"per a aquesta acció."
+
+#: ../src/metacity.schemas.in.h:145
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1639,7 +1699,7 @@ msgstr ""
 "establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació "
 "per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:137
+#: ../src/metacity.schemas.in.h:146
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1656,7 +1716,7 @@ msgstr ""
 "establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació "
 "per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:138
+#: ../src/metacity.schemas.in.h:147
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1673,7 +1733,7 @@ msgstr ""
 "«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
 "haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:139
+#: ../src/metacity.schemas.in.h:148
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1688,7 +1748,7 @@ msgstr ""
 "a la cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
 "acció."
 
-#: ../src/metacity.schemas.in.h:140
+#: ../src/metacity.schemas.in.h:149
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1702,7 +1762,7 @@ msgstr ""
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:141
+#: ../src/metacity.schemas.in.h:150
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1716,7 +1776,7 @@ msgstr ""
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:142
+#: ../src/metacity.schemas.in.h:151
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1732,7 +1792,7 @@ msgstr ""
 "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà "
 "cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:143
+#: ../src/metacity.schemas.in.h:152
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1746,7 +1806,7 @@ msgstr ""
 "«&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
 "«disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:144
+#: ../src/metacity.schemas.in.h:153
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1762,7 +1822,7 @@ msgstr ""
 "a la cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
 "acció."
 
-#: ../src/metacity.schemas.in.h:145
+#: ../src/metacity.schemas.in.h:154
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1776,7 +1836,7 @@ msgstr ""
 "Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
 "«disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:146
+#: ../src/metacity.schemas.in.h:155
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1792,7 +1852,7 @@ msgstr ""
 "Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
 "«disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:147
+#: ../src/metacity.schemas.in.h:156
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1808,7 +1868,7 @@ msgstr ""
 "a la cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
 "acció."
 
-#: ../src/metacity.schemas.in.h:148
+#: ../src/metacity.schemas.in.h:157
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1822,15 +1882,15 @@ msgstr ""
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:149
+#: ../src/metacity.schemas.in.h:158
 msgid "The name of a workspace."
 msgstr "El nom d'un espai de treball."
 
-#: ../src/metacity.schemas.in.h:150
+#: ../src/metacity.schemas.in.h:159
 msgid "The screenshot command"
 msgstr "L'ordre de captura de pantalla"
 
-#: ../src/metacity.schemas.in.h:151
+#: ../src/metacity.schemas.in.h:160
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
@@ -1838,7 +1898,7 @@ msgstr ""
 "El tema determina l'aspecte dels contorns de les finestres, la barra del "
 "títol, etc..."
 
-#: ../src/metacity.schemas.in.h:152
+#: ../src/metacity.schemas.in.h:161
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -1846,7 +1906,7 @@ msgstr ""
 "El retard de temps abans d'alçar una finestra si auto_raise és establer a "
 "«true». El retard es dóna en mil·lèssimes de segon."
 
-#: ../src/metacity.schemas.in.h:153
+#: ../src/metacity.schemas.in.h:162
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1861,20 +1921,21 @@ msgstr ""
 "quan el punter hi entra a dins, i es desenfoquen quan el punter abandona la "
 "finestra."
 
-#: ../src/metacity.schemas.in.h:154
+#: ../src/metacity.schemas.in.h:163
 msgid "The window screenshot command"
 msgstr "L'ordre de captura de finestra"
 
-#: ../src/metacity.schemas.in.h:155
+#: ../src/metacity.schemas.in.h:164
+#, fuzzy
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
-"the window is covered by another window, it raises the window above other "
-"windows. If the window is already fully visible, it lowers the window below "
-"other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
+"the window is covered by another one, it raises the window above all others, "
+"and if the window is already fully visible, it lowers it below all others. "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
 msgstr ""
 "Aquesta vinculació de tecles canvia si una finestra està per damunt o per "
 "baix d'altres finestres. Si una finestra està coberta per una altra "
@@ -1885,7 +1946,7 @@ msgstr ""
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:156
+#: ../src/metacity.schemas.in.h:165
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1899,7 +1960,7 @@ msgstr ""
 "«&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
 "«disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:157
+#: ../src/metacity.schemas.in.h:166
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1913,7 +1974,7 @@ msgstr ""
 "abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la "
 "cadena especial «disabled», no hi haurà cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:158
+#: ../src/metacity.schemas.in.h:167
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1929,7 +1990,7 @@ msgstr ""
 "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà "
 "cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:159
+#: ../src/metacity.schemas.in.h:168
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1945,7 +2006,7 @@ msgstr ""
 "Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi haurà "
 "cap vinculació per a aquesta acció."
 
-#: ../src/metacity.schemas.in.h:160
+#: ../src/metacity.schemas.in.h:169
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -1958,75 +2019,88 @@ msgstr ""
 "la finestra, i «toggle_maximize», que maximitzarà/desmaximitzarà la "
 "finestra, «minimize» que minimitzarà la finestra, i «none» que no farà res."
 
-#: ../src/metacity.schemas.in.h:161
+#: ../src/metacity.schemas.in.h:170
+msgid ""
+"This option provides additional control over how newly created windows get "
+"focus. It has two possible values; \"smart\" applies the user's normal focus "
+"mode, and \"strict\" results in windows started from a terminal not being "
+"given focus."
+msgstr ""
+"Aquesta opció proporciona control adicional sobre com les finestres noves "
+"obtenen el focus. Té dos valors possibles: «smart», que aplica el focus "
+"normal d'usuari, i «strict», que fa que no es doni el focus a les finestres "
+"que s'iniciïn des d'un terminal."
+
+#: ../src/metacity.schemas.in.h:171
 msgid "Toggle always on top state"
 msgstr "Canvia l'estat sempre per damunt"
 
-#: ../src/metacity.schemas.in.h:162
+#: ../src/metacity.schemas.in.h:172
 msgid "Toggle fullscreen mode"
 msgstr "Si s'utilitza el mode a pantalla completa"
 
-#: ../src/metacity.schemas.in.h:163
+#: ../src/metacity.schemas.in.h:173
 msgid "Toggle maximization state"
 msgstr "Canvia l'estat de maximització"
 
-#: ../src/metacity.schemas.in.h:164
+#: ../src/metacity.schemas.in.h:174
 msgid "Toggle shaded state"
 msgstr "Canvia l'estat d'ombrejat"
 
-#: ../src/metacity.schemas.in.h:165
+#: ../src/metacity.schemas.in.h:175
 msgid "Toggle window on all workspaces"
 msgstr "Commuta que la finestra estigui en tots els espais de treball"
 
-#: ../src/metacity.schemas.in.h:166
+#: ../src/metacity.schemas.in.h:176
+#, fuzzy
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
-"environments, or when 'audible bell' is off."
+"environments."
 msgstr ""
 "Activa una indicació visual quan una aplicació o el sistema envia un senyal "
 "de «campana» o «sons»; és útil per als durs d'orella i per a l'ús en "
 "ambients amb soroll, o quan la «campana audible» està inhabilitada."
 
-#: ../src/metacity.schemas.in.h:167
+#: ../src/metacity.schemas.in.h:177
 msgid "Unmaximize window"
 msgstr "Desmaximitza la finestra"
 
-#: ../src/metacity.schemas.in.h:168
+#: ../src/metacity.schemas.in.h:178
 msgid "Use standard system font in window titles"
 msgstr ""
 "Utilitza el tipus de lletra estàndard del sistema en els títols de les "
 "finestres"
 
-#: ../src/metacity.schemas.in.h:169
+#: ../src/metacity.schemas.in.h:179
 msgid "Visual Bell Type"
 msgstr "Tipus de «sons» visual"
 
-#: ../src/metacity.schemas.in.h:170
+#: ../src/metacity.schemas.in.h:180
 msgid "Whether raising should be a side-effect of other user interactions"
 msgstr ""
 "Si l'alçat hauria de ser un efecte secundari d'atres interaccions de l'usuari"
 
-#: ../src/metacity.schemas.in.h:171
+#: ../src/metacity.schemas.in.h:181
 msgid "Window focus mode"
 msgstr "Mode de focus de les finestres"
 
-#: ../src/metacity.schemas.in.h:172
+#: ../src/metacity.schemas.in.h:182
 msgid "Window title font"
 msgstr "Tipus de lletra del títol de les finestres"
 
-#: ../src/prefs.c:567 ../src/prefs.c:583 ../src/prefs.c:599 ../src/prefs.c:615
-#: ../src/prefs.c:631 ../src/prefs.c:647 ../src/prefs.c:667 ../src/prefs.c:683
-#: ../src/prefs.c:699 ../src/prefs.c:715 ../src/prefs.c:731 ../src/prefs.c:747
-#: ../src/prefs.c:763 ../src/prefs.c:779 ../src/prefs.c:796 ../src/prefs.c:812
-#: ../src/prefs.c:828 ../src/prefs.c:844 ../src/prefs.c:860 ../src/prefs.c:875
-#: ../src/prefs.c:890 ../src/prefs.c:905 ../src/prefs.c:921 ../src/prefs.c:937
-#: ../src/prefs.c:953 ../src/prefs.c:969
+#: ../src/prefs.c:556 ../src/prefs.c:572 ../src/prefs.c:588 ../src/prefs.c:604
+#: ../src/prefs.c:620 ../src/prefs.c:636 ../src/prefs.c:652 ../src/prefs.c:672
+#: ../src/prefs.c:688 ../src/prefs.c:704 ../src/prefs.c:720 ../src/prefs.c:736
+#: ../src/prefs.c:752 ../src/prefs.c:768 ../src/prefs.c:784 ../src/prefs.c:801
+#: ../src/prefs.c:817 ../src/prefs.c:833 ../src/prefs.c:849 ../src/prefs.c:865
+#: ../src/prefs.c:880 ../src/prefs.c:895 ../src/prefs.c:910 ../src/prefs.c:926
+#: ../src/prefs.c:942 ../src/prefs.c:958 ../src/prefs.c:974
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "La clau Gconf «%s» està configurada a un tipus no vàlid\n"
 
-#: ../src/prefs.c:1014
+#: ../src/prefs.c:1019
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2035,12 +2109,12 @@ msgstr ""
 "«%s», trobat a la base de dades de la configuració, no és un valor vàlid per "
 "al modificador del botó del ratolí\n"
 
-#: ../src/prefs.c:1038 ../src/prefs.c:1528
+#: ../src/prefs.c:1043 ../src/prefs.c:1064 ../src/prefs.c:1560
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "La clau GConf «%s» està establerta a un valor no vàlid\n"
 
-#: ../src/prefs.c:1161
+#: ../src/prefs.c:1193
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
@@ -2049,14 +2123,14 @@ msgstr ""
 "%d, emmagatzemat a la clau GConf %s, no és una mida de cursor raonable, ha "
 "d'estar dins del rang 1..128\n"
 
-#: ../src/prefs.c:1241
+#: ../src/prefs.c:1273
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "No s'ha pogut analitzar la descripció de tipus de lletra «%s» de la clau "
 "GConf %s\n"
 
-#: ../src/prefs.c:1426
+#: ../src/prefs.c:1458
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2065,7 +2139,7 @@ msgstr ""
 "%d, emmagatzemat a la clau GConf, %s no té un nombre raonable d'espais de "
 "treball. El màxim actual és %d\n"
 
-#: ../src/prefs.c:1486
+#: ../src/prefs.c:1518
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2073,18 +2147,18 @@ msgstr ""
 "El suport per a aplicacions amb errors està inhabilitat. Algunes aplicacions "
 "poden no comportar-se correctament.\n"
 
-#: ../src/prefs.c:1555
+#: ../src/prefs.c:1587
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d, emmagatzemat a la clau GConf %s, està fora del rang de 0 a %d\n"
 
-#: ../src/prefs.c:1695
+#: ../src/prefs.c:1730
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr ""
 "S'ha produït un error en establir el nombre d'espais de treball a %d: %s\n"
 
-#: ../src/prefs.c:2031
+#: ../src/prefs.c:2071
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2093,14 +2167,14 @@ msgstr ""
 "«%s» trobat a la base de dades de la configuració no és un valor vàlid per a "
 "la vinculació de tecla «%s»\n"
 
-#: ../src/prefs.c:2448
+#: ../src/prefs.c:2488
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
 "S'ha produït un error en establir el nom de l'espai de treball %d a «%s»: %"
 "s\n"
 
-#: ../src/resizepopup.c:126
+#: ../src/resizepopup.c:123
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
@@ -3129,13 +3203,9 @@ msgstr ""
 "cap operand enmig"
 
 #: ../src/theme.c:1978
-msgid ""
-"Coordinate expression parser overflowed its buffer, this is really a "
-"Metacity bug, but are you sure you need a huge expression like that?"
-msgstr ""
-"L'anàlisi de l'expressió coordinada ha sobreeixit la seva memòria "
-"intermèdia. Aquest és un error del Metacity, però esteu segur que necessiteu "
-"una expressió tan rotunda com aquesta?"
+#, fuzzy
+msgid "Coordinate expression parser overflowed its buffer."
+msgstr "L'expressió coordinada estava buida o no s'ha entès"
 
 #: ../src/theme.c:2007
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
@@ -3237,15 +3307,15 @@ msgstr "S'ha obert el fitxer de registre %s\n"
 msgid "Window manager: "
 msgstr "Gestor de finestres: "
 
-#: ../src/util.c:366
+#: ../src/util.c:368
 msgid "Bug in window manager: "
 msgstr "Error en el gestor de finestres: "
 
-#: ../src/util.c:395
+#: ../src/util.c:397
 msgid "Window manager warning: "
 msgstr "Avís del gestor de finestres: "
 
-#: ../src/util.c:419
+#: ../src/util.c:421
 msgid "Window manager error: "
 msgstr "Error del gestor de finestres: "
 
@@ -3260,7 +3330,7 @@ msgid "%s (on %s)"
 msgstr "%s (a %s)"
 
 #. first time through
-#: ../src/window.c:5411
+#: ../src/window.c:5227
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3276,7 +3346,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6039
+#: ../src/window.c:5823
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3319,8 +3389,62 @@ msgstr ""
 #~ msgid ""
 #~ "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 #~ "focused window will be automatically raised after a delay (the delay is "
-#~ "specified by the auto_raise_delay key)."
+#~ "specified by the auto_raise_delay key). This preference is poorly named, "
+#~ "but kept for backwards compatibility. To try to be more clear (at least "
+#~ "to the technically inclined), its meaning is \"automatically raise the "
+#~ "window following a timeout which is triggered by non-grabbed mouse entry "
+#~ "in sloppy or mouse focus modes\". It is unrelated to clicking behavior (i."
+#~ "e. this is not related to raise-on-click/orthogonal-raise). It is "
+#~ "unrelated to entering a window during drag and drop (because that results "
+#~ "in the application grabbing the mouse)"
 #~ msgstr ""
-#~ "Si és veritat, i el mode de focus és «sloppy» o «mouse», aleshores la "
-#~ "finestra amb el focus s'alçarà automàticament després d'un retard (el "
-#~ "retard s'especifica amb la clau auto_raise_delay)."
+#~ "Si és cert, i el mode del focus és «sloppy» o «mouse», aleshores la "
+#~ "finestra enfocada s'alçarà automàticament al cap d'una estona (el temps "
+#~ "s'especifica a la clau auto_raise_delay). Aquesta preferència no està "
+#~ "gaire ben batejada, però es manté per compatibilitat amb versions "
+#~ "anteriors. Per ser més clars (per als més tècnics), significa «alça la "
+#~ "finestra automàticament després d'un temps d'espera, que s'activa per una "
+#~ "entrada no capturada del ratolí quan aquest està en el mode de focus "
+#~ "\"sloppy\" o bé \"mouse\"». No té cap relació amb el comportament del "
+#~ "clic (no té relació amb l'alçament amb un clic/alçament ortogonal). No "
+#~ "està relacionat amb entrar a una finestra durant una opració d'arrossegar "
+#~ "i deixar anar (perquè resulta en que l'aplicació captura el ratolí)"
+
+#~ msgid ""
+#~ "Some applications break specifications in ways that result in window "
+#~ "manager misfeatures. For example, ideally Metacity would place all "
+#~ "dialogs in a consistent position with respect to their parent window. "
+#~ "This requires ignoring application-specified positions for dialogs. But "
+#~ "some versions of Java/Swing mark their popup menus as dialogs, so "
+#~ "Metacity has to disable dialog positioning to allow menus to work in "
+#~ "broken Java applications. There are several other examples like this. "
+#~ "This option puts Metacity in full-on Correct mode, which perhaps gives a "
+#~ "moderately nicer UI if you don't need to run any broken apps. Sadly, "
+#~ "workarounds must be enabled by default; the real world is an ugly place. "
+#~ "Some of the workarounds are workarounds for limitations in the "
+#~ "specifications themselves, so sometimes a bug in no-workarounds mode "
+#~ "won't be fixable without amending a spec."
+#~ msgstr ""
+#~ "Algunes aplicacions trenquen les especificacions de maneres que resulten "
+#~ "en disfuncionalitats dels gestors de finestres. Per exemple, idealment el "
+#~ "Metacity ficarà tots els diàlegs en una posició consistent respecte de "
+#~ "les seves finestres pare. Això requereix ignorar les posicions que "
+#~ "especifiquen les aplicacions per als diàlegs. Tanmateix, algunes versions "
+#~ "del Java/Swing marquen els seus menús emergents com a diàlegs, i Metacity "
+#~ "ha de inhabilitar el posicionament de diàlegs per a què els menús "
+#~ "funcionin en les aplicacions Java amb aquests errors. Hi ha més exemples "
+#~ "com aquest. Aquesta opció estableix Metacity en el mode «completament "
+#~ "correcte», que potser donarà una millor interfície d'usuari si no "
+#~ "necessiteu executar cap aplicació amb errors. Malauradament, aquesta "
+#~ "funcionalitat s'ha d'habilitar per defecte. Algunes de les funcionalitats "
+#~ "estan dirigides a limitacions en les mateixes especificacions, pel que a "
+#~ "vegades un error en el mode sense correccions no es pot solucionar sense "
+#~ "canviar l'especificació."
+
+#~ msgid ""
+#~ "Coordinate expression parser overflowed its buffer, this is really a "
+#~ "Metacity bug, but are you sure you need a huge expression like that?"
+#~ msgstr ""
+#~ "L'anàlisi de l'expressió coordinada ha sobreeixit la seva memòria "
+#~ "intermèdia. Aquest és un error del Metacity, però esteu segur que "
+#~ "necessiteu una expressió tan rotunda com aquesta?"
