@@ -256,9 +256,21 @@ typedef enum _MetaKeyBindingAction
 
 typedef struct
 {
-  const char   *name;
-  unsigned int  keysym;
+  unsigned int keysym;
   MetaVirtualModifier modifiers;
+} MetaKeyCombo;
+
+typedef struct
+{
+  const char   *name;
+  /* a list of MetaKeyCombos. Each of them is bound to
+   * this keypref. If one has keysym==modifiers==0, it is
+   * ignored. For historical reasons, the first entry is
+   * governed by the pref FOO and the remainder are
+   * governed by the pref FOO_list.
+   */
+  GSList *bindings;
+
   /* for keybindings that can have shift or not like Alt+Tab */
   gboolean      add_shift;
 } MetaKeyPref;

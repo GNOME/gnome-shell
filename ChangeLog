@@ -1,3 +1,13 @@
+2004-04-17  Thomas Thurman <thomas@thurman.org.uk>
+
+	* keybindings.c (count_bindings, rebuild_binding_table):
+	* prefs.c (change_notify, screen_bindings,
+	window_bindings, init_bindings, update_binding,
+	find_and_update_list_binding, update_list_binding,
+	meta_prefs_get_window_binding): Allow any keybinding pref
+	to be specified either with <foo>, a string, or <foo>_list,
+	a list of strings, or both. Fixes #164831.
+
 2006-04-16  Elijah Newren  <newren gmail com>
 
 	Patch from Dan Sanders to fix #334899.

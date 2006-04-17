@@ -63,6 +63,7 @@
 
 #define KEY_SCREEN_BINDINGS_PREFIX "/apps/metacity/global_keybindings"
 #define KEY_WINDOW_BINDINGS_PREFIX "/apps/metacity/window_keybindings"
+#define KEY_LIST_BINDINGS_SUFFIX "_list"
 
 #define KEY_WORKSPACE_NAME_PREFIX "/apps/metacity/workspace_names/name_"
 
@@ -146,6 +147,13 @@ static gboolean update_window_binding     (const char *name,
                                            const char *value);
 static gboolean update_screen_binding     (const char *name,
                                            const char *value);
+static gboolean find_and_update_list_binding (MetaKeyPref *bindings,
+                                              const char  *name,
+                                              GSList      *value);
+static gboolean update_window_list_binding (const char *name,
+                                            GSList      *value);
+static gboolean update_screen_list_binding (const char *name,
+                                            GSList      *value);
 static gboolean update_command            (const char  *name,
                                            const char  *value);
 static gboolean update_terminal_command   (const char *value);
@@ -168,6 +176,16 @@ static void queue_changed (MetaPreference  pref);
 #endif /* HAVE_GCONF */
 static gboolean update_binding            (MetaKeyPref *binding,
                                            const char  *value);
+
+typedef enum
+  {
+    META_LIST_OF_STRINGS,
+    META_LIST_OF_GCONFVALUE_STRINGS
+  } MetaStringListType;
+
+static gboolean update_list_binding       (MetaKeyPref *binding,
+                                           GSList      *value,
+                                           MetaStringListType type_of_value);
 
 static void     init_bindings             (void);
 static void     init_commands             (void);
@@ -713,35 +731,73 @@ change_notify (GConfClient    *client,
     }
   else if (g_str_has_prefix (key, KEY_WINDOW_BINDINGS_PREFIX))
     {
-      const char *str;
-
-      if (value && value->type != GCONF_VALUE_STRING)
+      if (g_str_has_suffix (key, KEY_LIST_BINDINGS_SUFFIX))
         {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        key);
-          goto out;
+          GSList *list;
+
+          if (value && value->type != GCONF_VALUE_LIST)
+            {
+              meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                            key);
+              goto out;
+            }
+
+          list = value ? gconf_value_get_list (value) : NULL;
+
+          if (update_window_list_binding (key, list))
+             queue_changed (META_PREF_WINDOW_KEYBINDINGS);
         }
+      else
+        {
+          const char *str;
 
-      str = value ? gconf_value_get_string (value) : NULL;
+          if (value && value->type != GCONF_VALUE_STRING)
+            {
+              meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                            key);
+              goto out;
+            }
 
-      if (update_window_binding (key, str))
-        queue_changed (META_PREF_WINDOW_KEYBINDINGS);
+          str = value ? gconf_value_get_string (value) : NULL;
+
+          if (update_window_binding (key, str))
+             queue_changed (META_PREF_WINDOW_KEYBINDINGS);
+        }
     }
   else if (g_str_has_prefix (key, KEY_SCREEN_BINDINGS_PREFIX))
     {
-      const char *str;
-
-      if (value && value->type != GCONF_VALUE_STRING)
+      if (g_str_has_suffix (key, KEY_LIST_BINDINGS_SUFFIX))
         {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        key);
-          goto out;
+          GSList *list;
+
+          if (value && value->type != GCONF_VALUE_LIST)
+            {
+              meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                            key);
+              goto out;
+            }
+
+          list = value ? gconf_value_get_list (value) : NULL;
+
+          if (update_screen_list_binding (key, list))
+             queue_changed (META_PREF_SCREEN_KEYBINDINGS);
+         }
+      else
+        {
+          const char *str;
+
+          if (value && value->type != GCONF_VALUE_STRING)
+            {
+               meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                            key);
+               goto out;
+            }
+
+          str = value ? gconf_value_get_string (value) : NULL;
+
+          if (update_screen_binding (key, str))
+             queue_changed (META_PREF_SCREEN_KEYBINDINGS);
         }
-
-      str = value ? gconf_value_get_string (value) : NULL;
-
-      if (update_screen_binding (key, str))
-        queue_changed (META_PREF_SCREEN_KEYBINDINGS);
     }
   else if (strcmp (key, KEY_ACTION_DOUBLE_CLICK_TITLEBAR) == 0)
     {
@@ -1737,110 +1793,110 @@ meta_prefs_set_num_workspaces (int n_workspaces)
 
 /* Indexes must correspond to MetaKeybindingAction */
 static MetaKeyPref screen_bindings[] = {
-  { META_KEYBINDING_WORKSPACE_1, 0, 0, FALSE },
-  { META_KEYBINDING_WORKSPACE_2, 0, 0, FALSE },
-  { META_KEYBINDING_WORKSPACE_3, 0, 0, FALSE },
-  { META_KEYBINDING_WORKSPACE_4, 0, 0, FALSE },
-  { META_KEYBINDING_WORKSPACE_5, 0, 0, FALSE },
-  { META_KEYBINDING_WORKSPACE_6, 0, 0, FALSE },
-  { META_KEYBINDING_WORKSPACE_7, 0, 0, FALSE },
-  { META_KEYBINDING_WORKSPACE_8, 0, 0, FALSE }, 
-  { META_KEYBINDING_WORKSPACE_9, 0, 0, FALSE },
-  { META_KEYBINDING_WORKSPACE_10, 0, 0, FALSE },
-  { META_KEYBINDING_WORKSPACE_11, 0, 0, FALSE },
-  { META_KEYBINDING_WORKSPACE_12, 0, 0, FALSE },
-  { META_KEYBINDING_WORKSPACE_LEFT, 0, 0, FALSE },
-  { META_KEYBINDING_WORKSPACE_RIGHT, 0, 0, FALSE },
-  { META_KEYBINDING_WORKSPACE_UP, 0, 0, FALSE },
-  { META_KEYBINDING_WORKSPACE_DOWN, 0, 0, FALSE },
-  { META_KEYBINDING_SWITCH_GROUP, 0, 0, TRUE },
-  { META_KEYBINDING_SWITCH_GROUP_BACKWARD, 0, 0, TRUE },
-  { META_KEYBINDING_SWITCH_WINDOWS, 0, 0, TRUE },
-  { META_KEYBINDING_SWITCH_WINDOWS_BACKWARD, 0, 0, TRUE },
-  { META_KEYBINDING_SWITCH_PANELS, 0, 0, TRUE },
-  { META_KEYBINDING_SWITCH_PANELS_BACKWARD, 0, 0, TRUE },
-  { META_KEYBINDING_CYCLE_GROUP, 0, 0, TRUE },
-  { META_KEYBINDING_CYCLE_GROUP_BACKWARD, 0, 0, TRUE },
-  { META_KEYBINDING_CYCLE_WINDOWS, 0, 0, TRUE },
-  { META_KEYBINDING_CYCLE_WINDOWS_BACKWARD, 0, 0, TRUE },
-  { META_KEYBINDING_CYCLE_PANELS, 0, 0, TRUE },
-  { META_KEYBINDING_CYCLE_PANELS_BACKWARD, 0, 0, TRUE },
-  { META_KEYBINDING_SHOW_DESKTOP, 0, 0, FALSE },
-  { META_KEYBINDING_PANEL_MAIN_MENU, 0, 0, FALSE },
-  { META_KEYBINDING_PANEL_RUN_DIALOG, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_1, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_2, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_3, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_4, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_5, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_6, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_7, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_8, 0, 0, FALSE }, 
-  { META_KEYBINDING_COMMAND_9, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_10, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_11, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_12, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_13, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_14, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_15, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_16, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_17, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_18, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_19, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_20, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_21, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_22, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_23, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_24, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_25, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_26, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_27, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_28, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_29, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_30, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_31, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_32, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_SCREENSHOT, 0, 0, FALSE },
-  { META_KEYBINDING_COMMAND_WIN_SCREENSHOT, 0, 0, FALSE },
-  { META_KEYBINDING_RUN_COMMAND_TERMINAL, 0, 0, FALSE },
-  { NULL, 0, 0, FALSE}
+  { META_KEYBINDING_WORKSPACE_1, NULL, FALSE },
+  { META_KEYBINDING_WORKSPACE_2, NULL, FALSE },
+  { META_KEYBINDING_WORKSPACE_3, NULL, FALSE },
+  { META_KEYBINDING_WORKSPACE_4, NULL, FALSE },
+  { META_KEYBINDING_WORKSPACE_5, NULL, FALSE },
+  { META_KEYBINDING_WORKSPACE_6, NULL, FALSE },
+  { META_KEYBINDING_WORKSPACE_7, NULL, FALSE },
+  { META_KEYBINDING_WORKSPACE_8, NULL, FALSE }, 
+  { META_KEYBINDING_WORKSPACE_9, NULL, FALSE },
+  { META_KEYBINDING_WORKSPACE_10, NULL, FALSE },
+  { META_KEYBINDING_WORKSPACE_11, NULL, FALSE },
+  { META_KEYBINDING_WORKSPACE_12, NULL, FALSE },
+  { META_KEYBINDING_WORKSPACE_LEFT, NULL, FALSE },
+  { META_KEYBINDING_WORKSPACE_RIGHT, NULL, FALSE },
+  { META_KEYBINDING_WORKSPACE_UP, NULL, FALSE },
+  { META_KEYBINDING_WORKSPACE_DOWN, NULL, FALSE },
+  { META_KEYBINDING_SWITCH_GROUP, NULL, TRUE },
+  { META_KEYBINDING_SWITCH_GROUP_BACKWARD, NULL, TRUE },
+  { META_KEYBINDING_SWITCH_WINDOWS, NULL, TRUE },
+  { META_KEYBINDING_SWITCH_WINDOWS_BACKWARD, NULL, TRUE },
+  { META_KEYBINDING_SWITCH_PANELS, NULL, TRUE },
+  { META_KEYBINDING_SWITCH_PANELS_BACKWARD, NULL, TRUE },
+  { META_KEYBINDING_CYCLE_GROUP, NULL, TRUE },
+  { META_KEYBINDING_CYCLE_GROUP_BACKWARD, NULL, TRUE },
+  { META_KEYBINDING_CYCLE_WINDOWS, NULL, TRUE },
+  { META_KEYBINDING_CYCLE_WINDOWS_BACKWARD, NULL, TRUE },
+  { META_KEYBINDING_CYCLE_PANELS, NULL, TRUE },
+  { META_KEYBINDING_CYCLE_PANELS_BACKWARD, NULL, TRUE },
+  { META_KEYBINDING_SHOW_DESKTOP, NULL, FALSE },
+  { META_KEYBINDING_PANEL_MAIN_MENU, NULL, FALSE },
+  { META_KEYBINDING_PANEL_RUN_DIALOG, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_1, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_2, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_3, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_4, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_5, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_6, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_7, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_8, NULL, FALSE }, 
+  { META_KEYBINDING_COMMAND_9, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_10, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_11, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_12, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_13, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_14, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_15, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_16, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_17, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_18, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_19, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_20, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_21, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_22, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_23, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_24, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_25, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_26, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_27, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_28, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_29, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_30, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_31, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_32, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_SCREENSHOT, NULL, FALSE },
+  { META_KEYBINDING_COMMAND_WIN_SCREENSHOT, NULL, FALSE },
+  { META_KEYBINDING_RUN_COMMAND_TERMINAL, NULL, FALSE },
+  { NULL, NULL, FALSE}
 };
 
 static MetaKeyPref window_bindings[] = {
-  { META_KEYBINDING_WINDOW_MENU, 0, 0, FALSE },
-  { META_KEYBINDING_TOGGLE_FULLSCREEN, 0, 0, FALSE },
-  { META_KEYBINDING_TOGGLE_MAXIMIZE, 0, 0, FALSE },
-  { META_KEYBINDING_TOGGLE_ABOVE, 0, 0, FALSE },
-  { META_KEYBINDING_MAXIMIZE, 0, 0, FALSE },
-  { META_KEYBINDING_UNMAXIMIZE, 0, 0, FALSE },
-  { META_KEYBINDING_TOGGLE_SHADE, 0, 0, FALSE },
-  { META_KEYBINDING_MINIMIZE, 0, 0, FALSE },
-  { META_KEYBINDING_CLOSE, 0, 0, FALSE },
-  { META_KEYBINDING_BEGIN_MOVE, 0, 0, FALSE },
-  { META_KEYBINDING_BEGIN_RESIZE, 0, 0, FALSE },
-  { META_KEYBINDING_TOGGLE_STICKY, 0, 0, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_1, 0, 0, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_2, 0, 0, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_3, 0, 0, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_4, 0, 0, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_5, 0, 0, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_6, 0, 0, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_7, 0, 0, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_8, 0, 0, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_9, 0, 0, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_10, 0, 0, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_11, 0, 0, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_12, 0, 0, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_LEFT, 0, 0, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_RIGHT, 0, 0, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_UP, 0, 0, FALSE },
-  { META_KEYBINDING_MOVE_WORKSPACE_DOWN, 0, 0, FALSE },
-  { META_KEYBINDING_RAISE_OR_LOWER, 0, 0, FALSE },
-  { META_KEYBINDING_RAISE, 0, 0, FALSE },
-  { META_KEYBINDING_LOWER, 0, 0, FALSE },
-  { META_KEYBINDING_MAXIMIZE_VERTICALLY, 0, 0, FALSE },
-  { META_KEYBINDING_MAXIMIZE_HORIZONTALLY, 0, 0, FALSE },
-  { NULL, 0, 0, FALSE }
+  { META_KEYBINDING_WINDOW_MENU, NULL, FALSE },
+  { META_KEYBINDING_TOGGLE_FULLSCREEN, NULL, FALSE },
+  { META_KEYBINDING_TOGGLE_MAXIMIZE, NULL, FALSE },
+  { META_KEYBINDING_TOGGLE_ABOVE, NULL, FALSE },
+  { META_KEYBINDING_MAXIMIZE, NULL, FALSE },
+  { META_KEYBINDING_UNMAXIMIZE, NULL, FALSE },
+  { META_KEYBINDING_TOGGLE_SHADE, NULL, FALSE },
+  { META_KEYBINDING_MINIMIZE, NULL, FALSE },
+  { META_KEYBINDING_CLOSE, NULL, FALSE },
+  { META_KEYBINDING_BEGIN_MOVE, NULL, FALSE },
+  { META_KEYBINDING_BEGIN_RESIZE, NULL, FALSE },
+  { META_KEYBINDING_TOGGLE_STICKY, NULL, FALSE },
+  { META_KEYBINDING_MOVE_WORKSPACE_1, NULL, FALSE },
+  { META_KEYBINDING_MOVE_WORKSPACE_2, NULL, FALSE },
+  { META_KEYBINDING_MOVE_WORKSPACE_3, NULL, FALSE },
+  { META_KEYBINDING_MOVE_WORKSPACE_4, NULL, FALSE },
+  { META_KEYBINDING_MOVE_WORKSPACE_5, NULL, FALSE },
+  { META_KEYBINDING_MOVE_WORKSPACE_6, NULL, FALSE },
+  { META_KEYBINDING_MOVE_WORKSPACE_7, NULL, FALSE },
+  { META_KEYBINDING_MOVE_WORKSPACE_8, NULL, FALSE },
+  { META_KEYBINDING_MOVE_WORKSPACE_9, NULL, FALSE },
+  { META_KEYBINDING_MOVE_WORKSPACE_10, NULL, FALSE },
+  { META_KEYBINDING_MOVE_WORKSPACE_11, NULL, FALSE },
+  { META_KEYBINDING_MOVE_WORKSPACE_12, NULL, FALSE },
+  { META_KEYBINDING_MOVE_WORKSPACE_LEFT, NULL, FALSE },
+  { META_KEYBINDING_MOVE_WORKSPACE_RIGHT, NULL, FALSE },
+  { META_KEYBINDING_MOVE_WORKSPACE_UP, NULL, FALSE },
+  { META_KEYBINDING_MOVE_WORKSPACE_DOWN, NULL, FALSE },
+  { META_KEYBINDING_RAISE_OR_LOWER, NULL, FALSE },
+  { META_KEYBINDING_RAISE, NULL, FALSE },
+  { META_KEYBINDING_LOWER, NULL, FALSE },
+  { META_KEYBINDING_MAXIMIZE_VERTICALLY, NULL, FALSE },
+  { META_KEYBINDING_MAXIMIZE_HORIZONTALLY, NULL, FALSE },
+  { NULL, NULL, FALSE }
 };
 
 #ifndef HAVE_GCONF
@@ -1900,6 +1956,7 @@ init_bindings (void)
   i = 0;
   while (window_bindings[i].name)
     {
+      GSList *list_val, *tmp;
       char *str_val;
       char *key;
 
@@ -1915,12 +1972,33 @@ init_bindings (void)
       g_free (str_val);      
       g_free (key);
 
+      key = g_strconcat (KEY_WINDOW_BINDINGS_PREFIX, "/",
+                         window_bindings[i].name,
+                         KEY_LIST_BINDINGS_SUFFIX, NULL);
+
+      err = NULL;
+
+      list_val = gconf_client_get_list (default_client, key, GCONF_VALUE_STRING, &err);
+      cleanup_error (&err);
+
+      update_list_binding (&window_bindings[i], list_val, META_LIST_OF_STRINGS);
+
+      tmp = list_val;
+      while (tmp)
+        {
+          g_free (tmp->data);
+          tmp = tmp->next;
+        }
+      g_slist_free (list_val);
+      g_free (key);
+
       ++i;
     }
 
   i = 0;
   while (screen_bindings[i].name)
     {
+      GSList *list_val, *tmp;
       char *str_val;
       char *key;
 
@@ -1934,6 +2012,26 @@ init_bindings (void)
       update_binding (&screen_bindings[i], str_val);
 
       g_free (str_val);      
+      g_free (key);
+
+      key = g_strconcat (KEY_SCREEN_BINDINGS_PREFIX, "/",
+                         screen_bindings[i].name,
+                         KEY_LIST_BINDINGS_SUFFIX, NULL);
+
+      err = NULL;
+
+      list_val = gconf_client_get_list (default_client, key, GCONF_VALUE_STRING, &err);
+      cleanup_error (&err);
+
+      update_list_binding (&screen_bindings[i], list_val, META_LIST_OF_STRINGS);
+
+      tmp = list_val;
+      while (tmp)
+        {
+          g_free (tmp->data);
+          tmp = tmp->next;
+        }
+      g_slist_free (list_val);
       g_free (key);
 
       ++i;
@@ -2054,6 +2152,7 @@ update_binding (MetaKeyPref *binding,
 {
   unsigned int keysym;
   MetaVirtualModifier mods;
+  MetaKeyCombo *combo;
   gboolean changed;
   
   meta_topic (META_DEBUG_KEYBINDINGS,
@@ -2075,7 +2174,17 @@ update_binding (MetaKeyPref *binding,
         }
     }
 
-  /* Bug 329676: Bindings which can be shifted must not have no modifiers,
+  /* If there isn't already a first element, make one. */
+  if (!binding->bindings)
+    {
+      MetaKeyCombo *blank = g_malloc0 (sizeof (MetaKeyCombo));
+      binding->bindings = g_slist_alloc();
+      binding->bindings->data = blank;
+    }
+  
+   combo = binding->bindings->data;
+
+   /* Bug 329676: Bindings which can be shifted must not have no modifiers,
    * nor only SHIFT as a modifier.
    */
 
@@ -2093,8 +2202,8 @@ update_binding (MetaKeyPref *binding,
                     value);
 
       old_setting = meta_ui_accelerator_name(
-                      binding->keysym,
-                      binding->modifiers);
+                      combo->keysym,
+                      combo->modifiers);
       
       if (!strcmp(old_setting, value))
         {
@@ -2136,17 +2245,17 @@ update_binding (MetaKeyPref *binding,
     }
   
   changed = FALSE;
-  if (keysym != binding->keysym ||
-      mods != binding->modifiers)
+  if (keysym != combo->keysym ||
+      mods != combo->modifiers)
     {
       changed = TRUE;
       
-      binding->keysym = keysym;
-      binding->modifiers = mods;
+      combo->keysym = keysym;
+      combo->modifiers = mods;
       
       meta_topic (META_DEBUG_KEYBINDINGS,
                   "New keybinding for \"%s\" is keysym = 0x%x mods = 0x%x\n",
-                  binding->name, binding->keysym, binding->modifiers);
+                  binding->name, combo->keysym, combo->modifiers);
     }
   else
     {
@@ -2154,6 +2263,115 @@ update_binding (MetaKeyPref *binding,
                   "Keybinding for \"%s\" is unchanged\n", binding->name);
     }
   
+  return changed;
+}
+
+static gboolean
+update_list_binding (MetaKeyPref *binding,
+                     GSList      *value,
+                     MetaStringListType type_of_value)
+{
+  unsigned int keysym;
+  MetaVirtualModifier mods;
+  gboolean changed = FALSE;
+  const gchar *pref_string;
+  GSList *pref_iterator = value, *tmp;
+  MetaKeyCombo *combo;
+
+  meta_topic (META_DEBUG_KEYBINDINGS,
+              "Binding \"%s\" has new gconf value\n",
+              binding->name);
+  
+  if (binding->bindings == NULL)
+    {
+      /* We need to insert a dummy element into the list, because the first
+       * element is the one governed by update_binding. We only handle the
+       * subsequent elements.
+       */
+      MetaKeyCombo *blank = g_malloc0 (sizeof (MetaKeyCombo));
+      binding->bindings = g_slist_alloc();
+      binding->bindings->data = blank;
+    }
+       
+  /* Okay, so, we're about to provide a new list of key combos for this
+   * action. Delete any pre-existing list.
+   */
+  tmp = binding->bindings->next;
+  while (tmp)
+    {
+      g_free (tmp->data);
+      tmp = tmp->next;
+    }
+  g_slist_free (binding->bindings->next);
+  binding->bindings->next = NULL;
+  
+  while (pref_iterator)
+    {
+      keysym = 0;
+      mods = 0;
+
+      if (!pref_iterator->data)
+        {
+          pref_iterator = pref_iterator->next;
+          continue;
+        }
+
+      switch (type_of_value)
+        {
+        case META_LIST_OF_STRINGS:
+          pref_string = pref_iterator->data;
+          break;
+        case META_LIST_OF_GCONFVALUE_STRINGS:
+          pref_string = gconf_value_get_string (pref_iterator->data);
+          break;
+        default:
+          g_assert_not_reached ();
+        }
+      
+      if (!meta_ui_parse_accelerator (pref_string, &keysym, &mods))
+        {
+          meta_topic (META_DEBUG_KEYBINDINGS,
+                      "Failed to parse new gconf value\n");
+          meta_warning (_("\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"),
+                        pref_string, binding->name);
+
+          /* Should we remove this value from the list in gconf? */
+          pref_iterator = pref_iterator->next;
+          continue;
+        }
+
+      /* Bug 329676: Bindings which can be shifted must not have no modifiers,
+       * nor only SHIFT as a modifier.
+       */
+
+      if (binding->add_shift &&
+          0 != keysym &&
+          (META_VIRTUAL_SHIFT_MASK == mods || 0 == mods))
+        {
+          meta_warning ("Cannot bind \"%s\" to %s: it needs a modifier "
+                        "such as Ctrl or Alt.\n",
+                        binding->name,
+                        pref_string);
+
+          /* Should we remove this value from the list in gconf? */
+
+          pref_iterator = pref_iterator->next;
+          continue;
+        }
+  
+      changed = TRUE;
+
+      combo = g_malloc0 (sizeof (MetaKeyCombo));
+      combo->keysym = keysym;
+      combo->modifiers = mods;
+      binding->bindings->next = g_slist_prepend (binding->bindings->next, combo);
+
+      meta_topic (META_DEBUG_KEYBINDINGS,
+                      "New keybinding for \"%s\" is keysym = 0x%x mods = 0x%x\n",
+                      binding->name, keysym, mods);
+
+      pref_iterator = pref_iterator->next;
+    }  
   return changed;
 }
 
@@ -2209,6 +2427,50 @@ update_screen_binding (const char *name,
                        const char *value)
 {
   return find_and_update_binding (screen_bindings, name, value);
+}
+
+static gboolean
+find_and_update_list_binding (MetaKeyPref *bindings,
+                              const char  *name,
+                              GSList      *value)
+{
+  const char *key;
+  int i;
+  gchar *name_without_suffix = g_strdup(name);
+
+  name_without_suffix[strlen(name_without_suffix) - strlen(KEY_LIST_BINDINGS_SUFFIX)] = 0;
+
+  /* FIXME factor out dupld code */
+  if (*name_without_suffix == '/')
+    key = relative_key (name_without_suffix);
+  else
+    key = name_without_suffix;
+
+  i = 0;
+  while (bindings[i].name &&
+         strcmp (key, bindings[i].name) != 0)
+    ++i;
+
+  g_free (name_without_suffix);
+
+  if (bindings[i].name)
+    return update_list_binding (&bindings[i], value, META_LIST_OF_GCONFVALUE_STRINGS);
+  else
+    return FALSE;
+}
+
+static gboolean
+update_window_list_binding (const char *name,
+                            GSList *value)
+{
+  return find_and_update_list_binding (window_bindings, name, value);
+}
+
+static gboolean
+update_screen_list_binding (const char *name,
+                            GSList *value)
+{
+  return find_and_update_list_binding (screen_bindings, name, value);
 }
 
 static gboolean
@@ -2598,6 +2860,10 @@ meta_prefs_get_keybinding_action (const char *name)
   return META_KEYBINDING_ACTION_NONE;
 }
 
+/* This is used by the menu system to decide what key binding
+ * to display next to an option. We return the first non-disabled
+ * binding, if any.
+ */
 void
 meta_prefs_get_window_binding (const char          *name,
                                unsigned int        *keysym,
@@ -2610,8 +2876,24 @@ meta_prefs_get_window_binding (const char          *name,
     {
       if (strcmp (window_bindings[i].name, name) == 0)
         {
-          *keysym = window_bindings[i].keysym;
-          *modifiers = window_bindings[i].modifiers;
+          GSList *s = window_bindings[i].bindings;
+
+          while (s)
+            {
+              MetaKeyCombo *c = s->data;
+
+              if (c->keysym!=0 || c->modifiers!=0)
+                {
+                  *keysym = c->keysym;
+                  *modifiers = c->modifiers;
+                  return;
+                }
+
+              s = s->next;
+            }
+
+          /* Not found; return the disabled value */
+          *keysym = *modifiers = 0;
           return;
         }
       

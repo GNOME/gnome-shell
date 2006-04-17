@@ -639,13 +639,22 @@ count_bindings (const MetaKeyPref *prefs,
   i = 0;
   while (i < n_prefs)
     {
-      if (prefs[i].keysym != None)
-        {
-          count += 1;
+      GSList *tmp = prefs[i].bindings;
 
-          if (prefs[i].add_shift &&
-              (prefs[i].modifiers & META_VIRTUAL_SHIFT_MASK) == 0)
-            count += 1;
+      while (tmp)
+        {
+          MetaKeyCombo *combo = tmp->data;
+
+          if (combo && combo->keysym != None)
+            {
+              count += 1;
+
+              if (prefs[i].add_shift &&
+                  (combo->modifiers & META_VIRTUAL_SHIFT_MASK) == 0)
+                count += 1;
+            }
+
+          tmp = tmp->next;
         }
       
       ++i;
@@ -672,32 +681,41 @@ rebuild_binding_table (MetaDisplay        *display,
   dest = 0;
   while (src < n_prefs)
     {
-      if (prefs[src].keysym != None)
-        {
-          (*bindings_p)[dest].name = prefs[src].name;
-          (*bindings_p)[dest].keysym = prefs[src].keysym;
-          (*bindings_p)[dest].modifiers = prefs[src].modifiers;
-          (*bindings_p)[dest].mask = 0;
-          (*bindings_p)[dest].keycode = 0;          
-          
-          ++dest;
+      GSList *tmp = prefs[src].bindings;
 
-          if (prefs[src].add_shift &&
-              (prefs[src].modifiers & META_VIRTUAL_SHIFT_MASK) == 0)
+      while (tmp)
+        {
+          MetaKeyCombo *combo = tmp->data;
+
+          if (combo && combo->keysym != None)
             {
-              meta_topic (META_DEBUG_KEYBINDINGS,
-                          "Binding %s also needs Shift grabbed\n",
-                          prefs[src].name);
-              
               (*bindings_p)[dest].name = prefs[src].name;
-              (*bindings_p)[dest].keysym = prefs[src].keysym;
-              (*bindings_p)[dest].modifiers = prefs[src].modifiers |
-                META_VIRTUAL_SHIFT_MASK;
+              (*bindings_p)[dest].keysym = combo->keysym;
+              (*bindings_p)[dest].modifiers = combo->modifiers;
               (*bindings_p)[dest].mask = 0;
               (*bindings_p)[dest].keycode = 0;          
-              
+          
               ++dest;
+
+              if (prefs[src].add_shift &&
+                  (combo->modifiers & META_VIRTUAL_SHIFT_MASK) == 0)
+                {
+                  meta_topic (META_DEBUG_KEYBINDINGS,
+                              "Binding %s also needs Shift grabbed\n",
+                               prefs[src].name);
+              
+                  (*bindings_p)[dest].name = prefs[src].name;
+                  (*bindings_p)[dest].keysym = combo->keysym;
+                  (*bindings_p)[dest].modifiers = combo->modifiers |
+                    META_VIRTUAL_SHIFT_MASK;
+                  (*bindings_p)[dest].mask = 0;
+                  (*bindings_p)[dest].keycode = 0;          
+              
+                  ++dest;
+                }
             }
+            
+          tmp = tmp->next;
         }
       
       ++src;
