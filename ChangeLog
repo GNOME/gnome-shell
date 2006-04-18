@@ -1,3 +1,8 @@
+2006-04-18  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* configure.in: Remove obsolete entry for no_NO
+	* po/no.po: And the translation.
+
 2004-04-17  Thomas Thurman <thomas@thurman.org.uk>
 
 	* keybindings.c (count_bindings, rebuild_binding_table):
