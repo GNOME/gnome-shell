@@ -535,8 +535,7 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
   
   n_left = 0;
   n_right = 0;
-  i = 0;
-  while (i < MAX_BUTTONS_PER_CORNER)
+  for (i = 0; i < MAX_BUTTONS_PER_CORNER; i++)
     {
       /* NULL all unused */
       left_func_rects[i] = NULL;
@@ -558,45 +557,35 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
           if (right_func_rects[n_right] != NULL)
             ++n_right;
         }
-      
-      ++i;
     }
 
-  i = 0;
-  while (i < MAX_BUTTONS_PER_CORNER)
+  for (i = 0; i < MAX_BUTTONS_PER_CORNER; i++)
     {
       left_bg_rects[i] = NULL;
       right_bg_rects[i] = NULL;
-
-      ++i;
     }
-  
-  i = 0;
-  while (i < n_left)
+
+  for (i = 0; i < n_left; i++)
     {
       if (i == 0) /* prefer left background if only one button */
         left_bg_rects[i] = &fgeom->left_left_background;
       else if (i == (n_left - 1))
         left_bg_rects[i] = &fgeom->left_right_background;
       else
-        left_bg_rects[i] = &fgeom->left_middle_backgrounds[i-1];
-
-      ++i;
+        left_bg_rects[i] = &fgeom->left_middle_backgrounds[i - 1];
     }
 
-  i = 0;
-  while (i < n_right)
+  for (i = 0; i < n_right; i++)
     {
-      if (i == (n_right - 1)) /* prefer right background if only one button */
+      /* prefer right background if only one button */
+      if (i == (n_right - 1))
         right_bg_rects[i] = &fgeom->right_right_background;
       else if (i == 0)
         right_bg_rects[i] = &fgeom->right_left_background;
       else
-        right_bg_rects[i] = &fgeom->right_middle_backgrounds[i-1];
-
-      ++i;
+        right_bg_rects[i] = &fgeom->right_middle_backgrounds[i - 1];
     }
-
+  
   /* Be sure buttons fit */
   while (n_left > 0 || n_right > 0)
     {
@@ -606,28 +595,14 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
       space_available = fgeom->width - layout->left_titlebar_edge - layout->right_titlebar_edge;
       
       space_used_by_buttons = 0;
-      
-      i = 0;
-      while (i < n_left)
-        {
-          space_used_by_buttons += button_width;
 
-          if (i != n_left)
-            space_used_by_buttons += layout->button_border.left + layout->button_border.right;
-          
-          ++i;
-        }
+      space_used_by_buttons += button_width * n_left;
+      space_used_by_buttons += layout->button_border.left * n_left;
+      space_used_by_buttons += layout->button_border.right * n_left;
 
-      i = 0;
-      while (i < n_right)
-        {
-          space_used_by_buttons += button_width;
-
-          if (i != n_right)
-            space_used_by_buttons += layout->button_border.left + layout->button_border.right;
-          
-          ++i;
-        }
+      space_used_by_buttons += button_width * n_right;
+      space_used_by_buttons += layout->button_border.left * n_right;
+      space_used_by_buttons += layout->button_border.right * n_right;
 
       if (space_used_by_buttons <= space_available)
         break; /* Everything fits, bail out */
@@ -703,24 +678,20 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
    * the left-side buttons
    */
   x = layout->left_titlebar_edge;
-
-  i = 0;
-  while (i < n_left)
+  for (i = 0; i < n_left; i++)
     {
       GdkRectangle *rect;
-      
+
       rect = left_func_rects[i];
-      
+
       rect->x = x + layout->button_border.left;
       rect->y = button_y;
       rect->width = button_width;
       rect->height = button_height;
-      
+
       x = rect->x + rect->width + layout->button_border.right;
 
       *(left_bg_rects[i]) = *rect;
-      
-      ++i;
     }
 
   /* We always fill as much vertical space as possible with title rect,
@@ -1383,13 +1354,10 @@ free_tokens (PosToken *tokens,
    * it was initialized
    */
 
-  i = 0;
-  while (i < n_tokens)
-    {
-      if (tokens[i].type == POS_TOKEN_VARIABLE)
-        g_free (tokens[i].d.v.name);
-      ++i;
-    }
+  for (i = 0; i < n_tokens; i++)
+    if (tokens[i].type == POS_TOKEN_VARIABLE)
+      g_free (tokens[i].d.v.name);
+
   g_free (tokens);
 }
 
@@ -1601,9 +1569,8 @@ debug_print_tokens (PosToken *tokens,
                     int       n_tokens)
 {
   int i;
-
-  i = 0;
-  while (i < n_tokens)
+  
+  for (i = 0; i < n_tokens; i++)
     {
       PosToken *t = &tokens[i];
 
@@ -1630,8 +1597,6 @@ debug_print_tokens (PosToken *tokens,
           g_print ("\"%s\"", op_name (t->d.o.op));
           break;
         }
-
-      ++i;
     }
 
   g_print ("\n");
@@ -1663,8 +1628,7 @@ debug_print_exprs (PosExpr *exprs,
 {
   int i;
 
-  i = 0;
-  while (i < n_exprs)
+  for (i = 0; i < n_exprs; i++)
     {
       switch (exprs[i].type)
         {
@@ -1678,8 +1642,6 @@ debug_print_exprs (PosExpr *exprs,
           g_print (" %s", op_name (exprs[i].d.operator));
           break;
         }
-
-      ++i;
     }
   g_print ("\n");
 }
@@ -1966,8 +1928,7 @@ pos_eval_helper (PosToken                   *tokens,
   first_paren = 0;
   paren_level = 0;
   n_exprs = 0;
-  i = 0;
-  while (i < n_tokens)
+  for (i = 0; i < n_tokens; i++)
     {
       PosToken *t = &tokens[i];
 
@@ -2015,9 +1976,9 @@ pos_eval_helper (PosToken                   *tokens,
                * for optimization purposes
                */
               if (strcmp (t->d.v.name, "width") == 0)
-                exprs[n_exprs].d.int_val = env->width;
+                exprs[n_exprs].d.int_val = env->rect.width;
               else if (strcmp (t->d.v.name, "height") == 0)
-                exprs[n_exprs].d.int_val = env->height;
+                exprs[n_exprs].d.int_val = env->rect.height;
               else if (env->object_width >= 0 &&
                        strcmp (t->d.v.name, "object_width") == 0)
                 exprs[n_exprs].d.int_val = env->object_width;
@@ -2115,8 +2076,6 @@ pos_eval_helper (PosToken                   *tokens,
 
             }
         }
-
-      ++i;
     }
 
   if (paren_level > 0)
@@ -2228,9 +2187,9 @@ meta_parse_position_expression (const char                *expr,
   if (pos_eval (tokens, n_tokens, env, &val, err))
     {
       if (x_return)
-        *x_return = env->x + val;
+        *x_return = env->rect.x + val;
       if (y_return)
-        *y_return = env->y + val;
+        *y_return = env->rect.y + val;
       free_tokens (tokens, n_tokens);
       return TRUE;
     }
@@ -2311,8 +2270,7 @@ meta_theme_replace_constants (MetaTheme   *theme,
 
   str = g_string_new (NULL);
 
-  i = 0;
-  while (i < n_tokens)
+  for (i = 0; i < n_tokens; i++)
     {
       PosToken *t = &tokens[i];      
 
@@ -2356,8 +2314,6 @@ meta_theme_replace_constants (MetaTheme   *theme,
           g_string_append (str, op_name (t->d.o.op));
           break;
         }
-
-      ++i;
     }  
   
   free_tokens (tokens, n_tokens);
@@ -2429,7 +2385,6 @@ parse_size_unchecked (const char          *expr,
 
   return retval;
 }
-
 
 MetaDrawOp*
 meta_draw_op_new (MetaDrawType type)
@@ -3163,17 +3118,11 @@ draw_op_as_pixbuf (const MetaDrawOp    *op,
 static void
 fill_env (MetaPositionExprEnv *env,
           const MetaDrawInfo  *info,
-          int                  x,
-          int                  y,
-          int                  width,
-          int                  height)
+          MetaRectangle        logical_region)
 {
   /* FIXME this stuff could be raised into draw_op_list_draw() probably
    */
-  env->x = x;
-  env->y = y;
-  env->width = width;
-  env->height = height;
+  env->rect = logical_region;
   env->object_width = -1;
   env->object_height = -1;
   if (info->fgeom)
@@ -3207,10 +3156,7 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
                             GdkDrawable         *drawable,
                             const GdkRectangle  *clip,
                             const MetaDrawInfo  *info,
-                            int                  x,
-                            int                  y,
-                            int                  width,
-                            int                  height,
+                            MetaRectangle        rect,
                             MetaPositionExprEnv *env)
 {
   GdkGC *gc;
@@ -3494,25 +3440,25 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
 
     case META_DRAW_OP_LIST:
       {
-        int rx, ry, rwidth, rheight;
+        MetaRectangle d_rect;
 
-        rx = parse_x_position_unchecked (op->data.op_list.x, env);
-        ry = parse_y_position_unchecked (op->data.op_list.y, env);
-        rwidth = parse_size_unchecked (op->data.op_list.width, env);
-        rheight = parse_size_unchecked (op->data.op_list.height, env);
+        d_rect.x = parse_x_position_unchecked (op->data.op_list.x, env);
+        d_rect.y = parse_y_position_unchecked (op->data.op_list.y, env);
+        d_rect.width = parse_size_unchecked (op->data.op_list.width, env);
+        d_rect.height = parse_size_unchecked (op->data.op_list.height, env);
 
         meta_draw_op_list_draw (op->data.op_list.op_list,
                                 widget, drawable, clip, info,
-                                rx, ry, rwidth, rheight);
+                                d_rect);
       }
       break;
 
     case META_DRAW_TILE:
       {
         int rx, ry, rwidth, rheight;
-        int tile_xoffset, tile_yoffset, tile_width, tile_height;
+        int tile_xoffset, tile_yoffset; 
         GdkRectangle new_clip;
-        int tile_x, tile_y;
+        MetaRectangle tile;
         
         rx = parse_x_position_unchecked (op->data.tile.x, env);
         ry = parse_y_position_unchecked (op->data.tile.y, env);
@@ -3530,27 +3476,27 @@ meta_draw_op_draw_with_env (const MetaDrawOp    *op,
             tile_xoffset = parse_x_position_unchecked (op->data.tile.tile_xoffset, env);
             tile_yoffset = parse_y_position_unchecked (op->data.tile.tile_yoffset, env);
             /* tile offset should not include x/y */
-            tile_xoffset -= x;
-            tile_yoffset -= y;
+            tile_xoffset -= rect.x;
+            tile_yoffset -= rect.y;
             
-            tile_width = parse_size_unchecked (op->data.tile.tile_width, env);
-            tile_height = parse_size_unchecked (op->data.tile.tile_height, env);
+            tile.width = parse_size_unchecked (op->data.tile.tile_width, env);
+            tile.height = parse_size_unchecked (op->data.tile.tile_height, env);
 
-            tile_x = rx - tile_xoffset;
+            tile.x = rx - tile_xoffset;
         
-            while (tile_x < (rx + rwidth))
+            while (tile.x < (rx + rwidth))
               {
-                tile_y = ry - tile_yoffset;
-                while (tile_y < (ry + rheight))
+                tile.y = ry - tile_yoffset;
+                while (tile.y < (ry + rheight))
                   {
                     meta_draw_op_list_draw (op->data.tile.op_list,
                                             widget, drawable, &new_clip, info,
-                                            tile_x, tile_y, tile_width, tile_height);     
+                                            tile);
 
-                    tile_y += tile_height;
+                    tile.y += tile.height;
                   }
 
-                tile_x += tile_width;
+                tile.x += tile.width;
               }
           }
       }
@@ -3564,18 +3510,16 @@ meta_draw_op_draw (const MetaDrawOp    *op,
                    GdkDrawable         *drawable,
                    const GdkRectangle  *clip,
                    const MetaDrawInfo  *info,
-                   int                  x,
-                   int                  y,
-                   int                  width,
-                   int                  height)
+                   MetaRectangle        logical_region)
 {
   MetaPositionExprEnv env;
 
-  fill_env (&env, info, x, y, width, height);
+  fill_env (&env, info, logical_region);
 
   meta_draw_op_draw_with_env (op, widget, drawable, clip,
-                              info, x, y, width, height,
+                              info, logical_region,
                               &env);
+
 }
 
 MetaDrawOpList*
@@ -3615,12 +3559,8 @@ meta_draw_op_list_unref (MetaDrawOpList *op_list)
     {
       int i;
 
-      i = 0;
-      while (i < op_list->n_ops)
-        {
-          meta_draw_op_free (op_list->ops[i]);
-          ++i;
-        }
+      for (i = 0; i < op_list->n_ops; i++)
+        meta_draw_op_free (op_list->ops[i]);
 
       g_free (op_list->ops);
 
@@ -3635,10 +3575,7 @@ meta_draw_op_list_draw  (const MetaDrawOpList *op_list,
                          GdkDrawable          *drawable,
                          const GdkRectangle   *clip,
                          const MetaDrawInfo   *info,
-                         int                   x,
-                         int                   y,
-                         int                   width,
-                         int                   height)
+                         MetaRectangle         rect)
 {
   int i;
   GdkRectangle active_clip;
@@ -3648,7 +3585,7 @@ meta_draw_op_list_draw  (const MetaDrawOpList *op_list,
   if (op_list->n_ops == 0)
     return;
   
-  fill_env (&env, info, x, y, width, height);
+  fill_env (&env, info, rect);
   
   /* FIXME this can be optimized, potentially a lot, by
    * compressing multiple ops when possible. For example,
@@ -3662,19 +3599,20 @@ meta_draw_op_list_draw  (const MetaDrawOpList *op_list,
    * adjacent items when possible.
    */
   if (clip)
-    orig_clip = *clip;
+    {
+      orig_clip = *clip;
+    }
   else
     {
-      orig_clip.x = x;
-      orig_clip.y = y;
-      orig_clip.width = width;
-      orig_clip.height = height;
+      orig_clip.x = rect.x;
+      orig_clip.y = rect.y;
+      orig_clip.width = rect.width;
+      orig_clip.height = rect.height;
     }
 
   active_clip = orig_clip;
-  
-  i = 0;
-  while (i < op_list->n_ops)
+
+  for (i = 0; i < op_list->n_ops; i++)
     {
       MetaDrawOp *op = op_list->ops[i];
       
@@ -3692,11 +3630,9 @@ meta_draw_op_list_draw  (const MetaDrawOpList *op_list,
         {
           meta_draw_op_draw_with_env (op,
                                       widget, drawable, &active_clip, info,
-                                      x, y, width, height,
+                                      rect,
                                       &env);
         }
-      
-      ++i;
     }
 }
 
@@ -3736,9 +3672,8 @@ meta_draw_op_list_contains (MetaDrawOpList    *op_list,
   int i;
 
   /* mmm, huge tree recursion */
-  
-  i = 0;
-  while (i < op_list->n_ops)
+
+  for (i = 0; i < op_list->n_ops; i++)
     {
       if (op_list->ops[i]->type == META_DRAW_OP_LIST)
         {
@@ -3758,8 +3693,6 @@ meta_draw_op_list_contains (MetaDrawOpList    *op_list,
                                           child))
             return TRUE;
         }
-      
-      ++i;
     }
 
   return FALSE;
@@ -3794,20 +3727,10 @@ free_button_ops (MetaDrawOpList *op_lists[META_BUTTON_TYPE_LAST][META_BUTTON_STA
 {
   int i, j;
 
-  i = 0;
-  while (i < META_BUTTON_TYPE_LAST)
-    {
-      j = 0;
-      while (j < META_BUTTON_STATE_LAST)
-        {
-          if (op_lists[i][j])
-            meta_draw_op_list_unref (op_lists[i][j]);
-
-          ++j;
-        }
-
-      ++i;
-    }
+  for (i = 0; i < META_BUTTON_TYPE_LAST; i++)
+    for (j = 0; j < META_BUTTON_STATE_LAST; j++)
+      if (op_lists[i][j])
+        meta_draw_op_list_unref (op_lists[i][j]);
 }
 
 void
@@ -3823,15 +3746,10 @@ meta_frame_style_unref (MetaFrameStyle *style)
       int i;
 
       free_button_ops (style->buttons);
-      
-      i = 0;
-      while (i < META_FRAME_PIECE_LAST)
-        {
-          if (style->pieces[i])
-            meta_draw_op_list_unref (style->pieces[i]);
 
-          ++i;
-        }
+      for (i = 0; i < META_FRAME_PIECE_LAST; i++)
+        if (style->pieces[i])
+          meta_draw_op_list_unref (style->pieces[i]);
 
       if (style->layout)
         meta_frame_layout_unref (style->layout);
@@ -3894,14 +3812,12 @@ meta_frame_style_validate (MetaFrameStyle    *style,
   g_return_val_if_fail (style != NULL, FALSE);
   g_return_val_if_fail (style->layout != NULL, FALSE);
 
-  i = 0;
-  while (i < META_BUTTON_TYPE_LAST)
+  for (i = 0; i < META_BUTTON_TYPE_LAST; i++)
     {
       /* for now the "positional" buttons are optional */
       if (i >= META_BUTTON_TYPE_CLOSE)
         {
-          j = 0;
-          while (j < META_BUTTON_STATE_LAST)
+          for (j = 0; j < META_BUTTON_STATE_LAST; j++)
             {
               if (get_button (style, i, j) == NULL)
                 {
@@ -3912,12 +3828,8 @@ meta_frame_style_validate (MetaFrameStyle    *style,
                                meta_button_state_to_string (j));
                   return FALSE;
                 }
-              
-              ++j;
             }
         }
-      
-      ++i;
     }
   
   return TRUE;
@@ -4150,12 +4062,16 @@ meta_frame_style_draw (MetaFrameStyle          *style,
             }
 
           if (op_list)
-            meta_draw_op_list_draw (op_list,
-                                    widget,
-                                    drawable,
-                                    &combined_clip,
-                                    &draw_info,
-                                    rect.x, rect.y, rect.width, rect.height);
+            {
+              MetaRectangle m_rect;
+              m_rect = meta_rect (rect.x, rect.y, rect.width, rect.height);
+              meta_draw_op_list_draw (op_list,
+                                      widget,
+                                      drawable,
+                                      &combined_clip,
+                                      &draw_info,
+                                      m_rect);
+            }
         }
 
 
@@ -4167,7 +4083,7 @@ meta_frame_style_draw (MetaFrameStyle          *style,
           middle_bg_offset = 0;
           j = 0;
           while (j < META_BUTTON_TYPE_LAST)
-            {              
+            {
               button_rect (j, fgeom, middle_bg_offset, &rect);
               
               rect.x += x_offset;
@@ -4187,12 +4103,17 @@ meta_frame_style_draw (MetaFrameStyle          *style,
                   op_list = get_button (style, j, button_states[j]);
                   
                   if (op_list)
-                    meta_draw_op_list_draw (op_list,
-                                            widget,
-                                            drawable,
-                                            &combined_clip,
-                                            &draw_info,
-                                            rect.x, rect.y, rect.width, rect.height);
+                    {
+                      MetaRectangle m_rect;
+                      m_rect = meta_rect (rect.x, rect.y,
+                                          rect.width, rect.height);
+                      meta_draw_op_list_draw (op_list,
+                                              widget,
+                                              drawable,
+                                              &combined_clip,
+                                              &draw_info,
+                                              m_rect);
+                    }
                 }
 
               /* MIDDLE_BACKGROUND type may get drawn more than once */
@@ -4235,14 +4156,9 @@ free_focus_styles (MetaFrameStyle *focus_styles[META_FRAME_FOCUS_LAST])
 {
   int i;
 
-  i = 0;
-  while (i < META_FRAME_FOCUS_LAST)
-    {
-      if (focus_styles[i])
-        meta_frame_style_unref (focus_styles[i]);
-
-      ++i;
-    }
+  for (i = 0; i < META_FRAME_FOCUS_LAST; i++)
+    if (focus_styles[i])
+      meta_frame_style_unref (focus_styles[i]);
 }
 
 void
@@ -4265,13 +4181,8 @@ meta_frame_style_set_unref (MetaFrameStyleSet *style_set)
     {
       int i;
 
-      i = 0;
-      while (i < META_FRAME_RESIZE_LAST)
-        {
-          free_focus_styles (style_set->normal_styles[i]);
-
-          ++i;
-        }
+      for (i = 0; i < META_FRAME_RESIZE_LAST; i++)
+        free_focus_styles (style_set->normal_styles[i]);
 
       free_focus_styles (style_set->maximized_styles);
       free_focus_styles (style_set->shaded_styles);
@@ -4348,9 +4259,8 @@ check_state  (MetaFrameStyleSet *style_set,
               GError           **error)
 {
   int i;
-  
-  i = 0;
-  while (i < META_FRAME_FOCUS_LAST)
+
+  for (i = 0; i < META_FRAME_FOCUS_LAST; i++)
     {
       if (get_style (style_set, state,
                      META_FRAME_RESIZE_NONE, i) == NULL)
@@ -4363,8 +4273,6 @@ check_state  (MetaFrameStyleSet *style_set,
                        meta_frame_focus_to_string (i));
           return FALSE;
         }
-      
-      ++i;
     }
 
   return TRUE;
@@ -4378,28 +4286,18 @@ meta_frame_style_set_validate  (MetaFrameStyleSet *style_set,
   
   g_return_val_if_fail (style_set != NULL, FALSE);
 
-  i = 0;
-  while (i < META_FRAME_RESIZE_LAST)
-    {
-      j = 0;
-      while (j < META_FRAME_FOCUS_LAST)
+  for (i = 0; i < META_FRAME_RESIZE_LAST; i++)
+    for (j = 0; j < META_FRAME_FOCUS_LAST; j++)
+      if (get_style (style_set, META_FRAME_STATE_NORMAL, i, j) == NULL)
         {
-          if (get_style (style_set, META_FRAME_STATE_NORMAL,
-                         i, j) == NULL)
-            {
-              g_set_error (error, META_THEME_ERROR,
-                           META_THEME_ERROR_FAILED,
-                           _("Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"),
-                           meta_frame_state_to_string (META_FRAME_STATE_NORMAL),
-                           meta_frame_resize_to_string (i),
-                           meta_frame_focus_to_string (j));
-              return FALSE;
-            }
-              
-          ++j;
+          g_set_error (error, META_THEME_ERROR,
+                       META_THEME_ERROR_FAILED,
+                       _("Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"),
+                       meta_frame_state_to_string (META_FRAME_STATE_NORMAL),
+                       meta_frame_resize_to_string (i),
+                       meta_frame_focus_to_string (j));
+          return FALSE;
         }
-      ++i;
-    }
 
   if (!check_state (style_set, META_FRAME_STATE_SHADED, error))
     return FALSE;
@@ -4501,20 +4399,10 @@ free_menu_ops (MetaDrawOpList *op_lists[META_MENU_ICON_TYPE_LAST][N_GTK_STATES])
 {
   int i, j;
 
-  i = 0;
-  while (i < META_MENU_ICON_TYPE_LAST)
-    {
-      j = 0;
-      while (j < N_GTK_STATES)
-        {
-          if (op_lists[i][j])
-            meta_draw_op_list_unref (op_lists[i][j]);
-
-          ++j;
-        }
-
-      ++i;
-    }
+  for (i = 0; i < META_MENU_ICON_TYPE_LAST; i++)
+    for (j = 0; j < N_GTK_STATES; j++)
+      if (op_lists[i][j])
+        meta_draw_op_list_unref (op_lists[i][j]);
 }
 
 void
@@ -4548,13 +4436,9 @@ meta_theme_free (MetaTheme *theme)
   if (theme->style_sets_by_name)  
     g_hash_table_destroy (theme->style_sets_by_name);
 
-  i = 0;
-  while (i < META_FRAME_TYPE_LAST)
-    {
-      if (theme->style_sets_by_type[i])
-        meta_frame_style_set_unref (theme->style_sets_by_type[i]);
-      ++i;
-    }
+  for (i = 0; i < META_FRAME_TYPE_LAST; i++)
+    if (theme->style_sets_by_type[i])
+      meta_frame_style_set_unref (theme->style_sets_by_type[i]);
 
   free_menu_ops (theme->menu_icons);
   
@@ -4626,45 +4510,29 @@ meta_theme_validate (MetaTheme *theme,
       return FALSE;
     }
 
-  i = 0;
-  while (i < (int) META_FRAME_TYPE_LAST)
-    {
-      if (theme->style_sets_by_type[i] == NULL)
+  for (i = 0; i < (int)META_FRAME_TYPE_LAST; i++)
+    if (theme->style_sets_by_type[i] == NULL)
+      {
+        g_set_error (error, META_THEME_ERROR, META_THEME_ERROR_FAILED,
+                     _("No frame style set for window type \"%s\" in theme \"%s\", add a <window type=\"%s\" style_set=\"whatever\"/> element"),
+                     meta_frame_type_to_string (i),
+                     theme->name,
+                     meta_frame_type_to_string (i));
+        
+        return FALSE;          
+      }
+
+  for (i = 0; i < META_MENU_ICON_TYPE_LAST; i++)
+    for (j = 0; j < N_GTK_STATES; j++)
+      if (get_menu_icon (theme, i, j) == NULL)
         {
-          g_set_error (error, META_THEME_ERROR, META_THEME_ERROR_FAILED,
-                       _("No frame style set for window type \"%s\" in theme \"%s\", add a <window type=\"%s\" style_set=\"whatever\"/> element"),
-                       meta_frame_type_to_string (i),
-                       theme->name,
-                       meta_frame_type_to_string (i));
-                       
-          return FALSE;          
+          g_set_error (error, META_THEME_ERROR,
+                       META_THEME_ERROR_FAILED,
+                       _("<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this theme"),
+                       meta_menu_icon_type_to_string (i),
+                       meta_gtk_state_to_string (j));
+          return FALSE;
         }
-      
-      ++i;
-    }
-
-  i = 0;
-  while (i < META_MENU_ICON_TYPE_LAST)
-    {
-      j = 0;
-      while (j < N_GTK_STATES)
-        {
-
-          if (get_menu_icon (theme, i, j) == NULL)
-            {
-              g_set_error (error, META_THEME_ERROR,
-                           META_THEME_ERROR_FAILED,
-                           _("<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this theme"),
-                           meta_menu_icon_type_to_string (i),
-                           meta_gtk_state_to_string (j));
-              return FALSE;
-            }
-
-          ++j;
-        }
-      
-      ++i;
-    }
   
   return TRUE;
 }
@@ -4865,10 +4733,7 @@ meta_theme_draw_menu_icon (MetaTheme          *theme,
                            GtkWidget          *widget,
                            GdkDrawable        *drawable,
                            const GdkRectangle *clip,
-                           int                 x_offset,
-                           int                 y_offset,
-                           int                 width,
-                           int                 height,
+                           MetaRectangle       offset_rect,
                            MetaMenuIconType    type)
 {  
   MetaDrawInfo info;
@@ -4891,7 +4756,7 @@ meta_theme_draw_menu_icon (MetaTheme          *theme,
                           drawable,
                           clip,
                           &info,
-                          x_offset, y_offset, width, height);
+                          offset_rect);
 }
 
 void

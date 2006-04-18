@@ -102,6 +102,8 @@ metacity_SOURCES= 				\
 # metacity proper will be compiled with different names.
 libmetacity_private_la_CFLAGS =
 libmetacity_private_la_SOURCES=	\
+	boxes.c			\
+	boxes.h			\
 	gradient.c		\
 	gradient.h		\
 	preview-widget.c	\

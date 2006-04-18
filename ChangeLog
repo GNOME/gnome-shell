@@ -1,3 +1,18 @@
+2006-04-18  Björn Lindqvist  <bjourne@gmail.com>
+
+	* makefile.am: Add boxes.{c,h} to libmetacity_private
+	* src/theme-parser.c (check_expression):
+	* src/theme-viewer.c (run_position_expression_tests):
+	Use meta_rect ().
+
+	* src/theme.c: Replace while loops iterating over sequences with
+	for loops.
+
+	* src/theme.c, src/theme.h (struct _MetaPositionExprEnv,
+	meta_draw_op_draw, meta_draw_op_list_draw,
+	meta_theme_draw_menu_icon): Use MetaRectangles in function
+	prototypes instead of x, y, with, height ints where applicable.
+
 2006-04-18  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* configure.in: Remove obsolete entry for no_NO

@@ -1562,10 +1562,7 @@ check_expression (const char          *expr,
    * are at least 1.
    */
   
-  env.x = 0;
-  env.y = 0;
-  env.width = 0;
-  env.height = 0;
+  env.rect = meta_rect (0, 0, 0, 0);
   if (has_object)
     {
       env.object_width = 0;

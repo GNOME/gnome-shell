@@ -1191,11 +1191,9 @@ run_position_expression_tests (void)
                  test->expr, test->expected_x, test->expected_y);
 
       err = NULL;
-
-      env.x = test->rect.x;
-      env.y = test->rect.y;
-      env.width = test->rect.width;
-      env.height = test->rect.height;
+      
+      env.rect = meta_rect (test->rect.x, test->rect.y,
+                            test->rect.width, test->rect.height);
       env.object_width = -1;
       env.object_height = -1;
       env.left_width = 0;

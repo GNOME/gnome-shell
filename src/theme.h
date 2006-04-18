@@ -22,6 +22,7 @@
 #ifndef META_THEME_H
 #define META_THEME_H
 
+#include "boxes.h"
 #include "gradient.h"
 #include "common.h"
 #include <gtk/gtkrc.h>
@@ -565,10 +566,7 @@ struct _MetaTheme
 
 struct _MetaPositionExprEnv
 {
-  int x;
-  int y;
-  int width;
-  int height;
+  MetaRectangle rect;
   /* size of an object being drawn, if it has a natural size */
   int object_width;
   int object_height;
@@ -638,11 +636,7 @@ void           meta_draw_op_draw (const MetaDrawOp    *op,
                                   const GdkRectangle  *clip,
                                   const MetaDrawInfo  *info,
                                   /* logical region being drawn */
-                                  int                  x,
-                                  int                  y,
-                                  int                  width,
-                                  int                  height);
-
+                                  MetaRectangle        logical_region);
 
 MetaDrawOpList* meta_draw_op_list_new   (int                   n_preallocs);
 void            meta_draw_op_list_ref   (MetaDrawOpList       *op_list);
@@ -651,11 +645,8 @@ void            meta_draw_op_list_draw  (const MetaDrawOpList *op_list,
                                          GtkWidget            *widget,
                                          GdkDrawable          *drawable,
                                          const GdkRectangle   *clip,
-                                         const MetaDrawInfo  *info,
-                                         int                   x,
-                                         int                   y,
-                                         int                   width,
-                                         int                   height);
+                                         const MetaDrawInfo   *info,
+                                         MetaRectangle         rect);
 void           meta_draw_op_list_append (MetaDrawOpList       *op_list,
                                          MetaDrawOp           *op);
 gboolean       meta_draw_op_list_validate (MetaDrawOpList    *op_list,
@@ -748,10 +739,7 @@ void meta_theme_draw_menu_icon (MetaTheme          *theme,
                                 GtkWidget          *widget,
                                 GdkDrawable        *drawable,
                                 const GdkRectangle *clip,
-                                int                 x_offset,
-                                int                 y_offset,
-                                int                 width,
-                                int                 height,
+                                MetaRectangle       offset_rect,
                                 MetaMenuIconType    type);
      
 void meta_theme_get_frame_borders (MetaTheme         *theme,
