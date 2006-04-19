@@ -1,3 +1,15 @@
+2006-04-19  Björn Lindqvist  <bjourne@gmail.com>
+
+	* src/frames.c (struct CachedPixels, meta_frames_destroy,
+	invalidate_cache, generate_pixmap, populate_cache,
+	cached_pixels_draw, meta_frames_expose_event,
+	meta_frames_paint_to_drawable):
+
+	Replace while loops iterating over sequences with for loops. Also,
+	replace the attributes in the CachedPixels struct with a list of
+	four CachedFramePiece:s, this allows iteration over the four
+	pixmaps instead of treating each one separately. Fixes #338359.
+  
 2006-04-18  Björn Lindqvist  <bjourne@gmail.com>
 
 	* makefile.am: Add boxes.{c,h} to libmetacity_private
