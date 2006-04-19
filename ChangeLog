@@ -1,3 +1,8 @@
+2006-04-19  Thomas Andersen  <phomes@gmail.com>
+
+        * src/window-props.c (reload_transient_for): warn and ignore if
+	transient_for is set to a non-top-level window.  Fixes #335524.
+
 2006-04-19  Björn Lindqvist  <bjourne@gmail.com>
 
 	* src/frames.c (struct CachedPixels, meta_frames_destroy,
