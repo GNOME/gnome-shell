@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-03-13 12:23+0700\n"
-"PO-Revision-Date: 2006-03-13 12:25+0700\n"
+"POT-Creation-Date: 2006-04-21 11:51+0700\n"
+"PO-Revision-Date: 2006-04-21 13:19+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <L10n@opentle.org>\n"
 "MIME-Version: 1.0\n"
@@ -62,7 +62,7 @@ msgstr "เกิดข้อผิดพลาด ขณะเปิดหน�
 msgid "Failed to get hostname: %s\n"
 msgstr "ไม่สามารถอ่านชื่อโฮสต์: %s\n"
 
-#: ../src/display.c:350
+#: ../src/display.c:354
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "ไม่สามารถเปิดดิสเพลย์ '%s' ของระบบ X Window\n"
@@ -82,44 +82,44 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "เกิดข้อผิดพลาดร้ายแรง %d (%s) ในการอ่านเขียนข้อมูลจากดิสเพลย์'%s'\n"
 
-#: ../src/frames.c:1097
+#: ../src/frames.c:1086
 msgid "Close Window"
 msgstr "ปิดหน้าต่าง"
 
-#: ../src/frames.c:1100
+#: ../src/frames.c:1089
 msgid "Window Menu"
 msgstr "เมนูหน้าต่าง"
 
-#: ../src/frames.c:1103
+#: ../src/frames.c:1092
 msgid "Minimize Window"
 msgstr "ย่อหน้าต่างหาย"
 
-#: ../src/frames.c:1106
+#: ../src/frames.c:1095
 msgid "Maximize Window"
 msgstr "ขยายหน้าต่างเต็ม"
 
-#: ../src/frames.c:1109
+#: ../src/frames.c:1098
 msgid "Unmaximize Window"
 msgstr "เลิกขยายหน้าต่างเต็ม"
 
-#: ../src/keybindings.c:996
+#: ../src/keybindings.c:1021
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "โปรแกรมอื่นกำลังใช้ปุ่ม %s ร่วมกับปุ่ม %x เป็นปุ่มลัดอยู่แล้ว\n"
 
-#: ../src/keybindings.c:2534
+#: ../src/keybindings.c:2588
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "ไม่สามารถเปิดกล่องโต้ตอบ เพื่อแสดงข้อผิดพลาดของคำสั่ง: %s\n"
 
-#: ../src/keybindings.c:2639
+#: ../src/keybindings.c:2693
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "คำสั่ง %d ยังไม่ได้ถูกกำหนด\n"
 
-#: ../src/keybindings.c:3501
+#: ../src/keybindings.c:3559
 msgid "No terminal command has been defined.\n"
 msgstr "คำสั่งเปิดเทอร์มินัลยังไม่ได้ถูกกำหนด\n"
 
@@ -245,7 +245,7 @@ msgstr "ย้ายไปพื้นที่ทำงาน_บน"
 msgid "Move to Workspace _Down"
 msgstr "ย้ายไปพื้นที่ทำงาน_ล่าง"
 
-#: ../src/menu.c:164 ../src/prefs.c:2004 ../src/prefs.c:2367
+#: ../src/menu.c:164 ../src/prefs.c:2142 ../src/prefs.c:2669
 #, c-format
 msgid "Workspace %d"
 msgstr "พื้นที่ทำงาน %d"
@@ -404,16 +404,12 @@ msgstr "(ยังใช้ไม่ได้) เคลื่อนย้าย
 msgid ""
 "A font description string describing a font for window titlebars. The size "
 "from the description will only be used if the titlebar_font_size option is "
-"set to 0, however. Also, this option is disabled if the "
-"titlebar_uses_desktop_font option is set to true. By default, titlebar_font "
-"is unset, causing Metacity to fall back to the desktop font even if "
-"titlebar_uses_desktop_font is false."
+"set to 0. Also, this option is disabled if the titlebar_uses_desktop_font "
+"option is set to true."
 msgstr ""
-"คำบรรยายแบบอักษรสำหรับแถบหัวเรื่องของหน้าต่าง อย่างไรก็ดี "
-"ขนาดตัวอักษรในคำบรรยายจะมีผลก็ต่อเมื่อตัวเลือก titlebar_font_size มีค่าเป็น 0 นอกจากนี้ "
-"ค่าตัวเลือกนี้จะไม่มีผลถ้าตัวเลือก titlebar_uses_desktop_font มีค่าเป็นจริง ซึ่งโดยปกติ "
-"titlebar_font จะไม่ถูกตั้งค่าไว้ ทำให้ Metacity กลับไปใช้ desktop font อยู่ดี ถึงแม้ "
-"titlebar_uses_desktop_font มีค่าเป็นเท็จ"
+"คำบรรยายแบบอักษรสำหรับแถบหัวเรื่องของหน้าต่าง "
+"ขนาดตัวอักษรในคำบรรยายนี้จะมีผลก็ต่อเมื่อตัวเลือก titlebar_font_size มีค่าเป็น 0 นอกจากนี้ "
+"ค่าตัวเลือกนี้จะไม่มีผลถ้าตัวเลือก titlebar_uses_desktop_font มีค่าเป็นจริง"
 
 #: ../src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
@@ -469,18 +465,22 @@ msgid "Compositing Manager"
 msgstr ""
 
 #: ../src/metacity.schemas.in.h:12
+msgid "Control how new windows get focus"
+msgstr "ควบคุมการโฟกัสหน้าต่างใหม่"
+
+#: ../src/metacity.schemas.in.h:13
 msgid "Current theme"
 msgstr "ธีมปัจจุบัน"
 
-#: ../src/metacity.schemas.in.h:13
+#: ../src/metacity.schemas.in.h:14
 msgid "Delay in milliseconds for the auto raise option"
 msgstr "การหน่วงเวลาในหน่วยมิลลิวินาทีสำหรับการยกหน้าต่างมาด้านหน้าโดยอัตโนมัติ"
 
-#: ../src/metacity.schemas.in.h:14
+#: ../src/metacity.schemas.in.h:15
 msgid "Determines whether Metacity is a compositing manager."
 msgstr ""
 
-#: ../src/metacity.schemas.in.h:15
+#: ../src/metacity.schemas.in.h:16
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
@@ -488,43 +488,31 @@ msgstr ""
 "ระบุว่าจะให้โปรแกรมหรือระบบส่งเสียง 'บี๊ป' หรือไม่ สามารถใช้ร่วมกับ 'ระฆังภาพ' เพื่อใช้ 'บี๊ป' "
 "แบบเงียบได้"
 
-#: ../src/metacity.schemas.in.h:16
+#: ../src/metacity.schemas.in.h:17
 msgid "Disable misfeatures that are required by old or broken applications"
 msgstr "ปิดคุณสมบัติแก้ขัดที่แก้ปัญหาให้กับโปรแกรมประยุกต์ที่เก่าหรือไม่ทำงาน"
 
-#: ../src/metacity.schemas.in.h:17
+#: ../src/metacity.schemas.in.h:18
 msgid "Enable Visual Bell"
 msgstr "ใช้ระฆังภาพ"
 
-#: ../src/metacity.schemas.in.h:18
+#: ../src/metacity.schemas.in.h:19
 msgid "Hide all windows and focus desktop"
 msgstr "ซ่อนหน้าต่างทั้งหมดแล้วโฟกัสไปยังพื้นโต๊ะ"
 
-#: ../src/metacity.schemas.in.h:19
-msgid ""
-"If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
-"focused window will be automatically raised after a delay (the delay is "
-"specified by the auto_raise_delay key). This preference is poorly named, but "
-"kept for backwards compatibility. To try to be more clear (at least to the "
-"technically inclined), its meaning is \"automatically raise the window "
-"following a timeout which is triggered by non-grabbed mouse entry in sloppy "
-"or mouse focus modes\". It is unrelated to clicking behavior (i.e. this is "
-"not related to raise-on-click/orthogonal-raise). It is unrelated to entering "
-"a window during drag and drop (because that results in the application "
-"grabbing the mouse)"
-msgstr ""
-"ถ้าเป็นจริง และโหมดโฟกัสหน้าต่างเป็น \"sloppy\" หรือ \"mouse\" "
-"จะยกหน้าต่างที่ได้โฟกัสขึ้นมาโดยอัตโนมัติหลังจากหน่วงเวลาระยะหนึ่ง (กำหนดเวลาที่หน่วงโดยคีย์ "
-"auto_raise_delay) ค่าตั้งนี้ตั้งชื่อค่อนข้างแย่ แต่ก็เก็บชื่อไว้เพื่อความเข้ากันได้กับรุ่นเก่า "
-"ถ้าจะให้ชัดเจนกว่านี้ (อย่างน้อยก็สำหรับผู้มีความรู้ทางเทคนิค) ความหมายของมันก็คือ "
-"\"ยกหน้าต่างขึ้นมาโดยอัตโนมัติหลังการหน่วงเวลา "
-"ซึ่งเริ่มจับเวลาเมื่อมีการเลื่อนเมาส์เข้ามาในหน้าต่างขณะใช้โหมดโฟกัสหน้าต่างแบบ sloppy หรือ "
-"mouse โดยขณะนั้นไม่มีหน้าต่างอื่นยึดเมาส์อยู่\" การยกหน้าต่างดังกล่าว ไม่เกี่ยวกับพฤติกรรมการคลิก "
-"(กล่าวคือ ไม่เกี่ยวกับการยกหน้าต่างขึ้นเมื่อถูกคลิก หรือการยกหน้าต่างขึ้นตามลำดับ) "
-"และไม่เกี่ยวกับการเลื่อนเมาส์เข้าสู่หน้าต่างระหว่างการลากวาง "
-"(เพราะนั่นหมายความว่าโปรแกรมหนึ่งกำลังยึดเมาส์ไว้ใช้อยู่)"
-
 #: ../src/metacity.schemas.in.h:20
+msgid ""
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focused window will be automatically raised after a delay specified by "
+"the auto_raise_delay key. This is not related to clicking on a window to "
+"raise it, nor to entering a window during drag-and-drop."
+msgstr ""
+"ถ้ามีค่าเป็นจริง และโหมดโฟกัสเป็น \"sloppy\" หรือ \"mouse\" อย่างใดอย่างหนึ่งแล้ว "
+"จะยกหน้าต่างที่ได้โฟกัสขึ้นมาโดยอัตโนมัติ หลังจากหน่วงเวลาเป็นระยะเวลาตามที่ระบุในคีย์ "
+"auto_raise_delay  การยกหน้าต่างดังกล่าว ไม่เกี่ยวกับการคลิกบนหน้าต่างเพื่อยกหน้าต่างขึ้น "
+"หรือการเลื่อนเมาส์เข้าสู่หน้าต่างระหว่างการลากวางแต่อย่างใด"
+
+#: ../src/metacity.schemas.in.h:21
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
@@ -532,340 +520,336 @@ msgstr ""
 "ถ้าเป็นจริง จะละเว้นตัวเลือก titlebar_font และใช้แบบอักษรมาตรฐาน "
 "สำหรับแถบหัวเรื่องของหน้าต่าง"
 
-#: ../src/metacity.schemas.in.h:21
-msgid ""
-"If true, metacity will give the user less feedback and less sense of "
-"\"direct manipulation\", by using wireframes, avoiding animations, or other "
-"means. This is a significant reduction in usability for many users, but may "
-"allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical. However, the wireframe feature is disabled when "
-"accessibility is on to avoid weird desktop breakages."
-msgstr ""
-"ถ้าเป็นจริง metacity จะตอบสนองและให้ความรู้สึกของการ \"ควบคุมโดยตรง\" น้อยลงโดยใช้ "
-"wireframe ใช้ภาพเคลื่อนไหวน้อยลง หรืออะไรก็ตาม ซึ่งอาจดูใช้ยากขึ้นสำหรับผู้ใช้หลายๆ คน "
-"แต่จะช่วยให้โปรแกรมเก่าๆ หรือเทอร์มินัลเก่าๆ ทำงานได้ อย่างไรก็ดี metacity จะไม่ใช้ "
-"wireframe เมื่อเปิดระบบอำนวยการใช้งาน เพื่อเลี่ยงการพังของเดสก์ท็อป"
-
 #: ../src/metacity.schemas.in.h:22
+msgid ""
+"If true, metacity will give the user less feedback by using wireframes, "
+"avoiding animations, or other means. This is a significant reduction in "
+"usability for many users, but may allow legacy applications to continue "
+"working, and may also be a useful tradeoff for terminal servers. However, "
+"the wireframe feature is disabled when accessibility is on."
+msgstr ""
+"ถ้าเป็นจริง metacity จะตอบสนองผู้ใช้น้อยลง โดยใช้ wireframe ใช้ภาพเคลื่อนไหวน้อยลง "
+"หรืออะไรก็ตาม ซึ่งอาจดูใช้ยากขึ้นสำหรับผู้ใช้หลายๆ คน แต่จะช่วยให้โปรแกรมเก่าๆ ยังทำงานได้ "
+"และอาจช่วยให้การใช้เทอร์มินัลเซิร์ฟเวอร์คล่องตัวขึ้น อย่างไรก็ดี metacity จะไม่ใช้ wireframe "
+"เมื่อเปิดระบบอำนวยการใช้งาน"
+
+#: ../src/metacity.schemas.in.h:23
 msgid ""
 "If true, then Metacity works in terms of applications rather than windows. "
 "The concept is a bit abstract, but in general an application-based setup is "
 "more like the Mac and less like Windows. When you focus a window in "
 "application-based mode, all the windows in the application will be raised. "
 "Also, in application-based mode, focus clicks are not passed through to "
-"windows in other applications. The existence of this setting is somewhat "
-"questionable. But it's better than having settings for all the specific "
-"details of application-based vs. window-based, e.g. whether to pass through "
-"clicks. Also, application-based mode is largely unimplemented at the moment."
+"windows in other applications. Application-based mode is, however, largely "
+"unimplemented at the moment."
 msgstr ""
 "ถ้าเป็นจริง Metacity จะทำงานในหน่วยของโปรแกรมประยุกต์แทนหน่วยของหน้าต่าง "
 "แนวคิดนี้ค่อนข้างเป็นนามธรรม แต่โดยทั่วไปการตั้งค่าแบบนี้จะคล้าย Mac และต่างจากวินโดวส์ "
 "เมื่อคุณโฟกัสหน้าต่างหนึ่งในโหมดโปรแกรมประยุกต์ "
 "หน้าต่างทั้งหมดในโปรแกรมประยุกต์เดียวกันจะถูกยกขึ้นพร้อมกัน นอกจากนี้ ในโหมดโปรแกรมประยุกต์นี้ "
 "การคลิกเพื่อโฟกัสจะไม่ถูกส่งผ่านไปยังหน้าต่างของโปรแกรมประยุกต์อื่นด้วย "
-"ตัวเลือกนี้ยังเป็นคำถามอยู่ว่าควรมีหรือไม่ แต่มันก็ดีกว่าใช้ตัวเลือกสำหรับทุกๆ "
-"รายละเอียดที่ต่างกันระหว่างโหมดโปรแกรมประยุกต์กับโหมดหน้าต่าง เช่น จะส่งผ่านการคลิกหรือไม่ "
-"เป็นต้น อนึ่ง โหมดโปรแกรมประยุกต์ยังใช้การไม่ได้ในขณะนี้"
+"อย่างไรก็ดี โหมดโปรแกรมประยุกต์ยังใช้การไม่ได้ในขณะนี้"
 
-#: ../src/metacity.schemas.in.h:23
+#: ../src/metacity.schemas.in.h:24
 msgid "If true, trade off usability for less resource usage"
 msgstr "ถ้าตั้ง จะสละความง่ายในการใช้เพื่อประหยัดทรัพยากร"
 
-#: ../src/metacity.schemas.in.h:24
+#: ../src/metacity.schemas.in.h:25
 msgid "Lower window below other windows"
 msgstr "ถอยหน้าต่างลงไปใว้หลังหน้าต่างอื่น"
 
-#: ../src/metacity.schemas.in.h:25
+#: ../src/metacity.schemas.in.h:26
 msgid ""
 "Many actions (e.g. clicking in the client area, moving or resizing the "
 "window) normally raise the window as a side-effect. Set this option to false "
-"to decouple raising from other user interactions. When false, windows can "
-"still be raised by an alt-left-click anywhere on the window or a normal "
-"click on the window decorations (assuming such clicks aren't used to start a "
-"move or resize operation). Special messages, such as activation requests "
-"from pagers, may also raise windows when this option is false. This option "
-"is currently disabled in click-to-focus mode."
+"to decouple raising from other user actions. Even when this option is false, "
+"windows can still be raised by an alt-left-click anywhere on the window, a "
+"normal click on the window decorations, or by special messages, such as "
+"activation requests from pagers. This option is currently disabled in click-"
+"to-focus mode."
 msgstr ""
 "โดยปกติ ปฏิบัติการหลายอย่าง (เช่น การคลิกบนพื้นที่ภายในหน้าต่าง การย้ายหรือปรับขนาดหน้าต่าง) "
 "จะยกหน้าต่างขึ้นด้วย ถ้ากำหนดตัวเลือกนี้เป็นเท็จ จะไม่ยกหน้าต่างเมื่อมีปฏิสัมพันธ์กับผู้ใช้ "
-"แต่ยังสามารถยกขึ้นได้ด้วย alt-คลิกซ้าย ภายในพื้นที่หน้าต่าง หรือคลิกธรรมดาที่ขอบหน้าต่าง "
-"(ถ้าไม่ใช่การเริ่มย้ายหรือปรับขนาด) ข้อความพิเศษ "
-"เช่นการร้องขอกระตุ้นหน้าต่างจากโปรแกรมจัดหน้าพื้นโต๊ะ อาจยังยกหน้าต่างขึ้นอยู่เมื่อตัวเลือกนี้เป็นเท็จ "
+"แต่ยังสามารถยกขึ้นได้โดย alt-คลิกซ้าย ภายในพื้นที่หน้าต่าง หรือคลิกแบบธรรมดาที่กรอบหน้าต่าง "
+"หรือโดยข้อความพิเศษ เช่นการร้องขอกระตุ้นหน้าต่างจากโปรแกรมจัดหน้าพื้นโต๊ะ "
 "ขณะนี้ ตัวเลือกนี้จะไม่มีผลถ้าอยู่ในโหมดโฟกัสด้วยการคลิก"
 
-#: ../src/metacity.schemas.in.h:26
+#: ../src/metacity.schemas.in.h:27
 msgid "Maximize window"
 msgstr "ขยายหน้าต่างเต็มจอ"
 
-#: ../src/metacity.schemas.in.h:27
+#: ../src/metacity.schemas.in.h:28
 msgid "Maximize window horizontally"
 msgstr "ขยายหน้าต่างเต็มด้านกว้าง"
 
-#: ../src/metacity.schemas.in.h:28
+#: ../src/metacity.schemas.in.h:29
 msgid "Maximize window vertically"
 msgstr "ขยายหน้าต่างเต็มด้านสูง"
 
-#: ../src/metacity.schemas.in.h:29
+#: ../src/metacity.schemas.in.h:30
 msgid "Minimize window"
 msgstr "ย่อหน้าต่างหาย"
 
-#: ../src/metacity.schemas.in.h:30
+#: ../src/metacity.schemas.in.h:31
 msgid "Modifier to use for modified window click actions"
 msgstr "ปุ่ม modifier เพื่อเปลี่ยนพฤติกรรมการคลิกหน้าต่าง"
 
-#: ../src/metacity.schemas.in.h:31
+#: ../src/metacity.schemas.in.h:32
 msgid "Move backward between panels and the desktop immediately"
 msgstr "ย้ายโฟกัสย้อนหลังระหว่างพาเนลและพื้นโต๊ะโดยทันที"
 
-#: ../src/metacity.schemas.in.h:32
+#: ../src/metacity.schemas.in.h:33
 msgid "Move backwards between panels and the desktop with popup"
 msgstr "ย้ายโฟกัสย้อนหลังระหว่างพาเนลและพื้นโต๊ะผ่านป๊อบอัพ"
 
-#: ../src/metacity.schemas.in.h:33
+#: ../src/metacity.schemas.in.h:34
 msgid "Move backwards between windows immediately"
 msgstr "ย้ายโฟกัสย้อนหลังระหว่างหน้าต่างโดยทันที"
 
-#: ../src/metacity.schemas.in.h:34
+#: ../src/metacity.schemas.in.h:35
+msgid "Move backwards between windows of an application immediately"
+msgstr "ย้ายโฟกัสย้อนหลังระหว่างหน้าต่างทั้งหลายของโปรแกรมประยุกต์โดยทันที"
+
+#: ../src/metacity.schemas.in.h:36
+msgid "Move backwards between windows of an application with popup"
+msgstr "ย้ายโฟกัสย้อนหลังระหว่างหน้าต่างทั้งหลายของโปรแกรมประยุกต์ผ่านป๊อบอัพ"
+
+#: ../src/metacity.schemas.in.h:37
 msgid "Move between panels and the desktop immediately"
 msgstr "ย้ายโฟกัสระหว่างพาเนลและพื้นโต๊ะโดยทันที"
 
-#: ../src/metacity.schemas.in.h:35
+#: ../src/metacity.schemas.in.h:38
 msgid "Move between panels and the desktop with popup"
 msgstr "ย้ายโฟกัสระหว่างพาเนลและพื้นโต๊ะผ่านป๊อบอัพ"
 
-#: ../src/metacity.schemas.in.h:36
+#: ../src/metacity.schemas.in.h:39
 msgid "Move between windows immediately"
 msgstr "ย้ายโฟกัสระหว่างหน้าต่างโดยทันที"
 
-#: ../src/metacity.schemas.in.h:37
+#: ../src/metacity.schemas.in.h:40
+msgid "Move between windows of an application immediately"
+msgstr "ย้ายโฟกัสระหว่างหน้าต่างทั้งหลายของโปรแกรมประยุกต์โดยทันที"
+
+#: ../src/metacity.schemas.in.h:41
+msgid "Move between windows of an application with popup"
+msgstr "ย้ายโฟกัสระหว่างหน้าต่างทั้งหลายของโปรแกรมประยุกต์ผ่านป๊อบอัพ"
+
+#: ../src/metacity.schemas.in.h:42
 msgid "Move between windows with popup"
 msgstr "ย้ายโฟกัสระหว่างหน้าต่างผ่านป๊อบอัพ"
 
-#: ../src/metacity.schemas.in.h:38
+#: ../src/metacity.schemas.in.h:43
 msgid "Move focus backwards between windows using popup display"
 msgstr "ย้ายโฟกัสย้อนหลังระหว่างหน้าต่างผ่านป๊อบอัพ"
 
-#: ../src/metacity.schemas.in.h:39
+#: ../src/metacity.schemas.in.h:44
 msgid "Move window"
 msgstr "ย้ายหน้าต่าง"
 
-#: ../src/metacity.schemas.in.h:40
+#: ../src/metacity.schemas.in.h:45
 msgid "Move window one workspace down"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านล่าง"
 
-#: ../src/metacity.schemas.in.h:41
+#: ../src/metacity.schemas.in.h:46
 msgid "Move window one workspace to the left"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านซ้าย"
 
-#: ../src/metacity.schemas.in.h:42
+#: ../src/metacity.schemas.in.h:47
 msgid "Move window one workspace to the right"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านขวา"
 
-#: ../src/metacity.schemas.in.h:43
+#: ../src/metacity.schemas.in.h:48
 msgid "Move window one workspace up"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านบน"
 
-#: ../src/metacity.schemas.in.h:44
+#: ../src/metacity.schemas.in.h:49
 msgid "Move window to workspace 1"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 1"
 
-#: ../src/metacity.schemas.in.h:45
+#: ../src/metacity.schemas.in.h:50
 msgid "Move window to workspace 10"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 10"
 
-#: ../src/metacity.schemas.in.h:46
+#: ../src/metacity.schemas.in.h:51
 msgid "Move window to workspace 11"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 11"
 
-#: ../src/metacity.schemas.in.h:47
+#: ../src/metacity.schemas.in.h:52
 msgid "Move window to workspace 12"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 12"
 
-#: ../src/metacity.schemas.in.h:48
+#: ../src/metacity.schemas.in.h:53
 msgid "Move window to workspace 2"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 2"
 
-#: ../src/metacity.schemas.in.h:49
+#: ../src/metacity.schemas.in.h:54
 msgid "Move window to workspace 3"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 3"
 
-#: ../src/metacity.schemas.in.h:50
+#: ../src/metacity.schemas.in.h:55
 msgid "Move window to workspace 4"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 4"
 
-#: ../src/metacity.schemas.in.h:51
+#: ../src/metacity.schemas.in.h:56
 msgid "Move window to workspace 5"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 5"
 
-#: ../src/metacity.schemas.in.h:52
+#: ../src/metacity.schemas.in.h:57
 msgid "Move window to workspace 6"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 6"
 
-#: ../src/metacity.schemas.in.h:53
+#: ../src/metacity.schemas.in.h:58
 msgid "Move window to workspace 7"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 7"
 
-#: ../src/metacity.schemas.in.h:54
+#: ../src/metacity.schemas.in.h:59
 msgid "Move window to workspace 8"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 8"
 
-#: ../src/metacity.schemas.in.h:55
+#: ../src/metacity.schemas.in.h:60
 msgid "Move window to workspace 9"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 9"
 
-#: ../src/metacity.schemas.in.h:56
+#: ../src/metacity.schemas.in.h:61
 msgid "Name of workspace"
 msgstr "ชื่อของพื้นที่ทำงาน"
 
-#: ../src/metacity.schemas.in.h:57
+#: ../src/metacity.schemas.in.h:62
 msgid "Number of workspaces"
 msgstr "จำนวนพื้นที่ทำงาน"
 
-#: ../src/metacity.schemas.in.h:58
+#: ../src/metacity.schemas.in.h:63
 msgid ""
-"Number of workspaces. Must be more than zero, and has a fixed maximum (to "
-"prevent accidentally destroying your desktop by asking for 34 million "
-"workspaces)."
+"Number of workspaces. Must be more than zero, and has a fixed maximum to "
+"prevent making the desktop unusable by accidentally asking for too many "
+"workspaces."
 msgstr ""
 "จำนวนพื้นที่ทำงาน ต้องมากกว่าศูนย์ และมีขีดจำกัดตายตัวอยู่ "
-"(เพื่อป้องกันการทำลายเดสก์ท็อปของคุณโดยการร้องขอถึง 34 ล้าน พื้นที่ทำงาน)"
+"เพื่อป้องกันการทำให้เดสก์ท็อปใช้การไม่ได้ด้วยการร้องขอพื้นที่ทำงานมากเกินไปโดยไม่เจตนา"
 
 # Note: This is the longest description in "Shortcut" menu.
 # Should keep it as short as possible, so it doesn't pad the
 # dialog out too wide.
 #
 # The next entry in the list will make this entry clear.
-#: ../src/metacity.schemas.in.h:59
+#: ../src/metacity.schemas.in.h:64
 msgid "Raise obscured window, otherwise lower"
 msgstr "ยกหน้าต่างขึ้นถ้าถูกบัง ไม่งั้นเอาลงด้านหลัง"
 
-#: ../src/metacity.schemas.in.h:60
+#: ../src/metacity.schemas.in.h:65
 msgid "Raise window above other windows"
 msgstr "ยกหน้าต่างขึ้นมาไว้หน้าหน้าต่างอื่นๆ"
 
-#: ../src/metacity.schemas.in.h:61
+#: ../src/metacity.schemas.in.h:66
 msgid "Resize window"
 msgstr "ปรับขนาดหน้าต่าง"
 
-#: ../src/metacity.schemas.in.h:62
+#: ../src/metacity.schemas.in.h:67
 msgid "Run a defined command"
 msgstr "เรียกใช้คำสั่งที่กำหนดไว้"
 
-#: ../src/metacity.schemas.in.h:63
+#: ../src/metacity.schemas.in.h:68
 msgid "Run a terminal"
 msgstr "เปิดเทอร์มินัล"
 
-#: ../src/metacity.schemas.in.h:64
+#: ../src/metacity.schemas.in.h:69
 msgid "Show the panel menu"
 msgstr "แสดงเมนูพาเนล"
 
 # Can omit the word panel without losing the core meaning.
-#: ../src/metacity.schemas.in.h:65
+#: ../src/metacity.schemas.in.h:70
 msgid "Show the panel run application dialog"
 msgstr "เปิดกล่องเรียกใช้โปรแกรม"
 
-#: ../src/metacity.schemas.in.h:66
+#: ../src/metacity.schemas.in.h:71
 msgid ""
-"Some applications break specifications in ways that result in window manager "
-"misfeatures. For example, ideally Metacity would place all dialogs in a "
-"consistent position with respect to their parent window. This requires "
-"ignoring application-specified positions for dialogs. But some versions of "
-"Java/Swing mark their popup menus as dialogs, so Metacity has to disable "
-"dialog positioning to allow menus to work in broken Java applications. There "
-"are several other examples like this. This option puts Metacity in full-on "
-"Correct mode, which perhaps gives a moderately nicer UI if you don't need to "
-"run any broken apps. Sadly, workarounds must be enabled by default; the real "
-"world is an ugly place. Some of the workarounds are workarounds for "
-"limitations in the specifications themselves, so sometimes a bug in no-"
-"workarounds mode won't be fixable without amending a spec."
+"Some applications disregard specifications in ways that result in window "
+"manager misfeatures. This option puts Metacity in a rigorously correct mode, "
+"which gives a more consistent user interface, provided one does not need to "
+"run any misbehaving applications."
 msgstr ""
-"โปรแกรมบางตัวละเมิดข้อกำหนดโดยทำให้โปรแกรมจัดการหน้าต่างต้องทำงานแก้ขัด ตัวอย่างเช่น "
-"ในอุดมคติแล้ว metacity จะเปิดกล่องโต้ตอบทั้งหลาย ณ ตำแหน่งคงที่เทียบกับหน้าต่างแม่ "
-"ซี่งจำเป็นต้องละเลยตำแหน่งที่โปรแกรมระบุมา แต่ Java/Swing "
-"บางรุ่นใช้กล่องโต้ตอบในการเปิดเมนูป๊อปอัพ ทำให้ metacity จำต้องงดการวางตำแหน่งกล่องโต้ตอบ "
-"เพื่อให้เมนูในโปรแกรมจาวาเสียๆ เหล่านี้ทำงานได้ และยังมีตัวอย่างทำนองนี้อีกมากมาย "
-"ตัวเลือกนี้จะตั้งให้ metacity เข้าสู่โหมดการทำงานที่ถูกหลักเกณฑ์ทุกประการ ซึ่งอาจจะให้ UI ที่ดีกว่า "
-"ถ้าคุณไม่ต้องการรันโปรแกรมที่เสียๆ แต่น่าเศร้าที่ต้องเปิดการแก้ขัดนี้ไว้ก่อน "
-"โลกแห่งความเป็นจริงช่างโสมม การแก้ขัดบางอย่างก็เป็นเพราะข้อจำกัดในข้อกำหนดมาตรฐานเอง "
-"ทำให้บั๊กในโหมดที่ปราศจากการแก้ขัดไม่สามารถแก้ได้โดยไม่แก้มาตรฐาน"
+"โปรแกรมบางตัวไม่สนใจข้อกำหนด โดยทำให้โปรแกรมจัดการหน้าต่างต้องทำงานแก้ขัด "
+"ตัวเลือกนี้จะกำหนดให้ Metacity เข้าสู่โหมดการทำงานที่ถูกหลักเกณฑ์อย่างเข้มงวด "
+"ซึ่งจะทำให้การติดต่อผู้ใช้คงเส้นคงวายิ่งขึ้น โดยถือว่าผู้ใช้ไม่จำเป็นต้องเรียกโปรแกรมใดๆ "
+"ที่ประพฤติผิดหลักเกณฑ์"
 
-#: ../src/metacity.schemas.in.h:67
+#: ../src/metacity.schemas.in.h:72
 msgid "Switch to workspace 1"
 msgstr "สลับไปทำงานพื้นที่ทำงาน 1"
 
-#: ../src/metacity.schemas.in.h:68
+#: ../src/metacity.schemas.in.h:73
 msgid "Switch to workspace 10"
 msgstr "สลับไปทำงานพื้นที่ทำงาน 10"
 
-#: ../src/metacity.schemas.in.h:69
+#: ../src/metacity.schemas.in.h:74
 msgid "Switch to workspace 11"
 msgstr "สลับไปทำงานพื้นที่ทำงาน 11"
 
-#: ../src/metacity.schemas.in.h:70
+#: ../src/metacity.schemas.in.h:75
 msgid "Switch to workspace 12"
 msgstr "สลับไปทำงานพื้นที่ทำงาน 12"
 
-#: ../src/metacity.schemas.in.h:71
+#: ../src/metacity.schemas.in.h:76
 msgid "Switch to workspace 2"
 msgstr "สลับไปทำงานพื้นที่ทำงาน 2"
 
-#: ../src/metacity.schemas.in.h:72
+#: ../src/metacity.schemas.in.h:77
 msgid "Switch to workspace 3"
 msgstr "สลับไปทำงานพื้นที่ทำงาน 3"
 
-#: ../src/metacity.schemas.in.h:73
+#: ../src/metacity.schemas.in.h:78
 msgid "Switch to workspace 4"
 msgstr "สลับไปทำงานพื้นที่ทำงาน 4"
 
-#: ../src/metacity.schemas.in.h:74
+#: ../src/metacity.schemas.in.h:79
 msgid "Switch to workspace 5"
 msgstr "สลับไปทำงานพื้นที่ทำงาน 5"
 
-#: ../src/metacity.schemas.in.h:75
+#: ../src/metacity.schemas.in.h:80
 msgid "Switch to workspace 6"
 msgstr "สลับไปทำงานพื้นที่ทำงาน 6"
 
-#: ../src/metacity.schemas.in.h:76
+#: ../src/metacity.schemas.in.h:81
 msgid "Switch to workspace 7"
 msgstr "สลับไปทำงานพื้นที่ทำงาน 7"
 
-#: ../src/metacity.schemas.in.h:77
+#: ../src/metacity.schemas.in.h:82
 msgid "Switch to workspace 8"
 msgstr "สลับไปทำงานพื้นที่ทำงาน 8"
 
-#: ../src/metacity.schemas.in.h:78
+#: ../src/metacity.schemas.in.h:83
 msgid "Switch to workspace 9"
 msgstr "สลับไปทำงานพื้นที่ทำงาน 9"
 
-#: ../src/metacity.schemas.in.h:79
+#: ../src/metacity.schemas.in.h:84
 msgid "Switch to workspace above this one"
 msgstr "สลับไปทำงานพื้นที่ทำงานด้านบน"
 
-#: ../src/metacity.schemas.in.h:80
+#: ../src/metacity.schemas.in.h:85
 msgid "Switch to workspace below this one"
 msgstr "สลับไปทำงานพื้นที่ทำงานด้านล่าง"
 
-#: ../src/metacity.schemas.in.h:81
+#: ../src/metacity.schemas.in.h:86
 msgid "Switch to workspace on the left"
 msgstr "สลับไปทำงานพื้นที่ทำงานด้านซ้าย"
 
-#: ../src/metacity.schemas.in.h:82
+#: ../src/metacity.schemas.in.h:87
 msgid "Switch to workspace on the right"
 msgstr "สลับไปทำงานพื้นที่ทำงานด้านขวา"
 
-#: ../src/metacity.schemas.in.h:83
+#: ../src/metacity.schemas.in.h:88
 msgid "System Bell is Audible"
 msgstr "เปิดเล่นเสียงระฆังระบบ"
 
-#: ../src/metacity.schemas.in.h:84
+#: ../src/metacity.schemas.in.h:89
 msgid "Take a screenshot"
 msgstr "จับภาพหน้าจอ"
 
-#: ../src/metacity.schemas.in.h:85
+#: ../src/metacity.schemas.in.h:90
 msgid "Take a screenshot of a window"
 msgstr "จับภาพหน้าต่าง"
 
-#: ../src/metacity.schemas.in.h:86
+#: ../src/metacity.schemas.in.h:91
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
 "or another application 'bell' indicator has been rung. Currently there are "
@@ -880,7 +864,7 @@ msgstr ""
 "\" ซึ่งจะวาบแถบหัวหน้าต่างของโปรแกรมที่สั่นระฆัง หรือถ้าไม่ปรากฏโปรแกรมที่สั่นระฆัง "
 "(ซึ่งเป็นปกติสำหรับ \"เสียงบี๊ปของระบบ\") ก็จะวาบแถบหัวหน้าต่างของโปรแกรมที่ได้โฟกัสอยู่"
 
-#: ../src/metacity.schemas.in.h:87
+#: ../src/metacity.schemas.in.h:92
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
@@ -889,7 +873,7 @@ msgstr ""
 "กำหนดคำสั่งที่จะเรียกจากการกดปุ่มลัดที่กำหนดในคีย์ /apps/metacity/global_keybindings/"
 "run_command_N การกดปุ่มลัดใน run_command_N จะเรียกคำสั่ง command_N"
 
-#: ../src/metacity.schemas.in.h:88
+#: ../src/metacity.schemas.in.h:93
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
@@ -897,7 +881,7 @@ msgstr ""
 "กำหนดคำสั่งที่จะเรียกจากการกดปุ่มลัดที่กำหนดในคีย์ /apps/metacity/global_keybindings/"
 "run_command_screenshot"
 
-#: ../src/metacity.schemas.in.h:89
+#: ../src/metacity.schemas.in.h:94
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
@@ -906,7 +890,7 @@ msgstr ""
 "กำหนดคำสั่งที่จะเรียกจากการกดปุ่มลัดที่กำหนดในคีย์ /apps/metacity/global_keybindings/"
 "run_command_window_screenshot"
 
-#: ../src/metacity.schemas.in.h:90
+#: ../src/metacity.schemas.in.h:95
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -918,10 +902,10 @@ msgstr ""
 "ปุ่มลัดสำหรับเรียกคำสั่งใน /apps/metacity/keybinding_commands  รูปแบบคือ \"&lt;"
 "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
 "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:91
+#: ../src/metacity.schemas.in.h:96
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -933,9 +917,9 @@ msgstr ""
 "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงานที่อยู่ด้านบนพื้นที่ทำงานปัจจุบัน  รูปแบบคือ \"&lt;Control&gt;a\" "
 "หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
 "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น "
-"\"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"\"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:92
+#: ../src/metacity.schemas.in.h:97
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -947,9 +931,9 @@ msgstr ""
 "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงานที่อยู่ด้านล่างพื้นที่ทำงานปัจจุบัน  รูปแบบคือ \"&lt;Control&gt;a\" "
 "หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
 "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น "
-"\"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"\"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:93
+#: ../src/metacity.schemas.in.h:98
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -961,9 +945,9 @@ msgstr ""
 "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงานที่อยู่ด้านซ้ายของพื้นที่ทำงานปัจจุบัน  รูปแบบคือ \"&lt;Control&gt;a"
 "\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
 "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น "
-"\"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"\"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:94
+#: ../src/metacity.schemas.in.h:99
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -975,9 +959,9 @@ msgstr ""
 "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงานที่อยู่ด้านขวาของพื้นที่ทำงานปัจจุบัน  รูปแบบคือ \"&lt;Control&gt;a"
 "\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
 "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น "
-"\"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"\"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:95
+#: ../src/metacity.schemas.in.h:100
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -987,10 +971,10 @@ msgid ""
 msgstr ""
 "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 1  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:96
+#: ../src/metacity.schemas.in.h:101
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1000,10 +984,10 @@ msgid ""
 msgstr ""
 "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 10  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:97
+#: ../src/metacity.schemas.in.h:102
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1013,10 +997,10 @@ msgid ""
 msgstr ""
 "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 11  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:98
+#: ../src/metacity.schemas.in.h:103
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1026,10 +1010,10 @@ msgid ""
 msgstr ""
 "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 12  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:99
+#: ../src/metacity.schemas.in.h:104
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1039,10 +1023,10 @@ msgid ""
 msgstr ""
 "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 2  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:100
+#: ../src/metacity.schemas.in.h:105
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1052,10 +1036,10 @@ msgid ""
 msgstr ""
 "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 3  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:101
+#: ../src/metacity.schemas.in.h:106
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1065,10 +1049,10 @@ msgid ""
 msgstr ""
 "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 4  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:102
+#: ../src/metacity.schemas.in.h:107
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1078,10 +1062,10 @@ msgid ""
 msgstr ""
 "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 5  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:103
+#: ../src/metacity.schemas.in.h:108
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1091,10 +1075,10 @@ msgid ""
 msgstr ""
 "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 6  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:104
+#: ../src/metacity.schemas.in.h:109
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1104,10 +1088,10 @@ msgid ""
 msgstr ""
 "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 7  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:105
+#: ../src/metacity.schemas.in.h:110
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1117,10 +1101,10 @@ msgid ""
 msgstr ""
 "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 8  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:106
+#: ../src/metacity.schemas.in.h:111
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1130,10 +1114,10 @@ msgid ""
 msgstr ""
 "ปุ่มลัดสำหรับสลับไปยังพื้นที่ทำงาน 9  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:107
+#: ../src/metacity.schemas.in.h:112
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1143,10 +1127,10 @@ msgid ""
 msgstr ""
 "ปุ่มลัดสำหรับเรียกเมนูหน้าต่าง  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:108
+#: ../src/metacity.schemas.in.h:113
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1156,10 +1140,10 @@ msgid ""
 msgstr ""
 "ปุ่มลัดสำหรับปิดหน้าต่าง  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:109
+#: ../src/metacity.schemas.in.h:114
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1171,10 +1155,10 @@ msgstr ""
 "ปุ่มลัดสำหรับ \"โหมดเคลื่อนย้าย\" ซึ่งยอมให้คุณใช้แป้นพิมพ์เคลื่อนย้ายหน้าต่าง  รูปแบบคือ \"&lt;"
 "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
 "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:110
+#: ../src/metacity.schemas.in.h:115
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1186,10 +1170,10 @@ msgstr ""
 "ปุ่มลัดสำหรับ \"โหมดปรับขนาด\" ซึ่งยอมให้คุณใช้แป้นพิมพ์ปรับขนาดหน้าต่าง  รูปแบบคือ \"&lt;"
 "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
 "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:111
+#: ../src/metacity.schemas.in.h:116
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1201,9 +1185,9 @@ msgstr ""
 "ปุ่มลัดสำหรับซ่อนหน้าต่างทั้งหมดและโฟกัสไปที่พื้นโต๊ะ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ "
 "\"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
 "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น "
-"\"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"\"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:112
+#: ../src/metacity.schemas.in.h:117
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1213,10 +1197,10 @@ msgid ""
 msgstr ""
 "ปุ่มลัดสำหรับขยายหน้าต่างให้เต็มจอ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:113
+#: ../src/metacity.schemas.in.h:118
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1226,10 +1210,10 @@ msgid ""
 msgstr ""
 "ปุ่มลัดสำหรับย่อหน้าต่างหาย  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:114
+#: ../src/metacity.schemas.in.h:119
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -1241,9 +1225,9 @@ msgstr ""
 "ปุ่มลัดสำหรับย้ายหน้าต่างลงไปยังพื้นที่ทำงานถัดลงไปด้านล่าง  รูปแบบคือ \"&lt;Control&gt;a\" "
 "หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
 "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น "
-"\"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"\"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:115
+#: ../src/metacity.schemas.in.h:120
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1255,9 +1239,9 @@ msgstr ""
 "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงานถัดไปด้านซ้าย  รูปแบบคือ \"&lt;Control&gt;a\" หรือ "
 "\"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
 "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น "
-"\"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"\"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:116
+#: ../src/metacity.schemas.in.h:121
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1269,9 +1253,9 @@ msgstr ""
 "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงานถัดไปด้านขวา  รูปแบบคือ \"&lt;Control&gt;a\" หรือ "
 "\"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
 "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น "
-"\"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"\"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:117
+#: ../src/metacity.schemas.in.h:122
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1282,9 +1266,9 @@ msgstr ""
 "ปุ่มลัดสำหรับย้ายหน้าต่างขึ้นไปยังพื้นที่ทำงานถัดขึ้นไปด้านบน  รูปแบบคือ \"&lt;Control&gt;a\" "
 "หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
 "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น "
-"\"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"\"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:118
+#: ../src/metacity.schemas.in.h:123
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1295,9 +1279,9 @@ msgstr ""
 "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 1  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
 "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:119
+#: ../src/metacity.schemas.in.h:124
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1308,9 +1292,9 @@ msgstr ""
 "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 10  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
 "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:120
+#: ../src/metacity.schemas.in.h:125
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1321,9 +1305,9 @@ msgstr ""
 "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 11  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
 "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:121
+#: ../src/metacity.schemas.in.h:126
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1334,9 +1318,9 @@ msgstr ""
 "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 12  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
 "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:122
+#: ../src/metacity.schemas.in.h:127
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1347,9 +1331,9 @@ msgstr ""
 "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 2  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
 "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:123
+#: ../src/metacity.schemas.in.h:128
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1360,9 +1344,9 @@ msgstr ""
 "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 3  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
 "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:124
+#: ../src/metacity.schemas.in.h:129
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1375,7 +1359,7 @@ msgstr ""
 "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:125
+#: ../src/metacity.schemas.in.h:130
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1386,9 +1370,9 @@ msgstr ""
 "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 5  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
 "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:126
+#: ../src/metacity.schemas.in.h:131
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1399,9 +1383,9 @@ msgstr ""
 "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 6  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
 "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:127
+#: ../src/metacity.schemas.in.h:132
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1412,9 +1396,9 @@ msgstr ""
 "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 7  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
 "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:128
+#: ../src/metacity.schemas.in.h:133
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1425,9 +1409,9 @@ msgstr ""
 "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 8  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
 "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:129
+#: ../src/metacity.schemas.in.h:134
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1438,9 +1422,9 @@ msgstr ""
 "ปุ่มลัดสำหรับย้ายหน้าต่างไปยังพื้นที่ทำงาน 9  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
 "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:130
+#: ../src/metacity.schemas.in.h:135
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1452,10 +1436,10 @@ msgstr ""
 "ปุ่มลัดสำหรับวนโฟกัสไปยังพาเนลต่างๆ และพื้นโต๊ะ ในทิศย้อนกลับ โดยใช้หน้าต่างป๊อปอัพช่วย  "
 "รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
 "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:131
+#: ../src/metacity.schemas.in.h:136
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1467,10 +1451,44 @@ msgstr ""
 "ปุ่มลัดสำหรับวนโฟกัสไปยังพาเนลต่างๆ และพื้นโต๊ะ ในทิศย้อนกลับ โดยไม่ใช้หน้าต่างป๊อปอัพช่วย  "
 "รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
 "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:132
+#: ../src/metacity.schemas.in.h:137
+msgid ""
+"The keybinding used to move focus backwards between windows of an "
+"application without a popup window. Holding \"shift\" together with this "
+"binding makes the direction go forward again. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"ปุ่มลัดสำหรับวนโฟกัส ระหว่างหน้าต่างทั้งหลายของโปรแกรมประยุกต์ในทิศย้อนกลับ "
+"โดยไม่ใช้หน้าต่างป๊อปอัพช่วย  กด \"shift\" พร้อมกับปุ่มลัดนี้ถ้าต้องการวนให้ไปข้างหน้า  "
+"รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
+"ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
+"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
+"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+
+#: ../src/metacity.schemas.in.h:138
+msgid ""
+"The keybinding used to move focus backwards between windows of an "
+"application, using a popup window. Holding \"shift\" together with this "
+"binding makes the direction go forward again. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"ปุ่มลัดสำหรับวนโฟกัส ระหว่างหน้าต่างทั้งหลายของโปรแกรมประยุกต์ในทิศย้อนกลับ "
+"โดยใช้หน้าต่างป๊อปอัพช่วย  กด \"shift\" พร้อมกับปุ่มลัดนี้ถ้าต้องการวนให้ไปข้างหน้า  "
+"รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
+"ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
+"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
+"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+
+#: ../src/metacity.schemas.in.h:139
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1484,9 +1502,9 @@ msgstr ""
 "\" พร้อมกับปุ่มลัดนี้ถ้าต้องการวนให้ไปข้างหน้า  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
 "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:133
+#: ../src/metacity.schemas.in.h:140
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1500,9 +1518,9 @@ msgstr ""
 "พร้อมกับปุ่มลัดนี้ถ้าต้องการวนให้ไปข้างหน้า  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
 "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:134
+#: ../src/metacity.schemas.in.h:141
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1514,10 +1532,10 @@ msgstr ""
 "ปุ่มลัดสำหรับวนโฟกัสไปยังพาเนลต่างๆ และพื้นโต๊ะ โดยใช้หน้าต่างป๊อปอัพช่วย  รูปแบบคือ \"&lt;"
 "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
 "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:135
+#: ../src/metacity.schemas.in.h:142
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1529,10 +1547,43 @@ msgstr ""
 "ปุ่มลัดสำหรับวนโฟกัสไปยังพาเนลต่างๆ และพื้นโต๊ะ โดยไม่ใช้หน้าต่างป๊อปอัพช่วย  รูปแบบคือ \"&lt;"
 "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
 "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:136
+#: ../src/metacity.schemas.in.h:143
+msgid ""
+"The keybinding used to move focus between windows of an application without "
+"a popup window. Holding the \"shift\" key while using this binding reverses "
+"the direction of movement. The format looks like \"&lt;Control&gt;a\" or "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
+"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
+"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
+"then there will be no keybinding for this action."
+msgstr ""
+"ปุ่มลัดสำหรับวนโฟกัส ระหว่างหน้าต่างทั้งหลายของโปรแกรมประยุกต์โดยไม่ใช้หน้าต่างป๊อปอัพช่วย "
+"กด \"shift\" พร้อมกับปุ่มลัดนี้ถ้าต้องการวนให้กลับคนละทาง  รูปแบบคือ \"&lt;Control&gt;a\" "
+"หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
+"และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น "
+"\"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+
+#: ../src/metacity.schemas.in.h:144
+msgid ""
+"The keybinding used to move focus between windows of an application, using a "
+"popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" key while "
+"using this binding reverses the direction of movement. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"ปุ่มลัดสำหรับวนโฟกัส ระหว่างหน้าต่างทั้งหลายของโปรแกรมประยุกต์โดยใช้หน้าต่างป๊อปอัพช่วย "
+"(โดยทั่วไปแล้วใช้ &lt;Alt&gt;F6)  กด \"shift\" พร้อมกับปุ่มลัดนี้ถ้าต้องการวนให้กลับคนละทาง  "
+"รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
+"ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
+"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
+"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+
+#: ../src/metacity.schemas.in.h:145
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1546,10 +1597,10 @@ msgstr ""
 "Escape)  กด \"shift\" พร้อมกับปุ่มลัดนี้ถ้าต้องการวนให้กลับคนละทาง  รูปแบบคือ \"&lt;"
 "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
 "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:137
+#: ../src/metacity.schemas.in.h:146
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1563,10 +1614,10 @@ msgstr ""
 "Tab)  กด \"shift\" พร้อมกับปุ่มลัดนี้ถ้าต้องการวนให้กลับคนละทาง  รูปแบบคือ \"&lt;"
 "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
 "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:138
+#: ../src/metacity.schemas.in.h:147
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1578,10 +1629,10 @@ msgstr ""
 "ปุ่มลัดสำหรับสลับการค้างอยู่บนสุด  หน้าต่างที่ค้างอยู่บนสุดจะปรากฏอยู่หน้าหน้าต่างอื่นๆเสมอ  รูปแบบคือ "
 "\"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
 "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:139
+#: ../src/metacity.schemas.in.h:148
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1591,10 +1642,10 @@ msgid ""
 msgstr ""
 "ปุ่มลัดสำหรับสลับโหมดเต็มหน้าจอ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:140
+#: ../src/metacity.schemas.in.h:149
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1604,10 +1655,10 @@ msgid ""
 msgstr ""
 "ปุ่มลัดสำหรับสลับสถานะขยายเต็ม  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:141
+#: ../src/metacity.schemas.in.h:150
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1618,9 +1669,9 @@ msgstr ""
 "ปุ่มลัดสำหรับสลับสถานะม้วนเก็บ/คลี่ออก  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
 "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:142
+#: ../src/metacity.schemas.in.h:151
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1632,10 +1683,10 @@ msgstr ""
 "ปุ่มลัดสำหรับสลับ ว่าจะแสดงหน้าต่างบนทุกพื้นที่ทำงาน หรือบนพื้นที่ทำงานเดียว  รูปแบบคือ \"&lt;"
 "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
 "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:143
+#: ../src/metacity.schemas.in.h:152
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1646,9 +1697,9 @@ msgstr ""
 "ปุ่มลัดสำหรับยกเลิกการขยายหน้าต่างเต็มพื้นโต๊ะ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
 "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:144
+#: ../src/metacity.schemas.in.h:153
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1660,9 +1711,9 @@ msgstr ""
 "ปุ่มลัดสำหรับเปิดกล่องโต้ตอบ \"เรียกโปรแกรม\" ของพาเนล  รูปแบบคือ \"&lt;Control&gt;a\" "
 "หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
 "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น "
-"\"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"\"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:145
+#: ../src/metacity.schemas.in.h:154
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1672,10 +1723,10 @@ msgid ""
 msgstr ""
 "ปุ่มลัดสำหรับเปิดเทอร์มินัล  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;"
 "Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:146
+#: ../src/metacity.schemas.in.h:155
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1687,10 +1738,10 @@ msgstr ""
 "ปุ่มลัดสำหรับเรียกโปรแกรมจับภาพของพาเนล เพื่อจับภาพหน้าต่างที่ต้องการ  รูปแบบคือ \"&lt;"
 "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
 "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:147
+#: ../src/metacity.schemas.in.h:156
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1702,9 +1753,9 @@ msgstr ""
 "ปุ่มลัดสำหรับเรียกโปรแกรมจับภาพหน้าจอของพาเนล  รูปแบบคือ \"&lt;Control&gt;a\" หรือ "
 "\"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
 "และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น "
-"\"disabled\" ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"\"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:148
+#: ../src/metacity.schemas.in.h:157
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1714,30 +1765,30 @@ msgid ""
 msgstr ""
 "ปุ่มลัดสำหรับเปิดเมนูหลักของพาเนล  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;"
 "&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;"
-"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:149
+#: ../src/metacity.schemas.in.h:158
 msgid "The name of a workspace."
 msgstr "ชื่อของพื้นที่ทำงาน"
 
-#: ../src/metacity.schemas.in.h:150
+#: ../src/metacity.schemas.in.h:159
 msgid "The screenshot command"
 msgstr "คำสั่งจับภาพหน้าจอ"
 
-#: ../src/metacity.schemas.in.h:151
+#: ../src/metacity.schemas.in.h:160
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr "ชุดตกแต่งนี้จะกำหนดลักษณะขอบหน้าต่าง หัวหน้าต่าง ฯลฯ"
 
-#: ../src/metacity.schemas.in.h:152
+#: ../src/metacity.schemas.in.h:161
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
 msgstr "ระยะเวลารอก่อนยกหน้าต่างขึ้นมาด้านหน้า ใช้ถ้า auto_raise ถูกตั้ง ระบุเวลาเป็นมิลลิวินาที"
 
-#: ../src/metacity.schemas.in.h:153
+#: ../src/metacity.schemas.in.h:162
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1751,29 +1802,29 @@ msgstr ""
 "หมายความว่าหน้าต่างจะได้โฟกัสเมื่อเมาส์เคลื่อนเข้าสู่หน้าต่าง "
 "และเสียโฟกัสเมื่อเมาส์เคลื่อนออกจากหน้าต่าง"
 
-#: ../src/metacity.schemas.in.h:154
+#: ../src/metacity.schemas.in.h:163
 msgid "The window screenshot command"
 msgstr "คำสั่งจับภาพหน้าต่าง"
 
-#: ../src/metacity.schemas.in.h:155
+#: ../src/metacity.schemas.in.h:164
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
-"the window is covered by another window, it raises the window above other "
-"windows. If the window is already fully visible, it lowers the window below "
-"other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
+"the window is covered by another one, it raises the window above all others, "
+"and if the window is already fully visible, it lowers it below all others. "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
 msgstr ""
 "ปุ่มลัดนี้ใช้ปรับว่าหน้าต่างจะอยู่ข้างบนหรือล่างหน้าต่างอื่น  ถ้าหน้าต่างนั้นถูกหน้าต่างอื่นบังอยู่ "
-"มันจะถูกยกขึ้นมาไว้บนสุด  แต่ถ้าหน้าต่างนั้นไม่ถูกบังอยู่ มันจะถูกเอาไปไว้หลังสุด  รูปแบบคือ \"&lt;"
+"ก็จะถูกยกขึ้นมาไว้บนสุด  แต่ถ้าหน้าต่างนั้นไม่ถูกบังอยู่ ก็จะถูกเอาไปไว้หลังสุด  รูปแบบคือ \"&lt;"
 "Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
 "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
+"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:156
+#: ../src/metacity.schemas.in.h:165
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1784,9 +1835,9 @@ msgstr ""
 "ปุ่มลัดนี้เอาหน้าต่างลงไปอยู่หลังหน้าต่างอื่นๆ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
 "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:157
+#: ../src/metacity.schemas.in.h:166
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1797,9 +1848,9 @@ msgstr ""
 "ปุ่มลัดนี้ยกหน้าต่างขึ้นมาอยู่หน้าหน้าต่างอื่นๆ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
 "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:158
+#: ../src/metacity.schemas.in.h:167
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1811,9 +1862,9 @@ msgstr ""
 "ปุ่มลัดนี้ใช้ขยายหน้าต่างเต็มความกว้างของพื้นโต๊ะ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
 "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:159
+#: ../src/metacity.schemas.in.h:168
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1825,9 +1876,9 @@ msgstr ""
 "ปุ่มลัดนี้ใช้ขยายหน้าต่างเต็มความสูงของพื้นโต๊ะ  รูปแบบคือ \"&lt;Control&gt;a\" หรือ \"&lt;"
 "Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ "
 "เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
-#: ../src/metacity.schemas.in.h:160
+#: ../src/metacity.schemas.in.h:169
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -1840,83 +1891,94 @@ msgstr ""
 "ซึ่งจะขยายหรือยกเลิกการขยายหน้าต่างให้เต็มพื้นโต๊ะ, 'minimize' ซึ่งจะย่อหน้าต่างหาย และ "
 "'none' ซึ่งจะไม่ทำอะไรเลย"
 
-#: ../src/metacity.schemas.in.h:161
+#: ../src/metacity.schemas.in.h:170
+msgid ""
+"This option provides additional control over how newly created windows get "
+"focus. It has two possible values; \"smart\" applies the user's normal focus "
+"mode, and \"strict\" results in windows started from a terminal not being "
+"given focus."
+msgstr ""
+"ตัวเลือกนี้เพิ่มการควบคุมการโฟกัสหน้าต่างที่สร้างใหม่ ค่าที่เป็นไปได้มีสองค่า คือ \"smart\" "
+"ซึ่งจะใช้วิธีโฟกัสตามปกติของผู้ใช้ และ \"strict\" ซึ่งจะไม่โฟกัสหน้าต่างที่เรียกจากเทอร์มินัล"
+
+#: ../src/metacity.schemas.in.h:171
 msgid "Toggle always on top state"
 msgstr "สลับการค้างอยู่บนสุด"
 
-#: ../src/metacity.schemas.in.h:162
+#: ../src/metacity.schemas.in.h:172
 msgid "Toggle fullscreen mode"
 msgstr "สลับโหมดเต็มหน้าจอ"
 
-#: ../src/metacity.schemas.in.h:163
+#: ../src/metacity.schemas.in.h:173
 msgid "Toggle maximization state"
 msgstr "สลับสถานะขยายเต็ม"
 
-#: ../src/metacity.schemas.in.h:164
+#: ../src/metacity.schemas.in.h:174
 msgid "Toggle shaded state"
 msgstr "ม้วน/คลี่หน้าต่าง"
 
-#: ../src/metacity.schemas.in.h:165
+#: ../src/metacity.schemas.in.h:175
 msgid "Toggle window on all workspaces"
 msgstr "สลับการแสดงหน้าต่างบนทุกพื้นที่ทำงาน"
 
-#: ../src/metacity.schemas.in.h:166
+#: ../src/metacity.schemas.in.h:176
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
-"environments, or when 'audible bell' is off."
+"environments."
 msgstr ""
 "เปิดใช้การส่งสัญญาณทางภาพเมื่อโปรแกรมหรือระบบสั่นระฆังหรือส่งเสียงบี๊ป "
-"ซึ่งจะมีประโยชน์สำหรับผู้ที่มีปัญหาเรื่องการฟัง หรือใช้ในสภาวะที่จอแจ หรือเมื่อ 'ระฆังเสียง' ปิดอยู่"
+"ซึ่งจะมีประโยชน์สำหรับผู้ที่มีปัญหาเรื่องการฟัง หรือใช้ในสภาวะที่จอแจ"
 
-#: ../src/metacity.schemas.in.h:167
+#: ../src/metacity.schemas.in.h:177
 msgid "Unmaximize window"
 msgstr "เลิกขยายหน้าต่างเต็ม"
 
-#: ../src/metacity.schemas.in.h:168
+#: ../src/metacity.schemas.in.h:178
 msgid "Use standard system font in window titles"
 msgstr "ใช้แบบตัวอักษรปกติของระบบสำหรับหัวหน้าต่าง"
 
-#: ../src/metacity.schemas.in.h:169
+#: ../src/metacity.schemas.in.h:179
 msgid "Visual Bell Type"
 msgstr "ชนิดของระฆังภาพ"
 
-#: ../src/metacity.schemas.in.h:170
+#: ../src/metacity.schemas.in.h:180
 msgid "Whether raising should be a side-effect of other user interactions"
 msgstr "กำหนดว่าควรยกหน้าต่างขึ้นเมื่อมีปฏิสัมพันธ์กับผู้ใช้หรือไม่"
 
-#: ../src/metacity.schemas.in.h:171
+#: ../src/metacity.schemas.in.h:181
 msgid "Window focus mode"
 msgstr "โหมดโฟกัสหน้าต่าง"
 
-#: ../src/metacity.schemas.in.h:172
+#: ../src/metacity.schemas.in.h:182
 msgid "Window title font"
 msgstr "แบบอักษรหัวหน้าต่าง"
 
-#: ../src/prefs.c:567 ../src/prefs.c:583 ../src/prefs.c:599 ../src/prefs.c:615
-#: ../src/prefs.c:631 ../src/prefs.c:647 ../src/prefs.c:667 ../src/prefs.c:683
-#: ../src/prefs.c:699 ../src/prefs.c:715 ../src/prefs.c:731 ../src/prefs.c:747
-#: ../src/prefs.c:763 ../src/prefs.c:779 ../src/prefs.c:796 ../src/prefs.c:812
-#: ../src/prefs.c:828 ../src/prefs.c:844 ../src/prefs.c:860 ../src/prefs.c:875
-#: ../src/prefs.c:890 ../src/prefs.c:905 ../src/prefs.c:921 ../src/prefs.c:937
-#: ../src/prefs.c:953 ../src/prefs.c:969
+#: ../src/prefs.c:574 ../src/prefs.c:590 ../src/prefs.c:606 ../src/prefs.c:622
+#: ../src/prefs.c:638 ../src/prefs.c:654 ../src/prefs.c:670 ../src/prefs.c:690
+#: ../src/prefs.c:706 ../src/prefs.c:722 ../src/prefs.c:740 ../src/prefs.c:756
+#: ../src/prefs.c:775 ../src/prefs.c:791 ../src/prefs.c:808 ../src/prefs.c:824
+#: ../src/prefs.c:840 ../src/prefs.c:857 ../src/prefs.c:873 ../src/prefs.c:889
+#: ../src/prefs.c:905 ../src/prefs.c:921 ../src/prefs.c:936 ../src/prefs.c:951
+#: ../src/prefs.c:966 ../src/prefs.c:982 ../src/prefs.c:998
+#: ../src/prefs.c:1014 ../src/prefs.c:1030
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf คีย์ \"%s\" ถูกตั้งค่าเป็นชนิดที่ใช้ไม่ได้\n"
 
-#: ../src/prefs.c:1014
+#: ../src/prefs.c:1075
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr "\"%s\" ที่พบในฐานข้อมูลข้อปรับแต่ง ใช้เป็นปุ่มใช้ร่วมสำหรับเมาส์ไม่ได้\n"
 
-#: ../src/prefs.c:1038 ../src/prefs.c:1528
+#: ../src/prefs.c:1099 ../src/prefs.c:1120 ../src/prefs.c:1616
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf คีย์ '%s' ถูกตั้งค่าเป็นค่าที่ใช้ไม่ได้\n"
 
-#: ../src/prefs.c:1161
+#: ../src/prefs.c:1249
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
@@ -1924,19 +1986,19 @@ msgid ""
 msgstr ""
 "%d ใน GConf คีย์ %s ไม่ใช่ขนาดเคอร์เซอร์ที่สมเหตุสมผล ค่าดังกล่าวควรอยู่ในช่วง 1..128\n"
 
-#: ../src/prefs.c:1241
+#: ../src/prefs.c:1329
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "ไม่เข้าใจคำบรรยายแบบตัวอักษร \"%s\" จาก GConf คีย์ %s\n"
 
-#: ../src/prefs.c:1426
+#: ../src/prefs.c:1514
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr "%d ใน GConf คีย์ %s ไม่ใช่จำนวนพื้นที่ทำงานที่สมเหตุสมผล สามารถตั้งได้มากสุดเป็น %d\n"
 
-#: ../src/prefs.c:1486
+#: ../src/prefs.c:1574
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -1944,29 +2006,29 @@ msgstr ""
 "ปิดการแก้ขัดที่เตรียมไว้สำหรับโปรแกรมเสียๆ บางโปรแกรมแล้ว "
 "ซึ่งอาจทำให้โปรแกรมเหล่านี้ทำงานไม่ปกติ\n"
 
-#: ../src/prefs.c:1555
+#: ../src/prefs.c:1643
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d ใน GConf คีย์ %s ต้องอยู่ระหว่าง 0 และ %d\n"
 
-#: ../src/prefs.c:1695
+#: ../src/prefs.c:1786
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "ไม่สามารถตั้งจำนวนพื้นที่ทำงานเป็น %d: %s\n"
 
-#: ../src/prefs.c:2031
+#: ../src/prefs.c:2170 ../src/prefs.c:2335
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "\"%s\" ที่พบในฐานข้อมูลค่าปรับแต่ง ไม่สามารถใช้เป็นปุ่มลัด \"%s\"\n"
 
-#: ../src/prefs.c:2448
+#: ../src/prefs.c:2750
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "ไม่สามารถตั้งชื่อพื้นที่ทำงาน %d เป็น %s: %s\n"
 
-#: ../src/resizepopup.c:126
+#: ../src/resizepopup.c:123
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
@@ -2131,8 +2193,8 @@ msgstr ""
 #: ../src/theme-parser.c:935 ../src/theme-parser.c:1012
 #: ../src/theme-parser.c:1062 ../src/theme-parser.c:1070
 #: ../src/theme-parser.c:1126 ../src/theme-parser.c:1134
-#: ../src/theme-parser.c:2936 ../src/theme-parser.c:3025
-#: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
+#: ../src/theme-parser.c:2933 ../src/theme-parser.c:3022
+#: ../src/theme-parser.c:3029 ../src/theme-parser.c:3036
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
 msgstr "ขาดแอตทริบิวต์ \"%s\" ในอีลิเมนต์ <%s>"
@@ -2189,17 +2251,17 @@ msgstr "ไม่รู้จักสถานะ \"%s\" สำหรับไ�
 msgid "Theme already has a menu icon for function %s state %s"
 msgstr "ชุดตกแต่งมีไอคอนเมนูสำหรับฟังก์ชัน %s สถานะ %s อยู่แล้ว"
 
-#: ../src/theme-parser.c:1177 ../src/theme-parser.c:3244
-#: ../src/theme-parser.c:3323
+#: ../src/theme-parser.c:1177 ../src/theme-parser.c:3241
+#: ../src/theme-parser.c:3320
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "ยังไม่ได้กำหนด <draw_ops> ชื่อ \"%s\""
 
 #: ../src/theme-parser.c:1192 ../src/theme-parser.c:1256
-#: ../src/theme-parser.c:1545 ../src/theme-parser.c:3124
-#: ../src/theme-parser.c:3178 ../src/theme-parser.c:3338
-#: ../src/theme-parser.c:3515 ../src/theme-parser.c:3553
-#: ../src/theme-parser.c:3591 ../src/theme-parser.c:3629
+#: ../src/theme-parser.c:1545 ../src/theme-parser.c:3121
+#: ../src/theme-parser.c:3175 ../src/theme-parser.c:3335
+#: ../src/theme-parser.c:3512 ../src/theme-parser.c:3550
+#: ../src/theme-parser.c:3588 ../src/theme-parser.c:3626
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "ไม่อนุญาตให้มีอีลิเมนต์ <%s> ภายใน <%s>"
@@ -2257,246 +2319,246 @@ msgstr "ขาดแอตทริบิวต์ \"right\" ในอีลิ�
 msgid "Border \"%s\" is unknown"
 msgstr "ไม่รู้จักเส้นขอบ \"%s\""
 
-#: ../src/theme-parser.c:1655 ../src/theme-parser.c:1765
-#: ../src/theme-parser.c:1868 ../src/theme-parser.c:2055
-#: ../src/theme-parser.c:2869
+#: ../src/theme-parser.c:1652 ../src/theme-parser.c:1762
+#: ../src/theme-parser.c:1865 ../src/theme-parser.c:2052
+#: ../src/theme-parser.c:2866
 #, c-format
 msgid "No \"color\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"color\" ในอีลิเมนต์<%s>"
 
-#: ../src/theme-parser.c:1662
+#: ../src/theme-parser.c:1659
 #, c-format
 msgid "No \"x1\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"x1\" ในอีลิเมนต์<%s>"
 
-#: ../src/theme-parser.c:1669 ../src/theme-parser.c:2714
+#: ../src/theme-parser.c:1666 ../src/theme-parser.c:2711
 #, c-format
 msgid "No \"y1\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"y1\" ในอีลิเมนต์<%s>"
 
-#: ../src/theme-parser.c:1676
+#: ../src/theme-parser.c:1673
 #, c-format
 msgid "No \"x2\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"x2\" ในอีลิเมนต์<%s>"
 
-#: ../src/theme-parser.c:1683 ../src/theme-parser.c:2721
+#: ../src/theme-parser.c:1680 ../src/theme-parser.c:2718
 #, c-format
 msgid "No \"y2\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"y2\" ในอีลิเมนต์<%s>"
 
-#: ../src/theme-parser.c:1772 ../src/theme-parser.c:1875
-#: ../src/theme-parser.c:1981 ../src/theme-parser.c:2062
-#: ../src/theme-parser.c:2168 ../src/theme-parser.c:2266
-#: ../src/theme-parser.c:2483 ../src/theme-parser.c:2609
-#: ../src/theme-parser.c:2707 ../src/theme-parser.c:2781
-#: ../src/theme-parser.c:2876
+#: ../src/theme-parser.c:1769 ../src/theme-parser.c:1872
+#: ../src/theme-parser.c:1978 ../src/theme-parser.c:2059
+#: ../src/theme-parser.c:2165 ../src/theme-parser.c:2263
+#: ../src/theme-parser.c:2480 ../src/theme-parser.c:2606
+#: ../src/theme-parser.c:2704 ../src/theme-parser.c:2778
+#: ../src/theme-parser.c:2873
 #, c-format
 msgid "No \"x\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"x\" ในอีลิเมนต์<%s>"
 
-#: ../src/theme-parser.c:1779 ../src/theme-parser.c:1882
-#: ../src/theme-parser.c:1988 ../src/theme-parser.c:2069
-#: ../src/theme-parser.c:2175 ../src/theme-parser.c:2273
-#: ../src/theme-parser.c:2490 ../src/theme-parser.c:2616
-#: ../src/theme-parser.c:2788 ../src/theme-parser.c:2883
+#: ../src/theme-parser.c:1776 ../src/theme-parser.c:1879
+#: ../src/theme-parser.c:1985 ../src/theme-parser.c:2066
+#: ../src/theme-parser.c:2172 ../src/theme-parser.c:2270
+#: ../src/theme-parser.c:2487 ../src/theme-parser.c:2613
+#: ../src/theme-parser.c:2785 ../src/theme-parser.c:2880
 #, c-format
 msgid "No \"y\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"y\" ในอีลิเมนต์<%s>"
 
-#: ../src/theme-parser.c:1786 ../src/theme-parser.c:1889
-#: ../src/theme-parser.c:1995 ../src/theme-parser.c:2076
-#: ../src/theme-parser.c:2182 ../src/theme-parser.c:2280
-#: ../src/theme-parser.c:2497 ../src/theme-parser.c:2623
-#: ../src/theme-parser.c:2795
+#: ../src/theme-parser.c:1783 ../src/theme-parser.c:1886
+#: ../src/theme-parser.c:1992 ../src/theme-parser.c:2073
+#: ../src/theme-parser.c:2179 ../src/theme-parser.c:2277
+#: ../src/theme-parser.c:2494 ../src/theme-parser.c:2620
+#: ../src/theme-parser.c:2792
 #, c-format
 msgid "No \"width\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"width\" ในอีลิเมนต์<%s>"
 
-#: ../src/theme-parser.c:1793 ../src/theme-parser.c:1896
-#: ../src/theme-parser.c:2002 ../src/theme-parser.c:2083
-#: ../src/theme-parser.c:2189 ../src/theme-parser.c:2287
-#: ../src/theme-parser.c:2504 ../src/theme-parser.c:2630
-#: ../src/theme-parser.c:2802
+#: ../src/theme-parser.c:1790 ../src/theme-parser.c:1893
+#: ../src/theme-parser.c:1999 ../src/theme-parser.c:2080
+#: ../src/theme-parser.c:2186 ../src/theme-parser.c:2284
+#: ../src/theme-parser.c:2501 ../src/theme-parser.c:2627
+#: ../src/theme-parser.c:2799
 #, c-format
 msgid "No \"height\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"height\" ในอีลิเมนต์<%s>"
 
-#: ../src/theme-parser.c:1903
+#: ../src/theme-parser.c:1900
 #, c-format
 msgid "No \"start_angle\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"start_angle\" ในอีลิเมนต์ <%s>"
 
-#: ../src/theme-parser.c:1910
+#: ../src/theme-parser.c:1907
 #, c-format
 msgid "No \"extent_angle\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"extent_angle\" ในอีลิเมนต์ <%s>"
 
-#: ../src/theme-parser.c:2090
+#: ../src/theme-parser.c:2087
 #, c-format
 msgid "No \"alpha\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"alpha\" ในอีลิเมนต์<%s>"
 
-#: ../src/theme-parser.c:2161
+#: ../src/theme-parser.c:2158
 #, c-format
 msgid "No \"type\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"type\" ในอีลิเมนต์<%s>"
 
-#: ../src/theme-parser.c:2209
+#: ../src/theme-parser.c:2206
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "ไม่เข้าใจค่า \"%s\" สำหรับชนิดของการไล่ระดับสี"
 
-#: ../src/theme-parser.c:2294
+#: ../src/theme-parser.c:2291
 #, c-format
 msgid "No \"filename\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"filename\" ในอีลิเมนต์ <%s>"
 
-#: ../src/theme-parser.c:2319 ../src/theme-parser.c:2827
+#: ../src/theme-parser.c:2316 ../src/theme-parser.c:2824
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "ไม่เข้าใจชนิดการเติม \"%s\" สำหรับอีลิเมนต์ <%s>"
 
-#: ../src/theme-parser.c:2462 ../src/theme-parser.c:2595
-#: ../src/theme-parser.c:2700
+#: ../src/theme-parser.c:2459 ../src/theme-parser.c:2592
+#: ../src/theme-parser.c:2697
 #, c-format
 msgid "No \"state\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"state\" ในอีลิเมนต์ <%s>"
 
-#: ../src/theme-parser.c:2469 ../src/theme-parser.c:2602
+#: ../src/theme-parser.c:2466 ../src/theme-parser.c:2599
 #, c-format
 msgid "No \"shadow\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"shadow\" ในอีลิเมนต์ <%s>"
 
-#: ../src/theme-parser.c:2476
+#: ../src/theme-parser.c:2473
 #, c-format
 msgid "No \"arrow\" attribute on element <%s>"
 msgstr "ขาดแอตทริบิวต์ \"arrow\" ในอีลิเมนต์ <%s>"
 
-#: ../src/theme-parser.c:2529 ../src/theme-parser.c:2651
-#: ../src/theme-parser.c:2739
+#: ../src/theme-parser.c:2526 ../src/theme-parser.c:2648
+#: ../src/theme-parser.c:2736
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "ไม่เข้าใจค่า state \"%s\" สำหรับอีลิเมนต์ <%s>"
 
-#: ../src/theme-parser.c:2539 ../src/theme-parser.c:2661
+#: ../src/theme-parser.c:2536 ../src/theme-parser.c:2658
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "ไม่เข้าใจค่า shadow \"%s\" สำหรับอีลิเมนต์ <%s>"
 
-#: ../src/theme-parser.c:2549
+#: ../src/theme-parser.c:2546
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "ไม่เข้าใจค่า arrow \"%s\" สำหรับอีลิเมนต์ <%s>"
 
-#: ../src/theme-parser.c:2962 ../src/theme-parser.c:3078
+#: ../src/theme-parser.c:2959 ../src/theme-parser.c:3075
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "ไม่มี <draw_ops> ที่ชื่อ \"%s\" กำหนดไว้"
 
-#: ../src/theme-parser.c:2974 ../src/theme-parser.c:3090
+#: ../src/theme-parser.c:2971 ../src/theme-parser.c:3087
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "การรวม draw_ops \"%s\" ที่นี่จะทำให้เกิดการอ้างอิงแบบวนรอบ"
 
-#: ../src/theme-parser.c:3153
+#: ../src/theme-parser.c:3150
 #, c-format
 msgid "No \"value\" attribute on <%s> element"
 msgstr "ขาดแอตทริบิวต์ \"value\" ในอีลิเมนต์ <%s>"
 
-#: ../src/theme-parser.c:3210
+#: ../src/theme-parser.c:3207
 #, c-format
 msgid "No \"position\" attribute on <%s> element"
 msgstr "ขาดแอตทริบิวต์ \"position\" ในอีลิเมนต์ <%s>"
 
-#: ../src/theme-parser.c:3219
+#: ../src/theme-parser.c:3216
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "ไม่รู้จักค่า position \"%s\" สำหรับชิ้นส่วนเฟรม"
 
-#: ../src/theme-parser.c:3227
+#: ../src/theme-parser.c:3224
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "มีรูปแบบเฟรมที่ตำแหน่ง %s อยู่ก่อนแล้ว"
 
-#: ../src/theme-parser.c:3272
+#: ../src/theme-parser.c:3269
 #, c-format
 msgid "No \"function\" attribute on <%s> element"
 msgstr "ขาดแอตทริบิวต์ \"function\" ในอีลิเมนต์ <%s>"
 
-#: ../src/theme-parser.c:3280 ../src/theme-parser.c:3384
+#: ../src/theme-parser.c:3277 ../src/theme-parser.c:3381
 #, c-format
 msgid "No \"state\" attribute on <%s> element"
 msgstr "ขาดแอตทริบิวต์ \"state\" ในอีลิเมนต์ <%s>"
 
-#: ../src/theme-parser.c:3289
+#: ../src/theme-parser.c:3286
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "ไม่รู้จักฟังก์ชัน \"%s\" สำหรับปุ่ม"
 
-#: ../src/theme-parser.c:3298
+#: ../src/theme-parser.c:3295
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "ไม่รู้สถานะ \"%s\" สำหรับปุ่ม"
 
-#: ../src/theme-parser.c:3306
+#: ../src/theme-parser.c:3303
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "รูปแบบเฟรมมีปุ่มสำหรับฟังก์ชัน %s สถานะ %s อยู่ก่อนแล้ว"
 
-#: ../src/theme-parser.c:3376
+#: ../src/theme-parser.c:3373
 #, c-format
 msgid "No \"focus\" attribute on <%s> element"
 msgstr "ขาดแอตทริบิวต์ \"focus\" ในอีลิเมนต์ <%s>"
 
-#: ../src/theme-parser.c:3392
+#: ../src/theme-parser.c:3389
 #, c-format
 msgid "No \"style\" attribute on <%s> element"
 msgstr "ขาดแอตทริบิวต์ \"style\" ในอีลิเมนต์ <%s>"
 
-#: ../src/theme-parser.c:3401
+#: ../src/theme-parser.c:3398
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "\"%s\" ไม่ใช่ค่าที่ใช้ได้สำหรับแอตทริบิวต์ focus"
 
-#: ../src/theme-parser.c:3410
+#: ../src/theme-parser.c:3407
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "\"%s\" ไม่ใช่ค่าที่ใช้ได้สำหรับแอตทริบิวต์·state"
 
-#: ../src/theme-parser.c:3420
+#: ../src/theme-parser.c:3417
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "ไม่มีรูปแบบที่ชื่อ \"%s\" กำหนดไว้"
 
-#: ../src/theme-parser.c:3430
+#: ../src/theme-parser.c:3427
 #, c-format
 msgid "No \"resize\" attribute on <%s> element"
 msgstr "ขาดแอตทริบิวต์ \"resize\" ในอีลิเมนต์ <%s>"
 
-#: ../src/theme-parser.c:3440
+#: ../src/theme-parser.c:3437
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "\"%s\" ไม่ใช่ค่าที่ใช้ได้สำหรับแอตทริบิวต์ resize"
 
-#: ../src/theme-parser.c:3450
+#: ../src/theme-parser.c:3447
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 msgstr "ไม่ควรมีแอตทริบิวต์ \"resize\" ในอีลิเมนต์ <%s> สำหรับสถานะขยายใหญ่สุด/พับเก็บ"
 
-#: ../src/theme-parser.c:3464
+#: ../src/theme-parser.c:3461
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "มีรูปแบบสำหรับ state %s resize %s focus %s กำหนดไว้ก่อนแล้ว"
 
-#: ../src/theme-parser.c:3475 ../src/theme-parser.c:3486
-#: ../src/theme-parser.c:3497
+#: ../src/theme-parser.c:3472 ../src/theme-parser.c:3483
+#: ../src/theme-parser.c:3494
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "มีรูปแบบสำหรับ state %s focus %s กำหนดไว้ก่อนแล้ว"
 
-#: ../src/theme-parser.c:3536
+#: ../src/theme-parser.c:3533
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -2505,7 +2567,7 @@ msgstr ""
 "(ชุดตกแต่งอาจมีการกำหนดทั้งแอตทริบิวต์ draw_ops และอีลิเมนต์ <draw_ops> "
 "หรือไม่ก็กำหนดอีลิเมนต์ซ้อนกันสองตัว)"
 
-#: ../src/theme-parser.c:3574
+#: ../src/theme-parser.c:3571
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -2513,7 +2575,7 @@ msgstr ""
 "ไม่สามารถมี·draw_ops·ซ้อนกันสองค่าสำหรับอีลิเมนต์·<button>·"
 "(ชุดตกแต่งอาจมีการกำหนดทั้งแอตทริบิวต์·draw_ops·และอีลิเมนต์·<draw_ops>·หรือไม่ก็กำหนดอีลิเมนต์ซ้อนกันสองตัว)"
 
-#: ../src/theme-parser.c:3612
+#: ../src/theme-parser.c:3609
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
@@ -2521,82 +2583,82 @@ msgstr ""
 "ไม่สามารถมี·draw_ops·ซ้อนกันสองค่าสำหรับอีลิเมนต์·<menu_icon>·"
 "(ชุดตกแต่งอาจมีการกำหนดทั้งแอตทริบิวต์·draw_ops·และอีลิเมนต์·<draw_ops>·หรือไม่ก็กำหนดอีลิเมนต์ซ้อนกันสองตัว)"
 
-#: ../src/theme-parser.c:3659
+#: ../src/theme-parser.c:3656
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "อีลิเมนต์ชั้นนอกสุดของชุดตกแต่งต้องเป็น <metacity_theme> ไม่ใช่ <%s>"
 
-#: ../src/theme-parser.c:3679
+#: ../src/theme-parser.c:3676
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "ไม่อนุญาตให้มีอีลิเมนต์·<%s>·ภายในอีลิเมนต์ name/author/date/description"
 
-#: ../src/theme-parser.c:3684
+#: ../src/theme-parser.c:3681
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "ไม่อนุญาตให้มีอีลิเมนต์·<%s>·ภายในอีลิเมนต์ <constant>"
 
-#: ../src/theme-parser.c:3696
+#: ../src/theme-parser.c:3693
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "ไม่อนุญาตให้มีอีลิเมนต์·<%s>·ภายในอีลิเมนต์ distance/border/aspect_ratio"
 
-#: ../src/theme-parser.c:3718
+#: ../src/theme-parser.c:3715
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "ไม่อนุญาตให้มีอีลิเมนต์·<%s>·ภายในอีลิเมนต์เกี่ยวกับคำสั่งวาด"
 
-#: ../src/theme-parser.c:3728 ../src/theme-parser.c:3758
-#: ../src/theme-parser.c:3763
+#: ../src/theme-parser.c:3725 ../src/theme-parser.c:3755
+#: ../src/theme-parser.c:3760
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "ไม่อนุญาตให้มีอีลิเมนต์·<%s>·ภายในอีลิเมนต์·<%s>"
 
-#: ../src/theme-parser.c:3984
+#: ../src/theme-parser.c:3981
 msgid "No draw_ops provided for frame piece"
 msgstr "ขาด draw_ops สำหรับชิ้นส่วนเฟรม"
 
-#: ../src/theme-parser.c:3999
+#: ../src/theme-parser.c:3996
 msgid "No draw_ops provided for button"
 msgstr "ขาด draw_ops สำหรับปุ่ม"
 
-#: ../src/theme-parser.c:4014
+#: ../src/theme-parser.c:4011
 msgid "No draw_ops provided for menu icon"
 msgstr "ขาด draw_ops สำหรับไอคอนเมนู"
 
-#: ../src/theme-parser.c:4054
+#: ../src/theme-parser.c:4051
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "ไม่อนุญาตให้มีข้อความภายในอีลิเมนต์ <%s>"
 
-#: ../src/theme-parser.c:4109
+#: ../src/theme-parser.c:4106
 msgid "<name> specified twice for this theme"
 msgstr "<name> ถูกระบุซ้ำในชุดตกแต่งนี้"
 
-#: ../src/theme-parser.c:4120
+#: ../src/theme-parser.c:4117
 msgid "<author> specified twice for this theme"
 msgstr "มีการระบุ <author> ซ้ำในชุดตกแต่งนี้"
 
-#: ../src/theme-parser.c:4131
+#: ../src/theme-parser.c:4128
 msgid "<copyright> specified twice for this theme"
 msgstr "<copyright> ถูกระบุซ้ำในชุดตกแต่งนี้"
 
-#: ../src/theme-parser.c:4142
+#: ../src/theme-parser.c:4139
 msgid "<date> specified twice for this theme"
 msgstr "<date> ถูกระบุซ้ำในชุดตกแต่งนี้"
 
-#: ../src/theme-parser.c:4153
+#: ../src/theme-parser.c:4150
 msgid "<description> specified twice for this theme"
 msgstr "<description> ถูกระบุซ้ำในชุดตกแต่งนี้"
 
-#: ../src/theme-parser.c:4348
+#: ../src/theme-parser.c:4345
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
 msgstr "ไม่สามารถอ่านชุดตกแต่งจากแฟ้ม %s: %s\n"
 
-#: ../src/theme-parser.c:4403
+#: ../src/theme-parser.c:4400
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "แฟ้มชุดตกแต่ง %s ไม่มีอีลิเมนต์ราก <metacity_theme>"
@@ -2760,39 +2822,39 @@ msgstr ""
 "วาด %d เฟรม โดยใช้เวลาที่ไคลเอนท์ทั้งหมด %g วินาที (%g มิลลิวินาทีต่อเฟรม) และ %g "
 "วินาทีตามเวลานาฬิกาจริงซึ่งรวมการติดต่อกับ X เซิร์ฟเวอร์ด้วย (%g มิลลิวินาทีต่อเฟรม)\n"
 
-#: ../src/theme-viewer.c:1219
+#: ../src/theme-viewer.c:1217
 msgid "position expression test returned TRUE but set error"
 msgstr "การทดสอบนิพจน์ตำแหน่งให้ค่าจริง แต่มีรหัสข้อผิดพลาด"
 
-#: ../src/theme-viewer.c:1221
+#: ../src/theme-viewer.c:1219
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "การทดสอบนิพจน์ตำแหน่งให้ค่าเท็จ·แต่ไม่มีรหัสข้อผิดพลาด"
 
-#: ../src/theme-viewer.c:1225
+#: ../src/theme-viewer.c:1223
 msgid "Error was expected but none given"
 msgstr "คาดหวังว่าจะเจอข้อผิดพลาด แต่ก็ไม่มีข้อมูล"
 
-#: ../src/theme-viewer.c:1227
+#: ../src/theme-viewer.c:1225
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "คาดหวังว่าจะเจอข้อผิดพลาด %d แต่พบข้อผิดพลาด %d แทน"
 
-#: ../src/theme-viewer.c:1233
+#: ../src/theme-viewer.c:1231
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "ไม่ได้คาดหวังว่าจะเจอข้อผิดพลาด แต่กลับมี: %s"
 
-#: ../src/theme-viewer.c:1237
+#: ../src/theme-viewer.c:1235
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "ค่าของ x เป็น %d แต่ที่คาดหวังไว้น่าจะเป็น %d"
 
-#: ../src/theme-viewer.c:1240
+#: ../src/theme-viewer.c:1238
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "ค่าของ·y·เป็น·%d·แต่ที่คาดหวังไว้น่าจะเป็น·%d"
 
-#: ../src/theme-viewer.c:1303
+#: ../src/theme-viewer.c:1301
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "แจงค่านิพจน์พิกัดทั้งหมด %d นิพจน์ ในเวลา %g วินาที (%g วินาทีโดยเฉลี่ย)\n"
@@ -2832,11 +2894,11 @@ msgstr "ค่า aspect ratio %g ของปุ่มไม่สมเหต�
 msgid "Frame geometry does not specify size of buttons"
 msgstr "ค่าเรขาคณิตของเฟรมไม่ได้ระบุขนาดของปุ่ม"
 
-#: ../src/theme.c:842
+#: ../src/theme.c:813
 msgid "Gradients should have at least two colors"
 msgstr "การไล่สีควรใช้อย่างน้อยสองสี"
 
-#: ../src/theme.c:968
+#: ../src/theme.c:939
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -2845,7 +2907,7 @@ msgstr ""
 "การกำหนดสี GTK ต้องเขียนสถานะในวงเล็บเหลี่ยม เช่น gtk:fg[NORMAL] เมื่อ NORMAL "
 "เป็นสถานะ; ไม่สามารถแจงค่า \"%s\""
 
-#: ../src/theme.c:982
+#: ../src/theme.c:953
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -2854,17 +2916,17 @@ msgstr ""
 "การกำหนดสี·GTK·ต้องมีวงเล็บเหลี่ยมปิดหลังสถานะด้วย·เช่น·gtk:fg[NORMAL]"
 "·เมื่อ·NORMAL·เป็นสถานะ;·ไม่สามารถแจงค่า·\"%s\""
 
-#: ../src/theme.c:993
+#: ../src/theme.c:964
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "ไม่เข้าใจสถานะ \"%s\" ในการระบุสี"
 
-#: ../src/theme.c:1006
+#: ../src/theme.c:977
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "ไม่เข้าใจองค์ประกอบ \"%s\" ในการระบุสี"
 
-#: ../src/theme.c:1036
+#: ../src/theme.c:1007
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -2872,89 +2934,89 @@ msgid ""
 msgstr ""
 "รูปแบบการเกลี่ยสีคือ \"blend/bg_color/fg_color/alpha\", ค่า \"%s\" ไม่ตรงกับรูปแบบ"
 
-#: ../src/theme.c:1047
+#: ../src/theme.c:1018
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "ไม่สามารถแจงค่าอัลฟา \"%s\" ในการเกลี่ยสี"
 
-#: ../src/theme.c:1057
+#: ../src/theme.c:1028
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "ค่าอัลฟา \"%s\" ในการเกลี่ยสีไม่อยู่ระหว่าง 0.0 และ 1.0"
 
-#: ../src/theme.c:1104
+#: ../src/theme.c:1075
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "รูปแบบของเฉดสีคือ \"shade/base_color/factor \", \"%s\" ไม่ตรงกับรูปแบบ"
 
-#: ../src/theme.c:1115
+#: ../src/theme.c:1086
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "ไม่สามารถแจงค่าตัวคูณของเฉด \"%s\" ในเฉดสี"
 
-#: ../src/theme.c:1125
+#: ../src/theme.c:1096
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "ตัวคูณเฉดสี \"%s\" ในเฉดสีเป็นค่าลบ"
 
-#: ../src/theme.c:1154
+#: ../src/theme.c:1125
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "ไม่เข้าใจสี \"%s\""
 
-#: ../src/theme.c:1416
+#: ../src/theme.c:1384
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "นิพจน์พิกัดมีอักขระ'%s' ซึ่งไม่อนุญาตให้ใช้"
 
-#: ../src/theme.c:1443
+#: ../src/theme.c:1411
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "นิพจน์พิกัดมีเลขจุดทศนิยม '%s'·ที่แจงค่าไม่ได้"
 
-#: ../src/theme.c:1457
+#: ../src/theme.c:1425
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "นิพจน์พิกัดมีเลขจำนวนเต็ม·'%s' ที่แจงค่าไม่ได้"
 
-#: ../src/theme.c:1524
+#: ../src/theme.c:1492
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr "นิพจน์พิกัดมีเครื่องหมายดำเนินการที่ไม่รู้จัก เริ่มจากตำแหน่ง·\"%s\""
 
-#: ../src/theme.c:1581
+#: ../src/theme.c:1549
 msgid "Coordinate expression was empty or not understood"
 msgstr "นิพจน์พิกัดว่างเปล่าหรือไม่สามารถเข้าใจ"
 
-#: ../src/theme.c:1724 ../src/theme.c:1734 ../src/theme.c:1768
+#: ../src/theme.c:1686 ../src/theme.c:1696 ../src/theme.c:1730
 msgid "Coordinate expression results in division by zero"
 msgstr "นิพจน์พิกัดมีผลลัพธ์ที่เป็นการหารด้วยศูนย์"
 
-#: ../src/theme.c:1776
+#: ../src/theme.c:1738
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "นิพจน์พิกัดพยายามใช้ตัวดำเนินการ mod กับตัวเลขจุดทศนิยม"
 
-#: ../src/theme.c:1832
+#: ../src/theme.c:1794
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "นิพจน์พิกัดมีตัวดำเนินการ\"%s\" ในที่ที่ควรจะเป็นตัวถูกดำเนินการ"
 
-#: ../src/theme.c:1841
+#: ../src/theme.c:1803
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "นิพจน์พิกัดมีตัวถูกดำเนินการในที่ที่ควรจะเป็นตัวดำเนินการ"
 
-#: ../src/theme.c:1849
+#: ../src/theme.c:1811
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "นิพจน์พิกัดจบด้วยตัวดำเนินการแทนที่จะเป็นตัวถูกดำเนินการ"
 
-#: ../src/theme.c:1859
+#: ../src/theme.c:1821
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -2962,37 +3024,33 @@ msgid ""
 msgstr ""
 "นิพจน์พิกัดมีตัวดำเนินการ\"%c\" ตามหลังตัวดำเนินการ \"%c\" โดยไม่มีตัวถูกดำเนินการคั่นกลาง"
 
-#: ../src/theme.c:1978
-msgid ""
-"Coordinate expression parser overflowed its buffer, this is really a "
-"Metacity bug, but are you sure you need a huge expression like that?"
-msgstr ""
-"ตัวแจงค่านิพจน์พิกัดทำข้อมูลล้น ความจริงแล้วนี่ถือเป็นบั๊กของ Metacity "
-"แต่คุณแน่ใจหรือว่าคุณต้องการนิพจน์ที่ใหญ่มหึมาเช่นนี้?"
+#: ../src/theme.c:1939
+msgid "Coordinate expression parser overflowed its buffer."
+msgstr "ตัวแจงค่านิพจน์พิกัดทำข้อมูลล้น"
 
-#: ../src/theme.c:2007
+#: ../src/theme.c:1968
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "นิพจน์พิกัดมีวงเล็บปิดโดยไม่มีวงเล็บเปิด"
 
-#: ../src/theme.c:2069
+#: ../src/theme.c:2030
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "นิพจน์พิกัดมีตัวแปรหรือค่าคงที่ \"%s\" ที่ไม่รู้จัก"
 
-#: ../src/theme.c:2126
+#: ../src/theme.c:2085
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "นิพจน์พิกัดมีวงเล็บเปิดโดยไม่มีวงเล็บปิด"
 
-#: ../src/theme.c:2137
+#: ../src/theme.c:2096
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "นิพจน์พิกัดท่าทางจะไม่มีตัวดำเนินการหรือตัวถูกดำเนินการเลย"
 
-#: ../src/theme.c:2381 ../src/theme.c:2403 ../src/theme.c:2424
+#: ../src/theme.c:2337 ../src/theme.c:2359 ../src/theme.c:2380
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "ชุดตกแต่งมีนิพจน์ \"%s\" ซึ่งทำให้เกิดข้อผิดพลาด: %s\n"
 
-#: ../src/theme.c:3910
+#: ../src/theme.c:3826
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3001,25 +3059,25 @@ msgstr ""
 "ต้องระบุ <button function =\"%s\" state=\"%s\" draw_ops=\"อะไรก็ตามแต่\"/> "
 "สำหรับรูปแบบเฟรมด้วย"
 
-#: ../src/theme.c:4360 ../src/theme.c:4392
+#: ../src/theme.c:4270 ../src/theme.c:4295
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "ขาด <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"อะไรก็ตามแต่\"/>"
 
-#: ../src/theme.c:4443
+#: ../src/theme.c:4341
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "โหลดชุดตกแต่ง \"%s\" ล้มเหลว: %s\n"
 
-#: ../src/theme.c:4597 ../src/theme.c:4604 ../src/theme.c:4611
-#: ../src/theme.c:4618 ../src/theme.c:4625
+#: ../src/theme.c:4481 ../src/theme.c:4488 ../src/theme.c:4495
+#: ../src/theme.c:4502 ../src/theme.c:4509
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "ไม่ได้กำหนดค่า <%s> สำหรับชุดตกแต่ง \"%s\""
 
-#: ../src/theme.c:4635
+#: ../src/theme.c:4517
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3028,7 +3086,7 @@ msgstr ""
 "ไม่ได้กำหนดรูปแบบเฟรมสำหรับชนิดหน้าต่าง \"%s\" ในชุดตกแต่ง \"%s\", กรุณาเพิ่มอีลิเมนต์ "
 "<window type=\"%s\" style_set=\"อะไรก็ตามแต่\"/>"
 
-#: ../src/theme.c:4657
+#: ../src/theme.c:4531
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3037,13 +3095,13 @@ msgstr ""
 "ต้องระบุ <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"อะไรก็ตามแต่\"/> "
 "สำหรับชุดตกแต่งนี้"
 
-#: ../src/theme.c:5046 ../src/theme.c:5108
+#: ../src/theme.c:4911 ../src/theme.c:4973
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "ค่าคงที่ที่ผู้ใช้กำหนดเองต้องเริ่มต้นด้วยอักษรตัวใหญ่; แต่ \"%s\" ไม่ได้เป็นตามนั้น"
 
-#: ../src/theme.c:5054 ../src/theme.c:5116
+#: ../src/theme.c:4919 ../src/theme.c:4981
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "ค่าคงที่ \"%s\" ถูกกำหนดไว้แล้ว"
@@ -3067,15 +3125,15 @@ msgstr "เปิดล็อกไฟล์ %s เรียบร้อยแ�
 msgid "Window manager: "
 msgstr "โปรแกรมจัดการหน้าต่าง: "
 
-#: ../src/util.c:366
+#: ../src/util.c:368
 msgid "Bug in window manager: "
 msgstr "บั๊กในโปรแกรมจัดการหน้าต่าง: "
 
-#: ../src/util.c:395
+#: ../src/util.c:397
 msgid "Window manager warning: "
 msgstr "คำเตือนในโปรแกรมจัดการหน้าต่าง: "
 
-#: ../src/util.c:419
+#: ../src/util.c:421
 msgid "Window manager error: "
 msgstr "เกิดข้อผิดพลาดในโปรแกรมจัดการหน้าต่าง: "
 
@@ -3089,8 +3147,13 @@ msgstr "โปรแกรมประยุกต์ตั้งค่า _NET_
 msgid "%s (on %s)"
 msgstr "%s (ที่เครื่อง %s)"
 
+#: ../src/window-props.c:1139
+#, c-format
+msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
+msgstr "ค่า WM_TRANSIENT_FOR หน้าต่าง 0x%lx ที่กำหนดให้กับ %s ใช้ไม่ได้\n"
+
 #. first time through
-#: ../src/window.c:5411
+#: ../src/window.c:5227
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3106,7 +3169,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6039
+#: ../src/window.c:5823
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3145,8 +3208,55 @@ msgstr ""
 #~ msgid ""
 #~ "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
 #~ "focused window will be automatically raised after a delay (the delay is "
-#~ "specified by the auto_raise_delay key)."
+#~ "specified by the auto_raise_delay key). This preference is poorly named, "
+#~ "but kept for backwards compatibility. To try to be more clear (at least "
+#~ "to the technically inclined), its meaning is \"automatically raise the "
+#~ "window following a timeout which is triggered by non-grabbed mouse entry "
+#~ "in sloppy or mouse focus modes\". It is unrelated to clicking behavior (i."
+#~ "e. this is not related to raise-on-click/orthogonal-raise). It is "
+#~ "unrelated to entering a window during drag and drop (because that results "
+#~ "in the application grabbing the mouse)"
 #~ msgstr ""
-#~ "ถ้ามีค่าเป็นจริงและโหมดโฟกัสเป็น \"sloppy\" หรือ \"mouse\" อย่างใดอย่างหนึ่งแล้ว "
-#~ "หน้าต่างที่ถูกโฟกัสจะถูกยกมาด้านหน้าโดยอัตโนมัติ หลังจากหน่วงเวลาเป็นระยะเวลาตามที่ระบุในคีย์ "
-#~ "auto_raise_delay"
+#~ "ถ้าเป็นจริง และโหมดโฟกัสหน้าต่างเป็น \"sloppy\" หรือ \"mouse\" "
+#~ "จะยกหน้าต่างที่ได้โฟกัสขึ้นมาโดยอัตโนมัติหลังจากหน่วงเวลาระยะหนึ่ง (กำหนดเวลาที่หน่วงโดยคีย์ "
+#~ "auto_raise_delay) ค่าตั้งนี้ตั้งชื่อค่อนข้างแย่ แต่ก็เก็บชื่อไว้เพื่อความเข้ากันได้กับรุ่นเก่า "
+#~ "ถ้าจะให้ชัดเจนกว่านี้ (อย่างน้อยก็สำหรับผู้มีความรู้ทางเทคนิค) ความหมายของมันก็คือ "
+#~ "\"ยกหน้าต่างขึ้นมาโดยอัตโนมัติหลังการหน่วงเวลา "
+#~ "ซึ่งเริ่มจับเวลาเมื่อมีการเลื่อนเมาส์เข้ามาในหน้าต่างขณะใช้โหมดโฟกัสหน้าต่างแบบ sloppy หรือ "
+#~ "mouse โดยขณะนั้นไม่มีหน้าต่างอื่นยึดเมาส์อยู่\" การยกหน้าต่างดังกล่าว "
+#~ "ไม่เกี่ยวกับพฤติกรรมการคลิก (กล่าวคือ ไม่เกี่ยวกับการยกหน้าต่างขึ้นเมื่อถูกคลิก "
+#~ "หรือการยกหน้าต่างขึ้นตามลำดับ) และไม่เกี่ยวกับการเลื่อนเมาส์เข้าสู่หน้าต่างระหว่างการลากวาง "
+#~ "(เพราะนั่นหมายความว่าโปรแกรมหนึ่งกำลังยึดเมาส์ไว้ใช้อยู่)"
+
+#~ msgid ""
+#~ "Some applications break specifications in ways that result in window "
+#~ "manager misfeatures. For example, ideally Metacity would place all "
+#~ "dialogs in a consistent position with respect to their parent window. "
+#~ "This requires ignoring application-specified positions for dialogs. But "
+#~ "some versions of Java/Swing mark their popup menus as dialogs, so "
+#~ "Metacity has to disable dialog positioning to allow menus to work in "
+#~ "broken Java applications. There are several other examples like this. "
+#~ "This option puts Metacity in full-on Correct mode, which perhaps gives a "
+#~ "moderately nicer UI if you don't need to run any broken apps. Sadly, "
+#~ "workarounds must be enabled by default; the real world is an ugly place. "
+#~ "Some of the workarounds are workarounds for limitations in the "
+#~ "specifications themselves, so sometimes a bug in no-workarounds mode "
+#~ "won't be fixable without amending a spec."
+#~ msgstr ""
+#~ "โปรแกรมบางตัวละเมิดข้อกำหนดโดยทำให้โปรแกรมจัดการหน้าต่างต้องทำงานแก้ขัด ตัวอย่างเช่น "
+#~ "ในอุดมคติแล้ว metacity จะเปิดกล่องโต้ตอบทั้งหลาย ณ ตำแหน่งคงที่เทียบกับหน้าต่างแม่ "
+#~ "ซี่งจำเป็นต้องละเลยตำแหน่งที่โปรแกรมระบุมา แต่ Java/Swing "
+#~ "บางรุ่นใช้กล่องโต้ตอบในการเปิดเมนูป๊อปอัพ ทำให้ metacity "
+#~ "จำต้องงดการวางตำแหน่งกล่องโต้ตอบ เพื่อให้เมนูในโปรแกรมจาวาเสียๆ เหล่านี้ทำงานได้ "
+#~ "และยังมีตัวอย่างทำนองนี้อีกมากมาย ตัวเลือกนี้จะตั้งให้ metacity "
+#~ "เข้าสู่โหมดการทำงานที่ถูกหลักเกณฑ์ทุกประการ ซึ่งอาจจะให้ UI ที่ดีกว่า "
+#~ "ถ้าคุณไม่ต้องการรันโปรแกรมที่เสียๆ แต่น่าเศร้าที่ต้องเปิดการแก้ขัดนี้ไว้ก่อน "
+#~ "โลกแห่งความเป็นจริงช่างโสมม การแก้ขัดบางอย่างก็เป็นเพราะข้อจำกัดในข้อกำหนดมาตรฐานเอง "
+#~ "ทำให้บั๊กในโหมดที่ปราศจากการแก้ขัดไม่สามารถแก้ได้โดยไม่แก้มาตรฐาน"
+
+#~ msgid ""
+#~ "Coordinate expression parser overflowed its buffer, this is really a "
+#~ "Metacity bug, but are you sure you need a huge expression like that?"
+#~ msgstr ""
+#~ "ตัวแจงค่านิพจน์พิกัดทำข้อมูลล้น ความจริงแล้วนี่ถือเป็นบั๊กของ Metacity "
+#~ "แต่คุณแน่ใจหรือว่าคุณต้องการนิพจน์ที่ใหญ่มหึมาเช่นนี้?"
