@@ -1,3 +1,151 @@
+2.15.0
+==
+
+Thanks to Thomas Thurman, Elijah Newren, Havoc Pennington, Björn
+Lindqvist, Gora Mohanty, Alejandro Andres, Andy Morum, Dan Sanders,
+Thomas Andersen, Brian Pepple, and Søren Sandmann for improvements in
+this release. (Note that "Thomas" below refers to Thomas Thurman if
+last name isn't specified)
+
+ - An endless array of compositor updates, not all of which are well
+   explained in the ChangeLog. ;-)  Includes an ability to enable and
+   disable the compositor at runtime, fixed up wobbling effect and new
+   explosion effect, special magnification handling, different opacity
+   for different window types like menus, a way of scaling windows,
+   handling of foreign displays, improved handling of window
+   moving/resizing, various code restructuring, special runtime checks
+   for correct extensions and other compositors, lots of bug fixes,
+   and possibly other stuff I'm missing or not understanding (Søren)
+ - Removed "move to another workspace" menu when there are exactly two
+   workspaces (Thomas) [#151183]
+ - fix type for compositing_manager schema entry (Elijah) [#335901]
+ - Port more properties to our async system for code cleanliness and
+   speed improvements (Havoc, Thomas)
+ - Lots of code cleanup, even more code cleanup, wow our code was
+   messy (Björn) [#335177, #337507, #336890, #338359]
+ - Abstract out the functions for setting/unsetting demands attention
+   hint and avoid doing it when the window isn't obscured (Thomas)
+   [#305882]
+ - Change strings to make them more readable, and more
+   translatable (Gora) [#335720]
+ - Reduce compiling warnings -- add a number of casts and change
+   signedness on a number of variables (Björn) [#336032]
+ - Fixed broken links in README (Alejandro) [#333303]
+ - Add a tabbing function, bound to alt-f6 by default, to cycle
+   through the windows of the current application (Thomas) [#94682]
+ - Fix the build with --disable-xsync (Andy) [#336605]
+ - Raise windows on maximize/unmaximize (Dan) [#335076]
+ - Don't have confirmation windows make applications appear to be
+   locked when closing via the window list (Dan) [#334899]
+ - Allow any keybinding pref to be specified either with <foo>, a
+   string, or <foo>_list, a list of strings, or both (Thomas)
+   [#164831]
+ - warn and ignore if transient_for is set to a non-top-level window
+   (Thomas Andersen) [#335524]
+ - Use po/LINGUAS for listing supported languages (Brian) [#337951]
+
+Translations
+  Vladimir Petkov (bg), Jordi Mallach (ca), Miloslav Trmac (cs), Rhys
+  Jones (cy), Lasse Bang Mikkelsen (da), Frank Arnold (de), Kostas
+  Papadimas (el), Francisco Javier F. Serrador (es), Ivar Smolin (et), Iñaki
+  Larrañaga (eu), Farzaneh Sarafraz (fa), Ilkka Tuohela (fi), Ignacio Casal
+  Quinteiro (gl), Ankit Patel (gu), Rajesh Ranjan (hi), Gabor Kelemen (hu), 
+  Satoru SATOH (ja), Alexander Didebulidze (ka), Žygimantas Beručka (lt), 
+  Kjartan Maraas (nb), Michiel Sikkes (nl), Åsmund Skjæveland (nn), Gora
+  Mohanty (or), Raphael Higino (pt_BR), Duarte Loreto (pt), Mugurel Tudor (ro),
+  Leonid Kanter (ru), Steve Murphy (rw), Laurent Dhima (sq), Слободан Д.
+  Средојевић (sr), Daniel Nylander (sv), Theppitak Karoonboonyanan (th), Maxim
+  Dziumanenko (uk), Clytie Siddall (vi), Funda Wang (zh_CN)
+
+2.14.3
+==
+
+This release just reverts the widely hated new focus behavior of Metacity
+2.14.x to the behavior found in 2.12.x.  Patch came from Ron Yorston.  
+See http://blogs.gnome.org/view/newren/2006/04/13/0 and
+http://mail.gnome.org/archives/release-team/2006-April/msg00025.html for
+more details.
+
+ - Add a focus_new_windows gconf key, change the default to 'smart' (2.12
+   behavior) and add a 'strict' option to get 2.14 behavior.  (Ron)
+   [#326159]
+
+Translations
+  Vladimir Petkov (bg), Miloslav Trmac (cs), Frank Arnold (de), Francisco
+  Javier F. Serrador (es), Ilkka Tuohela (fi), Tino Meinen (nl), Åsmund
+  Skjæveland (nn), Raphael Higino (pt_BR), Daniel Nylander (sv)
+
+2.14.2
+==
+
+Thanks to Thomas Thurman, Paolo Borelli, Björn Lindqvist, and
+Elijah Newren for fixes in this release.
+
+ - Fix constraints bug causing negative width windows and crashes
+   (Elijah) [#336651]
+ - Fix window grouping with parent/child windows (Björn) [#336184]
+ - use g_str_has_prefix instead of a local copy of the function
+   (Paolo) [#334643]
+ - Make sure pager can refresh when window is minimized on a different
+   workspace (Thomas) [#315142]
+ - Add debugging information for edge resistance (Elijah)
+
+Translations
+
+  Vladimir Petkov (bg), tangi.bzh (br), Jordi Mallach (ca), Miloslav
+  Trmac (cs), Rhys Jones (cy), Lasse Bang Mikkelsen (da), Frank
+  Arnold (de), Mindu Dorji (dz), Kostas Papadimas (el), Francisco
+  Javier F. Serrador (es), Ivar Smolin (et), Iñaki Larrañaga 
+  Murgoitio (eu), Elnaz Sarbar (fa), Ilkka Tuohela (fi),
+  Ignacio Casal Quinteiro (gl), Ankit Patel (gu), Rajesh Ranjan (hi)
+  Gabor Kelemen (hu), Luca Ferretti (it), Satoru SATOH (ja), Vladimer
+  Sichinava (ka), Žygimantas Beručka (lt), Kjartan Maraas (nb),
+  Tino Meinen (nl), Kjartan Maraas (no), Gora Mohanty (or), Gnome PL
+  Team (pl), Evandro Fernandes Giovanini (pt_BR), Duarte Loreto (pt),
+  Mugurel Tudor (ro), Leonid Kanter (ru), Laurent Dhima (sq),
+  Слободан Д. Средојевић (sr), Daniel Nylander (sv), Theppitak
+  Karoonboonyanan (th), Maxim Dziumanenko (uk), Clytie Siddall (vi),
+  Funda Wang (zh_CN)
+
+2.14.1
+==
+
+The only change since 2.14.0 is to remove the "This is the UNSTABLE
+branch" warning from configure for those compiling Metacity from
+source.
+
+2.14.0
+==
+
+Thanks to Ryan Lortie and Thomas Thurman for fixes in this release.
+
+ - Mark the app-running-remotely-window-title string for translation
+   (Thomas) [#334332]
+ - Only unmaximise window before freeing if the window is actually
+   maximised (Ryan) [#333563]
+
+Translations
+  Jordi Mallach (ca), Frank Arnold (de), Luca Ferretti (it), Evandro
+  Fernandes Giovanini (pt_BR), Theppitak Karoonboonyanan (th)
+
+2.13.144
+==
+
+Thanks to Jens Granseuer, Kristian, Søren Sandmann, Sylvain
+Bertrand, and Thomas Thurman for improvements in this release.
+
+ - Fix build with gcc 2.95 (Jens) [#331166]
+ - Compositor improvements [remember, still off by default]: add
+   unused wobbly (un)minimize animation (Kristian), add support for
+   turning updates on and off (Søren), use sync counter to make
+   composited resizing tear free (Søren), add ability to unmanage
+   the screen (Søren), 
+ - Fix build issue with library search order (Sylvain) [#330695]
+ - Work around buggy application grouping with transient windows
+   (Thomas) [#328211]
+ - Prevent setting cycle_windows to keybindings that won't work.
+   (Thomas) [#329676]
+
 2.13.89
 ==
 
@@ -46,18 +194,18 @@ Translations
 2.13.34
 ==
 
-Thanks to Damien Carbery, Havoc Pennington, S�ren Sandmann,
-Bj�rn Lindqvist, Kjartan Maraas, Elijah Newren for improvements in
+Thanks to Damien Carbery, Havoc Pennington, Søren Sandmann,
+Björn Lindqvist, Kjartan Maraas, Elijah Newren for improvements in
 this release.
 
  - manually define HOST_NAME_MAX if not already defined to fix Solaris
    compilation issue (Damien, Havoc) [#326745]
  - compositor improvements: port to changes in libcm, do it again, fix
-   unrefing, make minimize animation update again (all done by S�ren)
+   unrefing, make minimize animation update again (all done by Søren)
  - make sure an outline border is shown even if a window decoration's
-   width is 0 (Bj�rn) [#98340]
+   width is 0 (Björn) [#98340]
  - correctly handle window alt-tab outlines in showing desktop mode
-   (Bj�rn) [#98340]
+   (Björn) [#98340]
  - fix lots of tiny issues spotted by the intel compiler (Kjartan)
    [#321439]
  - prevent rapidly repeated visual bells from hanging metacity
@@ -67,9 +215,9 @@ this release.
  - fix various initialization and default issues, especially for
    running with --disable-gconf.  Make --disable-gconf actually work.
    (Elijah) [#326661]
- - fix some reading-from-free'd-data errors (S�ren) [#327575]
+ - fix some reading-from-free'd-data errors (Søren) [#327575]
  - fix an unitialized value problem when in raise-on-click mode
-   (S�ren) [#327572]
+   (Søren) [#327572]
  - avoid flashing original-sized window when closing a maximized
    window (Elijah) [#317254]
  - prevent windows from sometimes getting shoved and smashed by
@@ -82,17 +230,17 @@ Translations
 2.13.21
 ==
 
-Thanks to Damien Carbery, Ray Strode, S�ren Sandmann, Elijah
+Thanks to Damien Carbery, Ray Strode, Søren Sandmann, Elijah
 Newren, Jens Granseuer, and Kyle Ambroff for improvements in this
 release.
 
   - Fix Solaris compilation issues (Ray, Damien) [#326281, #326746]
   - Merge compositor work from branches to get the beginnings of an openGL
     based compositor.  Still not ready and thus disabled by default.
-    (S�ren)
-  - Composite fixes: Only update composite on damage events (S�ren), get
+    (Søren)
+  - Composite fixes: Only update composite on damage events (Søren), get
     non-composite compilation working again (Elijah), Really turn off
-    draw-in-a-loop (S�ren)
+    draw-in-a-loop (Søren)
   - Don't dereference a NULL string (Elijah) [#327013]
   - GCC 2.95 fix; remove more C99 style variable initiailizations (Jens)
     [#327050]
@@ -110,11 +258,11 @@ Translations
 2.13.13
 ==
 
-Thanks to Jens Granseuer, Bj�rn Lindqvist, and Elijah Newren for
+Thanks to Jens Granseuer, Björn Lindqvist, and Elijah Newren for
 improvements in this release.
 
  - Remove C99 style variable initiailization (Jens) [#322622]
- - Fix a logic error (Bj�rn) [#322149]
+ - Fix a logic error (Björn) [#322149]
  - Plug a few leaks (Elijah) [#309178]
  - Allow edge resistance at both sides of a window and also when edges
    don't overlap but are a single pixel away from doing so (Elijah)
@@ -164,10 +312,10 @@ Translations
 2.13.5
 ==
 
-Thanks to Davyd Madeley, Kjartan Maraas, and Bj�rn Lindqvist for
+Thanks to Davyd Madeley, Kjartan Maraas, and Björn Lindqvist for
 improvements in this release.
 
- - Make a debugging message actually correspond to the code (Bj�rn)
+ - Make a debugging message actually correspond to the code (Björn)
    [#322051]
  - Make the wireframe a bit slimmer (Kjartan) [#320051]
  - Display hostname in titlebar for remote X clients (Davyd) [#322202]
@@ -341,16 +489,16 @@ Translations
 2.13.0
 ==
 
-Thanks to Bj�rn Lindqvist, Kjartan Maraas, S�ren Sandmann,
+Thanks to Björn Lindqvist, Kjartan Maraas, Søren Sandmann,
 Elijah Newren, Ross Cohen, and Muktha for improvements in this release
 since 2.12.1.
 
  - Mave ancestors come along with the transient when moving the window from
-   one workspace to another (Bj�rn) [#314977]
+   one workspace to another (Björn) [#314977]
  - Fix the workspace switcher tabpopup to display the right windows and to
    fix the pick-a-new-window-to-focus algorithm in order to not select
-   windows that aren't showing (Bj�rn) [#170475]
- - Fix a couple memory leaks (Kjartan, S�ren, Elijah) [#313030]
+   windows that aren't showing (Björn) [#170475]
+ - Fix a couple memory leaks (Kjartan, Søren, Elijah) [#313030]
  - Make alt-esc (the "switch between windows immediately" keybinding)
    actually show minimized windows too (Ross) [#107072]
  - Make alt-esc consistent with alt-tab by leaving stacking of unselected
@@ -381,7 +529,7 @@ improvements in this release.
 
 Translations
   Mahay Alam Khan (bn), Francisco Javier F. Serrador (es), Ivar Smolin (et),
-  I�aki Larra�aga Murgoitio (eu), Luca Ferretti (it), Christian Rose (sv),
+  Iñaki Larrañaga Murgoitio (eu), Luca Ferretti (it), Christian Rose (sv),
   Clytie Siddall (vi), Funda Wang (zh_CN)
 
 2.12.0
@@ -394,16 +542,16 @@ Thanks to Brent Smith for finding the crasher in the release candidate!
 Translations
   Bryn Salisbury (cy), Hendrik Richter (de), Christophe Merlet (RedFox) (fr),
   Ignacio Casal Quinteiro (gl), Norayr Chilingaryan (hy), Young-Ho Cha (ko),
-  �ygimantas Berucka (lt), Michiel Sikkes (nl), Leonid Kanter (ru), Danilo
-  �egan(sr), Baris Cicek (tr)
+  Žygimantas Berucka (lt), Michiel Sikkes (nl), Leonid Kanter (ru), Danilo
+  Šegan (sr), Baris Cicek (tr)
 
 2.11.3
 ==
 
-Thanks to Bj�rn Lindqvist and Elijah Newren for improvements in
+Thanks to Björn Lindqvist and Elijah Newren for improvements in
 this release.
 
- - Check for the right versions of glib and gtk+ (Bj�rn) [#314116]
+ - Check for the right versions of glib and gtk+ (Björn) [#314116]
  - Avoid obscuring centered-on-desktop windows which are denied focus
    (Elijah) [#313234]
 
@@ -471,13 +619,13 @@ Translations
 
 This release contains all fixes up to Metacity 2.10.2 plus some new goodies.
 
-Thanks to Matthias Clasen, Aivars Kalvans, Bj�rn Lindqvist, and
+Thanks to Matthias Clasen, Aivars Kalvans, Björn Lindqvist, and
 Andrew Johnson for improvements in this release.
 
  - React to cursor theme changes (Matthias) [#308106]
  - Plug a small leak with xinerama information (Aivars) [#307884]
  - Split up main() into more manageable chunks and make use of GOpt
-   (Bj�rn) [#305331]
+   (Björn) [#305331]
  - Speed up vertical gradients (Andrew) [#169982]
 
 Translations
@@ -538,8 +686,8 @@ The only difference between this version and 2.9.34 is some
 translation updates.
 
 Translations
-  Vladimir Petkov (bg), Gabor Kelemen (hu), �ygimantas Berucka (lt),
-  Reinout van Schouwen (nl), Mugurel Tudor (ro), Danilo �egan (sr),
+  Vladimir Petkov (bg), Gabor Kelemen (hu), Žygimantas Berucka (lt),
+  Reinout van Schouwen (nl), Mugurel Tudor (ro), Danilo Šegan (sr),
   Woodman Tuen (zh_TW)
 
 2.9.34
@@ -604,7 +752,7 @@ Marcus Clarke for fixes in this release.
 Translations
   Jordi Mallach (ca), Martin Willemoes Hansen (da), 
   Kostas Papadimas (el), David Lodge (en_GB), 
-  Francisco Javier F.  Serrador (es), T�ivo Leedj�rv (et),
+  Francisco Javier F.  Serrador (es), Tõivo Leedjärv (et),
   Christophe Merlet (RedFox) (fr), Takeshi AIHANA (ja), 
   Young-Ho, Cha (ko), Kjartan Maraas (nb), Michiel Sikkes (nl),
   Kjartan Maraas (no), Duarte Loreto (pt), Leonid Kanter (ru), 
@@ -672,7 +820,7 @@ Translations
   Vladimir Petkov (bg), Miloslav Trmac (cs), Frank Arnold (de), 
   Adam Weinberger (en_CA), David Lodge (en_GB), 
   Francisco Javier F. Serrador (es), Pauli Virtanen (fi), 
-  Young-Ho, Changwoo Ryu (ko), �ygimantas Berucka (lt),
+  Young-Ho, Changwoo Ryu (ko), Žygimantas Berucka (lt),
   Kjartan Maraas (nb),  Kjartan Maraas (no), Duarte Loreto (pt),
   Marcel Telka (sk), Christian Rose (sv), 
   Theppitak Karoonboonyanan (th)
@@ -779,7 +927,7 @@ Vincent Untz for fixes/features in this release.
 
 Translations
  da (Martin Willemoes Hansen), fr(Christophe Merlet, Baptiste
- Mille-Mathias), lt(�ygimantas Berucka), ja(Takeshi AIHANA)
+ Mille-Mathias), lt(Žygimantas Berucka), ja(Takeshi AIHANA)
 
 2.9.0
 ==
@@ -810,7 +958,7 @@ and Vincent Untz for fixes and features in this release.
  - Re-enable focus stealing prevention (Elijah)
 
 Translations
- es(Francisco Javier F. Serrador), sq(Laurent Dhima), sr(Danilo �egan), 
+ es(Francisco Javier F. Serrador), sq(Laurent Dhima), sr(Danilo Šegan), 
  cs(Miloslav Trmac), en_CA(Adam Weinberger), en_GB(David Lodge)
 
 2.8.6
@@ -845,7 +993,7 @@ Translations
 
   * ar(Abdulaziz Al-Arfaj), cs(Miloslav Trmac), cy(Dafydd Harries),
     en_GB(David Lodge), fr(Christophe Merlet (RedFox)), 
-    nn(�smund Skj�veland), or(Gora Mohanty), 
+    nn(Åsmund Skjæveland), or(Gora Mohanty), 
     pr_BR(Gustavo Noronha Silva), ro(Mugurel Tudor), 
     th(Paisa Seeluangsawat), tr(Baris Cicek), zh_TW(Woodman Tuen)
 
@@ -883,7 +1031,7 @@ Fixes
 Translations
   * az(Metin Amiroff), bs(Kemal Sanjta), ca(Jordi Mallach), 
     el(Kostas Papadimas), es(Francisco Javier F. Serrador), 
-    eu(I��aki Larra��aga Murgoitio), fi(Pauli Virtanen),
+    eu(Iñaki Larrañaga Murgoitio), fi(Pauli Virtanen),
     nb(Kjartan Maraas), sq(Laurent Dhima), uk(Maxim Dziumanenko)
 
 
@@ -911,7 +1059,7 @@ Fixes
 
 Translations
   * fi (Pauli Virtanen), ja (Takeshi AIHANA), ko (Young-Ho, Cha), 
-    pl (Gnome PL Team), ru (Dmitry G. Mastrukov), sr (Danilo �Ł�egan),
+    pl (Gnome PL Team), ru (Dmitry G. Mastrukov), sr (Danilo Šegan),
     tk (Gurban M. Tewekgeli), zh_CN (Funda Wang)
 
 2.8.2
