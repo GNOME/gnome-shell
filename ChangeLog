@@ -1,5 +1,12 @@
 2006-04-25  Elijah Newren  <newren gmail com>
 
+	* autogen.sh: Nuke the old version, copy one from gcalctool that
+	uses gnome-autogen.sh.  Seems to fix the
+	translations-aren't-included-in-the-tarball problem.  Fix from
+	Rodney in IRC.
+
+2006-04-25  Elijah Newren  <newren gmail com>
+
 	* configure.in: post-release version bump to 2.15.2
 
 2006-04-25  Elijah Newren  <newren gmail com>
