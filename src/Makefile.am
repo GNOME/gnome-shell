@@ -122,6 +122,7 @@ libmetacity_private_la_LIBADD  = @METACITY_LIBS@
 libmetacityincludedir = $(includedir)/metacity-1/metacity-private
 
 libmetacityinclude_HEADERS =	\
+	boxes.h			\
 	common.h		\
 	gradient.h		\
 	preview-widget.h	\

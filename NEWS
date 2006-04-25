@@ -1,3 +1,11 @@
+2.15.1
+==
+
+This release just fixes the control-center build (which depends upon
+libmetacity-private).  Thanks to Vincent for catching the problem.
+
+ - Include boxes.h in the includes dir (Elijah) [#339708]
+
 2.15.0
 ==
 
