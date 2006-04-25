@@ -1,5 +1,9 @@
 2006-04-25  Elijah Newren  <newren gmail com>
 
+	* NEWS:	2.15.2 release
+
+2006-04-25  Elijah Newren  <newren gmail com>
+
 	* autogen.sh: Nuke the old version, copy one from gcalctool that
 	uses gnome-autogen.sh.  Seems to fix the
 	translations-aren't-included-in-the-tarball problem.  Fix from

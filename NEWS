@@ -1,3 +1,13 @@
+2.15.2
+==
+
+Here's hoping that "third time's a charm."  ;-) This release just
+fixes the translations-not-included issue.  See
+http://mail.gnome.org/archives/desktop-devel-list/2006-April/msg00483.html
+for more details.
+
+ - Use gnome-autogen.sh like most other modules (Rodney)
+
 2.15.1
 ==
 
