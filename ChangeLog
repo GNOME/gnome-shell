@@ -1,3 +1,9 @@
+Fri Apr 28 12:53:23 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/core.c (get_window): New function. 
+	* src/core.c: Use get_window() instead of cutted-and-pasted code
+	all over the place.
+
 2006-04-25  Elijah Newren  <newren gmail com>
 
 	* configure.in: post-release version bump to 2.15.3

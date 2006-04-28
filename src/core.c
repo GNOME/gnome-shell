@@ -27,11 +27,9 @@
 #include "workspace.h"
 #include "prefs.h"
 
-void
-meta_core_get_client_size (Display *xdisplay,
-                           Window   frame_xwindow,
-                           int     *width,
-                           int     *height)
+static MetaWindow *
+get_window (Display *xdisplay,
+	    Window   frame_xwindow)
 {
   MetaDisplay *display;
   MetaWindow *window;
@@ -40,7 +38,21 @@ meta_core_get_client_size (Display *xdisplay,
   window = meta_display_lookup_x_window (display, frame_xwindow);
 
   if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+    {
+      meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+      return NULL;
+    }
+
+  return window;
+}
+
+void
+meta_core_get_client_size (Display *xdisplay,
+                           Window   frame_xwindow,
+                           int     *width,
+                           int     *height)
+{
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
   
   if (width)
     *width = window->rect.width;
@@ -52,31 +64,16 @@ gboolean
 meta_core_titlebar_is_onscreen (Display *xdisplay,
                                 Window   frame_xwindow)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
 
   return meta_window_titlebar_is_onscreen (window);  
 }
-
 
 Window
 meta_core_get_client_xwindow (Display *xdisplay,
                               Window   frame_xwindow)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
 
   return window->xwindow;
 }
@@ -85,15 +82,8 @@ MetaFrameFlags
 meta_core_get_frame_flags (Display *xdisplay,
                            Window   frame_xwindow)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
   
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
-
   return meta_frame_get_flags (window->frame);
 }
 
@@ -101,15 +91,10 @@ MetaFrameType
 meta_core_get_frame_type (Display *xdisplay,
                           Window   frame_xwindow)
 {
-  MetaDisplay *display;
   MetaWindow *window;
   MetaFrameType base_type;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
 
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+  window = get_window (xdisplay, frame_xwindow);
 
   base_type = META_FRAME_TYPE_LAST;
   
@@ -156,14 +141,7 @@ GdkPixbuf*
 meta_core_get_mini_icon (Display *xdisplay,
                          Window   frame_xwindow)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
   
   return window->mini_icon;
 }
@@ -172,14 +150,7 @@ GdkPixbuf*
 meta_core_get_icon (Display *xdisplay,
                     Window   frame_xwindow)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
   
   return window->icon;
 }
@@ -188,14 +159,7 @@ void
 meta_core_queue_frame_resize (Display *xdisplay,
                               Window   frame_xwindow)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
 
   meta_window_queue_move_resize (window);
 }
@@ -206,14 +170,7 @@ meta_core_user_move (Display *xdisplay,
                      int      x,
                      int      y)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
 
   meta_window_move (window, TRUE, x, y);
 }
@@ -225,14 +182,7 @@ meta_core_user_resize  (Display *xdisplay,
                         int      width,
                         int      height)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
 
   meta_window_resize_with_gravity (window, TRUE, width, height, gravity);
 }
@@ -241,14 +191,7 @@ void
 meta_core_user_raise (Display *xdisplay,
                       Window   frame_xwindow)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
   
   meta_window_raise (window);
 }
@@ -258,14 +201,7 @@ meta_core_user_lower_and_unfocus (Display *xdisplay,
                                   Window   frame_xwindow,
                                   Time     timestamp)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
   
   meta_window_lower (window);
 
@@ -308,14 +244,7 @@ meta_core_user_focus (Display *xdisplay,
                       Window   frame_xwindow,
                       Time     timestamp)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
   
   meta_window_focus (window, timestamp);
 }
@@ -326,14 +255,7 @@ meta_core_get_position (Display *xdisplay,
                         int     *x,
                         int     *y)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
 
   meta_window_get_position (window, x, y);
 }
@@ -344,14 +266,7 @@ meta_core_get_size (Display *xdisplay,
                     int     *width,
                     int     *height)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
 
   if (width)
     *width = window->rect.width;
@@ -364,14 +279,7 @@ void
 meta_core_minimize (Display *xdisplay,
                     Window   frame_xwindow)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
 
   meta_window_minimize (window);
 }
@@ -380,14 +288,7 @@ void
 meta_core_maximize (Display *xdisplay,
                     Window   frame_xwindow)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
 
   if (meta_prefs_get_raise_on_click ())
     meta_window_raise (window);
@@ -400,14 +301,7 @@ void
 meta_core_toggle_maximize (Display *xdisplay,
                            Window   frame_xwindow)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
 
   if (meta_prefs_get_raise_on_click ())
     meta_window_raise (window);
@@ -424,14 +318,7 @@ void
 meta_core_unmaximize (Display *xdisplay,
                       Window   frame_xwindow)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
 
   if (meta_prefs_get_raise_on_click ())
     meta_window_raise (window);
@@ -445,14 +332,7 @@ meta_core_delete (Display *xdisplay,
                   Window   frame_xwindow,
                   guint32  timestamp)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-  
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
      
   meta_window_delete (window, timestamp);
 }
@@ -461,14 +341,7 @@ void
 meta_core_unshade (Display *xdisplay,
                    Window   frame_xwindow)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
 
   meta_window_unshade (window);
 }
@@ -477,15 +350,8 @@ void
 meta_core_shade (Display *xdisplay,
                  Window   frame_xwindow)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
   
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
-
   meta_window_shade (window);
 }
 
@@ -493,14 +359,7 @@ void
 meta_core_unstick (Display *xdisplay,
                    Window   frame_xwindow)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
 
   meta_window_unstick (window);
 }
@@ -509,14 +368,7 @@ void
 meta_core_stick (Display *xdisplay,
                  Window   frame_xwindow)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
 
   meta_window_stick (window);
 }
@@ -526,14 +378,7 @@ meta_core_change_workspace (Display *xdisplay,
                             Window   frame_xwindow,
                             int      new_workspace)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
 
   meta_window_change_workspace (window,
                                 meta_screen_get_workspace_by_index (window->screen,
@@ -564,14 +409,7 @@ int
 meta_core_get_frame_workspace (Display *xdisplay,
                                Window frame_xwindow)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
 
   return meta_window_get_net_wm_desktop (window);
 }
@@ -584,14 +422,7 @@ meta_core_get_frame_extents   (Display        *xdisplay,
                                int            *width,
                                int            *height)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
 
   if (x)
     *x = window->frame->rect.x;
@@ -612,15 +443,8 @@ meta_core_show_window_menu (Display *xdisplay,
                             int      button,
                             Time     timestamp)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
   
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
-
   if (meta_prefs_get_raise_on_click ())
     meta_window_raise (window);
   meta_window_focus (window, timestamp);
@@ -767,19 +591,15 @@ meta_core_begin_grab_op (Display    *xdisplay,
                          int         root_x,
                          int         root_y)
 {
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
   MetaDisplay *display;
-  MetaWindow *window;
   MetaScreen *screen;
   
   display = meta_display_for_x_display (xdisplay);
   screen = meta_display_screen_for_xwindow (display, frame_xwindow);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
 
   g_assert (screen != NULL);
   
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_xwindow);  
-
   return meta_display_begin_grab_op (display, screen, window,
                                      op, pointer_already_grabbed,
                                      event_serial,
@@ -847,7 +667,7 @@ meta_core_grab_buttons  (Display *xdisplay,
                          Window   frame_xwindow)
 {
   MetaDisplay *display;
-  
+    
   display = meta_display_for_x_display (xdisplay);
 
   meta_verbose ("Grabbing buttons on frame 0x%lx\n", frame_xwindow);
@@ -859,14 +679,7 @@ meta_core_set_screen_cursor (Display *xdisplay,
                              Window   frame_on_screen,
                              MetaCursor cursor)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_on_screen);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_on_screen);  
+  MetaWindow *window = get_window (xdisplay, frame_on_screen);
 
   meta_frame_set_screen_cursor (window->frame, cursor);
 }
@@ -877,14 +690,7 @@ meta_core_get_screen_size (Display *xdisplay,
                            int     *width,
                            int     *height)
 {
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_on_screen);
-
-  if (window == NULL || window->frame == NULL)
-    meta_bug ("No such frame window 0x%lx!\n", frame_on_screen);  
+  MetaWindow *window = get_window (xdisplay, frame_on_screen);
 
   if (width)
     *width = window->screen->rect.width;
