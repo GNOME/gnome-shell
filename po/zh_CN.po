@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-16 05:37+0200\n"
-"PO-Revision-Date: 2006-04-16 12:48+0800\n"
+"POT-Creation-Date: 2006-05-01 23:11+0200\n"
+"PO-Revision-Date: 2006-05-02 13:23+0800\n"
 "Last-Translator: Funda Wang <fundawang@linux.net.cn>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
@@ -60,12 +60,12 @@ msgstr "启动 metacity-dialog 查询有关杀死应用程序的情况时出错�
 msgid "Failed to get hostname: %s\n"
 msgstr "无法获取主机名：%s\n"
 
-#: ../src/display.c:308
+#: ../src/display.c:354
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "无法打开 X Window System 显示“%s”\n"
 
-#: ../src/errors.c:233
+#: ../src/errors.c:269
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -76,49 +76,49 @@ msgstr ""
 "可能是 X 服务器已关闭或者您杀死/摧毁了\n"
 "窗口管理器。\n"
 
-#: ../src/errors.c:240
+#: ../src/errors.c:276
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "严重的 IO 错误 %d (%s) 出现在显示“%s”上。\n"
 
-#: ../src/frames.c:1097
+#: ../src/frames.c:1086
 msgid "Close Window"
 msgstr "关闭窗口"
 
-#: ../src/frames.c:1100
+#: ../src/frames.c:1089
 msgid "Window Menu"
 msgstr "窗口菜单"
 
-#: ../src/frames.c:1103
+#: ../src/frames.c:1092
 msgid "Minimize Window"
 msgstr "最小化窗口"
 
-#: ../src/frames.c:1106
+#: ../src/frames.c:1095
 msgid "Maximize Window"
 msgstr "最大化窗口"
 
-#: ../src/frames.c:1109
+#: ../src/frames.c:1098
 msgid "Unmaximize Window"
 msgstr "取消最大化窗口"
 
-#: ../src/keybindings.c:996
+#: ../src/keybindings.c:1021
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "某个其它程序已经将按键 %s 和修饰键 %x 配合使用作为一种组合\n"
 
-#: ../src/keybindings.c:2534
+#: ../src/keybindings.c:2588
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "用 metacity-dialog 输出一个命令错误消息时出错：%s\n"
 
-#: ../src/keybindings.c:2639
+#: ../src/keybindings.c:2693
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "命令 %d 尚未定义。\n"
 
-#: ../src/keybindings.c:3501
+#: ../src/keybindings.c:3559
 msgid "No terminal command has been defined.\n"
 msgstr "终端命令尚未定义。\n"
 
@@ -242,7 +242,7 @@ msgstr "移动到上侧工作区(_U)"
 msgid "Move to Workspace _Down"
 msgstr "移动到下侧工作区(_D)"
 
-#: ../src/menu.c:164 ../src/prefs.c:2013 ../src/prefs.c:2376
+#: ../src/menu.c:164 ../src/prefs.c:2142 ../src/prefs.c:2669
 #, c-format
 msgid "Workspace %d"
 msgstr "工作区 %d"
@@ -256,7 +256,7 @@ msgstr "工作区 1_0"
 msgid "Workspace %s%d"
 msgstr "工作区 %s%d"
 
-#: ../src/menu.c:370
+#: ../src/menu.c:373
 msgid "Move to Another _Workspace"
 msgstr "移动到另外的工作区(_W)"
 
@@ -399,15 +399,12 @@ msgstr "(未实现)导航以应用程序而不是窗口的方式工作"
 msgid ""
 "A font description string describing a font for window titlebars. The size "
 "from the description will only be used if the titlebar_font_size option is "
-"set to 0, however. Also, this option is disabled if the "
-"titlebar_uses_desktop_font option is set to true. By default, titlebar_font "
-"is unset, causing Metacity to fall back to the desktop font even if "
-"titlebar_uses_desktop_font is false."
+"set to 0. Also, this option is disabled if the titlebar_uses_desktop_font "
+"option is set to true."
 msgstr ""
-"字体说明字符串描述窗口工具栏的字体。但是，只有在 titlebar_font_size 选项设置"
+"描述窗口标题栏所用字体的字体描述字符串。但是，只有在 titlebar_font_size 选项设置"
 "为 0 时，才使用该说明中的字体大小。同时，如果 titlebar_uses_desktop_font 选项"
-"设置为真，则禁用该选项。默认情况下不设置 titlebar_font。这样，即使 "
-"titlebar_uses_desktop_font 为假，Metacity 也会退回为桌面字体。"
+"设置为真，则禁用该选项。默认情况下不设置 titlebar_font。"
 
 #: ../src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
@@ -458,18 +455,26 @@ msgid "Commands to run in response to keybindings"
 msgstr "按键组合对应的执行命令"
 
 #: ../src/metacity.schemas.in.h:11
+msgid "Compositing Manager"
+msgstr "复合管理器"
+
+#: ../src/metacity.schemas.in.h:12
 msgid "Control how new windows get focus"
 msgstr "控制新窗口如何获得窗口"
 
-#: ../src/metacity.schemas.in.h:12
+#: ../src/metacity.schemas.in.h:13
 msgid "Current theme"
 msgstr "当前主题"
 
-#: ../src/metacity.schemas.in.h:13
+#: ../src/metacity.schemas.in.h:14
 msgid "Delay in milliseconds for the auto raise option"
 msgstr "自动提升选项的几毫秒延迟"
 
-#: ../src/metacity.schemas.in.h:14
+#: ../src/metacity.schemas.in.h:15
+msgid "Determines whether Metacity is a compositing manager."
+msgstr "决定 Metacity 是否是复合管理器。"
+
+#: ../src/metacity.schemas.in.h:16
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
@@ -477,369 +482,355 @@ msgstr ""
 "决定应用程序或系统是否可以生成听得见的铃声；可以和“视觉铃声”一起使用，以便允"
 "许静默的铃声。"
 
-#: ../src/metacity.schemas.in.h:15
+#: ../src/metacity.schemas.in.h:17
 msgid "Disable misfeatures that are required by old or broken applications"
 msgstr "禁用旧的或有缺陷的应用程序所需的错误功能"
 
-#: ../src/metacity.schemas.in.h:16
+#: ../src/metacity.schemas.in.h:18
 msgid "Enable Visual Bell"
 msgstr "启用视觉铃声"
 
-#: ../src/metacity.schemas.in.h:17
+#: ../src/metacity.schemas.in.h:19
 msgid "Hide all windows and focus desktop"
 msgstr "隐藏所有窗口并聚焦桌面"
 
-#: ../src/metacity.schemas.in.h:18
+#: ../src/metacity.schemas.in.h:20
 msgid ""
-"If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
-"focused window will be automatically raised after a delay (the delay is "
-"specified by the auto_raise_delay key). This preference is poorly named, but "
-"kept for backwards compatibility. To try to be more clear (at least to the "
-"technically inclined), its meaning is \"automatically raise the window "
-"following a timeout which is triggered by non-grabbed mouse entry in sloppy "
-"or mouse focus modes\". It is unrelated to clicking behavior (i.e. this is "
-"not related to raise-on-click/orthogonal-raise). It is unrelated to entering "
-"a window during drag and drop (because that results in the application "
-"grabbing the mouse)"
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focused window will be automatically raised after a delay specified by "
+"the auto_raise_delay key. This is not related to clicking on a window to "
+"raise it, nor to entering a window during drag-and-drop."
 msgstr ""
-"如果为 true，而聚焦模式为“sloppy”或“mouse”，那么聚焦的窗口将会在指定延迟后自"
-"动升起，延迟的时间由 auto_raise_delay 键指定。此首选项的名称会有点混淆，只不"
-"过为了保持向后的兼容性。如果说得更清楚一点(至少从技术层面上)，其含义是“在 "
-"sloppy 或 mouse 聚焦模式中非拖曳鼠标项所触发的延迟之后自动升起窗口”。此选项与"
-"单击行为并没有什么关系(也就是说，此选项并不是单击时升起)。它也与拖放时进入窗"
-"口无关(因为拖放时将导致应用程序抓取到鼠标)"
+"如果为 true，而聚焦模式为“sloppy”或“mouse”，那么聚焦的窗口将会在指定延迟后"
+"自动升起，延迟的时间由 auto_raise_delay 键指定。此选项与单击行为并没有什么关系，它"
+"也与拖放时进入窗口无关。"
 
-#: ../src/metacity.schemas.in.h:19
+#: ../src/metacity.schemas.in.h:21
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
 msgstr ""
 "如果为 true，则忽略 titlebar_font 选项，并为窗口标题使用标准应用程序字体。"
 
-#: ../src/metacity.schemas.in.h:20
+#: ../src/metacity.schemas.in.h:22
 msgid ""
-"If true, metacity will give the user less feedback and less sense of "
-"\"direct manipulation\", by using wireframes, avoiding animations, or other "
-"means. This is a significant reduction in usability for many users, but may "
-"allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical. However, the wireframe feature is disabled when "
-"accessibility is on to avoid weird desktop breakages."
+"If true, metacity will give the user less feedback by using wireframes, "
+"avoiding animations, or other means. This is a significant reduction in "
+"usability for many users, but may allow legacy applications to continue "
+"working, and may also be a useful tradeoff for terminal servers. However, "
+"the wireframe feature is disabled when accessibility is on."
 msgstr ""
-"如果为 true，metacity 将会给用户提供较少的反馈，并且对“直接操纵”也更不敏感，"
+"如果为 true，metacity 将会给用户提供较少的反馈，"
 "方法是使用线框、避免动画或者其它途径。这对许多用户来说，可用性大打折扣，但是"
-"这将允许较早的应用程序和终端服务器能够顺利运行。此外，如果开启了辅助功能，为"
-"了避免不必要的桌面闪烁，系统会自动禁用线框特性。"
+"这将允许较早的应用程序和终端服务器能够顺利运行。此外，如果开启了辅助功能，系统会自动禁用线框特性。"
 
-#: ../src/metacity.schemas.in.h:21
+#: ../src/metacity.schemas.in.h:23
 msgid ""
 "If true, then Metacity works in terms of applications rather than windows. "
 "The concept is a bit abstract, but in general an application-based setup is "
 "more like the Mac and less like Windows. When you focus a window in "
 "application-based mode, all the windows in the application will be raised. "
 "Also, in application-based mode, focus clicks are not passed through to "
-"windows in other applications. The existence of this setting is somewhat "
-"questionable. But it's better than having settings for all the specific "
-"details of application-based vs. window-based, e.g. whether to pass through "
-"clicks. Also, application-based mode is largely unimplemented at the moment."
+"windows in other applications. Application-based mode is, however, largely "
+"unimplemented at the moment."
 msgstr ""
 "如果为 true，那么 Metacity 将以应用程序而不是窗口的方式工作。该概念有点抽象，"
 "但通常基于应用程序的设置更类似于 Mac 系统，而不太像 Windows 系统。当您以基于"
 "应用程序的模式聚焦窗口时，该应用程序中的所有窗口都将被提升。同时，在基于应用"
-"程序的模式下，聚焦点击不会被传递到其它应用程序中的窗口。这种设置的存在有些问"
-"题。但是，使所有特定细节的设置基于应用程序要比基于窗口好，如是否传递点击操作"
-"的设置。同时，基于应用程序的模式目前还基本没有实现。"
+"程序的模式下，聚焦点击不会被传递到其它应用程序中的窗口。但是，基于应用程序的模式目前还基本没有实现。"
 
-#: ../src/metacity.schemas.in.h:22
+#: ../src/metacity.schemas.in.h:24
 msgid "If true, trade off usability for less resource usage"
 msgstr "如果为 true，则以可用性为代价而降低资源占用"
 
-#: ../src/metacity.schemas.in.h:23
+#: ../src/metacity.schemas.in.h:25
 msgid "Lower window below other windows"
 msgstr "将窗口降低到其它窗口之下"
 
-#: ../src/metacity.schemas.in.h:24
+#: ../src/metacity.schemas.in.h:26
 msgid ""
 "Many actions (e.g. clicking in the client area, moving or resizing the "
 "window) normally raise the window as a side-effect. Set this option to false "
-"to decouple raising from other user interactions. When false, windows can "
-"still be raised by an alt-left-click anywhere on the window or a normal "
-"click on the window decorations (assuming such clicks aren't used to start a "
-"move or resize operation). Special messages, such as activation requests "
-"from pagers, may also raise windows when this option is false. This option "
-"is currently disabled in click-to-focus mode."
+"to decouple raising from other user actions. Even when this option is false, "
+"windows can still be raised by an alt-left-click anywhere on the window, a "
+"normal click on the window decorations, or by special messages, such as "
+"activation requests from pagers. This option is currently disabled in click-"
+"to-focus mode."
 msgstr ""
 "许多操作(比如单击客户区、移动或更改窗口大小)通常会产生升起窗口的副作用。将此"
 "选项设定为 false 将禁止用户的其它交互操作产生升起窗口的副作用。当此选项为 "
-"false 时，按住 Alt 并单击窗口中的任何一处或者单击窗口的装饰区(假如这样的单击"
-"不会导致移动或更改大小操作)仍可以升起窗口。特殊消息，比如页面切换器请求激活窗"
-"口在此选项为 false 时仍可能升起窗口。此选项目前在单击并聚焦模式中被禁用。"
+"false 时，按住 Alt 并单击窗口中的任何一处或者窗口的装饰区，又或者是类似页面切换器"
+"请求激活窗口这样的特殊消息仍可以升起窗口。此选项目前在单击并聚焦模式中被禁用。"
 
-#: ../src/metacity.schemas.in.h:25
+#: ../src/metacity.schemas.in.h:27
 msgid "Maximize window"
 msgstr "最大化窗口"
 
-#: ../src/metacity.schemas.in.h:26
+#: ../src/metacity.schemas.in.h:28
 msgid "Maximize window horizontally"
 msgstr "水平最大化窗口"
 
-#: ../src/metacity.schemas.in.h:27
+#: ../src/metacity.schemas.in.h:29
 msgid "Maximize window vertically"
 msgstr "垂直最大化窗口"
 
-#: ../src/metacity.schemas.in.h:28
+#: ../src/metacity.schemas.in.h:30
 msgid "Minimize window"
 msgstr "最小化窗口"
 
-#: ../src/metacity.schemas.in.h:29
+#: ../src/metacity.schemas.in.h:31
 msgid "Modifier to use for modified window click actions"
 msgstr "用于修改窗口点击动作的修饰键"
 
-#: ../src/metacity.schemas.in.h:30
+#: ../src/metacity.schemas.in.h:32
 msgid "Move backward between panels and the desktop immediately"
 msgstr "在面板和桌面之间立即反向移动焦点"
 
-#: ../src/metacity.schemas.in.h:31
+#: ../src/metacity.schemas.in.h:33
 msgid "Move backwards between panels and the desktop with popup"
 msgstr "在面板和桌面之间用弹出框反向移动焦点"
 
-#: ../src/metacity.schemas.in.h:32
+#: ../src/metacity.schemas.in.h:34
 msgid "Move backwards between windows immediately"
 msgstr "在窗口之间立即反向移动焦点"
 
-#: ../src/metacity.schemas.in.h:33
+#: ../src/metacity.schemas.in.h:35
+msgid "Move backwards between windows of an application immediately"
+msgstr "在应用程序的窗口之间立即反向移动焦点"
+
+#: ../src/metacity.schemas.in.h:36
+msgid "Move backwards between windows of an application with popup"
+msgstr "在应用程序的窗口之间使用弹出窗口反向移动焦点"
+
+#: ../src/metacity.schemas.in.h:37
 msgid "Move between panels and the desktop immediately"
 msgstr "在面板和桌面之间立即移动焦点"
 
-#: ../src/metacity.schemas.in.h:34
+#: ../src/metacity.schemas.in.h:38
 msgid "Move between panels and the desktop with popup"
 msgstr "在面板和桌面之间用弹出框移动焦点"
 
-#: ../src/metacity.schemas.in.h:35
+#: ../src/metacity.schemas.in.h:39
 msgid "Move between windows immediately"
 msgstr "在窗口之间立即移动焦点"
 
-#: ../src/metacity.schemas.in.h:36
+#: ../src/metacity.schemas.in.h:40
+msgid "Move between windows of an application immediately"
+msgstr "在应用程序的窗口之间立即移动焦点"
+
+#: ../src/metacity.schemas.in.h:41
+msgid "Move between windows of an application with popup"
+msgstr "在应用程序的窗口之间用弹出框移动焦点"
+
+#: ../src/metacity.schemas.in.h:42
 msgid "Move between windows with popup"
 msgstr "在窗口之间用弹出框移动焦点"
 
-#: ../src/metacity.schemas.in.h:37
+#: ../src/metacity.schemas.in.h:43
 msgid "Move focus backwards between windows using popup display"
 msgstr "在窗口之间用弹出框反向移动焦点"
 
-#: ../src/metacity.schemas.in.h:38
+#: ../src/metacity.schemas.in.h:44
 msgid "Move window"
 msgstr "移动窗口"
 
-#: ../src/metacity.schemas.in.h:39
+#: ../src/metacity.schemas.in.h:45
 msgid "Move window one workspace down"
 msgstr "将窗口下移一个工作区"
 
-#: ../src/metacity.schemas.in.h:40
+#: ../src/metacity.schemas.in.h:46
 msgid "Move window one workspace to the left"
 msgstr "将窗口左移一个工作区"
 
-#: ../src/metacity.schemas.in.h:41
+#: ../src/metacity.schemas.in.h:47
 msgid "Move window one workspace to the right"
 msgstr "将窗口右移一个工作区"
 
-#: ../src/metacity.schemas.in.h:42
+#: ../src/metacity.schemas.in.h:48
 msgid "Move window one workspace up"
 msgstr "将窗口上移一个工作区"
 
-#: ../src/metacity.schemas.in.h:43
+#: ../src/metacity.schemas.in.h:49
 msgid "Move window to workspace 1"
 msgstr "将窗口移到工作区 1"
 
-#: ../src/metacity.schemas.in.h:44
+#: ../src/metacity.schemas.in.h:50
 msgid "Move window to workspace 10"
 msgstr "将窗口移到工作区 10"
 
-#: ../src/metacity.schemas.in.h:45
+#: ../src/metacity.schemas.in.h:51
 msgid "Move window to workspace 11"
 msgstr "将窗口移到工作区 11"
 
-#: ../src/metacity.schemas.in.h:46
+#: ../src/metacity.schemas.in.h:52
 msgid "Move window to workspace 12"
 msgstr "将窗口移到工作区 12"
 
-#: ../src/metacity.schemas.in.h:47
+#: ../src/metacity.schemas.in.h:53
 msgid "Move window to workspace 2"
 msgstr "将窗口移到工作区 2"
 
-#: ../src/metacity.schemas.in.h:48
+#: ../src/metacity.schemas.in.h:54
 msgid "Move window to workspace 3"
 msgstr "将窗口移到工作区 3"
 
-#: ../src/metacity.schemas.in.h:49
+#: ../src/metacity.schemas.in.h:55
 msgid "Move window to workspace 4"
 msgstr "将窗口移到工作区 4"
 
-#: ../src/metacity.schemas.in.h:50
+#: ../src/metacity.schemas.in.h:56
 msgid "Move window to workspace 5"
 msgstr "将窗口移到工作区 5"
 
-#: ../src/metacity.schemas.in.h:51
+#: ../src/metacity.schemas.in.h:57
 msgid "Move window to workspace 6"
 msgstr "将窗口移到工作区 6"
 
-#: ../src/metacity.schemas.in.h:52
+#: ../src/metacity.schemas.in.h:58
 msgid "Move window to workspace 7"
 msgstr "将窗口移到工作区 7"
 
-#: ../src/metacity.schemas.in.h:53
+#: ../src/metacity.schemas.in.h:59
 msgid "Move window to workspace 8"
 msgstr "将窗口移到工作区 8"
 
-#: ../src/metacity.schemas.in.h:54
+#: ../src/metacity.schemas.in.h:60
 msgid "Move window to workspace 9"
 msgstr "将窗口移到工作区 9"
 
-#: ../src/metacity.schemas.in.h:55
+#: ../src/metacity.schemas.in.h:61
 msgid "Name of workspace"
 msgstr "工作区名称"
 
-#: ../src/metacity.schemas.in.h:56
+#: ../src/metacity.schemas.in.h:62
 msgid "Number of workspaces"
 msgstr "工作区数量"
 
-#: ../src/metacity.schemas.in.h:57
+#: ../src/metacity.schemas.in.h:63
 msgid ""
-"Number of workspaces. Must be more than zero, and has a fixed maximum (to "
-"prevent accidentally destroying your desktop by asking for 34 million "
-"workspaces)."
+"Number of workspaces. Must be more than zero, and has a fixed maximum to "
+"prevent making the desktop unusable by accidentally asking for too many "
+"workspaces."
 msgstr ""
-"工作区数量。必须大于零，并有一个固定的最大值(以防由于不小心请求调用三千四百万"
-"个工作区而摧毁您的桌面)。"
+"工作区数量。必须大于零，并有一个固定的最大值，以防由于不小心请求调用太多"
+"工作区而摧毁您的桌面。"
 
-#: ../src/metacity.schemas.in.h:58
+#: ../src/metacity.schemas.in.h:64
 msgid "Raise obscured window, otherwise lower"
 msgstr "如果窗口被遮盖，则提升它，否则降低它"
 
-#: ../src/metacity.schemas.in.h:59
+#: ../src/metacity.schemas.in.h:65
 msgid "Raise window above other windows"
 msgstr "将窗口提升到其它窗口之上"
 
-#: ../src/metacity.schemas.in.h:60
+#: ../src/metacity.schemas.in.h:66
 msgid "Resize window"
 msgstr "改变窗口大小"
 
-#: ../src/metacity.schemas.in.h:61
+#: ../src/metacity.schemas.in.h:67
 msgid "Run a defined command"
 msgstr "运行预定义的命令"
 
-#: ../src/metacity.schemas.in.h:62
+#: ../src/metacity.schemas.in.h:68
 msgid "Run a terminal"
 msgstr "运行终端"
 
-#: ../src/metacity.schemas.in.h:63
+#: ../src/metacity.schemas.in.h:69
 msgid "Show the panel menu"
 msgstr "显示面板菜单"
 
-#: ../src/metacity.schemas.in.h:64
+#: ../src/metacity.schemas.in.h:70
 msgid "Show the panel run application dialog"
 msgstr "显示面板运行应用程序对话框"
 
-#: ../src/metacity.schemas.in.h:65
+#: ../src/metacity.schemas.in.h:71
 msgid ""
-"Some applications break specifications in ways that result in window manager "
-"misfeatures. For example, ideally Metacity would place all dialogs in a "
-"consistent position with respect to their parent window. This requires "
-"ignoring application-specified positions for dialogs. But some versions of "
-"Java/Swing mark their popup menus as dialogs, so Metacity has to disable "
-"dialog positioning to allow menus to work in broken Java applications. There "
-"are several other examples like this. This option puts Metacity in full-on "
-"Correct mode, which perhaps gives a moderately nicer UI if you don't need to "
-"run any broken apps. Sadly, workarounds must be enabled by default; the real "
-"world is an ugly place. Some of the workarounds are workarounds for "
-"limitations in the specifications themselves, so sometimes a bug in no-"
-"workarounds mode won't be fixable without amending a spec."
+"Some applications disregard specifications in ways that result in window "
+"manager misfeatures. This option puts Metacity in a rigorously correct mode, "
+"which gives a more consistent user interface, provided one does not need to "
+"run any misbehaving applications."
 msgstr ""
-"某些应用程序破坏规定从而导致窗口管理器功能失常。例如，理想情况下 Metacity 将"
-"把所有对话框放置在与它们的父窗口一致的位置上。这就要求忽略应用程序指定的对话"
-"框位置。但某些版本的 Java/Swing 将它们的弹出菜单标记为对话框，所以 Metacity "
-"必须禁用对话框定位以便允许菜单在有缺陷的 Java 应用程序中工作。还有一些其它的"
-"类似示例。该选项将 Metacity 置于完全正确模式下，这样如果您不需要运行任何有缺"
-"陷的应用程序，就会拥有更好的 UI。但不幸的是，默认情况下必须使用一些折衷；现实"
-"是丑陋的。某些折衷是因为规范本身方面就有局限，所以有时一些不使用折衷方法的问"
-"题如果不修改规范将不可能修复。"
+"某些应用程序破坏规定从而导致窗口管理器功能失常。该选项将 Metacity 置于完全"
+"正确模式下，这样的用户界面会更具有一致性，假定您不需"
+"要运行任何有缺陷的应用程序。"
 
-#: ../src/metacity.schemas.in.h:66
+#: ../src/metacity.schemas.in.h:72
 msgid "Switch to workspace 1"
 msgstr "切换到工作区 1"
 
-#: ../src/metacity.schemas.in.h:67
+#: ../src/metacity.schemas.in.h:73
 msgid "Switch to workspace 10"
 msgstr "切换到工作区 10"
 
-#: ../src/metacity.schemas.in.h:68
+#: ../src/metacity.schemas.in.h:74
 msgid "Switch to workspace 11"
 msgstr "切换到工作区 11"
 
-#: ../src/metacity.schemas.in.h:69
+#: ../src/metacity.schemas.in.h:75
 msgid "Switch to workspace 12"
 msgstr "切换到工作区 12"
 
-#: ../src/metacity.schemas.in.h:70
+#: ../src/metacity.schemas.in.h:76
 msgid "Switch to workspace 2"
 msgstr "切换到工作区 2"
 
-#: ../src/metacity.schemas.in.h:71
+#: ../src/metacity.schemas.in.h:77
 msgid "Switch to workspace 3"
 msgstr "切换到工作区 3"
 
-#: ../src/metacity.schemas.in.h:72
+#: ../src/metacity.schemas.in.h:78
 msgid "Switch to workspace 4"
 msgstr "切换到工作区 4"
 
-#: ../src/metacity.schemas.in.h:73
+#: ../src/metacity.schemas.in.h:79
 msgid "Switch to workspace 5"
 msgstr "切换到工作区 5"
 
-#: ../src/metacity.schemas.in.h:74
+#: ../src/metacity.schemas.in.h:80
 msgid "Switch to workspace 6"
 msgstr "切换到工作区 6"
 
-#: ../src/metacity.schemas.in.h:75
+#: ../src/metacity.schemas.in.h:81
 msgid "Switch to workspace 7"
 msgstr "切换到工作区 7"
 
-#: ../src/metacity.schemas.in.h:76
+#: ../src/metacity.schemas.in.h:82
 msgid "Switch to workspace 8"
 msgstr "切换到工作区 8"
 
-#: ../src/metacity.schemas.in.h:77
+#: ../src/metacity.schemas.in.h:83
 msgid "Switch to workspace 9"
 msgstr "切换到工作区 9"
 
-#: ../src/metacity.schemas.in.h:78
+#: ../src/metacity.schemas.in.h:84
 msgid "Switch to workspace above this one"
 msgstr "切换到当前工作区上方的工作区"
 
-#: ../src/metacity.schemas.in.h:79
+#: ../src/metacity.schemas.in.h:85
 msgid "Switch to workspace below this one"
 msgstr "切换到当前工作区下方的工作区"
 
-#: ../src/metacity.schemas.in.h:80
+#: ../src/metacity.schemas.in.h:86
 msgid "Switch to workspace on the left"
 msgstr "切换到左侧的工作区"
 
-#: ../src/metacity.schemas.in.h:81
+#: ../src/metacity.schemas.in.h:87
 msgid "Switch to workspace on the right"
 msgstr "切换到右侧的工作区"
 
-#: ../src/metacity.schemas.in.h:82
+#: ../src/metacity.schemas.in.h:88
 msgid "System Bell is Audible"
 msgstr "系统铃声发声"
 
-#: ../src/metacity.schemas.in.h:83
+#: ../src/metacity.schemas.in.h:89
 msgid "Take a screenshot"
 msgstr "屏幕抓图"
 
-#: ../src/metacity.schemas.in.h:84
+#: ../src/metacity.schemas.in.h:90
 msgid "Take a screenshot of a window"
 msgstr "窗口抓图"
 
-#: ../src/metacity.schemas.in.h:85
+#: ../src/metacity.schemas.in.h:91
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
 "or another application 'bell' indicator has been rung. Currently there are "
@@ -853,7 +844,7 @@ msgstr ""
 "屏”将以黑白色闪烁整个屏幕，而“框架闪烁”将闪烁发出响铃信号的应用程序的标题栏。"
 "如果发送响铃的程序未知(通常是默认的“系统响铃”)，则闪烁当前窗口的标题栏。"
 
-#: ../src/metacity.schemas.in.h:86
+#: ../src/metacity.schemas.in.h:92
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
@@ -862,7 +853,7 @@ msgstr ""
 "/apps/metacity/global_keybindings/run_command_N 键值定义这些命令对应的按键组"
 "合。按下 run_command_N 对应的按键组合将执行命令 command_N。"
 
-#: ../src/metacity.schemas.in.h:87
+#: ../src/metacity.schemas.in.h:93
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
@@ -870,7 +861,7 @@ msgstr ""
 "/apps/metacity/global_keybindings/run_command_screenshot 键值定义了导致调用此"
 "设置的按键组合。"
 
-#: ../src/metacity.schemas.in.h:88
+#: ../src/metacity.schemas.in.h:94
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
@@ -879,7 +870,7 @@ msgstr ""
 "/apps/metacity/global_keybindings/run_command_window_screenshot 键值定义了导"
 "致调用此设置的按键组合。"
 
-#: ../src/metacity.schemas.in.h:89
+#: ../src/metacity.schemas.in.h:95
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -893,7 +884,7 @@ msgstr ""
 "自由并允许大小写或者缩写，如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为"
 "特殊字符串“disabled”，那么此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:90
+#: ../src/metacity.schemas.in.h:96
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -907,7 +898,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:91
+#: ../src/metacity.schemas.in.h:97
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -921,7 +912,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:92
+#: ../src/metacity.schemas.in.h:98
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -935,7 +926,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:93
+#: ../src/metacity.schemas.in.h:99
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -949,7 +940,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:94
+#: ../src/metacity.schemas.in.h:100
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -962,7 +953,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:95
+#: ../src/metacity.schemas.in.h:101
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -975,7 +966,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:96
+#: ../src/metacity.schemas.in.h:102
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -988,7 +979,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:97
+#: ../src/metacity.schemas.in.h:103
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1001,7 +992,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:98
+#: ../src/metacity.schemas.in.h:104
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1014,7 +1005,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:99
+#: ../src/metacity.schemas.in.h:105
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1027,7 +1018,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:100
+#: ../src/metacity.schemas.in.h:106
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1040,7 +1031,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:101
+#: ../src/metacity.schemas.in.h:107
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1053,7 +1044,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:102
+#: ../src/metacity.schemas.in.h:108
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1066,7 +1057,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:103
+#: ../src/metacity.schemas.in.h:109
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1079,7 +1070,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:104
+#: ../src/metacity.schemas.in.h:110
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1092,7 +1083,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:105
+#: ../src/metacity.schemas.in.h:111
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1105,7 +1096,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:106
+#: ../src/metacity.schemas.in.h:112
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1118,7 +1109,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:107
+#: ../src/metacity.schemas.in.h:113
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1131,7 +1122,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:108
+#: ../src/metacity.schemas.in.h:114
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1145,7 +1136,7 @@ msgstr ""
 "用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 "串“disabled”，那么此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:109
+#: ../src/metacity.schemas.in.h:115
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1159,7 +1150,7 @@ msgstr ""
 "用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 "串“disabled”，那么此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:110
+#: ../src/metacity.schemas.in.h:116
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1173,7 +1164,7 @@ msgstr ""
 "用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 "串“disabled”，那么此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:111
+#: ../src/metacity.schemas.in.h:117
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1186,7 +1177,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:112
+#: ../src/metacity.schemas.in.h:118
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1199,7 +1190,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:113
+#: ../src/metacity.schemas.in.h:119
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -1213,7 +1204,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:114
+#: ../src/metacity.schemas.in.h:120
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1227,7 +1218,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:115
+#: ../src/metacity.schemas.in.h:121
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1241,7 +1232,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:116
+#: ../src/metacity.schemas.in.h:122
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1254,7 +1245,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:117
+#: ../src/metacity.schemas.in.h:123
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1267,7 +1258,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:118
+#: ../src/metacity.schemas.in.h:124
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1280,7 +1271,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:119
+#: ../src/metacity.schemas.in.h:125
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1293,7 +1284,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:120
+#: ../src/metacity.schemas.in.h:126
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1306,7 +1297,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:121
+#: ../src/metacity.schemas.in.h:127
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1319,7 +1310,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:122
+#: ../src/metacity.schemas.in.h:128
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1332,7 +1323,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:123
+#: ../src/metacity.schemas.in.h:129
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1345,7 +1336,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:124
+#: ../src/metacity.schemas.in.h:130
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1358,7 +1349,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:125
+#: ../src/metacity.schemas.in.h:131
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1371,7 +1362,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:126
+#: ../src/metacity.schemas.in.h:132
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1384,7 +1375,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:127
+#: ../src/metacity.schemas.in.h:133
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1397,7 +1388,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:128
+#: ../src/metacity.schemas.in.h:134
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1410,7 +1401,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:129
+#: ../src/metacity.schemas.in.h:135
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1424,7 +1415,7 @@ msgstr ""
 "用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 "串“disabled”，那么此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:130
+#: ../src/metacity.schemas.in.h:136
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1438,7 +1429,39 @@ msgstr ""
 "用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 "串“disabled”，那么此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:131
+#: ../src/metacity.schemas.in.h:137
+msgid ""
+"The keybinding used to move focus backwards between windows of an "
+"application without a popup window. Holding \"shift\" together with this "
+"binding makes the direction go forward again. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"用于同一个应用程序的不同窗口之间不用弹出框反向移动焦点的按键组合。使用这个组合时如果按"
+"住“Shift”键会将移动顺序改回正向顺序。其格式类似于“&lt;Control&gt;a”或“&lt;"
+"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
+
+#: ../src/metacity.schemas.in.h:138
+msgid ""
+"The keybinding used to move focus backwards between windows of an "
+"application, using a popup window. Holding \"shift\" together with this "
+"binding makes the direction go forward again. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"用于同一个应用程序的不同窗口之间不用弹出框反向移动焦点的按键组合。使用这个组合时如果按住“Shift”键"
+"会将移动顺序改回正向顺序。其格式类似于“&lt;Control&gt;a”或“&lt;Shift&gt;&lt;"
+"Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;"
+"Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
+"将没有按键组合。"
+
+#: ../src/metacity.schemas.in.h:139
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1454,7 +1477,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:132
+#: ../src/metacity.schemas.in.h:140
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1470,7 +1493,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:133
+#: ../src/metacity.schemas.in.h:141
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1484,7 +1507,7 @@ msgstr ""
 "缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 "串“disabled”，那么此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:134
+#: ../src/metacity.schemas.in.h:142
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1498,7 +1521,39 @@ msgstr ""
 "用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 "串“disabled”，那么此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:135
+#: ../src/metacity.schemas.in.h:143
+msgid ""
+"The keybinding used to move focus between windows of an application without "
+"a popup window. Holding the \"shift\" key while using this binding reverses "
+"the direction of movement. The format looks like \"&lt;Control&gt;a\" or "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
+"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
+"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
+"then there will be no keybinding for this action."
+msgstr ""
+"用于同一个应用程序的不同窗口之间不用弹出框移动焦点的按键组合。使用这"
+"个组合时如果按住“Shift”键将反转移动顺序。其格式类似于“&lt;Control&gt;"
+"a”或“&lt;Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和"
+"缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
+"串“disabled”，那么此操作将没有按键组合。"
+
+#: ../src/metacity.schemas.in.h:144
+msgid ""
+"The keybinding used to move focus between windows of an application, using a "
+"popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" key while "
+"using this binding reverses the direction of movement. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"用于同一个应用程序的不同窗口之间使用弹出框移动焦点的按键组合。使用这个"
+"组合时如果按住“Shift”键将反转移动顺序。其格式类似于“&lt;Control&gt;a”或“&lt;"
+"Shift&gt;&lt;Alt&gt;F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例"
+"如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
+"此操作将没有按键组合。"
+
+#: ../src/metacity.schemas.in.h:145
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1514,7 +1569,7 @@ msgstr ""
 "缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 "串“disabled”，那么此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:136
+#: ../src/metacity.schemas.in.h:146
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1530,7 +1585,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:137
+#: ../src/metacity.schemas.in.h:147
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1544,7 +1599,7 @@ msgstr ""
 "的格式非常自由并允许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果"
 "将该选项设置为特殊字符串“disabled”，那么此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:138
+#: ../src/metacity.schemas.in.h:148
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1557,7 +1612,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:139
+#: ../src/metacity.schemas.in.h:149
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1570,7 +1625,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:140
+#: ../src/metacity.schemas.in.h:150
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1583,7 +1638,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:141
+#: ../src/metacity.schemas.in.h:151
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1597,7 +1652,7 @@ msgstr ""
 "用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 "串“disabled”，那么此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:142
+#: ../src/metacity.schemas.in.h:152
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1610,7 +1665,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:143
+#: ../src/metacity.schemas.in.h:153
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1624,7 +1679,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:144
+#: ../src/metacity.schemas.in.h:154
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1636,7 +1691,7 @@ msgstr ""
 "F1”。该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;"
 "Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:145
+#: ../src/metacity.schemas.in.h:155
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1650,7 +1705,7 @@ msgstr ""
 "缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 "串“disabled”，那么此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:146
+#: ../src/metacity.schemas.in.h:156
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1664,7 +1719,7 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:147
+#: ../src/metacity.schemas.in.h:157
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1677,27 +1732,27 @@ msgstr ""
 "Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作"
 "将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:148
+#: ../src/metacity.schemas.in.h:158
 msgid "The name of a workspace."
 msgstr "工作区名称。"
 
-#: ../src/metacity.schemas.in.h:149
+#: ../src/metacity.schemas.in.h:159
 msgid "The screenshot command"
 msgstr "屏幕抓图命令"
 
-#: ../src/metacity.schemas.in.h:150
+#: ../src/metacity.schemas.in.h:160
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr "主题决定窗口边框、标题栏等的外观。"
 
-#: ../src/metacity.schemas.in.h:151
+#: ../src/metacity.schemas.in.h:161
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
 msgstr "提升窗口前的延迟时间(如果 auto_raise 设置为真)。延迟时间的单位为毫秒。"
 
-#: ../src/metacity.schemas.in.h:152
+#: ../src/metacity.schemas.in.h:162
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1709,20 +1764,20 @@ msgstr ""
 "聚焦该窗口，“sloppy”表示当鼠标进入窗口时，即会聚焦该窗口，“mouse”表示当鼠标进"
 "入窗口时会聚焦该窗口，当鼠标离开该窗口时则会失去焦点。"
 
-#: ../src/metacity.schemas.in.h:153
+#: ../src/metacity.schemas.in.h:163
 msgid "The window screenshot command"
 msgstr "窗口抓图命令"
 
-#: ../src/metacity.schemas.in.h:154
+#: ../src/metacity.schemas.in.h:164
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
-"the window is covered by another window, it raises the window above other "
-"windows. If the window is already fully visible, it lowers the window below "
-"other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
+"the window is covered by another one, it raises the window above all others, "
+"and if the window is already fully visible, it lowers it below all others. "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
 msgstr ""
 "用于将窗口更改到位于其它窗口上方或下方的按键组合。如果窗口被另一个窗口覆盖，"
 "则会将该窗口提升到其它窗口的上方。如果窗口已经完全可见，则会将该窗口降低到其"
@@ -1730,7 +1785,7 @@ msgstr ""
 "该解析程序的格式非常自由并允许使用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;"
 "Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:155
+#: ../src/metacity.schemas.in.h:165
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1743,7 +1798,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:156
+#: ../src/metacity.schemas.in.h:166
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1756,7 +1811,7 @@ msgstr ""
 "如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符串“disabled”，那么"
 "此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:157
+#: ../src/metacity.schemas.in.h:167
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1770,7 +1825,7 @@ msgstr ""
 "用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 "串“disabled”，那么此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:158
+#: ../src/metacity.schemas.in.h:168
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -1784,7 +1839,7 @@ msgstr ""
 "用大小写和缩写，例如“&lt;Ctl&gt;”和“&lt;Ctrl&gt;”。如果将该选项设置为特殊字符"
 "串“disabled”，那么此操作将没有按键组合。"
 
-#: ../src/metacity.schemas.in.h:159
+#: ../src/metacity.schemas.in.h:169
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -1796,94 +1851,95 @@ msgstr ""
 "开窗口，“toggle_maximize”将最大化/还原窗口，“minimize”将最小化窗口，"
 "而“none”将不执行任何操作。"
 
-#: ../src/metacity.schemas.in.h:160
+#: ../src/metacity.schemas.in.h:170
 msgid ""
 "This option provides additional control over how newly created windows get "
 "focus. It has two possible values; \"smart\" applies the user's normal focus "
 "mode, and \"strict\" results in windows started from a terminal not being "
 "given focus."
 msgstr ""
-"此选项提供了关于新创建的窗口如何获得焦点的额外控制。目前有效的选项包括，"
-"“smart”将应用用户普通的聚焦模式，而“strict”将使得通过终端启动的窗口"
-"不获得焦点。"
+"此选项提供了关于新创建的窗口如何获得焦点的额外控制。目前有效的选项包"
+"括，“smart”将应用用户普通的聚焦模式，而“strict”将使得通过终端启动的窗口不获得"
+"焦点。"
 
-#: ../src/metacity.schemas.in.h:161
+#: ../src/metacity.schemas.in.h:171
 msgid "Toggle always on top state"
 msgstr "切换常居顶层状态"
 
-#: ../src/metacity.schemas.in.h:162
+#: ../src/metacity.schemas.in.h:172
 msgid "Toggle fullscreen mode"
 msgstr "切换全屏模式"
 
-#: ../src/metacity.schemas.in.h:163
+#: ../src/metacity.schemas.in.h:173
 msgid "Toggle maximization state"
 msgstr "切换最大化状态"
 
-#: ../src/metacity.schemas.in.h:164
+#: ../src/metacity.schemas.in.h:174
 msgid "Toggle shaded state"
 msgstr "切换卷起状态"
 
-#: ../src/metacity.schemas.in.h:165
+#: ../src/metacity.schemas.in.h:175
 msgid "Toggle window on all workspaces"
 msgstr "切换窗口是否位于所有工作区"
 
-#: ../src/metacity.schemas.in.h:166
+#: ../src/metacity.schemas.in.h:176
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
-"environments, or when 'audible bell' is off."
+"environments."
 msgstr ""
 "当应用程序或系统发出“铃声”时，打开视觉标识；适合有听力障碍的用户以及在吵闹的"
-"环境中使用，或者关闭“听得见的铃声”时。"
+"环境中使用。"
 
-#: ../src/metacity.schemas.in.h:167
+#: ../src/metacity.schemas.in.h:177
 msgid "Unmaximize window"
 msgstr "取消最大化窗口"
 
-#: ../src/metacity.schemas.in.h:168
+#: ../src/metacity.schemas.in.h:178
 msgid "Use standard system font in window titles"
 msgstr "在窗口标题中使用标准系统字体"
 
-#: ../src/metacity.schemas.in.h:169
+#: ../src/metacity.schemas.in.h:179
 msgid "Visual Bell Type"
 msgstr "视觉铃声类型"
 
-#: ../src/metacity.schemas.in.h:170
+#: ../src/metacity.schemas.in.h:180
 msgid "Whether raising should be a side-effect of other user interactions"
 msgstr "升起是否作为其它用户交互的副作用"
 
-#: ../src/metacity.schemas.in.h:171
+#: ../src/metacity.schemas.in.h:181
 msgid "Window focus mode"
 msgstr "窗口焦点模式"
 
-#: ../src/metacity.schemas.in.h:172
+#: ../src/metacity.schemas.in.h:182
 msgid "Window title font"
 msgstr "窗口标题字体"
 
-#: ../src/prefs.c:549 ../src/prefs.c:565 ../src/prefs.c:581 ../src/prefs.c:597
-#: ../src/prefs.c:613 ../src/prefs.c:629 ../src/prefs.c:645 ../src/prefs.c:665
-#: ../src/prefs.c:681 ../src/prefs.c:697 ../src/prefs.c:713 ../src/prefs.c:729
-#: ../src/prefs.c:745 ../src/prefs.c:761 ../src/prefs.c:777 ../src/prefs.c:794
-#: ../src/prefs.c:810 ../src/prefs.c:826 ../src/prefs.c:842 ../src/prefs.c:858
-#: ../src/prefs.c:873 ../src/prefs.c:888 ../src/prefs.c:903 ../src/prefs.c:919
-#: ../src/prefs.c:935 ../src/prefs.c:951
+#: ../src/prefs.c:574 ../src/prefs.c:590 ../src/prefs.c:606 ../src/prefs.c:622
+#: ../src/prefs.c:638 ../src/prefs.c:654 ../src/prefs.c:670 ../src/prefs.c:690
+#: ../src/prefs.c:706 ../src/prefs.c:722 ../src/prefs.c:740 ../src/prefs.c:756
+#: ../src/prefs.c:775 ../src/prefs.c:791 ../src/prefs.c:808 ../src/prefs.c:824
+#: ../src/prefs.c:840 ../src/prefs.c:857 ../src/prefs.c:873 ../src/prefs.c:889
+#: ../src/prefs.c:905 ../src/prefs.c:921 ../src/prefs.c:936 ../src/prefs.c:951
+#: ../src/prefs.c:966 ../src/prefs.c:982 ../src/prefs.c:998
+#: ../src/prefs.c:1014 ../src/prefs.c:1030
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf 关键字“%s”被设置为无效的类型\n"
 
-#: ../src/prefs.c:996
+#: ../src/prefs.c:1075
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr "在配置数据库中找到的“%s”不是鼠标按钮修饰键的有效值\n"
 
-#: ../src/prefs.c:1020 ../src/prefs.c:1041 ../src/prefs.c:1537
+#: ../src/prefs.c:1099 ../src/prefs.c:1120 ../src/prefs.c:1616
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf 关键字“%s”被设置为无效值\n"
 
-#: ../src/prefs.c:1170
+#: ../src/prefs.c:1249
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
@@ -1892,12 +1948,12 @@ msgstr ""
 "存储在 GConf 关键字 %2$s 中的值 %1$d 不是一个合理的光标大小；必须介于 1 到 "
 "128\n"
 
-#: ../src/prefs.c:1250
+#: ../src/prefs.c:1329
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "无法解析字体说明“%s”(来自 GConf 关键字 %s)\n"
 
-#: ../src/prefs.c:1435
+#: ../src/prefs.c:1514
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -1906,35 +1962,35 @@ msgstr ""
 "存储在 GConf 关键字 %2$s 中的值 %1$d 不是一个合理的工作区数量，当前最大值为 %"
 "3$d\n"
 
-#: ../src/prefs.c:1495
+#: ../src/prefs.c:1574
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr "有缺陷的应用程序的工作区已禁用。某些应用程序可能无法正常运行。\n"
 
-#: ../src/prefs.c:1564
+#: ../src/prefs.c:1643
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "存储在 GConf 关键字 %2$s 中的值 %1$d 超出了 0 到 %3$d 的范围\n"
 
-#: ../src/prefs.c:1704
+#: ../src/prefs.c:1786
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "将工作区数量设置为 %d 时出错：%s\n"
 
-#: ../src/prefs.c:2040
+#: ../src/prefs.c:2170 ../src/prefs.c:2335
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "在配置数据库中找到的“%s”不是按键组合“%s”的有效值\n"
 
-#: ../src/prefs.c:2457
+#: ../src/prefs.c:2750
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "将工作区 %d 的名称设置为“%s”时出错：%s\n"
 
-#: ../src/resizepopup.c:126
+#: ../src/resizepopup.c:123
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
@@ -1964,7 +2020,7 @@ msgstr "无法获得显示“%2$s”上的屏幕 %1$d 的窗口管理器选定�
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "显示“%2$s”上的屏幕 %1$d 已经有一个窗口管理器\n"
 
-#: ../src/screen.c:702
+#: ../src/screen.c:705
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "无法释放显示“%2$s”上的屏幕 %1$d\n"
@@ -2099,8 +2155,8 @@ msgstr ""
 #: ../src/theme-parser.c:935 ../src/theme-parser.c:1012
 #: ../src/theme-parser.c:1062 ../src/theme-parser.c:1070
 #: ../src/theme-parser.c:1126 ../src/theme-parser.c:1134
-#: ../src/theme-parser.c:2936 ../src/theme-parser.c:3025
-#: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
+#: ../src/theme-parser.c:2933 ../src/theme-parser.c:3022
+#: ../src/theme-parser.c:3029 ../src/theme-parser.c:3036
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
 msgstr "无“%s”属性在 <%s> 元素上"
@@ -2157,17 +2213,17 @@ msgstr "菜单图标的未知状态“%s”"
 msgid "Theme already has a menu icon for function %s state %s"
 msgstr "主题已经有一个函数为 %s、状态为 %s 的菜单图标"
 
-#: ../src/theme-parser.c:1177 ../src/theme-parser.c:3244
-#: ../src/theme-parser.c:3323
+#: ../src/theme-parser.c:1177 ../src/theme-parser.c:3241
+#: ../src/theme-parser.c:3320
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "尚未定义名为“%s”的 <draw_ops>"
 
 #: ../src/theme-parser.c:1192 ../src/theme-parser.c:1256
-#: ../src/theme-parser.c:1545 ../src/theme-parser.c:3124
-#: ../src/theme-parser.c:3178 ../src/theme-parser.c:3338
-#: ../src/theme-parser.c:3515 ../src/theme-parser.c:3553
-#: ../src/theme-parser.c:3591 ../src/theme-parser.c:3629
+#: ../src/theme-parser.c:1545 ../src/theme-parser.c:3121
+#: ../src/theme-parser.c:3175 ../src/theme-parser.c:3335
+#: ../src/theme-parser.c:3512 ../src/theme-parser.c:3550
+#: ../src/theme-parser.c:3588 ../src/theme-parser.c:3626
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "不允许元素 <%s> 在 <%s> 下方"
@@ -2224,246 +2280,246 @@ msgstr "元素 <%s> 上没有“right”属性"
 msgid "Border \"%s\" is unknown"
 msgstr "边框“%s”未知"
 
-#: ../src/theme-parser.c:1655 ../src/theme-parser.c:1765
-#: ../src/theme-parser.c:1868 ../src/theme-parser.c:2055
-#: ../src/theme-parser.c:2869
+#: ../src/theme-parser.c:1652 ../src/theme-parser.c:1762
+#: ../src/theme-parser.c:1865 ../src/theme-parser.c:2052
+#: ../src/theme-parser.c:2866
 #, c-format
 msgid "No \"color\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“color”属性"
 
-#: ../src/theme-parser.c:1662
+#: ../src/theme-parser.c:1659
 #, c-format
 msgid "No \"x1\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“x1”属性"
 
-#: ../src/theme-parser.c:1669 ../src/theme-parser.c:2714
+#: ../src/theme-parser.c:1666 ../src/theme-parser.c:2711
 #, c-format
 msgid "No \"y1\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“y1”属性"
 
-#: ../src/theme-parser.c:1676
+#: ../src/theme-parser.c:1673
 #, c-format
 msgid "No \"x2\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“x2”属性"
 
-#: ../src/theme-parser.c:1683 ../src/theme-parser.c:2721
+#: ../src/theme-parser.c:1680 ../src/theme-parser.c:2718
 #, c-format
 msgid "No \"y2\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“y2”属性"
 
-#: ../src/theme-parser.c:1772 ../src/theme-parser.c:1875
-#: ../src/theme-parser.c:1981 ../src/theme-parser.c:2062
-#: ../src/theme-parser.c:2168 ../src/theme-parser.c:2266
-#: ../src/theme-parser.c:2483 ../src/theme-parser.c:2609
-#: ../src/theme-parser.c:2707 ../src/theme-parser.c:2781
-#: ../src/theme-parser.c:2876
+#: ../src/theme-parser.c:1769 ../src/theme-parser.c:1872
+#: ../src/theme-parser.c:1978 ../src/theme-parser.c:2059
+#: ../src/theme-parser.c:2165 ../src/theme-parser.c:2263
+#: ../src/theme-parser.c:2480 ../src/theme-parser.c:2606
+#: ../src/theme-parser.c:2704 ../src/theme-parser.c:2778
+#: ../src/theme-parser.c:2873
 #, c-format
 msgid "No \"x\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“x”属性"
 
-#: ../src/theme-parser.c:1779 ../src/theme-parser.c:1882
-#: ../src/theme-parser.c:1988 ../src/theme-parser.c:2069
-#: ../src/theme-parser.c:2175 ../src/theme-parser.c:2273
-#: ../src/theme-parser.c:2490 ../src/theme-parser.c:2616
-#: ../src/theme-parser.c:2788 ../src/theme-parser.c:2883
+#: ../src/theme-parser.c:1776 ../src/theme-parser.c:1879
+#: ../src/theme-parser.c:1985 ../src/theme-parser.c:2066
+#: ../src/theme-parser.c:2172 ../src/theme-parser.c:2270
+#: ../src/theme-parser.c:2487 ../src/theme-parser.c:2613
+#: ../src/theme-parser.c:2785 ../src/theme-parser.c:2880
 #, c-format
 msgid "No \"y\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“y”属性"
 
-#: ../src/theme-parser.c:1786 ../src/theme-parser.c:1889
-#: ../src/theme-parser.c:1995 ../src/theme-parser.c:2076
-#: ../src/theme-parser.c:2182 ../src/theme-parser.c:2280
-#: ../src/theme-parser.c:2497 ../src/theme-parser.c:2623
-#: ../src/theme-parser.c:2795
+#: ../src/theme-parser.c:1783 ../src/theme-parser.c:1886
+#: ../src/theme-parser.c:1992 ../src/theme-parser.c:2073
+#: ../src/theme-parser.c:2179 ../src/theme-parser.c:2277
+#: ../src/theme-parser.c:2494 ../src/theme-parser.c:2620
+#: ../src/theme-parser.c:2792
 #, c-format
 msgid "No \"width\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“width”属性"
 
-#: ../src/theme-parser.c:1793 ../src/theme-parser.c:1896
-#: ../src/theme-parser.c:2002 ../src/theme-parser.c:2083
-#: ../src/theme-parser.c:2189 ../src/theme-parser.c:2287
-#: ../src/theme-parser.c:2504 ../src/theme-parser.c:2630
-#: ../src/theme-parser.c:2802
+#: ../src/theme-parser.c:1790 ../src/theme-parser.c:1893
+#: ../src/theme-parser.c:1999 ../src/theme-parser.c:2080
+#: ../src/theme-parser.c:2186 ../src/theme-parser.c:2284
+#: ../src/theme-parser.c:2501 ../src/theme-parser.c:2627
+#: ../src/theme-parser.c:2799
 #, c-format
 msgid "No \"height\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“height”属性"
 
-#: ../src/theme-parser.c:1903
+#: ../src/theme-parser.c:1900
 #, c-format
 msgid "No \"start_angle\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“start_angle”属性"
 
-#: ../src/theme-parser.c:1910
+#: ../src/theme-parser.c:1907
 #, c-format
 msgid "No \"extent_angle\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“extent_angle”属性"
 
-#: ../src/theme-parser.c:2090
+#: ../src/theme-parser.c:2087
 #, c-format
 msgid "No \"alpha\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“alpha”属性"
 
-#: ../src/theme-parser.c:2161
+#: ../src/theme-parser.c:2158
 #, c-format
 msgid "No \"type\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“type”属性"
 
-#: ../src/theme-parser.c:2209
+#: ../src/theme-parser.c:2206
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "不理解梯度类型的值“%s”"
 
-#: ../src/theme-parser.c:2294
+#: ../src/theme-parser.c:2291
 #, c-format
 msgid "No \"filename\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“filename”属性"
 
-#: ../src/theme-parser.c:2319 ../src/theme-parser.c:2827
+#: ../src/theme-parser.c:2316 ../src/theme-parser.c:2824
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "不理解填充类型“%s”(用于 <%s> 元素)"
 
-#: ../src/theme-parser.c:2462 ../src/theme-parser.c:2595
-#: ../src/theme-parser.c:2700
+#: ../src/theme-parser.c:2459 ../src/theme-parser.c:2592
+#: ../src/theme-parser.c:2697
 #, c-format
 msgid "No \"state\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“state”属性"
 
-#: ../src/theme-parser.c:2469 ../src/theme-parser.c:2602
+#: ../src/theme-parser.c:2466 ../src/theme-parser.c:2599
 #, c-format
 msgid "No \"shadow\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“shadow”属性"
 
-#: ../src/theme-parser.c:2476
+#: ../src/theme-parser.c:2473
 #, c-format
 msgid "No \"arrow\" attribute on element <%s>"
 msgstr "元素 <%s> 上没有“arrow”属性"
 
-#: ../src/theme-parser.c:2529 ../src/theme-parser.c:2651
-#: ../src/theme-parser.c:2739
+#: ../src/theme-parser.c:2526 ../src/theme-parser.c:2648
+#: ../src/theme-parser.c:2736
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "不理解状态“%s”(用于 <%s> 元素)"
 
-#: ../src/theme-parser.c:2539 ../src/theme-parser.c:2661
+#: ../src/theme-parser.c:2536 ../src/theme-parser.c:2658
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "不理解阴影“%s”(用于 <%s> 元素)"
 
-#: ../src/theme-parser.c:2549
+#: ../src/theme-parser.c:2546
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "不理解箭头“%s”(用于 <%s> 元素)"
 
-#: ../src/theme-parser.c:2962 ../src/theme-parser.c:3078
+#: ../src/theme-parser.c:2959 ../src/theme-parser.c:3075
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "尚未定义名为“%s”的 <draw_ops>"
 
-#: ../src/theme-parser.c:2974 ../src/theme-parser.c:3090
+#: ../src/theme-parser.c:2971 ../src/theme-parser.c:3087
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "此处包括 draw_ops“%s”将创建一个循环引用"
 
-#: ../src/theme-parser.c:3153
+#: ../src/theme-parser.c:3150
 #, c-format
 msgid "No \"value\" attribute on <%s> element"
 msgstr "元素 <%s> 上没有“value”属性"
 
-#: ../src/theme-parser.c:3210
+#: ../src/theme-parser.c:3207
 #, c-format
 msgid "No \"position\" attribute on <%s> element"
 msgstr "元素 <%s> 上没有“position”属性"
 
-#: ../src/theme-parser.c:3219
+#: ../src/theme-parser.c:3216
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "帧段的位置“%s”未知"
 
-#: ../src/theme-parser.c:3227
+#: ../src/theme-parser.c:3224
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "在位置 %s 处已经有一段窗帧风格"
 
-#: ../src/theme-parser.c:3272
+#: ../src/theme-parser.c:3269
 #, c-format
 msgid "No \"function\" attribute on <%s> element"
 msgstr "元素 <%s> 上没有“function”属性"
 
-#: ../src/theme-parser.c:3280 ../src/theme-parser.c:3384
+#: ../src/theme-parser.c:3277 ../src/theme-parser.c:3381
 #, c-format
 msgid "No \"state\" attribute on <%s> element"
 msgstr "元素 <%s> 上没有“state”属性"
 
-#: ../src/theme-parser.c:3289
+#: ../src/theme-parser.c:3286
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "按钮的函数“%s”未知"
 
-#: ../src/theme-parser.c:3298
+#: ../src/theme-parser.c:3295
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "按钮的状态“%s”未知"
 
-#: ../src/theme-parser.c:3306
+#: ../src/theme-parser.c:3303
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "窗帧风格已经有一个函数为 %s、状态为 %s 的按钮"
 
-#: ../src/theme-parser.c:3376
+#: ../src/theme-parser.c:3373
 #, c-format
 msgid "No \"focus\" attribute on <%s> element"
 msgstr "元素 <%s> 上没有“focus”属性"
 
-#: ../src/theme-parser.c:3392
+#: ../src/theme-parser.c:3389
 #, c-format
 msgid "No \"style\" attribute on <%s> element"
 msgstr "元素 <%s> 上没有“style”属性"
 
-#: ../src/theme-parser.c:3401
+#: ../src/theme-parser.c:3398
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "“%s”不是 focus 属性的有效值"
 
-#: ../src/theme-parser.c:3410
+#: ../src/theme-parser.c:3407
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "“%s”不是 state 属性的有效值"
 
-#: ../src/theme-parser.c:3420
+#: ../src/theme-parser.c:3417
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "尚未定义名为“%s”的风格"
 
-#: ../src/theme-parser.c:3430
+#: ../src/theme-parser.c:3427
 #, c-format
 msgid "No \"resize\" attribute on <%s> element"
 msgstr "元素 <%s> 上没有“resize”属性"
 
-#: ../src/theme-parser.c:3440
+#: ../src/theme-parser.c:3437
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "“%s”不是 resize 属性的有效值"
 
-#: ../src/theme-parser.c:3450
+#: ../src/theme-parser.c:3447
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 msgstr "状态为 maximized/shaded 的 <%s> 元素不应有“resize”属性"
 
-#: ../src/theme-parser.c:3464
+#: ../src/theme-parser.c:3461
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "已经为 state 属性 %s、resize 属性 %s、focus 属性 %s 指定了风格"
 
-#: ../src/theme-parser.c:3475 ../src/theme-parser.c:3486
-#: ../src/theme-parser.c:3497
+#: ../src/theme-parser.c:3472 ../src/theme-parser.c:3483
+#: ../src/theme-parser.c:3494
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "已经为 state 属性 %s、focus 属性 %s 指定了风格"
 
-#: ../src/theme-parser.c:3536
+#: ../src/theme-parser.c:3533
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -2471,7 +2527,7 @@ msgstr ""
 "一个 <piece> 元素不能有两个 draw_ops(主题指定了一个 draw_ops属性和一个 "
 "<draw_ops> 元素，或者指定了两个元素)"
 
-#: ../src/theme-parser.c:3574
+#: ../src/theme-parser.c:3571
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
@@ -2479,7 +2535,7 @@ msgstr ""
 "一个 <button> 元素不能有两个 draw_ops(主题指定了一个 draw_ops属性和一个 "
 "<draw_ops> 元素，或者指定了两个元素)"
 
-#: ../src/theme-parser.c:3612
+#: ../src/theme-parser.c:3609
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
@@ -2487,82 +2543,82 @@ msgstr ""
 "一个 <menu_icon> 元素不能有两个 draw_ops(主题指定了一个draw_ops 属性和一个 "
 "<draw_ops> 元素，或者指定了两个元素)"
 
-#: ../src/theme-parser.c:3659
+#: ../src/theme-parser.c:3656
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "主题中最外面的元素必须是 <metacity_theme>，而不能是 <%s>"
 
-#: ../src/theme-parser.c:3679
+#: ../src/theme-parser.c:3676
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "name/author/date/description 元素中不允许有元素 <%s>"
 
-#: ../src/theme-parser.c:3684
+#: ../src/theme-parser.c:3681
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "<constant> 元素中不允许有元素 <%s>"
 
-#: ../src/theme-parser.c:3696
+#: ../src/theme-parser.c:3693
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "distance/border/aspect_ratio 元素中不允许有元素 <%s>"
 
-#: ../src/theme-parser.c:3718
+#: ../src/theme-parser.c:3715
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "draw operation 元素中不允许有元素 <%s>"
 
-#: ../src/theme-parser.c:3728 ../src/theme-parser.c:3758
-#: ../src/theme-parser.c:3763
+#: ../src/theme-parser.c:3725 ../src/theme-parser.c:3755
+#: ../src/theme-parser.c:3760
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "元素 <%s> 不允许出现在 <%s> 元素内"
 
-#: ../src/theme-parser.c:3984
+#: ../src/theme-parser.c:3981
 msgid "No draw_ops provided for frame piece"
 msgstr "没有为帧段提供 draw_ops"
 
-#: ../src/theme-parser.c:3999
+#: ../src/theme-parser.c:3996
 msgid "No draw_ops provided for button"
 msgstr "没有为按钮提供 draw_ops"
 
-#: ../src/theme-parser.c:4014
+#: ../src/theme-parser.c:4011
 msgid "No draw_ops provided for menu icon"
 msgstr "没有为菜单图标提供 draw_ops"
 
-#: ../src/theme-parser.c:4054
+#: ../src/theme-parser.c:4051
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "元素 <%s> 中不允许有文本"
 
-#: ../src/theme-parser.c:4109
+#: ../src/theme-parser.c:4106
 msgid "<name> specified twice for this theme"
 msgstr "为此主题指定了两次 <name>"
 
-#: ../src/theme-parser.c:4120
+#: ../src/theme-parser.c:4117
 msgid "<author> specified twice for this theme"
 msgstr "为此主题指定了两次 <author>"
 
-#: ../src/theme-parser.c:4131
+#: ../src/theme-parser.c:4128
 msgid "<copyright> specified twice for this theme"
 msgstr "为此主题指定了两次 <copyright>"
 
-#: ../src/theme-parser.c:4142
+#: ../src/theme-parser.c:4139
 msgid "<date> specified twice for this theme"
 msgstr "为此主题指定了两次 <date>"
 
-#: ../src/theme-parser.c:4153
+#: ../src/theme-parser.c:4150
 msgid "<description> specified twice for this theme"
 msgstr "为此主题指定了两次 <description>"
 
-#: ../src/theme-parser.c:4348
+#: ../src/theme-parser.c:4345
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
 msgstr "无法从文件 %s 读取主题：%s\n"
 
-#: ../src/theme-parser.c:4403
+#: ../src/theme-parser.c:4400
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "主题文件 %s 不包含根 <metacity_theme> 元素"
@@ -2726,39 +2782,39 @@ msgstr ""
 "在 %2$g 的客户端秒(每帧 %3$g 毫秒)和包括 X 服务器资源在内的 %4$g 秒时钟时间"
 "(每帧 %5$g 毫秒)内绘制 %1$d 帧\n"
 
-#: ../src/theme-viewer.c:1219
+#: ../src/theme-viewer.c:1217
 msgid "position expression test returned TRUE but set error"
 msgstr "位置表达式测试返回了 TRUE 但设置错误"
 
-#: ../src/theme-viewer.c:1221
+#: ../src/theme-viewer.c:1219
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "位置表达式测试返回了 FALSE 但并没有设置错误"
 
-#: ../src/theme-viewer.c:1225
+#: ../src/theme-viewer.c:1223
 msgid "Error was expected but none given"
 msgstr "期待错误但没有给出错误"
 
-#: ../src/theme-viewer.c:1227
+#: ../src/theme-viewer.c:1225
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "期待错误 %d，但给出了 %d"
 
-#: ../src/theme-viewer.c:1233
+#: ../src/theme-viewer.c:1231
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "未期待错误，但返回了错误：%s"
 
-#: ../src/theme-viewer.c:1237
+#: ../src/theme-viewer.c:1235
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x 值为 %d，但期待 %d"
 
-#: ../src/theme-viewer.c:1240
+#: ../src/theme-viewer.c:1238
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y 值为 %d，但期待 %d "
 
-#: ../src/theme-viewer.c:1303
+#: ../src/theme-viewer.c:1301
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
@@ -2798,11 +2854,11 @@ msgstr "按钮长宽比 %g 不合理"
 msgid "Frame geometry does not specify size of buttons"
 msgstr "窗帧几何布局没有指定按钮大小"
 
-#: ../src/theme.c:842
+#: ../src/theme.c:813
 msgid "Gradients should have at least two colors"
 msgstr "渐变应至少有两种颜色"
 
-#: ../src/theme.c:968
+#: ../src/theme.c:939
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -2811,7 +2867,7 @@ msgstr ""
 "GTK 颜色规范必须将状态包含在方括号中，例如 gtk:fg[NORMAL]其中 NORMAL 是状态；"
 "无法解析“%s”"
 
-#: ../src/theme.c:982
+#: ../src/theme.c:953
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -2820,143 +2876,139 @@ msgstr ""
 "GTK 颜色规范必须在状态后有一个闭方括号，例如 gtk:fg[NORMAL]，其中 NORMAL 是状"
 "态；无法解析“%s”"
 
-#: ../src/theme.c:993
+#: ../src/theme.c:964
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "不理解颜色规范中的状态“%s”"
 
-#: ../src/theme.c:1006
+#: ../src/theme.c:977
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "不理解颜色规范中的颜色组成部分“%s”"
 
-#: ../src/theme.c:1036
+#: ../src/theme.c:1007
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr "混合格式为“blend/bg_color/fg_color/alpha”，“%s”不符合该格式"
 
-#: ../src/theme.c:1047
+#: ../src/theme.c:1018
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "无法解析混合色中的 Alpha 值“%s”"
 
-#: ../src/theme.c:1057
+#: ../src/theme.c:1028
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "混合色中的 Alpha 值“%s”不在 0.0 到 1.0 之间"
 
-#: ../src/theme.c:1104
+#: ../src/theme.c:1075
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "阴影格式为“shade/base_color/factor”，“%s”不符合该格式"
 
-#: ../src/theme.c:1115
+#: ../src/theme.c:1086
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "无法解析阴影色中的阴影因子“%s”"
 
-#: ../src/theme.c:1125
+#: ../src/theme.c:1096
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "阴影色中的阴影因子“%s”为负数"
 
-#: ../src/theme.c:1154
+#: ../src/theme.c:1125
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "无法解析颜色“%s”"
 
-#: ../src/theme.c:1416
+#: ../src/theme.c:1384
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "坐标表达式包含不允许的字符“%s”"
 
-#: ../src/theme.c:1443
+#: ../src/theme.c:1411
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "坐标表达式包含无法解析的浮点数“%s”"
 
-#: ../src/theme.c:1457
+#: ../src/theme.c:1425
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "坐标表达式包含无法解析的整数“%s”"
 
-#: ../src/theme.c:1524
+#: ../src/theme.c:1492
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr "坐标表达式在该文本开始处包含未知的运算符：“%s”"
 
-#: ../src/theme.c:1581
+#: ../src/theme.c:1549
 msgid "Coordinate expression was empty or not understood"
 msgstr "坐标表达式为空或无法理解"
 
-#: ../src/theme.c:1724 ../src/theme.c:1734 ../src/theme.c:1768
+#: ../src/theme.c:1686 ../src/theme.c:1696 ../src/theme.c:1730
 msgid "Coordinate expression results in division by zero"
 msgstr "坐标表达式用零做除数"
 
-#: ../src/theme.c:1776
+#: ../src/theme.c:1738
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "坐标表达式试图对浮点数使用 mod 运算符"
 
-#: ../src/theme.c:1832
+#: ../src/theme.c:1794
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "坐标表达式的运算符“%s”应该是一个操作数"
 
-#: ../src/theme.c:1841
+#: ../src/theme.c:1803
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "坐标表达式的某个操作数应该是运算符"
 
-#: ../src/theme.c:1849
+#: ../src/theme.c:1811
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "坐标表达式以运算符结尾，而不是以操作数结尾"
 
-#: ../src/theme.c:1859
+#: ../src/theme.c:1821
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr "坐标表达式的运算符“%c”后面跟着运算符“%c”，之间没有操作数"
 
-#: ../src/theme.c:1978
-msgid ""
-"Coordinate expression parser overflowed its buffer, this is really a "
-"Metacity bug, but are you sure you need a huge expression like that?"
-msgstr ""
-"坐标表达式解析程序溢出它的缓冲区，这实际上是一个Metacity 缺陷，但您是否确实需"
-"要一个如此大的表达式？"
+#: ../src/theme.c:1939
+msgid "Coordinate expression parser overflowed its buffer."
+msgstr "坐标表达式溢出了其缓冲区。"
 
-#: ../src/theme.c:2007
+#: ../src/theme.c:1968
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "坐标表达式有一个闭括号，而没有开括号"
 
-#: ../src/theme.c:2069
+#: ../src/theme.c:2030
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "坐标表达式有未知的变量或常数“%s”"
 
-#: ../src/theme.c:2126
+#: ../src/theme.c:2085
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "坐标表达式有一个开括号，而没有闭括号"
 
-#: ../src/theme.c:2137
+#: ../src/theme.c:2096
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "坐标表达式似乎没有任何运算符或操作数"
 
-#: ../src/theme.c:2381 ../src/theme.c:2403 ../src/theme.c:2424
+#: ../src/theme.c:2337 ../src/theme.c:2359 ../src/theme.c:2380
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "主题包含的表达式“%s”产生一个错误：%s\n"
 
-#: ../src/theme.c:3910
+#: ../src/theme.c:3826
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -2965,25 +3017,25 @@ msgstr ""
 "必须为该窗帧风格指定<button function=\"%s\" state=\"%s\" draw_ops=\"whatever"
 "\"/>"
 
-#: ../src/theme.c:4360 ../src/theme.c:4392
+#: ../src/theme.c:4270 ../src/theme.c:4295
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "缺少 <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: ../src/theme.c:4443
+#: ../src/theme.c:4341
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "无法载入主题“%s”：%s\n"
 
-#: ../src/theme.c:4597 ../src/theme.c:4604 ../src/theme.c:4611
-#: ../src/theme.c:4618 ../src/theme.c:4625
+#: ../src/theme.c:4481 ../src/theme.c:4488 ../src/theme.c:4495
+#: ../src/theme.c:4502 ../src/theme.c:4509
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "没有为主题“%2$s”设置 <%1$s>"
 
-#: ../src/theme.c:4635
+#: ../src/theme.c:4517
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -2992,7 +3044,7 @@ msgstr ""
 "没有为窗口类型“%s”(在主题“%s”中)设置窗帧风格，请添加一个 <window type=\"%s\" "
 "style_set=\"whatever\"/> 元素"
 
-#: ../src/theme.c:4657
+#: ../src/theme.c:4531
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3001,13 +3053,13 @@ msgstr ""
 "必须为该主题指定<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever"
 "\"/>"
 
-#: ../src/theme.c:5046 ../src/theme.c:5108
+#: ../src/theme.c:4911 ../src/theme.c:4973
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "用户定义的常数必须以大写字母开头；而“%s”却不必"
 
-#: ../src/theme.c:5054 ../src/theme.c:5116
+#: ../src/theme.c:4919 ../src/theme.c:4981
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "常数“%s”已被定义"
@@ -3053,8 +3105,13 @@ msgstr "应用程序设置一个假的 _NET_WM_PID %lu\n"
 msgid "%s (on %s)"
 msgstr "%s (于 %s)"
 
+#: ../src/window-props.c:1139
+#, c-format
+msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
+msgstr "为 %2$s 指定了无效的 WM_TRANSIENT_FOR 窗口 0x%1$lx。\n"
+
 #. first time through
-#: ../src/window.c:5429
+#: ../src/window.c:5227
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3070,7 +3127,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6057
+#: ../src/window.c:5823
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3104,3 +3161,4 @@ msgstr "窗口 0x%2$lx 上的属性 %1$s 包含无效的 UTF-8\n"
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "窗口 0x%2$lx 上的属性 %1$s 为列表中的条目 %3$d 包含无效的 UTF-8\n"
+
