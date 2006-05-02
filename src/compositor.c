@@ -90,7 +90,7 @@ handle_error (Display *dpy, XErrorEvent *ev, gpointer data)
 {
     WsDisplay *display = data;
     
-    ws_display_process_error (display, ev);
+    ws_display_process_xerror (display, ev);
 }
 #endif
 
@@ -181,25 +181,6 @@ meta_compositor_unref (MetaCompositor *compositor)
 }
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-static void
-draw_windows (MetaScreen *screen,
-	      GList      *list)
-{
-  CmNode *node;
-  
-  if (!list)
-    return;
-  
-  node = list->data;
-  
-  draw_windows (screen, list->next);
-  
-#if 0
-  g_print ("rendering: %p\n", node);
-#endif
-  
-  cm_node_render (node, NULL);
-}
 
 static void
 process_configure_notify (MetaCompositor  *compositor,
@@ -510,148 +491,7 @@ meta_compositor_process_event (MetaCompositor *compositor,
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 }
 
-#ifdef HAVE_COMPOSITE_EXTENSIONS
-static void
-wavy (double time,
-      double in_x, double in_y,
-      double *out_x, double *out_y,
-      gpointer data)
-{
-  static int m;
-  time = time * 5;
-  double dx = 0.0025 * sin (time + 35 * in_y);
-  double dy = 0.0025 * cos (time + 35 * in_x);
-  
-  *out_x = in_x + dx;
-  *out_y = in_y + dy;
-  
-  m++;
-}
-
 static GTimer *timer;
-
-#if 0
-static gboolean
-update (gpointer data)
-{
-  MetaScreen *screen = data;
-  ScreenInfo *scr_info = screen->compositor_data;
-  WsWindow *gl_window = scr_info->glw;
-  gdouble angle;
-  
-  glViewport (0, 0, screen->rect.width, screen->rect.height);
-  
-  if (!timer)
-    timer = g_timer_new ();
-  
-#if 0
-  g_print ("rotation: %f\n", 360 * g_timer_elapsed (timer, NULL));
-#endif
-  
-  angle = g_timer_elapsed (timer, NULL) * 90;
-#if 0
-  
-  angle = 180.0;
-#endif
-  
-  cm_rotation_set_rotation (screen->display->compositor->rotation,
-			    angle,
-			    0.0, 1.0, 0.0);
-  
-  glClearColor (0.0, 0.0, 0.0, 0.0);
-  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  
-  glDisable (GL_TEXTURE_2D);
-  glDisable (GL_DEPTH_TEST);
-  ws_window_raise (gl_window);
-  
-#if 0
-  glMatrixMode (GL_MODELVIEW);
-  
-  glLoadIdentity();
-#endif
-  
-#if 0
-  glTranslatef (-1.0, -1.0, 0.0);
-#endif
-  
-#if 0
-  glMatrixMode (GL_PROJECTION);
-  glLoadIdentity();
-  gluPerspective( 45.0f, 1.0, 0.1f, 10.0f );
-  
-  glMatrixMode (GL_MODELVIEW);
-  glLoadIdentity();
-  glTranslatef (0, 0, -3);
-  
-  glEnable (GL_DEPTH_TEST);
-#endif
-  
-#if 0
-  draw_windows (screen, scr_info->compositor_nodes);
-#endif
-  
-  /* FIXME: we should probably grab the server around the raise/swap
-   */
-  
-  CmState *state = cm_state_new ();
-  
-  cm_state_disable_depth_buffer_update (state);
-  
-  cm_node_render (CM_NODE (screen->display->compositor->stacker), state);
-  
-  cm_state_enable_depth_buffer_update (state);
-  
-  g_object_unref (state);
-  
-#if 0
-  ws_display_grab (ws_drawable_get_display ((WsDrawable *)gl_window));
-#endif
-  
-  ws_window_gl_swap_buffers (gl_window);
-  glFinish();
-  
-  update_frame_counter ();
-  
-  scr_info->idle_id = 0;
-  
-  return FALSE;
-}
-#endif
-
-#if 0
-static void
-queue_repaint (CmDrawableNode *node, gpointer data)
-{
-  MetaScreen *screen = data;
-  ScreenInfo *scr_info = screen->compositor_data;
-  
-#if 0
-  g_print ("metacity queueing repaint for %p\n", node);
-#endif
-  
-  if (!scr_info)
-    {
-      /* compositor has been turned off */
-      return;
-    }
-  
-  if (!scr_info->idle_id)
-    {
-      scr_info->idle_id = g_idle_add (update, screen);
-#if 0
-      g_print ("done\n");
-#endif
-    }
-  else
-    {
-#if 0
-      g_print ("one was queued already\n");
-#endif
-    }
-}
-#endif /* HAVE_COMPOSITE_EXTENSIONS */
-#endif
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 static void

@@ -47,3 +47,5 @@ void		meta_screen_info_set_explode (MetaScreenInfo *info,
 					      gdouble level);
 void		meta_screen_info_hide_window (MetaScreenInfo *info,
 					      Window          xwindow);
+void		meta_screen_info_unmap (MetaScreenInfo *info,
+					Window		xwindow);
