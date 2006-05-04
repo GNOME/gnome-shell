@@ -33,7 +33,7 @@
 #include "c-screen.h"
 #include "c-window.h"
 
-struct MetaScreenInfo
+struct MetaCompScreen
 {
   WsDisplay *display;
   CmStacker *stacker;
@@ -49,7 +49,20 @@ struct MetaScreenInfo
   int idle_id;
   
   WsWindow *selection_window;
+
+  GHashTable *windows_by_xid;
 };
+
+static MetaCompWindow *
+meta_comp_window_lookup (MetaCompScreen *info,
+			 Window xid)
+{
+    MetaCompWindow *window;
+    
+    window = g_hash_table_lookup (info->windows_by_xid, (gpointer)xid);
+    
+    return window;
+}
 
 #if 0
 static void
@@ -99,7 +112,7 @@ dump_stacking_order (GList *nodes)
 static gboolean
 repaint (gpointer data)
 {
-  MetaScreenInfo *info = data;
+  MetaCompScreen *info = data;
   CmState *state;
 #if 0
   g_print ("repaint\n");
@@ -148,17 +161,17 @@ repaint (gpointer data)
 }
 
 static MetaCompWindow *
-find_comp_window (MetaScreenInfo *info,
+find_comp_window (MetaCompScreen *info,
 		  Window	       xwindow)
 {
-  return meta_comp_window_lookup (xwindow);
+  return meta_comp_window_lookup (info, xwindow);
 }
 
 static CmNode *
-find_node (MetaScreenInfo *info,
+find_node (MetaCompScreen *info,
 	   Window	   xwindow)
 {
-  MetaCompWindow *window = meta_comp_window_lookup (xwindow);
+  MetaCompWindow *window = meta_comp_window_lookup (info, xwindow);
   
   if (window)
     return meta_comp_window_get_node (window);
@@ -168,14 +181,14 @@ find_node (MetaScreenInfo *info,
 
 static GList *all_screen_infos;
 
-MetaScreenInfo *
-meta_screen_info_get_by_xwindow (Window xwindow)
+MetaCompScreen *
+meta_comp_screen_get_by_xwindow (Window xwindow)
 {
   GList *list;
   
   for (list = all_screen_infos; list != NULL; list = list->next)
     {
-      MetaScreenInfo *info = list->data;
+      MetaCompScreen *info = list->data;
       
       if (find_node (info, xwindow))
 	return info;
@@ -184,17 +197,18 @@ meta_screen_info_get_by_xwindow (Window xwindow)
   return NULL;
 }
 
-MetaScreenInfo *
-meta_screen_info_new (WsDisplay *display,
+MetaCompScreen *
+meta_comp_screen_new (WsDisplay *display,
 		      MetaScreen *screen)
 {
-  MetaScreenInfo *scr_info = g_new0 (MetaScreenInfo, 1);
+  MetaCompScreen *scr_info = g_new0 (MetaCompScreen, 1);
   
   scr_info->screen = ws_display_get_screen_from_number (
 							display, screen->number);
   scr_info->root_window = ws_screen_get_root_window (scr_info->screen);
   scr_info->display = display;
   scr_info->meta_screen = screen;
+  scr_info->windows_by_xid = g_hash_table_new (g_direct_hash, g_direct_equal);
   
   all_screen_infos = g_list_prepend (all_screen_infos, scr_info);
   
@@ -202,7 +216,7 @@ meta_screen_info_new (WsDisplay *display,
 }
 
 static char *
-make_selection_name (MetaScreenInfo *info)
+make_selection_name (MetaCompScreen *info)
 {
   char *buffer;
   
@@ -216,18 +230,18 @@ on_selection_clear (WsWindow *window,
 		    WsSelectionClearEvent *event,
 		    gpointer data)
 {
-  MetaScreenInfo *info = data;
+  MetaCompScreen *info = data;
   char *buffer = make_selection_name (info);
   
   if (strcmp (event->selection, buffer))
     {
       /* We lost the selection */
-      meta_screen_info_unredirect (info);
+      meta_comp_screen_unredirect (info);
     }
 }
 
 static WsWindow *
-claim_selection (MetaScreenInfo *info)
+claim_selection (MetaCompScreen *info)
 {
   WsWindow *window = ws_window_new (info->root_window);
   char *buffer = make_selection_name (info);
@@ -247,16 +261,16 @@ claim_selection (MetaScreenInfo *info)
 
 static void
 queue_paint (CmNode *node,
-	     MetaScreenInfo *info)
+	     MetaCompScreen *info)
 {
 #if 0
   g_print ("queueing %s\n", G_OBJECT_TYPE_NAME (node));
 #endif
-  meta_screen_info_queue_paint (info);
+  meta_comp_screen_queue_paint (info);
 }
 
 void
-meta_screen_info_redirect (MetaScreenInfo *info)
+meta_comp_screen_redirect (MetaCompScreen *info)
 {
   WsWindow *root = ws_screen_get_root_window (info->screen);
   WsRectangle source;
@@ -329,24 +343,46 @@ meta_screen_info_redirect (MetaScreenInfo *info)
   ws_display_sync (info->display);
 }
 
+static void
+listify (gpointer key,
+	 gpointer value,
+	 gpointer data)
+{
+    GList **windows = data;
+
+    *windows = g_list_prepend (*windows, (gpointer)value);
+}
+
+static void
+free_all_windows (MetaCompScreen *info)
+{
+    GList *windows = NULL, *list;
+    
+    g_hash_table_foreach (info->windows_by_xid, listify, &windows);
+
+    for (list = windows; list != NULL; list = list->next)
+    {
+	MetaCompWindow *window = list->data;
+
+	meta_comp_window_free (window);
+    }
+
+    g_list_free (windows);
+}
+
 void
-meta_screen_info_unredirect (MetaScreenInfo *info)
+meta_comp_screen_unredirect (MetaCompScreen *info)
 {
   WsScreen *ws_screen = info->screen;
   WsWindow *root = ws_screen_get_root_window (ws_screen);
-  
-#if 0
-  g_print ("unredirecting %lx\n", WS_RESOURCE_XID (root));
-#endif
   
   g_signal_handler_disconnect (info->magnifier, info->repaint_id);
   g_object_unref (info->magnifier);
   
   ws_window_unredirect_subwindows (root);
-#if 0
-  ws_window_unmap (info->gl_window);
-#endif
   ws_screen_release_gl_window (ws_screen);
+
+  free_all_windows (info);
   
   ws_display_sync (info->display);
   
@@ -357,7 +393,7 @@ meta_screen_info_unredirect (MetaScreenInfo *info)
 }
 
 void
-meta_screen_info_queue_paint (MetaScreenInfo *info)
+meta_comp_screen_queue_paint (MetaCompScreen *info)
 {
 #if 0
   g_print ("queuing\n");
@@ -367,7 +403,7 @@ meta_screen_info_queue_paint (MetaScreenInfo *info)
 }
 
 void
-meta_screen_info_restack (MetaScreenInfo *info,
+meta_comp_screen_restack (MetaCompScreen *info,
 			  Window	  window,
 			  Window	  above_this)
 {
@@ -412,7 +448,7 @@ meta_screen_info_restack (MetaScreenInfo *info,
 }
 
 void
-meta_screen_info_raise_window (MetaScreenInfo  *info,
+meta_comp_screen_raise_window (MetaCompScreen  *info,
 			       Window           window)
 {
   CmNode *node = find_node (info, window);
@@ -422,14 +458,14 @@ meta_screen_info_raise_window (MetaScreenInfo  *info,
 }
 
 void
-meta_screen_info_set_size (MetaScreenInfo *info,
+meta_comp_screen_set_size (MetaCompScreen *info,
 			   Window	   xwindow,
 			   gint		   x,
 			   gint		   y,
 			   gint		   width,
 			   gint		   height)
 {
-  MetaCompWindow *comp_window = meta_comp_window_lookup (xwindow);
+  MetaCompWindow *comp_window = meta_comp_window_lookup (info, xwindow);
   
   if (comp_window)
     {
@@ -463,7 +499,7 @@ print_child_titles (WsWindow *window)
 }
 
 void
-meta_screen_info_add_window (MetaScreenInfo *info,
+meta_comp_screen_add_window (MetaCompScreen *info,
 			     Window	     xwindow)
 {
   WsDrawable *drawable;
@@ -471,7 +507,7 @@ meta_screen_info_add_window (MetaScreenInfo *info,
   
   ws_display_begin_error_trap (info->display);
   
-  comp_window = meta_comp_window_lookup (xwindow);
+  comp_window = meta_comp_window_lookup (info, xwindow);
   
   if (comp_window)
     goto out;
@@ -492,6 +528,8 @@ meta_screen_info_add_window (MetaScreenInfo *info,
   
   comp_window = meta_comp_window_new (drawable);
   
+  g_hash_table_insert (info->windows_by_xid, (gpointer)WS_RESOURCE_XID (drawable), comp_window);
+  
   cm_stacker_add_child (info->stacker, meta_comp_window_get_node (comp_window));
   
  out:
@@ -509,10 +547,10 @@ meta_screen_info_add_window (MetaScreenInfo *info,
 
 
 void
-meta_screen_info_remove_window (MetaScreenInfo *info,
+meta_comp_screen_remove_window (MetaCompScreen *info,
 				Window	        xwindow)
 {
-  MetaCompWindow *comp_window = meta_comp_window_lookup (xwindow);
+  MetaCompWindow *comp_window = meta_comp_window_lookup (info, xwindow);
   
   if (comp_window)
     {
@@ -520,22 +558,24 @@ meta_screen_info_remove_window (MetaScreenInfo *info,
       
       cm_stacker_remove_child (info->stacker, node);
       meta_comp_window_free (comp_window);
+    
+      g_hash_table_remove (info->windows_by_xid, (gpointer)xwindow);
     }
 }
 
 void
-meta_screen_info_set_updates (MetaScreenInfo *info,
+meta_comp_screen_set_updates (MetaCompScreen *info,
 			      Window	      xwindow,
 			      gboolean	      updates)
 {
-  MetaCompWindow *comp_window = meta_comp_window_lookup (xwindow);
+  MetaCompWindow *comp_window = meta_comp_window_lookup (info, xwindow);
   
   meta_comp_window_set_updates (comp_window, updates);
 }
 
 
 void
-meta_screen_info_set_patch (MetaScreenInfo *info,
+meta_comp_screen_set_patch (MetaCompScreen *info,
 			    Window	    xwindow,
 			    CmPoint         points[4][4])
 {
@@ -546,7 +586,7 @@ meta_screen_info_set_patch (MetaScreenInfo *info,
 }
 
 void
-meta_screen_info_unset_patch (MetaScreenInfo *info,
+meta_comp_screen_unset_patch (MetaCompScreen *info,
 			      Window	      xwindow)
 {
   CmDrawableNode *node = CM_DRAWABLE_NODE (find_node (info, xwindow));
@@ -556,7 +596,7 @@ meta_screen_info_unset_patch (MetaScreenInfo *info,
 }
 
 void
-meta_screen_info_set_alpha (MetaScreenInfo *info,
+meta_comp_screen_set_alpha (MetaCompScreen *info,
 			    Window	xwindow,
 			    gdouble alpha)
 {
@@ -568,7 +608,7 @@ meta_screen_info_set_alpha (MetaScreenInfo *info,
 }
 
 void
-meta_screen_info_get_real_size (MetaScreenInfo *info,
+meta_comp_screen_get_real_size (MetaCompScreen *info,
 				Window xwindow,
 				WsRectangle *size)
 {
@@ -581,7 +621,7 @@ meta_screen_info_get_real_size (MetaScreenInfo *info,
 }
 
 void
-meta_screen_info_unmap (MetaScreenInfo *info,
+meta_comp_screen_unmap (MetaCompScreen *info,
 			Window		xwindow)
 {
   CmDrawableNode *node = CM_DRAWABLE_NODE (find_node (info, xwindow));
@@ -595,7 +635,7 @@ meta_screen_info_unmap (MetaScreenInfo *info,
 }
 
 void
-meta_screen_info_set_target_rect (MetaScreenInfo *info,
+meta_comp_screen_set_target_rect (MetaCompScreen *info,
 				  Window xwindow,
 				  WsRectangle *rect)
 {
@@ -606,7 +646,7 @@ meta_screen_info_set_target_rect (MetaScreenInfo *info,
 }
 
 void
-meta_screen_info_set_explode (MetaScreenInfo *info,
+meta_comp_screen_set_explode (MetaCompScreen *info,
 			      Window xwindow,
 			      gdouble level)
 {
@@ -623,7 +663,7 @@ meta_screen_info_set_explode (MetaScreenInfo *info,
 }
 
 void
-meta_screen_info_hide_window (MetaScreenInfo *info,
+meta_comp_screen_hide_window (MetaCompScreen *info,
 			      Window          xwindow)
 {
   CmDrawableNode *node = CM_DRAWABLE_NODE (find_node (info, xwindow));

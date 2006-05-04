@@ -23,7 +23,6 @@ typedef struct _MetaCompWindow MetaCompWindow;
 
 MetaCompWindow *meta_comp_window_new (WsDrawable *drawable);
 CmNode	       *meta_comp_window_get_node (MetaCompWindow *window);
-MetaCompWindow *meta_comp_window_lookup (Window xwindow);
 void		meta_comp_window_free (MetaCompWindow *window);
 void		meta_comp_window_set_size (MetaCompWindow *window,
 					   WsRectangle *size);

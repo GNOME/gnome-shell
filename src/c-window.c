@@ -30,8 +30,7 @@
 #include <string.h>
 
 #include "c-window.h"
-
-static GHashTable *windows_by_xid;
+#include "window.h"
 
 struct _MetaCompWindow
 {
@@ -42,22 +41,12 @@ struct _MetaCompWindow
     WsRectangle size;
 };
 
-static void
-ensure_hash_table (void)
-{
-    if (!windows_by_xid)
-    {
-	windows_by_xid = g_hash_table_new (
-	    g_direct_hash, g_direct_equal);
-    }
-}
-
 MetaCompWindow *
 meta_comp_window_new (WsDrawable *drawable)
 {
     MetaCompWindow *window;
     WsRectangle geometry;
-    
+
     ws_drawable_query_geometry (drawable, &geometry);
     
     window = g_new0 (MetaCompWindow, 1);
@@ -66,31 +55,12 @@ meta_comp_window_new (WsDrawable *drawable)
     window->node = CM_NODE (cm_drawable_node_new (drawable, &geometry));
     window->updates = TRUE;
     
-    ensure_hash_table ();
-    
-    g_hash_table_insert (windows_by_xid, (gpointer)WS_RESOURCE_XID (window->drawable), window);
-    
-    return window;
-}
-
-MetaCompWindow *
-meta_comp_window_lookup (Window xid)
-{
-    MetaCompWindow *window;
-    
-    ensure_hash_table ();
-    
-    window = g_hash_table_lookup (windows_by_xid, (gpointer)xid);
-    
     return window;
 }
 
 void
 meta_comp_window_free (MetaCompWindow *window)
 {
-    ensure_hash_table ();
-
-    g_hash_table_remove (windows_by_xid, WS_RESOURCE_XID (window->drawable));
     g_object_unref (window->drawable);
     g_object_unref (window->node);
     g_free (window);
@@ -142,8 +112,6 @@ has_type (WsWindow *window, const char *check_type)
     {
 	gchar *type = types[i];
 
-	g_print ("type: %s\n", type);
-	
 	if (strcmp (type, check_type) == 0)
 	{
 	    result = TRUE;
@@ -226,6 +194,5 @@ meta_comp_window_get_node (MetaCompWindow *comp_window)
 {
     return comp_window->node;
 }
-   
 
 #endif

@@ -65,8 +65,6 @@
 #endif
 #include <string.h>
 
-#define USE_GDK_DISPLAY
-
 #define GRAB_OP_IS_WINDOW_SWITCH(g)                     \
         (g == META_GRAB_OP_KEYBOARD_TABBING_NORMAL  ||  \
          g == META_GRAB_OP_KEYBOARD_TABBING_DOCK    ||  \
@@ -96,10 +94,6 @@ static GSList *all_displays = NULL;
 
 static void   meta_spew_event           (MetaDisplay    *display,
                                          XEvent         *event);
-#ifndef USE_GDK_DISPLAY
-static void   event_queue_callback      (XEvent         *event,
-                                         gpointer        data);
-#endif
 
 static gboolean event_callback          (XEvent         *event,
                                          gpointer        data);
@@ -232,7 +226,7 @@ disable_compositor (MetaDisplay *display)
 }
 
 gboolean
-meta_display_open (const char *name)
+meta_display_open (void)
 {
   MetaDisplay *display;
   Display *xdisplay;
@@ -341,18 +335,14 @@ meta_display_open (const char *name)
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
-  meta_verbose ("Opening display '%s'\n", XDisplayName (name));
+  meta_verbose ("Opening display '%s'\n", XDisplayName (NULL));
 
-#ifdef USE_GDK_DISPLAY
-  xdisplay = meta_ui_get_display (name);
-#else
-  xdisplay = XOpenDisplay (name);
-#endif
+  xdisplay = meta_ui_get_display ();
   
   if (xdisplay == NULL)
     {
       meta_warning (_("Failed to open X Window System display '%s'\n"),
-                    XDisplayName (name));
+		    XDisplayName (NULL));
       return FALSE;
     }
 
@@ -367,7 +357,7 @@ meta_display_open (const char *name)
    * probably put in, vs. DisplayString(display) which is
    * canonicalized by XOpenDisplay()
    */
-  display->name = g_strdup (XDisplayName (name));
+  display->name = g_strdup (XDisplayName (NULL));
   display->xdisplay = xdisplay;
   display->error_trap_synced_at_last_pop = TRUE;
   display->error_traps = 0;
@@ -526,18 +516,12 @@ meta_display_open (const char *name)
                                         sn_error_trap_pop);
 #endif
   
-#ifdef USE_GDK_DISPLAY
   display->events = NULL;
 
   /* Get events */
   meta_ui_add_event_func (display->xdisplay,
                           event_callback,
                           display);
-#else
-  display->events = meta_event_queue_new (display->xdisplay,
-                                          event_queue_callback,
-                                          display);
-#endif
   
   display->window_ids = g_hash_table_new (meta_unsigned_long_hash,
                                           meta_unsigned_long_equal);
@@ -872,12 +856,10 @@ meta_display_close (MetaDisplay *display)
   if (display->grab_old_window_stacking)
     g_list_free (display->grab_old_window_stacking);
   
-#ifdef USE_GDK_DISPLAY
   /* Stop caring about events */
   meta_ui_remove_event_func (display->xdisplay,
                              event_callback,
                              display);
-#endif
   
   /* Free all screens */
   tmp = display->screens;
@@ -912,10 +894,6 @@ meta_display_close (MetaDisplay *display)
   meta_display_free_window_prop_hooks (display);
   meta_display_free_group_prop_hooks (display);
   
-#ifndef USE_GDK_DISPLAY
-  meta_event_queue_free (display->events);
-  XCloseDisplay (display->xdisplay);
-#endif 
   g_free (display->name);
 
   all_displays = g_slist_remove (all_displays, display);
@@ -1057,15 +1035,6 @@ meta_displays_list (void)
 }
 
 static gboolean dump_events = TRUE;
-
-#ifndef USE_GDK_DISPLAY
-static void
-event_queue_callback (XEvent         *event,
-                      gpointer        data)
-{
-  event_callback (event, data);
-}
-#endif
 
 static gboolean
 grab_op_is_mouse (MetaGrabOp op)

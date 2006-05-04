@@ -56,12 +56,9 @@ meta_ui_init (int *argc, char ***argv)
 }
 
 Display*
-meta_ui_get_display (const char *name)
+meta_ui_get_display (void)
 {
-  if (name == NULL)
-    return gdk_display;
-  else
-    return NULL;
+  return gdk_display;
 }
 
 typedef struct _EventFunc EventFunc;

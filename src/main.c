@@ -472,7 +472,7 @@ main (int argc, char **argv)
   if (meta_args.client_id)
     g_free (meta_args.client_id);
   
-  if (!meta_display_open (NULL))
+  if (!meta_display_open ())
     meta_exit (META_EXIT_ERROR);
   
   {

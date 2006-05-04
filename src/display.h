@@ -387,7 +387,7 @@ struct _MetaDisplay
      (time2) != 0)                                                      \
   )
 
-gboolean      meta_display_open                (const char  *name);
+gboolean      meta_display_open                (void);
 void          meta_display_close               (MetaDisplay *display);
 MetaScreen*   meta_display_screen_for_root     (MetaDisplay *display,
                                                 Window       xroot);

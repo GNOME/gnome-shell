@@ -1,51 +1,51 @@
 #include "screen.h"
 
-typedef struct MetaScreenInfo MetaScreenInfo;
+typedef struct MetaCompScreen MetaCompScreen;
 
-MetaScreenInfo *meta_screen_info_new     (WsDisplay	 *display,
-					  MetaScreen     *screen);
-MetaScreenInfo *meta_screen_info_get_by_xwindow (Window xwindow);
-void            meta_screen_info_destroy (MetaScreenInfo *scr_info);
-void		meta_screen_info_redirect (MetaScreenInfo *info);
-void		meta_screen_info_unredirect (MetaScreenInfo *info);
-void		meta_screen_info_add_window (MetaScreenInfo *scr_info,
-					     Window          xwindow);
-void		meta_screen_info_remove_window (MetaScreenInfo *scr_info,
-						Window	     xwindow);
-void		meta_screen_info_restack	(MetaScreenInfo *scr_info,
-						 Window		 window,
-						 Window		 above_this);
-void	        meta_screen_info_set_size       (MetaScreenInfo *info,
-						 Window	         window,
-						 gint		 x,
-						 gint		 y,
-						 gint		 width,
-						 gint		 height);
-void            meta_screen_info_raise_window (MetaScreenInfo  *scr_info,
-					       Window           window);
-void		meta_screen_info_queue_paint (MetaScreenInfo *info);
-void		meta_screen_info_set_updates (MetaScreenInfo *info,
-					      Window	      xwindow,
-					      gboolean        updates);
-void		meta_screen_info_set_patch (MetaScreenInfo *info,
-					    Window	    xwindow,
-					    CmPoint         points[4][4]);
-void		meta_screen_info_unset_patch (MetaScreenInfo *info,
-					      Window	      xwindow);
-void            meta_screen_info_set_alpha (MetaScreenInfo *info,
-				       Window	xwindow,
-				       gdouble alpha);
-void		meta_screen_info_get_real_size (MetaScreenInfo *info,
-						Window xwindow,
-						WsRectangle *size);
-void		meta_screen_info_set_target_rect (MetaScreenInfo *info,
-						  Window xwindow,
-						  WsRectangle *rect);
+MetaCompScreen *meta_comp_screen_new             (WsDisplay      *display,
+						  MetaScreen     *screen);
+MetaCompScreen *meta_comp_screen_get_by_xwindow  (Window          xwindow);
+void            meta_comp_screen_destroy         (MetaCompScreen *scr_info);
+void            meta_comp_screen_redirect        (MetaCompScreen *info);
+void            meta_comp_screen_unredirect      (MetaCompScreen *info);
+void            meta_comp_screen_add_window      (MetaCompScreen *scr_info,
+						  Window          xwindow);
+void            meta_comp_screen_remove_window   (MetaCompScreen *scr_info,
+						  Window          xwindow);
+void            meta_comp_screen_restack         (MetaCompScreen *scr_info,
+						  Window          window,
+						  Window          above_this);
+void            meta_comp_screen_set_size        (MetaCompScreen *info,
+						  Window          window,
+						  gint            x,
+						  gint            y,
+						  gint            width,
+						  gint            height);
+void            meta_comp_screen_raise_window    (MetaCompScreen *scr_info,
+						  Window          window);
+void            meta_comp_screen_queue_paint     (MetaCompScreen *info);
+void            meta_comp_screen_set_updates     (MetaCompScreen *info,
+						  Window          xwindow,
+						  gboolean        updates);
+void            meta_comp_screen_set_patch       (MetaCompScreen *info,
+						  Window          xwindow,
+						  CmPoint         points[4][4]);
+void            meta_comp_screen_unset_patch     (MetaCompScreen *info,
+						  Window          xwindow);
+void            meta_comp_screen_set_alpha       (MetaCompScreen *info,
+						  Window          xwindow,
+						  gdouble         alpha);
+void            meta_comp_screen_get_real_size   (MetaCompScreen *info,
+						  Window          xwindow,
+						  WsRectangle    *size);
+void            meta_comp_screen_set_target_rect (MetaCompScreen *info,
+						  Window          xwindow,
+						  WsRectangle    *rect);
+void            meta_comp_screen_set_explode     (MetaCompScreen *info,
+						  Window          xwindow,
+						  gdouble         level);
+void            meta_comp_screen_hide_window     (MetaCompScreen *info,
+						  Window          xwindow);
+void            meta_comp_screen_unmap           (MetaCompScreen *info,
+						  Window          xwindow);
 
-void		meta_screen_info_set_explode (MetaScreenInfo *info,
-					      Window xwindow,
-					      gdouble level);
-void		meta_screen_info_hide_window (MetaScreenInfo *info,
-					      Window          xwindow);
-void		meta_screen_info_unmap (MetaScreenInfo *info,
-					Window		xwindow);

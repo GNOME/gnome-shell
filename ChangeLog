@@ -1,3 +1,23 @@
+Thu May  4 13:30:04 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/ui.h: Delete unused META_PRIORITY_COMPOSITE
+
+	* src/ui.c: Delete argument from meta_ui_get_display().
+
+	* src/c-window.c: Remove the xid->window hashtable and associated
+	code. 
+
+	* src/c-screen.[ch]: Rename MetaScreenInfo to MetaCompScreen. Put the
+	xid->windows table here instaed of as a static variable. Also make
+	sure that CompWindows are freed when the screen is unredirected.
+
+	* src/display.c: Delete non USE_GDK_DISPLAY case, as it didn't
+	work and hasn't been compiled for a long time.
+	
+	* src/display.[ch] (meta_display_open): Remove argument as it was
+	always NULL (and couldn't possibly be anything else in the
+	USE_GDK_DISPLAY case).
+
 Tue May  2 17:12:54 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/c-window.[ch]: New files

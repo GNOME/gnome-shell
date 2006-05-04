@@ -186,7 +186,7 @@ static void
 process_configure_notify (MetaCompositor  *compositor,
                           XConfigureEvent *event)
 {
-  MetaScreenInfo *minfo = meta_screen_info_get_by_xwindow (event->window);
+  MetaCompScreen *minfo = meta_comp_screen_get_by_xwindow (event->window);
 
 #if 0
   g_print ("minfo: %lx => %p\n", event->window, minfo);
@@ -205,8 +205,8 @@ process_configure_notify (MetaCompositor  *compositor,
       return;
   }
 
-  meta_screen_info_restack (minfo, event->window, event->above);
-  meta_screen_info_set_size (minfo,
+  meta_comp_screen_restack (minfo, event->window, event->above);
+  meta_comp_screen_set_size (minfo,
 			     event->window,
 			     event->x, event->y,
 			     event->width, event->height);
@@ -292,7 +292,7 @@ process_map (MetaCompositor     *compositor,
       return; 
     }
   
-  meta_screen_info_add_window (screen->compositor_data,
+  meta_comp_screen_add_window (screen->compositor_data,
 			       event->window);
 }
 
@@ -319,7 +319,7 @@ process_unmap (MetaCompositor     *compositor,
       return;
     }
 
-  meta_screen_info_unmap (screen->compositor_data, event->window);
+  meta_comp_screen_unmap (screen->compositor_data, event->window);
 }
 
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
@@ -434,7 +434,7 @@ process_reparent (MetaCompositor      *compositor,
     }
   else
     {
-      meta_screen_info_raise_window (parent_screen->compositor_data,
+      meta_comp_screen_raise_window (parent_screen->compositor_data,
 				     event->window);
     }
 }
@@ -519,9 +519,9 @@ meta_compositor_add_window (MetaCompositor    *compositor,
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   MetaScreen *screen = meta_screen_for_x_screen (attrs->screen);
-  MetaScreenInfo *minfo = screen->compositor_data;
+  MetaCompScreen *minfo = screen->compositor_data;
   
-  meta_screen_info_add_window (minfo, xwindow);
+  meta_comp_screen_add_window (minfo, xwindow);
 #endif
 }
 
@@ -530,12 +530,12 @@ meta_compositor_remove_window (MetaCompositor    *compositor,
                                Window             xwindow)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  MetaScreenInfo *minfo;
+  MetaCompScreen *minfo;
   
-  minfo = meta_screen_info_get_by_xwindow (xwindow);
+  minfo = meta_comp_screen_get_by_xwindow (xwindow);
 
   if (minfo)
-      meta_screen_info_remove_window (minfo, xwindow);
+      meta_comp_screen_remove_window (minfo, xwindow);
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 }
 
@@ -544,16 +544,16 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
                                MetaScreen     *screen)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-    MetaScreenInfo *info;
+    MetaCompScreen *info;
 
     if (screen->compositor_data)
 	return;
     
-    info = meta_screen_info_new (compositor->display, screen);
+    info = meta_comp_screen_new (compositor->display, screen);
 
     screen->compositor_data = info;
     
-    meta_screen_info_redirect (info);
+    meta_comp_screen_redirect (info);
 #endif
 }
 
@@ -562,9 +562,9 @@ meta_compositor_unmanage_screen (MetaCompositor *compositor,
                                  MetaScreen     *screen)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  MetaScreenInfo *info = screen->compositor_data;
+  MetaCompScreen *info = screen->compositor_data;
   
-  meta_screen_info_unredirect (info);
+  meta_comp_screen_unredirect (info);
   screen->compositor_data = NULL;
 #endif
 }
@@ -693,7 +693,7 @@ typedef struct
   GTimer *timer;
   
   MetaCompositor *compositor;
-  MetaScreenInfo *scr_info;
+  MetaCompScreen *scr_info;
   
   MetaAnimationFinishedFunc finished_func;
   gpointer		     finished_data;
@@ -739,7 +739,7 @@ set_geometry (MiniInfo *info, gdouble elapsed)
   
   g_print ("setting: %d %d %d %d\n", rect.x, rect.y, rect.width, rect.height);
   
-  meta_screen_info_set_target_rect (info->scr_info,
+  meta_comp_screen_set_target_rect (info->scr_info,
 				    get_xid (info->window), &rect);
 }
 
@@ -759,7 +759,7 @@ run_phase_1 (MiniInfo *info, gdouble elapsed)
 #endif
       info->phase_1_started = TRUE;
 
-      meta_screen_info_get_real_size (info->scr_info, get_xid (info->window),
+      meta_comp_screen_get_real_size (info->scr_info, get_xid (info->window),
 				      &info->current_geometry);
       
 #if 0
@@ -810,7 +810,7 @@ run_phase_3 (MiniInfo *info, gdouble elapsed)
       WsRectangle cur = info->target_geometry;
       WsRectangle real;
 
-      meta_screen_info_get_real_size (info->scr_info, get_xid (info->window),
+      meta_comp_screen_get_real_size (info->scr_info, get_xid (info->window),
 				      &real);
       
       g_print ("starting phase 3\n");
@@ -868,7 +868,7 @@ run_phase_5 (MiniInfo *info, gdouble elapsed)
   
   set_geometry (info, elapsed);
 
-  meta_screen_info_set_alpha (info->scr_info,
+  meta_comp_screen_set_alpha (info->scr_info,
 			      get_xid (info->window), 1 - elapsed);
 }
 
@@ -940,7 +940,7 @@ typedef struct
     GTimer *			timer;
     MetaAnimationFinishedFunc	func;
     gpointer			data;
-    MetaScreenInfo *		minfo;
+    MetaCompScreen *		minfo;
 } ExplodeInfo;
 
 static gboolean
@@ -950,15 +950,15 @@ update_explosion (gpointer data)
     gdouble elapsed = g_timer_elapsed (info->timer, NULL);
     gdouble t = elapsed / EXPLODE_TIME;
 
-    meta_screen_info_set_explode (info->minfo, get_xid (info->window), transform (t));
+    meta_comp_screen_set_explode (info->minfo, get_xid (info->window), transform (t));
 
     if (elapsed > EXPLODE_TIME)
     {
 	if (info->func)
 	    info->func (info->data);
 	
-	meta_screen_info_hide_window (info->minfo, get_xid (info->window));
-	meta_screen_info_set_explode (info->minfo, get_xid (info->window), 0.0);
+	meta_comp_screen_hide_window (info->minfo, get_xid (info->window));
+	meta_comp_screen_set_explode (info->minfo, get_xid (info->window), 0.0);
 	return FALSE;
     }
     else
@@ -984,7 +984,7 @@ meta_compositor_minimize (MetaCompositor	   *compositor,
     info->timer = g_timer_new ();
     info->func = finished;
     info->data = data;
-    info->minfo = meta_screen_info_get_by_xwindow (get_xid (window));
+    info->minfo = meta_comp_screen_get_by_xwindow (get_xid (window));
     
     g_idle_add (update_explosion, info);
 }
@@ -1042,9 +1042,9 @@ meta_compositor_set_updates (MetaCompositor *compositor,
 			     gboolean updates)
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
-  MetaScreenInfo *info = window->screen->compositor_data;
+  MetaCompScreen *info = window->screen->compositor_data;
   
-  meta_screen_info_set_updates (info, get_xid (window), updates);
+  meta_comp_screen_set_updates (info, get_xid (window), updates);
 #endif
 }
 
@@ -1114,7 +1114,7 @@ static gboolean
 wobble (gpointer data)
 {
   MoveInfo *info = data;
-  MetaScreenInfo *minfo = info->screen->compositor_data;
+  MetaCompScreen *minfo = info->screen->compositor_data;
   double t = g_timer_elapsed (info->timer, NULL);
 
 #if 0
@@ -1125,7 +1125,7 @@ wobble (gpointer data)
       info->window_destroyed)
     {
       if (!info->window_destroyed)
-	meta_screen_info_unset_patch (minfo, get_xid (info->window));
+	meta_comp_screen_unset_patch (minfo, get_xid (info->window));
 
       move_infos = g_list_remove (move_infos, info);
       g_free (info);
@@ -1148,7 +1148,7 @@ wobble (gpointer data)
 	info->last_time = t;
       
       get_patch_points (info->model, points);
-      meta_screen_info_set_patch (minfo,
+      meta_comp_screen_set_patch (minfo,
 				  get_xid (info->window),
 				  points);
       
