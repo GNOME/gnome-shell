@@ -528,8 +528,10 @@ meta_window_new_with_attrs (MetaDisplay       *display,
 
   window->struts = NULL;
 
-  window->using_net_wm_name = FALSE;
-  window->using_net_wm_icon_name = FALSE;
+  window->using_net_wm_name              = FALSE;
+  window->using_net_wm_visible_name      = FALSE;
+  window->using_net_wm_icon_name         = FALSE;
+  window->using_net_wm_visible_icon_name = FALSE;
 
   window->need_reread_icon = TRUE;
   window->update_icon_queued = FALSE;

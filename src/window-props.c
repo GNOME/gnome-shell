@@ -207,7 +207,11 @@ reload_net_wm_user_time (MetaWindow    *window,
  * Returns TRUE if a new title was set.
  */
 static gboolean
-set_title_text (MetaWindow *window, const char *title, Atom atom, char **target)
+set_title_text (MetaWindow  *window,
+                gboolean     previous_was_modified,
+                const char  *title,
+                Atom         atom,
+                char       **target)
 {
   char hostname[HOST_NAME_MAX + 1];
   gboolean modified = FALSE;
@@ -239,8 +243,14 @@ set_title_text (MetaWindow *window, const char *title, Atom atom, char **target)
 
   if (modified && atom != None)
     meta_prop_set_utf8_string_hint (window->display,
-                                      window->xwindow,
-                                      atom, *target);
+                                    window->xwindow,
+                                    atom, *target);
+
+  /* Bug 330671 -- Don't forget to clear _NET_WM_VISIBLE_(ICON_)NAME */
+  if (!modified && previous_was_modified)
+    XDeleteProperty (window->display->xdisplay,
+                     window->xwindow,
+                     atom);
 
   return modified;
 }
@@ -251,8 +261,13 @@ set_window_title (MetaWindow *window,
 {
   char *str;
  
-  set_title_text (window, title, window->display->atom_net_wm_visible_name,
-                  &window->title);
+  gboolean modified =
+    set_title_text (window,
+                    window->using_net_wm_visible_name,
+                    title,
+                    window->display->atom_net_wm_visible_name,
+                    &window->title);
+  window->using_net_wm_visible_name = modified;
   
   /* strndup is a hack since GNU libc has broken %.10s */
   str = g_strndup (window->title, 10);
@@ -297,8 +312,8 @@ reload_net_wm_name (MetaWindow    *window,
 
 static void
 init_wm_name (MetaDisplay   *display,
-                  Atom           property,
-                  MetaPropValue *value)
+              Atom           property,
+              MetaPropValue *value)
 {
   value->type = META_PROP_VALUE_TEXT_PROPERTY;
   value->atom = XA_WM_NAME;
@@ -332,8 +347,13 @@ static void
 set_icon_title (MetaWindow *window,
                 const char *title)
 {
-  set_title_text (window, title, window->display->atom_net_wm_visible_icon_name,
-                  &window->icon_name);
+  gboolean modified =
+    set_title_text (window,
+                    window->using_net_wm_visible_icon_name,
+                    title,
+                    window->display->atom_net_wm_visible_icon_name,
+                    &window->icon_name);
+  window->using_net_wm_visible_icon_name = modified;
 }
 
 static void

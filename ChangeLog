@@ -1,5 +1,18 @@
 2006-04-25  Elijah Newren  <newren gmail com>
 
+	Clear _NET_WM_VISIBLE_NAME (and the ICON_ equivalent) when no
+	longer being used.  Fixes #330671.
+
+	* src/window.[ch] (struct MetaWindow): new
+	using_net_wm_visible_name and using_net_wm_visible_icon_name bits,
+	(meta_window_new_with_attrs): initialize these new bits to false
+	
+	* src/window-props.c (set_title_text, set_window_title, set_icon_title):
+	if the _NET_WM_VISIBLE_(ICON_)NAME property was previously set but
+	doesn't need to be this time, make sure to clear it
+
+2006-04-25  Elijah Newren  <newren gmail com>
+
 	* rationales.txt: add three new tracker bugs
 
 Thu May  4 13:30:04 2006  Søren Sandmann  <sandmann@redhat.com>

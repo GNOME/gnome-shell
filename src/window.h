@@ -273,8 +273,10 @@ struct _MetaWindow
   guint transient_parent_is_root_window : 1;
 
   /* Info on which props we got our attributes from */
-  guint using_net_wm_name : 1; /* vs. plain wm_name */
-  guint using_net_wm_icon_name : 1; /* vs. plain wm_icon_name */
+  guint using_net_wm_name              : 1; /* vs. plain wm_name */
+  guint using_net_wm_visible_name      : 1; /* tracked so we can clear it */
+  guint using_net_wm_icon_name         : 1; /* vs. plain wm_icon_name */
+  guint using_net_wm_visible_icon_name : 1; /* tracked so we can clear it */
 
   /* has a shape mask */
   guint has_shape : 1;
