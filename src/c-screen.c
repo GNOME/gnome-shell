@@ -526,7 +526,7 @@ meta_comp_screen_add_window (MetaCompScreen *info,
       goto out;
     }
   
-  comp_window = meta_comp_window_new (drawable);
+  comp_window = meta_comp_window_new (info->meta_screen->display, drawable);
   
   g_hash_table_insert (info->windows_by_xid, (gpointer)WS_RESOURCE_XID (drawable), comp_window);
   
@@ -534,7 +534,12 @@ meta_comp_screen_add_window (MetaCompScreen *info,
   
  out:
   if (comp_window)
-    meta_comp_window_refresh_attrs (comp_window);
+  {
+      /* This function is called both when windows are created and when they
+       * are mapped, so for now we have this silly function.
+       */
+      meta_comp_window_refresh_attrs (comp_window);
+  }
   
   ws_display_end_error_trap (info->display);
   

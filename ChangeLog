@@ -1,3 +1,10 @@
+Fri May  5 12:50:58 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/c-window.c (has_counter): Some experimental code to handle
+	sync counter notifications on a window.
+
+	* src/c-screen.c (meta_comp_screen_add_window): Pass a MetaDisplay
+
 2006-04-25  Elijah Newren  <newren gmail com>
 
 	Clear _NET_WM_VISIBLE_NAME (and the ICON_ equivalent) when no

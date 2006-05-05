@@ -34,15 +34,19 @@
 
 struct _MetaCompWindow
 {
+    MetaDisplay *display;
     WsDrawable *drawable;
+    WsPixmap   *pixmap;
     CmNode     *node;
     gboolean	updates;
+    WsSyncAlarm *alarm;
     
     WsRectangle size;
 };
 
 MetaCompWindow *
-meta_comp_window_new (WsDrawable *drawable)
+meta_comp_window_new (MetaDisplay    *display,
+		      WsDrawable     *drawable)
 {
     MetaCompWindow *window;
     WsRectangle geometry;
@@ -50,7 +54,8 @@ meta_comp_window_new (WsDrawable *drawable)
     ws_drawable_query_geometry (drawable, &geometry);
     
     window = g_new0 (MetaCompWindow, 1);
-    
+
+    window->display = display;
     window->drawable = g_object_ref (drawable);
     window->node = CM_NODE (cm_drawable_node_new (drawable, &geometry));
     window->updates = TRUE;
@@ -123,6 +128,128 @@ has_type (WsWindow *window, const char *check_type)
     return result;
 }
 
+static MetaWindow *
+find_meta_window (MetaCompWindow *comp_window)
+{
+    Window xwindow = WS_RESOURCE_XID (comp_window->drawable);
+    MetaWindow *window =
+	meta_display_lookup_x_window (comp_window->display, xwindow);
+
+    return window;
+}
+
+static Window
+find_app_window (MetaCompWindow *comp_window)
+{
+    Window xwindow = WS_RESOURCE_XID (comp_window->drawable);
+    MetaWindow *meta_window =
+	meta_display_lookup_x_window (comp_window->display, xwindow);
+
+    if (meta_window)
+	return meta_window->xwindow;
+    else
+	return xwindow;
+}
+
+static WsPixmap *
+take_snapshot (WsDrawable *drawable)
+{
+    WsDisplay *display = WS_RESOURCE (drawable)->display;
+    WsRectangle geometry;
+    WsPixmap *pixmap;
+    
+    ws_display_begin_error_trap (display);
+
+    ws_drawable_query_geometry (drawable, &geometry);
+
+    pixmap = ws_pixmap_new (drawable, geometry.width, geometry.height);
+    
+    ws_drawable_copy_area (drawable, 0, 0, geometry.width, geometry.height,
+			   WS_DRAWABLE (pixmap), 0, 0,
+			   NULL);
+    
+    ws_display_end_error_trap (display);
+
+    return pixmap;
+}
+
+static void
+on_alarm (WsSyncAlarm *alarm,
+	  WsAlarmNotifyEvent *event,
+	  MetaCompWindow *window)
+{
+    g_print ("received alarm\n");
+
+    if (window->pixmap)
+	g_object_unref (window->pixmap);
+
+    window->pixmap = take_snapshot (window->drawable);
+    
+    ws_sync_alarm_set (window->alarm, event->counter_value + 2);
+    ws_sync_counter_change (event->counter, 1);
+}
+
+static gboolean
+has_counter (MetaCompWindow *comp_window)
+{
+    Window xwindow = find_app_window (comp_window);
+    WsDisplay *display = WS_RESOURCE (comp_window->drawable)->display;
+    WsWindow *window = ws_window_lookup (display, xwindow);
+    WsSyncCounter *counter;
+
+    ws_display_init_sync (display);
+    
+    counter = ws_window_get_property_sync_counter (
+	window, "_NET_WM_FINISH_FRAME_COUNTER");
+
+    if (counter)
+    {
+	WsSyncAlarm *alarm;
+	gint64 value = ws_sync_counter_query_value (counter);
+	
+	g_print ("counter value %lld\n", ws_sync_counter_query_value (counter));
+	alarm = ws_sync_alarm_new (display, counter);
+
+	g_signal_connect (alarm, "alarm_notify_event",
+			  G_CALLBACK (on_alarm), comp_window);
+
+	if (value % 2 == 1)
+	{
+	    ws_sync_alarm_set (alarm, value + 2);
+
+	    g_print ("wait for %lld\n", value + 2);
+	    
+	    g_print ("increasing counter\n");
+	    ws_sync_counter_change (counter, 1);
+
+	    g_print ("counter value %lld\n", ws_sync_counter_query_value (counter));
+	}
+	else
+	{
+	    g_print ("wait for %lld\n", value + 1);
+	    ws_sync_alarm_set (alarm, value + 1);
+	}
+
+	comp_window->alarm = alarm;
+	
+    }
+    
+#if 0
+    if (counter)
+    {
+	g_print ("found counter %lx on %lx\n",
+		 WS_RESOURCE_XID (counter),
+		 WS_RESOURCE_XID (window));
+    }
+    else
+    {
+	g_print ("no counter found for %lx\n", WS_RESOURCE_XID (window));
+    }
+#endif
+
+    return TRUE;
+}
+
 void
 meta_comp_window_refresh_attrs (MetaCompWindow *comp_window)
 {
@@ -139,6 +266,10 @@ meta_comp_window_refresh_attrs (MetaCompWindow *comp_window)
 	
 	cm_drawable_node_unset_patch (CM_DRAWABLE_NODE (node));
 
+	find_meta_window (comp_window);
+
+	has_counter (comp_window);
+	
 	if (has_type (window, "_NET_WM_WINDOW_TYPE_DROPDOWN_MENU"))
 	{
 	    alpha = 0.3;
