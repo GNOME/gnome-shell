@@ -68,3 +68,6 @@ moving/resizing (constraints): http://bugzilla.gnome.org/show_bug.cgi?id=155458
                 modal dialogs: http://bugzilla.gnome.org/show_bug.cgi?id=164841
      multi-head sans xinerama: http://bugzilla.gnome.org/show_bug.cgi?id=324772
                      xinerama: http://bugzilla.gnome.org/show_bug.cgi?id=324773
+          output-only windows: http://bugzilla.gnome.org/show_bug.cgi?id=340584
+  allowed actions/window-type: http://bugzilla.gnome.org/show_bug.cgi?id=340682
+        EWMH/ICCCM compliance: http://bugzilla.gnome.org/show_bug.cgi?id=340691

@@ -1,3 +1,7 @@
+2006-04-25  Elijah Newren  <newren gmail com>
+
+	* rationales.txt: add three new tracker bugs
+
 Thu May  4 13:30:04 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/ui.h: Delete unused META_PRIORITY_COMPOSITE
