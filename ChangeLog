@@ -1,3 +1,8 @@
+2006-04-25  Elijah Newren  <newren gmail com>
+
+	* HACKING: Clarify that gnome-common is needed now that autogen.sh
+	has been rewritten to use gnome-autogen.sh
+
 Fri May  5 12:50:58 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/c-window.c (has_counter): Some experimental code to handle

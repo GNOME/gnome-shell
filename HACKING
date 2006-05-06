@@ -44,8 +44,10 @@ Minimal Building/Testing Environment
 
   As long as you have gtk+ >= 2.6 with your distro, you should be able
   to install your distro's development packages (e.g. gtk2-devel,
-  GConf2-devel, and startup-notification-devel on Fedora) and be ready
-  to build and test Metacity.  Steps to do so:
+  GConf2-devel, startup-notification-devel on Fedora; also, remember
+  to install the gnome-common package which is needed for building cvs
+  versions of Gnome modules like Metacity) and be ready to build and
+  test Metacity.  Steps to do so:
 
   $ cvs -q -z3 -d :pserver:anonymous@anoncvs.gnome.org:/cvs/gnome \
                   checkout metacity
