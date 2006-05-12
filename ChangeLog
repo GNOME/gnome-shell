@@ -1,3 +1,10 @@
+2006-05-12  Elijah Newren  <newren gmail com>
+
+	* configure.in: I don't think we want a config file for the
+	no-gconf case; embedded people would prefer hard-coding things
+	into the binary
+	(http://mail.gnome.org/archives/metacity-devel-list/2006-May/msg00010.html)
+
 2006-04-25  Elijah Newren  <newren gmail com>
 
 	* HACKING: Clarify that gnome-common is needed now that autogen.sh

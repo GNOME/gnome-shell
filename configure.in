@@ -483,11 +483,8 @@ AC_OUTPUT
 
 if test x$enable_gconf = xno; then
         echo "*** WARNING WARNING WARNING WARNING WARNING"
-        echo "*** Building without GConf"
-        echo "*** This means there's no way to change prefs except"
-        echo "*** hacking source code, at least for now."
-        echo "*** Also, some prefs may have broken defaults."
-        echo "*** Patches needed for a simple no-gconf config file."
+        echo "*** Building without GConf.  This means there's no"
+        echo "*** way to change prefs except hacking source code."
         echo "*** This is intended for embedded systems etc., not for normal use."
 fi
 
