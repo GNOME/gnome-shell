@@ -71,7 +71,7 @@ msgid ""
 "the window manager.\n"
 msgstr ""
 "跟畫面‘%s’失去聯繫；\n"
-"很可能 X 伺服程式已經中止運作，或是您強行中止了視窗管理員。\n"
+"很可能 X 伺服程式已經中止運作，或是你強行中止了視窗管理員。\n"
 
 #: ../src/errors.c:276
 #, c-format
@@ -130,7 +130,7 @@ msgid ""
 msgstr ""
 "metacity %s\n"
 "版權所有 ©2001-2002 Havoc Pennington、Red Hat, Inc. 及其它開發者\n"
-"本程式是自由軟體；有關版權的詳情請參考源程式碼。本程式不負任何擔保責任；亦無"
+"本程式是自由軟件；有關版權的詳情請參考源程式碼。本程式不負任何擔保責任；亦無"
 "對適售性或特定目的適用性所為的默示性擔保。\n"
 
 #: ../src/main.c:258
@@ -2159,7 +2159,7 @@ msgstr "無法以浮點小數的方式分析“%s”"
 #: ../src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "布林值必須為“true”或“false”，不是“%s”"
+msgstr "邏輯值必須為“true”或“false”，不是“%s”"
 
 #: ../src/theme-parser.c:572
 #, c-format
@@ -2449,7 +2449,7 @@ msgstr "沒有定義任何名稱為“%s”的 <draw_ops>"
 #: ../src/theme-parser.c:2971 ../src/theme-parser.c:3087
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr "這裡的 draw_ops“%s”會造成循環"
+msgstr "這裏的 draw_ops“%s”會造成循環"
 
 #: ../src/theme-parser.c:3150
 #, c-format
@@ -2800,7 +2800,7 @@ msgstr "速度測試"
 
 #: ../src/theme-viewer.c:900
 msgid "Window Title Goes Here"
-msgstr "這裡是視窗標題"
+msgstr "這裏是視窗標題"
 
 #: ../src/theme-viewer.c:1004
 #, c-format
@@ -2895,7 +2895,7 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"GTK 色彩規格規定必須在狀態外加上方括號，例如 gtk:fg[NORMAL]，這裡 NORMAL 表示"
+"GTK 色彩規格規定必須在狀態外加上方括號，例如 gtk:fg[NORMAL]，這裏 NORMAL 表示"
 "狀態；無法分析“%s”"
 
 #: ../src/theme.c:953
@@ -2904,7 +2904,7 @@ msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"GTK 色彩規格規定必須在狀態後加上閉方括號，例如 gtk:fg[NORMAL]，這裡 NORMAL 表"
+"GTK 色彩規格規定必須在狀態後加上閉方括號，例如 gtk:fg[NORMAL]，這裏 NORMAL 表"
 "示狀態；無法分析“%s”"
 
 #: ../src/theme.c:964
