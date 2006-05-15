@@ -1,5 +1,21 @@
 2006-05-15  Elijah Newren  <newren gmail com>
 
+	Revert the accessibility module loading workaround from Gnome
+	2.6, since gtk+ has long since fixed this for us.  #123372.
+
+	* src/Makefile.am: remove METACITY_LIBDIR define
+
+	* src/main.c (find_accessibility_module,
+	accessibility_invoke_module, accessibility_invoke, main): remove
+	the first three of these functions and all calls to them
+
+	* src/tabpopup.c (meta_ui_tab_popup_new): not sure if this part of
+	120025 needed to be reverted but doing the reversion, if wrong, is
+	the best way to get someone from the accessibility team to scream,
+	er, I mean comment.  ;-)
+
+2006-05-15  Elijah Newren  <newren gmail com>
+
 	* src/screen.c (reload_xinerama_infos): Patch from
 	jylefort@FreeBSD.org to prevent a crash when changing resolution.
 	Fixes #340847.
