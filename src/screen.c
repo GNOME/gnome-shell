@@ -187,6 +187,20 @@ reload_xinerama_infos (MetaScreen *screen)
 {
   MetaDisplay *display;
 
+  {
+    GList *tmp;
+
+    tmp = screen->workspaces;
+    while (tmp != NULL)
+      {
+        MetaWorkspace *space = tmp->data;
+
+        meta_workspace_invalidate_work_area (space);
+        
+        tmp = tmp->next;
+      }
+  }
+
   display = screen->display;
   
   if (screen->xinerama_infos)
@@ -348,20 +362,6 @@ reload_xinerama_infos (MetaScreen *screen)
 
   g_assert (screen->n_xinerama_infos > 0);
   g_assert (screen->xinerama_infos != NULL);
-
-  {
-    GList *tmp;
-
-    tmp = screen->workspaces;
-    while (tmp != NULL)
-      {
-        MetaWorkspace *space = tmp->data;
-
-        meta_workspace_invalidate_work_area (space);
-        
-        tmp = tmp->next;
-      }
-  }
 }
 
 MetaScreen*

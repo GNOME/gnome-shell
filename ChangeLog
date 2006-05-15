@@ -1,3 +1,9 @@
+2006-05-15  Elijah Newren  <newren gmail com>
+
+	* src/screen.c (reload_xinerama_infos): Patch from
+	jylefort@FreeBSD.org to prevent a crash when changing resolution.
+	Fixes #340847.
+
 2006-05-15  Björn Lindqvist  <bjourne@gmail.com>
 
 	* places.[ch] (intcmp, window_get_edges,
