@@ -1,3 +1,14 @@
+2006-05-15  Björn Lindqvist  <bjourne@gmail.com>
+
+	* places.[ch] (intcmp, window_get_edges,
+	get_windows_showing_on_same_screen, get_vertical_edges,
+	get_horizontal_edges, meta_window_find_next_vertical_edge,
+	meta_window_find_next_horizontal_edge,
+	meta_window_find_nearest_vertical_edge,
+	meta_window_find_nearest_horizontal_edge): Remove the preceeding
+	functions as they are all obsoleted by the new edge-resistance
+	stuff. Fixes #341561.
+
 2006-05-15  Paolo Borelli  <pborelli@katamail.com>
 
 	* src/prefs.c (update_binding): plug a small leak.

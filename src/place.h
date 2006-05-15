@@ -42,23 +42,4 @@ void meta_window_place (MetaWindow *window,
                         int        *new_x,
                         int        *new_y);
 
-/* Returns the position to move the specified window edge to in order
- * to snap it to the next edge in the given direction,
- * while moving.
- */
-int meta_window_find_next_vertical_edge   (MetaWindow *window,
-                                           MetaWindowEdgePosition source_edge_position,
-                                           gboolean    down);
-int meta_window_find_next_horizontal_edge (MetaWindow *window,
-                                           MetaWindowEdgePosition source_edge_position,
-                                           gboolean    right);
-
-/* Returns the position to move the window to in order
- * to snap it to the nearest edge, while moving.
- */
-int meta_window_find_nearest_vertical_edge (MetaWindow *window,
-                                            int         x_pos);
-
-int meta_window_find_nearest_horizontal_edge (MetaWindow *window,
-                                              int         y_pos);
 #endif
