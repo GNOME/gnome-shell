@@ -2201,10 +2201,9 @@ update_binding (MetaKeyPref *binding,
                     binding->name,
                     value);
 
-      old_setting = meta_ui_accelerator_name(
-                      combo->keysym,
-                      combo->modifiers);
-      
+      old_setting = meta_ui_accelerator_name (combo->keysym,
+                                              combo->modifiers);
+
       if (!strcmp(old_setting, value))
         {
           /* We were about to set it to the same value
@@ -2213,6 +2212,7 @@ update_binding (MetaKeyPref *binding,
            * meta_ui_accelerator_name. Bail out now
            * so we don't get into an infinite loop.
            */
+           g_free (old_setting);
            return TRUE;
         }
 

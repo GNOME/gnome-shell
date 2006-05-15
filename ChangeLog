@@ -1,3 +1,7 @@
+2006-05-15  Paolo Borelli  <pborelli@katamail.com>
+
+	* src/prefs.c (update_binding): plug a small leak.
+
 2006-05-12  Elijah Newren  <newren gmail com>
 
 	* configure.in: I don't think we want a config file for the
