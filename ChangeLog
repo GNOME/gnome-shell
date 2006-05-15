@@ -1,5 +1,9 @@
 2006-05-15  Elijah Newren  <newren gmail com>
 
+	* NEWS:	2.15.3 release
+
+2006-05-15  Elijah Newren  <newren gmail com>
+
 	Revert the accessibility module loading workaround from Gnome
 	2.6, since gtk+ has long since fixed this for us.  #123372.
 

@@ -1,3 +1,25 @@
+2.15.3
+==
+
+Thanks to Søren Sandmann, Elijah Newren, Paolo Borelli, Björn
+Lindqvist, jylefort at FreeBSD org, 
+
+ - various code cleanups (Søren)
+ - prevent long titles from "sticking" in the tasklist (Elijah) [#330671]
+ - handle sync counter notifications in the compositor (Søren)
+ - notes/documentation updates (Elijah)
+ - plug a small leak (Paolo)
+ - remove a lot of dead code obsoleted by the new edge-resistance
+   stuff (Björn) [#341561]
+ - prevent a crash when changing resolution (jylefort) [#340847]
+ - revert an accessibility module loading workaround from Gnome 2.6
+   that has long since been fixed for us in gtk+ (Elijah) [#123372]
+
+Translations
+  Francisco Javier F. Serrador (es), Ignacio Casal Quinteiro (gl),
+  Raivis Dejus (lv), Kjartan Maraas (nb), Funda Wang (zh_CN), Woodman
+  Tuen (zh_HK), Woodman Tuen (zh_TW)
+
 2.15.2
 ==
 
