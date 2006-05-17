@@ -50,6 +50,12 @@ Pointer warping:
   (Think about tasklist & window selector too; this would be a very bad idea)
 
 
+Bugs for easy dupe-finding that seem to be hard to find otherwise:
+===
+Applications opening in wrong workspace:
+  http://bugzilla.gnome.org/show_bug.cgi?id=160687
+
+
 Tracking bugs
 ====
 
