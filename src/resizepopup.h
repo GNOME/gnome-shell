@@ -33,18 +33,11 @@ MetaResizePopup* meta_ui_resize_popup_new          (Display *display,
                                                     int      screen_number);
 void             meta_ui_resize_popup_free         (MetaResizePopup *popup);
 void             meta_ui_resize_popup_set (MetaResizePopup *popup,
-                                           int              resize_gravity,
                                            MetaRectangle    rect,
                                            int              base_width,
                                            int              base_height,
-                                           int              min_width,
-                                           int              min_height,
                                            int              width_inc,
-                                           int              height_inc,
-                                           int              frame_left,
-                                           int              frame_right,
-                                           int              frame_top,
-                                           int              frame_bottom);
+                                           int              height_inc);
 void             meta_ui_resize_popup_set_showing  (MetaResizePopup *popup,
                                                     gboolean         showing);
 

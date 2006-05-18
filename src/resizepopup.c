@@ -40,18 +40,7 @@ struct _MetaResizePopup
   
   gboolean showing;
   
-  int resize_gravity;
   MetaRectangle rect;
-  int width_inc;
-  int height_inc;
-  int min_width;
-  int min_height;
-  int frame_left;
-  int frame_right;
-  int frame_top;
-  int frame_bottom;
-  int tick_origin_x;
-  int tick_origin_y;
 };
 
 MetaResizePopup*
@@ -62,7 +51,6 @@ meta_ui_resize_popup_new (Display *display,
 
   popup = g_new0 (MetaResizePopup, 1);
 
-  popup->resize_gravity = -1;
   popup->display = display;
   popup->screen_number = screen_number;
   
@@ -167,18 +155,11 @@ sync_showing (MetaResizePopup *popup)
 
 void
 meta_ui_resize_popup_set (MetaResizePopup *popup,
-                          int              resize_gravity,
                           MetaRectangle    rect,
                           int              base_width,
                           int              base_height,
-                          int              min_width,
-                          int              min_height,
                           int              width_inc,
-                          int              height_inc,
-                          int              frame_left,
-                          int              frame_right,
-                          int              frame_top,
-                          int              frame_bottom)
+                          int              height_inc)
 {
   gboolean need_update_size;
   int display_w, display_h;
@@ -200,16 +181,7 @@ meta_ui_resize_popup_set (MetaResizePopup *popup,
       display_h != popup->vertical_size)
     need_update_size = TRUE;
   
-  popup->resize_gravity = resize_gravity;
   popup->rect = rect;
-  popup->min_width = min_width;
-  popup->min_height = min_height;
-  popup->width_inc = width_inc;
-  popup->height_inc = height_inc;
-  popup->frame_left = frame_left;
-  popup->frame_right = frame_right;
-  popup->frame_top = frame_top;
-  popup->frame_bottom = frame_bottom;
   popup->vertical_size = display_h;
   popup->horizontal_size = display_w;
   

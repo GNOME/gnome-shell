@@ -1,3 +1,11 @@
+2006-05-18  Björn Lindqvist  <bjourne@gmail.com>
+
+	* resizepopup.c: Remove the unused attributes resize_gravity,
+	width_inc, height_inc, min_width, min_height, frame_left,
+	frame_right, frame_top, frame_bottom, tick_origin_x, tick_origin_y
+	from the MetaResizePopup struct. Delete all code that references
+	those attributes.
+
 2006-05-15  Elijah Newren  <newren gmail com>
 
 	* configure.in: post-release version bump to 2.15.5

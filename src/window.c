@@ -7227,23 +7227,8 @@ meta_window_refresh_resize_popup (MetaWindow *window)
   
   if (window->display->grab_resize_popup != NULL)
     {
-      int gravity;
       MetaRectangle rect;
-      MetaFrameGeometry fgeom;
-
-      if (window->frame)
-        meta_frame_calc_geometry (window->frame, &fgeom);
-      else
-        {
-          fgeom.left_width = 0;
-          fgeom.right_width = 0;
-          fgeom.top_height = 0;
-          fgeom.bottom_height = 0;
-        }
       
-      gravity = meta_resize_gravity_from_grab_op (window->display->grab_op);
-      g_assert (gravity >= 0);
-
       if (window->display->grab_wireframe_active)
         {
           rect = window->display->grab_wireframe_rect;
@@ -7256,18 +7241,11 @@ meta_window_refresh_resize_popup (MetaWindow *window)
         }
       
       meta_ui_resize_popup_set (window->display->grab_resize_popup,
-                                gravity,
                                 rect,
                                 window->size_hints.base_width,
                                 window->size_hints.base_height,
-                                window->size_hints.min_width,
-                                window->size_hints.min_height,
                                 window->size_hints.width_inc,
-                                window->size_hints.height_inc,
-                                fgeom.left_width,
-                                fgeom.right_width,
-                                fgeom.top_height,
-                                fgeom.bottom_height);
+                                window->size_hints.height_inc);
 
       meta_ui_resize_popup_set_showing (window->display->grab_resize_popup,
                                         TRUE);
