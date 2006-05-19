@@ -1,3 +1,8 @@
+2006-05-19  Björn Lindqvist  <bjourne@gmail.com>
+
+	* frames.c: Fix a logic bug so that the whole titlebar becomes
+	sensitive to mouse clicks. Fixes #336320.
+
 2006-05-18  Björn Lindqvist  <bjourne@gmail.com>
 
 	* resizepopup.c: Remove the unused attributes resize_gravity,

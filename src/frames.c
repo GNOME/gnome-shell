@@ -2304,7 +2304,6 @@ get_control (MetaFrames *frames,
   MetaFrameFlags flags;
   gboolean has_vert, has_horiz;
   GdkRectangle client;
-  int bottom_of_titlebar;
   
   meta_frames_calc_geometry (frames, frame, &fgeom);
 
@@ -2313,8 +2312,6 @@ get_control (MetaFrames *frames,
   client.width = fgeom.width - fgeom.left_width - fgeom.right_width;
   client.height = fgeom.height - fgeom.top_height - fgeom.bottom_height;  
 
-  bottom_of_titlebar = fgeom.title_rect.y + fgeom.title_rect.height;
-  
   if (POINT_IN_RECT (x, y, client))
     return META_FRAME_CONTROL_CLIENT_AREA;
   
@@ -2415,7 +2412,7 @@ get_control (MetaFrames *frames,
         return META_FRAME_CONTROL_RESIZE_E;
     }
 
-  if (y >= bottom_of_titlebar)
+  if (y >= fgeom.top_height)
     return META_FRAME_CONTROL_NONE;
   else
     return META_FRAME_CONTROL_TITLE;
