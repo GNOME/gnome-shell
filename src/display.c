@@ -3064,10 +3064,7 @@ meta_display_create_x_cursor (MetaDisplay *display,
     case META_CURSOR_NW_RESIZE:
       glyph = XC_top_left_corner;
       break;
-    case META_CURSOR_MOVE_WINDOW:
-      glyph = XC_plus;
-      break;
-    case META_CURSOR_RESIZE_WINDOW:
+    case META_CURSOR_MOVE_OR_RESIZE_WINDOW:
       glyph = XC_fleur;
       break;
     case META_CURSOR_BUSY:
@@ -3127,10 +3124,8 @@ xcursor_for_op (MetaDisplay *display,
       break;
     case META_GRAB_OP_MOVING:
     case META_GRAB_OP_KEYBOARD_MOVING:
-      cursor = META_CURSOR_MOVE_WINDOW;
-      break;
     case META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN:
-      cursor = META_CURSOR_RESIZE_WINDOW;
+      cursor = META_CURSOR_MOVE_OR_RESIZE_WINDOW;
       break;
       
     default:
