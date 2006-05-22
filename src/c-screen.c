@@ -64,6 +64,13 @@ meta_comp_window_lookup (MetaCompScreen *info,
     return window;
 }
 
+MetaCompWindow *
+meta_comp_screen_lookup_window   (MetaCompScreen *info,
+				  Window          xwindow)
+{
+    return meta_comp_window_lookup (info, xwindow);
+}
+
 #if 0
 static void
 update_frame_counter (void)
@@ -648,23 +655,6 @@ meta_comp_screen_set_target_rect (MetaCompScreen *info,
   
   if (node)
     cm_drawable_node_set_scale_rect (node, rect);
-}
-
-void
-meta_comp_screen_set_explode (MetaCompScreen *info,
-			      Window xwindow,
-			      gdouble level)
-{
-  CmDrawableNode *node = CM_DRAWABLE_NODE (find_node (info, xwindow));
-  
-  if (node)
-    {
-#if 0
-      g_print ("level: %f\n", level);
-#endif
-      
-      cm_drawable_node_set_explosion_level (node, level);
-    }
 }
 
 void

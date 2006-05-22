@@ -25,6 +25,9 @@
 #include "util.h"
 #include "screen.h"
 
+typedef struct MetaEffect MetaEffect;
+typedef struct MetaEffectPriv MetaEffectPriv;
+
 #define META_MINIMIZE_ANIMATION_LENGTH 0.25
 #define META_SHADE_ANIMATION_LENGTH 0.2
 
@@ -34,6 +37,51 @@ typedef enum
   META_BOX_ANIM_SLIDE_UP
 
 } MetaBoxAnimType;
+
+typedef enum
+{
+  META_EFFECT_MINIMIZE
+} MetaEffectType;
+
+typedef void (* MetaEffectHandler) (MetaEffect *effect,
+				    gpointer    data);
+typedef void (* MetaEffectFinished) (const MetaEffect *effect,
+				     gpointer	      data);
+
+typedef struct
+{
+  MetaWindow *window;
+  MetaRectangle window_rect;
+  MetaRectangle icon_rect;
+} MetaMinimizeEffect;
+
+struct MetaEffect
+{
+  MetaEffectType type;
+  gpointer info;		/* effect handler can hang data here */
+  
+  union
+  {
+    MetaMinimizeEffect	minimize;
+  } u;
+
+  MetaEffectPriv *priv;
+};
+
+void        meta_push_effect_handler (MetaEffectHandler   handler,
+				      gpointer            data);
+void	    meta_pop_effect_handler  (void);
+
+void        meta_effect_run_minimize     (MetaWindow         *window,
+					  MetaRectangle	     *window_rect,
+					  MetaRectangle	     *target,
+					  MetaEffectFinished  finished,
+					  gpointer            data);
+void        meta_effect_end              (MetaEffect         *effect);
+
+
+
+/* Stuff that should become static functions */
 
 void meta_effects_draw_box_animation (MetaScreen     *screen,
                                       MetaRectangle  *initial_rect,

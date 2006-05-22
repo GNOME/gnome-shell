@@ -45,6 +45,7 @@ void meta_compositor_manage_screen   (MetaCompositor *compositor,
 void meta_compositor_unmanage_screen (MetaCompositor *compositor,
                                       MetaScreen     *screen);
 
+#if 0
 void meta_compositor_minimize (MetaCompositor            *compositor,
 			       MetaWindow                *window,
 			       int                        x,
@@ -53,6 +54,7 @@ void meta_compositor_minimize (MetaCompositor            *compositor,
 			       int                        height,
 			       MetaAnimationFinishedFunc  finished_cb,
 			       gpointer                   finished_data);
+#endif
 
 void
 meta_compositor_set_updates (MetaCompositor *compositor,

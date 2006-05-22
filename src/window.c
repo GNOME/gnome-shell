@@ -1324,7 +1324,8 @@ meta_window_should_be_showing (MetaWindow  *window)
 }
 
 static void
-finish_minimize (gpointer data)
+finish_minimize (const MetaEffect *effect,
+		 gpointer	   data)
 {
   MetaWindow *window = data;
   
@@ -1381,32 +1382,15 @@ implement_showing (MetaWindow *window,
 
           meta_window_get_outer_rect (window, &window_rect);
 
-	  if (window->display->compositor)
-	    {
-	      /* Draw a nice cool animation */
-	      meta_compositor_minimize (window->display->compositor,
-					window,
-					icon_rect.x,
-					icon_rect.y,
-					icon_rect.width,
-					icon_rect.height,
-					finish_minimize,
-					window);
-	    }
-	  else
-	    {
-	      meta_effects_draw_box_animation (window->screen,
-					       &window_rect,
-					       &icon_rect,
-					       META_MINIMIZE_ANIMATION_LENGTH,
-					       META_BOX_ANIM_SCALE);
-
-	      finish_minimize (window);
-	    }
+	  meta_effect_run_minimize (window,
+				    &window_rect,
+				    &icon_rect,
+				    finish_minimize,
+				    window);
 	}
       else
 	{
-	  finish_minimize (window);
+	  finish_minimize (NULL, window);
 	}
     }
   else

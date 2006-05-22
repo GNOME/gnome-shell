@@ -1,4 +1,5 @@
 #include "screen.h"
+#include "c-window.h"
 
 typedef struct MetaCompScreen MetaCompScreen;
 
@@ -48,4 +49,5 @@ void            meta_comp_screen_hide_window     (MetaCompScreen *info,
 						  Window          xwindow);
 void            meta_comp_screen_unmap           (MetaCompScreen *info,
 						  Window          xwindow);
-
+MetaCompWindow *meta_comp_screen_lookup_window   (MetaCompScreen *info,
+						  Window          xwindow);

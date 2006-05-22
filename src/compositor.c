@@ -50,6 +50,8 @@
 #include "spring-model.h"
 #include <cm/state.h>
 
+#include "effects.h"
+
 #include "c-screen.h"
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
@@ -94,6 +96,39 @@ handle_error (Display *dpy, XErrorEvent *ev, gpointer data)
 }
 #endif
 
+static Window
+get_xid (MetaWindow *window)
+{
+    if (window->frame)
+	return window->frame->xwindow;
+    else
+	return window->xwindow;
+}
+
+static void
+do_effect (MetaEffect *effect,
+	   gpointer data)
+{
+    switch (effect->type)
+    {
+    case META_EFFECT_MINIMIZE:
+    {
+	MetaCompScreen *screen = meta_comp_screen_get_by_xwindow (
+	    get_xid (effect->u.minimize.window));
+	MetaCompWindow *window =
+	    meta_comp_screen_lookup_window (screen, effect->u.minimize.window->frame->xwindow);
+
+	meta_comp_window_explode (window, effect);
+	break;
+    }
+    default:
+    {
+	g_assert_not_reached();
+	break;
+    }
+    }
+}
+
 MetaCompositor *
 meta_compositor_new (MetaDisplay *display)
 {
@@ -137,6 +172,8 @@ meta_compositor_new (MetaDisplay *display)
   compositor->meta_display = display;
   
   compositor->enabled = TRUE;
+  
+  meta_push_effect_handler (do_effect, compositor);
   
   return compositor;
 #else /* HAVE_COMPOSITE_EXTENSIONS */
@@ -673,6 +710,7 @@ interpolate_rectangle (gdouble		t,
 
 #if MINIMIZE_STYLE == 0
 
+#if 0
 void
 meta_compositor_minimize (MetaCompositor           *compositor,
 			  MetaWindow               *window,
@@ -684,6 +722,7 @@ meta_compositor_minimize (MetaCompositor           *compositor,
 			  gpointer                  data)
 {
 }
+#endif
 
 #elif MINIMIZE_STYLE == 1
 
@@ -717,15 +756,6 @@ typedef struct
   gboolean phase_4_started;
   gboolean phase_5_started;
 } MiniInfo;
-
-static Window
-get_xid (MetaWindow *window)
-{
-    if (window->frame)
-	return window->frame->xwindow;
-    else
-	return window->xwindow;
-}
 
 static void
 set_geometry (MiniInfo *info, gdouble elapsed)
@@ -921,72 +951,6 @@ run_animation_01 (gpointer data)
     }
   
   return TRUE;
-}
-
-#define EXPLODE_TIME 1.0
-
-#define BASE 0.5
-
-static double
-transform (double in)
-{
-    return (pow (BASE, in) - 1) / (BASE - 1);
-}
-
-typedef struct
-{
-    MetaWindow *		window;
-    gdouble			level;
-    GTimer *			timer;
-    MetaAnimationFinishedFunc	func;
-    gpointer			data;
-    MetaCompScreen *		minfo;
-} ExplodeInfo;
-
-static gboolean
-update_explosion (gpointer data)
-{
-    ExplodeInfo *info = data;
-    gdouble elapsed = g_timer_elapsed (info->timer, NULL);
-    gdouble t = elapsed / EXPLODE_TIME;
-
-    meta_comp_screen_set_explode (info->minfo, get_xid (info->window), transform (t));
-
-    if (elapsed > EXPLODE_TIME)
-    {
-	if (info->func)
-	    info->func (info->data);
-	
-	meta_comp_screen_hide_window (info->minfo, get_xid (info->window));
-	meta_comp_screen_set_explode (info->minfo, get_xid (info->window), 0.0);
-	return FALSE;
-    }
-    else
-    {
-	return TRUE;
-    }
-}
-
-void
-meta_compositor_minimize (MetaCompositor	   *compositor,
-			  MetaWindow               *window,
-			  int                       x,
-			  int                       y,
-			  int                       width,
-			  int                       height,
-			  MetaAnimationFinishedFunc finished,
-			  gpointer                  data)
-{
-    ExplodeInfo *info = g_new0 (ExplodeInfo, 1);
-
-    info->window = window;
-    info->level = 0.0;
-    info->timer = g_timer_new ();
-    info->func = finished;
-    info->data = data;
-    info->minfo = meta_comp_screen_get_by_xwindow (get_xid (window));
-    
-    g_idle_add (update_explosion, info);
 }
 
 #if 0

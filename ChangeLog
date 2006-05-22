@@ -1,3 +1,19 @@
+Mon May 22 17:35:52 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/effects.[ch]: Beginning of new layer that abstracts
+	transition effects. 
+
+	New functions:
+	(meta_push_effect_handler): Install an effect handler
+	(meta_pop_effect_handler): Remove last effect handler
+	(meta_effect_run_minimize): Create a minimize effect and pass it
+	to the handler.
+	(meta_effect_end): Called by handler when the effect is finished.
+
+	* src/compositor.c: Move explosion code form there to src/c-window.c.
+
+	* src/c-screen.c: Delete explosion related code.
+	
 2006-05-22  Björn Lindqvist  <bjourne@gmail.com>
 
 	* common.h (enum MetaCursor):

@@ -23,6 +23,7 @@
 #include "effects.h"
 #include "display.h"
 #include "ui.h"
+#include "window.h"
 
 #ifdef HAVE_SHAPE
 #include <X11/extensions/shape.h>
@@ -71,6 +72,87 @@ typedef struct
   MetaBoxAnimType anim_type;
   
 } BoxAnimationContext;
+
+struct MetaEffectPriv
+{
+  MetaEffectFinished finished;
+  gpointer	     finished_data;
+};
+
+static void run_default_effect_handler (MetaEffect *effect);
+
+static MetaEffectHandler effect_handler;
+static gpointer		 effect_handler_data;
+
+void
+meta_push_effect_handler (MetaEffectHandler   handler,
+			  gpointer            data)
+{
+    effect_handler = handler;
+    effect_handler_data = data;
+}
+
+void
+meta_pop_effect_handler (void)
+{
+    /* FIXME: not implemented yet */
+    g_assert_not_reached ();
+}
+
+static MetaEffect *
+create_effect (MetaEffectType type,
+	       MetaEffectFinished finished,
+	       gpointer		  finished_data)
+{
+    MetaEffect *effect = g_new (MetaEffect, 1);
+
+    effect->type = type;
+    effect->priv = g_new (MetaEffectPriv, 1);
+    effect->priv->finished = finished;
+    effect->priv->finished_data = finished_data;
+
+    return effect;
+}
+
+void
+meta_effect_run_minimize (MetaWindow         *window,
+			  MetaRectangle      *window_rect,
+			  MetaRectangle	     *icon_rect,
+			  MetaEffectFinished  finished,
+			  gpointer            data)
+{
+    MetaEffect *effect;
+
+    g_return_if_fail (window != NULL);
+    g_return_if_fail (icon_rect != NULL);
+    
+    effect = create_effect (META_EFFECT_MINIMIZE,
+			    finished, data);
+
+    effect->u.minimize.window = window;
+    effect->u.minimize.window_rect = *window_rect;
+    effect->u.minimize.icon_rect = *icon_rect;
+ 
+    if (effect_handler)
+    {
+	effect_handler (effect, effect_handler_data);
+    }
+    else
+    {
+	run_default_effect_handler (effect);
+	meta_effect_end (effect);
+    }
+}
+
+void
+meta_effect_end (MetaEffect         *effect)
+{
+    if (effect->priv->finished)
+	effect->priv->finished (effect, effect->priv->finished_data);
+    
+    g_free (effect->priv);
+    g_free (effect);
+}
 
 static void
 update_wireframe_window (MetaDisplay         *display,
@@ -374,7 +456,7 @@ meta_effects_draw_box_animation (MetaScreen     *screen,
       attrs.override_redirect = True;
       attrs.background_pixel = BlackPixel (screen->display->xdisplay,
                                            screen->number);
-      
+
       context->wireframe_xwindow = XCreateWindow (screen->display->xdisplay,
                                                   screen->xroot,
                                                   initial_rect->x,
@@ -624,3 +706,20 @@ meta_effects_end_wireframe (MetaScreen          *screen,
   meta_ui_pop_delay_exposes (screen->ui);
 }
 
+static void
+run_default_effect_handler (MetaEffect *effect)
+{
+    switch (effect->type)
+    {
+    case META_EFFECT_MINIMIZE:
+	meta_effects_draw_box_animation (effect->u.minimize.window->screen,
+					 &(effect->u.minimize.window_rect),
+					 &(effect->u.minimize.icon_rect),
+					 META_MINIMIZE_ANIMATION_LENGTH,
+					 META_BOX_ANIM_SCALE);
+	break;
+
+    default:
+	break;
+    }
+}

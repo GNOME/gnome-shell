@@ -19,6 +19,10 @@
 
 #include <cm/node.h>
 #include "display.h"
+#include "effects.h"
+
+#ifndef C_WINDOW_H
+#define C_WINDOW_H
 
 typedef struct _MetaCompWindow MetaCompWindow;
 
@@ -32,3 +36,14 @@ void		meta_comp_window_set_size (MetaCompWindow *window,
 void		meta_comp_window_refresh_attrs (MetaCompWindow *comp_window);
 void		meta_comp_window_set_updates (MetaCompWindow *comp_window,
 					      gboolean updates);
+
+void		meta_comp_window_explode (MetaCompWindow *comp_window,
+					  MetaEffect *effect);
+
+#if 0
+void		meta_comp_window_set_explode (MetaCompWindow *comp_window,
+					      double	      level);
+#endif
+
+#endif
+
