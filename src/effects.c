@@ -80,6 +80,7 @@ struct MetaEffectPriv
 };
 
 static void run_default_effect_handler (MetaEffect *effect);
+static void run_handler (MetaEffect *effect);
 
 static MetaEffectHandler effect_handler;
 static gpointer		 effect_handler_data;
@@ -132,16 +133,25 @@ meta_effect_run_minimize (MetaWindow         *window,
     effect->u.minimize.window = window;
     effect->u.minimize.window_rect = *window_rect;
     effect->u.minimize.icon_rect = *icon_rect;
- 
-    if (effect_handler)
-    {
-	effect_handler (effect, effect_handler_data);
-    }
-    else
-    {
-	run_default_effect_handler (effect);
-	meta_effect_end (effect);
-    }
+
+    run_handler (effect);
+}
+
+void
+meta_effect_run_close (MetaWindow         *window,
+		       MetaEffectFinished  finished,
+		       gpointer            data)
+{
+    MetaEffect *effect;
+    
+    g_return_if_fail (window != NULL);
+
+    effect = create_effect (META_EFFECT_CLOSE,
+			    finished, data);
+
+    effect->u.close.window = window;
+    
+    run_handler (effect);
 }
 
 void
@@ -721,5 +731,19 @@ run_default_effect_handler (MetaEffect *effect)
 
     default:
 	break;
+    }
+}
+
+static void
+run_handler (MetaEffect *effect)
+{
+    if (effect_handler)
+    {
+	effect_handler (effect, effect_handler_data);
+    }
+    else
+    {
+	run_default_effect_handler (effect);
+	meta_effect_end (effect);
     }
 }

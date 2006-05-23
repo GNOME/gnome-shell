@@ -1,3 +1,15 @@
+Tue May 23 16:36:04 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/compositor.c (do_effect): Also use explode when windows close.
+
+	* src/c-window.c (meta_comp_window_explode): Add refcounting to
+	comp window, and use it in the explosion effect
+
+	* src/effects.h (struct MetaEffect): Add new MetaCloseEffect.
+
+	* src/display.c (event_callback): Run it from the UnmapNotify
+	event handler.
+
 Tue May 23 15:23:58 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/c-window.c (send_sync_request): New function to send a sync

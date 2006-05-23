@@ -121,6 +121,20 @@ do_effect (MetaEffect *effect,
 	meta_comp_window_explode (window, effect);
 	break;
     }
+    case META_EFFECT_CLOSE:
+    {
+	MetaCompScreen *screen = meta_comp_screen_get_by_xwindow (
+	    get_xid (effect->u.minimize.window));
+	MetaCompWindow *window =
+	    meta_comp_screen_lookup_window (screen, effect->u.minimize.window->frame->xwindow);
+	g_print ("close\n");
+
+	meta_comp_window_explode (window, effect);
+#if 0
+	meta_effect_end (effect);
+#endif
+	break;
+    }
     default:
     {
 	g_assert_not_reached();

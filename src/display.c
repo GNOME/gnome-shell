@@ -2010,6 +2010,9 @@ event_callback (XEvent   *event,
                   meta_topic (META_DEBUG_WINDOW_STATE,
                               "Window %s withdrawn\n",
                               window->desc);
+
+		  meta_effect_run_close (window, NULL, NULL);
+		  
                   window->withdrawn = TRUE;
                   meta_window_free (window); /* Unmanage withdrawn window */
                   window = NULL;

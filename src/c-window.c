@@ -47,6 +47,10 @@ struct _MetaCompWindow
     gboolean waiting_for_paint;
 
     gint64	counter_value;
+    gint        ref_count;
+
+    gboolean    animation_in_progress;
+    gboolean	hide_after_animation;
 };
 
 static Window
@@ -168,6 +172,29 @@ has_counter (MetaCompWindow *comp_window)
     return TRUE;
 }
 
+static void
+show_node (MetaCompWindow *comp_window)
+{
+    if (comp_window->animation_in_progress)
+	comp_window->hide_after_animation = FALSE;
+    
+    cm_drawable_node_set_viewable (CM_DRAWABLE_NODE (comp_window->node), TRUE);
+    cm_drawable_node_update_pixmap (CM_DRAWABLE_NODE (comp_window->node));
+}
+
+static void
+hide_node (MetaCompWindow *comp_window)
+{
+    if (comp_window->animation_in_progress)
+    {
+	comp_window->hide_after_animation = TRUE;
+	return;
+    }
+
+    g_print ("hide %p\n", comp_window->node);
+    cm_drawable_node_set_viewable (CM_DRAWABLE_NODE (comp_window->node), FALSE);
+}
+
 MetaCompWindow *
 meta_comp_window_new (MetaDisplay    *display,
 		      WsDrawable     *drawable)
@@ -184,20 +211,38 @@ meta_comp_window_new (MetaDisplay    *display,
     window->node = CM_NODE (cm_drawable_node_new (drawable, &geometry));
     window->updates = TRUE;
     window->counter_value = 1;
+    window->ref_count = 1;
 
-    cm_drawable_node_set_viewable (CM_DRAWABLE_NODE (window->node), FALSE);
+    hide_node (window);
     
     return window;
+}
+
+static MetaCompWindow *
+comp_window_ref (MetaCompWindow *comp_window)
+{
+    comp_window->ref_count++;
+
+    return comp_window;
+}
+
+static void
+comp_window_unref (MetaCompWindow *comp_window)
+{
+    if (--comp_window->ref_count == 0)
+    {
+	g_object_unref (comp_window->drawable);
+	g_object_unref (comp_window->node);
+	if (comp_window->alarm)
+	    g_object_unref (comp_window->alarm);
+	g_free (comp_window);
+    }
 }
 
 void
 meta_comp_window_free (MetaCompWindow *window)
 {
-    g_object_unref (window->drawable);
-    g_object_unref (window->node);
-    if (window->alarm)
-	g_object_unref (window->alarm);
-    g_free (window);
+    comp_window_unref (window);
 }
 
 void
@@ -344,8 +389,7 @@ on_request_alarm (WsSyncAlarm *alarm,
     g_print ("alarm for %p\n", comp_window);
 #endif
     
-    cm_drawable_node_set_viewable (CM_DRAWABLE_NODE (comp_window->node), TRUE);
-    cm_drawable_node_update_pixmap (CM_DRAWABLE_NODE (comp_window->node));
+    show_node (comp_window);
 
     g_object_unref (alarm);
 }
@@ -453,8 +497,7 @@ meta_comp_window_refresh_attrs (MetaCompWindow *comp_window)
 #if 0
 		g_print ("directly showing %p\n", comp_window);
 #endif
-		cm_drawable_node_set_viewable (node, TRUE);
-		cm_drawable_node_update_pixmap (CM_DRAWABLE_NODE (comp_window->node));
+		show_node (comp_window);
 	    }
 	    else
 	    {
@@ -470,7 +513,7 @@ meta_comp_window_refresh_attrs (MetaCompWindow *comp_window)
 	g_print ("unmapping %p\n", node);
 #endif
     
-	cm_drawable_node_set_viewable (node, FALSE);
+	hide_node (comp_window);
     }
 }
 
@@ -524,7 +567,7 @@ transform (double in)
 typedef struct
 {
     MetaEffect		       *effect;
-    MetaCompWindow	       *window;
+    MetaCompWindow             *comp_window;
     gdouble			level;
     GTimer *			timer;
 } ExplodeInfo;
@@ -533,15 +576,25 @@ static gboolean
 update_explosion (gpointer data)
 {
     ExplodeInfo *info = data;
-    CmDrawableNode *node = (CmDrawableNode *)info->window->node;
+    CmDrawableNode *node = CM_DRAWABLE_NODE (info->comp_window->node);
     gdouble elapsed = g_timer_elapsed (info->timer, NULL);
 
+    if (!cm_drawable_node_get_viewable (node))
+    {
+	g_print ("huh, how did that happen to %p?\n", node);
+    }
+    
     if (elapsed > EXPLODE_TIME)
     {
 	meta_effect_end (info->effect);
+
+	info->comp_window->animation_in_progress = FALSE;
+	if (info->comp_window->hide_after_animation)
+	    hide_node (info->comp_window);
 	
-	cm_drawable_node_set_viewable (node, FALSE);
 	cm_drawable_node_set_explosion_level (node, 0.0);
+
+	comp_window_unref (info->comp_window);
 	return FALSE;
     }
     else
@@ -560,7 +613,19 @@ meta_comp_window_explode (MetaCompWindow *comp_window,
 {
     ExplodeInfo *info = g_new0 (ExplodeInfo, 1);
 
-    info->window = comp_window;
+    if (!cm_drawable_node_get_viewable (comp_window->node))
+    {
+	g_print ("%p wasn't even viewable to begin with\n", comp_window->node);
+	return;
+    }
+    else
+    {
+	g_print ("%p is viewable\n", comp_window->node);
+    }
+    
+    comp_window->animation_in_progress = TRUE;
+    
+    info->comp_window = comp_window_ref (comp_window);
     info->effect = effect;
     info->level = 0.0;
     info->timer = g_timer_new ();

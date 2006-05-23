@@ -50,6 +50,7 @@ typedef enum
   META_EFFECT_TOPLEVEL_UNMAP,
   META_EFFECT_ALT_TAB,
   META_EFFECT_FOCUS,
+  META_EFFECT_CLOSE,
 } MetaEffectType;
 
 typedef void (* MetaEffectHandler) (MetaEffect *effect,
@@ -64,6 +65,11 @@ typedef struct
   MetaRectangle icon_rect;
 } MetaMinimizeEffect;
 
+typedef struct
+{
+  MetaWindow *window;
+} MetaCloseEffect;
+
 struct MetaEffect
 {
   MetaEffectType type;
@@ -72,8 +78,9 @@ struct MetaEffect
   union
   {
     MetaMinimizeEffect	minimize;
+    MetaCloseEffect     close;
   } u;
-
+  
   MetaEffectPriv *priv;
 };
 
@@ -84,6 +91,9 @@ void	    meta_pop_effect_handler  (void);
 void        meta_effect_run_minimize     (MetaWindow         *window,
 					  MetaRectangle	     *window_rect,
 					  MetaRectangle	     *target,
+					  MetaEffectFinished  finished,
+					  gpointer            data);
+void        meta_effect_run_close        (MetaWindow         *window,
 					  MetaEffectFinished  finished,
 					  gpointer            data);
 void        meta_effect_end              (MetaEffect         *effect);
