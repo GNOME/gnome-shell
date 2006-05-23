@@ -109,6 +109,7 @@ static void
 do_effect (MetaEffect *effect,
 	   gpointer data)
 {
+    /* XXX screen and window should be easier to get than this... */
     switch (effect->type)
     {
     case META_EFFECT_MINIMIZE:
@@ -118,9 +119,21 @@ do_effect (MetaEffect *effect,
 	MetaCompWindow *window =
 	    meta_comp_screen_lookup_window (screen, effect->u.minimize.window->frame->xwindow);
 
+	/* meta_comp_window_shrink (window, effect); */
 	meta_comp_window_explode (window, effect);
 	break;
     }
+#if 0
+    case META_EFFECT_RESTORE:
+    {
+	MetaCompScreen *screen = meta_comp_screen_get_by_xwindow (
+	    get_xid (effect->u.restore.window));
+	MetaCompWindow *window = meta_comp_screen_lookup_window (
+	    screen, effect->u.restore.window->frame->xwindow);
+	meta_comp_window_unshrink (window, effect);
+	break;
+    }
+#endif
     case META_EFFECT_CLOSE:
     {
 	MetaCompScreen *screen = meta_comp_screen_get_by_xwindow (
@@ -688,330 +701,6 @@ minimize_deformation (gdouble time,
 	info->idle_id = g_idle_add (stop_minimize, info);
     }
 }
-#endif
-
-#ifdef HAVE_COMPOSITE_EXTENSIONS
-
-static gdouble
-interpolate (gdouble t, gdouble begin, gdouble end, double power)
-{
-  return (begin + (end - begin) * pow (t, power));
-}
-
-static void
-interpolate_rectangle (gdouble		t,
-		       WsRectangle *	from,
-		       WsRectangle *	to,
-		       WsRectangle *	result)
-{
-  if (!result)
-    return;
-  
-  result->x = interpolate (t, from->x, to->x, 1);
-  result->y = interpolate (t, from->y, to->y, 1);
-  result->width = interpolate (t, from->width, to->width, 1);
-  result->height = interpolate (t, from->height, to->height, 1);
-}
-
-#endif
-
-#define MINIMIZE_STYLE 1
-
-#ifndef HAVE_COMPOSITE_EXTENSIONS
-#undef MINIMIZE_STYLE
-#define MINIMIZE_STYLE 0
-#endif
-
-#if MINIMIZE_STYLE == 0
-
-#if 0
-void
-meta_compositor_minimize (MetaCompositor           *compositor,
-			  MetaWindow               *window,
-			  int                       x,
-			  int                       y,
-			  int                       width,
-			  int                       height,
-			  MetaAnimationFinishedFunc  finished,
-			  gpointer                  data)
-{
-}
-#endif
-
-#elif MINIMIZE_STYLE == 1
-
-typedef struct
-{
-  MetaWindow *window;
-  GTimer *timer;
-  
-  MetaCompositor *compositor;
-  MetaCompScreen *scr_info;
-  
-  MetaAnimationFinishedFunc finished_func;
-  gpointer		     finished_data;
-  
-  gdouble	aspect_ratio;
-  
-  WsRectangle current_geometry;
-  WsRectangle target_geometry;
-  gdouble	 current_alpha;
-  gdouble	 target_alpha;
-  
-  int		button_x;
-  int		button_y;
-  int		button_width;
-  int		button_height;
-  
-  /* FIXME: maybe would be simpler if all of this was an array */
-  gboolean phase_1_started;
-  gboolean phase_2_started;
-  gboolean phase_3_started;
-  gboolean phase_4_started;
-  gboolean phase_5_started;
-} MiniInfo;
-
-static void
-set_geometry (MiniInfo *info, gdouble elapsed)
-{
-  WsRectangle rect;
-  
-  interpolate_rectangle (elapsed, &info->current_geometry, &info->target_geometry, &rect);
-  
-  g_print ("y: %d %d  (%f  => %d)\n", info->current_geometry.y, info->target_geometry.y,
-	   elapsed, rect.y);
-  
-  g_print ("setting: %d %d %d %d\n", rect.x, rect.y, rect.width, rect.height);
-  
-  meta_comp_screen_set_target_rect (info->scr_info,
-				    get_xid (info->window), &rect);
-}
-
-static int
-center (gdouble what, gdouble in)
-{
-  return (in - what) / 2.0 + 0.5;
-}
-
-static void
-run_phase_1 (MiniInfo *info, gdouble elapsed)
-{
-  if (!info->phase_1_started)
-    {
-#if 0
-      g_print ("starting phase 1\n");
-#endif
-      info->phase_1_started = TRUE;
-
-      meta_comp_screen_get_real_size (info->scr_info, get_xid (info->window),
-				      &info->current_geometry);
-      
-#if 0
-      info->current_geometry.x = info->node->real_x;
-      info->current_geometry.y = info->node->real_y;
-      info->current_geometry.width = info->node->real_width;
-      info->current_geometry.height = info->node->real_height;
-#endif
-      
-      info->target_geometry.height = info->button_height;
-      info->target_geometry.width = info->button_height * info->aspect_ratio;
-      info->target_geometry.x = info->button_x + center (info->target_geometry.width, info->button_width);
-      info->target_geometry.y = info->current_geometry.y + center (info->button_height, info->current_geometry.height);
-    }
-  
-  set_geometry (info, elapsed);
-}
-
-static void
-run_phase_2 (MiniInfo *info, gdouble elapsed)
-{
-#define WOBBLE_FACTOR 3
-  
-  if (!info->phase_2_started)
-    {
-      WsRectangle cur = info->target_geometry;
-      
-      g_print ("starting phase 2\n");
-      
-      info->phase_2_started = TRUE;
-      
-      info->current_geometry = cur;
-      
-      info->target_geometry.x = cur.x + center (WOBBLE_FACTOR * cur.width, cur.width);
-      info->target_geometry.y = cur.y + center (WOBBLE_FACTOR * cur.height, cur.height);
-      info->target_geometry.width = cur.width * WOBBLE_FACTOR;
-      info->target_geometry.height = cur.height * WOBBLE_FACTOR;
-    }
-  
-  set_geometry (info, elapsed);
-}
-
-static void
-run_phase_3 (MiniInfo *info, gdouble elapsed)
-{
-  if (!info->phase_3_started)
-    {
-      WsRectangle cur = info->target_geometry;
-      WsRectangle real;
-
-      meta_comp_screen_get_real_size (info->scr_info, get_xid (info->window),
-				      &real);
-      
-      g_print ("starting phase 3\n");
-      info->phase_3_started = TRUE;
-      
-      info->current_geometry = cur;
-      
-      info->target_geometry.height = info->button_height;
-      info->target_geometry.width = info->button_height * info->aspect_ratio;
-      info->target_geometry.x = info->button_x + center (info->target_geometry.width, info->button_width);
-      info->target_geometry.y = real.y + center (info->button_height, real.height);
-    }
-  
-  set_geometry (info, elapsed);
-}
-
-static void
-run_phase_4 (MiniInfo *info, gdouble elapsed)
-{
-  if (!info->phase_4_started)
-    {
-      WsRectangle cur = info->target_geometry;
-      
-      g_print ("starting phase 4\n");
-      info->phase_4_started = TRUE;
-      
-      info->current_geometry = cur;
-      
-      info->target_geometry.height = info->button_height;
-      info->target_geometry.width = info->button_height * info->aspect_ratio;
-      info->target_geometry.x = cur.x;
-      g_print ("button y: %d\n", info->button_y);
-      info->target_geometry.y = info->button_y;
-    }
-  
-  set_geometry (info, elapsed);
-}
-
-static void
-run_phase_5 (MiniInfo *info, gdouble elapsed)
-{
-  if (!info->phase_5_started)
-    {
-      WsRectangle cur = info->target_geometry;
-      
-      g_print ("starting phase 5\n");
-      info->phase_5_started = TRUE;
-      
-      info->current_geometry = cur;
-      info->target_geometry.x = info->button_x;
-      info->target_geometry.y = info->button_y;
-      info->target_geometry.width = info->button_width;
-      info->target_geometry.height = info->button_height;
-    }
-  
-  set_geometry (info, elapsed);
-
-  meta_comp_screen_set_alpha (info->scr_info,
-			      get_xid (info->window), 1 - elapsed);
-}
-
-static gboolean
-run_animation_01 (gpointer data)
-{
-  MiniInfo *info = data;
-  gdouble elapsed;
-  
-  elapsed = g_timer_elapsed (info->timer, NULL);
-  
-#define PHASE_0		0.0
-#define PHASE_1		0.225		/* scale to size of button */
-#define PHASE_2		0.325		/* scale up a little */
-#define PHASE_3		0.425		/* scale back a little */
-#define PHASE_4		0.650		/* move to button */
-#define PHASE_5		1.0		/* fade out */
-  
-  if (elapsed < PHASE_1)
-    {
-      /* phase one */
-      run_phase_1 (info, (elapsed - PHASE_0)/(PHASE_1 - PHASE_0));
-    }
-  else if (elapsed < PHASE_2)
-    {
-      /* phase two */
-      run_phase_2 (info, (elapsed - PHASE_1)/(PHASE_2 - PHASE_1));
-    }
-  else if (elapsed < PHASE_3)
-    {
-      /* phase three */
-      run_phase_3 (info, (elapsed - PHASE_2)/(PHASE_3 - PHASE_2));
-    }
-  else if (elapsed < PHASE_4)
-    {
-      /* phase four */
-      run_phase_4 (info, (elapsed - PHASE_3)/(PHASE_4 - PHASE_3));
-    }
-  else if (elapsed < PHASE_5)
-    {
-      /* phase five */
-      run_phase_5 (info, (elapsed - PHASE_4)/(PHASE_5 - PHASE_4));
-    }
-  else 
-    {
-      if (info->finished_func)
-	info->finished_func (info->finished_data);
-      
-      return FALSE;
-    }
-  
-  return TRUE;
-}
-
-#if 0
-void
-meta_compositor_minimize (MetaCompositor           *compositor,
-			  MetaWindow               *window,
-			  int                       x,
-			  int                       y,
-			  int                       width,
-			  int                       height,
-			  MetaAnimationFinishedFunc  finished,
-			  gpointer                  data)
-{
-  MiniInfo *info = g_new (MiniInfo, 1);
-  WsRectangle start;
-  MetaScreen *screen = window->screen;
-  
-  info->window = window;
-  info->timer = g_timer_new ();
-  
-  info->finished_func = finished;
-  info->finished_data = data;
-  
-  info->phase_1_started = FALSE;
-  info->phase_2_started = FALSE;
-  info->phase_3_started = FALSE;
-  info->phase_4_started = FALSE;
-  info->phase_5_started = FALSE;
-  
-  info->button_x = x;
-  info->button_y = y;
-  info->button_width = width;
-  info->button_height = height;
-  
-  info->compositor = compositor;
-  info->scr_info = screen->compositor_data;
-  
-#if 0
-  cm_drawable_node_set_deformation_func (node, minimize_deformation, info);
-#endif
-  
-  info->aspect_ratio = 1.3;
-  
-  g_idle_add (run_animation_01, info);
-}
-#endif
-
 #endif
 
 void

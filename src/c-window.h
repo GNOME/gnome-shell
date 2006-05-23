@@ -39,6 +39,10 @@ void		meta_comp_window_set_updates (MetaCompWindow *comp_window,
 
 void		meta_comp_window_explode (MetaCompWindow *comp_window,
 					  MetaEffect *effect);
+void		meta_comp_window_shrink (MetaCompWindow *comp_window,
+					 MetaEffect *effect);
+void		meta_comp_window_unshrink (MetaCompWindow *comp_window,
+					   MetaEffect *effect);
 
 #if 0
 void		meta_comp_window_set_explode (MetaCompWindow *comp_window,

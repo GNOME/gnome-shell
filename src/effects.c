@@ -116,6 +116,16 @@ create_effect (MetaEffectType type,
 }
 
 void
+meta_effect_end (MetaEffect         *effect)
+{
+    if (effect->priv->finished)
+	effect->priv->finished (effect, effect->priv->finished_data);
+    
+    g_free (effect->priv);
+    g_free (effect);
+}
+
+void
 meta_effect_run_minimize (MetaWindow         *window,
 			  MetaRectangle      *window_rect,
 			  MetaRectangle	     *icon_rect,
@@ -127,12 +137,32 @@ meta_effect_run_minimize (MetaWindow         *window,
     g_return_if_fail (window != NULL);
     g_return_if_fail (icon_rect != NULL);
     
-    effect = create_effect (META_EFFECT_MINIMIZE,
-			    finished, data);
+    effect = create_effect (META_EFFECT_MINIMIZE, finished, data);
 
     effect->u.minimize.window = window;
     effect->u.minimize.window_rect = *window_rect;
     effect->u.minimize.icon_rect = *icon_rect;
+
+    run_handler (effect);
+}
+
+void
+meta_effect_run_restore (MetaWindow          *window,
+			 MetaRectangle       *window_rect,
+			 MetaRectangle	     *icon_rect,
+			 MetaEffectFinished  finished,
+			 gpointer            data)
+{
+    MetaEffect *effect;
+
+    g_return_if_fail (window != NULL);
+    g_return_if_fail (icon_rect != NULL);
+    
+    effect = create_effect (META_EFFECT_RESTORE, finished, data);
+
+    effect->u.restore.window = window;
+    effect->u.restore.window_rect = *window_rect;
+    effect->u.restore.icon_rect = *icon_rect;
 
     run_handler (effect);
 }
@@ -154,15 +184,8 @@ meta_effect_run_close (MetaWindow         *window,
     run_handler (effect);
 }
 
-void
-meta_effect_end (MetaEffect         *effect)
-{
-    if (effect->priv->finished)
-	effect->priv->finished (effect, effect->priv->finished_data);
-    
-    g_free (effect->priv);
-    g_free (effect);
-}
+
+/* old ugly minimization effect */
 
 static void
 update_wireframe_window (MetaDisplay         *display,

@@ -48,9 +48,12 @@ typedef enum
   META_EFFECT_DIALOG_UNMAP,
   META_EFFECT_TOPLEVEL_MAP,
   META_EFFECT_TOPLEVEL_UNMAP,
-  META_EFFECT_ALT_TAB,
+  META_EFFECT_WIREFRAME_BEGIN,
+  META_EFFECT_WIREFRAME_UPDATE,
+  META_EFFECT_WIREFRAME_END,
   META_EFFECT_FOCUS,
   META_EFFECT_CLOSE,
+  META_NUM_EFFECTS
 } MetaEffectType;
 
 typedef void (* MetaEffectHandler) (MetaEffect *effect,
@@ -63,7 +66,7 @@ typedef struct
   MetaWindow *window;
   MetaRectangle window_rect;
   MetaRectangle icon_rect;
-} MetaMinimizeEffect;
+} MetaMinimizeEffect, MetaRestoreEffect; /* same data for both */
 
 typedef struct
 {
@@ -77,8 +80,9 @@ struct MetaEffect
   
   union
   {
-    MetaMinimizeEffect	minimize;
-    MetaCloseEffect     close;
+    MetaMinimizeEffect	    minimize;
+    MetaRestoreEffect	    restore;
+    MetaCloseEffect	    close;
   } u;
   
   MetaEffectPriv *priv;

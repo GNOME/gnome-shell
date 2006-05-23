@@ -1821,6 +1821,7 @@ windows_overlap (const MetaWindow *w1, const MetaWindow *w2)
   return meta_rectangle_overlap (&w1rect, &w2rect);
 }
 
+/* XXX META_EFFECT_*_MAP */
 void
 meta_window_show (MetaWindow *window)
 {
@@ -2030,6 +2031,7 @@ meta_window_show (MetaWindow *window)
     }
 }
 
+/* XXX META_EFFECT_*_UNMAP */
 static void
 meta_window_hide (MetaWindow *window)
 {
@@ -3544,6 +3546,7 @@ meta_window_get_wireframe_geometry (MetaWindow    *window,
   *height /= window->display->grab_window->size_hints.height_inc;
 }
 
+/* XXX META_EFFECT_ALT_TAB, well, this and others */
 void
 meta_window_begin_wireframe (MetaWindow *window)
 {
@@ -3662,6 +3665,7 @@ get_modal_transient (MetaWindow *window)
   return modal_transient;
 }
 
+/* XXX META_EFFECT_FOCUS */
 void
 meta_window_focus (MetaWindow  *window,
                    Time         timestamp)

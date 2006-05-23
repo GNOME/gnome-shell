@@ -1,3 +1,15 @@
+2006-05-23  Adam Jackson  <ajax@freedesktop.org>
+
+	* src/c-window.c:
+	* src/c-window.h:
+	* src/compositor.c:
+	* src/effects.c:
+	* src/effects.h:
+	* src/window.c:
+	Move shrink effect code from compositor.c to c-window.c.  Stubs for
+	restore effect.  Notes in various places for where to hook in
+	other effects.
+
 Tue May 23 16:36:04 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/compositor.c (do_effect): Also use explode when windows close.
