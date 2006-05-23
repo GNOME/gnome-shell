@@ -45,6 +45,8 @@ struct _MetaCompWindow
     
     WsRectangle size;
     gboolean waiting_for_paint;
+
+    gint64	counter_value;
 };
 
 static Window
@@ -114,8 +116,12 @@ has_counter (MetaCompWindow *comp_window)
 	WsSyncAlarm *alarm;
 	gint64 value = ws_sync_counter_query_value (counter);
 	
+#if 0
 	g_print ("counter value %lld\n", ws_sync_counter_query_value (counter));
-	alarm = ws_sync_alarm_new (display, counter);
+	alarm = ws_sync_alarm_new (WS_RESOURCE (comp_window->drawable)->display,
+				   
+				   display, counter);
+#endif
 	
 	g_signal_connect (alarm, "alarm_notify_event",
 			  G_CALLBACK (on_alarm), comp_window);
@@ -177,6 +183,9 @@ meta_comp_window_new (MetaDisplay    *display,
     window->drawable = g_object_ref (drawable);
     window->node = CM_NODE (cm_drawable_node_new (drawable, &geometry));
     window->updates = TRUE;
+    window->counter_value = 1;
+
+    cm_drawable_node_set_viewable (CM_DRAWABLE_NODE (window->node), FALSE);
     
     return window;
 }
@@ -258,6 +267,133 @@ find_meta_window (MetaCompWindow *comp_window)
     return window;
 }
 
+static void
+send_configure_notify (WsDrawable *drawable)
+{
+    WsWindow *window = WS_WINDOW (drawable);
+    WsRectangle geo;
+
+    ws_drawable_query_geometry (drawable, &geo);
+
+#if 0
+    g_print ("sending configure notify %d %d %d %d\n",
+	     geo.x, geo.y, geo.width, geo.height);
+#endif
+    
+    ws_window_send_configure_notify (
+	window, geo.x, geo.y, geo.width, geo.height,
+	0 /* border width */, ws_window_query_override_redirect (window));
+}
+
+static WsWindow *
+find_client_window (MetaCompWindow *comp_window)
+{
+    MetaWindow *meta_window = find_meta_window (comp_window);
+
+    if (meta_window && meta_window->frame)
+    {
+	WsDisplay *ws_display = WS_RESOURCE (comp_window->drawable)->display;
+
+#if 0
+	g_print ("framed window (client: %lx)\n", WS_RESOURCE_XID (comp_window->drawable));
+#endif
+
+#if 0
+	g_print ("framed window (client: %lx\n", meta_window->xwindow);
+#endif
+
+#if 0
+	g_print ("framed window: %p\n", comp_window);
+#endif
+	return ws_window_lookup (ws_display, meta_window->xwindow);
+    }
+    else
+    {
+#if 0
+	if (meta_window)
+	    g_print ("window not framed, but managed (%p)\n", comp_window);
+	else
+	    g_print ("no meta window %p\n", comp_window);
+#endif
+	
+	return WS_WINDOW (comp_window->drawable);
+    }
+}
+
+static gboolean
+frameless_managed (MetaCompWindow *comp_window)
+{
+    /* For some reason frameless, managed windows don't respond to
+     * sync requests messages. FIXME: at some point need to find out
+     * what's going on
+     */
+
+    MetaWindow *mw = find_meta_window (comp_window);
+
+    return mw && !mw->frame;
+}
+
+static void
+on_request_alarm (WsSyncAlarm *alarm,
+		  WsAlarmNotifyEvent *event,
+		  MetaCompWindow *comp_window)
+{
+    /* This alarm means that the window is ready to be shown on screen */
+
+#if 0
+    g_print ("alarm for %p\n", comp_window);
+#endif
+    
+    cm_drawable_node_set_viewable (CM_DRAWABLE_NODE (comp_window->node), TRUE);
+    cm_drawable_node_update_pixmap (CM_DRAWABLE_NODE (comp_window->node));
+
+    g_object_unref (alarm);
+}
+
+static gboolean
+send_sync_request (MetaCompWindow *comp_window)
+{
+    WsDisplay *display;
+    WsWindow *client_window = find_client_window (comp_window);
+    WsSyncCounter *request_counter;
+    WsSyncAlarm *alarm;
+    guint32 msg[5];
+    display = WS_RESOURCE (comp_window->drawable)->display;
+    ws_display_init_sync (display);
+    
+    if (!client_window)
+	return FALSE;
+    
+    request_counter = ws_window_get_property_sync_counter (
+	client_window, "_NET_WM_SYNC_REQUEST_COUNTER");
+
+    if (!request_counter)
+	return FALSE;
+    
+    comp_window->counter_value = ws_sync_counter_query_value (request_counter) + 1;
+    
+    msg[0] = comp_window->display->atom_net_wm_sync_request;
+    msg[1] = meta_display_get_current_time (comp_window->display);
+    msg[2] = comp_window->counter_value & 0xffffffff;
+    msg[3] = (comp_window->counter_value >> 32) & 0xffffffff;
+    
+    alarm = ws_sync_alarm_new (display, request_counter);
+
+    ws_sync_alarm_set (alarm, comp_window->counter_value);
+
+    g_signal_connect (alarm, "alarm_notify_event",
+		      G_CALLBACK (on_request_alarm), comp_window);
+
+    ws_window_send_client_message (client_window,
+				   "WM_PROTOCOLS", msg);
+
+    send_configure_notify (WS_DRAWABLE (client_window));
+
+    ws_display_flush (WS_RESOURCE (client_window)->display);
+    
+    return TRUE;
+}
+
 void
 meta_comp_window_refresh_attrs (MetaCompWindow *comp_window)
 {
@@ -267,15 +403,20 @@ meta_comp_window_refresh_attrs (MetaCompWindow *comp_window)
     
     double alpha = 1.0;
     CmDrawableNode *node = CM_DRAWABLE_NODE (comp_window->node);
+
+#if 0
+    g_print ("waiting for paint: %d\n", comp_window->waiting_for_paint);
+#endif
     
-    if (ws_window_query_mapped (WS_WINDOW (comp_window->drawable)) &&
-	!comp_window->waiting_for_paint)
+    if (ws_window_query_mapped (WS_WINDOW (comp_window->drawable))
+#if 0
+	&& !comp_window->waiting_for_paint
+#endif
+	)
     {
 	WsWindow *window = WS_WINDOW (comp_window->drawable);
 	
 	cm_drawable_node_unset_patch (CM_DRAWABLE_NODE (node));
-	
-	find_meta_window (comp_window);
 	
 	if (has_type (window, "_NET_WM_WINDOW_TYPE_DROPDOWN_MENU"))
 	{
@@ -292,17 +433,43 @@ meta_comp_window_refresh_attrs (MetaCompWindow *comp_window)
 	
 	cm_drawable_node_set_alpha (node, alpha);
 
+	if (!cm_drawable_node_get_viewable (node))
+	{
+	    comp_window->waiting_for_paint = TRUE;
 #if 0
-	if (cm_drawable_node_get_viewable (node))
-	    g_print ("mapping new window\n");
+	    alarm = ws_alarm_new (comp_window->display);
 #endif
-	
-	cm_drawable_node_set_viewable (node, TRUE);
-	
-	cm_drawable_node_update_pixmap (node);
+#if 0
+	    finish_counter = ws_window_get_property_sync_counter (
+		window, "_NET_WM_FINISH_FRAME_COUNTER");
+#endif
+
+	    /* For some reason the panel and nautilus don't respond to the
+	     * sync counter stuff. FIXME: this should be figured out at
+	     * some point.
+	     */
+	    if (frameless_managed (comp_window) || !send_sync_request (comp_window))
+	    {
+#if 0
+		g_print ("directly showing %p\n", comp_window);
+#endif
+		cm_drawable_node_set_viewable (node, TRUE);
+		cm_drawable_node_update_pixmap (CM_DRAWABLE_NODE (comp_window->node));
+	    }
+	    else
+	    {
+#if 0
+		g_print ("for %p waiting for alarm\n", comp_window);
+#endif
+	    }
+	}
     }
     else
     {
+#if 0
+	g_print ("unmapping %p\n", node);
+#endif
+    
 	cm_drawable_node_set_viewable (node, FALSE);
     }
 }
@@ -381,8 +548,8 @@ update_explosion (gpointer data)
     {
 	gdouble t = elapsed / EXPLODE_TIME;
 	
-	cm_drawable_node_set_explosion_level (node,
-					      transform (t));
+	cm_drawable_node_set_explosion_level (
+	    node, transform (t));
 	return TRUE;
     }
 }
@@ -402,4 +569,3 @@ meta_comp_window_explode (MetaCompWindow *comp_window,
 }
 
 #endif
-
