@@ -26,7 +26,7 @@
 
 typedef struct _MetaCompWindow MetaCompWindow;
 
-MetaCompWindow *meta_comp_window_new (MetaDisplay *display,
+MetaCompWindow *meta_comp_window_new (MetaScreen *screen,
 				      WsDrawable *drawable);
 CmNode	       *meta_comp_window_get_node (MetaCompWindow *window);
 gboolean        meta_comp_window_free (MetaCompWindow *window);

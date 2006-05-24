@@ -537,7 +537,7 @@ meta_comp_screen_add_window (MetaCompScreen *info,
       goto out;
     }
   
-  comp_window = meta_comp_window_new (info->meta_screen->display, drawable);
+  comp_window = meta_comp_window_new (info->meta_screen, drawable);
   
   g_hash_table_insert (info->windows_by_xid, (gpointer)WS_RESOURCE_XID (drawable), comp_window);
   

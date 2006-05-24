@@ -33,10 +33,12 @@
 #include "effects.h"
 #include "c-window.h"
 #include "window.h"
+#include "frame.h"
 
 struct _MetaCompWindow
 {
     MetaDisplay *display;
+    MetaScreen  *screen;
     WsDrawable *drawable;
     WsPixmap   *pixmap;
     CmNode     *node;
@@ -197,16 +199,18 @@ meta_comp_window_hide (MetaCompWindow *comp_window)
 }
 
 MetaCompWindow *
-meta_comp_window_new (MetaDisplay    *display,
+meta_comp_window_new (MetaScreen     *screen,
 		      WsDrawable     *drawable)
 {
+    MetaDisplay    *display = screen->display;
     MetaCompWindow *window;
     WsRectangle geometry;
     
     ws_drawable_query_geometry (drawable, &geometry);
     
     window = g_new0 (MetaCompWindow, 1);
-    
+
+    window->screen = screen;
     window->display = display;
     window->drawable = g_object_ref (drawable);
     window->node = CM_NODE (cm_drawable_node_new (drawable, &geometry));
@@ -371,15 +375,25 @@ find_client_window (MetaCompWindow *comp_window)
 }
 
 static gboolean
+private_metacity_window (MetaCompWindow *comp_window)
+{
+    /* Returns TRUE if this is a private metacity window
+     * such as a tooltip or a menu
+     */
+    XID xid = WS_RESOURCE_XID (comp_window->drawable);
+
+    return meta_ui_window_is_widget (comp_window->screen->ui, xid);
+}
+
+static gboolean
 frameless_managed (MetaCompWindow *comp_window)
 {
     /* For some reason frameless, managed windows don't respond to
      * sync requests messages. FIXME: at some point need to find out
      * what's going on
      */
-
     MetaWindow *mw = find_meta_window (comp_window);
-
+    
     return mw && !mw->frame;
 }
 
@@ -497,18 +511,11 @@ meta_comp_window_refresh_attrs (MetaCompWindow *comp_window)
 	     * sync counter stuff. FIXME: this should be figured out at
 	     * some point.
 	     */
-	    if (frameless_managed (comp_window) || !send_sync_request (comp_window))
+	    if (frameless_managed (comp_window) ||
+		private_metacity_window (comp_window) ||
+		!send_sync_request (comp_window))
 	    {
-#if 0
-		g_print ("directly showing %p\n", comp_window);
-#endif
 		meta_comp_window_show (comp_window);
-	    }
-	    else
-	    {
-#if 0
-		g_print ("for %p waiting for alarm\n", comp_window);
-#endif
 	    }
 	}
     }
