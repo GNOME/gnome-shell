@@ -51,6 +51,8 @@ struct _MetaCompWindow
 
     gboolean    animation_in_progress;
     gboolean	hide_after_animation;
+
+    int		stack_freeze_count;
 };
 
 static Window
@@ -191,7 +193,6 @@ meta_comp_window_hide (MetaCompWindow *comp_window)
 	return;
     }
 
-    g_print ("hide %p\n", comp_window->node);
     cm_drawable_node_set_viewable (CM_DRAWABLE_NODE (comp_window->node), FALSE);
 }
 
@@ -528,7 +529,7 @@ meta_comp_window_set_updates (MetaCompWindow *comp_window,
     CmDrawableNode *node = CM_DRAWABLE_NODE (comp_window->node);
     
     comp_window->updates = updates;
-    
+
     cm_drawable_node_set_updates (node, updates);
     
     if (updates)
@@ -981,3 +982,21 @@ meta_compositor_minimize (MetaCompositor           *compositor,
   g_idle_add (run_animation_01, info);
 }
 #endif
+
+void
+meta_comp_window_freeze_stack (MetaCompWindow *comp_window)
+{
+    comp_window->stack_freeze_count++;
+}
+
+void
+meta_comp_window_thaw_stack (MetaCompWindow *comp_window)
+{
+    comp_window->stack_freeze_count--;
+}
+
+gboolean
+meta_comp_window_stack_frozen (MetaCompWindow *comp_window)
+{
+    return comp_window->stack_freeze_count > 0;
+}

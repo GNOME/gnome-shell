@@ -155,7 +155,7 @@ repaint (gpointer data)
   cm_state_enable_depth_buffer_update (state);
   
   g_object_unref (state);
-  
+
   ws_window_gl_swap_buffers (info->gl_window);
   glFinish();
   
@@ -414,12 +414,16 @@ meta_comp_screen_restack (MetaCompScreen *info,
 			  Window	  window,
 			  Window	  above_this)
 {
+  MetaCompWindow *comp_window = find_comp_window (info, window);
+  MetaCompWindow *above_comp_window = find_comp_window (info, above_this);
   CmNode *window_node = find_node (info, window);
   CmNode *above_node  = find_node (info, above_this);
-  
-#if 0
-  g_print ("restack %lx over %lx \n", window, above_this);
-#endif
+
+  if ((comp_window && meta_comp_window_stack_frozen (comp_window)) ||
+      (above_comp_window && meta_comp_window_stack_frozen (above_comp_window)))
+  {
+      return;
+  }
   
 #if 0
   dump_stacking_order (info->stacker->children);

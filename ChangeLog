@@ -1,3 +1,11 @@
+Wed May 24 14:36:42 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/c-window.c (meta_comp_window_{freeze,thaw}_stack: Add a
+	stack-freeze feature to CWindow.
+
+	* src/c-screen.c (meta_comp_screen_restack): Don't restack if the
+	window is frozen.
+
 Wed May 24 13:09:49 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/c-window.c: Fix compilation in the non-composited case.

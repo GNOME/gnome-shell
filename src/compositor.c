@@ -143,6 +143,7 @@ do_effect (MetaEffect *effect,
 	MetaCompWindow *window =
 	    meta_comp_screen_lookup_window (screen, effect->u.minimize.window->frame->xwindow);
 
+	meta_comp_window_freeze_stack (window);
 	meta_comp_window_set_updates (window, FALSE);
 	meta_comp_window_explode (window, effect);
 	break;
