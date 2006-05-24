@@ -1,3 +1,7 @@
+Wed May 24 13:09:49 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/c-window.c: Fix compilation in the non-composited case.
+
 Wed May 24 12:57:32 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/c-window.c (meta_comp_window_free): return TRUE when the

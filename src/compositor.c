@@ -105,6 +105,8 @@ get_xid (MetaWindow *window)
 	return window->xwindow;
 }
 
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+
 static void
 do_effect (MetaEffect *effect,
 	   gpointer data)
@@ -152,6 +154,8 @@ do_effect (MetaEffect *effect,
     }
     }
 }
+
+#endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 MetaCompositor *
 meta_compositor_new (MetaDisplay *display)

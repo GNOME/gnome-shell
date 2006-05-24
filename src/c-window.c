@@ -632,8 +632,6 @@ meta_comp_window_explode (MetaCompWindow *comp_window,
     g_idle_add (update_explosion, info);
 }
 
-#endif
-
 /* new shrinkydink code */
 
 #define SHRINK_TIME 1.0
@@ -682,6 +680,8 @@ meta_comp_window_shrink (MetaCompWindow *comp_window,
 
     g_idle_add (update_shrink, info);
 }
+
+#endif
 
 #if 0
 /* old shrinkydink minimize effect */
