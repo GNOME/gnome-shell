@@ -41,7 +41,7 @@ struct _MetaCompWindow
     MetaScreen  *screen;
     WsDrawable *drawable;
     WsPixmap   *pixmap;
-    CmNode     *node;
+    CmDrawableNode     *node;
     gboolean	updates;
     WsSyncAlarm *alarm;
     
@@ -55,7 +55,10 @@ struct _MetaCompWindow
     gboolean	hide_after_animation;
 
     int		stack_freeze_count;
+    int		fade_in_idle_id;
 };
+
+static void cancel_fade (MetaCompWindow *comp_window);
 
 static Window
 find_app_window (MetaCompWindow *comp_window)
@@ -195,7 +198,10 @@ meta_comp_window_hide (MetaCompWindow *comp_window)
 	return;
     }
 
-    cm_drawable_node_set_viewable (CM_DRAWABLE_NODE (comp_window->node), FALSE);
+    cancel_fade (comp_window);
+    
+    cm_drawable_node_set_viewable (CM_DRAWABLE_NODE (comp_window->node),
+				   FALSE);
 }
 
 MetaCompWindow *
@@ -213,7 +219,7 @@ meta_comp_window_new (MetaScreen     *screen,
     window->screen = screen;
     window->display = display;
     window->drawable = g_object_ref (drawable);
-    window->node = CM_NODE (cm_drawable_node_new (drawable, &geometry));
+    window->node = cm_drawable_node_new (drawable, &geometry);
     window->updates = TRUE;
     window->counter_value = 1;
     window->ref_count = 1;
@@ -397,18 +403,146 @@ frameless_managed (MetaCompWindow *comp_window)
     return mw && !mw->frame;
 }
 
+static gdouble
+interpolate (gdouble t, gdouble begin, gdouble end, double power)
+{
+  return (begin + (end - begin) * pow (t, power));
+}
+
+static void
+interpolate_rectangle (gdouble		t,
+		       WsRectangle *	from,
+		       WsRectangle *	to,
+		       WsRectangle *	result)
+{
+  if (!result)
+    return;
+  
+  result->x = interpolate (t, from->x, to->x, 2);
+  result->y = interpolate (t, from->y, to->y, 0.5);
+  result->width = interpolate (t, from->width, to->width, 0.7);
+  result->height = interpolate (t, from->height, to->height, 0.7);
+}
+
+static void
+comp_window_set_target_rect (MetaCompWindow *window,
+			     WsRectangle *rect)
+{
+    cm_drawable_node_set_scale_rect (window->node, rect);
+}
+
+static void
+comp_window_get_real_size (MetaCompWindow *window,
+			   WsRectangle *size)
+{
+    if (!size)
+	return;
+    
+    cm_drawable_node_get_clipbox (window->node, size);
+}
+
+#define FADE_TIME 0.225
+
+typedef struct
+{
+    MetaEffect		       *effect;
+    MetaCompWindow	       *window;
+    GTimer *			timer;
+    WsRectangle			from;
+    WsRectangle			to;
+    gboolean			first_time;
+    gdouble			start_alpha;
+    gdouble			end_alpha;
+} FadeInfo;
+
+static gboolean
+update_fade (gpointer data)
+{
+    FadeInfo *info = data;
+    gdouble elapsed = g_timer_elapsed (info->timer, NULL);
+    gdouble t = elapsed / FADE_TIME;
+    
+    if (elapsed >= FADE_TIME)
+    {
+	comp_window_set_target_rect (info->window, &info->to);
+	cm_drawable_node_set_alpha (info->window->node, 1.0);
+	cm_drawable_node_unset_patch (info->window->node);
+	comp_window_unref (info->window);
+	return FALSE;
+    }
+    else
+    {
+	gdouble alpha = interpolate (t, info->start_alpha, info->end_alpha, 1.0);
+	WsRectangle cur;
+
+	if (info->first_time)
+	{
+	    meta_comp_window_show (info->window);
+	    info->first_time = FALSE;
+	}
+	
+	interpolate_rectangle (t, &info->from, &info->to, &cur);
+	comp_window_set_target_rect (info->window, &cur);
+	cm_drawable_node_set_alpha (info->window->node, alpha);
+	return TRUE;
+    }
+}
+
+static void
+cancel_fade (MetaCompWindow *comp_window)
+{
+    if (comp_window->fade_in_idle_id)
+    {
+	g_source_remove (comp_window->fade_in_idle_id);
+	comp_window->fade_in_idle_id = 0;
+    }
+}
+
+static void
+meta_comp_window_fade_in (MetaCompWindow *comp_window)
+{
+    FadeInfo *info = g_new0 (FadeInfo, 1);
+    WsWindow *window = find_client_window (comp_window);
+
+    if (comp_window->fade_in_idle_id)
+	return;
+    
+    info->window = comp_window_ref (comp_window);
+    info->timer = g_timer_new ();
+
+    comp_window_get_real_size (info->window, &info->to);
+    info->from = info->to;
+
+    info->start_alpha = 0.1;
+    info->first_time = TRUE;
+    
+    if (has_type (window, "_NET_WM_WINDOW_TYPE_DROPDOWN_MENU") ||
+	has_type (window, "_NET_WM_WINDOW_TYPE_POPUP_MENU"))
+    {
+	info->end_alpha = 0.9;
+	info->from.width *= 0.6;
+	info->from.height *= 0.4;
+    }
+    else if (has_type (window, "_NET_WM_WINDOW_TYPE_DIALOG"))
+    {
+	info->end_alpha = 0.7;
+    }
+    else
+    {
+	info->end_alpha = 1.0;
+    }
+    
+    comp_window->fade_in_idle_id = g_idle_add (update_fade, info);
+}
+
 static void
 on_request_alarm (WsSyncAlarm *alarm,
 		  WsAlarmNotifyEvent *event,
 		  MetaCompWindow *comp_window)
 {
     /* This alarm means that the window is ready to be shown on screen */
-
-#if 0
-    g_print ("alarm for %p\n", comp_window);
-#endif
-    
-    meta_comp_window_show (comp_window);
+ 
+    meta_comp_window_fade_in (comp_window);
 
     g_object_unref (alarm);
 }
@@ -559,9 +693,8 @@ meta_comp_window_set_updates (MetaCompWindow *comp_window,
 CmNode *
 meta_comp_window_get_node (MetaCompWindow *comp_window)
 {
-    return comp_window->node;
+    return CM_NODE (comp_window->node);
 }
-
 
 /*
  * Explosion effect
@@ -696,26 +829,6 @@ meta_comp_window_shrink (MetaCompWindow *comp_window,
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 
-static gdouble
-interpolate (gdouble t, gdouble begin, gdouble end, double power)
-{
-  return (begin + (end - begin) * pow (t, power));
-}
-
-static void
-interpolate_rectangle (gdouble		t,
-		       WsRectangle *	from,
-		       WsRectangle *	to,
-		       WsRectangle *	result)
-{
-  if (!result)
-    return;
-  
-  result->x = interpolate (t, from->x, to->x, 2);
-  result->y = interpolate (t, from->y, to->y, 0.5);
-  result->width = interpolate (t, from->width, to->width, 0.7);
-  result->height = interpolate (t, from->height, to->height, 0.7);
-}
 
 #endif
 
@@ -1007,3 +1120,4 @@ meta_comp_window_stack_frozen (MetaCompWindow *comp_window)
 {
     return comp_window->stack_freeze_count > 0;
 }
+
