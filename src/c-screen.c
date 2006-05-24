@@ -566,12 +566,14 @@ meta_comp_screen_remove_window (MetaCompScreen *info,
   
   if (comp_window)
     {
-      CmNode *node = meta_comp_window_get_node (comp_window);
-      
-      cm_stacker_remove_child (info->stacker, node);
-      meta_comp_window_free (comp_window);
-    
-      g_hash_table_remove (info->windows_by_xid, (gpointer)xwindow);
+      if (meta_comp_window_free (comp_window))
+	{
+	  CmNode *node = meta_comp_window_get_node (comp_window);
+	  
+	  cm_stacker_remove_child (info->stacker, node);
+	  
+	  g_hash_table_remove (info->windows_by_xid, (gpointer)xwindow);
+	}
     }
 }
 
@@ -636,14 +638,10 @@ void
 meta_comp_screen_unmap (MetaCompScreen *info,
 			Window		xwindow)
 {
-  CmDrawableNode *node = CM_DRAWABLE_NODE (find_node (info, xwindow));
-  
-#if 0
-  g_print ("unmapping: %lx\n", xwindow);
-#endif
-  
-  if (node)
-    cm_drawable_node_set_viewable (node, FALSE);
+    MetaCompWindow *window = find_comp_window (info, xwindow);
+
+    if (window)
+	meta_comp_window_hide (window);
 }
 
 void
@@ -655,15 +653,6 @@ meta_comp_screen_set_target_rect (MetaCompScreen *info,
   
   if (node)
     cm_drawable_node_set_scale_rect (node, rect);
-}
-
-void
-meta_comp_screen_hide_window (MetaCompScreen *info,
-			      Window          xwindow)
-{
-  CmDrawableNode *node = CM_DRAWABLE_NODE (find_node (info, xwindow));
-  
-  cm_drawable_node_set_viewable (node, FALSE);
 }
 
 #endif

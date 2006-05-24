@@ -140,12 +140,9 @@ do_effect (MetaEffect *effect,
 	    get_xid (effect->u.minimize.window));
 	MetaCompWindow *window =
 	    meta_comp_screen_lookup_window (screen, effect->u.minimize.window->frame->xwindow);
-	g_print ("close\n");
 
+	meta_comp_window_set_updates (window, FALSE);
 	meta_comp_window_explode (window, effect);
-#if 0
-	meta_effect_end (effect);
-#endif
 	break;
     }
     default:

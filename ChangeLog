@@ -1,3 +1,26 @@
+Wed May 24 12:57:32 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/c-window.c (meta_comp_window_free): return TRUE when the
+	window is actually freed.
+
+	* src/compositor.c (do_effect): Disable updating before exploding
+	the window.
+
+	* src/c-window.c: Make MetaCompWindow refcounted.
+
+	* src/c-window.[ch]: New functions meta_comp_window_{show,hide}
+
+	* src/c-screen.c (meta_comp_screen_unmap): Call
+	meta_comp_window_hide() instead of directly setting the viewable
+	status of the node.
+
+	* src/c-screen.c (meta_comp_screen_remove_window): Only remove the
+	window when it is actually freed.
+
+Wed May 24 12:45:21 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/c-screen.c: Delete unused meta_comp_screen_hide_window().
+
 2006-05-23  Adam Jackson  <ajax@freedesktop.org>
 
 	* src/c-window.c:

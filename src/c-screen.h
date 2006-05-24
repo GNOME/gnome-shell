@@ -45,8 +45,6 @@ void            meta_comp_screen_set_target_rect (MetaCompScreen *info,
 void            meta_comp_screen_set_explode     (MetaCompScreen *info,
 						  Window          xwindow,
 						  gdouble         level);
-void            meta_comp_screen_hide_window     (MetaCompScreen *info,
-						  Window          xwindow);
 void            meta_comp_screen_unmap           (MetaCompScreen *info,
 						  Window          xwindow);
 MetaCompWindow *meta_comp_screen_lookup_window   (MetaCompScreen *info,

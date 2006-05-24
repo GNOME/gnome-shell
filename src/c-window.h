@@ -29,10 +29,12 @@ typedef struct _MetaCompWindow MetaCompWindow;
 MetaCompWindow *meta_comp_window_new (MetaDisplay *display,
 				      WsDrawable *drawable);
 CmNode	       *meta_comp_window_get_node (MetaCompWindow *window);
-void		meta_comp_window_free (MetaCompWindow *window);
+gboolean        meta_comp_window_free (MetaCompWindow *window);
 void		meta_comp_window_set_size (MetaCompWindow *window,
 					   WsRectangle *size);
 
+void		meta_comp_window_hide (MetaCompWindow *comp_window);
+void		meta_comp_window_show (MetaCompWindow *comp_window);
 void		meta_comp_window_refresh_attrs (MetaCompWindow *comp_window);
 void		meta_comp_window_set_updates (MetaCompWindow *comp_window,
 					      gboolean updates);
