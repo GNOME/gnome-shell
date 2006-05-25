@@ -1,3 +1,16 @@
+Thu May 25 15:11:58 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/c-window.h: Add a destroy notifier to the window.
+
+	* src/c-screen.c (on_window_destroy): New function.
+
+	* src/c-screen.c (meta_comp_screen_add_window): Use the destroy
+	notifier here.
+
+	* src/c-window.c (generate_phases): New function. Simplify the
+	minimize animation a lot by generating all the rectangle
+	information into an array, then processing that.
+
 2006-05-25  Adam Jackson  <ajax@freedesktop.org>
 
 	* src/c-window.c:

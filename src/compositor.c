@@ -629,7 +629,7 @@ meta_compositor_remove_window (MetaCompositor    *compositor,
 {
 #ifdef HAVE_COMPOSITE_EXTENSIONS
   MetaCompScreen *minfo;
-  
+
   minfo = meta_comp_screen_get_by_xwindow (xwindow);
 
   if (minfo)

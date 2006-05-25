@@ -26,8 +26,13 @@
 
 typedef struct _MetaCompWindow MetaCompWindow;
 
+typedef void (* MetaCompWindowDestroy) (MetaCompWindow *window,
+					gpointer        closure);
+
 MetaCompWindow *meta_comp_window_new (MetaScreen *screen,
-				      WsDrawable *drawable);
+				      WsDrawable *drawable,
+				      MetaCompWindowDestroy destroy,
+				      gpointer data);
 CmNode	       *meta_comp_window_get_node (MetaCompWindow *window);
 gboolean        meta_comp_window_free (MetaCompWindow *window);
 void		meta_comp_window_set_size (MetaCompWindow *window,

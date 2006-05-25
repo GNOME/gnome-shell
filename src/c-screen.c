@@ -509,12 +509,30 @@ print_child_titles (WsWindow *window)
     }
 }
 
+typedef struct
+{
+    MetaCompScreen *cscreen;
+    XID		    xid;
+} DestroyData;
+
+static void
+on_window_destroy (MetaCompWindow *comp_window,
+		   gpointer        closure)
+{
+    DestroyData *data = closure;
+    CmNode *node = meta_comp_window_get_node (comp_window);
+    
+    cm_stacker_remove_child (data->cscreen->stacker, node);
+    g_hash_table_remove (data->cscreen->windows_by_xid, (gpointer)data->xid);
+}
+
 void
 meta_comp_screen_add_window (MetaCompScreen *info,
 			     Window	     xwindow)
 {
   WsDrawable *drawable;
   MetaCompWindow *comp_window;
+  DestroyData *data;
   
   ws_display_begin_error_trap (info->display);
   
@@ -536,8 +554,13 @@ meta_comp_screen_add_window (MetaCompScreen *info,
 #endif
       goto out;
     }
+
+  data = g_new (DestroyData, 1);
+  data->cscreen = info;
+  data->xid = WS_RESOURCE_XID (drawable);
   
-  comp_window = meta_comp_window_new (info->meta_screen, drawable);
+  comp_window = meta_comp_window_new (info->meta_screen, drawable,
+				      on_window_destroy, data);
   
   g_hash_table_insert (info->windows_by_xid, (gpointer)WS_RESOURCE_XID (drawable), comp_window);
   
@@ -569,16 +592,7 @@ meta_comp_screen_remove_window (MetaCompScreen *info,
   MetaCompWindow *comp_window = meta_comp_window_lookup (info, xwindow);
   
   if (comp_window)
-    {
-      if (meta_comp_window_free (comp_window))
-	{
-	  CmNode *node = meta_comp_window_get_node (comp_window);
-	  
-	  cm_stacker_remove_child (info->stacker, node);
-	  
-	  g_hash_table_remove (info->windows_by_xid, (gpointer)xwindow);
-	}
-    }
+      meta_comp_window_free (comp_window);
 }
 
 void

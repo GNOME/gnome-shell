@@ -48,15 +48,18 @@ struct _MetaCompWindow
     
     WsRectangle size;
     gboolean waiting_for_paint;
-
+    
     gint64	counter_value;
     gint        ref_count;
-
+    
     gboolean    animation_in_progress;
     gboolean	hide_after_animation;
-
+    
     int		stack_freeze_count;
     int		fade_in_idle_id;
+
+    MetaCompWindowDestroy destroy;
+    gpointer              closure;
 };
 
 static void cancel_fade (MetaCompWindow *comp_window);
@@ -198,7 +201,7 @@ meta_comp_window_hide (MetaCompWindow *comp_window)
 	comp_window->hide_after_animation = TRUE;
 	return;
     }
-
+    
     cancel_fade (comp_window);
     
     cm_drawable_node_set_viewable (CM_DRAWABLE_NODE (comp_window->node),
@@ -207,7 +210,9 @@ meta_comp_window_hide (MetaCompWindow *comp_window)
 
 MetaCompWindow *
 meta_comp_window_new (MetaScreen     *screen,
-		      WsDrawable     *drawable)
+		      WsDrawable     *drawable,
+		      MetaCompWindowDestroy destroy,
+		      gpointer        closure)
 {
     MetaDisplay    *display = screen->display;
     MetaCompWindow *window;
@@ -216,7 +221,7 @@ meta_comp_window_new (MetaScreen     *screen,
     ws_drawable_query_geometry (drawable, &geometry);
     
     window = g_new0 (MetaCompWindow, 1);
-
+    
     window->screen = screen;
     window->display = display;
     window->drawable = g_object_ref (drawable);
@@ -224,7 +229,9 @@ meta_comp_window_new (MetaScreen     *screen,
     window->updates = TRUE;
     window->counter_value = 1;
     window->ref_count = 1;
-
+    window->destroy = destroy;
+    window->closure = closure;
+    
     meta_comp_window_hide (window);
     
     return window;
@@ -243,15 +250,19 @@ comp_window_unref (MetaCompWindow *comp_window)
 {
     if (--comp_window->ref_count == 0)
     {
+	if (comp_window->destroy)
+	    comp_window->destroy (comp_window, comp_window->closure);
+	
 	g_object_unref (comp_window->drawable);
 	g_object_unref (comp_window->node);
 	if (comp_window->alarm)
 	    g_object_unref (comp_window->alarm);
+	memset (comp_window, 'e', sizeof (MetaCompWindow));
 	g_free (comp_window);
-
+	
 	return TRUE;
     }
-
+    
     return FALSE;
 }
 
@@ -333,9 +344,9 @@ send_configure_notify (WsDrawable *drawable)
 {
     WsWindow *window = WS_WINDOW (drawable);
     WsRectangle geo;
-
+    
     ws_drawable_query_geometry (drawable, &geo);
-
+    
 #if 0
     g_print ("sending configure notify %d %d %d %d\n",
 	     geo.x, geo.y, geo.width, geo.height);
@@ -350,19 +361,19 @@ static WsWindow *
 find_client_window (MetaCompWindow *comp_window)
 {
     MetaWindow *meta_window = find_meta_window (comp_window);
-
+    
     if (meta_window && meta_window->frame)
     {
 	WsDisplay *ws_display = WS_RESOURCE (comp_window->drawable)->display;
-
+	
 #if 0
 	g_print ("framed window (client: %lx)\n", WS_RESOURCE_XID (comp_window->drawable));
 #endif
-
+	
 #if 0
 	g_print ("framed window (client: %lx\n", meta_window->xwindow);
 #endif
-
+	
 #if 0
 	g_print ("framed window: %p\n", comp_window);
 #endif
@@ -388,7 +399,7 @@ private_metacity_window (MetaCompWindow *comp_window)
      * such as a tooltip or a menu
      */
     XID xid = WS_RESOURCE_XID (comp_window->drawable);
-
+    
     return meta_ui_window_is_widget (comp_window->screen->ui, xid);
 }
 
@@ -407,7 +418,7 @@ frameless_managed (MetaCompWindow *comp_window)
 static gdouble
 interpolate (gdouble t, gdouble begin, gdouble end, double power)
 {
-  return (begin + (end - begin) * pow (t, power));
+    return (begin + (end - begin) * pow (t, power));
 }
 
 static void
@@ -416,13 +427,13 @@ interpolate_rectangle (gdouble		t,
 		       WsRectangle *	to,
 		       WsRectangle *	result)
 {
-  if (!result)
-    return;
-  
-  result->x = interpolate (t, from->x, to->x, 2);
-  result->y = interpolate (t, from->y, to->y, 0.5);
-  result->width = interpolate (t, from->width, to->width, 0.7);
-  result->height = interpolate (t, from->height, to->height, 0.7);
+    if (!result)
+	return;
+    
+    result->x = interpolate (t, from->x, to->x, 2);
+    result->y = interpolate (t, from->y, to->y, 0.5);
+    result->width = interpolate (t, from->width, to->width, 0.7);
+    result->height = interpolate (t, from->height, to->height, 0.7);
 }
 
 static void
@@ -475,7 +486,7 @@ update_fade (gpointer data)
     {
 	gdouble alpha = interpolate (t, info->start_alpha, info->end_alpha, 1.0);
 	WsRectangle cur;
-
+	
 	if (info->first_time)
 	{
 	    meta_comp_window_show (info->window);
@@ -504,16 +515,16 @@ meta_comp_window_fade_in (MetaCompWindow *comp_window)
 {
     FadeInfo *info = g_new0 (FadeInfo, 1);
     WsWindow *window = find_client_window (comp_window);
-
+    
     if (comp_window->fade_in_idle_id)
 	return;
     
     info->window = comp_window_ref (comp_window);
     info->timer = g_timer_new ();
-
+    
     comp_window_get_real_size (info->window, &info->to);
     info->from = info->to;
-
+    
     info->start_alpha = 0.1;
     info->first_time = TRUE;
     
@@ -542,9 +553,9 @@ on_request_alarm (WsSyncAlarm *alarm,
 		  MetaCompWindow *comp_window)
 {
     /* This alarm means that the window is ready to be shown on screen */
- 
+    
     meta_comp_window_fade_in (comp_window);
-
+    
     g_object_unref (alarm);
 }
 
@@ -564,7 +575,7 @@ send_sync_request (MetaCompWindow *comp_window)
     
     request_counter = ws_window_get_property_sync_counter (
 	client_window, "_NET_WM_SYNC_REQUEST_COUNTER");
-
+    
     if (!request_counter)
 	return FALSE;
     
@@ -576,17 +587,17 @@ send_sync_request (MetaCompWindow *comp_window)
     msg[3] = (comp_window->counter_value >> 32) & 0xffffffff;
     
     alarm = ws_sync_alarm_new (display, request_counter);
-
+    
     ws_sync_alarm_set (alarm, comp_window->counter_value);
-
+    
     g_signal_connect (alarm, "alarm_notify_event",
 		      G_CALLBACK (on_request_alarm), comp_window);
-
+    
     ws_window_send_client_message (client_window,
 				   "WM_PROTOCOLS", msg);
-
+    
     send_configure_notify (WS_DRAWABLE (client_window));
-
+    
     ws_display_flush (WS_RESOURCE (client_window)->display);
     
     return TRUE;
@@ -601,7 +612,7 @@ meta_comp_window_refresh_attrs (MetaCompWindow *comp_window)
     
     double alpha = 1.0;
     CmDrawableNode *node = CM_DRAWABLE_NODE (comp_window->node);
-
+    
 #if 0
     g_print ("waiting for paint: %d\n", comp_window->waiting_for_paint);
 #endif
@@ -630,7 +641,7 @@ meta_comp_window_refresh_attrs (MetaCompWindow *comp_window)
 	}
 	
 	cm_drawable_node_set_alpha (node, alpha);
-
+	
 	if (!cm_drawable_node_get_viewable (node))
 	{
 	    comp_window->waiting_for_paint = TRUE;
@@ -641,7 +652,7 @@ meta_comp_window_refresh_attrs (MetaCompWindow *comp_window)
 	    finish_counter = ws_window_get_property_sync_counter (
 		window, "_NET_WM_FINISH_FRAME_COUNTER");
 #endif
-
+	    
 	    /* For some reason the panel and nautilus don't respond to the
 	     * sync counter stuff. FIXME: this should be figured out at
 	     * some point.
@@ -659,7 +670,7 @@ meta_comp_window_refresh_attrs (MetaCompWindow *comp_window)
 #if 0
 	g_print ("unmapping %p\n", node);
 #endif
-    
+	
 	meta_comp_window_hide (comp_window);
     }
 }
@@ -671,7 +682,7 @@ meta_comp_window_set_updates (MetaCompWindow *comp_window,
     CmDrawableNode *node = CM_DRAWABLE_NODE (comp_window->node);
     
     comp_window->updates = updates;
-
+    
     cm_drawable_node_set_updates (node, updates);
     
     if (updates)
@@ -724,17 +735,17 @@ update_explosion (gpointer data)
     ExplodeInfo *info = data;
     CmDrawableNode *node = CM_DRAWABLE_NODE (info->comp_window->node);
     gdouble elapsed = g_timer_elapsed (info->timer, NULL);
-
+    
     if (!cm_drawable_node_get_viewable (node) || elapsed > EXPLODE_TIME)
     {
 	meta_effect_end (info->effect);
-
+	
 	info->comp_window->animation_in_progress = FALSE;
 	if (info->comp_window->hide_after_animation)
 	    meta_comp_window_hide (info->comp_window);
 	
 	cm_drawable_node_set_explosion_level (node, 0.0);
-
+	
 	comp_window_unref (info->comp_window);
 	return FALSE;
     }
@@ -753,7 +764,7 @@ meta_comp_window_explode (MetaCompWindow *comp_window,
 			  MetaEffect *effect)
 {
     ExplodeInfo *info = g_new0 (ExplodeInfo, 1);
-
+    
     if (!cm_drawable_node_get_viewable (comp_window->node))
     {
 #if 0
@@ -774,324 +785,208 @@ meta_comp_window_explode (MetaCompWindow *comp_window,
     info->effect = effect;
     info->level = 0.0;
     info->timer = g_timer_new ();
-
+    
     g_idle_add (update_explosion, info);
 }
 
-/* new shrinkydink code */
+/* shrinkydink minimize effect */
 
-#define SHRINK_TIME 1.0
-
-typedef struct
-{
-    MetaEffect		       *effect;
-    MetaCompWindow	       *window;
-    gdouble			elapsed;
-    GTimer *			timer;
-} ShrinkInfo;
-
-static gboolean
-update_shrink (gpointer data)
-{
-    ShrinkInfo *info = data;
-    CmDrawableNode *node = (CmDrawableNode *)info->window->node;
-    gdouble elapsed = g_timer_elapsed (info->timer, NULL);
-
-    if (elapsed > SHRINK_TIME)
-    {
-	meta_effect_end (info->effect);
-	
-	cm_drawable_node_set_viewable (node, FALSE);
-	// cm_drawable_node_set_explosion_level (node, 0.0);
-	return FALSE;
-    }
-    else
-    {
-	gdouble t = elapsed / SHRINK_TIME;
-	
-	// cm_drawable_node_set_explosion_level (node, transform (t));
-	return TRUE;
-    }
-}
-
-/* old shrinkydink minimize effect */
+#define N_PHASES 5
 
 typedef struct
 {
-#if 0
-  MetaWindow *window;
-#endif
-  GTimer *timer;
-  
-#if 0
-  MetaCompositor *compositor;
-#endif
-#if 0
-  MetaCompScreen *scr_info;
-#endif
+    WsRectangle start_rect;
+    WsRectangle end_rect;
+    gdouble	start_alpha;
+    gdouble	end_alpha;
+    gdouble	start_time;
+    gdouble	end_time;
+} Phase;
+
+typedef struct
+{
+    GTimer *timer;
+    
     MetaCompWindow *comp_window;
-  
-#if 0
-  MetaAnimationFinishedFunc finished_func;
-  gpointer		     finished_data;
-#endif
+    
     MetaEffect *effect;
-  
-  gdouble	aspect_ratio;
-  
-  WsRectangle current_geometry;
-  WsRectangle target_geometry;
-  gdouble	 current_alpha;
-  gdouble	 target_alpha;
-  
-  int		button_x;
-  int		button_y;
-  int		button_width;
-  int		button_height;
-  
-  /* FIXME: maybe would be simpler if all of this was an array */
-  gboolean phase_1_started;
-  gboolean phase_2_started;
-  gboolean phase_3_started;
-  gboolean phase_4_started;
-  gboolean phase_5_started;
+    
+    gdouble	aspect_ratio;
+
+    Phase	phases[N_PHASES];
 } MiniInfo;
 
 static void
-set_geometry (MiniInfo *info, gdouble elapsed)
+set_geometry (MetaCompWindow *window,
+	      Phase          *phase,
+	      gdouble         elapsed)
 {
-  WsRectangle rect;
-  
-  interpolate_rectangle (elapsed, &info->current_geometry, &info->target_geometry, &rect);
-  
-#if 0
-  g_print ("y: %d %d  (%f  => %d)\n", info->current_geometry.y, info->target_geometry.y,
-	   elapsed, rect.y);
-  
-  g_print ("setting: %d %d %d %d\n", rect.x, rect.y, rect.width, rect.height);
-#endif
-  
-  comp_window_set_target_rect (info->comp_window, &rect);
+    WsRectangle rect;
+    gdouble alpha;
+    gdouble t = (elapsed - phase->start_time) / (phase->end_time - phase->start_time);
+    
+    interpolate_rectangle (t, &phase->start_rect, &phase->end_rect, &rect);
+    alpha = interpolate (t, phase->start_alpha, phase->end_alpha, 1.0);
+    
+    comp_window_set_target_rect (window, &rect);
+    cm_drawable_node_set_alpha (window->node, alpha);
 }
 
 static int
 center (gdouble what, gdouble in)
 {
-  return (in - what) / 2.0 + 0.5;
+    return (in - what) / 2.0 + 0.5;
 }
 
-static void
-run_phase_1 (MiniInfo *info, gdouble elapsed)
-{
-  if (!info->phase_1_started)
-    {
-#if 0
-      g_print ("starting phase 1\n");
-#endif
-      info->phase_1_started = TRUE;
-
-      comp_window_get_real_size (info->comp_window,
-				 &info->current_geometry);
-      
-#if 0
-      info->current_geometry.x = info->node->real_x;
-      info->current_geometry.y = info->node->real_y;
-      info->current_geometry.width = info->node->real_width;
-      info->current_geometry.height = info->node->real_height;
-#endif
-      
-      info->target_geometry.height = info->button_height;
-      info->target_geometry.width = info->button_height * info->aspect_ratio;
-      info->target_geometry.x = info->button_x + center (info->target_geometry.width, info->button_width);
-      info->target_geometry.y = info->current_geometry.y + center (info->button_height, info->current_geometry.height);
-    }
-  
-  set_geometry (info, elapsed);
-}
+#define WOBBLE_FACTOR 1.5
 
 static void
-run_phase_2 (MiniInfo *info, gdouble elapsed)
+generate_phases (WsRectangle *start,
+		 WsRectangle *icon,
+		 Phase        phases[N_PHASES])
 {
-#define WOBBLE_FACTOR 3
-  
-  if (!info->phase_2_started)
+    const double phase_times[5] = {
+	0.225,				/* scale to size of button */
+	0.100,				/* scale up a little */
+	0.100,				/* scale back a little */
+	0.100,				/* drop down to icon */
+	0.350,				/* fade out */
+    };
+    
+    WsRectangle cur;
+    gdouble alpha;
+    gdouble aspect_ratio;
+    gdouble time;
+    int i;
+    
+    aspect_ratio = (double)start->width / (double)start->height;
+    cur = *start;
+    time = 0.0;
+    alpha = 1.0;
+    for (i = 0; i < N_PHASES; ++i)
     {
-      WsRectangle cur = info->target_geometry;
-      
-#if 0
-      g_print ("starting phase 2\n");
-#endif
-      
-      info->phase_2_started = TRUE;
-      
-      info->current_geometry = cur;
-      
-      info->target_geometry.x = cur.x + center (WOBBLE_FACTOR * cur.width, cur.width);
-      info->target_geometry.y = cur.y + center (WOBBLE_FACTOR * cur.height, cur.height);
-      info->target_geometry.width = cur.width * WOBBLE_FACTOR;
-      info->target_geometry.height = cur.height * WOBBLE_FACTOR;
+	Phase *phase = &(phases[i]);
+	WsRectangle *end = &(phase->end_rect);
+	
+	phase->start_time = time;
+	phase->start_rect = cur;
+	phase->start_alpha = alpha;
+	phase->end_alpha = 1.0;
+	phase->end_time = time + phase_times[i];
+	
+	if (i == 0)
+	{
+	    /* Shrink to a little rectangle */
+	    end->height = icon->height;
+	    end->width = icon->height * aspect_ratio;
+	    end->x = icon->x + center (end->width, icon->width);
+	    end->y = cur.y + center (icon->height, cur.height);
+	}
+	else if (i == 1)
+	{
+	    /* Zoom out a little */
+	    end->x = cur.x + center (WOBBLE_FACTOR * cur.width, cur.width);
+	    end->y = cur.y + center (WOBBLE_FACTOR * cur.height, cur.height);
+	    end->width = cur.width * WOBBLE_FACTOR;
+	    end->height = cur.height * WOBBLE_FACTOR;
+	}
+	else if (i == 2)
+	{
+	    /* Zoom back */
+	    end->height = icon->height;
+	    end->width = icon->height * aspect_ratio;
+	    end->x = icon->x + center (end->width, icon->width);
+	    end->y = cur.y + center (icon->height, cur.height);
+	}
+	else if (i == 3)
+	{
+	    /* Move down to the button */
+	    end->height = icon->height;
+	    end->width = icon->height * aspect_ratio;
+	    end->x = icon->x + center (end->width, icon->width);
+	    end->y = icon->y;
+	}
+	else if (i == 4)
+	{
+	    /* Fade out */
+	    end->x = icon->x;
+	    end->y = icon->y;
+	    end->width = icon->width;
+	    end->height = icon->height;
+
+	    phases[i].end_alpha = 0.0;
+	}
+
+	alpha = phase->end_alpha;
+	cur = phase->end_rect;
+	time += phase_times[i];
     }
-  
-  set_geometry (info, elapsed);
-}
-
-static void
-run_phase_3 (MiniInfo *info, gdouble elapsed)
-{
-  if (!info->phase_3_started)
-    {
-      WsRectangle cur = info->target_geometry;
-      WsRectangle real;
-
-      comp_window_get_real_size (info->comp_window, &real);
-      
-#if 0
-      g_print ("starting phase 3\n");
-#endif
-      info->phase_3_started = TRUE;
-      
-      info->current_geometry = cur;
-      
-      info->target_geometry.height = info->button_height;
-      info->target_geometry.width = info->button_height * info->aspect_ratio;
-      info->target_geometry.x = info->button_x + center (info->target_geometry.width, info->button_width);
-      info->target_geometry.y = real.y + center (info->button_height, real.height);
-    }
-  
-  set_geometry (info, elapsed);
-}
-
-static void
-run_phase_4 (MiniInfo *info, gdouble elapsed)
-{
-  if (!info->phase_4_started)
-    {
-      WsRectangle cur = info->target_geometry;
-      
-#if 0
-      g_print ("starting phase 4\n");
-#endif
-      info->phase_4_started = TRUE;
-      
-      info->current_geometry = cur;
-      
-      info->target_geometry.height = info->button_height;
-      info->target_geometry.width = info->button_height * info->aspect_ratio;
-      info->target_geometry.x = cur.x;
-
-#if 0
-      g_print ("button y: %d\n", info->button_y);
-#endif
-      info->target_geometry.y = info->button_y;
-    }
-  
-  set_geometry (info, elapsed);
-}
-
-static void
-run_phase_5 (MiniInfo *info, gdouble elapsed)
-{
-  if (!info->phase_5_started)
-    {
-      WsRectangle cur = info->target_geometry;
-      
-#if 0
-      g_print ("starting phase 5\n");
-#endif
-      info->phase_5_started = TRUE;
-      
-      info->current_geometry = cur;
-      info->target_geometry.x = info->button_x;
-      info->target_geometry.y = info->button_y;
-      info->target_geometry.width = info->button_width;
-      info->target_geometry.height = info->button_height;
-    }
-  
-  set_geometry (info, elapsed);
-
-  cm_drawable_node_set_alpha (info->comp_window->node, 1 - elapsed);
 }
 
 static gboolean
-run_animation_01 (gpointer data)
+update_minimize (gpointer data)
 {
-  MiniInfo *info = data;
-  gdouble elapsed;
-  
-  elapsed = g_timer_elapsed (info->timer, NULL);
-  
-#define PHASE_0		0.0
-#define PHASE_1		0.225		/* scale to size of button */
-#define PHASE_2		0.325		/* scale up a little */
-#define PHASE_3		0.425		/* scale back a little */
-#define PHASE_4		0.650		/* move to button */
-#define PHASE_5		1.0		/* fade out */
-  
-  if (elapsed < PHASE_1)
+    MiniInfo *info = data;
+    Phase *current_phase;
+    int i;
+    gdouble elapsed = g_timer_elapsed (info->timer, NULL);
+
+    current_phase = NULL;
+    for (i = 0; i < N_PHASES; ++i)
     {
-      /* phase one */
-      run_phase_1 (info, (elapsed - PHASE_0)/(PHASE_1 - PHASE_0));
+	Phase *p = &(info->phases[i]);
+	
+	if (p->start_time < elapsed && p->end_time >= elapsed)
+	{
+	    current_phase = p;
+	    break;
+	}
     }
-  else if (elapsed < PHASE_2)
+
+    if (current_phase)
     {
-      /* phase two */
-      run_phase_2 (info, (elapsed - PHASE_1)/(PHASE_2 - PHASE_1));
+	set_geometry (info->comp_window, current_phase, elapsed);
+	return TRUE;
     }
-  else if (elapsed < PHASE_3)
+    else
     {
-      /* phase three */
-      run_phase_3 (info, (elapsed - PHASE_2)/(PHASE_3 - PHASE_2));
+	meta_comp_window_hide (info->comp_window);
+	cm_drawable_node_set_alpha (info->comp_window->node, 1.0);
+	cm_drawable_node_unset_patch (info->comp_window->node);
+	comp_window_unref (info->comp_window);
+
+	meta_effect_end (info->effect);
+	
+	return FALSE;
     }
-  else if (elapsed < PHASE_4)
-    {
-      /* phase four */
-      run_phase_4 (info, (elapsed - PHASE_3)/(PHASE_4 - PHASE_3));
-    }
-  else if (elapsed < PHASE_5)
-    {
-      /* phase five */
-      run_phase_5 (info, (elapsed - PHASE_4)/(PHASE_5 - PHASE_4));
-    }
-  else 
-    {
-      meta_effect_end (info->effect);
-      
-      return FALSE;
-    }
-  
-  return TRUE;
 }
 
 void
 meta_comp_window_run_minimize (MetaCompWindow           *window,
 			       MetaEffect               *effect)
 {
-  MiniInfo *info = g_new (MiniInfo, 1);
-  
-  info->timer = g_timer_new ();
+    MiniInfo *info = g_new (MiniInfo, 1);
+    WsRectangle start, end;
 
-  info->comp_window = window;
-  
-  info->effect = effect;
-  
-  info->phase_1_started = FALSE;
-  info->phase_2_started = FALSE;
-  info->phase_3_started = FALSE;
-  info->phase_4_started = FALSE;
-  info->phase_5_started = FALSE;
-  
-  info->button_x = effect->u.minimize.icon_rect.x;
-  info->button_y = effect->u.minimize.icon_rect.y;
-  info->button_width = effect->u.minimize.icon_rect.width;
-  info->button_height = effect->u.minimize.icon_rect.height;
+    info->timer = g_timer_new ();
+    
+    info->comp_window = comp_window_ref (window);
 
-#if 0
-  cm_drawable_node_set_deformation_func (node, minimize_deformation, info);
-#endif
-  
-  info->aspect_ratio = 1.3;
+    info->effect = effect;
 
-  g_idle_add (run_animation_01, info);
+    start.x = effect->u.minimize.window_rect.x;
+    start.y = effect->u.minimize.window_rect.y;
+    start.width = effect->u.minimize.window_rect.width;
+    start.height = effect->u.minimize.window_rect.height;
+
+    end.x = effect->u.minimize.icon_rect.x;
+    end.y = effect->u.minimize.icon_rect.y;
+    end.width = effect->u.minimize.icon_rect.width;
+    end.height = effect->u.minimize.icon_rect.height;
+    
+    generate_phases (&start, &end, info->phases);
+    
+    g_idle_add (update_minimize, info);
 }
 
 /* bounce effect */
