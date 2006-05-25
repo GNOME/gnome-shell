@@ -101,13 +101,15 @@ meta_pop_effect_handler (void)
 }
 
 static MetaEffect *
-create_effect (MetaEffectType type,
-	       MetaEffectFinished finished,
-	       gpointer		  finished_data)
+create_effect (MetaEffectType      type,
+	       MetaWindow         *window,
+	       MetaEffectFinished  finished,
+	       gpointer		   finished_data)
 {
     MetaEffect *effect = g_new (MetaEffect, 1);
 
     effect->type = type;
+    effect->window = window;
     effect->priv = g_new (MetaEffectPriv, 1);
     effect->priv->finished = finished;
     effect->priv->finished_data = finished_data;
@@ -134,8 +136,7 @@ meta_effect_run_focus (MetaWindow	    *window,
 
     g_return_if_fail (window != NULL);
 
-    effect = create_effect (META_EFFECT_FOCUS, finished, data);
-    effect->u.focus.window = window;
+    effect = create_effect (META_EFFECT_FOCUS, window, finished, data);
     
     run_handler (effect);
 }
@@ -152,9 +153,8 @@ meta_effect_run_minimize (MetaWindow         *window,
     g_return_if_fail (window != NULL);
     g_return_if_fail (icon_rect != NULL);
     
-    effect = create_effect (META_EFFECT_MINIMIZE, finished, data);
+    effect = create_effect (META_EFFECT_MINIMIZE, window, finished, data);
 
-    effect->u.minimize.window = window;
     effect->u.minimize.window_rect = *window_rect;
     effect->u.minimize.icon_rect = *icon_rect;
 
@@ -173,9 +173,8 @@ meta_effect_run_restore (MetaWindow          *window,
     g_return_if_fail (window != NULL);
     g_return_if_fail (icon_rect != NULL);
     
-    effect = create_effect (META_EFFECT_RESTORE, finished, data);
+    effect = create_effect (META_EFFECT_RESTORE, window, finished, data);
 
-    effect->u.restore.window = window;
     effect->u.restore.window_rect = *window_rect;
     effect->u.restore.icon_rect = *icon_rect;
 
@@ -191,11 +190,9 @@ meta_effect_run_close (MetaWindow         *window,
     
     g_return_if_fail (window != NULL);
 
-    effect = create_effect (META_EFFECT_CLOSE,
+    effect = create_effect (META_EFFECT_CLOSE, window,
 			    finished, data);
 
-    effect->u.close.window = window;
-    
     run_handler (effect);
 }
 
@@ -760,7 +757,7 @@ run_default_effect_handler (MetaEffect *effect)
     switch (effect->type)
     {
     case META_EFFECT_MINIMIZE:
-	meta_effects_draw_box_animation (effect->u.minimize.window->screen,
+	meta_effects_draw_box_animation (effect->window->screen,
 					 &(effect->u.minimize.window_rect),
 					 &(effect->u.minimize.icon_rect),
 					 META_MINIMIZE_ANIMATION_LENGTH,

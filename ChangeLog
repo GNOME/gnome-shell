@@ -1,3 +1,10 @@
+Thu May 25 15:56:43 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/effects.h (struct MetaEffect): Move duplicated window field
+	outside the union
+
+	* src/compositor.c: delete duplicated code to get at the window.
+
 Thu May 25 15:17:29 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/c-window.c: Fix compilation in non-compositor case, by

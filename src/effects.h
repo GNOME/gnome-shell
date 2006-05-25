@@ -63,18 +63,22 @@ typedef void (* MetaEffectFinished) (const MetaEffect *effect,
 
 typedef struct
 {
-  MetaWindow *window;
   MetaRectangle window_rect;
   MetaRectangle icon_rect;
 } MetaMinimizeEffect, MetaRestoreEffect;
 
 typedef struct
 {
-  MetaWindow *window;
-} MetaCloseEffect, MetaFocusEffect;
+    
+} MetaCloseEffect;
+
+typedef struct
+{
+} MetaFocusEffect;
 
 struct MetaEffect
 {
+  MetaWindow *window;
   MetaEffectType type;
   gpointer info;		/* effect handler can hang data here */
   
@@ -98,6 +102,11 @@ void        meta_effect_run_minimize     (MetaWindow         *window,
 					  MetaRectangle	     *target,
 					  MetaEffectFinished  finished,
 					  gpointer            data);
+void        meta_effect_run_restore (MetaWindow          *window,
+				     MetaRectangle       *window_rect,
+				     MetaRectangle	     *icon_rect,
+				     MetaEffectFinished  finished,
+				     gpointer            data);
 void        meta_effect_run_close        (MetaWindow         *window,
 					  MetaEffectFinished  finished,
 					  gpointer            data);

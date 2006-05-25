@@ -111,80 +111,42 @@ static void
 do_effect (MetaEffect *effect,
 	   gpointer data)
 {
-    /* XXX screen and window should be easier to get than this... */
+    MetaCompScreen *screen;
+    MetaCompWindow *window;
+
+    screen = meta_comp_screen_get_by_xwindow (get_xid (effect->window));
+    window = meta_comp_screen_lookup_window (screen, get_xid (effect->window));
+    
     switch (effect->type)
     {
     case META_EFFECT_MINIMIZE:
-    {
-	MetaCompScreen *screen = meta_comp_screen_get_by_xwindow (
-	    get_xid (effect->u.minimize.window));
-	MetaCompWindow *window;
-
-	if (!effect->u.minimize.window->frame)
+	if (!effect->window->frame)
 	{
 	    meta_effect_end (effect);
 	    return;
 	}
 	
-	window =
-	    meta_comp_screen_lookup_window (screen, effect->u.minimize.window->frame->xwindow);
-
-	/* FIXME: a hack to make sure the window starts on top of the panel */
-	meta_comp_screen_raise_window (screen, effect->u.minimize.window->frame->xwindow);
+	meta_comp_screen_raise_window (screen, effect->window->frame->xwindow);
 	
 	meta_comp_window_run_minimize (window, effect);
-#if 0
-	meta_comp_window_explode (window, effect);
-#endif
 	break;
-    }
 #if 0
     case META_EFFECT_RESTORE:
-    {
-	MetaCompScreen *screen = meta_comp_screen_get_by_xwindow (
-	    get_xid (effect->u.restore.window));
-	MetaCompWindow *window = meta_comp_screen_lookup_window (
-	    screen, effect->u.restore.window->frame->xwindow);
 	meta_comp_window_unshrink (window, effect);
 	break;
-    }
 #endif
     case META_EFFECT_FOCUS:
-    {
-	MetaCompScreen *screen = meta_comp_screen_get_by_xwindow (
-	    get_xid (effect->u.focus.window));
-	MetaCompWindow *window = meta_comp_screen_lookup_window (
-	    screen, effect->u.focus.window->frame->xwindow);
 	meta_comp_window_bounce (window, effect);
 	break;
-    }
+
     case META_EFFECT_CLOSE:
-    {
-	MetaCompScreen *screen = meta_comp_screen_get_by_xwindow (
-	    get_xid (effect->u.minimize.window));
-	MetaCompWindow *window;
-
-	if (effect->u.close.window->frame)
-	{
-	    window = meta_comp_screen_lookup_window (
-		screen, effect->u.close.window->frame->xwindow);
-	}
-	else
-	{
-	    window = meta_comp_screen_lookup_window (
-		screen, effect->u.close.window->xwindow);
-	}
-
 	meta_comp_window_freeze_stack (window);
 	meta_comp_window_set_updates (window, FALSE);
 	meta_comp_window_explode (window, effect);
 	break;
-    }
     default:
-    {
 	g_assert_not_reached();
 	break;
-    }
     }
 }
 

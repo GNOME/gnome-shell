@@ -1055,6 +1055,11 @@ meta_comp_window_bounce (MetaCompWindow *comp_window,
     g_idle_add (update_bounce, info);
 }
 
+#endif
+
+#if 0
+#endif
+
 void
 meta_comp_window_freeze_stack (MetaCompWindow *comp_window)
 {
@@ -1072,7 +1077,4 @@ meta_comp_window_stack_frozen (MetaCompWindow *comp_window)
 {
     return comp_window->stack_freeze_count > 0;
 }
-
-#endif
-
 
