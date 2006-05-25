@@ -118,9 +118,20 @@ do_effect (MetaEffect *effect,
     {
 	MetaCompScreen *screen = meta_comp_screen_get_by_xwindow (
 	    get_xid (effect->u.minimize.window));
-	MetaCompWindow *window =
+	MetaCompWindow *window;
+
+	if (!effect->u.minimize.window->frame)
+	{
+	    meta_effect_end (effect);
+	    return;
+	}
+	
+	window =
 	    meta_comp_screen_lookup_window (screen, effect->u.minimize.window->frame->xwindow);
 
+	/* FIXME: a hack to make sure the window starts on top of the panel */
+	meta_comp_screen_raise_window (screen, effect->u.minimize.window->frame->xwindow);
+	
 	meta_comp_window_run_minimize (window, effect);
 #if 0
 	meta_comp_window_explode (window, effect);

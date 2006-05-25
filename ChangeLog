@@ -1,3 +1,8 @@
+Wed May 24 22:15:01 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/compositor.c (do_effect): Make sure windows are kept on top
+	of the panel during minimize.
+
 Wed May 24 21:17:59 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/compositor.c (do_effect): Shrink the window instead of

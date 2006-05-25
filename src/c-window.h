@@ -50,8 +50,8 @@ void		meta_comp_window_restack (MetaCompWindow *comp_window,
 void		meta_comp_window_freeze_stack (MetaCompWindow *comp_window);
 void		meta_comp_window_thaw_stack (MetaCompWindow *comp_window);
 gboolean	meta_comp_window_stack_frozen (MetaCompWindow *comp_window);
-void            meta_comp_window_run_minimize (MetaWindow               *window,
-					       MetaEffect               *effect);
+void            meta_comp_window_run_minimize (MetaCompWindow *window,
+					       MetaEffect     *effect);
     
 #if 0
 void		meta_comp_window_set_explode (MetaCompWindow *comp_window,

@@ -1062,7 +1062,7 @@ run_animation_01 (gpointer data)
 }
 
 void
-meta_comp_window_run_minimize (MetaWindow               *window,
+meta_comp_window_run_minimize (MetaCompWindow           *window,
 			       MetaEffect               *effect)
 {
   MiniInfo *info = g_new (MiniInfo, 1);
@@ -1083,13 +1083,13 @@ meta_comp_window_run_minimize (MetaWindow               *window,
   info->button_y = effect->u.minimize.icon_rect.y;
   info->button_width = effect->u.minimize.icon_rect.width;
   info->button_height = effect->u.minimize.icon_rect.height;
-  
+
 #if 0
   cm_drawable_node_set_deformation_func (node, minimize_deformation, info);
 #endif
   
   info->aspect_ratio = 1.3;
-  
+
   g_idle_add (run_animation_01, info);
 }
 
