@@ -27,6 +27,9 @@
 
 typedef void (* MetaAnimationFinishedFunc) (gpointer data);
 
+/* XXX namespace me */
+void compute_window_rect (MetaWindow *window, MetaRectangle *rect);
+
 MetaCompositor* meta_compositor_new           (MetaDisplay       *display);
 void            meta_compositor_unref         (MetaCompositor    *compositor);
 void            meta_compositor_process_event (MetaCompositor    *compositor,

@@ -45,6 +45,8 @@ void		meta_comp_window_shrink (MetaCompWindow *comp_window,
 					 MetaEffect *effect);
 void		meta_comp_window_unshrink (MetaCompWindow *comp_window,
 					   MetaEffect *effect);
+void		meta_comp_window_bounce (MetaCompWindow *comp_window,
+					 MetaEffect *effect);
 void		meta_comp_window_restack (MetaCompWindow *comp_window,
 					  MetaCompWindow *above);
 void		meta_comp_window_freeze_stack (MetaCompWindow *comp_window);

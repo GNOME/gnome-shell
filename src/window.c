@@ -42,6 +42,7 @@
 #include "window-props.h"
 #include "constraints.h"
 #include "compositor.h"
+#include "effects.h"
 
 #include <X11/Xatom.h>
 #include <string.h>
@@ -3760,6 +3761,8 @@ meta_window_focus (MetaWindow  *window,
 
   if (window->wm_state_demands_attention)
     meta_window_unset_demands_attention(window);
+
+  meta_effect_run_focus(window, NULL, NULL);
 }
 
 static void

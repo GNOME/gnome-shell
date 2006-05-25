@@ -149,6 +149,15 @@ do_effect (MetaEffect *effect,
 	break;
     }
 #endif
+    case META_EFFECT_FOCUS:
+    {
+	MetaCompScreen *screen = meta_comp_screen_get_by_xwindow (
+	    get_xid (effect->u.focus.window));
+	MetaCompWindow *window = meta_comp_screen_lookup_window (
+	    screen, effect->u.focus.window->frame->xwindow);
+	meta_comp_window_bounce (window, effect);
+	break;
+    }
     case META_EFFECT_CLOSE:
     {
 	MetaCompScreen *screen = meta_comp_screen_get_by_xwindow (
@@ -780,7 +789,7 @@ struct MoveInfo
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 
-static void
+void
 get_patch_points (Model   *model,
 		  CmPoint  points[4][4])
 {
@@ -850,7 +859,7 @@ wobble (gpointer data)
 
 #endif
 
-static void
+void
 compute_window_rect (MetaWindow *window,
 		     MetaRectangle *rect)
 {

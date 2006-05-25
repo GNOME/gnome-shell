@@ -126,6 +126,21 @@ meta_effect_end (MetaEffect         *effect)
 }
 
 void
+meta_effect_run_focus (MetaWindow	    *window,
+		       MetaEffectFinished   finished,
+		       gpointer		    data)
+{
+    MetaEffect *effect;
+
+    g_return_if_fail (window != NULL);
+
+    effect = create_effect (META_EFFECT_FOCUS, finished, data);
+    effect->u.focus.window = window;
+    
+    run_handler (effect);
+}
+
+void
 meta_effect_run_minimize (MetaWindow         *window,
 			  MetaRectangle      *window_rect,
 			  MetaRectangle	     *icon_rect,

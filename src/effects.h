@@ -66,12 +66,12 @@ typedef struct
   MetaWindow *window;
   MetaRectangle window_rect;
   MetaRectangle icon_rect;
-} MetaMinimizeEffect, MetaRestoreEffect; /* same data for both */
+} MetaMinimizeEffect, MetaRestoreEffect;
 
 typedef struct
 {
   MetaWindow *window;
-} MetaCloseEffect;
+} MetaCloseEffect, MetaFocusEffect;
 
 struct MetaEffect
 {
@@ -83,6 +83,7 @@ struct MetaEffect
     MetaMinimizeEffect	    minimize;
     MetaRestoreEffect	    restore;
     MetaCloseEffect	    close;
+    MetaFocusEffect	    focus;
   } u;
   
   MetaEffectPriv *priv;
@@ -98,6 +99,9 @@ void        meta_effect_run_minimize     (MetaWindow         *window,
 					  MetaEffectFinished  finished,
 					  gpointer            data);
 void        meta_effect_run_close        (MetaWindow         *window,
+					  MetaEffectFinished  finished,
+					  gpointer            data);
+void        meta_effect_run_focus        (MetaWindow         *window,
 					  MetaEffectFinished  finished,
 					  gpointer            data);
 void        meta_effect_end              (MetaEffect         *effect);

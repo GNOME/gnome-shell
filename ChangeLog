@@ -1,3 +1,15 @@
+2006-05-25  Adam Jackson  <ajax@freedesktop.org>
+
+	* src/c-window.c:
+	* src/c-window.h:
+	* src/compositor.c:
+	* src/compositor.h:
+	* src/effects.c:
+	* src/effects.h:
+	* src/spring-model.c:
+	* src/window.c:
+	Bounce on window focus.
+
 Wed May 24 22:15:01 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/compositor.c (do_effect): Make sure windows are kept on top

@@ -34,6 +34,7 @@
 #include "c-window.h"
 #include "window.h"
 #include "frame.h"
+#include "spring-model.h"
 
 struct _MetaCompWindow
 {
@@ -1091,6 +1092,72 @@ meta_comp_window_run_minimize (MetaCompWindow           *window,
   info->aspect_ratio = 1.3;
 
   g_idle_add (run_animation_01, info);
+}
+
+/* bounce effect */
+
+typedef struct
+{
+    MetaEffect	    *effect;
+    MetaCompWindow  *window;
+    GTimer	    *timer;
+    Model	    *model;
+    MetaRectangle   rect;
+    gdouble	    last_time;
+} BounceInfo;
+
+/* XXX HATE */
+extern void get_patch_points (Model *model, CmPoint points[4][4]);
+extern void compute_window_rect (MetaWindow *window, MetaRectangle *rect);
+
+static gboolean
+update_bounce (gpointer data)
+{
+    BounceInfo *info = data;
+    CmDrawableNode *node = (CmDrawableNode *)info->window->node;
+    gdouble elapsed = g_timer_elapsed (info->timer, NULL);
+    int i;
+    int n_steps = floor ((elapsed - info->last_time) * 60);
+    CmPoint points[4][4];
+
+    if (model_is_calm (info->model) || elapsed > 0.7)
+    {
+	cm_drawable_node_unset_patch (node);
+	meta_effect_end (info->effect);
+	g_free(info);
+	return FALSE;
+    }
+
+    for (i = 0; i < n_steps; ++i)
+	model_step (info->model);
+
+    if (i > 0)
+	info->last_time = elapsed;
+
+    get_patch_points (info->model, points);
+
+    cm_drawable_node_set_patch (node, points);
+    return TRUE;
+}
+
+void
+meta_comp_window_bounce (MetaCompWindow *comp_window,
+			 MetaEffect *effect)
+{
+    BounceInfo *info = g_new0 (BounceInfo, 1);
+    MetaWindow *meta_window =
+	meta_display_lookup_x_window (comp_window->display,
+				      WS_RESOURCE_XID (comp_window->drawable));
+
+    info->window = comp_window;
+    info->effect = effect;
+    info->timer = g_timer_new ();
+    info->last_time = 0;
+
+    compute_window_rect (meta_window, &info->rect);
+    info->model = model_new (&info->rect, TRUE);
+
+    g_idle_add (update_bounce, info);
 }
 
 #endif

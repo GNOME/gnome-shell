@@ -205,15 +205,32 @@ model_init_grid (Model *model, MetaRectangle *rect, gboolean expand)
       hpad = rect->width / 6;
       vpad = rect->height / 6;
     }
+
+#define EXPAND_DELTA 4
   
   for (y = 0; y < GRID_HEIGHT; y++)
     for (x = 0; x < GRID_WIDTH; x++)
       {
-#if 0
-	v_x = 40 * g_random_double() - 20;
-	v_y = 40 * g_random_double() - 20;
-#endif
-	v_x = v_y = 0;
+	if (expand)
+	  {
+	    if (y == 0)
+	      v_y = - EXPAND_DELTA * g_random_double();
+	    else if (y == GRID_HEIGHT - 1)
+	      v_y = EXPAND_DELTA * g_random_double();
+	    else
+	      v_y = 2 * EXPAND_DELTA * g_random_double() - EXPAND_DELTA;
+
+	    if (x == 0)
+	      v_x = - EXPAND_DELTA * g_random_double();
+	    else if (x == GRID_WIDTH - 1)
+	      v_x = EXPAND_DELTA * g_random_double();
+	    else
+	      v_x = 2 * EXPAND_DELTA * g_random_double() - EXPAND_DELTA;
+	  }
+	else
+	  {
+	    v_x = v_y = 0;
+	  }
 	
 #if 0
 	if (expand)
@@ -355,7 +372,7 @@ on_end_move (Model	 *model)
   }
 }
 
-#define EPSILON   0.01
+#define EPSILON   0.02
 
 gboolean
 model_is_calm (Model *model)
