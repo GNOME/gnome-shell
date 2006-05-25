@@ -1,3 +1,19 @@
+Wed May 24 21:17:59 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/compositor.c (do_effect): Shrink the window instead of
+	explode it. 
+
+	* src/compositor.c (do_effect): don't read the frame if it is
+	NULL.
+	
+	* src/c-window.c (meta_comp_window_run_minimize): Resurrect the
+	shrinking minimize animation.
+
+	* src/c-window.c (meta_comp_window_fade_in): Make dialogs 90%
+	translucent. 
+
+	* src/c-window.c (update_fade): End at end_fade, not 1.0.
+
 Wed May 24 19:15:45 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/c-window.c (cancel_fade): Add a fade-in animation when

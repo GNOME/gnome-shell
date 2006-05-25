@@ -465,7 +465,7 @@ update_fade (gpointer data)
     if (elapsed >= FADE_TIME)
     {
 	comp_window_set_target_rect (info->window, &info->to);
-	cm_drawable_node_set_alpha (info->window->node, 1.0);
+	cm_drawable_node_set_alpha (info->window->node, info->end_alpha);
 	cm_drawable_node_unset_patch (info->window->node);
 	comp_window_unref (info->window);
 	return FALSE;
@@ -525,7 +525,7 @@ meta_comp_window_fade_in (MetaCompWindow *comp_window)
     }
     else if (has_type (window, "_NET_WM_WINDOW_TYPE_DIALOG"))
     {
-	info->end_alpha = 0.7;
+	info->end_alpha = 0.9;
     }
     else
     {
@@ -755,12 +755,16 @@ meta_comp_window_explode (MetaCompWindow *comp_window,
 
     if (!cm_drawable_node_get_viewable (comp_window->node))
     {
+#if 0
 	g_print ("%p wasn't even viewable to begin with\n", comp_window->node);
+#endif
 	return;
     }
     else
     {
+#if 0
 	g_print ("%p is viewable\n", comp_window->node);
+#endif
     }
     
     comp_window->animation_in_progress = TRUE;
@@ -809,39 +813,28 @@ update_shrink (gpointer data)
     }
 }
 
-void
-meta_comp_window_shrink (MetaCompWindow *comp_window,
-			 MetaEffect *effect)
-{
-    ShrinkInfo *info = g_new0 (ShrinkInfo, 1);
-
-    info->window = comp_window;
-    info->effect = effect;
-    info->timer = g_timer_new ();
-
-    g_idle_add (update_shrink, info);
-}
-
-#endif
-
-#if 0
 /* old shrinkydink minimize effect */
-
-#ifdef HAVE_COMPOSITE_EXTENSIONS
-
-
-#endif
 
 typedef struct
 {
+#if 0
   MetaWindow *window;
+#endif
   GTimer *timer;
   
+#if 0
   MetaCompositor *compositor;
+#endif
+#if 0
   MetaCompScreen *scr_info;
+#endif
+    MetaCompWindow *comp_window;
   
+#if 0
   MetaAnimationFinishedFunc finished_func;
   gpointer		     finished_data;
+#endif
+    MetaEffect *effect;
   
   gdouble	aspect_ratio;
   
@@ -870,13 +863,14 @@ set_geometry (MiniInfo *info, gdouble elapsed)
   
   interpolate_rectangle (elapsed, &info->current_geometry, &info->target_geometry, &rect);
   
+#if 0
   g_print ("y: %d %d  (%f  => %d)\n", info->current_geometry.y, info->target_geometry.y,
 	   elapsed, rect.y);
   
   g_print ("setting: %d %d %d %d\n", rect.x, rect.y, rect.width, rect.height);
+#endif
   
-  meta_comp_screen_set_target_rect (info->scr_info,
-				    get_xid (info->window), &rect);
+  comp_window_set_target_rect (info->comp_window, &rect);
 }
 
 static int
@@ -895,8 +889,8 @@ run_phase_1 (MiniInfo *info, gdouble elapsed)
 #endif
       info->phase_1_started = TRUE;
 
-      meta_comp_screen_get_real_size (info->scr_info, get_xid (info->window),
-				      &info->current_geometry);
+      comp_window_get_real_size (info->comp_window,
+				 &info->current_geometry);
       
 #if 0
       info->current_geometry.x = info->node->real_x;
@@ -923,7 +917,9 @@ run_phase_2 (MiniInfo *info, gdouble elapsed)
     {
       WsRectangle cur = info->target_geometry;
       
+#if 0
       g_print ("starting phase 2\n");
+#endif
       
       info->phase_2_started = TRUE;
       
@@ -946,10 +942,11 @@ run_phase_3 (MiniInfo *info, gdouble elapsed)
       WsRectangle cur = info->target_geometry;
       WsRectangle real;
 
-      meta_comp_screen_get_real_size (info->scr_info, get_xid (info->window),
-				      &real);
+      comp_window_get_real_size (info->comp_window, &real);
       
+#if 0
       g_print ("starting phase 3\n");
+#endif
       info->phase_3_started = TRUE;
       
       info->current_geometry = cur;
@@ -970,7 +967,9 @@ run_phase_4 (MiniInfo *info, gdouble elapsed)
     {
       WsRectangle cur = info->target_geometry;
       
+#if 0
       g_print ("starting phase 4\n");
+#endif
       info->phase_4_started = TRUE;
       
       info->current_geometry = cur;
@@ -978,7 +977,10 @@ run_phase_4 (MiniInfo *info, gdouble elapsed)
       info->target_geometry.height = info->button_height;
       info->target_geometry.width = info->button_height * info->aspect_ratio;
       info->target_geometry.x = cur.x;
+
+#if 0
       g_print ("button y: %d\n", info->button_y);
+#endif
       info->target_geometry.y = info->button_y;
     }
   
@@ -992,7 +994,9 @@ run_phase_5 (MiniInfo *info, gdouble elapsed)
     {
       WsRectangle cur = info->target_geometry;
       
+#if 0
       g_print ("starting phase 5\n");
+#endif
       info->phase_5_started = TRUE;
       
       info->current_geometry = cur;
@@ -1004,8 +1008,7 @@ run_phase_5 (MiniInfo *info, gdouble elapsed)
   
   set_geometry (info, elapsed);
 
-  meta_comp_screen_set_alpha (info->scr_info,
-			      get_xid (info->window), 1 - elapsed);
+  cm_drawable_node_set_alpha (info->comp_window->node, 1 - elapsed);
 }
 
 static gboolean
@@ -1050,8 +1053,7 @@ run_animation_01 (gpointer data)
     }
   else 
     {
-      if (info->finished_func)
-	info->finished_func (info->finished_data);
+      meta_effect_end (info->effect);
       
       return FALSE;
     }
@@ -1060,24 +1062,16 @@ run_animation_01 (gpointer data)
 }
 
 void
-meta_compositor_minimize (MetaCompositor           *compositor,
-			  MetaWindow               *window,
-			  int                       x,
-			  int                       y,
-			  int                       width,
-			  int                       height,
-			  MetaAnimationFinishedFunc  finished,
-			  gpointer                  data)
+meta_comp_window_run_minimize (MetaWindow               *window,
+			       MetaEffect               *effect)
 {
   MiniInfo *info = g_new (MiniInfo, 1);
-  WsRectangle start;
-  MetaScreen *screen = window->screen;
   
-  info->window = window;
   info->timer = g_timer_new ();
+
+  info->comp_window = window;
   
-  info->finished_func = finished;
-  info->finished_data = data;
+  info->effect = effect;
   
   info->phase_1_started = FALSE;
   info->phase_2_started = FALSE;
@@ -1085,13 +1079,10 @@ meta_compositor_minimize (MetaCompositor           *compositor,
   info->phase_4_started = FALSE;
   info->phase_5_started = FALSE;
   
-  info->button_x = x;
-  info->button_y = y;
-  info->button_width = width;
-  info->button_height = height;
-  
-  info->compositor = compositor;
-  info->scr_info = screen->compositor_data;
+  info->button_x = effect->u.minimize.icon_rect.x;
+  info->button_y = effect->u.minimize.icon_rect.y;
+  info->button_width = effect->u.minimize.icon_rect.width;
+  info->button_height = effect->u.minimize.icon_rect.height;
   
 #if 0
   cm_drawable_node_set_deformation_func (node, minimize_deformation, info);
@@ -1101,6 +1092,10 @@ meta_compositor_minimize (MetaCompositor           *compositor,
   
   g_idle_add (run_animation_01, info);
 }
+
+#endif
+
+#if 0
 #endif
 
 void

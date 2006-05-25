@@ -121,8 +121,10 @@ do_effect (MetaEffect *effect,
 	MetaCompWindow *window =
 	    meta_comp_screen_lookup_window (screen, effect->u.minimize.window->frame->xwindow);
 
-	/* meta_comp_window_shrink (window, effect); */
+	meta_comp_window_run_minimize (window, effect);
+#if 0
 	meta_comp_window_explode (window, effect);
+#endif
 	break;
     }
 #if 0
@@ -140,8 +142,18 @@ do_effect (MetaEffect *effect,
     {
 	MetaCompScreen *screen = meta_comp_screen_get_by_xwindow (
 	    get_xid (effect->u.minimize.window));
-	MetaCompWindow *window =
-	    meta_comp_screen_lookup_window (screen, effect->u.minimize.window->frame->xwindow);
+	MetaCompWindow *window;
+
+	if (effect->u.close.window->frame)
+	{
+	    window = meta_comp_screen_lookup_window (
+		screen, effect->u.close.window->frame->xwindow);
+	}
+	else
+	{
+	    window = meta_comp_screen_lookup_window (
+		screen, effect->u.close.window->xwindow);
+	}
 
 	meta_comp_window_freeze_stack (window);
 	meta_comp_window_set_updates (window, FALSE);
