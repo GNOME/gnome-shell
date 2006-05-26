@@ -1,3 +1,9 @@
+2006-05-25  Elijah Newren  <newren gmail com>
+
+	* src/place.h:
+	* src/common.h:
+	Remove MetaWindowEdgePosition enum that isn't used anymore
+
 Thu May 25 15:56:43 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/effects.h (struct MetaEffect): Move duplicated window field

@@ -200,7 +200,6 @@ typedef enum
 
 /* Relative directions or sides seem to come up all over the place... */
 /* FIXME: Replace
- *   place.[ch]:MetaWindowEdgePosition,
  *   screen.[ch]:MetaScreenDirection,
  *   workspace.[ch]:MetaMotionDirection,
  * with the use of MetaDirection.

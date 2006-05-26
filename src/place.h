@@ -25,16 +25,6 @@
 #include "window.h"
 #include "frame.h"
 
-typedef enum _MetaWindowEdgePosition MetaWindowEdgePosition;
-
-enum _MetaWindowEdgePosition
-{
-  META_WINDOW_EDGE_TOP = 0,
-  META_WINDOW_EDGE_LEFT,
-  META_WINDOW_EDGE_RIGHT,
-  META_WINDOW_EDGE_BOTTOM
-};
-
 void meta_window_place (MetaWindow *window,
                         MetaFrameGeometry *fgeom,
                         int         x,
