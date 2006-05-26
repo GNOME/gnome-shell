@@ -150,7 +150,8 @@ has_counter (MetaCompWindow *comp_window)
 	    g_print ("increasing counter\n");
 	    ws_sync_counter_change (counter, 1);
 	    
-	    g_print ("counter value %lld\n", ws_sync_counter_query_value (counter));
+	    g_print ("counter value %lld\n",
+		     ws_sync_counter_query_value (counter));
 	}
 	else
 	{
@@ -766,18 +767,7 @@ meta_comp_window_explode (MetaCompWindow *comp_window,
     ExplodeInfo *info = g_new0 (ExplodeInfo, 1);
     
     if (!cm_drawable_node_get_viewable (comp_window->node))
-    {
-#if 0
-	g_print ("%p wasn't even viewable to begin with\n", comp_window->node);
-#endif
 	return;
-    }
-    else
-    {
-#if 0
-	g_print ("%p is viewable\n", comp_window->node);
-#endif
-    }
     
     comp_window->animation_in_progress = TRUE;
     
@@ -999,16 +989,16 @@ typedef struct
     Model	    *model;
     MetaRectangle   rect;
     gdouble	    last_time;
-} BounceInfo;
+} FocusInfo;
 
 /* XXX HATE */
 extern void get_patch_points (Model *model, CmPoint points[4][4]);
 extern void compute_window_rect (MetaWindow *window, MetaRectangle *rect);
 
 static gboolean
-update_bounce (gpointer data)
+update_focus (gpointer data)
 {
-    BounceInfo *info = data;
+    FocusInfo *info = data;
     CmDrawableNode *node = (CmDrawableNode *)info->window->node;
     gdouble elapsed = g_timer_elapsed (info->timer, NULL);
     int i;
@@ -1036,10 +1026,10 @@ update_bounce (gpointer data)
 }
 
 void
-meta_comp_window_bounce (MetaCompWindow *comp_window,
-			 MetaEffect *effect)
+meta_comp_window_run_focus (MetaCompWindow *comp_window,
+			    MetaEffect     *effect)
 {
-    BounceInfo *info = g_new0 (BounceInfo, 1);
+    FocusInfo *info = g_new0 (FocusInfo, 1);
     MetaWindow *meta_window =
 	meta_display_lookup_x_window (comp_window->display,
 				      WS_RESOURCE_XID (comp_window->drawable));
@@ -1052,13 +1042,15 @@ meta_comp_window_bounce (MetaCompWindow *comp_window,
     compute_window_rect (meta_window, &info->rect);
     info->model = model_new (&info->rect, TRUE);
 
-    g_idle_add (update_bounce, info);
+    g_idle_add (update_focus, info);
 }
 
-#endif
-
-#if 0
-#endif
+void
+meta_comp_window_run_restore (MetaCompWindow *comp_window,
+			      MetaEffect     *effect)
+{
+    meta_effect_end (effect);
+}
 
 void
 meta_comp_window_freeze_stack (MetaCompWindow *comp_window)
@@ -1077,4 +1069,6 @@ meta_comp_window_stack_frozen (MetaCompWindow *comp_window)
 {
     return comp_window->stack_freeze_count > 0;
 }
+
+#endif
 

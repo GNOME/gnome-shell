@@ -1,3 +1,8 @@
+Fri May 26 14:55:07 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/c-window.c (meta_comp_window_run_focus): Rename from
+	_bounce() to _focus().
+
 2006-05-26  Elijah Newren  <newren gmail com>
 
 	* src/display.c (meta_display_close): Fix a crash on exit/logout

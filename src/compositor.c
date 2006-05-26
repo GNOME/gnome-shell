@@ -130,13 +130,12 @@ do_effect (MetaEffect *effect,
 	
 	meta_comp_window_run_minimize (window, effect);
 	break;
-#if 0
     case META_EFFECT_RESTORE:
-	meta_comp_window_unshrink (window, effect);
+	meta_comp_window_run_restore (window, effect);
 	break;
-#endif
+
     case META_EFFECT_FOCUS:
-	meta_comp_window_bounce (window, effect);
+	meta_comp_window_run_focus (window, effect);
 	break;
 
     case META_EFFECT_CLOSE:
