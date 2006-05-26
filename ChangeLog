@@ -1,3 +1,16 @@
+Fri May 26 16:48:29 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* src/effects.c (meta_effect_run_unminimize): Run an unminimize effect
+
+	* src/window.c (meta_window_unminimize): Store a "was_minimized"
+	boolean in the window.
+
+	* src/window.c (meta_window_show): If the window was minimized,
+	run an unminimize animation.
+
+	* src/c-window.c (meta_comp_window_run_unminimize): Add an
+	unminimize animation, running the minimize one in reverse.
+
 Fri May 26 14:55:07 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/c-window.c (meta_comp_window_run_focus): Rename from

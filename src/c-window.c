@@ -36,6 +36,8 @@
 #include "frame.h"
 #include "spring-model.h"
 
+typedef struct UnminimizeInfo UnminimizeInfo;
+
 struct _MetaCompWindow
 {
     MetaDisplay *display;
@@ -60,9 +62,12 @@ struct _MetaCompWindow
 
     MetaCompWindowDestroy destroy;
     gpointer              closure;
+
+    UnminimizeInfo *unminimize_info;
 };
 
 static void cancel_fade (MetaCompWindow *comp_window);
+static void start_unminimize (MetaCompWindow *comp_window);
 
 static Window
 find_app_window (MetaCompWindow *comp_window)
@@ -145,17 +150,23 @@ has_counter (MetaCompWindow *comp_window)
 	{
 	    ws_sync_alarm_set (alarm, value + 2);
 	    
+#if 0
 	    g_print ("wait for %lld\n", value + 2);
 	    
 	    g_print ("increasing counter\n");
+#endif
 	    ws_sync_counter_change (counter, 1);
 	    
+#if 0
 	    g_print ("counter value %lld\n",
 		     ws_sync_counter_query_value (counter));
+#endif
 	}
 	else
 	{
+#if 0
 	    g_print ("wait for %lld\n", value + 1);
+#endif
 	    ws_sync_alarm_set (alarm, value + 1);
 	}
 	
@@ -431,10 +442,10 @@ interpolate_rectangle (gdouble		t,
     if (!result)
 	return;
     
-    result->x = interpolate (t, from->x, to->x, 2);
-    result->y = interpolate (t, from->y, to->y, 0.5);
-    result->width = interpolate (t, from->width, to->width, 0.7);
-    result->height = interpolate (t, from->height, to->height, 0.7);
+    result->x = interpolate (t, from->x, to->x, 1);
+    result->y = interpolate (t, from->y, to->y, 1);
+    result->width = interpolate (t, from->width, to->width, 1);
+    result->height = interpolate (t, from->height, to->height, 1);
 }
 
 static void
@@ -554,8 +565,11 @@ on_request_alarm (WsSyncAlarm *alarm,
 		  MetaCompWindow *comp_window)
 {
     /* This alarm means that the window is ready to be shown on screen */
-    
-    meta_comp_window_fade_in (comp_window);
+
+    if (comp_window->unminimize_info)
+	start_unminimize (comp_window);
+    else
+	meta_comp_window_fade_in (comp_window);
     
     g_object_unref (alarm);
 }
@@ -801,8 +815,6 @@ typedef struct
     
     MetaEffect *effect;
     
-    gdouble	aspect_ratio;
-
     Phase	phases[N_PHASES];
 } MiniInfo;
 
@@ -869,7 +881,10 @@ generate_phases (WsRectangle *start,
 	    /* Shrink to a little rectangle */
 	    end->height = icon->height;
 	    end->width = icon->height * aspect_ratio;
+#if 0
 	    end->x = icon->x + center (end->width, icon->width);
+#endif
+	    end->x = cur.x + center (end->width, cur.width);
 	    end->y = cur.y + center (icon->height, cur.height);
 	}
 	else if (i == 1)
@@ -885,7 +900,10 @@ generate_phases (WsRectangle *start,
 	    /* Zoom back */
 	    end->height = icon->height;
 	    end->width = icon->height * aspect_ratio;
+#if 0
 	    end->x = icon->x + center (end->width, icon->width);
+#endif
+	    end->x = cur.x + center (end->width, cur.width);
 	    end->y = cur.y + center (icon->height, cur.height);
 	}
 	else if (i == 3)
@@ -951,6 +969,19 @@ update_minimize (gpointer data)
     }
 }
 
+static void
+meta_rect_to_ws_rect (MetaRectangle *mrect,
+		      WsRectangle   *wrect)
+{
+    if (!mrect || !wrect)
+	return;
+
+    wrect->x = mrect->x;
+    wrect->y = mrect->y;
+    wrect->width = mrect->width;
+    wrect->height = mrect->height;
+}
+
 void
 meta_comp_window_run_minimize (MetaCompWindow           *window,
 			       MetaEffect               *effect)
@@ -964,19 +995,181 @@ meta_comp_window_run_minimize (MetaCompWindow           *window,
 
     info->effect = effect;
 
-    start.x = effect->u.minimize.window_rect.x;
-    start.y = effect->u.minimize.window_rect.y;
-    start.width = effect->u.minimize.window_rect.width;
-    start.height = effect->u.minimize.window_rect.height;
-
-    end.x = effect->u.minimize.icon_rect.x;
-    end.y = effect->u.minimize.icon_rect.y;
-    end.width = effect->u.minimize.icon_rect.width;
-    end.height = effect->u.minimize.icon_rect.height;
+    meta_rect_to_ws_rect (&(effect->u.minimize.window_rect), &start);
+    meta_rect_to_ws_rect (&(effect->u.minimize.icon_rect), &end);
     
     generate_phases (&start, &end, info->phases);
     
     g_idle_add (update_minimize, info);
+}
+
+struct UnminimizeInfo
+{
+    GTimer *timer;
+    
+    MetaCompWindow *comp_window;
+    
+    Phase	phases[N_PHASES];
+    gboolean	first_time;
+};
+
+#define WOBBLE_FACTOR_OUT 0.7
+
+static void
+generate_unminimize_phases (WsRectangle *icon,
+			    WsRectangle *full,
+			    Phase        phases[N_PHASES])
+{
+    const double phase_times[5] = {
+	0.350,				/* fade in */
+	0.100,				/* move up from icon */
+	0.225,				/* scale to full size */
+	0.100,				/* scale down a little */
+	0.100,			        /* scale to full size */
+    };
+    
+    WsRectangle cur;
+    gdouble aspect_ratio;
+    gdouble time;
+    int i;
+    
+    aspect_ratio = (double)full->width / (double)full->height;
+    cur = *icon;
+    time = 0.0;
+    for (i = 0; i < N_PHASES; ++i)
+    {
+	Phase *phase = &(phases[i]);
+	WsRectangle *end = &(phase->end_rect);
+	
+	phase->start_time = time;
+	phase->start_rect = cur;
+	phase->start_alpha = 1.0;
+	phase->end_alpha = 1.0;
+	phase->end_time = time + phase_times[i];
+	
+	if (i == 0)
+	{
+	    /* Fade in */
+	    phase->end_alpha = 1.0;
+	    phase->start_alpha = 0.0;
+	    end->height = icon->height;
+	    end->width = icon->height * aspect_ratio;
+	    end->x = icon->x + center (end->width, icon->width);
+	    end->y = icon->y;
+	}
+	else if (i == 1)
+	{
+	    /* Move up from icon */
+	    end->width = cur.width;
+	    end->height = cur.height;
+#if 0
+	    end->x = cur.x;
+#endif
+	    end->x = full->x + center (end->width, full->width);
+	    end->y = full->y + center (icon->height, full->height);
+	}
+	else if (i == 2)
+	{
+	    /* Zoom to full size */
+	    *end = *full;
+	}
+	else if (i == 3)
+	{
+	    /* Scale down a little */
+	    end->x = cur.x + center (cur.width * WOBBLE_FACTOR_OUT, cur.width);
+	    end->y = cur.y + center (cur.height * WOBBLE_FACTOR_OUT, cur.height);
+	    end->width = cur.width * WOBBLE_FACTOR_OUT;
+	    end->height = cur.height * WOBBLE_FACTOR_OUT;
+	}
+	else if (i == 4)
+	{
+	    /* Scale up to full size again */
+	    *end = *full;
+	}
+
+	cur = phase->end_rect;
+	time += phase_times[i];
+    }
+}
+
+static gboolean
+update_unminimize (gpointer data)
+{
+    UnminimizeInfo *info = data;
+    Phase *current_phase;
+    int i;
+    gdouble elapsed = g_timer_elapsed (info->timer, NULL);
+
+    current_phase = NULL;
+    for (i = 0; i < N_PHASES; ++i)
+    {
+	Phase *p = &(info->phases[i]);
+	
+	if (p->start_time < elapsed && p->end_time >= elapsed)
+	{
+	    current_phase = p;
+	    break;
+	}
+    }
+
+    if (current_phase)
+    {
+	if (info->first_time)
+	{
+	    meta_comp_window_show (info->comp_window);
+	    info->first_time = FALSE;
+	}
+	
+	set_geometry (info->comp_window, current_phase, elapsed);
+	return TRUE;
+    }
+    else
+    {
+	cm_drawable_node_set_alpha (info->comp_window->node, 1.0);
+	cm_drawable_node_unset_patch (info->comp_window->node);
+	comp_window_unref (info->comp_window);
+#if 0
+	g_print ("done\n");
+#endif
+
+	return FALSE;
+    }
+    
+}
+
+static void
+start_unminimize (MetaCompWindow *comp_window)
+{
+    UnminimizeInfo *info = comp_window->unminimize_info;
+
+    if (!info)
+	return;
+
+    comp_window->unminimize_info = NULL;
+
+    info->timer = g_timer_new ();
+    info->first_time = TRUE;
+    
+    g_idle_add (update_unminimize, info);
+}
+
+void
+meta_comp_window_run_unminimize (MetaCompWindow *comp_window,
+				 MetaEffect     *effect)
+{
+    WsRectangle start, end;
+    UnminimizeInfo *info = g_new0 (UnminimizeInfo, 1);
+
+    meta_rect_to_ws_rect (&(effect->u.unminimize.icon_rect), &start);
+    meta_rect_to_ws_rect (&(effect->u.unminimize.window_rect), &end);
+    
+    generate_unminimize_phases (&start, &end, info->phases);
+
+    info->comp_window = comp_window_ref (comp_window);
+    
+    comp_window->unminimize_info = info;
+    
+    meta_effect_end (effect);
 }
 
 /* bounce effect */
@@ -1043,13 +1236,6 @@ meta_comp_window_run_focus (MetaCompWindow *comp_window,
     info->model = model_new (&info->rect, TRUE);
 
     g_idle_add (update_focus, info);
-}
-
-void
-meta_comp_window_run_restore (MetaCompWindow *comp_window,
-			      MetaEffect     *effect)
-{
-    meta_effect_end (effect);
 }
 
 void

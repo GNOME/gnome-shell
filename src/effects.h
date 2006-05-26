@@ -41,7 +41,7 @@ typedef enum
 typedef enum
 {
   META_EFFECT_MINIMIZE,
-  META_EFFECT_RESTORE,
+  META_EFFECT_UNMINIMIZE,
   META_EFFECT_MENU_MAP,
   META_EFFECT_MENU_UNMAP,
   META_EFFECT_DIALOG_MAP,
@@ -65,7 +65,7 @@ typedef struct
 {
   MetaRectangle window_rect;
   MetaRectangle icon_rect;
-} MetaMinimizeEffect, MetaRestoreEffect;
+} MetaMinimizeEffect, MetaUnminimizeEffect;
 
 typedef struct
 {
@@ -85,7 +85,7 @@ struct MetaEffect
   union
   {
     MetaMinimizeEffect	    minimize;
-    MetaRestoreEffect	    restore;
+    MetaUnminimizeEffect    unminimize;
     MetaCloseEffect	    close;
     MetaFocusEffect	    focus;
   } u;
@@ -102,11 +102,11 @@ void        meta_effect_run_minimize     (MetaWindow         *window,
 					  MetaRectangle	     *target,
 					  MetaEffectFinished  finished,
 					  gpointer            data);
-void        meta_effect_run_restore (MetaWindow          *window,
-				     MetaRectangle       *window_rect,
-				     MetaRectangle	     *icon_rect,
-				     MetaEffectFinished  finished,
-				     gpointer            data);
+void        meta_effect_run_unminimize (MetaWindow         *window,
+					MetaRectangle      *window_rect,
+					MetaRectangle	     *icon_rect,
+					MetaEffectFinished  finished,
+					gpointer            data);
 void        meta_effect_run_close        (MetaWindow         *window,
 					  MetaEffectFinished  finished,
 					  gpointer            data);

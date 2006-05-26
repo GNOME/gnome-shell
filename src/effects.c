@@ -162,21 +162,21 @@ meta_effect_run_minimize (MetaWindow         *window,
 }
 
 void
-meta_effect_run_restore (MetaWindow          *window,
-			 MetaRectangle       *window_rect,
-			 MetaRectangle	     *icon_rect,
-			 MetaEffectFinished  finished,
-			 gpointer            data)
+meta_effect_run_unminimize (MetaWindow         *window,
+			    MetaRectangle      *window_rect,
+			    MetaRectangle      *icon_rect,
+			    MetaEffectFinished  finished,
+			    gpointer            data)
 {
     MetaEffect *effect;
 
     g_return_if_fail (window != NULL);
     g_return_if_fail (icon_rect != NULL);
     
-    effect = create_effect (META_EFFECT_RESTORE, window, finished, data);
+    effect = create_effect (META_EFFECT_UNMINIMIZE, window, finished, data);
 
-    effect->u.restore.window_rect = *window_rect;
-    effect->u.restore.icon_rect = *icon_rect;
+    effect->u.minimize.window_rect = *window_rect;
+    effect->u.minimize.icon_rect = *icon_rect;
 
     run_handler (effect);
 }
