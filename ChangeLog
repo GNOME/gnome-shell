@@ -1,3 +1,9 @@
+2006-05-29  Elijah Newren  <newren gmail com>
+
+	* HACKING: Slightly more detailed instructions on setting up a
+	build environment to mention relevant development tools in
+	addition to the needed development libraries.
+
 Fri May 26 16:48:29 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* src/effects.c (meta_effect_run_unminimize): Run an unminimize effect
