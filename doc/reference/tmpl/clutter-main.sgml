@@ -1,0 +1,138 @@
+<!-- ##### SECTION Title ##### -->
+clutter-main
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### MACRO CLUTTER_HAS_DEBUG_MESSGES ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_DBG ##### -->
+<para>
+
+</para>
+
+@x: 
+@a...:
+@a...:
+@a...:
+@a...: 
+
+
+<!-- ##### MACRO CLUTTER_GLERR ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_MARK ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_init ##### -->
+<para>
+
+</para>
+
+@argc: 
+@argv: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_main ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_stage ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_redraw ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_xdisplay ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_xscreen ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_root_xwindow ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_gl_context ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_want_debug ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_threads_enter ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_threads_leave ##### -->
+<para>
+
+</para>
+
+
+

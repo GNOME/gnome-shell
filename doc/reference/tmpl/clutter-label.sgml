@@ -1,0 +1,87 @@
+<!-- ##### SECTION Title ##### -->
+ClutterLabel
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT ClutterLabel ##### -->
+<para>
+
+</para>
+
+@parent: 
+
+<!-- ##### STRUCT ClutterLabelClass ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION clutter_label_new_with_text ##### -->
+<para>
+
+</para>
+
+@font_desc: 
+@text: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_label_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_label_set_text ##### -->
+<para>
+
+</para>
+
+@label: 
+@text: 
+
+
+<!-- ##### FUNCTION clutter_label_set_font ##### -->
+<para>
+
+</para>
+
+@label: 
+@desc: 
+
+
+<!-- ##### FUNCTION clutter_label_set_color ##### -->
+<para>
+
+</para>
+
+@label: 
+@pixel: 
+
+
+<!-- ##### FUNCTION clutter_label_set_text_extents ##### -->
+<para>
+
+</para>
+
+@label: 
+@width: 
+@height: 
+
+

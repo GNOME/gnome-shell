@@ -1,0 +1,42 @@
+<!-- ##### SECTION Title ##### -->
+ClutterRectangle
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT ClutterRectanglePrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT ClutterRectangle ##### -->
+<para>
+
+</para>
+
+@parent: 
+@priv: 
+
+<!-- ##### FUNCTION clutter_rectangle_new ##### -->
+<para>
+
+</para>
+
+@col: 
+@Returns: 
+
+

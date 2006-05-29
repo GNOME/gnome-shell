@@ -1,0 +1,19 @@
+2006-05-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	A clutter-0.0-sections.txt
+
+	* clutter-0.0-sections.txt: Add the -section file: every method
+	signature should go in this file in order to let gtk-doc pick
+	it up when building the template for it.
+
+2006-05-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	A tmpl
+	A tmpl/*.sgml
+
+	* tmpl/*.sgml: Add gtk-doc templates.
+
+2006-05-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* *: Initial entry.
+

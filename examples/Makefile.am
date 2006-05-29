@@ -1,35 +1,45 @@
-noinst_PROGRAMS = scratch photos player select
+noinst_PROGRAMS = test test-video video-cube test-text super-oh
 
-scratch_SOURCES = scratch.c
-scratch_CFLAGS = $(CLTR_CFLAGS) $(GST_CFLAGS) $(GCONF_CFLAGS)
-scratch_LDFLAGS = \
-    $(CLTR_LIBS) \
+INCLUDES = -I$(top_srcdir)/clutter
+
+test_SOURCES = test.c
+test_CFLAGS = $(CLUTTER_CFLAGS) $(GST_CFLAGS) $(GCONF_CFLAGS)
+test_LDFLAGS = \
+    $(CLUTTER_LIBS) \
     $(GST_LIBS)   \
     $(GCONF_LIBS) \
-    $(top_builddir)/clutter/libclutter.la 
+    $(top_builddir)/clutter/libclutter-@CLUTTER_MAJORMINOR@.la 
 
-photos_SOURCES = photos.c
-photos_CFLAGS = $(CLTR_CFLAGS) $(GST_CFLAGS) $(GCONF_CFLAGS)
-photos_LDFLAGS = \
-    $(CLTR_LIBS) \
+test_video_SOURCES = test-video.c
+test_video_CFLAGS = $(CLUTTER_CFLAGS) $(GST_CFLAGS) $(GCONF_CFLAGS)
+test_video_LDFLAGS = \
+    $(CLUTTER_LIBS) \
     $(GST_LIBS)   \
     $(GCONF_LIBS) \
-    $(top_builddir)/clutter/libclutter.la 
+    $(top_builddir)/clutter/libclutter-@CLUTTER_MAJORMINOR@.la 
 
-player_SOURCES = player.c
-player_CFLAGS = $(CLTR_CFLAGS) $(GST_CFLAGS) $(GCONF_CFLAGS)
-player_LDFLAGS =    \
-    $(CLTR_LIBS)    \
+video_cube_SOURCES = video-cube.c
+video_cube_CFLAGS = $(CLUTTER_CFLAGS) $(GST_CFLAGS) $(GCONF_CFLAGS)
+video_cube_LDFLAGS = \
+    $(CLUTTER_LIBS) \
     $(GST_LIBS)   \
     $(GCONF_LIBS) \
-    $(top_builddir)/clutter/libclutter.la 
+    $(top_builddir)/clutter/libclutter-@CLUTTER_MAJORMINOR@.la 
 
-select_SOURCES = select.c
-select_CFLAGS = $(CLTR_CFLAGS) $(GST_CFLAGS) $(GCONF_CFLAGS)
-select_LDFLAGS =    \
-    $(CLTR_LIBS)    \
+test_text_SOURCES = test-text.c
+test_text_CFLAGS = $(CLUTTER_CFLAGS) $(GST_CFLAGS) $(GCONF_CFLAGS)
+test_text_LDFLAGS = \
+    $(CLUTTER_LIBS) \
     $(GST_LIBS)   \
     $(GCONF_LIBS) \
-    $(top_builddir)/clutter/libclutter.la 
+    $(top_builddir)/clutter/libclutter-@CLUTTER_MAJORMINOR@.la 
 
+super_oh_SOURCES = super-oh.c
+super_oh_CFLAGS = $(CLUTTER_CFLAGS) $(GST_CFLAGS) $(GCONF_CFLAGS)
+super_oh_LDFLAGS = \
+    $(CLUTTER_LIBS) \
+    $(GST_LIBS)   \
+    $(GCONF_LIBS) \
+    $(top_builddir)/clutter/libclutter-@CLUTTER_MAJORMINOR@.la 
 
+EXTRA_DIST = redhand.png clutter-logo-800x600.png

@@ -1,0 +1,42 @@
+<!-- ##### SECTION Title ##### -->
+ClutterCloneTexture
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT ClutterCloneTexturePrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT ClutterCloneTexture ##### -->
+<para>
+
+</para>
+
+@parent: 
+@priv: 
+
+<!-- ##### FUNCTION clutter_clone_texture_new ##### -->
+<para>
+
+</para>
+
+@texture: 
+@Returns: 
+
+

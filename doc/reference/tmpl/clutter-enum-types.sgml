@@ -1,0 +1,109 @@
+<!-- ##### SECTION Title ##### -->
+clutter-enum-types
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### MACRO CLUTTER_TYPE_EVENT_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_event_type_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO CLUTTER_TYPE_ELEMENT_TRANSFORM ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_element_transform_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO CLUTTER_TYPE_ELEMENT_FLAGS ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_element_flags_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO CLUTTER_TYPE_VIDEO_TEXTURE_ERROR ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_video_texture_error_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO CLUTTER_TYPE_VIDEO_TEXTURE_ASPECT_RATIO ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_video_texture_aspect_ratio_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO CLUTTER_TYPE_VIDEO_TEXTURE_METADATA_TYPE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_video_texture_metadata_type_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+

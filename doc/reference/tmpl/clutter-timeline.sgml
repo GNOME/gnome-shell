@@ -1,0 +1,129 @@
+<!-- ##### SECTION Title ##### -->
+ClutterTimeline
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### TYPEDEF ClutterTimelinePrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT ClutterTimeline ##### -->
+<para>
+
+</para>
+
+@parent: 
+@priv: 
+
+<!-- ##### FUNCTION clutter_timeline_new ##### -->
+<para>
+
+</para>
+
+@nframes: 
+@fps: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_timeline_set_speed ##### -->
+<para>
+
+</para>
+
+@timeline: 
+@fps: 
+
+
+<!-- ##### FUNCTION clutter_timeline_start ##### -->
+<para>
+
+</para>
+
+@timeline: 
+
+
+<!-- ##### FUNCTION clutter_timeline_pause ##### -->
+<para>
+
+</para>
+
+@timeline: 
+
+
+<!-- ##### FUNCTION clutter_timeline_stop ##### -->
+<para>
+
+</para>
+
+@timeline: 
+
+
+<!-- ##### FUNCTION clutter_timeline_set_loop ##### -->
+<para>
+
+</para>
+
+@timeline: 
+@loop: 
+
+
+<!-- ##### FUNCTION clutter_timeline_rewind ##### -->
+<para>
+
+</para>
+
+@timeline: 
+
+
+<!-- ##### FUNCTION clutter_timeline_skip ##### -->
+<para>
+
+</para>
+
+@timeline: 
+@nframes: 
+
+
+<!-- ##### FUNCTION clutter_timeline_advance ##### -->
+<para>
+
+</para>
+
+@timeline: 
+@frame_num: 
+
+
+<!-- ##### FUNCTION clutter_timeline_get_current_frame ##### -->
+<para>
+
+</para>
+
+@timeline: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_timeline_get_n_frames ##### -->
+<para>
+
+</para>
+
+@timeline: 
+@Returns: 
+
+

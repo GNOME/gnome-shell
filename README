@@ -1,0 +1,14 @@
+
+
+What it will do:
+ 
+ - Give a nice easy GObject based API for creating fast, mainly 2D
+   single window stylalised applications such as media box UI's, 
+   presentaions, kiosk style apps etc.
+   
+ - If you've ever used Director, thats the kind of functionality, 
+   clutter aims for. 
+
+What it wont do:
+
+ - Provide a general interface to all openGL functionality

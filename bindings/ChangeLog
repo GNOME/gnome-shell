@@ -1,0 +1,55 @@
+2006-05-27  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* python/clutter-base.defs: Make static functions appear like
+	package methods, e.g.: clutter_main() is clutter.main() and
+	not clutter.clutter_main().  Changed functions are:
+	    C name			  Python name
+	  - clutter_main		- clutter.main
+	  - clutter_stage		- clutter.stage
+	  - clutter_want_debug		- clutter.want_debug
+	  - clutter_redraw		- clutter.redraw
+	  - clutter_threads_enter	- clutter.threads_enter
+	  - clutter_threads_leave	- clutter.threads_leave
+	
+	* python/clutter.override: Ignore all X11 and GL related
+	functions, as we don't have type definitions for them; fix typos
+	and cut-and-paste errors; make the threads_enter and main static
+	function use the pygobject threading facilities.
+
+	* Makefile.am: Rework the build system.  The defs files have been
+	split in two: clutter-base-types.def for the type declarations
+	and clutter-base.defs for the methods and functions.  The python
+	glue code depends on two auto-generated files: clutter.defs and
+	clutter-types.defs; these two files includes the clutter-base
+	files.  If the API changes, run "make update-defs": it will
+	create a "clutter-api.defs" which should be hand-edited and
+	the new sections added to the clutter-base files.  This is needed
+	because we do some mangling of the namespace and static functions
+	names, so we can't rely on the h2defs generator.
+
+2006-05-27  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	API coverage:
+	  - global functions: 71.43% (10/14)
+	  - methods:          95.40% (83/87)
+
+	* python/clutter.override: Implement bindings for the missing
+	ClutterTexture methods:
+	  - get_base_size
+	  - get_n_tiles
+	  - get_x_tile_detail
+	  - get_y_tile_detail
+	
+	* python/clutter.override: Implement the ClutterGroup.add_many
+	method.
+
+2006-05-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* python/clutter-base.defs:
+	* python/clutter-base-types.defs:
+	* python/clutter.override: Fix ClutterGeometry bindings;
+	implement ClutterElementBox bindings.
+
+	* python/Makefile.am: Use variables instead of hard-coded
+	file names.
+

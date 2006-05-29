@@ -1,0 +1,124 @@
+<!-- ##### SECTION Title ##### -->
+ClutterGroup
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT ClutterGroupPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT ClutterGroup ##### -->
+<para>
+
+</para>
+
+@parent: 
+
+<!-- ##### FUNCTION clutter_group_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_group_add ##### -->
+<para>
+
+</para>
+
+@group: 
+@element: 
+
+
+<!-- ##### FUNCTION clutter_group_add_many_valist ##### -->
+<para>
+
+</para>
+
+@group: 
+@first_element: 
+@args: 
+
+
+<!-- ##### FUNCTION clutter_group_add_many ##### -->
+<para>
+
+</para>
+
+@group: 
+@first_element: 
+@Varargs: 
+
+
+<!-- ##### FUNCTION clutter_group_remove ##### -->
+<para>
+
+</para>
+
+@group: 
+@element: 
+
+
+<!-- ##### FUNCTION clutter_group_show_all ##### -->
+<para>
+
+</para>
+
+@self: 
+
+
+<!-- ##### FUNCTION clutter_group_hide_all ##### -->
+<para>
+
+</para>
+
+@self: 
+
+
+<!-- ##### FUNCTION clutter_group_find_child_by_id ##### -->
+<para>
+
+</para>
+
+@self: 
+@id: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_group_raise ##### -->
+<para>
+
+</para>
+
+@self: 
+@element: 
+@sibling: 
+
+
+<!-- ##### FUNCTION clutter_group_lower ##### -->
+<para>
+
+</para>
+
+@self: 
+@element: 
+@sibling: 
+
+

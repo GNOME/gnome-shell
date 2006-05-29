@@ -1,0 +1,500 @@
+/* -*- C -*- */
+%%
+headers
+#define NO_IMPORT_PYGOBJECT
+#include "pygobject.h"
+#include <clutter/clutter-keysyms.h>
+#include <clutter/clutter-event.h>
+#include <clutter/clutter-main.h>
+#include <clutter/clutter-timeline.h>
+#include <clutter/clutter-stage.h>
+#include <clutter/clutter-color.h>
+#include <clutter/clutter-element.h>
+#include <clutter/clutter-rectangle.h>
+#include <clutter/clutter-group.h>
+#include <clutter/clutter-texture.h>
+#include <clutter/clutter-clone-texture.h>
+#include <clutter/clutter-video-texture.h>
+#include <clutter/clutter-label.h>
+#include <clutter/clutter-util.h>
+#include <clutter/clutter-enum-types.h>
+%%
+modulename clutter
+%%
+import gobject.GObject as PyGObject_Type
+import gtk.gdk.Pixbuf as PyGdkPixbuf_Type
+%%
+ignore
+  clutter_video_texture_error_quark
+  clutter_group_add_many_valist
+  clutter_stage_get_xwindow
+  clutter_init
+  clutter_xdisplay
+  clutter_root_xwindow
+  clutter_gl_context
+%%
+ignore-glob
+  *_get_type
+%%
+override clutter_geometry_new kwargs
+static int
+_wrap_clutter_geometry_new (PyGBoxed *self, PyObject *args, PyObject *kwargs)
+{
+	static char *kwlist[] = { "x", "y", "width", "height", NULL };
+	ClutterGeometry geom = { 0, 0, 0, 0 };
+
+	if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+					 "|iiii:ClutterGeometry.__init__",
+					 kwlist,
+					 &(geom.x), &(geom.y),
+					 &(geom.width), &(geom.height)))
+		return -1;
+	
+	self->boxed = g_boxed_copy (CLUTTER_TYPE_GEOMETRY, &geom);
+	self->free_on_dealloc = TRUE;
+	self->gtype = CLUTTER_TYPE_GEOMETRY;
+	
+	return 0;
+}
+%%
+override-slot ClutterGeometry.tp_as_sequence
+static int
+_wrap_clutter_geometry_length (PyGBoxed *self)
+{
+	return 4;
+}
+static PyObject *
+_wrap_clutter_geometry_getitem(PyGBoxed *self, int pos)
+{
+	ClutterGeometry *geom;
+
+	if (pos < 0)
+		pos += 4;
+	
+	if (pos < 0 || pos >= 4) {
+		PyErr_SetString(PyExc_IndexError, "index out of range");
+		
+		return NULL;
+	}
+
+	geom = pyg_boxed_get (self, ClutterGeometry);
+	switch (pos) {
+		case 0: return PyInt_FromLong (geom->x);
+		case 1: return PyInt_FromLong (geom->y);
+		case 2: return PyInt_FromLong (geom->width);
+		case 3: return PyInt_FromLong (geom->height);
+		default:
+			g_assert_not_reached();
+			return NULL;
+	}
+}
+static int
+_wrap_clutter_geometry_setitem (PyGBoxed *self, int pos, PyObject *value)
+{
+	ClutterGeometry *geom;
+	gint val;
+
+	if (pos < 0)
+		pos += 4;
+	
+	if (pos < 0 || pos >= 4) {
+		PyErr_SetString(PyExc_IndexError, "index out of range");
+		
+		return -1;
+	}
+
+	geom = pyg_boxed_get (self, ClutterGeometry);
+	val = PyInt_AsLong (value);
+	if (PyErr_Occurred ())
+		return -1;
+	
+	switch(pos) {
+		case 0: geom->x      = val; break;
+		case 1: geom->y      = val; break;
+		case 2: geom->width  = val; break;
+		case 3: geom->height = val; break;
+		default:
+			g_assert_not_reached();
+			return -1;
+	}
+
+	return 0;
+}
+static PySequenceMethods _wrap_clutter_geometry_tp_as_sequence = {
+	(inquiry) _wrap_clutter_geometry_length,
+	(binaryfunc) 0,
+	(intargfunc) 0,
+	(intargfunc) _wrap_clutter_geometry_getitem,
+	(intintargfunc) 0,
+	(intobjargproc) _wrap_clutter_geometry_setitem,
+	(intintobjargproc) 0
+};
+%%
+override-attr ClutterGeometry.x
+static int
+_wrap_clutter_geomtry__set_x (PyGBoxed *self, PyObject *value, void *closure)
+{
+	gint val;
+
+	val = PyInt_AsLong (value);
+	if (PyErr_Occurred ())
+		return -1;
+
+	pyg_boxed_get (self, ClutterGeometry)->x = val;
+
+	return 0;
+}
+%%
+override-attr ClutterGeometry.y
+static int
+_wrap_clutter_geometry__set_y (PyGBoxed *self, PyObject *value, void *closure)
+{
+	gint val;
+
+	val = PyInt_AsLong (value);
+	if (PyErr_Occurred ())
+		return -1;
+
+	pyg_boxed_get (self, ClutterGeometry)->y = val;
+
+	return 0;
+}
+%%
+override-attr ClutterGeometry.width
+static int
+_wrap_clutter_geometry__set_width (PyGBoxed *self, PyObject *value, void *closure)
+{
+	gint val;
+
+	val = PyInt_AsLong (value);
+	if (PyErr_Occurred ())
+        	return -1;
+	
+	pyg_boxed_get(self, ClutterGeometry)->width = val;
+	
+	return 0;
+}
+%%
+override-attr ClutterGeometry.height
+static int
+_wrap_clutter_geometry__set_height (PyGBoxed *self, PyObject *value, void *closure)
+{
+	gint val;
+
+	val = PyInt_AsLong (value);
+	if (PyErr_Occurred ())
+		return -1;
+	
+	pyg_boxed_get (self, ClutterGeometry)->height = val;
+
+	return 0;
+}
+%%
+override clutter_element_box_new kwargs
+static int
+_wrap_clutter_element_box_new (PyGBoxed *self, PyObject *args, PyObject *kwargs)
+{
+	static char *kwlist[] = { "x1", "y1", "x2", "y2", NULL };
+	ClutterElementBox box = { 0, 0, 0, 0 };
+
+	if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+					 "|iiii:ClutterElementBox.__init__",
+					 kwlist,
+					 &(box.x1), &(box.y1),
+					 &(box.x2), &(box.y2)))
+		return -1;
+	
+	self->boxed = g_boxed_copy (CLUTTER_TYPE_ELEMENT_BOX, &box);
+	self->free_on_dealloc = TRUE;
+	self->gtype = CLUTTER_TYPE_ELEMENT_BOX;
+	
+	return 0;
+}
+%%
+override-slot ClutterElementBox.tp_as_sequence
+static int
+_wrap_clutter_element_box_length (PyGBoxed *self)
+{
+	return 4;
+}
+static PyObject *
+_wrap_clutter_element_box_getitem(PyGBoxed *self, int pos)
+{
+	ClutterElementBox *box;
+
+	if (pos < 0)
+		pos += 4;
+	
+	if (pos < 0 || pos >= 4) {
+		PyErr_SetString(PyExc_IndexError, "index out of range");
+		
+		return NULL;
+	}
+
+	box = pyg_boxed_get (self, ClutterElementBox);
+	switch (pos) {
+		case 0: return PyInt_FromLong (box->x1);
+		case 1: return PyInt_FromLong (box->y1);
+		case 2: return PyInt_FromLong (box->x2);
+		case 3: return PyInt_FromLong (box->y2);
+		default:
+			g_assert_not_reached();
+			return NULL;
+	}
+}
+static int
+_wrap_clutter_element_box_setitem (PyGBoxed *self, int pos, PyObject *value)
+{
+	ClutterElementBox *box;
+	gint val;
+
+	if (pos < 0)
+		pos += 4;
+	
+	if (pos < 0 || pos >= 4) {
+		PyErr_SetString(PyExc_IndexError, "index out of range");
+		
+		return -1;
+	}
+
+	box = pyg_boxed_get (self, ClutterElementBox);
+	val = PyInt_AsLong (value);
+	if (PyErr_Occurred ())
+		return -1;
+	
+	switch(pos) {
+		case 0: box->x1 = val; break;
+		case 1: box->y1 = val; break;
+		case 2: box->x2 = val; break;
+		case 3: box->y2 = val; break;
+		default:
+			g_assert_not_reached();
+			return -1;
+	}
+
+	return 0;
+}
+static PySequenceMethods _wrap_clutter_element_box_tp_as_sequence = {
+	(inquiry) _wrap_clutter_element_box_length,
+	(binaryfunc) 0,
+	(intargfunc) 0,
+	(intargfunc) _wrap_clutter_element_box_getitem,
+	(intintargfunc) 0,
+	(intobjargproc) _wrap_clutter_element_box_setitem,
+	(intintobjargproc) 0
+};
+%%
+override-attr ClutterElementBox.x1
+static int
+_wrap_clutter_element_box__set_x1 (PyGBoxed *self, PyObject *value, void *closure)
+{
+	gint val;
+
+	val = PyInt_AsLong (value);
+	if (PyErr_Occurred ())
+		return -1;
+
+	pyg_boxed_get (self, ClutterElementBox)->x1 = val;
+
+	return 0;
+}
+%%
+override-attr ClutterElementBox.y1
+static int
+_wrap_clutter_element_box__set_y1 (PyGBoxed *self, PyObject *value, void *closure)
+{
+	gint val;
+
+	val = PyInt_AsLong (value);
+	if (PyErr_Occurred ())
+		return -1;
+
+	pyg_boxed_get (self, ClutterElementBox)->y1 = val;
+
+	return 0;
+}
+%%
+override-attr ClutterElementBox.x2
+static int
+_wrap_clutter_element_box__set_x2 (PyGBoxed *self, PyObject *value, void *closure)
+{
+	gint val;
+
+	val = PyInt_AsLong (value);
+	if (PyErr_Occurred ())
+        	return -1;
+	
+	pyg_boxed_get(self, ClutterElementBox)->x2 = val;
+	
+	return 0;
+}
+%%
+override-attr ClutterElementBox.y2
+static int
+_wrap_clutter_element_box__set_y2 (PyGBoxed *self, PyObject *value, void *closure)
+{
+	gint val;
+
+	val = PyInt_AsLong (value);
+	if (PyErr_Occurred ())
+		return -1;
+	
+	pyg_boxed_get (self, ClutterElementBox)->y2 = val;
+
+	return 0;
+}
+%%
+override clutter_element_get_coords
+static PyObject *
+_wrap_clutter_element_get_coords (PyGObject *self)
+{
+	gint x1, y1;
+	gint x2, y2;
+
+	clutter_element_get_coords (CLUTTER_ELEMENT (self->obj),
+				    &x1, &y1,
+				    &x2, &y2);
+	return Py_BuildValue("(iiii)", x1, y1, x2, y2);
+}
+%%
+override clutter_element_get_abs_position
+static PyObject *
+_wrap_clutter_element_get_abs_position (PyGObject *self)
+{
+	gint pos_x, pos_y;
+
+	clutter_element_get_abs_position (CLUTTER_ELEMENT (self->obj),
+					  &pos_x,
+					  &pos_y);
+	return Py_BuildValue("(ii)", pos_x, pos_y);
+}
+%%
+override clutter_texture_get_base_size
+static PyObject *
+_wrap_clutter_texture_get_base_size (PyGObject *self)
+{
+	gint width, height;
+
+	clutter_texture_get_base_size (CLUTTER_TEXTURE (self->obj),
+				       &width,
+				       &height);
+	return Py_BuildValue ("(ii)", width, height);
+}
+%%
+override clutter_texture_get_n_tiles
+static PyObject *
+_wrap_clutter_texture_get_n_tiles (PyGObject *self)
+{
+	gint n_x_tiles, n_y_tiles;
+
+	clutter_texture_get_n_tiles (CLUTTER_TEXTURE (self->obj),
+				     &n_x_tiles,
+				     &n_y_tiles);
+	return Py_BuildValue ("(ii)", n_x_tiles, n_y_tiles);
+}
+%%
+override clutter_texture_get_x_tile_detail kwargs
+static PyObject *
+_wrap_clutter_texture_get_x_tile_detail (PyGObject *self,
+                                         PyObject  *args,
+					 PyObject  *kwargs)
+{
+	static char *kwlist[] = { "x_index", NULL };
+	gint x_index;
+	gint pos, size, waste;
+
+	if (!PyArg_ParseTupleAndKeywords (args, kwargs,
+					  "i:ClutterTexture.get_x_tile_detail",
+					  kwlist, &x_index))
+		return NULL;
+	
+	clutter_texture_get_x_tile_detail (CLUTTER_TEXTURE (self->obj),
+					   x_index,
+					   &pos, &size, &waste);
+	return Py_BuildValue ("(iii)", pos, size, waste);
+}
+%%
+override clutter_texture_get_y_tile_detail kwargs
+static PyObject *
+_wrap_clutter_texture_get_y_tile_detail (PyGObject *self,
+                                         PyObject  *args,
+					 PyObject  *kwargs)
+{
+	static char *kwlist[] = { "y_index", NULL };
+	gint y_index;
+	gint pos, size, waste;
+
+	if (!PyArg_ParseTupleAndKeywords (args, kwargs,
+					  "i:ClutterTexture.get_y_tile_detail",
+					  kwlist, &y_index))
+		return NULL;
+	
+	clutter_texture_get_y_tile_detail (CLUTTER_TEXTURE (self->obj),
+					   y_index,
+					   &pos, &size, &waste);
+	return Py_BuildValue ("(iii)", pos, size, waste);
+}
+%%
+override clutter_group_add_many
+static PyObject *
+_wrap_clutter_group_add_many (PyGObject *self,
+			      PyObject  *args)
+{
+	ClutterGroup *group;
+	int i, len;
+
+	if ((len = PyTuple_Size(args)) < 1) {
+		PyErr_SetString(PyExc_TypeError,
+				"requires at least one argument");
+		return NULL;
+	}
+
+	group = CLUTTER_GROUP (self->obj);
+
+	for (i = 0; i < len; i++) {
+		PyGObject *pyelement;
+		ClutterElement *element;
+
+		pyelement = (PyGObject *) PyTuple_GetItem (args, i);
+		if (!pygobject_check (pyelement, &PyClutterElement_Type)) {
+			PyErr_SetString (PyExc_TypeError,
+					 "Expected a ClutterElement");
+			return NULL;
+		}
+		
+		element = CLUTTER_ELEMENT (pyelement->obj);
+
+		clutter_group_add (group, element);
+	}
+
+	Py_INCREF (Py_None);
+	return Py_None;
+}
+%%
+override clutter_main noargs
+static PyObject *
+_wrap_clutter_main (PyObject *self)
+{
+	pyg_begin_allow_threads;
+	clutter_main ();
+	pyg_end_allow_threads;
+
+	if (PyErr_Occurred ())
+		return NULL;
+	Py_INCREF (Py_None);
+	return Py_None;
+}
+%%
+override clutter_threads_enter noargs
+static PyObject *
+_wrap_clutter_threads_enter (PyObject *self)
+{
+	/* must allow threads while acquiring lock, or no other python
+         * code will execute while we wait! */
+	pyg_begin_allow_threads;
+	clutter_threads_enter ();
+	pyg_end_allow_threads;
+
+	Py_INCREF(Py_None);
+	return Py_None;
+}

@@ -1,3 +1,993 @@
+2006-05-29  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-element.c:
+	* clutter/clutter-element.h:
+	Add initial new element depth() getter and setter.
+
+	* clutter/clutter-group.c:
+	* clutter/clutter-group.h:
+	Add 2 new methods for listing a groups children externally.
+
+2006-05-27  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-clone-texture.c (set_parent_texture),
+	(clutter_clone_texture_set_property),
+	(clutter_clone_texture_get_property),
+	(clutter_clone_texture_class_init),
+	(clutter_clone_texture_new): Add a "parent-texture"
+	constructor-only property to simplify the constructor code.
+
+	* clutter/clutter-rectangle.c (clutter_rectangle_new):
+	* clutter/clutter-timeline.c (clutter_timeline_new): Simplify
+	the constructor code.
+
+	* examples/rect.py: Use the new method names for clutter.main()
+	and clutter.stage().
+
+2006-05-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-element.c: Fix gtk-doc annotations for public
+	functions; add sanity checks for public API; factor out some
+	pointer dereferences.
+
+2006-05-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Big entry, small changes.
+
+	* clutter/clutter-rectangle.c:
+	* clutter/clutter-clone-texture.c:
+	* clutter/clutter-group.c:
+	* clutter/clutter-element.c:
+	* clutter/clutter-label.c: Use the GObject built-in definition
+	of a private data structure; it removes the need for managing
+	the allocation/de-allocation of a private structure ourselves.
+
+	* clutter/clutter-group.h:
+	* clutter/clutter-label.h: Add padding, for adding signals and
+	other class-wide definitions without breaking ABI.
+
+	* clutter/clutter-element.h:
+	* clutter/clutter-element.c (clutter_element_box_get_type),
+	(clutter_element_box_copy): Make ClutterElementBox a GBoxed
+	type; clean up declarations of the enums and flags.
+
+	* clutter/clutter-group.h:
+	* clutter/clutter-group.c (clutter_group_add_many_valist),
+	(clutter_group_add_many): Add a _valist version of
+	clutter_group_add_many() function, and re-implement the latter
+	as a proxy for the former; language bindings do not cope
+	well with variable argument functions.
+
+	* clutter/clutter-video-texture.h:
+	* clutter/clutter-video-texture.c: Use the right prefix for
+	the error and for the ratio enumerations.
+
+	* clutter/*.c:
+	* clutter/*.h:
+	* clutter/Makefile.am: Use the <clutter/...> include path
+	for parallel installations.
+
+	* clutter/Makefile.am:
+	* clutter/clutter-enum-types.h:
+	* clutter/clutter-enum-types.c: Register the enumeration types
+	inside the GObject type system in order to use them as properties
+	and bindings automagically pick them up.
+
+	* bindings/python/ChangeLog: Add a changelog for the bindings...
+
+	* doc/reference/ChangeLog: ... and a changelog for the reference.
+
+	* examples/test.c:
+	* examples/video-cube.c:
+	* examples/test-video.c: Use the <clutter/clutter.h> header.
+
+2006-05-25  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-clone-texture.c:
+	(clone_texture_render_to_gl_quad):
+	Remove uneeded bogus warning. Fix a typo causing large
+	texture to get incorrectly rendered.  
+	* clutter/clutter-texture.c: (init_tiles),
+	(texture_render_to_gl_quad), (clutter_texture_sync_pixbuf),
+	(clutter_texture_realize):
+	Add some new debug info.
+	* clutter/clutter-video-texture.c: (fakesink_handoff_cb):
+	Set the pixbuf from GST_BUFFER_DATA() a little safer.
+
+2006-05-25  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter.pc.in:
+	Fix prefix snafu via Ross.
+
+2006-05-24  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-element.c: (clutter_element_paint),
+	(clutter_element_class_init):
+	* clutter/clutter-label.c: (clutter_label_make_pixbuf):
+	* clutter/clutter-main.c: (clutter_main):
+	* clutter/clutter-stage.c: (sync_fullscreen), (sync_gl_viewport):
+	* clutter/clutter-stage.h:
+	Various minor tweaks / fixes needed by o.p.t
+	* clutter/clutter-texture.c: (texture_render_to_gl_quad),
+	(clutter_texture_sync_pixbuf), (clutter_texture_set_property),
+	(clutter_texture_get_property), (clutter_texture_class_init):
+	Experiment adding currently borked repreating textures,
+	* clutter/clutter-timeline.c: (timeline_timeout_func),
+	(clutter_timeline_skip):
+	Fix timeline callback frame counting.
+	* examples/test-video.c: (main):
+	Experiment with repeated textures.
+
+2006-05-23  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-clone-texture.h:
+	Fix Include.
+	* clutter/clutter-element.c: (clutter_element_set_parent):
+	Only unref if parent non NULL
+	* clutter/clutter-label.c: (clutter_label_class_init),
+	(clutter_label_set_text), (clutter_label_set_font):
+	* clutter/clutter-stage.h:
+	Add some utility defines
+	* clutter/clutter-texture.c: (init_tiles):
+	* clutter/clutter-timeline.c: (clutter_timeline_class_init),
+	(timeline_timeout_func), (clutter_timeline_get_current_frame):
+	* clutter/clutter-timeline.h:
+	Add a 'completed' signal
+	Dont free priv when g_type_class_private used. 
+	* clutter/clutter.h:
+	Add missing clutter-rectangle.h
+	* examples/Makefile.am:
+	* examples/super-oh.c: (main):
+	* examples/test.c:
+	* examples/video-cube.c:
+	Fix includes
+
+2006-05-22  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-element.c:
+	* clutter/clutter-element.h:
+	* clutter/clutter-event.c:
+	* clutter/clutter-group.c: (clutter_group_remove_all):
+	* clutter/clutter-group.h:
+	* clutter/clutter-main.c: (translate_button_event),
+	(translate_motion_event):
+	Improve mouse event handling.
+	Add code to map arbituary ( i.e cursor ) position to
+	a clutter element using OpenGL 'picking'.	
+	* clutter/clutter-texture.c: 
+	* clutter/clutter-clone-texture.c:
+	re-realize parent texture if it gets hidden.
+	* clutter/clutter-stage.c:
+	* clutter/clutter-stage.h:
+	Make sure stage sets gl viewport up even if just default size.
+	(clutter_texture_hide), (clutter_texture_paint):
+	* doc/reference/Makefile.am:
+	* examples/super-oh.c: (input_cb), (frame_cb), (main):
+	Add test for mouse events, click to remove.
+
+2006-05-21  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-element.c: 
+	* clutter/clutter-element.h:
+	Add new core sizing methods and more documentation. 
+	* clutter/clutter-group.c: 
+	* clutter/clutter-group.h:
+	Use the sizing bits and documentation.
+	* clutter/clutter-main.c: 
+	* clutter/clutter-event.h:
+	Add FPS display when CLUTTER_SHOW_FPS env var set.
+	Add initial support for mouse events.
+	* clutter/clutter-stage.c: 
+	Add 'snapshot' method. 
+	* clutter/clutter-texture.c: (clutter_texture_new_from_pixbuf):
+	* clutter/clutter-texture.h:
+	Documentation.
+	* clutter/clutter-timeline.c:
+	Add support for changing FPS setting on the fly. Document.
+	* examples/super-oh.c: (frame_cb), (main):
+	Add an optional motion trails effect.
+
+2006-05-17  Matthew Allum  <mallum@openedhand.com>
+
+	* README:
+	Add a tiny bit of info
+	* TODO:
+	Sync up a little
+	* clutter/clutter-clone-texture.c:
+	(clone_texture_render_to_gl_quad):
+	* clutter/clutter-element.c: (clutter_element_show),
+	(clutter_element_realize), (clutter_element_unrealize),
+	(clutter_element_paint), (clutter_element_set_id),
+	(clutter_element_get_id):
+	* clutter/clutter-element.h:
+	Rename REALISE() to REALIZE()
+
+	* clutter/clutter-texture.c: (texture_render_to_gl_quad),
+	(clutter_texture_sync_pixbuf), (clutter_texture_set_pixbuf):
+	* clutter/clutter-video-texture.c: (query_timeout),
+	(got_video_size), (caps_set), (parse_stream_info),
+	(handle_element_message), (bus_message_cb),
+	(poll_for_state_change_full), (clutter_video_texture_get_property),
+	(clutter_video_texture_class_init), (clutter_video_texture_init),
+	(clutter_video_texture_open), (clutter_video_texture_seek_time),
+	(stop_play_pipeline):
+	* clutter/clutter-video-texture.h:
+	Move over using fakesink and handoff instead of custom element
+	Support 3 channel pixbufs as textures and thus increase efficiency
+	of video texture ( also avoids byte swapping. )
+	Clean up video texture code somemore.
+	Add some metadata support. 
+
+	* Makefile.am:
+	* configure.ac:
+	Disable old custom clutter gst element from build.	
+
+	* examples/test-video.c: (foo), (size_change), (tick), (main):
+	* examples/video-cube.c: (clutter_video_texture_cube_paint):
+	Sink with new API. Pause on key press.
+
+2006-05-13  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-element.c: (redraw_update_idle),
+	(clutter_element_show), (clutter_element_hide),
+	(clutter_element_realize), (clutter_element_unrealize),
+	(clutter_element_class_init), (clutter_element_init),
+	(clutter_element_queue_redraw), (clutter_element_set_geometry),
+	(clutter_element_get_geometry), (clutter_element_get_coords),
+	(clutter_element_set_position), (clutter_element_set_size),
+	(clutter_element_get_abs_position), (clutter_element_get_width),
+	(clutter_element_get_height), (clutter_element_get_x),
+	(clutter_element_get_y), (clutter_element_set_opacity):
+	* clutter/clutter-texture.c: (clutter_texture_get_base_size),
+	(clutter_texture_bind_tile), (clutter_texture_get_n_tiles),
+	(clutter_texture_get_x_tile_detail),
+	(clutter_texture_get_y_tile_detail):
+	* doc/reference/Makefile.am:
+	* doc/reference/clutter.types:
+	Documentation updates.
+
+2006-05-13  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter.pc.in:
+	Add @MAJORMINOR@ to installed dirs.
+	* clutter/clutter-main.c: (clutter_xscreen), (clutter_init):
+	* clutter/clutter-main.h:
+	* clutter/clutter-private.h:
+	Quick fix for debug statements so now only appear 
+        if CLUTTER_DBBUG env var set.
+
+2006-05-12  Matthew Allum  <mallum@openedhand.com>
+
+	* configure.ac:
+	* Makefile.am:
+	* clutter/Makefile.am:
+	* bindings/python/Makefile.am:
+	* examples/Makefile.am:
+	* gst/Makefile.am:
+	Clean up autofoo a bit fixing versioning.
+	* bootstrap-autotools.sh:
+	* clutter-1.0.pc.in:
+	Rename.
+
+2006-05-12  Matthew Allum  <mallum@openedhand.com>
+
+	* bindings/python/Makefile.am:
+	* bindings/python/clutter.override:
+	* clutter/Makefile.am:
+	* clutter/clutter-bin.c:
+	* clutter/clutter-bin.h:
+	* clutter/clutter-element.c: (clutter_element_dispose),
+	(clutter_element_raise), (clutter_element_lower):
+	* clutter/clutter-group.c:
+	* clutter/clutter-group.h:
+	* clutter/clutter-main.c: (clutter_threads_leave):
+	* clutter/clutter-main.h:
+	* clutter/clutter-stage.c: (clutter_stage_class_init):
+	* clutter/clutter-stage.h:
+	* clutter/clutter.h:
+	* examples/super-oh.c: (frame_cb), (main):
+	* examples/test-text.c: (main):
+	* examples/test-video.c: (main):
+	* examples/test.c: (main):
+	* examples/video-cube.c: (main):
+	Rename clutter-bin to clutter-group
+
+2006-05-11  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-clone-texture.c:
+	(clone_texture_render_to_gl_quad), (clutter_clone_texture_paint),
+	(clutter_clone_texture_class_init), (clutter_clone_texture_new):
+	Fix cloning.
+	* clutter/clutter-element.c: (clutter_element_rotate_z),
+	(clutter_element_rotate_x), (clutter_element_rotate_y):
+	Minor tweaks
+	* examples/Makefile.am:
+	* examples/super-oh.c:
+	Add a new demo - unsing rotations and clones.
+
+2006-05-11  Matthew Allum  <mallum@openedhand.com>
+
+	* bindings/python/Makefile.am:
+	* bindings/python/clutter-base-types.defs:
+	* bindings/python/clutter-base.defs:
+	* bindings/python/clutter.override:
+	Python goodiness from ebassi.
+	 - Element geometry handled nicely.
+	 - get_coords(), get_abs_position() added.
+
+	* clutter/clutter-element.c: (clutter_element_rotate_x),
+	(clutter_element_rotate_y), (clutter_element_mirror),
+	* clutter/clutter-element.h:
+	Add initial rotation API. Make Geometry boxed ( ebassi )
+
+	* clutter/clutter-stage.c: (sync_gl_viewport):
+	Set depth in main world transform.
+
+	* clutter/clutter-timeline.h:
+	Add missing new() api call.
+
+	* examples/test.c: (timeout_text_cb), (frame_cb), (main):
+	Tou with some rotation
+
+2006-05-11  Matthew Allum  <mallum@openedhand.com>
+
+	reviewed by: <delete if not using a buddy>
+
+	* bindings/python/Makefile.am:
+	* bindings/python/clutter-base-types.defs:
+	* bindings/python/clutter-base.defs:
+	* bindings/python/clutter.override:
+	* clutter/clutter-bin.c: (clutter_bin_paint):
+	* clutter/clutter-element.c: (clutter_element_paint),
+	(clutter_element_get_height), (clutter_element_get_x),
+	(clutter_element_get_y), (clutter_element_set_opacity),
+	(clutter_element_get_opacity), (clutter_element_set_id),
+	(clutter_element_get_id), (clutter_element_rotate_x),
+	(clutter_element_rotate_y), (clutter_element_mirror),
+	(clutter_element_set_clip), (clutter_element_remove_clip),
+	(clutter_element_set_parent), (clutter_element_get_parent),
+	(clutter_element_raise), (clutter_element_lower),
+	(clutter_element_raise_top), (clutter_element_lower_bottom):
+	* clutter/clutter-element.h:
+	* clutter/clutter-main.c: (clutter_redraw):
+	* clutter/clutter-stage.c: (sync_gl_viewport):
+	* clutter/clutter-timeline.h:
+	* examples/test.c: (timeout_text_cb), (frame_cb), (main):
+
+2006-05-09  Matthew Allum  <mallum@openedhand.com>
+
+	* COPYING:
+	* clutter/clutter-bin.c:
+	* clutter/clutter-bin.h:
+	* clutter/clutter-clone-texture.c:
+	* clutter/clutter-clone-texture.h:
+	* clutter/clutter-color.c:
+	* clutter/clutter-color.h:
+	* clutter/clutter-element.c:
+	* clutter/clutter-element.h:
+	* clutter/clutter-event.c:
+	* clutter/clutter-event.h:
+	* clutter/clutter-keysyms.h:
+	* clutter/clutter-label.c:
+	* clutter/clutter-label.h:
+	* clutter/clutter-main.c:
+	* clutter/clutter-main.h:
+	* clutter/clutter-private.h:
+	* clutter/clutter-rectangle.c:
+	* clutter/clutter-rectangle.h:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-stage.h:
+	* clutter/clutter-texture.c:
+	* clutter/clutter-texture.h:
+	* clutter/clutter-timeline.c:
+	* clutter/clutter-timeline.h:
+	* clutter/clutter-util.c:
+	* clutter/clutter-util.h:
+	Add license info.
+
+2006-05-08  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/Makefile.am:
+	* clutter/clutter-event.c:
+	* clutter/clutter-event.h:
+	* clutter/clutter-keysyms.h:
+	* clutter/clutter-main.c: (clutter_dispatch_x_event):
+	* clutter/clutter-stage.c: (clutter_stage_class_init):
+	* clutter/clutter-stage.h:
+	* clutter/clutter.h:
+	* bindings/python/Makefile.am:
+	* bindings/python/clutter.override:
+	Add basic input event handling. Keys only atm.
+
+2006-05-08  Matthew Allum  <mallum@openedhand.com>
+
+	* TODO:
+	Sync a little.
+	* bindings/python/Makefile.am:
+	* bindings/python/clutter.override:
+	Fix up so pixbufs now work ( thanks ebassi! )
+	Add some missing newer headers.
+	* clutter/clutter-main.h:
+	Remove unused clutter_queue_redraw();
+
+2006-05-07  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-element.c: (clutter_element_class_init),
+	(clutter_element_init), (clutter_element_queue_redraw),
+	(clutter_element_set_geometry), (clutter_element_get_geometry),
+	(clutter_element_get_coords), (clutter_element_set_position),
+	(clutter_element_set_size), (clutter_element_get_abs_position),
+	(clutter_element_get_width), (clutter_element_get_height),
+	(clutter_element_get_x), (clutter_element_get_y),
+	(clutter_element_set_opacity):
+	* clutter/clutter-main.c: (clutter_dispatch_x_event):
+	* clutter/clutter-main.h:
+	* clutter/clutter-private.h:
+	* clutter/clutter-stage.c: (clutter_stage_set_color):
+	* clutter/clutter-texture.c: (clutter_texture_set_pixbuf):
+	Rename clutter_queue_redraw -> clutter_element_queue_redraw
+
+	* clutter/clutter-label.c: (clutter_label_make_pixbuf),
+	(clutter_label_set_property), (clutter_label_set_text_extents):
+	* clutter/clutter-label.h:
+	Fixes to extents
+
+	* examples/Makefile.am:
+	* examples/test-text.c:
+	Add sime test text example.
+
+2006-05-07  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-label.c: (clutter_label_make_pixbuf),
+	(clutter_label_get_property), (clutter_label_dispose),
+	(clutter_label_class_init), (clutter_label_init),
+	(clutter_label_new_with_text), (clutter_label_new),
+	(clutter_label_set_text), (clutter_label_set_font),
+	(clutter_label_set_text_extents), (clutter_label_set_fg_color):
+	* examples/test.c: (main):
+	Slight efficiency improvements. Add initial extents API.
+
+2006-05-07  Matthew Allum  <mallum@openedhand.com>
+
+	* TODO:
+	resync.
+	* clutter/Makefile.am:
+	* clutter/clutter-clone-texture.c:
+	* clutter/clutter-clone-texture.h:
+	Add new texture clone element.	
+	* clutter/clutter-color.c:
+	* clutter/clutter-color.h:
+	Add simple color API.
+	* clutter/clutter-util.c:
+	* clutter/clutter-util.h:
+	Move shared texture funcs into shared util code.
+	* clutter/clutter-texture.c: (can_create), (tile_dimension),
+	(init_tiles), (texture_render_to_gl_quad),
+	(clutter_texture_unrealize), (clutter_texture_sync_pixbuf),
+	(clutter_texture_realize), (clutter_texture_show),
+	(clutter_texture_hide), (clutter_texture_paint),
+	(clutter_texture_finalize), (clutter_texture_set_property),
+	(clutter_texture_get_property), (clutter_texture_class_init),
+	(clutter_texture_init), (clutter_texture_set_pixbuf),
+	(clutter_texture_new_from_pixbuf), (clutter_texture_get_base_size),
+	(clutter_texture_bind_tile):
+	Changes for clones to work.
+	* clutter/clutter-element.c: (clutter_element_paint),
+	(clutter_element_set_property), (clutter_element_get_property),
+	(clutter_element_set_position), (clutter_element_set_size),
+	(clutter_element_get_abs_position), (clutter_element_get_width),
+	(clutter_element_get_height), (clutter_element_get_x),
+	(clutter_element_get_y), (clutter_element_set_opacity),
+	(clutter_element_get_opacity), (clutter_element_set_id),
+	(clutter_element_get_id), (clutter_element_set_clip):
+	* clutter/clutter-element.h:
+	Add clipping and other tweaks.
+	* clutter/clutter-stage.c: (sync_gl_viewport),
+	(clutter_stage_paint), (clutter_stage_init):
+	Add psuedo 3D desktop like GL setup.
+	* clutter/clutter-label.c: (clutter_label_make_pixbuf):
+	* clutter/clutter-label.h:
+	* clutter/clutter-main.c: (clutter_redraw):
+	* clutter/clutter-main.h:
+	* clutter/clutter-private.h:
+	* clutter/clutter-rectangle.c: (clutter_rectangle_paint):
+	* clutter/clutter-stage.h:
+	* clutter/clutter-texture.h:
+	* clutter/clutter-timeline.c: (clutter_timeline_class_init):
+	* clutter/clutter-video-texture.c:
+	* clutter/clutter.h:
+	* examples/test-video.c: (foo), (size_change), (tick), (main):
+	* examples/test.c: (main):
+	* examples/video-cube.c: (clutter_video_texture_cube_paint),
+	(clutter_video_texture_cube_class_init),
+	(clutter_video_texture_cube_init):
+	Various minor tweaks for API changes, new features etc.
+
+2006-05-03  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-bin.c: (clutter_bin_paint):
+	* clutter/clutter-bin.h:
+	* clutter/clutter-element.c: (clutter_element_unrealize),
+	(clutter_element_paint), (clutter_element_set_property),
+	(clutter_element_get_property), (clutter_element_dispose),
+	(clutter_element_finalize), (clutter_element_class_init),
+	(clutter_element_init), (clutter_element_queue_redraw),
+	(clutter_element_set_geometry), (clutter_element_get_geometry),
+	(clutter_element_get_coords), (clutter_element_set_position),
+	(clutter_element_set_size), (clutter_element_get_abs_position),
+	(clutter_element_set_opacity), (clutter_element_get_opacity),
+	(clutter_element_set_clip), (clutter_element_remove_clip),
+	(clutter_element_set_parent), (clutter_element_get_parent),
+	(clutter_element_raise), (clutter_element_lower),
+	(clutter_element_raise_top), (clutter_element_lower_bottom):
+	* clutter/clutter-element.h:
+	* clutter/clutter-label.c: (clutter_label_set_fg_color):
+	* clutter/clutter-rectangle.c: (clutter_rectangle_paint),
+	(clutter_rectangle_set_property), (clutter_rectangle_init):
+	* clutter/clutter-stage.c: (sync_xwindow_size):
+	* clutter/clutter-texture.c: (clutter_texture_paint),
+	(clutter_texture_set_pixbuf):
+	Clean up ClutterElement, removing globals, improving sizing
+	and initial clipping code.
+
+	* clutter/clutter.h:
+	* clutter/clutter-timeline.c: (clutter_timeline_class_init),
+	(timeline_timeout_func), (clutter_timeline_start),
+	(clutter_timeline_pause), (clutter_timeline_rewind),
+	(clutter_timeline_skip), (clutter_timeline_advance),
+	(clutter_timeline_get_current_frame), (clutter_timeline_new):
+	* clutter/clutter-timeline.h:
+	Various fixes to timelines. Implement frame skipping.
+
+	* examples/test.c: (timeout_text_cb), (main):
+	Update to use timeline.
+
+2006-05-02  Matthew Allum  <mallum@openedhand.com>
+
+	* TODO:
+	Update
+	* clutter/clutter-element.h:
+	* clutter/clutter-rectangle.h:
+	Minor formatting cleanups
+
+2006-05-02  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/Makefile.am:
+	* clutter/clutter-timeline.c:
+	* clutter/clutter-timeline.h:
+	Add initial timeline implementation
+
+2006-05-02  Matthew Allum  <mallum@openedhand.com>
+
+	* bindings/python/Makefile.am:
+	* bindings/python/cluttermodule.c: (initclutter):
+	Fix python build with new -1.0 naming. Use of GdkPixbufs 
+        still causing crashes.
+
+2006-04-30  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-main.c: (events_init), (redraw_update_idle),
+	(clutter_queue_redraw), (clutter_redraw):
+	Fix repaint queueing, using idle handler now.
+	Clean up some minor compiler warnings.
+	* clutter/clutter-main.h:
+	* clutter/clutter-texture.c: (clutter_texture_unrealize),
+	(clutter_texture_set_pixbuf):
+	Rename gl_lock/unlock to threads_enter/leaver
+
+2006-04-30  Matthew Allum  <mallum@openedhand.com>
+
+	* Makefile.am:
+	* clutter-1.0.pc.in:
+	* clutter/Makefile.am:
+	* clutter/clutter-bin.h:
+	* clutter/clutter-label.h:
+	* clutter/clutter-rectangle.h:
+	* clutter/clutter-stage.h:
+	* clutter/clutter-texture.h:
+	* clutter/clutter-video-texture.h:
+	* clutter/clutter.h:
+	* configure.ac:
+	* examples/Makefile.am:
+	Add .pc file, tag -1.0 onto lib, includes dir naming.
+
+2006-04-29  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-main.c: (clutter_dispatch_x_event),
+	(clutter_queue_redraw), (clutter_redraw):
+	Simplify paint event queueing. Does not actually queue 
+	anymore (broken), needs wrong to reduce high number of 
+        uneeded paints.  
+
+	* clutter/clutter-texture.c: (clutter_texture_set_pixbuf):
+	Remove visible check which broke paints of resized texture pixmaps.
+
+2006-04-19  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-bin.c: (clutter_bin_paint), (clutter_bin_add):
+	* clutter/clutter-element.c: (clutter_element_paint):
+	* clutter/clutter-element.h:
+	* clutter/clutter-label.c: (clutter_label_set_property),
+	(clutter_label_get_property), (clutter_label_class_init):
+	* clutter/clutter-marshal.list:
+	* clutter/clutter-rectangle.c: (clutter_rectangle_set_property),
+	(clutter_rectangle_get_property), (clutter_rectangle_class_init):
+	* clutter/clutter-stage.c: (clutter_stage_dispose),
+	(clutter_stage_get_property), (clutter_stage_class_init):
+	* clutter/clutter-texture.c: (clutter_texture_realize),
+	(clutter_texture_class_init), (clutter_texture_set_pixbuf):
+	* clutter/clutter-texture.h:
+	More object cleanups. Add signal to texture size changes.
+	Fix color props. Adjust element realise flags workings ( broken ).
+	* examples/test-video.c: (main):
+	Broken due to realize flag changes. 
+
+2006-04-18  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-bin.c: (clutter_bin_get_property),
+	(clutter_bin_finalize), (clutter_bin_class_init),
+	(clutter_bin_new), (clutter_bin_show_all), (clutter_bin_hide_all),
+	(clutter_bin_add):
+	* clutter/clutter-bin.h:
+	* clutter/clutter-element.c: (clutter_element_get_property),
+	(clutter_element_finalize), (clutter_element_class_init),
+	(clutter_element_set_parent), (clutter_element_get_parent),
+	(clutter_element_raise), (clutter_element_lower):
+	* clutter/clutter-element.h:
+	* clutter/clutter-label.c: (clutter_label_make_pixbuf),
+	(clutter_label_get_property), (clutter_label_dispose),
+	(clutter_label_finalize), (clutter_label_class_init),
+	(clutter_label_init), (clutter_label_new_with_text),
+	(clutter_label_new), (clutter_label_set_text),
+	(clutter_label_set_font), (clutter_label_set_fg_color):
+	* clutter/clutter-label.h:
+	* clutter/clutter-rectangle.c: (clutter_rectangle_paint),
+	(clutter_rectangle_set_property), (clutter_rectangle_get_property),
+	(clutter_rectangle_finalize), (clutter_rectangle_dispose),
+	(clutter_rectangle_class_init), (clutter_rectangle_init),
+	(clutter_rectangle_new):
+	* clutter/clutter-texture.c: (clutter_texture_paint),
+	(clutter_texture_dispose), (clutter_texture_finalize),
+	(clutter_texture_set_property), (clutter_texture_get_property),
+	(clutter_texture_class_init), (clutter_texture_init),
+	(clutter_texture_set_pixbuf), (clutter_texture_new_from_pixbuf):
+	Various GObject usages cleanups, adding properties and
+	finalize/dispose functions properly.
+
+2006-04-18  Matthew Allum  <mallum@openedhand.com>
+
+	* bindings/python/Makefile.am:
+	* bindings/python/clutter.override:
+	* bindings/python/cluttermodule.c: (initclutter):
+	* clutter/clutter-label.h:
+	* clutter/clutter-rectangle.h:
+	* clutter/clutter-video-texture.h:
+	More fixups to now less broken python bindings
+	* examples/rects.py:
+	A simple python script using bindings
+
+2006-04-18  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-marshal.list:
+	Add missing. 
+
+2006-04-17  Matthew Allum  <mallum@openedhand.com>
+
+	* Makefile.am:
+	* bindings/Makefile.am:
+	* bindings/python/Makefile.am:
+	* bindings/python/clutter.override:
+	* bindings/python/cluttermodule.c:
+	* configure.ac:
+	First shot at some python bindings ( broken atm )
+	* clutter/clutter-bin.h:
+	* clutter/clutter-element.h:
+	* clutter/clutter-stage.h:
+	* clutter/clutter-texture.h:
+	* clutter/clutter.h:
+	Rejig headers a little so h2def.py happier
+
+2006-04-17  Matthew Allum  <mallum@openedhand.com>
+
+	* TODO:
+	* doc/clutter.types:
+	* doc/reference/Makefile.am:
+	Move gtk-doc gubbins to doc/reference
+
+2006-04-16  Matthew Allum  <mallum@openedhand.com>
+
+	* TODO:
+	More updates
+
+	* clutter/clutter-bin.c: (clutter_bin_paint):
+	Add translate call
+
+	* clutter/clutter-texture.c: (clutter_texture_dispose),
+	(clutter_texture_class_init), (clutter_texture_set_pixbuf):
+	Fixup object finalization a little.
+	
+	* bootstrap-autotools.sh:
+	* configure.ac:
+	* doc/Makefile.am:
+	* doc/clutter.types:
+	Add gtk-doc infrastructure
+
+2006-04-15  Matthew Allum  <mallum@openedhand.com>
+
+	* TODO:
+	More ideas.
+
+	* clutter/Makefile.am:
+	* clutter/clutter-rectangle.c: (clutter_rectangle_new):
+	Sync passed color alpha chan to element opacity, 
+
+	* clutter/clutter-video-texture.c:
+	(clutter_video_texture_error_quark), (signal_eos_delayed),
+	(query_timeout), (got_video_size), (caps_set), (parse_stream_info),
+	(handle_element_message)
+	* clutter/clutter-video-texture.h:
+	Port more of bacon video widget API.
+
+	* examples/test-video.c: (foo), (tick), (main):
+	Add a simple overlay displaying playback time.
+
+2006-04-15  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-element.c:
+	* clutter/clutter-label.c: (clutter_label_init),
+	(clutter_label_new_with_text):
+	* clutter/clutter-label.h:
+	* clutter/clutter-main.c: (clutter_redraw), (clutter_gl_unlock):
+	* clutter/clutter-main.h:
+	* clutter/clutter-rectangle.c: (clutter_rectangle_init),
+	(clutter_rectangle_new):
+	* clutter/clutter-rectangle.h:
+	* clutter/clutter-texture.c: (clutter_texture_class_init),
+	(clutter_texture_set_pixbuf), (clutter_texture_new_from_pixbuf):
+	* clutter/clutter-texture.h:
+	* clutter/clutter-video-texture.c: (clutter_video_texture_init):
+	* clutter/clutter-video-texture.h:
+	* examples/test-video.c: (main):
+	* examples/test.c: (main):
+	* examples/video-cube.c: (clutter_video_texture_cube_init), (main):
+	Make xxx_new() return there type as ClutterElement*
+
+2006-04-15  Matthew Allum  <mallum@openedhand.com>
+
+	* TODO:
+	Update
+	* clutter/clutter-main.c:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-texture.c:
+	* clutter/clutter-texture.h:
+	* gst/clutterimagesink.c: (gst_clutterimagesink_clutterimage_put),
+	(gst_clutterimagesink_context_get):
+	Various experiments with textures and 3D views.
+
+	* clutter/clutter-video-texture.c:
+	(clutter_video_texture_class_init), (clutter_video_texture_init):
+	* examples/Makefile.am:
+	* examples/test-video.c: (main):
+	* examples/video-cube.c:
+	Add video-cube example
+
+2006-04-13  Matthew Allum  <mallum@openedhand.com>
+
+	* TODO:
+	Update
+
+	* clutter/clutter-bin.c:
+	* clutter/clutter-bin.h:
+	New container element
+
+	* clutter/clutter-stage.c:
+	* clutter/clutter-stage.h:
+	Make stage a proper element
+
+	* clutter/Makefile.am:
+	* clutter/clutter.h:
+	* clutter/clutter-element.c: (clutter_element_show),
+	(clutter_element_set_opacity):
+	* clutter/clutter-element.h:
+	* clutter/clutter-label.c: (clutter_label_make_pixbuf),
+	(clutter_label_set_text), (clutter_label_set_font):
+	* clutter/clutter-private.h:
+	Various tweaks new api calls.
+
+	* clutter/clutter-main.c: (events_init):
+	* clutter/clutter-main.h:
+	Make ClutterContex Private to main 
+
+	* clutter/clutter-texture.c:
+	* clutter/clutter-texture.h:
+	* clutter/clutter-video-texture.c:
+	(clutter_video_texture_finalize):
+	Fix video crash
+
+	* examples/test-video.c: (main):
+	* examples/test.c: (main):
+	Fix for API changes.
+
+2006-04-11  Matthew Allum  <mallum@openedhand.com>
+
+	* TODO:
+	Add
+	* clutter/clutter-video-texture.c:
+	(clutter_video_texture_finalize):
+	* clutter/clutter-video-texture.h:
+	Remove bogus pixbuf attribute
+
+2006-04-10  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-main.c: (clutter_dispatch_x_event),
+	(clutter_queue_redraw), (clutter_main), (clutter_set_stage_params),
+	(clutter_init):
+	* clutter/clutter-main.h:
+	* clutter/clutter-private.h:
+	Make Stage non fullscreen ( for now ). Change event loop to 
+	work better with video.
+
+	* clutter/Makefile.am:
+	* clutter/clutter-label.c: (clutter_label_make_pixbuf),
+	(clutter_label_class_init), (clutter_label_new_with_text),
+	(clutter_label_set_text), (clutter_label_set_font):
+	* clutter/clutter-texture.c: (texture_render_to_gl_quad),
+	(clutter_texture_unrealize), (clutter_texture_sync_pixbuf),
+	(clutter_texture_realize), (clutter_texture_show),
+	(clutter_texture_hide), (clutter_texture_paint),
+	(clutter_texture_finalize), (clutter_texture_set_property),
+	(clutter_texture_get_property), (clutter_texture_class_init),
+	(clutter_texture_init), (clutter_texture_get_pixbuf),
+	(clutter_texture_set_pixbuf), (clutter_texture_new_from_pixbuf):
+	* clutter/clutter-texture.h:
+	* clutter/clutter.h:
+	Fix leakage. Improve performance. Add support for non tiled
+	textures.
+
+	* examples/Makefile.am:
+	* examples/test.c: (timeout_text_cb), (main):
+	Experiments
+
+	* examples/test-video.c:
+	* configure.ac:
+	* gst/Makefile.am:
+	* gst/clutterimagesink.c:
+	* gst/clutterimagesink.h:
+	* clutter/clutter-video-texture.c:
+	* clutter/clutter-video-texture.h:
+	Add initial support for video textures with gst-0.10
+
+	* gst/cltrimagesink.c:
+	* gst/cltrimagesink.h:
+	Remove old gst-0.8 sink
+
+
+2006-04-05  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/Makefile.am:
+	* clutter/clutter-element.c: (clutter_element_show),
+	(clutter_element_hide), (clutter_element_realize),
+	(clutter_element_unrealize), (clutter_element_paint),
+	(clutter_element_finalize), (clutter_element_class_init),
+	(clutter_element_init), (clutter_element_new):
+	* clutter/clutter-element.h:
+	* clutter/clutter.h:
+	* clutter/clutter-main.c: (clutter_dispatch_x_event),
+	(events_init), (clutter_redraw), (clutter_main), (clutter_init),
+	(clutter_show_stage):
+	* clutter/clutter-main.h:
+	Various minor tweaks.
+
+	* clutter/clutter-private.h:
+	* clutter/clutter-texture.c: (can_create), (init_tiles),
+	(clutter_texture_unrealize), (clutter_texture_realize),
+	(clutter_texture_finalize), (clutter_texture_class_init),
+	(clutter_texture_init):
+	* clutter/clutter-texture.h:
+	Much improve texture class.
+
+	* clutter/clutter-label.c:
+	* clutter/clutter-label.h:
+	Add new text rendering class
+	
+	* clutter/clutter-rectangle.c:
+	* clutter/clutter-rectangle.h:
+	Add basic rectangle drawing class
+
+	* examples/test.c:
+	Add text rendering and animation to test.
+
+2006-04-04  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/Makefile.am:
+	* clutter/clutter-element.c: (clutter_element_realize):
+	* clutter/clutter-element.h:
+	* clutter/clutter-image.c:
+	* clutter/clutter-image.h:
+	* clutter/clutter-main.c: (clutter_dispatch_x_event),
+	(clutter_main), (clutter_set_stage_params), (clutter_init):
+	* clutter/clutter-texture.c: (next_p2), (can_create),
+	(tile_dimension), (init_tiles), (texture_render_to_gl_quad),
+	(clutter_texture_unrealize), (clutter_texture_realize),
+	(clutter_texture_get_pixbuf), (clutter_texture_paint),
+	(clutter_texture_finalize), (clutter_texture_class_init):
+	* clutter/clutter-texture.h:
+	* clutter/clutter.h:
+	* configure.ac:
+	* examples/test.c:
+	Implement basic tiled texture painting.
+
+2006-04-03  Matthew Allum  <mallum@openedhand.com>
+
+	reviewed by: <delete if not using a buddy>
+
+	* clutter/Makefile.am:
+	* clutter/clutter-element.c:
+	* clutter/clutter-element.h:
+	* clutter/clutter-image.c:
+	* clutter/clutter-image.h:
+	* clutter/clutter-main.c: (events_init), (stage_realize),
+	(clutter_queue_redraw), (clutter_redraw), (clutter_add_to_stage),
+	(clutter_remove_from_stage), (clutter_main),
+	(clutter_set_stage_params), (clutter_init):
+	* clutter/clutter-main.h:
+	* clutter/clutter-private.h:
+	* clutter/clutter.h:
+	* examples/test.c:
+
+2006-04-02  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/Makefile.am:
+	* clutter/cltr-animator.c:
+	* clutter/cltr-animator.h:
+	* clutter/cltr-button.c:
+	* clutter/cltr-button.h:
+	* clutter/cltr-core.c:
+	* clutter/cltr-core.h:
+	* clutter/cltr-events.c:
+	* clutter/cltr-events.h:
+	* clutter/cltr-glu.c:
+	* clutter/cltr-glu.h:
+	* clutter/cltr-label.c:
+	* clutter/cltr-label.h:
+	* clutter/cltr-list.c:
+	* clutter/cltr-list.h:
+	* clutter/cltr-overlay.c:
+	* clutter/cltr-overlay.h:
+	* clutter/cltr-photo-grid.c:
+	* clutter/cltr-photo-grid.h:
+	* clutter/cltr-private.h:
+	* clutter/cltr-scratch.c:
+	* clutter/cltr-scratch.h:
+	* clutter/cltr-texture.c:
+	* clutter/cltr-texture.h:
+	* clutter/cltr-video.c:
+	* clutter/cltr-video.h:
+	* clutter/cltr-widget.c:
+	* clutter/cltr-widget.h:
+	* clutter/cltr-window.c:
+	* clutter/cltr-window.h:
+	* clutter/cltr.h:
+	* clutter/clutter-main.c:
+	* clutter/clutter-main.h:
+	* clutter/clutter-private.h:
+	* clutter/clutter.h:
+	* clutter/fonts.c:
+	* clutter/fonts.h:
+	* clutter/pixbuf.c:
+	* clutter/pixbuf.h:
+	* clutter/util.c:
+	* clutter/util.h:
+	* configure.ac:
+	* examples/Makefile.am:
+	* examples/photos.c:
+	* examples/player.c:
+	* examples/scratch.c:
+	* examples/select.c:
+	* examples/test.c:
+	Remove old cltr files replacing with beginnings of
+	rejigged 'clutter' ones.
+
 2005-05-27  mallum,,,  <mallum@openedhand.com>
 
 	* clutter/cltr-animator.c: (cltr_animator_zoom_new),

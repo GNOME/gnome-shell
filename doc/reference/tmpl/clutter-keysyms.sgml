@@ -1,0 +1,9399 @@
+<!-- ##### SECTION Title ##### -->
+clutter-keysyms
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### MACRO CLUTTER_VoidSymbol ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_BackSpace ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Tab ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Linefeed ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Clear ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Return ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pause ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Scroll_Lock ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Sys_Req ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Escape ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Delete ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Multi_key ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Codeinput ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_SingleCandidate ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_MultipleCandidate ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_PreviousCandidate ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Kanji ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Muhenkan ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Henkan_Mode ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Henkan ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Romaji ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hiragana ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Katakana ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hiragana_Katakana ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Zenkaku ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hankaku ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Zenkaku_Hankaku ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Touroku ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Massyo ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Kana_Lock ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Kana_Shift ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Eisu_Shift ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Eisu_toggle ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Kanji_Bangou ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Zen_Koho ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Mae_Koho ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Home ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Left ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Up ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Right ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Down ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Prior ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Page_Up ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Next ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Page_Down ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_End ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Begin ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Select ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Print ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Execute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Insert ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Undo ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Redo ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Menu ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Find ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cancel ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Help ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Break ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Mode_switch ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_script_switch ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Num_Lock ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Space ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Tab ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Enter ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_F1 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_F2 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_F3 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_F4 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Home ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Left ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Up ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Right ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Down ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Prior ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Page_Up ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Next ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Page_Down ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_End ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Begin ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Insert ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Delete ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Equal ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Multiply ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Add ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Separator ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Subtract ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Decimal ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_Divide ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_1 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_2 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_3 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_4 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_5 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_6 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_7 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_8 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_KP_9 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F1 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F2 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F3 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F4 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F5 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F6 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F7 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F8 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F9 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F10 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F11 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_L1 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F12 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_L2 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F13 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_L3 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F14 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_L4 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F15 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_L5 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F16 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_L6 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F17 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_L7 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F18 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_L8 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F19 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_L9 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F20 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_L10 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F21 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_R1 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F22 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_R2 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F23 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_R3 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F24 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_R4 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F25 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_R5 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F26 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_R6 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F27 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_R7 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F28 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_R8 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F29 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_R9 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F30 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_R10 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F31 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_R11 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F32 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_R12 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F33 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_R13 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F34 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_R14 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F35 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_R15 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Shift_L ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Shift_R ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Control_L ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Control_R ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Caps_Lock ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Shift_Lock ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Meta_L ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Meta_R ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Alt_L ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Alt_R ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Super_L ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Super_R ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hyper_L ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hyper_R ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Lock ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Level2_Latch ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Level3_Shift ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Level3_Latch ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Level3_Lock ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Group_Shift ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Group_Latch ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Group_Lock ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Next_Group ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Next_Group_Lock ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Prev_Group ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Prev_Group_Lock ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_First_Group ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_First_Group_Lock ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Last_Group ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Last_Group_Lock ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Left_Tab ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Move_Line_Up ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Move_Line_Down ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Partial_Line_Up ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Partial_Line_Down ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Partial_Space_Left ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Partial_Space_Right ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Set_Margin_Left ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Set_Margin_Right ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Release_Margin_Left ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Release_Margin_Right ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Release_Both_Margins ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Fast_Cursor_Left ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Fast_Cursor_Right ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Fast_Cursor_Up ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Fast_Cursor_Down ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Continuous_Underline ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Discontinuous_Underline ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Emphasize ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Center_Object ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ISO_Enter ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dead_grave ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dead_acute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dead_circumflex ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dead_tilde ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dead_macron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dead_breve ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dead_abovedot ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dead_diaeresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dead_abovering ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dead_doubleacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dead_caron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dead_cedilla ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dead_ogonek ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dead_iota ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dead_voiced_sound ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dead_semivoiced_sound ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dead_belowdot ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dead_hook ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dead_horn ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_First_Virtual_Screen ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Prev_Virtual_Screen ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Next_Virtual_Screen ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Last_Virtual_Screen ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Terminate_Server ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_AccessX_Enable ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_AccessX_Feedback_Enable ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_RepeatKeys_Enable ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_SlowKeys_Enable ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_BounceKeys_Enable ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_StickyKeys_Enable ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_MouseKeys_Enable ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_MouseKeys_Accel_Enable ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Overlay1_Enable ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Overlay2_Enable ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_AudibleBell_Enable ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_Left ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_Right ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_Up ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_Down ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_UpLeft ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_UpRight ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_DownLeft ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_DownRight ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_Button_Dflt ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_Button1 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_Button2 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_Button3 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_Button4 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_Button5 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_DblClick_Dflt ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_DblClick1 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_DblClick2 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_DblClick3 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_DblClick4 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_DblClick5 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_Drag_Dflt ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_Drag1 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_Drag2 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_Drag3 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_Drag4 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_Drag5 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_EnableKeys ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_Accelerate ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_DfltBtnNext ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Pointer_DfltBtnPrev ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_Duplicate ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_FieldMark ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_Right2 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_Left2 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_BackTab ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_EraseEOF ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_EraseInput ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_Reset ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_Quit ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_PA1 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_PA2 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_PA3 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_Test ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_Attn ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_CursorBlink ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_AltCursor ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_KeyClick ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_Jump ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_Ident ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_Rule ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_Copy ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_Play ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_Setup ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_Record ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_ChangeScreen ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_DeleteWord ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_ExSelect ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_CursorSelect ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_PrintScreen ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3270_Enter ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_space ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_exclam ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_quotedbl ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_numbersign ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dollar ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_percent ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ampersand ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_apostrophe ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_quoteright ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_parenleft ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_parenright ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_asterisk ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_plus ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_comma ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_minus ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_period ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_slash ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_0 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_1 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_2 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_3 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_4 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_5 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_6 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_7 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_8 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_9 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_colon ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_semicolon ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_less ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_equal ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_greater ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_question ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_at ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_A ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_B ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_C ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_D ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_E ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_F ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_G ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_H ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_I ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_J ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_K ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_L ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_M ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_N ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_O ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_P ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Q ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_R ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_S ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_T ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_U ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_V ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_W ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_X ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Y ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Z ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_bracketleft ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_backslash ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_bracketright ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_asciicircum ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_underscore ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_grave ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_quoteleft ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_a ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_b ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_c ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_d ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_e ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_f ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_g ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_h ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_i ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_j ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_k ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_l ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_m ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_n ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_o ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_p ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_q ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_r ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_s ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_t ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_u ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_v ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_w ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_x ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_y ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_z ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_braceleft ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_bar ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_braceright ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_asciitilde ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_nobreakspace ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_exclamdown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_cent ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_sterling ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_currency ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_yen ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_brokenbar ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_section ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_diaeresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_copyright ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ordfeminine ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_guillemotleft ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_notsign ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hyphen ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_registered ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_macron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_degree ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_plusminus ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_twosuperior ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_threesuperior ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_acute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_mu ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_paragraph ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_periodcentered ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_cedilla ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_onesuperior ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_masculine ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_guillemotright ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_onequarter ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_onehalf ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_threequarters ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_questiondown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Agrave ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Aacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Acircumflex ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Atilde ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Adiaeresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Aring ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_AE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ccedilla ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Egrave ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Eacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ecircumflex ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ediaeresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Igrave ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Iacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Icircumflex ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Idiaeresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ETH ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Eth ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ntilde ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ograve ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Oacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ocircumflex ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Otilde ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Odiaeresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_multiply ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ooblique ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ugrave ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Uacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ucircumflex ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Udiaeresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Yacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_THORN ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thorn ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ssharp ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_agrave ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_aacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_acircumflex ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_atilde ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_adiaeresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_aring ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ae ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ccedilla ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_egrave ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_eacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ecircumflex ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ediaeresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_igrave ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_iacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_icircumflex ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_idiaeresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_eth ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ntilde ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ograve ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_oacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ocircumflex ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_otilde ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_odiaeresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_division ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_oslash ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ugrave ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_uacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ucircumflex ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_udiaeresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_yacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_thorn ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ydiaeresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Aogonek ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_breve ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Lstroke ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Lcaron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Sacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Scaron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Scedilla ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Tcaron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Zacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Zcaron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Zabovedot ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_aogonek ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ogonek ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_lstroke ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_lcaron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_sacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_caron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_scaron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_scedilla ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_tcaron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_zacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_doubleacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_zcaron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_zabovedot ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Racute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Abreve ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Lacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ccaron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Eogonek ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ecaron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Dcaron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Dstroke ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Nacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ncaron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Odoubleacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Rcaron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Uring ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Udoubleacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Tcedilla ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_racute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_abreve ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_lacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_cacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ccaron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_eogonek ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ecaron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dcaron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dstroke ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_nacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ncaron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_odoubleacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_udoubleacute ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_rcaron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_uring ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_tcedilla ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_abovedot ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hstroke ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hcircumflex ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Iabovedot ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Gbreve ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Jcircumflex ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hstroke ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hcircumflex ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_idotless ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_gbreve ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_jcircumflex ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cabovedot ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ccircumflex ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Gabovedot ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Gcircumflex ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ubreve ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Scircumflex ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_cabovedot ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ccircumflex ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_gabovedot ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_gcircumflex ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ubreve ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_scircumflex ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kra ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kappa ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Rcedilla ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Itilde ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Lcedilla ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Emacron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Gcedilla ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Tslash ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_rcedilla ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_itilde ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_lcedilla ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_emacron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_gcedilla ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_tslash ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ENG ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_eng ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Amacron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Iogonek ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Eabovedot ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Imacron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ncedilla ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Omacron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Kcedilla ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Uogonek ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Utilde ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Umacron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_amacron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_iogonek ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_eabovedot ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_imacron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ncedilla ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_omacron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kcedilla ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_uogonek ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_utilde ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_umacron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_OE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_oe ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ydiaeresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_overline ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_fullstop ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_openingbracket ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_closingbracket ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_comma ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_conjunctive ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_middledot ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_WO ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_a ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_i ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_u ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_e ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_o ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_ya ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_yu ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_yo ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_tsu ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_tu ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_prolongedsound ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_A ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_I ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_U ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_E ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_O ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_KA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_KI ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_KU ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_KE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_KO ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_SA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_SHI ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_SU ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_SE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_SO ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_TA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_CHI ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_TI ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_TSU ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_TU ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_TE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_TO ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_NA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_NI ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_NU ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_NE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_NO ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_HA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_HI ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_FU ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_HU ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_HE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_HO ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_MA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_MI ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_MU ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_ME ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_MO ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_YA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_YU ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_YO ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_RA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_RI ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_RU ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_RE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_RO ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_WA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_N ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_voicedsound ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_semivoicedsound ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_kana_switch ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_comma ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_semicolon ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_question_mark ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_hamza ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_maddaonalef ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_hamzaonalef ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_hamzaonwaw ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_hamzaunderalef ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_hamzaonyeh ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_alef ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_beh ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_tehmarbuta ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_teh ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_theh ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_jeem ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_hah ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_khah ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_dal ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_thal ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_ra ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_zain ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_seen ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_sheen ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_sad ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_dad ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_tah ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_zah ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_ain ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_ghain ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_tatweel ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_feh ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_qaf ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_kaf ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_lam ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_meem ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_noon ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_ha ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_heh ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_waw ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_alefmaksura ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_yeh ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_fathatan ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_dammatan ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_kasratan ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_fatha ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_damma ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_kasra ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_shadda ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_sukun ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Arabic_switch ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Serbian_dje ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Macedonia_gje ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_io ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ukrainian_ie ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ukranian_je ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Macedonia_dse ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ukrainian_i ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ukranian_i ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ukrainian_yi ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ukranian_yi ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_je ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Serbian_je ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_lje ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Serbian_lje ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_nje ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Serbian_nje ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Serbian_tshe ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Macedonia_kje ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ukrainian_ghe_with_upturn ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Byelorussian_shortu ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_dzhe ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Serbian_dze ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_numerosign ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Serbian_DJE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Macedonia_GJE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_IO ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ukrainian_IE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ukranian_JE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Macedonia_DSE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ukrainian_I ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ukranian_I ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ukrainian_YI ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ukranian_YI ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_JE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Serbian_JE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_LJE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Serbian_LJE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_NJE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Serbian_NJE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Serbian_TSHE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Macedonia_KJE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Ukrainian_GHE_WITH_UPTURN ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Byelorussian_SHORTU ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_DZHE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Serbian_DZE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_yu ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_a ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_be ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_tse ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_de ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_ie ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_ef ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_ghe ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_ha ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_i ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_shorti ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_ka ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_el ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_em ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_en ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_o ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_pe ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_ya ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_er ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_es ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_te ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_u ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_zhe ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_ve ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_softsign ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_yeru ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_ze ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_sha ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_e ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_shcha ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_che ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_hardsign ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_YU ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_A ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_BE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_TSE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_DE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_IE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_EF ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_GHE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_HA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_I ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_SHORTI ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_KA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_EL ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_EM ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_EN ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_O ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_PE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_YA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_ER ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_ES ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_TE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_U ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_ZHE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_VE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_SOFTSIGN ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_YERU ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_ZE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_SHA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_E ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_SHCHA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_CHE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Cyrillic_HARDSIGN ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_ALPHAaccent ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_EPSILONaccent ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_ETAaccent ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_IOTAaccent ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_IOTAdieresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_IOTAdiaeresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_OMICRONaccent ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_UPSILONaccent ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_UPSILONdieresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_OMEGAaccent ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_accentdieresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_horizbar ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_alphaaccent ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_epsilonaccent ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_etaaccent ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_iotaaccent ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_iotadieresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_iotaaccentdieresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_omicronaccent ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_upsilonaccent ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_upsilondieresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_upsilonaccentdieresis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_omegaaccent ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_ALPHA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_BETA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_GAMMA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_DELTA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_EPSILON ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_ZETA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_ETA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_THETA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_IOTA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_KAPPA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_LAMDA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_LAMBDA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_MU ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_NU ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_XI ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_OMICRON ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_PI ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_RHO ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_SIGMA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_TAU ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_UPSILON ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_PHI ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_CHI ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_PSI ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_OMEGA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_alpha ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_beta ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_gamma ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_delta ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_epsilon ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_zeta ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_eta ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_theta ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_iota ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_kappa ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_lamda ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_lambda ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_mu ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_nu ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_xi ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_omicron ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_pi ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_rho ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_sigma ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_finalsmallsigma ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_tau ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_upsilon ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_phi ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_chi ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_psi ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_omega ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Greek_switch ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_leftradical ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_topleftradical ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_horizconnector ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_topintegral ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_botintegral ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_vertconnector ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_topleftsqbracket ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_botleftsqbracket ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_toprightsqbracket ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_botrightsqbracket ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_topleftparens ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_botleftparens ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_toprightparens ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_botrightparens ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_leftmiddlecurlybrace ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_rightmiddlecurlybrace ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_topleftsummation ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_botleftsummation ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_topvertsummationconnector ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_botvertsummationconnector ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_toprightsummation ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_botrightsummation ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_rightmiddlesummation ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_lessthanequal ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_notequal ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_greaterthanequal ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_integral ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_therefore ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_variation ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_infinity ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_nabla ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_approximate ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_similarequal ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ifonlyif ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_implies ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_identical ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_radical ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_includedin ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_includes ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_intersection ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_union ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_logicaland ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_logicalor ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_partialderivative ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_function ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_leftarrow ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_uparrow ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_rightarrow ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_downarrow ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_blank ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_soliddiamond ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_checkerboard ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ht ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ff ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_cr ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_lf ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_nl ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_vt ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_lowrightcorner ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_uprightcorner ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_upleftcorner ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_lowleftcorner ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_crossinglines ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_horizlinescan1 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_horizlinescan3 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_horizlinescan5 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_horizlinescan7 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_horizlinescan9 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_leftt ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_rightt ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_bott ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_topt ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_vertbar ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_emspace ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_enspace ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_em3space ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_em4space ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_digitspace ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_punctspace ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_thinspace ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hairspace ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_emdash ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_endash ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_signifblank ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ellipsis ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_doubbaselinedot ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_onethird ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_twothirds ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_onefifth ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_twofifths ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_threefifths ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_fourfifths ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_onesixth ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_fivesixths ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_careof ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_figdash ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_leftanglebracket ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_decimalpoint ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_rightanglebracket ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_marker ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_oneeighth ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_threeeighths ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_fiveeighths ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_seveneighths ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_trademark ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_signaturemark ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_trademarkincircle ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_leftopentriangle ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_rightopentriangle ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_emopencircle ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_emopenrectangle ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_leftsinglequotemark ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_rightsinglequotemark ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_leftdoublequotemark ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_rightdoublequotemark ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_prescription ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_minutes ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_seconds ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_latincross ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hexagram ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_filledrectbullet ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_filledlefttribullet ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_filledrighttribullet ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_emfilledcircle ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_emfilledrect ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_enopencircbullet ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_enopensquarebullet ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_openrectbullet ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_opentribulletup ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_opentribulletdown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_openstar ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_enfilledcircbullet ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_enfilledsqbullet ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_filledtribulletup ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_filledtribulletdown ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_leftpointer ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_rightpointer ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_club ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_diamond ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_heart ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_maltesecross ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_dagger ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_doubledagger ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_checkmark ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ballotcross ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_musicalsharp ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_musicalflat ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_malesymbol ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_femalesymbol ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_telephone ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_telephonerecorder ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_phonographcopyright ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_caret ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_singlelowquotemark ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_doublelowquotemark ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_cursor ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_leftcaret ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_rightcaret ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_downcaret ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_upcaret ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_overbar ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_downtack ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_upshoe ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_downstile ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_underbar ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_jot ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_quad ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_uptack ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_circle ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_upstile ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_downshoe ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_rightshoe ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_leftshoe ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_lefttack ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_righttack ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_doublelowline ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_aleph ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_bet ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_beth ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_gimel ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_gimmel ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_dalet ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_daleth ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_he ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_waw ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_zain ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_zayin ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_chet ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_het ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_tet ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_teth ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_yod ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_finalkaph ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_kaph ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_lamed ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_finalmem ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_mem ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_finalnun ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_nun ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_samech ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_samekh ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_ayin ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_finalpe ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_pe ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_finalzade ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_finalzadi ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_zade ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_zadi ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_qoph ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_kuf ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_resh ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_shin ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_taw ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_hebrew_taf ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hebrew_switch ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_kokai ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_khokhai ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_khokhuat ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_khokhwai ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_khokhon ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_khorakhang ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_ngongu ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_chochan ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_choching ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_chochang ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_soso ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_chochoe ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_yoying ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_dochada ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_topatak ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_thothan ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_thonangmontho ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_thophuthao ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_nonen ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_dodek ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_totao ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_thothung ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_thothahan ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_thothong ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_nonu ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_bobaimai ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_popla ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_phophung ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_fofa ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_phophan ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_fofan ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_phosamphao ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_moma ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_yoyak ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_rorua ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_ru ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_loling ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_lu ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_wowaen ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_sosala ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_sorusi ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_sosua ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_hohip ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_lochula ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_oang ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_honokhuk ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_paiyannoi ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_saraa ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_maihanakat ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_saraaa ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_saraam ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_sarai ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_saraii ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_saraue ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_sarauee ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_sarau ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_sarauu ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_phinthu ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_maihanakat_maitho ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_baht ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_sarae ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_saraae ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_sarao ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_saraaimaimuan ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_saraaimaimalai ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_lakkhangyao ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_maiyamok ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_maitaikhu ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_maiek ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_maitho ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_maitri ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_maichattawa ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_thanthakhat ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_nikhahit ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_leksun ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_leknung ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_leksong ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_leksam ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_leksi ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_lekha ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_lekhok ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_lekchet ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_lekpaet ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Thai_lekkao ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Start ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_End ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Hanja ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Jamo ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Romaja ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Codeinput ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Jeonja ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Banja ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_PreHanja ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_PostHanja ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_SingleCandidate ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_MultipleCandidate ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_PreviousCandidate ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Special ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_switch ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Kiyeog ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_SsangKiyeog ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_KiyeogSios ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Nieun ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_NieunJieuj ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_NieunHieuh ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Dikeud ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_SsangDikeud ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Rieul ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_RieulKiyeog ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_RieulMieum ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_RieulPieub ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_RieulSios ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_RieulTieut ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_RieulPhieuf ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_RieulHieuh ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Mieum ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Pieub ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_SsangPieub ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_PieubSios ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Sios ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_SsangSios ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Ieung ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Jieuj ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_SsangJieuj ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Cieuc ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Khieuq ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Tieut ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Phieuf ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_Hieuh ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_A ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_AE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_YA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_YAE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_EO ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_E ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_YEO ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_YE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_O ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_WA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_WAE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_OE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_YO ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_U ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_WEO ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_WE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_WI ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_YU ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_EU ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_YI ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_I ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_Kiyeog ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_SsangKiyeog ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_KiyeogSios ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_Nieun ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_NieunJieuj ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_NieunHieuh ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_Dikeud ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_Rieul ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_RieulKiyeog ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_RieulMieum ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_RieulPieub ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_RieulSios ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_RieulTieut ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_RieulPhieuf ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_RieulHieuh ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_Mieum ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_Pieub ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_PieubSios ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_Sios ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_SsangSios ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_Ieung ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_Jieuj ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_Cieuc ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_Khieuq ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_Tieut ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_Phieuf ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_Hieuh ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_RieulYeorinHieuh ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_SunkyeongeumMieum ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_SunkyeongeumPieub ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_PanSios ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_KkogjiDalrinIeung ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_SunkyeongeumPhieuf ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_YeorinHieuh ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_AraeA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_AraeAE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_PanSios ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_KkogjiDalrinIeung ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Hangul_J_YeorinHieuh ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_Korean_Won ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_EcuSign ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_ColonSign ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_CruzeiroSign ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_FFrancSign ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_LiraSign ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_MillSign ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_NairaSign ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_PesetaSign ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_RupeeSign ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_WonSign ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_NewSheqelSign ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_DongSign ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_EuroSign ##### -->
+<para>
+
+</para>
+
+
+

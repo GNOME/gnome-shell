@@ -1,0 +1,129 @@
+<!-- ##### SECTION Title ##### -->
+clutter-color
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### MACRO clutter_color_r ##### -->
+<para>
+
+</para>
+
+@col: 
+
+
+<!-- ##### MACRO clutter_color_g ##### -->
+<para>
+
+</para>
+
+@col: 
+
+
+<!-- ##### MACRO clutter_color_b ##### -->
+<para>
+
+</para>
+
+@col: 
+
+
+<!-- ##### MACRO clutter_color_a ##### -->
+<para>
+
+</para>
+
+@col: 
+
+
+<!-- ##### MACRO clutter_color_set_r ##### -->
+<para>
+
+</para>
+
+@col: 
+@r: 
+
+
+<!-- ##### MACRO clutter_color_set_g ##### -->
+<para>
+
+</para>
+
+@col: 
+@g: 
+
+
+<!-- ##### MACRO clutter_color_set_b ##### -->
+<para>
+
+</para>
+
+@col: 
+@b: 
+
+
+<!-- ##### MACRO clutter_color_set_a ##### -->
+<para>
+
+</para>
+
+@col: 
+@a: 
+
+
+<!-- ##### TYPEDEF ClutterColor ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION clutter_color_new ##### -->
+<para>
+
+</para>
+
+@r: 
+@g: 
+@b: 
+@a: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_color_set ##### -->
+<para>
+
+</para>
+
+@color: 
+@r: 
+@g: 
+@b: 
+@a: 
+
+
+<!-- ##### FUNCTION clutter_color_get ##### -->
+<para>
+
+</para>
+
+@color: 
+@r: 
+@g: 
+@b: 
+@a: 
+
+

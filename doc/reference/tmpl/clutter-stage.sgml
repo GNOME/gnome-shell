@@ -1,0 +1,85 @@
+<!-- ##### SECTION Title ##### -->
+ClutterStage
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### MACRO CLUTTER_STAGE_WIDTH ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_STAGE_HEIGHT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### TYPEDEF ClutterStagePrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT ClutterStage ##### -->
+<para>
+
+</para>
+
+@parent: 
+@priv: 
+
+<!-- ##### FUNCTION clutter_stage_get_xwindow ##### -->
+<para>
+
+</para>
+
+@stage: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_stage_set_color ##### -->
+<para>
+
+</para>
+
+@stage: 
+@color: 
+
+
+<!-- ##### FUNCTION clutter_stage_get_color ##### -->
+<para>
+
+</para>
+
+@stage: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_stage_pick ##### -->
+<para>
+
+</para>
+
+@stage: 
+@x: 
+@y: 
+@Returns: 
+
+

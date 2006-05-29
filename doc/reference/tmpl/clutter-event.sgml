@@ -1,0 +1,144 @@
+<!-- ##### SECTION Title ##### -->
+clutter-event
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### ENUM ClutterEventType ##### -->
+<para>
+
+</para>
+
+@CLUTTER_KEY_PRESS: 
+@CLUTTER_KEY_RELEASE: 
+@CLUTTER_MOTION: 
+@CLUTTER_BUTTON_PRESS: 
+@CLUTTER_2BUTTON_PRESS: 
+@CLUTTER_BUTTON_RELEASE: 
+
+<!-- ##### STRUCT ClutterKeyEvent ##### -->
+<para>
+
+</para>
+
+@type: 
+@time: 
+@modifier_state: 
+@keyval: 
+@hardware_keycode: 
+
+<!-- ##### STRUCT ClutterButtonEvent ##### -->
+<para>
+
+</para>
+
+@type: 
+@time: 
+@x: 
+@y: 
+@modifier_state: 
+@button: 
+@axes: 
+@device: 
+
+<!-- ##### STRUCT ClutterMotionEvent ##### -->
+<para>
+
+</para>
+
+@type: 
+@time: 
+@x: 
+@y: 
+@modifier_state: 
+@axes: 
+@device: 
+
+<!-- ##### STRUCT ClutterInputDevice ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### UNION ClutterEvent ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION clutter_key_event_type ##### -->
+<para>
+
+</para>
+
+@keyev: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_key_event_time ##### -->
+<para>
+
+</para>
+
+@keyev: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_key_event_state ##### -->
+<para>
+
+</para>
+
+@keyev: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_key_event_symbol ##### -->
+<para>
+
+</para>
+
+@keyev: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_key_event_code ##### -->
+<para>
+
+</para>
+
+@keyev: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_key_event_unicode ##### -->
+<para>
+
+</para>
+
+@keyev: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_keysym_to_unicode ##### -->
+<para>
+
+</para>
+
+@keyval: 
+@Returns: 
+
+
