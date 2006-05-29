@@ -1,5 +1,10 @@
 2006-05-29  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/clutter-color.c: (clutter_color_set):
+	Fix bit shifts in clutter color setters.
+
+2006-05-29  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-element.c:
 	* clutter/clutter-element.h:
 	Add initial new element depth() getter and setter.

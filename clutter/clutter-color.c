@@ -28,7 +28,7 @@
 ClutterColor
 clutter_color_new (guint8 r, guint8 g, guint8 b, guint8 a)
 {
-  return ( r | g << 8 | b << 16 | a << 24 );
+  return ( a | b << 8 | g << 16  | r << 24 );
 }
 
 void
@@ -38,7 +38,7 @@ clutter_color_set (ClutterColor *color,
 		   guint8        b, 
 		   guint8        a)
 {
-  *color = ( r | g << 8 | b << 16 | a << 24 );
+  *color = ( a | b << 8 | g << 16  | r << 24 );
 }
 
 void
