@@ -1,3 +1,12 @@
+2006-06-01  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-element.c:
+	Fix a snafu in clutter_element_raise ()
+
+	* clutter/clutter-timeline.c:
+	* clutter/clutter-timeline.h:
+	Add new clutter_timeline_is_playing() method
+
 2006-05-29  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-color.c: (clutter_color_set):

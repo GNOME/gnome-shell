@@ -1170,13 +1170,12 @@ clutter_element_get_parent (ClutterElement *self)
 void
 clutter_element_raise (ClutterElement *self, ClutterElement *below)
 {
+  g_return_if_fail (CLUTTER_IS_ELEMENT(self));
   g_return_if_fail (clutter_element_get_parent (self) != NULL);
-  g_return_if_fail 
-    (clutter_element_get_parent (self) != clutter_element_get_parent (below));
 
   clutter_group_raise (CLUTTER_GROUP(clutter_element_get_parent (self)),
-		     self,
-		     below);
+		       self,
+		       below);
 }
 
 /**

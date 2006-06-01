@@ -463,6 +463,21 @@ clutter_timeline_set_speed (ClutterTimeline *timeline, guint fps)
 }
 
 /**
+ * clutter_timeline_is_playing:
+ * @timeline: A #ClutterTimeline
+ *
+ * Query state of a #ClutterTimeline instance.
+ *
+ * Return Value: TRUE if timeline is currently playing, FALSE if not.
+ */
+gboolean
+clutter_timeline_is_playing (ClutterTimeline *timeline)
+{
+  return (timeline->priv->timeout_id != 0);
+}
+
+
+/**
  * clutter_timeline_new:
  * @nframes: #ClutterTimeline number of frames
  * @fps: #ClutterTimeline  frames per second

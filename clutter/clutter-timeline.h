@@ -107,6 +107,9 @@ clutter_timeline_get_current_frame (ClutterTimeline *timeline);
 guint
 clutter_timeline_get_n_frames (ClutterTimeline *timeline);
 
+gboolean
+clutter_timeline_is_playing (ClutterTimeline *timeline);
+
 G_END_DECLS
 
 #endif
