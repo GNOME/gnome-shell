@@ -854,9 +854,6 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		       PIXEL_FORMAT,
 		       G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
 
-
-
-
   texture_signals[SIGNAL_SIZE_CHANGE] =
     g_signal_new ("size-change",
 		  G_TYPE_FROM_CLASS (gobject_class),
@@ -876,7 +873,6 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 
 		  0); 
-
 }
 
 static void

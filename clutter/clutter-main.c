@@ -233,6 +233,9 @@ clutter_redraw ()
   static GTimer      *timer = NULL; 
   static guint        timer_n_frames = 0;
 
+  /* FIXME: Should move all this into stage...
+  */
+
   CLUTTER_DBG("@@@ Redraw enter @@@");
 
   clutter_threads_enter();
@@ -255,7 +258,14 @@ clutter_redraw ()
 
   clutter_element_paint(CLUTTER_ELEMENT(stage));
 
-  glXSwapBuffers(ctx->xdpy, clutter_stage_get_xwindow (stage));  
+  if (clutter_stage_get_xwindow (stage))
+    {
+      glXSwapBuffers(ctx->xdpy, clutter_stage_get_xwindow (stage));  
+    }
+  else
+    {
+      glFlush();
+    }
 
   if (clutter_want_fps())
     {
@@ -321,23 +331,27 @@ clutter_root_xwindow(void)
   return ClutterCntx.xwin_root;
 }
 
+XVisualInfo*
+clutter_xvisual(void)
+{
+  return ClutterCntx.xvinfo;
+}
+
 gboolean
 clutter_want_debug(void)
 {
   return __clutter_has_debug;
 }
 
-GLXContext
-clutter_gl_context(void)
+void
+clutter_gl_context_set_indirect (gboolean indirect)
 {
-  return ClutterCntx.gl_context;
+
 }
 
 int
 clutter_init(int *argc, char ***argv)
 {
-  XVisualInfo  *vinfo;  
-
   int  gl_attributes[] =
     {
       GLX_RGBA, 
@@ -374,15 +388,13 @@ clutter_init(int *argc, char ***argv)
   ClutterCntx.xscreen   = DefaultScreen(ClutterCntx.xdpy);
   ClutterCntx.xwin_root = RootWindow(ClutterCntx.xdpy, ClutterCntx.xscreen);
 
-  if ((vinfo = glXChooseVisual(ClutterCntx.xdpy, 
-			       ClutterCntx.xscreen,
-			       gl_attributes)) == NULL)
+  if ((ClutterCntx.xvinfo = glXChooseVisual(ClutterCntx.xdpy, 
+					    ClutterCntx.xscreen,
+					    gl_attributes)) == NULL)
     {
       g_warning("Unable to find suitable GL visual.");
       return -2;
     }
-
-  ClutterCntx.gl_context = glXCreateContext(ClutterCntx.xdpy, vinfo, 0, True);
 
   ClutterCntx.font_map = PANGO_FT2_FONT_MAP (pango_ft2_font_map_new ());
 

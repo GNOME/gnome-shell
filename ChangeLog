@@ -1,3 +1,16 @@
+2006-06-02  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-element.h:
+	Add missing _depth() declarations 
+
+	* clutter/clutter-main.c:
+	* clutter/clutter-main.h:
+	* clutter/clutter-private.h:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-stage.h:
+	Rejig GL setup as for stage to support an offscreen property. 
+        Offscreen support is however a little borked.
+
 2006-06-01  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-element.c:

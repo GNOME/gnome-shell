@@ -38,9 +38,13 @@ static ClutterElementClass *parent_class;
 struct ClutterStagePrivate
 {
   Window          xwin;  
-  gint            xwin_width, xwin_height;
+  Pixmap          xpixmap;
+  GLXPixmap       glxpixmap;
+  gint            xwin_width, xwin_height; /* FIXME target_width / height */
   gboolean        want_fullscreen;
+  gboolean        want_offscreen;
   gboolean        hide_cursor;
+  GLXContext      gl_context;
   ClutterColor    color;
 };
 
@@ -48,6 +52,7 @@ enum
 {
   PROP_0,
   PROP_FULLSCREEN,
+  PROP_OFFSCREEN,
   PROP_HIDE_CURSOR
 };
 
@@ -198,15 +203,17 @@ sync_gl_viewport (ClutterStage *stage)
 static void
 clutter_stage_show (ClutterElement *self)
 {
-  XMapWindow (clutter_xdisplay(), 
-	      clutter_stage_get_xwindow (CLUTTER_STAGE(self)));
+  if (clutter_stage_get_xwindow (CLUTTER_STAGE(self)))
+    XMapWindow (clutter_xdisplay(), 
+		clutter_stage_get_xwindow (CLUTTER_STAGE(self)));
 }
 
 static void
 clutter_stage_hide (ClutterElement *self)
 {
-  XUnmapWindow (clutter_xdisplay(), 
-		clutter_stage_get_xwindow (CLUTTER_STAGE(self)));
+  if (clutter_stage_get_xwindow (CLUTTER_STAGE(self)))
+    XUnmapWindow (clutter_xdisplay(), 
+		  clutter_stage_get_xwindow (CLUTTER_STAGE(self)));
 }
 
 static void
@@ -218,8 +225,28 @@ clutter_stage_unrealize (ClutterElement *element)
   stage = CLUTTER_STAGE(element);
   priv = stage->priv;
 
-  XDestroyWindow (clutter_xdisplay(), priv->xwin);
-  priv->xwin = None;
+  if (priv->want_offscreen)
+    {
+      if (priv->glxpixmap)
+	{
+	  glXDestroyGLXPixmap (clutter_xdisplay(), priv->glxpixmap);
+	  priv->glxpixmap = None;
+	}
+
+      if (priv->xpixmap)
+	{
+	  XFreePixmap (clutter_xdisplay(), priv->xpixmap);
+	  priv->xpixmap = None;
+	}
+    }
+  else
+    {
+      if (clutter_stage_get_xwindow (CLUTTER_STAGE(element)))
+	{
+	  XDestroyWindow (clutter_xdisplay(), priv->xwin);
+	  priv->xwin = None;
+	}
+    }
 }
 
 static void
@@ -232,28 +259,63 @@ clutter_stage_realize (ClutterElement *element)
 
   priv = stage->priv;
 
-  priv->xwin = XCreateSimpleWindow(clutter_xdisplay(),
-				   clutter_root_xwindow(),
-				   0, 0,
-				   priv->xwin_width, priv->xwin_height,
-				   0, 0, 
-				   WhitePixel(clutter_xdisplay(), 
-					      clutter_xscreen()));
+  if (priv->want_offscreen)
+    {
+      priv->xpixmap = XCreatePixmap (clutter_xdisplay(),
+				     clutter_root_xwindow(),
+				     priv->xwin_width, priv->xwin_height,
+				     clutter_xvisual()->depth);
 
-  XSelectInput(clutter_xdisplay(), 
-	       priv->xwin, 
-	       StructureNotifyMask
-	       |ExposureMask
-	       |KeyPressMask
-	       |KeyReleaseMask
-	       |ButtonPressMask	    /* FIXME: Make optional ? */
-	       |ButtonReleaseMask
-	       |PropertyChangeMask);
+      priv->glxpixmap = glXCreateGLXPixmap(clutter_xdisplay(),
+					   clutter_xvisual(),
+					   priv->xpixmap);
+      sync_fullscreen (stage);  
 
-  sync_fullscreen (stage);  
-  sync_cursor_visible (stage);  
+      if (priv->gl_context)
+	glXDestroyContext (clutter_xdisplay(), priv->gl_context);
 
-  glXMakeCurrent(clutter_xdisplay(), priv->xwin, clutter_gl_context());
+      /* indirect */
+      priv->gl_context = glXCreateContext (clutter_xdisplay(), 
+					   clutter_xvisual(), 
+					   0, 
+					   False);
+      
+      glXMakeCurrent(clutter_xdisplay(), priv->glxpixmap, priv->gl_context);
+    }
+  else
+    {
+      priv->xwin = XCreateSimpleWindow(clutter_xdisplay(),
+				       clutter_root_xwindow(),
+				       0, 0,
+				       priv->xwin_width, priv->xwin_height,
+				       0, 0, 
+				       WhitePixel(clutter_xdisplay(), 
+						  clutter_xscreen()));
+
+      XSelectInput(clutter_xdisplay(), 
+		   priv->xwin, 
+		   StructureNotifyMask
+		   |ExposureMask
+		   |KeyPressMask
+		   |KeyReleaseMask
+		   |ButtonPressMask
+		   |ButtonReleaseMask
+		   |PropertyChangeMask);
+
+      sync_fullscreen (stage);  
+      sync_cursor_visible (stage);  
+
+      if (priv->gl_context)
+	glXDestroyContext (clutter_xdisplay(), priv->gl_context);
+
+      priv->gl_context = glXCreateContext (clutter_xdisplay(), 
+					   clutter_xvisual(), 
+					   0, 
+					   True);
+      
+      glXMakeCurrent(clutter_xdisplay(), priv->xwin, priv->gl_context);
+    }
+
   sync_gl_viewport (stage);
 }
 
@@ -298,6 +360,14 @@ clutter_stage_request_coords (ClutterElement    *self,
 		       priv->xwin, 
 		       priv->xwin_width, 
 		       priv->xwin_height);
+
+      if (priv->xpixmap)
+	{
+	  /* Need to recreate to resize */
+	  clutter_element_unrealize(self);
+	  clutter_element_realize(self);
+	}
+
       sync_gl_viewport (stage);
     }
 
@@ -351,6 +421,14 @@ clutter_stage_set_property (GObject      *object,
 
   switch (prop_id) 
     {
+    case PROP_OFFSCREEN:
+      if (priv->want_offscreen != g_value_get_boolean (value))
+	{
+	  clutter_element_unrealize(CLUTTER_ELEMENT(stage));
+	  priv->want_offscreen = g_value_get_boolean (value);
+	  clutter_element_realize(CLUTTER_ELEMENT(stage));
+	}
+      break;
     case PROP_FULLSCREEN:
       if (priv->want_fullscreen != g_value_get_boolean (value))
 	{
@@ -385,6 +463,9 @@ clutter_stage_get_property (GObject    *object,
 
   switch (prop_id) 
     {
+    case PROP_OFFSCREEN:
+      g_value_set_boolean (value, priv->want_offscreen);
+      break;
     case PROP_FULLSCREEN:
       g_value_set_boolean (value, priv->want_fullscreen);
       break;
@@ -431,6 +512,15 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			   "Make Clutter stage fullscreen",
 			   FALSE,
 			   G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+
+  g_object_class_install_property
+    (gobject_class, PROP_OFFSCREEN,
+     g_param_spec_boolean ("offscreen",
+			   "Offscreen",
+			   "Make Clutter stage offscreen",
+			   FALSE,
+			   G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+
 
   g_object_class_install_property
     (gobject_class, PROP_HIDE_CURSOR,
@@ -573,7 +663,7 @@ clutter_stage_pick (ClutterStage *stage, gint x, gint y)
 {
   ClutterElement *found = NULL;
   GLuint          buff[64] = {0};
-  GLint           hits, view[4], i;
+  GLint           hits, view[4];
  
   glSelectBuffer(64, buff);
   glGetIntegerv(GL_VIEWPORT, view);
@@ -606,6 +696,8 @@ clutter_stage_pick (ClutterStage *stage, gint x, gint y)
   if (hits != 0)
     {
       /*
+      int i;	 
+
       for (i=0; i<hits; i++)
 	g_print ("Hit at %i\n", buff[i * 4 + 3]);
       */

@@ -256,6 +256,14 @@ clutter_element_raise_top (ClutterElement *self);
 void
 clutter_element_lower_bottom (ClutterElement *self);
 
+void
+clutter_element_set_depth (ClutterElement *self,
+                           gint            depth);
+
+gint
+clutter_element_get_depth (ClutterElement *self);
+
+
 G_END_DECLS
 
 #endif

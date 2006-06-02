@@ -102,6 +102,13 @@ clutter_stage_set_color (ClutterStage *stage,
 ClutterColor
 clutter_stage_get_color (ClutterStage *stage);
 
+GdkPixbuf*
+clutter_stage_snapshot (ClutterStage *stage,
+			gint          x,
+			gint          y,
+			guint         width,
+			guint         height);
+
 ClutterElement*
 clutter_stage_pick (ClutterStage *stage, gint x, gint y);
 

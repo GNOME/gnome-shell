@@ -52,8 +52,8 @@ typedef struct ClutterMainContext
   Window            xwin_root;
   int               xscreen;
   GC                xgc;
+  XVisualInfo      *xvinfo;  
   PangoFT2FontMap *font_map;
-  GLXContext       gl_context;
   GMutex          *gl_lock;
   guint            update_idle;
   ClutterStage    *stage;

@@ -80,8 +80,8 @@ clutter_xscreen (void);
 Window
 clutter_root_xwindow (void);
 
-GLXContext
-clutter_gl_context (void);
+XVisualInfo*
+clutter_xvisual(void);
 
 gboolean
 clutter_want_debug (void);
