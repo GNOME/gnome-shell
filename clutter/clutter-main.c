@@ -260,6 +260,14 @@ clutter_redraw ()
 
   if (clutter_stage_get_xwindow (stage))
     {
+#if 0
+      unsigned int retraceCount;
+
+      // Wait for vertical retrace
+      // glXGetVideoSyncSGI(&retraceCount);
+      // glXWaitVideoSyncSGI(2, (retraceCount+1)%2, &retraceCount);
+      glXWaitVideoSyncSGI(1, 0, &retraceCount);
+#endif
       glXSwapBuffers(ctx->xdpy, clutter_stage_get_xwindow (stage));  
     }
   else

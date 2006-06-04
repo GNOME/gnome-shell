@@ -56,7 +56,7 @@ struct _ClutterElementPrivate
   gint                    z; 	/* to element box ? */
 
   guint8                  opacity;
-  ClutterElement         *parent_element;
+  ClutterElement         *parent_element; /* This should always be a group */
   gchar                  *name;
   guint32                 id; 	/* Unique ID */
 };
@@ -291,7 +291,8 @@ clutter_element_paint (ClutterElement *self)
 		     (float)(-1.0 * self->priv->z) - self->priv->rxz);
     }
 
-  
+  if (self->priv->z)
+    glTranslatef ( 0.0, 0.0, (float)self->priv->z);
 
   if (klass->paint)
     (klass->paint) (self);
@@ -937,9 +938,15 @@ static void
 depth_sorter_foreach (ClutterElement *element, gpointer user_data)
 {
   ClutterElement *element_to_sort = CLUTTER_ELEMENT(user_data);
+  gint            z_copy;
+
+  z_copy = element->priv->z;
 
   if (element_to_sort->priv->z > element->priv->z) 
-    clutter_element_raise (element_to_sort, element);
+    {
+      clutter_element_raise (element_to_sort, element);
+      element->priv->z = z_copy;
+    }
 }
 
 /**
@@ -953,20 +960,19 @@ void
 clutter_element_set_depth (ClutterElement *self,
                            gint            depth)
 {
-  /* Sets Z value. Note probably need to sort via stacking order
-   * so rendering correct with alpha values. 
-  */
+  /* Sets Z value.*/
   self->priv->z = depth;
 
   if (self->priv->parent_element)
     {
-      /* Fix stacking ordering so rendering correct */
-
-      clutter_element_lower_bottom (self);
-
-      clutter_group_foreach (CLUTTER_GROUP(self->priv->parent_element),
-			     depth_sorter_foreach,
-			     (gpointer)self);
+      /* We need to resort the group stacking order as to
+       * correctly render alpha values. 
+       *
+       * FIXME: This is sub optimal. maybe queue the the sort 
+       *        before stacking  
+      */
+      clutter_group_sort_depth_order 
+	(CLUTTER_GROUP(self->priv->parent_element));
     }
 }
 

@@ -1,3 +1,13 @@
+2006-06-04  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-element.c:
+	* clutter/clutter-group.c:
+	* clutter/clutter-group.h:
+	Work more on depth ( Z ) setting with sorting. 
+
+	* clutter/clutter-main.c: (clutter_redraw):
+	Experiment with glXWaitVideoSyncSGI. Currently disabled.
+
 2006-06-02  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-element.h:

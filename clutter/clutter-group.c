@@ -205,6 +205,7 @@ clutter_group_new (void)
 GList*
 clutter_group_get_children (ClutterGroup *self)
 {
+  /* FIXME: remane get_actors() */
   g_return_val_if_fail (CLUTTER_IS_GROUP (self), NULL);
 
   return g_list_copy(self->priv->children);
@@ -294,9 +295,7 @@ clutter_group_add (ClutterGroup *self, ClutterElement *element)
   /* below refs */
   clutter_element_set_parent (element, CLUTTER_ELEMENT(self));
 
-  /* FIXME: Force Sort any Z ordering, or set to 0 ? */
-  if (clutter_element_get_depth (element) != 0)
-    clutter_element_set_depth (element, clutter_element_get_depth (element));
+  clutter_group_sort_depth_order (self); 
 }
 
 /**
@@ -442,7 +441,7 @@ clutter_group_raise (ClutterGroup     *self,
 		     ClutterElement *sibling)
 {
   ClutterGroupPrivate *priv;
-  gint               pos;
+  gint                 pos;
 
   g_return_if_fail (element != sibling);
 
@@ -453,9 +452,27 @@ clutter_group_raise (ClutterGroup     *self,
   priv->children = g_list_remove (priv->children, element); 
 
   if (sibling == NULL)
-    priv->children = g_list_append (priv->children, element);
+    {
+      GList *last_item;
+      /* Raise top */
+      last_item = g_list_last (priv->children);
+      sibling = last_item->data;
+      priv->children = g_list_append (priv->children, element);
+    }
   else
-    priv->children = g_list_insert (priv->children, element, pos);
+    {
+      priv->children = g_list_insert (priv->children, element, pos);
+    }
+
+  /* set Z ordering a value below, this will then call sort
+   * as values are equal ordering shouldn't change but Z
+   * values will be correct.
+   * FIXME: optimise
+   */
+  if (clutter_element_get_depth(sibling) != clutter_element_get_depth(element))
+    clutter_element_set_depth (element,
+			       clutter_element_get_depth(sibling));
+
 }
 
 void
@@ -475,7 +492,55 @@ clutter_group_lower (ClutterGroup     *self,
   priv->children = g_list_remove (priv->children, element); 
 
   if (sibling == NULL)
-    priv->children = g_list_prepend (priv->children, element);
+    {
+      GList *last_item;
+      /* Raise top */
+      last_item = g_list_first (priv->children);
+      sibling = last_item->data;
+
+      priv->children = g_list_prepend (priv->children, element);
+    }
   else
     priv->children = g_list_insert (priv->children, element, pos);
+
+  /* See comment in group_raise for this */
+  if (clutter_element_get_depth(sibling) != clutter_element_get_depth(element))
+    clutter_element_set_depth (element,
+			       clutter_element_get_depth(sibling));
+}
+
+static gint 
+sort_z_order (gconstpointer a, gconstpointer b)
+{
+  if (clutter_element_get_depth (CLUTTER_ELEMENT(a)) 
+         == clutter_element_get_depth (CLUTTER_ELEMENT(b))) 
+    return 0;
+
+  if (clutter_element_get_depth (CLUTTER_ELEMENT(a)) 
+        > clutter_element_get_depth (CLUTTER_ELEMENT(b))) 
+    return 1;
+
+  return -1;
+}
+
+/**
+ * clutter_group_sort_z_order:
+ * @self: A #ClutterGroup
+ *
+ * Sorts a #ClutterGroup's children by there depth value.  
+ * This function should not be used by applications. 
+ **/
+void
+clutter_group_sort_depth_order (ClutterGroup *self)
+{
+  ClutterGroupPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_GROUP(self));
+
+  priv = self->priv;
+
+  priv->children = g_list_sort (priv->children, sort_z_order);
+
+  if (CLUTTER_ELEMENT_IS_VISIBLE (CLUTTER_ELEMENT(self)))
+    clutter_element_queue_redraw (CLUTTER_ELEMENT(self));
 }

@@ -125,6 +125,9 @@ clutter_group_lower (ClutterGroup     *self,
 		     ClutterElement *element, 
 		     ClutterElement *sibling);
 
+void
+clutter_group_sort_depth_order (ClutterGroup *self);
+
 G_END_DECLS
 
 #endif
