@@ -438,7 +438,7 @@ clutter_group_remove (ClutterGroup   *self,
   g_return_if_fail (CLUTTER_IS_ELEMENT (element));
 
   parent = clutter_element_get_parent (element);
-  if (element != CLUTTER_ELEMENT (self))
+  if (parent != CLUTTER_ELEMENT (self))
     {
       g_warning ("Attempting to remove element of type `%s' from "
 		 "group of class `%s', but the group is not the "

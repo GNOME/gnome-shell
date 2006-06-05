@@ -1,5 +1,10 @@
 2006-06-05  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/clutter-group.c: (clutter_group_remove):
+	Fix parent check.
+
+2006-06-05  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-event.h:
 	Remove send_event field. Clutter shouldn't need it.  
 
