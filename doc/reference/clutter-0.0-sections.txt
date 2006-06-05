@@ -1,29 +1,30 @@
 <SECTION>
 <FILE>clutter-label</FILE>
+ClutterLabelPrivate
 <TITLE>ClutterLabel</TITLE>
 ClutterLabel
-ClutterLabelClass
-clutter_label_new_with_text
 clutter_label_new
+clutter_label_new_with_text
 clutter_label_set_text
-clutter_label_set_font
+clutter_label_get_text
+clutter_label_set_font_name
+clutter_label_get_font_name
 clutter_label_set_color
+clutter_label_get_color
 clutter_label_set_text_extents
+clutter_label_get_text_extents
 <SUBSECTION Standard>
 CLUTTER_LABEL
 CLUTTER_IS_LABEL
 CLUTTER_TYPE_LABEL
+clutter_label_get_type
 CLUTTER_LABEL_CLASS
 CLUTTER_IS_LABEL_CLASS
 CLUTTER_LABEL_GET_CLASS
-<SUBSECTION Private>
-ClutterLabelPrivate
-clutter_label_get_type
 </SECTION>
 
 <SECTION>
 <FILE>clutter-element</FILE>
-<TITLE>ClutterElement</TITLE>
 CLUTTER_TYPE_GEOMETRY
 CLUTTER_TYPE_ELEMENT_BOX
 CLUTTER_ELEMENT_SET_FLAGS
@@ -32,12 +33,14 @@ CLUTTER_ELEMENT_IS_MAPPED
 CLUTTER_ELEMENT_IS_REALIZED
 CLUTTER_ELEMENT_IS_VISIBLE
 ClutterElementBox
+ClutterElementPrivate
 ClutterGeometry
+ClutterCallback
 ClutterElementTransform
 ClutterElementFlags
 clutter_element_box_get_type
+<TITLE>ClutterElement</TITLE>
 ClutterElement
-ClutterElementClass
 clutter_element_get_type
 clutter_element_show
 clutter_element_hide
@@ -77,12 +80,10 @@ clutter_element_lower_bottom
 CLUTTER_ELEMENT
 CLUTTER_IS_ELEMENT
 CLUTTER_TYPE_ELEMENT
+clutter_geometry_get_type
 CLUTTER_ELEMENT_CLASS
 CLUTTER_IS_ELEMENT_CLASS
 CLUTTER_ELEMENT_GET_CLASS
-<SUBSECTION Private>
-clutter_geometry_get_type
-ClutterElementPrivate
 </SECTION>
 
 <SECTION>
@@ -91,6 +92,8 @@ ClutterGroupPrivate
 <TITLE>ClutterGroup</TITLE>
 ClutterGroup
 clutter_group_new
+clutter_group_get_children
+clutter_group_foreach
 clutter_group_add
 clutter_group_add_many_valist
 clutter_group_add_many
@@ -162,7 +165,7 @@ ClutterStage
 clutter_stage_get_xwindow
 clutter_stage_set_color
 clutter_stage_get_color
-clutter_stage_pick
+clutter_stage_get_element_at_pos
 <SUBSECTION Standard>
 CLUTTER_STAGE
 CLUTTER_IS_STAGE
@@ -171,22 +174,6 @@ clutter_stage_get_type
 CLUTTER_STAGE_CLASS
 CLUTTER_IS_STAGE_CLASS
 CLUTTER_STAGE_GET_CLASS
-</SECTION>
-
-<SECTION>
-<FILE>clutter-rectangle</FILE>
-ClutterRectanglePrivate
-<TITLE>ClutterRectangle</TITLE>
-ClutterRectangle
-clutter_rectangle_new
-<SUBSECTION Standard>
-CLUTTER_RECTANGLE
-CLUTTER_IS_RECTANGLE
-CLUTTER_TYPE_RECTANGLE
-clutter_rectangle_get_type
-CLUTTER_RECTANGLE_CLASS
-CLUTTER_IS_RECTANGLE_CLASS
-CLUTTER_RECTANGLE_GET_CLASS
 </SECTION>
 
 <SECTION>
@@ -229,6 +216,25 @@ CLUTTER_VIDEO_TEXTURE_GET_CLASS
 </SECTION>
 
 <SECTION>
+<FILE>clutter-rectangle</FILE>
+ClutterRectanglePrivate
+<TITLE>ClutterRectangle</TITLE>
+ClutterRectangle
+clutter_rectangle_new
+clutter_rectangle_new_with_color
+clutter_rectangle_get_color
+clutter_rectangle_set_color
+<SUBSECTION Standard>
+CLUTTER_RECTANGLE
+CLUTTER_IS_RECTANGLE
+CLUTTER_TYPE_RECTANGLE
+clutter_rectangle_get_type
+CLUTTER_RECTANGLE_CLASS
+CLUTTER_IS_RECTANGLE_CLASS
+CLUTTER_RECTANGLE_GET_CLASS
+</SECTION>
+
+<SECTION>
 <FILE>clutter-timeline</FILE>
 ClutterTimelinePrivate
 <TITLE>ClutterTimeline</TITLE>
@@ -244,6 +250,7 @@ clutter_timeline_skip
 clutter_timeline_advance
 clutter_timeline_get_current_frame
 clutter_timeline_get_n_frames
+clutter_timeline_is_playing
 <SUBSECTION Standard>
 CLUTTER_TIMELINE
 CLUTTER_IS_TIMELINE
@@ -262,18 +269,16 @@ clutter_util_can_create_texture
 
 <SECTION>
 <FILE>clutter-color</FILE>
-clutter_color_r
-clutter_color_g
-clutter_color_b
-clutter_color_a
-clutter_color_set_r
-clutter_color_set_g
-clutter_color_set_b
-clutter_color_set_a
+CLUTTER_TYPE_COLOR
 ClutterColor
-clutter_color_new
-clutter_color_set
-clutter_color_get
+clutter_color_get_type
+clutter_color_add
+clutter_color_subtract
+clutter_color_lighten
+clutter_color_darken
+clutter_color_shade
+clutter_color_to_hls
+clutter_color_from_hls
 </SECTION>
 
 <SECTION>
@@ -1681,9 +1686,5 @@ CLUTTER_TYPE_VIDEO_TEXTURE_ASPECT_RATIO
 clutter_video_texture_aspect_ratio_get_type
 CLUTTER_TYPE_VIDEO_TEXTURE_METADATA_TYPE
 clutter_video_texture_metadata_type_get_type
-</SECTION>
-
-<SECTION>
-<FILE>stamp-clutter-enum-types</FILE>
 </SECTION>
 

@@ -26,7 +26,7 @@
 #ifndef _HAVE_CLUTTER_EVENT_H
 #define _HAVE_CLUTTER_EVENT_H
 
-#include <glib.h>
+#include <glib-object.h>
 
 G_BEGIN_DECLS
 
@@ -43,6 +43,8 @@ enum
 
 typedef enum 
 {
+  CLUTTER_NOTHING,
+  
   CLUTTER_KEY_PRESS,
   CLUTTER_KEY_RELEASE,
   CLUTTER_MOTION,
@@ -51,13 +53,22 @@ typedef enum
   CLUTTER_BUTTON_RELEASE
 } ClutterEventType;
 
+#define CLUTTER_TYPE_EVENT	(clutter_event_get_type ())
+
 typedef union _ClutterEvent ClutterEvent;
 
+typedef struct _ClutterAnyEvent    ClutterAnyEvent;
 typedef struct _ClutterKeyEvent    ClutterKeyEvent;
 typedef struct _ClutterButtonEvent ClutterButtonEvent;
 typedef struct _ClutterMotionEvent ClutterMotionEvent;
 
 typedef struct _ClutterInputDevice ClutterInputDevice;
+
+struct _ClutterAnyEvent
+{
+  ClutterEventType  type;
+  guint8            send_event : 1;
+};
 
 struct _ClutterKeyEvent
 {
@@ -95,10 +106,17 @@ union _ClutterEvent
 {
   ClutterEventType   type;
   
+  ClutterAnyEvent    any;
   ClutterKeyEvent    key_event;
   ClutterButtonEvent button_event;
   ClutterMotionEvent motion_event;
 };
+
+GType clutter_event_get_type (void) G_GNUC_CONST;
+
+ClutterEvent *clutter_event_new  (ClutterEventType  type);
+ClutterEvent *clutter_event_copy (ClutterEvent     *event);
+void          clutter_event_free (ClutterEvent     *event);
 
 ClutterEventType
 clutter_key_event_type (ClutterKeyEvent *keyev);

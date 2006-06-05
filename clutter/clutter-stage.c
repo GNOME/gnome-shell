@@ -23,34 +23,47 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "config.h"
+
 #include "clutter-stage.h"
 #include "clutter-main.h"
 #include "clutter-color.h"
+#include "clutter-marshal.h"
+#include "clutter-enum-types.h"
 #include "clutter-private.h" 	/* for DBG */
 
 #include <GL/glx.h>
 #include <GL/gl.h>
 
+/* the stage is a singleton instance */
+static ClutterStage *stage_singleton = NULL;
+
 G_DEFINE_TYPE (ClutterStage, clutter_stage, CLUTTER_TYPE_GROUP);
 
-static ClutterElementClass *parent_class;
+#define CLUTTER_STAGE_GET_PRIVATE(obj) \
+(G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_STAGE, ClutterStagePrivate))
 
-struct ClutterStagePrivate
+struct _ClutterStagePrivate
 {
-  Window          xwin;  
-  Pixmap          xpixmap;
-  GLXPixmap       glxpixmap;
-  gint            xwin_width, xwin_height; /* FIXME target_width / height */
-  gboolean        want_fullscreen;
-  gboolean        want_offscreen;
-  gboolean        hide_cursor;
-  GLXContext      gl_context;
-  ClutterColor    color;
+  Window        xwin;  
+  Pixmap        xpixmap;
+  gint          xwin_width, xwin_height; /* FIXME target_width / height */
+  
+  GLXPixmap     glxpixmap;
+  GLXContext    gl_context;
+  
+  ClutterColor  color;
+  
+  guint         want_fullscreen : 1;
+  guint         want_offscreen  : 1;
+  guint         hide_cursor     : 1;
 };
 
 enum
 {
   PROP_0,
+  
+  PROP_COLOR,
   PROP_FULLSCREEN,
   PROP_OFFSCREEN,
   PROP_HIDE_CURSOR
@@ -58,11 +71,19 @@ enum
 
 enum
 {
-  SIGNAL_INPUT_EVENT,
+  INPUT_EVENT,
+  BUTTON_PRESS_EVENT,
+  BUTTON_RELEASE_EVENT,
+  KEY_PRESS_EVENT,
+  KEY_RELEASE_EVENT,
+  MOTION_EVENT,
+  
   LAST_SIGNAL
 };
 
-static int stage_signals[LAST_SIGNAL] = { 0 };
+static guint stage_signals[LAST_SIGNAL] = { 0 };
+
+static ClutterElementClass *parent_class = NULL;
 
 static void
 sync_fullscreen (ClutterStage *stage)
@@ -322,7 +343,7 @@ clutter_stage_realize (ClutterElement *element)
 static void
 clutter_stage_paint (ClutterElement *self)
 {
-  parent_class->paint(self);
+  parent_class->paint (self);
 }
 
 static void
@@ -343,8 +364,7 @@ clutter_stage_request_coords (ClutterElement    *self,
   ClutterStagePrivate *priv;
   gint                 new_width, new_height;
 
-  stage = CLUTTER_STAGE(self);
-
+  stage = CLUTTER_STAGE (self);
   priv = stage->priv;
 
   new_width  = ABS(box->x2 - box->x1);
@@ -381,13 +401,10 @@ clutter_stage_request_coords (ClutterElement    *self,
 static void 
 clutter_stage_dispose (GObject *object)
 {
-  ClutterStage *self = CLUTTER_STAGE(object);
+  ClutterStage *self = CLUTTER_STAGE (object);
 
-  if (self->priv)
-    {
-      if (self->priv->xwin)
-	clutter_stage_unrealize (CLUTTER_ELEMENT(self));
-    }
+  if (self->priv->xwin)
+    clutter_stage_unrealize (CLUTTER_ELEMENT (self));
 
   G_OBJECT_CLASS (clutter_stage_parent_class)->dispose (object);
 }
@@ -395,14 +412,6 @@ clutter_stage_dispose (GObject *object)
 static void 
 clutter_stage_finalize (GObject *object)
 {
-  ClutterStage *self = CLUTTER_STAGE(object);
-
-  if (self->priv)
-    {
-      g_free(self->priv);
-      self->priv = NULL;
-    }
-
   G_OBJECT_CLASS (clutter_stage_parent_class)->finalize (object);
 }
 
@@ -421,12 +430,15 @@ clutter_stage_set_property (GObject      *object,
 
   switch (prop_id) 
     {
+    case PROP_COLOR:
+      clutter_stage_set_color (stage, g_value_get_boxed (value));
+      break;
     case PROP_OFFSCREEN:
       if (priv->want_offscreen != g_value_get_boolean (value))
 	{
-	  clutter_element_unrealize(CLUTTER_ELEMENT(stage));
+	  clutter_element_unrealize (CLUTTER_ELEMENT(stage));
 	  priv->want_offscreen = g_value_get_boolean (value);
-	  clutter_element_realize(CLUTTER_ELEMENT(stage));
+	  clutter_element_realize (CLUTTER_ELEMENT(stage));
 	}
       break;
     case PROP_FULLSCREEN:
@@ -457,12 +469,17 @@ clutter_stage_get_property (GObject    *object,
 {
   ClutterStage        *stage;
   ClutterStagePrivate *priv;
+  ClutterColor         color;
 
   stage = CLUTTER_STAGE(object);
   priv = stage->priv;
 
   switch (prop_id) 
     {
+    case PROP_COLOR:
+      clutter_stage_get_color (stage, &color);
+      g_value_set_boxed (value, &color);
+      break;
     case PROP_OFFSCREEN:
       g_value_set_boolean (value, priv->want_offscreen);
       break;
@@ -481,13 +498,10 @@ clutter_stage_get_property (GObject    *object,
 static void
 clutter_stage_class_init (ClutterStageClass *klass)
 {
-  GObjectClass        *gobject_class;
-  ClutterElementClass *element_class;
-  ClutterGroupClass     *group_class;
+  GObjectClass        *gobject_class = G_OBJECT_CLASS (klass);
+  ClutterElementClass *element_class = CLUTTER_ELEMENT_CLASS (klass);
 
-  gobject_class = (GObjectClass*)klass;
-  element_class = (ClutterElementClass*)klass;
-  group_class     = (ClutterGroupClass*)klass;
+  parent_class = g_type_class_peek_parent (klass);
 
   element_class->realize    = clutter_stage_realize;
   element_class->unrealize  = clutter_stage_unrealize;
@@ -503,15 +517,18 @@ clutter_stage_class_init (ClutterStageClass *klass)
   gobject_class->set_property = clutter_stage_set_property;
   gobject_class->get_property = clutter_stage_get_property;
 
-  parent_class = g_type_class_peek_parent(group_class);
-
+  /**
+   * ClutterStage:fullscreen
+   *
+   * Whether the stage should be fullscreen or not.
+   */
   g_object_class_install_property
     (gobject_class, PROP_FULLSCREEN,
      g_param_spec_boolean ("fullscreen",
 			   "Fullscreen",
 			   "Make Clutter stage fullscreen",
 			   FALSE,
-			   G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+			   G_PARAM_READWRITE));
 
   g_object_class_install_property
     (gobject_class, PROP_OFFSCREEN,
@@ -519,7 +536,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			   "Offscreen",
 			   "Make Clutter stage offscreen",
 			   FALSE,
-			   G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+			   G_PARAM_READWRITE));
 
 
   g_object_class_install_property
@@ -528,33 +545,128 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			   "Hide Cursor",
 			   "Make Clutter stage cursor-less",
 			   FALSE,
-			   G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+			   G_PARAM_READWRITE));
 
-  stage_signals[SIGNAL_INPUT_EVENT] =
+  g_object_class_install_property
+    (gobject_class, PROP_COLOR,
+     g_param_spec_boxed ("color",
+			 "Color",
+			 "The color of the stage",
+			 CLUTTER_TYPE_COLOR,
+			 G_PARAM_READWRITE));
+
+  stage_signals[INPUT_EVENT] =
     g_signal_new ("input-event",
 		  G_TYPE_FROM_CLASS (gobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterStageClass, input_event),
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__POINTER,
-		  G_TYPE_NONE, 
-		  1, G_TYPE_POINTER);
+		  clutter_marshal_VOID__BOXED,
+		  G_TYPE_NONE, 1,
+		  CLUTTER_TYPE_EVENT);
+  stage_signals[BUTTON_PRESS_EVENT] =
+    g_signal_new ("button-press-event",
+		  G_TYPE_FROM_CLASS (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterStageClass, button_press_event),
+		  NULL, NULL,
+		  clutter_marshal_VOID__BOXED,
+		  G_TYPE_NONE, 1,
+		  CLUTTER_TYPE_EVENT);
+  stage_signals[BUTTON_RELEASE_EVENT] =
+    g_signal_new ("button-release-event",
+		  G_TYPE_FROM_CLASS (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterStageClass, button_release_event),
+		  NULL, NULL,
+		  clutter_marshal_VOID__BOXED,
+		  G_TYPE_NONE, 1,
+		  CLUTTER_TYPE_EVENT);
+  stage_signals[BUTTON_PRESS_EVENT] =
+    g_signal_new ("key-press-event",
+		  G_TYPE_FROM_CLASS (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterStageClass, key_press_event),
+		  NULL, NULL,
+		  clutter_marshal_VOID__BOXED,
+		  G_TYPE_NONE, 1,
+		  CLUTTER_TYPE_EVENT);
+  stage_signals[BUTTON_RELEASE_EVENT] =
+    g_signal_new ("key-release-event",
+		  G_TYPE_FROM_CLASS (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterStageClass, key_release_event),
+		  NULL, NULL,
+		  clutter_marshal_VOID__BOXED,
+		  G_TYPE_NONE, 1,
+		  CLUTTER_TYPE_EVENT);
+  stage_signals[MOTION_EVENT] =
+    g_signal_new ("motion-event",
+		  G_TYPE_FROM_CLASS (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterStageClass, motion_event),
+		  NULL, NULL,
+		  clutter_marshal_VOID__BOXED,
+		  G_TYPE_NONE, 1,
+		  CLUTTER_TYPE_EVENT);
+  
+  g_type_class_add_private (gobject_class, sizeof (ClutterStagePrivate));
 }
 
 static void
 clutter_stage_init (ClutterStage *self)
 {
   ClutterStagePrivate *priv;
+  
+  self->priv = priv = CLUTTER_STAGE_GET_PRIVATE (self);
 
-  priv        = g_new0 (ClutterStagePrivate, 1);
+  priv->want_offscreen = FALSE;
+  priv->want_fullscreen = FALSE;
+  priv->hide_cursor = FALSE;
 
   priv->xwin_width  = 100;
   priv->xwin_height = 100;
-  priv->color       = 0xffffffff;
-  self->priv  = priv;
 
-  clutter_element_set_size (CLUTTER_ELEMENT(self), 640, 480);
+  priv->color.red   = 0xff;
+  priv->color.green = 0xff;
+  priv->color.blue  = 0xff;
+  priv->color.alpha = 0xff;
+  
+  clutter_element_set_size (CLUTTER_ELEMENT (self), 640, 480);
 }
+
+/**
+ * clutter_stage_get_default:
+ *
+ * Returns the main stage.  #ClutterStage is a singleton, so
+ * the stage will be created the first time this function is
+ * called (typically, inside clutter_init()); all the subsequent
+ * calls to clutter_stage_get_default() will return the same
+ * instance, with its reference count increased.
+ *
+ * Return value: the main #ClutterStage.  Use g_object_unref()
+ *   when finished using it.
+ */
+ClutterElement *
+clutter_stage_get_default (void)
+{
+  ClutterElement *retval = NULL;
+  
+  if (!stage_singleton)
+    {
+      stage_singleton = g_object_new (CLUTTER_TYPE_STAGE, NULL);
+      retval = CLUTTER_ELEMENT (stage_singleton);
+    }
+  else
+    {
+      retval = CLUTTER_ELEMENT (stage_singleton);
+      g_object_ref (retval);
+    }
+
+  return retval;
+  
+}
+
 
 /**
  * clutter_stage_get_xwindow
@@ -578,42 +690,66 @@ clutter_stage_get_xwindow (ClutterStage *stage)
  * Set the stage color.
  **/
 void
-clutter_stage_set_color (ClutterStage *stage,
-			 ClutterColor  color)
+clutter_stage_set_color (ClutterStage       *stage,
+			 const ClutterColor *color)
 {
-  stage->priv->color = color;
+  ClutterStagePrivate *priv;
 
-  if (CLUTTER_ELEMENT_IS_VISIBLE (CLUTTER_ELEMENT(stage)))
-    clutter_element_queue_redraw (CLUTTER_ELEMENT(stage));
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+  g_return_if_fail (color != NULL);
+  
+  priv = stage->priv;
+  priv->color.red = color->red;
+  priv->color.green = color->green;
+  priv->color.blue = color->blue;
+  priv->color.alpha = color->alpha;
+
+  if (CLUTTER_ELEMENT_IS_VISIBLE (CLUTTER_ELEMENT (stage)))
+    clutter_element_queue_redraw (CLUTTER_ELEMENT (stage));
+  
+  g_object_notify (G_OBJECT (stage), "color");
 }
 
 /**
- * clutter_stage_set_color
+ * clutter_stage_get_color
  * @stage: A #ClutterStage
+ * @color: return location for a #ClutterColor
  * 
  * Request the stage color.
- * 
- * Return Value: The stages #ClutterColor
- **/
-ClutterColor
-clutter_stage_get_color (ClutterStage *stage)
+ */
+void
+clutter_stage_get_color (ClutterStage *stage,
+			 ClutterColor *color)
 {
-  return stage->priv->color;
+  ClutterStagePrivate *priv;
+  
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+  g_return_if_fail (color != NULL);
+
+  priv = stage->priv;
+  
+  color->red = priv->color.red;
+  color->green = priv->color.green;
+  color->blue = priv->color.blue;
+  color->alpha = priv->color.alpha;
 }
 
 static void
-snapshot_pixbuf_free(guchar  *pixels, gpointer data)
+snapshot_pixbuf_free (guchar   *pixels,
+		      gpointer  data)
 {
   g_free(pixels);
 }
 
 /**
  * clutter_stage_snapshot
- * @stage A #ClutterStage
- * @x     x  coordinate of the first pixel that is read from stage
- * @y     y  coordinate of the first pixel that is read from stage
- * @width Width dimention of pixels to be read.
- * @height Height dimention of pixels to be read.
+ * @stage: A #ClutterStage
+ * @x: x coordinate of the first pixel that is read from stage
+ * @y: y coordinate of the first pixel that is read from stage
+ * @width: Width dimention of pixels to be read, or -1 for the
+ *   entire stage width
+ * @height: Height dimention of pixels to be read, or -1 for the
+ *   entire stage height
  *
  * Gets a pixel based representation of the current rendered stage.
  *
@@ -623,16 +759,28 @@ GdkPixbuf*
 clutter_stage_snapshot (ClutterStage *stage,
 			gint          x,
 			gint          y,
-			guint         width,
-			guint         height)
+			gint          width,
+			gint          height)
 {
   guchar    *data;
   GdkPixbuf *pixb, *fpixb;
+  ClutterElement *element;
 
-  data = g_malloc0(sizeof(guchar)*width*height*3);
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
+  g_return_val_if_fail (x >= 0 && y >= 0, NULL);
+
+  element = CLUTTER_ELEMENT (stage);
+
+  if (width < 0)
+    width = clutter_element_get_width (element);
+
+  if (height < 0)
+    height = clutter_element_get_height (element);
+
+  data = g_malloc0 (sizeof (guchar) * width * height * 3);
 
   glReadPixels (x, 
-		clutter_element_get_height(CLUTTER_ELEMENT(clutter_stage())) 
+		clutter_element_get_height (element) 
 		- y - height,
 		width, 
 		height, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -657,9 +805,21 @@ clutter_stage_snapshot (ClutterStage *stage,
   return fpixb;
 }
 
-/* FIXME: better name - pos_to_element */
+/**
+ * clutter_stage_get_element_at_pos:
+ * @stage: a #ClutterStage
+ * @x: the x coordinate
+ * @y: the y coordinate
+ *
+ * If found, retrieves the element that the (x, y) coordinates.
+ *
+ * Return value: the #ClutterElement at the desired coordinates,
+ *   or %NULL if no element was found.
+ */
 ClutterElement*
-clutter_stage_pick (ClutterStage *stage, gint x, gint y)
+clutter_stage_get_element_at_pos (ClutterStage *stage,
+				  gint          x,
+				  gint          y)
 {
   ClutterElement *found = NULL;
   GLuint          buff[64] = {0};
@@ -686,7 +846,7 @@ clutter_stage_pick (ClutterStage *stage, gint x, gint y)
 
   glMatrixMode(GL_MODELVIEW);
 
-  clutter_element_paint(CLUTTER_ELEMENT(stage));
+  clutter_element_paint (CLUTTER_ELEMENT (stage));
 
   glMatrixMode(GL_PROJECTION);
   glPopMatrix();
@@ -695,14 +855,13 @@ clutter_stage_pick (ClutterStage *stage, gint x, gint y)
 
   if (hits != 0)
     {
-      /*
-      int i;	 
-
-      for (i=0; i<hits; i++)
+#if 0
+      gint i
+      for (i = 0; i < hits; i++)
 	g_print ("Hit at %i\n", buff[i * 4 + 3]);
-      */
+#endif
   
-      found = clutter_group_find_child_by_id (clutter_stage(), buff[3]);
+      found = clutter_group_find_child_by_id (CLUTTER_GROUP (stage), buff[3]);
     }
   
   sync_gl_viewport (stage);

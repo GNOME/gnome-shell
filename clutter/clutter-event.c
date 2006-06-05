@@ -988,3 +988,47 @@ clutter_keysym_to_unicode (guint keyval)
   return 0;
 }
 
+ClutterEvent *
+clutter_event_new (ClutterEventType type)
+{
+  ClutterEvent *new_event;
+
+  new_event = g_new0 (ClutterEvent, 1);
+  new_event->any.type = type;
+
+  return new_event;
+}
+
+ClutterEvent *
+clutter_event_copy (ClutterEvent *event)
+{
+  ClutterEvent *new_event;
+
+  g_return_val_if_fail (event != NULL, NULL);
+
+  new_event = g_new (ClutterEvent, 1);
+  *new_event = *event;
+
+  return new_event;
+}
+
+void
+clutter_event_free (ClutterEvent *event)
+{
+  if (!event)
+    return;
+
+  g_free (event);
+}
+
+GType
+clutter_event_get_type (void)
+{
+  static GType our_type = 0;
+
+  if (!our_type)
+    our_type = g_boxed_type_register_static ("ClutterEvent",
+		    			     (GBoxedCopyFunc) clutter_event_copy,
+					     (GBoxedFreeFunc) clutter_event_free);
+  return our_type;
+}

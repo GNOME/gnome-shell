@@ -26,38 +26,52 @@
 #ifndef _HAVE_CLUTTER_COLOR_H
 #define _HAVE_CLUTTER_COLOR_H
 
-#include <glib.h>
+#include <glib-object.h>
 
 G_BEGIN_DECLS
 
-#define clutter_color_r(col) ((col) >> 24)
-#define clutter_color_g(col) (((col) >> 16) & 0xff)
-#define clutter_color_b(col) (((col) >> 8) & 0xff)
-#define clutter_color_a(col) ((col) & 0xff)
+#define CLUTTER_TYPE_COLOR	(clutter_color_get_type ())
 
-#define clutter_color_set_r(col,r) ((col) &= (r)) 
-#define clutter_color_set_g(col,g) ((col) &= (g << 8)) 
-#define clutter_color_set_b(col,b) ((col) &= (b << 16)) 
-#define clutter_color_set_a(col,a) ((col) &= (a << 24)) 
+typedef struct _ClutterColor ClutterColor;
 
-typedef guint32 ClutterColor;
+struct _ClutterColor
+{
+  guint8 red;
+  guint8 green;
+  guint8 blue;
+  
+  guint8 alpha;
+};
 
-ClutterColor
-clutter_color_new (guint8 r, guint8 g, guint8 b, guint8 a);
+GType   clutter_color_get_type   (void) G_GNUC_CONST;
 
-void
-clutter_color_set (ClutterColor *color, 
-		   guint8        r, 
-		   guint8        g, 
-		   guint8        b, 
-		   guint8        a);
+void    clutter_color_add        (const ClutterColor *src1,
+			          const ClutterColor *src2,
+			          ClutterColor       *dest);
+void    clutter_color_subtract   (const ClutterColor *src1,
+			          const ClutterColor *src2,
+			          ClutterColor       *dest);
 
-void
-clutter_color_get (ClutterColor  color, 
-		   guint8        *r, 
-		   guint8        *g, 
-		   guint8        *b, 
-		   guint8        *a);
+void    clutter_color_lighten    (const ClutterColor *src,
+			          ClutterColor       *dest);
+void    clutter_color_darken     (const ClutterColor *src,
+			          ClutterColor       *dest);
+void    clutter_color_shade      (const ClutterColor *src,
+			          ClutterColor       *dest,
+			          gdouble             shade);
+
+void    clutter_color_to_hls     (const ClutterColor *src,
+			          guint8             *hue,
+			          guint8             *luminance,
+			          guint8             *saturation);
+void    clutter_color_from_hls   (ClutterColor       *dest,
+			          guint8              hue,
+			          guint8              luminance,
+			          guint8              saturation);
+
+guint32 clutter_color_to_pixel   (const ClutterColor *src);
+void    clutter_color_from_pixel (ClutterColor       *dest,
+				  guint32             pixel);
 
 G_END_DECLS
 

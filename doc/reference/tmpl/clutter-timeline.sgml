@@ -127,3 +127,12 @@ ClutterTimeline
 @Returns: 
 
 
+<!-- ##### FUNCTION clutter_timeline_is_playing ##### -->
+<para>
+
+</para>
+
+@timeline: 
+@Returns: 
+
+

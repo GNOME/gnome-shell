@@ -228,6 +228,7 @@ int
 main (int argc, char *argv[])
 {
   ClutterElement      *label, *texture, *vtexture; 
+  ClutterElement      *stage = clutter_stage_get_default ();
   GdkPixbuf           *pixbuf;
   GError              *err = NULL;
 
@@ -241,7 +242,7 @@ main (int argc, char *argv[])
   if (!pixbuf)
     g_error("pixbuf load failed");
 
-  clutter_element_set_size (CLUTTER_ELEMENT(clutter_stage()), 
+  clutter_element_set_size (stage, 
 			    WINWIDTH, WINHEIGHT);
 
   texture = clutter_texture_new_from_pixbuf (pixbuf);
@@ -258,16 +259,16 @@ main (int argc, char *argv[])
 			     NULL,
 			     NULL);
 
-  clutter_group_add(clutter_stage(), texture);
-
-  clutter_group_add(clutter_stage(), vtexture);
-  
-  clutter_group_show_all(clutter_stage());
+  clutter_group_add (CLUTTER_GROUP (stage), texture);
+  clutter_group_add (CLUTTER_GROUP (stage), vtexture);
+  clutter_group_show_all (CLUTTER_GROUP (stage));
 
   if (!clutter_video_texture_play(CLUTTER_VIDEO_TEXTURE(vtexture), NULL))
       g_error("failed to play vtexture");
 
   clutter_main();
+
+  g_object_unref (stage);
 
   return 0;
 }

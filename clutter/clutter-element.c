@@ -73,8 +73,6 @@ enum
   PROP_NAME,
 };
 
-extern ClutterMainContext ClutterCntx;
-
 static gboolean
 redraw_update_idle (gpointer data)
 {
@@ -225,14 +223,15 @@ clutter_element_paint (ClutterElement *self)
 
   if (self->priv->has_clip)
     {
-      ClutterGeometry *clip = &self->priv->clip;
+      ClutterGeometry *clip = &(self->priv->clip);
       gint             absx, absy;
+      ClutterElement  *stage = clutter_stage_get_default ();
 
       clutter_element_get_abs_position (self, &absx, &absy);
 
       CLUTTER_DBG("clip +%i+%i, %ix%i\n", 
 		  absx + clip->x, 
-		  clutter_element_get_height(CLUTTER_ELEMENT(clutter_stage())) 
+		  clutter_element_get_height (stage) 
 		  - (absy + clip->y) - clip->height, 
 		  clip->width, 
 		  clip->height);
@@ -240,10 +239,12 @@ clutter_element_paint (ClutterElement *self)
       glEnable (GL_SCISSOR_TEST);
 
       glScissor (absx + clip->x, 
-		 clutter_element_get_height(CLUTTER_ELEMENT(clutter_stage())) 
+		 clutter_element_get_height (stage) 
                     - (absy + clip->y) - clip->height, 
 		 clip->width, 
 		 clip->height);
+
+      g_object_unref (stage);
     }
 
   glPushMatrix();

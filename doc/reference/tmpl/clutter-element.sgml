@@ -83,6 +83,12 @@ ClutterElement
 @x2: 
 @y2: 
 
+<!-- ##### STRUCT ClutterElementPrivate ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### STRUCT ClutterGeometry ##### -->
 <para>
 
@@ -92,6 +98,15 @@ ClutterElement
 @y: 
 @width: 
 @height: 
+
+<!-- ##### USER_FUNCTION ClutterCallback ##### -->
+<para>
+
+</para>
+
+@element: 
+@data: 
+
 
 <!-- ##### ENUM ClutterElementTransform ##### -->
 <para>
@@ -124,25 +139,6 @@ ClutterElement
 
 @parent: 
 @flags: 
-
-<!-- ##### STRUCT ClutterElementClass ##### -->
-<para>
-
-</para>
-
-@parent_class: 
-@show: 
-@hide: 
-@realize: 
-@unrealize: 
-@paint: 
-@request_coords: 
-@allocate_coords: 
-@set_depth: 
-@get_depth: 
-@show_all: 
-@hide_all: 
-@queue_redraw: 
 
 <!-- ##### FUNCTION clutter_element_get_type ##### -->
 <para>

@@ -38,6 +38,25 @@ ClutterGroup
 @Returns: 
 
 
+<!-- ##### FUNCTION clutter_group_get_children ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_group_foreach ##### -->
+<para>
+
+</para>
+
+@self: 
+@callback: 
+@user_data: 
+
+
 <!-- ##### FUNCTION clutter_group_add ##### -->
 <para>
 

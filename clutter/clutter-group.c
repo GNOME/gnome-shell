@@ -28,6 +28,18 @@
 
 #include "clutter-group.h"
 #include "clutter-main.h"
+#include "clutter-marshal.h"
+#include "clutter-enum-types.h"
+
+enum
+{
+  ADD,
+  REMOVE,
+
+  LAST_SIGNAL
+};
+
+static guint group_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (ClutterGroup, clutter_group, CLUTTER_TYPE_ELEMENT);
 
@@ -51,7 +63,7 @@ clutter_group_paint (ClutterElement *element)
 
   /* Translate if parent ( i.e not stage window ).
   */
-  if (clutter_element_get_parent(element) != NULL)
+  if (clutter_element_get_parent (element) != NULL)
     {
       ClutterGeometry geom;      
 
@@ -62,6 +74,20 @@ clutter_group_paint (ClutterElement *element)
 
     }
 
+#if 0
+  for (child_item = self->priv->children;
+       child_item != NULL;
+       child_item = child_item->next)
+    {
+      ClutterElement *child = child_item->data;
+
+      g_assert (child != NULL);
+
+      if (CLUTTER_ELEMENT_IS_MAPPED (child))
+	clutter_element_paint (child);
+    }
+#endif
+  
   if (child_item)
     {
       do 
@@ -151,6 +177,17 @@ clutter_group_dispose (GObject *object)
 static void 
 clutter_group_finalize (GObject *object)
 {
+  ClutterGroup *group = CLUTTER_GROUP (object);
+
+  /* XXX - if something survives ::dispose then there's something
+   * wrong; but, at least, we won't leak stuff around.
+   */
+  if (group->priv->children)
+    {
+      g_list_foreach (group->priv->children, (GFunc) g_object_unref, NULL);
+      g_list_free (group->priv->children);
+    }
+  
   G_OBJECT_CLASS (clutter_group_parent_class)->finalize (object);
 }
 
@@ -171,6 +208,26 @@ clutter_group_class_init (ClutterGroupClass *klass)
   /* GObject */
   object_class->finalize     = clutter_group_finalize;
   object_class->dispose      = clutter_group_dispose;
+
+  group_signals[ADD] =
+    g_signal_new ("add",
+		  G_OBJECT_CLASS_TYPE (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterGroupClass, add),
+		  NULL, NULL,
+		  clutter_marshal_VOID__OBJECT,
+		  G_TYPE_NONE, 1,
+		  CLUTTER_TYPE_ELEMENT);
+
+  group_signals[REMOVE] =
+    g_signal_new ("remove",
+		  G_OBJECT_CLASS_TYPE (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterGroupClass, remove),
+		  NULL, NULL,
+		  clutter_marshal_VOID__OBJECT,
+		  G_TYPE_NONE, 1,
+		  CLUTTER_TYPE_ELEMENT);
 
   g_type_class_add_private (object_class, sizeof (ClutterGroupPrivate));
 }
@@ -283,19 +340,37 @@ clutter_group_hide_all (ClutterGroup *self)
  * @self: A #ClutterGroup
  * @element: A #ClutterElement 
  *
- * Add a new child #ClutterElement to the #ClutterGroup.
+ * Adds a new child #ClutterElement to the #ClutterGroup.
  **/
 void
-clutter_group_add (ClutterGroup *self, ClutterElement *element)
+clutter_group_add (ClutterGroup   *self,
+		   ClutterElement *element)
 {
+  ClutterElement *parent;
+  
   g_return_if_fail (CLUTTER_IS_GROUP (self));
   g_return_if_fail (CLUTTER_IS_ELEMENT (element));
+
+  parent = clutter_element_get_parent (element);
+  if (parent)
+    {
+      g_warning ("Attempting to add element of type `%s' to a "
+		 "group of type `%s', but the element has already "
+		 "a parent of type `%s'.",
+		 g_type_name (G_OBJECT_TYPE (element)),
+		 g_type_name (G_OBJECT_TYPE (self)),
+		 g_type_name (G_OBJECT_TYPE (parent)));
+      return;
+    }
 
   self->priv->children = g_list_append (self->priv->children, element);
   /* below refs */
   clutter_element_set_parent (element, CLUTTER_ELEMENT(self));
+  g_object_ref (element);
 
   clutter_group_sort_depth_order (self); 
+
+  g_signal_emit (self, group_signals[ADD], 0, element);
 }
 
 /**
@@ -354,14 +429,30 @@ clutter_group_add_many (ClutterGroup   *self,
  * Remove a child #ClutterElement from the #ClutterGroup.
  **/
 void
-clutter_group_remove (ClutterGroup *self, ClutterElement *element)
+clutter_group_remove (ClutterGroup   *self,
+		      ClutterElement *element)
 {
+  ClutterElement *parent;
+  
   g_return_if_fail (CLUTTER_IS_GROUP (self));
   g_return_if_fail (CLUTTER_IS_ELEMENT (element));
 
-  /* FIXME: Check we actually are a child ? */
+  parent = clutter_element_get_parent (element);
+  if (element != CLUTTER_ELEMENT (self))
+    {
+      g_warning ("Attempting to remove element of type `%s' from "
+		 "group of class `%s', but the group is not the "
+		 "element's parent.",
+		 g_type_name (G_OBJECT_TYPE (element)),
+		 g_type_name (G_OBJECT_TYPE (self)));
+      return;
+    }
+
   self->priv->children = g_list_remove (self->priv->children, element);
   clutter_element_set_parent (element, NULL);
+  
+  g_signal_emit (self, group_signals[REMOVE], 0, element);
+  g_object_unref (element);
 }
 
 /**
@@ -369,7 +460,7 @@ clutter_group_remove (ClutterGroup *self, ClutterElement *element)
  * @self: A #ClutterGroup
  *
  * Remove all child #ClutterElement from the #ClutterGroup.
- **/
+ */
 void
 clutter_group_remove_all (ClutterGroup *self)
 {
@@ -396,9 +487,10 @@ clutter_group_remove_all (ClutterGroup *self)
  *
  * Finds a child element of a group by its unique ID. Search recurses
  * into any child groups. 
- **/
-ClutterElement*
-clutter_group_find_child_by_id (ClutterGroup *self, guint id)
+ */
+ClutterElement *
+clutter_group_find_child_by_id (ClutterGroup *self,
+				guint         id)
 {
   ClutterElement *element = NULL, *inner_element;
   GList          *child_item;
@@ -435,8 +527,16 @@ clutter_group_find_child_by_id (ClutterGroup *self, guint id)
   return element;
 }
 
+/**
+ * clutter_group_raise:
+ * @self: a #ClutterGroup
+ * @element: a #ClutterElement
+ * @sibling: a #ClutterElement
+ *
+ * FIXME
+ */
 void
-clutter_group_raise (ClutterGroup     *self,
+clutter_group_raise (ClutterGroup   *self,
 		     ClutterElement *element, 
 		     ClutterElement *sibling)
 {
@@ -475,8 +575,16 @@ clutter_group_raise (ClutterGroup     *self,
 
 }
 
+/**
+ * clutter_group_lower:
+ * @self: a #ClutterGroup
+ * @element: a #ClutterElement
+ * @sibling: a #ClutterElement
+ *
+ * FIXME
+ */
 void
-clutter_group_lower (ClutterGroup     *self,
+clutter_group_lower (ClutterGroup   *self,
 		     ClutterElement *element, 
 		     ClutterElement *sibling)
 {

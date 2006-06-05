@@ -1,3 +1,65 @@
+2006-06-05  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-color.h:
+	* clutter-color.c: Reimplement ClutterColor as a boxed type;
+	add convenience API for color handling, like: add, subtract,
+	shade, HSL color-space conversion, packing and unpacking.
+
+	* clutter-private.h: Update ClutterMainContext, and export the
+	main context pointer here.
+
+	* clutter-rectangle.h:
+	* clutter-rectangle.c: Update the color-related code; make
+	clutter_rectangle_new() and empty constructor and provide
+	clutter_rectangle_new_with_color(); provide color setter
+	and getter API.
+
+	* clutter-label.h:
+	* clutter-label.c: Rename the "font" property to "font-name";
+	update the color-related code to the new ClutterColor object;
+	rename clutter_label_new() to clutter_label_new_with_text(),
+	and add setters and getters for the properties.
+
+	* clutter-marshal.list: Add VOID:OBJECT and VOID:BOXED marshallers
+	generators.
+
+	* clutter-stage.h:
+	* clutter-stage.c: Rework the API: provide a default constructor
+	for a singleton object, named clutter_stage_get_default(), which
+	supercedes the clutter_stage() function in clutter-main; provide
+	new events: button-press-event, button-release-event,
+	key-press-event and key-release-event; update the color-related
+	code;
+
+	(clutter_stage_snapshot): Allow negative width and height when
+	taking a snapshot (meaning: use full width/height).
+
+	(clutter_stage_get_element_at_pos): Rename clutter_stage_pick().
+
+	* clutter-element.c (clutter_element_paint): Clean up the
+	stage and color related code.
+
+	* clutter-event.h:
+	* clutter-event.c: Add generic ClutterAnyEvent type; add
+	clutter_event_new(), clutter_event_copy() and clutter_event_free();
+	make ClutterEvent a boxed type.
+
+	* clutter-main.h:
+	* clutter-main.c: Remove clutter_stage(); add clutter_main_quit(),
+	for cleanly quitting from clutter_main(); add multiple mainloops
+	support; allocate the ClutterCntx instead of adding it to the
+	stack; re-work the ClutterEvent dispatching.
+
+	* clutter-group.c (clutter_group_add), (clutter_group_remove): Keep
+	a reference on the element when added to a ClutterGroup.
+
+	* examples/rects.py
+	* examples/test.c:
+	* examples/test-text.c:
+	* examples/video-cube.c:
+	* examples/super-oh.c:
+	* examples/test-video.c: Update.
+
 2006-06-04  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-element.c:
@@ -18,8 +80,8 @@
 	* clutter/clutter-private.h:
 	* clutter/clutter-stage.c:
 	* clutter/clutter-stage.h:
-	Rejig GL setup as for stage to support an offscreen property. 
-        Offscreen support is however a little borked.
+	Rejig GL setup as for stage to support an offscreen property.
+	Offscreen support is however a little borked.
 
 2006-06-01  Matthew Allum  <mallum@openedhand.com>
 

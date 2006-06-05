@@ -22,6 +22,7 @@ clutter-event
 
 </para>
 
+@CLUTTER_NOTHING: 
 @CLUTTER_KEY_PRESS: 
 @CLUTTER_KEY_RELEASE: 
 @CLUTTER_MOTION: 

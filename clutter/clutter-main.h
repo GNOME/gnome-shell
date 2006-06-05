@@ -63,10 +63,13 @@ int
 clutter_init (int *argc, char ***argv);
 
 void
-clutter_main(void);
+clutter_main (void);
 
-ClutterGroup*
-clutter_stage(void);
+void
+clutter_main_quit (void);
+
+gint
+clutter_main_level (void);
 
 void
 clutter_redraw ();

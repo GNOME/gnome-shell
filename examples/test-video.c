@@ -44,11 +44,13 @@ size_change (ClutterTexture *texture,
 	     gint            height,
 	     gpointer        user_data)
 {
-  ClutterGeometry stage_geom;
-  gint            vid_width, vid_height, new_y, new_height;
+  ClutterElement  *stage;
+  ClutterGeometry  stage_geom;
+  gint             vid_width, vid_height, new_y, new_height;
 
-  clutter_element_get_geometry (CLUTTER_ELEMENT(clutter_stage()), 
-				&stage_geom);
+  stage = clutter_stage_get_default ();
+
+  clutter_element_get_geometry (stage, &stage_geom);
 
   clutter_texture_get_base_size (texture, &vid_width, &vid_height);
 
@@ -59,13 +61,13 @@ size_change (ClutterTexture *texture,
   new_height = ( vid_height * stage_geom.width ) / vid_width;
   new_y      = (stage_geom.height - new_height) / 2;
 
-  clutter_element_set_position (CLUTTER_ELEMENT(texture), 0, new_y);
+  clutter_element_set_position (CLUTTER_ELEMENT (texture), 0, new_y);
 
-  clutter_element_set_size (CLUTTER_ELEMENT(texture),
+  clutter_element_set_size (CLUTTER_ELEMENT (texture),
 			    stage_geom.width,
 			    new_height);
 
-  clutter_element_set_opacity (CLUTTER_ELEMENT(texture), 50);
+  clutter_element_set_opacity (CLUTTER_ELEMENT (texture), 50);
 
   printf("*** Pos set to +%i+%i , %ix%i ***\n", 
 	 0, new_y, stage_geom.width, new_height);
@@ -95,7 +97,10 @@ tick (ClutterVideoTexture *cvt,
 int
 main (int argc, char *argv[])
 {
-  ClutterElement        *label, *vtexture, *ctexture; 
+  ClutterElement        *label, *vtexture, *ctexture;
+  ClutterElement        *stage;
+  ClutterColor           rect_color = { 0xde, 0xde, 0xdf, 0xaa };
+  ClutterColor           stage_color = { 0xff, 0xff, 0xff, 0x00 };
   GError                *err = NULL;
 
   if (argc < 2)
@@ -104,6 +109,8 @@ main (int argc, char *argv[])
   clutter_init (&argc, &argv);
 
   vtexture = clutter_video_texture_new ();
+
+  stage = clutter_stage_get_default ();
 
   /* Broken..
   g_object_set(vtexture, "repeat-x", TRUE, NULL);
@@ -121,7 +128,7 @@ main (int argc, char *argv[])
 
   clutter_element_set_position(label, 10, 10);
 
-  rect = clutter_rectangle_new (0xdededfaa);
+  rect = clutter_rectangle_new_with_color (&rect_color);
   clutter_element_set_size(rect, 0, 0);
   clutter_element_set_position(rect, 5, 5);
 
@@ -140,18 +147,18 @@ main (int argc, char *argv[])
 			     NULL,
 			     NULL);
 
-  clutter_group_add(clutter_stage(), vtexture);
-  clutter_group_add(clutter_stage(), rect);
-  clutter_group_add(clutter_stage(), label);
-  clutter_group_add(clutter_stage(), ctexture);
+  clutter_group_add (CLUTTER_GROUP (stage), vtexture);
+  clutter_group_add (CLUTTER_GROUP (stage), rect);
+  clutter_group_add (CLUTTER_GROUP (stage), label);
+  clutter_group_add (CLUTTER_GROUP (stage), ctexture);
 
-  clutter_stage_set_color (CLUTTER_STAGE(clutter_stage()), 0xFFFFFF00); 
+  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color); 
 
-  g_signal_connect (clutter_stage(), "input-event",
+  g_signal_connect (stage, "input-event",
 		    G_CALLBACK (input_cb), 
 		    vtexture);
 
-  clutter_group_show_all(clutter_stage());
+  clutter_group_show_all (CLUTTER_GROUP (stage));
 
 
   if (!clutter_video_texture_play(CLUTTER_VIDEO_TEXTURE(vtexture), NULL))
@@ -170,6 +177,8 @@ main (int argc, char *argv[])
   /* g_timeout_add (100, foo, vtexture); */
 
   clutter_main();
+
+  g_object_unref (stage);
 
   return 0;
 }

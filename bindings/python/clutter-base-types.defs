@@ -5,6 +5,18 @@
 
 ;; Boxed types
 
+(define-boxed Color
+  (in-module "Clutter")
+  (c-name "ClutterColor")
+  (gtype-id "CLUTTER_TYPE_COLOR")
+  (fields
+    '("guint8" "red")
+    '("guint8" "green")
+    '("guint8" "blue")
+    '("guint8" "alpha")
+  )
+)
+
 (define-boxed ElementBox
   (in-module "Clutter")
   (c-name "ClutterElementBox")
@@ -14,6 +26,15 @@
     '("gint" "y1")
     '("gint" "x2")
     '("gint" "y2")
+  )
+)
+
+(define-boxed Event
+  (in-module "Clutter")
+  (c-name "ClutterEvent")
+  (gtype-id "CLUTTER_TYPE_EVENT")
+  (fields
+    '("ClutterEventType" "type")
   )
 )
 
@@ -31,16 +52,6 @@
 
 ;; Enumerations and flags ...
 
-(define-flags ElementTransform
-  (in-module "Clutter")
-  (c-name "ClutterElementTransform")
-  (gtype-id "CLUTTER_TYPE_ELEMENT_TRANSFORM")
-  (values
-    '("x" "CLUTTER_ELEMENT_MIRROR_X")
-    '("y" "CLUTTER_ELEMENT_MIRROR_Y")
-  )
-)
-
 (define-flags ElementFlags
   (in-module "Clutter")
   (c-name "ClutterElementFlags")
@@ -51,11 +62,22 @@
   )
 )
 
+(define-flags ElementTransform
+  (in-module "Clutter")
+  (c-name "ClutterElementTransform")
+  (gtype-id "CLUTTER_TYPE_ELEMENT_TRANSFORM")
+  (values
+    '("x" "CLUTTER_ELEMENT_MIRROR_X")
+    '("y" "CLUTTER_ELEMENT_MIRROR_Y")
+  )
+)
+
 (define-enum EventType
   (in-module "Clutter")
   (c-name "ClutterEventType")
   (gtype-id "CLUTTER_TYPE_EVENT_TYPE")
   (values
+    '("nothing" "CLUTTER_NOTHING")
     '("key-press" "CLUTTER_KEY_PRESS")
     '("key-release" "CLUTTER_KEY_RELEASE")
     '("motion" "CLUTTER_MOTION")
@@ -134,13 +156,6 @@
 
 ;; Objects
 
-(define-object Element
-  (in-module "Clutter")
-  (parent "GObject")
-  (c-name "ClutterElement")
-  (gtype-id "CLUTTER_TYPE_ELEMENT")
-)
-
 (define-object CloneTexture
   (in-module "Clutter")
   (parent "ClutterElement")
@@ -148,11 +163,25 @@
   (gtype-id "CLUTTER_TYPE_CLONE_TEXTURE")
 )
 
+(define-object Element
+  (in-module "Clutter")
+  (parent "GObject")
+  (c-name "ClutterElement")
+  (gtype-id "CLUTTER_TYPE_ELEMENT")
+)
+
 (define-object Group
   (in-module "Clutter")
   (parent "ClutterElement")
   (c-name "ClutterGroup")
   (gtype-id "CLUTTER_TYPE_GROUP")
+)
+
+(define-object Label
+  (in-module "Clutter")
+  (parent "ClutterTexture")
+  (c-name "ClutterLabel")
+  (gtype-id "CLUTTER_TYPE_LABEL")
 )
 
 (define-object Rectangle
@@ -174,13 +203,6 @@
   (parent "ClutterElement")
   (c-name "ClutterTexture")
   (gtype-id "CLUTTER_TYPE_TEXTURE")
-)
-
-(define-object Label
-  (in-module "Clutter")
-  (parent "ClutterTexture")
-  (c-name "ClutterLabel")
-  (gtype-id "CLUTTER_TYPE_LABEL")
 )
 
 (define-object Timeline

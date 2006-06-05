@@ -45,21 +45,31 @@
 
 #include <pango/pangoft2.h>
 
+typedef struct _ClutterMainContext ClutterMainContext;
 
-typedef struct ClutterMainContext
+struct _ClutterMainContext
 {
-  Display          *xdpy;
-  Window            xwin_root;
-  int               xscreen;
-  GC                xgc;
-  XVisualInfo      *xvinfo;  
+  Display         *xdpy;
+  Window           xwin_root;
+  int              xscreen;
+  XVisualInfo     *xvinfo;
+  
+  GC               xgc;
+  
   PangoFT2FontMap *font_map;
+  
   GMutex          *gl_lock;
   guint            update_idle;
+  
+  guint            main_loop_level;
+  GSList          *main_loops;
+  
   ClutterStage    *stage;
-} 
-ClutterMainContext;
 
-#define CLUTTER_CONTEXT() &ClutterCntx
+  guint            is_initialized : 1;
+};
+
+#define CLUTTER_CONTEXT()	(clutter_context_get_default ())
+ClutterMainContext *clutter_context_get_default (void);
 
 #endif

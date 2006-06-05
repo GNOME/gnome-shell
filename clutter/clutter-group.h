@@ -70,6 +70,11 @@ struct _ClutterGroupClass
   /*< private >*/
   ClutterElementClass     parent_class;
 
+  void (*add)    (ClutterGroup   *group,
+		  ClutterElement *child);
+  void (*remove) (ClutterGroup   *group,
+		  ClutterElement *child);
+
   void (*_clutter_group_1) (void);
   void (*_clutter_group_2) (void);
   void (*_clutter_group_3) (void);
@@ -104,7 +109,8 @@ clutter_group_add_many (ClutterGroup   *group,
 			...) G_GNUC_NULL_TERMINATED;
 
 void
-clutter_group_remove (ClutterGroup *group, ClutterElement *element); 
+clutter_group_remove (ClutterGroup   *group,
+		      ClutterElement *element); 
 
 void
 clutter_group_show_all (ClutterGroup *self);
@@ -112,7 +118,7 @@ clutter_group_show_all (ClutterGroup *self);
 void
 clutter_group_hide_all (ClutterGroup *self);
 
-ClutterElement*
+ClutterElement *
 clutter_group_find_child_by_id (ClutterGroup *self, guint id);
 
 void

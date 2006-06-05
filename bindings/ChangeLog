@@ -1,3 +1,9 @@
+2006-06-05  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* python/clutter-base-types.defs:
+	* python/clutter-base.defs:
+	* python/clutter.override: Wrap new API and objects.
+
 2006-05-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* python/clutter-base.defs: Make static functions appear like

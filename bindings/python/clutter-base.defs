@@ -113,9 +113,9 @@
   (return-type "none")
 )
 
-(define-function stage
-  (c-name "clutter_stage")
-  (return-type "ClutterGroup*")
+(define-function main_quit
+  (c-name "clutter_main_quit")
+  (return-type "none")
 )
 
 (define-function redraw
@@ -163,6 +163,27 @@
 
 
 ;; From ../../clutter/clutter-event.h
+
+(define-function clutter_event_new
+  (c-name "clutter_event_new")
+  (is-constructor-of "ClutterEvent")
+  (return-type "ClutterEvent*")
+  (parameters
+    '("ClutterEventType" "type")
+  )
+)
+
+(define-method copy
+  (of-object "ClutterEvent")
+  (c-name "clutter_event_copy")
+  (return-type "ClutterEvent*")
+)
+
+(define-method free
+  (of-object "ClutterEvent")
+  (c-name "clutter_event_free")
+  (return-type "none")
+)
 
 (define-method type
   (of-object "ClutterKeyEvent")
@@ -217,22 +238,22 @@
   (return-type "GType")
 )
 
-(define-function geometry_new
-  (c-name "clutter_geometry_new")
-  (is-constructor-of "ClutterGeometry")
-  (return-type "ClutterGeometry")
-)
+;;(define-function geometry_new
+;;  (c-name "clutter_geometry_new")
+;;  (is-constructor-of "ClutterGeometry")
+;;  (return-type "ClutterGeometry")
+;;)
 
 (define-function clutter_element_box_get_type
   (c-name "clutter_element_box_get_type")
   (return-type "GType")
 )
 
-(define-function element_box_new
-  (c-name "clutter_element_box_new")
-  (is-constructor-of "ClutterElementBox")
-  (return-type "ClutterElementBox")
-)
+;;(define-function element_box_new
+;;  (c-name "clutter_element_box_new")
+;;  (is-constructor-of "ClutterElementBox")
+;;  (return-type "ClutterElementBox")
+;;)
 
 (define-function clutter_element_get_type
   (c-name "clutter_element_get_type")
@@ -513,17 +534,36 @@
 
 ;; From ../../clutter/clutter-rectangle.h
 
-(define-function clutter_rectangle_get_type
-  (c-name "clutter_rectangle_get_type")
-  (return-type "GType")
-)
-
 (define-function clutter_rectangle_new
   (c-name "clutter_rectangle_new")
   (is-constructor-of "ClutterRectangle")
   (return-type "ClutterElement*")
+)
+
+(define-function clutter_rectangle_new_with_color
+  (c-name "clutter_rectangle_new_with_color")
+  (is-constructor-of "ClutterRectangle")
+  (return-type "ClutterElement*")
   (properties
-    '("color" (argname "col"))
+    '("color" (argname "color"))
+  )
+)
+
+(define-method get_color
+  (of-object "ClutterRectangle")
+  (c-name "clutter_rectangle_get_color")
+  (return-type "none")
+  (parameters
+    '("ClutterColor*" "color")
+  )
+)
+
+(define-method set_color
+  (of-object "ClutterRectangle")
+  (c-name "clutter_rectangle_set_color")
+  (return-type "none")
+  (parameters
+    '("const-ClutterColor*" "color")
   )
 )
 
@@ -634,40 +674,96 @@
 
 ;; From ../../clutter/clutter-color.h
 
-(define-function clutter_color_new
-  (c-name "clutter_color_new")
-  (return-type "ClutterColor")
+(define-function clutter_color_get_type
+  (c-name "clutter_color_get_type")
+  (return-type "GType")
+)
+
+(define-method add
+  (of-object "ClutterColor")
+  (c-name "clutter_color_add")
+  (return-type "none")
   (parameters
-    '("guint8" "r")
-    '("guint8" "g")
-    '("guint8" "b")
-    '("guint8" "a")
+    '("ClutterColor*" "src2")
+    '("ClutterColor*" "dest")
   )
 )
 
-(define-method set
+(define-method subtract
   (of-object "ClutterColor")
-  (c-name "clutter_color_set")
+  (c-name "clutter_color_subtract")
   (return-type "none")
   (parameters
-    '("guint8" "r")
-    '("guint8" "g")
-    '("guint8" "b")
-    '("guint8" "a")
+    '("ClutterColor*" "src2")
+    '("ClutterColor*" "dest")
   )
 )
 
-(define-method get
+(define-method lighten
   (of-object "ClutterColor")
-  (c-name "clutter_color_get")
+  (c-name "clutter_color_lighten")
   (return-type "none")
   (parameters
-    '("guint8*" "r")
-    '("guint8*" "g")
-    '("guint8*" "b")
-    '("guint8*" "a")
+    '("ClutterColor*" "dest")
   )
 )
+
+(define-method darken
+  (of-object "ClutterColor")
+  (c-name "clutter_color_darken")
+  (return-type "none")
+  (parameters
+    '("ClutterColor*" "dest")
+  )
+)
+
+(define-method shade
+  (of-object "ClutterColor")
+  (c-name "clutter_color_shade")
+  (return-type "none")
+  (parameters
+    '("ClutterColor*" "dest")
+    '("gdouble" "shade")
+  )
+)
+
+(define-function color_to_hls
+  (c-name "clutter_color_to_hls")
+  (return-type "none")
+  (parameters
+    '("guint8*" "hue")
+    '("guint8*" "luminance")
+    '("guint8*" "saturation")
+  )
+)
+
+(define-function color_from_hls
+  (c-name "clutter_color_from_hls")
+  (return-type "none")
+  (parameters
+    '("guint8" "hue")
+    '("guint8" "luminance")
+    '("guint8" "saturation")
+  )
+)
+
+(define-function color_to_pixel
+  (c-name "clutter_color_to_pixel")
+  (return-type "guint32")
+  (parameters
+    '("ClutterColor" "src")
+  )
+)
+
+(define-function color_from_pixel
+  (c-name "clutter_color_from_pixel")
+  (return-type "none")
+  (parameters
+    '("ClutterColor" "dest")
+    '("guint32" "pixel")
+  )
+)
+
 
 
 
@@ -850,19 +946,20 @@
   (return-type "GType")
 )
 
-(define-function clutter_label_new_with_text
-  (c-name "clutter_label_new_with_text")
-  (return-type "ClutterElement*")
-  (parameters
-    '("const-gchar*" "font_desc")
-    '("const-gchar*" "text")
-  )
-)
-
 (define-function clutter_label_new
   (c-name "clutter_label_new")
   (is-constructor-of "ClutterLabel")
   (return-type "ClutterElement*")
+)
+
+(define-function clutter_label_new_with_text
+  (c-name "clutter_label_new_with_text")
+  (return-type "ClutterElement*")
+  (is-constructor-of "ClutterLabel")
+  (properties
+    '("font-name" (argname "name") (optional))
+    '("text" (argname "str") (optional))
+  )
 )
 
 (define-method set_text
@@ -874,13 +971,25 @@
   )
 )
 
-(define-method set_font
+(define-method get_text
   (of-object "ClutterLabel")
-  (c-name "clutter_label_set_font")
+  (c-name "clutter_label_get_text")
+  (return-type "const-gchar*")
+)
+
+(define-method set_font_name
+  (of-object "ClutterLabel")
+  (c-name "clutter_label_set_font_name")
   (return-type "none")
   (parameters
-    '("const-gchar*" "desc")
+    '("const-gchar*" "font_name")
   )
+)
+
+(define-method get_font_name
+  (of-object "ClutterLabel")
+  (c-name "clutter_label_get_font_name")
+  (return-type "const-gchar*")
 )
 
 (define-method set_color
@@ -888,7 +997,16 @@
   (c-name "clutter_label_set_color")
   (return-type "none")
   (parameters
-    '("guint32" "pixel")
+    '("const-ClutterColor*" "color")
+  )
+)
+
+(define-method get_color
+  (of-object "ClutterLabel")
+  (c-name "clutter_label_get_color")
+  (return-type "none")
+  (parameters
+    '("ClutterColor*" "color")
   )
 )
 
@@ -899,6 +1017,16 @@
   (parameters
     '("gint" "width")
     '("gint" "height")
+  )
+)
+
+(define-method get_text_extents
+  (of-object "ClutterLabel")
+  (c-name "clutter_label_get_text_extents")
+  (return-type "none")
+  (parameters
+    '("gint*" "width")
+    '("gint*" "height")
   )
 )
 
@@ -1005,6 +1133,11 @@
   (return-type "GType")
 )
 
+(define-function stage_get_default
+  (c-name "clutter_stage_get_default")
+  (return-type "ClutterElement*")
+)
+
 (define-method get_xwindow
   (of-object "ClutterStage")
   (c-name "clutter_stage_get_xwindow")
@@ -1016,23 +1149,38 @@
   (c-name "clutter_stage_set_color")
   (return-type "none")
   (parameters
-    '("ClutterColor" "color")
+    '("const-ClutterColor*" "color")
   )
 )
 
 (define-method get_color
   (of-object "ClutterStage")
   (c-name "clutter_stage_get_color")
-  (return-type "ClutterColor")
+  (return-type "none")
+  (parameters
+    '("ClutterColor*" "color")
+  )
 )
 
-(define-method pick
+(define-method get_element_at_pos
   (of-object "ClutterStage")
-  (c-name "clutter_stage_pick")
+  (c-name "clutter_stage_get_element_at_pos")
   (return-type "ClutterElement*")
   (parameters
     '("gint" "x")
     '("gint" "y")
+  )
+)
+
+(define-method snapshot
+  (of-object "ClutterStage")
+  (c-name "clutter_stage_snapshot")
+  (return-type "GdkPixbuf*")
+  (parameters
+    '("gint" "x")
+    '("gint" "y")
+    '("gint" "width")
+    '("gint" "height")
   )
 )
 

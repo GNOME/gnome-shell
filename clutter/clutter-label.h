@@ -29,6 +29,7 @@
 #include <glib-object.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <clutter/clutter-texture.h>
+#include <clutter/clutter-color.h>
 
 G_BEGIN_DECLS
 
@@ -77,27 +78,28 @@ struct _ClutterLabelClass
   void (*_clutter_label_4) (void);
 }; 
 
-GType clutter_label_get_type (void);
+GType clutter_label_get_type (void) G_GNUC_CONST;
 
-ClutterElement*
-clutter_label_new_with_text (const gchar *font_desc, const gchar *text);
+ClutterElement *      clutter_label_new              (void);
+ClutterElement *      clutter_label_new_with_text    (const gchar        *font_name,
+						      const gchar        *text);
 
-ClutterElement*
-clutter_label_new (void);
-
-void
-clutter_label_set_text (ClutterLabel *label, const gchar *text);
-
-void
-clutter_label_set_font (ClutterLabel *label, const gchar *desc);
-
-void
-clutter_label_set_color (ClutterLabel *label, guint32 pixel);
-
-void
-clutter_label_set_text_extents (ClutterLabel *label, 
-				gint          width,
-				gint          height);
+void                  clutter_label_set_text         (ClutterLabel       *label,
+						      const gchar        *text);
+G_CONST_RETURN gchar *clutter_label_get_text         (ClutterLabel       *label);
+void                  clutter_label_set_font_name    (ClutterLabel       *label,
+						      const gchar        *font_name);
+G_CONST_RETURN gchar *clutter_label_get_font_name    (ClutterLabel       *label);
+void                  clutter_label_set_color        (ClutterLabel       *label,
+						      const ClutterColor *color);
+void                  clutter_label_get_color        (ClutterLabel       *label,
+						      ClutterColor       *color);
+void                  clutter_label_set_text_extents (ClutterLabel       *label,
+						      gint                width,
+						      gint                height);
+void                  clutter_label_get_text_extents (ClutterLabel       *label,
+						      gint               *width,
+						      gint               *height);
 
 G_END_DECLS
 

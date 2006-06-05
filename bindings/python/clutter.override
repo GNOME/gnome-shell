@@ -26,6 +26,7 @@ import gtk.gdk.Pixbuf as PyGdkPixbuf_Type
 %%
 ignore
   clutter_video_texture_error_quark
+  clutter_video_texture_get_metadata
   clutter_group_add_many_valist
   clutter_stage_get_xwindow
   clutter_init
@@ -132,7 +133,7 @@ static PySequenceMethods _wrap_clutter_geometry_tp_as_sequence = {
 %%
 override-attr ClutterGeometry.x
 static int
-_wrap_clutter_geomtry__set_x (PyGBoxed *self, PyObject *value, void *closure)
+_wrap_clutter_geometry__set_x (PyGBoxed *self, PyObject *value, void *closure)
 {
 	gint val;
 
@@ -485,6 +486,22 @@ _wrap_clutter_main (PyObject *self)
 	return Py_None;
 }
 %%
+override clutter_main_quit
+static PyObject *
+_wrap_clutter_main_quit (PyObject *self, PyObject *args)
+{
+	/* sanity check to make sure we are in a main loop */
+	if (clutter_main_level () == 0) {
+		PyErr_SetString (PyExc_RuntimeError,
+				 "called outside of a mainloop");
+		return NULL;
+	}
+
+	clutter_main_quit ();
+	Py_INCREF (Py_None);
+	return Py_None;
+}
+%%
 override clutter_threads_enter noargs
 static PyObject *
 _wrap_clutter_threads_enter (PyObject *self)
@@ -498,3 +515,487 @@ _wrap_clutter_threads_enter (PyObject *self)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+%%
+override clutter_color_new kwargs
+static int
+_wrap_clutter_color_new (PyGBoxed *self,
+			 PyObject *args,
+			 PyObject *kwargs)
+{
+	static char *kwlist[] = { "red", "green", "blue", "alpha", NULL };
+	ClutterColor color = { 0, 0, 0, 0 };
+
+	if (!PyArg_ParseTupleAndKeywords(args, kwargs,
+					 "|iiii:ClutterColor.__init__",
+					 kwlist,
+					 &(color.red),
+					 &(color.green),
+					 &(color.blue),
+					 &(color.alpha)))
+		return -1;
+	
+	self->boxed = g_boxed_copy (CLUTTER_TYPE_COLOR, &color);
+	self->free_on_dealloc = TRUE;
+	self->gtype = CLUTTER_TYPE_COLOR;
+	
+	return 0;
+}
+%%
+override-slot ClutterColor.tp_as_sequence
+static int
+_wrap_clutter_color_length (PyGBoxed *self)
+{
+	return 4;
+}
+static PyObject *
+_wrap_clutter_color_getitem (PyGBoxed *self, int pos)
+{
+	ClutterColor *color;
+
+	if (pos < 0)
+		pos += 4;
+	
+	if (pos < 0 || pos >= 4) {
+		PyErr_SetString (PyExc_IndexError, "index out of range");
+		return NULL;
+	}
+
+	color = pyg_boxed_get (self, ClutterColor);
+	switch (pos) {
+		case 0: return PyInt_FromLong (color->red);
+		case 1: return PyInt_FromLong (color->green);
+		case 2: return PyInt_FromLong (color->blue);
+		case 3: return PyInt_FromLong (color->alpha);
+		default:
+			g_assert_not_reached();
+			return NULL;
+	}
+}
+static int
+_wrap_clutter_color_setitem (PyGBoxed *self, int pos, PyObject *value)
+{
+	ClutterColor *color;
+	gint val;
+
+	if (pos < 0)
+		pos += 4;
+	
+	if (pos < 0 || pos >= 4) {
+		PyErr_SetString (PyExc_IndexError, "index out of range");
+		return -1;
+	}
+
+	color = pyg_boxed_get (self, ClutterColor);
+	val = PyInt_AsLong (value);
+	if (PyErr_Occurred ())
+		return -1;
+	
+	switch (pos) {
+		case 0: color->red   = val; break;
+		case 1: color->green = val; break;
+		case 2: color->blue  = val; break;
+		case 3: color->alpha = val; break;
+		default:
+			g_assert_not_reached();
+			return -1;
+	}
+
+	return 0;
+}
+static PySequenceMethods _wrap_clutter_color_tp_as_sequence = {
+	(inquiry) _wrap_clutter_color_length,
+	(binaryfunc) 0,
+	(intargfunc) 0,
+	(intargfunc) _wrap_clutter_color_getitem,
+	(intintargfunc) 0,
+	(intobjargproc) _wrap_clutter_color_setitem,
+	(intintobjargproc) 0
+};
+%%
+override-attr ClutterColor.red
+static int
+_wrap_clutter_color__set_red (PyGBoxed *self, PyObject *value, void *closure)
+{
+	gint val;
+
+	val = PyInt_AsLong (value);
+	if (PyErr_Occurred ())
+		return -1;
+
+	pyg_boxed_get (self, ClutterColor)->red = val;
+
+	return 0;
+}
+%%
+override-attr ClutterColor.green
+static int
+_wrap_clutter_color__set_green (PyGBoxed *self, PyObject *value, void *closure)
+{
+	gint val;
+
+	val = PyInt_AsLong (value);
+	if (PyErr_Occurred ())
+		return -1;
+
+	pyg_boxed_get (self, ClutterColor)->green = val;
+
+	return 0;
+}
+%%
+override-attr ClutterColor.blue
+static int
+_wrap_clutter_color__set_blue (PyGBoxed *self, PyObject *value, void *closure)
+{
+	gint val;
+
+	val = PyInt_AsLong (value);
+	if (PyErr_Occurred ())
+        	return -1;
+	
+	pyg_boxed_get(self, ClutterColor)->blue = val;
+	
+	return 0;
+}
+%%
+override-attr ClutterColor.alpha
+static int
+_wrap_clutter_color__set_alpha (PyGBoxed *self, PyObject *value, void *closure)
+{
+	gint val;
+
+	val = PyInt_AsLong (value);
+	if (PyErr_Occurred ())
+		return -1;
+	
+	pyg_boxed_get (self, ClutterColor)->alpha = val;
+
+	return 0;
+}
+%%
+override clutter_stage_set_color
+static PyObject *
+_wrap_clutter_stage_set_color (PyGObject *self,
+			       PyObject  *args)
+{
+	ClutterColor color;
+	int len, i;
+
+	if (PyTuple_Size (args) != 4) {
+		PyErr_SetString (PyExc_TypeError,
+				 "requires a tuple of 4 integers: (r, g, b, a)");
+		return NULL;
+	}
+
+	for (i = 0; i < 4; i++) {
+		PyObject *comp = PyTuple_GetItem (args, i);
+		
+		if (!PyInt_Check (comp)) {
+			PyErr_SetString (PyExc_TypeError,
+					 "component is not an integer");
+			return NULL;
+		}
+		
+		switch (i) {
+			case 0: color.red   = (guint8) PyInt_AsLong (comp); break;
+			case 1: color.green = (guint8) PyInt_AsLong (comp); break;
+			case 2: color.blue  = (guint8) PyInt_AsLong (comp); break;
+			case 3: color.alpha = (guint8) PyInt_AsLong (comp); break;
+			default:
+				g_assert_not_reached ();
+				break;
+		}
+	}
+	
+	clutter_stage_set_color (CLUTTER_STAGE (self->obj), &color);
+
+	Py_INCREF (Py_None);
+	return Py_None;
+}
+%%
+override clutter_stage_get_color
+static PyObject *
+_wrap_clutter_stage_get_color (PyGObject *self,
+			       PyObject  *args)
+{
+	ClutterColor color;
+
+	clutter_stage_get_color (CLUTTER_STAGE (self->obj), &color);
+	
+	return Py_BuildValue ("(iiii)", color.red,
+					color.green,
+					color.blue,
+					color.alpha);
+}
+%%
+override clutter_color_to_hls
+static PyObject *
+_wrap_clutter_color_to_hls (PyObject *self,
+			    PyObject *args)
+{
+	ClutterColor color;
+	guint8 h, l, s;
+	int i;
+
+	if (PyTuple_Size (args) != 4) {
+		PyErr_SetString (PyExc_TypeError,
+				 "requires a tuple of 4 integers: (r, g, b, a)");
+		return NULL;
+	}
+
+	for (i = 0; i < 4; i++) {
+		PyObject *comp = PyTuple_GetItem (args, i);
+
+		if (!PyInt_Check (comp)) {
+			PyErr_SetString (PyExc_TypeError,
+					 "component is not an integer");
+			return NULL;
+		}
+
+		switch (i) {
+			case 0: color.red   = (guint8) PyInt_AsLong (comp); break;
+			case 1: color.green = (guint8) PyInt_AsLong (comp); break;
+			case 2: color.blue  = (guint8) PyInt_AsLong (comp); break;
+			case 3: color.alpha = (guint8) PyInt_AsLong (comp); break;
+			default:
+				g_assert_not_reached ();
+				break;
+		}
+	}
+
+	clutter_color_to_hls (&color, &h, &l, &s);
+
+	return Py_BuildValue ("(iii)", (int) h, (int) l, (int) s);
+}
+%%
+override clutter_color_from_hls
+static PyObject *
+_wrap_clutter_color_from_hls (PyObject *self,
+			      PyObject *args)
+{
+	ClutterColor color;
+	guint8 h, l, s;
+	int i;
+
+	if (PyTuple_Size (args) != 3) {
+		PyErr_SetString (PyExc_TypeError,
+				 "requires a tuple of 3 integers: (h, l, s)");
+		return NULL;
+	}
+
+	for (i = 0; i < 3; i++) {
+		PyObject *comp = PyTuple_GetItem (args, i);
+
+		if (!PyInt_Check (comp)) {
+			PyErr_SetString (PyExc_TypeError,
+					 "component is not an integer");
+			return NULL;
+		}
+
+		switch (i) {
+			case 0: h = (guint8) PyInt_AsLong (comp); break;
+			case 1: l = (guint8) PyInt_AsLong (comp); break;
+			case 2: s = (guint8) PyInt_AsLong (comp); break;
+			default:
+				g_assert_not_reached ();
+				break;
+		}
+	}
+
+	clutter_color_from_hls (&color, h, l, s);
+
+	return Py_BuildValue ("(iiii)",
+			      (int) color.red,
+			      (int) color.green,
+			      (int) color.blue,
+			      (int) color.alpha);
+}
+%%
+override clutter_color_to_pixel
+static PyObject *
+_wrap_clutter_color_to_pixel (PyObject *self,
+			      PyObject *args)
+{
+	ClutterColor color;
+	guint32 pixel;
+	int i;
+
+	if (PyTuple_Size (args) != 4) {
+		PyErr_SetString (PyExc_TypeError,
+				 "requires a tuple of 4 integers: (r, g, b, a)");
+		return NULL;
+	}
+
+	for (i = 0; i < 4; i++) {
+		PyObject *comp = PyTuple_GetItem (args, i);
+
+		if (!PyInt_Check (comp)) {
+			PyErr_SetString (PyExc_TypeError,
+					 "component is not an integer");
+			return NULL;
+		}
+
+		switch (i) {
+			case 0: color.red   = (guint8) PyInt_AsLong (comp); break;
+			case 1: color.green = (guint8) PyInt_AsLong (comp); break;
+			case 2: color.blue  = (guint8) PyInt_AsLong (comp); break;
+			case 3: color.alpha = (guint8) PyInt_AsLong (comp); break;
+			default:
+				g_assert_not_reached ();
+				break;
+		}
+	}
+
+	pixel = clutter_color_to_pixel (&color);
+
+	return PyInt_FromLong (pixel);
+}
+%%
+override clutter_color_from_pixel
+static PyObject *
+_wrap_clutter_color_from_pixel (PyObject *self,
+			        PyObject *args)
+{
+	ClutterColor color;
+	guint32 pixel;
+
+	if (!PyInt_Check (args)) {
+		PyErr_SetString (PyExc_TypeError,
+				 "requires a 32 bit encoded integer");
+		return NULL;
+	}
+
+	pixel = (guint32) PyInt_AsLong (args);
+
+	clutter_color_from_pixel (&color, pixel);
+
+	return Py_BuildValue ("(iiii)",
+			      (int) color.red,
+			      (int) color.green,
+			      (int) color.blue,
+			      (int) color.alpha);
+}
+%%
+override clutter_label_get_text_extents
+static PyObject *
+_wrap_clutter_label_get_text_extents (PyGObject *self,
+				      PyObject  *args)
+{
+	gint width, height;
+
+	clutter_label_get_text_extents (CLUTTER_LABEL (self->obj),
+					&width,
+					&height);
+	
+	return Py_BuildValue ("(ii)", width, height);
+}
+%%
+override clutter_rectangle_set_color
+static PyObject *
+_wrap_clutter_rectangle_set_color (PyGObject *self,
+				   PyObject  *args)
+{
+	ClutterColor color;
+	int len, i;
+
+	if (PyTuple_Size (args) != 4) {
+		PyErr_SetString (PyExc_TypeError,
+				 "requires a tuple of 4 integers: (r, g, b, a)");
+		return NULL;
+	}
+
+	for (i = 0; i < 4; i++) {
+		PyObject *comp = PyTuple_GetItem (args, i);
+		
+		if (!PyInt_Check (comp)) {
+			PyErr_SetString (PyExc_TypeError,
+					 "component is not an integer");
+			return NULL;
+		}
+		
+		switch (i) {
+			case 0: color.red   = (guint8) PyInt_AsLong (comp); break;
+			case 1: color.green = (guint8) PyInt_AsLong (comp); break;
+			case 2: color.blue  = (guint8) PyInt_AsLong (comp); break;
+			case 3: color.alpha = (guint8) PyInt_AsLong (comp); break;
+			default:
+				g_assert_not_reached ();
+				break;
+		}
+	}
+	
+	clutter_rectangle_set_color (CLUTTER_RECTANGLE (self->obj), &color);
+
+	Py_INCREF (Py_None);
+	return Py_None;
+}
+%%
+override clutter_rectangle_get_color
+static PyObject *
+_wrap_clutter_rectangle_get_color (PyGObject *self,
+				   PyObject  *args)
+{
+	ClutterColor color;
+
+	clutter_rectangle_get_color (CLUTTER_RECTANGLE (self->obj), &color);
+	
+	return Py_BuildValue ("(iiii)", color.red,
+					color.green,
+					color.blue,
+					color.alpha);
+}
+%%
+override clutter_label_set_color
+static PyObject *
+_wrap_clutter_label_set_color (PyGObject *self,
+			       PyObject  *args)
+{
+	ClutterColor color;
+	int len, i;
+
+	if (PyTuple_Size (args) != 4) {
+		PyErr_SetString (PyExc_TypeError,
+				 "requires a tuple of 4 integers: (r, g, b, a)");
+		return NULL;
+	}
+
+	for (i = 0; i < 4; i++) {
+		PyObject *comp = PyTuple_GetItem (args, i);
+		
+		if (!PyInt_Check (comp)) {
+			PyErr_SetString (PyExc_TypeError,
+					 "component is not an integer");
+			return NULL;
+		}
+		
+		switch (i) {
+			case 0: color.red   = (guint8) PyInt_AsLong (comp); break;
+			case 1: color.green = (guint8) PyInt_AsLong (comp); break;
+			case 2: color.blue  = (guint8) PyInt_AsLong (comp); break;
+			case 3: color.alpha = (guint8) PyInt_AsLong (comp); break;
+			default:
+				g_assert_not_reached ();
+				break;
+		}
+	}
+	
+	clutter_label_set_color (CLUTTER_LABEL (self->obj), &color);
+
+	Py_INCREF (Py_None);
+	return Py_None;
+}
+%%
+override clutter_label_get_color
+static PyObject *
+_wrap_clutter_label_get_color (PyGObject *self,
+			       PyObject  *args)
+{
+	ClutterColor color;
+
+	clutter_label_get_color (CLUTTER_LABEL (self->obj), &color);
+	
+	return Py_BuildValue ("(iiii)", color.red,
+					color.green,
+					color.blue,
+					color.alpha);
+}
+%%

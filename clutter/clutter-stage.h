@@ -68,13 +68,15 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   CLUTTER_TYPE_STAGE, ClutterStageClass))
 
-typedef struct ClutterStagePrivate ClutterStagePrivate;
-typedef struct _ClutterStage       ClutterStage;
-typedef struct _ClutterStageClass  ClutterStageClass;
+typedef struct _ClutterStagePrivate ClutterStagePrivate;
+typedef struct _ClutterStage        ClutterStage;
+typedef struct _ClutterStageClass   ClutterStageClass;
 
 struct _ClutterStage
 {
   ClutterGroup         parent;
+  
+  /*< private >*/
   ClutterStagePrivate *priv;
 }; 
 
@@ -82,35 +84,50 @@ struct _ClutterStageClass
 {
   ClutterGroupClass parent_class;
 
-  void (*input_event) (ClutterStage *stage,
-		       ClutterEvent *event);
+  void (*input_event)          (ClutterStage       *stage,
+		                ClutterEvent       *event);
+  void (*button_press_event)   (ClutterStage       *stage,
+			        ClutterButtonEvent *event);
+  void (*button_release_event) (ClutterStage       *stage,
+		  		ClutterButtonEvent *event);
+  void (*key_press_event)      (ClutterStage       *stage,
+		  		ClutterKeyEvent    *event);
+  void (*key_release_event)    (ClutterStage       *stage,
+		  		ClutterKeyEvent    *event);
+  void (*motion_event)         (ClutterStage       *stage,
+		  		ClutterMotionEvent *event);
+
+  /* padding for future expansion */
+  void (*_clutter_stage1) (void);
+  void (*_clutter_stage2) (void);
+  void (*_clutter_stage3) (void);
+  void (*_clutter_stage4) (void);
+  void (*_clutter_stage5) (void);
+  void (*_clutter_stage6) (void);
 }; 
 
-GType clutter_stage_get_type (void);
+GType           clutter_stage_get_type           (void);
+
+ClutterElement *clutter_stage_get_default        (void);
 
 /* FIXME: no need for below to take stage arg ? 
  *        convert to defines also ?
 */
 
-Window
-clutter_stage_get_xwindow (ClutterStage *stage);
+Window          clutter_stage_get_xwindow        (ClutterStage *stage);
 
-void
-clutter_stage_set_color (ClutterStage *stage,
-			 ClutterColor  color);
-
-ClutterColor
-clutter_stage_get_color (ClutterStage *stage);
-
-GdkPixbuf*
-clutter_stage_snapshot (ClutterStage *stage,
-			gint          x,
-			gint          y,
-			guint         width,
-			guint         height);
-
-ClutterElement*
-clutter_stage_pick (ClutterStage *stage, gint x, gint y);
+void            clutter_stage_set_color          (ClutterStage       *stage,
+						  const ClutterColor *color);
+void            clutter_stage_get_color          (ClutterStage       *stage,
+						  ClutterColor       *color);
+ClutterElement *clutter_stage_get_element_at_pos (ClutterStage       *stage,
+						  gint                x,
+						  gint                y);
+GdkPixbuf *     clutter_stage_snapshot           (ClutterStage       *stage,
+						  gint                x,
+						  gint                y,
+						  gint                width,
+						  gint                height);
 
 G_END_DECLS
 

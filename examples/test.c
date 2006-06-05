@@ -68,11 +68,14 @@ frame_cb (ClutterTimeline *timeline,
 int
 main (int argc, char *argv[])
 {
-  ClutterElement *texture, *label;
+  ClutterElement  *texture, *label;
+  ClutterElement  *stage;
   ClutterTimeline *timeline;
-  GdkPixbuf      *pixbuf;
+  GdkPixbuf       *pixbuf;
 
   clutter_init (&argc, &argv);
+
+  stage = clutter_stage_get_default ();
 
   pixbuf = gdk_pixbuf_new_from_file ("clutter-logo-800x600.png", NULL);
 
@@ -90,19 +93,21 @@ main (int argc, char *argv[])
   clutter_element_set_opacity (CLUTTER_ELEMENT(label), 0x99);
   clutter_element_set_position (CLUTTER_ELEMENT(label), 100, 200);
 
-  clutter_group_add(clutter_stage(), texture);
-  clutter_group_add(clutter_stage(), label);
+  clutter_group_add (CLUTTER_GROUP (stage), texture);
+  clutter_group_add (CLUTTER_GROUP (stage), label);
 
-  clutter_element_set_size (CLUTTER_ELEMENT(clutter_stage()), 800, 600);
+  clutter_element_set_size (CLUTTER_ELEMENT (stage), 800, 600);
 
-  clutter_group_show_all(clutter_stage());
+  clutter_group_show_all (CLUTTER_GROUP (stage));
 
   timeline = clutter_timeline_new (360, 200);
-  g_object_set(timeline, "loop", TRUE, 0);
-  g_signal_connect(timeline, "new-frame", frame_cb, label);
+  g_object_set (timeline, "loop", TRUE, 0);
+  g_signal_connect (timeline, "new-frame", G_CALLBACK (frame_cb), label);
   clutter_timeline_start (timeline);
 
   clutter_main();
+
+  g_object_unref (stage);
 
   return 0;
 }

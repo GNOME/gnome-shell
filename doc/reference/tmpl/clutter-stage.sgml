@@ -31,7 +31,7 @@ ClutterStage
 
 
 
-<!-- ##### TYPEDEF ClutterStagePrivate ##### -->
+<!-- ##### STRUCT ClutterStagePrivate ##### -->
 <para>
 
 </para>
@@ -43,7 +43,6 @@ ClutterStage
 </para>
 
 @parent: 
-@priv: 
 
 <!-- ##### FUNCTION clutter_stage_get_xwindow ##### -->
 <para>
@@ -69,10 +68,10 @@ ClutterStage
 </para>
 
 @stage: 
-@Returns: 
+@color: 
 
 
-<!-- ##### FUNCTION clutter_stage_pick ##### -->
+<!-- ##### FUNCTION clutter_stage_get_element_at_pos ##### -->
 <para>
 
 </para>

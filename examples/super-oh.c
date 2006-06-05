@@ -25,14 +25,28 @@ input_cb (ClutterStage *stage,
 
   if (event->type == CLUTTER_BUTTON_PRESS)
     {
+      ClutterButtonEvent *bev = (ClutterButtonEvent *) event;
       ClutterElement *e;
 
-      e = clutter_stage_pick (stage, 
-			      clutter_button_event_x(event),
-			      clutter_button_event_y(event));
+      g_print ("*** button press event (button:%d) ***\n",
+	       bev->button);
+
+      e = clutter_stage_get_element_at_pos (stage, 
+		                            clutter_button_event_x (event),
+					    clutter_button_event_y (event));
 
       if (e)
 	clutter_element_hide(e);
+    }
+  else if (event->type == CLUTTER_KEY_PRESS)
+    {
+      ClutterKeyEvent *kev = (ClutterKeyEvent *) event;
+
+      g_print ("*** key press event (key:%c) ***\n",
+	       clutter_key_event_symbol (kev));
+      
+      if (clutter_key_event_symbol (kev) == CLUTTER_q)
+	clutter_main_quit ();
     }
 }
 
@@ -43,14 +57,18 @@ frame_cb (ClutterTimeline *timeline,
 	  gint             frame_num, 
 	  gpointer         data)
 {
-  SuperOH *oh = (SuperOH *)data;
-  gint     i;
+  SuperOH        *oh = (SuperOH *)data;
+  ClutterElement *stage = clutter_stage_get_default ();
+  gint            i;
 
 #if TRAILS
-  oh->bgpixb = clutter_stage_snapshot (CLUTTER_STAGE(clutter_stage()),
-				       0, 0, WINWIDTH, WINHEIGHT);
-  clutter_texture_set_pixbuf(CLUTTER_TEXTURE(oh->bgtex), oh->bgpixb);
-  g_object_unref(G_OBJECT(oh->bgpixb));
+  oh->bgpixb = clutter_stage_snapshot (CLUTTER_STAGE (stage),
+				       0, 0,
+				       WINWIDTH,
+				       WINHEIGHT);
+  clutter_texture_set_pixbuf (CLUTTER_TEXTURE (oh->bgtex), oh->bgpixb);
+  g_object_unref (G_OBJECT (oh->bgpixb));
+  g_object_unref (stage);
 #endif
 
   /* Rotate everything clockwise about stage center*/
@@ -78,11 +96,15 @@ int
 main (int argc, char *argv[])
 {
   ClutterTimeline *timeline;
+  ClutterElement  *stage;
+  ClutterColor     stage_color = { 0x61, 0x64, 0x8c, 0xff };
   GdkPixbuf       *pixbuf;
   SuperOH         *oh;
   gint             i;
 
   clutter_init (&argc, &argv);
+
+  stage = clutter_stage_get_default ();
 
   pixbuf = gdk_pixbuf_new_from_file ("redhand.png", NULL);
 
@@ -90,11 +112,23 @@ main (int argc, char *argv[])
     g_error("pixbuf load failed");
 
   /* Set our stage (window) size */
-  clutter_element_set_size (CLUTTER_ELEMENT(clutter_stage()),
-			    WINWIDTH, WINHEIGHT);
+  clutter_element_set_size (stage, WINWIDTH, WINHEIGHT);
 
   /* and its background color */
-  clutter_stage_set_color (CLUTTER_STAGE(clutter_stage()), 0x61648cff);
+  g_print ("before clutter_stage_set_color: (%3d, %3d, %3d, %3d)\n",
+	   stage_color.red,
+	   stage_color.green,
+	   stage_color.blue,
+	   stage_color.alpha);
+  clutter_stage_set_color (CLUTTER_STAGE (stage),
+		           &stage_color);
+  clutter_stage_get_color (CLUTTER_STAGE (stage),
+		           &stage_color);
+  g_print ("after clutter_stage_get_color:  (%3d, %3d, %3d, %3d)\n",
+	   stage_color.red,
+	   stage_color.green,
+	   stage_color.blue,
+	   stage_color.alpha);
 
   oh = g_new(SuperOH, 1);
 
@@ -102,7 +136,7 @@ main (int argc, char *argv[])
   oh->bgtex = clutter_texture_new();
   clutter_element_set_size (oh->bgtex, WINWIDTH, WINHEIGHT);
   clutter_element_set_opacity (oh->bgtex, 0x99);
-  clutter_group_add (clutter_stage(), oh->bgtex);
+  clutter_group_add (CLUTTER_GROUP (stage), oh->bgtex);
 #endif
 
   /* create a new group to hold multiple elements in a group */
@@ -132,14 +166,17 @@ main (int argc, char *argv[])
     }
 
   /* Add the group to the stage */
-  clutter_group_add (clutter_stage(), CLUTTER_ELEMENT(oh->group));
+  clutter_group_add (CLUTTER_GROUP (stage), CLUTTER_ELEMENT(oh->group));
 
   /* Show everying ( and map window ) */
   clutter_group_show_all (oh->group);
-  clutter_group_show_all (clutter_stage());
+  clutter_group_show_all (CLUTTER_GROUP (stage));
 
-  g_signal_connect (clutter_stage(), "input-event",
+  g_signal_connect (stage, "button-press-event",
 		    G_CALLBACK (input_cb), 
+		    oh);
+  g_signal_connect (stage, "key-release-event",
+		    G_CALLBACK (input_cb),
 		    oh);
 
   /* Create a timeline to manage animation */
@@ -153,6 +190,8 @@ main (int argc, char *argv[])
   clutter_timeline_start (timeline);
 
   clutter_main();
+
+  g_object_unref (stage);
 
   return 0;
 }

@@ -1,12 +1,14 @@
-<!-- ##### STRUCT ClutterElementPrivate ##### -->
+<!-- ##### FUNCTION clutter_gl_context ##### -->
 <para>
 
 </para>
 
+@Returns: 
 
-<!-- ##### STRUCT ClutterLabelPrivate ##### -->
+<!-- ##### FUNCTION clutter_stage ##### -->
 <para>
 
 </para>
 
+@Returns: 
 

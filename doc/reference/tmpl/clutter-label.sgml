@@ -17,6 +17,12 @@ ClutterLabel
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### STRUCT ClutterLabelPrivate ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### STRUCT ClutterLabel ##### -->
 <para>
 
@@ -24,10 +30,12 @@ ClutterLabel
 
 @parent: 
 
-<!-- ##### STRUCT ClutterLabelClass ##### -->
+<!-- ##### FUNCTION clutter_label_new ##### -->
 <para>
 
 </para>
+
+@Returns: 
 
 
 <!-- ##### FUNCTION clutter_label_new_with_text ##### -->
@@ -35,16 +43,8 @@ ClutterLabel
 
 </para>
 
-@font_desc: 
+@font_name: 
 @text: 
-@Returns: 
-
-
-<!-- ##### FUNCTION clutter_label_new ##### -->
-<para>
-
-</para>
-
 @Returns: 
 
 
@@ -57,13 +57,31 @@ ClutterLabel
 @text: 
 
 
-<!-- ##### FUNCTION clutter_label_set_font ##### -->
+<!-- ##### FUNCTION clutter_label_get_text ##### -->
 <para>
 
 </para>
 
 @label: 
-@desc: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_label_set_font_name ##### -->
+<para>
+
+</para>
+
+@label: 
+@font_name: 
+
+
+<!-- ##### FUNCTION clutter_label_get_font_name ##### -->
+<para>
+
+</para>
+
+@label: 
+@Returns: 
 
 
 <!-- ##### FUNCTION clutter_label_set_color ##### -->
@@ -72,10 +90,29 @@ ClutterLabel
 </para>
 
 @label: 
-@pixel: 
+@color: 
+
+
+<!-- ##### FUNCTION clutter_label_get_color ##### -->
+<para>
+
+</para>
+
+@label: 
+@color: 
 
 
 <!-- ##### FUNCTION clutter_label_set_text_extents ##### -->
+<para>
+
+</para>
+
+@label: 
+@width: 
+@height: 
+
+
+<!-- ##### FUNCTION clutter_label_get_text_extents ##### -->
 <para>
 
 </para>

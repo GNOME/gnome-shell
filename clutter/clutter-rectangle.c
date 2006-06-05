@@ -35,7 +35,7 @@ G_DEFINE_TYPE (ClutterRectangle, clutter_rectangle, CLUTTER_TYPE_ELEMENT);
 enum
 {
   PROP_0,
-  PROP_COL
+  PROP_COLOR
 
   /* FIXME: Add gradient, rounded corner props etc */
 };
@@ -45,7 +45,7 @@ enum
 
 struct _ClutterRectanglePrivate
 {
-  guint32                  col;
+  ClutterColor color;
 };
 
 static void
@@ -65,10 +65,10 @@ clutter_rectangle_paint (ClutterElement *self)
 
   clutter_element_get_geometry (self, &geom);
 
-  glColor4ub(clutter_color_r(priv->col),
-	     clutter_color_g(priv->col),
-	     clutter_color_b(priv->col), 
-	     clutter_element_get_opacity(self));
+  glColor4ub(priv->color.red,
+	     priv->color.green,
+	     priv->color.blue, 
+	     clutter_element_get_opacity (self));
 
   glRecti (geom.x,
 	   geom.y,
@@ -86,19 +86,12 @@ clutter_rectangle_set_property (GObject      *object,
 				const GValue *value, 
 				GParamSpec   *pspec)
 {
-  ClutterRectangle        *rectangle;
-  ClutterRectanglePrivate *priv;
-
-  rectangle = CLUTTER_RECTANGLE(object);
-  priv = rectangle->priv;
+  ClutterRectangle *rectangle = CLUTTER_RECTANGLE(object);
 
   switch (prop_id) 
     {
-    case PROP_COL:
-      priv->col = g_value_get_uint(value);
-      clutter_element_set_opacity(CLUTTER_ELEMENT(rectangle), 
-				  priv->col & 0xff);
-      /* FIXME: queue paint */
+    case PROP_COLOR:
+      clutter_rectangle_set_color (rectangle, g_value_get_boxed (value)); 
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -112,16 +105,14 @@ clutter_rectangle_get_property (GObject    *object,
 				GValue     *value, 
 				GParamSpec *pspec)
 {
-  ClutterRectangle        *rectangle;
-  ClutterRectanglePrivate *priv;
-
-  rectangle = CLUTTER_RECTANGLE(object);
-  priv = rectangle->priv;
+  ClutterRectangle *rectangle = CLUTTER_RECTANGLE(object);
+  ClutterColor      color;
 
   switch (prop_id) 
     {
-    case PROP_COL:
-      g_value_set_uint (value, priv->col);
+    case PROP_COLOR:
+      clutter_rectangle_get_color (rectangle, &color);
+      g_value_set_boxed (value, &color);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -157,14 +148,12 @@ clutter_rectangle_class_init (ClutterRectangleClass *klass)
   gobject_class->get_property = clutter_rectangle_get_property;
 
   g_object_class_install_property
-    (gobject_class, PROP_COL,
-     g_param_spec_uint ("color",
-		       "Rectangle Colour",
-		       "Rectangle Colour specified as 8 byte RGBA value",
-			0,
-			0xffffffff,
-			0xff,
-			G_PARAM_READWRITE));
+    (gobject_class, PROP_COLOR,
+     g_param_spec_boxed ("color",
+		         "Color",
+		         "The color of the rectangle",
+			 CLUTTER_TYPE_COLOR,
+			 G_PARAM_READWRITE));
 
   g_type_class_add_private (gobject_class, sizeof (ClutterRectanglePrivate));
 }
@@ -173,13 +162,95 @@ static void
 clutter_rectangle_init (ClutterRectangle *self)
 {
   self->priv = CLUTTER_RECTANGLE_GET_PRIVATE (self);
+
+  self->priv->color.red = 0xff;
+  self->priv->color.green = 0xff;
+  self->priv->color.blue = 0xff;
+  self->priv->color.alpha = 0xff;
 }
 
+/**
+ * clutter_rectangle_new:
+ *
+ * Creates a new #ClutterElement with a rectangular shape.
+ *
+ * Return value: a new #ClutterElement
+ */
 ClutterElement*
-clutter_rectangle_new (guint32 colour)
+clutter_rectangle_new (void)
+{
+  return g_object_new (CLUTTER_TYPE_RECTANGLE, NULL);
+}
+
+/**
+ * clutter_rectangle_new_with_color:
+ * @color: a #ClutterColor
+ *
+ * Creates a new #ClutterElement with a rectangular shape
+ * and with @color.
+ *
+ * Return value: a new #ClutterElement
+ */
+ClutterElement *
+clutter_rectangle_new_with_color (const ClutterColor *color)
 {
   return g_object_new (CLUTTER_TYPE_RECTANGLE,
-		       "color", colour,
+		       "color", color,
 		       NULL);
 }
 
+/**
+ * clutter_rectangle_get_color:
+ * @rectangle: a #ClutterRectangle
+ * @color: return location for a #ClutterColor
+ *
+ * Retrieves the color of @rectangle.
+ */
+void
+clutter_rectangle_get_color (ClutterRectangle *rectangle,
+			     ClutterColor     *color)
+{
+  ClutterRectanglePrivate *priv;
+  
+  g_return_if_fail (CLUTTER_IS_RECTANGLE (rectangle));
+  g_return_if_fail (color != NULL);
+
+  priv = rectangle->priv;
+
+  color->red = priv->color.red;
+  color->green = priv->color.green;
+  color->blue = priv->color.blue;
+  color->alpha = priv->color.alpha;
+}
+
+/**
+ * clutter_rectangle_set_color:
+ * @rectangle: a #ClutterRectangle
+ * @color: a #ClutterColor
+ *
+ * Sets the color of @rectangle.
+ */
+void
+clutter_rectangle_set_color (ClutterRectangle   *rectangle,
+			     const ClutterColor *color)
+{
+  ClutterRectanglePrivate *priv;
+  
+  g_return_if_fail (CLUTTER_IS_RECTANGLE (rectangle));
+  g_return_if_fail (color != NULL);
+
+  priv = rectangle->priv;
+
+  priv->color.red = color->red;
+  priv->color.green = color->green;
+  priv->color.blue = color->blue;
+  priv->color.alpha = color->alpha;
+
+  clutter_element_set_opacity (CLUTTER_ELEMENT (rectangle),
+		  	       priv->color.alpha);
+
+  if (CLUTTER_ELEMENT_IS_VISIBLE (CLUTTER_ELEMENT (rectangle)))
+    clutter_element_queue_redraw (CLUTTER_ELEMENT (rectangle));
+
+  g_object_notify (G_OBJECT (rectangle), "color");
+}

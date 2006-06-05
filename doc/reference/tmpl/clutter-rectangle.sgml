@@ -29,14 +29,39 @@ ClutterRectangle
 </para>
 
 @parent: 
-@priv: 
 
 <!-- ##### FUNCTION clutter_rectangle_new ##### -->
 <para>
 
 </para>
 
-@col: 
 @Returns: 
+
+
+<!-- ##### FUNCTION clutter_rectangle_new_with_color ##### -->
+<para>
+
+</para>
+
+@color: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_rectangle_get_color ##### -->
+<para>
+
+</para>
+
+@rectangle: 
+@color: 
+
+
+<!-- ##### FUNCTION clutter_rectangle_set_color ##### -->
+<para>
+
+</para>
+
+@rectangle: 
+@color: 
 
 

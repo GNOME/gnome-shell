@@ -17,113 +17,98 @@ clutter-color
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### MACRO clutter_color_r ##### -->
-<para>
-
-</para>
-
-@col: 
-
-
-<!-- ##### MACRO clutter_color_g ##### -->
-<para>
-
-</para>
-
-@col: 
-
-
-<!-- ##### MACRO clutter_color_b ##### -->
-<para>
-
-</para>
-
-@col: 
-
-
-<!-- ##### MACRO clutter_color_a ##### -->
-<para>
-
-</para>
-
-@col: 
-
-
-<!-- ##### MACRO clutter_color_set_r ##### -->
-<para>
-
-</para>
-
-@col: 
-@r: 
-
-
-<!-- ##### MACRO clutter_color_set_g ##### -->
-<para>
-
-</para>
-
-@col: 
-@g: 
-
-
-<!-- ##### MACRO clutter_color_set_b ##### -->
-<para>
-
-</para>
-
-@col: 
-@b: 
-
-
-<!-- ##### MACRO clutter_color_set_a ##### -->
-<para>
-
-</para>
-
-@col: 
-@a: 
-
-
-<!-- ##### TYPEDEF ClutterColor ##### -->
+<!-- ##### MACRO CLUTTER_TYPE_COLOR ##### -->
 <para>
 
 </para>
 
 
-<!-- ##### FUNCTION clutter_color_new ##### -->
+
+<!-- ##### STRUCT ClutterColor ##### -->
 <para>
 
 </para>
 
-@r: 
-@g: 
-@b: 
-@a: 
+@red: 
+@green: 
+@blue: 
+@alpha: 
+
+<!-- ##### FUNCTION clutter_color_get_type ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 
-<!-- ##### FUNCTION clutter_color_set ##### -->
+<!-- ##### FUNCTION clutter_color_add ##### -->
 <para>
 
 </para>
 
-@color: 
-@r: 
-@g: 
-@b: 
-@a: 
+@src1: 
+@src2: 
+@dest: 
 
 
-<!-- ##### FUNCTION clutter_color_get ##### -->
+<!-- ##### FUNCTION clutter_color_subtract ##### -->
 <para>
 
 </para>
 
-@color: 
-@r: 
-@g: 
-@b: 
-@a: 
+@src1: 
+@src2: 
+@dest: 
+
+
+<!-- ##### FUNCTION clutter_color_lighten ##### -->
+<para>
+
+</para>
+
+@src: 
+@dest: 
+
+
+<!-- ##### FUNCTION clutter_color_darken ##### -->
+<para>
+
+</para>
+
+@src: 
+@dest: 
+
+
+<!-- ##### FUNCTION clutter_color_shade ##### -->
+<para>
+
+</para>
+
+@src: 
+@dest: 
+@shade: 
+
+
+<!-- ##### FUNCTION clutter_color_to_hls ##### -->
+<para>
+
+</para>
+
+@src: 
+@hue: 
+@luminance: 
+@saturation: 
+
+
+<!-- ##### FUNCTION clutter_color_from_hls ##### -->
+<para>
+
+</para>
+
+@dest: 
+@hue: 
+@luminance: 
+@saturation: 
 
 

@@ -22,6 +22,11 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+#include "config.h"
+
+#include <stdlib.h>
+
 #include "clutter-main.h"
 #include "clutter-element.h"
 #include "clutter-stage.h"
@@ -37,8 +42,6 @@ typedef struct
 } 
 ClutterXEventSource;
 
-ClutterMainContext ClutterCntx;
-
 #define GLX_SAMPLE_BUFFERS_ARB             100000
 #define GLX_SAMPLES_ARB                    100001
 
@@ -46,6 +49,8 @@ typedef void (*ClutterXEventFunc) (XEvent *xev, gpointer user_data);
 
 static gboolean __clutter_has_debug = FALSE;
 static gboolean __clutter_has_fps   = FALSE;
+
+static ClutterMainContext *ClutterCntx = NULL;
 
 static gboolean  
 x_event_prepare (GSource  *source,
@@ -141,12 +146,17 @@ translate_motion_event (ClutterMotionEvent   *event,
   event->modifier_state = xevent->xmotion.state;
 }
 
-void
+static void
 clutter_dispatch_x_event (XEvent  *xevent,
 			  gpointer data)
 {
-  ClutterMainContext *ctx = CLUTTER_CONTEXT();
-  ClutterEvent        event;
+  ClutterMainContext *ctx = CLUTTER_CONTEXT ();
+  ClutterEvent       *event;
+  ClutterStage       *stage = ctx->stage;
+  gboolean            emit_input_event = FALSE;
+
+  event = clutter_event_new (CLUTTER_NOTHING);
+  event->any.send_event = xevent->xany.send_event ? TRUE : FALSE;
 
   switch (xevent->type)
     {
@@ -163,24 +173,40 @@ clutter_dispatch_x_event (XEvent  *xevent,
 	/* FIXME: need to make stage an 'element' so can que
          * a paint direct from there rather than hack here...
 	*/
-	clutter_element_queue_redraw (CLUTTER_ELEMENT(clutter_stage()));
+	clutter_element_queue_redraw (CLUTTER_ELEMENT (stage));
       }
       break;
     case KeyPress:
+      translate_key_event ((ClutterKeyEvent *) event, xevent);
+      g_signal_emit_by_name (stage, "key-press-event", event);
+      emit_input_event = TRUE;
+      break;
     case KeyRelease:
-      translate_key_event ((ClutterKeyEvent*)&event, xevent);
-      g_signal_emit_by_name (clutter_stage(), "input-event", &event);
+      translate_key_event ((ClutterKeyEvent *) event, xevent);
+      g_signal_emit_by_name (stage, "key-release-event", event);
+      emit_input_event = TRUE;
       break;
     case ButtonPress:
+      translate_button_event ((ClutterButtonEvent *) event, xevent);
+      g_signal_emit_by_name (stage, "button-press-event", event);
+      emit_input_event = TRUE;
+      break;
     case ButtonRelease:
-      translate_button_event ((ClutterButtonEvent*)&event, xevent);
-      g_signal_emit_by_name (clutter_stage(), "input-event", &event);
+      translate_button_event ((ClutterButtonEvent *) event, xevent);
+      g_signal_emit_by_name (stage, "button-release-event", event);
+      emit_input_event = TRUE;
       break;
     case MotionNotify:
-      translate_motion_event ((ClutterMotionEvent*)&event, xevent);
-      g_signal_emit_by_name (clutter_stage(), "input-event", &event);
+      translate_motion_event ((ClutterMotionEvent *) event, xevent);
+      g_signal_emit_by_name (stage, "motion-event", event);
+      emit_input_event = TRUE;
       break;
     }
+
+  if (emit_input_event)
+    g_signal_emit_by_name (stage, "input-event", event);
+
+  clutter_event_free (event);
 }
 
 static void
@@ -195,7 +221,7 @@ events_init()
 
   g_main_context_ref (gmain_context);
 
-  connection_number = ConnectionNumber (ClutterCntx.xdpy);
+  connection_number = ConnectionNumber (ClutterCntx->xdpy);
   
   source = g_source_new ((GSourceFuncs *)&x_event_funcs, 
 			 sizeof (ClutterXEventSource));
@@ -204,7 +230,7 @@ events_init()
 
   display_source->event_poll_fd.fd     = connection_number;
   display_source->event_poll_fd.events = G_IO_IN;
-  display_source->display              = ClutterCntx.xdpy;
+  display_source->display              = ClutterCntx->xdpy;
   
   g_source_add_poll (source, &display_source->event_poll_fd);
   g_source_set_can_recurse (source, TRUE);
@@ -223,11 +249,16 @@ clutter_want_fps(void)
   return __clutter_has_fps;
 }
 
+/**
+ * clutter_redraw:
+ *
+ * FIXME
+ */
 void
-clutter_redraw ()
+clutter_redraw (void)
 {
   ClutterMainContext *ctx = CLUTTER_CONTEXT();
-  ClutterStage       *stage = CLUTTER_STAGE(clutter_stage());
+  ClutterStage       *stage = ctx->stage;
   ClutterColor        stage_color;
   
   static GTimer      *timer = NULL; 
@@ -238,25 +269,25 @@ clutter_redraw ()
 
   CLUTTER_DBG("@@@ Redraw enter @@@");
 
-  clutter_threads_enter();
+  clutter_threads_enter ();
 
-  if (clutter_want_fps())
+  if (clutter_want_fps ())
     {
       if (!timer)
-	timer = g_timer_new();
+	timer = g_timer_new ();
     }
 
-  stage_color = clutter_stage_get_color (stage);
+  clutter_stage_get_color (stage, &stage_color);
 
-  glClearColor( ( (float)clutter_color_r(stage_color) / 0xff ) * 1.0,
-		( (float)clutter_color_g(stage_color) / 0xff ) * 1.0,
-		( (float)clutter_color_b(stage_color) / 0xff ) * 1.0,
-		0.0 );
+  glClearColor(((float) stage_color.red / 0xff * 1.0),
+	       ((float) stage_color.green / 0xff * 1.0),
+	       ((float) stage_color.blue / 0xff * 1.0),
+	       0.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glDisable(GL_LIGHTING); 
   glDisable(GL_DEPTH_TEST);
 
-  clutter_element_paint(CLUTTER_ELEMENT(stage));
+  clutter_element_paint (CLUTTER_ELEMENT (stage));
 
   if (clutter_stage_get_xwindow (stage))
     {
@@ -275,7 +306,7 @@ clutter_redraw ()
       glFlush();
     }
 
-  if (clutter_want_fps())
+  if (clutter_want_fps ())
     {
       timer_n_frames++;
 
@@ -287,95 +318,221 @@ clutter_redraw ()
 	}
     }
 
-  clutter_threads_leave();
+  clutter_threads_leave ();
 
   CLUTTER_DBG("@@@ Redraw leave @@@");
 }
 
-
+/**
+ * clutter_main_quit:
+ *
+ * FIXME
+ */
 void
-clutter_main()
+clutter_main_quit (void)
 {
-  GMainLoop *loop;
+  ClutterMainContext *context = CLUTTER_CONTEXT ();
 
-  loop = g_main_loop_new (g_main_context_default (), TRUE);
+  g_return_if_fail (context->main_loops != NULL);
 
-  g_main_loop_run (loop);
+  g_main_loop_quit (context->main_loops->data);
 }
 
+/**
+ * clutter_main_level:
+ *
+ * FIXME
+ */
+gint
+clutter_main_level (void)
+{
+  ClutterMainContext *context = CLUTTER_CONTEXT ();
+
+  return context->main_loop_level;
+}
+
+/**
+ * clutter_main:
+ *
+ * FIXME
+ */
+void
+clutter_main (void)
+{
+  ClutterMainContext *context = CLUTTER_CONTEXT ();
+  GMainLoop *loop;
+
+  if (!context->is_initialized)
+    {
+      g_warning ("Called clutter_main() but Clutter wasn't initialised.  "
+		 "You must call clutter_init() first.");
+      return;
+    }
+
+  context->main_loop_level++;
+
+  loop = g_main_loop_new (NULL, TRUE);
+  context->main_loops = g_slist_prepend (context->main_loops, loop);
+
+  if (g_main_loop_is_running (context->main_loops->data))
+    {
+      g_main_loop_run (loop);
+    }
+
+  context->main_loops = g_slist_remove (context->main_loops, loop);
+
+  g_main_loop_unref (loop);
+
+  context->main_loop_level--;
+
+  if (context->main_loop_level == 0)
+    {
+      g_object_unref (context->stage);
+      g_free (context);
+    }
+}
+
+/**
+ * clutter_threads_enter:
+ *
+ * FIXME
+ */
 void
 clutter_threads_enter(void)
 {
-  g_mutex_lock(ClutterCntx.gl_lock);
+  ClutterMainContext *context = CLUTTER_CONTEXT ();
+  
+  g_mutex_lock (context->gl_lock);
 }
 
+/**
+ * clutter_threads_leave:
+ *
+ * FIXME
+ */
 void
-clutter_threads_leave(void)
+clutter_threads_leave (void)
 {
-  g_mutex_unlock(ClutterCntx.gl_lock);
-}
-
-ClutterGroup*
-clutter_stage(void)
-{
-  return CLUTTER_GROUP(ClutterCntx.stage);
+  ClutterMainContext *context = CLUTTER_CONTEXT ();
+  
+  g_mutex_unlock (context->gl_lock);
 }
 
 Display*
-clutter_xdisplay(void)
+clutter_xdisplay (void)
 {
-  return ClutterCntx.xdpy;
+  return ClutterCntx->xdpy;
 }
 
 int
-clutter_xscreen(void)
+clutter_xscreen (void)
 {
-  return ClutterCntx.xscreen;
+  return ClutterCntx->xscreen;
 }
 
+/**
+ * clutter_root_xwindow:
+ *
+ * FIXME
+ *
+ * Return value: FIXME
+ */
 Window
-clutter_root_xwindow(void)
+clutter_root_xwindow (void)
 {
-  return ClutterCntx.xwin_root;
+  return ClutterCntx->xwin_root;
 }
 
+/**
+ * clutter_xvisual:
+ *
+ * FIXME
+ *
+ * Return value: FIXME
+ */
 XVisualInfo*
-clutter_xvisual(void)
+clutter_xvisual (void)
 {
-  return ClutterCntx.xvinfo;
+  return ClutterCntx->xvinfo;
 }
 
+/**
+ * clutter_want_debug:
+ * 
+ * FIXME
+ *
+ * Return value: FIXME
+ */
 gboolean
-clutter_want_debug(void)
+clutter_want_debug (void)
 {
   return __clutter_has_debug;
 }
 
+/**
+ * clutter_gl_context_set_indirect:
+ * @indirect: FIXME
+ *
+ * FIXME
+ */
 void
 clutter_gl_context_set_indirect (gboolean indirect)
 {
 
 }
 
-int
-clutter_init(int *argc, char ***argv)
+ClutterMainContext *
+clutter_context_get_default (void)
 {
-  int  gl_attributes[] =
+  if (!ClutterCntx)
     {
-      GLX_RGBA, 
-      GLX_DOUBLEBUFFER, 
-      GLX_RED_SIZE, 1,
-      GLX_GREEN_SIZE, 1,
-      GLX_BLUE_SIZE, 1,
-      /* GLX_DEPTH_SIZE, 1, */
-      /* GLX_DEPTH_SIZE, 32, */
-      0
-    };
+      ClutterMainContext *ctx;
 
-  if (getenv("CLUTTER_DEBUG"))
+      ctx = g_new0 (ClutterMainContext, 1);
+      ctx->is_initialized = FALSE;
+
+      ClutterCntx = ctx;
+    }
+
+  return ClutterCntx;
+}
+
+/**
+ * clutter_init:
+ * @argc: FIXME
+ * @argv: FIXME
+ *
+ * FIXME
+ *
+ * Return value: FIXME
+ */
+int
+clutter_init (int *argc, char ***argv)
+{
+  ClutterMainContext *context;
+  XVisualInfo  *vinfo;
+  static gboolean is_initialized = FALSE;
+
+  int gl_attributes[] = {
+    GLX_RGBA, 
+    GLX_DOUBLEBUFFER, 
+    GLX_RED_SIZE, 1,
+    GLX_GREEN_SIZE, 1,
+    GLX_BLUE_SIZE, 1,
+    /* GLX_DEPTH_SIZE, 1, */
+    /* GLX_DEPTH_SIZE, 32, */
+    0
+  };
+
+  if (is_initialized)
+    return 1;
+
+  context = clutter_context_get_default ();
+
+  if (g_getenv ("CLUTTER_DEBUG"))
     __clutter_has_debug = TRUE;
 
-  if (getenv("CLUTTER_SHOW_FPS"))
+  if (g_getenv ("CLUTTER_SHOW_FPS"))
     __clutter_has_fps = TRUE;
 
   g_type_init();
@@ -387,36 +544,40 @@ clutter_init(int *argc, char ***argv)
 
   gst_init (argc, argv);
 
-  if ((ClutterCntx.xdpy = XOpenDisplay(getenv("DISPLAY"))) == NULL)
+  context->main_loops = NULL;
+  context->main_loop_level = 0;
+
+  if ((context->xdpy = XOpenDisplay (g_getenv ("DISPLAY"))) == NULL)
     {
       g_warning("Unable to connect to X DISPLAY.");
       return -1;
     }
 
-  ClutterCntx.xscreen   = DefaultScreen(ClutterCntx.xdpy);
-  ClutterCntx.xwin_root = RootWindow(ClutterCntx.xdpy, ClutterCntx.xscreen);
-
-  if ((ClutterCntx.xvinfo = glXChooseVisual(ClutterCntx.xdpy, 
-					    ClutterCntx.xscreen,
-					    gl_attributes)) == NULL)
+  context->xscreen   = DefaultScreen(context->xdpy);
+  context->xwin_root = RootWindow(context->xdpy,
+		  		  context->xscreen);
+  context->xvinfo    = glXChooseVisual (context->xdpy,
+		  			context->xscreen,
+					gl_attributes);
+  if (!context->xvinfo)
     {
-      g_warning("Unable to find suitable GL visual.");
+      g_warning ("Unable to find suitable GL visual.");
+      
       return -2;
     }
 
-  ClutterCntx.font_map = PANGO_FT2_FONT_MAP (pango_ft2_font_map_new ());
+  context->font_map = PANGO_FT2_FONT_MAP (pango_ft2_font_map_new ());
+  pango_ft2_font_map_set_resolution (context->font_map, 96.0, 96.0);
 
-  pango_ft2_font_map_set_resolution (ClutterCntx.font_map, 96.0, 96.0);
+  context->gl_lock = g_mutex_new ();
 
-  ClutterCntx.gl_lock = g_mutex_new ();
+  context->stage = CLUTTER_STAGE (clutter_stage_get_default ());
+  g_return_val_if_fail (CLUTTER_IS_STAGE (context->stage), -3);
+  clutter_element_realize (CLUTTER_ELEMENT (context->stage));
 
-  ClutterCntx.stage = g_object_new (CLUTTER_TYPE_STAGE, NULL);
+  events_init ();
 
-  g_return_val_if_fail (ClutterCntx.stage != NULL, -3);
-
-  clutter_element_realize(CLUTTER_ELEMENT(ClutterCntx.stage));
-
-  events_init();
+  context->is_initialized = TRUE;
 
   return 1;
 }
