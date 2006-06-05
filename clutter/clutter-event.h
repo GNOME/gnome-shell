@@ -67,7 +67,6 @@ typedef struct _ClutterInputDevice ClutterInputDevice;
 struct _ClutterAnyEvent
 {
   ClutterEventType  type;
-  guint8            send_event : 1;
 };
 
 struct _ClutterKeyEvent

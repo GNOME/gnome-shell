@@ -151,12 +151,9 @@ clutter_dispatch_x_event (XEvent  *xevent,
 			  gpointer data)
 {
   ClutterMainContext *ctx = CLUTTER_CONTEXT ();
-  ClutterEvent       *event;
+  ClutterEvent        event;
   ClutterStage       *stage = ctx->stage;
   gboolean            emit_input_event = FALSE;
-
-  event = clutter_event_new (CLUTTER_NOTHING);
-  event->any.send_event = xevent->xany.send_event ? TRUE : FALSE;
 
   switch (xevent->type)
     {
@@ -177,36 +174,35 @@ clutter_dispatch_x_event (XEvent  *xevent,
       }
       break;
     case KeyPress:
-      translate_key_event ((ClutterKeyEvent *) event, xevent);
-      g_signal_emit_by_name (stage, "key-press-event", event);
+      translate_key_event ((ClutterKeyEvent *) &event, xevent);
+      g_signal_emit_by_name (stage, "key-press-event", &event);
       emit_input_event = TRUE;
       break;
     case KeyRelease:
-      translate_key_event ((ClutterKeyEvent *) event, xevent);
-      g_signal_emit_by_name (stage, "key-release-event", event);
+      translate_key_event ((ClutterKeyEvent *) &event, xevent);
+      g_signal_emit_by_name (stage, "key-release-event", &event);
       emit_input_event = TRUE;
       break;
     case ButtonPress:
-      translate_button_event ((ClutterButtonEvent *) event, xevent);
-      g_signal_emit_by_name (stage, "button-press-event", event);
+      translate_button_event ((ClutterButtonEvent *) &event, xevent);
+      g_signal_emit_by_name (stage, "button-press-event", &event);
       emit_input_event = TRUE;
       break;
     case ButtonRelease:
-      translate_button_event ((ClutterButtonEvent *) event, xevent);
-      g_signal_emit_by_name (stage, "button-release-event", event);
+      translate_button_event ((ClutterButtonEvent *) &event, xevent);
+      g_signal_emit_by_name (stage, "button-release-event", &event);
       emit_input_event = TRUE;
       break;
     case MotionNotify:
-      translate_motion_event ((ClutterMotionEvent *) event, xevent);
-      g_signal_emit_by_name (stage, "motion-event", event);
+      translate_motion_event ((ClutterMotionEvent *) &event, xevent);
+      g_signal_emit_by_name (stage, "motion-event", &event);
       emit_input_event = TRUE;
       break;
     }
 
   if (emit_input_event)
-    g_signal_emit_by_name (stage, "input-event", event);
+    g_signal_emit_by_name (stage, "input-event", &event);
 
-  clutter_event_free (event);
 }
 
 static void
@@ -481,7 +477,7 @@ clutter_gl_context_set_indirect (gboolean indirect)
 
 }
 
-ClutterMainContext *
+ClutterMainContext*
 clutter_context_get_default (void)
 {
   if (!ClutterCntx)

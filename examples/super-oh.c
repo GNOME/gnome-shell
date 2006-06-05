@@ -115,20 +115,9 @@ main (int argc, char *argv[])
   clutter_element_set_size (stage, WINWIDTH, WINHEIGHT);
 
   /* and its background color */
-  g_print ("before clutter_stage_set_color: (%3d, %3d, %3d, %3d)\n",
-	   stage_color.red,
-	   stage_color.green,
-	   stage_color.blue,
-	   stage_color.alpha);
+
   clutter_stage_set_color (CLUTTER_STAGE (stage),
 		           &stage_color);
-  clutter_stage_get_color (CLUTTER_STAGE (stage),
-		           &stage_color);
-  g_print ("after clutter_stage_get_color:  (%3d, %3d, %3d, %3d)\n",
-	   stage_color.red,
-	   stage_color.green,
-	   stage_color.blue,
-	   stage_color.alpha);
 
   oh = g_new(SuperOH, 1);
 

@@ -42,10 +42,10 @@ G_BEGIN_DECLS
 #define CLUTTER_TYPE_STAGE clutter_stage_get_type()
 
 #define CLUTTER_STAGE_WIDTH() \
- clutter_element_get_width(CLUTTER_ELEMENT(clutter_stage()))
+ clutter_element_get_width(CLUTTER_ELEMENT(clutter_stage_get_default()))
 
 #define CLUTTER_STAGE_HEIGHT() \
- clutter_element_get_height(CLUTTER_ELEMENT(clutter_stage()))
+ clutter_element_get_height(CLUTTER_ELEMENT(clutter_stage_get_default()))
 
 
 #define CLUTTER_STAGE(obj) \
@@ -110,19 +110,18 @@ GType           clutter_stage_get_type           (void);
 
 ClutterElement *clutter_stage_get_default        (void);
 
-/* FIXME: no need for below to take stage arg ? 
- *        convert to defines also ?
-*/
-
 Window          clutter_stage_get_xwindow        (ClutterStage *stage);
 
 void            clutter_stage_set_color          (ClutterStage       *stage,
 						  const ClutterColor *color);
+
 void            clutter_stage_get_color          (ClutterStage       *stage,
 						  ClutterColor       *color);
+
 ClutterElement *clutter_stage_get_element_at_pos (ClutterStage       *stage,
 						  gint                x,
 						  gint                y);
+
 GdkPixbuf *     clutter_stage_snapshot           (ClutterStage       *stage,
 						  gint                x,
 						  gint                y,

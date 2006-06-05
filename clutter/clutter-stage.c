@@ -564,6 +564,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  clutter_marshal_VOID__BOXED,
 		  G_TYPE_NONE, 1,
 		  CLUTTER_TYPE_EVENT);
+
   stage_signals[BUTTON_PRESS_EVENT] =
     g_signal_new ("button-press-event",
 		  G_TYPE_FROM_CLASS (gobject_class),
@@ -660,13 +661,21 @@ clutter_stage_get_default (void)
   else
     {
       retval = CLUTTER_ELEMENT (stage_singleton);
-      g_object_ref (retval);
+
+      /* We dont ref for now as its assumed there will always be
+       * a stage and no real support for multiple stages. Non
+       * reffing makes API slightly simpler and allows for things
+       * like CLUTTER_STAGE_WIDTH() work nicely.
+       *
+       * In future if multiple stage support is added probably
+       * add a clutter-stage-manager class that would manage 
+       * multiple instances.
+       *  g_object_ref (retval);
+      */
     }
 
   return retval;
-  
 }
-
 
 /**
  * clutter_stage_get_xwindow

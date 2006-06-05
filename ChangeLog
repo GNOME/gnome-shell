@@ -1,3 +1,19 @@
+2006-06-05  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-event.h:
+	Remove send_event field. Clutter shouldn't need it.  
+
+	* clutter/clutter-main.c: (clutter_dispatch_x_event):
+	Dont malloc a new clutter event for each xevent.
+
+	* clutter/clutter-stage.h:
+	* clutter/clutter-stage.c: (clutter_stage_class_init),
+	(clutter_stage_get_default):
+	Dont ref stage from clutter_stage_get_default. 
+
+	* examples/super-oh.c: (main):
+	Remove some now uneeded debug g_prints
+
 2006-06-05  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-color.h:
