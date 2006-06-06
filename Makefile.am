@@ -1,4 +1,8 @@
-SUBDIRS=clutter gtk bindings doc examples 
+SUBDIRS=clutter bindings doc examples 
+
+if ENABLE_GTK
+SUBDIRS += gtk
+endif
 
 pcfiles = clutter-@CLUTTER_MAJORMINOR@.pc
 

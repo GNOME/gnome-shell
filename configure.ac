@@ -9,7 +9,7 @@ m4_define(clutter_version_micro, 1)
 
 AC_INIT([clutter], 
        clutter_version_major.clutter_version_minor.clutter_version_micro, 
-        [mallum@o-hand.com])
+        [http://bugzilla.o-hand.com/enter_bug.cgi?product=clutter])
 AC_CONFIG_SRCDIR([clutter/clutter.h])
 AM_CONFIG_HEADER([config.h])
 
@@ -53,45 +53,40 @@ AC_CHECK_FUNCS([memset munmap strcasecmp strdup])
 
 dnl ========================================================================
 
-# FIXME: redo below
+PKG_CHECK_MODULES(X11, x11)
 
-AC_PATH_XTRA
+# FIXME: Needed ?
+AC_MSG_CHECKING([for XTHREADS in Xlib])
 
-if test "x$have_x" = "xyes"; then
-    GLX_LIBS="$X_LIBS -lX11 -lGL"
-    GLX_CFLAGS="$X_CFLAGS"
-
-    save_LIBS="$LIBS"
-    save_CFLAGS="$CFLAGS"
-    CFLAGS="$CFLAGS $GLX_CFLAGS"
-    LIBS="$LIBS $GLX_LIBS"
-
-    AC_MSG_CHECKING([for XTHREADS in Xlib])
-    AC_RUN_IFELSE(
+AC_RUN_IFELSE(
       [AC_LANG_PROGRAM([[#include <X11/Xlib.h>]],
         [[return XInitThreads() == 0 ? 0 : 1;]])],
       [xthreads=no],
       [xthreads=yes],
       [xthreads=yes])
 
-    AC_MSG_RESULT($xthreads)
+AC_MSG_RESULT($xthreads)
 
-    LIBS="$save_LIBS"
-    CFLAGS="$save_CFLAGS"
-
-    if test "x$xthreads" = "xyes"
-    then
-      GLX_LIBS="$GLX_LIBS -lpthread"
-      AC_DEFINE([XTHREADS], [], [1])
-    fi
-else
-    AC_MSG_ERROR([*** Cannot find X + GL ****])
+if test "x$xthreads" = "xyes"
+then
+   X11_LIBS="$X11_LIBS -lpthread"
+   AC_DEFINE([XTHREADS], [], [1])
 fi
+
+AC_CHECK_LIB(GL, glXCreateContext, HAVE_LIBGL=yes, HAVE_LIBGL=no)
+
+if test "x$HAVE_LIBGL" = "xno"; then
+   AC_MSG_ERROR(libGL not found);
+else
+   GLX_LIBS="$X11_LIBS -lGL"
+fi
+
+GLX_CFLAGS="$X11_CFLAGS"
 
 dnl ========================================================================
 
 pkg_modules="pangoft2 glib-2.0 >= 2.8 gthread-2.0 gdk-pixbuf-2.0"
-PKG_CHECK_MODULES(CLUTTER, [$pkg_modules])
+PKG_CHECK_MODULES(CLUTTER_DEPS, [$pkg_modules])
 
 dnl ========================================================================
 
@@ -104,8 +99,14 @@ GST_LIBS="$GST_LIBS -lgstinterfaces-$GST_MAJORMINOR -lgstvideo-$GST_MAJORMINOR -
 
 dnl ========================================================================
 
-pkg_modules="gtk+-2.0"
-PKG_CHECK_MODULES(GTK, [$pkg_modules])
+AC_ARG_ENABLE(gtk,
+            [AC_HELP_STRING([--enable-gtk], [Buld Gtk+ Clutter widget])],enable_gtk="$enableval",enable_gtk=no) 
+
+if test "x$enable_gtk" = "xyes"; then
+   PKG_CHECK_MODULES(GTK, [gtk+-2.0])
+fi
+
+AM_CONDITIONAL(ENABLE_GTK, test x$enable_gtk = xyes)
 
 dnl ========================================================================
 
@@ -183,8 +184,8 @@ AC_SUBST(GST_LIBS)
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)
 
-CLUTTER_CFLAGS="$GLX_CLAGS $CLUTTER_CFLAGS"
-CLUTTER_LIBS="$GLX_LIBS $CLUTTER_LIBS"
+CLUTTER_CFLAGS="$GLX_CLAGS $CLUTTER_DEPS_CFLAGS"
+CLUTTER_LIBS="$GLX_LIBS $CLUTTER_DEPS_LIBS"
 
 AC_SUBST(CLUTTER_CFLAGS)
 AC_SUBST(CLUTTER_LIBS)
@@ -199,3 +200,16 @@ doc/Makefile
 doc/reference/Makefile
 clutter.pc
 ])
+
+dnl ========================================================================
+
+echo ""
+echo "                    Clutter $VERSION"
+echo "                 ==================="
+echo ""
+echo "                   prefix:   ${prefix}"
+echo ""
+echo "          Python Bindings:   ${enable_python}"
+echo "              GTK+ Widget:   ${enable_gtk}"
+echo "            Documentation:   ${enable_gtk_doc}"
+echo ""

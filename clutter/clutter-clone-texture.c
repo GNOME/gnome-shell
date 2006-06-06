@@ -129,6 +129,9 @@ clone_texture_render_to_gl_quad (ClutterCloneTexture *ctexture,
 	  qy1 = y1 + lasty;
 	  qy2 = qy1 + ((qheight * actual_h) / pheight );
 
+	  CLUTTER_DBG("rendering text tile x: %i, y: %i - %ix%i", 
+		      x, y, actual_w, actual_h);
+
 	  glBegin (GL_QUADS);
 	  glTexCoord2f (tx, ty);   glVertex2i   (qx2, qy2);
 	  glTexCoord2f (0,  ty);   glVertex2i   (qx1, qy2);
@@ -167,6 +170,10 @@ clutter_clone_texture_paint (ClutterElement *self)
   glColor4ub(255, 255, 255, clutter_element_get_opacity(self));
 
   clutter_element_get_coords (self, &x1, &y1, &x2, &y2);
+
+  CLUTTER_DBG("paint to x1: %i, y1: %i x2: %i, y2: %i opacity: %i", 
+	      x1, y1, x2, y2, clutter_element_get_opacity(self) );
+
   clone_texture_render_to_gl_quad (CLUTTER_CLONE_TEXTURE(self), 
 				   x1, y1, x2, y2);
 
@@ -186,8 +193,18 @@ set_parent_texture (ClutterCloneTexture *ctexture,
       priv->parent_texture = NULL;
     }
 
-  if (texture)
-    priv->parent_texture = g_object_ref (texture);
+  if (texture) 
+    {
+      gint width, height;
+
+      priv->parent_texture = g_object_ref (texture);
+
+      /* Sync up the size to parent texture base pixbuf size. 
+      */
+      clutter_texture_get_base_size (texture, &width, &height);
+      clutter_element_set_size (CLUTTER_ELEMENT(ctexture), width, height);
+    }
+      
 }
 
 static void 
@@ -285,22 +302,17 @@ clutter_clone_texture_init (ClutterCloneTexture *self)
  * clutter_clone_texture_new:
  * @texture: a #ClutterTexture
  *
- * FIXME
+ * Creates an efficient 'clone' of a pre-existing texture if which it 
+ * shares the underlying pixbuf data. 
  *
  * Return value: the newly created #ClutterCloneTexture
  */
 ClutterElement *
 clutter_clone_texture_new (ClutterTexture *texture)
 {
-  gint width, height;
-
   g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), NULL);
-
-  clutter_texture_get_base_size (texture, &width, &height);
 
   return g_object_new (CLUTTER_TYPE_CLONE_TEXTURE,
  		       "parent-texture", texture,
-		       "width", width,
-		       "height", height,
 		       NULL);
 }

@@ -1,3 +1,29 @@
+2006-06-06  Matthew Allum  <mallum@openedhand.com>
+
+	* configure.ac:
+	Use pkg-config to check for X. Really Check for GL libs.
+	Make gtk binding optional. Cleanup a little.
+
+	* Makefile.am:
+	* gtk/Makefile.am:
+	Make gtk binding optional
+
+	* clutter/clutter-element.c:
+	Cleanup a little, notify on size change.
+
+	* clutter/clutter-texture.c:
+	Lots of cleanups. Add waste prop. Add filter quality prop.
+
+	* clutter/clutter-clone-texture.c:
+	Make object construction simpler to work better with bindings. 
+
+	* clutter/clutter-stage.c: 
+	* clutter/clutter-timeline.c:
+	Minor reformating, cleanups.
+
+	* examples/test-text.c: (main):
+	Random experimentation
+
 2006-06-06  Iain Holmes  <iain@openedhand.com>
 
 	* gtk/gtk-clutter.c (size_request): Take the size of the widget from

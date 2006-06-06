@@ -26,6 +26,7 @@
 #include "clutter-texture.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
+#include "clutter-util.h"
 #include "clutter-private.h" 	/* for DBG */
 
 #include <GL/glx.h>
@@ -39,28 +40,7 @@ G_DEFINE_TYPE (ClutterTexture, clutter_texture, CLUTTER_TYPE_ELEMENT);
 #define PIXEL_TYPE GL_UNSIGNED_INT_8_8_8_8_REV
 #endif
 
-#define PIXEL_FORMAT GL_RGBA
-
-/* Some code below based on luminocity - copyright Owen Taylor */
-
-/*  MAX_WASTE: The maximum dimension of blank area we'll accept
- *       in a pixmap. Bigger values use less textures, smaller
- *       values less texture memory. The current value of 
- *       256 means that the smallest texture we'll split to
- *       save texture memory is 513x512. (That will be split into
- *       a 512x512 and, if overlap is 32, a 64x512 texture)
- */
-#define MAX_WASTE 64 		/* FIXME: Make property */
-
-/*
- * OVERLAP: when we divide the full-resolution image into
- *          tiles to deal with hardware limitations, we overlap
- *          tiles by this much. This means that we can scale
- *          down by up to OVERLAP before we start getting
- *          seems.
- */
-
-#define OVERLAP 0 /* 32 */
+#define OVERLAP 0
 
 /* FIXME: actually use */
 typedef struct ClutterTextureTileDimention
@@ -77,8 +57,9 @@ struct ClutterTexturePrivate
   GLenum                       pixel_type;
 
   gboolean                     sync_element_size;
-  gint                         tile_max_waste;
-  gboolean                     repeat_x, repeat_y;
+  gint                         max_tile_waste;
+  guint                        filter_quality;
+  gboolean                     repeat_x, repeat_y; /* non working */
   
   gboolean                     tiled;
   ClutterTextureTileDimention *x_tiles, *y_tiles;
@@ -96,7 +77,8 @@ enum
   PROP_PIXEL_FORMAT,		/* Texture format */
   PROP_SYNC_SIZE,
   PROP_REPEAT_Y,
-  PROP_REPEAT_X
+  PROP_REPEAT_X,
+  PROP_FILTER_QUALITY
 };
 
 enum
@@ -110,17 +92,6 @@ static int texture_signals[LAST_SIGNAL] = { 0 };
 
 static void
 init_tiles (ClutterTexture *texture);
-
-static int 
-next_p2 (int a)
-{
-  int rval=1;
-
-  while(rval < a) 
-    rval <<= 1;
-
-  return rval;
-}
 
 static gboolean
 can_create (int    width, 
@@ -147,6 +118,7 @@ can_create (int    width,
 static int
 tile_dimension (int                          to_fill,
 		int                          start_size,
+		int                          waste,
 		ClutterTextureTileDimention *tiles)
 {
   int pos     = 0;
@@ -174,7 +146,7 @@ tile_dimension (int                          to_fill,
 	{
 	  to_fill -= (size - OVERLAP);
 	  pos += size - OVERLAP;
-	  while (size >= 2 * to_fill || size - to_fill > MAX_WASTE)
+	  while (size >= 2 * to_fill || size - to_fill > waste)
 	    size /= 2;
 	}
     }
@@ -190,20 +162,21 @@ init_tiles (ClutterTexture *texture)
 
   priv = texture->priv;
 
-  x_pot = next_p2 (priv->width);
-  y_pot = next_p2 (priv->height);
+  x_pot = clutter_util_next_p2 (priv->width);
+  y_pot = clutter_util_next_p2 (priv->height);
   
-  if (x_pot - priv->width > MAX_WASTE && y_pot - priv->height > MAX_WASTE)
+  if (x_pot - priv->width > priv->max_tile_waste 
+      && y_pot - priv->height > priv->max_tile_waste)
     {
       while (!(can_create (x_pot, y_pot, priv->pixel_format, priv->pixel_type) 
-	       && (x_pot - priv->width < MAX_WASTE) 
-	       && (y_pot - priv->height < MAX_WASTE)))
+	       && (x_pot - priv->width < priv->max_tile_waste) 
+	       && (y_pot - priv->height < priv->max_tile_waste)))
 	{
 	  CLUTTER_DBG("x_pot:%i - width:%i < max_waste:%i", 
-		      x_pot, priv->width, MAX_WASTE );
+		      x_pot, priv->width, priv->max_tile_waste);
 	  
 	  CLUTTER_DBG("y_pot:%i - height:%i < max_waste:%i", 
-		      y_pot, priv->height, MAX_WASTE );
+		      y_pot, priv->height, priv->max_tile_waste);
 	  
 	  if (x_pot > y_pot)
 	    x_pot /= 2;
@@ -215,20 +188,22 @@ init_tiles (ClutterTexture *texture)
   if (priv->x_tiles)
     g_free(priv->x_tiles);
 
-  priv->n_x_tiles = tile_dimension (priv->width, x_pot, NULL);
+  priv->n_x_tiles = tile_dimension (priv->width, x_pot, 
+				    priv->max_tile_waste, NULL);
   priv->x_tiles = g_new (ClutterTextureTileDimention, priv->n_x_tiles);
-  tile_dimension (priv->width, x_pot, priv->x_tiles);
+  tile_dimension (priv->width, x_pot, priv->max_tile_waste, priv->x_tiles);
 
   if (priv->y_tiles)
     g_free(priv->y_tiles);
 
-  priv->n_y_tiles = tile_dimension (priv->height, y_pot, NULL);
+  priv->n_y_tiles = tile_dimension (priv->height, y_pot, 
+				    priv->max_tile_waste, NULL);
   priv->y_tiles = g_new (ClutterTextureTileDimention, priv->n_y_tiles);
-  tile_dimension (priv->height, y_pot, priv->y_tiles);
+  tile_dimension (priv->height, y_pot, priv->max_tile_waste, priv->y_tiles);
 
   CLUTTER_DBG("x_pot:%i, width:%i, y_pot:%i, height: %i max_waste:%i, "
               " n_x_tiles: %i, n_y_tiles: %i",
-	      x_pot, priv->width, y_pot, priv->height, MAX_WASTE,
+	      x_pot, priv->width, y_pot, priv->height, priv->max_tile_waste,
 	      priv->n_x_tiles, priv->n_y_tiles);
 
 }
@@ -267,8 +242,8 @@ texture_render_to_gl_quad (ClutterTexture *texture,
     {
       glBindTexture(GL_TEXTURE_2D, priv->tiles[0]);
 
-      tx = (float) priv->width / next_p2 (priv->width);  
-      ty = (float) priv->height / next_p2 (priv->height);
+      tx = (float) priv->width / clutter_util_next_p2 (priv->width);  
+      ty = (float) priv->height / clutter_util_next_p2 (priv->height);
 
       qx1 = x1; qx2 = x2;
       qy1 = y1; qy2 = y2;
@@ -407,8 +382,11 @@ clutter_texture_sync_pixbuf (ClutterTexture *texture)
 		      GL_TEXTURE_WRAP_T, 
 		      priv->repeat_y ? GL_REPEAT : GL_CLAMP);
 
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, 
+		      priv->filter_quality ? GL_LINEAR : GL_NEAREST);
+
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, 
+		      priv->filter_quality ? GL_LINEAR : GL_NEAREST);
 
       glPixelStorei (GL_UNPACK_ROW_LENGTH, 
 		     gdk_pixbuf_get_width(priv->pixbuf));
@@ -422,8 +400,8 @@ clutter_texture_sync_pixbuf (ClutterTexture *texture)
 		       0, 
 		       (gdk_pixbuf_get_n_channels (priv->pixbuf) == 4) ? 
 		              GL_RGBA : GL_RGB,
-		       next_p2(priv->width),
-		       next_p2(priv->height),
+		       clutter_util_next_p2(priv->width),
+		       clutter_util_next_p2(priv->height),
 		       0, 
 		       priv->pixel_format, 
 		       priv->pixel_type, 
@@ -518,9 +496,13 @@ clutter_texture_sync_pixbuf (ClutterTexture *texture)
 			GL_TEXTURE_WRAP_T, 
 			priv->repeat_y ? GL_REPEAT : GL_CLAMP);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexEnvi      (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, 
+			priv->filter_quality ? GL_LINEAR : GL_NEAREST);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, 
+			priv->filter_quality ? GL_LINEAR : GL_NEAREST);
+
+	glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	
 	glPixelStorei (GL_UNPACK_ROW_LENGTH, gdk_pixbuf_get_width(pixtmp));
 	glPixelStorei (GL_UNPACK_ALIGNMENT, 
@@ -535,10 +517,6 @@ clutter_texture_sync_pixbuf (ClutterTexture *texture)
 			 GL_RGBA : GL_RGB,
 			 priv->x_tiles[x].size,
 			 priv->y_tiles[y].size,
-			 /*
- 			 gdk_pixbuf_get_width(pixtmp),
-			 gdk_pixbuf_get_height(pixtmp),
-			 */
 			 0, 
 			 priv->pixel_format, 
 			 priv->pixel_type, 
@@ -552,10 +530,6 @@ clutter_texture_sync_pixbuf (ClutterTexture *texture)
 			     0, 0,
 			     priv->x_tiles[x].size,
 			     priv->y_tiles[y].size,
-			     /*
-			     gdk_pixbuf_get_width(pixtmp),
-			     gdk_pixbuf_get_height(pixtmp),
-			     */
 			     priv->pixel_format, 
 			     priv->pixel_type, 
 			     gdk_pixbuf_get_pixels(pixtmp));
@@ -690,7 +664,7 @@ clutter_texture_set_property (GObject      *object,
       CLUTTER_DBG("Texture is tiled ? %i", priv->tiled);
       break;
     case PROP_MAX_TILE_WASTE:
-      priv->tile_max_waste = g_value_get_int (value);
+      priv->max_tile_waste = g_value_get_int (value);
       break;
     case PROP_PIXEL_TYPE:
       priv->pixel_type = g_value_get_int (value);
@@ -706,6 +680,9 @@ clutter_texture_set_property (GObject      *object,
       break;
     case PROP_REPEAT_Y:
       priv->repeat_y = g_value_get_boolean (value);
+      break;
+    case PROP_FILTER_QUALITY:
+      priv->filter_quality = g_value_get_int (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -734,7 +711,7 @@ clutter_texture_get_property (GObject    *object,
       g_value_set_boolean (value, priv->tiled);
       break;
     case PROP_MAX_TILE_WASTE:
-      g_value_set_int (value, priv->tile_max_waste);
+      g_value_set_int (value, priv->max_tile_waste);
       break;
     case PROP_PIXEL_TYPE:
       g_value_set_int (value, priv->pixel_type);
@@ -750,6 +727,9 @@ clutter_texture_get_property (GObject    *object,
       break;
     case PROP_REPEAT_Y:
       g_value_set_boolean (value, priv->repeat_y);
+      break;
+    case PROP_FILTER_QUALITY:
+      g_value_set_int (value, priv->filter_quality);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -808,7 +788,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
      g_param_spec_boolean ("repeat-x",
 			   "Tile underlying pixbuf in x direction",
 			   "Reapeat underlying pixbuf rather than scale" 
-			   "in x direction",
+			   "in x direction. Currently UNWORKING",
 			   FALSE,
 			   G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
@@ -817,17 +797,32 @@ clutter_texture_class_init (ClutterTextureClass *klass)
      g_param_spec_boolean ("repeat-y",
 			   "Tile underlying pixbuf in y direction",
 			   "Reapeat underlying pixbuf rather than scale" 
-			   "in y direction",
+			   "in y direction. Currently UNWORKING",
 			   FALSE,
 			   G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
-  /* FIXME: non working atm */
+  /* FIXME: Ideally this option needs to have some kind of global
+   *        overide as to imporve performance.
+  */
+  g_object_class_install_property
+    (gobject_class, PROP_FILTER_QUALITY,
+     g_param_spec_int ("filter-quality",
+		       "Quality of filter used when scaling a texture",
+		       "Values 0 and 1 current only supported, with 0"
+		       "being lower quality but fast, 1 being better "
+		       "quality but slower. ( Currently just maps to "
+		       " GL_NEAREST / GL_LINEAR )",
+		       0,
+		       G_MAXINT,
+		       1,
+		       G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+
   g_object_class_install_property
     (gobject_class, PROP_MAX_TILE_WASTE,
      g_param_spec_int ("tile-waste",
 		       "Tile dimention to waste",
-		       "The maximum dimension of blank area we'll accept"
-		       "in a pixmap. Bigger values use less textures, "
+		       "Max wastage dimention of a texture when using "
+		       "tiled textures. Bigger values use less textures, "
 		       "smaller values less texture memory. ",
 		       0,
 		       G_MAXINT,
@@ -851,7 +846,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		       "GL texture pixel format used",
 		       0,
 		       G_MAXINT,
-		       PIXEL_FORMAT,
+		       GL_RGBA,
 		       G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
 
   texture_signals[SIGNAL_SIZE_CHANGE] =
@@ -971,27 +966,13 @@ clutter_texture_set_pixbuf (ClutterTexture *texture, GdkPixbuf *pixbuf)
   /* Force tiling if pixbuf is too big for single texture */
   if (priv->tiled == FALSE 
       && texture_dirty 
-      && !can_create(next_p2(priv->width), next_p2(priv->height),
-		     priv->pixel_format, priv->pixel_type))
+      && !can_create(clutter_util_next_p2(priv->width), 
+		     clutter_util_next_p2(priv->height),
+		     priv->pixel_format, 
+		     priv->pixel_type))
     priv->tiled = TRUE;
   clutter_threads_leave();
 
-  /* FIXME: for priv->tiled = FALSE textures, pixbuf could be 
-   *        format we dont like ( ie no alpha ). therfore
-   *        we need to pixbuf_copy it into one that is.
-   *
-   * Actually I dont think this is worth worrying about...
-   * is non tiled textures are being used, texture data
-   * type can be set at initialisation.
-  */
-
-  /* reset set if element does not yet have size */
-  /* FIXME: caller has to handle this via signal, OR
-            set prop so its always handled automatically OR
-            always happens and client can resize via signal
-  if (clutter_element_width (CLUTTER_ELEMENT(texture)) == 0
-      || clutter_element_height (CLUTTER_ELEMENT(texture)) == 0)
-  */
   if (priv->sync_element_size)
     clutter_element_set_size (CLUTTER_ELEMENT(texture), 
 			      priv->width, 

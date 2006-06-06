@@ -3,11 +3,12 @@ INCLUDES = @GCC_FLAGS@ @CLUTTER_CFLAGS@ $(GST_CFLAGS) $(GTK_CFLAGS)
 lib_LTLIBRARIES = libgtkclutter-@CLUTTER_MAJORMINOR@.la
 
 libgtkclutter_@CLUTTER_MAJORMINOR@_la_SOURCES = gtk-clutter.c
-
-libgtkclutter_@CLUTTER_MAJORMINOR@_la_LIBADD = @CLUTTER_LIBS@ $(GST_LIBS) $(GTK_LIBS)
+libgtkclutter_@CLUTTER_MAJORMINOR@_la_LIBADD = \
+                          @CLUTTER_LIBS@ $(GST_LIBS) $(GTK_LIBS)
 libgtkclutter_@CLUTTER_MAJORMINOR@_la_LDFLAGS = @CLUTTER_LT_LDFLAGS@
 
-gtkclutterheadersdir = $(includedir)/gtk-clutter-@CLUTTER_MAJORMINOR@/gtk-clutter
+gtkclutterheadersdir = \
+         $(includedir)/gtk-clutter-@CLUTTER_MAJORMINOR@/gtk-clutter
 gtkclutterheaders_DATA = gtk-clutter.h
 
 noinst_PROGRAMS = gtk-clutter-test

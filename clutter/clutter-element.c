@@ -251,7 +251,7 @@ clutter_element_paint (ClutterElement *self)
 
   glLoadName (clutter_element_get_id (self));
 
-  /* FIXME: Less clunky */
+  /* FIXME: Less clunky ? */
 
   if (self->priv->rzang)
     {
@@ -319,6 +319,7 @@ clutter_element_request_coords (ClutterElement    *self,
 				ClutterElementBox *box)
 {
   ClutterElementClass *klass;
+  gboolean             x_change, y_change, width_change, height_change;
 
   klass = CLUTTER_ELEMENT_GET_CLASS (self);
 
@@ -326,15 +327,34 @@ clutter_element_request_coords (ClutterElement    *self,
   if (klass->request_coords)
     klass->request_coords(self, box);
 
+  x_change     = (self->priv->coords.x1 != box->x1);
+  y_change     = (self->priv->coords.y1 != box->y1);
+  width_change = (self->priv->coords.x2 - self->priv->coords.x1 
+		            != box->x2 - box->x1);
+  height_change = (self->priv->coords.y2 - self->priv->coords.y1 
+		            != box->y2 - box->y1);
+
   self->priv->coords.x1 = box->x1;
   self->priv->coords.y1 = box->y1; 
   self->priv->coords.x2 = box->x2; 
   self->priv->coords.y2 = box->y2; 
 
-  /* TODO: Fire a signal ? Could be usage for WM resizing stage */
-
   if (CLUTTER_ELEMENT_IS_VISIBLE (self))
     clutter_element_queue_redraw (self);
+
+  /* FIXME: Below really needed ? If so should add to other _set calls. 
+  */
+  if (x_change)
+    g_object_notify (G_OBJECT (self), "x");
+
+  if (y_change)
+    g_object_notify (G_OBJECT (self), "y");
+
+  if (width_change)
+    g_object_notify (G_OBJECT (self), "width");
+
+  if (height_change)
+    g_object_notify (G_OBJECT (self), "height");
 }
 
 /**
@@ -342,7 +362,7 @@ clutter_element_request_coords (ClutterElement    *self,
  * @self: A #ClutterElement
  * @box: A location to store the elements #ClutterElementBox co-ordinates
  *
- * Requests the allocated co-ordinates for the #ClutterElement ralative 
+ * Requests the allocated co-ordinates for the #ClutterElement relative 
  * to any parent.
  *
  * This function should not be called directly by applications instead 
@@ -543,14 +563,6 @@ clutter_element_class_init (ClutterElementClass *klass)
 			 0xff,
 			 G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
-  /* FIXME: add - as boxed ?  
-   *  g_object_class_install_property
-   * (gobject_class, PROP_CLIP,
-   *  g_param_spec_pointer ("clip",
-   *			   "Clip",
-   *			   "Clip",
-   *			   G_PARAM_READWRITE));
-  */
 }
 
 static void
@@ -935,33 +947,18 @@ clutter_element_get_id (ClutterElement *self)
   return self->priv->id;
 }
 
-static void
-depth_sorter_foreach (ClutterElement *element, gpointer user_data)
-{
-  ClutterElement *element_to_sort = CLUTTER_ELEMENT(user_data);
-  gint            z_copy;
-
-  z_copy = element->priv->z;
-
-  if (element_to_sort->priv->z > element->priv->z) 
-    {
-      clutter_element_raise (element_to_sort, element);
-      element->priv->z = z_copy;
-    }
-}
-
 /**
  * clutter_element_set_depth:
  * @self: a #ClutterElement
  * @depth: FIXME
  *
- * FIXME
+ * FIXME ( Basically sets Z value )
  */
 void
 clutter_element_set_depth (ClutterElement *self,
                            gint            depth)
 {
-  /* Sets Z value.*/
+  /* Sets Z value. - FIXME: should invert ?*/
   self->priv->z = depth;
 
   if (self->priv->parent_element)
@@ -1198,7 +1195,6 @@ clutter_element_lower (ClutterElement *self, ClutterElement *above)
   g_return_if_fail (CLUTTER_IS_ELEMENT(self));
   g_return_if_fail (clutter_element_get_parent (self) != NULL);
 
-  /* FIXME: fix Z ordering ? */
   if (above != NULL)
     {
       g_return_if_fail 

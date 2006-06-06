@@ -111,7 +111,6 @@ sync_fullscreen (ClutterStage *stage)
     }
   else
     {
-      /* FIXME */
       if (stage->priv->xwin != None)
 	XDeleteProperty(clutter_xdisplay(), 
 			stage->priv->xwin, atom_WINDOW_STATE);
@@ -366,6 +365,9 @@ clutter_stage_request_coords (ClutterElement    *self,
 
   stage = CLUTTER_STAGE (self);
   priv = stage->priv;
+
+  /* FIXME: some how have X configure_notfiys call this ?  
+  */
 
   new_width  = ABS(box->x2 - box->x1);
   new_height = ABS(box->y2 - box->y1); 

@@ -1,14 +1,27 @@
 #include <clutter/clutter.h>
 
+void
+frame_cb (ClutterTimeline *timeline, 
+	  gint             frame_num, 
+	  gpointer         data)
+{
+  ClutterElement *label = (ClutterElement*)data;
+
+  clutter_element_set_depth(label, -400 + (frame_num * 40));
+  clutter_element_set_opacity (label, 255 - frame_num );
+}
+
+
 int
 main (int argc, char *argv[])
 {
-  ClutterElement *label;
-  ClutterElement *stage;
-  gchar          *text;
-  gsize           size;
-  ClutterColor    stage_color = { 0x00, 0x00, 0x00, 0xff };
-  ClutterColor    label_color = { 0x11, 0xdd, 0x11, 0xaa };
+  ClutterTimeline *timeline;
+  ClutterElement  *label;
+  ClutterElement  *stage;
+  gchar           *text;
+  gsize            size;
+  ClutterColor     stage_color = { 0x00, 0x00, 0x00, 0xff };
+  ClutterColor     label_color = { 0x11, 0xdd, 0x11, 0xaa };
 
   clutter_init (&argc, &argv);
 
@@ -22,12 +35,21 @@ main (int argc, char *argv[])
 
   label = clutter_label_new_with_text ("Mono 8", text);
   clutter_label_set_color (CLUTTER_LABEL (label), &label_color);
-  /* clutter_label_set_text_extents (CLUTTER_LABEL(label), 200, 0); */
 
   clutter_group_add (CLUTTER_GROUP (stage), label);
   clutter_group_show_all (CLUTTER_GROUP (stage));
-  g_signal_connect (stage, "button-press-event",
+
+  timeline = clutter_timeline_new (400, 60); /* num frames, fps */
+  g_object_set(timeline, "loop", TRUE, 0);   /* have it loop */
+
+  g_signal_connect(timeline, "new-frame",  G_CALLBACK (frame_cb), label);
+
+  /* and start it */
+  clutter_timeline_start (timeline);
+
+  g_signal_connect (stage, "key-press-event",
 		    G_CALLBACK (clutter_main_quit), NULL);
+
   g_object_unref (stage);
 
   clutter_main();

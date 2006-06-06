@@ -486,7 +486,7 @@ clutter_timeline_is_playing (ClutterTimeline *timeline)
  *
  * Return Value: a new #ClutterTimeline
  */
-ClutterTimeline *
+ClutterTimeline*
 clutter_timeline_new (guint nframes,
 		      guint fps)
 {
