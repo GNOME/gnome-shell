@@ -1,3 +1,11 @@
+2006-06-06  Iain Holmes  <iain@openedhand.com>
+
+	* gtk/: Add a gtk widget for clutter.
+
+	* configure.ac: Add GTK checks
+
+	* Makefile.am: Go into gtk/
+
 2006-06-05  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-group.c: (clutter_group_remove):

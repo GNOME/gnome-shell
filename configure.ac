@@ -104,6 +104,11 @@ GST_LIBS="$GST_LIBS -lgstinterfaces-$GST_MAJORMINOR -lgstvideo-$GST_MAJORMINOR -
 
 dnl ========================================================================
 
+pkg_modules="gtk+-2.0"
+PKG_CHECK_MODULES(GTK, [$pkg_modules])
+
+dnl ========================================================================
+
 if test "x$GCC" = "xyes"; then
         GCC_FLAGS="-g -Wall"
 fi
@@ -175,6 +180,8 @@ dnl ========================================================================
 AC_SUBST(GCC_FLAGS)
 AC_SUBST(GST_CFLAGS)
 AC_SUBST(GST_LIBS)
+AC_SUBST(GTK_CFLAGS)
+AC_SUBST(GTK_LIBS)
 
 CLUTTER_CFLAGS="$GLX_CLAGS $CLUTTER_CFLAGS"
 CLUTTER_LIBS="$GLX_LIBS $CLUTTER_LIBS"
@@ -184,6 +191,7 @@ AC_SUBST(CLUTTER_LIBS)
 
 AC_OUTPUT([Makefile
 clutter/Makefile
+gtk/Makefile
 bindings/Makefile
 bindings/python/Makefile
 examples/Makefile

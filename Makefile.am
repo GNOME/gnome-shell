@@ -1,4 +1,4 @@
-SUBDIRS=clutter bindings doc examples 
+SUBDIRS=clutter gtk bindings doc examples 
 
 pcfiles = clutter-@CLUTTER_MAJORMINOR@.pc
 
