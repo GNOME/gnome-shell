@@ -60,6 +60,20 @@ dispose (GObject *object)
 }
 
 static void
+size_request (GtkWidget *widget,
+              GtkRequisition *req)
+{
+  GtkClutter *clutter;
+  GtkClutterPrivate *priv;
+
+  clutter = GTK_CLUTTER (widget);
+  priv = GTK_CLUTTER_GET_PRIVATE (clutter);
+
+  req->width = clutter_element_get_width (priv->stage);
+  req->height = clutter_element_get_height (priv->stage);
+}
+
+static void
 hierarchy_changed (GtkWidget *widget,
                    GtkWidget *parent)
 {
@@ -86,6 +100,7 @@ gtk_clutter_class_init (GtkClutterClass *klass)
 
   gobject_class->dispose = dispose;
 
+  widget_class->size_request = size_request;
   widget_class->hierarchy_changed = hierarchy_changed;
 
   g_type_class_add_private (gobject_class, sizeof (GtkClutterPrivate));

@@ -1,5 +1,11 @@
 2006-06-06  Iain Holmes  <iain@openedhand.com>
 
+	* gtk/gtk-clutter.c (size_request): Take the size of the widget from
+	the ClutterStage.
+	(gtk_clutter_class_init): Hook up size-request
+
+2006-06-06  Iain Holmes  <iain@openedhand.com>
+
 	* gtk/: Add a gtk widget for clutter.
 
 	* configure.ac: Add GTK checks
