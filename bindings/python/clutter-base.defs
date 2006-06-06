@@ -18,7 +18,7 @@
   (is-constructor-of "ClutterTimeline")
   (return-type "ClutterTimeline*")
   (properties
-    '("frames" (argname "frames"))
+    '("num-frames" (argname "frames"))
     '("fps" (argsname "fps"))
   )
 )
@@ -530,7 +530,20 @@
   (return-type "none")
 )
 
+(define-method set_depth
+  (of-object "ClutterElement")
+  (c-name "clutter_element_set_depth")
+  (return-type "none")
+  (parameters
+    '("gint" "depth")
+  )
+)
 
+(define-method get_depth
+  (of-object "ClutterElement")
+  (c-name "clutter_element_get_depth")
+  (return-type "gint")
+)
 
 ;; From ../../clutter/clutter-rectangle.h
 
