@@ -1,3 +1,8 @@
+Tue Jun  6 12:46:42 2006  Søren Sandmann  <sandmann@redhat.com>
+
+	* configure.in (GETTEXT_PACKAGE): Bunp intltool requirement to
+	0.35.0.
+
 2006-05-29  Elijah Newren  <newren gmail com>
 
 	* HACKING: Slightly more detailed instructions on setting up a
