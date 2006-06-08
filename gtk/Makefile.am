@@ -1,3 +1,14 @@
+pcfiles = gtk-clutter-@CLUTTER_MAJORMINOR@.pc
+%-@CLUTTER_MAJORMINOR@.pc: %.pc
+	cp $< $@
+
+pkgconfig_DATA = $(pcfiles)
+pkgconfigdir   = $(libdir)/pkgconfig
+
+EXTRA_DIST = gtk-clutter.pc.in
+
+CLEANFILES = $(pcfiles)
+
 INCLUDES = @GCC_FLAGS@ @CLUTTER_CFLAGS@ $(GST_CFLAGS) $(GTK_CFLAGS)
 
 lib_LTLIBRARIES = libgtkclutter-@CLUTTER_MAJORMINOR@.la

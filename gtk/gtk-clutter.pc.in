@@ -1,0 +1,11 @@
+prefix=@prefix@
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: gtk-clutter-@CLUTTER_MAJORMINOR@
+Description: Gtk widget for Clutter
+Version: @VERSION@
+Libs: -L${libdir} -lgtk-clutter-@CLUTTER_MAJORMINOR@ 
+Cflags: -I${includedir}/gtk-clutter-@CLUTTER_MAJORMINOR@
+Requires: clutter-@CLUTTER_MAJORMINOR@ pangoft2 glib-2.0 >= 2.8 gthread-2.0 gdk-pixbuf-2.0 gdk-pixbuf-xlib-2.0 gstreamer-0.10 gstreamer-plugins-base-0.10

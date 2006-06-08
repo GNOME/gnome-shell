@@ -85,7 +85,7 @@ GLX_CFLAGS="$X11_CFLAGS"
 
 dnl ========================================================================
 
-pkg_modules="pangoft2 glib-2.0 >= 2.8 gthread-2.0 gdk-pixbuf-2.0"
+pkg_modules="pangoft2 glib-2.0 >= 2.8 gthread-2.0 gdk-pixbuf-2.0 gdk-pixbuf-xlib-2.0"
 PKG_CHECK_MODULES(CLUTTER_DEPS, [$pkg_modules])
 
 dnl ========================================================================
@@ -193,6 +193,7 @@ AC_SUBST(CLUTTER_LIBS)
 AC_OUTPUT([Makefile
 clutter/Makefile
 gtk/Makefile
+gtk/gtk-clutter.pc
 bindings/Makefile
 bindings/python/Makefile
 examples/Makefile

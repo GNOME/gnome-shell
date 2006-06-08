@@ -8,4 +8,4 @@ Description: Clutter library
 Version: @VERSION@
 Libs: -L${libdir} -lclutter-@CLUTTER_MAJORMINOR@ 
 Cflags: -I${includedir}/clutter-@CLUTTER_MAJORMINOR@
-Requires: pangoft2 glib-2.0 >= 2.8 gthread-2.0 gdk-pixbuf-2.0 gstreamer-0.10 gstreamer-plugins-base-0.10
+Requires: pangoft2 glib-2.0 >= 2.8 gthread-2.0 gdk-pixbuf-2.0 gdk-pixbuf-xlib-2.0 gstreamer-0.10 gstreamer-plugins-base-0.10

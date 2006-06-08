@@ -887,6 +887,7 @@ clutter_texture_init (ClutterTexture *self)
   priv->repeat_x     = FALSE;
   priv->repeat_y     = FALSE;
   priv->pixbuf = NULL;
+  priv->pixel_type = PIXEL_TYPE;
 
 
   self->priv  = priv;
