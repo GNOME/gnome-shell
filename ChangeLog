@@ -18,6 +18,27 @@
 	* gtk/Makefile.am:
 	Install gtk-clutter.pc
 
+2006-06-08  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-main.c:
+	* clutter/clutter-private.h:
+	* clutter/clutter-stage.c:
+	Rework and fix offscreen rendering, also rejig GLX
+	context handling, moving mostly into stage.
+	Require at least OpenGL 1.2 ( CLAMP_TO_EDGE )
+
+	* clutter/clutter-texture.c:
+	Explicity set props on _init() as to avoid nasty can_create
+	bug failing miserably in certain situations.
+	Switch to CLAMP_TO_EDGE for textures to avoid tile seams.
+	Add some more GL error checks. 
+
+	* clutter/clutter-label.c:
+	Extra debug info
+
+	* configure.ac:
+	Require gdk-pixbuf-xlib-2.0
+
 2006-06-06  Matthew Allum  <mallum@openedhand.com>
 
 	* configure.ac:
