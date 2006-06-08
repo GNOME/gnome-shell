@@ -35,6 +35,8 @@
 #include <GL/glx.h>
 #include <GL/gl.h>
 
+#include <gdk-pixbuf-xlib/gdk-pixbuf-xlib.h>
+
 /* the stage is a singleton instance */
 static ClutterStage *stage_singleton = NULL;
 
@@ -45,12 +47,14 @@ G_DEFINE_TYPE (ClutterStage, clutter_stage, CLUTTER_TYPE_GROUP);
 
 struct _ClutterStagePrivate
 {
+  XVisualInfo  *xvisinfo;
   Window        xwin;  
   Pixmap        xpixmap;
   gint          xwin_width, xwin_height; /* FIXME target_width / height */
   
   GLXPixmap     glxpixmap;
   GLXContext    gl_context;
+
   
   ClutterColor  color;
   
@@ -245,8 +249,12 @@ clutter_stage_unrealize (ClutterElement *element)
   stage = CLUTTER_STAGE(element);
   priv = stage->priv;
 
+  CLUTTER_MARK();
+
   if (priv->want_offscreen)
     {
+      
+
       if (priv->glxpixmap)
 	{
 	  glXDestroyGLXPixmap (clutter_xdisplay(), priv->glxpixmap);
@@ -267,6 +275,10 @@ clutter_stage_unrealize (ClutterElement *element)
 	  priv->xwin = None;
 	}
     }
+
+  glXMakeCurrent(clutter_xdisplay(), None, NULL);
+  glXDestroyContext (clutter_xdisplay(), priv->gl_context);
+  priv->gl_context = None;
 }
 
 static void
@@ -279,31 +291,105 @@ clutter_stage_realize (ClutterElement *element)
 
   priv = stage->priv;
 
+  CLUTTER_MARK();
+
   if (priv->want_offscreen)
     {
-      priv->xpixmap = XCreatePixmap (clutter_xdisplay(),
-				     clutter_root_xwindow(),
-				     priv->xwin_width, priv->xwin_height,
-				     clutter_xvisual()->depth);
+      int gl_attributes[] = {
+	GLX_RGBA, 
+	GLX_RED_SIZE, 1,
+	GLX_GREEN_SIZE, 1,
+	GLX_BLUE_SIZE, 1,
+	0
+      };
 
-      priv->glxpixmap = glXCreateGLXPixmap(clutter_xdisplay(),
-					   clutter_xvisual(),
-					   priv->xpixmap);
-      sync_fullscreen (stage);  
+      if (priv->xvisinfo)
+	XFree(priv->xvisinfo);
+
+      priv->xvisinfo = glXChooseVisual (clutter_xdisplay(),
+					clutter_xscreen(),
+					gl_attributes);
+      if (!priv->xvisinfo)
+	{
+	  g_critical ("Unable to find suitable GL visual.");
+	  CLUTTER_ELEMENT_UNSET_FLAGS (element, CLUTTER_ELEMENT_REALIZED);
+	  return;
+	}
 
       if (priv->gl_context)
 	glXDestroyContext (clutter_xdisplay(), priv->gl_context);
 
+      priv->xpixmap = XCreatePixmap (clutter_xdisplay(),
+				     clutter_root_xwindow(),
+				     priv->xwin_width, 
+				     priv->xwin_height,
+				     priv->xvisinfo->depth);
+
+      priv->glxpixmap = glXCreateGLXPixmap(clutter_xdisplay(),
+					   priv->xvisinfo,
+					   priv->xpixmap);
+      sync_fullscreen (stage);  
+
       /* indirect */
       priv->gl_context = glXCreateContext (clutter_xdisplay(), 
-					   clutter_xvisual(), 
+					   priv->xvisinfo, 
 					   0, 
 					   False);
       
       glXMakeCurrent(clutter_xdisplay(), priv->glxpixmap, priv->gl_context);
+
+#if 0
+      /* Debug code for monitoring a off screen pixmap via window */
+      {
+	Colormap cmap;
+	XSetWindowAttributes swa;
+
+	cmap = XCreateColormap(clutter_xdisplay(),
+			       clutter_root_xwindow(), 
+			       priv->xvisinfo->visual, AllocNone);
+
+	/* create a window */
+	swa.colormap = cmap; 
+
+	foo_win = XCreateWindow(clutter_xdisplay(),
+				clutter_root_xwindow(), 
+				0, 0, 
+				priv->xwin_width, priv->xwin_height,
+				0, 
+				priv->xvisinfo->depth, 
+				InputOutput, 
+				priv->xvisinfo->visual,
+				CWColormap, &swa);
+
+	XMapWindow(clutter_xdisplay(), foo_win);
+      }
+#endif
     }
   else
     {
+      int gl_attributes[] = 
+	{
+	  GLX_RGBA, 
+	  GLX_DOUBLEBUFFER,
+	  GLX_RED_SIZE, 1,
+	  GLX_GREEN_SIZE, 1,
+	  GLX_BLUE_SIZE, 1,
+	  0
+	};
+
+      if (priv->xvisinfo)
+	XFree(priv->xvisinfo);
+
+      priv->xvisinfo = glXChooseVisual (clutter_xdisplay(),
+					clutter_xscreen(),
+					gl_attributes);
+      if (!priv->xvisinfo)
+	{
+	  g_critical ("Unable to find suitable GL visual.");
+	  CLUTTER_ELEMENT_UNSET_FLAGS (element, CLUTTER_ELEMENT_REALIZED);
+	  return;
+	}
+
       priv->xwin = XCreateSimpleWindow(clutter_xdisplay(),
 				       clutter_root_xwindow(),
 				       0, 0,
@@ -329,12 +415,19 @@ clutter_stage_realize (ClutterElement *element)
 	glXDestroyContext (clutter_xdisplay(), priv->gl_context);
 
       priv->gl_context = glXCreateContext (clutter_xdisplay(), 
-					   clutter_xvisual(), 
+					   priv->xvisinfo, 
 					   0, 
 					   True);
       
       glXMakeCurrent(clutter_xdisplay(), priv->xwin, priv->gl_context);
     }
+
+  CLUTTER_DBG("===========================================")
+  CLUTTER_DBG("GL_VENDOR: %s\n", glGetString(GL_VENDOR));
+  CLUTTER_DBG("GL_RENDERER: %s\n", glGetString(GL_RENDERER));
+  CLUTTER_DBG("GL_VERSION: %s\n", glGetString(GL_VERSION));
+  CLUTTER_DBG("GL_EXTENSIONS: %s\n", glGetString(GL_EXTENSIONS));
+  CLUTTER_DBG("===========================================")
 
   sync_gl_viewport (stage);
 }
@@ -439,6 +532,12 @@ clutter_stage_set_property (GObject      *object,
       if (priv->want_offscreen != g_value_get_boolean (value))
 	{
 	  clutter_element_unrealize (CLUTTER_ELEMENT(stage));
+	  /* NOTE: as we are changing GL contexts here. so  
+	   * all textures will need unreleasing as they will
+           * likely have set up ( i.e labels ) in the old
+           * context. We should probably somehow do this
+           * automatically
+	  */
 	  priv->want_offscreen = g_value_get_boolean (value);
 	  clutter_element_realize (CLUTTER_ELEMENT(stage));
 	}
@@ -530,7 +629,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			   "Fullscreen",
 			   "Make Clutter stage fullscreen",
 			   FALSE,
-			   G_PARAM_READWRITE));
+			   G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
   g_object_class_install_property
     (gobject_class, PROP_OFFSCREEN,
@@ -538,7 +637,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			   "Offscreen",
 			   "Make Clutter stage offscreen",
 			   FALSE,
-			   G_PARAM_READWRITE));
+			   G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
 
   g_object_class_install_property
@@ -547,7 +646,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			   "Hide Cursor",
 			   "Make Clutter stage cursor-less",
 			   FALSE,
-			   G_PARAM_READWRITE));
+			   G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
   g_object_class_install_property
     (gobject_class, PROP_COLOR,
@@ -623,9 +722,9 @@ clutter_stage_init (ClutterStage *self)
   
   self->priv = priv = CLUTTER_STAGE_GET_PRIVATE (self);
 
-  priv->want_offscreen = FALSE;
+  priv->want_offscreen  = FALSE;
   priv->want_fullscreen = FALSE;
-  priv->hide_cursor = FALSE;
+  priv->hide_cursor     = FALSE;
 
   priv->xwin_width  = 100;
   priv->xwin_height = 100;
@@ -691,6 +790,20 @@ Window
 clutter_stage_get_xwindow (ClutterStage *stage)
 {
   return stage->priv->xwin;
+}
+
+/**
+ * clutter_stage_get_xvisual
+ * @stage: A #ClutterStage
+ *
+ * Get the stages  XVisualInfo.
+ *
+ * Return Value: Thes Stages XVisualInfo
+ **/
+const XVisualInfo*
+clutter_stage_get_xvisual (ClutterStage *stage)
+{
+  return stage->priv->xvisinfo;
 }
 
 /**
@@ -773,12 +886,15 @@ clutter_stage_snapshot (ClutterStage *stage,
 			gint          width,
 			gint          height)
 {
-  guchar    *data;
-  GdkPixbuf *pixb, *fpixb;
-  ClutterElement *element;
+  guchar              *data;
+  GdkPixbuf           *pixb, *fpixb;
+  ClutterElement      *element;
+  ClutterStagePrivate *priv;
 
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
   g_return_val_if_fail (x >= 0 && y >= 0, NULL);
+
+  priv = stage->priv;
 
   element = CLUTTER_ELEMENT (stage);
 
@@ -788,32 +904,46 @@ clutter_stage_snapshot (ClutterStage *stage,
   if (height < 0)
     height = clutter_element_get_height (element);
 
-  data = g_malloc0 (sizeof (guchar) * width * height * 3);
 
-  glReadPixels (x, 
-		clutter_element_get_height (element) 
-		- y - height,
-		width, 
-		height, GL_RGB, GL_UNSIGNED_BYTE, data);
+  if (priv->want_offscreen)
+    {
+      gdk_pixbuf_xlib_init (clutter_xdisplay(), clutter_xscreen());
 
-  pixb = gdk_pixbuf_new_from_data (data,
-				   GDK_COLORSPACE_RGB, 
-				   FALSE, 
-				   8, 
-				   width, 
-				   height,
-				   width * 3,
-				   snapshot_pixbuf_free,
-				   NULL);
+      pixb = gdk_pixbuf_xlib_get_from_drawable 
+                        	(NULL,
+				 (Drawable)priv->xpixmap,
+				 DefaultColormap(clutter_xdisplay(),
+						 clutter_xscreen()),
+				 priv->xvisinfo->visual,
+				 x, y, 0, 0, width, height);
+      return pixb;
+    }
+  else
+    {
+      data = g_malloc0 (sizeof (guchar) * width * height * 4);
 
-  if (pixb == NULL)
-    return NULL;
+      glReadPixels (x, 
+		    clutter_element_get_height (element) 
+		    - y - height,
+		    width, 
+		    height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+      
+      pixb = gdk_pixbuf_new_from_data (data,
+				       GDK_COLORSPACE_RGB, 
+				       TRUE, 
+				       8, 
+				       width, 
+				       height,
+				       width * 4,
+				       snapshot_pixbuf_free,
+				       NULL);
+      
+      fpixb = gdk_pixbuf_flip (pixb, TRUE); 
 
-  fpixb = gdk_pixbuf_flip (pixb, TRUE);
+      g_object_unref (pixb);
 
-  g_object_unref (pixb);
-
-  return fpixb;
+      return fpixb;
+    }
 }
 
 /**

@@ -317,6 +317,7 @@ clutter_label_init (ClutterLabel *self)
   pango_ft2_font_map_substitute_changed (font_map);
   g_object_unref (font_map);
   */
+  CLUTTER_MARK();
 }
 
 /**
@@ -332,6 +333,8 @@ ClutterElement *
 clutter_label_new_with_text (const gchar *font_name,
 		             const gchar *text)
 {
+  CLUTTER_MARK();
+
   return g_object_new (CLUTTER_TYPE_LABEL, 
 		       "font-name", font_name,
 		       "text", text,

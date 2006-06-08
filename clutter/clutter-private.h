@@ -52,8 +52,6 @@ struct _ClutterMainContext
   Display         *xdpy;
   Window           xwin_root;
   int              xscreen;
-  XVisualInfo     *xvinfo;
-  
   GC               xgc;
   
   PangoFT2FontMap *font_map;

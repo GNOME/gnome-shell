@@ -42,9 +42,6 @@ typedef struct
 } 
 ClutterXEventSource;
 
-#define GLX_SAMPLE_BUFFERS_ARB             100000
-#define GLX_SAMPLES_ARB                    100001
-
 typedef void (*ClutterXEventFunc) (XEvent *xev, gpointer user_data);
 
 static gboolean __clutter_has_debug = FALSE;
@@ -289,18 +286,20 @@ clutter_redraw (void)
     {
 #if 0
       unsigned int retraceCount;
-
-      // Wait for vertical retrace
-      // glXGetVideoSyncSGI(&retraceCount);
-      // glXWaitVideoSyncSGI(2, (retraceCount+1)%2, &retraceCount);
+      /* Wait for vertical retrace */
+      /* glXGetVideoSyncSGI(&retraceCount); */
+      /* glXWaitVideoSyncSGI(2, (retraceCount+1)%2, &retraceCount); */
       glXWaitVideoSyncSGI(1, 0, &retraceCount);
 #endif
       glXSwapBuffers(ctx->xdpy, clutter_stage_get_xwindow (stage));  
     }
   else
     {
-      glFlush();
+      glXWaitGL();
+      CLUTTER_GLERR();
     }
+
+
 
   if (clutter_want_fps ())
     {
@@ -440,19 +439,6 @@ clutter_root_xwindow (void)
 }
 
 /**
- * clutter_xvisual:
- *
- * FIXME
- *
- * Return value: FIXME
- */
-XVisualInfo*
-clutter_xvisual (void)
-{
-  return ClutterCntx->xvinfo;
-}
-
-/**
  * clutter_want_debug:
  * 
  * FIXME
@@ -463,18 +449,6 @@ gboolean
 clutter_want_debug (void)
 {
   return __clutter_has_debug;
-}
-
-/**
- * clutter_gl_context_set_indirect:
- * @indirect: FIXME
- *
- * FIXME
- */
-void
-clutter_gl_context_set_indirect (gboolean indirect)
-{
-
 }
 
 ClutterMainContext*
@@ -493,6 +467,32 @@ clutter_context_get_default (void)
   return ClutterCntx;
 }
 
+static gboolean 
+is_gl_version_at_least_12 (void)
+{     
+#define NON_VENDOR_VERSION_MAX_LEN 32
+  gchar        non_vendor_version[NON_VENDOR_VERSION_MAX_LEN];
+  const gchar *version;
+  gint         i = 0;
+
+  version = (const gchar*)glGetString(GL_VERSION);
+
+  while ( ((version[i] <= '9' && version[i] >= '0') || version[i] == '.') 
+	  && i < NON_VENDOR_VERSION_MAX_LEN)
+    {
+      non_vendor_version[i] = version[i];
+      i++;
+    }
+
+  non_vendor_version[i] = '\0';
+
+  if (strstr (non_vendor_version, "1.0") == NULL
+      && strstr (non_vendor_version, "1.0") == NULL)
+    return TRUE;
+
+  return FALSE;
+}
+
 /**
  * clutter_init:
  * @argc: FIXME
@@ -506,19 +506,7 @@ int
 clutter_init (int *argc, char ***argv)
 {
   ClutterMainContext *context;
-  XVisualInfo  *vinfo;
   static gboolean is_initialized = FALSE;
-
-  int gl_attributes[] = {
-    GLX_RGBA, 
-    GLX_DOUBLEBUFFER, 
-    GLX_RED_SIZE, 1,
-    GLX_GREEN_SIZE, 1,
-    GLX_BLUE_SIZE, 1,
-    /* GLX_DEPTH_SIZE, 1, */
-    /* GLX_DEPTH_SIZE, 32, */
-    0
-  };
 
   if (is_initialized)
     return 1;
@@ -545,22 +533,13 @@ clutter_init (int *argc, char ***argv)
 
   if ((context->xdpy = XOpenDisplay (g_getenv ("DISPLAY"))) == NULL)
     {
-      g_warning("Unable to connect to X DISPLAY.");
+      g_critical ("Unable to connect to X DISPLAY.");
       return -1;
     }
 
   context->xscreen   = DefaultScreen(context->xdpy);
   context->xwin_root = RootWindow(context->xdpy,
 		  		  context->xscreen);
-  context->xvinfo    = glXChooseVisual (context->xdpy,
-		  			context->xscreen,
-					gl_attributes);
-  if (!context->xvinfo)
-    {
-      g_warning ("Unable to find suitable GL visual.");
-      
-      return -2;
-    }
 
   context->font_map = PANGO_FT2_FONT_MAP (pango_ft2_font_map_new ());
   pango_ft2_font_map_set_resolution (context->font_map, 96.0, 96.0);
@@ -570,6 +549,12 @@ clutter_init (int *argc, char ***argv)
   context->stage = CLUTTER_STAGE (clutter_stage_get_default ());
   g_return_val_if_fail (CLUTTER_IS_STAGE (context->stage), -3);
   clutter_element_realize (CLUTTER_ELEMENT (context->stage));
+
+  g_return_val_if_fail 
+      (CLUTTER_ELEMENT_IS_REALIZED(CLUTTER_ELEMENT(context->stage)), -4);
+
+  /* At least GL 1.2 is needed for CLAMP_TO_EDGE */
+  g_return_val_if_fail(is_gl_version_at_least_12 (), -5);
 
   events_init ();
 

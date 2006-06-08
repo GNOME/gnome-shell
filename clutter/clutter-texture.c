@@ -40,7 +40,7 @@ G_DEFINE_TYPE (ClutterTexture, clutter_texture, CLUTTER_TYPE_ELEMENT);
 #define PIXEL_TYPE GL_UNSIGNED_INT_8_8_8_8_REV
 #endif
 
-#define OVERLAP 0
+#define OVERLAP 0  /* Dont need as CLAMP_TO_EDGE */
 
 /* FIXME: actually use */
 typedef struct ClutterTextureTileDimention
@@ -103,14 +103,14 @@ can_create (int    width,
 
   CLUTTER_DBG("checking %ix%i", width, height);
 
-
   glTexImage2D (GL_PROXY_TEXTURE_2D, 0, GL_RGBA,
                 width, height, 0 /* border */,
                 pixel_format, pixel_type, NULL);
 
+  CLUTTER_GLERR();
+
   glGetTexLevelParameteriv (GL_PROXY_TEXTURE_2D, 0,
                             GL_TEXTURE_WIDTH, &new_width);
-
 
   return new_width != 0;
 }
@@ -164,27 +164,23 @@ init_tiles (ClutterTexture *texture)
 
   x_pot = clutter_util_next_p2 (priv->width);
   y_pot = clutter_util_next_p2 (priv->height);
-  
-  if (x_pot - priv->width > priv->max_tile_waste 
-      && y_pot - priv->height > priv->max_tile_waste)
-    {
-      while (!(can_create (x_pot, y_pot, priv->pixel_format, priv->pixel_type) 
-	       && (x_pot - priv->width < priv->max_tile_waste) 
-	       && (y_pot - priv->height < priv->max_tile_waste)))
-	{
-	  CLUTTER_DBG("x_pot:%i - width:%i < max_waste:%i", 
-		      x_pot, priv->width, priv->max_tile_waste);
-	  
-	  CLUTTER_DBG("y_pot:%i - height:%i < max_waste:%i", 
-		      y_pot, priv->height, priv->max_tile_waste);
-	  
-	  if (x_pot > y_pot)
-	    x_pot /= 2;
-	  else
-	    y_pot /= 2;
-	}
-      } 
 
+  while (!(can_create (x_pot, y_pot, priv->pixel_format, priv->pixel_type) 
+	   && (x_pot - priv->width < priv->max_tile_waste) 
+	   && (y_pot - priv->height < priv->max_tile_waste)))
+    {
+      CLUTTER_DBG("x_pot:%i - width:%i < max_waste:%i", 
+		  x_pot, priv->width, priv->max_tile_waste);
+      
+      CLUTTER_DBG("y_pot:%i - height:%i < max_waste:%i", 
+		  y_pot, priv->height, priv->max_tile_waste);
+      
+      if (x_pot > y_pot)
+	x_pot /= 2;
+      else
+	y_pot /= 2;
+    }
+  
   if (priv->x_tiles)
     g_free(priv->x_tiles);
 
@@ -290,11 +286,11 @@ texture_render_to_gl_quad (ClutterTexture *texture,
 	  glTexCoord2f (tx, 0);    glVertex2i   (qx2, qy1);
 	  glEnd ();	
 
-	  lasty += qy2 - qy1;	  
+	  lasty += (qy2 - qy1) ;	  
 
 	  i++;
 	}
-      lastx += qx2 - qx1;
+      lastx += (qx2 - qx1);
     }
 }
 
@@ -376,11 +372,11 @@ clutter_texture_sync_pixbuf (ClutterTexture *texture)
 
       glTexParameteri(GL_TEXTURE_2D, 
 		      GL_TEXTURE_WRAP_S, 
-		      priv->repeat_x ? GL_REPEAT : GL_CLAMP);
+		      priv->repeat_x ? GL_REPEAT : GL_CLAMP_TO_EDGE);
 
       glTexParameteri(GL_TEXTURE_2D, 
 		      GL_TEXTURE_WRAP_T, 
-		      priv->repeat_y ? GL_REPEAT : GL_CLAMP);
+		      priv->repeat_y ? GL_REPEAT : GL_CLAMP_TO_EDGE);
 
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, 
 		      priv->filter_quality ? GL_LINEAR : GL_NEAREST);
@@ -490,11 +486,11 @@ clutter_texture_sync_pixbuf (ClutterTexture *texture)
 
 	glTexParameteri(GL_TEXTURE_2D, 
 			GL_TEXTURE_WRAP_S, 
-			priv->repeat_x ? GL_REPEAT : GL_CLAMP);
+			priv->repeat_x ? GL_REPEAT : GL_CLAMP_TO_EDGE);
 
 	glTexParameteri(GL_TEXTURE_2D, 
 			GL_TEXTURE_WRAP_T, 
-			priv->repeat_y ? GL_REPEAT : GL_CLAMP);
+			priv->repeat_y ? GL_REPEAT : GL_CLAMP_TO_EDGE);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, 
 			priv->filter_quality ? GL_LINEAR : GL_NEAREST);
@@ -876,7 +872,22 @@ clutter_texture_init (ClutterTexture *self)
   ClutterTexturePrivate *priv;
 
   priv        = g_new0 (ClutterTexturePrivate, 1);
+
+  /* FIXME: It seems defaults via props do not get set
+   * on all props for sub classes ( ie labels ).
+   * Should they be ?
+   *
+   * Setting them here also to be sure + safe. 
+  */
+  priv->max_tile_waste = 64;
+  priv->filter_quality = 0;
+  priv->tiled        = TRUE;
+  priv->pixel_type   = PIXEL_TYPE;
+  priv->pixel_format = GL_RGBA;
+  priv->repeat_x     = FALSE;
+  priv->repeat_y     = FALSE;
   priv->pixbuf = NULL;
+
 
   self->priv  = priv;
 }
