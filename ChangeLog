@@ -1,5 +1,10 @@
 2006-06-08  Iain Holmes  <iain@openedhand.com>
 
+	* clutter/clutter-texture.c:
+	Opps, undo change I didn't mean to commit
+
+2006-06-08  Iain Holmes  <iain@openedhand.com>
+
 	* configure.ac:
 	Add gdk-pixbuf-xlib cflags/libs to clutter libs
 	Build the gtk-clutter.pc file.
