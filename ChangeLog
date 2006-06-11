@@ -1,3 +1,12 @@
+2006-06-10  Elijah Newren  <newren gmail com>
+
+	Patch from Aidan Delaney to tidy tabpopup.c by factoring out
+	tab_entry_new().  #166890.
+
+	* src/tabpopup.c (tab_entry_new): new function,
+	(meta_ui_tab_popup_new): use tab_entry_new() to remove a big chunk
+	of code, plus a few other small cleanups.
+
 Tue Jun  6 12:46:42 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* configure.in (GETTEXT_PACKAGE): Bunp intltool requirement to

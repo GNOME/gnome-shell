@@ -126,15 +126,84 @@ dimm_icon (GdkPixbuf *pixbuf)
 
   for (y = 0; y < h; y++)
     {
-      pixels = row;			
+      pixels = row;                     
       for (x = 0; x < w; x++) 
         {
-          pixels[3] /= 2;				
+          pixels[3] /= 2;                               
           pixels += pixel_stride;
-        }			
+        }                       
       row += row_stride;
     }
   return dimmed_pixbuf;
+}
+
+static TabEntry*  
+tab_entry_new (const MetaTabEntry *entry, 
+               gint                screen_width,
+               gboolean            outline)
+{
+  TabEntry *te;
+
+  /* FIXME: make max title size some random relationship to the
+   * screen, avg char width of our font would be a better number.
+   */
+  int max_chars_per_title = screen_width / 15;
+  
+  te = g_new (TabEntry, 1);
+  te->key = entry->key;
+  te->title = NULL;
+  if (entry->title)
+    {
+      gchar *tmp;
+      if (entry->hidden)
+        {
+          tmp = g_markup_printf_escaped ("[%s]", entry->title);
+        }
+      else 
+        {
+          tmp = g_markup_printf_escaped ("%s", entry->title);
+        }
+      
+      if (entry->demands_attention) 
+        {         
+          /* Escape the whole line of text then markup the text and 
+           * copy it back into the original buffer.
+           */
+          gchar *markup, *escaped;
+          escaped = g_markup_escape_text (tmp, -1);
+          markup = g_strdup_printf ("<b>%s</b>", escaped);
+          g_free (escaped);
+          g_free (tmp);
+          tmp = markup;
+        }
+
+      te->title = meta_g_utf8_strndup (tmp, max_chars_per_title);
+      g_free (tmp);
+    }
+  te->widget = NULL;
+  te->icon = entry->icon;
+  te->blank = entry->blank;
+  te->dimmed_icon = NULL;
+  if (te->icon)
+    {
+      g_object_ref (G_OBJECT (te->icon));
+      if (entry->hidden)
+        te->dimmed_icon = dimm_icon (entry->icon);
+    }
+  
+  if (outline)
+    {
+      te->rect.x = entry->rect.x;
+      te->rect.y = entry->rect.y;
+      te->rect.width = entry->rect.width;
+      te->rect.height = entry->rect.height;
+
+      te->inner_rect.x = entry->inner_rect.x;
+      te->inner_rect.y = entry->inner_rect.y;
+      te->inner_rect.width = entry->inner_rect.width;
+      te->inner_rect.height = entry->inner_rect.height;
+    }
+  return te;
 }
 
 MetaTabPopup*
@@ -146,7 +215,6 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
 {
   MetaTabPopup *popup;
   int i, left, right, top, bottom;
-  GList *tab_entries;
   int height;
   GtkWidget *table;
   GtkWidget *vbox;
@@ -154,16 +222,16 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
   GList *tmp;
   GtkWidget *frame;
   int max_label_width; /* the actual max width of the labels we create */
-  int max_chars_per_title; /* max chars we allow in a label */
   GdkScreen *screen;
   
   popup = g_new (MetaTabPopup, 1);
 
   popup->outline_window = gtk_window_new (GTK_WINDOW_POPUP);
 
+  screen = gdk_display_get_screen (gdk_display_get_default (),
+                                   screen_number);
   gtk_window_set_screen (GTK_WINDOW (popup->outline_window),
-			 gdk_display_get_screen (gdk_display_get_default (),
-						 screen_number));
+                         screen);
 
   gtk_widget_set_app_paintable (popup->outline_window, TRUE);
   gtk_widget_realize (popup->outline_window);
@@ -173,11 +241,8 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
   
   popup->window = gtk_window_new (GTK_WINDOW_POPUP);
 
-  screen = gdk_display_get_screen (gdk_display_get_default (),
-                                   screen_number);
-  
   gtk_window_set_screen (GTK_WINDOW (popup->window),
-			 screen);
+                         screen);
 
   gtk_window_set_position (GTK_WINDOW (popup->window),
                            GTK_WIN_POS_CENTER_ALWAYS);
@@ -189,73 +254,15 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
   popup->current_selected_entry = NULL;
   popup->outline = outline;
 
-  /* make max title size some random relationship to the screen,
-   * avg char width of our font would be a better number.
-   */
-  max_chars_per_title = gdk_screen_get_width (screen) / 15; 
-
-  tab_entries = NULL;
+  int screen_width = gdk_screen_get_width (screen);
   for (i = 0; i < entry_count; ++i)
     {
-      TabEntry *te;
-
-      te = g_new (TabEntry, 1);
-      te->key = entries[i].key;
-      te->title = NULL;
-      if (entries[i].title)
-        {
-          gchar *temp;
-          if (entries[i].hidden)
-            {
-              temp = g_markup_printf_escaped ("[%s]", entries[i].title);
-            }
-          else 
-            {
-              temp = g_markup_printf_escaped ("%s", entries[i].title);
-            }
-          
-          if (entries[i].demands_attention) 
-            {
-              gchar *escaped, *markup;
-              escaped = g_markup_escape_text (temp, -1);
-              markup = g_strdup_printf ("<b>%s</b>", escaped);
-              g_free (escaped);
-              g_free (temp);
-              temp = markup;
-            }
-            
-          te->title = meta_g_utf8_strndup (temp, max_chars_per_title);
-          g_free (temp);
-        }
-      te->widget = NULL;
-      te->icon = entries[i].icon;
-      te->blank = entries[i].blank;
-      te->dimmed_icon = NULL;
-      if (te->icon)
-        {
-          g_object_ref (G_OBJECT (te->icon));
-          if (entries[i].hidden)
-            te->dimmed_icon = dimm_icon (entries[i].icon);
-        }
-
-      if (outline)
-        {
-          te->rect.x = entries[i].rect.x;
-          te->rect.y = entries[i].rect.y;
-          te->rect.width = entries[i].rect.width;
-          te->rect.height = entries[i].rect.height;
-
-          te->inner_rect.x = entries[i].inner_rect.x;
-          te->inner_rect.y = entries[i].inner_rect.y;
-          te->inner_rect.width = entries[i].inner_rect.width;
-          te->inner_rect.height = entries[i].inner_rect.height;
-        }
-
-      tab_entries = g_list_prepend (tab_entries, te);
+      TabEntry* new_entry = tab_entry_new (&entries[i], screen_width, outline);
+      popup->entries = g_list_prepend (popup->entries, new_entry);
     }
 
-  popup->entries = g_list_reverse (tab_entries);
-
+  popup->entries = g_list_reverse (popup->entries);
+    
   g_assert (width > 0);
   height = i / width;
   if (i % width)
@@ -366,7 +373,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
 }
 
 static void
-free_entry (gpointer data, gpointer user_data)
+free_tab_entry (gpointer data, gpointer user_data)
 {
   TabEntry *te;
 
@@ -389,7 +396,7 @@ meta_ui_tab_popup_free (MetaTabPopup *popup)
   gtk_widget_destroy (popup->outline_window);
   gtk_widget_destroy (popup->window);
   
-  g_list_foreach (popup->entries, free_entry, NULL);
+  g_list_foreach (popup->entries, free_tab_entry, NULL);
 
   g_list_free (popup->entries);
   
@@ -623,15 +630,15 @@ meta_select_image_get_type (void)
     {
       static const GTypeInfo image_info =
       {
-	sizeof (MetaSelectImageClass),
-	NULL,           /* base_init */
-	NULL,           /* base_finalize */
-	(GClassInitFunc) meta_select_image_class_init,
-	NULL,           /* class_finalize */
-	NULL,           /* class_data */
-	sizeof (MetaSelectImage),
-	16,             /* n_preallocs */
-	(GInstanceInitFunc) NULL,
+        sizeof (MetaSelectImageClass),
+        NULL,           /* base_init */
+        NULL,           /* base_finalize */
+        (GClassInitFunc) meta_select_image_class_init,
+        NULL,           /* class_finalize */
+        NULL,           /* class_data */
+        sizeof (MetaSelectImage),
+        16,             /* n_preallocs */
+        (GInstanceInitFunc) NULL,
       };
 
       image_type = g_type_register_static (GTK_TYPE_IMAGE, "MetaSelectImage", &image_info, 0);
@@ -664,13 +671,13 @@ meta_select_image_expose_event (GtkWidget      *widget,
       misc = GTK_MISC (widget);
       
       x = (widget->allocation.x * (1.0 - misc->xalign) +
-	   (widget->allocation.x + widget->allocation.width
-	    - (widget->requisition.width - misc->xpad * 2)) *
-	   misc->xalign) + 0.5;
+           (widget->allocation.x + widget->allocation.width
+            - (widget->requisition.width - misc->xpad * 2)) *
+           misc->xalign) + 0.5;
       y = (widget->allocation.y * (1.0 - misc->yalign) +
-	   (widget->allocation.y + widget->allocation.height
-	    - (widget->requisition.height - misc->ypad * 2)) *
-	   misc->yalign) + 0.5;
+           (widget->allocation.y + widget->allocation.height
+            - (widget->requisition.height - misc->ypad * 2)) *
+           misc->yalign) + 0.5;
 
       x -= INSIDE_SELECT_RECT + 1;
       y -= INSIDE_SELECT_RECT + 1;      
