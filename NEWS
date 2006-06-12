@@ -1,3 +1,27 @@
+2.15.5
+==
+
+Thanks to Björn Lindqvist, Søren Sandmann, Adam Jackson, Elijah
+Newren, and Aidan Delaney for improvements in this release.
+	
+ - code cleanup in resizepopup.c (Björn) [#341648]
+ - fix a logic bug so that the whole titlebar becomes sensitive to
+   mouse clicks (Björn) [#336320]
+ - make mouse cursor when moving windows become a hand (Björn) [#337376]
+ - lots and lots of compositor improvements -- beginning of a new
+   layer to abstract transition effects, shrinking and minimizing and
+   exploding effects, fading in and out, unminimize animation that
+   reverses minimize one, translucent menus, bounce on window focus,
+   and all kinds of stuff I don't understand and can't summarize well
+   (Søren, Adam)
+ - Fix a crash on exit/logout from assuming a compositor would always
+   exist (Elijah) [#342166]
+ - code cleanup in tabpopup.c (Aidan Delaney) [#166890]
+
+Translations
+  Pema Geyleg (dz), Iñaki Larrañaga Murgoitio (eu), Theppitak
+  Karoonboonyanan (th), Clytie Siddall (vi)
+
 2.15.3
 ==
 

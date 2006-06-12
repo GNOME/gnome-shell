@@ -1,3 +1,7 @@
+2006-06-12  Elijah Newren  <newren gmail com>
+
+	* NEWS:	2.15.5 release
+
 2006-06-10  Elijah Newren  <newren gmail com>
 
 	Patch from Aidan Delaney to tidy tabpopup.c by factoring out
