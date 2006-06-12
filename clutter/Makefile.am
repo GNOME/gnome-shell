@@ -7,6 +7,7 @@ BUILT_SOURCES = $(MARSHALFILES) $(ENUMFILES)
 
 source_h = clutter-keysyms.h       \
 	   clutter-util.h          \
+	   clutter-media.h         \
            clutter-event.h         \
 	   clutter-color.h         \
 	   clutter-timeline.h      \
@@ -65,6 +66,7 @@ CLEANFILES = $(BUILT_SOURCES) stamp-clutter-enum-types.h
 
 source_c = clutter-main.c          \
 	   clutter-util.c          \
+	   clutter-media.c         \
            clutter-event.c         \
 	   clutter-color.c         \
 	   clutter-timeline.c      \

@@ -40,9 +40,6 @@ G_DEFINE_TYPE (ClutterTexture, clutter_texture, CLUTTER_TYPE_ELEMENT);
 #define PIXEL_TYPE GL_UNSIGNED_INT_8_8_8_8_REV
 #endif
 
-#define OVERLAP 0  /* Dont need as CLAMP_TO_EDGE */
-
-/* FIXME: actually use */
 typedef struct ClutterTextureTileDimention
 {
   gint pos, size, waste;
@@ -144,8 +141,7 @@ tile_dimension (int                          to_fill,
 	}
       else
 	{
-	  to_fill -= (size - OVERLAP);
-	  pos += size - OVERLAP;
+	  to_fill -= size; pos += size;
 	  while (size >= 2 * to_fill || size - to_fill > waste)
 	    size /= 2;
 	}

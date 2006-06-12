@@ -1,3 +1,20 @@
+2006-06-12  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/Makefile.am:
+	* clutter/clutter-media.c:
+	* clutter/clutter-media.h:
+	* clutter/clutter-video-texture.c:
+	* clutter/clutter-video-texture.h:
+	* clutter/clutter.h:
+	* examples/test-video.c: (main):
+	* examples/video-cube.c: (main):
+	Add new 'media' interface.
+	Drop Totem based video playback code replace with newly
+	rewritten supper Jorn based code. Clutter is now fully LGPL.  
+
+	* clutter/clutter-texture.c: (tile_dimension): 
+	Remove uneeded overlap code.
+
 2006-06-08  Iain Holmes  <iain@openedhand.com>
 
 	* clutter/clutter-texture.c:

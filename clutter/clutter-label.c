@@ -144,6 +144,16 @@ clutter_label_make_pixbuf (ClutterLabel *label)
 }
 
 static void
+clutter_label_allocate_coords (ClutterElement        *element,
+			       ClutterElementBox     *box)
+{
+  
+
+
+}
+
+
+static void
 clutter_label_set_property (GObject      *object, 
 			    guint         prop_id,
 			    const GValue *value, 

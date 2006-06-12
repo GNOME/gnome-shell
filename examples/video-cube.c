@@ -254,17 +254,14 @@ main (int argc, char *argv[])
       g_error("failed to create vtexture, err: %s", err->message);
     }
 
-  clutter_video_texture_open(CLUTTER_VIDEO_TEXTURE(vtexture), 
-			     argv[1],
-			     NULL,
-			     NULL);
+
+  clutter_media_set_filename (CLUTTER_MEDIA(vtexture), argv[1]);
 
   clutter_group_add (CLUTTER_GROUP (stage), texture);
   clutter_group_add (CLUTTER_GROUP (stage), vtexture);
   clutter_group_show_all (CLUTTER_GROUP (stage));
 
-  if (!clutter_video_texture_play(CLUTTER_VIDEO_TEXTURE(vtexture), NULL))
-      g_error("failed to play vtexture");
+  clutter_media_set_playing(CLUTTER_MEDIA(vtexture), TRUE);
 
   clutter_main();
 

@@ -3,6 +3,7 @@
 
 #include "clutter-keysyms.h" 
 #include "clutter-main.h"
+#include "clutter-media.h"
 #include "clutter-color.h"
 #include "clutter-util.h"
 #include "clutter-event.h"
