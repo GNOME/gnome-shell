@@ -28,7 +28,7 @@
 
 #include <gtk/gtksocket.h>
 
-#include <clutter/clutter-element.h>
+#include <clutter/clutter-actor.h>
 
 G_BEGIN_DECLS
 
@@ -73,7 +73,7 @@ struct _GtkClutterClass
 
 GType gtk_clutter_get_type (void);
 
-ClutterElement *gtk_clutter_get_stage (GtkClutter *clutter);
+ClutterActor *gtk_clutter_get_stage (GtkClutter *clutter);
 
 G_END_DECLS
 

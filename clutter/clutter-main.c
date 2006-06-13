@@ -28,7 +28,7 @@
 #include <stdlib.h>
 
 #include "clutter-main.h"
-#include "clutter-element.h"
+#include "clutter-actor.h"
 #include "clutter-stage.h"
 #include "clutter-private.h"
 
@@ -164,10 +164,10 @@ clutter_dispatch_x_event (XEvent  *xevent,
 				      Expose, 
 				      &foo_xev));
 
-	/* FIXME: need to make stage an 'element' so can que
+	/* FIXME: need to make stage an 'actor' so can que
          * a paint direct from there rather than hack here...
 	*/
-	clutter_element_queue_redraw (CLUTTER_ELEMENT (stage));
+	clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
       }
       break;
     case KeyPress:
@@ -280,7 +280,7 @@ clutter_redraw (void)
   glDisable(GL_LIGHTING); 
   glDisable(GL_DEPTH_TEST);
 
-  clutter_element_paint (CLUTTER_ELEMENT (stage));
+  clutter_actor_paint (CLUTTER_ACTOR (stage));
 
   if (clutter_stage_get_xwindow (stage))
     {
@@ -548,10 +548,10 @@ clutter_init (int *argc, char ***argv)
 
   context->stage = CLUTTER_STAGE (clutter_stage_get_default ());
   g_return_val_if_fail (CLUTTER_IS_STAGE (context->stage), -3);
-  clutter_element_realize (CLUTTER_ELEMENT (context->stage));
+  clutter_actor_realize (CLUTTER_ACTOR (context->stage));
 
   g_return_val_if_fail 
-      (CLUTTER_ELEMENT_IS_REALIZED(CLUTTER_ELEMENT(context->stage)), -4);
+      (CLUTTER_ACTOR_IS_REALIZED(CLUTTER_ACTOR(context->stage)), -4);
 
   /* At least GL 1.2 is needed for CLAMP_TO_EDGE */
   g_return_val_if_fail(is_gl_version_at_least_12 (), -5);

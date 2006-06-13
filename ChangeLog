@@ -1,3 +1,37 @@
+2006-06-13  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/Makefile.am:
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	* clutter/clutter-clone-texture.c:
+	* clutter/clutter-clone-texture.h:
+	* clutter/clutter-element.c:
+	* clutter/clutter-element.h:
+	* clutter/clutter-group.c:
+	* clutter/clutter-group.h:
+	* clutter/clutter-label.c:
+	* clutter/clutter-label.h:
+	* clutter/clutter-main.c:
+	* clutter/clutter-main.h:
+	* clutter/clutter-rectangle.c:
+	* clutter/clutter-rectangle.h:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-stage.h:
+	* clutter/clutter-texture.c:
+	* clutter/clutter-texture.h:
+	* clutter/clutter-video-texture.c:
+	* clutter/clutter-video-texture.h:
+	* clutter/clutter.h:
+	* examples/super-oh.c:
+	* examples/test-text.c:
+	* examples/test-video.c:
+	* examples/test.c:
+	* examples/video-cube.c: 
+	* gtk/gtk-clutter-test.c:
+	* gtk/gtk-clutter.c:
+	* gtk/gtk-clutter.h:
+	Element to Actor Renaming. 
+
 2006-06-12  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/Makefile.am:

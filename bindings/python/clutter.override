@@ -9,12 +9,11 @@ headers
 #include <clutter/clutter-timeline.h>
 #include <clutter/clutter-stage.h>
 #include <clutter/clutter-color.h>
-#include <clutter/clutter-element.h>
+#include <clutter/clutter-actor.h>
 #include <clutter/clutter-rectangle.h>
 #include <clutter/clutter-group.h>
 #include <clutter/clutter-texture.h>
 #include <clutter/clutter-clone-texture.h>
-#include <clutter/clutter-video-texture.h>
 #include <clutter/clutter-label.h>
 #include <clutter/clutter-util.h>
 #include <clutter/clutter-enum-types.h>
@@ -191,37 +190,37 @@ _wrap_clutter_geometry__set_height (PyGBoxed *self, PyObject *value, void *closu
 	return 0;
 }
 %%
-override clutter_element_box_new kwargs
+override clutter_actor_box_new kwargs
 static int
-_wrap_clutter_element_box_new (PyGBoxed *self, PyObject *args, PyObject *kwargs)
+_wrap_clutter_actor_box_new (PyGBoxed *self, PyObject *args, PyObject *kwargs)
 {
 	static char *kwlist[] = { "x1", "y1", "x2", "y2", NULL };
-	ClutterElementBox box = { 0, 0, 0, 0 };
+	ClutterActorBox box = { 0, 0, 0, 0 };
 
 	if (!PyArg_ParseTupleAndKeywords(args, kwargs,
-					 "|iiii:ClutterElementBox.__init__",
+					 "|iiii:ClutterActorBox.__init__",
 					 kwlist,
 					 &(box.x1), &(box.y1),
 					 &(box.x2), &(box.y2)))
 		return -1;
 	
-	self->boxed = g_boxed_copy (CLUTTER_TYPE_ELEMENT_BOX, &box);
+	self->boxed = g_boxed_copy (CLUTTER_TYPE_ACTOR_BOX, &box);
 	self->free_on_dealloc = TRUE;
-	self->gtype = CLUTTER_TYPE_ELEMENT_BOX;
+	self->gtype = CLUTTER_TYPE_ACTOR_BOX;
 	
 	return 0;
 }
 %%
-override-slot ClutterElementBox.tp_as_sequence
+override-slot ClutterActorBox.tp_as_sequence
 static int
-_wrap_clutter_element_box_length (PyGBoxed *self)
+_wrap_clutter_actor_box_length (PyGBoxed *self)
 {
 	return 4;
 }
 static PyObject *
-_wrap_clutter_element_box_getitem(PyGBoxed *self, int pos)
+_wrap_clutter_actor_box_getitem(PyGBoxed *self, int pos)
 {
-	ClutterElementBox *box;
+	ClutterActorBox *box;
 
 	if (pos < 0)
 		pos += 4;
@@ -232,7 +231,7 @@ _wrap_clutter_element_box_getitem(PyGBoxed *self, int pos)
 		return NULL;
 	}
 
-	box = pyg_boxed_get (self, ClutterElementBox);
+	box = pyg_boxed_get (self, ClutterActorBox);
 	switch (pos) {
 		case 0: return PyInt_FromLong (box->x1);
 		case 1: return PyInt_FromLong (box->y1);
@@ -244,9 +243,9 @@ _wrap_clutter_element_box_getitem(PyGBoxed *self, int pos)
 	}
 }
 static int
-_wrap_clutter_element_box_setitem (PyGBoxed *self, int pos, PyObject *value)
+_wrap_clutter_actor_box_setitem (PyGBoxed *self, int pos, PyObject *value)
 {
-	ClutterElementBox *box;
+	ClutterActorBox *box;
 	gint val;
 
 	if (pos < 0)
@@ -258,7 +257,7 @@ _wrap_clutter_element_box_setitem (PyGBoxed *self, int pos, PyObject *value)
 		return -1;
 	}
 
-	box = pyg_boxed_get (self, ClutterElementBox);
+	box = pyg_boxed_get (self, ClutterActorBox);
 	val = PyInt_AsLong (value);
 	if (PyErr_Occurred ())
 		return -1;
@@ -275,19 +274,19 @@ _wrap_clutter_element_box_setitem (PyGBoxed *self, int pos, PyObject *value)
 
 	return 0;
 }
-static PySequenceMethods _wrap_clutter_element_box_tp_as_sequence = {
-	(inquiry) _wrap_clutter_element_box_length,
+static PySequenceMethods _wrap_clutter_actor_box_tp_as_sequence = {
+	(inquiry) _wrap_clutter_actor_box_length,
 	(binaryfunc) 0,
 	(intargfunc) 0,
-	(intargfunc) _wrap_clutter_element_box_getitem,
+	(intargfunc) _wrap_clutter_actor_box_getitem,
 	(intintargfunc) 0,
-	(intobjargproc) _wrap_clutter_element_box_setitem,
+	(intobjargproc) _wrap_clutter_actor_box_setitem,
 	(intintobjargproc) 0
 };
 %%
-override-attr ClutterElementBox.x1
+override-attr ClutterActorBox.x1
 static int
-_wrap_clutter_element_box__set_x1 (PyGBoxed *self, PyObject *value, void *closure)
+_wrap_clutter_actor_box__set_x1 (PyGBoxed *self, PyObject *value, void *closure)
 {
 	gint val;
 
@@ -295,14 +294,14 @@ _wrap_clutter_element_box__set_x1 (PyGBoxed *self, PyObject *value, void *closur
 	if (PyErr_Occurred ())
 		return -1;
 
-	pyg_boxed_get (self, ClutterElementBox)->x1 = val;
+	pyg_boxed_get (self, ClutterActorBox)->x1 = val;
 
 	return 0;
 }
 %%
-override-attr ClutterElementBox.y1
+override-attr ClutterActorBox.y1
 static int
-_wrap_clutter_element_box__set_y1 (PyGBoxed *self, PyObject *value, void *closure)
+_wrap_clutter_actor_box__set_y1 (PyGBoxed *self, PyObject *value, void *closure)
 {
 	gint val;
 
@@ -310,14 +309,14 @@ _wrap_clutter_element_box__set_y1 (PyGBoxed *self, PyObject *value, void *closur
 	if (PyErr_Occurred ())
 		return -1;
 
-	pyg_boxed_get (self, ClutterElementBox)->y1 = val;
+	pyg_boxed_get (self, ClutterActorBox)->y1 = val;
 
 	return 0;
 }
 %%
-override-attr ClutterElementBox.x2
+override-attr ClutterActorBox.x2
 static int
-_wrap_clutter_element_box__set_x2 (PyGBoxed *self, PyObject *value, void *closure)
+_wrap_clutter_actor_box__set_x2 (PyGBoxed *self, PyObject *value, void *closure)
 {
 	gint val;
 
@@ -325,14 +324,14 @@ _wrap_clutter_element_box__set_x2 (PyGBoxed *self, PyObject *value, void *closur
 	if (PyErr_Occurred ())
         	return -1;
 	
-	pyg_boxed_get(self, ClutterElementBox)->x2 = val;
+	pyg_boxed_get(self, ClutterActorBox)->x2 = val;
 	
 	return 0;
 }
 %%
-override-attr ClutterElementBox.y2
+override-attr ClutterActorBox.y2
 static int
-_wrap_clutter_element_box__set_y2 (PyGBoxed *self, PyObject *value, void *closure)
+_wrap_clutter_actor_box__set_y2 (PyGBoxed *self, PyObject *value, void *closure)
 {
 	gint val;
 
@@ -340,31 +339,31 @@ _wrap_clutter_element_box__set_y2 (PyGBoxed *self, PyObject *value, void *closur
 	if (PyErr_Occurred ())
 		return -1;
 	
-	pyg_boxed_get (self, ClutterElementBox)->y2 = val;
+	pyg_boxed_get (self, ClutterActorBox)->y2 = val;
 
 	return 0;
 }
 %%
-override clutter_element_get_coords
+override clutter_actor_get_coords
 static PyObject *
-_wrap_clutter_element_get_coords (PyGObject *self)
+_wrap_clutter_actor_get_coords (PyGObject *self)
 {
 	gint x1, y1;
 	gint x2, y2;
 
-	clutter_element_get_coords (CLUTTER_ELEMENT (self->obj),
+	clutter_actor_get_coords (CLUTTER_ACTOR (self->obj),
 				    &x1, &y1,
 				    &x2, &y2);
 	return Py_BuildValue("(iiii)", x1, y1, x2, y2);
 }
 %%
-override clutter_element_get_abs_position
+override clutter_actor_get_abs_position
 static PyObject *
-_wrap_clutter_element_get_abs_position (PyGObject *self)
+_wrap_clutter_actor_get_abs_position (PyGObject *self)
 {
 	gint pos_x, pos_y;
 
-	clutter_element_get_abs_position (CLUTTER_ELEMENT (self->obj),
+	clutter_actor_get_abs_position (CLUTTER_ACTOR (self->obj),
 					  &pos_x,
 					  &pos_y);
 	return Py_BuildValue("(ii)", pos_x, pos_y);
@@ -453,19 +452,19 @@ _wrap_clutter_group_add_many (PyGObject *self,
 	group = CLUTTER_GROUP (self->obj);
 
 	for (i = 0; i < len; i++) {
-		PyGObject *pyelement;
-		ClutterElement *element;
+		PyGObject *pyactor;
+		ClutterActor *actor;
 
-		pyelement = (PyGObject *) PyTuple_GetItem (args, i);
-		if (!pygobject_check (pyelement, &PyClutterElement_Type)) {
+		pyactor = (PyGObject *) PyTuple_GetItem (args, i);
+		if (!pygobject_check (pyactor, &PyClutterActor_Type)) {
 			PyErr_SetString (PyExc_TypeError,
-					 "Expected a ClutterElement");
+					 "Expected a ClutterActor");
 			return NULL;
 		}
 		
-		element = CLUTTER_ELEMENT (pyelement->obj);
+		actor = CLUTTER_ACTOR (pyactor->obj);
 
-		clutter_group_add (group, element);
+		clutter_group_add (group, actor);
 	}
 
 	Py_INCREF (Py_None);

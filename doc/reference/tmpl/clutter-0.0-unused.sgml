@@ -1,3 +1,513 @@
+<!-- ##### SECTION ./tmpl/clutter-element.sgml:Long_Description ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/clutter-element.sgml:See_Also ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### SECTION ./tmpl/clutter-element.sgml:Short_Description ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/clutter-element.sgml:Stability_Level ##### -->
+
+
+
+<!-- ##### SECTION ./tmpl/clutter-element.sgml:Title ##### -->
+ClutterElement
+
+
+<!-- ##### MACRO CLUTTER_ELEMENT_IS_MAPPED ##### -->
+<para>
+
+</para>
+
+@e: 
+
+<!-- ##### MACRO CLUTTER_ELEMENT_IS_REALIZED ##### -->
+<para>
+
+</para>
+
+@e: 
+
+<!-- ##### MACRO CLUTTER_ELEMENT_IS_VISIBLE ##### -->
+<para>
+
+</para>
+
+@e: 
+
+<!-- ##### MACRO CLUTTER_ELEMENT_SET_FLAGS ##### -->
+<para>
+
+</para>
+
+@e: 
+@f: 
+
+<!-- ##### MACRO CLUTTER_ELEMENT_UNSET_FLAGS ##### -->
+<para>
+
+</para>
+
+@e: 
+@f: 
+
+<!-- ##### MACRO CLUTTER_TYPE_ELEMENT_BOX ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO CLUTTER_TYPE_ELEMENT_FLAGS ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO CLUTTER_TYPE_ELEMENT_TRANSFORM ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO CLUTTER_TYPE_VIDEO_TEXTURE_ASPECT_RATIO ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO CLUTTER_TYPE_VIDEO_TEXTURE_ERROR ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO CLUTTER_TYPE_VIDEO_TEXTURE_METADATA_TYPE ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO CLUTTER_VIDEO_TEXTURE_ERROR ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT ClutterElement ##### -->
+<para>
+
+</para>
+
+@parent: 
+@flags: 
+
+<!-- ##### STRUCT ClutterElementBox ##### -->
+<para>
+
+</para>
+
+@x1: 
+@y1: 
+@x2: 
+@y2: 
+
+<!-- ##### ENUM ClutterElementFlags ##### -->
+<para>
+
+</para>
+
+@CLUTTER_ELEMENT_MAPPED: 
+@CLUTTER_ELEMENT_REALIZED: 
+
+<!-- ##### STRUCT ClutterElementPrivate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ENUM ClutterElementTransform ##### -->
+<para>
+
+</para>
+
+@CLUTTER_ELEMENT_MIRROR_X: 
+@CLUTTER_ELEMENT_MIRROR_Y: 
+
+<!-- ##### ENUM ClutterVideoTextureAspectRatio ##### -->
+<para>
+
+</para>
+
+@CLUTTER_VIDEO_TEXTURE_AUTO: 
+@CLUTTER_VIDEO_TEXTURE_SQUARE: 
+@CLUTTER_VIDEO_TEXTURE_FOURBYTHREE: 
+@CLUTTER_VIDEO_TEXTURE_ANAMORPHIC: 
+@CLUTTER_VIDEO_TEXTURE_DVB: 
+
+<!-- ##### ENUM ClutterVideoTextureError ##### -->
+<para>
+
+</para>
+
+@CLUTTER_VIDEO_TEXTURE_ERROR_AUDIO_PLUGIN: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_NO_PLUGIN_FOR_FILE: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_VIDEO_PLUGIN: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_AUDIO_BUSY: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_BROKEN_FILE: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_FILE_GENERIC: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_FILE_PERMISSION: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_FILE_ENCRYPTED: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_FILE_NOT_FOUND: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_DVD_ENCRYPTED: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_INVALID_DEVICE: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_UNKNOWN_HOST: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_NETWORK_UNREACHABLE: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_CONNECTION_REFUSED: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_UNVALID_LOCATION: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_GENERIC: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_CODEC_NOT_HANDLED: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_AUDIO_ONLY: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_CANNOT_CAPTURE: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_READ_ERROR: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_PLUGIN_LOAD: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_STILL_IMAGE: 
+@CLUTTER_VIDEO_TEXTURE_ERROR_EMPTY_FILE: 
+
+<!-- ##### ENUM ClutterVideoTextureMetadataType ##### -->
+<para>
+
+</para>
+
+@CLUTTER_INFO_TITLE: 
+@CLUTTER_INFO_ARTIST: 
+@CLUTTER_INFO_YEAR: 
+@CLUTTER_INFO_ALBUM: 
+@CLUTTER_INFO_DURATION: 
+@CLUTTER_INFO_TRACK_NUMBER: 
+@CLUTTER_INFO_HAS_VIDEO: 
+@CLUTTER_INFO_DIMENSION_X: 
+@CLUTTER_INFO_DIMENSION_Y: 
+@CLUTTER_INFO_VIDEO_BITRATE: 
+@CLUTTER_INFO_VIDEO_CODEC: 
+@CLUTTER_INFO_FPS: 
+@CLUTTER_INFO_HAS_AUDIO: 
+@CLUTTER_INFO_AUDIO_BITRATE: 
+@CLUTTER_INFO_AUDIO_CODEC: 
+
+<!-- ##### FUNCTION clutter_element_allocate_coords ##### -->
+<para>
+
+</para>
+
+@self: 
+@box: 
+
+<!-- ##### FUNCTION clutter_element_box_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION clutter_element_flags_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION clutter_element_get_abs_position ##### -->
+<para>
+
+</para>
+
+@self: 
+@x: 
+@y: 
+
+<!-- ##### FUNCTION clutter_element_get_coords ##### -->
+<para>
+
+</para>
+
+@self: 
+@x1: 
+@y1: 
+@x2: 
+@y2: 
+
+<!-- ##### FUNCTION clutter_element_get_geometry ##### -->
+<para>
+
+</para>
+
+@self: 
+@geom: 
+
+<!-- ##### FUNCTION clutter_element_get_height ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_element_get_id ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_element_get_name ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_element_get_opacity ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_element_get_parent ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_element_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION clutter_element_get_width ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_element_get_x ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_element_get_y ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_element_hide ##### -->
+<para>
+
+</para>
+
+@self: 
+
+<!-- ##### FUNCTION clutter_element_lower ##### -->
+<para>
+
+</para>
+
+@self: 
+@above: 
+
+<!-- ##### FUNCTION clutter_element_lower_bottom ##### -->
+<para>
+
+</para>
+
+@self: 
+
+<!-- ##### FUNCTION clutter_element_paint ##### -->
+<para>
+
+</para>
+
+@self: 
+
+<!-- ##### FUNCTION clutter_element_queue_redraw ##### -->
+<para>
+
+</para>
+
+@self: 
+
+<!-- ##### FUNCTION clutter_element_raise ##### -->
+<para>
+
+</para>
+
+@self: 
+@below: 
+
+<!-- ##### FUNCTION clutter_element_raise_top ##### -->
+<para>
+
+</para>
+
+@self: 
+
+<!-- ##### FUNCTION clutter_element_realize ##### -->
+<para>
+
+</para>
+
+@self: 
+
+<!-- ##### FUNCTION clutter_element_remove_clip ##### -->
+<para>
+
+</para>
+
+@self: 
+
+<!-- ##### FUNCTION clutter_element_request_coords ##### -->
+<para>
+
+</para>
+
+@self: 
+@box: 
+
+<!-- ##### FUNCTION clutter_element_rotate_x ##### -->
+<para>
+
+</para>
+
+@self: 
+@angle: 
+@y: 
+@z: 
+
+<!-- ##### FUNCTION clutter_element_rotate_y ##### -->
+<para>
+
+</para>
+
+@self: 
+@angle: 
+@x: 
+@z: 
+
+<!-- ##### FUNCTION clutter_element_rotate_z ##### -->
+<para>
+
+</para>
+
+@self: 
+@angle: 
+@x: 
+@y: 
+
+<!-- ##### FUNCTION clutter_element_set_clip ##### -->
+<para>
+
+</para>
+
+@self: 
+@xoff: 
+@yoff: 
+@width: 
+@height: 
+
+<!-- ##### FUNCTION clutter_element_set_geometry ##### -->
+<para>
+
+</para>
+
+@self: 
+@geom: 
+
+<!-- ##### FUNCTION clutter_element_set_name ##### -->
+<para>
+
+</para>
+
+@self: 
+@id: 
+
+<!-- ##### FUNCTION clutter_element_set_opacity ##### -->
+<para>
+
+</para>
+
+@self: 
+@opacity: 
+
+<!-- ##### FUNCTION clutter_element_set_parent ##### -->
+<para>
+
+</para>
+
+@self: 
+@parent: 
+
+<!-- ##### FUNCTION clutter_element_set_position ##### -->
+<para>
+
+</para>
+
+@self: 
+@x: 
+@y: 
+
+<!-- ##### FUNCTION clutter_element_set_size ##### -->
+<para>
+
+</para>
+
+@self: 
+@width: 
+@height: 
+
+<!-- ##### FUNCTION clutter_element_show ##### -->
+<para>
+
+</para>
+
+@self: 
+
+<!-- ##### FUNCTION clutter_element_transform_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION clutter_element_unrealize ##### -->
+<para>
+
+</para>
+
+@self: 
+
 <!-- ##### FUNCTION clutter_gl_context ##### -->
 <para>
 
@@ -11,4 +521,193 @@
 </para>
 
 @Returns: 
+
+<!-- ##### FUNCTION clutter_stage_get_element_at_pos ##### -->
+<para>
+
+</para>
+
+@stage: 
+@x: 
+@y: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_video_texture_aspect_ratio_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION clutter_video_texture_can_direct_seek ##### -->
+<para>
+
+</para>
+
+@video_texture: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_video_texture_can_set_volume ##### -->
+<para>
+
+</para>
+
+@video_texture: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_video_texture_error_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION clutter_video_texture_error_quark ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION clutter_video_texture_get_aspect_ratio ##### -->
+<para>
+
+</para>
+
+@video_texture: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_video_texture_get_current_time ##### -->
+<para>
+
+</para>
+
+@video_texture: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_video_texture_get_metadata ##### -->
+<para>
+
+</para>
+
+@video_texture: 
+@type: 
+@value: 
+
+<!-- ##### FUNCTION clutter_video_texture_get_position ##### -->
+<para>
+
+</para>
+
+@video_texture: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_video_texture_get_stream_length ##### -->
+<para>
+
+</para>
+
+@video_texture: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_video_texture_get_volume ##### -->
+<para>
+
+</para>
+
+@video_texture: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_video_texture_is_playing ##### -->
+<para>
+
+</para>
+
+@video_texture: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_video_texture_is_seekable ##### -->
+<para>
+
+</para>
+
+@video_texture: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_video_texture_metadata_type_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+<!-- ##### FUNCTION clutter_video_texture_open ##### -->
+<para>
+
+</para>
+
+@video_texture: 
+@mrl: 
+@subtitle_uri: 
+@error: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_video_texture_pause ##### -->
+<para>
+
+</para>
+
+@video_texture: 
+
+<!-- ##### FUNCTION clutter_video_texture_play ##### -->
+<para>
+
+</para>
+
+@video_texture: 
+@error: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_video_texture_seek ##### -->
+<para>
+
+</para>
+
+@video_texture: 
+@position: 
+@error: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_video_texture_seek_time ##### -->
+<para>
+
+</para>
+
+@video_texture: 
+@time: 
+@gerror: 
+@Returns: 
+
+<!-- ##### FUNCTION clutter_video_texture_set_aspect_ratio ##### -->
+<para>
+
+</para>
+
+@video_texture: 
+@ratio: 
+
+<!-- ##### FUNCTION clutter_video_texture_set_volume ##### -->
+<para>
+
+</para>
+
+@video_texture: 
+@volume: 
+
+<!-- ##### FUNCTION clutter_video_texture_stop ##### -->
+<para>
+
+</para>
+
+@video_texture: 
 

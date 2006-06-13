@@ -11,7 +11,7 @@ source_h = clutter-keysyms.h       \
            clutter-event.h         \
 	   clutter-color.h         \
 	   clutter-timeline.h      \
-	   clutter-element.h       \
+	   clutter-actor.h       \
 	   clutter-group.h         \
 	   clutter-stage.h         \
 	   clutter-rectangle.h     \
@@ -77,7 +77,7 @@ source_c = clutter-main.c          \
 	   clutter-clone-texture.c \
 	   clutter-video-texture.c \
 	   clutter-label.c         \
-           clutter-element.c	   \
+           clutter-actor.c	   \
 	   clutter-enum-types.c
 
 source_h_priv = clutter-private.h

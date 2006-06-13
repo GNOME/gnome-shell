@@ -27,7 +27,7 @@
 #define _HAVE_CLUTTER_GROUP_H
 
 #include <glib-object.h>
-#include <clutter/clutter-element.h>
+#include <clutter/clutter-actor.h>
 
 G_BEGIN_DECLS
 
@@ -59,7 +59,7 @@ typedef struct _ClutterGroupClass   ClutterGroupClass;
  
 struct _ClutterGroup
 {
-  ClutterElement          parent;
+  ClutterActor          parent;
 
   /*< private >*/
   ClutterGroupPrivate      *priv;
@@ -68,12 +68,12 @@ struct _ClutterGroup
 struct _ClutterGroupClass
 {
   /*< private >*/
-  ClutterElementClass     parent_class;
+  ClutterActorClass     parent_class;
 
   void (*add)    (ClutterGroup   *group,
-		  ClutterElement *child);
+		  ClutterActor *child);
   void (*remove) (ClutterGroup   *group,
-		  ClutterElement *child);
+		  ClutterActor *child);
 
   void (*_clutter_group_1) (void);
   void (*_clutter_group_2) (void);
@@ -96,21 +96,21 @@ clutter_group_foreach (ClutterGroup      *self,
 		       gpointer          user_data);
 
 void
-clutter_group_add (ClutterGroup *group, ClutterElement *element); 
+clutter_group_add (ClutterGroup *group, ClutterActor *actor); 
 
 void
 clutter_group_add_many_valist (ClutterGroup   *group,
-			       ClutterElement *first_element,
+			       ClutterActor *first_actor,
 			       va_list         args);
 
 void
 clutter_group_add_many (ClutterGroup   *group,
-		        ClutterElement *first_element,
+		        ClutterActor *first_actor,
 			...) G_GNUC_NULL_TERMINATED;
 
 void
 clutter_group_remove (ClutterGroup   *group,
-		      ClutterElement *element); 
+		      ClutterActor *actor); 
 
 void
 clutter_group_show_all (ClutterGroup *self);
@@ -118,18 +118,18 @@ clutter_group_show_all (ClutterGroup *self);
 void
 clutter_group_hide_all (ClutterGroup *self);
 
-ClutterElement *
+ClutterActor *
 clutter_group_find_child_by_id (ClutterGroup *self, guint id);
 
 void
 clutter_group_raise (ClutterGroup     *self,
-		     ClutterElement *element, 
-		     ClutterElement *sibling);
+		     ClutterActor *actor, 
+		     ClutterActor *sibling);
 
 void
 clutter_group_lower (ClutterGroup     *self,
-		     ClutterElement *element, 
-		     ClutterElement *sibling);
+		     ClutterActor *actor, 
+		     ClutterActor *sibling);
 
 void
 clutter_group_sort_depth_order (ClutterGroup *self);

@@ -41,7 +41,7 @@ enum
 
 static guint group_signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (ClutterGroup, clutter_group, CLUTTER_TYPE_ELEMENT);
+G_DEFINE_TYPE (ClutterGroup, clutter_group, CLUTTER_TYPE_ACTOR);
 
 #define CLUTTER_GROUP_GET_PRIVATE(obj) \
 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_GROUP, ClutterGroupPrivate))
@@ -52,9 +52,9 @@ struct _ClutterGroupPrivate
 };
 
 static void
-clutter_group_paint (ClutterElement *element)
+clutter_group_paint (ClutterActor *actor)
 {
-  ClutterGroup *self = CLUTTER_GROUP(element);
+  ClutterGroup *self = CLUTTER_GROUP(actor);
   GList      *child_item;
 
   child_item = self->priv->children;
@@ -63,11 +63,11 @@ clutter_group_paint (ClutterElement *element)
 
   /* Translate if parent ( i.e not stage window ).
   */
-  if (clutter_element_get_parent (element) != NULL)
+  if (clutter_actor_get_parent (actor) != NULL)
     {
       ClutterGeometry geom;      
 
-      clutter_element_get_geometry (element, &geom);
+      clutter_actor_get_geometry (actor, &geom);
 
       if (geom.x != 0 && geom.y != 0)
 	glTranslatef(geom.x, geom.y, 0.0);
@@ -79,12 +79,12 @@ clutter_group_paint (ClutterElement *element)
        child_item != NULL;
        child_item = child_item->next)
     {
-      ClutterElement *child = child_item->data;
+      ClutterActor *child = child_item->data;
 
       g_assert (child != NULL);
 
-      if (CLUTTER_ELEMENT_IS_MAPPED (child))
-	clutter_element_paint (child);
+      if (CLUTTER_ACTOR_IS_MAPPED (child))
+	clutter_actor_paint (child);
     }
 #endif
   
@@ -92,11 +92,11 @@ clutter_group_paint (ClutterElement *element)
     {
       do 
 	{
-	  ClutterElement *child = CLUTTER_ELEMENT(child_item->data);
+	  ClutterActor *child = CLUTTER_ACTOR(child_item->data);
 	      
-	  if (CLUTTER_ELEMENT_IS_MAPPED (child))
+	  if (CLUTTER_ACTOR_IS_MAPPED (child))
 	    {
-	      clutter_element_paint(child);
+	      clutter_actor_paint(child);
 	    }
 	}
       while ((child_item = g_list_next(child_item)) != NULL);
@@ -106,18 +106,18 @@ clutter_group_paint (ClutterElement *element)
 }
 
 static void
-clutter_group_request_coords (ClutterElement    *self,
-			      ClutterElementBox *box)
+clutter_group_request_coords (ClutterActor    *self,
+			      ClutterActorBox *box)
 {
   /* FIXME: what to do here ?
    *        o clip if smaller ?
-   *        o scale each element ? 
+   *        o scale each actor ? 
   */
 }
 
 static void
-clutter_group_allocate_coords (ClutterElement    *self,
-			       ClutterElementBox *box)
+clutter_group_allocate_coords (ClutterActor    *self,
+			       ClutterActorBox *box)
 {
   ClutterGroupPrivate *priv;
   GList               *child_item;
@@ -130,13 +130,13 @@ clutter_group_allocate_coords (ClutterElement    *self,
     {
       do 
 	{
-	  ClutterElement *child = CLUTTER_ELEMENT(child_item->data);
+	  ClutterActor *child = CLUTTER_ACTOR(child_item->data);
 	      
-	  if (CLUTTER_ELEMENT_IS_VISIBLE (child))
+	  if (CLUTTER_ACTOR_IS_VISIBLE (child))
 	    {
-	      ClutterElementBox cbox;
+	      ClutterActorBox cbox;
 
-	      clutter_element_allocate_coords (child, &cbox);
+	      clutter_actor_allocate_coords (child, &cbox);
 	      
 	      /*
 	      if (box->x1 == 0 || cbox.x1 < box->x1)
@@ -195,15 +195,15 @@ static void
 clutter_group_class_init (ClutterGroupClass *klass)
 {
   GObjectClass        *object_class = G_OBJECT_CLASS (klass);
-  ClutterElementClass *element_class = CLUTTER_ELEMENT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  element_class->paint      = clutter_group_paint;
+  actor_class->paint      = clutter_group_paint;
   /*
-  element_class->show       = clutter_group_show_all;
-  element_class->hide       = clutter_group_hide_all;
+  actor_class->show       = clutter_group_show_all;
+  actor_class->hide       = clutter_group_hide_all;
   */
-  element_class->request_coords  = clutter_group_request_coords;
-  element_class->allocate_coords = clutter_group_allocate_coords;
+  actor_class->request_coords  = clutter_group_request_coords;
+  actor_class->allocate_coords = clutter_group_allocate_coords;
 
   /* GObject */
   object_class->finalize     = clutter_group_finalize;
@@ -217,7 +217,7 @@ clutter_group_class_init (ClutterGroupClass *klass)
 		  NULL, NULL,
 		  clutter_marshal_VOID__OBJECT,
 		  G_TYPE_NONE, 1,
-		  CLUTTER_TYPE_ELEMENT);
+		  CLUTTER_TYPE_ACTOR);
 
   group_signals[REMOVE] =
     g_signal_new ("remove",
@@ -227,7 +227,7 @@ clutter_group_class_init (ClutterGroupClass *klass)
 		  NULL, NULL,
 		  clutter_marshal_VOID__OBJECT,
 		  G_TYPE_NONE, 1,
-		  CLUTTER_TYPE_ELEMENT);
+		  CLUTTER_TYPE_ACTOR);
 
   g_type_class_add_private (object_class, sizeof (ClutterGroupPrivate));
 }
@@ -255,9 +255,9 @@ clutter_group_new (void)
  * clutter_group_get_children:
  * @self: A #ClutterGroup
  * 
- * Get a list containing all elements contained in the group.
+ * Get a list containing all actors contained in the group.
  * 
- * Return value: A GList containing child #ClutterElements.
+ * Return value: A GList containing child #ClutterActors.
  **/
 GList*
 clutter_group_get_children (ClutterGroup *self)
@@ -281,7 +281,7 @@ clutter_group_foreach (ClutterGroup      *self,
 		       ClutterCallback   callback,
 		       gpointer          user_data)
 {
-  ClutterElement *child;
+  ClutterActor *child;
   GList          *children;
 
   g_return_if_fail (CLUTTER_IS_GROUP (self));
@@ -303,17 +303,17 @@ clutter_group_foreach (ClutterGroup      *self,
  * clutter_group_show_all:
  * @self: A #ClutterGroup
  * 
- * Show all child elements of the group. Note, does not recurse.
+ * Show all child actors of the group. Note, does not recurse.
  **/
 void
 clutter_group_show_all (ClutterGroup *self)
 {
   g_return_if_fail (CLUTTER_IS_GROUP (self));
 
-  clutter_element_show(CLUTTER_ELEMENT(self));
+  clutter_actor_show(CLUTTER_ACTOR(self));
 
   g_list_foreach (self->priv->children,
-		  (GFunc)clutter_element_show,
+		  (GFunc)clutter_actor_show,
 		  NULL);
 }
 
@@ -321,145 +321,145 @@ clutter_group_show_all (ClutterGroup *self)
  * clutter_group_hide_all:
  * @self: A #ClutterGroup
  * 
- * Hide all child elements of the group. Note, does not recurse.
+ * Hide all child actors of the group. Note, does not recurse.
  **/
 void
 clutter_group_hide_all (ClutterGroup *self)
 {
   g_return_if_fail (CLUTTER_IS_GROUP (self));
 
-  clutter_element_hide(CLUTTER_ELEMENT(self));
+  clutter_actor_hide(CLUTTER_ACTOR(self));
 
   g_list_foreach (self->priv->children,
-		  (GFunc)clutter_element_hide,
+		  (GFunc)clutter_actor_hide,
 		  NULL);
 }
 
 /**
  * clutter_group_add:
  * @self: A #ClutterGroup
- * @element: A #ClutterElement 
+ * @actor: A #ClutterActor 
  *
- * Adds a new child #ClutterElement to the #ClutterGroup.
+ * Adds a new child #ClutterActor to the #ClutterGroup.
  **/
 void
 clutter_group_add (ClutterGroup   *self,
-		   ClutterElement *element)
+		   ClutterActor *actor)
 {
-  ClutterElement *parent;
+  ClutterActor *parent;
   
   g_return_if_fail (CLUTTER_IS_GROUP (self));
-  g_return_if_fail (CLUTTER_IS_ELEMENT (element));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
-  parent = clutter_element_get_parent (element);
+  parent = clutter_actor_get_parent (actor);
   if (parent)
     {
-      g_warning ("Attempting to add element of type `%s' to a "
-		 "group of type `%s', but the element has already "
+      g_warning ("Attempting to add actor of type `%s' to a "
+		 "group of type `%s', but the actor has already "
 		 "a parent of type `%s'.",
-		 g_type_name (G_OBJECT_TYPE (element)),
+		 g_type_name (G_OBJECT_TYPE (actor)),
 		 g_type_name (G_OBJECT_TYPE (self)),
 		 g_type_name (G_OBJECT_TYPE (parent)));
       return;
     }
 
-  self->priv->children = g_list_append (self->priv->children, element);
+  self->priv->children = g_list_append (self->priv->children, actor);
   /* below refs */
-  clutter_element_set_parent (element, CLUTTER_ELEMENT(self));
-  g_object_ref (element);
+  clutter_actor_set_parent (actor, CLUTTER_ACTOR(self));
+  g_object_ref (actor);
 
   clutter_group_sort_depth_order (self); 
 
-  g_signal_emit (self, group_signals[ADD], 0, element);
+  g_signal_emit (self, group_signals[ADD], 0, actor);
 }
 
 /**
  * clutter_group_add_manyv:
  * @self: a #ClutterGroup
- * @first_element: the #ClutterElement element to add to the group
- * @args: the elements to be added
+ * @first_actor: the #ClutterActor actor to add to the group
+ * @args: the actors to be added
  *
  * Similar to clutter_group_add_many() but using a va_list.  Use this
  * function inside bindings.
  */
 void
 clutter_group_add_many_valist (ClutterGroup   *group,
-			       ClutterElement *first_element,
+			       ClutterActor *first_actor,
 			       va_list         args)
 {
-  ClutterElement *element;
+  ClutterActor *actor;
   
   g_return_if_fail (CLUTTER_IS_GROUP (group));
-  g_return_if_fail (CLUTTER_IS_ELEMENT (first_element));
+  g_return_if_fail (CLUTTER_IS_ACTOR (first_actor));
 
-  element = first_element;
-  while (element)
+  actor = first_actor;
+  while (actor)
     {
-      clutter_group_add (group, element);
-      element = va_arg (args, ClutterElement *);
+      clutter_group_add (group, actor);
+      actor = va_arg (args, ClutterActor *);
     }
 }
 
 /**
  * clutter_group_add_many:
  * @self: A #ClutterGroup
- * @first_element: the #ClutterElement element to add to the group
- * @Varargs: additional elements to add to the group
+ * @first_actor: the #ClutterActor actor to add to the group
+ * @Varargs: additional actors to add to the group
  *
- * Adds a NULL-terminated list of elements to a group.  This function is
+ * Adds a NULL-terminated list of actors to a group.  This function is
  * equivalent to calling clutter_group_add() for each member of the list.
  */
 void
 clutter_group_add_many (ClutterGroup   *self,
-		        ClutterElement *first_element,
+		        ClutterActor *first_actor,
 			...)
 {
   va_list args;
 
-  va_start (args, first_element);
-  clutter_group_add_many_valist (self, first_element, args);
+  va_start (args, first_actor);
+  clutter_group_add_many_valist (self, first_actor, args);
   va_end (args);
 }
 
 /**
  * clutter_group_remove
  * @self: A #ClutterGroup
- * @element: A #ClutterElement 
+ * @actor: A #ClutterActor 
  *
- * Remove a child #ClutterElement from the #ClutterGroup.
+ * Remove a child #ClutterActor from the #ClutterGroup.
  **/
 void
 clutter_group_remove (ClutterGroup   *self,
-		      ClutterElement *element)
+		      ClutterActor *actor)
 {
-  ClutterElement *parent;
+  ClutterActor *parent;
   
   g_return_if_fail (CLUTTER_IS_GROUP (self));
-  g_return_if_fail (CLUTTER_IS_ELEMENT (element));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
-  parent = clutter_element_get_parent (element);
-  if (parent != CLUTTER_ELEMENT (self))
+  parent = clutter_actor_get_parent (actor);
+  if (parent != CLUTTER_ACTOR (self))
     {
-      g_warning ("Attempting to remove element of type `%s' from "
+      g_warning ("Attempting to remove actor of type `%s' from "
 		 "group of class `%s', but the group is not the "
-		 "element's parent.",
-		 g_type_name (G_OBJECT_TYPE (element)),
+		 "actor's parent.",
+		 g_type_name (G_OBJECT_TYPE (actor)),
 		 g_type_name (G_OBJECT_TYPE (self)));
       return;
     }
 
-  self->priv->children = g_list_remove (self->priv->children, element);
-  clutter_element_set_parent (element, NULL);
+  self->priv->children = g_list_remove (self->priv->children, actor);
+  clutter_actor_set_parent (actor, NULL);
   
-  g_signal_emit (self, group_signals[REMOVE], 0, element);
-  g_object_unref (element);
+  g_signal_emit (self, group_signals[REMOVE], 0, actor);
+  g_object_unref (actor);
 }
 
 /**
  * clutter_group_remove_all:
  * @self: A #ClutterGroup
  *
- * Remove all child #ClutterElement from the #ClutterGroup.
+ * Remove all child #ClutterActor from the #ClutterGroup.
  */
 void
 clutter_group_remove_all (ClutterGroup *self)
@@ -474,7 +474,7 @@ clutter_group_remove_all (ClutterGroup *self)
     {
       do 
 	{
-	  clutter_group_remove (self, CLUTTER_ELEMENT(child_item->data));
+	  clutter_group_remove (self, CLUTTER_ACTOR(child_item->data));
 	}
       while ((child_item = g_list_next(child_item)) != NULL);
     }
@@ -483,22 +483,22 @@ clutter_group_remove_all (ClutterGroup *self)
 /**
  * clutter_group_find_child_by_id:
  * @self: A #ClutterGroup
- * @id: A unique #Clutterelement ID
+ * @id: A unique #Clutteractor ID
  *
- * Finds a child element of a group by its unique ID. Search recurses
+ * Finds a child actor of a group by its unique ID. Search recurses
  * into any child groups. 
  */
-ClutterElement *
+ClutterActor *
 clutter_group_find_child_by_id (ClutterGroup *self,
 				guint         id)
 {
-  ClutterElement *element = NULL, *inner_element;
+  ClutterActor *actor = NULL, *inner_actor;
   GList          *child_item;
 
   g_return_val_if_fail (CLUTTER_IS_GROUP (self), NULL);
 
-  if (clutter_element_get_id (CLUTTER_ELEMENT(self)) == id)
-    return CLUTTER_ELEMENT(self);
+  if (clutter_actor_get_id (CLUTTER_ACTOR(self)) == id)
+    return CLUTTER_ACTOR(self);
 
   child_item = self->priv->children;
 
@@ -506,50 +506,50 @@ clutter_group_find_child_by_id (ClutterGroup *self,
     {
       do 
 	{
-	  inner_element = (ClutterElement*)child_item->data;
+	  inner_actor = (ClutterActor*)child_item->data;
 
-	  if (clutter_element_get_id (inner_element) == id)
-	    return inner_element;
+	  if (clutter_actor_get_id (inner_actor) == id)
+	    return inner_actor;
 	  
-	  if (CLUTTER_IS_GROUP(inner_element))
+	  if (CLUTTER_IS_GROUP(inner_actor))
 	    {
-	      element = 
-		clutter_group_find_child_by_id (CLUTTER_GROUP(inner_element), 
+	      actor = 
+		clutter_group_find_child_by_id (CLUTTER_GROUP(inner_actor), 
 						id);
-	      if (element)
-		return element;
+	      if (actor)
+		return actor;
 	    }
 
 	}
       while ((child_item = g_list_next(child_item)) != NULL);
     }
 
-  return element;
+  return actor;
 }
 
 /**
  * clutter_group_raise:
  * @self: a #ClutterGroup
- * @element: a #ClutterElement
- * @sibling: a #ClutterElement
+ * @actor: a #ClutterActor
+ * @sibling: a #ClutterActor
  *
  * FIXME
  */
 void
 clutter_group_raise (ClutterGroup   *self,
-		     ClutterElement *element, 
-		     ClutterElement *sibling)
+		     ClutterActor *actor, 
+		     ClutterActor *sibling)
 {
   ClutterGroupPrivate *priv;
   gint                 pos;
 
-  g_return_if_fail (element != sibling);
+  g_return_if_fail (actor != sibling);
 
   priv = self->priv;
 
-  pos = g_list_index (priv->children, element) + 1;
+  pos = g_list_index (priv->children, actor) + 1;
 
-  priv->children = g_list_remove (priv->children, element); 
+  priv->children = g_list_remove (priv->children, actor); 
 
   if (sibling == NULL)
     {
@@ -557,11 +557,11 @@ clutter_group_raise (ClutterGroup   *self,
       /* Raise top */
       last_item = g_list_last (priv->children);
       sibling = last_item->data;
-      priv->children = g_list_append (priv->children, element);
+      priv->children = g_list_append (priv->children, actor);
     }
   else
     {
-      priv->children = g_list_insert (priv->children, element, pos);
+      priv->children = g_list_insert (priv->children, actor, pos);
     }
 
   /* set Z ordering a value below, this will then call sort
@@ -569,35 +569,35 @@ clutter_group_raise (ClutterGroup   *self,
    * values will be correct.
    * FIXME: optimise
    */
-  if (clutter_element_get_depth(sibling) != clutter_element_get_depth(element))
-    clutter_element_set_depth (element,
-			       clutter_element_get_depth(sibling));
+  if (clutter_actor_get_depth(sibling) != clutter_actor_get_depth(actor))
+    clutter_actor_set_depth (actor,
+			       clutter_actor_get_depth(sibling));
 
 }
 
 /**
  * clutter_group_lower:
  * @self: a #ClutterGroup
- * @element: a #ClutterElement
- * @sibling: a #ClutterElement
+ * @actor: a #ClutterActor
+ * @sibling: a #ClutterActor
  *
  * FIXME
  */
 void
 clutter_group_lower (ClutterGroup   *self,
-		     ClutterElement *element, 
-		     ClutterElement *sibling)
+		     ClutterActor *actor, 
+		     ClutterActor *sibling)
 {
   ClutterGroupPrivate *priv;
   gint               pos;
 
-  g_return_if_fail (element != sibling);
+  g_return_if_fail (actor != sibling);
 
   priv = self->priv;
 
-  pos = g_list_index (priv->children, element) - 1;
+  pos = g_list_index (priv->children, actor) - 1;
 
-  priv->children = g_list_remove (priv->children, element); 
+  priv->children = g_list_remove (priv->children, actor); 
 
   if (sibling == NULL)
     {
@@ -606,26 +606,26 @@ clutter_group_lower (ClutterGroup   *self,
       last_item = g_list_first (priv->children);
       sibling = last_item->data;
 
-      priv->children = g_list_prepend (priv->children, element);
+      priv->children = g_list_prepend (priv->children, actor);
     }
   else
-    priv->children = g_list_insert (priv->children, element, pos);
+    priv->children = g_list_insert (priv->children, actor, pos);
 
   /* See comment in group_raise for this */
-  if (clutter_element_get_depth(sibling) != clutter_element_get_depth(element))
-    clutter_element_set_depth (element,
-			       clutter_element_get_depth(sibling));
+  if (clutter_actor_get_depth(sibling) != clutter_actor_get_depth(actor))
+    clutter_actor_set_depth (actor,
+			       clutter_actor_get_depth(sibling));
 }
 
 static gint 
 sort_z_order (gconstpointer a, gconstpointer b)
 {
-  if (clutter_element_get_depth (CLUTTER_ELEMENT(a)) 
-         == clutter_element_get_depth (CLUTTER_ELEMENT(b))) 
+  if (clutter_actor_get_depth (CLUTTER_ACTOR(a)) 
+         == clutter_actor_get_depth (CLUTTER_ACTOR(b))) 
     return 0;
 
-  if (clutter_element_get_depth (CLUTTER_ELEMENT(a)) 
-        > clutter_element_get_depth (CLUTTER_ELEMENT(b))) 
+  if (clutter_actor_get_depth (CLUTTER_ACTOR(a)) 
+        > clutter_actor_get_depth (CLUTTER_ACTOR(b))) 
     return 1;
 
   return -1;
@@ -649,6 +649,6 @@ clutter_group_sort_depth_order (ClutterGroup *self)
 
   priv->children = g_list_sort (priv->children, sort_z_order);
 
-  if (CLUTTER_ELEMENT_IS_VISIBLE (CLUTTER_ELEMENT(self)))
-    clutter_element_queue_redraw (CLUTTER_ELEMENT(self));
+  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(self)))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR(self));
 }

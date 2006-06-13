@@ -27,7 +27,7 @@
 #define _HAVE_CLUTTER_VIDEO_TEXTURE_H
 
 #include <glib-object.h>
-#include <clutter/clutter-element.h>
+#include <clutter/clutter-actor.h>
 #include <clutter/clutter-texture.h>
 #include <clutter/clutter-media.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
@@ -90,7 +90,7 @@ struct _ClutterVideoTextureClass
 
 GType clutter_video_texture_get_type (void);
 
-ClutterElement*
+ClutterActor*
 clutter_video_texture_new (void);
 
 G_END_DECLS

@@ -12,7 +12,7 @@
 
 typedef struct SuperOH
 {
-  ClutterElement *hand[NHANDS], *bgtex;
+  ClutterActor *hand[NHANDS], *bgtex;
   ClutterGroup   *group;
   GdkPixbuf      *bgpixb;
 
@@ -29,17 +29,17 @@ input_cb (ClutterStage *stage,
   if (event->type == CLUTTER_BUTTON_PRESS)
     {
       ClutterButtonEvent *bev = (ClutterButtonEvent *) event;
-      ClutterElement *e;
+      ClutterActor *e;
 
       g_print ("*** button press event (button:%d) ***\n",
 	       bev->button);
 
-      e = clutter_stage_get_element_at_pos (stage, 
+      e = clutter_stage_get_actor_at_pos (stage, 
 		                            clutter_button_event_x (event),
 					    clutter_button_event_y (event));
 
       if (e)
-	clutter_element_hide(e);
+	clutter_actor_hide(e);
     }
   else if (event->type == CLUTTER_KEY_PRESS)
     {
@@ -61,7 +61,7 @@ frame_cb (ClutterTimeline *timeline,
 	  gpointer         data)
 {
   SuperOH        *oh = (SuperOH *)data;
-  ClutterElement *stage = clutter_stage_get_default ();
+  ClutterActor *stage = clutter_stage_get_default ();
   gint            i;
 
 #if TRAILS
@@ -75,21 +75,21 @@ frame_cb (ClutterTimeline *timeline,
 #endif
 
   /* Rotate everything clockwise about stage center*/
-  clutter_element_rotate_z (CLUTTER_ELEMENT(oh->group),
+  clutter_actor_rotate_z (CLUTTER_ACTOR(oh->group),
 			    frame_num,
 			    WINWIDTH/2,
 			    WINHEIGHT/2);
   for (i = 0; i < NHANDS; i++)
     {
       /* rotate each hand around there centers */
-      clutter_element_rotate_z (oh->hand[i],
+      clutter_actor_rotate_z (oh->hand[i],
 				- 6.0 * frame_num,
-				clutter_element_get_width (oh->hand[i])/2,
-				clutter_element_get_height (oh->hand[i])/2);
+				clutter_actor_get_width (oh->hand[i])/2,
+				clutter_actor_get_height (oh->hand[i])/2);
     }
 
   /*
-  clutter_element_rotate_x (CLUTTER_ELEMENT(oh->group),
+  clutter_actor_rotate_x (CLUTTER_ACTOR(oh->group),
 			    75.0,
 			    WINHEIGHT/2, 0);
   */
@@ -99,7 +99,7 @@ int
 main (int argc, char *argv[])
 {
   ClutterTimeline *timeline;
-  ClutterElement  *stage;
+  ClutterActor  *stage;
   ClutterColor     stage_color = { 0x61, 0x64, 0x8c, 0xff };
   GtkWidget       *window, *plug, *clutter;
   GtkWidget       *label, *button, *vbox;
@@ -120,7 +120,7 @@ main (int argc, char *argv[])
   stage = gtk_clutter_get_stage (GTK_CLUTTER (clutter));
 
   /* Set our stage size */
-  clutter_element_set_size (stage, WINWIDTH, WINHEIGHT);
+  clutter_actor_set_size (stage, WINWIDTH, WINHEIGHT);
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   g_signal_connect (window, "destroy",
@@ -146,12 +146,12 @@ main (int argc, char *argv[])
 
 #if TRAILS
   oh->bgtex = clutter_texture_new();
-  clutter_element_set_size (oh->bgtex, WINWIDTH, WINHEIGHT);
-  clutter_element_set_opacity (oh->bgtex, 0x99);
+  clutter_actor_set_size (oh->bgtex, WINWIDTH, WINHEIGHT);
+  clutter_actor_set_opacity (oh->bgtex, 0x99);
   clutter_group_add (CLUTTER_GROUP (stage), oh->bgtex);
 #endif
 
-  /* create a new group to hold multiple elements in a group */
+  /* create a new group to hold multiple actors in a group */
   oh->group = clutter_group_new();
   
   for (i = 0; i < NHANDS; i++)
@@ -165,20 +165,20 @@ main (int argc, char *argv[])
        oh->hand[i] = clutter_clone_texture_new (CLUTTER_TEXTURE(oh->hand[0]));
 
       /* Place around a circle */
-      w = clutter_element_get_width (oh->hand[0]);
-      h = clutter_element_get_height (oh->hand[0]);
+      w = clutter_actor_get_width (oh->hand[0]);
+      h = clutter_actor_get_height (oh->hand[0]);
 
       x = WINWIDTH/2  + RADIUS * cos (i * M_PI / (NHANDS/2)) - w/2;
       y = WINHEIGHT/2 + RADIUS * sin (i * M_PI / (NHANDS/2)) - h/2;
 
-      clutter_element_set_position (oh->hand[i], x, y);
+      clutter_actor_set_position (oh->hand[i], x, y);
 
       /* Add to our group group */
       clutter_group_add (oh->group, oh->hand[i]);
     }
 
   /* Add the group to the stage */
-  clutter_group_add (CLUTTER_GROUP (stage), CLUTTER_ELEMENT(oh->group));
+  clutter_group_add (CLUTTER_GROUP (stage), CLUTTER_ACTOR(oh->group));
 
   /* Show everying ( and map window ) */
   clutter_group_show_all (oh->group);

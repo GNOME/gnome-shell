@@ -17,10 +17,10 @@
   )
 )
 
-(define-boxed ElementBox
+(define-boxed ActorBox
   (in-module "Clutter")
-  (c-name "ClutterElementBox")
-  (gtype-id "CLUTTER_TYPE_ELEMENT_BOX")
+  (c-name "ClutterActorBox")
+  (gtype-id "CLUTTER_TYPE_ACTOR_BOX")
   (fields
     '("gint" "x1")
     '("gint" "y1")
@@ -52,23 +52,23 @@
 
 ;; Enumerations and flags ...
 
-(define-flags ElementFlags
+(define-flags ActorFlags
   (in-module "Clutter")
-  (c-name "ClutterElementFlags")
-  (gtype-id "CLUTTER_TYPE_ELEMENT_FLAGS")
+  (c-name "ClutterActorFlags")
+  (gtype-id "CLUTTER_TYPE_ACTOR_FLAGS")
   (values
-    '("mapped" "CLUTTER_ELEMENT_MAPPED")
-    '("realized" "CLUTTER_ELEMENT_REALIZED")
+    '("mapped" "CLUTTER_ACTOR_MAPPED")
+    '("realized" "CLUTTER_ACTOR_REALIZED")
   )
 )
 
-(define-flags ElementTransform
+(define-flags ActorTransform
   (in-module "Clutter")
-  (c-name "ClutterElementTransform")
-  (gtype-id "CLUTTER_TYPE_ELEMENT_TRANSFORM")
+  (c-name "ClutterActorTransform")
+  (gtype-id "CLUTTER_TYPE_ACTOR_TRANSFORM")
   (values
-    '("x" "CLUTTER_ELEMENT_MIRROR_X")
-    '("y" "CLUTTER_ELEMENT_MIRROR_Y")
+    '("x" "CLUTTER_ACTOR_MIRROR_X")
+    '("y" "CLUTTER_ACTOR_MIRROR_Y")
   )
 )
 
@@ -87,92 +87,25 @@
   )
 )
 
-(define-enum VideoTextureAspectRatio
-  (in-module "Clutter")
-  (c-name "ClutterVideoTextureAspectRatio")
-  (gtype-id "CLUTTER_TYPE_VIDEO_TEXTURE_ASPECT_RATIO")
-  (values
-    '("auto" "CLUTTER_VIDEO_TEXTURE_AUTO")
-    '("square" "CLUTTER_VIDEO_TEXTURE_SQUARE")
-    '("fourbythree" "CLUTTER_VIDEO_TEXTURE_FOURBYTHREE")
-    '("anamorphic" "CLUTTER_VIDEO_TEXTURE_ANAMORPHIC")
-    '("dvb" "CLUTTER_VIDEO_TEXTURE_DVB")
-  )
-)
-
-(define-enum VideoTextureError
-  (in-module "Clutter")
-  (c-name "ClutterVideoTextureError")
-  (gtype-id "CLUTTER_TYPE_VIDEO_TEXTURE_ERROR")
-  (values
-    '("audio-plugin" "CLUTTER_VIDEO_TEXTURE_ERROR_AUDIO_PLUGIN")
-    '("no-plugin-for-file" "CLUTTER_VIDEO_TEXTURE_ERROR_NO_PLUGIN_FOR_FILE")
-    '("video-plugin" "CLUTTER_VIDEO_TEXTURE_ERROR_VIDEO_PLUGIN")
-    '("audio-busy" "CLUTTER_VIDEO_TEXTURE_ERROR_AUDIO_BUSY")
-    '("broken-file" "CLUTTER_VIDEO_TEXTURE_ERROR_BROKEN_FILE")
-    '("file-generic" "CLUTTER_VIDEO_TEXTURE_ERROR_FILE_GENERIC")
-    '("file-permission" "CLUTTER_VIDEO_TEXTURE_ERROR_FILE_PERMISSION")
-    '("file-encrypted" "CLUTTER_VIDEO_TEXTURE_ERROR_FILE_ENCRYPTED")
-    '("file-not-found" "CLUTTER_VIDEO_TEXTURE_ERROR_FILE_NOT_FOUND")
-    '("dvd-encrypted" "CLUTTER_VIDEO_TEXTURE_ERROR_DVD_ENCRYPTED")
-    '("invalid-device" "CLUTTER_VIDEO_TEXTURE_ERROR_INVALID_DEVICE")
-    '("unknown-host" "CLUTTER_VIDEO_TEXTURE_ERROR_UNKNOWN_HOST")
-    '("network-unreachable" "CLUTTER_VIDEO_TEXTURE_ERROR_NETWORK_UNREACHABLE")
-    '("connection-refused" "CLUTTER_VIDEO_TEXTURE_ERROR_CONNECTION_REFUSED")
-    '("unvalid-location" "CLUTTER_VIDEO_TEXTURE_ERROR_UNVALID_LOCATION")
-    '("generic" "CLUTTER_VIDEO_TEXTURE_ERROR_GENERIC")
-    '("codec-not-handled" "CLUTTER_VIDEO_TEXTURE_ERROR_CODEC_NOT_HANDLED")
-    '("audio-only" "CLUTTER_VIDEO_TEXTURE_ERROR_AUDIO_ONLY")
-    '("cannot-capture" "CLUTTER_VIDEO_TEXTURE_ERROR_CANNOT_CAPTURE")
-    '("read-error" "CLUTTER_VIDEO_TEXTURE_ERROR_READ_ERROR")
-    '("plugin-load" "CLUTTER_VIDEO_TEXTURE_ERROR_PLUGIN_LOAD")
-    '("still-image" "CLUTTER_VIDEO_TEXTURE_ERROR_STILL_IMAGE")
-    '("empty-file" "CLUTTER_VIDEO_TEXTURE_ERROR_EMPTY_FILE")
-  )
-)
-
-(define-enum VideoTextureMetadataType
-  (in-module "Clutter")
-  (c-name "ClutterVideoTextureMetadataType")
-  (gtype-id "CLUTTER_TYPE_VIDEO_TEXTURE_METADATA_TYPE")
-  (values
-    '("title" "CLUTTER_INFO_TITLE")
-    '("artist" "CLUTTER_INFO_ARTIST")
-    '("year" "CLUTTER_INFO_YEAR")
-    '("album" "CLUTTER_INFO_ALBUM")
-    '("duration" "CLUTTER_INFO_DURATION")
-    '("track-number" "CLUTTER_INFO_TRACK_NUMBER")
-    '("has-video" "CLUTTER_INFO_HAS_VIDEO")
-    '("dimension-x" "CLUTTER_INFO_DIMENSION_X")
-    '("dimension-y" "CLUTTER_INFO_DIMENSION_Y")
-    '("video-bitrate" "CLUTTER_INFO_VIDEO_BITRATE")
-    '("video-codec" "CLUTTER_INFO_VIDEO_CODEC")
-    '("fps" "CLUTTER_INFO_FPS")
-    '("has-audio" "CLUTTER_INFO_HAS_AUDIO")
-    '("audio-bitrate" "CLUTTER_INFO_AUDIO_BITRATE")
-    '("audio-codec" "CLUTTER_INFO_AUDIO_CODEC")
-  )
-)
-
 ;; Objects
 
 (define-object CloneTexture
   (in-module "Clutter")
-  (parent "ClutterElement")
+  (parent "ClutterActor")
   (c-name "ClutterCloneTexture")
   (gtype-id "CLUTTER_TYPE_CLONE_TEXTURE")
 )
 
-(define-object Element
+(define-object Actor
   (in-module "Clutter")
   (parent "GObject")
-  (c-name "ClutterElement")
-  (gtype-id "CLUTTER_TYPE_ELEMENT")
+  (c-name "ClutterActor")
+  (gtype-id "CLUTTER_TYPE_ACTOR")
 )
 
 (define-object Group
   (in-module "Clutter")
-  (parent "ClutterElement")
+  (parent "ClutterActor")
   (c-name "ClutterGroup")
   (gtype-id "CLUTTER_TYPE_GROUP")
 )
@@ -186,7 +119,7 @@
 
 (define-object Rectangle
   (in-module "Clutter")
-  (parent "ClutterElement")
+  (parent "ClutterActor")
   (c-name "ClutterRectangle")
   (gtype-id "CLUTTER_TYPE_RECTANGLE")
 )
@@ -200,7 +133,7 @@
 
 (define-object Texture
   (in-module "Clutter")
-  (parent "ClutterElement")
+  (parent "ClutterActor")
   (c-name "ClutterTexture")
   (gtype-id "CLUTTER_TYPE_TEXTURE")
 )
@@ -210,13 +143,6 @@
   (parent "GObject")
   (c-name "ClutterTimeline")
   (gtype-id "CLUTTER_TYPE_TIMELINE")
-)
-
-(define-object VideoTexture
-  (in-module "Clutter")
-  (parent "ClutterTexture")
-  (c-name "ClutterVideoTexture")
-  (gtype-id "CLUTTER_TYPE_VIDEO_TEXTURE")
 )
 
 ;; Pointers

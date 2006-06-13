@@ -30,7 +30,7 @@
 #include <GL/glx.h>
 #include <GL/gl.h>
 
-G_DEFINE_TYPE (ClutterRectangle, clutter_rectangle, CLUTTER_TYPE_ELEMENT);
+G_DEFINE_TYPE (ClutterRectangle, clutter_rectangle, CLUTTER_TYPE_ACTOR);
 
 enum
 {
@@ -49,7 +49,7 @@ struct _ClutterRectanglePrivate
 };
 
 static void
-clutter_rectangle_paint (ClutterElement *self)
+clutter_rectangle_paint (ClutterActor *self)
 {
   ClutterRectangle        *rectangle = CLUTTER_RECTANGLE(self);
   ClutterRectanglePrivate *priv;
@@ -63,12 +63,12 @@ clutter_rectangle_paint (ClutterElement *self)
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  clutter_element_get_geometry (self, &geom);
+  clutter_actor_get_geometry (self, &geom);
 
   glColor4ub(priv->color.red,
 	     priv->color.green,
 	     priv->color.blue, 
-	     clutter_element_get_opacity (self));
+	     clutter_actor_get_opacity (self));
 
   glRecti (geom.x,
 	   geom.y,
@@ -138,9 +138,9 @@ static void
 clutter_rectangle_class_init (ClutterRectangleClass *klass)
 {
   GObjectClass        *gobject_class = G_OBJECT_CLASS (klass);
-  ClutterElementClass *element_class = CLUTTER_ELEMENT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  element_class->paint        = clutter_rectangle_paint;
+  actor_class->paint        = clutter_rectangle_paint;
 
   gobject_class->finalize     = clutter_rectangle_finalize;
   gobject_class->dispose      = clutter_rectangle_dispose;
@@ -172,11 +172,11 @@ clutter_rectangle_init (ClutterRectangle *self)
 /**
  * clutter_rectangle_new:
  *
- * Creates a new #ClutterElement with a rectangular shape.
+ * Creates a new #ClutterActor with a rectangular shape.
  *
- * Return value: a new #ClutterElement
+ * Return value: a new #ClutterActor
  */
-ClutterElement*
+ClutterActor*
 clutter_rectangle_new (void)
 {
   return g_object_new (CLUTTER_TYPE_RECTANGLE, NULL);
@@ -186,12 +186,12 @@ clutter_rectangle_new (void)
  * clutter_rectangle_new_with_color:
  * @color: a #ClutterColor
  *
- * Creates a new #ClutterElement with a rectangular shape
+ * Creates a new #ClutterActor with a rectangular shape
  * and with @color.
  *
- * Return value: a new #ClutterElement
+ * Return value: a new #ClutterActor
  */
-ClutterElement *
+ClutterActor *
 clutter_rectangle_new_with_color (const ClutterColor *color)
 {
   return g_object_new (CLUTTER_TYPE_RECTANGLE,
@@ -246,11 +246,11 @@ clutter_rectangle_set_color (ClutterRectangle   *rectangle,
   priv->color.blue = color->blue;
   priv->color.alpha = color->alpha;
 
-  clutter_element_set_opacity (CLUTTER_ELEMENT (rectangle),
+  clutter_actor_set_opacity (CLUTTER_ACTOR (rectangle),
 		  	       priv->color.alpha);
 
-  if (CLUTTER_ELEMENT_IS_VISIBLE (CLUTTER_ELEMENT (rectangle)))
-    clutter_element_queue_redraw (CLUTTER_ELEMENT (rectangle));
+  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (rectangle)))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (rectangle));
 
   g_object_notify (G_OBJECT (rectangle), "color");
 }

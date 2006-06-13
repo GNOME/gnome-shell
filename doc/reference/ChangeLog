@@ -1,3 +1,16 @@
+2006-06-13  Matthew Allum  <mallum@openedhand.com>
+
+	* ChangeLog:
+	* clutter-0.0-sections.txt:
+	* clutter.types:
+	* tmpl/clutter-0.0-unused.sgml:
+	* tmpl/clutter-enum-types.sgml:
+	* tmpl/clutter-group.sgml:
+	* tmpl/clutter-main.sgml:
+	* tmpl/clutter-stage.sgml:
+	* tmpl/clutter-video-texture.sgml:
+	rename element -> actor
+
 2006-05-26  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	A clutter-0.0-sections.txt

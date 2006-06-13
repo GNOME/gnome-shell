@@ -27,7 +27,7 @@
 #define _HAVE_CLUTTER_RECTANGLE_H
 
 #include <glib-object.h>
-#include <clutter/clutter-element.h>
+#include <clutter/clutter-actor.h>
 #include <clutter/clutter-color.h>
 
 G_BEGIN_DECLS
@@ -60,7 +60,7 @@ typedef struct _ClutterRectangleClass   ClutterRectangleClass;
 
 struct _ClutterRectangle
 {
-  ClutterElement           parent;
+  ClutterActor           parent;
 
   /*< private >*/
   ClutterRectanglePrivate *priv;
@@ -68,7 +68,7 @@ struct _ClutterRectangle
 
 struct _ClutterRectangleClass 
 {
-  ClutterElementClass parent_class;
+  ClutterActorClass parent_class;
 
   /* padding for future expansion */
   void (*_clutter_rectangle1) (void);
@@ -79,8 +79,8 @@ struct _ClutterRectangleClass
 
 GType clutter_rectangle_get_type (void) G_GNUC_CONST;
 
-ClutterElement *clutter_rectangle_new            (void);
-ClutterElement *clutter_rectangle_new_with_color (const ClutterColor *color);
+ClutterActor *clutter_rectangle_new            (void);
+ClutterActor *clutter_rectangle_new_with_color (const ClutterColor *color);
 
 void            clutter_rectangle_get_color      (ClutterRectangle   *rectangle,
 						  ClutterColor       *color);

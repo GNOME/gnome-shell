@@ -71,7 +71,7 @@ ClutterStage
 @color: 
 
 
-<!-- ##### FUNCTION clutter_stage_get_element_at_pos ##### -->
+<!-- ##### FUNCTION clutter_stage_get_actor_at_pos ##### -->
 <para>
 
 </para>

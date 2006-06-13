@@ -32,7 +32,7 @@
 #include <GL/glx.h>
 #include <GL/gl.h>
 
-G_DEFINE_TYPE (ClutterTexture, clutter_texture, CLUTTER_TYPE_ELEMENT);
+G_DEFINE_TYPE (ClutterTexture, clutter_texture, CLUTTER_TYPE_ACTOR);
 
 #if G_BYTE_ORDER == G_LITTLE_ENDIAN
 #define PIXEL_TYPE GL_UNSIGNED_BYTE
@@ -53,7 +53,7 @@ struct ClutterTexturePrivate
   GLenum                       pixel_format;
   GLenum                       pixel_type;
 
-  gboolean                     sync_element_size;
+  gboolean                     sync_actor_size;
   gint                         max_tile_waste;
   guint                        filter_quality;
   gboolean                     repeat_x, repeat_y; /* non working */
@@ -219,8 +219,8 @@ texture_render_to_gl_quad (ClutterTexture *texture,
   qwidth  = x2-x1;
   qheight = y2-y1;
 
-  if (!CLUTTER_ELEMENT_IS_REALIZED (CLUTTER_ELEMENT(texture)))
-      clutter_element_realize (CLUTTER_ELEMENT(texture));
+  if (!CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR(texture)))
+      clutter_actor_realize (CLUTTER_ACTOR(texture));
 
   g_return_if_fail(priv->tiles != NULL);
 
@@ -291,12 +291,12 @@ texture_render_to_gl_quad (ClutterTexture *texture,
 }
 
 static void
-clutter_texture_unrealize (ClutterElement *element)
+clutter_texture_unrealize (ClutterActor *actor)
 {
   ClutterTexture        *texture;
   ClutterTexturePrivate *priv;
 
-  texture = CLUTTER_TEXTURE(element);
+  texture = CLUTTER_TEXTURE(actor);
   priv = texture->priv;
 
   if (priv->tiles == NULL)
@@ -471,7 +471,7 @@ clutter_texture_sync_pixbuf (ClutterTexture *texture)
 	  gchar  *filename;
 
 	  filename = g_strdup_printf("/tmp/%i-%i-%i.png",
-				     clutter_element_get_id(CLUTTER_ELEMENT(texture)), 
+				     clutter_actor_get_id(CLUTTER_ACTOR(texture)), 
 				     x, y);
 	  printf("saving %s\n", filename);
 	  gdk_pixbuf_save (pixtmp, filename , "png", NULL, NULL);
@@ -534,11 +534,11 @@ clutter_texture_sync_pixbuf (ClutterTexture *texture)
 }
 
 static void
-clutter_texture_realize (ClutterElement *element)
+clutter_texture_realize (ClutterActor *actor)
 {
   ClutterTexture *texture;
 
-  texture = CLUTTER_TEXTURE(element);
+  texture = CLUTTER_TEXTURE(actor);
 
   CLUTTER_MARK();
 
@@ -546,9 +546,9 @@ clutter_texture_realize (ClutterElement *element)
     {
       /* Dont allow realization with no pixbuf */
       CLUTTER_DBG("*** Texture has no pixbuf cannot realize ***");
-      CLUTTER_DBG("*** flags %i ***", element->flags);
-      CLUTTER_ELEMENT_UNSET_FLAGS (element, CLUTTER_ELEMENT_REALIZED);
-      CLUTTER_DBG("*** flags %i ***", element->flags);
+      CLUTTER_DBG("*** flags %i ***", actor->flags);
+      CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+      CLUTTER_DBG("*** flags %i ***", actor->flags);
       return;
     }
   CLUTTER_DBG("Texture realized");
@@ -560,35 +560,35 @@ clutter_texture_realize (ClutterElement *element)
 }
 
 static void
-clutter_texture_show (ClutterElement *self)
+clutter_texture_show (ClutterActor *self)
 {
-  clutter_element_realize (self);
+  clutter_actor_realize (self);
 }
 
 static void
-clutter_texture_hide (ClutterElement *self)
+clutter_texture_hide (ClutterActor *self)
 {
-  clutter_element_unrealize (self);
+  clutter_actor_unrealize (self);
 }
 
 static void
-clutter_texture_paint (ClutterElement *self)
+clutter_texture_paint (ClutterActor *self)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE(self);
   gint            x1, y1, x2, y2;
 
   CLUTTER_DBG("@@@ for '%s' @@@", 
-	      clutter_element_get_name(self) ? 
-                          clutter_element_get_name(self) : "unknown");
+	      clutter_actor_get_name(self) ? 
+                          clutter_actor_get_name(self) : "unknown");
   glPushMatrix();
 
   glEnable(GL_BLEND);
   glEnable(GL_TEXTURE_2D);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  glColor4ub(255, 255, 255, clutter_element_get_opacity(self));
+  glColor4ub(255, 255, 255, clutter_actor_get_opacity(self));
 
-  clutter_element_get_coords (self, &x1, &y1, &x2, &y2);
+  clutter_actor_get_coords (self, &x1, &y1, &x2, &y2);
   texture_render_to_gl_quad (texture, x1, y1, x2, y2);
 
   glDisable(GL_TEXTURE_2D);
@@ -607,7 +607,7 @@ clutter_texture_dispose (GObject *object)
 
   if (priv != NULL)
     {
-      clutter_element_unrealize (CLUTTER_ELEMENT(self));
+      clutter_actor_unrealize (CLUTTER_ACTOR(self));
 
       if (priv->pixbuf != NULL)
 	{
@@ -665,7 +665,7 @@ clutter_texture_set_property (GObject      *object,
       priv->pixel_format = g_value_get_int (value);
       break;
     case PROP_SYNC_SIZE:
-      priv->sync_element_size = g_value_get_boolean (value);
+      priv->sync_actor_size = g_value_get_boolean (value);
       break;
     case PROP_REPEAT_X:
       priv->repeat_x = g_value_get_boolean (value);
@@ -712,7 +712,7 @@ clutter_texture_get_property (GObject    *object,
       g_value_set_int (value, priv->pixel_format);
       break;
     case PROP_SYNC_SIZE:
-      g_value_set_boolean (value, priv->sync_element_size);
+      g_value_set_boolean (value, priv->sync_actor_size);
       break;
     case PROP_REPEAT_X:
       g_value_set_boolean (value, priv->repeat_x);
@@ -734,16 +734,16 @@ static void
 clutter_texture_class_init (ClutterTextureClass *klass)
 {
   GObjectClass        *gobject_class;
-  ClutterElementClass *element_class;
+  ClutterActorClass *actor_class;
 
   gobject_class = (GObjectClass*)klass;
-  element_class = (ClutterElementClass*)klass;
+  actor_class = (ClutterActorClass*)klass;
 
-  element_class->paint      = clutter_texture_paint;
-  element_class->realize    = clutter_texture_realize;
-  element_class->unrealize  = clutter_texture_unrealize;
-  element_class->show       = clutter_texture_show;
-  element_class->hide       = clutter_texture_hide;
+  actor_class->paint      = clutter_texture_paint;
+  actor_class->realize    = clutter_texture_realize;
+  actor_class->unrealize  = clutter_texture_unrealize;
+  actor_class->show       = clutter_texture_show;
+  actor_class->hide       = clutter_texture_hide;
 
   gobject_class->dispose      = clutter_texture_dispose;
   gobject_class->finalize     = clutter_texture_finalize;
@@ -769,8 +769,8 @@ clutter_texture_class_init (ClutterTextureClass *klass)
   g_object_class_install_property
     (gobject_class, PROP_SYNC_SIZE,
      g_param_spec_boolean ("sync-size",
-			   "Sync size of element",
-			   "Auto sync size of element to underlying pixbuf"
+			   "Sync size of actor",
+			   "Auto sync size of actor to underlying pixbuf"
 			   "dimentions",
 			   TRUE,
 			   G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
@@ -939,12 +939,12 @@ clutter_texture_set_pixbuf (ClutterTexture *texture, GdkPixbuf *pixbuf)
       */
       if (texture_dirty)
 	{
-	  clutter_element_unrealize (CLUTTER_ELEMENT(texture));
+	  clutter_actor_unrealize (CLUTTER_ACTOR(texture));
 	}
       else
 	{
 	  /* If texture realised sync things for change */
-	  if (CLUTTER_ELEMENT_IS_REALIZED(CLUTTER_ELEMENT(texture)))
+	  if (CLUTTER_ACTOR_IS_REALIZED(CLUTTER_ACTOR(texture)))
 	    {
 	      priv->pixbuf = pixbuf; 
 
@@ -980,8 +980,8 @@ clutter_texture_set_pixbuf (ClutterTexture *texture, GdkPixbuf *pixbuf)
     priv->tiled = TRUE;
   clutter_threads_leave();
 
-  if (priv->sync_element_size)
-    clutter_element_set_size (CLUTTER_ELEMENT(texture), 
+  if (priv->sync_actor_size)
+    clutter_actor_set_size (CLUTTER_ACTOR(texture), 
 			      priv->width, 
 			      priv->height);
 
@@ -996,9 +996,9 @@ clutter_texture_set_pixbuf (ClutterTexture *texture, GdkPixbuf *pixbuf)
 
   g_signal_emit (texture, texture_signals[SIGNAL_PIXBUF_CHANGE], 0); 
 
-  /* If resized element may need resizing but paint() will do this */
-  if (CLUTTER_ELEMENT_IS_MAPPED (CLUTTER_ELEMENT(texture)))
-    clutter_element_queue_redraw (CLUTTER_ELEMENT(texture));
+  /* If resized actor may need resizing but paint() will do this */
+  if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR(texture)))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR(texture));
 }
 
 /**
@@ -1009,14 +1009,14 @@ clutter_texture_set_pixbuf (ClutterTexture *texture, GdkPixbuf *pixbuf)
  *
  * Return value: A newly created #ClutterTexture object.
  **/
-ClutterElement*
+ClutterActor*
 clutter_texture_new_from_pixbuf (GdkPixbuf *pixbuf)
 {
   ClutterTexture *texture;
 
   texture = g_object_new (CLUTTER_TYPE_TEXTURE, "pixbuf", pixbuf, NULL);
 
-  return CLUTTER_ELEMENT(texture);
+  return CLUTTER_ACTOR(texture);
 }
 
 /**
@@ -1026,14 +1026,14 @@ clutter_texture_new_from_pixbuf (GdkPixbuf *pixbuf)
  *
  * Return value: A newly created #ClutterTexture object.
  **/
-ClutterElement*
+ClutterActor*
 clutter_texture_new (void)
 {
   ClutterTexture *texture;
 
   texture = g_object_new (CLUTTER_TYPE_TEXTURE, NULL);
 
-  return CLUTTER_ELEMENT(texture);
+  return CLUTTER_ACTOR(texture);
 }
 
 /**

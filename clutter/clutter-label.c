@@ -144,8 +144,8 @@ clutter_label_make_pixbuf (ClutterLabel *label)
 }
 
 static void
-clutter_label_allocate_coords (ClutterElement        *element,
-			       ClutterElementBox     *box)
+clutter_label_allocate_coords (ClutterActor        *actor,
+			       ClutterActorBox     *box)
 {
   
 
@@ -259,14 +259,14 @@ static void
 clutter_label_class_init (ClutterLabelClass *klass)
 {
   GObjectClass        *gobject_class = G_OBJECT_CLASS (klass);
-  ClutterElementClass *element_class = CLUTTER_ELEMENT_CLASS (klass);
-  ClutterElementClass *parent_class = CLUTTER_ELEMENT_CLASS (clutter_label_parent_class);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  ClutterActorClass *parent_class = CLUTTER_ACTOR_CLASS (clutter_label_parent_class);
 
-  element_class->paint      = parent_class->paint;
-  element_class->realize    = parent_class->realize;
-  element_class->unrealize  = parent_class->unrealize;
-  element_class->show       = parent_class->show;
-  element_class->hide       = parent_class->hide;
+  actor_class->paint      = parent_class->paint;
+  actor_class->realize    = parent_class->realize;
+  actor_class->unrealize  = parent_class->unrealize;
+  actor_class->show       = parent_class->show;
+  actor_class->hide       = parent_class->hide;
 
   gobject_class->finalize   = clutter_label_finalize;
   gobject_class->dispose    = clutter_label_dispose;
@@ -339,7 +339,7 @@ clutter_label_init (ClutterLabel *self)
  *
  * Return value: a #ClutterLabel
  */
-ClutterElement *
+ClutterActor *
 clutter_label_new_with_text (const gchar *font_name,
 		             const gchar *text)
 {
@@ -358,7 +358,7 @@ clutter_label_new_with_text (const gchar *font_name,
  *
  * Return: the newly created #ClutterLabel
  */
-ClutterElement *
+ClutterActor *
 clutter_label_new (void)
 {
   return g_object_new (CLUTTER_TYPE_LABEL, NULL);
@@ -403,8 +403,8 @@ clutter_label_set_text (ClutterLabel *label,
 
   clutter_label_make_pixbuf (label);
 
-  if (CLUTTER_ELEMENT_IS_VISIBLE (CLUTTER_ELEMENT(label)))
-    clutter_element_queue_redraw (CLUTTER_ELEMENT(label));
+  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(label)))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR(label));
 
   g_object_notify (G_OBJECT (label), "text");
 }
@@ -471,8 +471,8 @@ clutter_label_set_font_name (ClutterLabel *label,
     {
       clutter_label_make_pixbuf (label);
 
-      if (CLUTTER_ELEMENT_IS_VISIBLE (CLUTTER_ELEMENT(label)))
-	clutter_element_queue_redraw (CLUTTER_ELEMENT(label));
+      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(label)))
+	clutter_actor_queue_redraw (CLUTTER_ACTOR(label));
     }
   
   g_object_notify (G_OBJECT (label), "font-name");
@@ -499,8 +499,8 @@ clutter_label_set_text_extents (ClutterLabel *label,
 
   clutter_label_make_pixbuf (label);
 
-  if (CLUTTER_ELEMENT_IS_VISIBLE (CLUTTER_ELEMENT(label)))
-    clutter_element_queue_redraw (CLUTTER_ELEMENT(label));
+  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(label)))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR(label));
 }
 
 /**
@@ -536,7 +536,7 @@ void
 clutter_label_set_color (ClutterLabel       *label,
 		         const ClutterColor *color)
 {
-  ClutterElement *element;
+  ClutterActor *actor;
   ClutterLabelPrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_LABEL (label));
@@ -550,11 +550,11 @@ clutter_label_set_color (ClutterLabel       *label,
 
   clutter_label_make_pixbuf (label);
   
-  element = CLUTTER_ELEMENT (label);
-  clutter_element_set_opacity (element, priv->fgcol.alpha);
+  actor = CLUTTER_ACTOR (label);
+  clutter_actor_set_opacity (actor, priv->fgcol.alpha);
 
-  if (CLUTTER_ELEMENT_IS_VISIBLE (element))
-    clutter_element_queue_redraw (element);
+  if (CLUTTER_ACTOR_IS_VISIBLE (actor))
+    clutter_actor_queue_redraw (actor);
 
   g_object_notify (G_OBJECT (label), "color");
 }

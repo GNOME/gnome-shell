@@ -87,7 +87,7 @@ enum
 
 static guint stage_signals[LAST_SIGNAL] = { 0 };
 
-static ClutterElementClass *parent_class = NULL;
+static ClutterActorClass *parent_class = NULL;
 
 static void
 sync_fullscreen (ClutterStage *stage)
@@ -101,7 +101,7 @@ sync_fullscreen (ClutterStage *stage)
 
   if (stage->priv->want_fullscreen)
     {
-      clutter_element_set_size (CLUTTER_ELEMENT(stage),
+      clutter_actor_set_size (CLUTTER_ACTOR(stage),
 				DisplayWidth(clutter_xdisplay(), 
 					     clutter_xscreen()),
 				DisplayHeight(clutter_xdisplay(), 
@@ -225,7 +225,7 @@ sync_gl_viewport (ClutterStage *stage)
 }
 
 static void
-clutter_stage_show (ClutterElement *self)
+clutter_stage_show (ClutterActor *self)
 {
   if (clutter_stage_get_xwindow (CLUTTER_STAGE(self)))
     XMapWindow (clutter_xdisplay(), 
@@ -233,7 +233,7 @@ clutter_stage_show (ClutterElement *self)
 }
 
 static void
-clutter_stage_hide (ClutterElement *self)
+clutter_stage_hide (ClutterActor *self)
 {
   if (clutter_stage_get_xwindow (CLUTTER_STAGE(self)))
     XUnmapWindow (clutter_xdisplay(), 
@@ -241,12 +241,12 @@ clutter_stage_hide (ClutterElement *self)
 }
 
 static void
-clutter_stage_unrealize (ClutterElement *element)
+clutter_stage_unrealize (ClutterActor *actor)
 {
   ClutterStage        *stage;
   ClutterStagePrivate *priv;
 
-  stage = CLUTTER_STAGE(element);
+  stage = CLUTTER_STAGE(actor);
   priv = stage->priv;
 
   CLUTTER_MARK();
@@ -269,7 +269,7 @@ clutter_stage_unrealize (ClutterElement *element)
     }
   else
     {
-      if (clutter_stage_get_xwindow (CLUTTER_STAGE(element)))
+      if (clutter_stage_get_xwindow (CLUTTER_STAGE(actor)))
 	{
 	  XDestroyWindow (clutter_xdisplay(), priv->xwin);
 	  priv->xwin = None;
@@ -282,12 +282,12 @@ clutter_stage_unrealize (ClutterElement *element)
 }
 
 static void
-clutter_stage_realize (ClutterElement *element)
+clutter_stage_realize (ClutterActor *actor)
 {
   ClutterStage        *stage;
   ClutterStagePrivate *priv;
 
-  stage = CLUTTER_STAGE(element);
+  stage = CLUTTER_STAGE(actor);
 
   priv = stage->priv;
 
@@ -312,7 +312,7 @@ clutter_stage_realize (ClutterElement *element)
       if (!priv->xvisinfo)
 	{
 	  g_critical ("Unable to find suitable GL visual.");
-	  CLUTTER_ELEMENT_UNSET_FLAGS (element, CLUTTER_ELEMENT_REALIZED);
+	  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
 	  return;
 	}
 
@@ -386,7 +386,7 @@ clutter_stage_realize (ClutterElement *element)
       if (!priv->xvisinfo)
 	{
 	  g_critical ("Unable to find suitable GL visual.");
-	  CLUTTER_ELEMENT_UNSET_FLAGS (element, CLUTTER_ELEMENT_REALIZED);
+	  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
 	  return;
 	}
 
@@ -433,14 +433,14 @@ clutter_stage_realize (ClutterElement *element)
 }
 
 static void
-clutter_stage_paint (ClutterElement *self)
+clutter_stage_paint (ClutterActor *self)
 {
   parent_class->paint (self);
 }
 
 static void
-clutter_stage_allocate_coords (ClutterElement    *self,
-			       ClutterElementBox *box)
+clutter_stage_allocate_coords (ClutterActor    *self,
+			       ClutterActorBox *box)
 {
   /* Do nothing, just stop group_allocate getting called */
 
@@ -449,8 +449,8 @@ clutter_stage_allocate_coords (ClutterElement    *self,
 }
 
 static void
-clutter_stage_request_coords (ClutterElement    *self,
-			      ClutterElementBox *box)
+clutter_stage_request_coords (ClutterActor    *self,
+			      ClutterActorBox *box)
 {
   ClutterStage        *stage;
   ClutterStagePrivate *priv;
@@ -479,8 +479,8 @@ clutter_stage_request_coords (ClutterElement    *self,
       if (priv->xpixmap)
 	{
 	  /* Need to recreate to resize */
-	  clutter_element_unrealize(self);
-	  clutter_element_realize(self);
+	  clutter_actor_unrealize(self);
+	  clutter_actor_realize(self);
 	}
 
       sync_gl_viewport (stage);
@@ -499,7 +499,7 @@ clutter_stage_dispose (GObject *object)
   ClutterStage *self = CLUTTER_STAGE (object);
 
   if (self->priv->xwin)
-    clutter_stage_unrealize (CLUTTER_ELEMENT (self));
+    clutter_stage_unrealize (CLUTTER_ACTOR (self));
 
   G_OBJECT_CLASS (clutter_stage_parent_class)->dispose (object);
 }
@@ -531,7 +531,7 @@ clutter_stage_set_property (GObject      *object,
     case PROP_OFFSCREEN:
       if (priv->want_offscreen != g_value_get_boolean (value))
 	{
-	  clutter_element_unrealize (CLUTTER_ELEMENT(stage));
+	  clutter_actor_unrealize (CLUTTER_ACTOR(stage));
 	  /* NOTE: as we are changing GL contexts here. so  
 	   * all textures will need unreleasing as they will
            * likely have set up ( i.e labels ) in the old
@@ -539,7 +539,7 @@ clutter_stage_set_property (GObject      *object,
            * automatically
 	  */
 	  priv->want_offscreen = g_value_get_boolean (value);
-	  clutter_element_realize (CLUTTER_ELEMENT(stage));
+	  clutter_actor_realize (CLUTTER_ACTOR(stage));
 	}
       break;
     case PROP_FULLSCREEN:
@@ -600,18 +600,18 @@ static void
 clutter_stage_class_init (ClutterStageClass *klass)
 {
   GObjectClass        *gobject_class = G_OBJECT_CLASS (klass);
-  ClutterElementClass *element_class = CLUTTER_ELEMENT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
-  element_class->realize    = clutter_stage_realize;
-  element_class->unrealize  = clutter_stage_unrealize;
-  element_class->show       = clutter_stage_show;
-  element_class->hide       = clutter_stage_hide;
-  element_class->paint      = clutter_stage_paint;
+  actor_class->realize    = clutter_stage_realize;
+  actor_class->unrealize  = clutter_stage_unrealize;
+  actor_class->show       = clutter_stage_show;
+  actor_class->hide       = clutter_stage_hide;
+  actor_class->paint      = clutter_stage_paint;
 
-  element_class->request_coords  = clutter_stage_request_coords;
-  element_class->allocate_coords = clutter_stage_allocate_coords;
+  actor_class->request_coords  = clutter_stage_request_coords;
+  actor_class->allocate_coords = clutter_stage_allocate_coords;
 
   gobject_class->dispose      = clutter_stage_dispose;
   gobject_class->finalize     = clutter_stage_finalize;
@@ -734,7 +734,7 @@ clutter_stage_init (ClutterStage *self)
   priv->color.blue  = 0xff;
   priv->color.alpha = 0xff;
   
-  clutter_element_set_size (CLUTTER_ELEMENT (self), 640, 480);
+  clutter_actor_set_size (CLUTTER_ACTOR (self), 640, 480);
 }
 
 /**
@@ -749,19 +749,19 @@ clutter_stage_init (ClutterStage *self)
  * Return value: the main #ClutterStage.  Use g_object_unref()
  *   when finished using it.
  */
-ClutterElement *
+ClutterActor *
 clutter_stage_get_default (void)
 {
-  ClutterElement *retval = NULL;
+  ClutterActor *retval = NULL;
   
   if (!stage_singleton)
     {
       stage_singleton = g_object_new (CLUTTER_TYPE_STAGE, NULL);
-      retval = CLUTTER_ELEMENT (stage_singleton);
+      retval = CLUTTER_ACTOR (stage_singleton);
     }
   else
     {
-      retval = CLUTTER_ELEMENT (stage_singleton);
+      retval = CLUTTER_ACTOR (stage_singleton);
 
       /* We dont ref for now as its assumed there will always be
        * a stage and no real support for multiple stages. Non
@@ -828,8 +828,8 @@ clutter_stage_set_color (ClutterStage       *stage,
   priv->color.blue = color->blue;
   priv->color.alpha = color->alpha;
 
-  if (CLUTTER_ELEMENT_IS_VISIBLE (CLUTTER_ELEMENT (stage)))
-    clutter_element_queue_redraw (CLUTTER_ELEMENT (stage));
+  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (stage)))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
   
   g_object_notify (G_OBJECT (stage), "color");
 }
@@ -888,7 +888,7 @@ clutter_stage_snapshot (ClutterStage *stage,
 {
   guchar              *data;
   GdkPixbuf           *pixb, *fpixb;
-  ClutterElement      *element;
+  ClutterActor      *actor;
   ClutterStagePrivate *priv;
 
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
@@ -896,13 +896,13 @@ clutter_stage_snapshot (ClutterStage *stage,
 
   priv = stage->priv;
 
-  element = CLUTTER_ELEMENT (stage);
+  actor = CLUTTER_ACTOR (stage);
 
   if (width < 0)
-    width = clutter_element_get_width (element);
+    width = clutter_actor_get_width (actor);
 
   if (height < 0)
-    height = clutter_element_get_height (element);
+    height = clutter_actor_get_height (actor);
 
 
   if (priv->want_offscreen)
@@ -923,7 +923,7 @@ clutter_stage_snapshot (ClutterStage *stage,
       data = g_malloc0 (sizeof (guchar) * width * height * 4);
 
       glReadPixels (x, 
-		    clutter_element_get_height (element) 
+		    clutter_actor_get_height (actor) 
 		    - y - height,
 		    width, 
 		    height, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -947,22 +947,22 @@ clutter_stage_snapshot (ClutterStage *stage,
 }
 
 /**
- * clutter_stage_get_element_at_pos:
+ * clutter_stage_get_actor_at_pos:
  * @stage: a #ClutterStage
  * @x: the x coordinate
  * @y: the y coordinate
  *
- * If found, retrieves the element that the (x, y) coordinates.
+ * If found, retrieves the actor that the (x, y) coordinates.
  *
- * Return value: the #ClutterElement at the desired coordinates,
- *   or %NULL if no element was found.
+ * Return value: the #ClutterActor at the desired coordinates,
+ *   or %NULL if no actor was found.
  */
-ClutterElement*
-clutter_stage_get_element_at_pos (ClutterStage *stage,
+ClutterActor*
+clutter_stage_get_actor_at_pos (ClutterStage *stage,
 				  gint          x,
 				  gint          y)
 {
-  ClutterElement *found = NULL;
+  ClutterActor *found = NULL;
   GLuint          buff[64] = {0};
   GLint           hits, view[4];
  
@@ -987,7 +987,7 @@ clutter_stage_get_element_at_pos (ClutterStage *stage,
 
   glMatrixMode(GL_MODELVIEW);
 
-  clutter_element_paint (CLUTTER_ELEMENT (stage));
+  clutter_actor_paint (CLUTTER_ACTOR (stage));
 
   glMatrixMode(GL_PROJECTION);
   glPopMatrix();

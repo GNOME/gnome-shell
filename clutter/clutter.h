@@ -9,7 +9,7 @@
 #include "clutter-event.h"
 #include "clutter-timeline.h"
 #include "clutter-stage.h"
-#include "clutter-element.h"
+#include "clutter-actor.h"
 #include "clutter-rectangle.h"
 #include "clutter-group.h"
 #include "clutter-texture.h"

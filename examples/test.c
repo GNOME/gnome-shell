@@ -5,13 +5,13 @@ guint8 opacity = 255;
 gboolean 
 timeout_cb (gpointer data)
 {
-  ClutterElement *element;
+  ClutterActor *actor;
 
-  element = CLUTTER_ELEMENT(data);
+  actor = CLUTTER_ACTOR(data);
 
   if (opacity > 0)
     {
-      clutter_element_set_opacity (element, opacity);
+      clutter_actor_set_opacity (actor, opacity);
       opacity -= 2;
     }
   else opacity = 0xff;
@@ -32,7 +32,7 @@ timeout_text_cb (gpointer data)
   if (opacity > 0)
     {
       clutter_label_set_text(label, buf);
-      clutter_element_set_opacity (CLUTTER_ELEMENT(label), opacity);
+      clutter_actor_set_opacity (CLUTTER_ACTOR(label), opacity);
       opacity -= 2;
     }
   else opacity = 0xff;
@@ -57,19 +57,19 @@ frame_cb (ClutterTimeline *timeline,
   g_snprintf(buf, 32, "--> %i <--", frame_num);
 
   clutter_label_set_text (label, buf);
-  clutter_element_set_opacity (CLUTTER_ELEMENT(label), opacity); 
+  clutter_actor_set_opacity (CLUTTER_ACTOR(label), opacity); 
 
-  clutter_element_rotate_z (CLUTTER_ELEMENT(label),
+  clutter_actor_rotate_z (CLUTTER_ACTOR(label),
 			    frame_num,
-			    clutter_element_get_width (CLUTTER_ELEMENT(label))/2,
-			    clutter_element_get_height (CLUTTER_ELEMENT(label))/2);
+			    clutter_actor_get_width (CLUTTER_ACTOR(label))/2,
+			    clutter_actor_get_height (CLUTTER_ACTOR(label))/2);
 }
 
 int
 main (int argc, char *argv[])
 {
-  ClutterElement  *texture, *label;
-  ClutterElement  *stage;
+  ClutterActor  *texture, *label;
+  ClutterActor  *stage;
   ClutterTimeline *timeline;
   GdkPixbuf       *pixbuf;
 
@@ -90,13 +90,13 @@ main (int argc, char *argv[])
 
   printf("***********foo***********\n");
 
-  clutter_element_set_opacity (CLUTTER_ELEMENT(label), 0x99);
-  clutter_element_set_position (CLUTTER_ELEMENT(label), 100, 200);
+  clutter_actor_set_opacity (CLUTTER_ACTOR(label), 0x99);
+  clutter_actor_set_position (CLUTTER_ACTOR(label), 100, 200);
 
   clutter_group_add (CLUTTER_GROUP (stage), texture);
   clutter_group_add (CLUTTER_GROUP (stage), label);
 
-  clutter_element_set_size (CLUTTER_ELEMENT (stage), 800, 600);
+  clutter_actor_set_size (CLUTTER_ACTOR (stage), 800, 600);
 
   clutter_group_show_all (CLUTTER_GROUP (stage));
 

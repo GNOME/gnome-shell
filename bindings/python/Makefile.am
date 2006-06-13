@@ -76,12 +76,11 @@ update-defs:
 		$(top_srcdir)/clutter/clutter-timeline.h        \
 		$(top_srcdir)/clutter/clutter-main.h            \
 		$(top_srcdir)/clutter/clutter-event.h           \
-		$(top_srcdir)/clutter/clutter-element.h         \
+		$(top_srcdir)/clutter/clutter-actor.h         \
 		$(top_srcdir)/clutter/clutter-rectangle.h       \
 		$(top_srcdir)/clutter/clutter-texture.h         \
 		$(top_srcdir)/clutter/clutter-color.h           \
 		$(top_srcdir)/clutter/clutter-clone-texture.h   \
-		$(top_srcdir)/clutter/clutter-video-texture.h   \
 		$(top_srcdir)/clutter/clutter-label.h           \
 		$(top_srcdir)/clutter/clutter-group.h           \
 		$(top_srcdir)/clutter/clutter-stage.h           \

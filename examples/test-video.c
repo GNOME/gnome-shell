@@ -1,6 +1,6 @@
 #include <clutter/clutter.h>
 
-ClutterElement *rect; /* um... */
+ClutterActor *rect; /* um... */
 
 
 void input_cb (ClutterStage *stage, 
@@ -31,13 +31,13 @@ size_change (ClutterTexture *texture,
 	     gint            height,
 	     gpointer        user_data)
 {
-  ClutterElement  *stage;
+  ClutterActor  *stage;
   ClutterGeometry  stage_geom;
   gint             vid_width, vid_height, new_y, new_height;
 
   stage = clutter_stage_get_default ();
 
-  clutter_element_get_geometry (stage, &stage_geom);
+  clutter_actor_get_geometry (stage, &stage_geom);
 
   clutter_texture_get_base_size (texture, &vid_width, &vid_height);
 
@@ -48,13 +48,13 @@ size_change (ClutterTexture *texture,
   new_height = ( vid_height * stage_geom.width ) / vid_width;
   new_y      = (stage_geom.height - new_height) / 2;
 
-  clutter_element_set_position (CLUTTER_ELEMENT (texture), 0, new_y);
+  clutter_actor_set_position (CLUTTER_ACTOR (texture), 0, new_y);
 
-  clutter_element_set_size (CLUTTER_ELEMENT (texture),
+  clutter_actor_set_size (CLUTTER_ACTOR (texture),
 			    stage_geom.width,
 			    new_height);
 
-  // clutter_element_set_opacity (CLUTTER_ELEMENT (texture), 50);
+  // clutter_actor_set_opacity (CLUTTER_ACTOR (texture), 50);
 
   printf("*** Pos set to +%i+%i , %ix%i ***\n", 
 	 0, new_y, stage_geom.width, new_height);
@@ -79,14 +79,14 @@ tick (GObject      *object,
   clutter_label_set_text (label, buf);
 
   clutter_texture_get_base_size (CLUTTER_TEXTURE(label), &w, &h);
-  clutter_element_set_size(rect, w+10, h+10);
+  clutter_actor_set_size(rect, w+10, h+10);
 }
 
 int
 main (int argc, char *argv[])
 {
-  ClutterElement        *label, *vtexture, *ctexture;
-  ClutterElement        *stage;
+  ClutterActor        *label, *vtexture, *ctexture;
+  ClutterActor        *stage;
   ClutterColor           rect_color =  { 0xde, 0xde, 0xdf, 0xaa };
   ClutterColor           stage_color = { 0x00, 0x00, 0x00, 0x00 };
   GError                *err = NULL;
@@ -114,17 +114,17 @@ main (int argc, char *argv[])
 
   label = clutter_label_new_with_text ("Sans Bold 24", "Loading...");
 
-  clutter_element_set_position(label, 10, 10);
+  clutter_actor_set_position(label, 10, 10);
 
   rect = clutter_rectangle_new_with_color (&rect_color);
-  clutter_element_set_size(rect, 0, 0);
-  clutter_element_set_position(rect, 5, 5);
+  clutter_actor_set_size(rect, 0, 0);
+  clutter_actor_set_position(rect, 5, 5);
 
   ctexture = clutter_clone_texture_new (CLUTTER_TEXTURE(vtexture));
-  clutter_element_set_opacity (CLUTTER_ELEMENT (ctexture), 100);
+  clutter_actor_set_opacity (CLUTTER_ACTOR (ctexture), 100);
 
-  clutter_element_set_size (ctexture, 640, 50);
-  clutter_element_set_position (ctexture, 0, 430);
+  clutter_actor_set_size (ctexture, 640, 50);
+  clutter_actor_set_position (ctexture, 0, 430);
 
   clutter_group_add_many (CLUTTER_GROUP (stage), 
 			  vtexture, rect, label, ctexture, NULL);

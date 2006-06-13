@@ -36,7 +36,7 @@
 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_CLUTTER, GtkClutterPrivate))
 
 struct _GtkClutterPrivate {
-  ClutterElement *stage;
+  ClutterActor *stage;
   gboolean anchored;
 };
 
@@ -69,8 +69,8 @@ size_request (GtkWidget *widget,
   clutter = GTK_CLUTTER (widget);
   priv = GTK_CLUTTER_GET_PRIVATE (clutter);
 
-  req->width = clutter_element_get_width (priv->stage);
-  req->height = clutter_element_get_height (priv->stage);
+  req->width = clutter_actor_get_width (priv->stage);
+  req->height = clutter_actor_get_height (priv->stage);
 }
 
 static void
@@ -121,7 +121,7 @@ gtk_clutter_init (GtkClutter *clutter)
 
 G_DEFINE_TYPE (GtkClutter, gtk_clutter, GTK_TYPE_SOCKET);
 
-ClutterElement *
+ClutterActor *
 gtk_clutter_get_stage (GtkClutter *clutter)
 {
   g_return_val_if_fail (GTK_IS_CLUTTER (clutter), NULL);

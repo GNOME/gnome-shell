@@ -26,7 +26,7 @@
 #ifndef _HAVE_CLUTTER_MAIN_H
 #define _HAVE_CLUTTER_MAIN_H
 
-#include <clutter/clutter-element.h>
+#include <clutter/clutter-actor.h>
 #include <clutter/clutter-stage.h>
 
 #include <X11/Xlib.h>

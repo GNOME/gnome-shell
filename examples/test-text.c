@@ -5,10 +5,10 @@ frame_cb (ClutterTimeline *timeline,
 	  gint             frame_num, 
 	  gpointer         data)
 {
-  ClutterElement *label = (ClutterElement*)data;
+  ClutterActor *label = (ClutterActor*)data;
 
-  clutter_element_set_depth(label, -400 + (frame_num * 40));
-  clutter_element_set_opacity (label, 255 - frame_num );
+  clutter_actor_set_depth(label, -400 + (frame_num * 40));
+  clutter_actor_set_opacity (label, 255 - frame_num );
 }
 
 
@@ -16,8 +16,8 @@ int
 main (int argc, char *argv[])
 {
   ClutterTimeline *timeline;
-  ClutterElement  *label;
-  ClutterElement  *stage;
+  ClutterActor  *label;
+  ClutterActor  *stage;
   gchar           *text;
   gsize            size;
   ClutterColor     stage_color = { 0x00, 0x00, 0x00, 0xff };
@@ -30,7 +30,7 @@ main (int argc, char *argv[])
   if (!g_file_get_contents ("test-text.c", &text, &size, NULL)) 
     g_error("g_file_get_contents() of test-text.c failed");
 
-  clutter_element_set_size (stage, 800, 600);
+  clutter_actor_set_size (stage, 800, 600);
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
 
   label = clutter_label_new_with_text ("Mono 8", text);

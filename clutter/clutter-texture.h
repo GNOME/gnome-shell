@@ -28,7 +28,7 @@
 
 #include <glib-object.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
-#include <clutter/clutter-element.h>
+#include <clutter/clutter-actor.h>
 
 G_BEGIN_DECLS
 
@@ -60,14 +60,14 @@ typedef struct _ClutterTextureClass ClutterTextureClass;
 
 struct _ClutterTexture
 {
-  ClutterElement         parent;
+  ClutterActor         parent;
 
   ClutterTexturePrivate *priv;
 }; 
 
 struct _ClutterTextureClass 
 {
-  ClutterElementClass parent_class;
+  ClutterActorClass parent_class;
 
   void (*size_change) (ClutterTexture *texture, gint width, gint height);
   void (*pixbuf_change) (ClutterTexture *texture );
@@ -75,10 +75,10 @@ struct _ClutterTextureClass
 
 GType clutter_texture_get_type (void);
 
-ClutterElement*
+ClutterActor*
 clutter_texture_new_from_pixbuf (GdkPixbuf *pixbuf);
 
-ClutterElement*
+ClutterActor*
 clutter_texture_new (void);
 
 void
@@ -92,7 +92,7 @@ clutter_texture_get_base_size (ClutterTexture *texture,
 			       gint           *width,
 			       gint           *height);
 
-/* Below mainly for subclassed texture based elements */
+/* Below mainly for subclassed texture based actors */
 
 void
 clutter_texture_bind_tile (ClutterTexture *texture, gint index);

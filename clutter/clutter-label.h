@@ -80,8 +80,8 @@ struct _ClutterLabelClass
 
 GType clutter_label_get_type (void) G_GNUC_CONST;
 
-ClutterElement *      clutter_label_new              (void);
-ClutterElement *      clutter_label_new_with_text    (const gchar        *font_name,
+ClutterActor *      clutter_label_new              (void);
+ClutterActor *      clutter_label_new_with_text    (const gchar        *font_name,
 						      const gchar        *text);
 
 void                  clutter_label_set_text         (ClutterLabel       *label,

@@ -37,7 +37,7 @@ enum
 
 G_DEFINE_TYPE (ClutterCloneTexture,
 	       clutter_clone_texture,
-	       CLUTTER_TYPE_ELEMENT);
+	       CLUTTER_TYPE_ACTOR);
 
 #define CLUTTER_CLONE_TEXTURE_GET_PRIVATE(obj) \
 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_CLONE_TEXTURE, ClutterCloneTexturePrivate))
@@ -62,15 +62,15 @@ clone_texture_render_to_gl_quad (ClutterCloneTexture *ctexture,
   float tx, ty;
 
   ClutterCloneTexturePrivate *priv = ctexture->priv;
-  ClutterElement *parent_element = CLUTTER_ELEMENT (priv->parent_texture);
+  ClutterActor *parent_actor = CLUTTER_ACTOR (priv->parent_texture);
 
   priv = ctexture->priv;
 
   qwidth  = x2 - x1;
   qheight = y2 - y1;
 
-  if (!CLUTTER_ELEMENT_IS_REALIZED (parent_element))
-      clutter_element_realize (parent_element);
+  if (!CLUTTER_ACTOR_IS_REALIZED (parent_actor))
+      clutter_actor_realize (parent_actor);
 
   /* Only paint if parent is in a state to do so */
   if (!clutter_texture_has_generated_tiles (priv->parent_texture))
@@ -148,10 +148,10 @@ clone_texture_render_to_gl_quad (ClutterCloneTexture *ctexture,
 }
 
 static void
-clutter_clone_texture_paint (ClutterElement *self)
+clutter_clone_texture_paint (ClutterActor *self)
 {
   ClutterCloneTexturePrivate  *priv;
-  ClutterElement              *parent_texture;
+  ClutterActor              *parent_texture;
   gint                         x1, y1, x2, y2;
 
   priv = CLUTTER_CLONE_TEXTURE (self)->priv;
@@ -159,20 +159,20 @@ clutter_clone_texture_paint (ClutterElement *self)
   /* parent texture may have been hidden, there for need to make sure its 
    * realised with resources available.  
   */
-  parent_texture = CLUTTER_ELEMENT (priv->parent_texture);
-  if (!CLUTTER_ELEMENT_IS_REALIZED (parent_texture))
-    clutter_element_realize (parent_texture);
+  parent_texture = CLUTTER_ACTOR (priv->parent_texture);
+  if (!CLUTTER_ACTOR_IS_REALIZED (parent_texture))
+    clutter_actor_realize (parent_texture);
 
   glEnable(GL_BLEND);
   glEnable(GL_TEXTURE_2D);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  glColor4ub(255, 255, 255, clutter_element_get_opacity(self));
+  glColor4ub(255, 255, 255, clutter_actor_get_opacity(self));
 
-  clutter_element_get_coords (self, &x1, &y1, &x2, &y2);
+  clutter_actor_get_coords (self, &x1, &y1, &x2, &y2);
 
   CLUTTER_DBG("paint to x1: %i, y1: %i x2: %i, y2: %i opacity: %i", 
-	      x1, y1, x2, y2, clutter_element_get_opacity(self) );
+	      x1, y1, x2, y2, clutter_actor_get_opacity(self) );
 
   clone_texture_render_to_gl_quad (CLUTTER_CLONE_TEXTURE(self), 
 				   x1, y1, x2, y2);
@@ -202,7 +202,7 @@ set_parent_texture (ClutterCloneTexture *ctexture,
       /* Sync up the size to parent texture base pixbuf size. 
       */
       clutter_texture_get_base_size (texture, &width, &height);
-      clutter_element_set_size (CLUTTER_ELEMENT(ctexture), width, height);
+      clutter_actor_set_size (CLUTTER_ACTOR(ctexture), width, height);
     }
       
 }
@@ -269,9 +269,9 @@ static void
 clutter_clone_texture_class_init (ClutterCloneTextureClass *klass)
 {
   GObjectClass        *gobject_class = G_OBJECT_CLASS (klass);
-  ClutterElementClass *element_class = CLUTTER_ELEMENT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  element_class->paint        = clutter_clone_texture_paint;
+  actor_class->paint        = clutter_clone_texture_paint;
 
   gobject_class->finalize     = clutter_clone_texture_finalize;
   gobject_class->dispose      = clutter_clone_texture_dispose;
@@ -307,7 +307,7 @@ clutter_clone_texture_init (ClutterCloneTexture *self)
  *
  * Return value: the newly created #ClutterCloneTexture
  */
-ClutterElement *
+ClutterActor *
 clutter_clone_texture_new (ClutterTexture *texture)
 {
   g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), NULL);

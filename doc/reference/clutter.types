@@ -1,6 +1,6 @@
 #include <clutter/clutter.h>
 
-clutter_element_get_type
+clutter_actor_get_type
 clutter_group_get_type
 clutter_stage_get_type
 clutter_rectangle_get_type

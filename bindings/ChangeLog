@@ -1,3 +1,13 @@
+2006-06-13  Matthew Allum  <mallum@openedhand.com>
+
+	* ChangeLog:
+	* python/Makefile.am:
+	* python/clutter-base-types.defs:
+	* python/clutter-base.defs:
+	* python/clutter.override:
+	Rename element -> actor. 
+	Disable video texture bindings as to build again.
+
 2006-06-06  Matthew Allum  <mallum@openedhand.com>
 
 	* python/clutter-base.defs:

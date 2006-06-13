@@ -462,10 +462,10 @@ static void
 clutter_video_texture_class_init (ClutterVideoTextureClass *klass)
 {
   GObjectClass        *object_class;
-  ClutterElementClass *element_class;
+  ClutterActorClass *actor_class;
 
   object_class = (GObjectClass*)klass;
-  element_class = (ClutterElementClass*)klass;
+  actor_class = (ClutterActorClass*)klass;
 
   object_class->dispose      = clutter_video_texture_dispose;
   object_class->finalize     = clutter_video_texture_finalize;
@@ -565,7 +565,7 @@ bus_message_duration_cb (GstBus            *bus,
 }
 
 static void
-bus_message_element_cb (GstBus            *bus,
+bus_message_actor_cb (GstBus            *bus,
                         GstMessage        *message,
                         ClutterVideoTexture *video_texture)
 {
@@ -692,7 +692,7 @@ lay_pipeline (ClutterVideoTexture *video_texture)
 {
   ClutterVideoTexturePrivate *priv;
   GstElement                 *audio_sink = NULL;
-  GstElement                 *video_sink, *video_bin, *video_capsfilter;
+  GstElement                  *video_sink, *video_bin, *video_capsfilter;
   GstCaps                    *video_filtercaps;
   GstPad                     *video_ghost_pad;
 
@@ -702,7 +702,7 @@ lay_pipeline (ClutterVideoTexture *video_texture)
 
   if (!priv->playbin) 
     {
-      g_warning ("Unable to create playbin GST element.");
+      g_warning ("Unable to create playbin GST actor.");
       return FALSE;
     }
 
@@ -725,7 +725,7 @@ lay_pipeline (ClutterVideoTexture *video_texture)
 
   if (video_sink == NULL) 
     {
-      g_warning ("Could not create element 'fakesink' for video playback");
+      g_warning ("Could not create actor 'fakesink' for video playback");
       priv->playbin = NULL;
       return FALSE;
     }
@@ -832,8 +832,8 @@ clutter_video_texture_init (ClutterVideoTexture *video_texture)
 			   0);
 
   g_signal_connect_object (bus,
-			   "message::element",
-			   G_CALLBACK (bus_message_element_cb),
+			   "message::actor",
+			   G_CALLBACK (bus_message_actor_cb),
 			   video_texture,
 			   0);
 
@@ -848,7 +848,7 @@ clutter_video_texture_init (ClutterVideoTexture *video_texture)
   return;
 }
 
-ClutterElement*
+ClutterActor*
 clutter_video_texture_new (void)
 {
   ClutterVideoTexture        *video_texture;
@@ -858,6 +858,6 @@ clutter_video_texture_new (void)
 				"pixel-format", GL_RGB,
 				NULL);
 
-  return CLUTTER_ELEMENT(video_texture);
+  return CLUTTER_ACTOR(video_texture);
 }
 

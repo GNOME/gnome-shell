@@ -60,7 +60,7 @@ typedef struct _ClutterCloneTextureClass   ClutterCloneTextureClass;
 
 struct _ClutterCloneTexture
 {
-  ClutterElement                 parent;
+  ClutterActor                 parent;
   
   /*< priv >*/
   ClutterCloneTexturePrivate    *priv;
@@ -68,7 +68,7 @@ struct _ClutterCloneTexture
 
 struct _ClutterCloneTextureClass 
 {
-  ClutterElementClass parent_class;
+  ClutterActorClass parent_class;
 
   /* padding for future expansion */
   void (*_clutter_clone_1) (void);
@@ -78,7 +78,7 @@ struct _ClutterCloneTextureClass
 }; 
 
 GType           clutter_clone_texture_get_type (void);
-ClutterElement *clutter_clone_texture_new      (ClutterTexture *texture);
+ClutterActor *clutter_clone_texture_new      (ClutterTexture *texture);
 
 G_END_DECLS
 

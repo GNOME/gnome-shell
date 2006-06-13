@@ -106,13 +106,13 @@ G_DEFINE_TYPE (ClutterVideoTextureCube, clutter_video_texture_cube, CLUTTER_TYPE
 
 
 static void
-clutter_video_texture_cube_paint (ClutterElement *self)
+clutter_video_texture_cube_paint (ClutterActor *self)
 {
   if (clutter_texture_get_pixbuf (CLUTTER_TEXTURE(self)) == NULL)
     return;
 
-  if (!CLUTTER_ELEMENT_IS_REALIZED (CLUTTER_ELEMENT(self)))
-      clutter_element_realize (CLUTTER_ELEMENT(self));
+  if (!CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR(self)))
+      clutter_actor_realize (CLUTTER_ACTOR(self));
 
   if (!clutter_texture_has_generated_tiles (CLUTTER_TEXTURE(self)))
     return;
@@ -201,12 +201,12 @@ static void
 clutter_video_texture_cube_class_init (ClutterVideoTextureCubeClass *klass)
 {
   GObjectClass        *gobject_class;
-  ClutterElementClass *element_class;
+  ClutterActorClass *actor_class;
 
   gobject_class = (GObjectClass*)klass;
-  element_class = (ClutterElementClass*)klass;
+  actor_class = (ClutterActorClass*)klass;
 
-  element_class->paint = clutter_video_texture_cube_paint;
+  actor_class->paint = clutter_video_texture_cube_paint;
 }
 
 static void
@@ -215,10 +215,10 @@ clutter_video_texture_cube_init (ClutterVideoTextureCube *self)
 
 }
 
-ClutterElement*
+ClutterActor*
 clutter_video_texture_cube_new (GError **err)
 {
-  return CLUTTER_ELEMENT(g_object_new (CLUTTER_TYPE_VIDEO_TEXTURE_CUBE, 
+  return CLUTTER_ACTOR(g_object_new (CLUTTER_TYPE_VIDEO_TEXTURE_CUBE, 
 				       /* "tiled", FALSE, */
 				       NULL));
 }
@@ -227,8 +227,8 @@ clutter_video_texture_cube_new (GError **err)
 int
 main (int argc, char *argv[])
 {
-  ClutterElement      *label, *texture, *vtexture; 
-  ClutterElement      *stage = clutter_stage_get_default ();
+  ClutterActor      *label, *texture, *vtexture; 
+  ClutterActor      *stage = clutter_stage_get_default ();
   GdkPixbuf           *pixbuf;
   GError              *err = NULL;
 
@@ -242,7 +242,7 @@ main (int argc, char *argv[])
   if (!pixbuf)
     g_error("pixbuf load failed");
 
-  clutter_element_set_size (stage, 
+  clutter_actor_set_size (stage, 
 			    WINWIDTH, WINHEIGHT);
 
   texture = clutter_texture_new_from_pixbuf (pixbuf);
