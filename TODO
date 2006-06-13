@@ -1,39 +1,26 @@
 TODO
 ====
 
-- Element
-  o depth and z positioning ?
-  o can glscale -1 for mirroring / flipping, or just use rotation ?
+Posiible New Features
+==
 
-- Stage
- o Events - mouse
+ - Gradients
+ - Audio only object implementing ClutterMedia Interface.
+ - Some kind of glitz/cairo integration - a GlitzDrawable Actor ?
+ - Improve clutter label usage as to expose more pango functionality.
+ - More portability - GL ES, DirectFB?, Windows, Mac ?
+ - Overhaul co-ordinate system ( more precision ? )
 
-- Texture
- o display lists ?
+Optimisations
+==
 
-- Rect
- o rounded
- o gradients ( or add to elements ? )
- o general polygon handler ?
-
-- Video Texture
- o complete API from bacon-video-widget *Mostly done*
- o Work with pixel aspect and use this info to size element correctly ?
- o mostly rewrite or check with orig author for LGPL.
-
-- Group
- o apply tranforms to group of elements
- o scissor to clip
- o sizing ? how does set/get_geometry affect ?
- o stacking orders with 'depth' value.
-
-- GST
- o Fix FIXME's
- o Remove and use fake sinc instead
-
-- Audio api for sound effects etc
-
-- Document, Document, Document!
- o fix GTK Doc set up with index, grouping etc
-
-- Glitz integration ?
+ - Display lists.
+ - labels being more conservative on texture creation.
+ - Custom source rather than idle handler for paints ?
+ 
+Other
+==
+ - Unit tests
+ - Much improved examples / demos
+ - Sort Documentation
+ - Bindings to languages other than just Python.

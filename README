@@ -1,14 +1,21 @@
+Clutter README.
+===============
 
+Clutter aims to give a nice easy GObject based API for creating fast,
+mainly 2D single window stylalised applications such as media box
+UI's, presentaions, kiosk style apps etc. It uses OpenGL for rendering.
 
-What it will do:
- 
- - Give a nice easy GObject based API for creating fast, mainly 2D
-   single window stylalised applications such as media box UI's, 
-   presentaions, kiosk style apps etc.
-   
- - If you've ever used Director, thats the kind of functionality, 
-   clutter aims for. 
+Its not meant to be a full featured GUI toolkit for regular desktop
+apps nor provide a general interface to *all* openGL functionality.
 
-What it wont do:
+It currently uses fairly low end GL functionality with an aim to still
+work well on open source graphics drivers as well as possibly making
+an eventual GL ES port feasable.
 
- - Provide a general interface to all openGL functionality
+Clutter currently requires GLib >= 2.8, GdkPixbuf, Gstreamer 0.10 and
+OpenGL >= 1.2. Its also recommended you have some kind of working
+hardware OpenGL on your target system.
+
+Clutter is LGPL licensed.
+
+If you want to hack on and improve clutter check the TODO file.

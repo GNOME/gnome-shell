@@ -1,3 +1,10 @@
+2006-06-14  Matthew Allum  <mallum@openedhand.com>
+
+	* AUTHORS:
+	* README:
+	* TODO:
+	Update all.
+
 2006-06-13  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-video-texture.c:
