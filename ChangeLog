@@ -1,5 +1,10 @@
 2006-06-13  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/clutter-video-texture.c:
+	Add missing license.
+
+2006-06-13  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/Makefile.am:
 	* clutter/clutter-actor.c:
 	* clutter/clutter-actor.h:
