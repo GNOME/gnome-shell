@@ -73,6 +73,9 @@ then
    AC_DEFINE([XTHREADS], [], [1])
 fi
 
+AC_CHECK_HEADERS([GL/gl.h GL/glx.h],, 
+	         [AC_MSG_ERROR([Unable to locate required GL headers])])
+
 AC_CHECK_LIB(GL, glXCreateContext, HAVE_LIBGL=yes, HAVE_LIBGL=no)
 
 if test "x$HAVE_LIBGL" = "xno"; then

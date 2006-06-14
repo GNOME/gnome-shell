@@ -1,5 +1,10 @@
 2006-06-14  Matthew Allum  <mallum@openedhand.com>
 
+	* configure.ac:
+	Add checks for GL/gl.h and GL/glx.h
+
+2006-06-14  Matthew Allum  <mallum@openedhand.com>
+
 	* AUTHORS:
 	* README:
 	* TODO:
