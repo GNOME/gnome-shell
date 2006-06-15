@@ -28,6 +28,7 @@
 #include "clutter-stage.h"
 #include "clutter-main.h"
 #include "clutter-color.h"
+#include "clutter-util.h"
 #include "clutter-marshal.h"
 #include "clutter-enum-types.h"
 #include "clutter-private.h" 	/* for DBG */
@@ -390,14 +391,14 @@ clutter_stage_realize (ClutterActor *actor)
 	  return;
 	}
 
-      priv->xwin = XCreateSimpleWindow(clutter_xdisplay(),
-				       clutter_root_xwindow(),
-				       0, 0,
-				       priv->xwin_width, priv->xwin_height,
-				       0, 0, 
-				       WhitePixel(clutter_xdisplay(), 
-						  clutter_xscreen()));
-
+      if (priv->xwin == None)
+	priv->xwin = XCreateSimpleWindow(clutter_xdisplay(),
+					 clutter_root_xwindow(),
+					 0, 0,
+					 priv->xwin_width, priv->xwin_height,
+					 0, 0, 
+					 WhitePixel(clutter_xdisplay(), 
+						    clutter_xscreen()));
       XSelectInput(clutter_xdisplay(), 
 		   priv->xwin, 
 		   StructureNotifyMask
@@ -790,6 +791,61 @@ Window
 clutter_stage_get_xwindow (ClutterStage *stage)
 {
   return stage->priv->xwin;
+}
+
+/**
+ * clutter_stage_set_xwindow_foreign
+ * @stage: A #ClutterStage
+ * @xid: A preexisting X Window ID
+ *
+ * Target the #ClutterStage to use an existing externtal X Window.
+ *
+ * Return Value: TRUE if foreign window valid, FALSE otherwise 
+ **/
+gboolean
+clutter_stage_set_xwindow_foreign (ClutterStage *stage,
+				   Window        xid)
+{
+  /* For screensavers via XSCREENSAVER_WINDOW env var.
+   * Also for toolkit binding.
+  */
+  gint x,y;
+  guint width, height, border, depth;
+  Window root_return;
+  Status status;
+  ClutterGeometry geom;
+
+  clutter_util_trap_x_errors();
+
+  status = XGetGeometry (clutter_xdisplay(),
+			 xid,
+			 &root_return,
+			 &x,
+			 &y,
+			 &width,
+			 &height,
+			 &border,
+			 &depth);
+	       
+  if (clutter_util_untrap_x_errors() || !status 
+      || width == 0 || height == 0 || depth != stage->priv->xvisinfo->depth)
+    return FALSE;
+
+  clutter_actor_unrealize (CLUTTER_ACTOR(stage));
+
+  stage->priv->xwin = xid;
+
+  geom.x = x;
+  geom.y = y;
+
+  geom.width  = stage->priv->xwin_width  = width;
+  geom.height = stage->priv->xwin_height = height;
+
+  clutter_actor_set_geometry (CLUTTER_ACTOR(stage), &geom);
+
+  clutter_actor_realize (CLUTTER_ACTOR(stage));
+
+  return TRUE;
 }
 
 /**

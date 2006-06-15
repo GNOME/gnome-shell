@@ -112,6 +112,9 @@ ClutterActor *clutter_stage_get_default        (void);
 
 Window          clutter_stage_get_xwindow        (ClutterStage *stage);
 
+gboolean        clutter_stage_set_xwindow_foreign (ClutterStage *stage,
+						   Window        xid);
+
 void            clutter_stage_set_color          (ClutterStage       *stage,
 						  const ClutterColor *color);
 

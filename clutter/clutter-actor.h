@@ -145,7 +145,7 @@ clutter_actor_queue_redraw (ClutterActor  *self);
 
 void
 clutter_actor_request_coords (ClutterActor    *self,
-				ClutterActorBox *box);
+			      ClutterActorBox *box);
 
 void
 clutter_actor_allocate_coords (ClutterActor    *self,

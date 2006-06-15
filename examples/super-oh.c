@@ -1,11 +1,11 @@
 #include <clutter/clutter.h>
 #include <math.h>
+#include <errno.h>
+#include <stdlib.h>
 
 #define TRAILS 0
 #define NHANDS  6
-#define WINWIDTH   800
-#define WINHEIGHT  800
-#define RADIUS     250
+#define RADIUS  ((CLUTTER_STAGE_WIDTH()+CLUTTER_STAGE_HEIGHT())/6)
 
 typedef struct SuperOH
 {
@@ -14,6 +14,33 @@ typedef struct SuperOH
   GdkPixbuf      *bgpixb;
 
 } SuperOH; 
+
+void
+screensaver_setup (void)
+{
+  Window         remote_xwindow;
+  const char    *preview_xid;
+  gboolean       foreign_success = FALSE;
+
+  preview_xid = g_getenv ("XSCREENSAVER_WINDOW");
+
+  if (preview_xid != NULL) 
+    {
+      char *end;
+      remote_xwindow = (Window) strtoul (preview_xid, &end, 0);
+
+      if ((remote_xwindow != 0) && (end != NULL) && 
+	  ((*end == ' ') || (*end == '\0')) &&
+	  ((remote_xwindow < G_MAXULONG) || (errno != ERANGE))) 
+	{
+	  foreign_success = clutter_stage_set_xwindow_foreign 
+	    (CLUTTER_STAGE(clutter_stage_get_default()), remote_xwindow);
+        }
+    }
+
+  if (!foreign_success)
+    clutter_actor_set_size (clutter_stage_get_default(), 800, 600);
+}
 
 /* input handler */
 void 
@@ -64,8 +91,8 @@ frame_cb (ClutterTimeline *timeline,
 #if TRAILS
   oh->bgpixb = clutter_stage_snapshot (CLUTTER_STAGE (stage),
 				       0, 0,
-				       WINWIDTH,
-				       WINHEIGHT);
+				       CLUTTER_STAGE_WIDTH(),
+				       CLUTTER_STAGE_HEIGHT();
   clutter_texture_set_pixbuf (CLUTTER_TEXTURE (oh->bgtex), oh->bgpixb);
   g_object_unref (G_OBJECT (oh->bgpixb));
   g_object_unref (stage);
@@ -74,8 +101,8 @@ frame_cb (ClutterTimeline *timeline,
   /* Rotate everything clockwise about stage center*/
   clutter_actor_rotate_z (CLUTTER_ACTOR(oh->group),
 			    frame_num,
-			    WINWIDTH/2,
-			    WINHEIGHT/2);
+			    CLUTTER_STAGE_WIDTH()/2,
+			    CLUTTER_STAGE_HEIGHT()/2);
   for (i = 0; i < NHANDS; i++)
     {
       /* rotate each hand around there centers */
@@ -88,9 +115,10 @@ frame_cb (ClutterTimeline *timeline,
   /*
   clutter_actor_rotate_x (CLUTTER_ACTOR(oh->group),
 			    75.0,
-			    WINHEIGHT/2, 0);
+			    CLUTTER_STAGE_HEIGHT()/2, 0);
   */
 }
+
 
 int
 main (int argc, char *argv[])
@@ -112,9 +140,11 @@ main (int argc, char *argv[])
     g_error("pixbuf load failed");
 
   /* Set our stage (window) size */
-  clutter_actor_set_size (stage, WINWIDTH, WINHEIGHT);
+  // clutter_actor_set_size (stage, WINWIDTH, WINHEIGHT);
 
   /* and its background color */
+
+  screensaver_setup ();
 
   clutter_stage_set_color (CLUTTER_STAGE (stage),
 		           &stage_color);
@@ -123,7 +153,8 @@ main (int argc, char *argv[])
 
 #if TRAILS
   oh->bgtex = clutter_texture_new();
-  clutter_actor_set_size (oh->bgtex, WINWIDTH, WINHEIGHT);
+  clutter_actor_set_size (oh->bgtex, 
+			  CLUTTER_STAGE_WIDTH(), CLUTTER_STAGE_HEIGHT());
   clutter_actor_set_opacity (oh->bgtex, 0x99);
   clutter_group_add (CLUTTER_GROUP (stage), oh->bgtex);
 #endif
@@ -145,8 +176,10 @@ main (int argc, char *argv[])
       w = clutter_actor_get_width (oh->hand[0]);
       h = clutter_actor_get_height (oh->hand[0]);
 
-      x = WINWIDTH/2  + RADIUS * cos (i * M_PI / (NHANDS/2)) - w/2;
-      y = WINHEIGHT/2 + RADIUS * sin (i * M_PI / (NHANDS/2)) - h/2;
+      x = CLUTTER_STAGE_WIDTH() / 2  
+               + RADIUS * cos (i * M_PI / (NHANDS/2)) - w/2;
+      y = CLUTTER_STAGE_HEIGHT() / 2 
+               + RADIUS * sin (i * M_PI / (NHANDS/2)) - h/2;
 
       clutter_actor_set_position (oh->hand[i], x, y);
 
@@ -169,7 +202,7 @@ main (int argc, char *argv[])
 		    oh);
 
   /* Create a timeline to manage animation */
-  timeline = clutter_timeline_new (360, 60); /* num frames, fps */
+  timeline = clutter_timeline_new (360, 90); /* num frames, fps */
   g_object_set(timeline, "loop", TRUE, 0);   /* have it loop */
 
   /* fire a callback for frame change */

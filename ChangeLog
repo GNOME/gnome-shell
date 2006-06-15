@@ -1,3 +1,15 @@
+2006-06-15  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-stage.c:
+	* clutter/clutter-stage.h:
+	Add clutter_stage_set_xwindow_foreign() call
+	* clutter/clutter-util.c:
+	* clutter/clutter-util.h:
+	Add some X error traps
+	* examples/super-oh.c:
+	Toy with us of new clutter_stage_set_xwindow_foreign() for
+	optional screensaver functionality.
+
 2006-06-14  Matthew Allum  <mallum@openedhand.com>
 
 	* configure.ac:

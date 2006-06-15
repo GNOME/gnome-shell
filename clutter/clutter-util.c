@@ -26,6 +26,31 @@
 #include "clutter-util.h"
 #include "clutter-main.h"
 
+static int TrappedErrorCode = 0;
+static int (*old_error_handler) (Display *, XErrorEvent *);
+
+static int
+error_handler(Display     *xdpy,
+	      XErrorEvent *error)
+{
+  TrappedErrorCode = error->error_code;
+  return 0;
+}
+
+void
+clutter_util_trap_x_errors(void)
+{
+  TrappedErrorCode  = 0;
+  old_error_handler = XSetErrorHandler(error_handler);
+}
+
+int
+clutter_util_untrap_x_errors(void)
+{
+  XSetErrorHandler(old_error_handler);
+  return TrappedErrorCode;
+}
+
 int 
 clutter_util_next_p2 (int a)
 {

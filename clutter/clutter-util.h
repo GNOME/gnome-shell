@@ -30,6 +30,12 @@
 
 G_BEGIN_DECLS
 
+void
+clutter_util_trap_x_errors(void);
+
+int
+clutter_util_untrap_x_errors(void);
+
 int 
 clutter_util_next_p2 (int a);
 
