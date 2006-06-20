@@ -348,6 +348,7 @@ clutter_texture_sync_pixbuf (ClutterTexture *texture)
 
   g_return_if_fail (priv->pixbuf != NULL);
 
+
   CLUTTER_MARK();
 
   if (!priv->tiled)
@@ -415,6 +416,8 @@ clutter_texture_sync_pixbuf (ClutterTexture *texture)
   CLUTTER_DBG("syncing for multiple tiles for %ix%i pixbuf",
 	      priv->width, priv->height);
 
+  g_return_if_fail (priv->x_tiles != NULL && priv->y_tiles != NULL);
+
   if (priv->tiles == NULL)
     {
       priv->tiles = g_new (GLuint, priv->n_x_tiles * priv->n_y_tiles);
@@ -465,6 +468,7 @@ clutter_texture_sync_pixbuf (ClutterTexture *texture)
 			     src_h,
 			     pixtmp,
 			     0,0);
+
 
 #ifdef CLUTTER_DUMP_TILES
 	{
@@ -576,6 +580,7 @@ clutter_texture_paint (ClutterActor *self)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE(self);
   gint            x1, y1, x2, y2;
+  guint8          opacity;
 
   CLUTTER_DBG("@@@ for '%s' @@@", 
 	      clutter_actor_get_name(self) ? 
@@ -586,7 +591,10 @@ clutter_texture_paint (ClutterActor *self)
   glEnable(GL_TEXTURE_2D);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  glColor4ub(255, 255, 255, clutter_actor_get_opacity(self));
+  opacity = clutter_actor_get_opacity(self);
+
+  CLUTTER_DBG("setting opacity to %i\n", opacity);
+  glColor4ub(255, 255, 255, opacity);
 
   clutter_actor_get_coords (self, &x1, &y1, &x2, &y2);
   texture_render_to_gl_quad (texture, x1, y1, x2, y2);
@@ -1050,6 +1058,13 @@ clutter_texture_get_base_size (ClutterTexture *texture,
 			       gint           *width,
 			       gint           *height)
 {
+  /* Attempt to realize, mainly for subclasses ( such as labels )
+   * which maynot create pixbuf data and thus base size until
+   * realization happens.
+  */
+  if (!CLUTTER_ACTOR_IS_REALIZED(CLUTTER_ACTOR(texture)))
+    clutter_actor_realize (CLUTTER_ACTOR(texture));
+
   if (width)
     *width = texture->priv->width;
 

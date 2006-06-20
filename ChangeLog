@@ -1,3 +1,18 @@
+2006-06-20  Matthew Allum  <mallum@openedhand.com>
+
+	* TODO:
+	Update.
+	* clutter/clutter-group.c:
+	Attempt better group sizing code. 
+	* clutter/clutter-label.c:
+	Minor tweaks. 
+	* clutter/clutter-texture.c:
+	More debug info, make sure texture is realised for base_size()
+	* clutter/clutter-video-texture.c: 
+	Seeking fixes
+	* examples/test.c: (main):
+	Populate with more randomness.
+
 2006-06-15  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-stage.c:

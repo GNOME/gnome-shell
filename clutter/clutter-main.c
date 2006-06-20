@@ -300,7 +300,6 @@ clutter_redraw (void)
     }
 
 
-
   if (clutter_want_fps ())
     {
       timer_n_frames++;

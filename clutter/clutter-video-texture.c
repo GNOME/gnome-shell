@@ -232,6 +232,7 @@ set_position (ClutterMedia *media,
 {
   ClutterVideoTexture        *video_texture = CLUTTER_VIDEO_TEXTURE(media);
   ClutterVideoTexturePrivate *priv; 
+  GstState                    state, pending;
 
   g_return_if_fail (CLUTTER_IS_VIDEO_TEXTURE (video_texture));
 
@@ -240,6 +241,13 @@ set_position (ClutterMedia *media,
   if (!priv->playbin)
     return;
 
+  gst_element_get_state (priv->playbin, &state, &pending, 0);
+
+  if (pending)
+    state = pending;
+
+  gst_element_set_state (priv->playbin, GST_STATE_PAUSED);
+
   gst_element_seek (priv->playbin,
 		    1.0,
 		    GST_FORMAT_TIME,
@@ -247,6 +255,8 @@ set_position (ClutterMedia *media,
 		    GST_SEEK_TYPE_SET,
 		    position * GST_SECOND,
 		    0, 0);
+
+  gst_element_set_state (priv->playbin, state);
 }
 
 static int

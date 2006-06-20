@@ -99,7 +99,10 @@ clutter_label_make_pixbuf (ClutterLabel *label)
 			       &h);
 
   if (w == 0 || h == 0)
-    return;
+    {
+      CLUTTER_DBG("aborting w:%i , h:%i", w, h);
+      return;
+    }
 
   ft_bitmap.rows         = h;
   ft_bitmap.width        = w;
@@ -135,23 +138,19 @@ clutter_label_make_pixbuf (ClutterLabel *label)
 
   g_free (ft_bitmap.buffer);
 
-  CLUTTER_DBG("Calling set_pixbuf with text : '%s' , pixb %ix%i", 
-	      priv->text, w, h);
+  CLUTTER_DBG("Calling set_pixbuf with text : '%s' , pixb %ix%i"
+	      " rendered with color %i,%i,%i,%i", 
+	      priv->text, w, h, 
+	      priv->fgcol.red,
+	      priv->fgcol.green,
+	      priv->fgcol.blue,
+	      priv->fgcol.alpha);
+
   clutter_texture_set_pixbuf (CLUTTER_TEXTURE (label), pixbuf);
   
   /* Texture has the ref now */
   g_object_unref (pixbuf); 
 }
-
-static void
-clutter_label_allocate_coords (ClutterActor        *actor,
-			       ClutterActorBox     *box)
-{
-  
-
-
-}
-
 
 static void
 clutter_label_set_property (GObject      *object, 
@@ -308,9 +307,9 @@ clutter_label_init (ClutterLabel *self)
 
   self->priv = priv = CLUTTER_LABEL_GET_PRIVATE (self);
 
-  priv->fgcol.red = 255;
-  priv->fgcol.green = 255;
-  priv->fgcol.blue = 255;
+  priv->fgcol.red   = 0;
+  priv->fgcol.green = 0;
+  priv->fgcol.blue  = 0;
   priv->fgcol.alpha = 255;
 
   priv->text = NULL;
@@ -339,16 +338,28 @@ clutter_label_init (ClutterLabel *self)
  *
  * Return value: a #ClutterLabel
  */
-ClutterActor *
+ClutterActor*
 clutter_label_new_with_text (const gchar *font_name,
 		             const gchar *text)
 {
+  ClutterActor *label;
+
   CLUTTER_MARK();
 
-  return g_object_new (CLUTTER_TYPE_LABEL, 
-		       "font-name", font_name,
-		       "text", text,
-		       NULL);
+  label = clutter_label_new ();
+  clutter_label_set_font_name (CLUTTER_LABEL(label), font_name);
+  clutter_label_set_text (CLUTTER_LABEL(label), text);
+
+  /*  FIXME: Why does calling like;
+   *  return g_object_new (CLUTTER_TYPE_LABEL, 
+   *		       "font-name", font_name,
+   *		       "text", text,
+   *		       NULL);
+   *  mean text does not get rendered without color being set
+   *  ( seems to need extra clutter_label_make_pixbuf() call )
+  */
+
+  return label;
 }
 
 /**
@@ -549,7 +560,7 @@ clutter_label_set_color (ClutterLabel       *label,
   priv->fgcol.alpha = color->alpha;
 
   clutter_label_make_pixbuf (label);
-  
+
   actor = CLUTTER_ACTOR (label);
   clutter_actor_set_opacity (actor, priv->fgcol.alpha);
 
@@ -557,6 +568,7 @@ clutter_label_set_color (ClutterLabel       *label,
     clutter_actor_queue_redraw (actor);
 
   g_object_notify (G_OBJECT (label), "color");
+
 }
 
 /**

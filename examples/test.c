@@ -1,54 +1,40 @@
 #include <clutter/clutter.h>
 
-guint8 opacity = 255;
-
-gboolean 
-timeout_cb (gpointer data)
-{
-  ClutterActor *actor;
-
-  actor = CLUTTER_ACTOR(data);
-
-  if (opacity > 0)
-    {
-      clutter_actor_set_opacity (actor, opacity);
-      opacity -= 2;
-    }
-  else opacity = 0xff;
-
-  return TRUE;
-}
-
-gboolean 
-timeout_text_cb (gpointer data)
-{
-  ClutterLabel *label;
-  gchar buf[32];
-
-  label = CLUTTER_LABEL(data);
-
-  g_snprintf(buf, 32, "--> %i <--", opacity);
-
-  if (opacity > 0)
-    {
-      clutter_label_set_text(label, buf);
-      clutter_actor_set_opacity (CLUTTER_ACTOR(label), opacity);
-      opacity -= 2;
-    }
-  else opacity = 0xff;
-
-
-
-  return TRUE;
-}
+#define PARA_TEXT "This is a paragraph of text to check both" \
+                  "word wrapping and basic clipping."
 
 void
-frame_cb (ClutterTimeline *timeline, 
-	  gint             frame_num, 
-	  gpointer         data)
+rect_cb (ClutterTimeline *timeline, 
+	 gint             frame_num, 
+	 gpointer         data)
+{
+  ClutterActor *rect = CLUTTER_ACTOR(data);
+  gint          x, y;
+  static gint   direction = 1;
+
+  x = clutter_actor_get_x (rect);
+  y = clutter_actor_get_y (rect);
+
+  if (x > (CLUTTER_STAGE_WIDTH() - 200))
+    direction = -1;
+      
+  if (x < 100)
+    direction = 1;
+
+  x += direction;
+
+  clutter_actor_set_position (rect, x, y);
+}
+
+
+void
+text_cb (ClutterTimeline *timeline, 
+	 gint             frame_num, 
+	 gpointer         data)
 {
   ClutterLabel *label;
   gchar buf[32];
+  gint  opacity;
 
   label = CLUTTER_LABEL(data);
 
@@ -57,7 +43,7 @@ frame_cb (ClutterTimeline *timeline,
   g_snprintf(buf, 32, "--> %i <--", frame_num);
 
   clutter_label_set_text (label, buf);
-  clutter_actor_set_opacity (CLUTTER_ACTOR(label), opacity); 
+  // clutter_actor_set_opacity (CLUTTER_ACTOR(label), opacity); 
 
   clutter_actor_rotate_z (CLUTTER_ACTOR(label),
 			    frame_num,
@@ -65,12 +51,22 @@ frame_cb (ClutterTimeline *timeline,
 			    clutter_actor_get_height (CLUTTER_ACTOR(label))/2);
 }
 
+void
+para_cb (ClutterTimeline *timeline, 
+	 gint             frame_num, 
+	 gpointer         data)
+{
+  
+
+}
+
 int
 main (int argc, char *argv[])
 {
-  ClutterActor  *texture, *label;
-  ClutterActor  *stage;
+  ClutterActor    *texture, *label, *rect, *para;
+  ClutterActor    *stage;
   ClutterTimeline *timeline;
+  ClutterColor     rect_col = { 0xff, 0x0, 0x0, 0xff };
   GdkPixbuf       *pixbuf;
 
   clutter_init (&argc, &argv);
@@ -84,17 +80,22 @@ main (int argc, char *argv[])
 
   texture = clutter_texture_new_from_pixbuf (pixbuf);
 
-  printf("***********foo***********\n");
-
-  label = clutter_label_new_with_text("Sans Bold 72", "Clutter\nOpened\nHand");
-
-  printf("***********foo***********\n");
+  label = clutter_label_new_with_text("Sans Bold 32", "hello");
 
   clutter_actor_set_opacity (CLUTTER_ACTOR(label), 0x99);
-  clutter_actor_set_position (CLUTTER_ACTOR(label), 100, 200);
+  clutter_actor_set_position (CLUTTER_ACTOR(label), 550, 100);
+
+  rect = clutter_rectangle_new_with_color(&rect_col);
+  clutter_actor_set_size(rect, 100, 100);
+  clutter_actor_set_position(rect, 100, 100);
+
+  para = clutter_label_new_with_text ("Sans 24", PARA_TEXT);
+  clutter_actor_set_position(para, 10, 10);
 
   clutter_group_add (CLUTTER_GROUP (stage), texture);
   clutter_group_add (CLUTTER_GROUP (stage), label);
+  clutter_group_add (CLUTTER_GROUP (stage), rect);
+  clutter_group_add (CLUTTER_GROUP (stage), para);
 
   clutter_actor_set_size (CLUTTER_ACTOR (stage), 800, 600);
 
@@ -102,7 +103,17 @@ main (int argc, char *argv[])
 
   timeline = clutter_timeline_new (360, 200);
   g_object_set (timeline, "loop", TRUE, 0);
-  g_signal_connect (timeline, "new-frame", G_CALLBACK (frame_cb), label);
+  g_signal_connect (timeline, "new-frame", G_CALLBACK (text_cb), label);
+  clutter_timeline_start (timeline);
+
+  timeline = clutter_timeline_new (1, 30);
+  g_object_set (timeline, "loop", TRUE, 0);
+  g_signal_connect (timeline, "new-frame", G_CALLBACK (rect_cb), rect);
+  clutter_timeline_start (timeline);
+
+  timeline = clutter_timeline_new (1, 10);
+  g_object_set (timeline, "loop", TRUE, 0);
+  g_signal_connect (timeline, "new-frame", G_CALLBACK (para_cb), rect);
   clutter_timeline_start (timeline);
 
   clutter_main();

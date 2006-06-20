@@ -55,9 +55,7 @@ static void
 clutter_group_paint (ClutterActor *actor)
 {
   ClutterGroup *self = CLUTTER_GROUP(actor);
-  GList      *child_item;
-
-  child_item = self->priv->children;
+  GList        *child_item;
 
   glPushMatrix();
 
@@ -74,7 +72,6 @@ clutter_group_paint (ClutterActor *actor)
 
     }
 
-#if 0
   for (child_item = self->priv->children;
        child_item != NULL;
        child_item = child_item->next)
@@ -86,21 +83,6 @@ clutter_group_paint (ClutterActor *actor)
       if (CLUTTER_ACTOR_IS_MAPPED (child))
 	clutter_actor_paint (child);
     }
-#endif
-  
-  if (child_item)
-    {
-      do 
-	{
-	  ClutterActor *child = CLUTTER_ACTOR(child_item->data);
-	      
-	  if (CLUTTER_ACTOR_IS_MAPPED (child))
-	    {
-	      clutter_actor_paint(child);
-	    }
-	}
-      while ((child_item = g_list_next(child_item)) != NULL);
-    }
 
   glPopMatrix();
 }
@@ -109,10 +91,60 @@ static void
 clutter_group_request_coords (ClutterActor    *self,
 			      ClutterActorBox *box)
 {
-  /* FIXME: what to do here ?
-   *        o clip if smaller ?
-   *        o scale each actor ? 
-  */
+  ClutterGroup   *group = CLUTTER_GROUP(self);
+  guint           cwidth, cheight, width ,height;
+  ClutterActorBox cbox;
+
+  clutter_actor_allocate_coords (self, &cbox);
+
+  cwidth  = cbox.x2 - cbox.x1;
+  cheight = cbox.y2 - cbox.y1;
+
+  /* g_print("cbox x2: %i x1 %i\n", cbox.x2, cbox.x1); */
+
+  width  = box->x2 - box->x1;
+  height = box->y2 - box->y1;
+
+  /* FIXME: below needs work */
+  if (cwidth != width || cheight != height)
+    {
+      GList          *child_item;
+
+      for (child_item = group->priv->children;
+	   child_item != NULL;
+	   child_item = child_item->next)
+	{
+	  ClutterActor   *child = child_item->data;
+	  ClutterActorBox tbox;
+	  gint            nx, ny;
+	  gint            twidth, theight, nwidth, nheight; 
+
+	  g_assert (child != NULL);
+
+	  clutter_actor_allocate_coords (child, &tbox);
+
+	  twidth  = tbox.x2 - tbox.x1;
+	  theight = tbox.y2 - tbox.y1;
+	  
+	  /* g_print("getting ps %ix%i\n", tbox.x1, tbox.y1); */
+
+	  nwidth = ( width * twidth ) / cwidth;
+	  nheight = ( height * theight ) / cheight;
+
+	  nx = ( nwidth  * tbox.x1 ) / twidth ;
+
+	  /* g_print("n: %i t %i  x1: %i\n", nwidth, twidth, tbox.x1); */
+
+	  ny = ( nheight  * tbox.y1 ) / theight;
+
+	  /* g_print("n: %i t %i  x1: %i\n", nheight, theight, tbox.y1); */
+
+	  clutter_actor_set_position (child, nx, ny);
+	  clutter_actor_set_size (child, nwidth, height);
+
+	  /* g_print("size to +%i+%x %ix%i\n", nx, ny, nwidth, nheight); */
+	}
+    }
 }
 
 static void
@@ -132,7 +164,7 @@ clutter_group_allocate_coords (ClutterActor    *self,
 	{
 	  ClutterActor *child = CLUTTER_ACTOR(child_item->data);
 	      
-	  if (CLUTTER_ACTOR_IS_VISIBLE (child))
+	  /* if (CLUTTER_ACTOR_IS_VISIBLE (child)) */
 	    {
 	      ClutterActorBox cbox;
 

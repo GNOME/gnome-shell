@@ -5,6 +5,7 @@ Posiible New Features
 ==
 
  - Gradients
+ - better pangi integration.
  - Audio only object implementing ClutterMedia Interface.
  - Some kind of glitz/cairo integration - a GlitzDrawable Actor ?
  - Improve clutter label usage as to expose more pango functionality.
@@ -16,6 +17,7 @@ Optimisations
 
  - Display lists.
  - labels being more conservative on texture creation.
+   o blitting to textures less
  - Custom source rather than idle handler for paints ?
  
 Other
