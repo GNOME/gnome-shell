@@ -203,7 +203,6 @@ main (int argc, char *argv[])
 
   /* Show everying ( and map window ) */
   clutter_group_show_all (oh->group);
-  clutter_group_show_all (CLUTTER_GROUP (stage));
 
   g_signal_connect (stage, "button-press-event",
 		    G_CALLBACK (input_cb), 

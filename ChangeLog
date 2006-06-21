@@ -1,5 +1,9 @@
 2006-06-22  Iain Holmes  <iain@openedhand.com>
 
+	* gtk/gtk-clutter-test.c (main): Don't show the stage.
+
+2006-06-22  Iain Holmes  <iain@openedhand.com>
+
 	* gtk/gtk-clutter.[ch]: Rewrite to use
 	clutter_stage_set_xwindow_foreign rather than GtkSocket.
 
