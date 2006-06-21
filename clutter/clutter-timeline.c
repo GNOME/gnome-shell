@@ -23,6 +23,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:clutter-timeline
+ * @short_description: A base class for managing time based events such
+ * as animations.
+ *
+ * #ClutterTimeline is a base class  for managing time based events such
+ * as animations. 
+ */
+
+
 #include "clutter-timeline.h"
 #include "clutter-main.h"
 #include "clutter-private.h"   /* for DBG */

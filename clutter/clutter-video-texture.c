@@ -23,6 +23,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:clutter-video-texture
+ * @short_description: Actor for playback of video files.
+ *
+ * #ClutterVideoTexture is a #ClutterTexture that plays video files.
+ */
+
 #include "clutter-video-texture.h"
 #include "clutter-main.h"
 #include "clutter-private.h" 	/* for DBG */

@@ -23,6 +23,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:clutter-util
+ * @short_description: Misc utility functions.
+ *
+ * Various misc utilility functions.
+ */
+
+
 #include "clutter-util.h"
 #include "clutter-main.h"
 

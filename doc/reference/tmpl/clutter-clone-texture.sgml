@@ -28,8 +28,11 @@ ClutterCloneTexture
 
 </para>
 
-@parent: 
-@priv: 
+
+<!-- ##### ARG ClutterCloneTexture:parent-texture ##### -->
+<para>
+
+</para>
 
 <!-- ##### FUNCTION clutter_clone_texture_new ##### -->
 <para>

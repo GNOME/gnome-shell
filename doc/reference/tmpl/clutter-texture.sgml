@@ -28,8 +28,67 @@ ClutterTexture
 
 </para>
 
-@parent: 
-@priv: 
+
+<!-- ##### SIGNAL ClutterTexture::pixbuf-change ##### -->
+<para>
+
+</para>
+
+@cluttertexture: the object which received the signal.
+
+<!-- ##### SIGNAL ClutterTexture::size-change ##### -->
+<para>
+
+</para>
+
+@cluttertexture: the object which received the signal.
+@arg1: 
+@arg2: 
+
+<!-- ##### ARG ClutterTexture:filter-quality ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterTexture:pixbuf ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterTexture:pixel-format ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterTexture:pixel-type ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterTexture:repeat-x ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterTexture:repeat-y ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterTexture:sync-size ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterTexture:tile-waste ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterTexture:tiled ##### -->
+<para>
+
+</para>
 
 <!-- ##### FUNCTION clutter_texture_new_from_pixbuf ##### -->
 <para>

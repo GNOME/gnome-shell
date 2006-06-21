@@ -1,3 +1,22 @@
+2006-06-22  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-clone-texture.c:
+	* clutter/clutter-color.c:
+	* clutter/clutter-event.c:
+	* clutter/clutter-group.c:
+	* clutter/clutter-label.c:
+	* clutter/clutter-main.c:
+	* clutter/clutter-media.c:
+	* clutter/clutter-rectangle.c:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-texture.c:
+	* clutter/clutter-timeline.c:
+	* clutter/clutter-util.c:
+	* clutter/clutter-video-texture.c:
+	* configure.ac:
+	Documentation updates - add section headers.
+
 2006-06-22  Iain Holmes  <iain@openedhand.com>
 
 	* gtk/gtk-clutter-test.c (main): Don't show the stage.

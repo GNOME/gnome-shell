@@ -23,6 +23,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:clutter-media
+ * @short_description: An interface for controlling playback of media data.
+ *
+ * #ClutterMedia is an interface  for controlling playback of media data.
+ */
+
 #include "config.h"
 
 #include "clutter-media.h"

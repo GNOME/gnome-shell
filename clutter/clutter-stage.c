@@ -23,6 +23,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:clutter-stage
+ * @short_description: Top level visual element to which actors are placed.
+ * 
+ * #ClutterStage is a top level 'window' on which child actors are placed
+ * and manipulated.
+ */
+
 #include "config.h"
 
 #include "clutter-stage.h"

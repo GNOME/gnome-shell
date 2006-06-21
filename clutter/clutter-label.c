@@ -23,6 +23,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:clutter-label
+ * @short_description: Actor for displaying text
+ *
+ * #ClutterLabel is a #ClutterTexture that displays text.
+ */
+
 #include "config.h"
 
 #include "clutter-label.h"

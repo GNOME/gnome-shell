@@ -17,6 +17,21 @@ clutter-util
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### FUNCTION clutter_util_trap_x_errors ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_util_untrap_x_errors ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### FUNCTION clutter_util_next_p2 ##### -->
 <para>
 

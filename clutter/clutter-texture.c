@@ -23,6 +23,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:clutter-texture
+ * @short_description: An actor for displaying and manipulating images.
+ *
+ * #ClutterTexture is a base class for displaying and manipulating pixel
+ * buffer type data.
+ */
+
 #include "clutter-texture.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"

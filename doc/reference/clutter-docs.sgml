@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+<!ENTITY version SYSTEM "version.xml">
+]>
+
+<book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
+  <bookinfo>
+    <title>Clutter &version; Reference Manual</title>
+  </bookinfo>
+
+  <chapter>
+    <title>Clutter Overview</title>
+    <para>
+    FIXME
+    </para>
+  </chapter>    
+  <chapter>
+    <title>Clutter Actors And Objects</title>
+    <xi:include href="xml/clutter-actor.xml"/>
+    <xi:include href="xml/clutter-stage.xml"/>
+    <xi:include href="xml/clutter-group.xml"/>
+    <xi:include href="xml/clutter-rectangle.xml"/>
+    <xi:include href="xml/clutter-texture.xml"/>
+    <xi:include href="xml/clutter-clone-texture.xml"/>
+    <xi:include href="xml/clutter-video-texture.xml"/>
+    <xi:include href="xml/clutter-label.xml"/>
+    <xi:include href="xml/clutter-timeline.xml"/>
+    <xi:include href="xml/clutter-media.xml"/>
+  </chapter>
+  <chapter>
+    <title>Clutter Tools</title>
+    <xi:include href="xml/clutter-main.xml"/>
+    <xi:include href="xml/clutter-event.xml"/>
+    <xi:include href="xml/clutter-color.xml"/>
+    <xi:include href="xml/clutter-util.xml"/>
+  </chapter>
+</book>

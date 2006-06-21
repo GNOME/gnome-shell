@@ -112,3 +112,21 @@ clutter-color
 @saturation: 
 
 
+<!-- ##### FUNCTION clutter_color_to_pixel ##### -->
+<para>
+
+</para>
+
+@src: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_color_from_pixel ##### -->
+<para>
+
+</para>
+
+@dest: 
+@pixel: 
+
+

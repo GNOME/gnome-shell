@@ -28,8 +28,36 @@ ClutterTimeline
 
 </para>
 
-@parent: 
-@priv: 
+
+<!-- ##### SIGNAL ClutterTimeline::completed ##### -->
+<para>
+
+</para>
+
+@cluttertimeline: the object which received the signal.
+
+<!-- ##### SIGNAL ClutterTimeline::new-frame ##### -->
+<para>
+
+</para>
+
+@cluttertimeline: the object which received the signal.
+@arg1: 
+
+<!-- ##### ARG ClutterTimeline:fps ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterTimeline:loop ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterTimeline:num-frames ##### -->
+<para>
+
+</para>
 
 <!-- ##### FUNCTION clutter_timeline_new ##### -->
 <para>

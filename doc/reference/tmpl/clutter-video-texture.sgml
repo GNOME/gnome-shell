@@ -28,8 +28,6 @@ ClutterVideoTexture
 
 </para>
 
-@parent: 
-@priv: 
 
 <!-- ##### FUNCTION clutter_video_texture_new ##### -->
 <para>

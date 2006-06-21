@@ -28,7 +28,11 @@ ClutterRectangle
 
 </para>
 
-@parent: 
+
+<!-- ##### ARG ClutterRectangle:color ##### -->
+<para>
+
+</para>
 
 <!-- ##### FUNCTION clutter_rectangle_new ##### -->
 <para>

@@ -9,3 +9,4 @@ clutter_video_texture_get_type
 clutter_clone_texture_get_type
 clutter_label_get_type
 clutter_timeline_get_type
+clutter_media_get_type

@@ -23,6 +23,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:clutter-group
+ * @short_description: Base class for actors which contain multiple child
+ * actors.
+ *
+ * #ClutterGroup is an Actor which can contain multiple child actors.
+ */
+
 #include "config.h"
 #include <stdarg.h>
 

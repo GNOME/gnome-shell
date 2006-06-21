@@ -46,6 +46,15 @@ clutter-main
 @a...:
 @a...:
 @a...:
+@a...:
+@a...:
+@a...:
+@a...:
+@a...:
+@a...:
+@a...:
+@a...:
+@a...:
 @a...: 
 
 
@@ -80,6 +89,21 @@ clutter-main
 
 
 
+<!-- ##### FUNCTION clutter_main_quit ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_main_level ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### FUNCTION clutter_redraw ##### -->
 <para>
 
@@ -104,6 +128,14 @@ clutter-main
 
 
 <!-- ##### FUNCTION clutter_root_xwindow ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_xvisual ##### -->
 <para>
 
 </para>

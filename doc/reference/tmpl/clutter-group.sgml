@@ -28,7 +28,22 @@ ClutterGroup
 
 </para>
 
-@parent: 
+
+<!-- ##### SIGNAL ClutterGroup::add ##### -->
+<para>
+
+</para>
+
+@cluttergroup: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL ClutterGroup::remove ##### -->
+<para>
+
+</para>
+
+@cluttergroup: the object which received the signal.
+@arg1: 
 
 <!-- ##### FUNCTION clutter_group_new ##### -->
 <para>
@@ -139,5 +154,13 @@ ClutterGroup
 @self: 
 @actor: 
 @sibling: 
+
+
+<!-- ##### FUNCTION clutter_group_sort_depth_order ##### -->
+<para>
+
+</para>
+
+@self: 
 
 

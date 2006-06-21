@@ -23,6 +23,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:clutter-clone-texture
+ * @short_description: Actor for cloning existing textures in an 
+ * efficient way.
+ *
+ * #ClutterCloneTexture allows the cloning of existing #ClutterTexture based
+ * actors whilst saving underlying graphics resources.
+ */
+
 #include "clutter-clone-texture.h"
 #include "clutter-main.h"
 #include "clutter-util.h" 

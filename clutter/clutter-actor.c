@@ -24,10 +24,10 @@
  */
 
 /**
- * SECTION:clutter-actory
+ * SECTION:clutter-actor
  * @short_description: Base abstract class for all visual stage actors. 
  * 
- * #ClutterActor is an blah blah
+ * #ClutterActor is a base abstract class for all visual elements. 
  */
 
 #include "config.h"

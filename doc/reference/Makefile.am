@@ -9,7 +9,7 @@ AUTOMAKE_OPTIONS = 1.6
 # of using the various options.
 
 # The name of the module, e.g. 'glib'.
-DOC_MODULE=clutter-@CLUTTER_MAJORMINOR@
+DOC_MODULE=clutter
 
 # The top-level SGML file. You can change this if you want to.
 DOC_MAIN_SGML_FILE=clutter-docs.sgml
@@ -47,7 +47,7 @@ CFILE_GLOB=$(top_srcdir)/clutter/*.c
 
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
-IGNORE_HFILES=clutter-private.h stamp-clutter-enum-types.h
+IGNORE_HFILES=clutter-private.h stamp-clutter-enum-types.h clutter-keysyms.h
 
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png
@@ -55,7 +55,7 @@ HTML_IMAGES=
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE).
 # e.g. content_files=running.sgml building.sgml changes-2.0.sgml
-content_files=
+content_files= version.xml
 
 # SGML files where gtk-doc abbrevations (#GtkWidget) are expanded
 # These files must be listed here *and* in content_files
@@ -67,7 +67,9 @@ expand_content_files=
 # signals and properties.
 # e.g. INCLUDES=-I$(top_srcdir) -I$(top_builddir) $(GTK_DEBUG_FLAGS)
 # e.g. GTKDOC_LIBS=$(top_builddir)/gtk/$(gtktargetlib)
-INCLUDES=-I$(top_srcdir) $(CLUTTERR_CFLAGS)
+
+# FIXME:  $(GST_CFLAGS) needed for clutter_media metadata - togo..
+INCLUDES=-I$(top_srcdir) $(CLUTTER_CFLAGS) $(GST_CFLAGS)
 GTKDOC_LIBS=$(top_builddir)/clutter/libclutter-@CLUTTER_MAJORMINOR@.la $(CLUTTER_LIBS)
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.
@@ -75,4 +77,4 @@ include $(top_srcdir)/gtk-doc.make
 
 # Other files to distribute
 # e.g. EXTRA_DIST += version.xml.in
-#EXTRA_DIST += 
+EXTRA_DIST += version.xml.in

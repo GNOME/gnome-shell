@@ -28,7 +28,21 @@ ClutterLabel
 
 </para>
 
-@parent: 
+
+<!-- ##### ARG ClutterLabel:color ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterLabel:font-name ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterLabel:text ##### -->
+<para>
+
+</para>
 
 <!-- ##### FUNCTION clutter_label_new ##### -->
 <para>

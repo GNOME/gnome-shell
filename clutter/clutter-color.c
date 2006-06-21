@@ -23,6 +23,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:clutter-color
+ * @short_description: Color management and manipulation.
+ *
+ * #ClutterColor is a simple type for representing colors.
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif

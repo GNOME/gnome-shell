@@ -202,6 +202,7 @@ bindings/python/Makefile
 examples/Makefile
 doc/Makefile
 doc/reference/Makefile
+doc/reference/version.xml
 clutter.pc
 ])
 

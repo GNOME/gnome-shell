@@ -30,6 +30,20 @@ clutter-event
 @CLUTTER_2BUTTON_PRESS: 
 @CLUTTER_BUTTON_RELEASE: 
 
+<!-- ##### MACRO CLUTTER_TYPE_EVENT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### STRUCT ClutterAnyEvent ##### -->
+<para>
+
+</para>
+
+@type: 
+
 <!-- ##### STRUCT ClutterKeyEvent ##### -->
 <para>
 
@@ -78,6 +92,40 @@ clutter-event
 <para>
 
 </para>
+
+
+<!-- ##### FUNCTION clutter_event_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_event_new ##### -->
+<para>
+
+</para>
+
+@type: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_event_copy ##### -->
+<para>
+
+</para>
+
+@event: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_event_free ##### -->
+<para>
+
+</para>
+
+@event: 
 
 
 <!-- ##### FUNCTION clutter_key_event_type ##### -->

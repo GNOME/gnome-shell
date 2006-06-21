@@ -23,6 +23,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:clutter-rectangle
+ * @short_description: An actor that displays simple rectangles.
+ *
+ * #ClutterRectangle is an Actor which draws simple filled rectangles.
+ */
+
 #include "clutter-rectangle.h"
 #include "clutter-main.h"
 #include "clutter-private.h" 	/* for DBG */

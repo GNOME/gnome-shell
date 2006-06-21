@@ -22,6 +22,14 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+/**
+ * SECTION:clutter-event
+ * @short_description: User and window system event functionality
+ *
+ * 
+ */
+
 #include "clutter-event.h"
 
 #include <X11/Xlib.h>

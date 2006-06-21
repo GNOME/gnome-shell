@@ -42,7 +42,82 @@ ClutterStage
 
 </para>
 
-@parent: 
+
+<!-- ##### SIGNAL ClutterStage::button-press-event ##### -->
+<para>
+
+</para>
+
+@clutterstage: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL ClutterStage::button-release-event ##### -->
+<para>
+
+</para>
+
+@clutterstage: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL ClutterStage::input-event ##### -->
+<para>
+
+</para>
+
+@clutterstage: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL ClutterStage::key-press-event ##### -->
+<para>
+
+</para>
+
+@clutterstage: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL ClutterStage::key-release-event ##### -->
+<para>
+
+</para>
+
+@clutterstage: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL ClutterStage::motion-event ##### -->
+<para>
+
+</para>
+
+@clutterstage: the object which received the signal.
+@arg1: 
+
+<!-- ##### ARG ClutterStage:color ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterStage:fullscreen ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterStage:hide-cursor ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterStage:offscreen ##### -->
+<para>
+
+</para>
+
+<!-- ##### FUNCTION clutter_stage_get_default ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
 
 <!-- ##### FUNCTION clutter_stage_get_xwindow ##### -->
 <para>
@@ -50,6 +125,16 @@ ClutterStage
 </para>
 
 @stage: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_stage_set_xwindow_foreign ##### -->
+<para>
+
+</para>
+
+@stage: 
+@xid: 
 @Returns: 
 
 
@@ -79,6 +164,19 @@ ClutterStage
 @stage: 
 @x: 
 @y: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_stage_snapshot ##### -->
+<para>
+
+</para>
+
+@stage: 
+@x: 
+@y: 
+@width: 
+@height: 
 @Returns: 
 
 

@@ -56,3 +56,17 @@ clutter-marshal
 @marshal_data: 
 
 
+<!-- ##### MACRO clutter_marshal_VOID__BOXED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO clutter_marshal_VOID__OBJECT ##### -->
+<para>
+
+</para>
+
+
+
