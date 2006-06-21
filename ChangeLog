@@ -1,5 +1,9 @@
 2006-06-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* examples/video-cube.c (main): Quit on key press.
+
+2006-06-21  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/Makefile.am: Re-fix distcheck after last commit.
 
 2006-06-21  Matthew Allum  <mallum@openedhand.com>
