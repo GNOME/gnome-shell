@@ -935,7 +935,7 @@ clutter_actor_get_name (ClutterActor *self)
  * clutter_actor_get_id:
  * @self: A #ClutterActor
  *
- * FIXME
+ * Retrieves the unique id for @self.
  * 
  * Return value: Globally unique value for object instance.
  */
@@ -950,9 +950,9 @@ clutter_actor_get_id (ClutterActor *self)
 /**
  * clutter_actor_set_depth:
  * @self: a #ClutterActor
- * @depth: FIXME
+ * @depth: Z co-ord
  *
- * FIXME ( Basically sets Z value )
+ * Sets the Z co-ordinate of @self to @depth.
  */
 void
 clutter_actor_set_depth (ClutterActor *self,
@@ -1084,10 +1084,10 @@ clutter_actor_mirror (ClutterActor          *self,
 /**
  * clutter_actor_set_clip:
  * @self: A #ClutterActor
- * @xoff: FIXME
- * @yoff: FIXME
- * @width: FIXME
- * @height: FIXME
+ * @xoff: X offset of the clip rectangle
+ * @yoff: Y offset of the clip rectangle
+ * @width: Width of the clip rectangle
+ * @height: Height of the clip rectangle
  *
  * Sets clip area for @self.
  */
@@ -1131,6 +1131,7 @@ clutter_actor_remove_clip (ClutterActor *self)
  * @self: A #ClutterActor
  * @parent: A new #ClutterActor parent or NULL
  *
+ * Sets the parent of @self to @parent.
  * This function should not be used by applications.
  */
 void
@@ -1156,6 +1157,8 @@ clutter_actor_set_parent (ClutterActor *self,
  * clutter_actor_get_parent:
  * @self: A #ClutterActor
  *
+ * Retrieves the parent of @self.
+ *
  * Return Value: The #ClutterActor parent or NULL
  */
 ClutterActor*
@@ -1169,6 +1172,7 @@ clutter_actor_get_parent (ClutterActor *self)
  * @self: A #ClutterActor
  * @below: A #ClutterActor to raise above.
  *
+ * Puts @self above @below.
  * Both actors must have the same parent.
  */
 void
@@ -1187,6 +1191,7 @@ clutter_actor_raise (ClutterActor *self, ClutterActor *below)
  * @self: A #ClutterActor
  * @above: A #ClutterActor to lower below
  *
+ * Puts @self below @above.
  * Both actors must have the same parent.
  */
 void
@@ -1212,7 +1217,7 @@ clutter_actor_lower (ClutterActor *self, ClutterActor *above)
  * clutter_actor_rise_top:
  * @self: A #ClutterActor
  *
- * Rises @self to the top.
+ * Raises @self to the top.
  */
 void
 clutter_actor_raise_top (ClutterActor *self)
