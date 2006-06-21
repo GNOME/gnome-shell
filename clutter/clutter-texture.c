@@ -477,7 +477,6 @@ clutter_texture_sync_pixbuf (ClutterTexture *texture)
 			     pixtmp,
 			     0,0);
 
-
 #ifdef CLUTTER_DUMP_TILES
 	{
 	  gchar  *filename;

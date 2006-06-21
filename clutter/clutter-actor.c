@@ -50,7 +50,6 @@ struct _ClutterActorPrivate
   ClutterGeometry         clip;
   gboolean                has_clip;
 
-  ClutterActorTransform mirror_transform;
   gfloat                  rxang, ryang, rzang; /* Rotation foo. */
   gint                    rzx, rzy, rxy, rxz, ryx, ryz;
   gint                    z; 	/* to actor box ? */
@@ -1065,21 +1064,6 @@ clutter_actor_rotate_y (ClutterActor          *self,
     clutter_actor_queue_redraw (self);
 }
 
-/**
- * clutter_actor_mirror:
- * @self: a #ClutterActor
- * @transform: a #ClutterActorTransform
- *
- * FIXME
- */
-void
-clutter_actor_mirror (ClutterActor          *self,
-			ClutterActorTransform  transform)
-{
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-  
-  self->priv->mirror_transform = transform;
-}
 
 /**
  * clutter_actor_set_clip:

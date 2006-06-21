@@ -553,8 +553,8 @@ clutter_init (int *argc, char ***argv)
 
   context->stage = CLUTTER_STAGE (clutter_stage_get_default ());
   g_return_val_if_fail (CLUTTER_IS_STAGE (context->stage), -3);
-  clutter_actor_realize (CLUTTER_ACTOR (context->stage));
 
+  clutter_actor_realize (CLUTTER_ACTOR (context->stage));
   g_return_val_if_fail 
       (CLUTTER_ACTOR_IS_REALIZED(CLUTTER_ACTOR(context->stage)), -4);
 

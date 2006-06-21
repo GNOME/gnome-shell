@@ -74,12 +74,6 @@ struct _ClutterGeometry
 
 GType clutter_geometry_get_type (void) G_GNUC_CONST;
 
-typedef enum 
-{
-  CLUTTER_ACTOR_MIRROR_X = 1 << 1,
-  CLUTTER_ACTOR_MIRROR_Y = 1 << 2
-} ClutterActorTransform;
-
 typedef enum
 {
   CLUTTER_ACTOR_MAPPED   = 1 << 1,
