@@ -1,6 +1,6 @@
 noinst_PROGRAMS = test test-video video-cube test-text super-oh
 
-INCLUDES = -I$(top_srcdir)/clutter
+INCLUDES = -I$(top_srcdir)/
 
 test_SOURCES = test.c
 test_CFLAGS = $(CLUTTER_CFLAGS) $(GST_CFLAGS) $(GCONF_CFLAGS)

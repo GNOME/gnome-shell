@@ -87,7 +87,7 @@ libclutter_@CLUTTER_MAJORMINOR@_la_SOURCES = $(MARSHALFILES) \
                                              $(source_h)     \
                                              $(source_h_priv)
 
-INCLUDES = @GCC_FLAGS@ @CLUTTER_CFLAGS@  $(GST_CFLAGS)
+INCLUDES = @GCC_FLAGS@ @CLUTTER_CFLAGS@  $(GST_CFLAGS) -I$(top_srcdir)
 
 lib_LTLIBRARIES = libclutter-@CLUTTER_MAJORMINOR@.la
 
@@ -95,7 +95,7 @@ libclutter_@CLUTTER_MAJORMINOR@_la_LIBADD  = @CLUTTER_LIBS@ $(GST_LIBS)
 libclutter_@CLUTTER_MAJORMINOR@_la_LDFLAGS = @CLUTTER_LT_LDFLAGS@
 
 clutterheadersdir = $(includedir)/clutter-@CLUTTER_MAJORMINOR@/clutter
-clutterheaders_DATA = $(source_h) 		\
+clutterheaders_HEADERS = $(source_h) 		\
 		      clutter-marshal.h 	\
 		      clutter-enum-types.h 	\
 		      clutter.h
