@@ -5,27 +5,30 @@ GLIB_MKENUMS=`pkg-config --variable=glib_mkenums glib-2.0`
 
 BUILT_SOURCES = $(MARSHALFILES) $(ENUMFILES)
 
-source_h = clutter-keysyms.h       \
-	   clutter-util.h          \
-	   clutter-media.h         \
-           clutter-event.h         \
-	   clutter-color.h         \
-	   clutter-timeline.h      \
-	   clutter-actor.h       \
-	   clutter-group.h         \
-	   clutter-stage.h         \
-	   clutter-rectangle.h     \
-	   clutter-texture.h       \
-	   clutter-clone-texture.h \
-	   clutter-video-texture.h \
-	   clutter-label.h         \
-           clutter-main.h          
+source_h =				  \
+	$(srcdir)/clutter-keysyms.h       \
+	$(srcdir)/clutter-util.h          \
+	$(srcdir)/clutter-media.h         \
+        $(srcdir)/clutter-event.h         \
+	$(srcdir)/clutter-color.h         \
+	$(srcdir)/clutter-timeline.h      \
+	$(srcdir)/clutter-actor.h 	  \
+	$(srcdir)/clutter-group.h         \
+	$(srcdir)/clutter-stage.h         \
+	$(srcdir)/clutter-rectangle.h     \
+	$(srcdir)/clutter-texture.h       \
+	$(srcdir)/clutter-clone-texture.h \
+	$(srcdir)/clutter-video-texture.h \
+	$(srcdir)/clutter-label.h         \
+        $(srcdir)/clutter-main.h          
 
 clutter-marshal.h: clutter-marshal.list
-	( $(GLIB_GENMARSHAL) --prefix=clutter_marshal $(srcdir)/clutter-marshal.list --header > clutter-marshal.h )
+	( $(GLIB_GENMARSHAL) --prefix=clutter_marshal \
+	$(srcdir)/clutter-marshal.list --header > clutter-marshal.h )
 
 clutter-marshal.c: clutter-marshal.h
-	( $(GLIB_GENMARSHAL) --prefix=clutter_marshal $(srcdir)/clutter-marshal.list --body --header > clutter-marshal.c )
+	( $(GLIB_GENMARSHAL) --prefix=clutter_marshal \
+	$(srcdir)/clutter-marshal.list --body --header > clutter-marshal.c )
 
 clutter-enum-types.h: stamp-clutter-enum-types.h
 	@true
