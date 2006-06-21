@@ -9,7 +9,7 @@ EXTRA_DIST = gtk-clutter.pc.in
 
 CLEANFILES = $(pcfiles)
 
-INCLUDES = @GCC_FLAGS@ @CLUTTER_CFLAGS@ $(GST_CFLAGS) $(GTK_CFLAGS)
+INCLUDES = @GCC_FLAGS@ @CLUTTER_CFLAGS@ $(GST_CFLAGS) $(GTK_CFLAGS) -I$(top_srcdir)
 
 lib_LTLIBRARIES = libgtkclutter-@CLUTTER_MAJORMINOR@.la
 
@@ -20,7 +20,7 @@ libgtkclutter_@CLUTTER_MAJORMINOR@_la_LDFLAGS = @CLUTTER_LT_LDFLAGS@
 
 gtkclutterheadersdir = \
          $(includedir)/gtk-clutter-@CLUTTER_MAJORMINOR@/gtk-clutter
-gtkclutterheaders_DATA = gtk-clutter.h
+gtkclutterheaders_HEADERS = gtk-clutter.h
 
 noinst_PROGRAMS = gtk-clutter-test
 

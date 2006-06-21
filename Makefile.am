@@ -16,7 +16,7 @@ EXTRA_DIST = clutter.pc.in
 
 CLEANFILES = $(pcfiles)
 
-DISTCHECK_CONFIGURE_FLAGS=--enable-gtk-doc --enable-python
+DISTCHECK_CONFIGURE_FLAGS=--enable-gtk-doc --enable-python --enable-gtk
 
 # Extra clean files so that maintainer-clean removes *everything*
 MAINTAINERCLEANFILES = aclocal.m4 compile config.guess config.sub \
