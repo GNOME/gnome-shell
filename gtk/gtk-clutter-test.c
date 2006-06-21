@@ -18,6 +18,8 @@ typedef struct SuperOH
 
 } SuperOH; 
 
+gboolean fade = FALSE;
+
 /* input handler */
 void 
 input_cb (ClutterStage *stage, 
@@ -86,13 +88,24 @@ frame_cb (ClutterTimeline *timeline,
 				- 6.0 * frame_num,
 				clutter_actor_get_width (oh->hand[i])/2,
 				clutter_actor_get_height (oh->hand[i])/2);
+      if (fade == TRUE) {
+              clutter_actor_set_opacity (oh->hand[i], (255 - (frame_num % 255)));
+      }
     }
 
+          
   /*
   clutter_actor_rotate_x (CLUTTER_ACTOR(oh->group),
 			    75.0,
 			    WINHEIGHT/2, 0);
   */
+}
+
+static void
+clickity (GtkButton *button,
+          gpointer ud)
+{
+        fade = !fade;
 }
 
 int
@@ -101,7 +114,7 @@ main (int argc, char *argv[])
   ClutterTimeline *timeline;
   ClutterActor  *stage;
   ClutterColor     stage_color = { 0x61, 0x64, 0x8c, 0xff };
-  GtkWidget       *window, *plug, *clutter;
+  GtkWidget       *window, *clutter;
   GtkWidget       *label, *button, *vbox;
   GdkPixbuf       *pixbuf;
   SuperOH         *oh;
@@ -116,11 +129,6 @@ main (int argc, char *argv[])
   if (!pixbuf)
     g_error("pixbuf load failed");
 
-  clutter = g_object_new (GTK_TYPE_CLUTTER, NULL);
-  stage = gtk_clutter_get_stage (GTK_CLUTTER (clutter));
-
-  /* Set our stage size */
-  clutter_actor_set_size (stage, WINWIDTH, WINHEIGHT);
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   g_signal_connect (window, "destroy",
@@ -128,13 +136,21 @@ main (int argc, char *argv[])
 
   vbox = gtk_vbox_new (FALSE, 6);
   gtk_container_add (GTK_CONTAINER (window), vbox);
+
+  clutter = g_object_new (GTK_TYPE_CLUTTER, NULL);
+  stage = gtk_clutter_get_stage (GTK_CLUTTER (clutter));
   
   gtk_container_add (GTK_CONTAINER (vbox), clutter);
+
+  /* Set our stage size */
+/*   clutter_actor_set_size (stage, WINWIDTH, WINHEIGHT); */
 
   label = gtk_label_new ("This is a label");
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
   button = gtk_button_new_with_label ("This is a button...clicky");
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (clickity), NULL);
   gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
   
   /* and its background color */
@@ -157,13 +173,18 @@ main (int argc, char *argv[])
   for (i = 0; i < NHANDS; i++)
     {
       gint x, y, w, h;
-
+      ClutterColor colour = { 255, 0, 0, 255 };
+#if 1
       /* Create a texture from pixbuf, then clone in to same resources */
       if (i == 0)
        oh->hand[i] = clutter_texture_new_from_pixbuf (pixbuf);
      else
        oh->hand[i] = clutter_clone_texture_new (CLUTTER_TEXTURE(oh->hand[0]));
+#else
 
+      oh->hand[i] = clutter_rectangle_new_with_color (&colour);
+      clutter_actor_set_size (oh->hand[i], 50, 50);
+#endif
       /* Place around a circle */
       w = clutter_actor_get_width (oh->hand[0]);
       h = clutter_actor_get_height (oh->hand[0]);
