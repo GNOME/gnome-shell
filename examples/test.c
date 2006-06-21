@@ -1,6 +1,6 @@
 #include <clutter/clutter.h>
 
-#define PARA_TEXT "This is a paragraph of text to check both" \
+#define PARA_TEXT "This is a paragraph of text to check both " \
                   "word wrapping and basic clipping."
 
 void
@@ -91,6 +91,7 @@ main (int argc, char *argv[])
 
   para = clutter_label_new_with_text ("Sans 24", PARA_TEXT);
   clutter_actor_set_position(para, 10, 10);
+  clutter_label_set_text_extents (CLUTTER_LABEL(para), 200, 0);
 
   clutter_group_add (CLUTTER_GROUP (stage), texture);
   clutter_group_add (CLUTTER_GROUP (stage), label);

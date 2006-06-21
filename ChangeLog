@@ -1,3 +1,23 @@
+2006-06-21  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/Makefile.am:
+	Make sure clutter.h included.
+	* clutter/clutter-stage.c: (clutter_stage_realize),
+	(clutter_stage_get_actor_at_pos):
+	Select for motion events on X window.
+	Return highest rather than lowest found actor for actor_at_pos.
+	* examples/Makefile.am:
+	Remove test-text, remane test video.
+	* examples/README:
+	Add info about the included examples.
+	* examples/test-video.c:
+	* examples/video-player.c:
+	Redo test-video a little nicer and rename.
+	* examples/video-cube.c: 
+	Fix so it at least 'works' again.
+	* examples/test.c: 
+	Clean up a little.
+
 2006-06-21  Ross Burton  <ross@openedhand.com>
 
 	* Makefile.am:

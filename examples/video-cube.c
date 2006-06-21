@@ -228,14 +228,16 @@ int
 main (int argc, char *argv[])
 {
   ClutterActor      *label, *texture, *vtexture; 
-  ClutterActor      *stage = clutter_stage_get_default ();
-  GdkPixbuf           *pixbuf;
-  GError              *err = NULL;
+  ClutterActor      *stage;
+  GdkPixbuf         *pixbuf;
+  GError            *err = NULL;
 
   if (argc < 2)
     g_error("%s <video file>", argv[0]);
 
   clutter_init (&argc, &argv);
+
+  stage = clutter_stage_get_default ();
 
   pixbuf = gdk_pixbuf_new_from_file ("clutter-logo-800x600.png", NULL);
 
@@ -253,7 +255,6 @@ main (int argc, char *argv[])
     {
       g_error("failed to create vtexture, err: %s", err->message);
     }
-
 
   clutter_media_set_filename (CLUTTER_MEDIA(vtexture), argv[1]);
 

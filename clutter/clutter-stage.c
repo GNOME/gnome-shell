@@ -403,6 +403,8 @@ clutter_stage_realize (ClutterActor *actor)
 		   priv->xwin, 
 		   StructureNotifyMask
 		   |ExposureMask
+		   /* FIXME: we may want to eplicity enable MotionMask */
+		   |PointerMotionMask
 		   |KeyPressMask
 		   |KeyReleaseMask
 		   |ButtonPressMask
@@ -1058,7 +1060,8 @@ clutter_stage_get_actor_at_pos (ClutterStage *stage,
 	g_print ("Hit at %i\n", buff[i * 4 + 3]);
 #endif
   
-      found = clutter_group_find_child_by_id (CLUTTER_GROUP (stage), buff[3]);
+      found = clutter_group_find_child_by_id (CLUTTER_GROUP (stage), 
+					      buff[(hits-1) * 4 + 3]);
     }
   
   sync_gl_viewport (stage);
