@@ -23,6 +23,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:gtk-clutter
+ * @short_description: GTK+ widget displaying a #ClutterStage.
+ *
+ * #GtkClutter is a GTK+ widget, derived from #GtkDrawingArea that contains a
+ * #ClutterStage, allowing it to be used in a GTK+ based program like any 
+ * normal GTK+ widget.
+ */
 #include "config.h"
 
 #include <gdk/gdkx.h>

@@ -793,7 +793,7 @@ clutter_stage_get_default (void)
  * clutter_stage_get_xwindow
  * @stage: A #ClutterStage
  *
- * Get the stages underlying x window ID.
+ * Get the stage's underlying x window ID.
  *
  * Return Value: Stage X Window XID
  **/
@@ -808,7 +808,7 @@ clutter_stage_get_xwindow (ClutterStage *stage)
  * @stage: A #ClutterStage
  * @xid: A preexisting X Window ID
  *
- * Target the #ClutterStage to use an existing externtal X Window.
+ * Target the #ClutterStage to use an existing external X Window.
  *
  * Return Value: TRUE if foreign window valid, FALSE otherwise 
  **/
@@ -862,9 +862,9 @@ clutter_stage_set_xwindow_foreign (ClutterStage *stage,
  * clutter_stage_get_xvisual
  * @stage: A #ClutterStage
  *
- * Get the stages  XVisualInfo.
+ * Get the stage's XVisualInfo.
  *
- * Return Value: Thes Stages XVisualInfo
+ * Return Value: The stage's XVisualInfo
  **/
 const XVisualInfo*
 clutter_stage_get_xvisual (ClutterStage *stage)
@@ -905,7 +905,7 @@ clutter_stage_set_color (ClutterStage       *stage,
  * @stage: A #ClutterStage
  * @color: return location for a #ClutterColor
  * 
- * Request the stage color.
+ * Retrieves the stage color.
  */
 void
 clutter_stage_get_color (ClutterStage *stage,

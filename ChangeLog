@@ -1,5 +1,11 @@
 2006-06-22  Iain Holmes  <iain@openedhand.com>
 
+	* clutter/clutter-actor.c:
+	* clutter/clutter-stage.c:
+	* gtk/gtk-clutter.c: More docs
+
+2006-06-22  Iain Holmes  <iain@openedhand.com>
+
 	* clutter/clutter-actor.c: Added some more docs.
 
 2006-06-22  Matthew Allum  <mallum@openedhand.com>
