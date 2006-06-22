@@ -47,7 +47,11 @@ CFILE_GLOB=$(top_srcdir)/clutter/*.c
 
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
-IGNORE_HFILES=clutter-private.h stamp-clutter-enum-types.h clutter-keysyms.h
+IGNORE_HFILES=\
+	clutter-private.h \
+	clutter-marshal.h \
+	clutter-keysyms.h \
+	stamp-clutter-enum-types.h
 
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png

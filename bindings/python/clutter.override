@@ -5,6 +5,7 @@ headers
 #include "pygobject.h"
 #include <clutter/clutter-keysyms.h>
 #include <clutter/clutter-event.h>
+#include <clutter/clutter-media.h>
 #include <clutter/clutter-main.h>
 #include <clutter/clutter-timeline.h>
 #include <clutter/clutter-stage.h>
@@ -13,6 +14,7 @@ headers
 #include <clutter/clutter-rectangle.h>
 #include <clutter/clutter-group.h>
 #include <clutter/clutter-texture.h>
+#include <clutter/clutter-video-texture.h>
 #include <clutter/clutter-clone-texture.h>
 #include <clutter/clutter-label.h>
 #include <clutter/clutter-util.h>

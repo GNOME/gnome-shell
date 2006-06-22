@@ -48,7 +48,7 @@ clutter-pyglue.c: clutter.defs clutter-types.defs $(CLUTTER_OVERRIDES)
         --register $(PYGTK_DEFSDIR)/gdk-types.defs	\
         --register $(PYGTK_DEFSDIR)/gtk-types.defs	\
         --register $(PYGTK_DEFSDIR)/pango-types.defs	\
-        --register clutter-types.defs			\
+	--register clutter-types.defs			\
 	--override $(top_srcdir)/bindings/python/$(CLUTTER_OVERRIDES)	\
 	--prefix clutter				\
         clutter.defs > gen-$@ &&			\
@@ -65,10 +65,12 @@ pkgconfig_DATA = pyclutter.pc
 
 EXTRA_DIST += pyclutter.pc.in
 
-INCLUDES = $(PYTHON_CFLAGS) $(PYGTK_CFLAGS) -I$(top_srcdir) $(CLUTTER_CFLAGS)
+INCLUDES = $(PYTHON_CFLAGS) $(PYGTK_CFLAGS) -I$(top_srcdir) $(GST_CFLAGS) $(CLUTTER_CFLAGS)
 
 clutter_la_SOURCES = clutter-pyglue.c cluttermodule.c
 clutter_la_LIBADD  = $(PYTHON_LIBS) $(PYGTK_LIBS) \
+		     $(GST_LIBS) \
+		     $(CLUTTER_LIBS) \
                      $(top_builddir)/clutter/libclutter-@CLUTTER_MAJORMINOR@.la
 clutter_la_LDFLAGS = -module avoid-version -export-symbols-regex initclutter
 
@@ -80,11 +82,13 @@ update-defs:
 	$(PYTHON) $(PYGTK_CODEGENDIR)/h2def.py -v       \
 		$(top_srcdir)/clutter/clutter-keysyms.h         \
 		$(top_srcdir)/clutter/clutter-timeline.h        \
+		$(top_srcdir)/clutter/clutter-media.h		\
 		$(top_srcdir)/clutter/clutter-main.h            \
 		$(top_srcdir)/clutter/clutter-event.h           \
 		$(top_srcdir)/clutter/clutter-actor.h         \
 		$(top_srcdir)/clutter/clutter-rectangle.h       \
 		$(top_srcdir)/clutter/clutter-texture.h         \
+		$(top_srcdir)/clutter/clutter-video-texture.h	\
 		$(top_srcdir)/clutter/clutter-color.h           \
 		$(top_srcdir)/clutter/clutter-clone-texture.h   \
 		$(top_srcdir)/clutter/clutter-label.h           \

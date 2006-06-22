@@ -115,6 +115,14 @@ struct _ClutterActorClass
   void (* show_all)            (ClutterActor        *actor);
   void (* hide_all)            (ClutterActor        *actor);
   void (* queue_redraw)        (ClutterActor        *actor);
+
+  /* padding for future expansion */
+  void (*_clutter_actor_1)     (void);
+  void (*_clutter_actor_2)     (void);
+  void (*_clutter_actor_3)     (void);
+  void (*_clutter_actor_4)     (void);
+  void (*_clutter_actor_5)     (void);
+  void (*_clutter_actor_6)     (void);
 };
 
 GType clutter_actor_get_type (void);

@@ -1,3 +1,18 @@
+2006-06-22  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-timeline.h:
+	* clutter/clutter-timeline.c: Add a "started" and a "paused"
+	signals; add more sanity checks on the public functions.
+	
+	(clutter_timeline_get_loop): Add a getter function for the
+	loop property.
+
+	* clutter/clutter-marshal.list: Add marshallers.
+
+	* clutter/clutter-timeline.h:
+	* clutter/clutter-actor.h: Add padding for future expansion
+	without breaking ABI.
+	
 2006-06-22  Iain Holmes  <iain@openedhand.com>
 
 	* clutter/clutter-util.c: And more

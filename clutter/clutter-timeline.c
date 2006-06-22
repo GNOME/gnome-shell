@@ -36,6 +36,7 @@
 #include "clutter-timeline.h"
 #include "clutter-main.h"
 #include "clutter-private.h"   /* for DBG */
+#include "clutter-marshal.h"
 
 G_DEFINE_TYPE (ClutterTimeline, clutter_timeline, G_TYPE_OBJECT);
 
@@ -49,7 +50,8 @@ struct ClutterTimelinePrivate
   guint    current_frame_num;
   gulong   last_frame_msecs;
   gulong   start_frame_secs;
-  gboolean loop;
+  
+  guint    loop : 1;
 };
 
 enum
@@ -63,6 +65,8 @@ enum
 enum
 {
   SIGNAL_NEW_FRAME,
+  SIGNAL_STARTED,
+  SIGNAL_PAUSED,
   SIGNAL_COMPLETED,
   LAST_SIGNAL
 };
@@ -202,19 +206,33 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterTimelineClass, new_frame),
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__INT,
+		  clutter_marshal_VOID__INT,
 		  G_TYPE_NONE, 
 		  1, G_TYPE_INT);
-
   timeline_signals[SIGNAL_COMPLETED] =
     g_signal_new ("completed",
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterTimelineClass, completed),
 		  NULL, NULL,
-		  g_cclosure_marshal_VOID__VOID,
+		  clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
-
+  timeline_signals[SIGNAL_STARTED] =
+    g_signal_new ("started",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterTimelineClass, started),
+		  NULL, NULL,
+		  clutter_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
+  timeline_signals[SIGNAL_PAUSED] =
+    g_signal_new ("paused",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterTimelineClass, paused),
+		  NULL, NULL,
+		  clutter_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
 }
 
 static void
@@ -313,12 +331,16 @@ clutter_timeline_start (ClutterTimeline *timeline)
 {
   ClutterTimelinePrivate *priv;
 
+  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+  
   priv = timeline->priv;
 
   if (!priv->timeout_id)
     priv->timeout_id = g_timeout_add (FPS_TO_INTERVAL(priv->fps),
 				      timeline_timeout_func,
 				      (gpointer)timeline);
+
+  g_signal_emit (timeline, timeline_signals[SIGNAL_STARTED], 0);
 }
 
 /**
@@ -337,6 +359,8 @@ clutter_timeline_pause (ClutterTimeline *timeline)
 
   timeline->priv->timeout_id = 0;
   timeline->priv->last_frame_msecs = 0;
+
+  g_signal_emit (timeline, timeline_signals[SIGNAL_PAUSED], 0);
 }
 
 /**
@@ -352,10 +376,41 @@ clutter_timeline_stop (ClutterTimeline *timeline)
   clutter_timeline_rewind (timeline);
 }
 
+/**
+ * clutter_timeline_set_loop:
+ * @timeline: a #ClutterTimeline
+ * @loop: %TRUE for enable looping
+ *
+ * Sets whether @timeline should loop.
+ */
 void
-clutter_timeline_set_loop (ClutterTimeline *timeline, gboolean loop)
+clutter_timeline_set_loop (ClutterTimeline *timeline,
+			   gboolean         loop)
 {
-  timeline->priv->loop = loop;
+  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+  
+  if (timeline->priv->loop != loop)
+    {
+      timeline->priv->loop = loop;
+
+      g_object_notify (G_OBJECT (timeline), "loop");
+    }
+}
+
+/**
+ * clutter_timeline_get_loop:
+ * @timeline: a #ClutterTimeline
+ *
+ * Gets whether @timeline is looping
+ *
+ * Return value: %TRUE if the timeline is looping
+ */
+gboolean
+clutter_timeline_get_loop (ClutterTimeline *timeline)
+{
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), FALSE);
+
+  return timeline->priv->loop;
 }
 
 /**
@@ -367,6 +422,8 @@ clutter_timeline_set_loop (ClutterTimeline *timeline, gboolean loop)
 void
 clutter_timeline_rewind (ClutterTimeline *timeline)
 {
+  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+  
   clutter_timeline_advance (timeline, 0);
 }
 
@@ -483,6 +540,8 @@ clutter_timeline_set_speed (ClutterTimeline *timeline, guint fps)
 gboolean
 clutter_timeline_is_playing (ClutterTimeline *timeline)
 {
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), FALSE);
+  
   return (timeline->priv->timeout_id != 0);
 }
 

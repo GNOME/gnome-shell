@@ -1,6 +1,14 @@
 2006-06-22  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* python/Makefile.am:
+	* python/clutter.override:
+	* python/clutter-base.defs:
+	* python/clutter-base-types.defs: Bind updated clutter.Timeline API;
+	bind clutter.Media interface and clutter.VideoTexture.
+
+2006-06-22  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* python/Makefile.am:
 	* python/pyclutter.pc.in: Add a pkgconfig file in order to
 	check for bindings existence.
 

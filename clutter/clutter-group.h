@@ -75,6 +75,7 @@ struct _ClutterGroupClass
   void (*remove) (ClutterGroup   *group,
 		  ClutterActor *child);
 
+  /* padding for future expansion */
   void (*_clutter_group_1) (void);
   void (*_clutter_group_2) (void);
   void (*_clutter_group_3) (void);
@@ -91,25 +92,26 @@ GList*
 clutter_group_get_children (ClutterGroup *self);
 
 void
-clutter_group_foreach (ClutterGroup      *self,
-		       ClutterCallback   callback,
-		       gpointer          user_data);
+clutter_group_foreach (ClutterGroup    *self,
+		       ClutterCallback  callback,
+		       gpointer         user_data);
 
 void
-clutter_group_add (ClutterGroup *group, ClutterActor *actor); 
+clutter_group_add (ClutterGroup *self,
+		   ClutterActor *actor); 
 
 void
-clutter_group_add_many_valist (ClutterGroup   *group,
+clutter_group_add_many_valist (ClutterGroup *self,
 			       ClutterActor *first_actor,
-			       va_list         args);
+			       va_list       args);
 
 void
-clutter_group_add_many (ClutterGroup   *group,
+clutter_group_add_many (ClutterGroup *self,
 		        ClutterActor *first_actor,
 			...) G_GNUC_NULL_TERMINATED;
 
 void
-clutter_group_remove (ClutterGroup   *group,
+clutter_group_remove (ClutterGroup *self,
 		      ClutterActor *actor); 
 
 void

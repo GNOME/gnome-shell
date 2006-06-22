@@ -176,6 +176,7 @@ clutter_timeline_start
 clutter_timeline_pause
 clutter_timeline_stop
 clutter_timeline_set_loop
+clutter_timeline_get_loop
 clutter_timeline_rewind
 clutter_timeline_skip
 clutter_timeline_advance

@@ -469,7 +469,7 @@ clutter_group_add_many (ClutterGroup   *self,
  * Remove a child #ClutterActor from the #ClutterGroup.
  **/
 void
-clutter_group_remove (ClutterGroup   *self,
+clutter_group_remove (ClutterGroup *self,
 		      ClutterActor *actor)
 {
   ClutterActor *parent;

@@ -59,6 +59,12 @@
   )
 )
 
+(define-method get_loop
+  (of-object "ClutterTimeline")
+  (c-name "clutter_timeline_get_loop")
+  (return-type "gboolean")
+)
+
 (define-method rewind
   (of-object "ClutterTimeline")
   (c-name "clutter_timeline_rewind")
@@ -158,6 +164,102 @@
 (define-function threads_leave
   (c-name "clutter_threads_leave")
   (return-type "none")
+)
+
+
+
+;; From ../../clutter/clutter-media.h
+
+(define-function clutter_media_get_type
+  (c-name "clutter_media_get_type")
+  (return-type "GType")
+)
+
+(define-method set_uri
+  (of-object "ClutterMedia")
+  (c-name "clutter_media_set_uri")
+  (return-type "none")
+  (parameters
+    '("const-char*" "uri")
+  )
+)
+
+(define-method get_uri
+  (of-object "ClutterMedia")
+  (c-name "clutter_media_get_uri")
+  (return-type "const-char*")
+)
+
+(define-method set_playing
+  (of-object "ClutterMedia")
+  (c-name "clutter_media_set_playing")
+  (return-type "none")
+  (parameters
+    '("gboolean" "playing")
+  )
+)
+
+(define-method get_playing
+  (of-object "ClutterMedia")
+  (c-name "clutter_media_get_playing")
+  (return-type "gboolean")
+)
+
+(define-method set_position
+  (of-object "ClutterMedia")
+  (c-name "clutter_media_set_position")
+  (return-type "none")
+  (parameters
+    '("int" "position")
+  )
+)
+
+(define-method get_position
+  (of-object "ClutterMedia")
+  (c-name "clutter_media_get_position")
+  (return-type "int")
+)
+
+(define-method set_volume
+  (of-object "ClutterMedia")
+  (c-name "clutter_media_set_volume")
+  (return-type "none")
+  (parameters
+    '("double" "volume")
+  )
+)
+
+(define-method get_volume
+  (of-object "ClutterMedia")
+  (c-name "clutter_media_get_volume")
+  (return-type "double")
+)
+
+(define-method get_can_seek
+  (of-object "ClutterMedia")
+  (c-name "clutter_media_get_can_seek")
+  (return-type "gboolean")
+)
+
+(define-method get_buffer_percent
+  (of-object "ClutterMedia")
+  (c-name "clutter_media_get_buffer_percent")
+  (return-type "int")
+)
+
+(define-method get_duration
+  (of-object "ClutterMedia")
+  (c-name "clutter_media_get_duration")
+  (return-type "int")
+)
+
+(define-method set_filename
+  (of-object "ClutterMedia")
+  (c-name "clutter_media_set_filename")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "filename")
+  )
 )
 
 
@@ -681,6 +783,21 @@
   (of-object "ClutterTexture")
   (c-name "clutter_texture_is_tiled")
   (return-type "gboolean")
+)
+
+
+
+;; From ../../clutter/clutter-video-texture.h
+
+(define-function clutter_video_texture_get_type
+  (c-name "clutter_video_texture_get_type")
+  (return-type "GType")
+)
+
+(define-function clutter_video_texture_new
+  (c-name "clutter_video_texture_new")
+  (is-constructor-of "ClutterVideoTexture")
+  (return-type "ClutterActor*")
 )
 
 

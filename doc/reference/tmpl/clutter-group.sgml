@@ -80,7 +80,7 @@ ClutterGroup
 
 </para>
 
-@group: 
+@self: 
 @first_actor: 
 @args: 
 

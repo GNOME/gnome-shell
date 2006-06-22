@@ -38,6 +38,20 @@ ClutterTimeline
 @cluttertimeline: the object which received the signal.
 @arg1: 
 
+<!-- ##### SIGNAL ClutterTimeline::paused ##### -->
+<para>
+
+</para>
+
+@cluttertimeline: the object which received the signal.
+
+<!-- ##### SIGNAL ClutterTimeline::started ##### -->
+<para>
+
+</para>
+
+@cluttertimeline: the object which received the signal.
+
 <!-- ##### ARG ClutterTimeline:fps ##### -->
 <para>
 
@@ -103,6 +117,15 @@ ClutterTimeline
 
 @timeline: 
 @loop: 
+
+
+<!-- ##### FUNCTION clutter_timeline_get_loop ##### -->
+<para>
+
+</para>
+
+@timeline: 
+@Returns: 
 
 
 <!-- ##### FUNCTION clutter_timeline_rewind ##### -->

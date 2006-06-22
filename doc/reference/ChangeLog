@@ -1,5 +1,12 @@
 2006-06-22  Emmanuele Bassi <ebassi@openedhand.com>
 
+	* clutter-sections.txt: Add clutter_timeline_get_loop().
+
+	* Makefile.am: Add clutter-marshal.h to the ignored header
+	files.
+
+2006-06-22  Emmanuele Bassi <ebassi@openedhand.com>
+
 	* clutter-docs.sgml: Fix typos.
 
 2006-06-22  Ross Burton  <ross@openedhand.com>

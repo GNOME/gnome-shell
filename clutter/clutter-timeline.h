@@ -68,8 +68,18 @@ struct _ClutterTimelineClass
 {
   GObjectClass parent_class;
   
-  void (*new_frame) (ClutterTimeline *timeline, gint frame_num);
+  void (*started)   (ClutterTimeline *timeline);
   void (*completed) (ClutterTimeline *timeline);
+  void (*paused)    (ClutterTimeline *timeline);
+  
+  void (*new_frame) (ClutterTimeline *timeline,
+		     gint             frame_num);
+
+  void (*_clutter_timeline_1) (void);
+  void (*_clutter_timeline_2) (void);
+  void (*_clutter_timeline_3) (void);
+  void (*_clutter_timeline_4) (void);
+  void (*_clutter_timeline_5) (void);
 }; 
 
 GType clutter_timeline_get_type (void);
@@ -91,6 +101,9 @@ clutter_timeline_stop (ClutterTimeline *timeline);
 
 void
 clutter_timeline_set_loop (ClutterTimeline *timeline, gboolean loop);
+
+gboolean
+clutter_timeline_get_loop (ClutterTimeline *timeline);
 
 void
 clutter_timeline_rewind (ClutterTimeline *timeline);
