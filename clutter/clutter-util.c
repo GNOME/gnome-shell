@@ -45,6 +45,11 @@ error_handler(Display     *xdpy,
   return 0;
 }
 
+/**
+ * clutter_util_trap_x_errors:
+ *
+ * Trap X errors so they don't cause an abort.
+ */
 void
 clutter_util_trap_x_errors(void)
 {
@@ -52,6 +57,13 @@ clutter_util_trap_x_errors(void)
   old_error_handler = XSetErrorHandler(error_handler);
 }
 
+/**
+ * clutter_util_untrap_x_errors:
+ *
+ * Stop trapping X errors.
+ *
+ * Return value: 0 if there was no error, or the last X error that occurred.
+ */
 int
 clutter_util_untrap_x_errors(void)
 {
@@ -59,6 +71,14 @@ clutter_util_untrap_x_errors(void)
   return TrappedErrorCode;
 }
 
+/**
+ * clutter_util_next_p2:
+ * @a: Value to get the next power
+ *
+ * Calculates the next power greater than @a.
+ *
+ * Return value: The next power after @a.
+ */
 int 
 clutter_util_next_p2 (int a)
 {

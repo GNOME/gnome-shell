@@ -1,3 +1,7 @@
+2006-06-22  Iain Holmes  <iain@openedhand.com>
+
+	* clutter/clutter-util.c: And more
+
 2006-06-22  Ross Burton  <ross@openedhand.com>
 
 	* clutter/clutter-label.c:
