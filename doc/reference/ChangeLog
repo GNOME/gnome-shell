@@ -1,6 +1,11 @@
 2006-06-22  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter-docs.sgml:
+	Add copyright info.
+
+2006-06-22  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter-docs.sgml:
 	Add overview text.
 
 2006-06-22  Matthew Allum  <mallum@openedhand.com>
