@@ -1,3 +1,7 @@
+2006-06-22  Iain Holmes  <iain@openedhand.com>
+
+	* clutter-sections.txt: Move _get_type to private sections
+
 2006-06-22  Emmanuele Bassi <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Add clutter_timeline_get_loop().

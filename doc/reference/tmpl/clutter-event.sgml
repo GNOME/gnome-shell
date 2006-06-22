@@ -94,14 +94,6 @@ clutter-event
 </para>
 
 
-<!-- ##### FUNCTION clutter_event_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
 <!-- ##### FUNCTION clutter_event_new ##### -->
 <para>
 

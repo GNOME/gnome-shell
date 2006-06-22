@@ -24,26 +24,10 @@ clutter-enum-types
 
 
 
-<!-- ##### FUNCTION clutter_event_type_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
 <!-- ##### MACRO CLUTTER_TYPE_ACTOR_FLAGS ##### -->
 <para>
 
 </para>
 
-
-
-<!-- ##### FUNCTION clutter_actor_flags_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 

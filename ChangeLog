@@ -15,6 +15,10 @@
 	
 2006-06-22  Iain Holmes  <iain@openedhand.com>
 
+	* clutter/clutter-actor.c: Fix some typos in the docs.
+
+2006-06-22  Iain Holmes  <iain@openedhand.com>
+
 	* clutter/clutter-util.c: And more
 
 2006-06-22  Ross Burton  <ross@openedhand.com>

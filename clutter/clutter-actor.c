@@ -170,7 +170,7 @@ clutter_actor_realize (ClutterActor *self)
 }
 
 /**
- * clutter_actor_realize
+ * clutter_actor_unrealize
  * @self: A #ClutterActor
  *
  * Frees up any underlying graphics resources needed by the actor to be
@@ -736,7 +736,7 @@ clutter_actor_set_size (ClutterActor *self,
 }
 
 /**
- * clutter_actor_set_position
+ * clutter_actor_get_abs_position
  * @self: A #ClutterActor
  * @x: Location to store x position if non NULL.
  * @y: Location to store y position if non NULL.
@@ -917,6 +917,8 @@ clutter_actor_set_name (ClutterActor *self,
 /**
  * clutter_actor_get_name:
  * @self: A #ClutterActor
+ *
+ * Retrieves the name of @self.
  *
  * Return value: pointer to textual tag for the actor.  The
  *   returned string is owned by the actor and should not
@@ -1198,7 +1200,7 @@ clutter_actor_lower (ClutterActor *self, ClutterActor *above)
 }
 
 /**
- * clutter_actor_rise_top:
+ * clutter_actor_raise_top:
  * @self: A #ClutterActor
  *
  * Raises @self to the top.

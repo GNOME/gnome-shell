@@ -34,14 +34,6 @@ clutter-color
 @blue: 
 @alpha: 
 
-<!-- ##### FUNCTION clutter_color_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
 <!-- ##### FUNCTION clutter_color_add ##### -->
 <para>
 
