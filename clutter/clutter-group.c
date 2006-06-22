@@ -526,7 +526,9 @@ clutter_group_remove_all (ClutterGroup *self)
  * @id: A unique #Clutteractor ID
  *
  * Finds a child actor of a group by its unique ID. Search recurses
- * into any child groups. 
+ * into any child groups.
+ *
+ * Returns: the #ClutterActor if found, or NULL.
  */
 ClutterActor *
 clutter_group_find_child_by_id (ClutterGroup *self,

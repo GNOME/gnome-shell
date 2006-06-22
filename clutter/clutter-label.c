@@ -374,7 +374,7 @@ clutter_label_new_with_text (const gchar *font_name,
  *
  * Creates a new, empty #ClutterLabel.
  *
- * Return: the newly created #ClutterLabel
+ * Returns: the newly created #ClutterLabel
  */
 ClutterActor *
 clutter_label_new (void)
