@@ -1,5 +1,9 @@
 2006-06-22  Iain Holmes  <iain@openedhand.com>
 
+	* clutter/clutter-video-texture.c: Docs.
+
+2006-06-22  Iain Holmes  <iain@openedhand.com>
+
 	* clutter/clutter-group.c: More typo fixes
 
 	* clutter/clutter-event.c: Documentation

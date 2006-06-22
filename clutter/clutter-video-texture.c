@@ -888,6 +888,13 @@ clutter_video_texture_init (ClutterVideoTexture *video_texture)
   return;
 }
 
+/**
+ * clutter_video_texture_new:
+ *
+ * Creates a video texture.
+ *
+ * Return value: A #ClutterActor implementing a displaying a video texture.
+ */
 ClutterActor*
 clutter_video_texture_new (void)
 {
