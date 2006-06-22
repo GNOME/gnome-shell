@@ -1002,7 +1002,7 @@ clutter_keysym_to_unicode (guint keyval)
  *
  * Creates a new #ClutterEvent of the specified type.
  *
- * Return value: A newly allocaed #ClutterEvent.
+ * Return value: A newly allocated #ClutterEvent.
  */
 ClutterEvent *
 clutter_event_new (ClutterEventType type)
