@@ -24,8 +24,10 @@
  */
 /**
  * SECTION:clutter-main
- * @short_description: Various 'global' clutter functionality.
+ * @short_description: Various 'global' clutter functions.
  *
+ * Functions to retrieve various global Clutter resources and other utility
+ * functions for mainloops, events and threads
  */
 
 

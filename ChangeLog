@@ -1,5 +1,9 @@
 2006-06-22  Iain Holmes  <iain@openedhand.com>
 
+	* clutter/clutter-main.c: Guess what...more docs
+
+2006-06-22  Iain Holmes  <iain@openedhand.com>
+
 	* clutter/clutter-event.c: Add docs
 
 2006-06-22  Iain Holmes  <iain@openedhand.com>
