@@ -99,30 +99,70 @@ clutter_motion_event_state (ClutterMotionEvent *motionev)
 
 /* keys */
 
+/**
+ * clutter_key_event_time:
+ * @keyev: A #ClutterKeyEvent
+ *
+ * Retrieves the time of @keyev
+ *
+ * Return value: The time that the event occurred 
+ */
 guint32
 clutter_key_event_time (ClutterKeyEvent *keyev)
 {
   return keyev->time;
 }
 
+/**
+ * clutter_key_event_state:
+ * @keyev: A #ClutterKeyEvent
+ *
+ * Retrieves the state of the modifier keys whenever the event occurred
+ *
+ * Return value: A mask representing the state of the modifier keys
+ */
 guint
 clutter_key_event_state (ClutterKeyEvent *keyev)
 {
   return keyev->modifier_state;
 }
 
+/**
+ * clutter_key_event_symbol:
+ * @keyev: A #ClutterKeyEvent
+ *
+ * Retrieves the value of the key that caused @keyev.
+ *
+ * Return value: The keysym representing the key
+ */
 guint
 clutter_key_event_symbol (ClutterKeyEvent *keyev)
 {
   return keyev->keyval;
 }
 
+/**
+ * clutter_key_event_code:
+ * @keyev: A #ClutterKeyEvent
+ *
+ * Retrieves the keycode of the key that caused @keyev.
+ *
+ * Return value: The keycode representing the key
+ */
 guint16
 clutter_key_event_code (ClutterKeyEvent *keyev)
 {
   return keyev->hardware_keycode;
 }
 
+/**
+ * clutter_key_event_unicode:
+ * @keyev: A #ClutterKeyEvent
+ *
+ * Retrieves the unicode value for the key that caused @keyev.
+ *
+ * Return value: The unicode value representing the key
+ */
 guint32
 clutter_key_event_unicode (ClutterKeyEvent *keyev)
 {
