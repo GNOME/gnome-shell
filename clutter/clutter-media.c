@@ -327,7 +327,9 @@ clutter_media_get_can_seek (ClutterMedia *media)
  * clutter_media_get_buffer_percent:
  * @media: A #ClutterMedia object
  *
- * Return value:
+ * Retrieves the amount of the stream that is buffered.
+ *
+ * Return value: percentage value
  */
 int
 clutter_media_get_buffer_percent (ClutterMedia *media)
