@@ -1,5 +1,10 @@
 2006-06-22  Matthew Allum  <mallum@openedhand.com>
 
+	* web/index.html:
+	Add Pango ref, authors info.
+
+2006-06-22  Matthew Allum  <mallum@openedhand.com>
+
 	* configure.ac:
 	* web/index.html:
 	Correct Bugzilla link. Add debs link

@@ -1,3 +1,9 @@
+2006-06-22  Matthew Allum  <mallum@openedhand.com>
+
+	reviewed by: <delete if not using a buddy>
+
+	* tmpl/clutter-main.sgml:
+
 2006-06-22  Iain Holmes  <iain@openedhand.com>
 
 	* clutter-sections.txt: Remove clutter_util_can_create_texture
