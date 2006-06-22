@@ -1,7 +1,14 @@
 2006-06-22  Matthew Allum  <mallum@openedhand.com>
 
 	* web/index.html:
+	Make OpeneHand link
+
+2006-06-22  Matthew Allum  <mallum@openedhand.com>
+
+	* web/index.html:
 	Add Pango ref, authors info.
+
+========== 2006-06-22 0.1 Release =====================
 
 2006-06-22  Matthew Allum  <mallum@openedhand.com>
 
