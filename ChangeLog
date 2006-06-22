@@ -1,3 +1,9 @@
+2006-06-22  Iain Holmes  <iain@openedhand.com>
+
+	* clutter/clutter-group.c: More typo fixes
+
+	* clutter/clutter-event.c: Documentation
+
 2006-06-22  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-timeline.h:

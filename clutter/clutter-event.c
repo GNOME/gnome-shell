@@ -996,6 +996,14 @@ clutter_keysym_to_unicode (guint keyval)
   return 0;
 }
 
+/**
+ * clutter_event_new:
+ * @type: The type of event.
+ *
+ * Creates a new #ClutterEvent of the specified type.
+ *
+ * Return value: A newly allocaed #ClutterEvent.
+ */
 ClutterEvent *
 clutter_event_new (ClutterEventType type)
 {
@@ -1007,6 +1015,14 @@ clutter_event_new (ClutterEventType type)
   return new_event;
 }
 
+/**
+ * clutter_event_copy:
+ * @event: A #ClutterEvent.
+ *
+ * Copies @event.
+ *
+ * Return value: A newly allocated #ClutterEvent
+ */
 ClutterEvent *
 clutter_event_copy (ClutterEvent *event)
 {
@@ -1020,6 +1036,12 @@ clutter_event_copy (ClutterEvent *event)
   return new_event;
 }
 
+/**
+ * clutter_event_free:
+ * @event: A #ClutterEvent.
+ *
+ * Frees all resources used by @event.
+ */
 void
 clutter_event_free (ClutterEvent *event)
 {

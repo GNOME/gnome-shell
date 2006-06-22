@@ -309,7 +309,7 @@ clutter_group_get_children (ClutterGroup *self)
 }
 
 /**
- * clutter_group_forall:
+ * clutter_group_foreach:
  * @self: A #ClutterGroup
  * @callback: a callback
  * @user_data: callback user data 
@@ -674,7 +674,7 @@ sort_z_order (gconstpointer a, gconstpointer b)
 }
 
 /**
- * clutter_group_sort_z_order:
+ * clutter_group_sort_depth_order:
  * @self: A #ClutterGroup
  *
  * Sorts a #ClutterGroup's children by there depth value.  
