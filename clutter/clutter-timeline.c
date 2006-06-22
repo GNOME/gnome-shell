@@ -428,7 +428,7 @@ clutter_timeline_rewind (ClutterTimeline *timeline)
 }
 
 /**
- * clutter_timeline_advance:
+ * clutter_timeline_skip:
  * @timeline: A #ClutterTimeline
  * @nframes: Number of frames to skip
  *

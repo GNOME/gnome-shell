@@ -80,7 +80,7 @@ The #ClutterActor @arg1 was removed from the group.
 
 </para>
 
-@group: 
+@self: 
 @first_actor: 
 @args: 
 

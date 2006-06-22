@@ -41,13 +41,3 @@ clutter-util
 @Returns: 
 
 
-<!-- ##### FUNCTION clutter_util_can_create_texture ##### -->
-<para>
-
-</para>
-
-@width: 
-@height: 
-@Returns: 
-
-

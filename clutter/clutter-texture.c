@@ -1205,7 +1205,7 @@ clutter_texture_has_generated_tiles (ClutterTexture *texture)
 }
 
 /**
- * clutter_texture_has_generated_tiles:
+ * clutter_texture_is_tiled:
  * @texture: A #ClutterTexture
  *
  * Checks if #ClutterTexture is tiled.
