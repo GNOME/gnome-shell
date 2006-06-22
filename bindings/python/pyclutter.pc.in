@@ -1,0 +1,8 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+includedir=@includedir@
+datadir=@datadir@
+
+Name: PyClutter
+Description: Python bindings for Clutter
+Version: @VERSION@
