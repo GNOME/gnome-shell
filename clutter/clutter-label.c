@@ -527,7 +527,7 @@ clutter_label_set_text_extents (ClutterLabel *label,
  * @width: return location for the width of the extents or %NULL
  * @height: return location for the height of the extents or %NULL
  *
- * Returns the extents of the label.
+ * Gets the extents of the label.
  */
 void
 clutter_label_get_text_extents (ClutterLabel *label,

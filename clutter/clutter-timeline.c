@@ -445,7 +445,7 @@ clutter_timeline_get_n_frames (ClutterTimeline *timeline)
 }
 
 /**
- * clutter_timeline_get_current_frame:
+ * clutter_timeline_set_speed:
  * @timeline: A #ClutterTimeline
  * @fps: New speed of timeline as frames per second
  *

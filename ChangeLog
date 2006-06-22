@@ -1,3 +1,11 @@
+2006-06-22  Ross Burton  <ross@openedhand.com>
+
+	* clutter/clutter-label.c:
+	* clutter/clutter-video-texture.c:
+	* clutter/clutter-texture.c:
+	* clutter/clutter-timeline.c:
+	Fix gtk-doc problems.
+
 2006-06-22  Iain Holmes  <iain@openedhand.com>
 
 	* clutter/clutter-main.c: More documentation

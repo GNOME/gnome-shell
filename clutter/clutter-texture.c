@@ -904,10 +904,10 @@ clutter_texture_init (ClutterTexture *self)
 }
 
 /**
- * clutter_texture_get_pixbuf
- * @texture A #ClutterTexture
+ * clutter_texture_get_pixbuf:
+ * @texture: A #ClutterTexture
  *
- * Gets the underlying #GdkPixbuf for the #ClutterTexture
+ * Gets the underlying #GdkPixbuf for the #ClutterTexture.
  *
  * Return value: The underlying #GdkPixbuf
  **/
@@ -918,8 +918,8 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 }
 
 /**
- * clutter_texture_set_pixbuf
- * @texture A #ClutterTexture
+ * clutter_texture_set_pixbuf:
+ * @texture: A #ClutterTexture
  * @pixbuf: A #GdkPixbuf
  *
  * Sets the underlying #GdkPixbuf for the #ClutterTexture
@@ -1017,7 +1017,7 @@ clutter_texture_set_pixbuf (ClutterTexture *texture, GdkPixbuf *pixbuf)
 }
 
 /**
- * clutter_texture_new_from_pixbuf
+ * clutter_texture_new_from_pixbuf:
  * @pixbuf: A #GdkPixbuf
  *
  * Creates a new #ClutterTexture object.
@@ -1035,7 +1035,7 @@ clutter_texture_new_from_pixbuf (GdkPixbuf *pixbuf)
 }
 
 /**
- * clutter_texture_new
+ * clutter_texture_new:
  *
  * Creates a new empty #ClutterTexture object.
  *
@@ -1052,7 +1052,7 @@ clutter_texture_new (void)
 }
 
 /**
- * clutter_texture_get_base_size
+ * clutter_texture_get_base_size:
  * @texture: A #ClutterTexture
  * @width:   Pointer to gint to be populated with width value if non NULL.
  * @height:  Pointer to gint to be populated with height value if non NULL.
@@ -1081,8 +1081,8 @@ clutter_texture_get_base_size (ClutterTexture *texture,
 }
 
 /**
- * clutter_texture_bind_tile
- * @texture A #ClutterTexture
+ * clutter_texture_bind_tile:
+ * @texture: A #ClutterTexture
  * @index: Tile index to bind
  *
  * Proxys a call to glBindTexture a to bind an internal 'tile'. 
@@ -1100,8 +1100,8 @@ clutter_texture_bind_tile (ClutterTexture *texture, gint index)
 }
 
 /**
- * clutter_texture_get_n_tiles
- * @texture A #ClutterTexture
+ * clutter_texture_get_n_tiles:
+ * @texture: A #ClutterTexture
  * @n_x_tiles: Location to store number of tiles in horizonally axis
  * @n_y_tiles: Location to store number of tiles in vertical axis
  *
@@ -1124,8 +1124,8 @@ clutter_texture_get_n_tiles (ClutterTexture *texture,
 }
 
 /**
- * clutter_texture_get_x_tile_detail
- * @texture A #ClutterTexture
+ * clutter_texture_get_x_tile_detail:
+ * @texture: A #ClutterTexture
  * @x_index: X index of tile to query
  * @pos: Location to store tiles X position
  * @size: Location to store tiles horizontal size in pixels 
@@ -1156,9 +1156,9 @@ clutter_texture_get_x_tile_detail (ClutterTexture *texture,
 }
 
 /**
- * clutter_texture_get_y_tile_detail
- * @texture A #ClutterTexture
- * @x_index: Y index of tile to query
+ * clutter_texture_get_y_tile_detail:
+ * @texture: A #ClutterTexture
+ * @y_index: Y index of tile to query
  * @pos: Location to store tiles Y position
  * @size: Location to store tiles vertical size in pixels 
  * @waste: Location to store tiles vertical wastage in pixels
@@ -1188,8 +1188,8 @@ clutter_texture_get_y_tile_detail (ClutterTexture *texture,
 }
 
 /**
- * clutter_texture_has_generated_tiles
- * @texture A #ClutterTexture
+ * clutter_texture_has_generated_tiles:
+ * @texture: A #ClutterTexture
  *
  * Checks if #ClutterTexture has generated underlying GL texture tiles.
  *
@@ -1205,8 +1205,8 @@ clutter_texture_has_generated_tiles (ClutterTexture *texture)
 }
 
 /**
- * clutter_texture_has_generated_tiles
- * @texture A #ClutterTexture
+ * clutter_texture_has_generated_tiles:
+ * @texture: A #ClutterTexture
  *
  * Checks if #ClutterTexture is tiled.
  *

@@ -152,10 +152,10 @@ set_uri (ClutterMedia *media,
   if (uri) 
     gst_element_set_state (priv->playbin, state);
   
-  /**
+  /*
    * Emit notififications for all these to make sure UI is not showing
    * any properties of the old URI.
-   **/
+   */
   g_object_notify (G_OBJECT (video_texture), "uri");
   g_object_notify (G_OBJECT (video_texture), "can-seek");
   g_object_notify (G_OBJECT (video_texture), "duration");
@@ -648,10 +648,10 @@ bus_message_state_change_cb (GstBus            *bus,
 				 NULL,
 				 NULL);
       } else {
-	/**
+	/*
 	 * Could not query for ability to seek. Determine
 	 * using URI.
-	 **/
+	 */
 	
 	if (g_str_has_prefix (video_texture->priv->uri,
 			      "http://")) {
