@@ -292,7 +292,6 @@ clutter_geometry_get_type
 clutter_util_trap_x_errors
 clutter_util_untrap_x_errors
 clutter_util_next_p2
-clutter_util_can_create_texture
 </SECTION>
 
 <SECTION>
