@@ -4,6 +4,7 @@
 	* clutter/clutter-video-texture.c:
 	* clutter/clutter-texture.c:
 	* clutter/clutter-timeline.c:
+	* clutter/clutter-group.c:
 	Fix gtk-doc problems.
 
 2006-06-22  Iain Holmes  <iain@openedhand.com>

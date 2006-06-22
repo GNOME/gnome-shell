@@ -414,8 +414,8 @@ clutter_group_add (ClutterGroup   *self,
 }
 
 /**
- * clutter_group_add_manyv:
- * @self: a #ClutterGroup
+ * clutter_group_add_many_valist:
+ * @group: a #ClutterGroup
  * @first_actor: the #ClutterActor actor to add to the group
  * @args: the actors to be added
  *
