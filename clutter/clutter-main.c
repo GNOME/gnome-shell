@@ -326,7 +326,7 @@ clutter_redraw (void)
 /**
  * clutter_main_quit:
  *
- * FIXME
+ * Terminates the Clutter mainloop.
  */
 void
 clutter_main_quit (void)
@@ -341,7 +341,9 @@ clutter_main_quit (void)
 /**
  * clutter_main_level:
  *
- * FIXME
+ * Retrieves the depth of the Clutter mainloop.
+ *
+ * Return value: The level of the mainloop.
  */
 gint
 clutter_main_level (void)
@@ -354,7 +356,7 @@ clutter_main_level (void)
 /**
  * clutter_main:
  *
- * FIXME
+ * Starts the Clutter mainloop.
  */
 void
 clutter_main (void)
@@ -395,7 +397,7 @@ clutter_main (void)
 /**
  * clutter_threads_enter:
  *
- * FIXME
+ * Locks the Clutter thread lock.
  */
 void
 clutter_threads_enter(void)
@@ -408,7 +410,7 @@ clutter_threads_enter(void)
 /**
  * clutter_threads_leave:
  *
- * FIXME
+ * Unlocks the Clutter thread lock.
  */
 void
 clutter_threads_leave (void)
@@ -418,12 +420,26 @@ clutter_threads_leave (void)
   g_mutex_unlock (context->gl_lock);
 }
 
+/**
+ * clutter_xdisplay:
+ *
+ * Retrieves the X display that Clutter is using
+ *
+ * Return value: A pointer to an X Display structure.
+ */
 Display*
 clutter_xdisplay (void)
 {
   return ClutterCntx->xdpy;
 }
 
+/**
+ * clutter_xscreen:
+ *
+ * Retrieves the X screen that Clutter is using.
+ *
+ * Return value: the X screen ID
+ */
 int
 clutter_xscreen (void)
 {
@@ -446,9 +462,9 @@ clutter_root_xwindow (void)
 /**
  * clutter_want_debug:
  * 
- * FIXME
+ * Check if clutter has debugging turned on.
  *
- * Return value: FIXME
+ * Return value: TRUE if debugging is turned on, FALSE otherwise.
  */
 gboolean
 clutter_want_debug (void)
@@ -500,12 +516,12 @@ is_gl_version_at_least_12 (void)
 
 /**
  * clutter_init:
- * @argc: FIXME
- * @argv: FIXME
+ * @argc: The number of arguments in @argv
+ * @argv: A pointer to an array of arguments.
  *
- * FIXME
+ * Initialises Clutter.
  *
- * Return value: FIXME
+ * Return value: 1 on success, < 0 on failure.
  */
 int
 clutter_init (int *argc, char ***argv)
