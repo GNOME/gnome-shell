@@ -19,13 +19,13 @@ ClutterTimeline
 
 <!-- ##### STRUCT ClutterTimeline ##### -->
 <para>
-
+#ClutterTimeline has no publicly available members.
 </para>
 
 
 <!-- ##### SIGNAL ClutterTimeline::completed ##### -->
 <para>
-
+The #ClutterTimeline has completed running.
 </para>
 
 @cluttertimeline: the object which received the signal.
@@ -36,18 +36,18 @@ ClutterTimeline
 </para>
 
 @cluttertimeline: the object which received the signal.
-@arg1: 
+@arg1: the frame number.
 
 <!-- ##### SIGNAL ClutterTimeline::paused ##### -->
 <para>
-
+The #ClutterTimeline has been paused.
 </para>
 
 @cluttertimeline: the object which received the signal.
 
 <!-- ##### SIGNAL ClutterTimeline::started ##### -->
 <para>
-
+The #ClutterTimeline has been started.
 </para>
 
 @cluttertimeline: the object which received the signal.

@@ -1,3 +1,8 @@
+2006-06-22  Ross Burton  <ross@openedhand.com>
+
+	* tmp/*.sgml:
+	Add lots of "no public members" and document some signals.
+
 2006-06-22  Iain Holmes  <iain@openedhand.com>
 
 	* clutter-sections.txt: Move _get_type to private sections
