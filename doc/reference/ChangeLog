@@ -1,5 +1,10 @@
 2006-06-22  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter-docs.sgml:
+	Add overview text.
+
+2006-06-22  Matthew Allum  <mallum@openedhand.com>
+
 	* Makefile.am:
 	* clutter-0.0-sections.txt:
 	* clutter-docs.sgml:

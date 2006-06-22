@@ -5,7 +5,7 @@
 #include "gtk-clutter.h"
 
 #define TRAILS 0
-#define NHANDS  6
+#define NHANDS  2
 #define WINWIDTH   800
 #define WINHEIGHT  800
 #define RADIUS     250
@@ -129,7 +129,6 @@ main (int argc, char *argv[])
   if (!pixbuf)
     g_error("pixbuf load failed");
 
-
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   g_signal_connect (window, "destroy",
                     G_CALLBACK (gtk_main_quit), NULL);
@@ -215,7 +214,7 @@ main (int argc, char *argv[])
 
   /* Create a timeline to manage animation */
   timeline = clutter_timeline_new (360, 60); /* num frames, fps */
-  g_object_set(timeline, "loop", TRUE, 0);   /* have it loop */
+  g_object_set(timeline, "loop", TRUE, NULL);   /* have it loop */
 
   /* fire a callback for frame change */
   g_signal_connect(timeline, "new-frame",  G_CALLBACK (frame_cb), oh);

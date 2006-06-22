@@ -12,7 +12,29 @@
   <chapter>
     <title>Clutter Overview</title>
     <para>
-    FIXME
+
+    Clutter is a GObject based library for creating fast, visually
+    rich graphical user interfaces. It is intended for creating single
+    window stylalised applications such as media box UI's,
+    presentaions, kiosk style apps in preference to regular 'desktop'
+    style applications.
+
+    </para>
+    <para>
+
+    Clutter's underlying graphics rendering is OpenGL ( version 1.2+ )
+    based.  The clutter API is intended to be easy to use, attempting
+    to hide many of the GL complexitys. It targets maily 2D based
+    graphics and is definetly not intended to be a general interface
+    for all OpenGL functionality ( yet ).
+
+    </para>
+    <para>
+
+    As well as OpenGL Clutter depends on and uses GLib, GObject,
+    GDKPixbuf and GStreamer. Clutter is released under the GNU Library
+    General Public License (GNU LGPL)
+
     </para>
   </chapter>    
   <chapter>
@@ -35,4 +57,39 @@
     <xi:include href="xml/clutter-color.xml"/>
     <xi:include href="xml/clutter-util.xml"/>
   </chapter>
+
+  <appendix id="license">
+    <title>License</title>
+
+    <para>
+      This library is free software; you can redistribute it and/or
+      modify it under the terms of the <citetitle>GNU Library General
+      Public License</citetitle> as published by the Free Software
+      Foundation; either version 2 of the License, or (at your option)
+      any later version.
+    </para>
+
+    <para>
+      This library is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      <citetitle>GNU Library General Public License</citetitle> for
+      more details.
+    </para>
+
+    <para>
+      You may obtain a copy of the <citetitle>GNU Library General
+      Public License</citetitle> from the Free Software Foundation by
+      visiting <ulink type="http" url="http://www.fsf.org">their Web
+      site</ulink> or by writing to:
+
+      <address>
+        Free Software Foundation, Inc.
+        <street>59 Temple Place</street> - Suite 330
+        <city>Boston</city>, <state>MA</state> <postcode>02111-1307</postcode>
+        <country>USA</country>
+      </address>
+    </para>
+  </appendix>
+
 </book>

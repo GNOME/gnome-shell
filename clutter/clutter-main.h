@@ -83,9 +83,6 @@ clutter_xscreen (void);
 Window
 clutter_root_xwindow (void);
 
-XVisualInfo*
-clutter_xvisual(void);
-
 gboolean
 clutter_want_debug (void);
 

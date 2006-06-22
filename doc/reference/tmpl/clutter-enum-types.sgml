@@ -32,21 +32,6 @@ clutter-enum-types
 @Returns: 
 
 
-<!-- ##### MACRO CLUTTER_TYPE_ACTOR_TRANSFORM ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### FUNCTION clutter_actor_transform_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
 <!-- ##### MACRO CLUTTER_TYPE_ACTOR_FLAGS ##### -->
 <para>
 

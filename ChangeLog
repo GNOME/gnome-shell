@@ -1,3 +1,15 @@
+2006-06-22  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-main.h:
+	Remove bogus xvisual call. 
+
+2006-06-22  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	Remove mirroring related calls ( unimplemented )
+	* gtk/gtk-clutter-test.c: 0 -> NULL
+
 2006-06-22  Iain Holmes  <iain@openedhand.com>
 
 	* clutter/clutter-actor.c:
