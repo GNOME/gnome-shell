@@ -43,16 +43,16 @@
 
     Clutter is a GObject based library for creating fast, visually
     rich graphical user interfaces. It is intended for creating single
-    window stylalised applications such as media box UI's,
-    presentaions, kiosk style apps in preference to regular 'desktop'
-    style applications.
+    window stylised applications such as media box UI's, presentations
+    or kiosk style apps in preference to regular 'desktop' style
+    applications.
 
     </para>
     <para>
 
     Clutter's underlying graphics rendering is OpenGL ( version 1.2+ )
     based.  The clutter API is intended to be easy to use, attempting
-    to hide many of the GL complexitys. It targets maily 2D based
+    to hide many of the GL complexities. It targets maily 2D based
     graphics and is definetly not intended to be a general interface
     for all OpenGL functionality ( yet ).
 
