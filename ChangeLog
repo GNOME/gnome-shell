@@ -1,5 +1,12 @@
 2006-06-22  Matthew Allum  <mallum@openedhand.com>
 
+	* configure.ac:
+	* web/index.html:
+	Correct Bugzilla link. Add debs link
+        Bump up version to 0.1 !
+
+2006-06-22  Matthew Allum  <mallum@openedhand.com>
+
 	* NEWS:
 	Add an entry for 0.1 release
 	* web/index.html:

@@ -4,12 +4,12 @@ AC_PREREQ(2.53)
 # An odd micro number indicates in-progress development, (eg. from CVS)
 # An even micro number indicates a released version.
 m4_define(clutter_version_major, 0)
-m4_define(clutter_version_minor, 0)
-m4_define(clutter_version_micro, 1)
+m4_define(clutter_version_minor, 1)
+m4_define(clutter_version_micro, 0)
 
 AC_INIT([clutter], 
        clutter_version_major.clutter_version_minor.clutter_version_micro, 
-        [http://bugzilla.o-hand.com/enter_bug.cgi?product=clutter])
+        [http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter])
 AC_CONFIG_SRCDIR([clutter/clutter.h])
 AM_CONFIG_HEADER([config.h])
 
