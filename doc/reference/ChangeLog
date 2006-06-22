@@ -1,3 +1,12 @@
+2006-06-22  Ross Burton  <ross@openedhand.com>
+
+	* clutter.sections.txt:
+	* clutter-sections.txt:
+	Rename . to -, and add missing class members.
+
+	* tmpl/*:
+	Resync
+
 2006-06-22  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter-docs.sgml:

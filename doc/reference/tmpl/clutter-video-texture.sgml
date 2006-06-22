@@ -17,12 +17,6 @@ ClutterVideoTexture
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### TYPEDEF ClutterVideoTexturePrivate ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### STRUCT ClutterVideoTexture ##### -->
 <para>
 

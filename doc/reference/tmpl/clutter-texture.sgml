@@ -17,12 +17,6 @@ ClutterTexture
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### TYPEDEF ClutterTexturePrivate ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### STRUCT ClutterTexture ##### -->
 <para>
 
