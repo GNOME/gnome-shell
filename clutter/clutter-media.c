@@ -179,6 +179,13 @@ clutter_media_base_init (gpointer g_iface)
     }
 }
 
+/**
+ * clutter_media_set_uri:
+ * @media: #ClutterMedia object
+ * @uri: Uri
+ *
+ * Sets the uri of @media to @uri.
+ */
 void
 clutter_media_set_uri (ClutterMedia *media,
 		       const char   *uri)
@@ -188,6 +195,14 @@ clutter_media_set_uri (ClutterMedia *media,
   CLUTTER_MEDIA_GET_INTERFACE (media)->set_uri (media, uri);
 }
 
+/**
+ * clutter_media_get_uri:
+ * @media: A #ClutterMedia object
+ *
+ * Retrieves the URI from @media.
+ *
+ * Return value: The URI as a string.
+ */
 const char*
 clutter_media_get_uri (ClutterMedia *media)
 {
@@ -196,6 +211,13 @@ clutter_media_get_uri (ClutterMedia *media)
   return CLUTTER_MEDIA_GET_INTERFACE (media)->get_uri (media);
 }
 
+/**
+ * clutter_media_set_playing:
+ * @media: A #ClutterMedia object
+ * @playing: TRUE to start playing, FALSE to stop.
+ *
+ * Starts or stops @media playing.
+ */
 void
 clutter_media_set_playing (ClutterMedia *media,
 			   gboolean      playing)
@@ -205,6 +227,14 @@ clutter_media_set_playing (ClutterMedia *media,
   CLUTTER_MEDIA_GET_INTERFACE (media)->set_playing (media, playing);
 }
 
+/**
+ * clutter_media_get_playing:
+ * @media: A #ClutterMedia object
+ *
+ * Retrieves the state of @media.
+ *
+ * Return value: TRUE if playing, FALSE if stopped.
+ */
 gboolean
 clutter_media_get_playing (ClutterMedia *media)
 {
@@ -213,6 +243,13 @@ clutter_media_get_playing (ClutterMedia *media)
   return CLUTTER_MEDIA_GET_INTERFACE (media)->get_playing (media);
 }
 
+/**
+ * clutter_media_set_position:
+ * @media: A #ClutterMedia object
+ * @position: The desired position.
+ *
+ * Sets the playback position of @media to @position.
+ */
 void
 clutter_media_set_position (ClutterMedia *media,
 			    int           position)
@@ -222,6 +259,14 @@ clutter_media_set_position (ClutterMedia *media,
   CLUTTER_MEDIA_GET_INTERFACE (media)->set_position (media, position);
 }
 
+/**
+ * clutter_media_get_position:
+ * @media: A #ClutterMedia object
+ *
+ * Retrieves the position of @media.
+ *
+ * Return value: The playback position.
+ */
 int
 clutter_media_get_position (ClutterMedia *media)
 {
@@ -230,6 +275,13 @@ clutter_media_get_position (ClutterMedia *media)
   return CLUTTER_MEDIA_GET_INTERFACE (media)->get_position (media);
 }
 
+/**
+ * clutter_media_set_volume:
+ * @media: A #ClutterMedia object
+ * @volume: The volume as a double between 0.0 and 1.0
+ *
+ * Sets the playback volume of @media to @volume.
+ */
 void
 clutter_media_set_volume (ClutterMedia *media,
 			  double        volume)
@@ -239,6 +291,14 @@ clutter_media_set_volume (ClutterMedia *media,
   CLUTTER_MEDIA_GET_INTERFACE (media)->set_position (media, volume);
 }
 
+/** 
+ * clutter_media_get_volume:
+ * @media: A #ClutterMedia object
+ * 
+ * Retrieves the playback volume of @media.
+ *
+ * Return value: The playback volume between 0.0 and 1.0
+ */
 double
 clutter_media_get_volume (ClutterMedia *media)
 {
@@ -247,6 +307,14 @@ clutter_media_get_volume (ClutterMedia *media)
   return CLUTTER_MEDIA_GET_INTERFACE (media)->get_volume (media);
 }
 
+/**
+ * clutter_media_get_can_seek:
+ * @media: A #ClutterMedia object
+ *
+ * Retrieves whether @media is seekable or not.
+ *
+ * Return value: TRUE if @media can seek, FALSE otherwise.
+ */
 gboolean
 clutter_media_get_can_seek (ClutterMedia *media)
 {
@@ -255,6 +323,12 @@ clutter_media_get_can_seek (ClutterMedia *media)
   return CLUTTER_MEDIA_GET_INTERFACE (media)->can_seek (media);
 }
 
+/**
+ * clutter_media_get_buffer_percent:
+ * @media: A #ClutterMedia object
+ *
+ * Return value:
+ */
 int
 clutter_media_get_buffer_percent (ClutterMedia *media)
 {
@@ -263,6 +337,14 @@ clutter_media_get_buffer_percent (ClutterMedia *media)
   return CLUTTER_MEDIA_GET_INTERFACE (media)->get_buffer_percent (media);
 }
 
+/**
+ * clutter_media_get_duration:
+ * @media: A #ClutterMedia object
+ *
+ * Retrieves the duration of the media stream that @media represents.
+ *
+ * Return value: The length of the media stream.
+ */
 int
 clutter_media_get_duration (ClutterMedia *media)
 {
@@ -273,6 +355,13 @@ clutter_media_get_duration (ClutterMedia *media)
 
 /* helper funcs */
 
+/**
+ * clutter_media_set_filename:
+ * @media: A #ClutterMedia object
+ * @filename: A filename to media file.
+ *
+ * Converts a filesystem path to a uri and calls clutter_media_set_uri
+ */
 void
 clutter_media_set_filename (ClutterMedia *media, const gchar *filename)
 {

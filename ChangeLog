@@ -1,5 +1,9 @@
 2006-06-22  Iain Holmes  <iain@openedhand.com>
 
+	* clutter/clutter-media.c: Add docs
+
+2006-06-22  Iain Holmes  <iain@openedhand.com>
+
 	* clutter/clutter-texture.c: Fix typos.
 
 	* clutter/clutter-timeline.c: Fix typos.
