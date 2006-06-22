@@ -62,16 +62,6 @@
   )
 )
 
-(define-flags ActorTransform
-  (in-module "Clutter")
-  (c-name "ClutterActorTransform")
-  (gtype-id "CLUTTER_TYPE_ACTOR_TRANSFORM")
-  (values
-    '("x" "CLUTTER_ACTOR_MIRROR_X")
-    '("y" "CLUTTER_ACTOR_MIRROR_Y")
-  )
-)
-
 (define-enum EventType
   (in-module "Clutter")
   (c-name "ClutterEventType")

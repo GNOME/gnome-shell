@@ -1,3 +1,7 @@
+2006-06-22  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* python/clutter-base-types.defs: Remove ClutterActorTransform.
+
 2006-06-13  Matthew Allum  <mallum@openedhand.com>
 
 	* ChangeLog:
