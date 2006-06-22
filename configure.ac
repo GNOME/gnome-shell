@@ -199,6 +199,7 @@ gtk/Makefile
 gtk/gtk-clutter.pc
 bindings/Makefile
 bindings/python/Makefile
+bindings/python/pyclutter.pc
 examples/Makefile
 doc/Makefile
 doc/reference/Makefile

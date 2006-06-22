@@ -60,6 +60,11 @@ CLEANFILES += clutter-pyglue.c
 pythondir = $(libdir)/python${PY_VER}/site-packages
 python_LTLIBRARIES = clutter.la
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = pyclutter.pc
+
+EXTRA_DIST += pyclutter.pc.in
+
 INCLUDES = $(PYTHON_CFLAGS) $(PYGTK_CFLAGS) -I$(top_srcdir) $(CLUTTER_CFLAGS)
 
 clutter_la_SOURCES = clutter-pyglue.c cluttermodule.c
