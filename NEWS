@@ -1,0 +1,14 @@
+Clutter 0.1 ( 22/06/2006)
+===========
+
+ * First 'official' release, expect bugs aplenty.
+ * Contains:
+   o Hopefully enough functionality to build things.
+   o Basic gstreamer 0.10 video playback support.
+   o Fairly stable API, though in no way totally stable. 
+     Expect CHANGES in future versions.
+   o Some simple examples ( also see OPT ).
+   o An experimental GTK-Clutter widget.
+   o Fairly complete Python bindings.
+   o Non complete but hopefully useful API documentation.
+ * If you want to help out see the TODO file.

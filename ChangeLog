@@ -1,3 +1,11 @@
+2006-06-22  Matthew Allum  <mallum@openedhand.com>
+
+	* NEWS:
+	Add an entry for 0.1 release
+	* web/index.html:
+	* web/style.css:
+	Add basic website. 
+
 2006-06-22  Iain Holmes  <iain@openedhand.com>
 
 	* clutter/clutter-main.c: Guess what...more docs
