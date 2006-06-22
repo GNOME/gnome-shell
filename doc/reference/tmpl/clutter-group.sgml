@@ -71,7 +71,7 @@ ClutterGroup
 
 </para>
 
-@group: 
+@self: 
 @actor: 
 
 
@@ -90,7 +90,7 @@ ClutterGroup
 
 </para>
 
-@group: 
+@self: 
 @first_actor: 
 @Varargs: 
 
@@ -100,7 +100,7 @@ ClutterGroup
 
 </para>
 
-@group: 
+@self: 
 @actor: 
 
 

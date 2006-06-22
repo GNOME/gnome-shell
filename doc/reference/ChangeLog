@@ -1,5 +1,10 @@
 2006-06-22  Ross Burton  <ross@openedhand.com>
 
+	* tmpl/clutter-group.sgml:
+	Fix braindead source parser.
+
+2006-06-22  Ross Burton  <ross@openedhand.com>
+
 	* clutter.sections.txt:
 	* clutter-sections.txt:
 	Rename . to -, and add missing class members.
