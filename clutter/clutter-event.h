@@ -117,26 +117,19 @@ ClutterEvent *clutter_event_new  (ClutterEventType  type);
 ClutterEvent *clutter_event_copy (ClutterEvent     *event);
 void          clutter_event_free (ClutterEvent     *event);
 
-ClutterEventType
-clutter_key_event_type (ClutterKeyEvent *keyev);
+ClutterEventType clutter_key_event_type (ClutterKeyEvent *keyev);
 
-guint32
-clutter_key_event_time (ClutterKeyEvent *keyev);
+guint32 clutter_key_event_time (ClutterKeyEvent *keyev);
 
-guint
-clutter_key_event_state (ClutterKeyEvent *keyev);
+guint clutter_key_event_state (ClutterKeyEvent *keyev);
 
-guint
-clutter_key_event_symbol (ClutterKeyEvent *keyev);
+guint clutter_key_event_symbol (ClutterKeyEvent *keyev);
 
-guint16
-clutter_key_event_code (ClutterKeyEvent *keyev);
+guint16 clutter_key_event_code (ClutterKeyEvent *keyev);
 
-guint32
-clutter_key_event_unicode (ClutterKeyEvent *keyev);
+guint32 clutter_key_event_unicode (ClutterKeyEvent *keyev);
 
-guint32
-clutter_keysym_to_unicode (guint keyval);
+guint32 clutter_keysym_to_unicode (guint keyval);
 
 G_END_DECLS
 

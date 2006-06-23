@@ -56,8 +56,8 @@ G_BEGIN_DECLS
   CLUTTER_TYPE_LABEL, ClutterLabelClass))
 
 typedef struct _ClutterLabel ClutterLabel;
-typedef struct _ClutterLabelPrivate ClutterLabelPrivate ;
 typedef struct _ClutterLabelClass ClutterLabelClass;
+typedef struct _ClutterLabelPrivate ClutterLabelPrivate;
 
 struct _ClutterLabel
 {

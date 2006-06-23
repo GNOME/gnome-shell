@@ -53,9 +53,9 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   CLUTTER_TYPE_GROUP, ClutterGroupClass))
 
-typedef struct _ClutterGroupPrivate ClutterGroupPrivate;
 typedef struct _ClutterGroup        ClutterGroup;
 typedef struct _ClutterGroupClass   ClutterGroupClass;
+typedef struct _ClutterGroupPrivate ClutterGroupPrivate;
  
 struct _ClutterGroup
 {

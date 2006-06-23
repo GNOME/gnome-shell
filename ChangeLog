@@ -1,3 +1,13 @@
+2006-06-23  Iain Holmes  <iain@openedhand.com>
+
+	* clutter/clutter-label.h:
+	* clutter/clutter-group.h:
+	* clutter/clutter-rectangle.h:
+	* clutter/clutter-video-texture.h:
+	* clutter/clutter-event.h:
+	* clutter/clutter-texture.h: Fix the header layout so that C# parser
+	can understand everything.
+
 2006-06-23  Ross Burton  <ross@openedhand.com>
 
 	* configure.ac:

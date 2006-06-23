@@ -56,9 +56,9 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   CLUTTER_TYPE_VIDEO_TEXTURE, ClutterVideoTextureClass))
 
-typedef struct ClutterVideoTexturePrivate ClutterVideoTexturePrivate ;
 typedef struct _ClutterVideoTexture       ClutterVideoTexture;
 typedef struct _ClutterVideoTextureClass  ClutterVideoTextureClass;
+typedef struct ClutterVideoTexturePrivate ClutterVideoTexturePrivate;
 
 /* #define CLUTTER_VIDEO_TEXTURE_ERROR clutter_video_texture_error_quark() */
 

@@ -54,9 +54,9 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   CLUTTER_TYPE_RECTANGLE, ClutterRectangleClass))
 
-typedef struct _ClutterRectanglePrivate ClutterRectanglePrivate;
 typedef struct _ClutterRectangle        ClutterRectangle;
 typedef struct _ClutterRectangleClass   ClutterRectangleClass;
+typedef struct _ClutterRectanglePrivate ClutterRectanglePrivate;
 
 struct _ClutterRectangle
 {
