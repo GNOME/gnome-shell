@@ -85,7 +85,7 @@ void clutter_texture_set_pixbuf (ClutterTexture *texture, GdkPixbuf *pixbuf);
 
 GdkPixbuf *clutter_texture_get_pixbuf (ClutterTexture* texture);
 
-voidclutter_texture_get_base_size (ClutterTexture *texture, 
+void clutter_texture_get_base_size (ClutterTexture *texture, 
 			       gint           *width,
 			       gint           *height);
 

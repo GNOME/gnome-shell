@@ -16,6 +16,10 @@
 
 2006-06-23  Iain Holmes  <iain@openedhand.com>
 
+	* clutter/clutter-texture.h: Add space :) Sorry.
+
+2006-06-23  Iain Holmes  <iain@openedhand.com>
+
 	* clutter/clutter-label.h:
 	* clutter/clutter-group.h:
 	* clutter/clutter-rectangle.h:
