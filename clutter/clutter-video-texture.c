@@ -903,6 +903,8 @@ clutter_video_texture_new (void)
   video_texture = g_object_new (CLUTTER_TYPE_VIDEO_TEXTURE, 
 				"tiled", FALSE, 
 				"pixel-format", GL_RGB,
+				/* As RGB below needed for Big Endian */
+				"pixel-type", GL_UNSIGNED_BYTE,
 				NULL);
 
   return CLUTTER_ACTOR(video_texture);
