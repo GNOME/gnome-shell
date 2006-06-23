@@ -1,5 +1,10 @@
 2006-06-23  Matthew Allum  <mallum@openedhand.com>
 
+	* examples/super-oh.c:
+	Remove random stage unref fixing trails. Fixes #98
+
+2006-06-23  Matthew Allum  <mallum@openedhand.com>
+
 	* examples/video-player.c: (size_change):
 	cast stage height to gint avoiding wierdness for when 
         video height greater than half display height. Fixed #99

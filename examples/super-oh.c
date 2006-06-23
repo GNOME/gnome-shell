@@ -3,7 +3,7 @@
 #include <errno.h>
 #include <stdlib.h>
 
-#define TRAILS 0
+#define TRAILS  0
 #define NHANDS  6
 #define RADIUS  ((CLUTTER_STAGE_WIDTH()+CLUTTER_STAGE_HEIGHT())/6)
 
@@ -95,7 +95,6 @@ frame_cb (ClutterTimeline *timeline,
 				       CLUTTER_STAGE_HEIGHT());
   clutter_texture_set_pixbuf (CLUTTER_TEXTURE (oh->bgtex), oh->bgpixb);
   g_object_unref (G_OBJECT (oh->bgpixb));
-  g_object_unref (stage);
 #endif
 
   /* Rotate everything clockwise about stage center*/
