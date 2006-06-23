@@ -1,4 +1,4 @@
-SUBDIRS=clutter bindings doc examples 
+SUBDIRS=clutter doc examples 
 
 if ENABLE_GTK
 SUBDIRS += gtk

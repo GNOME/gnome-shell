@@ -1,3 +1,9 @@
+2006-06-23  Ross Burton  <ross@openedhand.com>
+
+	* configure.ac:
+	* Makefile.am:
+	Remove references to bindings/, it's moved.
+
 2006-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-group.c
