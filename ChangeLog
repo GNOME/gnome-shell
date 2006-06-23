@@ -1,3 +1,9 @@
+2006-06-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-group.c
+	(clutter_group_get_children): Mention that you must free
+	the returned list otherwise you'll leak stuff all around.
+
 2006-06-23  Ross Burton  <ross@openedhand.com>
 
 	* examples/super-oh.c:

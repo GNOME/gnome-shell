@@ -297,8 +297,10 @@ clutter_group_new (void)
  * 
  * Get a list containing all actors contained in the group.
  * 
- * Return value: A GList containing child #ClutterActors.
- **/
+ * Return value: A GList containing child #ClutterActors.  You
+ *   should free the returned list using g_list_free() when
+ *   finished using it.
+ */
 GList*
 clutter_group_get_children (ClutterGroup *self)
 {
