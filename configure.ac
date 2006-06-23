@@ -36,6 +36,7 @@ dnl ========================================================================
 
 # Checks for programs.
 AC_PROG_CC
+AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
 
 # Checks for header files.
