@@ -1,7 +1,13 @@
 2006-06-23  Matthew Allum  <mallum@openedhand.com>
 
+	* examples/video-player.c: (size_change):
+	cast stage height to gint avoiding wierdness for when 
+        video height greater than half display height. Fixed #99
+
+2006-06-23  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-video-texture.c: (clutter_video_texture_new):
-	Small fix for video playback on Big Endian. See #99
+	Small fix for video playback on Big Endian. See #97
 
 2006-06-23  Iain Holmes  <iain@openedhand.com>
 

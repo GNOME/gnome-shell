@@ -200,7 +200,7 @@ size_change (ClutterTexture *texture,
   clutter_texture_get_base_size (texture, &vid_width, &vid_height);
 
   new_height = ( vid_height * CLUTTER_STAGE_WIDTH() ) / vid_width;
-  new_y      = ( CLUTTER_STAGE_HEIGHT() - new_height) / 2;
+  new_y      = ( (gint)CLUTTER_STAGE_HEIGHT() - new_height) / 2;
 
   clutter_actor_set_position (CLUTTER_ACTOR (texture), 0, new_y);
 
