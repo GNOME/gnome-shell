@@ -72,7 +72,7 @@ clutter_la_LIBADD  = $(PYTHON_LIBS) $(PYGTK_LIBS) \
 		     $(GST_LIBS) \
 		     $(CLUTTER_LIBS) \
                      $(top_builddir)/clutter/libclutter-@CLUTTER_MAJORMINOR@.la
-clutter_la_LDFLAGS = -module avoid-version -export-symbols-regex initclutter
+clutter_la_LDFLAGS = -module -avoid-version -export-symbols-regex initclutter
 
 # Run this to update the API and then copy then newly generated
 # definitions into clutter-base.defs and clutter-base-types.defs;
