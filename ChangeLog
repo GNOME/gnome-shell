@@ -1,5 +1,10 @@
 2006-06-23  Ross Burton  <ross@openedhand.com>
 
+	* examples/super-oh.c:
+	Fix build with trails enabled. Still crashes.
+
+2006-06-23  Ross Burton  <ross@openedhand.com>
+
 	* configure.ac:
 	Disable static libraries.
 

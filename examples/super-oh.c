@@ -92,7 +92,7 @@ frame_cb (ClutterTimeline *timeline,
   oh->bgpixb = clutter_stage_snapshot (CLUTTER_STAGE (stage),
 				       0, 0,
 				       CLUTTER_STAGE_WIDTH(),
-				       CLUTTER_STAGE_HEIGHT();
+				       CLUTTER_STAGE_HEIGHT());
   clutter_texture_set_pixbuf (CLUTTER_TEXTURE (oh->bgtex), oh->bgpixb);
   g_object_unref (G_OBJECT (oh->bgpixb));
   g_object_unref (stage);
