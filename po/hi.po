@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.hi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-25 19:27+0200\n"
-"PO-Revision-Date: 2006-06-26 10:49+0530\n"
+"POT-Creation-Date: 2006-06-27 00:12+0200\n"
+"PO-Revision-Date: 2006-06-27 13:35+0530\n"
 "Last-Translator: Rajesh Ranjan <rranjan@redhat.com>\n"
 "Language-Team: Hindi <fedora-trans-hi@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -19,6 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.9.1\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -510,7 +511,7 @@ msgstr "कंपोजिटिंग प्रबंधक"
 
 #: ../src/metacity.schemas.in.h:12
 msgid "Control how new windows get focus"
-msgstr ""
+msgstr "नियंत्रित करें कि कैसे नया विंडो फोकस पाता है"
 
 #: ../src/metacity.schemas.in.h:13
 msgid "Current theme"
@@ -522,7 +523,7 @@ msgstr "आटो रेस विकल्प हेतु मिलीसे�
 
 #: ../src/metacity.schemas.in.h:15
 msgid "Determines whether Metacity is a compositing manager."
-msgstr ""
+msgstr "निर्धारित करें कि Metacity एक कंपोजिटिंग प्रबंधक है."
 
 #: ../src/metacity.schemas.in.h:16
 msgid ""
@@ -647,14 +648,12 @@ msgid "Move backwards between windows immediately"
 msgstr "विंडोज़ के बीच तत्काल पीछे जाएँ"
 
 #: ../src/metacity.schemas.in.h:35
-#, fuzzy
 msgid "Move backwards between windows of an application immediately"
-msgstr "विंडोज़ के बीच तत्काल पीछे जाएँ"
+msgstr "तत्काल अनुप्रयोग के विंडो के बीच पीछे जायें"
 
 #: ../src/metacity.schemas.in.h:36
-#, fuzzy
 msgid "Move backwards between windows of an application with popup"
-msgstr "पटल तथा डेस्कटॉप के बीच पॉपअप सहित पीछे जाएँ"
+msgstr "पॉपअप के साथ तत्काल अनुप्रयोग के विंडो के बीच पीछे जायें"
 
 #: ../src/metacity.schemas.in.h:37
 msgid "Move between panels and the desktop immediately"
@@ -669,14 +668,12 @@ msgid "Move between windows immediately"
 msgstr "विंडोज़ के बीच तत्काल खिसकाएँ"
 
 #: ../src/metacity.schemas.in.h:40
-#, fuzzy
 msgid "Move between windows of an application immediately"
-msgstr "विंडोज़ के बीच तत्काल खिसकाएँ"
+msgstr "तत्काल अनुप्रयोग के विंडो के बीच जायें"
 
 #: ../src/metacity.schemas.in.h:41
-#, fuzzy
 msgid "Move between windows of an application with popup"
-msgstr "विंडोज़ के बीच पॉपअप सहित खिसकाएँ"
+msgstr "पॉपअप के साथ तत्काल अनुप्रयोग के विंडो के बीच जायें"
 
 #: ../src/metacity.schemas.in.h:42
 msgid "Move between windows with popup"
