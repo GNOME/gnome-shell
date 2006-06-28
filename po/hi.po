@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.hi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-27 00:12+0200\n"
-"PO-Revision-Date: 2006-06-27 13:35+0530\n"
+"POT-Creation-Date: 2006-06-28 00:06+0200\n"
+"PO-Revision-Date: 2006-06-28 11:02+0530\n"
 "Last-Translator: Rajesh Ranjan <rranjan@redhat.com>\n"
 "Language-Team: Hindi <fedora-trans-hi@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -19,6 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.9.1\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -443,7 +444,6 @@ msgid "(Not implemented) Navigation works in terms of applications not windows"
 msgstr "(कार्यान्वित नहीं) संचलन अनुप्रयोगों के अनुसार चलता है, विंडोज़ से नहीं"
 
 #: ../src/metacity.schemas.in.h:2
-#, fuzzy
 msgid ""
 "A font description string describing a font for window titlebars. The size "
 "from the description will only be used if the titlebar_font_size option is "
@@ -451,10 +451,8 @@ msgid ""
 "option is set to true."
 msgstr ""
 "एक फंट विवरण स्ट्रिंग विंडो शीर्षक पट्टी के लिये फंट के बारे में बता रहा है. विवरण से आकार "
-"प्रयुक्त होगा अगर titlebar_font_size विकल्प 0 में सेट किया जाता है, हालांकि. साथ ही "
-"यह विकल्प निष्क्रिय होता है अगर titlebar_uses_desktop_font विकल्प सही पर सेट किया "
-"जाता है. मूलभूत रूप से, titlebar_font नहीं सेट किया हुआ है, Metacity को डेस्कटॉप फंट पर "
-"लौटाते हुये अगर titlebar_uses_desktop_font गलत है."
+"प्रयुक्त होगा अगर titlebar_font_size विकल्प 0 में सेट किया जाता है, साथ ही, यह विकल्प निष्क्रिय किया जाता है अगर titlebar_uses_desktop_font "
+"विकल्प को सही पर सेट किया जाता है."
 
 #: ../src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
@@ -551,7 +549,7 @@ msgid ""
 "the focused window will be automatically raised after a delay specified by "
 "the auto_raise_delay key. This is not related to clicking on a window to "
 "raise it, nor to entering a window during drag-and-drop."
-msgstr ""
+msgstr "अगर सही पर सेट किया जाता है, और फोकस मोड या तो \"स्लोपी\" या \"माउस\" हो तब फोकस किया विंडो तब auto_raise_delay कुंजी से निर्दिष्ट विलंब से फोकस किया विंडो उठाया जायेगा. यह विंडो पर क्लिक किये जाने से संबंधित नहीं है, न तो खींचे व छोड़ें पर दाखिल होकर."
 
 #: ../src/metacity.schemas.in.h:21
 msgid ""
@@ -562,7 +560,6 @@ msgstr ""
 "फ़ॉन्ट का प्रयोग करें"
 
 #: ../src/metacity.schemas.in.h:22
-#, fuzzy
 msgid ""
 "If true, metacity will give the user less feedback by using wireframes, "
 "avoiding animations, or other means. This is a significant reduction in "
@@ -570,14 +567,13 @@ msgid ""
 "working, and may also be a useful tradeoff for terminal servers. However, "
 "the wireframe feature is disabled when accessibility is on."
 msgstr ""
-"अगर सही है, metacity उपयोक्ता को कम फीडबेक और \"सीधा हस्तक्षेप\" का कम सेंस देगा, "
+"अगर सही है, metacity उपयोक्ता को कम फीडबेक और सीधा हस्तक्षेप का कम सेंस देगा, "
 "वायरफ्रेम, एनीमेशन अनदेखा करते हुये, या अन्य साधन. यह महत्वपूर्ण कमी है कई उपयोक्ता के "
 "प्रयोग में, लेकिन कई पुरातन अनुप्रयोग व टर्मिनल सर्वर की अनुमति देते हैं कि वे कब अन्यथा रूप "
 "से अप्रायोगिक होगें. हालांकि, वायरफ्रेम फीचर को निष्क्रिय किया जाता है जब पहुंच वीयर्ड "
 "डेस्कटॉप खंडन को अनदेखा करने के लिये हो."
 
 #: ../src/metacity.schemas.in.h:23
-#, fuzzy
 msgid ""
 "If true, then Metacity works in terms of applications rather than windows. "
 "The concept is a bit abstract, but in general an application-based setup is "
@@ -590,10 +586,7 @@ msgstr ""
 "यदि सही है तो मेटासिटी विंडो के बजाए अनुप्रयोग जैसे कार्य करेगा. परिकल्पना थोड़ी संक्षिप्त "
 "है परंतु आमतौर पर अनुप्रयोग आधारित सेटअप मैक जैसा ज्यादा होगा विंडोज़ की तरह कम. यदि आप "
 "किसी विंडो को अनुप्रयोग आधारित मोड पर फ़ोकस करेंगे तो अनुप्रयोग में के सभी विंडो ऊपर हो "
-"जाएंगे. यह भी कि अनुप्रयोग आधारित मोड में फ़ोकस क्लिक अन्य अनुप्रयोग के विंडो में पास थ्रो "
-"नहीं होता. इस विन्यास का अस्तित्व संदेहास्पद है.परंतु यह फिर भी अच्छा है कि सभी विशिष्ट "
-"विवरण हेतु विन्यास विंडोज़ आधारित के विरूद्ध अनुप्रयोग आधारित  हों, उदाहरण के लिए - क्लिक "
-"को पास थ्रो करें या नहीं. तथा अनुप्रयोग आधारित मोड विस्तृत रूप से इस समय कार्यान्वित नहीं "
+"जाएंगे. यह भी कि अनुप्रयोग आधारित मोड में फ़ोकस क्लिक अन्य अनुप्रयोग के विंडो से होकर नहीं जाता. अनुप्रयोग आधारित मोड विस्तृत रूप से इस समय कार्यान्वित नहीं "
 "है."
 
 #: ../src/metacity.schemas.in.h:24
@@ -614,6 +607,8 @@ msgid ""
 "activation requests from pagers. This option is currently disabled in click-"
 "to-focus mode."
 msgstr ""
+"कई क्रिया (उदाहरण के लिये क्लाइंट क्षेत्र को क्लिक करना, विंडो को खिसकाना व पुनः आकार देना) सामान्यतः विंडो को कुप्रभाव के रूप में उठाता है. इस विकल्प को गलत पर सेट करें अन्य उपयोक्ता क्रिया से उठाते हुये. जबकि यह विकल्प गलत है, "
+"विंडो को अब भी alt-left-click से कहीं पर उठाया जा सकता है, विंडो सजावट पर सामान्य क्लिक से, या विशेष संदेश सेजैसे कि पेजर से सक्रियकरण आग्रह. यह विकल्प अभी क्लिक टू फोकस मोड में निष्क्रिय किया हुआ है."
 
 #: ../src/metacity.schemas.in.h:27
 msgid "Maximize window"
@@ -760,14 +755,11 @@ msgid "Number of workspaces"
 msgstr "कार्यस्थान की संख्या"
 
 #: ../src/metacity.schemas.in.h:63
-#, fuzzy
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum to "
 "prevent making the desktop unusable by accidentally asking for too many "
 "workspaces."
-msgstr ""
-"कार्यस्थान की संख्या. यह शून्य से अधिक होना चाहिए तथा इसकी एक अधिकतम संख्या भी है (3.4 "
-"करोड़ कार्यस्थान की मांग करने पर आपके डेस्कटॉप को दुर्धटनावश नष्ट होने से बचाने हेतु)."
+msgstr "कार्यस्थान की संख्या. यह शून्य से अधिक होना चाहिए तथा इसे एक अधिकतम पर निर्धारित करना चाहिये ज्यादा कार्यस्थान की मांग करने पर आपके डेस्कटॉप को दुर्धटनावश नष्ट होने से बचाने हेतु."
 
 #: ../src/metacity.schemas.in.h:64
 msgid "Raise obscured window, otherwise lower"
@@ -803,7 +795,7 @@ msgid ""
 "manager misfeatures. This option puts Metacity in a rigorously correct mode, "
 "which gives a more consistent user interface, provided one does not need to "
 "run any misbehaving applications."
-msgstr ""
+msgstr "कुछ अनुप्रयोग विशेषता को महत्व नहीं देते हैं जो कि विंडो प्रबंधक मिसफीचर में परिणाम लाता है. यह विकल्प Metacity को काफी सही मोड में रखता है, जो कि ज्यादा संगत उपयोक्ता अंतरफलक देता है, अगर कोई गलत अनुप्रयोग नहीं चला रहा है."
 
 #: ../src/metacity.schemas.in.h:72
 msgid "Switch to workspace 1"
@@ -1530,7 +1522,6 @@ msgstr ""
 "होगा."
 
 #: ../src/metacity.schemas.in.h:137
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows of an "
 "application without a popup window. Holding \"shift\" together with this "
@@ -1540,15 +1531,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"कीबाइंडिंग जो फ़ोकस को विंडो के बीच, पॉपअप विंडो की मदद से पीछे हटाने में उपयोग में आता "
+"कीबाइंडिंग जो फ़ोकस को विंडो के बीच, पॉपअप विंडो के बिना उपयोग में आता "
 "है.  इस बाइंडिंग के साथ  \"शिफ़्ट\"  को दबाकर रखने से दिशा फिर आगे जाती है. फ़ॉर्मेट इस "
-"तरह दिखेंगे \"&lt;Control&gt;a\" या \"&lt;Shift&gt;&lt;Alt&gt;F1. यह पारसर पूरी "
+"तरह दिखेंगे \"&lt;Control&gt;a\" या \"&lt;Shift&gt;&lt;Alt&gt;F1\". यह पारसर पूरी "
 "तरह लिबरल है और बड़े या छोटे अक्षर दोनों स्वीकार करता है, तथा संक्षिप्ताक्षर भी जैसे-  "
 "\"&lt;Ctl&gt;\" और \"&lt;Ctrl&gt;\". यदि आपने विकल्प विशेष स्ट्रिंग में तय किया है "
-"\"disabled\", तब वहाँ इस क्रिया हेतु कोई कीबाइंडिंग नहीं होगा."
+"\"निष्क्रिय\", तब वहाँ इस क्रिया हेतु कोई कीबाइंडिंग नहीं होगा."
 
 #: ../src/metacity.schemas.in.h:138
-#, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows of an "
 "application, using a popup window. Holding \"shift\" together with this "
@@ -1558,12 +1548,11 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"कीबाइंडिंग जो फ़ोकस को विंडो के बीच, पॉपअप विंडो की मदद से पीछे हटाने में उपयोग में आता "
-"है. इस बाइंडिंग के साथ \"शिफ़्ट\"  को दबाकर रखने से दिशा फिर आगे जाती है. फ़ॉर्मेट इस तरह "
-"दिखेंगे \"&lt;Control&gt;a\" या \"&lt;Shift&gt;&lt;Alt&gt;F1. यह पारसर पूरी तरह "
-"लिबरल है और बड़े या छोटे अक्षर दोनों स्वीकार करता है, तथा संक्षिप्ताक्षर भी जैसे-  \"&lt;"
+"कीबाइंडिंग जो अनुप्रयोग के विंडो के बीच, पॉपअप विंडो की मदद से पीछे हटाने में उपयोग में आता "
+"है. इस बाइंडिंग के साथ \"shift\"  को दबाकर रखने से दिशा फिर आगे जाती है. फ़ॉर्मेट इस तरह "
+"दिखेंगे \"&lt;Control&gt;a\" या \"&lt;Shift&gt;&lt;Alt&gt;F1\". यह विश्लेषक पूरी तरह उदाहरण है और बड़े या छोटे अक्षर दोनों स्वीकार करता है, तथा संक्षिप्ताक्षर भी जैसे-  \"&lt;"
 "Ctl&gt;\" और \"&lt;Ctrl&gt;\". यदि आपने विकल्प विशेष स्ट्रिंग में तय किया है "
-"\"disabled\", तब वहाँ इस क्रिया हेतु कोई कीबाइंडिंग नहीं होगा."
+"\"निष्क्रिय\", तब वहाँ इस क्रिया हेतु कोई कीबाइंडिंग नहीं होगा."
 
 #: ../src/metacity.schemas.in.h:139
 msgid ""
@@ -1631,7 +1620,6 @@ msgstr ""
 "होगा."
 
 #: ../src/metacity.schemas.in.h:143
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows of an application without "
 "a popup window. Holding the \"shift\" key while using this binding reverses "
@@ -1642,15 +1630,14 @@ msgid ""
 "then there will be no keybinding for this action."
 msgstr ""
 "कीबाइंडिंग जो फ़ोकस को विंडो के बीच, पॉपअप विंडो की मदद के बगैर हटाने में उपयोग में आता "
-"है.  (पारम्परिक रूप से- &lt;Alt&gt;Escape) इस बाइंडिंग के साथ शिफ्ट \"shift\"  को "
+"है. इस बाइंडिंग के साथ शिफ्ट \"shift\"  को "
 "दबाकर रखने से चाल की दिशा उलटी हो जाती है. फ़ॉर्मेट इस तरह दिखेंगे \"&lt;Control&gt;a"
-"\" या \"&lt;Shift&gt;&lt;Alt&gt;F1. यह पारसर पूरी तरह लिबरल है और बड़े या छोटे "
+"\" या \"&lt;Shift&gt;&lt;Alt&gt;F1\". यह विश्लेषक पूरी तरह उदार है और बड़े या छोटे "
 "अक्षर दोनों स्वीकार करता है, तथा संक्षिप्ताक्षर भी जैसे-  \"&lt;Ctl&gt;\" और \"&lt;"
-"Ctrl&gt;\". यदि आपने विकल्प विशेष स्ट्रिंग में तय किया है \"disabled\", तब वहाँ इस "
+"Ctrl&gt;\". यदि आपने विकल्प विशेष स्ट्रिंग में तय किया है \"निष्क्रिय\", तब वहाँ इस "
 "क्रिया हेतु कोई कीबाइंडिंग नहीं होगा."
 
 #: ../src/metacity.schemas.in.h:144
-#, fuzzy
 msgid ""
 "The keybinding used to move focus between windows of an application, using a "
 "popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" key while "
@@ -1661,11 +1648,11 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "कीबाइंडिंग जो फ़ोकस को विंडो के बीच, पॉपअप विंडो की मदद से हटाने में उपयोग में आता है.  "
-"(पारम्परिक रूप से-lt;Alt&gt;Tab) इस बाइंडिंग के साथ शिफ्ट \"shift\"  को दबाकर रखने से "
+"इस बाइंडिंग के साथ शिफ्ट \"shift\"  को दबाकर रखने से "
 "चाल की दिशा उलटी हो जाती है. फ़ॉर्मेट इस तरह दिखेंगे \"&lt;Control&gt;a\" या \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. यह पारसर पूरी तरह लिबरल है और बड़े या छोटे अक्षर दोनों "
+"Shift&gt;&lt;Alt&gt;F1\". यह विश्लेषक पूरी तरह उदाहरण है और बड़े या छोटे अक्षर दोनों "
 "स्वीकार करता है, तथा संक्षिप्ताक्षर भी जैसे-  \"&lt;Ctl&gt;\" और \"&lt;Ctrl&gt;\". "
-"यदि आपने विकल्प विशेष स्ट्रिंग में तय किया है \"disabled\", तब वहाँ इस क्रिया हेतु कोई "
+"यदि आपने विकल्प विशेष स्ट्रिंग में तय किया है \"निष्क्रिय\", तब वहाँ इस क्रिया हेतु कोई "
 "कीबाइंडिंग नहीं होगा."
 
 #: ../src/metacity.schemas.in.h:145
@@ -1905,7 +1892,6 @@ msgid "The window screenshot command"
 msgstr "विंडो स्क्रीन-शॉट कमांड "
 
 #: ../src/metacity.schemas.in.h:164
-#, fuzzy
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another one, it raises the window above all others, "
@@ -1919,9 +1905,9 @@ msgstr ""
 "यह कुंजी बाइंडिंग बदलता है कि क्याविंडो को अन्य विंडो के ऊपर या नीचे करना है. यदि विंडो "
 "अन्य विंडो से ढँका है, तो यह विंडो को अन्य विंडो से ऊपर करता है. यदि विंडो पहले से ही पूरी "
 "तरह दिखाई दे रहा है, तो यह विंडो को अन्य विंडो के नीचे रखता है. फॉर्मेट इस तरह दिखेंगे "
-"\"&lt;Control&gt;a\" या \"&lt;Shift&gt;&lt;Alt&gt;F1. यह पारसर पूरी तरह लिबरल "
+"\"&lt;Control&gt;a\" या \"&lt;Shift&gt;&lt;Alt&gt;F1\". यह विश्लेषक पूरी तरह उदार "
 "है और बड़े या छोटे अक्षर दोनों स्वीकार करता है, तथा संक्षिप्ताक्षर भी जैसे-  \"&lt;Ctl&gt;"
-"\" और \"&lt;Ctrl&gt;\". यदि आपने विकल्प विशेष स्ट्रिंग में तय किया है \"disabled\", "
+"\" और \"&lt;Ctrl&gt;\". यदि आपने विकल्प विशेष स्ट्रिंग में तय किया है \"निष्क्रिय\", "
 "तब वहाँ इस क्रिया हेतु कोई कीबाइंडिंग नहीं होगा."
 
 #: ../src/metacity.schemas.in.h:165
@@ -1983,17 +1969,13 @@ msgstr ""
 "\"disabled\", तब वहाँ इस क्रिया हेतु कोई कीबाइंडिंग नहीं होगा."
 
 #: ../src/metacity.schemas.in.h:169
-#, fuzzy
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, 'toggle_maximize' which will maximize/unmaximize the window, "
 "'minimize' which will minimize the window, and 'none' which will not do "
 "anything."
-msgstr ""
-"यह शीर्षक पट्टी पर डबल-क्लिक के असर को निर्धारित करता है. वर्तमान वैध विकल्प हैं- 'टॉगल-"
-"आभा' जो विंडो की आभा चालू/बन्द करते हैं, तथा 'टॉगल-अधिकतम'  जो विंडो को अधिकतम/उससे "
-"बाहर करता है."
+msgstr "यह शीर्षक पट्टी पर डबल-क्लिक के असर को निर्धारित करता है. वर्तमान वैध विकल्प हैं- 'toggle_shade' जो विंडो की छाया चालू/बन्द करते हैं, तथा 'टॉगल-अधिकतम' जो विंडो को अधिकतम/उससे बाहर करता है, और 'न्यूनतम' जो विंडो न्यूनतम करेगा, और 'कुछ नहीं' जो विंडो को कुछ नहीं करेगा."
 
 #: ../src/metacity.schemas.in.h:170
 msgid ""
@@ -2001,7 +1983,7 @@ msgid ""
 "focus. It has two possible values; \"smart\" applies the user's normal focus "
 "mode, and \"strict\" results in windows started from a terminal not being "
 "given focus."
-msgstr ""
+msgstr "यह विकल्प अतिरिक्त नियंत्रण देता है कि कैसे नया बनाया विंडो फोकस पाता है. इसके दो संभावित मान हैं; \"smart\" उपयोक्ता के सामान्य फोकस मोड पर लागू होता है और \"strict\" ऐसे विंडो के रूप में आता है जो टर्मिनल से फोकस नहीं किये गये रूप में आता है."
 
 #: ../src/metacity.schemas.in.h:171
 msgid "Toggle always on top state"
@@ -2024,14 +2006,13 @@ msgid "Toggle window on all workspaces"
 msgstr "सभी कार्यस्थान पर विंडो टॉगल करें"
 
 #: ../src/metacity.schemas.in.h:176
-#, fuzzy
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 "environments."
 msgstr ""
-"जब कोई अनुप्रयोग या तंत्र घंटी या बीप जारी करते हैं तो दृश्य संकेत प्रारंभ करें, शोरयुक्त "
-"वातावरण- जहाँ सुनने में कठिनाई हो या जब सुनाई देने वाली घंटी बन्द हो वहाँ उपयोगी."
+"दृश्य संकेत चालू करना जब कोई अनुप्रयोग या तंत्र घंटी या बीप जारी करते हैं तो, शोरयुक्त "
+"वातावरण- जहाँ सुनने में कठिनाई हो या उंचा सुनने वाले के लिये उपयोगी होता है."
 
 #: ../src/metacity.schemas.in.h:177
 msgid "Unmaximize window"
@@ -2047,7 +2028,7 @@ msgstr "दृष्टिगोच़र घंटी प्रकार"
 
 #: ../src/metacity.schemas.in.h:180
 msgid "Whether raising should be a side-effect of other user interactions"
-msgstr ""
+msgstr "अन्य उपयोक्ता अंतःक्रिया के प्रभाव को क्या उठाया जाना चाहिये"
 
 #: ../src/metacity.schemas.in.h:181
 msgid "Window focus mode"
@@ -2082,13 +2063,11 @@ msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "जी-कॉन्फ़ कुंजी '%s'  एक अवैध प्रकार में नियत है\n"
 
 #: ../src/prefs.c:1249
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
 "range 1..128\n"
-msgstr ""
-"%d जो जी-कॉन्फ़ कुंजी %s में भंडारित है, कार्यस्थान हेतु यथोचित संख्या नहीं है, वर्तमान "
-"अधिकतम है- %d\n"
+msgstr "%d जो जी-कॉन्फ़ कुंजी %s में भंडारित है जो एक तार्किक cursor_size नहीं है; को 1..128 के परिसर में होना चाहिये\n"
 
 #: ../src/prefs.c:1329
 #, c-format
@@ -3124,9 +3103,8 @@ msgid ""
 msgstr "कोआर्डिनेट एक्सप्रेशन में आपरेटर \"%c\" के बाद आपरेटर \"%c\" है बीच में कोई आपरेण्ड नहीं है"
 
 #: ../src/theme.c:1939
-#, fuzzy
 msgid "Coordinate expression parser overflowed its buffer."
-msgstr "कोआर्डिनेट एक्सप्रेशन या खाली है या समझा नहीं जा सका"
+msgstr "कोआर्डिनेट एक्सप्रेशन विश्लेषक इसके बफर को ओवरफ्लो कर गया है."
 
 #: ../src/theme.c:1968
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
