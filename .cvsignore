@@ -29,3 +29,7 @@ COPYING
 intltool-*
 metacity.spec
 autom4te.cache
+compile
+depcomp
+omf.make
+xmldocs.make
