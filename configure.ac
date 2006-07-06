@@ -5,7 +5,7 @@ AC_PREREQ(2.53)
 # An even micro number indicates a released version.
 m4_define(clutter_version_major, 0)
 m4_define(clutter_version_minor, 1)
-m4_define(clutter_version_micro, 0)
+m4_define(clutter_version_micro, 1)
 
 AC_INIT([clutter], 
        clutter_version_major.clutter_version_minor.clutter_version_micro, 
@@ -23,9 +23,9 @@ AC_SUBST(CLUTTER_MAJORMINOR)
 # - interfaces added/removed/changed -> increment CURRENT, REVISION = 0
 # - interfaces added -> increment AGE
 # - interfaces removed -> AGE = 0
-CLUTTER_LT_CURRENT=0
+CLUTTER_LT_CURRENT=1
 CLUTTER_LT_REV=0
-CLUTTER_LT_AGE=0
+CLUTTER_LT_AGE=1
 CLUTTER_LT_VERSION="$CLUTTER_LT_CURRENT:$CLUTTER_LT_REV:$CLUTTER_LT_AGE"
 CLUTTER_LT_LDFLAGS="-version-info $CLUTTER_LT_VERSION"
 

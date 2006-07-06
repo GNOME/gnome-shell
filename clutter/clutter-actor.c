@@ -646,6 +646,16 @@ clutter_actor_class_init (ClutterActorClass *klass)
 			CLUTTER_TYPE_GEOMETRY,
 			G_PARAM_READWRITE));
   
+  /**
+   * ClutterActor::destroy:
+   * @actor: the object which received the signal
+   *
+   * The ::destroy signal is emitted when an actor is destroyed,
+   * either by direct invocation of clutter_actor_destroy() or
+   * when the #ClutterGroup that contains the actor is destroyed.
+   *
+   * Since: 0.1.1
+   */
   actor_signals[DESTROY] =
     g_signal_new ("destroy",
 		  G_TYPE_FROM_CLASS (object_class),
@@ -654,6 +664,14 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  NULL, NULL,
 		  clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
+  /**
+   * ClutterActor::show:
+   * @actor: the object which received the signal
+   *
+   * The ::show signal is emitted when an actor becomes visible.
+   * 
+   * Since: 0.1.1
+   */
   actor_signals[SHOW] =
     g_signal_new ("show",
 		  G_TYPE_FROM_CLASS (object_class),
@@ -662,6 +680,14 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  NULL, NULL,
 		  clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
+  /**
+   * ClutterActor::hide:
+   * @actor: the object which received the signal
+   *
+   * The ::hide signal is emitted when an actor is no longer visible.
+   *
+   * Since: 0.1.1
+   */
   actor_signals[HIDE] =
     g_signal_new ("hide",
 		  G_TYPE_FROM_CLASS (object_class),
@@ -743,20 +769,20 @@ clutter_actor_queue_redraw (ClutterActor *self)
 /**
  * clutter_actor_set_geometry:
  * @self: A #ClutterActor
- * @geom: A #ClutterGeometry
+ * @geometry: A #ClutterGeometry
  *
  * Sets the actors geometry in pixels relative to any parent actor.
  */
 void
 clutter_actor_set_geometry (ClutterActor          *self,
-			    const ClutterGeometry *geom)
+			    const ClutterGeometry *geometry)
 {
   ClutterActorBox box;
 
-  box.x1 = geom->x;
-  box.y1 = geom->y;
-  box.x2 = geom->x + geom->width;
-  box.y2 = geom->y + geom->height;
+  box.x1 = geometry->x;
+  box.y1 = geometry->y;
+  box.x2 = geometry->x + geometry->width;
+  box.y2 = geometry->y + geometry->height;
   
   clutter_actor_request_coords (self, &box);
 }
@@ -764,13 +790,13 @@ clutter_actor_set_geometry (ClutterActor          *self,
 /**
  * clutter_actor_get_geometry:
  * @self: A #ClutterActor
- * @geom: A location to store actors #ClutterGeometry
+ * @geometry: A location to store actors #ClutterGeometry
  *
  * Gets the actors geometry in pixels relative to any parent actor.
  */
 void
 clutter_actor_get_geometry (ClutterActor    *self,
-			    ClutterGeometry *geom)
+			    ClutterGeometry *geometry)
 {
   ClutterActorBox box;
 
@@ -778,10 +804,10 @@ clutter_actor_get_geometry (ClutterActor    *self,
   
   clutter_actor_allocate_coords (self, &box);
 
-  geom->x      = box.x1;
-  geom->y      = box.y1;
-  geom->width  = box.x2 - box.x1;
-  geom->height = box.y2 - box.y1;
+  geometry->x      = box.x1;
+  geometry->y      = box.y1;
+  geometry->width  = box.x2 - box.x1;
+  geometry->height = box.y2 - box.y1;
 }
 
 /**
@@ -1030,7 +1056,7 @@ clutter_actor_get_opacity (ClutterActor *self)
 /**
  * clutter_actor_set_name:
  * @self: A #ClutterActor
- * @id: Textual tag to apply to actor
+ * @name: Textual tag to apply to actor
  *
  * Sets a textual tag to the actor.
  */
@@ -1258,6 +1284,8 @@ clutter_actor_remove_clip (ClutterActor *self)
  * Gets whether the actor has a clip set or not.
  * 
  * Return value: %TRUE if the actor has a clip set.
+ *
+ * Since: 0.1.1
  */
 gboolean
 clutter_actor_has_clip (ClutterActor *self)
@@ -1330,6 +1358,8 @@ clutter_actor_get_parent (ClutterActor *self)
  *
  * This function should not be used in applications.  It should be called by
  * implementations of group actors, to dissociate a child from the container.
+ *
+ * Since: 0.1.1
  */
 void
 clutter_actor_unparent (ClutterActor *self)

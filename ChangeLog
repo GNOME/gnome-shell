@@ -1,5 +1,13 @@
 2006-07-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* configure.ac: Mark this as 0.1.1, and change the version info
+	of the library.
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-group.c: Fix documentation.
+
+2006-07-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.h:
 	* clutter/clutter-actor.c:
 	

@@ -370,7 +370,7 @@ clutter_group_hide_all (ClutterGroup *self)
  * Adds a new child #ClutterActor to the #ClutterGroup.
  **/
 void
-clutter_group_add (ClutterGroup   *self,
+clutter_group_add (ClutterGroup *self,
 		   ClutterActor *actor)
 {
   ClutterActor *parent;
@@ -404,7 +404,7 @@ clutter_group_add (ClutterGroup   *self,
 
 /**
  * clutter_group_add_many_valist:
- * @group: a #ClutterGroup
+ * @self: a #ClutterGroup
  * @first_actor: the #ClutterActor actor to add to the group
  * @args: the actors to be added
  *
@@ -412,19 +412,19 @@ clutter_group_add (ClutterGroup   *self,
  * function inside bindings.
  */
 void
-clutter_group_add_many_valist (ClutterGroup *group,
+clutter_group_add_many_valist (ClutterGroup *self,
 			       ClutterActor *first_actor,
 			       va_list       args)
 {
   ClutterActor *actor;
   
-  g_return_if_fail (CLUTTER_IS_GROUP (group));
+  g_return_if_fail (CLUTTER_IS_GROUP (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (first_actor));
 
   actor = first_actor;
   while (actor)
     {
-      clutter_group_add (group, actor);
+      clutter_group_add (self, actor);
       actor = va_arg (args, ClutterActor *);
     }
 }
