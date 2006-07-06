@@ -1,5 +1,10 @@
 2006-07-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* configure.ac: Remove the python stuff, now that the bindings
+	are out of tree.
+
+2006-07-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* configure.ac: Mark this as 0.1.1, and change the version info
 	of the library.
 
