@@ -2021,7 +2021,7 @@ msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
 "range 1..128\n"
 msgstr "« %d » được lưu trong khóa GConf « %s » không phải là một « cursor_size "
-"» (kích cỡ con chạy) hợp lý; phải nằm trong phạm vị (1..128)\n"
+"» (kích cỡ con chạy) hợp lý; phải nằm trong phạm vi (1..128)\n"
 
 #: ../src/prefs.c:1329
 #, c-format
@@ -2484,7 +2484,7 @@ msgstr "Không có thuộc tính «start_angle» (góc bắt đầu) trong phầ
 #: ../src/theme-parser.c:1907
 #, c-format
 msgid "No \"extent_angle\" attribute on element <%s>"
-msgstr "Không có thuộc tính «extent_angle» (góc phạm vị) trong phần tử <%s>."
+msgstr "Không có thuộc tính «extent_angle» (góc phạm vi) trong phần tử <%s>."
 
 #: ../src/theme-parser.c:2087
 #, c-format
