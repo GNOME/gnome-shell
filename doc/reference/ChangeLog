@@ -1,3 +1,8 @@
+2006-07-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Add clutter_actor_has_clip() and
+	clutter_actor_unparent().
+
 2006-06-22  Matthew Allum  <mallum@openedhand.com>
 
 	reviewed by: <delete if not using a buddy>

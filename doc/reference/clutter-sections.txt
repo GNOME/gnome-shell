@@ -264,8 +264,10 @@ clutter_actor_get_name
 clutter_actor_get_id
 clutter_actor_set_clip
 clutter_actor_remove_clip
+clutter_actor_has_clip
 clutter_actor_set_parent
 clutter_actor_get_parent
+clutter_actor_unparent
 clutter_actor_raise
 clutter_actor_lower
 clutter_actor_raise_top
