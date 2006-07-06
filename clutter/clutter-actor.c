@@ -476,6 +476,15 @@ clutter_actor_set_property (GObject      *object,
       else
 	clutter_actor_hide (actor);
       break;
+    case PROP_CLIP:
+      {
+        ClutterGeometry *geom = g_value_get_boxed (value);
+	
+	clutter_actor_set_clip (actor,
+				geom->x, geom->y,
+				geom->width, geom->height);
+      }
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -517,6 +526,12 @@ clutter_actor_get_property (GObject    *object,
     case PROP_VISIBLE:
       g_value_set_boolean (value,
 		           (CLUTTER_ACTOR_IS_VISIBLE (actor) != FALSE));
+      break;
+    case PROP_HAS_CLIP:
+      g_value_set_boolean (value, priv->has_clip);
+      break;
+    case PROP_CLIP:
+      g_value_set_boxed (value, &(priv->clip));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -617,8 +632,20 @@ clutter_actor_class_init (ClutterActorClass *klass)
 	     		   "Visible",
 			   "Whether the actor is visible or not",
 			   FALSE,
-			   G_PARAM_READABLE));
-
+			   G_PARAM_READWRITE));
+  g_object_class_install_property (object_class, PROP_HAS_CLIP,
+    g_param_spec_boolean ("has-clip",
+	    		  "Has Clip",
+			  "Whether the actor has a clip set or not",
+			  FALSE,
+			  G_PARAM_READABLE));
+  g_object_class_install_property (object_class, PROP_CLIP,
+    g_param_spec_boxed ("clip",
+	    		"Clip",
+			"The clip region for the actor",
+			CLUTTER_TYPE_GEOMETRY,
+			G_PARAM_READWRITE));
+  
   actor_signals[DESTROY] =
     g_signal_new ("destroy",
 		  G_TYPE_FROM_CLASS (object_class),
@@ -1186,10 +1213,10 @@ clutter_actor_rotate_y (ClutterActor          *self,
  */
 void
 clutter_actor_set_clip (ClutterActor *self,
-			  gint            xoff, 
-			  gint            yoff, 
-			  gint            width, 
-			  gint            height)
+			gint          xoff, 
+			gint          yoff, 
+			gint          width, 
+			gint          height)
 {
   ClutterGeometry *clip;
   
@@ -1203,6 +1230,9 @@ clutter_actor_set_clip (ClutterActor *self,
   clip->height = height;
 
   self->priv->has_clip = TRUE;
+
+  g_object_notify (G_OBJECT (self), "has-clip");
+  g_object_notify (G_OBJECT (self), "clip");
 } 
 
 /**
@@ -1217,7 +1247,25 @@ clutter_actor_remove_clip (ClutterActor *self)
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   
   self->priv->has_clip = FALSE;
+  
+  g_object_notify (G_OBJECT (self), "has-clip");
 } 
+
+/**
+ * clutter_actor_has_clip:
+ * @self: a #ClutterActor
+ *
+ * Gets whether the actor has a clip set or not.
+ * 
+ * Return value: %TRUE if the actor has a clip set.
+ */
+gboolean
+clutter_actor_has_clip (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
+
+  return self->priv->has_clip;
+}
 
 /**
  * clutter_actor_set_parent:

@@ -1,5 +1,20 @@
 2006-07-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.h:
+	* clutter/clutter-actor.c:
+	
+	(clutter_actor_class_init), (clutter_actor_set_property),
+	(clutter_actor_get_property): Add the "clip" and "has-clip"
+	properties.
+
+	(clutter_actor_set_clip), (clutter_actor_remove_clip): Emit
+	the notification for the changed properties.
+
+	(clutter_actor_has_clip): Simple accessor to the "has-clip"
+	property.
+
+2006-07-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Big rework of the actor management semantics: now ClutterActor
 	objects behave like GtkObjects - that is they have an initial
 	"floating" reference that gets "sunk" when they are added to

@@ -189,6 +189,7 @@ void                  clutter_actor_set_clip         (ClutterActor          *sel
 						      gint                   width, 
 						      gint                   height);
 void                  clutter_actor_remove_clip      (ClutterActor          *self);
+gboolean              clutter_actor_has_clip         (ClutterActor          *self);
 void                  clutter_actor_set_parent       (ClutterActor          *self,
 						      ClutterActor          *parent);
 ClutterActor *        clutter_actor_get_parent       (ClutterActor          *self);
