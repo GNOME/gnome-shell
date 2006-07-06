@@ -59,20 +59,20 @@ typedef struct _ClutterGroupPrivate ClutterGroupPrivate;
  
 struct _ClutterGroup
 {
-  ClutterActor          parent;
+  ClutterActor parent_instance;
 
   /*< private >*/
-  ClutterGroupPrivate      *priv;
+  ClutterGroupPrivate *priv;
 };
 
 struct _ClutterGroupClass
 {
   /*< private >*/
-  ClutterActorClass     parent_class;
+  ClutterActorClass parent_class;
 
-  void (*add)    (ClutterGroup   *group,
+  void (*add)    (ClutterGroup *group,
 		  ClutterActor *child);
-  void (*remove) (ClutterGroup   *group,
+  void (*remove) (ClutterGroup *group,
 		  ClutterActor *child);
 
   /* padding for future expansion */
@@ -84,57 +84,33 @@ struct _ClutterGroupClass
   void (*_clutter_group_6) (void);
 };
 
-GType clutter_group_get_type (void);
-
-ClutterGroup *clutter_group_new (void);
-
-GList*
-clutter_group_get_children (ClutterGroup *self);
-
-void
-clutter_group_foreach (ClutterGroup    *self,
-		       ClutterCallback  callback,
-		       gpointer         user_data);
-
-void
-clutter_group_add (ClutterGroup *self,
-		   ClutterActor *actor); 
-
-void
-clutter_group_add_many_valist (ClutterGroup *self,
-			       ClutterActor *first_actor,
-			       va_list       args);
-
-void
-clutter_group_add_many (ClutterGroup *self,
-		        ClutterActor *first_actor,
-			...) G_GNUC_NULL_TERMINATED;
-
-void
-clutter_group_remove (ClutterGroup *self,
-		      ClutterActor *actor); 
-
-void
-clutter_group_show_all (ClutterGroup *self);
-
-void
-clutter_group_hide_all (ClutterGroup *self);
-
-ClutterActor *
-clutter_group_find_child_by_id (ClutterGroup *self, guint id);
-
-void
-clutter_group_raise (ClutterGroup     *self,
-		     ClutterActor *actor, 
-		     ClutterActor *sibling);
-
-void
-clutter_group_lower (ClutterGroup     *self,
-		     ClutterActor *actor, 
-		     ClutterActor *sibling);
-
-void
-clutter_group_sort_depth_order (ClutterGroup *self);
+GType         clutter_group_get_type         (void) G_GNUC_CONST;
+ClutterActor *clutter_group_new              (void);
+GList *       clutter_group_get_children     (ClutterGroup    *self);
+void          clutter_group_foreach          (ClutterGroup    *self,
+					      ClutterCallback  callback,
+					      gpointer         user_data);
+void          clutter_group_add              (ClutterGroup    *self,
+					      ClutterActor    *actor); 
+void          clutter_group_add_many_valist  (ClutterGroup    *self,
+					      ClutterActor    *first_actor,
+					      va_list          args);
+void          clutter_group_add_many         (ClutterGroup    *self,
+					      ClutterActor    *first_actor,
+					      ...) G_GNUC_NULL_TERMINATED;
+void          clutter_group_remove           (ClutterGroup    *self,
+					      ClutterActor    *actor); 
+void          clutter_group_show_all         (ClutterGroup    *self);
+void          clutter_group_hide_all         (ClutterGroup    *self);
+ClutterActor *clutter_group_find_child_by_id (ClutterGroup    *self,
+					      guint            id);
+void          clutter_group_raise            (ClutterGroup    *self,
+					      ClutterActor    *actor, 
+					      ClutterActor    *sibling);
+void          clutter_group_lower            (ClutterGroup    *self,
+					      ClutterActor    *actor, 
+					      ClutterActor    *sibling);
+void          clutter_group_sort_depth_order (ClutterGroup    *self);
 
 G_END_DECLS
 

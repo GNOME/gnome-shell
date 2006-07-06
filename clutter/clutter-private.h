@@ -26,8 +26,6 @@
 #ifndef _HAVE_CLUTTER_PRIVATE_H
 #define _HAVE_CLUTTER_PRIVATE_H
 
-#include <config.h>
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -44,6 +42,8 @@
 #include <glib.h>
 
 #include <pango/pangoft2.h>
+
+G_BEGIN_DECLS
 
 typedef struct _ClutterMainContext ClutterMainContext;
 
@@ -69,5 +69,19 @@ struct _ClutterMainContext
 
 #define CLUTTER_CONTEXT()	(clutter_context_get_default ())
 ClutterMainContext *clutter_context_get_default (void);
+
+
+typedef enum {
+  CLUTTER_ACTOR_UNUSED_FLAG = 0,
+
+  CLUTTER_ACTOR_IN_DESTRUCTION = 1 << 0,
+  CLUTTER_ACTOR_IS_TOPLEVEL    = 1 << 1
+} ClutterPrivateFlags;
+
+#define CLUTTER_PRIVATE_FLAGS(a)	 (CLUTTER_ACTOR ((a))->private_flags)
+#define CLUTTER_SET_PRIVATE_FLAGS(a,f)	 G_STMT_START{ (CLUTTER_PRIVATE_FLAGS (a) |= (f)); }G_STMT_END
+#define CLUTTER_UNSET_PRIVATE_FLAGS(a,f) G_STMT_START{ (CLUTTER_PRIVATE_FLAGS (a) &= ~(f)); }G_STMT_END
+
+G_END_DECLS
 
 #endif

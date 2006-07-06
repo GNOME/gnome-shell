@@ -1,3 +1,70 @@
+2006-07-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Big rework of the actor management semantics: now ClutterActor
+	objects behave like GtkObjects - that is they have an initial
+	"floating" reference that gets "sunk" when they are added to
+	a ClutterGroup.  This makes a group responsible of de-allocating
+	each actor inside it, so you just have to destroy the group to
+	get every child actor destroyed.  Also, now you can do:
+
+	  clutter_group_add (group, clutter_video_texture_new ());
+	
+	without having to care about reference counting and explicit
+	unreffing.
+
+	* clutter/clutter-private.h: Add private flags setter and
+	getter macros.
+
+	* clutter/clutter-actor.h:
+	* clutter/clutter-actor.c: Clean up; inherit from GInitiallyUnowned;
+	add a "visible" property; add the "destroy", "show" and "hide"
+	signals to ClutterActorClass.
+
+	(clutter_actor_show), (clutter_actor_hide): Refactor a bit; emit
+	the "show" and "hide" signals.
+
+	(clutter_actor_set_property), (clutter_actor_get_property),
+	(clutter_actor_class_init): Implement the "visible" property; add
+	signals.
+
+	(clutter_actor_finalize): Do not leak the actor's name, if it is
+	set.
+	
+	(clutter_actor_dispose): Emit the "destroy" signal here.
+
+	(clutter_actor_init): Sink the initial floating flag if needed.
+
+	(clutter_actor_destroy): Add a function to explicitely destroy
+	a ClutterActor.
+
+	(clutter_actor_set_parent), (clutter_actor_get_parent),
+	(clutter_actor_unparent): Make set_parent require a valid parent;
+	add unparent; check on get_parent; ref_sink the actor when
+	setting its parent and unref it when unsetting it.  Probably we'll
+	need a function that does reparenting as unparent+set_parent in
+	a single shot.
+
+	* clutter/clutter-group.h:
+	* clutter/clutter-group.c (clutter_group_dispose),
+	(clutter_group_finalize), (clutter_group_add),
+	(clutter_group_remove): Make the group destroy its children when
+	disposing it; clean up, and use the newly-available
+	clutter_actor_unparent().
+
+	* clutter/clutter-stage.h:
+	* clutter/clutter-stage.c (clutter_stage_init): ClutterStage is
+	a top-level actor; clean up.
+
+	* clutter/clutter-video-texture.h:
+	* clutter/clutter-video-texture.c: Clean up.
+
+	* examples/super-oh.c:
+	* examples/test.c:
+	* examples/video-player.c:
+	* examples/test-text.c:
+	* examples/video-cube.c: Remove the g_object_unref() call, as the
+	ClutterStage object is destroyed on clutter_main_quit().
+
 2006-06-23  Matthew Allum  <mallum@openedhand.com>
 
 	* examples/super-oh.c:
@@ -7,7 +74,7 @@
 
 	* examples/video-player.c: (size_change):
 	cast stage height to gint avoiding wierdness for when 
-        video height greater than half display height. Fixed #99
+	video height greater than half display height. Fixed #99
 
 2006-06-23  Matthew Allum  <mallum@openedhand.com>
 

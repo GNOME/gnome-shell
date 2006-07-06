@@ -44,7 +44,7 @@
 
 #include <glib.h>
 
-struct ClutterVideoTexturePrivate
+struct _ClutterVideoTexturePrivate
 {
   GstElement *playbin;
   char       *uri;
@@ -101,8 +101,7 @@ set_uri (ClutterMedia *media,
   if (!priv->playbin)
     return;
 
-  if (priv->uri)
-    g_free (priv->uri);
+  g_free (priv->uri);
 
   if (uri) 
     {

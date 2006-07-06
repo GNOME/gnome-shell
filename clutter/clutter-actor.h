@@ -63,6 +63,7 @@ typedef struct _ClutterActorPrivate  ClutterActorPrivate;
 typedef struct _ClutterGeometry        ClutterGeometry;
 
 typedef void (*ClutterCallback) (ClutterActor *actor, gpointer data);
+#define CLUTTER_CALLBACK(f)	((ClutterCallback) (f))
 
 struct _ClutterGeometry
 { 
@@ -87,183 +88,122 @@ GType clutter_actor_box_get_type (void) G_GNUC_CONST;
 struct _ClutterActor
 {
   /*< public >*/
-  GObject                 parent;
-  guint32                 flags;
+  GObject parent_instance;
+  guint32 flags;
 
   /*< private >*/
-  ClutterActorPrivate  *priv;
+  guint32 private_flags;
+  
+  ClutterActorPrivate *priv;
 };
 
 struct _ClutterActorClass
 {
   GObjectClass parent_class;
 
-  void (* show)                (ClutterActor        *actor);
-  void (* hide)                (ClutterActor        *actor);
-  void (* realize)             (ClutterActor        *actor);
-  void (* unrealize)           (ClutterActor        *actor);
-  void (* paint)               (ClutterActor        *actor);
-  void (* request_coords)      (ClutterActor        *actor,
-				ClutterActorBox     *box);
-  void (* allocate_coords)     (ClutterActor        *actor,
-				ClutterActorBox     *box);
-  void (* set_depth)           (ClutterActor        *actor,
-		                gint                   depth);
-  gint (* get_depth)           (ClutterActor        *actor);
+  void (* show)            (ClutterActor    *actor);
+  void (* hide)            (ClutterActor    *actor);
+  void (* realize)         (ClutterActor    *actor);
+  void (* unrealize)       (ClutterActor    *actor);
+  void (* paint)           (ClutterActor    *actor);
+  void (* request_coords)  (ClutterActor    *actor,
+			    ClutterActorBox *box);
+  void (* allocate_coords) (ClutterActor    *actor,
+			    ClutterActorBox *box);
+  void (* set_depth)       (ClutterActor    *actor,
+		            gint             depth);
+  gint (* get_depth)       (ClutterActor    *actor);
+
+  void (*destroy)          (ClutterActor    *actor);
 
   /* to go ? */
-  void (* show_all)            (ClutterActor        *actor);
-  void (* hide_all)            (ClutterActor        *actor);
-  void (* queue_redraw)        (ClutterActor        *actor);
+  void (* show_all)        (ClutterActor    *actor);
+  void (* hide_all)        (ClutterActor    *actor);
+  void (* queue_redraw)    (ClutterActor    *actor);
 
   /* padding for future expansion */
-  void (*_clutter_actor_1)     (void);
-  void (*_clutter_actor_2)     (void);
-  void (*_clutter_actor_3)     (void);
-  void (*_clutter_actor_4)     (void);
-  void (*_clutter_actor_5)     (void);
-  void (*_clutter_actor_6)     (void);
+  void (*_clutter_actor_1) (void);
+  void (*_clutter_actor_2) (void);
+  void (*_clutter_actor_3) (void);
+  void (*_clutter_actor_4) (void);
+  void (*_clutter_actor_5) (void);
+  void (*_clutter_actor_6) (void);
 };
 
-GType clutter_actor_get_type (void);
-
-void
-clutter_actor_show (ClutterActor *self);
-
-void
-clutter_actor_hide (ClutterActor *self);
-
-void
-clutter_actor_realize (ClutterActor *self);
-
-void
-clutter_actor_unrealize (ClutterActor *self);
-
-void
-clutter_actor_paint (ClutterActor *self);
-
-void
-clutter_actor_queue_redraw (ClutterActor  *self);
-
-void
-clutter_actor_request_coords (ClutterActor    *self,
-			      ClutterActorBox *box);
-
-void
-clutter_actor_allocate_coords (ClutterActor    *self,
-				 ClutterActorBox *box);
-
-void
-clutter_actor_set_geometry (ClutterActor  *self,
-			      ClutterGeometry *geom);
-
-void
-clutter_actor_get_geometry (ClutterActor  *self,
-			      ClutterGeometry *geom);
-
-void
-clutter_actor_get_coords (ClutterActor *self,
-			    gint           *x1,
-			    gint           *y1,
-			    gint           *x2,
-			    gint           *y2);
-
-void
-clutter_actor_set_position (ClutterActor *self,
-			      gint            x,
-			      gint            y);
-
-void
-clutter_actor_set_size (ClutterActor *self,
-			  gint            width,
-			  gint            height);
-
-void
-clutter_actor_get_abs_position (ClutterActor *self,
-				  gint           *x,
-				  gint           *y);
-
-guint
-clutter_actor_get_width (ClutterActor *self);
-
-guint
-clutter_actor_get_height (ClutterActor *self);
-
-gint
-clutter_actor_get_x (ClutterActor *self);
-
-gint
-clutter_actor_get_y (ClutterActor *self);
-
-void
-clutter_actor_rotate_z (ClutterActor          *self,
-			  gfloat                   angle,
-			  gint                     x,
-			  gint                     y);
-
-void
-clutter_actor_rotate_x (ClutterActor          *self,
-			  gfloat                   angle,
-			  gint                     y,
-			  gint                     z);
-
-void
-clutter_actor_rotate_y (ClutterActor          *self,
-			  gfloat                   angle,
-			  gint                     x,
-			  gint                     z);
-
-void
-clutter_actor_set_opacity (ClutterActor *self,
-			     guint8          opacity);
-
-guint8
-clutter_actor_get_opacity (ClutterActor *self);
-
-void
-clutter_actor_set_name (ClutterActor *self,
-			  const gchar    *id);
-
-const gchar*
-clutter_actor_get_name (ClutterActor *self);
-
-guint32
-clutter_actor_get_id (ClutterActor *self);
-
-void
-clutter_actor_set_clip (ClutterActor *self,
-			  gint            xoff, 
-			  gint            yoff, 
-			  gint            width, 
-			  gint            height);
-
-void
-clutter_actor_remove_clip (ClutterActor *self);
-
-void
-clutter_actor_set_parent (ClutterActor *self, ClutterActor *parent);
-
-ClutterActor*
-clutter_actor_get_parent (ClutterActor *self);
-
-void
-clutter_actor_raise (ClutterActor *self, ClutterActor *below);
-
-void
-clutter_actor_lower (ClutterActor *self, ClutterActor *above);
-
-void
-clutter_actor_raise_top (ClutterActor *self);
-
-void
-clutter_actor_lower_bottom (ClutterActor *self);
-
-void
-clutter_actor_set_depth (ClutterActor *self,
-                           gint            depth);
-
-gint
-clutter_actor_get_depth (ClutterActor *self);
+GType                 clutter_actor_get_type         (void) G_GNUC_CONST;
+void                  clutter_actor_show             (ClutterActor          *self);
+void                  clutter_actor_hide             (ClutterActor          *self);
+void                  clutter_actor_realize          (ClutterActor          *self);
+void                  clutter_actor_unrealize        (ClutterActor          *self);
+void                  clutter_actor_paint            (ClutterActor          *self);
+void                  clutter_actor_queue_redraw     (ClutterActor          *self);
+void                  clutter_actor_destroy          (ClutterActor          *self);
+void                  clutter_actor_request_coords   (ClutterActor          *self,
+						      ClutterActorBox       *box);
+void                  clutter_actor_allocate_coords  (ClutterActor          *self,
+						      ClutterActorBox       *box);
+void                  clutter_actor_set_geometry     (ClutterActor          *self,
+						      const ClutterGeometry *geometry);
+void                  clutter_actor_get_geometry     (ClutterActor          *self,
+						      ClutterGeometry       *geometry);
+void                  clutter_actor_get_coords       (ClutterActor          *self,
+						      gint                  *x1,
+						      gint                  *y1,
+						      gint                  *x2,
+						      gint                  *y2);
+void                  clutter_actor_set_size         (ClutterActor          *self,
+						      gint                   width,
+						      gint                   height);
+void                  clutter_actor_set_position     (ClutterActor          *self,
+						      gint                   x,
+						      gint                   y);
+void                  clutter_actor_get_abs_position (ClutterActor          *self,
+						      gint                  *x,
+						      gint                  *y);
+guint                 clutter_actor_get_width        (ClutterActor          *self);
+guint                 clutter_actor_get_height       (ClutterActor          *self);
+gint                  clutter_actor_get_x            (ClutterActor          *self);
+gint                  clutter_actor_get_y            (ClutterActor          *self);
+void                  clutter_actor_rotate_x         (ClutterActor          *self,
+						      gfloat                 angle,
+						      gint                   y,
+						      gint                   z);
+void                  clutter_actor_rotate_y         (ClutterActor          *self,
+						      gfloat                 angle,
+						      gint                   x,
+						      gint                   z);
+void                  clutter_actor_rotate_z         (ClutterActor          *self,
+						      gfloat                 angle,
+						      gint                   x,
+						      gint                   y);
+void                  clutter_actor_set_opacity      (ClutterActor          *self,
+						      guint8                 opacity);
+guint8                clutter_actor_get_opacity      (ClutterActor          *self);
+void                  clutter_actor_set_name         (ClutterActor          *self,
+						      const gchar           *name);
+G_CONST_RETURN gchar *clutter_actor_get_name         (ClutterActor          *self);
+guint32               clutter_actor_get_id           (ClutterActor          *self);
+void                  clutter_actor_set_clip         (ClutterActor          *self,
+						      gint                   xoff, 
+						      gint                   yoff, 
+						      gint                   width, 
+						      gint                   height);
+void                  clutter_actor_remove_clip      (ClutterActor          *self);
+void                  clutter_actor_set_parent       (ClutterActor          *self,
+						      ClutterActor          *parent);
+ClutterActor *        clutter_actor_get_parent       (ClutterActor          *self);
+void                  clutter_actor_reparent         (ClutterActor          *self,
+						      ClutterActor          *new_parent);
+void                  clutter_actor_unparent         (ClutterActor          *self);
+void                  clutter_actor_raise            (ClutterActor          *self,
+						      ClutterActor          *below);
+void                  clutter_actor_lower            (ClutterActor          *self,
+						      ClutterActor          *above);
+void                  clutter_actor_raise_top        (ClutterActor          *self);
+void                  clutter_actor_lower_bottom     (ClutterActor          *self);
+void                  clutter_actor_set_depth        (ClutterActor          *self,
+						      gint                   depth);
+gint                  clutter_actor_get_depth        (ClutterActor          *self);
 
 
 G_END_DECLS

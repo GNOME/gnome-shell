@@ -200,16 +200,12 @@ clutter_group_allocate_coords (ClutterActor    *self,
 static void 
 clutter_group_dispose (GObject *object)
 {
-  ClutterGroup *self = CLUTTER_GROUP(object); 
+  ClutterGroup *self = CLUTTER_GROUP (object);
 
-  if (self->priv)
-    {
-      /* FIXME: Do we need to actually free anything here ?
-       *        Children ref us so this wont get called till
-       *        they are all removed.
-      */
-    }
-
+  clutter_group_foreach (self,
+		  	 CLUTTER_CALLBACK (clutter_actor_destroy),
+			 NULL);
+  
   G_OBJECT_CLASS (clutter_group_parent_class)->dispose (object);
 }
 
@@ -217,17 +213,6 @@ clutter_group_dispose (GObject *object)
 static void 
 clutter_group_finalize (GObject *object)
 {
-  ClutterGroup *group = CLUTTER_GROUP (object);
-
-  /* XXX - if something survives ::dispose then there's something
-   * wrong; but, at least, we won't leak stuff around.
-   */
-  if (group->priv->children)
-    {
-      g_list_foreach (group->priv->children, (GFunc) g_object_unref, NULL);
-      g_list_free (group->priv->children);
-    }
-  
   G_OBJECT_CLASS (clutter_group_parent_class)->finalize (object);
 }
 
@@ -285,7 +270,7 @@ clutter_group_init (ClutterGroup *self)
  *
  * returns a new #ClutterGroup
  **/
-ClutterGroup*
+ClutterActor *
 clutter_group_new (void)
 {
   return g_object_new (CLUTTER_TYPE_GROUP, NULL);
@@ -405,14 +390,16 @@ clutter_group_add (ClutterGroup   *self,
       return;
     }
 
-  self->priv->children = g_list_append (self->priv->children, actor);
-  /* below refs */
-  clutter_actor_set_parent (actor, CLUTTER_ACTOR(self));
   g_object_ref (actor);
 
+  self->priv->children = g_list_append (self->priv->children, actor);
+  clutter_actor_set_parent (actor, CLUTTER_ACTOR (self));
+  
   clutter_group_sort_depth_order (self); 
 
   g_signal_emit (self, group_signals[ADD], 0, actor);
+
+  g_object_unref (actor);
 }
 
 /**
@@ -425,9 +412,9 @@ clutter_group_add (ClutterGroup   *self,
  * function inside bindings.
  */
 void
-clutter_group_add_many_valist (ClutterGroup   *group,
+clutter_group_add_many_valist (ClutterGroup *group,
 			       ClutterActor *first_actor,
-			       va_list         args)
+			       va_list       args)
 {
   ClutterActor *actor;
   
@@ -452,7 +439,7 @@ clutter_group_add_many_valist (ClutterGroup   *group,
  * equivalent to calling clutter_group_add() for each member of the list.
  */
 void
-clutter_group_add_many (ClutterGroup   *self,
+clutter_group_add_many (ClutterGroup *self,
 		        ClutterActor *first_actor,
 			...)
 {
@@ -479,6 +466,8 @@ clutter_group_remove (ClutterGroup *self,
   g_return_if_fail (CLUTTER_IS_GROUP (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
+  g_object_ref (actor);
+
   parent = clutter_actor_get_parent (actor);
   if (parent != CLUTTER_ACTOR (self))
     {
@@ -489,11 +478,17 @@ clutter_group_remove (ClutterGroup *self,
 		 g_type_name (G_OBJECT_TYPE (self)));
       return;
     }
+  
+  g_object_ref (actor);
 
   self->priv->children = g_list_remove (self->priv->children, actor);
-  clutter_actor_set_parent (actor, NULL);
+  clutter_actor_unparent (actor);
   
   g_signal_emit (self, group_signals[REMOVE], 0, actor);
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (self)))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+
   g_object_unref (actor);
 }
 

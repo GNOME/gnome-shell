@@ -50,8 +50,6 @@ main (int argc, char *argv[])
   g_signal_connect (stage, "key-press-event",
 		    G_CALLBACK (clutter_main_quit), NULL);
 
-  g_object_unref (stage);
-
   clutter_main();
 
   return 0;

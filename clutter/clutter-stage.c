@@ -730,6 +730,9 @@ static void
 clutter_stage_init (ClutterStage *self)
 {
   ClutterStagePrivate *priv;
+
+  /* a stage is a top-level object */
+  CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IS_TOPLEVEL);
   
   self->priv = priv = CLUTTER_STAGE_GET_PRIVATE (self);
 

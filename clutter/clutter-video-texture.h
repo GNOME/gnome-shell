@@ -56,9 +56,9 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   CLUTTER_TYPE_VIDEO_TEXTURE, ClutterVideoTextureClass))
 
-typedef struct _ClutterVideoTexture       ClutterVideoTexture;
-typedef struct _ClutterVideoTextureClass  ClutterVideoTextureClass;
-typedef struct ClutterVideoTexturePrivate ClutterVideoTexturePrivate;
+typedef struct _ClutterVideoTexture        ClutterVideoTexture;
+typedef struct _ClutterVideoTextureClass   ClutterVideoTextureClass;
+typedef struct _ClutterVideoTexturePrivate ClutterVideoTexturePrivate;
 
 /* #define CLUTTER_VIDEO_TEXTURE_ERROR clutter_video_texture_error_quark() */
 
@@ -88,10 +88,8 @@ struct _ClutterVideoTextureClass
   void (* _clutter_reserved6) (void);
 }; 
 
-GType clutter_video_texture_get_type (void);
-
-ClutterActor*
-clutter_video_texture_new (void);
+GType         clutter_video_texture_get_type (void) G_GNUC_CONST;
+ClutterActor *clutter_video_texture_new      (void);
 
 G_END_DECLS
 

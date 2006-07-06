@@ -34,30 +34,38 @@
 
 #include "clutter-actor.h"
 #include "clutter-main.h"
+#include "clutter-enum-types.h"
+#include "clutter-marshal.h"
 #include "clutter-private.h"
 
-G_DEFINE_ABSTRACT_TYPE (ClutterActor, clutter_actor, G_TYPE_OBJECT);
+G_DEFINE_ABSTRACT_TYPE (ClutterActor,
+			clutter_actor,
+			G_TYPE_INITIALLY_UNOWNED);
 
 static guint32 __id = 0;
+
 
 #define CLUTTER_ACTOR_GET_PRIVATE(obj) \
 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_ACTOR, ClutterActorPrivate))
 
 struct _ClutterActorPrivate
 {
-  ClutterActorBox       coords;
+  ClutterActorBox coords;
 
-  ClutterGeometry         clip;
-  gboolean                has_clip;
+  ClutterGeometry clip;
+  guint has_clip : 1;
 
-  gfloat                  rxang, ryang, rzang; /* Rotation foo. */
-  gint                    rzx, rzy, rxy, rxz, ryx, ryz;
-  gint                    z; 	/* to actor box ? */
+  gfloat rxang, ryang, rzang; /* Rotation foo. */
+  gint rzx, rzy, rxy, rxz, ryx, ryz;
+  gint z; /* to actor box ? */
 
-  guint8                  opacity;
-  ClutterActor         *parent_actor; /* This should always be a group */
-  gchar                  *name;
-  guint32                 id; 	/* Unique ID */
+  guint8 opacity;
+  
+  ClutterActor *parent_actor; /* This should always be a group */
+  
+  gchar *name;
+  
+  guint32 id; /* Unique ID */
 };
 
 enum
@@ -67,10 +75,23 @@ enum
   PROP_Y,
   PROP_WIDTH,
   PROP_HEIGHT,
-  /* PROP_CLIP FIXME: add */
+  PROP_CLIP,
+  PROP_HAS_CLIP,
   PROP_OPACITY,
   PROP_NAME,
+  PROP_VISIBLE
 };
+
+enum
+{
+  SHOW,
+  HIDE,
+  DESTROY,
+
+  LAST_SIGNAL
+};
+
+static guint actor_signals[LAST_SIGNAL] = { 0, };
 
 static gboolean
 redraw_update_idle (gpointer data)
@@ -102,23 +123,29 @@ redraw_update_idle (gpointer data)
 void
 clutter_actor_show (ClutterActor *self)
 {
-  ClutterActorClass *klass;
+  if (!CLUTTER_ACTOR_IS_VISIBLE (self))
+    {
+      ClutterActorClass *klass;
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    return;
+      g_object_ref (self);
+      
+      if (!CLUTTER_ACTOR_IS_REALIZED (self))
+	clutter_actor_realize(self);
 
-  if (!CLUTTER_ACTOR_IS_REALIZED (self))
-    clutter_actor_realize(self);
+      CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
 
-  CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
+      klass = CLUTTER_ACTOR_GET_CLASS (self);
+      if (klass->show)
+        (klass->show) (self);
 
-  klass = CLUTTER_ACTOR_GET_CLASS (self);
+      if (CLUTTER_ACTOR_IS_VISIBLE (self))
+        clutter_actor_queue_redraw (self);
 
-  if (klass->show)
-    (klass->show) (self);
+      g_signal_emit (self, actor_signals[SHOW], 0);
+      g_object_notify (G_OBJECT (self), "visible");
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    clutter_actor_queue_redraw (self);
+      g_object_unref (self);
+    }
 }
 
 /**
@@ -131,19 +158,25 @@ clutter_actor_show (ClutterActor *self)
 void
 clutter_actor_hide (ClutterActor *self)
 {
-  ClutterActorClass *klass;
+  if (CLUTTER_ACTOR_IS_VISIBLE (self))
+    {
+      ClutterActorClass *klass;
 
-  if (!CLUTTER_ACTOR_IS_VISIBLE (self))
-    return;
+      g_object_ref (self);
 
-  CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
+      CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
 
-  klass = CLUTTER_ACTOR_GET_CLASS (self);
+      klass = CLUTTER_ACTOR_GET_CLASS (self);
+      if (klass->hide)
+        (klass->hide) (self);
 
-  if (klass->hide)
-    (klass->hide) (self);
+      clutter_actor_queue_redraw (self);
 
-  clutter_actor_queue_redraw (self);
+      g_signal_emit (self, actor_signals[HIDE], 0);
+      g_object_notify (G_OBJECT (self), "visible");
+
+      g_object_unref (self);
+    }
 }
 
 /**
@@ -315,16 +348,16 @@ clutter_actor_paint (ClutterActor *self)
  **/
 void
 clutter_actor_request_coords (ClutterActor    *self,
-				ClutterActorBox *box)
+			      ClutterActorBox *box)
 {
   ClutterActorClass *klass;
-  gboolean             x_change, y_change, width_change, height_change;
+  gboolean x_change, y_change, width_change, height_change;
 
   klass = CLUTTER_ACTOR_GET_CLASS (self);
 
   /* FIXME: Kludgy see allocate co-ords */
   if (klass->request_coords)
-    klass->request_coords(self, box);
+    klass->request_coords (self, box);
 
   x_change     = (self->priv->coords.x1 != box->x1);
   y_change     = (self->priv->coords.y1 != box->y1);
@@ -437,6 +470,12 @@ clutter_actor_set_property (GObject      *object,
     case PROP_NAME:
       clutter_actor_set_name (actor, g_value_get_string (value));
       break;
+    case PROP_VISIBLE:
+      if (g_value_get_boolean (value) == TRUE)
+	clutter_actor_show (actor);
+      else
+	clutter_actor_hide (actor);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -475,6 +514,10 @@ clutter_actor_get_property (GObject    *object,
     case PROP_NAME:
       g_value_set_string (value, priv->name);
       break;
+    case PROP_VISIBLE:
+      g_value_set_boolean (value,
+		           (CLUTTER_ACTOR_IS_VISIBLE (actor) != FALSE));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -484,19 +527,31 @@ clutter_actor_get_property (GObject    *object,
 static void 
 clutter_actor_dispose (GObject *object)
 {
-  ClutterActor *self = CLUTTER_ACTOR(object); 
+  ClutterActor *self = CLUTTER_ACTOR (object);
 
-  if (self->priv->parent_actor)
+  CLUTTER_DBG ("Disposing of object (id=%d) of type `%s'",
+	       self->priv->id,
+	       g_type_name (G_OBJECT_TYPE (self)));
+  
+  if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION))
     {
-      clutter_group_remove (CLUTTER_GROUP(self->priv->parent_actor), self);
-    }
+      CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_DESTRUCTION);
 
+      g_signal_emit (self, actor_signals[DESTROY], 0);
+
+      CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_DESTRUCTION);
+    }
+  
   G_OBJECT_CLASS (clutter_actor_parent_class)->dispose (object);
 }
 
 static void 
 clutter_actor_finalize (GObject *object)
 {
+  ClutterActor *actor = CLUTTER_ACTOR (object);
+
+  g_free (actor->priv->name);
+  
   G_OBJECT_CLASS (clutter_actor_parent_class)->finalize (object);
 }
 
@@ -512,8 +567,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 
   g_type_class_add_private (klass, sizeof (ClutterActorPrivate));
 
-  g_object_class_install_property
-    (object_class, PROP_X,
+  g_object_class_install_property (object_class, PROP_X,
      g_param_spec_int ("x",
 		       "X co-ord",
 		       "X co-ord of actor",
@@ -522,8 +576,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		       0,
 		       G_PARAM_READWRITE));
 
-  g_object_class_install_property
-    (object_class, PROP_Y,
+  g_object_class_install_property (object_class, PROP_Y,
      g_param_spec_int ("y",
 		       "Y co-ord",
 		       "Y co-ord of actor",
@@ -532,8 +585,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		       0,
 		       G_PARAM_READWRITE));
 
-  g_object_class_install_property
-    (object_class, PROP_WIDTH,
+  g_object_class_install_property (object_class, PROP_WIDTH,
      g_param_spec_int ("width",
 		       "Width",
 		       "Width of actor in pixels",
@@ -542,8 +594,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		       0,
 		       G_PARAM_READWRITE));
 
-  g_object_class_install_property
-    (object_class, PROP_HEIGHT,
+  g_object_class_install_property (object_class, PROP_HEIGHT,
      g_param_spec_int ("height",
 		       "Height",
 		       "Height of actor in pixels",
@@ -552,8 +603,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		       0,
 		       G_PARAM_READWRITE));
   
-  g_object_class_install_property
-    (object_class, PROP_OPACITY,
+  g_object_class_install_property (object_class, PROP_OPACITY,
      g_param_spec_uchar ("opacity",
 			 "Opacity",
 			 "Opacity of actor",
@@ -562,20 +612,77 @@ clutter_actor_class_init (ClutterActorClass *klass)
 			 0xff,
 			 G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
+  g_object_class_install_property (object_class, PROP_VISIBLE,
+     g_param_spec_boolean ("visible",
+	     		   "Visible",
+			   "Whether the actor is visible or not",
+			   FALSE,
+			   G_PARAM_READABLE));
+
+  actor_signals[DESTROY] =
+    g_signal_new ("destroy",
+		  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_CLEANUP | G_SIGNAL_NO_RECURSE | G_SIGNAL_NO_HOOKS,
+		  G_STRUCT_OFFSET (ClutterActorClass, destroy),
+		  NULL, NULL,
+		  clutter_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
+  actor_signals[SHOW] =
+    g_signal_new ("show",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_FIRST,
+		  G_STRUCT_OFFSET (ClutterActorClass, show),
+		  NULL, NULL,
+		  clutter_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
+  actor_signals[HIDE] =
+    g_signal_new ("hide",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_FIRST,
+		  G_STRUCT_OFFSET (ClutterActorClass, hide),
+		  NULL, NULL,
+		  clutter_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);  
 }
 
 static void
 clutter_actor_init (ClutterActor *self)
 {
+  gboolean was_floating;
+
+  /* sink the GInitiallyUnowned floating flag */
+  was_floating = g_object_is_floating (G_OBJECT (self));
+  if (was_floating)
+    g_object_force_floating (G_OBJECT (self));
+
   self->priv = CLUTTER_ACTOR_GET_PRIVATE (self); 
 
   self->priv->parent_actor = NULL;
-  self->priv->has_clip       = FALSE;
-  self->priv->opacity        = 0xff;
-  self->priv->id             = __id++;
+  self->priv->has_clip     = FALSE;
+  self->priv->opacity      = 0xff;
+  self->priv->id           = __id++;
 
   clutter_actor_set_position (self, 0, 0);
   clutter_actor_set_size (self, 0, 0);
+}
+
+/**
+ * clutter_actor_destroy:
+ * @self: a #ClutterActor
+ *
+ * Destroys an actor.  When an actor is destroyed, it will break any
+ * references it holds to other objects.  If the actor is inside a
+ * group, the actor will be removed from the group.
+ *
+ * When you destroy a group its children will be destroyed as well.
+ */
+void
+clutter_actor_destroy (ClutterActor *self)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION))
+    g_object_run_dispose (G_OBJECT (self));
 }
 
 /**
@@ -614,8 +721,8 @@ clutter_actor_queue_redraw (ClutterActor *self)
  * Sets the actors geometry in pixels relative to any parent actor.
  */
 void
-clutter_actor_set_geometry (ClutterActor  *self,
-			      ClutterGeometry *geom)
+clutter_actor_set_geometry (ClutterActor          *self,
+			    const ClutterGeometry *geom)
 {
   ClutterActorBox box;
 
@@ -635,8 +742,8 @@ clutter_actor_set_geometry (ClutterActor  *self,
  * Gets the actors geometry in pixels relative to any parent actor.
  */
 void
-clutter_actor_get_geometry (ClutterActor  *self,
-			      ClutterGeometry *geom)
+clutter_actor_get_geometry (ClutterActor    *self,
+			    ClutterGeometry *geom)
 {
   ClutterActorBox box;
 
@@ -902,14 +1009,14 @@ clutter_actor_get_opacity (ClutterActor *self)
  */
 void
 clutter_actor_set_name (ClutterActor *self,
-			  const gchar    *name)
+			const gchar  *name)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   
+  g_free (self->priv->name);
+  
   if (name || name[0] != '\0')
     {
-      g_free (self->priv->name);
-      
       self->priv->name = g_strdup(name);
     }
 }
@@ -924,7 +1031,7 @@ clutter_actor_set_name (ClutterActor *self,
  *   returned string is owned by the actor and should not
  *   be modified or freed.
  */
-const gchar*
+G_CONST_RETURN gchar *
 clutter_actor_get_name (ClutterActor *self)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
@@ -1088,7 +1195,7 @@ clutter_actor_set_clip (ClutterActor *self,
   
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   
-  clip = &self->priv->clip;
+  clip = &(self->priv->clip);
   
   clip->x      = xoff;
   clip->y      = yoff;
@@ -1115,28 +1222,42 @@ clutter_actor_remove_clip (ClutterActor *self)
 /**
  * clutter_actor_set_parent:
  * @self: A #ClutterActor
- * @parent: A new #ClutterActor parent or NULL
+ * @parent: A new #ClutterActor parent
  *
- * Sets the parent of @self to @parent.
+ * Sets the parent of @self to @parent.  The opposite function is
+ * clutter_actor_unparent().
+ * 
  * This function should not be used by applications.
  */
 void
 clutter_actor_set_parent (ClutterActor *self,
-		            ClutterActor *parent)
+		          ClutterActor *parent)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
-  g_return_if_fail ((parent == NULL) || CLUTTER_IS_ACTOR (parent));
+  g_return_if_fail (CLUTTER_IS_ACTOR (parent));
+  g_return_if_fail (self != parent);
 
-  if (self->priv->parent_actor == parent)
-    return;
-  
-  if (self->priv->parent_actor && self->priv->parent_actor != parent)
-    g_object_unref (self->priv->parent_actor);
-  
+  if (self->priv->parent_actor != NULL)
+    {
+      g_warning ("Cannot set a parent on an actor which has a parent.\n"
+		 "You must use clutter_actor_unparent() first.\n");
+
+      return;
+    }
+
+  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
+    {
+      g_warning ("Cannot set a parent on a toplevel actor\n");
+
+      return;
+    }
+
+  g_object_ref_sink (self);
   self->priv->parent_actor = parent;
 
-  if (self->priv->parent_actor)
-    g_object_ref (self->priv->parent_actor);
+  if (CLUTTER_ACTOR_IS_VISIBLE (self->priv->parent_actor) &&
+      CLUTTER_ACTOR_IS_VISIBLE (self))
+    clutter_actor_queue_redraw (self);
 }
 
 /**
@@ -1147,10 +1268,31 @@ clutter_actor_set_parent (ClutterActor *self,
  *
  * Return Value: The #ClutterActor parent or NULL
  */
-ClutterActor*
+ClutterActor *
 clutter_actor_get_parent (ClutterActor *self)
 {
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), NULL);
+  
   return self->priv->parent_actor;
+}
+
+/**
+ * clutter_actor_unparent:
+ * @self: a #ClutterActor
+ *
+ * This function should not be used in applications.  It should be called by
+ * implementations of group actors, to dissociate a child from the container.
+ */
+void
+clutter_actor_unparent (ClutterActor *self)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  if (self->priv->parent_actor == NULL)
+    return;
+
+  self->priv->parent_actor = NULL;
+  g_object_unref (self);
 }
 
 /**

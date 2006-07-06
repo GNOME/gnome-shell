@@ -10,8 +10,8 @@
 typedef struct SuperOH
 {
   ClutterActor *hand[NHANDS], *bgtex;
-  ClutterGroup   *group;
-  GdkPixbuf      *bgpixb;
+  ClutterActor *group;
+  GdkPixbuf    *bgpixb;
 
 } SuperOH; 
 
@@ -183,14 +183,14 @@ main (int argc, char *argv[])
       clutter_actor_set_position (oh->hand[i], x, y);
 
       /* Add to our group group */
-      clutter_group_add (oh->group, oh->hand[i]);
+      clutter_group_add (CLUTTER_GROUP (oh->group), oh->hand[i]);
     }
 
   /* Add the group to the stage */
   clutter_group_add (CLUTTER_GROUP (stage), CLUTTER_ACTOR(oh->group));
 
   /* Show everying ( and map window ) */
-  clutter_group_show_all (oh->group);
+  clutter_group_show_all (CLUTTER_GROUP (oh->group));
   clutter_group_show_all (CLUTTER_GROUP (stage));
 
   g_signal_connect (stage, "button-press-event",
@@ -211,8 +211,6 @@ main (int argc, char *argv[])
   clutter_timeline_start (timeline);
 
   clutter_main();
-
-  g_object_unref (stage);
 
   return 0;
 }

@@ -39,7 +39,7 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_STAGE clutter_stage_get_type()
+#define CLUTTER_TYPE_STAGE (clutter_stage_get_type())
 
 #define CLUTTER_STAGE_WIDTH() \
  clutter_actor_get_width(CLUTTER_ACTOR(clutter_stage_get_default()))
@@ -106,30 +106,23 @@ struct _ClutterStageClass
   void (*_clutter_stage6) (void);
 }; 
 
-GType           clutter_stage_get_type           (void);
-
-ClutterActor *clutter_stage_get_default        (void);
-
-Window          clutter_stage_get_xwindow        (ClutterStage *stage);
-
-gboolean        clutter_stage_set_xwindow_foreign (ClutterStage *stage,
-						   Window        xid);
-
-void            clutter_stage_set_color          (ClutterStage       *stage,
-						  const ClutterColor *color);
-
-void            clutter_stage_get_color          (ClutterStage       *stage,
-						  ClutterColor       *color);
-
-ClutterActor *clutter_stage_get_actor_at_pos (ClutterStage       *stage,
-						  gint                x,
-						  gint                y);
-
-GdkPixbuf *     clutter_stage_snapshot           (ClutterStage       *stage,
-						  gint                x,
-						  gint                y,
-						  gint                width,
-						  gint                height);
+GType         clutter_stage_get_type            (void) G_GNUC_CONST;
+ClutterActor *clutter_stage_get_default         (void);
+Window        clutter_stage_get_xwindow         (ClutterStage       *stage);
+gboolean      clutter_stage_set_xwindow_foreign (ClutterStage       *stage,
+						 Window              xid);
+void          clutter_stage_set_color           (ClutterStage       *stage,
+					         const ClutterColor *color);
+void          clutter_stage_get_color           (ClutterStage       *stage,
+						 ClutterColor       *color);
+ClutterActor *clutter_stage_get_actor_at_pos    (ClutterStage       *stage,
+						 gint                x,
+						 gint                y);
+GdkPixbuf *   clutter_stage_snapshot            (ClutterStage       *stage,
+						 gint                x,
+						 gint                y,
+						 gint                width,
+						 gint                height);
 
 G_END_DECLS
 

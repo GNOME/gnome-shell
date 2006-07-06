@@ -268,9 +268,5 @@ main (int argc, char *argv[])
 
   clutter_main();
 
-  g_object_unref (stage);
-
   return 0;
 }
-
-
