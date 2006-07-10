@@ -106,9 +106,9 @@ union _ClutterEvent
   ClutterEventType   type;
   
   ClutterAnyEvent    any;
-  ClutterKeyEvent    key_event;
-  ClutterButtonEvent button_event;
-  ClutterMotionEvent motion_event;
+  ClutterKeyEvent    key;
+  ClutterButtonEvent button;
+  ClutterMotionEvent motion;
 };
 
 GType clutter_event_get_type (void) G_GNUC_CONST;

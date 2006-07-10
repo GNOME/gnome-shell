@@ -1,3 +1,8 @@
+2006-07-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-event.h: Change the name of the
+	ClutterEvent union members to something a little shorter.
+
 2006-07-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* configure.ac: Remove the python stuff, now that the bindings
