@@ -1,3 +1,18 @@
+2006-07-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-main.c:
+	
+	(clutter_main): Destroy the main stage, instead of unreffing it.
+
+	(clutter_init): Ref and sink the main stage, as it is a top
+	level actor.
+
+	* clutter/clutter-stage.c (clutter_stage_unrealize): Access
+	the Window private member directly, instead of calling the
+	get_xwindow method.
+
+	* examples/test.c (main): Quit on button press.
+
 2006-07-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-event.h: Change the name of the

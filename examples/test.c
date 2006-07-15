@@ -72,7 +72,10 @@ main (int argc, char *argv[])
   clutter_init (&argc, &argv);
 
   stage = clutter_stage_get_default ();
-
+  g_signal_connect (stage, "button-press-event",
+		    G_CALLBACK (clutter_main_quit),
+		    NULL);
+  
   pixbuf = gdk_pixbuf_new_from_file ("clutter-logo-800x600.png", NULL);
 
   if (!pixbuf)

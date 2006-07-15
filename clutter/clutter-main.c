@@ -391,7 +391,7 @@ clutter_main (void)
 
   if (context->main_loop_level == 0)
     {
-      g_object_unref (context->stage);
+      clutter_actor_destroy (CLUTTER_ACTOR (context->stage));
       g_free (context);
     }
 }
@@ -571,6 +571,7 @@ clutter_init (int *argc, char ***argv)
 
   context->stage = CLUTTER_STAGE (clutter_stage_get_default ());
   g_return_val_if_fail (CLUTTER_IS_STAGE (context->stage), -3);
+  g_object_ref_sink (context->stage);
 
   clutter_actor_realize (CLUTTER_ACTOR (context->stage));
   g_return_val_if_fail 

@@ -262,8 +262,6 @@ clutter_stage_unrealize (ClutterActor *actor)
 
   if (priv->want_offscreen)
     {
-      
-
       if (priv->glxpixmap)
 	{
 	  glXDestroyGLXPixmap (clutter_xdisplay(), priv->glxpixmap);
@@ -278,7 +276,7 @@ clutter_stage_unrealize (ClutterActor *actor)
     }
   else
     {
-      if (clutter_stage_get_xwindow (CLUTTER_STAGE(actor)))
+      if (priv->xwin)
 	{
 	  XDestroyWindow (clutter_xdisplay(), priv->xwin);
 	  priv->xwin = None;
@@ -771,6 +769,7 @@ clutter_stage_get_default (void)
   if (!stage_singleton)
     {
       stage_singleton = g_object_new (CLUTTER_TYPE_STAGE, NULL);
+      
       retval = CLUTTER_ACTOR (stage_singleton);
     }
   else
