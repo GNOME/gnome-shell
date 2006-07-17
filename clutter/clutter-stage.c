@@ -626,7 +626,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
   gobject_class->finalize     = clutter_stage_finalize;
   gobject_class->set_property = clutter_stage_set_property;
   gobject_class->get_property = clutter_stage_get_property;
-
+  
   /**
    * ClutterStage:fullscreen
    *
@@ -758,8 +758,8 @@ clutter_stage_init (ClutterStage *self)
  * calls to clutter_stage_get_default() will return the same
  * instance, with its reference count increased.
  *
- * Return value: the main #ClutterStage.  Use g_object_unref()
- *   when finished using it.
+ * Return value: the main #ClutterStage.  You should never
+ *   destroy the returned actor.
  */
 ClutterActor *
 clutter_stage_get_default (void)
