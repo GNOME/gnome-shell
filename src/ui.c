@@ -70,25 +70,28 @@ struct _EventFunc
   int last_event_serial;
 };
 
+static EventFunc *ef = NULL;
+
 static GdkFilterReturn
 filter_func (GdkXEvent *xevent,
              GdkEvent *event,
              gpointer data)
 {
-  EventFunc *ef;
-
-  ef = data;
+  g_return_if_fail (ef != NULL);
 
   if ((* ef->func) (xevent, ef->data))
     return GDK_FILTER_REMOVE;
   else
     {
-      ef->last_event_serial = ((XEvent*)xevent)->xany.serial;
+      /* ef would be NULL here if we removed the filter function
+       * in response to the event.
+       */
+      if (ef != NULL)
+        ef->last_event_serial = ((XEvent*)xevent)->xany.serial;
+
       return GDK_FILTER_CONTINUE;
     }
 }
-
-static EventFunc *ef = NULL;
 
 void
 meta_ui_add_event_func (Display       *xdisplay,
