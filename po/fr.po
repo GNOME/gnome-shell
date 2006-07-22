@@ -11,10 +11,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.14.5\n"
+"Project-Id-Version: metacity 2.15.13\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-21 18:41+0200\n"
-"PO-Revision-Date: 2006-07-21 18:26+0200\n"
+"POT-Creation-Date: 2006-07-22 15:41+0200\n"
+"PO-Revision-Date: 2006-07-22 15:41+0200\n"
 "Last-Translator: Jonathan Ernst <jonathan@ernstfamily.ch>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
@@ -147,10 +147,10 @@ msgid ""
 msgstr ""
 "metacity %s\n"
 "Copyright © 2001-2002 Havoc Pennington, Red Hat, Inc., et autres\n"
-"Ceci est un logiciel libre ; voir le code source pour les conditions de "
-"copie.\n"
-"Il n'y a AUCUNE garantie ; même pas de VALEUR MARCHANDE ou d'ADÉQUATION\n"
-"À UN USAGE PARTICULIER.\n"
+"Ceci est un logiciel libre ; consultez le code source pour les\n"
+"conditions de copie.\n"
+"Il n'y a AUCUNE garantie ; même pas de VALEUR MARCHANDE ou\n"
+"d'ADÉQUATION À UN USAGE PARTICULIER.\n"
 
 #: ../src/main.c:169
 msgid "Disable connection to session manager"
@@ -422,7 +422,6 @@ msgstr ""
 "et non de fenêtres"
 
 #: ../src/metacity.schemas.in.h:2
-#, fuzzy
 msgid ""
 "A font description string describing a font for window titlebars. The size "
 "from the description will only be used if the titlebar_font_size option is "
@@ -433,8 +432,6 @@ msgstr ""
 "titre de fenêtres. La taille de la description ne sera toutefois utilisée "
 "que si l'option titlebar_font_size est réglée sur 0. Cette option est en "
 "outre désactivée si l'option titlebar_uses_desktop_font est réglée sur VRAI. "
-"Par défaut, titlebar_font est désactivé et Metacity utilise donc la police "
-"du bureau, même si la valeur de titlebar_uses_desktop_font est fausse."
 
 #: ../src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
@@ -3227,14 +3224,14 @@ msgstr "droite"
 #: ../src/theme.c:222
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
-msgstr "la géométrie du cadre ne spécifie pas la dimension « %s » . "
+msgstr "la géométrie du cadre ne spécifie pas la dimension « %s »"
 
 #: ../src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr ""
-"la géométrie du cadre ne spécifie pas la dimension « %s » pour la bordure \"%"
-"s\""
+"la géométrie du cadre ne spécifie pas la dimension « %s » pour la bordure "
+"« %s »"
 
 #: ../src/theme.c:278
 #, c-format
