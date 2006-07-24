@@ -1,3 +1,16 @@
+2.15.13
+==
+
+Thanks to Björn Lindqvist and Thomas Thurman for improvements in this
+release.
+
+ - grab alt+shift+button1 when trying to snap-move windows (Björn)
+ - avoid a case where memory is written after it's freed (Thomas)
+
+Translators
+ Hendrik Richter (de), Kostas Papadimas (el), Jonathan Ernst (fr),
+ Satoru SATOH (ja)
+
 2.15.8
 ==
 
