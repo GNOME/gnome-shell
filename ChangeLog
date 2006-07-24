@@ -8,7 +8,7 @@
 	
 2006-07-24  Björn Lindqvist  <bjourne@gmail.com>
 
-	* display.c (meta_display_grab_window_buttons): Grab
+	* src/display.c (meta_display_grab_window_buttons): Grab
 	Alt+Shift+Button1 as well to partially fix operation ordering
 	issues when trying to snap-move windows.  Part of #112478.
  
