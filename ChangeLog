@@ -1,3 +1,19 @@
+2006-07-24  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/Makefile.am:
+	* clutter/clutter-feature.c:
+	* clutter/clutter-feature.h:
+
+	Add new funcs for checking for available runtime GL 
+	extensions. 	
+	
+	* clutter/clutter-clone-texture.c:
+	* clutter/clutter-texture.c:
+
+	Add support for non power of two textures 
+       if GL_TEXTURE_RECTANGLE_ARB extension available ( at runtime ).
+       Should lower texture memory needs a little.
+
 2006-07-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-stage.c (clutter_stage_get_default): Fix

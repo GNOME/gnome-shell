@@ -34,6 +34,7 @@
 
 #include "clutter-clone-texture.h"
 #include "clutter-main.h"
+#include "clutter-feature.h"
 #include "clutter-util.h" 
 #include "clutter-enum-types.h"
 #include "clutter-private.h" 	/* for DBG */
@@ -91,8 +92,18 @@ clone_texture_render_to_gl_quad (ClutterCloneTexture *ctexture,
     {
       clutter_texture_bind_tile (priv->parent_texture, 0);
 
-      tx = (float) pwidth / clutter_util_next_p2 (pwidth);  
-      ty = (float) pheight / clutter_util_next_p2 (pheight);
+      /* NPOTS textures *always* used if extension available
+       */
+      if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_RECTANGLE))
+	{
+	  tx = (float) pwidth;
+	  ty = (float) pheight;
+	}
+      else
+	{
+	  tx = (float) pwidth / clutter_util_next_p2 (pwidth);  
+	  ty = (float) pheight / clutter_util_next_p2 (pheight);
+	}
 
       qx1 = x1; qx2 = x2;
       qy1 = y1; qy2 = y2;
@@ -160,10 +171,12 @@ static void
 clutter_clone_texture_paint (ClutterActor *self)
 {
   ClutterCloneTexturePrivate  *priv;
-  ClutterActor              *parent_texture;
+  ClutterActor                *parent_texture;
   gint                         x1, y1, x2, y2;
+  GLenum                       target_type;
 
   priv = CLUTTER_CLONE_TEXTURE (self)->priv;
+
 
   /* parent texture may have been hidden, there for need to make sure its 
    * realised with resources available.  
@@ -172,8 +185,16 @@ clutter_clone_texture_paint (ClutterActor *self)
   if (!CLUTTER_ACTOR_IS_REALIZED (parent_texture))
     clutter_actor_realize (parent_texture);
 
+  /* FIXME: figure out nicer way of getting at this info...  
+   */  
+  if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_RECTANGLE)
+      && clutter_texture_is_tiled (CLUTTER_TEXTURE(parent_texture)) == FALSE)
+    target_type = GL_TEXTURE_RECTANGLE_ARB;
+  else
+    target_type = GL_TEXTURE_2D;
+
   glEnable(GL_BLEND);
-  glEnable(GL_TEXTURE_2D);
+  glEnable(target_type);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   glColor4ub(255, 255, 255, clutter_actor_get_opacity(self));
@@ -185,8 +206,7 @@ clutter_clone_texture_paint (ClutterActor *self)
 
   clone_texture_render_to_gl_quad (CLUTTER_CLONE_TEXTURE(self), 
 				   x1, y1, x2, y2);
-
-  glDisable(GL_TEXTURE_2D);
+  glDisable(target_type);
   glDisable(GL_BLEND);
 }
 

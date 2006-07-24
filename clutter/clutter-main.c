@@ -36,6 +36,7 @@
 #include <stdlib.h>
 
 #include "clutter-main.h"
+#include "clutter-feature.h"
 #include "clutter-actor.h"
 #include "clutter-stage.h"
 #include "clutter-private.h"
@@ -516,6 +517,7 @@ is_gl_version_at_least_12 (void)
   return FALSE;
 }
 
+
 /**
  * clutter_init:
  * @argc: The number of arguments in @argv
@@ -573,12 +575,17 @@ clutter_init (int *argc, char ***argv)
   g_return_val_if_fail (CLUTTER_IS_STAGE (context->stage), -3);
   g_object_ref_sink (context->stage);
 
+  /* Realize to get context */
   clutter_actor_realize (CLUTTER_ACTOR (context->stage));
+
   g_return_val_if_fail 
       (CLUTTER_ACTOR_IS_REALIZED(CLUTTER_ACTOR(context->stage)), -4);
 
   /* At least GL 1.2 is needed for CLAMP_TO_EDGE */
   g_return_val_if_fail(is_gl_version_at_least_12 (), -5);
+
+  /* Check available features */
+  clutter_feature_init ();
 
   events_init ();
 

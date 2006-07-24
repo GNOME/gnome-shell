@@ -34,6 +34,8 @@
 #include <GL/glx.h>
 #include <GL/gl.h>
 
+G_BEGIN_DECLS
+
 #define CLUTTER_HAS_DEBUG_MESSGES 1
 
 #if (CLUTTER_HAS_DEBUG_MESSGES)
@@ -92,5 +94,6 @@ clutter_threads_enter (void);
 void
 clutter_threads_leave (void);
 
+G_END_DECLS
 
 #endif

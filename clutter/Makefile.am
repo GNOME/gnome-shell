@@ -11,6 +11,7 @@ source_h =				  \
 	$(srcdir)/clutter-media.h         \
         $(srcdir)/clutter-event.h         \
 	$(srcdir)/clutter-color.h         \
+	$(srcdir)/clutter-feature.h       \
 	$(srcdir)/clutter-timeline.h      \
 	$(srcdir)/clutter-actor.h 	  \
 	$(srcdir)/clutter-group.h         \
@@ -69,6 +70,7 @@ CLEANFILES = $(BUILT_SOURCES) stamp-clutter-enum-types.h
 
 source_c = clutter-main.c          \
 	   clutter-util.c          \
+	   clutter-feature.c       \
 	   clutter-media.c         \
            clutter-event.c         \
 	   clutter-color.c         \
