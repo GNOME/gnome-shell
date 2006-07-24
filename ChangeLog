@@ -1,5 +1,9 @@
 2006-07-24  Thomas Thurman  <thomas@thurman.org.uk>
 
+	* configure.in: post-release version bump to 2.15.21
+
+2006-07-24  Thomas Thurman  <thomas@thurman.org.uk>
+
 	* NEWS:	2.15.13 release
 	
 2006-07-24  Björn Lindqvist  <bjourne@gmail.com>
