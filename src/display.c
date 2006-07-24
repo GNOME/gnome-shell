@@ -3711,8 +3711,10 @@ void
 meta_display_grab_window_buttons (MetaDisplay *display,
                                   Window       xwindow)
 {  
-  /* Grab Alt + button1 and Alt + button2 for moving window,
-   * and Alt + button3 for popping up window menu.
+  /* Grab Alt + button1 for moving window.
+   * Grab Alt + button2 for resizing window.
+   * Grab Alt + button3 for popping up window menu.
+   * Grab Alt + Shift + button1 for snap-moving window.
    */
   meta_verbose ("Grabbing window buttons for 0x%lx\n", xwindow);
   
@@ -3724,11 +3726,10 @@ meta_display_grab_window_buttons (MetaDisplay *display,
   if (display->window_grab_modifiers != 0)
     {
       gboolean debug = g_getenv ("METACITY_DEBUG_BUTTON_GRABS") != NULL;
-      int i = 1;
-      while (i < 4)
+      int i;
+      for (i = 1; i < 4; i++)
         {
-          meta_change_button_grab (display,
-                                   xwindow,
+          meta_change_button_grab (display, xwindow,
                                    TRUE,
                                    FALSE,
                                    i, display->window_grab_modifiers);  
@@ -3741,9 +3742,18 @@ meta_display_grab_window_buttons (MetaDisplay *display,
                                      TRUE,
                                      FALSE,
                                      i, ControlMask);
-          
-          ++i;
         }
+
+      /* In addition to grabbing Alt+Button1 for moving the window,
+       * grab Alt+Shift+Button1 for snap-moving the window.  See bug
+       * 112478.  Unfortunately, this doesn't work with
+       * Shift+Alt+Button1 for some reason; so at least part of the
+       * order still matters, which sucks (please FIXME).
+       */
+      meta_change_button_grab (display, xwindow,
+                               TRUE,
+                               FALSE,
+                               1, display->window_grab_modifiers | ShiftMask);
     }
 }
 
