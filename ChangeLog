@@ -1,3 +1,7 @@
+2006-07-26  Vincent Untz  <vuntz@gnome.org>
+
+	* src/update-from-egg.sh: also kill this
+
 2006-07-25  Vincent Untz  <vuntz@gnome.org>
 
         * src/Makefile.am, ui.c: Kill usage of libegg. #348633.
