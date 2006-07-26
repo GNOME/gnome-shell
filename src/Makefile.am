@@ -4,10 +4,6 @@ SUBDIRS=wm-tester tools themes
 
 INCLUDES=@METACITY_CFLAGS@ -DMETACITY_LIBEXECDIR=\"$(libexecdir)\" -DHOST_ALIAS=\"@HOST_ALIAS@\" -DMETACITY_LOCALEDIR=\"$(prefix)/@DATADIRNAME@/locale\" -DMETACITY_PKGDATADIR=\"$(pkgdatadir)\" -DMETACITY_DATADIR=\"$(datadir)\" -DG_LOG_DOMAIN=\"metacity\" -DSN_API_NOT_YET_FROZEN=1
 
-EGGFILES=			\
-	eggaccelerators.c	\
-	eggaccelerators.h
-
 metacity_SOURCES= 				\
 	async-getprop.c				\
 	async-getprop.h				\
@@ -97,8 +93,7 @@ metacity_SOURCES= 				\
 	workspace.c				\
 	workspace.h				\
 	xprops.c				\
-	xprops.h				\
-	$(EGGFILES)
+	xprops.h
 
 # by setting libmetacity_private_la_CFLAGS, the files shared with
 # metacity proper will be compiled with different names.
@@ -193,13 +188,6 @@ pkgconfig_DATA = libmetacity-private.pc
 
 EXTRA_DIST=$(desktopfiles_files) 	\
 	$(IMAGES) $(schema_DATA) 	\
-	update-from-egg.sh		\
 	$(desktopfiles_in_files)	\
 	$(schema_in_files)		\
 	libmetacity-private.pc.in
-
-
-EGGDIR=$(srcdir)/../../libegg/libegg
-
-regenerate-built-sources:
-	EGGFILES="$(EGGFILES)" EGGDIR="$(EGGDIR)" $(srcdir)/update-from-egg.sh

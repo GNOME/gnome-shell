@@ -29,8 +29,6 @@
 #include "core.h"
 #include "theme.h"
 
-#include "eggaccelerators.h"
-
 #include "inlinepixbufs.h"
 
 #include <pango/pangox.h>
@@ -744,7 +742,7 @@ meta_ui_parse_accelerator (const char          *accel,
                            unsigned int        *keysym,
                            MetaVirtualModifier *mask)
 {
-  EggVirtualModifierType gdk_mask = 0;
+  GdkModifierType gdk_mask = 0;
   guint gdk_sym = 0;
   
   *keysym = 0;
@@ -753,36 +751,37 @@ meta_ui_parse_accelerator (const char          *accel,
   if (strcmp (accel, "disabled") == 0)
     return TRUE;
   
-  if (!egg_accelerator_parse_virtual (accel, &gdk_sym, &gdk_mask))
+  gtk_accelerator_parse (accel, &gdk_sym, &gdk_mask);
+  if (gdk_mask == 0 && gdk_sym == 0)
     return FALSE;
 
   if (gdk_sym == None)
     return FALSE;
   
-  if (gdk_mask & EGG_VIRTUAL_RELEASE_MASK) /* we don't allow this */
+  if (gdk_mask & GDK_RELEASE_MASK) /* we don't allow this */
     return FALSE;
   
   *keysym = gdk_sym;
 
-  if (gdk_mask & EGG_VIRTUAL_SHIFT_MASK)
+  if (gdk_mask & GDK_SHIFT_MASK)
     *mask |= META_VIRTUAL_SHIFT_MASK;
-  if (gdk_mask & EGG_VIRTUAL_CONTROL_MASK)
+  if (gdk_mask & GDK_CONTROL_MASK)
     *mask |= META_VIRTUAL_CONTROL_MASK;
-  if (gdk_mask & EGG_VIRTUAL_ALT_MASK)
+  if (gdk_mask & GDK_MOD1_MASK)
     *mask |= META_VIRTUAL_ALT_MASK;
-  if (gdk_mask & EGG_VIRTUAL_MOD2_MASK)
+  if (gdk_mask & GDK_MOD2_MASK)
     *mask |= META_VIRTUAL_MOD2_MASK;
-  if (gdk_mask & EGG_VIRTUAL_MOD3_MASK)
+  if (gdk_mask & GDK_MOD3_MASK)
     *mask |= META_VIRTUAL_MOD3_MASK;
-  if (gdk_mask & EGG_VIRTUAL_MOD4_MASK)
+  if (gdk_mask & GDK_MOD4_MASK)
     *mask |= META_VIRTUAL_MOD4_MASK;
-  if (gdk_mask & EGG_VIRTUAL_MOD5_MASK)
+  if (gdk_mask & GDK_MOD5_MASK)
     *mask |= META_VIRTUAL_MOD5_MASK;
-  if (gdk_mask & EGG_VIRTUAL_SUPER_MASK)
+  if (gdk_mask & GDK_SUPER_MASK)
     *mask |= META_VIRTUAL_SUPER_MASK;
-  if (gdk_mask & EGG_VIRTUAL_HYPER_MASK)
+  if (gdk_mask & GDK_HYPER_MASK)
     *mask |= META_VIRTUAL_HYPER_MASK;
-  if (gdk_mask & EGG_VIRTUAL_META_MASK)
+  if (gdk_mask & GDK_META_MASK)
     *mask |= META_VIRTUAL_META_MASK;
   
   return TRUE;
@@ -793,7 +792,7 @@ gchar*
 meta_ui_accelerator_name  (unsigned int        keysym,
                            MetaVirtualModifier mask)
 {
-  EggVirtualModifierType mods = 0;
+  GdkModifierType mods = 0;
         
   if (keysym == 0 && mask == 0)
     {
@@ -801,27 +800,27 @@ meta_ui_accelerator_name  (unsigned int        keysym,
     }
 
   if (mask & META_VIRTUAL_SHIFT_MASK)
-    mods |= EGG_VIRTUAL_SHIFT_MASK;
+    mods |= GDK_SHIFT_MASK;
   if (mask & META_VIRTUAL_CONTROL_MASK)
-    mods |= EGG_VIRTUAL_CONTROL_MASK;
+    mods |= GDK_CONTROL_MASK;
   if (mask & META_VIRTUAL_ALT_MASK)
-    mods |= EGG_VIRTUAL_ALT_MASK;
+    mods |= GDK_MOD1_MASK;
   if (mask & META_VIRTUAL_MOD2_MASK)
-    mods |= EGG_VIRTUAL_MOD2_MASK;
+    mods |= GDK_MOD2_MASK;
   if (mask & META_VIRTUAL_MOD3_MASK)
-    mods |= EGG_VIRTUAL_MOD3_MASK;
+    mods |= GDK_MOD3_MASK;
   if (mask & META_VIRTUAL_MOD4_MASK)
-    mods |= EGG_VIRTUAL_MOD4_MASK;
+    mods |= GDK_MOD4_MASK;
   if (mask & META_VIRTUAL_MOD5_MASK)
-    mods |= EGG_VIRTUAL_MOD5_MASK;
+    mods |= GDK_MOD5_MASK;
   if (mask & META_VIRTUAL_SUPER_MASK)
-    mods |= EGG_VIRTUAL_SUPER_MASK;
+    mods |= GDK_SUPER_MASK;
   if (mask & META_VIRTUAL_HYPER_MASK)
-    mods |= EGG_VIRTUAL_HYPER_MASK;
+    mods |= GDK_HYPER_MASK;
   if (mask & META_VIRTUAL_META_MASK)
-    mods |= EGG_VIRTUAL_META_MASK;
+    mods |= GDK_META_MASK;
 
-  return egg_virtual_accelerator_name (keysym, mods);
+  return gtk_accelerator_name (keysym, mods);
 
 }
 
@@ -829,7 +828,7 @@ gboolean
 meta_ui_parse_modifier (const char          *accel,
                         MetaVirtualModifier *mask)
 {
-  EggVirtualModifierType gdk_mask = 0;
+  GdkModifierType gdk_mask = 0;
   guint gdk_sym = 0;
   
   *mask = 0;
@@ -837,34 +836,35 @@ meta_ui_parse_modifier (const char          *accel,
   if (strcmp (accel, "disabled") == 0)
     return TRUE;
   
-  if (!egg_accelerator_parse_virtual (accel, &gdk_sym, &gdk_mask))
+  gtk_accelerator_parse (accel, &gdk_sym, &gdk_mask);
+  if (gdk_mask == 0 && gdk_sym == 0)
     return FALSE;
 
   if (gdk_sym != None)
     return FALSE;
   
-  if (gdk_mask & EGG_VIRTUAL_RELEASE_MASK) /* we don't allow this */
+  if (gdk_mask & GDK_RELEASE_MASK) /* we don't allow this */
     return FALSE;
 
-  if (gdk_mask & EGG_VIRTUAL_SHIFT_MASK)
+  if (gdk_mask & GDK_SHIFT_MASK)
     *mask |= META_VIRTUAL_SHIFT_MASK;
-  if (gdk_mask & EGG_VIRTUAL_CONTROL_MASK)
+  if (gdk_mask & GDK_CONTROL_MASK)
     *mask |= META_VIRTUAL_CONTROL_MASK;
-  if (gdk_mask & EGG_VIRTUAL_ALT_MASK)
+  if (gdk_mask & GDK_MOD1_MASK)
     *mask |= META_VIRTUAL_ALT_MASK;
-  if (gdk_mask & EGG_VIRTUAL_MOD2_MASK)
+  if (gdk_mask & GDK_MOD2_MASK)
     *mask |= META_VIRTUAL_MOD2_MASK;
-  if (gdk_mask & EGG_VIRTUAL_MOD3_MASK)
+  if (gdk_mask & GDK_MOD3_MASK)
     *mask |= META_VIRTUAL_MOD3_MASK;
-  if (gdk_mask & EGG_VIRTUAL_MOD4_MASK)
+  if (gdk_mask & GDK_MOD4_MASK)
     *mask |= META_VIRTUAL_MOD4_MASK;
-  if (gdk_mask & EGG_VIRTUAL_MOD5_MASK)
+  if (gdk_mask & GDK_MOD5_MASK)
     *mask |= META_VIRTUAL_MOD5_MASK;
-  if (gdk_mask & EGG_VIRTUAL_SUPER_MASK)
+  if (gdk_mask & GDK_SUPER_MASK)
     *mask |= META_VIRTUAL_SUPER_MASK;
-  if (gdk_mask & EGG_VIRTUAL_HYPER_MASK)
+  if (gdk_mask & GDK_HYPER_MASK)
     *mask |= META_VIRTUAL_HYPER_MASK;
-  if (gdk_mask & EGG_VIRTUAL_META_MASK)
+  if (gdk_mask & GDK_META_MASK)
     *mask |= META_VIRTUAL_META_MASK;
   
   return TRUE;
