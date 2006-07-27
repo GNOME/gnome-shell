@@ -1,5 +1,12 @@
 2006-07-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-feature.c: No need to call clutter_feature_init()
+	each time: it's private and should never be seen from the outside;
+	add a warning, just in case something screws up and calls it more
+	than once.
+
+2006-07-27  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-private.h: Move clutter_feature_init()
 	declaration here: you shouldn't even need to initialise
 	features yourself.

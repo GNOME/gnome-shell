@@ -34,8 +34,7 @@
 #include "clutter-feature.h"
 #include "string.h"
 
-G_LOCK_DEFINE_STATIC (__features);
-static ClutterFeatureFlags __features;
+static ClutterFeatureFlags __features = -1;
 
 /* Note must be called after context created */
 static gboolean 
@@ -66,25 +65,20 @@ check_gl_extension (const gchar *name)
   return FALSE;
 }
 
-/* HOLDS: __features lock */
-static void
-clutter_feature_init_do (void)
+void
+clutter_feature_init (void)
 {
-  if (__features)
-    return;
+  if (__features != -1)
+    {
+      g_warning ("You should never call clutter_feature_init() "
+                 "more than once.");
+      return;
+    }
 
   __features = 0;
 
   if (check_gl_extension ("GL_ARB_texture_rectangle"))
       __features |= CLUTTER_FEATURE_TEXTURE_RECTANGLE;
-}
-
-void
-clutter_feature_init (void)
-{
-  G_LOCK (__features);
-  clutter_feature_init_do ();
-  G_UNLOCK (__features);
 }
 
 /**
@@ -101,7 +95,6 @@ clutter_feature_init (void)
 gboolean
 clutter_feature_available (ClutterFeatureFlags feature)
 {
-  clutter_feature_init ();
   return (__features & feature);
 }
 
@@ -117,6 +110,5 @@ clutter_feature_available (ClutterFeatureFlags feature)
 ClutterFeatureFlags
 clutter_feature_all (void)
 {
-  clutter_feature_init ();
   return __features;
 }
