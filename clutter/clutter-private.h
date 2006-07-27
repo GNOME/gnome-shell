@@ -82,6 +82,8 @@ typedef enum {
 #define CLUTTER_SET_PRIVATE_FLAGS(a,f)	 G_STMT_START{ (CLUTTER_PRIVATE_FLAGS (a) |= (f)); }G_STMT_END
 #define CLUTTER_UNSET_PRIVATE_FLAGS(a,f) G_STMT_START{ (CLUTTER_PRIVATE_FLAGS (a) &= ~(f)); }G_STMT_END
 
+void clutter_feature_init (void);
+
 G_END_DECLS
 
 #endif

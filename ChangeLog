@@ -1,3 +1,16 @@
+2006-07-27  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-private.h: Move clutter_feature_init()
+	declaration here: you shouldn't even need to initialise
+	features yourself.
+
+	* clutter/clutter-feature.c: call clutter_feature_init()
+	each time you try to access the feature list; add a static
+	lock around the feature flags container; add api documentation.
+
+	* clutter/clutter-feature.h: Add a type for the feature flags
+	to make bindings happy.
+
 2006-07-24  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/Makefile.am:

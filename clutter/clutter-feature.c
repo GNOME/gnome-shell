@@ -34,7 +34,8 @@
 #include "clutter-feature.h"
 #include "string.h"
 
-static gulong __features;
+G_LOCK_DEFINE_STATIC (__features);
+static ClutterFeatureFlags __features;
 
 /* Note must be called after context created */
 static gboolean 
@@ -65,20 +66,9 @@ check_gl_extension (const gchar *name)
   return FALSE;
 }
 
-gboolean
-clutter_feature_available (gulong query)
-{
-  return (__features & query);
-}
-
-gulong 
-clutter_feature_all (void)
-{
-  return __features;
-}
-
-void
-clutter_feature_init (void)
+/* HOLDS: __features lock */
+static void
+clutter_feature_init_do (void)
 {
   if (__features)
     return;
@@ -87,5 +77,46 @@ clutter_feature_init (void)
 
   if (check_gl_extension ("GL_ARB_texture_rectangle"))
       __features |= CLUTTER_FEATURE_TEXTURE_RECTANGLE;
+}
 
+void
+clutter_feature_init (void)
+{
+  G_LOCK (__features);
+  clutter_feature_init_do ();
+  G_UNLOCK (__features);
+}
+
+/**
+ * clutter_feature_available:
+ * @feature: a #ClutterFeatureFlags
+ *
+ * Checks whether @feature is available.  @feature can be a logical
+ * OR of #ClutterFeatureFlags.
+ * 
+ * Return value: %TRUE if a feature is available
+ *
+ * Since: 0.1.1
+ */
+gboolean
+clutter_feature_available (ClutterFeatureFlags feature)
+{
+  clutter_feature_init ();
+  return (__features & feature);
+}
+
+/**
+ * clutter_feature_all:
+ *
+ * Returns all the suppoerted features.
+ *
+ * Return value: a logical OR of all the supported features.
+ *
+ * Since: 0.1.1
+ */
+ClutterFeatureFlags
+clutter_feature_all (void)
+{
+  clutter_feature_init ();
+  return __features;
 }

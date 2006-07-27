@@ -39,19 +39,13 @@
 
 G_END_DECLS
 
-enum 
+typedef enum 
 {
   CLUTTER_FEATURE_TEXTURE_RECTANGLE = (1 << 1)
-};
+} ClutterFeatureFlags;
 
-gboolean
-clutter_feature_available (gulong query);
-
-gulong 
-clutter_feature_get_all (void);
-
-void
-clutter_feature_init (void);
+gboolean            clutter_feature_available (ClutterFeatureFlags flags);
+ClutterFeatureFlags clutter_feature_get_all   (void);
 
 G_END_DECLS
 
