@@ -223,6 +223,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
   GtkWidget *frame;
   int max_label_width; /* the actual max width of the labels we create */
   GdkScreen *screen;
+  int screen_width;
   
   popup = g_new (MetaTabPopup, 1);
 
@@ -254,7 +255,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
   popup->current_selected_entry = NULL;
   popup->outline = outline;
 
-  int screen_width = gdk_screen_get_width (screen);
+  screen_width = gdk_screen_get_width (screen);
   for (i = 0; i < entry_count; ++i)
     {
       TabEntry* new_entry = tab_entry_new (&entries[i], screen_width, outline);

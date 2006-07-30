@@ -1,3 +1,7 @@
+2006-07-30  Jens Granseuer  <jensgr@gmx.net>
+
+	* src/tabpopup.c: Fix another C89 vs. C99 issue. #347621.
+
 2006-07-26  Vincent Untz  <vuntz@gnome.org>
 
 	* src/update-from-egg.sh: also kill this
