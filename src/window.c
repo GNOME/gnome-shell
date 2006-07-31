@@ -2205,7 +2205,7 @@ meta_window_maximize_internal (MetaWindow        *window,
 
   /* Fix for #336850: If the frame shape isn't reapplied, it is
    * possible that the frame will retains its rounded corners. That
-   * happens if the clients size when maximized equals the unmaximized
+   * happens if the client's size when maximized equals the unmaximized
    * size.
    */
   if (window->frame)
