@@ -1,3 +1,7 @@
+2006-07-31  Jakub Friedl <jfriedl@suse.cz>
+
+	* cs.po: Updated Czech translation.
+
 2006-07-23  Satoru SATOH <ss@gnome.gr.jp>
 
 	* ja.po: Updated Japanese translation.
@@ -22,8 +26,8 @@
 
 2006-07-03  Runa Bhattacharjee <runabh@gmail.com>
 
-        * bn_IN.po: Added Bengali India Translation
-        * LINGUAS: Added Bengali India (bn_IN) to the list of languages.
+	* bn_IN.po: Added Bengali India Translation
+	* LINGUAS: Added Bengali India (bn_IN) to the list of languages.
 
 2006-07-03  Ilkka Tuohela  <hile@iki.fi>
 
@@ -35,15 +39,15 @@
 
 2006-06-28  Rajesh Ranjan <rajeshkajha@yahoo.com>
 
-        * hi.po: Updated Hindi Translation.
+	* hi.po: Updated Hindi Translation.
 
 2006-06-27  Rajesh Ranjan <rajeshkajha@yahoo.com>
 
-        * hi.po: Updated Hindi Translation.
+	* hi.po: Updated Hindi Translation.
 
 2006-06-26  Rajesh Ranjan <rajeshkajha@yahoo.com>
 
-        * hi.po: Updated Hindi Translation.
+	* hi.po: Updated Hindi Translation.
 
 2006-05-28  Pema Geyleg  <pema.geyleg@gmail.com>
 
