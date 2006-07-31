@@ -1,3 +1,8 @@
+2006-07-31  Björn Lindqvist  <bjourne@gmail.com>
+
+	* src/window.c: Make it so maximized windows do not have rounded
+	corners. #336850.
+
 2006-07-30  Jens Granseuer  <jensgr@gmx.net>
 
 	* src/tabpopup.c: Fix another C89 vs. C99 issue. #347621.

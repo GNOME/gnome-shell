@@ -2202,6 +2202,14 @@ meta_window_maximize_internal (MetaWindow        *window,
     window->maximized_horizontally || maximize_horizontally;
   window->maximized_vertically = 
     window->maximized_vertically   || maximize_vertically;
+
+  /* Fix for #336850: If the frame shape isn't reapplied, it is
+   * possible that the frame will retains its rounded corners. That
+   * happens if the clients size when maximized equals the unmaximized
+   * size.
+   */
+  if (window->frame)
+    window->frame->need_reapply_frame_shape = TRUE;
   
   recalc_window_features (window);
   set_net_wm_state (window);
