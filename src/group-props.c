@@ -152,7 +152,7 @@ init_net_startup_id (MetaDisplay   *display,
 
 static void
 reload_net_startup_id (MetaGroup     *group,
-                          MetaPropValue *value)
+                       MetaPropValue *value)
 {
   g_free (group->startup_id);
   group->startup_id = NULL;
