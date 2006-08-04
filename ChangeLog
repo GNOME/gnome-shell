@@ -1,3 +1,13 @@
+2006-08-04  Elijah Newren  <newren gmail com>
+
+	Patch from Dmitry Timoshkov to fix the heuristic for determining
+	if windows can be made fullscreen (needed for WINE and possible
+	also some legacy applications).  Part of #346927.
+
+	* src/window.c (recalc_window_features): ignore window decoration
+	when checking size for determing whether an unresizable window
+	should be allowed ot be considered for fullscreening
+
 2006-07-31  Björn Lindqvist  <bjourne@gmail.com>
 
 	* src/window.c: Make it so maximized windows do not have rounded
