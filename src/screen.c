@@ -2202,6 +2202,8 @@ meta_screen_resize_func (MetaScreen *screen,
       meta_window_update_struts (window);
     }
   meta_window_queue_move_resize (window);
+
+  meta_window_recalc_features (window);
 }
 
 void
