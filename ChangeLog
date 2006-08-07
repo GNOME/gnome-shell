@@ -1,3 +1,18 @@
+2006-08-07  Elijah Newren  <newren gmail com>
+
+	Patch from Vytautas Liuolia to react to _NET_STARTUP_ID changes,
+	as proposed for the new startup-notification/EWMH spec.  #347515
+
+	* src/window-props.c (reload_net_startup_id): be sure to act on
+	the new id instead of just recording it
+
+	* src/window.[ch] (window_activate, meta_window_activate,
+	  meta_window_activate_with_workspace, meta_window_client_message):
+	change window_activate() to take a workspace parameter instead of
+	hardcoding to the current workspace, add
+	meta_window_activate_with_workspace() function needed by
+	reload_net_startup_id().
+
 2006-08-07  Thomas Thurman  <thomas@thurman.org.uk>
 
 	* src/frames.h: add new MetaButtonSpace struct; use it for

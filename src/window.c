@@ -2489,7 +2489,8 @@ unminimize_window_and_all_transient_parents (MetaWindow *window)
 static void
 window_activate (MetaWindow     *window,
                  guint32         timestamp,
-                 MetaClientType  source_indication)
+                 MetaClientType  source_indication,
+                 MetaWorkspace  *workspace)
 {
   gboolean can_ignore_outdated_timestamps;
   meta_topic (META_DEBUG_FOCUS,
@@ -2529,11 +2530,11 @@ window_activate (MetaWindow     *window,
   /* disable show desktop mode unless we're a desktop component */
   maybe_leave_show_desktop_mode (window);
  
-  /* Get window on current workspace */
-  if (!meta_window_located_on_workspace (window,
-                                         window->screen->active_workspace))
-    meta_window_change_workspace (window,
-                                  window->screen->active_workspace);
+  /* Get window on current or given workspace */
+  if (workspace == NULL)
+    workspace = window->screen->active_workspace;
+  if (!meta_window_located_on_workspace (window, workspace))
+    meta_window_change_workspace (window, workspace);
   
   if (window->shaded)
     meta_window_unshade (window);
@@ -2562,7 +2563,19 @@ meta_window_activate (MetaWindow     *window,
    * we were such.  If we change the pager behavior later, we could revisit
    * this and just add extra flags to window_activate.
    */
-  window_activate (window, timestamp, META_CLIENT_TYPE_PAGER);
+  window_activate (window, timestamp, META_CLIENT_TYPE_PAGER, NULL);
+}
+
+void
+meta_window_activate_with_workspace (MetaWindow     *window,
+                                     guint32         timestamp,
+                                     MetaWorkspace  *workspace)
+{
+  /* We're not really a pager, but the behavior we want is the same as if
+   * we were such.  If we change the pager behavior later, we could revisit
+   * this and just add extra flags to window_activate.
+   */
+  window_activate (window, timestamp, META_CLIENT_TYPE_APPLICATION, workspace);
 }
 
 /* Manually fix all the weirdness explained in the big comment at the
@@ -4743,7 +4756,7 @@ meta_window_client_message (MetaWindow *window,
         /* Client using older EWMH _NET_ACTIVE_WINDOW without a timestamp */
         timestamp = meta_display_get_current_time (window->display);
 
-      window_activate (window, timestamp, source_indication);
+      window_activate (window, timestamp, source_indication, NULL);
       return TRUE;
     }
   
