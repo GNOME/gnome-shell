@@ -1,5 +1,9 @@
 2006-08-07  Elijah Newren  <newren gmail com>
 
+	* NEWS:	2.15.21 release
+
+2006-08-07  Elijah Newren  <newren gmail com>
+
 	Add a constrain_titlebar_visible constraint; should fix both bug
 	333328 and bug 345522.  Not perfect (minor annoying snap pulling
 	windows back onscreen, plus an ugly hack almost as bad as the old

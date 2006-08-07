@@ -1,3 +1,37 @@
+2.15.21
+==
+
+Thanks to Vincent Untz, Jens Granseuer, Björn Lindqvist, Dmitry
+Timoshkov, Thomas Thurman, Vytautas Liuolia, Thomas Andersen, Chris
+Ball, and Elijah Newren for fixes in this release.
+
+ - kill usage of libegg (Vincent) [#348633]
+ - fix another C89 vs. C99 issue (Jens) [#347621]
+ - make it so maximized windows do not have rounded corners (Björn)
+   [#336850]
+ - fix the heuristic for determining if windows can be made
+   fullscreen, needed for WINE and possible also some legacy
+   applications (Dmitry) [#346927]
+ - make sure window features get recalculated when the screen is
+   resized via XRandR (Dmitry) [#346927]
+ - fitts' law fixes for titlebar buttons on maximized windows (Thomas
+   Thurman) [#97703]
+ - react to _NET_STARTUP_ID changes, as proposed for the new
+   startup-notification/EWMH spec (Vytautas) [#347515]
+ - return the window to maximized state if the window was "shaken
+   loose" from maximized state during a resize but the resize is later
+   aborted (Thomas Andersen) [#346719]
+ - fix button lighting with dragged clicks (Björn) [#321474]
+ - don't minimize in response to double clicks on the titlebar when
+   minimiziation should not be allowed (Chris) [#347377]
+ - fix some titlebar-not-on-screen constraint issues (Elijah)
+   [#333328, #345522]
+
+Translators
+ Mahay Alam Khan (bn_IN), Jakub Friedl (cs), Iñaki Larrañaga 
+ Murgoitio (eu), Yuval Tanny (he), Rajesh Ranjan (hi), Jovan
+ Naumovski (mk) Kjartan Maraas (nb), Leonid Kanter (ru)
+
 2.15.13
 ==
 
