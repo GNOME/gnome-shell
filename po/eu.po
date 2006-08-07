@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-25 08:47+0000\n"
+"POT-Creation-Date: 2006-08-07 18:02+0000\n"
 "PO-Revision-Date: 2006-05-25 09:26+0000\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.10.2\n"
-"Plural-Forms: Plural-Forms: Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "\n"
 
 #: ../src/tools/metacity-message.c:150
@@ -43,7 +43,8 @@ msgstr "Ez dira ulertzen amaierako \"%s\" karaktereak \"%s\" katean"
 #: ../src/delete.c:129
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "Huts egin du elkarrizketa-koadroaren prozesutik \"%s\" mezua analizatzean\n"
+msgstr ""
+"Huts egin du elkarrizketa-koadroaren prozesutik \"%s\" mezua analizatzean\n"
 
 #: ../src/delete.c:264
 #, c-format
@@ -52,7 +53,8 @@ msgstr "Errorea elkarrizketa-koadroa bistaratzeko prozesutik irakurtzean: %s\n"
 
 #: ../src/delete.c:345
 #, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 "Errorea aplikazioa hil behar den galdetzeko metacity-ren elkarrizketa-"
 "koadroa abiaraztean: %s\n"
@@ -174,8 +176,10 @@ msgstr "Huts egin du gaien direktorioa aztertzean: %s\n"
 
 #: ../src/main.c:366
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr "Gai bat ezin izan da aurkitu! Ziurtatu %s badagoela eta ohiko gaiak dituela."
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
+msgstr ""
+"Gai bat ezin izan da aurkitu! Ziurtatu %s badagoela eta ohiko gaiak dituela."
 
 #: ../src/main.c:424
 #, c-format
@@ -362,7 +366,8 @@ msgid "The window \"%s\" is not responding."
 msgstr "\"%s\" leihoak ez du erantzuten."
 
 #: ../src/metacity-dialog.c:119
-msgid "Forcing this application to quit will cause you to lose any unsaved changes."
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Aplikazioa ixtera behartzen baduzu, gorde gabeko aldaketak galdu egingo "
 "dituzu."
@@ -402,7 +407,8 @@ msgstr "Metacity"
 
 #: ../src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr "(Ez dago inplementatuta) Nabigazioa aplikazioetan egiten da, ez leihoetan"
+msgstr ""
+"(Ez dago inplementatuta) Nabigazioa aplikazioetan egiten da, ez leihoetan"
 
 #: ../src/metacity.schemas.in.h:2
 msgid ""
@@ -520,7 +526,9 @@ msgid ""
 msgstr ""
 "Egia bada, eta fokuaren modua \"sloppy\" edo \"mouse\" bada, fokua duen "
 "leihoa automatikoki goratuko da 'auto_raise_key' gakoan zehaztutako "
-"atzerapena igarotakoan. Honek ez dauka zerikusirik leiho baten klik egitearekin goratzeko, ezta leiho batean sartzearekin arrastatu eta jaregitean."
+"atzerapena igarotakoan. Honek ez dauka zerikusirik leiho baten klik "
+"egitearekin goratzeko, ezta leiho batean sartzearekin arrastatu eta "
+"jaregitean."
 
 #: ../src/metacity.schemas.in.h:21
 msgid ""
@@ -562,12 +570,13 @@ msgstr ""
 "Aplikazioan oinarritutako moduan leiho bati fokua ematen diozunean, "
 "aplikazio horretako leiho guztiak goratuko dira. Gainera, aplikazioan "
 "oinarritutako moduan, foku-klikak ez dira pasatzen beste aplikazio "
-"batzuetako leihoetara. Gainera, aplikazioa "
-"oinarritutako modua ez dago ia batere inplementatuta oraingoz."
+"batzuetako leihoetara. Gainera, aplikazioa oinarritutako modua ez dago ia "
+"batere inplementatuta oraingoz."
 
 #: ../src/metacity.schemas.in.h:24
 msgid "If true, trade off usability for less resource usage"
-msgstr "Egia bada, gutxiagotu erabilgarritasuna errekurtso gutxiago erabiltzeko"
+msgstr ""
+"Egia bada, gutxiagotu erabilgarritasuna errekurtso gutxiago erabiltzeko"
 
 #: ../src/metacity.schemas.in.h:25
 msgid "Lower window below other windows"
@@ -589,8 +598,8 @@ msgstr ""
 "leihoa ez goratzeko. Faltsua balioarekin leihoa goratu ahalko da Alt"
 "+saguaren-ezker-pultsazioa sakatuz edo klik normal batekin leihoaren "
 "dekorazioan (suposatzen da horrelako klik-ak ez direla erabiltzen lekuz edo "
-"tamainaz aldatzeko eragiketak hasteko). "
-"Unean aukera hau desgaituta dago 'click-to-focus' moduan."
+"tamainaz aldatzeko eragiketak hasteko). Unean aukera hau desgaituta dago "
+"'click-to-focus' moduan."
 
 #: ../src/metacity.schemas.in.h:27
 msgid "Maximize window"
@@ -780,7 +789,12 @@ msgid ""
 "manager misfeatures. This option puts Metacity in a rigorously correct mode, "
 "which gives a more consistent user interface, provided one does not need to "
 "run any misbehaving applications."
-msgstr "Aplikazio batzuk espezifikazioaei jaramonik ez diete egiten eta leiho-kudeatzailearen funtzionalitatea gutxituz. Aukera honek Metacity era zorrotzean modu zuzenean jartzen du, erabiltzailearen interfazeari sendotasun gehiago emanez, eskainitakoak ez du gaizki portatzen diren aplikazioak exekutatu beharrik."
+msgstr ""
+"Aplikazio batzuk espezifikazioaei jaramonik ez diete egiten eta leiho-"
+"kudeatzailearen funtzionalitatea gutxituz. Aukera honek Metacity era "
+"zorrotzean modu zuzenean jartzen du, erabiltzailearen interfazeari "
+"sendotasun gehiago emanez, eskainitakoak ez du gaizki portatzen diren "
+"aplikazioak exekutatu beharrik."
 
 #: ../src/metacity.schemas.in.h:72
 msgid "Switch to workspace 1"
@@ -1633,14 +1647,13 @@ msgid ""
 "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
 "then there will be no keybinding for this action."
 msgstr ""
-"Fokua leihoen artean laster-leihorik gabe aldatzeko laster-teklak. "
-"Laster-tekla hauekin batera \"maius\" "
-"sakatuta, mugimenduaren norabidea aldatu egiten da. Formatua \"&lt;"
-"Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1\" itxurakoa izango da. "
-"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
-"eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. "
-"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
+"Fokua leihoen artean laster-leihorik gabe aldatzeko laster-teklak. Laster-"
+"tekla hauekin batera \"maius\" sakatuta, mugimenduaren norabidea aldatu "
+"egiten da. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1\" "
+"itxurakoa izango da. Analizatzailea oso irekia da eta maiuskulak eta "
+"minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" "
+"moduko laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez "
+"da laster-teklarik izango ekintza honentzat."
 
 #: ../src/metacity.schemas.in.h:144
 msgid ""
@@ -1878,7 +1891,8 @@ msgstr "Pantaila-argazkiaren komandoa"
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
-msgstr "Gaiak erabakiko du leihoen ertzen, titulu-barren eta horrelakoen itxura."
+msgstr ""
+"Gaiak erabakiko du leihoen ertzen, titulu-barren eta horrelakoen itxura."
 
 #: ../src/metacity.schemas.in.h:161
 msgid ""
@@ -2007,7 +2021,11 @@ msgid ""
 "focus. It has two possible values; \"smart\" applies the user's normal focus "
 "mode, and \"strict\" results in windows started from a terminal not being "
 "given focus."
-msgstr "Aukera honek leihoak sortu berriek nola lortzen duten fokuaren gaineko kontrol gehiago ematen du. Bi balio izan ditzake: \"smart\" erabiltzailearen foku-modu normala aplikatzen du, eta \"sctrict\" leihoa terminal batetik abiaratzen denean eta fokua lortzen ez duenekoa."
+msgstr ""
+"Aukera honek leihoak sortu berriek nola lortzen duten fokuaren gaineko "
+"kontrol gehiago ematen du. Bi balio izan ditzake: \"smart\" erabiltzailearen "
+"foku-modu normala aplikatzen du, eta \"sctrict\" leihoa terminal batetik "
+"abiaratzen denean eta fokua lortzen ez duenekoa."
 
 #: ../src/metacity.schemas.in.h:171
 msgid "Toggle always on top state"
@@ -2036,8 +2054,8 @@ msgid ""
 "environments."
 msgstr ""
 "Adierazpen bisuala aktibatzen du aplikazio batek edo sistemak soinua "
-"bidaltzen duenerako; erosoa da entzumen-arazoak dituztenentzat edo "
-"inguruan zarata handia dagoenerako."
+"bidaltzen duenerako; erosoa da entzumen-arazoak dituztenentzat edo inguruan "
+"zarata handia dagoenerako."
 
 #: ../src/metacity.schemas.in.h:177
 msgid "Unmaximize window"
@@ -2165,7 +2183,8 @@ msgstr ""
 
 #: ../src/screen.c:443
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Ezin izan da eskuratu leiho-kudeatzailearen hautapena \"%2$s\" bistaratzeko %"
 "1$d pantailan\n"
@@ -2286,7 +2305,8 @@ msgstr "\"%s\" ezin da analizatu koma mugikorreko zenbaki gisa"
 #: ../src/theme-parser.c:552
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "Balio boolearrak \"egiazkoak\" edo \"faltsuak\" izan daitezke, ez \"%s\""
+msgstr ""
+"Balio boolearrak \"egiazkoak\" edo \"faltsuak\" izan daitezke, ez \"%s\""
 
 #: ../src/theme-parser.c:572
 #, c-format
@@ -2296,7 +2316,8 @@ msgstr "Angeluak 0.0 eta 360.0 bitartekoa behar du, %g \n"
 #: ../src/theme-parser.c:638
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr "Alfak 0.0 (ikusezina) eta 1.0 (erabat opakoa) artekoa izan behar du, %g\n"
+msgstr ""
+"Alfak 0.0 (ikusezina) eta 1.0 (erabat opakoa) artekoa izan behar du, %g\n"
 
 #: ../src/theme-parser.c:684
 #, c-format
@@ -2398,7 +2419,8 @@ msgstr "Ez dago \"value\" atributurik <%s> elementuan"
 
 #: ../src/theme-parser.c:1320 ../src/theme-parser.c:1334
 #: ../src/theme-parser.c:1393
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid ""
+"Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr ""
 "button_width/button_height eta aspektu-erlazioa ezin dira batera zehaztu "
 "botoietan"
@@ -2577,7 +2599,8 @@ msgstr "Ez da \"%s\" izeneko <draw_ops> bat ere definitu"
 #: ../src/theme-parser.c:2971 ../src/theme-parser.c:3087
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr "Hemen \"%s\" draw_ops sartzen bada, erreferentzia zirkularra sortuko da"
+msgstr ""
+"Hemen \"%s\" draw_ops sartzen bada, erreferentzia zirkularra sortuko da"
 
 #: ../src/theme-parser.c:3150
 #, c-format
@@ -2707,11 +2730,13 @@ msgstr ""
 #: ../src/theme-parser.c:3656
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr "Gaian kanporen dagoen elementuak <metacity_theme> izan behar du, ez <%s>"
+msgstr ""
+"Gaian kanporen dagoen elementuak <metacity_theme> izan behar du, ez <%s>"
 
 #: ../src/theme-parser.c:3676
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "<%s> elementua ez da onartzen izena/egilea/data/azalpena elementuan"
 
 #: ../src/theme-parser.c:3681
@@ -2721,13 +2746,15 @@ msgstr "<%s> elementua ez da onartzen <constant> elementuaren barnean"
 
 #: ../src/theme-parser.c:3693
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "<%s> elementua ez da onartzen distance/border/aspect_ratio elementuan"
 
 #: ../src/theme-parser.c:3715
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr "<%s> elementua ez da onartzen marrazteko eragiketaren elementuaren barnean"
+msgstr ""
+"<%s> elementua ez da onartzen marrazteko eragiketaren elementuaren barnean"
 
 #: ../src/theme-parser.c:3725 ../src/theme-parser.c:3755
 #: ../src/theme-parser.c:3760
@@ -2944,7 +2971,8 @@ msgstr ""
 
 #: ../src/theme-viewer.c:1217
 msgid "position expression test returned TRUE but set error"
-msgstr "adierazpenaren kokalekuko probak TRUE itzuli du, baina errore bat ezarri du"
+msgstr ""
+"adierazpenaren kokalekuko probak TRUE itzuli du, baina errore bat ezarri du"
 
 #: ../src/theme-viewer.c:1219
 msgid "position expression test returned FALSE but didn't set error"
@@ -2979,7 +3007,8 @@ msgstr "y balioa %d zen, %d espero zenean"
 #: ../src/theme-viewer.c:1301
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr "%d koordenada adierazpen analizatua %g segundotan (%g segundo batazbesteko)\n"
+msgstr ""
+"%d koordenada adierazpen analizatua %g segundotan (%g segundo batazbesteko)\n"
 
 #: ../src/theme.c:202
 msgid "top"
@@ -3069,7 +3098,8 @@ msgstr "Kolore nahastuko \"%s\" alfa balioa ez dago 0,0 eta 1,0 artean"
 
 #: ../src/theme.c:1075
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "Itzal-faktorea \"shade/base_color/factor\" da, \"%s\" ez dator bat "
 "formatuarekin"
@@ -3092,7 +3122,8 @@ msgstr "Ezin izan da \"%s\" kolorea analizatu"
 #: ../src/theme.c:1384
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "Koordenatuen adierazpenak '%s' karakterea dauka, eta hori ez da onartzen"
+msgstr ""
+"Koordenatuen adierazpenak '%s' karakterea dauka, eta hori ez da onartzen"
 
 #: ../src/theme.c:1411
 #, c-format
@@ -3106,7 +3137,8 @@ msgstr ""
 #: ../src/theme.c:1425
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "Koordenatuen adierazpenak '%s' osoko zenbakia dauka, eta ezin da analizatu"
+msgstr ""
+"Koordenatuen adierazpenak '%s' osoko zenbakia dauka, eta ezin da analizatu"
 
 #: ../src/theme.c:1492
 #, c-format
@@ -3126,19 +3158,23 @@ msgid "Coordinate expression results in division by zero"
 msgstr "Koordenatuen adierazpenak zero zatitzaileko zatiketa ematen du"
 
 #: ../src/theme.c:1738
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Koordenatuen adierazpena mod eragilea erabiltzen saiatzen da koma "
 "mugikorreko zenbaki batean"
 
 #: ../src/theme.c:1794
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr "Koordenatuen adierazpenak \"%s\" eragilea du eragigai bat espero zen lekuan"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgstr ""
+"Koordenatuen adierazpenak \"%s\" eragilea du eragigai bat espero zen lekuan"
 
 #: ../src/theme.c:1803
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr "Koordenatuen adierazpenak eragigai bat du eragile bat espero zen lekuan"
+msgstr ""
+"Koordenatuen adierazpenak eragigai bat du eragile bat espero zen lekuan"
 
 #: ../src/theme.c:1811
 msgid "Coordinate expression ended with an operator instead of an operand"
@@ -3157,11 +3193,13 @@ msgstr ""
 
 #: ../src/theme.c:1939
 msgid "Coordinate expression parser overflowed its buffer."
-msgstr "Koordenatuen adierazpenaren analizatzaileak bere bufferra gainezkatu du"
+msgstr ""
+"Koordenatuen adierazpenaren analizatzaileak bere bufferra gainezkatu du"
 
 #: ../src/theme.c:1968
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr "Koordenatuen adierazpenak ixteko parentesi bat du, baina irekitzekoa falta da"
+msgstr ""
+"Koordenatuen adierazpenak ixteko parentesi bat du, baina irekitzekoa falta da"
 
 #: ../src/theme.c:2030
 #, c-format
@@ -3170,7 +3208,8 @@ msgstr "Koordenatuen adierazpenak \"%s\" aldagai edo konstante ezezaguna du"
 
 #: ../src/theme.c:2085
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "Koordenatuen adierazpenak irekitzeko parentesi bat du, baina ixtekoa falta da"
+msgstr ""
+"Koordenatuen adierazpenak irekitzeko parentesi bat du, baina ixtekoa falta da"
 
 #: ../src/theme.c:2096
 msgid "Coordinate expression doesn't seem to have any operators or operands"
@@ -3192,8 +3231,10 @@ msgstr ""
 
 #: ../src/theme.c:4270 ../src/theme.c:4295
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> falta da"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> falta da"
 
 #: ../src/theme.c:4341
 #, c-format
@@ -3226,7 +3267,8 @@ msgstr ""
 
 #: ../src/theme.c:4911 ../src/theme.c:4973
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Erabiltzaileak definitutako konstanteak maiuskulaz hasi behar du; \"%s\" ez "
 "da maiuskulaz hasten"
@@ -3283,7 +3325,7 @@ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "%2$s(e)n baliogabeko WM_TRANSIENT_FOR 0x%1$lx leihoa zehaztu da.\n"
 
 #. first time through
-#: ../src/window.c:5217
+#: ../src/window.c:5248
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3299,7 +3341,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5813
+#: ../src/window.c:5844
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3331,8 +3373,8 @@ msgstr "0x%2$lx leihoko %1$s propietateak UTF-8 baliogabea du\n"
 
 #: ../src/xprops.c:482
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "0x%2$lx leihoko %1$s propietateak UTF-8 baliogabea du zerrendako %3$d. "
 "elementuan\n"
-
