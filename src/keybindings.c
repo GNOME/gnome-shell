@@ -1768,13 +1768,17 @@ process_keyboard_move_grab (MetaDisplay *display,
        * since in wireframe we always moveresize at the end
        * of the grab only.
        */
-      if (!display->grab_wireframe_active)
+      if (!display->grab_wireframe_active && !window->shaken_loose)
         meta_window_move_resize (display->grab_window,
                                  TRUE,
                                  display->grab_initial_window_pos.x,
                                  display->grab_initial_window_pos.y,
                                  display->grab_initial_window_pos.width,
                                  display->grab_initial_window_pos.height);
+      if(window->shaken_loose)
+        meta_window_maximize (window,
+                              META_MAXIMIZE_HORIZONTAL |
+                              META_MAXIMIZE_VERTICAL);
       display->grab_was_cancelled = TRUE;
     }
   

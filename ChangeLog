@@ -1,5 +1,12 @@
 2006-08-07  Elijah Newren  <newren gmail com>
 
+	* src/keybindings.c (process_keyboard_move_grab): Patch from
+	Thomas Andersen to return the window to maximized state if the
+	window was "shaken loose" from maximized state during a resize but
+	the resize is later aborted.  #346719.
+
+2006-08-07  Elijah Newren  <newren gmail com>
+
 	Patch from Vytautas Liuolia to react to _NET_STARTUP_ID changes,
 	as proposed for the new startup-notification/EWMH spec.  #347515
 
