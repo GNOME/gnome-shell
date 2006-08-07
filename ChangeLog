@@ -1,5 +1,11 @@
 2006-08-07  Elijah Newren  <newren gmail com>
 
+	* src/frames.c (meta_frames_button_press_event): Patch from Chris
+	Ball to not minimize in response to double clicks on the titlebar
+	when minimiziation should not be allowed.  #347377
+
+2006-08-07  Elijah Newren  <newren gmail com>
+
 	Patch from Björn Lindqvist to fix button lighting with dragged
 	clicks.  #321474.
 

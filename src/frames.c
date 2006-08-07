@@ -1275,9 +1275,14 @@ meta_frames_button_press_event (GtkWidget      *widget,
 
         case META_ACTION_DOUBLE_CLICK_TITLEBAR_MINIMIZE:
           {
-            meta_core_minimize (gdk_display, frame->xwindow);
-            break;
+            flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
+            
+            if (flags & META_FRAME_ALLOWS_MINIMIZE)
+              {
+                meta_core_minimize (gdk_display, frame->xwindow);
+              }
           }
+          break;
 
         case META_ACTION_DOUBLE_CLICK_TITLEBAR_NONE:
           /* Yaay, a sane user that doesn't use that other weird crap! */
