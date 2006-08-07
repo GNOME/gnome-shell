@@ -389,7 +389,7 @@ meta_frame_layout_get_borders (const MetaFrameLayout *layout,
     }
 }
 
-static GdkRectangle*
+static MetaButtonSpace*
 rect_for_function (MetaFrameGeometry *fgeom,
                    MetaFrameFlags     flags,
                    MetaButtonFunction function)
@@ -424,10 +424,10 @@ rect_for_function (MetaFrameGeometry *fgeom,
 }
 
 static gboolean
-strip_button (GdkRectangle *func_rects[MAX_BUTTONS_PER_CORNER],
-              GdkRectangle *bg_rects[MAX_BUTTONS_PER_CORNER],
-              int          *n_rects,
-              GdkRectangle *to_strip)
+strip_button (MetaButtonSpace *func_rects[MAX_BUTTONS_PER_CORNER],
+              GdkRectangle    *bg_rects[MAX_BUTTONS_PER_CORNER],
+              int             *n_rects,
+              MetaButtonSpace *to_strip)
 {
   int i;
   
@@ -479,8 +479,8 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
   /* the left/right rects in order; the max # of rects
    * is the number of button functions
    */
-  GdkRectangle *left_func_rects[MAX_BUTTONS_PER_CORNER];
-  GdkRectangle *right_func_rects[MAX_BUTTONS_PER_CORNER];
+  MetaButtonSpace *left_func_rects[MAX_BUTTONS_PER_CORNER];
+  MetaButtonSpace *right_func_rects[MAX_BUTTONS_PER_CORNER];
   GdkRectangle *left_bg_rects[MAX_BUTTONS_PER_CORNER];
   GdkRectangle *right_bg_rects[MAX_BUTTONS_PER_CORNER];
   
@@ -652,21 +652,35 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
   i = n_right - 1;
   while (i >= 0)
     {
-      GdkRectangle *rect;
+      MetaButtonSpace *rect;
 
       if (x < 0) /* if we go negative, leave the buttons we don't get to as 0-width */
         break;
       
       rect = right_func_rects[i];
 
-      rect->x = x - layout->button_border.right - button_width;
-      rect->y = button_y;
-      rect->width = button_width;
-      rect->height = button_height;
+      rect->visible.x = x - layout->button_border.right - button_width;
+      rect->visible.y = button_y;
+      rect->visible.width = button_width;
+      rect->visible.height = button_height;
 
-      *(right_bg_rects[i]) = *rect;
+      if (flags & META_FRAME_MAXIMIZED)
+        {
+          rect->clickable.x = rect->visible.x;
+          rect->clickable.y = 0;
+          rect->clickable.width = rect->visible.width;
+          rect->clickable.height = button_height + button_y;
+
+          if (i == n_right - 1)
+            rect->clickable.width += layout->right_titlebar_edge + layout->right_width + layout->button_border.right;
+
+        }
+      else
+        g_memmove (&(rect->clickable), &(rect->visible), sizeof(rect->clickable));
+
+      *(right_bg_rects[i]) = rect->visible;
       
-      x = rect->x - layout->button_border.left;
+      x = rect->visible.x - layout->button_border.left;
       
       --i;
     }
@@ -680,18 +694,38 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
   x = layout->left_titlebar_edge;
   for (i = 0; i < n_left; i++)
     {
-      GdkRectangle *rect;
+      MetaButtonSpace *rect;
 
       rect = left_func_rects[i];
+      
+      rect->visible.x = x + layout->button_border.left;
+      rect->visible.y = button_y;
+      rect->visible.width = button_width;
+      rect->visible.height = button_height;
 
-      rect->x = x + layout->button_border.left;
-      rect->y = button_y;
-      rect->width = button_width;
-      rect->height = button_height;
+      if (flags & META_FRAME_MAXIMIZED)
+        {
+          if (i==0)
+            {
+              rect->clickable.x = 0;
+              rect->clickable.width = button_width + x;
+            }
+          else
+            {
+              rect->clickable.x = rect->visible.x;
+              rect->clickable.width = button_width;
+            }
 
-      x = rect->x + rect->width + layout->button_border.right;
+            rect->clickable.y = 0;
+            rect->clickable.height = button_height + button_y;
+          }
+        else
+          g_memmove (&(rect->clickable), &(rect->visible), sizeof(rect->clickable));
 
-      *(left_bg_rects[i]) = *rect;
+
+      x = rect->visible.x + rect->visible.width + layout->button_border.right;
+
+      *(left_bg_rects[i]) = rect->visible;
     }
 
   /* We always fill as much vertical space as possible with title rect,
@@ -3868,19 +3902,19 @@ button_rect (MetaButtonType           type,
       break;
       
     case META_BUTTON_TYPE_CLOSE:
-      *rect = fgeom->close_rect;
+      *rect = fgeom->close_rect.visible;
       break;
 
     case META_BUTTON_TYPE_MAXIMIZE:
-      *rect = fgeom->max_rect;
+      *rect = fgeom->max_rect.visible;
       break;
 
     case META_BUTTON_TYPE_MINIMIZE:
-      *rect = fgeom->min_rect;
+      *rect = fgeom->min_rect.visible;
       break;
 
     case META_BUTTON_TYPE_MENU:
-      *rect = fgeom->menu_rect;
+      *rect = fgeom->menu_rect.visible;
       break;
       
     case META_BUTTON_TYPE_LAST:

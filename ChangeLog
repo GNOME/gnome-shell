@@ -1,3 +1,15 @@
+2006-08-07  Thomas Thurman  <thomas@thurman.org.uk>
+
+	* src/frames.h: add new MetaButtonSpace struct; use it for
+	close_rect, max_rect, min_rect and menu_rect.
+
+	* src/frames.c (control_rect, get_control): modify to support
+	the new fields in MetaButtonSpace.
+
+	* src/theme.c (meta_frame_layout_get_borders, rect_for_function,
+	meta_frame_layout_calc_geometry, button_rect): add support for
+	the new fields in MetaButtonSpace.
+
 2006-08-07  Elijah Newren  <newren gmail com>
 
 	* src/screen.c (meta_screen_resize_func): patch from Dmitry

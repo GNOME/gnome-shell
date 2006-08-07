@@ -2256,17 +2256,17 @@ control_rect (MetaFrameControl control,
       rect = &fgeom->title_rect;
       break;
     case META_FRAME_CONTROL_DELETE:
-      rect = &fgeom->close_rect;
+      rect = &fgeom->close_rect.visible;
       break;
     case META_FRAME_CONTROL_MENU:
-      rect = &fgeom->menu_rect;
+      rect = &fgeom->menu_rect.visible;
       break;
     case META_FRAME_CONTROL_MINIMIZE:
-      rect = &fgeom->min_rect;
+      rect = &fgeom->min_rect.visible;
       break;
     case META_FRAME_CONTROL_MAXIMIZE:
     case META_FRAME_CONTROL_UNMAXIMIZE:
-      rect = &fgeom->max_rect;
+      rect = &fgeom->max_rect.visible;
       break;
     case META_FRAME_CONTROL_RESIZE_SE:
       break;
@@ -2315,13 +2315,13 @@ get_control (MetaFrames *frames,
   if (POINT_IN_RECT (x, y, client))
     return META_FRAME_CONTROL_CLIENT_AREA;
   
-  if (POINT_IN_RECT (x, y, fgeom.close_rect))
+  if (POINT_IN_RECT (x, y, fgeom.close_rect.clickable))
     return META_FRAME_CONTROL_DELETE;
 
-  if (POINT_IN_RECT (x, y, fgeom.min_rect))
+  if (POINT_IN_RECT (x, y, fgeom.min_rect.clickable))
     return META_FRAME_CONTROL_MINIMIZE;
 
-  if (POINT_IN_RECT (x, y, fgeom.menu_rect))
+  if (POINT_IN_RECT (x, y, fgeom.menu_rect.clickable))
     return META_FRAME_CONTROL_MENU;
 
   flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
@@ -2337,7 +2337,7 @@ get_control (MetaFrames *frames,
         return META_FRAME_CONTROL_TITLE;
     }
 
-  if (POINT_IN_RECT (x, y, fgeom.max_rect))
+  if (POINT_IN_RECT (x, y, fgeom.max_rect.clickable))
     {
       if (flags & META_FRAME_MAXIMIZED)
         return META_FRAME_CONTROL_UNMAXIMIZE;

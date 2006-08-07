@@ -35,6 +35,7 @@ typedef struct _MetaGradientSpec MetaGradientSpec;
 typedef struct _MetaAlphaGradientSpec MetaAlphaGradientSpec; 
 typedef struct _MetaColorSpec MetaColorSpec;
 typedef struct _MetaFrameLayout MetaFrameLayout;
+typedef struct _MetaButtonSpace MetaButtonSpace;
 typedef struct _MetaFrameGeometry MetaFrameGeometry;
 typedef struct _MetaTheme MetaTheme;
 typedef struct _MetaPositionExprEnv MetaPositionExprEnv;
@@ -104,6 +105,14 @@ struct _MetaFrameLayout
   guint bottom_right_corner_rounded : 1;
 };
 
+struct _MetaButtonSpace
+{
+  GdkRectangle visible;   /* The area of the screen which has a button's image
+                             drawn on it. */
+  GdkRectangle clickable; /* The area of the screen which, when clicked,
+                             activates a button. */
+};
+
 /* Calculated actual geometry of the frame */
 struct _MetaFrameGeometry
 {
@@ -127,10 +136,10 @@ struct _MetaFrameGeometry
 #define LENGTH_OF_BUTTON_RECTS (G_STRUCT_OFFSET (MetaFrameGeometry, right_right_background) + sizeof (GdkRectangle) - G_STRUCT_OFFSET (MetaFrameGeometry, close_rect))
   
   /* The button rects (if changed adjust memset hack) */
-  GdkRectangle close_rect;
-  GdkRectangle max_rect;
-  GdkRectangle min_rect;
-  GdkRectangle menu_rect;
+  MetaButtonSpace close_rect;
+  MetaButtonSpace max_rect;
+  MetaButtonSpace min_rect;
+  MetaButtonSpace menu_rect;
 
 #define MAX_MIDDLE_BACKGROUNDS (MAX_BUTTONS_PER_CORNER - 2)
   GdkRectangle left_left_background;
