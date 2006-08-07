@@ -1,3 +1,9 @@
+2006-08-07  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c: (clutter_actor_paint):
+	Remove relic from old stage behaviour - dont unref
+	it during a clip. 
+
 2006-07-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-feature.c: No need to call clutter_feature_init()

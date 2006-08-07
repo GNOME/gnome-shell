@@ -275,8 +275,6 @@ clutter_actor_paint (ClutterActor *self)
                     - (absy + clip->y) - clip->height, 
 		 clip->width, 
 		 clip->height);
-
-      g_object_unref (stage);
     }
 
   glPushMatrix();
