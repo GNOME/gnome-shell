@@ -46,6 +46,9 @@ static void meta_frames_style_set  (GtkWidget       *widget,
 static void meta_frames_realize    (GtkWidget       *widget);
 static void meta_frames_unrealize  (GtkWidget       *widget);
 
+static void meta_frames_update_prelit_control (MetaFrames      *frames,
+                                               MetaUIFrame     *frame,
+                                               MetaFrameControl control);
 static gboolean meta_frames_button_press_event    (GtkWidget           *widget,
                                                    GdkEventButton      *event);
 static gboolean meta_frames_button_release_event  (GtkWidget           *widget,
@@ -1194,15 +1197,6 @@ redraw_control (MetaFrames *frames,
 }
 
 static gboolean
-point_in_control (MetaFrames *frames,
-                  MetaUIFrame *frame,
-                  MetaFrameControl control,
-                  int x, int y)
-{
-  return control == get_control (frames, frame, x, y);
-}
-
-static gboolean
 meta_frames_button_press_event (GtkWidget      *widget,
                                 GdkEventButton *event)
 {
@@ -1342,6 +1336,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
                                event->x_root,
                                event->y_root);      
       
+      frame->prelit_control = control;
       redraw_control (frames, frame, control);
 
       if (op == META_GRAB_OP_CLICKING_MENU)
@@ -1525,67 +1520,54 @@ meta_frames_button_release_event    (GtkWidget           *widget,
   if (frame->xwindow == meta_core_get_grab_frame (gdk_display) &&
       ((int) event->button) == meta_core_get_grab_button (gdk_display))
     {
-      gboolean end_grab;
+      MetaFrameControl control;
 
-      end_grab = FALSE;
-
+      control = get_control (frames, frame, event->x, event->y);
+      
       switch (op)
         {
         case META_GRAB_OP_CLICKING_MINIMIZE:
-          if (point_in_control (frames, frame,
-                                META_FRAME_CONTROL_MINIMIZE,
-                                event->x, event->y))
+          if (control == META_FRAME_CONTROL_MINIMIZE)
             meta_core_minimize (gdk_display, frame->xwindow);
-
-          redraw_control (frames, frame,
-                          META_FRAME_CONTROL_MINIMIZE);
-          end_grab = TRUE;
+          
+          meta_core_end_grab_op (gdk_display, event->time);
           break;
 
         case META_GRAB_OP_CLICKING_MAXIMIZE:
-          if (point_in_control (frames, frame,
-                                META_FRAME_CONTROL_MAXIMIZE,
-                                event->x, event->y))
+          if (control == META_FRAME_CONTROL_MAXIMIZE)
             meta_core_maximize (gdk_display, frame->xwindow);
-
-          redraw_control (frames, frame,
-                          META_FRAME_CONTROL_MAXIMIZE);
-          end_grab = TRUE;
+          
+          meta_core_end_grab_op (gdk_display, event->time);
           break;
 
         case META_GRAB_OP_CLICKING_UNMAXIMIZE:
-          if (point_in_control (frames, frame,
-                                META_FRAME_CONTROL_UNMAXIMIZE,
-                                event->x, event->y))
+          if (control == META_FRAME_CONTROL_UNMAXIMIZE)
             meta_core_unmaximize (gdk_display, frame->xwindow);
-
-          redraw_control (frames, frame,
-                          META_FRAME_CONTROL_MAXIMIZE);
-          end_grab = TRUE;
+          
+          meta_core_end_grab_op (gdk_display, event->time);
           break;
           
         case META_GRAB_OP_CLICKING_DELETE:
-          if (point_in_control (frames, frame,
-                                META_FRAME_CONTROL_DELETE,
-                                event->x, event->y))
+          if (control == META_FRAME_CONTROL_DELETE)
             meta_core_delete (gdk_display, frame->xwindow, event->time);
-          redraw_control (frames, frame,
-                          META_FRAME_CONTROL_DELETE);
-          end_grab = TRUE;
+          
+          meta_core_end_grab_op (gdk_display, event->time);
           break;
           
         case META_GRAB_OP_CLICKING_MENU:
-          redraw_control (frames, frame,
-                          META_FRAME_CONTROL_MENU);
-          end_grab = TRUE;
+          meta_core_end_grab_op (gdk_display, event->time);
           break;
 
         default:
           break;
         }
 
-      if (end_grab)
-        meta_core_end_grab_op (gdk_display, event->time);
+      /* Update the prelit control regardless of what button the mouse
+       * was released over; needed so that the new button can become
+       * prelit so to let the user know that it can now be pressed.
+       * :)
+       */
+      meta_frames_update_prelit_control (frames, frame, control);
     }
   
   return TRUE;

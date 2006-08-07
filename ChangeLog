@@ -1,5 +1,15 @@
 2006-08-07  Elijah Newren  <newren gmail com>
 
+	Patch from Björn Lindqvist to fix button lighting with dragged
+	clicks.  #321474.
+
+	* src/frames.c (meta_frames_button_press_event): update the
+	prelit_control, (meta_frames_button_release_event): some code
+	refactoring to simplify things a bit, and make sure to update the
+	prelit_control
+
+2006-08-07  Elijah Newren  <newren gmail com>
+
 	* src/keybindings.c (process_keyboard_move_grab): Patch from
 	Thomas Andersen to return the window to maximized state if the
 	window was "shaken loose" from maximized state during a resize but
