@@ -97,6 +97,7 @@ typedef enum
   PRIORITY_MAXIMIZATION = 2,
   PRIORITY_FULLSCREEN = 2,
   PRIORITY_SIZE_HINTS_LIMITS = 3,
+  PRIORITY_TITLEBAR_VISIBLE = 4,
   PRIORITY_PARTIALLY_VISIBLE_ON_WORKAREA = 4,
   PRIORITY_MAXIMUM = 4  // Dummy value used for loop end = max(all priorities)
 } ConstraintPriority;
@@ -165,6 +166,10 @@ static gboolean constrain_fully_onscreen     (MetaWindow         *window,
                                               ConstraintInfo     *info,
                                               ConstraintPriority  priority,
                                               gboolean            check_only);
+static gboolean constrain_titlebar_visible   (MetaWindow         *window,
+                                              ConstraintInfo     *info,
+                                              ConstraintPriority  priority,
+                                              gboolean            check_only);
 static gboolean constrain_partially_onscreen (MetaWindow         *window,
                                               ConstraintInfo     *info,
                                               ConstraintPriority  priority,
@@ -209,6 +214,7 @@ static const Constraint all_constraints[] = {
   {constrain_aspect_ratio,       "constrain_aspect_ratio"},
   {constrain_to_single_xinerama, "constrain_to_single_xinerama"},
   {constrain_fully_onscreen,     "constrain_fully_onscreen"},
+  {constrain_titlebar_visible,   "constrain_titlebar_visible"},
   {constrain_partially_onscreen, "constrain_partially_onscreen"},
   {NULL,                         NULL}
 };
@@ -536,23 +542,23 @@ update_onscreen_requirements (MetaWindow     *window,
       window->type == META_WINDOW_DOCK)
     return;
 
-  /* USABILITY NOTE: Naturally, I only want the require_fully_onscreen and
-   * require_on_single_xinerama flags to *become false* due to user
-   * interactions (which is allowed since certain constraints are ignored
-   * for user interactions regardless of the setting of these flags).
-   * However, whether to make these flags *become true* due to just an
-   * application interaction is a little trickier.  It's possible that
-   * users may find not doing that strange since two application
-   * interactions that resize in opposite ways don't necessarily end up
-   * cancelling--but it may also be strange for the user to have an
-   * application resize the window so that it's onscreen, the user forgets
-   * about it, and then later the app is able to resize itself off the
-   * screen.  Anyway, for now, I'm think the latter is the more problematic
-   * case but this may need to be revisited.
+  /* USABILITY NOTE: Naturally, I only want the require_fully_onscreen,
+   * require_on_single_xinerama, and require_titlebar_visible flags to
+   * *become false* due to user interactions (which is allowed since
+   * certain constraints are ignored for user interactions regardless of
+   * the setting of these flags).  However, whether to make these flags
+   * *become true* due to just an application interaction is a little
+   * trickier.  It's possible that users may find not doing that strange
+   * since two application interactions that resize in opposite ways don't
+   * necessarily end up cancelling--but it may also be strange for the user
+   * to have an application resize the window so that it's onscreen, the
+   * user forgets about it, and then later the app is able to resize itself
+   * off the screen.  Anyway, for now, I think the latter is the more
+   * problematic case but this may need to be revisited.
    */
 
-  /* The require onscreen/on-single-xinerama stuff is relative to the
-   * outer window, not the inner
+  /* The require onscreen/on-single-xinerama and titlebar_visible
+   * stuff is relative to the outer window, not the inner
    */
   extend_by_frame (&info->current, info->fgeom);
 
@@ -581,6 +587,26 @@ update_onscreen_requirements (MetaWindow     *window,
                 "require_on_single_xinerama for %s toggled to %s\n",
                 window->desc, 
                 window->require_on_single_xinerama ? "TRUE" : "FALSE");
+
+  /* Update whether we want future constraint runs to require the
+   * titlebar to be visible.
+   */
+  if (window->frame && window->decorated)
+    {
+      MetaRectangle titlebar_rect;
+
+      titlebar_rect = info->current;
+      titlebar_rect.height = info->fgeom->top_height;
+      old = window->require_titlebar_visible;
+      window->require_titlebar_visible =
+        meta_rectangle_overlaps_with_region (info->usable_screen_region,
+                                             &titlebar_rect);
+      if (old ^ window->require_titlebar_visible)
+        meta_topic (META_DEBUG_GEOMETRY,
+                    "require_titlebar_visible for %s toggled to %s\n",
+                    window->desc,
+                    window->require_titlebar_visible ? "TRUE" : "FALSE");
+    }
 
   /* Don't forget to restore the position of the window */
   unextend_by_frame (&info->current, info->fgeom);
@@ -1051,6 +1077,93 @@ constrain_fully_onscreen (MetaWindow         *window,
                                                  info->usable_screen_region,
                                                  info,
                                                  check_only);
+}
+
+static gboolean
+constrain_titlebar_visible (MetaWindow         *window,
+                            ConstraintInfo     *info,
+                            ConstraintPriority  priority,
+                            gboolean            check_only)
+{
+  gboolean unconstrained_user_action;
+  gboolean retval;
+  int bottom_amount;
+  int horiz_amount_offscreen, vert_amount_offscreen;
+  int horiz_amount_onscreen,  vert_amount_onscreen;
+
+  if (priority > PRIORITY_TITLEBAR_VISIBLE)
+    return TRUE;
+
+  /* Allow the titlebar beyond the top of the screen only if the user wasn't
+   * clicking on the titlebar to start the move.
+   * FIXME: This is kind of a hack; nearly as ugly as the old infinite edge
+   * resistance.
+   */
+  unconstrained_user_action =
+    info->is_user_action &&
+    window->display->grab_anchor_root_y >= window->display->grab_initial_window_pos.y;
+
+  /* Exit early if we know the constraint won't apply--note that this constraint
+   * is only meant for normal windows (e.g. we don't want docks to be shoved 
+   * "onscreen" by their own strut).
+   */
+  if (window->type == META_WINDOW_DESKTOP ||
+      window->type == META_WINDOW_DOCK    ||
+      !window->require_titlebar_visible   ||
+      !window->decorated                  ||
+      unconstrained_user_action)
+    return TRUE;
+
+  /* Determine how much offscreen things are allowed.  We first need to
+   * figure out how much must remain on the screen.  For that, we use 25%
+   * window width/height but clamp to the range of (10,75) pixels.  This is
+   * somewhat of a seat of my pants random guess at what might look good.
+   * Then, the amount that is allowed off is just the window size minus
+   * this amount (but no less than 0 for tiny windows).
+   */
+  horiz_amount_onscreen = info->current.width  / 4;
+  vert_amount_onscreen  = info->current.height / 4;
+  horiz_amount_onscreen = CLAMP (horiz_amount_onscreen, 10, 75);
+  vert_amount_onscreen  = CLAMP (vert_amount_onscreen,  10, 75);
+  horiz_amount_offscreen = info->current.width - horiz_amount_onscreen;
+  vert_amount_offscreen  = info->current.height - vert_amount_onscreen;
+  horiz_amount_offscreen = MAX (horiz_amount_offscreen, 0);
+  vert_amount_offscreen  = MAX (vert_amount_offscreen,  0);
+  /* Allow the titlebar to touch the bottom panel;  If there is no titlebar,
+   * require vert_amount to remain on the screen.
+   */
+  if (window->frame)
+    {
+      bottom_amount = info->current.height + info->fgeom->bottom_height;
+      vert_amount_onscreen = info->fgeom->top_height;
+    }
+  else
+    bottom_amount = vert_amount_offscreen;
+
+  /* Extend the region, have a helper function handle the constraint,
+   * then return the region to its original size.
+   */
+  meta_rectangle_expand_region_conditionally (info->usable_screen_region,
+                                              horiz_amount_offscreen,
+                                              horiz_amount_offscreen, 
+                                              0, /* Don't let titlebar off */
+                                              bottom_amount,
+                                              horiz_amount_onscreen,
+                                              vert_amount_onscreen);
+  retval =
+    do_screen_and_xinerama_relative_constraints (window, 
+                                                 info->usable_screen_region,
+                                                 info,
+                                                 check_only);
+  meta_rectangle_expand_region_conditionally (info->usable_screen_region,
+                                              -horiz_amount_offscreen,
+                                              -horiz_amount_offscreen,
+                                              0, /* Don't let titlebar off */
+                                              -bottom_amount,
+                                              horiz_amount_onscreen,
+                                              vert_amount_onscreen);
+
+  return retval;
 }
 
 static gboolean

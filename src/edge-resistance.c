@@ -44,7 +44,6 @@ struct ResistanceDataForAnEdge
   GSourceFunc  timeout_func;
   MetaWindow  *window;
   int          keyboard_buildup;
-  gboolean     allow_past_screen_edge;
 };
 typedef struct ResistanceDataForAnEdge ResistanceDataForAnEdge;
 
@@ -396,18 +395,6 @@ apply_edge_resistance (MetaWindow                *window,
       else /* mouse op */
         {
           int threshold;
-
-          /* INFINITE RESISTANCE for screen edges under certain cases; If
-           * the edge is relevant and we're moving towards it and it's a
-           * screen edge and infinite resistance has been requested for
-           * this particular grab op then don't allow movement past it.
-           */
-          if (edge->edge_type == META_EDGE_SCREEN &&
-              !resistance_data->allow_past_screen_edge &&
-              movement_towards_edge (edge->side_type, increment))
-            {
-              return compare;
-            }
 
           /* TIMEOUT RESISTANCE: If the edge is relevant and we're moving
            * towards it, then we may want to have some kind of time delay
@@ -913,12 +900,6 @@ initialize_grab_edge_resistance_data (MetaDisplay *display)
   edge_data->right_data.keyboard_buildup  = 0;
   edge_data->top_data.keyboard_buildup    = 0;
   edge_data->bottom_data.keyboard_buildup = 0;
-
-  edge_data->left_data.allow_past_screen_edge   = TRUE;
-  edge_data->right_data.allow_past_screen_edge  = TRUE;
-  edge_data->bottom_data.allow_past_screen_edge = TRUE;
-  edge_data->top_data.allow_past_screen_edge    = 
-    display->grab_anchor_root_y >= display->grab_initial_window_pos.y;
 }
 
 void

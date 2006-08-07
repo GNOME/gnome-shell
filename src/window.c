@@ -448,6 +448,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->fullscreen = FALSE;
   window->require_fully_onscreen = TRUE;
   window->require_on_single_xinerama = TRUE;
+  window->require_titlebar_visible = TRUE;
   window->on_all_workspaces = FALSE;
   window->shaded = FALSE;
   window->initially_iconic = FALSE;

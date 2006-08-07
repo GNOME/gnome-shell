@@ -1,5 +1,27 @@
 2006-08-07  Elijah Newren  <newren gmail com>
 
+	Add a constrain_titlebar_visible constraint; should fix both bug
+	333328 and bug 345522.  Not perfect (minor annoying snap pulling
+	windows back onscreen, plus an ugly hack almost as bad as the old
+	one), but tarballs are due in less than half an hour.  ;-)
+
+	* src/boxes.[ch] (meta_rectangle_overlaps_with_region):
+	new function
+
+	* src/constraints.c (constrain_titlebar_visible): new function,
+	  (enum ConstraintPriority, array all_constraints,
+	  update_onscreen_requirements): various small changes to
+	  accomodate the new function
+
+	* src/edge-resistance.c: remove the infinite edge resistance,
+	which was a big hack of a way to workaround the lack of a
+	titlebar_visible constraint
+
+	* src/window.[ch] (MetaWindow): new require_titlebar_visible
+	bitfield, (meta_window_new_with_attrs): initialized here
+
+2006-08-07  Elijah Newren  <newren gmail com>
+
 	* src/frames.c (meta_frames_button_press_event): Patch from Chris
 	Ball to not minimize in response to double clicks on the titlebar
 	when minimiziation should not be allowed.  #347377

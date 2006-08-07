@@ -705,6 +705,25 @@ meta_rectangle_contained_in_region (const GList         *spanning_rects,
   return contained;
 }
 
+gboolean
+meta_rectangle_overlaps_with_region (const GList         *spanning_rects,
+                                     const MetaRectangle *rect)
+{
+  const GList *temp;
+  gboolean     overlaps;
+
+  temp = spanning_rects;
+  overlaps = FALSE;
+  while (!overlaps && temp != NULL)
+    {
+      overlaps = overlaps || meta_rectangle_overlap (temp->data, rect);
+      temp = temp->next;
+    }
+
+  return overlaps;
+}
+
+
 void
 meta_rectangle_clamp_to_fit_into_region (const GList         *spanning_rects,
                                          FixedDirections      fixed_directions,

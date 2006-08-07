@@ -183,6 +183,9 @@ gboolean meta_rectangle_could_fit_in_region (
 gboolean meta_rectangle_contained_in_region (
                                          const GList         *spanning_rects,
                                          const MetaRectangle *rect);
+gboolean meta_rectangle_overlaps_with_region (
+                                         const GList         *spanning_rects,
+                                         const MetaRectangle *rect);
 
 /* Make the rectangle small enough to fit into one of the spanning_rects,
  * but make it no smaller than min_size.
