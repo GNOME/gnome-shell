@@ -1,5 +1,10 @@
 2006-08-07  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/clutter-video-texture.c: (lay_pipeline):
+	Set quality of service prop on fakesink to TRUE.
+
+2006-08-07  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-actor.c: (clutter_actor_paint):
 	Remove relic from old stage behaviour - dont unref
 	it during a clip. 

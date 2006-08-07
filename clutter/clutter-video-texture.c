@@ -806,6 +806,8 @@ lay_pipeline (ClutterVideoTexture *video_texture)
   g_object_set (G_OBJECT(video_sink), 
 		"signal-handoffs", TRUE, 
 		"sync", TRUE,
+		/* Enable frame drops. FIXME: export setting in API ? */
+		"qos",  TRUE, 
 		NULL);
 
   g_signal_connect(G_OBJECT (video_sink), 
