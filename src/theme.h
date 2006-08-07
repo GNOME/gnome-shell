@@ -107,10 +107,13 @@ struct _MetaFrameLayout
 
 struct _MetaButtonSpace
 {
-  GdkRectangle visible;   /* The area of the screen which has a button's image
-                             drawn on it. */
-  GdkRectangle clickable; /* The area of the screen which, when clicked,
-                             activates a button. */
+  /* The reason for two different rectangles here is Fitts' law & maximized
+   * windows; see #97703 for more details.
+   *   visible   - The screen area where the button's image is drawn
+   *   clickable - The screen area where the button can be activated by clicking
+   */
+  GdkRectangle visible;
+  GdkRectangle clickable;
 };
 
 /* Calculated actual geometry of the frame */
