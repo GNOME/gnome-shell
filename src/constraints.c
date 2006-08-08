@@ -385,10 +385,11 @@ setup_constraint_info (ConstraintInfo      *info,
   if (!info->is_user_action)
     info->fixed_directions = 0;
 
-  meta_window_get_work_area_current_xinerama (window, &info->work_area_xinerama);
-
   xinerama_info =
-    meta_screen_get_xinerama_for_window (window->screen, window);
+    meta_screen_get_xinerama_for_rect (window->screen, &info->current);
+  meta_window_get_work_area_for_xinerama (window,
+                                          xinerama_info->number,
+                                          &info->work_area_xinerama);
   info->entire_xinerama = xinerama_info->rect;
 
   cur_workspace = window->screen->active_workspace;

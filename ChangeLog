@@ -1,5 +1,11 @@
 2006-08-07  Elijah Newren  <newren gmail com>
 
+	* src/constraints.c (setup_constraint_info): patch from Stéphane
+	Rosi to allow moving maximized windows between xineramas again.
+	#323820
+
+2006-08-07  Elijah Newren  <newren gmail com>
+
 	* configure.in: post-release version bump to 2.15.34
 
 2006-08-07  Elijah Newren  <newren gmail com>
