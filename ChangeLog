@@ -1,5 +1,14 @@
 2006-08-07  Elijah Newren  <newren gmail com>
 
+	* src/window.c (intervening_user_event_occurred): Vytautus Liuolia
+	totally rocks; he tested and debugged and tracked down where we
+	were using the focus window's net_wm_user_time even when it was
+	uninitialized.  This may fix bug 311868 and others I've heard
+	about (with Valknut, IIRC).  It definitely fixes the issues Vytas
+	was seeing with his single instance library.  :-)
+
+2006-08-07  Elijah Newren  <newren gmail com>
+
 	* src/constraints.c (setup_constraint_info): patch from Stéphane
 	Rosi to allow moving maximized windows between xineramas again.
 	#323820

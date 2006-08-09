@@ -1646,9 +1646,11 @@ intervening_user_event_occurred (MetaWindow *window)
     {
       meta_topic (META_DEBUG_STARTUP,
                   "COMPARISON (continued):\n"
-                  "  focus_window         : %s\n"
-                  "  fw->net_wm_user_time : %lu\n",
+                  "  focus_window             : %s\n"
+                  "  fw->net_wm_user_time_set : %d\n"
+                  "  fw->net_wm_user_time     : %lu\n",
                   focus_window->desc,
+                  focus_window->net_wm_user_time_set,
                   focus_window->net_wm_user_time);
     }
 
@@ -1673,6 +1675,15 @@ intervening_user_event_occurred (MetaWindow *window)
     {
       meta_topic (META_DEBUG_STARTUP,
                   "no information about window %s found\n",
+                  window->desc);
+      return FALSE;
+    }
+
+  if (focus_window != NULL &&
+      !focus_window->net_wm_user_time_set)
+    {
+      meta_topic (META_DEBUG_STARTUP,
+                  "focus window, %s, doesn't have a user time set yet!\n",
                   window->desc);
       return FALSE;
     }
