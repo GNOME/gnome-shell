@@ -75,7 +75,7 @@ clutter_group_paint (ClutterActor *actor)
 
       clutter_actor_get_geometry (actor, &geom);
 
-      if (geom.x != 0 && geom.y != 0)
+      if (geom.x != 0 || geom.y != 0)
 	glTranslatef(geom.x, geom.y, 0.0);
 
     }

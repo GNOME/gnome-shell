@@ -44,14 +44,17 @@ G_DEFINE_TYPE (ClutterTimeline, clutter_timeline, G_TYPE_OBJECT);
 
 struct ClutterTimelinePrivate
 {
-  guint    timeout_id;
-  guint    fps;
-  guint    nframes;
-  guint    current_frame_num;
-  gulong   last_frame_msecs;
-  gulong   start_frame_secs;
+  guint                     timeout_id;
+  guint                     fps;
+  guint                     nframes;
+  guint                     current_frame_num;
+  gulong                    last_frame_msecs;
+  gulong                    start_frame_secs;
+
+  guint32                   alpha;
+  ClutterTimelineAlphaFunc  alpha_func;
   
-  guint    loop : 1;
+  guint                     loop : 1;
 };
 
 enum
@@ -59,7 +62,8 @@ enum
   PROP_0,
   PROP_FPS,
   PROP_NFRAMES,
-  PROP_LOOP
+  PROP_LOOP,
+  PROP_ALPHA
 };
 
 enum
@@ -72,6 +76,17 @@ enum
 };
 
 static int timeline_signals[LAST_SIGNAL] = { 0 };
+
+/* Alpha funcs */
+
+guint32 
+clutter_timeline_alpha_ramp_inc_func (ClutterTimeline *timeline)
+{
+  return (timeline->priv->current_frame_num * CLUTTER_TIMELINE_MAX_ALPHA)
+                        / timeline->priv->nframes;
+}
+
+/* Object */
 
 static void 
 clutter_timeline_set_property (GObject      *object, 
@@ -92,6 +107,9 @@ clutter_timeline_set_property (GObject      *object,
       break;
     case PROP_NFRAMES:
       priv->nframes = g_value_get_int (value);
+      break;
+    case PROP_ALPHA:
+      priv->alpha = g_value_get_int (value);
       break;
     case PROP_LOOP:
       priv->loop = g_value_get_boolean (value);
@@ -183,6 +201,16 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 		       G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
   g_object_class_install_property
+    (object_class, PROP_ALPHA,
+     g_param_spec_int ("alpha",
+		       "Alpha value for timeline",
+		       "Alpha value for timeline",
+		       0,
+		       CLUTTER_TIMELINE_MAX_ALPHA,
+		       0,
+		       G_PARAM_READABLE));
+
+  g_object_class_install_property
     (object_class, PROP_NFRAMES,
      g_param_spec_int ("num-frames",
 		       "Total number of frames",
@@ -190,7 +218,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 		       0,
 		       G_MAXINT,
 		       0,
-		       G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
+		       G_PARAM_READWRITE));
 
   g_object_class_install_property
     (object_class, PROP_LOOP,
@@ -297,6 +325,10 @@ timeline_timeout_func (gpointer data)
 
   /* Advance frames */
   priv->current_frame_num += nframes;;
+
+  /* Update alpha value */
+  if (priv->alpha_func)
+    priv->alpha = priv->alpha_func(timeline);
 
   /* Handle loop or stop */
   if (priv->current_frame_num > priv->nframes)
@@ -545,6 +577,21 @@ clutter_timeline_is_playing (ClutterTimeline *timeline)
   return (timeline->priv->timeout_id != 0);
 }
 
+/**
+ * clutter_timeline_get_alpha:
+ * @timeline: A #ClutterTimeline
+ *
+ * Query the timelines current alpha value.
+ *
+ * Return Value: The current alpha value for the timeline
+ */
+gint32
+clutter_timeline_get_alpha (ClutterTimeline *timeline)
+{
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), FALSE);
+  
+  return timeline->priv->alpha;
+}
 
 /**
  * clutter_timeline_new:

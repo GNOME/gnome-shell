@@ -1,3 +1,23 @@
+2006-08-14  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/Makefile.am:
+	* clutter/clutter-behaviour.c:
+	* clutter/clutter-behaviour.h:
+	* clutter/clutter-behaviours.c:
+	* clutter/clutter-behaviours.h:
+	* clutter/clutter-timeline.c:
+	* clutter/clutter-timeline.h:
+	Add very initial new behaviour functionality.
+
+	* clutter/clutter-stage.c:
+	* clutter/clutter-main.c:
+	* clutter/clutter-actor.c:
+	Improve clipping using stencil test rather than scissor check.
+	( Should now handle rotated clips etc ).
+
+	* clutter/clutter-group.c: (clutter_group_paint):
+	Fix typo on position check.
+
 2006-08-07  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-video-texture.c: (lay_pipeline):

@@ -381,6 +381,7 @@ clutter_stage_realize (ClutterActor *actor)
 	  GLX_RED_SIZE, 1,
 	  GLX_GREEN_SIZE, 1,
 	  GLX_BLUE_SIZE, 1,
+	  GLX_STENCIL_SIZE, 1,
 	  0
 	};
 

@@ -58,6 +58,8 @@ typedef struct _ClutterTimeline ClutterTimeline;
 typedef struct _ClutterTimelineClass ClutterTimelineClass; 
 typedef struct ClutterTimelinePrivate ClutterTimelinePrivate;
 
+typedef guint32 (*ClutterTimelineAlphaFunc) (ClutterTimeline *timeline); 
+
 struct _ClutterTimeline
 {
   GObject                 parent;
@@ -81,6 +83,8 @@ struct _ClutterTimelineClass
   void (*_clutter_timeline_4) (void);
   void (*_clutter_timeline_5) (void);
 }; 
+
+#define CLUTTER_TIMELINE_MAX_ALPHA 0xffff
 
 GType clutter_timeline_get_type (void);
 
@@ -122,6 +126,18 @@ clutter_timeline_get_n_frames (ClutterTimeline *timeline);
 
 gboolean
 clutter_timeline_is_playing (ClutterTimeline *timeline);
+
+/* Alpha funcs */
+
+gint32
+clutter_timeline_get_alpha (ClutterTimeline *timeline);
+
+guint32 
+clutter_timeline_alpha_ramp_inc_func (ClutterTimeline *timeline);
+
+
+
+#define CLUTTER_ALPHA_RAMP_INC clutter_timeline_alpha_ramp_inc_func;
 
 G_END_DECLS
 

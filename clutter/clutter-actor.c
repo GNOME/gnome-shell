@@ -253,6 +253,7 @@ clutter_actor_paint (ClutterActor *self)
 
   klass = CLUTTER_ACTOR_GET_CLASS (self);
 
+#if 0
   if (self->priv->has_clip)
     {
       ClutterGeometry *clip = &(self->priv->clip);
@@ -276,6 +277,7 @@ clutter_actor_paint (ClutterActor *self)
 		 clip->width, 
 		 clip->height);
     }
+#endif
 
   glPushMatrix();
 
@@ -325,13 +327,39 @@ clutter_actor_paint (ClutterActor *self)
   if (self->priv->z)
     glTranslatef ( 0.0, 0.0, (float)self->priv->z);
 
+  if (self->priv->has_clip)
+    {
+      ClutterGeometry *clip = &(self->priv->clip);
+
+      glClearStencil (0.0f);
+      glEnable (GL_STENCIL_TEST);
+
+      glStencilFunc (GL_NEVER, 0x1, 0x1);
+      glStencilOp (GL_INCR, GL_INCR, GL_INCR);
+      glColor3f(1.0f, 1.0f, 1.0f);
+
+      /* render clip geomerty */
+      glRecti (self->priv->coords.x1 + clip->x,
+	       self->priv->coords.y1 + clip->y,
+	       self->priv->coords.x1 + clip->x + clip->width,
+	       self->priv->coords.y1 + clip->y + clip->height);
+
+      glStencilFunc (GL_EQUAL, 0x1, 0x1);
+      glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP);
+    }
+
   if (klass->paint)
     (klass->paint) (self);
 
-  glPopMatrix();
-
   if (self->priv->has_clip)
-    glDisable (GL_SCISSOR_TEST);
+    {
+      glDisable (GL_STENCIL_TEST);
+#if 0
+      glDisable (GL_SCISSOR_TEST);
+#endif
+    }
+
+  glPopMatrix();
 }
 
 /**

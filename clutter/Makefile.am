@@ -21,6 +21,8 @@ source_h =				  \
 	$(srcdir)/clutter-clone-texture.h \
 	$(srcdir)/clutter-video-texture.h \
 	$(srcdir)/clutter-label.h         \
+	$(srcdir)/clutter-behaviour.h     \
+	$(srcdir)/clutter-behaviours.h    \
         $(srcdir)/clutter-main.h          
 
 clutter-marshal.h: clutter-marshal.list
@@ -83,6 +85,8 @@ source_c = clutter-main.c          \
 	   clutter-video-texture.c \
 	   clutter-label.c         \
            clutter-actor.c	   \
+           clutter-behaviour.c	   \
+           clutter-behaviours.c	   \
 	   clutter-enum-types.c
 
 source_h_priv = clutter-private.h
