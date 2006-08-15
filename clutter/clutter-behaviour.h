@@ -33,13 +33,13 @@ typedef struct _ClutterBehaviourClass  ClutterBehaviourClass;
  
 struct _ClutterBehaviour
 {
-  ClutterTimeline     parent;
+  GObject                 parent;
   ClutterBehaviourPrivate *priv;
 };
 
 struct _ClutterBehaviourClass
 {
-  ClutterTimelineClass         parent_class;
+  GObjectClass parent_class;
 };
 
 GType clutter_behaviour_get_type (void);
