@@ -3,8 +3,6 @@
 
 #include <glib-object.h>
 
-#include "clutter.h"
-
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_BEHAVIOUR clutter_behaviour_get_type()

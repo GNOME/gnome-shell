@@ -86,6 +86,32 @@ clutter_timeline_alpha_ramp_inc_func (ClutterTimeline *timeline)
                         / timeline->priv->nframes;
 }
 
+guint32 
+clutter_timeline_alpha_ramp_dec_func (ClutterTimeline *timeline)
+{
+  return ((timeline->priv->nframes - timeline->priv->current_frame_num) 
+                 * CLUTTER_TIMELINE_MAX_ALPHA)
+                        / timeline->priv->nframes;
+}
+
+guint32 
+clutter_timeline_alpha_ramp_func (ClutterTimeline *timeline)
+{
+
+  if (timeline->priv->current_frame_num > (timeline->priv->nframes/2))
+    {
+      return (((timeline->priv->nframes) - timeline->priv->current_frame_num) 
+	      * CLUTTER_TIMELINE_MAX_ALPHA)
+	                  / (timeline->priv->nframes/2);
+    }
+  else
+    {
+      return (timeline->priv->current_frame_num * CLUTTER_TIMELINE_MAX_ALPHA)
+	                     / (timeline->priv->nframes/2);
+    }
+}
+
+
 /* Object */
 
 static void 
@@ -269,6 +295,8 @@ clutter_timeline_init (ClutterTimeline *self)
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE(self,
 					   CLUTTER_TYPE_TIMELINE,
 					   ClutterTimelinePrivate);
+
+  self->priv->alpha_func = CLUTTER_ALPHA_RAMP_INC;
 }
 
 static gboolean
@@ -323,12 +351,12 @@ timeline_timeout_func (gpointer data)
 
   priv->last_frame_msecs = msecs; 
 
-  /* Advance frames */
-  priv->current_frame_num += nframes;;
-
   /* Update alpha value */
   if (priv->alpha_func)
     priv->alpha = priv->alpha_func(timeline);
+
+  /* Advance frames */
+  priv->current_frame_num += nframes;;
 
   /* Handle loop or stop */
   if (priv->current_frame_num > priv->nframes)
@@ -336,8 +364,10 @@ timeline_timeout_func (gpointer data)
       priv->current_frame_num = priv->nframes;
 
       if (nframes > 1)
-	g_signal_emit (timeline, timeline_signals[SIGNAL_NEW_FRAME], 
-		       0, priv->current_frame_num);
+	{
+	  g_signal_emit (timeline, timeline_signals[SIGNAL_NEW_FRAME], 
+			 0, priv->current_frame_num);
+	}
 
       if (priv->loop)
 	clutter_timeline_rewind (timeline);
@@ -591,6 +621,19 @@ clutter_timeline_get_alpha (ClutterTimeline *timeline)
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), FALSE);
   
   return timeline->priv->alpha;
+}
+
+/**
+ * clutter_timeline_set_alpha_func:
+ * @timeline: A #ClutterTimeline
+ * @func: A #ClutterTimelineAlphaFunc
+ *
+ */
+void
+clutter_timeline_set_alpha_func (ClutterTimeline          *timeline,
+				 ClutterTimelineAlphaFunc  func)
+{
+  timeline->priv->alpha_func = func;
 }
 
 /**

@@ -31,10 +31,9 @@
 
 #include "config.h"
 
-#include "clutter-behaviour.h"
-#include "clutter-enum-types.h"
-#include "clutter-private.h" 	/* for DBG */
 #include "clutter-timeline.h"
+#include "clutter-actor.h"
+#include "clutter-behaviour.h"
 
 G_DEFINE_TYPE (ClutterBehaviour, clutter_behaviour, G_TYPE_OBJECT);
 

@@ -31,10 +31,12 @@
 
 #include "config.h"
 
+#include "clutter-timeline.h"
+#include "clutter-actor.h"
+#include "clutter-behaviour.h"
 #include "clutter-behaviours.h"
 #include "clutter-enum-types.h"
-#include "clutter-private.h" 	/* for DBG */
-#include "clutter-timeline.h"
+#include "clutter-main.h"
 
 G_DEFINE_TYPE (ClutterBehaviourPath,   \
                clutter_behaviour_path, \
@@ -98,6 +100,29 @@ clutter_behaviour_path_init (ClutterBehaviourPath *self)
 
   self->priv = priv = CLUTTER_BEHAVIOUR_PATH_GET_PRIVATE (self);
 }
+
+/* 
+
+function line(x0, x1, y0, y1)
+     boolean steep := abs(y1 - y0) > abs(x1 - x0)
+     if steep then
+         swap(x0, y0)
+         swap(x1, y1)
+     if x0 > x1 then
+         swap(x0, x1)
+         swap(y0, y1)
+     int deltax := x1 - x0
+     int deltay := abs(y1 - y0)
+     int error := 0
+     int ystep
+     int y := y0
+     if y0 < y1 then ystep := 1 else ystep := -1
+     for x from x0 to x1
+         if steep then plot(y,x) else plot(x,y)
+         error := error + deltay
+         if 2
+
+ */
 
 ClutterBehaviour*
 clutter_behaviour_path_new (ClutterTimeline *timeline,
@@ -203,6 +228,8 @@ clutter_behaviour_opacity_frame_foreach (ClutterActor            *actor,
 
   opacity += priv->opacity_start;
 
+  CLUTTER_DBG("alpha %i opacity %i\n", alpha, opacity);
+
   clutter_actor_set_opacity (actor, opacity);
 }
 
@@ -218,7 +245,7 @@ clutter_behaviour_opacity_frame (ClutterTimeline *timelime,
   clutter_behaviour_actors_foreach 
                      (CLUTTER_BEHAVIOUR(behave),
 		      (GFunc)clutter_behaviour_opacity_frame_foreach,
-		      GINT_TO_POINTER(frame_num));
+		      behave);
 }
 
 ClutterBehaviour*

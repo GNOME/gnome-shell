@@ -1,3 +1,20 @@
+2006-08-15  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-behaviour.c:
+	* clutter/clutter-behaviour.h:
+	* clutter/clutter-behaviours.c:
+	* clutter/clutter-timeline.c:
+	* clutter/clutter-timeline.h:
+	* clutter/clutter.h:
+	Make basic behaviour infrastructure actually work.
+
+	* examples/Makefile.am:
+	* examples/behave.c:
+	Add a simple behaviour demo/test
+
+	* clutter/clutter-media.c: (clutter_media_set_volume):
+	Actuall set volume rather than position..   (Fixes #141)
+
 2006-08-14  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/Makefile.am:

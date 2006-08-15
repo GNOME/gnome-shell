@@ -288,7 +288,7 @@ clutter_media_set_volume (ClutterMedia *media,
 {
   g_return_if_fail (CLUTTER_IS_MEDIA(media));
 
-  CLUTTER_MEDIA_GET_INTERFACE (media)->set_position (media, volume);
+  CLUTTER_MEDIA_GET_INTERFACE (media)->set_volume (media, volume);
 }
 
 /** 

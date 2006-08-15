@@ -8,6 +8,8 @@
 #include "clutter-util.h"
 #include "clutter-event.h"
 #include "clutter-timeline.h"
+#include "clutter-behaviour.h"
+#include "clutter-behaviours.h"
 #include "clutter-stage.h"
 #include "clutter-actor.h"
 #include "clutter-rectangle.h"

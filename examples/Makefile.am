@@ -1,4 +1,4 @@
-noinst_PROGRAMS = test video-player video-cube super-oh
+noinst_PROGRAMS = test video-player video-cube super-oh behave
 
 INCLUDES = -I$(top_srcdir)/
 
@@ -33,6 +33,15 @@ super_oh_LDFLAGS = \
     $(GST_LIBS)   \
     $(GCONF_LIBS) \
     $(top_builddir)/clutter/libclutter-@CLUTTER_MAJORMINOR@.la 
+
+behave_SOURCES = behave.c
+behave_CFLAGS = $(CLUTTER_CFLAGS) $(GST_CFLAGS) $(GCONF_CFLAGS)
+behave_LDFLAGS = \
+    $(CLUTTER_LIBS) \
+    $(GST_LIBS)   \
+    $(GCONF_LIBS) \
+    $(top_builddir)/clutter/libclutter-@CLUTTER_MAJORMINOR@.la 
+
 
 EXTRA_DIST = redhand.png              \
              clutter-logo-800x600.png \

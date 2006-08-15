@@ -636,7 +636,7 @@ clutter_texture_paint (ClutterActor *self)
 
   glEnable(GL_BLEND);
   glEnable(texture->priv->target_type);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
 
   opacity = clutter_actor_get_opacity(self);
 
