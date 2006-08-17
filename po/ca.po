@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.9.91\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-17 12:22+0200\n"
+"POT-Creation-Date: 2006-08-17 12:22+0200\n"
 "PO-Revision-Date: 2006-03-01 01:29+0100\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
@@ -163,7 +163,7 @@ msgstr "Visualització X per a usar"
 
 #: ../src/main.c:281
 msgid "Initialize session from savefile"
-msgstr "Initialitza la sessió des del fitxer desat"
+msgstr "Inicialitza la sessió des del fitxer desat"
 
 #: ../src/main.c:287
 msgid "Print version"
@@ -2209,7 +2209,7 @@ msgstr "La pantalla %d en la visualització «%s» ja té un gestor de finestres
 #: ../src/screen.c:705
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "No s'ha pogut lliberar la pantalla %d en la visualització «%s»\n"
+msgstr "No s'ha pogut alliberar la pantalla %d en la visualització «%s»\n"
 
 #: ../src/session.c:835 ../src/session.c:842
 #, c-format
@@ -2604,7 +2604,7 @@ msgstr "No s'entén l'ombra «%s» per a l'element <%s>"
 #: ../src/theme-parser.c:2549
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr "No s'entén la flexta «%s» per a l'element <%s>"
+msgstr "No s'entén la fletxa «%s» per a l'element <%s>"
 
 #: ../src/theme-parser.c:2962 ../src/theme-parser.c:3078
 #, c-format
@@ -3062,7 +3062,7 @@ msgstr "La geometria del marc no especifica la mida dels botons"
 
 #: ../src/theme.c:842
 msgid "Gradients should have at least two colors"
-msgstr "Els degradats hauríen de tenir almenys dos colors"
+msgstr "Els degradats han de tenir almenys dos colors"
 
 #: ../src/theme.c:968
 #, c-format
@@ -3291,7 +3291,7 @@ msgstr "La constant «%s» ja s'ha definit"
 #: ../src/util.c:96
 #, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr "És impossible d'obrir el resgistre de depuració: %s\n"
+msgstr "No s'ha pogut obrir el registre de depuració: %s\n"
 
 #: ../src/util.c:106
 #, c-format
