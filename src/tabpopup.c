@@ -222,6 +222,7 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
   GList *tmp;
   GtkWidget *frame;
   int max_label_width; /* the actual max width of the labels we create */
+  AtkObject *obj;
   GdkScreen *screen;
   int screen_width;
   
@@ -288,6 +289,14 @@ meta_ui_tab_popup_new (const MetaTabEntry *entries,
                      table);
 
   popup->label = gtk_label_new ("");
+
+  /* Set the accessible role of the label to a status bar so it
+   * will emit name changed events that can be used by screen
+   * readers.
+   */
+  obj = gtk_widget_get_accessible (popup->label);
+  atk_object_set_role (obj, ATK_ROLE_STATUSBAR);
+
   gtk_misc_set_padding (GTK_MISC (popup->label), 3, 3);
 
   gtk_box_pack_end (GTK_BOX (vbox), popup->label, FALSE, FALSE, 0);

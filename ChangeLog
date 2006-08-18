@@ -1,3 +1,9 @@
+2006-08-18  Elijah Newren  <newren gmail com>
+
+	* src/tabpopup.c (meta_ui_tab_popup_new): Patch from Willie Walker
+	to restore the part of the patch that I should not have reverted
+	in #123372, in order to fix accessibility.  #350624
+
 2006-08-09  Elijah Newren  <newren gmail com>
 
 	* src/window.c (intervening_user_event_occurred): Vytautus Liuolia
