@@ -1,3 +1,9 @@
+2006-08-19 Baptiste Mille-Mathias <baptiste.millemathias@gmail.com>
+
+	* src/stock_delete.png: Update the pixmap to a new one which
+	fit better with the other pixmaps of the menu. First patch in
+	metacity, woot! #345498
+
 2006-08-18  Elijah Newren  <newren gmail com>
 
 	* src/tabpopup.c (meta_ui_tab_popup_new): Patch from Willie Walker
