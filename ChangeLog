@@ -1,3 +1,31 @@
+2006-08-21  Elijah Newren  <newren gmail com>
+
+	Fix several bugs with handling of fullscreen windows, causing them
+	to not actually be fullscreen.  #343115 (and also #346927,
+	#350547, #351643, the recent additional WINE-related issue
+	mentioned on the mailing list, and probably others...)
+
+	* src/constraints.c (setup_constraint_info): if a window tries to
+	resize to fullscreen-size and it has a fullscreen function but
+	isn't actually marked as fullscreen then assist it by marking it
+	as such, (constrain_fully_onscreen, constrain_titlebar_visible):
+	ignore this constraint for fullscreen windows since such windows
+	have a separate specialized constraint
+
+	* src/stack.c (window_is_fullscreen_size, get_standalone_layer):
+	remove the old window_is_fullscreen_size() hack for detecting
+	windows to treat as fullscreen since it doesn't work well with the
+	new constraints framework (i.e. we needed a slightly different
+	hack)
+
+	* src/window.[ch] (meta_window_new_with_addrs): shuffle the order
+	of adding the window to the stack and moveresizing the window
+	since moveresizing can cause stack changes if the window's initial
+	size is fullscreen size, (meta_window_make_fullscreen,
+	meta_window_make_fullscreen_internal): split
+	meta_window_make_fullscreen() similar to meta_window_maximize() so
+	that constraints can make use of it
+
 2006-08-19 Baptiste Mille-Mathias <baptiste.millemathias@gmail.com>
 
 	* src/stock_delete.png: Update the pixmap to a new one which

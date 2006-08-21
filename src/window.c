@@ -701,6 +701,16 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   
   meta_window_update_struts (window);
 
+  /* Must add window to stack before doing move/resize, since the
+   * window might have fullscreen size (i.e. should have been
+   * fullscreen'd; acrobat is one such braindead case; it withdraws
+   * and remaps its window whenever trying to become fullscreen...)
+   * and thus constraints may try to auto-fullscreen it which also
+   * means restacking it.
+   */
+  meta_stack_add (window->screen->stack, 
+                  window);
+
   /* Put our state back where it should be,
    * passing TRUE for is_configure_request, ICCCM says
    * initial map is handled same as configure request
@@ -714,9 +724,6 @@ meta_window_new_with_attrs (MetaDisplay       *display,
                                     window->size_hints.y,
                                     window->size_hints.width,
                                     window->size_hints.height);
-
-  meta_stack_add (window->screen->stack, 
-                  window);
 
   /* Now try applying saved stuff from the session */
   {
@@ -2359,7 +2366,7 @@ meta_window_unmake_above (MetaWindow  *window)
 }
 
 void
-meta_window_make_fullscreen (MetaWindow  *window)
+meta_window_make_fullscreen_internal (MetaWindow  *window)
 {
   if (!window->fullscreen)
     {
@@ -2379,12 +2386,20 @@ meta_window_make_fullscreen (MetaWindow  *window)
       meta_window_raise (window);
       meta_stack_thaw (window->screen->stack);
       
+      recalc_window_features (window);
+      set_net_wm_state (window);
+    }
+}
+
+void
+meta_window_make_fullscreen (MetaWindow  *window)
+{
+  if (!window->fullscreen)
+    {
+      meta_window_make_fullscreen_internal (window);
       /* move_resize with new constraints
        */
       meta_window_queue_move_resize (window);
-
-      recalc_window_features (window);
-      set_net_wm_state (window);
     }
 }
 

@@ -404,10 +404,10 @@ void        meta_window_unstick            (MetaWindow  *window);
 
 void        meta_window_activate           (MetaWindow  *window,
                                             guint32      current_time);
-void        meta_window_activate_with_workspace (MetaWindow *window,
-                                            guint32          current_time,
-                                            MetaWorkspace   *workspace);   
-                                                                                    
+void        meta_window_activate_with_workspace  (MetaWindow    *window,
+                                                  guint32        current_time,
+                                                  MetaWorkspace *workspace);   
+void        meta_window_make_fullscreen_internal (MetaWindow    *window);
 void        meta_window_make_fullscreen    (MetaWindow  *window);
 void        meta_window_unmake_fullscreen  (MetaWindow  *window);
 

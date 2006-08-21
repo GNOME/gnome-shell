@@ -399,6 +399,23 @@ setup_constraint_info (ConstraintInfo      *info,
     meta_workspace_get_onxinerama_region (cur_workspace, 
                                           xinerama_info->number);
 
+  /* Workaround braindead legacy apps that don't know how to
+   * fullscreen themselves properly.
+   */
+  if (meta_rectangle_equal (new, &xinerama_info->rect) &&
+      window->has_fullscreen_func &&
+      !window->fullscreen)
+    {
+      /*
+      meta_topic (META_DEBUG_GEOMETRY,
+      */
+      meta_warning (
+                  "Treating resize request of legacy application %s as a "
+                  "fullscreen request\n",
+                  window->desc);
+      meta_window_make_fullscreen_internal (window);
+    }
+
   /* Log all this information for debugging */
   meta_topic (META_DEBUG_GEOMETRY,
               "Setting up constraint info:\n"
@@ -1069,6 +1086,7 @@ constrain_fully_onscreen (MetaWindow         *window,
    */
   if (window->type == META_WINDOW_DESKTOP ||
       window->type == META_WINDOW_DOCK    ||
+      window->fullscreen                  ||
       !window->require_fully_onscreen     || 
       info->is_user_action)
     return TRUE;
@@ -1110,6 +1128,7 @@ constrain_titlebar_visible (MetaWindow         *window,
    */
   if (window->type == META_WINDOW_DESKTOP ||
       window->type == META_WINDOW_DOCK    ||
+      window->fullscreen                  ||
       !window->require_titlebar_visible   ||
       !window->decorated                  ||
       unconstrained_user_action)

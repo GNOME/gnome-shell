@@ -197,42 +197,6 @@ meta_stack_thaw (MetaStack *stack)
 }
 
 static gboolean
-window_is_fullscreen_size (MetaWindow *window)
-{
-  int i;
-
-  if (meta_rectangle_could_fit_rect (&window->rect, &window->screen->rect))
-    {
-      /* we use the work area since windows that try to
-       * position at 0,0 will get pushed down by menu panel
-       */
-      MetaRectangle workarea;
-      
-      meta_window_get_work_area_current_xinerama (window, &workarea);
-      if (meta_rectangle_contains_rect (&window->rect, &workarea))
-        return TRUE;
-    }
-  
-  i = 0;
-  while (i < window->screen->n_xinerama_infos)
-    {
-      if (meta_rectangle_could_fit_rect (&window->rect,
-                                         &window->screen->xinerama_infos[i].rect))
-        {
-          MetaRectangle workarea;
-          
-          meta_window_get_work_area_current_xinerama (window, &workarea);
-          if (meta_rectangle_contains_rect (&window->rect, &workarea))
-            return TRUE;
-        }
-      
-      ++i;
-    }
-
-  return FALSE;
-}
-
-static gboolean
 is_focused_foreach (MetaWindow *window,
                     void       *data)
 {
@@ -283,7 +247,7 @@ get_standalone_layer (MetaWindow *window)
 
       if (window->wm_state_below)
         layer = META_LAYER_BOTTOM;
-      else if ((window->fullscreen || window_is_fullscreen_size (window)) &&
+      else if (window->fullscreen &&
                (focused_transient ||
                 window == window->display->expected_focus_window ||
                 window->display->expected_focus_window == NULL ||
