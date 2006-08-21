@@ -1,3 +1,24 @@
+2.15.34
+==
+
+Thanks to Stéphane Rosi, Vytautus Liuolia, Will Walker, Baptiste
+Mille-Mathias, Elijah Newren, Ed Catmur, and Thomas Andersen for fixes
+in this release.
+
+ - allow moving maximized windows between xineramas again (Stéphane)
+   [#338660]
+ - fix an uninitialized-usage bug with net_wm_user_time that breaks
+   focus with new windows (Vytautus)
+ - re-fix accessibility events for the alt-tab popup (Will) [#350624]
+ - update the close pixmap to fit better with the other pixmaps of the
+   menu (Baptiste) [#345498]
+ - fix several fullscreen handling bugs I introduced, causing
+   fullscreen windows to not actually be shown fullscreen (Elijah)
+   [#343115]
+ - fix keybindings with hex-values, coming from special extended
+   keyboard keys (Ed) [#140448]
+ - fix metacity-dialog handling of arguments (Thomas) [#340690]
+
 2.15.21
 ==
 

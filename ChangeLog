@@ -1,5 +1,9 @@
 2006-08-21  Elijah Newren  <newren gmail com>
 
+	* NEWS:	2.15.34 release
+
+2006-08-21  Elijah Newren  <newren gmail com>
+
 	Patch from Thomas Andersen to fix metacity-dialog handling of
 	arguments.  #340690
 
