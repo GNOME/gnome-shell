@@ -1,5 +1,28 @@
 2006-08-21  Elijah Newren  <newren gmail com>
 
+	Patch from Ed Catmur to fix keybindings with hex-values (coming
+	from special extended keyboard keys).  #140448.
+
+	* src/keybindings.c (struct _MetaKeyBinding): change keycode from
+	KeyCode to unsigned int (comment from Elijah: why???),
+	(reload_keycodes): only grab keysyms for keybindings that have
+	them, (count_bindings, rebuild_binding_table): bindings can be
+	valid either due to a valid keysym or a valid keycode,
+	(display_get_keybinding_action, meta_change_keygrab,
+	process_tab_grab, process_workspace_switch_grab): handle keycode
+	as well as keysym
+
+	* src/prefs.[ch] (struct MetaKeyCombo, update_binding,
+	update_list_binding): handle keycode as well as keysym
+
+	* src/ui.[ch] (meta_ui_accelerator_parse): new function special
+	cases strings of the form "0x[0-9a-fA-F]+" and otherwise calling
+	gtk_accelerator_parse(), (meta_ui_parse_accelerator,
+	meta_ui_parse_modifier): call meta_ui_accelerator_parse instead of
+	gtk_accelerator_parse.
+
+2006-08-21  Elijah Newren  <newren gmail com>
+
 	Allow drags & resizes to be reverted by hitting escape.  Based on
 	patch from Thomas Andersen.  #126497.
 

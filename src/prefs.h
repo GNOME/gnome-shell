@@ -257,6 +257,7 @@ typedef enum _MetaKeyBindingAction
 typedef struct
 {
   unsigned int keysym;
+  unsigned int keycode;
   MetaVirtualModifier modifiers;
 } MetaKeyCombo;
 

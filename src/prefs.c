@@ -2151,6 +2151,7 @@ update_binding (MetaKeyPref *binding,
                 const char  *value)
 {
   unsigned int keysym;
+  unsigned int keycode;
   MetaVirtualModifier mods;
   MetaKeyCombo *combo;
   gboolean changed;
@@ -2160,10 +2161,11 @@ update_binding (MetaKeyPref *binding,
               binding->name, value ? value : "none");
   
   keysym = 0;
+  keycode = 0;
   mods = 0;
   if (value)
     {
-      if (!meta_ui_parse_accelerator (value, &keysym, &mods))
+      if (!meta_ui_parse_accelerator (value, &keysym, &keycode, &mods))
         {
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Failed to parse new gconf value\n");
@@ -2246,16 +2248,19 @@ update_binding (MetaKeyPref *binding,
   
   changed = FALSE;
   if (keysym != combo->keysym ||
+      keycode != combo->keycode ||
       mods != combo->modifiers)
     {
       changed = TRUE;
       
       combo->keysym = keysym;
+      combo->keycode = keycode;
       combo->modifiers = mods;
       
       meta_topic (META_DEBUG_KEYBINDINGS,
-                  "New keybinding for \"%s\" is keysym = 0x%x mods = 0x%x\n",
-                  binding->name, combo->keysym, combo->modifiers);
+                  "New keybinding for \"%s\" is keysym = 0x%x keycode = 0x%x mods = 0x%x\n",
+                  binding->name, combo->keysym, combo->keycode,
+                  combo->modifiers);
     }
   else
     {
@@ -2272,6 +2277,7 @@ update_list_binding (MetaKeyPref *binding,
                      MetaStringListType type_of_value)
 {
   unsigned int keysym;
+  unsigned int keycode;
   MetaVirtualModifier mods;
   gboolean changed = FALSE;
   const gchar *pref_string;
@@ -2308,6 +2314,7 @@ update_list_binding (MetaKeyPref *binding,
   while (pref_iterator)
     {
       keysym = 0;
+      keycode = 0;
       mods = 0;
 
       if (!pref_iterator->data)
@@ -2328,7 +2335,7 @@ update_list_binding (MetaKeyPref *binding,
           g_assert_not_reached ();
         }
       
-      if (!meta_ui_parse_accelerator (pref_string, &keysym, &mods))
+      if (!meta_ui_parse_accelerator (pref_string, &keysym, &keycode, &mods))
         {
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Failed to parse new gconf value\n");
@@ -2363,12 +2370,13 @@ update_list_binding (MetaKeyPref *binding,
 
       combo = g_malloc0 (sizeof (MetaKeyCombo));
       combo->keysym = keysym;
+      combo->keycode = keycode;
       combo->modifiers = mods;
       binding->bindings->next = g_slist_prepend (binding->bindings->next, combo);
 
       meta_topic (META_DEBUG_KEYBINDINGS,
-                      "New keybinding for \"%s\" is keysym = 0x%x mods = 0x%x\n",
-                      binding->name, keysym, mods);
+                      "New keybinding for \"%s\" is keysym = 0x%x keycode = 0x%x mods = 0x%x\n",
+                      binding->name, keysym, keycode, mods);
 
       pref_iterator = pref_iterator->next;
     }  

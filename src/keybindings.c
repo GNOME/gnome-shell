@@ -238,8 +238,8 @@ struct _MetaKeyBinding
 {
   const char *name;
   KeySym keysym;
+  KeyCode keycode;
   unsigned int mask;
-  unsigned int keycode;
   MetaVirtualModifier modifiers;
   const MetaKeyHandler *handler;
 };
@@ -563,8 +563,9 @@ reload_keycodes (MetaDisplay *display)
       i = 0;
       while (i < display->n_screen_bindings)
         {
-          display->screen_bindings[i].keycode = XKeysymToKeycode (display->xdisplay,
-                                                                  display->screen_bindings[i].keysym);
+          if (display->screen_bindings[i].keycode == 0)
+              display->screen_bindings[i].keycode = XKeysymToKeycode (
+                      display->xdisplay, display->screen_bindings[i].keysym);
           
           ++i;
         }
@@ -577,8 +578,9 @@ reload_keycodes (MetaDisplay *display)
       i = 0;
       while (i < display->n_window_bindings)
         {
-          display->window_bindings[i].keycode = XKeysymToKeycode (display->xdisplay,
-                                                                  display->window_bindings[i].keysym);
+          if (display->window_bindings[i].keycode == 0)
+              display->window_bindings[i].keycode = XKeysymToKeycode (
+                      display->xdisplay, display->window_bindings[i].keysym);
           
           ++i;
         }
@@ -651,7 +653,7 @@ count_bindings (const MetaKeyPref *prefs,
         {
           MetaKeyCombo *combo = tmp->data;
 
-          if (combo && combo->keysym != None)
+          if (combo && (combo->keysym != None || combo->keycode != 0))
             {
               count += 1;
 
@@ -693,13 +695,13 @@ rebuild_binding_table (MetaDisplay        *display,
         {
           MetaKeyCombo *combo = tmp->data;
 
-          if (combo && combo->keysym != None)
+          if (combo && (combo->keysym != None || combo->keycode != 0))
             {
               (*bindings_p)[dest].name = prefs[src].name;
               (*bindings_p)[dest].keysym = combo->keysym;
+              (*bindings_p)[dest].keycode = combo->keycode;
               (*bindings_p)[dest].modifiers = combo->modifiers;
               (*bindings_p)[dest].mask = 0;
-              (*bindings_p)[dest].keycode = 0;          
           
               ++dest;
 
@@ -712,10 +714,10 @@ rebuild_binding_table (MetaDisplay        *display,
               
                   (*bindings_p)[dest].name = prefs[src].name;
                   (*bindings_p)[dest].keysym = combo->keysym;
+                  (*bindings_p)[dest].keycode = combo->keycode;
                   (*bindings_p)[dest].modifiers = combo->modifiers |
                     META_VIRTUAL_SHIFT_MASK;
                   (*bindings_p)[dest].mask = 0;
-                  (*bindings_p)[dest].keycode = 0;          
               
                   ++dest;
                 }
@@ -816,6 +818,7 @@ regrab_window_bindings (MetaDisplay *display)
 static MetaKeyBindingAction
 display_get_keybinding_action (MetaDisplay  *display,
                                unsigned int  keysym,
+                               unsigned int  keycode,
                                unsigned long mask)
 {
   int i;
@@ -824,6 +827,7 @@ display_get_keybinding_action (MetaDisplay  *display,
   while (i >= 0)
     {
       if (display->screen_bindings[i].keysym == keysym &&
+          display->screen_bindings[i].keycode == keycode &&
           display->screen_bindings[i].mask == mask)
         {
           return meta_prefs_get_keybinding_action (display->screen_bindings[i].name);
@@ -982,9 +986,9 @@ meta_change_keygrab (MetaDisplay *display,
    */
 
   meta_topic (META_DEBUG_KEYBINDINGS,
-              "%s keybinding %s mask 0x%x on 0x%lx\n",
+              "%s keybinding %s keycode %d mask 0x%x on 0x%lx\n",
               grab ? "Grabbing" : "Ungrabbing",
-              keysym_name (keysym),
+              keysym_name (keysym), keycode,
               modmask, xwindow);
 
   /* efficiency, avoid so many XSync() */
@@ -2421,6 +2425,7 @@ process_tab_grab (MetaDisplay *display,
   prev_window  = meta_display_lookup_x_window (display, prev_xwindow);
   action = display_get_keybinding_action (display,
                                           keysym,
+                                          event->xkey.keycode,
                                           display->grab_mask);
 
   /* Cancel when alt-Escape is pressed during using alt-Tab, and vice
@@ -2881,6 +2886,7 @@ process_workspace_switch_grab (MetaDisplay *display,
 
       action = display_get_keybinding_action (display,
                                               keysym,
+                                              event->xkey.keycode,
                                               display->grab_mask);
 
       switch (action)

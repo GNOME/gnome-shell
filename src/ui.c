@@ -34,8 +34,13 @@
 #include <pango/pangox.h>
 
 #include <string.h>
+#include <stdlib.h>
 
 static void meta_stock_icons_init (void);
+static void meta_ui_accelerator_parse (const char      *accel,
+                                       guint           *keysym,
+                                       guint           *keycode,
+                                       GdkModifierType *keymask);
 
 struct _MetaUI
 {
@@ -737,31 +742,51 @@ meta_ui_have_a_theme (void)
   return meta_theme_get_current () != NULL;
 }
 
+static void
+meta_ui_accelerator_parse (const char      *accel,
+                           guint           *keysym,
+                           guint           *keycode,
+                           GdkModifierType *keymask)
+{
+  if (accel[0] == '0' && accel[1] == 'x')
+    {
+      *keysym = 0;
+      *keycode = (guint) strtoul (accel, NULL, 16);
+      *keymask = 0;
+    }
+  else
+    gtk_accelerator_parse (accel, keysym, keymask);
+}
+
 gboolean
 meta_ui_parse_accelerator (const char          *accel,
                            unsigned int        *keysym,
+                           unsigned int        *keycode,
                            MetaVirtualModifier *mask)
 {
   GdkModifierType gdk_mask = 0;
   guint gdk_sym = 0;
+  guint gdk_code = 0;
   
   *keysym = 0;
+  *keycode = 0;
   *mask = 0;
 
   if (strcmp (accel, "disabled") == 0)
     return TRUE;
   
-  gtk_accelerator_parse (accel, &gdk_sym, &gdk_mask);
-  if (gdk_mask == 0 && gdk_sym == 0)
+  meta_ui_accelerator_parse (accel, &gdk_sym, &gdk_code, &gdk_mask);
+  if (gdk_mask == 0 && gdk_sym == 0 && gdk_code == 0)
     return FALSE;
 
-  if (gdk_sym == None)
+  if (gdk_sym == None && gdk_code == 0)
     return FALSE;
   
   if (gdk_mask & GDK_RELEASE_MASK) /* we don't allow this */
     return FALSE;
   
   *keysym = gdk_sym;
+  *keycode = gdk_code;
 
   if (gdk_mask & GDK_SHIFT_MASK)
     *mask |= META_VIRTUAL_SHIFT_MASK;
@@ -830,17 +855,18 @@ meta_ui_parse_modifier (const char          *accel,
 {
   GdkModifierType gdk_mask = 0;
   guint gdk_sym = 0;
+  guint gdk_code = 0;
   
   *mask = 0;
 
   if (strcmp (accel, "disabled") == 0)
     return TRUE;
   
-  gtk_accelerator_parse (accel, &gdk_sym, &gdk_mask);
-  if (gdk_mask == 0 && gdk_sym == 0)
+  meta_ui_accelerator_parse (accel, &gdk_sym, &gdk_code, &gdk_mask);
+  if (gdk_mask == 0 && gdk_sym == 0 && gdk_code == 0)
     return FALSE;
 
-  if (gdk_sym != None)
+  if (gdk_sym != None || gdk_code != 0)
     return FALSE;
   
   if (gdk_mask & GDK_RELEASE_MASK) /* we don't allow this */
