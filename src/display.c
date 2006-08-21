@@ -1038,6 +1038,27 @@ meta_displays_list (void)
 static gboolean dump_events = TRUE;
 
 static gboolean
+grab_op_is_mouse_only (MetaGrabOp op)
+{
+  switch (op)
+    {
+    case META_GRAB_OP_MOVING:
+    case META_GRAB_OP_RESIZING_SE:
+    case META_GRAB_OP_RESIZING_S:      
+    case META_GRAB_OP_RESIZING_SW:      
+    case META_GRAB_OP_RESIZING_N:
+    case META_GRAB_OP_RESIZING_NE:
+    case META_GRAB_OP_RESIZING_NW:
+    case META_GRAB_OP_RESIZING_W:
+    case META_GRAB_OP_RESIZING_E:
+      return TRUE;
+
+    default:
+      return FALSE;
+    }
+}
+
+static gboolean
 grab_op_is_mouse (MetaGrabOp op)
 {
   switch (op)
@@ -3293,11 +3314,12 @@ meta_display_begin_grab_op (MetaDisplay *display,
       return FALSE;
     }
 
-  if (grab_op_is_keyboard (op))
+  /* Grab keys for keyboard ops and mouse move/resizes; see #126497 */
+  if (grab_op_is_keyboard (op) || grab_op_is_mouse_only (op))
     {
       if (window)
         display->grab_have_keyboard =
-                     meta_window_grab_all_keys (window);
+                     meta_window_grab_all_keys (window, timestamp);
 
       else
         display->grab_have_keyboard =

@@ -196,6 +196,12 @@ static void handle_run_terminal       (MetaDisplay    *display,
                                        MetaKeyBinding *binding);
 
 /* debug */
+static gboolean process_mouse_move_resize_grab (MetaDisplay *display,
+                                                MetaScreen  *screen,
+                                                MetaWindow  *window,
+                                                XEvent      *event,
+                                                KeySym       keysym);
+
 static gboolean process_keyboard_move_grab (MetaDisplay *display,
                                             MetaScreen  *screen,
                                             MetaWindow  *window,
@@ -1294,7 +1300,8 @@ meta_screen_ungrab_all_keys (MetaScreen *screen)
 }
 
 gboolean
-meta_window_grab_all_keys (MetaWindow  *window)
+meta_window_grab_all_keys (MetaWindow  *window,
+                           Time         timestamp)
 {
   Window grabwindow;
   gboolean retval;
@@ -1311,8 +1318,7 @@ meta_window_grab_all_keys (MetaWindow  *window)
   meta_topic (META_DEBUG_FOCUS,
               "Focusing %s because we're grabbing all its keys\n",
               window->desc);
-  meta_window_focus (window,
-                     meta_display_get_current_time (window->display));
+  meta_window_focus (window, timestamp);
   
   grabwindow = window->frame ? window->frame->xwindow : window->xwindow;
 
@@ -1661,6 +1667,22 @@ meta_display_process_key_event (MetaDisplay *display,
     {
       switch (display->grab_op)
         {
+        case META_GRAB_OP_MOVING:
+        case META_GRAB_OP_RESIZING_SE:
+        case META_GRAB_OP_RESIZING_S:      
+        case META_GRAB_OP_RESIZING_SW:      
+        case META_GRAB_OP_RESIZING_N:
+        case META_GRAB_OP_RESIZING_NE:
+        case META_GRAB_OP_RESIZING_NW:
+        case META_GRAB_OP_RESIZING_W:
+        case META_GRAB_OP_RESIZING_E:
+          meta_topic (META_DEBUG_KEYBINDINGS,
+                      "Processing event for mouse-only move/resize\n");
+          g_assert (window != NULL);
+          handled = process_mouse_move_resize_grab (display, screen,
+                                                    window, event, keysym);
+          break;
+
         case META_GRAB_OP_KEYBOARD_MOVING:
           meta_topic (META_DEBUG_KEYBINDINGS,
                       "Processing event for keyboard move\n");
@@ -1718,6 +1740,50 @@ meta_display_process_key_event (MetaDisplay *display,
 }
 
 static gboolean
+process_mouse_move_resize_grab (MetaDisplay *display,
+                                MetaScreen  *screen,
+                                MetaWindow  *window,
+                                XEvent      *event,
+                                KeySym       keysym)
+{
+  /* don't care about releases, but eat them, don't end grab */
+  if (event->type == KeyRelease)
+    return TRUE;
+
+  if (keysym == XK_Escape)
+    {
+      /* End move or resize and restore to original state.  If the
+       * window was a maximized window that had been "shaken loose" we
+       * need to remaximize it.  In normal cases, we need to do a
+       * moveresize now to get the position back to the original.  In
+       * wireframe mode, we just need to set grab_was_cancelled to tru
+       * to avoid avoid moveresizing to the position of the wireframe.
+       */
+      if (window->shaken_loose)
+        meta_window_maximize (window,
+                              META_MAXIMIZE_HORIZONTAL |
+                              META_MAXIMIZE_VERTICAL);
+      else if (!display->grab_wireframe_active)
+        meta_window_move_resize (display->grab_window,
+                                 TRUE,
+                                 display->grab_initial_window_pos.x,
+                                 display->grab_initial_window_pos.y,
+                                 display->grab_initial_window_pos.width,
+                                 display->grab_initial_window_pos.height);
+      else
+        display->grab_was_cancelled = TRUE;
+
+      /* End grab, since this was an "unhandled" keypress */
+      return FALSE;
+    }
+
+  /* The keypress really isn't handled but we just want to ignore it, so
+   * treat it as handled.
+   */
+  return TRUE;
+}
+
+static gboolean
 process_keyboard_move_grab (MetaDisplay *display,
                             MetaScreen  *screen,
                             MetaWindow  *window,
@@ -1763,23 +1829,26 @@ process_keyboard_move_grab (MetaDisplay *display,
 
   if (keysym == XK_Escape)
     {
-      /* End resize and restore to original state.
-       * The move_resize is only needed when !wireframe
-       * since in wireframe we always moveresize at the end
-       * of the grab only.
+      /* End move and restore to original state.  If the window was a
+       * maximized window that had been "shaken loose" we need to
+       * remaximize it.  In normal cases, we need to do a moveresize
+       * now to get the position back to the original.  In wireframe
+       * mode, we just need to set grab_was_cancelled to tru to avoid
+       * avoid moveresizing to the position of the wireframe.
        */
-      if (!display->grab_wireframe_active && !window->shaken_loose)
+      if (window->shaken_loose)
+        meta_window_maximize (window,
+                              META_MAXIMIZE_HORIZONTAL |
+                              META_MAXIMIZE_VERTICAL);
+      else if (!display->grab_wireframe_active)
         meta_window_move_resize (display->grab_window,
                                  TRUE,
                                  display->grab_initial_window_pos.x,
                                  display->grab_initial_window_pos.y,
                                  display->grab_initial_window_pos.width,
                                  display->grab_initial_window_pos.height);
-      if(window->shaken_loose)
-        meta_window_maximize (window,
-                              META_MAXIMIZE_HORIZONTAL |
-                              META_MAXIMIZE_VERTICAL);
-      display->grab_was_cancelled = TRUE;
+      else
+        display->grab_was_cancelled = TRUE;
     }
   
   /* When moving by increments, we still snap to edges if the move
@@ -2012,10 +2081,11 @@ process_keyboard_resize_grab (MetaDisplay *display,
 
   if (keysym == XK_Escape)
     {
-      /* End resize and restore to original state.
-       * The move_resize is only needed when !wireframe
-       * since in wireframe we always moveresize at the end
-       * of the grab only.
+      /* End resize and restore to original state.  If not in
+       * wireframe mode, we need to do a moveresize now to get the
+       * position back to the original.  If we are in wireframe mode,
+       * we need to avoid moveresizing to the position of the
+       * wireframe.
        */
       if (!display->grab_wireframe_active)
         meta_window_move_resize (display->grab_window,
@@ -2024,7 +2094,8 @@ process_keyboard_resize_grab (MetaDisplay *display,
                                  display->grab_initial_window_pos.y,
                                  display->grab_initial_window_pos.width,
                                  display->grab_initial_window_pos.height);
-      display->grab_was_cancelled = TRUE;
+      else
+        display->grab_was_cancelled = TRUE;
 
       return FALSE;
     }

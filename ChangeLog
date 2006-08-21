@@ -1,5 +1,27 @@
 2006-08-21  Elijah Newren  <newren gmail com>
 
+	Allow drags & resizes to be reverted by hitting escape.  Based on
+	patch from Thomas Andersen.  #126497.
+
+	* src/display.c (grab_op_is_mouse_only): new function,
+	(meta_display_begin_grab_op): grab the keyboard when moving or
+	resizing too so that we can get escape keypresses
+
+	* src/display.h (struct _MetaDisplay): add a comment to remind
+	that grab_was_cancelled is only used in wireframe mode
+
+	* src/keybindings.[ch] (process_mouse_move_resize_grab): add new
+	function for handling keypresses during mouse-only moving and
+	resizing, (meta_window_grab_all_keys): add a timestamp parameter
+	and pass it to meta_window_focus(),
+	(meta_display_process_key_event): make sure
+	process_mouse_move_resize_grab() gets called when needed,
+	(process_keyboard_move_grab, process_keyboard_resize_grab):
+	rearrange some code slightly and improve the comments to make it
+	more readable
+
+2006-08-21  Elijah Newren  <newren gmail com>
+
 	Fix several bugs with handling of fullscreen windows, causing them
 	to not actually be fullscreen.  #343115 (and also #346927,
 	#350547, #351643, the recent additional WINE-related issue

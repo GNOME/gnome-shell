@@ -261,7 +261,7 @@ struct _MetaDisplay
   guint       grab_have_pointer : 1;
   guint       grab_have_keyboard : 1;
   guint       grab_wireframe_active : 1;
-  guint       grab_was_cancelled : 1;
+  guint       grab_was_cancelled : 1;    /* Only used in wireframe mode */
   MetaRectangle grab_wireframe_rect;
   MetaRectangle grab_wireframe_last_xor_rect;
   MetaRectangle grab_initial_window_pos;
