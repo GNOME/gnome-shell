@@ -19,6 +19,11 @@ in this release.
    keyboard keys (Ed) [#140448]
  - fix metacity-dialog handling of arguments (Thomas) [#340690]
 
+Translators
+  Vladimir Petkov (bg), Jordi Mallach (ca), Gabor Kelemen (hu),
+  Mohammad DAMT (id), Wouter Bolsterlee (nl), Daniel Nylander (sv),
+  Funda Wang (zh_CN)
+
 2.15.21
 ==
 
