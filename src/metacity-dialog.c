@@ -348,67 +348,112 @@ error_about_command (const char *gconf_key,
   return 0;
 }
 
+static gchar *screen = NULL;
+static gchar *timestamp_string = NULL;
+static gboolean isset_kill_window_question = FALSE;
+static gboolean isset_warn_about_no_sm_support = FALSE;
+static gboolean isset_command_failed_error = FALSE;
+static gchar **remaining_args;
+
+static const GOptionEntry options[] = {
+  { "screen", 0, 0, G_OPTION_ARG_STRING, &screen, NULL, NULL},
+  { "timestamp", 0, 0, G_OPTION_ARG_STRING, &timestamp_string, NULL, NULL},
+  { "kill-window-question", 'k', 0, G_OPTION_ARG_NONE, 
+    &isset_kill_window_question, NULL, NULL},
+  { "warn-about-no-sm-support", 'w', 0, G_OPTION_ARG_NONE, 
+    &isset_warn_about_no_sm_support, NULL, NULL},
+  { "command-failed-error", 'c', 0, G_OPTION_ARG_NONE, 
+    &isset_command_failed_error, NULL, NULL},
+  { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_STRING_ARRAY, 
+    &remaining_args, NULL, NULL},
+  { NULL}
+};
+
 int
 main (int argc, char **argv)
 {
-  Time timestamp;
+  Time timestamp = 0;
+  gint num_args = 0;
 
   bindtextdomain (GETTEXT_PACKAGE, METACITY_LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
   gtk_init (&argc, &argv);
+
+  GOptionContext *ctx;
+  ctx = g_option_context_new ("- Dialogs for metacity. "
+                          "This program is intented for use by metacity only.");
+  g_option_context_add_main_entries (ctx, options, GETTEXT_PACKAGE);
+  g_option_context_parse (ctx, &argc, &argv, NULL);
+  g_option_context_free (ctx);
     
-  if (argc < 4)
+  if (timestamp_string != NULL)
+    {
+      timestamp = strtoul (timestamp_string, NULL, 10);
+    }
+
+  if (remaining_args != NULL)
+    {
+      num_args = g_strv_length (remaining_args);
+    }
+
+  if ((isset_kill_window_question && isset_warn_about_no_sm_support) ||
+      (isset_kill_window_question && isset_command_failed_error) ||
+      (isset_warn_about_no_sm_support && isset_command_failed_error) ||
+      timestamp == 0) 
     {
       g_printerr ("bad args to metacity-dialog\n");
       return 1;
     }
 
-  if (strcmp (argv[1], "--timestamp") != 0)
+  else if (isset_kill_window_question)
     {
-      g_printerr ("bad args to metacity-dialog\n");
-      return 1;
-    }
-  timestamp = strtoul (argv[2], NULL, 10);
-  
-  if (strcmp (argv[3], "--kill-window-question") == 0)
-    {
-      if (argc < 6)
+      if (num_args < 2)
         {
           g_printerr ("bad args to metacity-dialog\n");
           return 1;
+        } 
+      else 
+        {
+          return kill_window_question (remaining_args[0], 
+                          remaining_args[1], timestamp);
         }
-
-      return kill_window_question (argv[4], argv[5], timestamp);
     }
-  else if (strcmp (argv[3], "--warn-about-no-sm-support") == 0)
+
+  else if (isset_warn_about_no_sm_support)
     {
       /* argc must be even because we want title-class pairs */
-      if (argc < 5 || (argc % 2) != 0)
+      if (num_args == 0 || (num_args % 2) != 0)
         {
           g_printerr ("bad args to metacity-dialog\n");
           return 1;
+        } 
+      else 
+        {
+          return warn_about_no_sm_support (&remaining_args[0], timestamp);
         }
-
-      return warn_about_no_sm_support (&argv[4], timestamp);
     }
-  else if (strcmp (argv[3], "--command-failed-error") == 0)
-    {
 
+  else if (isset_command_failed_error)
+    {
       /* the args are the gconf key of the failed command, the text of
        * the command, and the error message
        */
-      if (argc != 7)
+      if (num_args != 3)
         {
           g_printerr ("bad args to metacity-dialog\n");
           return 1;
+        } 
+      else 
+        {
+          return error_about_command (remaining_args[0], 
+                          remaining_args[1], remaining_args[2], timestamp);
         }
-
-      return error_about_command (argv[4], argv[5], argv[6], timestamp);
     }
-  
-  g_printerr ("bad args to metacity-dialog\n");
-  return 1;
-} 
-
+  else
+    {
+      g_printerr ("bad args to metacity-dialog\n");
+      return 1;
+    }
+}
