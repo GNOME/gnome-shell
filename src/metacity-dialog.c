@@ -372,6 +372,7 @@ static const GOptionEntry options[] = {
 int
 main (int argc, char **argv)
 {
+  GOptionContext *ctx;
   Time timestamp = 0;
   gint num_args = 0;
 
@@ -381,7 +382,6 @@ main (int argc, char **argv)
 
   gtk_init (&argc, &argv);
 
-  GOptionContext *ctx;
   ctx = g_option_context_new ("- Dialogs for metacity. "
                           "This program is intented for use by metacity only.");
   g_option_context_add_main_entries (ctx, options, GETTEXT_PACKAGE);
