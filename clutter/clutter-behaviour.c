@@ -230,7 +230,7 @@ clutter_behaviour_set_timelime (ClutterBehaviour *behave,
       priv->timeline = NULL;
     }
 
-  if (behave)
+  if (timeline)
     {
       g_object_ref(timeline);
       priv->timeline = timeline;

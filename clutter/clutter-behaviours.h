@@ -3,6 +3,7 @@
 
 #include <glib-object.h>
 #include "clutter-behaviour.h"
+#include "clutter-alpha.h"
 
 G_BEGIN_DECLS
 
@@ -94,9 +95,9 @@ struct _ClutterBehaviourOpacityClass
 GType clutter_behaviour_opacity_get_type (void);
 
 ClutterBehaviour*
-clutter_behaviour_opacity_new (ClutterTimeline *timeline, 
-			       guint8           opacity_start,
-			       guint8           opacity_end);
+clutter_behaviour_opacity_new (ClutterAlpha *alpha, 
+			       guint8        opacity_start,
+			       guint8        opacity_end);
 
 G_END_DECLS
 

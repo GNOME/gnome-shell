@@ -1,3 +1,25 @@
+2006-08-28  Jorn Baayen  <jorn@openedhand.com>
+
+	* clutter/Makefile.am:
+	* clutter/clutter-alpha.c:
+	* clutter/clutter-alpha.h:
+	* clutter/clutter-behaviours.c:
+	(clutter_behaviour_opacity_dispose),
+	(clutter_behaviour_opacity_init),
+	(clutter_behaviour_opacity_frame_foreach),
+	(clutter_behaviour_opacity_frame):
+	* clutter/clutter-behaviours.h:
+	* clutter/clutter-timeline.c: (clutter_timeline_class_init):
+	* clutter/clutter-timeline.h:
+	* clutter/clutter.h:
+	* examples/behave.c: (main):
+
+	Separate alpha calculation into its own class.
+
+	* clutter/clutter-behaviour.c: (clutter_behaviour_set_timelime):
+
+	Correct NULL check.
+
 2006-08-15  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-behaviour.h:

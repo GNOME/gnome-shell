@@ -148,9 +148,10 @@ G_DEFINE_TYPE (ClutterBehaviourOpacity,   \
 
 struct ClutterBehaviourOpacityPrivate
 {
-  guint8  opacity_start;
-  guint8  opacity_end;
-  gulong  handler_id; 	 /* FIXME: handle in parent class ?  */
+  ClutterAlpha *alpha;
+  guint8        opacity_start;
+  guint8        opacity_end;
+  gulong        handler_id; 	 /* FIXME: handle in parent class ?  */
 };
 
 #define CLUTTER_BEHAVIOUR_OPACITY_GET_PRIVATE(obj)    \
@@ -166,9 +167,18 @@ clutter_behaviour_opacity_dispose (GObject *object)
   if (self->priv)
     {
       if (self->priv->handler_id)
-	g_signal_handler_disconnect 
-	  (clutter_behaviour_get_timelime (CLUTTER_BEHAVIOUR(self)), 
-					   self->priv->handler_id);
+        {
+	  g_signal_handler_disconnect 
+	    (clutter_behaviour_get_timelime (CLUTTER_BEHAVIOUR(self)), 
+	  				     self->priv->handler_id);
+          self->priv->handler_id = 0;
+        }
+
+      if (self->priv->alpha)
+        {
+          g_object_unref (self->priv->alpha);
+          self->priv->alpha = NULL;
+        }
     }
 
   G_OBJECT_CLASS (clutter_behaviour_opacity_parent_class)->dispose (object);
@@ -220,11 +230,10 @@ clutter_behaviour_opacity_frame_foreach (ClutterActor            *actor,
 
   priv = CLUTTER_BEHAVIOUR_OPACITY_GET_PRIVATE (behave);
 
-  alpha = clutter_timeline_get_alpha 
-               (clutter_behaviour_get_timelime (CLUTTER_BEHAVIOUR(behave)));
+  alpha = clutter_alpha_get_alpha (priv->alpha);
 
   opacity = (alpha * (priv->opacity_end - priv->opacity_start)) 
-                    / CLUTTER_TIMELINE_MAX_ALPHA;
+                    / CLUTTER_ALPHA_MAX_ALPHA;
 
   opacity += priv->opacity_start;
 
@@ -234,9 +243,9 @@ clutter_behaviour_opacity_frame_foreach (ClutterActor            *actor,
 }
 
 static void
-clutter_behaviour_opacity_frame (ClutterTimeline *timelime, 
-				 gint             frame_num, 
-				 gpointer         data)
+clutter_behaviour_opacity_frame (GObject    *object, 
+                                 GParamSpec *pspec,
+				 gpointer    data)
 {
   ClutterBehaviourOpacity        *behave;
 
@@ -249,23 +258,27 @@ clutter_behaviour_opacity_frame (ClutterTimeline *timelime,
 }
 
 ClutterBehaviour*
-clutter_behaviour_opacity_new (ClutterTimeline *timeline,
-			       guint8           opacity_start,
-			       guint8           opacity_end)
+clutter_behaviour_opacity_new (ClutterAlpha *alpha,
+			       guint8        opacity_start,
+			       guint8        opacity_end)
 {
   ClutterBehaviourOpacity *behave;
+  ClutterTimeline *timeline;
+
+  timeline = clutter_alpha_get_timeline (alpha);
 
   behave = g_object_new (CLUTTER_TYPE_BEHAVIOUR_OPACITY, 
 			 "timeline", timeline,
 			 NULL);
 
+  behave->priv->alpha = g_object_ref (alpha);
+
   behave->priv->opacity_start = opacity_start;
   behave->priv->opacity_end   = opacity_end;
 
-  /* FIXME: Should be part of regular behave functionality */
   behave->priv->handler_id 
-           = g_signal_connect (timeline, 
-			       "new-frame",  
+           = g_signal_connect (alpha, 
+			       "notify::alpha",  
 			       G_CALLBACK (clutter_behaviour_opacity_frame), 
 			       behave);  
   

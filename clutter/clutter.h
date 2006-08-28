@@ -18,6 +18,7 @@
 #include "clutter-clone-texture.h"
 #include "clutter-video-texture.h"
 #include "clutter-label.h"
+#include "clutter-alpha.h"
 #include "clutter-enum-types.h"
 
 #endif

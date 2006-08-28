@@ -4,6 +4,7 @@ int
 main (int argc, char *argv[])
 {
   ClutterTimeline  *timeline;
+  ClutterAlpha     *alpha;
   ClutterBehaviour *behave;
   ClutterActor     *stage, *hand;
   ClutterColor      stage_color = { 0xcc, 0xcc, 0xcc, 0xff };
@@ -32,10 +33,10 @@ main (int argc, char *argv[])
   g_object_set(timeline, "loop", TRUE, 0);  
 
   /* Set an alpha func to power behaviour - ramp is constant rise/fall */
-  clutter_timeline_set_alpha_func (timeline, CLUTTER_ALPHA_RAMP);
+  alpha = clutter_alpha_new (timeline, CLUTTER_ALPHA_RAMP);
 
   /* Create a behaviour for that time line */
-  behave = clutter_behaviour_opacity_new (timeline, 0X33 ,0xff); 
+  behave = clutter_behaviour_opacity_new (alpha, 0X33 ,0xff); 
 
   /* Apply it to our actor */
   clutter_behaviour_apply (behave, hand);
