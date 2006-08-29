@@ -2,8 +2,8 @@
 #define _HAVE_CLUTTER_BEHAVIOURS_H
 
 #include <glib-object.h>
-#include "clutter-behaviour.h"
 #include "clutter-alpha.h"
+#include "clutter-behaviour.h"
 
 G_BEGIN_DECLS
 
@@ -47,11 +47,12 @@ struct _ClutterBehaviourPathClass
 GType clutter_behaviour_path_get_type (void);
 
 ClutterBehaviour*
-clutter_behaviour_path_new (ClutterTimeline *timeline,
-			    gint             x1,
-			    gint             y1,
-			    gint             x2,
-			    gint             y2);
+clutter_behaviour_path_new (GObject    *object,
+                            const char *property,
+			    gint        x1,
+			    gint        y1,
+			    gint        x2,
+			    gint        y2);
 
 /* opacity */
 
@@ -95,9 +96,15 @@ struct _ClutterBehaviourOpacityClass
 GType clutter_behaviour_opacity_get_type (void);
 
 ClutterBehaviour*
-clutter_behaviour_opacity_new (ClutterAlpha *alpha, 
-			       guint8        opacity_start,
-			       guint8        opacity_end);
+clutter_behaviour_opacity_new (GObject    *object,
+                               const char *property,
+			       guint8      opacity_start,
+			       guint8      opacity_end);
+
+ClutterBehaviour*
+clutter_behaviour_opacity_new_from_alpha (ClutterAlpha *alpha,
+			                  guint8        opacity_start,
+			                  guint8        opacity_end);
 
 G_END_DECLS
 

@@ -72,13 +72,6 @@ struct _ClutterVideoTextureClass
 {
   ClutterTextureClass parent_class;
 
-  /* Signals */
-  void (* tag_list_available) (ClutterVideoTexture *video_texture,
-			       GstTagList          *tag_list);
-  void (* eos)                (ClutterVideoTexture *video_texture);
-  void (* error)              (ClutterVideoTexture *video_texture,
-			       GError              *error);
-
   /* Future padding */
   void (* _clutter_reserved1) (void);
   void (* _clutter_reserved2) (void);

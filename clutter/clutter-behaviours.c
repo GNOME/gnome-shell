@@ -31,7 +31,6 @@
 
 #include "config.h"
 
-#include "clutter-timeline.h"
 #include "clutter-actor.h"
 #include "clutter-behaviour.h"
 #include "clutter-behaviours.h"
@@ -125,16 +124,18 @@ function line(x0, x1, y0, y1)
  */
 
 ClutterBehaviour*
-clutter_behaviour_path_new (ClutterTimeline *timeline,
-			    gint             x1,
-			    gint             y1,
-			    gint             x2,
-			    gint             y2)
+clutter_behaviour_path_new (GObject    *object,
+                            const char *property,
+			    gint        x1,
+			    gint        y1,
+			    gint        x2,
+			    gint        y2)
 {
   ClutterBehaviourPath *behave;
 
   behave = g_object_new (CLUTTER_TYPE_BEHAVIOUR_PATH, 
-			 "timeline", timeline,
+                         "object", object,
+                         "property", property,
 			 NULL);
 
   return CLUTTER_BEHAVIOUR(behave);
@@ -148,10 +149,8 @@ G_DEFINE_TYPE (ClutterBehaviourOpacity,   \
 
 struct ClutterBehaviourOpacityPrivate
 {
-  ClutterAlpha *alpha;
-  guint8        opacity_start;
-  guint8        opacity_end;
-  gulong        handler_id; 	 /* FIXME: handle in parent class ?  */
+  guint8 opacity_start;
+  guint8 opacity_end;
 };
 
 #define CLUTTER_BEHAVIOUR_OPACITY_GET_PRIVATE(obj)    \
@@ -159,28 +158,52 @@ struct ClutterBehaviourOpacityPrivate
                CLUTTER_TYPE_BEHAVIOUR_OPACITY,        \
                ClutterBehaviourOpacityPrivate))
 
+static void
+clutter_behaviour_opacity_frame_foreach (ClutterActor            *actor,
+					 ClutterBehaviourOpacity *behave)
+{
+  guint32                         alpha;
+  guint8                          opacity;
+  ClutterBehaviourOpacityPrivate *priv;
+  ClutterBehaviour               *_behave;
+  GParamSpec                     *pspec;
+
+  priv = CLUTTER_BEHAVIOUR_OPACITY_GET_PRIVATE (behave);
+  _behave = CLUTTER_BEHAVIOUR (behave);
+
+  pspec = clutter_behaviour_get_param_spec (_behave);
+
+  g_object_get (clutter_behaviour_get_object (_behave),
+                pspec->name,
+                &alpha,
+                NULL);
+
+  opacity = (alpha * (priv->opacity_end - priv->opacity_start)) 
+                    / ((GParamSpecUInt *) pspec)->maximum;
+
+  opacity += priv->opacity_start;
+
+  CLUTTER_DBG("alpha %i opacity %i\n", alpha, opacity);
+
+  clutter_actor_set_opacity (actor, opacity);
+}
+
+static void
+clutter_behaviour_property_change (ClutterBehaviour *behave,
+                                   GObject          *object,
+                                   GParamSpec       *param_spec)
+{
+  g_return_if_fail (param_spec->value_type == G_TYPE_UINT);
+
+  clutter_behaviour_actors_foreach 
+                     (behave,
+		      (GFunc)clutter_behaviour_opacity_frame_foreach,
+		      CLUTTER_BEHAVIOUR_OPACITY(behave));
+}
+
 static void 
 clutter_behaviour_opacity_dispose (GObject *object)
 {
-  ClutterBehaviourOpacity *self = CLUTTER_BEHAVIOUR_OPACITY(object); 
-
-  if (self->priv)
-    {
-      if (self->priv->handler_id)
-        {
-	  g_signal_handler_disconnect 
-	    (clutter_behaviour_get_timelime (CLUTTER_BEHAVIOUR(self)), 
-	  				     self->priv->handler_id);
-          self->priv->handler_id = 0;
-        }
-
-      if (self->priv->alpha)
-        {
-          g_object_unref (self->priv->alpha);
-          self->priv->alpha = NULL;
-        }
-    }
-
   G_OBJECT_CLASS (clutter_behaviour_opacity_parent_class)->dispose (object);
 }
 
@@ -202,12 +225,17 @@ clutter_behaviour_opacity_finalize (GObject *object)
 static void
 clutter_behaviour_opacity_class_init (ClutterBehaviourOpacityClass *klass)
 {
-  GObjectClass        *object_class;
+  GObjectClass          *object_class;
+  ClutterBehaviourClass *behave_class;
 
   object_class = (GObjectClass*) klass;
 
   object_class->finalize     = clutter_behaviour_opacity_finalize;
   object_class->dispose      = clutter_behaviour_opacity_dispose;
+
+  behave_class = (ClutterBehaviourClass*) klass;
+
+  behave_class->property_change = clutter_behaviour_property_change;
 
   g_type_class_add_private (object_class, sizeof (ClutterBehaviourOpacityPrivate));
 }
@@ -220,67 +248,32 @@ clutter_behaviour_opacity_init (ClutterBehaviourOpacity *self)
   self->priv = priv = CLUTTER_BEHAVIOUR_OPACITY_GET_PRIVATE (self);
 }
 
-static void
-clutter_behaviour_opacity_frame_foreach (ClutterActor            *actor,
-					 ClutterBehaviourOpacity *behave)
-{
-  gint32                          alpha;
-  guint8                          opacity;
-  ClutterBehaviourOpacityPrivate *priv;
-
-  priv = CLUTTER_BEHAVIOUR_OPACITY_GET_PRIVATE (behave);
-
-  alpha = clutter_alpha_get_alpha (priv->alpha);
-
-  opacity = (alpha * (priv->opacity_end - priv->opacity_start)) 
-                    / CLUTTER_ALPHA_MAX_ALPHA;
-
-  opacity += priv->opacity_start;
-
-  CLUTTER_DBG("alpha %i opacity %i\n", alpha, opacity);
-
-  clutter_actor_set_opacity (actor, opacity);
-}
-
-static void
-clutter_behaviour_opacity_frame (GObject    *object, 
-                                 GParamSpec *pspec,
-				 gpointer    data)
-{
-  ClutterBehaviourOpacity        *behave;
-
-  behave = CLUTTER_BEHAVIOUR_OPACITY(data);
-
-  clutter_behaviour_actors_foreach 
-                     (CLUTTER_BEHAVIOUR(behave),
-		      (GFunc)clutter_behaviour_opacity_frame_foreach,
-		      behave);
-}
-
 ClutterBehaviour*
-clutter_behaviour_opacity_new (ClutterAlpha *alpha,
-			       guint8        opacity_start,
-			       guint8        opacity_end)
+clutter_behaviour_opacity_new (GObject    *object,
+                               const char *property,
+			       guint8      opacity_start,
+			       guint8      opacity_end)
 {
   ClutterBehaviourOpacity *behave;
-  ClutterTimeline *timeline;
-
-  timeline = clutter_alpha_get_timeline (alpha);
 
   behave = g_object_new (CLUTTER_TYPE_BEHAVIOUR_OPACITY, 
-			 "timeline", timeline,
+                         "object", object,
+                         "property", property,
 			 NULL);
-
-  behave->priv->alpha = g_object_ref (alpha);
 
   behave->priv->opacity_start = opacity_start;
   behave->priv->opacity_end   = opacity_end;
 
-  behave->priv->handler_id 
-           = g_signal_connect (alpha, 
-			       "notify::alpha",  
-			       G_CALLBACK (clutter_behaviour_opacity_frame), 
-			       behave);  
-  
   return CLUTTER_BEHAVIOUR(behave);
+}
+
+ClutterBehaviour*
+clutter_behaviour_opacity_new_from_alpha (ClutterAlpha *alpha,
+                                          guint8        opacity_start,
+                                          guint8        opacity_end)
+{
+  return clutter_behaviour_opacity_new (G_OBJECT (alpha),
+                                        "alpha",
+                                        opacity_start,
+                                        opacity_end);
 }

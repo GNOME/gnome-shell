@@ -171,7 +171,7 @@ clutter_alpha_get_property (GObject    *object,
       g_value_set_pointer (value, priv->func);
       break;
     case PROP_ALPHA:
-      g_value_set_int (value, priv->alpha);
+      g_value_set_uint (value, priv->alpha);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -227,13 +227,13 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
 
   g_object_class_install_property
     (object_class, PROP_ALPHA,
-     g_param_spec_int ("alpha",
-		       "Alpha value",
-		       "Alpha value",
-		       0,
-		       CLUTTER_ALPHA_MAX_ALPHA,
-		       0,
-		       G_PARAM_READABLE));
+     g_param_spec_uint ("alpha",
+		        "Alpha value",
+		        "Alpha value",
+		        0,
+		        CLUTTER_ALPHA_MAX_ALPHA,
+		        0,
+		        G_PARAM_READABLE));
 }
 
 static void

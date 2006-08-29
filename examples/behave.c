@@ -36,7 +36,7 @@ main (int argc, char *argv[])
   alpha = clutter_alpha_new (timeline, CLUTTER_ALPHA_RAMP);
 
   /* Create a behaviour for that time line */
-  behave = clutter_behaviour_opacity_new (alpha, 0X33 ,0xff); 
+  behave = clutter_behaviour_opacity_new_from_alpha (alpha, 0X33, 0xff); 
 
   /* Apply it to our actor */
   clutter_behaviour_apply (behave, hand);

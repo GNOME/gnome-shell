@@ -40,12 +40,17 @@ struct _ClutterBehaviour
 struct _ClutterBehaviourClass
 {
   GObjectClass parent_class;
+
+  void (* property_change) (ClutterBehaviour *behave,
+                            GObject          *object,
+                            GParamSpec       *param_spec);
 };
 
 GType clutter_behaviour_get_type (void);
 
 ClutterBehaviour*
-clutter_behaviour_new (ClutterTimeline *timeline);
+clutter_behaviour_new (GObject    *object,
+                       const char *property);
 
 void
 clutter_behaviour_apply (ClutterBehaviour *behave, ClutterActor *actor);
@@ -62,11 +67,21 @@ clutter_behaviour_actors_foreach (ClutterBehaviour *behave,
 				  gpointer          userdata);
 
 void
-clutter_behaviour_set_timelime (ClutterBehaviour *behave, 
-				ClutterTimeline  *timeline);
+clutter_behaviour_set_object (ClutterBehaviour *behave, 
+                              GObject          *object);
 
-ClutterTimeline*
-clutter_behaviour_get_timelime (ClutterBehaviour *behave);
+GObject*
+clutter_behaviour_get_object (ClutterBehaviour *behave);
+
+void
+clutter_behaviour_set_property (ClutterBehaviour *behave,
+                                const char       *property);
+
+const char*
+clutter_behaviour_get_property (ClutterBehaviour *behave);
+
+GParamSpec*
+clutter_behaviour_get_param_spec (ClutterBehaviour *behave);
 
 G_END_DECLS
 
