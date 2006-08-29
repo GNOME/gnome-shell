@@ -1,3 +1,18 @@
+2006-08-29  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-fixed.h:
+	Add basic fixed point utility defines and type.
+
+	* clutter/Makefile.am:
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	* clutter/clutter-group.c:
+	* clutter/clutter-stage.c:
+	* examples/super-oh.c: (main):
+	Add scale API and functionality.
+	Rework group sizing. Now group size requests have no effect
+	but can be scaled.
+
 2006-08-29  Jorn Baayen  <jorn@openedhand.com>
 
 	* clutter/clutter-behaviour.c: (_clutter_behaviour_finalize),

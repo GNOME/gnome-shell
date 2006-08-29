@@ -64,7 +64,9 @@ struct _ClutterActorPrivate
   ClutterActor *parent_actor; /* This should always be a group */
   
   gchar *name;
-  
+
+  ClutterFixed   scale_x, scale_y;
+
   guint32 id; /* Unique ID */
 };
 
@@ -253,37 +255,10 @@ clutter_actor_paint (ClutterActor *self)
 
   klass = CLUTTER_ACTOR_GET_CLASS (self);
 
-#if 0
-  if (self->priv->has_clip)
-    {
-      ClutterGeometry *clip = &(self->priv->clip);
-      gint             absx, absy;
-      ClutterActor  *stage = clutter_stage_get_default ();
-
-      clutter_actor_get_abs_position (self, &absx, &absy);
-
-      CLUTTER_DBG("clip +%i+%i, %ix%i\n", 
-		  absx + clip->x, 
-		  clutter_actor_get_height (stage) 
-		  - (absy + clip->y) - clip->height, 
-		  clip->width, 
-		  clip->height);
-
-      glEnable (GL_SCISSOR_TEST);
-
-      glScissor (absx + clip->x, 
-		 clutter_actor_get_height (stage) 
-                    - (absy + clip->y) - clip->height, 
-		 clip->width, 
-		 clip->height);
-    }
-#endif
-
   glPushMatrix();
 
   glLoadName (clutter_actor_get_id (self));
 
-  /* FIXME: Less clunky ? */
 
   if (self->priv->rzang)
     {
@@ -326,6 +301,13 @@ clutter_actor_paint (ClutterActor *self)
 
   if (self->priv->z)
     glTranslatef ( 0.0, 0.0, (float)self->priv->z);
+
+  if (self->priv->scale_x != CFX_ONE || self->priv->scale_y != CFX_ONE)
+    {
+      glScaled (CLUTTER_FIXED_TO_DOUBLE (self->priv->scale_x),
+		CLUTTER_FIXED_TO_DOUBLE (self->priv->scale_y),
+		1.0);
+    }
 
   if (self->priv->has_clip)
     {
@@ -381,7 +363,6 @@ clutter_actor_request_coords (ClutterActor    *self,
 
   klass = CLUTTER_ACTOR_GET_CLASS (self);
 
-  /* FIXME: Kludgy see allocate co-ords */
   if (klass->request_coords)
     klass->request_coords (self, box);
 
@@ -392,27 +373,28 @@ clutter_actor_request_coords (ClutterActor    *self,
   height_change = (self->priv->coords.y2 - self->priv->coords.y1 
 		            != box->y2 - box->y1);
 
-  self->priv->coords.x1 = box->x1;
-  self->priv->coords.y1 = box->y1; 
-  self->priv->coords.x2 = box->x2; 
-  self->priv->coords.y2 = box->y2; 
-
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    clutter_actor_queue_redraw (self);
-
-  /* FIXME: Below really needed ? If so should add to other _set calls. 
-  */
-  if (x_change)
-    g_object_notify (G_OBJECT (self), "x");
-
-  if (y_change)
-    g_object_notify (G_OBJECT (self), "y");
-
-  if (width_change)
-    g_object_notify (G_OBJECT (self), "width");
-
-  if (height_change)
-    g_object_notify (G_OBJECT (self), "height");
+  if (x_change || y_change || width_change || height_change)
+    {
+      self->priv->coords.x1 = box->x1;
+      self->priv->coords.y1 = box->y1; 
+      self->priv->coords.x2 = box->x2; 
+      self->priv->coords.y2 = box->y2; 
+      
+      if (CLUTTER_ACTOR_IS_VISIBLE (self))
+	clutter_actor_queue_redraw (self);
+      
+      if (x_change)
+	g_object_notify (G_OBJECT (self), "x");
+      
+      if (y_change)
+	g_object_notify (G_OBJECT (self), "y");
+      
+      if (width_change)
+	g_object_notify (G_OBJECT (self), "width");
+      
+      if (height_change)
+	g_object_notify (G_OBJECT (self), "height");
+    }
 }
 
 /**
@@ -740,6 +722,8 @@ clutter_actor_init (ClutterActor *self)
   self->priv->has_clip     = FALSE;
   self->priv->opacity      = 0xff;
   self->priv->id           = __id++;
+  self->priv->scale_x      = CFX_ONE;
+  self->priv->scale_y      = CFX_ONE;
 
   clutter_actor_set_position (self, 0, 0);
   clutter_actor_set_size (self, 0, 0);
@@ -849,10 +833,10 @@ clutter_actor_get_geometry (ClutterActor    *self,
  */
 void
 clutter_actor_get_coords (ClutterActor *self,
-			    gint           *x1,
-			    gint           *y1,
-			    gint           *x2,
-			    gint           *y2)
+			  gint           *x1,
+			  gint           *y1,
+			  gint           *x2,
+			  gint           *y2)
 {
   ClutterActorBox box;
 
@@ -877,8 +861,8 @@ clutter_actor_get_coords (ClutterActor *self,
  */
 void
 clutter_actor_set_position (ClutterActor *self,
-			      gint            x,
-			      gint            y)
+			    gint            x,
+			    gint            y)
 {
   ClutterActorBox box;
 
@@ -906,8 +890,8 @@ clutter_actor_set_position (ClutterActor *self,
  */
 void
 clutter_actor_set_size (ClutterActor *self,
-			  gint            width,
-			  gint            height)
+			gint            width,
+			gint            height)
 {
   ClutterActorBox box;
 
@@ -932,8 +916,8 @@ clutter_actor_set_size (ClutterActor *self,
  */
 void
 clutter_actor_get_abs_position (ClutterActor *self,
-				  gint           *x,
-				  gint           *y)
+				gint           *x,
+				gint           *y)
 {
   ClutterActorBox  box;
   ClutterActor    *parent;
@@ -946,8 +930,24 @@ clutter_actor_get_abs_position (ClutterActor *self,
   parent = self->priv->parent_actor;
 
   /* FIXME: must be nicer way to get 0,0 for stage ? */
-  if (parent && !CLUTTER_IS_STAGE (parent))
-    clutter_actor_get_abs_position (parent, &px, &py);
+  if (parent)
+    {
+      ClutterFixed parent_scale_x, parent_scale_y, fx, fy;
+
+      clutter_actor_get_scalex(parent, &parent_scale_x, &parent_scale_y);
+
+      if (parent_scale_x != CFX_ONE || parent_scale_y != CFX_ONE)
+	{
+	  fx = CLUTTER_FIXED_MUL(CLUTTER_INT_TO_FIXED(box.x1),parent_scale_x); 
+	  fy = CLUTTER_FIXED_MUL(CLUTTER_INT_TO_FIXED(box.y1),parent_scale_y); 
+
+	  box.x1 = CLUTTER_FIXED_INT(fx);
+	  box.y1 = CLUTTER_FIXED_INT(fy);
+	}
+
+      if (!CLUTTER_IS_STAGE (parent))
+	clutter_actor_get_abs_position (parent, &px, &py);
+    }
 
   if (x)
     *x = px + box.x1;
@@ -955,6 +955,57 @@ clutter_actor_get_abs_position (ClutterActor *self,
   if (y)
     *y = py + box.y1;
 }
+
+/**
+ * clutter_actor_get_abs_size
+ * @self: A #ClutterActor
+ * @x: Location to store width if non NULL.
+ * @y: Location to store height if non NULL.
+ *
+ * Gets the absolute size of an actor taking into account
+ * an scaling factors
+ */
+void
+clutter_actor_get_abs_size (ClutterActor *self,
+			    guint        *width,
+			    guint        *height)
+{
+  ClutterActorBox  box;
+  ClutterActor    *parent;
+
+  clutter_actor_allocate_coords (self, &box);
+
+  if (width)
+    *width  = box.x2 - box.x1;
+  if (height)
+    *height = box.y2 - box.y1;
+
+  parent = self;
+
+  do
+    {
+      if (parent->priv->scale_x != CFX_ONE || parent->priv->scale_y != CFX_ONE)
+	{
+	  ClutterFixed fx, fy;
+
+	  if (width)
+	    {
+	      fx = CLUTTER_FIXED_MUL(CLUTTER_INT_TO_FIXED(*width),
+				     parent->priv->scale_x); 
+	      *width = CLUTTER_FIXED_INT(fx);
+	    }
+
+	  if (height)
+	    {
+	      fy = CLUTTER_FIXED_MUL(CLUTTER_INT_TO_FIXED(*height),
+				     parent->priv->scale_x); 
+	      *height = CLUTTER_FIXED_INT(fy);
+	    }
+	}
+    }
+  while ((parent = clutter_actor_get_parent(parent)) != NULL);
+}
+
 
 /**
  * clutter_actor_get_width
@@ -1035,6 +1086,87 @@ clutter_actor_get_y (ClutterActor *self)
 
   return box.y1;
 }
+
+/**
+ * clutter_actor_set_scalex:
+ * @self: A #ClutterActor
+ * @scale_x: #ClutterFixed factor to scale actor by horizontally.
+ * @scale_y: #ClutterFixed factor to scale actor by vertically.
+ *
+ * Scale an actor.
+ */
+void
+clutter_actor_set_scalex (ClutterActor *self,
+			  ClutterFixed  scale_x,
+			  ClutterFixed  scale_y)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  self->priv->scale_x = scale_x;
+  self->priv->scale_y = scale_y;
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (self))
+    clutter_actor_queue_redraw (self);
+}
+
+/**
+ * clutter_actor_set_scale:
+ * @self: A #ClutterActor
+ * @scale_x: double
+ * @scale_y: double
+ */
+void
+clutter_actor_set_scale (ClutterActor *self,
+			 double        scale_x,
+			 double        scale_y)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_set_scalex (self,
+			    CLUTTER_FLOAT_TO_FIXED (scale_x),
+			    CLUTTER_FLOAT_TO_FIXED (scale_y));
+}
+
+/**
+ * clutter_actor_get_scalex
+ * @self: A #ClutterActor
+ * @scale_x: FIXME
+ * @scale_y: FIXME
+ *
+ * FIXME
+ */
+void
+clutter_actor_get_scalex (ClutterActor *self,
+			  ClutterFixed *scale_x,
+			  ClutterFixed *scale_y)
+{
+  if (scale_x)
+    *scale_x = self->priv->scale_x;
+
+  if (scale_y)
+    *scale_y = self->priv->scale_y;
+}
+
+/**
+ * clutter_actor_get_scale
+ * @self: A #ClutterActor
+ * @scale_x: FIXME
+ * @scale_y: FIXME
+ *
+ * FIXME
+ */
+void
+clutter_actor_get_scale (ClutterActor *self,
+			 double       *scale_x,
+			 double       *scale_y)
+{
+  if (scale_x)
+    *scale_x = CLUTTER_FIXED_TO_FLOAT(self->priv->scale_x);
+
+  if (scale_y)
+    *scale_y = CLUTTER_FIXED_TO_FLOAT(self->priv->scale_y);
+}
+
 
 /**
  * clutter_actor_set_opacity:

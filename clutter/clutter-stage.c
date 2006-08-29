@@ -501,6 +501,7 @@ clutter_stage_request_coords (ClutterActor    *self,
 		 priv->xwin,
 		 box->x1,
 		 box->y1);
+
 }
 
 static void 

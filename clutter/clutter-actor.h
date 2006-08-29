@@ -30,6 +30,8 @@
 
 #include <glib-object.h>
 
+#include "clutter-fixed.h"
+
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_GEOMETRY (clutter_geometry_get_type ())
@@ -66,7 +68,11 @@ typedef void (*ClutterCallback) (ClutterActor *actor, gpointer data);
 #define CLUTTER_CALLBACK(f)	((ClutterCallback) (f))
 
 struct _ClutterGeometry
-{ 
+{
+  /* FIXME: 
+   * It is likely gonna save a load of pain if we make 
+   * x,y unsigned...
+  */
   gint x;
   gint y;
   guint width;
@@ -206,6 +212,30 @@ void                  clutter_actor_set_depth        (ClutterActor          *sel
 						      gint                   depth);
 gint                  clutter_actor_get_depth        (ClutterActor          *self);
 
+void
+clutter_actor_set_scalex (ClutterActor *self,
+			  ClutterFixed  scale_x,
+			  ClutterFixed  scale_y);
+
+void
+clutter_actor_set_scale (ClutterActor *self,
+			 double        scale_x,
+			 double        scale_y);
+
+void
+clutter_actor_get_scalex (ClutterActor *self,
+			  ClutterFixed *scale_x,
+			  ClutterFixed *scale_y);
+
+void
+clutter_actor_get_scale (ClutterActor *self,
+			 double       *scale_x,
+			 double       *scale_y);
+
+void
+clutter_actor_get_abs_size (ClutterActor *self,
+			    guint        *width,
+			    guint        *height);
 
 G_END_DECLS
 

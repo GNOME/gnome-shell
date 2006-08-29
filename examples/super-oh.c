@@ -167,9 +167,9 @@ main (int argc, char *argv[])
 
       /* Create a texture from pixbuf, then clone in to same resources */
       if (i == 0)
-       oh->hand[i] = clutter_texture_new_from_pixbuf (pixbuf);
-     else
-       oh->hand[i] = clutter_clone_texture_new (CLUTTER_TEXTURE(oh->hand[0]));
+	oh->hand[i] = clutter_texture_new_from_pixbuf (pixbuf);
+      else
+	oh->hand[i] = clutter_clone_texture_new (CLUTTER_TEXTURE(oh->hand[0]));
 
       /* Place around a circle */
       w = clutter_actor_get_width (oh->hand[0]);
@@ -185,6 +185,19 @@ main (int argc, char *argv[])
       /* Add to our group group */
       clutter_group_add (CLUTTER_GROUP (oh->group), oh->hand[i]);
     }
+
+  clutter_actor_set_scale (oh->group, .1, 0.1);
+
+#if 0
+  {
+    guint w, h;
+    clutter_actor_get_abs_size (CLUTTER_ACTOR(oh->hand[0]), &w, &h);
+    g_print ("%ix%i\n", w, h);
+    g_print ("%ix%i\n", 
+	     clutter_actor_get_width(oh->hand[0]), 
+	     clutter_actor_get_height(oh->hand[0]));
+  }
+#endif
 
   /* Add the group to the stage */
   clutter_group_add (CLUTTER_GROUP (stage), CLUTTER_ACTOR(oh->group));

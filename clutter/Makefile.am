@@ -8,6 +8,7 @@ BUILT_SOURCES = $(MARSHALFILES) $(ENUMFILES)
 source_h =				  \
 	$(srcdir)/clutter-keysyms.h       \
 	$(srcdir)/clutter-util.h          \
+	$(srcdir)/clutter-fixed.h         \
 	$(srcdir)/clutter-media.h         \
         $(srcdir)/clutter-event.h         \
 	$(srcdir)/clutter-color.h         \

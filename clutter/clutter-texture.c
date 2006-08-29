@@ -241,8 +241,6 @@ texture_render_to_gl_quad (ClutterTexture *texture,
 
   priv = texture->priv;
 
-
-
   qwidth  = x2-x1;
   qheight = y2-y1;
 

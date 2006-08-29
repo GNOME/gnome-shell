@@ -99,60 +99,15 @@ static void
 clutter_group_request_coords (ClutterActor    *self,
 			      ClutterActorBox *box)
 {
-  ClutterGroup   *group = CLUTTER_GROUP(self);
-  guint           cwidth, cheight, width ,height;
   ClutterActorBox cbox;
 
   clutter_actor_allocate_coords (self, &cbox);
 
-  cwidth  = cbox.x2 - cbox.x1;
-  cheight = cbox.y2 - cbox.y1;
-
-  /* g_print("cbox x2: %i x1 %i\n", cbox.x2, cbox.x1); */
-
-  width  = box->x2 - box->x1;
-  height = box->y2 - box->y1;
-
-  /* FIXME: below needs work */
-  if (cwidth != width || cheight != height)
-    {
-      GList          *child_item;
-
-      for (child_item = group->priv->children;
-	   child_item != NULL;
-	   child_item = child_item->next)
-	{
-	  ClutterActor   *child = child_item->data;
-	  ClutterActorBox tbox;
-	  gint            nx, ny;
-	  gint            twidth, theight, nwidth, nheight; 
-
-	  g_assert (child != NULL);
-
-	  clutter_actor_allocate_coords (child, &tbox);
-
-	  twidth  = tbox.x2 - tbox.x1;
-	  theight = tbox.y2 - tbox.y1;
-	  
-	  /* g_print("getting ps %ix%i\n", tbox.x1, tbox.y1); */
-
-	  nwidth = ( width * twidth ) / cwidth;
-	  nheight = ( height * theight ) / cheight;
-
-	  nx = ( nwidth  * tbox.x1 ) / twidth ;
-
-	  /* g_print("n: %i t %i  x1: %i\n", nwidth, twidth, tbox.x1); */
-
-	  ny = ( nheight  * tbox.y1 ) / theight;
-
-	  /* g_print("n: %i t %i  x1: %i\n", nheight, theight, tbox.y1); */
-
-	  clutter_actor_set_position (child, nx, ny);
-	  clutter_actor_set_size (child, nwidth, height);
-
-	  /* g_print("size to +%i+%x %ix%i\n", nx, ny, nwidth, nheight); */
-	}
-    }
+  /* Sizing requests fail, use scale() instead */
+  box->x1 = cbox.x1;
+  box->y1 = cbox.y1;
+  box->x2 = cbox.x2;
+  box->y2 = cbox.y2;
 }
 
 static void
@@ -172,19 +127,15 @@ clutter_group_allocate_coords (ClutterActor    *self,
 	{
 	  ClutterActor *child = CLUTTER_ACTOR(child_item->data);
 	      
-	  /* if (CLUTTER_ACTOR_IS_VISIBLE (child)) */
+	  if (CLUTTER_ACTOR_IS_VISIBLE (child)) 
 	    {
 	      ClutterActorBox cbox;
 
 	      clutter_actor_allocate_coords (child, &cbox);
 	      
-	      /*
-	      if (box->x1 == 0 || cbox.x1 < box->x1)
-		box->x1 = cbox.x1;
-
-	      if (box->y1 == 0 || cbox.y1 < box->y1)
-		box->y1 = cbox.y1;
-	      */		
+	      /* Ignore any children with offscreen ( negaive )
+               * positions
+	      */
 
 	      if (box->x2 == 0 || cbox.x2 > box->x2)
 		box->x2 = cbox.x2;
@@ -374,6 +325,8 @@ clutter_group_add (ClutterGroup *self,
 		   ClutterActor *actor)
 {
   ClutterActor *parent;
+
+  /* FIXME: add() needs to be somehow overidden */
   
   g_return_if_fail (CLUTTER_IS_GROUP (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
@@ -396,6 +349,8 @@ clutter_group_add (ClutterGroup *self,
   clutter_actor_set_parent (actor, CLUTTER_ACTOR (self));
   
   clutter_group_sort_depth_order (self); 
+
+  /* If were scaled, we scale the actor too */
 
   g_signal_emit (self, group_signals[ADD], 0, actor);
 
