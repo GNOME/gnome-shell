@@ -12,9 +12,9 @@ It currently uses fairly low end GL functionality with an aim to still
 work well on open source graphics drivers as well as possibly making
 an eventual GL ES port feasable.
 
-Clutter currently requires GLib >= 2.8, GdkPixbuf, Gstreamer 0.10 and
-OpenGL >= 1.2. Its also recommended you have some kind of working
-hardware OpenGL on your target system.
+Clutter currently requires GLib >= 2.8, GdkPixbuf and OpenGL >= 1.2.
+Its also recommended you have some kind of working hardware OpenGL on
+your target system.
 
 Clutter is LGPL licensed.
 

@@ -72,8 +72,7 @@ expand_content_files=
 # e.g. INCLUDES=-I$(top_srcdir) -I$(top_builddir) $(GTK_DEBUG_FLAGS)
 # e.g. GTKDOC_LIBS=$(top_builddir)/gtk/$(gtktargetlib)
 
-# FIXME:  $(GST_CFLAGS) needed for clutter_media metadata - togo..
-INCLUDES=-I$(top_srcdir) $(CLUTTER_CFLAGS) $(GST_CFLAGS)
+INCLUDES=-I$(top_srcdir) $(CLUTTER_CFLAGS)
 GTKDOC_LIBS=$(top_builddir)/clutter/libclutter-@CLUTTER_MAJORMINOR@.la $(CLUTTER_LIBS)
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.

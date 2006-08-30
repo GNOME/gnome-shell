@@ -41,8 +41,6 @@
 #include "clutter-stage.h"
 #include "clutter-private.h"
 
-#include <gst/gst.h> 		/* for gst_init() */
-
 typedef struct 
 {
   GSource  source;
@@ -550,8 +548,6 @@ clutter_init (int *argc, char ***argv)
     g_thread_init (NULL);
 
   XInitThreads();
-
-  gst_init (argc, argv);
 
   context->main_loops = NULL;
   context->main_loop_level = 0;

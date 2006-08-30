@@ -1,5 +1,30 @@
 2006-08-30  Jorn Baayen  <jorn@openedhand.com>
 
+	* README:
+	* clutter/Makefile.am:
+	* clutter/clutter-audio.c:
+	* clutter/clutter-audio.h:
+	* clutter/clutter-main.c: (clutter_init):
+	* clutter/clutter-media.c:
+	* clutter/clutter-media.h:
+	* clutter/clutter-video-texture.c:
+	* clutter/clutter-video-texture.h:
+	* clutter/clutter.h:
+	* configure.ac:
+	* examples/Makefile.am:
+	* examples/README:
+	* examples/video-cube.c:
+	* examples/video-player.c:
+	* gst/Makefile.am:
+	* gst/clutterimagesink.:
+	* gst/clutterimagesink.c:
+	* gst/clutterimagesink.h:
+	* gtk/Makefile.am:
+
+	Remove gstreamer bits. There live in clutter-gst now.
+
+2006-08-30  Jorn Baayen  <jorn@openedhand.com>
+
 	* clutter/Makefile.am:
 	* clutter/clutter-audio.c:
 	* clutter/clutter-audio.h:

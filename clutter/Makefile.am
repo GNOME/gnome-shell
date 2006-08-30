@@ -9,7 +9,6 @@ source_h =				  \
 	$(srcdir)/clutter-keysyms.h       \
 	$(srcdir)/clutter-util.h          \
 	$(srcdir)/clutter-fixed.h         \
-	$(srcdir)/clutter-media.h         \
         $(srcdir)/clutter-event.h         \
 	$(srcdir)/clutter-color.h         \
 	$(srcdir)/clutter-feature.h       \
@@ -20,12 +19,10 @@ source_h =				  \
 	$(srcdir)/clutter-rectangle.h     \
 	$(srcdir)/clutter-texture.h       \
 	$(srcdir)/clutter-clone-texture.h \
-	$(srcdir)/clutter-video-texture.h \
 	$(srcdir)/clutter-label.h         \
 	$(srcdir)/clutter-behaviour.h     \
 	$(srcdir)/clutter-behaviours.h    \
 	$(srcdir)/clutter-alpha.h         \
-	$(srcdir)/clutter-audio.h         \
         $(srcdir)/clutter-main.h          
 
 clutter-marshal.h: clutter-marshal.list
@@ -76,7 +73,6 @@ CLEANFILES = $(BUILT_SOURCES) stamp-clutter-enum-types.h
 source_c = clutter-main.c          \
 	   clutter-util.c          \
 	   clutter-feature.c       \
-	   clutter-media.c         \
            clutter-event.c         \
 	   clutter-color.c         \
 	   clutter-timeline.c      \
@@ -85,13 +81,11 @@ source_c = clutter-main.c          \
 	   clutter-rectangle.c     \
 	   clutter-texture.c       \
 	   clutter-clone-texture.c \
-	   clutter-video-texture.c \
 	   clutter-label.c         \
            clutter-actor.c	   \
            clutter-behaviour.c	   \
            clutter-behaviours.c	   \
 	   clutter-alpha.c	   \
-	   clutter-audio.c	   \
 	   clutter-enum-types.c
 
 source_h_priv = clutter-private.h
@@ -101,11 +95,11 @@ libclutter_@CLUTTER_MAJORMINOR@_la_SOURCES = $(MARSHALFILES) \
                                              $(source_h)     \
                                              $(source_h_priv)
 
-INCLUDES = @GCC_FLAGS@ @CLUTTER_CFLAGS@  $(GST_CFLAGS) -I$(top_srcdir)
+INCLUDES = @GCC_FLAGS@ @CLUTTER_CFLAGS@ -I$(top_srcdir)
 
 lib_LTLIBRARIES = libclutter-@CLUTTER_MAJORMINOR@.la
 
-libclutter_@CLUTTER_MAJORMINOR@_la_LIBADD  = @CLUTTER_LIBS@ $(GST_LIBS)
+libclutter_@CLUTTER_MAJORMINOR@_la_LIBADD  = @CLUTTER_LIBS@
 libclutter_@CLUTTER_MAJORMINOR@_la_LDFLAGS = @CLUTTER_LT_LDFLAGS@
 
 clutterheadersdir = $(includedir)/clutter-@CLUTTER_MAJORMINOR@/clutter

@@ -94,15 +94,6 @@ PKG_CHECK_MODULES(CLUTTER_DEPS, [$pkg_modules])
 
 dnl ========================================================================
 
-GST_MAJORMINOR=0.10
-
-pkg_modules="gstreamer-$GST_MAJORMINOR gstreamer-plugins-base-$GST_MAJORMINOR"
-PKG_CHECK_MODULES(GST, [$pkg_modules])
-
-GST_LIBS="$GST_LIBS -lgstinterfaces-$GST_MAJORMINOR -lgstvideo-$GST_MAJORMINOR -lgstaudio-$GST_MAJORMINOR"
-
-dnl ========================================================================
-
 AC_ARG_ENABLE(gtk,
             [AC_HELP_STRING([--enable-gtk], [Buld Gtk+ Clutter widget])],enable_gtk="$enableval",enable_gtk=no) 
 
@@ -125,8 +116,6 @@ GTK_DOC_CHECK([1.0])
 dnl ========================================================================
 
 AC_SUBST(GCC_FLAGS)
-AC_SUBST(GST_CFLAGS)
-AC_SUBST(GST_LIBS)
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)
 

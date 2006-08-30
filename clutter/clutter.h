@@ -3,7 +3,6 @@
 
 #include "clutter-keysyms.h" 
 #include "clutter-main.h"
-#include "clutter-media.h"
 #include "clutter-color.h"
 #include "clutter-util.h"
 #include "clutter-event.h"
@@ -16,10 +15,8 @@
 #include "clutter-group.h"
 #include "clutter-texture.h"
 #include "clutter-clone-texture.h"
-#include "clutter-video-texture.h"
 #include "clutter-label.h"
 #include "clutter-alpha.h"
-#include "clutter-audio.h"
 #include "clutter-enum-types.h"
 
 #endif

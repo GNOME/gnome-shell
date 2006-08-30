@@ -18,19 +18,6 @@ There are:
 
    Spinning OH logos. Click to dissapear.
 
- o video-player.
- 
-   Simple fullscreen video player. 
-
-   - Move mouse to see controls.
-   - Hit q or Esc to exit, p to toggle pause state.
-   - Has some useless cheesy effects built in.
-      - Hit e to flip the video. 
-
- o video-cube.
- 
-   Pure evil. A nasty hack to do a video cube with clutter.
-   Could be done much nicer.
  
 
 Also see http://svn.o-hand.com/repos/misc/trunk/opt for a simple
