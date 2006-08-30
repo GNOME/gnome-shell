@@ -19,6 +19,7 @@
 #include "clutter-video-texture.h"
 #include "clutter-label.h"
 #include "clutter-alpha.h"
+#include "clutter-audio.h"
 #include "clutter-enum-types.h"
 
 #endif

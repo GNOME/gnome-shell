@@ -25,6 +25,7 @@ source_h =				  \
 	$(srcdir)/clutter-behaviour.h     \
 	$(srcdir)/clutter-behaviours.h    \
 	$(srcdir)/clutter-alpha.h         \
+	$(srcdir)/clutter-audio.h         \
         $(srcdir)/clutter-main.h          
 
 clutter-marshal.h: clutter-marshal.list
@@ -90,6 +91,7 @@ source_c = clutter-main.c          \
            clutter-behaviour.c	   \
            clutter-behaviours.c	   \
 	   clutter-alpha.c	   \
+	   clutter-audio.c	   \
 	   clutter-enum-types.c
 
 source_h_priv = clutter-private.h
