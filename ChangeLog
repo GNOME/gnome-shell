@@ -1,5 +1,11 @@
 2006-08-30  Jorn Baayen  <jorn@openedhand.com>
 
+	* clutter.pc.in:
+
+	Remove gstreamer deps.
+
+2006-08-30  Jorn Baayen  <jorn@openedhand.com>
+
 	* README:
 	* clutter/Makefile.am:
 	* clutter/clutter-audio.c:
