@@ -410,7 +410,7 @@ clutter_actor_request_coords (ClutterActor    *self,
  **/
 void
 clutter_actor_allocate_coords (ClutterActor    *self,
-				 ClutterActorBox *box)
+			       ClutterActorBox *box)
 {
   ClutterActorClass *klass;
 

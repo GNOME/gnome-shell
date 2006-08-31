@@ -1,3 +1,11 @@
+2006-08-31  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-group.c: (clutter_group_paint),
+	(clutter_group_request_coords), (clutter_group_allocate_coords),
+	(clutter_group_add):
+	Fix some group sizing/positioning issues.
+
 2006-08-30  Jorn Baayen  <jorn@openedhand.com>
 
 	* clutter.pc.in:

@@ -76,7 +76,9 @@ clutter_group_paint (ClutterActor *actor)
       clutter_actor_get_geometry (actor, &geom);
 
       if (geom.x != 0 || geom.y != 0)
-	glTranslatef(geom.x, geom.y, 0.0);
+	{
+	  glTranslatef(geom.x, geom.y, 0.0);
+	}
 
     }
 
@@ -103,11 +105,11 @@ clutter_group_request_coords (ClutterActor    *self,
 
   clutter_actor_allocate_coords (self, &cbox);
 
-  /* Sizing requests fail, use scale() instead */
-  box->x1 = cbox.x1;
-  box->y1 = cbox.y1;
-  box->x2 = cbox.x2;
-  box->y2 = cbox.y2;
+  /* Only positioning works.
+   * Sizing requests fail, use scale() instead 
+  */
+  box->x2 = box->x1 + (cbox.x2 - cbox.x1);
+  box->y2 = box->y1 + (cbox.y2 - cbox.y1);
 }
 
 static void
@@ -121,22 +123,26 @@ clutter_group_allocate_coords (ClutterActor    *self,
 
   child_item = priv->children;
 
+  /* FIXME: Cache these values */
+
   if (child_item)
     {
       do 
 	{
 	  ClutterActor *child = CLUTTER_ACTOR(child_item->data);
-	      
-	  if (CLUTTER_ACTOR_IS_VISIBLE (child)) 
+
+	  /* Once added we include in sizing - doesn't matter if visible */
+	  /* if (CLUTTER_ACTOR_IS_VISIBLE (child)) */
 	    {
 	      ClutterActorBox cbox;
 
 	      clutter_actor_allocate_coords (child, &cbox);
 	      
 	      /* Ignore any children with offscreen ( negaive )
-               * positions
+               * positions.
+	       *
+               * Also x1 and x2 will be set by parent caller.
 	      */
-
 	      if (box->x2 == 0 || cbox.x2 > box->x2)
 		box->x2 = cbox.x2;
 
@@ -349,8 +355,6 @@ clutter_group_add (ClutterGroup *self,
   clutter_actor_set_parent (actor, CLUTTER_ACTOR (self));
   
   clutter_group_sort_depth_order (self); 
-
-  /* If were scaled, we scale the actor too */
 
   g_signal_emit (self, group_signals[ADD], 0, actor);
 
