@@ -1,3 +1,11 @@
+2006-09-01  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/Makefile.am:
+	* clutter/clutter-media.c:
+	* clutter/clutter-media.h:
+	* clutter/clutter.h:
+	Re-add clutter media.
+
 2006-08-31  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c:
