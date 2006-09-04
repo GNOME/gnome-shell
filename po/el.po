@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-22 11:39+0300\n"
-"PO-Revision-Date: 2006-07-22 12:03+0300\n"
+"POT-Creation-Date: 2006-09-04 13:50+0300\n"
+"PO-Revision-Date: 2006-09-04 13:50+0300\n"
 "Last-Translator: Kostas Papadimas <pkst@gnome.org>\n"
 "Language-Team: Greek <team@gnome.gr>\n"
 "MIME-Version: 1.0\n"
@@ -92,28 +92,28 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Μοιραίο σφάλμα IO %d (%s) στην οθόνη '%s'.\n"
 
-#: ../src/frames.c:1086
+#: ../src/frames.c:1089
 msgid "Close Window"
 msgstr "Κλείσιμο παραθύρου"
 
 #
-#: ../src/frames.c:1089
+#: ../src/frames.c:1092
 msgid "Window Menu"
 msgstr "Μενού παραθύρου"
 
-#: ../src/frames.c:1092
+#: ../src/frames.c:1095
 msgid "Minimize Window"
 msgstr "Ελαχιστοποίηση παραθύρου"
 
-#: ../src/frames.c:1095
+#: ../src/frames.c:1098
 msgid "Maximize Window"
 msgstr "Μεγιστοποίηση παραθύρου"
 
-#: ../src/frames.c:1098
+#: ../src/frames.c:1101
 msgid "Unmaximize Window"
 msgstr "Από-μεγιστοποίηση παραθύρου"
 
-#: ../src/keybindings.c:1021
+#: ../src/keybindings.c:1031
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -122,19 +122,19 @@ msgstr ""
 "Κάποιο άλλο πρόγραμμα χρησιμοποιεί ήδη το κλειδί %s με μετατροπείς %x ώς "
 "δεσμό\n"
 
-#: ../src/keybindings.c:2588
+#: ../src/keybindings.c:2668
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Σφάλμα εκκίνησης διαλόγου metacity για την εκτύπωση ενός σφάλματος για μια "
 "εντολή: %s\n"
 
-#: ../src/keybindings.c:2693
+#: ../src/keybindings.c:2773
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Δεν έχει ορισθεί εντολή %d.\n"
 
-#: ../src/keybindings.c:3559
+#: ../src/keybindings.c:3640
 msgid "No terminal command has been defined.\n"
 msgstr "Δεν έχει ορισθεί εντολή τερματικού.\n"
 
@@ -263,7 +263,7 @@ msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας
 msgid "Move to Workspace _Down"
 msgstr "Μετακίνηση στο χώρο εργασίας _κάτω"
 
-#: ../src/menu.c:164 ../src/prefs.c:2142 ../src/prefs.c:2669
+#: ../src/menu.c:164 ../src/prefs.c:2142 ../src/prefs.c:2677
 #, c-format
 msgid "Workspace %d"
 msgstr "Χώρος εργασίας %d"
@@ -380,8 +380,8 @@ msgstr "Το παράθυρο \"%s\" δεν ανταποκρίνεται."
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
-"Ο εξαναγκασμός αυτού του παραθύρου σε τερματισμό θα προκαλέσει την απώλεια των "
-"μη αποθηκευμένων αλλαγών."
+"Ο εξαναγκασμός αυτού του παραθύρου σε τερματισμό θα προκαλέσει την απώλεια "
+"των μη αποθηκευμένων αλλαγών."
 
 #: ../src/metacity-dialog.c:130
 msgid "_Force Quit"
@@ -535,6 +535,10 @@ msgid ""
 "the auto_raise_delay key. This is not related to clicking on a window to "
 "raise it, nor to entering a window during drag-and-drop."
 msgstr ""
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focused window will be automatically raised after a delay specified by "
+"the auto_raise_delay key. This is not related to clicking on a window to "
+"raise it, nor to entering a window during drag-and-drop."
 
 #: ../src/metacity.schemas.in.h:21
 msgid ""
@@ -555,8 +559,8 @@ msgstr ""
 "Αν true, το metacity θα δίνει στο χρήστη λιγότερη ανάδραση και λιγότερη "
 "αίσθηση \"άμεσων χειρισμών\" με τη χρήση wireframes και την αποφυγή "
 "κινήσεων. Αυτή είναι μια σημαντική παραχώρηση στη χρηστικότητα για πολλούς "
-"χρήστες αλλά θα επιτρέψει σε εφαρμογές legacy και εξυπηρετητές τερματικού "
-"να λειτουργήσουν εκεί που δεν μπορούσαν πριν."
+"χρήστες αλλά θα επιτρέψει σε εφαρμογές legacy και εξυπηρετητές τερματικού να "
+"λειτουργήσουν εκεί που δεν μπορούσαν πριν."
 
 #: ../src/metacity.schemas.in.h:23
 msgid ""
@@ -647,7 +651,8 @@ msgstr "Άμεση μετακίνηση προς τα πίσω ανάμεσα σ
 #: ../src/metacity.schemas.in.h:36
 msgid "Move backwards between windows of an application with popup"
 msgstr ""
-"Μετακίνηση προς τα πίσω ανάμεσα στα παράθυρα μιας εφαρμογής τη χρήση αναδυόμενης οθόνης"
+"Μετακίνηση προς τα πίσω ανάμεσα στα παράθυρα μιας εφαρμογής τη χρήση "
+"αναδυόμενης οθόνης"
 
 #: ../src/metacity.schemas.in.h:37
 msgid "Move between panels and the desktop immediately"
@@ -670,7 +675,8 @@ msgstr "Άμεση μετακίνηση ανάμεσα σε παράθυρα μ�
 
 #: ../src/metacity.schemas.in.h:41
 msgid "Move between windows of an application with popup"
-msgstr "Μετακίνηση ανάμεσα σε παράθυρα μιας εφαρμογής με τη χρήση αναδυόμενης οθόνης"
+msgstr ""
+"Μετακίνηση ανάμεσα σε παράθυρα μιας εφαρμογής με τη χρήση αναδυόμενης οθόνης"
 
 #: ../src/metacity.schemas.in.h:42
 msgid "Move between windows with popup"
@@ -803,6 +809,10 @@ msgid ""
 "which gives a more consistent user interface, provided one does not need to "
 "run any misbehaving applications."
 msgstr ""
+"Some applications disregard specifications in ways that result in window "
+"manager misfeatures. This option puts Metacity in a rigorously correct mode, "
+"which gives a more consistent user interface, provided one does not need to "
+"run any misbehaving applications."
 
 #: ../src/metacity.schemas.in.h:72
 msgid "Switch to workspace 1"
@@ -1698,8 +1708,8 @@ msgid ""
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
 "Ο συνδυασμός πλήκτρων που χρησιμοποιείται για τη μετακίνηση της εστίασης "
-"ανάμεσα στα παράθυρα με τη χρήση ενός αναδυόμενου παραθύρου.(Παραδοσιακά &lt;Alt&gt;F6)."
-" Πατώντας συγχρόνως το  πλήκτρο \"shift\" με τη χρήση αυτού του "
+"ανάμεσα στα παράθυρα με τη χρήση ενός αναδυόμενου παραθύρου.(Παραδοσιακά &lt;"
+"Alt&gt;F6). Πατώντας συγχρόνως το  πλήκτρο \"shift\" με τη χρήση αυτού του "
 "συνδυασμού αντιστρέφει την κατεύθυνση της κίνησης. Η διαμόρφωση μοιάζει με  "
 "\"&lt;Control&gt;a\" ή \"&lt;Shift&gt;&lt;Alt&gt;F1\". Ο διαβιβαστής είναι "
 "φιλελεύθερος και επιτρέπει κεφαλαία και πεζά και συντομεύσεις όπως \"&lt;"
@@ -2048,6 +2058,10 @@ msgid ""
 "mode, and \"strict\" results in windows started from a terminal not being "
 "given focus."
 msgstr ""
+"This option provides additional control over how newly created windows get "
+"focus. It has two possible values; \"smart\" applies the user's normal focus "
+"mode, and \"strict\" results in windows started from a terminal not being "
+"given focus."
 
 #: ../src/metacity.schemas.in.h:171
 msgid "Toggle always on top state"
@@ -2173,7 +2187,7 @@ msgstr ""
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Σφάλμα κατά τον ορισμό αριθμού χώρων εργασίας σε  %d: %s\n"
 
-#: ../src/prefs.c:2170 ../src/prefs.c:2335
+#: ../src/prefs.c:2172 ../src/prefs.c:2342
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2183,7 +2197,7 @@ msgstr ""
 "για συνδυασμό πλήκτρων\"%s\"\n"
 
 # gconf/gconfd.c:1561
-#: ../src/prefs.c:2750
+#: ../src/prefs.c:2758
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Σφάλμα κατά τον ορισμό ονόματος χώρου εργασίας %d σε \"%s\": %s\n"
@@ -3095,11 +3109,11 @@ msgstr "Η αναλογία διαστάσεων κουμπιού  %g  δεν ε
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Η γεωμετρία πλαισίου δεν έχει καθορίσει μέγεθος κουμπιών"
 
-#: ../src/theme.c:813
+#: ../src/theme.c:847
 msgid "Gradients should have at least two colors"
 msgstr "Τα διαβαθμισμένα χρώματα θα πρέπει να έχουν δύο τουλάχιστον θέματα"
 
-#: ../src/theme.c:939
+#: ../src/theme.c:973
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -3108,7 +3122,7 @@ msgstr ""
 "Ο καθορισμός χρώματος GTK θα πρέπει να έχει τη κατάσταση σε αγκύλες, π.χ gtk:"
 "fg[NORMAL] όπου NORMAL είναι η κατάσταση. Αδυναμία ανάλυσης \"%s\""
 
-#: ../src/theme.c:953
+#: ../src/theme.c:987
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -3118,17 +3132,17 @@ msgstr ""
 "κατάσταση. π.χ gtk:fg[NORMAL] όπου NORMAL είναι η κατάσταση. Αδυναμία "
 "ανάλυσης \"%s\""
 
-#: ../src/theme.c:964
+#: ../src/theme.c:998
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Δεν έγινε κατανοητή η κατάσταση  \"%s\" στον ορισμό χρώματος"
 
-#: ../src/theme.c:977
+#: ../src/theme.c:1011
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Δεν έγινε κατανοητό το συστατικό χρώματος  \"%s\" στον ορισμό χρώματος"
 
-#: ../src/theme.c:1007
+#: ../src/theme.c:1041
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -3137,18 +3151,18 @@ msgstr ""
 "Ο τύπος ανάμιξης που είναι \"blend/bg_color/fg_color/alpha\", \"%s\" δεν "
 "ταιριάζει στη διαμόρφωση"
 
-#: ../src/theme.c:1018
+#: ../src/theme.c:1052
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Αδυναμία ανάλυσης τιμής alpha \"%s\" στο αναμεμιγμένο χρώμα"
 
-#: ../src/theme.c:1028
+#: ../src/theme.c:1062
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr ""
 "Η τιμή Alpha \"%s\" στο αναμεμιγμένο χρώμα δεν είναι ανάμεσα σε 0.0 και 1.0"
 
-#: ../src/theme.c:1075
+#: ../src/theme.c:1109
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
@@ -3156,27 +3170,27 @@ msgstr ""
 "Ο τύπος σκίασης είναι  \"shade/base_color/factor\", το \"%s\" δεν ταιριάζει "
 "στον τύπο"
 
-#: ../src/theme.c:1086
+#: ../src/theme.c:1120
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Αδυναμία ανάλυσης παράγοντα σκίασης \"%s\" στο σκιασμένο χρώμα"
 
-#: ../src/theme.c:1096
+#: ../src/theme.c:1130
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Ο παράγοντας σκίασης  \"%s\" στο σκιασμένο χρώμα είναι αρνητικός"
 
-#: ../src/theme.c:1125
+#: ../src/theme.c:1159
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Αδύνατη η ανάλυση χρώματος \"%s\""
 
-#: ../src/theme.c:1384
+#: ../src/theme.c:1418
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Η συντεταγμένη έκφραση περιέχει ένα χαρακτήρα '%s που δεν επιτρέπεται"
 
-#: ../src/theme.c:1411
+#: ../src/theme.c:1445
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -3185,13 +3199,13 @@ msgstr ""
 "Η συντεταγμένη έκφραση περιέχει αριθμό κινητού σημείου '%s' που δεν μπορεί "
 "να αναλυθεί"
 
-#: ../src/theme.c:1425
+#: ../src/theme.c:1459
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
 "Η συντεταγμένη έκφραση περιέχει έναν ακέραιο  '%s που δεν μπορεί να αναλυθεί"
 
-#: ../src/theme.c:1492
+#: ../src/theme.c:1526
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -3200,37 +3214,37 @@ msgstr ""
 "Η συντεταγμένη έκφραση περιείχε έναν άγνωστο χειριστή στην αρχή αυτού του "
 "κειμένου: \"%s\""
 
-#: ../src/theme.c:1549
+#: ../src/theme.c:1583
 msgid "Coordinate expression was empty or not understood"
 msgstr "Η συντεταγμένη έκφραση ήταν κενή ή δεν έγινε κατανοητή"
 
-#: ../src/theme.c:1686 ../src/theme.c:1696 ../src/theme.c:1730
+#: ../src/theme.c:1720 ../src/theme.c:1730 ../src/theme.c:1764
 msgid "Coordinate expression results in division by zero"
 msgstr "Η συντεταγμένη έκφραση έχει σαν αποτέλεσμα διαίρεση με το μηδέν"
 
-#: ../src/theme.c:1738
+#: ../src/theme.c:1772
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Η συντεταγμένη έκφραση  προσπαθεί να χρησιμοποίησε ιmod operator σε αριθμό "
 "κινητού σημείου"
 
-#: ../src/theme.c:1794
+#: ../src/theme.c:1828
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "Η συντεταγμένη έκφραση έχει ένα operator \"%s\" ενώ αναμενόταν operand "
 
-#: ../src/theme.c:1803
+#: ../src/theme.c:1837
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Η συντεταγμένη έκφραση έχει ένα operand  ενώ αναμενόταν  operator"
 
-#: ../src/theme.c:1811
+#: ../src/theme.c:1845
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Η συντεταγμένη έκφραση τέλειωσε με χειριστή αντί για operand"
 
-#: ../src/theme.c:1821
+#: ../src/theme.c:1855
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -3239,38 +3253,38 @@ msgstr ""
 "Η συντεταγμένη έκφραση έχει operator \"%c\" ακολουθούμενο operator \"%c\" "
 "χωρίς operand μεταξύ τους"
 
-#: ../src/theme.c:1939
+#: ../src/theme.c:1973
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "Η συντεταγμένη έκφραση ήταν κενή ή δεν έγινε κατανοητή"
 
-#: ../src/theme.c:1968
+#: ../src/theme.c:2002
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
-"Η συντεταγμένη έκφραση έχει μια παρένθεση κλεισίματος χωρίς να έχει "
-"ανοιχθεί παρένθεση"
+"Η συντεταγμένη έκφραση έχει μια παρένθεση κλεισίματος χωρίς να έχει ανοιχθεί "
+"παρένθεση"
 
-#: ../src/theme.c:2030
+#: ../src/theme.c:2064
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Η συντεταγμένη έκφραση έχει άγνωστη μεταβλητή ή συνεχής \"%s\""
 
-#: ../src/theme.c:2085
+#: ../src/theme.c:2119
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 "Η συντεταγμένη έκφραση έχει μια παρένθεση ανοίγματος χωρίς να έχει κλεισθεί "
 "παρένθεση"
 
-#: ../src/theme.c:2096
+#: ../src/theme.c:2130
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Η συντεταγμένη έκφραση δεν φαίνεται να έχει operators ή operands"
 
-#: ../src/theme.c:2337 ../src/theme.c:2359 ../src/theme.c:2380
+#: ../src/theme.c:2371 ../src/theme.c:2393 ../src/theme.c:2414
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr ""
 "Το θέμα περιείχε μια έκφραση \"%s\" που είχε σαν αποτέλεσμα σφάλμα: %s\n"
 
-#: ../src/theme.c:3826
+#: ../src/theme.c:3860
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3279,26 +3293,26 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> θα πρέπει να "
 "καθοριστεί στο στυλ πλαισίου"
 
-#: ../src/theme.c:4270 ../src/theme.c:4295
+#: ../src/theme.c:4304 ../src/theme.c:4329
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Λείπει <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: ../src/theme.c:4341
+#: ../src/theme.c:4375
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Αποτυχία φόρτωσης θέματος \"%s\": %s\n"
 
 # gconf/gconftool.c:877
-#: ../src/theme.c:4481 ../src/theme.c:4488 ../src/theme.c:4495
-#: ../src/theme.c:4502 ../src/theme.c:4509
+#: ../src/theme.c:4515 ../src/theme.c:4522 ../src/theme.c:4529
+#: ../src/theme.c:4536 ../src/theme.c:4543
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Δεν έχει ορισθεί  <%s> για θέμα \"%s\""
 
-#: ../src/theme.c:4517
+#: ../src/theme.c:4551
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3307,7 +3321,7 @@ msgstr ""
 "Δεν έχει ορισθεί στύλ πλαισίου για τον τύπο παραθύρου \"%s\" στο θέμα \"%s"
 "\", add a <window type=\"%s\" style_set=\"whatever\"/> element"
 
-#: ../src/theme.c:4531
+#: ../src/theme.c:4565
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3316,7 +3330,7 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> θα πρέπει να "
 "καθοριστεί για αυτό το θέμα"
 
-#: ../src/theme.c:4911 ../src/theme.c:4973
+#: ../src/theme.c:4945 ../src/theme.c:5007
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -3324,7 +3338,7 @@ msgstr ""
 "Οι συνεχείς που ορίζονται από το χρήστη θα πρέπει να ξεκινάνε με κεφαλαίο "
 "γράμμα, η \"%s\" δεν έχει"
 
-#: ../src/theme.c:4919 ../src/theme.c:4981
+#: ../src/theme.c:4953 ../src/theme.c:5015
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Constant \"%s\" έχει ήδη καθορισθεί"
@@ -3372,13 +3386,13 @@ msgstr "Η εφαρμογή έθεσε ένα πλαστό _NET_WM_PID %lu\n"
 msgid "%s (on %s)"
 msgstr "%s (σε %s)"
 
-#: ../src/window-props.c:1159
+#: ../src/window-props.c:1178
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Άκυρο WM_TRANSIENT_FOR παράθυρο 0x%lx που καθορίστηκε για %s.\n"
 
 #. first time through
-#: ../src/window.c:5240
+#: ../src/window.c:5288
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3394,7 +3408,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5836
+#: ../src/window.c:5884
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
