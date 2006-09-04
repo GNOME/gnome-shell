@@ -1,3 +1,17 @@
+2.16.0
+==
+
+Thanks to Jens Granseuer for changes in this release.
+
+ - Fix the build with c89/gcc 2.95.
+
+Translators
+  Rahul Bhalerao (mr), Runa Bhattacharjee (bn_IN), Woodman Tuen
+  (zh_HK, zh_TW), Kostas Papadimas (el), Ani Peter (ml),
+  Jonathan Ernst (fr), Горан Ракић (sr, Gabor Kelemen (hu),
+  Maxim Dziumanenko (uk), Duarte Loreto (pt), Jordi Mallach (ca),
+  Gintautas Miliauskas (lt)
+
 2.15.34
 ==
 
