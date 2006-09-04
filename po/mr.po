@@ -1,3 +1,4 @@
+# translation of mr.po to Marathi
 # translation of metacity.HEAD.po to Marathi
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
@@ -5,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity.HEAD\n"
+"Project-Id-Version: mr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-08-28 08:51+0200\n"
-"PO-Revision-Date: 2006-08-31 01:15+0530\n"
+"PO-Revision-Date: 2006-09-04 15:34+0530\n"
 "Last-Translator: Rahul Bhalerao <b.rahul.pm@gmail.com>\n"
 "Language-Team: Marathi\n"
 "MIME-Version: 1.0\n"
@@ -24,13 +25,13 @@ msgstr "वापर: %s\n"
 
 #: ../src/tools/metacity-message.c:176 ../src/util.c:131
 msgid "Metacity was compiled without support for verbose mode\n"
-msgstr ""
+msgstr "मेटासिटी शब्दबंबाळ रितीव्यतिरिक्त कम्पाइल केला होता\n"
 
 #: ../src/delete.c:64 ../src/delete.c:91 ../src/metacity-dialog.c:71
 #: ../src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
-msgstr ""
+msgstr "\"%s\" चे पुर्णांक म्हणून विश्लेषण करता आले नाही"
 
 #: ../src/delete.c:71 ../src/delete.c:98 ../src/metacity-dialog.c:78
 #: ../src/theme-parser.c:476 ../src/theme-parser.c:530
@@ -351,7 +352,7 @@ msgstr ""
 
 #: ../src/metacity-dialog.c:130
 msgid "_Force Quit"
-msgstr ""
+msgstr "जबरदस्तीने सोडा(_F)"
 
 #: ../src/metacity-dialog.c:227
 msgid "Title"
@@ -464,11 +465,11 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:18
 msgid "Enable Visual Bell"
-msgstr ""
+msgstr "दृश्य घंटा सक्षम करा"
 
 #: ../src/metacity.schemas.in.h:19
 msgid "Hide all windows and focus desktop"
-msgstr ""
+msgstr "सर्व खिडक्या लपवा आणि कार्यस्थळे प्रकाशित करा"
 
 #: ../src/metacity.schemas.in.h:20
 msgid ""
@@ -525,19 +526,19 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:27
 msgid "Maximize window"
-msgstr ""
+msgstr "खिडकी मोठी करा"
 
 #: ../src/metacity.schemas.in.h:28
 msgid "Maximize window horizontally"
-msgstr ""
+msgstr "खिडकी आडवी मोठी करा"
 
 #: ../src/metacity.schemas.in.h:29
 msgid "Maximize window vertically"
-msgstr ""
+msgstr "खिडकी उभी मोठी करा"
 
 #: ../src/metacity.schemas.in.h:30
 msgid "Minimize window"
-msgstr ""
+msgstr "खिडकी लहान करा"
 
 #: ../src/metacity.schemas.in.h:31
 msgid "Modifier to use for modified window click actions"
@@ -593,79 +594,79 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:44
 msgid "Move window"
-msgstr ""
+msgstr "खिडकी हलवा"
 
 #: ../src/metacity.schemas.in.h:45
 msgid "Move window one workspace down"
-msgstr ""
+msgstr "खिडकी एक कार्यस्थळ खाली हलवा"
 
 #: ../src/metacity.schemas.in.h:46
 msgid "Move window one workspace to the left"
-msgstr ""
+msgstr "खिडकी एक कार्यस्थळ डावीकडे हलवा"
 
 #: ../src/metacity.schemas.in.h:47
 msgid "Move window one workspace to the right"
-msgstr ""
+msgstr "खिडकी एक कार्यस्थळ उजवीकडे हलवा"
 
 #: ../src/metacity.schemas.in.h:48
 msgid "Move window one workspace up"
-msgstr ""
+msgstr "खिडकी एक कार्यस्थळ वर हलवा"
 
 #: ../src/metacity.schemas.in.h:49
 msgid "Move window to workspace 1"
-msgstr ""
+msgstr "खिडकी कार्यस्थळ १ वर हलवा"
 
 #: ../src/metacity.schemas.in.h:50
 msgid "Move window to workspace 10"
-msgstr ""
+msgstr "खिडकी कार्यस्थळ १० वर हलवा"
 
 #: ../src/metacity.schemas.in.h:51
 msgid "Move window to workspace 11"
-msgstr ""
+msgstr "खिडकी कार्यस्थळ ११ वर हलवा"
 
 #: ../src/metacity.schemas.in.h:52
 msgid "Move window to workspace 12"
-msgstr ""
+msgstr "खिडकी कार्यस्थळ १२ वर हलवा"
 
 #: ../src/metacity.schemas.in.h:53
 msgid "Move window to workspace 2"
-msgstr ""
+msgstr "खिडकी कार्यस्थळ २ वर हलवा"
 
 #: ../src/metacity.schemas.in.h:54
 msgid "Move window to workspace 3"
-msgstr ""
+msgstr "खिडकी कार्यस्थळ ३ वर हलवा"
 
 #: ../src/metacity.schemas.in.h:55
 msgid "Move window to workspace 4"
-msgstr ""
+msgstr "खिडकी कार्यस्थळ ४ वर हलवा"
 
 #: ../src/metacity.schemas.in.h:56
 msgid "Move window to workspace 5"
-msgstr ""
+msgstr "खिडकी कार्यस्थळ ५ वर हलवा"
 
 #: ../src/metacity.schemas.in.h:57
 msgid "Move window to workspace 6"
-msgstr ""
+msgstr "खिडकी कार्यस्थळ ६ वर हलवा"
 
 #: ../src/metacity.schemas.in.h:58
 msgid "Move window to workspace 7"
-msgstr ""
+msgstr "खिडकी कार्यस्थळ ७ वर हलवा"
 
 #: ../src/metacity.schemas.in.h:59
 msgid "Move window to workspace 8"
-msgstr ""
+msgstr "खिडकी कार्यस्थळ ८ वर हलवा"
 
 #: ../src/metacity.schemas.in.h:60
 msgid "Move window to workspace 9"
-msgstr ""
+msgstr "खिडकी कार्यस्थळ ९ वर हलवा"
 
 #: ../src/metacity.schemas.in.h:61
 msgid "Name of workspace"
-msgstr ""
+msgstr "कार्यस्थळाचे नाव"
 
 #: ../src/metacity.schemas.in.h:62
 msgid "Number of workspaces"
-msgstr ""
+msgstr "कार्यस्थळांची संख्या"
 
 #: ../src/metacity.schemas.in.h:63
 msgid ""
@@ -680,27 +681,27 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:65
 msgid "Raise window above other windows"
-msgstr ""
+msgstr "खिडकी इतर खिडक्यांवर उचला"
 
 #: ../src/metacity.schemas.in.h:66
 msgid "Resize window"
-msgstr ""
+msgstr "खिडकी पुनःआकारित करा"
 
 #: ../src/metacity.schemas.in.h:67
 msgid "Run a defined command"
-msgstr ""
+msgstr "व्याख्यीत केलेला आदेश चालवा"
 
 #: ../src/metacity.schemas.in.h:68
 msgid "Run a terminal"
-msgstr ""
+msgstr "टर्मिनल चालवा"
 
 #: ../src/metacity.schemas.in.h:69
 msgid "Show the panel menu"
-msgstr ""
+msgstr "पॅनेल मेनू दाखवा"
 
 #: ../src/metacity.schemas.in.h:70
 msgid "Show the panel run application dialog"
-msgstr ""
+msgstr "पॅनेल अनुप्रयोग चालवा संवाद दाखवा"
 
 #: ../src/metacity.schemas.in.h:71
 msgid ""
@@ -712,79 +713,79 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:72
 msgid "Switch to workspace 1"
-msgstr ""
+msgstr "कार्यस्थळ १ वर जा"
 
 #: ../src/metacity.schemas.in.h:73
 msgid "Switch to workspace 10"
-msgstr ""
+msgstr "कार्यस्थळ १० वर जा"
 
 #: ../src/metacity.schemas.in.h:74
 msgid "Switch to workspace 11"
-msgstr ""
+msgstr "कार्यस्थळ ११ वर जा"
 
 #: ../src/metacity.schemas.in.h:75
 msgid "Switch to workspace 12"
-msgstr ""
+msgstr "कार्यस्थळ १२ वर जा"
 
 #: ../src/metacity.schemas.in.h:76
 msgid "Switch to workspace 2"
-msgstr ""
+msgstr "कार्यस्थळ २ वर जा"
 
 #: ../src/metacity.schemas.in.h:77
 msgid "Switch to workspace 3"
-msgstr ""
+msgstr "कार्यस्थळ ३ वर जा"
 
 #: ../src/metacity.schemas.in.h:78
 msgid "Switch to workspace 4"
-msgstr ""
+msgstr "कार्यस्थळ ४ वर जा"
 
 #: ../src/metacity.schemas.in.h:79
 msgid "Switch to workspace 5"
-msgstr ""
+msgstr "कार्यस्थळ ५ वर जा"
 
 #: ../src/metacity.schemas.in.h:80
 msgid "Switch to workspace 6"
-msgstr ""
+msgstr "कार्यस्थळ ६ वर जा"
 
 #: ../src/metacity.schemas.in.h:81
 msgid "Switch to workspace 7"
-msgstr ""
+msgstr "कार्यस्थळ ७ वर जा"
 
 #: ../src/metacity.schemas.in.h:82
 msgid "Switch to workspace 8"
-msgstr ""
+msgstr "कार्यस्थळ ८ वर जा"
 
 #: ../src/metacity.schemas.in.h:83
 msgid "Switch to workspace 9"
-msgstr ""
+msgstr "कार्यस्थळ ९ वर जा"
 
 #: ../src/metacity.schemas.in.h:84
 msgid "Switch to workspace above this one"
-msgstr ""
+msgstr "यावरील कार्यस्थळावर जा"
 
 #: ../src/metacity.schemas.in.h:85
 msgid "Switch to workspace below this one"
-msgstr ""
+msgstr "याखालील कार्यस्थळावर जा"
 
 #: ../src/metacity.schemas.in.h:86
 msgid "Switch to workspace on the left"
-msgstr ""
+msgstr "डाव्या कार्यस्थळावर जा"
 
 #: ../src/metacity.schemas.in.h:87
 msgid "Switch to workspace on the right"
-msgstr ""
+msgstr "उजव्या कार्यस्थळावर जा"
 
 #: ../src/metacity.schemas.in.h:88
 msgid "System Bell is Audible"
-msgstr ""
+msgstr "प्रणाली घंटा श्राव्य आहे"
 
 #: ../src/metacity.schemas.in.h:89
 msgid "Take a screenshot"
-msgstr ""
+msgstr "स्क्रीनशॉट घ्या"
 
 #: ../src/metacity.schemas.in.h:90
 msgid "Take a screenshot of a window"
-msgstr ""
+msgstr "खिडकीचा स्क्रीनशॉट घ्या"
 
 #: ../src/metacity.schemas.in.h:91
 msgid ""
@@ -2263,55 +2264,55 @@ msgstr ""
 
 #: ../src/theme-viewer.c:72
 msgid "/_Windows"
-msgstr ""
+msgstr "/खिडक्या(_W)"
 
 #: ../src/theme-viewer.c:73
 msgid "/Windows/tearoff"
-msgstr ""
+msgstr "/खिडक्या/टिअरऑफ"
 
 #: ../src/theme-viewer.c:74
 msgid "/Windows/_Dialog"
-msgstr ""
+msgstr "/खिडक्या/संवाद(_D)"
 
 #: ../src/theme-viewer.c:75
 msgid "/Windows/_Modal dialog"
-msgstr ""
+msgstr "/खिडक्या/मोडल संवाद(_M)"
 
 #: ../src/theme-viewer.c:76
 msgid "/Windows/_Utility"
-msgstr ""
+msgstr "/खिडक्या/उपयुक्तता(_U)"
 
 #: ../src/theme-viewer.c:77
 msgid "/Windows/_Splashscreen"
-msgstr ""
+msgstr "/खिडक्या/स्प्लॅशस्क्रीन(_S)"
 
 #: ../src/theme-viewer.c:78
 msgid "/Windows/_Top dock"
-msgstr ""
+msgstr "/खिडक्या/उच्च डॉक(_T)"
 
 #: ../src/theme-viewer.c:79
 msgid "/Windows/_Bottom dock"
-msgstr ""
+msgstr "/खिडक्या/तळाचा डॉक(_B)"
 
 #: ../src/theme-viewer.c:80
 msgid "/Windows/_Left dock"
-msgstr ""
+msgstr "/खिडक्या/डावा डॉक(_L)"
 
 #: ../src/theme-viewer.c:81
 msgid "/Windows/_Right dock"
-msgstr ""
+msgstr "/खिडक्या/उजवा डॉक(_R)"
 
 #: ../src/theme-viewer.c:82
 msgid "/Windows/_All docks"
-msgstr ""
+msgstr "/खिडक्या/सर्व डॉक(_A)"
 
 #: ../src/theme-viewer.c:83
 msgid "/Windows/Des_ktop"
-msgstr ""
+msgstr "/खिडक्या/कार्यस्थळ(_k)"
 
 #: ../src/theme-viewer.c:132
 msgid "Open another one of these windows"
-msgstr ""
+msgstr "यापैकी वेगळी खिडकी उघडा"
 
 #: ../src/theme-viewer.c:139
 msgid "This is a demo button with an 'open' icon"
@@ -2332,83 +2333,83 @@ msgstr ""
 
 #: ../src/theme-viewer.c:356
 msgid "Border-only window"
-msgstr ""
+msgstr "फक्त-किनार खिडकी"
 
 #: ../src/theme-viewer.c:358
 msgid "Bar"
-msgstr ""
+msgstr "पट्टी"
 
 #: ../src/theme-viewer.c:375
 msgid "Normal Application Window"
-msgstr ""
+msgstr "सामान्य अनुप्रयोग खिडकी"
 
 #: ../src/theme-viewer.c:379
 msgid "Dialog Box"
-msgstr ""
+msgstr "संवाद खोका"
 
 #: ../src/theme-viewer.c:383
 msgid "Modal Dialog Box"
-msgstr ""
+msgstr "मोडल संवाद खोका"
 
 #: ../src/theme-viewer.c:387
 msgid "Utility Palette"
-msgstr ""
+msgstr "उपयुक्तता पॅलेट"
 
 #: ../src/theme-viewer.c:391
 msgid "Torn-off Menu"
-msgstr ""
+msgstr "टिअर-ऑफ मेनू"
 
 #: ../src/theme-viewer.c:395
 msgid "Border"
-msgstr ""
+msgstr "किनार"
 
 #: ../src/theme-viewer.c:723
 #, c-format
 msgid "Button layout test %d"
-msgstr ""
+msgstr "बटन लेआउट कसोटी %d"
 
 #: ../src/theme-viewer.c:752
 #, c-format
 msgid "%g milliseconds to draw one window frame"
-msgstr ""
+msgstr "एक खिडकीची चौकट काढण्यासाठी %g मिलीसेकंद"
 
 #: ../src/theme-viewer.c:795
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr ""
+msgstr "वापर: metacity-theme-viewer [THEMENAME]\n"
 
 #: ../src/theme-viewer.c:802
 #, c-format
 msgid "Error loading theme: %s\n"
-msgstr ""
+msgstr "थीम भारित करण्यात चूक: %s\n"
 
 #: ../src/theme-viewer.c:808
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr ""
+msgstr "\"%s\" थीम %g सेकंदांत भारित करत आहे\n"
 
 #: ../src/theme-viewer.c:831
 msgid "Normal Title Font"
-msgstr ""
+msgstr "सामान्य शिर्षक फॉन्ट"
 
 #: ../src/theme-viewer.c:837
 msgid "Small Title Font"
-msgstr ""
+msgstr "लहान शिर्षक फॉन्ट"
 
 #: ../src/theme-viewer.c:843
 msgid "Large Title Font"
-msgstr ""
+msgstr "मोठा शिर्षक फॉन्ट"
 
 #: ../src/theme-viewer.c:848
 msgid "Button Layouts"
-msgstr ""
+msgstr "बटन लेआउट"
 
 #: ../src/theme-viewer.c:853
 msgid "Benchmark"
-msgstr ""
+msgstr "बेंचमार्क"
 
 #: ../src/theme-viewer.c:900
 msgid "Window Title Goes Here"
-msgstr ""
+msgstr "खिडकीचे शिर्षक येथे जाते"
 
 #: ../src/theme-viewer.c:1004
 #, c-format
@@ -2457,19 +2458,19 @@ msgstr ""
 
 #: ../src/theme.c:202
 msgid "top"
-msgstr ""
+msgstr "उच्च"
 
 #: ../src/theme.c:204
 msgid "bottom"
-msgstr ""
+msgstr "तळ"
 
 #: ../src/theme.c:206
 msgid "left"
-msgstr ""
+msgstr "डावे"
 
 #: ../src/theme.c:208
 msgid "right"
-msgstr ""
+msgstr "उजवे"
 
 #: ../src/theme.c:222
 #, c-format
@@ -2553,7 +2554,7 @@ msgstr ""
 #: ../src/theme.c:1159
 #, c-format
 msgid "Could not parse color \"%s\""
-msgstr ""
+msgstr "रंग \"%s\" विश्लेषित करता आला नाही"
 
 #: ../src/theme.c:1418
 #, c-format
@@ -2647,18 +2648,18 @@ msgstr ""
 #: ../src/theme.c:4304 ../src/theme.c:4329
 #, c-format
 msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
+msgstr "हरवले आहे <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
 #: ../src/theme.c:4375
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr ""
+msgstr "थीम \"%s\" भारित करण्यास असफल: %s\n"
 
 #: ../src/theme.c:4515 ../src/theme.c:4522 ../src/theme.c:4529
 #: ../src/theme.c:4536 ../src/theme.c:4543
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr ""
+msgstr "कोणतेही <%s> थीम \"%s\" साठी निर्धारित नाही"
 
 #: ../src/theme.c:4551
 #, c-format
@@ -2697,19 +2698,19 @@ msgstr ""
 #: ../src/util.c:112
 #, c-format
 msgid "Opened log file %s\n"
-msgstr ""
+msgstr "लॉग फाइल %s उघडली\n"
 
 #: ../src/util.c:220
 msgid "Window manager: "
-msgstr ""
+msgstr "खिडकी व्यवस्थापक: "
 
 #: ../src/util.c:368
 msgid "Bug in window manager: "
-msgstr ""
+msgstr "खिडकी व्यवस्थापकात त्रुटी: "
 
 #: ../src/util.c:397
 msgid "Window manager warning: "
-msgstr ""
+msgstr "खिडकी व्यवस्थापक सुचना: "
 
 #: ../src/util.c:421
 msgid "Window manager error: "
