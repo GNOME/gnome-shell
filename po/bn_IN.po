@@ -1,22 +1,24 @@
-# Bengali Translation for Metacity 2.4
+# Bengali India Translation for Metacity 2.4
 # Copyright (C) 2003 Free Software Foundation
 # This file is distributed under the same license as the METACITY package.
 # Dr Anirban Mitra <mitra_anirban@yahoo.co.in>, 2003.
 # Mahay Alam Khan <makl10n@yahoo.com>, 2005.
 # Samia Niamatullah <mailsamia2001@yahoo.com>, 2005.
+# Runa Bhattacharjee <runabh@gmail.com>, 2006.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: METACITY 2\n"
+"Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-03 07:47+0200\n"
-"PO-Revision-Date: 2005-10-03 01:16+0600\n"
-"Last-Translator: Mahay Alam Khan <makl10n@yahoo.com>\n"
-"Language-Team: Bengali <gnome-trans@bengalinux.org>\n"
+"POT-Creation-Date: 2006-09-03 13:00+0200\n"
+"PO-Revision-Date: 2006-09-04 19:44+0530\n"
+"Last-Translator: Runa Bhattacharjee <runabh@gmail.com>\n"
+"Language-Team: Bengali India\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.6\n"
+"X-Generator: KBabel 1.9.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n\n"
 
 #: ../src/tools/metacity-message.c:150
 #, c-format
@@ -51,8 +53,7 @@ msgstr "এই বার্তালাপ প্রদর্শণকারী 
 
 #: ../src/delete.c:345
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 "এই প্রোগ্রামকে মেরে ফেলার বিষয়ে প্রশ্নকারী মেটাসিটি বার্তালাপ চালু করতে ভুল হয়েছে: %"
 "s\n"
@@ -83,48 +84,47 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "ঘাতক IO ভুল %d(%s) হয়েছে প্রদর্শক '%s' তে\n"
 
-#: ../src/frames.c:1086
+#: ../src/frames.c:1089
 msgid "Close Window"
 msgstr "উইন্ডো বন্ধ করো"
 
-#: ../src/frames.c:1089
+#: ../src/frames.c:1092
 msgid "Window Menu"
 msgstr "উইন্ডো পছন্দতালিকা"
 
-#: ../src/frames.c:1092
+#: ../src/frames.c:1095
 msgid "Minimize Window"
 msgstr "ছোটো কর"
 
 # "উইন্ডো ক্ষুদ্রায়ত কর"
-#: ../src/frames.c:1095
+#: ../src/frames.c:1098
 msgid "Maximize Window"
 msgstr "পুরো পর্দা জুড়ে কর"
 
 # "উইন্ডো বৃহদায়ত কর"
-#: ../src/frames.c:1098
+#: ../src/frames.c:1101
 msgid "Unmaximize Window"
 msgstr "মাঝারি আকার কর"
 
 # " উইন্ডো অবৃহদায়ত কর"
-#: ../src/keybindings.c:1021
+#: ../src/keybindings.c:1031
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr ""
-"অন্য একটি প্রোগ্রাম ইতিমধ্যেই %s চাবি %x পরিবর্তক সহ কার্যকারক হিসাবে ব্যবহার করছে\n"
+msgstr "অন্য একটি প্রোগ্রাম ইতিমধ্যেই %s চাবি %x পরিবর্তক সহ কার্যকারক হিসাবে ব্যবহার করছে\n"
 
-#: ../src/keybindings.c:2588
+#: ../src/keybindings.c:2668
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "একটি আদেশ বিষয়ে ভুল ছাপার মেটাসিটি বার্তালাপ চালু করতে গন্ডগোল হয়েছে: %s\n"
 
-#: ../src/keybindings.c:2693
+#: ../src/keybindings.c:2773
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "আদেশ %d জানা  নেই।\n"
 
-#: ../src/keybindings.c:3559
+#: ../src/keybindings.c:3640
 msgid "No terminal command has been defined.\n"
 msgstr "টার্মিনাল কমান্ড উল্লেখকৃত নয়।\n"
 
@@ -174,10 +174,8 @@ msgstr "থীম এর ডিরেক্টরি স্ক্যান ক�
 
 #: ../src/main.c:366
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr ""
-"কোনো থীম খুঁজে পেলাম না! নিশ্চিত হোন যে %s আছে এবং তাতে সাধারণ থীমগুলি আছে।"
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+msgstr "কোনো থীম খুঁজে পেলাম না! নিশ্চিত হোন যে %s আছে এবং তাতে সাধারণ থীমগুলি আছে।"
 
 #: ../src/main.c:424
 #, c-format
@@ -186,35 +184,35 @@ msgstr "আবার চালু করতে পারলাম না: %s\n"
 
 #: ../src/menu.c:55
 msgid "Mi_nimize"
-msgstr "ছোট করো (_ছ)"
+msgstr "ছোট করো (_n)"
 
 #: ../src/menu.c:56
 msgid "Ma_ximize"
-msgstr "পুরো বড় করো (_ব)"
+msgstr "পুরো বড় করো (_x)"
 
 #: ../src/menu.c:57
 msgid "Unma_ximize"
-msgstr "মাঝারি করো (_ব)"
+msgstr "মাঝারি করো (_x)"
 
 #: ../src/menu.c:58
 msgid "Roll _Up"
-msgstr "গোটাও (_ও)"
+msgstr "গোটাও (_U)"
 
 #: ../src/menu.c:59
 msgid "_Unroll"
-msgstr "খোলো (_ল)"
+msgstr "খোলো (_U)"
 
 #: ../src/menu.c:60 ../src/menu.c:61
 msgid "On _Top"
-msgstr "উপরে (_ট)"
+msgstr "উপরে (_T)"
 
 #: ../src/menu.c:62
 msgid "_Move"
-msgstr "সরাও (_স)"
+msgstr "সরাও (_M)"
 
 #: ../src/menu.c:63
 msgid "_Resize"
-msgstr "আকার পরিবর্তন করো (_আ)"
+msgstr "আকার পরিবর্তন করো (_R)"
 
 #: ../src/menu.c:64
 msgid "Move Titlebar On_screen"
@@ -223,41 +221,41 @@ msgstr ""
 #. separator
 #: ../src/menu.c:66
 msgid "_Close"
-msgstr "বন্ধ করো (_ক)"
+msgstr "বন্ধ করো (_C)"
 
 #. separator
 #: ../src/menu.c:68
 msgid "_Always on Visible Workspace"
-msgstr "শুধুমাত্র দৃশ্যমান কার্যক্ষেত্রে (_দ)"
+msgstr "শুধুমাত্র দৃশ্যমান কার্যক্ষেত্রে (_A)"
 
 #: ../src/menu.c:69
 msgid "_Only on This Workspace"
-msgstr "শুধুমাত্র এই কার্যক্ষেত্রে (_শ)"
+msgstr "শুধুমাত্র এই কার্যক্ষেত্রে (_O)"
 
 #: ../src/menu.c:70
 msgid "Move to Workspace _Left"
-msgstr "বায়ের কার্যক্ষেত্র যাও (_ব)"
+msgstr "বায়ের কার্যক্ষেত্র যাও (_L)"
 
 #: ../src/menu.c:71
 msgid "Move to Workspace R_ight"
-msgstr "ডানের কার্যক্ষেত্র যাও (_ড)"
+msgstr "ডানের কার্যক্ষেত্র যাও (_i)"
 
 #: ../src/menu.c:72
 msgid "Move to Workspace _Up"
-msgstr "উপরের কার্যক্ষেত্র যাও (_উ)"
+msgstr "উপরের কার্যক্ষেত্র যাও (_U)"
 
 #: ../src/menu.c:73
 msgid "Move to Workspace _Down"
-msgstr "নীচের কার্যক্ষেত্র যাও (_ন)"
+msgstr "নীচের কার্যক্ষেত্র যাও (_D)"
 
-#: ../src/menu.c:164 ../src/prefs.c:2142 ../src/prefs.c:2669
+#: ../src/menu.c:164 ../src/prefs.c:2142 ../src/prefs.c:2677
 #, c-format
 msgid "Workspace %d"
 msgstr "কার্যক্ষেত্র %d"
 
 #: ../src/menu.c:173
 msgid "Workspace 1_0"
-msgstr "কার্যক্ষেত্র ১০ (_০)"
+msgstr "কার্যক্ষেত্র ১০ (_0)"
 
 #: ../src/menu.c:175
 #, c-format
@@ -266,7 +264,7 @@ msgstr "কার্যক্ষেত্র %s%d"
 
 #: ../src/menu.c:373
 msgid "Move to Another _Workspace"
-msgstr "উইন্ডোটিকে অন্য কার্যক্ষেত্র পাঠাও (_অ)"
+msgstr "উইন্ডোটিকে অন্য কার্যক্ষেত্র পাঠাও (_W)"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -364,15 +362,14 @@ msgid "The window \"%s\" is not responding."
 msgstr "\"%s\" উইন্ডোটি সাড়া দিচ্ছে না"
 
 #: ../src/metacity-dialog.c:119
-msgid ""
-"Forcing this application to quit will cause you to lose any unsaved changes."
+msgid "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "এই অ্যাপ্লিকেসনটিকে বন্ধ হতে বাধ্য করলে আপনি যে সমস্ত পরিবর্তনসঞ্চিত করেন নি সে সব "
 "চলে যাবে"
 
 #: ../src/metacity-dialog.c:130
 msgid "_Force Quit"
-msgstr "বন্ধ হতে বাধ্য কর (_ধ)"
+msgstr "বন্ধ হতে বাধ্য কর (_F)"
 
 #: ../src/metacity-dialog.c:227
 msgid "Title"
@@ -528,8 +525,6 @@ msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
 msgstr ""
-"যদি ঠিক হয়, তাহলে শীর্ষকবার এর ফন্ট অগ্রাহ্য কর, এবং সাধারন  প্রোগ্রামেব্যবহার্য ফন্ট "
-"উইন্ডোর শীর্ষকে ব্যবহার কর"
 
 #: ../src/metacity.schemas.in.h:22
 #, fuzzy
@@ -610,7 +605,7 @@ msgstr "উইন্ডোতে পরিবর্তিত ক্লিক ক
 
 #: ../src/metacity.schemas.in.h:32
 msgid "Move backward between panels and the desktop immediately"
-msgstr "প্যানেলগুলি এবং ডেস্কটপের মধ্যে তত্‍ক্ষনাত্‍ বিপরীতদিকে স্থান পরিবর্তন কর"
+msgstr "প্যানেলগুলি এবং ডেস্কটপের মধ্যে তৎক্ষনাৎ বিপরীতদিকে স্থান পরিবর্তন কর"
 
 #: ../src/metacity.schemas.in.h:33
 msgid "Move backwards between panels and the desktop with popup"
@@ -618,12 +613,12 @@ msgstr "প্যানেলগুলি এবং ডেস্কটপের 
 
 #: ../src/metacity.schemas.in.h:34
 msgid "Move backwards between windows immediately"
-msgstr "উইন্ডোগুলির মধ্যে তত্‍ক্ষনাত্‍ বিপরীতদিকে স্থান পরিবর্তন কর"
+msgstr "উইন্ডোগুলির মধ্যে তৎক্ষনাৎ বিপরীতদিকে স্থান পরিবর্তন কর"
 
 #: ../src/metacity.schemas.in.h:35
 #, fuzzy
 msgid "Move backwards between windows of an application immediately"
-msgstr "উইন্ডোগুলির মধ্যে তত্‍ক্ষনাত্‍ বিপরীতদিকে স্থান পরিবর্তন কর"
+msgstr "উইন্ডোগুলির মধ্যে তৎক্ষনাৎ বিপরীতদিকে স্থান পরিবর্তন কর"
 
 #: ../src/metacity.schemas.in.h:36
 #, fuzzy
@@ -632,7 +627,7 @@ msgstr "প্যানেলগুলি এবং ডেস্কটপের 
 
 #: ../src/metacity.schemas.in.h:37
 msgid "Move between panels and the desktop immediately"
-msgstr "প্যানেলগুলি এবং ডেস্কটপের মধ্যে তত্‍ক্ষনাত্‍ স্থান পরিবর্তন কর"
+msgstr "প্যানেলগুলি এবং ডেস্কটপের মধ্যে তৎক্ষনাৎ স্থান পরিবর্তন কর"
 
 #: ../src/metacity.schemas.in.h:38
 msgid "Move between panels and the desktop with popup"
@@ -640,12 +635,12 @@ msgstr "প্যানেলগুলি এবং ডেস্কটপের 
 
 #: ../src/metacity.schemas.in.h:39
 msgid "Move between windows immediately"
-msgstr "উইন্ডোগুলির মধ্যে তত্‍ক্ষনাত্‍ বিপরীতদিকে স্থান পরিবর্তন কর"
+msgstr "উইন্ডোগুলির মধ্যে তৎক্ষনাৎ বিপরীতদিকে স্থান পরিবর্তন কর"
 
 #: ../src/metacity.schemas.in.h:40
 #, fuzzy
 msgid "Move between windows of an application immediately"
-msgstr "উইন্ডোগুলির মধ্যে তত্‍ক্ষনাত্‍ বিপরীতদিকে স্থান পরিবর্তন কর"
+msgstr "উইন্ডোগুলির মধ্যে তৎক্ষনাৎ বিপরীতদিকে স্থান পরিবর্তন কর"
 
 #: ../src/metacity.schemas.in.h:41
 #, fuzzy
@@ -869,12 +864,6 @@ msgid ""
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
 msgstr ""
-"এটি মেটাসিটিকে বলে দেবে কিভাবে সিস্টেম ঘন্টী বা অন্য কোনো প্রোগ্রামের ঘন্টী "
-"বাজলেসেটা কিভাবে দৃশ্যতঃ প্রকাশ করা হবে। বর্তমানে এর দুটি কার্যকরী মান আছে, "
-"\"ফুলস্ক্রিন\",যা পুরো পর্দা জুড়ে একটি সাদা-কালো ঝলক দেখাবে, এবং \"ফ্রেম_ফ্ল্যাশ\", "
-"যাতে যে প্রোগ্র্যামটিঘন্টির সংকেত পাঠিয়েছে তার শীর্ষকবারটি ঝলকিয়ে উঠবে। যদি কোন "
-"প্রোগ্রামটি ঘন্টী বাজিয়েছেতা জানা না থাকে (ডিফল্ট \"সিস্টেম বীপ\"-এর ক্ষেত্রে যেমন "
-"হয়ে থাকে), সেক্ষেত্রে বর্তমানে আলোকপাতিত উইন্ডোটির শীর্ষকবার ঝলক দেবে।"
 
 #: ../src/metacity.schemas.in.h:92
 msgid ""
@@ -2109,8 +2098,7 @@ msgstr "জিকন্‌ফ কী \"%s\"  ভুল প্রকার স্
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
-msgstr ""
-"কন্‌ফিগারেশন ডাটাবেস-এ পাওয়া  \"%s\" মাউস বোতামের পরিবর্তক হিসাবে কার্যকরমান নয়\n"
+msgstr "কন্‌ফিগারেশন ডাটাবেস-এ পাওয়া  \"%s\" মাউস বোতামের পরিবর্তক হিসাবে কার্যকরমান নয়\n"
 
 #: ../src/prefs.c:1099 ../src/prefs.c:1120 ../src/prefs.c:1616
 #, c-format
@@ -2158,7 +2146,7 @@ msgstr "সঞ্চিত মান %d জিকন্‌ফ কী %s এর  
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "কার্যক্ষেত্রের সংখ্যা %d করতে এই ভুল হয়েছে: %s\n"
 
-#: ../src/prefs.c:2170 ../src/prefs.c:2335
+#: ../src/prefs.c:2172 ../src/prefs.c:2342
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2167,7 +2155,7 @@ msgstr ""
 "\"%s\" যা কন্‌ফিগারেশন ডাটাবেসে পাওয়া গেছে সেটি কীবাইন্ডিং\"%s\" র জন্য সঠিক মান "
 "নয়\n"
 
-#: ../src/prefs.c:2750
+#: ../src/prefs.c:2758
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "কার্যক্ষেত্র %d -র নাম \"%s\" করতে ভুল হয়েছে: %s\n"
@@ -2193,10 +2181,8 @@ msgstr ""
 
 #: ../src/screen.c:443
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr ""
-"পর্দা %d প্রদর্শক \"%s\"  এর চয়ণিত উইন্ডো প্রবন্ধক কে অধিগ্রহণ করতে পারলাম না\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr "পর্দা %d প্রদর্শক \"%s\"  এর চয়ণিত উইন্ডো প্রবন্ধক কে অধিগ্রহণ করতে পারলাম না\n"
 
 #: ../src/screen.c:501
 #, c-format
@@ -2240,8 +2226,7 @@ msgstr "সঞ্চিত সেসন ফাইল পার্স করত�
 
 #: ../src/session.c:1168
 msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr ""
-"<metacity_session> বৈশিষ্ট্য দেখা গেছে কিন্তু আমাদের ইতিমধ্যেই সেসন আই ডি আছে"
+msgstr "<metacity_session> বৈশিষ্ট্য দেখা গেছে কিন্তু আমাদের ইতিমধ্যেই সেসন আই ডি আছে"
 
 #: ../src/session.c:1181
 #, c-format
@@ -2429,8 +2414,7 @@ msgstr "উপাদান  <%s> তে \"মান\" বৈশিষ্ট্�
 
 #: ../src/theme-parser.c:1320 ../src/theme-parser.c:1334
 #: ../src/theme-parser.c:1393
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr "বোতমের দৈর্ঘ্য/প্রস্থ এবং বোতামের আকারের অনুপাত দুটিই সুনির্দিষ্ট করা যাবে না"
 
 #: ../src/theme-parser.c:1343
@@ -2694,8 +2678,7 @@ msgstr "আকার পরিবর্তন বৈশিষ্ট্যর জ
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
-msgstr ""
-"উপাদান  <%s> তে \"resize\" বৈশিষ্ট্য পুরো বড়/ছায়াবৃত স্থিতির জন্যথাকা উচিত নয়"
+msgstr "উপাদান  <%s> তে \"resize\" বৈশিষ্ট্য পুরো বড়/ছায়াবৃত স্থিতির জন্যথাকা উচিত নয়"
 
 #: ../src/theme-parser.c:3461
 #, c-format
@@ -2742,8 +2725,7 @@ msgstr "থীমের সবথেকে বাইরের উপাদান
 
 #: ../src/theme-parser.c:3676
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "উপাদান <%s> টি নাম/লেখক/তারিখ/বিবরণ  উপাদান এর মধ্যে রাখা চলবে না"
 
 #: ../src/theme-parser.c:3681
@@ -2753,10 +2735,8 @@ msgstr "উপাদান <%s> টি <constant>  উপাদান এর ম
 
 #: ../src/theme-parser.c:3693
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
-"উপাদান <%s> টিdistance/border/aspect_ratio  উপাদান এর মধ্যে রাখা চলবে না"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr "উপাদান <%s> টিdistance/border/aspect_ratio  উপাদান এর মধ্যে রাখা চলবে না"
 
 #: ../src/theme-parser.c:3715
 #, c-format
@@ -2818,7 +2798,7 @@ msgstr "থীম ফাইল %s এ root <metacity_theme>অংশ নেই"
 
 #: ../src/theme-viewer.c:72
 msgid "/_Windows"
-msgstr "/উইন্ডো (_উ)"
+msgstr "/উইন্ডো (_W)"
 
 #: ../src/theme-viewer.c:73
 msgid "/Windows/tearoff"
@@ -2826,43 +2806,43 @@ msgstr "/উইন্ডো/ছেঁড়া টুকরো"
 
 #: ../src/theme-viewer.c:74
 msgid "/Windows/_Dialog"
-msgstr "/উইন্ডো/ডায়ালগ (_ড)"
+msgstr "/উইন্ডো/ডায়ালগ (_D)"
 
 #: ../src/theme-viewer.c:75
 msgid "/Windows/_Modal dialog"
-msgstr "/উইন্ডো/মোডাল ডায়ালগ (_ড)"
+msgstr "/উইন্ডো/মোডাল ডায়ালগ (_M)"
 
 #: ../src/theme-viewer.c:76
 msgid "/Windows/_Utility"
-msgstr "/উইন্ডো/ইউটিলিটি (_ই)"
+msgstr "/উইন্ডো/ইউটিলিটি (_U)"
 
 #: ../src/theme-viewer.c:77
 msgid "/Windows/_Splashscreen"
-msgstr "/উইন্ডো/স্প্ল্যাসস্ক্রীন (_স)"
+msgstr "/উইন্ডো/স্প্ল্যাসস্ক্রীন (_S)"
 
 #: ../src/theme-viewer.c:78
 msgid "/Windows/_Top dock"
-msgstr "/উইন্ডো/উপরের ডক (_উ)"
+msgstr "/উইন্ডো/উপরের ডক (_T)"
 
 #: ../src/theme-viewer.c:79
 msgid "/Windows/_Bottom dock"
-msgstr "/উইন্ডো/তলাতে ডক (_ত)"
+msgstr "/উইন্ডো/তলাতে ডক (_B)"
 
 #: ../src/theme-viewer.c:80
 msgid "/Windows/_Left dock"
-msgstr "/উইন্ডো/বাম দিকে ডক (_ব)"
+msgstr "/উইন্ডো/বাম দিকে ডক (_L)"
 
 #: ../src/theme-viewer.c:81
 msgid "/Windows/_Right dock"
-msgstr "/উইন্ডো/ডান দিকে ডক (_ড)"
+msgstr "/উইন্ডো/ডান দিকে ডক (_R)"
 
 #: ../src/theme-viewer.c:82
 msgid "/Windows/_All docks"
-msgstr "/উইন্ডো/সকল ডক (_ড)"
+msgstr "/উইন্ডো/সকল ডক (_A)"
 
 #: ../src/theme-viewer.c:83
 msgid "/Windows/Des_ktop"
-msgstr "/উইন্ডো/ডেস্কটপ (_স)"
+msgstr "/উইন্ডো/ডেস্কটপ (_k)"
 
 #: ../src/theme-viewer.c:132
 msgid "Open another one of these windows"
@@ -3047,11 +3027,11 @@ msgstr "বোতামের আকার অনুপাত %g যুক্ত
 msgid "Frame geometry does not specify size of buttons"
 msgstr "কাঠামোর জ্যামিতি বোতামের আকার বলে নি"
 
-#: ../src/theme.c:813
+#: ../src/theme.c:847
 msgid "Gradients should have at least two colors"
 msgstr "গ্রেডিয়েন্টে অন্ততঃ দুটি রং থাকতে হবে"
 
-#: ../src/theme.c:939
+#: ../src/theme.c:973
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -3060,7 +3040,7 @@ msgstr ""
 "জিটিকে রঙের স্পেসিফোকেশন -এ স্টেটটি বন্ধনীর মধ্যে থাকতেই হবে, যেমন gtk:fg"
 "[NORMAL]  যেখানে NORMAL হল স্টেট, \"%s\" প্রক্রিয়ণ করতে পারলাম না"
 
-#: ../src/theme.c:953
+#: ../src/theme.c:987
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -3069,17 +3049,17 @@ msgstr ""
 "জিটিকে রঙের স্পেসিফোকেশন -এ স্টেটটির শেষে একটি বন্ধনী থাকতেই হবে, যেমন gtk:fg"
 "[NORMAL]  যেখানে NORMAL হল স্টেট, \"%s\" প্রক্রিয়ণ করতে পারলাম না"
 
-#: ../src/theme.c:964
+#: ../src/theme.c:998
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "রঙের স্পেসিফোকেশন -এ স্টেট \"%s\" বুঝতে পারলাম না"
 
-#: ../src/theme.c:977
+#: ../src/theme.c:1011
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "রঙের স্পেসিফোকেশন -এ রঙ উপাদান  \"%s\" বুঝতে পারলাম না"
 
-#: ../src/theme.c:1007
+#: ../src/theme.c:1041
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -3088,91 +3068,87 @@ msgstr ""
 "মিশ্রিত রঙের বিন্যাস হল \"blend/bg_color/fg_color/alpha\",  \"%s\" এই বিন্যাসে "
 "খাপ খায় না"
 
-#: ../src/theme.c:1018
+#: ../src/theme.c:1052
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "মিশ্রিত রঙের আলফা মান  \"%s\"কে প্রক্রিয়ণ করতে পারি নি"
 
-#: ../src/theme.c:1028
+#: ../src/theme.c:1062
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "মিশ্রিত রঙের আলফা মান  \"%s\" 0.0 এবং 1.0 মধ্যে নয়"
 
-#: ../src/theme.c:1075
+#: ../src/theme.c:1109
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-"ছায়ার বিন্যাস হল \"shade/base_color/factor\",  \"%s\" এই বিন্যাসে খাপ খায় না "
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr "ছায়ার বিন্যাস হল \"shade/base_color/factor\",  \"%s\" এই বিন্যাসে খাপ খায় না "
 
-#: ../src/theme.c:1086
+#: ../src/theme.c:1120
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "ছায়াবৃত রঙের শেড ফ্যক্টর \"%s\" কে প্রক্রিয়ণ করতে পারি নি"
 
-#: ../src/theme.c:1096
+#: ../src/theme.c:1130
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "শেড ফ্যক্টর \"%s\" যা ছায়াবৃত রঙে আছে তা ঋনাত্মক"
 
-#: ../src/theme.c:1125
+#: ../src/theme.c:1159
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr " রং \"%s\" কে প্রক্রিয়ণ করতে পারি নি"
 
-#: ../src/theme.c:1384
+#: ../src/theme.c:1418
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "অবস্থানের সমীকরণ এ অক্ষর '%s' আছে যা চলবে না"
 
 # what is bengali for Coordinate expression ? অবস্থানের মান or অবস্থানের সমীকরণ?
-#: ../src/theme.c:1411
+#: ../src/theme.c:1445
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "অবস্থানের সমীকরণ এ দশমিকযুক্ত সংখ্যা '%s' আছে যাপ্রক্রিয়া করা যায় নি"
 
-#: ../src/theme.c:1425
+#: ../src/theme.c:1459
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "অবস্থানের সমীকরণ এ পূর্ণসংখ্যা '%s' আছে যা প্রক্রিয়া করা যায় নি"
 
-#: ../src/theme.c:1492
+#: ../src/theme.c:1526
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr "অবস্থানের সমীকরণ এ এই লেখার শুরুতে একটি অজানা কার্য আছে:\"%s\""
 
-#: ../src/theme.c:1549
+#: ../src/theme.c:1583
 msgid "Coordinate expression was empty or not understood"
 msgstr "অবস্থানের সমীকরণ খালি বা বোঝা যাচ্ছে না"
 
-#: ../src/theme.c:1686 ../src/theme.c:1696 ../src/theme.c:1730
+#: ../src/theme.c:1720 ../src/theme.c:1730 ../src/theme.c:1764
 msgid "Coordinate expression results in division by zero"
 msgstr "অবস্থানের সমীকরণ এ শুন্য দ্বারা বিভাজন হচ্ছে"
 
-#: ../src/theme.c:1738
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+#: ../src/theme.c:1772
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "অবস্থানের সমীকরণ দশমিকযুক্ত সংখ্যায় mod কার্য করার চেষ্টা করে"
 
-#: ../src/theme.c:1794
+#: ../src/theme.c:1828
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "অবস্থানের সমীকরণ এ একটি কার্য \"%s\" রয়েছে যেখানে একটি কারক অপেক্ষিত ছিল"
 
-#: ../src/theme.c:1803
+#: ../src/theme.c:1837
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "অবস্থানের সমীকরণ এ একটি কারক রয়েছে যেখানে কার্য অপেক্ষিত ছিল"
 
-#: ../src/theme.c:1811
+#: ../src/theme.c:1845
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "অবস্থানের সমীকরণ কারকের পরিবর্তে কার্য দিয়ে শেষ হয়েছে"
 
-#: ../src/theme.c:1821
+#: ../src/theme.c:1855
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -3181,34 +3157,34 @@ msgstr ""
 "অবস্থানের সমীকরণ এ কার্য  \"%c\" এর আগে কার্য \"%c\" আছে এবংতার মধ্যে কোনও কারক "
 "নেই"
 
-#: ../src/theme.c:1939
+#: ../src/theme.c:1973
 #, fuzzy
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "অবস্থানের সমীকরণ খালি বা বোঝা যাচ্ছে না"
 
-#: ../src/theme.c:1968
+#: ../src/theme.c:2002
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "অবস্থানের সমীকরণ এ একটি শেষের বন্ধনী আছে কিন্তু শুরুর বন্ধনী নেই"
 
-#: ../src/theme.c:2030
+#: ../src/theme.c:2064
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "অবস্থানের সমীকরণ এ একটি অজানা পরিবর্তক বা ধ্রুবক  \"%s\" আছে"
 
-#: ../src/theme.c:2085
+#: ../src/theme.c:2119
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "অবস্থানের সমীকরণ এ একটি শুরুর বন্ধনী আছে কিন্তু শেষের বন্ধনী নেই"
 
-#: ../src/theme.c:2096
+#: ../src/theme.c:2130
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "অবস্থানের সমীকরণ এ কোনও কারক বা কার্য আছে বলে মনে হচ্ছে না"
 
-#: ../src/theme.c:2337 ../src/theme.c:2359 ../src/theme.c:2380
+#: ../src/theme.c:2371 ../src/theme.c:2393 ../src/theme.c:2414
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "থীমে একটি সমীকরণ  \"%s\" আছে যা একটি গন্ডগোল করেছে: %s\n"
 
-#: ../src/theme.c:3826
+#: ../src/theme.c:3860
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3217,25 +3193,23 @@ msgstr ""
 "এই থীমের জন্য <button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> "
 "অবশ্যই নির্ধারিত করতে হবে"
 
-#: ../src/theme.c:4270 ../src/theme.c:4295
+#: ../src/theme.c:4304 ../src/theme.c:4329
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> নিখোঁজ"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> নিখোঁজ"
 
-#: ../src/theme.c:4341
+#: ../src/theme.c:4375
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "থীম \"%s\" লোড করতে পারি নি: %s\n"
 
-#: ../src/theme.c:4481 ../src/theme.c:4488 ../src/theme.c:4495
-#: ../src/theme.c:4502 ../src/theme.c:4509
+#: ../src/theme.c:4515 ../src/theme.c:4522 ../src/theme.c:4529
+#: ../src/theme.c:4536 ../src/theme.c:4543
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr " <%s> টি থীম  \"%s\" এর জন্য স্থির করা নেই"
 
-#: ../src/theme.c:4517
+#: ../src/theme.c:4551
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3244,7 +3218,7 @@ msgstr ""
 "উইন্ডো প্রকার  \"%s\" যা থীম \"%s\"তে আছে তাতে কোন ফ্রেমের প্রকার ঠিক করা নেই,"
 "একটি  <window type=\"%s\" style_set=\"whatever\"/> অংশ যোগ করতে হবে"
 
-#: ../src/theme.c:4531
+#: ../src/theme.c:4565
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3253,15 +3227,14 @@ msgstr ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> এই থীমের জন্য "
 "অবশ্যই স্থির করতে হবে"
 
-#: ../src/theme.c:4911 ../src/theme.c:4973
+#: ../src/theme.c:4945 ../src/theme.c:5007
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "ব্যবহারকারী দ্বারা স্থির করা ধ্রুবক সব সময় বড় হাতের অক্ষর দিয়ে শুরু হবে; \"%s\" তা "
 "হয় নি"
 
-#: ../src/theme.c:4919 ../src/theme.c:4981
+#: ../src/theme.c:4953 ../src/theme.c:5015
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "ধ্রুবক \"%s\" ইতিমধ্যেই স্থির করা আছে"
@@ -3298,22 +3271,22 @@ msgid "Window manager error: "
 msgstr "উইন্ডো প্রবন্ধক এর ভুল :"
 
 #: ../src/window-props.c:169
-#, fuzzy, c-format
+#, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
-msgstr "প্রোগ্রামটি একটি অর্থহীন _NET_WM_PID স্থির করেছে %ld\n"
+msgstr "প্রোগ্রামটি একটি অর্থহীন _NET_WM_PID স্থির করেছে %lu\n"
 
 #: ../src/window-props.c:237
 #, c-format
 msgid "%s (on %s)"
 msgstr ""
 
-#: ../src/window-props.c:1159
+#: ../src/window-props.c:1178
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr ""
 
 #. first time through
-#: ../src/window.c:5240
+#: ../src/window.c:5288
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3329,7 +3302,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5836
+#: ../src/window.c:5884
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3361,44 +3334,8 @@ msgstr "উইন্ডো 0x%2$lx এর বৈশিষ্ট্য %1$s �
 # FIXME msgstr "%s বিশেষত্বটি জানালা 0x%lx -তে অন্যায্য UTF-8 আছে\n
 #: ../src/xprops.c:482
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "উইন্ডো 0x%2$lx এর বৈশিষ্ট্য %1$s তে, তালিকার %3$d বস্তুটির জন্য অবৈধ ইউটিএফ-৮ "
 "আছে\n"
 
-# fuzzy
-#~ msgid ""
-#~ "Some applications break specifications in ways that result in window "
-#~ "manager misfeatures. For example, ideally Metacity would place all "
-#~ "dialogs in a consistent position with respect to their parent window. "
-#~ "This requires ignoring application-specified positions for dialogs. But "
-#~ "some versions of Java/Swing mark their popup menus as dialogs, so "
-#~ "Metacity has to disable dialog positioning to allow menus to work in "
-#~ "broken Java applications. There are several other examples like this. "
-#~ "This option puts Metacity in full-on Correct mode, which perhaps gives a "
-#~ "moderately nicer UI if you don't need to run any broken apps. Sadly, "
-#~ "workarounds must be enabled by default; the real world is an ugly place. "
-#~ "Some of the workarounds are workarounds for limitations in the "
-#~ "specifications themselves, so sometimes a bug in no-workarounds mode "
-#~ "won't be fixable without amending a spec."
-#~ msgstr ""
-#~ "কিছু প্রোগ্রাম এমনভাবে স্পেসিফিকেশন ভাঙ্গে যে উইন্ডো প্রবন্ধকে কুবৈশিষ্ট্যতৈরী হয়। "
-#~ "উদাহরণস্বরুপ, আদর্শ অবস্থায় মেটাসিটি সমস্ত বার্তালাপ মূল জানালার সাপেক্ষেসুনির্দিষ্ট "
-#~ "স্থানে রাখে। এর জন্য প্রোগ্রাম নির্দিষ্ট বার্তালাপের অবস্থান অগ্রাহ্য করা দরকার। "
-#~ "কিন্তু জাভা/সুইং এর কোন কোন সংস্করণ তাদের পপ্-আপ মেনুকে বার্তালাপহিসাবে চিহ্নিত "
-#~ "করে, ফলে মেটাসিটিকে ভাঙ্গা জাভা প্রোগ্রাম চালানোর জন্য বার্তালাপ "
-#~ "প্রতিস্থাপননিষ্ক্রিয় করতে হয়। এই রকম আরও উদাহরণ আছে। এই পছন্দটি বেছে নিলে "
-#~ "মেটাসিটি পুরো সংশোধনস্থিতিতে চলে যায়, যা সম্ভবতঃ কোন ভাঙ্গা প্রোগ্রাম না চালাতে "
-#~ "হলে সুন্দরতর ইউ-আই দেয়। দুঃখজনকভাবে, ডিফল্ট স্থিতিতে ওয়ার্কএরাউন্ডগুলিকে চালু "
-#~ "রাখ্তে হয়, কারণ বাস্তব পৃথিবীএকটি নোংরা জায়গা। কিছু কিছু ওয়ার্কএরাউন্ড "
-#~ "স্পেসিফিকেশনের সীমাবদ্ধতার জন্য প্রয়োজন হয়, ফলে \"কোনো ওয়ার্কএরাউন্ড নয়\" "
-#~ "স্থিতিতে স্পেসিফিকেশনের সংযোজন না করে কিছু বাগ ঠিক করা যাবে না"
-
-#~ msgid ""
-#~ "Coordinate expression parser overflowed its buffer, this is really a "
-#~ "Metacity bug, but are you sure you need a huge expression like that?"
-#~ msgstr ""
-#~ "অবস্থানের সমীকরণ প্রক্রিয়াকারক এর বাফার উপছে গেছে, এটি প্রকৃতপক্ষে মেটাসিটির "
-#~ "প্রোগ্রামত্রুটি, কিন্তু আপনি কি নিশ্চিত যে আপনি এত বড় একটি সমীকরণ ব্যবহার করতে "
-#~ "চান?"
