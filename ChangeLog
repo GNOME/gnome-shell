@@ -1,3 +1,10 @@
+2006-09-07  Elijah Newren  <newren gmail com>
+
+	* src/metacity-dialog.c: Patch from Bruno Boaventura de Oliveira
+	Lacerda to replace copy_of_gdk_x11_window_set_user_time() with
+	gdk_x11_window_set_user_time().  We've long since adopted gtk+ >=
+	2.6 as a dependency.  #352293
+
 2006-09-04  Thomas Thurman  <thomas@thurman.org.uk>
 
 	* configure.in: post-release version bump to 2.16.1

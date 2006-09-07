@@ -33,29 +33,6 @@
 #include <gdk/gdkx.h>
 #include <X11/Xatom.h>
 
-/* FIXME: When we switch to gtk+-2.6, use of this function should be
- * replaced by using the real gdk_x11_window_set_user_time.
- */
-static void
-copy_of_gdk_x11_window_set_user_time (GdkWindow *window,
-                                      Time       timestamp)
-{
-  GdkDisplay *display;
-
-  g_return_if_fail (window != NULL);
-  g_return_if_fail (GDK_IS_WINDOW (window));
-
-  if (GDK_WINDOW_DESTROYED (window))
-    return;
-
-  display = gdk_drawable_get_display (window);
-
-  XChangeProperty (GDK_DISPLAY_XDISPLAY (display), GDK_WINDOW_XID (window),
-                   gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_USER_TIME"),
-                   XA_CARDINAL, 32, PropModeReplace,
-                   (guchar *)&timestamp, 1);
-}
-
 static Window
 window_from_string (const char *str)
 {
@@ -137,7 +114,7 @@ kill_window_question (const char *window_name,
                     G_CALLBACK (on_realize), (char*) parent_str);
   
   gtk_widget_realize (dialog);
-  copy_of_gdk_x11_window_set_user_time (dialog->window, timestamp);
+  gdk_x11_window_set_user_time (dialog->window, timestamp);
 
   /* return our PID, then window ID that should be killed */
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
@@ -304,7 +281,7 @@ warn_about_no_sm_support (char **lame_apps,
   gtk_window_stick (GTK_WINDOW (dialog));
 
   gtk_widget_realize (dialog);
-  copy_of_gdk_x11_window_set_user_time (dialog->window, timestamp);
+  gdk_x11_window_set_user_time (dialog->window, timestamp);
 
   gtk_widget_grab_focus (button);
   gtk_widget_show_all (dialog);
@@ -339,7 +316,7 @@ error_about_command (const char *gconf_key,
   gtk_window_set_icon_name (GTK_WINDOW (dialog), "stock_dialog-error");
   
   gtk_widget_realize (dialog);
-  copy_of_gdk_x11_window_set_user_time (dialog->window, timestamp);
+  gdk_x11_window_set_user_time (dialog->window, timestamp);
 
   gtk_dialog_run (GTK_DIALOG (dialog));
 
