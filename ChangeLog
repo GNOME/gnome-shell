@@ -1,3 +1,9 @@
+2006-08-30  Colin Watson  <cjwatson@ubuntu.com>
+
+	* src/window-props.c (reload_transient_for): Clear
+	window->xtransient_for after emitting the invalid window warning.
+	#353540
+
 2006-09-07  Elijah Newren  <newren gmail com>
 
 	* src/metacity-dialog.c: Patch from Bruno Boaventura de Oliveira

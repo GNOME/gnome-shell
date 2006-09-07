@@ -1174,10 +1174,10 @@ reload_transient_for (MetaWindow    *window,
       meta_display_lookup_x_window (window->display, 
                                     window->xtransient_for) == NULL)
     {
-      window->xtransient_for = None;
       meta_warning (_("Invalid WM_TRANSIENT_FOR window 0x%lx specified "
                       "for %s.\n"),
                     window->xtransient_for, window->desc);
+      window->xtransient_for = None;
     }
 
   window->transient_parent_is_root_window =
