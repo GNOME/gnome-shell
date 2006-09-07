@@ -1,3 +1,9 @@
+2006-09-07  Elijah Newren  <newren gmail com>
+
+	* src/constraints.c (update_onscreen_requirements): make sure
+	windows returning from fullscreen mode are constrained to be
+	"onscreen"; fixes #353699.
+
 2006-08-30  Colin Watson  <cjwatson@ubuntu.com>
 
 	* src/window-props.c (reload_transient_for): Clear

@@ -560,6 +560,16 @@ update_onscreen_requirements (MetaWindow     *window,
       window->type == META_WINDOW_DOCK)
     return;
 
+  /* We don't want to update the requirements for fullscreen windows;
+   * fullscreen windows are specially handled anyway, and it updating
+   * the requirements when windows enter fullscreen mode mess up the
+   * handling of the window when it leaves that mode (especially when
+   * the application sends a bunch of configurerequest events).  See
+   * #353699.
+   */
+  if (window->fullscreen)
+    return;
+
   /* USABILITY NOTE: Naturally, I only want the require_fully_onscreen,
    * require_on_single_xinerama, and require_titlebar_visible flags to
    * *become false* due to user interactions (which is allowed since
