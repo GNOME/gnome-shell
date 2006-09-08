@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-03-11 23:18+0100\n"
-"PO-Revision-Date: 2006-03-20 20:35+0200\n"
+"PO-Revision-Date: 2006-09-08 08:00+0300\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -412,7 +412,7 @@ msgstr "Pealkirjariba topeltklõpsamisel tehtav tegevus"
 
 #: ../src/metacity.schemas.in.h:4
 msgid "Activate window menu"
-msgstr "Aktiveeri aknamenüü"
+msgstr "Aknamenüü aktiveerimine"
 
 #: ../src/metacity.schemas.in.h:5
 msgid "Arrangement of buttons on the titlebar"
@@ -603,67 +603,67 @@ msgstr "Teisalda aken"
 
 #: ../src/metacity.schemas.in.h:40
 msgid "Move window one workspace down"
-msgstr ""
+msgstr "Akna tõstmine ühe tööala võrra allapoole"
 
 #: ../src/metacity.schemas.in.h:41
 msgid "Move window one workspace to the left"
-msgstr ""
+msgstr "Akna tõstmine ühe tööala võrra vasakule"
 
 #: ../src/metacity.schemas.in.h:42
 msgid "Move window one workspace to the right"
-msgstr ""
+msgstr "Akna tõstmine ühe tööala võrra paremale"
 
 #: ../src/metacity.schemas.in.h:43
 msgid "Move window one workspace up"
-msgstr ""
+msgstr "Akna tõstmine ühe tööala võrra ülespoole"
 
 #: ../src/metacity.schemas.in.h:44
 msgid "Move window to workspace 1"
-msgstr "Tõsta aken 1. tööalale"
+msgstr "Akna tõstmine 1. tööalale"
 
 #: ../src/metacity.schemas.in.h:45
 msgid "Move window to workspace 10"
-msgstr "Tõsta aken 10. tööalale"
+msgstr "Akna tõstmine 10. tööalale"
 
 #: ../src/metacity.schemas.in.h:46
 msgid "Move window to workspace 11"
-msgstr "Tõsta aken 11. tööalale"
+msgstr "Akna tõstmine 11. tööalale"
 
 #: ../src/metacity.schemas.in.h:47
 msgid "Move window to workspace 12"
-msgstr "Tõsta aken 12. tööalale"
+msgstr "Akna tõstmine 12. tööalale"
 
 #: ../src/metacity.schemas.in.h:48
 msgid "Move window to workspace 2"
-msgstr "Tõsta aken 2. tööalale"
+msgstr "Akna tõstmine 2. tööalale"
 
 #: ../src/metacity.schemas.in.h:49
 msgid "Move window to workspace 3"
-msgstr "Tõsta aken 3. tööalale"
+msgstr "Akna tõstmine 3. tööalale"
 
 #: ../src/metacity.schemas.in.h:50
 msgid "Move window to workspace 4"
-msgstr "Tõsta aken 4. tööalale"
+msgstr "Akna tõstmine 4. tööalale"
 
 #: ../src/metacity.schemas.in.h:51
 msgid "Move window to workspace 5"
-msgstr "Tõsta aken 5. tööalale"
+msgstr "Akna tõstmine 5. tööalale"
 
 #: ../src/metacity.schemas.in.h:52
 msgid "Move window to workspace 6"
-msgstr "Tõsta aken 6. tööalale"
+msgstr "Akna tõstmine 6. tööalale"
 
 #: ../src/metacity.schemas.in.h:53
 msgid "Move window to workspace 7"
-msgstr "Tõsta aken 7. tööalale"
+msgstr "Akna tõstmine 7. tööalale"
 
 #: ../src/metacity.schemas.in.h:54
 msgid "Move window to workspace 8"
-msgstr "Tõsta aken 8. tööalale"
+msgstr "Akna tõstmine 8. tööalale"
 
 #: ../src/metacity.schemas.in.h:55
 msgid "Move window to workspace 9"
-msgstr "Tõsta aken 9. tööalale"
+msgstr "Akna tõstmine 9. tööalale"
 
 #: ../src/metacity.schemas.in.h:56
 msgid "Name of workspace"
@@ -701,7 +701,7 @@ msgstr "Käivita defineeritud käsk"
 
 #: ../src/metacity.schemas.in.h:63
 msgid "Run a terminal"
-msgstr "Käivita terminal"
+msgstr "Terminali käivitamine"
 
 #: ../src/metacity.schemas.in.h:64
 msgid "Show the panel menu"
@@ -709,7 +709,7 @@ msgstr "Paneelimenüü näitamine"
 
 #: ../src/metacity.schemas.in.h:65
 msgid "Show the panel run application dialog"
-msgstr ""
+msgstr "Paneeli rakenduste käivitamise dialoogi näitamine"
 
 #: ../src/metacity.schemas.in.h:66
 msgid ""
@@ -1491,11 +1491,11 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:162
 msgid "Toggle fullscreen mode"
-msgstr ""
+msgstr "Täisekraanivaate sisse- ja väljalülitamine"
 
 #: ../src/metacity.schemas.in.h:163
 msgid "Toggle maximization state"
-msgstr ""
+msgstr "Maksimeeritud oleku sisse- ja väljalülitamine"
 
 #: ../src/metacity.schemas.in.h:164
 msgid "Toggle shaded state"
@@ -2739,10 +2739,3 @@ msgstr ""
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
-
-#~ msgid ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FILENAME] [--"
-#~ "display=DISPLAY] [--replace] [--version]\n"
-#~ msgstr ""
-#~ "metacity [--sm-disable] [--sm-client-id=ID] [--sm-save-file=FAILINIMI] [--"
-#~ "display=KUVA] [--replace] [--version]\n"
