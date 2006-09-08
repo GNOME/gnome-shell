@@ -14,6 +14,9 @@ main (int argc, char *argv[])
   clutter_init (&argc, &argv);
 
   stage = clutter_stage_get_default ();
+  g_signal_connect (stage, "button-press-event",
+                    G_CALLBACK (clutter_main_quit),
+                    NULL);
 
   pixbuf = gdk_pixbuf_new_from_file ("redhand.png", NULL);
 
@@ -30,13 +33,14 @@ main (int argc, char *argv[])
 
   /* Make a timeline */
   timeline = clutter_timeline_new (100, 30); /* num frames, fps */
-  g_object_set(timeline, "loop", TRUE, 0);  
+  g_object_set (timeline, "loop", TRUE, 0);  
 
   /* Set an alpha func to power behaviour - ramp is constant rise/fall */
-  alpha = clutter_alpha_new (timeline, CLUTTER_ALPHA_RAMP);
+  alpha = clutter_alpha_new (timeline, CLUTTER_ALPHA_RAMP, NULL);
 
   /* Create a behaviour for that time line */
-  behave = clutter_behaviour_opacity_new_from_alpha (alpha, 0X33, 0xff); 
+  behave = clutter_opacity_behaviour_new (0X33, 0xff, 0x00);
+  clutter_behaviour_set_alpha (CLUTTER_BEHAVIOUR (behave), alpha);
 
   /* Apply it to our actor */
   clutter_behaviour_apply (behave, hand);
@@ -47,6 +51,8 @@ main (int argc, char *argv[])
   clutter_group_show_all (CLUTTER_GROUP (stage));
 
   clutter_main();
+
+  g_object_unref (behave);
 
   return 0;
 }
