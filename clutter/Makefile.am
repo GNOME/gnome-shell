@@ -1,5 +1,3 @@
-NULL =
-
 MARSHALFILES = clutter-marshal.c clutter-marshal.h
 ENUMFILES = clutter-enum-types.c clutter-enum-types.h
 GLIB_GENMARSHAL=`pkg-config --variable=glib_genmarshal glib-2.0`
@@ -7,28 +5,26 @@ GLIB_MKENUMS=`pkg-config --variable=glib_mkenums glib-2.0`
 
 BUILT_SOURCES = $(MARSHALFILES) $(ENUMFILES)
 
-source_h =				  	\
-	$(srcdir)/clutter-keysyms.h       	\
-	$(srcdir)/clutter-util.h          	\
-	$(srcdir)/clutter-fixed.h         	\
-        $(srcdir)/clutter-event.h    	        \
-	$(srcdir)/clutter-color.h       	\
-	$(srcdir)/clutter-feature.h       	\
-	$(srcdir)/clutter-timeline.h      	\
-	$(srcdir)/clutter-actor.h 	  	\
-	$(srcdir)/clutter-group.h         	\
-	$(srcdir)/clutter-stage.h         	\
-	$(srcdir)/clutter-rectangle.h     	\
-	$(srcdir)/clutter-texture.h       	\
-	$(srcdir)/clutter-clone-texture.h 	\
-	$(srcdir)/clutter-label.h         	\
-	$(srcdir)/clutter-behaviour.h     	\
-	$(srcdir)/clutter-opacity-behaviour.h 	\
-	$(srcdir)/clutter-blink-behaviour.h 	\
-	$(srcdir)/clutter-alpha.h         	\
-	$(srcdir)/clutter-media.h         	\
-        $(srcdir)/clutter-main.h		\
-	$(NULL)
+source_h =				  \
+	$(srcdir)/clutter-keysyms.h       \
+	$(srcdir)/clutter-util.h          \
+	$(srcdir)/clutter-fixed.h         \
+        $(srcdir)/clutter-event.h         \
+	$(srcdir)/clutter-color.h         \
+	$(srcdir)/clutter-feature.h       \
+	$(srcdir)/clutter-timeline.h      \
+	$(srcdir)/clutter-actor.h 	  \
+	$(srcdir)/clutter-group.h         \
+	$(srcdir)/clutter-stage.h         \
+	$(srcdir)/clutter-rectangle.h     \
+	$(srcdir)/clutter-texture.h       \
+	$(srcdir)/clutter-clone-texture.h \
+	$(srcdir)/clutter-label.h         \
+	$(srcdir)/clutter-behaviour.h     \
+	$(srcdir)/clutter-behaviours.h    \
+	$(srcdir)/clutter-alpha.h         \
+	$(srcdir)/clutter-media.h         \
+        $(srcdir)/clutter-main.h          
 
 clutter-marshal.h: clutter-marshal.list
 	( $(GLIB_GENMARSHAL) --prefix=clutter_marshal \
@@ -75,26 +71,24 @@ clutter-enum-types.c: clutter-enum-types.h
 
 CLEANFILES = $(BUILT_SOURCES) stamp-clutter-enum-types.h
 
-source_c = clutter-main.c          	\
-	   clutter-util.c          	\
-	   clutter-feature.c       	\
-           clutter-event.c         	\
-	   clutter-color.c         	\
-	   clutter-timeline.c      	\
-	   clutter-group.c         	\
-	   clutter-stage.c         	\
-	   clutter-rectangle.c     	\
-	   clutter-texture.c       	\
-	   clutter-clone-texture.c 	\
-	   clutter-label.c         	\
-           clutter-actor.c	   	\
-           clutter-behaviour.c	   	\
-	   clutter-opacity-behaviour.c 	\
-	   clutter-blink-behaviour.c	\
-	   clutter-alpha.c	   	\
-	   clutter-media.c	   	\
-	   clutter-enum-types.c		\
-	   $(NULL)
+source_c = clutter-main.c          \
+	   clutter-util.c          \
+	   clutter-feature.c       \
+           clutter-event.c         \
+	   clutter-color.c         \
+	   clutter-timeline.c      \
+	   clutter-group.c         \
+	   clutter-stage.c         \
+	   clutter-rectangle.c     \
+	   clutter-texture.c       \
+	   clutter-clone-texture.c \
+	   clutter-label.c         \
+           clutter-actor.c	   \
+           clutter-behaviour.c	   \
+           clutter-behaviours.c	   \
+	   clutter-alpha.c	   \
+	   clutter-media.c	   \
+	   clutter-enum-types.c
 
 source_h_priv = clutter-private.h
 
