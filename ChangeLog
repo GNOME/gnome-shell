@@ -1,3 +1,21 @@
+2006-09-09  Elijah Newren  <newren gmail com>
+
+	Avoid a stuck grab, preventing focus from being transferred
+	between windows.  Thanks to Fryderyk Dziarmagowski for steps to
+	reproduce.  Fixes at least part of #354422.
+
+	* src/display.c (meta_display_begin_grab_op,
+	meta_display_end_grab_op): pass timestamp to
+	meta_screen_ungrab_all_keys, meta_screen_ungrab_all_keys, and
+	meta_window_ungrab_all_keys
+
+	* src/keybindings.[ch] (grab_keyboard, ungrab_keyboard): add a
+	timestamp parameter and remove call to
+	meta_display_get_current_time(), (meta_screen_grab_all_keys,
+	meta_screen_ungrab_all_keys, meta_window_ungrab_all_keys): add a
+	timestamp parameter and pass it on to grab_keyboard and
+	ungrab_keyboard
+
 2006-09-07  Elijah Newren  <newren gmail com>
 
 	* src/constraints.c (update_onscreen_requirements): make sure

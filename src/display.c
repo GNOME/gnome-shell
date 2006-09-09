@@ -3323,7 +3323,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
 
       else
         display->grab_have_keyboard =
-                     meta_screen_grab_all_keys (screen);
+                     meta_screen_grab_all_keys (screen, timestamp);
       
       if (!display->grab_have_keyboard)
         {
@@ -3618,9 +3618,9 @@ meta_display_end_grab_op (MetaDisplay *display,
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Ungrabbing all keys timestamp %lu\n", timestamp);
       if (display->grab_window)
-        meta_window_ungrab_all_keys (display->grab_window);
+        meta_window_ungrab_all_keys (display->grab_window, timestamp);
       else
-        meta_screen_ungrab_all_keys (display->grab_screen);
+        meta_screen_ungrab_all_keys (display->grab_screen, timestamp);
     }
 
 #ifdef HAVE_XSYNC

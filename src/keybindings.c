@@ -1208,18 +1208,17 @@ grab_status_to_string (int status)
 
 static gboolean
 grab_keyboard (MetaDisplay *display,
-               Window       xwindow)
+               Window       xwindow,
+               Time         timestamp)
 {
   int result;
   int grab_status;
-  Time timestamp;
   
   /* Grab the keyboard, so we get key releases and all key
    * presses
    */
   meta_error_trap_push_with_return (display);
 
-  timestamp = meta_display_get_current_time (display);
   grab_status = XGrabKeyboard (display->xdisplay,
                                xwindow, True,
                                GrabModeAsync, GrabModeAsync,
@@ -1251,12 +1250,8 @@ grab_keyboard (MetaDisplay *display,
 }
 
 static void
-ungrab_keyboard (MetaDisplay *display)
+ungrab_keyboard (MetaDisplay *display, Time timestamp)
 {
-  Time timestamp;
-
-  timestamp = meta_display_get_current_time (display);
-      
   meta_error_trap_push (display);
 
   meta_topic (META_DEBUG_KEYBINDINGS,
@@ -1267,7 +1262,7 @@ ungrab_keyboard (MetaDisplay *display)
 }
 
 gboolean
-meta_screen_grab_all_keys (MetaScreen *screen)
+meta_screen_grab_all_keys (MetaScreen *screen, Time timestamp)
 {
   gboolean retval;
 
@@ -1279,7 +1274,7 @@ meta_screen_grab_all_keys (MetaScreen *screen)
 
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Grabbing all keys on RootWindow\n");
-  retval = grab_keyboard (screen->display, screen->xroot);
+  retval = grab_keyboard (screen->display, screen->xroot, timestamp);
   if (retval)
     screen->all_keys_grabbed = TRUE;
   else
@@ -1289,11 +1284,11 @@ meta_screen_grab_all_keys (MetaScreen *screen)
 }
 
 void
-meta_screen_ungrab_all_keys (MetaScreen *screen)
+meta_screen_ungrab_all_keys (MetaScreen *screen, Time timestamp)
 {
   if (screen->all_keys_grabbed)
     {
-      ungrab_keyboard (screen->display);
+      ungrab_keyboard (screen->display, timestamp);
 
       screen->all_keys_grabbed = FALSE;
       screen->keys_grabbed = FALSE;
@@ -1328,7 +1323,7 @@ meta_window_grab_all_keys (MetaWindow  *window,
 
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Grabbing all keys on window %s\n", window->desc);
-  retval = grab_keyboard (window->display, grabwindow);
+  retval = grab_keyboard (window->display, grabwindow, timestamp);
   if (retval)
     {
       window->keys_grabbed = FALSE;
@@ -1340,11 +1335,11 @@ meta_window_grab_all_keys (MetaWindow  *window,
 }
 
 void
-meta_window_ungrab_all_keys (MetaWindow *window)
+meta_window_ungrab_all_keys (MetaWindow *window, Time timestamp)
 {
   if (window->all_keys_grabbed)
     {
-      ungrab_keyboard (window->display);
+      ungrab_keyboard (window->display, timestamp);
 
       window->grab_on_frame = FALSE;
       window->all_keys_grabbed = FALSE;
