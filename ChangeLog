@@ -1,5 +1,10 @@
 2006-09-09  Elijah Newren  <newren gmail com>
 
+	* src/display.c (meta_display_open): Fix build when XKB not found.
+	#354211
+
+2006-09-09  Elijah Newren  <newren gmail com>
+
 	Avoid a stuck grab, preventing focus from being transferred
 	between windows.  Thanks to Fryderyk Dziarmagowski for steps to
 	reproduce.  Fixes at least part of #354422.

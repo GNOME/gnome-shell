@@ -540,7 +540,9 @@ meta_display_open (void)
   display->grab_resize_timeout_id = 0;
   display->grab_have_keyboard = FALSE;
   
+#ifdef HAVE_XKB  
   display->last_bell_time = 0;
+#endif
 
   display->grab_op = META_GRAB_OP_NONE;
   display->grab_wireframe_active = FALSE;
