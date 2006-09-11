@@ -1,3 +1,22 @@
+2.16.1
+======
+
+Thanks to Elijah Newren, Colin Watson, and Bruno Boaventura de Olevira
+Lacerda for changes in this release.
+
+  - fix stuck grab, letting focus be transferred between windows (Elijah)
+    [#354422 partial]
+  - windows returning from fullscreen are constrained to be onscreen
+    (Elijah) [#353699]
+  - Clear the transient_for flag of a window after emitting a warning
+    (Colin)
+  - Replace copy_of_gdk_x11_window_set_user_time() with the real thing
+    (Bruno) [#352293]
+
+Translators
+  David Lodge (en_GB), Ivar Smolin (et), Matic Žgur (sl),
+  Vasiliy Faronov (ru)
+
 2.16.0
 ==
 
