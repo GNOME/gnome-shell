@@ -1,4 +1,12 @@
-2006-09-09  Elijah Newren  <newren gmail com>
+2006-09-11  Thomas Thurman <thomas@thurman.org.uk>
+
+	* configure.in: post-release bump to 2.16.2
+
+2006-09-11  Thomas Thurman <thomas@thurman.org.uk>
+
+	* NEWS: 2.16.1 release
+
+22006-09-09  Elijah Newren  <newren gmail com>
 
 	* src/display.c (meta_display_open): Fix build when XKB not found.
 	#354211
