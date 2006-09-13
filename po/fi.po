@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-07-03 11:45+0300\n"
-"PO-Revision-Date: 2006-07-03 12:00+0300\n"
+"PO-Revision-Date: 2006-09-13 18:23+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -189,11 +189,11 @@ msgstr "_Pienennä"
 
 #: ../src/menu.c:56
 msgid "Ma_ximize"
-msgstr "_Suurenna"
+msgstr "S_uurenna"
 
 #: ../src/menu.c:57
 msgid "Unma_ximize"
-msgstr "_Palauta"
+msgstr "_Palauta koko"
 
 #: ../src/menu.c:58
 msgid "Roll _Up"
@@ -205,7 +205,7 @@ msgstr "_Rullaa alas"
 
 #: ../src/menu.c:60 ../src/menu.c:61
 msgid "On _Top"
-msgstr "_Päällimmäisenä"
+msgstr "_Päällimmäiseksi"
 
 #: ../src/menu.c:62
 msgid "_Move"
@@ -247,7 +247,7 @@ msgstr "Siirry _ylläolevaan työtilaan"
 
 #: ../src/menu.c:73
 msgid "Move to Workspace _Down"
-msgstr "Siirrä _alla olevaan työtilaan"
+msgstr "Siirrä _allaolevaan työtilaan"
 
 #: ../src/menu.c:164 ../src/prefs.c:2142 ../src/prefs.c:2669
 #, c-format
