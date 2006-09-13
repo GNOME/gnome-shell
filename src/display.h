@@ -62,7 +62,7 @@ typedef struct MetaEdgeResistanceData MetaEdgeResistanceData;
 
 typedef void (* MetaWindowPingFunc) (MetaDisplay *display,
 				     Window       xwindow,
-				     Time         timestamp,
+				     guint32      timestamp,
 				     gpointer     user_data);
 
 
@@ -194,10 +194,10 @@ struct _MetaDisplay
   MetaWindow *expected_focus_window;
 
   /* last timestamp passed to XSetInputFocus */
-  Time last_focus_time;
+  guint32 last_focus_time;
 
   /* last user interaction time in any app */
-  Time last_user_time;
+  guint32 last_user_time;
 
   /* whether we're using mousenav (only relevant for sloppy&mouse focus modes;
    * !mouse_mode means "keynav mode")
@@ -269,7 +269,7 @@ struct _MetaDisplay
   gboolean    grab_threshold_movement_reached; /* raise_on_click == FALSE.    */
   MetaResizePopup *grab_resize_popup;
   GTimeVal    grab_last_moveresize_time;
-  Time        grab_motion_notify_time;
+  guint32     grab_motion_notify_time;
   int         grab_wireframe_last_display_width;
   int         grab_wireframe_last_display_height;
   GList*      grab_old_window_stacking;
@@ -283,7 +283,7 @@ struct _MetaDisplay
 
 #ifdef HAVE_XKB
   int         xkb_base_event_type;
-  Time        last_bell_time;
+  guint32     last_bell_time;
 #endif
 #ifdef HAVE_XSYNC
   /* alarm monitoring client's _NET_WM_SYNC_REQUEST_COUNTER */
@@ -431,7 +431,7 @@ void     meta_display_set_grab_op_cursor (MetaDisplay *display,
                                           MetaGrabOp   op,
                                           gboolean     change_pointer,
                                           Window       grab_xwindow,
-                                          Time         timestamp);
+                                          guint32      timestamp);
 
 gboolean meta_display_begin_grab_op (MetaDisplay *display,
                                      MetaScreen  *screen,
@@ -441,11 +441,11 @@ gboolean meta_display_begin_grab_op (MetaDisplay *display,
                                      int          event_serial,
                                      int          button,
                                      gulong       modmask,
-                                     Time         timestamp,
+                                     guint32      timestamp,
                                      int          root_x,
                                      int          root_y);
 void     meta_display_end_grab_op   (MetaDisplay *display,
-                                     Time         timestamp);
+                                     guint32      timestamp);
 
 void    meta_display_check_threshold_reached (MetaDisplay *display,
                                               int          x,
@@ -482,12 +482,12 @@ void meta_display_retheme_all (void);
 void meta_display_set_cursor_theme (const char *theme, 
 				    int         size);
 
-void     meta_display_ping_window              (MetaDisplay        *display,
-						MetaWindow         *window,
-						Time                timestamp,
-						MetaWindowPingFunc  ping_reply_func,
-						MetaWindowPingFunc  ping_timeout_func,
-						void               *user_data);
+void meta_display_ping_window      (MetaDisplay        *display,
+                                    MetaWindow         *window,
+                                    guint32             timestamp,
+                                    MetaWindowPingFunc  ping_reply_func,
+                                    MetaWindowPingFunc  ping_timeout_func,
+                                    void               *user_data);
 gboolean meta_display_window_has_pending_pings (MetaDisplay        *display,
 						MetaWindow         *window);
 
@@ -546,7 +546,7 @@ gboolean meta_display_focus_sentinel_clear (MetaDisplay *display);
 void meta_display_set_input_focus_window   (MetaDisplay *display, 
                                             MetaWindow  *window,
                                             gboolean     focus_frame,
-                                            Time         timestamp);
+                                            guint32      timestamp);
 
 /* meta_display_focus_the_no_focus_window is called when the
  * designated no_focus_window should be focused, but is otherwise the
@@ -554,7 +554,7 @@ void meta_display_set_input_focus_window   (MetaDisplay *display,
  */
 void meta_display_focus_the_no_focus_window (MetaDisplay *display, 
                                              MetaScreen  *screen,
-                                             Time         timestamp);
+                                             guint32      timestamp);
 
 void meta_display_queue_autoraise_callback  (MetaDisplay *display,
                                              MetaWindow  *window);

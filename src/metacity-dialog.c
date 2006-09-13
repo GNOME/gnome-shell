@@ -79,7 +79,7 @@ on_realize (GtkWidget *dialog,
 static int
 kill_window_question (const char *window_name,
                       const char *parent_str,
-                      Time        timestamp)
+                      guint32     timestamp)
 {
   GtkWidget *dialog;
   char *str, *tmp;
@@ -227,8 +227,8 @@ create_lame_apps_list (char **lame_apps)
 }
 
 static int
-warn_about_no_sm_support (char **lame_apps,
-                          Time   timestamp)
+warn_about_no_sm_support (char    **lame_apps,
+                          guint32   timestamp)
 {
   GtkWidget *dialog;
   GtkWidget *list;
@@ -295,7 +295,7 @@ static int
 error_about_command (const char *gconf_key,
                      const char *command,
                      const char *error,
-                     Time        timestamp)
+                     guint32     timestamp)
 {
   GtkWidget *dialog;
 
@@ -350,7 +350,7 @@ int
 main (int argc, char **argv)
 {
   GOptionContext *ctx;
-  Time timestamp = 0;
+  guint32 timestamp = 0;
   gint num_args = 0;
 
   bindtextdomain (GETTEXT_PACKAGE, METACITY_LOCALEDIR);

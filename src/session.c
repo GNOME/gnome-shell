@@ -1790,7 +1790,7 @@ warn_about_lame_clients_and_finish_interact (gboolean shutdown)
   GError *err;
   GIOChannel *channel;
   LameClientsDialogData *d;
-  Time timestamp;
+  guint32 timestamp;
   char timestampbuf[32];
   
   lame = NULL;
@@ -1855,7 +1855,7 @@ warn_about_lame_clients_and_finish_interact (gboolean shutdown)
 
       timestamp = property_event.xproperty.time;
     }
-  sprintf (timestampbuf, "%lu", timestamp);
+  sprintf (timestampbuf, "%u", timestamp);
 
   len = g_slist_length (lame);
   len *= 2; /* titles and also classes */

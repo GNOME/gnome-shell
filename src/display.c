@@ -76,12 +76,12 @@
 typedef struct 
 {
   MetaDisplay *display;
-  Window xwindow;
-  Time timestamp;
+  Window       xwindow;
+  guint32      timestamp;
   MetaWindowPingFunc ping_reply_func;
   MetaWindowPingFunc ping_timeout_func;
-  void *user_data;
-  guint ping_timeout_id;
+  void        *user_data;
+  guint        ping_timeout_id;
 } MetaPingData;
 
 typedef struct 
@@ -116,7 +116,7 @@ static void    prefs_changed_callback    (MetaPreference pref,
                                           void          *data);
 
 static void    sanity_check_timestamps   (MetaDisplay *display,
-                                          Time         known_good_timestamp);
+                                          guint32      known_good_timestamp);
 
 MetaGroup*     get_focussed_group (MetaDisplay *display);
 
@@ -233,7 +233,7 @@ meta_display_open (void)
   GSList *screens;
   GSList *tmp;
   int i;
-  Time timestamp;
+  guint32 timestamp;
   /* Remember to edit code that assigns each atom to display struct
    * when adding an atom name here.
    */
@@ -1773,9 +1773,9 @@ event_callback (XEvent   *event,
               else
                 mode = ReplayPointer; /* give event back */
 
-              meta_verbose ("Allowing events mode %s time %lu\n",
+              meta_verbose ("Allowing events mode %s time %u\n",
                             mode == AsyncPointer ? "AsyncPointer" : "ReplayPointer",
-                            (unsigned long) event->xbutton.time);
+                            (unsigned int)event->xbutton.time);
               
               XAllowEvents (display->xdisplay,
                             mode, event->xbutton.time);
@@ -2247,8 +2247,8 @@ event_callback (XEvent   *event,
                   time = event->xclient.data.l[1];
               
                   meta_verbose ("Request to change current workspace to %d with "
-                                "specified timestamp of %lu\n",
-                                space, (unsigned long)time);
+                                "specified timestamp of %u\n",
+                                space, time);
 
                   workspace =
                     meta_screen_get_workspace_by_index (screen,
@@ -2955,7 +2955,7 @@ meta_spew_event (MetaDisplay *display,
                              aevent->alarm,
                              (gint64) sync_value_to_64 (&aevent->counter_value),
                              (gint64) sync_value_to_64 (&aevent->alarm_value),
-                             (unsigned int) aevent->time,
+                             (unsigned int)aevent->time,
                              alarm_state_to_string (aevent->state));
         }
       else
@@ -3170,7 +3170,7 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
                                  MetaGrabOp   op,
                                  gboolean     change_pointer,
                                  Window       grab_xwindow,
-                                 Time         timestamp)
+                                 guint32      timestamp)
 {
   Cursor cursor;
 
@@ -3215,13 +3215,13 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
         {
           display->grab_have_pointer = TRUE;
           meta_topic (META_DEBUG_WINDOW_OPS,
-                      "XGrabPointer() returned GrabSuccess time 0x%lu\n",
+                      "XGrabPointer() returned GrabSuccess time %u\n",
                       timestamp);
         }
       else
         {
           meta_topic (META_DEBUG_WINDOW_OPS,
-                      "XGrabPointer() failed time 0x%lu\n",
+                      "XGrabPointer() failed time %u\n",
                       timestamp);
         }
       meta_error_trap_pop (display, TRUE);
@@ -3242,7 +3242,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
                             int          event_serial,
                             int          button,
                             gulong       modmask,
-                            Time         timestamp,
+                            guint32      timestamp,
                             int          root_x,
                             int          root_y)
 {
@@ -3519,11 +3519,10 @@ meta_display_begin_grab_op (MetaDisplay *display,
 
 void
 meta_display_end_grab_op (MetaDisplay *display,
-                          Time         timestamp)
+                          guint32      timestamp)
 {
   meta_topic (META_DEBUG_WINDOW_OPS,
-              "Ending grab op %u at time %lu\n", display->grab_op,
-              (unsigned long) timestamp);
+              "Ending grab op %u at time %u\n", display->grab_op, timestamp);
   
   if (display->grab_op == META_GRAB_OP_NONE)
     return;
@@ -3610,15 +3609,14 @@ meta_display_end_grab_op (MetaDisplay *display,
   if (display->grab_have_pointer)
     {
       meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Ungrabbing pointer with timestamp %lu\n",
-                  timestamp);
+                  "Ungrabbing pointer with timestamp %u\n", timestamp);
       XUngrabPointer (display->xdisplay, timestamp);
     }
 
   if (display->grab_have_keyboard)
     {
       meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Ungrabbing all keys timestamp %lu\n", timestamp);
+                  "Ungrabbing all keys timestamp %u\n", timestamp);
       if (display->grab_window)
         meta_window_ungrab_all_keys (display->grab_window, timestamp);
       else
@@ -4027,7 +4025,7 @@ meta_display_ping_timeout (gpointer data)
   ping_data->ping_timeout_id = 0;
 
   meta_topic (META_DEBUG_PING,
-              "Ping %lu on window %lx timed out\n",
+              "Ping %u on window %lx timed out\n",
               ping_data->timestamp, ping_data->xwindow);
   
   (* ping_data->ping_timeout_func) (ping_data->display, ping_data->xwindow,
@@ -4044,7 +4042,7 @@ meta_display_ping_timeout (gpointer data)
 void
 meta_display_ping_window (MetaDisplay       *display,
 			  MetaWindow        *window,
-			  Time               timestamp,
+			  guint32            timestamp,
 			  MetaWindowPingFunc ping_reply_func,
 			  MetaWindowPingFunc ping_timeout_func,
 			  gpointer           user_data)
@@ -4079,7 +4077,7 @@ meta_display_ping_window (MetaDisplay       *display,
   display->pending_pings = g_slist_prepend (display->pending_pings, ping_data);
 
   meta_topic (META_DEBUG_PING,
-              "Sending ping with timestamp %lu to window %s\n",
+              "Sending ping with timestamp %u to window %s\n",
               timestamp, window->desc);
   meta_window_send_icccm_message (window,
                                   display->atom_net_wm_ping,
@@ -4160,18 +4158,19 @@ process_pong_message (MetaDisplay    *display,
                       XEvent         *event)
 {
   GSList *tmp;
+  guint32 timestamp = event->xclient.data.l[1];
 
-  meta_topic (META_DEBUG_PING, "Received a pong with timestamp %lu\n",
-              (Time) event->xclient.data.l[1]);
+  meta_topic (META_DEBUG_PING, "Received a pong with timestamp %u\n",
+              timestamp);
   
   for (tmp = display->pending_pings; tmp; tmp = tmp->next)
     {
       MetaPingData *ping_data = tmp->data;
 			  
-      if ((Time)event->xclient.data.l[1] == ping_data->timestamp)
+      if (timestamp == ping_data->timestamp)
         {
           meta_topic (META_DEBUG_PING,
-                      "Matching ping found for pong %lu\n",
+                      "Matching ping found for pong %u\n", 
                       ping_data->timestamp);
 
           /* Remove the ping data from the list */
@@ -4870,15 +4869,15 @@ meta_display_focus_sentinel_clear (MetaDisplay *display)
 
 static void
 sanity_check_timestamps (MetaDisplay *display,
-                         Time         timestamp)
+                         guint32      timestamp)
 {
   if (XSERVER_TIME_IS_BEFORE (timestamp, display->last_focus_time))
     {
-      meta_warning ("last_focus_time (%lu) is greater than comparison "
-                    "timestamp (%lu).  This most likely represents a buggy "
+      meta_warning ("last_focus_time (%u) is greater than comparison "
+                    "timestamp (%u).  This most likely represents a buggy "
                     "client sending inaccurate timestamps in messages such as "
                     "_NET_ACTIVE_WINDOW.  Trying to work around...\n",
-                    display->last_focus_time, (unsigned long)timestamp);
+                    display->last_focus_time, timestamp);
       display->last_focus_time = timestamp;
     }
   if (XSERVER_TIME_IS_BEFORE (timestamp, display->last_user_time))
@@ -4886,11 +4885,11 @@ sanity_check_timestamps (MetaDisplay *display,
       GSList *windows;
       GSList *tmp;
 
-      meta_warning ("last_user_time (%lu) is greater than comparison "
-                    "timestamp (%lu).  This most likely represents a buggy "
+      meta_warning ("last_user_time (%u) is greater than comparison "
+                    "timestamp (%u).  This most likely represents a buggy "
                     "client sending inaccurate timestamps in messages such as "
                     "_NET_ACTIVE_WINDOW.  Trying to work around...\n",
-                    display->last_user_time, (unsigned long)timestamp);
+                    display->last_user_time, timestamp);
       display->last_user_time = timestamp;
 
       windows = meta_display_list_windows (display);
@@ -4902,7 +4901,7 @@ sanity_check_timestamps (MetaDisplay *display,
           if (XSERVER_TIME_IS_BEFORE (timestamp, window->net_wm_user_time))
             {
               meta_warning ("%s appears to be one of the offending windows "
-                            "with a timestamp of %lu.  Working around...\n",
+                            "with a timestamp of %u.  Working around...\n",
                             window->desc, window->net_wm_user_time);
               window->net_wm_user_time = timestamp;
             }
@@ -4917,7 +4916,7 @@ sanity_check_timestamps (MetaDisplay *display,
 static gboolean
 timestamp_too_old (MetaDisplay *display,
                    MetaWindow  *window,
-                   Time        *timestamp)
+                   guint32     *timestamp)
 {
   /* FIXME: If Soeren's suggestion in bug 151984 is implemented, it will allow
    * us to sanity check the timestamp here and ensure it doesn't correspond to
@@ -4939,12 +4938,12 @@ timestamp_too_old (MetaDisplay *display,
       if (XSERVER_TIME_IS_BEFORE (*timestamp, display->last_user_time))
         {
           meta_topic (META_DEBUG_FOCUS,
-                      "Ignoring focus request for %s since %lu "
-                      "is less than %lu and %lu.\n",
+                      "Ignoring focus request for %s since %u "
+                      "is less than %u and %u.\n",
                       window ? window->desc : "the no_focus_window",
                       *timestamp,
-                      (unsigned long) display->last_user_time,
-                      (unsigned long) display->last_focus_time);
+                      display->last_user_time,
+                      display->last_focus_time);
           return TRUE;
         }
       else
@@ -4952,7 +4951,7 @@ timestamp_too_old (MetaDisplay *display,
           meta_topic (META_DEBUG_FOCUS,
                       "Received focus request for %s which is newer than most "
                       "recent user_time, but less recent than "
-                      "last_focus_time (%lu < %lu < %lu); adjusting "
+                      "last_focus_time (%u < %u < %u); adjusting "
                       "accordingly.  (See bug 167358)\n",
                       window ? window->desc : "the no_focus_window",
                       display->last_user_time,
@@ -4970,7 +4969,7 @@ void
 meta_display_set_input_focus_window (MetaDisplay *display, 
                                      MetaWindow  *window,
                                      gboolean     focus_frame,
-                                     Time         timestamp)
+                                     guint32      timestamp)
 {
   if (timestamp_too_old (display, window, &timestamp))
     return;
@@ -4990,7 +4989,7 @@ meta_display_set_input_focus_window (MetaDisplay *display,
 void
 meta_display_focus_the_no_focus_window (MetaDisplay *display, 
                                         MetaScreen  *screen,
-                                        Time         timestamp)
+                                        guint32      timestamp)
 {
   if (timestamp_too_old (display, NULL, &timestamp))
     return;

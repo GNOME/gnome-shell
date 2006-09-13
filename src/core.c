@@ -199,7 +199,7 @@ meta_core_user_raise (Display *xdisplay,
 void
 meta_core_user_lower_and_unfocus (Display *xdisplay,
                                   Window   frame_xwindow,
-                                  Time     timestamp)
+                                  guint32  timestamp)
 {
   MetaWindow *window = get_window (xdisplay, frame_xwindow);
   
@@ -242,7 +242,7 @@ meta_core_user_lower_and_unfocus (Display *xdisplay,
 void
 meta_core_user_focus (Display *xdisplay,
                       Window   frame_xwindow,
-                      Time     timestamp)
+                      guint32  timestamp)
 {
   MetaWindow *window = get_window (xdisplay, frame_xwindow);
   
@@ -441,7 +441,7 @@ meta_core_show_window_menu (Display *xdisplay,
                             int      root_x,
                             int      root_y,
                             int      button,
-                            Time     timestamp)
+                            guint32  timestamp)
 {
   MetaWindow *window = get_window (xdisplay, frame_xwindow);
   
@@ -587,7 +587,7 @@ meta_core_begin_grab_op (Display    *xdisplay,
                          int         event_serial,
                          int         button,
                          gulong      modmask,
-                         Time        timestamp,
+                         guint32     timestamp,
                          int         root_x,
                          int         root_y)
 {
@@ -609,7 +609,7 @@ meta_core_begin_grab_op (Display    *xdisplay,
 
 void
 meta_core_end_grab_op (Display *xdisplay,
-                       Time     timestamp)
+                       guint32  timestamp)
 {
   MetaDisplay *display;
   

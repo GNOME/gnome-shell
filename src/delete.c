@@ -39,7 +39,7 @@ static void meta_window_present_delete_dialog (MetaWindow *window);
 static void
 delete_ping_reply_func (MetaDisplay *display,
                         Window       xwindow,
-                        Time         timestamp,
+                        guint32      timestamp,
                         void        *user_data)
 {
   meta_topic (META_DEBUG_PING,
@@ -292,7 +292,7 @@ io_from_ping_dialog (GIOChannel   *channel,
 static void
 delete_ping_timeout_func (MetaDisplay *display,
                           Window       xwindow,
-                          Time         timestamp,
+                          guint32      timestamp,
                           void        *user_data)
 {
   MetaWindow *window = user_data;
@@ -318,7 +318,7 @@ delete_ping_timeout_func (MetaDisplay *display,
   window_id_str = g_strdup_printf ("0x%lx", window->xwindow);
 
   sprintf (numbuf, "%d", window->screen->number);
-  sprintf (timestampbuf, "%lu", timestamp);
+  sprintf (timestampbuf, "%u", timestamp);
   
   argv[0] = METACITY_LIBEXECDIR"/metacity-dialog";
   argv[1] = "--screen";
@@ -364,7 +364,7 @@ delete_ping_timeout_func (MetaDisplay *display,
 
 void
 meta_window_delete (MetaWindow  *window,
-                    Time         timestamp)
+                    guint32      timestamp)
 {
   meta_error_trap_push (window->display);
   if (window->delete_window)

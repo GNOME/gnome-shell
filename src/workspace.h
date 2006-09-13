@@ -67,9 +67,9 @@ void           meta_workspace_relocate_windows (MetaWorkspace *workspace,
                                                 MetaWorkspace *new_home);
 void           meta_workspace_activate_with_focus (MetaWorkspace *workspace,
                                                    MetaWindow    *focus_this,
-                                                   Time           timestamp);
+                                                   guint32        timestamp);
 void           meta_workspace_activate            (MetaWorkspace *workspace,
-                                                   Time           timestamp);
+                                                   guint32        timestamp);
 int            meta_workspace_index         (MetaWorkspace *workspace);
 GList*         meta_workspace_list_windows  (MetaWorkspace *workspace);
 
@@ -89,7 +89,7 @@ void meta_workspace_get_work_area_all_xineramas (MetaWorkspace *workspace,
 
 void meta_workspace_focus_default_window (MetaWorkspace *workspace,
                                           MetaWindow    *not_this_one,
-                                          Time           timestamp);
+                                          guint32        timestamp);
 
 MetaWorkspace* meta_workspace_get_neighbor (MetaWorkspace      *workspace,
                                             MetaMotionDirection direction);

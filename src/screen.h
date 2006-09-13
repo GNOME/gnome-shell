@@ -87,7 +87,7 @@ struct _MetaScreen
 
   Window wm_sn_selection_window;
   Atom wm_sn_atom;
-  Time wm_sn_timestamp;
+  guint32 wm_sn_timestamp;
   
   MetaXineramaScreenInfo *xinerama_infos;
   int n_xinerama_infos;
@@ -122,7 +122,7 @@ struct _MetaScreen
 
 MetaScreen*   meta_screen_new                 (MetaDisplay                *display,
                                                int                         number,
-                                               Time                        timestamp);
+                                               guint32                     timestamp);
 void          meta_screen_free                (MetaScreen                 *screen);
 void          meta_screen_manage_all_windows  (MetaScreen                 *screen);
 MetaScreen*   meta_screen_for_x_screen        (Screen                     *xscreen);
@@ -197,7 +197,7 @@ void     meta_screen_minimize_all_on_active_workspace_except (MetaScreen *screen
 
 /* Show/hide the desktop (temporarily hide all windows) */
 void     meta_screen_show_desktop        (MetaScreen *screen,
-                                          Time        timestamp);
+                                          guint32     timestamp);
 void     meta_screen_unshow_desktop      (MetaScreen *screen);
 
 /* Update whether the destkop is being shown for the current active_workspace */

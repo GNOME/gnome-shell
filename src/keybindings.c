@@ -1209,7 +1209,7 @@ grab_status_to_string (int status)
 static gboolean
 grab_keyboard (MetaDisplay *display,
                Window       xwindow,
-               Time         timestamp)
+               guint32      timestamp)
 {
   int result;
   int grab_status;
@@ -1228,9 +1228,9 @@ grab_keyboard (MetaDisplay *display,
     {
       meta_error_trap_pop_with_return (display, TRUE);
       meta_topic (META_DEBUG_KEYBINDINGS,
-                  "XGrabKeyboard() returned failure status %s time %lu\n",
+                  "XGrabKeyboard() returned failure status %s time %u\n",
                   grab_status_to_string (grab_status),
-                  (unsigned long) timestamp);
+                  timestamp);
       return FALSE;
     }
   else
@@ -1250,19 +1250,19 @@ grab_keyboard (MetaDisplay *display,
 }
 
 static void
-ungrab_keyboard (MetaDisplay *display, Time timestamp)
+ungrab_keyboard (MetaDisplay *display, guint32 timestamp)
 {
   meta_error_trap_push (display);
 
   meta_topic (META_DEBUG_KEYBINDINGS,
-              "Ungrabbing keyboard with timestamp %lu\n",
+              "Ungrabbing keyboard with timestamp %u\n",
               timestamp);
   XUngrabKeyboard (display->xdisplay, timestamp);
   meta_error_trap_pop (display, FALSE);
 }
 
 gboolean
-meta_screen_grab_all_keys (MetaScreen *screen, Time timestamp)
+meta_screen_grab_all_keys (MetaScreen *screen, guint32 timestamp)
 {
   gboolean retval;
 
@@ -1284,7 +1284,7 @@ meta_screen_grab_all_keys (MetaScreen *screen, Time timestamp)
 }
 
 void
-meta_screen_ungrab_all_keys (MetaScreen *screen, Time timestamp)
+meta_screen_ungrab_all_keys (MetaScreen *screen, guint32 timestamp)
 {
   if (screen->all_keys_grabbed)
     {
@@ -1300,7 +1300,7 @@ meta_screen_ungrab_all_keys (MetaScreen *screen, Time timestamp)
 
 gboolean
 meta_window_grab_all_keys (MetaWindow  *window,
-                           Time         timestamp)
+                           guint32      timestamp)
 {
   Window grabwindow;
   gboolean retval;
@@ -1335,7 +1335,7 @@ meta_window_grab_all_keys (MetaWindow  *window,
 }
 
 void
-meta_window_ungrab_all_keys (MetaWindow *window, Time timestamp)
+meta_window_ungrab_all_keys (MetaWindow *window, guint32 timestamp)
 {
   if (window->all_keys_grabbed)
     {
@@ -2627,7 +2627,7 @@ error_on_generic_command (const char *key,
                           const char *command,
                           const char *message,
                           int         screen_number,
-                          Time        timestamp)
+                          guint32     timestamp)
 {
   GError *err;
   char *argv[10];
@@ -2635,7 +2635,7 @@ error_on_generic_command (const char *key,
   char timestampbuf[32];
   
   sprintf (numbuf, "%d", screen_number);
-  sprintf (timestampbuf, "%lu", timestamp);
+  sprintf (timestampbuf, "%u", timestamp);
   
   argv[0] = METACITY_LIBEXECDIR"/metacity-dialog";
   argv[1] = "--screen";
@@ -2671,7 +2671,7 @@ error_on_command (int         command_index,
                   const char *command,
                   const char *message,
                   int         screen_number,
-                  Time        timestamp)
+                  guint32     timestamp)
 {
   char *key;
   
@@ -2689,7 +2689,7 @@ static void
 error_on_terminal_command (const char *command,
                            const char *message,
                            int         screen_number,
-                           Time        timestamp)
+                           guint32     timestamp)
 {
   const char *key;
   

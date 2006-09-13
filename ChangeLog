@@ -1,3 +1,41 @@
+2006-09-13  Elijah Newren  <newren gmail com>
+
+	* src/common.h (MetaWindowMenuFunc):
+	* src/core.[ch] (meta_core_user_lower_and_unfocus,
+	  meta_core_user_focus, meta_core_show_window_menu,
+	  meta_core_begin_grab_op, meta_core_end_grab_op):
+	* src/delete.c (delete_ping_reply_func, delete_ping_timeout_func,
+	  meta_window_delete):
+	* src/display.[ch] (struct MetaDisplay, struct MetaPingData,
+	  sanity_check_timestamps, meta_display_open, event_callback,
+	  meta_spew_event, meta_display_set_grab_op_cursor,
+	  meta_display_begin_grab_op, meta_display_end_grab_op,
+	  meta_display_ping_timeout, meta_display_ping_window,
+	  process_pong_message, timestamp_too_old,
+	  meta_display_set_input_focus_window):
+	* src/keybindings.[ch] (grab_keyboard, ungrab_keyboard,
+	  meta_screen_grab_all_keys, meta_window_grab_all_keys,
+	  meta_window_ungrab_all_keys, error_on_generic_command,
+	  error_on_command, error_on_terminal_command):
+	* src/metacity-dialog.c (on_realize, warn_about_no_sm_support,
+	  error_about_command, main):
+	* src/screen.[ch] (struct _MetaScreen, meta_screen_new,
+	  meta_screen_show_desktop, meta_screen_apply_startup_properties):
+	* src/session.c (warn_about_lame_clients_and_finish_interact):
+	* src/window.[ch] (struct _MetaWindow,
+	  intervening_user_event_occurred, window_activate,
+	  meta_window_delete, meta_window_focus,
+	  meta_window_send_icccm_message, meta_window_client_message,
+	  menu_callback, meta_window_show_menu, struct EventScannerData,
+	  check_use_this_motion_notify, meta_window_begin_grab_op,
+	  meta_window_set_user_time):
+	* src/workspace.[ch] (focus_ancestor_or_mru_window,
+	  meta_workspace_activate_with_focus, meta_workspace_activate,
+	  meta_workspace_focus_default_window,
+	  focus_ancestor_or_mru_window):
+	Fix issues on 64-bit machines with timestamps by using guint32
+	(like gtk+ does) instead of Time.  #348305
+
 2006-09-12  Elijah Newren  <newren gmail com>
 
 	* src/theme.c (meta_gtk_arrow_from_string,

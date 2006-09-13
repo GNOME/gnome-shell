@@ -367,7 +367,7 @@ reload_xinerama_infos (MetaScreen *screen)
 MetaScreen*
 meta_screen_new (MetaDisplay *display,
                  int          number,
-                 Time         timestamp)
+                 guint32      timestamp)
 {
   MetaScreen *screen;
   Window xroot;
@@ -378,7 +378,7 @@ meta_screen_new (MetaDisplay *display,
   gboolean replace_current_wm;
   Atom wm_sn_atom;
   char buf[128];
-  Time manager_timestamp;
+  guint32 manager_timestamp;
   gulong current_workspace;
   
   replace_current_wm = meta_get_replace_current_wm ();
@@ -2287,7 +2287,7 @@ meta_screen_minimize_all_on_active_workspace_except (MetaScreen *screen,
 
 void
 meta_screen_show_desktop (MetaScreen *screen, 
-                          Time        timestamp)
+                          guint32     timestamp)
 {
   GList *windows;
 
@@ -2604,7 +2604,7 @@ meta_screen_apply_startup_properties (MetaScreen *screen,
   if (sequence != NULL)
     {
       int space;
-      Time timestamp;
+      guint32 timestamp;
           
       meta_topic (META_DEBUG_STARTUP,
                   "Found startup sequence for window %s ID \"%s\"\n",
@@ -2628,7 +2628,7 @@ meta_screen_apply_startup_properties (MetaScreen *screen,
         {
           timestamp = sn_startup_sequence_get_timestamp (sequence);
           meta_topic (META_DEBUG_STARTUP,
-                      "Setting initial window timestamp to %lu based on startup info\n",
+                      "Setting initial window timestamp to %u based on startup info\n",
                       timestamp);
               
           window->initial_timestamp_set = TRUE;

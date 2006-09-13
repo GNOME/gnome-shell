@@ -32,7 +32,7 @@ void meta_workspace_queue_calc_showing   (MetaWorkspace *workspace);
 static void set_active_space_hint        (MetaScreen *screen);
 static void focus_ancestor_or_mru_window (MetaWorkspace *workspace,
                                           MetaWindow    *not_this_one,
-                                          Time           timestamp);
+                                          guint32        timestamp);
 
 static void
 maybe_add_to_list (MetaScreen *screen, MetaWindow *window, gpointer data)
@@ -274,7 +274,7 @@ meta_workspace_queue_calc_showing  (MetaWorkspace *workspace)
 void
 meta_workspace_activate_with_focus (MetaWorkspace *workspace,
                                     MetaWindow    *focus_this,
-                                    Time           timestamp)
+                                    guint32        timestamp)
 {
   MetaWorkspace *old;
   MetaWindow *move_window;
@@ -350,7 +350,7 @@ meta_workspace_activate_with_focus (MetaWorkspace *workspace,
 
 void
 meta_workspace_activate (MetaWorkspace *workspace,
-                         Time           timestamp)
+                         guint32        timestamp)
 {
   meta_workspace_activate_with_focus (workspace, NULL, timestamp);
 }
@@ -872,7 +872,7 @@ meta_workspace_get_name (MetaWorkspace *workspace)
 void
 meta_workspace_focus_default_window (MetaWorkspace *workspace,
                                      MetaWindow    *not_this_one,
-                                     Time           timestamp)
+                                     guint32        timestamp)
 {
   if (timestamp == CurrentTime)
     {
@@ -949,7 +949,7 @@ record_ancestor (MetaWindow *window,
 static void
 focus_ancestor_or_mru_window (MetaWorkspace *workspace,
                               MetaWindow    *not_this_one,
-                              Time           timestamp)
+                              guint32        timestamp)
 {
   MetaWindow *window = NULL;
   MetaWindow *desktop_window = NULL;

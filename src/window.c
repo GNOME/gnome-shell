@@ -1634,7 +1634,7 @@ meta_window_queue_calc_showing (MetaWindow  *window)
 static gboolean
 intervening_user_event_occurred (MetaWindow *window)
 {
-  Time compare;
+  guint32 compare;
   MetaWindow *focus_window;
 
   focus_window = window->display->focus_window;
@@ -1642,9 +1642,9 @@ intervening_user_event_occurred (MetaWindow *window)
   meta_topic (META_DEBUG_STARTUP,
               "COMPARISON:\n"
               "  net_wm_user_time_set : %d\n"
-              "  net_wm_user_time     : %lu\n"
+              "  net_wm_user_time     : %u\n"
               "  initial_timestamp_set: %d\n"
-              "  initial_timestamp    : %lu\n",
+              "  initial_timestamp    : %u\n",
               window->net_wm_user_time_set,
               window->net_wm_user_time,
               window->initial_timestamp_set,
@@ -1655,7 +1655,7 @@ intervening_user_event_occurred (MetaWindow *window)
                   "COMPARISON (continued):\n"
                   "  focus_window             : %s\n"
                   "  fw->net_wm_user_time_set : %d\n"
-                  "  fw->net_wm_user_time     : %lu\n",
+                  "  fw->net_wm_user_time     : %u\n",
                   focus_window->desc,
                   focus_window->net_wm_user_time_set,
                   focus_window->net_wm_user_time);
@@ -1710,8 +1710,9 @@ intervening_user_event_occurred (MetaWindow *window)
       XSERVER_TIME_IS_BEFORE (compare, focus_window->net_wm_user_time))
     {
       meta_topic (META_DEBUG_STARTUP,
-                  "window %s focus prevented by other activity; %lu < %lu\n",
-                  window->desc, compare, 
+                  "window %s focus prevented by other activity; %u < %u\n",
+                  window->desc,
+                  compare, 
                   focus_window->net_wm_user_time);
       return TRUE;
     }
@@ -2521,9 +2522,9 @@ window_activate (MetaWindow     *window,
 {
   gboolean can_ignore_outdated_timestamps;
   meta_topic (META_DEBUG_FOCUS,
-              "_NET_ACTIVE_WINDOW message sent for %s at time %lu "
+              "_NET_ACTIVE_WINDOW message sent for %s at time %u "
               "by client type %u.\n",
-              window->desc, (unsigned long)timestamp, source_indication);
+              window->desc, timestamp, source_indication);
 
   /* Older EWMH spec didn't specify a timestamp; we decide to honor these only
    * if the app specifies that it is a pager.
@@ -2538,7 +2539,7 @@ window_activate (MetaWindow     *window,
       can_ignore_outdated_timestamps)
     {
       meta_topic (META_DEBUG_FOCUS,
-                  "last_user_time (%lu) is more recent; ignoring "
+                  "last_user_time (%u) is more recent; ignoring "
                   " _NET_ACTIVE_WINDOW message.\n",
                   window->display->last_user_time);
       meta_window_set_demands_attention(window);
@@ -3737,7 +3738,7 @@ get_modal_transient (MetaWindow *window)
 /* XXX META_EFFECT_FOCUS */
 void
 meta_window_focus (MetaWindow  *window,
-                   Time         timestamp)
+                   guint32      timestamp)
 {  
   MetaWindow *modal_transient;
 
@@ -4122,7 +4123,7 @@ meta_window_lower (MetaWindow  *window)
 void
 meta_window_send_icccm_message (MetaWindow *window,
                                 Atom        atom,
-                                Time        timestamp)
+                                guint32     timestamp)
 {
   /* This comment and code are from twm, copyright
    * Open Group, Evans & Sutherland, etc.
@@ -4351,8 +4352,8 @@ meta_window_configure_request (MetaWindow *window,
         {
           meta_topic (META_DEBUG_STACK,
                       "Ignoring xconfigure stacking request from %s (with "
-                      "user_time %lu); currently active application is %s (with "
-                      "user_time %lu).\n",
+                      "user_time %u); currently active application is %s (with "
+                      "user_time %u).\n",
                       window->desc,
                       window->net_wm_user_time,
                       active_window->desc,
@@ -4411,7 +4412,7 @@ meta_window_client_message (MetaWindow *window,
   if (event->xclient.message_type ==
       display->atom_net_close_window)
     {
-      Time timestamp;
+      guint32 timestamp;
 
       if (event->xclient.data.l[0] != 0)
 	timestamp = event->xclient.data.l[0];
@@ -6044,7 +6045,7 @@ static void
 menu_callback (MetaWindowMenu *menu,
                Display        *xdisplay,
                Window          client_xwindow,
-	       Time	       timestamp,
+               guint32         timestamp,
                MetaMenuOp      op,
                int             workspace_index,
                gpointer        data)
@@ -6187,7 +6188,7 @@ meta_window_show_menu (MetaWindow *window,
                        int         root_x,
                        int         root_y,
                        int         button,
-                       Time        timestamp)
+                       guint32     timestamp)
 {
   MetaMenuOp ops;
   MetaMenuOp insensitive;
@@ -6919,8 +6920,8 @@ update_resize (MetaWindow *window,
 typedef struct
 {
   const XEvent *current_event;
-  int count;
-  Time last_time;
+  int           count;
+  guint32       last_time;
 } EventScannerData;
 
 static Bool
@@ -6956,9 +6957,9 @@ check_use_this_motion_notify (MetaWindow *window,
           event->xmotion.time)
         {
           meta_topic (META_DEBUG_RESIZING,
-                      "Arrived at event with time %lu (waiting for %lu), using it\n",
-                      (unsigned long) event->xmotion.time,
-                      (unsigned long) window->display->grab_motion_notify_time);
+                      "Arrived at event with time %u (waiting for %u), using it\n",
+                      (unsigned int)event->xmotion.time,
+                      window->display->grab_motion_notify_time);
           window->display->grab_motion_notify_time = 0;
           return TRUE;
         }
@@ -6978,8 +6979,8 @@ check_use_this_motion_notify (MetaWindow *window,
 
   if (esd.count > 0)
     meta_topic (META_DEBUG_RESIZING,
-                "Will skip %d motion events and use the event with time %lu\n",
-                esd.count, (unsigned long) esd.last_time);
+                "Will skip %d motion events and use the event with time %u\n",
+                esd.count, (unsigned int) esd.last_time);
   
   if (esd.last_time == 0)
     return TRUE;
@@ -7548,7 +7549,7 @@ warp_grab_pointer (MetaWindow          *window,
 void
 meta_window_begin_grab_op (MetaWindow *window,
                            MetaGrabOp  op,
-                           Time        timestamp)
+                           guint32     timestamp)
 {
   int x, y;
   gulong grab_start_serial;
@@ -7689,7 +7690,7 @@ meta_window_stack_just_below (MetaWindow *window,
 
 void
 meta_window_set_user_time (MetaWindow *window,
-                           Time        timestamp)
+                           guint32     timestamp)
 {
   /* FIXME: If Soeren's suggestion in bug 151984 is implemented, it will allow
    * us to sanity check the timestamp here and ensure it doesn't correspond to
@@ -7701,15 +7702,14 @@ meta_window_set_user_time (MetaWindow *window,
       XSERVER_TIME_IS_BEFORE (timestamp, window->net_wm_user_time))
     {
       meta_topic (META_DEBUG_STARTUP,
-                  "Window %s _NET_WM_USER_TIME not updated to %lu, because it "
-                  "is less than %lu\n",
+                  "Window %s _NET_WM_USER_TIME not updated to %u, because it "
+                  "is less than %u\n",
                   window->desc, timestamp, window->net_wm_user_time);
-
     }
   else
     {
       meta_topic (META_DEBUG_STARTUP,
-                  "Window %s has _NET_WM_USER_TIME of %lu\n",
+                  "Window %s has _NET_WM_USER_TIME of %u\n",
                   window->desc, timestamp);
       window->net_wm_user_time_set = TRUE;
       window->net_wm_user_time = timestamp;

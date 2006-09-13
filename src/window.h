@@ -118,7 +118,7 @@ struct _MetaWindow
   int initial_workspace;  
   
   /* Initial timestamp property */
-  Time initial_timestamp;  
+  guint32 initial_timestamp;  
   
   /* Whether we're maximized */
   guint maximized_horizontally : 1;
@@ -312,7 +312,7 @@ struct _MetaWindow
 
   /* set to the most recent user-interaction event timestamp that we
      know about for this window */
-  Time net_wm_user_time;
+  guint32 net_wm_user_time;
   
   /* The size we set the window to last (i.e. what we believe
    * to be its actual size on the server). The x, y are
@@ -486,10 +486,10 @@ void        meta_window_update_wireframe (MetaWindow *window,
 void        meta_window_end_wireframe (MetaWindow *window);
 
 void        meta_window_delete             (MetaWindow  *window,
-                                            Time         timestamp);
+                                            guint32      timestamp);
 void        meta_window_kill               (MetaWindow  *window);
 void        meta_window_focus              (MetaWindow  *window,
-                                            Time         timestamp);
+                                            guint32      timestamp);
 void        meta_window_raise              (MetaWindow  *window);
 void        meta_window_lower              (MetaWindow  *window);
 
@@ -498,7 +498,7 @@ void        meta_window_update_unfocused_button_grabs (MetaWindow *window);
 /* Sends a client message */
 void meta_window_send_icccm_message (MetaWindow *window,
                                      Atom        atom,
-                                     Time        timestamp);
+                                     guint32     timestamp);
 
 
 gboolean meta_window_configure_request (MetaWindow *window,
@@ -518,7 +518,7 @@ void meta_window_show_menu (MetaWindow *window,
                             int         root_x,
                             int         root_y,
                             int         button,
-                            Time        timestamp);
+                            guint32     timestamp);
 
 gboolean meta_window_titlebar_is_onscreen    (MetaWindow *window);
 void     meta_window_shove_titlebar_onscreen (MetaWindow *window);
@@ -572,7 +572,7 @@ MetaWindow* meta_window_find_root_ancestor    (MetaWindow *window);
 
 void meta_window_begin_grab_op (MetaWindow *window,
                                 MetaGrabOp  op,
-                                Time        timestamp);
+                                guint32     timestamp);
 
 void meta_window_update_keyboard_resize (MetaWindow *window,
                                          gboolean    update_cursor);
@@ -594,7 +594,7 @@ void meta_window_stack_just_below (MetaWindow *window,
                                    MetaWindow *below_this_one);
 
 void meta_window_set_user_time (MetaWindow *window,
-                                Time        timestamp);
+                                guint32     timestamp);
 
 void meta_window_set_demands_attention (MetaWindow *window);
 

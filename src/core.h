@@ -66,11 +66,11 @@ void meta_core_user_raise   (Display *xdisplay,
                              Window   frame_xwindow);
 void meta_core_user_lower_and_unfocus (Display *xdisplay,
                                        Window   frame_xwindow,
-                                       Time     timestamp);
+                                       guint32  timestamp);
 
 void meta_core_user_focus   (Display *xdisplay,
                              Window   frame_xwindow,
-                             Time     timestamp);
+                             guint32  timestamp);
 
 /* get position of client, same coord space expected by move */
 void meta_core_get_position (Display *xdisplay,
@@ -127,7 +127,7 @@ void meta_core_show_window_menu (Display *xdisplay,
                                  int      root_x,
                                  int      root_y,
                                  int      button,
-                                 Time     timestamp);
+                                 guint32  timestamp);
 
 void meta_core_get_menu_accelerator (MetaMenuOp           menu_op,
                                      int                  workspace,
@@ -141,11 +141,11 @@ gboolean   meta_core_begin_grab_op (Display    *xdisplay,
                                     int         event_serial,
                                     int         button,
                                     gulong      modmask,
-                                    Time        timestamp,
+                                    guint32     timestamp,
                                     int         root_x,
                                     int         root_y);
 void       meta_core_end_grab_op   (Display    *xdisplay,
-                                    Time        timestamp);
+                                    guint32     timestamp);
 MetaGrabOp meta_core_get_grab_op     (Display    *xdisplay);
 Window     meta_core_get_grab_frame  (Display   *xdisplay);
 int        meta_core_get_grab_button (Display  *xdisplay);
