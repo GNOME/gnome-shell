@@ -1,3 +1,9 @@
+2006-09-11  Elijah Newren  <newren gmail com>
+
+	* src/compositor.c: Patch from Bruno Boaventura de Oliveira
+	Lacerda to fix warnings about unused function and global var.
+	#355489.
+
 2006-09-11  Thomas Thurman <thomas@thurman.org.uk>
 
 	* configure.in: post-release bump to 2.16.2

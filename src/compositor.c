@@ -96,6 +96,8 @@ handle_error (Display *dpy, XErrorEvent *ev, gpointer data)
 }
 #endif
 
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+
 static Window
 get_xid (MetaWindow *window)
 {
@@ -104,6 +106,8 @@ get_xid (MetaWindow *window)
     else
 	return window->xwindow;
 }
+
+#endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 
@@ -551,7 +555,9 @@ meta_compositor_process_event (MetaCompositor *compositor,
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 }
 
+#ifdef HAVE_COMPOSITE_EXTENSIONS
 static GTimer *timer;
+#endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 static void
