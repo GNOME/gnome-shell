@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.9.91\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-30 16:57+0200\n"
-"PO-Revision-Date: 2006-08-30 18:15+0200\n"
+"POT-Creation-Date: 2006-09-13 21:27+0200\n"
+"PO-Revision-Date: 2006-09-13 21:49+0200\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,13 +26,13 @@ msgstr "Forma d'ús: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity es va compilar sense suport per al mode detallat\n"
 
-#: ../src/delete.c:64 ../src/delete.c:91 ../src/metacity-dialog.c:71
+#: ../src/delete.c:64 ../src/delete.c:91 ../src/metacity-dialog.c:48
 #: ../src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "No s'ha pogut analitzar «%s» com a enter"
 
-#: ../src/delete.c:71 ../src/delete.c:98 ../src/metacity-dialog.c:78
+#: ../src/delete.c:71 ../src/delete.c:98 ../src/metacity-dialog.c:55
 #: ../src/theme-parser.c:476 ../src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
@@ -114,19 +114,19 @@ msgstr ""
 "Ja hi ha algun altre programa utilitzant la clau %s amb els modificadors %x "
 "com a vinculació\n"
 
-#: ../src/keybindings.c:2668
+#: ../src/keybindings.c:2663
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "S'ha produït un error en executar el metacity-dialog per a mostrar un error "
 "quant a una ordre: %s\n"
 
-#: ../src/keybindings.c:2773
+#: ../src/keybindings.c:2768
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "No s'ha definit cap ordre %d.\n"
 
-#: ../src/keybindings.c:3640
+#: ../src/keybindings.c:3635
 msgid "No terminal command has been defined.\n"
 msgstr "No s'ha definit cap ordre de terminal.\n"
 
@@ -209,7 +209,7 @@ msgstr "Desenro_tlla"
 
 #: ../src/menu.c:60 ../src/menu.c:61
 msgid "On _Top"
-msgstr "Damun_t"
+msgstr "A Sobr_e"
 
 #: ../src/menu.c:62
 msgid "_Move"
@@ -231,11 +231,11 @@ msgstr "_Tanca"
 #. separator
 #: ../src/menu.c:68
 msgid "_Always on Visible Workspace"
-msgstr "_Sempre a l'espai de treball visible"
+msgstr "Sempre a l'espai de treball _visible"
 
 #: ../src/menu.c:69
 msgid "_Only on This Workspace"
-msgstr "N_omés a aquest espai de treball"
+msgstr "Només en _aquest espai de treball"
 
 #: ../src/menu.c:70
 msgid "Move to Workspace _Left"
@@ -269,7 +269,7 @@ msgstr "Espai de treball %s%d"
 
 #: ../src/menu.c:373
 msgid "Move to Another _Workspace"
-msgstr "Mou a un altre espai de _treball"
+msgstr "Mou a un altre es_pai de treball"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -361,31 +361,31 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: ../src/metacity-dialog.c:111
+#: ../src/metacity-dialog.c:88
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "La finestra «%s» no està responent."
 
-#: ../src/metacity-dialog.c:119
+#: ../src/metacity-dialog.c:96
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Si forceu la sortida d'aquesta aplicació, se'n perdran els canvis que hagueu "
 "desat."
 
-#: ../src/metacity-dialog.c:130
+#: ../src/metacity-dialog.c:107
 msgid "_Force Quit"
 msgstr "_Força la sortida"
 
-#: ../src/metacity-dialog.c:227
+#: ../src/metacity-dialog.c:204
 msgid "Title"
 msgstr "Títol"
 
-#: ../src/metacity-dialog.c:239
+#: ../src/metacity-dialog.c:216
 msgid "Class"
 msgstr "Classe"
 
-#: ../src/metacity-dialog.c:265
+#: ../src/metacity-dialog.c:242
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -393,7 +393,7 @@ msgstr ""
 "Aquestes finestres no suporten «desa la configuració actual» i es tindràn "
 "que reiniciar manualment la pròxima vegada que entreu."
 
-#: ../src/metacity-dialog.c:331
+#: ../src/metacity-dialog.c:308
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -3319,14 +3319,14 @@ msgstr "L'aplicació ha definit un _NET_WM_PID %lu fals\n"
 msgid "%s (on %s)"
 msgstr "%s (a %s)"
 
-#: ../src/window-props.c:1178
+#: ../src/window-props.c:1177
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr ""
 "WM_TRANSIENT_FOR no vàlid per a la finestra 0x%lx especificat per a %s.\n"
 
 #. first time through
-#: ../src/window.c:5288
+#: ../src/window.c:5289
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3342,7 +3342,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5884
+#: ../src/window.c:5885
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
