@@ -1,3 +1,4 @@
+# translation of ml.po to Malayalam
 # translation of metacity.HEAD.ml.po to Malayalam
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
@@ -6,10 +7,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity.HEAD.ml\n"
+"Project-Id-Version: ml\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-09-04 04:31+0200\n"
-"PO-Revision-Date: 2006-09-04 15:08+0530\n"
+"PO-Revision-Date: 2006-09-13 15:55+0530\n"
 "Last-Translator: Ani Peter <apeter@redhat.com>\n"
 "Language-Team: Malayalam\n"
 "MIME-Version: 1.0\n"
@@ -169,15 +170,15 @@ msgstr "പുനരാരംഭിക്കുന്നതില്‌ പര�
 
 #: ../src/menu.c:55
 msgid "Mi_nimize"
-msgstr "ചെറുതാക്കുക"
+msgstr "ചെറുതാക്കുക (_n)"
 
 #: ../src/menu.c:56
 msgid "Ma_ximize"
-msgstr "വലുതാക്കുക"
+msgstr "വലുതാക്കുക (_x)"
 
 #: ../src/menu.c:57
 msgid "Unma_ximize"
-msgstr "വലുതാക്കിയതൊഴിവാക്കുക"
+msgstr "വലുതാക്കിയതൊഴിവാക്കുക (_x)"
 
 #: ../src/menu.c:58
 msgid "Roll _Up"
@@ -193,11 +194,11 @@ msgstr ""
 
 #: ../src/menu.c:62
 msgid "_Move"
-msgstr "മാറ്റുക"
+msgstr "നീക്കുക (_M)"
 
 #: ../src/menu.c:63
 msgid "_Resize"
-msgstr "വലിപ്പം മാറ്റുക"
+msgstr "വലിപ്പം മാറ്റുക (_R)"
 
 #: ../src/menu.c:64
 msgid "Move Titlebar On_screen"
@@ -206,12 +207,12 @@ msgstr ""
 #. separator
 #: ../src/menu.c:66
 msgid "_Close"
-msgstr "അടയ്‍ക്കുക"
+msgstr "അടയ്‍ക്കുക (_C)"
 
 #. separator
 #: ../src/menu.c:68
 msgid "_Always on Visible Workspace"
-msgstr "എപ്പോഴും ദൃശ്യമായ പണിയറയില്‍ മാത്രം (_A)"
+msgstr "എപ്പോഴും ദൃശ്യമായ പണിയറയില്‍ (_A)"
 
 #: ../src/menu.c:69
 msgid "_Only on This Workspace"
@@ -231,7 +232,7 @@ msgstr "മുകളിലുളള പണിയറയിലേക്ക് ന�
 
 #: ../src/menu.c:73
 msgid "Move to Workspace _Down"
-msgstr "താഴേക് പളളണിയറയിലേക്ക് നീങ്ങുക (_D)"
+msgstr "താഴെയുളള പണിയറയിലേക്ക് നീങ്ങുക (_D)"
 
 #: ../src/menu.c:164 ../src/prefs.c:2142 ../src/prefs.c:2677
 #, c-format
