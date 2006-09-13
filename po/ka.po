@@ -3,19 +3,19 @@
 # Copyright © 2006 Canonical Ltd. and Rosetta Contributors.
 # This file is distributed under the same license as the metacity package.
 # Alexander Didebulidze <didebuli@in.tum.de>, 2006.
-#
+# 
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: ka\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-02-10 00:21+0100\n"
-"PO-Revision-Date: 2006-08-21 21:01+0200\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2006-09-13 00:49+0200\n"
+"PO-Revision-Date: 2006-09-13 02:48+0200\n"
+"Last-Translator:  <>\n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
+"Content-Transfer-Encoding: 8bit"
 
 #: ../src/tools/metacity-message.c:150
 #, c-format
@@ -27,113 +27,101 @@ msgstr "გამოყენება: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity რეჟიმი n"
 
-#: ../src/delete.c:64 ../src/delete.c:91 ../src/metacity-dialog.c:71
+#: ../src/delete.c:64 ../src/delete.c:91 ../src/metacity-dialog.c:48
 #: ../src/theme-parser.c:467
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "არა წმ მთელი"
 
-#: ../src/delete.c:71 ../src/delete.c:98 ../src/metacity-dialog.c:78
+#: ../src/delete.c:71 ../src/delete.c:98 ../src/metacity-dialog.c:55
 #: ../src/theme-parser.c:476 ../src/theme-parser.c:530
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "არა ასო-ნიშნები წმ დუ სტრიქონი წმ"
 
 #: ../src/delete.c:129
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "ვერ განხორციელდა -სკენ წმ დიალოგი n"
 
 #: ../src/delete.c:264
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "შეცდომა დიალოგი წმ n"
 
 #: ../src/delete.c:345
-#, c-format
-#, fuzzy
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
+#, fuzzy, c-format
+msgid ""
+"Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "შეცდომა დიალოგი -სკენ კითხვა შესახებ პროგრამა წმ n"
 
 #: ../src/delete.c:453
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "ვერ განხორციელდა -სკენ წმ n"
 
-#: ../src/display.c:308
-#, c-format
-#, fuzzy
+#: ../src/display.c:344
+#, fuzzy, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "ვერ განხორციელდა -სკენ გახსნა X ფანჯარა სისტემა წმ n"
 
-#: ../src/errors.c:233
-#, c-format
-#, fuzzy
+#: ../src/errors.c:269
+#, fuzzy, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
 "most likely the X server was shut down or you killed/destroyed\n"
 "the window manager.\n"
 msgstr "-სკენ წმ X ან ფანჯარა n"
 
-#: ../src/errors.c:240
-#, c-format
-#, fuzzy
+#: ../src/errors.c:276
+#, fuzzy, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "ფატალური შეცდომა წმ ჩართულია წმ n"
 
-#: ../src/frames.c:1097
+#: ../src/frames.c:1089
 msgid "Close Window"
 msgstr "ფანჯრის დახურვა"
 
-#: ../src/frames.c:1100
+#: ../src/frames.c:1092
 msgid "Window Menu"
 msgstr "ფანჯრის მენუ"
 
-#: ../src/frames.c:1103
+#: ../src/frames.c:1095
 msgid "Minimize Window"
 msgstr "ფანჯრის მინიმიზირება"
 
-#: ../src/frames.c:1106
+#: ../src/frames.c:1098
 msgid "Maximize Window"
 msgstr "ფანჯრის მაქსიმიზირება"
 
-#: ../src/frames.c:1109
+#: ../src/frames.c:1101
 msgid "Unmaximize Window"
 msgstr "ფანჯრის გადიდება"
 
-#: ../src/keybindings.c:996
-#, c-format
-#, fuzzy
+#: ../src/keybindings.c:1031
+#, fuzzy, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "სხვა პროგრამა  არის გასაღები წმ x a n"
 
-#: ../src/keybindings.c:2504
-#, c-format
-#, fuzzy
+#: ../src/keybindings.c:2663
+#, fuzzy, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "შეცდომა დიალოგი -სკენ ბეჭდვა შეცდომა შესახებ a წმ n"
 
-#: ../src/keybindings.c:2609
-#, c-format
-#, fuzzy
+#: ../src/keybindings.c:2768
+#, fuzzy, c-format
 msgid "No command %d has been defined.\n"
 msgstr "არა n"
 
-#: ../src/keybindings.c:3471
+#: ../src/keybindings.c:3635
 #, fuzzy
 msgid "No terminal command has been defined.\n"
 msgstr "არა ტერმინალი n"
 
-#: ../src/main.c:70
-#, c-format
-#, fuzzy
+#: ../src/main.c:65
+#, fuzzy, c-format
 msgid ""
 "metacity %s\n"
 "Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
@@ -142,51 +130,49 @@ msgid ""
 "PARTICULAR PURPOSE.\n"
 msgstr "წმ C წითელი და  არის წყარო  არის არა ან A n"
 
-#: ../src/main.c:258
+#: ../src/main.c:169
 #, fuzzy
 msgid "Disable connection to session manager"
 msgstr "გააუქმე კავშირი სეანსის დისპეჩერთან"
 
-#: ../src/main.c:264
+#: ../src/main.c:175
 #, fuzzy
 msgid "Replace the running window manager with Metacity"
 msgstr "შეცვლა გაშვებული ფანჯარა Metacity"
 
-#: ../src/main.c:270
+#: ../src/main.c:181
 #, fuzzy
 msgid "Specify session management ID"
 msgstr "მიუთითე სეანსის მართვის იდენტიფიკატორი"
 
-#: ../src/main.c:275
+#: ../src/main.c:186
 #, fuzzy
 msgid "X Display to use"
 msgstr "X ჩვენება -სკენ"
 
-#: ../src/main.c:281
+#: ../src/main.c:192
 #, fuzzy
 msgid "Initialize session from savefile"
 msgstr "სესია"
 
-#: ../src/main.c:287
+#: ../src/main.c:198
 #, fuzzy
 msgid "Print version"
 msgstr "ამოსაბეჭდი ვერსია"
 
-#: ../src/main.c:439
-#, c-format
-#, fuzzy
+#: ../src/main.c:350
+#, fuzzy, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "ვერ განხორციელდა -სკენ წმ n"
 
-#: ../src/main.c:455
-#, c-format
-#, fuzzy
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
+#: ../src/main.c:366
+#, fuzzy, c-format
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
 msgstr "არა პოვნა a წმ და შეიცავს."
 
-#: ../src/main.c:527
-#, c-format
-#, fuzzy
+#: ../src/main.c:424
+#, fuzzy, c-format
 msgid "Failed to restart: %s\n"
 msgstr "ვერ განხორციელდა -სკენ წმ n"
 
@@ -216,7 +202,7 @@ msgstr "წინა _პლანზე"
 
 #: ../src/menu.c:62
 msgid "_Move"
-msgstr "_გადატანა"
+msgstr "_გადაადგილება"
 
 #: ../src/menu.c:63
 msgid "_Resize"
@@ -234,11 +220,11 @@ msgstr "_დახურე"
 #. separator
 #: ../src/menu.c:68
 msgid "_Always on Visible Workspace"
-msgstr "_მოცემულ გარემოში გამოჩენა"
+msgstr "_მიმდინ_არე გარემოში ჩვენება"
 
 #: ../src/menu.c:69
 msgid "_Only on This Workspace"
-msgstr "_მხოლოდ მიმდებარე გარემოში"
+msgstr "_მხოლოდ მიმდინარე გარემოში"
 
 #: ../src/menu.c:70
 msgid "Move to Workspace _Left"
@@ -246,17 +232,17 @@ msgstr "_მარცხენა გარემოში გადატან
 
 #: ../src/menu.c:71
 msgid "Move to Workspace R_ight"
-msgstr "მა_რჯვენა გარემოში გადატანა"
+msgstr "მარჯვენა გარემოშ_ი გადატანა"
 
 #: ../src/menu.c:72
 msgid "Move to Workspace _Up"
-msgstr "_ზევითა გარემოში გადატანა"
+msgstr "ზ_ემო გარემოში გადატანა"
 
 #: ../src/menu.c:73
 msgid "Move to Workspace _Down"
-msgstr "_ქვევითა გარემოში გადატანა"
+msgstr "ქვემ_ო გარემოში გადატანა"
 
-#: ../src/menu.c:164 ../src/prefs.c:1976 ../src/prefs.c:2277
+#: ../src/menu.c:164 ../src/prefs.c:2142 ../src/prefs.c:2677
 #, c-format
 msgid "Workspace %d"
 msgstr "სამუშაო გარემო %d"
@@ -270,7 +256,7 @@ msgstr "სამუშაო გარემო 1_0"
 msgid "Workspace %s%d"
 msgstr "სამუშაო გარემო %s%d"
 
-#: ../src/menu.c:370
+#: ../src/menu.c:373
 msgid "Move to Another _Workspace"
 msgstr "_სხვა გარემოში გადატანა"
 
@@ -364,35 +350,38 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: ../src/metacity-dialog.c:111
+#: ../src/metacity-dialog.c:88
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "\"%s\" ფანჯარა არ პასუხობს."
 
-#: ../src/metacity-dialog.c:119
-msgid "Forcing this application to quit will cause you to lose any unsaved changes."
-msgstr "პროგრამის ძალდატანებითი დახურვა დაუმახსოვრებელი ცვლილებების დაკარგვას გამოიწვევს."
+#: ../src/metacity-dialog.c:96
+msgid ""
+"Forcing this application to quit will cause you to lose any unsaved changes."
+msgstr ""
+"პროგრამის ძალდატანებითი დახურვა დაუმახსოვრებელი ცვლილებების დაკარგვას "
+"გამოიწვევს."
 
-#: ../src/metacity-dialog.c:130
+#: ../src/metacity-dialog.c:107
 msgid "_Force Quit"
 msgstr "_ნაძალადევი გამოსვლა"
 
-#: ../src/metacity-dialog.c:227
+#: ../src/metacity-dialog.c:204
 msgid "Title"
 msgstr "სათაური"
 
-#: ../src/metacity-dialog.c:239
+#: ../src/metacity-dialog.c:216
 msgid "Class"
 msgstr "კლასი"
 
-#: ../src/metacity-dialog.c:265
+#: ../src/metacity-dialog.c:242
 #, fuzzy
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
 msgstr "არა შენახვა და -სკენ დრო დუ."
 
-#: ../src/metacity-dialog.c:331
+#: ../src/metacity-dialog.c:308
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -414,10 +403,8 @@ msgstr "არა ნავიგაცია დუ ის არა"
 msgid ""
 "A font description string describing a font for window titlebars. The size "
 "from the description will only be used if the titlebar_font_size option is "
-"set to 0, however. Also, this option is disabled if the "
-"titlebar_uses_desktop_font option is set to true. By default, titlebar_font "
-"is unset, causing Metacity to fall back to the desktop font even if "
-"titlebar_uses_desktop_font is false."
+"set to 0. Also, this option is disabled if the titlebar_uses_desktop_font "
+"option is set to true."
 msgstr ""
 
 #: ../src/metacity.schemas.in.h:3
@@ -442,7 +429,9 @@ msgid ""
 "Duplicate buttons are not allowed. Unknown button names are silently ignored "
 "so that buttons can be added in future metacity versions without breaking "
 "older versions."
-msgstr "ის ჩართულია a სტრიქონი მენიუ დახურვა მარცხენა ის ფანჯარა მარჯვენა და დუბლირება არა უცნობი დუ მომავალი."
+msgstr ""
+"ის ჩართულია a სტრიქონი მენიუ დახურვა მარცხენა ის ფანჯარა მარჯვენა და "
+"დუბლირება არა უცნობი დუ მომავალი."
 
 #: ../src/metacity.schemas.in.h:7
 #, fuzzy
@@ -456,7 +445,9 @@ msgid ""
 "(left click), resize the window (middle click), or show the window menu "
 "(right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" "
 "for example."
-msgstr "a ფანჯარა გასაღები ფანჯარა მარცხენა ფანჯარა ან ფანჯარა მენიუ მარჯვენა მოდიფიკატორი  არის&lt; Alt&gt; ან&lt; სუპერ&gt; მაგალითი."
+msgstr ""
+"a ფანჯარა გასაღები ფანჯარა მარცხენა ფანჯარა ან ფანჯარა მენიუ მარჯვენა "
+"მოდიფიკატორი  არის&lt; Alt&gt; ან&lt; სუპერ&gt; მაგალითი."
 
 #: ../src/metacity.schemas.in.h:9
 msgid "Close window"
@@ -468,71 +459,77 @@ msgid "Commands to run in response to keybindings"
 msgstr "ბრძანებები -სკენ დუ -სკენ"
 
 #: ../src/metacity.schemas.in.h:11
+msgid "Compositing Manager"
+msgstr ""
+
+#: ../src/metacity.schemas.in.h:12
+msgid "Control how new windows get focus"
+msgstr ""
+
+#: ../src/metacity.schemas.in.h:13
 #, fuzzy
 msgid "Current theme"
 msgstr "მიმდინარე"
 
-#: ../src/metacity.schemas.in.h:12
+#: ../src/metacity.schemas.in.h:14
 #, fuzzy
 msgid "Delay in milliseconds for the auto raise option"
 msgstr "დაყოვნება დუ მილიწამები ავტო"
 
-#: ../src/metacity.schemas.in.h:13
+#: ../src/metacity.schemas.in.h:15
+msgid "Determines whether Metacity is a compositing manager."
+msgstr ""
+
+#: ../src/metacity.schemas.in.h:16
 #, fuzzy
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr "ან დუ -სკენ."
 
-#: ../src/metacity.schemas.in.h:14
+#: ../src/metacity.schemas.in.h:17
 #, fuzzy
 msgid "Disable misfeatures that are required by old or broken applications"
 msgstr "გამორთე ან"
 
-#: ../src/metacity.schemas.in.h:15
+#: ../src/metacity.schemas.in.h:18
 #, fuzzy
 msgid "Enable Visual Bell"
 msgstr "ჩართვა იერსახე"
 
-#: ../src/metacity.schemas.in.h:16
+#: ../src/metacity.schemas.in.h:19
 #, fuzzy
 msgid "Hide all windows and focus desktop"
 msgstr "დამალვა ყველა და"
 
-#: ../src/metacity.schemas.in.h:17
-#, fuzzy
+#: ../src/metacity.schemas.in.h:20
 msgid ""
-"If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
-"focused window will be automatically raised after a delay (the delay is "
-"specified by the auto_raise_delay key). This preference is poorly named, but "
-"kept for backwards compatibility. To try to be more clear (at least to the "
-"technically inclined), its meaning is \"automatically raise the window "
-"following a timeout which is triggered by non-grabbed mouse entry in sloppy "
-"or mouse focus modes\". It is unrelated to clicking behavior (i.e. this is "
-"not related to raise-on-click/orthogonal-raise). It is unrelated to entering "
-"a window during drag and drop (because that results in the application "
-"grabbing the mouse)"
-msgstr "ჭეშმარიტი და რეჟიმი  არის ან ფანჯარა a  არის ავტო გასაღები  არის ადრესატი -სკენ მეტი გაწმენდა ეთ -სკენ  არის ფანჯარა a დაყოვნების დრო  არის ჩანაწერი დუ ან  არის -სკენ i e  არის არა -სკენ ჩართულია  არის -სკენ a ფანჯარა და დუ პროგრამა"
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focused window will be automatically raised after a delay specified by "
+"the auto_raise_delay key. This is not related to clicking on a window to "
+"raise it, nor to entering a window during drag-and-drop."
+msgstr ""
 
-#: ../src/metacity.schemas.in.h:18
+#: ../src/metacity.schemas.in.h:21
 #, fuzzy
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
 msgstr "ჭეშმარიტი და პროგრამა ფანჯარა."
 
-#: ../src/metacity.schemas.in.h:19
+#: ../src/metacity.schemas.in.h:22
 #, fuzzy
 msgid ""
-"If true, metacity will give the user less feedback and less sense of "
-"\"direct manipulation\", by using wireframes, avoiding animations, or other "
-"means. This is a significant reduction in usability for many users, but may "
-"allow legacy applications and terminal servers to function when they would "
-"otherwise be impractical. However, the wireframe feature is disabled when "
-"accessibility is on to avoid weird desktop breakages."
-msgstr "ჭეშმარიტი ცოტა და ცოტა ის ან სხვა  არის a დუ და ტერმინალი -სკენ ფუნქცია შესაძლებლობა  არის გამორთული  არის ჩართულია -სკენ."
+"If true, metacity will give the user less feedback by using wireframes, "
+"avoiding animations, or other means. This is a significant reduction in "
+"usability for many users, but may allow legacy applications to continue "
+"working, and may also be a useful tradeoff for terminal servers. However, "
+"the wireframe feature is disabled when accessibility is on."
+msgstr ""
+"ჭეშმარიტი ცოტა და ცოტა ის ან სხვა  არის a დუ და ტერმინალი -სკენ ფუნქცია "
+"შესაძლებლობა  არის გამორთული  არის ჩართულია -სკენ."
 
-#: ../src/metacity.schemas.in.h:20
+#: ../src/metacity.schemas.in.h:23
 #, fuzzy
 msgid ""
 "If true, then Metacity works in terms of applications rather than windows. "
@@ -540,326 +537,342 @@ msgid ""
 "more like the Mac and less like Windows. When you focus a window in "
 "application-based mode, all the windows in the application will be raised. "
 "Also, in application-based mode, focus clicks are not passed through to "
-"windows in other applications. The existence of this setting is somewhat "
-"questionable. But it's better than having settings for all the specific "
-"details of application-based vs. window-based, e.g. whether to pass through "
-"clicks. Also, application-based mode is largely unimplemented at the moment."
-msgstr "ჭეშმარიტი Metacity დუ ის  არის a დუ ჩვეულებრივი პროგრამა  არის მეტი და ცოტა ფანჯრები a ფანჯარა დუ პროგრამა რეჟიმი ყველა დუ პროგრამა დუ პროგრამა რეჟიმი არა -სკენ დუ სხვა ის  არის წმ ყველა ის პროგრამა ფანჯარა e g -სკენ პროგრამა რეჟიმი  არის ეთ."
+"windows in other applications. Application-based mode is, however, largely "
+"unimplemented at the moment."
+msgstr ""
+"ჭეშმარიტი Metacity დუ ის  არის a დუ ჩვეულებრივი პროგრამა  არის მეტი და ცოტა "
+"ფანჯრები a ფანჯარა დუ პროგრამა რეჟიმი ყველა დუ პროგრამა დუ პროგრამა რეჟიმი "
+"არა -სკენ დუ სხვა ის  არის წმ ყველა ის პროგრამა ფანჯარა e g -სკენ პროგრამა "
+"რეჟიმი  არის ეთ."
 
-#: ../src/metacity.schemas.in.h:21
+#: ../src/metacity.schemas.in.h:24
 #, fuzzy
 msgid "If true, trade off usability for less resource usage"
 msgstr "ჭეშმარიტი გამორთულია ცოტა რესურსი"
 
-#: ../src/metacity.schemas.in.h:22
+#: ../src/metacity.schemas.in.h:25
 #, fuzzy
 msgid "Lower window below other windows"
 msgstr "ჩაწევა ფანჯარა სხვა"
 
-#: ../src/metacity.schemas.in.h:23
+#: ../src/metacity.schemas.in.h:26
 #, fuzzy
 msgid ""
 "Many actions (e.g. clicking in the client area, moving or resizing the "
 "window) normally raise the window as a side-effect. Set this option to false "
-"to decouple raising from other user interactions. When false, windows can "
-"still be raised by an alt-left-click anywhere on the window or a normal "
-"click on the window decorations (assuming such clicks aren't used to start a "
-"move or resize operation). Special messages, such as activation requests "
-"from pagers, may also raise windows when this option is false. This option "
-"is currently disabled in click-to-focus mode."
-msgstr "მეტი e g დუ არე ან ფანჯარა ფანჯარა a ეფექტი დაყენებული -სკენ მცდარი -სკენ სხვა მცდარი მარცხენა ჩართულია ფანჯარა ან a საშუალო ჩართულია ფანჯარა t -სკენ დასაწყისი a ან სპეციალური მოთხოვნა  არის მცდარი  არის გამორთული დუ -სკენ რეჟიმი."
+"to decouple raising from other user actions. Even when this option is false, "
+"windows can still be raised by an alt-left-click anywhere on the window, a "
+"normal click on the window decorations, or by special messages, such as "
+"activation requests from pagers. This option is currently disabled in click-"
+"to-focus mode."
+msgstr ""
+"მეტი e g დუ არე ან ფანჯარა ფანჯარა a ეფექტი დაყენებული -სკენ მცდარი -სკენ "
+"სხვა მცდარი მარცხენა ჩართულია ფანჯარა ან a საშუალო ჩართულია ფანჯარა t -სკენ "
+"დასაწყისი a ან სპეციალური მოთხოვნა  არის მცდარი  არის გამორთული დუ -სკენ "
+"რეჟიმი."
 
-#: ../src/metacity.schemas.in.h:24
+#: ../src/metacity.schemas.in.h:27
 msgid "Maximize window"
 msgstr "ფანჯრის გადიდება"
 
-#: ../src/metacity.schemas.in.h:25
+#: ../src/metacity.schemas.in.h:28
 msgid "Maximize window horizontally"
 msgstr "ფანჯრის ჰორიზონტალურად გაშლა"
 
-#: ../src/metacity.schemas.in.h:26
+#: ../src/metacity.schemas.in.h:29
 msgid "Maximize window vertically"
 msgstr "ფანჯრის ვერტიკალურად გაშლა"
 
-#: ../src/metacity.schemas.in.h:27
+#: ../src/metacity.schemas.in.h:30
 msgid "Minimize window"
 msgstr "ფანჯრის ჩაკეცვა"
 
-#: ../src/metacity.schemas.in.h:28
+#: ../src/metacity.schemas.in.h:31
 #, fuzzy
 msgid "Modifier to use for modified window click actions"
 msgstr "მოდიფიკატორი -სკენ შეცვლილია ფანჯარა"
 
-#: ../src/metacity.schemas.in.h:29
+#: ../src/metacity.schemas.in.h:32
 #, fuzzy
 msgid "Move backward between panels and the desktop immediately"
 msgstr "გადატანა და დაუყოვნებლივ"
 
-#: ../src/metacity.schemas.in.h:30
+#: ../src/metacity.schemas.in.h:33
 #, fuzzy
 msgid "Move backwards between panels and the desktop with popup"
 msgstr "გადატანა და"
 
-#: ../src/metacity.schemas.in.h:31
+#: ../src/metacity.schemas.in.h:34
 #, fuzzy
 msgid "Move backwards between windows immediately"
 msgstr "გადატანა დაუყოვნებლივ"
 
-#: ../src/metacity.schemas.in.h:32
+#: ../src/metacity.schemas.in.h:35
+#, fuzzy
+msgid "Move backwards between windows of an application immediately"
+msgstr "გადატანა დაუყოვნებლივ"
+
+#: ../src/metacity.schemas.in.h:36
+#, fuzzy
+msgid "Move backwards between windows of an application with popup"
+msgstr "გადატანა და"
+
+#: ../src/metacity.schemas.in.h:37
 #, fuzzy
 msgid "Move between panels and the desktop immediately"
 msgstr "გადატანა და დაუყოვნებლივ"
 
-#: ../src/metacity.schemas.in.h:33
+#: ../src/metacity.schemas.in.h:38
 #, fuzzy
 msgid "Move between panels and the desktop with popup"
 msgstr "გადატანა და"
 
-#: ../src/metacity.schemas.in.h:34
+#: ../src/metacity.schemas.in.h:39
 #, fuzzy
 msgid "Move between windows immediately"
 msgstr "გადატანა დაუყოვნებლივ"
 
-#: ../src/metacity.schemas.in.h:35
+#: ../src/metacity.schemas.in.h:40
+#, fuzzy
+msgid "Move between windows of an application immediately"
+msgstr "გადატანა დაუყოვნებლივ"
+
+#: ../src/metacity.schemas.in.h:41
+#, fuzzy
+msgid "Move between windows of an application with popup"
+msgstr "გადატანა"
+
+#: ../src/metacity.schemas.in.h:42
 #, fuzzy
 msgid "Move between windows with popup"
 msgstr "გადატანა"
 
-#: ../src/metacity.schemas.in.h:36
+#: ../src/metacity.schemas.in.h:43
 #, fuzzy
 msgid "Move focus backwards between windows using popup display"
 msgstr "გადატანა"
 
-#: ../src/metacity.schemas.in.h:37
+#: ../src/metacity.schemas.in.h:44
 msgid "Move window"
 msgstr "ფანჯრის გადაადგილება"
 
-#: ../src/metacity.schemas.in.h:38
+#: ../src/metacity.schemas.in.h:45
 #, fuzzy
 msgid "Move window one workspace down"
 msgstr "გადატანა ფანჯარა"
 
-#: ../src/metacity.schemas.in.h:39
+#: ../src/metacity.schemas.in.h:46
 #, fuzzy
 msgid "Move window one workspace to the left"
 msgstr "გადატანა ფანჯარა -სკენ მარცხენა"
 
-#: ../src/metacity.schemas.in.h:40
+#: ../src/metacity.schemas.in.h:47
 #, fuzzy
 msgid "Move window one workspace to the right"
 msgstr "გადატანა ფანჯარა -სკენ მარჯვენა"
 
-#: ../src/metacity.schemas.in.h:41
+#: ../src/metacity.schemas.in.h:48
 #, fuzzy
 msgid "Move window one workspace up"
 msgstr "გადატანა ფანჯარა"
 
-#: ../src/metacity.schemas.in.h:42
+#: ../src/metacity.schemas.in.h:49
 #, fuzzy
 msgid "Move window to workspace 1"
 msgstr "გადატანა ფანჯარა -სკენ 1"
 
-#: ../src/metacity.schemas.in.h:43
+#: ../src/metacity.schemas.in.h:50
 #, fuzzy
 msgid "Move window to workspace 10"
 msgstr "გადატანა ფანჯარა -სკენ 10"
 
-#: ../src/metacity.schemas.in.h:44
+#: ../src/metacity.schemas.in.h:51
 #, fuzzy
 msgid "Move window to workspace 11"
 msgstr "გადატანა ფანჯარა -სკენ 11"
 
-#: ../src/metacity.schemas.in.h:45
+#: ../src/metacity.schemas.in.h:52
 #, fuzzy
 msgid "Move window to workspace 12"
 msgstr "გადატანა ფანჯარა -სკენ 12"
 
-#: ../src/metacity.schemas.in.h:46
+#: ../src/metacity.schemas.in.h:53
 #, fuzzy
 msgid "Move window to workspace 2"
 msgstr "გადატანა ფანჯარა -სკენ 2"
 
-#: ../src/metacity.schemas.in.h:47
+#: ../src/metacity.schemas.in.h:54
 #, fuzzy
 msgid "Move window to workspace 3"
 msgstr "გადატანა ფანჯარა -სკენ 3"
 
-#: ../src/metacity.schemas.in.h:48
+#: ../src/metacity.schemas.in.h:55
 #, fuzzy
 msgid "Move window to workspace 4"
 msgstr "გადატანა ფანჯარა -სკენ 4"
 
-#: ../src/metacity.schemas.in.h:49
+#: ../src/metacity.schemas.in.h:56
 #, fuzzy
 msgid "Move window to workspace 5"
 msgstr "გადატანა ფანჯარა -სკენ 5"
 
-#: ../src/metacity.schemas.in.h:50
+#: ../src/metacity.schemas.in.h:57
 #, fuzzy
 msgid "Move window to workspace 6"
 msgstr "გადატანა ფანჯარა -სკენ 6"
 
-#: ../src/metacity.schemas.in.h:51
+#: ../src/metacity.schemas.in.h:58
 #, fuzzy
 msgid "Move window to workspace 7"
 msgstr "გადატანა ფანჯარა -სკენ 7"
 
-#: ../src/metacity.schemas.in.h:52
+#: ../src/metacity.schemas.in.h:59
 #, fuzzy
 msgid "Move window to workspace 8"
 msgstr "გადატანა ფანჯარა -სკენ 8"
 
-#: ../src/metacity.schemas.in.h:53
+#: ../src/metacity.schemas.in.h:60
 #, fuzzy
 msgid "Move window to workspace 9"
 msgstr "გადატანა ფანჯარა -სკენ 9"
 
-#: ../src/metacity.schemas.in.h:54
+#: ../src/metacity.schemas.in.h:61
 msgid "Name of workspace"
 msgstr "სამუშაო გარემოს სახელი"
 
-#: ../src/metacity.schemas.in.h:55
+#: ../src/metacity.schemas.in.h:62
 msgid "Number of workspaces"
 msgstr "სამუშაო გარემოებების რაოდენობა"
 
-#: ../src/metacity.schemas.in.h:56
+#: ../src/metacity.schemas.in.h:63
 #, fuzzy
 msgid ""
-"Number of workspaces. Must be more than zero, and has a fixed maximum (to "
-"prevent accidentally destroying your desktop by asking for 34 million "
-"workspaces)."
+"Number of workspaces. Must be more than zero, and has a fixed maximum to "
+"prevent making the desktop unusable by accidentally asking for too many "
+"workspaces."
 msgstr "ნომერი ის მეტი და a სტაციონარული -სკენ."
 
-#: ../src/metacity.schemas.in.h:57
+#: ../src/metacity.schemas.in.h:64
 #, fuzzy
 msgid "Raise obscured window, otherwise lower"
 msgstr "აწევა ფანჯარა"
 
-#: ../src/metacity.schemas.in.h:58
+#: ../src/metacity.schemas.in.h:65
 #, fuzzy
 msgid "Raise window above other windows"
 msgstr "აწევა ფანჯარა სხვა"
 
-#: ../src/metacity.schemas.in.h:59
+#: ../src/metacity.schemas.in.h:66
 msgid "Resize window"
 msgstr "ფანჯრის ზომის შეცვლა"
 
-#: ../src/metacity.schemas.in.h:60
+#: ../src/metacity.schemas.in.h:67
 msgid "Run a defined command"
 msgstr "განსაზღვრული პროგრამის გაშვება"
 
-#: ../src/metacity.schemas.in.h:61
+#: ../src/metacity.schemas.in.h:68
 msgid "Run a terminal"
 msgstr "ტერმინალის გაშვება"
 
-#: ../src/metacity.schemas.in.h:62
+#: ../src/metacity.schemas.in.h:69
 msgid "Show the panel menu"
 msgstr "პანელის მენუს ჩვენება"
 
-#: ../src/metacity.schemas.in.h:63
+#: ../src/metacity.schemas.in.h:70
 #, fuzzy
 msgid "Show the panel run application dialog"
 msgstr "ჩვენება პანელი პროგრამა დიალოგი"
 
-#: ../src/metacity.schemas.in.h:64
-#, fuzzy
+#: ../src/metacity.schemas.in.h:71
 msgid ""
-"Some applications break specifications in ways that result in window manager "
-"misfeatures. For example, ideally Metacity would place all dialogs in a "
-"consistent position with respect to their parent window. This requires "
-"ignoring application-specified positions for dialogs. But some versions of "
-"Java/Swing mark their popup menus as dialogs, so Metacity has to disable "
-"dialog positioning to allow menus to work in broken Java applications. There "
-"are several other examples like this. This option puts Metacity in full-on "
-"Correct mode, which perhaps gives a moderately nicer UI if you don't need to "
-"run any broken apps. Sadly, workarounds must be enabled by default; the real "
-"world is an ugly place. Some of the workarounds are workarounds for "
-"limitations in the specifications themselves, so sometimes a bug in no-"
-"workarounds mode won't be fixable without amending a spec."
-msgstr "დუ დუ ფანჯარა -თვის მაგალითი Metacity ყველა დუ a -სკენ ფანჯარა პროგრამა მონაცემები ის Java Metacity -სკენ გამორთვა დიალოგი -სკენ -სკენ დუ Java სხვა Metacity დუ ჩართულია სწორია რეჟიმი a Интерфейс t -სკენ ნებისმიერი ჩართული ნაგულისხმევი  არის ის დუ იშვიათად a დუ არა რეჟიმი t a."
+"Some applications disregard specifications in ways that result in window "
+"manager misfeatures. This option puts Metacity in a rigorously correct mode, "
+"which gives a more consistent user interface, provided one does not need to "
+"run any misbehaving applications."
+msgstr ""
 
-#: ../src/metacity.schemas.in.h:65
+#: ../src/metacity.schemas.in.h:72
 msgid "Switch to workspace 1"
 msgstr "გადადი გარემო 1"
 
-#: ../src/metacity.schemas.in.h:66
+#: ../src/metacity.schemas.in.h:73
 msgid "Switch to workspace 10"
 msgstr "სამუშაო გარემო 10 გადართვა"
 
-#: ../src/metacity.schemas.in.h:67
+#: ../src/metacity.schemas.in.h:74
 msgid "Switch to workspace 11"
 msgstr "სამუშაო გარემო 11 გადართვა"
 
-#: ../src/metacity.schemas.in.h:68
+#: ../src/metacity.schemas.in.h:75
 msgid "Switch to workspace 12"
 msgstr "სამუშაო გარემო 12 გადართვა"
 
-#: ../src/metacity.schemas.in.h:69
+#: ../src/metacity.schemas.in.h:76
 msgid "Switch to workspace 2"
 msgstr "სამუშაო გარემო 2 გადართვა"
 
-#: ../src/metacity.schemas.in.h:70
+#: ../src/metacity.schemas.in.h:77
 msgid "Switch to workspace 3"
 msgstr "სამუშაო გარემო 3 გადართვა"
 
-#: ../src/metacity.schemas.in.h:71
+#: ../src/metacity.schemas.in.h:78
 msgid "Switch to workspace 4"
 msgstr "სამუშაო გარემო 4 გადართვა"
 
-#: ../src/metacity.schemas.in.h:72
+#: ../src/metacity.schemas.in.h:79
 msgid "Switch to workspace 5"
 msgstr "სამუშაო გარემო 5 გადართვა"
 
-#: ../src/metacity.schemas.in.h:73
+#: ../src/metacity.schemas.in.h:80
 msgid "Switch to workspace 6"
 msgstr "სამუშაო გარემო 2 გადართვა"
 
-#: ../src/metacity.schemas.in.h:74
+#: ../src/metacity.schemas.in.h:81
 msgid "Switch to workspace 7"
 msgstr "სამუშაო გარემო 7 გადართვა"
 
-#: ../src/metacity.schemas.in.h:75
+#: ../src/metacity.schemas.in.h:82
 msgid "Switch to workspace 8"
 msgstr "სამუშაო გარემო 8 გადართვა"
 
-#: ../src/metacity.schemas.in.h:76
+#: ../src/metacity.schemas.in.h:83
 msgid "Switch to workspace 9"
 msgstr "სამუშაო გარემო 9 გადართვა"
 
-#: ../src/metacity.schemas.in.h:77
+#: ../src/metacity.schemas.in.h:84
 #, fuzzy
 msgid "Switch to workspace above this one"
 msgstr "გადართვა -სკენ"
 
-#: ../src/metacity.schemas.in.h:78
+#: ../src/metacity.schemas.in.h:85
 #, fuzzy
 msgid "Switch to workspace below this one"
 msgstr "გადართვა -სკენ"
 
-#: ../src/metacity.schemas.in.h:79
+#: ../src/metacity.schemas.in.h:86
 #, fuzzy
 msgid "Switch to workspace on the left"
 msgstr "გადართვა -სკენ ჩართულია მარცხენა"
 
-#: ../src/metacity.schemas.in.h:80
+#: ../src/metacity.schemas.in.h:87
 #, fuzzy
 msgid "Switch to workspace on the right"
 msgstr "გადართვა -სკენ ჩართულია მარჯვენა"
 
-#: ../src/metacity.schemas.in.h:81
+#: ../src/metacity.schemas.in.h:88
 #, fuzzy
 msgid "System Bell is Audible"
 msgstr "სისტემა  არის"
 
-#: ../src/metacity.schemas.in.h:82
+#: ../src/metacity.schemas.in.h:89
 msgid "Take a screenshot"
 msgstr "ეკრანის ანაბეჭდის გადაღება"
 
-#: ../src/metacity.schemas.in.h:83
+#: ../src/metacity.schemas.in.h:90
 msgid "Take a screenshot of a window"
 msgstr "ფანჯრის ანაბეჭდის გადაღება"
 
-#: ../src/metacity.schemas.in.h:84
+#: ../src/metacity.schemas.in.h:91
 #, fuzzy
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
@@ -869,9 +882,11 @@ msgid ""
 "which sent the bell signal to flash. If the application which sent the bell "
 "is unknown (as is usually the case for the default \"system beep\"), the "
 "currently focused window's titlebar is flashed."
-msgstr "Metacity -სკენ ან პროგრამა a თეთრი შავი და ჩარჩო ის პროგრამა -სკენ პროგრამა  არის უცნობი  არის ნაგულისხმევი ფანჯარა წმ  არის."
+msgstr ""
+"Metacity -სკენ ან პროგრამა a თეთრი შავი და ჩარჩო ის პროგრამა -სკენ პროგრამა  "
+"არის უცნობი  არის ნაგულისხმევი ფანჯარა წმ  არის."
 
-#: ../src/metacity.schemas.in.h:85
+#: ../src/metacity.schemas.in.h:92
 #, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
@@ -879,14 +894,14 @@ msgid ""
 "will execute command_N."
 msgstr "N განსაზღვრა -სკენ N შესრულება N."
 
-#: ../src/metacity.schemas.in.h:86
+#: ../src/metacity.schemas.in.h:93
 #, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
 msgstr "ეკრანის ანაბეჭდი გასაღები a -სკენ."
 
-#: ../src/metacity.schemas.in.h:87
+#: ../src/metacity.schemas.in.h:94
 #, fuzzy
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
@@ -894,7 +909,7 @@ msgid ""
 "be invoked."
 msgstr "ფანჯარა ეკრანის ანაბეჭდი გასაღები a -სკენ."
 
-#: ../src/metacity.schemas.in.h:88
+#: ../src/metacity.schemas.in.h:95
 #, fuzzy
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
@@ -903,9 +918,11 @@ msgid ""
 "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
 "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
 "then there will be no keybinding for this action."
-msgstr "დუ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"დუ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; "
+"და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:89
+#: ../src/metacity.schemas.in.h:96
 #, fuzzy
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
@@ -914,9 +931,11 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr "-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;"
+"&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:90
+#: ../src/metacity.schemas.in.h:97
 #, fuzzy
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
@@ -925,9 +944,11 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr "-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;"
+"&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:91
+#: ../src/metacity.schemas.in.h:98
 #, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
@@ -936,9 +957,12 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr "-სკენ ჩართულია მარცხენა ის&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ ჩართულია მარცხენა ის&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; "
+"F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული "
+"არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:92
+#: ../src/metacity.schemas.in.h:99
 #, fuzzy
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
@@ -947,9 +971,12 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr "-სკენ ჩართულია მარჯვენა ის&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ ჩართულია მარჯვენა ის&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; "
+"F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული "
+"არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:93
+#: ../src/metacity.schemas.in.h:100
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
@@ -957,9 +984,11 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;"
+"&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:94
+#: ../src/metacity.schemas.in.h:101
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
@@ -967,9 +996,11 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;"
+"&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:95
+#: ../src/metacity.schemas.in.h:102
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
@@ -977,9 +1008,11 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;"
+"&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:96
+#: ../src/metacity.schemas.in.h:103
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
@@ -987,9 +1020,11 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;"
+"&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:97
+#: ../src/metacity.schemas.in.h:104
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
@@ -997,9 +1032,11 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;"
+"&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:98
+#: ../src/metacity.schemas.in.h:105
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
@@ -1007,9 +1044,11 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;"
+"&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:99
+#: ../src/metacity.schemas.in.h:106
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
@@ -1017,9 +1056,11 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;"
+"&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:100
+#: ../src/metacity.schemas.in.h:107
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
@@ -1027,9 +1068,11 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;"
+"&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:101
+#: ../src/metacity.schemas.in.h:108
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
@@ -1037,9 +1080,11 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;"
+"&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:102
+#: ../src/metacity.schemas.in.h:109
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
@@ -1047,9 +1092,11 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;"
+"&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:103
+#: ../src/metacity.schemas.in.h:110
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
@@ -1057,9 +1104,11 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;"
+"&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:104
+#: ../src/metacity.schemas.in.h:111
 #, fuzzy
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
@@ -1067,9 +1116,11 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;"
+"&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:105
+#: ../src/metacity.schemas.in.h:112
 #, fuzzy
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
@@ -1077,9 +1128,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ ფანჯარა მენიუ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ ფანჯარა მენიუ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის "
+"და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:106
+#: ../src/metacity.schemas.in.h:113
 #, fuzzy
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
@@ -1087,9 +1141,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ დახურვა a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ დახურვა a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  "
+"არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:107
+#: ../src/metacity.schemas.in.h:114
 #, fuzzy
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
@@ -1098,9 +1155,12 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr "-სკენ რეჟიმი და a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ რეჟიმი და a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  "
+"არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:108
+#: ../src/metacity.schemas.in.h:115
 #, fuzzy
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
@@ -1109,9 +1169,12 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr "-სკენ რეჟიმი და a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ რეჟიმი და a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  "
+"არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:109
+#: ../src/metacity.schemas.in.h:116
 #, fuzzy
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
@@ -1120,9 +1183,12 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr "-სკენ ყველა საშუალო და მინიჭება -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ ყველა საშუალო და მინიჭება -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; "
+"Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი "
+"გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:110
+#: ../src/metacity.schemas.in.h:117
 #, fuzzy
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
@@ -1130,9 +1196,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და "
+"ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:111
+#: ../src/metacity.schemas.in.h:118
 #, fuzzy
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
@@ -1140,9 +1209,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და "
+"ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:112
+#: ../src/metacity.schemas.in.h:119
 #, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
@@ -1151,9 +1223,12 @@ msgid ""
 "as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
 "special string \"disabled\", then there will be no keybinding for this "
 "action."
-msgstr "-სკენ a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და "
+"ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:113
+#: ../src/metacity.schemas.in.h:120
 #, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
@@ -1162,9 +1237,12 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr "-სკენ a ფანჯარა -სკენ მარცხენა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა -სკენ მარცხენა&lt; Control&gt; a ან&lt; Shift&gt;&lt; "
+"Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი "
+"გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:114
+#: ../src/metacity.schemas.in.h:121
 #, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
@@ -1173,9 +1251,12 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr "-სკენ a ფანჯარა -სკენ მარჯვენა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა -სკენ მარჯვენა&lt; Control&gt; a ან&lt; Shift&gt;&lt; "
+"Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი "
+"გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:115
+#: ../src/metacity.schemas.in.h:122
 #, fuzzy
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
@@ -1183,9 +1264,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და "
+"ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:116
+#: ../src/metacity.schemas.in.h:123
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
@@ -1193,9 +1277,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  "
+"არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:117
+#: ../src/metacity.schemas.in.h:124
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
@@ -1203,9 +1290,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  "
+"არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:118
+#: ../src/metacity.schemas.in.h:125
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
@@ -1213,9 +1303,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  "
+"არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:119
+#: ../src/metacity.schemas.in.h:126
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
@@ -1223,9 +1316,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  "
+"არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:120
+#: ../src/metacity.schemas.in.h:127
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
@@ -1233,9 +1329,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  "
+"არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:121
+#: ../src/metacity.schemas.in.h:128
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
@@ -1243,9 +1342,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  "
+"არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:122
+#: ../src/metacity.schemas.in.h:129
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
@@ -1253,9 +1355,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  "
+"არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:123
+#: ../src/metacity.schemas.in.h:130
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
@@ -1263,9 +1368,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  "
+"არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:124
+#: ../src/metacity.schemas.in.h:131
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
@@ -1273,9 +1381,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  "
+"არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:125
+#: ../src/metacity.schemas.in.h:132
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
@@ -1283,9 +1394,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  "
+"არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:126
+#: ../src/metacity.schemas.in.h:133
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
@@ -1293,9 +1407,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  "
+"არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:127
+#: ../src/metacity.schemas.in.h:134
 #, fuzzy
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
@@ -1303,9 +1420,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  "
+"არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:128
+#: ../src/metacity.schemas.in.h:135
 #, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
@@ -1314,9 +1434,12 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr "-სკენ და a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ და a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის "
+"და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:129
+#: ../src/metacity.schemas.in.h:136
 #, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
@@ -1325,9 +1448,42 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr "-სკენ და a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ და a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის "
+"და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:130
+#: ../src/metacity.schemas.in.h:137
+#, fuzzy
+msgid ""
+"The keybinding used to move focus backwards between windows of an "
+"application without a popup window. Holding \"shift\" together with this "
+"binding makes the direction go forward again. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"-სკენ a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და "
+"ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
+
+#: ../src/metacity.schemas.in.h:138
+#, fuzzy
+msgid ""
+"The keybinding used to move focus backwards between windows of an "
+"application, using a popup window. Holding \"shift\" together with this "
+"binding makes the direction go forward again. The format looks like \"&lt;"
+"Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"-სკენ a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და "
+"ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
+
+#: ../src/metacity.schemas.in.h:139
 #, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
@@ -1337,9 +1493,12 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr "-სკენ a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და "
+"ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:131
+#: ../src/metacity.schemas.in.h:140
 #, fuzzy
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
@@ -1349,9 +1508,12 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr "-სკენ a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და "
+"ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:132
+#: ../src/metacity.schemas.in.h:141
 #, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
@@ -1360,9 +1522,12 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr "-სკენ და a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ და a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის "
+"და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:133
+#: ../src/metacity.schemas.in.h:142
 #, fuzzy
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
@@ -1371,9 +1536,42 @@ msgid ""
 "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
 "If you set the option to the special string \"disabled\", then there will be "
 "no keybinding for this action."
-msgstr "-სკენ და a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ და a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის "
+"და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:134
+#: ../src/metacity.schemas.in.h:143
+#, fuzzy
+msgid ""
+"The keybinding used to move focus between windows of an application without "
+"a popup window. Holding the \"shift\" key while using this binding reverses "
+"the direction of movement. The format looks like \"&lt;Control&gt;a\" or "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
+"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
+"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
+"then there will be no keybinding for this action."
+msgstr ""
+"-სკენ a ფანჯარა&lt; Alt&gt; Escape გასაღები ის&lt; Control&gt; a ან&lt; "
+"Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -"
+"სკენ სტრიქონი გამორთული არა მოქმედება."
+
+#: ../src/metacity.schemas.in.h:144
+#, fuzzy
+msgid ""
+"The keybinding used to move focus between windows of an application, using a "
+"popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" key while "
+"using this binding reverses the direction of movement. The format looks like "
+"\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+"liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
+"Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+"\"disabled\", then there will be no keybinding for this action."
+msgstr ""
+"-სკენ a ფანჯარა&lt; Alt&gt; ჩანართი გასაღები ის&lt; Control&gt; a ან&lt; "
+"Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -"
+"სკენ სტრიქონი გამორთული არა მოქმედება."
+
+#: ../src/metacity.schemas.in.h:145
 #, fuzzy
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
@@ -1383,9 +1581,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ a ფანჯარა&lt; Alt&gt; Escape გასაღები ის&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა&lt; Alt&gt; Escape გასაღები ის&lt; Control&gt; a ან&lt; "
+"Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -"
+"სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:135
+#: ../src/metacity.schemas.in.h:146
 #, fuzzy
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
@@ -1395,9 +1596,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ a ფანჯარა&lt; Alt&gt; ჩანართი გასაღები ის&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა&lt; Alt&gt; ჩანართი გასაღები ის&lt; Control&gt; a ან&lt; "
+"Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -"
+"სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:136
+#: ../src/metacity.schemas.in.h:147
 #, fuzzy
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
@@ -1406,9 +1610,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ ჩართულია ზემოთ A ფანჯარა  არის ჩართულია ზემოთ ხილული სხვა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ ჩართულია ზემოთ A ფანჯარა  არის ჩართულია ზემოთ ხილული სხვა&lt; "
+"Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; "
+"Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:137
+#: ../src/metacity.schemas.in.h:148
 #, fuzzy
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
@@ -1416,9 +1623,11 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ რეჟიმი&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ რეჟიმი&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან "
+"და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:138
+#: ../src/metacity.schemas.in.h:149
 #, fuzzy
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
@@ -1426,9 +1635,11 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;"
+"&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:139
+#: ../src/metacity.schemas.in.h:150
 #, fuzzy
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
@@ -1436,9 +1647,11 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;"
+"&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:140
+#: ../src/metacity.schemas.in.h:151
 #, fuzzy
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
@@ -1447,9 +1660,12 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr "-სკენ ფანჯარა  არის ჩართულია ყველა ან&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ ფანჯარა  არის ჩართულია ყველა ან&lt; Control&gt; a ან&lt; Shift&gt;&lt; "
+"Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი "
+"გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:141
+#: ../src/metacity.schemas.in.h:152
 #, fuzzy
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
@@ -1457,9 +1673,12 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "-სკენ a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"-სკენ a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და "
+"ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:142
+#: ../src/metacity.schemas.in.h:153
 #, fuzzy
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
@@ -1468,9 +1687,12 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr "წმ პანელი წმ გაშვება პროგრამა დიალოგი&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"წმ პანელი წმ გაშვება პროგრამა დიალოგი&lt; Control&gt; a ან&lt; Shift&gt;&lt; "
+"Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი "
+"გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:143
+#: ../src/metacity.schemas.in.h:154
 #, fuzzy
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
@@ -1478,9 +1700,11 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "a ტერმინალი&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"a ტერმინალი&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან "
+"და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:144
+#: ../src/metacity.schemas.in.h:155
 #, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
@@ -1489,9 +1713,12 @@ msgid ""
 "upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
 "\". If you set the option to the special string \"disabled\", then there "
 "will be no keybinding for this action."
-msgstr "პანელი წმ ეკრანის ანაბეჭდი -სკენ a ეკრანის ანაბეჭდი ის a ფანჯარა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"პანელი წმ ეკრანის ანაბეჭდი -სკენ a ეკრანის ანაბეჭდი ის a ფანჯარა&lt; "
+"Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; "
+"Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:145
+#: ../src/metacity.schemas.in.h:156
 #, fuzzy
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
@@ -1500,9 +1727,12 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr "პანელი წმ ეკრანის ანაბეჭდი&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"პანელი წმ ეკრანის ანაბეჭდი&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; "
+"F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული "
+"არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:146
+#: ../src/metacity.schemas.in.h:157
 #, fuzzy
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
@@ -1510,32 +1740,35 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "პანელი წმ მენიუ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"პანელი წმ მენიუ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და "
+"ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:147
+#: ../src/metacity.schemas.in.h:158
 #, fuzzy
 msgid "The name of a workspace."
 msgstr "სახელი ის a."
 
-#: ../src/metacity.schemas.in.h:148
+#: ../src/metacity.schemas.in.h:159
 msgid "The screenshot command"
 msgstr "ეკრანის ანაბეჭდის მისაღები ბრძანება"
 
-#: ../src/metacity.schemas.in.h:149
+#: ../src/metacity.schemas.in.h:160
 #, fuzzy
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr "ის ფანჯარა და."
 
-#: ../src/metacity.schemas.in.h:150
+#: ../src/metacity.schemas.in.h:161
 #, fuzzy
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
 msgstr "დრო a ფანჯარა ავტო  არის მინიჭება -სკენ ჭეშმარიტი  არის დუ ის a წამი."
 
-#: ../src/metacity.schemas.in.h:151
+#: ../src/metacity.schemas.in.h:162
 #, fuzzy
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
@@ -1545,24 +1778,28 @@ msgid ""
 "unfocused when the mouse leaves the window."
 msgstr "ფანჯარა რეჟიმი დუ -სკენ ფანჯარა და ფანჯარა და ფანჯარა."
 
-#: ../src/metacity.schemas.in.h:152
+#: ../src/metacity.schemas.in.h:163
 msgid "The window screenshot command"
 msgstr "ფანჯარის ანაბეჭდის გადასაღები ბრძანება"
 
-#: ../src/metacity.schemas.in.h:153
+#: ../src/metacity.schemas.in.h:164
 #, fuzzy
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
-"the window is covered by another window, it raises the window above other "
-"windows. If the window is already fully visible, it lowers the window below "
-"other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-"&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-"case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". "
-"If you set the option to the special string \"disabled\", then there will be "
-"no keybinding for this action."
-msgstr "a ფანჯარა  არის ან სხვა ფანჯარა  არის ფანჯარა ფანჯარა სხვა ფანჯარა  არის ხილული ფანჯარა სხვა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+"the window is covered by another one, it raises the window above all others, "
+"and if the window is already fully visible, it lowers it below all others. "
+"The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". The parser is fairly liberal and allows lower or upper case, and also "
+"abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
+"option to the special string \"disabled\", then there will be no keybinding "
+"for this action."
+msgstr ""
+"a ფანჯარა  არის ან სხვა ფანჯარა  არის ფანჯარა ფანჯარა სხვა ფანჯარა  არის "
+"ხილული ფანჯარა სხვა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის "
+"და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:154
+#: ../src/metacity.schemas.in.h:165
 #, fuzzy
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
@@ -1570,9 +1807,11 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "a ფანჯარა სხვა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"a ფანჯარა სხვა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან "
+"და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:155
+#: ../src/metacity.schemas.in.h:166
 #, fuzzy
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
@@ -1580,9 +1819,11 @@ msgid ""
 "liberal and allows lower or upper case, and also abbreviations such as \"&lt;"
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
-msgstr "ფანჯარა სხვა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"ფანჯარა სხვა&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან "
+"და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
 
-#: ../src/metacity.schemas.in.h:156
+#: ../src/metacity.schemas.in.h:167
 #, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
@@ -1591,9 +1832,12 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr "a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და "
+"ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:157
+#: ../src/metacity.schemas.in.h:168
 #, fuzzy
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
@@ -1602,9 +1846,12 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr "a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა მოქმედება."
+msgstr ""
+"a ფანჯარა -სკენ&lt; Control&gt; a ან&lt; Shift&gt;&lt; Alt&gt; F1  არის და "
+"ან და&lt;&gt; და&lt; Ctrl&gt; მინიჭება -სკენ სტრიქონი გამორთული არა "
+"მოქმედება."
 
-#: ../src/metacity.schemas.in.h:158
+#: ../src/metacity.schemas.in.h:169
 #, fuzzy
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
@@ -1612,213 +1859,203 @@ msgid ""
 "window, 'toggle_maximize' which will maximize/unmaximize the window, "
 "'minimize' which will minimize the window, and 'none' which will not do "
 "anything."
-msgstr "ის ორმაგი ჩართულია სათაური მიმდინარე პარამეტრები ფანჯარა ფანჯარა ფანჯარა და არა არა ნებისმიერი."
+msgstr ""
+"ის ორმაგი ჩართულია სათაური მიმდინარე პარამეტრები ფანჯარა ფანჯარა ფანჯარა და "
+"არა არა ნებისმიერი."
 
-#: ../src/metacity.schemas.in.h:159
+#: ../src/metacity.schemas.in.h:170
+msgid ""
+"This option provides additional control over how newly created windows get "
+"focus. It has two possible values; \"smart\" applies the user's normal focus "
+"mode, and \"strict\" results in windows started from a terminal not being "
+"given focus."
+msgstr ""
+
+#: ../src/metacity.schemas.in.h:171
 msgid "Toggle always on top state"
 msgstr " \"ყოველთვის წინა პლანზე\" რეჟიმის ჩართვა"
 
-#: ../src/metacity.schemas.in.h:160
+#: ../src/metacity.schemas.in.h:172
 msgid "Toggle fullscreen mode"
 msgstr "სრული ეკრანის რეჟიმზე გადასვლა"
 
-#: ../src/metacity.schemas.in.h:161
+#: ../src/metacity.schemas.in.h:173
 msgid "Toggle maximization state"
 msgstr "მთელს ეკრანზე გაშლის რეჟიმი"
 
-#: ../src/metacity.schemas.in.h:162
+#: ../src/metacity.schemas.in.h:174
 msgid "Toggle shaded state"
 msgstr "დაჩრდილულ რეჟიმზე გადასვლა"
 
-#: ../src/metacity.schemas.in.h:163
+#: ../src/metacity.schemas.in.h:175
 msgid "Toggle window on all workspaces"
 msgstr "ყველა გარემოში გამოჩენა"
 
-#: ../src/metacity.schemas.in.h:164
+#: ../src/metacity.schemas.in.h:176
 #, fuzzy
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
-"environments, or when 'audible bell' is off."
+"environments."
 msgstr "ჩართულია a პროგრამა ან a ან მაგარი ის და დუ ან  არის გამორთულია."
 
-#: ../src/metacity.schemas.in.h:165
+#: ../src/metacity.schemas.in.h:177
 msgid "Unmaximize window"
 msgstr "ფანჯრის შემცირება"
 
-#: ../src/metacity.schemas.in.h:166
+#: ../src/metacity.schemas.in.h:178
 msgid "Use standard system font in window titles"
 msgstr "ფანჯრის სათაურში სისტემის შრიფტის გამოყენება"
 
-#: ../src/metacity.schemas.in.h:167
+#: ../src/metacity.schemas.in.h:179
 msgid "Visual Bell Type"
 msgstr "ვიზუალური სიგნალის ტიპი"
 
-#: ../src/metacity.schemas.in.h:168
+#: ../src/metacity.schemas.in.h:180
 #, fuzzy
 msgid "Whether raising should be a side-effect of other user interactions"
 msgstr "a ეფექტი ის სხვა"
 
-#: ../src/metacity.schemas.in.h:169
+#: ../src/metacity.schemas.in.h:181
 msgid "Window focus mode"
 msgstr "ფანჯრის აქტივირების რეჟიმი"
 
-#: ../src/metacity.schemas.in.h:170
+#: ../src/metacity.schemas.in.h:182
 msgid "Window title font"
 msgstr "ფანჯარის სათაურის შრიფტი"
 
-#: ../src/prefs.c:558 ../src/prefs.c:574 ../src/prefs.c:590 ../src/prefs.c:606
-#: ../src/prefs.c:622 ../src/prefs.c:638 ../src/prefs.c:658 ../src/prefs.c:674
-#: ../src/prefs.c:690 ../src/prefs.c:706 ../src/prefs.c:722 ../src/prefs.c:738
-#: ../src/prefs.c:754 ../src/prefs.c:770 ../src/prefs.c:787 ../src/prefs.c:803
-#: ../src/prefs.c:819 ../src/prefs.c:835 ../src/prefs.c:851 ../src/prefs.c:866
-#: ../src/prefs.c:881 ../src/prefs.c:896 ../src/prefs.c:912 ../src/prefs.c:928
-#: ../src/prefs.c:944
-#, c-format
-#, fuzzy
+#: ../src/prefs.c:574 ../src/prefs.c:590 ../src/prefs.c:606 ../src/prefs.c:622
+#: ../src/prefs.c:638 ../src/prefs.c:654 ../src/prefs.c:670 ../src/prefs.c:690
+#: ../src/prefs.c:706 ../src/prefs.c:722 ../src/prefs.c:740 ../src/prefs.c:756
+#: ../src/prefs.c:775 ../src/prefs.c:791 ../src/prefs.c:808 ../src/prefs.c:824
+#: ../src/prefs.c:840 ../src/prefs.c:857 ../src/prefs.c:873 ../src/prefs.c:889
+#: ../src/prefs.c:905 ../src/prefs.c:921 ../src/prefs.c:936 ../src/prefs.c:951
+#: ../src/prefs.c:966 ../src/prefs.c:982 ../src/prefs.c:998
+#: ../src/prefs.c:1014 ../src/prefs.c:1030
+#, fuzzy, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf გასაღები წმ  არის მინიჭება -სკენ არასწორი ტიპი n"
 
-#: ../src/prefs.c:989
-#, c-format
-#, fuzzy
+#: ../src/prefs.c:1075
+#, fuzzy, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr "წმ დუ  არის არა a n"
 
-#: ../src/prefs.c:1013 ../src/prefs.c:1503
-#, c-format
-#, fuzzy
+#: ../src/prefs.c:1099 ../src/prefs.c:1120 ../src/prefs.c:1616
+#, fuzzy, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf გასაღები წმ  არის მინიჭება -სკენ არასწორი n"
 
-#: ../src/prefs.c:1136
-#, c-format
-#, fuzzy
+#: ../src/prefs.c:1249
+#, fuzzy, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
 "range 1..128\n"
 msgstr "დუ GConf გასაღები წმ  არის არა a ზომა დუ n"
 
-#: ../src/prefs.c:1216
-#, c-format
-#, fuzzy
+#: ../src/prefs.c:1329
+#, fuzzy, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "არა აღწერა წმ GConf გასაღები წმ n"
 
-#: ../src/prefs.c:1401
-#, c-format
-#, fuzzy
+#: ../src/prefs.c:1514
+#, fuzzy, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr "დუ GConf გასაღები წმ  არის არა a რიცხვი ის  არის n"
 
-#: ../src/prefs.c:1461
+#: ../src/prefs.c:1574
 #, fuzzy
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr "გამორთული არა n"
 
-#: ../src/prefs.c:1530
-#, c-format
-#, fuzzy
+#: ../src/prefs.c:1643
+#, fuzzy, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "დუ GConf გასაღები წმ  არის ის -სკენ n"
 
-#: ../src/prefs.c:1667
-#, c-format
-#, fuzzy
+#: ../src/prefs.c:1786
+#, fuzzy, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "შეცდომა რიცხვი ის -სკენ წმ n"
 
-#: ../src/prefs.c:2003
-#, c-format
-#, fuzzy
+#: ../src/prefs.c:2172 ../src/prefs.c:2342
+#, fuzzy, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "წმ დუ  არის არა a წმ n"
 
-#: ../src/prefs.c:2358
-#, c-format
-#, fuzzy
+#: ../src/prefs.c:2758
+#, fuzzy, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "შეცდომა სახელი -სკენ წმ წმ n"
 
-#: ../src/resizepopup.c:126
-#, c-format
-#, fuzzy
+#: ../src/resizepopup.c:111
+#, fuzzy, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
 
 #: ../src/screen.c:403
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "ეკრანი ჩართულია წმ  არის არასწორი n"
 
 #: ../src/screen.c:419
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr "ეკრანი ჩართულია წმ a ფანჯარა ჩანაცვლება -სკენ ჩანაცვლება ფანჯარა n"
 
 #: ../src/screen.c:443
-#, c-format
-#, fuzzy
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+#, fuzzy, c-format
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "არა ფანჯარა ჩართულია წმ n"
 
 #: ../src/screen.c:501
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "ეკრანი ჩართულია წმ a ფანჯარა n"
 
-#: ../src/screen.c:702
-#, c-format
-#, fuzzy
+#: ../src/screen.c:705
+#, fuzzy, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "არა ჩართულია წმ n"
 
 #: ../src/session.c:835 ../src/session.c:842
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "არა წმ წმ n"
 
 #: ../src/session.c:852
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "არა გახსნა სესია ფაილი წმ წმ n"
 
 #: ../src/session.c:1004
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "შეცდომა სესია ფაილი წმ წმ n"
 
 #: ../src/session.c:1009
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "შეცდომა სესია ფაილი წმ წმ n"
 
 #: ../src/session.c:1084
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "ვერ განხორციელდა -სკენ სესია ფაილი წმ წმ n"
 
 #: ../src/session.c:1119
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "ვერ განხორციელდა -სკენ სესია ფაილი წმ n"
 
@@ -1828,8 +2065,7 @@ msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session> ატრიბუტი სესია ID"
 
 #: ../src/session.c:1181
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "უცნობი ატრიბუტი წმ ჩართულია<metacity_session> ელემენტი"
 
@@ -1838,95 +2074,80 @@ msgid "nested <window> tag"
 msgstr ""
 
 #: ../src/session.c:1256 ../src/session.c:1288
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "უცნობი ატრიბუტი წმ ჩართულია<window> ელემენტი"
 
 #: ../src/session.c:1360
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "უცნობი ატრიბუტი წმ ჩართულია<maximized> ელემენტი"
 
 #: ../src/session.c:1420
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "უცნობი ატრიბუტი წმ ჩართულია<geometry> ელემენტი"
 
 #: ../src/session.c:1440
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Unknown element %s"
 msgstr "უცნობი ელემენტი წმ"
 
 #: ../src/session.c:1906
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
 msgstr "შეცდომა დიალოგი -სკენ შესახებ t სესია წმ n"
 
 #: ../src/theme-parser.c:224 ../src/theme-parser.c:242
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Line %d character %d: %s"
 msgstr "სტრიქონი %d, სიმბოლო %d: %s"
 
 #: ../src/theme-parser.c:396
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "ატრიბუტი \"%s\" მეორდება ორჯერ იგივე <%s> ელემენტისთვის"
 
 #: ../src/theme-parser.c:414 ../src/theme-parser.c:439
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "ატრიბუტი \"%s\" უმართებლოა <%s> ელემენტისთვის ამ კონტექსტში"
 
 #: ../src/theme-parser.c:485
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Integer %ld must be positive"
 msgstr "მთელი რიცხვი"
 
 #: ../src/theme-parser.c:493
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Integer %ld is too large, current max is %d"
 msgstr "მთელი რიცხვი  არის მაქსიმუმი  არის"
 
 #: ../src/theme-parser.c:521 ../src/theme-parser.c:602
 #: ../src/theme-parser.c:626
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "არა წმ a წერტილი რიცხვი"
 
 #: ../src/theme-parser.c:552
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr "ლოგიკური ჭეშმარიტი ან მცდარი არა წმ"
 
 #: ../src/theme-parser.c:572
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
 msgstr "კუთხე და g n"
 
 #: ../src/theme-parser.c:638
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr "ალფა და g n"
 
 #: ../src/theme-parser.c:684
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
@@ -1937,543 +2158,472 @@ msgstr "არასწორი სათაური წმ ის პატ�
 #: ../src/theme-parser.c:935 ../src/theme-parser.c:1012
 #: ../src/theme-parser.c:1062 ../src/theme-parser.c:1070
 #: ../src/theme-parser.c:1126 ../src/theme-parser.c:1134
-#: ../src/theme-parser.c:2936 ../src/theme-parser.c:3025
-#: ../src/theme-parser.c:3032 ../src/theme-parser.c:3039
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:2933 ../src/theme-parser.c:3022
+#: ../src/theme-parser.c:3029 ../src/theme-parser.c:3036
+#, fuzzy, c-format
 msgid "No \"%s\" attribute on <%s> element"
 msgstr "არა წმ ატრიბუტი ჩართულია წმ ელემენტი"
 
 #: ../src/theme-parser.c:837 ../src/theme-parser.c:905
 #: ../src/theme-parser.c:943 ../src/theme-parser.c:1020
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "წმ სახელი წმ a წამი დრო"
 
 #: ../src/theme-parser.c:849 ../src/theme-parser.c:955
 #: ../src/theme-parser.c:1032
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "<%s> parent \"%s\" has not been defined"
 msgstr "წმ წმ არა"
 
 #: ../src/theme-parser.c:968
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
 msgstr "წმ წმ არა"
 
 #: ../src/theme-parser.c:981
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr "წმ a ან a a"
 
 #: ../src/theme-parser.c:1080
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Unknown type \"%s\" on <%s> element"
 msgstr "უცნობი ტიპი წმ ჩართულია წმ ელემენტი"
 
 #: ../src/theme-parser.c:1091
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "უცნობი მინიჭება წმ ჩართულია წმ ელემენტი"
 
 #: ../src/theme-parser.c:1099
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "ფანჯარა ტიპი წმ a მინიჭება"
 
 #: ../src/theme-parser.c:1143
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Unknown function \"%s\" for menu icon"
 msgstr "უცნობი ფუნქცია წმ მენიუ ხატულა"
 
 #: ../src/theme-parser.c:1152
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Unknown state \"%s\" for menu icon"
 msgstr "უცნობი წმ მენიუ ხატულა"
 
 #: ../src/theme-parser.c:1160
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Theme already has a menu icon for function %s state %s"
 msgstr "გაფორმება a მენიუ ხატულა ფუნქცია წმ წმ"
 
-#: ../src/theme-parser.c:1177 ../src/theme-parser.c:3244
-#: ../src/theme-parser.c:3323
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:1177 ../src/theme-parser.c:3241
+#: ../src/theme-parser.c:3320
+#, fuzzy, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "არა<draw_ops> სახელი წმ"
 
 #: ../src/theme-parser.c:1192 ../src/theme-parser.c:1256
-#: ../src/theme-parser.c:1545 ../src/theme-parser.c:3124
-#: ../src/theme-parser.c:3178 ../src/theme-parser.c:3338
-#: ../src/theme-parser.c:3515 ../src/theme-parser.c:3553
-#: ../src/theme-parser.c:3591 ../src/theme-parser.c:3629
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:1545 ../src/theme-parser.c:3121
+#: ../src/theme-parser.c:3175 ../src/theme-parser.c:3335
+#: ../src/theme-parser.c:3512 ../src/theme-parser.c:3550
+#: ../src/theme-parser.c:3588 ../src/theme-parser.c:3626
+#, fuzzy, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "ელემენტი <%s> დაუშვებელია <%s> კვანძში"
 
 #: ../src/theme-parser.c:1282 ../src/theme-parser.c:1369
 #: ../src/theme-parser.c:1439
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "No \"name\" attribute on element <%s>"
 msgstr "არა სახელი ატრიბუტი ჩართულია ელემენტი წმ"
 
 #: ../src/theme-parser.c:1289 ../src/theme-parser.c:1376
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "No \"value\" attribute on element <%s>"
 msgstr "არა ატრიბუტი ჩართულია ელემენტი წმ"
 
 #: ../src/theme-parser.c:1320 ../src/theme-parser.c:1334
 #: ../src/theme-parser.c:1393
 #, fuzzy
-msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid ""
+"Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr "სიგანე სიმაღლე და თანხმობა"
 
 #: ../src/theme-parser.c:1343
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Distance \"%s\" is unknown"
 msgstr "წმ  არის უცნობი"
 
 #: ../src/theme-parser.c:1402
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Aspect ratio \"%s\" is unknown"
 msgstr "წმ  არის უცნობი"
 
 #: ../src/theme-parser.c:1446
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "No \"top\" attribute on element <%s>"
 msgstr "არა ზემოთ ატრიბუტი ჩართულია ელემენტი წმ"
 
 #: ../src/theme-parser.c:1453
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "No \"bottom\" attribute on element <%s>"
 msgstr "არა ქვემოთ ატრიბუტი ჩართულია ელემენტი წმ"
 
 #: ../src/theme-parser.c:1460
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "No \"left\" attribute on element <%s>"
 msgstr "არა მარცხენა ატრიბუტი ჩართულია ელემენტი წმ"
 
 #: ../src/theme-parser.c:1467
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "No \"right\" attribute on element <%s>"
 msgstr "არა მარჯვენა ატრიბუტი ჩართულია ელემენტი წმ"
 
 #: ../src/theme-parser.c:1499
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Border \"%s\" is unknown"
 msgstr "ჩარჩო წმ  არის უცნობი"
 
-#: ../src/theme-parser.c:1655 ../src/theme-parser.c:1765
-#: ../src/theme-parser.c:1868 ../src/theme-parser.c:2055
-#: ../src/theme-parser.c:2869
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:1652 ../src/theme-parser.c:1762
+#: ../src/theme-parser.c:1865 ../src/theme-parser.c:2052
+#: ../src/theme-parser.c:2866
+#, fuzzy, c-format
 msgid "No \"color\" attribute on element <%s>"
 msgstr "არა ატრიბუტი ჩართულია ელემენტი წმ"
 
-#: ../src/theme-parser.c:1662
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:1659
+#, fuzzy, c-format
 msgid "No \"x1\" attribute on element <%s>"
 msgstr "არა ატრიბუტი ჩართულია ელემენტი წმ"
 
-#: ../src/theme-parser.c:1669 ../src/theme-parser.c:2714
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:1666 ../src/theme-parser.c:2711
+#, fuzzy, c-format
 msgid "No \"y1\" attribute on element <%s>"
 msgstr "არა ატრიბუტი ჩართულია ელემენტი წმ"
 
-#: ../src/theme-parser.c:1676
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:1673
+#, fuzzy, c-format
 msgid "No \"x2\" attribute on element <%s>"
 msgstr "არა ატრიბუტი ჩართულია ელემენტი წმ"
 
-#: ../src/theme-parser.c:1683 ../src/theme-parser.c:2721
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:1680 ../src/theme-parser.c:2718
+#, fuzzy, c-format
 msgid "No \"y2\" attribute on element <%s>"
 msgstr "არა ატრიბუტი ჩართულია ელემენტი წმ"
 
-#: ../src/theme-parser.c:1772 ../src/theme-parser.c:1875
-#: ../src/theme-parser.c:1981 ../src/theme-parser.c:2062
-#: ../src/theme-parser.c:2168 ../src/theme-parser.c:2266
-#: ../src/theme-parser.c:2483 ../src/theme-parser.c:2609
-#: ../src/theme-parser.c:2707 ../src/theme-parser.c:2781
-#: ../src/theme-parser.c:2876
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:1769 ../src/theme-parser.c:1872
+#: ../src/theme-parser.c:1978 ../src/theme-parser.c:2059
+#: ../src/theme-parser.c:2165 ../src/theme-parser.c:2263
+#: ../src/theme-parser.c:2480 ../src/theme-parser.c:2606
+#: ../src/theme-parser.c:2704 ../src/theme-parser.c:2778
+#: ../src/theme-parser.c:2873
+#, fuzzy, c-format
 msgid "No \"x\" attribute on element <%s>"
 msgstr "არა x ატრიბუტი ჩართულია ელემენტი წმ"
 
-#: ../src/theme-parser.c:1779 ../src/theme-parser.c:1882
-#: ../src/theme-parser.c:1988 ../src/theme-parser.c:2069
-#: ../src/theme-parser.c:2175 ../src/theme-parser.c:2273
-#: ../src/theme-parser.c:2490 ../src/theme-parser.c:2616
-#: ../src/theme-parser.c:2788 ../src/theme-parser.c:2883
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:1776 ../src/theme-parser.c:1879
+#: ../src/theme-parser.c:1985 ../src/theme-parser.c:2066
+#: ../src/theme-parser.c:2172 ../src/theme-parser.c:2270
+#: ../src/theme-parser.c:2487 ../src/theme-parser.c:2613
+#: ../src/theme-parser.c:2785 ../src/theme-parser.c:2880
+#, fuzzy, c-format
 msgid "No \"y\" attribute on element <%s>"
 msgstr "არა y ატრიბუტი ჩართულია ელემენტი წმ"
 
-#: ../src/theme-parser.c:1786 ../src/theme-parser.c:1889
-#: ../src/theme-parser.c:1995 ../src/theme-parser.c:2076
-#: ../src/theme-parser.c:2182 ../src/theme-parser.c:2280
-#: ../src/theme-parser.c:2497 ../src/theme-parser.c:2623
-#: ../src/theme-parser.c:2795
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:1783 ../src/theme-parser.c:1886
+#: ../src/theme-parser.c:1992 ../src/theme-parser.c:2073
+#: ../src/theme-parser.c:2179 ../src/theme-parser.c:2277
+#: ../src/theme-parser.c:2494 ../src/theme-parser.c:2620
+#: ../src/theme-parser.c:2792
+#, fuzzy, c-format
 msgid "No \"width\" attribute on element <%s>"
 msgstr "არა სიგანე ატრიბუტი ჩართულია ელემენტი წმ"
 
-#: ../src/theme-parser.c:1793 ../src/theme-parser.c:1896
-#: ../src/theme-parser.c:2002 ../src/theme-parser.c:2083
-#: ../src/theme-parser.c:2189 ../src/theme-parser.c:2287
-#: ../src/theme-parser.c:2504 ../src/theme-parser.c:2630
-#: ../src/theme-parser.c:2802
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:1790 ../src/theme-parser.c:1893
+#: ../src/theme-parser.c:1999 ../src/theme-parser.c:2080
+#: ../src/theme-parser.c:2186 ../src/theme-parser.c:2284
+#: ../src/theme-parser.c:2501 ../src/theme-parser.c:2627
+#: ../src/theme-parser.c:2799
+#, fuzzy, c-format
 msgid "No \"height\" attribute on element <%s>"
 msgstr "არა სიმაღლე ატრიბუტი ჩართულია ელემენტი წმ"
 
-#: ../src/theme-parser.c:1903
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:1900
+#, fuzzy, c-format
 msgid "No \"start_angle\" attribute on element <%s>"
 msgstr "არა დასაწყისი კუთხე ატრიბუტი ჩართულია ელემენტი წმ"
 
-#: ../src/theme-parser.c:1910
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:1907
+#, fuzzy, c-format
 msgid "No \"extent_angle\" attribute on element <%s>"
 msgstr "არა კუთხე ატრიბუტი ჩართულია ელემენტი წმ"
 
-#: ../src/theme-parser.c:2090
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:2087
+#, fuzzy, c-format
 msgid "No \"alpha\" attribute on element <%s>"
 msgstr "არა ალფა ატრიბუტი ჩართულია ელემენტი წმ"
 
-#: ../src/theme-parser.c:2161
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:2158
+#, fuzzy, c-format
 msgid "No \"type\" attribute on element <%s>"
 msgstr "არა ტიპი ატრიბუტი ჩართულია ელემენტი წმ"
 
-#: ../src/theme-parser.c:2209
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:2206
+#, fuzzy, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "არა წმ ტიპი ის"
 
-#: ../src/theme-parser.c:2294
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:2291
+#, fuzzy, c-format
 msgid "No \"filename\" attribute on element <%s>"
 msgstr "არა ფაილის სახელი ატრიბუტი ჩართულია ელემენტი წმ"
 
-#: ../src/theme-parser.c:2319 ../src/theme-parser.c:2827
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:2316 ../src/theme-parser.c:2824
+#, fuzzy, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "არა ტიპი წმ წმ ელემენტი"
 
-#: ../src/theme-parser.c:2462 ../src/theme-parser.c:2595
-#: ../src/theme-parser.c:2700
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:2459 ../src/theme-parser.c:2592
+#: ../src/theme-parser.c:2697
+#, fuzzy, c-format
 msgid "No \"state\" attribute on element <%s>"
 msgstr "არა ატრიბუტი ჩართულია ელემენტი წმ"
 
-#: ../src/theme-parser.c:2469 ../src/theme-parser.c:2602
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:2466 ../src/theme-parser.c:2599
+#, fuzzy, c-format
 msgid "No \"shadow\" attribute on element <%s>"
 msgstr "არა ატრიბუტი ჩართულია ელემენტი წმ"
 
-#: ../src/theme-parser.c:2476
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:2473
+#, fuzzy, c-format
 msgid "No \"arrow\" attribute on element <%s>"
 msgstr "არა ისარი ატრიბუტი ჩართულია ელემენტი წმ"
 
-#: ../src/theme-parser.c:2529 ../src/theme-parser.c:2651
-#: ../src/theme-parser.c:2739
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:2526 ../src/theme-parser.c:2648
+#: ../src/theme-parser.c:2736
+#, fuzzy, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "არა წმ წმ ელემენტი"
 
-#: ../src/theme-parser.c:2539 ../src/theme-parser.c:2661
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:2536 ../src/theme-parser.c:2658
+#, fuzzy, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "არა წმ წმ ელემენტი"
 
-#: ../src/theme-parser.c:2549
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:2546
+#, fuzzy, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "არა ისარი წმ წმ ელემენტი"
 
-#: ../src/theme-parser.c:2962 ../src/theme-parser.c:3078
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:2959 ../src/theme-parser.c:3075
+#, fuzzy, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "არა<draw_ops> წმ"
 
-#: ../src/theme-parser.c:2974 ../src/theme-parser.c:3090
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:2971 ../src/theme-parser.c:3087
+#, fuzzy, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "წმ a"
 
-#: ../src/theme-parser.c:3153
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3150
+#, fuzzy, c-format
 msgid "No \"value\" attribute on <%s> element"
 msgstr "არა ატრიბუტი ჩართულია წმ ელემენტი"
 
-#: ../src/theme-parser.c:3210
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3207
+#, fuzzy, c-format
 msgid "No \"position\" attribute on <%s> element"
 msgstr "არა ატრიბუტი ჩართულია წმ ელემენტი"
 
-#: ../src/theme-parser.c:3219
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3216
+#, fuzzy, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "უცნობი წმ ჩარჩო"
 
-#: ../src/theme-parser.c:3227
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3224
+#, fuzzy, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "ბლოკი a ეთ წმ"
 
-#: ../src/theme-parser.c:3272
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3269
+#, fuzzy, c-format
 msgid "No \"function\" attribute on <%s> element"
 msgstr "არა ფუნქცია ატრიბუტი ჩართულია წმ ელემენტი"
 
-#: ../src/theme-parser.c:3280 ../src/theme-parser.c:3384
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3277 ../src/theme-parser.c:3381
+#, fuzzy, c-format
 msgid "No \"state\" attribute on <%s> element"
 msgstr "არა ატრიბუტი ჩართულია წმ ელემენტი"
 
-#: ../src/theme-parser.c:3289
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3286
+#, fuzzy, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "უცნობი ფუნქცია წმ"
 
-#: ../src/theme-parser.c:3298
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3295
+#, fuzzy, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "უცნობი წმ"
 
-#: ../src/theme-parser.c:3306
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3303
+#, fuzzy, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "ბლოკი a ფუნქცია წმ წმ"
 
-#: ../src/theme-parser.c:3376
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3373
+#, fuzzy, c-format
 msgid "No \"focus\" attribute on <%s> element"
 msgstr "არა ატრიბუტი ჩართულია წმ ელემენტი"
 
-#: ../src/theme-parser.c:3392
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3389
+#, fuzzy, c-format
 msgid "No \"style\" attribute on <%s> element"
 msgstr "არა ატრიბუტი ჩართულია წმ ელემენტი"
 
-#: ../src/theme-parser.c:3401
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3398
+#, fuzzy, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "წმ  არის არა a ატრიბუტი"
 
-#: ../src/theme-parser.c:3410
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3407
+#, fuzzy, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "წმ  არის არა a ატრიბუტი"
 
-#: ../src/theme-parser.c:3420
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3417
+#, fuzzy, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "A წმ არა"
 
-#: ../src/theme-parser.c:3430
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3427
+#, fuzzy, c-format
 msgid "No \"resize\" attribute on <%s> element"
 msgstr "არა ატრიბუტი ჩართულია წმ ელემენტი"
 
-#: ../src/theme-parser.c:3440
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3437
+#, fuzzy, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "წმ  არის არა a ატრიბუტი"
 
-#: ../src/theme-parser.c:3450
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3447
+#, fuzzy, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 msgstr "არა ატრიბუტი ჩართულია წმ ელემენტი გაშლილი"
 
-#: ../src/theme-parser.c:3464
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3461
+#, fuzzy, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "სტილი წმ წმ წმ"
 
-#: ../src/theme-parser.c:3475 ../src/theme-parser.c:3486
-#: ../src/theme-parser.c:3497
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3472 ../src/theme-parser.c:3483
+#: ../src/theme-parser.c:3494
+#, fuzzy, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "სტილი წმ წმ"
 
-#: ../src/theme-parser.c:3536
+#: ../src/theme-parser.c:3533
 #, fuzzy
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr "t a a<piece> ელემენტი a ატრიბუტი და a<draw_ops> ელემენტი ან"
 
-#: ../src/theme-parser.c:3574
+#: ../src/theme-parser.c:3571
 #, fuzzy
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr "t a a<button> ელემენტი a ატრიბუტი და a<draw_ops> ელემენტი ან"
 
-#: ../src/theme-parser.c:3612
+#: ../src/theme-parser.c:3609
 #, fuzzy
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr "t a a<menu_icon> ელემენტი a ატრიბუტი და a<draw_ops> ელემენტი ან"
 
-#: ../src/theme-parser.c:3659
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3656
+#, fuzzy, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "ელემენტი დუ<metacity_theme> არა წმ"
 
-#: ../src/theme-parser.c:3679
-#, c-format
-#, fuzzy
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
+#: ../src/theme-parser.c:3676
+#, fuzzy, c-format
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "ელემენტი წმ  არის არა a სახელი თარიღი აღწერა ელემენტი"
 
-#: ../src/theme-parser.c:3684
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3681
+#, fuzzy, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "ელემენტი წმ  არის არა a<constant> ელემენტი"
 
-#: ../src/theme-parser.c:3696
-#, c-format
-#, fuzzy
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+#: ../src/theme-parser.c:3693
+#, fuzzy, c-format
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "ელემენტი წმ  არის არა a თანხმობა ელემენტი"
 
-#: ../src/theme-parser.c:3718
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3715
+#, fuzzy, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "ელემენტი წმ  არის არა a ელემენტი"
 
-#: ../src/theme-parser.c:3728 ../src/theme-parser.c:3758
-#: ../src/theme-parser.c:3763
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:3725 ../src/theme-parser.c:3755
+#: ../src/theme-parser.c:3760
+#, fuzzy, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "ელემენტი <%s> დაუშვებელია <%s> ელემენტში"
 
-#: ../src/theme-parser.c:3984
+#: ../src/theme-parser.c:3981
 #, fuzzy
 msgid "No draw_ops provided for frame piece"
 msgstr "არა ჩარჩო"
 
-#: ../src/theme-parser.c:3999
+#: ../src/theme-parser.c:3996
 #, fuzzy
 msgid "No draw_ops provided for button"
 msgstr "არა"
 
-#: ../src/theme-parser.c:4014
+#: ../src/theme-parser.c:4011
 #, fuzzy
 msgid "No draw_ops provided for menu icon"
 msgstr "არა მენიუ ხატულა"
 
-#: ../src/theme-parser.c:4054
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:4051
+#, fuzzy, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "ელემენტში <%s> ტექსტი დაუშვებელია"
 
-#: ../src/theme-parser.c:4109
+#: ../src/theme-parser.c:4106
 msgid "<name> specified twice for this theme"
 msgstr ""
 
-#: ../src/theme-parser.c:4120
+#: ../src/theme-parser.c:4117
 msgid "<author> specified twice for this theme"
 msgstr ""
 
-#: ../src/theme-parser.c:4131
+#: ../src/theme-parser.c:4128
 msgid "<copyright> specified twice for this theme"
 msgstr ""
 
-#: ../src/theme-parser.c:4142
+#: ../src/theme-parser.c:4139
 msgid "<date> specified twice for this theme"
 msgstr ""
 
-#: ../src/theme-parser.c:4153
+#: ../src/theme-parser.c:4150
 msgid "<description> specified twice for this theme"
 msgstr ""
 
-#: ../src/theme-parser.c:4348
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:4345
+#, fuzzy, c-format
 msgid "Failed to read theme from file %s: %s\n"
 msgstr "ვერ განხორციელდა -სკენ ფაილი წმ წმ n"
 
-#: ../src/theme-parser.c:4403
-#, c-format
-#, fuzzy
+#: ../src/theme-parser.c:4400
+#, fuzzy, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "გაფორმება ფაილი წმ არა შეიცავს a root<metacity_theme> ელემენტი"
 
@@ -2558,8 +2708,7 @@ msgid "This is a sample message in a sample dialog"
 msgstr " არის a დუ a დიალოგი"
 
 #: ../src/theme-viewer.c:322
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Fake menu item %d\n"
 msgstr "მენიუ n"
 
@@ -2616,8 +2765,7 @@ msgid "Error loading theme: %s\n"
 msgstr "გაფორმების თემის ჩატვირთვისას დაიშვა შეცდომა: %s\n"
 
 #: ../src/theme-viewer.c:808
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "ჩატვირთულია წმ დუ g წამები n"
 
@@ -2651,56 +2799,51 @@ msgid "Window Title Goes Here"
 msgstr "ფანჯარა სათაური"
 
 #: ../src/theme-viewer.c:1004
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
-msgstr "კადრები დუ g წამები g მილიწამები ჩარჩო და g წამები დრო X g მილიწამები ჩარჩო n"
+msgstr ""
+"კადრები დუ g წამები g მილიწამები ჩარჩო და g წამები დრო X g მილიწამები ჩარჩო n"
 
-#: ../src/theme-viewer.c:1219
+#: ../src/theme-viewer.c:1217
 #, fuzzy
 msgid "position expression test returned TRUE but set error"
 msgstr "მინიჭება შეცდომა"
 
-#: ../src/theme-viewer.c:1221
+#: ../src/theme-viewer.c:1219
 #, fuzzy
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "t მინიჭება შეცდომა"
 
-#: ../src/theme-viewer.c:1225
+#: ../src/theme-viewer.c:1223
 #, fuzzy
 msgid "Error was expected but none given"
 msgstr "შეცდომა არა"
 
-#: ../src/theme-viewer.c:1227
-#, c-format
-#, fuzzy
+#: ../src/theme-viewer.c:1225
+#, fuzzy, c-format
 msgid "Error %d was expected but %d given"
 msgstr "შეცდომა"
 
-#: ../src/theme-viewer.c:1233
-#, c-format
-#, fuzzy
+#: ../src/theme-viewer.c:1231
+#, fuzzy, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "შეცდომა არა წმ"
 
-#: ../src/theme-viewer.c:1237
-#, c-format
-#, fuzzy
+#: ../src/theme-viewer.c:1235
+#, fuzzy, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x"
 
-#: ../src/theme-viewer.c:1240
-#, c-format
-#, fuzzy
+#: ../src/theme-viewer.c:1238
+#, fuzzy, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y"
 
-#: ../src/theme-viewer.c:1303
-#, c-format
-#, fuzzy
+#: ../src/theme-viewer.c:1301
+#, fuzzy, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "დუ g წამები g წამები n"
 
@@ -2721,20 +2864,17 @@ msgid "right"
 msgstr "მარჯვნივ"
 
 #: ../src/theme.c:222
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "ჩარჩო არა წმ"
 
 #: ../src/theme.c:241
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "ჩარჩო არა წმ წმ"
 
 #: ../src/theme.c:278
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "ღილაკი თანხმობა g  არის არა"
 
@@ -2743,253 +2883,230 @@ msgstr "ღილაკი თანხმობა g  არის არა"
 msgid "Frame geometry does not specify size of buttons"
 msgstr "ბლოკი არა ზომა ის"
 
-#: ../src/theme.c:842
+#: ../src/theme.c:847
 #, fuzzy
 msgid "Gradients should have at least two colors"
 msgstr "ეთ ფერები"
 
-#: ../src/theme.c:968
-#, c-format
-#, fuzzy
+#: ../src/theme.c:973
+#, fuzzy, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr "დუ e g  არის არა წმ"
 
-#: ../src/theme.c:982
-#, c-format
-#, fuzzy
+#: ../src/theme.c:987
+#, fuzzy, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr "a დახურვა e g  არის არა წმ"
 
-#: ../src/theme.c:993
-#, c-format
-#, fuzzy
+#: ../src/theme.c:998
+#, fuzzy, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "არა წმ დუ"
 
-#: ../src/theme.c:1006
-#, c-format
-#, fuzzy
+#: ../src/theme.c:1011
+#, fuzzy, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "არა წმ დუ"
 
-#: ../src/theme.c:1036
-#, c-format
-#, fuzzy
+#: ../src/theme.c:1041
+#, fuzzy, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr "ადღვებვა  არის ალფა წმ არა"
 
-#: ../src/theme.c:1047
-#, c-format
-#, fuzzy
+#: ../src/theme.c:1052
+#, fuzzy, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "არა ალფა წმ დუ"
 
-#: ../src/theme.c:1057
-#, c-format
-#, fuzzy
+#: ../src/theme.c:1062
+#, fuzzy, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "ალფა წმ დუ  არის არა და 0"
 
-#: ../src/theme.c:1104
-#, c-format
-#, fuzzy
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+#: ../src/theme.c:1109
+#, fuzzy, c-format
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "ჩრდილი  არის ფუძე ფაქტორი წმ არა"
 
-#: ../src/theme.c:1115
-#, c-format
-#, fuzzy
+#: ../src/theme.c:1120
+#, fuzzy, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "არა ფაქტორი წმ დუ"
 
-#: ../src/theme.c:1125
-#, c-format
-#, fuzzy
+#: ../src/theme.c:1130
+#, fuzzy, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "ჩრდილი ფაქტორი წმ დუ  არის"
 
-#: ../src/theme.c:1154
-#, c-format
-#, fuzzy
+#: ../src/theme.c:1159
+#, fuzzy, c-format
 msgid "Could not parse color \"%s\""
 msgstr "არა წმ"
 
-#: ../src/theme.c:1416
-#, c-format
-#, fuzzy
+#: ../src/theme.c:1418
+#, fuzzy, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "კოორდინატა შეიცავს წმ  არის არა"
 
-#: ../src/theme.c:1443
-#, c-format
-#, fuzzy
+#: ../src/theme.c:1445
+#, fuzzy, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "კოორდინატა შეიცავს წერტილი რიცხვი წმ არა"
 
-#: ../src/theme.c:1457
-#, c-format
-#, fuzzy
+#: ../src/theme.c:1459
+#, fuzzy, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "კოორდინატა შეიცავს მთელი წმ არა"
 
-#: ../src/theme.c:1524
-#, c-format
-#, fuzzy
+#: ../src/theme.c:1526
+#, fuzzy, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr "კოორდინატა უცნობი ეთ დასაწყისი ის ტექსტი წმ"
 
-#: ../src/theme.c:1581
+#: ../src/theme.c:1583
 #, fuzzy
 msgid "Coordinate expression was empty or not understood"
 msgstr "კოორდინატა ან არა"
 
-#: ../src/theme.c:1724 ../src/theme.c:1734 ../src/theme.c:1768
+#: ../src/theme.c:1720 ../src/theme.c:1730 ../src/theme.c:1764
 #, fuzzy
 msgid "Coordinate expression results in division by zero"
 msgstr "კოორდინატა დუ"
 
-#: ../src/theme.c:1776
+#: ../src/theme.c:1772
 #, fuzzy
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "კოორდინატა -სკენ ჩართულია a წერტილი რიცხვი"
 
-#: ../src/theme.c:1832
-#, c-format
-#, fuzzy
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+#: ../src/theme.c:1828
+#, fuzzy, c-format
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "კოორდინატა წმ"
 
-#: ../src/theme.c:1841
+#: ../src/theme.c:1837
 #, fuzzy
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "კოორდინატა"
 
-#: ../src/theme.c:1849
+#: ../src/theme.c:1845
 #, fuzzy
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "კოორდინატა ის"
 
-#: ../src/theme.c:1859
-#, c-format
-#, fuzzy
+#: ../src/theme.c:1855
+#, fuzzy, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr "კოორდინატა არა დუ"
 
-#: ../src/theme.c:1978
+#: ../src/theme.c:1973
 #, fuzzy
-msgid ""
-"Coordinate expression parser overflowed its buffer, this is really a "
-"Metacity bug, but are you sure you need a huge expression like that?"
-msgstr "კოორდინატა  არის a Metacity a?"
+msgid "Coordinate expression parser overflowed its buffer."
+msgstr "კოორდინატა ან არა"
 
-#: ../src/theme.c:2007
+#: ../src/theme.c:2002
 #, fuzzy
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "კოორდინატა a დახურვა არა გახსნა"
 
-#: ../src/theme.c:2069
-#, c-format
-#, fuzzy
+#: ../src/theme.c:2064
+#, fuzzy, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "კოორდინატა უცნობი ცვლადი ან წმ"
 
-#: ../src/theme.c:2126
+#: ../src/theme.c:2119
 #, fuzzy
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "კოორდინატა გახსნა არა დახურვა"
 
-#: ../src/theme.c:2137
+#: ../src/theme.c:2130
 #, fuzzy
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "კოორდინატა t -სკენ ნებისმიერი ან"
 
-#: ../src/theme.c:2381 ../src/theme.c:2403 ../src/theme.c:2424
-#, c-format
-#, fuzzy
+#: ../src/theme.c:2371 ../src/theme.c:2393 ../src/theme.c:2414
+#, fuzzy, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "გაფორმება წმ დუ შეცდომა წმ n"
 
-#: ../src/theme.c:3910
-#, c-format
-#, fuzzy
+#: ../src/theme.c:3860
+#, fuzzy, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> ჩარჩო"
 
-#: ../src/theme.c:4360 ../src/theme.c:4392
-#, c-format
-#, fuzzy
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "არ არის<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+#: ../src/theme.c:4304 ../src/theme.c:4329
+#, fuzzy, c-format
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"არ არის<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: ../src/theme.c:4443
-#, c-format
-#, fuzzy
+#: ../src/theme.c:4375
+#, fuzzy, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "ვერ განხორციელდა -სკენ წმ წმ n"
 
-#: ../src/theme.c:4597 ../src/theme.c:4604 ../src/theme.c:4611
-#: ../src/theme.c:4618 ../src/theme.c:4625
-#, c-format
-#, fuzzy
+#: ../src/theme.c:4515 ../src/theme.c:4522 ../src/theme.c:4529
+#: ../src/theme.c:4536 ../src/theme.c:4543
+#, fuzzy, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "არა წმ მინიჭება წმ"
 
-#: ../src/theme.c:4635
-#, c-format
-#, fuzzy
+#: ../src/theme.c:4551
+#, fuzzy, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
-msgstr "არა ჩარჩო მინიჭება ფანჯარა ტიპი წმ დუ წმ დამატება a<window type=\"%s\" style_set=\"whatever\"/> ელემენტი"
+msgstr ""
+"არა ჩარჩო მინიჭება ფანჯარა ტიპი წმ დუ წმ დამატება a<window type=\"%s\" "
+"style_set=\"whatever\"/> ელემენტი"
 
-#: ../src/theme.c:4657
+#: ../src/theme.c:4565
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 msgstr ""
 
-#: ../src/theme.c:5046 ../src/theme.c:5108
-#, c-format
-#, fuzzy
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+#: ../src/theme.c:4945 ../src/theme.c:5007
+#, fuzzy, c-format
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "მომხმარებელი a წმ არა"
 
-#: ../src/theme.c:5054 ../src/theme.c:5116
-#, c-format
-#, fuzzy
+#: ../src/theme.c:4953 ../src/theme.c:5015
+#, fuzzy, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "წმ"
 
 #: ../src/util.c:96
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "ვერ განხორციელდა -სკენ გახსნა განბზიკვა წმ n"
 
 #: ../src/util.c:106
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "ვერ განხორციელდა -სკენ ფაილი წმ წმ n"
 
 #: ../src/util.c:112
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Opened log file %s\n"
 msgstr "ფაილი წმ n"
 
@@ -2997,28 +3114,36 @@ msgstr "ფაილი წმ n"
 msgid "Window manager: "
 msgstr "ფანჯარათა მმართველი: "
 
-#: ../src/util.c:366
+#: ../src/util.c:368
 msgid "Bug in window manager: "
 msgstr "შეცდომა ფანჯარათა მმართველში: "
 
-#: ../src/util.c:395
+#: ../src/util.c:397
 msgid "Window manager warning: "
 msgstr "ფანჯარათა მმართველის გაფრთხილება: "
 
-#: ../src/util.c:419
+#: ../src/util.c:421
 msgid "Window manager error: "
 msgstr "ფანჯარათა მმართველის შეცდომა: "
 
 #: ../src/window-props.c:169
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "პროგრამა მინიჭება a NET PID n"
 
-#. first time through
-#: ../src/window.c:5405
+#: ../src/window-props.c:237
 #, c-format
-#, fuzzy
+msgid "%s (on %s)"
+msgstr ""
+
+#: ../src/window-props.c:1177
+#, c-format
+msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
+msgstr ""
+
+#. first time through
+#: ../src/window.c:5288
+#, fuzzy, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
@@ -3031,34 +3156,77 @@ msgstr "ფანჯარა წმ ID ჩართულია ის ჩა�
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6035
-#, c-format
-#, fuzzy
+#: ../src/window.c:5884
+#, fuzzy, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "ფანჯარა წმ მინიშნება t წთ ზომა x და მაქსიმუმი ზომა x t n"
 
 #: ../src/xprops.c:153
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid ""
 "Window 0x%lx has property %s\n"
 "that was expected to have type %s format %d\n"
 "and actually has type %s format %d n_items %d.\n"
 "This is most likely an application bug, not a window manager bug.\n"
 "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
-msgstr "ფანჯარა წმ -სკენ ტიპი წმ ტიპი წმ n  არის პროგრამა არა a ფანჯარა ფანჯარა სათაური წმ კლასი წმ სახელი წმ n"
+msgstr ""
+"ფანჯარა წმ -სკენ ტიპი წმ ტიპი წმ n  არის პროგრამა არა a ფანჯარა ფანჯარა "
+"სათაური წმ კლასი წმ სახელი წმ n"
 
 #: ../src/xprops.c:399
-#, c-format
-#, fuzzy
+#, fuzzy, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "მდგომარეობა წმ ჩართულია ფანჯარა არასწორი n"
 
 #: ../src/xprops.c:482
-#, c-format
-#, fuzzy
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+#, fuzzy, c-format
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "მდგომარეობა წმ ჩართულია ფანჯარა არასწორი დუ სია n"
 
+#, fuzzy
+#~ msgid ""
+#~ "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
+#~ "focused window will be automatically raised after a delay (the delay is "
+#~ "specified by the auto_raise_delay key). This preference is poorly named, "
+#~ "but kept for backwards compatibility. To try to be more clear (at least "
+#~ "to the technically inclined), its meaning is \"automatically raise the "
+#~ "window following a timeout which is triggered by non-grabbed mouse entry "
+#~ "in sloppy or mouse focus modes\". It is unrelated to clicking behavior (i."
+#~ "e. this is not related to raise-on-click/orthogonal-raise). It is "
+#~ "unrelated to entering a window during drag and drop (because that results "
+#~ "in the application grabbing the mouse)"
+#~ msgstr ""
+#~ "ჭეშმარიტი და რეჟიმი  არის ან ფანჯარა a  არის ავტო გასაღები  არის ადრესატი "
+#~ "-სკენ მეტი გაწმენდა ეთ -სკენ  არის ფანჯარა a დაყოვნების დრო  არის "
+#~ "ჩანაწერი დუ ან  არის -სკენ i e  არის არა -სკენ ჩართულია  არის -სკენ a "
+#~ "ფანჯარა და დუ პროგრამა"
+
+#, fuzzy
+#~ msgid ""
+#~ "Some applications break specifications in ways that result in window "
+#~ "manager misfeatures. For example, ideally Metacity would place all "
+#~ "dialogs in a consistent position with respect to their parent window. "
+#~ "This requires ignoring application-specified positions for dialogs. But "
+#~ "some versions of Java/Swing mark their popup menus as dialogs, so "
+#~ "Metacity has to disable dialog positioning to allow menus to work in "
+#~ "broken Java applications. There are several other examples like this. "
+#~ "This option puts Metacity in full-on Correct mode, which perhaps gives a "
+#~ "moderately nicer UI if you don't need to run any broken apps. Sadly, "
+#~ "workarounds must be enabled by default; the real world is an ugly place. "
+#~ "Some of the workarounds are workarounds for limitations in the "
+#~ "specifications themselves, so sometimes a bug in no-workarounds mode "
+#~ "won't be fixable without amending a spec."
+#~ msgstr ""
+#~ "დუ დუ ფანჯარა -თვის მაგალითი Metacity ყველა დუ a -სკენ ფანჯარა პროგრამა "
+#~ "მონაცემები ის Java Metacity -სკენ გამორთვა დიალოგი -სკენ -სკენ დუ Java "
+#~ "სხვა Metacity დუ ჩართულია სწორია რეჟიმი a Интерфейс t -სკენ ნებისმიერი "
+#~ "ჩართული ნაგულისხმევი  არის ის დუ იშვიათად a დუ არა რეჟიმი t a."
+
+#, fuzzy
+#~ msgid ""
+#~ "Coordinate expression parser overflowed its buffer, this is really a "
+#~ "Metacity bug, but are you sure you need a huge expression like that?"
+#~ msgstr "კოორდინატა  არის a Metacity a?"
