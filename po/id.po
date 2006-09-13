@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-19 10:35+0700\n"
-"PO-Revision-Date: 2006-08-19 11:32+0700\n"
+"POT-Creation-Date: 2006-09-13 08:20+0700\n"
+"PO-Revision-Date: 2000-09-13 08:54+0700\n"
 "Last-Translator: Mohammad DAMT <mdamt@bisnisweb.com>\n"
 "Language-Team: Indonesian <sukarelawan@gnome.linux.or.id>\n"
 "MIME-Version: 1.0\n"
@@ -25,13 +25,13 @@ msgstr "Cara pakai: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity dikompilasi tanpa dukungan mode verbose\n"
 
-#: ../src/delete.c:64 ../src/delete.c:91 ../src/metacity-dialog.c:71
+#: ../src/delete.c:64 ../src/delete.c:91 ../src/metacity-dialog.c:48
 #: ../src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Tidak dapat menguraikan \"%s\" sebagai integer"
 
-#: ../src/delete.c:71 ../src/delete.c:98 ../src/metacity-dialog.c:78
+#: ../src/delete.c:71 ../src/delete.c:98 ../src/metacity-dialog.c:55
 #: ../src/theme-parser.c:476 ../src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
@@ -101,26 +101,26 @@ msgstr "Maksimalkan Ukuran Jendela"
 msgid "Unmaximize Window"
 msgstr "Kembalikan Ukuran ke Semula"
 
-#: ../src/keybindings.c:1021
+#: ../src/keybindings.c:1031
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "Ada program lain yang menggunakan tombol %s dengan kombinasi %x\n"
 
-#: ../src/keybindings.c:2592
+#: ../src/keybindings.c:2663
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr ""
 "Ada error saat menjalankan metacity-dialog untuk menampilkan error suatu "
 "perintah: %s\n"
 
-#: ../src/keybindings.c:2697
+#: ../src/keybindings.c:2768
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Tidak ada perintah %d.\n"
 
-#: ../src/keybindings.c:3563
+#: ../src/keybindings.c:3635
 msgid "No terminal command has been defined.\n"
 msgstr "Tidak ada perintah untuk menjalankan terminal.\n"
 
@@ -182,15 +182,15 @@ msgstr "Gagal menjalankan ulang: %s\n"
 
 #: ../src/menu.c:55
 msgid "Mi_nimize"
-msgstr "Mi_nimalkan Ukuran"
+msgstr "Kecilka_n"
 
 #: ../src/menu.c:56
 msgid "Ma_ximize"
-msgstr "Ma_ksimalkan Ukuran"
+msgstr "Pe_rbesar"
 
 #: ../src/menu.c:57
 msgid "Unma_ximize"
-msgstr "Kem_balikan Ukuran"
+msgstr "Kem_balikan"
 
 #: ../src/menu.c:58
 msgid "Roll _Up"
@@ -210,7 +210,7 @@ msgstr "_Pindahkan"
 
 #: ../src/menu.c:63
 msgid "_Resize"
-msgstr "_Ganti Ukuran"
+msgstr "Ganti·Uku_ran"
 
 #: ../src/menu.c:64
 msgid "Move Titlebar On_screen"
@@ -246,7 +246,7 @@ msgstr "Pindahkan ke Area Kerja Ata_s"
 msgid "Move to Workspace _Down"
 msgstr "Pindahkan ke Area Kerja _Bawah"
 
-#: ../src/menu.c:164 ../src/prefs.c:2142 ../src/prefs.c:2669
+#: ../src/menu.c:164 ../src/prefs.c:2142 ../src/prefs.c:2677
 #, c-format
 msgid "Workspace %d"
 msgstr "Area kerja %d"
@@ -354,31 +354,31 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: ../src/metacity-dialog.c:111
+#: ../src/metacity-dialog.c:88
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "Tidak ada tanda-tanda kehidupan pada jendela \"%s\"."
 
-#: ../src/metacity-dialog.c:119
+#: ../src/metacity-dialog.c:96
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
 "Perubahan yang telah dilakukan akan hilang bila Anda mematikan aplikasi ini "
 "secara paksa."
 
-#: ../src/metacity-dialog.c:130
+#: ../src/metacity-dialog.c:107
 msgid "_Force Quit"
 msgstr "_Matikan Paksa"
 
-#: ../src/metacity-dialog.c:227
+#: ../src/metacity-dialog.c:204
 msgid "Title"
 msgstr "Judul"
 
-#: ../src/metacity-dialog.c:239
+#: ../src/metacity-dialog.c:216
 msgid "Class"
 msgstr "Kelas"
 
-#: ../src/metacity-dialog.c:265
+#: ../src/metacity-dialog.c:242
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -386,7 +386,7 @@ msgstr ""
 "Jendela ini tidak bisa \"menyimpan setelan aktif saat ini\" dan bila login "
 "kali lain Anda harus menjalankannya ulang."
 
-#: ../src/metacity-dialog.c:331
+#: ../src/metacity-dialog.c:308
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -517,9 +517,10 @@ msgid ""
 "raise it, nor to entering a window during drag-and-drop."
 msgstr ""
 "Bila bernilai true dan modus fokus bernilai \"sloppy\" atau \"mouse\" maka "
-"window yang berfokus akan dinaikkan secara otomatis setelah waktu jeda ditetapkan "
-"oleh key auto_rise_delay. Hal ini tidak berhubungan untuk mengklik pada jendela untuk "
-"memunculkannya, ataupun untuk memasukkan jendela ketika seret-dan-letakkan."
+"window yang berfokus akan dinaikkan secara otomatis setelah waktu jeda "
+"ditetapkan oleh key auto_rise_delay. Hal ini tidak berhubungan untuk "
+"mengklik pada jendela untuk memunculkannya, ataupun untuk memasukkan jendela "
+"ketika seret-dan-letakkan."
 
 #: ../src/metacity.schemas.in.h:21
 msgid ""
@@ -541,8 +542,8 @@ msgstr ""
 "dengan menggunakan wireframes menghindari animasi, atau yang lain. Ini "
 "berarti akan kurang berdaya guna untuk kebanyakan pemakai, tetapi akan "
 "membolehkan aplikasi lama untuk tetap bekerja, dan mungkin juga berguna "
-"untuk server terminal. Bagaimanapun, fitur bingkai kawat akan dimatikan "
-"saat kemudahan akses dinyalakan."
+"untuk server terminal. Bagaimanapun, fitur bingkai kawat akan dimatikan saat "
+"kemudahan akses dinyalakan."
 
 #: ../src/metacity.schemas.in.h:23
 msgid ""
@@ -558,9 +559,9 @@ msgstr ""
 "bukan berdasarkan jendela. Konsepnya agak sedikit abstrak, tapi secara umum, "
 "konsepnya lebih mirip ke Mac ketimbang ke Windows. Saat Anda memberi fokus "
 "pada window pada modus aplikasi, semua jendela pada aplikasi akan dinaikkan. "
-"Juga, pada mode berdasarkan aplikasi, klik fokus tidak diberikan ke jendela pada "
-"aplikasi lain. Mode berdasarkan aplikasi, bagaimanapun, belum lagi diterapkan "
-"secara luar pada saat ini."
+"Juga, pada mode berdasarkan aplikasi, klik fokus tidak diberikan ke jendela "
+"pada aplikasi lain. Mode berdasarkan aplikasi, bagaimanapun, belum lagi "
+"diterapkan secara luar pada saat ini."
 
 #: ../src/metacity.schemas.in.h:24
 msgid "If true, trade off usability for less resource usage"
@@ -583,12 +584,12 @@ msgid ""
 "to-focus mode."
 msgstr ""
 "Banyak aksi (mis: mengklik pada daerah client. memindah atau merubah ukuran "
-"jendela) normalnya menimbulkan jendela sebagai efek samping. Tentukan pilihan ini "
-"menjadi salah untuk memisahkan akibat dari aksi pengguna lain. Bahkan jika pilihan "
-"ini salah, jendela akan tetap dapat ditimbulkan dengan alt-kiri klik dimana saja di "
-"jendela, klik biasa di dekorasi jendela, atau dengan pesan istimewa, seperti permintaan "
-"aktivasi dari pager. Pilihan ini dimatikan pada mode klik-untuk-fokus."
-""
+"jendela) normalnya menimbulkan jendela sebagai efek samping. Tentukan "
+"pilihan ini menjadi salah untuk memisahkan akibat dari aksi pengguna lain. "
+"Bahkan jika pilihan ini salah, jendela akan tetap dapat ditimbulkan dengan "
+"alt-kiri klik dimana saja di jendela, klik biasa di dekorasi jendela, atau "
+"dengan pesan istimewa, seperti permintaan aktivasi dari pager. Pilihan ini "
+"dimatikan pada mode klik-untuk-fokus."
 
 #: ../src/metacity.schemas.in.h:27
 msgid "Maximize window"
@@ -741,9 +742,9 @@ msgid ""
 "prevent making the desktop unusable by accidentally asking for too many "
 "workspaces."
 msgstr ""
-"Jumlah ruang kerja. Harus bernilai lebih dari nol, dan memiliki batas maksimum "
-"untuk mencegah kerusakan pada desktop, misalnya karena minta membuat "
-"begitu banyak ruang kerja."
+"Jumlah ruang kerja. Harus bernilai lebih dari nol, dan memiliki batas "
+"maksimum untuk mencegah kerusakan pada desktop, misalnya karena minta "
+"membuat begitu banyak ruang kerja."
 
 #: ../src/metacity.schemas.in.h:64
 msgid "Raise obscured window, otherwise lower"
@@ -780,11 +781,11 @@ msgid ""
 "which gives a more consistent user interface, provided one does not need to "
 "run any misbehaving applications."
 msgstr ""
-"Beberapa aplikasi tidak mengacuhkan spesifikasi yang dapat menyebabkan keselahan "
-"pengelola jendela. Pilihan ini menempatkan Metacity pada mode pembenaran yang tepat, "
-"yang akan memberikan antar muka pengguna yang lebih konsisten, sehingga tidak perlu "
-"menjalankan aplikasi yang berkelakuan tidak benar."
-""
+"Beberapa aplikasi tidak mengacuhkan spesifikasi yang dapat menyebabkan "
+"keselahan pengelola jendela. Pilihan ini menempatkan Metacity pada mode "
+"pembenaran yang tepat, yang akan memberikan antar muka pengguna yang lebih "
+"konsisten, sehingga tidak perlu menjalankan aplikasi yang berkelakuan tidak "
+"benar."
 
 #: ../src/metacity.schemas.in.h:72
 msgid "Switch to workspace 1"
@@ -1612,7 +1613,8 @@ msgstr ""
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
 "singkatan seperti \"&lt;Ctl&gt;\" atau \"&lt;Ctrl&gt;\". Dan apabila Anda "
-"menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi tombol."
+"menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
+"tombol."
 
 #: ../src/metacity.schemas.in.h:138
 msgid ""
@@ -1631,7 +1633,8 @@ msgstr ""
 "Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
 "digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
 "singkata seperti \"&lt;Ctl&gt;\" atau \"&lt;Ctrl&gt;\". Dan apabila Anda "
-"menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi tombol."
+"menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi "
+"tombol."
 
 #: ../src/metacity.schemas.in.h:139
 msgid ""
@@ -1718,12 +1721,13 @@ msgid ""
 "then there will be no keybinding for this action."
 msgstr ""
 "Kombinasi tombol untuk mengalihkan fokus antara jendela tanpa menampilkan "
-"jendela popup. Bila ditambah lagi menekan \"shift\" maka arah pengalihan akan dibalik. "
-"Format penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
-"digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
-"singkata seperti \"&lt;Ctl&gt;\" atau \"&lt;Ctrl&gt;\". Dan apabila Anda "
-"menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi tombol."
+"jendela popup. Bila ditambah lagi menekan \"shift\" maka arah pengalihan "
+"akan dibalik. Format penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;"
+"Shift&gt;&lt;Alt&gt;F1. Program pendeteksi kombinasi tombol ini sangat "
+"fleksibel dan memperbolehkan digunakannya huruf besar dan huruf kecil, juga "
+"memperbolehkan digunakannya singkata seperti \"&lt;Ctl&gt;\" atau \"&lt;"
+"Ctrl&gt;\". Dan apabila Anda menuliskan kata \"disabled\" maka perintah ini "
+"tidak memiliki kombinasi tombol."
 
 #: ../src/metacity.schemas.in.h:144
 msgid ""
@@ -1735,13 +1739,14 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"Kombinasi tombol untuk mengalihkan fokus antara jendela aplikasi, menampilkan "
-"jendela popup. Bila ditambah lagi menekan \"shift\" maka arah pengalihan akan dibalik. "
-"Format penulisannya seperti \"&lt;Control&gt;a\" atau \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-"Program pendeteksi kombinasi tombol ini sangat fleksibel dan memperbolehkan "
-"digunakannya huruf besar dan huruf kecil, juga memperbolehkan digunakannya "
-"singkata seperti \"&lt;Ctl&gt;\" atau \"&lt;Ctrl&gt;\". Dan apabila Anda "
-"menuliskan kata \"disabled\" maka perintah ini tidak memiliki kombinasi tombol."
+"Kombinasi tombol untuk mengalihkan fokus antara jendela aplikasi, "
+"menampilkan jendela popup. Bila ditambah lagi menekan \"shift\" maka arah "
+"pengalihan akan dibalik. Format penulisannya seperti \"&lt;Control&gt;a\" "
+"atau \"&lt;Shift&gt;&lt;Alt&gt;F1. Program pendeteksi kombinasi tombol ini "
+"sangat fleksibel dan memperbolehkan digunakannya huruf besar dan huruf "
+"kecil, juga memperbolehkan digunakannya singkata seperti \"&lt;Ctl&gt;\" "
+"atau \"&lt;Ctrl&gt;\". Dan apabila Anda menuliskan kata \"disabled\" maka "
+"perintah ini tidak memiliki kombinasi tombol."
 
 #: ../src/metacity.schemas.in.h:145
 msgid ""
@@ -2103,8 +2108,8 @@ msgid ""
 msgstr ""
 "Pilihan ini menentukan efek samping klik ganda pada judul window. Pilihan "
 "yang sah adalah 'toggle_shade' yang akan menggulung/membuka window, dan "
-"'toggle_maximize' yang akan memaksimalkan dan mengecilkan window, dan "
-"'none' tidak akan melakukan apapun."
+"'toggle_maximize' yang akan memaksimalkan dan mengecilkan window, dan 'none' "
+"tidak akan melakukan apapun."
 
 #: ../src/metacity.schemas.in.h:170
 msgid ""
@@ -2113,10 +2118,10 @@ msgid ""
 "mode, and \"strict\" results in windows started from a terminal not being "
 "given focus."
 msgstr ""
-"Pilihan ini menyediakan kendali tambahan pada bagaimana jendela yang baru "
-"di buat berfokus. Dia memiliki dua nilai yang mungkin; \"pintar\" menerapkan mode "
-"fokus normal pengguna, dan \"strict\" menghasilkan jendela dimulai dari terminal "
-"tidak akan berfokus."
+"Pilihan ini menyediakan kendali tambahan pada bagaimana jendela yang baru di "
+"buat berfokus. Dia memiliki dua nilai yang mungkin; \"pintar\" menerapkan "
+"mode fokus normal pengguna, dan \"strict\" menghasilkan jendela dimulai dari "
+"terminal tidak akan berfokus."
 
 #: ../src/metacity.schemas.in.h:171
 msgid "Toggle always on top state"
@@ -2162,7 +2167,8 @@ msgstr "Tipe Bel Visual"
 
 #: ../src/metacity.schemas.in.h:180
 msgid "Whether raising should be a side-effect of other user interactions"
-msgstr "Apakah kemunculan akan menjadi efek-samping dari interaksi pengguna lain"
+msgstr ""
+"Apakah kemunculan akan menjadi efek-samping dari interaksi pengguna lain"
 
 #: ../src/metacity.schemas.in.h:181
 msgid "Window focus mode"
@@ -2240,7 +2246,7 @@ msgstr ""
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Ada error saat mengeset jumlah area kerja menjadi %d: %s\n"
 
-#: ../src/prefs.c:2170 ../src/prefs.c:2335
+#: ../src/prefs.c:2172 ../src/prefs.c:2342
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2249,7 +2255,7 @@ msgstr ""
 "\"%s\" yang ada pada database konfigurasi bernilai tidak benar untuk "
 "kombinasi tombol \"%s\"\n"
 
-#: ../src/prefs.c:2750
+#: ../src/prefs.c:2758
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Ada error saat melakukan seting nama workspace %d ke \"%s\": %s\n"
@@ -3397,13 +3403,13 @@ msgstr "Aplikasi telah membuat _NET_WM_PID %lu bohongan\n"
 msgid "%s (on %s)"
 msgstr "%s (pada %s)"
 
-#: ../src/window-props.c:1178
+#: ../src/window-props.c:1177
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "WM_TRANSIENT_FOR salah jendela 0x%lx ditentukan untuk %s.\n"
 
 #. first time through
-#: ../src/window.c:5273
+#: ../src/window.c:5288
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3419,7 +3425,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5869
+#: ../src/window.c:5884
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
