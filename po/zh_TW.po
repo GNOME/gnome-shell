@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: metacity 2.16.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-09-04 20:18+0800\n"
-"PO-Revision-Date: 2006-09-04 20:28+0800\n"
+"PO-Revision-Date: 2006-09-13 17:42+0800\n"
 "Last-Translator: Woodman Tuen <wmtuen@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) <community@linuxhall.org>\n"
 "MIME-Version: 1.0\n"
@@ -172,17 +172,20 @@ msgstr "找不到任何佈景主題！請確定 %s 已經存在而且其中存�
 msgid "Failed to restart: %s\n"
 msgstr "無法重新啟動：%s\n"
 
+# (Abel) take care of the same string in libwnck
 #: ../src/menu.c:55
 msgid "Mi_nimize"
 msgstr "最小化(_N)"
 
+# (Abel) take care of the same string in libwnck
 #: ../src/menu.c:56
 msgid "Ma_ximize"
 msgstr "最大化(_X)"
 
+# (Abel) take care of the same string in libwnck
 #: ../src/menu.c:57
 msgid "Unma_ximize"
-msgstr "還原最大化(_X)"
+msgstr "取消最大化(_X)"
 
 #: ../src/menu.c:58
 msgid "Roll _Up"
@@ -192,14 +195,17 @@ msgstr "捲起(_U)"
 msgid "_Unroll"
 msgstr "放下(_U)"
 
+# (Abel) take care of the same string in libwnck
 #: ../src/menu.c:60 ../src/menu.c:61
 msgid "On _Top"
 msgstr "最上層(_T)"
 
+# (Abel) take care of the same string in libwnck
 #: ../src/menu.c:62
 msgid "_Move"
 msgstr "移動(_M)"
 
+# (Abel) take care of the same string in libwnck
 #: ../src/menu.c:63
 msgid "_Resize"
 msgstr "調整尺寸(_R)"
@@ -208,53 +214,64 @@ msgstr "調整尺寸(_R)"
 msgid "Move Titlebar On_screen"
 msgstr "在畫面上移動標題列(_S)"
 
+# (Abel) take care of the same string in libwnck
 #. separator
 #: ../src/menu.c:66
 msgid "_Close"
 msgstr "關閉(_C)"
 
+# (Abel) take care of the same string in libwnck
 #. separator
 #: ../src/menu.c:68
 msgid "_Always on Visible Workspace"
-msgstr "放在所有可視的工作區中(_A)"
+msgstr "在所有工作區顯示(_A)"
 
+# (Abel) take care of the same string in libwnck
 #: ../src/menu.c:69
 msgid "_Only on This Workspace"
 msgstr "只在本工作區顯示(_O)"
 
+# (Abel) take care of the same string in libwnck
 #: ../src/menu.c:70
 msgid "Move to Workspace _Left"
-msgstr "將視窗移至左方的工作區(_L)"
+msgstr "移至左方的工作區(_L)"
 
+# (Abel) take care of the same string in libwnck
 #: ../src/menu.c:71
 msgid "Move to Workspace R_ight"
-msgstr "將視窗移至右方的工作區(_I)"
+msgstr "移至右方的工作區(_I)"
 
+# (Abel) take care of the same string in libwnck
 #: ../src/menu.c:72
 msgid "Move to Workspace _Up"
-msgstr "將視窗移至上方的工作區(_U)"
+msgstr "移至上方的工作區(_U)"
 
+# (Abel) take care of the same string in libwnck
 #: ../src/menu.c:73
 msgid "Move to Workspace _Down"
-msgstr "將視窗移至下方的工作區(_D)"
+msgstr "移至下方的工作區(_D)"
 
+# (Abel) take care of the same string in libwnck
 #: ../src/menu.c:164 ../src/prefs.c:2142 ../src/prefs.c:2677
 #, c-format
 msgid "Workspace %d"
 msgstr "工作區 %d"
 
+# (Abel) take care of the same string in libwnck
 #: ../src/menu.c:173
 msgid "Workspace 1_0"
 msgstr "工作區 1_0"
 
+# (Abel) take care of the same string in libwnck
 #: ../src/menu.c:175
 #, c-format
 msgid "Workspace %s%d"
 msgstr "工作區 %s%d"
 
+# (Abel) take care of the same string in libwnck
 #: ../src/menu.c:373
 msgid "Move to Another _Workspace"
-msgstr "將視窗移至其它的工作區(_W)"
+msgstr "移至另一個工作區(_W)"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
