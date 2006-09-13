@@ -9,10 +9,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity.HEAD.ta\n"
+"Project-Id-Version: ta\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-09-13 07:50+0200\n"
-"PO-Revision-Date: 2006-09-13 14:37+0530\n"
+"PO-Revision-Date: 2006-09-13 15:48+0530\n"
 "Last-Translator: Felix <ifelix@redhat.com>\n"
 "Language-Team: Tamil <ta@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -91,19 +91,19 @@ msgstr "சாளரம் மூடவும்"
 
 #: ../src/frames.c:1092
 msgid "Window Menu"
-msgstr "தலைப்புப் பட்டி"
+msgstr "சாளர பட்டி"
 
 #: ../src/frames.c:1095
 msgid "Minimize Window"
-msgstr "சாளரத்தை சிறிதாக்கு"
+msgstr "சாளரத்தை குறுக்கவும்"
 
 #: ../src/frames.c:1098
 msgid "Maximize Window"
-msgstr "சாளரத்தை பெரிதாக்கு"
+msgstr "சாளரத்தை பெரிதாக்கவும்"
 
 #: ../src/frames.c:1101
 msgid "Unmaximize Window"
-msgstr "சாளரத்தை பெரிதாக்காதே"
+msgstr "பெரிதாக்காத சாளரம்"
 
 #: ../src/keybindings.c:1031
 #, c-format
@@ -164,7 +164,7 @@ msgstr ""
 
 #: ../src/main.c:198
 msgid "Print version"
-msgstr ""
+msgstr "அச்சு பதிப்பு"
 
 #: ../src/main.c:350
 #, c-format
@@ -185,7 +185,7 @@ msgstr "மீண்டும் துவக்குவதில் பிழ�
 
 #: ../src/menu.c:55
 msgid "Mi_nimize"
-msgstr "(_n)சிறிதாக்கு"
+msgstr "குறுக்கவும் (_n)"
 
 #: ../src/menu.c:56
 msgid "Ma_ximize"
@@ -201,11 +201,11 @@ msgstr "மேலே சுருட்டு"
 
 #: ../src/menu.c:59
 msgid "_Unroll"
-msgstr "கீழ் விரி"
+msgstr "கீழ் விரி (_U)"
 
 #: ../src/menu.c:60 ../src/menu.c:61
 msgid "On _Top"
-msgstr "(_T)மேலே"
+msgstr "மேலே (_T)"
 
 #: ../src/menu.c:62
 msgid "_Move"
@@ -213,7 +213,7 @@ msgstr "நகர்த்தவும் (_M)"
 
 #: ../src/menu.c:63
 msgid "_Resize"
-msgstr "அளவு மாற்று"
+msgstr "மறுஅளவு (_R)"
 
 #: ../src/menu.c:64
 msgid "Move Titlebar On_screen"
@@ -235,28 +235,28 @@ msgstr "இந்த வேலையிடத்தில் மட்டும�
 
 #: ../src/menu.c:70
 msgid "Move to Workspace _Left"
-msgstr "(_L)பணியிடத்தின் இடது பக்கம் நகர்த்து"
+msgstr "வேலையிடத்தின் இடப்பக்கத்திற்கு நகர்த்தவும் (_L)"
 
 #: ../src/menu.c:71
 msgid "Move to Workspace R_ight"
-msgstr "(_i)பணியிடத்தின் வலது பக்கம் நகர்த்து"
+msgstr "வேலையிடத்தின் வலப்பக்கத்திற்கு நகர்த்தவும் (_i)"
 
 #: ../src/menu.c:72
 msgid "Move to Workspace _Up"
-msgstr "(_U)பணியிடத்தின் மேலே நகர்த்து"
+msgstr "வேலையிடத்தின் மேலே நகர்த்தவும் (_U)"
 
 #: ../src/menu.c:73
 msgid "Move to Workspace _Down"
-msgstr "(_D)பணியிடத்தின் கீழேகம் நகர்த்து"
+msgstr "வேலையிடத்தின் கீழே நகர்த்தவும் (_D)"
 
 #: ../src/menu.c:164 ../src/prefs.c:2142 ../src/prefs.c:2677
 #, c-format
 msgid "Workspace %d"
-msgstr "வேலை þடம் %d"
+msgstr "வேலையிடம் %d"
 
 #: ../src/menu.c:173
 msgid "Workspace 1_0"
-msgstr "வேலை þடம் 1_0"
+msgstr "வேலையிடம் 1_0"
 
 #: ../src/menu.c:175
 #, c-format
@@ -265,7 +265,7 @@ msgstr "வேலையிடம் %s%d"
 
 #: ../src/menu.c:373
 msgid "Move to Another _Workspace"
-msgstr "(_W)மற்ற பணியிடத்திற்கு நகர்த்து"
+msgstr "மற்ற வேலையிடத்திற்கு மாற்றவும் (_W)"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -301,7 +301,7 @@ msgstr "Alt"
 #.
 #: ../src/metaaccellabel.c:121
 msgid "Meta"
-msgstr "மெட்டா"
+msgstr "Meta"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the super key. If the text on this key isn't typically
@@ -310,7 +310,7 @@ msgstr "மெட்டா"
 #.
 #: ../src/metaaccellabel.c:127
 msgid "Super"
-msgstr "சூப்பர்"
+msgstr "Super"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the hyper key. If the text on this key isn't typically
@@ -319,7 +319,7 @@ msgstr "சூப்பர்"
 #.
 #: ../src/metaaccellabel.c:133
 msgid "Hyper"
-msgstr "ஹைப்பர்"
+msgstr "Hyper"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the mod2 key. If the text on this key isn't typically
@@ -368,7 +368,7 @@ msgstr "இந்த பயன்பாட்டை நீங்கள் கட
 
 #: ../src/metacity-dialog.c:107
 msgid "_Force Quit"
-msgstr "(_F)கட்டாயம் வெளியேறு"
+msgstr "கட்டாய வெளியேற்றம் (_F)"
 
 #: ../src/metacity-dialog.c:204
 msgid "Title"
@@ -376,7 +376,7 @@ msgstr "தலைப்பு"
 
 #: ../src/metacity-dialog.c:216
 msgid "Class"
-msgstr "Class"
+msgstr "வகுப்பு"
 
 #: ../src/metacity-dialog.c:242
 msgid ""
