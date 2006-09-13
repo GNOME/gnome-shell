@@ -1921,6 +1921,59 @@ meta_window_show (MetaWindow *window)
       window->denied_focus_and_not_transient = FALSE;
     }
   
+  if (needs_stacking_adjustment)
+    {
+      /* needs_stacking_adjustment is only set under certain
+       * circumstances currently; if those circumstances change, this
+       * code may need re-thinking too
+       */
+      g_assert(window->showing_for_first_time &&
+               !place_on_top_on_map &&
+               !takes_focus_on_map &&
+               focus_window != NULL);
+
+      /* This window isn't getting focus on map.  We may need to do some
+       * special handing with it in regards to
+       *   - the stacking of the window
+       *   - the MRU position of the window
+       *   - the demands attention setting of the window
+       */
+          
+      gboolean overlap;
+      overlap = windows_overlap (window, focus_window);
+
+      /* We want alt tab to go to the denied-focus window */
+      ensure_mru_position_after (window, focus_window);
+
+      /* We don't want the denied-focus window to obscure the focus
+       * window, and if we're in both click-to-focus mode and
+       * raise-on-click mode then we want to maintain the invariant
+       * that MRU order == stacking order.  The need for this if
+       * comes from the fact that in sloppy/mouse focus the focus
+       * window may not overlap other windows and also can be
+       * considered "below" them; this combination means that
+       * placing the denied-focus window "below" the focus window
+       * in the stack when it doesn't overlap it confusingly places
+       * that new window below a lot of other windows.
+       */
+      if (overlap || 
+          (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK &&
+           meta_prefs_get_raise_on_click ()))
+        meta_window_stack_just_below (window, focus_window);
+
+      /* If the window will be obscured by the focus window, then the
+       * user might not notice the window appearing so set the
+       * demands attention hint.
+       *
+       * We set the hint ourselves rather than calling 
+       * meta_window_set_demands_attention() because that would cause
+       * a recalculation of overlap, and a call to set_net_wm_state()
+       * which we are going to call ourselves here a few lines down.
+       */
+      if (overlap)
+        window->wm_state_demands_attention = TRUE;
+    } 
+
   /* Shaded means the frame is mapped but the window is not */
   
   if (window->frame && !window->frame->mapped)
@@ -1965,24 +2018,24 @@ meta_window_show (MetaWindow *window)
           XMapWindow (window->display->xdisplay, window->xwindow);
           meta_error_trap_pop (window->display, FALSE);
           did_show = TRUE;
-
-	  if (window->was_minimized)
-	    {
-	      MetaRectangle window_rect;
-	      MetaRectangle icon_rect;
-	      
-	      window->was_minimized = FALSE;
-	      
-	      if (meta_window_get_icon_geometry (window, &icon_rect))
-		{
-		  meta_window_get_outer_rect (window, &window_rect);
-		  
-		  meta_effect_run_unminimize (window,
-					      &window_rect,
-					      &icon_rect,
-					      NULL, NULL);
-		}
-	    }
+          
+          if (window->was_minimized)
+            {
+              MetaRectangle window_rect;
+              MetaRectangle icon_rect;
+              
+              window->was_minimized = FALSE;
+              
+              if (meta_window_get_icon_geometry (window, &icon_rect))
+                {
+                  meta_window_get_outer_rect (window, &window_rect);
+                  
+                  meta_effect_run_unminimize (window,
+                                              &window_rect,
+                                              &icon_rect,
+                                              NULL, NULL);
+                }
+            }
         }      
       
       if (window->iconic)
@@ -2006,50 +2059,6 @@ meta_window_show (MetaWindow *window)
         }
       else
         {
-          /* This window isn't getting focus on map.  We may need to do some
-           * special handing with it in regards to
-           *   - the stacking of the window
-           *   - the MRU position of the window
-           *   - the demands attention setting of the window
-           */
-          if (!place_on_top_on_map && needs_stacking_adjustment)
-            {
-              gboolean overlap;
-              g_assert (focus_window != NULL);
-              overlap = windows_overlap (window, focus_window);
-
-              /* We want alt tab to go to the denied-focus window */
-              ensure_mru_position_after (window, focus_window);
-
-              /* We don't want the denied-focus window to obscure the focus
-               * window, and if we're in both click-to-focus mode and
-               * raise-on-click mode then we want to maintain the invariant
-               * that MRU order == stacking order.  The need for this if
-               * comes from the fact that in sloppy/mouse focus the focus
-               * window may not overlap other windows and also can be
-               * considered "below" them; this combination means that
-               * placing the denied-focus window "below" the focus window
-               * in the stack when it doesn't overlap it confusingly places
-               * that new window below a lot of other windows.
-               */
-              if (overlap || 
-                  (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK &&
-                   meta_prefs_get_raise_on_click ()))
-                meta_window_stack_just_below (window, focus_window);
-
-              /* If the window will be obscured by the focus window, then the
-               * user might not notice the window appearing so set the
-               * demands attention hint.
-               *
-               * We set the hint ourselves rather than calling 
-               * meta_window_set_demands_attention() because that would cause
-               * a recalculation of overlap, and a call to set_net_wm_state()
-               * which we are going to call ourselves here a few lines down.
-               */
-              if (overlap)
-                window->wm_state_demands_attention = TRUE;
-            }
-
           /* Prevent EnterNotify events in sloppy/mouse focus from
            * erroneously focusing the window that had been denied
            * focus.  FIXME: This introduces a race; I have a couple

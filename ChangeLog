@@ -1,5 +1,11 @@
 2006-09-13  Elijah Newren  <newren gmail com>
 
+	* src/window.c (meta_window_show): Patch from Thomas Andersen to
+	make windows be stacked correctly before showing them, to prevent
+	flicker with focus stealing prevention.  #332385.
+
+2006-09-13  Elijah Newren  <newren gmail com>
+
 	* src/common.h (MetaWindowMenuFunc):
 	* src/core.[ch] (meta_core_user_lower_and_unfocus,
 	  meta_core_user_focus, meta_core_show_window_menu,
