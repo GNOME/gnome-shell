@@ -5598,6 +5598,8 @@ meta_gtk_arrow_from_string (const char *str)
     return GTK_ARROW_LEFT;
   else if (strcmp ("right", str) == 0)
     return GTK_ARROW_RIGHT;
+  else if (strcmp ("none", str) == 0)
+    return GTK_ARROW_NONE;
   else
     return -1;
 }
@@ -5615,6 +5617,8 @@ meta_gtk_arrow_to_string (GtkArrowType arrow)
       return "left";
     case GTK_ARROW_RIGHT:
       return "right";
+    case GTK_ARROW_NONE:
+      return "none";
     }
 
   return "<unknown>";

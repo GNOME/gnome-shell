@@ -1,4 +1,11 @@
-2006-09-11  Elijah Newren  <newren gmail com>
+2006-09-12  Elijah Newren  <newren gmail com>
+
+	* src/theme.c (meta_gtk_arrow_from_string,
+	meta_gtk_arrow_to_string): patch from Bruno Boaventura de Oliveira
+	to fix a compiler warning about not handling GTK_ARRROW_NONE.
+	#355490.
+
+2006-09-12  Elijah Newren  <newren gmail com>
 
 	* src/compositor.c: Patch from Bruno Boaventura de Oliveira
 	Lacerda to fix warnings about unused function and global var.
