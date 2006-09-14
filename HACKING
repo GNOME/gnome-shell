@@ -39,10 +39,11 @@ Minimal Building/Testing Environment
   You do not need to _install_ a development version of Metacity to
   build, run and test it; you can run it from some temporary
   directory.  Also, you do not need to build all of Gnome in order to
-  build a development version of Metacity -- odds are, you can build
-  metacity from CVS without building any other modules.
+  build a development version of Metacity -- odds are, you may be able
+  to build metacity from CVS without building any other modules.
 
-  As long as you have gtk+ >= 2.6 with your distro, you should be able
+  As long as you have gtk+ >= 2.10 with your distro (gtk+ >= 2.6 if
+  you manually revert the change from bug 348633), you should be able
   to install your distro's development packages (e.g. gtk2-devel,
   GConf2-devel, startup-notification-devel on Fedora; also, remember
   to install the gnome-common package which is needed for building cvs

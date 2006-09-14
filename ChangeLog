@@ -1,5 +1,10 @@
 2006-09-13  Elijah Newren  <newren gmail com>
 
+	* HACKING: update -- we depend on gtk+ >= 2.10 since Vincent's
+	July patches for #348633.
+
+2006-09-13  Elijah Newren  <newren gmail com>
+
 	* src/window.c (meta_window_show): Patch from Thomas Andersen to
 	make windows be stacked correctly before showing them, to prevent
 	flicker with focus stealing prevention.  #332385.
