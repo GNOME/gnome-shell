@@ -1,3 +1,10 @@
+2006-09-14  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	D tmpl/clutter-video-texture.sgml
+
+	* clutter-sections.txt:
+	* clutter.types: Remove ClutterVideoTexture.
+
 2006-08-30  Jorn Baayen  <jorn@openedhand.com>
 
 	* Makefile.am:

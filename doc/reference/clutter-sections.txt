@@ -128,24 +128,6 @@ clutter_stage_get_type
 </SECTION>
 
 <SECTION>
-<FILE>clutter-video-texture</FILE>
-<TITLE>ClutterVideoTexture</TITLE>
-ClutterVideoTexture
-clutter_video_texture_new
-<SUBSECTION Standard>
-ClutterVideoTextureClass
-CLUTTER_VIDEO_TEXTURE
-CLUTTER_IS_VIDEO_TEXTURE
-CLUTTER_TYPE_VIDEO_TEXTURE
-CLUTTER_VIDEO_TEXTURE_CLASS
-CLUTTER_IS_VIDEO_TEXTURE_CLASS
-CLUTTER_VIDEO_TEXTURE_GET_CLASS
-<SUBSECTION Private>
-ClutterVideoTexturePrivate
-clutter_video_texture_get_type
-</SECTION>
-
-<SECTION>
 <FILE>clutter-rectangle</FILE>
 <TITLE>ClutterRectangle</TITLE>
 ClutterRectangle
