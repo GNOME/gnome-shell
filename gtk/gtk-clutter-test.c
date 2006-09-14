@@ -26,8 +26,6 @@ input_cb (ClutterStage *stage,
 	  ClutterEvent *event,
 	  gpointer      data)
 {
-  SuperOH *oh = (SuperOH *)data;
-
   if (event->type == CLUTTER_BUTTON_PRESS)
     {
       ClutterButtonEvent *bev = (ClutterButtonEvent *) event;
@@ -37,8 +35,8 @@ input_cb (ClutterStage *stage,
 	       bev->button);
 
       e = clutter_stage_get_actor_at_pos (stage, 
-		                            clutter_button_event_x (event),
-					    clutter_button_event_y (event));
+		                            clutter_button_event_x (bev),
+					    clutter_button_event_y (bev));
 
       if (e)
 	clutter_actor_hide(e);
@@ -63,7 +61,6 @@ frame_cb (ClutterTimeline *timeline,
 	  gpointer         data)
 {
   SuperOH        *oh = (SuperOH *)data;
-  ClutterActor *stage = clutter_stage_get_default ();
   gint            i;
 
 #if TRAILS
@@ -167,12 +164,11 @@ main (int argc, char *argv[])
 #endif
 
   /* create a new group to hold multiple actors in a group */
-  oh->group = clutter_group_new();
+  oh->group = CLUTTER_GROUP (clutter_group_new());
   
   for (i = 0; i < NHANDS; i++)
     {
       gint x, y, w, h;
-      ClutterColor colour = { 255, 0, 0, 255 };
 #if 1
       /* Create a texture from pixbuf, then clone in to same resources */
       if (i == 0)
@@ -180,6 +176,7 @@ main (int argc, char *argv[])
      else
        oh->hand[i] = clutter_clone_texture_new (CLUTTER_TEXTURE(oh->hand[0]));
 #else
+      ClutterColor colour = { 255, 0, 0, 255 };
 
       oh->hand[i] = clutter_rectangle_new_with_color (&colour);
       clutter_actor_set_size (oh->hand[i], 50, 50);

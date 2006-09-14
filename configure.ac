@@ -54,7 +54,18 @@ AC_CHECK_FUNCS([memset munmap strcasecmp strdup])
 
 dnl ========================================================================
 
-PKG_CHECK_MODULES(X11, x11)
+PKG_CHECK_MODULES(X11, x11, [have_x11=yes], [have_x11=no])
+if test x$have_x11 = xno
+then
+   AC_PATH_X
+   if test x"$x_includes" != x"NONE" && test -n "$x_includes" ; then
+     X11_CFLAGS=-I`echo $x_includes | sed -e "s/:/ -I/g"`
+   fi
+   if test x"$x_libraries" != x"NONE" && test -n "$x_libraries" ; then
+     X11_LIBS=-L`echo $x_libraries | sed -e "s/:/ -L/g"`
+   fi
+fi
+
 
 # FIXME: Needed ?
 AC_MSG_CHECKING([for XTHREADS in Xlib])

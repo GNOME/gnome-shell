@@ -276,7 +276,7 @@ clutter_stage_unrealize (ClutterActor *actor)
     }
   else
     {
-      if (priv->xwin)
+      if (priv->xwin != None)
 	{
 	  XDestroyWindow (clutter_xdisplay(), priv->xwin);
 	  priv->xwin = None;
@@ -284,8 +284,11 @@ clutter_stage_unrealize (ClutterActor *actor)
     }
 
   glXMakeCurrent(clutter_xdisplay(), None, NULL);
-  glXDestroyContext (clutter_xdisplay(), priv->gl_context);
-  priv->gl_context = None;
+  if (priv->gl_context != None)
+    {
+      glXDestroyContext (clutter_xdisplay(), priv->gl_context);
+      priv->gl_context = None;
+    }
 }
 
 static void
@@ -323,7 +326,7 @@ clutter_stage_realize (ClutterActor *actor)
 	  return;
 	}
 
-      if (priv->gl_context)
+      if (priv->gl_context != None)
 	glXDestroyContext (clutter_xdisplay(), priv->gl_context);
 
       priv->xpixmap = XCreatePixmap (clutter_xdisplay(),
@@ -421,7 +424,7 @@ clutter_stage_realize (ClutterActor *actor)
       sync_fullscreen (stage);  
       sync_cursor_visible (stage);  
 
-      if (priv->gl_context)
+      if (priv->gl_context != None)
 	glXDestroyContext (clutter_xdisplay(), priv->gl_context);
 
       priv->gl_context = glXCreateContext (clutter_xdisplay(), 
@@ -480,7 +483,7 @@ clutter_stage_request_coords (ClutterActor    *self,
       priv->xwin_width  = new_width;
       priv->xwin_height = new_height;
 
-      if (priv->xwin)
+      if (priv->xwin != None)
 	XResizeWindow (clutter_xdisplay(), 
 		       priv->xwin, 
 		       priv->xwin_width, 
@@ -496,7 +499,7 @@ clutter_stage_request_coords (ClutterActor    *self,
       sync_gl_viewport (stage);
     }
 
-  if (priv->xwin) /* Do we want to bother ? */
+  if (priv->xwin != None) /* Do we want to bother ? */
     XMoveWindow (clutter_xdisplay(), 
 		 priv->xwin,
 		 box->x1,
@@ -509,7 +512,7 @@ clutter_stage_dispose (GObject *object)
 {
   ClutterStage *self = CLUTTER_STAGE (object);
 
-  if (self->priv->xwin)
+  if (self->priv->xwin != None)
     clutter_stage_unrealize (CLUTTER_ACTOR (self));
 
   G_OBJECT_CLASS (clutter_stage_parent_class)->dispose (object);
@@ -739,6 +742,8 @@ clutter_stage_init (ClutterStage *self)
   priv->want_offscreen  = FALSE;
   priv->want_fullscreen = FALSE;
   priv->hide_cursor     = FALSE;
+  priv->xwin = None;
+  priv->gl_context = None;
 
   priv->xwin_width  = 100;
   priv->xwin_height = 100;

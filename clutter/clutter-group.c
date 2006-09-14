@@ -425,8 +425,6 @@ clutter_group_remove (ClutterGroup *self,
   g_return_if_fail (CLUTTER_IS_GROUP (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
-  g_object_ref (actor);
-
   parent = clutter_actor_get_parent (actor);
   if (parent != CLUTTER_ACTOR (self))
     {

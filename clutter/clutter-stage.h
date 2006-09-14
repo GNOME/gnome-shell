@@ -36,6 +36,7 @@
 
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
+#include <GL/glx.h>
 
 G_BEGIN_DECLS
 
@@ -123,6 +124,7 @@ GdkPixbuf *   clutter_stage_snapshot            (ClutterStage       *stage,
 						 gint                y,
 						 gint                width,
 						 gint                height);
+const XVisualInfo * clutter_stage_get_xvisual   (ClutterStage *stage);
 
 G_END_DECLS
 

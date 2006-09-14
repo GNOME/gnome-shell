@@ -65,7 +65,7 @@ input_cb (ClutterStage *stage,
       if (e)
 	clutter_actor_hide(e);
     }
-  else if (event->type == CLUTTER_KEY_PRESS)
+  else if (event->type == CLUTTER_KEY_RELEASE)
     {
       ClutterKeyEvent *kev = (ClutterKeyEvent *) event;
 

@@ -88,10 +88,9 @@ realize (GtkWidget *widget)
 {
   GtkClutter *clutter;
   GtkClutterPrivate *priv;
-  XVisualInfo *xvinfo;
+  const XVisualInfo *xvinfo;
   GdkVisual *visual;
   GdkColormap *colormap;
-  gboolean foreign_success;
 
   clutter = GTK_CLUTTER (widget);
   priv = GTK_CLUTTER_GET_PRIVATE (clutter);

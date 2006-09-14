@@ -123,6 +123,10 @@ guint32 clutter_key_event_time (ClutterKeyEvent *keyev);
 
 guint clutter_key_event_state (ClutterKeyEvent *keyev);
 
+gint clutter_button_event_x  (ClutterButtonEvent *buttev);
+
+gint clutter_button_event_y (ClutterButtonEvent *buttev);
+
 guint clutter_key_event_symbol (ClutterKeyEvent *keyev);
 
 guint16 clutter_key_event_code (ClutterKeyEvent *keyev);

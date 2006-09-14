@@ -1,3 +1,25 @@
+2006-09-14  Matthew Allum  <mallum@openedhand.com>
+
+	Various fixes from Bastien Nocera:
+
+	* clutter/clutter-event.h:
+	* clutter/clutter-stage.c: (clutter_stage_unrealize),
+	(clutter_stage_realize), (clutter_stage_request_coords),
+	(clutter_stage_dispose), (clutter_stage_init):
+	* clutter/clutter-stage.h:
+	* gtk/gtk-clutter-test.c: (input_cb), (frame_cb), (main):
+	* gtk/gtk-clutter.c: (realize):
+	Misc fixes (#152)
+
+	* clutter/clutter-group.c: (clutter_group_remove):
+	Remove uneeded ref count (#143)
+
+	* examples/super-oh.c: (input_cb):
+	Handle key release rather than presses (#154)
+
+	* configure.ac:
+	Add old style X libs check when x11.pc unavailable (#101)
+
 2006-09-01  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/Makefile.am:
