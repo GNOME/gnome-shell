@@ -1,5 +1,5 @@
 # Slovenian translation of metacity.
-# Copyright (C) 2002 Free Software Foundation, Inc.
+# Copyright (C) 2002-2006 Free Software Foundation, Inc.
 # This file is distributed under the same license as the metacity package.
 #
 # Andraz Tori <andraz.tori1@guest.arnes.si>, 2000.
@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-26 00:52+0200\n"
-"PO-Revision-Date: 2006-09-07 22:11+0100\n"
+"POT-Creation-Date: 2006-09-14 15:54+0200\n"
+"PO-Revision-Date: 2006-09-15 02:02+0100\n"
 "Last-Translator: Matic Žgur <mr.zgur@gmail.com>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +29,7 @@ msgstr "Metacity je bil preveden brez podpore za zgovorni način\n"
 
 #: ../src/delete.c:64
 #: ../src/delete.c:91
-#: ../src/metacity-dialog.c:71
+#: ../src/metacity-dialog.c:48
 #: ../src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
@@ -37,7 +37,7 @@ msgstr "Ni mogoče razčleniti \"%s\" kot celoštevilčne vrednosti"
 
 #: ../src/delete.c:71
 #: ../src/delete.c:98
-#: ../src/metacity-dialog.c:78
+#: ../src/metacity-dialog.c:55
 #: ../src/theme-parser.c:476
 #: ../src/theme-parser.c:530
 #, c-format
@@ -114,17 +114,17 @@ msgstr "Odrazpni okno"
 msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
 msgstr "Tipko %s s spremenilnikom %x uporablja že nek drug program\n"
 
-#: ../src/keybindings.c:2668
+#: ../src/keybindings.c:2663
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "Napaka ob zaganjanju metacity-dialog za izpis napake o ukazu: %s\n"
 
-#: ../src/keybindings.c:2773
+#: ../src/keybindings.c:2768
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Ukaz %d ni bil naveden.\n"
 
-#: ../src/keybindings.c:3640
+#: ../src/keybindings.c:3635
 msgid "No terminal command has been defined.\n"
 msgstr "Ni bilo navedenih ukazov terminala.\n"
 
@@ -180,11 +180,11 @@ msgstr "Ni mogoče najti teme! Prepričajte se ali %s obstaja in vsebuje običaj
 #: ../src/main.c:424
 #, c-format
 msgid "Failed to restart: %s\n"
-msgstr "Nisem uspel znova pognati: %s\n"
+msgstr "Ni mogoče znova pognati: %s\n"
 
 #: ../src/menu.c:55
 msgid "Mi_nimize"
-msgstr "Po_manjšaj"
+msgstr "Poma_njšaj"
 
 # G:1 K:0 O:0
 #: ../src/menu.c:56
@@ -219,7 +219,7 @@ msgstr "_Prestavi"
 # G:2 K:2 O:0
 #: ../src/menu.c:63
 msgid "_Resize"
-msgstr "_Spremeni velikost"
+msgstr "Sp_remeni velikost"
 
 #: ../src/menu.c:64
 msgid "Move Titlebar On_screen"
@@ -240,7 +240,7 @@ msgstr "Vedno n_a vidni delovni površini"
 # G:1 K:0 O:0
 #: ../src/menu.c:69
 msgid "_Only on This Workspace"
-msgstr "Sam_o na delovni površini"
+msgstr "Sam_o na tej delovni površini"
 
 #: ../src/menu.c:70
 msgid "Move to Workspace _Left"
@@ -377,34 +377,34 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: ../src/metacity-dialog.c:111
+#: ../src/metacity-dialog.c:88
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "Okno \"%s\" se ne odziva."
 
-#: ../src/metacity-dialog.c:119
+#: ../src/metacity-dialog.c:96
 msgid "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr "Če vsilite izhod iz programa, boste izgubili vse neshranjene spremembe."
 
-#: ../src/metacity-dialog.c:130
+#: ../src/metacity-dialog.c:107
 msgid "_Force Quit"
 msgstr "_Vsili izhod"
 
-#: ../src/metacity-dialog.c:227
+#: ../src/metacity-dialog.c:204
 msgid "Title"
 msgstr "Naziv"
 
 # G:1 K:0 O:0
-#: ../src/metacity-dialog.c:239
+#: ../src/metacity-dialog.c:216
 msgid "Class"
 msgstr "Razred"
 
 # G:2 K:6 O:0
-#: ../src/metacity-dialog.c:265
+#: ../src/metacity-dialog.c:242
 msgid "These windows do not support \"save current setup\" and will have to be restarted manually next time you log in."
 msgstr "Ta okna ne podpirajo \"shranitve trenutnih nastavitev\", zato bodo morala biti ob vaši naslednji prijavi znova zagnana ročno."
 
-#: ../src/metacity-dialog.c:331
+#: ../src/metacity-dialog.c:308
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -1280,7 +1280,7 @@ msgstr "Ni mogoče ustvariti imenika %s %s\n"
 #: ../src/session.c:852
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "Nisem uspel odpreti datoteke seje '%s' za pisanje: %s\n"
+msgstr "Ni mogoče odpreti datoteke seje '%s' za pisanje: %s\n"
 
 #: ../src/session.c:1004
 #, c-format
@@ -1295,12 +1295,12 @@ msgstr "Napaka ob zapiranju datekote seje '%s': %s\n"
 #: ../src/session.c:1084
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
-msgstr "Nisem uspel prebrati datoteke shranjene seje %s: %s\n"
+msgstr "Ni mogoče prebrati datoteke shranjene seje %s: %s\n"
 
 #: ../src/session.c:1119
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr "Nisem uspel razčleniti datoteke shranjene seje: %s\n"
+msgstr "Ni mogoče razčleniti datoteke shranjene seje: %s\n"
 
 #: ../src/session.c:1168
 msgid "<metacity_session> attribute seen but we already have the session ID"
@@ -1652,7 +1652,7 @@ msgstr "Element <%s> nima atributa \"type\""
 #: ../src/theme-parser.c:2206
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr "Nisem razumel vrednost za vrsto preliva \"%s\""
+msgstr "Ni mogoče razumeti vrednost za vrsto preliva \"%s\""
 
 #: ../src/theme-parser.c:2291
 #, c-format
@@ -1688,18 +1688,18 @@ msgstr "Element <%s> nima atributa \"arrow\""
 #: ../src/theme-parser.c:2736
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr "Nisem razumel stanja \"%s\" za element <%s>"
+msgstr "Ni mogoče razumeti stanja \"%s\" za element <%s>"
 
 #: ../src/theme-parser.c:2536
 #: ../src/theme-parser.c:2658
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr "Nisem razumel senčenja \"%s\" za element <%s>"
+msgstr "Ni mogoče razumeti senčenja \"%s\" za element <%s>"
 
 #: ../src/theme-parser.c:2546
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr "Nisem razumel puščice \"%s\" za element <%s>"
+msgstr "Ni mogoče razumeti puščice \"%s\" za element <%s>"
 
 #: ../src/theme-parser.c:2959
 #: ../src/theme-parser.c:3075
@@ -1895,7 +1895,7 @@ msgstr "Za to temo je element <description> naveden dvakrat"
 #: ../src/theme-parser.c:4345
 #, c-format
 msgid "Failed to read theme from file %s: %s\n"
-msgstr "Nisem uspel prebrati teme iz datoteke %s: %s\n"
+msgstr "Ni mogoče prebrati teme iz datoteke %s: %s\n"
 
 #: ../src/theme-parser.c:4400
 #, c-format
@@ -2149,12 +2149,12 @@ msgstr "Navedbi barve GTK manjka oglati zaklepaj za stanjem, npr. gtk:fg[NORMAL]
 #: ../src/theme.c:998
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr "V navedbi barve nisem razumel stanja \"%s\""
+msgstr "Ni mogoče razumeti stanja \"%s\" v navedbi barve "
 
 #: ../src/theme.c:1011
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr "V navedbi barve nisem razumel barvne komponente \"%s\""
+msgstr "Ni mogoče razumeti barvne komponente \"%s\" v navedbi barve"
 
 #: ../src/theme.c:1041
 #, c-format
@@ -2179,7 +2179,7 @@ msgstr "Oblika zapisa barve senčenja je \"shade/base_color/factor\", \"%s\" ne 
 #: ../src/theme.c:1120
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "V senčeni barvi nisem uspel razčleniti faktorja senčenja \"%s\""
+msgstr "Ni mogoče razčleniti faktorja senčenja \"%s\" v senčeni barvi"
 
 #: ../src/theme.c:1130
 #, c-format
@@ -2189,7 +2189,7 @@ msgstr "V senčeni barvi je faktor senčenja \"%s\" negativen"
 #: ../src/theme.c:1159
 #, c-format
 msgid "Could not parse color \"%s\""
-msgstr "Nisem uspel razčleniti barve \"%s\""
+msgstr "Ni mogoče razčleniti barve \"%s\""
 
 #: ../src/theme.c:1418
 #, c-format
@@ -2285,7 +2285,7 @@ msgstr "Manjka <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"karkoli\"/
 #: ../src/theme.c:4375
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr "Nisem uspel naložiti teme \"%s\": %s\n"
+msgstr "Nalaganje teme \"%s\" ni uspelo: %s\n"
 
 #: ../src/theme.c:4515
 #: ../src/theme.c:4522
@@ -2321,12 +2321,12 @@ msgstr "Konstanta \"%s\" je bila že določena"
 #: ../src/util.c:96
 #, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr "Nisem uspel odpreti razhroščevalnega dnevnika: %s\n"
+msgstr "Odpiranje razhroščevalnega dnevnika ni uspelo: %s\n"
 
 #: ../src/util.c:106
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "S fdopen() nisem uspel odpreti dnevniške datoteke %s: %s\n"
+msgstr "Odpiranje dnevniške datoteke %s s fdopen() ni uspelo: %s\n"
 
 #: ../src/util.c:112
 #, c-format
@@ -2360,13 +2360,13 @@ msgstr "Program je nastavil pokvarjen _NET_WM_PID %lu\n"
 msgid "%s (on %s)"
 msgstr "%s (na %s)"
 
-#: ../src/window-props.c:1178
+#: ../src/window-props.c:1177
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Neveljaven WM_TRANSIENT_FOR za okno 0x%lx naveden za %s.\n"
 
 #. first time through
-#: ../src/window.c:5288
+#: ../src/window.c:5298
 #, c-format
 msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
 msgstr "Okno %s nastavi svoj SM_CLIENT_ID, namesto, da bi nastavilo WM_CLIENT_LEADER kot je nevaedeno v ICCCM.\n"
@@ -2378,7 +2378,7 @@ msgstr "Okno %s nastavi svoj SM_CLIENT_ID, namesto, da bi nastavilo WM_CLIENT_LE
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5884
+#: ../src/window.c:5894
 #, c-format
 msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "Okno %s nastavi namig MWM, ki pove, da se mu ne da spremeniti velikosti, anastavi najmanjšo velikost na %d x %d in največjo na %d x %d; to nima smilsa.\n"
