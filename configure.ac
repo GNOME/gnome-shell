@@ -66,25 +66,6 @@ then
    fi
 fi
 
-
-# FIXME: Needed ?
-AC_MSG_CHECKING([for XTHREADS in Xlib])
-
-AC_RUN_IFELSE(
-      [AC_LANG_PROGRAM([[#include <X11/Xlib.h>]],
-        [[return XInitThreads() == 0 ? 0 : 1;]])],
-      [xthreads=no],
-      [xthreads=yes],
-      [xthreads=yes])
-
-AC_MSG_RESULT($xthreads)
-
-if test "x$xthreads" = "xyes"
-then
-   X11_LIBS="$X11_LIBS -lpthread"
-   AC_DEFINE([XTHREADS], [], [1])
-fi
-
 AC_CHECK_HEADERS([GL/gl.h GL/glx.h],, 
 	         [AC_MSG_ERROR([Unable to locate required GL headers])])
 

@@ -61,7 +61,16 @@ G_BEGIN_DECLS
 
 #define CLUTTER_MARK() CLUTTER_DBG("mark")
 
-int
+typedef enum {
+  CLUTTER_INIT_SUCCESS        =  1,
+  CLUTTER_INIT_ERROR_UNKOWN   =  0,
+  CLUTTER_INIT_ERROR_THREADS  = -1,
+  CLUTTER_INIT_ERROR_DISPLAY  = -2,
+  CLUTTER_INIT_ERROR_INTERNAL = -3,
+  CLUTTER_INIT_ERROR_OPENGL   = -4
+} ClutterInitError;
+
+ClutterInitError
 clutter_init (int *argc, char ***argv);
 
 void

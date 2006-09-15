@@ -1,3 +1,13 @@
+2006-09-15  Matthew Allum  <mallum@openedhand.com>
+
+	More fixes from Bastien Nocera (#155):
+
+	* clutter/clutter-main.c: (clutter_init):
+	* clutter/clutter-main.h:
+	Add an enum for clutter init to return an error code. 
+	* configure.ac:
+	Dont check for XInitThreads, there is no need, its part of xlib.
+
 2006-09-14  Matthew Allum  <mallum@openedhand.com>
 
 	Various fixes from Bastien Nocera:

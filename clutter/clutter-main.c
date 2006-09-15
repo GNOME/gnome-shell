@@ -525,14 +525,14 @@ is_gl_version_at_least_12 (void)
  *
  * Return value: 1 on success, < 0 on failure.
  */
-int
+ClutterInitError
 clutter_init (int *argc, char ***argv)
 {
   ClutterMainContext *context;
   static gboolean is_initialized = FALSE;
 
   if (is_initialized)
-    return 1;
+    return CLUTTER_INIT_SUCCESS;
 
   context = clutter_context_get_default ();
 
@@ -547,7 +547,8 @@ clutter_init (int *argc, char ***argv)
   if (!g_thread_supported ())
     g_thread_init (NULL);
 
-  XInitThreads();
+  if (!XInitThreads())
+    return CLUTTER_INIT_ERROR_THREADS;
 
   context->main_loops = NULL;
   context->main_loop_level = 0;
@@ -555,7 +556,7 @@ clutter_init (int *argc, char ***argv)
   if ((context->xdpy = XOpenDisplay (g_getenv ("DISPLAY"))) == NULL)
     {
       g_critical ("Unable to connect to X DISPLAY.");
-      return -1;
+      return CLUTTER_INIT_ERROR_DISPLAY;
     }
 
   context->xscreen   = DefaultScreen(context->xdpy);
@@ -575,10 +576,12 @@ clutter_init (int *argc, char ***argv)
   clutter_actor_realize (CLUTTER_ACTOR (context->stage));
 
   g_return_val_if_fail 
-      (CLUTTER_ACTOR_IS_REALIZED(CLUTTER_ACTOR(context->stage)), -4);
+      (CLUTTER_ACTOR_IS_REALIZED(CLUTTER_ACTOR(context->stage)),
+       CLUTTER_INIT_ERROR_INTERNAL);
 
   /* At least GL 1.2 is needed for CLAMP_TO_EDGE */
-  g_return_val_if_fail(is_gl_version_at_least_12 (), -5);
+  g_return_val_if_fail(is_gl_version_at_least_12 (),
+		       CLUTTER_INIT_ERROR_OPENGL);
 
   /* Check available features */
   clutter_feature_init ();
