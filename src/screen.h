@@ -123,7 +123,8 @@ struct _MetaScreen
 MetaScreen*   meta_screen_new                 (MetaDisplay                *display,
                                                int                         number,
                                                guint32                     timestamp);
-void          meta_screen_free                (MetaScreen                 *screen);
+void          meta_screen_free                (MetaScreen                 *screen,
+                                               guint32                     timestamp);
 void          meta_screen_manage_all_windows  (MetaScreen                 *screen);
 MetaScreen*   meta_screen_for_x_screen        (Screen                     *xscreen);
 void          meta_screen_foreach_window      (MetaScreen                 *screen,

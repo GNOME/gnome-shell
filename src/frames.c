@@ -1254,10 +1254,12 @@ meta_frames_button_press_event (GtkWidget      *widget,
               {
                 if (flags & META_FRAME_SHADED)
                   meta_core_unshade (gdk_display,
-                                     frame->xwindow);
+                                     frame->xwindow,
+                                     event->time);
                 else
                   meta_core_shade (gdk_display,
-                                   frame->xwindow);
+                                   frame->xwindow,
+                                   event->time);
               }
           }
           break;          

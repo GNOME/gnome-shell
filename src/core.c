@@ -339,20 +339,22 @@ meta_core_delete (Display *xdisplay,
 
 void
 meta_core_unshade (Display *xdisplay,
-                   Window   frame_xwindow)
+                   Window   frame_xwindow,
+                   guint32  timestamp)
 {
   MetaWindow *window = get_window (xdisplay, frame_xwindow);
 
-  meta_window_unshade (window);
+  meta_window_unshade (window, timestamp);
 }
 
 void
 meta_core_shade (Display *xdisplay,
-                 Window   frame_xwindow)
+                 Window   frame_xwindow,
+                 guint32  timestamp)
 {
   MetaWindow *window = get_window (xdisplay, frame_xwindow);
   
-  meta_window_shade (window);
+  meta_window_shade (window, timestamp);
 }
 
 void

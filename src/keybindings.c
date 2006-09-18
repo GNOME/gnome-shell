@@ -3300,9 +3300,9 @@ handle_toggle_shade       (MetaDisplay    *display,
   if (window)
     {
       if (window->shaded)
-        meta_window_unshade (window);
+        meta_window_unshade (window, event->xkey.time);
       else if (window->has_shade_func)
-        meta_window_shade (window);
+        meta_window_shade (window, event->xkey.time);
     }
 }
 

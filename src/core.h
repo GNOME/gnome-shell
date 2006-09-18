@@ -95,9 +95,11 @@ void meta_core_delete           (Display *xdisplay,
                                  Window   frame_xwindow,
                                  guint32  timestamp);
 void meta_core_unshade          (Display *xdisplay,
-                                 Window   frame_xwindow);
+                                 Window   frame_xwindow,
+                                 guint32  timestamp);
 void meta_core_shade            (Display *xdisplay,
-                                 Window   frame_xwindow);
+                                 Window   frame_xwindow,
+                                 guint32  timestamp);
 void meta_core_unstick          (Display *xdisplay,
                                  Window   frame_xwindow);
 void meta_core_stick            (Display *xdisplay,

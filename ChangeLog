@@ -1,5 +1,34 @@
 2006-09-18  Elijah Newren  <newren gmail com>
 
+	Partial audit to fix timestamp usage.  One step towards fixing
+	#355180; see important comments in that bug.
+
+	* src/core.[ch] (meta_core_unshade, meta_core_shade):
+	* src/delete.c (meta_window_present_delete_dialog,
+	  delete_ping_timeout_func):
+	* src/display.[ch] (meta_display_open, meta_display_close,
+	  event_callback, meta_display_begin_grab_op,
+	  process_selection_clear, meta_display_unmanage_screen,
+	  meta_display_unmanage_windows_for_screen):
+	* src/frames.c (meta_frames_button_press_event):
+	* src/keybindings.c (handle_toggle_shade):
+	* src/main.c (main):
+	* src/screen.[ch] (update_num_workspaces, meta_screen_new,
+	  meta_screen_free, prefs_changed_callback):
+	* src/window.[ch] (meta_window_free, finish_minimize,
+	  implement_showing, meta_window_show, meta_window_maximize,
+	  meta_window_make_fullscreen_internal,
+	  meta_window_unmake_fullscreen, meta_window_shade,
+	  meta_window_unshade, window_activate, send_sync_request,
+	  meta_window_client_message, menu_callback,
+	  meta_window_update_keyboard_resize):
+	Remove usage of CurrentTime, meta_display_get_current_time() and
+	meta_display_get_current_time_roundtrip() where possible, or
+	document why it isn't possible, or at very least add a FIXME with
+	some explanation of my laziness and what needs to be done.
+
+2006-09-18  Elijah Newren  <newren gmail com>
+
 	* src/spring-model.c (on_end_move, model_is_calm): Patch from Maik
 	Beckmann to remove compilation warnings.  Fixes #355876.
 

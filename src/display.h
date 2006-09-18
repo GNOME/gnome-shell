@@ -388,7 +388,8 @@ struct _MetaDisplay
   )
 
 gboolean      meta_display_open                (void);
-void          meta_display_close               (MetaDisplay *display);
+void          meta_display_close               (MetaDisplay *display,
+                                                guint32      timestamp);
 MetaScreen*   meta_display_screen_for_root     (MetaDisplay *display,
                                                 Window       xroot);
 MetaScreen*   meta_display_screen_for_x_screen (MetaDisplay *display,
@@ -399,10 +400,12 @@ void          meta_display_grab                (MetaDisplay *display);
 void          meta_display_ungrab              (MetaDisplay *display);
 
 void          meta_display_unmanage_screen     (MetaDisplay *display,
-                                                MetaScreen  *screen);
+                                                MetaScreen  *screen,
+                                                guint32      timestamp);
 
 void          meta_display_unmanage_windows_for_screen (MetaDisplay *display,
-                                                        MetaScreen  *screen);
+                                                        MetaScreen  *screen,
+                                                        guint32      timestamp);
 
 /* A given MetaWindow may have various X windows that "belong"
  * to it, such as the frame window.

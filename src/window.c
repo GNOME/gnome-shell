@@ -910,7 +910,8 @@ meta_window_apply_session_info (MetaWindow *window,
 }
 
 void
-meta_window_free (MetaWindow  *window)
+meta_window_free (MetaWindow  *window,
+                  guint32      timestamp)
 {
   GList *tmp;
   
@@ -963,7 +964,9 @@ meta_window_free (MetaWindow  *window)
       meta_topic (META_DEBUG_FOCUS,
                   "Focusing default window since we're unmanaging %s\n",
                   window->desc);
-      meta_workspace_focus_default_window (window->screen->active_workspace, window, meta_display_get_current_time_roundtrip (window->display));
+      meta_workspace_focus_default_window (window->screen->active_workspace,
+                                           window,
+                                           timestamp);
     }
   else if (window->display->expected_focus_window == window)
     {
@@ -971,7 +974,9 @@ meta_window_free (MetaWindow  *window)
                   "Focusing default window since expected focus window freed %s\n",
                   window->desc);
       window->display->expected_focus_window = NULL;
-      meta_workspace_focus_default_window (window->screen->active_workspace, window, meta_display_get_current_time_roundtrip (window->display));
+      meta_workspace_focus_default_window (window->screen->active_workspace,
+                                           window,
+                                           timestamp);
     }
   else
     {
@@ -992,8 +997,7 @@ meta_window_free (MetaWindow  *window)
     }
   
   if (window->display->grab_window == window)
-    meta_display_end_grab_op (window->display,
-                              meta_display_get_current_time (window->display));
+    meta_display_end_grab_op (window->display, timestamp);
 
   g_assert (window->display->grab_window != window);
   
@@ -1338,14 +1342,20 @@ finish_minimize (const MetaEffect *effect,
 		 gpointer	   data)
 {
   MetaWindow *window = data;
+  /* FIXME: It really sucks to put timestamp pinging here; it'd
+   * probably make more sense in implement_showing() so that it's at
+   * least not duplicated in meta_window_show; but since
+   * finish_minimize is a callback making things just slightly icky, I
+   * haven't done that yet.
+   */
+  guint32 timestamp = meta_display_get_current_time_roundtrip (window->display);
   
   meta_window_hide (window);
   if (window->has_focus)
     {
-      meta_workspace_focus_default_window
-	(window->screen->active_workspace,
-	 window,
-	 meta_display_get_current_time_roundtrip (window->display));
+      meta_workspace_focus_default_window (window->screen->active_workspace,
+                                           window, 
+                                           timestamp);
     }
 }
 
@@ -1373,11 +1383,11 @@ implement_showing (MetaWindow *window,
       if (on_workspace && window->minimized && window->mapped &&
           !meta_prefs_get_reduced_resources ())
         {
-	  MetaRectangle icon_rect, window_rect;
-	  gboolean result;
-	  
-	  /* Check if the window has an icon geometry */
-	  result = meta_window_get_icon_geometry (window, &icon_rect);
+          MetaRectangle icon_rect, window_rect;
+          gboolean result;
+          
+          /* Check if the window has an icon geometry */
+          result = meta_window_get_icon_geometry (window, &icon_rect);
           
           if (!result)
             {
@@ -1392,16 +1402,16 @@ implement_showing (MetaWindow *window,
 
           meta_window_get_outer_rect (window, &window_rect);
 
-	  meta_effect_run_minimize (window,
-				    &window_rect,
-				    &icon_rect,
-				    finish_minimize,
-				    window);
-	}
+          meta_effect_run_minimize (window,
+                                    &window_rect,
+                                    &icon_rect,
+                                    finish_minimize,
+                                    window);
+        }
       else
-	{
-	  finish_minimize (NULL, window);
-	}
+        {
+          finish_minimize (NULL, window);
+        }
     }
   else
     {
@@ -1852,6 +1862,13 @@ meta_window_show (MetaWindow *window)
   gboolean place_on_top_on_map;
   gboolean needs_stacking_adjustment;
   MetaWindow *focus_window;
+  guint32     timestamp;
+
+  /* FIXME: It really sucks to put timestamp pinging here; it'd
+   * probably make more sense in implement_showing() so that it's at
+   * least not duplicated in finish_minimize.  *shrug*
+   */
+  timestamp = meta_display_get_current_time_roundtrip (window->display);
 
   meta_topic (META_DEBUG_WINDOW_STATE,
               "Showing window %s, shaded: %d iconic: %d placed: %d\n",
@@ -1885,7 +1902,9 @@ meta_window_show (MetaWindow *window)
                       "ancestor.\n",
                       focus_window->desc, window->desc);
 
-          meta_display_focus_the_no_focus_window (window->display, window->screen, meta_display_get_current_time_roundtrip (window->display));
+          meta_display_focus_the_no_focus_window (window->display,
+                                                  window->screen,
+                                                  timestamp);
         }
       else
         {
@@ -2054,8 +2073,7 @@ meta_window_show (MetaWindow *window)
       window->showing_for_first_time = FALSE;
       if (takes_focus_on_map)
         {                
-          meta_window_focus (window,
-                             meta_display_get_current_time_roundtrip (window->display));
+          meta_window_focus (window, timestamp);
         }
       else
         {
@@ -2261,7 +2279,14 @@ meta_window_maximize (MetaWindow        *window,
       (maximize_vertically   && !window->maximized_vertically))
     {
       if (window->shaded && maximize_vertically)
-        meta_window_unshade (window);
+        {
+          /* Shading sucks anyway; I'm not adding a timestamp argument
+           * to this function just for this niche usage & corner case.
+           */
+          guint32 timestamp = 
+            meta_display_get_current_time_roundtrip (window->display);
+          meta_window_unshade (window, timestamp);
+        }
       
       /* if the window hasn't been placed yet, we'll maximize it then
        */
@@ -2384,7 +2409,14 @@ meta_window_make_fullscreen_internal (MetaWindow  *window)
                   "Fullscreening %s\n", window->desc);
 
       if (window->shaded)
-        meta_window_unshade (window);
+        {
+          /* Shading sucks anyway; I'm not adding a timestamp argument
+           * to this function just for this niche usage & corner case.
+           */
+          guint32 timestamp = 
+            meta_display_get_current_time_roundtrip (window->display);
+          meta_window_unshade (window, timestamp);
+        }
 
       meta_window_save_rect (window);
       
@@ -2438,7 +2470,8 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
 }
 
 void
-meta_window_shade (MetaWindow  *window)
+meta_window_shade (MetaWindow  *window,
+                   guint32      timestamp)
 {
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Shading %s\n", window->desc);
@@ -2479,15 +2512,15 @@ meta_window_shade (MetaWindow  *window)
       meta_topic (META_DEBUG_FOCUS,
                   "Re-focusing window %s after shading it\n",
                   window->desc);
-      meta_window_focus (window,
-                         meta_display_get_current_time_roundtrip (window->display));
+      meta_window_focus (window, timestamp);
       
       set_net_wm_state (window);
     }
 }
 
 void
-meta_window_unshade (MetaWindow  *window)
+meta_window_unshade (MetaWindow  *window,
+                     guint32      timestamp)
 {
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Unshading %s\n", window->desc);
@@ -2501,8 +2534,7 @@ meta_window_unshade (MetaWindow  *window)
       meta_topic (META_DEBUG_FOCUS,
                   "Focusing window %s after unshading it\n",
                   window->desc);
-      meta_window_focus (window,
-                         meta_display_get_current_time_roundtrip (window->display));
+      meta_window_focus (window, timestamp);
 
       set_net_wm_state (window);
     }
@@ -2556,11 +2588,12 @@ window_activate (MetaWindow     *window,
     }
 
   /* For those stupid pagers, get a valid timestamp and show a warning */  
-  if (timestamp == 0) {
-    meta_warning ("meta_window_activate called by a pager with a 0 timestamp; "
-                  "the pager needs to be fixed.\n");
-    timestamp = meta_display_get_current_time_roundtrip (window->display);
-  }
+  if (timestamp == 0)
+    {
+      meta_warning ("meta_window_activate called by a pager with a 0 timestamp; "
+                    "the pager needs to be fixed.\n");
+      timestamp = meta_display_get_current_time_roundtrip (window->display);
+    }
 
   meta_window_set_user_time (window, timestamp);
 
@@ -2574,7 +2607,7 @@ window_activate (MetaWindow     *window,
     meta_window_change_workspace (window, workspace);
   
   if (window->shaded)
-    meta_window_unshade (window);
+    meta_window_unshade (window, timestamp);
 
   unminimize_window_and_all_transient_parents (window);
 
@@ -2772,6 +2805,11 @@ send_sync_request (MetaWindow *window)
   ev.message_type = window->display->atom_wm_protocols;
   ev.format = 32;
   ev.data.l[0] = window->display->atom_net_wm_sync_request;
+  /* FIXME: meta_display_get_current_time() is bad, but since calls
+   * come from meta_window_move_resize_internal (which in turn come
+   * from all over), I'm not sure what we can do to fix it.  Do we
+   * want to use _roundtrip, though?
+   */
   ev.data.l[1] = meta_display_get_current_time (window->display);
   ev.data.l[2] = XSyncValueLow32 (value);
   ev.data.l[3] = XSyncValueHigh32 (value);
@@ -4426,7 +4464,13 @@ meta_window_client_message (MetaWindow *window,
       if (event->xclient.data.l[0] != 0)
 	timestamp = event->xclient.data.l[0];
       else
-	timestamp = meta_display_get_current_time (window->display);
+        {
+          meta_warning ("Receiving a NET_CLOSE_WINDOW message for %s without "
+                        "a timestamp!  This means some buggy (outdated) "
+                        "application is on the loose!\n",
+                        window->desc);
+          timestamp = meta_display_get_current_time (window->display);
+        }
       
       meta_window_delete (window, timestamp);
 
@@ -4506,13 +4550,20 @@ meta_window_client_message (MetaWindow *window,
           second == display->atom_net_wm_state_shaded)
         {
           gboolean shade;
+          guint32 timestamp;
+
+          /* Stupid protocol has no timestamp; of course, shading
+           * sucks anyway so who really cares that we're forced to do
+           * a roundtrip here? 
+           */
+          timestamp = meta_display_get_current_time_roundtrip (window->display);
 
           shade = (action == _NET_WM_STATE_ADD ||
                    (action == _NET_WM_STATE_TOGGLE && !window->shaded));
           if (shade && window->has_shade_func)
-            meta_window_shade (window);
+            meta_window_shade (window, timestamp);
           else
-            meta_window_unshade (window);
+            meta_window_unshade (window, timestamp);
         }
 
       if (first == display->atom_net_wm_state_fullscreen ||
@@ -4658,12 +4709,18 @@ meta_window_client_message (MetaWindow *window,
       int action;
       MetaGrabOp op;
       int button;
+      guint32 timestamp;
       
       x_root = event->xclient.data.l[0];
       y_root = event->xclient.data.l[1];
       action = event->xclient.data.l[2];
       button = event->xclient.data.l[3];
 
+      /* FIXME: What a braindead protocol; no timestamp?!? */
+      timestamp = meta_display_get_current_time_roundtrip (display);
+      meta_warning ("Received a _NET_WM_MOVERESIZE message for %s; these "
+                    "messages lack timestamps and therefore suck.\n",
+                    window->desc);
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Received _NET_WM_MOVERESIZE message on %s, %d,%d action = %d, button %d\n",
                   window->desc,
@@ -4713,10 +4770,7 @@ meta_window_client_message (MetaWindow *window,
           ((window->has_move_func && op == META_GRAB_OP_KEYBOARD_MOVING) ||
            (window->has_resize_func && op == META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN)))
         {
-
-          meta_window_begin_grab_op (window,
-                                     op,
-                                     meta_display_get_current_time (window->display));
+          meta_window_begin_grab_op (window, op, timestamp);
         }
       else if (op != META_GRAB_OP_NONE &&
                ((window->has_move_func && op == META_GRAB_OP_MOVING) ||
@@ -4766,7 +4820,7 @@ meta_window_client_message (MetaWindow *window,
                                           op,
                                           FALSE, 0 /* event_serial */,
                                           button, 0,
-                                          meta_display_get_current_time (window->display),
+                                          timestamp,
                                           x_root,
                                           y_root);
             }
@@ -4790,8 +4844,13 @@ meta_window_client_message (MetaWindow *window,
         source_indication = META_CLIENT_TYPE_UNKNOWN;
 
       if (timestamp == 0)
-        /* Client using older EWMH _NET_ACTIVE_WINDOW without a timestamp */
-        timestamp = meta_display_get_current_time (window->display);
+        {
+          /* Client using older EWMH _NET_ACTIVE_WINDOW without a timestamp */
+          meta_warning ("Buggy client sent a _NET_ACTIVE_WINDOW message with a "
+                        "timestamp of 0 for %s\n",
+                        window->desc);
+          timestamp = meta_display_get_current_time (display);
+        }
 
       window_activate (window, timestamp, source_indication, NULL);
       return TRUE;
@@ -6095,11 +6154,11 @@ menu_callback (MetaWindowMenu *menu,
           break;
 
         case META_MENU_OP_UNSHADE:
-          meta_window_unshade (window);
+          meta_window_unshade (window, timestamp);
           break;
       
         case META_MENU_OP_SHADE:
-          meta_window_shade (window);
+          meta_window_shade (window, timestamp);
           break;
       
         case META_MENU_OP_MOVE_LEFT:
@@ -6146,13 +6205,13 @@ menu_callback (MetaWindowMenu *menu,
         case META_MENU_OP_MOVE:
           meta_window_begin_grab_op (window,
                                      META_GRAB_OP_KEYBOARD_MOVING,
-                                     meta_display_get_current_time (window->display));
+                                     timestamp);
           break;
 
         case META_MENU_OP_RESIZE:
           meta_window_begin_grab_op (window,
                                      META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN,
-                                     meta_display_get_current_time (window->display));
+                                     timestamp);
           break;
 
         case META_MENU_OP_RECOVER:
@@ -6704,7 +6763,7 @@ static void
 update_resize (MetaWindow *window,
                gboolean    snap,
                int x, int y,
-	       gboolean force)
+               gboolean force)
 {
   int dx, dy;
   int new_w, new_h;
@@ -7047,7 +7106,7 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
                          window->display->grab_last_user_action_was_snap,
                          window->display->grab_latest_motion_x,
                          window->display->grab_latest_motion_y,
-			 TRUE);
+                         TRUE);
           break;
           
         default:
@@ -7597,12 +7656,15 @@ meta_window_update_keyboard_resize (MetaWindow *window,
 
   if (update_cursor)
     {
+      guint32 timestamp;
+      /* FIXME: Using CurrentTime is really bad mojo */
+      timestamp = CurrentTime;
       meta_display_set_grab_op_cursor (window->display,
                                        NULL,
                                        window->display->grab_op,
                                        TRUE,
                                        window->display->grab_xwindow,
-                                       meta_display_get_current_time (window->display));
+                                       timestamp);
     }
 }
 

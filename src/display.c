@@ -707,7 +707,7 @@ meta_display_open (void)
       /* This would typically happen because all the screens already
        * have window managers.
        */
-      meta_display_close (display);
+      meta_display_close (display, timestamp);
       return FALSE;
     }
  
@@ -842,7 +842,8 @@ meta_display_list_windows (MetaDisplay *display)
 }
 
 void
-meta_display_close (MetaDisplay *display)
+meta_display_close (MetaDisplay *display,
+                    guint32      timestamp)
 {
   GSList *tmp;
 
@@ -868,7 +869,7 @@ meta_display_close (MetaDisplay *display)
   while (tmp != NULL)
     {
       MetaScreen *screen = tmp->data;
-      meta_screen_free (screen);
+      meta_screen_free (screen, timestamp);
       tmp = tmp->next;
     }
 
@@ -2000,9 +2001,16 @@ event_callback (XEvent   *event,
     case DestroyNotify:
       if (window)
         {
+          /* FIXME: It sucks that DestroyNotify events don't come with
+           * a timestamp; could we do something better here?  Maybe X
+           * will change one day?
+           */
+          guint32 timestamp;
+          timestamp = meta_display_get_current_time_roundtrip (display);
+
           if (display->grab_op != META_GRAB_OP_NONE &&
               display->grab_window == window)
-            meta_display_end_grab_op (display, CurrentTime);
+            meta_display_end_grab_op (display, timestamp);
           
           if (frame_was_receiver)
             {
@@ -2014,7 +2022,8 @@ event_callback (XEvent   *event,
             }
           else
             {
-              meta_window_free (window); /* Unmanage destroyed window */
+              /* Unmanage destroyed window */
+              meta_window_free (window, timestamp);
               window = NULL;
             }
         }
@@ -2022,10 +2031,17 @@ event_callback (XEvent   *event,
     case UnmapNotify:
       if (window)
         {
+          /* FIXME: It sucks that UnmapNotify events don't come with
+           * a timestamp; could we do something better here?  Maybe X
+           * will change one day?
+           */
+          guint32 timestamp;
+          timestamp = meta_display_get_current_time_roundtrip (display);
+
           if (display->grab_op != META_GRAB_OP_NONE &&
               display->grab_window == window &&
               ((window->frame == NULL) || !window->frame->mapped))
-            meta_display_end_grab_op (display, CurrentTime);      
+            meta_display_end_grab_op (display, timestamp);
       
           if (!frame_was_receiver)
             {
@@ -2035,10 +2051,11 @@ event_callback (XEvent   *event,
                               "Window %s withdrawn\n",
                               window->desc);
 
-		  meta_effect_run_close (window, NULL, NULL);
-		  
+                  meta_effect_run_close (window, NULL, NULL);
+
+                  /* Unmanage withdrawn window */		  
                   window->withdrawn = TRUE;
-                  meta_window_free (window); /* Unmanage withdrawn window */
+                  meta_window_free (window, timestamp);
                   window = NULL;
                 }
               else
@@ -2206,7 +2223,12 @@ event_callback (XEvent   *event,
       /* do this here instead of at end of function
        * so we can return
        */
+
+      /* FIXME: Clearing display->current_time here makes no sense to
+       * me; who put this here and why?
+       */
       display->current_time = CurrentTime;
+
       process_selection_clear (display, event);
       /* Note that processing that may have resulted in
        * closing the display... so return right away.
@@ -2256,7 +2278,12 @@ event_callback (XEvent   *event,
 
                   /* Handle clients using the older version of the spec... */
                   if (time == 0 && workspace)
-                    time = meta_display_get_current_time_roundtrip (display);
+                    {
+                      meta_warning ("Received a NET_CURRENT_DESKTOP message "
+                                    "from a broken (outdated) client who sent "
+                                    "a 0 timestamp\n");
+                      time = meta_display_get_current_time_roundtrip (display);
+                    }
 
                   if (workspace)
                     meta_workspace_activate (workspace, time);
@@ -2275,22 +2302,26 @@ event_callback (XEvent   *event,
 
                   meta_prefs_set_num_workspaces (num_spaces);
                 }
-	      else if (event->xclient.message_type ==
-		       display->atom_net_showing_desktop)
-		{
-		  gboolean showing_desktop;
+              else if (event->xclient.message_type ==
+                       display->atom_net_showing_desktop)
+                {
+                  gboolean showing_desktop;
+                  guint32  timestamp;
                   
-		  showing_desktop = event->xclient.data.l[0] != 0;
-		  meta_verbose ("Request to %s desktop\n", showing_desktop ? "show" : "hide");
+                  showing_desktop = event->xclient.data.l[0] != 0;
+                  /* FIXME: Braindead protocol doesn't have a timestamp */
+                  timestamp = meta_display_get_current_time_roundtrip (display);
+                  meta_verbose ("Request to %s desktop\n",
+                                showing_desktop ? "show" : "hide");
                   
-		  if (showing_desktop)
-		    meta_screen_show_desktop (screen, meta_display_get_current_time_roundtrip (display));
-		  else
-		    {
-		      meta_screen_unshow_desktop (screen);
-		      meta_workspace_focus_default_window (screen->active_workspace, NULL, meta_display_get_current_time_roundtrip (display));
-		    }
-		}
+                  if (showing_desktop)
+                    meta_screen_show_desktop (screen, timestamp);
+                  else
+                    {
+                      meta_screen_unshow_desktop (screen);
+                      meta_workspace_focus_default_window (screen->active_workspace, NULL, timestamp);
+                    }
+                }
               else if (event->xclient.message_type ==
                        display->atom_metacity_restart_message)
                 {
@@ -3331,8 +3362,8 @@ meta_display_begin_grab_op (MetaDisplay *display,
         {
           meta_topic (META_DEBUG_WINDOW_OPS,
                       "grabbing all keys failed, ungrabbing pointer\n");
-          XUngrabPointer (display->xdisplay, CurrentTime);
-	  display->grab_have_pointer = FALSE;
+          XUngrabPointer (display->xdisplay, timestamp);
+          display->grab_have_pointer = FALSE;
           return FALSE;
         }
     }
@@ -4675,7 +4706,9 @@ process_selection_clear (MetaDisplay   *display,
       meta_verbose ("Got selection clear for screen %d on display %s\n",
                     screen->number, display->name);
       
-      meta_display_unmanage_screen (display, screen);
+      meta_display_unmanage_screen (display, 
+                                    screen,
+                                    event->xselectionclear.time);
 
       /* display and screen may both be invalid memory... */
       
@@ -4699,23 +4732,25 @@ process_selection_clear (MetaDisplay   *display,
 
 void
 meta_display_unmanage_screen (MetaDisplay *display,
-                              MetaScreen  *screen)
+                              MetaScreen  *screen,
+                              guint32      timestamp)
 {
   meta_verbose ("Unmanaging screen %d on display %s\n",
                 screen->number, display->name);
   
   g_return_if_fail (g_slist_find (display->screens, screen) != NULL);
   
-  meta_screen_free (screen);
+  meta_screen_free (screen, timestamp);
   display->screens = g_slist_remove (display->screens, screen);
 
   if (display->screens == NULL)
-    meta_display_close (display);
+    meta_display_close (display, timestamp);
 }
 
 void
 meta_display_unmanage_windows_for_screen (MetaDisplay *display,
-                                          MetaScreen  *screen)
+                                          MetaScreen  *screen,
+                                          guint32      timestamp)
 {
   GSList *tmp;
   GSList *winlist;
@@ -4725,8 +4760,8 @@ meta_display_unmanage_windows_for_screen (MetaDisplay *display,
   /* Unmanage all windows */
   tmp = winlist;
   while (tmp != NULL)
-    {      
-      meta_window_free (tmp->data);
+    {
+      meta_window_free (tmp->data, timestamp);
       
       tmp = tmp->next;
     }

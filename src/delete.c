@@ -34,7 +34,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static void meta_window_present_delete_dialog (MetaWindow *window);
+static void meta_window_present_delete_dialog (MetaWindow *window,
+                                               guint32     timestamp);
 
 static void
 delete_ping_reply_func (MetaDisplay *display,
@@ -311,7 +312,7 @@ delete_ping_timeout_func (MetaDisplay *display,
 
   if (window->dialog_pid >= 0)
     {
-      meta_window_present_delete_dialog (window);
+      meta_window_present_delete_dialog (window, timestamp);
       return;
     }
   
@@ -476,7 +477,7 @@ meta_window_free_delete_dialog (MetaWindow *window)
 }
 
 static void
-meta_window_present_delete_dialog (MetaWindow *window)
+meta_window_present_delete_dialog (MetaWindow *window, guint32 timestamp)
 {
   meta_topic (META_DEBUG_PING,
               "Presenting existing ping dialog for %s\n",
@@ -501,8 +502,7 @@ meta_window_present_delete_dialog (MetaWindow *window)
               w->res_class &&
               g_strcasecmp (w->res_class, "metacity-dialog") == 0)
             {
-              meta_window_activate (w,
-                                    meta_display_get_current_time (w->display));
+              meta_window_activate (w, timestamp);
               break;
             }
           

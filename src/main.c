@@ -399,7 +399,9 @@ main (int argc, char **argv)
     tmp = displays;
     while (tmp != NULL)
       {
-        meta_display_close (tmp->data);
+        guint32 timestamp;
+        timestamp = CurrentTime; /* I doubt correct timestamps matter here */
+        meta_display_close (tmp->data, timestamp);
         tmp = tmp->next;
       }
     g_slist_free (displays);

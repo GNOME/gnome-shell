@@ -52,7 +52,8 @@
 static char* get_screen_name (MetaDisplay *display,
                               int          number);
 
-static void update_num_workspaces  (MetaScreen *screen);
+static void update_num_workspaces  (MetaScreen *screen,
+                                    guint32     timestamp);
 static void update_focus_mode      (MetaScreen *screen);
 static void set_workspace_names    (MetaScreen *screen);
 static void prefs_changed_callback (MetaPreference pref,
@@ -608,7 +609,7 @@ meta_screen_new (MetaDisplay *display,
    * so create that required workspace.
    */
   meta_workspace_activate (meta_workspace_new (screen), timestamp);
-  update_num_workspaces (screen);
+  update_num_workspaces (screen, timestamp);
   
   set_workspace_names (screen);
 
@@ -654,7 +655,8 @@ meta_screen_new (MetaDisplay *display,
 }
 
 void
-meta_screen_free (MetaScreen *screen)
+meta_screen_free (MetaScreen *screen,
+                  guint32     timestamp)
 {
   MetaDisplay *display;
   XGCValues gc_values = { 0 };
@@ -671,7 +673,7 @@ meta_screen_free (MetaScreen *screen)
 				       screen);
     }
   
-  meta_display_unmanage_windows_for_screen (display, screen);
+  meta_display_unmanage_windows_for_screen (display, screen, timestamp);
   
   meta_prefs_remove_listener (prefs_changed_callback, screen);
   
@@ -855,7 +857,12 @@ prefs_changed_callback (MetaPreference pref,
   
   if (pref == META_PREF_NUM_WORKSPACES)
     {
-      update_num_workspaces (screen);
+      /* GConf doesn't provide timestamps, but luckily update_num_workspaces
+       * often doesn't need it...
+       */
+      guint32 timestamp = 
+        meta_display_get_current_time_roundtrip (screen->display);
+      update_num_workspaces (screen, timestamp);
     }
   else if (pref == META_PREF_FOCUS_MODE)
     {
@@ -1083,7 +1090,8 @@ set_desktop_viewport_hint (MetaScreen *screen)
 }
 
 static void
-update_num_workspaces (MetaScreen *screen)
+update_num_workspaces (MetaScreen *screen,
+                       guint32     timestamp)
 {
   int new_num;
   GList *tmp;
@@ -1136,7 +1144,7 @@ update_num_workspaces (MetaScreen *screen)
     }
 
   if (need_change_space)
-    meta_workspace_activate (last_remaining, meta_display_get_current_time_roundtrip (screen->display));
+    meta_workspace_activate (last_remaining, timestamp);
 
   /* Should now be safe to free the workspaces */
   tmp = extras;

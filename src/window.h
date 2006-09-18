@@ -381,7 +381,8 @@ MetaWindow* meta_window_new_with_attrs     (MetaDisplay *display,
                                             Window       xwindow,
                                             gboolean     must_be_viewable,
                                             XWindowAttributes *attrs);
-void        meta_window_free               (MetaWindow  *window);
+void        meta_window_free               (MetaWindow  *window,
+                                            guint32      timestamp);
 void        meta_window_calc_showing       (MetaWindow  *window);
 void        meta_window_queue_calc_showing (MetaWindow  *window);
 void        meta_window_minimize           (MetaWindow  *window);
@@ -395,8 +396,10 @@ void        meta_window_unmaximize         (MetaWindow        *window,
                                             MetaMaximizeFlags  directions);
 void        meta_window_make_above         (MetaWindow  *window);
 void        meta_window_unmake_above       (MetaWindow  *window);
-void        meta_window_shade              (MetaWindow  *window);
-void        meta_window_unshade            (MetaWindow  *window);
+void        meta_window_shade              (MetaWindow  *window,
+                                            guint32      timestamp);
+void        meta_window_unshade            (MetaWindow  *window,
+                                            guint32      timestamp);
 void        meta_window_change_workspace   (MetaWindow  *window,
                                             MetaWorkspace *workspace);
 void        meta_window_stick              (MetaWindow  *window);
