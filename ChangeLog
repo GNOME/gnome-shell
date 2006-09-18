@@ -1,5 +1,9 @@
 2006-09-18  Thomas Thurman <thomas@thurman.org.uk>
 
+	* configure.in: post-release bump to 2.16.3
+
+2006-09-18  Thomas Thurman <thomas@thurman.org.uk>
+
         * NEWS: 2.16.2 release
 
 2006-09-18  Elijah Newren  <newren gmail com>
