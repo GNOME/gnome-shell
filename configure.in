@@ -1,8 +1,14 @@
 AC_PREREQ(2.50)
 
+m4_define([metacity_major_version], [2])
+m4_define([metacity_minor_version], [16])
 # Fibonacci sequence for micro version numbering:
 # 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987
-AC_INIT([metacity], [2.16.2],
+m4_define([metacity_micro_version], [2])
+
+m4_define([metacity_version],
+          [metacity_major_version.metacity_minor_version.metacity_micro_version])
+AC_INIT([metacity], [metacity_version],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=metacity])
 
 AC_CONFIG_SRCDIR(src/display.c)
@@ -516,5 +522,13 @@ metacity-$VERSION:
 	Render:                   ${have_xrender}
 	Xcursor:                  ${have_xcursor}
 "
-echo "This is the UNSTABLE branch of metacity"
-echo "Use 2.14.x for stable (gnome-2-14 branch in CVS)"
+
+METACITY_MINOR_VERSION=metacity_minor_version
+if test $(( $(echo $METACITY_MINOR_VERSION) %2)) == "1"; then
+   stable_version=$(( ($METACITY_MINOR_VERSION / 2) * 2))
+   echo "This is the UNSTABLE branch of metacity"
+   echo -n "Use 2.$stable_version.x for stable "
+   echo    "(gnome-2-$stable_version branch in CVS)"
+else
+   echo "This is the stable branch of metacity"
+fi

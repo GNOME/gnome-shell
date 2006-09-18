@@ -1,3 +1,9 @@
+2006-09-18  Elijah Newren  <newren gmail com>
+
+	* configure.in: Make detection of stable vs. unstable automatic
+	and based upon the version number.  Partially based on patch from
+	Christian Hamar in #356122.  Fixes #356122.
+
 2006-09-13  Elijah Newren  <newren gmail com>
 
 	* HACKING: update -- we depend on gtk+ >= 2.10 since Vincent's
