@@ -1,3 +1,27 @@
+2.16.2
+======
+
+Thanks to Eljah Newren, Maik Beckmann, Christian Hamar, Thomas Andersen,
+and Bruno Boaventura de Olevira for changes in this release.
+
+  - partial audit to fix timestamp usage (partly fixes #355180) (Elijah)
+
+  - remove compilation warnings (#355876) (Maik); (#355490) (Bruno);
+    (#355489) (Bruno).
+
+  - automatic detection of stable/unstable in configure script
+    (#356122) (Christian/Elijah)
+
+  - make windows be stacked correctly before showing them (#332385) (Thomas)
+
+  - use guint32 for timestamps (#348305) (Elijah)
+
+Translators
+  Wouter Bolsterlee (nl), Matic Žgur (sl), Francisco Javier F. Serrador (es),
+  Vladimir Petkov (bg), Jordi Mallach (ca), Ilkka Tuohela (fi),
+  Rajesh Ranjan (hi), Woodman Tuen (zh_HK, zh_TW), Ani Peter (ml),
+  Felix (ta), Ankit Patel (gu), Mohammad DAMT (id)
+ 
 2.16.1
 ======
 
