@@ -80,7 +80,7 @@ filter_func (GdkXEvent *xevent,
              GdkEvent *event,
              gpointer data)
 {
-  g_return_if_fail (ef != NULL);
+  g_return_val_if_fail (ef != NULL, GDK_FILTER_CONTINUE);
 
   if ((* ef->func) (xevent, ef->data))
     return GDK_FILTER_REMOVE;

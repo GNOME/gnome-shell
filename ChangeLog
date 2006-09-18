@@ -1,3 +1,8 @@
+2006-09-18  Elijah Newren  <newren gmail com>
+
+	* src/ui.c (filter_func): avoid a compilation warning by making
+	sure to return something.  #348067
+
 2006-09-18  Thomas Thurman  <thomas@thurman.org.uk>
 
 	Branched for Gnome 2.17.
