@@ -1,5 +1,11 @@
 2006-09-18  Elijah Newren  <newren gmail com>
 
+	* src/constraints.c (constrain_maximization): Ignore maximum size
+	hints when maximizing.  Should fix #327543 (see comment 4 and comment
+	5).
+
+2006-09-18  Elijah Newren  <newren gmail com>
+
 	* src/ui.c (filter_func): avoid a compilation warning by making
 	sure to return something.  #348067
 

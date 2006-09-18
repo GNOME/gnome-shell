@@ -694,7 +694,7 @@ constrain_maximization (MetaWindow         *window,
                         gboolean            check_only)
 {
   MetaRectangle min_size, max_size, work_area;
-  gboolean hminbad, vminbad, hmaxbad, vmaxbad;
+  gboolean hminbad, vminbad;
   gboolean horiz_equal, vert_equal;
   gboolean constraint_already_satisfied;
 
@@ -711,9 +711,7 @@ constrain_maximization (MetaWindow         *window,
 
   hminbad = work_area.width < min_size.width && window->maximized_horizontally;
   vminbad = work_area.height < min_size.height && window->maximized_vertically;
-  hmaxbad = work_area.width > max_size.width && window->maximized_horizontally;
-  vmaxbad = work_area.height > max_size.height && window->maximized_vertically;
-  if (hminbad || vminbad || hmaxbad || vmaxbad)
+  if (hminbad || vminbad)
     return TRUE;
 
   /* Determine whether constraint is already satisfied; exit if it is */
@@ -841,8 +839,13 @@ constrain_size_limits (MetaWindow         *window,
 
   /* Determine whether constraint is already satisfied; exit if it is */
   get_size_limits (window, info->fgeom, FALSE, &min_size, &max_size);
-  too_big = !meta_rectangle_could_fit_rect (&info->current, &min_size);
-  too_small = !meta_rectangle_could_fit_rect (&max_size, &info->current);
+  /* We ignore max-size limits for maximized windows; see #327543 */
+  if (window->maximized_horizontally)
+    max_size.width = MAX (max_size.width, info->current.width);
+  if (window->maximized_vertically)
+    max_size.height = MAX (max_size.height, info->current.height);
+  too_small = !meta_rectangle_could_fit_rect (&info->current, &min_size);
+  too_big   = !meta_rectangle_could_fit_rect (&max_size, &info->current);
   constraint_already_satisfied = !too_big && !too_small;
   if (check_only || constraint_already_satisfied)
     return constraint_already_satisfied;
