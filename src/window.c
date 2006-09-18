@@ -1942,6 +1942,8 @@ meta_window_show (MetaWindow *window)
   
   if (needs_stacking_adjustment)
     {
+      gboolean overlap;
+
       /* needs_stacking_adjustment is only set under certain
        * circumstances currently; if those circumstances change, this
        * code may need re-thinking too
@@ -1958,7 +1960,6 @@ meta_window_show (MetaWindow *window)
        *   - the demands attention setting of the window
        */
           
-      gboolean overlap;
       overlap = windows_overlap (window, focus_window);
 
       /* We want alt tab to go to the denied-focus window */

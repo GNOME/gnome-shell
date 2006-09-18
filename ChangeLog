@@ -1,5 +1,10 @@
 2006-09-18  Elijah Newren  <newren gmail com>
 
+	* src/window.c (meta_window_show): Patch from Jens Granseuer to
+	fix c89 cleanness, again.  #356631.
+
+2006-09-18  Elijah Newren  <newren gmail com>
+
 	* src/constraints.c (constrain_maximization): Ignore maximum size
 	hints when maximizing.  Should fix #327543 (see comment 4 and comment
 	5).
