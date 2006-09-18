@@ -1,5 +1,10 @@
 2006-09-18  Elijah Newren  <newren gmail com>
 
+	* src/spring-model.c (on_end_move, model_is_calm): Patch from Maik
+	Beckmann to remove compilation warnings.  Fixes #355876.
+
+2006-09-18  Elijah Newren  <newren gmail com>
+
 	* configure.in: Make detection of stable vs. unstable automatic
 	and based upon the version number.  Partially based on patch from
 	Christian Hamar in #356122.  Fixes #356122.

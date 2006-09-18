@@ -362,23 +362,12 @@ model_update_move (Model *model, int x, int y)
   model->anchor_object->position.y = y - model->anchor_offset.y;
 }
 
-static void
-on_end_move (Model	 *model)
-{
-  if (model->anchor_object)
-  {
-      model->anchor_object->immobile = 0;
-      model->anchor_object = NULL;
-  }
-}
-
 #define EPSILON   0.02
 
 gboolean
 model_is_calm (Model *model)
 {
-    int i, j;
-    gboolean calm = TRUE;
+    int i;
 
     for (i = 0; i < model->num_objects; i++)
     {
