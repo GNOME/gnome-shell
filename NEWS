@@ -4,17 +4,14 @@
 Thanks to Eljah Newren, Maik Beckmann, Christian Hamar, Thomas Andersen,
 and Bruno Boaventura de Olevira for changes in this release.
 
-  - partial audit to fix timestamp usage (partly fixes #355180) (Elijah)
-
-  - remove compilation warnings (#355876) (Maik); (#355490) (Bruno);
-    (#355489) (Bruno).
-
+  - partial audit to fix timestamp usage (Elijah) [part of #355180]
+  - remove compilation warnings (Maik) [#355876]; (Bruno) [#355490,
+    #355489]
   - automatic detection of stable/unstable in configure script
-    (#356122) (Christian/Elijah)
-
-  - make windows be stacked correctly before showing them (#332385) (Thomas)
-
-  - use guint32 for timestamps (#348305) (Elijah)
+    (Christian/Elijah) [#356122]
+  - make windows be stacked correctly before showing them (Thomas)
+    [#332385]
+  - use guint32 for timestamps (Elijah) [#348305]
 
 Translators
   Wouter Bolsterlee (nl), Matic Žgur (sl), Francisco Javier F. Serrador (es),
