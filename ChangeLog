@@ -1,3 +1,16 @@
+2006-09-19  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c: (redraw_update_idle),
+	(clutter_actor_queue_redraw):
+	* clutter/clutter-main.c: (clutter_redraw):
+	Remove now uneeded locks 
+	( new gst and texture code makes redundant )
+
+	* clutter/clutter-texture.c:
+	* clutter/clutter-texture.h:
+	Redo clutter texture as to not keep a reference
+	to underlying texture.
+
 2006-09-15  Matthew Allum  <mallum@openedhand.com>
 
 	More fixes from Bastien Nocera (#155):

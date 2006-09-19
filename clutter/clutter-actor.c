@@ -100,15 +100,11 @@ redraw_update_idle (gpointer data)
 {
   ClutterMainContext *ctx = CLUTTER_CONTEXT();
 
-  clutter_threads_enter();
-
   if (ctx->update_idle)
     {
       g_source_remove (ctx->update_idle);
       ctx->update_idle = 0;
     }
-
-  clutter_threads_leave();
 
   clutter_redraw ();
 
@@ -764,16 +760,12 @@ clutter_actor_queue_redraw (ClutterActor *self)
 {
   ClutterMainContext *ctx = CLUTTER_CONTEXT();
 
-  clutter_threads_enter();
-
   if (!ctx->update_idle)
     {
       ctx->update_idle = g_idle_add_full (-100 , /* very high priority */
 					  redraw_update_idle, 
 					  NULL, NULL);
     }
-
-  clutter_threads_leave();
 }
 
 /**

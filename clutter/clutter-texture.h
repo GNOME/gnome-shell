@@ -81,13 +81,22 @@ ClutterActor *clutter_texture_new_from_pixbuf (GdkPixbuf *pixbuf);
 
 ClutterActor *clutter_texture_new (void);
 
+void
+clutter_texture_set_from_data (ClutterTexture *texture,
+                               const guchar   *data,
+                               gboolean        has_alpha,
+                               gint            width,
+                               gint            height,
+                               gint            rowstride,
+                               gint            bpp);
+
 void clutter_texture_set_pixbuf (ClutterTexture *texture, GdkPixbuf *pixbuf);
 
 GdkPixbuf *clutter_texture_get_pixbuf (ClutterTexture* texture);
 
 void clutter_texture_get_base_size (ClutterTexture *texture, 
-			       gint           *width,
-			       gint           *height);
+				    gint           *width,
+				    gint           *height);
 
 /* Below mainly for subclassed texture based actors */
 

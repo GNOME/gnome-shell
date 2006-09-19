@@ -269,8 +269,6 @@ clutter_redraw (void)
 
   CLUTTER_DBG("@@@ Redraw enter @@@");
 
-  clutter_threads_enter ();
-
   if (clutter_want_fps ())
     {
       if (!timer)
@@ -318,8 +316,6 @@ clutter_redraw (void)
 	  g_timer_start (timer);
 	}
     }
-
-  clutter_threads_leave ();
 
   CLUTTER_DBG("@@@ Redraw leave @@@");
 }
