@@ -255,29 +255,35 @@ clutter_actor_paint (ClutterActor *self)
 
   glLoadName (clutter_actor_get_id (self));
 
+  if (clutter_actor_get_parent (self) != NULL)
+    {
+	  glTranslatef((float)(self->priv->coords.x1), 
+		       (float)(self->priv->coords.y1), 
+		       0.0);
+    }
 
   if (self->priv->rzang)
     {
-      glTranslatef ( (float)(self->priv->coords.x1) + self->priv->rzx,
-		     (float)(self->priv->coords.y1) + self->priv->rzy,
+      glTranslatef ( self->priv->rzx,
+		     self->priv->rzy,
 		     0.0);
 
       glRotatef (self->priv->rzang, 0.0f, 0.0f, 1.0f);
 
-      glTranslatef ( (-1.0 * self->priv->coords.x1) - self->priv->rzx,
-		     (-1.0 * self->priv->coords.y1) - self->priv->rzy,
+      glTranslatef ( - self->priv->rzx,
+		     - self->priv->rzy,
 		     0.0 );
     }
 
   if (self->priv->ryang)
     {
-      glTranslatef ( (float)(self->priv->coords.x1) + self->priv->ryx,
+      glTranslatef (  self->priv->ryx,
 		     0.0,
 		     (float)(self->priv->z) + self->priv->ryz);
 
       glRotatef (self->priv->ryang, 0.0f, 1.0f, 0.0f);
 
-      glTranslatef ( (float)(-1.0 * self->priv->coords.x1) - self->priv->ryx,
+      glTranslatef ( (float) - self->priv->ryx,
 		     0.0,
 		     (float)(-1.0 * self->priv->z) - self->priv->ryz);
     }
@@ -285,13 +291,13 @@ clutter_actor_paint (ClutterActor *self)
   if (self->priv->rxang)
     {
       glTranslatef ( 0.0,
-		     (float)(self->priv->coords.x1) + self->priv->rxy,
+		     (float)self->priv->rxy,
 		     (float)(self->priv->z) + self->priv->rxz);
 
       glRotatef (self->priv->rxang, 1.0f, 0.0f, 0.0f);
 
       glTranslatef ( 0.0,
-		     (float)(-1.0 * self->priv->coords.x1) - self->priv->rxy,
+		     (float) - self->priv->rxy,
 		     (float)(-1.0 * self->priv->z) - self->priv->rxz);
     }
 

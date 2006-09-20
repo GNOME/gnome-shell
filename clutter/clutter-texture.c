@@ -660,7 +660,8 @@ clutter_texture_paint (ClutterActor *self)
   glColor4ub(255, 255, 255, opacity);
 
   clutter_actor_get_coords (self, &x1, &y1, &x2, &y2);
-  texture_render_to_gl_quad (texture, x1, y1, x2, y2);
+  /* Paint will of translated us */
+  texture_render_to_gl_quad (texture, 0, 0, x2 - x1, y2 - y1);
 
   glDisable(texture->priv->target_type);
   glDisable(GL_BLEND);

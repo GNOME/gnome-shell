@@ -1,3 +1,15 @@
+2006-09-20  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c: (clutter_actor_paint):
+	* clutter/clutter-clone-texture.c: (clutter_clone_texture_paint):
+	* clutter/clutter-group.c: (clutter_group_paint):
+	* clutter/clutter-rectangle.c: (clutter_rectangle_paint):
+	* clutter/clutter-texture.c: (clutter_texture_paint):
+	Fix for #156. 
+	clutter_actor_paint() now translates to actor position as
+	to not fix scaled groups positioning. Sub classes now paint
+	at 0,0.  
+
 2006-09-19  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c: (redraw_update_idle),

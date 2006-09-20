@@ -77,10 +77,10 @@ clutter_rectangle_paint (ClutterActor *self)
 	     priv->color.blue, 
 	     clutter_actor_get_opacity (self));
 
-  glRecti (geom.x,
-	   geom.y,
-	   geom.x + geom.width,
-	   geom.y + geom.height);
+  /* parent paint call will have translated us into position so 
+   * paint from 0,0
+  */
+  glRecti (0, 0, geom.width, geom.height);
 
   glDisable(GL_BLEND);
 

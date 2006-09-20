@@ -204,8 +204,9 @@ clutter_clone_texture_paint (ClutterActor *self)
   CLUTTER_DBG("paint to x1: %i, y1: %i x2: %i, y2: %i opacity: %i", 
 	      x1, y1, x2, y2, clutter_actor_get_opacity(self) );
 
+  /* Parent paint translated us into position */
   clone_texture_render_to_gl_quad (CLUTTER_CLONE_TEXTURE(self), 
-				   x1, y1, x2, y2);
+				   0, 0, x2 - x1, y2 - y1);
   glDisable(target_type);
   glDisable(GL_BLEND);
 }

@@ -67,21 +67,6 @@ clutter_group_paint (ClutterActor *actor)
 
   glPushMatrix();
 
-  /* Translate if parent ( i.e not stage window ).
-  */
-  if (clutter_actor_get_parent (actor) != NULL)
-    {
-      ClutterGeometry geom;      
-
-      clutter_actor_get_geometry (actor, &geom);
-
-      if (geom.x != 0 || geom.y != 0)
-	{
-	  glTranslatef(geom.x, geom.y, 0.0);
-	}
-
-    }
-
   for (child_item = self->priv->children;
        child_item != NULL;
        child_item = child_item->next)
