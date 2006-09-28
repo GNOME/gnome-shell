@@ -2,7 +2,7 @@
 ======
 
 Thanks to Eljah Newren, Maik Beckmann, Christian Hamar, Thomas Andersen,
-and Bruno Boaventura de Olevira for changes in this release.
+and Bruno Boaventura de Oliveira for changes in this release.
 
   - partial audit to fix timestamp usage (Elijah) [part of #355180]
   - remove compilation warnings (Maik) [#355876]; (Bruno) [#355490,
@@ -22,7 +22,7 @@ Translators
 2.16.1
 ======
 
-Thanks to Elijah Newren, Colin Watson, and Bruno Boaventura de Olevira
+Thanks to Elijah Newren, Colin Watson, and Bruno Boaventura de Oliveira
 Lacerda for changes in this release.
 
   - fix stuck grab, letting focus be transferred between windows (Elijah)
