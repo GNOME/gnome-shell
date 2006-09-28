@@ -1,3 +1,9 @@
+2006-09-27  Elijah Newren  <newren gmail com>
+
+	* src/menu.c (var menuitems): Patch from Bruno Boaventura to add
+	notes to remind translators to keep translations in sync with
+	libwnck.  #355620.
+
 2006-09-18  Elijah Newren  <newren gmail com>
 
 	* src/window.c (meta_window_show): Patch from Jens Granseuer to

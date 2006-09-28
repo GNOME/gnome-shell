@@ -52,24 +52,41 @@ struct _MenuData
 static void activate_cb (GtkWidget *menuitem, gpointer data);
 
 static MenuItem menuitems[] = {
+  /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_MINIMIZE, METACITY_STOCK_MINIMIZE, FALSE, N_("Mi_nimize") },
+  /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_MAXIMIZE, METACITY_STOCK_MAXIMIZE, FALSE, N_("Ma_ximize") },
+  /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_UNMAXIMIZE, NULL, FALSE, N_("Unma_ximize") },
+  /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_SHADE, NULL, FALSE, N_("Roll _Up") },
+  /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_UNSHADE, NULL, FALSE, N_("_Unroll") },
+  /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_ABOVE, NULL, FALSE, N_("On _Top") },
+  /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_UNABOVE, NULL, TRUE, N_("On _Top") },
+  /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_MOVE, NULL, FALSE, N_("_Move") },
+  /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_RESIZE, NULL, FALSE, N_("_Resize") },
+  /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_RECOVER, NULL, FALSE, N_("Move Titlebar On_screen") },
   { 0, NULL, FALSE, NULL }, /* separator */
+  /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_DELETE, METACITY_STOCK_DELETE, FALSE, N_("_Close") },
   { META_MENU_OP_WORKSPACES, NULL, FALSE, NULL }, /* separator */
+  /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_STICK, NULL, FALSE, N_("_Always on Visible Workspace") },
+  /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_UNSTICK, NULL, FALSE,  N_("_Only on This Workspace") },
+  /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_MOVE_LEFT, NULL, FALSE, N_("Move to Workspace _Left") },
+  /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_MOVE_RIGHT, NULL, FALSE, N_("Move to Workspace R_ight") },
+  /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_MOVE_UP, NULL, FALSE, N_("Move to Workspace _Up") },
+  /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_MOVE_DOWN, NULL, FALSE, N_("Move to Workspace _Down") }
 };
 
