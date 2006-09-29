@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-14 08:00+0300\n"
-"PO-Revision-Date: 2006-09-14 07:55+0300\n"
+"POT-Creation-Date: 2006-09-29 23:52+0300\n"
+"PO-Revision-Date: 2006-09-29 23:52+0300\n"
 "Last-Translator: Vladimir Petkov <vpetkov@i-space.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "MIME-Version: 1.0\n"
@@ -27,29 +27,29 @@ msgstr "Употреба: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity е компилиран без поддръжка на подробен режим\n"
 
-#: ../src/delete.c:64 ../src/delete.c:91 ../src/metacity-dialog.c:48
+#: ../src/delete.c:65 ../src/delete.c:92 ../src/metacity-dialog.c:48
 #: ../src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "„%s“ не може да се анализира като цяло число"
 
-#: ../src/delete.c:71 ../src/delete.c:98 ../src/metacity-dialog.c:55
+#: ../src/delete.c:72 ../src/delete.c:99 ../src/metacity-dialog.c:55
 #: ../src/theme-parser.c:476 ../src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Крайните символи „%s“ в низа „%s“ са неразбираеми"
 
-#: ../src/delete.c:129
+#: ../src/delete.c:130
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Неуспех при анализа на съобщението „%s“ от диалоговия процес\n"
 
-#: ../src/delete.c:264
+#: ../src/delete.c:265
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Грешка при четене от процеса за изобразяване на диалога: %s\n"
 
-#: ../src/delete.c:345
+#: ../src/delete.c:346
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -57,7 +57,7 @@ msgstr ""
 "Грешка при стартиране на диалога на Metacity, който пита дали да се убие "
 "приложението: %s\n"
 
-#: ../src/delete.c:453
+#: ../src/delete.c:454
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Неуспех при получаването на името на хоста: %s\n"
@@ -179,92 +179,108 @@ msgstr ""
 "Неуспех при намирането на тема! Проверете дали %s съществува и съдържа "
 "обичайните теми."
 
-#: ../src/main.c:424
+#: ../src/main.c:426
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Неуспех при рестартиране: %s\n"
 
-#: ../src/menu.c:55
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:56
 msgid "Mi_nimize"
 msgstr "Ми_нимизиране"
 
-#: ../src/menu.c:56
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:58
 msgid "Ma_ximize"
 msgstr "_Максимизиране"
 
-#: ../src/menu.c:57
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:60
 msgid "Unma_ximize"
 msgstr "_Демаксимизиране"
 
-#: ../src/menu.c:58
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:62
 msgid "Roll _Up"
 msgstr "На_виване"
 
-#: ../src/menu.c:59
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:64
 msgid "_Unroll"
 msgstr "_Развиване"
 
-#: ../src/menu.c:60 ../src/menu.c:61
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:66 ../src/menu.c:68
 msgid "On _Top"
 msgstr "_Отгоре"
 
-#: ../src/menu.c:62
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:70
 msgid "_Move"
 msgstr "_Преместване"
 
-#: ../src/menu.c:63
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:72
 msgid "_Resize"
 msgstr "О_размеряване"
 
-#: ../src/menu.c:64
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:74
 msgid "Move Titlebar On_screen"
 msgstr "Преместване на лентата за заглавието по _екрана"
 
 #. separator
-#: ../src/menu.c:66
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:77
 msgid "_Close"
 msgstr "_Затваряне"
 
 #. separator
-#: ../src/menu.c:68
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:80
 msgid "_Always on Visible Workspace"
 msgstr "_Винаги на видимия работен плот"
 
-#: ../src/menu.c:69
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:82
 msgid "_Only on This Workspace"
 msgstr "_Само на този работен плот"
 
-#: ../src/menu.c:70
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:84
 msgid "Move to Workspace _Left"
 msgstr "Преместване на _левия работен плот"
 
-#: ../src/menu.c:71
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:86
 msgid "Move to Workspace R_ight"
 msgstr "Преместване на _десния работен плот"
 
-#: ../src/menu.c:72
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:88
 msgid "Move to Workspace _Up"
 msgstr "Преместване на _горния работен плот"
 
-#: ../src/menu.c:73
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:90
 msgid "Move to Workspace _Down"
 msgstr "Преместване в до_лния работен плот"
 
-#: ../src/menu.c:164 ../src/prefs.c:2142 ../src/prefs.c:2677
+#: ../src/menu.c:181 ../src/prefs.c:2142 ../src/prefs.c:2677
 #, c-format
 msgid "Workspace %d"
 msgstr "Работен плот %d"
 
-#: ../src/menu.c:173
+#: ../src/menu.c:190
 msgid "Workspace 1_0"
 msgstr "Работен плот 1_0"
 
-#: ../src/menu.c:175
+#: ../src/menu.c:192
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Работен плот %s%d"
 
-#: ../src/menu.c:373
+#: ../src/menu.c:390
 msgid "Move to Another _Workspace"
 msgstr "Преместване на друг _работен плот"
 
@@ -367,7 +383,7 @@ msgstr "Прозорецът „%s“ не отговаря."
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr ""
-"Принудителното спиране на тази програма, ще доведе до загуба на всички "
+"Принудителното спиране на тази програма ще доведе до загуба на всички "
 "незапазени промени."
 
 #: ../src/metacity-dialog.c:107
@@ -2163,12 +2179,12 @@ msgstr "Грешка при задаване на името на работно
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/screen.c:403
+#: ../src/screen.c:404
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Екранът %d на дисплей '%s' е невалиден\n"
 
-#: ../src/screen.c:419
+#: ../src/screen.c:420
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2177,7 +2193,7 @@ msgstr ""
 "Екранът %d на дисплей „%s“ вече има мениджър на прозорци; пробвайте с "
 "опцията --replace да го замените.\n"
 
-#: ../src/screen.c:443
+#: ../src/screen.c:444
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -2185,12 +2201,12 @@ msgstr ""
 "Неуспех при получаването на избрания мениджър за прозорци на екран %d, "
 "дисплей „%s“\n"
 
-#: ../src/screen.c:501
+#: ../src/screen.c:502
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Екран %d на дисплей „%s“ вече има мениджър за прозорци\n"
 
-#: ../src/screen.c:705
+#: ../src/screen.c:707
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Неуспех при отстъпването на екран %d на дисплей „%s“\n"
@@ -3315,7 +3331,7 @@ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "За %2$s е указан неправилен WM_TRANSIENT_FOR, прозорец 0x%1$lx.\n"
 
 #. first time through
-#: ../src/window.c:5298
+#: ../src/window.c:5358
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3331,7 +3347,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5894
+#: ../src/window.c:5954
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
