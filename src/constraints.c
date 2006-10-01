@@ -458,13 +458,15 @@ place_window_if_needed(MetaWindow     *window,
 
   /* Do placement if any, so we go ahead and apply position
    * constraints in a move-only context. Don't place
-   * maximized/fullscreen windows until they are unmaximized
-   * and unfullscreened
+   * maximized/minimized/fullscreen windows until they are
+   * unmaximized, unminimized and unfullscreened.
    */
   did_placement = FALSE;
   if (!window->placed &&
       window->calc_placement &&
-      !META_WINDOW_MAXIMIZED (window) &&
+      !(window->maximized_horizontally ||
+        window->maximized_vertically) &&
+      !window->minimized &&
       !window->fullscreen)
     {
       MetaRectangle placed_rect = info->orig;
@@ -499,53 +501,47 @@ place_window_if_needed(MetaWindow     *window,
       info->fixed_directions = 0;
     }
 
-  if ((window->maximize_horizontally_after_placement ||
-       window->maximize_vertically_after_placement) &&
-      (window->placed || did_placement))
+  if (window->placed || did_placement)
     {
-      /* define a sane saved_rect so that the user can unmaximize to
-       * something reasonable.
-       */
-      if (info->current.width >= info->work_area_xinerama.width)
-        {
-          info->current.width = .75 * info->work_area_xinerama.width;
-          info->current.x = info->work_area_xinerama.x +
-                   .125 * info->work_area_xinerama.width;
-        }
-      if (info->current.height >= info->work_area_xinerama.height)
-        {
-          info->current.height = .75 * info->work_area_xinerama.height;
-          info->current.y = info->work_area_xinerama.y +
-                   .083 * info->work_area_xinerama.height;
-        }
-
-      if (window->maximize_horizontally_after_placement &&
+      if (window->maximize_horizontally_after_placement ||
           window->maximize_vertically_after_placement)
-        meta_window_maximize_internal (window,   
-                                       META_MAXIMIZE_HORIZONTAL |
-                                       META_MAXIMIZE_VERTICAL,
-                                       &info->current);
-      else if (window->maximize_horizontally_after_placement)
         {
-          info->current.x = info->work_area_xinerama.x
-            + info->fgeom->left_width;
-          info->current.width = info->work_area_xinerama.width
-            - info->fgeom->left_width - info->fgeom->right_width;
+          /* define a sane saved_rect so that the user can unmaximize to
+           * something reasonable.
+           */
+          if (info->current.width >= info->work_area_xinerama.width)
+            {
+              info->current.width = .75 * info->work_area_xinerama.width;
+              info->current.x = info->work_area_xinerama.x +
+                       .125 * info->work_area_xinerama.width;
+            }
+          if (info->current.height >= info->work_area_xinerama.height)
+            {
+              info->current.height = .75 * info->work_area_xinerama.height;
+              info->current.y = info->work_area_xinerama.y +
+                       .083 * info->work_area_xinerama.height;
+            }
+
+          if (window->maximize_horizontally_after_placement ||
+              window->maximize_vertically_after_placement)
+            meta_window_maximize_internal (window,   
+                (window->maximize_horizontally_after_placement ?
+                 META_MAXIMIZE_HORIZONTAL : 0 ) |
+                (window->maximize_vertically_after_placement ?
+                 META_MAXIMIZE_VERTICAL : 0), &info->current);
+
+          /* maximization may have changed frame geometry */
+          if (window->frame && !window->fullscreen)
+            meta_frame_calc_geometry (window->frame, info->fgeom);
+
+          window->maximize_horizontally_after_placement = FALSE;
+          window->maximize_vertically_after_placement = FALSE;
         }
-      else if (window->maximize_vertically_after_placement);
+      if (window->minimize_after_placement)
         {
-          info->current.y = info->work_area_xinerama.y
-            + info->fgeom->top_height;
-          info->current.height = info->work_area_xinerama.height
-            - info->fgeom->top_height - info->fgeom->bottom_height;
+          meta_window_minimize (window);
+          window->minimize_after_placement = FALSE;
         }
-
-      /* maximization may have changed frame geometry */
-      if (window->frame && !window->fullscreen)
-        meta_frame_calc_geometry (window->frame, info->fgeom);
-
-      window->maximize_horizontally_after_placement = FALSE;
-      window->maximize_vertically_after_placement = FALSE;
     }
 }
 

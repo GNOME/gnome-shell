@@ -363,6 +363,7 @@ meta_display_open (void)
   display->error_traps = 0;
   display->error_trap_handler = NULL;
   display->server_grab_count = 0;
+  display->display_opening = TRUE;
 
   display->pending_pings = NULL;
   display->autoraise_timeout_id = 0;
@@ -767,6 +768,9 @@ meta_display_open (void)
   if (meta_prefs_get_compositing_manager ())
     enable_compositor (display);
   
+  /* Done opening new display */
+  display->display_opening = FALSE;
+
   return TRUE;
 }
 

@@ -445,6 +445,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->maximized_vertically = FALSE;
   window->maximize_horizontally_after_placement = FALSE;
   window->maximize_vertically_after_placement = FALSE;
+  window->minimize_after_placement = FALSE;
   window->fullscreen = FALSE;
   window->require_fully_onscreen = TRUE;
   window->require_on_single_xinerama = TRUE;
@@ -757,10 +758,15 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   meta_window_foreach_transient (window,
                                  queue_calc_showing_func,
                                  NULL);
-  /* See bug 334899; the window may have minimized ancestors which need to be
-   * shown.
+  /* See bug 334899; the window may have minimized ancestors
+   * which need to be shown.
+   *
+   * However, we shouldn't unminimize windows here when opening
+   * a new display because that breaks passing _NET_WM_STATE_HIDDEN
+   * between window managers when replacing them; see bug 358042.
    */
-  unminimize_window_and_all_transient_parents (window);
+  if (!display->display_opening)
+    unminimize_window_and_all_transient_parents (window);
 
   meta_error_trap_pop (display, FALSE); /* pop the XSync()-reducing trap */
   meta_display_ungrab (display);
@@ -2318,13 +2324,32 @@ unmaximize_window_before_freeing (MetaWindow        *window)
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Unmaximizing %s just before freeing\n",
               window->desc);
-      
-  window->rect = window->saved_rect;
-  send_configure_notify (window);
 
   window->maximized_horizontally = FALSE;
   window->maximized_vertically = FALSE;
-  set_net_wm_state (window);
+
+  if (window->withdrawn)                /* See bug #137185 */
+    {
+      window->rect = window->saved_rect;
+      send_configure_notify (window);
+
+      set_net_wm_state (window);
+    }
+  else if (window->screen->closing)     /* See bug #358042 */
+    {
+      /* Do NOT update net_wm_state: this screen is closing,
+       * it likely will be managed by another window manager
+       * that will need the current _NET_WM_STATE atoms.
+       * Moreover, it will need to know the unmaximized geometry,
+       * therefore move_resize the window to saved_rect here
+       * before closing it. */
+      meta_window_move_resize (window,
+                               FALSE,
+                               window->saved_rect.x,
+                               window->saved_rect.y,
+                               window->saved_rect.width,
+                               window->saved_rect.height);
+    }
 }
 
 void

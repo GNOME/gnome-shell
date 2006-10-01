@@ -464,6 +464,8 @@ reload_net_wm_state (MetaWindow    *window,
         window->maximize_horizontally_after_placement = TRUE;
       else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_maximized_vert)
         window->maximize_vertically_after_placement = TRUE;
+      else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_hidden)
+        window->minimize_after_placement = TRUE;
       else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_modal)
         window->wm_state_modal = TRUE;
       else if (value->v.atom_list.atoms[i] == window->display->atom_net_wm_state_skip_taskbar)

@@ -1,5 +1,31 @@
 2006-10-01  Elijah Newren  <newren gmail com>
 
+	Patch from Carlo Wood to ensure that maximized and minimized
+	properties are maintained across restarts.  #358042.
+
+	* src/constraints.c (place_window_if_needed): fix up partial
+	maximization handling and add minimize_after_placement handling.
+
+	* src/display.[ch] (struct MetaDisplay, meta_display_open): add a
+	new display->display_opening flag to allow handling startup
+	differently where needed.
+
+	* src/window-props.c (reload_net_wm_state): handle
+	_net_wm_state_hidden as well, setting
+	window->minimize_after_placement appropriately
+
+	* src/window.[ch] (struct MetaWindow, meta_window_new_with_attrs):
+	add a window->minimize_after_placement field
+
+	* src/window.c (meta_window_new_with_attrs): only unminimize the
+	window and its transients if the display isn't being opened,
+	(unmaximize_window_before_freeing): don't reset the state unless
+	the window is becoming withdrawn, if the screen is being closed be
+	sure to save the unmaximized state of the window so the next
+	window manager can restore it
+
+2006-10-01  Elijah Newren  <newren gmail com>
+
 	* src/window-props.c (set_title_text): surround the
 	XDeleteProperty() call with a
 	meta_error_trap_push/meta_error_trap_pop pair to prevent a crash

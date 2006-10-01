@@ -311,6 +311,9 @@ struct _MetaDisplay
   /* Xinerama cache */
   unsigned int xinerama_cache_invalidated : 1;
 
+  /* Opening the display */
+  unsigned int display_opening : 1;
+
   /* Closing down the display */
   int closing;
 
