@@ -1,3 +1,5 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 /* Metacity hacked-up GtkAccelLabel */
 /* Copyright (C) 2002 Red Hat, Inc. */
 /* GTK - The GIMP Toolkit

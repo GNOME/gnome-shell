@@ -1,3 +1,5 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 /* Metacity popup window thing showing windows you can tab to */
 
 /* 

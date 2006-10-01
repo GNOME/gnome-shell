@@ -1,3 +1,4 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 /* 
  * Copyright (C) 2006 Red Hat, Inc.
  * 
@@ -27,7 +28,7 @@
 typedef struct _MetaCompWindow MetaCompWindow;
 
 typedef void (* MetaCompWindowDestroy) (MetaCompWindow *window,
-					gpointer        closure);
+                                        gpointer        closure);
 
 MetaCompWindow *meta_comp_window_new (MetaScreen *screen,
 				      WsDrawable *drawable,

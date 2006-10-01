@@ -1,3 +1,5 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 /* 
  * Copyright (C) 2003, 2004, 2005, 2006 Red Hat, Inc.
  * Copyright (C) 2003 Keith Packard

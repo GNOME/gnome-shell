@@ -1,5 +1,12 @@
 2006-10-01  Elijah Newren  <newren gmail com>
 
+	* src/*.[ch]: Stick an emacs comment directive at the beginning of
+	all the code files so that people using emacs will be more likely
+	to get coding style correct in their patches.  We still need a
+	similar vi directive.  #358866
+
+2006-10-01  Elijah Newren  <newren gmail com>
+
 	Patch from Carlo Wood to ensure that maximized and minimized
 	properties are maintained across restarts.  #358042.
 

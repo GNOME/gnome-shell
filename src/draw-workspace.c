@@ -1,3 +1,5 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 /* Draw a workspace */
 
 /* This file should not be modified to depend on other files in

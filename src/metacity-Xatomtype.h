@@ -1,3 +1,5 @@
+/* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 /* $Xorg: Xatomtype.h,v 1.4 2001/02/09 02:03:38 xorgcvs Exp $ */
 
 /***********************************************************
