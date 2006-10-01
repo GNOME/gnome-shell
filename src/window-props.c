@@ -22,6 +22,7 @@
 
 #include <config.h>
 #include "window-props.h"
+#include "errors.h"
 #include "xprops.h"
 #include "frame.h"
 #include "group.h"
@@ -248,9 +249,13 @@ set_title_text (MetaWindow  *window,
 
   /* Bug 330671 -- Don't forget to clear _NET_WM_VISIBLE_(ICON_)NAME */
   if (!modified && previous_was_modified)
-    XDeleteProperty (window->display->xdisplay,
-                     window->xwindow,
-                     atom);
+    {
+      meta_error_trap_push (window->display);
+      XDeleteProperty (window->display->xdisplay,
+                       window->xwindow,
+                       atom);
+      meta_error_trap_pop (window->display, FALSE);
+    }
 
   return modified;
 }

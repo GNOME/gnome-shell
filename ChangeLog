@@ -1,5 +1,13 @@
 2006-10-01  Elijah Newren  <newren gmail com>
 
+	* src/window-props.c (set_title_text): surround the
+	XDeleteProperty() call with a
+	meta_error_trap_push/meta_error_trap_pop pair to prevent a crash
+	when closing a remote instance of gedit (and perhaps other apps).
+	#358514.
+
+2006-10-01  Elijah Newren  <newren gmail com>
+
 	Fix longstanding focus bug with mouse (not sloppy) focus mode with
 	popup override-redirect windows, particularly mozilla and
 	firefox's location bar autocompletion.  #357695.
