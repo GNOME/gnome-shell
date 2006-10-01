@@ -9,7 +9,8 @@ basics are easy:
 Focus method  Behavior
     click     When a user clicks on a window, focus it
    sloppy     When an EnterNotify is received, focus the window
-    mouse     Same as sloppy, but also defocus on LeaveNotify
+    mouse     Same as sloppy, but also defocus when mouse enters DESKTOP
+              window
 
 Note that these choices (along with the choice that clicking on a
 window raises it for the click focus method) introduces the following
@@ -20,8 +21,9 @@ Focus method  Invariant
    sloppy     If the mouse is in a window, then it is focused; if the
               mouse is not in a window, then the most recently used
               window is focused.
-    mouse     If the mouse is in a window, then it is focused; otherwise,
-              the designated "no_focus_window" is focused
+
+    mouse     If the mouse is in a non-DESKTOP window, then it is focused;
+              otherwise, the designated "no_focus_window" is focused
 
 However, there are a number of cases where the current focus window
 becomes invalid and another should be chosen.  Some examples are when
@@ -34,8 +36,10 @@ Focus method  Behavior
               on top)
    sloppy     Focus the window containing the pointer if there is such
               a window, otherwise focus the most recently used window.
-    mouse     Focus the window containing the pointer if there is one,
-              otherwise focus the designated "no_focus_window".
+
+    mouse     Focus the non-DESKTOP window containing the pointer if
+              there is one, otherwise focus the designated
+              "no_focus_window".
 
 Note that "most recently used window", as used here, has a slightly
 different connotation than "most recent to have keyboard focus".  This
@@ -123,6 +127,7 @@ To read more about the bugs that inspired these choices:
   - Mousenav vs. Keynav in mouse and sloppy focus modes
     http://bugzilla.gnome.org/show_bug.cgi?id=167545
     http://bugzilla.gnome.org/show_bug.cgi?id=101190
+    http://bugzilla.gnome.org/show_bug.cgi?id=357695
   - Not focusing panels
     http://bugzilla.gnome.org/show_bug.cgi?id=160470
     http://bugzilla.gnome.org/show_bug.cgi?id=120100

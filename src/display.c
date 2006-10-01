@@ -1847,6 +1847,7 @@ event_callback (XEvent   *event,
             {
             case META_FOCUS_MODE_SLOPPY:
             case META_FOCUS_MODE_MOUSE:
+              display->mouse_mode = TRUE;
               if (window->type != META_WINDOW_DOCK &&
                   window->type != META_WINDOW_DESKTOP)
                 {
@@ -1858,21 +1859,41 @@ event_callback (XEvent   *event,
                               event->xany.serial,
                               event->xcrossing.time);
 
-                  display->mouse_mode = TRUE;
                   meta_window_focus (window, event->xcrossing.time);
 
-		  /* stop ignoring stuff */
-		  reset_ignores (display);
-		  
-		  if (meta_prefs_get_auto_raise ()) 
-		    {
+                  /* stop ignoring stuff */
+                  reset_ignores (display);
+                  
+                  if (meta_prefs_get_auto_raise ()) 
+                    {
                       meta_display_queue_autoraise_callback (display, window);
-		    }
-		  else
-		    {
-		      meta_topic (META_DEBUG_FOCUS,
-				  "Auto raise is disabled\n");		      
-		    }
+                    }
+                  else
+                    {
+                      meta_topic (META_DEBUG_FOCUS,
+                                  "Auto raise is disabled\n");		      
+                    }
+                }
+              /* In mouse focus mode, we defocus when the mouse *enters*
+               * the DESKTOP window, instead of defocusing on LeaveNotify.
+               * This is because having the mouse enter override-redirect
+               * child windows unfortunately causes LeaveNotify events that
+               * we can't distinguish from the mouse actually leaving the
+               * toplevel window as we expect.  But, since we filter out
+               * EnterNotify events on override-redirect windows, this
+               * alternative mechanism works great.
+               */
+              if (window->type == META_WINDOW_DESKTOP &&
+                  meta_prefs_get_focus_mode() == META_FOCUS_MODE_MOUSE &&
+                  display->expected_focus_window != NULL)
+                {
+                  meta_topic (META_DEBUG_FOCUS,
+                              "Unsetting focus from %s due to mouse entering "
+                              "the DESKTOP window\n",
+                              display->expected_focus_window->desc);
+                  meta_display_focus_the_no_focus_window (display, 
+                                                          window->screen,
+                                                          event->xcrossing.time);
                 }
               break;
             case META_FOCUS_MODE_CLICK:
@@ -1890,40 +1911,6 @@ event_callback (XEvent   *event,
         meta_window_handle_mouse_grab_op_event (window, event);
       else if (window != NULL)
         {
-          switch (meta_prefs_get_focus_mode ())
-            {
-            case META_FOCUS_MODE_MOUSE:
-              if ((window->frame == NULL || frame_was_receiver) &&
-                  event->xcrossing.mode != NotifyGrab && 
-                  event->xcrossing.mode != NotifyUngrab &&
-                  event->xcrossing.detail != NotifyInferior &&
-                  meta_display_focus_sentinel_clear (display))
-                {
-                  if (window == display->expected_focus_window)
-                    {
-                      meta_topic (META_DEBUG_FOCUS,
-                                  "Unsetting focus from %s due to LeaveNotify\n",
-                                  window->desc);
-                      meta_display_focus_the_no_focus_window (display, 
-                                                              window->screen,
-                                                              event->xcrossing.time);
-                    }
-                  if (window->type != META_WINDOW_DOCK &&
-                      window->type != META_WINDOW_DESKTOP)
-                    {
-                      meta_topic (META_DEBUG_FOCUS,
-                                  "Setting display->mouse_mode to TRUE due to "
-                                  "LeaveNotify at time %lu.\n",
-                                  event->xcrossing.time);
-                      display->mouse_mode = TRUE;
-                    }
-                }
-              break;
-            case META_FOCUS_MODE_SLOPPY:
-            case META_FOCUS_MODE_CLICK:
-              break;
-            }
-          
           if (window->type == META_WINDOW_DOCK &&
               event->xcrossing.mode != NotifyGrab &&
               event->xcrossing.mode != NotifyUngrab &&

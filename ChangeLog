@@ -1,3 +1,19 @@
+2006-10-01  Elijah Newren  <newren gmail com>
+
+	Fix longstanding focus bug with mouse (not sloppy) focus mode with
+	popup override-redirect windows, particularly mozilla and
+	firefox's location bar autocompletion.  #357695.
+
+	* src/display.c (event_callback -- EnterNotify & LeaveNotify events):
+	for mouse focus, defocus the focused window when the mouse enters
+	the desktop window rather than when the mouse leaves the focused
+	window.
+
+	* doc/how-to-get-focus-right.txt:
+	update for the slightly nuanced definition of mouse focus (people
+	without a DESKTOP window like nautilus get sloppy focus behavior
+	now)
+
 2006-09-27  Elijah Newren  <newren gmail com>
 
 	* src/menu.c (var menuitems): Patch from Bruno Boaventura to add
