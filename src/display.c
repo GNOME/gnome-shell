@@ -5002,10 +5002,13 @@ meta_display_set_input_focus_window (MetaDisplay *display,
   if (timestamp_too_old (display, window, &timestamp))
     return;
 
+  meta_error_trap_push (display);
   XSetInputFocus (display->xdisplay,
                   focus_frame ? window->frame->xwindow : window->xwindow,
                   RevertToPointerRoot,
                   timestamp);
+  meta_error_trap_pop (display, FALSE);
+
   display->expected_focus_window = window;
   display->last_focus_time = timestamp;
   display->active_screen = window->screen;

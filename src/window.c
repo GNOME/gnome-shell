@@ -3876,8 +3876,6 @@ meta_window_focus (MetaWindow  *window,
     }
   else
     {
-      meta_error_trap_push (window->display);
-      
       if (window->input)
         {
           meta_topic (META_DEBUG_FOCUS,
@@ -3899,8 +3897,6 @@ meta_window_focus (MetaWindow  *window,
                                           timestamp);
           window->display->expected_focus_window = window;
         }
-      
-      meta_error_trap_pop (window->display, FALSE);
     }
 
   if (window->wm_state_demands_attention)
