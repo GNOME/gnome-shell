@@ -1,3 +1,15 @@
+2006-10-02  Elijah Newren  <newren gmail com>
+
+	Ignore edge resistance for size-increment windows when resizing
+	with the keyboard.  #346782.
+
+	* src/edge-resistance.c (apply_edge_resistance_to_each_side):
+	ignore edge resistance for size-increment windows when resizing
+	with the keyboard, (apply_edge_resistance_to_each_side,
+	meta_window_edge_resistance_for_move,
+	meta_window_edge_resistance_for_resize): pass a is_resize
+	parameter as well
+
 2006-10-01  Elijah Newren  <newren gmail com>
 
 	* src/display.c (meta_display_set_input_focus_window):

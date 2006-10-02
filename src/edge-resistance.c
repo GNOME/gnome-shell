@@ -530,7 +530,8 @@ apply_edge_resistance_to_each_side (MetaDisplay         *display,
                                     MetaRectangle       *new_outer,
                                     GSourceFunc          timeout_func,
                                     gboolean             auto_snap,
-                                    gboolean             keyboard_op)
+                                    gboolean             keyboard_op,
+                                    gboolean             is_resize)
 {
   MetaEdgeResistanceData *edge_data;
   MetaRectangle           modified_rect;
@@ -577,47 +578,68 @@ apply_edge_resistance_to_each_side (MetaDisplay         *display,
     }
   else
     {
-      /* Now, apply the normal edge resistance */
-      new_left   = apply_edge_resistance (window,
-                                          BOX_LEFT (*old_outer),
-                                          BOX_LEFT (*new_outer),
-                                          old_outer,
-                                          new_outer,
-                                          edge_data->left_edges,
-                                          &edge_data->left_data,
-                                          timeout_func,
-                                          TRUE,
-                                          keyboard_op);
-      new_right  = apply_edge_resistance (window,
-                                          BOX_RIGHT (*old_outer),
-                                          BOX_RIGHT (*new_outer),
-                                          old_outer,
-                                          new_outer,
-                                          edge_data->right_edges,
-                                          &edge_data->right_data,
-                                          timeout_func,
-                                          TRUE,
-                                          keyboard_op);
-      new_top    = apply_edge_resistance (window,
-                                          BOX_TOP (*old_outer),
-                                          BOX_TOP (*new_outer),
-                                          old_outer,
-                                          new_outer,
-                                          edge_data->top_edges,
-                                          &edge_data->top_data,
-                                          timeout_func,
-                                          FALSE,
-                                          keyboard_op);
-      new_bottom = apply_edge_resistance (window,
-                                          BOX_BOTTOM (*old_outer),
-                                          BOX_BOTTOM (*new_outer),
-                                          old_outer,
-                                          new_outer,
-                                          edge_data->bottom_edges,
-                                          &edge_data->bottom_data,
-                                          timeout_func,
-                                          FALSE,
-                                          keyboard_op);
+      /* Disable edge resistance for resizes when windows have size
+       * increment hints; see #346782.  For all other cases, apply
+       * them.
+       */
+      if (!is_resize || window->size_hints.width_inc == 1)
+        {
+          /* Now, apply the normal horizontal edge resistance */
+          new_left   = apply_edge_resistance (window,
+                                              BOX_LEFT (*old_outer),
+                                              BOX_LEFT (*new_outer),
+                                              old_outer,
+                                              new_outer,
+                                              edge_data->left_edges,
+                                              &edge_data->left_data,
+                                              timeout_func,
+                                              TRUE,
+                                              keyboard_op);
+          new_right  = apply_edge_resistance (window,
+                                              BOX_RIGHT (*old_outer),
+                                              BOX_RIGHT (*new_outer),
+                                              old_outer,
+                                              new_outer,
+                                              edge_data->right_edges,
+                                              &edge_data->right_data,
+                                              timeout_func,
+                                              TRUE,
+                                              keyboard_op);
+        }
+      else
+        {
+          new_left  = new_outer->x;
+          new_right = new_outer->x + new_outer->width;
+        }
+      /* Same for vertical resizes... */
+      if (!is_resize || window->size_hints.height_inc == 1)
+        {
+          new_top    = apply_edge_resistance (window,
+                                              BOX_TOP (*old_outer),
+                                              BOX_TOP (*new_outer),
+                                              old_outer,
+                                              new_outer,
+                                              edge_data->top_edges,
+                                              &edge_data->top_data,
+                                              timeout_func,
+                                              FALSE,
+                                              keyboard_op);
+          new_bottom = apply_edge_resistance (window,
+                                              BOX_BOTTOM (*old_outer),
+                                              BOX_BOTTOM (*new_outer),
+                                              old_outer,
+                                              new_outer,
+                                              edge_data->bottom_edges,
+                                              &edge_data->bottom_data,
+                                              timeout_func,
+                                              FALSE,
+                                              keyboard_op);
+        }
+      else
+        {
+          new_top    = new_outer->y;
+          new_bottom = new_outer->y + new_outer->height;
+        }
     }
 
   /* Determine whether anything changed, and save the changes */
@@ -1104,6 +1126,7 @@ meta_window_edge_resistance_for_move (MetaWindow  *window,
                                       gboolean     is_keyboard_op)
 {
   MetaRectangle old_outer, proposed_outer, new_outer;
+  gboolean is_resize;
 
   if (window == window->display->grab_window &&
       window->display->grab_wireframe_active)
@@ -1122,13 +1145,15 @@ meta_window_edge_resistance_for_move (MetaWindow  *window,
   new_outer = proposed_outer;
 
   window->display->grab_last_user_action_was_snap = snap;
+  is_resize = FALSE;
   if (apply_edge_resistance_to_each_side (window->display,
                                           window,
                                           &old_outer,
                                           &new_outer,
                                           timeout_func,
                                           snap,
-                                          is_keyboard_op))
+                                          is_keyboard_op,
+                                          is_resize))
     {
       /* apply_edge_resistance_to_each_side independently applies
        * resistance to both the right and left edges of new_outer as both
@@ -1196,6 +1221,7 @@ meta_window_edge_resistance_for_resize (MetaWindow  *window,
 {
   MetaRectangle old_outer, new_outer;
   int proposed_outer_width, proposed_outer_height;
+  gboolean is_resize;
 
   if (window == window->display->grab_window &&
       window->display->grab_wireframe_active)
@@ -1217,13 +1243,15 @@ meta_window_edge_resistance_for_resize (MetaWindow  *window,
                                       proposed_outer_height);
 
   window->display->grab_last_user_action_was_snap = snap;
+  is_resize = TRUE;
   if (apply_edge_resistance_to_each_side (window->display,
                                           window,
                                           &old_outer,
                                           &new_outer,
                                           timeout_func,
                                           snap,
-                                          is_keyboard_op))
+                                          is_keyboard_op,
+                                          is_resize))
     {
       *new_width  = old_width  + (new_outer.width  - old_outer.width);
       *new_height = old_height + (new_outer.height - old_outer.height);
