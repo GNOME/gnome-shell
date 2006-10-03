@@ -31,6 +31,9 @@
 #include <clutter/clutter-texture.h>
 #include <clutter/clutter-color.h>
 
+#include <pango/pango.h>
+
+
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_LABEL clutter_label_get_type()
@@ -61,7 +64,7 @@ typedef struct _ClutterLabelPrivate ClutterLabelPrivate;
 
 struct _ClutterLabel
 {
-  ClutterTexture         parent;
+  ClutterActor         parent;
 
   /*< private >*/
   ClutterLabelPrivate   *priv;
@@ -70,7 +73,7 @@ struct _ClutterLabel
 struct _ClutterLabelClass 
 {
   /*< private >*/
-  ClutterTextureClass parent_class;
+  ClutterActorClass parent_class;
 
   void (*_clutter_label_1) (void);
   void (*_clutter_label_2) (void);
@@ -80,11 +83,11 @@ struct _ClutterLabelClass
 
 GType clutter_label_get_type (void) G_GNUC_CONST;
 
-ClutterActor *      clutter_label_new              (void);
-ClutterActor *      clutter_label_new_with_text    (const gchar        *font_name,
+ClutterActor *clutter_label_new              (void);
+ClutterActor *clutter_label_new_with_text    (const gchar        *font_name,
 						      const gchar        *text);
 
-void                  clutter_label_set_text         (ClutterLabel       *label,
+void   clutter_label_set_text         (ClutterLabel       *label,
 						      const gchar        *text);
 G_CONST_RETURN gchar *clutter_label_get_text         (ClutterLabel       *label);
 void                  clutter_label_set_font_name    (ClutterLabel       *label,
@@ -94,12 +97,51 @@ void                  clutter_label_set_color        (ClutterLabel       *label,
 						      const ClutterColor *color);
 void                  clutter_label_get_color        (ClutterLabel       *label,
 						      ClutterColor       *color);
-void                  clutter_label_set_text_extents (ClutterLabel       *label,
-						      gint                width,
-						      gint                height);
-void                  clutter_label_get_text_extents (ClutterLabel       *label,
-						      gint               *width,
-						      gint               *height);
+
+void
+clutter_label_set_ellipsize (ClutterLabel          *label,
+			     PangoEllipsizeMode     mode);
+
+PangoEllipsizeMode
+clutter_label_get_ellipsize (ClutterLabel *label);
+
+void
+clutter_label_set_line_wrap (ClutterLabel *label,
+			     gboolean      wrap);
+
+gboolean
+clutter_label_get_line_wrap (ClutterLabel *label);
+
+void
+clutter_label_set_line_wrap_mode (ClutterLabel *label,
+				  PangoWrapMode wrap_mode);
+
+PangoWrapMode
+clutter_label_get_line_wrap_mode (ClutterLabel *label);
+
+PangoLayout*
+clutter_label_get_layout (ClutterLabel *label);
+
+void
+clutter_label_set_attributes (ClutterLabel     *label,
+			      PangoAttrList    *attrs);
+
+PangoAttrList*
+clutter_label_get_attributes (ClutterLabel *label);
+
+void
+clutter_label_set_use_markup (ClutterLabel *label,
+			      gboolean      setting);
+
+gboolean
+clutter_label_get_use_markup (ClutterLabel *label);
+
+void
+clutter_label_set_alignment (ClutterLabel   *label,
+			     PangoAlignment  alignment);
+gboolean
+clutter_label_get_alignment (ClutterLabel *label);
+
 
 G_END_DECLS
 

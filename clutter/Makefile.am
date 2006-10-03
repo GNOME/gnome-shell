@@ -1,3 +1,5 @@
+SUBDIRS=pango
+
 MARSHALFILES = clutter-marshal.c clutter-marshal.h
 ENUMFILES = clutter-enum-types.c clutter-enum-types.h
 GLIB_GENMARSHAL=`pkg-config --variable=glib_genmarshal glib-2.0`
@@ -97,12 +99,15 @@ libclutter_@CLUTTER_MAJORMINOR@_la_SOURCES = $(MARSHALFILES) \
                                              $(source_h)     \
                                              $(source_h_priv)
 
-INCLUDES = @GCC_FLAGS@ @CLUTTER_CFLAGS@ -I$(top_srcdir)
+INCLUDES = @GCC_FLAGS@ @CLUTTER_CFLAGS@ -I$(top_srcdir) -I$(top_srcdir)/clutter/pango
 
 lib_LTLIBRARIES = libclutter-@CLUTTER_MAJORMINOR@.la
 
-libclutter_@CLUTTER_MAJORMINOR@_la_LIBADD  = @CLUTTER_LIBS@
+libclutter_@CLUTTER_MAJORMINOR@_la_LIBADD  = \
+            @CLUTTER_LIBS@ $(top_srcdir)/clutter/pango/libpangoclutter.a
 libclutter_@CLUTTER_MAJORMINOR@_la_LDFLAGS = @CLUTTER_LT_LDFLAGS@
+libclutter_@CLUTTER_MAJORMINOR@_la_DEPENDENCIES = \
+            $(top_srcdir)/clutter/pango/libpangoclutter.a
 
 clutterheadersdir = $(includedir)/clutter-@CLUTTER_MAJORMINOR@/clutter
 clutterheaders_HEADERS = $(source_h) 		\

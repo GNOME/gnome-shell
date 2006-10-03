@@ -338,9 +338,6 @@ clutter_actor_paint (ClutterActor *self)
   if (self->priv->has_clip)
     {
       glDisable (GL_STENCIL_TEST);
-#if 0
-      glDisable (GL_SCISSOR_TEST);
-#endif
     }
 
   glPopMatrix();

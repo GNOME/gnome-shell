@@ -118,6 +118,7 @@ AC_SUBST(CLUTTER_CFLAGS)
 AC_SUBST(CLUTTER_LIBS)
 
 AC_OUTPUT([Makefile
+clutter/pango/Makefile
 clutter/Makefile
 gtk/Makefile
 gtk/gtk-clutter.pc

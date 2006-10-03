@@ -43,7 +43,10 @@ text_cb (ClutterTimeline *timeline,
   g_snprintf(buf, 32, "--> %i <--", frame_num);
 
   clutter_label_set_text (label, buf);
-  // clutter_actor_set_opacity (CLUTTER_ACTOR(label), opacity); 
+  clutter_actor_set_size(CLUTTER_ACTOR(label), 150, 0);
+  clutter_label_set_ellipsize (label, PANGO_ELLIPSIZE_END);
+
+  clutter_actor_set_opacity (CLUTTER_ACTOR(label), opacity); 
 
   clutter_actor_rotate_z (CLUTTER_ACTOR(label),
 			    frame_num,
@@ -66,7 +69,7 @@ main (int argc, char *argv[])
   ClutterActor    *texture, *label, *rect, *para;
   ClutterActor    *stage;
   ClutterTimeline *timeline;
-  ClutterColor     rect_col = { 0xff, 0x0, 0x0, 0xff };
+  ClutterColor     rect_col = { 0xff, 0x0, 0x0, 0x99 };
   GdkPixbuf       *pixbuf;
 
   clutter_init (&argc, &argv);
@@ -87,6 +90,8 @@ main (int argc, char *argv[])
 
   clutter_actor_set_opacity (CLUTTER_ACTOR(label), 0x99);
   clutter_actor_set_position (CLUTTER_ACTOR(label), 550, 100);
+  clutter_actor_set_size(label, 400, 0);
+
 
   rect = clutter_rectangle_new_with_color(&rect_col);
   clutter_actor_set_size(rect, 100, 100);
@@ -94,7 +99,7 @@ main (int argc, char *argv[])
 
   para = clutter_label_new_with_text ("Sans 24", PARA_TEXT);
   clutter_actor_set_position(para, 10, 10);
-  clutter_label_set_text_extents (CLUTTER_LABEL(para), 200, 0);
+  clutter_actor_set_size(para, 200, 0);
 
   clutter_group_add (CLUTTER_GROUP (stage), texture);
   clutter_group_add (CLUTTER_GROUP (stage), label);

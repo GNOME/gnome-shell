@@ -1,3 +1,22 @@
+2006-10-03  Matthew Allum  <mallum@openedhand.com>
+
+	* configure.ac:
+	* clutter/Makefile.am:
+	* clutter/clutter-actor.c:
+	* clutter/clutter-label.c:
+	* clutter/clutter-label.h:
+	* clutter/pango/Makefile.am:
+	* clutter/pango/pangoclutter-font.c:
+	* clutter/pango/pangoclutter-fontmap.c:
+	* clutter/pango/pangoclutter-private.h:
+	* clutter/pango/pangoclutter-render.c:
+	* clutter/pango/pangoclutter.h:
+	Add initial rough new pango renderer and clutter-label. 
+
+	* examples/super-oh.c:
+	* examples/test.c:
+	Minor fixups
+
 2006-09-20  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c: (clutter_actor_paint):

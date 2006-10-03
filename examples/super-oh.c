@@ -186,10 +186,10 @@ main (int argc, char *argv[])
       clutter_group_add (CLUTTER_GROUP (oh->group), oh->hand[i]);
     }
 
-  clutter_actor_set_scale (oh->group, .1, 0.1);
-
 #if 0
   {
+    clutter_actor_set_scale (oh->group, .1, 0.1);
+
     guint w, h;
     clutter_actor_get_abs_size (CLUTTER_ACTOR(oh->hand[0]), &w, &h);
     g_print ("%ix%i\n", w, h);
