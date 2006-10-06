@@ -87,16 +87,16 @@ kill_window_question (const char *window_name,
   char *str, *tmp;
 
   tmp = g_markup_escape_text (window_name, -1);
-  str = g_strdup_printf (_("The window \"%s\" is not responding."), tmp);
+  str = g_strdup_printf (_("\"%s\" is not responding."), tmp);
   g_free (tmp);
-
   dialog = gtk_message_dialog_new (NULL, 0,
                                    GTK_MESSAGE_WARNING,
                                    GTK_BUTTONS_NONE,
-				   "<b>%s</b>\n\n%s",
-				   str,
-				   _("Forcing this application to quit will "
-				     "cause you to lose any unsaved changes."));
+                                   "<big><b>%s</b></big>\n\n%s",
+                                   str,
+                                   _("<i>You may choose to wait a short while"
+                                   "for it to continue or force the application"
+                                   "to quit entirely.</i>"));
   g_free (str);
   gtk_window_set_icon_name (GTK_WINDOW (dialog), "panel-force-quit");
 
@@ -104,7 +104,7 @@ kill_window_question (const char *window_name,
   gtk_label_set_line_wrap (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label), TRUE);
   
   gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-                          GTK_STOCK_CANCEL,
+                          _("_Wait"),
                           GTK_RESPONSE_REJECT,
                           _("_Force Quit"),
                           GTK_RESPONSE_ACCEPT,
