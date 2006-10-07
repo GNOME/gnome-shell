@@ -1,5 +1,9 @@
 2006-10-07  Thomas Thurman <thomas@thurman.org.uk>
 
+        * MAINTAINERS: added myself.
+
+2006-10-07  Thomas Thurman <thomas@thurman.org.uk>
+
         * doc/theme-format.txt: described new theme format.
 
 	* src/themes/Bright, src/themes/Crux: added version 2 themes.
