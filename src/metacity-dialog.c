@@ -92,11 +92,11 @@ kill_window_question (const char *window_name,
   dialog = gtk_message_dialog_new (NULL, 0,
                                    GTK_MESSAGE_WARNING,
                                    GTK_BUTTONS_NONE,
-                                   "<big><b>%s</b></big>\n\n%s",
+                                   "<big><b>%s</b></big>\n\n<i>%s</i>",
                                    str,
-                                   _("<i>You may choose to wait a short while"
+                                   _("You may choose to wait a short while"
                                    "for it to continue or force the application"
-                                   "to quit entirely.</i>"));
+                                   "to quit entirely."));
   g_free (str);
   gtk_window_set_icon_name (GTK_WINDOW (dialog), "panel-force-quit");
 

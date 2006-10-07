@@ -1,5 +1,12 @@
 2006-10-06  Elijah Newren  <newren gmail com>
 
+	* src/metacity-dialog.c (kill_window_question): Be nice to
+	translators; remove unnecessary markup from strings marked for
+	translation (oops, I missed this in my review before previous
+	commit)
+
+2006-10-06  Elijah Newren  <newren gmail com>
+
 	* src/metacity-dialog.c (kill_window_question): Patch from Bruno
 	Boaventura to improve the "Force Quit" dialog.  #121936
 
