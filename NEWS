@@ -1,3 +1,29 @@
+2.17.0
+======
+
+Thanks to Elijah Newren, Jens Granseuer, Bruno Boaventura, Carlo Wood,
+and Thomas Thurman for changes in this release.
+
+  - version 2 of theme format: stick, shade and above buttons on titlebar,
+    variable rounding on corners, variable transparency on window
+    backgrounds, stock icons in themes, can remove all titlebar buttons
+    from certain classes of window, and more (Thomas) [#102547 and
+    dependencies]
+  - improve "Force Quit" dialog (Bruno) [#121936]
+  - ignore edge resistance when resizing with keyboard (Elijah) [#346782]
+  - maintain window size and placement across restarts (Carlo) [#358042]
+  - prevent crash when closing certain remote apps (Elijah) [#358514]
+  - longstanding mouse-focus bug fixed which affected firefox's
+    autocompletion (Elijah) [#357695]
+  - ignore maximum size constraints when maximising (Elijah) [#327543]
+  - warn translators to keep translations in sync with libwnck (Bruno)
+    [#355620]
+  - fixes for compilation warnings, etc (Elijah, Jens) [#348067, #356631]
+
+ Translators
+   Ivar Smolin (et), Gabor Kelemen (hu), Luca Ferretti (it),
+   Runa Bhattacharjee (bn_IN)
+
 2.16.2
 ======
 

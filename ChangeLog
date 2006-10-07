@@ -1,5 +1,9 @@
 2006-10-07  Thomas Thurman <thomas@thurman.org.uk>
 
+        * NEWS: 2.17.0 release.
+
+2006-10-07  Thomas Thurman <thomas@thurman.org.uk>
+
         * src/themes/Crux/metacity-theme-2.xml: removed hide_buttons.
 	Closes #360498.
 
