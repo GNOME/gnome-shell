@@ -27,6 +27,8 @@
 #include "util.h"
 #include "gradient.h"
 #include <gtk/gtkwidget.h>
+#include <gtk/gtkimage.h>
+#include <gtk/gtkicontheme.h>
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
@@ -394,8 +396,51 @@ meta_frame_layout_get_borders (const MetaFrameLayout *layout,
 static MetaButtonSpace*
 rect_for_function (MetaFrameGeometry *fgeom,
                    MetaFrameFlags     flags,
-                   MetaButtonFunction function)
+                   MetaButtonFunction function,
+                   MetaTheme         *theme)
 {
+
+  /* Firstly, check version-specific things. */
+  
+  if (META_THEME_ALLOWS(theme, META_THEME_SHADE_STICK_ABOVE_BUTTONS))
+    {
+      switch (function)
+        {
+        case META_BUTTON_FUNCTION_SHADE:
+          if ((flags & META_FRAME_ALLOWS_SHADE) && !(flags & META_FRAME_SHADED))
+            return &fgeom->shade_rect;
+          else
+            return NULL;
+        case META_BUTTON_FUNCTION_ABOVE:
+          if (!(flags & META_FRAME_ABOVE))
+            return &fgeom->above_rect;
+          else
+            return NULL;
+        case META_BUTTON_FUNCTION_STICK:
+          if (!(flags & META_FRAME_STUCK))
+            return &fgeom->stick_rect;
+          else
+            return NULL;
+        case META_BUTTON_FUNCTION_UNSHADE:
+          if ((flags & META_FRAME_ALLOWS_SHADE) && (flags & META_FRAME_SHADED))
+            return &fgeom->unshade_rect;
+          else
+            return NULL;
+        case META_BUTTON_FUNCTION_UNABOVE:
+          if (flags & META_FRAME_ABOVE)
+            return &fgeom->unabove_rect;
+          else
+            return NULL;
+        case META_BUTTON_FUNCTION_UNSTICK:
+          if (flags & META_FRAME_STUCK)
+            return &fgeom->unstick_rect;
+        default:
+          /* just go on to the next switch block */;
+        }
+    }
+
+  /* now consider the buttons which exist in all versions */
+
   switch (function)
     {
     case META_BUTTON_FUNCTION_MENU:
@@ -418,6 +463,19 @@ rect_for_function (MetaFrameGeometry *fgeom,
         return &fgeom->close_rect;
       else
         return NULL;
+    case META_BUTTON_FUNCTION_STICK:
+    case META_BUTTON_FUNCTION_SHADE:
+    case META_BUTTON_FUNCTION_ABOVE:
+    case META_BUTTON_FUNCTION_UNSTICK:
+    case META_BUTTON_FUNCTION_UNSHADE:
+    case META_BUTTON_FUNCTION_UNABOVE:
+      /* we are being asked for a >v1 button which hasn't been handled yet,
+       * so obviously we're not in a theme which supports that version.
+       * therefore, we don't show the button. return NULL and all will
+       * be well.
+       */
+      return NULL;
+      
     case META_BUTTON_FUNCTION_LAST:
       return NULL;
     }
@@ -468,7 +526,8 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
                                  int                     client_width,
                                  int                     client_height,
                                  const MetaButtonLayout *button_layout,
-                                 MetaFrameGeometry      *fgeom)
+                                 MetaFrameGeometry      *fgeom,
+                                 MetaTheme              *theme)
 {
   int i, n_left, n_right;
   int x;
@@ -544,18 +603,20 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
       right_func_rects[i] = NULL;
 
       /* Try to fill in rects */
-      if (button_layout->left_buttons[i] != META_BUTTON_FUNCTION_LAST)
+      if (button_layout->left_buttons[i] != META_BUTTON_FUNCTION_LAST && !layout->hide_buttons)
         {
           left_func_rects[n_left] = rect_for_function (fgeom, flags,
-                                                       button_layout->left_buttons[i]);
+                                                       button_layout->left_buttons[i],
+                                                       theme);
           if (left_func_rects[n_left] != NULL)
             ++n_left;
         }
       
-      if (button_layout->right_buttons[i] != META_BUTTON_FUNCTION_LAST)
+      if (button_layout->right_buttons[i] != META_BUTTON_FUNCTION_LAST && !layout->hide_buttons)
         {
           right_func_rects[n_right] = rect_for_function (fgeom, flags,
-                                                         button_layout->right_buttons[i]);
+                                                         button_layout->right_buttons[i],
+                                                         theme);
           if (right_func_rects[n_right] != NULL)
             ++n_right;
         }
@@ -610,10 +671,28 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
         break; /* Everything fits, bail out */
       
       /* Otherwise we need to shave out a button. Shave
-       * min, max, close, then menu (menu is most useful);
+       * above, stick, shade, min, max, close, then menu (menu is most useful);
        * prefer the default button locations.
        */
       if (strip_button (left_func_rects, left_bg_rects,
+                        &n_left, &fgeom->above_rect))
+        continue;
+      else if (strip_button (right_func_rects, right_bg_rects,
+                             &n_right, &fgeom->above_rect))
+        continue;
+      else if (strip_button (left_func_rects, left_bg_rects,
+                        &n_left, &fgeom->stick_rect))
+        continue;
+      else if (strip_button (right_func_rects, right_bg_rects,
+                             &n_right, &fgeom->stick_rect))
+        continue;
+      else if (strip_button (left_func_rects, left_bg_rects,
+                        &n_left, &fgeom->shade_rect))
+        continue;
+      else if (strip_button (right_func_rects, right_bg_rects,
+                             &n_right, &fgeom->shade_rect))
+        continue;
+      else if (strip_button (left_func_rects, left_bg_rects,
                         &n_left, &fgeom->min_rect))
         continue;
       else if (strip_button (right_func_rects, right_bg_rects,
@@ -751,20 +830,20 @@ meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout,
   else
     min_size_for_rounding = 5;
   
-  fgeom->top_left_corner_rounded = FALSE;
-  fgeom->top_right_corner_rounded = FALSE;
-  fgeom->bottom_left_corner_rounded = FALSE;
-  fgeom->bottom_right_corner_rounded = FALSE;
+  fgeom->top_left_corner_rounded_radius = 0;
+  fgeom->top_right_corner_rounded_radius = 0;
+  fgeom->bottom_left_corner_rounded_radius = 0;
+  fgeom->bottom_right_corner_rounded_radius = 0;
 
   if (fgeom->top_height + fgeom->left_width >= min_size_for_rounding)
-    fgeom->top_left_corner_rounded = layout->top_left_corner_rounded;
+    fgeom->top_left_corner_rounded_radius = layout->top_left_corner_rounded_radius;
   if (fgeom->top_height + fgeom->right_width >= min_size_for_rounding)
-    fgeom->top_right_corner_rounded = layout->top_right_corner_rounded;
+    fgeom->top_right_corner_rounded_radius = layout->top_right_corner_rounded_radius;
 
   if (fgeom->bottom_height + fgeom->left_width >= min_size_for_rounding)
-    fgeom->bottom_left_corner_rounded = layout->bottom_left_corner_rounded;
+    fgeom->bottom_left_corner_rounded_radius = layout->bottom_left_corner_rounded_radius;
   if (fgeom->bottom_height + fgeom->right_width >= min_size_for_rounding)
-    fgeom->bottom_right_corner_rounded = layout->bottom_right_corner_rounded;
+    fgeom->bottom_right_corner_rounded_radius = layout->bottom_right_corner_rounded_radius;
 }
 
 MetaGradientSpec*
@@ -3743,6 +3822,9 @@ meta_frame_style_new (MetaFrameStyle *parent)
 
   style->refcount = 1;
 
+  /* Default alpha is fully opaque */
+  style->window_background_alpha = 255;
+
   style->parent = parent;
   if (parent)
     meta_frame_style_ref (parent);
@@ -3789,6 +3871,9 @@ meta_frame_style_unref (MetaFrameStyle *style)
 
       if (style->layout)
         meta_frame_layout_unref (style->layout);
+
+      if (style->window_background_color)
+        meta_color_spec_free (style->window_background_color);
 
       /* we hold a reference to any parent style */
       if (style->parent)
@@ -3841,6 +3926,7 @@ get_button (MetaFrameStyle *style,
 
 gboolean
 meta_frame_style_validate (MetaFrameStyle    *style,
+                           guint              current_theme_version,
                            GError           **error)
 {
   int i, j;
@@ -3855,7 +3941,9 @@ meta_frame_style_validate (MetaFrameStyle    *style,
         {
           for (j = 0; j < META_BUTTON_STATE_LAST; j++)
             {
-              if (get_button (style, i, j) == NULL)
+              if (get_button (style, i, j) == NULL &&
+                  meta_theme_earliest_version_with_button (i) <= current_theme_version
+                  )
                 {
                   g_set_error (error, META_THEME_ERROR,
                                META_THEME_ERROR_FAILED,
@@ -3905,6 +3993,30 @@ button_rect (MetaButtonType           type,
       
     case META_BUTTON_TYPE_CLOSE:
       *rect = fgeom->close_rect.visible;
+      break;
+
+    case META_BUTTON_TYPE_SHADE:
+      *rect = fgeom->shade_rect.visible;
+      break;
+
+    case META_BUTTON_TYPE_UNSHADE:
+      *rect = fgeom->unshade_rect.visible;
+      break;
+
+    case META_BUTTON_TYPE_ABOVE:
+      *rect = fgeom->above_rect.visible;
+      break;
+
+    case META_BUTTON_TYPE_UNABOVE:
+      *rect = fgeom->unabove_rect.visible;
+      break;
+
+    case META_BUTTON_TYPE_STICK:
+      *rect = fgeom->stick_rect.visible;
+      break;
+
+    case META_BUTTON_TYPE_UNSTICK:
+      *rect = fgeom->unstick_rect.visible;
       break;
 
     case META_BUTTON_TYPE_MAXIMIZE:
@@ -4218,10 +4330,12 @@ meta_frame_style_set_unref (MetaFrameStyleSet *style_set)
       int i;
 
       for (i = 0; i < META_FRAME_RESIZE_LAST; i++)
-        free_focus_styles (style_set->normal_styles[i]);
+        {
+          free_focus_styles (style_set->normal_styles[i]);
+          free_focus_styles (style_set->shaded_styles[i]);
+        }
 
       free_focus_styles (style_set->maximized_styles);
-      free_focus_styles (style_set->shaded_styles);
       free_focus_styles (style_set->maximized_and_shaded_styles);
 
       if (style_set->parent)
@@ -4243,47 +4357,53 @@ get_style (MetaFrameStyleSet *style_set,
   
   style = NULL;
 
-  if (state == META_FRAME_STATE_NORMAL)
+  switch (state)
     {
-      style = style_set->normal_styles[resize][focus];
+    case META_FRAME_STATE_NORMAL:
+    case META_FRAME_STATE_SHADED:
+      {
+        if (state == META_FRAME_STATE_SHADED)
+          style = style_set->shaded_styles[resize][focus];
+        else
+          style = style_set->normal_styles[resize][focus];
 
-      /* Try parent if we failed here */
-      if (style == NULL && style_set->parent)
-        style = get_style (style_set->parent, state, resize, focus);
+        /* Try parent if we failed here */
+        if (style == NULL && style_set->parent)
+          style = get_style (style_set->parent, state, resize, focus);
       
-      /* Allow people to omit the vert/horz/none resize modes */
-      if (style == NULL &&
-          resize != META_FRAME_RESIZE_BOTH)
-        style = get_style (style_set, state, META_FRAME_RESIZE_BOTH, focus);
-    }
-  else
-    {
-      MetaFrameStyle **styles;
+        /* Allow people to omit the vert/horz/none resize modes */
+        if (style == NULL &&
+            resize != META_FRAME_RESIZE_BOTH)
+          style = get_style (style_set, state, META_FRAME_RESIZE_BOTH, focus);
+      }
+      break;
+    default:
+      {
+        MetaFrameStyle **styles;
 
-      styles = NULL;
+        styles = NULL;
       
-      switch (state)
-        {
-        case META_FRAME_STATE_SHADED:
-          styles = style_set->shaded_styles;
-          break;
-        case META_FRAME_STATE_MAXIMIZED:
-          styles = style_set->maximized_styles;
-          break;
-        case META_FRAME_STATE_MAXIMIZED_AND_SHADED:
-          styles = style_set->maximized_and_shaded_styles;
-          break;
-        case META_FRAME_STATE_NORMAL:
-        case META_FRAME_STATE_LAST:
-          g_assert_not_reached ();
-          break;
-        }
+        switch (state)
+          {
+          case META_FRAME_STATE_MAXIMIZED:
+            styles = style_set->maximized_styles;
+            break;
+          case META_FRAME_STATE_MAXIMIZED_AND_SHADED:
+            styles = style_set->maximized_and_shaded_styles;
+            break;
+          case META_FRAME_STATE_NORMAL:
+          case META_FRAME_STATE_SHADED:
+          case META_FRAME_STATE_LAST:
+            g_assert_not_reached ();
+            break;
+          }
 
-      style = styles[focus];
+        style = styles[focus];
 
-      /* Try parent if we failed here */
-      if (style == NULL && style_set->parent)
-        style = get_style (style_set->parent, state, resize, focus);      
+        /* Try parent if we failed here */
+        if (style == NULL && style_set->parent)
+          style = get_style (style_set->parent, state, resize, focus);      
+      }
     }
 
   return style;
@@ -4430,17 +4550,6 @@ meta_theme_new (void)
 }
 
 
-static void
-free_menu_ops (MetaDrawOpList *op_lists[META_MENU_ICON_TYPE_LAST][N_GTK_STATES])
-{
-  int i, j;
-
-  for (i = 0; i < META_MENU_ICON_TYPE_LAST; i++)
-    for (j = 0; j < N_GTK_STATES; j++)
-      if (op_lists[i][j])
-        meta_draw_op_list_unref (op_lists[i][j]);
-}
-
 void
 meta_theme_free (MetaTheme *theme)
 {
@@ -4476,34 +4585,15 @@ meta_theme_free (MetaTheme *theme)
     if (theme->style_sets_by_type[i])
       meta_frame_style_set_unref (theme->style_sets_by_type[i]);
 
-  free_menu_ops (theme->menu_icons);
-  
   DEBUG_FILL_STRUCT (theme);
   g_free (theme);
-}
-
-static MetaDrawOpList*
-get_menu_icon (MetaTheme       *theme,
-               MetaMenuIconType type,
-               GtkStateType     state)
-{
-  MetaDrawOpList *op_list;
-
-  op_list = theme->menu_icons[type][state];
-
-  /* We fall back to normal if other states aren't found */
-  if (op_list == NULL &&
-      state != GTK_STATE_NORMAL)
-    return get_menu_icon (theme, type, GTK_STATE_NORMAL);
-  
-  return op_list;
 }
 
 gboolean
 meta_theme_validate (MetaTheme *theme,
                      GError   **error)
 {
-  int i, j;
+  int i;
   
   g_return_val_if_fail (theme != NULL, FALSE);
 
@@ -4558,24 +4648,13 @@ meta_theme_validate (MetaTheme *theme,
         return FALSE;          
       }
 
-  for (i = 0; i < META_MENU_ICON_TYPE_LAST; i++)
-    for (j = 0; j < N_GTK_STATES; j++)
-      if (get_menu_icon (theme, i, j) == NULL)
-        {
-          g_set_error (error, META_THEME_ERROR,
-                       META_THEME_ERROR_FAILED,
-                       _("<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this theme"),
-                       meta_menu_icon_type_to_string (i),
-                       meta_gtk_state_to_string (j));
-          return FALSE;
-        }
-  
   return TRUE;
 }
 
 GdkPixbuf*
 meta_theme_load_image (MetaTheme  *theme,
                        const char *filename,
+                       guint size_of_theme_icons,
                        GError    **error)
 {
   GdkPixbuf *pixbuf;
@@ -4585,19 +4664,32 @@ meta_theme_load_image (MetaTheme  *theme,
 
   if (pixbuf == NULL)
     {
-      char *full_path;
-      
-      full_path = g_build_filename (theme->dirname, filename, NULL);
-      
-      pixbuf = gdk_pixbuf_new_from_file (full_path, error);
-      if (pixbuf == NULL)
+       
+      if (g_str_has_prefix (filename, "theme:") &&
+          META_THEME_ALLOWS (theme, META_THEME_IMAGES_FROM_ICON_THEMES))
         {
+          pixbuf = gtk_icon_theme_load_icon (
+              gtk_icon_theme_get_default (),
+              filename+6,
+              size_of_theme_icons,
+              0,
+              error);
+          if (pixbuf == NULL) return NULL;
+         }
+      else
+        {
+          char *full_path;
+          full_path = g_build_filename (theme->dirname, filename, NULL);
+      
+          pixbuf = gdk_pixbuf_new_from_file (full_path, error);
+          if (pixbuf == NULL)
+            {
+              g_free (full_path);
+              return NULL;
+            }
+      
           g_free (full_path);
-          return NULL;
-        }
-      
-      g_free (full_path);
-      
+        }      
       g_hash_table_replace (theme->images_by_filename,
                             g_strdup (filename),
                             pixbuf);
@@ -4749,7 +4841,8 @@ meta_theme_draw_frame (MetaTheme              *theme,
                                    flags,
                                    client_width, client_height,
                                    button_layout,
-                                   &fgeom);  
+                                   &fgeom,
+                                   theme);  
 
   meta_frame_style_draw (style,
                          widget,
@@ -4762,37 +4855,6 @@ meta_theme_draw_frame (MetaTheme              *theme,
                          text_height,
                          button_states,
                          mini_icon, icon);
-}
-
-void
-meta_theme_draw_menu_icon (MetaTheme          *theme,
-                           GtkWidget          *widget,
-                           GdkDrawable        *drawable,
-                           const GdkRectangle *clip,
-                           MetaRectangle       offset_rect,
-                           MetaMenuIconType    type)
-{  
-  MetaDrawInfo info;
-  MetaDrawOpList *op_list;
-  
-  g_return_if_fail (type < META_BUTTON_TYPE_LAST);  
-
-  op_list = get_menu_icon (theme, type,
-                           GTK_WIDGET_STATE (widget));
-  
-  info.mini_icon = NULL;
-  info.icon = NULL;
-  info.title_layout = NULL;
-  info.title_layout_width = 0;
-  info.title_layout_height = 0;
-  info.fgeom = NULL;
-  
-  meta_draw_op_list_draw (op_list,
-                          widget,
-                          drawable,
-                          clip,
-                          &info,
-                          offset_rect);
 }
 
 void
@@ -4856,7 +4918,8 @@ meta_theme_calc_geometry (MetaTheme              *theme,
                                    flags,
                                    client_width, client_height,
                                    button_layout,
-                                   fgeom);
+                                   fgeom,
+                                   theme);
 }
 
 MetaFrameLayout*
@@ -5054,6 +5117,68 @@ meta_theme_lookup_float_constant (MetaTheme   *theme,
     }
 }
 
+gboolean
+meta_theme_define_color_constant (MetaTheme   *theme,
+                                  const char  *name,
+                                  const char  *value,
+                                  GError     **error)
+{
+  if (theme->color_constants == NULL)
+    theme->color_constants = g_hash_table_new_full (g_str_hash,
+                                                    g_str_equal,
+                                                    g_free,
+                                                    NULL);
+
+  if (!first_uppercase (name))
+    {
+      g_set_error (error, META_THEME_ERROR, META_THEME_ERROR_FAILED,
+                   _("User-defined constants must begin with a capital letter; \"%s\" does not"),
+                   name);
+      return FALSE;
+    }
+  
+  if (g_hash_table_lookup_extended (theme->color_constants, name, NULL, NULL))
+    {
+      g_set_error (error, META_THEME_ERROR, META_THEME_ERROR_FAILED,
+                   _("Constant \"%s\" has already been defined"),
+                   name);
+      
+      return FALSE;
+    }
+
+  g_hash_table_insert (theme->color_constants,
+                       g_strdup (name),
+                       g_strdup (value));
+
+  return TRUE;
+}
+
+gboolean
+meta_theme_lookup_color_constant (MetaTheme   *theme,
+                                  const char  *name,
+                                  char       **value)
+{
+  char *result;
+
+  *value = NULL;
+  
+  if (theme->color_constants == NULL)
+    return FALSE;
+
+  result = g_hash_table_lookup (theme->color_constants, name);
+
+  if (result)
+    {
+      *value = result;
+      return TRUE;
+    }
+  else
+    {
+      return FALSE;
+    }
+}
+
+
 PangoFontDescription*
 meta_gtk_widget_get_font_desc (GtkWidget *widget,
                                double     scale,
@@ -5176,8 +5301,24 @@ meta_button_state_to_string (MetaButtonState state)
 }
 
 MetaButtonType
-meta_button_type_from_string (const char *str)
+meta_button_type_from_string (const char *str, MetaTheme *theme)
 {
+  if (META_THEME_ALLOWS(theme, META_THEME_SHADE_STICK_ABOVE_BUTTONS))
+    {
+      if (strcmp ("shade", str) == 0)
+        return META_BUTTON_TYPE_SHADE;
+      else if (strcmp ("above", str) == 0)
+        return META_BUTTON_TYPE_ABOVE;
+      else if (strcmp ("stick", str) == 0)
+        return META_BUTTON_TYPE_STICK;
+      else if (strcmp ("unshade", str) == 0)
+        return META_BUTTON_TYPE_UNSHADE;
+      else if (strcmp ("unabove", str) == 0)
+        return META_BUTTON_TYPE_UNABOVE;
+      else if (strcmp ("unstick", str) == 0)
+        return META_BUTTON_TYPE_UNSTICK;
+     }
+
   if (strcmp ("close", str) == 0)
     return META_BUTTON_TYPE_CLOSE;
   else if (strcmp ("maximize", str) == 0)
@@ -5213,7 +5354,19 @@ meta_button_type_to_string (MetaButtonType type)
       return "maximize";
     case META_BUTTON_TYPE_MINIMIZE:
       return "minimize";
-    case META_BUTTON_TYPE_MENU:
+    case META_BUTTON_TYPE_SHADE:
+     return "shade";
+    case META_BUTTON_TYPE_ABOVE:
+      return "above";
+    case META_BUTTON_TYPE_STICK:
+      return "stick";
+    case META_BUTTON_TYPE_UNSHADE:
+      return "unshade";
+    case META_BUTTON_TYPE_UNABOVE:
+      return "unabove";
+    case META_BUTTON_TYPE_UNSTICK:
+      return "unstick";
+     case META_BUTTON_TYPE_MENU:
       return "menu";
     case META_BUTTON_TYPE_LEFT_LEFT_BACKGROUND:
       return "left_left_background";
@@ -5228,41 +5381,6 @@ meta_button_type_to_string (MetaButtonType type)
     case META_BUTTON_TYPE_RIGHT_RIGHT_BACKGROUND:
       return "right_right_background";      
     case META_BUTTON_TYPE_LAST:
-      break;
-    }
-
-  return "<unknown>";
-}
-
-MetaMenuIconType
-meta_menu_icon_type_from_string (const char *str)
-{
-  if (strcmp ("close", str) == 0)
-    return META_MENU_ICON_TYPE_CLOSE;
-  else if (strcmp ("maximize", str) == 0)
-    return META_MENU_ICON_TYPE_MAXIMIZE;
-  else if (strcmp ("minimize", str) == 0)
-    return META_MENU_ICON_TYPE_MINIMIZE;
-  else if (strcmp ("unmaximize", str) == 0)
-    return META_MENU_ICON_TYPE_UNMAXIMIZE;
-  else
-    return META_MENU_ICON_TYPE_LAST;
-}
-
-const char*
-meta_menu_icon_type_to_string (MetaMenuIconType type)
-{
-  switch (type)
-    {
-    case META_MENU_ICON_TYPE_CLOSE:
-      return "close";
-    case META_MENU_ICON_TYPE_MAXIMIZE:
-      return "maximize";
-    case META_MENU_ICON_TYPE_MINIMIZE:
-      return "minimize";
-    case META_MENU_ICON_TYPE_UNMAXIMIZE:
-      return "unmaximize";
-    case META_MENU_ICON_TYPE_LAST:
       break;
     }
 
@@ -6044,3 +6162,34 @@ draw_bg_gradient_composite (const MetaTextureSpec *bg,
     }
 }
 #endif
+
+guint
+meta_theme_earliest_version_with_button (MetaButtonType type)
+{
+  switch (type)
+    {
+    case META_BUTTON_TYPE_CLOSE:
+    case META_BUTTON_TYPE_MAXIMIZE:
+    case META_BUTTON_TYPE_MINIMIZE:
+    case META_BUTTON_TYPE_MENU:
+    case META_BUTTON_TYPE_LEFT_LEFT_BACKGROUND:
+    case META_BUTTON_TYPE_LEFT_MIDDLE_BACKGROUND:
+    case META_BUTTON_TYPE_LEFT_RIGHT_BACKGROUND:
+    case META_BUTTON_TYPE_RIGHT_LEFT_BACKGROUND:
+    case META_BUTTON_TYPE_RIGHT_MIDDLE_BACKGROUND:
+    case META_BUTTON_TYPE_RIGHT_RIGHT_BACKGROUND:
+      return 1;
+      
+    case META_BUTTON_TYPE_SHADE:
+    case META_BUTTON_TYPE_ABOVE:
+    case META_BUTTON_TYPE_STICK:
+    case META_BUTTON_TYPE_UNSHADE:
+    case META_BUTTON_TYPE_UNABOVE:
+    case META_BUTTON_TYPE_UNSTICK:
+      return 2;
+
+    default:
+      meta_warning("Unknown button %d\n", type);
+      return 1; 
+    }
+}

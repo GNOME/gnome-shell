@@ -25,6 +25,7 @@
 #include "iconcache.h"
 #include "ui.h"
 #include "errors.h"
+#include "theme.h"
 
 #include <X11/Xatom.h>
 
@@ -499,19 +500,6 @@ get_kwm_win_icon (MetaDisplay *display,
   return;
 }
 
-typedef enum
-{
-  /* These MUST be in ascending order of preference;
-   * i.e. if we get _NET_WM_ICON and already have
-   * WM_HINTS, we prefer _NET_WM_ICON
-   */
-  USING_NO_ICON,
-  USING_FALLBACK_ICON,
-  USING_KWM_WIN_ICON,
-  USING_WM_HINTS,
-  USING_NET_WM_ICON
-} IconOrigin;
-
 void
 meta_icon_cache_init (MetaIconCache *icon_cache)
 {
@@ -830,13 +818,23 @@ meta_read_icons (MetaScreen     *screen,
   if (icon_cache->want_fallback &&
       icon_cache->origin < USING_FALLBACK_ICON)
     {
-      get_fallback_icons (screen,
-                          iconp,
-                          ideal_width,
-                          ideal_height,
-                          mini_iconp,
-                          ideal_mini_width,
-                          ideal_mini_height);
+      MetaTheme *theme = meta_theme_get_current ();
+
+      if (theme->fallback_icon == NULL || theme->fallback_mini_icon == NULL)
+        {
+          get_fallback_icons (screen,
+                              iconp,
+                              ideal_width,
+                              ideal_height,
+                              mini_iconp,
+                              ideal_mini_width,
+                              ideal_mini_height);
+        }
+
+      if (theme->fallback_icon != NULL)
+        *iconp = theme->fallback_icon;
+      if (theme->fallback_mini_icon != NULL)
+        *mini_iconp = theme->fallback_mini_icon;
 
       replace_cache (icon_cache, USING_FALLBACK_ICON,
                      *iconp, *mini_iconp);

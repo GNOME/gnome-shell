@@ -28,6 +28,19 @@
 
 typedef struct _MetaIconCache MetaIconCache;
 
+typedef enum
+{
+  /* These MUST be in ascending order of preference;
+   * i.e. if we get _NET_WM_ICON and already have
+   * WM_HINTS, we prefer _NET_WM_ICON
+   */
+  USING_NO_ICON,
+  USING_FALLBACK_ICON,
+  USING_KWM_WIN_ICON,
+  USING_WM_HINTS,
+  USING_NET_WM_ICON
+} IconOrigin;
+
 struct _MetaIconCache
 {
   int origin;

@@ -100,11 +100,14 @@ struct _MetaFrameLayout
   /* Whether title text will be displayed */
   guint has_title : 1;
 
+  /* Whether we should hide the buttons */
+  guint hide_buttons : 1;
+
   /* Round corners */
-  guint top_left_corner_rounded : 1;
-  guint top_right_corner_rounded : 1;
-  guint bottom_left_corner_rounded : 1;
-  guint bottom_right_corner_rounded : 1;
+  guint top_left_corner_rounded_radius;
+  guint top_right_corner_rounded_radius;
+  guint bottom_left_corner_rounded_radius;
+  guint bottom_right_corner_rounded_radius;
 };
 
 struct _MetaButtonSpace
@@ -145,6 +148,12 @@ struct _MetaFrameGeometry
   MetaButtonSpace max_rect;
   MetaButtonSpace min_rect;
   MetaButtonSpace menu_rect;
+  MetaButtonSpace shade_rect;
+  MetaButtonSpace above_rect;
+  MetaButtonSpace stick_rect;
+  MetaButtonSpace unshade_rect;
+  MetaButtonSpace unabove_rect;
+  MetaButtonSpace unstick_rect;
 
 #define MAX_MIDDLE_BACKGROUNDS (MAX_BUTTONS_PER_CORNER - 2)
   GdkRectangle left_left_background;
@@ -156,10 +165,10 @@ struct _MetaFrameGeometry
   /* End of button rects (if changed adjust memset hack) */
   
   /* Round corners */
-  guint top_left_corner_rounded : 1;
-  guint top_right_corner_rounded : 1;
-  guint bottom_left_corner_rounded : 1;
-  guint bottom_right_corner_rounded : 1;
+  guint top_left_corner_rounded_radius;
+  guint top_right_corner_rounded_radius;
+  guint bottom_left_corner_rounded_radius;
+  guint bottom_right_corner_rounded_radius;
 };
 
 typedef enum
@@ -438,6 +447,12 @@ typedef enum
   META_BUTTON_TYPE_MAXIMIZE,
   META_BUTTON_TYPE_MINIMIZE,
   META_BUTTON_TYPE_MENU,
+  META_BUTTON_TYPE_SHADE,
+  META_BUTTON_TYPE_ABOVE,
+  META_BUTTON_TYPE_STICK,
+  META_BUTTON_TYPE_UNSHADE,
+  META_BUTTON_TYPE_UNABOVE,
+  META_BUTTON_TYPE_UNSTICK,
   META_BUTTON_TYPE_LAST
 } MetaButtonType;
 
@@ -503,6 +518,9 @@ struct _MetaFrameStyle
   MetaDrawOpList *buttons[META_BUTTON_TYPE_LAST][META_BUTTON_STATE_LAST];
   MetaDrawOpList *pieces[META_FRAME_PIECE_LAST];
   MetaFrameLayout *layout;
+  MetaColorSpec *window_background_color; /* can be NULL to use the standard
+                                             GTK theme engine */
+  guint8 window_background_alpha; /* 0=transparent; 255=opaque */
 };
 
 /* Kinds of frame...
@@ -552,7 +570,7 @@ struct _MetaFrameStyleSet
   MetaFrameStyleSet *parent;
   MetaFrameStyle *normal_styles[META_FRAME_RESIZE_LAST][META_FRAME_FOCUS_LAST];
   MetaFrameStyle *maximized_styles[META_FRAME_FOCUS_LAST];
-  MetaFrameStyle *shaded_styles[META_FRAME_FOCUS_LAST];
+  MetaFrameStyle *shaded_styles[META_FRAME_RESIZE_LAST][META_FRAME_FOCUS_LAST];
   MetaFrameStyle *maximized_and_shaded_styles[META_FRAME_FOCUS_LAST];
 };
 
@@ -566,16 +584,19 @@ struct _MetaTheme
   char *copyright;
   char *date;
   char *description;
+  guint format_version;
 
   GHashTable *integer_constants;
   GHashTable *float_constants;
+  GHashTable *color_constants;
   GHashTable *images_by_filename;
   GHashTable *layouts_by_name;
   GHashTable *draw_op_lists_by_name;
   GHashTable *styles_by_name;
   GHashTable *style_sets_by_name;
   MetaFrameStyleSet *style_sets_by_type[META_FRAME_TYPE_LAST];
-  MetaDrawOpList *menu_icons[META_MENU_ICON_TYPE_LAST][N_GTK_STATES];
+
+  GdkPixbuf *fallback_icon, *fallback_mini_icon;
 };
 
 struct _MetaPositionExprEnv
@@ -616,7 +637,8 @@ void             meta_frame_layout_calc_geometry (const MetaFrameLayout  *layout
                                                   int                     client_width,
                                                   int                     client_height,
                                                   const MetaButtonLayout *button_layout,
-                                                  MetaFrameGeometry      *fgeom);
+                                                  MetaFrameGeometry      *fgeom,
+                                                  MetaTheme              *theme);
 
 gboolean         meta_frame_layout_validate      (const MetaFrameLayout *layout,
                                                   GError               **error);
@@ -703,6 +725,7 @@ void meta_frame_style_draw (MetaFrameStyle          *style,
 
 
 gboolean       meta_frame_style_validate (MetaFrameStyle    *style,
+                                          guint              current_theme_version,
                                           GError           **error);
 
 MetaFrameStyleSet* meta_frame_style_set_new   (MetaFrameStyleSet *parent);
@@ -722,6 +745,7 @@ gboolean   meta_theme_validate (MetaTheme *theme,
                                 GError   **error);
 GdkPixbuf* meta_theme_load_image (MetaTheme  *theme,
                                   const char *filename,
+                                  guint       size_of_theme_icons,
                                   GError    **error);
 
 MetaFrameStyle* meta_theme_get_frame_style (MetaTheme     *theme,
@@ -749,13 +773,6 @@ void meta_theme_draw_frame (MetaTheme              *theme,
                             GdkPixbuf              *mini_icon,
                             GdkPixbuf              *icon);
 
-void meta_theme_draw_menu_icon (MetaTheme          *theme,
-                                GtkWidget          *widget,
-                                GdkDrawable        *drawable,
-                                const GdkRectangle *clip,
-                                MetaRectangle       offset_rect,
-                                MetaMenuIconType    type);
-     
 void meta_theme_get_frame_borders (MetaTheme         *theme,
                                    MetaFrameType      type,
                                    int                text_height,
@@ -808,6 +825,14 @@ gboolean meta_theme_lookup_float_constant (MetaTheme   *theme,
                                            const char  *name,
                                            double      *value);
 
+gboolean meta_theme_define_color_constant (MetaTheme   *theme,
+                                           const char  *name,
+                                           const char  *value,
+                                           GError     **error);
+gboolean meta_theme_lookup_color_constant (MetaTheme   *theme,
+                                           const char  *name,
+                                           char       **value);
+
 char*    meta_theme_replace_constants     (MetaTheme   *theme,
                                            const char  *expr,
                                            GError     **err);
@@ -826,10 +851,9 @@ MetaGtkColorComponent meta_color_component_from_string (const char            *s
 const char*           meta_color_component_to_string   (MetaGtkColorComponent  component);
 MetaButtonState       meta_button_state_from_string    (const char            *str);
 const char*           meta_button_state_to_string      (MetaButtonState        state);
-MetaButtonType        meta_button_type_from_string     (const char            *str);
+MetaButtonType        meta_button_type_from_string     (const char            *str,
+                                                        MetaTheme             *theme);
 const char*           meta_button_type_to_string       (MetaButtonType         type);
-MetaMenuIconType      meta_menu_icon_type_from_string  (const char            *str);
-const char*           meta_menu_icon_type_to_string    (MetaMenuIconType       type);
 MetaFramePiece        meta_frame_piece_from_string     (const char            *str);
 const char*           meta_frame_piece_to_string       (MetaFramePiece         piece);
 MetaFrameState        meta_frame_state_from_string     (const char            *str);
@@ -851,5 +875,19 @@ const char*           meta_gtk_arrow_to_string         (GtkArrowType           a
 MetaImageFillType     meta_image_fill_type_from_string (const char            *str);
 const char*           meta_image_fill_type_to_string   (MetaImageFillType      fill_type);
 
+guint meta_theme_earliest_version_with_button (MetaButtonType type);
+
+#define META_THEME_ALLOWS(theme, feature) (theme->format_version >= feature)
+
+/* What version of the theme file format were various features introduced in? */
+#define META_THEME_SHADE_STICK_ABOVE_BUTTONS 2
+#define META_THEME_UBIQUITOUS_CONSTANTS 2
+#define META_THEME_VARIED_ROUND_CORNERS 2
+#define META_THEME_IMAGES_FROM_ICON_THEMES 2
+#define META_THEME_UNRESIZABLE_SHADED_STYLES 2
+#define META_THEME_DEGREES_IN_ARCS 2
+#define META_THEME_HIDDEN_BUTTONS 2
+#define META_THEME_COLOR_CONSTANTS 2
+#define META_THEME_FRAME_BACKGROUNDS 2
 
 #endif

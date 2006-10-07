@@ -1,3 +1,167 @@
+2006-10-07  Thomas Thurman <thomas@thurman.org.uk>
+
+        * common.h: Added "above" to the list of flags a frame can have, so
+	that we know when to mark it as always on top.  Added six grab ops,
+	one to do and one to undo each of the three new titlebar buttons
+	(shade, above, stick).  Added six new button functions, similarly.
+	(#96229)
+
+        * frame.c (meta_frame_get_flags): If a frame has the WM_STATE_ABOVE X
+         attribute, set META_FRAME_ABOVE in its flags.
+
+        * frames.c (meta_frames_apply_shapes): Allow variable amounts of
+         rounding. (#113162)
+
+        * frames.c (show_tip_now, meta_frames_paint_to_drawable, control_rect,
+	 get_control): extend handling of existing buttons to the
+         3*2 new kinds of button. (#96229)
+
+        * frames.c (meta_frames_button_press_event): translate clicks on the 3*2
+         new kinds of button to the new grab ops. (#96229)
+
+        * frames.c (meta_frames_button_release_event): implement the various
+        actions for the 3*2 new kinds of button. (#96229)
+
+        * frames.c (meta_frames_update_prelit_control,
+         meta_frames_motion_notify_event): extend existing motion
+         notifications for buttons to the 3*2 new kinds of button. (#96229)
+
+        * frames.c (meta_frames_set_window_background): handle specified
+         background colours and alpha transparency. (#151261)
+
+        * frames.h (MetaFrameControl): New control types for the 3*2 new kinds
+	 of button.  (#96229)
+
+        * iconcache.[ch] (meta_read_icons): use theme's fallback icons if a
+	 window has no icon; use metacity's fallback icons only if the theme
+         does not provide any. (#11363) 
+
+        * iconcache.[ch] (meta_invalidate_default_icons (new function)): clear
+         icon cache on windows using default icons, and update them. (#11363) 
+
+        * main.c (main): added \n to error message.
+ 
+        * prefs.c (button_function_from_string): extend for 3 new button
+	 types. (#96229) 
+
+        * prefs.c (button_opposite_function (new function)): return a button
+         function's inverse (shade -> unshade, etc) (#96229) 
+
+        * prefs.c (update_button_layout): allocate space for a button's
+	 inverse, if it has one. (#96229) 
+
+        * theme-parser.c (ParseState): add state for fallback icons (#11363) 
+
+        * theme-parser.c (ParseInfo): add format_version; remove
+         menu_icon_* (#114305)
+
+        * theme-parser.c (parse_positive_integer): add lookup for integer
+	 constants (#331356)
+
+        * theme-parser.c (parse_rounding (new function)): parse window
+	 rounding amount (#113162)
+
+        * theme-parser.c (parse_alpha): don't set error if the number can't
+	 be parsed since it'll already be set; change tolerance in comparison
+	 from 1e6 to 1e-6
+
+        * theme-parser.c (parse_color (new function)): parse colour, including
+	 possible constant lookup.
+ 
+        * theme-parser.c (parse_toplevel_element): allow defining of various
+	new kinds of constant; allow
+	hide_buttons (#121639) and more detailed rounding attributes on
+	<frame_geometry> (#113162); allow background and alpha attributes on
+	<frame_style>; (#151261) remove support for <menu_icon> except as
+	stub; (#114305) add support for loading stock images (#113465); add
+        support for <fallback>. (#11363))
+
+        * theme-parser.c (parse_draw_op_element): add from and to attribute
+         for arcs. (#121603)
+
+        * theme-parser.c (parse_style_element): add check for theme version
+         supporting a button function. (#96229) 
+
+        * theme-parser.c (parse_style_set_element): add ability for shaded
+	 windows to be resizable (#114304)
+
+        * theme-parser.c (meta_theme_load): add theme versioning routine.
+
+        * theme.c ( meta_frame_layout_get_borders): return rectangles for
+	 the new 3*2 kinds of button, except where they're
+         inapplicable. (#96229)
+
+        * theme.c (meta_frame_layout_calc_geometry): don't format buttons on
+	windows with no buttons (#121639); strip the 3*2 new kinds of button
+	correctly (#96229); allow variable amounts of rounding (#113162).
+
+        * theme.c (meta_frame_style_new): set alpha to 255 by
+        default. (#151261)
+
+        * theme.c (meta_frame_style_unref): free colour spec if
+        allocated. (#151261)
+
+        * theme.c (meta_frame_style_validate): it's only an error not to
+        include a button if that button is valid in the current
+        theme. (#96229)
+
+        * theme.c (button_rect): return rectangles for the new 3*2 kinds
+	of button. (#96229)
+
+        * theme.c (meta_frame_style_set_unref): free differently resizable
+	shaded styles. (#114304)
+
+        * theme.c (get_style): look up differently resizable styles
+        for shaded windows. (#114304)
+ 
+        * theme.c (free_menu_ops (removed function), get_menu_icon
+	 (removed function), meta_theme_draw_menu_icon (removed function),
+         meta_menu_icon_type_from_string (removed function),
+         meta_menu_icon_type_to_string (removed function),
+         meta_theme_free, meta_theme_validate): removed menu icon code. (#114305)
+   
+        * theme.c (meta_theme_load_image): add size_of_theme_icons
+	parameter. (#113465)
+ 
+        * theme.c (meta_theme_define_color_constant (new function),
+        meta_theme_lookup_color_constant (new function)): allow
+        definition of colour constants. (#129747)
+
+        * theme.c (meta_button_type_from_string, meta_button_type_to_string):
+        add the 3*2 new kinds of button. (#96229)
+
+        * theme.c (meta_theme_earliest_version_with_button (new function)):
+        return the theme version each button was introduced in. (#96229)
+
+        * theme.h ( MetaFrameLayout): add "hide_buttons" flag (#121639) and
+	corner radiuses. (#113162)
+
+        * theme.h (MetaFrameGeometry): add rectangles for the 3*2 new
+	buttons. (#96229)
+
+        * theme.h (MetaButtonType): the 3*2 new buttons. (#96229)
+ 
+        * theme.h (MetaFrameStyle): add window_background_color and
+        window_background_alpha so that we can specify background on a
+        <frame_style>. (#151261)
+
+        * theme.h (MetaFrameStyleSet): shaded_styles gets resize
+	dimension. (#114304)
+
+        * theme.h (MetaTheme): added format_version, color_constants
+        hash, (#129747) fallback_icon and fallback_mini_icon, (#11363)
+        and removed menu_icons. (#114305)
+ 
+        * theme.h (META_THEME_ALLOWS (new macro)): return whether a theme
+        supports a given feature. Also, several macros representing
+        new features in v2.
+
+        * ui.c (meta_ui_set_current_theme)): also invalidate default
+        icons. (#11363) 
+
+        * window.[ch] (meta_window_update_icon_now)): became
+	non-static. (#11363) 
+
 2006-10-06  Elijah Newren  <newren gmail com>
 
 	* src/metacity-dialog.c (kill_window_question): Be nice to

@@ -29,6 +29,17 @@
 #include "workspace.h"
 #include "prefs.h"
 
+/* Looks up the MetaWindow representing the frame of the given X window.
+ * Used as a helper function by a bunch of the functions below.
+ *
+ * FIXME: The functions that use this function throw the result away
+ * after use. Many of these functions tend to be called in small groups,
+ * which results in get_window() getting called several times in succession
+ * with the same parameters. We should profile to see whether this wastes
+ * much time, and if it does we should look into a generalised
+ * meta_core_get_window_info() which takes a bunch of pointers to variables
+ * to put its results in, and only fills in the non-null ones.
+ */
 static MetaWindow *
 get_window (Display *xdisplay,
 	    Window   frame_xwindow)
@@ -60,6 +71,19 @@ meta_core_get_client_size (Display *xdisplay,
     *width = window->rect.width;
   if (height)
     *height = window->rect.height;
+}
+
+gboolean
+meta_core_window_has_frame (Display *xdisplay,
+                            Window frame_xwindow)
+{
+  MetaDisplay *display;
+  MetaWindow *window;
+  
+  display = meta_display_for_x_display (xdisplay);
+  window = meta_display_lookup_x_window (display, frame_xwindow);
+
+  return window != NULL && window->frame != NULL;
 }
 
 gboolean
@@ -366,6 +390,24 @@ meta_core_unstick (Display *xdisplay,
   MetaWindow *window = get_window (xdisplay, frame_xwindow);
 
   meta_window_unstick (window);
+}
+
+void
+meta_core_make_above (Display *xdisplay,
+                      Window   frame_xwindow)
+{
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
+
+  meta_window_make_above (window);
+}
+
+void
+meta_core_unmake_above (Display *xdisplay,
+                        Window   frame_xwindow)
+{
+  MetaWindow *window = get_window (xdisplay, frame_xwindow);
+
+  meta_window_unmake_above (window);
 }
 
 void
@@ -710,5 +752,33 @@ meta_core_increment_event_serial (Display *xdisplay)
   display = meta_display_for_x_display (xdisplay);
 
   meta_display_increment_event_serial (display);
+}
+
+void
+meta_invalidate_default_icons (void)
+{
+  GSList *displays, *windows;
+
+  for (displays = meta_displays_list ();
+       displays != NULL;
+       displays = displays->next)
+    {
+
+      for (windows = meta_display_list_windows (displays->data);
+           windows != NULL;
+           windows = windows->next)
+        {
+
+          MetaWindow *window = (MetaWindow*)windows->data;
+
+          if (window->icon_cache.origin == USING_FALLBACK_ICON)
+            {
+              meta_icon_cache_free (&(window->icon_cache));
+              meta_window_update_icon_now (window);
+            }
+        }
+
+      g_slist_free (windows);
+    }
 }
 

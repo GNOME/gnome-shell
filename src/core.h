@@ -37,6 +37,10 @@ void meta_core_get_client_size (Display *xdisplay,
 gboolean meta_core_titlebar_is_onscreen (Display *xdisplay,
                                          Window   frame_xwindow);
 
+gboolean meta_core_window_has_frame (Display *xdisplay,
+                                     Window   frame_xwindow);
+
+
 Window meta_core_get_client_xwindow (Display *xdisplay,
                                      Window   frame_xwindow);
 
@@ -106,6 +110,10 @@ void meta_core_unstick          (Display *xdisplay,
                                  Window   frame_xwindow);
 void meta_core_stick            (Display *xdisplay,
                                  Window   frame_xwindow);
+void meta_core_unmake_above     (Display *xdisplay,
+                                 Window   frame_xwindow);
+void meta_core_make_above       (Display *xdisplay,
+                                 Window   frame_xwindow);
 void meta_core_change_workspace (Display *xdisplay,
                                  Window   frame_xwindow,
                                  int      new_workspace);
@@ -174,6 +182,8 @@ void       meta_core_get_screen_size (Display *xdisplay,
 void meta_core_increment_event_serial (Display *display);
 
 int meta_ui_get_last_event_serial (Display *xdisplay);
+
+void meta_invalidate_default_icons (void);
 
 #endif
 

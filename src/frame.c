@@ -279,6 +279,9 @@ meta_frame_get_flags (MetaFrame *frame)
   if (frame->is_flashing)
     flags |= META_FRAME_IS_FLASHING;
 
+  if (frame->window->wm_state_above)
+    flags |= META_FRAME_ABOVE;
+  
   return flags;
 }
 

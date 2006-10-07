@@ -73,7 +73,9 @@ typedef enum
   /* assigning style sets to windows */
   STATE_WINDOW,
   /* and menu icons */
-  STATE_MENU_ICON
+  STATE_MENU_ICON,
+  /* fallback icons */
+  STATE_FALLBACK
 } ParseState;
 
 typedef struct
@@ -84,6 +86,7 @@ typedef struct
   char *theme_file;             /* theme filename */
   char *theme_dir;              /* dir the theme is inside */
   MetaTheme *theme;             /* theme being parsed */
+  guint format_version;         /* version of format of theme file */  
   char *name;                   /* name of named thing being parsed */
   MetaFrameLayout *layout;      /* layout being parsed if any */
   MetaDrawOpList *op_list;      /* op list being parsed if any */
@@ -93,8 +96,6 @@ typedef struct
   MetaFramePiece piece;         /* position of piece being parsed */
   MetaButtonType button_type;   /* type of button/menuitem being parsed */
   MetaButtonState button_state; /* state of button being parsed */
-  MetaMenuIconType menu_icon_type; /* type of menu icon being parsed */
-  GtkStateType menu_icon_state; /* state of menu icon being parsed */
 } ParseInfo;
 
 static void set_error (GError             **err,
@@ -451,33 +452,48 @@ static gboolean
 parse_positive_integer (const char          *str,
                         int                 *val,
                         GMarkupParseContext *context,
+                        MetaTheme           *theme,
                         GError             **error)
 {
   char *end;
   long l;
+  int j;
 
   *val = 0;
   
   end = NULL;
   
-  l = strtol (str, &end, 10);
+  /* Is str a constant? */
 
-  if (end == NULL || end == str)
+  if (META_THEME_ALLOWS (theme, META_THEME_UBIQUITOUS_CONSTANTS) &&
+      meta_theme_lookup_int_constant (theme, str, &j))
     {
-      set_error (error, context, G_MARKUP_ERROR,
-                 G_MARKUP_ERROR_PARSE,
-                 _("Could not parse \"%s\" as an integer"),
-                 str);
-      return FALSE;
+      /* Yes. */
+      l = j;
     }
-
-  if (*end != '\0')
+  else
     {
-      set_error (error, context, G_MARKUP_ERROR,
-                 G_MARKUP_ERROR_PARSE,
-                 _("Did not understand trailing characters \"%s\" in string \"%s\""),
-                 end, str);
-      return FALSE;
+      /* No. Let's try parsing it instead. */
+
+      l = strtol (str, &end, 10);
+
+      if (end == NULL || end == str)
+      {
+        set_error (error, context, G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_PARSE,
+                   _("Could not parse \"%s\" as an integer"),
+                   str);
+        return FALSE;
+      }
+
+    if (*end != '\0')
+      {
+        set_error (error, context, G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_PARSE,
+                   _("Did not understand trailing characters \"%s\" in string \"%s\""),
+                   end, str);
+        return FALSE;
+      }
     }
 
   if (l < 0)
@@ -560,6 +576,41 @@ parse_boolean (const char          *str,
 }
 
 static gboolean
+parse_rounding (const char          *str,
+                guint               *val,
+                GMarkupParseContext *context,
+                MetaTheme           *theme,
+                GError             **error)
+{
+  if (strcmp ("true", str) == 0)
+    *val = 5; /* historical "true" value */
+  else if (strcmp ("false", str) == 0)
+    *val = 0;
+  else
+    {
+      int tmp;
+      gboolean result;
+       if (!META_THEME_ALLOWS (theme, META_THEME_VARIED_ROUND_CORNERS))
+         {
+           /* Not known in this version, so bail. */
+           set_error (error, context, G_MARKUP_ERROR,
+                      G_MARKUP_ERROR_PARSE,
+                      _("Boolean values must be \"true\" or \"false\" not \"%s\""),
+                      str);
+           return FALSE;
+         }
+   
+      result = parse_positive_integer (str, &tmp, context, theme, error);
+
+      *val = tmp;
+
+      return result;    
+    }
+  
+  return TRUE;
+}
+
+static gboolean
 parse_angle (const char          *str,
              double              *val,
              GMarkupParseContext *context,
@@ -624,17 +675,14 @@ parse_alpha (const char             *str,
       
       if (!parse_double (split[i], &v, context, error))
         {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("Could not parse \"%s\" as a floating point number"),
-                     split[i]);
-          
+          /* clear up, but don't set error: it was set by parse_double */
           g_strfreev (split);
           meta_alpha_gradient_spec_free (spec);
           
           return FALSE;
         }
 
-      if (v < (0.0 - 1e6) || v > (1.0 + 1e6))
+      if (v < (0.0 - 1e-6) || v > (1.0 + 1e-6))
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
                      _("Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"),
@@ -656,6 +704,25 @@ parse_alpha (const char             *str,
   *spec_ret = spec;
   
   return TRUE;
+}
+
+static MetaColorSpec*
+parse_color (MetaTheme *theme,
+             const char        *str,
+             GError           **err)
+{
+  char* referent;
+
+  if (META_THEME_ALLOWS (theme, META_THEME_COLOR_CONSTANTS) &&
+      meta_theme_lookup_color_constant (theme, str, &referent))
+    {
+      if (referent)
+        return meta_color_spec_new_from_string (referent, err);
+      
+      /* no need to free referent: it's a pointer into the actual hash table */
+    }
+  
+  return meta_color_spec_new_from_string (str, err);
 }
 
 static gboolean
@@ -716,8 +783,8 @@ parse_toplevel_element (GMarkupParseContext  *context,
     {
       const char *name;
       const char *value;
-      int ival;
-      double dval;
+      int ival = 0;
+      double dval = 0.0;
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
@@ -741,11 +808,9 @@ parse_toplevel_element (GMarkupParseContext  *context,
           return;
         }
 
-      if (strchr (value, '.'))
+      if (strchr (value, '.') && parse_double (value, &dval, context, error))
         {
-          dval = 0.0;
-          if (!parse_double (value, &dval, context, error))
-            return;
+          g_clear_error (error);
 
           if (!meta_theme_define_float_constant (info->theme,
                                                  name,
@@ -756,16 +821,27 @@ parse_toplevel_element (GMarkupParseContext  *context,
               return;
             }
         }
-      else
+      else if (parse_positive_integer (value, &ival, context, info->theme, error))
         {
-          ival = 0;
-          if (!parse_positive_integer (value, &ival, context, error))
-            return;
+          g_clear_error (error);
 
           if (!meta_theme_define_int_constant (info->theme,
                                                name,
                                                ival,
                                                error))
+            {
+              add_context_to_error (error, context);
+              return;
+            }
+        }
+      else
+        {
+          g_clear_error (error);
+
+          if (!meta_theme_define_color_constant (info->theme,
+                                                 name,
+                                                 value,
+                                                 error))
             {
               add_context_to_error (error, context);
               return;
@@ -784,11 +860,13 @@ parse_toplevel_element (GMarkupParseContext  *context,
       const char *rounded_top_right = NULL;
       const char *rounded_bottom_left = NULL;
       const char *rounded_bottom_right = NULL;
+      const char *hide_buttons = NULL;
       gboolean has_title_val;
-      gboolean rounded_top_left_val;
-      gboolean rounded_top_right_val;
-      gboolean rounded_bottom_left_val;
-      gboolean rounded_bottom_right_val;
+      guint rounded_top_left_val;
+      guint rounded_top_right_val;
+      guint rounded_bottom_left_val;
+      guint rounded_bottom_right_val;
+      gboolean hide_buttons_val;
       double title_scale_val;
       MetaFrameLayout *parent_layout;
 
@@ -800,6 +878,7 @@ parse_toplevel_element (GMarkupParseContext  *context,
                               "rounded_top_right", &rounded_top_right,
                               "rounded_bottom_left", &rounded_bottom_left,
                               "rounded_bottom_right", &rounded_bottom_right,
+                              "hide_buttons", &hide_buttons,
                               NULL))
         return;
 
@@ -815,18 +894,22 @@ parse_toplevel_element (GMarkupParseContext  *context,
       if (has_title && !parse_boolean (has_title, &has_title_val, context, error))
         return;
 
-      rounded_top_left_val = FALSE;
-      rounded_top_right_val = FALSE;
-      rounded_bottom_left_val = FALSE;
-      rounded_bottom_right_val = FALSE;
+      hide_buttons_val = FALSE;
+      if (hide_buttons && !parse_boolean (hide_buttons, &hide_buttons_val, context, error))
+        return;
 
-      if (rounded_top_left && !parse_boolean (rounded_top_left, &rounded_top_left_val, context, error))
+      rounded_top_left_val = 0;
+      rounded_top_right_val = 0;
+      rounded_bottom_left_val = 0;
+      rounded_bottom_right_val = 0;
+
+      if (rounded_top_left && !parse_rounding (rounded_top_left, &rounded_top_left_val, context, info->theme, error))
         return;
-      if (rounded_top_right && !parse_boolean (rounded_top_right, &rounded_top_right_val, context, error))
+      if (rounded_top_right && !parse_rounding (rounded_top_right, &rounded_top_right_val, context, info->theme, error))
         return;
-      if (rounded_bottom_left && !parse_boolean (rounded_bottom_left, &rounded_bottom_left_val, context, error))
+      if (rounded_bottom_left && !parse_rounding (rounded_bottom_left, &rounded_bottom_left_val, context, info->theme, error))
         return;      
-      if (rounded_bottom_right && !parse_boolean (rounded_bottom_right, &rounded_bottom_right_val, context, error))
+      if (rounded_bottom_right && !parse_rounding (rounded_bottom_right, &rounded_bottom_right_val, context, info->theme, error))
         return;
       
       title_scale_val = 1.0;
@@ -864,20 +947,23 @@ parse_toplevel_element (GMarkupParseContext  *context,
       if (has_title) /* only if explicit, otherwise inherit */
         info->layout->has_title = has_title_val;
 
+      if (META_THEME_ALLOWS (info->theme, META_THEME_HIDDEN_BUTTONS) && hide_buttons_val)
+          info->layout->hide_buttons = hide_buttons_val;
+
       if (title_scale)
 	info->layout->title_scale = title_scale_val;
 
       if (rounded_top_left)
-        info->layout->top_left_corner_rounded = rounded_top_left_val;
+        info->layout->top_left_corner_rounded_radius = rounded_top_left_val;
 
       if (rounded_top_right)
-        info->layout->top_right_corner_rounded = rounded_top_right_val;
+        info->layout->top_right_corner_rounded_radius = rounded_top_right_val;
 
       if (rounded_bottom_left)
-        info->layout->bottom_left_corner_rounded = rounded_bottom_left_val;
+        info->layout->bottom_left_corner_rounded_radius = rounded_bottom_left_val;
 
       if (rounded_bottom_right)
-        info->layout->bottom_right_corner_rounded = rounded_bottom_right_val;
+        info->layout->bottom_right_corner_rounded_radius = rounded_bottom_right_val;
       
       meta_theme_insert_layout (info->theme, name, info->layout);
 
@@ -921,6 +1007,8 @@ parse_toplevel_element (GMarkupParseContext  *context,
       const char *name = NULL;
       const char *parent = NULL;
       const char *geometry = NULL;
+      const char *background = NULL;
+      const char *alpha = NULL;
       MetaFrameStyle *parent_style;
       MetaFrameLayout *layout;
 
@@ -928,6 +1016,8 @@ parse_toplevel_element (GMarkupParseContext  *context,
                               error,
                               "name", &name, "parent", &parent,
                               "geometry", &geometry,
+                              "background", &background,
+                              "alpha", &alpha,
                               NULL))
         return;
 
@@ -991,6 +1081,40 @@ parse_toplevel_element (GMarkupParseContext  *context,
       g_assert (info->style->layout == NULL);
       meta_frame_layout_ref (layout);
       info->style->layout = layout;
+
+      if (background != NULL && META_THEME_ALLOWS (info->theme, META_THEME_FRAME_BACKGROUNDS))
+        {
+          info->style->window_background_color = meta_color_spec_new_from_string (background, error);
+          if (!info->style->window_background_color)
+            return;
+
+          if (alpha != NULL)
+            {
+            
+               gboolean success;
+               MetaAlphaGradientSpec *alpha_vector;
+               
+               g_clear_error (error);
+               /* fortunately, we already have a routine to parse alpha values,
+                * though it produces a vector of them, which is a superset of
+                * what we want.
+                */
+               success = parse_alpha (alpha, &alpha_vector, context, error); 
+               if (!success)
+                 return;
+
+               /* alpha_vector->alphas must contain at least one element */
+               info->style->window_background_alpha = alpha_vector->alphas[0];
+
+               meta_alpha_gradient_spec_free (alpha_vector);
+            }
+        }
+      else if (alpha != NULL)
+        {
+          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                     _("You must specify a background for an alpha value to be meaningful"));
+          return;
+        }
 
       meta_theme_insert_style (info->theme, name, info->style);
 
@@ -1110,84 +1234,52 @@ parse_toplevel_element (GMarkupParseContext  *context,
     }
   else if (ELEMENT_IS ("menu_icon"))
     {
-      const char *function = NULL;
-      const char *state = NULL;
-      const char *draw_ops = NULL;
+      /* Not supported any more, but we have to parse it if they include it,
+       * for backwards compatibility.
+       */
+      g_assert (info->op_list == NULL);
+      
+      push_state (info, STATE_MENU_ICON);
+    }
+  else if (ELEMENT_IS ("fallback"))
+    {
+      const char *icon = NULL;
+      const char *mini_icon = NULL;
       
       if (!locate_attributes (context, element_name, attribute_names, attribute_values,
                               error,
-                              "function", &function,
-                              "state", &state,
-                              "draw_ops", &draw_ops,
+                              "icon", &icon,
+                              "mini_icon", &mini_icon,
                               NULL))
         return;
 
-      if (function == NULL)
+      if (icon)
         {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"%s\" attribute on <%s> element"),
-                     "function", element_name);
-          return;
-        }
-
-      if (state == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"%s\" attribute on <%s> element"),
-                     "state", element_name);
-          return;
-        }
-      
-      info->menu_icon_type = meta_menu_icon_type_from_string (function);
-      if (info->menu_icon_type == META_BUTTON_TYPE_LAST)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("Unknown function \"%s\" for menu icon"),
-                     function);
-          return;
-        }
-
-      info->menu_icon_state = meta_gtk_state_from_string (state);
-      if (((int) info->menu_icon_state) == -1)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("Unknown state \"%s\" for menu icon"),
-                     state);
-          return;
-        }
-      
-      if (info->theme->menu_icons[info->menu_icon_type][info->menu_icon_state] != NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("Theme already has a menu icon for function %s state %s"),
-                     function, state);
-          return;
-        }
-
-      g_assert (info->op_list == NULL);
-      
-      if (draw_ops)
-        {
-          MetaDrawOpList *op_list;
-
-          op_list = meta_theme_lookup_draw_op_list (info->theme,
-                                                    draw_ops);
-
-          if (op_list == NULL)
+          if (info->theme->fallback_icon != NULL)
             {
               set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                         _("No <draw_ops> with the name \"%s\" has been defined"),
-                         draw_ops);
+                         _("Theme already has a fallback icon"));
               return;
             }
 
-          meta_draw_op_list_ref (op_list);
-          info->op_list = op_list;
+          info->theme->fallback_icon = meta_theme_load_image(info->theme, icon, 64, error);
         }
 
-      push_state (info, STATE_MENU_ICON);
+      if (mini_icon)
+        {
+          if (info->theme->fallback_mini_icon != NULL)
+            {
+              set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                         _("Theme already has a fallback mini_icon"));
+              return;
+            }
+
+          info->theme->fallback_mini_icon = meta_theme_load_image(info->theme, mini_icon, 16, error);
+        }
+
+      push_state (info, STATE_FALLBACK);
     }
-  else
+   else
     {
       set_error (error, context,
                  G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
@@ -1293,7 +1385,7 @@ parse_distance (GMarkupParseContext  *context,
     }
 
   val = 0;
-  if (!parse_positive_integer (value, &val, context, error))
+  if (!parse_positive_integer (value, &val, context, info->theme, error))
     return;
 
   g_assert (val >= 0); /* yeah, "non-negative" not "positive" get over it */
@@ -1471,19 +1563,19 @@ parse_border (GMarkupParseContext  *context,
     }
 
   top_val = 0;
-  if (!parse_positive_integer (top, &top_val, context, error))
+  if (!parse_positive_integer (top, &top_val, context, info->theme, error))
     return;
 
   bottom_val = 0;
-  if (!parse_positive_integer (bottom, &bottom_val, context, error))
+  if (!parse_positive_integer (bottom, &bottom_val, context, info->theme, error))
     return;
 
   left_val = 0;
-  if (!parse_positive_integer (left, &left_val, context, error))
+  if (!parse_positive_integer (left, &left_val, context, info->theme, error))
     return;
 
   right_val = 0;
-  if (!parse_positive_integer (right, &right_val, context, error))
+  if (!parse_positive_integer (right, &right_val, context, info->theme, error))
     return;
   
   g_assert (info->layout);
@@ -1697,23 +1789,23 @@ parse_draw_op_element (GMarkupParseContext  *context,
       
       dash_on_val = 0;
       if (dash_on_length &&
-          !parse_positive_integer (dash_on_length, &dash_on_val, context, error))
+          !parse_positive_integer (dash_on_length, &dash_on_val, context, info->theme, error))
         return;
 
       dash_off_val = 0;
       if (dash_off_length &&
-          !parse_positive_integer (dash_off_length, &dash_off_val, context, error))
+          !parse_positive_integer (dash_off_length, &dash_off_val, context, info->theme, error))
         return;
 
       width_val = 0;
       if (width &&
-          !parse_positive_integer (width, &width_val, context, error))
+          !parse_positive_integer (width, &width_val, context, info->theme, error))
         return;
 
       /* Check last so we don't have to free it when other
        * stuff fails
        */
-      color_spec = meta_color_spec_new_from_string (color, error);
+      color_spec = parse_color (info->theme, color, error);
       if (color_spec == NULL)
         {
           add_context_to_error (error, context);
@@ -1812,7 +1904,7 @@ parse_draw_op_element (GMarkupParseContext  *context,
       /* Check last so we don't have to free it when other
        * stuff fails
        */
-      color_spec = meta_color_spec_new_from_string (color, error);
+      color_spec = parse_color (info->theme, color, error);
       if (color_spec == NULL)
         {
           add_context_to_error (error, context);
@@ -1845,6 +1937,8 @@ parse_draw_op_element (GMarkupParseContext  *context,
       const char *filled;
       const char *start_angle;
       const char *extent_angle;
+      const char *from;
+      const char *to;
       gboolean filled_val;
       double start_angle_val;
       double extent_angle_val;
@@ -1858,6 +1952,8 @@ parse_draw_op_element (GMarkupParseContext  *context,
                               "filled", &filled,
                               "start_angle", &start_angle,
                               "extent_angle", &extent_angle,
+                              "from", &from,
+                              "to", &to,
                               NULL))
         return;
 
@@ -1896,20 +1992,40 @@ parse_draw_op_element (GMarkupParseContext  *context,
           return;
         }
 
-      if (start_angle == NULL)
+      if (META_THEME_ALLOWS (info->theme, META_THEME_DEGREES_IN_ARCS) )
         {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"start_angle\" attribute on element <%s>"), element_name);
-          return;
+          if (start_angle == NULL && from == NULL)
+            {
+              set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                         _("No \"start_angle\" or \"from\" attribute on element <%s>"), element_name);
+              return;
+            }
+
+          if (extent_angle == NULL && to == NULL)
+            {
+              set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                         _("No \"extent_angle\" or \"to\" attribute on element <%s>"), element_name);
+              return;
+            }
+        }
+      else
+        {
+          if (start_angle == NULL)
+            {
+              set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                         _("No \"start_angle\" attribute on element <%s>"), element_name);
+              return;
+            }
+
+          if (extent_angle == NULL)
+            {
+              set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                         _("No \"extent_angle\" attribute on element <%s>"), element_name);
+              return;
+            }
         }
 
-      if (extent_angle == NULL)
-        {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No \"extent_angle\" attribute on element <%s>"), element_name);
-          return;
-        }
-      
+     
       if (!check_expression (x, FALSE, info->theme, context, error))
         return;
 
@@ -1922,12 +2038,32 @@ parse_draw_op_element (GMarkupParseContext  *context,
       if (!check_expression (height, FALSE, info->theme, context, error))
         return;
 
-      if (!parse_angle (start_angle, &start_angle_val, context, error))
-        return;
-
-      if (!parse_angle (extent_angle, &extent_angle_val, context, error))
-        return;
+      if (start_angle == NULL)
+        {
+          if (!parse_angle (from, &start_angle_val, context, error))
+            return;
+          
+          start_angle_val = (180-start_angle_val)/360.0;
+        }
+      else
+        {
+          if (!parse_angle (start_angle, &start_angle_val, context, error))
+            return;
+        }
       
+      if (extent_angle == NULL)
+        {
+          if (!parse_angle (to, &extent_angle_val, context, error))
+            return;
+          
+          extent_angle_val = ((180-extent_angle_val)/360.0) - start_angle_val;
+        }
+      else
+        {
+           if (!parse_angle (extent_angle, &extent_angle_val, context, error))
+             return;
+        }
+     
       filled_val = FALSE;
       if (filled && !parse_boolean (filled, &filled_val, context, error))
         return;
@@ -1935,7 +2071,7 @@ parse_draw_op_element (GMarkupParseContext  *context,
       /* Check last so we don't have to free it when other
        * stuff fails
        */
-      color_spec = meta_color_spec_new_from_string (color, error);
+      color_spec = parse_color (info->theme, color, error);
       if (color_spec == NULL)
         {
           add_context_to_error (error, context);
@@ -2109,7 +2245,7 @@ parse_draw_op_element (GMarkupParseContext  *context,
       /* Check last so we don't have to free it when other
        * stuff fails
        */
-      color_spec = meta_color_spec_new_from_string (color, error);
+      color_spec = parse_color (info->theme, color, error);
       if (color_spec == NULL)
         {
           if (alpha_spec)
@@ -2254,7 +2390,7 @@ parse_draw_op_element (GMarkupParseContext  *context,
                               "x", &x, "y", &y,
                               "width", &width, "height", &height,
                               "alpha", &alpha, "filename", &filename,
-			      "colorize", &colorize,
+                              "colorize", &colorize,
                               "fill_type", &fill_type,
                               NULL))
         return;
@@ -2321,9 +2457,12 @@ parse_draw_op_element (GMarkupParseContext  *context,
         }
       
       /* Check last so we don't have to free it when other
-       * stuff fails
+       * stuff fails.
+       *
+       * If it's a theme image, ask for it at 64px, which is
+       * the largest possible. We scale it anyway.
        */
-      pixbuf = meta_theme_load_image (info->theme, filename, error);
+      pixbuf = meta_theme_load_image (info->theme, filename, 64, error);
 
       if (pixbuf == NULL)
         {
@@ -2333,7 +2472,7 @@ parse_draw_op_element (GMarkupParseContext  *context,
 
       if (colorize)
         {
-          colorize_spec = meta_color_spec_new_from_string (colorize, error);
+          colorize_spec = parse_color (info->theme, colorize, error);
           
           if (colorize_spec == NULL)
             {
@@ -2892,7 +3031,7 @@ parse_draw_op_element (GMarkupParseContext  *context,
       /* Check last so we don't have to free it when other
        * stuff fails
        */
-      color_spec = meta_color_spec_new_from_string (color, error);
+      color_spec = parse_color (info->theme, color, error);
       if (color_spec == NULL)
         {
           add_context_to_error (error, context);
@@ -3154,7 +3293,7 @@ parse_gradient_element (GMarkupParseContext  *context,
           return;
         }
 
-      color_spec = meta_color_spec_new_from_string (value, error);
+      color_spec = parse_color (info->theme, value, error);
       if (color_spec == NULL)
         {
           add_context_to_error (error, context);
@@ -3281,12 +3420,24 @@ parse_style_element (GMarkupParseContext  *context,
           return;
         }
       
-      info->button_type = meta_button_type_from_string (function);
+      info->button_type = meta_button_type_from_string (function, info->theme);
       if (info->button_type == META_BUTTON_TYPE_LAST)
         {
           set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
                      _("Unknown function \"%s\" for button"),
                      function);
+          return;
+        }
+
+      if (meta_theme_earliest_version_with_button (info->button_type) >
+          info->theme->format_version)
+        {
+          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                     _("Button function \"%s\" does not exist in this version (%d, need %d)"),
+                     function,
+                     info->theme->format_version,
+                     meta_theme_earliest_version_with_button (info->button_type)
+                     );
           return;
         }
 
@@ -3421,8 +3572,9 @@ parse_style_set_element (GMarkupParseContext  *context,
           return;
         }
 
-      if (frame_state == META_FRAME_STATE_NORMAL)
+      switch (frame_state)
         {
+        case META_FRAME_STATE_NORMAL:
           if (resize == NULL)
             {
               set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
@@ -3440,13 +3592,51 @@ parse_style_set_element (GMarkupParseContext  *context,
                          focus);
               return;
             }
-        }
-      else
-        {
+          
+          break;
+
+        case META_FRAME_STATE_SHADED:
+          if (META_THEME_ALLOWS (info->theme, META_THEME_UNRESIZABLE_SHADED_STYLES))
+            {
+              if (resize == NULL)
+                /* In state="normal" we would complain here. But instead we accept
+                 * not having a resize attribute and default to resize="both", since
+                 * that most closely mimics what we did in v1, and thus people can
+                 * upgrade a theme to v2 without as much hassle.
+                 */
+                frame_resize = META_FRAME_RESIZE_BOTH;
+              else
+                {
+                  frame_resize = meta_frame_resize_from_string (resize);
+                  if (frame_resize == META_FRAME_RESIZE_LAST)
+                    {
+                      set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                                 _("\"%s\" is not a valid value for resize attribute"),
+                                 focus);
+                      return;
+                    }
+                }
+            }
+          else /* v1 theme */
+            {
+              if (resize != NULL)
+                {
+                  set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                       _("Should not have \"resize\" attribute on <%s> element for maximized/shaded states"),
+                      element_name);
+                  return;
+                }
+
+              /* resize="both" is equivalent to the old behaviour */
+              frame_resize = META_FRAME_RESIZE_BOTH;
+            }
+          break;
+          
+        default:
           if (resize != NULL)
             {
               set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                         _("Should not have \"resize\" attribute on <%s> element for maximized/shaded states"),
+                         _("Should not have \"resize\" attribute on <%s> element for maximized states"),
                          element_name);
               return;
             }
@@ -3479,15 +3669,15 @@ parse_style_set_element (GMarkupParseContext  *context,
           info->style_set->maximized_styles[frame_focus] = frame_style;
           break;
         case META_FRAME_STATE_SHADED:
-          if (info->style_set->shaded_styles[frame_focus])
+          if (info->style_set->shaded_styles[frame_resize][frame_focus])
             {
               set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                         _("Style has already been specified for state %s focus %s"),
-                         state, focus);
+                         _("Style has already been specified for state %s resize %s focus %s"),
+                         state, resize, focus);
               return;
             }
           meta_frame_style_ref (frame_style);
-          info->style_set->shaded_styles[frame_focus] = frame_style;
+          info->style_set->shaded_styles[frame_resize][frame_focus] = frame_style;
           break;
         case META_FRAME_STATE_MAXIMIZED_AND_SHADED:
           if (info->style_set->maximized_and_shaded_styles[frame_focus])
@@ -3650,6 +3840,7 @@ start_element_handler (GMarkupParseContext *context,
           info->theme->name = g_strdup (info->theme_name);
           info->theme->filename = g_strdup (info->theme_file);
           info->theme->dirname = g_strdup (info->theme_dir);
+          info->theme->format_version = info->format_version;
           
           push_state (info, STATE_THEME);
         }
@@ -3761,6 +3952,11 @@ start_element_handler (GMarkupParseContext *context,
       set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
                  _("Element <%s> is not allowed inside a <%s> element"),
                  element_name, "window");
+      break;
+    case STATE_FALLBACK:
+      set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
+                 _("Element <%s> is not allowed inside a <%s> element"),
+                 element_name, "fallback");
       break;
     }
 }
@@ -3962,6 +4158,7 @@ end_element_handler (GMarkupParseContext *context,
       g_assert (info->style);
 
       if (!meta_frame_style_validate (info->style,
+                                      info->theme->format_version,
                                       error))
         {
           add_context_to_error (error, context);
@@ -4007,16 +4204,9 @@ end_element_handler (GMarkupParseContext *context,
       break;
     case STATE_MENU_ICON:
       g_assert (info->theme);
-      if (info->op_list == NULL)
+      if (info->op_list != NULL)
         {
-          set_error (error, context, G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
-                     _("No draw_ops provided for menu icon"));
-        }
-      else
-        {
-          g_assert (info->theme->menu_icons[info->menu_icon_type][info->menu_icon_state] == NULL);
-          info->theme->menu_icons[info->menu_icon_type][info->menu_icon_state] =
-            info->op_list;
+          meta_draw_op_list_unref (info->op_list);
           info->op_list = NULL;
         }
       pop_state (info);
@@ -4044,6 +4234,10 @@ end_element_handler (GMarkupParseContext *context,
       g_assert (peek_state (info) == STATE_FRAME_STYLE_SET);
       break;
     case STATE_WINDOW:
+      pop_state (info);
+      g_assert (peek_state (info) == STATE_THEME);
+      break;
+    case STATE_FALLBACK:
       pop_state (info);
       g_assert (peek_state (info) == STATE_THEME);
       break;
@@ -4239,18 +4433,25 @@ text_handler (GMarkupParseContext *context,
     case STATE_WINDOW:
       NO_TEXT ("window");
       break;
+    case STATE_FALLBACK:
+      NO_TEXT ("fallback");
+      break;
     }
 }
 
-/* We change the filename when we break the format,
- * so themes can work with various metacity versions
- * (note, this is obsolete now because we are versioning
- * the directory this file is inside, so oh well)
+/* We were intending to put the version number
+ * in the subdirectory name, but we ended up
+ * using the filename instead.  The "-1" survives
+ * as a fossil.
  */
-#define THEME_FILENAME "metacity-theme-1.xml"
-
-/* now this is versioned, /usr/share/themes/NAME/THEME_SUBDIR/THEME_FILENAME */
 #define THEME_SUBDIR "metacity-1"
+
+/* Highest version of the theme format to
+ * look out for.
+ */
+#define THEME_VERSION 2
+
+#define METACITY_THEME_FILENAME_FORMAT "metacity-theme-%d.xml"
 
 MetaTheme*
 meta_theme_load (const char *theme_name,
@@ -4264,6 +4465,7 @@ meta_theme_load (const char *theme_name,
   char *theme_file;
   char *theme_dir;
   MetaTheme *retval;
+  guint version;
 
   text = NULL;
   length = 0;
@@ -4275,11 +4477,14 @@ meta_theme_load (const char *theme_name,
   
   if (meta_is_debugging ())
     {
+      gchar *theme_filename = g_strdup_printf (METACITY_THEME_FILENAME_FORMAT,
+                                               THEME_VERSION);
+
       /* Try in themes in our source tree */
       theme_dir = g_build_filename ("./themes", theme_name, NULL);
       
       theme_file = g_build_filename (theme_dir,
-                                     THEME_FILENAME,
+                                     theme_filename,
                                      NULL);
       
       error = NULL;
@@ -4295,12 +4500,19 @@ meta_theme_load (const char *theme_name,
           g_free (theme_file);
           theme_file = NULL;
         }
+      version = THEME_VERSION;
+
+      g_free (theme_filename);
     }
   
-  /* We try in home dir, then system dir for themes */
-  
-  if (text == NULL)
+  /* We try all supported versions from current to oldest */
+  for (version = THEME_VERSION; (version > 0) && (text == NULL); version--)
     {
+      gchar *theme_filename = g_strdup_printf (METACITY_THEME_FILENAME_FORMAT,
+                                               version);
+      
+      /* We try in home dir, then system dir for themes */
+  
       theme_dir = g_build_filename (g_get_home_dir (),
                                     ".themes",
                                     theme_name,
@@ -4308,7 +4520,7 @@ meta_theme_load (const char *theme_name,
                                     NULL);
       
       theme_file = g_build_filename (theme_dir,
-                                     THEME_FILENAME,
+                                     theme_filename,
                                      NULL);
 
       error = NULL;
@@ -4324,38 +4536,48 @@ meta_theme_load (const char *theme_name,
           g_free (theme_file);
           theme_file = NULL;
         }
+
+      if (text == NULL)
+        {
+          theme_dir = g_build_filename (METACITY_DATADIR,
+                                        "themes",
+                                        theme_name,
+                                        THEME_SUBDIR,
+                                        NULL);
+      
+          theme_file = g_build_filename (theme_dir,
+                                         theme_filename,
+                                         NULL);
+
+          error = NULL;
+          if (!g_file_get_contents (theme_file,
+                                    &text,
+                                    &length,
+                                    &error))
+            {
+              meta_topic (META_DEBUG_THEMES, "Failed to read theme from file %s: %s\n",
+                            theme_file, error->message);
+              g_error_free (error);
+              g_free (theme_dir);
+              g_free (theme_file);
+              theme_file = NULL;
+            }
+        }
+
+      g_free (theme_filename);
     }
 
   if (text == NULL)
     {
-      theme_dir = g_build_filename (METACITY_DATADIR,
-                                    "themes",
-                                    theme_name,
-                                    THEME_SUBDIR,
-                                    NULL);
-      
-      theme_file = g_build_filename (theme_dir,
-                                     THEME_FILENAME,
-                                     NULL);
+      g_set_error (err, META_THEME_ERROR, META_THEME_ERROR_FAILED,
+          _("Failed to find a valid file for theme %s\n"),
+          theme_name);
 
-      error = NULL;
-      if (!g_file_get_contents (theme_file,
-                                &text,
-                                &length,
-                                &error))
-        {
-          meta_warning (_("Failed to read theme from file %s: %s\n"),
-                        theme_file, error->message);
-          g_propagate_error (err, error);
-          g_free (theme_file);
-          g_free (theme_dir);
-          return NULL; /* all fallbacks failed */
-        }
+      return NULL; /* all fallbacks failed */
     }
 
-  g_assert (text);
-
   meta_topic (META_DEBUG_THEMES, "Parsing theme file %s\n", theme_file);
+
 
   parse_info_init (&info);
   info.theme_name = theme_name;
@@ -4363,6 +4585,8 @@ meta_theme_load (const char *theme_name,
   /* pass ownership to info so we free it with the info */
   info.theme_file = theme_file;
   info.theme_dir = theme_dir;
+
+  info.format_version = version + 1;
   
   context = g_markup_parse_context_new (&metacity_theme_parser,
                                         0, &info, NULL);
@@ -4385,7 +4609,9 @@ meta_theme_load (const char *theme_name,
   if (context)
     g_markup_parse_context_free (context);
   g_free (text);
-  
+
+  info.theme->format_version = info.format_version;
+
   if (error)
     {
       g_propagate_error (err, error);
