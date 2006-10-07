@@ -13,7 +13,7 @@
 <constant name="CenterTitlePieceWidth" value="48"/> <!-- Width of center title piece -->
 <constant name="ButtonWidth" value="16"/> <!-- Button width -->
 
-<frame_geometry name="normal" hide_buttons="true">
+<frame_geometry name="normal">
   <distance name="left_width" value="5"/>
   <distance name="right_width" value="6"/>
   <distance name="bottom_height" value="6"/>
@@ -25,7 +25,7 @@
   <border name="button_border" left="0" right="0" top="3" bottom="3"/>
 </frame_geometry>
 
-<frame_geometry name="border" has_title="false" hide_buttons="true">
+<frame_geometry name="border" has_title="false">
   <distance name="left_width" value="5"/>
   <distance name="right_width" value="6"/>
   <distance name="bottom_height" value="6"/>

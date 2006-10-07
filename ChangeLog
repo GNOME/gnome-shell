@@ -1,5 +1,10 @@
 2006-10-07  Thomas Thurman <thomas@thurman.org.uk>
 
+        * src/themes/Crux/metacity-theme-2.xml: removed hide_buttons.
+	Closes #360498.
+
+2006-10-07  Thomas Thurman <thomas@thurman.org.uk>
+
         * MAINTAINERS: added myself.
 
 2006-10-07  Thomas Thurman <thomas@thurman.org.uk>
