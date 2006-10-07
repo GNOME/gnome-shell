@@ -1,5 +1,11 @@
 2006-10-07  Thomas Thurman <thomas@thurman.org.uk>
 
+        * doc/theme-format.txt: described new theme format.
+
+	* src/themes/Bright, src/themes/Crux: added version 2 themes.
+
+2006-10-07  Thomas Thurman <thomas@thurman.org.uk>
+
         * common.h: Added "above" to the list of flags a frame can have, so
 	that we know when to mark it as always on top.  Added six grab ops,
 	one to do and one to undo each of the three new titlebar buttons

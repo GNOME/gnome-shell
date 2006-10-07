@@ -1,6 +1,91 @@
-Docs on the theme format
+Themes are in a simple XML-subset format. There are multiple versions
+of the theme format, and a given theme can support more than one format.
 
-Themes are in a simple XML-subset format.
+Version 1:     THEMEDIR/metacity-1/metacity-theme-1.xml
+  (original metacity format)
+Version 2:     THEMEDIR/metacity-1/metacity-theme-2.xml
+
+The subdirectory name is "metacity-1" in all versions.
+
+As you might expect, older versions of metacity will not understand
+newer theme formats. However, newer versions will use old themes.
+Metacity will always use the newest theme format it understands that
+the X server supports. Some format versions are only supported if you
+have the right X server features.
+
+Each format *requires* the corresponding filename. If you put version
+2 format features in the metacity-1/metacity-theme-1.xml file, then
+metacity will get angry.
+
+This document has separate sections for each format version. You may
+want to read the document in reverse order, since the base features
+are discussed under version 1.
+
+New Features in Theme Format Version 2
+======================================
+
+The optional attributes rounded_top_left, rounded_top_right,
+rounded_bottom_left and rounded_bottom_right on <frame_geometry>
+should now be the radius of the corner in pixels. You may still use
+the values "false" for 0 and "true" for 5, which means v1 values will
+still work just fine.
+
+<frame_geometry> has a new optional attribute, hide_buttons. If this
+is true, no buttons will be displayed on the titlebar.
+
+Anywhere you can use a positive integer, you can use an integer constant.
+
+As well as constant integers and reals, you may define constant colours,
+thus:
+  <constant name="RevoltingPink" value="#FF00FF"/>
+  <constant name="Background" value="gtk:bg[NORMAL]"/>
+
+<frame_style> has two new optional attributes, background and alpha.
+If you specify alpha, you must specify background. background is a
+colour used for the background of the frame. alpha is the transparency
+as a real between 0.0 and 1.0. If the current X server does not support
+alpha channels, the value is ignored.
+
+The filename attribute of <image> may begin with "theme:". If so, the
+rest of the string is the name of a theme icon. The 64x64 version of the
+icon is used, except for fallback mini_icons, which use the 16x16 version.
+This does not affect ordinary resizing. For example:
+  <button function="close" state="normal">
+    <draw_ops>
+      <include name="active_button"/>
+      <image filename="theme:gnome-logout" x="2" y="2"
+          width="width-4" height="height-4"/>
+      <!-- Note: not "theme:gnome-logout.png" or similar. -->
+    </draw_ops>
+  </button>
+
+<menu_icon>s are parsed but ignored.
+
+Fallback icons can be specified using <fallback>. There are two
+optional arguments, icon and mini_icon. The values of these arguments
+are identical to that of the filename attribute of <image>. Fallback
+icons are used when a window does not supply its own icon. If a fallback
+icon is not specified with <fallback>, Metacity will use a built-in
+icon, as in metacity-theme-1.
+
+The <arc> element, as well as the original start_angle and end_angle
+attributes, may be given from and to attributes. The values of these
+attributes are given in degrees clockwise, with 0 being straight up.
+For example:
+  <arc from="0.0" to="90.0" filled="true" color="#FF00FF"
+      x="0" y="5" width="15" height="15"/>
+
+<frame state="shaded"> may now take an optional resize attribute, with
+the same interpretation as the resize attribute on <frame state="normal">.
+If this attribute is omitted for state="shaded", it defaults to "both".
+(If it is omitted for state="normal", it remains an error.)
+
+In addition to the four <button> functions which are required in
+metacity-theme-1, there are six new functions in metacity-theme-2:
+shade, unshade, above, unabove, stick and unstick.
+      
+Overview of Theme Format Version 1
+==================================
 
 <?xml version="1.0"?>
 <metacity_theme>
