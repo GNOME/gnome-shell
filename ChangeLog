@@ -1,3 +1,9 @@
+2006-10-10  Elijah Newren  <newren gmail com>
+
+	* src/draw-workspace.c (draw_window, wnck_draw_workspace): Patch
+	from Bruno Boaventura to sync metacity workspace previews with
+	libwnck.  #341893
+
 2006-10-07  Thomas Thurman <thomas@thurman.org.uk>
 
         * configure.in: post-release bump to 2.17.1.

@@ -66,21 +66,38 @@ get_window_rect (const WnckWindowDisplayInfo *win,
 }
 
 static void
-draw_window (GtkWidget             *widget,
-             GdkDrawable           *drawable,
+draw_window (GtkWidget                   *widget,
+             GdkDrawable                 *drawable,
              const WnckWindowDisplayInfo *win,
-             const GdkRectangle    *winrect)
+             const GdkRectangle          *winrect,
+             GtkStateType                state)
 {
+  cairo_t *cr;
   GdkPixbuf *icon;
   int icon_x, icon_y, icon_w, icon_h;
-          
-  gdk_draw_rectangle (drawable,
-                      win->is_active ?
-                      widget->style->bg_gc[GTK_STATE_SELECTED] :
-                      widget->style->bg_gc[GTK_STATE_NORMAL],
-                      TRUE,
-                      winrect->x + 1, winrect->y + 1,
-                      winrect->width - 2, winrect->height - 2);
+  gboolean is_active;
+  GdkColor *color;
+
+  is_active = win->is_active;
+  
+  cr = gdk_cairo_create (drawable);
+  cairo_rectangle (cr, winrect->x, winrect->y, winrect->width, winrect->height);
+  cairo_clip (cr);
+
+  if (is_active)
+    color = &widget->style->light[state];
+  else
+    color = &widget->style->bg[state];
+  cairo_set_source_rgb (cr,
+                        color->red / 65535.,
+                        color->green / 65535.,
+                        color->blue / 65535.);
+
+  cairo_rectangle (cr,
+                   winrect->x + 1, winrect->y + 1,
+                   MAX (0, winrect->width - 2), MAX (0, winrect->height - 2));
+  cairo_fill (cr);
+
 
   icon = win->icon;
 
@@ -103,7 +120,7 @@ draw_window (GtkWidget             *widget,
             {
               icon_w = gdk_pixbuf_get_width (icon);
               icon_h = gdk_pixbuf_get_height (icon);
-
+        
               /* Give up. */
               if (icon_w > (winrect->width - 2) ||
                   icon_h > (winrect->height - 2))
@@ -116,44 +133,31 @@ draw_window (GtkWidget             *widget,
     {
       icon_x = winrect->x + (winrect->width - icon_w) / 2;
       icon_y = winrect->y + (winrect->height - icon_h) / 2;
-                
-      {
-        /* render_to_drawable should take a clip rect to save
-         * us this mess...
-         */
-        GdkRectangle pixbuf_rect;
-        GdkRectangle draw_rect;
-
-        pixbuf_rect.x = icon_x;
-        pixbuf_rect.y = icon_y;
-        pixbuf_rect.width = icon_w;
-        pixbuf_rect.height = icon_h;
-        
-        if (gdk_rectangle_intersect ((GdkRectangle *)winrect, &pixbuf_rect,
-                                     &draw_rect))
-          {
-            gdk_pixbuf_render_to_drawable_alpha (icon,
-                                                 drawable,
-                                                 draw_rect.x - pixbuf_rect.x,
-                                                 draw_rect.y - pixbuf_rect.y,
-                                                 draw_rect.x, draw_rect.y,
-                                                 draw_rect.width,
-                                                 draw_rect.height,
-                                                 GDK_PIXBUF_ALPHA_FULL,
-                                                 128,
-                                                 GDK_RGB_DITHER_NORMAL,
-                                                 0, 0);
-          }
-      }
+      
+      cairo_save (cr);
+      gdk_cairo_set_source_pixbuf (cr, icon, icon_x, icon_y);
+      cairo_rectangle (cr, icon_x, icon_y, icon_w, icon_h);
+      cairo_clip (cr);
+      cairo_paint (cr);
+      cairo_restore (cr);
     }
           
-  gdk_draw_rectangle (drawable,
-                      win->is_active ?
-                      widget->style->fg_gc[GTK_STATE_SELECTED] :
-                      widget->style->fg_gc[GTK_STATE_NORMAL],
-                      FALSE,
-                      winrect->x, winrect->y,
-                      winrect->width - 1, winrect->height - 1);
+  if (is_active)
+    color = &widget->style->fg[state];
+  else
+    color = &widget->style->fg[state];
+
+  cairo_set_source_rgb (cr,
+                        color->red / 65535.,
+                        color->green / 65535.,
+                        color->blue / 65535.);
+  cairo_set_line_width (cr, 1.0);
+  cairo_rectangle (cr,
+                   winrect->x + 0.5, winrect->y + 0.5,
+                   MAX (0, winrect->width - 1), MAX (0, winrect->height - 1));
+  cairo_stroke (cr);
+  
+  cairo_destroy (cr);
 }
 
 void
@@ -172,48 +176,56 @@ wnck_draw_workspace (GtkWidget                   *widget,
 {
   int i;
   GdkRectangle workspace_rect;
-  
+  GtkStateType state;
+
   workspace_rect.x = x;
   workspace_rect.y = y;
   workspace_rect.width = width;
   workspace_rect.height = height;
 
-  
   if (is_active)
-    gdk_draw_rectangle (drawable,
-                        GTK_WIDGET (widget)->style->dark_gc[GTK_STATE_SELECTED],
-                        TRUE,
-                        x, y, width, height);
-  else if (workspace_background)
+    state = GTK_STATE_SELECTED;
+  else if (workspace_background) 
+    state = GTK_STATE_PRELIGHT;
+  else
+    state = GTK_STATE_NORMAL;
+  
+  if (workspace_background)
     {
-      gdk_pixbuf_render_to_drawable (workspace_background,
-                                     drawable,
-                                     GTK_WIDGET (widget)->style->dark_gc[GTK_STATE_SELECTED],
-                                     0, 0,
-                                     x, y,
-                                     -1, -1,
-                                     GDK_RGB_DITHER_MAX,
-                                     0, 0);
+      gdk_draw_pixbuf (drawable,
+                       GTK_WIDGET (widget)->style->dark_gc[state],
+                       workspace_background,
+                       0, 0,
+                       x, y,
+                       -1, -1,
+                       GDK_RGB_DITHER_MAX,
+                       0, 0);
     }
   else
-    gdk_draw_rectangle (drawable,
-                        GTK_WIDGET (widget)->style->dark_gc[GTK_STATE_NORMAL],
-                        TRUE,
-                        x, y, width, height);
-
-
+    {
+      cairo_t *cr;
+      
+      cr = gdk_cairo_create (widget->window);
+      gdk_cairo_set_source_color (cr, &widget->style->dark[state]);
+      cairo_rectangle (cr, x, y, width, height);
+      cairo_fill (cr);
+      cairo_destroy (cr);
+    }
+  
   i = 0;
   while (i < n_windows)
     {
       const WnckWindowDisplayInfo *win = &windows[i];
       GdkRectangle winrect;
       
-      get_window_rect (win, screen_width, screen_height, &workspace_rect, &winrect);
+      get_window_rect (win, screen_width,
+                       screen_height, &workspace_rect, &winrect);
       
       draw_window (widget,
                    drawable,
                    win,
-                   &winrect);
+                   &winrect,
+                   state);
       
       ++i;
     }
