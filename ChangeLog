@@ -1,3 +1,32 @@
+2006-10-13  Carlo Wood <carlo@alinoe.com>
+
+	Fix cases when titlebar is allowed offscreen and shouldn't be (and
+	vice-versa).  #333995.
+
+	* src/display.[ch] (struct _MetaDisplay): add grab_frame_action
+	member
+
+	* src/display.[ch] (meta_display_begin_grab_op):
+	* src/window.[ch] (meta_window_begin_grab_op):
+	* src/core.[ch] (meta_core_begin_grab_op):
+	Add frame_action parameter (core & window versions pass it on to
+	display)
+	
+	* src/display.c (event_callback):
+	* src/window.c (meta_window_begin_grab_op,
+	  meta_window_client_message, menu_callback):
+	* frames.c (meta_frames_button_press_event):
+	* keybindings.c (do_choose_window, handle_begin_move,
+	  handle_begin_resize, handle_workspace_switch):
+	Pass whether the action should be considered a 'frame_action',
+	which will be used to determine whether to force the titlebar to
+	remain onscreen, to meta_*_begin_grab_op
+
+	* constraints.c (constrain_titlebar_visible):
+	Replace previous ugly hack by using grab_frame_action (and whether
+	the action is a user action) to determine whether to enforce the
+	titlebar_visible constraint.
+
 2006-10-10  Elijah Newren  <newren gmail com>
 
 	* src/draw-workspace.c (draw_window, wnck_draw_workspace): Patch

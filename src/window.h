@@ -580,6 +580,7 @@ MetaWindow* meta_window_find_root_ancestor    (MetaWindow *window);
 
 void meta_window_begin_grab_op (MetaWindow *window,
                                 MetaGrabOp  op,
+                                gboolean    frame_action,
                                 guint32     timestamp);
 
 void meta_window_update_keyboard_resize (MetaWindow *window,

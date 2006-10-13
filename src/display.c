@@ -1738,6 +1738,7 @@ event_callback (XEvent   *event,
                                                 window,
                                                 op,
                                                 TRUE,
+                                                FALSE,
                                                 event->xbutton.serial,
                                                 event->xbutton.button,
                                                 0,
@@ -1795,6 +1796,7 @@ event_callback (XEvent   *event,
                                           window,
                                           META_GRAB_OP_MOVING,
                                           TRUE,
+                                          FALSE,
                                           event->xbutton.serial,
                                           event->xbutton.button,
                                           0,
@@ -3263,6 +3265,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
                             MetaWindow  *window,
                             MetaGrabOp   op,
                             gboolean     pointer_already_grabbed,
+                            gboolean     frame_action,
                             int          event_serial,
                             int          button,
                             gulong       modmask,
@@ -3380,7 +3383,8 @@ meta_display_begin_grab_op (MetaDisplay *display,
   display->grab_last_user_action_was_snap = FALSE;
 #endif
   display->grab_was_cancelled = FALSE;
-  
+  display->grab_frame_action = frame_action;
+
   if (display->grab_resize_timeout_id)
     {
       g_source_remove (display->grab_resize_timeout_id);

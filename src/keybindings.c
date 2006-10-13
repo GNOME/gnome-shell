@@ -3122,6 +3122,7 @@ do_choose_window (MetaDisplay    *display,
                                            tab_op_from_tab_type (type) :
                                            cycle_op_from_tab_type (type),
                                            FALSE,
+                                           FALSE,
                                            event->xkey.serial,
                                            0,
                                            binding->mask,
@@ -3343,6 +3344,7 @@ handle_begin_move         (MetaDisplay    *display,
     {
       meta_window_begin_grab_op (window,
                                  META_GRAB_OP_KEYBOARD_MOVING,
+                                 FALSE,
                                  event->xkey.time);
     }
 }
@@ -3358,6 +3360,7 @@ handle_begin_resize       (MetaDisplay    *display,
     {
       meta_window_begin_grab_op (window,
                                  META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN,
+                                 FALSE,
                                  event->xkey.time);
     }
 }
@@ -3554,6 +3557,7 @@ handle_workspace_switch  (MetaDisplay    *display,
                                   screen,
                                   NULL,
                                   META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING,
+                                  FALSE,
                                   FALSE,
                                   event->xkey.serial,
                                   0,

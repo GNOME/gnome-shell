@@ -264,6 +264,7 @@ struct _MetaDisplay
   guint       grab_have_keyboard : 1;
   guint       grab_wireframe_active : 1;
   guint       grab_was_cancelled : 1;    /* Only used in wireframe mode */
+  guint       grab_frame_action : 1;
   MetaRectangle grab_wireframe_rect;
   MetaRectangle grab_wireframe_last_xor_rect;
   MetaRectangle grab_initial_window_pos;
@@ -446,6 +447,7 @@ gboolean meta_display_begin_grab_op (MetaDisplay *display,
                                      MetaWindow  *window,
                                      MetaGrabOp   op,
                                      gboolean     pointer_already_grabbed,
+                                     gboolean     frame_action,
                                      int          event_serial,
                                      int          button,
                                      gulong       modmask,

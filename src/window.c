@@ -4733,6 +4733,13 @@ meta_window_client_message (MetaWindow *window,
       MetaGrabOp op;
       int button;
       guint32 timestamp;
+
+      /* _NET_WM_MOVERESIZE messages are almost certainly going to come from
+       * clients when users click on the fake "frame" that the client has,
+       * thus we should also treat such messages as though it were a
+       * "frame action".
+       */
+      gboolean const frame_action = TRUE;
       
       x_root = event->xclient.data.l[0];
       y_root = event->xclient.data.l[1];
@@ -4793,7 +4800,7 @@ meta_window_client_message (MetaWindow *window,
           ((window->has_move_func && op == META_GRAB_OP_KEYBOARD_MOVING) ||
            (window->has_resize_func && op == META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN)))
         {
-          meta_window_begin_grab_op (window, op, timestamp);
+          meta_window_begin_grab_op (window, op, frame_action, timestamp);
         }
       else if (op != META_GRAB_OP_NONE &&
                ((window->has_move_func && op == META_GRAB_OP_MOVING) ||
@@ -4841,7 +4848,9 @@ meta_window_client_message (MetaWindow *window,
                                           window->screen,
                                           window,
                                           op,
-                                          FALSE, 0 /* event_serial */,
+                                          FALSE,
+                                          frame_action,
+                                          0 /* event_serial */,
                                           button, 0,
                                           timestamp,
                                           x_root,
@@ -6228,12 +6237,14 @@ menu_callback (MetaWindowMenu *menu,
         case META_MENU_OP_MOVE:
           meta_window_begin_grab_op (window,
                                      META_GRAB_OP_KEYBOARD_MOVING,
+                                     TRUE,
                                      timestamp);
           break;
 
         case META_MENU_OP_RESIZE:
           meta_window_begin_grab_op (window,
                                      META_GRAB_OP_KEYBOARD_RESIZING_UNKNOWN,
+                                     TRUE,
                                      timestamp);
           break;
 
@@ -7640,6 +7651,7 @@ warp_grab_pointer (MetaWindow          *window,
 void
 meta_window_begin_grab_op (MetaWindow *window,
                            MetaGrabOp  op,
+                           gboolean    frame_action,
                            guint32     timestamp)
 {
   int x, y;
@@ -7655,6 +7667,7 @@ meta_window_begin_grab_op (MetaWindow *window,
                               window,
                               op,
                               FALSE,
+                              frame_action,
                               grab_start_serial /* event_serial */,
                               0 /* button */,
                               0,

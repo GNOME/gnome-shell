@@ -1125,13 +1125,10 @@ constrain_titlebar_visible (MetaWindow         *window,
     return TRUE;
 
   /* Allow the titlebar beyond the top of the screen only if the user wasn't
-   * clicking on the titlebar to start the move.
-   * FIXME: This is kind of a hack; nearly as ugly as the old infinite edge
-   * resistance.
+   * clicking on the frame to start the move.
    */
   unconstrained_user_action =
-    info->is_user_action &&
-    window->display->grab_anchor_root_y >= window->display->grab_initial_window_pos.y;
+    info->is_user_action && !window->display->grab_frame_action;
 
   /* Exit early if we know the constraint won't apply--note that this constraint
    * is only meant for normal windows (e.g. we don't want docks to be shoved 
