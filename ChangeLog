@@ -1,3 +1,7 @@
+2006-10-16  Elijah Newren  <newren gmail com>
+
+        * NEWS: 2.17.1 release.
+
 2006-10-13  Carlo Wood <carlo@alinoe.com>
 
 	Fix cases when titlebar is allowed offscreen and shouldn't be (and

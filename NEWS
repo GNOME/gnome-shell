@@ -1,3 +1,16 @@
+2.17.1
+======
+
+Thanks to Bruno Boaventura and Carlo Wood for improvements in this
+release.
+
+  - sync metacity workspace previous with libwnck (Bruno) [#341893]
+  - fix cases when titlebar is allowed offscreen and shouldn't be, and
+    vice-versa (Carlo) [#333995]
+
+Translations
+  Ilkka Tuohela (fi)
+
 2.17.0
 ======
 
@@ -20,9 +33,9 @@ and Thomas Thurman for changes in this release.
     [#355620]
   - fixes for compilation warnings, etc (Elijah, Jens) [#348067, #356631]
 
- Translators
-   Ivar Smolin (et), Gabor Kelemen (hu), Luca Ferretti (it),
-   Runa Bhattacharjee (bn_IN)
+Translators
+  Ivar Smolin (et), Gabor Kelemen (hu), Luca Ferretti (it),
+  Runa Bhattacharjee (bn_IN)
 
 2.16.2
 ======
