@@ -1,3 +1,7 @@
+2006-10-22  Christophe Merlet  <redfox@redfoxcenter.org>
+
+	* fr.po: Updated French translation.
+
 2006-10-19  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* nb.po: Updated Norwegian bokmål translation.
@@ -118,7 +122,7 @@
 
 	* mr.po: Added the file and updated Marathi translation.
 	* LINGUAS: Added an entry for Marathi(mr).
-	
+
 2006-09-03  Christophe Merlet  <redfox@redfoxcenter.org>
 
 	* fr.po: Updated French translation from
