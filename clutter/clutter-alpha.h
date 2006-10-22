@@ -80,7 +80,10 @@ struct _ClutterAlphaClass
   void (*_clutter_alpha_5) (void);
 }; 
 
+
 #define CLUTTER_ALPHA_MAX_ALPHA 0xffff
+
+GType clutter_alpha_get_type         (void) G_GNUC_CONST;
 
 ClutterAlpha *
 clutter_alpha_new (ClutterTimeline *timeline,

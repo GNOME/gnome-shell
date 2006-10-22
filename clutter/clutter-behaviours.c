@@ -37,19 +37,59 @@
 #include "clutter-enum-types.h"
 #include "clutter-main.h"
 
+#include <math.h>
+
+static ClutterKnot *
+clutter_knot_copy (const ClutterKnot *knot)
+{
+  ClutterKnot *copy;
+
+  copy = g_slice_new0 (ClutterKnot);
+  
+  *copy = *knot;
+
+  return copy;
+}
+
+static void
+clutter_knot_free (ClutterKnot *knot)
+{
+  if (G_LIKELY (knot))
+    {
+      g_slice_free (ClutterKnot, knot);
+    }
+}
+
+GType
+clutter_knot_get_type (void)
+{
+  static GType our_type = 0;
+
+  if (G_UNLIKELY (!our_type))
+    our_type = g_boxed_type_register_static 
+                            ("ClutterKnot",
+			     (GBoxedCopyFunc) clutter_knot_copy,
+			     (GBoxedFreeFunc) clutter_knot_free);
+  return our_type;
+}
+
+
 G_DEFINE_TYPE (ClutterBehaviourPath,   \
                clutter_behaviour_path, \
 	       CLUTTER_TYPE_BEHAVIOUR);
 
 struct ClutterBehaviourPathPrivate
 {
-  gint x1, y1, x2, y2;
+  GSList *knots;
 };
 
 #define CLUTTER_BEHAVIOUR_PATH_GET_PRIVATE(obj)    \
               (G_TYPE_INSTANCE_GET_PRIVATE ((obj), \
                CLUTTER_TYPE_BEHAVIOUR_PATH,        \
                ClutterBehaviourPathPrivate))
+
+static void
+clutter_behaviour_path_alpha_notify (ClutterBehaviour *behave);
 
 static void 
 clutter_behaviour_path_dispose (GObject *object)
@@ -58,7 +98,7 @@ clutter_behaviour_path_dispose (GObject *object)
 
   if (self->priv)
     {
-      /* FIXME: remove all actors */
+      /* FIXME: unref knots */
     }
 
   G_OBJECT_CLASS (clutter_behaviour_path_parent_class)->dispose (object);
@@ -82,12 +122,16 @@ clutter_behaviour_path_finalize (GObject *object)
 static void
 clutter_behaviour_path_class_init (ClutterBehaviourPathClass *klass)
 {
-  GObjectClass        *object_class;
+  GObjectClass          *object_class;
+  ClutterBehaviourClass *behave_class;
 
   object_class = (GObjectClass*) klass;
+  behave_class = (ClutterBehaviourClass*) klass;
 
   object_class->finalize     = clutter_behaviour_path_finalize;
   object_class->dispose      = clutter_behaviour_path_dispose;
+
+  behave_class->alpha_notify = clutter_behaviour_path_alpha_notify;
 
   g_type_class_add_private (object_class, sizeof (ClutterBehaviourPathPrivate));
 }
@@ -100,48 +144,218 @@ clutter_behaviour_path_init (ClutterBehaviourPath *self)
   self->priv = priv = CLUTTER_BEHAVIOUR_PATH_GET_PRIVATE (self);
 }
 
-/* 
+static void
+interpolate (const ClutterKnot *begin, 
+	     const ClutterKnot *end, 
+	     ClutterKnot       *out,
+	     double             t)
+{
+  /* FIXME: fixed point */
+  out->x = begin->x + t * (end->x - begin->x);
+  out->y = begin->y + t * (end->y - begin->y);
+}
 
-function line(x0, x1, y0, y1)
-     boolean steep := abs(y1 - y0) > abs(x1 - x0)
-     if steep then
-         swap(x0, y0)
-         swap(x1, y1)
-     if x0 > x1 then
-         swap(x0, x1)
-         swap(y0, y1)
-     int deltax := x1 - x0
-     int deltay := abs(y1 - y0)
-     int error := 0
-     int ystep
-     int y := y0
-     if y0 < y1 then ystep := 1 else ystep := -1
-     for x from x0 to x1
-         if steep then plot(y,x) else plot(x,y)
-         error := error + deltay
-         if 2
+static gint
+node_distance (const ClutterKnot *begin, const ClutterKnot *end)
+{
+  g_return_val_if_fail (begin != NULL, 0);
+  g_return_val_if_fail (end != NULL, 0);
 
- */
+  /* FIXME: need fixed point here */
+  return sqrt ((end->x - begin->x) * (end->x - begin->x) +
+               (end->y - begin->y) * (end->y - begin->y));
+}
+
+static gint
+path_total_length (ClutterBehaviourPath *behave)
+{
+  GSList *l;
+  gint    len = 0;
+
+  for (l = behave->priv->knots; l != NULL; l = l->next)
+    if (l->next)
+      len += node_distance (l->data, l->next->data);
+
+  return len;
+}
+
+static void
+actor_apply_knot_foreach (ClutterActor            *actor,
+			  ClutterKnot             *knot)
+{
+  clutter_actor_set_position (actor, knot->x, knot->y);
+}
+
+static void
+path_alpha_to_position (ClutterBehaviourPath *behave)
+{
+  guint32  alpha;
+  GSList  *l;
+  gint     total_len, offset, dist_to_next, dist = 0;
+
+  /* FIXME: Optimise. Much of the data used here can be pre-generated  
+   *        ( total_len, dist between knots ) when knots are added/removed.
+  */
+
+  /* Calculation as follows:
+   *  o Get total length of path
+   *  o Find the offset on path where alpha val corresponds to
+   *  o Figure out between which knots this offset lies.
+   *  o Interpolate new co-ords via dist between these knots
+   *  o Apply to actors.
+  */
+
+  alpha = clutter_alpha_get_alpha 
+                   (clutter_behaviour_get_alpha (CLUTTER_BEHAVIOUR(behave)));
+
+  total_len = path_total_length (behave);
+
+  offset = (alpha * total_len) / CLUTTER_ALPHA_MAX_ALPHA;
+
+  if (offset == 0)
+    {
+      clutter_behaviour_actors_foreach (CLUTTER_BEHAVIOUR(behave), 
+					(GFunc)actor_apply_knot_foreach,
+					behave->priv->knots->data);
+      return;
+    }
+
+  for (l = behave->priv->knots; l != NULL; l = l->next)
+    if (l->next)
+      {
+	dist_to_next = node_distance (l->data, l->next->data);
+	
+	if (offset >= dist && offset < (dist + dist_to_next))
+	  {
+	    ClutterKnot new;
+	    double t;
+	    
+	    /* FIXME: Use fixed */
+	    t = (double)(offset - dist) / dist_to_next ;
+	    
+	    interpolate (l->data, l->next->data, &new, t);
+	    
+	    clutter_behaviour_actors_foreach (CLUTTER_BEHAVIOUR(behave), 
+					      (GFunc)actor_apply_knot_foreach,
+					      &new);
+	    return;
+	  }
+
+	dist += dist_to_next;
+      }
+}
+
+static void
+clutter_behaviour_path_alpha_notify (ClutterBehaviour *behave)
+{
+  path_alpha_to_position (CLUTTER_BEHAVIOUR_PATH(behave));
+}
 
 ClutterBehaviour*
-clutter_behaviour_path_new (GObject    *object,
-                            const char *property,
-			    gint        x1,
-			    gint        y1,
-			    gint        x2,
-			    gint        y2)
+clutter_behaviour_path_new (ClutterAlpha          *alpha,
+			    const ClutterKnot     *knots,
+                            guint                  n_knots)
 {
   ClutterBehaviourPath *behave;
-
+  gint i; 
+     
   behave = g_object_new (CLUTTER_TYPE_BEHAVIOUR_PATH, 
-                         "object", object,
-                         "property", property,
+                         "alpha", alpha,
 			 NULL);
+
+  for (i = 0; i < n_knots; i++)
+    {
+      ClutterKnot knot = knots[i];
+      clutter_path_behaviour_append_knot (behave, &knot);
+    }
 
   return CLUTTER_BEHAVIOUR(behave);
 }
 
-/* opacity */
+GSList*
+clutter_path_behaviour_get_knots (ClutterBehaviourPath *behave)
+{
+  GSList *retval, *l;
+
+  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_PATH (behave), NULL);
+
+  retval = NULL;
+  for (l = behave->priv->knots; l != NULL; l = l->next)
+    retval = g_slist_prepend (retval, l->data);
+  
+  return g_slist_reverse (retval);
+}
+
+void
+clutter_path_behaviour_append_knot (ClutterBehaviourPath  *pathb,
+				    const ClutterKnot     *knot)
+{
+  ClutterBehaviourPathPrivate *priv;
+
+  g_return_if_fail (knot != NULL);
+
+  priv = pathb->priv;
+
+  priv->knots = g_slist_append (priv->knots,
+                                clutter_knot_copy (knot));
+}
+
+void
+clutter_path_behaviour_append_knots_valist (ClutterBehaviourPath  *pathb,
+					    const ClutterKnot     *first_knot,
+					    va_list                args)
+{
+  const ClutterKnot * knot;
+
+  knot = first_knot;
+  while (knot)
+    {
+      clutter_path_behaviour_append_knot (pathb, knot);
+      knot = va_arg (args, ClutterKnot*);
+    }
+}
+
+void
+clutter_path_behavior_append_knots (ClutterBehaviourPath  *pathb,
+				    const ClutterKnot     *first_knot,
+				    ...)
+{
+  va_list args;
+
+  g_return_if_fail (first_knot != NULL);
+
+  va_start (args, first_knot);
+  clutter_path_behaviour_append_knots_valist (pathb, first_knot, args);
+  va_end (args);
+}
+
+void
+clutter_path_behavior_remove_knot (ClutterBehaviourPath  *behave,
+				   guint                  index)
+{
+  /* FIXME: implement */
+}
+
+ClutterKnot*
+clutter_path_behavior_get_knot (ClutterBehaviourPath  *behave,
+				guint                  index)
+{
+  /* FIXME: implement */
+}
+
+void
+clutter_path_behavior_insert_knot (ClutterBehaviourPath  *behave,
+				   ClutterKnot           *knot,
+				   guint                  index)
+{
+  /* FIXME: implement */
+}
+
+
+/*
+ * ====================== Opacity ============================
+ */
+
 
 G_DEFINE_TYPE (ClutterBehaviourOpacity,   \
                clutter_behaviour_opacity, \
@@ -166,20 +380,14 @@ clutter_behaviour_opacity_frame_foreach (ClutterActor            *actor,
   guint8                          opacity;
   ClutterBehaviourOpacityPrivate *priv;
   ClutterBehaviour               *_behave;
-  GParamSpec                     *pspec;
 
   priv = CLUTTER_BEHAVIOUR_OPACITY_GET_PRIVATE (behave);
   _behave = CLUTTER_BEHAVIOUR (behave);
 
-  pspec = clutter_behaviour_get_param_spec (_behave);
-
-  g_object_get (clutter_behaviour_get_object (_behave),
-                pspec->name,
-                &alpha,
-                NULL);
+  alpha = clutter_alpha_get_alpha (clutter_behaviour_get_alpha (_behave));
 
   opacity = (alpha * (priv->opacity_end - priv->opacity_start)) 
-                    / ((GParamSpecUInt *) pspec)->maximum;
+                            / CLUTTER_ALPHA_MAX_ALPHA;
 
   opacity += priv->opacity_start;
 
@@ -189,12 +397,8 @@ clutter_behaviour_opacity_frame_foreach (ClutterActor            *actor,
 }
 
 static void
-clutter_behaviour_property_change (ClutterBehaviour *behave,
-                                   GObject          *object,
-                                   GParamSpec       *param_spec)
+clutter_behaviour_alpha_notify (ClutterBehaviour *behave)
 {
-  g_return_if_fail (param_spec->value_type == G_TYPE_UINT);
-
   clutter_behaviour_actors_foreach 
                      (behave,
 		      (GFunc)clutter_behaviour_opacity_frame_foreach,
@@ -235,7 +439,7 @@ clutter_behaviour_opacity_class_init (ClutterBehaviourOpacityClass *klass)
 
   behave_class = (ClutterBehaviourClass*) klass;
 
-  behave_class->property_change = clutter_behaviour_property_change;
+  behave_class->alpha_notify = clutter_behaviour_alpha_notify;
 
   g_type_class_add_private (object_class, sizeof (ClutterBehaviourOpacityPrivate));
 }
@@ -249,16 +453,14 @@ clutter_behaviour_opacity_init (ClutterBehaviourOpacity *self)
 }
 
 ClutterBehaviour*
-clutter_behaviour_opacity_new (GObject    *object,
-                               const char *property,
-			       guint8      opacity_start,
-			       guint8      opacity_end)
+clutter_behaviour_opacity_new (ClutterAlpha *alpha,
+			       guint8        opacity_start,
+			       guint8        opacity_end)
 {
   ClutterBehaviourOpacity *behave;
 
   behave = g_object_new (CLUTTER_TYPE_BEHAVIOUR_OPACITY, 
-                         "object", object,
-                         "property", property,
+                         "alpha", alpha,
 			 NULL);
 
   behave->priv->opacity_start = opacity_start;
@@ -267,13 +469,3 @@ clutter_behaviour_opacity_new (GObject    *object,
   return CLUTTER_BEHAVIOUR(behave);
 }
 
-ClutterBehaviour*
-clutter_behaviour_opacity_new_from_alpha (ClutterAlpha *alpha,
-                                          guint8        opacity_start,
-                                          guint8        opacity_end)
-{
-  return clutter_behaviour_opacity_new (G_OBJECT (alpha),
-                                        "alpha",
-                                        opacity_start,
-                                        opacity_end);
-}

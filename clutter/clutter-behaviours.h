@@ -7,6 +7,14 @@
 
 G_BEGIN_DECLS
 
+typedef struct _ClutterKnot  ClutterKnot;
+
+struct _ClutterKnot
+{
+  gint x,y;
+  /* FIXME: optionally include bezier control points also ? */
+};
+
 #define CLUTTER_TYPE_BEHAVIOUR_PATH clutter_behaviour_path_get_type()
 
 #define CLUTTER_BEHAVIOUR_PATH(obj) \
@@ -47,12 +55,26 @@ struct _ClutterBehaviourPathClass
 GType clutter_behaviour_path_get_type (void);
 
 ClutterBehaviour*
-clutter_behaviour_path_new (GObject    *object,
-                            const char *property,
-			    gint        x1,
-			    gint        y1,
-			    gint        x2,
-			    gint        y2);
+clutter_behaviour_path_new (ClutterAlpha          *alpha,
+			    const ClutterKnot     *knots,
+                            guint                  n_knots);
+
+GSList*
+clutter_path_behaviour_get_knots (ClutterBehaviourPath *behave);
+
+void
+clutter_path_behaviour_append_knot (ClutterBehaviourPath  *pathb,
+				    const ClutterKnot     *knot);
+
+void
+clutter_path_behaviour_append_knots_valist (ClutterBehaviourPath  *pathb,
+					    const ClutterKnot     *first_knot,
+					    va_list                args);
+
+void
+clutter_path_behavior_append_knots (ClutterBehaviourPath  *pathb,
+				    const ClutterKnot     *first_knot,
+				    ...);
 
 /* opacity */
 
@@ -96,15 +118,9 @@ struct _ClutterBehaviourOpacityClass
 GType clutter_behaviour_opacity_get_type (void);
 
 ClutterBehaviour*
-clutter_behaviour_opacity_new (GObject    *object,
-                               const char *property,
-			       guint8      opacity_start,
-			       guint8      opacity_end);
-
-ClutterBehaviour*
-clutter_behaviour_opacity_new_from_alpha (ClutterAlpha *alpha,
-			                  guint8        opacity_start,
-			                  guint8        opacity_end);
+clutter_behaviour_opacity_new (ClutterAlpha *alpha,
+			       guint8        opacity_start,
+			       guint8        opacity_end);
 
 G_END_DECLS
 

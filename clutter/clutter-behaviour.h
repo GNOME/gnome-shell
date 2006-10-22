@@ -2,6 +2,7 @@
 #define _HAVE_CLUTTER_BEHAVIOUR_H
 
 #include <glib-object.h>
+#include "clutter-alpha.h"
 
 G_BEGIN_DECLS
 
@@ -41,9 +42,7 @@ struct _ClutterBehaviourClass
 {
   GObjectClass parent_class;
 
-  void (* property_change) (ClutterBehaviour *behave,
-                            GObject          *object,
-                            GParamSpec       *param_spec);
+  void (*alpha_notify) (ClutterBehaviour *behave);
 };
 
 GType clutter_behaviour_get_type (void);
@@ -66,22 +65,12 @@ clutter_behaviour_actors_foreach (ClutterBehaviour *behave,
 				  GFunc             func,
 				  gpointer          userdata);
 
-void
-clutter_behaviour_set_object (ClutterBehaviour *behave, 
-                              GObject          *object);
-
-GObject*
-clutter_behaviour_get_object (ClutterBehaviour *behave);
+ClutterAlpha*
+clutter_behaviour_get_alpha (ClutterBehaviour *behave);
 
 void
-clutter_behaviour_set_property (ClutterBehaviour *behave,
-                                const char       *property);
-
-const char*
-clutter_behaviour_get_property (ClutterBehaviour *behave);
-
-GParamSpec*
-clutter_behaviour_get_param_spec (ClutterBehaviour *behave);
+clutter_behaviour_set_alpha (ClutterBehaviour *behave,
+			     ClutterAlpha     *alpha);
 
 G_END_DECLS
 

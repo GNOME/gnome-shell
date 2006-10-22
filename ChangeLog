@@ -1,3 +1,14 @@
+2006-10-23  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-alpha.h:
+	* clutter/clutter-behaviour.c:
+	* clutter/clutter-behaviour.h:
+	* clutter/clutter-behaviours.c:
+	* clutter/clutter-behaviours.h:
+	* examples/behave.c:
+	Behaviours now only 'driven' by ClutterAlpha, not any object/prop.
+	Add simple Clutter path behaviour. 
+
 2006-10-03  Matthew Allum  <mallum@openedhand.com>
 
 	* configure.ac:
