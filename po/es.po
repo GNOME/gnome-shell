@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-09-14 13:52+0200\n"
-"PO-Revision-Date: 2006-09-14 13:53+0200\n"
+"PO-Revision-Date: 2006-10-26 22:26+0200\n"
 "Last-Translator: Francisco Javier F. Serrador <serrador@cvs.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -183,7 +183,7 @@ msgstr ""
 #: ../src/main.c:424
 #, c-format
 msgid "Failed to restart: %s\n"
-msgstr "Ocurrió un error al reiniciar: %s\n"
+msgstr "No se pudo reiniciar: %s\n"
 
 #: ../src/menu.c:55
 msgid "Mi_nimize"
@@ -199,7 +199,7 @@ msgstr "_Restaurar"
 
 #: ../src/menu.c:58
 msgid "Roll _Up"
-msgstr "_Enrollar"
+msgstr "Enro_llar"
 
 #: ../src/menu.c:59
 msgid "_Unroll"
@@ -207,7 +207,7 @@ msgstr "De_senrollar"
 
 #: ../src/menu.c:60 ../src/menu.c:61
 msgid "On _Top"
-msgstr "En_cima"
+msgstr "_Encima"
 
 #: ../src/menu.c:62
 msgid "_Move"
@@ -245,7 +245,7 @@ msgstr "Mover al área de trabajo de la _derecha"
 
 #: ../src/menu.c:72
 msgid "Move to Workspace _Up"
-msgstr "Mover al área de trabajo de _arriba"
+msgstr "Mover al área de trabajo de a_rriba"
 
 #: ../src/menu.c:73
 msgid "Move to Workspace _Down"
@@ -267,7 +267,7 @@ msgstr "Área de trabajo %s%d"
 
 #: ../src/menu.c:373
 msgid "Move to Another _Workspace"
-msgstr "Mover a otro _área de trabajo"
+msgstr "Mover a _otro área de trabajo"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
