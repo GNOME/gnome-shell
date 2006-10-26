@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-10-15 18:13+0300\n"
-"PO-Revision-Date: 2006-10-15 18:14+0300\n"
+"PO-Revision-Date: 2006-10-26 09:11+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -112,7 +112,7 @@ msgstr "Avaa rullattu ikkuna"
 
 #: ../src/frames.c:1083
 msgid "Keep Window On Top"
-msgstr ""
+msgstr "Pidä ikkuna päällimmäisenä"
 
 #: ../src/frames.c:1086
 msgid "Remove Window From Top"
@@ -195,12 +195,12 @@ msgid "Failed to scan themes directory: %s\n"
 msgstr "Teemakansion lukeminen epäonnistui: %s\n"
 
 #: ../src/main.c:368
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
 "Teemaa ei löydy! Varmista, että %s on olemassa, ja sisältää tavalliset "
-"teemat."
+"teemat.\n"
 
 #: ../src/main.c:428
 #, c-format
@@ -407,10 +407,12 @@ msgid ""
 "You may choose to wait a short whilefor it to continue or force the "
 "applicationto quit entirely."
 msgstr ""
+"Voit odottaa sovellusta vielä hetken valitsemalla \"Odota\" tai "
+"sulkea sovelluksen väkisin heti."
 
 #: ../src/metacity-dialog.c:107
 msgid "_Wait"
-msgstr ""
+msgstr "_Odota"
 
 #: ../src/metacity-dialog.c:109
 msgid "_Force Quit"
@@ -2370,7 +2372,7 @@ msgstr "<%s>:n täytyy joko määritellä mitat, tai emo, jolla on jo mitat"
 
 #: ../src/theme-parser.c:1115
 msgid "You must specify a background for an alpha value to be meaningful"
-msgstr ""
+msgstr "Tausta täytyy määritellä, jotta alfa-arvo olisi mielekäs"
 
 #: ../src/theme-parser.c:1206
 #, c-format
@@ -2389,11 +2391,11 @@ msgstr "Ikkunatyyppiin \"%s\" on jo liitetty tyylijoukko"
 
 #: ../src/theme-parser.c:1261
 msgid "Theme already has a fallback icon"
-msgstr ""
+msgstr "Teemalla on jo vaihtoehtoinen kuvake"
 
 #: ../src/theme-parser.c:1273
 msgid "Theme already has a fallback mini_icon"
-msgstr ""
+msgstr "Teemalla on jo vaihtoehtoinen pikkukuvake"
 
 #: ../src/theme-parser.c:1286 ../src/theme-parser.c:1350
 #: ../src/theme-parser.c:1639 ../src/theme-parser.c:3262
@@ -2523,14 +2525,14 @@ msgid "No \"height\" attribute on element <%s>"
 msgstr "Elementissä <%s> ei ole \"height\"-määrettä"
 
 #: ../src/theme-parser.c:2000
-#, fuzzy, c-format
+#, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"start_angle\"-määrettä"
+msgstr "Elementissä <%s> ei ole \"start_angle\"- tai \"from\" -määrettä"
 
 #: ../src/theme-parser.c:2007
-#, fuzzy, c-format
+#, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
-msgstr "Elementissä <%s> ei ole \"extent_angle\"-määrettä"
+msgstr "Elementissä <%s> ei ole \"extent_angle\"- tai \"to\" -määrettä"
 
 #: ../src/theme-parser.c:2016
 #, c-format
@@ -2652,7 +2654,7 @@ msgstr "Tuntematon painikkeen toiminto \"%s\""
 #: ../src/theme-parser.c:3436
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
-msgstr ""
+msgstr "Nappifunktiota \"%s\" ei ole tässä versiossa (%d, tarvitaan %d)"
 
 #: ../src/theme-parser.c:3448
 #, c-format
@@ -2821,9 +2823,9 @@ msgid "<description> specified twice for this theme"
 msgstr "<description> määritelty kahdesti tässä teemassa"
 
 #: ../src/theme-parser.c:4573
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to find a valid file for theme %s\n"
-msgstr "Lokitiedoston \"%s\" fdopen() epäonnistui: %s\n"
+msgstr "Teemalle %s ei löytynyt kelvollista tiedostoa\n"
 
 #: ../src/theme-parser.c:4628
 #, c-format
