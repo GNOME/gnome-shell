@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-10-15 18:13+0300\n"
-"PO-Revision-Date: 2006-10-26 09:11+0300\n"
+"PO-Revision-Date: 2006-10-26 18:30+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -116,7 +116,7 @@ msgstr "Pidä ikkuna päällimmäisenä"
 
 #: ../src/frames.c:1086
 msgid "Remove Window From Top"
-msgstr ""
+msgstr "Poista ikkuna päältä"
 
 #: ../src/frames.c:1089
 msgid "Always On Visible Workspace"
@@ -2711,12 +2711,11 @@ msgstr ""
 "tilaa varten"
 
 #: ../src/theme-parser.c:3639
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
-"Elementissä <%s> pitäisi olla \"resize\"-määre suurennettua ja rullattua "
-"tilaa varten"
+"Elementissä <%s> ei pitäisi olla \"resize\"-määrettä suurennetuilla tiloilla"
 
 #: ../src/theme-parser.c:3653 ../src/theme-parser.c:3675
 #, c-format
