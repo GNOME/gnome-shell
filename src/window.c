@@ -1750,32 +1750,37 @@ intervening_user_event_occurred (MetaWindow *window)
 gboolean
 __window_is_terminal (MetaWindow *window)
 {
-  if (window == NULL || window->res_name == NULL)
+  if (window == NULL || window->res_class == NULL)
     return FALSE;
 
+  /*
+   * Compare res_class, which is not user-settable, and thus theoretically
+   * a more-reliable indication of term-ness.
+   */
+
   /* gnome-terminal -- if you couldn't guess */
-  if (strcmp (window->res_name, "gnome-terminal") == 0)
+  if (strcmp (window->res_class, "Gnome-terminal") == 0)
     return TRUE;
   /* xterm, rxvt, aterm */
-  else if (strcmp (window->res_name, "XTerm") == 0)
+  else if (strcmp (window->res_class, "XTerm") == 0)
     return TRUE;
   /* konsole, KDE's terminal program */
-  else if (strcmp (window->res_name, "Konsole") == 0)
+  else if (strcmp (window->res_class, "Konsole") == 0)
     return TRUE;
   /* rxvt-unicode */
-  else if (strcmp (window->res_name, "URxvt") == 0)
+  else if (strcmp (window->res_class, "URxvt") == 0)
     return TRUE;
   /* eterm */
-  else if (strcmp (window->res_name, "Eterm") == 0)
+  else if (strcmp (window->res_class, "Eterm") == 0)
     return TRUE;
   /* KTerm -- some terminal not KDE based; so not like Konsole */
-  else if (strcmp (window->res_name, "KTerm") == 0)
+  else if (strcmp (window->res_class, "KTerm") == 0)
     return TRUE;
   /* Multi-gnome-terminal */
-  else if (strcmp (window->res_name, "Multi-gnome-terminal") == 0)
+  else if (strcmp (window->res_class, "Multi-gnome-terminal") == 0)
     return TRUE;
   /* mlterm ("multi lingual terminal emulator on X") */
-  else if (strcmp (window->res_name, "mlterm") == 0)
+  else if (strcmp (window->res_class, "mlterm") == 0)
     return TRUE;
 
   return FALSE;

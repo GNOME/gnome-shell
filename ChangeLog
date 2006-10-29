@@ -1,3 +1,9 @@
+2006-10-30  Dan Mick  <dan.mick@sun.com>
+
+	* src/window.c: (__window_is_terminal): Fix strict focus
+        mode by picking up on res_class. Fixes #361054, strict focus 
+        mode still not working; should look for res_class, not res_name
+
 2006-10-16  Elijah Newren  <newren gmail com>
 
         * NEWS: 2.17.1 release.
