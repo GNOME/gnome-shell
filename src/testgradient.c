@@ -131,13 +131,13 @@ render_simple (GdkDrawable *drawable,
       draw_checkerboard (drawable, width, height);
     }
     
-  gdk_pixbuf_render_to_drawable (pixbuf,
-                                 drawable,
-                                 gc,
-                                 0, 0,
-                                 0, 0, width, height,
-                                 GDK_RGB_DITHER_MAX,
-                                 0, 0);
+  gdk_draw_pixbuf (drawable,
+                   gc,
+                   pixbuf,
+                   0, 0,
+                   0, 0, width, height,
+                   GDK_RGB_DITHER_MAX,
+                   0, 0);
 
   g_object_unref (G_OBJECT (pixbuf));
 }

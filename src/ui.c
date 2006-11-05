@@ -437,16 +437,16 @@ meta_image_window_set (MetaImageWindow *iw,
    * and this way flicker is genuinely zero.
    */
 
-  gdk_pixbuf_render_to_drawable (pixbuf,
-                                 iw->pixmap,
-                                 iw->window->style->black_gc,
-                                 0, 0,
-                                 0, 0,
-                                 gdk_pixbuf_get_width (pixbuf),
-                                 gdk_pixbuf_get_height (pixbuf),
-                                 GDK_RGB_DITHER_NORMAL,
-                                 0, 0);
-  
+  gdk_draw_pixbuf (iw->pixmap,
+                   iw->window->style->black_gc,
+		   pixbuf,
+                   0, 0,
+                   0, 0,
+                   gdk_pixbuf_get_width (pixbuf),
+                   gdk_pixbuf_get_height (pixbuf),
+                   GDK_RGB_DITHER_NORMAL,
+                   0, 0);
+
   gdk_window_set_back_pixmap (iw->window->window,
                               iw->pixmap,
                               FALSE);

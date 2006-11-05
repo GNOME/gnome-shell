@@ -2815,18 +2815,17 @@ render_pixbuf (GdkDrawable        *drawable,
       draw_rect = pixbuf_rect;
     }
 
-  gdk_pixbuf_render_to_drawable_alpha (pixbuf,
-                                       drawable,
-                                       draw_rect.x - pixbuf_rect.x,
-                                       draw_rect.y - pixbuf_rect.y,
-                                       draw_rect.x, draw_rect.y,
-                                       draw_rect.width,
-                                       draw_rect.height,
-                                       GDK_PIXBUF_ALPHA_FULL, /* ignored */
-                                       128,                   /* ignored */
-                                       GDK_RGB_DITHER_NORMAL,
-                                       draw_rect.x - pixbuf_rect.x,
-                                       draw_rect.y - pixbuf_rect.y);
+  gdk_draw_pixbuf (drawable,
+                   NULL,
+                   pixbuf,
+                   draw_rect.x - pixbuf_rect.x,
+                   draw_rect.y - pixbuf_rect.y,
+                   draw_rect.x, draw_rect.y,
+                   draw_rect.width,
+                   draw_rect.height,
+                   GDK_RGB_DITHER_NORMAL,
+                   draw_rect.x - pixbuf_rect.x,
+                   draw_rect.y - pixbuf_rect.y);
 }
 
 static GdkPixbuf*

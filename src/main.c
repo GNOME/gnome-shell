@@ -126,7 +126,7 @@ meta_print_self_identity (void)
 
   /* Version and current date. */
   g_date_clear (&d, 1);
-  g_date_set_time (&d, time (NULL));
+  g_date_set_time_t (&d, time (NULL));
   g_date_strftime (buf, sizeof (buf), "%x", &d);
   meta_verbose ("Metacity version %s running on %s\n",
     VERSION, buf);
@@ -388,7 +388,7 @@ main (int argc, char **argv)
   if (!meta_display_open ())
     meta_exit (META_EXIT_ERROR);
   
-  g_main_run (meta_main_loop);
+  g_main_loop_run (meta_main_loop);
 
   {
     GSList *displays;
@@ -446,8 +446,8 @@ meta_quit (MetaExitCode code)
 {
   meta_exit_code = code;
 
-  if (g_main_is_running (meta_main_loop))
-    g_main_quit (meta_main_loop);
+  if (g_main_loop_is_running (meta_main_loop))
+    g_main_loop_quit (meta_main_loop);
 }
 
 void

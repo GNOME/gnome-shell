@@ -1,3 +1,11 @@
+2006-11-05  Priit Laes  <amd@store20.com>
+
+	* src/main.c, src/ui.c: remove deprecated gtk stuff.
+
+2006-11-05  Bruno Boaventura  <brunoboaventura@gmail.com>
+
+	* src/theme.c, src/testgradient.c: remove deprecated gtk stuff.
+
 2006-11-05  Kjartan Maraas  <kmaraas@gnome.org>
 
         * src/ui.c: use g_strdup to allocate a string, not strdup. Fixes
