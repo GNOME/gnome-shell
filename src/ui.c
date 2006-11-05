@@ -825,7 +825,7 @@ meta_ui_accelerator_name  (unsigned int        keysym,
         
   if (keysym == 0 && mask == 0)
     {
-      return strdup ("disabled");
+      return g_strdup ("disabled");
     }
 
   if (mask & META_VIRTUAL_SHIFT_MASK)
