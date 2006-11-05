@@ -793,7 +793,7 @@ meta_frames_apply_shapes (MetaFrames *frames,
 
       for (i=0; i<radius; i++)
         {
-          const int width = 1 + (radius - floor(sqrt(radius*radius - (radius-i)*(radius-i))));
+          const int width = 1 + (radius - floor(sqrt(radius*radius - (radius-i)*(radius-i)) + 0.5));
           xrect.x = 0;
           xrect.y = i;
           xrect.width = width;
@@ -810,7 +810,7 @@ meta_frames_apply_shapes (MetaFrames *frames,
 
       for (i=0; i<radius; i++)
         {
-          const int width = 1 + (radius - floor(sqrt(radius*radius - (radius-i)*(radius-i))));
+          const int width = 1 + (radius - floor(sqrt(radius*radius - (radius-i)*(radius-i)) + 0.5));
           xrect.x = new_window_width - width;
           xrect.y = i;
           xrect.width = width;
@@ -827,7 +827,7 @@ meta_frames_apply_shapes (MetaFrames *frames,
 
       for (i=0; i<radius; i++)
         {
-          const int width = 1 + (radius - floor(sqrt(radius*radius - (radius-i)*(radius-i))));
+          const int width = 1 + (radius - floor(sqrt(radius*radius - (radius-i)*(radius-i)) + 0.5));
           xrect.x = 0;
           xrect.y = new_window_height - i;
           xrect.width = width;
@@ -844,7 +844,7 @@ meta_frames_apply_shapes (MetaFrames *frames,
 
       for (i=0; i<radius; i++)
         {
-          const int width = 1 + (radius - floor(sqrt(radius*radius - (radius-i)*(radius-i))));
+          const int width = 1 + (radius - floor(sqrt(radius*radius - (radius-i)*(radius-i)) + 0.5));
           xrect.x = new_window_width - width;
           xrect.y = new_window_height - i;
           xrect.width = width;
