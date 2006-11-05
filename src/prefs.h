@@ -207,6 +207,14 @@ gboolean    meta_prefs_get_compositing_manager (void);
 #define META_KEYBINDING_LOWER                    "lower"
 #define META_KEYBINDING_MAXIMIZE_VERTICALLY      "maximize_vertically"
 #define META_KEYBINDING_MAXIMIZE_HORIZONTALLY    "maximize_horizontally"
+#define META_KEYBINDING_MOVE_TO_CORNER_NW        "move_to_corner_nw"
+#define META_KEYBINDING_MOVE_TO_CORNER_NE        "move_to_corner_ne"
+#define META_KEYBINDING_MOVE_TO_CORNER_SW        "move_to_corner_sw"
+#define META_KEYBINDING_MOVE_TO_CORNER_SE        "move_to_corner_se"
+#define META_KEYBINDING_MOVE_TO_SIDE_N           "move_to_side_n"
+#define META_KEYBINDING_MOVE_TO_SIDE_S           "move_to_side_s"
+#define META_KEYBINDING_MOVE_TO_SIDE_E           "move_to_side_e"
+#define META_KEYBINDING_MOVE_TO_SIDE_W           "move_to_side_w"
 
 typedef enum _MetaKeyBindingAction
 {

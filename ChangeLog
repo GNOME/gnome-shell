@@ -1,4 +1,12 @@
-2006-10-16  Elijah Newren  <newren gmail com>
+2006-11-05  Justin Mason  <jm@jmason.org>
+
+        * src/keybindings.c: implement handle_move_to_{side|corner}_* to
+	allow the user to flip a window to the side or corner of the
+	screen. Fixes #317884.
+	* src/prefs.h: keybindings for the above.
+	* src/metacity.schemas.in: keybindings for the above.
+
+2006-11-05  Elijah Newren  <newren gmail com>
 
         * src/frames.c: improved rounding of rounded corners. Fixes #360542,
 	mostly.

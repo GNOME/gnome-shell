@@ -1084,6 +1084,198 @@ you set
       </locale>
     </schema>
 
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_corner_nw</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_corner_nw</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <!-- no default for this one -->
+      <locale name="C">
+         <short>Move window to north-west corner</short>
+         <long>
+            This keybinding moves a window into the north-west (top left)
+            corner of the screen.
+
+            The format looks like "&lt;Control&gt;a" or
+            "&lt;Shift&gt;&lt;Alt&gt;F1".
+
+            The parser is fairly liberal and allows lower or upper case,
+            and also abbreviations such as "&lt;Ctl&gt;" and
+            "&lt;Ctrl&gt;". If you set the option to the special string
+            "disabled", then there will be no keybinding for this
+            action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_corner_ne</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_corner_ne</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <!-- no default for this one -->
+      <locale name="C">
+         <short>Move window to north-east corner</short>
+         <long>
+            This keybinding moves a window into the north-east (top right)
+            corner of the screen.
+
+            The format looks like "&lt;Control&gt;a" or
+            "&lt;Shift&gt;&lt;Alt&gt;F1".
+
+            The parser is fairly liberal and allows lower or upper case,
+            and also abbreviations such as "&lt;Ctl&gt;" and
+            "&lt;Ctrl&gt;". If you set the option to the special string
+            "disabled", then there will be no keybinding for this
+            action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_corner_sw</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_corner_sw</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <!-- no default for this one -->
+      <locale name="C">
+         <short>Move window to south-west corner</short>
+         <long>
+            This keybinding moves a window into the south-west (bottom left)
+            corner of the screen.
+
+            The format looks like "&lt;Control&gt;a" or
+            "&lt;Shift&gt;&lt;Alt&gt;F1".
+
+            The parser is fairly liberal and allows lower or upper case,
+            and also abbreviations such as "&lt;Ctl&gt;" and
+            "&lt;Ctrl&gt;". If you set the option to the special string
+            "disabled", then there will be no keybinding for this
+            action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_corner_se</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_corner_se</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <!-- no default for this one -->
+      <locale name="C">
+         <short>Move window to south-east corner</short>
+         <long>
+            This keybinding moves a window into the south-east (bottom right)
+            corner of the screen.
+
+            The format looks like "&lt;Control&gt;a" or
+            "&lt;Shift&gt;&lt;Alt&gt;F1".
+
+            The parser is fairly liberal and allows lower or upper case,
+            and also abbreviations such as "&lt;Ctl&gt;" and
+            "&lt;Ctrl&gt;". If you set the option to the special string
+            "disabled", then there will be no keybinding for this
+            action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_side_n</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_side_n</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <!-- no default for this one -->
+      <locale name="C">
+         <short>Move window to north side of screen</short>
+         <long>
+            This keybinding moves a window against the north (top)
+            side of the screen.
+
+            The format looks like "&lt;Control&gt;a" or
+            "&lt;Shift&gt;&lt;Alt&gt;F1".
+
+            The parser is fairly liberal and allows lower or upper case,
+            and also abbreviations such as "&lt;Ctl&gt;" and
+            "&lt;Ctrl&gt;". If you set the option to the special string
+            "disabled", then there will be no keybinding for this
+            action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_side_s</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_side_s</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <!-- no default for this one -->
+      <locale name="C">
+         <short>Move window to south side of screen</short>
+         <long>
+            This keybinding moves a window into the south (bottom)
+            side of the screen.
+
+            The format looks like "&lt;Control&gt;a" or
+            "&lt;Shift&gt;&lt;Alt&gt;F1".
+
+            The parser is fairly liberal and allows lower or upper case,
+            and also abbreviations such as "&lt;Ctl&gt;" and
+            "&lt;Ctrl&gt;". If you set the option to the special string
+            "disabled", then there will be no keybinding for this
+            action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_side_e</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_side_e</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <!-- no default for this one -->
+      <locale name="C">
+         <short>Move window to east side of screen</short>
+         <long>
+            This keybinding moves a window into the east (right)
+            side of the screen.
+
+            The format looks like "&lt;Control&gt;a" or
+            "&lt;Shift&gt;&lt;Alt&gt;F1".
+
+            The parser is fairly liberal and allows lower or upper case,
+            and also abbreviations such as "&lt;Ctl&gt;" and
+            "&lt;Ctrl&gt;". If you set the option to the special string
+            "disabled", then there will be no keybinding for this
+            action.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/window_keybindings/move_to_side_w</key>
+      <applyto>/apps/metacity/window_keybindings/move_to_side_w</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <!-- no default for this one -->
+      <locale name="C">
+         <short>Move window to west side of screen</short>
+         <long>
+            This keybinding moves a window into the west (left)
+            side of the screen.
+
+            The format looks like "&lt;Control&gt;a" or
+            "&lt;Shift&gt;&lt;Alt&gt;F1".
+
+            The parser is fairly liberal and allows lower or upper case,
+            and also abbreviations such as "&lt;Ctl&gt;" and
+            "&lt;Ctrl&gt;". If you set the option to the special string
+            "disabled", then there will be no keybinding for this
+            action.
+         </long>
+      </locale>
+    </schema>
+
     <!-- Global Keybindings -->
 
 

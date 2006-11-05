@@ -191,6 +191,46 @@ static void handle_maximize_horiz     (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
                                        MetaKeyBinding *binding);
+static void handle_move_to_side_n     (MetaDisplay    *display,
+                                       MetaScreen     *screen,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
+static void handle_move_to_side_w     (MetaDisplay    *display,
+                                       MetaScreen     *screen,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
+static void handle_move_to_side_s     (MetaDisplay    *display,
+                                       MetaScreen     *screen,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
+static void handle_move_to_side_e     (MetaDisplay    *display,
+                                       MetaScreen     *screen,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
+static void handle_move_to_corner_nw          (MetaDisplay    *display,
+                                       MetaScreen     *screen,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
+static void handle_move_to_corner_ne          (MetaDisplay    *display,
+                                       MetaScreen     *screen,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
+static void handle_move_to_corner_sw          (MetaDisplay    *display,
+                                       MetaScreen     *screen,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
+static void handle_move_to_corner_se          (MetaDisplay    *display,
+                                       MetaScreen     *screen,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
 static void handle_run_terminal       (MetaDisplay    *display,
                                        MetaScreen     *screen,
                                        MetaWindow     *window,
@@ -432,6 +472,14 @@ static const MetaKeyHandler window_handlers[] = {
   { META_KEYBINDING_LOWER, handle_lower, NULL},
   { META_KEYBINDING_MAXIMIZE_VERTICALLY, handle_maximize_vert, NULL },
   { META_KEYBINDING_MAXIMIZE_HORIZONTALLY, handle_maximize_horiz, NULL },
+  { META_KEYBINDING_MOVE_TO_SIDE_N, handle_move_to_side_n, NULL },
+  { META_KEYBINDING_MOVE_TO_SIDE_S, handle_move_to_side_s, NULL },
+  { META_KEYBINDING_MOVE_TO_SIDE_E, handle_move_to_side_e, NULL },
+  { META_KEYBINDING_MOVE_TO_SIDE_W, handle_move_to_side_w, NULL },
+  { META_KEYBINDING_MOVE_TO_CORNER_NW, handle_move_to_corner_nw, NULL },
+  { META_KEYBINDING_MOVE_TO_CORNER_NE, handle_move_to_corner_ne, NULL },
+  { META_KEYBINDING_MOVE_TO_CORNER_SW, handle_move_to_corner_sw, NULL },
+  { META_KEYBINDING_MOVE_TO_CORNER_SE, handle_move_to_corner_se, NULL },
   { NULL, NULL, NULL }
 };
 
@@ -2814,6 +2862,162 @@ handle_maximize_horiz (MetaDisplay    *display,
         meta_window_unmaximize (window, META_MAXIMIZE_HORIZONTAL);
       else
         meta_window_maximize (window, META_MAXIMIZE_HORIZONTAL);
+    }
+}
+
+/* Move a window to a corner; to_bottom/to_right are FALSE for the
+ * top or left edge, or TRUE for the bottom/right edge.  xchange/ychange
+ * are FALSE if that dimension is not to be changed, TRUE otherwise.
+ * Together they describe which of the four corners, or four sides,
+ * is desired.
+ */
+static void
+handle_move_to_corner_backend (MetaDisplay    *display,
+           MetaScreen     *screen,
+           MetaWindow     *window,
+           gboolean        xchange,
+           gboolean        ychange,
+           gboolean        to_right,
+           gboolean        to_bottom)
+{
+  MetaRectangle work_area;
+  MetaRectangle outer;
+  int orig_x, orig_y;
+  int new_x, new_y;
+  int frame_width, frame_height;
+
+  meta_window_get_work_area_all_xineramas (window, &work_area);
+  meta_window_get_outer_rect (window, &outer);
+  meta_window_get_position (window, &orig_x, &orig_y);
+
+  frame_width = (window->frame ? window->frame->child_x : 0);
+  frame_height = (window->frame ? window->frame->child_y : 0);
+
+  if (xchange) {
+    new_x = work_area.x + (to_right ?
+            (work_area.width + frame_width) - outer.width :
+            0);
+  } else {
+    new_x = orig_x;
+  }
+
+  if (ychange) {
+    new_y = work_area.y + (to_bottom ?
+            (work_area.height + frame_height) - outer.height :
+            0);
+  } else {
+    new_y = orig_y;
+  }
+
+  meta_window_move_resize (window,
+          FALSE,
+          new_x,
+          new_y,
+          window->rect.width,
+          window->rect.height);
+}
+
+static void
+handle_move_to_corner_nw  (MetaDisplay    *display,
+                           MetaScreen     *screen,
+                           MetaWindow     *window,
+                           XEvent         *event,
+                           MetaKeyBinding *binding)
+{
+  if (window)
+    {
+      handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, FALSE, FALSE);
+    }
+}
+
+static void
+handle_move_to_corner_ne  (MetaDisplay    *display,
+                           MetaScreen     *screen,
+                           MetaWindow     *window,
+                           XEvent         *event,
+                           MetaKeyBinding *binding)
+{
+  if (window)
+    {
+      handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, TRUE, FALSE);
+    }
+}
+
+static void
+handle_move_to_corner_sw  (MetaDisplay    *display,
+                           MetaScreen     *screen,
+                           MetaWindow     *window,
+                           XEvent         *event,
+                           MetaKeyBinding *binding)
+{
+  if (window)
+    {
+      handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, FALSE, TRUE);
+    }
+}
+
+static void
+handle_move_to_corner_se  (MetaDisplay    *display,
+                           MetaScreen     *screen,
+                           MetaWindow     *window,
+                           XEvent         *event,
+                           MetaKeyBinding *binding)
+{
+  if (window)
+    {
+      handle_move_to_corner_backend (display, screen, window, TRUE, TRUE, TRUE, TRUE);
+    }
+}
+
+static void
+handle_move_to_side_n     (MetaDisplay    *display,
+                           MetaScreen     *screen,
+                           MetaWindow     *window,
+                           XEvent         *event,
+                           MetaKeyBinding *binding)
+{
+  if (window)
+    {
+      handle_move_to_corner_backend (display, screen, window, FALSE, TRUE, FALSE, FALSE);
+    }
+}
+
+static void
+handle_move_to_side_s     (MetaDisplay    *display,
+                           MetaScreen     *screen,
+                           MetaWindow     *window,
+                           XEvent         *event,
+                           MetaKeyBinding *binding)
+{
+  if (window)
+    {
+      handle_move_to_corner_backend (display, screen, window, FALSE, TRUE, FALSE, TRUE);
+    }
+}
+
+static void
+handle_move_to_side_e     (MetaDisplay    *display,
+                           MetaScreen     *screen,
+                           MetaWindow     *window,
+                           XEvent         *event,
+                           MetaKeyBinding *binding)
+{
+  if (window)
+    {
+      handle_move_to_corner_backend (display, screen, window, TRUE, FALSE, TRUE, FALSE);
+    }
+}
+
+static void
+handle_move_to_side_w     (MetaDisplay    *display,
+                           MetaScreen     *screen,
+                           MetaWindow     *window,
+                           XEvent         *event,
+                           MetaKeyBinding *binding)
+{
+  if (window)
+    {
+      handle_move_to_corner_backend (display, screen, window, TRUE, FALSE, FALSE, FALSE);
     }
 }
 
