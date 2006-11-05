@@ -2,6 +2,8 @@
 
         * src/ui.c: use g_strdup to allocate a string, not strdup. Fixes
         #363354.
+        * src/metacity-dialog.c: add missing spaces to string. Fixes
+        #363355.
 
 2006-11-05  Justin Mason  <jm@jmason.org>
 
