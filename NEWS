@@ -1,3 +1,19 @@
+2.17.2
+======
+
+Thanks to Priit Laes, Bruno Boaventura, Kjartan Maraas, Justin Mason,
+Elijah Newren and Dan Mick for improvements in this release.
+
+  - implement handle_move_to_{side|corner}_* to allow the user to flip a
+  window to the side or corner of the screen. (Justin) [#317884]
+  - fix strict focus mode by picking up on res_class (Dan) [#361054]
+  - remove deprecated gtk stuff (Priit, Bruno)
+  - string fixes (Kjartan) [#363354, #363355]
+
+Translations
+  Jakub Friedl (cs), Francisco Javier F. Serrador (es), Ilkka Tuohela (fi),
+  Christophe Merlet (RedFox) (fr), Kjartan Maraas (nb)
+
 2.17.1
 ======
 
