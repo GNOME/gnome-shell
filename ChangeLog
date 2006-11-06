@@ -1,5 +1,9 @@
 2006-11-06  Thomas Thurman  <thomas@thurman.org.uk>
 
+	* configure.in: post-release bump to 2.17.3.
+
+2006-11-06  Thomas Thurman  <thomas@thurman.org.uk>
+
 	* configure.in: pre-release bump to 2.17.2.
         * NEWS: 2.17.2 release.
 
