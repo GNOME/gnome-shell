@@ -34,13 +34,16 @@
 #include "clutter-actor.h"
 #include "clutter-behaviour.h"
 
-G_DEFINE_TYPE (ClutterBehaviour, clutter_behaviour, G_TYPE_OBJECT);
+G_DEFINE_ABSTRACT_TYPE (ClutterBehaviour,
+                        clutter_behaviour,
+                        G_TYPE_OBJECT);
 
-struct ClutterBehaviourPrivate
+struct _ClutterBehaviourPrivate
 {
   ClutterAlpha *alpha;
-  guint         notify_id;
-  GSList       *actors;
+
+  guint notify_id;
+  GSList *actors;
 };
 
 enum
@@ -60,39 +63,23 @@ enum {
                ClutterBehaviourPrivate))
 
 static void 
-_clutter_behaviour_dispose (GObject *object)
+clutter_behaviour_finalize (GObject *object)
 {
-  ClutterBehaviour *self = CLUTTER_BEHAVIOUR(object); 
+  ClutterBehaviour *self = CLUTTER_BEHAVIOUR (object);
 
-  if (self->priv)
-    {
-      /* FIXME: remove all actors */
-
-      clutter_behaviour_set_alpha (self, NULL);
-    }
-
-  G_OBJECT_CLASS (clutter_behaviour_parent_class)->dispose (object);
-}
-
-static void 
-_clutter_behaviour_finalize (GObject *object)
-{
-  ClutterBehaviour *self = CLUTTER_BEHAVIOUR(object); 
-
-  if (self->priv)
-    {
-      g_free(self->priv);
-      self->priv = NULL;
-    }
+  clutter_behaviour_set_alpha (self, NULL);
+  
+  g_slist_foreach (self->priv->actors, (GFunc) g_object_unref, NULL);
+  g_slist_free (self->priv->actors);
 
   G_OBJECT_CLASS (clutter_behaviour_parent_class)->finalize (object);
 }
 
 static void
-_clutter_behaviour_set_property (GObject      *object, 
-				 guint         prop_id,
-				 const GValue *value, 
-				 GParamSpec   *pspec)
+clutter_behaviour_set_property (GObject      *object, 
+				guint         prop_id,
+				const GValue *value, 
+				GParamSpec   *pspec)
 {
   ClutterBehaviour *behaviour;
 
@@ -110,10 +97,10 @@ _clutter_behaviour_set_property (GObject      *object,
 }
 
 static void
-_clutter_behaviour_get_property (GObject    *object, 
-			         guint       prop_id,
-			         GValue     *value, 
-			         GParamSpec *pspec)
+clutter_behaviour_get_property (GObject    *object, 
+			        guint       prop_id,
+			        GValue     *value, 
+			        GParamSpec *pspec)
 {
   ClutterBehaviour        *behaviour;
   ClutterBehaviourPrivate *priv;
@@ -136,24 +123,22 @@ _clutter_behaviour_get_property (GObject    *object,
 static void
 clutter_behaviour_class_init (ClutterBehaviourClass *klass)
 {
-  GObjectClass        *object_class;
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class = (GObjectClass*) klass;
+  object_class->finalize     = clutter_behaviour_finalize;
+  object_class->set_property = clutter_behaviour_set_property;
+  object_class->get_property = clutter_behaviour_get_property;
 
-  object_class->finalize     = _clutter_behaviour_finalize;
-  object_class->dispose      = _clutter_behaviour_dispose;
-  object_class->set_property = _clutter_behaviour_set_property;
-  object_class->get_property = _clutter_behaviour_get_property;
+  g_object_class_install_property (object_class,
+                                   PROP_ALPHA,
+                                   g_param_spec_object ("alpha",
+                                                        "Alpha",
+                                                        "Alpha Object to drive the behaviour",
+                                                        CLUTTER_TYPE_ALPHA,
+                                                        G_PARAM_CONSTRUCT |
+                                                        G_PARAM_READWRITE));
 
-  g_object_class_install_property
-    (object_class, PROP_ALPHA,
-     g_param_spec_object ("alpha",
-			  "Alpha",
-			  "Alpha Object to drive the behaviour",
-			  CLUTTER_TYPE_ALPHA,
-			  G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
-
-  g_type_class_add_private (object_class, sizeof (ClutterBehaviourPrivate));
+  g_type_class_add_private (klass, sizeof (ClutterBehaviourPrivate));
 }
 
 static void
@@ -165,48 +150,44 @@ clutter_behaviour_init (ClutterBehaviour *self)
 
 }
 
-ClutterBehaviour*
-clutter_behaviour_new (GObject    *object,
-                       const char *property)
-{
-  ClutterBehaviour *behave;
-
-  behave = g_object_new (CLUTTER_TYPE_BEHAVIOUR, 
-                         "object", object,
-                         "property", property,
-			 NULL);
-
-  return behave;
-}
-
 void
-clutter_behaviour_apply (ClutterBehaviour *behave, ClutterActor *actor)
+clutter_behaviour_apply (ClutterBehaviour *behave,
+                         ClutterActor     *actor)
 {
-  g_return_if_fail (actor != NULL);
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR (behave));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
-  if (g_slist_find (behave->priv->actors, (gconstpointer)actor))
-    return;
+  if (g_slist_find (behave->priv->actors, actor))
+    {
+      g_warning ("The behaviour of type %s already applies "
+                 "to the actor of type %s",
+                 g_type_name (G_OBJECT_TYPE (behave)),
+                 g_type_name (G_OBJECT_TYPE (actor)));
+      return;
+    }
 
   g_object_ref (actor);
-  behave->priv->actors = g_slist_append (behave->priv->actors, actor);
+  behave->priv->actors = g_slist_prepend (behave->priv->actors, actor);
 }
 
 void
-clutter_behaviour_remove (ClutterBehaviour *behave, ClutterActor *actor)
+clutter_behaviour_remove (ClutterBehaviour *behave,
+                          ClutterActor     *actor)
 {
-  g_return_if_fail (actor != NULL);
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR (behave));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
-  if (g_slist_find (behave->priv->actors, (gconstpointer)actor))
+  if (!g_slist_find (behave->priv->actors, actor))
     {
-      g_object_unref (actor);
-      behave->priv->actors = g_slist_remove (behave->priv->actors, actor);
+      g_warning ("The behaviour of type %s does not apply "
+                 "to the actor of type %s",
+                 g_type_name (G_OBJECT_TYPE (behave)),
+                 g_type_name (G_OBJECT_TYPE (actor)));
+      return;
     }
-}
-
-void
-clutter_behaviour_remove_all (ClutterBehaviour *behave)
-{
-  /* tofix */
+  
+  g_object_unref (actor);
+  behave->priv->actors = g_slist_remove (behave->priv->actors, actor);
 }
 
 void
@@ -214,12 +195,17 @@ clutter_behaviour_actors_foreach (ClutterBehaviour *behave,
 				  GFunc             func,
 				  gpointer          userdata)
 {
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR (behave));
+  g_return_if_fail (func != NULL);
+
   g_slist_foreach (behave->priv->actors, func, userdata);
 }
 
 ClutterAlpha*
 clutter_behaviour_get_alpha (ClutterBehaviour *behave)
 {
+  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR (behave), NULL);
+
   return behave->priv->alpha;
 }
 
@@ -240,27 +226,32 @@ void
 clutter_behaviour_set_alpha (ClutterBehaviour *behave,
 			     ClutterAlpha     *alpha)
 {
-  if (behave->priv->notify_id)
+  ClutterBehaviourPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR (behave));
+  g_return_if_fail (CLUTTER_IS_ALPHA (alpha));
+
+  priv = behave->priv;
+
+  if (priv->notify_id)
     {
-      g_signal_handler_disconnect (behave->priv->alpha,
-                                   behave->priv->notify_id);
-      behave->priv->notify_id = 0;
+      g_signal_handler_disconnect (priv->alpha, priv->notify_id);
+      priv->notify_id = 0;
     }
 
-  if (behave->priv->alpha)
+  if (priv->alpha)
     {
-      g_object_unref (behave->priv->alpha);
-      behave->priv->alpha = NULL;
+      g_object_unref (priv->alpha);
+      priv->alpha = NULL;
     }
 
   if (alpha)
     {
-      behave->priv->alpha = alpha;
-      g_object_ref (behave->priv->alpha);
+      priv->alpha = alpha;
+      g_object_ref_sink (priv->alpha);
 
-      behave->priv->notify_id = g_signal_connect (behave->priv->alpha, 
-						  "notify::alpha",
-						  G_CALLBACK(notify_cb),
-						  behave);
+      priv->notify_id = g_signal_connect (priv->alpha, "notify::alpha",
+                                          G_CALLBACK(notify_cb),
+                                          behave);
     }
 }

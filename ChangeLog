@@ -1,3 +1,21 @@
+2006-11-16  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-alpha.h:
+	* clutter/clutter-alpha.c: ClutterAlpha is an initially
+	floating object, as it makes sense only when bound to
+	a ClutterBehaviour; add checks for public API.
+
+	* clutter/clutter-behaviour.h:
+	* clutter/clutter-behaviour.c: Remove the ClutterBehaviour
+	constructor: ClutterBehaviour is an abstract class which
+	must be implemented by subclassing; add checks for public
+	API; unref the actors on finalize; sink the ClutterAlpha
+	object.
+
+	* clutter/clutter-behaviours.h: ClutterKnot is a boxed
+	type: add the _get_type() function declaration and the
+	type macro.
+
 2006-10-23  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-alpha.h:

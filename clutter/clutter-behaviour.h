@@ -28,9 +28,9 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   CLUTTER_TYPE_BEHAVIOUR, ClutterBehaviourClass))
 
-typedef struct _ClutterBehaviour       ClutterBehaviour;
-typedef struct ClutterBehaviourPrivate ClutterBehaviourPrivate;
-typedef struct _ClutterBehaviourClass  ClutterBehaviourClass;
+typedef struct _ClutterBehaviour        ClutterBehaviour;
+typedef struct _ClutterBehaviourPrivate ClutterBehaviourPrivate;
+typedef struct _ClutterBehaviourClass   ClutterBehaviourClass;
  
 struct _ClutterBehaviour
 {
@@ -47,18 +47,11 @@ struct _ClutterBehaviourClass
 
 GType clutter_behaviour_get_type (void);
 
-ClutterBehaviour*
-clutter_behaviour_new (GObject    *object,
-                       const char *property);
-
 void
 clutter_behaviour_apply (ClutterBehaviour *behave, ClutterActor *actor);
 
 void
 clutter_behaviour_remove (ClutterBehaviour *behave, ClutterActor *actor);
-
-void
-clutter_behaviour_remove_all (ClutterBehaviour *behave);
 
 void
 clutter_behaviour_actors_foreach (ClutterBehaviour *behave,

@@ -57,21 +57,21 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   CLUTTER_TYPE_ALPHA, ClutterAlphaClass))
 
-typedef struct _ClutterAlpha ClutterAlpha;
-typedef struct _ClutterAlphaClass ClutterAlphaClass; 
-typedef struct ClutterAlphaPrivate ClutterAlphaPrivate;
+typedef struct _ClutterAlpha        ClutterAlpha;
+typedef struct _ClutterAlphaClass   ClutterAlphaClass; 
+typedef struct _ClutterAlphaPrivate ClutterAlphaPrivate;
 
 typedef guint32 (*ClutterAlphaFunc) (ClutterAlpha *alpha); 
 
 struct _ClutterAlpha
 {
-  GObject              parent;
+  GInitiallyUnowned parent;
   ClutterAlphaPrivate *priv;
 };
 
 struct _ClutterAlphaClass
 {
-  GObjectClass parent_class;
+  GInitiallyUnownedClass parent_class;
   
   void (*_clutter_alpha_1) (void);
   void (*_clutter_alpha_2) (void);

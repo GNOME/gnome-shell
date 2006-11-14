@@ -78,7 +78,7 @@ G_DEFINE_TYPE (ClutterBehaviourPath,   \
                clutter_behaviour_path, \
 	       CLUTTER_TYPE_BEHAVIOUR);
 
-struct ClutterBehaviourPathPrivate
+struct _ClutterBehaviourPathPrivate
 {
   GSList *knots;
 };

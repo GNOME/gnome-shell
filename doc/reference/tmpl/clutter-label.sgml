@@ -23,7 +23,22 @@ ClutterLabel
 </para>
 
 
+<!-- ##### ARG ClutterLabel:alignment ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterLabel:attributes ##### -->
+<para>
+
+</para>
+
 <!-- ##### ARG ClutterLabel:color ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterLabel:ellipsize ##### -->
 <para>
 
 </para>
@@ -34,6 +49,21 @@ ClutterLabel
 </para>
 
 <!-- ##### ARG ClutterLabel:text ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterLabel:use-markup ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterLabel:wrap ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterLabel:wrap-mode ##### -->
 <para>
 
 </para>
@@ -108,25 +138,5 @@ ClutterLabel
 
 @label: 
 @color: 
-
-
-<!-- ##### FUNCTION clutter_label_set_text_extents ##### -->
-<para>
-
-</para>
-
-@label: 
-@width: 
-@height: 
-
-
-<!-- ##### FUNCTION clutter_label_get_text_extents ##### -->
-<para>
-
-</para>
-
-@label: 
-@width: 
-@height: 
 
 

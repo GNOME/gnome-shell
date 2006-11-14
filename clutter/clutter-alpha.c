@@ -40,7 +40,7 @@
 
 G_DEFINE_TYPE (ClutterAlpha, clutter_alpha, G_TYPE_OBJECT);
 
-struct ClutterAlphaPrivate
+struct _ClutterAlphaPrivate
 {
   ClutterTimeline *timeline;
   guint            timeline_new_frame_id;
@@ -316,6 +316,8 @@ clutter_alpha_set_timeline (ClutterAlpha *alpha,
 ClutterTimeline *
 clutter_alpha_get_timeline (ClutterAlpha *alpha)
 {
+  g_return_val_if_fail (CLUTTER_IS_ALPHA (alpha), NULL);
+
   return alpha->priv->timeline;
 }
 
@@ -332,6 +334,9 @@ ClutterAlpha*
 clutter_alpha_new (ClutterTimeline *timeline,
 		   ClutterAlphaFunc func)
 {
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), NULL);
+  g_return_val_if_fail (func != NULL, NULL);
+
   return g_object_new (CLUTTER_TYPE_ALPHA, 
 		       "timeline", timeline, 
 		       "func", func,
