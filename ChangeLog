@@ -1,3 +1,16 @@
+2006-11-15  Bruno Boaventura  <brunoboaventura@gmail.com>
+2006-11-15  Björn Lindqvist   <bjourne@gmail.com>
+
+	* src/menu.c: added MetaMenuItemType enum; added it
+	to MenuItem; added values of this type to menuitems
+	array.
+	* src/menu.c (menu_item_new): rewrite to take a MenuItem
+	instead of a set of parameters describing the menu item.
+	* src/menu.c (meta_window_menu_new): use proper checkboxes
+	or radio buttons on the window menu.
+	* src/window.c (meta_window_show_menu): unstick and stick
+	are always shown.
+
 2006-11-06  Thomas Thurman  <thomas@thurman.org.uk>
 
 	* configure.in: post-release bump to 2.17.3.

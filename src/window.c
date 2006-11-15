@@ -6359,9 +6359,7 @@ meta_window_show_menu (MetaWindow *window,
     ops |= META_MENU_OP_SHADE;
 #endif
 
-  if (window->on_all_workspaces)
     ops |= META_MENU_OP_UNSTICK;
-  else
     ops |= META_MENU_OP_STICK;
 
   if (window->wm_state_above)

@@ -32,13 +32,23 @@
 #include "core.h"
 #include "themewidget.h"
 #include "metaaccellabel.h"
+#include "window.h"
 
 typedef struct _MenuItem MenuItem;
 typedef struct _MenuData MenuData;
 
+typedef enum
+{
+  MENU_ITEM_SEPARATOR = 0,
+  MENU_ITEM_NORMAL,
+  MENU_ITEM_IMAGE,
+  MENU_ITEM_CHECKBOX,
+} MetaMenuItemType;
+
 struct _MenuItem
 {
   MetaMenuOp op;
+  MetaMenuItemType type;
   const char *stock_id;
   const gboolean checked;
   const char *label;
@@ -55,41 +65,41 @@ static void activate_cb (GtkWidget *menuitem, gpointer data);
 
 static MenuItem menuitems[] = {
   /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_MINIMIZE, METACITY_STOCK_MINIMIZE, FALSE, N_("Mi_nimize") },
+  { META_MENU_OP_MINIMIZE, MENU_ITEM_IMAGE, METACITY_STOCK_MINIMIZE, FALSE, N_("Mi_nimize") },
   /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_MAXIMIZE, METACITY_STOCK_MAXIMIZE, FALSE, N_("Ma_ximize") },
+  { META_MENU_OP_MAXIMIZE, MENU_ITEM_IMAGE, METACITY_STOCK_MAXIMIZE, FALSE, N_("Ma_ximize") },
   /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_UNMAXIMIZE, NULL, FALSE, N_("Unma_ximize") },
+  { META_MENU_OP_UNMAXIMIZE, MENU_ITEM_NORMAL, NULL, FALSE, N_("Unma_ximize") },
   /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_SHADE, NULL, FALSE, N_("Roll _Up") },
+  { META_MENU_OP_SHADE, MENU_ITEM_NORMAL, NULL, FALSE, N_("Roll _Up") },
   /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_UNSHADE, NULL, FALSE, N_("_Unroll") },
+  { META_MENU_OP_UNSHADE, MENU_ITEM_NORMAL, NULL, FALSE, N_("_Unroll") },
   /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_ABOVE, NULL, FALSE, N_("On _Top") },
+  { META_MENU_OP_ABOVE, MENU_ITEM_CHECKBOX, NULL, FALSE, N_("On _Top") },
   /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_UNABOVE, NULL, TRUE, N_("On _Top") },
+  { META_MENU_OP_UNABOVE, MENU_ITEM_CHECKBOX, NULL, TRUE, N_("On _Top") },
   /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_MOVE, NULL, FALSE, N_("_Move") },
+  { META_MENU_OP_MOVE, MENU_ITEM_NORMAL, NULL, FALSE, N_("_Move") },
   /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_RESIZE, NULL, FALSE, N_("_Resize") },
+  { META_MENU_OP_RESIZE, MENU_ITEM_NORMAL, NULL, FALSE, N_("_Resize") },
   /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_RECOVER, NULL, FALSE, N_("Move Titlebar On_screen") },
-  { 0, NULL, FALSE, NULL }, /* separator */
+  { META_MENU_OP_RECOVER, MENU_ITEM_NORMAL, NULL, FALSE, N_("Move Titlebar On_screen") },
+  { 0, MENU_ITEM_SEPARATOR, NULL, FALSE, NULL }, /* separator */
   /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_DELETE, METACITY_STOCK_DELETE, FALSE, N_("_Close") },
-  { META_MENU_OP_WORKSPACES, NULL, FALSE, NULL }, /* separator */
+  { META_MENU_OP_DELETE, MENU_ITEM_IMAGE, METACITY_STOCK_DELETE, FALSE, N_("_Close") },
+  { META_MENU_OP_WORKSPACES, MENU_ITEM_SEPARATOR, NULL, FALSE, NULL }, /* separator */
   /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_STICK, NULL, FALSE, N_("_Always on Visible Workspace") },
+  { META_MENU_OP_STICK, MENU_ITEM_CHECKBOX, NULL, FALSE, N_("_Always on Visible Workspace") },
   /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_UNSTICK, NULL, FALSE,  N_("_Only on This Workspace") },
+  { META_MENU_OP_UNSTICK, MENU_ITEM_CHECKBOX, NULL, FALSE,  N_("_Only on This Workspace") },
   /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_MOVE_LEFT, NULL, FALSE, N_("Move to Workspace _Left") },
+  { META_MENU_OP_MOVE_LEFT, MENU_ITEM_NORMAL, NULL, FALSE, N_("Move to Workspace _Left") },
   /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_MOVE_RIGHT, NULL, FALSE, N_("Move to Workspace R_ight") },
+  { META_MENU_OP_MOVE_RIGHT, MENU_ITEM_NORMAL, NULL, FALSE, N_("Move to Workspace R_ight") },
   /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_MOVE_UP, NULL, FALSE, N_("Move to Workspace _Up") },
+  { META_MENU_OP_MOVE_UP, MENU_ITEM_NORMAL, NULL, FALSE, N_("Move to Workspace _Up") },
   /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_MOVE_DOWN, NULL, FALSE, N_("Move to Workspace _Down") }
+  { META_MENU_OP_MOVE_DOWN, MENU_ITEM_NORMAL, NULL, FALSE, N_("Move to Workspace _Down") }
 };
 
 static void
@@ -97,7 +107,7 @@ popup_position_func (GtkMenu   *menu,
                      gint      *x,
                      gint      *y,
                      gboolean  *push_in,
-                     gpointer	user_data)
+                     gpointer  user_data)
 {
   GtkRequisition req;      
   GdkPoint *pos;
@@ -125,7 +135,7 @@ menu_closed (GtkMenu *widget,
   meta_frames_notify_menu_hide (menu->frames);
   (* menu->func) (menu, gdk_display,
                   menu->client_xwindow,
-		  gtk_get_current_event_time (),
+                  gtk_get_current_event_time (),
                   0, 0,
                   menu->data);
   
@@ -144,7 +154,7 @@ activate_cb (GtkWidget *menuitem, gpointer data)
   meta_frames_notify_menu_hide (md->menu->frames);
   (* md->menu->func) (md->menu, gdk_display,
                       md->menu->client_xwindow,
-		      gtk_get_current_event_time (),
+                      gtk_get_current_event_time (),
                       md->op,
                       GPOINTER_TO_INT (g_object_get_data (G_OBJECT (menuitem),
                                                           "workspace")),
@@ -239,36 +249,57 @@ get_workspace_name_with_accel (Display *display,
     }
 }
 
-static GtkWidget*
-menu_item_new (const char         *label,
-               gboolean            with_image,
-	       gboolean		   with_check,
-               unsigned int        key,
-               MetaVirtualModifier mods)
+static GtkWidget *
+menu_item_new (MenuItem *menuitem, int workspace_id)
 {
-  GtkWidget *menu_item;
+  unsigned int key;
+  MetaVirtualModifier mods;
+  const char *i18n_label;
+  GtkWidget *mi;
   GtkWidget *accel_label;
 
-  if (with_check)
+  if (menuitem->type == MENU_ITEM_NORMAL)
     {
-      menu_item = gtk_check_menu_item_new ();    
-      gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menu_item),
-                                      TRUE);
+      mi = gtk_menu_item_new ();
     }
-  else if (with_image)
-    menu_item = gtk_image_menu_item_new ();
+  else if (menuitem->type == MENU_ITEM_IMAGE)
+    {
+      GtkWidget *image;
+      
+      image = gtk_image_new_from_stock (menuitem->stock_id, GTK_ICON_SIZE_MENU);
+      mi = gtk_image_menu_item_new ();
+     
+      gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (mi), image);
+      gtk_widget_show (image);
+    }
+  else if (menuitem->type == MENU_ITEM_CHECKBOX)
+    {
+      mi = gtk_check_menu_item_new ();
+      
+      if (menuitem->op == META_MENU_OP_STICK || menuitem->op == META_MENU_OP_UNSTICK)
+        {
+          gtk_check_menu_item_set_draw_as_radio (GTK_CHECK_MENU_ITEM (mi),
+                                                 TRUE);
+        }
+      else
+        gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (mi), menuitem->checked);
+    }    
   else
-    menu_item = gtk_menu_item_new ();
-  accel_label = meta_accel_label_new_with_mnemonic (label);
+    return gtk_separator_menu_item_new ();
+
+  i18n_label = _(menuitem->label);
+  meta_core_get_menu_accelerator (menuitem->op, workspace_id, &key, &mods);
+
+  accel_label = meta_accel_label_new_with_mnemonic (i18n_label);
   gtk_misc_set_alignment (GTK_MISC (accel_label), 0.0, 0.5);
 
-  gtk_container_add (GTK_CONTAINER (menu_item), accel_label);
+  gtk_container_add (GTK_CONTAINER (mi), accel_label);
   gtk_widget_show (accel_label);
 
   meta_accel_label_set_accelerator (META_ACCEL_LABEL (accel_label),
                                     key, mods);
   
-  return menu_item;
+  return mi;
 }
 
 MetaWindowMenu*
@@ -301,58 +332,48 @@ meta_window_menu_new   (MetaFrames         *frames,
   menu->menu = gtk_menu_new ();
 
   gtk_menu_set_screen (GTK_MENU (menu->menu),
-		       gtk_widget_get_screen (GTK_WIDGET (frames)));
+                       gtk_widget_get_screen (GTK_WIDGET (frames)));
 
-  i = 0;
-  while (i < (int) G_N_ELEMENTS (menuitems))
+  for (i = 0; i < (int) G_N_ELEMENTS (menuitems); i++)
     {
-      if (ops & menuitems[i].op || menuitems[i].op == 0)
+      MenuItem menuitem = menuitems[i];
+      if (ops & menuitem.op || menuitem.op == 0)
         {
           GtkWidget *mi;
           MenuData *md;
           unsigned int key;
           MetaVirtualModifier mods;
-          
-          if (menuitems[i].label == NULL)
-            {
-              mi = gtk_separator_menu_item_new ();
-            }
-          else
-            {
-              GtkWidget *image;
 
-              image = NULL;
+          mi = menu_item_new (&menuitem, -1);
+
+          if (menuitem.op == META_MENU_OP_STICK || menuitem.op == META_MENU_OP_UNSTICK)
+            {
+              Display *xdisplay;
+              MetaDisplay *display;
+              MetaWindow *window;
               
-              if (menuitems[i].stock_id)
-                {
-                  image = gtk_image_new_from_stock (menuitems[i].stock_id,
-                                                    GTK_ICON_SIZE_MENU);
+              xdisplay = gdk_x11_drawable_get_xdisplay (GTK_WIDGET (frames)->window);
+              display = meta_display_for_x_display (xdisplay);
+              window = meta_display_lookup_x_window (display, client_xwindow);
 
-                }
-
+              if (menuitem.op == META_MENU_OP_STICK)
+                gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (mi), window->on_all_workspaces);
+              else
+                gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (mi), !window->on_all_workspaces);
+            }
+            
+          if (menuitem.type != MENU_ITEM_SEPARATOR)
+            {
               meta_core_get_menu_accelerator (menuitems[i].op, -1,
                                               &key, &mods);
 
-              if (image)
-                {
-                  mi = menu_item_new (_(menuitems[i].label), TRUE, FALSE, key, mods);
-                  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (mi),
-                                                 image);
-                  gtk_widget_show (image);
-                }
-              else
-                {
-                  mi = menu_item_new (_(menuitems[i].label), FALSE, 
-                                      menuitems[i].checked, key, mods);
-                }
-              
-              if (insensitive & menuitems[i].op)
+              if (insensitive & menuitem.op)
                 gtk_widget_set_sensitive (mi, FALSE);
               
               md = g_new (MenuData, 1);
               
               md->menu = menu;
-              md->op = menuitems[i].op;
+              md->op = menuitem.op;
               
               gtk_signal_connect_full (GTK_OBJECT (mi),
                                        "activate",
@@ -362,53 +383,59 @@ meta_window_menu_new   (MetaFrames         *frames,
                                        g_free, FALSE, FALSE);
             }
           
-          gtk_menu_shell_append (GTK_MENU_SHELL (menu->menu),
-                                 mi);
+          gtk_menu_shell_append (GTK_MENU_SHELL (menu->menu), mi);
           
           gtk_widget_show (mi);
         }
-      ++i;
     }
 
   if (ops & META_MENU_OP_WORKSPACES)
     {
-
-      GtkWidget *mi;
       Display *display;
       Window xroot;
       GdkScreen *screen;
       GtkWidget *submenu;
       GtkWidget *submenuitem;
 
+      MenuItem to_another_workspace = {
+        0, MENU_ITEM_NORMAL,
+        NULL, FALSE,
+        N_("Move to Another _Workspace")
+      };
+
       meta_verbose ("Creating %d-workspace menu current space %d\n",
                     n_workspaces, active_workspace);
           
       display = gdk_x11_drawable_get_xdisplay (GTK_WIDGET (frames)->window);
-          
+        
       screen = gdk_drawable_get_screen (GTK_WIDGET (frames)->window);
       xroot = GDK_DRAWABLE_XID (gdk_screen_get_root_window (screen));
 
       submenu = gtk_menu_new ();
-      submenuitem = menu_item_new (_("Move to Another _Workspace"), FALSE, FALSE, 0, 0);
+      submenuitem = menu_item_new (&to_another_workspace, -1);
       gtk_menu_item_set_submenu (GTK_MENU_ITEM (submenuitem), submenu);
-      gtk_menu_shell_append (GTK_MENU_SHELL (menu->menu),
-			     submenuitem);
+      gtk_menu_shell_append (GTK_MENU_SHELL (menu->menu), submenuitem);
       gtk_widget_show (submenuitem);
            
-      i = 0;
-      while (i < n_workspaces)
+      for (i = 0; i < n_workspaces; i++)
         {
           char *label;
           MenuData *md;
           unsigned int key;
           MetaVirtualModifier mods;
-              
+          MenuItem moveitem;
+          GtkWidget *mi;
+          
           meta_core_get_menu_accelerator (META_MENU_OP_WORKSPACES,
                                           i + 1,
                                           &key, &mods);
               
           label = get_workspace_name_with_accel (display, xroot, i);
-          mi = menu_item_new (label, FALSE, FALSE, key, mods);
+
+          moveitem.type = MENU_ITEM_NORMAL;
+          moveitem.op = META_MENU_OP_WORKSPACES;
+          moveitem.label = label;
+          mi = menu_item_new (&moveitem, i + 1);
 
           g_free (label);
 
@@ -434,12 +461,9 @@ meta_window_menu_new   (MetaFrames         *frames,
                                    md,
                                    g_free, FALSE, FALSE);
 
-          gtk_menu_shell_append (GTK_MENU_SHELL (submenu),
-                                 mi);
+          gtk_menu_shell_append (GTK_MENU_SHELL (submenu), mi);
           
           gtk_widget_show (mi);
-          
-          ++i;
         }
     }
   else
