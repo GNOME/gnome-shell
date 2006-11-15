@@ -28,6 +28,17 @@ ClutterCloneTexture
 
 </para>
 
+<!-- ##### STRUCT ClutterCloneTextureClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+@_clutter_clone_1: 
+@_clutter_clone_2: 
+@_clutter_clone_3: 
+@_clutter_clone_4: 
+
 <!-- ##### FUNCTION clutter_clone_texture_new ##### -->
 <para>
 

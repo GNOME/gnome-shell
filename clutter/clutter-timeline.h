@@ -54,14 +54,13 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   CLUTTER_TYPE_TIMELINE, ClutterTimelineClass))
 
-typedef struct _ClutterTimeline ClutterTimeline;
-typedef struct _ClutterTimelineClass ClutterTimelineClass; 
-typedef struct ClutterTimelinePrivate ClutterTimelinePrivate;
-
-typedef guint32 (*ClutterTimelineAlphaFunc) (ClutterTimeline *timeline); 
+typedef struct _ClutterTimeline        ClutterTimeline;
+typedef struct _ClutterTimelineClass   ClutterTimelineClass; 
+typedef struct _ClutterTimelinePrivate ClutterTimelinePrivate;
 
 struct _ClutterTimeline
 {
+  /*< private >*/
   GObject                 parent;
   ClutterTimelinePrivate *priv;
 };
@@ -84,46 +83,29 @@ struct _ClutterTimelineClass
   void (*_clutter_timeline_5) (void);
 }; 
 
-GType clutter_timeline_get_type (void);
+GType clutter_timeline_get_type (void) G_GNUC_CONST;
 
-ClutterTimeline*
-clutter_timeline_new (guint nframes, guint fps);
-
-void
-clutter_timeline_set_speed (ClutterTimeline *timeline, guint fps);
-
-void
-clutter_timeline_start (ClutterTimeline *timeline);
-
-void
-clutter_timeline_pause (ClutterTimeline *timeline);
-
-void
-clutter_timeline_stop (ClutterTimeline *timeline);
-
-void
-clutter_timeline_set_loop (ClutterTimeline *timeline, gboolean loop);
-
-gboolean
-clutter_timeline_get_loop (ClutterTimeline *timeline);
-
-void
-clutter_timeline_rewind (ClutterTimeline *timeline);
-
-void
-clutter_timeline_skip (ClutterTimeline *timeline, guint nframes);
-
-void
-clutter_timeline_advance (ClutterTimeline *timeline, guint frame_num);
-
-gint
-clutter_timeline_get_current_frame (ClutterTimeline *timeline);
-
-guint
-clutter_timeline_get_n_frames (ClutterTimeline *timeline);
-
-gboolean
-clutter_timeline_is_playing (ClutterTimeline *timeline);
+ClutterTimeline *clutter_timeline_new               (guint            n_frames,
+                                                     guint            fps);
+guint            clutter_timeline_get_speed         (ClutterTimeline *timeline);
+void             clutter_timeline_set_speed         (ClutterTimeline *timeline,
+                                                     guint            fps);
+void             clutter_timeline_start             (ClutterTimeline *timeline);
+void             clutter_timeline_pause             (ClutterTimeline *timeline);
+void             clutter_timeline_stop              (ClutterTimeline *timeline);
+void             clutter_timeline_set_loop          (ClutterTimeline *timeline,
+                                                     gboolean         loop);
+gboolean         clutter_timeline_get_loop          (ClutterTimeline *timeline);
+void             clutter_timeline_rewind            (ClutterTimeline *timeline);
+void             clutter_timeline_skip              (ClutterTimeline *timeline,
+                                                     guint            n_frames);
+void             clutter_timeline_advance           (ClutterTimeline *timeline,
+                                                     guint            frame_num);
+gint             clutter_timeline_get_current_frame (ClutterTimeline *timeline);
+void             clutter_timeline_set_n_frames      (ClutterTimeline *timeline,
+                                                     guint            n_frames);
+guint            clutter_timeline_get_n_frames      (ClutterTimeline *timeline);
+gboolean         clutter_timeline_is_playing        (ClutterTimeline *timeline);
 
 G_END_DECLS
 

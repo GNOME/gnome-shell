@@ -277,7 +277,7 @@ clutter_feature_available (ClutterFeatureFlags feature)
 }
 
 /**
- * clutter_feature_all:
+ * clutter_feature_get_all:
  *
  * Returns all the suppoerted features.
  *
@@ -286,7 +286,7 @@ clutter_feature_available (ClutterFeatureFlags feature)
  * Since: 0.1.1
  */
 ClutterFeatureFlags
-clutter_feature_all (void)
+clutter_feature_get_all (void)
 {
   return __features->flags;
 }

@@ -12,7 +12,7 @@ AUTOMAKE_OPTIONS = 1.6
 DOC_MODULE=clutter
 
 # The top-level SGML file. You can change this if you want to.
-DOC_MAIN_SGML_FILE=clutter-docs.sgml
+DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.sgml
 
 # The directory containing the source code. Relative to $(srcdir).
 # gtk-doc will search all .c & .h files beneath here for inline comments
@@ -21,7 +21,7 @@ DOC_MAIN_SGML_FILE=clutter-docs.sgml
 DOC_SOURCE_DIR=../../clutter
 
 # Extra options to pass to gtkdoc-scangobj. Not normally needed.
-SCANGOBJ_OPTIONS=
+SCANGOBJ_OPTIONS=--type-init-func="clutter_init(0,0)"
 
 # Extra options to supply to gtkdoc-scan.
 # e.g. SCAN_OPTIONS=--deprecated-guards="GTK_DISABLE_DEPRECATED" 

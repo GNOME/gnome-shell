@@ -45,9 +45,9 @@ typedef enum
   CLUTTER_FEATURE_SYNC_TO_VBLANK    = (1 << 2)
 } ClutterFeatureFlags;
 
-gboolean            clutter_feature_available (ClutterFeatureFlags flags);
-ClutterFeatureFlags clutter_feature_get_all   (void);
-void                clutter_feature_wait_for_vblank ();
+gboolean            clutter_feature_available       (ClutterFeatureFlags flags);
+ClutterFeatureFlags clutter_feature_get_all         (void);
+void                clutter_feature_wait_for_vblank (void);
 
 G_END_DECLS
 

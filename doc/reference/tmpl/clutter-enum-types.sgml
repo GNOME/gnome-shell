@@ -24,10 +24,56 @@ clutter-enum-types
 
 
 
+<!-- ##### FUNCTION clutter_event_type_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO CLUTTER_TYPE_FEATURE_FLAGS ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_feature_flags_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### MACRO CLUTTER_TYPE_ACTOR_FLAGS ##### -->
 <para>
 
 </para>
 
+
+
+<!-- ##### FUNCTION clutter_actor_flags_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### MACRO CLUTTER_TYPE_INIT_ERROR ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_init_error_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
 
 

@@ -5,6 +5,7 @@
  *
  * Authored By Matthew Allum  <mallum@openedhand.com>
  *             Jorn Baayen  <jorn@openedhand.com>
+ *             Emmanuele Bassi  <ebassi@openedhand.com>
  *
  * Copyright (C) 2006 OpenedHand
  *
@@ -24,14 +25,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef _HAVE_CLUTTER_ALPHA_H
-#define _HAVE_CLUTTER_ALPHA_H
-
-/* clutter-alpha.h */
+#ifndef __CLUTTER_ALPHA_H__
+#define __CLUTTER_ALPHA_H__
 
 #include <glib-object.h>
-
-#include "clutter-timeline.h"
+#include <clutter/clutter-timeline.h>
 
 G_BEGIN_DECLS
 
@@ -61,10 +59,12 @@ typedef struct _ClutterAlpha        ClutterAlpha;
 typedef struct _ClutterAlphaClass   ClutterAlphaClass; 
 typedef struct _ClutterAlphaPrivate ClutterAlphaPrivate;
 
-typedef guint32 (*ClutterAlphaFunc) (ClutterAlpha *alpha); 
+typedef guint32 (*ClutterAlphaFunc) (ClutterAlpha *alpha,
+                                     gpointer      user_data); 
 
 struct _ClutterAlpha
 {
+  /*< private >*/
   GInitiallyUnowned parent;
   ClutterAlphaPrivate *priv;
 };
@@ -83,43 +83,37 @@ struct _ClutterAlphaClass
 
 #define CLUTTER_ALPHA_MAX_ALPHA 0xffff
 
-GType clutter_alpha_get_type         (void) G_GNUC_CONST;
+GType clutter_alpha_get_type (void) G_GNUC_CONST;
 
-ClutterAlpha *
-clutter_alpha_new (ClutterTimeline *timeline,
-                   ClutterAlphaFunc func);
+ClutterAlpha *   clutter_alpha_new          (void);
+ClutterAlpha *   clutter_alpha_new_full     (ClutterTimeline  *timeline,
+                                             ClutterAlphaFunc  func,
+                                             gpointer          data,
+                                             GDestroyNotify    destroy);
+guint32          clutter_alpha_get_alpha    (ClutterAlpha     *alpha);
+void             clutter_alpha_set_func     (ClutterAlpha     *alpha,
+                                             ClutterAlphaFunc  func,
+                                             gpointer          data,
+                                             GDestroyNotify    destroy);
+void             clutter_alpha_set_timeline (ClutterAlpha     *alpha,
+                                             ClutterTimeline  *timeline);
+ClutterTimeline *clutter_alpha_get_timeline (ClutterAlpha     *alpha);
 
-gint32
-clutter_alpha_get_alpha (ClutterAlpha *alpha);
+/* convenience functions */
+#define CLUTTER_ALPHA_RAMP_INC  clutter_ramp_inc_func
+#define CLUTTER_ALPHA_RAMP_DEC  clutter_ramp_dec_func
+#define CLUTTER_ALPHA_RAMP      clutter_ramp_func
+#define CLUTTER_ALPHA_SINE      clutter_sine_func
 
-void
-clutter_alpha_set_func (ClutterAlpha    *alpha,
-			ClutterAlphaFunc func);
-
-void
-clutter_alpha_set_timeline (ClutterAlpha    *alpha,
-                            ClutterTimeline *timeline);
-
-ClutterTimeline *
-clutter_alpha_get_timeline (ClutterAlpha *alpha);
-
-guint32 
-clutter_alpha_ramp_inc_func (ClutterAlpha *alpha);
-
-guint32 
-clutter_alpha_ramp_dec_func (ClutterAlpha *alpha);
-
-guint32 
-clutter_alpha_ramp_func (ClutterAlpha *alpha);
-
-guint32 
-clutter_alpha_sine_func (ClutterAlpha *alpha);
-
-#define CLUTTER_ALPHA_RAMP_INC clutter_alpha_ramp_inc_func
-#define CLUTTER_ALPHA_RAMP_DEC clutter_alpha_ramp_dec_func
-#define CLUTTER_ALPHA_RAMP     clutter_alpha_ramp_func
-#define CLUTTER_ALPHA_SINE     clutter_alpha_sine_func
+guint32          clutter_ramp_inc_func      (ClutterAlpha     *alpha,
+                                             gpointer          dummy);
+guint32          clutter_ramp_dec_func      (ClutterAlpha     *alpha,
+                                             gpointer          dummy);
+guint32          clutter_ramp_func          (ClutterAlpha     *alpha,
+                                             gpointer          dummy);
+guint32          clutter_sine_func          (ClutterAlpha     *alpha,
+                                             gpointer          dummy);
 
 G_END_DECLS
 
-#endif
+#endif /* __CLUTTER_ALPHA_H__ */

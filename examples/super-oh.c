@@ -59,8 +59,8 @@ input_cb (ClutterStage *stage,
 	       bev->button);
 
       e = clutter_stage_get_actor_at_pos (stage, 
-		                            clutter_button_event_x (event),
-					    clutter_button_event_y (event));
+		                          clutter_button_event_x (bev),
+					  clutter_button_event_y (bev));
 
       if (e)
 	clutter_actor_hide(e);

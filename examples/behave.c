@@ -32,10 +32,12 @@ main (int argc, char *argv[])
 
   /* Make a timeline */
   timeline = clutter_timeline_new (100, 60); /* num frames, fps */
-  g_object_set(timeline, "loop", TRUE, 0);  
+  g_object_set (timeline, "loop", TRUE, 0);  
 
   /* Set an alpha func to power behaviour - ramp is constant rise/fall */
-  alpha = clutter_alpha_new (timeline, CLUTTER_ALPHA_RAMP);
+  alpha = clutter_alpha_new_full (timeline,
+                                  CLUTTER_ALPHA_RAMP,
+                                  NULL, NULL);
 
   /* Create a behaviour for that alpha */
   behave = clutter_behaviour_opacity_new (alpha, 0X33, 0xff); 

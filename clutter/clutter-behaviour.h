@@ -1,8 +1,35 @@
+/*
+ * Clutter.
+ *
+ * An OpenGL based 'interactive canvas' library.
+ *
+ * Authored By Matthew Allum  <mallum@openedhand.com>
+ *             Jorn Baayen  <jorn@openedhand.com>
+ *             Emmanuele Bassi  <ebassi@openedhand.com>
+ *
+ * Copyright (C) 2006 OpenedHand
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
 #ifndef _HAVE_CLUTTER_BEHAVIOUR_H
 #define _HAVE_CLUTTER_BEHAVIOUR_H
 
 #include <glib-object.h>
-#include "clutter-alpha.h"
+#include <clutter/clutter-alpha.h>
 
 G_BEGIN_DECLS
 
@@ -34,7 +61,8 @@ typedef struct _ClutterBehaviourClass   ClutterBehaviourClass;
  
 struct _ClutterBehaviour
 {
-  GObject                 parent;
+  /*< private >*/
+  GObject parent;
   ClutterBehaviourPrivate *priv;
 };
 
@@ -43,27 +71,27 @@ struct _ClutterBehaviourClass
   GObjectClass parent_class;
 
   void (*alpha_notify) (ClutterBehaviour *behave);
+
+  void (*_clutter_behaviour1) (void);
+  void (*_clutter_behaviour2) (void);
+  void (*_clutter_behaviour3) (void);
+  void (*_clutter_behaviour4) (void);
+  void (*_clutter_behaviour5) (void);
+  void (*_clutter_behaviour6) (void);
 };
 
-GType clutter_behaviour_get_type (void);
+GType clutter_behaviour_get_type (void) G_GNUC_CONST;
 
-void
-clutter_behaviour_apply (ClutterBehaviour *behave, ClutterActor *actor);
-
-void
-clutter_behaviour_remove (ClutterBehaviour *behave, ClutterActor *actor);
-
-void
-clutter_behaviour_actors_foreach (ClutterBehaviour *behave,
-				  GFunc             func,
-				  gpointer          userdata);
-
-ClutterAlpha*
-clutter_behaviour_get_alpha (ClutterBehaviour *behave);
-
-void
-clutter_behaviour_set_alpha (ClutterBehaviour *behave,
-			     ClutterAlpha     *alpha);
+void          clutter_behaviour_apply          (ClutterBehaviour *behave,
+                                                ClutterActor     *actor);
+void          clutter_behaviour_remove         (ClutterBehaviour *behave,
+                                                ClutterActor     *actor);
+void          clutter_behaviour_actors_foreach (ClutterBehaviour *behave,
+                                                GFunc             func,
+                                                gpointer          data);
+ClutterAlpha *clutter_behaviour_get_alpha      (ClutterBehaviour *behave);
+void          clutter_behaviour_set_alpha      (ClutterBehaviour *behave,
+                                                ClutterAlpha     *alpha);
 
 G_END_DECLS
 

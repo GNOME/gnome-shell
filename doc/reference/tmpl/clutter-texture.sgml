@@ -84,6 +84,15 @@ ClutterTexture
 
 </para>
 
+<!-- ##### STRUCT ClutterTextureClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+@size_change: 
+@pixbuf_change: 
+
 <!-- ##### FUNCTION clutter_texture_new_from_pixbuf ##### -->
 <para>
 
@@ -99,6 +108,20 @@ ClutterTexture
 </para>
 
 @Returns: 
+
+
+<!-- ##### FUNCTION clutter_texture_set_from_data ##### -->
+<para>
+
+</para>
+
+@texture: 
+@data: 
+@has_alpha: 
+@width: 
+@height: 
+@rowstride: 
+@bpp: 
 
 
 <!-- ##### FUNCTION clutter_texture_set_pixbuf ##### -->

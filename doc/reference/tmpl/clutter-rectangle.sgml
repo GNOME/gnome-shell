@@ -28,6 +28,17 @@ ClutterRectangle
 
 </para>
 
+<!-- ##### STRUCT ClutterRectangleClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+@_clutter_rectangle1: 
+@_clutter_rectangle2: 
+@_clutter_rectangle3: 
+@_clutter_rectangle4: 
+
 <!-- ##### FUNCTION clutter_rectangle_new ##### -->
 <para>
 

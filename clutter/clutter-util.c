@@ -89,20 +89,3 @@ clutter_util_next_p2 (int a)
 
   return rval;
 }
-
-#if 0
-gboolean
-clutter_util_can_create_texture (int width, int height)
-{
-  GLint new_width;
-
-  glTexImage2D (GL_PROXY_VIDEO_TEXTURE_2D, 0, GL_RGBA,
-                width, height, 0 /* border */,
-                GL_RGBA, PIXEL_TYPE, NULL);
-
-  glGetTexLevelParameteriv (GL_PROXY_VIDEO_TEXTURE_2D, 0,
-                            GL_VIDEO_TEXTURE_WIDTH, &new_width);
-
-  return new_width != 0;
-}
-#endif

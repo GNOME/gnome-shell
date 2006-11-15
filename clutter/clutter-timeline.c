@@ -32,6 +32,9 @@
  * as animations. 
  */
 
+#ifndef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include "clutter-timeline.h"
 #include "clutter-main.h"
@@ -42,32 +45,35 @@ G_DEFINE_TYPE (ClutterTimeline, clutter_timeline, G_TYPE_OBJECT);
 
 #define FPS_TO_INTERVAL(f) (1000/f)
 
-struct ClutterTimelinePrivate
+struct _ClutterTimelinePrivate
 {
-  guint                     timeout_id;
-  guint                     fps;
-  guint                     nframes;
-  guint                     current_frame_num;
-  gulong                    last_frame_msecs;
-  gulong                    start_frame_secs;
+  guint timeout_id;
+  guint fps;
+  guint n_frames;
+  guint current_frame_num;
 
-  guint                     loop : 1;
+  gulong last_frame_msecs;
+  gulong start_frame_secs;
+
+  guint loop : 1;
 };
 
 enum
 {
   PROP_0,
+  
   PROP_FPS,
-  PROP_NFRAMES,
+  PROP_NUM_FRAMES,
   PROP_LOOP
 };
 
 enum
 {
-  SIGNAL_NEW_FRAME,
-  SIGNAL_STARTED,
-  SIGNAL_PAUSED,
-  SIGNAL_COMPLETED,
+  NEW_FRAME,
+  STARTED,
+  PAUSED,
+  COMPLETED,
+
   LAST_SIGNAL
 };
 
@@ -92,8 +98,8 @@ clutter_timeline_set_property (GObject      *object,
     case PROP_FPS:
       clutter_timeline_set_speed (timeline, g_value_get_int (value));
       break;
-    case PROP_NFRAMES:
-      priv->nframes = g_value_get_int (value);
+    case PROP_NUM_FRAMES:
+      priv->n_frames = g_value_get_int (value);
       break;
     case PROP_LOOP:
       priv->loop = g_value_get_boolean (value);
@@ -121,8 +127,8 @@ clutter_timeline_get_property (GObject    *object,
     case PROP_FPS:
       g_value_set_int (value, priv->fps);
       break;
-    case PROP_NFRAMES:
-      g_value_set_int (value, priv->nframes);
+    case PROP_NUM_FRAMES:
+      g_value_set_int (value, priv->n_frames);
       break;
     case PROP_LOOP:
       g_value_set_boolean (value, priv->loop);
@@ -185,7 +191,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 		       G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
   g_object_class_install_property
-    (object_class, PROP_NFRAMES,
+    (object_class, PROP_NUM_FRAMES,
      g_param_spec_int ("num-frames",
 		       "Total number of frames",
 		       "Timelines total number of frames",
@@ -202,7 +208,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 			   FALSE,
 			   G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
 
-  timeline_signals[SIGNAL_NEW_FRAME] =
+  timeline_signals[NEW_FRAME] =
     g_signal_new ("new-frame",
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
@@ -211,7 +217,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 		  clutter_marshal_VOID__INT,
 		  G_TYPE_NONE, 
 		  1, G_TYPE_INT);
-  timeline_signals[SIGNAL_COMPLETED] =
+  timeline_signals[COMPLETED] =
     g_signal_new ("completed",
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
@@ -219,7 +225,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 		  NULL, NULL,
 		  clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
-  timeline_signals[SIGNAL_STARTED] =
+  timeline_signals[STARTED] =
     g_signal_new ("started",
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
@@ -227,7 +233,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 		  NULL, NULL,
 		  clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
-  timeline_signals[SIGNAL_PAUSED] =
+  timeline_signals[PAUSED] =
     g_signal_new ("paused",
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
@@ -251,7 +257,7 @@ timeline_timeout_func (gpointer data)
   ClutterTimeline        *timeline = CLUTTER_TIMELINE(data);
   ClutterTimelinePrivate *priv;
   GTimeVal                timeval;
-  gint                    nframes;
+  gint                    n_frames;
   gulong                  msecs;
 
   priv = timeline->priv;
@@ -260,7 +266,7 @@ timeline_timeout_func (gpointer data)
   g_get_current_time (&timeval);
 
   /* Fire off signal */
-  g_signal_emit (timeline, timeline_signals[SIGNAL_NEW_FRAME], 
+  g_signal_emit (timeline, timeline_signals[NEW_FRAME], 
 		 0, priv->current_frame_num);
 
   /* Signal frees timeline ? */
@@ -281,33 +287,35 @@ timeline_timeout_func (gpointer data)
       */
       msecs = ((timeval.tv_sec - priv->start_frame_secs) * 1000) 
                  + (timeval.tv_usec / 1000);
-      nframes =  (msecs - priv->last_frame_msecs ) / (1000 / priv->fps);
-      if (nframes < 0) nframes = 1;
+      n_frames =  (msecs - priv->last_frame_msecs ) / (1000 / priv->fps);
+      if (n_frames < 0)
+        n_frames = 1;
 
-      if (nframes > 1)
-	CLUTTER_DBG("*** Skipping %i frames ***", nframes);
+      if (n_frames > 1)
+	CLUTTER_DBG("*** Skipping %i frames ***", n_frames);
     }
   else 
     {
       /* First frame, set up timings.*/
       priv->start_frame_secs = timeval.tv_sec;
+      
       msecs     = timeval.tv_usec / 1000;
-      nframes   = 1;
+      n_frames  = 1;
     }
 
   priv->last_frame_msecs = msecs; 
 
   /* Advance frames */
-  priv->current_frame_num += nframes;;
+  priv->current_frame_num += n_frames;;
 
   /* Handle loop or stop */
-  if (priv->current_frame_num > priv->nframes)
+  if (priv->current_frame_num > priv->n_frames)
     {
-      priv->current_frame_num = priv->nframes;
+      priv->current_frame_num = priv->n_frames;
 
-      if (nframes > 1)
+      if (n_frames > 1)
 	{
-	  g_signal_emit (timeline, timeline_signals[SIGNAL_NEW_FRAME], 
+	  g_signal_emit (timeline, timeline_signals[NEW_FRAME], 
 			 0, priv->current_frame_num);
 	}
 
@@ -316,7 +324,7 @@ timeline_timeout_func (gpointer data)
       else
 	{
 	  clutter_timeline_stop (timeline);
-	  g_signal_emit (timeline, timeline_signals[SIGNAL_COMPLETED], 0); 
+	  g_signal_emit (timeline, timeline_signals[COMPLETED], 0); 
 	  return FALSE;
 	}
     }
@@ -344,7 +352,7 @@ clutter_timeline_start (ClutterTimeline *timeline)
 				      timeline_timeout_func,
 				      (gpointer)timeline);
 
-  g_signal_emit (timeline, timeline_signals[SIGNAL_STARTED], 0);
+  g_signal_emit (timeline, timeline_signals[STARTED], 0);
 }
 
 /**
@@ -364,7 +372,7 @@ clutter_timeline_pause (ClutterTimeline *timeline)
   timeline->priv->timeout_id = 0;
   timeline->priv->last_frame_msecs = 0;
 
-  g_signal_emit (timeline, timeline_signals[SIGNAL_PAUSED], 0);
+  g_signal_emit (timeline, timeline_signals[PAUSED], 0);
 }
 
 /**
@@ -395,9 +403,12 @@ clutter_timeline_set_loop (ClutterTimeline *timeline,
   
   if (timeline->priv->loop != loop)
     {
+      g_object_ref (timeline);
+
       timeline->priv->loop = loop;
 
       g_object_notify (G_OBJECT (timeline), "loop");
+      g_object_unref (timeline);
     }
 }
 
@@ -434,12 +445,13 @@ clutter_timeline_rewind (ClutterTimeline *timeline)
 /**
  * clutter_timeline_skip:
  * @timeline: A #ClutterTimeline
- * @nframes: Number of frames to skip
+ * @n_frames: Number of frames to skip
  *
  * Advance timeline by requested number of frames.
  **/
 void
-clutter_timeline_skip (ClutterTimeline *timeline, guint nframes)
+clutter_timeline_skip (ClutterTimeline *timeline,
+                       guint            n_frames)
 {
   ClutterTimelinePrivate *priv;
 
@@ -447,9 +459,9 @@ clutter_timeline_skip (ClutterTimeline *timeline, guint nframes)
 
   priv = timeline->priv;
 
-  priv->current_frame_num += nframes;
+  priv->current_frame_num += n_frames;
 
-  if (priv->current_frame_num > priv->nframes)
+  if (priv->current_frame_num > priv->n_frames)
     priv->current_frame_num = 1;
 }
 
@@ -461,7 +473,8 @@ clutter_timeline_skip (ClutterTimeline *timeline, guint nframes)
  * Advance timeline to requested frame number
  **/
 void
-clutter_timeline_advance (ClutterTimeline *timeline, guint frame_num)
+clutter_timeline_advance (ClutterTimeline *timeline,
+                          guint            frame_num)
 {
   ClutterTimelinePrivate *priv;
 
@@ -469,7 +482,7 @@ clutter_timeline_advance (ClutterTimeline *timeline, guint frame_num)
 
   priv = timeline->priv;
 
-  if (frame_num < priv->nframes)
+  if (frame_num < priv->n_frames)
     priv->current_frame_num = frame_num;
 }
 
@@ -493,7 +506,7 @@ clutter_timeline_get_current_frame (ClutterTimeline *timeline)
  * clutter_timeline_get_n_frames:
  * @timeline: A #ClutterTimeline
  *
- * Request the totle number of frames for the #ClutterTimeline.
+ * Request the total number of frames for the #ClutterTimeline.
  *
  * Return Value: Number of frames for this #ClutterTimeline.
  **/
@@ -502,7 +515,35 @@ clutter_timeline_get_n_frames (ClutterTimeline *timeline)
 {
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), 0);
 
-  return timeline->priv->nframes;
+  return timeline->priv->n_frames;
+}
+
+/**
+ * clutter_timeline_set_n_frames:
+ * @timeline: a #ClutterTimeline
+ * @n_frames: the number of frames
+ *
+ * Sets the total number of frames for @timeline
+ */
+void
+clutter_timeline_set_n_frames (ClutterTimeline *timeline,
+                               guint            n_frames)
+{
+  ClutterTimelinePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+
+  priv = timeline->priv;
+
+  if (priv->n_frames != n_frames)
+    {
+      g_object_ref (timeline);
+
+      priv->n_frames = n_frames;
+
+      g_object_notify (G_OBJECT (timeline), "num-frames");
+      g_object_unref (timeline);
+    }
 }
 
 /**
@@ -513,7 +554,8 @@ clutter_timeline_get_n_frames (ClutterTimeline *timeline)
  * Set the speed in frames per second of the timeline.
  **/
 void
-clutter_timeline_set_speed (ClutterTimeline *timeline, guint fps)
+clutter_timeline_set_speed (ClutterTimeline *timeline,
+                            guint            fps)
 {
   ClutterTimelinePrivate *priv;
 
@@ -521,16 +563,41 @@ clutter_timeline_set_speed (ClutterTimeline *timeline, guint fps)
 
   priv = timeline->priv;
 
-  priv->fps = fps;
-
-  /* if the timeline is playing restart */
-  if (priv->timeout_id)
+  if (priv->fps != fps)
     {
-      g_source_remove (priv->timeout_id);
-      priv->timeout_id = g_timeout_add (FPS_TO_INTERVAL(priv->fps),
-					timeline_timeout_func,
-					(gpointer)timeline);
+      g_object_ref (timeline);
+
+      priv->fps = fps;
+
+      /* if the timeline is playing restart */
+      if (priv->timeout_id)
+        {
+          g_source_remove (priv->timeout_id);
+     
+          priv->timeout_id = g_timeout_add (FPS_TO_INTERVAL (priv->fps),
+					    timeline_timeout_func,
+					    timeline);
+        }
+
+      g_object_notify (G_OBJECT (timeline), "fps");
+      g_object_unref (timeline);
     }
+}
+
+/**
+ * clutter_timeline_get_speed:
+ * @timeline: a #ClutterTimeline
+ *
+ * Gets the frames per second played by @timeline
+ *
+ * Return value: the number of frames per second.
+ */
+guint
+clutter_timeline_get_speed (ClutterTimeline *timeline)
+{
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), 0);
+
+  return timeline->priv->fps;
 }
 
 /**
@@ -551,19 +618,19 @@ clutter_timeline_is_playing (ClutterTimeline *timeline)
 
 /**
  * clutter_timeline_new:
- * @nframes: #ClutterTimeline number of frames
- * @fps: #ClutterTimeline  frames per second
+ * @n_frames: the number of frames
+ * @fps: the number of frames per second
  *
  * Create a new  #ClutterTimeline instance.
  *
  * Return Value: a new #ClutterTimeline
  */
 ClutterTimeline*
-clutter_timeline_new (guint nframes,
+clutter_timeline_new (guint n_frames,
 		      guint fps)
 {
   return g_object_new (CLUTTER_TYPE_TIMELINE, 
 		       "fps", fps, 
-		       "num-frames", nframes, 
+		       "num-frames", n_frames, 
 		       NULL);
 }

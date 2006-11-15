@@ -68,6 +68,12 @@ ClutterLabel
 
 </para>
 
+<!-- ##### STRUCT ClutterLabelClass ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### FUNCTION clutter_label_new ##### -->
 <para>
 
@@ -138,5 +144,122 @@ ClutterLabel
 
 @label: 
 @color: 
+
+
+<!-- ##### FUNCTION clutter_label_set_ellipsize ##### -->
+<para>
+
+</para>
+
+@label: 
+@mode: 
+
+
+<!-- ##### FUNCTION clutter_label_get_ellipsize ##### -->
+<para>
+
+</para>
+
+@label: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_label_set_line_wrap ##### -->
+<para>
+
+</para>
+
+@label: 
+@wrap: 
+
+
+<!-- ##### FUNCTION clutter_label_get_line_wrap ##### -->
+<para>
+
+</para>
+
+@label: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_label_set_line_wrap_mode ##### -->
+<para>
+
+</para>
+
+@label: 
+@wrap_mode: 
+
+
+<!-- ##### FUNCTION clutter_label_get_line_wrap_mode ##### -->
+<para>
+
+</para>
+
+@label: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_label_get_layout ##### -->
+<para>
+
+</para>
+
+@label: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_label_set_attributes ##### -->
+<para>
+
+</para>
+
+@label: 
+@attrs: 
+
+
+<!-- ##### FUNCTION clutter_label_get_attributes ##### -->
+<para>
+
+</para>
+
+@label: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_label_set_use_markup ##### -->
+<para>
+
+</para>
+
+@label: 
+@setting: 
+
+
+<!-- ##### FUNCTION clutter_label_get_use_markup ##### -->
+<para>
+
+</para>
+
+@label: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_label_set_alignment ##### -->
+<para>
+
+</para>
+
+@label: 
+@alignment: 
+
+
+<!-- ##### FUNCTION clutter_label_get_alignment ##### -->
+<para>
+
+</para>
+
+@label: 
+@Returns: 
 
 

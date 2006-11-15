@@ -67,10 +67,6 @@ struct _ClutterMediaInterface
   int (*get_duration)       (ClutterMedia *media);
 
   /* signals */
-#if 0
-  void (* metadata_available) (ClutterMedia *media,
-			       GstTagList   *tag_list);
-#endif
   void (* eos)                (ClutterMedia *media);
   void (* error)              (ClutterMedia *media,
 			       GError       *error);

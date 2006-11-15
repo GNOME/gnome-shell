@@ -1,4 +1,76 @@
-2006-11-16  Emmanuele Bassi  <ebassi@openedhand.com>
+2006-11-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-alpha.h:
+	* clutter/clutter-alpha.c: Add a data parameter to
+	the ClutterAlphaFunc; add a data+destroy parameter
+	to clutter_alpha_set_func() and to clutter_alpha_new(),
+	and turned the latter into clutter_alpha_new_full();
+	add a simple, empty constructor clutter_alpha_new().
+
+	These changes makes writing bindings a tad more easy,
+	as bindings require passing their own functions in
+	order to call the real alpha function.
+
+	* clutter/clutter-behaviour.h: Clean up the header.
+
+	* clutter/clutter-behaviours.[ch]:
+	* clutter/clutter-behaviour-opacity.[ch]:
+	* clutter/clutter-behaviour-path.[ch]:
+	* clutter/clutter-behaviour-scale.[ch]: Split the
+	ClutterBehaviourPath, ClutterBehaviourOpacity and
+	ClutterBehaviourScale into their own files as they
+	have been growing a bit. Fix ClutterBehaviourPath
+	API.
+
+	* clutter/clutter-media.h: Remove the commented
+	"metadata_available" signal: gtk-doc chokes up on that.
+
+	* clutter/clutter-timeline.h:
+	* clutter/clutter-timeline.c: Remove the useless
+	ClutterTimelineAlphaFunc signature; add missing accessor
+	methods for the properties; clean up a bit.
+
+	* clutter/clutter-util.h:
+	* clutter/clutter-util.c: Remove unneeded function
+	clutter_util_can_create_texture().
+
+	* clutter/clutter-feature.h: Sync the name of
+	clutter_feature_get_all() with the name declared
+	in clutter-feature.h.
+
+	* clutter/Makefile.am:
+	* clutter/clutter.h: Update.
+
+	* examples/behave.c: Update to the new ClutterAlpha
+	constructor.
+
+	* examples/super-oh.c: Use the right pointer and avoid
+	the compiler making a fuss about it.
+
+2006-11-15  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.h:
+	* clutter/clutter-actor.c:
+	Add new API clutter_actor_move_by(), clutter_actor_get_size()
+
+	* clutter/clutter-alpha.c:
+	* clutter/clutter-alpha.h:
+	Add clutter alpha sine func
+
+	* clutter/clutter-behaviours.h:
+	* clutter/clutter-behaviours.c:
+	Add a basic scale behaviour (needs work)
+
+	* examples/behave.c: (main):
+	More playing with new behaviour functionality
+
+	* clutter/clutter-feature.c:
+	* clutter/clutter-feature.h:
+	* clutter/clutter-main.c:
+	Add new experimental sync to vblank code
+	Set env CLUTTER_VBLANK=none to disable.
+
+2006-11-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-alpha.h:
 	* clutter/clutter-alpha.c: ClutterAlpha is an initially

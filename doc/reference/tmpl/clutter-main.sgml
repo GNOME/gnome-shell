@@ -32,6 +32,11 @@ clutter-main
 @x: 
 @a...:
 @a...:
+@a...:
+@a...:
+@a...:
+@a...:
+@a...:
 @a...: 
 
 
@@ -48,6 +53,18 @@ clutter-main
 </para>
 
 
+
+<!-- ##### ENUM ClutterInitError ##### -->
+<para>
+
+</para>
+
+@CLUTTER_INIT_SUCCESS: 
+@CLUTTER_INIT_ERROR_UNKOWN: 
+@CLUTTER_INIT_ERROR_THREADS: 
+@CLUTTER_INIT_ERROR_DISPLAY: 
+@CLUTTER_INIT_ERROR_INTERNAL: 
+@CLUTTER_INIT_ERROR_OPENGL: 
 
 <!-- ##### FUNCTION clutter_init ##### -->
 <para>

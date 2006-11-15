@@ -39,6 +39,12 @@ The #ClutterActor @arg1 was removed from the group.
 @cluttergroup: the object which received the signal.
 @arg1: a #ClutterActor.
 
+<!-- ##### STRUCT ClutterGroupClass ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### FUNCTION clutter_group_new ##### -->
 <para>
 

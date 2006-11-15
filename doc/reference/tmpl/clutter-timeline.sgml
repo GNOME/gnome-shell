@@ -67,12 +67,28 @@ The #ClutterTimeline has been started.
 
 </para>
 
+<!-- ##### STRUCT ClutterTimelineClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+@started: 
+@completed: 
+@paused: 
+@new_frame: 
+@_clutter_timeline_1: 
+@_clutter_timeline_2: 
+@_clutter_timeline_3: 
+@_clutter_timeline_4: 
+@_clutter_timeline_5: 
+
 <!-- ##### FUNCTION clutter_timeline_new ##### -->
 <para>
 
 </para>
 
-@nframes: 
+@n_frames: 
 @fps: 
 @Returns: 
 
@@ -84,6 +100,15 @@ The #ClutterTimeline has been started.
 
 @timeline: 
 @fps: 
+
+
+<!-- ##### FUNCTION clutter_timeline_get_speed ##### -->
+<para>
+
+</para>
+
+@timeline: 
+@Returns: 
 
 
 <!-- ##### FUNCTION clutter_timeline_start ##### -->
@@ -142,7 +167,7 @@ The #ClutterTimeline has been started.
 </para>
 
 @timeline: 
-@nframes: 
+@n_frames: 
 
 
 <!-- ##### FUNCTION clutter_timeline_advance ##### -->
@@ -161,6 +186,15 @@ The #ClutterTimeline has been started.
 
 @timeline: 
 @Returns: 
+
+
+<!-- ##### FUNCTION clutter_timeline_set_n_frames ##### -->
+<para>
+
+</para>
+
+@timeline: 
+@n_frames: 
 
 
 <!-- ##### FUNCTION clutter_timeline_get_n_frames ##### -->

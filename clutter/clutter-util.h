@@ -39,9 +39,6 @@ clutter_util_untrap_x_errors(void);
 int 
 clutter_util_next_p2 (int a);
 
-gboolean
-clutter_util_can_create_texture (int width, int height);
-
 G_END_DECLS
 
 #endif

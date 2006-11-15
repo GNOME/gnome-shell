@@ -94,6 +94,14 @@ clutter-event
 </para>
 
 
+<!-- ##### FUNCTION clutter_event_get_type ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### FUNCTION clutter_event_new ##### -->
 <para>
 
@@ -144,6 +152,24 @@ clutter-event
 </para>
 
 @keyev: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_button_event_x ##### -->
+<para>
+
+</para>
+
+@buttev: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_button_event_y ##### -->
+<para>
+
+</para>
+
+@buttev: 
 @Returns: 
 
 
