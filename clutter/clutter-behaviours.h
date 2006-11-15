@@ -80,7 +80,7 @@ clutter_path_behavior_append_knots (ClutterBehaviourPath  *pathb,
 				    const ClutterKnot     *first_knot,
 				    ...);
 
-/* opacity */
+/* ============================ opacity ======================== */
 
 #define CLUTTER_TYPE_BEHAVIOUR_OPACITY clutter_behaviour_opacity_get_type()
 
@@ -125,6 +125,67 @@ ClutterBehaviour*
 clutter_behaviour_opacity_new (ClutterAlpha *alpha,
 			       guint8        opacity_start,
 			       guint8        opacity_end);
+
+/* ============================ scale ======================== */
+
+#define CLUTTER_TYPE_BEHAVIOUR_SCALE clutter_behaviour_scale_get_type()
+
+#define CLUTTER_BEHAVIOUR_SCALE(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
+  CLUTTER_TYPE_BEHAVIOUR_SCALE, ClutterBehaviourScale))
+
+#define CLUTTER_BEHAVIOUR_SCALE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST ((klass), \
+  CLUTTER_TYPE_BEHAVIOUR_SCALE, ClutterBehaviourScaleClass))
+
+#define CLUTTER_IS_BEHAVIOUR_SCALE(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
+  CLUTTER_TYPE_BEHAVIOUR_SCALE))
+
+#define CLUTTER_IS_BEHAVIOUR_SCALE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
+  CLUTTER_TYPE_BEHAVIOUR_SCALE))
+
+#define CLUTTER_BEHAVIOUR_SCALE_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
+  CLUTTER_TYPE_BEHAVIOUR_SCALE, ClutterBehaviourScaleClass))
+
+typedef struct _ClutterBehaviourScale       ClutterBehaviourScale;
+typedef struct ClutterBehaviourScalePrivate ClutterBehaviourScalePrivate;
+typedef struct _ClutterBehaviourScaleClass  ClutterBehaviourScaleClass;
+ 
+struct _ClutterBehaviourScale
+{
+  ClutterBehaviour             parent;
+  ClutterBehaviourScalePrivate *priv;
+};
+
+struct _ClutterBehaviourScaleClass
+{
+  ClutterBehaviourClass   parent_class;
+};
+
+typedef enum {
+  CLUTTER_GRAVITY_NONE = 0,
+  CLUTTER_GRAVITY_NORTH,
+  CLUTTER_GRAVITY_NORTH_EAST,
+  CLUTTER_GRAVITY_EAST,
+  CLUTTER_GRAVITY_SOUTH_EAST,
+  CLUTTER_GRAVITY_SOUTH,
+  CLUTTER_GRAVITY_SOUTH_WEST,
+  CLUTTER_GRAVITY_WEST,
+  CLUTTER_GRAVITY_NORTH_WEST,
+  CLUTTER_GRAVITY_CENTER
+} ClutterGravity;
+
+GType clutter_behaviour_scale_get_type (void);
+
+ClutterBehaviour*
+clutter_behaviour_scale_new (ClutterAlpha  *alpha,
+			     double         scale_begin,
+			     double         scale_end,
+			     ClutterGravity gravity);
+
 
 G_END_DECLS
 

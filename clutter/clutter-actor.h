@@ -237,6 +237,16 @@ clutter_actor_get_abs_size (ClutterActor *self,
 			    guint        *width,
 			    guint        *height);
 
+void
+clutter_actor_get_size (ClutterActor *self,
+			guint        *width,
+			guint        *height);
+
+void
+clutter_actor_move_by (ClutterActor *self,
+		       gint          dx,
+		       gint          dy);
+
 G_END_DECLS
 
 #endif

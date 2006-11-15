@@ -875,6 +875,36 @@ clutter_actor_set_position (ClutterActor *self,
 }
 
 /**
+ * clutter_actor_move_by
+ * @self: A #ClutterActor
+ * @dx: Distance to move Actor on X axis.
+ * @dy: Distance to move Actor on Y axis.
+ *
+ * Moves an actor by specified distance relative to 
+ * current position.
+ *
+ * Since: 0.2
+ */
+void
+clutter_actor_move_by (ClutterActor *self,
+		       gint          dx,
+		       gint          dy)
+{
+  ClutterActorBox box;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_allocate_coords (self, &box);
+
+  box.x2 += dx;
+  box.y2 += dy;
+  box.x1 += dx;
+  box.y1 += dy;
+
+  clutter_actor_request_coords (self, &box);
+}
+
+/**
  * clutter_actor_set_size
  * @self: A #ClutterActor
  * @width: New width of actor in pixels 
@@ -898,6 +928,29 @@ clutter_actor_set_size (ClutterActor *self,
   box.y2 = box.y1 + height;
 
   clutter_actor_request_coords (self, &box);
+}
+
+/*
+ * clutter_actor_get_size
+ * @self: A #ClutterActor
+ * @x: Location to store width if non NULL.
+ * @y: Location to store height if non NULL.
+ *
+ * Gets the size of an actor ignoring any scaling factors
+ *
+ * Since: 0.2
+ */
+void
+clutter_actor_get_size (ClutterActor *self,
+			guint        *width,
+			guint        *height)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  if (width)
+    *width = clutter_actor_get_width(self);
+  if (height)
+    *height = clutter_actor_get_height(self);
 }
 
 /**

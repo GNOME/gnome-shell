@@ -37,6 +37,7 @@
 #include "clutter-alpha.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
+#include <math.h>
 
 G_DEFINE_TYPE (ClutterAlpha, clutter_alpha, G_TYPE_OBJECT);
 
@@ -103,6 +104,26 @@ clutter_alpha_ramp_func (ClutterAlpha *alpha)
     {
       return (current_frame_num * CLUTTER_ALPHA_MAX_ALPHA) / (nframes/2);
     }
+}
+
+guint32 
+clutter_alpha_sine_func (ClutterAlpha *alpha)
+{
+  int    current_frame_num, nframes;
+  double x;
+
+  current_frame_num =
+          clutter_timeline_get_current_frame (alpha->priv->timeline);
+  nframes =
+          clutter_timeline_get_n_frames (alpha->priv->timeline);
+
+  /* FIXME: fixed point, and fixed point sine() */
+
+  x = (double)(current_frame_num * 2.0f * M_PI) / nframes ;
+
+  printf("%2f\n", ((sin(x-(M_PI/2.0f)) + 1.0f ) * 0.5f )); 
+
+  return (guint32) (((sin(x-(M_PI/2.0f)) + 1.0f ) * 0.5f ) * (double)CLUTTER_ALPHA_MAX_ALPHA);  
 }
 
 /* Object */

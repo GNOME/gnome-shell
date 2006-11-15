@@ -289,13 +289,7 @@ clutter_redraw (void)
 
   if (clutter_stage_get_xwindow (stage))
     {
-#if 0
-      unsigned int retraceCount;
-      /* Wait for vertical retrace */
-      /* glXGetVideoSyncSGI(&retraceCount); */
-      /* glXWaitVideoSyncSGI(2, (retraceCount+1)%2, &retraceCount); */
-      glXWaitVideoSyncSGI(1, 0, &retraceCount);
-#endif
+      clutter_feature_wait_for_vblank ();
       glXSwapBuffers(ctx->xdpy, clutter_stage_get_xwindow (stage));  
     }
   else
@@ -583,6 +577,7 @@ clutter_init (int *argc, char ***argv)
   clutter_feature_init ();
 
   events_init ();
+
 
   context->is_initialized = TRUE;
 

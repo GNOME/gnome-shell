@@ -112,9 +112,13 @@ clutter_alpha_ramp_dec_func (ClutterAlpha *alpha);
 guint32 
 clutter_alpha_ramp_func (ClutterAlpha *alpha);
 
+guint32 
+clutter_alpha_sine_func (ClutterAlpha *alpha);
+
 #define CLUTTER_ALPHA_RAMP_INC clutter_alpha_ramp_inc_func
 #define CLUTTER_ALPHA_RAMP_DEC clutter_alpha_ramp_dec_func
 #define CLUTTER_ALPHA_RAMP     clutter_alpha_ramp_func
+#define CLUTTER_ALPHA_SINE     clutter_alpha_sine_func
 
 G_END_DECLS
 

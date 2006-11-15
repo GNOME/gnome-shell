@@ -41,11 +41,13 @@ G_END_DECLS
 
 typedef enum 
 {
-  CLUTTER_FEATURE_TEXTURE_RECTANGLE = (1 << 1)
+  CLUTTER_FEATURE_TEXTURE_RECTANGLE = (1 << 1),
+  CLUTTER_FEATURE_SYNC_TO_VBLANK    = (1 << 2)
 } ClutterFeatureFlags;
 
 gboolean            clutter_feature_available (ClutterFeatureFlags flags);
 ClutterFeatureFlags clutter_feature_get_all   (void);
+void                clutter_feature_wait_for_vblank ();
 
 G_END_DECLS
 
