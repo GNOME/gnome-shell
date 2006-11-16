@@ -33,6 +33,7 @@
 #include "config.h"
 
 #include "clutter-actor.h"
+#include "clutter-group.h"
 #include "clutter-main.h"
 #include "clutter-enum-types.h"
 #include "clutter-marshal.h"
@@ -1575,10 +1576,69 @@ clutter_actor_unparent (ClutterActor *self)
   if (self->priv->parent_actor == NULL)
     return;
 
+  /* just hide the actor if we are reparenting it */
+  if (CLUTTER_ACTOR_IS_REALIZED (self))
+    {
+      if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT)
+        clutter_actor_hide (self);
+      else
+        clutter_actor_unrealize (self);
+    }
+
   self->priv->parent_actor = NULL;
   g_object_unref (self);
 }
 
+/**
+ * clutter_actor_reparent:
+ * @self: a #ClutterActor
+ * @new_parent: the new #ClutterActor parent
+ *
+ * This function resets the parent actor of @self.  It is
+ * logically equivalent to calling clutter_actory_unparent()
+ * and clutter_actor_set_parent().
+ *
+ * Since: 0.1.1
+ */
+void
+clutter_actor_reparent (ClutterActor *self,
+                        ClutterActor *new_parent)
+{
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (CLUTTER_IS_ACTOR (new_parent));
+  g_return_if_fail (self != new_parent);
+  
+  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IS_TOPLEVEL)
+    {
+      g_warning ("Cannot set a parent on a toplevel actor\n");
+      return;
+    }
+
+  if (self->priv->parent_actor != new_parent)
+    {
+      /* if the actor and the parent have already been realized,
+       * mark the actor as reparenting, so that clutter_actor_unparent()
+       * just hides the actor instead of unrealize it.
+       */
+      if (CLUTTER_ACTOR_IS_REALIZED (self) &&
+          CLUTTER_ACTOR_IS_REALIZED (new_parent))
+        {
+          CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_REPARENT);
+        }
+
+      g_object_ref (self);
+      clutter_group_remove (CLUTTER_GROUP (self->priv->parent_actor), self);
+      clutter_group_add (CLUTTER_GROUP (new_parent), self);
+      g_object_unref (self);
+
+      if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT)
+        {
+          CLUTTER_UNSET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_REPARENT);
+
+          clutter_actor_queue_redraw (self);
+        }
+   }
+}
 /**
  * clutter_actor_raise:
  * @self: A #ClutterActor

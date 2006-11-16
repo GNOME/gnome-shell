@@ -1,3 +1,10 @@
+2006-11-16  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-private.h:
+	* clutter/clutter-actor.c: Implement the defined
+	clutter_actor_reparent() method; call unrealize
+	when unparenting an actor.
+
 2006-11-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-alpha.h:

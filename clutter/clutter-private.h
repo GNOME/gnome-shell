@@ -76,7 +76,8 @@ typedef enum {
   CLUTTER_ACTOR_UNUSED_FLAG = 0,
 
   CLUTTER_ACTOR_IN_DESTRUCTION = 1 << 0,
-  CLUTTER_ACTOR_IS_TOPLEVEL    = 1 << 1
+  CLUTTER_ACTOR_IS_TOPLEVEL    = 1 << 1,
+  CLUTTER_ACTOR_IN_REPARENT    = 1 << 2
 } ClutterPrivateFlags;
 
 #define CLUTTER_PRIVATE_FLAGS(a)	 (CLUTTER_ACTOR ((a))->private_flags)
