@@ -1,3 +1,26 @@
+2006-11-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Move stuff around: get_type and Private
+	stuff go in the Private subsection; remove private symbols like
+	pango stuff and the enum gtype signatures; remove cruft.
+
+	* Makefile.am: Add more private files.
+
+	* tmpl/clutter-fixed.sgml:
+	* tmpl/clutter-feature.sgml:
+	* tmpl/clutter-actor.sgml:
+	* tmpl/clutter-media.sgml:
+	* tmpl/clutter-behaviour-opacity.sgml:
+	* tmpl/clutter-behaviour-path.sgml:
+	* tmpl/clutter-behaviour-scale.sgml:
+	* tmpl/clutter-behaviour.sgml:
+	* tmpl/clutter-alpha.sgml: Add templates.
+
+	* tmpl/clutter-0.0-unused.sgml:
+	* tmpl/clutter.sgml:
+	* tmpl/clutter-enum-types.sgml:
+	* tmpl/clutter-element.sgml: Remove old templates.
+
 2006-11-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt:

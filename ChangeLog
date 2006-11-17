@@ -1,3 +1,24 @@
+2006-11-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-behaviour-path.h:
+	* clutter/clutter-behaviour-path.c: Add a "knot-reached" signal,
+	which is emitted when the path reaches a node in the nodes list;
+	flesh out the documentation a bit; sync the parameters names
+	so that gtk-doc doesn't complain about missing stuff.
+
+	* clutter/clutter-behaviour.h:
+	* clutter/clutter-behaviour.c: Add the alpha value to the
+	ClutterBehaviour::alpha_notify vfunc, so you don't have to
+	get the value from the alpha inside the behaviour implementations;
+	add more documentation.
+
+	* clutter/clutter-alpha.c: Flesh out the description.
+
+	* clutter/clutter-actor.h: Update the header.
+
+	* clutter/clutter-behaviour-opacity.c:
+	* clutter/clutter-behaviour-scale.c: Update docs.
+
 2006-11-17  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-alpha.c:

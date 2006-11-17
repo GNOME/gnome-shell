@@ -1,0 +1,44 @@
+<!-- ##### SECTION Title ##### -->
+ClutterBehaviourScale
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT ClutterBehaviourScale ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT ClutterBehaviourScaleClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+
+<!-- ##### FUNCTION clutter_behaviour_scale_new ##### -->
+<para>
+
+</para>
+
+@alpha: 
+@scale_begin: 
+@scale_end: 
+@gravity: 
+@Returns: 
+
+

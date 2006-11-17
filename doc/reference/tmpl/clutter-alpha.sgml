@@ -1,0 +1,123 @@
+<!-- ##### SECTION Title ##### -->
+ClutterAlpha
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+#ClutterBehaviour, #ClutterTimeline
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT ClutterAlpha ##### -->
+<para>
+The #ClutterAlpha structure contains only private data and should not be
+accessed directly.
+</para>
+
+
+<!-- ##### ARG ClutterAlpha:alpha ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterAlpha:timeline ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT ClutterAlphaClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+@_clutter_alpha_1: 
+@_clutter_alpha_2: 
+@_clutter_alpha_3: 
+@_clutter_alpha_4: 
+@_clutter_alpha_5: 
+
+<!-- ##### FUNCTION clutter_alpha_new ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_alpha_new_full ##### -->
+<para>
+
+</para>
+
+@timeline: 
+@func: 
+@data: 
+@destroy: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_alpha_get_alpha ##### -->
+<para>
+
+</para>
+
+@alpha: 
+@Returns: 
+
+
+<!-- ##### MACRO CLUTTER_ALPHA_MAX_ALPHA ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### USER_FUNCTION ClutterAlphaFunc ##### -->
+<para>
+
+</para>
+
+@alpha: 
+@user_data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_alpha_set_func ##### -->
+<para>
+
+</para>
+
+@alpha: 
+@func: 
+@data: 
+@destroy: 
+
+
+<!-- ##### FUNCTION clutter_alpha_set_timeline ##### -->
+<para>
+
+</para>
+
+@alpha: 
+@timeline: 
+
+
+<!-- ##### FUNCTION clutter_alpha_get_timeline ##### -->
+<para>
+
+</para>
+
+@alpha: 
+@Returns: 
+
+

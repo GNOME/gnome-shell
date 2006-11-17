@@ -1,0 +1,135 @@
+<!-- ##### SECTION Title ##### -->
+clutter-fixed
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### TYPEDEF ClutterFixed ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO CFX_Q ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CFX_ONE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CFX_MAX ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CFX_MIN ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_FIXED_TO_FLOAT ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### MACRO CLUTTER_FIXED_TO_DOUBLE ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### MACRO CLUTTER_FLOAT_TO_FIXED ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### MACRO CLUTTER_INT_TO_FIXED ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### MACRO CLUTTER_FIXED_INT ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### MACRO CLUTTER_FIXED_FRACTION ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### MACRO CLUTTER_FIXED_FLOOR ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### MACRO CLUTTER_FIXED_CEIL ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### MACRO CLUTTER_FIXED_MUL ##### -->
+<para>
+
+</para>
+
+@x: 
+@y: 
+
+
+<!-- ##### MACRO CLUTTER_FIXED_DIV ##### -->
+<para>
+
+</para>
+
+@x: 
+@y: 
+
+

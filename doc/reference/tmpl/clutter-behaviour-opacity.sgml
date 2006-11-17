@@ -1,0 +1,43 @@
+<!-- ##### SECTION Title ##### -->
+ClutterBehaviourOpacity
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT ClutterBehaviourOpacity ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### STRUCT ClutterBehaviourOpacityClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+
+<!-- ##### FUNCTION clutter_behaviour_opacity_new ##### -->
+<para>
+
+</para>
+
+@alpha: 
+@opacity_start: 
+@opacity_end: 
+@Returns: 
+
+

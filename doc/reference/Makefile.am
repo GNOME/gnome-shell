@@ -51,7 +51,9 @@ IGNORE_HFILES=\
 	clutter-private.h \
 	clutter-marshal.h \
 	clutter-keysyms.h \
-	stamp-clutter-enum-types.h
+	clutter-enum-types.h \
+	stamp-clutter-enum-types.h \
+	pango
 
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png

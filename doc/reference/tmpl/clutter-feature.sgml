@@ -1,0 +1,44 @@
+<!-- ##### SECTION Title ##### -->
+clutter-feature
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### ENUM ClutterFeatureFlags ##### -->
+<para>
+
+</para>
+
+@CLUTTER_FEATURE_TEXTURE_RECTANGLE: 
+@CLUTTER_FEATURE_SYNC_TO_VBLANK: 
+
+<!-- ##### FUNCTION clutter_feature_available ##### -->
+<para>
+
+</para>
+
+@flags: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_feature_get_all ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+

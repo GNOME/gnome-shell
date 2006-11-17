@@ -1,0 +1,196 @@
+<!-- ##### SECTION Title ##### -->
+clutter-media
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### MACRO CLUTTER_MEDIA_GET_INTERFACE ##### -->
+<para>
+
+</para>
+
+@obj: 
+
+
+<!-- ##### STRUCT ClutterMedia ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG ClutterMedia:buffer-percent ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterMedia:can-seek ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterMedia:duration ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterMedia:playing ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterMedia:position ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterMedia:uri ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterMedia:volume ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT ClutterMediaInterface ##### -->
+<para>
+
+</para>
+
+@base_iface: 
+@set_uri: 
+@get_uri: 
+@set_playing: 
+@get_playing: 
+@set_position: 
+@get_position: 
+@set_volume: 
+@get_volume: 
+@can_seek: 
+@get_buffer_percent: 
+@get_duration: 
+@eos: 
+@error: 
+
+<!-- ##### FUNCTION clutter_media_set_uri ##### -->
+<para>
+
+</para>
+
+@media: 
+@uri: 
+
+
+<!-- ##### FUNCTION clutter_media_get_uri ##### -->
+<para>
+
+</para>
+
+@media: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_media_set_playing ##### -->
+<para>
+
+</para>
+
+@media: 
+@playing: 
+
+
+<!-- ##### FUNCTION clutter_media_get_playing ##### -->
+<para>
+
+</para>
+
+@media: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_media_set_position ##### -->
+<para>
+
+</para>
+
+@media: 
+@position: 
+
+
+<!-- ##### FUNCTION clutter_media_get_position ##### -->
+<para>
+
+</para>
+
+@media: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_media_set_volume ##### -->
+<para>
+
+</para>
+
+@media: 
+@volume: 
+
+
+<!-- ##### FUNCTION clutter_media_get_volume ##### -->
+<para>
+
+</para>
+
+@media: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_media_get_can_seek ##### -->
+<para>
+
+</para>
+
+@media: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_media_get_buffer_percent ##### -->
+<para>
+
+</para>
+
+@media: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_media_get_duration ##### -->
+<para>
+
+</para>
+
+@media: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_media_set_filename ##### -->
+<para>
+
+</para>
+
+@media: 
+@filename: 
+
+

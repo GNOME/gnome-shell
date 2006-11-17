@@ -44,6 +44,13 @@
 
 #include <math.h>
 
+/**
+ * SECTION:clutter-behaviour-opacity
+ * @short_description: Behaviour controlling the opacity
+ *
+ * #ClutterBehaviourOpacity controls the opacity of a set of actors.
+ */
+
 G_DEFINE_TYPE (ClutterBehaviourOpacity,
                clutter_behaviour_opacity,
 	       CLUTTER_TYPE_BEHAVIOUR);
@@ -60,8 +67,8 @@ struct _ClutterBehaviourOpacityPrivate
                ClutterBehaviourOpacityPrivate))
 
 static void
-clutter_behaviour_opacity_frame_foreach (ClutterActor            *actor,
-					 ClutterBehaviourOpacity *behave)
+opacity_frame_foreach (ClutterActor            *actor,
+                       ClutterBehaviourOpacity *behave)
 {
   guint32                         alpha;
   guint8                          opacity;
@@ -84,10 +91,11 @@ clutter_behaviour_opacity_frame_foreach (ClutterActor            *actor,
 }
 
 static void
-clutter_behaviour_alpha_notify (ClutterBehaviour *behave)
+clutter_behaviour_alpha_notify (ClutterBehaviour *behave,
+                                guint32           alpha_value)
 {
   clutter_behaviour_actors_foreach (behave,
-                                    (GFunc)clutter_behaviour_opacity_frame_foreach,
+                                    (GFunc) opacity_frame_foreach,
                                     CLUTTER_BEHAVIOUR_OPACITY (behave));
 }
 
@@ -117,18 +125,18 @@ clutter_behaviour_opacity_init (ClutterBehaviourOpacity *self)
 }
 
 /**
- * clutter_behaviour_opacity_new :
- * @alpha: a #ClutterAlpha
- * @scale_begin: initial opacity value
- * @scale_end: final opacity value
+ * clutter_behaviour_opacity_new:
+ * @alpha: a #ClutterAlpha instance, or %NULL
+ * @opacity_start: minimum level of opacity
+ * @opacity_end: maximum level of opacity
  *
- * Creates a new  #ClutterBehaviourOpacity instance.
+ * Creates a new #ClutterBehaviourOpacity object, driven by @alpha
+ * which controls the opacity property of every actor, making it
+ * change in the interval between @opacity_start and @opacity_end.
  *
  * Return value: the newly created #ClutterBehaviourOpacity
- *
- * Since: 0.2
  */
-ClutterBehaviour*
+ClutterBehaviour *
 clutter_behaviour_opacity_new (ClutterAlpha *alpha,
 			       guint8        opacity_start,
 			       guint8        opacity_end)

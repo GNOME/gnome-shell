@@ -45,6 +45,13 @@
 
 #include <math.h>
 
+/**
+ * SECTION:clutter-behaviour-scale
+ * @short_description: Behaviour controlling the scale of a set of actors
+ *
+ * FIXME
+ */
+
 G_DEFINE_TYPE (ClutterBehaviourScale,
                clutter_behaviour_scale,
 	       CLUTTER_TYPE_BEHAVIOUR);
@@ -63,8 +70,8 @@ struct _ClutterBehaviourScalePrivate
                ClutterBehaviourScalePrivate))
 
 static void
-clutter_behaviour_scale_frame_foreach (ClutterActor            *actor,
-					 ClutterBehaviourScale *behave)
+scale_frame_foreach (ClutterActor          *actor,
+		     ClutterBehaviourScale *behave)
 {
   ClutterFixed                    scale, factor;
   guint32                         alpha;
@@ -122,10 +129,11 @@ clutter_behaviour_scale_frame_foreach (ClutterActor            *actor,
 }
 
 static void
-clutter_behaviour_scale_alpha_notify (ClutterBehaviour *behave)
+clutter_behaviour_scale_alpha_notify (ClutterBehaviour *behave,
+                                      guint32           alpha_value)
 {
   clutter_behaviour_actors_foreach (behave,
-                                    (GFunc)clutter_behaviour_scale_frame_foreach,
+                                    (GFunc) scale_frame_foreach,
                                     CLUTTER_BEHAVIOUR_SCALE (behave));
 }
 
@@ -154,6 +162,7 @@ clutter_behaviour_scale_init (ClutterBehaviourScale *self)
  * @alpha: a #ClutterAlpha
  * @scale_begin: initial scale factor
  * @scale_end: final scale factor
+ * @gravity: FIXME
  *
  * Creates a new  #ClutterBehaviourScale instance.
  *

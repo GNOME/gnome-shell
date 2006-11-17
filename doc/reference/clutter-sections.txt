@@ -19,6 +19,7 @@ clutter_media_set_filename
 CLUTTER_MEDIA
 CLUTTER_IS_MEDIA
 CLUTTER_TYPE_MEDIA
+<SUBSECTION Private>
 clutter_media_get_type
 </SECTION>
 
@@ -99,12 +100,12 @@ clutter_alpha_get_timeline
 CLUTTER_ALPHA
 CLUTTER_IS_ALPHA
 CLUTTER_TYPE_ALPHA
-clutter_alpha_get_type
 CLUTTER_ALPHA_CLASS
 CLUTTER_IS_ALPHA_CLASS
 CLUTTER_ALPHA_GET_CLASS
 <SUBSECTION Private>
 ClutterAlphaPrivate
+clutter_alpha_get_type
 </SECTION>
 
 <SECTION>
@@ -186,16 +187,13 @@ CLUTTER_ACTOR_IS_MAPPED
 CLUTTER_ACTOR_IS_REALIZED
 CLUTTER_ACTOR_IS_VISIBLE
 ClutterActorBox
-ClutterActorPrivate
-ClutterGeometry
-ClutterCallback
-CLUTTER_CALLBACK
 ClutterActorFlags
-clutter_actor_box_get_type
+ClutterGeometry
+CLUTTER_CALLBACK
+ClutterCallback
 <TITLE>ClutterActor</TITLE>
 ClutterActor
 ClutterActorClass
-clutter_actor_get_type
 clutter_actor_show
 clutter_actor_hide
 clutter_actor_realize
@@ -245,10 +243,14 @@ clutter_actor_get_abs_size
 CLUTTER_ACTOR
 CLUTTER_IS_ACTOR
 CLUTTER_TYPE_ACTOR
-clutter_geometry_get_type
 CLUTTER_ACTOR_CLASS
 CLUTTER_IS_ACTOR_CLASS
 CLUTTER_ACTOR_GET_CLASS
+<SUBSECTION Private>
+ClutterActorPrivate
+clutter_actor_get_type
+clutter_actor_box_get_type
+clutter_geometry_get_type
 </SECTION>
 
 <SECTION>
@@ -400,57 +402,10 @@ clutter_behaviour_scale_get_type
 </SECTION>
 
 <SECTION>
-<FILE>pangoclutter-private</FILE>
-PANGO_SCALE_26_6
-PANGO_PIXELS_26_6
-PANGO_UNITS_26_6
-PANGO_CLUTTER_FONT
-PangoClutterFont
-PangoClutterGlyphInfo
-pango_clutter_get_unknown_glyph
-pango_clutter_font_get_face
-PangoClutterRenderer
-PANGO_TYPE_CLUTTER_RENDERER
-PANGO_CLUTTER_RENDERER
-PANGO_IS_CLUTTER_RENDERER
-pango_clutter_renderer_get_type
-pango_fc_font_get_raw_extents
-<SUBSECTION Standard>
-PANGO_TYPE_CLUTTER_FONT
-PANGO_CLUTTER_IS_FONT
-pango_clutter_font_get_type
-</SECTION>
-
-<SECTION>
-<FILE>pangoclutter</FILE>
-PANGO_ENABLE_BACKEND
-G_DISABLE_CAST_CHECKS
-PANGO_CLUTTER_FONT_MAP
-PangoClutterFontMap
-PangoClutterFontMapClass
-PangoClutterSubstituteFunc
-pango_clutter_font_map_new
-pango_clutter_font_map_set_default_substitute
-pango_clutter_font_map_substitute_changed
-pango_clutter_font_map_create_context
-FLAG_INVERSE
-FLAG_OUTLINE
-pango_clutter_render_layout_subpixel
-pango_clutter_render_layout
-pango_clutter_render_layout_line
-pango_clutter_render_clear_caches
-<SUBSECTION Standard>
-PANGO_TYPE_CLUTTER_FONT_MAP
-PANGO_CLUTTER_IS_FONT_MAP
-pango_clutter_font_map_get_type
-</SECTION>
-
-<SECTION>
 <FILE>clutter-util</FILE>
 clutter_util_trap_x_errors
 clutter_util_untrap_x_errors
 clutter_util_next_p2
-clutter_util_can_create_texture
 </SECTION>
 
 <SECTION>
@@ -539,22 +494,3 @@ clutter_want_debug
 clutter_threads_enter
 clutter_threads_leave
 </SECTION>
-
-<SECTION>
-<FILE>clutter</FILE>
-</SECTION>
-
-<SECTION>
-<FILE>clutter-enum-types</FILE>
-CLUTTER_TYPE_EVENT_TYPE
-clutter_event_type_get_type
-CLUTTER_TYPE_FEATURE_FLAGS
-clutter_feature_flags_get_type
-CLUTTER_TYPE_ACTOR_FLAGS
-clutter_actor_flags_get_type
-CLUTTER_TYPE_RAMP_TYPE
-clutter_ramp_type_get_type
-CLUTTER_TYPE_INIT_ERROR
-clutter_init_error_get_type
-</SECTION>
-

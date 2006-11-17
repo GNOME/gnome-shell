@@ -934,8 +934,8 @@ clutter_actor_set_size (ClutterActor *self,
 /*
  * clutter_actor_get_size
  * @self: A #ClutterActor
- * @x: Location to store width if non NULL.
- * @y: Location to store height if non NULL.
+ * @width: Location to store width if non NULL.
+ * @height: Location to store height if non NULL.
  *
  * Gets the size of an actor ignoring any scaling factors
  *

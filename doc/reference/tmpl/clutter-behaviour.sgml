@@ -1,0 +1,90 @@
+<!-- ##### SECTION Title ##### -->
+ClutterBehaviour
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### STRUCT ClutterBehaviour ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG ClutterBehaviour:alpha ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT ClutterBehaviourClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+@alpha_notify: 
+@_clutter_behaviour1: 
+@_clutter_behaviour2: 
+@_clutter_behaviour3: 
+@_clutter_behaviour4: 
+@_clutter_behaviour5: 
+@_clutter_behaviour6: 
+
+<!-- ##### FUNCTION clutter_behaviour_apply ##### -->
+<para>
+
+</para>
+
+@behave: 
+@actor: 
+
+
+<!-- ##### FUNCTION clutter_behaviour_remove ##### -->
+<para>
+
+</para>
+
+@behave: 
+@actor: 
+
+
+<!-- ##### FUNCTION clutter_behaviour_actors_foreach ##### -->
+<para>
+
+</para>
+
+@behave: 
+@func: 
+@data: 
+
+
+<!-- ##### FUNCTION clutter_behaviour_get_alpha ##### -->
+<para>
+
+</para>
+
+@behave: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_behaviour_set_alpha ##### -->
+<para>
+
+</para>
+
+@behave: 
+@alpha: 
+
+

@@ -70,8 +70,11 @@ struct _ClutterBehaviourClass
 {
   GObjectClass parent_class;
 
-  void (*alpha_notify) (ClutterBehaviour *behave);
+  /* vfunc, not signal */
+  void (*alpha_notify) (ClutterBehaviour *behave,
+                        guint32           alpha_value);
 
+  /* padding, for future expansion */
   void (*_clutter_behaviour1) (void);
   void (*_clutter_behaviour2) (void);
   void (*_clutter_behaviour3) (void);

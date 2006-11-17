@@ -27,6 +27,26 @@
  * SECTION:clutter-behaviour
  * @short_description: Class for providing behaviours to actors
  *
+ * #ClutterBehaviour is the base class for implementing behaviours.  A
+ * behaviour is a controller object for #ClutterActor<!-- -->s; you can
+ * use a behaviour to control one or more properties of an actor (such
+ * as its opacity, or its position).  A #ClutterBehaviour is driven by
+ * an "alpha function" stored inside a #ClutterAlpha object; an alpha
+ * function is a function depending solely on time.  The alpha function
+ * computes a value which is then applied to the properties of the
+ * actors driven by a behaviour.
+ *
+ * Clutter provides some pre-defined behaviours, like #ClutterBehaviourPath,
+ * which controls the position of a set of actors making them "walk" along
+ * a set of nodes; #ClutterBehaviourOpacity, which controls the opacity
+ * of a set of actors; #ClutterBehaviourScale, which controls the width
+ * and height of a set of actors.
+ *
+ * In order to implement a new behaviour you should subclass #ClutterBehaviour
+ * and override the "alpha_notify" virtual function; inside the overridden
+ * function you should obtain the alpha value from the #ClutterAlpha
+ * instance bound to the behaviour and apply it to the desiderd property
+ * (or properties) of every actor controlled by the behaviour. 
  */
 
 #include "config.h"
@@ -214,12 +234,18 @@ notify_cb (GObject          *object,
            GParamSpec       *param_spec,
            ClutterBehaviour *behave)
 {
-  ClutterBehaviourClass *class;
+  ClutterBehaviourClass *klass;
 
-  class = CLUTTER_BEHAVIOUR_GET_CLASS(behave);
+  klass = CLUTTER_BEHAVIOUR_GET_CLASS (behave);
 
-  if (class->alpha_notify)
-    class->alpha_notify (behave);
+  if (klass->alpha_notify)
+    {
+      guint32 alpha_value;
+
+      alpha_value = clutter_alpha_get_alpha (behave->priv->alpha);
+
+      klass->alpha_notify (behave, alpha_value);
+    }
 }
 
 void

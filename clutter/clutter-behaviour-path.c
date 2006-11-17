@@ -39,11 +39,24 @@
 
 #include "clutter-actor.h"
 #include "clutter-behaviour.h"
+#include "clutter-marshal.h"
 #include "clutter-enum-types.h"
 #include "clutter-main.h"
 #include "clutter-behaviour-path.h"
 
 #include <math.h>
+
+/**
+ * SECTION:clutter-behaviour-path
+ * @short_description: Behaviour for walking on a path
+ * 
+ * #ClutterBehaviourPath makes all the actors driven by it walk on a path.
+ * A path is a set of #ClutterKnots object given when creating a new
+ * #ClutterBehaviourPath instance.  Knots can be also added to the path
+ * using clutter_behaviour_path_append_knot().  The whole path can be
+ * cleared using clutter_behaviour_path_clear().  Each time the behaviour
+ * reaches a knot in the path, the "knot-reached" signal is emitted.
+ */
 
 static ClutterKnot *
 clutter_knot_copy (const ClutterKnot *knot)
@@ -80,8 +93,8 @@ clutter_knot_get_type (void)
 }
 
 
-G_DEFINE_TYPE (ClutterBehaviourPath,   \
-               clutter_behaviour_path, \
+G_DEFINE_TYPE (ClutterBehaviourPath, 
+               clutter_behaviour_path,
 	       CLUTTER_TYPE_BEHAVIOUR);
 
 struct _ClutterBehaviourPathPrivate
@@ -94,6 +107,15 @@ struct _ClutterBehaviourPathPrivate
                CLUTTER_TYPE_BEHAVIOUR_PATH,        \
                ClutterBehaviourPathPrivate))
 
+enum
+{
+  KNOT_REACHED,
+
+  LAST_SIGNAL
+};
+
+static guint path_signals[LAST_SIGNAL] = { 0, };
+
 static void 
 clutter_behaviour_path_finalize (GObject *object)
 {
@@ -105,7 +127,7 @@ clutter_behaviour_path_finalize (GObject *object)
   G_OBJECT_CLASS (clutter_behaviour_path_parent_class)->finalize (object);
 }
 
-static void
+static inline void
 interpolate (const ClutterKnot *begin, 
 	     const ClutterKnot *end, 
 	     ClutterKnot       *out,
@@ -117,7 +139,8 @@ interpolate (const ClutterKnot *begin,
 }
 
 static gint
-node_distance (const ClutterKnot *begin, const ClutterKnot *end)
+node_distance (const ClutterKnot *begin,
+               const ClutterKnot *end)
 {
   g_return_val_if_fail (begin != NULL, 0);
   g_return_val_if_fail (end != NULL, 0);
@@ -141,18 +164,18 @@ path_total_length (ClutterBehaviourPath *behave)
 }
 
 static void
-actor_apply_knot_foreach (ClutterActor            *actor,
-			  ClutterKnot             *knot)
+actor_apply_knot_foreach (ClutterActor *actor,
+			  ClutterKnot  *knot)
 {
   clutter_actor_set_position (actor, knot->x, knot->y);
 }
 
 static void
-path_alpha_to_position (ClutterBehaviourPath *behave)
+path_alpha_to_position (ClutterBehaviourPath *behave,
+                        guint32               alpha)
 {
   ClutterBehaviourPathPrivate *priv = behave->priv;
   ClutterBehaviour *behaviour = CLUTTER_BEHAVIOUR (behave);
-  guint32  alpha;
   GSList  *l;
   gint     total_len, offset, dist_to_next, dist = 0;
 
@@ -168,8 +191,6 @@ path_alpha_to_position (ClutterBehaviourPath *behave)
    *  o Apply to actors.
   */
 
-  alpha = clutter_alpha_get_alpha (clutter_behaviour_get_alpha (behaviour));
-
   total_len = path_total_length (behave);
   offset = (alpha * total_len) / CLUTTER_ALPHA_MAX_ALPHA;
 
@@ -178,6 +199,9 @@ path_alpha_to_position (ClutterBehaviourPath *behave)
       clutter_behaviour_actors_foreach (behaviour, 
 					(GFunc) actor_apply_knot_foreach,
 					priv->knots->data);
+      
+      g_signal_emit (behave, path_signals[KNOT_REACHED], 0,
+                     priv->knots->data);
       return;
     }
 
@@ -197,11 +221,15 @@ path_alpha_to_position (ClutterBehaviourPath *behave)
 	    
 	      /* FIXME: Use fixed */
 	      t = (double) (offset - dist) / dist_to_next;
+
               interpolate (knot, next, &new, t);
 
               clutter_behaviour_actors_foreach (behaviour, 
 					        (GFunc)actor_apply_knot_foreach,
 					        &new);
+
+              g_signal_emit (behave, path_signals[KNOT_REACHED], 0, &new);
+
 	      return;
 	    }
         }
@@ -211,25 +239,41 @@ path_alpha_to_position (ClutterBehaviourPath *behave)
 }
 
 static void
-clutter_behaviour_path_alpha_notify (ClutterBehaviour *behave)
+clutter_behaviour_path_alpha_notify (ClutterBehaviour *behave,
+                                     guint32           alpha_value)
 {
-  path_alpha_to_position (CLUTTER_BEHAVIOUR_PATH(behave));
+  path_alpha_to_position (CLUTTER_BEHAVIOUR_PATH (behave), alpha_value);
 }
 
 static void
 clutter_behaviour_path_class_init (ClutterBehaviourPathClass *klass)
 {
-  GObjectClass          *object_class;
-  ClutterBehaviourClass *behave_class;
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  ClutterBehaviourClass *behave_class = CLUTTER_BEHAVIOUR_CLASS (klass);
 
-  object_class = (GObjectClass*) klass;
-  behave_class = (ClutterBehaviourClass*) klass;
+  gobject_class->finalize = clutter_behaviour_path_finalize;
 
-  object_class->finalize = clutter_behaviour_path_finalize;
+  /**
+   * ClutterBehaviourPath::knot-reached:
+   * @pathb: the object which received the signal
+   * @knot: the #ClutterKnot reached
+   *
+   * This signal is emitted each time a node defined inside the path
+   * is reached.
+   */
+  path_signals[KNOT_REACHED] =
+    g_signal_new ("knot-reached",
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ClutterBehaviourPathClass, knot_reached),
+                  NULL, NULL,
+                  clutter_marshal_VOID__BOXED,
+                  G_TYPE_NONE, 1,
+                  CLUTTER_TYPE_KNOT);
 
   behave_class->alpha_notify = clutter_behaviour_path_alpha_notify;
-
-  g_type_class_add_private (object_class, sizeof (ClutterBehaviourPathPrivate));
+  
+  g_type_class_add_private (klass, sizeof (ClutterBehaviourPathPrivate));
 }
 
 static void
@@ -242,23 +286,24 @@ clutter_behaviour_path_init (ClutterBehaviourPath *self)
 
 /**
  * clutter_behaviour_path_new:
- * @alpha: a #ClutterAlpha
- * @knots: a list of #ClutterKnots 
- * @n_knots: the number of nodes in the path 
+ * @alpha: a #ClutterAlpha, or %NULL
+ * @knots: a list of #ClutterKnots, or %NULL for an empty path
+ * @n_knots: the number of nodes in the path
  *
- * Creates a new #ClutterBehaviourPath instance for supplied knots.
+ * Creates a new path behaviour. You can use this behaviour to drive
+ * actors along the nodes of a path, described by the @knots.
  *
  * Return value: a #ClutterBehaviour
  *
  * Since: 0.2
  */
 ClutterBehaviour *
-clutter_behaviour_path_new (ClutterAlpha          *alpha,
-			    const ClutterKnot     *knots,
-                            guint                  n_knots)
+clutter_behaviour_path_new (ClutterAlpha      *alpha,
+			    const ClutterKnot *knots,
+                            guint              n_knots)
 {
   ClutterBehaviourPath *behave;
-  gint i; 
+  gint i;
      
   behave = g_object_new (CLUTTER_TYPE_BEHAVIOUR_PATH, 
                          "alpha", alpha,
@@ -276,23 +321,23 @@ clutter_behaviour_path_new (ClutterAlpha          *alpha,
 
 /**
  * clutter_behaviour_path_get_knots:
- * @behave: a #ClutterBehvaiourPath
+ * @pathb: a #ClutterBehvaiourPath
  *
- * Returns a copy of the list of knots contained by the  #ClutterBehvaiourPath
+ * Returns a copy of the list of knots contained by @pathb 
  *
  * Return value: a #GSList of the paths knots.
  *
  * Since: 0.2
  */
 GSList *
-clutter_behaviour_path_get_knots (ClutterBehaviourPath *behave)
+clutter_behaviour_path_get_knots (ClutterBehaviourPath *pathb)
 {
   GSList *retval, *l;
 
-  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_PATH (behave), NULL);
+  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_PATH (pathb), NULL);
 
   retval = NULL;
-  for (l = behave->priv->knots; l != NULL; l = l->next)
+  for (l = pathb->priv->knots; l != NULL; l = l->next)
     retval = g_slist_prepend (retval, l->data);
   
   return g_slist_reverse (retval);

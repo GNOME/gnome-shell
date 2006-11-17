@@ -30,8 +30,17 @@
  * @short_description: A class for calculating an alpha value as a function
  * of time.
  *
- * #ClutterAlpha is a class for calculating an integer value between 
- * 0 and CLUTTER_ALPHA_MAX_ALPHA as a function of time. 
+ * #ClutterAlpha is a class for calculating an integer value between
+ * 0 and %CLUTTER_ALPHA_MAX_ALPHA as a function of time.  You should
+ * provide a #ClutterTimeline and bind it to the #ClutterAlpha object;
+ * you should also provide a function returning the alpha value depending
+ * on the position inside the timeline; this function will be executed
+ * each time a new frame in the #ClutterTimeline is reached.  Since the
+ * alpha function is controlled by the timeline instance, you can pause
+ * or stop the #ClutterAlpha from calling the alpha function by controlling
+ * the #ClutterTimeline object.
+ *
+ * #ClutterAlpha is used to "drive" a #ClutterBehaviour instance.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -142,6 +151,10 @@ clutter_alpha_finalize (GObject *object)
   if (priv->destroy)
     {
       priv->destroy (priv->data);
+
+      priv->destroy = NULL;
+      priv->data = NULL;
+      priv->func = NULL;
     }
 
   G_OBJECT_CLASS (clutter_alpha_parent_class)->finalize (object);
@@ -300,7 +313,9 @@ clutter_alpha_set_timeline (ClutterAlpha    *alpha,
  * clutter_alpha_get_timeline:
  * @alpha: A #ClutterAlpha
  *
- * Return value: The #ClutterTimeline
+ * Gets the #ClutterTimeline bound to @alpha.
+ *
+ * Return value: a #ClutterTimeline instance
  */
 ClutterTimeline *
 clutter_alpha_get_timeline (ClutterAlpha *alpha)
@@ -336,10 +351,10 @@ clutter_alpha_new (void)
  * @data: data to be passed to the alpha function
  * @destroy: notify to be called when removing the alpha function
  *
- * Create a new #ClutterAlpha instance and sets the timeline
+ * Creates a new #ClutterAlpha instance and sets the timeline
  * and alpha function.
  *
- * Return Value: a new #ClutterAlpha
+ * Return Value: the newly created #ClutterAlpha
  */
 ClutterAlpha *
 clutter_alpha_new_full (ClutterTimeline  *timeline,
@@ -360,6 +375,16 @@ clutter_alpha_new_full (ClutterTimeline  *timeline,
   return retval;
 }
 
+/**
+ * clutter_ramp_inc_func:
+ * @alpha: a #ClutterAlpha
+ * @dummy: unused argument
+ *
+ * Convenience alpha function for a monotonic increasing ramp. You
+ * can use this function as the alpha function for clutter_alpha_set_func().
+ *
+ * Return value: an alpha value.
+ */
 guint32
 clutter_ramp_inc_func (ClutterAlpha *alpha,
                        gpointer      dummy)
@@ -375,6 +400,16 @@ clutter_ramp_inc_func (ClutterAlpha *alpha,
   return (current_frame_num * CLUTTER_ALPHA_MAX_ALPHA) / n_frames;
 }
 
+/**
+ * clutter_ramp_dec_func:
+ * @alpha: a #ClutterAlpha
+ * @dummy: unused argument
+ *
+ * Convenience alpha function for a monotonic decreasing ramp. You
+ * can use this function as the alpha function for clutter_alpha_set_func().
+ *
+ * Return value: an alpha value.
+ */
 guint32
 clutter_ramp_dec_func (ClutterAlpha *alpha,
                        gpointer      dummy)
@@ -392,6 +427,17 @@ clutter_ramp_dec_func (ClutterAlpha *alpha,
          / n_frames;
 }
 
+/**
+ * clutter_ramp_func:
+ * @alpha: a #ClutterAlpha
+ * @dummy: unused argument
+ *
+ * Convenience alpha function for a full ramp function (increase for
+ * half the time, decrease for the remaining half). You can use this
+ * function as the alpha function for clutter_alpha_set_func().
+ *
+ * Return value: an alpha value.
+ */
 guint32
 clutter_ramp_func (ClutterAlpha *alpha,
                    gpointer      dummy)
@@ -418,6 +464,16 @@ clutter_ramp_func (ClutterAlpha *alpha,
     }
 }
 
+/**
+ * clutter_sine_func:
+ * @alpha: a #ClutterAlpha
+ * @dummy: unused argument
+ *
+ * Convenience alpha function for a sine wave. You can use this
+ * function as the alpha function for clutter_alpha_set_func().
+ *
+ * Return value: an alpha value.
+ */
 guint32 
 clutter_sine_func (ClutterAlpha *alpha,
                    gpointer      dummy)
@@ -438,5 +494,5 @@ clutter_sine_func (ClutterAlpha *alpha,
   CLUTTER_DBG ("%2f\n", ((sin (x - (M_PI / 2.0f)) + 1.0f) * 0.5f)); 
 
   return (guint32) (((sin (x - (M_PI / 2.0f)) + 1.0f) * 0.5f)
-                    * (gdouble) CLUTTER_ALPHA_MAX_ALPHA);  
+                    * (gdouble) CLUTTER_ALPHA_MAX_ALPHA);
 }
