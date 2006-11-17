@@ -49,6 +49,8 @@
  * @short_description: Behaviour controlling the opacity
  *
  * #ClutterBehaviourOpacity controls the opacity of a set of actors.
+ *
+ * Since: 0.2
  */
 
 G_DEFINE_TYPE (ClutterBehaviourOpacity,
@@ -65,6 +67,14 @@ struct _ClutterBehaviourOpacityPrivate
               (G_TYPE_INSTANCE_GET_PRIVATE ((obj),    \
                CLUTTER_TYPE_BEHAVIOUR_OPACITY,        \
                ClutterBehaviourOpacityPrivate))
+
+enum
+{
+  PROP_0,
+
+  PROP_OPACITY_START,
+  PROP_OPACITY_END
+};
 
 static void
 opacity_frame_foreach (ClutterActor            *actor,
@@ -105,13 +115,92 @@ clutter_behaviour_opacity_finalize (GObject *object)
   G_OBJECT_CLASS (clutter_behaviour_opacity_parent_class)->finalize (object);
 }
 
+static void
+clutter_behaviour_opacity_set_property (GObject      *gobject,
+                                        guint         prop_id,
+                                        const GValue *value,
+                                        GParamSpec   *pspec)
+{
+  ClutterBehaviourOpacity *opacityb = CLUTTER_BEHAVIOUR_OPACITY (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_OPACITY_START:
+      opacityb->priv->opacity_start = g_value_get_uint (value);
+      break;
+    case PROP_OPACITY_END:
+      opacityb->priv->opacity_end = g_value_get_uint (value);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+clutter_behaviour_opacity_get_property (GObject    *gobject,
+                                        guint       prop_id,
+                                        GValue     *value,
+                                        GParamSpec *pspec)
+{
+  ClutterBehaviourOpacity *opacityb = CLUTTER_BEHAVIOUR_OPACITY (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_OPACITY_START:
+      g_value_set_uint (value, opacityb->priv->opacity_start);
+      break;
+    case PROP_OPACITY_END:
+      g_value_set_uint (value, opacityb->priv->opacity_end);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
 
 static void
 clutter_behaviour_opacity_class_init (ClutterBehaviourOpacityClass *klass)
 {
-  ClutterBehaviourClass *behave_class;
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  ClutterBehaviourClass *behave_class = CLUTTER_BEHAVIOUR_CLASS (klass);
 
-  behave_class = (ClutterBehaviourClass*) klass;
+  gobject_class->set_property = clutter_behaviour_opacity_set_property;
+  gobject_class->get_property = clutter_behaviour_opacity_get_property;
+
+  /**
+   * ClutterBehaviourOpacity:opacity-start:
+   *
+   * Initial opacity level of the behaviour.
+   *
+   * Since: 0.2
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_OPACITY_START,
+                                   g_param_spec_uint ("opacity-start",
+                                                      "Opacity Start",
+                                                      "Initial opacity level",
+                                                      0, 255,
+                                                      0,
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_CONSTRUCT));
+  
+  /**
+   * ClutterBehaviourOpacity:opacity-end:
+   *
+   * Final opacity level of the behaviour.
+   *
+   * Since: 0.2
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_OPACITY_END,
+                                   g_param_spec_uint ("opacity-end",
+                                                      "Opacity End",
+                                                      "Final opacity level",
+                                                      0, 255,
+                                                      0,
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_CONSTRUCT));
 
   behave_class->alpha_notify = clutter_behaviour_alpha_notify;
 
@@ -135,21 +224,18 @@ clutter_behaviour_opacity_init (ClutterBehaviourOpacity *self)
  * change in the interval between @opacity_start and @opacity_end.
  *
  * Return value: the newly created #ClutterBehaviourOpacity
+ *
+ * Since: 0.2
  */
 ClutterBehaviour *
 clutter_behaviour_opacity_new (ClutterAlpha *alpha,
 			       guint8        opacity_start,
 			       guint8        opacity_end)
 {
-  ClutterBehaviourOpacity *behave;
-
-  behave = g_object_new (CLUTTER_TYPE_BEHAVIOUR_OPACITY, 
-                         "alpha", alpha,
-			 NULL);
-
-  behave->priv->opacity_start = opacity_start;
-  behave->priv->opacity_end   = opacity_end;
-
-  return CLUTTER_BEHAVIOUR (behave);
+  return g_object_new (CLUTTER_TYPE_BEHAVIOUR_OPACITY, 
+                       "alpha", alpha,
+                       "opacity-start", opacity_start,
+                       "opacity-end", opacity_end,
+                       NULL);
 }
 

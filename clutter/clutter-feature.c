@@ -291,6 +291,13 @@ clutter_feature_get_all (void)
   return __features->flags;
 }
 
+/**
+ * clutter_feature_wait_for_vblank:
+ *
+ * FIXME
+ *
+ * Since: 0.2
+ */
 void
 clutter_feature_wait_for_vblank (void)
 {

@@ -1,6 +1,20 @@
 2006-11-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-behaviour-path.h:
+	* clutter/clutter-behaviour-path.c: Add "since" strings; add
+	a "knot" property which can be used to append a knot to the path;
+	fix apidoc.
+
+	* clutter/clutter-alpha.c: Add "since" strings.
+
+	* clutter/clutter-feature.c: Add apidoc.
+
+	* clutter/clutter-behaviour-opacity.c: Add the "opacity-start"
+	and "opacity-end" properties; rewrite constructor to use them.
+
+2006-11-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-behaviour-path.h:
 	* clutter/clutter-behaviour-path.c: Add a "knot-reached" signal,
 	which is emitted when the path reaches a node in the nodes list;
 	flesh out the documentation a bit; sync the parameters names

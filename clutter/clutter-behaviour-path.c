@@ -28,8 +28,15 @@
  * @short_description: A behaviour class interpolating actors along a defined
  * path.
  *
- * #ClutterBehaviourPath interpolates actors along a defined path of points.
+ * #ClutterBehaviourPath interpolates actors along a defined path.
  *
+ * A path is a set of #ClutterKnots object given when creating a new
+ * #ClutterBehaviourPath instance.  Knots can be also added to the path
+ * using clutter_behaviour_path_append_knot().  The whole path can be
+ * cleared using clutter_behaviour_path_clear().  Each time the behaviour
+ * reaches a knot in the path, the "knot-reached" signal is emitted.
+ *
+ * Since: 0.2
  */
 
 
@@ -45,18 +52,6 @@
 #include "clutter-behaviour-path.h"
 
 #include <math.h>
-
-/**
- * SECTION:clutter-behaviour-path
- * @short_description: Behaviour for walking on a path
- * 
- * #ClutterBehaviourPath makes all the actors driven by it walk on a path.
- * A path is a set of #ClutterKnots object given when creating a new
- * #ClutterBehaviourPath instance.  Knots can be also added to the path
- * using clutter_behaviour_path_append_knot().  The whole path can be
- * cleared using clutter_behaviour_path_clear().  Each time the behaviour
- * reaches a knot in the path, the "knot-reached" signal is emitted.
- */
 
 static ClutterKnot *
 clutter_knot_copy (const ClutterKnot *knot)
@@ -115,6 +110,13 @@ enum
 };
 
 static guint path_signals[LAST_SIGNAL] = { 0, };
+
+enum
+{
+  PROP_0,
+
+  PROP_KNOT
+};
 
 static void 
 clutter_behaviour_path_finalize (GObject *object)
@@ -246,12 +248,47 @@ clutter_behaviour_path_alpha_notify (ClutterBehaviour *behave,
 }
 
 static void
+clutter_behaviour_path_set_property (GObject      *gobject,
+                                     guint         prop_id,
+                                     const GValue *value,
+                                     GParamSpec   *pspec)
+{
+  ClutterBehaviourPath *pathb = CLUTTER_BEHAVIOUR_PATH (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_KNOT:
+      clutter_behaviour_path_append_knot (pathb, g_value_get_boxed (value));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
 clutter_behaviour_path_class_init (ClutterBehaviourPathClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterBehaviourClass *behave_class = CLUTTER_BEHAVIOUR_CLASS (klass);
 
+  gobject_class->set_property = clutter_behaviour_path_set_property;
   gobject_class->finalize = clutter_behaviour_path_finalize;
+
+  /**
+   * ClutterBehaviourPath:knot:
+   *
+   * This property can be used to append a new knot to the path.
+   *
+   * Since: 0.2
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_KNOT,
+                                   g_param_spec_boxed ("knot",
+                                                       "Knot",
+                                                       "Can be used to append a knot to the path",
+                                                       CLUTTER_TYPE_KNOT,
+                                                       G_PARAM_WRITABLE));
 
   /**
    * ClutterBehaviourPath::knot-reached:
@@ -260,6 +297,8 @@ clutter_behaviour_path_class_init (ClutterBehaviourPathClass *klass)
    *
    * This signal is emitted each time a node defined inside the path
    * is reached.
+   *
+   * Since: 0.2
    */
   path_signals[KNOT_REACHED] =
     g_signal_new ("knot-reached",
@@ -366,7 +405,7 @@ clutter_behaviour_path_append_knot (ClutterBehaviourPath  *pathb,
 }
 
 /**
- * clutter_behaviour_path_append_knot:
+ * clutter_behaviour_path_insert_knot:
  * @pathb: a #ClutterBehvaiourPath
  * @offset: position in path to insert knot. 
  * @knot:  a #ClutterKnot to append.
@@ -394,7 +433,6 @@ clutter_behaviour_path_insert_knot (ClutterBehaviourPath  *pathb,
  * clutter_behaviour_path_remove_knot:
  * @pathb: a #ClutterBehvaiourPath
  * @offset: position in path to remove knot.
- * @knot:  a #ClutterKnot to append.
  *   
  * Removes a #ClutterKnot in the path at specified offset.
  *
@@ -420,17 +458,6 @@ clutter_behaviour_path_remove_knot (ClutterBehaviourPath  *pathb,
     }
 }
 
-/**
- * clutter_behaviour_path_append_knots_valist:
- * @pathb: a #ClutterBehvaiourPath
- * @first_know: the #ClutterKnot knot to add to the path
- * @args: the knots to be added
- *
- * Similar to clutter_behaviour_path_append_knots() but using a va_list.  
- * Use this function inside bindings.
- *
- * Since: 0.2
- */
 static void
 clutter_behaviour_path_append_knots_valist (ClutterBehaviourPath *pathb,
 					    const ClutterKnot    *first_knot,
@@ -449,7 +476,7 @@ clutter_behaviour_path_append_knots_valist (ClutterBehaviourPath *pathb,
 /**
  * clutter_behaviour_path_append_knots:
  * @pathb: a #ClutterBehvaiourPath
- * @first_know: the #ClutterKnot knot to add to the path
+ * @first_knot: the #ClutterKnot knot to add to the path
  * @Varargs: additional knots to add to the path
  *
  * Adds a NULL-terminated list of knots to a path.  This function is

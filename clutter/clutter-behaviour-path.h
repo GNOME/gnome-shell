@@ -107,7 +107,7 @@ void              clutter_behaviour_path_insert_knot  (ClutterBehaviourPath  *pa
 void              clutter_behaviour_path_remove_knot  (ClutterBehaviourPath  *pathb,
 				                       guint                  offset);
 
-void              clutter_behaviour_path_clear        (ClutterBehaviourPath  *path);
+void              clutter_behaviour_path_clear        (ClutterBehaviourPath  *pathb);
 
 G_END_DECLS
 

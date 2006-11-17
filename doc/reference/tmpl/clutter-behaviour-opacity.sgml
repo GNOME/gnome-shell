@@ -23,6 +23,16 @@ ClutterBehaviourOpacity
 </para>
 
 
+<!-- ##### ARG ClutterBehaviourOpacity:opacity-end ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterBehaviourOpacity:opacity-start ##### -->
+<para>
+
+</para>
+
 <!-- ##### STRUCT ClutterBehaviourOpacityClass ##### -->
 <para>
 

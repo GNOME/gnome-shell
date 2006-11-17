@@ -41,6 +41,8 @@
  * the #ClutterTimeline object.
  *
  * #ClutterAlpha is used to "drive" a #ClutterBehaviour instance.
+ *
+ * Since: 0.2
  */
 
 #ifdef HAVE_CONFIG_H
@@ -187,6 +189,8 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
    * ClutterAlpha:timeline:
    *
    * A #ClutterTimeline instance used to drive the alpha function.
+   *
+   * Since: 0.2
    */
   g_object_class_install_property (object_class,
                                    PROP_TIMELINE,
@@ -199,6 +203,8 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
    * ClutterAlpha:alpha:
    *
    * The alpha value as computed by the alpha function.
+   *
+   * Since: 0.2
    */
   g_object_class_install_property (object_class,
                                    PROP_ALPHA,
@@ -226,6 +232,8 @@ clutter_alpha_init (ClutterAlpha *self)
  * Query the current alpha value.
  *
  * Return Value: The current alpha value for the alpha
+ *
+ * Since: 0.2
  */
 guint32
 clutter_alpha_get_alpha (ClutterAlpha *alpha)
@@ -245,6 +253,8 @@ clutter_alpha_get_alpha (ClutterAlpha *alpha)
  * Sets the #ClutterAlphaFunc function used to compute
  * the alpha value at each frame of the #ClutterTimeline
  * bound to @alpha.
+ *
+ * Since: 0.2
  */
 void
 clutter_alpha_set_func (ClutterAlpha    *alpha,
@@ -277,6 +287,8 @@ clutter_alpha_set_func (ClutterAlpha    *alpha,
  * @timeline: A #ClutterTimeline
  *
  * Binds @alpha to @timeline.
+ *
+ * Since: 0.2
  */
 void
 clutter_alpha_set_timeline (ClutterAlpha    *alpha,
@@ -316,6 +328,8 @@ clutter_alpha_set_timeline (ClutterAlpha    *alpha,
  * Gets the #ClutterTimeline bound to @alpha.
  *
  * Return value: a #ClutterTimeline instance
+ *
+ * Since: 0.2
  */
 ClutterTimeline *
 clutter_alpha_get_timeline (ClutterAlpha *alpha)
@@ -337,6 +351,8 @@ clutter_alpha_get_timeline (ClutterAlpha *alpha)
  * a #ClutterBehaviour object.
  *
  * Return value: the newly created empty #ClutterAlpha instance.
+ *
+ * Since: 0.2
  */
 ClutterAlpha *
 clutter_alpha_new (void)
@@ -355,6 +371,8 @@ clutter_alpha_new (void)
  * and alpha function.
  *
  * Return Value: the newly created #ClutterAlpha
+ *
+ * Since: 0.2
  */
 ClutterAlpha *
 clutter_alpha_new_full (ClutterTimeline  *timeline,
@@ -384,6 +402,8 @@ clutter_alpha_new_full (ClutterTimeline  *timeline,
  * can use this function as the alpha function for clutter_alpha_set_func().
  *
  * Return value: an alpha value.
+ *
+ * Since: 0.2
  */
 guint32
 clutter_ramp_inc_func (ClutterAlpha *alpha,
@@ -409,6 +429,8 @@ clutter_ramp_inc_func (ClutterAlpha *alpha,
  * can use this function as the alpha function for clutter_alpha_set_func().
  *
  * Return value: an alpha value.
+ *
+ * Since: 0.2
  */
 guint32
 clutter_ramp_dec_func (ClutterAlpha *alpha,
@@ -437,6 +459,8 @@ clutter_ramp_dec_func (ClutterAlpha *alpha,
  * function as the alpha function for clutter_alpha_set_func().
  *
  * Return value: an alpha value.
+ *
+ * Since: 0.2
  */
 guint32
 clutter_ramp_func (ClutterAlpha *alpha,
@@ -473,6 +497,8 @@ clutter_ramp_func (ClutterAlpha *alpha,
  * function as the alpha function for clutter_alpha_set_func().
  *
  * Return value: an alpha value.
+ *
+ * Since: 0.2
  */
 guint32 
 clutter_sine_func (ClutterAlpha *alpha,

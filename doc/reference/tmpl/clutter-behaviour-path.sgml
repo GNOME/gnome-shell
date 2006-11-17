@@ -46,6 +46,11 @@ ClutterBehaviourPath
 @clutterbehaviourpath: the object which received the signal.
 @arg1: 
 
+<!-- ##### ARG ClutterBehaviourPath:knot ##### -->
+<para>
+
+</para>
+
 <!-- ##### STRUCT ClutterBehaviourPathClass ##### -->
 <para>
 
@@ -102,6 +107,6 @@ ClutterBehaviourPath
 
 </para>
 
-@path: 
+@pathb: 
 
 
