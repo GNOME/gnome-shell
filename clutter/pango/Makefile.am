@@ -6,11 +6,11 @@ source_h = pangoclutter.h
 
 source_h_priv = pangoclutter-private.h
 
-noinst_LIBRARIES = libpangoclutter.a
+noinst_LTLIBRARIES = libpangoclutter.la
 
-libpangoclutter_a_SOURCES = $(source_c)     \
-        		    $(source_h)     \
-                            $(source_h_priv)
+libpangoclutter_la_SOURCES = $(source_c)     \
+        	             $(source_h)     \
+                             $(source_h_priv)
 
 INCLUDES = @GCC_FLAGS@ @CLUTTER_CFLAGS@ -I$(top_srcdir)
 

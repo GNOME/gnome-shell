@@ -91,6 +91,11 @@ clutter_behaviour_scale_new (ClutterAlpha  *alpha,
 			     gdouble        scale_end,
 			     ClutterGravity gravity);
 
+ClutterBehaviour*
+clutter_behaviour_scale_newx (ClutterAlpha   *alpha,
+			      ClutterFixed    scale_begin,
+			      ClutterFixed    scale_end,
+			      ClutterGravity  gravity);
 
 G_END_DECLS
 

@@ -23,6 +23,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:clutter-behaviour-opacity
+ * @short_description: A behaviour class interpolating actors opacity between
+ * two values.
+ *
+ * #ClutterBehaviourPath interpolates actors opacity between two values.
+ *
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -107,6 +116,18 @@ clutter_behaviour_opacity_init (ClutterBehaviourOpacity *self)
   self->priv = CLUTTER_BEHAVIOUR_OPACITY_GET_PRIVATE (self);
 }
 
+/**
+ * clutter_behaviour_opacity_new :
+ * @alpha: a #ClutterAlpha
+ * @scale_begin: initial opacity value
+ * @scale_end: final opacity value
+ *
+ * Creates a new  #ClutterBehaviourOpacity instance.
+ *
+ * Return value: the newly created #ClutterBehaviourOpacity
+ *
+ * Since: 0.2
+ */
 ClutterBehaviour*
 clutter_behaviour_opacity_new (ClutterAlpha *alpha,
 			       guint8        opacity_start,

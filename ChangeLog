@@ -1,3 +1,45 @@
+2006-11-17  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-alpha.c:
+	* clutter/clutter-behaviour-opacity.c:
+	More docs.
+
+	* clutter/clutter-behaviour-path.h:
+	* clutter/clutter-behaviour-path.c:
+	More docs, add clutter_behaviour_path_insert_knot(),
+	clutter_behaviour_path_remove_knot()
+
+	* clutter/clutter-behaviour-scale.h:
+	* clutter/clutter-behaviour-scale.c:
+	More docs, add clutter_behaviour_scale_newx() taking fixed values.
+
+	* clutter/Makefile.am:
+	* clutter/pango/Makefile.am:
+	Fix linking warning.
+
+2006-11-15  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.h:
+	* clutter/clutter-actor.c:
+	Add new API clutter_actor_move_by(), clutter_actor_get_size()
+
+	* clutter/clutter-alpha.c:
+	* clutter/clutter-alpha.h:
+	Add clutter alpha sine func
+
+	* clutter/clutter-behaviours.h:
+	* clutter/clutter-behaviours.c:
+	Add a basic scale behaviour (needs work)
+
+	* examples/behave.c: (main):
+	More playing with new behaviour functionality
+
+	* clutter/clutter-feature.c:
+	* clutter/clutter-feature.h:
+	* clutter/clutter-main.c:
+	Add new experimental sync to vblank code
+	Set env CLUTTER_VBLANK=none to disable.
+
 2006-11-16  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-private.h:

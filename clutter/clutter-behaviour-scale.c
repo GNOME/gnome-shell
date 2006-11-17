@@ -23,6 +23,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:clutter-behaviour-scale
+ * @short_description: A behaviour class interpolating actors size between
+ * two values.
+ *
+ * #ClutterBehaviourPath interpolates actors size between two values.
+ *
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -143,12 +152,14 @@ clutter_behaviour_scale_init (ClutterBehaviourScale *self)
 /**
  * clutter_behaviour_scale_new:
  * @alpha: a #ClutterAlpha
- * @scale_begin: FIXME
- * @scale_end: FIXME
+ * @scale_begin: initial scale factor
+ * @scale_end: final scale factor
  *
- * FIXME
+ * Creates a new  #ClutterBehaviourScale instance.
  *
  * Return value: the newly created #ClutterBehaviourScale
+ *
+ * Since: 0.2
  */
 ClutterBehaviour *
 clutter_behaviour_scale_new (ClutterAlpha   *alpha,
@@ -156,14 +167,38 @@ clutter_behaviour_scale_new (ClutterAlpha   *alpha,
 			     gdouble         scale_end,
 			     ClutterGravity  gravity)
 {
+  return clutter_behaviour_scale_newx (alpha,
+				       CLUTTER_FLOAT_TO_FIXED (scale_begin),
+				       CLUTTER_FLOAT_TO_FIXED (scale_end),
+				       gravity);
+}
+
+/**
+ * clutter_behaviour_scale_newx:
+ * @alpha: a #ClutterAlpha
+ * @scale_begin: initial scale factor
+ * @scale_end: final scale factor
+ *
+ * A fixed point implementation of clutter_behaviour_scale_new()
+ *
+ * Return value: the newly created #ClutterBehaviourScale
+ *
+ * Since: 0.2
+ */
+ClutterBehaviour *
+clutter_behaviour_scale_newx (ClutterAlpha   *alpha,
+			      ClutterFixed    scale_begin,
+			      ClutterFixed    scale_end,
+			      ClutterGravity  gravity)
+{
   ClutterBehaviourScale *behave;
 
   behave = g_object_new (CLUTTER_TYPE_BEHAVIOUR_SCALE, 
                          "alpha", alpha,
 			 NULL);
 
-  behave->priv->scale_begin = CLUTTER_FLOAT_TO_FIXED (scale_begin);
-  behave->priv->scale_end   = CLUTTER_FLOAT_TO_FIXED (scale_end);
+  behave->priv->scale_begin = scale_begin;
+  behave->priv->scale_end   = scale_end;
   behave->priv->gravity     = gravity;
 
   return CLUTTER_BEHAVIOUR (behave);

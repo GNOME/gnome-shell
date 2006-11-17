@@ -93,6 +93,13 @@ void              clutter_behaviour_path_append_knot  (ClutterBehaviourPath *beh
 void              clutter_behaviour_path_append_knots (ClutterBehaviourPath *pathb,
                                                        const ClutterKnot    *first_knot,
                                                        ...) G_GNUC_NULL_TERMINATED;
+
+void              clutter_behaviour_path_insert_knot (ClutterBehaviourPath  *pathb,
+				                      guint                  offset,
+				                      const ClutterKnot     *knot);
+void              clutter_behaviour_path_remove_knot (ClutterBehaviourPath  *pathb,
+				                      guint                  offset);
+
 void              clutter_behaviour_path_clear        (ClutterBehaviourPath *path);
 
 G_END_DECLS

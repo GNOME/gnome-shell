@@ -30,8 +30,8 @@
  * @short_description: A class for calculating an alpha value as a function
  * of time.
  *
- * #ClutterAlpha is a class for calculating an alpha value as a function
- * of time.
+ * #ClutterAlpha is a class for calculating an integer value between 
+ * 0 and CLUTTER_ALPHA_MAX_ALPHA as a function of time. 
  */
 
 #ifdef HAVE_CONFIG_H

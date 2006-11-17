@@ -23,6 +23,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:clutter-behaviour-path
+ * @short_description: A behaviour class interpolating actors along a defined
+ * path.
+ *
+ * #ClutterBehaviourPath interpolates actors along a defined path of points.
+ *
+ */
+
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -233,12 +243,14 @@ clutter_behaviour_path_init (ClutterBehaviourPath *self)
 /**
  * clutter_behaviour_path_new:
  * @alpha: a #ClutterAlpha
- * @knots: a list of #ClutterKnots
- * @n_knots: the number of nodes in the path
+ * @knots: a list of #ClutterKnots 
+ * @n_knots: the number of nodes in the path 
  *
- * FIXME
+ * Creates a new #ClutterBehaviourPath instance for supplied knots.
  *
  * Return value: a #ClutterBehaviour
+ *
+ * Since: 0.2
  */
 ClutterBehaviour *
 clutter_behaviour_path_new (ClutterAlpha          *alpha,
@@ -262,6 +274,16 @@ clutter_behaviour_path_new (ClutterAlpha          *alpha,
   return CLUTTER_BEHAVIOUR (behave);
 }
 
+/**
+ * clutter_behaviour_path_get_knots:
+ * @behave: a #ClutterBehvaiourPath
+ *
+ * Returns a copy of the list of knots contained by the  #ClutterBehvaiourPath
+ *
+ * Return value: a #GSList of the paths knots.
+ *
+ * Since: 0.2
+ */
 GSList *
 clutter_behaviour_path_get_knots (ClutterBehaviourPath *behave)
 {
@@ -276,6 +298,15 @@ clutter_behaviour_path_get_knots (ClutterBehaviourPath *behave)
   return g_slist_reverse (retval);
 }
 
+/**
+ * clutter_behaviour_path_append_knot:
+ * @pathb: a #ClutterBehvaiourPath
+ * @knot:  a #ClutterKnot to append.
+ *   
+ * Appends a #ClutterKnot to the path
+ *
+ * Since: 0.2
+ */
 void
 clutter_behaviour_path_append_knot (ClutterBehaviourPath  *pathb,
 				    const ClutterKnot     *knot)
@@ -289,6 +320,72 @@ clutter_behaviour_path_append_knot (ClutterBehaviourPath  *pathb,
   priv->knots = g_slist_append (priv->knots, clutter_knot_copy (knot));
 }
 
+/**
+ * clutter_behaviour_path_append_knot:
+ * @pathb: a #ClutterBehvaiourPath
+ * @offset: position in path to insert knot. 
+ * @knot:  a #ClutterKnot to append.
+ *   
+ * Inserts a #ClutterKnot in the path at specified position. Values greater
+ * than total number of knots will append the knot at the end of path.
+ *
+ * Since: 0.2
+ */
+void
+clutter_behaviour_path_insert_knot (ClutterBehaviourPath  *pathb,
+				    guint                  offset,
+				    const ClutterKnot     *knot)
+{
+  ClutterBehaviourPathPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_PATH (pathb));
+  g_return_if_fail (knot != NULL);
+
+  priv = pathb->priv;
+  priv->knots = g_slist_insert (priv->knots, clutter_knot_copy (knot), offset);
+}
+
+/**
+ * clutter_behaviour_path_remove_knot:
+ * @pathb: a #ClutterBehvaiourPath
+ * @offset: position in path to remove knot.
+ * @knot:  a #ClutterKnot to append.
+ *   
+ * Removes a #ClutterKnot in the path at specified offset.
+ *
+ * Since: 0.2
+ */
+void
+clutter_behaviour_path_remove_knot (ClutterBehaviourPath  *pathb,
+				    guint                  offset)
+{
+  ClutterBehaviourPathPrivate *priv;
+  GSList                      *togo;
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_PATH (pathb));
+
+  priv = pathb->priv;
+
+  togo = g_slist_nth (priv->knots, offset);
+
+  if (togo)
+    {
+      clutter_knot_free ((ClutterKnot*)togo->data);
+      priv->knots = g_slist_delete_link (priv->knots, togo);
+    }
+}
+
+/**
+ * clutter_behaviour_path_append_knots_valist:
+ * @pathb: a #ClutterBehvaiourPath
+ * @first_know: the #ClutterKnot knot to add to the path
+ * @args: the knots to be added
+ *
+ * Similar to clutter_behaviour_path_append_knots() but using a va_list.  
+ * Use this function inside bindings.
+ *
+ * Since: 0.2
+ */
 static void
 clutter_behaviour_path_append_knots_valist (ClutterBehaviourPath *pathb,
 					    const ClutterKnot    *first_knot,
@@ -304,6 +401,18 @@ clutter_behaviour_path_append_knots_valist (ClutterBehaviourPath *pathb,
     }
 }
 
+/**
+ * clutter_behaviour_path_append_knots:
+ * @pathb: a #ClutterBehvaiourPath
+ * @first_know: the #ClutterKnot knot to add to the path
+ * @Varargs: additional knots to add to the path
+ *
+ * Adds a NULL-terminated list of knots to a path.  This function is
+ * equivalent to calling clutter_behaviour_path_append_knot() for each 
+ * member of the list.
+ *
+ * Since: 0.2
+ */
 void
 clutter_behaviour_path_append_knots (ClutterBehaviourPath *pathb,
 				     const ClutterKnot    *first_knot,
@@ -319,6 +428,14 @@ clutter_behaviour_path_append_knots (ClutterBehaviourPath *pathb,
   va_end (args);
 }
 
+/**
+ * clutter_behaviour_path_clear:
+ * @pathb: a #ClutterBehvaiourPath
+ *   
+ * Removes all knots from a path
+ *
+ * Since: 0.2
+ */
 void
 clutter_behaviour_path_clear (ClutterBehaviourPath *pathb)
 {
