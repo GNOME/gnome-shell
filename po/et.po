@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-11-18 21:11+0200\n"
-"PO-Revision-Date: 2006-11-18 21:12+0200\n"
+"PO-Revision-Date: 2006-11-18 21:31+0200\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -90,43 +90,39 @@ msgstr "Aknamenüü"
 
 #: ../src/frames.c:1068
 msgid "Minimize Window"
-msgstr "Minimeeri aken"
+msgstr "Akna minimeerimine"
 
 #: ../src/frames.c:1071
 msgid "Maximize Window"
-msgstr "Maksimeeri aken"
+msgstr "Akna maksimeerimine"
 
 #: ../src/frames.c:1074
 msgid "Unmaximize Window"
-msgstr "Taasta akna suurus"
+msgstr "Akna suuruse taastamine"
 
 #: ../src/frames.c:1077
-#, fuzzy
 msgid "Roll Up Window"
-msgstr "K_eri kokku"
+msgstr "Akna kokkukerimine"
 
 #: ../src/frames.c:1080
-#, fuzzy
 msgid "Unroll Window"
-msgstr "Sulge aken"
+msgstr "Akna lahtikerimine"
 
 #: ../src/frames.c:1083
 msgid "Keep Window On Top"
-msgstr ""
+msgstr "Akna kõige pealmiseks määramine"
 
 #: ../src/frames.c:1086
 msgid "Remove Window From Top"
 msgstr ""
 
 #: ../src/frames.c:1089
-#, fuzzy
 msgid "Always On Visible Workspace"
-msgstr "_Alati nähtaval tööalal"
+msgstr "Alati nähtaval tööalal"
 
 #: ../src/frames.c:1092
-#, fuzzy
 msgid "Put Window On Only One Workspace"
-msgstr "Akna tõstmine ühe tööala võrra ülespoole"
+msgstr ""
 
 #: ../src/keybindings.c:1081
 #, c-format
@@ -396,9 +392,9 @@ msgid "Mod5"
 msgstr "Mod5"
 
 #: ../src/metacity-dialog.c:90
-#, fuzzy, c-format
+#, c-format
 msgid "\"%s\" is not responding."
-msgstr "Aken \"%s\" ei vasta."
+msgstr "\"%s\" ei vasta."
 
 #: ../src/metacity-dialog.c:97
 msgid ""
@@ -487,7 +483,7 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:9
 msgid "Close window"
-msgstr "Sulge aken"
+msgstr "Akna sulgemine"
 
 #: ../src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
@@ -673,44 +669,36 @@ msgid "Move window one workspace up"
 msgstr "Akna tõstmine ühe tööala võrra ülespoole"
 
 #: ../src/metacity.schemas.in.h:49
-#, fuzzy
 msgid "Move window to east side of screen"
-msgstr "Akna tõstmine 1. tööalale"
+msgstr "Akna tõstmine ekraani idapoolsesse serva"
 
 #: ../src/metacity.schemas.in.h:50
-#, fuzzy
 msgid "Move window to north side of screen"
-msgstr "Akna tõstmine 1. tööalale"
+msgstr "Akna tõstmine ekraani põhjapoolsesse serva"
 
 #: ../src/metacity.schemas.in.h:51
-#, fuzzy
 msgid "Move window to north-east corner"
-msgstr "Akna tõstmine 1. tööalale"
+msgstr "Akna tõstmine ekraani kirdepoolsesse nurka"
 
 #: ../src/metacity.schemas.in.h:52
-#, fuzzy
 msgid "Move window to north-west corner"
-msgstr "Akna tõstmine 1. tööalale"
+msgstr "Akna tõstmine ekraani loodepoolsesse nurka"
 
 #: ../src/metacity.schemas.in.h:53
-#, fuzzy
 msgid "Move window to south side of screen"
-msgstr "Akna tõstmine 1. tööalale"
+msgstr "Akna tõstmine ekraani lõunapoolsesse serva"
 
 #: ../src/metacity.schemas.in.h:54
-#, fuzzy
 msgid "Move window to south-east corner"
-msgstr "Akna tõstmine 1. tööalale"
+msgstr "Akna tõstmine ekraani kagupoolsesse nurka"
 
 #: ../src/metacity.schemas.in.h:55
-#, fuzzy
 msgid "Move window to south-west corner"
-msgstr "Akna tõstmine 1. tööalale"
+msgstr "Akna tõstmine ekraani edelapoolsesse nurka"
 
 #: ../src/metacity.schemas.in.h:56
-#, fuzzy
 msgid "Move window to west side of screen"
-msgstr "Akna tõstmine 1. tööalale"
+msgstr "Akna tõstmine ekraani läänepoolsesse serva"
 
 #: ../src/metacity.schemas.in.h:57
 msgid "Move window to workspace 1"
@@ -769,15 +757,14 @@ msgid "Number of workspaces"
 msgstr "Tööalade arv"
 
 #: ../src/metacity.schemas.in.h:71
-#, fuzzy
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum to "
 "prevent making the desktop unusable by accidentally asking for too many "
 "workspaces."
 msgstr ""
 "Tööalade arv. Peab olema suurem kui null ja omab fikseeritud "
-"maksimaalsuurust (selleks, et ära hoida kogemata töölaua õhkulaskmist peale "
-"34 miljoni tööala küsimist)."
+"maksimaalsuurust, et ära hoida kogemata töölaua rikkumist liiga paljude "
+"tööalade eraldamise tagajärjel."
 
 #: ../src/metacity.schemas.in.h:72
 msgid "Raise obscured window, otherwise lower"
@@ -2434,28 +2421,28 @@ msgstr ""
 
 #: ../src/theme-parser.c:4302
 msgid "<name> specified twice for this theme"
-msgstr ""
+msgstr "Selle teema jaoks on <name> määratud kaks korda"
 
 #: ../src/theme-parser.c:4313
 msgid "<author> specified twice for this theme"
-msgstr ""
+msgstr "Selle teema jaoks on <author> määratud kaks korda"
 
 #: ../src/theme-parser.c:4324
 msgid "<copyright> specified twice for this theme"
-msgstr ""
+msgstr "Selle teema jaoks on <copyright> määratud kaks korda"
 
 #: ../src/theme-parser.c:4335
 msgid "<date> specified twice for this theme"
-msgstr ""
+msgstr "Selle teema jaoks on <date> määratud kaks korda"
 
 #: ../src/theme-parser.c:4346
 msgid "<description> specified twice for this theme"
-msgstr ""
+msgstr "Selle teema jaoks on <description> määratud kaks korda"
 
 #: ../src/theme-parser.c:4573
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to find a valid file for theme %s\n"
-msgstr "Tõrge teema \"%s\" laadimisel: %s\n"
+msgstr "Tõrge %s teema jaoks korrektse faili leidmisel\n"
 
 #: ../src/theme-parser.c:4628
 #, c-format
