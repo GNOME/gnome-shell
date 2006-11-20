@@ -1,0 +1,56 @@
+<Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:foaf="http://xmlns.com/foaf/0.1/"
+	xmlns="http://usefulinc.com/ns/doap#">
+
+	<name>Clutter</name>
+	<created>2006-11-18</created>
+
+	<shortdesc xml:lang="en">Clutter is an openGL based interface library</shortdesc>
+
+	<description xml:lang="en"> 
+	
+	Clutter is a GObject based library for creating fast, visually
+	rich graphical user interfaces. It is intended for creating
+	single window heavily stylised applications such as media box
+	ui's, presentations or kiosk style programs in preference to
+	regular 'desktop' style applications. 
+
+	</description>
+
+	<homepage rdf:resource="http://labs.o-hand.com/clutter" />
+        <download-page rdf:resource="http://projects.o-hand.com/clutter/sources" />
+	<license rdf:resource="http://usefulinc.com/doap/licenses/lgpl" />
+        <bug-database rdf:resource="http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter"/>
+        <os>linux</os>
+        <programming-language>C</programming-language>
+        <programming-language>Python</programming-language>
+        <programming-language>Perl</programming-language>
+
+        <category rdf:resource="http://labs.o-hand.com/doap/category/library"/>
+        <category rdf:resource="http://labs.o-hand.com/doap/category/graphics"/>
+        <category rdf:resource="http://labs.o-hand.com/doap/category/embedded"/>
+	<maintainer>
+		<foaf:Person>
+			<foaf:name>Matthew Allum</foaf:name>
+		</foaf:Person>
+	</maintainer>
+
+        <repository>
+		<SVNRepository>
+			<browse rdf:resource="http://svn.o-hand.com/view/clutter"/>
+			<location rdf:resource="https://svn.o-hand.com/repos/clutter"/>
+		</SVNRepository>
+        </repository>
+
+	<release>
+		<Version>
+			<name>First Release</name>
+			<created>2006-22-06</created>
+			<branch></branch>
+			<revision>0.1</revision>
+		       <file-release rdf:resource="http://projects.o-hand.com/clutter/sources/clutter-0.1.0.tar.gz" />
+		</Version>
+	</release>
+
+
+</Project>
