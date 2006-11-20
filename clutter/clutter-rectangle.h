@@ -79,13 +79,20 @@ struct _ClutterRectangleClass
 
 GType clutter_rectangle_get_type (void) G_GNUC_CONST;
 
-ClutterActor *clutter_rectangle_new            (void);
-ClutterActor *clutter_rectangle_new_with_color (const ClutterColor *color);
+ClutterActor *clutter_rectangle_new              (void);
+ClutterActor *clutter_rectangle_new_with_color   (const ClutterColor *color);
 
-void            clutter_rectangle_get_color      (ClutterRectangle   *rectangle,
-						  ClutterColor       *color);
-void            clutter_rectangle_set_color      (ClutterRectangle   *rectangle,
+void          clutter_rectangle_get_color        (ClutterRectangle   *rectangle,
+                                                  ClutterColor       *color);
+void          clutter_rectangle_set_color        (ClutterRectangle   *rectangle,
 						  const ClutterColor *color);
+guint         clutter_rectangle_get_border_width (ClutterRectangle   *rectangle);
+void          clutter_rectangle_set_border_width (ClutterRectangle   *rectangle,
+                                                  guint               width);
+void          clutter_rectangle_get_border_color (ClutterRectangle   *rectangle,
+                                                  ClutterColor       *color);
+void          clutter_rectangle_set_border_color (ClutterRectangle   *rectangle,
+                                                  const ClutterColor *color);
 
 G_END_DECLS
 

@@ -1,3 +1,13 @@
+2006-11-20  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-rectangle.h:
+	* clutter/clutter-rectangle.c: Add border to the ClutterRectangle
+	actor; add "border-width", "border-color" and "has-border"
+	properties, plus their accessors.  The border generation code is
+	pretty lame, at the moment.
+
+	* examples/behave.c: Add code to test the new rectangle properties.
+
 2006-11-20  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter.doap:

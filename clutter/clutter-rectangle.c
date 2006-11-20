@@ -42,7 +42,11 @@ G_DEFINE_TYPE (ClutterRectangle, clutter_rectangle, CLUTTER_TYPE_ACTOR);
 enum
 {
   PROP_0,
-  PROP_COLOR
+
+  PROP_COLOR,
+  PROP_BORDER_COLOR,
+  PROP_BORDER_WIDTH,
+  PROP_HAS_BORDER
 
   /* FIXME: Add gradient, rounded corner props etc */
 };
@@ -53,6 +57,11 @@ enum
 struct _ClutterRectanglePrivate
 {
   ClutterColor color;
+  ClutterColor border_color;
+
+  guint border_width;
+
+  guint has_border : 1;
 };
 
 static void
@@ -72,15 +81,40 @@ clutter_rectangle_paint (ClutterActor *self)
 
   clutter_actor_get_geometry (self, &geom);
 
-  glColor4ub(priv->color.red,
-	     priv->color.green,
-	     priv->color.blue, 
-	     clutter_actor_get_opacity (self));
-
   /* parent paint call will have translated us into position so 
-   * paint from 0,0
-  */
-  glRecti (0, 0, geom.width, geom.height);
+   * paint from 0, 0
+   */
+  if (priv->has_border)
+    {
+      glColor4ub (priv->border_color.red,
+                  priv->border_color.green,
+                  priv->border_color.blue,
+                  clutter_actor_get_opacity (self));
+
+      /* this sucks, but it's the only way to make a border */
+      glRecti (0, 0,
+               geom.width, priv->border_width);
+      glRecti (geom.width - priv->border_width, priv->border_width,
+               geom.width, geom.height - priv->border_width);
+      glRecti (0, geom.height - priv->border_width,
+               geom.width, geom.height);
+      glRecti (0, priv->border_width,
+               priv->border_width, geom.height - priv->border_width);
+      
+      glColor4ub (priv->color.red,
+	          priv->color.green,
+	          priv->color.blue, 
+	          clutter_actor_get_opacity (self));
+
+      glRecti (priv->border_width,
+               priv->border_width,
+               geom.width - priv->border_width,
+               geom.height - priv->border_width);
+    }
+  else
+    {
+      glRecti (0, 0, geom.width, geom.height);
+    }
 
   glDisable(GL_BLEND);
 
@@ -99,6 +133,17 @@ clutter_rectangle_set_property (GObject      *object,
     {
     case PROP_COLOR:
       clutter_rectangle_set_color (rectangle, g_value_get_boxed (value)); 
+      break;
+    case PROP_BORDER_COLOR:
+      clutter_rectangle_set_border_color (rectangle,
+                                          g_value_get_boxed (value));
+      break;
+    case PROP_BORDER_WIDTH:
+      clutter_rectangle_set_border_width (rectangle,
+                                          g_value_get_uint (value));
+      break;
+    case PROP_HAS_BORDER:
+      rectangle->priv->has_border = g_value_get_boolean (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -120,6 +165,16 @@ clutter_rectangle_get_property (GObject    *object,
     case PROP_COLOR:
       clutter_rectangle_get_color (rectangle, &color);
       g_value_set_boxed (value, &color);
+      break;
+    case PROP_BORDER_COLOR:
+      clutter_rectangle_get_border_color (rectangle, &color);
+      g_value_set_boxed (value, &color);
+      break;
+    case PROP_BORDER_WIDTH:
+      g_value_set_uint (value, rectangle->priv->border_width);
+      break;
+    case PROP_HAS_BORDER:
+      g_value_set_boolean (value, rectangle->priv->has_border);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -154,13 +209,61 @@ clutter_rectangle_class_init (ClutterRectangleClass *klass)
   gobject_class->set_property = clutter_rectangle_set_property;
   gobject_class->get_property = clutter_rectangle_get_property;
 
-  g_object_class_install_property
-    (gobject_class, PROP_COLOR,
-     g_param_spec_boxed ("color",
-		         "Color",
-		         "The color of the rectangle",
-			 CLUTTER_TYPE_COLOR,
-			 G_PARAM_READWRITE));
+  /**
+   * ClutterRectangle:color:
+   *
+   * The color of the rectangle.
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_COLOR,
+                                   g_param_spec_boxed ("color",
+                                                       "Color",
+                                                       "The color of the rectangle",
+                                                       CLUTTER_TYPE_COLOR,
+                                                       G_PARAM_READWRITE));
+  /**
+   * ClutterRectangle:border-color:
+   *
+   * The color of the border of the rectangle.
+   *
+   * Since: 0.2
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_BORDER_COLOR,
+                                   g_param_spec_boxed ("border-color",
+                                                       "Border Color",
+                                                       "The color of the border of the rectangle",
+                                                       CLUTTER_TYPE_COLOR,
+                                                       G_PARAM_READWRITE));
+  /**
+   * ClutterRectangle:border-width:
+   *
+   * The width of the border of the rectangle, in pixels.
+   * 
+   * Since: 0.2
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_BORDER_WIDTH,
+                                   g_param_spec_uint ("border-width",
+                                                      "Border Width",
+                                                      "The width of the border of the rectangle",
+                                                      0, G_MAXUINT,
+                                                      0,
+                                                      G_PARAM_READWRITE));
+  /**
+   * ClutterRectangle:has-border:
+   *
+   * Whether the #ClutterRectangle should be displayed with a border.
+   *
+   * Since: 0.2
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_HAS_BORDER,
+                                   g_param_spec_boolean ("has-border",
+                                                         "Has Border",
+                                                         "Whether the rectangle should have a border",
+                                                         FALSE,
+                                                         G_PARAM_READWRITE));
 
   g_type_class_add_private (gobject_class, sizeof (ClutterRectanglePrivate));
 }
@@ -168,12 +271,23 @@ clutter_rectangle_class_init (ClutterRectangleClass *klass)
 static void
 clutter_rectangle_init (ClutterRectangle *self)
 {
-  self->priv = CLUTTER_RECTANGLE_GET_PRIVATE (self);
+  ClutterRectanglePrivate *priv;
 
-  self->priv->color.red = 0xff;
-  self->priv->color.green = 0xff;
-  self->priv->color.blue = 0xff;
-  self->priv->color.alpha = 0xff;
+  self->priv = priv = CLUTTER_RECTANGLE_GET_PRIVATE (self);
+
+  priv->color.red = 0xff;
+  priv->color.green = 0xff;
+  priv->color.blue = 0xff;
+  priv->color.alpha = 0xff;
+
+  priv->border_color.red = 0x00;
+  priv->border_color.green = 0x00;
+  priv->border_color.blue = 0x00;
+  priv->border_color.alpha = 0xff;
+
+  priv->border_width = 0;
+
+  priv->has_border = FALSE;
 }
 
 /**
@@ -246,6 +360,8 @@ clutter_rectangle_set_color (ClutterRectangle   *rectangle,
   g_return_if_fail (CLUTTER_IS_RECTANGLE (rectangle));
   g_return_if_fail (color != NULL);
 
+  g_object_ref (rectangle);
+
   priv = rectangle->priv;
 
   priv->color.red = color->red;
@@ -260,4 +376,127 @@ clutter_rectangle_set_color (ClutterRectangle   *rectangle,
     clutter_actor_queue_redraw (CLUTTER_ACTOR (rectangle));
 
   g_object_notify (G_OBJECT (rectangle), "color");
+  g_object_unref (rectangle);
+}
+
+/**
+ * clutter_rectangle_get_border_width:
+ * @rectangle: a #ClutterRectangle
+ *
+ * Gets the width (in pixels) of the border used by @rectangle
+ *
+ * Return value: the border's width
+ *
+ * Since: 0.2
+ */
+guint
+clutter_rectangle_get_border_width (ClutterRectangle *rectangle)
+{
+  g_return_val_if_fail (CLUTTER_IS_RECTANGLE (rectangle), 0);
+
+  return rectangle->priv->border_width;
+}
+
+/**
+ * clutter_rectangle_set_border_width:
+ * @rectangle: a #ClutterRectangle
+ * @width: the width of the border
+ *
+ * Sets the width (in pixel) of the border used by @rectangle.
+ * A @width of 0 will unset the border.
+ *
+ * Since: 0.2
+ */
+void
+clutter_rectangle_set_border_width (ClutterRectangle *rectangle,
+                                    guint             width)
+{
+  ClutterRectanglePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_RECTANGLE (rectangle));
+  priv = rectangle->priv;
+
+  if (priv->border_width != width)
+    {
+      g_object_ref (rectangle);
+
+      priv->border_width = width;
+
+      if (priv->border_width != 0)
+        priv->has_border = TRUE;
+      else
+        priv->has_border = FALSE;
+
+      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (rectangle)))
+        clutter_actor_queue_redraw (CLUTTER_ACTOR (rectangle));
+
+      g_object_notify (G_OBJECT (rectangle), "border-width");
+      g_object_notify (G_OBJECT (rectangle), "has-border");
+      g_object_unref (rectangle);
+    }
+}
+
+/**
+ * clutter_rectangle_get_border_color:
+ * @rectangle: a #ClutterRectangle
+ * @color: return location for a #ClutterColor
+ *
+ * Gets the color of the border used by @rectangle and places
+ * it into @color.
+ *
+ * Since: 0.2
+ */
+void
+clutter_rectangle_get_border_color (ClutterRectangle *rectangle,
+                                    ClutterColor     *color)
+{
+  ClutterRectanglePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_RECTANGLE (rectangle));
+  g_return_if_fail (color != NULL);
+
+  priv = rectangle->priv;
+
+  color->red = priv->border_color.red;
+  color->green = priv->border_color.green;
+  color->blue = priv->border_color.blue;
+  color->alpha = priv->border_color.alpha;
+}
+
+/**
+ * clutter_rectangle_set_border_color:
+ * @rectangle: a #ClutterRectangle
+ * @color: the color of the border
+ *
+ * Sets the color of the border used by @rectangle using @color
+ */
+void
+clutter_rectangle_set_border_color (ClutterRectangle   *rectangle,
+                                    const ClutterColor *color)
+{
+  ClutterRectanglePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_RECTANGLE (rectangle));
+  g_return_if_fail (color != NULL);
+
+  priv = rectangle->priv;
+
+  if (priv->border_color.red != color->red &&
+      priv->border_color.green != color->green &&
+      priv->border_color.blue != color->blue &&
+      priv->border_color.alpha != color->alpha)
+    {
+      g_object_ref (rectangle);
+
+      priv->border_color.red = color->red;
+      priv->border_color.green = color->green;
+      priv->border_color.blue = color->blue;
+      priv->border_color.alpha = color->alpha;
+
+      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (rectangle)))
+        clutter_actor_queue_redraw (CLUTTER_ACTOR (rectangle));
+
+      g_object_notify (G_OBJECT (rectangle), "border-color");
+      g_object_unref (rectangle);
+    }
 }

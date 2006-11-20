@@ -165,6 +165,10 @@ clutter_rectangle_new
 clutter_rectangle_new_with_color
 clutter_rectangle_get_color
 clutter_rectangle_set_color
+clutter_rectangle_get_border_color
+clutter_rectangle_set_border_color
+clutter_rectangle_get_border_width
+clutter_rectangle_set_border_width
 <SUBSECTION Standard>
 CLUTTER_RECTANGLE
 CLUTTER_IS_RECTANGLE

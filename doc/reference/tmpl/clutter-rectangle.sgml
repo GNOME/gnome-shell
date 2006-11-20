@@ -23,7 +23,22 @@ ClutterRectangle
 </para>
 
 
+<!-- ##### ARG ClutterRectangle:border-color ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterRectangle:border-width ##### -->
+<para>
+
+</para>
+
 <!-- ##### ARG ClutterRectangle:color ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterRectangle:has-border ##### -->
 <para>
 
 </para>
@@ -72,5 +87,41 @@ ClutterRectangle
 
 @rectangle: 
 @color: 
+
+
+<!-- ##### FUNCTION clutter_rectangle_get_border_color ##### -->
+<para>
+
+</para>
+
+@rectangle: 
+@color: 
+
+
+<!-- ##### FUNCTION clutter_rectangle_set_border_color ##### -->
+<para>
+
+</para>
+
+@rectangle: 
+@color: 
+
+
+<!-- ##### FUNCTION clutter_rectangle_get_border_width ##### -->
+<para>
+
+</para>
+
+@rectangle: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_rectangle_set_border_width ##### -->
+<para>
+
+</para>
+
+@rectangle: 
+@width: 
 
 
