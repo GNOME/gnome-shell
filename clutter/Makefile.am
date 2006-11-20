@@ -2,6 +2,7 @@ SUBDIRS=pango
 
 MARSHALFILES = clutter-marshal.c clutter-marshal.h
 ENUMFILES = clutter-enum-types.c clutter-enum-types.h
+STAMPFILES = stamp-clutter-marshal.h stamp-clutter-enum-types.h
 GLIB_GENMARSHAL=`pkg-config --variable=glib_genmarshal glib-2.0`
 GLIB_MKENUMS=`pkg-config --variable=glib_mkenums glib-2.0`
 
@@ -28,15 +29,28 @@ source_h =					\
 	$(srcdir)/clutter-behaviour-scale.h 	\
 	$(srcdir)/clutter-alpha.h		\
 	$(srcdir)/clutter-media.h		\
+	$(srcdir)/clutter-version.h		\
         $(srcdir)/clutter-main.h
 
-clutter-marshal.h: clutter-marshal.list
-	( $(GLIB_GENMARSHAL) --prefix=clutter_marshal \
-	$(srcdir)/clutter-marshal.list --header > clutter-marshal.h )
+clutter-marshal.h: stamp-clutter-marshal.h
+	@true
+stamp-clutter-marshal.h: clutter-marshal.list
+	$(GLIB_GENMARSHAL) \
+		--prefix=clutter_marshal \
+		--header \
+	  $(srcdir)/clutter-marshal.list > xgen-cmh \
+	&& (cmp -s xgen-cmh clutter-marshal.h || cp xgen-cmh clutter-marshal.h ) \
+	&& rm -f xgen-cmh \
+	&& echo timestamp > $(@F)
 
-clutter-marshal.c: clutter-marshal.h
-	( $(GLIB_GENMARSHAL) --prefix=clutter_marshal \
-	$(srcdir)/clutter-marshal.list --body --header > clutter-marshal.c )
+clutter-marshal.c: clutter-marshal.h Makefile
+	( echo "#include \"clutter-marshal.h\"" ; \
+	  $(GLIB_GENMARSHAL) \
+	  	--prefix=clutter_marshal \
+		--body \
+	  $(srcdir)/clutter-marshal.list --body ) >> xgen-cmc \
+	&& cp xgen-cmc clutter-marshal.c \
+	&& rm -f xgen-cmc
 
 clutter-enum-types.h: stamp-clutter-enum-types.h
 	@true
@@ -73,7 +87,9 @@ clutter-enum-types.c: clutter-enum-types.h
 	&& cp xgen-cetc clutter-enum-types.c \
 	&& rm -f xgen-cetc
 
-CLEANFILES = $(BUILT_SOURCES) stamp-clutter-enum-types.h
+CLEANFILES = \
+	$(BUILT_SOURCES) \
+	$(STAMPFILES)
 
 source_c = clutter-main.c 		\
 	   clutter-util.c 		\
@@ -103,7 +119,16 @@ libclutter_@CLUTTER_MAJORMINOR@_la_SOURCES = $(MARSHALFILES) \
                                              $(source_h)     \
                                              $(source_h_priv)
 
-INCLUDES = @GCC_FLAGS@ @CLUTTER_CFLAGS@ -I$(top_srcdir) -I$(top_srcdir)/clutter/pango
+INCLUDES = \
+	-I$(top_srcdir) \
+	-I$(top_srcdir)/clutter/pango \
+	-DPREFIX=\""$(prefix)"\" \
+	-DLIBDIR=\""$(libdir)"\" \
+	-DDATADIR=\""$(datadir)"\" \
+	-DG_DISABLE_DEPRECATED \
+	$(GCC_FLAGS) \
+	$(CLUTTER_CFLAGS) \
+	$(CLUTTER_DEBUG_CFLAGS)
 
 lib_LTLIBRARIES = libclutter-@CLUTTER_MAJORMINOR@.la
 
@@ -119,4 +144,4 @@ clutterheaders_HEADERS = $(source_h) 		\
 		      clutter-enum-types.h 	\
 		      clutter.h
 
-EXTRA_DIST = clutter-marshal.list
+EXTRA_DIST = clutter-marshal.list clutter-version.h.in

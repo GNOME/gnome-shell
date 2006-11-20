@@ -1,3 +1,16 @@
+2006-11-20  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Remove debug macros; add clutter-version
+	section.
+
+	* Makefile.am: Ignore the stamp files.
+
+	* clutter-docs.sgml: Add a link to the version utils.
+
+	* tmpl/clutter-actor.sgml:
+	* tmpl/clutter-main.sgml:
+	* tmpl/clutter-version.sgml: Update templates.
+
 2006-11-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Move stuff around: get_type and Private

@@ -1,3 +1,25 @@
+2006-11-20  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/Makefile.am:
+	* clutter/clutter.h:
+	* clutter/clutter-version.h.in: Auto-generated versioning macros.
+
+	* clutter/clutter-actor.h:
+	* clutter/clutter-actor.c: Add a ClutterActor::parent-set signal,
+	for notificating changes of an actor's parent; add api-doc for
+	the actor's properties; add the ClutterActor "name" property; clean
+	up a bit some functions; emit the "parent-set" signal when setting
+	te parent and when unparenting; better warnings when lowering
+	and raising an actor.
+
+	* configure.ac:
+	* clutter/Makefile.am: Add a --enable-debug configure option,
+	with three levels of debugging: no, minimum and yes; default
+	for development releases (odd minor version) is "yes"; update
+	the version m4 defines; update the libtool macros: now just
+	changed the clutter_interface_age when releasing will update
+	everything else.
+
 2006-11-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-behaviour-path.h:

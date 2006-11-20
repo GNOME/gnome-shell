@@ -477,10 +477,6 @@ clutter_keysym_to_unicode
 
 <SECTION>
 <FILE>clutter-main</FILE>
-CLUTTER_HAS_DEBUG_MESSGES
-CLUTTER_DBG
-CLUTTER_GLERR
-CLUTTER_MARK
 ClutterInitError
 clutter_init
 clutter_main
@@ -493,4 +489,20 @@ clutter_root_xwindow
 clutter_want_debug
 clutter_threads_enter
 clutter_threads_leave
+<SUBSECTION Private>
+CLUTTER_HAS_DEBUG_MESSGES
+CLUTTER_DBG
+CLUTTER_GLERR
+CLUTTER_MARK
+</SECTION>
+
+<SECTION>
+<FILE>clutter-version</FILE>
+CLUTTER_MAJOR_VERSION
+CLUTTER_MINOR_VERSION
+CLUTTER_MICRO_VERSION
+CLUTTER_VERSION
+CLUTTER_VERSION_S
+CLUTTER_VERSION_HEX
+CLUTTER_CHECK_VERSION
 </SECTION>

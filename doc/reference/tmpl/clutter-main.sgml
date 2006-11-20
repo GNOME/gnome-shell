@@ -17,62 +17,6 @@ clutter-main
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### MACRO CLUTTER_HAS_DEBUG_MESSGES ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO CLUTTER_DBG ##### -->
-<para>
-
-</para>
-
-@x: 
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...:
-@a...: 
-
-
-<!-- ##### MACRO CLUTTER_GLERR ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO CLUTTER_MARK ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### ENUM ClutterInitError ##### -->
 <para>
 

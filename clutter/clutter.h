@@ -20,6 +20,8 @@
 #include "clutter-label.h"
 #include "clutter-alpha.h"
 #include "clutter-media.h"
+#include "clutter-feature.h"
+#include "clutter-version.h"
 #include "clutter-enum-types.h"
 
 #endif

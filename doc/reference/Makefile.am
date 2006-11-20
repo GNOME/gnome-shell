@@ -53,6 +53,7 @@ IGNORE_HFILES=\
 	clutter-keysyms.h \
 	clutter-enum-types.h \
 	stamp-clutter-enum-types.h \
+	stamp-clutter-marshal.h \
 	pango
 
 # Images to copy into HTML directory.

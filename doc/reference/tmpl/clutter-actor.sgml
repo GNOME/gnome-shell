@@ -140,6 +140,14 @@ ClutterActor
 
 @clutteractor: the object which received the signal.
 
+<!-- ##### SIGNAL ClutterActor::parent-set ##### -->
+<para>
+
+</para>
+
+@clutteractor: the object which received the signal.
+@arg1: 
+
 <!-- ##### SIGNAL ClutterActor::show ##### -->
 <para>
 
@@ -158,6 +166,11 @@ ClutterActor
 </para>
 
 <!-- ##### ARG ClutterActor:height ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterActor:name ##### -->
 <para>
 
 </para>
@@ -202,6 +215,7 @@ ClutterActor
 @allocate_coords: 
 @set_depth: 
 @get_depth: 
+@parent_set: 
 @destroy: 
 @show_all: 
 @hide_all: 

@@ -119,8 +119,10 @@ struct _ClutterActorClass
   void (* set_depth)       (ClutterActor    *actor,
 		            gint             depth);
   gint (* get_depth)       (ClutterActor    *actor);
+  void (* parent_set)      (ClutterActor    *actor,
+                            ClutterActor    *old_parent);
 
-  void (*destroy)          (ClutterActor    *actor);
+  void (* destroy)         (ClutterActor    *actor);
 
   /* to go ? */
   void (* show_all)        (ClutterActor    *actor);
