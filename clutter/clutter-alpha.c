@@ -49,10 +49,13 @@
 #include "config.h"
 #endif
 
+#include <math.h>
+
 #include "clutter-alpha.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
-#include <math.h>
+#include "clutter-private.h"
+#include "clutter-debug.h"
 
 G_DEFINE_TYPE (ClutterAlpha, clutter_alpha, G_TYPE_OBJECT);
 
@@ -506,7 +509,7 @@ clutter_sine_func (ClutterAlpha *alpha,
 {
   ClutterTimeline *timeline;
   gint current_frame_num, n_frames;
-  gdouble x;
+  gdouble x, sine;
   
   timeline = clutter_alpha_get_timeline (alpha);
 
@@ -516,9 +519,9 @@ clutter_sine_func (ClutterAlpha *alpha,
   /* FIXME: fixed point, and fixed point sine() */
 
   x = (gdouble) (current_frame_num * 2.0f * M_PI) / n_frames ;
+  sine = (sin (x - (M_PI / 2.0f)) + 1.0f) * 0.5f;
 
-  CLUTTER_DBG ("%2f\n", ((sin (x - (M_PI / 2.0f)) + 1.0f) * 0.5f)); 
+  CLUTTER_NOTE (ALPHA, g_message ("sine: %2f\n", sine));
 
-  return (guint32) (((sin (x - (M_PI / 2.0f)) + 1.0f) * 0.5f)
-                    * (gdouble) CLUTTER_ALPHA_MAX_ALPHA);
+  return (guint32) (sine * (gdouble) CLUTTER_ALPHA_MAX_ALPHA);
 }

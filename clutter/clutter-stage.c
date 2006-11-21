@@ -39,7 +39,8 @@
 #include "clutter-util.h"
 #include "clutter-marshal.h"
 #include "clutter-enum-types.h"
-#include "clutter-private.h" 	/* for DBG */
+#include "clutter-private.h"
+#include "clutter-debug.h"
 
 #include <GL/glx.h>
 #include <GL/gl.h>
@@ -435,12 +436,18 @@ clutter_stage_realize (ClutterActor *actor)
       glXMakeCurrent(clutter_xdisplay(), priv->xwin, priv->gl_context);
     }
 
-  CLUTTER_DBG("===========================================")
-  CLUTTER_DBG("GL_VENDOR: %s\n", glGetString(GL_VENDOR));
-  CLUTTER_DBG("GL_RENDERER: %s\n", glGetString(GL_RENDERER));
-  CLUTTER_DBG("GL_VERSION: %s\n", glGetString(GL_VERSION));
-  CLUTTER_DBG("GL_EXTENSIONS: %s\n", glGetString(GL_EXTENSIONS));
-  CLUTTER_DBG("===========================================")
+  CLUTTER_NOTE (GL,
+                g_message ("\n"
+                           "==========================================="
+                           "GL_VENDOR: %s\n"
+                           "GL_RENDERER: %s\n"
+                           "GL_VERSION: %s\n"
+                           "GL_EXTENSIONS: %s\n"
+                           "===========================================",
+                           glGetString (GL_VENDOR),
+                           glGetString (GL_RENDERER),
+                           glGetString (GL_VERSION),
+                           glGetString (GL_EXTENSIONS)));
 
   sync_gl_viewport (stage);
 }

@@ -241,12 +241,12 @@ clutter_actor_paint (ClutterActor *self)
 
   if (!CLUTTER_ACTOR_IS_REALIZED (self))
     {
-      CLUTTER_DBG("@@@ Attempting realize via paint() @@@");
+      CLUTTER_NOTE (PAINT, g_message ("Attempting realize via paint()"));
       clutter_actor_realize(self);
 
       if (!CLUTTER_ACTOR_IS_REALIZED (self))
 	{
-	  CLUTTER_DBG("*** Attempt failed, aborting paint ***");
+	  CLUTTER_NOTE (PAINT, g_warning ("Attempt failed, aborting paint"));
 	  return;
 	}
     }
@@ -553,9 +553,9 @@ clutter_actor_dispose (GObject *object)
 {
   ClutterActor *self = CLUTTER_ACTOR (object);
 
-  CLUTTER_DBG ("Disposing of object (id=%d) of type `%s'",
-	       self->priv->id,
-	       g_type_name (G_OBJECT_TYPE (self)));
+  CLUTTER_NOTE (MISC, g_message ("Disposing of object (id=%d) of type `%s'",
+                                 self->priv->id,
+                                 g_type_name (G_OBJECT_TYPE (self))));
   
   if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION))
     {

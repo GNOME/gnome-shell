@@ -2,18 +2,37 @@
 #include <math.h>
 #include <errno.h>
 #include <stdlib.h>
+#include <glib.h>
 
 #define TRAILS  0
 #define NHANDS  6
-#define RADIUS  ((CLUTTER_STAGE_WIDTH()+CLUTTER_STAGE_HEIGHT())/6)
+#define RADIUS  ((CLUTTER_STAGE_WIDTH()+CLUTTER_STAGE_HEIGHT())/NHANDS)
 
 typedef struct SuperOH
 {
-  ClutterActor *hand[NHANDS], *bgtex;
+  ClutterActor **hand, *bgtex;
   ClutterActor *group;
   GdkPixbuf    *bgpixb;
 
 } SuperOH; 
+
+static gint n_hands = NHANDS;
+
+static GOptionEntry super_oh_entries[] = {
+  {
+    "num-hands", 'n',
+    0,
+    G_OPTION_ARG_INT, &n_hands,
+    "Number of hands", "HANDS"
+  },
+  { NULL }
+};
+
+static gint
+get_radius (void)
+{
+  return (CLUTTER_STAGE_WIDTH() + CLUTTER_STAGE_HEIGHT()) / n_hands;
+}
 
 void
 screensaver_setup (void)
@@ -98,17 +117,17 @@ frame_cb (ClutterTimeline *timeline,
 #endif
 
   /* Rotate everything clockwise about stage center*/
-  clutter_actor_rotate_z (CLUTTER_ACTOR(oh->group),
-			    frame_num,
-			    CLUTTER_STAGE_WIDTH()/2,
-			    CLUTTER_STAGE_HEIGHT()/2);
-  for (i = 0; i < NHANDS; i++)
+  clutter_actor_rotate_z (CLUTTER_ACTOR (oh->group),
+			  frame_num,
+			  CLUTTER_STAGE_WIDTH() / 2,
+			  CLUTTER_STAGE_HEIGHT() / 2);
+  for (i = 0; i < n_hands; i++)
     {
       /* rotate each hand around there centers */
       clutter_actor_rotate_z (oh->hand[i],
-				- 6.0 * frame_num,
-				clutter_actor_get_width (oh->hand[i])/2,
-				clutter_actor_get_height (oh->hand[i])/2);
+			      - 6.0 * frame_num,
+			      clutter_actor_get_width (oh->hand[i]) / 2,
+			      clutter_actor_get_height (oh->hand[i]) / 2);
     }
 
   /*
@@ -128,8 +147,22 @@ main (int argc, char *argv[])
   GdkPixbuf       *pixbuf;
   SuperOH         *oh;
   gint             i;
+  GError          *error;
 
-  clutter_init (&argc, &argv);
+  error = NULL;
+  clutter_init_with_args (&argc, &argv,
+                          NULL,
+                          super_oh_entries,
+                          NULL,
+                          &error);
+  if (error)
+    {
+      g_warning ("Unable to initialise Clutter:\n%s",
+                 error->message);
+      g_error_free (error);
+
+      exit (1);
+    }
 
   stage = clutter_stage_get_default ();
 
@@ -160,10 +193,12 @@ main (int argc, char *argv[])
 
   /* create a new group to hold multiple actors in a group */
   oh->group = clutter_group_new();
-  
-  for (i = 0; i < NHANDS; i++)
+
+  oh->hand = g_new (ClutterActor*, n_hands);
+  for (i = 0; i < n_hands; i++)
     {
       gint x, y, w, h;
+      gint radius = get_radius ();
 
       /* Create a texture from pixbuf, then clone in to same resources */
       if (i == 0)
@@ -175,10 +210,14 @@ main (int argc, char *argv[])
       w = clutter_actor_get_width (oh->hand[0]);
       h = clutter_actor_get_height (oh->hand[0]);
 
-      x = CLUTTER_STAGE_WIDTH() / 2  
-               + RADIUS * cos (i * M_PI / (NHANDS/2)) - w/2;
-      y = CLUTTER_STAGE_HEIGHT() / 2 
-               + RADIUS * sin (i * M_PI / (NHANDS/2)) - h/2;
+      x = CLUTTER_STAGE_WIDTH () / 2 
+          + radius
+          * cos (i * M_PI / (n_hands / 2))
+          - w / 2;
+      y = CLUTTER_STAGE_HEIGHT () / 2 
+          + radius
+          * sin (i * M_PI / (n_hands / 2))
+          - h / 2;
 
       clutter_actor_set_position (oh->hand[i], x, y);
 
@@ -218,12 +257,16 @@ main (int argc, char *argv[])
   g_object_set(timeline, "loop", TRUE, 0);   /* have it loop */
 
   /* fire a callback for frame change */
-  g_signal_connect(timeline, "new-frame",  G_CALLBACK (frame_cb), oh);
+  g_signal_connect (timeline, "new-frame",
+                    G_CALLBACK (frame_cb), oh);
 
   /* and start it */
   clutter_timeline_start (timeline);
 
   clutter_main();
+
+  g_free (oh->hand);
+  g_free (oh);
 
   return 0;
 }

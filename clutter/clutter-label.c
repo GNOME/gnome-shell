@@ -35,7 +35,8 @@
 #include "clutter-label.h"
 #include "clutter-main.h"
 #include "clutter-enum-types.h"
-#include "clutter-private.h" 	/* for DBG */
+#include "clutter-private.h"
+#include "clutter-debug.h"
 
 #include "pangoclutter.h"
 
@@ -243,8 +244,10 @@ clutter_label_paint (ClutterActor *self)
   
   if (priv->desc == NULL || priv->text == NULL)
     {
-      CLUTTER_DBG("*** FAIL: layout: %p , desc: %p, text %p ***",
-		  priv->layout, priv->desc, priv->text);
+      CLUTTER_NOTE (ACTOR, g_warning ("layout: %p , desc: %p, text %p",
+                                      priv->layout,
+                                      priv->desc,
+                                      priv->text));
       return;
     }
 

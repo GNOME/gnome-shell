@@ -22,10 +22,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <math.h>
 
 #include "pangoclutter.h"
 #include "pangoclutter-private.h"
+#include "../clutter-debug.h"
 
 /* 
  * Texture cache support code
@@ -99,7 +104,8 @@ tc_get (tc_area *area, int width, int height)
       /* create a new texture if necessary */
       if (!match)
         {
-	  CLUTTER_DBG("creating new texture %i x %i\n", TC_WIDTH, TC_HEIGHT);
+	  CLUTTER_NOTE (PANGO, g_message ("creating new texture %i x %i\n",
+                                          TC_WIDTH, TC_HEIGHT));
 
           match = g_slice_new (tc_texture);
           match->next = first_texture;
@@ -332,7 +338,7 @@ draw_glyph (PangoRenderer *renderer_,
       g->left = bm.left;
       g->top  = bm.top;
 
-      CLUTTER_DBG("cache fail; subimage2d %i\n", glyph);
+      CLUTTER_NOTE (PANGO, g_message ("cache fail; subimage2d %i\n", glyph));
 
       glBindTexture (GL_TEXTURE_2D, g->tex.name);
       glPixelStorei (GL_UNPACK_ROW_LENGTH, bm.stride);
@@ -352,7 +358,7 @@ draw_glyph (PangoRenderer *renderer_,
       renderer->curtex = g->tex.name;
       glBegin (GL_QUADS);
     }
-  else CLUTTER_DBG("cache succsess %i\n", glyph);
+  else CLUTTER_NOTE (PANGO, g_message ("cache succsess %i\n", glyph));
 
   x += g->left;
   y -= g->top;

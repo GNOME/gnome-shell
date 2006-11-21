@@ -30,8 +30,9 @@
  * functions for mainloops, events and threads
  */
 
-
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include <stdlib.h>
 
@@ -40,6 +41,28 @@
 #include "clutter-actor.h"
 #include "clutter-stage.h"
 #include "clutter-private.h"
+#include "clutter-debug.h"
+
+static gboolean clutter_is_initialized = FALSE;
+static gboolean clutter_show_fps       = FALSE;
+static gchar *clutter_display_name     = NULL;
+static int clutter_screen              = 0;
+
+guint clutter_debug_flags = 0;  /* global clutter debug flag */
+
+#ifdef CLUTTER_ENABLE_DEBUG
+static const GDebugKey clutter_debug_keys[] = {
+  { "misc", CLUTTER_DEBUG_MISC },
+  { "actor", CLUTTER_DEBUG_ACTOR },
+  { "texture", CLUTTER_DEBUG_TEXTURE },
+  { "event", CLUTTER_DEBUG_EVENT },
+  { "paint", CLUTTER_DEBUG_PAINT },
+  { "gl", CLUTTER_DEBUG_GL },
+  { "alpha", CLUTTER_DEBUG_ALPHA },
+  { "behaviour", CLUTTER_DEBUG_BEHAVIOUR },
+  { "pango", CLUTTER_DEBUG_PANGO },
+};
+#endif /* CLUTTER_ENABLE_DEBUG */
 
 typedef struct 
 {
@@ -50,9 +73,6 @@ typedef struct
 ClutterXEventSource;
 
 typedef void (*ClutterXEventFunc) (XEvent *xev, gpointer user_data);
-
-static gboolean __clutter_has_debug = FALSE;
-static gboolean __clutter_has_fps   = FALSE;
 
 static ClutterMainContext *ClutterCntx = NULL;
 
@@ -113,8 +133,8 @@ static void
 translate_key_event (ClutterKeyEvent   *event,
 		     XEvent            *xevent)
 {
-  event->type = xevent->xany.type 
-    == KeyPress ? CLUTTER_KEY_PRESS : CLUTTER_KEY_RELEASE;
+  event->type = xevent->xany.type == KeyPress ? CLUTTER_KEY_PRESS
+                                              : CLUTTER_KEY_RELEASE;
   event->time = xevent->xkey.time;
   event->modifier_state = xevent->xkey.state; /* FIXME: handle modifiers */
   event->hardware_keycode = xevent->xkey.keycode;
@@ -128,10 +148,12 @@ translate_button_event (ClutterButtonEvent   *event,
 			XEvent               *xevent)
 {
   /* FIXME: catch double click */
- CLUTTER_DBG("button event at %ix%i", xevent->xbutton.x, xevent->xbutton.y);
+  CLUTTER_NOTE (EVENT, g_message (G_STRLOC ": button event at %ix%i",
+                                  xevent->xbutton.x,
+                                  xevent->xbutton.y));
 
-  event->type = xevent->xany.type 
-    == ButtonPress ? CLUTTER_BUTTON_PRESS : CLUTTER_BUTTON_RELEASE;
+  event->type = xevent->xany.type == ButtonPress ? CLUTTER_BUTTON_PRESS
+                                                 : CLUTTER_BUTTON_RELEASE;
   event->time = xevent->xbutton.time;
   event->x = xevent->xbutton.x;
   event->y = xevent->xbutton.y;
@@ -173,7 +195,7 @@ clutter_dispatch_x_event (XEvent  *xevent,
 
 	/* FIXME: need to make stage an 'actor' so can que
          * a paint direct from there rather than hack here...
-	*/
+	 */
 	clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
       }
       break;
@@ -244,9 +266,9 @@ events_init()
 }
 
 static gboolean
-clutter_want_fps(void)
+clutter_want_fps (void)
 {
-  return __clutter_has_fps;
+  return clutter_show_fps;
 }
 
 /**
@@ -267,7 +289,7 @@ clutter_redraw (void)
   /* FIXME: Should move all this into stage...
   */
 
-  CLUTTER_DBG("@@@ Redraw enter @@@");
+  CLUTTER_NOTE (PAINT, g_message (G_STRLOC ": Redraw enter"));
 
   if (clutter_want_fps ())
     {
@@ -311,7 +333,7 @@ clutter_redraw (void)
 	}
     }
 
-  CLUTTER_DBG("@@@ Redraw leave @@@");
+  CLUTTER_NOTE (PAINT, g_message (G_STRLOC ": Redraw leave"));
 }
 
 /**
@@ -355,7 +377,7 @@ clutter_main (void)
   ClutterMainContext *context = CLUTTER_CONTEXT ();
   GMainLoop *loop;
 
-  if (!context->is_initialized)
+  if (!clutter_is_initialized)
     {
       g_warning ("Called clutter_main() but Clutter wasn't initialised.  "
 		 "You must call clutter_init() first.");
@@ -460,7 +482,7 @@ clutter_root_xwindow (void)
 gboolean
 clutter_want_debug (void)
 {
-  return __clutter_has_debug;
+  return clutter_debug_flags != 0;
 }
 
 ClutterMainContext*
@@ -487,7 +509,7 @@ is_gl_version_at_least_12 (void)
   const gchar *version;
   gint         i = 0;
 
-  version = (const gchar*)glGetString(GL_VERSION);
+  version = (const gchar*) glGetString (GL_VERSION);
 
   while ( ((version[i] <= '9' && version[i] >= '0') || version[i] == '.') 
 	  && i < NON_VENDOR_VERSION_MAX_LEN)
@@ -506,81 +528,394 @@ is_gl_version_at_least_12 (void)
 }
 
 
-/**
- * clutter_init:
- * @argc: The number of arguments in @argv
- * @argv: A pointer to an array of arguments.
- *
- * Initialises Clutter.
- *
- * Return value: 1 on success, < 0 on failure.
- */
-ClutterInitError
-clutter_init (int *argc, char ***argv)
+#ifdef CLUTTER_ENABLE_DEBUG
+static gboolean
+clutter_arg_debug_cb (const char *key,
+                      const char *value,
+                      gpointer    user_data)
 {
-  ClutterMainContext *context;
-  static gboolean is_initialized = FALSE;
+  clutter_debug_flags |=
+    g_parse_debug_string (value,
+                          clutter_debug_keys,
+                          G_N_ELEMENTS (clutter_debug_keys));
+  return TRUE;
+}
 
-  if (is_initialized)
-    return CLUTTER_INIT_SUCCESS;
+static gboolean
+clutter_arg_no_debug_cb (const char *key,
+                         const char *value,
+                         gpointer    user_data)
+{
+  clutter_debug_flags &=
+    ~g_parse_debug_string (value,
+                           clutter_debug_keys,
+                           G_N_ELEMENTS (clutter_debug_keys));
+  return TRUE;
+}
+#endif /* CLUTTER_ENABLE_DEBUG */
 
-  context = clutter_context_get_default ();
+static GOptionEntry clutter_args[] = {
+  { "display", 0, G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_STRING, &clutter_display_name,
+    "X display to use", "DISPLAY" },
+  { "screen", 0, G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_INT, &clutter_screen,
+    "X screen to use", "SCREEN" },
+  { "clutter-show-fps", 0, 0, G_OPTION_ARG_NONE, &clutter_show_fps,
+    "Show frames per second", NULL },
+#ifdef CLUTTER_ENABLE_DEBUG
+  { "clutter-debug", 0, 0, G_OPTION_ARG_CALLBACK, clutter_arg_debug_cb,
+    "Clutter debugging flags to set", "FLAGS" },
+  { "clutter-no-debug", 0, 0, G_OPTION_ARG_CALLBACK, clutter_arg_no_debug_cb,
+    "Clutter debugging flags to unset", "FLAGS" },
+#endif /* CLUTTER_ENABLE_DEBUG */
+  { NULL, },
+};
 
-  if (g_getenv ("CLUTTER_DEBUG"))
-    __clutter_has_debug = TRUE;
+/* pre_parse_hook: initialise variables depending on environment
+ * variables; these variables might be overridden by the command
+ * line arguments that are going to be parsed after.
+ */
+static gboolean
+pre_parse_hook (GOptionContext  *context,
+                GOptionGroup    *group,
+                gpointer         data,
+                GError         **error)
+{
+  const char *env_string;
 
-  if (g_getenv ("CLUTTER_SHOW_FPS"))
-    __clutter_has_fps = TRUE;
+  if (clutter_is_initialized)
+    return TRUE;
 
-  g_type_init();
+  g_type_init ();
 
   if (!g_thread_supported ())
     g_thread_init (NULL);
 
-  if (!XInitThreads())
-    return CLUTTER_INIT_ERROR_THREADS;
-
-  context->main_loops = NULL;
-  context->main_loop_level = 0;
-
-  if ((context->xdpy = XOpenDisplay (g_getenv ("DISPLAY"))) == NULL)
+#ifdef CLUTTER_ENABLE_DEBUG
+  env_string = g_getenv ("CLUTTER_DEBUG");
+  if (env_string != NULL)
     {
-      g_critical ("Unable to connect to X DISPLAY.");
-      return CLUTTER_INIT_ERROR_DISPLAY;
+      clutter_debug_flags =
+        g_parse_debug_string (env_string,
+                              clutter_debug_keys,
+                              G_N_ELEMENTS (clutter_debug_keys));
+      env_string = NULL;
+    }
+#endif /* CLUTTER_ENABLE_DEBUG */
+
+  env_string = g_getenv ("CLUTTER_SHOW_FPS");
+  if (env_string)
+    clutter_show_fps = TRUE;
+
+  env_string = g_getenv ("DISPLAY");
+  if (env_string)
+    clutter_display_name = g_strdup (env_string);
+
+  return TRUE;
+}
+
+/* post_parse_hook: initialise the context and data structures
+ * and opens the X display
+ */
+static gboolean
+post_parse_hook (GOptionContext  *context,
+                 GOptionGroup    *group,
+                 gpointer         data,
+                 GError         **error)
+{
+  ClutterMainContext *clutter_context;
+
+  clutter_context = clutter_context_get_default ();
+  clutter_context->main_loops = NULL;
+  clutter_context->main_loop_level = 0;
+
+  /* either we got this with the DISPLAY envvar or via the
+   * --display command line switch; if both failed, then
+   *  we'll fail later when we return in clutter_init()
+   */
+  if (clutter_display_name)
+    clutter_context->xdpy = XOpenDisplay (clutter_display_name);
+
+  if (clutter_context->xdpy)
+    {
+      if (clutter_screen == 0)
+        clutter_context->xscreen = DefaultScreen (clutter_context->xdpy);
+      else
+        {
+          Screen *xscreen;
+
+          xscreen = ScreenOfDisplay (clutter_context->xdpy, clutter_screen);
+          clutter_context->xscreen = XScreenNumberOfScreen (xscreen);
+        }
+
+      clutter_context->xwin_root = RootWindow (clutter_context->xdpy,
+                                               clutter_context->xscreen);
+
+      /* we don't need it anymore */
+      g_free (clutter_display_name);
     }
 
-  context->xscreen   = DefaultScreen(context->xdpy);
-  context->xwin_root = RootWindow(context->xdpy,
-		  		  context->xscreen);
+  clutter_context->font_map = PANGO_FT2_FONT_MAP (pango_ft2_font_map_new ());
+  pango_ft2_font_map_set_resolution (clutter_context->font_map, 96.0, 96.0);
 
-  context->font_map = PANGO_FT2_FONT_MAP (pango_ft2_font_map_new ());
-  pango_ft2_font_map_set_resolution (context->font_map, 96.0, 96.0);
+  clutter_context->gl_lock = g_mutex_new ();
 
-  context->gl_lock = g_mutex_new ();
+  clutter_is_initialized = TRUE;
+  
+  return TRUE;
+}
 
+/**
+ * clutter_get_option_group:
+ *
+ * Returns a #GOptionGroup for the command line arguments recognized
+ * by Clutter. You should add this group to your #GOptionContext with
+ * g_option_context_add_group(), if you are using g_option_context_parse()
+ * to parse your commandline arguments.
+ *
+ * Return value: a GOptionGroup for the commandline arguments
+ *   recognized by Clutter
+ *
+ * Since: 0.2
+ */
+GOptionGroup *
+clutter_get_option_group (void)
+{
+  GOptionGroup *group;
+
+  group = g_option_group_new ("clutter",
+                              "Clutter Options",
+                              "Show Clutter Options",
+                              NULL,
+                              NULL);
+  g_option_group_set_parse_hooks (group, pre_parse_hook, post_parse_hook);
+  g_option_group_add_entries (group, clutter_args);
+
+  return group;
+}
+
+static gboolean
+clutter_parse_args (int    *argc,
+                    char ***argv)
+{
+  GOptionContext *option_context;
+  GOptionGroup *clutter_group;
+  GError *error = NULL;
+
+  if (clutter_is_initialized)
+    return TRUE;
+
+  option_context = g_option_context_new (NULL);
+  g_option_context_set_ignore_unknown_options (option_context, TRUE);
+  g_option_context_set_help_enabled (option_context, FALSE);
+
+  clutter_group = clutter_get_option_group ();
+  g_option_context_set_main_group (option_context, clutter_group);
+  if (!g_option_context_parse (option_context, argc, argv, &error))
+    {
+      g_warning ("%s", error->message);
+      g_error_free (error);
+    }
+
+  g_option_context_free (option_context);
+
+  return TRUE;
+}
+
+GQuark
+clutter_init_error_quark (void)
+{
+  return g_quark_from_static_string ("clutter-init-error-quark");
+}
+
+static gboolean
+clutter_stage_init (ClutterMainContext  *context,
+                    GError             **error)
+{
   context->stage = CLUTTER_STAGE (clutter_stage_get_default ());
-  g_return_val_if_fail (CLUTTER_IS_STAGE (context->stage), -3);
+  if (!CLUTTER_IS_STAGE (context->stage))
+    {
+      g_set_error (error, clutter_init_error_quark (),
+                   CLUTTER_INIT_ERROR_INTERNAL,
+                   "Unable to create the main stage");
+      return FALSE;
+    }
+
   g_object_ref_sink (context->stage);
 
   /* Realize to get context */
   clutter_actor_realize (CLUTTER_ACTOR (context->stage));
+  if (!CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR (context->stage)))
+    {
+      g_set_error (error, clutter_init_error_quark (),
+                   CLUTTER_INIT_ERROR_INTERNAL,
+                   "Unable to realize the main stage");
+      return FALSE;
+    }
 
-  g_return_val_if_fail 
-      (CLUTTER_ACTOR_IS_REALIZED(CLUTTER_ACTOR(context->stage)),
-       CLUTTER_INIT_ERROR_INTERNAL);
+  return TRUE;
+}
+
+/**
+ * clutter_init_with_args:
+ * @argc: a pointer to the number of command line arguments
+ * @argv: a pointer to the array of comman line arguments
+ * @parameter_string: a string which is displayed in the
+ *   first line of <option>--help</option> output, after
+ *   <literal><replaceable>programname</replaceable [OPTION...]</literal>
+ * @entries: a %NULL terminated array of #GOptionEntry<!-- -->s
+ *   describing the options of your program
+ * @translation_domain: a translation domain to use for translating
+ *   the <option>--help</option> output for the options in @entries
+ *   with gettext(), or %NULL
+ * @error: a return location for a #GError
+ *
+ * This function does the same work as clutter_init(). Additionally,
+ * it allows you to add your own command line options, and it
+ * automatically generates nicely formatted <option>--help</option>
+ * output. Note that your program will be terminated after writing
+ * out the help output. Also note that, in case of error, the
+ * error message will be placed inside @error instead of being
+ * printed on the display.
+ *
+ * Return value: %CLUTTER_INIT_SUCCESS if Clutter has been successfully
+ *   initialised, or other values or #ClutterInitError in case of
+ *   error.
+ *
+ * Since: 0.2
+ */
+ClutterInitError
+clutter_init_with_args (int            *argc,
+                        char         ***argv,
+                        char           *parameter_string,
+                        GOptionEntry   *entries,
+                        char           *translation_domain,
+                        GError        **error)
+{
+  ClutterMainContext *clutter_context;
+  GOptionContext *context;
+  GOptionGroup *group;
+  gboolean res;
+  GError *stage_error;
+
+  if (clutter_is_initialized)
+    return CLUTTER_INIT_SUCCESS;
+
+  if (!XInitThreads())
+    {
+      g_set_error (error, clutter_init_error_quark (),
+                   CLUTTER_INIT_ERROR_THREADS,
+                   "Unable to initialise the X threading");
+      return CLUTTER_INIT_ERROR_THREADS;
+    }
+
+  group = clutter_get_option_group ();
+
+  context = g_option_context_new (parameter_string);
+  g_option_context_add_group (context, group);
+
+  if (entries)
+    g_option_context_add_main_entries (context, entries, translation_domain);
+
+  res = g_option_context_parse (context, argc, argv, error);
+  g_option_context_free (context);
+
+  /* if res is FALSE, the error is filled for
+   * us by g_option_context_parse()
+   */
+  if (!res)
+    return CLUTTER_INIT_ERROR_INTERNAL;
+
+  clutter_context = clutter_context_get_default ();
+  if (!clutter_context->xdpy)
+    {
+      g_set_error (error, clutter_init_error_quark (),
+                   CLUTTER_INIT_ERROR_DISPLAY,
+                   "Unable to connect to X DISPLAY. You should either "
+                   "set the DISPLAY environment variable or use the "
+                   "--display command line switch");
+      return CLUTTER_INIT_ERROR_DISPLAY;
+    }
+
+  stage_error = NULL;
+  if (!clutter_stage_init (clutter_context, &stage_error))
+    {
+      g_propagate_error (error, stage_error);
+      return CLUTTER_INIT_ERROR_INTERNAL;
+    }
 
   /* At least GL 1.2 is needed for CLAMP_TO_EDGE */
-  g_return_val_if_fail(is_gl_version_at_least_12 (),
-		       CLUTTER_INIT_ERROR_OPENGL);
+  if (!is_gl_version_at_least_12 ())
+    {
+      g_set_error (error, clutter_init_error_quark (),
+                   CLUTTER_INIT_ERROR_OPENGL,
+                   "Clutter needs at least version 1.2 of OpenGL");
+      return CLUTTER_INIT_ERROR_OPENGL;
+    }
 
   /* Check available features */
   clutter_feature_init ();
 
   events_init ();
 
+  return CLUTTER_INIT_SUCCESS;
+}
 
-  context->is_initialized = TRUE;
+/**
+ * clutter_init:
+ * @argc: The number of arguments in @argv
+ * @argv: A pointer to an array of arguments.
+ *
+ * It will initialise everything needed to operate with Clutter and
+ * parses some standard command line options. @argc and @argv are
+ * adjusted accordingly so your own code will never see those standard
+ * arguments.
+ *
+ * Return value: 1 on success, < 0 on failure.
+ */
+ClutterInitError
+clutter_init (int    *argc,
+              char ***argv)
+{
+  ClutterMainContext *context;
+  GError *stage_error;
+
+  if (clutter_is_initialized)
+    return CLUTTER_INIT_SUCCESS;
+
+  if (!XInitThreads())
+    return CLUTTER_INIT_ERROR_THREADS;
+
+  clutter_parse_args (argc, argv);
+
+  context = clutter_context_get_default ();
+  if (!context->xdpy)
+    {
+      g_critical ("Unable to connect to X DISPLAY. You should either "
+                  "set the DISPLAY environment variable or use the "
+                  "--display command line switch");
+
+      return CLUTTER_INIT_ERROR_DISPLAY;
+    }
+
+  stage_error = NULL;
+  if (!clutter_stage_init (context, &stage_error))
+    {
+      g_critical (stage_error->message);
+      g_error_free (stage_error);
+      return CLUTTER_INIT_ERROR_INTERNAL;
+    }
+
+  /* At least GL 1.2 is needed for CLAMP_TO_EDGE */
+  if (!is_gl_version_at_least_12 ())
+    {
+      g_critical ("Clutter needs at least version 1.2 of OpenGL");
+      return CLUTTER_INIT_ERROR_OPENGL;
+    }
+
+  /* Check available features */
+  clutter_feature_init ();
+
+  events_init ();
 
   return 1;
 }
-

@@ -1,5 +1,68 @@
 2006-11-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* configure.ac: Enable debug messages also when
+	--enable-debug is set to "minimum".
+
+	* clutter/Makefile.am:
+	* clutter/clutter-debug.h: Move all debugging macros inside
+	this private header; make all debug macros depend on the
+	CLUTTER_ENABLE_DEBUG compile time define, controlled by
+	the --enable-debug configure switch; add G_LOG_DOMAIN define.
+
+	* clutter/clutter-main.c: Clean up the debug stuff; add
+	command line argument parsing using GOption; the debug
+	messages now are triggered like this:
+
+	  CLUTTER_DEBUG=section:section:... clutter-app
+	
+	or like this:
+
+	  clutter-app --clutter-debug=section:section:...
+	
+	where "section" is one of the sections listed in clutter-main.c,
+	or "all", for all sections; each section is bound to a flag,
+	which can be used to define a domain when adding a debug note
+	using the CLUTTER_NOTE() macro; the old CLUTTER_DBG() macro is
+	just a wrapper around that, under the CLUTTER_DEBUG_MISC domain;
+	CLUTTER_NOTE() is used like this:
+
+	  CLUTTER_NOTE (DOMAIN, log-function);
+	
+	where log function is g_printerr(), g_message(), g_warning(),
+	g_critical() or directly g_log() - for instance:
+
+	  CLUTTER_NOTE (PANGO, g_warning ("Cache miss: %d", glyph));
+
+	will print the warning only if the "pango" flag has been
+	set to the CLUTTER_DEBUG envvar or passed to the --clutter-debug
+	command line argument.
+
+	similar to CLUTTER_SHOW_FPS, there's also the --clutter-show-fps
+	command line switch; also, the --display and --screen command
+	line switches have been added: the first overrides the DISPLAY
+	envvar and the second controls the X screen used by Clutter to
+	get the root window on the display.
+
+	* clutter/clutter-main.h:
+	* clutter/clutter-main.c: Add extended support for GOption
+	in Clutter; use clutter_init_with_args() to let Clutter
+	parse your own command line arguments; use instead
+	clutter_get_option_group() to get the GOptionGroup used by
+	Clutter if you want to do the parsing yourself with
+	g_option_context_parse(). The init sequence has been verified,
+	updated and moved into common functions where possible.
+
+	* clutter/pango/pangoclutter-render.c:
+	* clutter/*.c: Include "clutter-debug.h" where needed; use
+	CLUTTER_NOTE() instead of CLUTTER_DBG().
+
+	* examples/super-oh.c: Use the new clutter_init_with_args()
+	function, and add a --num-hands command line switch to
+	the SuperOH example code controlling the number of hands at
+	runtime.
+
+2006-11-21  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* configure.ac: Rename G_ENABLE_DEBUG to CLUTTER_ENABLE_DEBUG.
 
 2006-11-20  Emmanuele Bassi  <ebassi@openedhand.com>

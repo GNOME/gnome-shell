@@ -31,8 +31,6 @@
  */
 
 #include "config.h"
-#include "clutter-main.h"
-#include "clutter-feature.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -42,7 +40,12 @@
 #include <fcntl.h>
 #include <errno.h>
 
- #include <dlfcn.h>
+#include <dlfcn.h>
+
+#include "clutter-feature.h"
+#include "clutter-main.h"
+#include "clutter-private.h"
+#include "clutter-debug.h"
 
 typedef void (*FuncPtr) (void);
 typedef int (*GLXGetVideoSyncProc)  (unsigned int *count);
@@ -221,7 +224,7 @@ clutter_feature_init (void)
 
   if (getenv("__GL_SYNC_TO_VBLANK") || check_vblank_env("none"))
     {
-      CLUTTER_DBG("vblank sync: disabled at user request");
+      CLUTTER_NOTE (MISC, g_message ("vblank sync: disabled at user request"));
     }
   else
     {
@@ -237,8 +240,9 @@ clutter_feature_init (void)
 	  if (__features->funcs.get_video_sync != NULL
 	      && __features->funcs.wait_video_sync != NULL)
 	    {
-	      CLUTTER_DBG("vblank sync: using glx");
-	      __features->vblank_type = CLUTTER_VBLANK_GLX;
+	      CLUTTER_NOTE (MISC, g_message ("vblank sync: using glx"));
+	      
+              __features->vblank_type = CLUTTER_VBLANK_GLX;
 	      __features->flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
 	    }
 	}
@@ -248,14 +252,18 @@ clutter_feature_init (void)
 	  __features->dri_fd = open("/dev/dri/card0", O_RDWR);
 	  if (__features->dri_fd >= 0)
 	    {
-	      CLUTTER_DBG("vblank sync: using dri");
+	      CLUTTER_NOTE (MISC, g_message ("vblank sync: using dri"));
+
 	      __features->vblank_type = CLUTTER_VBLANK_DRI;
 	      __features->flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
 	    }
 	}
 
       if (!(__features->flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
-	CLUTTER_DBG("vblank sync: no use-able mechanism found");
+        {
+          CLUTTER_NOTE (MISC,
+                        g_message ("vblank sync: no use-able mechanism found"));
+        }
     }
 }
 

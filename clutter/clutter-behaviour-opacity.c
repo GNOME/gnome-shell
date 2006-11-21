@@ -41,6 +41,8 @@
 #include "clutter-behaviour-opacity.h"
 #include "clutter-enum-types.h"
 #include "clutter-main.h"
+#include "clutter-private.h"
+#include "clutter-debug.h"
 
 #include <math.h>
 
@@ -95,7 +97,8 @@ opacity_frame_foreach (ClutterActor            *actor,
 
   opacity += priv->opacity_start;
 
-  CLUTTER_DBG ("alpha %i opacity %i\n", alpha, opacity);
+  CLUTTER_NOTE (BEHAVIOUR, g_message ("alpha %i opacity %i\n",
+                                      alpha, opacity));
 
   clutter_actor_set_opacity (actor, opacity);
 }
@@ -107,12 +110,6 @@ clutter_behaviour_alpha_notify (ClutterBehaviour *behave,
   clutter_behaviour_actors_foreach (behave,
                                     (GFunc) opacity_frame_foreach,
                                     CLUTTER_BEHAVIOUR_OPACITY (behave));
-}
-
-static void 
-clutter_behaviour_opacity_finalize (GObject *object)
-{
-  G_OBJECT_CLASS (clutter_behaviour_opacity_parent_class)->finalize (object);
 }
 
 static void

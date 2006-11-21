@@ -42,6 +42,8 @@
 #include "clutter-main.h"
 #include "clutter-fixed.h"
 #include "clutter-behaviour-scale.h"
+#include "clutter-private.h"
+#include "clutter-debug.h"
 
 #include <math.h>
 
@@ -121,7 +123,7 @@ scale_frame_foreach (ClutterActor          *actor,
     case CLUTTER_GRAVITY_WEST:
       break;
     case CLUTTER_GRAVITY_CENTER:
-      CLUTTER_DBG ("%i vs %i\n", sw, w);
+      CLUTTER_NOTE (MISC, g_message (G_STRLOC ": gravity %i vs %i\n", sw, w));
       clutter_actor_move_by (actor, sw - w, sh - h);
     default:
       break;

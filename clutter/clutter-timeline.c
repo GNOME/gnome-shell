@@ -38,12 +38,13 @@
 
 #include "clutter-timeline.h"
 #include "clutter-main.h"
-#include "clutter-private.h"   /* for DBG */
 #include "clutter-marshal.h"
+#include "clutter-private.h"
+#include "clutter-debug.h"
 
 G_DEFINE_TYPE (ClutterTimeline, clutter_timeline, G_TYPE_OBJECT);
 
-#define FPS_TO_INTERVAL(f) (1000/f)
+#define FPS_TO_INTERVAL(f) (1000 / (f))
 
 struct _ClutterTimelinePrivate
 {
@@ -292,7 +293,7 @@ timeline_timeout_func (gpointer data)
         n_frames = 1;
 
       if (n_frames > 1)
-	CLUTTER_DBG("*** Skipping %i frames ***", n_frames);
+	CLUTTER_NOTE (MISC, g_message ("Skipping %i frames", n_frames));
     }
   else 
     {

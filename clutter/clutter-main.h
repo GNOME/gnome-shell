@@ -36,30 +36,7 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_HAS_DEBUG_MESSGES 1
-
-#if (CLUTTER_HAS_DEBUG_MESSGES)
-
-#define CLUTTER_DBG(x, a...) \
- if (clutter_want_debug())   \
-   { g_printerr ( __FILE__ ":%d,%s() " x "\n", __LINE__, __func__, ##a); }
-
-#define CLUTTER_GLERR()                                        \
- if (clutter_want_debug())                                     \
- {                                                             \
-  GLenum err = glGetError (); 	/* Roundtrip */                \
-  if (err != GL_NO_ERROR)                                      \
-    {                                                          \
-      g_printerr (__FILE__ ": GL Error: %x [at %s:%d]\n",      \
-		  err, __func__, __LINE__);                    \
-    }                                                          \
- }
-#else
-#define CLUTTER_DBG(x, a...) do {} while (0)
-#define CLUTTER_GLERR()      do {} while (0)
-#endif /* CLUTTER_HAS_DEBUG */
-
-#define CLUTTER_MARK() CLUTTER_DBG("mark")
+#define CLUTTER_INIT_ERROR      (clutter_init_error_quark ())
 
 typedef enum {
   CLUTTER_INIT_SUCCESS        =  1,
@@ -70,38 +47,29 @@ typedef enum {
   CLUTTER_INIT_ERROR_OPENGL   = -4
 } ClutterInitError;
 
-ClutterInitError
-clutter_init (int *argc, char ***argv);
+GQuark clutter_init_error_quark (void);
 
-void
-clutter_main (void);
+ClutterInitError clutter_init             (int          *argc,
+                                           char       ***argv);
+ClutterInitError clutter_init_with_args   (int          *argc,
+                                           char       ***argv,
+                                           char         *parameter_string,
+                                           GOptionEntry *entries,
+                                           char         *translation_domain,
+                                           GError      **error);
 
-void
-clutter_main_quit (void);
+GOptionGroup *   clutter_get_option_group (void);
 
-gint
-clutter_main_level (void);
-
-void
-clutter_redraw ();
-
-Display*
-clutter_xdisplay (void);
-
-int
-clutter_xscreen (void);
-
-Window
-clutter_root_xwindow (void);
-
-gboolean
-clutter_want_debug (void);
-
-void
-clutter_threads_enter (void);
-
-void
-clutter_threads_leave (void);
+void             clutter_main             (void);
+void             clutter_main_quit        (void);
+gint             clutter_main_level       (void);
+void             clutter_redraw           (void);
+Display *        clutter_xdisplay         (void);
+gint             clutter_xscreen          (void);
+Window           clutter_root_xwindow     (void);
+gboolean         clutter_want_debug       (void);
+void             clutter_threads_enter    (void);
+void             clutter_threads_leave    (void);
 
 G_END_DECLS
 

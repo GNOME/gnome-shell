@@ -112,7 +112,7 @@ source_c = clutter-main.c 		\
 	   clutter-media.c 		\
 	   clutter-enum-types.c
 
-source_h_priv = clutter-private.h
+source_h_priv = clutter-debug.h clutter-private.h
 
 libclutter_@CLUTTER_MAJORMINOR@_la_SOURCES = $(MARSHALFILES) \
                                              $(source_c)     \
@@ -126,6 +126,7 @@ INCLUDES = \
 	-DLIBDIR=\""$(libdir)"\" \
 	-DDATADIR=\""$(datadir)"\" \
 	-DG_DISABLE_DEPRECATED \
+	-DG_LOG_DOMAIN=\"Clutter\" \
 	$(GCC_FLAGS) \
 	$(CLUTTER_CFLAGS) \
 	$(CLUTTER_DEBUG_CFLAGS)

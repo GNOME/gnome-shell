@@ -48,6 +48,7 @@ CFILE_GLOB=$(top_srcdir)/clutter/*.c
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
 IGNORE_HFILES=\
+	clutter-debug.h \
 	clutter-private.h \
 	clutter-marshal.h \
 	clutter-keysyms.h \

@@ -43,6 +43,7 @@
 
 #include <pango/pangoft2.h>
 
+#include <clutter/clutter-debug.h>
 
 G_BEGIN_DECLS
 

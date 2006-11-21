@@ -493,11 +493,6 @@ clutter_root_xwindow
 clutter_want_debug
 clutter_threads_enter
 clutter_threads_leave
-<SUBSECTION Private>
-CLUTTER_HAS_DEBUG_MESSGES
-CLUTTER_DBG
-CLUTTER_GLERR
-CLUTTER_MARK
 </SECTION>
 
 <SECTION>
