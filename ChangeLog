@@ -1,5 +1,10 @@
 2006-11-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-main.c: Add a --g-fatal-warnings switch
+	for abort()-ing on warnings and criticals.
+
+2006-11-21  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* configure.ac: Enable debug messages also when
 	--enable-debug is set to "minimum".
 

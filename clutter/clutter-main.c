@@ -45,6 +45,7 @@
 
 static gboolean clutter_is_initialized = FALSE;
 static gboolean clutter_show_fps       = FALSE;
+static gboolean clutter_fatal_warnings = FALSE;
 static gchar *clutter_display_name     = NULL;
 static int clutter_screen              = 0;
 
@@ -561,6 +562,8 @@ static GOptionEntry clutter_args[] = {
     "X screen to use", "SCREEN" },
   { "clutter-show-fps", 0, 0, G_OPTION_ARG_NONE, &clutter_show_fps,
     "Show frames per second", NULL },
+  { "g-fatal-warnings", 0, 0, G_OPTION_ARG_NONE, &clutter_fatal_warnings,
+    "Make all warnings fatal", NULL },
 #ifdef CLUTTER_ENABLE_DEBUG
   { "clutter-debug", 0, 0, G_OPTION_ARG_CALLBACK, clutter_arg_debug_cb,
     "Clutter debugging flags to set", "FLAGS" },
@@ -623,6 +626,18 @@ post_parse_hook (GOptionContext  *context,
                  GError         **error)
 {
   ClutterMainContext *clutter_context;
+
+  if (clutter_is_initialized)
+    return TRUE;
+
+  if (clutter_fatal_warnings)
+    {
+      GLogLevelFlags fatal_mask;
+
+      fatal_mask = g_log_set_always_fatal (G_LOG_FATAL_MASK);
+      fatal_mask |= G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL;
+      g_log_set_always_fatal (fatal_mask);
+    }
 
   clutter_context = clutter_context_get_default ();
   clutter_context->main_loops = NULL;
