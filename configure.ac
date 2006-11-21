@@ -132,7 +132,7 @@ AC_ARG_ENABLE(debug,
 
 if test "x$enable_debug" = "xyes"; then
   test "$cflags_set" = set || CFLAGS="$CFLAGS -g"
-  CLUTTER_DEBUG_CFLAGS="-DG_ENABLE_DEBUG"
+  CLUTTER_DEBUG_CFLAGS="-DCLUTTER_ENABLE_DEBUG"
 else
   if test "x$enable_debug" = "xno"; then
     CLUTTER_DEBUG_CFLAGS="-DG_DISABLE_ASSERT -DG_DISABLE_CHECKS -DG_DISABLE_CAST
