@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-03 09:21+0300\n"
+"POT-Creation-Date: 2006-11-22 04:22+0100\n"
 "PO-Revision-Date: 2005-07-31 01:18+0300\n"
 "Last-Translator: Yuval Tanny\n"
 "Language-Team: Hebrew <he@li.org>\n"
@@ -27,35 +27,35 @@ msgstr "שימוש: %s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity was compiled without support for verbose mode\n"
 
-#: ../src/delete.c:64 ../src/delete.c:91 ../src/metacity-dialog.c:71
+#: ../src/delete.c:65 ../src/delete.c:92 ../src/metacity-dialog.c:48
 #: ../src/theme-parser.c:467
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "לא ניתן להעביר את \"%s\" כמספר שלם"
 
-#: ../src/delete.c:71 ../src/delete.c:98 ../src/metacity-dialog.c:78
+#: ../src/delete.c:72 ../src/delete.c:99 ../src/metacity-dialog.c:55
 #: ../src/theme-parser.c:476 ../src/theme-parser.c:530
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "לא ניתן להבין את התוים \"%s\" במחרוזת \"%s\""
 
-#: ../src/delete.c:129
+#: ../src/delete.c:130
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "נכשל בהעברת ההודעה \"%s\" מתהליך תיבת דו-השיח\n"
 
-#: ../src/delete.c:264
+#: ../src/delete.c:265
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "שגיאה בקריאה מתהליך הצגת תיבת דו-שיח: %s\n"
 
-#: ../src/delete.c:345
+#: ../src/delete.c:346
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "שגיאה בהפעלת תיבת דו-שיח של מטאסיטי השואלת אם להרוג יישום: %s\n"
 
-#: ../src/delete.c:453
+#: ../src/delete.c:454
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "נכשל בקבלת שם המארח: %s\n"
@@ -81,44 +81,44 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "שגיאת קלט/פלט חמורה %d (%s) בתצוגה '%s'.\n"
 
-#: ../src/frames.c:1086
+#: ../src/frames.c:1089
 msgid "Close Window"
 msgstr "סגור חלון"
 
-#: ../src/frames.c:1089
+#: ../src/frames.c:1092
 msgid "Window Menu"
 msgstr "תפריט חלון"
 
-#: ../src/frames.c:1092
+#: ../src/frames.c:1095
 msgid "Minimize Window"
 msgstr "מזער חלון"
 
-#: ../src/frames.c:1095
+#: ../src/frames.c:1098
 msgid "Maximize Window"
 msgstr "הגדל חלון"
 
-#: ../src/frames.c:1098
+#: ../src/frames.c:1101
 msgid "Unmaximize Window"
 msgstr "שחזר חלון"
 
-#: ../src/keybindings.c:1021
+#: ../src/keybindings.c:1031
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "תוכנית אחרת כבר משתמשת במקש %s עם המקש %x כצירוף\n"
 
-#: ../src/keybindings.c:2588
+#: ../src/keybindings.c:2663
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "שגיאה בהפעלת תיבת דו-שיח של מטאסיטי כדי להדפיס שגיאה על הפקודה: %s\n"
 
-#: ../src/keybindings.c:2693
+#: ../src/keybindings.c:2768
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "אף פקודה %d לא הוגדרה.\n"
 
-#: ../src/keybindings.c:3559
+#: ../src/keybindings.c:3635
 msgid "No terminal command has been defined.\n"
 msgstr "אף פקודת מסוף לא הוגדרה.\n"
 
@@ -131,50 +131,52 @@ msgid ""
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
-"מטאסיטי %s\n"
-"כל הזכויות שמורות (C) 2001-2002 Havoc Pennington, Red Hat, Inc., ואחרים\n"
-"זוהי תוכנה חופשית; ראה קוד מקור לתנאי ההעתקה.\n"
-"אין אחראיות; אפילו לא לאפשרויות מסחר או התאמה למטרה מסויימת.\n"
+"metacity %s\n"
+"Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
+"This is free software; see the source for copying conditions.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
 
 #: ../src/main.c:169
 msgid "Disable connection to session manager"
-msgstr ""
+msgstr "Disable connection to session manager"
 
 #: ../src/main.c:175
 msgid "Replace the running window manager with Metacity"
-msgstr ""
+msgstr "Replace the running window manager with Metacity"
 
 #: ../src/main.c:181
 msgid "Specify session management ID"
-msgstr ""
+msgstr "Specify session management ID"
 
 #: ../src/main.c:186
 msgid "X Display to use"
-msgstr ""
+msgstr "X Display to use"
 
 #: ../src/main.c:192
 msgid "Initialize session from savefile"
-msgstr ""
+msgstr "Initialize session from savefile"
 
 #: ../src/main.c:198
 msgid "Print version"
-msgstr ""
+msgstr "Print version"
 
 #: ../src/main.c:350
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
-msgstr "נכשל בסריקת ספריית ערכות נושא: %s\n"
+msgstr "Failed to scan themes directory: %s\n"
 
 #: ../src/main.c:366
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr "לא ניתן למצוא ערכת נושא! ודא כי %s קיים ומכיל את ערכות הנושא הרגילות."
+msgstr ""
+"Could not find a theme! Be sure %s exists and contains the usual themes."
 
-#: ../src/main.c:424
+#: ../src/main.c:426
 #, c-format
 msgid "Failed to restart: %s\n"
-msgstr "נכשל בהפעלה מחדש: %s\n"
+msgstr "Failed to restart: %s\n"
 
 #: ../src/menu.c:55
 msgid "Mi_nimize"
@@ -242,7 +244,7 @@ msgstr "הזז חלון לסביבת העבודה למעלה"
 msgid "Move to Workspace _Down"
 msgstr "הזז חלון לסביבת העבודה למטה"
 
-#: ../src/menu.c:164 ../src/prefs.c:2142 ../src/prefs.c:2669
+#: ../src/menu.c:164 ../src/prefs.c:2142 ../src/prefs.c:2677
 #, c-format
 msgid "Workspace %d"
 msgstr "סביבת עבודה %d"
@@ -350,29 +352,29 @@ msgstr "Mod4"
 msgid "Mod5"
 msgstr "Mod5"
 
-#: ../src/metacity-dialog.c:111
+#: ../src/metacity-dialog.c:88
 #, c-format
 msgid "The window \"%s\" is not responding."
 msgstr "החלון \"%s\" אינו מגיב"
 
-#: ../src/metacity-dialog.c:119
+#: ../src/metacity-dialog.c:96
 msgid ""
 "Forcing this application to quit will cause you to lose any unsaved changes."
 msgstr "להכריח את ישום זה לסיים יגרום לאיבוד שינויים שלא נשמרו"
 
-#: ../src/metacity-dialog.c:130
+#: ../src/metacity-dialog.c:107
 msgid "_Force Quit"
 msgstr "_הכרח יציאה"
 
-#: ../src/metacity-dialog.c:227
+#: ../src/metacity-dialog.c:204
 msgid "Title"
 msgstr "כותרת"
 
-#: ../src/metacity-dialog.c:239
+#: ../src/metacity-dialog.c:216
 msgid "Class"
 msgstr "מחלקה"
 
-#: ../src/metacity-dialog.c:265
+#: ../src/metacity-dialog.c:242
 msgid ""
 "These windows do not support \"save current setup\" and will have to be "
 "restarted manually next time you log in."
@@ -380,7 +382,7 @@ msgstr ""
 "חלון זה אינו תומך ב\"שמירת ההגדרות הנוכחיות\", ויהיה צורך באתחול ידני בכניסה "
 "הבאה שלך."
 
-#: ../src/metacity-dialog.c:331
+#: ../src/metacity-dialog.c:308
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
@@ -395,7 +397,8 @@ msgstr "מטאסיטי"
 
 #: ../src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr "(Not implemented) Navigation works in terms of applications not windows"
+msgstr ""
+"(Not implemented) Navigation works in terms of applications not windows"
 
 #: ../src/metacity.schemas.in.h:2
 msgid ""
@@ -2061,7 +2064,7 @@ msgstr "Window title font"
 #: ../src/prefs.c:1014 ../src/prefs.c:1030
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "מפתח GConf \"%s\" נקבע לסוג לא תקני\n"
+msgstr "GConf key \"%s\" is set to an invalid type\n"
 
 #: ../src/prefs.c:1075
 #, c-format
@@ -2069,11 +2072,13 @@ msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr ""
+"\"%s\" found in configuration database is not a valid value for mouse button "
+"modifier\n"
 
 #: ../src/prefs.c:1099 ../src/prefs.c:1120 ../src/prefs.c:1616
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
-msgstr ""
+msgstr "GConf key '%s' is set to an invalid value\n"
 
 #: ../src/prefs.c:1249
 #, c-format
@@ -2081,11 +2086,13 @@ msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
 "range 1..128\n"
 msgstr ""
+"%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
+"range 1..128\n"
 
 #: ../src/prefs.c:1329
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr ""
+msgstr "Could not parse font description \"%s\" from GConf key %s\n"
 
 #: ../src/prefs.c:1514
 #, c-format
@@ -2093,46 +2100,52 @@ msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
 "maximum is %d\n"
 msgstr ""
+"%d stored in GConf key %s is not a reasonable number of workspaces, current "
+"maximum is %d\n"
 
 #: ../src/prefs.c:1574
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
+"Workarounds for broken applications disabled. Some applications may not "
+"behave properly.\n"
 
 #: ../src/prefs.c:1643
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgstr ""
+msgstr "%d stored in GConf key %s is out of range 0 to %d\n"
 
 #: ../src/prefs.c:1786
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
-msgstr ""
+msgstr "Error setting number of workspaces to %d: %s\n"
 
-#: ../src/prefs.c:2170 ../src/prefs.c:2335
+#: ../src/prefs.c:2172 ../src/prefs.c:2342
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr ""
+"\"%s\" found in configuration database is not a valid value for keybinding "
+"\"%s\"\n"
 
-#: ../src/prefs.c:2750
+#: ../src/prefs.c:2758
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr ""
+msgstr "Error setting name for workspace %d to \"%s\": %s\n"
 
 #: ../src/resizepopup.c:111
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/screen.c:403
+#: ../src/screen.c:404
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Screen %d on display '%s' is invalid\n"
 
-#: ../src/screen.c:419
+#: ../src/screen.c:420
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2141,19 +2154,19 @@ msgstr ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 
-#: ../src/screen.c:443
+#: ../src/screen.c:444
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 
-#: ../src/screen.c:501
+#: ../src/screen.c:502
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Screen %d on display \"%s\" already has a window manager\n"
 
-#: ../src/screen.c:705
+#: ../src/screen.c:707
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Could not release screen %d on display \"%s\"\n"
@@ -2238,7 +2251,7 @@ msgstr "Line %d character %d: %s"
 #: ../src/theme-parser.c:396
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr ""
+msgstr "Attribute \"%s\" repeated twice on the same <%s> element"
 
 #: ../src/theme-parser.c:414 ../src/theme-parser.c:439
 #, c-format
@@ -2959,296 +2972,316 @@ msgstr ""
 
 #: ../src/theme.c:202
 msgid "top"
-msgstr "מעלה"
+msgstr "top"
 
 #: ../src/theme.c:204
 msgid "bottom"
-msgstr "מטה"
+msgstr "bottom"
 
 #: ../src/theme.c:206
 msgid "left"
-msgstr "שמאלה"
+msgstr "left"
 
 #: ../src/theme.c:208
 msgid "right"
-msgstr "ימינה"
+msgstr "right"
 
 #: ../src/theme.c:222
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
-msgstr ""
+msgstr "frame geometry does not specify \"%s\" dimension"
 
 #: ../src/theme.c:241
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr ""
+msgstr "frame geometry does not specify dimension \"%s\" for border \"%s\""
 
 #: ../src/theme.c:278
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
-msgstr ""
+msgstr "Button aspect ratio %g is not reasonable"
 
 #: ../src/theme.c:290
 msgid "Frame geometry does not specify size of buttons"
-msgstr ""
+msgstr "Frame geometry does not specify size of buttons"
 
-#: ../src/theme.c:813
+#: ../src/theme.c:847
 msgid "Gradients should have at least two colors"
-msgstr ""
+msgstr "Gradients should have at least two colors"
 
-#: ../src/theme.c:939
+#: ../src/theme.c:973
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
+"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
+"where NORMAL is the state; could not parse \"%s\""
 
-#: ../src/theme.c:953
+#: ../src/theme.c:987
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
+"GTK color specification must have a close bracket after the state, e.g. gtk:"
+"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 
-#: ../src/theme.c:964
+#: ../src/theme.c:998
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr ""
+msgstr "Did not understand state \"%s\" in color specification"
 
-#: ../src/theme.c:977
+#: ../src/theme.c:1011
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr ""
+msgstr "Did not understand color component \"%s\" in color specification"
 
-#: ../src/theme.c:1007
+#: ../src/theme.c:1041
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr ""
+"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
+"format"
 
-#: ../src/theme.c:1018
+#: ../src/theme.c:1052
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr ""
+msgstr "Could not parse alpha value \"%s\" in blended color"
 
-#: ../src/theme.c:1028
+#: ../src/theme.c:1062
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr ""
+msgstr "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 
-#: ../src/theme.c:1075
+#: ../src/theme.c:1109
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 
-#: ../src/theme.c:1086
+#: ../src/theme.c:1120
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr ""
+msgstr "Could not parse shade factor \"%s\" in shaded color"
 
-#: ../src/theme.c:1096
+#: ../src/theme.c:1130
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr ""
+msgstr "Shade factor \"%s\" in shaded color is negative"
 
-#: ../src/theme.c:1125
+#: ../src/theme.c:1159
 #, c-format
 msgid "Could not parse color \"%s\""
-msgstr ""
+msgstr "Could not parse color \"%s\""
 
-#: ../src/theme.c:1384
+#: ../src/theme.c:1418
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr ""
+msgstr "Coordinate expression contains character '%s' which is not allowed"
 
-#: ../src/theme.c:1411
+#: ../src/theme.c:1445
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr ""
+"Coordinate expression contains floating point number '%s' which could not be "
+"parsed"
 
-#: ../src/theme.c:1425
+#: ../src/theme.c:1459
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr ""
+msgstr "Coordinate expression contains integer '%s' which could not be parsed"
 
-#: ../src/theme.c:1492
+#: ../src/theme.c:1526
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr ""
+"Coordinate expression contained unknown operator at the start of this text: "
+"\"%s\""
 
-#: ../src/theme.c:1549
+#: ../src/theme.c:1583
 msgid "Coordinate expression was empty or not understood"
-msgstr ""
+msgstr "Coordinate expression was empty or not understood"
 
-#: ../src/theme.c:1686 ../src/theme.c:1696 ../src/theme.c:1730
+#: ../src/theme.c:1720 ../src/theme.c:1730 ../src/theme.c:1764
 msgid "Coordinate expression results in division by zero"
-msgstr ""
+msgstr "Coordinate expression results in division by zero"
 
-#: ../src/theme.c:1738
+#: ../src/theme.c:1772
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr ""
+msgstr 
+"Coordinate expression tries to use mod operator on a floating-point number"
 
-#: ../src/theme.c:1794
+#: ../src/theme.c:1828
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 
-#: ../src/theme.c:1803
+#: ../src/theme.c:1837
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr ""
+msgstr "Coordinate expression had an operand where an operator was expected"
 
-#: ../src/theme.c:1811
+#: ../src/theme.c:1845
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
+msgstr "Coordinate expression ended with an operator instead of an operand"
 
-#: ../src/theme.c:1821
+#: ../src/theme.c:1855
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
+"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
+"operand in between"
 
-#: ../src/theme.c:1939
+#: ../src/theme.c:1973
 msgid "Coordinate expression parser overflowed its buffer."
-msgstr ""
+msgstr "Coordinate expression parser overflowed its buffer."
 
-#: ../src/theme.c:1968
+#: ../src/theme.c:2002
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
+msgstr "Coordinate expression had a close parenthesis with no open parenthesis"
 
-#: ../src/theme.c:2030
+#: ../src/theme.c:2064
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr ""
+msgstr "Coordinate expression had unknown variable or constant \"%s\""
 
-#: ../src/theme.c:2085
+#: ../src/theme.c:2119
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
+msgstr "Coordinate expression had an open parenthesis with no close parenthesis"
 
-#: ../src/theme.c:2096
+#: ../src/theme.c:2130
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr ""
+msgstr "Coordinate expression doesn't seem to have any operators or operands"
 
-#: ../src/theme.c:2337 ../src/theme.c:2359 ../src/theme.c:2380
+#: ../src/theme.c:2371 ../src/theme.c:2393 ../src/theme.c:2414
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
-msgstr "ערכת הנושא מכילה ביטוי \"%s\" שגרם לשגיאה: %s\n"
+msgstr "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 
-#: ../src/theme.c:3826
+#: ../src/theme.c:3860
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> חייב להיות "
-"מצויין לסגנון מסגרת זו"
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this frame style"
 
-#: ../src/theme.c:4270 ../src/theme.c:4295
+#: ../src/theme.c:4304 ../src/theme.c:4329
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
-"חסר <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: ../src/theme.c:4341
+#: ../src/theme.c:4375
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr "נכשל בטעינת ערכת נושא \"%s\": %s\n"
+msgstr "Failed to load theme \"%s\": %s\n"
 
-#: ../src/theme.c:4481 ../src/theme.c:4488 ../src/theme.c:4495
-#: ../src/theme.c:4502 ../src/theme.c:4509
+#: ../src/theme.c:4515 ../src/theme.c:4522 ../src/theme.c:4529
+#: ../src/theme.c:4536 ../src/theme.c:4543
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr "לא נקבע <%s> לערכת הנושא \"%s\""
+msgstr "No <%s> set for theme \"%s\""
 
-#: ../src/theme.c:4517
+#: ../src/theme.c:4551
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
+"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
+"type=\"%s\" style_set=\"whatever\"/> element"
 
-#: ../src/theme.c:4531
+#: ../src/theme.c:4565
 #, c-format
 msgid ""
 "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this theme"
 msgstr ""
-"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> חייב להיות "
-"מצויין לערכת נושא זו"
+"<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
+"specified for this theme"
 
-#: ../src/theme.c:4911 ../src/theme.c:4973
+#: ../src/theme.c:4945 ../src/theme.c:5007
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr "קבועים מותאמים-אישית חייבים להתחיל באות גדולה; \"%s\" לא"
+msgstr ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 
-#: ../src/theme.c:4919 ../src/theme.c:4981
+#: ../src/theme.c:4953 ../src/theme.c:5015
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr "הקבוע \"%s\" כבר הוגדר"
+msgstr "Constant \"%s\" has already been defined"
 
 #: ../src/util.c:96
 #, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr ""
+msgstr "Failed to open debug log: %s\n"
 
 #: ../src/util.c:106
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr ""
+msgstr "Failed to fdopen() log file %s: %s\n"
 
 #: ../src/util.c:112
 #, c-format
 msgid "Opened log file %s\n"
-msgstr ""
+msgstr "Opened log file %s\n"
 
 #: ../src/util.c:220
 msgid "Window manager: "
-msgstr "מנהל החלונות: "
+msgstr "Window manager: "
 
 #: ../src/util.c:368
 msgid "Bug in window manager: "
-msgstr "תקלה במנהל החלונות: "
+msgstr "Bug in window manager: "
 
 #: ../src/util.c:397
 msgid "Window manager warning: "
-msgstr "אזהרת מנהל החלונות: "
+msgstr "Window manager warning: "
 
 #: ../src/util.c:421
 msgid "Window manager error: "
-msgstr "שגיאת מנהל החלונות: "
+msgstr "Window manager error: "
 
-#: ../src/window-props.c:169
+#: ../src/window-props.c:170
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
-msgstr ""
+msgstr "Application set a bogus _NET_WM_PID %lu\n"
 
-#: ../src/window-props.c:237
+#: ../src/window-props.c:238
 #, c-format
 msgid "%s (on %s)"
-msgstr ""
+msgstr "%s (מעל %s)"
 
-#: ../src/window-props.c:1159
+#: ../src/window-props.c:1182
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
-msgstr ""
+msgstr "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 
 #. first time through
-#: ../src/window.c:5248
+#: ../src/window.c:5359
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
+"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
+"window as specified in the ICCCM.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -3257,12 +3290,14 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5844
+#: ../src/window.c:5955
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
+"d x %d and max size %d x %d; this doesn't make much sense.\n"
 
 #: ../src/xprops.c:153
 #, c-format
@@ -3273,14 +3308,20 @@ msgid ""
 "This is most likely an application bug, not a window manager bug.\n"
 "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
+"Window 0x%lx has property %s\n"
+"that was expected to have type %s format %d\n"
+"and actually has type %s format %d n_items %d.\n"
+"This is most likely an application bug, not a window manager bug.\n"
+"The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 
 #: ../src/xprops.c:399
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "המאפיין %s של החלון 0x%lx מכיל UTF-8 לא תקני\n"
+msgstr "Property %s on window 0x%lx contained invalid UTF-8\n"
 
 #: ../src/xprops.c:482
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr "המאפיין %s של החלון 0x%lx מכיל UTF-8 לא תקני לפריט %d ברשימה\n"
+msgstr ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
