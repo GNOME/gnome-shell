@@ -151,9 +151,9 @@ clone_texture_render_to_gl_quad (ClutterCloneTexture *ctexture,
 	  qy2 = qy1 + ((qheight * actual_h) / pheight );
 
 	  CLUTTER_NOTE (TEXTURE,
-                        g_message ("rendering text tile x: %i, y: %i - %ix%i",
-                                   x, y,
-                                   actual_w, actual_h));
+                        "rendering text tile x: %i, y: %i - %ix%i",
+			x, y,
+			actual_w, actual_h);
 
 	  glBegin (GL_QUADS);
 	  glTexCoord2f (tx, ty);   glVertex2i   (qx2, qy2);
@@ -204,10 +204,10 @@ clutter_clone_texture_paint (ClutterActor *self)
 
   clutter_actor_get_coords (self, &x1, &y1, &x2, &y2);
 
-  CLUTTER_NOTE (PAINT, g_message ("paint to x1: %i, y1: %i x2: %i, y2: %i "
-                                  "opacity: %i",
-                                  x1, y1, x2, y2,
-                                  clutter_actor_get_opacity (self)));
+  CLUTTER_NOTE (PAINT, "paint to x1: %i, y1: %i x2: %i, y2: %i "
+		"opacity: %i",
+		x1, y1, x2, y2,
+		clutter_actor_get_opacity (self));
 
   /* Parent paint translated us into position */
   clone_texture_render_to_gl_quad (CLUTTER_CLONE_TEXTURE(self), 

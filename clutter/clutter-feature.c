@@ -224,7 +224,7 @@ clutter_feature_init (void)
 
   if (getenv("__GL_SYNC_TO_VBLANK") || check_vblank_env("none"))
     {
-      CLUTTER_NOTE (MISC, g_message ("vblank sync: disabled at user request"));
+      CLUTTER_NOTE (MISC, "vblank sync: disabled at user request");
     }
   else
     {
@@ -240,7 +240,7 @@ clutter_feature_init (void)
 	  if (__features->funcs.get_video_sync != NULL
 	      && __features->funcs.wait_video_sync != NULL)
 	    {
-	      CLUTTER_NOTE (MISC, g_message ("vblank sync: using glx"));
+	      CLUTTER_NOTE (MISC, "vblank sync: using glx");
 	      
               __features->vblank_type = CLUTTER_VBLANK_GLX;
 	      __features->flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
@@ -252,7 +252,7 @@ clutter_feature_init (void)
 	  __features->dri_fd = open("/dev/dri/card0", O_RDWR);
 	  if (__features->dri_fd >= 0)
 	    {
-	      CLUTTER_NOTE (MISC, g_message ("vblank sync: using dri"));
+	      CLUTTER_NOTE (MISC, "vblank sync: using dri");
 
 	      __features->vblank_type = CLUTTER_VBLANK_DRI;
 	      __features->flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
@@ -262,7 +262,7 @@ clutter_feature_init (void)
       if (!(__features->flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
         {
           CLUTTER_NOTE (MISC,
-                        g_message ("vblank sync: no use-able mechanism found"));
+                        "vblank sync: no use-able mechanism found");
         }
     }
 }

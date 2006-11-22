@@ -149,9 +149,9 @@ translate_button_event (ClutterButtonEvent   *event,
 			XEvent               *xevent)
 {
   /* FIXME: catch double click */
-  CLUTTER_NOTE (EVENT, g_message (G_STRLOC ": button event at %ix%i",
-                                  xevent->xbutton.x,
-                                  xevent->xbutton.y));
+  CLUTTER_NOTE (EVENT, " button event at %ix%i",
+		xevent->xbutton.x,
+		xevent->xbutton.y);
 
   event->type = xevent->xany.type == ButtonPress ? CLUTTER_BUTTON_PRESS
                                                  : CLUTTER_BUTTON_RELEASE;
@@ -290,7 +290,7 @@ clutter_redraw (void)
   /* FIXME: Should move all this into stage...
   */
 
-  CLUTTER_NOTE (PAINT, g_message (G_STRLOC ": Redraw enter"));
+  CLUTTER_NOTE (PAINT, " Redraw enter");
 
   if (clutter_want_fps ())
     {
@@ -334,7 +334,7 @@ clutter_redraw (void)
 	}
     }
 
-  CLUTTER_NOTE (PAINT, g_message (G_STRLOC ": Redraw leave"));
+  CLUTTER_NOTE (PAINT, "Redraw leave");
 }
 
 /**

@@ -1,3 +1,23 @@
+2006-11-22  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-alpha.c:
+	* clutter/clutter-behaviour-opacity.c:
+	* clutter/clutter-behaviour-scale.c:
+	* clutter/clutter-clone-texture.c:
+	* clutter/clutter-feature.c:
+	* clutter/clutter-label.c:
+	* clutter/clutter-main.c:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-texture.c
+	* clutter/clutter-timeline.c:
+	* clutter/clutter-debug.h:
+	Make CLUTTER_NOTE() just take a string rather than a func.
+	Add more default context to output.
+
+	* configure.ac:
+	Fix flag and add more help docs for --ebable-debug option.
+
 2006-11-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-main.c: Add a --g-fatal-warnings switch

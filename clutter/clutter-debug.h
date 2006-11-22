@@ -19,12 +19,13 @@ typedef enum {
 
 #ifdef CLUTTER_ENABLE_DEBUG
 
-#define CLUTTER_NOTE(type,action)               G_STMT_START {  \
+#define CLUTTER_NOTE(type,x,a...)               G_STMT_START {  \
         if (clutter_debug_flags & CLUTTER_DEBUG_##type)         \
-          { action; }                           } G_STMT_END
+          { g_message ("[" #type "] " G_STRLOC ": " x, ##a); }  \
+                                                } G_STMT_END
 
-#define CLUTTER_MARK()      CLUTTER_NOTE(MISC, g_message (G_STRLOC ": mark"))
-#define CLUTTER_DBG(x,a...) CLUTTER_NOTE(MISC, g_message (x, ##a))
+#define CLUTTER_MARK()      CLUTTER_NOTE(MISC, "== mark ==")
+#define CLUTTER_DBG(x) { a }
 
 #define CLUTTER_GLERR()                         G_STMT_START {  \
         if (clutter_debug_flags & CLUTTER_DEBUG_GL)             \
@@ -36,7 +37,7 @@ typedef enum {
 #else /* !CLUTTER_ENABLE_DEBUG */
 
 #define CLUTTER_NOTE(type,action)
-#define CLUTTER_DBG(x,a...)
+#define CLUTTER_DBG(x)
 #define CLUTTER_GLERR()
 
 #endif /* CLUTTER_ENABLE_DEBUG */

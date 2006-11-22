@@ -115,7 +115,7 @@ can_create (int    width,
 {
   GLint new_width = 0;
 
-  CLUTTER_NOTE (TEXTURE, g_message ("checking %ix%i", width, height));
+  CLUTTER_NOTE (TEXTURE, "checking %ix%i", width, height);
 
   glTexImage2D (GL_PROXY_TEXTURE_2D, 0, GL_RGBA,
                 width, height, 0 /* border */,
@@ -195,15 +195,15 @@ texture_init_tiles (ClutterTexture *texture)
 	   && (x_pot - priv->width < priv->max_tile_waste) 
 	   && (y_pot - priv->height < priv->max_tile_waste)))
     {
-      CLUTTER_NOTE (TEXTURE, g_message ("x_pot:%i - width:%i < max_waste:%i",
-                                        x_pot,
-                                        priv->width,
-                                        priv->max_tile_waste));
+      CLUTTER_NOTE (TEXTURE, "x_pot:%i - width:%i < max_waste:%i",
+		    x_pot,
+		    priv->width,
+		    priv->max_tile_waste);
       
-      CLUTTER_NOTE (TEXTURE, g_message ("y_pot:%i - height:%i < max_waste:%i",
-                                        y_pot,
-                                        priv->height,
-                                        priv->max_tile_waste));
+      CLUTTER_NOTE (TEXTURE, "y_pot:%i - height:%i < max_waste:%i",
+		    y_pot,
+		    priv->height,
+		    priv->max_tile_waste);
       
       if (x_pot > y_pot)
 	x_pot /= 2;
@@ -228,11 +228,11 @@ texture_init_tiles (ClutterTexture *texture)
   tile_dimension (priv->height, y_pot, priv->max_tile_waste, priv->y_tiles);
 
   CLUTTER_NOTE (TEXTURE,
-                g_message ("x_pot:%i, width:%i, y_pot:%i, height: %i "
-                           "max_waste:%i, n_x_tiles: %i, n_y_tiles: %i",
-                           x_pot, priv->width, y_pot, priv->height,
-                           priv->max_tile_waste,
-                           priv->n_x_tiles, priv->n_y_tiles));
+                "x_pot:%i, width:%i, y_pot:%i, height: %i "
+		"max_waste:%i, n_x_tiles: %i, n_y_tiles: %i",
+		x_pot, priv->width, y_pot, priv->height,
+		priv->max_tile_waste,
+		priv->n_x_tiles, priv->n_y_tiles);
 
 }
 
@@ -309,8 +309,8 @@ texture_render_to_gl_quad (ClutterTexture *texture,
 	  actual_h = priv->y_tiles[y].size - priv->y_tiles[y].waste;
 
 	  CLUTTER_NOTE (TEXTURE,
-                        g_message ("rendering text tile x: %i, y: %i - %ix%i",
-                                   x, y, actual_w, actual_h));
+                        "rendering text tile x: %i, y: %i - %ix%i",
+			x, y, actual_w, actual_h);
 
 	  tx = (float) actual_w / priv->x_tiles[x].size;
 	  ty = (float) actual_h / priv->y_tiles[y].size;
@@ -398,7 +398,7 @@ texture_upload_data (ClutterTexture *texture,
 	  create_textures = TRUE;
 	}
 
-      CLUTTER_NOTE (TEXTURE, g_message ("syncing for single tile"));
+      CLUTTER_NOTE (TEXTURE, "syncing for single tile");
 
       glBindTexture(priv->target_type, priv->tiles[0]);
 
@@ -458,8 +458,8 @@ texture_upload_data (ClutterTexture *texture,
   /* Multiple tiled texture */
   
   CLUTTER_NOTE (TEXTURE,
-                g_message ("syncing for multiple tiles for %ix%i pixbuf",
-                           priv->width, priv->height));
+                "syncing for multiple tiles for %ix%i pixbuf",
+		priv->width, priv->height);
 
   g_return_if_fail (priv->x_tiles != NULL && priv->y_tiles != NULL);
   
@@ -495,11 +495,11 @@ texture_upload_data (ClutterTexture *texture,
 	  }
 
 	CLUTTER_NOTE (TEXTURE,
-                      g_message ("copying tile %i,%i - %ix%i to 0,0 %ix%i",
-                                 priv->x_tiles[x].pos, priv->y_tiles[y].pos,
-                                 src_w, src_h,
-                                 priv->x_tiles[x].size,
-                                 priv->y_tiles[y].size));
+                      "copying tile %i,%i - %ix%i to 0,0 %ix%i",
+		      priv->x_tiles[x].pos, priv->y_tiles[y].pos,
+		      src_w, src_h,
+		      priv->x_tiles[x].size,
+		      priv->y_tiles[y].size);
 
 	for (dy = 0; dy < src_h; dy++)
 	  {
@@ -596,7 +596,7 @@ clutter_texture_unrealize (ClutterActor *actor)
   
   texture_free_gl_resources (texture);
 
-  CLUTTER_NOTE (TEXTURE, g_message ("Texture unrealized"));
+  CLUTTER_NOTE (TEXTURE, "Texture unrealized");
 }
 
 static void
@@ -625,15 +625,15 @@ clutter_texture_realize (ClutterActor *actor)
        * will set realize flags.	 
       */
       CLUTTER_NOTE (TEXTURE,
-                    g_warning ("Texture has no image data cannot realize"));
+                    "Texture has no image data cannot realize");
 
-      CLUTTER_NOTE (TEXTURE, g_message ("flags %i", actor->flags));
+      CLUTTER_NOTE (TEXTURE, "flags %i", actor->flags);
       CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-      CLUTTER_NOTE (TEXTURE, g_message ("flags %i", actor->flags));
+      CLUTTER_NOTE (TEXTURE, "flags %i", actor->flags);
       return;
     }
 
-  CLUTTER_NOTE (TEXTURE, g_message ("Texture realized"));
+  CLUTTER_NOTE (TEXTURE, "Texture realized");
 }
 
 static void
@@ -656,9 +656,9 @@ clutter_texture_paint (ClutterActor *self)
   guint8          opacity;
 
   CLUTTER_NOTE (PAINT,
-                g_message ("@@@ for '%s' @@@",
-                           clutter_actor_get_name (self) ? clutter_actor_get_name (self)
-                                                         : "unknown"));
+                "@@@ for '%s' @@@",
+		clutter_actor_get_name (self) ? clutter_actor_get_name (self)
+                                                         : "unknown");
   glPushMatrix();
 
   glEnable(GL_BLEND);
@@ -667,7 +667,7 @@ clutter_texture_paint (ClutterActor *self)
 
   opacity = clutter_actor_get_opacity(self);
 
-  CLUTTER_NOTE (PAINT, g_message ("setting opacity to %i\n", opacity));
+  CLUTTER_NOTE (PAINT, "setting opacity to %i\n", opacity);
   glColor4ub(255, 255, 255, opacity);
 
   clutter_actor_get_coords (self, &x1, &y1, &x2, &y2);
@@ -741,8 +741,8 @@ clutter_texture_set_property (GObject      *object,
 	  && priv->tiled == TRUE)
 	priv->target_type  = GL_TEXTURE_2D;
 
-      CLUTTER_NOTE (TEXTURE, g_message ("Texture is tiled ? %s",
-                                        priv->tiled ? "yes" : "no"));
+      CLUTTER_NOTE (TEXTURE, "Texture is tiled ? %s",
+		    priv->tiled ? "yes" : "no");
       break;
     case PROP_MAX_TILE_WASTE:
       priv->max_tile_waste = g_value_get_int (value);
@@ -1179,9 +1179,9 @@ clutter_texture_set_from_data (ClutterTexture *texture,
 	texture_init_tiles (texture); 
     }
 
-  CLUTTER_NOTE (TEXTURE, g_message ("set size %ix%i\n",
-                                    priv->width,
-                                    priv->height));
+  CLUTTER_NOTE (TEXTURE, "set size %ix%i\n",
+		priv->width,
+		priv->height);
 
   texture_upload_data (texture, data, has_alpha, 
 		       width, height, rowstride, bpp);

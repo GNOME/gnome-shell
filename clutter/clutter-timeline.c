@@ -293,7 +293,7 @@ timeline_timeout_func (gpointer data)
         n_frames = 1;
 
       if (n_frames > 1)
-	CLUTTER_NOTE (MISC, g_message ("Skipping %i frames", n_frames));
+	CLUTTER_NOTE (MISC, "Skipping %i frames", n_frames);
     }
   else 
     {

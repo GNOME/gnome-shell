@@ -521,7 +521,7 @@ clutter_sine_func (ClutterAlpha *alpha,
   x = (gdouble) (current_frame_num * 2.0f * M_PI) / n_frames ;
   sine = (sin (x - (M_PI / 2.0f)) + 1.0f) * 0.5f;
 
-  CLUTTER_NOTE (ALPHA, g_message ("sine: %2f\n", sine));
+  CLUTTER_NOTE (ALPHA, "sine: %2f\n", sine);
 
   return (guint32) (sine * (gdouble) CLUTTER_ALPHA_MAX_ALPHA);
 }

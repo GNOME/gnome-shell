@@ -97,8 +97,7 @@ opacity_frame_foreach (ClutterActor            *actor,
 
   opacity += priv->opacity_start;
 
-  CLUTTER_NOTE (BEHAVIOUR, g_message ("alpha %i opacity %i\n",
-                                      alpha, opacity));
+  CLUTTER_NOTE (BEHAVIOUR, "alpha %i opacity %i\n", alpha, opacity);
 
   clutter_actor_set_opacity (actor, opacity);
 }

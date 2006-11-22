@@ -437,17 +437,17 @@ clutter_stage_realize (ClutterActor *actor)
     }
 
   CLUTTER_NOTE (GL,
-                g_message ("\n"
-                           "==========================================="
-                           "GL_VENDOR: %s\n"
-                           "GL_RENDERER: %s\n"
-                           "GL_VERSION: %s\n"
-                           "GL_EXTENSIONS: %s\n"
-                           "===========================================",
-                           glGetString (GL_VENDOR),
-                           glGetString (GL_RENDERER),
-                           glGetString (GL_VERSION),
-                           glGetString (GL_EXTENSIONS)));
+                "\n"
+		"==========================================="
+		"GL_VENDOR: %s\n"
+		"GL_RENDERER: %s\n"
+		"GL_VERSION: %s\n"
+		"GL_EXTENSIONS: %s\n"
+		"===========================================",
+		glGetString (GL_VENDOR),
+		glGetString (GL_RENDERER),
+		glGetString (GL_VERSION),
+		glGetString (GL_EXTENSIONS));
 
   sync_gl_viewport (stage);
 }

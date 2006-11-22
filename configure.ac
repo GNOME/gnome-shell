@@ -126,7 +126,7 @@ m4_define([debug_default],
 
 AC_ARG_ENABLE(debug,
               AC_HELP_STRING([--enable-debug=@<:@no/minimum/yes@:>@],
-                             [turn on debugging @<:@default=debug_default@:>@]),
+                             [turn on debugging. yes; All glib asserts, checks and runtime clutter verbose messages. minimum; Just glib cast checks and runtime clutter verbose messagaes. no; No glib asserts or checks and no runtime clutter verbose messages.  @<:@default=debug_default@:>@]),
 ,
               enable_debug=debug_default)
 
@@ -135,10 +135,9 @@ if test "x$enable_debug" = "xyes"; then
   CLUTTER_DEBUG_CFLAGS="-DCLUTTER_ENABLE_DEBUG"
 else
   if test "x$enable_debug" = "xno"; then
-    CLUTTER_DEBUG_CFLAGS="-DG_DISABLE_ASSERT -DG_DISABLE_CHECKS -DG_DISABLE_CAST
-_CHECKS"
+    CLUTTER_DEBUG_CFLAGS="-DG_DISABLE_ASSERT -DG_DISABLE_CHECKS -DG_DISABLE_CAST_CHECKS"
   else # minimum
-    CLUTTER_DEBUG_CFLAGS="-DG_ENABLE_DEBUG -DG_DISABLE_CAST_CHECKS"
+    CLUTTER_DEBUG_CFLAGS="-DCLUTTER_ENABLE_DEBUG -DG_DISABLE_CAST_CHECKS"
   fi
 fi
 

@@ -244,10 +244,10 @@ clutter_label_paint (ClutterActor *self)
   
   if (priv->desc == NULL || priv->text == NULL)
     {
-      CLUTTER_NOTE (ACTOR, g_warning ("layout: %p , desc: %p, text %p",
-                                      priv->layout,
-                                      priv->desc,
-                                      priv->text));
+      CLUTTER_NOTE (ACTOR, "layout: %p , desc: %p, text %p",
+		    priv->layout,
+		    priv->desc,
+		    priv->text);
       return;
     }
 
