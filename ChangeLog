@@ -1,5 +1,11 @@
 2006-11-29  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-stage.c:
+	(clutter_stage_set_xwindow_foreign): Add checks;
+	remove an indirection to the private data.
+
+2006-11-29  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* gtk/*
 	* configure.ac:
 	* Makfile.am: Remove the GTK+ widget from the

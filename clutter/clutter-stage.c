@@ -863,7 +863,7 @@ clutter_stage_get_xwindow (ClutterStage *stage)
  *
  * Target the #ClutterStage to use an existing external X Window.
  *
- * Return Value: TRUE if foreign window valid, FALSE otherwise 
+ * Return value: TRUE if foreign window valid, FALSE otherwise
  **/
 gboolean
 clutter_stage_set_xwindow_foreign (ClutterStage *stage,
@@ -877,6 +877,12 @@ clutter_stage_set_xwindow_foreign (ClutterStage *stage,
   Window root_return;
   Status status;
   ClutterGeometry geom;
+  ClutterStagePrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
+  g_return_val_if_fail (xid != None, FALSE);
+
+  priv = stage->priv;
 
   clutter_util_trap_x_errors();
 
@@ -890,23 +896,25 @@ clutter_stage_set_xwindow_foreign (ClutterStage *stage,
 			 &border,
 			 &depth);
 	       
-  if (clutter_util_untrap_x_errors() || !status 
-      || width == 0 || height == 0 || depth != stage->priv->xvisinfo->depth)
-    return FALSE;
+  if (clutter_util_untrap_x_errors() || !status ||
+      width == 0 || height == 0 ||
+      depth != priv->xvisinfo->depth)
+    {
+      return FALSE;
+    }
 
-  clutter_actor_unrealize (CLUTTER_ACTOR(stage));
+  clutter_actor_unrealize (CLUTTER_ACTOR (stage));
 
-  stage->priv->xwin = xid;
+  priv->xwin = xid;
 
   geom.x = x;
   geom.y = y;
+  geom.width  = priv->xwin_width  = width;
+  geom.height = priv->xwin_height = height;
 
-  geom.width  = stage->priv->xwin_width  = width;
-  geom.height = stage->priv->xwin_height = height;
+  clutter_actor_set_geometry (CLUTTER_ACTOR (stage), &geom);
 
-  clutter_actor_set_geometry (CLUTTER_ACTOR(stage), &geom);
-
-  clutter_actor_realize (CLUTTER_ACTOR(stage));
+  clutter_actor_realize (CLUTTER_ACTOR (stage));
 
   return TRUE;
 }
