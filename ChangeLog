@@ -1,3 +1,9 @@
+2006-11-29  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-stage.c: (clutter_stage_realize):
+	Set colormap on stage window - should fix issues
+	with indirect rendering.
+
 2006-11-23  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-debug.h:

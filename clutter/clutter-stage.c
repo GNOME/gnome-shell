@@ -402,14 +402,42 @@ clutter_stage_realize (ClutterActor *actor)
 	  return;
 	}
 
+      CLUTTER_NOTE(GL, "visual id's %li vs %li",
+		   priv->xvisinfo->visualid,
+		   XVisualIDFromVisual(DefaultVisual(clutter_xdisplay(),
+						     clutter_xscreen())));
+
+
       if (priv->xwin == None)
-	priv->xwin = XCreateSimpleWindow(clutter_xdisplay(),
-					 clutter_root_xwindow(),
-					 0, 0,
-					 priv->xwin_width, priv->xwin_height,
-					 0, 0, 
-					 WhitePixel(clutter_xdisplay(), 
-						    clutter_xscreen()));
+	{
+	  XSetWindowAttributes swa;
+
+	  if (priv->xvisinfo->visualid 
+	      == XVisualIDFromVisual(DefaultVisual(clutter_xdisplay(),
+						       clutter_xscreen())))
+	    {
+	      swa.colormap = DefaultColormap(clutter_xdisplay(),
+					     clutter_xscreen());
+	    }
+	  else
+	    {
+	      swa.colormap = XCreateColormap(clutter_xdisplay(),
+					     clutter_root_xwindow(), 
+					     priv->xvisinfo->visual, 
+					     AllocNone);
+	    }
+
+	  priv->xwin = XCreateWindow(clutter_xdisplay(),
+				     clutter_root_xwindow(), 
+				     0, 0, 
+				     priv->xwin_width, priv->xwin_height,
+				     0, 
+				     priv->xvisinfo->depth, 
+				     InputOutput, 
+				     priv->xvisinfo->visual,
+				     CWColormap, &swa);
+	}
+
       XSelectInput(clutter_xdisplay(), 
 		   priv->xwin, 
 		   StructureNotifyMask
@@ -432,7 +460,13 @@ clutter_stage_realize (ClutterActor *actor)
 					   priv->xvisinfo, 
 					   0, 
 					   True);
-      
+      if (priv->gl_context == None)
+	{
+	  g_critical ("Unable to create suitable GL context.");
+	  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+	  return;
+	}
+	
       glXMakeCurrent(clutter_xdisplay(), priv->xwin, priv->gl_context);
     }
 
@@ -443,11 +477,14 @@ clutter_stage_realize (ClutterActor *actor)
 		"GL_RENDERER: %s\n"
 		"GL_VERSION: %s\n"
 		"GL_EXTENSIONS: %s\n"
+		"Is direct: %s\n"
 		"===========================================",
 		glGetString (GL_VENDOR),
 		glGetString (GL_RENDERER),
 		glGetString (GL_VERSION),
-		glGetString (GL_EXTENSIONS));
+		glGetString (GL_EXTENSIONS),
+		glXIsDirect(clutter_xdisplay(), priv->gl_context) ? "yes" : "no"
+		);
 
   sync_gl_viewport (stage);
 }
