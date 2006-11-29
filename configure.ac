@@ -104,17 +104,6 @@ PKG_CHECK_MODULES(CLUTTER_DEPS, [$pkg_modules])
 
 dnl ========================================================================
 
-AC_ARG_ENABLE(gtk,
-            [AC_HELP_STRING([--enable-gtk], [Buld Gtk+ Clutter widget])],enable_gtk="$enableval",enable_gtk=no) 
-
-if test "x$enable_gtk" = "xyes"; then
-   PKG_CHECK_MODULES(GTK, [gtk+-2.0])
-fi
-
-AM_CONDITIONAL(ENABLE_GTK, test x$enable_gtk = xyes)
-
-dnl ========================================================================
-
 if test "x$GCC" = "xyes"; then
         GCC_FLAGS="-g -Wall"
 fi
@@ -143,8 +132,6 @@ fi
 
 AC_SUBST(CLUTTER_DEBUG_CFLAGS)
 
-dnl ========================================================================
-
 dnl = GTK Doc check ========================================================
 
 GTK_DOC_CHECK([1.4])
@@ -152,8 +139,6 @@ GTK_DOC_CHECK([1.4])
 dnl ========================================================================
 
 AC_SUBST(GCC_FLAGS)
-AC_SUBST(GTK_CFLAGS)
-AC_SUBST(GTK_LIBS)
 
 CLUTTER_CFLAGS="$GLX_CLAGS $CLUTTER_DEPS_CFLAGS"
 CLUTTER_LIBS="$GLX_LIBS $CLUTTER_DEPS_LIBS"
@@ -166,8 +151,6 @@ AC_CONFIG_FILES([
         clutter/pango/Makefile
         clutter/Makefile
         clutter/clutter-version.h
-        gtk/Makefile
-        gtk/gtk-clutter.pc
         examples/Makefile
         doc/Makefile
         doc/reference/Makefile
@@ -185,7 +168,6 @@ echo "                 ==================="
 echo ""
 echo "                   prefix:   ${prefix}"
 echo ""
-echo "              GTK+ Widget:   ${enable_gtk}"
 echo "              Debug level:   ${enable_debug}"
 echo "            Documentation:   ${enable_gtk_doc}"
 echo ""

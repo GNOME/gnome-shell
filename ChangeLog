@@ -1,3 +1,11 @@
+2006-11-29  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* gtk/*
+	* configure.ac:
+	* Makfile.am: Remove the GTK+ widget from the
+	main tree; now Clutter depends just on GLib,
+	XLibs, GdkPixbuf and OpenGL.
+
 2006-11-29  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-stage.c: (clutter_stage_realize):
