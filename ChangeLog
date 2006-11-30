@@ -1,3 +1,8 @@
+2006-11-30  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter.doap:
+	Updates
+
 2006-11-30  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-stage.h:
