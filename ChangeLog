@@ -1,3 +1,12 @@
+2006-11-30  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* Makefile.am: Remove the gtk directory from the SUBDIRS.
+
+	* clutter/clutter-stage.h:
+	* clutter/clutter-stage.c: Add clutter_stage_swap_buffers(),
+	which swaps the GL buffers.  This fixes the redraw in the
+	GTK widget.
+
 2006-11-29  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-stage.c:

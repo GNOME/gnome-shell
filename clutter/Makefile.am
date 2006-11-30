@@ -137,7 +137,7 @@ libclutter_@CLUTTER_MAJORMINOR@_la_LIBADD  = \
             @CLUTTER_LIBS@ $(top_srcdir)/clutter/pango/libpangoclutter.la
 libclutter_@CLUTTER_MAJORMINOR@_la_LDFLAGS = @CLUTTER_LT_LDFLAGS@
 libclutter_@CLUTTER_MAJORMINOR@_la_DEPENDENCIES = \
-            $(top_srcdir)/clutter/pango/libpangoclutter.a
+            $(top_srcdir)/clutter/pango/libpangoclutter.la
 
 clutterheadersdir = $(includedir)/clutter-@CLUTTER_MAJORMINOR@/clutter
 clutterheaders_HEADERS = $(source_h) 		\

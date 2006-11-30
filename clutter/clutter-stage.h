@@ -124,7 +124,8 @@ GdkPixbuf *   clutter_stage_snapshot            (ClutterStage       *stage,
 						 gint                y,
 						 gint                width,
 						 gint                height);
-const XVisualInfo * clutter_stage_get_xvisual   (ClutterStage *stage);
+const XVisualInfo * clutter_stage_get_xvisual   (ClutterStage       *stage);
+void          clutter_stage_swap_buffers        (ClutterStage       *stage);
 
 G_END_DECLS
 

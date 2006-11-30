@@ -1,9 +1,5 @@
 SUBDIRS=clutter doc examples 
 
-if ENABLE_GTK
-SUBDIRS += gtk
-endif
-
 pcfiles = clutter-@CLUTTER_MAJORMINOR@.pc
 
 %-@CLUTTER_MAJORMINOR@.pc: %.pc

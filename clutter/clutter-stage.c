@@ -1138,3 +1138,16 @@ clutter_stage_get_actor_at_pos (ClutterStage *stage,
   return found;
 }
 
+void
+clutter_stage_swap_buffers (ClutterStage *stage)
+{
+  ClutterStagePrivate *priv;
+  ClutterMainContext *context;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  priv = stage->priv;
+  context = clutter_context_get_default ();
+
+  glXSwapBuffers (context->xdpy, stage->priv->xwin);
+}
