@@ -1,5 +1,17 @@
 2006-11-30  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-stage.h:
+	* clutter/clutter-stage.c:
+	(clutter_stage_swap_buffers): Remove, as the same is done
+	via clutter_redraw() and clutter_actor_queue_redraw().
+
+	(clutter_stage_unrealize), (clutter_stage_init),
+	(clutter_stage_set_xwindow_foreign): Do not call
+	XDestroyWindow() on the stage Window if we are using a
+	foreign Window, as we don't control its lifetime.
+
+2006-11-30  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* Makefile.am: Remove the gtk directory from the SUBDIRS.
 
 	* clutter/clutter-stage.h:

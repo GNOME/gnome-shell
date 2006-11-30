@@ -71,6 +71,7 @@ struct _ClutterStagePrivate
   guint         want_fullscreen : 1;
   guint         want_offscreen  : 1;
   guint         hide_cursor     : 1;
+  guint         is_foreign_xwin : 1;
 };
 
 enum
@@ -277,11 +278,13 @@ clutter_stage_unrealize (ClutterActor *actor)
     }
   else
     {
-      if (priv->xwin != None)
+      if (!priv->is_foreign_xwin && priv->xwin != None)
 	{
 	  XDestroyWindow (clutter_xdisplay(), priv->xwin);
 	  priv->xwin = None;
 	}
+      else
+        priv->xwin = None;
     }
 
   glXMakeCurrent(clutter_xdisplay(), None, NULL);
@@ -786,6 +789,8 @@ clutter_stage_init (ClutterStage *self)
   priv->want_offscreen  = FALSE;
   priv->want_fullscreen = FALSE;
   priv->hide_cursor     = FALSE;
+  priv->is_foreign_xwin = FALSE;
+
   priv->xwin = None;
   priv->gl_context = None;
 
@@ -906,6 +911,7 @@ clutter_stage_set_xwindow_foreign (ClutterStage *stage,
   clutter_actor_unrealize (CLUTTER_ACTOR (stage));
 
   priv->xwin = xid;
+  priv->is_foreign_xwin = TRUE;
 
   geom.x = x;
   geom.y = y;
@@ -1136,18 +1142,4 @@ clutter_stage_get_actor_at_pos (ClutterStage *stage,
   sync_gl_viewport (stage);
 
   return found;
-}
-
-void
-clutter_stage_swap_buffers (ClutterStage *stage)
-{
-  ClutterStagePrivate *priv;
-  ClutterMainContext *context;
-
-  g_return_if_fail (CLUTTER_IS_STAGE (stage));
-
-  priv = stage->priv;
-  context = clutter_context_get_default ();
-
-  glXSwapBuffers (context->xdpy, stage->priv->xwin);
 }
