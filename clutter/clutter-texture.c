@@ -57,13 +57,13 @@ G_DEFINE_TYPE (ClutterTexture, clutter_texture, CLUTTER_TYPE_ACTOR);
 #define PIXEL_TYPE GL_UNSIGNED_INT_8_8_8_8_REV
 #endif
 
-typedef struct ClutterTextureTileDimention
+typedef struct ClutterTextureTileDimension
 {
   gint pos, size, waste;
 }
-ClutterTextureTileDimention;
+ClutterTextureTileDimension;
 
-struct ClutterTexturePrivate
+struct _ClutterTexturePrivate
 {
   gint                         width, height;
   GLenum                       pixel_format;
@@ -79,7 +79,7 @@ struct ClutterTexturePrivate
 
   
   gboolean                     tiled;
-  ClutterTextureTileDimention *x_tiles, *y_tiles;
+  ClutterTextureTileDimension *x_tiles, *y_tiles;
   gint                         n_x_tiles, n_y_tiles;
   GLuint                      *tiles;
 };
@@ -146,7 +146,7 @@ static int
 tile_dimension (int                          to_fill,
 		int                          start_size,
 		int                          waste,
-		ClutterTextureTileDimention *tiles)
+		ClutterTextureTileDimension *tiles)
 {
   int pos     = 0;
   int n_tiles = 0;
@@ -216,7 +216,7 @@ texture_init_tiles (ClutterTexture *texture)
 
   priv->n_x_tiles = tile_dimension (priv->width, x_pot, 
 				    priv->max_tile_waste, NULL);
-  priv->x_tiles = g_new (ClutterTextureTileDimention, priv->n_x_tiles);
+  priv->x_tiles = g_new (ClutterTextureTileDimension, priv->n_x_tiles);
   tile_dimension (priv->width, x_pot, priv->max_tile_waste, priv->x_tiles);
 
   if (priv->y_tiles)
@@ -224,7 +224,7 @@ texture_init_tiles (ClutterTexture *texture)
 
   priv->n_y_tiles = tile_dimension (priv->height, y_pot, 
 				    priv->max_tile_waste, NULL);
-  priv->y_tiles = g_new (ClutterTextureTileDimention, priv->n_y_tiles);
+  priv->y_tiles = g_new (ClutterTextureTileDimension, priv->n_y_tiles);
   tile_dimension (priv->height, y_pot, priv->max_tile_waste, priv->y_tiles);
 
   CLUTTER_NOTE (TEXTURE,

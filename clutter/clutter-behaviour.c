@@ -255,7 +255,7 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
   ClutterBehaviourPrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR (behave));
-  g_return_if_fail (CLUTTER_IS_ALPHA (alpha));
+  g_return_if_fail (alpha == NULL || CLUTTER_IS_ALPHA (alpha));
 
   priv = behave->priv;
 

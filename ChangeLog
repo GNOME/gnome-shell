@@ -1,3 +1,14 @@
+2006-12-03  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-texture.h: Clean up.
+
+	* clutter/clutter-texture.c: Typo fix in the name
+	of ClutterTextureTileDimension.
+
+	* clutter/clutter-behaviour.c: Allow passing NULL
+	to clutter_behaviour_set_alpha() (as we pass NULL
+	in the finalize process).
+
 2006-12-02  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-version.h.in: Fix a stupid logic
