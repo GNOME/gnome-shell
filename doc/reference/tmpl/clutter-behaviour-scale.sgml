@@ -23,6 +23,21 @@ ClutterBehaviourScale
 </para>
 
 
+<!-- ##### ARG ClutterBehaviourScale:scale-begin ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterBehaviourScale:scale-end ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterBehaviourScale:scale-gravity ##### -->
+<para>
+
+</para>
+
 <!-- ##### STRUCT ClutterBehaviourScaleClass ##### -->
 <para>
 

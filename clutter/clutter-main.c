@@ -235,16 +235,18 @@ clutter_dispatch_x_event (XEvent  *xevent,
 static void
 events_init()
 {
+  ClutterMainContext   *clutter_context;
   GMainContext         *gmain_context;
   int                   connection_number;
   GSource              *source;
   ClutterXEventSource  *display_source;
 
+  clutter_context = clutter_context_get_default ();
   gmain_context = g_main_context_default ();
 
   g_main_context_ref (gmain_context);
 
-  connection_number = ConnectionNumber (ClutterCntx->xdpy);
+  connection_number = ConnectionNumber (clutter_context->xdpy);
   
   source = g_source_new ((GSourceFuncs *)&x_event_funcs, 
 			 sizeof (ClutterXEventSource));
@@ -253,7 +255,7 @@ events_init()
 
   display_source->event_poll_fd.fd     = connection_number;
   display_source->event_poll_fd.events = G_IO_IN;
-  display_source->display              = ClutterCntx->xdpy;
+  display_source->display              = clutter_context->xdpy;
   
   g_source_add_poll (source, &display_source->event_poll_fd);
   g_source_set_can_recurse (source, TRUE);
@@ -444,7 +446,9 @@ clutter_threads_leave (void)
 Display*
 clutter_xdisplay (void)
 {
-  return ClutterCntx->xdpy;
+  ClutterMainContext *context = CLUTTER_CONTEXT ();
+
+  return context->xdpy;
 }
 
 /**
@@ -457,7 +461,9 @@ clutter_xdisplay (void)
 int
 clutter_xscreen (void)
 {
-  return ClutterCntx->xscreen;
+  ClutterMainContext *context = CLUTTER_CONTEXT ();
+
+  return context->xscreen;
 }
 
 /**
@@ -470,7 +476,9 @@ clutter_xscreen (void)
 Window
 clutter_root_xwindow (void)
 {
-  return ClutterCntx->xwin_root;
+  ClutterMainContext *context = CLUTTER_CONTEXT ();
+
+  return context->xwin_root;
 }
 
 /**
@@ -867,9 +875,6 @@ clutter_init_with_args (int            *argc,
       return CLUTTER_INIT_ERROR_OPENGL;
     }
 
-  /* Check available features */
-  clutter_feature_init ();
-
   events_init ();
 
   return CLUTTER_INIT_SUCCESS;
@@ -926,9 +931,6 @@ clutter_init (int    *argc,
       g_critical ("Clutter needs at least version 1.2 of OpenGL");
       return CLUTTER_INIT_ERROR_OPENGL;
     }
-
-  /* Check available features */
-  clutter_feature_init ();
 
   events_init ();
 
