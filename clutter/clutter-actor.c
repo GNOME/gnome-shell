@@ -38,6 +38,7 @@
 #include "clutter-enum-types.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
+#include "clutter-debug.h"
 
 G_DEFINE_ABSTRACT_TYPE (ClutterActor,
 			clutter_actor,
@@ -603,7 +604,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                                      "X co-ord of actor",
                                                      0, G_MAXINT,
                                                      0,
-                                                     G_PARAM_READWRITE));
+                                                     CLUTTER_PARAM_READWRITE));
   /**
    * ClutterActor:y:
    *
@@ -616,7 +617,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                                      "Y co-ord of actor",
                                                      0, G_MAXINT,
                                                      0,
-                                                     G_PARAM_READWRITE));
+                                                     CLUTTER_PARAM_READWRITE));
   /**
    * ClutterActor:width:
    *
@@ -629,7 +630,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                                      "Width of actor in pixels",
                                                      0, G_MAXINT,
                                                      0,
-                                                     G_PARAM_READWRITE));
+                                                     CLUTTER_PARAM_READWRITE));
   /**
    * ClutterActor:height:
    *
@@ -642,7 +643,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                                      "Height of actor in pixels",
                                                      0, G_MAXINT,
                                                      0,
-                                                     G_PARAM_READWRITE));
+                                                     CLUTTER_PARAM_READWRITE));
   /**
    * ClutterActor:opacity:
    *
@@ -655,7 +656,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                                        "Opacity of actor",
                                                        0, 0xff,
                                                        0xff,
-                                                       G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+                                                       G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
   /**
    * ClutterActor:visible:
    *
@@ -667,7 +668,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                                          "Visible",
                                                          "Whether the actor is visible or not",
                                                          FALSE,
-                                                         G_PARAM_READWRITE));
+                                                         CLUTTER_PARAM_READWRITE));
   /**
    * ClutterActor:has-clip:
    *
@@ -679,7 +680,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                                          "Has Clip",
                                                          "Whether the actor has a clip set or not",
                                                          FALSE,
-                                                         G_PARAM_READABLE));
+                                                         CLUTTER_PARAM_READABLE));
   /**
    * ClutterActor:clip:
    *
@@ -691,7 +692,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                                        "Clip",
                                                        "The clip region for the actor",
                                                        CLUTTER_TYPE_GEOMETRY,
-                                                       G_PARAM_READWRITE));
+                                                       CLUTTER_PARAM_READWRITE));
   /**
    * ClutterActor:name:
    *
@@ -705,7 +706,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                                         "Name",
                                                         "Name of the actor",
                                                         NULL,
-                                                        G_PARAM_READWRITE));
+                                                        CLUTTER_PARAM_READWRITE));
   
   /**
    * ClutterActor::destroy:

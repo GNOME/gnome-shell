@@ -348,7 +348,7 @@ clutter_label_class_init (ClutterLabelClass *klass)
 			  "Font Name",
 			  "Pango font description",
 			  NULL,
-			  G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+			  G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
     (gobject_class, PROP_TEXT,
@@ -356,7 +356,7 @@ clutter_label_class_init (ClutterLabelClass *klass)
 			  "Text",
 			  "Text to render",
 			  NULL,
-			  G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+			  G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
     (gobject_class, PROP_COLOR,
@@ -364,7 +364,7 @@ clutter_label_class_init (ClutterLabelClass *klass)
 			 "Font Colour",
 			 "Font Colour",
 			 CLUTTER_TYPE_COLOR,
-			 G_PARAM_READWRITE));
+			 CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property 
     (gobject_class, PROP_ATTRIBUTES,
@@ -373,7 +373,7 @@ clutter_label_class_init (ClutterLabelClass *klass)
 			 "A list of style attributes to apply to the" 
 			 "text of the label",
 			 PANGO_TYPE_ATTR_LIST,
-			 G_PARAM_READWRITE));
+			 CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property 
     (gobject_class, PROP_USE_MARKUP,
@@ -382,7 +382,7 @@ clutter_label_class_init (ClutterLabelClass *klass)
 			   "The text of the label includes XML markup." 
 			   "See pango_parse_markup()",
 			   FALSE,
-			   G_PARAM_READWRITE));
+			   CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property 
     (gobject_class, PROP_WRAP,
@@ -390,7 +390,7 @@ clutter_label_class_init (ClutterLabelClass *klass)
 			   "Line wrap",
 			   "If set, wrap lines if the text becomes too wide",
 			   TRUE,
-			   G_PARAM_READWRITE));
+			   CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property 
     (gobject_class, PROP_WRAP_MODE,
@@ -399,7 +399,7 @@ clutter_label_class_init (ClutterLabelClass *klass)
 			"If wrap is set, controls how linewrapping is done",
 			PANGO_TYPE_WRAP_MODE,
 			PANGO_WRAP_WORD,
-			G_PARAM_READWRITE));
+			CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property 
     (gobject_class, PROP_ELLIPSIZE,
@@ -410,7 +410,7 @@ clutter_label_class_init (ClutterLabelClass *klass)
 			 "display the entire string",
 			 PANGO_TYPE_ELLIPSIZE_MODE,
 			 PANGO_ELLIPSIZE_NONE,
-			 G_PARAM_READWRITE));
+			 CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property 
     (gobject_class, PROP_ALIGNMENT,
@@ -419,7 +419,7 @@ clutter_label_class_init (ClutterLabelClass *klass)
 			 "The preferred alignment for the string,",
 			 PANGO_TYPE_ALIGNMENT,
 			 PANGO_ALIGN_LEFT,
-			 G_PARAM_READWRITE));
+			 CLUTTER_PARAM_READWRITE));
 
   g_type_class_add_private (gobject_class, sizeof (ClutterLabelPrivate));
 }

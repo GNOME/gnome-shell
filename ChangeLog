@@ -1,3 +1,42 @@
+2006-12-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-private.h: Add our own READABLE,
+	WRITABLE and READWRITE paramspec flags, declaring the
+	string components of the properties GParamSpec as static;
+	this should shave off some bytes in the memory footprint
+	and avoid relocations.
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-behaviour.c:
+	* clutter/clutter-behaviour-opacity.c:
+	* clutter/clutter-behaviour-path.c:
+	* clutter/clutter-behavuour-scale.c:
+	* clutter/clutter-clone-texture.c:
+	* clutter/clutter-label.c:
+	* clutter/clutter-rectangle.c:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-texture.c:
+	* clutter/clutter-timeline.c: Use the CLUTTER_PARAM_*
+	macros we just added.
+
+	* clutter/clutter-behaviour-scale.c: Add properties for
+	the scale begin, scale end and gravity parameters.
+
+	* clutter/clutter-behaviour-path.h: Mark the ClutterKnot
+	memory management functions as public (for the bindings),
+	since we use the slice allocator for copying knots around;
+	add a clutter_knot_equal() function.
+
+	* clutter/clutter-behaviour-path.c:
+	(node_distance): Use clutter_knot_equal() as a fast path
+	to avoid the sqrt() in case the nodes we are using are
+	at the same position.
+	(path_total_length): Additional check on the existence
+	of the next node.
+
+	* examples/behave.c: Do not leak the ClutterBehaviour
+	objects around.
+
 2006-12-03  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-texture.h: Clean up.

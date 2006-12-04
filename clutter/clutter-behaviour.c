@@ -49,10 +49,15 @@
  * (or properties) of every actor controlled by the behaviour. 
  */
 
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
+#include "clutter-main.h"
 #include "clutter-actor.h"
 #include "clutter-behaviour.h"
+#include "clutter-debug.h"
+#include "clutter-private.h"
 
 G_DEFINE_ABSTRACT_TYPE (ClutterBehaviour,
                         clutter_behaviour,
@@ -156,7 +161,7 @@ clutter_behaviour_class_init (ClutterBehaviourClass *klass)
                                                         "Alpha Object to drive the behaviour",
                                                         CLUTTER_TYPE_ALPHA,
                                                         G_PARAM_CONSTRUCT |
-                                                        G_PARAM_READWRITE));
+                                                        CLUTTER_PARAM_READWRITE));
 
   g_type_class_add_private (klass, sizeof (ClutterBehaviourPrivate));
 }

@@ -50,10 +50,12 @@
 #include "clutter-enum-types.h"
 #include "clutter-main.h"
 #include "clutter-behaviour-path.h"
+#include "clutter-private.h"
+#include "clutter-debug.h"
 
 #include <math.h>
 
-static ClutterKnot *
+ClutterKnot *
 clutter_knot_copy (const ClutterKnot *knot)
 {
   ClutterKnot *copy;
@@ -65,7 +67,7 @@ clutter_knot_copy (const ClutterKnot *knot)
   return copy;
 }
 
-static void
+void
 clutter_knot_free (ClutterKnot *knot)
 {
   if (G_LIKELY (knot))
@@ -74,16 +76,29 @@ clutter_knot_free (ClutterKnot *knot)
     }
 }
 
+gboolean
+clutter_knot_equal (const ClutterKnot *knot_a,
+                    const ClutterKnot *knot_b)
+{
+  g_return_val_if_fail (knot_a != NULL, FALSE);
+  g_return_val_if_fail (knot_b != NULL, FALSE);
+
+  return knot_a->x == knot_b->x && knot_a->y == knot_b->y;
+}
+
 GType
 clutter_knot_get_type (void)
 {
   static GType our_type = 0;
 
   if (G_UNLIKELY (!our_type))
-    our_type = g_boxed_type_register_static 
-                            ("ClutterKnot",
-			     (GBoxedCopyFunc) clutter_knot_copy,
-			     (GBoxedFreeFunc) clutter_knot_free);
+    {
+      our_type =
+        g_boxed_type_register_static ("ClutterKnot",
+                                      (GBoxedCopyFunc) clutter_knot_copy,
+                                      (GBoxedFreeFunc) clutter_knot_free);
+    }
+
   return our_type;
 }
 
@@ -147,6 +162,9 @@ node_distance (const ClutterKnot *begin,
   g_return_val_if_fail (begin != NULL, 0);
   g_return_val_if_fail (end != NULL, 0);
 
+  if (clutter_knot_equal (begin, end))
+        return 0;
+
   /* FIXME: need fixed point here */
   return sqrt ((end->x - begin->x) * (end->x - begin->x) +
                (end->y - begin->y) * (end->y - begin->y));
@@ -159,7 +177,7 @@ path_total_length (ClutterBehaviourPath *behave)
   gint    len = 0;
 
   for (l = behave->priv->knots; l != NULL; l = l->next)
-    if (l->next)
+    if (l->next && l->next->data)
       len += node_distance (l->data, l->next->data);
 
   return len;
@@ -288,7 +306,7 @@ clutter_behaviour_path_class_init (ClutterBehaviourPathClass *klass)
                                                        "Knot",
                                                        "Can be used to append a knot to the path",
                                                        CLUTTER_TYPE_KNOT,
-                                                       G_PARAM_WRITABLE));
+                                                       CLUTTER_PARAM_WRITABLE));
 
   /**
    * ClutterBehaviourPath::knot-reached:

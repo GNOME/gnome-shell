@@ -43,8 +43,6 @@
 
 #include <pango/pangoft2.h>
 
-#include <clutter/clutter-debug.h>
-
 G_BEGIN_DECLS
 
 typedef struct _ClutterMainContext ClutterMainContext;
@@ -86,6 +84,13 @@ typedef enum {
 #define CLUTTER_UNSET_PRIVATE_FLAGS(a,f) G_STMT_START{ (CLUTTER_PRIVATE_FLAGS (a) &= ~(f)); }G_STMT_END
 
 void clutter_feature_init (void);
+
+#define CLUTTER_PARAM_READABLE  \
+        G_PARAM_READABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB
+#define CLUTTER_PARAM_WRITABLE  \
+        G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB
+#define CLUTTER_PARAM_READWRITE \
+        G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK |G_PARAM_STATIC_BLURB
 
 G_END_DECLS
 

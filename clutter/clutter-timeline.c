@@ -189,7 +189,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 		       0,
 		       1000,
 		       50,
-		       G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+		       G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
     (object_class, PROP_NUM_FRAMES,
@@ -199,7 +199,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 		       0,
 		       G_MAXINT,
 		       0,
-		       G_PARAM_READWRITE));
+		       CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
     (object_class, PROP_LOOP,
@@ -207,7 +207,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 			   "Loop",
 			   "Should the timeline automatically restart",
 			   FALSE,
-			   G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
 
   timeline_signals[NEW_FRAME] =
     g_signal_new ("new-frame",

@@ -178,7 +178,7 @@ clutter_behaviour_opacity_class_init (ClutterBehaviourOpacityClass *klass)
                                                       "Initial opacity level",
                                                       0, 255,
                                                       0,
-                                                      G_PARAM_READWRITE |
+                                                      CLUTTER_PARAM_READWRITE |
                                                       G_PARAM_CONSTRUCT));
   
   /**
@@ -195,7 +195,7 @@ clutter_behaviour_opacity_class_init (ClutterBehaviourOpacityClass *klass)
                                                       "Final opacity level",
                                                       0, 255,
                                                       0,
-                                                      G_PARAM_READWRITE |
+                                                      CLUTTER_PARAM_READWRITE |
                                                       G_PARAM_CONSTRUCT));
 
   behave_class->alpha_notify = clutter_behaviour_alpha_notify;

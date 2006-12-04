@@ -690,7 +690,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			   "Fullscreen",
 			   "Make Clutter stage fullscreen",
 			   FALSE,
-			   G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
     (gobject_class, PROP_OFFSCREEN,
@@ -698,7 +698,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			   "Offscreen",
 			   "Make Clutter stage offscreen",
 			   FALSE,
-			   G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
 
 
   g_object_class_install_property
@@ -707,7 +707,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			   "Hide Cursor",
 			   "Make Clutter stage cursor-less",
 			   FALSE,
-			   G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
     (gobject_class, PROP_COLOR,
@@ -715,7 +715,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			 "Color",
 			 "The color of the stage",
 			 CLUTTER_TYPE_COLOR,
-			 G_PARAM_READWRITE));
+			 CLUTTER_PARAM_READWRITE));
 
   stage_signals[INPUT_EVENT] =
     g_signal_new ("input-event",

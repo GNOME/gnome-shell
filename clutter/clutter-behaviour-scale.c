@@ -71,6 +71,15 @@ struct _ClutterBehaviourScalePrivate
                CLUTTER_TYPE_BEHAVIOUR_SCALE,            \
                ClutterBehaviourScalePrivate))
 
+enum
+{
+  PROP_0,
+
+  PROP_SCALE_BEGIN,
+  PROP_SCALE_END,
+  PROP_SCALE_GRAVITY
+};
+
 static void
 scale_frame_foreach (ClutterActor          *actor,
 		     ClutterBehaviourScale *behave)
@@ -140,11 +149,114 @@ clutter_behaviour_scale_alpha_notify (ClutterBehaviour *behave,
 }
 
 static void
+clutter_behaviour_scale_set_property (GObject      *gobject,
+                                      guint         prop_id,
+                                      const GValue *value,
+                                      GParamSpec   *pspec)
+{
+  ClutterBehaviourScalePrivate *priv;
+
+  priv = CLUTTER_BEHAVIOUR_SCALE (gobject)->priv;
+
+  switch (prop_id)
+    {
+    case PROP_SCALE_BEGIN:
+      priv->scale_begin = CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
+      break;
+    case PROP_SCALE_END:
+      priv->scale_end = CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value));
+      break;
+    case PROP_SCALE_GRAVITY:
+      priv->gravity = g_value_get_enum (value);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+clutter_behaviour_scale_get_property (GObject    *gobject,
+                                      guint       prop_id,
+                                      GValue     *value,
+                                      GParamSpec *pspec)
+{
+  ClutterBehaviourScalePrivate *priv;
+
+  priv = CLUTTER_BEHAVIOUR_SCALE (gobject)->priv;
+
+  switch (prop_id)
+    {
+    case PROP_SCALE_BEGIN:
+      g_value_set_double (value, CLUTTER_FIXED_TO_FLOAT (priv->scale_begin));
+      break;
+    case PROP_SCALE_END:
+      g_value_set_double (value, CLUTTER_FIXED_TO_FLOAT (priv->scale_end));
+      break;
+    case PROP_SCALE_GRAVITY:
+      g_value_set_enum (value, priv->gravity);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
 clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
 {
-  ClutterBehaviourClass *behave_class;
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  ClutterBehaviourClass *behave_class = CLUTTER_BEHAVIOUR_CLASS (klass);
 
-  behave_class = (ClutterBehaviourClass*) klass;
+  gobject_class->set_property = clutter_behaviour_scale_set_property;
+  gobject_class->get_property = clutter_behaviour_scale_get_property;
+
+  /**
+   * ClutterBehaviourScale:scale-begin:
+   *
+   * The initial scaling factor for the actors.
+   * 
+   * Since: 0.2
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_SCALE_BEGIN,
+                                   g_param_spec_double ("scale-begin",
+                                                        "Scale Begin",
+                                                        "Initial scale",
+                                                        1.0, G_MAXDOUBLE,
+                                                        1.0,
+                                                        CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterBehaviourScale:scale-end:
+   *
+   * The final scaling factor for the actors.
+   *
+   * Since: 0.2
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_SCALE_END,
+                                   g_param_spec_double ("scale-end",
+                                                        "Scale End",
+                                                        "Final scale",
+                                                        1.0, G_MAXDOUBLE,
+                                                        1.0,
+                                                        CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterBehaviourScale:gravity:
+   *
+   * The gravity of the scaling.
+   *
+   * Since: 0.2
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_SCALE_GRAVITY,
+                                   g_param_spec_enum ("scale-gravity",
+                                                      "Scale Gravity",
+                                                      "The gravity of the scaling",
+                                                      CLUTTER_TYPE_GRAVITY,
+                                                      CLUTTER_GRAVITY_CENTER,
+                                                      CLUTTER_PARAM_READWRITE));
+
 
   behave_class->alpha_notify = clutter_behaviour_scale_alpha_notify;
 

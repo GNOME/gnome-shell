@@ -201,7 +201,7 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
                                                         "Timeline",
                                                         "Timeline",
                                                         CLUTTER_TYPE_TIMELINE,
-                                                        G_PARAM_READWRITE));
+                                                        CLUTTER_PARAM_READWRITE));
   /**
    * ClutterAlpha:alpha:
    *
@@ -217,7 +217,7 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
                                                       0, 
                                                       CLUTTER_ALPHA_MAX_ALPHA,
                                                       0,
-                                                      G_PARAM_READABLE));
+                                                      CLUTTER_PARAM_READABLE));
 }
 
 static void

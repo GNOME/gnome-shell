@@ -43,7 +43,11 @@ struct _ClutterKnot
   /* FIXME: optionally include bezier control points also ? */
 };
 
-GType clutter_knot_get_type (void) G_GNUC_CONST;
+GType        clutter_knot_get_type (void) G_GNUC_CONST;
+ClutterKnot *clutter_knot_copy     (const ClutterKnot *knot);
+void         clutter_knot_free     (ClutterKnot       *knot);
+gboolean     clutter_knot_equal    (const ClutterKnot *knot_a,
+                                    const ClutterKnot *knot_b);
 
 #define CLUTTER_TYPE_BEHAVIOUR_PATH (clutter_behaviour_path_get_type ())
 

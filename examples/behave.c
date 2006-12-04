@@ -5,7 +5,7 @@ main (int argc, char *argv[])
 {
   ClutterTimeline  *timeline;
   ClutterAlpha     *alpha;
-  ClutterBehaviour *behave;
+  ClutterBehaviour *o_behave, *p_behave;
   ClutterActor     *stage;
   ClutterActor     *group, *rect, *hand;
   ClutterColor      stage_color = { 0xcc, 0xcc, 0xcc, 0xff };
@@ -64,14 +64,14 @@ main (int argc, char *argv[])
                                   NULL, NULL);
 
   /* Create a behaviour for that alpha */
-  behave = clutter_behaviour_opacity_new (alpha, 0X33, 0xff); 
+  o_behave = clutter_behaviour_opacity_new (alpha, 0X33, 0xff); 
 
   /* Apply it to our actor */
-  clutter_behaviour_apply (behave, group);
+  clutter_behaviour_apply (o_behave, group);
 
   /* Make a path behaviour and apply that too */
-  behave = clutter_behaviour_path_new (alpha, knots, 5); 
-  clutter_behaviour_apply (behave, group);
+  p_behave = clutter_behaviour_path_new (alpha, knots, 5); 
+  clutter_behaviour_apply (p_behave, group);
 
   /* start the timeline and thus the animations */
   clutter_timeline_start (timeline);
@@ -79,6 +79,9 @@ main (int argc, char *argv[])
   clutter_group_show_all (CLUTTER_GROUP (stage));
 
   clutter_main();
+
+  g_object_unref (o_behave);
+  g_object_unref (p_behave);
 
   return 0;
 }

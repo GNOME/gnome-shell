@@ -220,7 +220,7 @@ clutter_rectangle_class_init (ClutterRectangleClass *klass)
                                                        "Color",
                                                        "The color of the rectangle",
                                                        CLUTTER_TYPE_COLOR,
-                                                       G_PARAM_READWRITE));
+                                                       CLUTTER_PARAM_READWRITE));
   /**
    * ClutterRectangle:border-color:
    *
@@ -234,7 +234,7 @@ clutter_rectangle_class_init (ClutterRectangleClass *klass)
                                                        "Border Color",
                                                        "The color of the border of the rectangle",
                                                        CLUTTER_TYPE_COLOR,
-                                                       G_PARAM_READWRITE));
+                                                       CLUTTER_PARAM_READWRITE));
   /**
    * ClutterRectangle:border-width:
    *
@@ -249,7 +249,7 @@ clutter_rectangle_class_init (ClutterRectangleClass *klass)
                                                       "The width of the border of the rectangle",
                                                       0, G_MAXUINT,
                                                       0,
-                                                      G_PARAM_READWRITE));
+                                                      CLUTTER_PARAM_READWRITE));
   /**
    * ClutterRectangle:has-border:
    *
@@ -263,7 +263,7 @@ clutter_rectangle_class_init (ClutterRectangleClass *klass)
                                                          "Has Border",
                                                          "Whether the rectangle should have a border",
                                                          FALSE,
-                                                         G_PARAM_READWRITE));
+                                                         CLUTTER_PARAM_READWRITE));
 
   g_type_class_add_private (gobject_class, sizeof (ClutterRectanglePrivate));
 }

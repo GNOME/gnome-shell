@@ -848,7 +848,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
      g_param_spec_pointer ("pixbuf",
 			   "Pixbuf source for Texture.",
 			   "Pixbuf source for Texture.",
-			   G_PARAM_READWRITE));
+			   CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
     (gobject_class, PROP_USE_TILES,
@@ -862,7 +862,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 			   */
 			   (clutter_feature_available 
 			     (CLUTTER_FEATURE_TEXTURE_RECTANGLE) == FALSE),
-			   G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
+			   G_PARAM_CONSTRUCT_ONLY | CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
     (gobject_class, PROP_SYNC_SIZE,
@@ -871,7 +871,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 			   "Auto sync size of actor to underlying pixbuf"
 			   "dimentions",
 			   TRUE,
-			   G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
     (gobject_class, PROP_REPEAT_X,
@@ -880,7 +880,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 			   "Reapeat underlying pixbuf rather than scale" 
 			   "in x direction. Currently UNWORKING",
 			   FALSE,
-			   G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
     (gobject_class, PROP_REPEAT_Y,
@@ -889,7 +889,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 			   "Reapeat underlying pixbuf rather than scale" 
 			   "in y direction. Currently UNWORKING",
 			   FALSE,
-			   G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
 
   /* FIXME: Ideally this option needs to have some kind of global
    *        overide as to imporve performance.
@@ -905,7 +905,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		       0,
 		       G_MAXINT,
 		       1,
-		       G_PARAM_CONSTRUCT | G_PARAM_READWRITE));
+		       G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
     (gobject_class, PROP_MAX_TILE_WASTE,
@@ -917,7 +917,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		       0,
 		       G_MAXINT,
 		       64,
-		       G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
+		       G_PARAM_CONSTRUCT_ONLY | CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
     (gobject_class, PROP_PIXEL_TYPE,
@@ -927,7 +927,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		       0,
 		       G_MAXINT,
 		       PIXEL_TYPE,
-		       G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
+		       G_PARAM_CONSTRUCT_ONLY | CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
     (gobject_class, PROP_PIXEL_FORMAT,
@@ -937,7 +937,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		       0,
 		       G_MAXINT,
 		       GL_RGBA,
-		       G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE));
+		       G_PARAM_CONSTRUCT_ONLY | CLUTTER_PARAM_READWRITE));
 
   texture_signals[SIGNAL_SIZE_CHANGE] =
     g_signal_new ("size-change",
