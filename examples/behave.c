@@ -10,7 +10,7 @@ main (int argc, char *argv[])
   ClutterActor     *group, *rect, *hand;
   ClutterColor      stage_color = { 0xcc, 0xcc, 0xcc, 0xff };
   ClutterColor      rect_bg_color = { 0x33, 0x22, 0x22, 0xff };
-  ClutterColor      rect_border_color = { 0xff, 0xcc, 0xcc, 0xff };
+  ClutterColor      rect_border_color = { 0, 0, 0, 0 };
   GdkPixbuf        *pixbuf;
 
   ClutterKnot       knots[] = {{ 0, 0 }, { 0, 300 }, { 300, 300 },
@@ -44,6 +44,7 @@ main (int argc, char *argv[])
   clutter_rectangle_set_color (CLUTTER_RECTANGLE (rect),
                                &rect_bg_color);
   clutter_rectangle_set_border_width (CLUTTER_RECTANGLE (rect), 10);
+  clutter_color_parse ("DarkSlateGray", &rect_border_color);
   clutter_rectangle_set_border_color (CLUTTER_RECTANGLE (rect),
                                       &rect_border_color);
   clutter_actor_show (rect);

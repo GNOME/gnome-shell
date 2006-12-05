@@ -1,5 +1,9 @@
 2006-12-05  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* behave.c: Add test for clutter_color_parse().
+
+2006-12-05  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-event.c: Move the apidoc out.
 
 2006-12-05  Emmanuele Bassi  <ebassi@openedhand.com>
