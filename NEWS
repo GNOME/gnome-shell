@@ -1,5 +1,38 @@
-Clutter 0.1 ( 22/06/2006)
-===========
+Clutter 0.2 ()
+========================
+
+ * List of changes between 0.2 and 0.1
+   o Bindings, GStreamer and GTK+ dependencies moved out of tree:
+     now Clutter strictly depends on Xlibs, OpenGL and GdkPixbuf only.
+   o Actors now have an initial floating reference; this means you
+     don't have to explicitely unref them: every memory an actor
+     allocates will be freed when the group containing the actor will
+     be destroyed.
+   o Add run-time detection of GL features.
+   o Add API for behaviours. A ClutterBehaviour is an object which
+     drives a set of actors using one or more properties depending
+     on the value of an "alpha" function.
+   o Add group and actor scale API and functionality.
+   o Add fixed point API for embedded platforms with no FPU.
+   o Add support for command line switches to Clutter, like debug
+     flags and abort on warnings; also allow application to hook up
+     into the initialisation sequence to add their own command line
+     switches.
+   o Add Pango GL renderer for Clutter, and use it to render text
+     inside the ClutterLabel actor; this will decrease texture memory
+     usage.
+ * List of bug fixed
+   o #156 - clutter_actor_set_position not using the absolute size
+   o #155 - Don't test for XInitThreads [Bastien Nocera]
+   o #154 - Key presses not working in super-oh example [Bastien Nocera]
+   o #152 - Misc fixes [Bastien Nocera]
+   o #143 - Faulty ref-counting in clutter_group_remove [Frederic Riss]
+   o #141 - Copy-pasto in clutter_media_set_volume [Frederic Riss]
+   o #101 - No package 'x11' found -- wrong configure [Tomasz Torcz]
+   o #98 - Enabling trails in super-oh crashes
+
+Clutter 0.1 (22/06/2006)
+========================
 
  * First 'official' release, expect bugs aplenty.
  * Contains:
