@@ -784,7 +784,7 @@ clutter_stage_init (ClutterMainContext  *context,
  * @argv: a pointer to the array of comman line arguments
  * @parameter_string: a string which is displayed in the
  *   first line of <option>--help</option> output, after
- *   <literal><replaceable>programname</replaceable [OPTION...]</literal>
+ *   <literal><replaceable>programname</replaceable> [OPTION...]</literal>
  * @entries: a %NULL terminated array of #GOptionEntry<!-- -->s
  *   describing the options of your program
  * @translation_domain: a translation domain to use for translating

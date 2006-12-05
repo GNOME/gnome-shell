@@ -1,5 +1,9 @@
 2006-12-05  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-event.c: Move the apidoc out.
+
+2006-12-05  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-color.h:
 	* clutter/clutter-color.c: Add clutter_color_parse(),
 	which parses a string containing a color definition as
