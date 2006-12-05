@@ -26,17 +26,14 @@
 #ifndef _HAVE_CLUTTER_LABEL_H
 #define _HAVE_CLUTTER_LABEL_H
 
-#include <glib-object.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
-#include <clutter/clutter-texture.h>
+#include <clutter/clutter-actor.h>
 #include <clutter/clutter-color.h>
-
 #include <pango/pango.h>
 
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_LABEL clutter_label_get_type()
+#define CLUTTER_TYPE_LABEL (clutter_label_get_type ())
 
 #define CLUTTER_LABEL(obj) \
   (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
@@ -83,66 +80,39 @@ struct _ClutterLabelClass
 
 GType clutter_label_get_type (void) G_GNUC_CONST;
 
-ClutterActor *clutter_label_new              (void);
-ClutterActor *clutter_label_new_with_text    (const gchar        *font_name,
-						      const gchar        *text);
-
-void   clutter_label_set_text         (ClutterLabel       *label,
-						      const gchar        *text);
-G_CONST_RETURN gchar *clutter_label_get_text         (ClutterLabel       *label);
-void                  clutter_label_set_font_name    (ClutterLabel       *label,
-						      const gchar        *font_name);
-G_CONST_RETURN gchar *clutter_label_get_font_name    (ClutterLabel       *label);
-void                  clutter_label_set_color        (ClutterLabel       *label,
-						      const ClutterColor *color);
-void                  clutter_label_get_color        (ClutterLabel       *label,
-						      ClutterColor       *color);
-
-void
-clutter_label_set_ellipsize (ClutterLabel          *label,
-			     PangoEllipsizeMode     mode);
-
-PangoEllipsizeMode
-clutter_label_get_ellipsize (ClutterLabel *label);
-
-void
-clutter_label_set_line_wrap (ClutterLabel *label,
-			     gboolean      wrap);
-
-gboolean
-clutter_label_get_line_wrap (ClutterLabel *label);
-
-void
-clutter_label_set_line_wrap_mode (ClutterLabel *label,
-				  PangoWrapMode wrap_mode);
-
-PangoWrapMode
-clutter_label_get_line_wrap_mode (ClutterLabel *label);
-
-PangoLayout*
-clutter_label_get_layout (ClutterLabel *label);
-
-void
-clutter_label_set_attributes (ClutterLabel     *label,
-			      PangoAttrList    *attrs);
-
-PangoAttrList*
-clutter_label_get_attributes (ClutterLabel *label);
-
-void
-clutter_label_set_use_markup (ClutterLabel *label,
-			      gboolean      setting);
-
-gboolean
-clutter_label_get_use_markup (ClutterLabel *label);
-
-void
-clutter_label_set_alignment (ClutterLabel   *label,
-			     PangoAlignment  alignment);
-gboolean
-clutter_label_get_alignment (ClutterLabel *label);
-
+ClutterActor *        clutter_label_new                (void);
+ClutterActor *        clutter_label_new_with_text      (const gchar        *font_name,
+                                                        const gchar        *text);
+void                  clutter_label_set_text           (ClutterLabel       *label,
+						        const gchar        *text);
+G_CONST_RETURN gchar *clutter_label_get_text           (ClutterLabel       *label);
+void                  clutter_label_set_font_name      (ClutterLabel       *label,
+						        const gchar        *font_name);
+G_CONST_RETURN gchar *clutter_label_get_font_name      (ClutterLabel       *label);
+void                  clutter_label_set_color          (ClutterLabel       *label,
+						        const ClutterColor *color);
+void                  clutter_label_get_color          (ClutterLabel       *label,
+						        ClutterColor       *color);
+void                  clutter_label_set_ellipsize      (ClutterLabel       *label,
+                                                        PangoEllipsizeMode  mode);
+PangoEllipsizeMode    clutter_label_get_ellipsize      (ClutterLabel       *label);
+void                  clutter_label_set_line_wrap      (ClutterLabel       *label,
+                                                        gboolean            wrap);
+gboolean              clutter_label_get_line_wrap      (ClutterLabel       *label);
+void                  clutter_label_set_line_wrap_mode (ClutterLabel       *label,
+                                                        PangoWrapMode       wrap_mode);
+PangoWrapMode         clutter_label_get_line_wrap_mode (ClutterLabel       *label);
+PangoLayout *         clutter_label_get_layout         (ClutterLabel       *label);
+void                  clutter_label_set_attributes     (ClutterLabel       *label,
+                                                        PangoAttrList      *attrs);
+PangoAttrList *       clutter_label_get_attributes     (ClutterLabel       *label);
+void                  clutter_label_set_use_markup     (ClutterLabel       *label,
+                                                        gboolean            setting);
+gboolean              clutter_label_get_use_markup     (ClutterLabel       *label);
+void                  clutter_label_set_alignment      (ClutterLabel       *label,
+                                                        PangoAlignment      alignment);
+gboolean              clutter_label_get_alignment      (ClutterLabel       *label);
 
 G_END_DECLS
 
-#endif
+#endif /* _HAVE_CLUTTER_LABEL_H */

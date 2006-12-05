@@ -220,11 +220,12 @@ check_vblank_env (const char *name)
  * without explicitely calling clutter_feature_init() inside clutter_init()
  * and we also need to have an open X display when we test for the features.
  * __features is dynamically allocated, and applications tend to badly
- * crash when trying to access __features; so when can't use a NULL check
- * to know whether we already invoked clutter_feature_init() once; hence,
- * we must allocate it anyway, and have a flag to let us know when the
- * features have been set - that is when clutter_feature_init() has been
- * successfully completed with an open X display.
+ * crash when trying to access __features components if we did not allocate
+ * it; so when can't use a NULL check to know whether we already invoked
+ * clutter_feature_init() once; hence, we must allocate it anyway, and have
+ * a flag to let us know when the features have been set - that is when
+ * clutter_feature_init() has been successfully completed with an open
+ * X display.
  */
 static void
 clutter_feature_init (void)
