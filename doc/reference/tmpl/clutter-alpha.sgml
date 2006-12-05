@@ -121,3 +121,71 @@ accessed directly.
 @Returns: 
 
 
+<!-- ##### MACRO CLUTTER_ALPHA_RAMP_INC ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_ramp_inc_func ##### -->
+<para>
+
+</para>
+
+@alpha: 
+@dummy: 
+@Returns: 
+
+
+<!-- ##### MACRO CLUTTER_ALPHA_RAMP_DEC ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_ramp_dec_func ##### -->
+<para>
+
+</para>
+
+@alpha: 
+@dummy: 
+@Returns: 
+
+
+<!-- ##### MACRO CLUTTER_ALPHA_RAMP ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_ramp_func ##### -->
+<para>
+
+</para>
+
+@alpha: 
+@dummy: 
+@Returns: 
+
+
+<!-- ##### MACRO CLUTTER_ALPHA_SINE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_sine_func ##### -->
+<para>
+
+</para>
+
+@alpha: 
+@dummy: 
+@Returns: 
+
+

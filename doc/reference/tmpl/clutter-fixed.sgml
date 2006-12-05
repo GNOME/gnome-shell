@@ -2,11 +2,15 @@
 clutter-fixed
 
 <!-- ##### SECTION Short_Description ##### -->
-
+Fixed point API
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+Clutter has a fixed point API targeted at platforms without a floating
+point unit, such as embedded devices. This API should be preferred to
+the floating point one as it does not trigger the slow path of software
+emulation, relying on integer math for fixed-to-floating and
+floating-to-fixed conversion.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

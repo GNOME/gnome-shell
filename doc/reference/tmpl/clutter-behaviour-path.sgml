@@ -32,6 +32,33 @@ ClutterBehaviourPath
 @x: 
 @y: 
 
+<!-- ##### FUNCTION clutter_knot_copy ##### -->
+<para>
+
+</para>
+
+@knot: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_knot_free ##### -->
+<para>
+
+</para>
+
+@knot: 
+
+
+<!-- ##### FUNCTION clutter_knot_equal ##### -->
+<para>
+
+</para>
+
+@knot_a: 
+@knot_b: 
+@Returns: 
+
+
 <!-- ##### STRUCT ClutterBehaviourPath ##### -->
 <para>
 
@@ -100,6 +127,25 @@ ClutterBehaviourPath
 @pathb: 
 @first_knot: 
 @Varargs: 
+
+
+<!-- ##### FUNCTION clutter_behaviour_path_insert_knot ##### -->
+<para>
+
+</para>
+
+@pathb: 
+@offset: 
+@knot: 
+
+
+<!-- ##### FUNCTION clutter_behaviour_path_remove_knot ##### -->
+<para>
+
+</para>
+
+@pathb: 
+@offset: 
 
 
 <!-- ##### FUNCTION clutter_behaviour_path_clear ##### -->

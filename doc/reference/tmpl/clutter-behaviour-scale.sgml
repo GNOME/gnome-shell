@@ -17,6 +17,22 @@ ClutterBehaviourScale
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### ENUM ClutterGravity ##### -->
+<para>
+
+</para>
+
+@CLUTTER_GRAVITY_NONE: 
+@CLUTTER_GRAVITY_NORTH: 
+@CLUTTER_GRAVITY_NORTH_EAST: 
+@CLUTTER_GRAVITY_EAST: 
+@CLUTTER_GRAVITY_SOUTH_EAST: 
+@CLUTTER_GRAVITY_SOUTH: 
+@CLUTTER_GRAVITY_SOUTH_WEST: 
+@CLUTTER_GRAVITY_WEST: 
+@CLUTTER_GRAVITY_NORTH_WEST: 
+@CLUTTER_GRAVITY_CENTER: 
+
 <!-- ##### STRUCT ClutterBehaviourScale ##### -->
 <para>
 
@@ -46,6 +62,18 @@ ClutterBehaviourScale
 @parent_class: 
 
 <!-- ##### FUNCTION clutter_behaviour_scale_new ##### -->
+<para>
+
+</para>
+
+@alpha: 
+@scale_begin: 
+@scale_end: 
+@gravity: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_behaviour_scale_newx ##### -->
 <para>
 
 </para>

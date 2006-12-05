@@ -341,6 +341,16 @@ ClutterActor
 @height: 
 
 
+<!-- ##### FUNCTION clutter_actor_get_size ##### -->
+<para>
+
+</para>
+
+@self: 
+@width: 
+@height: 
+
+
 <!-- ##### FUNCTION clutter_actor_set_position ##### -->
 <para>
 
@@ -395,6 +405,16 @@ ClutterActor
 
 @self: 
 @Returns: 
+
+
+<!-- ##### FUNCTION clutter_actor_move_by ##### -->
+<para>
+
+</para>
+
+@self: 
+@dx: 
+@dy: 
 
 
 <!-- ##### FUNCTION clutter_actor_rotate_x ##### -->

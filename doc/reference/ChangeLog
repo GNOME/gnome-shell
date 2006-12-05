@@ -1,3 +1,18 @@
+2006-12-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Update with the newly added API.
+
+	* tmpl/clutter-event.sgml:
+	* tmpl/clutter-fixed.sgml: Provide short and long descriptions.
+
+	* tmpl/clutter-actor.sgml:
+	* tmpl/clutter-alpha.sgml:
+	* tmpl/clutter-behaviour-path.sgml:
+	* tmpl/clutter-behaviour-scale.sgml:
+	* tmpl/clutter-color.sgml:
+	* tmpl/clutter-feature.sgml:
+	* tmpl/clutter-main.sgml: Update templates.
+
 2006-11-20  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Remove debug macros; add clutter-version

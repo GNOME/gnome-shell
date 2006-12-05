@@ -96,6 +96,14 @@ ClutterAlphaFunc
 clutter_alpha_set_func
 clutter_alpha_set_timeline
 clutter_alpha_get_timeline
+CLUTTER_ALPHA_RAMP_INC
+clutter_ramp_inc_func
+CLUTTER_ALPHA_RAMP_DEC
+clutter_ramp_dec_func
+CLUTTER_ALPHA_RAMP
+clutter_ramp_func
+CLUTTER_ALPHA_SINE
+clutter_sine_func
 <SUBSECTION Standard>
 CLUTTER_ALPHA
 CLUTTER_IS_ALPHA
@@ -211,12 +219,14 @@ clutter_actor_set_geometry
 clutter_actor_get_geometry
 clutter_actor_get_coords
 clutter_actor_set_size
+clutter_actor_get_size
 clutter_actor_set_position
 clutter_actor_get_abs_position
 clutter_actor_get_width
 clutter_actor_get_height
 clutter_actor_get_x
 clutter_actor_get_y
+clutter_actor_move_by
 clutter_actor_rotate_x
 clutter_actor_rotate_y
 clutter_actor_rotate_z
@@ -347,15 +357,20 @@ clutter_timeline_get_type
 
 <SECTION>
 <FILE>clutter-behaviour-path</FILE>
+<TITLE>ClutterBehaviourPath</TITLE>
 CLUTTER_TYPE_KNOT
 ClutterKnot
-<TITLE>ClutterBehaviourPath</TITLE>
+clutter_knot_copy
+clutter_knot_free
+clutter_knot_equal
 ClutterBehaviourPath
 ClutterBehaviourPathClass
 clutter_behaviour_path_new
 clutter_behaviour_path_get_knots
 clutter_behaviour_path_append_knot
 clutter_behaviour_path_append_knots
+clutter_behaviour_path_insert_knot
+clutter_behaviour_path_remove_knot
 clutter_behaviour_path_clear
 <SUBSECTION Standard>
 CLUTTER_BEHAVIOUR_PATH
@@ -366,6 +381,7 @@ CLUTTER_IS_BEHAVIOUR_PATH_CLASS
 CLUTTER_BEHAVIOUR_PATH_GET_CLASS
 <SUBSECTION Private>
 ClutterBehaviourPathPrivate
+clutter_knot_get_type
 clutter_behaviour_path_get_type
 </SECTION>
 
@@ -390,9 +406,11 @@ clutter_behaviour_opacity_get_type
 <SECTION>
 <FILE>clutter-behaviour-scale</FILE>
 <TITLE>ClutterBehaviourScale</TITLE>
+ClutterGravity
 ClutterBehaviourScale
 ClutterBehaviourScaleClass
 clutter_behaviour_scale_new
+clutter_behaviour_scale_newx
 <SUBSECTION Standard>
 CLUTTER_BEHAVIOUR_SCALE
 CLUTTER_IS_BEHAVIOUR_SCALE
@@ -417,6 +435,7 @@ clutter_util_next_p2
 ClutterFeatureFlags
 clutter_feature_available
 clutter_feature_get_all
+clutter_feature_wait_for_vblank
 </SECTION>
 
 <SECTION>
@@ -443,6 +462,7 @@ CLUTTER_FIXED_DIV
 CLUTTER_TYPE_COLOR
 ClutterColor
 clutter_color_get_type
+clutter_color_parse
 clutter_color_add
 clutter_color_subtract
 clutter_color_lighten
@@ -481,8 +501,11 @@ clutter_keysym_to_unicode
 
 <SECTION>
 <FILE>clutter-main</FILE>
+CLUTTER_INIT_ERROR
 ClutterInitError
 clutter_init
+clutter_init_with_args
+clutter_get_option_group
 clutter_main
 clutter_main_quit
 clutter_main_level
@@ -493,6 +516,8 @@ clutter_root_xwindow
 clutter_want_debug
 clutter_threads_enter
 clutter_threads_leave
+<SUBSECTION Private>
+clutter_init_error_quark
 </SECTION>
 
 <SECTION>

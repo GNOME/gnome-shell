@@ -2,11 +2,11 @@
 clutter-event
 
 <!-- ##### SECTION Short_Description ##### -->
-
+User and window system event functionality
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-
+Windowing events handled by Clutter.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->

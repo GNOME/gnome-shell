@@ -42,3 +42,10 @@ clutter-feature
 @Returns: 
 
 
+<!-- ##### FUNCTION clutter_feature_wait_for_vblank ##### -->
+<para>
+
+</para>
+
+
+

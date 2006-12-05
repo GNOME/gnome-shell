@@ -17,6 +17,13 @@ clutter-main
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### MACRO CLUTTER_INIT_ERROR ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### ENUM ClutterInitError ##### -->
 <para>
 
@@ -36,6 +43,28 @@ clutter-main
 
 @argc: 
 @argv: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_init_with_args ##### -->
+<para>
+
+</para>
+
+@argc: 
+@argv: 
+@parameter_string: 
+@entries: 
+@translation_domain: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_get_option_group ##### -->
+<para>
+
+</para>
+
 @Returns: 
 
 
