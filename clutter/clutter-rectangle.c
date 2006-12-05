@@ -113,6 +113,11 @@ clutter_rectangle_paint (ClutterActor *self)
     }
   else
     {
+      glColor4ub (priv->color.red,
+	          priv->color.green,
+	          priv->color.blue, 
+	          clutter_actor_get_opacity (self));
+      
       glRecti (0, 0, geom.width, geom.height);
     }
 
