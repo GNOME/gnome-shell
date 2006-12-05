@@ -34,7 +34,10 @@
 #include "config.h"
 #endif
 
+#include "clutter-main.h"
 #include "clutter-color.h"
+#include "clutter-private.h"
+#include "clutter-debug.h"
 
 /**
  * clutter_color_add:
@@ -372,6 +375,45 @@ clutter_color_from_pixel (ClutterColor *dest,
   dest->green = (pixel >> 16) & 0xff;
   dest->blue = (pixel >> 8) & 0xff;
   dest->alpha = pixel % 0xff;
+}
+
+/**
+ * clutter_color_parse:
+ * @color: a string specifiying a color
+ * @dest: return location for a #ClutterColor
+ *
+ * Parses a string definition of a color, filling the
+ * <structfield>red</structfield>, <structfield>green</structfield> and
+ * <structfield>blue</structfield> channels of @dest. The
+ * <structfield>alpha</structfield> channel is not changed. The
+ * color in @dest is not allocated.
+ *
+ * The color may be defined by any of the formats understood by
+ * <function>XParseColor</function>; these include literal color
+ * names, like <literal>Red</literal> or <literal>DarkSlateGray</literal>,
+ * or hexadecimal specifications like <literal>&num;3050b2</literal> or
+ * <literal>&num;333</literal>.
+ *
+ * Return value: %TRUE if parsing succeeded.
+ *
+ * Since: 0.2
+ */
+gboolean
+clutter_color_parse (const gchar  *color,
+                     ClutterColor *dest)
+{
+  PangoColor pango_color;
+
+  if (pango_color_parse (&pango_color, color))
+    {
+      dest->red = pango_color.red;
+      dest->green = pango_color.green;
+      dest->blue = pango_color.blue;
+
+      return TRUE;
+    }
+  else
+    return FALSE;
 }
 
 static ClutterColor *

@@ -1,3 +1,10 @@
+2006-12-05  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-color.h:
+	* clutter/clutter-color.c: Add clutter_color_parse(),
+	which parses a string containing a color definition as
+	understood by XParseColor() (or pango_color_parse()).
+
 2006-12-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Avoid clutter segfaulting when used without invoking
