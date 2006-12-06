@@ -6730,6 +6730,9 @@ update_move (MetaWindow  *window,
                       window->saved_rect.y += window->frame->child_y;
                     }
 
+                  window->user_rect.x = window->saved_rect.x;
+                  window->user_rect.y = window->saved_rect.y;
+
                   meta_window_unmaximize (window,
                                           META_MAXIMIZE_HORIZONTAL |
                                           META_MAXIMIZE_VERTICAL);
