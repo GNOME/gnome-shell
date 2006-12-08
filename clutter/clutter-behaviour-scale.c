@@ -81,30 +81,15 @@ enum
 };
 
 static void
-scale_frame_foreach (ClutterActor          *actor,
-		     ClutterBehaviourScale *behave)
+scale_frame_foreach (ClutterBehaviour *behaviour,
+                     ClutterActor     *actor,
+		     gpointer          data)
 {
-  ClutterFixed                    scale, factor;
-  guint32                         alpha;
-  ClutterBehaviourScalePrivate   *priv;
-  ClutterBehaviour               *_behave;
-  gint                            sw, sh, w, h;
+  ClutterBehaviourScalePrivate *priv;
+  gint sw, sh, w, h;
+  guint scale = GPOINTER_TO_UINT (data);
 
-  priv = CLUTTER_BEHAVIOUR_SCALE_GET_PRIVATE (behave);
-  _behave = CLUTTER_BEHAVIOUR (behave);
-
-  alpha = clutter_alpha_get_alpha (clutter_behaviour_get_alpha (_behave));
-
-  /* FIXME: use all fixed if possible
-  factor = CLUTTER_FIXED_DIV(CLUTTER_INT_TO_FIXED(alpha/2),
-			     CLUTTER_INT_TO_FIXED(CLUTTER_ALPHA_MAX_ALPHA/2));
-  */
-
-  factor = CLUTTER_FLOAT_TO_FIXED ((gdouble) alpha / CLUTTER_ALPHA_MAX_ALPHA);
-
-  scale = CLUTTER_FIXED_MUL (factor, (priv->scale_end - priv->scale_begin));
-
-  scale += priv->scale_begin;
+  priv = CLUTTER_BEHAVIOUR_SCALE (behaviour)->priv;
 
   clutter_actor_set_scalex (actor, scale, scale);
 
@@ -143,9 +128,24 @@ static void
 clutter_behaviour_scale_alpha_notify (ClutterBehaviour *behave,
                                       guint32           alpha_value)
 {
+  ClutterFixed                  scale, factor;
+  ClutterBehaviourScalePrivate *priv;
+
+  priv = CLUTTER_BEHAVIOUR_SCALE (behave)->priv;
+
+  /* FIXME: use all fixed if possible
+  factor = CLUTTER_FIXED_DIV(CLUTTER_INT_TO_FIXED(alpha/2),
+			     CLUTTER_INT_TO_FIXED(CLUTTER_ALPHA_MAX_ALPHA/2));
+  */
+
+  factor = CLUTTER_FLOAT_TO_FIXED ((gdouble) alpha_value / CLUTTER_ALPHA_MAX_ALPHA);
+
+  scale = CLUTTER_FIXED_MUL (factor, (priv->scale_end - priv->scale_begin));
+  scale += priv->scale_begin;
+
   clutter_behaviour_actors_foreach (behave,
-                                    (GFunc) scale_frame_foreach,
-                                    CLUTTER_BEHAVIOUR_SCALE (behave));
+                                    scale_frame_foreach,
+                                    GUINT_TO_POINTER (scale));
 }
 
 static void

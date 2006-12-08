@@ -184,9 +184,12 @@ path_total_length (ClutterBehaviourPath *behave)
 }
 
 static void
-actor_apply_knot_foreach (ClutterActor *actor,
-			  ClutterKnot  *knot)
+actor_apply_knot_foreach (ClutterBehaviour *behaviour,
+                          ClutterActor     *actor,
+                          gpointer          data)
 {
+  ClutterKnot *knot = data;
+
   clutter_actor_set_position (actor, knot->x, knot->y);
 }
 
@@ -217,7 +220,7 @@ path_alpha_to_position (ClutterBehaviourPath *behave,
   if (offset == 0)
     {
       clutter_behaviour_actors_foreach (behaviour, 
-					(GFunc) actor_apply_knot_foreach,
+					actor_apply_knot_foreach,
 					priv->knots->data);
       
       g_signal_emit (behave, path_signals[KNOT_REACHED], 0,
@@ -245,7 +248,7 @@ path_alpha_to_position (ClutterBehaviourPath *behave,
               interpolate (knot, next, &new, t);
 
               clutter_behaviour_actors_foreach (behaviour, 
-					        (GFunc)actor_apply_knot_foreach,
+					        actor_apply_knot_foreach,
 					        &new);
 
               g_signal_emit (behave, path_signals[KNOT_REACHED], 0, &new);

@@ -68,7 +68,9 @@ ClutterBehaviour
 ClutterBehaviourClass
 clutter_behaviour_apply
 clutter_behaviour_remove
+ClutterBehaviourForeachFunc
 clutter_behaviour_actors_foreach
+clutter_behaviour_get_actors
 clutter_behaviour_get_alpha
 clutter_behaviour_set_alpha
 <SUBSECTION Standard>

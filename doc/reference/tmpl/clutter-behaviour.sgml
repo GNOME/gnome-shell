@@ -60,6 +60,16 @@ ClutterBehaviour
 @actor: 
 
 
+<!-- ##### USER_FUNCTION ClutterBehaviourForeachFunc ##### -->
+<para>
+
+</para>
+
+@behaviour: 
+@actor: 
+@data: 
+
+
 <!-- ##### FUNCTION clutter_behaviour_actors_foreach ##### -->
 <para>
 
@@ -68,6 +78,15 @@ ClutterBehaviour
 @behave: 
 @func: 
 @data: 
+
+
+<!-- ##### FUNCTION clutter_behaviour_get_actors ##### -->
+<para>
+
+</para>
+
+@behave: 
+@Returns: 
 
 
 <!-- ##### FUNCTION clutter_behaviour_get_alpha ##### -->

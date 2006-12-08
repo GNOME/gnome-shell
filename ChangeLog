@@ -1,3 +1,23 @@
+2006-12-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-behaviour.h: Add a function prototype
+	for the foreach function: we need something more specific
+	than GFunc; add clutter_behaviour_get_actors(), used to
+	get a list of the actors.
+
+	* clutter/clutter-behaviour.c: Add debugging notes; add
+	a warning for behaviour implementations missing the
+	alpha_notify vfunc; add api documentation
+
+	* clutter/clutter-behaviour-opacity.c:
+	* clutter/clutter-behaviour-path.c:
+	* clutter/clutter-behaviour-scale.c: Reimplement the
+	alpha_notify functions using the new foreach function
+	and, where possible, by directly iterating on the
+	actors: this shaves off the number of recalculations
+	of the property/alpha values, and the number of
+	functions.
+
 2006-12-05  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-rectangle.c: Forgot to set the

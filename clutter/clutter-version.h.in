@@ -7,7 +7,9 @@
 
 #define CLUTTER_VERSION         @CLUTTER_VERSION@
 #define CLUTTER_VERSION_S       "@CLUTTER_VERSION@"
-#define CLUTTER_VERSION_HEX     0x@CLUTTER_MAJOR_VERSION@0@CLUTTER_MINOR_VERSION@0@CLUTTER_MICRO_VERSION@
+#define CLUTTER_VERSION_HEX     ((CLUTTER_MAJOR_VERSION << 24) | \
+                                 (CLUTTER_MINOR_VERSION << 16) | \
+                                 (CLUTTER_MICRO_VERSION << 8))
 
 #define CLUTTER_CHECK_VERSION(major,minor,micro) \
         (CLUTTER_MAJOR_VERSION > (major) || \

@@ -144,6 +144,13 @@ clutter_behaviour_get_property (GObject    *object,
     } 
 }
 
+static void
+clutter_behaviour_alpha_notify_unimplemented (ClutterBehaviour *behaviour,
+                                              guint32           alpha_value)
+{
+  g_warning ("ClutterBehaviourClass::alpha_notify not implemented for `%s'",
+             g_type_name (G_TYPE_FROM_INSTANCE (behaviour)));
+}
 
 static void
 clutter_behaviour_class_init (ClutterBehaviourClass *klass)
@@ -163,6 +170,8 @@ clutter_behaviour_class_init (ClutterBehaviourClass *klass)
                                                         G_PARAM_CONSTRUCT |
                                                         CLUTTER_PARAM_READWRITE));
 
+  klass->alpha_notify = clutter_behaviour_alpha_notify_unimplemented;
+
   g_type_class_add_private (klass, sizeof (ClutterBehaviourPrivate));
 }
 
@@ -175,6 +184,16 @@ clutter_behaviour_init (ClutterBehaviour *self)
 
 }
 
+/**
+ * clutter_behaviour_apply:
+ * @behave: a #ClutterBehaviour
+ * @actor: a #ClutterActor
+ *
+ * Applies @behave to @actor.  This function adds a reference on
+ * the actor.
+ *
+ * Since: 0.2
+ */
 void
 clutter_behaviour_apply (ClutterBehaviour *behave,
                          ClutterActor     *actor)
@@ -195,6 +214,16 @@ clutter_behaviour_apply (ClutterBehaviour *behave,
   behave->priv->actors = g_slist_prepend (behave->priv->actors, actor);
 }
 
+/**
+ * clutter_behaviour_remove:
+ * @behave: a #ClutterBehaviour
+ * @actor: a #ClutterActor
+ *
+ * Removes @actor from the list of #ClutterActor<!-- -->s to which
+ * @behave applies.  This function removes a reference on the actor.
+ *
+ * Since: 0.2
+ */
 void
 clutter_behaviour_remove (ClutterBehaviour *behave,
                           ClutterActor     *actor)
@@ -215,17 +244,47 @@ clutter_behaviour_remove (ClutterBehaviour *behave,
   behave->priv->actors = g_slist_remove (behave->priv->actors, actor);
 }
 
+/**
+ * clutter_behaviour_actors_foreach:
+ * @behave: a #ClutterBehaviour
+ * @func: a function called for each actor
+ * @data: optional data to be passed to the function, or %NULL
+ *
+ * Calls @func for every actor driven by @behave.
+ *
+ * Since: 0.2
+ */
 void
-clutter_behaviour_actors_foreach (ClutterBehaviour *behave,
-				  GFunc             func,
-				  gpointer          userdata)
+clutter_behaviour_actors_foreach (ClutterBehaviour            *behave,
+				  ClutterBehaviourForeachFunc  func,
+				  gpointer                     data)
 {
+  GSList *l;
+
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR (behave));
   g_return_if_fail (func != NULL);
 
-  g_slist_foreach (behave->priv->actors, func, userdata);
+  for (l = behave->priv->actors; l != NULL; l = l->next)
+    {
+      ClutterActor *actor = l->data;
+
+      g_assert (CLUTTER_IS_ACTOR (actor));
+
+      func (behave, actor, data);
+    }
 }
 
+/**
+ * clutter_behaviour_get_alpha:
+ * @behave: a #ClutterBehaviour
+ *
+ * Retrieves the #ClutterAlpha object bound to @behave.
+ *
+ * Return value: a #ClutterAlpha object, or %NULL if no alpha
+ *   object has been bound to this behaviour.
+ * 
+ * Since: 0.2
+ */
 ClutterAlpha*
 clutter_behaviour_get_alpha (ClutterBehaviour *behave)
 {
@@ -243,16 +302,36 @@ notify_cb (GObject          *object,
 
   klass = CLUTTER_BEHAVIOUR_GET_CLASS (behave);
 
+  CLUTTER_NOTE (BEHAVIOUR, "notify::alpha");
+
   if (klass->alpha_notify)
     {
       guint32 alpha_value;
 
       alpha_value = clutter_alpha_get_alpha (behave->priv->alpha);
 
+      CLUTTER_NOTE (BEHAVIOUR, "calling %s::alpha_notify (%p, %d)",
+                    g_type_name (G_TYPE_FROM_CLASS (klass)),
+                    behave, alpha_value);
+
       klass->alpha_notify (behave, alpha_value);
     }
 }
 
+/**
+ * clutter_behaviour_set_alpha:
+ * @behave: a #ClutterBehaviour
+ * @alpha: a #ClutterAlpha or %NULL to unset a previously set alpha
+ *
+ * Binds @alpha to a #ClutterBehaviour.  The #ClutterAlpha object
+ * is what makes a behaviour work: for each tick of the timeline
+ * used by #ClutterAlpha a new value of the alpha parameter is
+ * computed by the alpha function; the value should be used by
+ * the #ClutterBehaviour to update one or more properties of the
+ * actors to which the behaviour applies.
+ *
+ * Since: 0.2
+ */
 void
 clutter_behaviour_set_alpha (ClutterBehaviour *behave,
 			     ClutterAlpha     *alpha)
@@ -266,12 +345,17 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
 
   if (priv->notify_id)
     {
+      CLUTTER_NOTE (BEHAVIOUR, "removing previous notify-id (%d)",
+                    priv->notify_id);
+
       g_signal_handler_disconnect (priv->alpha, priv->notify_id);
       priv->notify_id = 0;
     }
 
   if (priv->alpha)
     {
+      CLUTTER_NOTE (BEHAVIOUR, "removing previous alpha object");
+
       g_object_unref (priv->alpha);
       priv->alpha = NULL;
     }
@@ -284,5 +368,33 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
       priv->notify_id = g_signal_connect (priv->alpha, "notify::alpha",
                                           G_CALLBACK(notify_cb),
                                           behave);
+      
+      CLUTTER_NOTE (BEHAVIOUR, "setting new alpha object (%p, notify:%d)",
+                    priv->alpha, priv->notify_id);
     }
+}
+
+/**
+ * clutter_behaviour_get_actors:
+ * @behaviour: a #ClutterBehaviour
+ *
+ * Retrieves all the actors to which @behaviour applies.
+ *
+ * Return value: a list of actors. You should free the returned list
+ *   with g_slist_free() when finished using it.
+ * 
+ * Since: 0.2
+ */
+GSList *
+clutter_behaviour_get_actors (ClutterBehaviour *behaviour)
+{
+  GSList *retval, *l;
+
+  g_return_val_if_fail (CLUTTER_BEHAVIOUR (behaviour), NULL);
+
+  retval = NULL;
+  for (l = behaviour->priv->actors; l != NULL; l = l->next)
+    retval = g_slist_prepend (retval, l->data);
+
+  return g_slist_reverse (retval);
 }

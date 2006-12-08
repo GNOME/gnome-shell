@@ -58,7 +58,20 @@ G_BEGIN_DECLS
 typedef struct _ClutterBehaviour        ClutterBehaviour;
 typedef struct _ClutterBehaviourPrivate ClutterBehaviourPrivate;
 typedef struct _ClutterBehaviourClass   ClutterBehaviourClass;
- 
+
+/**
+ * ClutterBehaviourFunction:
+ * @behaviour: the #ClutterBehaviour
+ * @actor: an actor driven by @behaviour
+ * @data: optional data passed to the function
+ *
+ * This function is passed to clutter_behaviour_foreach_actor() and
+ * will be called for each actor driven by @behaviour.
+ */
+typedef void (*ClutterBehaviourForeachFunc) (ClutterBehaviour *behaviour,
+                                             ClutterActor     *actor,
+                                             gpointer          data);
+
 struct _ClutterBehaviour
 {
   /*< private >*/
@@ -85,16 +98,17 @@ struct _ClutterBehaviourClass
 
 GType clutter_behaviour_get_type (void) G_GNUC_CONST;
 
-void          clutter_behaviour_apply          (ClutterBehaviour *behave,
-                                                ClutterActor     *actor);
-void          clutter_behaviour_remove         (ClutterBehaviour *behave,
-                                                ClutterActor     *actor);
-void          clutter_behaviour_actors_foreach (ClutterBehaviour *behave,
-                                                GFunc             func,
-                                                gpointer          data);
-ClutterAlpha *clutter_behaviour_get_alpha      (ClutterBehaviour *behave);
-void          clutter_behaviour_set_alpha      (ClutterBehaviour *behave,
-                                                ClutterAlpha     *alpha);
+void          clutter_behaviour_apply          (ClutterBehaviour            *behave,
+                                                ClutterActor                *actor);
+void          clutter_behaviour_remove         (ClutterBehaviour            *behave,
+                                                ClutterActor                *actor);
+void          clutter_behaviour_actors_foreach (ClutterBehaviour            *behave,
+                                                ClutterBehaviourForeachFunc  func,
+                                                gpointer                     data);
+GSList *      clutter_behaviour_get_actors     (ClutterBehaviour            *behave);
+ClutterAlpha *clutter_behaviour_get_alpha      (ClutterBehaviour            *behave);
+void          clutter_behaviour_set_alpha      (ClutterBehaviour            *behave,
+                                                ClutterAlpha                *alpha);
 
 G_END_DECLS
 
