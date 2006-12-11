@@ -1,3 +1,11 @@
+2006-12-10  Thomas Thurman  <thomas@thurman.org.uk>
+
+        * configure.in: post-release bump to 2.17.5.
+
+2006-12-10  Thomas Thurman  <thomas@thurman.org.uk>
+
+        * NEWS: 2.17.3 release.
+
 2006-12-05  Christof Krüger  <mail@pop2wap.net>
 
         * src/window.c (update_move): Fix flickering about when dragging
