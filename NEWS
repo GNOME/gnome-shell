@@ -1,3 +1,18 @@
+2.17.3
+======
+Thanks to Christof Krüger, Federico Mena Quintero, Bruno Boaventura,
+and Björn Lindqvist for improvements in this release.
+
+  - fix longstanding problem about windows flickering in and out of
+  maximised state when dragging between xineramas (#358715) (Christof)
+  - grab server when switching workspaces (#381127) (Federico)
+  - replace changing text on window menu with pairs of radio buttons
+  and checkboxes (#343108) (Bruno, Björn)
+
+Translations
+  Kjartan Maraas (nb), Jakub Friedl (cs), Yuval Tanny (he), Ivar Smolin (et),
+  Duarte Loreto (pt), Francisco Javier F. Serrador (es)
+
 2.17.2
 ======
 

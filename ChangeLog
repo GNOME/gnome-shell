@@ -21,7 +21,7 @@
 	* src/menu.c (menu_item_new): rewrite to take a MenuItem
 	instead of a set of parameters describing the menu item.
 	* src/menu.c (meta_window_menu_new): use proper checkboxes
-	or radio buttons on the window menu.
+	or radio buttons on the window menu. (#343108)
 	* src/window.c (meta_window_show_menu): unstick and stick
 	are always shown.
 
