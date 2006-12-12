@@ -121,6 +121,15 @@ do_effect (MetaEffect *effect,
     MetaCompWindow *window;
 
     screen = meta_comp_screen_get_by_xwindow (get_xid (effect->window));
+
+    if (!screen)
+      {
+        /* sanity check: if no screen is found, bail */
+        meta_warning ("No screen found for %s (%ld); aborting effect.\n",
+            effect->window->desc, get_xid (effect->window));
+        return;
+      }
+
     window = meta_comp_screen_lookup_window (screen, get_xid (effect->window));
     
     switch (effect->type)
