@@ -1,3 +1,54 @@
+2006-12-12  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Rework part of the show/hide machinery.  Allow groups sub-classes
+	and composite actors to override show_all/hide_all in order to
+	decide which children they wish to show/hide.  This means that
+	if an actor overrides the default show/hide virtual methods, it'll
+	have to chain up to the parent class show/hide.  While we're at it,
+	provide the fully recursive clutter_actor_show_all() and
+	clutter_actor_hide_all() methods.
+
+	* clutter/clutter-behaviour-path.c: Add apidoc for the ClutterKnot
+	functions; add pathological equality case for clutter_knot_equal().
+
+	* clutter/clutter-event.h:
+	* clutter/clutter-feature.h:
+	* clutter/clutter-behaviour.c:
+	* clutter/clutter-behaviour-scale.c:Fix parameters name so that
+	gtk-doc doesn't complain.
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-event.c: Add apidoc
+
+	* clutter/clutter-actor.h:
+	* clutter/clutter-actor.c: Add a clutter_actor_show_all() and a
+	clutter_actor_hide_all() functions; provide a mechanism for
+	groups and composited actors to programmatically select what to
+	show/hide when clutter_actor_show_all() and clutter_actor_hide_all()
+	are called.  If you are overriding the ClutterActor::show or
+	the ClutterActor::hide virtual methods you should chain up with
+	the parent class.
+
+	* clutter/clutter-group.c: Override show_all and hide_all and
+	recursively show/hide every child inside the group;
+	clutter_group_show_all() and clutter_group_hide_all() remain as non
+	recursive versions of clutter_actor_show_all() and
+	clutter_actor_hide_all() (maybe we should rename them in order
+	to avoid name clashes with the bindings).
+
+	* clutter/clutter-stage.c:
+	* clutter/clutter-texture.c: Chain up with parent class show
+	and hide vfuncs.
+
+	* clutter/clutter-clone-texture.h:
+	* clutter/clutter-clone-texture.c: Provide API for changing the
+	parent texture of a clone texture actor.
+
+	* examples/behave.c:
+	* examples/super-oh.c:
+	* examples/test.c: Use clutter_actor_show_all() instead of
+	clutter_group_show_all().
+
 2006-12-08  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter.doap:

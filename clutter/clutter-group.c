@@ -159,22 +159,38 @@ clutter_group_finalize (GObject *object)
 }
 
 static void
+clutter_group_real_show_all (ClutterActor *actor)
+{
+  clutter_group_foreach (CLUTTER_GROUP (actor),
+                         CLUTTER_CALLBACK (clutter_actor_show_all),
+                         NULL);
+  clutter_actor_show (actor);
+}
+
+static void
+clutter_group_real_hide_all (ClutterActor *actor)
+{
+  clutter_actor_hide (actor);
+  clutter_group_foreach (CLUTTER_GROUP (actor),
+                         CLUTTER_CALLBACK (clutter_actor_hide_all),
+                         NULL);
+}
+
+static void
 clutter_group_class_init (ClutterGroupClass *klass)
 {
-  GObjectClass        *object_class = G_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  actor_class->paint      = clutter_group_paint;
-  /*
-  actor_class->show       = clutter_group_show_all;
-  actor_class->hide       = clutter_group_hide_all;
-  */
+  actor_class->paint           = clutter_group_paint;
+  actor_class->show_all        = clutter_group_real_show_all;
+  actor_class->hide_all        = clutter_group_real_hide_all;
   actor_class->request_coords  = clutter_group_request_coords;
   actor_class->allocate_coords = clutter_group_allocate_coords;
 
   /* GObject */
-  object_class->finalize     = clutter_group_finalize;
-  object_class->dispose      = clutter_group_dispose;
+  object_class->finalize = clutter_group_finalize;
+  object_class->dispose = clutter_group_dispose;
 
   group_signals[ADD] =
     g_signal_new ("add",
@@ -272,17 +288,19 @@ clutter_group_foreach (ClutterGroup      *self,
  * clutter_group_show_all:
  * @self: A #ClutterGroup
  * 
- * Show all child actors of the group. Note, does not recurse.
- **/
+ * Show all child actors of the group.
+ * Note, does not recurse: use clutter_actor_show_all() for
+ * a recursive show.
+ */
 void
 clutter_group_show_all (ClutterGroup *self)
 {
   g_return_if_fail (CLUTTER_IS_GROUP (self));
 
-  clutter_actor_show(CLUTTER_ACTOR(self));
+  clutter_actor_show (CLUTTER_ACTOR (self));
 
   g_list_foreach (self->priv->children,
-		  (GFunc)clutter_actor_show,
+		  (GFunc) clutter_actor_show,
 		  NULL);
 }
 
@@ -290,8 +308,10 @@ clutter_group_show_all (ClutterGroup *self)
  * clutter_group_hide_all:
  * @self: A #ClutterGroup
  * 
- * Hide all child actors of the group. Note, does not recurse.
- **/
+ * Hide all child actors of the group.
+ * Note, does not recurse: use clutter_actor_hide_all() for
+ * a recursive hide.
+ */
 void
 clutter_group_hide_all (ClutterGroup *self)
 {
@@ -300,7 +320,7 @@ clutter_group_hide_all (ClutterGroup *self)
   clutter_actor_hide(CLUTTER_ACTOR(self));
 
   g_list_foreach (self->priv->children,
-		  (GFunc)clutter_actor_hide,
+		  (GFunc) clutter_actor_hide,
 		  NULL);
 }
 

@@ -37,7 +37,7 @@
 #include <GL/glx.h>
 #include <GL/gl.h>
 
-G_END_DECLS
+G_BEGIN_DECLS
 
 typedef enum 
 {
@@ -45,7 +45,7 @@ typedef enum
   CLUTTER_FEATURE_SYNC_TO_VBLANK    = (1 << 2)
 } ClutterFeatureFlags;
 
-gboolean            clutter_feature_available       (ClutterFeatureFlags flags);
+gboolean            clutter_feature_available       (ClutterFeatureFlags feature);
 ClutterFeatureFlags clutter_feature_get_all         (void);
 void                clutter_feature_wait_for_vblank (void);
 

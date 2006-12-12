@@ -23,29 +23,65 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include "clutter-event.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 
+/**
+ * clutter_event_type:
+ * @event: a #ClutterEvent
+ *
+ * Retrieves the type of the event.
+ *
+ * Return value: a #ClutterEventType
+ */
 ClutterEventType
 clutter_event_type (ClutterEvent *event)
 {
   return event->type;
 }
 
+/**
+ * clutter_button_event_time:
+ * @buttev: a #ClutterButtonEvent
+ *
+ * Retrieves the time of the event.
+ *
+ * Return value: the time of the event.
+ */
 guint32
 clutter_button_event_time (ClutterButtonEvent *buttev)
 {
   return buttev->time;
 }
 
+/**
+ * clutter_button_event_x:
+ * @buttev: a #ClutterButtonEvent
+ *
+ * Retrieve the x coordinate of the event.
+ *
+ * Return value: the x coordinate.
+ */
 gint
 clutter_button_event_x (ClutterButtonEvent *buttev)
 {
   return buttev->x;
 }
 
+/**
+ * clutter_button_event_y:
+ * @buttev: a #ClutterButtonEvent
+ *
+ * Retrieve the y coordinate of the event.
+ *
+ * Return value: the y coordinate
+ */
 gint
 clutter_button_event_y (ClutterButtonEvent *buttev)
 {

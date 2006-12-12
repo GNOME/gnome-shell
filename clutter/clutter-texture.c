@@ -639,12 +639,26 @@ clutter_texture_realize (ClutterActor *actor)
 static void
 clutter_texture_show (ClutterActor *self)
 {
+  ClutterActorClass *parent_class;
+
+  /* chain up parent show */
+  parent_class = CLUTTER_ACTOR_CLASS (clutter_texture_parent_class);
+  if (parent_class->show)
+    parent_class->show (self);
+
   clutter_actor_realize (self);
 }
 
 static void
 clutter_texture_hide (ClutterActor *self)
 {
+  ClutterActorClass *parent_class;
+
+  /* chain up parent hide */
+  parent_class = CLUTTER_ACTOR_CLASS (clutter_texture_parent_class);
+  if (parent_class->hide)
+    parent_class->hide (self);
+
   clutter_actor_unrealize (self);
 }
 

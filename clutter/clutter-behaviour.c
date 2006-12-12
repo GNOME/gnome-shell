@@ -376,9 +376,9 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
 
 /**
  * clutter_behaviour_get_actors:
- * @behaviour: a #ClutterBehaviour
+ * @behave: a #ClutterBehaviour
  *
- * Retrieves all the actors to which @behaviour applies.
+ * Retrieves all the actors to which @behave applies.
  *
  * Return value: a list of actors. You should free the returned list
  *   with g_slist_free() when finished using it.
@@ -386,14 +386,14 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
  * Since: 0.2
  */
 GSList *
-clutter_behaviour_get_actors (ClutterBehaviour *behaviour)
+clutter_behaviour_get_actors (ClutterBehaviour *behave)
 {
   GSList *retval, *l;
 
-  g_return_val_if_fail (CLUTTER_BEHAVIOUR (behaviour), NULL);
+  g_return_val_if_fail (CLUTTER_BEHAVIOUR (behave), NULL);
 
   retval = NULL;
-  for (l = behaviour->priv->actors; l != NULL; l = l->next)
+  for (l = behave->priv->actors; l != NULL; l = l->next)
     retval = g_slist_prepend (retval, l->data);
 
   return g_slist_reverse (retval);

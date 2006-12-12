@@ -55,6 +55,16 @@
 
 #include <math.h>
 
+/**
+ * clutter_knot_copy:
+ * @knot: a #ClutterKnot
+ *
+ * Makes an allocated copy of a knot.
+ *
+ * Return value: the copied knot.
+ *
+ * Since: 0.2
+ */
 ClutterKnot *
 clutter_knot_copy (const ClutterKnot *knot)
 {
@@ -67,6 +77,14 @@ clutter_knot_copy (const ClutterKnot *knot)
   return copy;
 }
 
+/**
+ * clutter_knot_free:
+ * @knot: a #ClutterKnot
+ *
+ * Frees the memory of an allocated knot.
+ *
+ * Since: 0.2
+ */
 void
 clutter_knot_free (ClutterKnot *knot)
 {
@@ -76,12 +94,26 @@ clutter_knot_free (ClutterKnot *knot)
     }
 }
 
+/**
+ * clutter_knot_equal:
+ * @knot_a: First knot
+ * @knot_b: Second knot
+ *
+ * Compares to knot and checks if the point to the same location.
+ *
+ * Return value: %TRUE if the knots point to the same location.
+ *
+ * Since: 0.2
+ */
 gboolean
 clutter_knot_equal (const ClutterKnot *knot_a,
                     const ClutterKnot *knot_b)
 {
   g_return_val_if_fail (knot_a != NULL, FALSE);
   g_return_val_if_fail (knot_b != NULL, FALSE);
+
+  if (knot_a == knot_b)
+    return TRUE;
 
   return knot_a->x == knot_b->x && knot_a->y == knot_b->y;
 }

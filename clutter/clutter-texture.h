@@ -26,9 +26,8 @@
 #ifndef _HAVE_CLUTTER_TEXTURE_H
 #define _HAVE_CLUTTER_TEXTURE_H
 
-#include <glib-object.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <clutter/clutter-actor.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 G_BEGIN_DECLS
 
@@ -54,10 +53,18 @@ struct _ClutterTextureClass
 {
   ClutterActorClass parent_class;
 
-  void (*size_change) (ClutterTexture *texture, 
-		       gint width, 
-		       gint height);
+  void (*size_change)   (ClutterTexture *texture, 
+		         gint            width, 
+		         gint            height);
   void (*pixbuf_change) (ClutterTexture *texture);
+
+  /* padding, for future expansion */
+  void (*_clutter_texture1) (void);
+  void (*_clutter_texture2) (void);
+  void (*_clutter_texture3) (void);
+  void (*_clutter_texture4) (void);
+  void (*_clutter_texture5) (void);
+  void (*_clutter_texture6) (void);
 };
 
 GType clutter_texture_get_type (void) G_GNUC_CONST;

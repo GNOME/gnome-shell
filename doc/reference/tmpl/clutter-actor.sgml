@@ -207,7 +207,9 @@ ClutterActor
 
 @parent_class: 
 @show: 
+@show_all: 
 @hide: 
+@hide_all: 
 @realize: 
 @unrealize: 
 @paint: 
@@ -217,8 +219,6 @@ ClutterActor
 @get_depth: 
 @parent_set: 
 @destroy: 
-@show_all: 
-@hide_all: 
 @queue_redraw: 
 @_clutter_actor_1: 
 @_clutter_actor_2: 

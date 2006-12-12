@@ -108,7 +108,7 @@ main (int argc, char *argv[])
 
   clutter_actor_set_size (CLUTTER_ACTOR (stage), 800, 600);
 
-  clutter_group_show_all (CLUTTER_GROUP (stage));
+  clutter_actor_show_all (CLUTTER_ACTOR (stage));
 
   timeline = clutter_timeline_new (360, 200);
   g_object_set (timeline, "loop", TRUE, 0);

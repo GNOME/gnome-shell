@@ -50,19 +50,19 @@ G_BEGIN_DECLS
 #define CLUTTER_ACTOR_GET_CLASS(obj) \
  (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_ACTOR, ClutterActorClass))
 
-#define CLUTTER_ACTOR_SET_FLAGS(e,f) ((e)->flags |= (f))  
-#define CLUTTER_ACTOR_UNSET_FLAGS(e,f) ((e)->flags &= ~(f))  
+#define CLUTTER_ACTOR_SET_FLAGS(e,f)    ((e)->flags |= (f))  
+#define CLUTTER_ACTOR_UNSET_FLAGS(e,f)  ((e)->flags &= ~(f))  
 
-#define CLUTTER_ACTOR_IS_MAPPED(e) ((e)->flags & CLUTTER_ACTOR_MAPPED)  
-#define CLUTTER_ACTOR_IS_REALIZED(e) ((e)->flags & CLUTTER_ACTOR_REALIZED)
-#define CLUTTER_ACTOR_IS_VISIBLE(e) \
- (CLUTTER_ACTOR_IS_MAPPED(e) && CLUTTER_ACTOR_IS_REALIZED(e))  
+#define CLUTTER_ACTOR_IS_MAPPED(e)      ((e)->flags & CLUTTER_ACTOR_MAPPED)  
+#define CLUTTER_ACTOR_IS_REALIZED(e)    ((e)->flags & CLUTTER_ACTOR_REALIZED)
+#define CLUTTER_ACTOR_IS_VISIBLE(e)     (CLUTTER_ACTOR_IS_MAPPED (e) && \
+                                         CLUTTER_ACTOR_IS_REALIZED (e))
 
 typedef struct _ClutterActor         ClutterActor;
 typedef struct _ClutterActorClass    ClutterActorClass;
 typedef struct _ClutterActorBox      ClutterActorBox;
 typedef struct _ClutterActorPrivate  ClutterActorPrivate;
-typedef struct _ClutterGeometry        ClutterGeometry;
+typedef struct _ClutterGeometry      ClutterGeometry;
 
 typedef void (*ClutterCallback) (ClutterActor *actor, gpointer data);
 #define CLUTTER_CALLBACK(f)	((ClutterCallback) (f))
@@ -108,7 +108,9 @@ struct _ClutterActorClass
   GObjectClass parent_class;
 
   void (* show)            (ClutterActor    *actor);
+  void (* show_all)        (ClutterActor    *actor);
   void (* hide)            (ClutterActor    *actor);
+  void (* hide_all)        (ClutterActor    *actor);
   void (* realize)         (ClutterActor    *actor);
   void (* unrealize)       (ClutterActor    *actor);
   void (* paint)           (ClutterActor    *actor);
@@ -125,8 +127,6 @@ struct _ClutterActorClass
   void (* destroy)         (ClutterActor    *actor);
 
   /* to go ? */
-  void (* show_all)        (ClutterActor    *actor);
-  void (* hide_all)        (ClutterActor    *actor);
   void (* queue_redraw)    (ClutterActor    *actor);
 
   /* padding for future expansion */
@@ -140,7 +140,9 @@ struct _ClutterActorClass
 
 GType                 clutter_actor_get_type         (void) G_GNUC_CONST;
 void                  clutter_actor_show             (ClutterActor          *self);
+void                  clutter_actor_show_all         (ClutterActor          *self);
 void                  clutter_actor_hide             (ClutterActor          *self);
+void                  clutter_actor_hide_all         (ClutterActor          *self);
 void                  clutter_actor_realize          (ClutterActor          *self);
 void                  clutter_actor_unrealize        (ClutterActor          *self);
 void                  clutter_actor_paint            (ClutterActor          *self);

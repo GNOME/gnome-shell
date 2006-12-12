@@ -26,8 +26,7 @@
 #ifndef _HAVE_CLUTTER_CLONE_TEXTURE_H
 #define _HAVE_CLUTTER_CLONE_TEXTURE_H
 
-#include <glib-object.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <clutter/clutter-actor.h>
 #include <clutter/clutter-texture.h>
 
 G_BEGIN_DECLS
@@ -77,8 +76,12 @@ struct _ClutterCloneTextureClass
   void (*_clutter_clone_4) (void);
 }; 
 
-GType           clutter_clone_texture_get_type (void);
-ClutterActor *clutter_clone_texture_new      (ClutterTexture *texture);
+GType           clutter_clone_texture_get_type           (void) G_GNUC_CONST;
+
+ClutterActor *  clutter_clone_texture_new                (ClutterTexture      *texture);
+ClutterTexture *clutter_clone_texture_get_parent_texture (ClutterCloneTexture *clone);
+void            clutter_clone_texture_set_parent_texture (ClutterCloneTexture *clone,
+                                                          ClutterTexture      *texture);
 
 G_END_DECLS
 

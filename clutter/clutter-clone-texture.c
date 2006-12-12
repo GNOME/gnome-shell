@@ -35,6 +35,7 @@
 #include "clutter-clone-texture.h"
 #include "clutter-main.h"
 #include "clutter-feature.h"
+#include "clutter-actor.h"
 #include "clutter-util.h" 
 #include "clutter-enum-types.h"
 #include "clutter-private.h"
@@ -121,11 +122,11 @@ clone_texture_render_to_gl_quad (ClutterCloneTexture *ctexture,
 
   clutter_texture_get_n_tiles (priv->parent_texture, &n_x_tiles, &n_y_tiles); 
 
-  for (x=0; x < n_x_tiles; x++)
+  for (x = 0; x < n_x_tiles; x++)
     {
       lasty = 0;
 
-      for (y=0; y < n_y_tiles; y++)
+      for (y = 0; y < n_y_tiles; y++)
 	{
 	  gint actual_w, actual_h;
 	  gint xpos, ypos, xsize, ysize, ywaste, xwaste;
@@ -180,6 +181,9 @@ clutter_clone_texture_paint (ClutterActor *self)
 
   priv = CLUTTER_CLONE_TEXTURE (self)->priv;
 
+  /* no need to paint stuff if we don't have a texture to clone */
+  if (!priv->parent_texture)
+    return;
 
   /* parent texture may have been hidden, there for need to make sure its 
    * realised with resources available.  
@@ -190,17 +194,17 @@ clutter_clone_texture_paint (ClutterActor *self)
 
   /* FIXME: figure out nicer way of getting at this info...  
    */  
-  if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_RECTANGLE)
-      && clutter_texture_is_tiled (CLUTTER_TEXTURE(parent_texture)) == FALSE)
+  if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_RECTANGLE) &&
+      clutter_texture_is_tiled (CLUTTER_TEXTURE (parent_texture)) == FALSE)
     target_type = GL_TEXTURE_RECTANGLE_ARB;
   else
     target_type = GL_TEXTURE_2D;
 
-  glEnable(GL_BLEND);
-  glEnable(target_type);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glEnable (GL_BLEND);
+  glEnable (target_type);
+  glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  glColor4ub(255, 255, 255, clutter_actor_get_opacity(self));
+  glColor4ub (255, 255, 255, clutter_actor_get_opacity (self));
 
   clutter_actor_get_coords (self, &x1, &y1, &x2, &y2);
 
@@ -210,10 +214,10 @@ clutter_clone_texture_paint (ClutterActor *self)
 		clutter_actor_get_opacity (self));
 
   /* Parent paint translated us into position */
-  clone_texture_render_to_gl_quad (CLUTTER_CLONE_TEXTURE(self), 
+  clone_texture_render_to_gl_quad (CLUTTER_CLONE_TEXTURE (self), 
 				   0, 0, x2 - x1, y2 - y1);
-  glDisable(target_type);
-  glDisable(GL_BLEND);
+  glDisable (target_type);
+  glDisable (GL_BLEND);
 }
 
 static void
@@ -221,6 +225,7 @@ set_parent_texture (ClutterCloneTexture *ctexture,
 		    ClutterTexture      *texture)
 {
   ClutterCloneTexturePrivate *priv = ctexture->priv;
+  ClutterActor *actor = CLUTTER_ACTOR (ctexture);
 
   if (priv->parent_texture)
     {
@@ -228,16 +233,22 @@ set_parent_texture (ClutterCloneTexture *ctexture,
       priv->parent_texture = NULL;
     }
 
+  clutter_actor_hide (actor);
+
   if (texture) 
     {
       gint width, height;
 
       priv->parent_texture = g_object_ref (texture);
 
-      /* Sync up the size to parent texture base pixbuf size. 
-      */
+      /* Sync up the size to parent texture base pixbuf size. */
       clutter_texture_get_base_size (texture, &width, &height);
-      clutter_actor_set_size (CLUTTER_ACTOR(ctexture), width, height);
+      clutter_actor_set_size (actor, width, height);
+
+      /* queue a redraw if the cloned texture is already visible */
+      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (priv->parent_texture)) &&
+          CLUTTER_ACTOR_IS_VISIBLE (actor))
+        clutter_actor_queue_redraw (actor);
     }
       
 }
@@ -303,10 +314,10 @@ clutter_clone_texture_get_property (GObject    *object,
 static void
 clutter_clone_texture_class_init (ClutterCloneTextureClass *klass)
 {
-  GObjectClass        *gobject_class = G_OBJECT_CLASS (klass);
+  GObjectClass      *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
-  actor_class->paint        = clutter_clone_texture_paint;
+  actor_class->paint = clutter_clone_texture_paint;
 
   gobject_class->finalize     = clutter_clone_texture_finalize;
   gobject_class->dispose      = clutter_clone_texture_dispose;
@@ -319,7 +330,7 @@ clutter_clone_texture_class_init (ClutterCloneTextureClass *klass)
 					   		"Parent Texture",
 							"The parent texture to clone",
 							CLUTTER_TYPE_TEXTURE,
-							(G_PARAM_CONSTRUCT_ONLY | CLUTTER_PARAM_READWRITE)));
+							(G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE)));
 
   g_type_class_add_private (gobject_class, sizeof (ClutterCloneTexturePrivate));
 }
@@ -335,19 +346,64 @@ clutter_clone_texture_init (ClutterCloneTexture *self)
 
 /**
  * clutter_clone_texture_new:
- * @texture: a #ClutterTexture
+ * @texture: a #ClutterTexture or %NULL
  *
  * Creates an efficient 'clone' of a pre-existing texture if which it 
- * shares the underlying pixbuf data. 
+ * shares the underlying pixbuf data.
+ *
+ * You can use clutter_clone_texture_set_parent_texture() to change the
+ * parent texture to be cloned.
  *
  * Return value: the newly created #ClutterCloneTexture
  */
 ClutterActor *
 clutter_clone_texture_new (ClutterTexture *texture)
 {
-  g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), NULL);
+  g_return_val_if_fail (texture == NULL || CLUTTER_IS_TEXTURE (texture), NULL);
 
   return g_object_new (CLUTTER_TYPE_CLONE_TEXTURE,
  		       "parent-texture", texture,
 		       NULL);
+}
+
+/**
+ * clutter_clone_texture_get_parent_texture:
+ * @clone: a #ClutterCloneTexture
+ * 
+ * Retrieves the parent #ClutterTexture used by @clone.
+ *
+ * Return value: a #ClutterTexture actor, or %NULL
+ *
+ * Since: 0.2
+ */
+ClutterTexture *
+clutter_clone_texture_get_parent_texture (ClutterCloneTexture *clone)
+{
+  g_return_val_if_fail (CLUTTER_IS_CLONE_TEXTURE (clone), NULL);
+
+  return clone->priv->parent_texture;
+}
+
+/**
+ * clutter_clone_texture_set_parent_texture:
+ * @clone: a #ClutterCloneTexture
+ * @texture a #ClutterTexture or %NULL
+ *
+ * Sets the parent texture cloned by the #ClutterCloneTexture.
+ *
+ * Since: 0.2
+ */
+void
+clutter_clone_texture_set_parent_texture (ClutterCloneTexture *clone,
+                                          ClutterTexture      *texture)
+{
+  g_return_if_fail (CLUTTER_IS_CLONE_TEXTURE (clone));
+  g_return_if_fail (texture == NULL || CLUTTER_IS_TEXTURE (texture));
+
+  g_object_ref (clone);
+
+  set_parent_texture (clone, texture);
+
+  g_object_notify (G_OBJECT (clone), "parent-texture");
+  g_object_unref (clone);
 }

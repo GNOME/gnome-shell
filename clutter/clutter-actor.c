@@ -114,6 +114,21 @@ redraw_update_idle (gpointer data)
   return FALSE;
 }
 
+static void
+clutter_actor_real_show (ClutterActor *self)
+{
+  if (!CLUTTER_ACTOR_IS_VISIBLE (self))
+    {
+      if (!CLUTTER_ACTOR_IS_REALIZED (self))
+        clutter_actor_realize (self);
+
+      CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
+
+      if (CLUTTER_ACTOR_IS_VISIBLE (self))
+        clutter_actor_queue_redraw (self);
+    }
+}
+
 /**
  * clutter_actor_show
  * @self: A #ClutterActor
@@ -126,26 +141,43 @@ clutter_actor_show (ClutterActor *self)
 {
   if (!CLUTTER_ACTOR_IS_VISIBLE (self))
     {
-      ClutterActorClass *klass;
-
       g_object_ref (self);
       
-      if (!CLUTTER_ACTOR_IS_REALIZED (self))
-	clutter_actor_realize(self);
-
-      CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
-
-      klass = CLUTTER_ACTOR_GET_CLASS (self);
-      if (klass->show)
-        (klass->show) (self);
-
-      if (CLUTTER_ACTOR_IS_VISIBLE (self))
-        clutter_actor_queue_redraw (self);
-
       g_signal_emit (self, actor_signals[SHOW], 0);
       g_object_notify (G_OBJECT (self), "visible");
 
       g_object_unref (self);
+    }
+}
+
+/**
+ * clutter_actor_show_all:
+ * @self: a #ClutterActor
+ *
+ * Recursively show an actor, and any child actor if @self is a
+ * #ClutterGroup.
+ *
+ * Since: 0.2
+ */
+void
+clutter_actor_show_all (ClutterActor *self)
+{
+  ClutterActorClass *klass;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  klass = CLUTTER_ACTOR_GET_CLASS (self);
+  if (klass->show_all)
+    klass->show_all (self);
+}
+
+void
+clutter_actor_real_hide (ClutterActor *self)
+{
+  if (CLUTTER_ACTOR_IS_VISIBLE (self))
+    {
+      CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
+      clutter_actor_queue_redraw (self);
     }
 }
 
@@ -161,23 +193,34 @@ clutter_actor_hide (ClutterActor *self)
 {
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
     {
-      ClutterActorClass *klass;
-
       g_object_ref (self);
-
-      CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_MAPPED);
-
-      klass = CLUTTER_ACTOR_GET_CLASS (self);
-      if (klass->hide)
-        (klass->hide) (self);
-
-      clutter_actor_queue_redraw (self);
 
       g_signal_emit (self, actor_signals[HIDE], 0);
       g_object_notify (G_OBJECT (self), "visible");
 
       g_object_unref (self);
     }
+}
+
+/**
+ * clutter_actor_hide_all:
+ * @self: a #ClutterActor
+ *
+ * Recursively hides an actor, and any child actor if @self
+ * is a #ClutterGroup.
+ *
+ * Since: 0.2
+ */
+void
+clutter_actor_hide_all (ClutterActor *self)
+{
+  ClutterActorClass *klass;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  klass = CLUTTER_ACTOR_GET_CLASS (self);
+  if (klass->hide_all)
+    klass->hide_all (self);
 }
 
 /**
@@ -776,18 +819,16 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   clutter_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   CLUTTER_TYPE_ACTOR);
+
+  klass->show = clutter_actor_real_show;
+  klass->show_all = clutter_actor_show;
+  klass->hide = clutter_actor_real_hide;
+  klass->hide_all = clutter_actor_hide;
 }
 
 static void
 clutter_actor_init (ClutterActor *self)
 {
-  gboolean was_floating;
-
-  /* sink the GInitiallyUnowned floating flag */
-  was_floating = g_object_is_floating (G_OBJECT (self));
-  if (was_floating)
-    g_object_force_floating (G_OBJECT (self));
-
   self->priv = CLUTTER_ACTOR_GET_PRIVATE (self); 
 
   self->priv->parent_actor = NULL;
@@ -1011,7 +1052,7 @@ clutter_actor_set_size (ClutterActor *self,
 }
 
 /*
- * clutter_actor_get_size
+ * clutter_actor_get_size:
  * @self: A #ClutterActor
  * @width: Location to store width if non NULL.
  * @height: Location to store height if non NULL.
@@ -1092,10 +1133,10 @@ clutter_actor_get_abs_position (ClutterActor *self,
 }
 
 /**
- * clutter_actor_get_abs_size
+ * clutter_actor_get_abs_size:
  * @self: A #ClutterActor
- * @x: Location to store width if non NULL.
- * @y: Location to store height if non NULL.
+ * @width: Location to store width if non NULL.
+ * @height: Location to store height if non NULL.
  *
  * Gets the absolute size of an actor taking into account
  * an scaling factors
@@ -1265,12 +1306,14 @@ clutter_actor_set_scale (ClutterActor *self,
 }
 
 /**
- * clutter_actor_get_scalex
+ * clutter_actor_get_scalex:
  * @self: A #ClutterActor
  * @scale_x: FIXME
  * @scale_y: FIXME
  *
  * FIXME
+ *
+ * Since: 0.2
  */
 void
 clutter_actor_get_scalex (ClutterActor *self,
@@ -1285,12 +1328,14 @@ clutter_actor_get_scalex (ClutterActor *self,
 }
 
 /**
- * clutter_actor_get_scale
+ * clutter_actor_get_scale:
  * @self: A #ClutterActor
  * @scale_x: FIXME
  * @scale_y: FIXME
  *
  * FIXME
+ *
+ * Since: 0.2
  */
 void
 clutter_actor_get_scale (ClutterActor *self,
@@ -1417,10 +1462,16 @@ void
 clutter_actor_set_depth (ClutterActor *self,
                          gint          depth)
 {
-  /* Sets Z value. - FIXME: should invert ?*/
-  self->priv->z = depth;
+  ClutterActorPrivate *priv;
 
-  if (self->priv->parent_actor)
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  priv = self->priv;
+
+  /* Sets Z value. - FIXME: should invert ?*/
+  priv->z = depth;
+
+  if (priv->parent_actor)
     {
       /* We need to resort the group stacking order as to
        * correctly render alpha values. 
@@ -1428,8 +1479,7 @@ clutter_actor_set_depth (ClutterActor *self,
        * FIXME: This is sub optimal. maybe queue the the sort 
        *        before stacking  
       */
-      clutter_group_sort_depth_order 
-	(CLUTTER_GROUP(self->priv->parent_actor));
+      clutter_group_sort_depth_order (CLUTTER_GROUP (priv->parent_actor));
     }
 }
 

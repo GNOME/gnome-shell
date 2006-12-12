@@ -301,6 +301,7 @@ clutter_behaviour_scale_new (ClutterAlpha   *alpha,
  * @alpha: a #ClutterAlpha
  * @scale_begin: initial scale factor
  * @scale_end: final scale factor
+ * @gravity: FIXME
  *
  * A fixed point implementation of clutter_behaviour_scale_new()
  *

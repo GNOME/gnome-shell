@@ -48,13 +48,13 @@ main (int argc, char *argv[])
   clutter_rectangle_set_border_color (CLUTTER_RECTANGLE (rect),
                                       &rect_border_color);
   clutter_actor_show (rect);
-
+  
   hand = clutter_texture_new_from_pixbuf (pixbuf);
   clutter_actor_set_position (hand, 0, 0);
   clutter_actor_show (hand);
 
   clutter_group_add_many (CLUTTER_GROUP (group), rect, hand, NULL);
-
+  
   /* Make a timeline */
   timeline = clutter_timeline_new (100, 26); /* num frames, fps */
   g_object_set (timeline, "loop", TRUE, 0);  
@@ -77,7 +77,7 @@ main (int argc, char *argv[])
   /* start the timeline and thus the animations */
   clutter_timeline_start (timeline);
 
-  clutter_group_show_all (CLUTTER_GROUP (stage));
+  clutter_actor_show_all (stage);
 
   clutter_main();
 

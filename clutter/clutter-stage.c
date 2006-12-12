@@ -238,17 +238,29 @@ sync_gl_viewport (ClutterStage *stage)
 static void
 clutter_stage_show (ClutterActor *self)
 {
-  if (clutter_stage_get_xwindow (CLUTTER_STAGE(self)))
-    XMapWindow (clutter_xdisplay(), 
-		clutter_stage_get_xwindow (CLUTTER_STAGE(self)));
+  ClutterActorClass *parent_class;
+
+  parent_class = CLUTTER_ACTOR_CLASS (clutter_stage_parent_class);
+  if (parent_class->show)
+    parent_class->show (self);
+
+  if (clutter_stage_get_xwindow (CLUTTER_STAGE (self)))
+    XMapWindow (clutter_xdisplay (), 
+		clutter_stage_get_xwindow (CLUTTER_STAGE (self)));
 }
 
 static void
 clutter_stage_hide (ClutterActor *self)
 {
-  if (clutter_stage_get_xwindow (CLUTTER_STAGE(self)))
-    XUnmapWindow (clutter_xdisplay(), 
-		  clutter_stage_get_xwindow (CLUTTER_STAGE(self)));
+  ClutterActorClass *parent_class;
+
+  parent_class = CLUTTER_ACTOR_CLASS (clutter_stage_parent_class);
+  if (parent_class->hide)
+    parent_class->hide (self);
+
+  if (clutter_stage_get_xwindow (CLUTTER_STAGE (self)))
+    XUnmapWindow (clutter_xdisplay (), 
+		  clutter_stage_get_xwindow (CLUTTER_STAGE (self)));
 }
 
 static void

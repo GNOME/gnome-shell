@@ -94,14 +94,6 @@ Windowing events handled by Clutter.
 </para>
 
 
-<!-- ##### FUNCTION clutter_event_get_type ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
 <!-- ##### FUNCTION clutter_event_new ##### -->
 <para>
 
@@ -126,15 +118,6 @@ Windowing events handled by Clutter.
 </para>
 
 @event: 
-
-
-<!-- ##### FUNCTION clutter_key_event_type ##### -->
-<para>
-
-</para>
-
-@keyev: 
-@Returns: 
 
 
 <!-- ##### FUNCTION clutter_key_event_time ##### -->
