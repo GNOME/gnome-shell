@@ -1,3 +1,8 @@
+2006-12-13  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c: (clutter_actor_class_init):
+	Allow actor x,y props to be negative.
+
 2006-12-12  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Rework part of the show/hide machinery.  Allow groups sub-classes

@@ -645,7 +645,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                    g_param_spec_int ("x",
                                                      "X co-ord",
                                                      "X co-ord of actor",
-                                                     0, G_MAXINT,
+                                                     -G_MAXINT, G_MAXINT,
                                                      0,
                                                      CLUTTER_PARAM_READWRITE));
   /**
@@ -658,7 +658,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                    g_param_spec_int ("y",
                                                      "Y co-ord",
                                                      "Y co-ord of actor",
-                                                     0, G_MAXINT,
+                                                     -G_MAXINT, G_MAXINT,
                                                      0,
                                                      CLUTTER_PARAM_READWRITE));
   /**
