@@ -260,7 +260,7 @@ msgstr "Ecranul %s%d"
 
 #: ../src/menu.c:370
 msgid "Move to Another _Workspace"
-msgstr "Mută ferestra către un alt _ecran"
+msgstr "Mută fereastra către un alt _ecran"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -456,7 +456,7 @@ msgid ""
 "for example."
 msgstr ""
 "Efectuănd un click pe o fereastră având apăsată această tastă modificator va "
-"muta fereastra (click normal), va redimensiona ferestra (click cu butonul "
+"muta fereastra (click normal), va redimensiona fereastra (click cu butonul "
 "din mijloc), sau va arăta meniul ferestrei (click cu butonul din dreapta). "
 "Modificatorul este scris ca „&lt;Alt&gt;” sau „&lt;Super&gt;”, de exemplu."
 
@@ -599,7 +599,7 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:24
 msgid "Maximize window"
-msgstr "Maximizează ferestra"
+msgstr "Maximizează fereastra"
 
 #: ../src/metacity.schemas.in.h:25
 msgid "Maximize window horizontally"
@@ -667,7 +667,7 @@ msgstr "Mută fereastra un ecran la dreapta"
 
 #: ../src/metacity.schemas.in.h:41
 msgid "Move window one workspace up"
-msgstr "Mută ferestra un ecran mai sus"
+msgstr "Mută fereastra un ecran mai sus"
 
 #: ../src/metacity.schemas.in.h:42
 msgid "Move window to workspace 1"
@@ -1932,7 +1932,7 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Combinaţia de taste folosită pentru a maximiza o ferestră la totalul "
+"Combinaţia de taste folosită pentru a maximiza o fereastră la totalul "
 "spaţiului disponibil pe verticală. Formatul arată ca de exemplu „&lt;"
 "Control&gt;a” sau „&lt;Shift&gt;&lt;Alt&gt;F1”. Este permisă folosirea "
 "majusculelor şi a minusculelor, precum şi a abrevierilor gen „&lt;Ctl&gt;” "
@@ -2877,7 +2877,7 @@ msgstr "Test de performanţă"
 
 #: ../src/theme-viewer.c:900
 msgid "Window Title Goes Here"
-msgstr "Titlul de ferestră vine aici"
+msgstr "Titlul de fereastră vine aici"
 
 #: ../src/theme-viewer.c:1004
 #, c-format
@@ -3235,7 +3235,7 @@ msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
-"Ferestra %s setează SM_CLIENT_ID asupra sa, în loc să o facă asupra "
+"Fereastra %s setează SM_CLIENT_ID asupra sa, în loc să o facă asupra "
 "ferestrei WM_CLIENT_LEADER aşa cum este specificat în ICCCM.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
