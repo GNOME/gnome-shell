@@ -48,3 +48,21 @@ ClutterCloneTexture
 @Returns: 
 
 
+<!-- ##### FUNCTION clutter_clone_texture_get_parent_texture ##### -->
+<para>
+
+</para>
+
+@clone: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_clone_texture_set_parent_texture ##### -->
+<para>
+
+</para>
+
+@clone: 
+@texture: 
+
+

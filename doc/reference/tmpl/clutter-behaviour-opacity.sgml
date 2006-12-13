@@ -19,7 +19,8 @@ ClutterBehaviourOpacity
 
 <!-- ##### STRUCT ClutterBehaviourOpacity ##### -->
 <para>
-
+The <structname>ClutterBehaviourOpacity</structname> struct has only
+private data and should not be accessed directly.
 </para>
 
 
@@ -35,7 +36,7 @@ ClutterBehaviourOpacity
 
 <!-- ##### STRUCT ClutterBehaviourOpacityClass ##### -->
 <para>
-
+Class structure for #ClutterBehaviourOpacity.
 </para>
 
 @parent_class: 

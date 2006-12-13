@@ -19,14 +19,14 @@ ClutterStage
 
 <!-- ##### MACRO CLUTTER_STAGE_WIDTH ##### -->
 <para>
-
+Macro evaluating to the width of the #ClutterStage
 </para>
 
 
 
 <!-- ##### MACRO CLUTTER_STAGE_HEIGHT ##### -->
 <para>
-
+Macro evaluating to the height of the #ClutterStage
 </para>
 
 

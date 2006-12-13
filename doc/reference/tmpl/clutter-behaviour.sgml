@@ -30,11 +30,15 @@ ClutterBehaviour
 
 <!-- ##### STRUCT ClutterBehaviourClass ##### -->
 <para>
-
+Class structure.
 </para>
 
-@parent_class: 
-@alpha_notify: 
+@parent_class: parent class
+@alpha_notify: Override this virtual function when creating a new behaviour.
+  The alpha notify virtual function is called each time the alpha value
+  computed by the #ClutterAlpha object changes; in this virtual function
+  you should update the properties driven by your behaviour for all the
+  actors to which the behaviour applies.
 @_clutter_behaviour1: 
 @_clutter_behaviour2: 
 @_clutter_behaviour3: 
@@ -62,12 +66,13 @@ ClutterBehaviour
 
 <!-- ##### USER_FUNCTION ClutterBehaviourForeachFunc ##### -->
 <para>
-
+The function used to iterate on every #ClutterActor to which a behaviour
+applies.
 </para>
 
-@behaviour: 
-@actor: 
-@data: 
+@behaviour: a #ClutterBehaviour
+@actor: a #ClutterActor
+@data: optional user data passed to this function
 
 
 <!-- ##### FUNCTION clutter_behaviour_actors_foreach ##### -->

@@ -17,114 +17,102 @@ ClutterActor
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### MACRO CLUTTER_TYPE_GEOMETRY ##### -->
-<para>
-
-</para>
-
-
-
-<!-- ##### MACRO CLUTTER_TYPE_ACTOR_BOX ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### MACRO CLUTTER_ACTOR_SET_FLAGS ##### -->
 <para>
-
+Sets a flag from #ClutterActorFlags to an actor
 </para>
 
-@e: 
-@f: 
+@e: a #ClutterActor 
+@f: the flag to set
 
 
 <!-- ##### MACRO CLUTTER_ACTOR_UNSET_FLAGS ##### -->
 <para>
-
+Unsets a flag from #ClutterActorFlags to an actor
 </para>
 
-@e: 
-@f: 
+@e: a #ClutterActor
+@f: the flag to unset
 
 
 <!-- ##### MACRO CLUTTER_ACTOR_IS_MAPPED ##### -->
 <para>
-
+Evaluates to %TRUE if an actor is mapped.
 </para>
 
-@e: 
+@e: a #ClutterActor
 
 
 <!-- ##### MACRO CLUTTER_ACTOR_IS_REALIZED ##### -->
 <para>
-
+Evaluates to %TRUE if an actor has been realized.
 </para>
 
-@e: 
+@e: a #ClutterActor
 
 
 <!-- ##### MACRO CLUTTER_ACTOR_IS_VISIBLE ##### -->
 <para>
-
+Evaluates to %TRUE if an actor is visible.
 </para>
 
-@e: 
+@e: a #ClutterActor
 
 
 <!-- ##### STRUCT ClutterActorBox ##### -->
 <para>
-
+Coordinates (top-left to bottom-right) of a box surrounding an actor.
 </para>
 
-@x1: 
-@y1: 
-@x2: 
-@y2: 
+@x1: X coordinate of the top left corner of the box
+@y1: Y coordinate of the top left corner of the box
+@x2: X coordinate of the bottom right corner of the box
+@y2: Y coordinate of the bottom right corner of the box
 
 <!-- ##### ENUM ClutterActorFlags ##### -->
 <para>
-
+Flags used by an actor.
 </para>
 
-@CLUTTER_ACTOR_MAPPED: 
-@CLUTTER_ACTOR_REALIZED: 
+@CLUTTER_ACTOR_MAPPED: the actor is mapped
+@CLUTTER_ACTOR_REALIZED: the actor is realised
 
 <!-- ##### STRUCT ClutterGeometry ##### -->
 <para>
-
+Positional and dimensional coordinates of an actor.
 </para>
 
-@x: 
-@y: 
-@width: 
-@height: 
+@x: X coordinate of the top left corner of an actor
+@y: Y coordinate of the top left corner of an actor
+@width: width of an actor
+@height: height of an actor
 
 <!-- ##### MACRO CLUTTER_CALLBACK ##### -->
 <para>
-
+Casts a generic callback function into a #ClutterCallback
 </para>
 
-@f: 
+@f: a function pointer
 
 
 <!-- ##### USER_FUNCTION ClutterCallback ##### -->
 <para>
-
+Generic callback function.
 </para>
 
-@actor: 
-@data: 
+@actor: a #ClutterActor
+@data: optional data to be passed to the function
 
 
 <!-- ##### STRUCT ClutterActor ##### -->
 <para>
-
+Basic element of the Clutter canvas.  Every object present on the stage must
+be an actor.  You can scale, move and rotate an actor; you can group actors
+inside #ClutterGroup<!-- -->s or let them follow a #ClutterBehaviour.
 </para>
 
-@parent_instance: 
-@flags: 
+@parent_instance: parent class
+@flags: flags set for the actor
 
 <!-- ##### SIGNAL ClutterActor::destroy ##### -->
 <para>
@@ -202,10 +190,10 @@ ClutterActor
 
 <!-- ##### STRUCT ClutterActorClass ##### -->
 <para>
-
+Base class for #ClutterActor
 </para>
 
-@parent_class: 
+@parent_class: parent class
 @show: 
 @show_all: 
 @hide: 
@@ -235,7 +223,23 @@ ClutterActor
 @self: 
 
 
+<!-- ##### FUNCTION clutter_actor_show_all ##### -->
+<para>
+
+</para>
+
+@self: 
+
+
 <!-- ##### FUNCTION clutter_actor_hide ##### -->
+<para>
+
+</para>
+
+@self: 
+
+
+<!-- ##### FUNCTION clutter_actor_hide_all ##### -->
 <para>
 
 </para>

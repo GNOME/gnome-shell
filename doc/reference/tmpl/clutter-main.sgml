@@ -19,22 +19,22 @@ clutter-main
 
 <!-- ##### MACRO CLUTTER_INIT_ERROR ##### -->
 <para>
-
+GError domain for the #ClutterInitError enum.
 </para>
 
 
 
 <!-- ##### ENUM ClutterInitError ##### -->
 <para>
-
+Error codes for the Clutter initialisation process.
 </para>
 
-@CLUTTER_INIT_SUCCESS: 
-@CLUTTER_INIT_ERROR_UNKOWN: 
-@CLUTTER_INIT_ERROR_THREADS: 
-@CLUTTER_INIT_ERROR_DISPLAY: 
-@CLUTTER_INIT_ERROR_INTERNAL: 
-@CLUTTER_INIT_ERROR_OPENGL: 
+@CLUTTER_INIT_SUCCESS: Clutter was successfully initialised
+@CLUTTER_INIT_ERROR_UNKOWN: Unknown error while initialising Clutter
+@CLUTTER_INIT_ERROR_THREADS: Unable to initialise threading
+@CLUTTER_INIT_ERROR_DISPLAY: Unable to open the X display
+@CLUTTER_INIT_ERROR_INTERNAL: Internal Clutter error
+@CLUTTER_INIT_ERROR_OPENGL: Unable to initialise OpenGL
 
 <!-- ##### FUNCTION clutter_init ##### -->
 <para>

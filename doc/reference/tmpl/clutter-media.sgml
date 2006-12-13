@@ -17,14 +17,6 @@ clutter-media
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### MACRO CLUTTER_MEDIA_GET_INTERFACE ##### -->
-<para>
-
-</para>
-
-@obj: 
-
-
 <!-- ##### STRUCT ClutterMedia ##### -->
 <para>
 

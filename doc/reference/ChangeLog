@@ -1,3 +1,9 @@
+2006-12-13  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Update.
+
+	* tmpl/*.sgml: Update the templates.
+
 2006-12-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Update with the newly added API.

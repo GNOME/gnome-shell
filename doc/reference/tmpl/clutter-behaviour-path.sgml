@@ -17,20 +17,13 @@ ClutterBehaviourPath
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### MACRO CLUTTER_TYPE_KNOT ##### -->
-<para>
-
-</para>
-
-
-
 <!-- ##### STRUCT ClutterKnot ##### -->
 <para>
-
+A single node of the path followed by a #ClutterBehaviourPath.
 </para>
 
-@x: 
-@y: 
+@x: X coordinate of the node
+@y: Y coordinate of the node
 
 <!-- ##### FUNCTION clutter_knot_copy ##### -->
 <para>
@@ -61,7 +54,8 @@ ClutterBehaviourPath
 
 <!-- ##### STRUCT ClutterBehaviourPath ##### -->
 <para>
-
+The <structname>ClutterBehaviourPath</structname> structure contains
+only private data, and should not be accessed directly.
 </para>
 
 
@@ -80,7 +74,7 @@ ClutterBehaviourPath
 
 <!-- ##### STRUCT ClutterBehaviourPathClass ##### -->
 <para>
-
+Class structure for #ClutterBehaviourPath.
 </para>
 
 @parent_class: 

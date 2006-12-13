@@ -77,19 +77,21 @@ accessed directly.
 
 <!-- ##### MACRO CLUTTER_ALPHA_MAX_ALPHA ##### -->
 <para>
-
+Maximum value of the alpha function.  You should use this value to
+scale the computed alpha value.
 </para>
 
 
 
 <!-- ##### USER_FUNCTION ClutterAlphaFunc ##### -->
 <para>
-
+The alpha function is a function of time.  You should provide a function
+transforming the current position in the timeline.
 </para>
 
-@alpha: 
-@user_data: 
-@Returns: 
+@alpha: a #ClutterAlpha
+@user_data: optional user defined data passed to the function
+@Returns: a value between 0 and CLUTTER_ALPHA_MAX_ALPHA
 
 
 <!-- ##### FUNCTION clutter_alpha_set_func ##### -->
@@ -123,7 +125,7 @@ accessed directly.
 
 <!-- ##### MACRO CLUTTER_ALPHA_RAMP_INC ##### -->
 <para>
-
+Symbolic name for passing clutter_ramp_inc_func().
 </para>
 
 
@@ -140,7 +142,7 @@ accessed directly.
 
 <!-- ##### MACRO CLUTTER_ALPHA_RAMP_DEC ##### -->
 <para>
-
+Symbolic name for passing clutter_ramp_dec_func().
 </para>
 
 
@@ -157,7 +159,7 @@ accessed directly.
 
 <!-- ##### MACRO CLUTTER_ALPHA_RAMP ##### -->
 <para>
-
+Symbolic name for passing clutter_ramp_func().
 </para>
 
 
@@ -174,7 +176,7 @@ accessed directly.
 
 <!-- ##### MACRO CLUTTER_ALPHA_SINE ##### -->
 <para>
-
+Symbolic name for passing clutter_sine_func().
 </para>
 
 
