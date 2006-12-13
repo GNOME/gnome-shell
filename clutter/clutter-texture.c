@@ -100,8 +100,8 @@ enum
 
 enum
 {
-  SIGNAL_SIZE_CHANGE,
-  SIGNAL_PIXBUF_CHANGE,
+  SIZE_CHANGE,
+  PIXBUF_CHANGE,
   LAST_SIGNAL
 };
 
@@ -953,7 +953,17 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		       GL_RGBA,
 		       G_PARAM_CONSTRUCT_ONLY | CLUTTER_PARAM_READWRITE));
 
-  texture_signals[SIGNAL_SIZE_CHANGE] =
+  /**
+   * ClutterTexture::size-change:
+   * @texture: the texture which received the signal
+   * @width: the width of the new texture
+   * @height: the height of the new texture
+   *
+   * The ::size-change signal is emitted each time the size of the
+   * pixbuf used by @texture changes.  The new size is given as
+   * argument to the callback.
+   */
+  texture_signals[SIZE_CHANGE] =
     g_signal_new ("size-change",
 		  G_TYPE_FROM_CLASS (gobject_class),
 		  G_SIGNAL_RUN_LAST,
@@ -962,8 +972,14 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		  clutter_marshal_VOID__INT_INT,
 		  G_TYPE_NONE, 
 		  2, G_TYPE_INT, G_TYPE_INT);
-
-  texture_signals[SIGNAL_PIXBUF_CHANGE] =
+  /**
+   * ClutterTexture::pixbuf-change:
+   * @texture: the texture which received the signal
+   * 
+   * The ::pixbuf-change signal is emitted each time the pixbuf
+   * used by @texture changes.
+   */
+  texture_signals[PIXBUF_CHANGE] =
     g_signal_new ("pixbuf-change",
 		  G_TYPE_FROM_CLASS (gobject_class),
 		  G_SIGNAL_RUN_LAST,
@@ -1204,7 +1220,7 @@ clutter_texture_set_from_data (ClutterTexture *texture,
 
   if (texture_dirty)
     {
-      g_signal_emit (texture, texture_signals[SIGNAL_SIZE_CHANGE], 
+      g_signal_emit (texture, texture_signals[SIZE_CHANGE], 
 		     0, priv->width, priv->height);
 
       if (priv->sync_actor_size)
@@ -1214,7 +1230,7 @@ clutter_texture_set_from_data (ClutterTexture *texture,
     }
   
   /* rename signal */
-  g_signal_emit (texture, texture_signals[SIGNAL_PIXBUF_CHANGE], 0); 
+  g_signal_emit (texture, texture_signals[PIXBUF_CHANGE], 0); 
 
   /* If resized actor may need resizing but paint() will do this */
   if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR(texture)))

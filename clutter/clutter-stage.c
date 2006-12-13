@@ -729,6 +729,15 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			 CLUTTER_TYPE_COLOR,
 			 CLUTTER_PARAM_READWRITE));
 
+  /**
+   * ClutterStage::input-event:
+   * @stage: the actor which received the event
+   * @event: the event received
+   *
+   * The ::input-event is a signal emitted when any input event is
+   * received.  Valid input events are mouse button press and release
+   * events, and key press and release events.
+   */
   stage_signals[INPUT_EVENT] =
     g_signal_new ("input-event",
 		  G_TYPE_FROM_CLASS (gobject_class),
@@ -738,7 +747,14 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  clutter_marshal_VOID__BOXED,
 		  G_TYPE_NONE, 1,
 		  CLUTTER_TYPE_EVENT);
-
+  /**
+   * ClutterStage::button-press-event:
+   * @stage: the actor which received the event
+   * @event: a #ClutterButtonEvent
+   *
+   * The ::button-press-event is emitted each time a mouse button
+   * is pressed on @stage.
+   */
   stage_signals[BUTTON_PRESS_EVENT] =
     g_signal_new ("button-press-event",
 		  G_TYPE_FROM_CLASS (gobject_class),
@@ -748,6 +764,14 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  clutter_marshal_VOID__BOXED,
 		  G_TYPE_NONE, 1,
 		  CLUTTER_TYPE_EVENT);
+  /**
+   * ClutterStage::button-release-event:
+   * @stage: the actor which received the event
+   * @event: a #ClutterButtonEvent
+   *
+   * The ::button-release-event is emitted each time a mouse button
+   * is released on @stage.
+   */
   stage_signals[BUTTON_RELEASE_EVENT] =
     g_signal_new ("button-release-event",
 		  G_TYPE_FROM_CLASS (gobject_class),
@@ -757,7 +781,15 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  clutter_marshal_VOID__BOXED,
 		  G_TYPE_NONE, 1,
 		  CLUTTER_TYPE_EVENT);
-  stage_signals[BUTTON_PRESS_EVENT] =
+  /**
+   * ClutterStage::key-press-event:
+   * @stage: the actor which received the event
+   * @event: a #ClutterKeyEvent
+   *
+   * The ::key-press-event is emitted each time a keyboard button
+   * is pressed on @stage.
+   */
+  stage_signals[KEY_PRESS_EVENT] =
     g_signal_new ("key-press-event",
 		  G_TYPE_FROM_CLASS (gobject_class),
 		  G_SIGNAL_RUN_LAST,
@@ -766,7 +798,15 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  clutter_marshal_VOID__BOXED,
 		  G_TYPE_NONE, 1,
 		  CLUTTER_TYPE_EVENT);
-  stage_signals[BUTTON_RELEASE_EVENT] =
+  /**
+   * ClutterStage::key-release-event:
+   * @stage: the actor which received the event
+   * @event: a #ClutterKeyEvent
+   *
+   * The ::key-release-event is emitted each time a keyboard button
+   * is released on @stage.
+   */
+  stage_signals[KEY_RELEASE_EVENT] =
     g_signal_new ("key-release-event",
 		  G_TYPE_FROM_CLASS (gobject_class),
 		  G_SIGNAL_RUN_LAST,
@@ -775,6 +815,14 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  clutter_marshal_VOID__BOXED,
 		  G_TYPE_NONE, 1,
 		  CLUTTER_TYPE_EVENT);
+  /**
+   * ClutterStage::motion-event:
+   * @stage: the actor which received the event
+   * @event: a #ClutterMotionEvent
+   *
+   * The ::motion-event is emitted each time the mouse pointer is
+   * moved on @stage.
+   */
   stage_signals[MOTION_EVENT] =
     g_signal_new ("motion-event",
 		  G_TYPE_FROM_CLASS (gobject_class),

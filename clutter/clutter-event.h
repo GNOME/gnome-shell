@@ -116,7 +116,7 @@ GType clutter_event_get_type (void) G_GNUC_CONST;
 ClutterEvent     *clutter_event_new  (ClutterEventType  type);
 ClutterEvent     *clutter_event_copy (ClutterEvent     *event);
 void              clutter_event_free (ClutterEvent     *event);
-ClutterEventType  clutter_event_type (ClutterEvent     *keyev);
+ClutterEventType  clutter_event_type (ClutterEvent     *event);
 
 guint32 clutter_key_event_time    (ClutterKeyEvent *keyev);
 guint   clutter_key_event_state   (ClutterKeyEvent *keyev);

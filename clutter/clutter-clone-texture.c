@@ -387,7 +387,7 @@ clutter_clone_texture_get_parent_texture (ClutterCloneTexture *clone)
 /**
  * clutter_clone_texture_set_parent_texture:
  * @clone: a #ClutterCloneTexture
- * @texture a #ClutterTexture or %NULL
+ * @texture: a #ClutterTexture or %NULL
  *
  * Sets the parent texture cloned by the #ClutterCloneTexture.
  *

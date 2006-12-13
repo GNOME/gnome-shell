@@ -1051,7 +1051,7 @@ clutter_actor_set_size (ClutterActor *self,
   clutter_actor_request_coords (self, &box);
 }
 
-/*
+/**
  * clutter_actor_get_size:
  * @self: A #ClutterActor
  * @width: Location to store width if non NULL.
@@ -1292,6 +1292,10 @@ clutter_actor_set_scalex (ClutterActor *self,
  * @self: A #ClutterActor
  * @scale_x: double
  * @scale_y: double
+ *
+ * FIXME
+ *
+ * Since: 0.2
  */
 void
 clutter_actor_set_scale (ClutterActor *self,

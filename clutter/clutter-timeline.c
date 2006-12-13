@@ -209,6 +209,14 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 			   FALSE,
 			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
 
+  /**
+   * ClutterTimeline::new-frame:
+   * @timeline: the timeline which received the signal
+   * @frame_num: the number of the new frame
+   *
+   * The ::new-frame signal is emitted each time a new frame in the
+   * timeline is reached.
+   */
   timeline_signals[NEW_FRAME] =
     g_signal_new ("new-frame",
 		  G_TYPE_FROM_CLASS (object_class),
