@@ -377,10 +377,16 @@ clutter_rectangle_set_color (ClutterRectangle   *rectangle,
   clutter_actor_set_opacity (CLUTTER_ACTOR (rectangle),
 		  	       priv->color.alpha);
 
+  if (clutter_color_equal (&priv->color, &priv->border_color))
+    priv->has_border = FALSE;
+  else
+    priv->has_border = TRUE;
+
   if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (rectangle)))
     clutter_actor_queue_redraw (CLUTTER_ACTOR (rectangle));
 
   g_object_notify (G_OBJECT (rectangle), "color");
+  g_object_notify (G_OBJECT (rectangle), "has-border");
   g_object_unref (rectangle);
 }
 
@@ -498,10 +504,16 @@ clutter_rectangle_set_border_color (ClutterRectangle   *rectangle,
       priv->border_color.blue = color->blue;
       priv->border_color.alpha = color->alpha;
 
+      if (clutter_color_equal (&priv->color, &priv->border_color))
+        priv->has_border = FALSE;
+      else
+        priv->has_border = TRUE;
+
       if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (rectangle)))
         clutter_actor_queue_redraw (CLUTTER_ACTOR (rectangle));
 
       g_object_notify (G_OBJECT (rectangle), "border-color");
+      g_object_notify (G_OBJECT (rectangle), "has-border");
       g_object_unref (rectangle);
     }
 }

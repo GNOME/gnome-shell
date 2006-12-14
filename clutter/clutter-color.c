@@ -416,14 +416,71 @@ clutter_color_parse (const gchar  *color,
     return FALSE;
 }
 
-static ClutterColor *
-clutter_color_copy (ClutterColor *color)
+/**
+ * clutter_color_equal:
+ * @a: a #ClutterColor
+ * @b: a #ClutterColor
+ *
+ * Compares two #ClutterColor<!-- -->s and checks if they are the same.
+ *
+ * Return: %TRUE if the two colors are the same.
+ *
+ * Since: 0.2
+ */
+gboolean
+clutter_color_equal (const ClutterColor *a,
+                     const ClutterColor *b)
 {
-  ClutterColor *result = g_new0 (ClutterColor, 1);
+  g_return_val_if_fail (a != NULL, FALSE);
+  g_return_val_if_fail (b != NULL, FALSE);
 
+  if (a == b)
+    return TRUE;
+
+  return (a->red == b->red &&
+          a->green == b->green &&
+          a->blue == b->blue &&
+          a->alpha == b->alpha);
+}
+
+/**
+ * clutter_color_copy:
+ * @color: a #ClutterColor
+ *
+ * Makes a copy of the color structure.  The result must be
+ * freed using clutter_color_free().
+ *
+ * Return value: an allocated copy of @color.
+ *
+ * Since: 0.2
+ */
+ClutterColor *
+clutter_color_copy (const ClutterColor *color)
+{
+  ClutterColor *result;
+  
+  g_return_val_if_fail (color != NULL, NULL);
+
+  result = g_slice_new (ClutterColor);
   *result = *color;
 
   return result;
+}
+
+/**
+ * clutter_color_free:
+ * @color: a #ClutterColor
+ *
+ * Frees a color structure created with clutter_color_copy().
+ *
+ * Since: 0.2
+ */
+void
+clutter_color_free (ClutterColor *color)
+{
+  g_return_if_fail (color != NULL);
+
+  g_slice_free (ClutterColor, color);
 }
 
 GType
@@ -434,6 +491,6 @@ clutter_color_get_type (void)
   if (!our_type)
     our_type = g_boxed_type_register_static ("ClutterColor",
 		    			     (GBoxedCopyFunc) clutter_color_copy,
-					     (GBoxedFreeFunc) g_free);
+					     (GBoxedFreeFunc) clutter_color_free);
   return our_type;
 }

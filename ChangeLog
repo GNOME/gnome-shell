@@ -1,3 +1,23 @@
+2006-12-14  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-color.h:
+	* clutter/clutter-color.c: Expose clutter_color_copy()
+	and clutter_color_free() for the python bindings, so that
+	they can manager the conversion automatically; use the
+	slice allocator when copying/freeing a ClutterColor.
+
+2006-12-13  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-color.h:
+	* clutter/clutter-color.c: Add clutter_color_equal(),
+	a function for comparing two colors.
+
+	* clutter/clutter-rectangle.c:
+	(clutter_rectangle_set_color),
+	(clutter_rectangle_set_border_color): Unset the border if
+	the color of the rectangle and the color of the border are
+	the same.
+
 2006-12-13  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.c:

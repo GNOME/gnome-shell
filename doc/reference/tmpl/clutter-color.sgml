@@ -27,6 +27,23 @@ clutter-color
 @blue: 
 @alpha: 
 
+<!-- ##### FUNCTION clutter_color_copy ##### -->
+<para>
+
+</para>
+
+@color: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_color_free ##### -->
+<para>
+
+</para>
+
+@color: 
+
+
 <!-- ##### FUNCTION clutter_color_parse ##### -->
 <para>
 
@@ -55,6 +72,16 @@ clutter-color
 @src1: 
 @src2: 
 @dest: 
+
+
+<!-- ##### FUNCTION clutter_color_equal ##### -->
+<para>
+
+</para>
+
+@a: 
+@b: 
+@Returns: 
 
 
 <!-- ##### FUNCTION clutter_color_lighten ##### -->

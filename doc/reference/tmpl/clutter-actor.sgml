@@ -22,7 +22,7 @@ ClutterActor
 Sets a flag from #ClutterActorFlags to an actor
 </para>
 
-@e: a #ClutterActor 
+@e: a #ClutterActor
 @f: the flag to set
 
 
