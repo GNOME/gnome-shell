@@ -8,6 +8,18 @@ Posiible New Features
  - Some kind of glitz/cairo integration - a GlitzDrawable Actor ?
  - More portability - GL ES, DirectFB?, Windows, Mac ?
  - Overhaul co-ordinate system ( more precision ? )
+ - Width-for-height allocation of the actors (esp. ClutterLabel)
+ - Complete over-haul of the ClutterMedia interface
+   o remove the accessors from the vfuncs and use pure properties
+   o add a way to get a timeline from the media source, to be
+     used inside a ClutterAlpha and drive a behaviour
+   o add signals for start and stop
+ - Move the events to the actors instead of the stage
+   o add an event queue to clutter so that we can push/pop the
+     events from it
+   o add support for mouse double click and scroll events
+ - Add focus handling API
+ - Add an entry actor
 
 Optimisations
 ==
