@@ -530,7 +530,9 @@ clutter_label_set_text (ClutterLabel *label,
   g_return_if_fail (CLUTTER_IS_LABEL (label));
 
   priv = label->priv;
-  
+
+  g_object_ref (label);
+
   g_free (priv->text);
   priv->text = g_strdup (text);
 
@@ -540,6 +542,7 @@ clutter_label_set_text (ClutterLabel *label,
     clutter_actor_queue_redraw (CLUTTER_ACTOR(label));
 
   g_object_notify (G_OBJECT (label), "text");
+  g_object_unref (label);
 }
 
 /**
@@ -576,7 +579,8 @@ void
 clutter_label_set_font_name (ClutterLabel *label,
 		             const gchar  *font_name)
 {
-  ClutterLabelPrivate  *priv;  
+  ClutterLabelPrivate *priv;
+  PangoFontDescription *desc;
 
   g_return_if_fail (CLUTTER_IS_LABEL (label));
   
@@ -585,20 +589,27 @@ clutter_label_set_font_name (ClutterLabel *label,
 
   priv = label->priv;
 
-  if (priv->desc)
-    pango_font_description_free (priv->desc);
+  if (strcmp (priv->font_name, font_name) == 0)
+    return;
 
-  g_free (priv->font_name);
-  priv->font_name = g_strdup (font_name);
-
-  priv->desc = pango_font_description_from_string (priv->font_name);
-  if (!priv->desc)
+  desc = pango_font_description_from_string (font_name);
+  if (!desc)
     {
       g_warning ("Attempting to create a PangoFontDescription for "
 		 "font name `%s', but failed.",
-		 priv->font_name);
+		 font_name);
       return;
     }
+
+  g_object_ref (label);
+
+  g_free (priv->font_name);
+  priv->font_name = g_strdup (font_name);
+  
+  if (priv->desc)
+    pango_font_description_free (priv->desc);
+
+  priv->desc = desc;
 
   if (label->priv->text && label->priv->text[0] != '\0')
     {
@@ -609,6 +620,7 @@ clutter_label_set_font_name (ClutterLabel *label,
     }
   
   g_object_notify (G_OBJECT (label), "font-name");
+  g_object_unref (label);
 }
 
 
@@ -630,6 +642,9 @@ clutter_label_set_color (ClutterLabel       *label,
   g_return_if_fail (color != NULL);
 
   priv = label->priv;
+
+  g_object_ref (label);
+
   priv->fgcol.red = color->red;
   priv->fgcol.green = color->green;
   priv->fgcol.blue = color->blue;
@@ -643,7 +658,7 @@ clutter_label_set_color (ClutterLabel       *label,
     clutter_actor_queue_redraw (actor);
 
   g_object_notify (G_OBJECT (label), "color");
-
+  g_object_unref (label);
 }
 
 /**
@@ -684,18 +699,27 @@ void
 clutter_label_set_ellipsize (ClutterLabel          *label,
 			     PangoEllipsizeMode     mode)
 {
+  ClutterLabelPrivate *priv;
+
   g_return_if_fail (CLUTTER_IS_LABEL (label));
-  g_return_if_fail (mode >= PANGO_ELLIPSIZE_NONE 
-		    && mode <= PANGO_ELLIPSIZE_END);
+  g_return_if_fail (mode >= PANGO_ELLIPSIZE_NONE &&
+		    mode <= PANGO_ELLIPSIZE_END);
   
-  if ((PangoEllipsizeMode) label->priv->ellipsize != mode)
+  priv = label->priv;
+
+  if ((PangoEllipsizeMode) priv->ellipsize != mode)
     {
-      label->priv->ellipsize = mode;
+      g_object_ref (label);
+
+      priv->ellipsize = mode;
 
       clutter_label_clear_layout (label);      
       
       if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(label)))
 	clutter_actor_queue_redraw (CLUTTER_ACTOR(label));
+
+      g_object_notify (G_OBJECT (label), "ellipsize");
+      g_object_unref (label);
     }
 }
 
@@ -723,34 +747,38 @@ clutter_label_get_ellipsize (ClutterLabel *label)
  * @label: a #ClutterLabel
  * @wrap: the setting
  *
- * Toggles line wrapping within the #ClutterLabel widget.  %TRUE makes it break
- * lines if text exceeds the widget's size.  %FALSE lets the text get cut off
- * by the edge of the widget if it exceeds the widget size.
+ * Toggles line wrapping within the #ClutterLabel widget.  %TRUE makes
+ * it break lines if text exceeds the widget's size.  %FALSE lets the
+ * text get cut off by the edge of the widget if it exceeds the widget
+ * size.
  *
- * Note that setting line wrapping to %TRUE does not make the label
- * wrap at its parent container's width, because CLUTTER+ widgets
- * conceptually can't make their requisition depend on the parent
- * container's size. For a label that wraps at a specific position,
- * set the label's width using clutter_widget_set_size_request().
- **/
+ * Since: 0.2
+ */
 void
 clutter_label_set_line_wrap (ClutterLabel *label,
 			     gboolean      wrap)
 {
+  ClutterLabelPrivate *priv;
+
   g_return_if_fail (CLUTTER_IS_LABEL (label));
+
+  priv = label->priv;
   
   wrap = wrap != FALSE;
   
-  if (label->priv->wrap != wrap)
+  if (priv->wrap != wrap)
     {
-      label->priv->wrap = wrap;
+      g_object_ref (label);
+
+      priv->wrap = wrap;
 
       clutter_label_clear_layout (label);            
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(label)))
-	clutter_actor_queue_redraw (CLUTTER_ACTOR(label));
+      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (label)))
+	clutter_actor_queue_redraw (CLUTTER_ACTOR (label));
 
       g_object_notify (G_OBJECT (label), "wrap");
+      g_object_unref (label);
     }
 }
 
@@ -788,18 +816,25 @@ void
 clutter_label_set_line_wrap_mode (ClutterLabel *label,
 				  PangoWrapMode wrap_mode)
 {
+  ClutterLabelPrivate *priv;
+
   g_return_if_fail (CLUTTER_IS_LABEL (label));
+
+  priv = label->priv;
   
-  if (label->priv->wrap_mode != wrap_mode)
+  if (priv->wrap_mode != wrap_mode)
     {
-      label->priv->wrap_mode = wrap_mode;
+      g_object_ref (label);
+
+      priv->wrap_mode = wrap_mode;
 
       clutter_label_clear_layout (label);      
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(label)))
-	clutter_actor_queue_redraw (CLUTTER_ACTOR(label));
+      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (label)))
+	clutter_actor_queue_redraw (CLUTTER_ACTOR (label));
 
       g_object_notify (G_OBJECT (label), "wrap-mode");
+      g_object_unref (label);
     }
 }
 
@@ -807,7 +842,8 @@ clutter_label_set_line_wrap_mode (ClutterLabel *label,
  * clutter_label_get_line_wrap_mode:
  * @label: a #ClutterLabel
  *
- * Returns line wrap mode used by the label. See clutter_label_set_line_wrap_mode ().
+ * Returns line wrap mode used by the label.
+ * See clutter_label_set_line_wrap_mode ().
  *
  * Return value: %TRUE if the lines of the label are automatically wrapped.
  *
@@ -845,13 +881,15 @@ clutter_label_get_layout (ClutterLabel *label)
   return label->priv->layout;
 }
 
-static void
+static inline void
 clutter_label_set_attributes_internal (ClutterLabel  *label,
 				       PangoAttrList *attrs)
 {
   ClutterLabelPrivate *priv;
 
   priv = label->priv;
+
+  g_object_ref (label);
 
   if (attrs)
     pango_attr_list_ref (attrs);
@@ -870,6 +908,7 @@ clutter_label_set_attributes_internal (ClutterLabel  *label,
 
   label->priv->attrs = attrs;
   g_object_notify (G_OBJECT (label), "attributes");
+  g_object_unref (label);
 }
 
 /**
@@ -930,17 +969,24 @@ void
 clutter_label_set_use_markup (ClutterLabel *label,
 			      gboolean  setting)
 {
+  ClutterLabelPrivate *priv;
+
   g_return_if_fail (CLUTTER_IS_LABEL (label));
 
-  if (label->priv->use_markup != setting)
+  priv = label->priv;
+
+  if (priv->use_markup != setting)
     {
-      label->priv->use_markup = setting;
+      g_object_ref (label);
+
+      priv->use_markup = setting;
       clutter_label_clear_layout (label);
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(label)))
-	clutter_actor_queue_redraw (CLUTTER_ACTOR(label));
+      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (label)))
+	clutter_actor_queue_redraw (CLUTTER_ACTOR (label));
 
       g_object_notify (G_OBJECT (label), "use-markup");
+      g_object_unref (label);
     }
 }
 
@@ -973,17 +1019,24 @@ void
 clutter_label_set_alignment (ClutterLabel   *label,
 			     PangoAlignment  alignment)
 {
+  ClutterLabelPrivate *priv;
+
   g_return_if_fail (CLUTTER_IS_LABEL (label));
 
-  if (label->priv->alignment != alignment)
+  priv = label->priv;
+
+  if (priv->alignment != alignment)
     {
-      label->priv->alignment = alignment;
+      g_object_ref (label);
+
+      priv->alignment = alignment;
       clutter_label_clear_layout (label);
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(label)))
-	clutter_actor_queue_redraw (CLUTTER_ACTOR(label));
+      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (label)))
+	clutter_actor_queue_redraw (CLUTTER_ACTOR (label));
 
       g_object_notify (G_OBJECT (label), "alignment");
+      g_object_unref (label);
     }
 }
 

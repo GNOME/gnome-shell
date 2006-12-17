@@ -1,3 +1,10 @@
+2006-12-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-label.c: Remove some gtk-isms; always take
+	a reference before calling g_object_notify(), as the object
+	might get disposed while calling the closures inside the
+	notify queue; notify the changes of the ellipsize property.
+
 2006-12-14  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-color.h:
