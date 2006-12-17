@@ -5,10 +5,7 @@ Posiible New Features
 ==
 
  - Gradients
- - better pangi integration.
- - Audio only object implementing ClutterMedia Interface.
  - Some kind of glitz/cairo integration - a GlitzDrawable Actor ?
- - Improve clutter label usage as to expose more pango functionality.
  - More portability - GL ES, DirectFB?, Windows, Mac ?
  - Overhaul co-ordinate system ( more precision ? )
 
@@ -25,4 +22,4 @@ Other
  - Unit tests
  - Much improved examples / demos
  - Sort Documentation
- - Bindings to languages other than just Python.
+ - Bindings to languages other than just Python and Perl.
