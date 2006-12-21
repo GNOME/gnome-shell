@@ -36,7 +36,8 @@
 #include "c-window.h"
 #include "window.h"
 #include "frame.h"
-#include "spring-model.h"
+#include "compositor.h"
+#include "workspace.h"
 
 typedef struct UnminimizeInfo UnminimizeInfo;
 
@@ -1185,10 +1186,6 @@ typedef struct
     MetaRectangle   rect;
     gdouble	    last_time;
 } FocusInfo;
-
-/* XXX HATE */
-extern void get_patch_points (Model *model, CmPoint points[4][4]);
-extern void compute_window_rect (MetaWindow *window, MetaRectangle *rect);
 
 static gboolean
 update_focus (gpointer data)

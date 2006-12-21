@@ -49,7 +49,6 @@
 #include <X11/extensions/Xdamage.h>
 #include <X11/extensions/Xfixes.h>
 #include <X11/extensions/Xrender.h>
-#include "spring-model.h"
 #include <cm/state.h>
 
 #include "effects.h"
@@ -113,6 +112,11 @@ get_xid (MetaWindow *window)
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 
+#ifdef SPIFFY_COMPOSITOR
+/* This is called by Metacity's effect code when an effect needs to happen.
+ * In compositor-less Metacity, this includes things like the wireframe
+ * zoom when a window is minimised. We have a rather larger box of tricks.
+ */
 static void
 do_effect (MetaEffect *effect,
 	   gpointer data)
@@ -164,9 +168,13 @@ do_effect (MetaEffect *effect,
 	break;
     }
 }
+#endif /* SPIFFY_COMPOSITOR */
 
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
+/* Constructs a new compositor. The rest of Metacity knows whether the
+ * compositor is turned on by whether this function returns NULL or not.
+ */
 MetaCompositor *
 meta_compositor_new (MetaDisplay *display)
 {
@@ -211,7 +219,9 @@ meta_compositor_new (MetaDisplay *display)
   
   compositor->enabled = TRUE;
   
+#ifdef SPIFFY_COMPOSITOR
   meta_push_effect_handler (do_effect, compositor);
+#endif
   
   return compositor;
 #else /* HAVE_COMPOSITE_EXTENSIONS */
@@ -219,6 +229,7 @@ meta_compositor_new (MetaDisplay *display)
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 }
 
+#if 0
 void
 meta_compositor_set_debug_updates (MetaCompositor *compositor,
 				   gboolean	   debug_updates)
@@ -227,6 +238,7 @@ meta_compositor_set_debug_updates (MetaCompositor *compositor,
   compositor->debug_updates = !!debug_updates;
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 }
+#endif /* 0 */
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 static void
@@ -255,8 +267,29 @@ meta_compositor_unref (MetaCompositor *compositor)
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 }
 
-#ifdef HAVE_COMPOSITE_EXTENSIONS
+/****************************************************************************
+ *
+ *                             HANDLING X EVENTS
+ *
+ * Here are several process_* functions, which are all called by
+ * meta_compositor_process_event at the bottom.
+ *
+ ****************************************************************************/
 
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+/* Handles the CirculateNotify XEvent.
+ */
+static void
+process_circulate_notify (MetaCompositor *compositor,
+                          XCirculateEvent* event)
+{
+  /* FIXME: Do something here. */
+}
+#endif /* HAVE_COMPOSITE_EXTENSIONS */
+ 
+#ifdef HAVE_COMPOSITE_EXTENSIONS
+/* Handles the ConfigureNotify XEvent.
+ */
 static void
 process_configure_notify (MetaCompositor  *compositor,
                           XConfigureEvent *event)
@@ -290,6 +323,9 @@ process_configure_notify (MetaCompositor  *compositor,
 
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
+/* Handles the Expose XEvent.
+ * XXX FIXME: This looks like it quite urgently needs looking into. --tthurman
+ */
 static void
 process_expose (MetaCompositor     *compositor,
                 XExposeEvent       *event)
@@ -300,6 +336,10 @@ process_expose (MetaCompositor     *compositor,
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
+
+#if 0
+
+/* Apparently never used. */
 
 typedef struct
 {
@@ -340,9 +380,12 @@ fade_out (gpointer data)
       return TRUE;
     }
 }
+#endif /* 0 */
 #endif
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
+/* Handles the MapNotify XEvent.
+ */
 static void
 process_map (MetaCompositor     *compositor,
              XMapEvent          *event)
@@ -356,13 +399,13 @@ process_map (MetaCompositor     *compositor,
   /* See if window was mapped as child of root */
   screen = meta_display_screen_for_root (compositor->meta_display,
 					 event->event);
-  
+
   if (screen == NULL)
     {
       meta_topic (META_DEBUG_COMPOSITOR,
 		  "MapNotify received on non-root 0x%lx for 0x%lx\n",
 		  event->event, event->window);
-      
+
       /* MapNotify wasn't for a child of the root */
       return; 
     }
@@ -374,6 +417,8 @@ process_map (MetaCompositor     *compositor,
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
+/* Handles the UnmapNotify XEvent.
+ */
 static void
 process_unmap (MetaCompositor     *compositor,
                XUnmapEvent        *event)
@@ -400,6 +445,8 @@ process_unmap (MetaCompositor     *compositor,
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
+/* Handles the CreateNotify XEvent.
+ */
 static void
 process_create (MetaCompositor     *compositor,
                 XCreateWindowEvent *event)
@@ -441,6 +488,8 @@ process_create (MetaCompositor     *compositor,
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
+/* Handles the DestroyNotify XEvent.
+ */
 static void
 process_destroy (MetaCompositor      *compositor,
                  XDestroyWindowEvent *event)
@@ -474,6 +523,8 @@ process_destroy (MetaCompositor      *compositor,
 
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
+/* Handles the ReparentNotify XEvent.
+ */
 static void
 process_reparent (MetaCompositor      *compositor,
                   XReparentEvent      *event)
@@ -516,6 +567,9 @@ process_reparent (MetaCompositor      *compositor,
 
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
+/* If the compositor is enabled, this function gets called with any XEvent
+ * in case we want to deal with it specially.
+ */
 void
 meta_compositor_process_event (MetaCompositor *compositor,
                                XEvent         *event,
@@ -525,9 +579,12 @@ meta_compositor_process_event (MetaCompositor *compositor,
   if (!compositor->enabled)
     return; /* no extension */
   
-  /* FIXME support CirculateNotify */
-  
-  if (event->type == ConfigureNotify)
+  if (event->type == CirculateNotify)
+    {
+      process_circulate_notify (compositor,
+                                (XCirculateEvent*) event);
+    }
+  else if (event->type == ConfigureNotify)
     {
       process_configure_notify (compositor,
 				(XConfigureEvent*) event);
@@ -567,10 +624,13 @@ meta_compositor_process_event (MetaCompositor *compositor,
 }
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
+#if 0
 static GTimer *timer;
+#endif /* 0 */
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
+#if 0
 static void
 dump_stacking_order (GList *nodes)
 {
@@ -584,6 +644,7 @@ dump_stacking_order (GList *nodes)
     }
   g_print ("\n");
 }
+#endif /* 0 */
 #endif
 
 /* This is called when metacity does its XQueryTree() on startup
@@ -770,7 +831,7 @@ struct MoveInfo
 
 void
 get_patch_points (Model   *model,
-		  CmPoint  points[4][4])
+		  CmPoint points[4][4])
 {
   int i, j;
   

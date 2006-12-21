@@ -1,3 +1,9 @@
+2006-12-21  Thomas Thurman  <thomas@thurman.org.uk>
+
+        * src/compositor.c: Disabled bling for now; added function for
+	handling CirculateNotify XEvent; some commenting.
+	* src/compositor.h, src/c-window.c: fix function prototype visibility.
+
 2006-12-12  Thomas Thurman  <thomas@thurman.org.uk>
 
         * src/compositor.c (do_effect): Sanity check to avoid dereferencing
