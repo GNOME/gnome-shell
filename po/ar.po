@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.gnome-2-16\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-24 21:01+0000\n"
+"POT-Creation-Date: 2006-12-27 16:32+0000\n"
 "PO-Revision-Date: 2006-11-10 06:30+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <support@eglug.org>\n"
@@ -236,77 +236,77 @@ msgid "_Unroll"
 msgstr "إل_غاء اللف"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:78 ../src/menu.c:80
-msgid "On _Top"
-msgstr "إلى الأ_على"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:82
+#: ../src/menu.c:78
 msgid "_Move"
 msgstr "_نقل"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:84
+#: ../src/menu.c:80
 msgid "_Resize"
 msgstr "ت_حجيم"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:86
+#: ../src/menu.c:82
 msgid "Move Titlebar On_screen"
 msgstr "انقل _شريط العنوان حول الشاشة"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:89
+#: ../src/menu.c:85
 msgid "_Close"
 msgstr "_غلق"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:92
+#: ../src/menu.c:88
+msgid "Always on _Top"
+msgstr ""
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:90
 msgid "_Always on Visible Workspace"
 msgstr "فقط على مساحة العمل ال_بائنة"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:94
+#: ../src/menu.c:92
 msgid "_Only on This Workspace"
 msgstr "فقط على مساحة العمل _هذه"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:96
+#: ../src/menu.c:94
 msgid "Move to Workspace _Left"
 msgstr "نقل لمساحة العمل على ال_يسار"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:98
+#: ../src/menu.c:96
 msgid "Move to Workspace R_ight"
 msgstr "نقل لمساحة العمل على الي_مين"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:100
+#: ../src/menu.c:98
 msgid "Move to Workspace _Up"
 msgstr "نقل لمساحة العمل إلى ال_أعلى"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:102
+#: ../src/menu.c:100
 msgid "Move to Workspace _Down"
 msgstr "نقل لمساحة العمل إلى الأ_سفل"
 
-#: ../src/menu.c:193 ../src/prefs.c:2194 ../src/prefs.c:2729
+#: ../src/menu.c:191 ../src/prefs.c:2194 ../src/prefs.c:2729
 #, c-format
 msgid "Workspace %d"
 msgstr "مساحة العمل %d"
 
-#: ../src/menu.c:202
+#: ../src/menu.c:200
 msgid "Workspace 1_0"
 msgstr "مساحة العمل 1_0"
 
-#: ../src/menu.c:204
+#: ../src/menu.c:202
 #, c-format
 msgid "Workspace %s%d"
 msgstr "مساحة العمل %s%d"
 
-#: ../src/menu.c:403
+#: ../src/menu.c:407
 msgid "Move to Another _Workspace"
 msgstr "نقل ل_مساحة عمل أخرى"
 
@@ -3444,6 +3444,9 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "الخاصية %s على النافذة 0x%lx تحتوي UTF-8 غير صحيح للعنصر %d في القائمة\n"
+
+#~ msgid "On _Top"
+#~ msgstr "إلى الأ_على"
 
 #~ msgid ""
 #~ "Forcing this application to quit will cause you to lose any unsaved "
