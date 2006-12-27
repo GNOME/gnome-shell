@@ -14,16 +14,19 @@ Clutter 0.2 ()
    o Add API for behaviours. A ClutterBehaviour is an object which
      drives a set of actors using one or more properties depending
      on the value of an "alpha" function.
+     + Provide simple behaviours: ClutterBehaviourOpacity,
+       ClutterBehaviourPath and ClutterBehaviourScale.
+     + Provide simple alpha functions for ramps and sine waveforms.
    o Add fixed point API for embedded platforms with no FPU.
    o Add support for command line switches to Clutter, like debug
      flags and abort on warnings; also allow application to hook up
      into the initialisation sequence to add their own command line
      switches.
    o Add Pango GL renderer for Clutter, and use it to render text
-     inside the ClutterLabel actor; this will decrease texture memory
+     inside the ClutterLabel actor; this decrease texture memory
      usage. 
-   o Redo Clutter Label widget. 
-   o Clutter Textures not store local pixbuf copy (of texture).
+   o Redo Clutter Label widget, using the new Pango renderer.
+   o Clutter Textures do not store local pixbuf copy (of texture).
    o Redo group and actor scale/sizing API and functionality.
  * List of bug fixed
    o #156 - clutter_actor_set_position not using the absolute size
