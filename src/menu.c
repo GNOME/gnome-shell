@@ -75,10 +75,6 @@ static MenuItem menuitems[] = {
   /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_UNSHADE, MENU_ITEM_NORMAL, NULL, FALSE, N_("_Unroll") },
   /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_ABOVE, MENU_ITEM_CHECKBOX, NULL, FALSE, N_("On _Top") },
-  /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_UNABOVE, MENU_ITEM_CHECKBOX, NULL, TRUE, N_("On _Top") },
-  /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_MOVE, MENU_ITEM_NORMAL, NULL, FALSE, N_("_Move") },
   /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_RESIZE, MENU_ITEM_NORMAL, NULL, FALSE, N_("_Resize") },
@@ -88,6 +84,8 @@ static MenuItem menuitems[] = {
   /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_DELETE, MENU_ITEM_IMAGE, METACITY_STOCK_DELETE, FALSE, N_("_Close") },
   { META_MENU_OP_WORKSPACES, MENU_ITEM_SEPARATOR, NULL, FALSE, NULL }, /* separator */
+  /* Translators: Translate this string the same way as you do in libwnck! */
+  { META_MENU_OP_ABOVE, MENU_ITEM_CHECKBOX, NULL, FALSE, N_("Always on _Top") },
   /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_STICK, MENU_ITEM_CHECKBOX, NULL, FALSE, N_("_Always on Visible Workspace") },
   /* Translators: Translate this string the same way as you do in libwnck! */
@@ -346,7 +344,9 @@ meta_window_menu_new   (MetaFrames         *frames,
 
           mi = menu_item_new (&menuitem, -1);
 
-          if (menuitem.op == META_MENU_OP_STICK || menuitem.op == META_MENU_OP_UNSTICK)
+          if ((menuitem.op == META_MENU_OP_STICK) ||
+              (menuitem.op == META_MENU_OP_UNSTICK) ||
+              (menuitem.op == META_MENU_OP_ABOVE))
             {
               Display *xdisplay;
               MetaDisplay *display;
@@ -360,8 +360,12 @@ meta_window_menu_new   (MetaFrames         *frames,
                 gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (mi), window->on_all_workspaces);
               else
                 gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (mi), !window->on_all_workspaces);
+                
+              if (menuitem.op == META_MENU_OP_ABOVE)
+                gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (mi), window->wm_state_above);
+
             }
-            
+
           if (menuitem.type != MENU_ITEM_SEPARATOR)
             {
               meta_core_get_menu_accelerator (menuitems[i].op, -1,

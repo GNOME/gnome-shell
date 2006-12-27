@@ -531,7 +531,6 @@ meta_core_get_menu_accelerator (MetaMenuOp           menu_op,
       name = META_KEYBINDING_TOGGLE_STICKY;
       break;
     case META_MENU_OP_ABOVE:
-    case META_MENU_OP_UNABOVE:
       name = META_KEYBINDING_TOGGLE_ABOVE;
       break;
     case META_MENU_OP_WORKSPACES:
