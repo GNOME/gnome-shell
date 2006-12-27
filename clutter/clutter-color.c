@@ -417,6 +417,32 @@ clutter_color_parse (const gchar  *color,
 }
 
 /**
+ * clutter_color_to_string:
+ * @color: a #ClutterColor
+ *
+ * Returns a textual specification of @color in the hexadecimal form
+ * <literal>&num;rrrrggggbbbbaaaa</literal>, where <literal>r</literal>,
+ * <literal>g</literal>, <literal>b</literal> and <literal>a</literal> are
+ * hex digits representing the red, green, blue and alpha components
+ * respectively.
+ *
+ * Return value: a newly-allocated text string
+ *
+ * Since: 0.2
+ */
+gchar *
+clutter_color_to_string (const ClutterColor *color)
+{
+  g_return_val_if_fail (color != NULL, NULL);
+
+  return g_strdup_printf ("#%04x%04x%04x%04x",
+                          color->red,
+                          color->green,
+                          color->blue,
+                          color->alpha);
+}
+
+/**
  * clutter_color_equal:
  * @a: a #ClutterColor
  * @b: a #ClutterColor

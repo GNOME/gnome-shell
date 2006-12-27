@@ -53,6 +53,14 @@ Macro evaluating to the height of the #ClutterStage
 @clutterstage: the object which received the signal.
 @arg1: 
 
+<!-- ##### SIGNAL ClutterStage::delete-event ##### -->
+<para>
+
+</para>
+
+@clutterstage: the object which received the signal.
+@arg1: 
+
 <!-- ##### SIGNAL ClutterStage::input-event ##### -->
 <para>
 
@@ -117,6 +125,7 @@ Macro evaluating to the height of the #ClutterStage
 @key_press_event: 
 @key_release_event: 
 @motion_event: 
+@delete_event: 
 @_clutter_stage1: 
 @_clutter_stage2: 
 @_clutter_stage3: 

@@ -54,6 +54,26 @@ clutter-color
 @Returns: 
 
 
+<!-- ##### FUNCTION clutter_color_from_hls ##### -->
+<para>
+
+</para>
+
+@dest: 
+@hue: 
+@luminance: 
+@saturation: 
+
+
+<!-- ##### FUNCTION clutter_color_from_pixel ##### -->
+<para>
+
+</para>
+
+@dest: 
+@pixel: 
+
+
 <!-- ##### FUNCTION clutter_color_add ##### -->
 <para>
 
@@ -123,17 +143,6 @@ clutter-color
 @saturation: 
 
 
-<!-- ##### FUNCTION clutter_color_from_hls ##### -->
-<para>
-
-</para>
-
-@dest: 
-@hue: 
-@luminance: 
-@saturation: 
-
-
 <!-- ##### FUNCTION clutter_color_to_pixel ##### -->
 <para>
 
@@ -143,12 +152,12 @@ clutter-color
 @Returns: 
 
 
-<!-- ##### FUNCTION clutter_color_from_pixel ##### -->
+<!-- ##### FUNCTION clutter_color_to_string ##### -->
 <para>
 
 </para>
 
-@dest: 
-@pixel: 
+@color: 
+@Returns: 
 
 

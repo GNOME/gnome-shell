@@ -49,6 +49,7 @@ gboolean      clutter_color_parse      (const gchar        *color,
                                         ClutterColor       *dest);
 gboolean      clutter_color_equal      (const ClutterColor *a,
                                         const ClutterColor *b);
+gchar *       clutter_color_to_string  (const ClutterColor *color);
 
 GType         clutter_color_get_type   (void) G_GNUC_CONST;
 

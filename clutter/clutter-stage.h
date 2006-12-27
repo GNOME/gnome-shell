@@ -97,6 +97,8 @@ struct _ClutterStageClass
 		  		ClutterKeyEvent    *event);
   void (*motion_event)         (ClutterStage       *stage,
 		  		ClutterMotionEvent *event);
+  void (*delete_event)         (ClutterStage       *stage,
+                                ClutterEvent       *event);
 
   /* padding for future expansion */
   void (*_clutter_stage1) (void);

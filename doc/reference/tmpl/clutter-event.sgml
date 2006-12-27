@@ -29,6 +29,7 @@ Windowing events handled by Clutter.
 @CLUTTER_BUTTON_PRESS: 
 @CLUTTER_2BUTTON_PRESS: 
 @CLUTTER_BUTTON_RELEASE: 
+@CLUTTER_DELETE_EVENT: 
 
 <!-- ##### STRUCT ClutterAnyEvent ##### -->
 <para>

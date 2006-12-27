@@ -92,6 +92,7 @@ enum
   KEY_PRESS_EVENT,
   KEY_RELEASE_EVENT,
   MOTION_EVENT,
+  DELETE_EVENT,
   
   LAST_SIGNAL
 };
@@ -832,7 +833,16 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  clutter_marshal_VOID__BOXED,
 		  G_TYPE_NONE, 1,
 		  CLUTTER_TYPE_EVENT);
-  
+  stage_signals[DELETE_EVENT] =
+    g_signal_new ("delete-event",
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ClutterStageClass, delete_event),
+                  NULL, NULL,
+                  clutter_marshal_VOID__BOXED,
+                  G_TYPE_NONE, 1,
+                  CLUTTER_TYPE_EVENT);
+
   g_type_class_add_private (gobject_class, sizeof (ClutterStagePrivate));
 }
 
