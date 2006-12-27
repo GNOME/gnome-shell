@@ -1,5 +1,11 @@
 2006-12-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-stage.[ch]:
+	* clutter/clutter-event.[ch]: Revert changes; this is what
+	happens when you keep old tree around.
+
+2006-12-27  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-color.h:
 	* clutter/clutter-color.c: Add clutter_color_to_string(),
 	which creates a hex-encoded color string from a ClutterColor.

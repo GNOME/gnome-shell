@@ -50,8 +50,7 @@ typedef enum
   CLUTTER_MOTION,
   CLUTTER_BUTTON_PRESS,
   CLUTTER_2BUTTON_PRESS, 	/* Double click */
-  CLUTTER_BUTTON_RELEASE,
-  CLUTTER_DELETE_EVENT
+  CLUTTER_BUTTON_RELEASE
 } ClutterEventType;
 
 #define CLUTTER_TYPE_EVENT	(clutter_event_get_type ())
@@ -64,7 +63,6 @@ typedef struct _ClutterButtonEvent ClutterButtonEvent;
 typedef struct _ClutterMotionEvent ClutterMotionEvent;
 
 typedef struct _ClutterInputDevice ClutterInputDevice;
-
 
 struct _ClutterAnyEvent
 {
