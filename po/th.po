@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-15 16:20+0700\n"
-"PO-Revision-Date: 2006-12-15 16:59+0700\n"
+"POT-Creation-Date: 2006-12-29 12:44+0700\n"
+"PO-Revision-Date: 2006-12-29 12:46+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <L10n@opentle.org>\n"
 "MIME-Version: 1.0\n"
@@ -229,77 +229,77 @@ msgid "_Unroll"
 msgstr "_คลี่กลับ"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:78 ../src/menu.c:80
-msgid "On _Top"
-msgstr "_บนสุด"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:82
+#: ../src/menu.c:78
 msgid "_Move"
 msgstr "_ย้าย"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:84
+#: ../src/menu.c:80
 msgid "_Resize"
 msgstr "_ปรับขนาด"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:86
+#: ../src/menu.c:82
 msgid "Move Titlebar On_screen"
 msgstr "ย้ายแถบหัวเรื่องกลับเข้า_จอ"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:89
+#: ../src/menu.c:85
 msgid "_Close"
 msgstr "ปิ_ด"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:92
+#: ../src/menu.c:88
+msgid "Always on _Top"
+msgstr "อยู่_บนสุด"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:90
 msgid "_Always on Visible Workspace"
 msgstr "แสดงบนพื้นที่ทำงานเ_สมอ"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:94
+#: ../src/menu.c:92
 msgid "_Only on This Workspace"
 msgstr "แสดงบนพื้นที่ทำงาน_นี้เท่านั้น"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:96
+#: ../src/menu.c:94
 msgid "Move to Workspace _Left"
 msgstr "ย้ายไปพื้นที่ทำงานซ้_าย"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:98
+#: ../src/menu.c:96
 msgid "Move to Workspace R_ight"
 msgstr "ย้ายไปพื้นที่ทำงานข_วา"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:100
+#: ../src/menu.c:98
 msgid "Move to Workspace _Up"
 msgstr "ย้ายไปพื้นที่ทำงาน_บน"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:102
+#: ../src/menu.c:100
 msgid "Move to Workspace _Down"
 msgstr "ย้ายไปพื้นที่ทำงาน_ล่าง"
 
-#: ../src/menu.c:193 ../src/prefs.c:2194 ../src/prefs.c:2729
+#: ../src/menu.c:191 ../src/prefs.c:2194 ../src/prefs.c:2729
 #, c-format
 msgid "Workspace %d"
 msgstr "พื้นที่ทำงาน %d"
 
-#: ../src/menu.c:202
+#: ../src/menu.c:200
 msgid "Workspace 1_0"
 msgstr "พื้นที่ทำงาน 1_0"
 
-#: ../src/menu.c:204
+#: ../src/menu.c:202
 #, c-format
 msgid "Workspace %s%d"
 msgstr "พื้นที่ทำงาน %s%d"
 
-#: ../src/menu.c:403
+#: ../src/menu.c:407
 msgid "Move to Another _Workspace"
 msgstr "ย้ายไป_พื้นที่ทำงานอื่น"
 
@@ -1937,11 +1937,10 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"ปุ่มลัดนี้ย้ายหน้าต่างไปที่ขอบทางตะวันออก (ด้านขวา) ของหน้าจอ  รูปแบบคือ "
-"\"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-"ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ปุ่มลัดนี้ย้ายหน้าต่างไปที่ขอบทางตะวันออก (ด้านขวา) ของหน้าจอ  รูปแบบคือ \"&lt;Control&gt;a"
+"\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
+"และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น "
+"\"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: ../src/metacity.schemas.in.h:176
 msgid ""
@@ -1952,8 +1951,8 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"ปุ่มลัดนี้ย้ายหน้าต่างไปที่มุมตะวันออกเฉียงเหนือ (ด้านบนขวา) ของหน้าจอ  รูปแบบคือ "
-"\"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
+"ปุ่มลัดนี้ย้ายหน้าต่างไปที่มุมตะวันออกเฉียงเหนือ (ด้านบนขวา) ของหน้าจอ  รูปแบบคือ \"&lt;"
+"Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
 "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
 "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
@@ -1967,8 +1966,8 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"ปุ่มลัดนี้ย้ายหน้าต่างไปที่มุมตะวันตกเฉียงเหนือ (ด้านบนซ้าย) ของหน้าจอ  รูปแบบคือ "
-"\"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
+"ปุ่มลัดนี้ย้ายหน้าต่างไปที่มุมตะวันตกเฉียงเหนือ (ด้านบนซ้าย) ของหน้าจอ  รูปแบบคือ \"&lt;"
+"Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
 "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
 "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
@@ -1982,11 +1981,10 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"ปุ่มลัดนี้ย้ายหน้าต่างไปที่ขอบทางใต้ (ด้านล่าง) ของหน้าจอ  รูปแบบคือ "
-"\"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-"ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ปุ่มลัดนี้ย้ายหน้าต่างไปที่ขอบทางใต้ (ด้านล่าง) ของหน้าจอ  รูปแบบคือ \"&lt;Control&gt;a\" "
+"หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
+"และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น "
+"\"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: ../src/metacity.schemas.in.h:179
 msgid ""
@@ -1997,8 +1995,8 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"ปุ่มลัดนี้ย้ายหน้าต่างไปที่มุมตะวันออกเฉียงใต้ (ด้านล่างขวา) ของหน้าจอ  รูปแบบคือ "
-"\"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
+"ปุ่มลัดนี้ย้ายหน้าต่างไปที่มุมตะวันออกเฉียงใต้ (ด้านล่างขวา) ของหน้าจอ  รูปแบบคือ \"&lt;"
+"Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
 "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
 "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
@@ -2012,8 +2010,8 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"ปุ่มลัดนี้ย้ายหน้าต่างไปที่มุมตะวันตกเฉียงใต้ (ด้านล่างซ้าย) ของหน้าจอ  รูปแบบคือ "
-"\"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
+"ปุ่มลัดนี้ย้ายหน้าต่างไปที่มุมตะวันตกเฉียงใต้ (ด้านล่างซ้าย) ของหน้าจอ  รูปแบบคือ \"&lt;"
+"Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
 "ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
 "\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
 "ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
@@ -2027,11 +2025,10 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"ปุ่มลัดนี้ย้ายหน้าต่างไปที่ขอบทางตะวันตก (ด้านซ้าย) ของหน้าจอ  รูปแบบคือ "
-"\"&lt;Control&gt;a\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  "
-"ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ "
-"\"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น \"disabled\" ได้ "
-"ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
+"ปุ่มลัดนี้ย้ายหน้าต่างไปที่ขอบทางตะวันตก (ด้านซ้าย) ของหน้าจอ  รูปแบบคือ \"&lt;Control&gt;a"
+"\" หรือ \"&lt;Shift&gt;&lt;Alt&gt;F1\"  ตัวอ่านค่าคีย์ไม่สนใจว่าเป็นตัวพิมพ์ใหญ่หรือเล็ก "
+"และเข้าใจชื่อย่อ เช่น \"&lt;Ctl&gt;\" และ \"&lt;Ctrl&gt;\"  คุณสามารถตั้งค่าตัวเลือกเป็น "
+"\"disabled\" ได้ ถ้าไม่ต้องการปุ่มลัดสำหรับปฏิบัติการนี้"
 
 #: ../src/metacity.schemas.in.h:182
 msgid ""
@@ -3401,6 +3398,9 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "คุณสมบัติ %s ของหน้าต่าง 0x%lx มีค่าที่ไม่ใช่ UTF-8 ที่ถูกต้องสำหรับหัวข้อที่ %d ในรายการ\n"
+
+#~ msgid "On _Top"
+#~ msgstr "_บนสุด"
 
 #~ msgid ""
 #~ "Forcing this application to quit will cause you to lose any unsaved "
