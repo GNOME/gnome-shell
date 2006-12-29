@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.15.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-18 09:55+0100\n"
-"PO-Revision-Date: 2006-12-18 10:02+0100\n"
+"POT-Creation-Date: 2006-12-29 12:41+0100\n"
+"PO-Revision-Date: 2006-12-29 12:41+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian (bokmål) <i18n-no@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -230,77 +230,77 @@ msgid "_Unroll"
 msgstr "R_ull ned"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:78 ../src/menu.c:80
-msgid "On _Top"
-msgstr "_Over"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:82
+#: ../src/menu.c:78
 msgid "_Move"
 msgstr "_Flytt"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:84
+#: ../src/menu.c:80
 msgid "_Resize"
 msgstr "End_re størrelse"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:86
+#: ../src/menu.c:82
 msgid "Move Titlebar On_screen"
 msgstr "Flytt tittellinje på _skjermen"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:89
+#: ../src/menu.c:85
 msgid "_Close"
 msgstr "_Lukk"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:92
+#: ../src/menu.c:88
+msgid "Always on _Top"
+msgstr "All_tid øverst"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:90
 msgid "_Always on Visible Workspace"
 msgstr "_Alltid på synlig arbeidsområde"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:94
+#: ../src/menu.c:92
 msgid "_Only on This Workspace"
 msgstr "K_un på dette arbeidsområdet"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:96
+#: ../src/menu.c:94
 msgid "Move to Workspace _Left"
 msgstr "Flytt til arbeidsområdet ti_l venstre"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:98
+#: ../src/menu.c:96
 msgid "Move to Workspace R_ight"
 msgstr "Flytt til a_rbeidsområdet til høyre"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:100
+#: ../src/menu.c:98
 msgid "Move to Workspace _Up"
 msgstr "Flytt til arbeidsområdet _over"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:102
+#: ../src/menu.c:100
 msgid "Move to Workspace _Down"
 msgstr "Flytt til arbeidsområdet ne_denfor"
 
-#: ../src/menu.c:193 ../src/prefs.c:2194 ../src/prefs.c:2729
+#: ../src/menu.c:191 ../src/prefs.c:2194 ../src/prefs.c:2729
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbeidsområde %d"
 
-#: ../src/menu.c:202
+#: ../src/menu.c:200
 msgid "Workspace 1_0"
 msgstr "Arbeidsområde 1_0"
 
-#: ../src/menu.c:204
+#: ../src/menu.c:202
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Arbeidsområde %s%d"
 
-#: ../src/menu.c:403
+#: ../src/menu.c:407
 msgid "Move to Another _Workspace"
 msgstr "Flytt til et annet ar_beidsområde"
 
@@ -456,7 +456,11 @@ msgid ""
 "from the description will only be used if the titlebar_font_size option is "
 "set to 0. Also, this option is disabled if the titlebar_uses_desktop_font "
 "option is set to true."
-msgstr "En streng som beskriver en skrift for vinduers tittellinje. Størrelsen fra beskrivelsen vil kun brukes hvis alternativet titlebar_font_size settes til 0. I tillegg vil dette alternativet deaktiveres hvis alternativet titlebar_uses_desktop_font settes til «true»."
+msgstr ""
+"En streng som beskriver en skrift for vinduers tittellinje. Størrelsen fra "
+"beskrivelsen vil kun brukes hvis alternativet titlebar_font_size settes til "
+"0. I tillegg vil dette alternativet deaktiveres hvis alternativet "
+"titlebar_uses_desktop_font settes til «true»."
 
 #: ../src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
@@ -572,7 +576,13 @@ msgid ""
 "usability for many users, but may allow legacy applications to continue "
 "working, and may also be a useful tradeoff for terminal servers. However, "
 "the wireframe feature is disabled when accessibility is on."
-msgstr "Hvis denne er sann vil metacity gi bruker mindre informasjon og inntrykk av «direkte manipulasjon», ved å vise kun ramme ved flytting og å unngå animasjoner. Dette er en betydelig reduksjon i brukervennlighet for mange brukere, men kan la eldre programmer og termialtjenere fungere på en bedre måte.Denne funksjonen vil deaktiveres hvis hjelpefunksjoner for tilgjengelighet aktiveres."
+msgstr ""
+"Hvis denne er sann vil metacity gi bruker mindre informasjon og inntrykk av "
+"«direkte manipulasjon», ved å vise kun ramme ved flytting og å unngå "
+"animasjoner. Dette er en betydelig reduksjon i brukervennlighet for mange "
+"brukere, men kan la eldre programmer og termialtjenere fungere på en bedre "
+"måte.Denne funksjonen vil deaktiveres hvis hjelpefunksjoner for "
+"tilgjengelighet aktiveres."
 
 #: ../src/metacity.schemas.in.h:23
 msgid ""
@@ -583,7 +593,13 @@ msgid ""
 "Also, in application-based mode, focus clicks are not passed through to "
 "windows in other applications. Application-based mode is, however, largely "
 "unimplemented at the moment."
-msgstr "Hvis denne settes til sann vil Metacity forholde seg til programmer i stedet for vinduer. Konseptet er litt abstrakt, men i praksis er programbasert oppsett mer likt Mac, og mindre likt Windows. Når du fokuserer et vindu i programbasert modus vil alle vinduer i programmet heves. I tillegg vil ikke fokusklikk sendes gjennom til vinduer i andre programmer i programbasert modus. Programbasert modus er i stor grad ikke implementert ennå."
+msgstr ""
+"Hvis denne settes til sann vil Metacity forholde seg til programmer i stedet "
+"for vinduer. Konseptet er litt abstrakt, men i praksis er programbasert "
+"oppsett mer likt Mac, og mindre likt Windows. Når du fokuserer et vindu i "
+"programbasert modus vil alle vinduer i programmet heves. I tillegg vil ikke "
+"fokusklikk sendes gjennom til vinduer i andre programmer i programbasert "
+"modus. Programbasert modus er i stor grad ikke implementert ennå."
 
 #: ../src/metacity.schemas.in.h:24
 msgid "If true, trade off usability for less resource usage"
@@ -602,7 +618,15 @@ msgid ""
 "normal click on the window decorations, or by special messages, such as "
 "activation requests from pagers. This option is currently disabled in click-"
 "to-focus mode."
-msgstr "Mange handlinger (f.eks klikk i klientområdet, flytting av eller endring av størrelse på vinduer) hever normalt sett vinduet som en sideeffekt. Sett dette alternativet til «false» for å fjerne koblingen mellom heving av vinduer og andre handlinger. Når denne er satt til «false» kan vinduer fremdeles heves av alt-venstreklikk hvor som helst på vinduet eller et normalt klikk på vindudekorasjonene eller spesielle meldinger slik som aktiveringsforespørsler fra skrivebordshåndterere. Dette alternativet er deaktivert i klikk-for-fokus modus."
+msgstr ""
+"Mange handlinger (f.eks klikk i klientområdet, flytting av eller endring av "
+"størrelse på vinduer) hever normalt sett vinduet som en sideeffekt. Sett "
+"dette alternativet til «false» for å fjerne koblingen mellom heving av "
+"vinduer og andre handlinger. Når denne er satt til «false» kan vinduer "
+"fremdeles heves av alt-venstreklikk hvor som helst på vinduet eller et "
+"normalt klikk på vindudekorasjonene eller spesielle meldinger slik som "
+"aktiveringsforespørsler fra skrivebordshåndterere. Dette alternativet er "
+"deaktivert i klikk-for-fokus modus."
 
 #: ../src/metacity.schemas.in.h:27
 msgid "Maximize window"
