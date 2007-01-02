@@ -1,3 +1,8 @@
+2007-01-02  Thomas Thurman  <thomas@thurman.org.uk>
+
+        * src/c-screen.c (meta_comp_screen_redirect): Remove double unref
+	of stacker object. Fixes #387761.
+
 2006-12-27  Bruno Boaventura  <brunoboaventura@gmail.com>
 
         Move "On Top" option in menu. Fix #382962.

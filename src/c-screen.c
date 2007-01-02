@@ -338,8 +338,6 @@ meta_comp_screen_redirect (MetaCompScreen *info)
   
   info->magnifier = cm_magnifier_new (CM_NODE (info->stacker), &source, &target);
   
-  g_object_unref (info->stacker);
-  
   if (g_getenv ("USE_MAGNIFIER"))
     cm_magnifier_set_active (info->magnifier, TRUE);
   else
