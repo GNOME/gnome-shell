@@ -172,6 +172,14 @@ void                  clutter_actor_get_abs_position (ClutterActor          *sel
 						      gint                  *y);
 guint                 clutter_actor_get_width        (ClutterActor          *self);
 guint                 clutter_actor_get_height       (ClutterActor          *self);
+
+void                  clutter_actor_set_width         (ClutterActor *self, 
+						       guint         width);
+
+void                  clutter_actor_set_height        (ClutterActor *self, 
+						       guint         height);
+
+
 gint                  clutter_actor_get_x            (ClutterActor          *self);
 gint                  clutter_actor_get_y            (ClutterActor          *self);
 void                  clutter_actor_rotate_x         (ClutterActor          *self,

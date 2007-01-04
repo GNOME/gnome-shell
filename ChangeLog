@@ -1,3 +1,33 @@
+2007-01-04  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	Add new set_width/height API calls.
+	Tweak scaling by reseting matrix.
+	Make set_opactiy() take parent opacity into account.
+	Fix clipping.
+
+	* clutter/clutter-alpha.c:
+	Add more sine functionality.
+
+	* clutter/clutter-behaviour-opacity.c:
+	Dont make a copy of all applied actors but use a foreach()
+
+	* clutter/clutter-behaviour-scale.c:
+	Give correct limits to propertys. 
+	Tweak gravity a little more. 
+	Update docs. 
+:
+	* clutter/clutter-behaviour.c: (clutter_behaviour_remove):
+	Minor warning text change.
+
+	* clutter/clutter-feature.c: (clutter_feature_wait_for_vblank):
+	Minor dri ioctl tweak.
+
+	* clutter/clutter-label.c:
+	* clutter/clutter-label.h:
+	Add new label_full api call.
+
 2006-12-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-stage.[ch]:

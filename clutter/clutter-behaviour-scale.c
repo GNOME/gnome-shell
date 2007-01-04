@@ -118,7 +118,10 @@ scale_frame_foreach (ClutterBehaviour *behaviour,
       break;
     case CLUTTER_GRAVITY_CENTER:
       CLUTTER_NOTE (MISC, "gravity %i vs %i\n", sw, w);
-      clutter_actor_move_by (actor, sw - w, sh - h);
+      /* 
+       * FIXME: This is actually broken for anything other than 0,0 
+      */
+      clutter_actor_set_position (actor, (w - sw)/2, (h - sh)/2);
     default:
       break;
     }
@@ -223,7 +226,7 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
                                    g_param_spec_double ("scale-begin",
                                                         "Scale Begin",
                                                         "Initial scale",
-                                                        1.0, G_MAXDOUBLE,
+                                                        0.0, G_MAXDOUBLE,
                                                         1.0,
                                                         CLUTTER_PARAM_READWRITE));
   /**
@@ -238,7 +241,7 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
                                    g_param_spec_double ("scale-end",
                                                         "Scale End",
                                                         "Final scale",
-                                                        1.0, G_MAXDOUBLE,
+                                                        0.0, G_MAXDOUBLE,
                                                         1.0,
                                                         CLUTTER_PARAM_READWRITE));
   /**
@@ -276,7 +279,7 @@ clutter_behaviour_scale_init (ClutterBehaviourScale *self)
  * @alpha: a #ClutterAlpha
  * @scale_begin: initial scale factor
  * @scale_end: final scale factor
- * @gravity: FIXME
+ * @gravity: FIXME: Not currently implemented
  *
  * Creates a new  #ClutterBehaviourScale instance.
  *
@@ -301,7 +304,7 @@ clutter_behaviour_scale_new (ClutterAlpha   *alpha,
  * @alpha: a #ClutterAlpha
  * @scale_begin: initial scale factor
  * @scale_end: final scale factor
- * @gravity: FIXME
+ * @gravity: FIXME: Not currently implemented
  *
  * A fixed point implementation of clutter_behaviour_scale_new()
  *

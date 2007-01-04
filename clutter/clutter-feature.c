@@ -381,6 +381,7 @@ clutter_feature_wait_for_vblank (void)
 	drm_wait_vblank_t blank;
 	blank.request.type     = DRM_VBLANK_RELATIVE;
 	blank.request.sequence = 1;
+	blank.request.signal   = 0;
 	drm_wait_vblank (__features->dri_fd, &blank);
       }
       break;

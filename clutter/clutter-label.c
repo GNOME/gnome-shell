@@ -485,6 +485,31 @@ clutter_label_new_with_text (const gchar *font_name,
 }
 
 /**
+ * clutter_label_new_full:
+ * @font_name: the name (and size) of the font to be used
+ * @text: the text to be displayed
+ * @color: #ClutterColor for text
+ *
+ * Creates a new #ClutterLabel displaying @text with color @color 
+ * using @font_name.
+ *
+ * Return value: a #ClutterLabel
+ */
+ClutterActor*
+clutter_label_new_full (const gchar  *font_name,
+			const gchar  *text,
+			ClutterColor *color)
+{
+  /* FIXME: really new_with_text should take color argument... */
+  ClutterActor *label;
+
+  label = clutter_label_new_with_text (font_name, text);
+  clutter_label_set_color (CLUTTER_LABEL(label), color);
+
+  return label;
+}
+
+/**
  * clutter_label_new:
  *
  * Creates a new, empty #ClutterLabel.

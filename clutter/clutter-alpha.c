@@ -491,6 +491,30 @@ clutter_ramp_func (ClutterAlpha *alpha,
     }
 }
 
+static guint32
+sinc_func (ClutterAlpha *alpha, 
+	   float         angle,
+	   float         offset)
+{
+  ClutterTimeline *timeline;
+  gint current_frame_num, n_frames;
+  gdouble x, sine;
+  
+  timeline = clutter_alpha_get_timeline (alpha);
+
+  current_frame_num = clutter_timeline_get_current_frame (timeline);
+  n_frames = clutter_timeline_get_n_frames (timeline);
+
+  /* FIXME: fixed point, and fixed point sine() */
+
+  x = (gdouble) (current_frame_num * angle * M_PI) / n_frames ;
+  sine = (sin (x - (M_PI / angle)) + offset) * 0.5f;
+
+  CLUTTER_NOTE (ALPHA, "sine: %2f\n", sine);
+
+  return (guint32) (sine * (gdouble) CLUTTER_ALPHA_MAX_ALPHA);
+}
+
 /**
  * clutter_sine_func:
  * @alpha: a #ClutterAlpha
@@ -507,21 +531,24 @@ guint32
 clutter_sine_func (ClutterAlpha *alpha,
                    gpointer      dummy)
 {
-  ClutterTimeline *timeline;
-  gint current_frame_num, n_frames;
-  gdouble x, sine;
-  
-  timeline = clutter_alpha_get_timeline (alpha);
+  return sinc_func (alpha, 2.0, 1.0);
+}
 
-  current_frame_num = clutter_timeline_get_current_frame (timeline);
-  n_frames = clutter_timeline_get_n_frames (timeline);
-
-  /* FIXME: fixed point, and fixed point sine() */
-
-  x = (gdouble) (current_frame_num * 2.0f * M_PI) / n_frames ;
-  sine = (sin (x - (M_PI / 2.0f)) + 1.0f) * 0.5f;
-
-  CLUTTER_NOTE (ALPHA, "sine: %2f\n", sine);
-
-  return (guint32) (sine * (gdouble) CLUTTER_ALPHA_MAX_ALPHA);
+/**
+ * clutter_sine_inc_func:
+ * @alpha: a #ClutterAlpha
+ * @dummy: unused argument
+ *
+ * Convenience alpha function for a sine wave. You can use this
+ * function as the alpha function for clutter_alpha_set_func().
+ *
+ * Return value: an alpha value.
+ *
+ * Since: 0.2
+ */
+guint32 
+clutter_sine_inc_func (ClutterAlpha *alpha,
+		       gpointer      dummy)
+{
+  return sinc_func (alpha, 0.5, 1.0);
 }

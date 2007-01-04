@@ -307,6 +307,7 @@ clutter_redraw (void)
 	       ((float) stage_color.blue / 0xff * 1.0),
 	       0.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+  
   glDisable(GL_LIGHTING); 
   glDisable(GL_DEPTH_TEST);
 

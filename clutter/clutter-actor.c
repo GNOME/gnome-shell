@@ -361,18 +361,20 @@ clutter_actor_paint (ClutterActor *self)
     {
       ClutterGeometry *clip = &(self->priv->clip);
 
-      glClearStencil (0.0f);
       glEnable (GL_STENCIL_TEST);
+
+      glClearStencil (0.0f);
+      glClear(GL_STENCIL_BUFFER_BIT);
 
       glStencilFunc (GL_NEVER, 0x1, 0x1);
       glStencilOp (GL_INCR, GL_INCR, GL_INCR);
+
       glColor3f(1.0f, 1.0f, 1.0f);
 
-      /* render clip geomerty */
-      glRecti (self->priv->coords.x1 + clip->x,
-	       self->priv->coords.y1 + clip->y,
-	       self->priv->coords.x1 + clip->x + clip->width,
-	       self->priv->coords.y1 + clip->y + clip->height);
+      glRecti (clip->x, 
+	       clip->y,
+	       clip->x + clip->width,
+	       clip->y + clip->height);
 
       glStencilFunc (GL_EQUAL, 0x1, 0x1);
       glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP);
@@ -384,6 +386,11 @@ clutter_actor_paint (ClutterActor *self)
   if (self->priv->has_clip)
     {
       glDisable (GL_STENCIL_TEST);
+    }
+
+  if (self->priv->scale_x != CFX_ONE || self->priv->scale_y != CFX_ONE)
+    {
+      glScaled (1.0, 1.0, 1.0);
     }
 
   glPopMatrix();
@@ -1226,6 +1233,41 @@ clutter_actor_get_height (ClutterActor *self)
 }
 
 /**
+ * clutter_actor_set_width
+ * @self: A #ClutterActor
+ * @width: Requested new width for actor
+ * 
+ * Requests a new width for actor
+ *
+ * since: 2.0
+ **/
+void
+clutter_actor_set_width (ClutterActor *self, guint width)
+{
+  clutter_actor_set_size (self, 
+			  width,
+			  clutter_actor_get_height (self));
+}
+
+/**
+ * clutter_actor_set_height
+ * @self: A #ClutterActor
+ * @height: Requested new height for actor
+ * 
+ * Requests a new height for actor
+ *
+ * since: 2.0
+ **/
+void
+clutter_actor_set_height (ClutterActor *self, guint height)
+{
+  clutter_actor_set_size (self, 
+			  clutter_actor_get_width (self),
+			  height);
+}
+
+
+/**
  * clutter_actor_get_x
  * @self: A #ClutterActor
  *
@@ -1390,9 +1432,9 @@ clutter_actor_get_opacity (ClutterActor *self)
 
   parent = self->priv->parent_actor;
   
-  /* FIXME: need to factor in the actual actors opacity with parents */
+  /* Factor in the actual actors opacity with parents */
   if (parent && clutter_actor_get_opacity (parent) != 0xff)
-    return clutter_actor_get_opacity(parent);
+    return (clutter_actor_get_opacity(parent) * self->priv->opacity) / 0xff;
 
   return self->priv->opacity;
 }

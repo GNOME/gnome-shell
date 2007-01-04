@@ -233,7 +233,7 @@ clutter_behaviour_remove (ClutterBehaviour *behave,
 
   if (!g_slist_find (behave->priv->actors, actor))
     {
-      g_warning ("The behaviour of type %s does not apply "
+      g_warning ("The behaviour of type %s is not applied "
                  "to the actor of type %s",
                  g_type_name (G_OBJECT_TYPE (behave)),
                  g_type_name (G_OBJECT_TYPE (actor)));
@@ -378,7 +378,9 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
  * clutter_behaviour_get_actors:
  * @behave: a #ClutterBehaviour
  *
- * Retrieves all the actors to which @behave applies.
+ * Retrieves all the actors to which @behave applies. It is not recommended
+ * derived classes use this in there alpha notify method but use 
+ * #clutter_behaviour_actors_foreach as it avoids alot of needless allocations.
  *
  * Return value: a list of actors. You should free the returned list
  *   with g_slist_free() when finished using it.

@@ -78,20 +78,23 @@ enum
   PROP_OPACITY_END
 };
 
+static void 
+alpha_notify_foreach (ClutterBehaviour *behaviour,
+		      ClutterActor     *actor,
+		      gpointer          data)
+{
+  clutter_actor_set_opacity (actor, GPOINTER_TO_INT(data));
+}
+
 static void
 clutter_behaviour_alpha_notify (ClutterBehaviour *behave,
                                 guint32           alpha_value)
 {
-  GSList *actors, *l;
   guint8 opacity;
   ClutterBehaviourOpacityPrivate *priv;
 
   priv = CLUTTER_BEHAVIOUR_OPACITY (behave)->priv;
   
-  actors = clutter_behaviour_get_actors (behave);
-  if (!actors)
-    return;
-
   opacity = alpha_value 
           * (priv->opacity_end - priv->opacity_start)
           / CLUTTER_ALPHA_MAX_ALPHA;
@@ -100,14 +103,9 @@ clutter_behaviour_alpha_notify (ClutterBehaviour *behave,
                 alpha_value,
                 opacity);
 
-  for (l = actors; l; l = l->next)
-    {
-      ClutterActor *actor = l->data;
-      
-      clutter_actor_set_opacity (actor, opacity);
-    }
-
-  g_slist_free (actors);
+  clutter_behaviour_actors_foreach (behave,
+				    alpha_notify_foreach,
+				    GINT_TO_POINTER((gint)opacity));
 }
 
 static void
