@@ -1,3 +1,16 @@
+2007-01-07  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c: (clutter_actor_allocate_coords):
+	Fix an amazingly not noticed until now typo.
+	Minor doc tweaks.
+
+	* clutter/clutter-behaviour-opacity.c:
+	(clutter_behaviour_alpha_notify):
+	Take into account initial opacity value when calculating from alpha.  
+
+	* clutter/clutter-group.c:
+	Add new get_nth_child() and get_n_children() api calls.
+
 2007-01-04  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c:

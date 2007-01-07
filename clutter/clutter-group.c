@@ -28,7 +28,7 @@
  * @short_description: Base class for actors which contain multiple child
  * actors.
  *
- * #ClutterGroup is an Actor which can contain multiple child actors.
+ * A #ClutterGroup is an Actor which can contain multiple child actors.
  */
 
 #include "config.h"
@@ -247,11 +247,49 @@ clutter_group_new (void)
 GList*
 clutter_group_get_children (ClutterGroup *self)
 {
-  /* FIXME: remane get_actors() */
   g_return_val_if_fail (CLUTTER_IS_GROUP (self), NULL);
 
   return g_list_copy(self->priv->children);
 }
+
+/**
+ * clutter_group_get_nth_child:
+ * @self: A #ClutterGroup
+ *
+ * Gets the number of actors held in the group.
+ * 
+ * Return value: The number of child actors held in the group.
+ * 
+ * Since: 0.2
+ **/
+gint
+clutter_group_get_n_children (ClutterGroup *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_GROUP (self), NULL);
+
+  return g_list_length (self->priv->children);
+}
+
+/**
+ * clutter_group_get_nth_child:
+ * @self: A #ClutterGroup
+ * @index: the position of the requested actor. 
+ * 
+ * Gets a groups child held at position index in stack.
+ *
+ * Return value: A Clutter actor or NULL if index is invalid.
+ *
+ * Since: 0.2
+ **/
+ClutterActor*
+clutter_group_get_nth_child (ClutterGroup *self,
+			     gint          index)
+{
+  g_return_val_if_fail (CLUTTER_IS_GROUP (self), NULL);
+
+  return g_list_nth_data (self->priv->children, index);
+}
+
 
 /**
  * clutter_group_foreach:

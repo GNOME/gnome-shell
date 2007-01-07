@@ -154,8 +154,8 @@ clutter_actor_show (ClutterActor *self)
  * clutter_actor_show_all:
  * @self: a #ClutterActor
  *
- * Recursively show an actor, and any child actor if @self is a
- * #ClutterGroup.
+ * Recursively show an actor, and any child actor if @self has
+ * child actors.
  *
  * Since: 0.2
  */
@@ -207,7 +207,7 @@ clutter_actor_hide (ClutterActor *self)
  * @self: a #ClutterActor
  *
  * Recursively hides an actor, and any child actor if @self
- * is a #ClutterGroup.
+ * has child actors.
  *
  * Since: 0.2
  */
@@ -473,7 +473,7 @@ clutter_actor_allocate_coords (ClutterActor    *self,
   box->x2 = self->priv->coords.x2;
   box->y2 = self->priv->coords.y2;
 
-  if (klass->request_coords)
+  if (klass->allocate_coords)
     {
       /* FIXME: This is kind of a cludge - we pass out *private* 
        *        co-ords down to any subclasses so they can modify
@@ -1434,7 +1434,7 @@ clutter_actor_get_opacity (ClutterActor *self)
   
   /* Factor in the actual actors opacity with parents */
   if (parent && clutter_actor_get_opacity (parent) != 0xff)
-    return (clutter_actor_get_opacity(parent) * self->priv->opacity) / 0xff;
+      return (clutter_actor_get_opacity(parent) * self->priv->opacity) / 0xff;
 
   return self->priv->opacity;
 }
