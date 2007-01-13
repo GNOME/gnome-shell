@@ -1797,7 +1797,8 @@ meta_frames_motion_notify_event     (GtkWidget           *widget,
                 grab_op == META_GRAB_OP_CLICKING_DELETE) ||
                (control == META_FRAME_CONTROL_MINIMIZE &&
                 grab_op == META_GRAB_OP_CLICKING_MINIMIZE) ||
-               (control == META_FRAME_CONTROL_MAXIMIZE &&
+               ((control == META_FRAME_CONTROL_MAXIMIZE ||
+                 control == META_FRAME_CONTROL_UNMAXIMIZE) &&
                 (grab_op == META_GRAB_OP_CLICKING_MAXIMIZE ||
                  grab_op == META_GRAB_OP_CLICKING_UNMAXIMIZE)) ||
                (control == META_FRAME_CONTROL_SHADE &&

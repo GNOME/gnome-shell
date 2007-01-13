@@ -1,3 +1,10 @@
+2007-01-13  Bruno Boaventura  <brunobol@gnome.org>
+
+        * src/frames.c (meta_frames_motion_notify_event): Unmaximize
+        button must keep preesed appearence when clicked (hold down),
+        move off, and back over the button. Fixes #395560. Patch from
+        Mad Alex <madalexonline@yahoo.co.uk>.
+        
 2007-01-02  Thomas Thurman  <thomas@thurman.org.uk>
 
         * src/c-screen.c (meta_comp_screen_redirect): Remove double unref
