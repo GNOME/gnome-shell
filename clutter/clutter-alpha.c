@@ -492,6 +492,13 @@ clutter_ramp_func (ClutterAlpha *alpha,
 }
 
 static guint32
+sincx_func (ClutterAlpha *alpha, 
+	   float         angle,
+	   float         offset)
+{
+}
+
+static guint32
 sinc_func (ClutterAlpha *alpha, 
 	   float         angle,
 	   float         offset)

@@ -94,6 +94,7 @@ CLEANFILES = \
 source_c = clutter-main.c 		\
 	   clutter-util.c 		\
 	   clutter-feature.c 		\
+	   clutter-fixed.c		\
            clutter-event.c 		\
 	   clutter-color.c 		\
 	   clutter-timeline.c 		\
