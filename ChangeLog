@@ -1,3 +1,12 @@
+2007-01-15  Tomas Frydrych  <tf@openedhand.com>
+	
+	* clutter/clutter-fixed.h: (CLUTTER_FIXED_TO_DOUBLE/FLOAT):
+	Fixed macro so it works for negative values.
+	* clutter/clutter-fixed.c: (clutter_fixed_sin):
+	Implemented fixed point sin function.
+	* clutter/clutter-alpha.c: (clutter_sin_func, clutter_sin_inc_func):
+	Pluged in fixed point sin function.
+	
 2007-01-07  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c: (clutter_actor_allocate_coords):

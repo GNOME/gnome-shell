@@ -83,49 +83,60 @@ static ClutterFixed sin_tbl [] =
  */
 #define CFX_SIN_STEP 0x00000192
 
+
+/**
+ * clutter_fixed_sin:
+ * @angle: a #ClutterAlpha
+ *
+ * Fixed point implementation of sine function
+ * Return value: sine value (as fixed point).
+ *
+ * Since: 0.2
+ */
 ClutterFixed
-clutter_fixed_sin (ClutterFixed anx)
+clutter_fixed_sin (ClutterFixed angle)
 {
+    int sign = 1, indx1, indx2;
+    ClutterFixed low, high, d1, d2;
+    
     /* reduce to <0, 2*pi) */
-    if (anx >= CFX_2PI)
+    if (angle >= CFX_2PI)
     {
-	ClutterFixed f = CLUTTER_FIXED_DIV (anx, CFX_2PI);
-	anx = anx - f;
+	ClutterFixed f = CLUTTER_FIXED_DIV (angle, CFX_2PI);
+	angle = angle - f;
     }
 
     /* reduce to first quadrant and sign */
-    int sign = 1;
-
-    if (anx > CFX_PI)
+    if (angle > CFX_PI)
     {
 	sign = -1;
-	if (anx > CFX_PI + CFX_PI_2)
+	if (angle > CFX_PI + CFX_PI_2)
 	{
 	    /* fourth qudrant */
-	    anx = CFX_2PI - anx;
+	    angle = CFX_2PI - angle;
 	}
 	else
 	{
 	    /* third quadrant */
-	    anx -= CFX_PI;
+	    angle -= CFX_PI;
 	}
     }
     else
     {
-	if (anx > CFX_PI_2)
+	if (angle > CFX_PI_2)
 	{
 	    /* second quadrant */
-	    anx = CFX_PI - anx;
+	    angle = CFX_PI - angle;
 	}
     }
 
-    /* Calculate indexes of the two nearest values in our table
+    /* Calculate indices of the two nearest values in our table
      * and return weighted average
      *
      * Handle the end of the table gracefully
      */
-    int indx1 = CLUTTER_FIXED_DIV (anx, CFX_SIN_STEP);
-    int indx2;
+    indx1 = CLUTTER_FIXED_DIV (angle, CFX_SIN_STEP);
+    indx2;
     
     indx1 = CLUTTER_FIXED_INT (indx1);
 
@@ -139,16 +150,16 @@ clutter_fixed_sin (ClutterFixed anx)
 	indx2 = indx1 + 1;
     }
     
-    ClutterFixed low  = sin_tbl[indx1];
-    ClutterFixed high = sin_tbl[indx2];
+    low  = sin_tbl[indx1];
+    high = sin_tbl[indx2];
 
-    ClutterFixed d1 = anx - indx1 * CFX_SIN_STEP;
-    ClutterFixed d2 = indx2 * CFX_SIN_STEP - anx;
+    d1 = angle - indx1 * CFX_SIN_STEP;
+    d2 = indx2 * CFX_SIN_STEP - angle;
 
-    anx = ((low * d2 + high * d1) / (CFX_SIN_STEP));
+    angle = ((low * d2 + high * d1) / (CFX_SIN_STEP));
 
     if (sign < 0)
-	anx = (1 + ~anx);
+	angle = (1 + ~angle);
     
-    return anx;
+    return angle;
 }

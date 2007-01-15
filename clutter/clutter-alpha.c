@@ -493,9 +493,26 @@ clutter_ramp_func (ClutterAlpha *alpha,
 
 static guint32
 sincx_func (ClutterAlpha *alpha, 
-	   float         angle,
-	   float         offset)
+	    ClutterFixed  angle,
+	    ClutterFixed  offset)
 {
+  ClutterTimeline *timeline;
+  gint current_frame_num, n_frames;
+  ClutterFixed x, sine;
+  
+  timeline = clutter_alpha_get_timeline (alpha);
+
+  current_frame_num = clutter_timeline_get_current_frame (timeline);
+  n_frames = clutter_timeline_get_n_frames (timeline);
+
+  x = angle * current_frame_num / n_frames;
+  x = CLUTTER_FIXED_MUL (x, CFX_PI) - CLUTTER_FIXED_DIV (CFX_PI, angle);
+
+  sine = (clutter_fixed_sin (x) + offset)/2;
+
+  CLUTTER_NOTE (ALPHA, "sine: %2f\n", CLUTTER_FIXED_TO_DOUBLE (sine));
+
+  return CLUTTER_FIXED_INT (sine * CLUTTER_ALPHA_MAX_ALPHA);
 }
 
 static guint32
@@ -538,7 +555,11 @@ guint32
 clutter_sine_func (ClutterAlpha *alpha,
                    gpointer      dummy)
 {
+#if 0
   return sinc_func (alpha, 2.0, 1.0);
+#else
+  return sincx_func (alpha, CLUTTER_INT_TO_FIXED (2), CFX_ONE);
+#endif
 }
 
 /**
@@ -557,5 +578,9 @@ guint32
 clutter_sine_inc_func (ClutterAlpha *alpha,
 		       gpointer      dummy)
 {
+#if 0
   return sinc_func (alpha, 0.5, 1.0);
+#else
+  return sincx_func (alpha, CFX_ONE / 2, CFX_ONE);
+#endif
 }
