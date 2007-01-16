@@ -1,3 +1,22 @@
+2.17.5
+======
+
+Thanks to Bruno Boaventura, Mad Alex, and Thomas Thurman for
+improvements in this release.
+
+   - make window menu arrangement more sensible. (#382962, Bruno)
+   - unmaximise button keeps pressed appearance when moved off and
+     back. (#395560, Alex)
+   - fix a couple of compositor crashes (#387761, Thomas)
+   - new environment variables checked if the compositor is enabled;
+     see the new file doc/compositor-control.txt for details. (Thomas)
+
+Translations
+  Djihed Afifi (ar), Ales Nyakhaychyk (be), Jordi Mallach (ca),
+  Jakub Friedl (cs), David Lodge (en_GB), Raivis Dejus (lv),
+  Kjartan Maraas (nb), Mugurel Tudor (ro), Daniel Nylander (sv),
+  Theppitak Karoonboonyanan (th)
+
 2.17.3
 ======
 Thanks to Christof Krüger, Federico Mena Quintero, Bruno Boaventura,
