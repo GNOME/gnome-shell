@@ -556,7 +556,6 @@ clutter_root_xwindow
 clutter_want_debug
 clutter_threads_enter
 clutter_threads_leave
-clutter_vblank_method
 <SUBSECTION Private>
 clutter_init_error_quark
 </SECTION>

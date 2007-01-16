@@ -1,5 +1,10 @@
 2007-01-16  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter-sections.txt: Remove clutter_vblank_method(): it's
+	private.
+
+2007-01-16  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter-sections.txt: Update.
 
 	* tmpl/*.sgml: Update templates.
