@@ -1,3 +1,9 @@
+2007-01-16  Thomas Thurman  <thomas@thurman.org.uk>
+
+        * src/compositor.c (meta_compositor_new): Removed
+        #ifdef SPIFFY_COMPOSITOR throughout the file. Replaced with check
+	for environment variable METACITY_BLING, which may be temporary.
+
 2007-01-13  Bruno Boaventura  <brunobol@gnome.org>
 
         * src/frames.c (meta_frames_motion_notify_event): Unmaximize

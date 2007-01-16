@@ -112,7 +112,6 @@ get_xid (MetaWindow *window)
 
 #ifdef HAVE_COMPOSITE_EXTENSIONS
 
-#ifdef SPIFFY_COMPOSITOR
 /* This is called by Metacity's effect code when an effect needs to happen.
  * In compositor-less Metacity, this includes things like the wireframe
  * zoom when a window is minimised. We have a rather larger box of tricks.
@@ -168,7 +167,6 @@ do_effect (MetaEffect *effect,
 	break;
     }
 }
-#endif /* SPIFFY_COMPOSITOR */
 
 #endif /* HAVE_COMPOSITE_EXTENSIONS */
 
@@ -219,9 +217,11 @@ meta_compositor_new (MetaDisplay *display)
   
   compositor->enabled = TRUE;
   
-#ifdef SPIFFY_COMPOSITOR
-  meta_push_effect_handler (do_effect, compositor);
-#endif
+  /* Compositor without bling is the default, but leave the bling
+   * accessible for now.
+   */
+  if (getenv("METACITY_BLING")!=NULL)
+    meta_push_effect_handler (do_effect, compositor);
   
   return compositor;
 #else /* HAVE_COMPOSITE_EXTENSIONS */
