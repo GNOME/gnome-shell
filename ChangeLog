@@ -1,5 +1,9 @@
 2007-01-16  Thomas Thurman  <thomas@thurman.org.uk>
 
+        * doc/compositor-control.txt: New file.
+
+2007-01-16  Thomas Thurman  <thomas@thurman.org.uk>
+
         * src/compositor.c (meta_compositor_new): Removed
         #ifdef SPIFFY_COMPOSITOR throughout the file. Replaced with check
 	for environment variable METACITY_BLING, which may be temporary.

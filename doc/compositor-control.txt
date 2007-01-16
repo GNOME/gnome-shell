@@ -1,0 +1,46 @@
+The compositor is the box of tricks inside the window manager which performs
+special effects on the windows on your screen. Metacity's window manager is
+under development. Your help is requested in finding and fixing bugs. This
+document tells you how to configure Metacity so that you can use compositing.
+
+To turn the compositor on initially, you need to pass --enable-compositor to
+the configure script. This will introduce a dependence on libcm, which you
+can get from <URL:http://ftp.gnome.org/pub/GNOME/sources/libcm/>.
+
+When Metacity is compiled, you will need to turn the compositor on in gconf
+for it to have any effect. You will find the boolean switch at
+
+   /apps/metacity/general/compositing_manager
+
+When that's done, you can set some environment variables before you launch
+Metacity to influence how the compositor works. These will eventually become
+configuration options or gconf options when they grow up. Define them to any
+value to turn them on; leave them undefined to turn them off. Currently the
+options you can set are:
+
+   LIBCM_DIRECT
+
+      If this is set, the compositor will bypass the X server and do all its
+      work directly with the hardware. I know of no reason you would want to
+      do so, but perhaps you do.
+
+   LIBCM_TFP
+
+      If this is set ("tfp mode"), the compositor will feel free to use the
+      texture_from_pixmap extension; if this is not set ("non-tfp mode"), the
+      compositor will use a workaround. Many drivers require non-tfp mode in
+      order to work, and will paint all windows clear blue or clear white
+      without it. Thanks to Travis Watkins for suggesting this switch; he
+      cautions that some games or video players may require tfp mode.
+
+   METACITY_BLING
+
+      This turns on several pretty but non-essential animations (dialogues
+      fracturing and exploding, minimisations doing a shrinkydink effect,
+      and so on). If it is not set, the standard non-GL animations are
+      retained. This affects only window event animations; it doesn't change
+      menus zooming, dialogues being semi-transparent, and so on. Try it
+      and see whether you like it.
+
+If you have any problems, ask on metacity-devel-list@gnome.org, or
+#gnome-hackers on gimpnet, or come and find me (tthurman at gnome) and ask.
