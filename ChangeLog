@@ -1,5 +1,9 @@
 2007-01-16  Thomas Thurman  <thomas@thurman.org.uk>
 
+        * configure.in: post-release bump to 2.17.8.
+
+2007-01-16  Thomas Thurman  <thomas@thurman.org.uk>
+
         * doc/compositor-control.txt: New file.
 
 2007-01-16  Thomas Thurman  <thomas@thurman.org.uk>

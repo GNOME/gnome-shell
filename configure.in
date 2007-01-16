@@ -4,7 +4,7 @@ m4_define([metacity_major_version], [2])
 m4_define([metacity_minor_version], [17])
 # Fibonacci sequence for micro version numbering:
 # 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987
-m4_define([metacity_micro_version], [5])
+m4_define([metacity_micro_version], [8])
 
 m4_define([metacity_version],
           [metacity_major_version.metacity_minor_version.metacity_micro_version])
@@ -219,7 +219,7 @@ if test x$enable_compositor = xyes; then
    have_xcomposite=yes
    echo "CompositeExt support forced on"
 elif test x$enable_compositor = xauto; then
-   echo "Not building compositing manager by default now, must enable explicitly to get it. And it doesn't work, so don't bother unless you want to hack on it..."
+   echo "Not building compositing manager by default now, must enable explicitly to get it."
    have_xcomposite=no
 else
    have_xcomposite=no
