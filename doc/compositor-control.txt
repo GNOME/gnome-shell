@@ -1,5 +1,5 @@
 The compositor is the box of tricks inside the window manager which performs
-special effects on the windows on your screen. Metacity's window manager is
+special effects on the windows on your screen. Metacity's compositor is
 under development. Your help is requested in finding and fixing bugs. This
 document tells you how to configure Metacity so that you can use compositing.
 
