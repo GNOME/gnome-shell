@@ -405,11 +405,32 @@ clutter_stage_realize (ClutterActor *actor)
 	};
 
       if (priv->xvisinfo)
-	XFree(priv->xvisinfo);
+	{
+	  XFree(priv->xvisinfo);
+	  priv->xvisinfo = None;
+	}
+#if 0
+      /* Attempted fix at GTK 'white' textures - made no difference :( */
+      if (priv->is_foreign_xwin && priv->xwin != None)
+	{
+	  XWindowAttributes win_attr;
+	  XVisualInfo       vis_info;
+	  int               n;
 
-      priv->xvisinfo = glXChooseVisual (clutter_xdisplay(),
-					clutter_xscreen(),
-					gl_attributes);
+	  XGetWindowAttributes (clutter_xdisplay(), priv->xwin, &win_attr);
+	  vis_info.screen   = clutter_xscreen();
+	  vis_info.visualid = XVisualIDFromVisual (win_attr.visual);
+	  priv->xvisinfo = XGetVisualInfo (clutter_xdisplay(),
+					   VisualScreenMask|VisualIDMask, 
+					   &vis_info, &n);
+
+	  printf("made %li\n", priv->xvisinfo);
+	}
+#endif
+      if (priv->xvisinfo == None)
+	priv->xvisinfo = glXChooseVisual (clutter_xdisplay(),
+					  clutter_xscreen(),
+					  gl_attributes);
       if (!priv->xvisinfo)
 	{
 	  g_critical ("Unable to find suitable GL visual.");

@@ -131,7 +131,7 @@ clutter_group_allocate_coords (ClutterActor    *self,
 	      if (box->x2 == 0 || cbox.x2 > box->x2)
 		box->x2 = cbox.x2;
 
-	      if (box->y2 == 0 || cbox.y2 < box->y2)
+	      if (box->y2 == 0 || cbox.y2 > box->y2)
 		box->y2 = cbox.y2;
 	    }
 	}
@@ -265,7 +265,7 @@ clutter_group_get_children (ClutterGroup *self)
 gint
 clutter_group_get_n_children (ClutterGroup *self)
 {
-  g_return_val_if_fail (CLUTTER_IS_GROUP (self), NULL);
+  g_return_val_if_fail (CLUTTER_IS_GROUP (self), 0);
 
   return g_list_length (self->priv->children);
 }

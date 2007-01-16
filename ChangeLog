@@ -1,3 +1,31 @@
+2007-01-16  Matthew Allum  <mallum@openedhand.com>
+
+	* NEWS:
+	Minor tweaks
+
+	* TODO:
+	Sync up, mainly with 0.3 todo items
+
+	* clutter/clutter-behaviour.c:
+	* clutter/clutter-behaviour.h:
+	clutter_behaviour_get_n_actors() / clutter_behaviour_get_nth_actor()
+	Additions.
+
+	* clutter/clutter-stage.c: (clutter_stage_realize):
+	Experimental (disabled) visual setting code.
+
+	* clutter/clutter-feature.c:
+	Check for GL_EXT_texture_rectangle (#198  - Frederick Riss)
+
+	* clutter/clutter-group.c: (clutter_group_allocate_coords):
+	Fix for group size allocation (#199 -  Frederick Riss)	
+
+	* clutter/clutter-texture.c: (texture_upload_data):
+	Fix texture unpacking row length (#197 Frederick Riss)
+	
+	* examples/Makefile.am:
+	Fix LDADD in build (#196 - Frederick Riss)
+
 2007-01-16  Tomas Frydrych  <tf@openedhand.com>
 	
 	* clutter/clutter-fixed.h:

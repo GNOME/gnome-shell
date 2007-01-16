@@ -539,12 +539,11 @@ texture_upload_data (ClutterTexture *texture,
 
 	glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-	glPixelStorei (GL_UNPACK_ROW_LENGTH, priv->width);
+	glPixelStorei (GL_UNPACK_ROW_LENGTH, src_w);
 	glPixelStorei (GL_UNPACK_ALIGNMENT, 4);
 	
 	if (create_textures)
 	  {
-
 	    glTexImage2D(priv->target_type, 
 			 0, 
 			 (bpp == 4) ? 

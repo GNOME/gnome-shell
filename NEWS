@@ -10,7 +10,7 @@ Clutter 0.2 ()
      be destroyed.
    o Add basic run-time detection of GL features.
      + Use GL_TEXTURE_RECTANGLE_ARB if available.
-     + Attempt to set up sync to vblank
+     + Attempt to set up sync to vblank (set CLUTTER_VBLANK=none to disable)
    o Add API for behaviours. A ClutterBehaviour is an object which
      drives a set of actors using one or more properties depending
      on the value of an "alpha" function.

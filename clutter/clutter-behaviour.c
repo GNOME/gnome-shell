@@ -245,6 +245,45 @@ clutter_behaviour_remove (ClutterBehaviour *behave,
 }
 
 /**
+ * clutter_behaviour_get_n_actors:
+ * @behave: a #ClutterBehaviour
+ *
+ * Gets the number of actors this behaviour is applied too.
+ *
+ * Return value: The number of applied actors 
+ *
+ * Since: 0.2
+ */
+gint
+clutter_behaviour_get_n_actors (ClutterBehaviour *behave)
+{
+  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR (behave), 0);
+
+  return g_list_length (behave->priv->actors);
+}
+
+/**
+ * clutter_behaviour_get_nth_actor:
+ * @behave: a #ClutterBehaviour
+ * @num:  the index of an actor this behaviour is applied too. 
+ *
+ * Gets an actor the behaviour was applied to referenced by index num.
+ *
+ * Return value: A Clutter actor or NULL if index is invalid.
+ *
+ * Since: 0.2
+ */
+ClutterActor*
+clutter_behaviour_get_nth_actor (ClutterBehaviour *behave,
+				 gint              num)
+{
+  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR (behave), NULL);
+
+  return g_list_nth_data (behave->priv->actors, num);
+}
+
+
+/**
  * clutter_behaviour_actors_foreach:
  * @behave: a #ClutterBehaviour
  * @func: a function called for each actor

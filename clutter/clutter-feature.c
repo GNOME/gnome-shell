@@ -253,7 +253,8 @@ clutter_feature_init (void)
   glx_extensions = glXQueryExtensionsString (clutter_xdisplay (),
                                              clutter_xscreen ());
   
-  if (check_gl_extension ("GL_ARB_texture_rectangle", gl_extensions))
+  if (check_gl_extension ("GL_ARB_texture_rectangle", gl_extensions)
+      || check_gl_extension ("GL_EXT_texture_rectangle", gl_extensions))
     __features->flags |= CLUTTER_FEATURE_TEXTURE_RECTANGLE;
 
   /* vblank */
