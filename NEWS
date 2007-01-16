@@ -30,6 +30,10 @@ Clutter 0.2 ()
    o Redo group and actor scale/sizing API and functionality.
    o Add memory management API for ClutterColor, and string parsing.
  * List of bug fixed
+   o #199 - Little group handling fix?
+   o #198 - Detect NPOT support on more systems
+   o #197 - Tiled textures are broken
+   o #196 - Rebuild the examples when the library changes
    o #156 - clutter_actor_set_position not using the absolute size
    o #155 - Don't test for XInitThreads [Bastien Nocera]
    o #154 - Key presses not working in super-oh example [Bastien Nocera]
@@ -37,7 +41,7 @@ Clutter 0.2 ()
    o #143 - Faulty ref-counting in clutter_group_remove [Frederic Riss]
    o #141 - Copy-pasto in clutter_media_set_volume [Frederic Riss]
    o #101 - No package 'x11' found -- wrong configure [Tomasz Torcz]
-   o #98 - Enabling trails in super-oh crashes
+   o  #98 - Enabling trails in super-oh crashes
 
 Clutter 0.1 (22/06/2006)
 ========================
