@@ -70,6 +70,7 @@ struct _ClutterMainContext
 #define CLUTTER_CONTEXT()	(clutter_context_get_default ())
 ClutterMainContext *clutter_context_get_default (void);
 
+const gchar *clutter_vblank_method (void);
 
 typedef enum {
   CLUTTER_ACTOR_UNUSED_FLAG = 0,

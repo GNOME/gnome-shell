@@ -30,6 +30,7 @@ ClutterLabel
 ClutterLabelClass
 clutter_label_new
 clutter_label_new_with_text
+clutter_label_new_full
 clutter_label_set_text
 clutter_label_get_text
 clutter_label_set_font_name
@@ -71,6 +72,8 @@ clutter_behaviour_remove
 ClutterBehaviourForeachFunc
 clutter_behaviour_actors_foreach
 clutter_behaviour_get_actors
+clutter_behaviour_get_n_actors
+clutter_behaviour_get_nth_actor
 clutter_behaviour_get_alpha
 clutter_behaviour_set_alpha
 <SUBSECTION Standard>
@@ -226,7 +229,9 @@ clutter_actor_set_size
 clutter_actor_get_size
 clutter_actor_set_position
 clutter_actor_get_abs_position
+clutter_actor_set_width
 clutter_actor_get_width
+clutter_actor_set_height
 clutter_actor_get_height
 clutter_actor_get_x
 clutter_actor_get_y
@@ -451,6 +456,21 @@ CFX_Q
 CFX_ONE
 CFX_MAX
 CFX_MIN
+ClutterAngle
+CFX_PI
+CFX_2PI
+CFX_PI_2
+CFX_PI_4
+CFX_PI8192
+CFX_120
+CFX_180
+CFX_240
+CFX_360
+CFX_60
+CFX_DIV
+CFX_INT
+CFX_MUL
+clutter_color_shadex
 CLUTTER_FIXED_TO_FLOAT
 CLUTTER_FIXED_TO_DOUBLE
 CLUTTER_FLOAT_TO_FIXED
@@ -461,6 +481,10 @@ CLUTTER_FIXED_FLOOR
 CLUTTER_FIXED_CEIL
 CLUTTER_FIXED_MUL
 CLUTTER_FIXED_DIV
+clutter_fixed_cos
+clutter_fixed_sin
+clutter_angle_cos
+clutter_angle_sin
 </SECTION>
 
 <SECTION>
@@ -477,6 +501,7 @@ clutter_color_equal
 clutter_color_lighten
 clutter_color_darken
 clutter_color_shade
+clutter_color_shadex
 clutter_color_to_hls
 clutter_color_to_pixel
 clutter_color_to_string
@@ -531,6 +556,7 @@ clutter_root_xwindow
 clutter_want_debug
 clutter_threads_enter
 clutter_threads_leave
+clutter_vblank_method
 <SUBSECTION Private>
 clutter_init_error_quark
 </SECTION>

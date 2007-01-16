@@ -132,6 +132,16 @@ clutter-color
 @shade: 
 
 
+<!-- ##### FUNCTION clutter_color_shadex ##### -->
+<para>
+
+</para>
+
+@src: 
+@dest: 
+@shade: 
+
+
 <!-- ##### FUNCTION clutter_color_to_hls ##### -->
 <para>
 

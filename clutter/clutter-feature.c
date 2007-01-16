@@ -196,7 +196,10 @@ check_vblank_env (const char *name)
 {
   const char *val;
 
+#if 0
   val = getenv("CLUTTER_VBLANK");
+#endif
+  val = clutter_vblank_method ();
 
   if (val && !strcasecmp(val, name))
     return TRUE;
@@ -310,12 +313,16 @@ clutter_feature_init (void)
   __features->features_set = TRUE;
 }
 
-static void
+static inline void
 clutter_feature_do_init (void)
 {
-  G_LOCK (__features);
-  clutter_feature_init ();
-  G_UNLOCK (__features);
+  if (G_UNLIKELY (__features == NULL) ||
+      G_UNLIKELY (__features->features_set == FALSE))
+    {
+      G_LOCK (__features);
+      clutter_feature_init ();
+      G_UNLOCK (__features);
+    }
 }
 
 /**

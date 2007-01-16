@@ -1,3 +1,28 @@
+2007-01-16  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-feature.c: Use clutter_vblank_method() to
+	get the VBlank method name from the environment variable OR
+	the command line switch.
+
+	(clutter_feature_do_init): Move the check on the features
+	state here, to avoid an expensive function call, and inline
+	the function.
+
+	* clutter/clutter-fixed.c: Fix gtk-doc.
+
+	* clutter/clutter-main.c: Add a --clutter-vblank command line
+	switch controlling the VBlank method to be used: it overrides
+	the CLUTTER_VBLANK environment variable.
+
+	(pre_parse_hook), (clutter_init),
+	(clutter_init_with_args): Move thread initialisation before
+	type init, to avoid the warning that comes with newer GLib
+	versions.
+
+	* clutter/clutter-group.h:
+	* clutter/clutter-group.c: Mark clutter_group_show_all() and
+	clutter_group_hide_all() as deprecated.
+
 2007-01-16  Matthew Allum  <mallum@openedhand.com>
 
 	* NEWS:

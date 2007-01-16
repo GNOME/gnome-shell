@@ -84,7 +84,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 #define CFX_DIV CLUTTER_FIXED_DIV
 
 /* Fixed point math routines */
-ClutterFixed clutter_fixed_sin (ClutterFixed anx);
+ClutterFixed clutter_fixed_sin (ClutterFixed angle);
 ClutterFixed clutter_angle_sin (ClutterAngle angle);
 
 /* convenience macros for the cos functions */

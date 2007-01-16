@@ -47,6 +47,7 @@ static gboolean clutter_is_initialized = FALSE;
 static gboolean clutter_show_fps       = FALSE;
 static gboolean clutter_fatal_warnings = FALSE;
 static gchar *clutter_display_name     = NULL;
+static gchar *clutter_vblank_name      = NULL;
 static int clutter_screen              = 0;
 
 guint clutter_debug_flags = 0;  /* global clutter debug flag */
@@ -272,6 +273,12 @@ static gboolean
 clutter_want_fps (void)
 {
   return clutter_show_fps;
+}
+
+const gchar *
+clutter_vblank_method (void)
+{
+  return clutter_vblank_name;
 }
 
 /**
@@ -571,6 +578,8 @@ static GOptionEntry clutter_args[] = {
     "X screen to use", "SCREEN" },
   { "clutter-show-fps", 0, 0, G_OPTION_ARG_NONE, &clutter_show_fps,
     "Show frames per second", NULL },
+  { "clutter-vblank", 0, 0, G_OPTION_ARG_STRING, &clutter_vblank_name,
+    "VBlank method to be used (none, dri or glx)", "METHOD" },
   { "g-fatal-warnings", 0, 0, G_OPTION_ARG_NONE, &clutter_fatal_warnings,
     "Make all warnings fatal", NULL },
 #ifdef CLUTTER_ENABLE_DEBUG
@@ -597,10 +606,19 @@ pre_parse_hook (GOptionContext  *context,
   if (clutter_is_initialized)
     return TRUE;
 
-  g_type_init ();
-
+#if 0
+  /* XXX - this shows a warning with newer releases of GLib,
+   * as we use GOption in order to get here, and GOption uses
+   * the slice allocator and other GLib stuff.  so, either we
+   * move the thread init inside clutter_init() directly or
+   * we remove this call altogether, and let the applications
+   * deal with threading, as they are supposed to do anyway.
+   */
   if (!g_thread_supported ())
     g_thread_init (NULL);
+#endif
+
+  g_type_init ();
 
 #ifdef CLUTTER_ENABLE_DEBUG
   env_string = g_getenv ("CLUTTER_DEBUG");
@@ -614,13 +632,23 @@ pre_parse_hook (GOptionContext  *context,
     }
 #endif /* CLUTTER_ENABLE_DEBUG */
 
+  env_string = g_getenv ("CLUTTER_VBLANK");
+  if (env_string)
+    {
+      clutter_vblank_name = g_strdup (env_string);
+      env_string = NULL;
+    }
+
   env_string = g_getenv ("CLUTTER_SHOW_FPS");
   if (env_string)
     clutter_show_fps = TRUE;
 
   env_string = g_getenv ("DISPLAY");
   if (env_string)
-    clutter_display_name = g_strdup (env_string);
+    {
+      clutter_display_name = g_strdup (env_string);
+      env_string = NULL;
+    }
 
   return TRUE;
 }
@@ -824,6 +852,9 @@ clutter_init_with_args (int            *argc,
   if (clutter_is_initialized)
     return CLUTTER_INIT_SUCCESS;
 
+  if (!g_thread_supported ())
+    g_thread_init (NULL);
+
   if (!XInitThreads())
     {
       g_set_error (error, clutter_init_error_quark (),
@@ -902,6 +933,9 @@ clutter_init (int    *argc,
 
   if (clutter_is_initialized)
     return CLUTTER_INIT_SUCCESS;
+
+  if (!g_thread_supported ())
+    g_thread_init (NULL);
 
   if (!XInitThreads())
     return CLUTTER_INIT_ERROR_THREADS;

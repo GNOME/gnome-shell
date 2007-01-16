@@ -281,7 +281,7 @@ clutter_group_get_n_children (ClutterGroup *self)
  *
  * Since: 0.2
  **/
-ClutterActor*
+ClutterActor *
 clutter_group_get_nth_child (ClutterGroup *self,
 			     gint          index)
 {
@@ -326,40 +326,32 @@ clutter_group_foreach (ClutterGroup      *self,
  * clutter_group_show_all:
  * @self: A #ClutterGroup
  * 
- * Show all child actors of the group.
- * Note, does not recurse: use clutter_actor_show_all() for
- * a recursive show.
+ * Show all child actors of the group, like clutter_actor_show_all().
+ *
+ * @Deprecated: Use clutter_actor_show_all() instead.
  */
 void
 clutter_group_show_all (ClutterGroup *self)
 {
   g_return_if_fail (CLUTTER_IS_GROUP (self));
 
-  clutter_actor_show (CLUTTER_ACTOR (self));
-
-  g_list_foreach (self->priv->children,
-		  (GFunc) clutter_actor_show,
-		  NULL);
+  clutter_actor_show_all (CLUTTER_ACTOR (self));
 }
 
 /**
  * clutter_group_hide_all:
  * @self: A #ClutterGroup
  * 
- * Hide all child actors of the group.
- * Note, does not recurse: use clutter_actor_hide_all() for
- * a recursive hide.
+ * Hide all child actors of the group, like clutter_actor_hide_all().
+ *
+ * @Deprecated: Use clutter_actor_hide_all() instead
  */
 void
 clutter_group_hide_all (ClutterGroup *self)
 {
   g_return_if_fail (CLUTTER_IS_GROUP (self));
 
-  clutter_actor_hide(CLUTTER_ACTOR(self));
-
-  g_list_foreach (self->priv->children,
-		  (GFunc) clutter_actor_hide,
-		  NULL);
+  clutter_actor_hide_all (CLUTTER_ACTOR (self));
 }
 
 /**

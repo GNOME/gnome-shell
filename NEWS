@@ -28,6 +28,7 @@ Clutter 0.2 ()
    o Redo Clutter Label widget, using the new Pango renderer.
    o Clutter Textures do not store local pixbuf copy (of texture).
    o Redo group and actor scale/sizing API and functionality.
+   o Add memory management API for ClutterColor, and string parsing.
  * List of bug fixed
    o #156 - clutter_actor_set_position not using the absolute size
    o #155 - Don't test for XInitThreads [Bastien Nocera]

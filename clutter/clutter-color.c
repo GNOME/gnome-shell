@@ -445,6 +445,9 @@ clutter_color_parse (const gchar  *color,
  * hex digits representing the red, green, blue and alpha components
  * respectively.
  *
+ * Note: the returned string cannot be used to get the color back with
+ * clutter_color_parse().
+ *
  * Return value: a newly-allocated text string
  *
  * Since: 0.2

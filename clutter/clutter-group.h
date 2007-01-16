@@ -100,8 +100,11 @@ void          clutter_group_add_many         (ClutterGroup    *self,
 					      ...) G_GNUC_NULL_TERMINATED;
 void          clutter_group_remove           (ClutterGroup    *self,
 					      ClutterActor    *actor); 
+#ifndef CLUTTER_DISABLE_DEPRECATED
 void          clutter_group_show_all         (ClutterGroup    *self);
 void          clutter_group_hide_all         (ClutterGroup    *self);
+#endif /* CLUTTER_DISABLE_DEPRECATED */
+
 ClutterActor *clutter_group_find_child_by_id (ClutterGroup    *self,
 					      guint            id);
 void          clutter_group_raise            (ClutterGroup    *self,

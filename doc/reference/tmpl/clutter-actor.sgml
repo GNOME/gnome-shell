@@ -375,6 +375,15 @@ Base class for #ClutterActor
 @y: 
 
 
+<!-- ##### FUNCTION clutter_actor_set_width ##### -->
+<para>
+
+</para>
+
+@self: 
+@width: 
+
+
 <!-- ##### FUNCTION clutter_actor_get_width ##### -->
 <para>
 
@@ -382,6 +391,15 @@ Base class for #ClutterActor
 
 @self: 
 @Returns: 
+
+
+<!-- ##### FUNCTION clutter_actor_set_height ##### -->
+<para>
+
+</para>
+
+@self: 
+@height: 
 
 
 <!-- ##### FUNCTION clutter_actor_get_height ##### -->

@@ -92,6 +92,17 @@ ClutterLabel
 @Returns: 
 
 
+<!-- ##### FUNCTION clutter_label_new_full ##### -->
+<para>
+
+</para>
+
+@font_name: 
+@text: 
+@color: 
+@Returns: 
+
+
 <!-- ##### FUNCTION clutter_label_set_text ##### -->
 <para>
 

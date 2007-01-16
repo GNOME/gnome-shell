@@ -55,6 +55,113 @@ floating-to-fixed conversion.
 
 
 
+<!-- ##### TYPEDEF ClutterAngle ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO CFX_PI ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CFX_2PI ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CFX_PI_2 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CFX_PI_4 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CFX_PI8192 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CFX_120 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CFX_180 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CFX_240 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CFX_360 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CFX_60 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CFX_DIV ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CFX_INT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CFX_MUL ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_color_shadex ##### -->
+<para>
+
+</para>
+
+@src: 
+@dest: 
+@shade: 
+
+
 <!-- ##### MACRO CLUTTER_FIXED_TO_FLOAT ##### -->
 <para>
 
@@ -135,5 +242,39 @@ floating-to-fixed conversion.
 
 @x: 
 @y: 
+
+
+<!-- ##### MACRO clutter_fixed_cos ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### FUNCTION clutter_fixed_sin ##### -->
+<para>
+
+</para>
+
+@angle: 
+@Returns: 
+
+
+<!-- ##### MACRO clutter_angle_cos ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### FUNCTION clutter_angle_sin ##### -->
+<para>
+
+</para>
+
+@angle: 
+@Returns: 
 
 

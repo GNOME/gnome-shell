@@ -94,6 +94,25 @@ applies.
 @Returns: 
 
 
+<!-- ##### FUNCTION clutter_behaviour_get_n_actors ##### -->
+<para>
+
+</para>
+
+@behave: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_behaviour_get_nth_actor ##### -->
+<para>
+
+</para>
+
+@behave: 
+@num: 
+@Returns: 
+
+
 <!-- ##### FUNCTION clutter_behaviour_get_alpha ##### -->
 <para>
 

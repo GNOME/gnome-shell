@@ -89,6 +89,7 @@ static ClutterFixed sin_tbl [] =
  * @angle: a #ClutterFixed angle in radians
  *
  * Fixed point implementation of sine function
+ * 
  * Return value: sine value (as fixed point).
  *
  * Since: 0.2
