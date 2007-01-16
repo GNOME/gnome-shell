@@ -86,7 +86,7 @@ static ClutterFixed sin_tbl [] =
 
 /**
  * clutter_fixed_sin:
- * @angle: a #ClutterAlpha
+ * @angle: a #ClutterFixed angle in radians
  *
  * Fixed point implementation of sine function
  * Return value: sine value (as fixed point).
@@ -98,6 +98,13 @@ clutter_fixed_sin (ClutterFixed angle)
 {
     int sign = 1, indx1, indx2;
     ClutterFixed low, high, d1, d2;
+
+    /* convert negative angle to positive + sign */
+    if ((int)angle < 0)
+    {
+	sign  = 1 + ~sign;
+	angle = 1 + ~angle;
+    }
     
     /* reduce to <0, 2*pi) */
     if (angle >= CFX_2PI)
@@ -109,7 +116,7 @@ clutter_fixed_sin (ClutterFixed angle)
     /* reduce to first quadrant and sign */
     if (angle > CFX_PI)
     {
-	sign = -1;
+	sign = 1 + ~sign;
 	if (angle > CFX_PI + CFX_PI_2)
 	{
 	    /* fourth qudrant */
@@ -162,4 +169,65 @@ clutter_fixed_sin (ClutterFixed angle)
 	angle = (1 + ~angle);
     
     return angle;
+}
+
+/**
+ * clutter_angle_sin:
+ * @angle: a #ClutterAngle
+ *
+ * Fast fixed point implementation of sine function.
+ *
+ * ClutterAngle is an integer such that that 1024 represents
+ * full circle.
+ * 
+ * Return value: sine value (as fixed point).
+ *
+ * Since: 0.2
+ */
+ClutterFixed
+clutter_angle_sin (ClutterAngle angle)
+{
+    int sign = 1;
+    ClutterFixed result;
+
+    /* reduce negative angle to positive + sign */
+    if (angle < 0)
+    {
+	sign  = 1 + ~sign;
+	angle = 1 + ~angle;
+    }
+    
+    /* reduce to <0, 2*pi) */
+    angle &= 0x7ff;
+    
+    /* reduce to first quadrant and sign */
+    if (angle > 512)
+    {
+	sign = 1 + ~sign;
+	if (angle > 768)
+	{
+	    /* fourth qudrant */
+	    angle = 1024 - angle;
+	}
+	else
+	{
+	    /* third quadrant */
+	    angle -= 512;
+	}
+    }
+    else
+    {
+	if (angle > 256)
+	{
+	    /* second quadrant */
+	    angle = 512 - angle;
+	}
+    }
+
+    result = sin_tbl[angle];
+    
+    if (sign < 0)
+	result = (1 + ~result);
+    
+    return result;
 }

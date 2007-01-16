@@ -492,6 +492,40 @@ clutter_ramp_func (ClutterAlpha *alpha,
 }
 
 static guint32
+sincx1024_func (ClutterAlpha *alpha, 
+		ClutterAngle  angle,
+		ClutterFixed  offset)
+{
+  ClutterTimeline *timeline;
+  gint current_frame_num, n_frames;
+  ClutterAngle x;
+  ClutterFixed sine;
+  
+  timeline = clutter_alpha_get_timeline (alpha);
+
+  current_frame_num = clutter_timeline_get_current_frame (timeline);
+  n_frames = clutter_timeline_get_n_frames (timeline);
+
+  x = angle * current_frame_num / n_frames;
+
+  /*
+   * x = x*PI - PI/angle
+   */
+  x = (x << 9) - (512 / angle);
+
+  sine = (clutter_angle_sin (x) + offset)/2;
+
+  CLUTTER_NOTE (ALPHA, "sine: %2f\n", CLUTTER_FIXED_TO_DOUBLE (sine));
+
+  return CLUTTER_FIXED_INT (sine * CLUTTER_ALPHA_MAX_ALPHA);
+}
+
+#if 0
+/*
+ * The following two functions are left in place for reference
+ * purposes.
+ */
+static guint32
 sincx_func (ClutterAlpha *alpha, 
 	    ClutterFixed  angle,
 	    ClutterFixed  offset)
@@ -538,7 +572,7 @@ sinc_func (ClutterAlpha *alpha,
 
   return (guint32) (sine * (gdouble) CLUTTER_ALPHA_MAX_ALPHA);
 }
-
+#endif
 /**
  * clutter_sine_func:
  * @alpha: a #ClutterAlpha
@@ -558,7 +592,11 @@ clutter_sine_func (ClutterAlpha *alpha,
 #if 0
   return sinc_func (alpha, 2.0, 1.0);
 #else
-  return sincx_func (alpha, CLUTTER_INT_TO_FIXED (2), CFX_ONE);
+  /* Conversion to ClutterAngle:
+   * 
+   * 2.0 rad -> 1024*2.0/(2*PI) = 325.949
+   */
+  return sincx1024_func (alpha, 326, CFX_ONE);
 #endif
 }
 
@@ -581,6 +619,10 @@ clutter_sine_inc_func (ClutterAlpha *alpha,
 #if 0
   return sinc_func (alpha, 0.5, 1.0);
 #else
-  return sincx_func (alpha, CFX_ONE / 2, CFX_ONE);
+  /* Conversion to ClutterAngle:
+   * 
+   * 0.5 rad -> 1024*0.5/(2*PI) = 81.487
+   */
+  return sincx1024_func (alpha, 81, CFX_ONE);
 #endif
 }

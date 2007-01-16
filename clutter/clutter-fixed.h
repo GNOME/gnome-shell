@@ -31,6 +31,7 @@
 G_BEGIN_DECLS
 
 typedef gint32 ClutterFixed;
+typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 
 #define CFX_Q      16		/* Decimal part size in bits */
 #define CFX_ONE    (1 << CFX_Q)	/* 1 */
@@ -69,6 +70,11 @@ typedef gint32 ClutterFixed;
 
 /* Fixed point math routines */
 ClutterFixed clutter_fixed_sin (ClutterFixed anx);
+ClutterFixed clutter_angle_sin (ClutterAngle angle);
+
+/* convenience macros for the cos functions */
+#define clutter_fixed_cos(x) clutter_fixed_sin((x) - CFX_PI_2)
+#define clutter_angle_cos(x) clutter_fixed_sin((x) - 256)
 
 G_END_DECLS
 

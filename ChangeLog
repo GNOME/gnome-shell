@@ -1,3 +1,17 @@
+2007-01-16  Tomas Frydrych  <tf@openedhand.com>
+	
+	* clutter/clutter-fixed.h:
+	Added integer ClutterAngle type, protype of clutter_angle_sin and
+	convenience macros clutter_fixed_cos and clutter_angle_cos
+	* clutter/clutter-fixed.c: 
+	(clutter_fixed_sin):
+	Fixed to work for negative angles.
+	(clutter_angle_sin):
+	Fast fixed point sin function for ClutterAngle angles.
+	* clutter/clutter-alpha.c: 
+	(clutter_sin_func, clutter_sin_inc_func):
+	Changed to use clutter_angle_sin function.
+	
 2007-01-15  Tomas Frydrych  <tf@openedhand.com>
 	
 	* clutter/clutter-fixed.h: (CLUTTER_FIXED_TO_DOUBLE/FLOAT):
