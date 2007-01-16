@@ -67,6 +67,9 @@ void          clutter_color_darken     (const ClutterColor *src,
 void          clutter_color_shade      (const ClutterColor *src,
                                         ClutterColor       *dest,
                                         gdouble             shade);
+void          clutter_color_shadex      (const ClutterColor *src,
+                                        ClutterColor       *dest,
+                                        ClutterFixed        shade);
 
 void          clutter_color_to_hls     (const ClutterColor *src,
                                         guint8             *hue,

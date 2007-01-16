@@ -180,11 +180,10 @@ static inline void
 interpolate (const ClutterKnot *begin, 
 	     const ClutterKnot *end, 
 	     ClutterKnot       *out,
-	     double             t)
+	     ClutterFixed       t)
 {
-  /* FIXME: fixed point */
-  out->x = begin->x + t * (end->x - begin->x);
-  out->y = begin->y + t * (end->y - begin->y);
+  out->x = begin->x + CLUTTER_FIXED_INT (t * (end->x - begin->x));
+  out->y = begin->y + CLUTTER_FIXED_INT (t * (end->y - begin->y));
 }
 
 static gint
@@ -272,10 +271,9 @@ path_alpha_to_position (ClutterBehaviourPath *behave,
           if (offset >= dist && offset < (dist + dist_to_next))
             {
 	      ClutterKnot new;
-	      double t;
+	      ClutterFixed t;
 	    
-	      /* FIXME: Use fixed */
-	      t = (double) (offset - dist) / dist_to_next;
+	      t = CLUTTER_INT_TO_FIXED (offset - dist) / dist_to_next;
 
               interpolate (knot, next, &new, t);
 

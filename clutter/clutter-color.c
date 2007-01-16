@@ -107,7 +107,8 @@ void
 clutter_color_lighten (const ClutterColor *src,
 		       ClutterColor       *dest)
 {
-  clutter_color_shade (src, dest, 1.3);
+  /* 0x14ccd is ClutterFixed for 1.3 */
+  clutter_color_shade (src, dest, 0x14ccd);
 }
 
 /**
@@ -122,7 +123,8 @@ void
 clutter_color_darken (const ClutterColor *src,
 		      ClutterColor       *dest)
 {
-  clutter_color_shade (src, dest, 0.7);
+  /* 0xb333 is ClutterFixed for 0.7 */
+  clutter_color_shade (src, dest, 0xb333);
 }
 
 /**
@@ -140,15 +142,15 @@ clutter_color_to_hls (const ClutterColor *src,
 		      guint8             *luminance,
 		      guint8             *saturation)
 {
-  gdouble red, green, blue;
-  gdouble min, max, delta;
-  gdouble h, l, s;
+  ClutterFixed red, green, blue;
+  ClutterFixed min, max, delta;
+  ClutterFixed h, l, s;
   
   g_return_if_fail (src != NULL);
 
-  red = src->red / 255.0;
-  green = src->green / 255.0;
-  blue = src->blue / 255.0;
+  red   = CLUTTER_INT_TO_FIXED (src->red)   / 255;
+  green = CLUTTER_INT_TO_FIXED (src->green) / 255;
+  blue  = CLUTTER_INT_TO_FIXED (src->blue)  / 255;
 
   if (red > green)
     {
@@ -181,32 +183,32 @@ clutter_color_to_hls (const ClutterColor *src,
 
   if (max != min)
     {
-      if (l <= 0.5)
-	s = (max - min) / (max + min);
+      if (l <= CFX_ONE/2)
+	s = CFX_DIV ((max - min), (max + min));
       else
-	s = (max - min) / (2 - max - min);
+	s = CFX_DIV ((max - min), (2 - max - min));
 
       delta = max - min;
       if (red == max)
-	h = (green - blue) / delta;
+	h = CFX_DIV ((green - blue), delta);
       else if (green == max)
-	h = 2 + (blue - red) / delta;
+	h = CLUTTER_INT_TO_FIXED (2) + CFX_DIV ((blue - red), delta);
       else if (blue == max)
-	h = 4 + (red - green) / delta;
+	h = CLUTTER_INT_TO_FIXED (4) + CFX_DIV ((red - green), delta);
 
       h *= 60;
-      if (h < 0.0)
-	h += 360;
+      if (h < 0)
+	h += CLUTTER_INT_TO_FIXED (360);
     }
 
   if (hue)
-    *hue = (guint8) (h * 255);
+    *hue = (guint8) CFX_INT (h * 255);
 
   if (luminance)
-    *luminance = (guint8) (l * 255);
+    *luminance = (guint8) CFX_INT (l * 255);
 
   if (saturation)
-    *saturation = (guint8) (s * 255);
+    *saturation = (guint8) CFX_INT (s * 255);
 }
 
 /**
@@ -219,79 +221,81 @@ clutter_color_to_hls (const ClutterColor *src,
  * Converts a color expressed in HLS (hue, luminance and saturation)
  * values into a #ClutterColor.
  */
+
 void
 clutter_color_from_hls (ClutterColor *dest,
 			guint8        hue,
 			guint8        luminance,
 			guint8        saturation)
 {
-  gdouble h, l, s;
-  gdouble m1, m2;
+  ClutterFixed h, l, s;
+  ClutterFixed m1, m2;
   
   g_return_if_fail (dest != NULL);
 
-  l = (gdouble) luminance / 255.0;
-  s = (gdouble) saturation / 255.0;
+  l = CLUTTER_INT_TO_FIXED (luminance)  / 255;
+  s = CLUTTER_INT_TO_FIXED (saturation) / 255;
 
-  if (l <= 0.5)
-    m2 = l * (1 - s);
+  if (l <= CFX_ONE/2)
+    m2 = CFX_MUL (l, (CFX_ONE - s));
   else
-    m2 = l + s - l * s;
+    m2 = l + s - CFX_MUL (l,s);
 
   m1 = 2 * l - m2;
 
   if (s == 0)
     {
-      dest->red = (guint8) l * 255;
-      dest->green = (guint8) l * 255;
-      dest->blue = (guint8) l * 255;
+      dest->red   = (guint8) CFX_INT (l * 255);
+      dest->green = (guint8) CFX_INT (l * 255);
+      dest->blue  = (guint8) CFX_INT (l * 255);
     }
   else
     {
-      h = ((gdouble) hue / 255.0) + 120;
-      while (h > 360)
-	h -= 360;
+      h = (CLUTTER_INT_TO_FIXED (hue)/ 255) + CFX_120;
+      while (h > CFX_360)
+	h -= CFX_360;
       while (h < 0)
-	h += 360;
+	h += CFX_360;
 
-      if (h < 60)
-	dest->red = (guint8) (m1 + (m2 - m1) * h / 60) * 255;
-      else if (h < 180)
-	dest->red = (guint8) m2 * 255;
-      else if (h < 240)
-	dest->red = (guint8) (m1 + (m2 - m1) * (240 - h) / 60) * 255;
+      if (h < CFX_60)
+	dest->red = (guint8) CFX_INT((m1 + CFX_MUL((m2-m1), h) / 60) * 255);
+      else if (h < CFX_180)
+	dest->red = (guint8) CFX_INT (m2 * 255);
+      else if (h < CFX_240)
+	dest->red = (guint8)CFX_INT((m1+CFX_MUL((m2-m1),(CFX_240-h))/60)*255);
       else
-	dest->red = (guint8) m1 * 255;
+	dest->red = (guint8) CFX_INT (m1 * 255);
 
-      h = (gdouble) hue / 255.0;
-      while (h > 360)
-	h -= 360;
+      h = CLUTTER_INT_TO_FIXED (hue) / 255;
+      while (h > CFX_360)
+	h -= CFX_360;
       while (h < 0)
-	h += 360;
+	h += CFX_360;
 
-      if (h < 60)
-	dest->green = (guint8) (m1 + (m2 - m1) * h / 60) * 255;
-      else if (h < 180)
-        dest->green = (guint8) m2 * 255;
-      else if (h < 240)
-	dest->green = (guint8) (m1 + (m2 - m1) * (240 - h) / 60) * 255;
+      if (h < CFX_60)
+	dest->green = (guint8)CFX_INT((m1 + CFX_MUL((m2 - m1), h) / 60) * 255);
+      else if (h < CFX_180)
+        dest->green = (guint8) CFX_INT (m2 * 255);
+      else if (h < CFX_240)
+	dest->green =
+	    (guint8) CFX_INT((m1 + CFX_MUL ((m2-m1), (CFX_240-h)) / 60) * 255);
       else
-	dest->green = (guint8) m1 * 255;
+	dest->green = (guint8) CFX_INT (m1 * 255);
 
-      h = ((gdouble) hue / 255.0) - 120;
-      while (h > 360)
-	h -= 360;
+      h = (CLUTTER_INT_TO_FIXED (hue) / 255) - CFX_120;
+      while (h > CFX_360)
+	h -= CFX_360;
       while (h < 0)
-	h += 360;
+	h += CFX_360;
 
-      if (h < 60)
-	dest->blue = (guint8) (m1 + (m2 - m1) * h / 60) * 255;
-      else if (h < 180)
-	dest->blue = (guint8) m2 * 255;
-      else if (h < 240)
-	dest->blue = (guint8) (m1 + (m2 - m1) * (240 - h) / 60) * 255;
+      if (h < CFX_60)
+	dest->blue = (guint8) CFX_INT ((m1 + CFX_MUL ((m2-m1), h) / 60) * 255);
+      else if (h < CFX_180)
+	dest->blue = (guint8) CFX_INT (m2 * 255);
+      else if (h < CFX_240)
+	dest->blue = (guint8)CFX_INT((m1+CFX_MUL((m2-m1),(CFX_240-h))/60)*255);
       else
-	dest->blue = (guint8) m1 * 255;
+	dest->blue = (guint8) CFX_INT(m1 * 255);
     }
 }
 
@@ -307,35 +311,50 @@ clutter_color_from_hls (ClutterColor *dest,
 void
 clutter_color_shade (const ClutterColor *src,
 		     ClutterColor       *dest,
-		     gdouble             shade)
+		     gdouble            shade)
+{
+    clutter_color_shadex (src, dest, CLUTTER_FLOAT_TO_FIXED (shade));
+}
+
+/**
+ * clutter_color_shade:
+ * @src: a #ClutterColor
+ * @dest: return location for the shaded color
+ * @shade: #ClutterFixed the shade factor to apply
+ * 
+ * Shades @src by the factor of @shade and saves the modified
+ * color into @dest.
+ */
+void
+clutter_color_shadex (const ClutterColor *src,
+		      ClutterColor       *dest,
+		      ClutterFixed        shade)
 {
   guint8 h, l, s;
-  gdouble h1, l1, s1;
+  ClutterFixed l1, s1;
 
   g_return_if_fail (src != NULL);
   g_return_if_fail (dest != NULL);
   
   clutter_color_to_hls (src, &h, &l, &s);
 
-  h1 = (gdouble) h / 255.0;
-  l1 = (gdouble) l / 255.0;
-  s1 = (gdouble) s / 255.0;
-  
-  l1 *= shade;
-  if (l1 > 1.0)
-    l1 = 1.0;
-  else if (l1 < 0.0)
-    l1 = 0.0;
-  
-  s1 *= shade;
-  if (s1 > 1.0)
-    s1 = 1.0;
-  else if (s1 < 0.0)
-    s1 = 0.0;
+  l1 = CLUTTER_INT_TO_FIXED (l) / 255;
+  s1 = CLUTTER_INT_TO_FIXED (s) / 255;
 
-  h = (guint8) h1 * 255;
-  l = (guint8) l1 * 255;
-  s = (guint8) s1 * 255;
+  l1 = CFX_MUL (l1, shade);
+  if (l1 > CFX_ONE)
+    l1 = CFX_ONE;
+  else if (l1 < 0)
+    l1 = 0;
+
+  s1 = CFX_MUL (s1, shade);
+  if (s1 > CFX_ONE)
+    s1 = CFX_ONE;
+  else if (s1 < 0)
+    s1 = 0;
+  
+  l = (guint8) CFX_INT (l1 * 255);
+  s = (guint8) CFX_INT (s1 * 255);
 
   clutter_color_from_hls (dest, h, l, s);
 }

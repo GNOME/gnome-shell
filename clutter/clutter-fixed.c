@@ -177,7 +177,7 @@ clutter_fixed_sin (ClutterFixed angle)
  *
  * Fast fixed point implementation of sine function.
  *
- * ClutterAngle is an integer such that that 1024 represents
+ * ClutterAngle is an integer such that 1024 represents
  * full circle.
  * 
  * Return value: sine value (as fixed point).
