@@ -52,6 +52,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 #define CFX_180 CLUTTER_INT_TO_FIXED (180)
 #define CFX_120 CLUTTER_INT_TO_FIXED (120)
 #define CFX_60  CLUTTER_INT_TO_FIXED (60)
+#define CFX_255 CLUTTER_INT_TO_FIXED (255)
 
 #define CLUTTER_FIXED_TO_FLOAT(x) ((float)((int)(x)/65536.0))
 
@@ -84,12 +85,15 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 #define CFX_DIV CLUTTER_FIXED_DIV
 
 /* Fixed point math routines */
-ClutterFixed clutter_fixed_sin (ClutterFixed angle);
-ClutterFixed clutter_angle_sin (ClutterAngle angle);
+ClutterFixed clutter_sinx (ClutterFixed anx);
+ClutterFixed clutter_sini (ClutterAngle angle);
 
 /* convenience macros for the cos functions */
-#define clutter_fixed_cos(x) clutter_fixed_sin((x) - CFX_PI_2)
-#define clutter_angle_cos(x) clutter_fixed_sin((x) - 256)
+#define clutter_cosx(x) clutter_fixed_sin((x) - CFX_PI_2)
+#define clutter_cosi(x) clutter_sini((x) - 256)
+
+ClutterFixed clutter_sqrtx (ClutterFixed x);
+int clutter_sqrti (int x);
 
 G_END_DECLS
 

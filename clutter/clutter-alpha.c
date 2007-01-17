@@ -513,7 +513,7 @@ sincx1024_func (ClutterAlpha *alpha,
    */
   x = (x << 9) - (512 / angle);
 
-  sine = (clutter_angle_sin (x) + offset)/2;
+  sine = (clutter_sini (x) + offset)/2;
 
   CLUTTER_NOTE (ALPHA, "sine: %2f\n", CLUTTER_FIXED_TO_DOUBLE (sine));
 

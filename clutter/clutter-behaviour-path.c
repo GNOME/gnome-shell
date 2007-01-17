@@ -196,9 +196,8 @@ node_distance (const ClutterKnot *begin,
   if (clutter_knot_equal (begin, end))
         return 0;
 
-  /* FIXME: need fixed point here */
-  return sqrt ((end->x - begin->x) * (end->x - begin->x) +
-               (end->y - begin->y) * (end->y - begin->y));
+  return clutter_sqrti ((end->x - begin->x) * (end->x - begin->x) +
+			(end->y - begin->y) * (end->y - begin->y));
 }
 
 static gint
