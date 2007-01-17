@@ -2,8 +2,8 @@
 # An odd micro number indicates in-progress development, (eg. from CVS)
 # An even micro number indicates a released version.
 m4_define([clutter_major_version], [0])
-m4_define([clutter_minor_version], [1])
-m4_define([clutter_micro_version], [1])
+m4_define([clutter_minor_version], [2])
+m4_define([clutter_micro_version], [0])
 
 m4_define([clutter_version],
           [clutter_major_version.clutter_minor_version.clutter_micro_version])
@@ -133,7 +133,7 @@ fi
 AC_SUBST(CLUTTER_DEBUG_CFLAGS)
 
 AC_ARG_WITH(fpu, AS_HELP_STRING([--without-fpu], 
-                                [Assume no fpu is present]),
+                                [Assume target hardware has no fpu]),
               [with_fpu=$withval], [with_fpu=yes])
 
 if test "x$with_fpu" != "xyes" ; then
