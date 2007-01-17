@@ -136,13 +136,7 @@ clutter_behaviour_scale_alpha_notify (ClutterBehaviour *behave,
 
   priv = CLUTTER_BEHAVIOUR_SCALE (behave)->priv;
 
-  /* FIXME: use all fixed if possible
-  factor = CLUTTER_FIXED_DIV(CLUTTER_INT_TO_FIXED(alpha/2),
-			     CLUTTER_INT_TO_FIXED(CLUTTER_ALPHA_MAX_ALPHA/2));
-  */
-
-  factor = CLUTTER_FLOAT_TO_FIXED ((gdouble) alpha_value / CLUTTER_ALPHA_MAX_ALPHA);
-
+  factor = CLUTTER_INT_TO_FIXED (alpha_value) / CLUTTER_ALPHA_MAX_ALPHA;
   scale = CLUTTER_FIXED_MUL (factor, (priv->scale_end - priv->scale_begin));
   scale += priv->scale_begin;
 
