@@ -311,19 +311,23 @@ clutter_color_from_hls (ClutterColor *dest,
 void
 clutter_color_shade (const ClutterColor *src,
 		     ClutterColor       *dest,
-		     gdouble            shade)
+		     gdouble             shade)
 {
     clutter_color_shadex (src, dest, CLUTTER_FLOAT_TO_FIXED (shade));
 }
 
 /**
- * clutter_color_shade:
+ * clutter_color_shadex:
  * @src: a #ClutterColor
  * @dest: return location for the shaded color
  * @shade: #ClutterFixed the shade factor to apply
  * 
+ * Fixed point version of clutter_color_shade().
+ *
  * Shades @src by the factor of @shade and saves the modified
  * color into @dest.
+ *
+ * Since: 0.2
  */
 void
 clutter_color_shadex (const ClutterColor *src,
@@ -471,7 +475,7 @@ clutter_color_to_string (const ClutterColor *color)
  *
  * Compares two #ClutterColor<!-- -->s and checks if they are the same.
  *
- * Return: %TRUE if the two colors are the same.
+ * Return value: %TRUE if the two colors are the same.
  *
  * Since: 0.2
  */

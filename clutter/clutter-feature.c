@@ -40,6 +40,9 @@
 #include <fcntl.h>
 #include <errno.h>
 
+#include <GL/glx.h>
+#include <GL/gl.h>
+
 #include <dlfcn.h>
 
 #include "clutter-feature.h"

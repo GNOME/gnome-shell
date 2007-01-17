@@ -1,3 +1,15 @@
+2007-01-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-feature.h:
+	* clutter/clutter-feature.c: Move the GL headers from the
+	header file to the body.
+
+	* clutter/clutter-fixed.h:
+	* clutter/clutter-fixed.c: Fix apidoc.
+
+	* clutter/clutter-color.h:
+	* clutter/clutter-color.c: Ditto.
+
 2007-01-17  Tomas Frydrych  <tf@openedhand.com>
 	
 	* clutter/clutter-fixed.h:

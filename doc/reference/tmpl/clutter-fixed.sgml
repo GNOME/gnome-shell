@@ -131,6 +131,13 @@ floating-to-fixed conversion.
 
 
 
+<!-- ##### MACRO CFX_255 ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### MACRO CFX_DIV ##### -->
 <para>
 
@@ -150,16 +157,6 @@ floating-to-fixed conversion.
 
 </para>
 
-
-
-<!-- ##### FUNCTION clutter_color_shadex ##### -->
-<para>
-
-</para>
-
-@src: 
-@dest: 
-@shade: 
 
 
 <!-- ##### MACRO CLUTTER_FIXED_TO_FLOAT ##### -->
@@ -244,7 +241,7 @@ floating-to-fixed conversion.
 @y: 
 
 
-<!-- ##### MACRO clutter_fixed_cos ##### -->
+<!-- ##### MACRO clutter_cosi ##### -->
 <para>
 
 </para>
@@ -252,7 +249,15 @@ floating-to-fixed conversion.
 @x: 
 
 
-<!-- ##### FUNCTION clutter_fixed_sin ##### -->
+<!-- ##### MACRO clutter_cosx ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### FUNCTION clutter_sini ##### -->
 <para>
 
 </para>
@@ -261,20 +266,30 @@ floating-to-fixed conversion.
 @Returns: 
 
 
-<!-- ##### MACRO clutter_angle_cos ##### -->
-<para>
-
-</para>
-
-@x: 
-
-
-<!-- ##### FUNCTION clutter_angle_sin ##### -->
+<!-- ##### FUNCTION clutter_sinx ##### -->
 <para>
 
 </para>
 
 @angle: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_sqrti ##### -->
+<para>
+
+</para>
+
+@x: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_sqrtx ##### -->
+<para>
+
+</para>
+
+@x: 
 @Returns: 
 
 

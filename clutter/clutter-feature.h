@@ -34,8 +34,6 @@
 #define _HAVE_CLUTTER_FEATURE_H
 
 #include <glib.h>
-#include <GL/glx.h>
-#include <GL/gl.h>
 
 G_BEGIN_DECLS
 

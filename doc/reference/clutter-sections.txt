@@ -467,10 +467,10 @@ CFX_180
 CFX_240
 CFX_360
 CFX_60
+CFX_255
 CFX_DIV
 CFX_INT
 CFX_MUL
-clutter_color_shadex
 CLUTTER_FIXED_TO_FLOAT
 CLUTTER_FIXED_TO_DOUBLE
 CLUTTER_FLOAT_TO_FIXED
@@ -481,10 +481,12 @@ CLUTTER_FIXED_FLOOR
 CLUTTER_FIXED_CEIL
 CLUTTER_FIXED_MUL
 CLUTTER_FIXED_DIV
-clutter_fixed_cos
-clutter_fixed_sin
-clutter_angle_cos
-clutter_angle_sin
+clutter_cosi
+clutter_cosx
+clutter_sini
+clutter_sinx
+clutter_sqrti
+clutter_sqrtx
 </SECTION>
 
 <SECTION>

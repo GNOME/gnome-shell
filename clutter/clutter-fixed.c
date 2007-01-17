@@ -455,8 +455,8 @@ clutter_sqrtx (ClutterFixed x)
  *
  * Since: 0.2
  */
-int
-clutter_sqrti (int x)
+gint
+clutter_sqrti (gint x)
 {
     int t = 0;
     int sh = 0;
