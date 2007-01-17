@@ -1,3 +1,15 @@
+2007-01-17  Tomas Frydrych  <tf@openedhand.com>
+	* configure.ac: 
+	* clutter/clutter-behavior-path.c:
+	Added --without-fpu option.
+
+	* doc/refrence/tmpl/clutter-fixed.sgml:
+	* clutter/clutter-fixed.c:
+	* clutter/clutter-fixed.h:
+	Documentation for fixed point API.
+
+	* AUTHORS: added self.
+	
 2007-01-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-feature.h:

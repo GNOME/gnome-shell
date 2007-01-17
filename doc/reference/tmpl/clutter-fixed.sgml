@@ -29,28 +29,28 @@ floating-to-fixed conversion.
 
 <!-- ##### MACRO CFX_Q ##### -->
 <para>
-
+Number of bits used to store fractional part of #ClutterFixed.
 </para>
 
 
 
 <!-- ##### MACRO CFX_ONE ##### -->
 <para>
-
+#ClutterFixed representation of 1.
 </para>
 
 
 
 <!-- ##### MACRO CFX_MAX ##### -->
 <para>
-
+Maximum number representable by #ClutterFixed.
 </para>
 
 
 
 <!-- ##### MACRO CFX_MIN ##### -->
 <para>
-
+Minumum number representable by #ClutterFixed.
 </para>
 
 
@@ -63,198 +63,191 @@ floating-to-fixed conversion.
 
 <!-- ##### MACRO CFX_PI ##### -->
 <para>
-
+#ClutterFixed  representation of Pi.
 </para>
 
 
 
 <!-- ##### MACRO CFX_2PI ##### -->
 <para>
-
+#ClutterFixed representation of 2 * Pi.
 </para>
 
 
 
 <!-- ##### MACRO CFX_PI_2 ##### -->
 <para>
-
+#ClutterFixed representation of Pi/2.
 </para>
 
 
 
 <!-- ##### MACRO CFX_PI_4 ##### -->
 <para>
-
-</para>
-
-
-
-<!-- ##### MACRO CFX_PI8192 ##### -->
-<para>
-
+#ClutterFixed representation of Pi/4.
 </para>
 
 
 
 <!-- ##### MACRO CFX_120 ##### -->
 <para>
-
+#ClutterFixed representation of 120.
 </para>
 
 
 
 <!-- ##### MACRO CFX_180 ##### -->
 <para>
-
+#ClutterFixed representation of 180.
 </para>
 
 
 
 <!-- ##### MACRO CFX_240 ##### -->
 <para>
-
+#ClutterFixed representation of 240.
 </para>
 
 
 
 <!-- ##### MACRO CFX_360 ##### -->
 <para>
-
+#ClutterFixed representation of 360.
 </para>
 
 
 
 <!-- ##### MACRO CFX_60 ##### -->
 <para>
-
+#ClutterFixed representation of 60.
 </para>
 
 
 
 <!-- ##### MACRO CFX_255 ##### -->
 <para>
-
+#ClutterFixed representation of 255.
 </para>
 
 
 
 <!-- ##### MACRO CFX_DIV ##### -->
 <para>
-
+Alias for #CLUTTER_FIXED_DIV.
 </para>
 
 
 
 <!-- ##### MACRO CFX_INT ##### -->
 <para>
-
+Alias for #CLUTTER_FIXED_INT.
 </para>
 
 
 
 <!-- ##### MACRO CFX_MUL ##### -->
 <para>
-
+Alias for #CLUTTER_FIXED_MUL.
 </para>
 
 
 
 <!-- ##### MACRO CLUTTER_FIXED_TO_FLOAT ##### -->
 <para>
-
+Macro for converting #ClutterFixed to single precission floating point.
 </para>
 
-@x: 
+@x: #ClutterFixed
 
 
 <!-- ##### MACRO CLUTTER_FIXED_TO_DOUBLE ##### -->
 <para>
-
+Macro for converting #ClutterFixed to double precission floating point.
 </para>
 
-@x: 
+@x: #ClutterFixed
 
 
 <!-- ##### MACRO CLUTTER_FLOAT_TO_FIXED ##### -->
 <para>
-
+Macro for converting floating point numbers to #ClutterFixed.
 </para>
 
-@x: 
+@x: double or float
 
 
 <!-- ##### MACRO CLUTTER_INT_TO_FIXED ##### -->
 <para>
-
+Macro for converting integers to #ClutterFixed.
 </para>
 
-@x: 
+@x: int
 
 
 <!-- ##### MACRO CLUTTER_FIXED_INT ##### -->
 <para>
-
+Macro to obtain integer part of #ClutterFixed.
 </para>
 
-@x: 
+@x: #ClutterFixed
 
 
 <!-- ##### MACRO CLUTTER_FIXED_FRACTION ##### -->
 <para>
-
+Macro to obtain the fraction of #ClutterFixed.
 </para>
 
-@x: 
+@x: #ClutterFixed
 
 
 <!-- ##### MACRO CLUTTER_FIXED_FLOOR ##### -->
 <para>
-
+Macro to obtain greatest integer smaller than given #ClutterFixed.
 </para>
 
-@x: 
+@x: #ClutterFixed
 
 
 <!-- ##### MACRO CLUTTER_FIXED_CEIL ##### -->
 <para>
-
+Macro to obtain smallest integer greater than given #ClutterFixed.
 </para>
 
-@x: 
+@x: #ClutterFixed
 
 
 <!-- ##### MACRO CLUTTER_FIXED_MUL ##### -->
 <para>
-
+Macro for multiplication of two #ClutterFixed numbers.
 </para>
 
-@x: 
-@y: 
+@x: #ClutterFixed
+@y: #ClutterFixed
 
 
 <!-- ##### MACRO CLUTTER_FIXED_DIV ##### -->
 <para>
-
+Macro for difvision of two #ClutterFixed numbers.
 </para>
 
-@x: 
-@y: 
+@x: #ClutterFixed
+@y: #ClutterFixed
 
 
 <!-- ##### MACRO clutter_cosi ##### -->
 <para>
-
+Very fast fixed point cosine function.
 </para>
 
-@x: 
+@x: #ClutterAngle
 
 
 <!-- ##### MACRO clutter_cosx ##### -->
 <para>
-
+Fast fixed point cosine function.
 </para>
 
-@x: 
+@x: #ClutterFixed
 
 
 <!-- ##### FUNCTION clutter_sini ##### -->

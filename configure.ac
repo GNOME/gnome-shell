@@ -132,6 +132,14 @@ fi
 
 AC_SUBST(CLUTTER_DEBUG_CFLAGS)
 
+AC_ARG_WITH(fpu, AS_HELP_STRING([--without-fpu], 
+                                [Assume no fpu is present]),
+              [with_fpu=$withval], [with_fpu=yes])
+
+if test "x$with_fpu" != "xyes" ; then
+   CLUTTER_FIXED_CFLAGS="-DCFX_NO_FPU"
+fi
+
 dnl = GTK Doc check ========================================================
 
 GTK_DOC_CHECK([1.4])
@@ -140,7 +148,7 @@ dnl ========================================================================
 
 AC_SUBST(GCC_FLAGS)
 
-CLUTTER_CFLAGS="$GLX_CLAGS $CLUTTER_DEPS_CFLAGS"
+CLUTTER_CFLAGS="$GLX_CLAGS $CLUTTER_DEPS_CFLAGS $CLUTTER_FIXED_CFLAGS"
 CLUTTER_LIBS="$GLX_LIBS $CLUTTER_DEPS_LIBS"
 
 AC_SUBST(CLUTTER_CFLAGS)
@@ -170,4 +178,5 @@ echo "                   prefix:   ${prefix}"
 echo ""
 echo "              Debug level:   ${enable_debug}"
 echo "            Documentation:   ${enable_gtk_doc}"
+echo "                      FPU:   ${with_fpu}"
 echo ""

@@ -115,7 +115,7 @@ static ClutterFixed sin_tbl [] =
  *
  * Fixed point implementation of sine function
  * 
- * Return value: sine value (as fixed point).
+ * Return value: #ClutterFixed sine value.
  *
  * Since: 0.2
  */
@@ -204,7 +204,7 @@ clutter_sinx (ClutterFixed angle)
  * ClutterAngle is an integer such that 1024 represents
  * full circle.
  * 
- * Return value: sine value (as fixed point).
+ * Return value: #ClutterFixed sine value.
  *
  * Since: 0.2
  */
@@ -331,7 +331,7 @@ ClutterFixed sqrt_tbl [] =
  *
  * A fixed point implementation of squre root
  *
- * Return value: square root (as fixed point).
+ * Return value: #ClutterFixed square root.
  *
  * Since: 0.2
  */
@@ -450,7 +450,7 @@ clutter_sqrtx (ClutterFixed x)
  *
  * A fixed point implementation of square root for integers
  *
- * Return value: square root (as truncated integer).
+ * Return value: integer square root (truncated).
  *
  *
  * Since: 0.2
