@@ -65,6 +65,16 @@
 
 	<release>
 		<Version>
+			<name>0.2 Release</name>
+			<created>2007-01-18</created>
+			<branch></branch>
+			<revision>0.2</revision>
+		       <file-release rdf:resource="http://clutter-project.org/sources/clutter/0.2/clutter-0.2.0.tar.gz" />
+		</Version>
+	</release>
+
+	<release>
+		<Version>
 			<name>First Release</name>
 			<created>2006-06-22</created>
 			<branch></branch>
