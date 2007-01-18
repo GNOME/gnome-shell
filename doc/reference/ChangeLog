@@ -1,3 +1,7 @@
+2007-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Add forgotten ClutterGroup API.
+
 2007-01-18  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter-docs.sgml:

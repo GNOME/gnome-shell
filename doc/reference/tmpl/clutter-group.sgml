@@ -62,6 +62,25 @@ The #ClutterActor @arg1 was removed from the group.
 @Returns: 
 
 
+<!-- ##### FUNCTION clutter_group_get_n_children ##### -->
+<para>
+
+</para>
+
+@self: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_group_get_nth_child ##### -->
+<para>
+
+</para>
+
+@self: 
+@index: 
+@Returns: 
+
+
 <!-- ##### FUNCTION clutter_group_foreach ##### -->
 <para>
 
