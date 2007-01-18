@@ -42,26 +42,24 @@
     <para>
 
     Clutter is a GObject based library for creating fast, visually
-    rich graphical user interfaces. It is intended for creating single
-    window stylised applications such as media box UI's, presentations
-    or kiosk style apps in preference to regular 'desktop' style
-    applications.
+    rich graphical user interfaces.
 
     </para>
     <para>
 
-    Clutter's underlying graphics rendering is OpenGL ( version 1.2+ )
-    based.  The clutter API is intended to be easy to use, attempting
-    to hide many of the GL complexities. It targets maily 2D based
-    graphics and is definetly not intended to be a general interface
-    for all OpenGL functionality ( yet ).
+    Clutter semantics work by having a stage (a window) and then
+    adding actors (widgets) to the stage and manipulating via the
+    actor api. Actors can contain child actors (ClutterGroup for
+    example) and be manipulated as a whole.
 
     </para>
     <para>
 
-    As well as OpenGL Clutter depends on and uses GLib, GObject,
-    GDKPixbuf and GStreamer. Clutter is released under the GNU Library
-    General Public License (GNU LGPL)
+    Animations and visual effects can be created via the use of
+    timelines and behaviours. Timelines provide accurate frame based
+    animations. Behaviours further extend this by taking a timeline, a
+    control function (ClutterAlpha) and then applying to actors as to
+    modify a property as a function of time.
 
     </para>
   </chapter>    

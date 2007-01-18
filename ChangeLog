@@ -1,3 +1,8 @@
+2007-01-18  Matthew Allum <mallum@openedhand.com>
+
+        * doc/reference/clutter-docs.sgml
+	Update.
+
 2007-01-18  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.h: fixed a typo in comment
