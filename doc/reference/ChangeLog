@@ -1,3 +1,8 @@
+2007-01-18  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter-docs.sgml: added clutter-fixed
+	* tmpl/clutter-fixed.sgml: added intro to fixed point math
+	
 2007-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Remove old cruft.

@@ -13,6 +13,34 @@ emulation, relying on integer math for fixed-to-floating and
 floating-to-fixed conversion.
 </para>
 
+<section>
+<title>Basic Rules of Fixed Point Arithmetic</title>
+<itemizedlist>
+<listitem>
+<para>
+Two fixed point numbers can be directly added and subtracted.
+</para>
+</listitem>
+<listitem>
+<para>
+To add other numerical type to a fixed point number it has to be first 
+converted to fixed point.
+</para>
+</listitem>
+<listitem>
+<para>
+A fixed point number can be directly multiplied or divided by an integer.
+</para>
+</listitem>
+<listitem>
+<para>
+Two fixed point numbers can only be multiplied and divided by the provided
+#CLUTTER_FIXED_MUL (aka #CFX_MUL) and #CLUTTER_FIXED_DIV (aka #CFX_DIV) macros.
+</para>
+</listitem>
+</itemizedlist>
+</section>
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
@@ -22,6 +50,12 @@ floating-to-fixed conversion.
 
 
 <!-- ##### TYPEDEF ClutterFixed ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### TYPEDEF ClutterAngle ##### -->
 <para>
 
 </para>
@@ -53,12 +87,6 @@ Maximum number representable by #ClutterFixed.
 Minumum number representable by #ClutterFixed.
 </para>
 
-
-
-<!-- ##### TYPEDEF ClutterAngle ##### -->
-<para>
-
-</para>
 
 
 <!-- ##### MACRO CFX_PI ##### -->

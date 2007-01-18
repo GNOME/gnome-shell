@@ -40,7 +40,7 @@ typedef gint32 ClutterFixed;
 /**
  * ClutterAngle:
  * 
- * Integer representation of an agnle such that 1024 corresponds to
+ * Integer representation of an angle such that 1024 corresponds to
  * full circle (i.e., 2*Pi).
  */
 typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */

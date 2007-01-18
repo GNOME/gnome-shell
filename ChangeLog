@@ -1,3 +1,7 @@
+2007-01-18  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-fixed.h: fixed a typo in comment
+	
 2007-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-fixed.h: Remove some inline documentation to
