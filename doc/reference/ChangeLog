@@ -1,3 +1,11 @@
+2007-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Remove old cruft.
+
+	* clutter-docs.sgml: Add index of symbols.
+
+	* tmpl/clutter-fixed.sgml: Fix doc template.
+
 2007-01-16  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Remove clutter_vblank_method(): it's

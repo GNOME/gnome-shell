@@ -63,70 +63,70 @@ Minumum number representable by #ClutterFixed.
 
 <!-- ##### MACRO CFX_PI ##### -->
 <para>
-#ClutterFixed  representation of Pi.
+
 </para>
 
 
 
 <!-- ##### MACRO CFX_2PI ##### -->
 <para>
-#ClutterFixed representation of 2 * Pi.
+
 </para>
 
 
 
 <!-- ##### MACRO CFX_PI_2 ##### -->
 <para>
-#ClutterFixed representation of Pi/2.
+
 </para>
 
 
 
 <!-- ##### MACRO CFX_PI_4 ##### -->
 <para>
-#ClutterFixed representation of Pi/4.
+
 </para>
 
 
 
 <!-- ##### MACRO CFX_120 ##### -->
 <para>
-#ClutterFixed representation of 120.
+
 </para>
 
 
 
 <!-- ##### MACRO CFX_180 ##### -->
 <para>
-#ClutterFixed representation of 180.
+
 </para>
 
 
 
 <!-- ##### MACRO CFX_240 ##### -->
 <para>
-#ClutterFixed representation of 240.
+
 </para>
 
 
 
 <!-- ##### MACRO CFX_360 ##### -->
 <para>
-#ClutterFixed representation of 360.
+
 </para>
 
 
 
 <!-- ##### MACRO CFX_60 ##### -->
 <para>
-#ClutterFixed representation of 60.
+
 </para>
 
 
 
 <!-- ##### MACRO CFX_255 ##### -->
 <para>
-#ClutterFixed representation of 255.
+
 </para>
 
 
@@ -236,18 +236,18 @@ Macro for difvision of two #ClutterFixed numbers.
 
 <!-- ##### MACRO clutter_cosi ##### -->
 <para>
-Very fast fixed point cosine function.
+
 </para>
 
-@x: #ClutterAngle
+@angle: 
 
 
 <!-- ##### MACRO clutter_cosx ##### -->
 <para>
-Fast fixed point cosine function.
+
 </para>
 
-@x: #ClutterFixed
+@angle: 
 
 
 <!-- ##### FUNCTION clutter_sini ##### -->

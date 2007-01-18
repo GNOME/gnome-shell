@@ -94,6 +94,8 @@
     <xi:include href="xml/clutter-version.xml"/>
   </chapter>
 
+  <index></index>
+
   <appendix id="license">
     <title>License</title>
 
