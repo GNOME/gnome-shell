@@ -259,7 +259,7 @@ clutter_behaviour_get_n_actors (ClutterBehaviour *behave)
 {
   g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR (behave), 0);
 
-  return g_list_length (behave->priv->actors);
+  return g_slist_length (behave->priv->actors);
 }
 
 /**
@@ -279,7 +279,7 @@ clutter_behaviour_get_nth_actor (ClutterBehaviour *behave,
 {
   g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR (behave), NULL);
 
-  return g_list_nth_data (behave->priv->actors, num);
+  return g_slist_nth_data (behave->priv->actors, num);
 }
 
 

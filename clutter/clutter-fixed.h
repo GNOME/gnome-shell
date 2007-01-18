@@ -41,7 +41,7 @@ typedef gint32 ClutterFixed;
  * ClutterAngle:
  * 
  * Integer representation of an agnle such that 1024 corresponds to
- * fool circle (i.e., 2*Pi).
+ * full circle (i.e., 2*Pi).
  */
 typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 
@@ -114,95 +114,30 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
  * Fixed point representation of the number 255
  */
 #define CFX_255 CLUTTER_INT_TO_FIXED (255)
-/**
- * CLUTTER_FIXED_TO_FLOAT:
- * 
- * Macro to convert from fixed to floating point.
- */
-#define CLUTTER_FIXED_TO_FLOAT(x) ((float)((int)(x)/65536.0))
-/**
- * CLUTTER_FIXED_TO_DOUBLE:
- * 
- * Macro to convert from fixed to doulbe precission floating point.
- */
-#define CLUTTER_FIXED_TO_DOUBLE(x) ((double)((int)(x)/65536.0))
-/**
- * CLUTTER_FLOAT_TO_FIXED:
- * 
- * Macro to convert from floating to fixed point.
- */
-#define CLUTTER_FLOAT_TO_FIXED(x)   \
-  ( (ABS(x) > 32767.0) ?            \
-            (((x)/(x))*0x7fffffff)  \
-          : ((long)((x) * 65536.0  + ((x) < 0 ? -0.5 : 0.5))) )
 
+#define CLUTTER_FIXED_TO_FLOAT(x)       ((float) ((int)(x) / 65536.0))
+#define CLUTTER_FIXED_TO_DOUBLE(x)      ((double) ((int)(x) / 65536.0))
 
-/**
- * CLUTTER_INT_TO_FIXED:
- * 
- * Macro to convert from int to fixed point representation.
- */
+#define CLUTTER_FLOAT_TO_FIXED(x)                                           \
+        ( (ABS(x) > 32767.0) ? (((x) / (x)) * 0x7fffffff)                   \
+                             : ((long)((x) * 65536.0  + ((x) < 0 ? -0.5     \
+                                                                 : 0.5))) )
 #define CLUTTER_INT_TO_FIXED(x) ((x) << CFX_Q)
-/**
- * CLUTTER_FIXED_INT:
- * 
- * Macro to convert from fixed point to integer.
- */
-#define CLUTTER_FIXED_INT(x) ((x) >> CFX_Q)
-/**
- * CLUTTER_FIXED_FRACTION:
- * 
- * Macro to retrive the fraction of a fixed point number.
- */
-#define CLUTTER_FIXED_FRACTION(x) ((x) & ((1 << CFX_Q) - 1))
 
-/**
- * CLUTTER_FIXED_FLOOR:
- * 
- * Macro to obtain greatest integer lesser than given fixed point value.
- */
-#define CLUTTER_FIXED_FLOOR(x) \
-   (((x) >= 0) ? ((x) >> CFX_Q) : ~((~(x)) >> CFX_Q))
-/**
- * CLUTTER_FIXED_CEIL:
- * 
- * Macro to obtain smallest integer greater than given fixed point value.
- */
+#define CLUTTER_FIXED_INT(x)            ((x) >> CFX_Q)
+#define CLUTTER_FIXED_FRACTION(x)       ((x) & ((1 << CFX_Q) - 1))
+
+#define CLUTTER_FIXED_FLOOR(x)          (((x) >= 0) ? ((x) >> CFX_Q) \
+                                                    : ~((~(x)) >> CFX_Q))
 #define CLUTTER_FIXED_CEIL(x) CLUTTER_FIXED_FLOOR(x + 0xffff) 
-/**
- * CLUTTER_FIXED_MUL:
- * 
- * Macro to multiply two fixed point numbers.
- */
-#define CLUTTER_FIXED_MUL(x,y) ((x) >> 8) * ((y) >> 8)
 
-/**
- * CLUTTER_FIXED_DIV:
- * 
- * Macro to divide two fixed point numbers.
- */
+#define CLUTTER_FIXED_MUL(x,y) ((x) >> 8) * ((y) >> 8)
 #define CLUTTER_FIXED_DIV(x,y) ((((x) << 8)/(y)) << 8)
 
 /* some handy short aliases to avoid exessively long lines */
 
-/**
- * CFX_INT:
- * 
- * Alias for CLUTTER_FIXED_INT:
- */
 #define CFX_INT CLUTTER_FIXED_INT
-/**
- * CFX_MUL:
- * 
- * Alias for CLUTTER_FIXED_MUL:
- */
 #define CFX_MUL CLUTTER_FIXED_MUL
-
-/**
- * CFX_DIV:
- * 
- * Alias for CLUTTER_FIXED_DIV:
- */
 #define CFX_DIV CLUTTER_FIXED_DIV
 
 /* Fixed point math routines */
@@ -223,7 +158,7 @@ ClutterFixed clutter_sini (ClutterAngle angle);
  *
  * Since: 0.2
  */
-#define clutter_cosx(x) clutter_fixed_sin((x) - CFX_PI_2)
+#define clutter_cosx(angle) clutter_fixed_sin((angle) - CFX_PI_2)
 
 /**
  * clutter_cosi:
@@ -240,7 +175,7 @@ ClutterFixed clutter_sini (ClutterAngle angle);
  *
  * Since: 0.2
  */
-#define clutter_cosi(x) clutter_sini((x) - 256)
+#define clutter_cosi(angle) clutter_sini((angle) - 256)
 
 ClutterFixed clutter_sqrtx (ClutterFixed x);
 gint         clutter_sqrti (gint         x);

@@ -1,4 +1,14 @@
+2007-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-fixed.h: Remove some inline documentation to
+	make the header more readable.
+
+	* clutter/clutter-behaviour.c: The actors are store inside a
+	GSList and not in a GList, so change the list operations to
+	use the right API.
+
 2007-01-18  Tomas Frydrych  <tf@openedhand.com>
+
 	* clutter/clutter-color.c:
 	(clutter_color_darken):
 	(clutter_color_lighten):
