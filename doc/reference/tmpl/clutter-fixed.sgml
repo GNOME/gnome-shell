@@ -55,12 +55,6 @@ Two fixed point numbers can only be multiplied and divided by the provided
 </para>
 
 
-<!-- ##### TYPEDEF ClutterAngle ##### -->
-<para>
-
-</para>
-
-
 <!-- ##### MACRO CFX_Q ##### -->
 <para>
 Number of bits used to store fractional part of #ClutterFixed.
@@ -87,6 +81,12 @@ Maximum number representable by #ClutterFixed.
 Minumum number representable by #ClutterFixed.
 </para>
 
+
+
+<!-- ##### TYPEDEF ClutterAngle ##### -->
+<para>
+
+</para>
 
 
 <!-- ##### MACRO CFX_PI ##### -->

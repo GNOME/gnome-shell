@@ -265,7 +265,7 @@ clutter_behaviour_get_n_actors (ClutterBehaviour *behave)
 /**
  * clutter_behaviour_get_nth_actor:
  * @behave: a #ClutterBehaviour
- * @num:  the index of an actor this behaviour is applied too. 
+ * @index:  the index of an actor this behaviour is applied too. 
  *
  * Gets an actor the behaviour was applied to referenced by index num.
  *
@@ -275,11 +275,11 @@ clutter_behaviour_get_n_actors (ClutterBehaviour *behave)
  */
 ClutterActor*
 clutter_behaviour_get_nth_actor (ClutterBehaviour *behave,
-				 gint              num)
+				 gint              index)
 {
   g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR (behave), NULL);
 
-  return g_slist_nth_data (behave->priv->actors, num);
+  return g_slist_nth_data (behave->priv->actors, index);
 }
 
 

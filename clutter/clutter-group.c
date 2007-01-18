@@ -253,7 +253,7 @@ clutter_group_get_children (ClutterGroup *self)
 }
 
 /**
- * clutter_group_get_nth_child:
+ * clutter_group_get_n_children:
  * @self: A #ClutterGroup
  *
  * Gets the number of actors held in the group.

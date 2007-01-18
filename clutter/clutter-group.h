@@ -107,6 +107,9 @@ void          clutter_group_hide_all         (ClutterGroup    *self);
 
 ClutterActor *clutter_group_find_child_by_id (ClutterGroup    *self,
 					      guint            id);
+ClutterActor *clutter_group_get_nth_child    (ClutterGroup    *self,
+                                              gint             index);
+gint          clutter_group_get_n_children   (ClutterGroup    *self);
 void          clutter_group_raise            (ClutterGroup    *self,
 					      ClutterActor    *actor, 
 					      ClutterActor    *sibling);

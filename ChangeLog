@@ -1,5 +1,14 @@
 2007-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-group.h: Add public functions
+	clutter_group_get_n_children() and clutter_group_get_nth_child().
+
+	* clutter/clutter-behaviour.h:
+	* clutter/clutter-behaviour.c: Fix header alignment; fix argument
+	name for apidoc.
+
+2007-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/Makefile.am: Use the build dir when linking to the
 	internal pango clutter renderer.
 

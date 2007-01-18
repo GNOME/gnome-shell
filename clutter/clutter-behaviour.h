@@ -105,13 +105,9 @@ void          clutter_behaviour_remove         (ClutterBehaviour            *beh
 void          clutter_behaviour_actors_foreach (ClutterBehaviour            *behave,
                                                 ClutterBehaviourForeachFunc  func,
                                                 gpointer                     data);
-gint           clutter_behaviour_get_n_actors (ClutterBehaviour *behave);
-
-ClutterActor*  clutter_behaviour_get_nth_actor (ClutterBehaviour *behave,
-						gint              num);
-
-
-
+gint          clutter_behaviour_get_n_actors   (ClutterBehaviour            *behave);
+ClutterActor *clutter_behaviour_get_nth_actor  (ClutterBehaviour            *behave,
+						gint                         index);
 GSList *      clutter_behaviour_get_actors     (ClutterBehaviour            *behave);
 ClutterAlpha *clutter_behaviour_get_alpha      (ClutterBehaviour            *behave);
 void          clutter_behaviour_set_alpha      (ClutterBehaviour            *behave,
