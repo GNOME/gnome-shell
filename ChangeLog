@@ -1,3 +1,9 @@
+2007-01-18  Tomas Frydrych  <tf@openedhand.com>
+	* clutter/clutter-color.c:
+	(clutter_color_darken):
+	(clutter_color_lighten):
+	Changed calls to clutter_color_shade calls to clutter_color_shadex
+	
 2007-01-17  Matthew Allum  <mallum@openedhand.com>
 
 	* configure.ac:
