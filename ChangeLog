@@ -1,3 +1,13 @@
+2007-01-19  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Allow the ClutterGroup subclasses to override the add and
+	remove operations.
+
+	* clutter/clutter-group.c: Move the add and remove code from
+	clutter_group_add() and clutter_group_remove() to the signal
+	class closures; make the "add" and "remove" signals as
+	RUN_FIRST.
+
 2007-01-19  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.h.: 

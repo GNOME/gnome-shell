@@ -177,6 +177,36 @@ clutter_group_real_hide_all (ClutterActor *actor)
 }
 
 static void
+clutter_group_real_add (ClutterGroup *group,
+                        ClutterActor *actor)
+{
+  g_object_ref (actor);
+
+  group->priv->children = g_list_append (group->priv->children, actor);
+  clutter_actor_set_parent (actor, CLUTTER_ACTOR (group));
+  
+  clutter_group_sort_depth_order (group); 
+
+  g_object_unref (actor);
+}
+
+static void
+clutter_group_real_remove (ClutterGroup *group,
+                           ClutterActor *actor)
+{
+  g_object_ref (actor);
+
+  group->priv->children = g_list_remove (group->priv->children, actor);
+  clutter_actor_unparent (actor);
+  
+  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (group)))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (group));
+
+  g_object_unref (actor);
+
+}
+
+static void
 clutter_group_class_init (ClutterGroupClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -195,7 +225,7 @@ clutter_group_class_init (ClutterGroupClass *klass)
   group_signals[ADD] =
     g_signal_new ("add",
 		  G_OBJECT_CLASS_TYPE (object_class),
-		  G_SIGNAL_RUN_LAST,
+		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (ClutterGroupClass, add),
 		  NULL, NULL,
 		  clutter_marshal_VOID__OBJECT,
@@ -205,12 +235,15 @@ clutter_group_class_init (ClutterGroupClass *klass)
   group_signals[REMOVE] =
     g_signal_new ("remove",
 		  G_OBJECT_CLASS_TYPE (object_class),
-		  G_SIGNAL_RUN_LAST,
+		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (ClutterGroupClass, remove),
 		  NULL, NULL,
 		  clutter_marshal_VOID__OBJECT,
 		  G_TYPE_NONE, 1,
 		  CLUTTER_TYPE_ACTOR);
+
+  klass->add = clutter_group_real_add;
+  klass->remove = clutter_group_real_remove;
 
   g_type_class_add_private (object_class, sizeof (ClutterGroupPrivate));
 }
@@ -366,8 +399,6 @@ clutter_group_add (ClutterGroup *self,
 		   ClutterActor *actor)
 {
   ClutterActor *parent;
-
-  /* FIXME: add() needs to be somehow overidden */
   
   g_return_if_fail (CLUTTER_IS_GROUP (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
@@ -384,16 +415,7 @@ clutter_group_add (ClutterGroup *self,
       return;
     }
 
-  g_object_ref (actor);
-
-  self->priv->children = g_list_append (self->priv->children, actor);
-  clutter_actor_set_parent (actor, CLUTTER_ACTOR (self));
-  
-  clutter_group_sort_depth_order (self); 
-
   g_signal_emit (self, group_signals[ADD], 0, actor);
-
-  g_object_unref (actor);
 }
 
 /**
@@ -470,18 +492,8 @@ clutter_group_remove (ClutterGroup *self,
 		 g_type_name (G_OBJECT_TYPE (self)));
       return;
     }
-  
-  g_object_ref (actor);
 
-  self->priv->children = g_list_remove (self->priv->children, actor);
-  clutter_actor_unparent (actor);
-  
   g_signal_emit (self, group_signals[REMOVE], 0, actor);
-
-  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (self)))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
-
-  g_object_unref (actor);
 }
 
 /**
@@ -493,19 +505,15 @@ clutter_group_remove (ClutterGroup *self,
 void
 clutter_group_remove_all (ClutterGroup *self)
 {
-  GList *child_item;
+  GList *l;
 
   g_return_if_fail (CLUTTER_IS_GROUP (self));
 
-  child_item = self->priv->children;
-
-  if (child_item)
+  for (l = self->priv->children; l != NULL; l = l->next)
     {
-      do 
-	{
-	  clutter_group_remove (self, CLUTTER_ACTOR(child_item->data));
-	}
-      while ((child_item = g_list_next(child_item)) != NULL);
+      ClutterActor *child = l->data;
+
+      clutter_group_remove (self, child);
     }
 }
 
@@ -602,7 +610,7 @@ clutter_group_raise (ClutterGroup   *self,
    */
   if (clutter_actor_get_depth(sibling) != clutter_actor_get_depth(actor))
     clutter_actor_set_depth (actor,
-			       clutter_actor_get_depth(sibling));
+			     clutter_actor_get_depth(sibling));
 
 }
 
@@ -645,7 +653,7 @@ clutter_group_lower (ClutterGroup   *self,
   /* See comment in group_raise for this */
   if (clutter_actor_get_depth(sibling) != clutter_actor_get_depth(actor))
     clutter_actor_set_depth (actor,
-			       clutter_actor_get_depth(sibling));
+			     clutter_actor_get_depth(sibling));
 }
 
 static gint 
