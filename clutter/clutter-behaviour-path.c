@@ -196,12 +196,12 @@ node_distance (const ClutterKnot *begin,
   if (clutter_knot_equal (begin, end))
         return 0;
 
-#ifdef CFX_NO_FPU
+#if 1
   return clutter_sqrti ((end->x - begin->x) * (end->x - begin->x) +
 			(end->y - begin->y) * (end->y - begin->y));
 #else
-  return (gint) sqrt ((end->x - begin->x) * (end->x - begin->x) +
-		      (end->y - begin->y) * (end->y - begin->y));
+  return CLUTTER_FLOAT_TO_INT(sqrt((end->x - begin->x) * (end->x - begin->x) +
+				   (end->y - begin->y) * (end->y - begin->y)));
 #endif
 }
 

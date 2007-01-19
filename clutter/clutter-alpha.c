@@ -519,7 +519,6 @@ sincx1024_func (ClutterAlpha *alpha,
 
   return CLUTTER_FIXED_INT (sine * CLUTTER_ALPHA_MAX_ALPHA);
 }
-
 #if 0
 /*
  * The following two functions are left in place for reference
@@ -570,9 +569,10 @@ sinc_func (ClutterAlpha *alpha,
 
   CLUTTER_NOTE (ALPHA, "sine: %2f\n", sine);
 
-  return (guint32) (sine * (gdouble) CLUTTER_ALPHA_MAX_ALPHA);
+  return CLUTTER_FLOAT_TO_INT ((sine * (gdouble) CLUTTER_ALPHA_MAX_ALPHA));
 }
 #endif
+
 /**
  * clutter_sine_func:
  * @alpha: a #ClutterAlpha

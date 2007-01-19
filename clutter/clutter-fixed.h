@@ -118,10 +118,9 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 #define CLUTTER_FIXED_TO_FLOAT(x)       ((float) ((int)(x) / 65536.0))
 #define CLUTTER_FIXED_TO_DOUBLE(x)      ((double) ((int)(x) / 65536.0))
 
-#define CLUTTER_FLOAT_TO_FIXED(x)                                           \
-        ( (ABS(x) > 32767.0) ? (((x) / (x)) * 0x7fffffff)                   \
-                             : ((long)((x) * 65536.0  + ((x) < 0 ? -0.5     \
-                                                                 : 0.5))) )
+#define CLUTTER_FLOAT_TO_FIXED(x) _clutter_double_to_fixed((x))
+#define CLUTTER_FLOAT_TO_INT(x)   _clutter_double_to_int((x))
+
 #define CLUTTER_INT_TO_FIXED(x) ((x) << CFX_Q)
 
 #define CLUTTER_FIXED_INT(x)            ((x) >> CFX_Q)
@@ -179,6 +178,14 @@ ClutterFixed clutter_sini (ClutterAngle angle);
 
 ClutterFixed clutter_sqrtx (ClutterFixed x);
 gint         clutter_sqrti (gint         x);
+
+
+/* <private> */
+extern inline
+ClutterFixed _clutter_double_to_fixed (double value);
+
+extern inline
+ClutterFixed _clutter_double_to_int (double value);
 
 G_END_DECLS
 

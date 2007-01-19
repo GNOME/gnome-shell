@@ -353,14 +353,6 @@ clutter_sqrtx (ClutterFixed x)
      * on ARM this function is about 5 times faster than c-lib sqrt, whilst
      * producing errors < 1%.
      *
-     * (There are faster algorithm's available; the Carmack 'magic'
-     * algorithm, http://www.codemaestro.com/reviews/review00000105.html,
-     * is about five times faster than this one when implemented
-     * as fixed point, but it's error is much greater and grows with the
-     * size of the argument (reaches about 10% around x == 800).
-     *
-     * Note: on systems with FPU, the clib sqrt can be noticeably faster
-     *       than this function.
      */
     int t = 0;
     int sh = 0;
@@ -448,68 +440,121 @@ clutter_sqrtx (ClutterFixed x)
  * clutter_sqrti:
  * @x: integer value
  *
- * A fixed point implementation of square root for integers
+ * Very fast fixed point implementation of square root for integers.
+ * 
+ * This function is about 10x faster than clib sqrt() on x86, and (this is
+ * not a typo!) more than 800x faster on ARM without FPU. It's error is < 5%
+ * for arguments < 132 and < 10% for arguments < 5591.
  *
- * Return value: integer square root (truncated).
+ * Return value: integer square root.
  *
  *
  * Since: 0.2
  */
 gint
-clutter_sqrti (gint x)
+clutter_sqrti (gint number)
 {
-    int t = 0;
-    int sh = 0;
-    unsigned int mask = 0x40000000;
+    /* This is a fixed point implementation of the Quake III sqrt algorithm,
+     * described, for example, at
+     *   http://www.codemaestro.com/reviews/review00000105.html
+     *
+     * While the original QIII is extremely fast, the use of floating division
+     * and multiplication makes it perform very on arm processors without FPU.
+     *
+     * The key to successfully replacing the floating point operations with
+     * fixed point is in the choice of the fixed point format. The QIII
+     * algorithm does not calculate the square root, but its reciprocal ('y'
+     * below), which is only at the end turned to the inverse value. In order
+     * for the algorithm to produce satisfactory results, the reciprocal value
+     * must be represented with sufficient precission; the 16.16 we use
+     * elsewhere in clutter is not good enough, and 10.22 is used instead.
+     */
+    ClutterFixed x;
+    unsigned long y, y1;        /* 10.22 fixed point */
+    unsigned long f = 0x600000; /* '1.5' as 10.22 fixed */
+    float flt = number;
+    float flt2;
     
-    if (x <= 0)
-	return 0;
+    x = CLUTTER_INT_TO_FIXED (number) / 2;
 
-    if (x > (sizeof (sqrt_tbl)/sizeof(ClutterFixed) - 1))
-    {
-	/*
-	 * Find the highest bit set
-	 */
-#if __arm__
-	/* This actually requires at least arm v5, but gcc does not seem
-	 * to set the architecture defines correctly, and it is probably
-	 * very unlikely that anyone will want to use clutter on anything
-	 * less than v5.
-	 */
-	int bit;
-	__asm__ ("clz  %0, %1\n"
-		 "rsb  %0, %0, #31\n"
-		 :"=r"(bit)
-		 :"r" (x));
+    /* The QIII initial estimate */
+    y   = * ( unsigned long * ) &flt;
+    y   = 0x5f3759df - ( y >> 1 );
+    flt = * ( float * ) &y;
 
-	/* make even (2n) */
-	bit &= 0xfffffffe;
-#else
-	/* TODO -- add i386 branch using bshr */
-	int bit = 30;
-	while (bit >= 0)
-	{
-	    if (x & mask)
-		break;
+    /* Now, we convert the float to 10.22 fixed. We exploit the mechanism
+     * described at http://www.d6.com/users/checker/pdfs/gdmfp.pdf.
+     * 
+     * We want 22 bit fraction; a single precission float uses 23 bit
+     * mantisa, so we only need to add 2^(23-22) (no need for the 1.5
+     * multiplier as we are only dealing with positive numbers).
+     * 
+     * Note: we have to use two separate variables here -- for some reason,
+     * if we try to use just the flt variable, gcc on ARM optimises the whole
+     * addition out, and it all goes pear shape, since without it, the bits
+     * in the float will not be correctly aligned.
+     */
+    flt2 = flt + 2.0;
+    y   = * ( long * ) &flt2;
+    y &= 0x7FFFFF;
 
-	    mask = (mask >> 1 | mask >> 2);
-	    bit -= 2;
-	}
-#endif
-	sh = ((bit - 6) >> 1);
-	t = (x >> (bit - 6));
-    }
-    else
-    {
-	return (sqrt_tbl[x] >> CFX_Q);
-    }
+    /* Now we correct the estimate, only single iterration is needed */
+    y1 = (y >> 11) * (y >> 11);
+    y1 = (y1 >> 8) * (x >> 8);
 
-    x = sqrt_tbl[t];
+    y1 = f - y1;
+    y  = (y >> 11) * (y1 >> 11);
 
-    if (sh > 0)
-	x = x << sh;
-    else if (sh < 0)
-	x = (x >> (1 + ~sh));
-    
-    return (x >> CFX_Q);
+    /* Invert, round and convert from 10.22 to an integer
+     * 0x1e3c68 is a magical rounding constant that produces slightly
+     * better results than 0x200000.
+     */
+    return (number * y + 0x1e3c68) >> 22;
 }
+
+/* <private> */
+const double _magic = 68719476736.0*1.5;
+
+/* Where in the 64 bits of double is the mantisa */
+#ifdef LITTLE_ENDIAN
+#define _CFX_MAN			0
+#else
+#define _CFX_MAN			1
+#endif
+
+/* 
+ * clutter_double_to_fixed :
+ * @value: value to be converted
+ *
+ * A fast conversion from double precision floating to fixed point
+ *
+ * Return value: Fixed point representation of the value
+ *
+ * Since: 0.2
+ */
+ClutterFixed
+_clutter_double_to_fixed (double val)
+{
+    val = val + _magic;
+    return ((gint32*)&val)[_CFX_MAN]; 
+}
+
+/*
+ * clutter_double_to_int :
+ * @value: value to be converted
+ *
+ * A fast conversion from doulbe precision floatint point  to int;
+ * used this instead of casting double/float to int.
+ *
+ * Return value: Integer part of the double
+ *
+ * Since: 0.2
+ */
+ClutterFixed
+_clutter_double_to_int (double val)
+{
+    val = val + _magic;
+    return ((gint32*)&val)[_CFX_MAN] >> 16; 
+}
+
+#undef _CFX_MAN

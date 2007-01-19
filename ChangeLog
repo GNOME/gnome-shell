@@ -1,3 +1,19 @@
+2007-01-19  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-fixed.h.: 
+	* clutter/clutter-fixed.c:
+	Added fast double to int and double to fixed point conversion
+	routines; changed CLUTTER_FLOAT_TO_FIXED to use it.
+	Replaced clutter_sqrti with fixed point implementation of the QIII
+	algorithm.
+	
+
+	* clutter/clutter-behavior-path.c: use clutter_sqrti always
+
+	* clutter/clutter-alpha.c: 
+	(sinc_func): replaced double -> int cast with CLUTTER_FLOAT_TO_INT
+	
+	
 2007-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* configure.ac: Post release bump to 0.3.0.
