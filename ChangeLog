@@ -1,3 +1,10 @@
+2007-01-19  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-fixed.c: (clutter_sqrti):
+	Use union instead of casting int <-> float to get rid of 
+	punned-pointer warning and avoid gcc optimatisation breaking
+	the function on arm.
+	
 2007-01-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Allow the ClutterGroup subclasses to override the add and

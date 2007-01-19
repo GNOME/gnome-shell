@@ -470,17 +470,21 @@ clutter_sqrti (gint number)
      * elsewhere in clutter is not good enough, and 10.22 is used instead.
      */
     ClutterFixed x;
-    unsigned long y, y1;        /* 10.22 fixed point */
+    unsigned long y1;        /* 10.22 fixed point */
     unsigned long f = 0x600000; /* '1.5' as 10.22 fixed */
-    float flt = number;
-    float flt2;
+
+    union
+    {
+	float f;
+	unsigned long i;
+    } flt, flt2;
+    
+    flt.f = number;
     
     x = CLUTTER_INT_TO_FIXED (number) / 2;
 
     /* The QIII initial estimate */
-    y   = * ( unsigned long * ) &flt;
-    y   = 0x5f3759df - ( y >> 1 );
-    flt = * ( float * ) &y;
+    flt.i = 0x5f3759df - ( flt.i >> 1 );
 
     /* Now, we convert the float to 10.22 fixed. We exploit the mechanism
      * described at http://www.d6.com/users/checker/pdfs/gdmfp.pdf.
@@ -494,22 +498,21 @@ clutter_sqrti (gint number)
      * addition out, and it all goes pear shape, since without it, the bits
      * in the float will not be correctly aligned.
      */
-    flt2 = flt + 2.0;
-    y   = * ( long * ) &flt2;
-    y &= 0x7FFFFF;
+    flt2.f = flt.f + 2.0;
+    flt2.i &= 0x7FFFFF;
 
     /* Now we correct the estimate, only single iterration is needed */
-    y1 = (y >> 11) * (y >> 11);
+    y1 = (flt2.i >> 11) * (flt2.i >> 11);
     y1 = (y1 >> 8) * (x >> 8);
 
     y1 = f - y1;
-    y  = (y >> 11) * (y1 >> 11);
+    flt2.i = (flt2.i >> 11) * (y1 >> 11);
 
     /* Invert, round and convert from 10.22 to an integer
      * 0x1e3c68 is a magical rounding constant that produces slightly
      * better results than 0x200000.
      */
-    return (number * y + 0x1e3c68) >> 22;
+    return (number * flt2.i + 0x1e3c68) >> 22;
 }
 
 /* <private> */
