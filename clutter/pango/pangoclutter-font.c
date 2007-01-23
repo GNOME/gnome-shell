@@ -70,7 +70,7 @@ _pango_clutter_font_new (PangoClutterFontMap *fontmap_, FcPattern *pattern)
   PangoFontMap *fontmap = PANGO_FONT_MAP (fontmap_);
   PangoClutterFont *font;
   double d;
-
+  
   g_return_val_if_fail (fontmap != NULL, NULL);
   g_return_val_if_fail (pattern != NULL, NULL);
 
@@ -79,8 +79,15 @@ _pango_clutter_font_new (PangoClutterFontMap *fontmap_, FcPattern *pattern)
 					  NULL);
 
   if (FcPatternGetDouble (pattern, FC_PIXEL_SIZE, 0, &d) == FcResultMatch)
-    font->size = d * PANGO_SCALE;
-
+  {
+    /* Cannot use 16.16 fixed here, because multiplying by PANGO_SCALE
+     * could easily take us out of range, but we do not need the 16 bit
+     * precission for the fraction, so we use 20.12 fixed point here
+     */
+    int f = CLUTTER_FLOAT_TO_FIXED (d) >> 4;
+    font->size = (f * PANGO_SCALE) >> 12;
+  }
+  
   return font;
 }
 

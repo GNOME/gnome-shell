@@ -1,3 +1,18 @@
+2007-01-23  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-fixed.c:
+	(_clutter_double_to_fixed):
+	(_clutter_double_to_int):
+	Fixed to avoid problems with punned pointers and gcc
+	optimatisation.
+
+	* clutter/pango/pangoclutter-private.h:
+	Simplified PANGO_PIXELS_26_6 macro.
+
+	* clutter/pango/pangoclutter-font.c:
+	(_pango_clutter_font_new):
+	Replace floating with fixed point math.
+	
 2007-01-19  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.c: (clutter_sqrti):

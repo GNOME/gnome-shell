@@ -538,8 +538,15 @@ const double _magic = 68719476736.0*1.5;
 ClutterFixed
 _clutter_double_to_fixed (double val)
 {
-    val = val + _magic;
-    return ((gint32*)&val)[_CFX_MAN]; 
+    union 
+    {
+	double d;
+	unsigned int i[2];
+    } dbl;
+
+    dbl.d = val;
+    dbl.d = dbl.d + _magic;
+    return dbl.i[0]; 
 }
 
 /*
@@ -556,8 +563,15 @@ _clutter_double_to_fixed (double val)
 ClutterFixed
 _clutter_double_to_int (double val)
 {
-    val = val + _magic;
-    return ((gint32*)&val)[_CFX_MAN] >> 16; 
+    union 
+    {
+	double d;
+	unsigned int i[2];
+    } dbl;
+
+    dbl.d = val;
+    dbl.d = dbl.d + _magic;
+    return dbl.i[0] >> 16; 
 }
 
 #undef _CFX_MAN

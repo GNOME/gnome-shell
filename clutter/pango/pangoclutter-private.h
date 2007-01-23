@@ -29,10 +29,23 @@
 /* Defines duped */
 
 #define PANGO_SCALE_26_6 (PANGO_SCALE / (1<<6))
+
+/* We only use the PANGO_SCALE_26_6 macro for scaling font size.
+ * Font sizes are normally given in points with at most one single
+ * decimal place fraction. If we do not do the rounding here, we will
+ * be suffering from an error < 0.016pt, which is entirely negligeable
+ * as far as font sizes are concerned.
+ */
+#if 0
 #define PANGO_PIXELS_26_6(d)                            \
   (((d) >= 0) ?                                         \
    ((d) + PANGO_SCALE_26_6 / 2) / PANGO_SCALE_26_6 :    \
    ((d) - PANGO_SCALE_26_6 / 2) / PANGO_SCALE_26_6)
+#else
+#define PANGO_PIXELS_26_6(d)                            \
+   (d / PANGO_SCALE_26_6)
+#endif
+
 #define PANGO_UNITS_26_6(d) (PANGO_SCALE_26_6 * (d))
 
 #define PANGO_TYPE_CLUTTER_FONT (pango_clutter_font_get_type ())
