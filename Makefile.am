@@ -1,8 +1,8 @@
 SUBDIRS=clutter doc examples 
 
-pcfiles = clutter-@CLUTTER_MAJORMINOR@.pc
+pcfiles = clutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.pc
 
-%-@CLUTTER_MAJORMINOR@.pc: %.pc
+%-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.pc: %.pc
 	cp $< $@
 
 pkgconfig_DATA = $(pcfiles)

@@ -97,6 +97,9 @@ fi
 
 GLX_CFLAGS="$X11_CFLAGS"
 
+CLUTTER_FLAVOUR="glx"
+AC_SUBST(CLUTTER_FLAVOUR)
+
 dnl ========================================================================
 
 pkg_modules="pangoft2 glib-2.0 >= 2.8 gthread-2.0 gdk-pixbuf-2.0 gdk-pixbuf-xlib-2.0"

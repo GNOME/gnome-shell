@@ -36,6 +36,7 @@
 
 #include "clutter-group.h"
 #include "clutter-main.h"
+#include "clutter-private.h"
 #include "clutter-marshal.h"
 #include "clutter-enum-types.h"
 

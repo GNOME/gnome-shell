@@ -29,9 +29,6 @@
 
 #include "clutter-event.h"
 
-#include <X11/Xlib.h>
-#include <X11/Xatom.h>
-
 /**
  * clutter_event_type:
  * @event: a #ClutterEvent

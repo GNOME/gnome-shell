@@ -3,9 +3,9 @@ exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
 
-Name: clutter-@CLUTTER_MAJORMINOR@
+Name: clutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@
 Description: Clutter library
 Version: @VERSION@
-Libs: -L${libdir} -lclutter-@CLUTTER_MAJORMINOR@ 
-Cflags: -I${includedir}/clutter-@CLUTTER_MAJORMINOR@
+Libs: -L${libdir} -lclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@ 
+Cflags: -I${includedir}/clutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@
 Requires: pangoft2 glib-2.0 >= 2.8 gthread-2.0 gdk-pixbuf-2.0 gdk-pixbuf-xlib-2.0

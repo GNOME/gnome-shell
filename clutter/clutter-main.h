@@ -29,11 +29,6 @@
 #include <clutter/clutter-actor.h>
 #include <clutter/clutter-stage.h>
 
-#include <X11/Xlib.h>
-
-#include <GL/glx.h>
-#include <GL/gl.h>
-
 G_BEGIN_DECLS
 
 #define CLUTTER_INIT_ERROR      (clutter_init_error_quark ())
@@ -42,7 +37,7 @@ typedef enum {
   CLUTTER_INIT_SUCCESS        =  1,
   CLUTTER_INIT_ERROR_UNKOWN   =  0,
   CLUTTER_INIT_ERROR_THREADS  = -1,
-  CLUTTER_INIT_ERROR_DISPLAY  = -2,
+  CLUTTER_INIT_ERROR_BACKEND  = -2,
   CLUTTER_INIT_ERROR_INTERNAL = -3,
   CLUTTER_INIT_ERROR_OPENGL   = -4
 } ClutterInitError;
@@ -64,10 +59,8 @@ void             clutter_main             (void);
 void             clutter_main_quit        (void);
 gint             clutter_main_level       (void);
 void             clutter_redraw           (void);
-Display *        clutter_xdisplay         (void);
-gint             clutter_xscreen          (void);
-Window           clutter_root_xwindow     (void);
 gboolean         clutter_want_debug       (void);
+gboolean         clutter_want_fps         (void);
 void             clutter_threads_enter    (void);
 void             clutter_threads_leave    (void);
 

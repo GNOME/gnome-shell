@@ -23,32 +23,32 @@
  * Boston, MA 02111-1307, USA.
  */
 
-/**
- * SECTION:clutter-util
- * @short_description: Misc utility functions.
- *
- * Various misc utilility functions.
- */
+#ifndef _HAVE_CLUTTER_GLX_H
+#define _HAVE_CLUTTER_GLX_H
+
+#include <X11/Xlib.h>
+#include <X11/Xatom.h>
+
+#include <GL/glx.h>
+#include <GL/gl.h>
+
+gboolean
+clutter_backend_init (GOptionContext *context) G_GNUC_INTERNAL;
+
+void
+clutter_glx_trap_x_errors(void);
+
+int
+clutter_glx_untrap_x_errors(void);
+
+Display*
+clutter_glx_display (void);
+
+int
+clutter_glx_screen (void);
+
+Window
+clutter_glx_root_window (void);
 
 
-#include "clutter-util.h"
-#include "clutter-main.h"
-
-/**
- * clutter_util_next_p2:
- * @a: Value to get the next power
- *
- * Calculates the next power greater than @a.
- *
- * Return value: The next power after @a.
- */
-int 
-clutter_util_next_p2 (int a)
-{
-  int rval=1;
-
-  while(rval < a) 
-    rval <<= 1;
-
-  return rval;
-}
+#endif

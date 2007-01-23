@@ -19,6 +19,8 @@ Optimisations
  - Display lists.
  - Custom source rather than idle handler for paints ?
  - General oprofiling.
+ - GL state cache - avoid so much expensive glenable/disable calling 
+   during paint (Also GL does not check if a state is already set) 
  
 Other
 ==

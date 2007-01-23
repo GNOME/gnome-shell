@@ -42,13 +42,21 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
-#include <GL/glx.h>
-#include <GL/gl.h>
+#ifdef CLUTTER_BACKEND_GLX
+#include <clutter/clutter-stage-glx.h>
+#endif
+
+#ifdef CLUTTER_BACKEND_EGL
+#include <clutter/clutter-stage-egl.h>
+#endif
 
 #include <gdk-pixbuf-xlib/gdk-pixbuf-xlib.h>
 
 /* the stage is a singleton instance */
 static ClutterStage *stage_singleton = NULL;
+
+/* Backend hooks */
+static ClutterStageVTable _vtable;
 
 G_DEFINE_TYPE (ClutterStage, clutter_stage, CLUTTER_TYPE_GROUP);
 
@@ -57,21 +65,11 @@ G_DEFINE_TYPE (ClutterStage, clutter_stage, CLUTTER_TYPE_GROUP);
 
 struct _ClutterStagePrivate
 {
-  XVisualInfo  *xvisinfo;
-  Window        xwin;  
-  Pixmap        xpixmap;
-  gint          xwin_width, xwin_height; /* FIXME target_width / height */
-  
-  GLXPixmap     glxpixmap;
-  GLXContext    gl_context;
-
-  
   ClutterColor  color;
   
   guint         want_fullscreen : 1;
   guint         want_offscreen  : 1;
   guint         hide_cursor     : 1;
-  guint         is_foreign_xwin : 1;
 };
 
 enum
@@ -99,511 +97,6 @@ enum
 static guint stage_signals[LAST_SIGNAL] = { 0 };
 
 static ClutterActorClass *parent_class = NULL;
-
-static void
-sync_fullscreen (ClutterStage *stage)
-{
-  Atom                 atom_WINDOW_STATE, atom_WINDOW_STATE_FULLSCREEN;
-
-  atom_WINDOW_STATE 
-    = XInternAtom(clutter_xdisplay(), "_NET_WM_STATE", False);
-  atom_WINDOW_STATE_FULLSCREEN 
-    = XInternAtom(clutter_xdisplay(), "_NET_WM_STATE_FULLSCREEN",False);
-
-  if (stage->priv->want_fullscreen)
-    {
-      clutter_actor_set_size (CLUTTER_ACTOR(stage),
-				DisplayWidth(clutter_xdisplay(), 
-					     clutter_xscreen()),
-				DisplayHeight(clutter_xdisplay(), 
-					      clutter_xscreen()));
-
-      if (stage->priv->xwin != None)
-	XChangeProperty(clutter_xdisplay(), stage->priv->xwin,
-			atom_WINDOW_STATE, XA_ATOM, 32,
-			PropModeReplace,
-			(unsigned char *)&atom_WINDOW_STATE_FULLSCREEN, 1);
-    }
-  else
-    {
-      if (stage->priv->xwin != None)
-	XDeleteProperty(clutter_xdisplay(), 
-			stage->priv->xwin, atom_WINDOW_STATE);
-    }
-}
-
-static void
-sync_cursor_visible (ClutterStage *stage)
-{
-  if (stage->priv->xwin == None)
-    return;
-  
-  if (stage->priv->hide_cursor)
-    {
-      XColor col;
-      Pixmap pix;
-      Cursor curs;
-
-      pix = XCreatePixmap (clutter_xdisplay(), 
-			   stage->priv->xwin, 1, 1, 1);
-      memset (&col, 0, sizeof (col));
-      curs = XCreatePixmapCursor (clutter_xdisplay(), 
-				  pix, pix, &col, &col, 1, 1);
-      XFreePixmap (clutter_xdisplay(), pix);
-      XDefineCursor(clutter_xdisplay(), stage->priv->xwin, curs);
-    }
-  else
-    {
-      XUndefineCursor(clutter_xdisplay(), stage->priv->xwin);
-    }
-}
-
-static void
-frustum (GLfloat left,
-	 GLfloat right,
-	 GLfloat bottom,
-	 GLfloat top,
-	 GLfloat nearval,
-	 GLfloat farval)
-{
-  GLfloat x, y, a, b, c, d;
-  GLfloat m[16];
-
-  x = (2.0 * nearval) / (right - left);
-  y = (2.0 * nearval) / (top - bottom);
-  a = (right + left) / (right - left);
-  b = (top + bottom) / (top - bottom);
-  c = -(farval + nearval) / ( farval - nearval);
-  d = -(2.0 * farval * nearval) / (farval - nearval);
-
-#define M(row,col)  m[col*4+row]
-  M(0,0) = x;     M(0,1) = 0.0F;  M(0,2) = a;      M(0,3) = 0.0F;
-  M(1,0) = 0.0F;  M(1,1) = y;     M(1,2) = b;      M(1,3) = 0.0F;
-  M(2,0) = 0.0F;  M(2,1) = 0.0F;  M(2,2) = c;      M(2,3) = d;
-  M(3,0) = 0.0F;  M(3,1) = 0.0F;  M(3,2) = -1.0F;  M(3,3) = 0.0F;
-#undef M
-
-  glMultMatrixf (m);
-}
-
-static void
-perspective (GLfloat fovy,
-	     GLfloat aspect,
-	     GLfloat zNear,
-	     GLfloat zFar)
-{
-  GLfloat xmin, xmax, ymin, ymax;
-
-  ymax = zNear * tan (fovy * M_PI / 360.0);
-  ymin = -ymax;
-  xmin = ymin * aspect;
-  xmax = ymax * aspect;
-
-  frustum (xmin, xmax, ymin, ymax, zNear, zFar);
-}
-
-static void
-sync_gl_viewport (ClutterStage *stage)
-{
-  /* Set For 2D */
-#if 0
-  glViewport (0, 0, stage->priv->xwin_width, stage->priv->xwin_height);
-  glMatrixMode (GL_PROJECTION);
-  glLoadIdentity ();
-  glOrtho (0, stage->priv->xwin_width, stage->priv->xwin_height, 0, -1, 1);
-  glMatrixMode (GL_MODELVIEW);
-  glLoadIdentity ();
-
-#endif
-  /* For 3D */
-
-  glViewport (0, 0, stage->priv->xwin_width, stage->priv->xwin_height);
-  glMatrixMode (GL_PROJECTION);
-  glLoadIdentity ();
-  perspective (60.0f, 1.0f, 0.1f, 100.0f);
-  glMatrixMode (GL_MODELVIEW);
-  glLoadIdentity ();
-
-  /* Then for 2D like transform */
-
-  /* camera distance from screen, 0.5 * tan (FOV) */
-#define DEFAULT_Z_CAMERA 0.866025404f
-
-  glTranslatef (-0.5f, -0.5f, -DEFAULT_Z_CAMERA);
-  glScalef (1.0f / stage->priv->xwin_width, 
-	    -1.0f / stage->priv->xwin_height, 1.0f / stage->priv->xwin_width);
-  glTranslatef (0.0f, -stage->priv->xwin_height, 0.0f);
-}
-
-static void
-clutter_stage_show (ClutterActor *self)
-{
-  ClutterActorClass *parent_class;
-
-  parent_class = CLUTTER_ACTOR_CLASS (clutter_stage_parent_class);
-  if (parent_class->show)
-    parent_class->show (self);
-
-  if (clutter_stage_get_xwindow (CLUTTER_STAGE (self)))
-    XMapWindow (clutter_xdisplay (), 
-		clutter_stage_get_xwindow (CLUTTER_STAGE (self)));
-}
-
-static void
-clutter_stage_hide (ClutterActor *self)
-{
-  ClutterActorClass *parent_class;
-
-  parent_class = CLUTTER_ACTOR_CLASS (clutter_stage_parent_class);
-  if (parent_class->hide)
-    parent_class->hide (self);
-
-  if (clutter_stage_get_xwindow (CLUTTER_STAGE (self)))
-    XUnmapWindow (clutter_xdisplay (), 
-		  clutter_stage_get_xwindow (CLUTTER_STAGE (self)));
-}
-
-static void
-clutter_stage_unrealize (ClutterActor *actor)
-{
-  ClutterStage        *stage;
-  ClutterStagePrivate *priv;
-
-  stage = CLUTTER_STAGE(actor);
-  priv = stage->priv;
-
-  CLUTTER_MARK();
-
-  if (priv->want_offscreen)
-    {
-      if (priv->glxpixmap)
-	{
-	  glXDestroyGLXPixmap (clutter_xdisplay(), priv->glxpixmap);
-	  priv->glxpixmap = None;
-	}
-
-      if (priv->xpixmap)
-	{
-	  XFreePixmap (clutter_xdisplay(), priv->xpixmap);
-	  priv->xpixmap = None;
-	}
-    }
-  else
-    {
-      if (!priv->is_foreign_xwin && priv->xwin != None)
-	{
-	  XDestroyWindow (clutter_xdisplay(), priv->xwin);
-	  priv->xwin = None;
-	}
-      else
-        priv->xwin = None;
-    }
-
-  glXMakeCurrent(clutter_xdisplay(), None, NULL);
-  if (priv->gl_context != None)
-    {
-      glXDestroyContext (clutter_xdisplay(), priv->gl_context);
-      priv->gl_context = None;
-    }
-}
-
-static void
-clutter_stage_realize (ClutterActor *actor)
-{
-  ClutterStage        *stage;
-  ClutterStagePrivate *priv;
-
-  stage = CLUTTER_STAGE(actor);
-
-  priv = stage->priv;
-
-  CLUTTER_MARK();
-
-  if (priv->want_offscreen)
-    {
-      int gl_attributes[] = {
-	GLX_RGBA, 
-	GLX_RED_SIZE, 1,
-	GLX_GREEN_SIZE, 1,
-	GLX_BLUE_SIZE, 1,
-	0
-      };
-
-      if (priv->xvisinfo)
-	XFree(priv->xvisinfo);
-
-      priv->xvisinfo = glXChooseVisual (clutter_xdisplay(),
-					clutter_xscreen(),
-					gl_attributes);
-      if (!priv->xvisinfo)
-	{
-	  g_critical ("Unable to find suitable GL visual.");
-	  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-	  return;
-	}
-
-      if (priv->gl_context != None)
-	glXDestroyContext (clutter_xdisplay(), priv->gl_context);
-
-      priv->xpixmap = XCreatePixmap (clutter_xdisplay(),
-				     clutter_root_xwindow(),
-				     priv->xwin_width, 
-				     priv->xwin_height,
-				     priv->xvisinfo->depth);
-
-      priv->glxpixmap = glXCreateGLXPixmap(clutter_xdisplay(),
-					   priv->xvisinfo,
-					   priv->xpixmap);
-      sync_fullscreen (stage);  
-
-      /* indirect */
-      priv->gl_context = glXCreateContext (clutter_xdisplay(), 
-					   priv->xvisinfo, 
-					   0, 
-					   False);
-      
-      glXMakeCurrent(clutter_xdisplay(), priv->glxpixmap, priv->gl_context);
-
-#if 0
-      /* Debug code for monitoring a off screen pixmap via window */
-      {
-	Colormap cmap;
-	XSetWindowAttributes swa;
-
-	cmap = XCreateColormap(clutter_xdisplay(),
-			       clutter_root_xwindow(), 
-			       priv->xvisinfo->visual, AllocNone);
-
-	/* create a window */
-	swa.colormap = cmap; 
-
-	foo_win = XCreateWindow(clutter_xdisplay(),
-				clutter_root_xwindow(), 
-				0, 0, 
-				priv->xwin_width, priv->xwin_height,
-				0, 
-				priv->xvisinfo->depth, 
-				InputOutput, 
-				priv->xvisinfo->visual,
-				CWColormap, &swa);
-
-	XMapWindow(clutter_xdisplay(), foo_win);
-      }
-#endif
-    }
-  else
-    {
-      int gl_attributes[] = 
-	{
-	  GLX_RGBA, 
-	  GLX_DOUBLEBUFFER,
-	  GLX_RED_SIZE, 1,
-	  GLX_GREEN_SIZE, 1,
-	  GLX_BLUE_SIZE, 1,
-	  GLX_STENCIL_SIZE, 1,
-	  0
-	};
-
-      if (priv->xvisinfo)
-	{
-	  XFree(priv->xvisinfo);
-	  priv->xvisinfo = None;
-	}
-#if 0
-      /* Attempted fix at GTK 'white' textures - made no difference :( */
-      if (priv->is_foreign_xwin && priv->xwin != None)
-	{
-	  XWindowAttributes win_attr;
-	  XVisualInfo       vis_info;
-	  int               n;
-
-	  XGetWindowAttributes (clutter_xdisplay(), priv->xwin, &win_attr);
-	  vis_info.screen   = clutter_xscreen();
-	  vis_info.visualid = XVisualIDFromVisual (win_attr.visual);
-	  priv->xvisinfo = XGetVisualInfo (clutter_xdisplay(),
-					   VisualScreenMask|VisualIDMask, 
-					   &vis_info, &n);
-
-	  printf("made %li\n", priv->xvisinfo);
-	}
-#endif
-      if (priv->xvisinfo == None)
-	priv->xvisinfo = glXChooseVisual (clutter_xdisplay(),
-					  clutter_xscreen(),
-					  gl_attributes);
-      if (!priv->xvisinfo)
-	{
-	  g_critical ("Unable to find suitable GL visual.");
-	  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-	  return;
-	}
-
-      CLUTTER_NOTE(GL, "visual id's %li vs %li",
-		   priv->xvisinfo->visualid,
-		   XVisualIDFromVisual(DefaultVisual(clutter_xdisplay(),
-						     clutter_xscreen())));
-
-
-      if (priv->xwin == None)
-	{
-	  XSetWindowAttributes swa;
-
-	  if (priv->xvisinfo->visualid 
-	      == XVisualIDFromVisual(DefaultVisual(clutter_xdisplay(),
-						       clutter_xscreen())))
-	    {
-	      swa.colormap = DefaultColormap(clutter_xdisplay(),
-					     clutter_xscreen());
-	    }
-	  else
-	    {
-	      swa.colormap = XCreateColormap(clutter_xdisplay(),
-					     clutter_root_xwindow(), 
-					     priv->xvisinfo->visual, 
-					     AllocNone);
-	    }
-
-	  priv->xwin = XCreateWindow(clutter_xdisplay(),
-				     clutter_root_xwindow(), 
-				     0, 0, 
-				     priv->xwin_width, priv->xwin_height,
-				     0, 
-				     priv->xvisinfo->depth, 
-				     InputOutput, 
-				     priv->xvisinfo->visual,
-				     CWColormap, &swa);
-	}
-
-      XSelectInput(clutter_xdisplay(), 
-		   priv->xwin, 
-		   StructureNotifyMask
-		   |ExposureMask
-		   /* FIXME: we may want to eplicity enable MotionMask */
-		   |PointerMotionMask
-		   |KeyPressMask
-		   |KeyReleaseMask
-		   |ButtonPressMask
-		   |ButtonReleaseMask
-		   |PropertyChangeMask);
-
-      sync_fullscreen (stage);  
-      sync_cursor_visible (stage);  
-
-      if (priv->gl_context != None)
-	glXDestroyContext (clutter_xdisplay(), priv->gl_context);
-
-      priv->gl_context = glXCreateContext (clutter_xdisplay(), 
-					   priv->xvisinfo, 
-					   0, 
-					   True);
-      if (priv->gl_context == None)
-	{
-	  g_critical ("Unable to create suitable GL context.");
-	  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-	  return;
-	}
-	
-      glXMakeCurrent(clutter_xdisplay(), priv->xwin, priv->gl_context);
-    }
-
-  CLUTTER_NOTE (GL,
-                "\n"
-		"==========================================="
-		"GL_VENDOR: %s\n"
-		"GL_RENDERER: %s\n"
-		"GL_VERSION: %s\n"
-		"GL_EXTENSIONS: %s\n"
-		"Is direct: %s\n"
-		"===========================================",
-		glGetString (GL_VENDOR),
-		glGetString (GL_RENDERER),
-		glGetString (GL_VERSION),
-		glGetString (GL_EXTENSIONS),
-		glXIsDirect(clutter_xdisplay(), priv->gl_context) ? "yes" : "no"
-		);
-
-  sync_gl_viewport (stage);
-}
-
-static void
-clutter_stage_paint (ClutterActor *self)
-{
-  parent_class->paint (self);
-}
-
-static void
-clutter_stage_allocate_coords (ClutterActor    *self,
-			       ClutterActorBox *box)
-{
-  /* Do nothing, just stop group_allocate getting called */
-
-  /* TODO: sync up with any configure events from WM ??  */
-  return;
-}
-
-static void
-clutter_stage_request_coords (ClutterActor    *self,
-			      ClutterActorBox *box)
-{
-  ClutterStage        *stage;
-  ClutterStagePrivate *priv;
-  gint                 new_width, new_height;
-
-  stage = CLUTTER_STAGE (self);
-  priv = stage->priv;
-
-  /* FIXME: some how have X configure_notfiys call this ?  
-  */
-
-  new_width  = ABS(box->x2 - box->x1);
-  new_height = ABS(box->y2 - box->y1); 
-
-  if (new_width != priv->xwin_width || new_height != priv->xwin_height)
-    {
-      priv->xwin_width  = new_width;
-      priv->xwin_height = new_height;
-
-      if (priv->xwin != None)
-	XResizeWindow (clutter_xdisplay(), 
-		       priv->xwin, 
-		       priv->xwin_width, 
-		       priv->xwin_height);
-
-      if (priv->xpixmap)
-	{
-	  /* Need to recreate to resize */
-	  clutter_actor_unrealize(self);
-	  clutter_actor_realize(self);
-	}
-
-      sync_gl_viewport (stage);
-    }
-
-  if (priv->xwin != None) /* Do we want to bother ? */
-    XMoveWindow (clutter_xdisplay(), 
-		 priv->xwin,
-		 box->x1,
-		 box->y1);
-
-}
-
-static void 
-clutter_stage_dispose (GObject *object)
-{
-  ClutterStage *self = CLUTTER_STAGE (object);
-
-  if (self->priv->xwin != None)
-    clutter_stage_unrealize (CLUTTER_ACTOR (self));
-
-  G_OBJECT_CLASS (clutter_stage_parent_class)->dispose (object);
-}
-
-static void 
-clutter_stage_finalize (GObject *object)
-{
-  G_OBJECT_CLASS (clutter_stage_parent_class)->finalize (object);
-}
-
 
 static void
 clutter_stage_set_property (GObject      *object, 
@@ -640,14 +133,14 @@ clutter_stage_set_property (GObject      *object,
       if (priv->want_fullscreen != g_value_get_boolean (value))
 	{
 	  priv->want_fullscreen = g_value_get_boolean (value);
-	  sync_fullscreen (stage);
+	  _vtable.sync_fullscreen (stage);
 	}
       break;
     case PROP_HIDE_CURSOR:
       if (priv->hide_cursor != g_value_get_boolean (value))
 	{
 	  priv->hide_cursor = g_value_get_boolean (value);
-	  sync_cursor_visible (stage);
+	  _vtable.sync_cursor (stage);
 	}
       break;
     default:
@@ -698,17 +191,22 @@ clutter_stage_class_init (ClutterStageClass *klass)
 
   parent_class = g_type_class_peek_parent (klass);
 
-  actor_class->realize    = clutter_stage_realize;
-  actor_class->unrealize  = clutter_stage_unrealize;
-  actor_class->show       = clutter_stage_show;
-  actor_class->hide       = clutter_stage_hide;
-  actor_class->paint      = clutter_stage_paint;
+  clutter_stage_backend_init_vtable (&_vtable);
 
-  actor_class->request_coords  = clutter_stage_request_coords;
-  actor_class->allocate_coords = clutter_stage_allocate_coords;
+  actor_class->realize    = _vtable.realize;
+  actor_class->unrealize  = _vtable.unrealize;
+  actor_class->show       = _vtable.show;
+  actor_class->hide       = _vtable.hide;
+  actor_class->paint      = _vtable.paint;
 
-  gobject_class->dispose      = clutter_stage_dispose;
-  gobject_class->finalize     = clutter_stage_finalize;
+  actor_class->request_coords  = _vtable.request_coords;
+  actor_class->allocate_coords = _vtable.allocate_coords;
+
+  /*
+  gobject_class->dispose      = _vtable.stage_dispose;
+  gobject_class->finalize     = _vtable.stage_finalize;
+  */
+
   gobject_class->set_property = clutter_stage_set_property;
   gobject_class->get_property = clutter_stage_get_property;
   
@@ -867,16 +365,11 @@ clutter_stage_init (ClutterStage *self)
   
   self->priv = priv = CLUTTER_STAGE_GET_PRIVATE (self);
 
+  self->backend = clutter_stage_backend_init (self);
+
   priv->want_offscreen  = FALSE;
   priv->want_fullscreen = FALSE;
   priv->hide_cursor     = FALSE;
-  priv->is_foreign_xwin = FALSE;
-
-  priv->xwin = None;
-  priv->gl_context = None;
-
-  priv->xwin_width  = 100;
-  priv->xwin_height = 100;
 
   priv->color.red   = 0xff;
   priv->color.green = 0xff;
@@ -926,98 +419,6 @@ clutter_stage_get_default (void)
     }
 
   return retval;
-}
-
-/**
- * clutter_stage_get_xwindow
- * @stage: A #ClutterStage
- *
- * Get the stage's underlying x window ID.
- *
- * Return Value: Stage X Window XID
- **/
-Window
-clutter_stage_get_xwindow (ClutterStage *stage)
-{
-  return stage->priv->xwin;
-}
-
-/**
- * clutter_stage_set_xwindow_foreign
- * @stage: A #ClutterStage
- * @xid: A preexisting X Window ID
- *
- * Target the #ClutterStage to use an existing external X Window.
- *
- * Return value: TRUE if foreign window valid, FALSE otherwise
- **/
-gboolean
-clutter_stage_set_xwindow_foreign (ClutterStage *stage,
-				   Window        xid)
-{
-  /* For screensavers via XSCREENSAVER_WINDOW env var.
-   * Also for toolkit binding.
-  */
-  gint x,y;
-  guint width, height, border, depth;
-  Window root_return;
-  Status status;
-  ClutterGeometry geom;
-  ClutterStagePrivate *priv;
-
-  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
-  g_return_val_if_fail (xid != None, FALSE);
-
-  priv = stage->priv;
-
-  clutter_util_trap_x_errors();
-
-  status = XGetGeometry (clutter_xdisplay(),
-			 xid,
-			 &root_return,
-			 &x,
-			 &y,
-			 &width,
-			 &height,
-			 &border,
-			 &depth);
-	       
-  if (clutter_util_untrap_x_errors() || !status ||
-      width == 0 || height == 0 ||
-      depth != priv->xvisinfo->depth)
-    {
-      return FALSE;
-    }
-
-  clutter_actor_unrealize (CLUTTER_ACTOR (stage));
-
-  priv->xwin = xid;
-  priv->is_foreign_xwin = TRUE;
-
-  geom.x = x;
-  geom.y = y;
-  geom.width  = priv->xwin_width  = width;
-  geom.height = priv->xwin_height = height;
-
-  clutter_actor_set_geometry (CLUTTER_ACTOR (stage), &geom);
-
-  clutter_actor_realize (CLUTTER_ACTOR (stage));
-
-  return TRUE;
-}
-
-/**
- * clutter_stage_get_xvisual
- * @stage: A #ClutterStage
- *
- * Get the stage's XVisualInfo.
- *
- * Return Value: The stage's XVisualInfo
- **/
-const XVisualInfo*
-clutter_stage_get_xvisual (ClutterStage *stage)
-{
-  return stage->priv->xvisinfo;
 }
 
 /**
@@ -1072,12 +473,14 @@ clutter_stage_get_color (ClutterStage *stage,
   color->alpha = priv->color.alpha;
 }
 
+#if 0
 static void
 snapshot_pixbuf_free (guchar   *pixels,
 		      gpointer  data)
 {
   g_free(pixels);
 }
+#endif
 
 /**
  * clutter_stage_snapshot
@@ -1100,6 +503,7 @@ clutter_stage_snapshot (ClutterStage *stage,
 			gint          width,
 			gint          height)
 {
+#if 0
   guchar              *data;
   GdkPixbuf           *pixb, *fpixb;
   ClutterActor      *actor;
@@ -1158,7 +562,55 @@ clutter_stage_snapshot (ClutterStage *stage,
 
       return fpixb;
     }
+#endif
+  return 0;
 }
+
+/* FIXME -> CGL */
+static void
+frustum (GLfloat left,
+	 GLfloat right,
+	 GLfloat bottom,
+	 GLfloat top,
+	 GLfloat nearval,
+	 GLfloat farval)
+{
+  GLfloat x, y, a, b, c, d;
+  GLfloat m[16];
+
+  x = (2.0 * nearval) / (right - left);
+  y = (2.0 * nearval) / (top - bottom);
+  a = (right + left) / (right - left);
+  b = (top + bottom) / (top - bottom);
+  c = -(farval + nearval) / ( farval - nearval);
+  d = -(2.0 * farval * nearval) / (farval - nearval);
+
+#define M(row,col)  m[col*4+row]
+  M(0,0) = x;     M(0,1) = 0.0F;  M(0,2) = a;      M(0,3) = 0.0F;
+  M(1,0) = 0.0F;  M(1,1) = y;     M(1,2) = b;      M(1,3) = 0.0F;
+  M(2,0) = 0.0F;  M(2,1) = 0.0F;  M(2,2) = c;      M(2,3) = d;
+  M(3,0) = 0.0F;  M(3,1) = 0.0F;  M(3,2) = -1.0F;  M(3,3) = 0.0F;
+#undef M
+
+  glMultMatrixf (m);
+}
+
+static void
+perspective (GLfloat fovy,
+	     GLfloat aspect,
+	     GLfloat zNear,
+	     GLfloat zFar)
+{
+  GLfloat xmin, xmax, ymin, ymax;
+
+  ymax = zNear * tan (fovy * M_PI / 360.0);
+  ymin = -ymax;
+  xmin = ymin * aspect;
+  xmax = ymax * aspect;
+
+  frustum (xmin, xmax, ymin, ymax, zNear, zFar);
+}
+
 
 /**
  * clutter_stage_get_actor_at_pos:
@@ -1220,7 +672,7 @@ clutter_stage_get_actor_at_pos (ClutterStage *stage,
 					      buff[(hits-1) * 4 + 3]);
     }
   
-  sync_gl_viewport (stage);
+  _vtable.sync_viewport (stage); 
 
   return found;
 }

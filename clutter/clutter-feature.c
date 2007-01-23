@@ -249,15 +249,15 @@ clutter_feature_init (void)
       __features->features_set = FALSE; /* don't rely on zero-ing */
     }
 
-  if (!clutter_xdisplay ())
+  if (!clutter_glx_display ())
     return;
 
   if (__features->features_set)
     return;
 
   gl_extensions = (const gchar*) glGetString (GL_EXTENSIONS);
-  glx_extensions = glXQueryExtensionsString (clutter_xdisplay (),
-                                             clutter_xscreen ());
+  glx_extensions = glXQueryExtensionsString (clutter_glx_display (),
+                                             clutter_glx_screen ());
   
   if (check_gl_extension ("GL_ARB_texture_rectangle", gl_extensions)
       || check_gl_extension ("GL_EXT_texture_rectangle", gl_extensions))

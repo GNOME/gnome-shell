@@ -43,12 +43,16 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
+#ifdef CLUTTER_BACKEND_GLX
+#include <clutter/clutter-backend-glx.h>
+#endif
+
+static ClutterMainContext *ClutterCntx = NULL;
+
 static gboolean clutter_is_initialized = FALSE;
 static gboolean clutter_show_fps       = FALSE;
 static gboolean clutter_fatal_warnings = FALSE;
-static gchar *clutter_display_name     = NULL;
 static gchar *clutter_vblank_name      = NULL;
-static int clutter_screen              = 0;
 
 guint clutter_debug_flags = 0;  /* global clutter debug flag */
 
@@ -66,210 +70,8 @@ static const GDebugKey clutter_debug_keys[] = {
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
 
-typedef struct 
-{
-  GSource  source;
-  Display *display;
-  GPollFD  event_poll_fd;
-} 
-ClutterXEventSource;
 
-typedef void (*ClutterXEventFunc) (XEvent *xev, gpointer user_data);
-
-static ClutterMainContext *ClutterCntx = NULL;
-
-static gboolean  
-x_event_prepare (GSource  *source,
-		 gint     *timeout)
-{
-  Display *display = ((ClutterXEventSource*)source)->display;
-
-  *timeout = -1;
-
-  return XPending (display);
-}
-
-static gboolean  
-x_event_check (GSource *source) 
-{
-  ClutterXEventSource *display_source = (ClutterXEventSource*)source;
-  gboolean         retval;
-
-  if (display_source->event_poll_fd.revents & G_IO_IN)
-    retval = XPending (display_source->display);
-  else
-    retval = FALSE;
-
-  return retval;
-}
-
-static gboolean  
-x_event_dispatch (GSource    *source,
-		  GSourceFunc callback,
-		  gpointer    user_data)
-{
-  Display *display = ((ClutterXEventSource*)source)->display;
-  ClutterXEventFunc event_func = (ClutterXEventFunc) callback;
-  
-  XEvent xev;
-
-  if (XPending (display))
-    {
-      XNextEvent (display, &xev);
-
-      if (event_func)
-	(*event_func) (&xev, user_data);
-    }
-
-  return TRUE;
-}
-
-static const GSourceFuncs x_event_funcs = {
-  x_event_prepare,
-  x_event_check,
-  x_event_dispatch,
-  NULL
-};
-
-static void
-translate_key_event (ClutterKeyEvent   *event,
-		     XEvent            *xevent)
-{
-  event->type = xevent->xany.type == KeyPress ? CLUTTER_KEY_PRESS
-                                              : CLUTTER_KEY_RELEASE;
-  event->time = xevent->xkey.time;
-  event->modifier_state = xevent->xkey.state; /* FIXME: handle modifiers */
-  event->hardware_keycode = xevent->xkey.keycode;
-  event->keyval = XKeycodeToKeysym(xevent->xkey.display, 
-				   xevent->xkey.keycode,
-				   0 );	/* FIXME: index with modifiers */
-}
-
-static void
-translate_button_event (ClutterButtonEvent   *event,
-			XEvent               *xevent)
-{
-  /* FIXME: catch double click */
-  CLUTTER_NOTE (EVENT, " button event at %ix%i",
-		xevent->xbutton.x,
-		xevent->xbutton.y);
-
-  event->type = xevent->xany.type == ButtonPress ? CLUTTER_BUTTON_PRESS
-                                                 : CLUTTER_BUTTON_RELEASE;
-  event->time = xevent->xbutton.time;
-  event->x = xevent->xbutton.x;
-  event->y = xevent->xbutton.y;
-  event->modifier_state = xevent->xbutton.state; /* includes button masks */
-  event->button = xevent->xbutton.button;
-}
-
-static void
-translate_motion_event (ClutterMotionEvent   *event,
-			XEvent               *xevent)
-{
-  event->type = CLUTTER_MOTION;
-  event->time = xevent->xbutton.time;
-  event->x = xevent->xmotion.x;
-  event->y = xevent->xmotion.y;
-  event->modifier_state = xevent->xmotion.state;
-}
-
-static void
-clutter_dispatch_x_event (XEvent  *xevent,
-			  gpointer data)
-{
-  ClutterMainContext *ctx = CLUTTER_CONTEXT ();
-  ClutterEvent        event;
-  ClutterStage       *stage = ctx->stage;
-  gboolean            emit_input_event = FALSE;
-
-  switch (xevent->type)
-    {
-    case Expose:
-      {
-	XEvent foo_xev;
-
-	/* Cheap compress */
-	while (XCheckTypedWindowEvent(ctx->xdpy, 
-				      xevent->xexpose.window,
-				      Expose, 
-				      &foo_xev));
-
-	/* FIXME: need to make stage an 'actor' so can que
-         * a paint direct from there rather than hack here...
-	 */
-	clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
-      }
-      break;
-    case KeyPress:
-      translate_key_event ((ClutterKeyEvent *) &event, xevent);
-      g_signal_emit_by_name (stage, "key-press-event", &event);
-      emit_input_event = TRUE;
-      break;
-    case KeyRelease:
-      translate_key_event ((ClutterKeyEvent *) &event, xevent);
-      g_signal_emit_by_name (stage, "key-release-event", &event);
-      emit_input_event = TRUE;
-      break;
-    case ButtonPress:
-      translate_button_event ((ClutterButtonEvent *) &event, xevent);
-      g_signal_emit_by_name (stage, "button-press-event", &event);
-      emit_input_event = TRUE;
-      break;
-    case ButtonRelease:
-      translate_button_event ((ClutterButtonEvent *) &event, xevent);
-      g_signal_emit_by_name (stage, "button-release-event", &event);
-      emit_input_event = TRUE;
-      break;
-    case MotionNotify:
-      translate_motion_event ((ClutterMotionEvent *) &event, xevent);
-      g_signal_emit_by_name (stage, "motion-event", &event);
-      emit_input_event = TRUE;
-      break;
-    }
-
-  if (emit_input_event)
-    g_signal_emit_by_name (stage, "input-event", &event);
-
-}
-
-static void
-events_init()
-{
-  ClutterMainContext   *clutter_context;
-  GMainContext         *gmain_context;
-  int                   connection_number;
-  GSource              *source;
-  ClutterXEventSource  *display_source;
-
-  clutter_context = clutter_context_get_default ();
-  gmain_context = g_main_context_default ();
-
-  g_main_context_ref (gmain_context);
-
-  connection_number = ConnectionNumber (clutter_context->xdpy);
-  
-  source = g_source_new ((GSourceFuncs *)&x_event_funcs, 
-			 sizeof (ClutterXEventSource));
-
-  display_source = (ClutterXEventSource *)source;
-
-  display_source->event_poll_fd.fd     = connection_number;
-  display_source->event_poll_fd.events = G_IO_IN;
-  display_source->display              = clutter_context->xdpy;
-  
-  g_source_add_poll (source, &display_source->event_poll_fd);
-  g_source_set_can_recurse (source, TRUE);
-
-  g_source_set_callback (source, 
-			 (GSourceFunc) clutter_dispatch_x_event, 
-			 NULL  /* no userdata */, NULL);
-
-  g_source_attach (source, gmain_context);
-  g_source_unref (source);
-}
-
-static gboolean
+gboolean
 clutter_want_fps (void)
 {
   return clutter_show_fps;
@@ -291,60 +93,8 @@ clutter_redraw (void)
 {
   ClutterMainContext *ctx = CLUTTER_CONTEXT();
   ClutterStage       *stage = ctx->stage;
-  ClutterColor        stage_color;
-  
-  static GTimer      *timer = NULL; 
-  static guint        timer_n_frames = 0;
 
-  /* FIXME: Should move all this into stage...
-  */
-
-  CLUTTER_NOTE (PAINT, " Redraw enter");
-
-  if (clutter_want_fps ())
-    {
-      if (!timer)
-	timer = g_timer_new ();
-    }
-
-  clutter_stage_get_color (stage, &stage_color);
-
-  glClearColor(((float) stage_color.red / 0xff * 1.0),
-	       ((float) stage_color.green / 0xff * 1.0),
-	       ((float) stage_color.blue / 0xff * 1.0),
-	       0.0);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-  
-  glDisable(GL_LIGHTING); 
-  glDisable(GL_DEPTH_TEST);
-
-  clutter_actor_paint (CLUTTER_ACTOR (stage));
-
-  if (clutter_stage_get_xwindow (stage))
-    {
-      clutter_feature_wait_for_vblank ();
-      glXSwapBuffers(ctx->xdpy, clutter_stage_get_xwindow (stage));  
-    }
-  else
-    {
-      glXWaitGL();
-      CLUTTER_GLERR();
-    }
-
-
-  if (clutter_want_fps ())
-    {
-      timer_n_frames++;
-
-      if (g_timer_elapsed (timer, NULL) >= 1.0)
-	{
-	  g_print ("*** FPS: %i ***\n", timer_n_frames);
-	  timer_n_frames = 0;
-	  g_timer_start (timer);
-	}
-    }
-
-  CLUTTER_NOTE (PAINT, "Redraw leave");
+  clutter_actor_paint (CLUTTER_ACTOR(stage));
 }
 
 /**
@@ -444,50 +194,6 @@ clutter_threads_leave (void)
   g_mutex_unlock (context->gl_lock);
 }
 
-/**
- * clutter_xdisplay:
- *
- * Retrieves the X display that Clutter is using
- *
- * Return value: A pointer to an X Display structure.
- */
-Display*
-clutter_xdisplay (void)
-{
-  ClutterMainContext *context = CLUTTER_CONTEXT ();
-
-  return context->xdpy;
-}
-
-/**
- * clutter_xscreen:
- *
- * Retrieves the X screen that Clutter is using.
- *
- * Return value: the X screen ID
- */
-int
-clutter_xscreen (void)
-{
-  ClutterMainContext *context = CLUTTER_CONTEXT ();
-
-  return context->xscreen;
-}
-
-/**
- * clutter_root_xwindow:
- *
- * FIXME
- *
- * Return value: FIXME
- */
-Window
-clutter_root_xwindow (void)
-{
-  ClutterMainContext *context = CLUTTER_CONTEXT ();
-
-  return context->xwin_root;
-}
 
 /**
  * clutter_want_debug:
@@ -572,10 +278,6 @@ clutter_arg_no_debug_cb (const char *key,
 #endif /* CLUTTER_ENABLE_DEBUG */
 
 static GOptionEntry clutter_args[] = {
-  { "display", 0, G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_STRING, &clutter_display_name,
-    "X display to use", "DISPLAY" },
-  { "screen", 0, G_OPTION_FLAG_IN_MAIN, G_OPTION_ARG_INT, &clutter_screen,
-    "X screen to use", "SCREEN" },
   { "clutter-show-fps", 0, 0, G_OPTION_ARG_NONE, &clutter_show_fps,
     "Show frames per second", NULL },
   { "clutter-vblank", 0, 0, G_OPTION_ARG_STRING, &clutter_vblank_name,
@@ -606,18 +308,6 @@ pre_parse_hook (GOptionContext  *context,
   if (clutter_is_initialized)
     return TRUE;
 
-#if 0
-  /* XXX - this shows a warning with newer releases of GLib,
-   * as we use GOption in order to get here, and GOption uses
-   * the slice allocator and other GLib stuff.  so, either we
-   * move the thread init inside clutter_init() directly or
-   * we remove this call altogether, and let the applications
-   * deal with threading, as they are supposed to do anyway.
-   */
-  if (!g_thread_supported ())
-    g_thread_init (NULL);
-#endif
-
   g_type_init ();
 
 #ifdef CLUTTER_ENABLE_DEBUG
@@ -642,13 +332,6 @@ pre_parse_hook (GOptionContext  *context,
   env_string = g_getenv ("CLUTTER_SHOW_FPS");
   if (env_string)
     clutter_show_fps = TRUE;
-
-  env_string = g_getenv ("DISPLAY");
-  if (env_string)
-    {
-      clutter_display_name = g_strdup (env_string);
-      env_string = NULL;
-    }
 
   return TRUE;
 }
@@ -679,32 +362,6 @@ post_parse_hook (GOptionContext  *context,
   clutter_context = clutter_context_get_default ();
   clutter_context->main_loops = NULL;
   clutter_context->main_loop_level = 0;
-
-  /* either we got this with the DISPLAY envvar or via the
-   * --display command line switch; if both failed, then
-   *  we'll fail later when we return in clutter_init()
-   */
-  if (clutter_display_name)
-    clutter_context->xdpy = XOpenDisplay (clutter_display_name);
-
-  if (clutter_context->xdpy)
-    {
-      if (clutter_screen == 0)
-        clutter_context->xscreen = DefaultScreen (clutter_context->xdpy);
-      else
-        {
-          Screen *xscreen;
-
-          xscreen = ScreenOfDisplay (clutter_context->xdpy, clutter_screen);
-          clutter_context->xscreen = XScreenNumberOfScreen (xscreen);
-        }
-
-      clutter_context->xwin_root = RootWindow (clutter_context->xdpy,
-                                               clutter_context->xscreen);
-
-      /* we don't need it anymore */
-      g_free (clutter_display_name);
-    }
 
   clutter_context->font_map = PANGO_FT2_FONT_MAP (pango_ft2_font_map_new ());
   pango_ft2_font_map_set_resolution (clutter_context->font_map, 96.0, 96.0);
@@ -743,34 +400,6 @@ clutter_get_option_group (void)
   g_option_group_add_entries (group, clutter_args);
 
   return group;
-}
-
-static gboolean
-clutter_parse_args (int    *argc,
-                    char ***argv)
-{
-  GOptionContext *option_context;
-  GOptionGroup *clutter_group;
-  GError *error = NULL;
-
-  if (clutter_is_initialized)
-    return TRUE;
-
-  option_context = g_option_context_new (NULL);
-  g_option_context_set_ignore_unknown_options (option_context, TRUE);
-  g_option_context_set_help_enabled (option_context, FALSE);
-
-  clutter_group = clutter_get_option_group ();
-  g_option_context_set_main_group (option_context, clutter_group);
-  if (!g_option_context_parse (option_context, argc, argv, &error))
-    {
-      g_warning ("%s", error->message);
-      g_error_free (error);
-    }
-
-  g_option_context_free (option_context);
-
-  return TRUE;
 }
 
 GQuark
@@ -855,17 +484,11 @@ clutter_init_with_args (int            *argc,
   if (!g_thread_supported ())
     g_thread_init (NULL);
 
-  if (!XInitThreads())
-    {
-      g_set_error (error, clutter_init_error_quark (),
-                   CLUTTER_INIT_ERROR_THREADS,
-                   "Unable to initialise the X threading");
-      return CLUTTER_INIT_ERROR_THREADS;
-    }
-
-  group = clutter_get_option_group ();
-
+  group   = clutter_get_option_group ();
   context = g_option_context_new (parameter_string);
+
+  clutter_backend_init (context);
+
   g_option_context_add_group (context, group);
 
   if (entries)
@@ -881,15 +504,6 @@ clutter_init_with_args (int            *argc,
     return CLUTTER_INIT_ERROR_INTERNAL;
 
   clutter_context = clutter_context_get_default ();
-  if (!clutter_context->xdpy)
-    {
-      g_set_error (error, clutter_init_error_quark (),
-                   CLUTTER_INIT_ERROR_DISPLAY,
-                   "Unable to connect to X DISPLAY. You should either "
-                   "set the DISPLAY environment variable or use the "
-                   "--display command line switch");
-      return CLUTTER_INIT_ERROR_DISPLAY;
-    }
 
   stage_error = NULL;
   if (!clutter_stage_init (clutter_context, &stage_error))
@@ -898,18 +512,42 @@ clutter_init_with_args (int            *argc,
       return CLUTTER_INIT_ERROR_INTERNAL;
     }
 
-  /* At least GL 1.2 is needed for CLAMP_TO_EDGE */
-  if (!is_gl_version_at_least_12 ())
+  return CLUTTER_INIT_SUCCESS;
+}
+
+static gboolean
+clutter_parse_args (int    *argc,
+                    char ***argv)
+{
+  GOptionContext *option_context;
+  GOptionGroup   *clutter_group;
+  GError         *error = NULL;
+  gboolean        ret = TRUE;
+
+  if (clutter_is_initialized)
+    return TRUE;
+
+  option_context = g_option_context_new (NULL);
+  g_option_context_set_ignore_unknown_options (option_context, TRUE);
+  g_option_context_set_help_enabled (option_context, FALSE); 
+
+  /* Initiate any command line options from the backend */
+  clutter_backend_init (option_context);
+
+  clutter_group = clutter_get_option_group ();
+
+  g_option_context_set_main_group (option_context, clutter_group);
+
+  if (!g_option_context_parse (option_context, argc, argv, &error))
     {
-      g_set_error (error, clutter_init_error_quark (),
-                   CLUTTER_INIT_ERROR_OPENGL,
-                   "Clutter needs at least version 1.2 of OpenGL");
-      return CLUTTER_INIT_ERROR_OPENGL;
+      g_warning ("%s", error->message);
+      g_error_free (error);
+      ret = FALSE;
     }
 
-  events_init ();
+  g_option_context_free (option_context);
 
-  return CLUTTER_INIT_SUCCESS;
+  return ret;
 }
 
 /**
@@ -937,20 +575,10 @@ clutter_init (int    *argc,
   if (!g_thread_supported ())
     g_thread_init (NULL);
 
-  if (!XInitThreads())
-    return CLUTTER_INIT_ERROR_THREADS;
-
-  clutter_parse_args (argc, argv);
+  if (clutter_parse_args (argc, argv) == FALSE)
+    return CLUTTER_INIT_ERROR_INTERNAL;
 
   context = clutter_context_get_default ();
-  if (!context->xdpy)
-    {
-      g_critical ("Unable to connect to X DISPLAY. You should either "
-                  "set the DISPLAY environment variable or use the "
-                  "--display command line switch");
-
-      return CLUTTER_INIT_ERROR_DISPLAY;
-    }
 
   stage_error = NULL;
   if (!clutter_stage_init (context, &stage_error))
@@ -960,14 +588,15 @@ clutter_init (int    *argc,
       return CLUTTER_INIT_ERROR_INTERNAL;
     }
 
+#if 0
+  /* FIXME: move to backend */
   /* At least GL 1.2 is needed for CLAMP_TO_EDGE */
   if (!is_gl_version_at_least_12 ())
     {
       g_critical ("Clutter needs at least version 1.2 of OpenGL");
       return CLUTTER_INIT_ERROR_OPENGL;
     }
-
-  events_init ();
+#endif
 
   return 1;
 }

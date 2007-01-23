@@ -26,6 +26,7 @@
 #include "config.h"
 #endif
 
+#include <GL/gl.h>
 #include <math.h>
 
 #include "pangoclutter.h"
@@ -553,14 +554,15 @@ draw_begin (PangoRenderer *renderer_)
   glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
   glEnable (GL_BLEND);
 #if 0
+  /* How to handle in ES ? */
   gl_BlendFuncSeparate (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,
                         GL_ONE      , GL_ONE_MINUS_SRC_ALPHA);
 #endif
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-#if 0
+
   glEnable (GL_ALPHA_TEST);
   glAlphaFunc (GL_GREATER, 0.01f);
-#endif
+
 }
 
 static void

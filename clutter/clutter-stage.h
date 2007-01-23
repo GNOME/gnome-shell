@@ -34,10 +34,6 @@
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-#include <X11/Xlib.h>
-#include <X11/Xatom.h>
-#include <GL/glx.h>
-
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_STAGE (clutter_stage_get_type())
@@ -72,10 +68,14 @@ G_BEGIN_DECLS
 typedef struct _ClutterStagePrivate ClutterStagePrivate;
 typedef struct _ClutterStage        ClutterStage;
 typedef struct _ClutterStageClass   ClutterStageClass;
+typedef struct _ClutterStageBackend ClutterStageBackend;
+typedef struct _ClutterStageVTable  ClutterStageVTable;
+
 
 struct _ClutterStage
 {
   ClutterGroup         parent;
+  ClutterStageBackend *backend;
   
   /*< private >*/
   ClutterStagePrivate *priv;
@@ -107,11 +107,27 @@ struct _ClutterStageClass
   void (*_clutter_stage6) (void);
 }; 
 
+struct _ClutterStageVTable 
+{
+  void (* show)            (ClutterActor    *actor);
+  void (* hide)            (ClutterActor    *actor);
+  void (* realize)         (ClutterActor    *actor);
+  void (* unrealize)       (ClutterActor    *actor);
+  void (* paint)           (ClutterActor    *actor);
+  void (* request_coords)  (ClutterActor    *actor,
+			    ClutterActorBox *box);
+  void (* allocate_coords) (ClutterActor    *actor,
+			    ClutterActorBox *box);
+
+  void (* sync_fullscreen) (ClutterStage    *stage);
+  void (* sync_cursor)     (ClutterStage    *stage);
+  void (* sync_viewport)   (ClutterStage    *stage);
+
+};
+
+
 GType         clutter_stage_get_type            (void) G_GNUC_CONST;
 ClutterActor *clutter_stage_get_default         (void);
-Window        clutter_stage_get_xwindow         (ClutterStage       *stage);
-gboolean      clutter_stage_set_xwindow_foreign (ClutterStage       *stage,
-						 Window              xid);
 void          clutter_stage_set_color           (ClutterStage       *stage,
 					         const ClutterColor *color);
 void          clutter_stage_get_color           (ClutterStage       *stage,
@@ -124,7 +140,6 @@ GdkPixbuf *   clutter_stage_snapshot            (ClutterStage       *stage,
 						 gint                y,
 						 gint                width,
 						 gint                height);
-const XVisualInfo * clutter_stage_get_xvisual   (ClutterStage       *stage);
 
 G_END_DECLS
 

@@ -32,12 +32,7 @@
 #include <unistd.h>
 #include <math.h>
 
-#include <X11/Xlib.h>
-#include <X11/Xatom.h>
-#include <X11/keysym.h>
-
-#include <GL/glx.h>
-#include <GL/gl.h>
+#include <GL/gl.h>   /* Togo */
 
 #include <glib.h>
 
@@ -49,11 +44,6 @@ typedef struct _ClutterMainContext ClutterMainContext;
 
 struct _ClutterMainContext
 {
-  Display         *xdpy;
-  Window           xwin_root;
-  int              xscreen;
-  GC               xgc;
-  
   PangoFT2FontMap *font_map;
   
   GMutex          *gl_lock;

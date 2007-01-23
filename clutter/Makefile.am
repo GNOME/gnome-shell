@@ -32,6 +32,10 @@ source_h =					\
 	$(srcdir)/clutter-version.h		\
         $(srcdir)/clutter-main.h
 
+backend_h =                                     \
+	$(srcdir)/clutter-stage-glx.h 		\
+	$(srcdir)/clutter-backend-glx.h 	
+
 clutter-marshal.h: stamp-clutter-marshal.h
 	@true
 stamp-clutter-marshal.h: clutter-marshal.list
@@ -113,11 +117,18 @@ source_c = clutter-main.c 		\
 	   clutter-media.c 		\
 	   clutter-enum-types.c
 
+backend_c =                                     \
+	$(srcdir)/clutter-stage-glx.c 		\
+	$(srcdir)/clutter-backend-glx.c 	
+
 source_h_priv = clutter-debug.h clutter-private.h
 
-libclutter_@CLUTTER_MAJORMINOR@_la_SOURCES = $(MARSHALFILES) \
+libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_MAJORMINOR@_la_SOURCES = \
+					     $(MARSHALFILES) \
                                              $(source_c)     \
                                              $(source_h)     \
+                                             $(backend_c)    \
+                                             $(backend_h)    \
                                              $(source_h_priv)
 
 INCLUDES = \
@@ -130,17 +141,23 @@ INCLUDES = \
 	-DG_LOG_DOMAIN=\"Clutter\" \
 	$(GCC_FLAGS) \
 	$(CLUTTER_CFLAGS) \
-	$(CLUTTER_DEBUG_CFLAGS)
+	$(CLUTTER_DEBUG_CFLAGS) \
+	-DCLUTTER_BACKEND_GLX
 
-lib_LTLIBRARIES = libclutter-@CLUTTER_MAJORMINOR@.la
+lib_LTLIBRARIES = libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.la
 
-libclutter_@CLUTTER_MAJORMINOR@_la_LIBADD  = \
+libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_MAJORMINOR@_la_LIBADD  = \
             @CLUTTER_LIBS@ $(top_builddir)/clutter/pango/libpangoclutter.la
-libclutter_@CLUTTER_MAJORMINOR@_la_LDFLAGS = @CLUTTER_LT_LDFLAGS@
-libclutter_@CLUTTER_MAJORMINOR@_la_DEPENDENCIES = \
+
+libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_MAJORMINOR@_la_LDFLAGS = \
+           @CLUTTER_LT_LDFLAGS@
+
+libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_MAJORMINOR@_la_DEPENDENCIES = \
             $(top_builddir)/clutter/pango/libpangoclutter.la
 
-clutterheadersdir = $(includedir)/clutter-@CLUTTER_MAJORMINOR@/clutter
+clutterheadersdir = \
+       $(includedir)/clutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@/clutter
+
 clutterheaders_HEADERS = $(source_h) 		\
 		      clutter-marshal.h 	\
 		      clutter-enum-types.h 	\

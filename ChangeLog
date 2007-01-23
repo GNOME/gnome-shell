@@ -1,3 +1,31 @@
+2007-01-23  Matthew Allum  <mallum@openedhand.com>
+
+	* Makefile.am:
+	* clutter.pc.in:
+	* clutter/Makefile.am:
+	* clutter/clutter-backend-glx.c:
+	* clutter/clutter-backend-glx.h:
+	* clutter/clutter-event.c:
+	* clutter/clutter-feature.c:
+	* clutter/clutter-group.c:
+	* clutter/clutter-main.c:
+	* clutter/clutter-main.h:
+	* clutter/clutter-private.h:
+	* clutter/clutter-stage-glx.c:
+	* clutter/clutter-stage-glx.h:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-stage.h:
+	* clutter/clutter-util.c:
+	* clutter/clutter-util.h:
+	* clutter/pango/pangoclutter-render.c:
+	* configure.ac:
+	* examples/Makefile.am:
+	Initial work in supporting different GL backends (ie. GLX/EGL/DirectFB etc). 
+	Currently just GLX supported and now mostly self contained. 
+
+	* TODO:
+	Add a note about caching glenables
+
 2007-01-23  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.c:

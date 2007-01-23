@@ -1,7 +1,7 @@
 noinst_PROGRAMS = test super-oh behave
 
 INCLUDES = -I$(top_srcdir)/
-LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_MAJORMINOR@.la
+LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.la
 
 test_SOURCES = test.c
 test_CFLAGS = $(CLUTTER_CFLAGS) $(GCONF_CFLAGS)
