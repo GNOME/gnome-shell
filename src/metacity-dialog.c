@@ -98,7 +98,7 @@ kill_window_question (const char *window_name,
                                    "for it to continue or force the application "
                                    "to quit entirely."));
   g_free (str);
-  gtk_window_set_icon_name (GTK_WINDOW (dialog), "panel-force-quit");
+  gtk_window_set_icon_name (GTK_WINDOW (dialog), "stock_dialog-warning");
 
   gtk_label_set_use_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label), TRUE);
   gtk_label_set_line_wrap (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label), TRUE);

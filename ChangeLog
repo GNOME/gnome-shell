@@ -1,3 +1,9 @@
+2007-01-27  Bruno Boaventura <brunobol@gnome.org>
+
+	* src/metacity-dialog.c (kill_window_question): Change dialog
+	icon because gnome-icon-theme have no more "panel-force-quit".
+	Patch from Jaap A. Haitsma <jaap@haitsma.org>.	
+
 2007-01-16  Thomas Thurman  <thomas@thurman.org.uk>
 
         * doc/compositor-control.txt: fix silly thinko.
