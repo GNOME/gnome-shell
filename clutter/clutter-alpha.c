@@ -499,7 +499,7 @@ sincx1024_func (ClutterAlpha *alpha,
   ClutterTimeline *timeline;
   gint current_frame_num, n_frames;
   ClutterAngle x;
-  ClutterFixed sine;
+  unsigned int sine;
   
   timeline = clutter_alpha_get_timeline (alpha);
 
@@ -508,16 +508,13 @@ sincx1024_func (ClutterAlpha *alpha,
 
   x = angle * current_frame_num / n_frames;
 
-  /*
-   * x = x*PI - PI/angle
-   */
-  x = (x << 9) - (512 / angle);
+  x -= (512 * 512 / angle);
+  
+  sine = ((clutter_sini (x) + offset)/2) * CLUTTER_ALPHA_MAX_ALPHA;
 
-  sine = (clutter_sini (x) + offset)/2;
-
-  CLUTTER_NOTE (ALPHA, "sine: %2f\n", CLUTTER_FIXED_TO_DOUBLE (sine));
-
-  return CLUTTER_FIXED_INT (sine * CLUTTER_ALPHA_MAX_ALPHA);
+  sine = sine >> CFX_Q;
+  
+  return sine;
 }
 #if 0
 /*
@@ -548,6 +545,9 @@ sincx_func (ClutterAlpha *alpha,
   return CLUTTER_FIXED_INT (sine * CLUTTER_ALPHA_MAX_ALPHA);
 }
 
+/* NB: angle is not in radians but in muliples of PI, i.e., 2.0
+ * represents full circle.
+ */
 static guint32
 sinc_func (ClutterAlpha *alpha, 
 	   float         angle,
@@ -567,7 +567,7 @@ sinc_func (ClutterAlpha *alpha,
   x = (gdouble) (current_frame_num * angle * M_PI) / n_frames ;
   sine = (sin (x - (M_PI / angle)) + offset) * 0.5f;
 
-  CLUTTER_NOTE (ALPHA, "sine: %2f\n", sine);
+  CLUTTER_NOTE (ALPHA, "sine: %2f\n",sine);
 
   return CLUTTER_FLOAT_TO_INT ((sine * (gdouble) CLUTTER_ALPHA_MAX_ALPHA));
 }
@@ -590,13 +590,10 @@ clutter_sine_func (ClutterAlpha *alpha,
                    gpointer      dummy)
 {
 #if 0
-  return sinc_func (alpha, 2.0, 1.0);
+    return sinc_func (alpha, 2.0, 1.0);
 #else
-  /* Conversion to ClutterAngle:
-   * 
-   * 2.0 rad -> 1024*2.0/(2*PI) = 325.949
-   */
-  return sincx1024_func (alpha, 326, CFX_ONE);
+    /* 2.0 above represents full circle */
+    return sincx1024_func (alpha, 1024, CFX_ONE);
 #endif
 }
 
@@ -619,11 +616,7 @@ clutter_sine_inc_func (ClutterAlpha *alpha,
 #if 0
   return sinc_func (alpha, 0.5, 1.0);
 #else
-  /* Conversion to ClutterAngle:
-   * 
-   * 0.5 rad -> 1024*0.5/(2*PI) = 81.487
-   */
-  return sincx1024_func (alpha, 81, CFX_ONE);
+  return sincx1024_func (alpha, 256, CFX_ONE);
 #endif
 }
 
