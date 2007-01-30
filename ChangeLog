@@ -1,3 +1,10 @@
+2007-01-30  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-alpha.h:
+	* clutter/clutter-alpha.c: Add the square waveform
+	function clutter_square_func() to the precooked
+	alpha functions.
+
 2007-01-23  Matthew Allum  <mallum@openedhand.com>
 
 	* Makefile.am:

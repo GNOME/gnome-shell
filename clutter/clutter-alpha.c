@@ -626,3 +626,31 @@ clutter_sine_inc_func (ClutterAlpha *alpha,
   return sincx1024_func (alpha, 81, CFX_ONE);
 #endif
 }
+
+/**
+ * clutter_square_func:
+ * @alpha: a #ClutterAlpha
+ * @dummy: unused argument
+ *
+ * Convenience alpha function for a square wave. You can use this
+ * function as the alpha function for clutter_alpha_set_func().
+ *
+ * Return value: an alpha value
+ *
+ * Since: 0.4
+ */
+guint32
+clutter_square_func (ClutterAlpha *alpha,
+                     gpointer      dummy)
+{
+  ClutterTimeline *timeline;
+  gint current_frame_num, n_frames;
+
+  timeline = clutter_alpha_get_timeline (alpha);
+
+  current_frame_num = clutter_timeline_get_current_frame (timeline);
+  n_frames = clutter_timeline_get_n_frames (timeline);
+
+  return (current_frame_num > (n_frames / 2)) ? CLUTTER_ALPHA_MAX_ALPHA
+                                              : 0;
+}
