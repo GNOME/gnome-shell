@@ -1,4 +1,11 @@
+2007-02-07  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-debug.h: Define the CLUTTER_MARK()
+	macro even when CLUTTER_ENABLE_DEBUG is not
+	defined. (#215)
+
 2007-01-30  Tomas Frydrych  <tf@openedhand.com>
+
 	* clutter/clutter-alpha.c: 
 	(sincx1024_func):
 	(clutter_sine_func):

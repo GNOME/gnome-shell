@@ -37,6 +37,7 @@ typedef enum {
 #else /* !CLUTTER_ENABLE_DEBUG */
 
 #define CLUTTER_NOTE(type,x,a...)
+#define CLUTTER_MARK()
 #define CLUTTER_DBG(x)
 #define CLUTTER_GLERR()
 
