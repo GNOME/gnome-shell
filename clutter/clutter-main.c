@@ -42,8 +42,9 @@
 #include "clutter-stage.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
+#include "clutter-version.h" 	/* For flavour define */
 
-#ifdef CLUTTER_BACKEND_GLX
+#ifdef CLUTTER_FLAVOUR_GLX
 #include <clutter/clutter-backend-glx.h>
 #endif
 

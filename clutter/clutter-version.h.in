@@ -41,4 +41,6 @@
          (CLUTTER_MAJOR_VERSION == (major) && CLUTTER_MINOR_VERSION > (minor)) || \
          (CLUTTER_MAJOR_VERSION == (major) && CLUTTER_MINOR_VERSION == (minor) && CLUTTER_MICRO_VERSION > (micro)))
 
+#define @CLUTTER_FLAVOUR_DEFINE@
+
 #endif /* __CLUTTER_VERSION_H__ */

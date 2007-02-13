@@ -98,7 +98,9 @@ fi
 GLX_CFLAGS="$X11_CFLAGS"
 
 CLUTTER_FLAVOUR="glx"
+CLUTTER_FLAVOUR_DEFINE="CLUTTER_FLAVOUR_GLX"
 AC_SUBST(CLUTTER_FLAVOUR)
+AC_SUBST(CLUTTER_FLAVOUR_DEFINE)
 
 dnl ========================================================================
 

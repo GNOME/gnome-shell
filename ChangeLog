@@ -1,3 +1,13 @@
+2007-02-14  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/Makefile.am:
+	* clutter/clutter-main.c:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-version.h.in:
+	* configure.ac:
+	* examples/super-oh.c:
+	Add CLUTTER_FLAVOUR define.
+
 2007-02-13  Matthew Allum  <mallum@openedhand.com>
 
 	* examples/super-oh.c: (screensaver_setup):

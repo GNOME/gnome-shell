@@ -41,12 +41,13 @@
 #include "clutter-enum-types.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
+#include "clutter-version.h" 	/* For flavour */
 
-#ifdef CLUTTER_BACKEND_GLX
+#ifdef CLUTTER_FLAVOUR_GLX
 #include <clutter/clutter-stage-glx.h>
 #endif
 
-#ifdef CLUTTER_BACKEND_EGL
+#ifdef CLUTTER_FLAVOUR_EGL
 #include <clutter/clutter-stage-egl.h>
 #endif
 

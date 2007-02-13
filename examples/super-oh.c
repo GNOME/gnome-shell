@@ -1,5 +1,7 @@
 #include <clutter/clutter.h>
+#ifdef CLUTTER_FLAVOUR_GLX
 #include <clutter/clutter-backend-glx.h>
+#endif
 #include <math.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -38,6 +40,7 @@ get_radius (void)
 void
 screensaver_setup (void)
 {
+#ifdef CLUTTER_FLAVOUR_GLX
   Window         remote_xwindow;
   const char    *preview_xid;
   gboolean       foreign_success = FALSE;
@@ -60,6 +63,7 @@ screensaver_setup (void)
 
   if (!foreign_success)
     clutter_actor_set_size (clutter_stage_get_default(), 800, 600);
+#endif
 }
 
 /* input handler */
