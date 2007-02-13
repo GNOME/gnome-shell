@@ -1,3 +1,8 @@
+2007-02-13  Matthew Allum  <mallum@openedhand.com>
+
+	* examples/super-oh.c: (screensaver_setup):
+	Fix example to build with new glx api
+
 2007-02-07  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-debug.h: Define the CLUTTER_MARK()

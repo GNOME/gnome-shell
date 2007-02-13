@@ -1,4 +1,5 @@
 #include <clutter/clutter.h>
+#include <clutter/clutter-backend-glx.h>
 #include <math.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -52,7 +53,7 @@ screensaver_setup (void)
 	  ((*end == ' ') || (*end == '\0')) &&
 	  ((remote_xwindow < G_MAXULONG) || (errno != ERANGE))) 
 	{
-	  foreign_success = clutter_stage_set_xwindow_foreign 
+	  foreign_success = clutter_stage_glx_set_window_foreign 
 	    (CLUTTER_STAGE(clutter_stage_get_default()), remote_xwindow);
         }
     }
