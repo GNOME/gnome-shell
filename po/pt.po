@@ -1,14 +1,14 @@
 # metacity's Portuguese Translation
-# Copyright © 2001, 2002, 2003, 2004, 2005, 2006 metacity
+# Copyright © 2001, 2002, 2003, 2004, 2005, 2006, 2007 metacity
 # Distributed under the same licence as the metacity package
-# Duarte Loreto <happyguy_pt@hotmail.com>, 2001, 2002, 2003, 2004, 2005, 2006.
+# Duarte Loreto <happyguy_pt@hotmail.com>, 2001, 2002, 2003, 2004, 2005, 2006, 2007.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 2.16\n"
+"Project-Id-Version: 2.18\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-19 19:39+0000\n"
-"PO-Revision-Date: 2006-08-31 20:30+0000\n"
+"POT-Creation-Date: 2007-02-15 00:12+0000\n"
+"PO-Revision-Date: 2007-02-15 00:20+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -233,77 +233,77 @@ msgid "_Unroll"
 msgstr "D_esenrolar"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:78 ../src/menu.c:80
-msgid "On _Top"
-msgstr "No _Topo"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:82
+#: ../src/menu.c:78
 msgid "_Move"
 msgstr "_Mover"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:84
+#: ../src/menu.c:80
 msgid "_Resize"
 msgstr "_Redimensionar"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:86
+#: ../src/menu.c:82
 msgid "Move Titlebar On_screen"
 msgstr "Mover a _Barra de Títulos no Ecrã"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:89
+#: ../src/menu.c:85
 msgid "_Close"
 msgstr "_Fechar"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:92
+#: ../src/menu.c:88
+msgid "Always on _Top"
+msgstr "Sempre no _Topo"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:90
 msgid "_Always on Visible Workspace"
 msgstr "_Sempre na Área de Trabalho Visível"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:94
+#: ../src/menu.c:92
 msgid "_Only on This Workspace"
 msgstr "_Apenas nesta Área de Trabalho"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:96
+#: ../src/menu.c:94
 msgid "Move to Workspace _Left"
 msgstr "Mover para a Área de Trabalho à _Esquerda"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:98
+#: ../src/menu.c:96
 msgid "Move to Workspace R_ight"
 msgstr "Mover para a Área de Trabalho à _Direita"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:100
+#: ../src/menu.c:98
 msgid "Move to Workspace _Up"
 msgstr "Mover para a Área de Trabalho _Acima"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:102
+#: ../src/menu.c:100
 msgid "Move to Workspace _Down"
 msgstr "Mover para a Área de Trabalho A_baixo"
 
-#: ../src/menu.c:193 ../src/prefs.c:2194 ../src/prefs.c:2729
+#: ../src/menu.c:191 ../src/prefs.c:2194 ../src/prefs.c:2729
 #, c-format
 msgid "Workspace %d"
 msgstr "Área de Trabalho %d"
 
-#: ../src/menu.c:202
+#: ../src/menu.c:200
 msgid "Workspace 1_0"
 msgstr "Área de Trabalho 1_0"
 
-#: ../src/menu.c:204
+#: ../src/menu.c:202
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Área de Trabalho %s%d"
 
-#: ../src/menu.c:403
+#: ../src/menu.c:407
 msgid "Move to Another _Workspace"
 msgstr "Mover para Outra Área de _Trabalho"
 
@@ -407,8 +407,8 @@ msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr ""
-"Poderá aguardar uns instantes para que continue ou forçar a aplicação "
-"a terminar definitivamente."
+"Poderá aguardar uns instantes para que continue ou forçar a aplicação a "
+"terminar definitivamente."
 
 #: ../src/metacity-dialog.c:107
 msgid "_Wait"
@@ -2073,7 +2073,6 @@ msgstr ""
 "quaisquer atalhos de teclado para esta acção."
 
 #: ../src/metacity.schemas.in.h:174
-#, fuzzy
 msgid ""
 "This keybinding moves a window against the north (top) side of the screen. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -2082,15 +2081,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Este atalho de teclado coloca uma janela atrás de outras janelas. O formato "
-"assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
+"Este atalho de teclado move uma janela contra o lado norte (superior) do ecrã. "
+"O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "parseador é razoavelmente liberal e permite capitalização maiúscula ou "
 "minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;"
 "\". Se definir a opção para a expressão especial \"disabled\", não existirão "
 "quaisquer atalhos de teclado para esta acção."
 
 #: ../src/metacity.schemas.in.h:175
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the east (right) side of the screen. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2099,15 +2097,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Este atalho de teclado coloca uma janela atrás de outras janelas. O formato "
-"assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
+"Este atalho de teclado move uma janela contra o lado este (direito) do ecrã. "
+"O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "parseador é razoavelmente liberal e permite capitalização maiúscula ou "
 "minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;"
 "\". Se definir a opção para a expressão especial \"disabled\", não existirão "
 "quaisquer atalhos de teclado para esta acção."
 
 #: ../src/metacity.schemas.in.h:176
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the north-east (top right) corner of the "
 "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2116,15 +2113,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Este atalho de teclado coloca uma janela atrás de outras janelas. O formato "
-"assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
+"Este atalho de teclado move uma janela contra o lado nordeste (superior direito) do ecrã. "
+"O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "parseador é razoavelmente liberal e permite capitalização maiúscula ou "
 "minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;"
 "\". Se definir a opção para a expressão especial \"disabled\", não existirão "
 "quaisquer atalhos de teclado para esta acção."
 
 #: ../src/metacity.schemas.in.h:177
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the north-west (top left) corner of the "
 "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2133,15 +2129,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Este atalho de teclado coloca uma janela atrás de outras janelas. O formato "
-"assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
+"Este atalho de teclado move uma janela contra o lado noroeste (superior esquerdo) do ecrã. "
+"O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "parseador é razoavelmente liberal e permite capitalização maiúscula ou "
 "minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;"
 "\". Se definir a opção para a expressão especial \"disabled\", não existirão "
 "quaisquer atalhos de teclado para esta acção."
 
 #: ../src/metacity.schemas.in.h:178
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the south (bottom) side of the screen. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -2150,15 +2145,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Este atalho de teclado coloca uma janela atrás de outras janelas. O formato "
-"assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
+"Este atalho de teclado move uma janela contra o lado sul (inferior) do ecrã. "
+"O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "parseador é razoavelmente liberal e permite capitalização maiúscula ou "
 "minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;"
 "\". Se definir a opção para a expressão especial \"disabled\", não existirão "
 "quaisquer atalhos de teclado para esta acção."
 
 #: ../src/metacity.schemas.in.h:179
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the south-east (bottom right) corner of "
 "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2167,15 +2161,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Este atalho de teclado coloca uma janela atrás de outras janelas. O formato "
-"assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
+"Este atalho de teclado move uma janela contra o lado sudeste (inferior direito) do ecrã. "
+"O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "parseador é razoavelmente liberal e permite capitalização maiúscula ou "
 "minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;"
 "\". Se definir a opção para a expressão especial \"disabled\", não existirão "
 "quaisquer atalhos de teclado para esta acção."
 
 #: ../src/metacity.schemas.in.h:180
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the south-west (bottom left) corner of "
 "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2184,15 +2177,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Este atalho de teclado coloca uma janela atrás de outras janelas. O formato "
-"assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
+"Este atalho de teclado move uma janela contra o lado sudoeste (inferior esquerdo) do ecrã. "
+"O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "parseador é razoavelmente liberal e permite capitalização maiúscula ou "
 "minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;"
 "\". Se definir a opção para a expressão especial \"disabled\", não existirão "
 "quaisquer atalhos de teclado para esta acção."
 
 #: ../src/metacity.schemas.in.h:181
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the west (left) side of the screen. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2201,8 +2193,8 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Este atalho de teclado coloca uma janela atrás de outras janelas. O formato "
-"assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
+"Este atalho de teclado move uma janela contra o lado oeste (esquerdo) do ecrã. "
+"O formato assemelha-se a \"&lt;Control&gt;a\" ou \"&lt;Shift&gt;&lt;Alt&gt;F1\". O "
 "parseador é razoavelmente liberal e permite capitalização maiúscula ou "
 "minúscula e também abreviaturas tais como \"&lt;Ctl&gt;\" e \"&lt;Ctrl&gt;"
 "\". Se definir a opção para a expressão especial \"disabled\", não existirão "
@@ -2615,7 +2607,7 @@ msgstr "<%s> tem de especificar ou uma geometria ou um pai que tenha geometria"
 
 #: ../src/theme-parser.c:1115
 msgid "You must specify a background for an alpha value to be meaningful"
-msgstr ""
+msgstr "Tem de especificar um fundo para que o valor alfa tenha algum significado"
 
 #: ../src/theme-parser.c:1206
 #, c-format
@@ -2634,11 +2626,11 @@ msgstr "Tipo de janela \"%s\" já tem um tipo de estilo atribuido"
 
 #: ../src/theme-parser.c:1261
 msgid "Theme already has a fallback icon"
-msgstr ""
+msgstr "Tema já possui um ícone de recurso"
 
 #: ../src/theme-parser.c:1273
 msgid "Theme already has a fallback mini_icon"
-msgstr ""
+msgstr "Tema já possui um mini_icon de recurso"
 
 #: ../src/theme-parser.c:1286 ../src/theme-parser.c:1350
 #: ../src/theme-parser.c:1639 ../src/theme-parser.c:3262
@@ -2768,14 +2760,14 @@ msgid "No \"height\" attribute on element <%s>"
 msgstr "Nenhum atributo \"height\" no elemento <%s>"
 
 #: ../src/theme-parser.c:2000
-#, fuzzy, c-format
+#, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
-msgstr "Nenhum atributo \"start_angle\" no elemento <%s>"
+msgstr "Nenhum atributo \"start_angle\" ou \"from\" no elemento <%s>"
 
 #: ../src/theme-parser.c:2007
-#, fuzzy, c-format
+#, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
-msgstr "Nenhum atributo \"extent_angle\" no elemento <%s>"
+msgstr "Nenhum atributo \"extent_angle\" ou \"to\" no elemento <%s>"
 
 #: ../src/theme-parser.c:2016
 #, c-format
@@ -2897,7 +2889,7 @@ msgstr "Função \"%s\" desconhecida para botão"
 #: ../src/theme-parser.c:3436
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
-msgstr ""
+msgstr "Função do botão \"%s\" não existe nesta versão (%d, necessita %d)"
 
 #: ../src/theme-parser.c:3448
 #, c-format
@@ -2954,12 +2946,12 @@ msgstr ""
 "maximizado/sombreado"
 
 #: ../src/theme-parser.c:3639
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
 "Não deveria ter atributo \"resize\" no elemento <%s> para os estados "
-"maximizado/sombreado"
+"maximizados"
 
 #: ../src/theme-parser.c:3653 ../src/theme-parser.c:3675
 #, c-format
@@ -3071,9 +3063,9 @@ msgid "<description> specified twice for this theme"
 msgstr "<description> especificado duas vezes para este tema"
 
 #: ../src/theme-parser.c:4573
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to find a valid file for theme %s\n"
-msgstr "Falha ao efectuar fdopen() do ficheiro de registo %s: %s\n"
+msgstr "Falha ao procurar um ficheiro válido para o tema %s\n"
 
 #: ../src/theme-parser.c:4628
 #, c-format
@@ -3579,7 +3571,7 @@ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Janela 0x%lx de WM_TRANSIENT_FOR inválido especificada para %s.\n"
 
 #. first time through
-#: ../src/window.c:5394
+#: ../src/window.c:5401
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3595,7 +3587,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5990
+#: ../src/window.c:5997
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3633,6 +3625,9 @@ msgid ""
 msgstr ""
 "Propriedade %s na janela 0x%lx continha UTF-8 inválido para item %d na "
 "lista\n"
+
+#~ msgid "On _Top"
+#~ msgstr "No _Topo"
 
 #~ msgid ""
 #~ "Forcing this application to quit will cause you to lose any unsaved "
