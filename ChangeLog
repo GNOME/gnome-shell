@@ -1,3 +1,12 @@
+2007-02-17  Linus Torvalds  <torvalds@woody.linux-foundation.org>
+
+        * src/frames.c (meta_frames_button_press_event): Split out
+	code for different kinds of click into separate functions.
+	Fixes #408899.
+	* src/frames.c (meta_frame_titlebar_event,
+         meta_frame_double_click_event, meta_frame_middle_click_event,
+         meta_frame_right_click_event): new functions.
+
 2007-01-27  Bruno Boaventura <brunobol@gnome.org>
 
 	* src/metacity-dialog.c (kill_window_question): Change dialog

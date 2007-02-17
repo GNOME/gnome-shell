@@ -1188,6 +1188,98 @@ redraw_control (MetaFrames *frames,
 }
 
 static gboolean
+meta_frame_titlebar_event (MetaUIFrame    *frame,
+                           GdkEventButton *event,
+                           int            action)
+{
+  MetaFrameFlags flags;
+  
+  switch (action)
+    {
+    case META_ACTION_DOUBLE_CLICK_TITLEBAR_TOGGLE_SHADE:
+      {
+        flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
+        
+        if (flags & META_FRAME_ALLOWS_SHADE)
+          {
+            if (flags & META_FRAME_SHADED)
+              meta_core_unshade (gdk_display,
+                                 frame->xwindow,
+                                 event->time);
+            else
+              meta_core_shade (gdk_display,
+                               frame->xwindow,
+                               event->time);
+          }
+      }
+      break;          
+      
+    case META_ACTION_DOUBLE_CLICK_TITLEBAR_TOGGLE_MAXIMIZE:
+      {
+        flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
+        
+        if (flags & META_FRAME_ALLOWS_MAXIMIZE)
+          {
+            meta_core_toggle_maximize (gdk_display, frame->xwindow);
+          }
+      }
+      break;
+
+    case META_ACTION_DOUBLE_CLICK_TITLEBAR_MINIMIZE:
+      {
+        flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
+        
+        if (flags & META_FRAME_ALLOWS_MINIMIZE)
+          {
+            meta_core_minimize (gdk_display, frame->xwindow);
+          }
+      }
+      break;
+
+    case META_ACTION_DOUBLE_CLICK_TITLEBAR_NONE:
+      /* Yaay, a sane user that doesn't use that other weird crap! */
+      break;
+
+    case META_ACTION_DOUBLE_CLICK_TITLEBAR_LAST:
+      break;
+    }
+  
+  return TRUE;
+}
+
+static gboolean
+meta_frame_double_click_event (MetaUIFrame    *frame,
+                               GdkEventButton *event)
+{
+  int action = meta_prefs_get_action_double_click_titlebar ();
+  
+  return meta_frame_titlebar_event (frame, event, action);
+}
+
+static gboolean
+meta_frame_middle_click_event (MetaUIFrame    *frame,
+                               GdkEventButton *event)
+{
+  meta_core_user_lower_and_unfocus (gdk_display,
+                                    frame->xwindow,
+                                    event->time);
+  return TRUE;
+}
+
+static gboolean
+meta_frame_right_click_event(MetaUIFrame     *frame,
+                             GdkEventButton  *event)
+{
+  meta_core_show_window_menu (gdk_display,
+                              frame->xwindow,
+                              event->x_root,
+                              event->y_root,
+                              event->button,
+                              event->time);
+  return TRUE;
+}
+
+static gboolean
 meta_frames_button_press_event (GtkWidget      *widget,
                                 GdkEventButton *event)
 {
@@ -1233,59 +1325,7 @@ meta_frames_button_press_event (GtkWidget      *widget,
       event->button == 1 &&
       event->type == GDK_2BUTTON_PRESS)
     {
-      MetaFrameFlags flags;
-      
-      switch (meta_prefs_get_action_double_click_titlebar ())
-        {
-        case META_ACTION_DOUBLE_CLICK_TITLEBAR_TOGGLE_SHADE:
-          {
-            flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
-            
-            if (flags & META_FRAME_ALLOWS_SHADE)
-              {
-                if (flags & META_FRAME_SHADED)
-                  meta_core_unshade (gdk_display,
-                                     frame->xwindow,
-                                     event->time);
-                else
-                  meta_core_shade (gdk_display,
-                                   frame->xwindow,
-                                   event->time);
-              }
-          }
-          break;          
-          
-        case META_ACTION_DOUBLE_CLICK_TITLEBAR_TOGGLE_MAXIMIZE:
-          {
-            flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
-            
-            if (flags & META_FRAME_ALLOWS_MAXIMIZE)
-              {
-                meta_core_toggle_maximize (gdk_display, frame->xwindow);
-              }
-          }
-          break;
-
-        case META_ACTION_DOUBLE_CLICK_TITLEBAR_MINIMIZE:
-          {
-            flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
-            
-            if (flags & META_FRAME_ALLOWS_MINIMIZE)
-              {
-                meta_core_minimize (gdk_display, frame->xwindow);
-              }
-          }
-          break;
-
-        case META_ACTION_DOUBLE_CLICK_TITLEBAR_NONE:
-          /* Yaay, a sane user that doesn't use that other weird crap! */
-          break;
-
-        case META_ACTION_DOUBLE_CLICK_TITLEBAR_LAST:
-          break;
-        }
-      
-      return TRUE;
+      return meta_frame_double_click_event (frame, event);
     }
 
   if (meta_core_get_grab_op (gdk_display) !=
@@ -1474,18 +1514,11 @@ meta_frames_button_press_event (GtkWidget      *widget,
     }
   else if (event->button == 2)
     {
-      meta_core_user_lower_and_unfocus (gdk_display,
-                                        frame->xwindow,
-                                        event->time);
+      return meta_frame_middle_click_event (frame, event);
     }
   else if (event->button == 3)
     {
-      meta_core_show_window_menu (gdk_display,
-                                  frame->xwindow,
-                                  event->x_root,
-                                  event->y_root,
-                                  event->button,
-                                  event->time);
+      return meta_frame_right_click_event (frame, event);
     }
   
   return TRUE;
