@@ -91,8 +91,7 @@ static MetaFocusNewWindows focus_new_windows = META_FOCUS_NEW_WINDOWS_SMART;
 static gboolean raise_on_click = TRUE;
 static char* current_theme = NULL;
 static int num_workspaces = 4;
-static MetaActionDoubleClickTitlebar action_double_click_titlebar =
-    META_ACTION_DOUBLE_CLICK_TITLEBAR_TOGGLE_MAXIMIZE;
+static MetaActionTitlebar action_double_click_titlebar = META_ACTION_TITLEBAR_TOGGLE_MAXIMIZE;
 static gboolean application_based = FALSE;
 static gboolean disable_workarounds = FALSE;
 static gboolean auto_raise = FALSE;
@@ -1630,31 +1629,35 @@ meta_prefs_get_disable_workarounds (void)
 }
 
 #ifdef HAVE_GCONF
-static MetaActionDoubleClickTitlebar
-action_double_click_titlebar_from_string (const char *str)
+static MetaActionTitlebar
+action_titlebar_from_string (const char *str)
 {
   if (strcmp (str, "toggle_shade") == 0)
-    return META_ACTION_DOUBLE_CLICK_TITLEBAR_TOGGLE_SHADE;
+    return META_ACTION_TITLEBAR_TOGGLE_SHADE;
   else if (strcmp (str, "toggle_maximize") == 0)
-    return META_ACTION_DOUBLE_CLICK_TITLEBAR_TOGGLE_MAXIMIZE;
+    return META_ACTION_TITLEBAR_TOGGLE_MAXIMIZE;
   else if (strcmp (str, "minimize") == 0)
-    return META_ACTION_DOUBLE_CLICK_TITLEBAR_MINIMIZE;
+    return META_ACTION_TITLEBAR_MINIMIZE;
   else if (strcmp (str, "none") == 0)
-    return META_ACTION_DOUBLE_CLICK_TITLEBAR_NONE;
+    return META_ACTION_TITLEBAR_NONE;
+  else if (strcmp (str, "lower") == 0)
+    return META_ACTION_TITLEBAR_LOWER;
+  else if (strcmp (str, "menu") == 0)
+    return META_ACTION_TITLEBAR_MENU;
   else
-    return META_ACTION_DOUBLE_CLICK_TITLEBAR_LAST;
+    return META_ACTION_TITLEBAR_LAST;
 }
 
 static gboolean
 update_action_double_click_titlebar (const char *value)
 {
-  MetaActionDoubleClickTitlebar old_action = action_double_click_titlebar;
+  MetaActionTitlebar old_action = action_double_click_titlebar;
   
   if (value != NULL)
     {
-      action_double_click_titlebar = action_double_click_titlebar_from_string (value);
+      action_double_click_titlebar = action_titlebar_from_string (value);
 
-      if (action_double_click_titlebar == META_ACTION_DOUBLE_CLICK_TITLEBAR_LAST)
+      if (action_double_click_titlebar == META_ACTION_TITLEBAR_LAST)
         {
           action_double_click_titlebar = old_action;
           meta_warning (_("GConf key '%s' is set to an invalid value\n"),
@@ -2873,7 +2876,7 @@ meta_prefs_get_window_bindings (const MetaKeyPref **bindings,
   *n_bindings = (int) G_N_ELEMENTS (window_bindings) - 1;
 }
 
-MetaActionDoubleClickTitlebar
+MetaActionTitlebar
 meta_prefs_get_action_double_click_titlebar (void)
 {
   return action_double_click_titlebar;

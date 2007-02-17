@@ -1,5 +1,20 @@
 2007-02-17  Linus Torvalds  <torvalds@woody.linux-foundation.org>
 
+        * src/common.h (MetaActionTitleBar): renamed from
+	MetaActionDoubleClickTitleBar; added _LOWER and _MENU.
+	* src/frames.c (meta_frame_titlebar_event): renamed
+	enums as above; added code to handle _LOWER and _MENU,
+	which is moved in from meta_frame_{middle|right}_click_event.
+	* src/frames.c (meta_frame_middle_click_event,
+        meta_frame_right_click_event): rewrote in terms of
+        meta_frame_titlebar_event.
+	* src/prefs.c: removed "DoubleClick" from names as above.
+	* src/prefs.c (action_titlebar_from_string): added cases
+	for "lower" and "menu".
+	Fixes #408902.
+
+2007-02-17  Linus Torvalds  <torvalds@woody.linux-foundation.org>
+
         * src/frames.c (meta_frames_button_press_event): Split out
 	code for different kinds of click into separate functions.
 	Fixes #408899.

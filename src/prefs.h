@@ -93,7 +93,7 @@ const char*                 meta_prefs_get_terminal_command   (void);
 const char*                 meta_prefs_get_gconf_key_for_terminal_command (void);
 
 void                        meta_prefs_get_button_layout (MetaButtonLayout *button_layout);
-MetaActionDoubleClickTitlebar meta_prefs_get_action_double_click_titlebar (void);
+MetaActionTitlebar          meta_prefs_get_action_double_click_titlebar (void);
 
 void meta_prefs_set_num_workspaces (int n_workspaces);
 

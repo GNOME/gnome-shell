@@ -1196,7 +1196,7 @@ meta_frame_titlebar_event (MetaUIFrame    *frame,
   
   switch (action)
     {
-    case META_ACTION_DOUBLE_CLICK_TITLEBAR_TOGGLE_SHADE:
+    case META_ACTION_TITLEBAR_TOGGLE_SHADE:
       {
         flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
         
@@ -1214,7 +1214,7 @@ meta_frame_titlebar_event (MetaUIFrame    *frame,
       }
       break;          
       
-    case META_ACTION_DOUBLE_CLICK_TITLEBAR_TOGGLE_MAXIMIZE:
+    case META_ACTION_TITLEBAR_TOGGLE_MAXIMIZE:
       {
         flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
         
@@ -1225,7 +1225,7 @@ meta_frame_titlebar_event (MetaUIFrame    *frame,
       }
       break;
 
-    case META_ACTION_DOUBLE_CLICK_TITLEBAR_MINIMIZE:
+    case META_ACTION_TITLEBAR_MINIMIZE:
       {
         flags = meta_core_get_frame_flags (gdk_display, frame->xwindow);
         
@@ -1236,11 +1236,26 @@ meta_frame_titlebar_event (MetaUIFrame    *frame,
       }
       break;
 
-    case META_ACTION_DOUBLE_CLICK_TITLEBAR_NONE:
+    case META_ACTION_TITLEBAR_NONE:
       /* Yaay, a sane user that doesn't use that other weird crap! */
       break;
+    
+    case META_ACTION_TITLEBAR_LOWER:
+      meta_core_user_lower_and_unfocus (gdk_display,
+                                        frame->xwindow,
+                                        event->time);
+      break;
 
-    case META_ACTION_DOUBLE_CLICK_TITLEBAR_LAST:
+    case META_ACTION_TITLEBAR_MENU:
+      meta_core_show_window_menu (gdk_display,
+                                  frame->xwindow,
+                                  event->x_root,
+                                  event->y_root,
+                                  event->button,
+                                  event->time);
+      break;
+
+    case META_ACTION_TITLEBAR_LAST:
       break;
     }
   
@@ -1260,23 +1275,14 @@ static gboolean
 meta_frame_middle_click_event (MetaUIFrame    *frame,
                                GdkEventButton *event)
 {
-  meta_core_user_lower_and_unfocus (gdk_display,
-                                    frame->xwindow,
-                                    event->time);
-  return TRUE;
+  return meta_frame_titlebar_event (frame, event, META_ACTION_TITLEBAR_LOWER);
 }
 
 static gboolean
 meta_frame_right_click_event(MetaUIFrame     *frame,
                              GdkEventButton  *event)
 {
-  meta_core_show_window_menu (gdk_display,
-                              frame->xwindow,
-                              event->x_root,
-                              event->y_root,
-                              event->button,
-                              event->time);
-  return TRUE;
+  return meta_frame_titlebar_event (frame, event, META_ACTION_TITLEBAR_MENU);
 }
 
 static gboolean
