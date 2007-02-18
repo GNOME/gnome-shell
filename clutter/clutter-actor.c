@@ -1829,6 +1829,8 @@ clutter_actor_reparent (ClutterActor *self,
       old_parent = self->priv->parent_actor;
 
       g_object_ref (self);
+      /* FIXME: below assumes only groups can reparent
+      */
       clutter_group_remove (CLUTTER_GROUP (self->priv->parent_actor), self);
       clutter_group_add (CLUTTER_GROUP (new_parent), self);
       g_object_unref (self);

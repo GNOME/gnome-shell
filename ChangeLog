@@ -1,3 +1,10 @@
+2007-02-18  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c: (clutter_actor_reparent):
+	Add a FIXME re calling clutter_group here.
+	* clutter/clutter-group.c:
+	Fix clutter_group_remove_all
+
 2007-02-15  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-group.h:

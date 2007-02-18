@@ -506,16 +506,19 @@ clutter_group_remove (ClutterGroup *self,
 void
 clutter_group_remove_all (ClutterGroup *self)
 {
-  GList *l;
+  GList *child_item, *next;
 
   g_return_if_fail (CLUTTER_IS_GROUP (self));
 
-  for (l = self->priv->children; l != NULL; l = l->next)
-    {
-      ClutterActor *child = l->data;
+  if ((child_item = self->priv->children) == NULL)
+    return;
 
-      clutter_group_remove (self, child);
+  do 
+    {
+      next = g_list_next(child_item);
+      clutter_group_remove (self, CLUTTER_ACTOR(child_item->data));
     }
+  while ((child_item = next) != NULL);
 }
 
 /**
