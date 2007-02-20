@@ -1,3 +1,8 @@
+2007-02-20  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* Makefile.am: Add MAINTAINERS to EXTRA_DIST so others
+	can find out where to send patches. Hi Linus :-)
+
 2007-02-17  Linus Torvalds  <torvalds@woody.linux-foundation.org>
 
         * src/common.h (MetaActionTitleBar): renamed from
