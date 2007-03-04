@@ -1,20 +1,25 @@
+# translation of lt.po to Lithuanian
 # Lithuanian translation of metacity.
-# Copyright (C) 2003-2006 Free Software Foundation, Inc.
+# Copyright (C) 2003-2006, 2007 Free Software Foundation, Inc.
+#
+#
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
 # Žygimantas Beručka <zygis@gnome.org>, 2004-2006.
-#
-#
+# Gintautas Miliauskas <gintas@akl.lt>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity HEAD\n"
+"Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-27 15:48+0200\n"
-"PO-Revision-Date: 2006-08-27 16:45+0300\n"
+"POT-Creation-Date: 2007-03-04 23:38+0200\n"
+"PO-Revision-Date: 2007-03-04 23:38+0200\n"
 "Last-Translator: Gintautas Miliauskas <gintas@akl.lt>\n"
-"Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
+"Language-Team: Lithuanian <gnome-lt@lists.akl.lt>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%"
+"100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../src/tools/metacity-message.c:150
 #, c-format
@@ -102,32 +107,28 @@ msgid "Unmaximize Window"
 msgstr "Sutraukti langą"
 
 #: ../src/frames.c:1077
-#, fuzzy
 msgid "Roll Up Window"
-msgstr "Su_vynioti"
+msgstr "Suvynioti langą"
 
 #: ../src/frames.c:1080
-#, fuzzy
 msgid "Unroll Window"
-msgstr "Užverti langą"
+msgstr "Išvynioti langą"
 
 #: ../src/frames.c:1083
 msgid "Keep Window On Top"
-msgstr ""
+msgstr "Langas visada viršuje"
 
 #: ../src/frames.c:1086
 msgid "Remove Window From Top"
-msgstr ""
+msgstr "Langas nebūtinai viršuje"
 
 #: ../src/frames.c:1089
-#, fuzzy
 msgid "Always On Visible Workspace"
-msgstr "_Visada matomame darbalaukyje"
+msgstr "Visada matomame darbalaukyje"
 
 #: ../src/frames.c:1092
-#, fuzzy
 msgid "Put Window On Only One Workspace"
-msgstr "Perjungti lango buvimo visuose darbo laukuose būseną"
+msgstr "Langas tik viename darbalaukyje"
 
 #: ../src/keybindings.c:1081
 #, c-format
@@ -201,12 +202,12 @@ msgid "Failed to scan themes directory: %s\n"
 msgstr "Nepavyko nuskanuoti temų aplanko: %s\n"
 
 #: ../src/main.c:368
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
-"Nepavyko rasti temos! Įsitikinkite, kad %s egzistuoja ir ar ten yra įprastos "
-"temos."
+"Nepavyko rasti temos! Įsitikinkite, kad %s egzistuoja ir kad ten yra "
+"įprastos temos.\n"
 
 #: ../src/main.c:428
 #, c-format
@@ -263,7 +264,7 @@ msgstr "_Užverti"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:88
 msgid "Always on _Top"
-msgstr ""
+msgstr "Visada _viršuje"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:90
@@ -404,19 +405,19 @@ msgid "Mod5"
 msgstr "Mod5"
 
 #: ../src/metacity-dialog.c:90
-#, fuzzy, c-format
+#, c-format
 msgid "\"%s\" is not responding."
-msgstr "Langas „%s“ neatsiliepia į komandas."
+msgstr "„%s“ neatsiliepia į komandas."
 
 #: ../src/metacity-dialog.c:97
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
-msgstr ""
+msgstr "Galite šiek tiek palaukti arba priverstinai uždaryti programą."
 
 #: ../src/metacity-dialog.c:107
 msgid "_Wait"
-msgstr ""
+msgstr "_Laukti"
 
 #: ../src/metacity-dialog.c:109
 msgid "_Force Quit"
@@ -735,44 +736,36 @@ msgid "Move window one workspace up"
 msgstr "Perkelti langą į aukščiau esantį darbo lauką"
 
 #: ../src/metacity.schemas.in.h:49
-#, fuzzy
 msgid "Move window to east side of screen"
-msgstr "Perkelti langą į darbo lauką Nr.1"
+msgstr "Perkelti langą į kairę ekrano pusę"
 
 #: ../src/metacity.schemas.in.h:50
-#, fuzzy
 msgid "Move window to north side of screen"
-msgstr "Perkelti langą į darbo lauką Nr.1"
+msgstr "Perkelti langą į viršutinę ekrano dalį"
 
 #: ../src/metacity.schemas.in.h:51
-#, fuzzy
 msgid "Move window to north-east corner"
-msgstr "Perkelti langą į darbo lauką Nr.1"
+msgstr "Perkelti langą į ekrano viršutinį kairįjį kampą"
 
 #: ../src/metacity.schemas.in.h:52
-#, fuzzy
 msgid "Move window to north-west corner"
-msgstr "Perkelti langą į darbo lauką Nr.1"
+msgstr "Perkelti langą į ekrano viršutinį dešinįjį kampą"
 
 #: ../src/metacity.schemas.in.h:53
-#, fuzzy
 msgid "Move window to south side of screen"
-msgstr "Perkelti langą į darbo lauką Nr.1"
+msgstr "Perkelti langą į apatinę ekrano pusę"
 
 #: ../src/metacity.schemas.in.h:54
-#, fuzzy
 msgid "Move window to south-east corner"
-msgstr "Perkelti langą į darbo lauką Nr.1"
+msgstr "Perkelti langą į ekrano apatinį kairįjį kampą"
 
 #: ../src/metacity.schemas.in.h:55
-#, fuzzy
 msgid "Move window to south-west corner"
-msgstr "Perkelti langą į darbo lauką Nr.1"
+msgstr "Perkelti langą į ekrano apatinį dešinįjį kampą"
 
 #: ../src/metacity.schemas.in.h:56
-#, fuzzy
 msgid "Move window to west side of screen"
-msgstr "Perkelti langą į darbo lauką Nr.1"
+msgstr "Perkelti langą į dešinę ekrano pusę"
 
 #: ../src/metacity.schemas.in.h:57
 msgid "Move window to workspace 1"
@@ -2077,7 +2070,6 @@ msgstr ""
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
 #: ../src/metacity.schemas.in.h:174
-#, fuzzy
 msgid ""
 "This keybinding moves a window against the north (top) side of the screen. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -2086,15 +2078,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Klavišų kombinacija, kuri paslepia langą po kitais langais. Klavišų "
-"kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-"leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
+"Ši klavišų kombinacija priglaudžia langą prie viršutinio ekrano krašto. "
+"Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva "
+"ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
 #: ../src/metacity.schemas.in.h:175
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the east (right) side of the screen. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2103,15 +2094,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Klavišų kombinacija, kuri paslepia langą po kitais langais. Klavišų "
-"kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-"leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
+"Ši klavišų kombinacija priglaudžia langą prie dešiniojo ekrano krašto. "
+"Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva "
+"ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
 #: ../src/metacity.schemas.in.h:176
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the north-east (top right) corner of the "
 "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2120,15 +2110,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Klavišų kombinacija, kuri paslepia langą po kitais langais. Klavišų "
-"kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-"leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
+"Ši klavišų kombinacija priglaudžia langą prie ekrano viršutinio kairiojo "
+"kampo. Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a"
+"\" arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana "
+"laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
 #: ../src/metacity.schemas.in.h:177
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the north-west (top left) corner of the "
 "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2137,15 +2126,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Klavišų kombinacija, kuri paslepia langą po kitais langais. Klavišų "
-"kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-"leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
+"Ši klavišų kombinacija priglaudžia langą prie ekrano viršutinio dešiniojo "
+"kampo. Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a"
+"\" arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana "
+"laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
 #: ../src/metacity.schemas.in.h:178
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the south (bottom) side of the screen. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -2154,15 +2142,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Klavišų kombinacija, kuri paslepia langą po kitais langais. Klavišų "
-"kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-"leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
+"Ši klavišų kombinacija priglaudžia langą prie apatinio ekrano krašto. "
+"Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva "
+"ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
 #: ../src/metacity.schemas.in.h:179
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the south-east (bottom right) corner of "
 "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2171,15 +2158,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Klavišų kombinacija, kuri paslepia langą po kitais langais. Klavišų "
-"kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-"leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
+"Ši klavišų kombinacija priglaudžia langą prie ekrano apatinio dešiniojo "
+"kampo. Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a"
+"\" arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana "
+"laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
 #: ../src/metacity.schemas.in.h:180
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the south-west (bottom left) corner of "
 "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2188,15 +2174,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Klavišų kombinacija, kuri paslepia langą po kitais langais. Klavišų "
-"kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-"leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
+"Ši klavišų kombinacija priglaudžia langą prie ekrano apatinio kairiojo "
+"kampo. Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a"
+"\" arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana "
+"laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
 #: ../src/metacity.schemas.in.h:181
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the west (left) side of the screen. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2205,10 +2190,10 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Klavišų kombinacija, kuri paslepia langą po kitais langais. Klavišų "
-"kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-"Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-"leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
+"Ši klavišų kombinacija priglaudžia langą prie kairiojo ekrano krašto. "
+"Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva "
+"ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
 "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų "
 "požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
 
@@ -2622,7 +2607,7 @@ msgstr ""
 
 #: ../src/theme-parser.c:1115
 msgid "You must specify a background for an alpha value to be meaningful"
-msgstr ""
+msgstr "Turite nustatyti foną, kad alfa reikšmė būtų prasminga"
 
 #: ../src/theme-parser.c:1206
 #, c-format
@@ -2641,11 +2626,11 @@ msgstr "Lango type \"%s\" požymis jau turi nurodytą stiliaus aprašymą"
 
 #: ../src/theme-parser.c:1261
 msgid "Theme already has a fallback icon"
-msgstr ""
+msgstr "Tema jau turi atsarginę piktogramą"
 
 #: ../src/theme-parser.c:1273
 msgid "Theme already has a fallback mini_icon"
-msgstr ""
+msgstr "Tema jau turi atsarginę mini piktogramą"
 
 #: ../src/theme-parser.c:1286 ../src/theme-parser.c:1350
 #: ../src/theme-parser.c:1639 ../src/theme-parser.c:3262
@@ -2774,14 +2759,14 @@ msgid "No \"height\" attribute on element <%s>"
 msgstr "Elemente <%s> trūksta \"height\" požymio"
 
 #: ../src/theme-parser.c:2000
-#, fuzzy, c-format
+#, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
-msgstr "Elemente <%s> trūksta \"start_angle\" požymio"
+msgstr "Elemente <%s> trūksta \"start_angle\" ar \"from\" požymio"
 
 #: ../src/theme-parser.c:2007
-#, fuzzy, c-format
+#, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
-msgstr "Elemente <%s> trūksta \"extent_angle\" požymio"
+msgstr "Elemente <%s> trūksta \"extent_angle\" ar \"to\" požymio"
 
 #: ../src/theme-parser.c:2016
 #, c-format
@@ -2903,7 +2888,7 @@ msgstr "Mygtukui priskirta nežinoma funkcija \"%s\""
 #: ../src/theme-parser.c:3436
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
-msgstr ""
+msgstr "Mygtuko funkcija \"%s\" neegzistuoja šioje versijoje (%d, reikia %d)"
 
 #: ../src/theme-parser.c:3448
 #, c-format
@@ -2962,12 +2947,12 @@ msgstr ""
 "šešėlių būsenų aprašymui"
 
 #: ../src/theme-parser.c:3639
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
-"Negalima naudoti \"resize\" požymio elemente <%s>, skirtame išplėtimo/"
-"šešėlių būsenų aprašymui"
+"Negalima naudoti \"resize\" požymio elemente <%s>, skirtame išplėtimo būsenų "
+"aprašymui"
 
 #: ../src/theme-parser.c:3653 ../src/theme-parser.c:3675
 #, c-format
@@ -3070,9 +3055,9 @@ msgid "<description> specified twice for this theme"
 msgstr "<description> elementas temos aprašyme nurodytas du kartus"
 
 #: ../src/theme-parser.c:4573
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to find a valid file for theme %s\n"
-msgstr "Funkcija fdopen() nepavyko su žurnalo failu %s: %s\n"
+msgstr "Nepavyko rasti failo temai %s\n"
 
 #: ../src/theme-parser.c:4628
 #, c-format
@@ -3642,97 +3627,3 @@ msgid ""
 msgstr ""
 "Požymis %s lange 0x%lx naudoja nepriimtinus UTF-8 simbolius sąrašo punkte %"
 "d\n"
-
-#~ msgid "On _Top"
-#~ msgstr "_Viršuje"
-
-#~ msgid ""
-#~ "Forcing this application to quit will cause you to lose any unsaved "
-#~ "changes."
-#~ msgstr ""
-#~ "Priverstinai išjungdami programą Jūs prarasite visus neišsaugotus "
-#~ "pakeitimus."
-
-#~ msgid "Unknown function \"%s\" for menu icon"
-#~ msgstr "Nežinoma funkcija \"%s\" meniu piktogramos aprašyme"
-
-#~ msgid "Unknown state \"%s\" for menu icon"
-#~ msgstr "Nežinoma būsena \"%s\" meniu piktogramos aprašyme"
-
-#~ msgid "Theme already has a menu icon for function %s state %s"
-#~ msgstr "Tema jau turi meniu piktogramą aprašančią funkcijos %s būseną %s"
-
-#~ msgid "No draw_ops provided for menu icon"
-#~ msgstr "Meniu piktogramai nepriskirta draw_ops funkcija"
-
-#~ msgid "Failed to read theme from file %s: %s\n"
-#~ msgstr "Nepavyko perskaityti temos iš failo %s: %s\n"
-
-#~ msgid ""
-#~ "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-#~ "specified for this theme"
-#~ msgstr ""
-#~ "Šiai temai turi būti nurodytas <menu_icon function=\"%s\" state=\"%s\" "
-#~ "draw_ops=\"kažkoks\"/>"
-
-#~ msgid ""
-#~ "If true, and the focus mode is either \"sloppy\" or \"mouse\" then the "
-#~ "focused window will be automatically raised after a delay (the delay is "
-#~ "specified by the auto_raise_delay key). This preference is poorly named, "
-#~ "but kept for backwards compatibility. To try to be more clear (at least "
-#~ "to the technically inclined), its meaning is \"automatically raise the "
-#~ "window following a timeout which is triggered by non-grabbed mouse entry "
-#~ "in sloppy or mouse focus modes\". It is unrelated to clicking behavior (i."
-#~ "e. this is not related to raise-on-click/orthogonal-raise). It is "
-#~ "unrelated to entering a window during drag and drop (because that results "
-#~ "in the application grabbing the mouse)"
-#~ msgstr ""
-#~ "Jei teigiama, ir fokusavimo režimas yra „sloppy“ arba „mouse“, tai "
-#~ "sufokusuotas langas bus iškeltas po laiko tarpo nurodyto auto_raise_delay "
-#~ "rakte. Ši nuostata prastai pavadinta, tačiau taip palikta dėl "
-#~ "suderinamumo su senesnėmis versijomis. Norint, kad būtų aiškiau (bent "
-#~ "techniška besidomintiems), jo reikšmė yra „automatiškai pakelti langą, po "
-#~ "laiko tarpo, kuris yra įjungiamas netempiamu pelės judesiu „sloppy“ arba "
-#~ "fokusavimo pele režimuose“. Jis nesusijęs su spragtelėjimų judesiais (t."
-#~ "y., tai nesusiję su iškėlimu spragtelint). Tai nesusiję su įėjimu į lango "
-#~ "zoną tempiant ir paleidžiant failus (nes tai baigiasi programos perėmimu "
-#~ "pelės žymeklio)"
-
-#~ msgid ""
-#~ "Some applications break specifications in ways that result in window "
-#~ "manager misfeatures. For example, ideally Metacity would place all "
-#~ "dialogs in a consistent position with respect to their parent window. "
-#~ "This requires ignoring application-specified positions for dialogs. But "
-#~ "some versions of Java/Swing mark their popup menus as dialogs, so "
-#~ "Metacity has to disable dialog positioning to allow menus to work in "
-#~ "broken Java applications. There are several other examples like this. "
-#~ "This option puts Metacity in full-on Correct mode, which perhaps gives a "
-#~ "moderately nicer UI if you don't need to run any broken apps. Sadly, "
-#~ "workarounds must be enabled by default; the real world is an ugly place. "
-#~ "Some of the workarounds are workarounds for limitations in the "
-#~ "specifications themselves, so sometimes a bug in no-workarounds mode "
-#~ "won't be fixable without amending a spec."
-#~ msgstr ""
-#~ "Dalis programų gali pažeisti langų valdyklės specifikacijas. Pavyzdžiui, "
-#~ "idealioje situacijos langų valdyklė turėtų visus dialogo langus "
-#~ "patalpinti atsižvelgdama į jų pagrindinio lango padėtį. Norint tai "
-#~ "pasiekti, reikia nekreipti dėmesio į programų pateikiamas dialogo langų "
-#~ "padėtis. Tačiau dalis Java/Swing laidų žymi jų išsiskleidžiančius meniu "
-#~ "kaip dialogus ir langų valdyklė turi atjungti dialogų padėties valdymą, "
-#~ "kad netvarkingose programose veiktų meniu. Yra ir kitų panašaus tipo "
-#~ "pavydžių. Šis nustatymas perveda langų valdyklę į klaidų nepripažįstantį "
-#~ "darbo režimą, kuris garantuoja šiek tiek geresnę vartotojo sąsają, jei "
-#~ "jums nereikia dirbti su nekorektiškai dirbančiomis programomis. Tačiau "
-#~ "mes gyvename netobulame pasaulyje ir pagal nutylėjimą apsauga nuo "
-#~ "nekorektiškų programų yra įjungta. Dalis apsaugos priemonių saugo nuo "
-#~ "pačios langų valdyklės specifikacijų netobulumo ir klaida atsiradusi "
-#~ "„tobulame“ režime negali būti pataisyta neištaisius valdyklės "
-#~ "specifikacijų."
-
-#~ msgid ""
-#~ "Coordinate expression parser overflowed its buffer, this is really a "
-#~ "Metacity bug, but are you sure you need a huge expression like that?"
-#~ msgstr ""
-#~ "Koordinačių išraiškos aprodojimo metu buvo viršytas tam skirtas atminties "
-#~ "kiekis. Tai yra langų valdyklės klaida, bet ar Jums tikrai reikia tokio "
-#~ "dydžio išraiškos?"
