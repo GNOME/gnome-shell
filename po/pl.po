@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-21 00:01+0100\n"
-"PO-Revision-Date: 2006-11-17 22:25+0100\n"
-"Last-Translator: Marek Stepien <marcoos@aviary.pl>\n"
+"POT-Creation-Date: 2007-03-07 00:38+0100\n"
+"PO-Revision-Date: 2007-03-03 00:33+0100\n"
+"Last-Translator: wadim dziedzic <wdziedzic@aviary.pl>\n"
 "Language-Team: Polish <translation-team-pl@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,8 +26,8 @@ msgstr "Użycie: %s\n"
 #: ../src/tools/metacity-message.c:176 ../src/util.c:133
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr ""
-"Program Metacity został skompilowany bez obsługi trybu z informowaniem o "
-"przebiegu\n"
+"Program Metacity został skompilowany bez obsługi trybu z obszerną "
+"informacją\n"
 
 #: ../src/delete.c:67 ../src/delete.c:94 ../src/metacity-dialog.c:50
 #: ../src/theme-parser.c:484
@@ -106,32 +106,28 @@ msgid "Unmaximize Window"
 msgstr "Przywraca zmaksymalizowane okno"
 
 #: ../src/frames.c:1077
-#, fuzzy
 msgid "Roll Up Window"
-msgstr "_Zwiń"
+msgstr "Zwiń okno"
 
 #: ../src/frames.c:1080
-#, fuzzy
 msgid "Unroll Window"
-msgstr "Zamyka okno"
+msgstr "Rozwiń okno"
 
 #: ../src/frames.c:1083
 msgid "Keep Window On Top"
-msgstr ""
+msgstr "Zatrzymaj okno na wierzchu"
 
 #: ../src/frames.c:1086
 msgid "Remove Window From Top"
-msgstr ""
+msgstr "Usuń okno z wierzchu"
 
 #: ../src/frames.c:1089
-#, fuzzy
 msgid "Always On Visible Workspace"
-msgstr "_Zawsze na widocznym obszarze roboczym"
+msgstr "Zawsze na widocznym obszarze roboczym"
 
 #: ../src/frames.c:1092
-#, fuzzy
 msgid "Put Window On Only One Workspace"
-msgstr "Przełączenie obecności okna na wszystkich obszarach roboczych"
+msgstr "Umieść okno tylko na jednym obszarze roboczym"
 
 #: ../src/keybindings.c:1081
 #, c-format
@@ -204,12 +200,12 @@ msgid "Failed to scan themes directory: %s\n"
 msgstr "Nie można przejrzeć katalogu z motywami: %s\n"
 
 #: ../src/main.c:368
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
-"Nie można odnaleźć żadnego motywu! Upewnij się, że istnieje katalog \"%s\" i "
-"zawiera standardowe motywy."
+"Nie można odnaleźć żadnego motywu. Proszę sprawdzić, że katalog %s istnieje "
+"i zawiera standardowe motywy.\n"
 
 #: ../src/main.c:428
 #, c-format
@@ -266,7 +262,7 @@ msgstr "Za_mknij"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:88
 msgid "Always on _Top"
-msgstr ""
+msgstr "Zawsze na _wierzchu"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:90
@@ -407,7 +403,7 @@ msgid "Mod5"
 msgstr "Mod5"
 
 #: ../src/metacity-dialog.c:90
-#, fuzzy, c-format
+#, c-format
 msgid "\"%s\" is not responding."
 msgstr "Okno \"%s\" nie odpowiada."
 
@@ -416,14 +412,15 @@ msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr ""
+"Można poczekać chwilę dłużej lub wymusić całkowite zakończenie aplikacji."
 
 #: ../src/metacity-dialog.c:107
 msgid "_Wait"
-msgstr ""
+msgstr "_Czekaj"
 
 #: ../src/metacity-dialog.c:109
 msgid "_Force Quit"
-msgstr "_Wymuś zakończenie"
+msgstr "_Zakończ"
 
 #: ../src/metacity-dialog.c:206
 msgid "Title"
@@ -742,44 +739,36 @@ msgid "Move window one workspace up"
 msgstr "Przeniesienie okna o obszar roboczy w górę"
 
 #: ../src/metacity.schemas.in.h:49
-#, fuzzy
 msgid "Move window to east side of screen"
-msgstr "Przeniesienie okna na 1. obszar roboczy"
+msgstr "Przeniesienie okna na wschodnią stronę ekranu"
 
 #: ../src/metacity.schemas.in.h:50
-#, fuzzy
 msgid "Move window to north side of screen"
-msgstr "Przeniesienie okna na 1. obszar roboczy"
+msgstr "Przeniesienie okna na północną stronę ekranu"
 
 #: ../src/metacity.schemas.in.h:51
-#, fuzzy
 msgid "Move window to north-east corner"
-msgstr "Przeniesienie okna na 1. obszar roboczy"
+msgstr "Przeniesienie okna na północno-wschodnią stronę ekranu"
 
 #: ../src/metacity.schemas.in.h:52
-#, fuzzy
 msgid "Move window to north-west corner"
-msgstr "Przeniesienie okna na 1. obszar roboczy"
+msgstr "Przeniesienie okna na północno-zachodnią stronę ekranu"
 
 #: ../src/metacity.schemas.in.h:53
-#, fuzzy
 msgid "Move window to south side of screen"
-msgstr "Przeniesienie okna na 1. obszar roboczy"
+msgstr "Przeniesienie okna na południową stronę ekranu"
 
 #: ../src/metacity.schemas.in.h:54
-#, fuzzy
 msgid "Move window to south-east corner"
-msgstr "Przeniesienie okna na 1. obszar roboczy"
+msgstr "Przeniesienie okna na południowo-wschodnią stronę ekranu"
 
 #: ../src/metacity.schemas.in.h:55
-#, fuzzy
 msgid "Move window to south-west corner"
-msgstr "Przeniesienie okna na 1. obszar roboczy"
+msgstr "Przeniesienie okna na południowo-zachodnią stronę ekranu"
 
 #: ../src/metacity.schemas.in.h:56
-#, fuzzy
 msgid "Move window to west side of screen"
-msgstr "Przeniesienie okna na 1. obszar roboczy"
+msgstr "Przeniesienie okna na zachodnią stronę ekranu"
 
 #: ../src/metacity.schemas.in.h:57
 msgid "Move window to workspace 1"
@@ -2127,7 +2116,6 @@ msgstr ""
 "nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
 
 #: ../src/metacity.schemas.in.h:174
-#, fuzzy
 msgid ""
 "This keybinding moves a window against the north (top) side of the screen. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -2136,15 +2124,15 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Skrót klawiszowy, odsuwa okno za pozostałe. Przykładowy zapis skrótu ma "
-"postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza "
-"składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i "
-"wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;"
-"\". Jeśli opcji zostanie przypisany specjalny napis \"disabled\" (ang. "
-"nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
+"Ten skrót klawiszowy odsuwa okno do północnej (górnej) krawędzi ekranu. "
+"Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na "
+"używanie małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" "
+"oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
+"\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden "
+"skrót klawiszowy."
 
 #: ../src/metacity.schemas.in.h:175
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the east (right) side of the screen. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2153,15 +2141,15 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Skrót klawiszowy, odsuwa okno za pozostałe. Przykładowy zapis skrótu ma "
-"postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza "
-"składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i "
-"wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;"
-"\". Jeśli opcji zostanie przypisany specjalny napis \"disabled\" (ang. "
-"nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
+"Ten skrót klawiszowy odsuwa okno do wschodniej (prawej) krawędzi ekranu. "
+"Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na "
+"używanie małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" "
+"oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
+"\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden "
+"skrót klawiszowy."
 
 #: ../src/metacity.schemas.in.h:176
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the north-east (top right) corner of the "
 "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2170,15 +2158,15 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Skrót klawiszowy, odsuwa okno za pozostałe. Przykładowy zapis skrótu ma "
-"postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza "
-"składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i "
-"wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;"
-"\". Jeśli opcji zostanie przypisany specjalny napis \"disabled\" (ang. "
-"nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
+"Ten skrót klawiszowy odsuwa okno do północno-wschodniej (prawej-górnej) "
+"krawędzi ekranu. Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - "
+"pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak "
+"\"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany "
+"specjalny napis \"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie "
+"powiązany żaden skrót klawiszowy."
 
 #: ../src/metacity.schemas.in.h:177
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the north-west (top left) corner of the "
 "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2187,15 +2175,15 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Skrót klawiszowy, odsuwa okno za pozostałe. Przykładowy zapis skrótu ma "
-"postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza "
-"składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i "
-"wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;"
-"\". Jeśli opcji zostanie przypisany specjalny napis \"disabled\" (ang. "
-"nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
+"Ten skrót klawiszowy odsuwa okno do północno-zachodniej (lewej górnej) "
+"krawędzi ekranu. Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - "
+"pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak "
+"\"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany "
+"specjalny napis \"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie "
+"powiązany żaden skrót klawiszowy."
 
 #: ../src/metacity.schemas.in.h:178
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the south (bottom) side of the screen. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -2204,15 +2192,15 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Skrót klawiszowy, odsuwa okno za pozostałe. Przykładowy zapis skrótu ma "
-"postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza "
-"składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i "
-"wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;"
-"\". Jeśli opcji zostanie przypisany specjalny napis \"disabled\" (ang. "
-"nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
+"Ten skrót klawiszowy odsuwa okno do południowej (dolnej) krawędzi ekranu. "
+"Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na "
+"używanie małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" "
+"oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
+"\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden "
+"skrót klawiszowy."
 
 #: ../src/metacity.schemas.in.h:179
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the south-east (bottom right) corner of "
 "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2221,15 +2209,15 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Skrót klawiszowy, odsuwa okno za pozostałe. Przykładowy zapis skrótu ma "
-"postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza "
-"składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i "
-"wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;"
-"\". Jeśli opcji zostanie przypisany specjalny napis \"disabled\" (ang. "
-"nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
+"Ten skrót klawiszowy odsuwa okno do południowo-wschodniej (prawej dolnej) "
+"krawędzi ekranu. Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - "
+"pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak "
+"\"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany "
+"specjalny napis \"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie "
+"powiązany żaden skrót klawiszowy."
 
 #: ../src/metacity.schemas.in.h:180
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the south-west (bottom left) corner of "
 "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2238,15 +2226,15 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Skrót klawiszowy, odsuwa okno za pozostałe. Przykładowy zapis skrótu ma "
-"postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza "
-"składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i "
-"wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;"
-"\". Jeśli opcji zostanie przypisany specjalny napis \"disabled\" (ang. "
-"nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
+"Ten skrót klawiszowy odsuwa okno do południowo-zachodniej (lewej dolnej) "
+"krawędzi ekranu. Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub "
+"\"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - "
+"pozwala to na używanie małych i wielkich liter oraz skrótów, takich jak "
+"\"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany "
+"specjalny napis \"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie "
+"powiązany żaden skrót klawiszowy."
 
 #: ../src/metacity.schemas.in.h:181
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the west (left) side of the screen. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2255,12 +2243,13 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Skrót klawiszowy, odsuwa okno za pozostałe. Przykładowy zapis skrótu ma "
-"postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;&lt;Alt&gt;F1. Analiza "
-"składniowa jest niezbyt restrykcyjna - pozwala to na używanie małych i "
-"wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" oraz \"&lt;Ctrl&gt;"
-"\". Jeśli opcji zostanie przypisany specjalny napis \"disabled\" (ang. "
-"nieaktywne), wówczas z akcją nie będzie powiązany żaden skrót klawiszowy."
+"Ten skrót klawiszowy odsuwa okno do zachodniej (lewej) krawędzi ekranu. "
+"Przykładowy zapis skrótu ma postać \"&lt;Control&gt;a\" lub \"&lt;Shift&gt;"
+"&lt;Alt&gt;F1. Analiza składniowa jest niezbyt restrykcyjna - pozwala to na "
+"używanie małych i wielkich liter oraz skrótów, takich jak \"&lt;Ctl&gt;\" "
+"oraz \"&lt;Ctrl&gt;\". Jeśli opcji zostanie przypisany specjalny napis "
+"\"disabled\" (ang. nieaktywne), wówczas z akcją nie będzie powiązany żaden "
+"skrót klawiszowy."
 
 #: ../src/metacity.schemas.in.h:182
 msgid ""
@@ -2673,7 +2662,7 @@ msgstr "<%s> musi albo określać geometrię albo element nadrzędny z geometri�
 
 #: ../src/theme-parser.c:1115
 msgid "You must specify a background for an alpha value to be meaningful"
-msgstr ""
+msgstr "Aby wartość alpha miała sens, należy określić tło"
 
 #: ../src/theme-parser.c:1206
 #, c-format
@@ -2692,11 +2681,11 @@ msgstr "Z typem okna \"%s\" powiązano już zbiór stylów"
 
 #: ../src/theme-parser.c:1261
 msgid "Theme already has a fallback icon"
-msgstr ""
+msgstr "Motyw posiada już domyślną ikonę"
 
 #: ../src/theme-parser.c:1273
 msgid "Theme already has a fallback mini_icon"
-msgstr ""
+msgstr "Motyw posiada już domyślną mini_ikoną"
 
 #: ../src/theme-parser.c:1286 ../src/theme-parser.c:1350
 #: ../src/theme-parser.c:1639 ../src/theme-parser.c:3262
@@ -2826,12 +2815,12 @@ msgid "No \"height\" attribute on element <%s>"
 msgstr "Brak atrybutu \"height\" wewnątrz elementu <%s>"
 
 #: ../src/theme-parser.c:2000
-#, fuzzy, c-format
+#, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "Brak atrybutu \"start_angle\" wewnątrz elementu <%s>"
 
 #: ../src/theme-parser.c:2007
-#, fuzzy, c-format
+#, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr "Brak atrybutu \"extent_angle\" wewnątrz elementu <%s>"
 
@@ -2957,7 +2946,7 @@ msgstr "Nieznana funkcja \"%s\" powiązana z przyciskiem"
 #: ../src/theme-parser.c:3436
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
-msgstr ""
+msgstr "Fukcja \"%s\" przycisku nie istnieje w tej wersji (%d, wymaga %d)"
 
 #: ../src/theme-parser.c:3448
 #, c-format
@@ -3015,12 +3004,12 @@ msgstr ""
 "zmaksymalizowanym lub zwiniętym"
 
 #: ../src/theme-parser.c:3639
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
-"Element <%s> nie powinien zawierać atrybutu \"resize\" przy stanie "
-"zmaksymalizowanym lub zwiniętym"
+"Nie powinno być atrybutu \"resize\" w elemecie <%s> przy stanie "
+"zmaksymalizowanym"
 
 #: ../src/theme-parser.c:3653 ../src/theme-parser.c:3675
 #, c-format
@@ -3128,9 +3117,9 @@ msgid "<description> specified twice for this theme"
 msgstr "Dwukrotnie określono dla tego motywu element <description>"
 
 #: ../src/theme-parser.c:4573
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to find a valid file for theme %s\n"
-msgstr "Nie można wykonać fdopen() na pliku dziennika %s: %s\n"
+msgstr "Nie można znaleźć poprawnego pliku dla motywu %s\n"
 
 #: ../src/theme-parser.c:4628
 #, c-format
