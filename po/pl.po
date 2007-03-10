@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-07 00:38+0100\n"
+"POT-Creation-Date: 2007-03-10 19:55+0100\n"
 "PO-Revision-Date: 2007-03-03 00:33+0100\n"
 "Last-Translator: wadim dziedzic <wdziedzic@aviary.pl>\n"
 "Language-Team: Polish <translation-team-pl@lists.sourceforge.net>\n"
@@ -294,7 +294,7 @@ msgstr "_Przenieś na górny obszar roboczy"
 msgid "Move to Workspace _Down"
 msgstr "Przenieś na _dolny obszar roboczy"
 
-#: ../src/menu.c:191 ../src/prefs.c:2197 ../src/prefs.c:2732
+#: ../src/menu.c:191 ../src/prefs.c:2201 ../src/prefs.c:2736
 #, c-format
 msgid "Workspace %d"
 msgstr "Obszar roboczy %d"
@@ -947,11 +947,11 @@ msgstr "Brzęczyk systemowy jest słyszalny"
 
 #: ../src/metacity.schemas.in.h:97
 msgid "Take a screenshot"
-msgstr "Pobierz zrzut ekranu"
+msgstr "Pobranie zrzutu ekranu"
 
 #: ../src/metacity.schemas.in.h:98
 msgid "Take a screenshot of a window"
-msgstr "Pobiera zrzut ekranu"
+msgstr "Pobranie zrzutu okna"
 
 #: ../src/metacity.schemas.in.h:99
 msgid ""
@@ -2380,19 +2380,19 @@ msgstr "Tryb skupienia okna"
 msgid "Window title font"
 msgstr "Czcionka tytułu okna"
 
-#: ../src/prefs.c:575 ../src/prefs.c:591 ../src/prefs.c:607 ../src/prefs.c:623
-#: ../src/prefs.c:639 ../src/prefs.c:655 ../src/prefs.c:671 ../src/prefs.c:691
-#: ../src/prefs.c:707 ../src/prefs.c:723 ../src/prefs.c:741 ../src/prefs.c:757
-#: ../src/prefs.c:776 ../src/prefs.c:792 ../src/prefs.c:809 ../src/prefs.c:825
-#: ../src/prefs.c:841 ../src/prefs.c:858 ../src/prefs.c:874 ../src/prefs.c:890
-#: ../src/prefs.c:906 ../src/prefs.c:922 ../src/prefs.c:937 ../src/prefs.c:952
-#: ../src/prefs.c:967 ../src/prefs.c:983 ../src/prefs.c:999
-#: ../src/prefs.c:1015 ../src/prefs.c:1031
+#: ../src/prefs.c:579 ../src/prefs.c:595 ../src/prefs.c:611 ../src/prefs.c:627
+#: ../src/prefs.c:643 ../src/prefs.c:659 ../src/prefs.c:675 ../src/prefs.c:695
+#: ../src/prefs.c:711 ../src/prefs.c:727 ../src/prefs.c:745 ../src/prefs.c:761
+#: ../src/prefs.c:780 ../src/prefs.c:796 ../src/prefs.c:813 ../src/prefs.c:829
+#: ../src/prefs.c:845 ../src/prefs.c:862 ../src/prefs.c:878 ../src/prefs.c:894
+#: ../src/prefs.c:910 ../src/prefs.c:926 ../src/prefs.c:941 ../src/prefs.c:956
+#: ../src/prefs.c:971 ../src/prefs.c:987 ../src/prefs.c:1003
+#: ../src/prefs.c:1019 ../src/prefs.c:1035
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Klucz GConfa \"%s\" jest niewłaściwego typu\n"
 
-#: ../src/prefs.c:1076
+#: ../src/prefs.c:1080
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2401,12 +2401,12 @@ msgstr ""
 "Wartość \"%s\", odnaleziona w bazie danych konfiguracji nie opisuje "
 "poprawnie modyfikatora przycisku myszy\n"
 
-#: ../src/prefs.c:1100 ../src/prefs.c:1121 ../src/prefs.c:1663
+#: ../src/prefs.c:1104 ../src/prefs.c:1125 ../src/prefs.c:1667
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Kluczowi GConfa \"%s\" jest przypisana niepoprawna wartość\n"
 
-#: ../src/prefs.c:1250
+#: ../src/prefs.c:1254
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
@@ -2415,12 +2415,12 @@ msgstr ""
 "Wartość %d zapisana w kluczu GConfa %s nie jest rozsądną wartością dla "
 "cursor_size, musi się ona zawierać w przedziale 1...128\n"
 
-#: ../src/prefs.c:1330
+#: ../src/prefs.c:1334
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Nie można przetworzyć opisu \"%s\", powiązanego z kluczem GConfa %s\n"
 
-#: ../src/prefs.c:1557
+#: ../src/prefs.c:1561
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2429,7 +2429,7 @@ msgstr ""
 "Wartość %d zapisana w kluczu GConfa %s nie jest poprawną liczbą biurek; "
 "aktualne maksimum wynosi %d\n"
 
-#: ../src/prefs.c:1617
+#: ../src/prefs.c:1621
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2437,17 +2437,17 @@ msgstr ""
 "Obejścia dla niepoprawnie działających aplikacji są nieaktywne. Niektóre z "
 "nich mogą się więc zachowywać niezgodnie z oczekiwaniami.\n"
 
-#: ../src/prefs.c:1690
+#: ../src/prefs.c:1694
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "Wartość %d zapisana w kluczu GConfa %s jest poza zakresem od 0 do %d\n"
 
-#: ../src/prefs.c:1833
+#: ../src/prefs.c:1837
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Przy ustawianiu liczby obszarów roboczych na %d wystąpił błąd: %s\n"
 
-#: ../src/prefs.c:2227 ../src/prefs.c:2397
+#: ../src/prefs.c:2231 ../src/prefs.c:2401
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2456,7 +2456,7 @@ msgstr ""
 "Wartość \"%s\", odnaleziona w bazie danych konfiguracji nie opisuje "
 "poprawnie skrótu klawiszowego \"%s\"\n"
 
-#: ../src/prefs.c:2813
+#: ../src/prefs.c:2817
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Błąd przy ustawianiu nazwy obszaru roboczego %d na \"%s\": %s\n"
