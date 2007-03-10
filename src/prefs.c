@@ -47,6 +47,8 @@
 #define KEY_FOCUS_NEW_WINDOWS "/apps/metacity/general/focus_new_windows"
 #define KEY_RAISE_ON_CLICK "/apps/metacity/general/raise_on_click"
 #define KEY_ACTION_DOUBLE_CLICK_TITLEBAR "/apps/metacity/general/action_double_click_titlebar"
+#define KEY_ACTION_MIDDLE_CLICK_TITLEBAR "/apps/metacity/general/action_middle_click_titlebar"
+#define KEY_ACTION_RIGHT_CLICK_TITLEBAR "/apps/metacity/general/action_right_click_titlebar"
 #define KEY_AUTO_RAISE "/apps/metacity/general/auto_raise"
 #define KEY_AUTO_RAISE_DELAY "/apps/metacity/general/auto_raise_delay"
 #define KEY_THEME "/apps/metacity/general/theme"
@@ -92,6 +94,8 @@ static gboolean raise_on_click = TRUE;
 static char* current_theme = NULL;
 static int num_workspaces = 4;
 static MetaActionTitlebar action_double_click_titlebar = META_ACTION_TITLEBAR_TOGGLE_MAXIMIZE;
+static MetaActionTitlebar action_middle_click_titlebar = META_ACTION_TITLEBAR_LOWER;
+static MetaActionTitlebar action_right_click_titlebar = META_ACTION_TITLEBAR_MENU;
 static gboolean application_based = FALSE;
 static gboolean disable_workarounds = FALSE;
 static gboolean auto_raise = FALSE;
@@ -2880,6 +2884,18 @@ MetaActionTitlebar
 meta_prefs_get_action_double_click_titlebar (void)
 {
   return action_double_click_titlebar;
+}
+
+MetaActionTitlebar
+meta_prefs_get_action_middle_click_titlebar (void)
+{
+  return action_middle_click_titlebar;
+}
+
+MetaActionTitlebar
+meta_prefs_get_action_right_click_titlebar (void)
+{
+  return action_right_click_titlebar;
 }
 
 gboolean

@@ -1,3 +1,10 @@
+2007-03-09  Linus Torvalds  <torvalds@woody.linux-foundation.org>
+
+	* src/frames.c (meta_frame_middle_click_event,
+        meta_frame_right_click_event): honour preferences.
+	* src/prefs.[ch] (meta_prefs_get_action_middle_click_titlebar,
+        meta_prefs_get_action_right_click_titlebar): new functions.
+
 2007-02-20  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* Makefile.am: Add MAINTAINERS to EXTRA_DIST so others

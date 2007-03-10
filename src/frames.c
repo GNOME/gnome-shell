@@ -1275,14 +1275,18 @@ static gboolean
 meta_frame_middle_click_event (MetaUIFrame    *frame,
                                GdkEventButton *event)
 {
-  return meta_frame_titlebar_event (frame, event, META_ACTION_TITLEBAR_LOWER);
+  int action = meta_prefs_get_action_middle_click_titlebar();
+  
+  return meta_frame_titlebar_event (frame, event, action);
 }
 
 static gboolean
 meta_frame_right_click_event(MetaUIFrame     *frame,
                              GdkEventButton  *event)
 {
-  return meta_frame_titlebar_event (frame, event, META_ACTION_TITLEBAR_MENU);
+  int action = meta_prefs_get_action_right_click_titlebar();
+  
+  return meta_frame_titlebar_event (frame, event, action);
 }
 
 static gboolean
