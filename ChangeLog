@@ -1,3 +1,8 @@
+2007-03-10  Charlie Brej  <cbrej@cs.man.ac.uk>
+
+	* src/metacity.schemas.in: add action_{middle|right}_click_titlebar.
+	Closes #408903.
+
 2007-03-09  Linus Torvalds  <torvalds@woody.linux-foundation.org>
 
 	* src/frames.c (meta_frame_middle_click_event,

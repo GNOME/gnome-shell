@@ -124,6 +124,42 @@
     </schema>
 
     <schema>
+      <key>/schemas/apps/metacity/general/action_middle_click_titlebar</key>
+      <applyto>/apps/metacity/general/action_middle_click_titlebar</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>lower</default>
+      <locale name="C">
+         <short>Action on title bar middle-click</short>
+         <long>
+           This option determines the effects of middle-clicking on the
+           title bar.  Current valid options are 'toggle_shade', which will
+           shade/unshade the window, 'toggle_maximize' which will
+           maximize/unmaximize the window, 'minimize' which will minimize
+           the window, and 'none' which will not do anything.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/metacity/general/action_right_click_titlebar</key>
+      <applyto>/apps/metacity/general/action_right_click_titlebar</applyto>
+      <owner>metacity</owner>
+      <type>string</type>
+      <default>menu</default>
+      <locale name="C">
+         <short>Action on title bar right-click</short>
+         <long>
+           This option determines the effects of right-clicking on the
+           title bar.  Current valid options are 'toggle_shade', which will
+           shade/unshade the window, 'toggle_maximize' which will
+           maximize/unmaximize the window, 'minimize' which will minimize
+           the window, and 'none' which will not do anything.
+         </long>
+      </locale>
+    </schema>
+
+    <schema>
       <key>/schemas/apps/metacity/general/auto_raise</key>
       <applyto>/apps/metacity/general/auto_raise</applyto>
       <owner>metacity</owner>
