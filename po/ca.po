@@ -1,16 +1,16 @@
 # Catalan translation of Metacity.
-# Copyright © 2002, 2003, 2004, 2005,2006 Free Software Foundation, Inc.
+# Copyright © 2002, 2003, 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
 # This file is distributed under the same license as the metacity package.
 # Softcatala <info@softcatala.org>, 2002.
 # Jesús Moreno <jmmolas@wanadoo.es>, 2002.
-# Jordi Mallach <jordi@sindominio.net>, 2003, 2004, 2005, 2006.
+# Jordi Mallach <jordi@sindominio.net>, 2003, 2004, 2005, 2006, 2007.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity 2.17\n"
+"Project-Id-Version: metacity 2.18\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-11 20:55+0100\n"
-"PO-Revision-Date: 2006-12-11 21:01+0100\n"
+"POT-Creation-Date: 2007-03-11 00:58+0100\n"
+"PO-Revision-Date: 2007-03-11 01:03+0100\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
 "MIME-Version: 1.0\n"
@@ -41,7 +41,7 @@ msgstr "No s'entenen els caràcters finals «%s» de la cadena «%s»"
 #: ../src/delete.c:132
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "És impossible d'analitzar «%s» des del procés de diàleg\n"
+msgstr "No s'ha pogut analitzar el missatge «%s» des del procés de diàleg\n"
 
 #: ../src/delete.c:267
 #, c-format
@@ -202,7 +202,9 @@ msgstr "No s'ha pogut analitzar el directori de temes: %s\n"
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
-msgstr "No s'ha trobat cap tema. Assegureu-vos que %s existeix i conté els temes habituals.\n"
+msgstr ""
+"No s'ha trobat cap tema. Assegureu-vos que %s existeix i conté els temes "
+"habituals.\n"
 
 #: ../src/main.c:428
 #, c-format
@@ -235,77 +237,77 @@ msgid "_Unroll"
 msgstr "Desenro_tlla"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:78 ../src/menu.c:80
-msgid "On _Top"
-msgstr "Per damun_t"
-
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:82
+#: ../src/menu.c:78
 msgid "_Move"
 msgstr "_Mou"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:84
+#: ../src/menu.c:80
 msgid "_Resize"
 msgstr "_Redimensiona"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:86
+#: ../src/menu.c:82
 msgid "Move Titlebar On_screen"
 msgstr "Mou la _barra de títol en pantalla"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:89
+#: ../src/menu.c:85
 msgid "_Close"
 msgstr "_Tanca"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:92
+#: ../src/menu.c:88
+msgid "Always on _Top"
+msgstr "Sempre per _damunt"
+
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:90
 msgid "_Always on Visible Workspace"
 msgstr "Sempre a l'espai de treball _visible"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:94
+#: ../src/menu.c:92
 msgid "_Only on This Workspace"
 msgstr "Només en _aquest espai de treball"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:96
+#: ../src/menu.c:94
 msgid "Move to Workspace _Left"
 msgstr "Mou a l'espai de treball de l'es_querra"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:98
+#: ../src/menu.c:96
 msgid "Move to Workspace R_ight"
 msgstr "Mou a l'espai de treball de la _dreta"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:100
+#: ../src/menu.c:98
 msgid "Move to Workspace _Up"
 msgstr "Mou a l'espai de treball de _sobre"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:102
+#: ../src/menu.c:100
 msgid "Move to Workspace _Down"
 msgstr "Mou a l'espai de treball de s_ota"
 
-#: ../src/menu.c:193 ../src/prefs.c:2194 ../src/prefs.c:2729
+#: ../src/menu.c:191 ../src/prefs.c:2201 ../src/prefs.c:2736
 #, c-format
 msgid "Workspace %d"
 msgstr "Espai de treball %d"
 
-#: ../src/menu.c:202
+#: ../src/menu.c:200
 msgid "Workspace 1_0"
 msgstr "Espai de treball 1_0"
 
-#: ../src/menu.c:204
+#: ../src/menu.c:202
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Espai de treball %s%d"
 
-#: ../src/menu.c:403
+#: ../src/menu.c:407
 msgid "Move to Another _Workspace"
 msgstr "Mou a un altre es_pai de treball"
 
@@ -408,7 +410,9 @@ msgstr "«%s» no està responent."
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
-msgstr "Podeu esperar un poc per a que continue o forçar la sortida completa de l'aplicació."
+msgstr ""
+"Podeu esperar un poc per a que continue o forçar la sortida completa de "
+"l'aplicació."
 
 #: ../src/metacity-dialog.c:107
 msgid "_Wait"
@@ -742,29 +746,24 @@ msgid "Move window to north-east corner"
 msgstr "Mou la finestra al cantó nordest"
 
 #: ../src/metacity.schemas.in.h:52
-#, fuzzy
 msgid "Move window to north-west corner"
-msgstr "Mou la finestra a l'espai de treball 1"
+msgstr "Mou la finestra al cantó nord-oest"
 
 #: ../src/metacity.schemas.in.h:53
-#, fuzzy
 msgid "Move window to south side of screen"
-msgstr "Mou la finestra a l'espai de treball 1"
+msgstr "Mou la finestra a la part del sud de la pantalla"
 
 #: ../src/metacity.schemas.in.h:54
-#, fuzzy
 msgid "Move window to south-east corner"
-msgstr "Mou la finestra a l'espai de treball 1"
+msgstr "Mou la finestra al cantó sud-est"
 
 #: ../src/metacity.schemas.in.h:55
-#, fuzzy
 msgid "Move window to south-west corner"
-msgstr "Mou la finestra a l'espai de treball 1"
+msgstr "Mou la finestra al cantó sud-oest"
 
 #: ../src/metacity.schemas.in.h:56
-#, fuzzy
 msgid "Move window to west side of screen"
-msgstr "Mou la finestra a l'espai de treball 1"
+msgstr "Mou la finestra a la part de l'oest de la pantalla"
 
 #: ../src/metacity.schemas.in.h:57
 msgid "Move window to workspace 1"
@@ -2028,7 +2027,6 @@ msgstr ""
 "«disabled», no hi haurà cap vinculació per a aquesta acció."
 
 #: ../src/metacity.schemas.in.h:174
-#, fuzzy
 msgid ""
 "This keybinding moves a window against the north (top) side of the screen. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -2037,14 +2035,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Aquesta vinculació de tecles fica una finestra sota les altres. El format és "
-"semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador "
-"és prou flexible i permet minúscules i majúscules, i també abreviacions com "
-"«&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
-"«disabled», no hi haurà cap vinculació per a aquesta acció."
+"Aquesta vinculació de tecles mou una finestra cap a la part nord (superior) "
+"de la pantalla. El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;"
+"&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i "
+"majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
+"establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació "
+"per a aquesta acció."
 
 #: ../src/metacity.schemas.in.h:175
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the east (right) side of the screen. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2053,14 +2051,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Aquesta vinculació de tecles fica una finestra sota les altres. El format és "
-"semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador "
-"és prou flexible i permet minúscules i majúscules, i també abreviacions com "
-"«&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
-"«disabled», no hi haurà cap vinculació per a aquesta acció."
+"Aquesta vinculació de tecles mou una finestra cap a la part est (dreta) de "
+"la pantalla. El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;"
+"Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i majúscules, "
+"i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció "
+"a la cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
+"acció."
 
 #: ../src/metacity.schemas.in.h:176
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the north-east (top right) corner of the "
 "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2069,14 +2067,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Aquesta vinculació de tecles fica una finestra sota les altres. El format és "
-"semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador "
-"és prou flexible i permet minúscules i majúscules, i també abreviacions com "
-"«&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
-"«disabled», no hi haurà cap vinculació per a aquesta acció."
+"Aquesta vinculació de tecles mou una finestra cap a la part nord-est "
+"(superior a la dreta) de la pantalla. El format és semblant a «&lt;"
+"Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
+"i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
+"«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
+"haurà cap vinculació per a aquesta acció."
 
 #: ../src/metacity.schemas.in.h:177
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the north-west (top left) corner of the "
 "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2085,14 +2083,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Aquesta vinculació de tecles fica una finestra sota les altres. El format és "
-"semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador "
-"és prou flexible i permet minúscules i majúscules, i també abreviacions com "
-"«&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
-"«disabled», no hi haurà cap vinculació per a aquesta acció."
+"Aquesta vinculació de tecles mou una finestra cap a la part nord-oest "
+"(superior a l'esquerra) de la pantalla. El format és semblant a «&lt;"
+"Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
+"i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
+"«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
+"haurà cap vinculació per a aquesta acció."
 
 #: ../src/metacity.schemas.in.h:178
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the south (bottom) side of the screen. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -2101,14 +2099,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Aquesta vinculació de tecles fica una finestra sota les altres. El format és "
-"semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador "
-"és prou flexible i permet minúscules i majúscules, i també abreviacions com "
-"«&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
-"«disabled», no hi haurà cap vinculació per a aquesta acció."
+"Aquesta vinculació de tecles mou una finestra cap a la part del sud "
+"(inferior) de la pantalla. El format és semblant a «&lt;Control&gt;a» o «&lt;"
+"Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules "
+"i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
+"establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació "
+"per a aquesta acció."
 
 #: ../src/metacity.schemas.in.h:179
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the south-east (bottom right) corner of "
 "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2117,14 +2115,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Aquesta vinculació de tecles fica una finestra sota les altres. El format és "
-"semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador "
-"és prou flexible i permet minúscules i majúscules, i també abreviacions com "
-"«&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
-"«disabled», no hi haurà cap vinculació per a aquesta acció."
+"Aquesta vinculació de tecles mou una finestra cap a la part sud-est de la "
+"pantalla. El format és semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;"
+"Alt&gt;F1». L'analitzador és prou flexible i permet minúscules i majúscules, "
+"i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció "
+"a la cadena especial «disabled», no hi haurà cap vinculació per a aquesta "
+"acció."
 
 #: ../src/metacity.schemas.in.h:180
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the south-west (bottom left) corner of "
 "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2133,14 +2131,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Aquesta vinculació de tecles fica una finestra sota les altres. El format és "
-"semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador "
-"és prou flexible i permet minúscules i majúscules, i també abreviacions com "
-"«&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
-"«disabled», no hi haurà cap vinculació per a aquesta acció."
+"Aquesta vinculació de tecles mou una finestra cap a la part sud-oest "
+"(inferior a l'esquerra) de la pantalla. El format és semblant a «&lt;"
+"Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible "
+"i permet minúscules i majúscules, i també abreviacions com «&lt;Ctl&gt;» i "
+"«&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial «disabled», no hi "
+"haurà cap vinculació per a aquesta acció."
 
 #: ../src/metacity.schemas.in.h:181
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the west (left) side of the screen. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2149,11 +2147,12 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Aquesta vinculació de tecles fica una finestra sota les altres. El format és "
-"semblant a «&lt;Control&gt;a» o «&lt;Shift&gt;&lt;Alt&gt;F1». L'analitzador "
-"és prou flexible i permet minúscules i majúscules, i també abreviacions com "
-"«&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si establiu l'opció a la cadena especial "
-"«disabled», no hi haurà cap vinculació per a aquesta acció."
+"Aquesta vinculació de tecles mou una finestra cap a la part l'oest "
+"(esquerra) de la pantalla. El format és semblant a «&lt;Control&gt;a» o «&lt;"
+"Shift&gt;&lt;Alt&gt;F1». L'analitzador és prou flexible i permet minúscules "
+"i majúscules, i també abreviacions com «&lt;Ctl&gt;» i «&lt;Ctrl&gt;». Si "
+"establiu l'opció a la cadena especial «disabled», no hi haurà cap vinculació "
+"per a aquesta acció."
 
 #: ../src/metacity.schemas.in.h:182
 msgid ""
@@ -2283,19 +2282,19 @@ msgstr "Mode de focus de les finestres"
 msgid "Window title font"
 msgstr "Tipus de lletra del títol de les finestres"
 
-#: ../src/prefs.c:576 ../src/prefs.c:592 ../src/prefs.c:608 ../src/prefs.c:624
-#: ../src/prefs.c:640 ../src/prefs.c:656 ../src/prefs.c:672 ../src/prefs.c:692
-#: ../src/prefs.c:708 ../src/prefs.c:724 ../src/prefs.c:742 ../src/prefs.c:758
-#: ../src/prefs.c:777 ../src/prefs.c:793 ../src/prefs.c:810 ../src/prefs.c:826
-#: ../src/prefs.c:842 ../src/prefs.c:859 ../src/prefs.c:875 ../src/prefs.c:891
-#: ../src/prefs.c:907 ../src/prefs.c:923 ../src/prefs.c:938 ../src/prefs.c:953
-#: ../src/prefs.c:968 ../src/prefs.c:984 ../src/prefs.c:1000
-#: ../src/prefs.c:1016 ../src/prefs.c:1032
+#: ../src/prefs.c:579 ../src/prefs.c:595 ../src/prefs.c:611 ../src/prefs.c:627
+#: ../src/prefs.c:643 ../src/prefs.c:659 ../src/prefs.c:675 ../src/prefs.c:695
+#: ../src/prefs.c:711 ../src/prefs.c:727 ../src/prefs.c:745 ../src/prefs.c:761
+#: ../src/prefs.c:780 ../src/prefs.c:796 ../src/prefs.c:813 ../src/prefs.c:829
+#: ../src/prefs.c:845 ../src/prefs.c:862 ../src/prefs.c:878 ../src/prefs.c:894
+#: ../src/prefs.c:910 ../src/prefs.c:926 ../src/prefs.c:941 ../src/prefs.c:956
+#: ../src/prefs.c:971 ../src/prefs.c:987 ../src/prefs.c:1003
+#: ../src/prefs.c:1019 ../src/prefs.c:1035
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "La clau Gconf «%s» està configurada a un tipus no vàlid\n"
 
-#: ../src/prefs.c:1077
+#: ../src/prefs.c:1080
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2304,12 +2303,12 @@ msgstr ""
 "«%s», trobat a la base de dades de la configuració, no és un valor vàlid per "
 "al modificador del botó del ratolí\n"
 
-#: ../src/prefs.c:1101 ../src/prefs.c:1122 ../src/prefs.c:1660
+#: ../src/prefs.c:1104 ../src/prefs.c:1125 ../src/prefs.c:1667
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "La clau GConf «%s» està establerta a un valor no vàlid\n"
 
-#: ../src/prefs.c:1251
+#: ../src/prefs.c:1254
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
@@ -2318,14 +2317,14 @@ msgstr ""
 "%d, emmagatzemat a la clau GConf %s, no és una mida de cursor raonable, ha "
 "d'estar dins del rang 1..128\n"
 
-#: ../src/prefs.c:1331
+#: ../src/prefs.c:1334
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "No s'ha pogut analitzar la descripció de tipus de lletra «%s» de la clau "
 "GConf %s\n"
 
-#: ../src/prefs.c:1558
+#: ../src/prefs.c:1561
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2334,7 +2333,7 @@ msgstr ""
 "%d, emmagatzemat a la clau GConf, %s no té un nombre raonable d'espais de "
 "treball. El màxim actual és %d\n"
 
-#: ../src/prefs.c:1618
+#: ../src/prefs.c:1621
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2342,18 +2341,18 @@ msgstr ""
 "El suport per a aplicacions amb errors està inhabilitat. Algunes aplicacions "
 "poden no comportar-se correctament.\n"
 
-#: ../src/prefs.c:1687
+#: ../src/prefs.c:1694
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d, emmagatzemat a la clau GConf %s, està fora del rang de 0 a %d\n"
 
-#: ../src/prefs.c:1830
+#: ../src/prefs.c:1837
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr ""
 "S'ha produït un error en establir el nombre d'espais de treball a %d: %s\n"
 
-#: ../src/prefs.c:2224 ../src/prefs.c:2394
+#: ../src/prefs.c:2231 ../src/prefs.c:2401
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2362,7 +2361,7 @@ msgstr ""
 "«%s» trobat a la base de dades de la configuració no és un valor vàlid per a "
 "la vinculació de tecla «%s»\n"
 
-#: ../src/prefs.c:2810
+#: ../src/prefs.c:2817
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
@@ -2429,12 +2428,12 @@ msgstr "S'ha produït un error en tancar el fitxer de sessió «%s»: %s\n"
 #: ../src/session.c:1086
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
-msgstr "És impossible de llegir el fitxer de sessió «%s» desat: %s\n"
+msgstr "No s'ha pogut llegir el fitxer de sessió «%s» desat: %s\n"
 
 #: ../src/session.c:1121
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr "És impossible d'analitzar el fitxer de sessió desat: %s\n"
+msgstr "No s'ha pogut analitzar el fitxer de sessió desat: %s\n"
 
 #: ../src/session.c:1170
 msgid "<metacity_session> attribute seen but we already have the session ID"
@@ -2571,7 +2570,7 @@ msgstr ""
 
 #: ../src/theme-parser.c:1115
 msgid "You must specify a background for an alpha value to be meaningful"
-msgstr ""
+msgstr "El valor alfa requereix que també s'especifiqui un fons de pantalla"
 
 #: ../src/theme-parser.c:1206
 #, c-format
@@ -2590,11 +2589,11 @@ msgstr "El tipus de finestra «%s» ja té assignat un joc d'estil"
 
 #: ../src/theme-parser.c:1261
 msgid "Theme already has a fallback icon"
-msgstr ""
+msgstr "El tema ja té una icona alternativa"
 
 #: ../src/theme-parser.c:1273
 msgid "Theme already has a fallback mini_icon"
-msgstr ""
+msgstr "El tema ja té una miniicona alternativa"
 
 #: ../src/theme-parser.c:1286 ../src/theme-parser.c:1350
 #: ../src/theme-parser.c:1639 ../src/theme-parser.c:3262
@@ -2724,14 +2723,14 @@ msgid "No \"height\" attribute on element <%s>"
 msgstr "No hi ha cap atribut de «height» en l'element <%s>"
 
 #: ../src/theme-parser.c:2000
-#, fuzzy, c-format
+#, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
-msgstr "No hi ha cap atribut de «start_angle» en l'element <%s>"
+msgstr "No hi ha cap atribut de «start_angle» o «from» en l'element <%s>"
 
 #: ../src/theme-parser.c:2007
-#, fuzzy, c-format
+#, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
-msgstr "No hi ha cap atribut de «extent_angle» en l'element <%s>"
+msgstr "No hi ha cap atribut de «extent_angle» o «to» en l'element <%s>"
 
 #: ../src/theme-parser.c:2016
 #, c-format
@@ -2853,7 +2852,8 @@ msgstr "Funció «%s» desconeguda per al botó"
 #: ../src/theme-parser.c:3436
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
-msgstr "La funció de botó «%s» no existeix en aquesta versió (%d, es necessita %d)"
+msgstr ""
+"La funció de botó «%s» no existeix en aquesta versió (%d, es necessita %d)"
 
 #: ../src/theme-parser.c:3448
 #, c-format
@@ -2910,12 +2910,12 @@ msgstr ""
 "maximitzat/ombrejat"
 
 #: ../src/theme-parser.c:3639
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
 "No hauria de tenir l'atribut «resize» en l'element <%s> per als estats "
-"maximitzat/ombrejat"
+"maximitzats"
 
 #: ../src/theme-parser.c:3653 ../src/theme-parser.c:3675
 #, c-format
@@ -3023,9 +3023,9 @@ msgid "<description> specified twice for this theme"
 msgstr "S'ha especificat <description> dues vegades per a aquest tema"
 
 #: ../src/theme-parser.c:4573
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to find a valid file for theme %s\n"
-msgstr "És impossible executar fdopen() sobre el fitxer de registre %s: %s\n"
+msgstr "No s'ha trobat un fitxer vàlid per al tema %s\n"
 
 #: ../src/theme-parser.c:4628
 #, c-format
@@ -3457,7 +3457,7 @@ msgstr ""
 #: ../src/theme.c:4496
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr "És impossible de carregar el tema \"%s\": %s\n"
+msgstr "No s'ha pogut carregar el tema \"%s\": %s\n"
 
 #: ../src/theme.c:4606 ../src/theme.c:4613 ../src/theme.c:4620
 #: ../src/theme.c:4627 ../src/theme.c:4634
@@ -3495,7 +3495,7 @@ msgstr "No s'ha pogut obrir el registre de depuració: %s\n"
 #: ../src/util.c:108
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "És impossible executar fdopen() sobre el fitxer de registre %s: %s\n"
+msgstr "No s'ha pogut executar fdopen() sobre el fitxer de registre %s: %s\n"
 
 #: ../src/util.c:114
 #, c-format
@@ -3590,6 +3590,9 @@ msgid ""
 msgstr ""
 "La propietat %s en la finestra 0x%lx contenia UTF-8 invàlid per a l'element %"
 "d en la lista\n"
+
+#~ msgid "On _Top"
+#~ msgstr "Per damun_t"
 
 #~ msgid ""
 #~ "Forcing this application to quit will cause you to lose any unsaved "
