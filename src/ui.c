@@ -34,8 +34,6 @@
 
 #include "inlinepixbufs.h"
 
-#include <pango/pangox.h>
-
 #include <string.h>
 #include <stdlib.h>
 

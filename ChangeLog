@@ -1,3 +1,8 @@
+2007-03-17  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* src/ui.c: Remove #include <pango/pangox.h> since it's
+	apparently not installed anymore. Builds just fine without it too.
+
 2007-03-10  Charlie Brej  <cbrej@cs.man.ac.uk>
 
 	* src/metacity.schemas.in: add action_{middle|right}_click_titlebar.
