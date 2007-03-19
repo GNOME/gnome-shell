@@ -57,31 +57,36 @@ G_DEFINE_TYPE (ClutterTexture, clutter_texture, CLUTTER_TYPE_ACTOR);
 #define PIXEL_TYPE GL_UNSIGNED_INT_8_8_8_8_REV
 #endif
 
-typedef struct ClutterTextureTileDimension
-{
-  gint pos, size, waste;
-}
-ClutterTextureTileDimension;
+typedef struct {
+  gint pos;
+  gint size;
+  gint waste;
+} ClutterTextureTileDimension;
 
 struct _ClutterTexturePrivate
 {
-  gint                         width, height;
-  GLenum                       pixel_format;
-  GLenum                       pixel_type;
-  GLenum                       target_type; 
+  gint width;
+  gint height;
 
-  GdkPixbuf                   *local_pixbuf; /* non video memory copy */
+  GLenum pixel_format;
+  GLenum pixel_type;
+  GLenum target_type; 
 
-  gboolean                     sync_actor_size;
-  gint                         max_tile_waste;
-  guint                        filter_quality;
-  gboolean                     repeat_x, repeat_y; /* non working */
+  GdkPixbuf *local_pixbuf; /* non video memory copy */
+
+  guint sync_actor_size : 1;
+  gint max_tile_waste;
+  guint filter_quality;
+  guint repeat_x : 1; /* non working */
+  guint repeat_y : 1; /* non working */
 
   
-  gboolean                     tiled;
-  ClutterTextureTileDimension *x_tiles, *y_tiles;
-  gint                         n_x_tiles, n_y_tiles;
-  GLuint                      *tiles;
+  guint is_tiled : 1;
+  ClutterTextureTileDimension *x_tiles;
+  ClutterTextureTileDimension *y_tiles;
+  gint n_x_tiles;
+  gint n_y_tiles;
+  GLuint *tiles;
 };
 
 enum
@@ -266,7 +271,7 @@ texture_render_to_gl_quad (ClutterTexture *texture,
    *      supported. 
   */
 
-  if (!priv->tiled)
+  if (!priv->is_tiled)
     {
       glBindTexture(priv->target_type, priv->tiles[0]);
 
@@ -347,7 +352,7 @@ texture_free_gl_resources (ClutterTexture *texture)
 
   if (priv->tiles)
     {
-      if (!priv->tiled)
+      if (!priv->is_tiled)
 	glDeleteTextures(1, priv->tiles);
       else
 	glDeleteTextures(priv->n_x_tiles * priv->n_y_tiles, priv->tiles);
@@ -388,7 +393,7 @@ texture_upload_data (ClutterTexture *texture,
 
   CLUTTER_MARK();
 
-  if (!priv->tiled)
+  if (!priv->is_tiled)
     {
       /* Single Texture */
       if (!priv->tiles)
@@ -470,18 +475,19 @@ texture_upload_data (ClutterTexture *texture,
       create_textures = TRUE;
     }
 
-  for (x=0; x < priv->n_x_tiles; x++)
-    for (y=0; y < priv->n_y_tiles; y++)
+  for (x = 0; x < priv->n_x_tiles; x++)
+    for (y = 0; y < priv->n_y_tiles; y++)
       {
-	guchar    *tmp;
-	gint        src_h, src_w, dy;
+	guchar *tmp;
+	gint    src_h, src_w, dy;
 	
 	src_w = priv->x_tiles[x].size;
 	src_h = priv->y_tiles[y].size;
 	
 	/* fixme - gslice ? */
-	tmp = g_malloc (sizeof(guchar) * priv->x_tiles[x].size 
-			  * priv->y_tiles[y].size * bpp);
+	tmp = g_malloc (sizeof (guchar) * priv->x_tiles[x].size 
+			                * priv->y_tiles[y].size
+                                        * bpp);
 
 	/* clip */
 	if (priv->x_tiles[x].pos + src_w > priv->width)
@@ -546,8 +552,7 @@ texture_upload_data (ClutterTexture *texture,
 	  {
 	    glTexImage2D(priv->target_type, 
 			 0, 
-			 (bpp == 4) ? 
-			 GL_RGBA : GL_RGB,
+			 (bpp == 4) ? GL_RGBA : GL_RGB,
 			 priv->x_tiles[x].size,
 			 priv->y_tiles[y].size,
 			 0, 
@@ -664,33 +669,33 @@ clutter_texture_hide (ClutterActor *self)
 static void
 clutter_texture_paint (ClutterActor *self)
 {
-  ClutterTexture *texture = CLUTTER_TEXTURE(self);
+  ClutterTexture *texture = CLUTTER_TEXTURE (self);
   gint            x1, y1, x2, y2;
   guint8          opacity;
 
   CLUTTER_NOTE (PAINT,
                 "@@@ for '%s' @@@",
 		clutter_actor_get_name (self) ? clutter_actor_get_name (self)
-                                                         : "unknown");
-  glPushMatrix();
+                                              : "unknown");
+  glPushMatrix ();
 
-  glEnable(GL_BLEND);
-  glEnable(texture->priv->target_type);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+  glEnable (GL_BLEND);
+  glEnable (texture->priv->target_type);
+  glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
 
-  opacity = clutter_actor_get_opacity(self);
+  opacity = clutter_actor_get_opacity (self);
 
   CLUTTER_NOTE (PAINT, "setting opacity to %i\n", opacity);
-  glColor4ub(255, 255, 255, opacity);
+  glColor4ub (255, 255, 255, opacity);
 
   clutter_actor_get_coords (self, &x1, &y1, &x2, &y2);
   /* Paint will of translated us */
   texture_render_to_gl_quad (texture, 0, 0, x2 - x1, y2 - y1);
 
-  glDisable(texture->priv->target_type);
-  glDisable(GL_BLEND);
+  glDisable (texture->priv->target_type);
+  glDisable (GL_BLEND);
 
-  glPopMatrix();
+  glPopMatrix ();
 }
 
 static void 
@@ -748,14 +753,14 @@ clutter_texture_set_property (GObject      *object,
 				  (GdkPixbuf*)g_value_get_pointer(value));
       break;
     case PROP_USE_TILES:
-      priv->tiled = g_value_get_boolean (value);
+      priv->is_tiled = g_value_get_boolean (value);
 
-      if (priv->target_type == GL_TEXTURE_RECTANGLE_ARB
-	  && priv->tiled == TRUE)
-	priv->target_type  = GL_TEXTURE_2D;
+      if (priv->target_type == GL_TEXTURE_RECTANGLE_ARB &&
+          priv->is_tiled)
+	priv->target_type = GL_TEXTURE_2D;
 
       CLUTTER_NOTE (TEXTURE, "Texture is tiled ? %s",
-		    priv->tiled ? "yes" : "no");
+		    priv->is_tiled ? "yes" : "no");
       break;
     case PROP_MAX_TILE_WASTE:
       priv->max_tile_waste = g_value_get_int (value);
@@ -806,7 +811,7 @@ clutter_texture_get_property (GObject    *object,
       }
       break;
     case PROP_USE_TILES:
-      g_value_set_boolean (value, priv->tiled);
+      g_value_set_boolean (value, priv->is_tiled);
       break;
     case PROP_MAX_TILE_WASTE:
       g_value_set_int (value, priv->max_tile_waste);
@@ -998,7 +1003,7 @@ clutter_texture_init (ClutterTexture *self)
 
   priv->max_tile_waste = 64;
   priv->filter_quality = 0;
-  priv->tiled        = TRUE;
+  priv->is_tiled     = TRUE;
   priv->pixel_type   = PIXEL_TYPE;
   priv->pixel_format = GL_RGBA;
   priv->repeat_x     = FALSE;
@@ -1007,7 +1012,7 @@ clutter_texture_init (ClutterTexture *self)
   if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_RECTANGLE))
     {
       priv->target_type  = GL_TEXTURE_RECTANGLE_ARB;
-      priv->tiled        = FALSE;
+      priv->is_tiled     = FALSE;
     }
   else
     priv->target_type = GL_TEXTURE_2D;
@@ -1042,7 +1047,7 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
   if (priv->tiles == NULL)
     return NULL; 
 
-  if (!priv->tiled)
+  if (!priv->is_tiled)
     {
       pixels = g_malloc (priv->width * priv->height * 4);
       
@@ -1181,7 +1186,7 @@ clutter_texture_set_from_data (ClutterTexture *texture,
     {
       texture_free_gl_resources (texture);
 
-      if (priv->tiled == FALSE)
+      if (priv->is_tiled == FALSE)
 	{
 	  if (priv->target_type == GL_TEXTURE_RECTANGLE_ARB
 	      && !can_create_rect_arb (priv->width, 
@@ -1190,7 +1195,7 @@ clutter_texture_set_from_data (ClutterTexture *texture,
 				       priv->pixel_type))
 	    {
 	      /* If we cant create NPOT tex of this size fall back to tiles */
-	      priv->tiled = TRUE; 
+	      priv->is_tiled = TRUE; 
 	      priv->target_type = GL_TEXTURE_2D;
 	    }
 	  else if (priv->target_type == GL_TEXTURE_2D
@@ -1199,12 +1204,12 @@ clutter_texture_set_from_data (ClutterTexture *texture,
 				  priv->pixel_format, 
 				  priv->pixel_type))
 	    { 
-	      priv->tiled = TRUE; 
+	      priv->is_tiled = TRUE; 
 	    }
 	}
 
       /* Figure our tiling etc */
-      if (priv->tiled)
+      if (priv->is_tiled)
 	texture_init_tiles (texture); 
     }
 
@@ -1215,7 +1220,7 @@ clutter_texture_set_from_data (ClutterTexture *texture,
   texture_upload_data (texture, data, has_alpha, 
 		       width, height, rowstride, bpp);
 
-  CLUTTER_ACTOR_SET_FLAGS (CLUTTER_ACTOR(texture), CLUTTER_ACTOR_REALIZED);
+  CLUTTER_ACTOR_SET_FLAGS (CLUTTER_ACTOR (texture), CLUTTER_ACTOR_REALIZED);
 
   if (texture_dirty)
     {
@@ -1246,7 +1251,8 @@ clutter_texture_set_from_data (ClutterTexture *texture,
  *
  **/
 void
-clutter_texture_set_pixbuf (ClutterTexture *texture, GdkPixbuf *pixbuf)
+clutter_texture_set_pixbuf (ClutterTexture *texture,
+                            GdkPixbuf      *pixbuf)
 {
   ClutterTexturePrivate *priv;
 
@@ -1288,14 +1294,10 @@ clutter_texture_new_from_pixbuf (GdkPixbuf *pixbuf)
  *
  * Return value: A newly created #ClutterTexture object.
  **/
-ClutterActor*
+ClutterActor *
 clutter_texture_new (void)
 {
-  ClutterTexture *texture;
-
-  texture = g_object_new (CLUTTER_TYPE_TEXTURE, NULL);
-
-  return CLUTTER_ACTOR(texture);
+  return g_object_new (CLUTTER_TYPE_TEXTURE, NULL);
 }
 
 /**
@@ -1422,16 +1424,22 @@ clutter_texture_get_y_tile_detail (ClutterTexture *texture,
 				   gint           *size,
 				   gint           *waste)
 {
-  g_return_if_fail(y_index < texture->priv->n_y_tiles);
+  ClutterTexturePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
+  
+  priv = texture->priv;
+
+  g_return_if_fail (y_index < priv->n_y_tiles);
 
   if (pos)
-    *pos = texture->priv->y_tiles[y_index].pos;
+    *pos = priv->y_tiles[y_index].pos;
 
   if (size)
-    *size = texture->priv->y_tiles[y_index].size;
+    *size = priv->y_tiles[y_index].size;
 
   if (waste)
-    *waste = texture->priv->y_tiles[y_index].waste;
+    *waste = priv->y_tiles[y_index].waste;
 }
 
 /**
@@ -1448,6 +1456,8 @@ clutter_texture_get_y_tile_detail (ClutterTexture *texture,
 gboolean
 clutter_texture_has_generated_tiles (ClutterTexture *texture)
 {
+  g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), FALSE);
+
   return (texture->priv->tiles != NULL);
 }
 
@@ -1465,5 +1475,7 @@ clutter_texture_has_generated_tiles (ClutterTexture *texture)
 gboolean
 clutter_texture_is_tiled (ClutterTexture *texture)
 {
-  return texture->priv->tiled;
+  g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), FALSE);
+
+  return texture->priv->is_tiled;
 }
