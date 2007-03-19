@@ -1,3 +1,10 @@
+2007-03-19  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-label.c:
+	Simple doc fix.
+	* clutter/clutter-texture.c: (clutter_texture_get_pixbuf):
+	Backport of fix to get_pixbuf on non alpha textures from 0_2 branch.
+
 2007-03-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-texture.c: Clean up code; add checks

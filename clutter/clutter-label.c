@@ -988,7 +988,7 @@ clutter_label_get_attributes (ClutterLabel *label)
  *
  * Sets whether the text of the label contains markup in <link
  * linkend="PangoMarkupFormat">Pango's text markup
- * language</link>. See clutter_label_set_markup().
+ * language</link>.
  **/
 void
 clutter_label_set_use_markup (ClutterLabel *label,

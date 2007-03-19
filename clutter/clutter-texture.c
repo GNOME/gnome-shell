@@ -1041,15 +1041,19 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
   ClutterTexturePrivate *priv;
   GdkPixbuf             *pixbuf = NULL;
   guchar                *pixels = NULL;
+  int                    bpp = 4;
 
   priv = texture->priv;
 
   if (priv->tiles == NULL)
     return NULL; 
 
+  if (priv->pixel_format == GL_RGB)
+    bpp = 3;
+
   if (!priv->is_tiled)
     {
-      pixels = g_malloc (priv->width * priv->height * 4);
+      pixels = g_malloc (priv->width * priv->height * bpp);
       
       if (pixels == NULL)
 	return NULL;
@@ -1062,7 +1066,7 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
       /* read data from gl text and return as pixbuf */
       glGetTexImage (priv->target_type,
 		     0,
-		     priv->pixel_format,
+		     priv->pixel_format, 
 		     priv->pixel_type,
 		     (GLvoid*)pixels);
 
@@ -1072,7 +1076,7 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 					 8,
 					 priv->width,
 					 priv->height,
-					 priv->width * 4,
+					 priv->width * bpp,
 					 pixbuf_destroy_notify,
 					 NULL);
     }
@@ -1097,7 +1101,7 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 	    src_w = priv->x_tiles[x].size;
 	    src_h = priv->y_tiles[y].size;
 
-	    pixels = g_malloc (src_w * src_h *4);
+	    pixels = g_malloc (src_w * src_h * bpp);
 
 	    glBindTexture(priv->target_type, priv->tiles[i]);
 	    
@@ -1117,7 +1121,7 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 					  8,
 					  src_w,
 					  src_h,
-					  src_w * 4,
+					  src_w * bpp,
 					  pixbuf_destroy_notify,
 					  NULL);
 	
