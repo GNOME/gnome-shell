@@ -1,3 +1,9 @@
+2007-03-20  Arthur Taylor  <theycallhimart@gmail.com>
+
+        * src/frames.c (meta_frames_apply_shapes): adjusted the rounded
+          corners so that they fit nicely with the arcs around them.
+	  Fixes #399373.
+
 2007-03-17  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* src/ui.c: Remove #include <pango/pangox.h> since it's

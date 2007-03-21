@@ -788,12 +788,13 @@ meta_frames_apply_shapes (MetaFrames *frames,
   
   if (fgeom.top_left_corner_rounded_radius != 0)
     {
-      const int radius = fgeom.top_left_corner_rounded_radius;
+      const int corner = fgeom.top_left_corner_rounded_radius;
+      const float radius = sqrt(corner) + corner;
       int i;
 
-      for (i=0; i<radius; i++)
+      for (i=0; i<corner; i++)
         {
-          const int width = 1 + (radius - floor(sqrt(radius*radius - (radius-i)*(radius-i)) + 0.5));
+          const int width = floor(0.5 + radius - sqrt(radius*radius - (radius-(i+0.5))*(radius-(i+0.5))));
           xrect.x = 0;
           xrect.y = i;
           xrect.width = width;
@@ -805,12 +806,13 @@ meta_frames_apply_shapes (MetaFrames *frames,
 
   if (fgeom.top_right_corner_rounded_radius != 0)
     {
-      const int radius = fgeom.top_right_corner_rounded_radius;
+      const int corner = fgeom.top_right_corner_rounded_radius;
+      const float radius = sqrt(corner) + corner;
       int i;
 
-      for (i=0; i<radius; i++)
+      for (i=0; i<corner; i++)
         {
-          const int width = 1 + (radius - floor(sqrt(radius*radius - (radius-i)*(radius-i)) + 0.5));
+          const int width = floor(0.5 + radius - sqrt(radius*radius - (radius-(i+0.5))*(radius-(i+0.5))));
           xrect.x = new_window_width - width;
           xrect.y = i;
           xrect.width = width;
@@ -822,14 +824,15 @@ meta_frames_apply_shapes (MetaFrames *frames,
 
   if (fgeom.bottom_left_corner_rounded_radius != 0)
     {
-      const int radius = fgeom.bottom_left_corner_rounded_radius;
+      const int corner = fgeom.bottom_left_corner_rounded_radius;
+      const float radius = sqrt(corner) + corner;
       int i;
 
-      for (i=0; i<radius; i++)
+      for (i=0; i<corner; i++)
         {
-          const int width = 1 + (radius - floor(sqrt(radius*radius - (radius-i)*(radius-i)) + 0.5));
+          const int width = floor(0.5 + radius - sqrt(radius*radius - (radius-(i+0.5))*(radius-(i+0.5))));
           xrect.x = 0;
-          xrect.y = new_window_height - i;
+          xrect.y = new_window_height - i - 1;
           xrect.width = width;
           xrect.height = 1;
           
@@ -839,14 +842,15 @@ meta_frames_apply_shapes (MetaFrames *frames,
 
   if (fgeom.bottom_right_corner_rounded_radius != 0)
     {
-      const int radius = fgeom.bottom_right_corner_rounded_radius;
+      const int corner = fgeom.bottom_right_corner_rounded_radius;
+      const float radius = sqrt(corner) + corner;
       int i;
 
-      for (i=0; i<radius; i++)
+      for (i=0; i<corner; i++)
         {
-          const int width = 1 + (radius - floor(sqrt(radius*radius - (radius-i)*(radius-i)) + 0.5));
+          const int width = floor(0.5 + radius - sqrt(radius*radius - (radius-(i+0.5))*(radius-(i+0.5))));
           xrect.x = new_window_width - width;
-          xrect.y = new_window_height - i;
+          xrect.y = new_window_height - i - 1;
           xrect.width = width;
           xrect.height = 1;
           
