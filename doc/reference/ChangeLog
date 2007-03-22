@@ -1,5 +1,9 @@
 2007-03-22  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* Makefile.am: Include the clutter-glx backend API.
+
+2007-03-22  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter-sections.txt: Update with the backend and API
 	changes
 
