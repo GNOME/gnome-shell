@@ -42,7 +42,7 @@ FIXXREF_OPTIONS=
 # Used for dependencies. The docs will be rebuilt if any of these change.
 # e.g. HFILE_GLOB=$(top_srcdir)/gtk/*.h
 # e.g. CFILE_GLOB=$(top_srcdir)/gtk/*.c
-HFILE_GLOB=$(top_srcdir)/clutter/*.h
+HFILE_GLOB=$(top_srcdir)/clutter/*.h $(top_srcdir)/clutter/glx/clutter-glx.h
 CFILE_GLOB=$(top_srcdir)/clutter/*.c
 
 # Header files to ignore when scanning.
@@ -52,10 +52,13 @@ IGNORE_HFILES=\
 	clutter-private.h \
 	clutter-marshal.h \
 	clutter-keysyms.h \
+	clutter-keysyms-table.h \
 	clutter-enum-types.h \
 	stamp-clutter-enum-types.h \
 	stamp-clutter-marshal.h \
-	pango
+	pango \
+	glx \
+	egl
 
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png

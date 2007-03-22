@@ -17,6 +17,72 @@ Windowing events handled by Clutter.
 <!-- ##### SECTION Stability_Level ##### -->
 
 
+<!-- ##### MACRO CLUTTER_CURRENT_TIME ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CLUTTER_PRIORITY_EVENTS ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### USER_FUNCTION ClutterFilterFunc ##### -->
+<para>
+
+</para>
+
+@event: 
+@data: 
+@Returns: 
+
+
+<!-- ##### ENUM ClutterFilterResponse ##### -->
+<para>
+
+</para>
+
+@CLUTTER_FILTER_CONTINUE: 
+@CLUTTER_FILTER_REMOVE: 
+
+<!-- ##### ENUM ClutterScrollDirection ##### -->
+<para>
+
+</para>
+
+@CLUTTER_SCROLL_UP: 
+@CLUTTER_SCROLL_DOWN: 
+@CLUTTER_SCROLL_LEFT: 
+@CLUTTER_SCROLL_RIGHT: 
+
+<!-- ##### STRUCT ClutterScrollEvent ##### -->
+<para>
+
+</para>
+
+@type: 
+@time: 
+@x: 
+@y: 
+@direction: 
+@modifier_state: 
+@axes: 
+@device: 
+
+<!-- ##### ENUM ClutterStageState ##### -->
+<para>
+
+</para>
+
+@CLUTTER_STAGE_STATE_FULLSCREEN: 
+@CLUTTER_STAGE_STATE_MAXIMIZED: 
+@CLUTTER_STAGE_STATE_MINIMIZED: 
+@CLUTTER_STAGE_STATE_OFFSCREEN: 
+
 <!-- ##### ENUM ClutterEventType ##### -->
 <para>
 
@@ -28,8 +94,17 @@ Windowing events handled by Clutter.
 @CLUTTER_MOTION: 
 @CLUTTER_BUTTON_PRESS: 
 @CLUTTER_2BUTTON_PRESS: 
+@CLUTTER_3BUTTON_PRESS: 
 @CLUTTER_BUTTON_RELEASE: 
+@CLUTTER_SCROLL: 
 @CLUTTER_STAGE_STATE: 
+@CLUTTER_DESTROY_NOTIFY: 
+
+<!-- ##### UNION ClutterEvent ##### -->
+<para>
+
+</para>
+
 
 <!-- ##### STRUCT ClutterAnyEvent ##### -->
 <para>
@@ -37,17 +112,6 @@ Windowing events handled by Clutter.
 </para>
 
 @type: 
-
-<!-- ##### STRUCT ClutterKeyEvent ##### -->
-<para>
-
-</para>
-
-@type: 
-@time: 
-@modifier_state: 
-@keyval: 
-@hardware_keycode: 
 
 <!-- ##### STRUCT ClutterButtonEvent ##### -->
 <para>
@@ -63,6 +127,17 @@ Windowing events handled by Clutter.
 @axes: 
 @device: 
 
+<!-- ##### STRUCT ClutterKeyEvent ##### -->
+<para>
+
+</para>
+
+@type: 
+@time: 
+@modifier_state: 
+@keyval: 
+@hardware_keycode: 
+
 <!-- ##### STRUCT ClutterMotionEvent ##### -->
 <para>
 
@@ -76,13 +151,16 @@ Windowing events handled by Clutter.
 @axes: 
 @device: 
 
-<!-- ##### STRUCT ClutterInputDevice ##### -->
+<!-- ##### STRUCT ClutterStageStateEvent ##### -->
 <para>
 
 </para>
 
+@type: 
+@changed_mask: 
+@new_state: 
 
-<!-- ##### UNION ClutterEvent ##### -->
+<!-- ##### STRUCT ClutterInputDevice ##### -->
 <para>
 
 </para>
@@ -120,6 +198,75 @@ Windowing events handled by Clutter.
 </para>
 
 @event: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_event_get_coords ##### -->
+<para>
+
+</para>
+
+@event: 
+@x: 
+@y: 
+
+
+<!-- ##### FUNCTION clutter_event_get_state ##### -->
+<para>
+
+</para>
+
+@event: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_event_get_time ##### -->
+<para>
+
+</para>
+
+@event: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_event_get ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_event_peek ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_event_put ##### -->
+<para>
+
+</para>
+
+@event: 
+
+
+<!-- ##### FUNCTION clutter_events_pending ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_button_event_button ##### -->
+<para>
+
+</para>
+
+@buttev: 
 @Returns: 
 
 

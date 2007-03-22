@@ -109,6 +109,8 @@ CLUTTER_ALPHA_RAMP
 clutter_ramp_func
 CLUTTER_ALPHA_SINE
 clutter_sine_func
+CLUTTER_ALPHA_SQUARE
+clutter_square_func
 <SUBSECTION Standard>
 CLUTTER_ALPHA
 CLUTTER_IS_ALPHA
@@ -155,6 +157,7 @@ clutter_group_add
 clutter_group_add_many_valist
 clutter_group_add_many
 clutter_group_remove
+clutter_group_remove_all
 clutter_group_show_all
 clutter_group_hide_all
 clutter_group_find_child_by_id
@@ -317,13 +320,15 @@ CLUTTER_STAGE_HEIGHT
 ClutterStage
 ClutterStageClass
 clutter_stage_get_default
-clutter_stage_get_xwindow
-clutter_stage_set_xwindow_foreign
 clutter_stage_set_color
 clutter_stage_get_color
+clutter_stage_fullscreen
+clutter_stage_unfullscreen
+clutter_stage_show_cursor
+clutter_stage_hide_cursor
 clutter_stage_get_actor_at_pos
 clutter_stage_snapshot
-clutter_stage_get_xvisual
+clutter_stage_flush
 <SUBSECTION Standard>
 CLUTTER_STAGE
 CLUTTER_IS_STAGE
@@ -437,6 +442,31 @@ clutter_behaviour_scale_get_type
 </SECTION>
 
 <SECTION>
+<FILE>clutter-backend</FILE>
+<TITLE>ClutterBackend</TITLE>
+ClutterBackend
+clutter_backend_get_stage
+clutter_backend_get_event
+clutter_backend_peek_event
+clutter_backend_put_event
+<SUBSECTION Standard>
+CLUTTER_BACKEND
+CLUTTER_IS_BACKEND
+CLUTTER_BACKEND_CLASS
+CLUTTER_IS_BACKEND_CLASS
+CLUTTER_BACKEND_GET_CLASS
+CLUTTER_TYPE_BACKEND
+<SUBSECTION Private>
+ClutterBackendClass
+clutter_backend_get_type
+clutter_backend_add_options
+clutter_backend_init_stage
+clutter_backend_init_events
+clutter_backend_pre_parse
+clutter_backend_post_parse
+</SECTION>
+
+<SECTION>
 <FILE>clutter-util</FILE>
 clutter_util_trap_x_errors
 clutter_util_untrap_x_errors
@@ -475,6 +505,7 @@ CFX_MUL
 CLUTTER_FIXED_TO_FLOAT
 CLUTTER_FIXED_TO_DOUBLE
 CLUTTER_FLOAT_TO_FIXED
+CLUTTER_FLOAT_TO_INT
 CLUTTER_INT_TO_FIXED
 CLUTTER_FIXED_INT
 CLUTTER_FIXED_FRACTION
@@ -516,22 +547,34 @@ clutter_color_get_type
 
 <SECTION>
 <FILE>clutter-event</FILE>
+CLUTTER_CURRENT_TIME
+CLUTTER_PRIORITY_EVENTS
+ClutterFilterFunc
+ClutterFilterResponse
+ClutterScrollDirection
+ClutterScrollEvent
+ClutterStageState
 ClutterEventType
-ClutterAnyEvent
-ClutterKeyEvent
-ClutterButtonEvent
-ClutterMotionEvent
-ClutterInputDevice
 ClutterEvent
+ClutterAnyEvent
+ClutterButtonEvent
+ClutterKeyEvent
+ClutterMotionEvent
+ClutterScollEvent
+ClutterStageStateEvent
+ClutterInputDevice
 clutter_event_new
 clutter_event_copy
 clutter_event_free
 clutter_event_type
-clutter_button_event_time
-clutter_button_event_x
-clutter_button_event_y
-clutter_key_event_time
-clutter_key_event_state
+clutter_event_get_coords
+clutter_event_get_state
+clutter_event_get_time
+clutter_event_get
+clutter_event_peek
+clutter_event_put
+clutter_events_pending
+clutter_button_event_button
 clutter_key_event_symbol
 clutter_key_event_code
 clutter_key_event_unicode
@@ -549,18 +592,29 @@ ClutterInitError
 clutter_init
 clutter_init_with_args
 clutter_get_option_group
+clutter_get_debug_enabled
+clutter_get_show_fps
+clutter_get_vblank_method
 clutter_main
 clutter_main_quit
 clutter_main_level
 clutter_redraw
-clutter_xdisplay
-clutter_xscreen
-clutter_root_xwindow
-clutter_want_debug
 clutter_threads_enter
 clutter_threads_leave
 <SUBSECTION Private>
 clutter_init_error_quark
+</SECTION>
+
+<SECTION>
+<FILE>clutter-glx</FILE>
+clutter_glx_get_default_display
+clutter_glx_get_default_screen
+clutter_glx_get_root_window
+clutter_glx_get_stage_visual
+clutter_glx_get_stage_window
+clutter_glx_set_stage_foreign
+clutter_glx_trap_x_errors
+clutter_glx_untrap_x_errors
 </SECTION>
 
 <SECTION>
@@ -572,4 +626,5 @@ CLUTTER_VERSION
 CLUTTER_VERSION_S
 CLUTTER_VERSION_HEX
 CLUTTER_CHECK_VERSION
+CLUTTER_FLAVOUR
 </SECTION>

@@ -67,6 +67,30 @@ Error codes for the Clutter initialisation process.
 @Returns: 
 
 
+<!-- ##### FUNCTION clutter_get_debug_enabled ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_get_show_fps ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_get_vblank_method ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
 <!-- ##### FUNCTION clutter_main ##### -->
 <para>
 

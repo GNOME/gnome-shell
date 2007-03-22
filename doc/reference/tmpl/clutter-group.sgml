@@ -129,6 +129,14 @@ The #ClutterActor @arg1 was removed from the group.
 @actor: 
 
 
+<!-- ##### FUNCTION clutter_group_remove_all ##### -->
+<para>
+
+</para>
+
+@self: 
+
+
 <!-- ##### FUNCTION clutter_group_show_all ##### -->
 <para>
 

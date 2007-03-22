@@ -1,3 +1,10 @@
+2007-03-22  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Update with the backend and API
+	changes
+
+	* Makefile.am: Don't check into the backend subdirs.
+
 2007-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Add forgotten ClutterGroup API.

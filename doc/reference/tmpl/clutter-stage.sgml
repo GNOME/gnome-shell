@@ -53,6 +53,13 @@ Macro evaluating to the height of the #ClutterStage
 @clutterstage: the object which received the signal.
 @arg1: 
 
+<!-- ##### SIGNAL ClutterStage::delete-event ##### -->
+<para>
+
+</para>
+
+@clutterstage: the object which received the signal.
+
 <!-- ##### SIGNAL ClutterStage::input-event ##### -->
 <para>
 
@@ -78,6 +85,14 @@ Macro evaluating to the height of the #ClutterStage
 @arg1: 
 
 <!-- ##### SIGNAL ClutterStage::motion-event ##### -->
+<para>
+
+</para>
+
+@clutterstage: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL ClutterStage::scroll-event ##### -->
 <para>
 
 </para>
@@ -120,10 +135,12 @@ Macro evaluating to the height of the #ClutterStage
 @input_event: 
 @button_press_event: 
 @button_release_event: 
+@scroll_event: 
 @key_press_event: 
 @key_release_event: 
 @motion_event: 
 @stage_state_event: 
+@delete_event: 
 @_clutter_stage1: 
 @_clutter_stage2: 
 @_clutter_stage3: 
@@ -157,6 +174,38 @@ Macro evaluating to the height of the #ClutterStage
 @color: 
 
 
+<!-- ##### FUNCTION clutter_stage_fullscreen ##### -->
+<para>
+
+</para>
+
+@stage: 
+
+
+<!-- ##### FUNCTION clutter_stage_unfullscreen ##### -->
+<para>
+
+</para>
+
+@stage: 
+
+
+<!-- ##### FUNCTION clutter_stage_show_cursor ##### -->
+<para>
+
+</para>
+
+@stage: 
+
+
+<!-- ##### FUNCTION clutter_stage_hide_cursor ##### -->
+<para>
+
+</para>
+
+@stage: 
+
+
 <!-- ##### FUNCTION clutter_stage_get_actor_at_pos ##### -->
 <para>
 
@@ -179,5 +228,13 @@ Macro evaluating to the height of the #ClutterStage
 @width: 
 @height: 
 @Returns: 
+
+
+<!-- ##### FUNCTION clutter_stage_flush ##### -->
+<para>
+
+</para>
+
+@stage: 
 
 

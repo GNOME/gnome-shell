@@ -191,3 +191,20 @@ Symbolic name for passing clutter_sine_func().
 @Returns: 
 
 
+<!-- ##### MACRO CLUTTER_ALPHA_SQUARE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_square_func ##### -->
+<para>
+
+</para>
+
+@alpha: 
+@dummy: 
+@Returns: 
+
+

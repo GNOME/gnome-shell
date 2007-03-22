@@ -204,6 +204,14 @@ Macro for converting floating point numbers to #ClutterFixed.
 @x: double or float
 
 
+<!-- ##### MACRO CLUTTER_FLOAT_TO_INT ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
 <!-- ##### MACRO CLUTTER_INT_TO_FIXED ##### -->
 <para>
 Macro for converting integers to #ClutterFixed.
