@@ -41,6 +41,8 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
+#include <GL/gl.h>
+
 enum
 {
   PROP_0,

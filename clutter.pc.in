@@ -2,10 +2,11 @@ prefix=@prefix@
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
+backend=@clutterbackend@
 
-Name: clutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@
-Description: Clutter library
+Name: Clutter
+Description: Clutter Core Library (${backend} backend)
 Version: @VERSION@
-Libs: -L${libdir} -lclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@ 
-Cflags: -I${includedir}/clutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@
+Libs: -L${libdir} -lclutter-${backend}-0.3
+Cflags: -I${includedir}/clutter-0.3
 Requires: pangoft2 glib-2.0 >= 2.8 gthread-2.0 gdk-pixbuf-2.0 gdk-pixbuf-xlib-2.0

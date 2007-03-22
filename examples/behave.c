@@ -1,5 +1,38 @@
 #include <clutter/clutter.h>
 
+static void
+button_press_cb (ClutterStage       *stage,
+                 ClutterButtonEvent *event,
+                 gpointer            data)
+{
+  const gchar *click_type;
+
+  switch (event->type)
+    {
+    case CLUTTER_2BUTTON_PRESS:
+      click_type = "double";
+      break;
+    case CLUTTER_3BUTTON_PRESS:
+      click_type = "triple";
+      break;
+    default:
+      click_type = "single";
+      break;
+    }
+
+  g_print ("%s button press event\n", click_type);
+}
+
+static void
+scroll_event_cb (ClutterStage       *stage,
+                 ClutterScrollEvent *event,
+                 gpointer            data)
+{
+  g_print ("scroll direction: %s\n",
+           event->direction == CLUTTER_SCROLL_UP ? "up"
+                                                 : "down");
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -19,6 +52,14 @@ main (int argc, char *argv[])
   clutter_init (&argc, &argv);
 
   stage = clutter_stage_get_default ();
+  clutter_stage_hide_cursor (CLUTTER_STAGE (stage));
+
+  g_signal_connect (stage, "button-press-event",
+                    G_CALLBACK (button_press_cb),
+                    NULL);
+  g_signal_connect (stage, "scroll-event",
+                    G_CALLBACK (scroll_event_cb),
+                    NULL);
   g_signal_connect (stage, "key-press-event",
                     G_CALLBACK (clutter_main_quit),
                     NULL);
@@ -61,7 +102,7 @@ main (int argc, char *argv[])
 
   /* Set an alpha func to power behaviour - ramp is constant rise/fall */
   alpha = clutter_alpha_new_full (timeline,
-                                  CLUTTER_ALPHA_RAMP,
+                                  CLUTTER_ALPHA_SINE,
                                   NULL, NULL);
 
   /* Create a behaviour for that alpha */

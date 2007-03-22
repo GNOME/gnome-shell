@@ -23,36 +23,29 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef _HAVE_CLUTTER_STAGE_GLX_H
-#define _HAVE_CLUTTER_STAGE_GLX_H
+#ifndef __CLUTTER_GLX_H__
+#define __CLUTTER_GLX_H__
+
+#include <glib.h>
+#include <X11/Xlib.h>
+#include <X11/Xatom.h>
+#include <clutter/clutter-stage.h>
 
 G_BEGIN_DECLS
 
-#include <X11/Xlib.h>
-#include <X11/Xatom.h>
+void     clutter_glx_trap_x_errors       (void);
+gint     clutter_glx_untrap_x_errors     (void);
 
-#include <GL/glx.h>
-#include <GL/gl.h>
+Display *clutter_glx_get_default_display (void);
+gint     clutter_glx_get_default_screen  (void);
+Window   clutter_glx_get_root_window     (void);
 
-#include <clutter/clutter-stage.h>
+Window       clutter_glx_get_stage_window (ClutterStage *stage);
+XVisualInfo *clutter_glx_get_stage_visual (ClutterStage *stage);
 
-void
-clutter_stage_backend_init_vtable (ClutterStageVTable *vtable) G_GNUC_INTERNAL;
-
-ClutterStageBackend*
-clutter_stage_backend_init (ClutterStage *stage) G_GNUC_INTERNAL;
-
-Window
-clutter_stage_glx_window (ClutterStage *stage);
-
-gboolean
-clutter_stage_glx_set_window_foreign (ClutterStage *stage,
-				      Window        xid);
-
-const XVisualInfo*
-clutter_stage_glx_get_xvisual (ClutterStage *stage);
-
+void         clutter_glx_set_stage_foreign (ClutterStage *stage,
+                                            Window        window);
 
 G_END_DECLS
 
-#endif
+#endif /* __CLUTTER_GLX_H__ */

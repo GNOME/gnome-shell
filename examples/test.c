@@ -63,6 +63,22 @@ para_cb (ClutterTimeline *timeline,
 
 }
 
+static void
+key_press_cb (ClutterStage    *stage,
+              ClutterKeyEvent *event,
+              gpointer         data)
+{
+  g_print ("key-press-event\n");
+}
+
+static void
+key_release_cb (ClutterStage    *stage,
+                ClutterKeyEvent *event,
+                gpointer         data)
+{
+  g_print ("key-release-event\n");
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -75,6 +91,10 @@ main (int argc, char *argv[])
   clutter_init (&argc, &argv);
 
   stage = clutter_stage_get_default ();
+  g_signal_connect (stage, "key-press-event",
+                    G_CALLBACK (key_press_cb), NULL);
+  g_signal_connect (stage, "key-release-event",
+                    G_CALLBACK (key_release_cb), NULL);
   g_signal_connect (stage, "button-press-event",
 		    G_CALLBACK (clutter_main_quit),
 		    NULL);

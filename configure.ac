@@ -84,6 +84,12 @@ then
    fi
 fi
 
+if $PKG_CONFIG --exists xfixes ; then
+  AC_DEFINE(HAVE_XFIXES, 1, Have the XFIXES X extension)
+
+  X11_LIBS="$X11_LIBS -lXfixes"
+fi
+
 AC_CHECK_HEADERS([GL/gl.h GL/glx.h],, 
 	         [AC_MSG_ERROR([Unable to locate required GL headers])])
 
@@ -97,10 +103,30 @@ fi
 
 GLX_CFLAGS="$X11_CFLAGS"
 
-CLUTTER_FLAVOUR="glx"
-CLUTTER_FLAVOUR_DEFINE="CLUTTER_FLAVOUR_GLX"
+clutterbackend=glx
+AC_ARG_WITH([flavour],
+            AC_HELP_STRING([--with-flavour=@<:@glx/egl@:>@],
+                           [Select the Clutter backend]),
+            clutterbackend=$with_flavour)
+
+AC_SUBST([clutterbackend])
+case $clutterbackend in
+  glx)
+    CLUTTER_FLAVOUR="glx"
+    AC_DEFINE([HAVE_CLUTTER_GLX], 1, [Have the GLX backend])
+    ;;
+  egl)
+    CLUTTER_FLAVOUR="egl"
+    AC_DEFINE([HAVE_CLUTTER_EGL], 1, [Have the EGL backend])
+    ;;
+  *) AC_MSG_ERROR([Invalid backend for Clutter: use glx or egl])
+    ;;
+esac
+
 AC_SUBST(CLUTTER_FLAVOUR)
-AC_SUBST(CLUTTER_FLAVOUR_DEFINE)
+
+clutterbackendlib=libclutter-$clutterbackend-$CLUTTER_MAJORMINOR.la
+AC_SUBST([clutterbackendlib])
 
 dnl ========================================================================
 
@@ -164,6 +190,8 @@ AC_CONFIG_FILES([
         clutter/pango/Makefile
         clutter/Makefile
         clutter/clutter-version.h
+        clutter/glx/Makefile
+        clutter/egl/Makefile
         examples/Makefile
         doc/Makefile
         doc/reference/Makefile
@@ -181,6 +209,7 @@ echo "                 ==================="
 echo ""
 echo "                   prefix:   ${prefix}"
 echo ""
+echo "                  Flavour:   ${clutterbackend}"
 echo "              Debug level:   ${enable_debug}"
 echo "            Documentation:   ${enable_gtk_doc}"
 echo "                      FPU:   ${with_fpu}"

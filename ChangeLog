@@ -1,3 +1,50 @@
+2007-03-22  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-private.h: Remove inclusion of backend-specific
+	headers; update the main context object; add the declarations for
+	the event queue functions.
+
+	* clutter/clutter-backend.[ch]: Add the abstract ClutterBackend
+	object, which holds backend-specific settings, the main stage,
+	and the event queue. Every backend must implement a subclass of
+	ClutterBackend and ClutterStage.
+
+	* clutter/clutter-feature.c: Protect the GLX specific calls
+	behing #ifdef HAVE_CLUTTER_GLX.
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-group.c:
+	* clutter/clutter-clone-texture.c: Include GL/gl.h
+
+	* clutter/clutter-event.[ch]: Update public API and implement the
+	event queue private API; hold a reference on the event objects;
+	move out the keysym-to-unicode table; add the new event types.
+
+	* clutter/clutter-color.h: Include clutter-fixed.h
+
+	* clutter/clutter-main.c: Update API; get the main stage
+	from the backend object; process the event received from the
+	queue; lock/unlock the main mutex if we have one; move the
+	initialisation process sooner in the init sequence, in order to
+	have the backend object when we check for options; call the
+	backed vfuncs in the pre/post parse hooks.
+
+	* clutter/clutter-stage.c: Make ClutterStage and abstract class,
+	implemented by the backends.
+
+	* clutter/clutter/glx/clutter-glx.h:
+	* clutter/clutter/glx/clutter-backend-glx.[ch]:
+	* clutter/clutter/glx/clutter-event-glx.c:
+	* clutter/clutter/glx/clutter-stage-glx.[ch]:
+	* clutter/clutter/glx/Makefile.am: Add the GLX backend.
+
+	* clutter/clutter/egl/clutter-backend-egl.[ch]:
+	* clutter/clutter/egl/clutter-event-egl.c:
+	* clutter/clutter/egl/clutter-stage-egl.[ch]:
+	* clutter/clutter/egl/Makefile.am: Add the stub for a EGL backend.
+
+	* examples/*.c: Update for the new API.
+
 2007-03-19  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-label.c:

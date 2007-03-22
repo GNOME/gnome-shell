@@ -1,6 +1,6 @@
 #include <clutter/clutter.h>
 #ifdef CLUTTER_FLAVOUR_GLX
-#include <clutter/clutter-backend-glx.h>
+#include <clutter/clutter-glx.h>
 #endif
 #include <math.h>
 #include <errno.h>
@@ -41,28 +41,31 @@ void
 screensaver_setup (void)
 {
 #ifdef CLUTTER_FLAVOUR_GLX
-  Window         remote_xwindow;
-  const char    *preview_xid;
-  gboolean       foreign_success = FALSE;
+  const gchar *preview_xid;
+  gboolean foreign_success = FALSE;
+  ClutterActor *stage;
+
+  stage = clutter_stage_get_default ();
 
   preview_xid = g_getenv ("XSCREENSAVER_WINDOW");
 
-  if (preview_xid != NULL) 
+  if (preview_xid && *preview_xid)
     {
       char *end;
-      remote_xwindow = (Window) strtoul (preview_xid, &end, 0);
+      Window remote_xwin = (Window) strtoul (preview_xid, &end, 0);
 
-      if ((remote_xwindow != 0) && (end != NULL) && 
+      if ((remote_xwin != None) && (end != NULL) && 
 	  ((*end == ' ') || (*end == '\0')) &&
-	  ((remote_xwindow < G_MAXULONG) || (errno != ERANGE))) 
+	  ((remote_xwin < G_MAXULONG) || (errno != ERANGE))) 
 	{
-	  foreign_success = clutter_stage_glx_set_window_foreign 
-	    (CLUTTER_STAGE(clutter_stage_get_default()), remote_xwindow);
+
+	  foreign_success =
+            clutter_glx_stage_set_foreign (CLUTTER_STAGE (stage), remote_xwin);
         }
     }
 
   if (!foreign_success)
-    clutter_actor_set_size (clutter_stage_get_default(), 800, 600);
+    clutter_actor_set_size (stage, 800, 600);
 #endif
 }
 
@@ -76,18 +79,20 @@ input_cb (ClutterStage *stage,
 
   if (event->type == CLUTTER_BUTTON_PRESS)
     {
-      ClutterButtonEvent *bev = (ClutterButtonEvent *) event;
+      ClutterButtonEvent *button_event;
       ClutterActor *e;
+      gint x, y;
 
+      clutter_event_get_coords (event, &x, &y);
+
+      button_event = (ClutterButtonEvent *) event;
       g_print ("*** button press event (button:%d) ***\n",
-	       bev->button);
+	       button_event->button);
 
-      e = clutter_stage_get_actor_at_pos (stage, 
-		                          clutter_button_event_x (bev),
-					  clutter_button_event_y (bev));
+      e = clutter_stage_get_actor_at_pos (stage, x, y);
 
       if (e)
-	clutter_actor_hide(e);
+	clutter_actor_hide (e);
     }
   else if (event->type == CLUTTER_KEY_RELEASE)
     {

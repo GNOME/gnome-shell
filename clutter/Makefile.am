@@ -1,4 +1,10 @@
-SUBDIRS=pango
+NULL =
+
+SUBDIRS = pango $(clutterbackend)
+
+DIST_SUBDIRS = pango glx egl
+
+target = $(clutterbackend)
 
 MARSHALFILES = clutter-marshal.c clutter-marshal.h
 ENUMFILES = clutter-enum-types.c clutter-enum-types.h
@@ -6,35 +12,51 @@ STAMPFILES = stamp-clutter-marshal.h stamp-clutter-enum-types.h
 GLIB_GENMARSHAL=`pkg-config --variable=glib_genmarshal glib-2.0`
 GLIB_MKENUMS=`pkg-config --variable=glib_mkenums glib-2.0`
 
+INCLUDES = \
+	-I$(top_srcdir) 			\
+	-I$(top_srcdir)/clutter/pango 		\
+	-DPREFIX=\""$(prefix)"\" 		\
+	-DLIBDIR=\""$(libdir)"\" 		\
+	-DDATADIR=\""$(datadir)"\" 		\
+	-DG_DISABLE_DEPRECATED 			\
+	-DG_LOG_DOMAIN=\"Clutter\" 		\
+	$(GCC_FLAGS) 				\
+	$(CLUTTER_CFLAGS) 			\
+	$(CLUTTER_DEBUG_CFLAGS)			\
+	$(NULL)
+
+LDADD = \
+	-version-info $(LT_VERSION_INFO) \
+	-export-dynamic \
+	-rpath $(libdir) \
+	$(NULL)
+
 BUILT_SOURCES = $(MARSHALFILES) $(ENUMFILES)
 
 source_h =					\
-	$(srcdir)/clutter-keysyms.h 		\
-	$(srcdir)/clutter-util.h 		\
-	$(srcdir)/clutter-fixed.h 		\
-        $(srcdir)/clutter-event.h 		\
-	$(srcdir)/clutter-color.h		\
-	$(srcdir)/clutter-feature.h 		\
-	$(srcdir)/clutter-timeline.h 		\
 	$(srcdir)/clutter-actor.h		\
-	$(srcdir)/clutter-group.h 		\
-	$(srcdir)/clutter-stage.h 		\
-	$(srcdir)/clutter-rectangle.h		\
-	$(srcdir)/clutter-texture.h 		\
-	$(srcdir)/clutter-clone-texture.h 	\
-	$(srcdir)/clutter-label.h 		\
+	$(srcdir)/clutter-alpha.h		\
 	$(srcdir)/clutter-behaviour.h     	\
 	$(srcdir)/clutter-behaviour-opacity.h 	\
 	$(srcdir)/clutter-behaviour-path.h 	\
 	$(srcdir)/clutter-behaviour-scale.h 	\
-	$(srcdir)/clutter-alpha.h		\
+	$(srcdir)/clutter-clone-texture.h 	\
+	$(srcdir)/clutter-color.h		\
+        $(srcdir)/clutter-event.h 		\
+	$(srcdir)/clutter-feature.h 		\
+	$(srcdir)/clutter-fixed.h 		\
+	$(srcdir)/clutter-group.h 		\
+	$(srcdir)/clutter-keysyms.h 		\
+	$(srcdir)/clutter-label.h 		\
+        $(srcdir)/clutter-main.h		\
 	$(srcdir)/clutter-media.h		\
+	$(srcdir)/clutter-rectangle.h		\
+	$(srcdir)/clutter-stage.h 		\
+	$(srcdir)/clutter-texture.h 		\
+	$(srcdir)/clutter-timeline.h 		\
+	$(srcdir)/clutter-util.h 		\
 	$(srcdir)/clutter-version.h		\
-        $(srcdir)/clutter-main.h
-
-backend_h =                                     \
-	$(srcdir)/clutter-stage-glx.h 		\
-	$(srcdir)/clutter-backend-glx.h 	
+	$(NULL)
 
 clutter-marshal.h: stamp-clutter-marshal.h
 	@true
@@ -91,75 +113,76 @@ clutter-enum-types.c: clutter-enum-types.h
 	&& cp xgen-cetc clutter-enum-types.c \
 	&& rm -f xgen-cetc
 
-CLEANFILES = \
-	$(BUILT_SOURCES) \
-	$(STAMPFILES)
+CLEANFILES = $(STAMPFILES)
 
-source_c = clutter-main.c 		\
-	   clutter-util.c 		\
-	   clutter-feature.c 		\
-	   clutter-fixed.c		\
-           clutter-event.c 		\
-	   clutter-color.c 		\
-	   clutter-timeline.c 		\
-	   clutter-group.c 		\
-	   clutter-stage.c 		\
-	   clutter-rectangle.c 		\
-	   clutter-texture.c 		\
-	   clutter-clone-texture.c 	\
-	   clutter-label.c 		\
-           clutter-actor.c		\
-           clutter-behaviour.c 		\
-	   clutter-behaviour-opacity.c	\
-	   clutter-behaviour-path.c	\
-	   clutter-behaviour-scale.c	\
-	   clutter-alpha.c 		\
-	   clutter-media.c 		\
-	   clutter-enum-types.c
+source_c = \
+        clutter-actor.c			\
+	clutter-alpha.c 		\
+	clutter-backend.c		\
+        clutter-behaviour.c 		\
+	clutter-behaviour-opacity.c	\
+	clutter-behaviour-path.c	\
+	clutter-behaviour-scale.c	\
+	clutter-color.c 		\
+	clutter-clone-texture.c 	\
+	clutter-enum-types.c		\
+        clutter-event.c 		\
+	clutter-feature.c 		\
+	clutter-fixed.c			\
+	clutter-group.c 		\
+	clutter-label.c 		\
+	clutter-main.c 			\
+	clutter-marshal.c		\
+	clutter-media.c 		\
+	clutter-stage.c 		\
+	clutter-rectangle.c 		\
+	clutter-texture.c 		\
+	clutter-timeline.c 		\
+	clutter-util.c 			\
+	$(NULL)
 
-backend_c =                                     \
-	$(srcdir)/clutter-stage-glx.c 		\
-	$(srcdir)/clutter-backend-glx.c 	
+source_h_priv = \
+	clutter-keysyms-table.h		\
+	clutter-backend.h		\
+	clutter-debug.h 		\
+	clutter-private.h 		\
+	$(NULL)
 
-source_h_priv = clutter-debug.h clutter-private.h
 
-libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_MAJORMINOR@_la_SOURCES = \
-					     $(MARSHALFILES) \
-                                             $(source_c)     \
-                                             $(source_h)     \
-                                             $(backend_c)    \
-                                             $(backend_h)    \
-                                             $(source_h_priv)
+libclutter_glx_0_3_la_LIBADD = \
+	$(CLUTTER_LIBS) \
+	pango/libpangoclutter.la \
+	glx/libclutter-glx.la
+	
+libclutter_glx_0_3_la_SOURCES = \
+	$(source_c) \
+	$(source_h) \
+        $(source_h_priv)
 
-INCLUDES = \
-	-I$(top_srcdir) \
-	-I$(top_srcdir)/clutter/pango \
-	-DPREFIX=\""$(prefix)"\" \
-	-DLIBDIR=\""$(libdir)"\" \
-	-DDATADIR=\""$(datadir)"\" \
-	-DG_DISABLE_DEPRECATED \
-	-DG_LOG_DOMAIN=\"Clutter\" \
-	$(GCC_FLAGS) \
-	$(CLUTTER_CFLAGS) \
-	$(CLUTTER_DEBUG_CFLAGS) 
+#libclutter_egl_0_3_la_LIBADD = \
+#	$(CLUTTER_LIBS) \
+#	pango/libpangoclutter.la \
+#	egl/libclutter-egl.la
+#libclutter_egl_0_3_la_SOURCES = \
+#	$(source_c) \
+#	$(source_h) \
+#	$(source_h_priv)
 
-lib_LTLIBRARIES = libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.la
+lib_LTLIBRARIES = $(clutterbackendlib)
 
-libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_MAJORMINOR@_la_LIBADD  = \
-            @CLUTTER_LIBS@ $(top_builddir)/clutter/pango/libpangoclutter.la
+EXTRA_LTLIBRARIES = libclutter-glx-0.3.la
 
-libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_MAJORMINOR@_la_LDFLAGS = \
-           @CLUTTER_LT_LDFLAGS@
+clutterdir = $(includedir)/clutter-@CLUTTER_MAJORMINOR@/clutter
+clutter_HEADERS = \
+	$(source_h) \
+	clutter-enum-types.h \
+	clutter-version.h \
+	clutter.h
 
-libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_MAJORMINOR@_la_DEPENDENCIES = \
-            $(top_builddir)/clutter/pango/libpangoclutter.la
-
-clutterheadersdir = \
-       $(includedir)/clutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@/clutter
-
-clutterheaders_HEADERS = $(source_h) 		\
-		      clutter-marshal.h 	\
-		      clutter-enum-types.h 	\
-		      clutter.h
+DISTCLEANFILES = \
+	$(ENUMFILES) \
+	$(MARSHALFILES) \
+	clutter-version.h \
+	$(NULL)
 
 EXTRA_DIST = clutter-marshal.list clutter-version.h.in

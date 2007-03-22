@@ -28,8 +28,11 @@
 
 #include <glib-object.h>
 
-G_BEGIN_DECLS
+#define CLUTTER_TYPE_EVENT	(clutter_event_get_type ())
+#define CLUTTER_PRIORITY_EVENTS (G_PRIORITY_DEFAULT)
+#define CLUTTER_CURRENT_TIME    0L
 
+G_BEGIN_DECLS
 
 enum
 {
@@ -43,26 +46,61 @@ enum
 
 typedef enum 
 {
-  CLUTTER_NOTHING,
+  CLUTTER_NOTHING = 0,
   
   CLUTTER_KEY_PRESS,
   CLUTTER_KEY_RELEASE,
   CLUTTER_MOTION,
   CLUTTER_BUTTON_PRESS,
   CLUTTER_2BUTTON_PRESS, 	/* Double click */
-  CLUTTER_BUTTON_RELEASE
+  CLUTTER_3BUTTON_PRESS,        /* Triple click */
+  CLUTTER_BUTTON_RELEASE,
+  CLUTTER_SCROLL,
+  CLUTTER_STAGE_STATE,
+  CLUTTER_DESTROY_NOTIFY
 } ClutterEventType;
 
-#define CLUTTER_TYPE_EVENT	(clutter_event_get_type ())
+typedef enum
+{
+  CLUTTER_EVENT_NONE    = 0,
+  CLUTTER_EVENT_PENDING = 1 << 0
+} ClutterEventFlags;
+
+typedef enum
+{
+  CLUTTER_SCROLL_UP,
+  CLUTTER_SCROLL_DOWN,
+  CLUTTER_SCROLL_LEFT,
+  CLUTTER_SCROLL_RIGHT
+} ClutterScrollDirection;
+
+typedef enum
+{
+  CLUTTER_STAGE_STATE_FULLSCREEN,
+  CLUTTER_STAGE_STATE_MAXIMIZED,
+  CLUTTER_STAGE_STATE_MINIMIZED,
+  CLUTTER_STAGE_STATE_OFFSCREEN
+} ClutterStageState;
+
+typedef enum
+{
+  CLUTTER_FILTER_CONTINUE,
+  CLUTTER_FILTER_REMOVE
+} ClutterFilterResponse;
 
 typedef union _ClutterEvent ClutterEvent;
 
-typedef struct _ClutterAnyEvent    ClutterAnyEvent;
-typedef struct _ClutterKeyEvent    ClutterKeyEvent;
-typedef struct _ClutterButtonEvent ClutterButtonEvent;
-typedef struct _ClutterMotionEvent ClutterMotionEvent;
+typedef struct _ClutterAnyEvent         ClutterAnyEvent;
+typedef struct _ClutterButtonEvent      ClutterButtonEvent;
+typedef struct _ClutterKeyEvent         ClutterKeyEvent;
+typedef struct _ClutterMotionEvent      ClutterMotionEvent;
+typedef struct _ClutterScrollEvent      ClutterScrollEvent;
+typedef struct _ClutterStageStateEvent  ClutterStageStateEvent;
 
 typedef struct _ClutterInputDevice ClutterInputDevice;
+
+
+typedef ClutterFilterResponse (* ClutterFilterFunc) (ClutterEvent *event,                                                            gpointer      data);
 
 struct _ClutterAnyEvent
 {
@@ -72,61 +110,88 @@ struct _ClutterAnyEvent
 struct _ClutterKeyEvent
 {
   ClutterEventType type;
-  guint32          time;
-  guint            modifier_state;
-  guint            keyval;
-  guint16          hardware_keycode;
+  guint32 time;
+  guint modifier_state;
+  guint keyval;
+  guint16 hardware_keycode;
 };
 
 struct _ClutterButtonEvent
 {
-  ClutterEventType     type;
-  guint32              time;
-  gint                 x;
-  gint                 y;
-  guint32              modifier_state;
-  guint32              button;
-  gdouble             *axes;   /* Future use */
-  ClutterInputDevice *device;  /* Future use */
+  ClutterEventType type;
+  guint32 time;
+  gint x;
+  gint y;
+  guint32 modifier_state;
+  guint32 button;
+  gdouble *axes; /* Future use */
+  ClutterInputDevice *device; /* Future use */
 };
 
 struct _ClutterMotionEvent
 {
-  ClutterEventType     type;
-  guint32              time;
-  gint                 x;
-  gint                 y;
-  guint32              modifier_state;
-  gdouble             *axes;	/* Future use */
-  ClutterInputDevice *device; 	/* Future use */
+  ClutterEventType type;
+  guint32 time;
+  gint x;
+  gint y;
+  guint32 modifier_state;
+  gdouble *axes; /* Future use */
+  ClutterInputDevice *device; /* Future use */
+};
+
+struct _ClutterScrollEvent
+{
+  ClutterEventType type;
+  guint32 time;
+  gint x;
+  gint y;
+  ClutterScrollDirection direction;
+  guint32 modifier_state;
+  gdouble *axes; /* future use */
+  ClutterInputDevice *device; /* future use */
+};
+
+struct _ClutterStageStateEvent
+{
+  ClutterEventType type;
+  ClutterStageState changed_mask;
+  ClutterStageState new_state;
 };
 
 union _ClutterEvent
 {
-  ClutterEventType   type;
+  ClutterEventType type;
+  ClutterEventFlags flags;
   
-  ClutterAnyEvent    any;
-  ClutterKeyEvent    key;
+  ClutterAnyEvent any;
   ClutterButtonEvent button;
+  ClutterKeyEvent key;
   ClutterMotionEvent motion;
+  ClutterScrollEvent scroll;
+  ClutterStageStateEvent stage_state;
 };
 
 GType clutter_event_get_type (void) G_GNUC_CONST;
 
-ClutterEvent     *clutter_event_new  (ClutterEventType  type);
-ClutterEvent     *clutter_event_copy (ClutterEvent     *event);
-void              clutter_event_free (ClutterEvent     *event);
-ClutterEventType  clutter_event_type (ClutterEvent     *event);
+gboolean          clutter_events_pending   (void);
+ClutterEvent *    clutter_event_get        (void);
+ClutterEvent *    clutter_event_peek       (void);
+void              clutter_event_put	   (ClutterEvent     *event);
+ClutterEvent *    clutter_event_new        (ClutterEventType  type);
+ClutterEvent *    clutter_event_copy       (ClutterEvent     *event);
+void              clutter_event_free       (ClutterEvent     *event);
+ClutterEventType  clutter_event_type       (ClutterEvent     *event);
+guint32           clutter_event_get_time   (ClutterEvent     *event);
+guint             clutter_event_get_state  (ClutterEvent     *event);
+void              clutter_event_get_coords (ClutterEvent     *event,
+                                            gint             *x,
+                                            gint             *y);
 
-guint32 clutter_key_event_time    (ClutterKeyEvent *keyev);
-guint   clutter_key_event_state   (ClutterKeyEvent *keyev);
 guint   clutter_key_event_symbol  (ClutterKeyEvent *keyev);
 guint16 clutter_key_event_code    (ClutterKeyEvent *keyev);
 guint32 clutter_key_event_unicode (ClutterKeyEvent *keyev);
 
-guint32 clutter_button_event_time (ClutterButtonEvent *buttev);
-gint    clutter_button_event_x    (ClutterButtonEvent *buttev);
-gint    clutter_button_event_y    (ClutterButtonEvent *buttev);
+guint32 clutter_button_event_button (ClutterButtonEvent *buttev);
 
 guint32 clutter_keysym_to_unicode (guint keyval);
 

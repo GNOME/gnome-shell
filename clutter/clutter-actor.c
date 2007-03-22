@@ -40,6 +40,8 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
+#include <GL/gl.h>
+
 G_DEFINE_ABSTRACT_TYPE (ClutterActor,
 			clutter_actor,
 			G_TYPE_INITIALLY_UNOWNED);
@@ -281,7 +283,11 @@ clutter_actor_unrealize (ClutterActor *self)
 void
 clutter_actor_paint (ClutterActor *self)
 {
+  ClutterActorPrivate *priv;
   ClutterActorClass *klass;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  priv = self->priv;
 
   if (!CLUTTER_ACTOR_IS_REALIZED (self))
     {
@@ -303,73 +309,74 @@ clutter_actor_paint (ClutterActor *self)
 
   if (clutter_actor_get_parent (self) != NULL)
     {
-	  glTranslatef((float)(self->priv->coords.x1), 
-		       (float)(self->priv->coords.y1), 
-		       0.0);
+      glTranslatef((float) (priv->coords.x1), 
+		   (float) (priv->coords.y1), 
+		   0.0);
     }
 
   if (self->priv->rzang)
     {
-      glTranslatef ( self->priv->rzx,
-		     self->priv->rzy,
+      glTranslatef (priv->rzx,
+		    priv->rzy,
+		    0.0);
+
+      glRotatef (priv->rzang, 0.0f, 0.0f, 1.0f);
+
+      glTranslatef (-1. * priv->rzx,
+		    -1. * priv->rzy,
 		     0.0);
-
-      glRotatef (self->priv->rzang, 0.0f, 0.0f, 1.0f);
-
-      glTranslatef ( - self->priv->rzx,
-		     - self->priv->rzy,
-		     0.0 );
     }
 
   if (self->priv->ryang)
     {
-      glTranslatef (  self->priv->ryx,
-		     0.0,
-		     (float)(self->priv->z) + self->priv->ryz);
+      glTranslatef (priv->ryx,
+		    0.0,
+		    (float) (priv->z) + priv->ryz);
 
-      glRotatef (self->priv->ryang, 0.0f, 1.0f, 0.0f);
+      glRotatef (priv->ryang, 0.0f, 1.0f, 0.0f);
 
-      glTranslatef ( (float) - self->priv->ryx,
-		     0.0,
-		     (float)(-1.0 * self->priv->z) - self->priv->ryz);
+      glTranslatef ((float) - priv->ryx,
+		    0.0,
+		    (float) (-1. * priv->z) - priv->ryz);
     }
 
   if (self->priv->rxang)
     {
-      glTranslatef ( 0.0,
-		     (float)self->priv->rxy,
-		     (float)(self->priv->z) + self->priv->rxz);
+      glTranslatef (0.0,
+		    (float) priv->rxy,
+		    (float) (priv->z) + priv->rxz);
 
-      glRotatef (self->priv->rxang, 1.0f, 0.0f, 0.0f);
+      glRotatef (priv->rxang, 1.0f, 0.0f, 0.0f);
 
-      glTranslatef ( 0.0,
-		     (float) - self->priv->rxy,
-		     (float)(-1.0 * self->priv->z) - self->priv->rxz);
+      glTranslatef (0.0,
+		    -1. * priv->rxy,
+		    -1. * priv->z - priv->rxz);
     }
 
   if (self->priv->z)
-    glTranslatef ( 0.0, 0.0, (float)self->priv->z);
+    glTranslatef (0.0, 0.0, (float) priv->z);
 
-  if (self->priv->scale_x != CFX_ONE || self->priv->scale_y != CFX_ONE)
+  if (self->priv->scale_x != CFX_ONE ||
+      self->priv->scale_y != CFX_ONE)
     {
-      glScaled (CLUTTER_FIXED_TO_DOUBLE (self->priv->scale_x),
-		CLUTTER_FIXED_TO_DOUBLE (self->priv->scale_y),
+      glScaled (CLUTTER_FIXED_TO_DOUBLE (priv->scale_x),
+		CLUTTER_FIXED_TO_DOUBLE (priv->scale_y),
 		1.0);
     }
 
-  if (self->priv->has_clip)
+  if (priv->has_clip)
     {
-      ClutterGeometry *clip = &(self->priv->clip);
+      ClutterGeometry *clip = &(priv->clip);
 
       glEnable (GL_STENCIL_TEST);
 
       glClearStencil (0.0f);
-      glClear(GL_STENCIL_BUFFER_BIT);
+      glClear (GL_STENCIL_BUFFER_BIT);
 
       glStencilFunc (GL_NEVER, 0x1, 0x1);
       glStencilOp (GL_INCR, GL_INCR, GL_INCR);
 
-      glColor3f(1.0f, 1.0f, 1.0f);
+      glColor3f (1.0f, 1.0f, 1.0f);
 
       glRecti (clip->x, 
 	       clip->y,
@@ -383,15 +390,11 @@ clutter_actor_paint (ClutterActor *self)
   if (klass->paint)
     (klass->paint) (self);
 
-  if (self->priv->has_clip)
-    {
-      glDisable (GL_STENCIL_TEST);
-    }
+  if (priv->has_clip)
+    glDisable (GL_STENCIL_TEST);
 
-  if (self->priv->scale_x != CFX_ONE || self->priv->scale_y != CFX_ONE)
-    {
-      glScaled (1.0, 1.0, 1.0);
-    }
+  if (priv->scale_x != CFX_ONE || priv->scale_y != CFX_ONE)
+    glScaled (1.0, 1.0, 1.0);
 
   glPopMatrix();
 }

@@ -50,6 +50,10 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
+#ifdef HAVE_CLUTTER_GLX
+#include "glx/clutter-glx.h"
+#endif
+
 typedef void (*FuncPtr) (void);
 typedef int (*GLXGetVideoSyncProc)  (unsigned int *count);
 typedef int (*GLXWaitVideoSyncProc) (int           divisor,
@@ -199,10 +203,7 @@ check_vblank_env (const char *name)
 {
   const char *val;
 
-#if 0
-  val = getenv("CLUTTER_VBLANK");
-#endif
-  val = clutter_vblank_method ();
+  val = clutter_get_vblank_method ();
 
   if (val && !strcasecmp(val, name))
     return TRUE;
@@ -245,35 +246,42 @@ clutter_feature_init (void)
       CLUTTER_NOTE (MISC, "allocating features data");
 
       __features = g_new0 (ClutterFeatures, 1);
-      memset(&__features->funcs, 0, sizeof(ClutterFeatureFuncs));
+      memset(&__features->funcs, 0, sizeof (ClutterFeatureFuncs));
       __features->features_set = FALSE; /* don't rely on zero-ing */
     }
 
-  if (!clutter_glx_display ())
+#ifdef HAVE_CLUTTER_GLX
+  if (!clutter_glx_get_default_display ())
     return;
+#endif
 
   if (__features->features_set)
     return;
 
+#ifdef HAVE_CLUTTER_GLX
   gl_extensions = (const gchar*) glGetString (GL_EXTENSIONS);
-  glx_extensions = glXQueryExtensionsString (clutter_glx_display (),
-                                             clutter_glx_screen ());
+  glx_extensions = glXQueryExtensionsString (clutter_glx_get_default_display (),
+                                             clutter_glx_get_default_screen ());
   
-  if (check_gl_extension ("GL_ARB_texture_rectangle", gl_extensions)
-      || check_gl_extension ("GL_EXT_texture_rectangle", gl_extensions))
-    __features->flags |= CLUTTER_FEATURE_TEXTURE_RECTANGLE;
+  if (check_gl_extension ("GL_ARB_texture_rectangle", gl_extensions) ||
+      check_gl_extension ("GL_EXT_texture_rectangle", gl_extensions))
+    {
+      __features->flags |= CLUTTER_FEATURE_TEXTURE_RECTANGLE;
+    }
+#endif
 
   /* vblank */
 
   __features->vblank_type = CLUTTER_VBLANK_NONE;
 
-  if (getenv("__GL_SYNC_TO_VBLANK") || check_vblank_env("none"))
+  if (getenv("__GL_SYNC_TO_VBLANK") || check_vblank_env ("none"))
     {
       CLUTTER_NOTE (MISC, "vblank sync: disabled at user request");
     }
   else
     {
-      if (!check_vblank_env("dri") && 
+#ifdef HAVE_CLUTTER_GLX
+      if (!check_vblank_env ("dri") && 
 	  check_gl_extension ("GLX_SGI_video_sync", glx_extensions))
 	{
 	  __features->funcs.get_video_sync = 
@@ -291,7 +299,8 @@ clutter_feature_init (void)
 	      __features->flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
 	    }
 	}
-	
+#endif
+
       if (!(__features->flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
 	{
 	  __features->dri_fd = open("/dev/dri/card0", O_RDWR);

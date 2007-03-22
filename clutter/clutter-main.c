@@ -36,6 +36,8 @@
 
 #include <stdlib.h>
 
+#include "clutter-event.h"
+#include "clutter-backend.h"
 #include "clutter-main.h"
 #include "clutter-feature.h"
 #include "clutter-actor.h"
@@ -43,10 +45,6 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 #include "clutter-version.h" 	/* For flavour define */
-
-#ifdef CLUTTER_FLAVOUR_GLX
-#include <clutter/clutter-backend-glx.h>
-#endif
 
 static ClutterMainContext *ClutterCntx = NULL;
 
@@ -72,14 +70,32 @@ static const GDebugKey clutter_debug_keys[] = {
 #endif /* CLUTTER_ENABLE_DEBUG */
 
 
+/**
+ * clutter_get_show_fps:
+ *
+ * FIXME
+ *
+ * Return value: FIXME
+ *
+ * Since: 0.4
+ */
 gboolean
-clutter_want_fps (void)
+clutter_get_show_fps (void)
 {
   return clutter_show_fps;
 }
 
-const gchar *
-clutter_vblank_method (void)
+/**
+ * clutter_get_vblank_method:
+ *
+ * FIXME
+ *
+ * Return value: FIXME
+ *
+ * Since: 0.4
+ */
+G_CONST_RETURN gchar *
+clutter_get_vblank_method (void)
 {
   return clutter_vblank_name;
 }
@@ -92,10 +108,57 @@ clutter_vblank_method (void)
 void
 clutter_redraw (void)
 {
-  ClutterMainContext *ctx = CLUTTER_CONTEXT();
-  ClutterStage       *stage = ctx->stage;
+  ClutterMainContext *ctx;
+  
+  ctx = clutter_context_get_default ();
+  if (ctx->backend)
+    clutter_actor_paint (clutter_backend_get_stage (ctx->backend));
+}
 
-  clutter_actor_paint (CLUTTER_ACTOR(stage));
+static void
+clutter_main_do_event (ClutterEvent *event,
+                       gpointer      dummy)
+{
+  ClutterMainContext *context;
+  ClutterBackend *backend;
+  ClutterActor *stage;
+
+  context = clutter_context_get_default ();
+  backend = context->backend;
+  stage = clutter_backend_get_stage (backend);
+  if (!stage)
+    return;
+  
+  switch (event->type)
+    {
+    case CLUTTER_NOTHING:
+      break;
+    case CLUTTER_BUTTON_PRESS:
+    case CLUTTER_2BUTTON_PRESS:
+    case CLUTTER_3BUTTON_PRESS:
+      g_signal_emit_by_name (stage, "button-press-event", event);
+      break;
+    case CLUTTER_BUTTON_RELEASE:
+      g_signal_emit_by_name (stage, "button-release-event", event);
+      break;
+    case CLUTTER_SCROLL:
+      g_signal_emit_by_name (stage, "scroll-event", event);
+      break;
+    case CLUTTER_KEY_PRESS:
+      g_signal_emit_by_name (stage, "key-press-event", event);
+      break;
+    case CLUTTER_KEY_RELEASE:
+      g_signal_emit_by_name (stage, "key-release-event", event);
+      break;
+    case CLUTTER_MOTION:
+      g_signal_emit_by_name (stage, "motion-event", event);
+      break;
+    case CLUTTER_DESTROY_NOTIFY:
+      g_signal_emit_by_name (stage, "delete-event");
+      break;
+    case CLUTTER_STAGE_STATE:
+      break;
+    }
 }
 
 /**
@@ -164,7 +227,10 @@ clutter_main (void)
 
   if (context->main_loop_level == 0)
     {
-      clutter_actor_destroy (CLUTTER_ACTOR (context->stage));
+      /* this will take care of destroying the stage */
+      g_object_unref (context->backend);
+      context->backend = NULL;
+
       g_free (context);
     }
 }
@@ -179,7 +245,8 @@ clutter_threads_enter(void)
 {
   ClutterMainContext *context = CLUTTER_CONTEXT ();
   
-  g_mutex_lock (context->gl_lock);
+  if (context->gl_lock)
+    g_mutex_lock (context->gl_lock);
 }
 
 /**
@@ -192,21 +259,26 @@ clutter_threads_leave (void)
 {
   ClutterMainContext *context = CLUTTER_CONTEXT ();
   
-  g_mutex_unlock (context->gl_lock);
+  if (context->gl_lock)
+    g_mutex_unlock (context->gl_lock);
 }
 
 
 /**
- * clutter_want_debug:
+ * clutter_get_debug_enabled:
  * 
  * Check if clutter has debugging turned on.
  *
  * Return value: TRUE if debugging is turned on, FALSE otherwise.
  */
 gboolean
-clutter_want_debug (void)
+clutter_get_debug_enabled (void)
 {
+#ifdef CLUTTER_ENABLE_DEBUG
   return clutter_debug_flags != 0;
+#else
+  return FALSE;
+#endif
 }
 
 ClutterMainContext*
@@ -217,6 +289,8 @@ clutter_context_get_default (void)
       ClutterMainContext *ctx;
 
       ctx = g_new0 (ClutterMainContext, 1);
+      ctx->backend = g_object_new (_clutter_backend_impl_get_type (), NULL);
+
       ctx->is_initialized = FALSE;
 
       ClutterCntx = ctx;
@@ -224,33 +298,6 @@ clutter_context_get_default (void)
 
   return ClutterCntx;
 }
-
-static gboolean 
-is_gl_version_at_least_12 (void)
-{     
-#define NON_VENDOR_VERSION_MAX_LEN 32
-  gchar        non_vendor_version[NON_VENDOR_VERSION_MAX_LEN];
-  const gchar *version;
-  gint         i = 0;
-
-  version = (const gchar*) glGetString (GL_VERSION);
-
-  while ( ((version[i] <= '9' && version[i] >= '0') || version[i] == '.') 
-	  && i < NON_VENDOR_VERSION_MAX_LEN)
-    {
-      non_vendor_version[i] = version[i];
-      i++;
-    }
-
-  non_vendor_version[i] = '\0';
-
-  if (strstr (non_vendor_version, "1.0") == NULL
-      && strstr (non_vendor_version, "1.0") == NULL)
-    return TRUE;
-
-  return FALSE;
-}
-
 
 #ifdef CLUTTER_ENABLE_DEBUG
 static gboolean
@@ -304,12 +351,24 @@ pre_parse_hook (GOptionContext  *context,
                 gpointer         data,
                 GError         **error)
 {
+  ClutterMainContext *clutter_context;
+  ClutterBackend *backend;
   const char *env_string;
 
   if (clutter_is_initialized)
     return TRUE;
 
-  g_type_init ();
+  clutter_context = clutter_context_get_default ();
+  clutter_context->main_loops = NULL;
+  clutter_context->main_loop_level = 0;
+
+  clutter_context->font_map = PANGO_FT2_FONT_MAP (pango_ft2_font_map_new ());
+  pango_ft2_font_map_set_resolution (clutter_context->font_map, 96.0, 96.0);
+
+  backend = clutter_context->backend;
+  g_assert (CLUTTER_IS_BACKEND (backend));
+
+  _clutter_set_events_handler (clutter_main_do_event, NULL, NULL);
 
 #ifdef CLUTTER_ENABLE_DEBUG
   env_string = g_getenv ("CLUTTER_DEBUG");
@@ -334,6 +393,9 @@ pre_parse_hook (GOptionContext  *context,
   if (env_string)
     clutter_show_fps = TRUE;
 
+  if (CLUTTER_BACKEND_GET_CLASS (backend)->pre_parse)
+    return CLUTTER_BACKEND_GET_CLASS (backend)->pre_parse (backend, error);
+
   return TRUE;
 }
 
@@ -347,9 +409,15 @@ post_parse_hook (GOptionContext  *context,
                  GError         **error)
 {
   ClutterMainContext *clutter_context;
+  ClutterBackend *backend;
+  gboolean retval = FALSE;
 
   if (clutter_is_initialized)
     return TRUE;
+
+  clutter_context = clutter_context_get_default ();
+  backend = clutter_context->backend;
+  g_assert (CLUTTER_IS_BACKEND (backend));
 
   if (clutter_fatal_warnings)
     {
@@ -360,18 +428,14 @@ post_parse_hook (GOptionContext  *context,
       g_log_set_always_fatal (fatal_mask);
     }
 
-  clutter_context = clutter_context_get_default ();
-  clutter_context->main_loops = NULL;
-  clutter_context->main_loop_level = 0;
+  if (CLUTTER_BACKEND_GET_CLASS (backend)->post_parse)
+    retval = CLUTTER_BACKEND_GET_CLASS (backend)->post_parse (backend, error);
+  else
+    retval = TRUE;
 
-  clutter_context->font_map = PANGO_FT2_FONT_MAP (pango_ft2_font_map_new ());
-  pango_ft2_font_map_set_resolution (clutter_context->font_map, 96.0, 96.0);
-
-  clutter_context->gl_lock = g_mutex_new ();
-
-  clutter_is_initialized = TRUE;
+  clutter_is_initialized = retval;
   
-  return TRUE;
+  return retval;
 }
 
 /**
@@ -390,15 +454,22 @@ post_parse_hook (GOptionContext  *context,
 GOptionGroup *
 clutter_get_option_group (void)
 {
+  ClutterMainContext *context;
   GOptionGroup *group;
+
+  context = clutter_context_get_default ();
 
   group = g_option_group_new ("clutter",
                               "Clutter Options",
                               "Show Clutter Options",
                               NULL,
                               NULL);
+  
   g_option_group_set_parse_hooks (group, pre_parse_hook, post_parse_hook);
   g_option_group_add_entries (group, clutter_args);
+  
+  /* add backend-specific options */
+  clutter_backend_add_options (context->backend, group);
 
   return group;
 }
@@ -407,34 +478,6 @@ GQuark
 clutter_init_error_quark (void)
 {
   return g_quark_from_static_string ("clutter-init-error-quark");
-}
-
-static gboolean
-clutter_stage_init (ClutterMainContext  *context,
-                    GError             **error)
-{
-  context->stage = CLUTTER_STAGE (clutter_stage_get_default ());
-  if (!CLUTTER_IS_STAGE (context->stage))
-    {
-      g_set_error (error, clutter_init_error_quark (),
-                   CLUTTER_INIT_ERROR_INTERNAL,
-                   "Unable to create the main stage");
-      return FALSE;
-    }
-
-  g_object_ref_sink (context->stage);
-
-  /* Realize to get context */
-  clutter_actor_realize (CLUTTER_ACTOR (context->stage));
-  if (!CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR (context->stage)))
-    {
-      g_set_error (error, clutter_init_error_quark (),
-                   CLUTTER_INIT_ERROR_INTERNAL,
-                   "Unable to realize the main stage");
-      return FALSE;
-    }
-
-  return TRUE;
 }
 
 /**
@@ -482,13 +525,10 @@ clutter_init_with_args (int            *argc,
   if (clutter_is_initialized)
     return CLUTTER_INIT_SUCCESS;
 
-  if (!g_thread_supported ())
-    g_thread_init (NULL);
+  g_type_init ();
 
   group   = clutter_get_option_group ();
   context = g_option_context_new (parameter_string);
-
-  clutter_backend_init (context);
 
   g_option_context_add_group (context, group);
 
@@ -507,11 +547,13 @@ clutter_init_with_args (int            *argc,
   clutter_context = clutter_context_get_default ();
 
   stage_error = NULL;
-  if (!clutter_stage_init (clutter_context, &stage_error))
+  if (!clutter_backend_init_stage (clutter_context->backend, &stage_error))
     {
       g_propagate_error (error, stage_error);
       return CLUTTER_INIT_ERROR_INTERNAL;
     }
+
+  clutter_backend_init_events (clutter_context->backend);
 
   return CLUTTER_INIT_SUCCESS;
 }
@@ -533,10 +575,8 @@ clutter_parse_args (int    *argc,
   g_option_context_set_help_enabled (option_context, FALSE); 
 
   /* Initiate any command line options from the backend */
-  clutter_backend_init (option_context);
 
   clutter_group = clutter_get_option_group ();
-
   g_option_context_set_main_group (option_context, clutter_group);
 
   if (!g_option_context_parse (option_context, argc, argv, &error))
@@ -573,8 +613,7 @@ clutter_init (int    *argc,
   if (clutter_is_initialized)
     return CLUTTER_INIT_SUCCESS;
 
-  if (!g_thread_supported ())
-    g_thread_init (NULL);
+  g_type_init ();
 
   if (clutter_parse_args (argc, argv) == FALSE)
     return CLUTTER_INIT_ERROR_INTERNAL;
@@ -582,22 +621,14 @@ clutter_init (int    *argc,
   context = clutter_context_get_default ();
 
   stage_error = NULL;
-  if (!clutter_stage_init (context, &stage_error))
+  if (!clutter_backend_init_stage (context->backend, &stage_error))
     {
       g_critical (stage_error->message);
       g_error_free (stage_error);
       return CLUTTER_INIT_ERROR_INTERNAL;
     }
 
-#if 0
-  /* FIXME: move to backend */
-  /* At least GL 1.2 is needed for CLAMP_TO_EDGE */
-  if (!is_gl_version_at_least_12 ())
-    {
-      g_critical ("Clutter needs at least version 1.2 of OpenGL");
-      return CLUTTER_INIT_ERROR_OPENGL;
-    }
-#endif
+  _clutter_events_init (context->backend);
 
-  return 1;
+  return CLUTTER_INIT_SUCCESS;
 }

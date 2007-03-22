@@ -32,9 +32,8 @@ Error codes for the Clutter initialisation process.
 @CLUTTER_INIT_SUCCESS: Clutter was successfully initialised
 @CLUTTER_INIT_ERROR_UNKOWN: Unknown error while initialising Clutter
 @CLUTTER_INIT_ERROR_THREADS: Unable to initialise threading
-@CLUTTER_INIT_ERROR_DISPLAY: Unable to open the X display
+@CLUTTER_INIT_ERROR_BACKEND: 
 @CLUTTER_INIT_ERROR_INTERNAL: Internal Clutter error
-@CLUTTER_INIT_ERROR_OPENGL: Unable to initialise OpenGL
 
 <!-- ##### FUNCTION clutter_init ##### -->
 <para>
@@ -95,38 +94,6 @@ Error codes for the Clutter initialisation process.
 
 </para>
 
-
-
-<!-- ##### FUNCTION clutter_xdisplay ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION clutter_xscreen ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION clutter_root_xwindow ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
-<!-- ##### FUNCTION clutter_want_debug ##### -->
-<para>
-
-</para>
-
-@Returns: 
 
 
 <!-- ##### FUNCTION clutter_threads_enter ##### -->

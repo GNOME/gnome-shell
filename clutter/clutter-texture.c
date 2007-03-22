@@ -46,7 +46,6 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
-#include <GL/glx.h>
 #include <GL/gl.h>
 
 G_DEFINE_TYPE (ClutterTexture, clutter_texture, CLUTTER_TYPE_ACTOR);

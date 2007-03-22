@@ -38,8 +38,7 @@ typedef enum {
   CLUTTER_INIT_ERROR_UNKOWN   =  0,
   CLUTTER_INIT_ERROR_THREADS  = -1,
   CLUTTER_INIT_ERROR_BACKEND  = -2,
-  CLUTTER_INIT_ERROR_INTERNAL = -3,
-  CLUTTER_INIT_ERROR_OPENGL   = -4
+  CLUTTER_INIT_ERROR_INTERNAL = -3
 } ClutterInitError;
 
 GQuark clutter_init_error_quark (void);
@@ -58,9 +57,13 @@ GOptionGroup *   clutter_get_option_group (void);
 void             clutter_main             (void);
 void             clutter_main_quit        (void);
 gint             clutter_main_level       (void);
+
 void             clutter_redraw           (void);
-gboolean         clutter_want_debug       (void);
-gboolean         clutter_want_fps         (void);
+
+gboolean              clutter_get_debug_enabled (void);
+gboolean              clutter_get_show_fps      (void);
+G_CONST_RETURN gchar *clutter_get_vblank_method (void);
+
 void             clutter_threads_enter    (void);
 void             clutter_threads_leave    (void);
 

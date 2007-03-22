@@ -27,9 +27,9 @@
 #define G_DISABLE_CAST_CHECKS
 
 #include <glib-object.h>
-#include <clutter/clutter.h>
 #include <pango/pango.h>
 #include <fontconfig/fontconfig.h>
+#include <clutter/clutter-color.h>
 
 G_BEGIN_DECLS
 

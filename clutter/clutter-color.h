@@ -27,6 +27,7 @@
 #define _HAVE_CLUTTER_COLOR_H
 
 #include <glib-object.h>
+#include <clutter/clutter-fixed.h>
 
 G_BEGIN_DECLS
 

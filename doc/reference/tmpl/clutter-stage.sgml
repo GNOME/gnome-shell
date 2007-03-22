@@ -90,12 +90,12 @@ Macro evaluating to the height of the #ClutterStage
 
 </para>
 
-<!-- ##### ARG ClutterStage:fullscreen ##### -->
+<!-- ##### ARG ClutterStage:cursor-visible ##### -->
 <para>
 
 </para>
 
-<!-- ##### ARG ClutterStage:hide-cursor ##### -->
+<!-- ##### ARG ClutterStage:fullscreen ##### -->
 <para>
 
 </para>
@@ -111,12 +111,19 @@ Macro evaluating to the height of the #ClutterStage
 </para>
 
 @parent_class: 
+@set_fullscreen: 
+@set_cursor_visible: 
+@set_offscreen: 
+@get_actor_at_pos: 
+@draw_to_pixbuf: 
+@flush: 
 @input_event: 
 @button_press_event: 
 @button_release_event: 
 @key_press_event: 
 @key_release_event: 
 @motion_event: 
+@stage_state_event: 
 @_clutter_stage1: 
 @_clutter_stage2: 
 @_clutter_stage3: 
@@ -129,25 +136,6 @@ Macro evaluating to the height of the #ClutterStage
 
 </para>
 
-@Returns: 
-
-
-<!-- ##### FUNCTION clutter_stage_get_xwindow ##### -->
-<para>
-
-</para>
-
-@stage: 
-@Returns: 
-
-
-<!-- ##### FUNCTION clutter_stage_set_xwindow_foreign ##### -->
-<para>
-
-</para>
-
-@stage: 
-@xid: 
 @Returns: 
 
 
@@ -190,15 +178,6 @@ Macro evaluating to the height of the #ClutterStage
 @y: 
 @width: 
 @height: 
-@Returns: 
-
-
-<!-- ##### FUNCTION clutter_stage_get_xvisual ##### -->
-<para>
-
-</para>
-
-@stage: 
 @Returns: 
 
 

@@ -40,6 +40,8 @@
 #include "clutter-marshal.h"
 #include "clutter-enum-types.h"
 
+#include <GL/gl.h>
+
 enum
 {
   ADD,
