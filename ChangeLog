@@ -1,5 +1,11 @@
 2007-03-22  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter.pc.in: Require gobject-2.0 too.
+
+	* ChangeLog: Fix the previous commit log.
+
+2007-03-22  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-private.h: Remove inclusion of backend-specific
 	headers; update the main context object; add the declarations for
 	the event queue functions.
@@ -45,6 +51,17 @@
 
 	* examples/*.c: Update for the new API.
 
+	* configure.ac: Check for the XFixes X extension; add a configure
+	switch for choosing the backend; show the backend we are building
+	in the summary.
+
+	* clutter.pc.in: Add the backend to the exported variables.
+
+	* clutter/Makefile.am: Install the headers in the
+	clutter-$api_version/clutter directory, as usual; call the shared
+	object libclutter-$backend-$api_version; build glue for the
+	backend static library.
+	
 2007-03-19  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-label.c:

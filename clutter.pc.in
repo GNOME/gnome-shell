@@ -9,4 +9,4 @@ Description: Clutter Core Library (${backend} backend)
 Version: @VERSION@
 Libs: -L${libdir} -lclutter-${backend}-0.3
 Cflags: -I${includedir}/clutter-0.3
-Requires: pangoft2 glib-2.0 >= 2.8 gthread-2.0 gdk-pixbuf-2.0 gdk-pixbuf-xlib-2.0
+Requires: glib-2.0 >= 2.10 gobject-2.0 gthread-2.0 pangoft2 gdk-pixbuf-2.0 gdk-pixbuf-xlib-2.0
