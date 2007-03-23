@@ -88,7 +88,8 @@ enum
 static guint stage_signals[LAST_SIGNAL] = { 0 };
 
 static void
-clutter_stage_delete_event (ClutterStage *stage)
+clutter_stage_delete_event (ClutterStage    *stage,
+                            ClutterAnyEvent *event)
 {
   /* FIXME - destroy the main stage, probably attaching a weak ref
    * to it from the backend, so that it gets destroyed too.
@@ -227,24 +228,6 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			 CLUTTER_PARAM_READWRITE));
 
   /**
-   * ClutterStage::input-event:
-   * @stage: the actor which received the event
-   * @event: the event received
-   *
-   * The ::input-event is a signal emitted when any input event is
-   * received.  Valid input events are mouse button press and release
-   * events, and key press and release events.
-   */
-  stage_signals[INPUT_EVENT] =
-    g_signal_new ("input-event",
-		  G_TYPE_FROM_CLASS (gobject_class),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (ClutterStageClass, input_event),
-		  NULL, NULL,
-		  clutter_marshal_VOID__BOXED,
-		  G_TYPE_NONE, 1,
-		  CLUTTER_TYPE_EVENT);
-  /**
    * ClutterStage::button-press-event:
    * @stage: the actor which received the event
    * @event: a #ClutterButtonEvent
@@ -260,7 +243,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  NULL, NULL,
 		  clutter_marshal_VOID__BOXED,
 		  G_TYPE_NONE, 1,
-		  CLUTTER_TYPE_EVENT);
+		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
   /**
    * ClutterStage::button-release-event:
    * @stage: the actor which received the event
@@ -277,7 +260,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  NULL, NULL,
 		  clutter_marshal_VOID__BOXED,
 		  G_TYPE_NONE, 1,
-		  CLUTTER_TYPE_EVENT);
+		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
   /**
    * ClutterStage::scroll-event:
    * @stage: the actor which received the event
@@ -296,7 +279,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  NULL, NULL,
 		  clutter_marshal_VOID__BOXED,
 		  G_TYPE_NONE, 1,
-		  CLUTTER_TYPE_EVENT);
+		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
   /**
    * ClutterStage::key-press-event:
    * @stage: the actor which received the event
@@ -313,7 +296,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  NULL, NULL,
 		  clutter_marshal_VOID__BOXED,
 		  G_TYPE_NONE, 1,
-		  CLUTTER_TYPE_EVENT);
+		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
   /**
    * ClutterStage::key-release-event:
    * @stage: the actor which received the event
@@ -330,7 +313,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  NULL, NULL,
 		  clutter_marshal_VOID__BOXED,
 		  G_TYPE_NONE, 1,
-		  CLUTTER_TYPE_EVENT);
+		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
   /**
    * ClutterStage::motion-event:
    * @stage: the actor which received the event
@@ -347,16 +330,17 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  NULL, NULL,
 		  clutter_marshal_VOID__BOXED,
 		  G_TYPE_NONE, 1,
-		  CLUTTER_TYPE_EVENT);
+		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
   
   stage_signals[DELETE_EVENT] =
     g_signal_new ("delete-event",
                   G_TYPE_FROM_CLASS (gobject_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterStageClass, delete_event),
-                  NULL, NULL,
-                  clutter_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
+                  _clutter_boolean_accumulator, NULL,
+                  clutter_marshal_VOID__BOXED,
+                  G_TYPE_BOOLEAN, 1,
+                  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
   
   g_type_class_add_private (gobject_class, sizeof (ClutterStagePrivate));
 }

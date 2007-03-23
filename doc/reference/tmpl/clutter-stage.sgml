@@ -59,14 +59,8 @@ Macro evaluating to the height of the #ClutterStage
 </para>
 
 @clutterstage: the object which received the signal.
-
-<!-- ##### SIGNAL ClutterStage::input-event ##### -->
-<para>
-
-</para>
-
-@clutterstage: the object which received the signal.
-@arg1: 
+@Param2: 
+@Returns: 
 
 <!-- ##### SIGNAL ClutterStage::key-press-event ##### -->
 <para>
@@ -132,7 +126,7 @@ Macro evaluating to the height of the #ClutterStage
 @get_actor_at_pos: 
 @draw_to_pixbuf: 
 @flush: 
-@input_event: 
+@event: 
 @button_press_event: 
 @button_release_event: 
 @scroll_event: 

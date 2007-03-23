@@ -312,6 +312,8 @@ clutter_event_translate (ClutterBackend *backend,
       event->motion.modifier_state = xevent->xmotion.state;
       break;
     case DestroyNotify:
+      CLUTTER_NOTE (EVENT, "destroy notify:\twindow: %ld",
+                    xevent->xdestroywindow.window);
       event->type = event->any.type = CLUTTER_DESTROY_NOTIFY;
       break;
     default:

@@ -1,3 +1,8 @@
+2007-03-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-event.c: Pop and peek the event queue
+	from the tail - it's a queue, not a stack.
+
 2007-03-22  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter.pc.in: Require gobject-2.0 too.

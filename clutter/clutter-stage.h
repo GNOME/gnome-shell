@@ -96,7 +96,7 @@ struct _ClutterStageClass
   void          (* flush)              (ClutterStage *stage);
 
   /* signals */
-  void (* input_event)          (ClutterStage           *stage,
+  void (* event)                (ClutterStage           *stage,
                                  ClutterEvent           *event);
   void (* button_press_event)   (ClutterStage           *stage,
 			         ClutterButtonEvent     *event);
@@ -112,7 +112,8 @@ struct _ClutterStageClass
 		  		 ClutterMotionEvent     *event);
   void (* stage_state_event)    (ClutterStage           *stage,
                                  ClutterStageStateEvent *event);
-  void (* delete_event)         (ClutterStage           *stage);
+  void (* delete_event)         (ClutterStage           *stage,
+                                 ClutterAnyEvent        *event);
 
   /* padding for future expansion */
   void (*_clutter_stage1) (void);

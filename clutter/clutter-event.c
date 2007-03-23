@@ -433,7 +433,7 @@ _clutter_event_queue_pop (ClutterBackend *backend)
   if (!backend->events_queue)
     return NULL;
 
-  return g_queue_pop_head (backend->events_queue);
+  return g_queue_pop_tail (backend->events_queue);
 }
 
 ClutterEvent *
@@ -442,7 +442,7 @@ _clutter_event_queue_peek (ClutterBackend *backend)
   if (!backend->events_queue)
     return NULL;
 
-  return g_queue_peek_head (backend->events_queue);
+  return g_queue_peek_tail (backend->events_queue);
 }
 
 gboolean

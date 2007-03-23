@@ -96,6 +96,12 @@ ClutterEvent *_clutter_event_queue_pop           (ClutterBackend *backend);
 ClutterEvent *_clutter_event_queue_peek          (ClutterBackend *backend);
 gboolean      _clutter_event_queue_check_pending (ClutterBackend *backend);
 
+/* signal accumulators */
+gboolean _clutter_boolean_accumulator (GSignalInvocationHint *ihint,
+                                       GValue                *return_accu,
+                                       const GValue          *handler_return,
+                                       gpointer               dummy);
+
 typedef void (* ClutterEventFunc) (ClutterEvent *event,
                                    gpointer      data);
 
