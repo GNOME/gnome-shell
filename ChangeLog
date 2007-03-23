@@ -1,5 +1,14 @@
 2007-03-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-backend.c: Clear the event queue when
+	disposing the backend object; remove the initialisation
+	of the backend structure members...
+
+	* clutter/glx/clutter-backend-glx.c: ... and keep it here
+	in the backends where it belongs.
+
+2007-03-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-private.h:
 	* clutter/clutter-backend.h: Move the backend functions
 	into the private header.

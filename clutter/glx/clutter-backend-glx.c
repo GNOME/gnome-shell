@@ -314,6 +314,7 @@ static void
 clutter_backend_glx_init (ClutterBackendGlx *backend_glx)
 {
   ClutterBackend *backend = CLUTTER_BACKEND (backend_glx);
+  backend->events_queue = g_queue_new ();
 
   backend->button_click_time[0] = backend->button_click_time[1] = 0;
   backend->button_number[0] = backend->button_number[1] = -1;

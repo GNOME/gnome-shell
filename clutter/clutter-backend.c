@@ -35,23 +35,32 @@ G_DEFINE_ABSTRACT_TYPE (ClutterBackend,
                         G_TYPE_OBJECT);
 
 static void
+clutter_backend_dispose (GObject *gobject)
+{
+  ClutterBackend *backend = CLUTTER_BACKEND (gobject);
+
+  if (backend->events_queue)
+    {
+      g_queue_foreach (backend->events_queue, (GFunc) clutter_event_free, NULL);
+      g_queue_free (backend->events_queue);
+      backend->events_queue = NULL;
+    }
+
+  G_OBJECT_CLASS (clutter_backend_parent_class)->dispose (gobject);
+}
+
+static void
 clutter_backend_class_init (ClutterBackendClass *klass)
 {
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
+  gobject_class->dispose = clutter_backend_dispose;
 }
 
 static void
 clutter_backend_init (ClutterBackend *backend)
 {
-  backend->events_queue = g_queue_new ();
 
-  backend->button_click_time[0] = backend->button_click_time[1] = 0;
-  backend->button_number[0] = backend->button_number[1] = -1;
-  backend->button_x[0] = backend->button_x[1] = 0;
-  backend->button_y[0] = backend->button_y[1] = 0;
-
-  backend->double_click_time = 250;
-  backend->double_click_distance = 5;
 }
 
 ClutterActor *
