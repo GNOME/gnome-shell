@@ -1,8 +1,12 @@
 2007-03-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/glx/clutter-stage-glx.c:
-	(clutter_stage_glx_allocate_coords): Make sure the top-left
-	corner of the box is our origin.
+	Make sure the top-left corner of the box is our origin,
+	when returning the allocation.
+
+	* clutter/clutter-stage.c:
+	* clutter/clutter-group.c: Add tracing for the paint
+	method.
 
 2007-03-23  Matthew Allum  <mallum@openedhand.com>
 
