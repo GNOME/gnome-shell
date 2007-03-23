@@ -1,3 +1,9 @@
+2007-03-23  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/glx/clutter-stage-glx.c:
+	(clutter_stage_glx_allocate_coords):
+	Make new stage return correct width & height.
+
 2007-03-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Assorted build fixes to pass distcheck.

@@ -415,9 +415,11 @@ static void
 clutter_stage_glx_allocate_coords (ClutterActor    *self,
                                    ClutterActorBox *box)
 {
-  /* Do nothing, just stop group_allocate getting called */
+  ClutterStageGlx *stage_glx = CLUTTER_STAGE_GLX (self);
 
-  /* TODO: sync up with any configure events from WM ??  */
+  box->x2 = box->x1 + stage_glx->xwin_width;
+  box->y2 = box->y1 + stage_glx->xwin_height;
+
   return;
 }
 
