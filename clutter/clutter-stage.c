@@ -87,7 +87,7 @@ enum
 
 static guint stage_signals[LAST_SIGNAL] = { 0 };
 
-static void
+static gboolean
 clutter_stage_delete_event (ClutterStage    *stage,
                             ClutterAnyEvent *event)
 {
@@ -95,6 +95,9 @@ clutter_stage_delete_event (ClutterStage    *stage,
    * to it from the backend, so that it gets destroyed too.
    */
   CLUTTER_NOTE (EVENT, "Received a destroy notification");
+
+  /* we don't want to block */
+  return FALSE;
 }
 
 static void
