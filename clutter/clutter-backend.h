@@ -47,6 +47,7 @@ struct _ClutterBackend
   GObject parent_instance;
 
   /*< private >*/
+
   /* events queue: every backend must implement one */
   GQueue *events_queue;
   gpointer queue_head;
@@ -67,34 +68,27 @@ struct _ClutterBackendClass
   GObjectClass parent_class;
 
   /* vfuncs */
-  gboolean      (* pre_parse)   (ClutterBackend  *backend,
-                                 GError         **error);
-  gboolean      (* post_parse)  (ClutterBackend  *backend,
-                                 GError         **error);
-  gboolean      (* init_stage)  (ClutterBackend  *backend,
-                                 GError         **error);
-  void          (* init_events) (ClutterBackend  *backend);
-  ClutterActor *(* get_stage)   (ClutterBackend  *backend);
-  void          (* add_options) (ClutterBackend  *backend,
-                                 GOptionGroup    *group);
+  gboolean      (* pre_parse)     (ClutterBackend  *backend,
+                                   GError         **error);
+  gboolean      (* post_parse)    (ClutterBackend  *backend,
+                                   GError         **error);
+  gboolean      (* init_stage)    (ClutterBackend  *backend,
+                                   GError         **error);
+  void          (* init_events)   (ClutterBackend  *backend);
+  void          (* init_features) (ClutterBackend  *backend);
+  ClutterActor *(* get_stage)     (ClutterBackend  *backend);
+  void          (* add_options)   (ClutterBackend  *backend,
+                                   GOptionGroup    *group);
 };
 
-GType         clutter_backend_get_type    (void) G_GNUC_CONST;
-ClutterActor *clutter_backend_get_stage   (ClutterBackend  *backend);
-void          clutter_backend_add_options (ClutterBackend  *backend,
-                                           GOptionGroup    *group);
-gboolean      clutter_backend_pre_parse   (ClutterBackend  *backend,
-                                           GError         **error);
-gboolean      clutter_backend_post_parse  (ClutterBackend  *backend,
-                                           GError         **error);
-gboolean      clutter_backend_init_stage  (ClutterBackend  *backend,
-                                           GError         **error);
-void          clutter_backend_init_events (ClutterBackend  *backend);
+GType           clutter_backend_get_type    (void) G_GNUC_CONST;
 
-ClutterEvent *clutter_backend_get_event   (ClutterBackend *backend);
-ClutterEvent *clutter_backend_peek_event  (ClutterBackend *backend);
-void          clutter_backend_put_event   (ClutterBackend *backend,
-                                           ClutterEvent   *event);
+ClutterBackend *clutter_get_default_backend (void);
+
+ClutterEvent *  clutter_backend_get_event   (ClutterBackend *backend);
+ClutterEvent *  clutter_backend_peek_event  (ClutterBackend *backend);
+void            clutter_backend_put_event   (ClutterBackend *backend,
+                                             ClutterEvent   *event);
 
 G_END_DECLS
 

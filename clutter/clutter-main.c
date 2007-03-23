@@ -112,7 +112,7 @@ clutter_redraw (void)
   
   ctx = clutter_context_get_default ();
   if (ctx->backend)
-    clutter_actor_paint (clutter_backend_get_stage (ctx->backend));
+    clutter_actor_paint (_clutter_backend_get_stage (ctx->backend));
 }
 
 static void
@@ -125,7 +125,7 @@ clutter_main_do_event (ClutterEvent *event,
 
   context = clutter_context_get_default ();
   backend = context->backend;
-  stage = clutter_backend_get_stage (backend);
+  stage = _clutter_backend_get_stage (backend);
   if (!stage)
     return;
   
@@ -469,7 +469,7 @@ clutter_get_option_group (void)
   g_option_group_add_entries (group, clutter_args);
   
   /* add backend-specific options */
-  clutter_backend_add_options (context->backend, group);
+  _clutter_backend_add_options (context->backend, group);
 
   return group;
 }
@@ -547,13 +547,13 @@ clutter_init_with_args (int            *argc,
   clutter_context = clutter_context_get_default ();
 
   stage_error = NULL;
-  if (!clutter_backend_init_stage (clutter_context->backend, &stage_error))
+  if (!_clutter_backend_init_stage (clutter_context->backend, &stage_error))
     {
       g_propagate_error (error, stage_error);
       return CLUTTER_INIT_ERROR_INTERNAL;
     }
 
-  clutter_backend_init_events (clutter_context->backend);
+  _clutter_backend_init_events (clutter_context->backend);
 
   return CLUTTER_INIT_SUCCESS;
 }
@@ -621,7 +621,7 @@ clutter_init (int    *argc,
   context = clutter_context_get_default ();
 
   stage_error = NULL;
-  if (!clutter_backend_init_stage (context->backend, &stage_error))
+  if (!_clutter_backend_init_stage (context->backend, &stage_error))
     {
       g_critical (stage_error->message);
       g_error_free (stage_error);

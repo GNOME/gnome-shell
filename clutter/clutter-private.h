@@ -96,6 +96,19 @@ ClutterEvent *_clutter_event_queue_pop           (ClutterBackend *backend);
 ClutterEvent *_clutter_event_queue_peek          (ClutterBackend *backend);
 gboolean      _clutter_event_queue_check_pending (ClutterBackend *backend);
 
+ClutterActor *_clutter_backend_get_stage     (ClutterBackend  *backend);
+void          _clutter_backend_add_options   (ClutterBackend  *backend,
+                                              GOptionGroup    *group);
+gboolean      _clutter_backend_pre_parse     (ClutterBackend  *backend,
+                                              GError         **error);
+gboolean      _clutter_backend_post_parse    (ClutterBackend  *backend,
+                                              GError         **error);
+gboolean      _clutter_backend_init_stage    (ClutterBackend  *backend,
+                                              GError         **error);
+void          _clutter_backend_init_events   (ClutterBackend  *backend);
+void          _clutter_backend_init_features (ClutterBackend  *backend);
+
+
 /* signal accumulators */
 gboolean _clutter_boolean_accumulator (GSignalInvocationHint *ihint,
                                        GValue                *return_accu,

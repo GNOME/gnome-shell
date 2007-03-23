@@ -419,7 +419,7 @@ clutter_stage_get_default (void)
   context = clutter_context_get_default ();
   g_assert (context != NULL);
 
-  return clutter_backend_get_stage (context->backend);
+  return _clutter_backend_get_stage (context->backend);
 }
 
 /**

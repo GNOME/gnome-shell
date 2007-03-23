@@ -515,7 +515,7 @@ clutter_stage_glx_set_cursor_visible (ClutterStage *stage,
       XFixesShowCursor (stage_glx->xdpy, stage_glx->xwin);
 #else
       XUndefineCursor (stage_glx->xdpy, stage_glx->xwin);
-#endif
+#endif /* HAVE_XFIXES */
     }
   else
     {
@@ -534,7 +534,7 @@ clutter_stage_glx_set_cursor_visible (ClutterStage *stage,
                                   1, 1);
       XFreePixmap (stage_glx->xdpy, pix);
       XDefineCursor (stage_glx->xdpy, stage_glx->xwin, curs);
-#endif
+#endif /* HAVE_XFIXES */
     }
 
   sync_viewport (stage_glx);
