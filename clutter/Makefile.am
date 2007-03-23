@@ -26,7 +26,7 @@ INCLUDES = \
 	$(NULL)
 
 LDADD = \
-	-version-info $(LT_VERSION_INFO) \
+	-version-info $(CLUTTER_LT_VERSION) \
 	-export-dynamic \
 	-rpath $(libdir) \
 	$(NULL)
@@ -149,20 +149,15 @@ source_h_priv = \
 	$(NULL)
 
 
-libclutter_glx_0_3_la_LIBADD = \
-	$(CLUTTER_LIBS) \
-	pango/libpangoclutter.la \
-	glx/libclutter-glx.la
-	
-libclutter_glx_0_3_la_SOURCES = \
-	$(source_c) \
-	$(source_h) \
-        $(source_h_priv)
+libclutter_glx_0_3_la_LIBADD = $(CLUTTER_LIBS) pango/libpangoclutter.la glx/libclutter-glx.la	
+libclutter_glx_0_3_la_SOURCES = $(source_c) $(source_h) $(source_h_priv)
+libclutter_glx_0_3_la_LDFLAGS = $(LDADD)
 
 #libclutter_egl_0_3_la_LIBADD = \
 #	$(CLUTTER_LIBS) \
 #	pango/libpangoclutter.la \
 #	egl/libclutter-egl.la
+#libclutter_egl_0_3_la_LDADD = $(LDADD)
 #libclutter_egl_0_3_la_SOURCES = \
 #	$(source_c) \
 #	$(source_h) \
@@ -172,7 +167,7 @@ lib_LTLIBRARIES = $(clutterbackendlib)
 
 EXTRA_LTLIBRARIES = libclutter-glx-0.3.la
 
-clutterdir = $(includedir)/clutter-@CLUTTER_MAJORMINOR@/clutter
+clutterdir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter
 clutter_HEADERS = \
 	$(source_h) \
 	clutter-enum-types.h \

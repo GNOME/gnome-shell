@@ -1,4 +1,5 @@
-libclutterincludedir = $(includedir)/clutter-@CLUTTER_MAJORMINOR@/clutter
+libclutterincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter
+libclutterinclude_HEADERS = clutter-glx.h
 
 INCLUDES = \
 	-DG_LOG_DOMAIN=\"ClutterGLX\" \

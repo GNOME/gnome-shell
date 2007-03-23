@@ -1,5 +1,19 @@
 2007-03-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	Assorted build fixes to pass distcheck.
+
+	* clutter/glx/Makefile.am: Install the clutter-glx.h header.
+
+	* clutter/Makefile.am: Actually apply linker flags.
+
+	* configure.ac: Use a more readable CLUTTER_API_VERSION instead
+	of CLUTTER_MAJORMINOR; require gobject-2.0 with glib-2.0 >= 2.10,
+	as we are using GObject and the slice allocator from glib 2.10.
+
+	* clutter.pc.in: Add the apiversion variable.
+
+2007-03-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-event.c: Pop and peek the event queue
 	from the tail - it's a queue, not a stack.
 

@@ -30,11 +30,13 @@ CLUTTER_MAJOR_VERSION=clutter_major_version
 CLUTTER_MINOR_VERSION=clutter_minor_version
 CLUTTER_MICRO_VERSION=clutter_micro_version
 CLUTTER_VERSION=clutter_version
+CLUTTER_API_VERSION=clutter_api_version
 CLUTTER_MAJORMINOR=clutter_api_version
 AC_SUBST(CLUTTER_MAJOR_VERSION)
 AC_SUBST(CLUTTER_MINOR_VERSION)
 AC_SUBST(CLUTTER_MICRO_VERSION)
 AC_SUBST(CLUTTER_VERSION)
+AC_SUBST(CLUTTER_API_VERSION)
 AC_SUBST(CLUTTER_MAJORMINOR)
 
 m4_define([lt_current],
@@ -90,7 +92,7 @@ if $PKG_CONFIG --exists xfixes ; then
   X11_LIBS="$X11_LIBS -lXfixes"
 fi
 
-AC_CHECK_HEADERS([GL/gl.h GL/glx.h],, 
+AC_CHECK_HEADERS([GL/gl.h GL/glx.h],,
 	         [AC_MSG_ERROR([Unable to locate required GL headers])])
 
 AC_CHECK_LIB(GL, glXCreateContext, HAVE_LIBGL=yes, HAVE_LIBGL=no)
@@ -130,7 +132,7 @@ AC_SUBST([clutterbackendlib])
 
 dnl ========================================================================
 
-pkg_modules="pangoft2 glib-2.0 >= 2.8 gthread-2.0 gdk-pixbuf-2.0 gdk-pixbuf-xlib-2.0"
+pkg_modules="pangoft2 glib-2.0 >= 2.10 gobject-2.0 gthread-2.0 gdk-pixbuf-2.0 gdk-pixbuf-xlib-2.0"
 PKG_CHECK_MODULES(CLUTTER_DEPS, [$pkg_modules])
 
 dnl ========================================================================
@@ -163,9 +165,11 @@ fi
 
 AC_SUBST(CLUTTER_DEBUG_CFLAGS)
 
-AC_ARG_WITH(fpu, AS_HELP_STRING([--without-fpu], 
-                                [Assume target hardware has no fpu]),
-              [with_fpu=$withval], [with_fpu=yes])
+AC_ARG_WITH(fpu,
+            AS_HELP_STRING([--without-fpu],
+                           [Assume target hardware has no fpu]),
+            [with_fpu=$withval],
+            [with_fpu=yes])
 
 if test "x$with_fpu" != "xyes" ; then
    CLUTTER_FIXED_CFLAGS="-DCFX_NO_FPU"
@@ -210,6 +214,7 @@ echo ""
 echo "                   prefix:   ${prefix}"
 echo ""
 echo "                  Flavour:   ${clutterbackend}"
+echo "           Target library:   ${clutterbackendlib}"
 echo "              Debug level:   ${enable_debug}"
 echo "            Documentation:   ${enable_gtk_doc}"
 echo "                      FPU:   ${with_fpu}"
