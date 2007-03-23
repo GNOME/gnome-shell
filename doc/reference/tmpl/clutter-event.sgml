@@ -59,20 +59,6 @@ Windowing events handled by Clutter.
 @CLUTTER_SCROLL_LEFT: 
 @CLUTTER_SCROLL_RIGHT: 
 
-<!-- ##### STRUCT ClutterScrollEvent ##### -->
-<para>
-
-</para>
-
-@type: 
-@time: 
-@x: 
-@y: 
-@direction: 
-@modifier_state: 
-@axes: 
-@device: 
-
 <!-- ##### ENUM ClutterStageState ##### -->
 <para>
 

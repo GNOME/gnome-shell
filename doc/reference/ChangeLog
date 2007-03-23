@@ -1,3 +1,7 @@
+2007-03-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Remove duplicae symbol.
+
 2007-03-22  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* Makefile.am: Include the clutter-glx backend API.

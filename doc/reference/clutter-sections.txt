@@ -550,7 +550,6 @@ CLUTTER_PRIORITY_EVENTS
 ClutterFilterFunc
 ClutterFilterResponse
 ClutterScrollDirection
-ClutterScrollEvent
 ClutterStageState
 ClutterEventType
 ClutterEvent
