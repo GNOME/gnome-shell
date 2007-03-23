@@ -468,8 +468,6 @@ clutter_backend_post_parse
 
 <SECTION>
 <FILE>clutter-util</FILE>
-clutter_util_trap_x_errors
-clutter_util_untrap_x_errors
 clutter_util_next_p2
 </SECTION>
 
@@ -560,7 +558,7 @@ ClutterAnyEvent
 ClutterButtonEvent
 ClutterKeyEvent
 ClutterMotionEvent
-ClutterScollEvent
+ClutterScrollEvent
 ClutterStageStateEvent
 ClutterInputDevice
 clutter_event_new

@@ -3,6 +3,16 @@
 	* clutter/clutter-event.c: Pop and peek the event queue
 	from the tail - it's a queue, not a stack.
 
+	* clutter/clutter-private.h:
+	* clutter/clutter-main.c: Add a boolean signal accumulator.
+
+	* clutter/clutter-stage.[ch]: Add an event argument to
+	the 'delete-event' signal; rename the 'input-event' signal
+	to 'event'; add the static scope flag to all the stage
+	events.
+
+	* examples/*.c: Update.
+
 2007-03-22  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter.pc.in: Require gobject-2.0 too.

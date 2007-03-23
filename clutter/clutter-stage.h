@@ -96,24 +96,24 @@ struct _ClutterStageClass
   void          (* flush)              (ClutterStage *stage);
 
   /* signals */
-  void (* event)                (ClutterStage           *stage,
-                                 ClutterEvent           *event);
-  void (* button_press_event)   (ClutterStage           *stage,
-			         ClutterButtonEvent     *event);
-  void (* button_release_event) (ClutterStage           *stage,
-		  		 ClutterButtonEvent     *event);
-  void (* scroll_event)         (ClutterStage           *stage,
-                                 ClutterScrollEvent     *event);
-  void (* key_press_event)      (ClutterStage           *stage,
-		  		 ClutterKeyEvent        *event);
-  void (* key_release_event)    (ClutterStage           *stage,
-		  		 ClutterKeyEvent        *event);
-  void (* motion_event)         (ClutterStage           *stage,
-		  		 ClutterMotionEvent     *event);
-  void (* stage_state_event)    (ClutterStage           *stage,
-                                 ClutterStageStateEvent *event);
-  void (* delete_event)         (ClutterStage           *stage,
-                                 ClutterAnyEvent        *event);
+  void     (* event)                (ClutterStage           *stage,
+                                     ClutterEvent           *event);
+  void     (* button_press_event)   (ClutterStage           *stage,
+			             ClutterButtonEvent     *event);
+  void     (* button_release_event) (ClutterStage           *stage,
+		  		     ClutterButtonEvent     *event);
+  void     (* scroll_event)         (ClutterStage           *stage,
+                                     ClutterScrollEvent     *event);
+  void     (* key_press_event)      (ClutterStage           *stage,
+		  		     ClutterKeyEvent        *event);
+  void     (* key_release_event)    (ClutterStage           *stage,
+		  		     ClutterKeyEvent        *event);
+  void     (* motion_event)         (ClutterStage           *stage,
+                                     ClutterMotionEvent     *event);
+  void     (* stage_state_event)    (ClutterStage           *stage,
+                                     ClutterStageStateEvent *event);
+  gboolean (* delete_event)         (ClutterStage           *stage,
+                                     ClutterAnyEvent        *event);
 
   /* padding for future expansion */
   void (*_clutter_stage1) (void);

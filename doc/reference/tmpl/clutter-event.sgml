@@ -151,6 +151,20 @@ Windowing events handled by Clutter.
 @axes: 
 @device: 
 
+<!-- ##### STRUCT ClutterScrollEvent ##### -->
+<para>
+
+</para>
+
+@type: 
+@time: 
+@x: 
+@y: 
+@direction: 
+@modifier_state: 
+@axes: 
+@device: 
+
 <!-- ##### STRUCT ClutterStageStateEvent ##### -->
 <para>
 

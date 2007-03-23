@@ -62,6 +62,14 @@ Macro evaluating to the height of the #ClutterStage
 @Param2: 
 @Returns: 
 
+<!-- ##### SIGNAL ClutterStage::event ##### -->
+<para>
+
+</para>
+
+@clutterstage: the object which received the signal.
+@arg1: 
+
 <!-- ##### SIGNAL ClutterStage::key-press-event ##### -->
 <para>
 

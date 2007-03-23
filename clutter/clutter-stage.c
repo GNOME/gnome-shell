@@ -72,7 +72,7 @@ enum
 
 enum
 {
-  INPUT_EVENT,
+  EVENT,
   BUTTON_PRESS_EVENT,
   BUTTON_RELEASE_EVENT,
   SCROLL_EVENT,
@@ -226,7 +226,23 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			 "The color of the main stage",
 			 CLUTTER_TYPE_COLOR,
 			 CLUTTER_PARAM_READWRITE));
-
+  /**
+   * ClutterStage::event:
+   * @stage: the actor which received the event
+   * @event: a #ClutterEvent
+   *
+   * The ::event signal is emitted each time and event is received
+   * by the @stage.
+   */
+  stage_signals[EVENT] =
+    g_signal_new ("event",
+		  G_TYPE_FROM_CLASS (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterStageClass, event),
+		  NULL, NULL,
+		  clutter_marshal_VOID__BOXED,
+		  G_TYPE_NONE, 1,
+		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
   /**
    * ClutterStage::button-press-event:
    * @stage: the actor which received the event
