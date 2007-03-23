@@ -101,6 +101,16 @@ clutter_stage_delete_event (ClutterStage    *stage,
 }
 
 static void
+clutter_stage_paint (ClutterActor *actor)
+{
+  /* chain up */
+  CLUTTER_NOTE (PAINT, "Chaining up to parent class paint");
+
+  if (CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->paint)
+    CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->paint (actor);
+}
+
+static void
 clutter_stage_set_property (GObject      *object, 
 			    guint         prop_id,
 			    const GValue *value, 
@@ -185,10 +195,13 @@ static void
 clutter_stage_class_init (ClutterStageClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   ClutterStageClass *stage_class = CLUTTER_STAGE_CLASS (klass);
 
   gobject_class->set_property = clutter_stage_set_property;
   gobject_class->get_property = clutter_stage_get_property;
+
+  actor_class->paint = clutter_stage_paint;
 
   stage_class->delete_event = clutter_stage_delete_event;
 

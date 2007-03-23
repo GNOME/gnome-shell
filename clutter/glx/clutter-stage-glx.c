@@ -214,7 +214,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
 
       if (stage_glx->xwin == None)
         {
-        CLUTTER_NOTE (MISC, "XCreateSimpleWindow");
+        CLUTTER_NOTE (MISC, "Creating stage X window");
 	stage_glx->xwin = XCreateSimpleWindow (stage_glx->xdpy,
                                                stage_glx->xwin_root,
                                                0, 0,
@@ -238,7 +238,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
       if (stage_glx->gl_context)
 	glXDestroyContext (stage_glx->xdpy, stage_glx->gl_context);
 
-      CLUTTER_NOTE (GL, "glXCreateContext");
+      CLUTTER_NOTE (GL, "Creating GL Context");
       stage_glx->gl_context = glXCreateContext (stage_glx->xdpy, 
 					        stage_glx->xvisinfo, 
 					        0, 
@@ -360,12 +360,8 @@ clutter_stage_glx_paint (ClutterActor *self)
   ClutterColor stage_color;
   static GTimer *timer = NULL; 
   static guint timer_n_frames = 0;
-  static ClutterActorClass *parent_class = NULL;
 
   CLUTTER_NOTE (PAINT, " Redraw enter");
-
-  if (!parent_class)
-    parent_class = g_type_class_peek_parent (CLUTTER_STAGE_GET_CLASS (stage));
 
   if (clutter_get_show_fps ())
     {
@@ -383,7 +379,8 @@ clutter_stage_glx_paint (ClutterActor *self)
   glDisable (GL_LIGHTING); 
   glDisable (GL_DEPTH_TEST);
 
-  parent_class->paint (self);
+  if (CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->paint)
+    CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->paint (self);
 
   if (stage_glx->xwin)
     {
@@ -417,10 +414,9 @@ clutter_stage_glx_allocate_coords (ClutterActor    *self,
 {
   ClutterStageGlx *stage_glx = CLUTTER_STAGE_GLX (self);
 
+  box->x1 = box->y1 = 0;
   box->x2 = box->x1 + stage_glx->xwin_width;
   box->y2 = box->y1 + stage_glx->xwin_height;
-
-  return;
 }
 
 static void

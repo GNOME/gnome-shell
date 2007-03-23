@@ -37,6 +37,7 @@
 #include "clutter-group.h"
 #include "clutter-main.h"
 #include "clutter-private.h"
+#include "clutter-debug.h"
 #include "clutter-marshal.h"
 #include "clutter-enum-types.h"
 
@@ -68,6 +69,8 @@ clutter_group_paint (ClutterActor *actor)
   ClutterGroup *self = CLUTTER_GROUP(actor);
   GList        *child_item;
 
+  CLUTTER_NOTE (PAINT, "ClutterGroup paint enter");
+
   glPushMatrix();
 
   for (child_item = self->priv->children;
@@ -83,6 +86,8 @@ clutter_group_paint (ClutterActor *actor)
     }
 
   glPopMatrix();
+  
+  CLUTTER_NOTE (PAINT, "ClutterGroup paint leave");
 }
 
 static void
