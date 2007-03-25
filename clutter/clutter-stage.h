@@ -90,7 +90,6 @@ struct _ClutterStageClass
                                         gint          y,
                                         gint          width,
                                         gint          height);
-  void          (* flush)              (ClutterStage *stage);
 
   /* signals */
   void     (* event)                (ClutterStage           *stage,
