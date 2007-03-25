@@ -357,7 +357,7 @@ clutter_timeline_start (ClutterTimeline *timeline)
   priv = timeline->priv;
 
   if (!priv->timeout_id)
-    priv->timeout_id = g_timeout_add_full (G_PRIORITY_DEFAULT + 20
+    priv->timeout_id = g_timeout_add_full (G_PRIORITY_DEFAULT + 20,
                                            FPS_TO_INTERVAL (priv->fps),
                                            timeline_timeout_func,
                                            timeline,

@@ -1,3 +1,7 @@
+2007-03-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-timeline.c: Fix last commit.
+
 2007-03-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-timeline.c: Slightly lower the proiority
