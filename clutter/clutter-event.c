@@ -318,9 +318,7 @@ clutter_event_new (ClutterEventType type)
     event_hash = g_hash_table_new (g_direct_hash, NULL);
 
   new_event = g_slice_new0 (ClutterEvent);
-
   new_event->type = new_event->any.type = type;
-  new_event->flags = CLUTTER_EVENT_NONE;
 
   g_hash_table_insert (event_hash, new_event, GUINT_TO_POINTER (1));
 

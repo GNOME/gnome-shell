@@ -62,12 +62,6 @@ typedef enum
 
 typedef enum
 {
-  CLUTTER_EVENT_NONE    = 0,
-  CLUTTER_EVENT_PENDING = 1 << 0
-} ClutterEventFlags;
-
-typedef enum
-{
   CLUTTER_SCROLL_UP,
   CLUTTER_SCROLL_DOWN,
   CLUTTER_SCROLL_LEFT,
@@ -161,7 +155,6 @@ struct _ClutterStageStateEvent
 union _ClutterEvent
 {
   ClutterEventType type;
-  ClutterEventFlags flags;
   
   ClutterAnyEvent any;
   ClutterButtonEvent button;
