@@ -1,5 +1,11 @@
 2007-03-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-event.[ch]: Remove the flags member from
+	the ClutterEvent structure; remove the ClutterEventFlags
+	enum.
+
+2007-03-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-stage.h: Remove the ::get_actor_at_pos()
 	and ::flush() vfuncs.
 
