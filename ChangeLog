@@ -1,3 +1,19 @@
+2007-03-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-stage.h: Remove the ::get_actor_at_pos()
+	and ::flush() vfuncs.
+
+	* clutter/glx/clutter-stage-glx.c: Remove the implementations
+	of those vfuncs from the backend specific code, as they are
+	pure GL calls.
+
+	* clutter/clutter-stage.c: Add back the actor hit detection
+	code in the base stage class, along with the viewport
+	synchronisation function.
+
+	* clutter/clutter-private.h: Declare the private function
+	_clutter_stage_sync_viewport().
+
 2007-03-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-backend.c: Clear the event queue when
