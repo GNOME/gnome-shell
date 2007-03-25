@@ -84,9 +84,6 @@ struct _ClutterStageClass
                                         gboolean      visible);
   void          (* set_offscreen)      (ClutterStage *stage,
                                         gboolean      offscreen);
-  ClutterActor *(* get_actor_at_pos)   (ClutterStage *stage,
-                                        gint          x,
-                                        gint          y);
   void          (* draw_to_pixbuf)     (ClutterStage *stage,
                                         GdkPixbuf    *dest,
                                         gint          x,

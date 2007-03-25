@@ -44,6 +44,8 @@
 #include "clutter-debug.h"
 #include "clutter-version.h" 	/* For flavour */
 
+#include <GL/gl.h>
+
 #include <gdk-pixbuf-xlib/gdk-pixbuf-xlib.h>
 
 G_DEFINE_ABSTRACT_TYPE (ClutterStage, clutter_stage, CLUTTER_TYPE_GROUP);
@@ -582,23 +584,6 @@ clutter_stage_hide_cursor (ClutterStage *stage)
 }
 
 /**
- * clutter_stage_flush:
- * @stage: a #ClutterStage
- *
- * Flushes the stage. This function is only useful for stage
- * implementations inside backends or for actors; you should never
- * need to call this function directly.
- */
-void
-clutter_stage_flush (ClutterStage *stage)
-{
-  g_return_if_fail (CLUTTER_IS_STAGE (stage));
-
-  if (CLUTTER_STAGE_GET_CLASS (stage)->flush)
-    CLUTTER_STAGE_GET_CLASS (stage)->flush (stage);
-}
-
-/**
  * clutter_stage_snapshot
  * @stage: A #ClutterStage
  * @x: x coordinate of the first pixel that is read from stage
@@ -637,17 +622,148 @@ clutter_stage_snapshot (ClutterStage *stage,
   return NULL;
 }
 
+static inline void
+frustum (GLfloat left,
+	 GLfloat right,
+	 GLfloat bottom,
+	 GLfloat top,
+	 GLfloat nearval,
+	 GLfloat farval)
+{
+  GLfloat x, y, a, b, c, d;
+  GLfloat m[16];
+
+  x = (2.0 * nearval) / (right - left);
+  y = (2.0 * nearval) / (top - bottom);
+  a = (right + left) / (right - left);
+  b = (top + bottom) / (top - bottom);
+  c = -(farval + nearval) / ( farval - nearval);
+  d = -(2.0 * farval * nearval) / (farval - nearval);
+
+#define M(row,col)  m[col*4+row]
+  M(0,0) = x;     M(0,1) = 0.0F;  M(0,2) = a;      M(0,3) = 0.0F;
+  M(1,0) = 0.0F;  M(1,1) = y;     M(1,2) = b;      M(1,3) = 0.0F;
+  M(2,0) = 0.0F;  M(2,1) = 0.0F;  M(2,2) = c;      M(2,3) = d;
+  M(3,0) = 0.0F;  M(3,1) = 0.0F;  M(3,2) = -1.0F;  M(3,3) = 0.0F;
+#undef M
+
+  glMultMatrixf (m);
+}
+
+static inline void
+perspective (GLfloat fovy,
+	     GLfloat aspect,
+	     GLfloat zNear,
+	     GLfloat zFar)
+{
+  GLfloat xmin, xmax, ymin, ymax;
+
+  ymax = zNear * tan (fovy * M_PI / 360.0);
+  ymin = -ymax;
+  xmin = ymin * aspect;
+  xmax = ymax * aspect;
+
+  frustum (xmin, xmax, ymin, ymax, zNear, zFar);
+}
+
+void
+_clutter_stage_sync_viewport (ClutterStage *stage)
+{
+  ClutterActor *actor;
+  gint width, height;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  actor = CLUTTER_ACTOR (stage);
+
+  width = clutter_actor_get_width (actor);
+  height = clutter_actor_get_height (actor);
+
+  glViewport (0, 0, width, height);
+  
+  glMatrixMode (GL_PROJECTION);
+  glLoadIdentity ();
+  
+  perspective (60.0f, 1.0f, 0.1f, 100.0f);
+  
+  glMatrixMode (GL_MODELVIEW);
+  glLoadIdentity ();
+
+  /* Then for 2D like transform */
+
+  /* camera distance from screen, 0.5 * tan (FOV) */
+#define DEFAULT_Z_CAMERA 0.866025404f
+
+  glTranslatef (-0.5f, -0.5f, -DEFAULT_Z_CAMERA);
+  glScalef ( 1.0f / width, 
+	    -1.0f / height, 
+	     1.0f / width);
+  glTranslatef (0.0f, -1.0 * height, 0.0f);
+}
+
+/**
+ * clutter_stage_get_actor_at_pos:
+ * @stage:
+ * @x:
+ * @y:
+ *
+ * FIXME
+ *
+ * Return value: the actor at the specified coordinates, if any
+ */
 ClutterActor *
 clutter_stage_get_actor_at_pos (ClutterStage *stage,
                                 gint          x,
                                 gint          y)
 {
+  ClutterActor *found = NULL;
+  GLuint buff[64] = { 0 };
+  GLint hits;
+  GLint view[4];
+  
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
+ 
+  glSelectBuffer (sizeof (buff), buff);
+  glGetIntegerv (GL_VIEWPORT, view);
+  glRenderMode (GL_SELECT);
 
-  if (CLUTTER_STAGE_GET_CLASS (stage)->get_actor_at_pos)
+  glInitNames ();
+
+  glPushName (0);
+ 
+  glMatrixMode (GL_PROJECTION);
+  glPushMatrix ();
+  glLoadIdentity ();
+
+  /* This is gluPickMatrix(x, y, 1.0, 1.0, view); */
+  glTranslatef ((view[2] - 2 * (x - view[0])),
+	        (view[3] - 2 * (y - view[1])), 0);
+  glScalef (view[2], -view[3], 1.0);
+
+  perspective (60.0f, 1.0f, 0.1f, 100.0f); 
+
+  glMatrixMode (GL_MODELVIEW);
+
+  clutter_actor_paint (CLUTTER_ACTOR (stage));
+
+  glMatrixMode (GL_PROJECTION);
+  glPopMatrix ();
+
+  hits = glRenderMode (GL_RENDER);
+
+  if (hits != 0)
     {
-      return CLUTTER_STAGE_GET_CLASS (stage)->get_actor_at_pos (stage, x, y);
+#if 0
+      gint i
+      for (i = 0; i < hits; i++)
+	g_print ("Hit at %i\n", buff[i * 4 + 3]);
+#endif
+  
+      found = clutter_group_find_child_by_id (CLUTTER_GROUP (stage), 
+					      buff[(hits-1) * 4 + 3]);
     }
 
-  return NULL;
+  _clutter_stage_sync_viewport (stage);
+
+  return found;
 }

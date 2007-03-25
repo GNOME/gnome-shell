@@ -45,75 +45,6 @@
 
 G_DEFINE_TYPE (ClutterStageGlx, clutter_stage_glx, CLUTTER_TYPE_STAGE);
 
-static inline void
-frustum (GLfloat left,
-	 GLfloat right,
-	 GLfloat bottom,
-	 GLfloat top,
-	 GLfloat nearval,
-	 GLfloat farval)
-{
-  GLfloat x, y, a, b, c, d;
-  GLfloat m[16];
-
-  x = (2.0 * nearval) / (right - left);
-  y = (2.0 * nearval) / (top - bottom);
-  a = (right + left) / (right - left);
-  b = (top + bottom) / (top - bottom);
-  c = -(farval + nearval) / ( farval - nearval);
-  d = -(2.0 * farval * nearval) / (farval - nearval);
-
-#define M(row,col)  m[col*4+row]
-  M(0,0) = x;     M(0,1) = 0.0F;  M(0,2) = a;      M(0,3) = 0.0F;
-  M(1,0) = 0.0F;  M(1,1) = y;     M(1,2) = b;      M(1,3) = 0.0F;
-  M(2,0) = 0.0F;  M(2,1) = 0.0F;  M(2,2) = c;      M(2,3) = d;
-  M(3,0) = 0.0F;  M(3,1) = 0.0F;  M(3,2) = -1.0F;  M(3,3) = 0.0F;
-#undef M
-
-  glMultMatrixf (m);
-}
-
-static inline void
-perspective (GLfloat fovy,
-	     GLfloat aspect,
-	     GLfloat zNear,
-	     GLfloat zFar)
-{
-  GLfloat xmin, xmax, ymin, ymax;
-
-  ymax = zNear * tan (fovy * M_PI / 360.0);
-  ymin = -ymax;
-  xmin = ymin * aspect;
-  xmax = ymax * aspect;
-
-  frustum (xmin, xmax, ymin, ymax, zNear, zFar);
-}
-
-static void
-sync_viewport (ClutterStageGlx *stage_glx)
-{
-  glViewport (0, 0, stage_glx->xwin_width, stage_glx->xwin_height);
-  
-  glMatrixMode (GL_PROJECTION);
-  glLoadIdentity ();
-  
-  perspective (60.0f, 1.0f, 0.1f, 100.0f);
-  
-  glMatrixMode (GL_MODELVIEW);
-  glLoadIdentity ();
-
-  /* Then for 2D like transform */
-
-  /* camera distance from screen, 0.5 * tan (FOV) */
-#define DEFAULT_Z_CAMERA 0.866025404f
-
-  glTranslatef (-0.5f, -0.5f, -DEFAULT_Z_CAMERA);
-  glScalef ( 1.0f / stage_glx->xwin_width, 
-	    -1.0f / stage_glx->xwin_height, 
-	     1.0f / stage_glx->xwin_width);
-  glTranslatef (0.0f, -1.0 * stage_glx->xwin_height, 0.0f);
-}
-
 static void
 clutter_stage_glx_show (ClutterActor *actor)
 {
@@ -349,7 +280,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
 		glXIsDirect (stage_glx->xdpy, stage_glx->gl_context) ? "yes"
                                                                      : "no");
 
-  sync_viewport (stage_glx);
+  _clutter_stage_sync_viewport (CLUTTER_STAGE (stage_glx));
 }
 
 static void
@@ -449,7 +380,7 @@ clutter_stage_glx_request_coords (ClutterActor    *self,
 	  clutter_actor_realize (self);
 	}
 
-      sync_viewport (stage_glx);
+      _clutter_stage_sync_viewport (CLUTTER_STAGE (stage_glx));
     }
 
   if (stage_glx->xwin != None) /* Do we want to bother ? */
@@ -493,7 +424,7 @@ clutter_stage_glx_set_fullscreen (ClutterStage *stage,
         XDeleteProperty (stage_glx->xdpy, stage_glx->xwin, atom_WM_STATE);
     }
 
-  sync_viewport (stage_glx);
+  _clutter_stage_sync_viewport (stage);
 }
 
 static void
@@ -537,7 +468,7 @@ clutter_stage_glx_set_cursor_visible (ClutterStage *stage,
 #endif /* HAVE_XFIXES */
     }
 
-  sync_viewport (stage_glx);
+  _clutter_stage_sync_viewport (stage);
 }
 
 static void
@@ -545,61 +476,6 @@ clutter_stage_glx_set_offscreen (ClutterStage *stage,
                                  gboolean      offscreen)
 {
 
-}
-
-static ClutterActor *
-clutter_stage_glx_get_actor_at_pos (ClutterStage *stage,
-                                    gint          x,
-                                    gint          y)
-{
-  ClutterActor *found = NULL;
-  GLuint buff[64] = { 0 };
-  GLint hits;
-  GLint view[4];
- 
-  glSelectBuffer (sizeof (buff), buff);
-  glGetIntegerv (GL_VIEWPORT, view);
-  glRenderMode (GL_SELECT);
-
-  glInitNames ();
-
-  glPushName (0);
- 
-  glMatrixMode (GL_PROJECTION);
-  glPushMatrix ();
-  glLoadIdentity ();
-
-  /* This is gluPickMatrix(x, y, 1.0, 1.0, view); */
-  glTranslatef ((view[2] - 2 * (x - view[0])),
-	        (view[3] - 2 * (y - view[1])), 0);
-  glScalef (view[2], -view[3], 1.0);
-
-  perspective (60.0f, 1.0f, 0.1f, 100.0f); 
-
-  glMatrixMode (GL_MODELVIEW);
-
-  clutter_actor_paint (CLUTTER_ACTOR (stage));
-
-  glMatrixMode (GL_PROJECTION);
-  glPopMatrix ();
-
-  hits = glRenderMode(GL_RENDER);
-
-  if (hits != 0)
-    {
-#if 0
-      gint i
-      for (i = 0; i < hits; i++)
-	g_print ("Hit at %i\n", buff[i * 4 + 3]);
-#endif
-  
-      found = clutter_group_find_child_by_id (CLUTTER_GROUP (stage), 
-					      buff[(hits-1) * 4 + 3]);
-    }
-
-  clutter_stage_flush (stage);
-
-  return found;
 }
 
 static void
@@ -672,12 +548,6 @@ clutter_stage_glx_draw_to_pixbuf (ClutterStage *stage,
 }
 
 static void
-clutter_stage_glx_flush (ClutterStage *stage)
-{
-  sync_viewport (CLUTTER_STAGE_GLX (stage));
-}
-
-static void
 clutter_stage_glx_dispose (GObject *gobject)
 {
   ClutterStageGlx *stage_glx = CLUTTER_STAGE_GLX (gobject);
@@ -708,9 +578,7 @@ clutter_stage_glx_class_init (ClutterStageGlxClass *klass)
   stage_class->set_fullscreen = clutter_stage_glx_set_fullscreen;
   stage_class->set_cursor_visible = clutter_stage_glx_set_cursor_visible;
   stage_class->set_offscreen = clutter_stage_glx_set_offscreen;
-  stage_class->get_actor_at_pos = clutter_stage_glx_get_actor_at_pos;
   stage_class->draw_to_pixbuf = clutter_stage_glx_draw_to_pixbuf;
-  stage_class->flush = clutter_stage_glx_flush;
 }
 
 static void

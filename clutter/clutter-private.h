@@ -137,6 +137,8 @@ void          _clutter_synthetise_stage_state (ClutterBackend    *backend,
                                                ClutterStageState  set_flags,
                                                ClutterStageState  unset_flags);
 
+void _clutter_stage_sync_viewport (ClutterStage *stage);
+
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_PRIVATE_H */

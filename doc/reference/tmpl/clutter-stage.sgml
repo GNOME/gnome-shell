@@ -131,7 +131,6 @@ Macro evaluating to the height of the #ClutterStage
 @set_fullscreen: 
 @set_cursor_visible: 
 @set_offscreen: 
-@get_actor_at_pos: 
 @draw_to_pixbuf: 
 @flush: 
 @event: 
