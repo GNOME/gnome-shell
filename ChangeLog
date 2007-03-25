@@ -1,5 +1,11 @@
 2007-03-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-timeline.c: Slightly lower the proiority
+	of the ClutterTimeline tick, so that events get a higher
+	priority in the main loop.
+
+2007-03-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-event.[ch]: Remove the flags member from
 	the ClutterEvent structure; remove the ClutterEventFlags
 	enum.
