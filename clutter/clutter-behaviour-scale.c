@@ -28,7 +28,7 @@
  * @short_description: A behaviour class interpolating actors size between
  * two values.
  *
- * #ClutterBehaviourPath interpolates actors size between two values.
+ * A #ClutterBehaviourScale interpolates actors size between two values.
  *
  */
 
@@ -46,13 +46,6 @@
 #include "clutter-debug.h"
 
 #include <math.h>
-
-/**
- * SECTION:clutter-behaviour-scale
- * @short_description: Behaviour controlling the scale of a set of actors
- *
- * FIXME
- */
 
 G_DEFINE_TYPE (ClutterBehaviourScale,
                clutter_behaviour_scale,
@@ -121,7 +114,7 @@ scale_frame_foreach (ClutterBehaviour *behaviour,
       /* 
        * FIXME: This is actually broken for anything other than 0,0 
       */
-      clutter_actor_set_position (actor, (w - sw)/2, (h - sh)/2);
+      clutter_actor_set_position (actor, (w - sw) / 2, (h - sh) / 2);
     default:
       break;
     }
@@ -131,7 +124,7 @@ static void
 clutter_behaviour_scale_alpha_notify (ClutterBehaviour *behave,
                                       guint32           alpha_value)
 {
-  ClutterFixed                  scale, factor;
+  ClutterFixed scale, factor;
   ClutterBehaviourScalePrivate *priv;
 
   priv = CLUTTER_BEHAVIOUR_SCALE (behave)->priv;
@@ -287,6 +280,8 @@ clutter_behaviour_scale_new (ClutterAlpha   *alpha,
 			     gdouble         scale_end,
 			     ClutterGravity  gravity)
 {
+  g_return_val_if_fail (alpha == NULL || CLUTTER_IS_ALPHA (alpha), NULL);
+
   return clutter_behaviour_scale_newx (alpha,
 				       CLUTTER_FLOAT_TO_FIXED (scale_begin),
 				       CLUTTER_FLOAT_TO_FIXED (scale_end),
@@ -314,6 +309,8 @@ clutter_behaviour_scale_newx (ClutterAlpha   *alpha,
 {
   ClutterBehaviourScale *behave;
 
+  g_return_val_if_fail (alpha == NULL || CLUTTER_IS_ALPHA (alpha), NULL);
+  
   behave = g_object_new (CLUTTER_TYPE_BEHAVIOUR_SCALE, 
                          "alpha", alpha,
 			 NULL);
@@ -323,4 +320,78 @@ clutter_behaviour_scale_newx (ClutterAlpha   *alpha,
   behave->priv->gravity     = gravity;
 
   return CLUTTER_BEHAVIOUR (behave);
+}
+
+/**
+ * clutter_behaviour_scale_get_bounds:
+ * @scale: a #ClutterBehaviourScale
+ * @scale_begin: return location for the initial scale factor
+ * @scale_end: return location for the final scale factor
+ *
+ * Retrieves the bounds used by scale behaviour.
+ *
+ * Since: 0.4
+ */
+void
+clutter_behaviour_scale_get_bounds (ClutterBehaviourScale *scale,
+                                    gdouble               *scale_begin,
+                                    gdouble               *scale_end)
+{
+  ClutterBehaviourScalePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_SCALE (scale));
+
+  priv = scale->priv;
+
+  if (scale_begin)
+    *scale_begin = CLUTTER_FIXED_TO_DOUBLE (priv->scale_begin);
+
+  if (scale_end)
+    *scale_end = CLUTTER_FIXED_TO_DOUBLE (priv->scale_end);
+}
+
+/**
+ * clutter_behaviour_scale_get_boundsx:
+ * @scale: a #ClutterBehaviourScale
+ * @scale_begin: return location for the initial scale factor
+ * @scale_end: return location for the final scale factor
+ *
+ * Retrieves the bounds used by scale behaviour.
+ *
+ * Since: 0.4
+ */
+void
+clutter_behaviour_scale_get_boundsx (ClutterBehaviourScale *scale,
+                                     ClutterFixed          *scale_begin,
+                                     ClutterFixed          *scale_end)
+{
+  ClutterBehaviourScalePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_SCALE (scale));
+
+  priv = scale->priv;
+
+  if (scale_begin)
+    *scale_begin = priv->scale_begin;
+
+  if (scale_end)
+    *scale_end = priv->scale_end;
+}
+
+/**
+ * clutter_behaviour_scale_get_gravity:
+ * @scale: a #ClutterBehaviourScale
+ *
+ * Retrieves the #ClutterGravity applied by the scale behaviour.
+ *
+ * Return value: the gravity used by the behaviour
+ *
+ * Since: 0.4
+ */
+ClutterGravity
+clutter_behaviour_scale_get_gravity (ClutterBehaviourScale *scale)
+{
+  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_SCALE (scale), CLUTTER_GRAVITY_NONE);
+
+  return scale->priv->gravity;
 }

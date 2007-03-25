@@ -1,5 +1,10 @@
 2007-03-26  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-behaviour-scale.[ch]: Add API for getting
+	the scale bounds and the gravity from a scale behaviour instance.
+
+2007-03-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-timeline.c: Fix last commit.
 
 2007-03-25  Emmanuele Bassi  <ebassi@openedhand.com>

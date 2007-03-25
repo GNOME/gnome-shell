@@ -55,23 +55,8 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   CLUTTER_TYPE_BEHAVIOUR_SCALE, ClutterBehaviourScaleClass))
 
-typedef struct _ClutterBehaviourScale        ClutterBehaviourScale;
-typedef struct _ClutterBehaviourScalePrivate ClutterBehaviourScalePrivate;
-typedef struct _ClutterBehaviourScaleClass   ClutterBehaviourScaleClass;
- 
-struct _ClutterBehaviourScale
-{
-  ClutterBehaviour             parent;
-  ClutterBehaviourScalePrivate *priv;
-};
-
-struct _ClutterBehaviourScaleClass
-{
-  ClutterBehaviourClass   parent_class;
-};
-
-typedef enum {
-  CLUTTER_GRAVITY_NONE = 0,
+typedef enum { /*< prefix=CLUTTER_GRAVITY >*/
+  CLUTTER_GRAVITY_NONE       = 0,
   CLUTTER_GRAVITY_NORTH,
   CLUTTER_GRAVITY_NORTH_EAST,
   CLUTTER_GRAVITY_EAST,
@@ -83,20 +68,43 @@ typedef enum {
   CLUTTER_GRAVITY_CENTER
 } ClutterGravity;
 
+typedef struct _ClutterBehaviourScale        ClutterBehaviourScale;
+typedef struct _ClutterBehaviourScalePrivate ClutterBehaviourScalePrivate;
+typedef struct _ClutterBehaviourScaleClass   ClutterBehaviourScaleClass;
+
+struct _ClutterBehaviourScale
+{
+  ClutterBehaviour parent_instance;
+
+  /*< private >*/
+  ClutterBehaviourScalePrivate *priv;
+};
+
+struct _ClutterBehaviourScaleClass
+{
+  ClutterBehaviourClass parent_class;
+};
+
 GType clutter_behaviour_scale_get_type (void) G_GNUC_CONST;
 
-ClutterBehaviour*
-clutter_behaviour_scale_new (ClutterAlpha  *alpha,
-			     gdouble        scale_begin,
-			     gdouble        scale_end,
-			     ClutterGravity gravity);
+ClutterBehaviour *clutter_behaviour_scale_new  (ClutterAlpha  *alpha,
+                                                gdouble        scale_begin,
+                                                gdouble        scale_end,
+                                                ClutterGravity gravity);
+ClutterBehaviour *clutter_behaviour_scale_newx (ClutterAlpha   *alpha,
+                                                ClutterFixed    scale_begin,
+                                                ClutterFixed    scale_end,
+                                                ClutterGravity  gravity);
 
-ClutterBehaviour*
-clutter_behaviour_scale_newx (ClutterAlpha   *alpha,
-			      ClutterFixed    scale_begin,
-			      ClutterFixed    scale_end,
-			      ClutterGravity  gravity);
+void clutter_behaviour_scale_get_bounds  (ClutterBehaviourScale *scale,
+                                          gdouble               *scale_begin,
+                                          gdouble               *scale_end);
+void clutter_behaviour_scale_get_boundsx (ClutterBehaviourScale *scale,
+                                          ClutterFixed          *scale_begin,
+                                          ClutterFixed          *scale_end);
+
+ClutterGravity clutter_behaviour_scale_get_gravity (ClutterBehaviourScale *scale);
 
 G_END_DECLS
 
-#endif
+#endif /* __CLUTTER_BEHAVIOUR_SCALE_H__ */
