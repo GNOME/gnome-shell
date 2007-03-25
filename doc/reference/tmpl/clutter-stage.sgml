@@ -132,7 +132,6 @@ Macro evaluating to the height of the #ClutterStage
 @set_cursor_visible: 
 @set_offscreen: 
 @draw_to_pixbuf: 
-@flush: 
 @event: 
 @button_press_event: 
 @button_release_event: 

@@ -445,6 +445,7 @@ clutter_behaviour_scale_get_type
 <FILE>clutter-backend</FILE>
 <TITLE>ClutterBackend</TITLE>
 ClutterBackend
+clutter_get_default_backend
 clutter_backend_get_stage
 clutter_backend_get_event
 clutter_backend_peek_event
