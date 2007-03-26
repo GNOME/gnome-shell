@@ -1,0 +1,3 @@
+SUBDIRS=gl
+
+EXTRA_DIST=cogl.h
