@@ -240,6 +240,12 @@ meta_session_init (const char *previous_client_id,
       saved_client_id = load_state (previous_save_file);
       previous_client_id = saved_client_id;
     }
+  else if (previous_client_id)
+    {
+      char *save_file = g_strconcat (previous_client_id, ".ms", NULL);
+      saved_client_id = load_state (save_file);
+      g_free (save_file);
+    }
   else
     {
       saved_client_id = NULL;
@@ -588,12 +594,14 @@ set_clone_restart_commands (void)
   prop1.name = SmRestartCommand;
   prop1.type = SmLISTofARRAY8;
   
+  g_return_if_fail (client_id);
+  
   i = 0;
   restartv[i] = "metacity";
   ++i;
-  restartv[i] = "--sm-save-file";
+  restartv[i] = "--sm-client-id";
   ++i;
-  restartv[i] = (char*) base_save_file ();
+  restartv[i] = client_id;
   ++i;
   restartv[i] = NULL;
 
@@ -1681,36 +1689,27 @@ session_info_new (void)
   return info;
 }
 
-static char* relative_save_path = NULL;
 static char* full_save_path = NULL;
 
 static void
 regenerate_save_file (void)
 {
-  g_free (relative_save_path);
   g_free (full_save_path);
-  
-  relative_save_path = g_strdup_printf ("%d-%d-%u.ms",
-                                        (int) time (NULL),
-                                        (int) getpid (),
-                                        g_random_int ()); 
-  
-  full_save_path = g_strconcat (g_get_home_dir (),
-                                "/.metacity/sessions/",
-                                relative_save_path,
-                                NULL);
+
+  if (client_id)
+    full_save_path = g_strconcat (g_get_home_dir (),
+                                  "/.metacity/sessions/",
+                                  client_id,
+                                  ".ms",
+                                  NULL);
+  else
+    full_save_path = NULL;
 }
 
 static const char*
 full_save_file (void)
 {
   return full_save_path;
-}
-
-static const char*
-base_save_file (void)
-{
-  return relative_save_path;
 }
 
 static int

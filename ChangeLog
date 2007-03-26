@@ -1,3 +1,14 @@
+2007-03-26  Josselin Mouette  <joss@malsain.org>
+
+	* src/session.c (meta_session_init): if previous client ID
+	was supplied, use it in filename.
+	* src/session.c (set_clone_restart_commands): use --sm-client-id
+	in command line to restore session, not original file name.
+	* src/session.c (regenerate_save_file): generate filename using
+	client ID and not original file name.
+	* src/session.c (base_save_file): removed function.
+	Closes GNOME 407981, Debian 391287, Debian 315169.
+
 2007-03-25  Elijah Newren  <newren gmail com>
 
 	* configure.in: bump version to 2.19.1; doesn't make sense to have
