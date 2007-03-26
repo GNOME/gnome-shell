@@ -1,3 +1,23 @@
+2007-03-27  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-feature.c:
+	Rejig ifdef's a little. Make drm vblanking Linux only.
+
+	* clutter/clutter-stage.c:
+	* clutter/clutter-stage.h:
+	Add a perspective boxed type.
+
+	* clutter/glx/clutter-stage-glx.c:
+	Add some FIXMEs 
+
+	* clutter/Makefile.am:
+	* clutter/cogl/Makefile.am:
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/gl/Makefile.am:
+	* clutter/cogl/gl/cogl.c:
+	* configure.ac:
+	Very initial work on 'cogl' GL/GLES abstraction/utility code.
+
 2007-03-26  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-behaviour-scale.[ch]: Add API for getting

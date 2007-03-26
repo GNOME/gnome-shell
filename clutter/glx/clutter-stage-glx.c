@@ -287,10 +287,10 @@ static void
 clutter_stage_glx_paint (ClutterActor *self)
 {
   ClutterStageGlx *stage_glx = CLUTTER_STAGE_GLX (self);
-  ClutterStage *stage = CLUTTER_STAGE (self);
-  ClutterColor stage_color;
-  static GTimer *timer = NULL; 
-  static guint timer_n_frames = 0;
+  ClutterStage    *stage = CLUTTER_STAGE (self);
+  ClutterColor     stage_color;
+  static GTimer   *timer = NULL; 
+  static guint     timer_n_frames = 0;
 
   CLUTTER_NOTE (PAINT, " Redraw enter");
 
@@ -302,6 +302,7 @@ clutter_stage_glx_paint (ClutterActor *self)
 
   clutter_stage_get_color (stage, &stage_color);
 
+  /* FIXME: move below into cogl_paint_start() ? */
   glClearColor (((float) stage_color.red / 0xff * 1.0),
 	        ((float) stage_color.green / 0xff * 1.0),
 	        ((float) stage_color.blue / 0xff * 1.0),
@@ -310,9 +311,14 @@ clutter_stage_glx_paint (ClutterActor *self)
   glDisable (GL_LIGHTING); 
   glDisable (GL_DEPTH_TEST);
 
-  if (CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->paint)
+  /* FIXME Check is redundant */
+  if (G_LIKELY(CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->paint))
+    /* Basically call up to ClutterGroup paint here */
     CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->paint (self);
 
+  /* Why this paint is done in backend as likely GL windowing system
+   * specific calls, like swapping buffers.
+  */
   if (stage_glx->xwin)
     {
       clutter_feature_wait_for_vblank ();

@@ -767,3 +767,58 @@ clutter_stage_get_actor_at_pos (ClutterStage *stage,
 
   return found;
 }
+
+/*** Perspective boxed type ******/
+
+/**
+ * clutter_perspective_copy:
+ * @perspective: a #ClutterPerspective
+ *
+ * Makes a copy of the perspective structure.  The result must be
+ * freed using clutter_perspective_free().
+ *
+ * Return value: an allocated copy of @perspective.
+ *
+ * Since: 0.2
+ */
+ClutterPerspective *
+clutter_perspective_copy (const ClutterPerspective *perspective)
+{
+  ClutterPerspective *result;
+  
+  g_return_val_if_fail (perspective != NULL, NULL);
+
+  result = g_slice_new (ClutterPerspective);
+  *result = *perspective;
+
+  return result;
+}
+
+/**
+ * clutter_perspective_free:
+ * @perspective: a #ClutterPerspective
+ *
+ * Frees a perspective structure created with clutter_perspective_copy().
+ *
+ * Since: 0.2
+ */
+void
+clutter_perspective_free (ClutterPerspective *perspective)
+{
+  g_return_if_fail (perspective != NULL);
+
+  g_slice_free (ClutterPerspective, perspective);
+}
+
+GType
+clutter_perspective_get_type (void)
+{
+  static GType our_type = 0;
+  
+  if (!our_type)
+    our_type = g_boxed_type_register_static 
+                       ("ClutterPerspective",
+			(GBoxedCopyFunc) clutter_perspective_copy,
+			(GBoxedFreeFunc) clutter_perspective_free);
+  return our_type;
+}

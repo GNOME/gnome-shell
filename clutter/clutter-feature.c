@@ -55,16 +55,16 @@
 #endif
 
 typedef void (*FuncPtr) (void);
-typedef int (*GLXGetVideoSyncProc)  (unsigned int *count);
-typedef int (*GLXWaitVideoSyncProc) (int           divisor,
-				     int          remainder,
-				     unsigned int *count);
+typedef int (*GetVideoSyncProc)  (unsigned int *count);
+typedef int (*WaitVideoSyncProc) (int           divisor,
+				  int          remainder,
+				  unsigned int *count);
 typedef FuncPtr (*GLXGetProcAddressProc) (const guint8 *procName);
 
 typedef struct ClutterFeatureFuncs
 {
-  GLXGetVideoSyncProc  get_video_sync;
-  GLXWaitVideoSyncProc wait_video_sync;
+  GetVideoSyncProc  get_video_sync;
+  WaitVideoSyncProc wait_video_sync;
 
 } ClutterFeatureFuncs;
 
@@ -89,7 +89,8 @@ typedef struct ClutterFeatures
 static ClutterFeatures* __features = NULL;
 G_LOCK_DEFINE_STATIC (__features);
 
-/* #ifdef linux */
+
+#ifdef __linux__
 #define DRM_VBLANK_RELATIVE 0x1;
 
 struct drm_wait_vblank_request {
@@ -129,7 +130,7 @@ static int drm_wait_vblank(int fd, drm_wait_vblank_t *vbl)
     return rc;
 }
 
-/* #endif */
+#endif 
 
 
 /* Note must be called after context created */
@@ -137,6 +138,7 @@ static gboolean
 check_gl_extension (const gchar *name,
                     const gchar *ext)
 {
+  /* FIXME: move to cogl */
   gchar *end;
   gint name_len, n;
 
@@ -159,6 +161,7 @@ check_gl_extension (const gchar *name,
   return FALSE;
 }
 
+/* FIXME: move to cogl */
 static FuncPtr
 get_proc_address (const gchar *name)
 {
@@ -237,7 +240,7 @@ check_vblank_env (const char *name)
 static void
 clutter_feature_init (void)
 {
-  const gchar *gl_extensions, *glx_extensions;
+  const gchar *gl_extensions, *glx_extensions = NULL;
   
   CLUTTER_NOTE (MISC, "checking features");
 
@@ -259,16 +262,18 @@ clutter_feature_init (void)
     return;
 
 #ifdef HAVE_CLUTTER_GLX
+  glx_extensions 
+    = glXQueryExtensionsString (clutter_glx_get_default_display (),
+				clutter_glx_get_default_screen ());
+#endif  
+
   gl_extensions = (const gchar*) glGetString (GL_EXTENSIONS);
-  glx_extensions = glXQueryExtensionsString (clutter_glx_get_default_display (),
-                                             clutter_glx_get_default_screen ());
-  
+
   if (check_gl_extension ("GL_ARB_texture_rectangle", gl_extensions) ||
       check_gl_extension ("GL_EXT_texture_rectangle", gl_extensions))
     {
       __features->flags |= CLUTTER_FEATURE_TEXTURE_RECTANGLE;
     }
-#endif
 
   /* vblank */
 
@@ -285,10 +290,10 @@ clutter_feature_init (void)
 	  check_gl_extension ("GLX_SGI_video_sync", glx_extensions))
 	{
 	  __features->funcs.get_video_sync = 
-	     (GLXGetVideoSyncProc) get_proc_address ("glXGetVideoSyncSGI");
+	     (GetVideoSyncProc) get_proc_address ("glXGetVideoSyncSGI");
 
 	  __features->funcs.wait_video_sync = 
-	    (GLXWaitVideoSyncProc) get_proc_address ("glXWaitVideoSyncSGI");
+	    (WaitVideoSyncProc) get_proc_address ("glXWaitVideoSyncSGI");
 
 	  if ((__features->funcs.get_video_sync != NULL) &&
 	      (__features->funcs.wait_video_sync != NULL))
@@ -300,7 +305,7 @@ clutter_feature_init (void)
 	    }
 	}
 #endif
-
+#ifdef __linux__
       if (!(__features->flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
 	{
 	  __features->dri_fd = open("/dev/dri/card0", O_RDWR);
@@ -312,7 +317,7 @@ clutter_feature_init (void)
 	      __features->flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
 	    }
 	}
-
+#endif
       if (!(__features->flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
         {
           CLUTTER_NOTE (MISC,
@@ -388,6 +393,7 @@ clutter_feature_wait_for_vblank (void)
   switch (__features->vblank_type)
     {
     case CLUTTER_VBLANK_GLX:
+#ifdef HAVE_CLUTTER_GLX
       {
 	unsigned int retraceCount;
 	__features->funcs.get_video_sync (&retraceCount);
@@ -395,8 +401,10 @@ clutter_feature_wait_for_vblank (void)
 					   (retraceCount + 1) % 2,
                                            &retraceCount); 
       }
+#endif
       break;
     case CLUTTER_VBLANK_DRI:
+#ifdef __linux__
       {
 	drm_wait_vblank_t blank;
 	blank.request.type     = DRM_VBLANK_RELATIVE;
@@ -404,6 +412,7 @@ clutter_feature_wait_for_vblank (void)
 	blank.request.signal   = 0;
 	drm_wait_vblank (__features->dri_fd, &blank);
       }
+#endif
       break;
     case CLUTTER_VBLANK_NONE:
     default:

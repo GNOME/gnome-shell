@@ -115,10 +115,12 @@ AC_SUBST([clutterbackend])
 case $clutterbackend in
   glx)
     CLUTTER_FLAVOUR="glx"
+    CLUTTER_GOGL="gl"
     AC_DEFINE([HAVE_CLUTTER_GLX], 1, [Have the GLX backend])
     ;;
   egl)
     CLUTTER_FLAVOUR="egl"
+    CLUTTER_GOGL="gles"
     AC_DEFINE([HAVE_CLUTTER_EGL], 1, [Have the EGL backend])
     ;;
   *) AC_MSG_ERROR([Invalid backend for Clutter: use glx or egl])
@@ -126,6 +128,7 @@ case $clutterbackend in
 esac
 
 AC_SUBST(CLUTTER_FLAVOUR)
+AC_SUBST(CLUTTER_COGL)
 
 clutterbackendlib=libclutter-$clutterbackend-$CLUTTER_MAJORMINOR.la
 AC_SUBST([clutterbackendlib])
@@ -196,6 +199,8 @@ AC_CONFIG_FILES([
         clutter/clutter-version.h
         clutter/glx/Makefile
         clutter/egl/Makefile
+        clutter/cogl/Makefile
+        clutter/cogl/gl/Makefile
         examples/Makefile
         doc/Makefile
         doc/reference/Makefile

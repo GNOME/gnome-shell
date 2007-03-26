@@ -1,8 +1,8 @@
 NULL =
 
-SUBDIRS = pango $(clutterbackend)
+SUBDIRS = cogl pango $(clutterbackend) 
 
-DIST_SUBDIRS = pango glx egl
+DIST_SUBDIRS = pango glx egl cogl
 
 target = $(clutterbackend)
 
@@ -15,6 +15,7 @@ GLIB_MKENUMS=`pkg-config --variable=glib_mkenums glib-2.0`
 INCLUDES = \
 	-I$(top_srcdir) 			\
 	-I$(top_srcdir)/clutter/pango 		\
+	-I$(top_srcdir)/cogl 	         	\
 	-DPREFIX=\""$(prefix)"\" 		\
 	-DLIBDIR=\""$(libdir)"\" 		\
 	-DDATADIR=\""$(datadir)"\" 		\
@@ -149,25 +150,22 @@ source_h_priv = \
 	$(NULL)
 
 
-libclutter_glx_0_3_la_LIBADD = $(CLUTTER_LIBS) pango/libpangoclutter.la glx/libclutter-glx.la	
-libclutter_glx_0_3_la_SOURCES = $(source_c) $(source_h) $(source_h_priv)
-libclutter_glx_0_3_la_LDFLAGS = $(LDADD)
+libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LIBADD =   \
+  $(CLUTTER_LIBS) pango/libpangoclutter.la                       \
+  @CLUTTER_FLAVOUR@/libclutter-@CLUTTER_FLAVOUR@.la              \
+  cogl/gl/libclutter-cogl.la	  
 
-#libclutter_egl_0_3_la_LIBADD = \
-#	$(CLUTTER_LIBS) \
-#	pango/libpangoclutter.la \
-#	egl/libclutter-egl.la
-#libclutter_egl_0_3_la_LDADD = $(LDADD)
-#libclutter_egl_0_3_la_SOURCES = \
-#	$(source_c) \
-#	$(source_h) \
-#	$(source_h_priv)
+libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_SOURCES =  \
+  $(source_c) $(source_h) $(source_h_priv)                      
+
+libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LDFLAGS = $(LDADD)
 
 lib_LTLIBRARIES = $(clutterbackendlib)
 
-EXTRA_LTLIBRARIES = libclutter-glx-0.3.la
+EXTRA_LTLIBRARIES = libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la
 
 clutterdir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter
+
 clutter_HEADERS = \
 	$(source_h) \
 	clutter-enum-types.h \

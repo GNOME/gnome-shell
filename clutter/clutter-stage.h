@@ -120,6 +120,22 @@ struct _ClutterStageClass
   void (*_clutter_stage6) (void);
 };
 
+#define CLUTTER_TYPE_PERSPECTIVE  (clutter_perspective_get_type ())
+
+typedef struct _ClutterPerspective ClutterPerspective;
+
+struct _ClutterPerspective
+{
+  ClutterFixed fovy;
+  ClutterFixed aspect;
+  ClutterFixed zNear;
+  ClutterFixed zFar;
+};
+
+ClutterPerspective *clutter_perspective_copy (const ClutterPerspective *perspective);
+void          clutter_perspective_free       (ClutterPerspective       *perspective);
+
+
 GType         clutter_stage_get_type         (void) G_GNUC_CONST;
 
 ClutterActor *clutter_stage_get_default      (void);
