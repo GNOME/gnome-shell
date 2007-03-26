@@ -1,3 +1,9 @@
+2007-03-25  Elijah Newren  <newren gmail com>
+
+	* configure.in: bump version to 2.19.1; doesn't make sense to have
+	the development version have a version number less than the stable
+	version.  ;-)
+
 2007-03-20  Arthur Taylor  <theycallhimart@gmail.com>
 
         * src/frames.c (meta_frames_apply_shapes): adjusted the rounded
