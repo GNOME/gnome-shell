@@ -1,3 +1,28 @@
+2007-03-27  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/cogl/Makefile.am:
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/gles/Makefile.am:
+	* clutter/cogl/gles/cogl.c:
+	Begin poplulating cogl GLES code.
+
+	* configure.ac:
+	* clutter/egl/clutter-event-egl.c:
+	* clutter/egl/clutter-stage-egl.c:
+	* clutter/egl/clutter-stage-egl.h:
+	* clutter/egl/clutter-backend-egl.c:
+	* clutter/egl/clutter-backend-egl.h:
+	* clutter/egl/clutter-egl.h:
+	Add initial EGL/X backend work mostly ported from backend branch.
+	Builds but untested as yet.
+
+	* clutter/glx/clutter-stage-glx.c:
+	Only include XFixes Header if we have have it.
+
+	* clutter/clutter-behaviour.c: (clutter_behaviour_apply):
+	* clutter/clutter-behaviour.h:
+	Add clutter_behaviour_is_applied()
+
 2007-03-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-stage.h: Remove unused clutter_stage_flush()

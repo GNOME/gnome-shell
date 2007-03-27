@@ -1,7 +1,16 @@
 #ifndef __CLUTTER_STAGE_EGL_H__
 #define __CLUTTER_STAGE_EGL_H__
 
+#include <glib-object.h>
 #include <clutter/clutter-stage.h>
+
+#include <X11/Xlib.h>
+#include <X11/Xatom.h>
+#include <X11/Xutil.h>
+
+#include <GLES/gl.h>
+#include <GLES/egl.h>
+
 
 #define CLUTTER_TYPE_STAGE_EGL                  (clutter_stage_egl_get_type ())
 #define CLUTTER_STAGE_EGL(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_STAGE_EGL, ClutterStageEgl))
@@ -16,6 +25,18 @@ typedef struct _ClutterStageEglClass    ClutterStageEglClass;
 struct _ClutterStageEgl
 {
   ClutterStage parent_instance;
+
+  /* from the backend */
+  Display     *xdpy;
+  Window       xwin_root;
+  int          xscreen;
+  XVisualInfo *xvisinfo; 
+  Window       xwin;  
+  gint         xwin_width;
+  gint         xwin_height;
+
+  EGLSurface   egl_surface;
+  EGLContext   egl_context;
 };
 
 struct _ClutterStageEglClass

@@ -215,6 +215,27 @@ clutter_behaviour_apply (ClutterBehaviour *behave,
 }
 
 /**
+ * clutter_behaviour_is_applied:
+ * @behave: a #ClutterBehaviour
+ * @actor: a #ClutterActor
+ *
+ * Check if @behave applied to  @actor.
+ *
+ * Return value: TRUE if actor has behaviour. FALSE otherwise.
+ *
+ * Since: 0.3
+ */
+gboolean
+clutter_behaviour_is_applied (ClutterBehaviour *behave,
+			      ClutterActor     *actor)
+{
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR (behave));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+
+  return (g_slist_find (behave->priv->actors, actor) != NULL);
+}
+
+/**
  * clutter_behaviour_remove:
  * @behave: a #ClutterBehaviour
  * @actor: a #ClutterActor

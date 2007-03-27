@@ -36,7 +36,9 @@
 #include "../clutter-private.h"
 #include "../clutter-debug.h"
 
+#ifdef HAVE_XFIXES
 #include <X11/extensions/Xfixes.h>
+#endif
 
 #include <GL/glx.h>
 #include <GL/gl.h>

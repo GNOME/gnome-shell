@@ -113,6 +113,9 @@ ClutterAlpha *clutter_behaviour_get_alpha      (ClutterBehaviour            *beh
 void          clutter_behaviour_set_alpha      (ClutterBehaviour            *behave,
                                                 ClutterAlpha                *alpha);
 
+gboolean      clutter_behaviour_is_applied     (ClutterBehaviour *behave,
+						ClutterActor     *actor);
+
 G_END_DECLS
 
 #endif

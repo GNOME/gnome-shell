@@ -24,6 +24,8 @@
 
 #include <glib-object.h>
 #include <clutter/clutter-backend.h>
+#include <X11/Xlib.h>
+#include <X11/Xatom.h>
 
 G_BEGIN_DECLS
 
@@ -40,6 +42,17 @@ typedef struct _ClutterBackendEglClass  ClutterBackendEglClass;
 struct _ClutterBackendEgl
 {
   ClutterBackend parent_instance;
+
+  Display *xdpy;
+  gchar   *display_name;
+  Window   xwin_root;
+  int      xscreen;
+
+  /* main stage singleton */
+  ClutterActor *stage;
+
+  /* event source */
+  GSource *event_source;
 
   /*< private >*/
 };

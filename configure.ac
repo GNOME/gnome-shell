@@ -92,18 +92,6 @@ if $PKG_CONFIG --exists xfixes ; then
   X11_LIBS="$X11_LIBS -lXfixes"
 fi
 
-AC_CHECK_HEADERS([GL/gl.h GL/glx.h],,
-	         [AC_MSG_ERROR([Unable to locate required GL headers])])
-
-AC_CHECK_LIB(GL, glXCreateContext, HAVE_LIBGL=yes, HAVE_LIBGL=no)
-
-if test "x$HAVE_LIBGL" = "xno"; then
-   AC_MSG_ERROR(libGL not found);
-else
-   GLX_LIBS="$X11_LIBS -lGL"
-fi
-
-GLX_CFLAGS="$X11_CFLAGS"
 
 clutterbackend=glx
 AC_ARG_WITH([flavour],
@@ -112,19 +100,46 @@ AC_ARG_WITH([flavour],
             clutterbackend=$with_flavour)
 
 AC_SUBST([clutterbackend])
+
 case $clutterbackend in
+
   glx)
+
     CLUTTER_FLAVOUR="glx"
     CLUTTER_GOGL="gl"
     AC_DEFINE([HAVE_CLUTTER_GLX], 1, [Have the GLX backend])
+
+    AC_CHECK_HEADERS([GL/gl.h GL/glx.h],,
+	         [AC_MSG_ERROR([Unable to locate required GL headers])])
+
+    AC_CHECK_LIB(GL, glXCreateContext, HAVE_LIBGL=yes, HAVE_LIBGL=no)
+
+    if test "x$HAVE_LIBGL" = "xno"; then
+      AC_MSG_ERROR([GLX not found and GLX backend requested]);
+    fi
+
+    GLX_LIBS="$X11_LIBS -lGL"
+    GLX_CFLAGS="$X11_CFLAGS"
     ;;
+
   egl)
+    
     CLUTTER_FLAVOUR="egl"
     CLUTTER_GOGL="gles"
     AC_DEFINE([HAVE_CLUTTER_EGL], 1, [Have the EGL backend])
+
+    PKG_CHECK_MODULES(EGL, libvincent, HAVE_OGLES=yes, HAVE_OGLES=no)
+    if test "x$HAVE_OGLES" = "xno"; then
+      AC_MSG_ERROR([libvincent (ogles) not found and egl backend requested.]);
+    fi
+    
+    EGL_LIBS="$EGL_LIBS $X11_LIBS"
+    EGL_CFLAGS="$EGL_CFLAGS $X11_CFLAGS"
     ;;
+
   *) AC_MSG_ERROR([Invalid backend for Clutter: use glx or egl])
     ;;
+
 esac
 
 AC_SUBST(CLUTTER_FLAVOUR)
@@ -186,8 +201,8 @@ dnl ========================================================================
 
 AC_SUBST(GCC_FLAGS)
 
-CLUTTER_CFLAGS="$GLX_CLAGS $CLUTTER_DEPS_CFLAGS $CLUTTER_FIXED_CFLAGS"
-CLUTTER_LIBS="$GLX_LIBS $CLUTTER_DEPS_LIBS"
+CLUTTER_CFLAGS="$EGL_CFLAGS $GLX_CFLAGS $CLUTTER_DEPS_CFLAGS $CLUTTER_FIXED_CFLAGS"
+CLUTTER_LIBS="$EGL_LIBS $GLX_LIBS $CLUTTER_DEPS_LIBS"
 
 AC_SUBST(CLUTTER_CFLAGS)
 AC_SUBST(CLUTTER_LIBS)
@@ -201,6 +216,7 @@ AC_CONFIG_FILES([
         clutter/egl/Makefile
         clutter/cogl/Makefile
         clutter/cogl/gl/Makefile
+        clutter/cogl/gles/Makefile
         examples/Makefile
         doc/Makefile
         doc/reference/Makefile
