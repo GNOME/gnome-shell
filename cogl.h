@@ -63,6 +63,34 @@ cogl_rotatex (ClutterFixed angle, gint x, gint y, gint z);
 void
 cogl_rotate (gint angle, gint x, gint y, gint z);
 
+void
+cogl_color (ClutterColor *color);
+
+#if 0
+
+../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glColor3f'
+../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glColor4ub'
+../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glGetTexLevelParameteriv'
+../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glSelectBuffer'
+../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glScaled'
+../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glPushName'
+../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glRecti'
+../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glBegin'
+../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glInitNames'
+../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glVertex2i'
+../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glGetTexImage'
+../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glTexCoord2f'
+../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glRenderMode'
+../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glTranslated'
+../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glRotated'
+../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glLoadName'
+../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glTexEnvi'
+../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glVertex2d'
+../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glEnd'
+
+#endif
+
 G_END_DECLS
 
 #endif /* __COGL_H__ */
+
