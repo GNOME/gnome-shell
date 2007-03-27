@@ -23,7 +23,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#ifndef __COGL_H__
+#define __COGL_H__
+
+#include <glib.h>
 #include <clutter/clutter.h>
+
+G_BEGIN_DECLS
 
 typedef void (*CoglFuncPtr) (void);
 
@@ -57,3 +63,6 @@ cogl_rotatex (ClutterFixed angle, gint x, gint y, gint z);
 void
 cogl_rotate (gint angle, gint x, gint y, gint z);
 
+G_END_DECLS
+
+#endif /* __COGL_H__ */
