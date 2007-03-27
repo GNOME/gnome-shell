@@ -158,7 +158,6 @@ GdkPixbuf *   clutter_stage_snapshot         (ClutterStage       *stage,
                                               gint                y,
                                               gint                width,
                                               gint                height);
-void          clutter_stage_flush            (ClutterStage       *stage);
 
 G_END_DECLS
 
