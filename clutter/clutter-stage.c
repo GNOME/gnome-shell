@@ -800,7 +800,7 @@ clutter_perspective_copy (const ClutterPerspective *perspective)
  *
  * Frees a perspective structure created with clutter_perspective_copy().
  *
- * Since: 0.2
+ * Since: 0.4
  */
 void
 clutter_perspective_free (ClutterPerspective *perspective)
