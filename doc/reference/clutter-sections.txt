@@ -317,6 +317,9 @@ clutter_texture_get_type
 CLUTTER_STAGE_WIDTH
 CLUTTER_STAGE_HEIGHT
 <TITLE>ClutterStage</TITLE>
+ClutterPerspective
+clutter_perspective_copy
+clutter_perspective_free
 ClutterStage
 ClutterStageClass
 clutter_stage_get_default
@@ -339,6 +342,7 @@ CLUTTER_STAGE_GET_CLASS
 <SUBSECTION Private>
 ClutterStagePrivate
 clutter_stage_get_type
+clutter_perspective_get_type
 </SECTION>
 
 <SECTION>
@@ -446,7 +450,6 @@ clutter_behaviour_scale_get_type
 <TITLE>ClutterBackend</TITLE>
 ClutterBackend
 clutter_get_default_backend
-clutter_backend_get_stage
 clutter_backend_get_event
 clutter_backend_peek_event
 clutter_backend_put_event
@@ -460,11 +463,6 @@ CLUTTER_TYPE_BACKEND
 <SUBSECTION Private>
 ClutterBackendClass
 clutter_backend_get_type
-clutter_backend_add_options
-clutter_backend_init_stage
-clutter_backend_init_events
-clutter_backend_pre_parse
-clutter_backend_post_parse
 </SECTION>
 
 <SECTION>

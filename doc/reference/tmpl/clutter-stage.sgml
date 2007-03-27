@@ -31,6 +31,33 @@ Macro evaluating to the height of the #ClutterStage
 
 
 
+<!-- ##### STRUCT ClutterPerspective ##### -->
+<para>
+
+</para>
+
+@fovy: 
+@aspect: 
+@zNear: 
+@zFar: 
+
+<!-- ##### FUNCTION clutter_perspective_copy ##### -->
+<para>
+
+</para>
+
+@perspective: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_perspective_free ##### -->
+<para>
+
+</para>
+
+@perspective: 
+
+
 <!-- ##### STRUCT ClutterStage ##### -->
 <para>
 #ClutterStage has no publicly available members.

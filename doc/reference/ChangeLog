@@ -1,3 +1,10 @@
+2007-03-27  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* Makefile.am: Ignore clutter/cogl: it's private API.
+
+	* clutter-sections.txt: Remove the now private ClutterBackend
+	API; add the ClutterPerspective API.
+
 2007-03-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Add clutter_get_default_backend().

@@ -48,7 +48,7 @@ static gint clutter_screen = 0;
 
 /* X error trap */
 static int TrappedErrorCode = 0;
-static int (*old_error_handler) (Display *, XErrorEvent *);
+static int (* old_error_handler) (Display *, XErrorEvent *);
 
 static gboolean
 clutter_backend_glx_pre_parse (ClutterBackend  *backend,

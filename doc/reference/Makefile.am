@@ -56,9 +56,10 @@ IGNORE_HFILES=\
 	clutter-enum-types.h \
 	stamp-clutter-enum-types.h \
 	stamp-clutter-marshal.h \
-	pango \
+	cogl \
+	egl \
 	glx \
-	egl
+	pango 
 
 EXTRA_HFILES=\
         ../../clutter/glx/clutter-glx.h
