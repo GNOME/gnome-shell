@@ -43,8 +43,8 @@ Window   clutter_glx_get_root_window     (void);
 Window       clutter_glx_get_stage_window (ClutterStage *stage);
 XVisualInfo *clutter_glx_get_stage_visual (ClutterStage *stage);
 
-void         clutter_glx_set_stage_foreign (ClutterStage *stage,
-                                            Window        window);
+gboolean     clutter_glx_set_stage_foreign (ClutterStage *stage,
+                                            Window        xwindow);
 
 G_END_DECLS
 

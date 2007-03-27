@@ -1,5 +1,11 @@
 2007-03-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/glx/clutter-glx.h:
+	* clutter/glx/clutter-stage-glx.c: (Re-)Implement the foreign
+	window setting function for the stage in the GLX backend.
+
+2007-03-27  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-stage.h: Declare the clutter_perspective_get_type()
 	function in the header.
 

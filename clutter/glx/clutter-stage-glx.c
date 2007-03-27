@@ -636,11 +636,65 @@ clutter_glx_get_stage_visual (ClutterStage *stage)
   return CLUTTER_STAGE_GLX (stage)->xvisinfo;
 }
 
-void
+/**
+ * clutter_glx_set_stage_foreign:
+ * @stage: a #ClutterStage
+ * @xwindow: an existing X Window id
+ *
+ * Target the #ClutterStage to use an existing external X Window
+ *
+ * Return value: %TRUE if foreign window is valid
+ *
+ * Since: 0.4
+ */
+gboolean
 clutter_glx_set_stage_foreign (ClutterStage *stage,
-                               Window        window)
+                               Window        xwindow)
 {
-  g_return_if_fail (CLUTTER_IS_STAGE_GLX (stage));
+  ClutterStageGlx *stage_glx;
+  ClutterActor *actor;
+  gint x, y;
+  guint width, height, border, depth;
+  Window root_return;
+  Status status;
+  ClutterGeometry geom;
 
-  /* FIXME */
+  g_return_val_if_fail (CLUTTER_IS_STAGE_GLX (stage), FALSE);
+  g_return_val_if_fail (xwindow != None, FALSE);
+
+  stage_glx = CLUTTER_STAGE_GLX (stage);
+  actor = CLUTTER_ACTOR (stage);
+
+  clutter_glx_trap_x_errors ();
+
+  status = XGetGeometry (stage_glx->xdpy,
+                         xwindow,
+                         &root_return,
+                         &x, &y,
+                         &width, &height,
+                         &border,
+                         &depth);
+  
+  if (clutter_glx_untrap_x_errors () ||
+      !status ||
+      width == 0 || height == 0 ||
+      depth != stage_glx->xvisinfo->depth)
+    {
+      return FALSE;
+    }
+
+  clutter_actor_unrealize (actor);
+
+  stage_glx->xwin = xwindow;
+  stage_glx->is_foreign_xwin = TRUE;
+
+  geom.x = x;
+  geom.y = y;
+  geom.width = stage_glx->xwin_width = width;
+  geom.height = stage_glx->xwin_height = height;
+
+  clutter_actor_set_geometry (actor, &geom);
+  clutter_actor_realize (actor);
+
+  return TRUE;
 }
