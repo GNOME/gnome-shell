@@ -1,5 +1,10 @@
 2007-03-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-stage.h: Declare the clutter_perspective_get_type()
+	function in the header.
+
+2007-03-27  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/cogl/cogl.h: Add header and compiler guards.
 
 2007-03-27  Emmanuele Bassi  <ebassi@openedhand.com>

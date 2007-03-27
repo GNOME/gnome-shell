@@ -132,8 +132,9 @@ struct _ClutterPerspective
   ClutterFixed zFar;
 };
 
-ClutterPerspective *clutter_perspective_copy (const ClutterPerspective *perspective);
-void          clutter_perspective_free       (ClutterPerspective       *perspective);
+GType               clutter_perspective_get_type (void) G_GNUC_CONST;
+ClutterPerspective *clutter_perspective_copy     (const ClutterPerspective *perspective);
+void                clutter_perspective_free     (ClutterPerspective       *perspective);
 
 
 GType         clutter_stage_get_type         (void) G_GNUC_CONST;
