@@ -311,10 +311,8 @@ clutter_stage_glx_paint (ClutterActor *self)
   glDisable (GL_LIGHTING); 
   glDisable (GL_DEPTH_TEST);
 
-  /* FIXME Check is redundant */
-  if (G_LIKELY(CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->paint))
-    /* Basically call up to ClutterGroup paint here */
-    CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->paint (self);
+  /* chain up to reach ClutterGroup->paint here */
+  CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->paint (self);
 
   /* Why this paint is done in backend as likely GL windowing system
    * specific calls, like swapping buffers.
@@ -442,7 +440,7 @@ clutter_stage_glx_set_cursor_visible (ClutterStage *stage,
   if (stage_glx->xwin == None)
     return;
 
-  CLUTTER_NOTE (MISC, "setting cursor state (%s) over stage window (%u)",
+  CLUTTER_NOTE (MISC, "setting cursor state ('%s') over stage window (%u)",
                 show_cursor ? "visible" : "invisible",
                 (unsigned int) stage_glx->xwin);
 

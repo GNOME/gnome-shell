@@ -1,3 +1,9 @@
+2007-03-27  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/glx/clutter-stage-glx.c: Remove the check in the
+	paint chain up: we know for sure that the parent's paint
+	vfunc is present.
+
 2007-03-27  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-feature.c:
