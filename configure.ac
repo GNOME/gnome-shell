@@ -106,7 +106,7 @@ case $clutterbackend in
   glx)
 
     CLUTTER_FLAVOUR="glx"
-    CLUTTER_GOGL="gl"
+    CLUTTER_COGL="gl"
     AC_DEFINE([HAVE_CLUTTER_GLX], 1, [Have the GLX backend])
 
     AC_CHECK_HEADERS([GL/gl.h GL/glx.h],,

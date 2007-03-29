@@ -48,6 +48,8 @@
 
 #include <gdk-pixbuf-xlib/gdk-pixbuf-xlib.h>
 
+#define FIXED_PERSPECTIVE
+
 G_DEFINE_ABSTRACT_TYPE (ClutterStage, clutter_stage, CLUTTER_TYPE_GROUP);
 
 #define CLUTTER_STAGE_GET_PRIVATE(obj) \
@@ -622,6 +624,11 @@ clutter_stage_snapshot (ClutterStage *stage,
   return NULL;
 }
 
+#ifndef FIXED_PERSPECTIVE
+/*
+ * Original floating point implementaiton of the perspective function,
+ * retained for reference purposes
+ */
 static inline void
 frustum (GLfloat left,
 	 GLfloat right,
@@ -658,13 +665,60 @@ perspective (GLfloat fovy,
 {
   GLfloat xmin, xmax, ymin, ymax;
 
-  ymax = zNear * tan (fovy * M_PI / 360.0);
+  ymax = zNear * tan (fovy * M_PI / 180.0);
   ymin = -ymax;
   xmin = ymin * aspect;
   xmax = ymax * aspect;
 
+  printf ("%f, %f, %f, %f\n", xmin, xmax, ymin, ymax);
+  
   frustum (xmin, xmax, ymin, ymax, zNear, zFar);
 }
+#else
+
+/*
+ * Fixed point implementation of the perspective function
+ */
+static inline void
+perspectivex (ClutterAngle fovy,
+	      ClutterFixed aspect,
+	      ClutterFixed zNear,
+	      ClutterFixed zFar)
+{
+  ClutterFixed xmax, ymax;
+  ClutterFixed x, y, c, d;
+  GLfloat m[16];
+
+  memset (&m[0], 0, sizeof (m));
+
+  /*
+   * Based on the original algorithm in perspective():
+   * 
+   * 1) xmin = -xmax => xmax + xmin == 0 && xmax - xmin == 2 * xmax
+   * same true for y, hence: a == 0 && b == 0;
+   *
+   * 2) When working with small numbers, we can are loosing significant
+   * precision, hence we use clutter_qmulx() here, not the fast macro.
+   */
+  ymax = clutter_qmulx (zNear, clutter_tani (fovy));
+  xmax = clutter_qmulx (ymax, aspect);
+
+  x = CFX_DIV (zNear, xmax);
+  y = CFX_DIV (zNear, ymax);
+  c = CFX_DIV (-(zFar + zNear), ( zFar - zNear));
+  d = CFX_DIV (-(clutter_qmulx (2*zFar, zNear)), (zFar - zNear));
+
+#define M(row,col)  m[col*4+row]
+  M(0,0) = CLUTTER_FIXED_TO_FLOAT (x);
+  M(1,1) = CLUTTER_FIXED_TO_FLOAT (y);
+  M(2,2) = CLUTTER_FIXED_TO_FLOAT (c);
+  M(2,3) = CLUTTER_FIXED_TO_FLOAT (d);
+  M(3,2) = -1.0F;
+#undef M
+
+  glMultMatrixf (m);
+}
+#endif
 
 void
 _clutter_stage_sync_viewport (ClutterStage *stage)
@@ -683,8 +737,15 @@ _clutter_stage_sync_viewport (ClutterStage *stage)
   
   glMatrixMode (GL_PROJECTION);
   glLoadIdentity ();
-  
-  perspective (60.0f, 1.0f, 0.1f, 100.0f);
+
+#ifndef FIXED_PERSPECTIVE
+  perspective (30.0f, 1.0f, 0.1f, 100.0f);
+#else
+  perspectivex (85, /* 30 degrees */
+		CFX_ONE,
+		CLUTTER_FLOAT_TO_FIXED (0.1),
+		CLUTTER_FLOAT_TO_FIXED (100.0));
+#endif
   
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity ();
@@ -740,7 +801,14 @@ clutter_stage_get_actor_at_pos (ClutterStage *stage,
 	        (view[3] - 2 * (y - view[1])), 0);
   glScalef (view[2], -view[3], 1.0);
 
-  perspective (60.0f, 1.0f, 0.1f, 100.0f); 
+#ifndef FIXED_PERSPECTIVE
+  perspective (30.0f, 1.0f, 0.1f, 100.0f);
+#else
+  perspectivex (85, /* 30 degrees */
+		CFX_ONE,
+		CLUTTER_FLOAT_TO_FIXED (0.1),
+		CLUTTER_FLOAT_TO_FIXED (100.0));
+#endif
 
   glMatrixMode (GL_MODELVIEW);
 

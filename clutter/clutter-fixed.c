@@ -256,6 +256,124 @@ clutter_sini (ClutterAngle angle)
     return result;
 }
 
+/* pre-computed tan table for 1st quadrant
+ *
+ * Currently contains 257 entries.
+ *
+ */
+static ClutterFixed tan_tbl [] =
+{
+  0x00000000L, 0x00000192L, 0x00000324L, 0x000004b7L, 
+  0x00000649L, 0x000007dbL, 0x0000096eL, 0x00000b01L, 
+  0x00000c94L, 0x00000e27L, 0x00000fbaL, 0x0000114eL, 
+  0x000012e2L, 0x00001477L, 0x0000160cL, 0x000017a1L, 
+  0x00001937L, 0x00001acdL, 0x00001c64L, 0x00001dfbL, 
+  0x00001f93L, 0x0000212cL, 0x000022c5L, 0x0000245fL, 
+  0x000025f9L, 0x00002795L, 0x00002931L, 0x00002aceL, 
+  0x00002c6cL, 0x00002e0aL, 0x00002faaL, 0x0000314aL, 
+  0x000032ecL, 0x0000348eL, 0x00003632L, 0x000037d7L, 
+  0x0000397dL, 0x00003b24L, 0x00003cccL, 0x00003e75L, 
+  0x00004020L, 0x000041ccL, 0x00004379L, 0x00004528L, 
+  0x000046d8L, 0x0000488aL, 0x00004a3dL, 0x00004bf2L, 
+  0x00004da8L, 0x00004f60L, 0x0000511aL, 0x000052d5L, 
+  0x00005492L, 0x00005651L, 0x00005812L, 0x000059d5L, 
+  0x00005b99L, 0x00005d60L, 0x00005f28L, 0x000060f3L, 
+  0x000062c0L, 0x0000648fL, 0x00006660L, 0x00006834L, 
+  0x00006a0aL, 0x00006be2L, 0x00006dbdL, 0x00006f9aL, 
+  0x0000717aL, 0x0000735dL, 0x00007542L, 0x0000772aL, 
+  0x00007914L, 0x00007b02L, 0x00007cf2L, 0x00007ee6L, 
+  0x000080dcL, 0x000082d6L, 0x000084d2L, 0x000086d2L, 
+  0x000088d6L, 0x00008adcL, 0x00008ce7L, 0x00008ef4L, 
+  0x00009106L, 0x0000931bL, 0x00009534L, 0x00009750L, 
+  0x00009971L, 0x00009b95L, 0x00009dbeL, 0x00009febL, 
+  0x0000a21cL, 0x0000a452L, 0x0000a68cL, 0x0000a8caL, 
+  0x0000ab0eL, 0x0000ad56L, 0x0000afa3L, 0x0000b1f5L, 
+  0x0000b44cL, 0x0000b6a8L, 0x0000b909L, 0x0000bb70L, 
+  0x0000bdddL, 0x0000c04fL, 0x0000c2c7L, 0x0000c545L, 
+  0x0000c7c9L, 0x0000ca53L, 0x0000cce3L, 0x0000cf7aL, 
+  0x0000d218L, 0x0000d4bcL, 0x0000d768L, 0x0000da1aL, 
+  0x0000dcd4L, 0x0000df95L, 0x0000e25eL, 0x0000e52eL, 
+  0x0000e806L, 0x0000eae7L, 0x0000edd0L, 0x0000f0c1L, 
+  0x0000f3bbL, 0x0000f6bfL, 0x0000f9cbL, 0x0000fce1L, 
+  0x00010000L, 0x00010329L, 0x0001065dL, 0x0001099aL, 
+  0x00010ce3L, 0x00011036L, 0x00011394L, 0x000116feL, 
+  0x00011a74L, 0x00011df6L, 0x00012184L, 0x0001251fL, 
+  0x000128c6L, 0x00012c7cL, 0x0001303fL, 0x00013410L, 
+  0x000137f0L, 0x00013bdfL, 0x00013fddL, 0x000143ebL, 
+  0x00014809L, 0x00014c37L, 0x00015077L, 0x000154c9L, 
+  0x0001592dL, 0x00015da4L, 0x0001622eL, 0x000166ccL, 
+  0x00016b7eL, 0x00017045L, 0x00017523L, 0x00017a17L, 
+  0x00017f22L, 0x00018444L, 0x00018980L, 0x00018ed5L, 
+  0x00019445L, 0x000199cfL, 0x00019f76L, 0x0001a53aL, 
+  0x0001ab1cL, 0x0001b11dL, 0x0001b73fL, 0x0001bd82L, 
+  0x0001c3e7L, 0x0001ca71L, 0x0001d11fL, 0x0001d7f4L, 
+  0x0001def1L, 0x0001e618L, 0x0001ed6aL, 0x0001f4e8L, 
+  0x0001fc96L, 0x00020473L, 0x00020c84L, 0x000214c9L, 
+  0x00021d44L, 0x000225f9L, 0x00022ee9L, 0x00023818L, 
+  0x00024187L, 0x00024b3aL, 0x00025534L, 0x00025f78L, 
+  0x00026a0aL, 0x000274edL, 0x00028026L, 0x00028bb8L, 
+  0x000297a8L, 0x0002a3fbL, 0x0002b0b5L, 0x0002bdddL, 
+  0x0002cb79L, 0x0002d98eL, 0x0002e823L, 0x0002f740L, 
+  0x000306ecL, 0x00031730L, 0x00032816L, 0x000339a6L, 
+  0x00034bebL, 0x00035ef2L, 0x000372c6L, 0x00038776L, 
+  0x00039d11L, 0x0003b3a6L, 0x0003cb48L, 0x0003e40aL, 
+  0x0003fe02L, 0x00041949L, 0x000435f7L, 0x0004542bL, 
+  0x00047405L, 0x000495a9L, 0x0004b940L, 0x0004def6L, 
+  0x00050700L, 0x00053196L, 0x00055ef9L, 0x00058f75L, 
+  0x0005c35dL, 0x0005fb14L, 0x00063709L, 0x000677c0L, 
+  0x0006bdd0L, 0x000709ecL, 0x00075ce6L, 0x0007b7bbL, 
+  0x00081b98L, 0x000889e9L, 0x0009046eL, 0x00098d4dL, 
+  0x000a2736L, 0x000ad593L, 0x000b9cc6L, 0x000c828aL, 
+  0x000d8e82L, 0x000ecb1bL, 0x001046eaL, 0x00121703L, 
+  0x00145b00L, 0x0017448dL, 0x001b2672L, 0x002095afL, 
+  0x0028bc49L, 0x0036519aL, 0x00517bb6L, 0x00a2f8fdL, 
+  0x46d3eab2L, 
+};
+
+/**
+ * clutter_tani:
+ * @angle: a #ClutterAngle
+ *
+ * Very fast fixed point implementation of tan function.
+ *
+ * ClutterAngle is an integer such that 1024 represents
+ * full circle.
+ * 
+ * Return value: #ClutterFixed sine value.
+ *
+ * Since: 0.3
+ */
+ClutterFixed
+clutter_tani (ClutterAngle angle)
+{
+    int sign = 1;
+    ClutterFixed result;
+
+    /* reduce negative angle to positive + sign */
+    if (angle < 0)
+    {
+	sign  = 1 + ~sign;
+	angle = 1 + ~angle;
+    }
+    
+    /* reduce to <0,  pi) */
+    angle &= 0x1ff;
+    
+    /* reduce to first quadrant and sign */
+    if (angle > 256)
+    {
+	sign = 1 + ~sign;
+	angle = 512 - angle;
+    }
+
+    result = tan_tbl[angle];
+    
+    if (sign < 0)
+	result = (1 + ~result);
+    
+    return result;
+}
+
 ClutterFixed sqrt_tbl [] =
 {
  0x00000000L, 0x00010000L, 0x00016A0AL, 0x0001BB68L,
@@ -515,6 +633,46 @@ clutter_sqrti (gint number)
     return (number * flt2.i + 0x1e3c68) >> 22;
 }
 
+/**
+ * clutter_fixed_qmulx:
+ * @op1: #ClutterFixed
+ * @op2: #ClutterFixed
+ *
+ * Return value: #ClutterFixed.
+ *
+ * Multiplies two fixed values using 64bit arithmetic; this provides
+ * significantly better precission than the #CLUTTER_FIXED_MUL macro,
+ * but at performance cost (about 2.7 times slowdown on ARMv5e, and 2 times
+ * on x86).
+ *
+ * Since: 0.3
+ */
+ClutterFixed
+clutter_qmulx (ClutterFixed op1, ClutterFixed op2)
+{
+#ifdef __arm__
+    /* This provides about 12% speedeup on the gcc -O2 optimised
+     * C version
+     *
+     * Based on code found in the following thread:
+     * http://lists.mplayerhq.hu/pipermail/ffmpeg-devel/2006-August/014405.html
+     */
+    int res_low, res_hi;
+    
+    __asm__ ("smull %0, %1, %2, %3     \n"
+	     "mov   %0, %0,     lsr %4 \n"
+	     "add   %1, %0, %1, lsl %5 \n"
+	     : "=r"(res_hi), "=r"(res_low)\
+	     : "r"(op1), "r"(op2), "i"(CFX_Q), "i"(32-CFX_Q));
+    
+    return (ClutterFixed) res_low;
+#else
+    long long r = (long long) op1 * (long long) op2;
+
+    return (unsigned int)(r >> CFX_Q);
+#endif
+}
+
 /* <private> */
 const double _magic = 68719476736.0*1.5;
 
@@ -575,3 +733,4 @@ _clutter_double_to_int (double val)
 }
 
 #undef _CFX_MAN
+

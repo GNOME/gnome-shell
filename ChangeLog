@@ -1,3 +1,18 @@
+2007-03-29  Tomas Frydrych  <tf@openedhand.com>
+
+	* configure.ac: fixed typo
+	
+	* clutter/clutter-fixed.c:
+	* clutter/clutter-fixed.h:
+	(clutter_tani): fast implementation of tan()
+	(clutter_qmulx): improved-precission fixed point multiply
+
+	* clutter/clutter-state.c:
+	(perspectivex): fixed point implementaiton of perspective()
+	(_clutter_stage_sync_viewport):
+	(clutter_stage_get_actor_at_pos):
+	use perspectivex() instead of perspective()
+	
 2007-03-27  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/cogl/Makefile.am:
