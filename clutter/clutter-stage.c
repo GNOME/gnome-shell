@@ -49,6 +49,7 @@
 #include <gdk-pixbuf-xlib/gdk-pixbuf-xlib.h>
 
 #define FIXED_PERSPECTIVE
+#undef  USING_GLES
 
 G_DEFINE_ABSTRACT_TYPE (ClutterStage, clutter_stage, CLUTTER_TYPE_GROUP);
 
@@ -665,7 +666,7 @@ perspective (GLfloat fovy,
 {
   GLfloat xmin, xmax, ymin, ymax;
 
-  ymax = zNear * tan (fovy * M_PI / 180.0);
+  ymax = zNear * tan (fovy * M_PI / 360.0);
   ymin = -ymax;
   xmin = ymin * aspect;
   xmax = ymax * aspect;
@@ -687,8 +688,13 @@ perspectivex (ClutterAngle fovy,
 {
   ClutterFixed xmax, ymax;
   ClutterFixed x, y, c, d;
-  GLfloat m[16];
 
+#ifndef USING_GLES
+  GLfloat m[16];
+#else
+  GLfixed m[16];
+#endif
+  
   memset (&m[0], 0, sizeof (m));
 
   /*
@@ -700,7 +706,7 @@ perspectivex (ClutterAngle fovy,
    * 2) When working with small numbers, we can are loosing significant
    * precision, hence we use clutter_qmulx() here, not the fast macro.
    */
-  ymax = clutter_qmulx (zNear, clutter_tani (fovy));
+  ymax = clutter_qmulx (zNear, clutter_tani (fovy >> 1));
   xmax = clutter_qmulx (ymax, aspect);
 
   x = CFX_DIV (zNear, xmax);
@@ -709,14 +715,24 @@ perspectivex (ClutterAngle fovy,
   d = CFX_DIV (-(clutter_qmulx (2*zFar, zNear)), (zFar - zNear));
 
 #define M(row,col)  m[col*4+row]
+#ifndef USING_GLES
   M(0,0) = CLUTTER_FIXED_TO_FLOAT (x);
   M(1,1) = CLUTTER_FIXED_TO_FLOAT (y);
   M(2,2) = CLUTTER_FIXED_TO_FLOAT (c);
   M(2,3) = CLUTTER_FIXED_TO_FLOAT (d);
   M(3,2) = -1.0F;
-#undef M
-
+  
   glMultMatrixf (m);
+#else
+  M(0,0) = x;
+  M(1,1) = y;
+  M(2,2) = c;
+  M(2,3) = d;
+  M(3,2) = 1 + ~CFX_ONE;
+  
+  glMultMatrixx (m);
+#endif
+#undef M
 }
 #endif
 
@@ -739,9 +755,9 @@ _clutter_stage_sync_viewport (ClutterStage *stage)
   glLoadIdentity ();
 
 #ifndef FIXED_PERSPECTIVE
-  perspective (30.0f, 1.0f, 0.1f, 100.0f);
+  perspective (60.0f, 1.0f, 0.1f, 100.0f);
 #else
-  perspectivex (85, /* 30 degrees */
+  perspectivex (171, /* 60 degrees */
 		CFX_ONE,
 		CLUTTER_FLOAT_TO_FIXED (0.1),
 		CLUTTER_FLOAT_TO_FIXED (100.0));
@@ -802,9 +818,9 @@ clutter_stage_get_actor_at_pos (ClutterStage *stage,
   glScalef (view[2], -view[3], 1.0);
 
 #ifndef FIXED_PERSPECTIVE
-  perspective (30.0f, 1.0f, 0.1f, 100.0f);
+  perspective (60.0f, 1.0f, 0.1f, 100.0f);
 #else
-  perspectivex (85, /* 30 degrees */
+  perspectivex (171, /* 60 degrees */
 		CFX_ONE,
 		CLUTTER_FLOAT_TO_FIXED (0.1),
 		CLUTTER_FLOAT_TO_FIXED (100.0));
