@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: metacity HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-11-18 21:11+0200\n"
-"PO-Revision-Date: 2007-01-21 13:00+0200\n"
+"PO-Revision-Date: 2007-03-25 09:22+0300\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -157,7 +157,7 @@ msgid ""
 msgstr ""
 "metacity %s\n"
 "Autoriõigused (C) 2001-2002 Havoc Pennington, Red Hat, Inc., ja teised\n"
-"See protgramm on vaba tarkvara; kopeerimistingimuste kohta vaata\n"
+"See programm on vaba tarkvara; kopeerimistingimuste kohta vaata\n"
 "programmi lähteteksti. Sellel programmil pole MINGISUGUST GARANTIID;\n"
 "isegi KESKMISE/TAVALISE KVALITEEDI GARANTIID või GARANTIID SOBIVUSELE\n"
 "TEATUD KINDLAKS EESMÄRGIKS.\n"
@@ -2964,7 +2964,7 @@ msgstr "Värvust \"%s\" pole võimalik analüüsida"
 #: ../src/theme.c:1499
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr ""
+msgstr "Koordinaatide avaldis sisaldab lubamatut märki '%s'"
 
 #: ../src/theme.c:1526
 #, c-format
@@ -2972,11 +2972,15 @@ msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr ""
+"Koordinaatide avaldis sisaldab ujukomaarvu '%s', seda aga pole võimalik "
+"analüüsida"
 
 #: ../src/theme.c:1540
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
+"Koordinaatide avaldis sisaldab täisarvu '%s', seda aga pole võimalik "
+"analüüsida"
 
 #: ../src/theme.c:1607
 #, c-format
@@ -2987,11 +2991,11 @@ msgstr ""
 
 #: ../src/theme.c:1664
 msgid "Coordinate expression was empty or not understood"
-msgstr ""
+msgstr "Koordinaatide avaldis on tühi või arusaamatult koostatud"
 
 #: ../src/theme.c:1801 ../src/theme.c:1811 ../src/theme.c:1845
 msgid "Coordinate expression results in division by zero"
-msgstr ""
+msgstr "Koordinaatide avaldise tulemuseks on nulliga jagamine"
 
 #: ../src/theme.c:1853
 msgid ""
@@ -3021,20 +3025,21 @@ msgstr ""
 
 #: ../src/theme.c:2054
 msgid "Coordinate expression parser overflowed its buffer."
-msgstr ""
+msgstr "Koordinaatide avaldise analüsaatoril tekkis puhvri ületäitumine."
 
 #: ../src/theme.c:2083
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr ""
+msgstr "Koordinaatide avaldises on sulgevad sulud ilma avavate sulgudeta"
 
 #: ../src/theme.c:2145
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr ""
+"Koordinaatide avaldis sisaldab tundmatut muutujat või konstanti \"%s\""
 
 #: ../src/theme.c:2200
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr ""
+msgstr "Koordinaatide avaldises on avavad sulud ilma sulgevate sulgudeta"
 
 #: ../src/theme.c:2211
 msgid "Coordinate expression doesn't seem to have any operators or operands"
@@ -3095,7 +3100,7 @@ msgstr "Tõrge silumislogi avamisel: %s\n"
 #: ../src/util.c:108
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr ""
+msgstr "Tõrge logifaili %s avamisel funktsiooniga fdopen(): %s\n"
 
 #: ../src/util.c:114
 #, c-format
@@ -3176,15 +3181,8 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 
-#~ msgid ""
-#~ "Forcing this application to quit will cause you to lose any unsaved "
-#~ "changes."
-#~ msgstr ""
-#~ "Sellest rakendusest jõuga väljumine põhjustab kõigi salvestamata andmete "
-#~ "hävimise."
-
-#~ msgid "Unknown function \"%s\" for menu icon"
-#~ msgstr "Tundmatu funktsioon \"%s\" menüüikoonile"
-
-#~ msgid "Failed to read theme from file %s: %s\n"
-#~ msgstr "Tõrge teema lugemisel failist %s: %s\n"
+#. separator
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:88
+msgid "Always on _Top"
+msgstr "Alati _pealmine"
