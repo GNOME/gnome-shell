@@ -82,7 +82,6 @@ static void        save_state         (void);
 static char*       load_state         (const char *previous_save_file);
 static void        regenerate_save_file (void);
 static const char* full_save_file       (void);
-static const char* base_save_file       (void);
 static void        warn_about_lame_clients_and_finish_interact (gboolean shutdown);
 
 /* This is called when data is available on an ICE connection.  */
@@ -1835,27 +1834,7 @@ warn_about_lame_clients_and_finish_interact (gboolean shutdown)
   
   lame = g_slist_sort (lame, (GCompareFunc) windows_cmp_by_title);
 
-  
-    {
-      XEvent property_event;
-      MetaDisplay *display;
-
-      display = meta_displays_list ()->data;
-
-      /* Using the property XA_PRIMARY because it's safe; nothing
-       * would use it as a property. The type doesn't matter.
-       */
-      XChangeProperty (display->xdisplay,
-                       display->leader_window,
-                       XA_PRIMARY, XA_STRING, 8,
-                       PropModeAppend, NULL, 0);
-      XWindowEvent (display->xdisplay,
-                    display->leader_window,
-                    PropertyChangeMask,
-                    &property_event);
-
-      timestamp = property_event.xproperty.time;
-    }
+  timestamp = meta_display_get_current_time_roundtrip (displays->data);  
   sprintf (timestampbuf, "%u", timestamp);
 
   len = g_slist_length (lame);

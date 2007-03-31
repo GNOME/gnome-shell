@@ -171,7 +171,8 @@ void          meta_screen_update_workspace_names  (MetaScreen             *scree
 void          meta_screen_queue_workarea_recalc   (MetaScreen             *screen);
 
 Window meta_create_offscreen_window (Display *xdisplay,
-                                     Window   parent);
+                                     Window   parent,
+                                     long     valuemask);
 
 typedef struct MetaWorkspaceLayout MetaWorkspaceLayout;
 

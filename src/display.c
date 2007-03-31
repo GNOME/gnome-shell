@@ -660,8 +660,15 @@ meta_display_open (void)
     gulong data[1];
     XEvent event;
 
-    display->leader_window = meta_create_offscreen_window (display->xdisplay,
-                                                           DefaultRootWindow (display->xdisplay));                                                           
+    /* We only care about the PropertyChangeMask in the next 30 or so lines of
+     * code.  Note that gdk will at some point unset the PropertyChangeMask for
+     * this window, so we can't rely on it still being set later.  See bug
+     * 354213 for details.
+     */
+    display->leader_window =
+      meta_create_offscreen_window (display->xdisplay,
+                                    DefaultRootWindow (display->xdisplay),
+                                    PropertyChangeMask);
 
     meta_prop_set_utf8_string_hint (display,
                                     display->leader_window,
@@ -686,6 +693,13 @@ meta_display_open (void)
                   &event);
 
     timestamp = event.xproperty.time;
+
+    /* Make it painfully clear that we can't rely on PropertyNotify events on
+     * this window, as per bug 354213.
+     */
+    XSelectInput(display->xdisplay,
+                 display->leader_window,
+                 NoEventMask);
   }
 
   /* Make a little window used only for pinging the server for timestamps; note
@@ -693,7 +707,8 @@ meta_display_open (void)
    */
   display->timestamp_pinging_window =
     meta_create_offscreen_window (display->xdisplay,
-                                  DefaultRootWindow (display->xdisplay));
+                                  DefaultRootWindow (display->xdisplay),
+                                  PropertyChangeMask);
 
   display->last_focus_time = timestamp;
   display->last_user_time = timestamp;

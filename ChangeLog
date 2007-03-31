@@ -1,7 +1,25 @@
+2007-03-31  Elijah Newren  <newren gmail com>
+
+	Clean up event mask handling and meta_create_offscreen_window, to
+	prevent nasty metacity/gdk interactions causing hangs. See #354213.
+
+	* src/screen.[ch] (meta_create_offscreen_window):
+	* src/display.c (meta_display_open):
+	* src/screen.c (meta_screen_new):
+	Add a valuemask parameter to meta_create_offscreen_window
+	
+	* src/display.c (meta_display_open):
+	make it explicit that we can't rely on PropertyNotify events for
+	the leader_window due to nasty metacity/gdk interaction
+
+	* src/session.c (warn_about_lame_clients_and_finish_interact):
+	remove cut-and-paste code for timestamp pinging and just call
+	meta_display_get_current_time_roundtrip
+
 2007-03-30  Elijah Newren  <newren gmail com>
 
 	Add support for _NET_WM_USER_TIME_WINDOW in order to cut down on
-	context switches.
+	context switches.  Fixes #354213.
 
 	* src/display.c (meta_display_open):
 	* src/display.h (struct _MetaDisplay):
