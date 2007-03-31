@@ -70,6 +70,26 @@ meta_window_reload_properties (MetaWindow *window,
                                const Atom *properties,
                                int         n_properties)
 {
+  meta_window_reload_properties_from_xwindow (window,
+                                              window->xwindow,
+                                              properties,
+                                              n_properties);
+}
+
+void
+meta_window_reload_property_from_xwindow (MetaWindow *window,
+                                          Window      xwindow,
+                                          Atom        property)
+{
+  meta_window_reload_properties_from_xwindow (window, xwindow, &property, 1);
+}
+
+void
+meta_window_reload_properties_from_xwindow (MetaWindow *window,
+                                            Window      xwindow,
+                                            const Atom *properties,
+                                            int         n_properties)
+{
   int i;
   MetaPropValue *values;
 
@@ -85,7 +105,7 @@ meta_window_reload_properties (MetaWindow *window,
       ++i;
     }
   
-  meta_prop_get_values (window->display, window->xwindow,
+  meta_prop_get_values (window->display, xwindow,
                         values, n_properties);
 
   i = 0;
@@ -197,6 +217,70 @@ reload_net_wm_user_time (MetaWindow    *window,
     {
       gulong cardinal = value->v.cardinal;
       meta_window_set_user_time (window, cardinal);
+    }
+}
+
+static void
+init_net_wm_user_time_window (MetaDisplay   *display,
+                              Atom           property,
+                              MetaPropValue *value)
+{
+  value->type = META_PROP_VALUE_WINDOW;
+  value->atom = display->atom_net_wm_user_time_window;
+}
+
+static void
+reload_net_wm_user_time_window (MetaWindow    *window,
+                                MetaPropValue *value)
+{
+  if (value->type != META_PROP_VALUE_INVALID)
+    {
+      /* Unregister old NET_WM_USER_TIME_WINDOW */
+      if (window->user_time_window != None)
+        {
+          /* See the comment to the meta_display_register_x_window call below. */
+          meta_display_unregister_x_window (window->display,
+                                            window->user_time_window);
+          /* Don't get events on not-managed windows */
+          XSelectInput (window->display->xdisplay,
+                        window->user_time_window,
+                        NoEventMask);
+        }
+
+
+      /* Obtain the new NET_WM_USER_TIME_WINDOW and register it */
+      window->user_time_window = value->v.xwindow;
+      if (window->user_time_window != None)
+        {
+          /* Kind of a hack; display.c:event_callback() ignores events
+           * for unknown windows.  We make window->user_time_window
+           * known by registering it with window (despite the fact
+           * that window->xwindow is already registered with window).
+           * This basically means that property notifies to either the
+           * window->user_time_window or window->xwindow will be
+           * treated identically and will result in functions for
+           * window being called to update it.  Maybe we should ignore
+           * any property notifies to window->user_time_window other
+           * than atom_net_wm_user_time ones, but I just don't care
+           * and it's not specified in the spec anyway.
+           */
+          meta_display_register_x_window (window->display,
+                                          &window->user_time_window,
+                                          window);
+          /* Just listen for property notify events */
+          XSelectInput (window->display->xdisplay,
+                        window->user_time_window,
+                        PropertyChangeMask);
+
+          /* Manually load the _NET_WM_USER_TIME field from the given window
+           * at this time as well.  If the user_time_window ever broadens in
+           * scope, we'll probably want to load all relevant properties here.
+           */
+          meta_window_reload_property_from_xwindow (
+            window,
+            window->display->atom_net_wm_user_time,
+            window->user_time_window);
+        }
     }
 }
 
@@ -1217,7 +1301,7 @@ reload_transient_for (MetaWindow    *window,
     meta_window_queue_move_resize (window);
 }
 
-#define N_HOOKS 25
+#define N_HOOKS 26
 
 void
 meta_display_init_window_prop_hooks (MetaDisplay *display)
@@ -1355,6 +1439,11 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
   hooks[i].property = XA_WM_TRANSIENT_FOR;
   hooks[i].init_func = init_transient_for;
   hooks[i].reload_func = reload_transient_for;
+  ++i;
+
+  hooks[i].property = display->atom_net_wm_user_time_window;
+  hooks[i].init_func = init_net_wm_user_time_window;
+  hooks[i].reload_func = reload_net_wm_user_time_window;
   ++i;
 
   if (i != N_HOOKS)

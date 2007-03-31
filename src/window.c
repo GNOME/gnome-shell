@@ -234,7 +234,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   gulong existing_wm_state;
   gulong event_mask;
   MetaMoveResizeFlags flags;
-#define N_INITIAL_PROPS 17
+#define N_INITIAL_PROPS 18
   Atom initial_props[N_INITIAL_PROPS];
   int i;
   gboolean has_shape;
@@ -478,6 +478,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->initial_workspace_set = FALSE;
   window->initial_timestamp_set = FALSE;
   window->net_wm_user_time_set = FALSE;
+  window->user_time_window = None;
   window->calc_placement = FALSE;
   window->shaken_loose = FALSE;
   window->have_focus_click_grab = FALSE;
@@ -577,6 +578,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   initial_props[i++] = display->atom_net_wm_state;
   initial_props[i++] = display->atom_motif_wm_hints;
   initial_props[i++] = XA_WM_TRANSIENT_FOR;
+  initial_props[i++] = display->atom_net_wm_user_time_window;
   g_assert (N_INITIAL_PROPS == i);
   
   meta_window_reload_properties (window, initial_props, N_INITIAL_PROPS);
@@ -1102,6 +1104,17 @@ meta_window_free (MetaWindow  *window,
   XSelectInput (window->display->xdisplay,
                 window->xwindow,
                 NoEventMask);
+
+  /* Stop getting events for the window's _NET_WM_USER_TIME_WINDOW too */
+  if (window->user_time_window != None)
+    {
+      meta_display_unregister_x_window (window->display,
+                                        window->user_time_window);
+      XSelectInput (window->display->xdisplay,
+                    window->user_time_window,
+                    NoEventMask);
+      window->user_time_window = None;
+    }
 
 #ifdef HAVE_SHAPE
   if (META_DISPLAY_HAS_SHAPE (window->display))
@@ -5229,10 +5242,19 @@ process_property_notify (MetaWindow     *window,
     }
   else if (event->atom == window->display->atom_net_wm_user_time)
     {
+      Window xid;
+      Atom atom_net_wm_user_time;
+
       meta_verbose ("Property notify on %s for _NET_WM_USER_TIME\n", window->desc);
-      
-      meta_window_reload_property (window,
-                                   window->display->atom_net_wm_user_time);
+
+      atom_net_wm_user_time = window->display->atom_net_wm_user_time;
+      if (window->user_time_window)
+        xid = window->user_time_window;
+      else
+        xid = window->xwindow;
+      meta_window_reload_property_from_xwindow (window,
+                                                xid,
+                                                atom_net_wm_user_time);
     }
 
   return TRUE;

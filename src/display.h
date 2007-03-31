@@ -85,6 +85,7 @@ struct _MetaDisplay
   Display *xdisplay;
 
   Window leader_window;
+  Window timestamp_pinging_window;
   
   Atom atom_net_wm_name;
   Atom atom_wm_protocols;
@@ -180,6 +181,7 @@ struct _MetaDisplay
   Atom atom_metacity_version;
   Atom atom_net_wm_visible_name;
   Atom atom_net_wm_visible_icon_name;
+  Atom atom_net_wm_user_time_window;
 
   /* This is the actual window from focus events,
    * not the one we last set

@@ -31,6 +31,15 @@ void meta_window_reload_property   (MetaWindow *window,
 void meta_window_reload_properties (MetaWindow *window,
                                     const Atom *properties,
                                     int         n_properties);
+void meta_window_reload_property_from_xwindow
+                                   (MetaWindow *window,
+                                    Window      xwindow,
+                                    Atom        property);
+void meta_window_reload_properties_from_xwindow
+                                   (MetaWindow *window,
+                                    Window      xwindow,
+                                    const Atom *properties,
+                                    int         n_properties);
 
 void meta_display_init_window_prop_hooks (MetaDisplay *display);
 void meta_display_free_window_prop_hooks (MetaDisplay *display);

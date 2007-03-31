@@ -1,3 +1,35 @@
+2007-03-30  Elijah Newren  <newren gmail com>
+
+	Add support for _NET_WM_USER_TIME_WINDOW in order to cut down on
+	context switches.
+
+	* src/display.c (meta_display_open):
+	* src/display.h (struct _MetaDisplay):
+	* src/screen.c (set_supported_hint):
+	new atom
+
+	* src/display.c (meta_display_open,
+	  meta_display_get_current_time_roundtrip):
+	* src/display.h (struct _MetaDisplay):
+	create a dedicated timestamp pinging window instead of reusing
+	display->leader_window
+
+	* src/display.c (event_callback):
+	* src/window-props.c (reload_net_wm_user_time_window):
+	* src/window.c (meta_window_new_with_attrs, meta_window_free,
+	  process_property_notify):
+	* src/window.h (struct _MetaWindow):
+	monitor property notify events on _NET_WM_USER_TIME_WINDOW windows too
+	
+	* src/window-props.[ch]:
+	new meta_window_reload_propert(y|ies)_from_xwindow() functions
+
+	* src/window-props.[ch]
+	  (init_net_wm_user_time_window, reload_net_wm_user_time_window,
+	  meta_display_init_window_prop_hooks):
+	* src/window.c (meta_window_new_with_attrs):
+	new hooks to handle new atom
+
 2007-03-26  Josselin Mouette  <joss@malsain.org>
 
 	* src/session.c (meta_session_init): if previous client ID

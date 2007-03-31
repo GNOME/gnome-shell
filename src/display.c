@@ -333,7 +333,8 @@ meta_display_open (void)
     "_NET_DESKTOP_VIEWPORT",
     "_METACITY_VERSION",
     "_NET_WM_VISIBLE_NAME",
-    "_NET_WM_VISIBLE_ICON_NAME"
+    "_NET_WM_VISIBLE_ICON_NAME",
+    "_NET_WM_USER_TIME_WINDOW"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -492,6 +493,7 @@ meta_display_open (void)
   display->atom_metacity_version = atoms[91];
   display->atom_net_wm_visible_name = atoms[92];
   display->atom_net_wm_visible_icon_name = atoms[93];
+  display->atom_net_wm_user_time_window = atoms[94];
 
   display->prop_hooks = NULL;
   meta_display_init_window_prop_hooks (display);
@@ -502,6 +504,7 @@ meta_display_open (void)
    * created in screen_new
    */
   display->leader_window = None;
+  display->timestamp_pinging_window = None;
 
   display->xinerama_cache_invalidated = TRUE;
 
@@ -684,6 +687,13 @@ meta_display_open (void)
 
     timestamp = event.xproperty.time;
   }
+
+  /* Make a little window used only for pinging the server for timestamps; note
+   * that meta_create_offscreen_window already selects for PropertyChangeMask.
+   */
+  display->timestamp_pinging_window =
+    meta_create_offscreen_window (display->xdisplay,
+                                  DefaultRootWindow (display->xdisplay));
 
   display->last_focus_time = timestamp;
   display->last_user_time = timestamp;
@@ -1192,14 +1202,13 @@ meta_display_get_current_time_roundtrip (MetaDisplay *display)
        * would use it as a property. The type doesn't matter.
        */
       XChangeProperty (display->xdisplay,
-                       display->leader_window,
+                       display->timestamp_pinging_window,
                        XA_PRIMARY, XA_STRING, 8,
                        PropModeAppend, NULL, 0);
       XWindowEvent (display->xdisplay,
-                    display->leader_window,
+                    display->timestamp_pinging_window,
                     PropertyChangeMask,
                     &property_event);
-
       timestamp = property_event.xproperty.time;
     }
 
@@ -1457,6 +1466,7 @@ event_callback (XEvent   *event,
                 gpointer  data)
 {
   MetaWindow *window;
+  MetaWindow *property_for_window;
   MetaDisplay *display;
   Window modified;
   gboolean frame_was_receiver;
@@ -1509,6 +1519,18 @@ event_callback (XEvent   *event,
     window = meta_display_lookup_x_window (display, modified);
   else
     window = NULL;
+
+  /* We only want to respond to _NET_WM_USER_TIME property notify
+   * events on _NET_WM_USER_TIME_WINDOW windows; in particular,
+   * responding to UnmapNotify events is kind of bad.
+   */
+  property_for_window = NULL;
+  if (window && modified == window->user_time_window)
+    {
+      property_for_window = window;
+      window = NULL;
+    }
+    
 
   frame_was_receiver = FALSE;
   if (window &&
@@ -2173,6 +2195,8 @@ event_callback (XEvent   *event,
         
         if (window && !frame_was_receiver)
           meta_window_property_notify (window, event);
+        else if (property_for_window && !frame_was_receiver)
+          meta_window_property_notify (property_for_window, event);
 
         group = meta_display_lookup_group (display,
                                            event->xproperty.window);

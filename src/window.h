@@ -318,6 +318,9 @@ struct _MetaWindow
   /* set to the most recent user-interaction event timestamp that we
      know about for this window */
   guint32 net_wm_user_time;
+
+  /* window that gets updated net_wm_user_time values */
+  Window user_time_window;
   
   /* The size we set the window to last (i.e. what we believe
    * to be its actual size on the server). The x, y are

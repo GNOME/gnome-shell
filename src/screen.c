@@ -89,7 +89,7 @@ set_wm_check_hint (MetaScreen *screen)
 static int
 set_supported_hint (MetaScreen *screen)
 {
-#define N_SUPPORTED 58
+#define N_SUPPORTED 59
   Atom atoms[N_SUPPORTED];
   
   atoms[0] = screen->display->atom_net_wm_name;
@@ -150,6 +150,7 @@ set_supported_hint (MetaScreen *screen)
   atoms[55] = screen->display->atom_net_wm_state_demands_attention;
   atoms[56] = screen->display->atom_net_desktop_geometry;
   atoms[57] = screen->display->atom_net_desktop_viewport;
+  atoms[58] = screen->display->atom_net_wm_user_time_window;
   //atoms[58] = screen->display->atom_net_restack_window;
   //atoms[59] = screen->display->atom_net_moveresize_window;
   
