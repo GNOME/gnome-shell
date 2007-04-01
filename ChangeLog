@@ -1,3 +1,9 @@
+2007-01-27  Bruno Boaventura <brunobol@gnome.org>
+
+	* src/theme.c (kill_window_question): Fallback to NORMAL state after
+	checking for the middle button. Fixes bug #419043.
+	Patch from Benjamin Berg <benjamin@sipsolutions.net>.	
+
 2007-03-31  Elijah Newren  <newren gmail com>
 
 	Clean up event mask handling and meta_create_offscreen_window, to

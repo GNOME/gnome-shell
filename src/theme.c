@@ -3899,11 +3899,6 @@ get_button (MetaFrameStyle *style,
       parent = parent->parent;
     }
 
-  /* We fall back to normal if no prelight */
-  if (op_list == NULL &&
-      state == META_BUTTON_STATE_PRELIGHT)
-    return get_button (style, type, META_BUTTON_STATE_NORMAL);
-
   /* We fall back to middle button backgrounds if we don't
    * have the ones on the sides
    */
@@ -3920,6 +3915,11 @@ get_button (MetaFrameStyle *style,
     return get_button (style, META_BUTTON_TYPE_RIGHT_MIDDLE_BACKGROUND,
                        state);
   
+  /* We fall back to normal if no prelight */
+  if (op_list == NULL &&
+      state == META_BUTTON_STATE_PRELIGHT)
+    return get_button (style, type, META_BUTTON_STATE_NORMAL);
+
   return op_list;
 }
 
