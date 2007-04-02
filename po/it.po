@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: metacity 2.16.x\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-02-26 13:44+0100\n"
-"PO-Revision-Date: 2007-02-26 13:49+0100\n"
+"PO-Revision-Date: 2007-04-02 22:21+0200\n"
 "Last-Translator: Luca Ferretti <elle.uca@libero.it>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -284,7 +284,7 @@ msgstr "Sposta sull'area di lavoro a d_estra"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:98
 msgid "Move to Workspace _Up"
-msgstr "Sposta sull'area di lavoro il a_lto"
+msgstr "Sposta sull'area di lavoro in a_lto"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:100
