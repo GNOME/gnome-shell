@@ -1026,13 +1026,15 @@ do_screen_and_xinerama_relative_constraints (
   gboolean exit_early = FALSE, constraint_satisfied;
   MetaRectangle how_far_it_can_be_smushed, min_size, max_size;
 
+#ifdef WITH_VERBOSE_MODE
   /* First, log some debugging information */
   char spanning_region[1 + 28 * g_list_length (region_spanning_rectangles)];
-  (void) spanning_region;  /* Avoid stupid & incorrect compiler warnings... */
+
   meta_topic (META_DEBUG_GEOMETRY,
               "screen/xinerama constraint; region_spanning_rectangles: %s\n",
               meta_rectangle_region_to_string (region_spanning_rectangles, ", ", 
                                                spanning_region));
+#endif
 
   /* Determine whether constraint applies; exit if it doesn't */
   how_far_it_can_be_smushed = info->current;

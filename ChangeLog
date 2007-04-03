@@ -1,5 +1,17 @@
 2007-04-02  Elijah Newren  <newren gmail com>
 
+	Patch from Carlo Wood to do some miscellaneous code cleanups found
+	while working on #358311.
+
+	* src/constraints.c (do_screen_and_xinerama_relative_constraints):
+	nicer way of avoiding compilation warning
+
+	* src/boxes.c (meta_rectangle_clamp_to_fit_into_region,
+	  meta_rectangle_clip_to_region, meta_rectangle_shove_into_region):
+	Much cleaner way of ignoring invalid boxes in comparisons
+
+2007-04-02  Elijah Newren  <newren gmail com>
+
 	Patch from Carlo Wood to fix handling of unidirectional
 	maximization and partial struts.  #358311.
 
