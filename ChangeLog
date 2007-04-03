@@ -1,5 +1,10 @@
 2007-04-03  Elijah Newren  <newren gmail com>
 
+	* src/display.c (meta_display_update_active_window_hint):
+	_NET_ACTIVE_WINDOW is a single xwindow id, not two.
+
+2007-04-03  Elijah Newren  <newren gmail com>
+
 	* src/keybindings.c (handle_panel_keybinding): turn mouse_mode off
 	to prevent focus issues with the run application dialog.  Fixes
 	#374752.

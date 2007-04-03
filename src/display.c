@@ -3959,13 +3959,12 @@ meta_display_update_active_window_hint (MetaDisplay *display)
 {
   GSList *tmp;
   
-  unsigned long data[2];
+  gulong data[1];
 
   if (display->focus_window)
     data[0] = display->focus_window->xwindow;
   else
     data[0] = None;
-  data[1] = None;
   
   tmp = display->screens;
   while (tmp != NULL)
@@ -3976,7 +3975,8 @@ meta_display_update_active_window_hint (MetaDisplay *display)
       XChangeProperty (display->xdisplay, screen->xroot,
                        display->atom_net_active_window,
                        XA_WINDOW,
-                       32, PropModeReplace, (guchar*) data, 2);
+                       32, PropModeReplace, (guchar*) data, 1);
+
       meta_error_trap_pop (display, FALSE);
 
       tmp = tmp->next;
