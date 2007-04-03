@@ -28,13 +28,19 @@
 #include "common.h"
 
 typedef struct _MetaRectangle MetaRectangle;
-
 struct _MetaRectangle
 {
   int x;
   int y;
   int width;
   int height;
+};
+
+typedef struct _MetaStrut MetaStrut;
+struct _MetaStrut
+{
+  MetaRectangle rect;
+  MetaDirection side;
 };
 
 #define BOX_LEFT(box)    ((box).x)                /* Leftmost pixel of rect */
@@ -44,8 +50,9 @@ struct _MetaRectangle
 
 typedef enum
 {
-  FIXED_DIRECTION_X = 1 << 0,
-  FIXED_DIRECTION_Y = 1 << 1,
+  FIXED_DIRECTION_NONE = 0,
+  FIXED_DIRECTION_X    = 1 << 0,
+  FIXED_DIRECTION_Y    = 1 << 1,
 } FixedDirections;
 
 typedef enum
@@ -165,6 +172,16 @@ GList*   meta_rectangle_expand_region_conditionally (
                                          const int            bottom_expand,
                                          const int            min_x,
                                          const int            min_y);
+
+/* Expand rect in direction to the size of expand_to, and then clip out any
+ * overlapping struts oriented orthognal to the expansion direction.  (Think
+ * horizontal or vertical maximization)
+ */
+void     meta_rectangle_expand_to_avoiding_struts (
+                                         MetaRectangle       *rect,
+                                         const MetaRectangle *expand_to,
+                                         const MetaDirection  direction,
+                                         const GSList        *all_struts);
 
 /* Free the list created by
  *   meta_rectangle_get_minimal_spanning_set_for_region()

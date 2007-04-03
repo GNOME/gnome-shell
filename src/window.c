@@ -5675,86 +5675,74 @@ invalidate_work_areas (MetaWindow *window)
 void
 meta_window_update_struts (MetaWindow *window)
 {
+  GSList *old_struts;
+  GSList *new_struts;
+  GSList *old_iter, *new_iter;
   gulong *struts = NULL;
   int nitems;
-  gboolean old_has_struts;
-  gboolean new_has_struts;
-
-  MetaRectangle old_left;
-  MetaRectangle old_right;
-  MetaRectangle old_top;
-  MetaRectangle old_bottom;
-
-  MetaRectangle new_left;
-  MetaRectangle new_right;
-  MetaRectangle new_top;
-  MetaRectangle new_bottom;
+  gboolean changed;
 
   meta_verbose ("Updating struts for %s\n", window->desc);
-  
-  if (window->struts)
-    {
-      old_has_struts = TRUE;
-      old_left = window->struts->left;
-      old_right = window->struts->right;
-      old_top = window->struts->top;
-      old_bottom = window->struts->bottom;
-    }
-  else
-    {
-      old_has_struts = FALSE;
-    }
 
-  new_has_struts = FALSE;
-  new_left = window->screen->rect;
-  new_left.width = 0;
+  old_struts = window->struts;
+  new_struts = NULL; 
 
-  new_right = window->screen->rect;
-  new_right.width = 0;
-  new_right.x = window->screen->rect.width;
-
-  new_top = window->screen->rect;
-  new_top.height = 0;
-
-  new_bottom = window->screen->rect;
-  new_bottom.height = 0;
-  new_bottom.y = window->screen->rect.height;
-  
   if (meta_prop_get_cardinal_list (window->display,
                                    window->xwindow,
                                    window->display->atom_net_wm_strut_partial,
                                    &struts, &nitems))
     {
       if (nitems != 12)
-        {
-          meta_verbose ("_NET_WM_STRUT_PARTIAL on %s has %d values instead of 12\n",
-                        window->desc, nitems);
-        }
+        meta_verbose ("_NET_WM_STRUT_PARTIAL on %s has %d values instead "
+                      "of 12\n",
+                      window->desc, nitems);
       else
         {
-          new_has_struts = TRUE;
-          new_left.width = (int) struts[0];
-          new_right.width = (int) struts[1];
-          new_top.height = (int)struts[2];
-          new_bottom.height = (int)struts[3];
-          new_right.x  = window->screen->rect.width  - new_right.width;
-          new_bottom.y = window->screen->rect.height - new_bottom.height;
-          new_left.y = struts[4];
-          new_left.height = struts[5] - new_left.y + 1;
-          new_right.y = struts[6];
-          new_right.height = struts[7] - new_right.y + 1;
-          new_top.x = struts[8];
-          new_top.width = struts[9] - new_top.x + 1;
-          new_bottom.x = struts[10];
-          new_bottom.width = struts[11] - new_bottom.x + 1;
-          
-          meta_verbose ("_NET_WM_STRUT_PARTIAL struts %d %d %d %d for window %s\n",
-                        new_left.width,
-                        new_right.width,
-                        new_top.height,
-                        new_bottom.height,
+          /* Pull out the strut info for each side in the hint */
+          int i;
+          for (i=0; i<4; i++)
+            {
+              MetaStrut *temp;
+              int thickness, strut_begin, strut_end;
+
+              thickness = struts[i];
+              if (thickness == 0)
+                continue;
+              strut_begin = struts[4+(i*2)];
+              strut_end   = struts[4+(i*2)+1];
+
+              temp = g_new (MetaStrut, 1);
+              temp->side = 1 << i; // See MetaDirection def.  Matches nicely, eh?
+              temp->rect = window->screen->rect;
+              switch (temp->side)
+                {
+                case META_SIDE_RIGHT:
+                  temp->rect.x = BOX_RIGHT(temp->rect) - thickness;
+                  /* Intentionally fall through without breaking */
+                case META_SIDE_LEFT:
+                  temp->rect.width  = thickness;
+                  temp->rect.y      = strut_begin;
+                  temp->rect.height = strut_end - strut_begin + 1;
+                  break;
+                case META_SIDE_BOTTOM:
+                  temp->rect.y = BOX_BOTTOM(temp->rect) - thickness;
+                  /* Intentionally fall through without breaking */
+                case META_SIDE_TOP:
+                  temp->rect.height = thickness;
+                  temp->rect.x      = strut_begin;
+                  temp->rect.width  = strut_end - strut_begin + 1;
+                  break;
+                default:
+                  g_assert_not_reached ();
+                }
+
+              new_struts = g_slist_prepend (new_struts, temp);
+            }
+
+          meta_verbose ("_NET_WM_STRUT_PARTIAL struts %lu %lu %lu %lu for "
+                        "window %s\n",
+                        struts[0], struts[1], struts[2], struts[3], 
                         window->desc);
-          
         }
       meta_XFree (struts);
     }
@@ -5764,67 +5752,86 @@ meta_window_update_struts (MetaWindow *window)
                     window->desc);
     }
 
-  if (!new_has_struts)
+  if (!new_struts &&
+      meta_prop_get_cardinal_list (window->display,
+                                   window->xwindow,
+                                   window->display->atom_net_wm_strut,
+                                   &struts, &nitems))
     {
-      if (meta_prop_get_cardinal_list (window->display,
-                                       window->xwindow,
-                                       window->display->atom_net_wm_strut,
-                                       &struts, &nitems))
-        {
-          if (nitems != 4)
-            {
-              meta_verbose ("_NET_WM_STRUT on %s has %d values instead of 4\n",
-                            window->desc, nitems);
-            }
-          else
-            {
-              new_has_struts = TRUE;
-              new_left.width = (int) struts[0];
-              new_right.width = (int) struts[1];
-              new_top.height = (int)struts[2];
-              new_bottom.height = (int)struts[3];
-              new_right.x  = window->screen->rect.width  - new_right.width;
-              new_bottom.y = window->screen->rect.height - new_bottom.height;
-              
-              meta_verbose ("_NET_WM_STRUT struts %d %d %d %d for window %s\n",
-                            new_left.width,
-                            new_right.width,
-                            new_top.height,
-                            new_bottom.height,
-                            window->desc);
-              
-            }
-          meta_XFree (struts);
-        }
+      if (nitems != 4)
+        meta_verbose ("_NET_WM_STRUT on %s has %d values instead of 4\n",
+                      window->desc, nitems);
       else
         {
-          meta_verbose ("No _NET_WM_STRUT property for %s\n",
+          /* Pull out the strut info for each side in the hint */
+          int i;
+          for (i=0; i<4; i++)
+            {
+              MetaStrut *temp;
+              int thickness;
+
+              thickness = struts[i];
+              if (thickness == 0)
+                continue;
+
+              temp = g_new (MetaStrut, 1);
+              temp->side = 1 << i;
+              temp->rect = window->screen->rect;
+              switch (temp->side)
+                {
+                case META_SIDE_RIGHT:
+                  temp->rect.x = BOX_RIGHT(temp->rect) - thickness;
+                  /* Intentionally fall through without breaking */
+                case META_SIDE_LEFT:
+                  temp->rect.width  = thickness;
+                  break;
+                case META_SIDE_BOTTOM:
+                  temp->rect.y = BOX_BOTTOM(temp->rect) - thickness;
+                  /* Intentionally fall through without breaking */
+                case META_SIDE_TOP:
+                  temp->rect.height = thickness;
+                  break;
+                default:
+                  g_assert_not_reached ();
+                }
+
+              new_struts = g_slist_prepend (new_struts, temp);
+            }
+              
+          meta_verbose ("_NET_WM_STRUT struts %lu %lu %lu %lu for window %s\n",
+                        struts[0], struts[1], struts[2], struts[3], 
                         window->desc);
         }
+      meta_XFree (struts);
+    }
+  else if (!new_struts)
+    {
+      meta_verbose ("No _NET_WM_STRUT property for %s\n",
+                    window->desc);
     }
  
-  if (old_has_struts != new_has_struts ||
-      (new_has_struts && old_has_struts &&
-       (!meta_rectangle_equal(&old_left, &new_left) ||
-        !meta_rectangle_equal(&old_right, &new_right) ||
-        !meta_rectangle_equal(&old_top, &new_top) ||
-        !meta_rectangle_equal(&old_bottom, &new_bottom))))
+  /* Determine whether old_struts and new_struts are the same */
+  old_iter = old_struts;
+  new_iter = new_struts;
+  while (old_iter && new_iter)
     {
-      if (new_has_struts)
-        {
-          if (!window->struts)
-            window->struts = g_new (MetaStruts, 1);
-              
-          window->struts->left = new_left;
-          window->struts->right = new_right;
-          window->struts->top = new_top;
-          window->struts->bottom = new_bottom;
-        }
-      else
-        {
-          g_free (window->struts);
-          window->struts = NULL;
-        }
+      MetaStrut *old_strut = (MetaStrut*) old_iter->data;
+      MetaStrut *new_strut = (MetaStrut*) new_iter->data;
+
+      if (old_strut->side != new_strut->side ||
+          !meta_rectangle_equal (&old_strut->rect, &new_strut->rect))
+        break;
+
+      old_iter = old_iter->next;
+      new_iter = new_iter->next;
+    }
+  changed = (old_iter != NULL || new_iter != NULL);
+
+  /* Update appropriately */
+  meta_free_gslist_and_elements (old_struts);
+  window->struts = new_struts;
+  if (changed)
+    {
       meta_topic (META_DEBUG_WORKAREA,
                   "Invalidating work areas of window %s due to struts update\n",
                   window->desc);

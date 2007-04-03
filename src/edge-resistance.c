@@ -300,9 +300,9 @@ movement_towards_edge (MetaDirection side, int increment)
     case META_DIRECTION_RIGHT:
     case META_DIRECTION_BOTTOM:
       return increment > 0;
+    default:
+      g_assert_not_reached ();
     }
-
-  g_assert_not_reached ();
 }
 
 static gboolean

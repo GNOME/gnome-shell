@@ -58,6 +58,17 @@ new_meta_rect (int x, int y, int width, int height)
   return temporary;
 }
 
+static MetaStrut*
+new_meta_strut (int x, int y, int width, int height, int side)
+{
+  MetaStrut* temporary;
+  temporary = g_new (MetaStrut, 1);
+  temporary->rect = meta_rect(x, y, width, height);
+  temporary->side = side;
+
+  return temporary;
+}
+
 static MetaEdge*
 new_screen_edge (int x, int y, int width, int height, int side_type)
 {
@@ -228,9 +239,10 @@ free_strut_list (GSList *struts)
 static GSList*
 get_strut_list (int which)
 {
-  GSList *struts;
+  GSList *ans;
+  MetaDirection wc = 0; /* wc == who cares? ;-) */
 
-  struts = NULL;
+  ans = NULL;
 
   g_assert (which >=0 && which <= 6);
   switch (which)
@@ -238,36 +250,36 @@ get_strut_list (int which)
     case 0:
       break;
     case 1:
-      struts = g_slist_prepend (struts, new_meta_rect (   0,    0, 1600,   20));
-      struts = g_slist_prepend (struts, new_meta_rect ( 400, 1160, 1600,   40));
+      ans = g_slist_prepend (ans, new_meta_strut (   0,    0, 1600,   20, wc));
+      ans = g_slist_prepend (ans, new_meta_strut ( 400, 1160, 1600,   40, wc));
       break;
     case 2:
-      struts = g_slist_prepend (struts, new_meta_rect (   0,    0, 1600,   20));
-      struts = g_slist_prepend (struts, new_meta_rect ( 800, 1100,  400,  100));
-      struts = g_slist_prepend (struts, new_meta_rect ( 300, 1150,  150,   50));
+      ans = g_slist_prepend (ans, new_meta_strut (   0,    0, 1600,   20, wc));
+      ans = g_slist_prepend (ans, new_meta_strut ( 800, 1100,  400,  100, wc));
+      ans = g_slist_prepend (ans, new_meta_strut ( 300, 1150,  150,   50, wc));
       break;
     case 3:
-      struts = g_slist_prepend (struts, new_meta_rect (   0,    0, 1600,   20));
-      struts = g_slist_prepend (struts, new_meta_rect ( 800, 1100,  400,  100));
-      struts = g_slist_prepend (struts, new_meta_rect ( 300, 1150,   80,   50));
-      struts = g_slist_prepend (struts, new_meta_rect ( 700,  525,  200,  150));
+      ans = g_slist_prepend (ans, new_meta_strut (   0,    0, 1600,   20, wc));
+      ans = g_slist_prepend (ans, new_meta_strut ( 800, 1100,  400,  100, wc));
+      ans = g_slist_prepend (ans, new_meta_strut ( 300, 1150,   80,   50, wc));
+      ans = g_slist_prepend (ans, new_meta_strut ( 700,  525,  200,  150, wc));
       break;
     case 4:
-      struts = g_slist_prepend (struts, new_meta_rect (   0,    0,  800, 1200));
-      struts = g_slist_prepend (struts, new_meta_rect ( 800,    0, 1600,   20));
+      ans = g_slist_prepend (ans, new_meta_strut (   0,    0,  800, 1200, wc));
+      ans = g_slist_prepend (ans, new_meta_strut ( 800,    0, 1600,   20, wc));
       break;
     case 5:
-      struts = g_slist_prepend (struts, new_meta_rect ( 800,    0, 1600,   20));
-      struts = g_slist_prepend (struts, new_meta_rect (   0,    0,  800, 1200));
-      struts = g_slist_prepend (struts, new_meta_rect ( 800,   10,  800, 1200));
+      ans = g_slist_prepend (ans, new_meta_strut ( 800,    0, 1600,   20, wc));
+      ans = g_slist_prepend (ans, new_meta_strut (   0,    0,  800, 1200, wc));
+      ans = g_slist_prepend (ans, new_meta_strut ( 800,   10,  800, 1200, wc));
       break;
     case 6:
-      struts = g_slist_prepend (struts, new_meta_rect (   0,    0, 1600,   40));
-      struts = g_slist_prepend (struts, new_meta_rect (   0,    0, 1600,   20));
+      ans = g_slist_prepend (ans, new_meta_strut (   0,    0, 1600,   40, wc));
+      ans = g_slist_prepend (ans, new_meta_strut (   0,    0, 1600,   20, wc));
       break;
     }
 
-  return struts;
+  return ans;
 }
 
 static GList*

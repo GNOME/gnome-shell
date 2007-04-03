@@ -95,6 +95,8 @@ const char* meta_gravity_to_string (int gravity);
 
 char* meta_g_utf8_strndup (const gchar *src, gsize n);
 
+void  meta_free_gslist_and_elements (GSList *list_to_deep_free);
+
 /* To disable verbose mode, we make these functions into no-ops */
 #ifdef WITH_VERBOSE_MODE
 

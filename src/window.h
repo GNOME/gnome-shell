@@ -36,7 +36,6 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 typedef struct _MetaGroup MetaGroup;
-typedef struct _MetaStruts MetaStruts;
 
 typedef gboolean (*MetaWindowForeachFunc) (MetaWindow *window,
                                            void       *data);
@@ -66,15 +65,6 @@ typedef enum {
   META_CLIENT_TYPE_PAGER = 2,
   META_CLIENT_TYPE_MAX_RECOGNIZED = 2
 } MetaClientType;
-
-struct _MetaStruts
-{
-  /* struts */
-  MetaRectangle left;
-  MetaRectangle right;
-  MetaRectangle top;
-  MetaRectangle bottom;
-};
 
 struct _MetaWindow
 {
@@ -276,7 +266,7 @@ struct _MetaWindow
   guint calc_placement : 1;
 
   /* Note: can be NULL */
-  MetaStruts *struts;
+  GSList *struts;
 
   /* Transient parent is a root window */
   guint transient_parent_is_root_window : 1;

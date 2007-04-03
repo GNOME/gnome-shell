@@ -547,10 +547,10 @@ meta_rectangle_get_minimal_spanning_set_for_region (
   ret = g_list_prepend (NULL, temp_rect);
 
   strut_iter = all_struts;
-  while (strut_iter)
+  for (strut_iter = all_struts; strut_iter; strut_iter = strut_iter->next)
     {
       GList *rect_iter; 
-      MetaRectangle *strut = (MetaRectangle*) strut_iter->data;
+      MetaRectangle *strut_rect = &((MetaStrut*)strut_iter->data)->rect;
 
       tmp_list = ret;
       ret = NULL;
@@ -558,45 +558,45 @@ meta_rectangle_get_minimal_spanning_set_for_region (
       while (rect_iter)
         {
           MetaRectangle *rect = (MetaRectangle*) rect_iter->data;
-          if (!meta_rectangle_overlap (rect, strut))
+          if (!meta_rectangle_overlap (rect, strut_rect))
             ret = g_list_prepend (ret, rect);
           else
             {
               /* If there is area in rect left of strut */
-              if (rect->x < strut->x)
+              if (BOX_LEFT (*rect) < BOX_LEFT (*strut_rect))
                 {
                   temp_rect = g_new (MetaRectangle, 1);
                   *temp_rect = *rect;
-                  temp_rect->width = strut->x - rect->x;
+                  temp_rect->width = BOX_LEFT (*strut_rect) - BOX_LEFT (*rect);
                   ret = g_list_prepend (ret, temp_rect);
                 }
               /* If there is area in rect right of strut */
-              if (rect->x + rect->width > strut->x + strut->width)
+              if (BOX_RIGHT (*rect) > BOX_RIGHT (*strut_rect))
                 {
                   int new_x;
                   temp_rect = g_new (MetaRectangle, 1);
                   *temp_rect = *rect;
-                  new_x = strut->x + strut->width;
-                  temp_rect->width = rect->x + rect->width - new_x;
+                  new_x = BOX_RIGHT (*strut_rect);
+                  temp_rect->width = BOX_RIGHT(*rect) - new_x;
                   temp_rect->x = new_x;
                   ret = g_list_prepend (ret, temp_rect);
                 }
               /* If there is area in rect above strut */
-              if (rect->y < strut->y)
+              if (BOX_TOP (*rect) < BOX_TOP (*strut_rect))
                 {
                   temp_rect = g_new (MetaRectangle, 1);
                   *temp_rect = *rect;
-                  temp_rect->height = strut->y - rect->y;
+                  temp_rect->height = BOX_TOP (*strut_rect) - BOX_TOP (*rect);
                   ret = g_list_prepend (ret, temp_rect);
                 }
               /* If there is area in rect below strut */
-              if (rect->y + rect->height > strut->y + strut->height)
+              if (BOX_BOTTOM (*rect) > BOX_BOTTOM (*strut_rect))
                 {
                   int new_y;
                   temp_rect = g_new (MetaRectangle, 1);
                   *temp_rect = *rect;
-                  new_y = strut->y + strut->height;
-                  temp_rect->height = rect->y + rect->height - new_y;
+                  new_y = BOX_BOTTOM (*strut_rect);
+                  temp_rect->height = BOX_BOTTOM (*rect) - new_y;
                   temp_rect->y = new_y;
                   ret = g_list_prepend (ret, temp_rect);
                 }
@@ -605,7 +605,6 @@ meta_rectangle_get_minimal_spanning_set_for_region (
           rect_iter = rect_iter->next;
         }
       g_list_free (tmp_list);
-      strut_iter = strut_iter->next;
     }
 
   /* Sort by maximal area, just because I feel like it... */
@@ -661,6 +660,76 @@ meta_rectangle_expand_region_conditionally (GList     *region,
 
   return region;
 }
+
+void
+meta_rectangle_expand_to_avoiding_struts (MetaRectangle       *rect,
+                                          const MetaRectangle *expand_to,
+                                          const MetaDirection  direction,
+                                          const GSList        *all_struts)
+{
+  const GSList *strut_iter;
+
+  /* If someone wants this function to handle more fine-grained
+   * direction expanding in the future (e.g. only left, or fully
+   * horizontal plus upward), feel free.  But I'm hard-coding for both
+   * horizontal directions (exclusive-)or both vertical directions.
+   */
+  g_assert ((direction == META_DIRECTION_HORIZONTAL) ^
+            (direction == META_DIRECTION_VERTICAL  ));
+ 
+  if (direction == META_DIRECTION_HORIZONTAL)
+    {
+      rect->x      = expand_to->x;
+      rect->width  = expand_to->width;
+    }
+  else
+    {
+      rect->y      = expand_to->y;
+      rect->height = expand_to->height;
+    }
+
+ 
+  /* Run over all struts */
+  for (strut_iter = all_struts; strut_iter; strut_iter = strut_iter->next)
+    {
+      MetaStrut *strut = (MetaStrut*) strut_iter->data;
+ 
+      /* Skip struts that don't overlap */
+      if (!meta_rectangle_overlap (&strut->rect, rect))
+        continue;
+
+      if (direction == META_DIRECTION_HORIZONTAL)
+        {
+          if (strut->side == META_SIDE_LEFT)
+            {
+              int offset = BOX_RIGHT(strut->rect) - BOX_LEFT(*rect);
+              rect->x     += offset;
+              rect->width -= offset;
+            }
+          else if (strut->side == META_SIDE_RIGHT)
+            {
+              int offset = BOX_RIGHT (*rect) - BOX_LEFT(strut->rect);
+              rect->width -= offset;
+            }
+          /* else ignore the strut */
+        }
+      else /* direction == META_DIRECTION_VERTICAL */
+        {
+          if (strut->side == META_SIDE_TOP)
+            {
+              int offset = BOX_BOTTOM(strut->rect) - BOX_TOP(*rect);
+              rect->y      += offset;
+              rect->height -= offset;
+            }
+          else if (strut->side == META_SIDE_BOTTOM)
+            {
+              int offset = BOX_BOTTOM(*rect) - BOX_TOP(strut->rect);
+              rect->height -= offset;
+            }
+          /* else ignore the strut */
+        }
+    } /* end loop over struts */
+} /* end meta_rectangle_expand_to_avoiding_struts */
 
 void
 meta_rectangle_free_list_and_elements (GList *filled_list)
@@ -1075,9 +1144,9 @@ meta_rectangle_edge_aligns (const MetaRectangle *rect, const MetaEdge *edge)
     case META_DIRECTION_BOTTOM:
       return BOX_LEFT (*rect)      <= BOX_RIGHT (edge->rect) &&
              BOX_LEFT (edge->rect) <= BOX_RIGHT (*rect);
+    default:
+      g_assert_not_reached ();
     }
-
-  g_assert_not_reached ();
 }
 
 static GList*
@@ -1161,27 +1230,27 @@ replace_rect_with_list (GList *old_element,
 }
 
 /* Make a copy of the strut list, make sure that copy only contains parts
- * of the old_struts that intersect with the rection rect, and then do some
+ * of the old_struts that intersect with the region rect, and then do some
  * magic to make all the new struts disjoint (okay, we we break up struts
  * that aren't disjoint in a way that the overlapping part is only included
  * once, so it's not really magic...).
  */
 static GList*
-get_disjoint_strut_list_in_region (const GSList        *old_struts,
-                                   const MetaRectangle *region)
+get_disjoint_strut_rect_list_in_region (const GSList        *old_struts,
+                                        const MetaRectangle *region)
 {
-  GList *struts;
+  GList *strut_rects;
   GList *tmp;
 
   /* First, copy the list */
-  struts = NULL;
+  strut_rects = NULL;
   while (old_struts)
     {
-      MetaRectangle *cur = old_struts->data;
+      MetaRectangle *cur = &((MetaStrut*)old_struts->data)->rect;
       MetaRectangle *copy = g_new (MetaRectangle, 1);
       *copy = *cur;
       if (meta_rectangle_intersect (copy, region, copy))
-        struts = g_list_prepend (struts, copy);
+        strut_rects = g_list_prepend (strut_rects, copy);
       else
         g_free (copy);
 
@@ -1191,7 +1260,7 @@ get_disjoint_strut_list_in_region (const GSList        *old_struts,
   /* Now, loop over the list and check for intersections, fixing things up
    * where they do intersect.
    */
-  tmp = struts;
+  tmp = strut_rects;
   while (tmp)
     {
       GList *compare;
@@ -1218,10 +1287,10 @@ get_disjoint_strut_list_in_region (const GSList        *old_struts,
               cur_leftover = g_list_prepend (cur_leftover, overlap_allocated);
 
               /* Fix up tmp, compare, and cur -- maybe struts too */
-              if (struts == tmp)
+              if (strut_rects == tmp)
                 {
-                  struts = replace_rect_with_list (tmp, cur_leftover);
-                  tmp = struts;
+                  strut_rects = replace_rect_with_list (tmp, cur_leftover);
+                  tmp = strut_rects;
                 }
               else
                 tmp   = replace_rect_with_list (tmp,     cur_leftover);
@@ -1239,7 +1308,7 @@ get_disjoint_strut_list_in_region (const GSList        *old_struts,
       tmp = tmp->next;
     }
 
-  return struts;
+  return strut_rects;
 }
 
 gint
@@ -1347,7 +1416,7 @@ rectangle_and_edge_intersection (const MetaRectangle *rect,
   /* Find out if the intersection is empty; have to do it this way since
    * edges have a thickness of 0
    */
-  if ((result->width < 0 || result->height < 0) ||
+  if ((result->width <  0 || result->height <  0) ||
       (result->width == 0 && result->height == 0))
     {
       result->width = 0;
@@ -1397,6 +1466,8 @@ rectangle_and_edge_intersection (const MetaRectangle *rect,
           else
             *handle_type = 0;
           break;
+        default:
+          g_assert_not_reached ();
         }
     }
   return intersect;
@@ -1503,23 +1574,25 @@ split_edge (GList *cur_list,
           cur_list = g_list_prepend (cur_list, temp_edge);
         }
       break;
+    default:
+      g_assert_not_reached ();
     }
 
   return cur_list;
 }
 
 /* Split up edge and remove preliminary edges from strut_edges depending on
- * if and how strut and edge intersect.
+ * if and how rect and edge intersect.
  */
 static void
-fix_up_edges (MetaRectangle *strut,        MetaEdge *edge, 
+fix_up_edges (MetaRectangle *rect,         MetaEdge *edge, 
               GList         **strut_edges, GList    **edge_splits,
               gboolean      *edge_needs_removal)
 {
   MetaEdge overlap;
   int      handle_type;
 
-  if (!rectangle_and_edge_intersection (strut, edge, &overlap, &handle_type))
+  if (!rectangle_and_edge_intersection (rect, edge, &overlap, &handle_type))
     return;
 
   if (handle_type == 0 || handle_type == 1)
@@ -1628,9 +1701,9 @@ meta_rectangle_find_onscreen_edges (const MetaRectangle *basic_rect,
                                     const GSList        *all_struts)
 {
   GList        *ret;
-  GList        *fixed_struts;
+  GList        *fixed_strut_rects;
   GList        *edge_iter; 
-  const GList  *strut_iter;
+  const GList  *strut_rect_iter;
 
   /* The algorithm is basically as follows:
    *   Make sure the struts are disjoint
@@ -1648,18 +1721,19 @@ meta_rectangle_find_onscreen_edges (const MetaRectangle *basic_rect,
    */
 
   /* Make sure the struts are disjoint */
-  fixed_struts = get_disjoint_strut_list_in_region (all_struts, basic_rect);
+  fixed_strut_rects =
+    get_disjoint_strut_rect_list_in_region (all_struts, basic_rect);
 
   /* Start off the list with the edges of basic_rect */
   ret = add_edges (NULL, basic_rect, TRUE);
 
-  strut_iter = fixed_struts;
-  while (strut_iter)
+  strut_rect_iter = fixed_strut_rects;
+  while (strut_rect_iter)
     {
-      MetaRectangle *strut = (MetaRectangle*) strut_iter->data;
+      MetaRectangle *strut_rect = (MetaRectangle*) strut_rect_iter->data;
 
       /* Get the new possible edges we may need to add from the strut */
-      GList *new_strut_edges = add_edges (NULL, strut, FALSE);
+      GList *new_strut_edges = add_edges (NULL, strut_rect, FALSE);
 
       edge_iter = ret;
       while (edge_iter)
@@ -1668,7 +1742,7 @@ meta_rectangle_find_onscreen_edges (const MetaRectangle *basic_rect,
           GList *splits_of_cur_edge = NULL;
           gboolean edge_needs_removal = FALSE;
 
-          fix_up_edges (strut,            cur_edge, 
+          fix_up_edges (strut_rect,       cur_edge, 
                         &new_strut_edges, &splits_of_cur_edge,
                         &edge_needs_removal);
 
@@ -1692,14 +1766,14 @@ meta_rectangle_find_onscreen_edges (const MetaRectangle *basic_rect,
         }
 
       ret = g_list_concat (new_strut_edges, ret);
-      strut_iter = strut_iter->next;
+      strut_rect_iter = strut_rect_iter->next;
     }
 
   /* Sort the list */
   ret = g_list_sort (ret, meta_rectangle_edge_cmp);
 
   /* Free the fixed struts list */
-  meta_rectangle_free_list_and_elements (fixed_struts);
+  meta_rectangle_free_list_and_elements (fixed_strut_rects);
 
   return ret;
 }
@@ -1716,6 +1790,7 @@ meta_rectangle_find_nonintersected_xinerama_edges (
    */
   GList *ret;
   const GList  *cur;
+  GSList *temp_rects;
 
   /* Initialize the return list to be empty */
   ret = NULL;
@@ -1823,8 +1898,13 @@ meta_rectangle_find_nonintersected_xinerama_edges (
       cur = cur->next;
     }
 
+  temp_rects = NULL;
+  for (; all_struts; all_struts = all_struts->next)
+    temp_rects = g_slist_prepend (temp_rects,
+                                  &((MetaStrut*)all_struts->data)->rect);
   ret = meta_rectangle_remove_intersections_with_boxes_from_edges (ret, 
-                                                                   all_struts);
+                                                                   temp_rects);
+  g_slist_free (temp_rects);
 
   /* Sort the list */
   ret = g_list_sort (ret, meta_rectangle_edge_cmp);

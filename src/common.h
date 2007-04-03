@@ -216,12 +216,24 @@ typedef enum
  */
 typedef enum
 {
-  META_DIRECTION_LEFT      = 1 << 0,
-  META_DIRECTION_RIGHT     = 1 << 1,
-  META_DIRECTION_TOP       = 1 << 2,
-  META_DIRECTION_BOTTOM    = 1 << 3,
-  META_DIRECTION_UP        = 1 << 2, /* Alternate name for TOP */
-  META_DIRECTION_DOWN      = 1 << 3  /* Alternate name for BOTTOM */
+  META_DIRECTION_LEFT       = 1 << 0,
+  META_DIRECTION_RIGHT      = 1 << 1,
+  META_DIRECTION_TOP        = 1 << 2,
+  META_DIRECTION_BOTTOM     = 1 << 3,
+
+  /* Some aliases for making code more readable for various circumstances. */
+  META_DIRECTION_UP         = META_DIRECTION_TOP,
+  META_DIRECTION_DOWN       = META_DIRECTION_BOTTOM,
+
+  /* A few more definitions using aliases */
+  META_DIRECTION_HORIZONTAL = META_DIRECTION_LEFT | META_DIRECTION_RIGHT,
+  META_DIRECTION_VERTICAL   = META_DIRECTION_UP   | META_DIRECTION_DOWN,
+
+  /* And a few more aliases */
+  META_SIDE_LEFT            = META_DIRECTION_LEFT,
+  META_SIDE_RIGHT           = META_DIRECTION_RIGHT,
+  META_SIDE_TOP             = META_DIRECTION_TOP,
+  META_SIDE_BOTTOM          = META_DIRECTION_BOTTOM
 } MetaDirection;
 
 /* Function a window button can have.  Note, you can't add stuff here

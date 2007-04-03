@@ -1,3 +1,61 @@
+2007-04-02  Elijah Newren  <newren gmail com>
+
+	Patch from Carlo Wood to fix handling of unidirectional
+	maximization and partial struts.  #358311.
+
+	* src/constraints.c (constrain_maximization):
+	determine target size for unidirectionally maximized windows by
+	determining how far they can be maximized without hitting
+	orthogonal struts.  Avoids weird "empty spaces".
+
+	* src/boxes.[ch] (meta_rectangle_expand_to_avoiding_struts):
+	new function
+
+2007-04-02  Elijah Newren  <newren gmail com>
+
+	Make the strut lists (stored in workspaces) record both the
+	rectangle and the side that the strut is on.  Lots of code
+	cleanups relating to struts.
+
+	* src/boxes.h (struct MetaStrut):
+	new struct for struts
+
+	* src/window.[ch] (struct MetaStruts, struct MetaWindow,
+	  meta_window_update_struts):
+	overhaul to make window's struts remember their side as well as
+	their rectangular location, and just use a list instead of several
+	copies of near-identical code for left/right/top/bottom (allowing
+	us to nuke MetaStruts struct as well)
+	
+	* src/testboxes.c (new_meta_strut, get_strut_list):
+	* src/workspace.c (ensure_work_areas_validated):
+	* src/boxes.c (meta_rectangle_get_minimal_spanning_set_for_region,
+	  meta_rectangle_expand_to_avoiding_struts,
+	  get_disjoint_strut_rect_list_in_region, fix_up_edges,
+	  meta_rectangle_find_onscreen_edges,
+	  meta_rectangle_find_nonintersected_xinerama_edges):
+	modify to handle struts being rectangle + side instead of just rectangle
+
+	* src/workspace.c (ensure_work_areas_validated):
+	simplify strut list creation considerably given MetaWindow change,
+	modify work_area computations to take advantage of region
+	computations being done (makes the code shorter as well as more
+	robust against pathological cases).
+
+	* src/util.[ch] (meta_free_gslist_and_elements):
+	new convenience function
+
+	* src/common.h (enum MetaDirection):
+	* src/edge-resistance.c (movement_towards_edge):
+	* src/boxes.c (meta_rectangle_edge_aligns,
+	  rectangle_and_edge_intersection, split_edge):
+	Add more MetaDirection fields for convenience
+
+	* src/boxes.h (enum FixedDirections):
+	* src/constraints.c (setup_constraint_info, place_window_if_needed):
+	add a FIXED_DIRECTION_NONE to the FixedDirections enum to make
+	code more clear
+
 2007-04-01  Bruno Boaventura <brunobol@gnome.org>
 
 	* src/theme.c (kill_window_question): Fallback to NORMAL state after

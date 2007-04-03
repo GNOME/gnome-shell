@@ -365,7 +365,7 @@ setup_constraint_info (ConstraintInfo      *info,
    * and (b) ignored it for aspect ratio windows -- at least in those
    * cases where both directions do actually change size.
    */
-  info->fixed_directions = 0;
+  info->fixed_directions = FIXED_DIRECTION_NONE;
   /* If x directions don't change but either y direction does */
   if ( orig->x == new->x && orig->x + orig->width  == new->x + new->width   &&
       (orig->y != new->y || orig->y + orig->height != new->y + new->height))
@@ -385,7 +385,7 @@ setup_constraint_info (ConstraintInfo      *info,
    * aren't explicit user interaction, though, so just clear it out.
    */
   if (!info->is_user_action)
-    info->fixed_directions = 0;
+    info->fixed_directions = FIXED_DIRECTION_NONE;
 
   xinerama_info =
     meta_screen_get_xinerama_for_rect (window->screen, &info->current);
@@ -441,7 +441,7 @@ setup_constraint_info (ConstraintInfo      *info,
                 "Freakin' Invalid Stupid",
               (info->is_user_action) ? "true" : "false",
               meta_gravity_to_string (info->resize_gravity),
-              (info->fixed_directions == 0) ? "None" :
+              (info->fixed_directions == FIXED_DIRECTION_NONE) ? "None" :
                 (info->fixed_directions == FIXED_DIRECTION_X) ? "X fixed" :
                 (info->fixed_directions == FIXED_DIRECTION_Y) ? "Y fixed" :
                 "Freakin' Invalid Stupid",
@@ -500,7 +500,7 @@ place_window_if_needed(MetaWindow     *window,
       /* Since we just barely placed the window, there's no reason to
        * consider any of the directions fixed.
        */
-      info->fixed_directions = 0;
+      info->fixed_directions = FIXED_DIRECTION_NONE;
     }
 
   if (window->placed || did_placement)
@@ -691,7 +691,8 @@ constrain_maximization (MetaWindow         *window,
                         ConstraintPriority  priority,
                         gboolean            check_only)
 {
-  MetaRectangle min_size, max_size, work_area;
+  MetaRectangle target_size;
+  MetaRectangle min_size, max_size;
   gboolean hminbad, vminbad;
   gboolean horiz_equal, vert_equal;
   gboolean constraint_already_satisfied;
@@ -703,20 +704,51 @@ constrain_maximization (MetaWindow         *window,
   if (!window->maximized_horizontally && !window->maximized_vertically)
     return TRUE;
 
-  work_area = info->work_area_xinerama;
-  unextend_by_frame (&work_area, info->fgeom);
-  get_size_limits (window, info->fgeom, FALSE, &min_size, &max_size);
+  /* Calculate target_size = maximized size of (window + frame) */
+  if (window->maximized_horizontally && window->maximized_vertically)
+    target_size = info->work_area_xinerama;
+  else
+    {
+      /* Amount of maximization possible in a single direction depends
+       * on which struts could occlude the window given its current
+       * position.  For example, a vertical partial strut on the right
+       * is only relevant for a horizontally maximized window when the
+       * window is at a vertical position where it could be occluded
+       * by that partial strut.
+       */
+      MetaDirection  direction;
+      GSList        *active_workspace_struts;
 
-  hminbad = work_area.width < min_size.width && window->maximized_horizontally;
-  vminbad = work_area.height < min_size.height && window->maximized_vertically;
+      if (window->maximized_horizontally)
+        direction = META_DIRECTION_HORIZONTAL;
+      else
+        direction = META_DIRECTION_VERTICAL;
+      active_workspace_struts = window->screen->active_workspace->all_struts;
+
+      target_size = info->current;
+      extend_by_frame (&target_size, info->fgeom);
+      meta_rectangle_expand_to_avoiding_struts (&target_size,
+                                                &info->entire_xinerama,
+                                                direction,
+                                                active_workspace_struts);
+   }
+  /* Now make target_size = maximized size of client window */
+  unextend_by_frame (&target_size, info->fgeom);
+
+  /* Check min size constraints; max size constraints are ignored for maximized
+   * windows, as per bug 327543.
+   */
+  get_size_limits (window, info->fgeom, FALSE, &min_size, &max_size);
+  hminbad = target_size.width < min_size.width && window->maximized_horizontally;
+  vminbad = target_size.height < min_size.height && window->maximized_vertically;
   if (hminbad || vminbad)
     return TRUE;
 
   /* Determine whether constraint is already satisfied; exit if it is */
-  horiz_equal = work_area.x      == info->current.x &&
-                work_area.width  == info->current.width;
-  vert_equal  = work_area.y      == info->current.y &&
-                work_area.height == info->current.height;
+  horiz_equal = target_size.x      == info->current.x &&
+                target_size.width  == info->current.width;
+  vert_equal  = target_size.y      == info->current.y &&
+                target_size.height == info->current.height;
   constraint_already_satisfied =
     (horiz_equal || !window->maximized_horizontally) &&
     (vert_equal  || !window->maximized_vertically);
@@ -726,13 +758,13 @@ constrain_maximization (MetaWindow         *window,
   /*** Enforce constraint ***/
   if (window->maximized_horizontally)
     {
-      info->current.x      = work_area.x;
-      info->current.width  = work_area.width;
+      info->current.x      = target_size.x;
+      info->current.width  = target_size.width;
     }
   if (window->maximized_vertically)
     {
-      info->current.y      = work_area.y;
-      info->current.height = work_area.height;
+      info->current.y      = target_size.y;
+      info->current.height = target_size.height;
     }
   return TRUE;
 }
