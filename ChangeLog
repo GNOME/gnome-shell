@@ -1,5 +1,11 @@
 2007-04-03  Elijah Newren  <newren gmail com>
 
+	* src/keybindings.c (handle_panel_keybinding): turn mouse_mode off
+	to prevent focus issues with the run application dialog.  Fixes
+	#374752.
+
+2007-04-03  Elijah Newren  <newren gmail com>
+
 	Avoid some crashes when dragging windows partially offscreen.
 	Possible (or at least partial) fix for #353513.
 

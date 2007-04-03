@@ -3194,7 +3194,9 @@ handle_panel_keybinding (MetaDisplay    *display,
   ev.data.l[1] = event->xkey.time;
 
   meta_topic (META_DEBUG_KEYBINDINGS,
-              "Sending panel message with timestamp %lu\n", event->xkey.time);
+              "Sending panel message with timestamp %lu, and turning mouse_mode "
+              "off due to keybinding press\n", event->xkey.time);
+  display->mouse_mode = FALSE;
 
   meta_error_trap_push (display);
 
