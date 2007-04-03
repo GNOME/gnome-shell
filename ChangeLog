@@ -1,5 +1,15 @@
 2007-04-03  Elijah Newren  <newren gmail com>
 
+	Avoid some crashes when dragging windows partially offscreen.
+	Possible (or at least partial) fix for #353513.
+
+	* src/edge-resistance.c (apply_edge_resistance): be more careful
+	about calls to find_index_of_edge_near_position() returning
+	possibly invalid indices.  Also, add a warning comment to
+	find_index_of_edge_near_position().
+
+2007-04-03  Elijah Newren  <newren gmail com>
+
 	Patch from Carlo Wood to do some miscellaneous code cleanups found
 	while working on #358311.
 

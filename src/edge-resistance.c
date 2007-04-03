@@ -62,6 +62,9 @@ struct MetaEdgeResistanceData
   ResistanceDataForAnEdge bottom_data;
 };
 
+/* !WARNING!: this function can return invalid indices (namely, either -1 or
+ * edges->len); this is by design, but you need to remember this.
+ */
 static int
 find_index_of_edge_near_position (const GArray *edges,
                                   int           position,
@@ -330,6 +333,7 @@ apply_edge_resistance (MetaWindow                *window,
                        gboolean                   keyboard_op)
 {
   int i, begin, end;
+  int last_edge;
   gboolean increasing = new_pos > old_pos;
   int      increment = increasing ? 1 : -1;
 
@@ -365,6 +369,13 @@ apply_edge_resistance (MetaWindow                *window,
   /* Get the range of indices in the edge array that we move past/to. */
   begin = find_index_of_edge_near_position (edges, old_pos,  increasing, xdir);
   end   = find_index_of_edge_near_position (edges, new_pos, !increasing, xdir);
+
+  /* begin and end can be outside the array index, if the window is partially
+   * off the screen
+   */
+  last_edge = edges->len - 1;
+  begin = CLAMP (begin, 0, last_edge);
+  end   = CLAMP (end,   0, last_edge);
 
   /* Loop over all these edges we're moving past/to. */
   i = begin;
