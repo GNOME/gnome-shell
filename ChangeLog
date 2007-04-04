@@ -1,5 +1,9 @@
 2007-04-03  Elijah Newren  <newren gmail com>
 
+	* MAINTAINERS: Update.  #412319.
+
+2007-04-03  Elijah Newren  <newren gmail com>
+
 	* src/display.c (meta_display_update_active_window_hint):
 	_NET_ACTIVE_WINDOW is a single xwindow id, not two.
 
