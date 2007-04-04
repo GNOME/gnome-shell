@@ -1,4 +1,12 @@
-2004-04-04  Elijah Newren  <newren gmail com>
+2007-04-04  Elijah Newren  <newren gmail com>
+
+	* src/window.c (meta_window_move_resize_internal): send synthetic
+	configurenotify events also in response to MapRequest events when
+	the window has a frame and the application specifies PPosition or
+	UPosition hints.  I believe they are already sent for all other
+	cases.  Should fix #322840.  Fixes the testcase at least.  :)
+
+2007-04-04  Elijah Newren  <newren gmail com>
 
 	Fix lots of little issues with min/max constraints and size
 	increment constraints.  Fixes #329152, #418395, and possibly

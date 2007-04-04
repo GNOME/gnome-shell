@@ -3270,6 +3270,18 @@ meta_window_move_resize_internal (MetaWindow  *window,
   if ((need_move_client || need_move_frame) &&
       !(need_resize_client || need_resize_frame))
     need_configure_notify = TRUE;
+
+  /* MapRequest events with a PPosition or UPosition hint with a frame
+   * are moved by metacity without resizing; send a configure notify
+   * in such cases.  See #322840.  (Note that window->constructing is
+   * only true iff this call is due to a MapRequest, and when
+   * PPosition/UPosition hints aren't set, metacity seems to send a
+   * ConfigureNotify anyway due to the above code.)
+   */
+  if (window->constructing && window->frame &&
+      ((window->size_hints.flags & PPosition) ||
+       (window->size_hints.flags & USPosition)))
+    need_configure_notify = TRUE;
   
   /* The rest of this function syncs our new size/pos with X as
    * efficiently as possible
