@@ -21,7 +21,6 @@ Focus method  Invariant
    sloppy     If the mouse is in a window, then it is focused; if the
               mouse is not in a window, then the most recently used
               window is focused.
-
     mouse     If the mouse is in a non-DESKTOP window, then it is focused;
               otherwise, the designated "no_focus_window" is focused
 
@@ -36,7 +35,6 @@ Focus method  Behavior
               on top)
    sloppy     Focus the window containing the pointer if there is such
               a window, otherwise focus the most recently used window.
-
     mouse     Focus the non-DESKTOP window containing the pointer if
               there is one, otherwise focus the designated
               "no_focus_window".
@@ -66,9 +64,9 @@ cases in which a new window shouldn't be focused:
 
 To handle these cases, Metacity compares timestamps of the event that
 caused the launch and the timestamp of the last interaction with the
-focused window.  (Case 2 is handled by providing a special timestamp
-of 0 for the launch time, which ensures that the window that appears
-doesn't get focus)
+focused window.  (Case 2 is handled by the application providing a
+special timestamp of 0 for the launch time, which ensures that the
+window that appears doesn't get focus)
 
 If the newly launched window isn't focused, some things should be done
 to alert the user that there is a window to work with:
@@ -88,10 +86,10 @@ attempt to handle the INHERENTLY CONFLICTING CONSTRAINTS.  Metacity does
 this by having a mouse_mode boolean used to determine which of the two
 sets of invariants holds.  This mode is set according to which method was
 most recently used to choose a focus window:
-  1) When receiving EnterNotify/LeaveNotify events from mouse movement, set
+  1) When receiving EnterNotify events from mouse movement, set
      mouse_mode to TRUE.
   2) When using keynav to choose a focus window (e.g. alt-tab, alt-esc,
-     move-window-to-workspace keybindings), set mouse_mode to FALSE.
+     alt-f2, move-window-to-workspace keybindings), set mouse_mode to FALSE.
   3) When handling events that don't choose a focus window but rather need
      a focus_window chosen for them (e.g. switch-to-workspace keybindings),
      don't change the mouse_mode and just use the current value.

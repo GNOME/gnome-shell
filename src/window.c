@@ -2233,6 +2233,39 @@ meta_window_unminimize (MetaWindow  *window)
 }
 
 static void
+ensure_size_hints_satisfied (MetaRectangle    *rect,
+                             const XSizeHints *size_hints)
+{
+  int minw, minh, maxw, maxh;   /* min/max width/height                      */
+  int basew, baseh, winc, hinc; /* base width/height, width/height increment */
+  int extra_width, extra_height;
+
+  minw  = size_hints->min_width;  minh  = size_hints->min_height;
+  maxw  = size_hints->max_width;  maxh  = size_hints->max_height;
+  basew = size_hints->base_width; baseh = size_hints->base_height;
+  winc  = size_hints->width_inc;  hinc  = size_hints->height_inc;
+  
+  /* First, enforce min/max size constraints */
+  rect->width  = CLAMP (rect->width,  minw, maxw);
+  rect->height = CLAMP (rect->height, minh, maxh);
+
+  /* Now, verify size increment constraints are satisfied, or make them be */
+  extra_width  = (rect->width  - basew) % winc;
+  extra_height = (rect->height - baseh) % hinc;
+
+  rect->width  -= extra_width;
+  rect->height -= extra_height;
+
+  /* Adjusting width/height down, as done above, may violate minimum size
+   * constraints, so one last fix.
+   */
+  if (rect->width  < minw)
+    rect->width  += ((minw - rect->width)/winc  + 1)*winc;
+  if (rect->height < minh)
+    rect->height += ((minh - rect->height)/hinc + 1)*hinc;
+}
+
+static void
 meta_window_save_rect (MetaWindow *window)
 {
   if (!(META_WINDOW_MAXIMIZED (window) || window->fullscreen))
@@ -2424,6 +2457,11 @@ meta_window_unmaximize (MetaWindow        *window,
           target_rect.height = window->saved_rect.height;
         }
 
+      /* Window's size hints may have changed while maximized, making
+       * saved_rect invalid.  #329152
+       */
+      ensure_size_hints_satisfied (&target_rect, &window->size_hints);
+
       /* When we unmaximize, if we're doing a mouse move also we could
        * get the window suddenly jumping to the upper left corner of
        * the workspace, since that's where it was when the grab op
@@ -2520,17 +2558,25 @@ meta_window_unmake_fullscreen (MetaWindow  *window)
 {
   if (window->fullscreen)
     {
+      MetaRectangle target_rect;
+
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Unfullscreening %s\n", window->desc);
       
       window->fullscreen = FALSE;
+      target_rect = window->saved_rect;
+
+      /* Window's size hints may have changed while maximized, making
+       * saved_rect invalid.  #329152
+       */
+      ensure_size_hints_satisfied (&target_rect, &window->size_hints);
 
       meta_window_move_resize (window,
                                FALSE,
-                               window->saved_rect.x,
-                               window->saved_rect.y,
-                               window->saved_rect.width,
-                               window->saved_rect.height);
+                               target_rect.x,
+                               target_rect.y,
+                               target_rect.width,
+                               target_rect.height);
 
       meta_window_update_layer (window);
       

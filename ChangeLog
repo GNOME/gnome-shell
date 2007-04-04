@@ -1,3 +1,27 @@
+2004-04-04  Elijah Newren  <newren gmail com>
+
+	Fix lots of little issues with min/max constraints and size
+	increment constraints.  Fixes #329152, #418395, and possibly
+	others.
+
+	* src/window-props.c (meta_set_normal_hints):
+	Do more checking to make sure application specified constraints
+	are self-consistent, modifying the size_hints as necessary to
+	achieve self-consistency.
+
+	* src/constraints.c (setup_constraint_info): remove ugly
+	copy-pasto, (constrain_size_increments): be careful that fixing
+	violation of the constraints doesn't cause a violation of the
+	minimum size constraints.
+
+	* src/window.c (ensure_size_hints_satisfied): new function,
+	(meta_window_unmaximize, meta_window_unmake_fullscreen): the
+	saved_rect may no longer be valid (as in the case of #329152) so
+	call ensure_size_hints_satisfied to fix it up.
+
+	* doc/how-to-get-focus-right.txt: Some minor spacing and wording
+	fixes completely unrelated to the rest of this commit
+
 2007-04-03  Elijah Newren  <newren gmail com>
 
 	* src/window.c (meta_window_unmaximize):

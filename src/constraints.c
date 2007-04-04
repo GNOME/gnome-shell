@@ -350,7 +350,7 @@ setup_constraint_info (ConstraintInfo      *info,
   else if (flags & META_IS_RESIZE_ACTION)
     info->action_type = ACTION_RESIZE;
   else if (flags & META_IS_MOVE_ACTION)
-    info->action_type = ACTION_MOVE_AND_RESIZE;
+    info->action_type = ACTION_MOVE;
   else
     g_error ("BAD, BAD developer!  No treat for you!  (Fix your calls to "
              "meta_window_move_resize_internal()).\n");
@@ -809,6 +809,7 @@ constrain_size_increments (MetaWindow         *window,
                            gboolean            check_only)
 {
   int bh, hi, bw, wi, extra_height, extra_width;
+  int new_width, new_height;
   gboolean constraint_already_satisfied;
 
   if (priority > PRIORITY_SIZE_HINTS_INCREMENTS)
@@ -826,10 +827,12 @@ constrain_size_increments (MetaWindow         *window,
   wi = window->size_hints.width_inc;
   extra_height = (info->current.height - bh) % hi;
   extra_width  = (info->current.width  - bw) % wi;
+  /* ignore size increments for maximized windows */
   if (window->maximized_horizontally)
     extra_width *= 0;
   if (window->maximized_vertically)
     extra_height *= 0;
+  /* constraint is satisfied iff there is no extra height or width */
   constraint_already_satisfied = 
     (extra_height == 0 && extra_width == 0);
 
@@ -837,12 +840,24 @@ constrain_size_increments (MetaWindow         *window,
     return constraint_already_satisfied;
 
   /*** Enforce constraint ***/
-  /* Shrink to base + N * inc */
+  new_width  = info->current.width  - extra_width;
+  new_height = info->current.height - extra_height;
+
+  /* Adjusting down instead of up (as done in the above two lines) may
+   * violate minimum size constraints; fix the adjustment if this
+   * happens.
+   */
+  if (new_width  < window->size_hints.min_width)
+    new_width  += ((window->size_hints.min_width  - new_width)/wi  + 1)*wi;
+  if (new_height < window->size_hints.min_height)
+    new_height += ((window->size_hints.min_height - new_height)/hi + 1)*hi;
+
+  /* Resize to the new size */
   meta_rectangle_resize_with_gravity (&info->orig,
                                       &info->current, 
                                       info->resize_gravity,
-                                      info->current.width - extra_width,
-                                      info->current.height - extra_height);
+                                      new_width,
+                                      new_height);
   return TRUE;
 }
 
