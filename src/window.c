@@ -2394,6 +2394,8 @@ meta_window_unmaximize (MetaWindow        *window,
   if ((unmaximize_horizontally && window->maximized_horizontally) ||
       (unmaximize_vertically   && window->maximized_vertically))
     {
+      MetaRectangle target_rect;
+
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Unmaximizing %s%s\n",
                   window->desc,
@@ -2406,6 +2408,22 @@ meta_window_unmaximize (MetaWindow        *window,
       window->maximized_vertically = 
         window->maximized_vertically   && !unmaximize_vertically;
 
+      /* Unmaximize to the saved_rect position in the direction(s)
+       * being unmaximized.
+       */
+      target_rect = window->rect;
+      meta_window_get_position (window, &target_rect.x, &target_rect.y);
+      if (unmaximize_horizontally)
+        {
+          target_rect.x     = window->saved_rect.x;
+          target_rect.width = window->saved_rect.width;
+        }
+      if (unmaximize_vertically)
+        {
+          target_rect.y      = window->saved_rect.y;
+          target_rect.height = window->saved_rect.height;
+        }
+
       /* When we unmaximize, if we're doing a mouse move also we could
        * get the window suddenly jumping to the upper left corner of
        * the workspace, since that's where it was when the grab op
@@ -2414,19 +2432,19 @@ meta_window_unmaximize (MetaWindow        *window,
       if (meta_grab_op_is_moving (window->display->grab_op) &&
           window->display->grab_window == window)
         {
-          window->display->grab_anchor_window_pos = window->saved_rect;
+          window->display->grab_anchor_window_pos = target_rect;
         }
 
       meta_window_move_resize (window,
                                FALSE,
-                               window->saved_rect.x,
-                               window->saved_rect.y,
-                               window->saved_rect.width,
-                               window->saved_rect.height);
+                               target_rect.x,
+                               target_rect.y,
+                               target_rect.width,
+                               target_rect.height);
 
       if (window->display->grab_wireframe_active)
         {
-          window->display->grab_wireframe_rect = window->saved_rect;
+          window->display->grab_wireframe_rect = target_rect;
         }
 
       recalc_window_features (window);

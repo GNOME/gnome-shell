@@ -1,5 +1,11 @@
 2007-04-03  Elijah Newren  <newren gmail com>
 
+	* src/window.c (meta_window_unmaximize):
+	Only use saved_rect for determining the position to unmaximize to
+	for the previously-maximized direction(s).  Fixes #355497.
+
+2007-04-03  Elijah Newren  <newren gmail com>
+
 	* MAINTAINERS: Update.  #412319.
 
 2007-04-03  Elijah Newren  <newren gmail com>
