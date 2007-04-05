@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: lv\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-04-05 09:40+0300\n"
-"PO-Revision-Date: 2007-04-05 09:53+0300\n"
+"PO-Revision-Date: 2007-04-05 09:58+0300\n"
 "Last-Translator: Raivis Dejus <orvils@gmail.com>\n"
 "Language-Team: Latvian <locale@laka.lv>\n"
 "MIME-Version: 1.0\n"
@@ -64,7 +64,7 @@ msgstr "Neizdevās dabūt resursdatora nosaukumu: %s\n"
 #: ../src/display.c:347
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr "Nevarēja atvērt X Logu Sistēmas displeju '%s'\n"
+msgstr "Nevarēja atvērt X logu Sistēmas displeju '%s'\n"
 
 #: ../src/errors.c:271
 #, c-format
@@ -84,7 +84,7 @@ msgstr "Fatāla IO kļūda %d (%s) displejā '%s'.\n"
 
 #: ../src/frames.c:1066
 msgid "Close Window"
-msgstr "Aizvērt Logu"
+msgstr "Aizvērt logu"
 
 #: ../src/frames.c:1069
 msgid "Window Menu"
@@ -92,15 +92,15 @@ msgstr "Loga Izvēlne"
 
 #: ../src/frames.c:1072
 msgid "Minimize Window"
-msgstr "Samazināt Logu"
+msgstr "Samazināt logu"
 
 #: ../src/frames.c:1075
 msgid "Maximize Window"
-msgstr "Maksimizēt Logu"
+msgstr "Maksimizēt logu"
 
 #: ../src/frames.c:1078
 msgid "Unmaximize Window"
-msgstr "Atjaunot Logu"
+msgstr "Atjaunot logu"
 
 #: ../src/frames.c:1081
 msgid "Roll Up Window"
