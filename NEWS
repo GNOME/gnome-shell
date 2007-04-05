@@ -1,13 +1,62 @@
+2.19.1
+======
+
+Thanks to Jaap Haitsma, Linus Torvalds, Charlie Brej, Kjartan Maraas,
+Arthur Taylor, Elijah Newren, Josselin Mouette, Havoc Pennington,
+Benjamin Berg, and Carlo Wood for improvements in this release.
+
+  - new icon for the force-quit dialog (Jaap) [#396655]
+  - add configureable mouse click action abilities, and clean up lots of
+    related code (Linus) [#408899, #408902, others]
+  - add schemeas for middle and right click titlebar actions (Charlie)
+    [#408903]
+  - remove pango/pangox.h include since it's not needed and not
+    installed anymore (Kjartan)
+  - adjust rounded corners so that they fit nicely with the arcs
+    around them (Arthur) [#399373]
+  - fix session hang when metacity .sm file is missing (Josselin)
+    [#407981]
+  - add support for _NET_WM_USER_TIME_WINDOW in order to cut down on
+    context switches (Elijah, Havoc) [#354213]
+  - prevent nasty metacity/gdk interactions causing hangs with gtk
+    trunk (Elijah) [offshoots of #354213]
+  - fix button middle fallback and the prelight state (Benjamin) [#419043]
+  - Lots of code cleanup for the strut lists (Elijah)
+  - fix handling of unidirectional maximization and partial struts +
+    some miscellaneous cleanups (Carlo) [#358311]
+  - avoid some crashes when dragging windows partially offscreen
+    (Elijah) [#353513]
+  - avoid mousenav vs. keynav focus problems with the run application
+    dialog in mouse/sloppy focus modes (Elijah) [#374752]
+  - _NET_ACTIVE_WINDOW property on the root window should be a single
+    xwindow id, not two (Elijah)
+  - Fix unidirection unmaximization causing jumps (Elijah) [#355497]
+  - fix unfullscreening and unmaximizing with size increment/size
+    constraint windows (such as gnome-terminal) possibly not returning
+    to their "original position" (Elijah) [#329152]
+  - fix some issues with min/max and size increment constraints
+    (Elijah) [#418395]
+  - send synthetic configure notify events in response to appropriate
+    MapRequest events too (Elijah) [#322840]
+
+Translations
+  Ihar Hrachyshka (be@latin), Jordi Mallach (ca), Jakub Friedl (cs),
+  norbu (dz), David Lodge (en_GB), Ivar Smolin (et), Gabor Kelemen (hu),
+  Luca Ferretti (it), Takeshi AIHANA (ja), Erdal Ronahi (ku), Gintautas
+  Miliauskas (lt), Jovan Naumovski (mk), Kjartan Maraas (nb), Reinout van
+  Schouwen (nl), wadim dziedzic (pl), raulpereira (pt_BR), Nickolay V.
+  Shmyrev (ru), Горан Ракић (sr), Woodman Tuen (zh_HK), Woodman Tuen (zh_TW)
+
 2.17.5
 ======
 
 Thanks to Bruno Boaventura, Mad Alex, and Thomas Thurman for
 improvements in this release.
 
-   - make window menu arrangement more sensible. (#382962, Bruno)
+   - make window menu arrangement more sensible. (Bruno) [#382962]
    - unmaximise button keeps pressed appearance when moved off and
-     back. (#395560, Alex)
-   - fix a couple of compositor crashes (#387761, Thomas)
+     back. (Alex) [#395560]
+   - fix a couple of compositor crashes (Thomas) [#387761]
    - new environment variables checked if the compositor is enabled;
      see the new file doc/compositor-control.txt for details. (Thomas)
 
@@ -19,14 +68,15 @@ Translations
 
 2.17.3
 ======
+
 Thanks to Christof Krüger, Federico Mena Quintero, Bruno Boaventura,
 and Björn Lindqvist for improvements in this release.
 
   - fix longstanding problem about windows flickering in and out of
-  maximised state when dragging between xineramas (#358715) (Christof)
-  - grab server when switching workspaces (#381127) (Federico)
+    maximised state when dragging between xineramas (Christof) [#358715]
+  - grab server when switching workspaces (Federico) [#381127] 
   - replace changing text on window menu with pairs of radio buttons
-  and checkboxes (#343108) (Bruno, Björn)
+    and checkboxes (Bruno, Björn) [#343108]
 
 Translations
   Kjartan Maraas (nb), Jakub Friedl (cs), Yuval Tanny (he), Ivar Smolin (et),
@@ -39,7 +89,7 @@ Thanks to Priit Laes, Bruno Boaventura, Kjartan Maraas, Justin Mason,
 Elijah Newren and Dan Mick for improvements in this release.
 
   - implement handle_move_to_{side|corner}_* to allow the user to flip a
-  window to the side or corner of the screen. (Justin) [#317884]
+    window to the side or corner of the screen. (Justin) [#317884]
   - fix strict focus mode by picking up on res_class (Dan) [#361054]
   - remove deprecated gtk stuff (Priit, Bruno)
   - string fixes (Kjartan) [#363354, #363355]
