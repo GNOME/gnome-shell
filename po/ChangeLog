@@ -1,3 +1,7 @@
+2007-04-05  Bastien Nocera  <hadess@hadess.net>
+
+	* POTFILES.in: add the XML keys definitions to the list
+
 2007-04-05  Raivis Dejus <orvils@gmail.com>
 
         * lv.po: Updated Latvian Translation.

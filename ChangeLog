@@ -1,3 +1,10 @@
+2007-04-05  Bastien Nocera  <hadess@hadess.net>
+
+	* src/50-metacity-desktop-key.xml.in:
+	* src/50-metacity-key.xml.in:
+	* src/Makefile.am:
+	Add new control-center key bindings definitions (Closes: #420145)
+
 2007-04-04  Elijah Newren  <newren gmail com>
 
         * configure.in: post-release bump to 2.19.2.

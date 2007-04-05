@@ -161,6 +161,12 @@ schemadir   = @GCONF_SCHEMA_FILE_DIR@
 schema_in_files = metacity.schemas.in
 schema_DATA = $(schema_in_files:.schemas.in=.schemas)
 
+@INTLTOOL_XML_NOMERGE_RULE@
+
+xmldir       = $(datadir)/control-center/keybindings
+xml_in_files = 50-metacity-desktop-key.xml.in 50-metacity-key.xml.in
+xml_DATA     = $(xml_in_files:.xml.in=.xml)
+
 @INTLTOOL_SCHEMAS_RULE@
 
 if GCONF_SCHEMAS_INSTALL
@@ -177,7 +183,7 @@ VARIABLES=default_icon_data $(srcdir)/default_icon.png \
           stock_delete_data $(srcdir)/stock_delete.png
 
 BUILT_SOURCES = inlinepixbufs.h
-CLEANFILES = inlinepixbufs.h metacity.desktop metacity.schemas
+CLEANFILES = inlinepixbufs.h metacity.desktop metacity.schemas 50-metacity-desktop-key.xml 50-metacity-key.xml
 
 inlinepixbufs.h: $(IMAGES)
 	   $(GDK_PIXBUF_CSOURCE) --raw --build-list $(VARIABLES) >$(srcdir)/inlinepixbufs.h
@@ -190,4 +196,6 @@ EXTRA_DIST=$(desktopfiles_files) 	\
 	$(IMAGES) $(schema_DATA) 	\
 	$(desktopfiles_in_files)	\
 	$(schema_in_files)		\
+	$(xml_in_files)			\
 	libmetacity-private.pc.in
+
