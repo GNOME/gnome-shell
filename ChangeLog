@@ -1,3 +1,8 @@
+2007-04-05  Thomas Thurman  <thomas@thurman.org.uk>
+
+	* src/theme_parser.c: if theme is invalid and therefore got
+	freed, don't attempt to read from it. Closes #423855.
+
 2007-04-05  Bastien Nocera  <hadess@hadess.net>
 
 	* src/50-metacity-desktop-key.xml.in:
@@ -202,6 +207,7 @@
 	* src/window.c (meta_window_new_with_attrs):
 	new hooks to handle new atom
 
+>>>>>>> .r3171
 2007-03-26  Josselin Mouette  <joss@malsain.org>
 
 	* src/session.c (meta_session_init): if previous client ID

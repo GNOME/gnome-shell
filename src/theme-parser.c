@@ -4610,7 +4610,8 @@ meta_theme_load (const char *theme_name,
     g_markup_parse_context_free (context);
   g_free (text);
 
-  info.theme->format_version = info.format_version;
+  if (info.theme)
+    info.theme->format_version = info.format_version;
 
   if (error)
     {
