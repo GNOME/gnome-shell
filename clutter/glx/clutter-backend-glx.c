@@ -123,30 +123,11 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
 
 static gboolean 
 is_gl_version_at_least_12 (void)
-{     
-#define NON_VENDOR_VERSION_MAX_LEN 32
-  gchar non_vendor_version[NON_VENDOR_VERSION_MAX_LEN];
-  const gchar *version;
-  gint i = 0;
-
-  version = (const gchar*) glGetString (GL_VERSION);
-
-  while ( ((version[i] <= '9' && version[i] >= '0') || version[i] == '.') 
-	  && i < NON_VENDOR_VERSION_MAX_LEN)
-    {
-      non_vendor_version[i] = version[i];
-      i++;
-    }
-
-  non_vendor_version[i] = '\0';
-
-  if (strstr (non_vendor_version, "1.0") == NULL &&
-      strstr (non_vendor_version, "1.0") == NULL)
-    return TRUE;
-
-  return FALSE;
+{
+  /* FIXME: This likely needs to live elsewhere in features */
+  return 
+    (g_ascii_strtod ((const gchar*) glGetString (GL_VERSION), NULL) >= 1.2);
 }
-
 
 static gboolean
 clutter_backend_glx_init_stage (ClutterBackend  *backend,
