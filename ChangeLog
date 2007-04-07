@@ -1,3 +1,8 @@
+2007-04-07  Elijah Newren  <newren gmail com>
+
+	* src/window.c (meta_window_free): Fix memory bug (invalid free)
+	introduced in 2007-04-02 strut cleanup commit.  Part of #427385.
+
 2007-04-05  Thomas Thurman  <thomas@thurman.org.uk>
 
 	* src/theme_parser.c: if theme is invalid and therefore got

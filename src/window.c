@@ -996,7 +996,7 @@ meta_window_free (MetaWindow  *window,
 
   if (window->struts)
     {
-      g_free (window->struts);
+      meta_free_gslist_and_elements (window->struts);
       window->struts = NULL;
 
       meta_topic (META_DEBUG_WORKAREA,
