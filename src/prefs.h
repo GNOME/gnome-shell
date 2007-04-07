@@ -176,6 +176,7 @@ gboolean    meta_prefs_get_compositing_manager (void);
 #define META_KEYBINDING_COMMAND_SCREENSHOT       "run_command_screenshot"
 #define META_KEYBINDING_COMMAND_WIN_SCREENSHOT   "run_command_window_screenshot"
 #define META_KEYBINDING_RUN_COMMAND_TERMINAL     "run_command_terminal"
+#define META_KEYBINDING_SET_SPEW_MARK            "set_spew_mark"
 
 /* Window bindings */
 #define META_KEYBINDING_WINDOW_MENU              "activate_window_menu"

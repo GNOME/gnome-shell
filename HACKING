@@ -183,7 +183,7 @@ Debugging information
 
   To run metacity under valgrind, use options typical for any Gnome
   program, such as
-    valgrind --logfile=metacity.log --tool=memcheck --num-callers=48 \
+    valgrind --log-file=metacity.log --tool=memcheck --num-callers=48 \
     --leak-check=yes --leak-resolution=high --show-reachable=yes     \
     ./src/metacity --replace
   where, again, the backslashes mean to join all the stuff on the following

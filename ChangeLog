@@ -1,5 +1,17 @@
 2007-04-07  Elijah Newren  <newren gmail com>
 
+	* src/prefs.[ch] (screen_bindings array,
+	  META_KEYBINDING_SET_SPEW_MARK definition):
+	* src/keybindings.c (handle_spew_mark, screen_handlers array):
+	Add an (unbound by default) keybinding for setting spew marks in
+	verbose debugging logs.  I'm not sure why this was ever removed;
+	I've wanted it so many times.
+
+	* HACKING:
+	valgrind wants --log-file not --logfile.
+
+2007-04-07  Elijah Newren  <newren gmail com>
+
 	* src/window.c (meta_window_free): Fix memory bug (invalid free)
 	introduced in 2007-04-02 strut cleanup commit.  Part of #427385.
 

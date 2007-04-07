@@ -231,6 +231,11 @@ static void handle_move_to_corner_se          (MetaDisplay    *display,
                                        MetaWindow     *window,
                                        XEvent         *event,
                                        MetaKeyBinding *binding);
+static void handle_spew_mark          (MetaDisplay    *display,
+                                       MetaScreen     *screen,
+                                       MetaWindow     *window,
+                                       XEvent         *event,
+                                       MetaKeyBinding *binding);
 static void handle_run_terminal       (MetaDisplay    *display,
                                        MetaScreen     *screen,
                                        MetaWindow     *window,
@@ -419,6 +424,7 @@ static const MetaKeyHandler screen_handlers[] = {
     GINT_TO_POINTER (33) },
   { META_KEYBINDING_RUN_COMMAND_TERMINAL, handle_run_terminal,
     NULL },
+  { META_KEYBINDING_SET_SPEW_MARK, handle_spew_mark, NULL },
   { NULL, NULL, NULL }
 };
   
@@ -3804,7 +3810,6 @@ handle_workspace_switch  (MetaDisplay    *display,
     }
 }
 
-#if 0
 static void
 handle_spew_mark (MetaDisplay    *display,
                   MetaScreen     *screen,
@@ -3814,7 +3819,6 @@ handle_spew_mark (MetaDisplay    *display,
 {
   meta_verbose ("-- MARK MARK MARK MARK --\n");
 }
-#endif
 
 void
 meta_set_keybindings_disabled (gboolean setting)
