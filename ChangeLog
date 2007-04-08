@@ -1,3 +1,7 @@
+2007-04-08  Thomas Thurman  <thomas@thurman.org.uk>
+
+        * ChangeLog: removed conflict line.
+
 2007-04-07  Elijah Newren  <newren gmail com>
 
 	* src/prefs.[ch] (screen_bindings array,
@@ -224,7 +228,6 @@
 	* src/window.c (meta_window_new_with_attrs):
 	new hooks to handle new atom
 
->>>>>>> .r3171
 2007-03-26  Josselin Mouette  <joss@malsain.org>
 
 	* src/session.c (meta_session_init): if previous client ID
