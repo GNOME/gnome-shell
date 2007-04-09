@@ -1,5 +1,32 @@
 2007-04-08  Elijah Newren  <newren gmail com>
 
+	Remove grab_start_serial, which we expect to be an ancient attempt
+	to workaround sloppy/mouse focus bugs that have since been
+	correctly fixed.  May fix some race conditions.  May cause nasty
+	bugs in sloppy/mouse focus modes.  We'll find out soon enough...
+	See #304430.
+
+	* src/display.c (event_callback):
+	remove event->xany.serial >= display->grab_start_serial in several
+	event callback handlers
+
+	* src/display.[ch] (struct _MetaDisplay, meta_display_begin_grab_op):
+	* src/keybindings.c (do_choose_window, handle_workspace_switch):
+	* src/frames.c (meta_frames_button_press_event):
+	* src/core.[ch] (meta_core_begin_grab_op):
+	* src/window.c (meta_window_client_message, meta_window_begin_grab_op):
+	don't require an event_serial to be passed to
+	meta_display_begin_grab_op () and don't record it anymore.
+
+	* src/ui.c (struct _EventFunc, filter_func,
+	  meta_ui_get_last_event_serial)
+	* src/core.h (meta_ui_get_last_event_serial):
+	remove meta_ui_get_last_event_serial() function (don't ask me why
+	it was declared in core.h) and the last_even_serial field of
+	_EventFunc
+	
+2007-04-08  Elijah Newren  <newren gmail com>
+
 	Fix move/resize events in relation to combinations of
 	ConfigureRequest and WM_NORMAL_HINTS change notifications (plus a
 	few code cleanups).  Fixes #426519.

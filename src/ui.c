@@ -71,7 +71,6 @@ struct _EventFunc
 {
   MetaEventFunc func;
   gpointer data;
-  int last_event_serial;
 };
 
 static EventFunc *ef = NULL;
@@ -86,15 +85,7 @@ filter_func (GdkXEvent *xevent,
   if ((* ef->func) (xevent, ef->data))
     return GDK_FILTER_REMOVE;
   else
-    {
-      /* ef would be NULL here if we removed the filter function
-       * in response to the event.
-       */
-      if (ef != NULL)
-        ef->last_event_serial = ((XEvent*)xevent)->xany.serial;
-
-      return GDK_FILTER_CONTINUE;
-    }
+    return GDK_FILTER_CONTINUE;
 }
 
 void
@@ -123,16 +114,6 @@ meta_ui_remove_event_func (Display       *xdisplay,
 
   g_free (ef);
   ef = NULL;
-}
-
-int
-meta_ui_get_last_event_serial (Display *xdisplay)
-{
-  g_assert (ef != NULL);
-
-  /* This is technically broken since it's not per-display */
-  
-  return ef->last_event_serial;
 }
 
 MetaUI*

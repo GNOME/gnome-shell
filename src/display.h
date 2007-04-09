@@ -254,7 +254,6 @@ struct _MetaDisplay
   MetaScreen *grab_screen;
   MetaWindow *grab_window;
   Window      grab_xwindow;
-  gulong      grab_start_serial;
   int         grab_button;
   int         grab_anchor_root_x;
   int         grab_anchor_root_y;
@@ -450,7 +449,6 @@ gboolean meta_display_begin_grab_op (MetaDisplay *display,
                                      MetaGrabOp   op,
                                      gboolean     pointer_already_grabbed,
                                      gboolean     frame_action,
-                                     int          event_serial,
                                      int          button,
                                      gulong       modmask,
                                      guint32      timestamp,

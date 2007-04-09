@@ -1570,7 +1570,6 @@ event_callback (XEvent   *event,
       
       if (display->grab_op != META_GRAB_OP_NONE &&
           display->grab_window != NULL &&
-          event->xany.serial >= display->grab_start_serial &&
           grab_op_is_mouse (display->grab_op))
 	meta_window_handle_mouse_grab_op_event (display->grab_window, event);
     }
@@ -1656,7 +1655,6 @@ event_callback (XEvent   *event,
       if ((window &&
            grab_op_is_mouse (display->grab_op) &&
            display->grab_button != (int) event->xbutton.button &&
-           event->xany.serial >= display->grab_start_serial &&
            display->grab_window == window) ||
           grab_op_is_keyboard (display->grab_op))
         {
@@ -1776,7 +1774,6 @@ event_callback (XEvent   *event,
                                                 op,
                                                 TRUE,
                                                 FALSE,
-                                                event->xbutton.serial,
                                                 event->xbutton.button,
                                                 0,
                                                 event->xbutton.time,
@@ -1834,7 +1831,6 @@ event_callback (XEvent   *event,
                                           META_GRAB_OP_MOVING,
                                           TRUE,
                                           FALSE,
-                                          event->xbutton.serial,
                                           event->xbutton.button,
                                           0,
                                           event->xbutton.time,
@@ -1845,19 +1841,16 @@ event_callback (XEvent   *event,
       break;
     case ButtonRelease:
       if (display->grab_window == window &&
-          event->xany.serial >= display->grab_start_serial &&
           grab_op_is_mouse (display->grab_op))
         meta_window_handle_mouse_grab_op_event (window, event);
       break;
     case MotionNotify:
       if (display->grab_window == window &&
-          event->xany.serial >= display->grab_start_serial &&
           grab_op_is_mouse (display->grab_op))
         meta_window_handle_mouse_grab_op_event (window, event);
       break;
     case EnterNotify:
       if (display->grab_window == window &&
-          event->xany.serial >= display->grab_start_serial &&
           grab_op_is_mouse (display->grab_op))
         {
           meta_window_handle_mouse_grab_op_event (window, event);
@@ -1951,7 +1944,6 @@ event_callback (XEvent   *event,
       break;
     case LeaveNotify:
       if (display->grab_window == window &&
-          event->xany.serial >= display->grab_start_serial &&
           grab_op_is_mouse (display->grab_op))
         meta_window_handle_mouse_grab_op_event (window, event);
       else if (window != NULL)
@@ -3305,7 +3297,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
                             MetaGrabOp   op,
                             gboolean     pointer_already_grabbed,
                             gboolean     frame_action,
-                            int          event_serial,
                             int          button,
                             gulong       modmask,
                             guint32      timestamp,
@@ -3350,12 +3341,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
         }
     }
 
-  /* We'll ignore any events < this serial. */
-  if (pointer_already_grabbed)
-    display->grab_start_serial = event_serial;
-  else
-    display->grab_start_serial = XNextRequest (display->xdisplay);
-  
   /* FIXME:
    *   If we have no MetaWindow we do our best
    *   and try to do the grab on the RootWindow.

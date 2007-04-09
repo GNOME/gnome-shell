@@ -4957,7 +4957,6 @@ meta_window_client_message (MetaWindow *window,
                                           op,
                                           FALSE,
                                           frame_action,
-                                          0 /* event_serial */,
                                           button, 0,
                                           timestamp,
                                           x_root,
@@ -7762,10 +7761,7 @@ meta_window_begin_grab_op (MetaWindow *window,
                            guint32     timestamp)
 {
   int x, y;
-  gulong grab_start_serial;
 
-  grab_start_serial = XNextRequest (window->display->xdisplay);
-  
   warp_grab_pointer (window,
                      op, &x, &y);
 
@@ -7775,16 +7771,10 @@ meta_window_begin_grab_op (MetaWindow *window,
                               op,
                               FALSE,
                               frame_action,
-                              grab_start_serial /* event_serial */,
                               0 /* button */,
                               0,
                               timestamp,
                               x, y);
-
-  /* We override the one set in display_begin_grab_op since we
-   * did additional stuff as part of the grabbing process
-   */
-  window->display->grab_start_serial = grab_start_serial;
 }
 
 void
