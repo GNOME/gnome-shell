@@ -2940,34 +2940,34 @@ send_sync_request (MetaWindow *window)
 #endif
 
 static void
-meta_window_move_resize_internal (MetaWindow  *window,
-                                  MetaMoveResizeFlags flags,
-                                  int          resize_gravity,
-                                  int          root_x_nw,
-                                  int          root_y_nw,
-                                  int          w,
-                                  int          h)
+meta_window_move_resize_internal (MetaWindow          *window,
+                                  MetaMoveResizeFlags  flags,
+                                  int                  gravity,
+                                  int                  root_x_nw,
+                                  int                  root_y_nw,
+                                  int                  w,
+                                  int                  h)
 {
   /* meta_window_move_resize_internal gets called with very different
-   * meanings for root_x_nw and root_y_nw.  w & h are always the area of
-   * the inner or client window (i.e. excluding the frame) and the
-   * resize_gravity is always the gravity associated with the resize or
-   * move_resize request (the gravity is ignored for move-only operations).
-   * But the location is different because of how this function gets
-   * called; note that in all cases what we want to find out is the upper
-   * left corner of the position of the inner window:
+   * meanings for root_x_nw and root_y_nw.  w & h are always the area
+   * of the inner or client window (i.e. excluding the frame) and
+   * gravity is the relevant gravity associated with the request (note
+   * that gravity is ignored for move-only operations unless its
+   * e.g. a configure request).  The location is different for
+   * different cases because of how this function gets called; note
+   * that in all cases what we want to find out is the upper left
+   * corner of the position of the inner window:
    *
-   *   Case | Called from (flags; resize_gravity)
+   *   Case | Called from (flags; gravity)
    *   -----+-----------------------------------------------
    *    1   | A resize only ConfigureRequest
    *    1   | meta_window_resize
    *    1   | meta_window_resize_with_gravity
    *    2   | New window
    *    2   | Session restore
-   *    2   | A not-resize-only ConfigureRequest
+   *    2   | A not-resize-only ConfigureRequest/net_moveresize_window request
    *    3   | meta_window_move
    *    3   | meta_window_move_resize
-   *    4   | various functions via handle_net_moveresize_window() in display.c
    *
    * For each of the cases, root_x_nw and root_y_nw must be treated as follows:
    *
@@ -2980,8 +2980,6 @@ meta_window_move_resize_internal (MetaWindow  *window,
    *       know the location of the upper left corner of the inner window.
    *   (3) These values are already the desired positon of the NW corner
    *       of the inner window
-   *   (4) The place that calls this function this way must be fixed; it is
-   *       wrong.
    */
   XWindowChanges values;
   unsigned int mask;
@@ -3045,7 +3043,7 @@ meta_window_move_resize_internal (MetaWindow  *window,
     { 
       meta_rectangle_resize_with_gravity (&old_rect,
                                           &new_rect,
-                                          resize_gravity,
+                                          gravity,
                                           new_rect.width,
                                           new_rect.height);
 
@@ -3061,7 +3059,7 @@ meta_window_move_resize_internal (MetaWindow  *window,
                            * the border width existed
                            */
                           is_configure_request,
-                          window->size_hints.win_gravity,
+                          gravity,
                           &new_rect);
 
       meta_topic (META_DEBUG_GEOMETRY,
@@ -3073,7 +3071,7 @@ meta_window_move_resize_internal (MetaWindow  *window,
   meta_window_constrain (window,
                          window->frame ? &fgeom : NULL,
                          flags,
-                         resize_gravity,
+                         gravity,
                          &old_rect,
                          &new_rect);
 
@@ -3297,7 +3295,7 @@ meta_window_move_resize_internal (MetaWindow  *window,
   
   if (configure_frame_first && window->frame)
     meta_frame_sync_to_window (window->frame,
-                               resize_gravity,
+                               gravity,
                                need_move_frame, need_resize_frame);
 
   values.border_width = 0;
@@ -3354,7 +3352,7 @@ meta_window_move_resize_internal (MetaWindow  *window,
 
   if (!configure_frame_first && window->frame)
     meta_frame_sync_to_window (window->frame,
-                               resize_gravity,
+                               gravity,
                                need_move_frame, need_resize_frame);  
 
   /* Put gravity back to be nice to lesser window managers */
@@ -3633,6 +3631,7 @@ meta_window_get_user_position  (MetaWindow  *window,
 
 void
 meta_window_get_gravity_position (MetaWindow  *window,
+                                  int          gravity,
                                   int         *root_x,
                                   int         *root_y)
 {
@@ -3643,7 +3642,7 @@ meta_window_get_gravity_position (MetaWindow  *window,
   w = window->rect.width;
   h = window->rect.height;
 
-  if (window->size_hints.win_gravity == StaticGravity)
+  if (gravity == StaticGravity)
     {
       frame_extents = window->rect;
       if (window->frame)
@@ -3663,7 +3662,7 @@ meta_window_get_gravity_position (MetaWindow  *window,
   x = frame_extents.x;
   y = frame_extents.y;
   
-  switch (window->size_hints.win_gravity)
+  switch (gravity)
     {
     case NorthGravity:
     case CenterGravity:
@@ -3686,7 +3685,7 @@ meta_window_get_gravity_position (MetaWindow  *window,
       break;
     }
   
-  switch (window->size_hints.win_gravity)
+  switch (gravity)
     {
     case WestGravity:
     case CenterGravity:
@@ -3721,7 +3720,9 @@ meta_window_get_geometry (MetaWindow  *window,
                           int         *width,
                           int         *height)
 {
-  meta_window_get_gravity_position (window, x, y);
+  meta_window_get_gravity_position (window,
+                                    window->size_hints.win_gravity,
+                                    x, y);
 
   *width = (window->rect.width - window->size_hints.base_width) /
     window->size_hints.width_inc;
@@ -4325,9 +4326,14 @@ meta_window_send_icccm_message (MetaWindow *window,
     meta_error_trap_pop (window->display, FALSE);
 }
 
-gboolean
-meta_window_configure_request (MetaWindow *window,
-                               XEvent     *event)
+void
+meta_window_move_resize_request (MetaWindow *window,
+                                 guint       value_mask,
+                                 int         gravity,
+                                 int         new_x,
+                                 int         new_y,
+                                 int         new_width,
+                                 int         new_height)
 {
   int x, y, width, height;
   gboolean allow_position_change;
@@ -4372,8 +4378,9 @@ meta_window_configure_request (MetaWindow *window,
    * server-side position in effect when the configure request was
    * generated.
    */
-
-  meta_window_get_gravity_position (window, &x, &y);
+  meta_window_get_gravity_position (window,
+                                    gravity,
+                                    &x, &y);
 
   allow_position_change = FALSE;
   
@@ -4401,13 +4408,11 @@ meta_window_configure_request (MetaWindow *window,
   
   if (allow_position_change)
     {
-      if (event->xconfigurerequest.value_mask & CWX)
-        x = event->xconfigurerequest.x;
-      
-      if (event->xconfigurerequest.value_mask & CWY)
-        y = event->xconfigurerequest.y;
-
-      if (event->xconfigurerequest.value_mask & (CWX | CWY))
+      if (value_mask & CWX)
+        x = new_x;
+      if (value_mask & CWY)
+        y = new_y;
+      if (value_mask & (CWX | CWY))
         {
           /* Once manually positioned, windows shouldn't be placed
            * by the window manager.
@@ -4426,31 +4431,20 @@ meta_window_configure_request (MetaWindow *window,
 
   width = window->rect.width;
   height = window->rect.height;
-
   if (!in_grab_op)
     {
-      if (event->xconfigurerequest.value_mask & CWWidth)
-        width = event->xconfigurerequest.width;
+      if (value_mask & CWWidth)
+        width = new_width;
       
-      if (event->xconfigurerequest.value_mask & CWHeight)
-        height = event->xconfigurerequest.height;
+      if (value_mask & CWHeight)
+        height = new_height;
     }
 
   /* ICCCM 4.1.5 */
   
-  /* Note that x, y is the corner of the window border,
-   * and width, height is the size of the window inside
-   * its border, but that we always deny border requests
-   * and give windows a border of 0. But we save the
-   * requested border here.
-   */
-  if (event->xconfigurerequest.value_mask & CWBorderWidth)
-    window->border_width = event->xconfigurerequest.border_width;
-
   /* We're ignoring the value_mask here, since sizes
    * not in the mask will be the current window geometry.
    */
-  
   window->size_hints.x = x;
   window->size_hints.y = y;
   window->size_hints.width = width;
@@ -4470,19 +4464,19 @@ meta_window_configure_request (MetaWindow *window,
    * meta_window_move_resize_internal() call.
    */
   flags = META_IS_CONFIGURE_REQUEST;
-  if (event->xconfigurerequest.value_mask & (CWX | CWY))
+  if (value_mask & (CWX | CWY))
     flags |= META_IS_MOVE_ACTION;
-  if (event->xconfigurerequest.value_mask & (CWWidth | CWHeight))
+  if (value_mask & (CWWidth | CWHeight))
     flags |= META_IS_RESIZE_ACTION;
 
   if (flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION))
     meta_window_move_resize_internal (window, 
                                       flags,
-                                      window->size_hints.win_gravity,
-                                      window->size_hints.x,
-                                      window->size_hints.y,
-                                      window->size_hints.width,
-                                      window->size_hints.height);
+                                      gravity,
+                                      x,
+                                      y,
+                                      width,
+                                      height);
 
   /* window->user_rect exists to allow "snapping-back" the window if a
    * new strut is set (causing the window to move) and then the strut
@@ -4495,6 +4489,28 @@ meta_window_configure_request (MetaWindow *window,
    * See also bug 426519.
    */
   meta_window_get_client_root_coords (window, &window->user_rect);
+}
+
+gboolean
+meta_window_configure_request (MetaWindow *window,
+                               XEvent     *event)
+{
+  /* Note that x, y is the corner of the window border,
+   * and width, height is the size of the window inside
+   * its border, but that we always deny border requests
+   * and give windows a border of 0. But we save the
+   * requested border here.
+   */
+  if (event->xconfigurerequest.value_mask & CWBorderWidth)
+    window->border_width = event->xconfigurerequest.border_width;
+
+  meta_window_move_resize_request(window,
+                                  event->xconfigurerequest.value_mask,
+                                  window->size_hints.win_gravity,
+                                  event->xconfigurerequest.x,
+                                  event->xconfigurerequest.y,
+                                  event->xconfigurerequest.width,
+                                  event->xconfigurerequest.height);
       
   /* Handle stacking. We only handle raises/lowers, mostly because
    * stack.c really can't deal with anything else.  I guess we'll fix
@@ -4965,6 +4981,27 @@ meta_window_client_message (MetaWindow *window,
         }
 
       return TRUE;
+    }
+  else if (event->xclient.message_type ==
+           display->atom_net_moveresize_window)
+    {
+      int gravity, source;
+      guint value_mask;
+
+      gravity = (event->xclient.data.l[0] & 0xff);
+      value_mask = (event->xclient.data.l[0] & 0xf00) >> 8;
+      source = (event->xclient.data.l[0] & 0xf000) >> 12;
+
+      if (gravity == 0)
+        gravity = window->size_hints.win_gravity;
+
+      meta_window_move_resize_request(window,
+                                      value_mask,
+                                      gravity,
+                                      event->xclient.data.l[1],  // x
+                                      event->xclient.data.l[2],  // y
+                                      event->xclient.data.l[3],  // width
+                                      event->xclient.data.l[4]); // height
     }
   else if (event->xclient.message_type ==
            display->atom_net_active_window)

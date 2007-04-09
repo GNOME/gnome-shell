@@ -1366,80 +1366,6 @@ meta_display_queue_autoraise_callback (MetaDisplay *display,
 
 #if 0
 static void
-handle_net_moveresize_window (MetaDisplay* display,
-                              XEvent *event)
-{
-  MetaWindow *window;
-  int x, y, width, height;
-  gboolean only_resize;
-  unsigned int gravity;
-  unsigned int mode;
-
-  window = meta_display_lookup_x_window (display,
-                                         event->xclient.window);
-
-  /*
-   * FIXME: The specification seems to have serious endian issues
-   * here.  Does bits 8-11 mean the high-order byte, or the low-order
-   * byte?
-   */
-  gravity = (event->xclient.data.l[0] & ~0xff);
-  mode = (event->xclient.data.l[0] & ~0xff00) >> 8;
-
-  if (window)
-    {
-      /* FIXME!!!!  This function is _wrong_ except for the resize-only
-       * case.  Even then, it sucks to special case the code instead of
-       * factoring out common functionality with the configure reqest
-       * handling, especially since the EWMH says this message should be
-       * treated identically to a configure request with the exception of
-       * having a special gravity specified.
-       */
-      meta_window_get_gravity_position (window, &x, &y);
-      width = window->rect.width;
-      height = window->rect.height;
-
-      if (mode & (CWX | CWY))
-        only_resize = FALSE;
-      else
-        only_resize = TRUE;
-
-      if (mode & CWX)
-        x = event->xclient.data.l[1];
-      if (mode & CWY)
-        y = event->xclient.data.l[2];
-      if (mode & CWWidth)
-        width = event->xclient.data.l[3];
-      if (mode & CWHeight)
-        height = event->xclient.data.l[4];
-
-      if (only_resize)
-        {
-          if (gravity)
-	    meta_window_resize_with_gravity (window,
-					     FALSE,
-					     width,
-					     height,
-					     gravity);
-          else
-            meta_window_resize (window,
-				FALSE,
-				width,
-				height);
-        }
-      else
-        {
-          meta_window_move_resize (window,
-                                   FALSE,
-                                   x,
-                                   y,
-                                   width,
-                                   height);
-        }
-    }
-}
-
-static void
 handle_net_restack_window (MetaDisplay* display,
                            XEvent *event)
 {
@@ -2228,9 +2154,6 @@ event_callback (XEvent   *event,
             else if (event->xproperty.atom ==
                      display->atom_net_restack_window)
               handle_net_restack_window (display, event);
-            else if (event->xproperty.atom ==
-                     display->atom_net_moveresize_window)
-              handle_net_moveresize_window (display, event);
 #endif
 
             /* we just use this property as a sentinel to avoid

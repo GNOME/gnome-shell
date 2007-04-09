@@ -1,5 +1,38 @@
 2007-04-09  Elijah Newren  <newren gmail com>
 
+	Add support for _NET_MOVERESIZE_WINDOW.  #344521.
+
+	* src/display.c (handle_net_moveresize_window, event_callback):
+	Remove handle_net_moveresize_window() and the call to it; this
+	code was highly buggy, though to be fair it was never tested and
+	had simply been put into the code in commented out form.
+
+	* src/screen.c (set_supported_hint):
+	add atom_net_moveresize_window
+
+	* src/window.[ch]:
+	(meta_window_configure_request, meta_window_move_resize_request):
+	Split out the moving/resize part of the configure request and put
+	it into meta_window_move_resize_request
+
+	(meta_window_client_message):
+	check for NET_MOVERESIZE_WINDOW messages and call
+	meta_window_move_resize_request() with the appropriate parameters
+	to handle them
+
+	(meta_window_move_resize_internal):
+	fix some of the big comment at this function -- it wasn't quite
+	right, use the passed in gravity instead of
+	window->size_hints.win_gravity when calling adjust_for_gravity()
+	to make sure the correct adjustments are used.
+
+	(meta_window_get_gravity_position,
+	 meta_window_get_geometry, meta_window_move_resize_request):
+	add a gravity parameter to meta_window_get_gravity_position and
+	have it use that gravity instead of window->size_hints.win_gravity
+
+2007-04-09  Elijah Newren  <newren gmail com>
+
         * configure.in: post-release bump to 2.19.3.
 
 2007-04-09  Elijah Newren  <newren gmail com>

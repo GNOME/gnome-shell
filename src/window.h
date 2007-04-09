@@ -470,6 +470,7 @@ void        meta_window_get_client_root_coords (MetaWindow    *window,
  * request.
  */
 void        meta_window_get_gravity_position (MetaWindow  *window,
+                                              int          gravity,
                                               int         *x,
                                               int         *y);
 /* Get geometry for saving in the session; x/y are gravity
@@ -509,6 +510,13 @@ void meta_window_send_icccm_message (MetaWindow *window,
                                      guint32     timestamp);
 
 
+void     meta_window_move_resize_request(MetaWindow *window,
+                                         guint       value_mask,
+                                         int         gravity,
+                                         int         x,
+                                         int         y,
+                                         int         width,
+                                         int         height);
 gboolean meta_window_configure_request (MetaWindow *window,
                                         XEvent     *event);
 gboolean meta_window_property_notify   (MetaWindow *window,
