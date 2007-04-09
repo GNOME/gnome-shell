@@ -1,3 +1,28 @@
+2.19.2
+======
+
+Thanks to Bastien Nocera, Thomas Thurman, and Elijah Newren for
+improvements in this release.
+
+  - Add new control-center key bindings definitions (Bastien) [#420145]
+  - Prevent metacity from crashing when trying to use invalid themes
+    (Thomas) [#423855]
+  - Fix invalid free causing crash on metacity close introduced in
+    2.19.1 (Elijah) [#427385]
+  - Add special keybinding just for debugging spew marks, unbound and
+    not even listed in schemas (Elijah)
+  - Fix move/resize events in relation to combinations of
+    ConfigureRequest and WM_NORMAL_HINTS change notifications (Elijah)
+    [#426519]
+  - Remove what we believe to be an ancient attempt at working around
+    sloppy/mouse focus bugs that we believe have since been correctly
+    fixed.  May fix some ugly race conditions.  May also cause nasty
+    bugs in sloppy/mouse focus modes.  Only one way to find
+    out... (Elijah) [#304430]
+
+Translations
+  Raivis Dejus (lv)
+
 2.19.1
 ======
 
