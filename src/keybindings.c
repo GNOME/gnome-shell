@@ -1957,10 +1957,7 @@ process_keyboard_move_grab (MetaDisplay *display,
       if (display->grab_wireframe_active)
         old_rect = display->grab_wireframe_rect;
       else
-        {
-          old_rect = window->rect;
-          meta_window_get_position (window, &old_rect.x, &old_rect.y);
-        }
+        meta_window_get_client_root_coords (window, &old_rect);
 
       meta_window_edge_resistance_for_move (window, 
                                             old_rect.x,

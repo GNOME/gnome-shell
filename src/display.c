@@ -3432,10 +3432,8 @@ meta_display_begin_grab_op (MetaDisplay *display,
 	
   if (display->grab_window)
     {
-      display->grab_initial_window_pos = display->grab_window->rect;
-      meta_window_get_position (display->grab_window,
-                                &display->grab_initial_window_pos.x,
-                                &display->grab_initial_window_pos.y);
+      meta_window_get_client_root_coords (display->grab_window,
+                                          &display->grab_initial_window_pos);
       display->grab_anchor_window_pos = display->grab_initial_window_pos;
 
       display->grab_wireframe_active =

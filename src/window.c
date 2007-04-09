@@ -2444,8 +2444,7 @@ meta_window_unmaximize (MetaWindow        *window,
       /* Unmaximize to the saved_rect position in the direction(s)
        * being unmaximized.
        */
-      target_rect = window->rect;
-      meta_window_get_position (window, &target_rect.x, &target_rect.y);
+      meta_window_get_client_root_coords (window, &target_rect);
       if (unmaximize_horizontally)
         {
           target_rect.x     = window->saved_rect.x;
@@ -3019,8 +3018,7 @@ meta_window_move_resize_internal (MetaWindow  *window,
   /* We don't need it in the idle queue anymore. */
   meta_window_unqueue_move_resize (window);
 
-  old_rect = window->rect;
-  meta_window_get_position (window, &old_rect.x, &old_rect.y);
+  meta_window_get_client_root_coords (window, &old_rect);
   
   meta_topic (META_DEBUG_GEOMETRY,
               "Move/resize %s to %d,%d %dx%d%s%s from %d,%d %dx%d\n",
@@ -3480,22 +3478,15 @@ meta_window_resize_with_gravity (MetaWindow *window,
 static void
 meta_window_move_resize_now (MetaWindow  *window)
 {
-  int x, y;
-
-  /* If constraints have changed then we'll snap back to wherever
-   * the user had the window
+  /* If constraints have changed then we want to snap back to wherever
+   * the user had the window.  We use user_rect for this reason.  See
+   * also bug 426519 comment 3.
    */
-  meta_window_get_user_position (window, &x, &y);
-
-  /* This used to use the user width/height if the user hadn't resized,
-   * but it turns out that breaks things pretty often, because configure
-   * requests from the app or size hints changes from the app frequently
-   * reflect user actions such as changing terminal font size
-   * or expanding a disclosure triangle.
-   */
-  meta_window_move_resize (window, FALSE, x, y,
-                           window->rect.width,
-                           window->rect.height);
+  meta_window_move_resize (window, FALSE,
+                           window->user_rect.x,
+                           window->user_rect.y,
+                           window->user_rect.width,
+                           window->user_rect.height);
 }
 
 static guint move_resize_idle = 0;
@@ -3611,6 +3602,15 @@ meta_window_get_position (MetaWindow  *window,
       if (y)
         *y = window->rect.y;
     }
+}
+
+void
+meta_window_get_client_root_coords (MetaWindow    *window,
+                                    MetaRectangle *rect)
+{
+  meta_window_get_position (window, &rect->x, &rect->y);
+  rect->width  = window->rect.width;
+  rect->height = window->rect.height;
 }
 
 void
@@ -3799,10 +3799,8 @@ meta_window_begin_wireframe (MetaWindow *window)
   MetaRectangle new_xor;
   int display_width, display_height;
 
-  window->display->grab_wireframe_rect = window->rect;
-  meta_window_get_position (window, 
-                            &window->display->grab_wireframe_rect.x,
-                            &window->display->grab_wireframe_rect.y);
+  meta_window_get_client_root_coords (window,
+                                      &window->display->grab_wireframe_rect);
 
   meta_window_get_xor_rect (window, &window->display->grab_wireframe_rect,
                             &new_xor);
@@ -4332,7 +4330,6 @@ meta_window_configure_request (MetaWindow *window,
                                XEvent     *event)
 {
   int x, y, width, height;
-  gboolean only_resize;
   gboolean allow_position_change;
   gboolean in_grab_op;
   MetaMoveResizeFlags flags;
@@ -4378,8 +4375,6 @@ meta_window_configure_request (MetaWindow *window,
 
   meta_window_get_gravity_position (window, &x, &y);
 
-  only_resize = TRUE;
-
   allow_position_change = FALSE;
   
   if (meta_prefs_get_disable_workarounds ())
@@ -4414,8 +4409,6 @@ meta_window_configure_request (MetaWindow *window,
 
       if (event->xconfigurerequest.value_mask & (CWX | CWY))
         {
-          only_resize = FALSE;
-
           /* Once manually positioned, windows shouldn't be placed
            * by the window manager.
            */
@@ -4463,18 +4456,19 @@ meta_window_configure_request (MetaWindow *window,
   window->size_hints.width = width;
   window->size_hints.height = height;
 
-  /* FIXME passing the gravity on only_resize thing is kind of crack-rock.
-   * Basically I now have several ways of handling gravity, and things
-   * don't make too much sense. I think I am doing the math in a couple
-   * places and could do it in only one function, and remove some of the
-   * move_resize_internal arguments.
-   *
-   * UPDATE (2005-09-17): See the huge comment at the beginning of
-   * meta_window_move_resize_internal() which explains why the current
-   * setup requires the only_resize thing.  Yeah, it'd be much better to
-   * have a different setup for meta_window_move_resize_internal()...
+  /* NOTE: We consider ConfigureRequests to be "user" actions in one
+   * way, but not in another.  Explanation of the two cases are in the
+   * next two big comments.
    */
-  
+
+  /* The constraints code allows user actions to move windows
+   * offscreen, etc., and configure request actions would often send
+   * windows offscreen when users don't want it if not constrained
+   * (e.g. hitting a dropdown triangle in a fileselector to show more
+   * options, which makes the window bigger).  Thus we do not set
+   * META_IS_USER_ACTION in flags to the
+   * meta_window_move_resize_internal() call.
+   */
   flags = META_IS_CONFIGURE_REQUEST;
   if (event->xconfigurerequest.value_mask & (CWX | CWY))
     flags |= META_IS_MOVE_ACTION;
@@ -4490,6 +4484,18 @@ meta_window_configure_request (MetaWindow *window,
                                       window->size_hints.width,
                                       window->size_hints.height);
 
+  /* window->user_rect exists to allow "snapping-back" the window if a
+   * new strut is set (causing the window to move) and then the strut
+   * is later removed without the user moving the window in the
+   * interim.  We'd like to "snap-back" to the position specified by
+   * ConfigureRequest events (at least the constrained version of the
+   * ConfigureRequest, since that is guaranteed to be onscreen) so we
+   * set user_rect here.
+   *
+   * See also bug 426519.
+   */
+  meta_window_get_client_root_coords (window, &window->user_rect);
+      
   /* Handle stacking. We only handle raises/lowers, mostly because
    * stack.c really can't deal with anything else.  I guess we'll fix
    * that if a client turns up that really requires it. Only a very
@@ -6856,10 +6862,7 @@ update_move (MetaWindow  *window,
   if (display->grab_wireframe_active)
     old = display->grab_wireframe_rect;
   else
-    {
-      old = window->rect;
-      meta_window_get_position (window, &old.x, &old.y);
-    }
+    meta_window_get_client_root_coords (window, &old);
 
   /* Don't allow movement in the maximized directions */
   if (window->maximized_horizontally)
@@ -7505,15 +7508,9 @@ meta_window_refresh_resize_popup (MetaWindow *window)
       MetaRectangle rect;
       
       if (window->display->grab_wireframe_active)
-        {
-          rect = window->display->grab_wireframe_rect;
-        }
+        rect = window->display->grab_wireframe_rect;
       else
-        {
-          meta_window_get_position (window, &rect.x, &rect.y);
-          rect.width = window->rect.width;
-          rect.height = window->rect.height;
-        }
+        meta_window_get_client_root_coords (window, &rect);
       
       meta_ui_resize_popup_set (window->display->grab_resize_popup,
                                 rect,
@@ -7646,16 +7643,17 @@ warp_grab_pointer (MetaWindow          *window,
                    int                 *x,
                    int                 *y)
 {
-  MetaRectangle rect;
+  MetaRectangle  rect;
+  MetaDisplay   *display;
+
+  display = window->display;
 
   /* We may not have done begin_grab_op yet, i.e. may not be in a grab
    */
   
-  if (window == window->display->grab_window &&
-      window->display->grab_wireframe_active)
+  if (window == display->grab_window && display->grab_wireframe_active)
     {
-      meta_window_get_xor_rect (window, &window->display->grab_wireframe_rect,
-                                &rect);
+      meta_window_get_xor_rect (window, &display->grab_wireframe_rect, &rect);
     }
   else
     {
@@ -7721,7 +7719,7 @@ warp_grab_pointer (MetaWindow          *window,
   *x = CLAMP (*x, 0, window->screen->rect.width-1);
   *y = CLAMP (*y, 0, window->screen->rect.height-1);
   
-  meta_error_trap_push_with_return (window->display);
+  meta_error_trap_push_with_return (display);
 
   meta_topic (META_DEBUG_WINDOW_OPS,
               "Warping pointer to %d,%d with window at %d,%d\n",
@@ -7731,28 +7729,23 @@ warp_grab_pointer (MetaWindow          *window,
    * events generated by the XWarpPointer() call below don't cause complete
    * funkiness.  See bug 124582 and bug 122670.
    */
-  window->display->grab_anchor_root_x = *x;
-  window->display->grab_anchor_root_y = *y;
-  window->display->grab_latest_motion_x = *x;
-  window->display->grab_latest_motion_y = *y;
-  if (window->display->grab_wireframe_active)
-    window->display->grab_anchor_window_pos = 
-      window->display->grab_wireframe_rect;
+  display->grab_anchor_root_x = *x;
+  display->grab_anchor_root_y = *y;
+  display->grab_latest_motion_x = *x;
+  display->grab_latest_motion_y = *y;
+  if (display->grab_wireframe_active)
+    display->grab_anchor_window_pos = display->grab_wireframe_rect;
   else
-    {
-      window->display->grab_anchor_window_pos = window->rect;
-      meta_window_get_position (window,
-                                &window->display->grab_anchor_window_pos.x,
-                                &window->display->grab_anchor_window_pos.y);
-    }
+    meta_window_get_client_root_coords (window,
+                                        &display->grab_anchor_window_pos);
   
-  XWarpPointer (window->display->xdisplay,
+  XWarpPointer (display->xdisplay,
                 None,
                 window->screen->xroot,
                 0, 0, 0, 0, 
                 *x, *y);
 
-  if (meta_error_trap_pop_with_return (window->display, FALSE) != Success)
+  if (meta_error_trap_pop_with_return (display, FALSE) != Success)
     {
       meta_verbose ("Failed to warp pointer for window %s\n",
                     window->desc);

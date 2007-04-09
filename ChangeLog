@@ -1,3 +1,31 @@
+2007-04-08  Elijah Newren  <newren gmail com>
+
+	Fix move/resize events in relation to combinations of
+	ConfigureRequest and WM_NORMAL_HINTS change notifications (plus a
+	few code cleanups).  Fixes #426519.
+
+	* src/window.c (meta_window_move_resize_now):
+	move to the user_rect position, not some weird combination of rect
+	and user_rect
+
+	* src/window.c (meta_window_configure_request):
+        set user_rect in response to ConfigureRequest events (after the
+	ConfigureRequest values have been constrained) and add a big
+	comment explaining this change, remove unused only_resize variable
+	and irrelevant huge FIXME comment about it
+
+	* src/window.[ch] (meta_window_get_client_root_coords):
+	new function
+
+	* src/display.c (meta_display_begin_grab_op):
+	* src/keybindings.c (process_keyboard_move_grab):
+	* src/window.c (meta_window_unmaximize,
+	  meta_window_move_resize_internal, meta_window_begin_wireframe,
+	  update_move, meta_window_refresh_resize_popup,
+	  warp_grab_pointer)
+	combine multi-step client rect root coord setting into a single
+	function call to meta_window_get_client_root_coords()
+
 2007-04-08  Thomas Thurman  <thomas@thurman.org.uk>
 
         * ChangeLog: removed conflict line.

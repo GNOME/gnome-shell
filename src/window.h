@@ -457,6 +457,13 @@ void        meta_window_get_position       (MetaWindow  *window,
 void        meta_window_get_user_position  (MetaWindow  *window,
                                             int         *x,
                                             int         *y);
+
+/* Gets root coords for x, y, width & height of client window; uses
+ * meta_window_get_position for x & y.
+ */
+void        meta_window_get_client_root_coords (MetaWindow    *window,
+                                                MetaRectangle *rect);
+
 /* gets position we need to set to stay in current position,
  * assuming position will be gravity-compensated. i.e.
  * this is the position a client would send in a configure
