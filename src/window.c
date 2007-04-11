@@ -6287,7 +6287,8 @@ recalc_window_features (MetaWindow *window)
    * only recalc_window_features when something
    * has actually changed.
    */
-  if (old_has_close_func != window->has_close_func       ||
+  if (window->constructing                               ||
+      old_has_close_func != window->has_close_func       ||
       old_has_minimize_func != window->has_minimize_func ||
       old_has_move_func != window->has_move_func         ||
       old_has_resize_func != window->has_resize_func     ||

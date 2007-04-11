@@ -1,3 +1,11 @@
+2007-04-10  Elijah Newren  <newren gmail com>
+
+	* src/window.c (recalc_window_features): make sure to set
+	_NET_WM_ALLOWED_ACTIONS so that libwnck menus don't have sensitive
+	but ineffective menu items.  The "On Top" item is now buggy, but
+	due to the fact that _NET_WM_ACTION_ABOVE is not yet defined in
+	the EWMH.  Fixes #115247.
+
 2007-04-09  Elijah Newren  <newren gmail com>
 
 	Add support for _NET_MOVERESIZE_WINDOW.  #344521.
