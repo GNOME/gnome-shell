@@ -1,3 +1,17 @@
+2007-04-11  Elijah Newren  <newren gmail com>
+
+	Advertise support of Above and Below operations (assuming the
+	proposed EWMH additions of _NET_WM_ACTION_(ABOVE|BELOW) will be
+	accepted, otherwise these changes will have to be modified).  Part
+	of #115247.
+
+	* src/display.[ch] (meta_display_open, struct MetaDisplay):
+	* src/screen.c (set_wm_check_hint):
+	Add support for _NET_WM_ACTION_ABOVE and _NET_WM_ACTION_BELOW
+
+	* src/window.c (set_allowed_actions_hints):
+	add active_above and action_below
+
 2007-04-10  Elijah Newren  <newren gmail com>
 
 	* src/window.c (recalc_window_features): make sure to set

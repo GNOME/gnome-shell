@@ -6035,7 +6035,7 @@ recalc_window_type (MetaWindow *window)
 static void
 set_allowed_actions_hint (MetaWindow *window)
 {
-#define MAX_N_ACTIONS 10
+#define MAX_N_ACTIONS 12
   unsigned long data[MAX_N_ACTIONS];
   int i;
 
@@ -6080,6 +6080,12 @@ set_allowed_actions_hint (MetaWindow *window)
       data[i] = window->display->atom_net_wm_action_close;
       ++i;
     }
+
+  /* I guess we always allow above/below operations */
+  data[i] = window->display->atom_net_wm_action_above;
+  ++i;
+  data[i] = window->display->atom_net_wm_action_below;
+  ++i;
 
   g_assert (i <= MAX_N_ACTIONS);
 

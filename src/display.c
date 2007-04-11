@@ -334,7 +334,9 @@ meta_display_open (void)
     "_METACITY_VERSION",
     "_NET_WM_VISIBLE_NAME",
     "_NET_WM_VISIBLE_ICON_NAME",
-    "_NET_WM_USER_TIME_WINDOW"
+    "_NET_WM_USER_TIME_WINDOW",
+    "_NET_WM_ACTION_ABOVE",
+    "_NET_WM_ACTION_BELOW"
   };
   Atom atoms[G_N_ELEMENTS(atom_names)];
   
@@ -494,6 +496,8 @@ meta_display_open (void)
   display->atom_net_wm_visible_name = atoms[92];
   display->atom_net_wm_visible_icon_name = atoms[93];
   display->atom_net_wm_user_time_window = atoms[94];
+  display->atom_net_wm_action_above = atoms[95];
+  display->atom_net_wm_action_below = atoms[96];
 
   display->prop_hooks = NULL;
   meta_display_init_window_prop_hooks (display);

@@ -159,6 +159,8 @@ struct _MetaDisplay
   Atom atom_net_wm_action_maximize_vert;
   Atom atom_net_wm_action_change_desktop;
   Atom atom_net_wm_action_close;
+  Atom atom_net_wm_action_above;
+  Atom atom_net_wm_action_below;
   Atom atom_net_wm_state_above;
   Atom atom_net_wm_state_below;
   Atom atom_net_startup_id;
