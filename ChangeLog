@@ -1,3 +1,9 @@
+2007-04-12  Elijah Newren  <newren gmail com>
+
+	* src/place.c (meta_window_place): do not auto-maximize windows
+	larger than the workarea in only a single direction.  Fixes
+	#419810.
+
 2007-04-11  Elijah Newren  <newren gmail com>
 
 	Make sure apps have correct info about their coordinates, even on
