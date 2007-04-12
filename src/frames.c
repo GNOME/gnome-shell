@@ -33,6 +33,7 @@
 #include "fixedtip.h"
 #include "theme.h"
 #include "prefs.h"
+#include "errors.h"
 
 #ifdef HAVE_SHAPE
 #include <X11/extensions/shape.h>
@@ -2174,6 +2175,11 @@ meta_frames_expose_event (GtkWidget           *widget,
   return TRUE;
 }
 
+/* How far off the screen edge the window decorations should
+ * be drawn. Used only in meta_frames_paint_to_drawable, below.
+ */
+#define DECORATING_BORDER 100
+
 static void
 meta_frames_paint_to_drawable (MetaFrames   *frames,
                                MetaUIFrame  *frame,
@@ -2191,12 +2197,6 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
   MetaButtonState button_states[META_BUTTON_TYPE_LAST];
   Window grab_frame;
   int i;
-  int top, bottom, left, right;
-  GdkRegion *edges;
-  GdkRegion *tmp_region;
-  GdkRectangle area;
-  GdkRectangle *areas;
-  int n_areas;
   MetaButtonLayout button_layout;
   MetaGrabOp grab_op;
   
@@ -2307,35 +2307,95 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
 
   meta_frames_ensure_layout (frames, frame);
 
-  meta_theme_get_frame_borders (meta_theme_get_current (),
-                                type, frame->text_height, flags, 
-                                &top, &bottom, &left, &right);
-
-  /* Repaint each side of the frame */
-  
-  edges = gdk_region_copy (region);
-
-  /* Punch out the client area */
-  area.x = left;
-  area.y = top;
-  area.width = w;
-  area.height = h;
-  tmp_region = gdk_region_rectangle (&area);
-  gdk_region_subtract (edges, tmp_region);
-  gdk_region_destroy (tmp_region);
-
-  /* Now draw remaining portion of region */
-  gdk_region_get_rectangles (edges, &areas, &n_areas);
-
   meta_prefs_get_button_layout (&button_layout);
-  for (i = 0; i < n_areas; i++)
+
+  if (G_LIKELY (GDK_IS_WINDOW (drawable)))
     {
-      if (GDK_IS_WINDOW (drawable))
-        gdk_window_begin_paint_rect (drawable, &areas[i]);
+      /* A window; happens about 2/3 of the time */
+
+      GdkRectangle area, *areas;
+      int n_areas;
+      int screen_width, screen_height;
+      GdkRegion *edges, *tmp_region;
+      int top, bottom, left, right;
+ 
+      /* Repaint each side of the frame */
+
+      meta_theme_get_frame_borders (meta_theme_get_current (),
+                             type, frame->text_height, flags, 
+                             &top, &bottom, &left, &right);
+
+      meta_core_get_screen_size (gdk_display,
+                             frame->xwindow,
+                             &screen_width, &screen_height);
+
+      edges = gdk_region_copy (region);
+
+      /* Punch out the client area */
+
+      area.x = left;
+      area.y = top;
+      area.width = w;
+      area.height = h;
+      tmp_region = gdk_region_rectangle (&area);
+      gdk_region_subtract (edges, tmp_region);
+      gdk_region_destroy (tmp_region);
+
+      /* Now draw remaining portion of region */
+
+      gdk_region_get_rectangles (edges, &areas, &n_areas);
+
+      for (i = 0; i < n_areas; i++)
+        {
+          /* Bug 399529: clamp areas[i] so that it doesn't go too far
+           * off the edge of the screen. This works around a GDK bug
+           * which makes gdk_window_begin_paint_rect cause an X error
+           * if the window is insanely huge. If the client is a GDK program
+           * and does this, it will still probably cause an X error in that
+           * program, but the last thing we want is for Metacity to crash
+           * because it attempted to decorate the silly window.
+           */
+
+          areas[i].x = MAX (areas[i].x, -DECORATING_BORDER); 
+          areas[i].y = MAX (areas[i].y, -DECORATING_BORDER); 
+          if (areas[i].x+areas[i].width  > screen_width  + DECORATING_BORDER)
+            areas[i].width  = MIN (0, screen_width  - areas[i].x);
+          if (areas[i].y+areas[i].height > screen_height + DECORATING_BORDER)
+            areas[i].height = MIN (0, screen_height - areas[i].y);
+
+          /* Okay, so let's start painting. */
+
+          gdk_window_begin_paint_rect (drawable, &areas[i]);
+
+          meta_theme_draw_frame (meta_theme_get_current (),
+            widget,
+            drawable,
+            NULL, /* &areas[i], */
+            x_offset, y_offset,
+            type,
+            flags,
+            w, h,
+            frame->layout,
+            frame->text_height,
+            &button_layout,
+            button_states,
+            mini_icon, icon);
+
+          gdk_window_end_paint (drawable);
+        }
+
+      g_free (areas);
+      gdk_region_destroy (edges);
+
+    }
+  else
+    {
+      /* Not a window; happens about 1/3 of the time */
+
       meta_theme_draw_frame (meta_theme_get_current (),
                              widget,
                              drawable,
-                             NULL, /* &areas[i], */
+                             NULL,
                              x_offset, y_offset,
                              type,
                              flags,
@@ -2345,13 +2405,8 @@ meta_frames_paint_to_drawable (MetaFrames   *frames,
                              &button_layout,
                              button_states,
                              mini_icon, icon);
-
-      if (GDK_IS_WINDOW (drawable))
-        gdk_window_end_paint (drawable);
     }
 
-  gdk_region_destroy (edges);
-  g_free (areas);
 }
 
 static void

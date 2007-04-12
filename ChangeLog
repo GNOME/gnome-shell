@@ -1,3 +1,9 @@
+2007-04-11  Thomas Thurman  <thomas@thurman.org.uk>
+
+	Workaround for a gdk bug which dies with BadAlloc if you try
+	to allocate an insanely huge rectangle for an insanely huge
+	window. Fixes #399529.
+
 2007-04-11  Elijah Newren  <newren gmail com>
 
 	Advertise support of Above and Below operations (assuming the
