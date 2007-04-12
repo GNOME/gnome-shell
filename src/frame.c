@@ -197,7 +197,10 @@ meta_window_destroy_frame (MetaWindow *window)
   XReparentWindow (window->display->xdisplay,
                    window->xwindow,
                    window->screen->xroot,
-                   /* FIXME where to put it back depends on the gravity */
+                   /* Using anything other than meta_window_get_position()
+                    * coordinates here means we'll need to ensure a configure
+                    * notify event is sent; see bug 399552.
+                    */
                    window->frame->rect.x,
                    window->frame->rect.y);
   meta_error_trap_pop (window->display, FALSE);

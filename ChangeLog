@@ -1,3 +1,20 @@
+2007-04-11  Elijah Newren  <newren gmail com>
+
+	Make sure apps have correct info about their coordinates, even on
+	unmap.  Fixes temporary hang with libXt (XtVaSetValues setting x &
+	y coordinates).  #399552.
+
+	* src/frame.c (meta_window_destroy_frame): Add a comment noting
+	that the current choice causes the need for a ConfigureNotify
+	event
+
+	* src/window.c (meta_window_free): Send a configure notify event
+	due to our XReparentWindow coordinate choices on withdrawal,
+	(unmaximize_window_before_freeing): no need to send a configure
+	notify from here since it is always done in meta_window_free new,
+	(send_configure_notify): have to special case the coordinates used
+	when withdrawing the window
+
 2007-04-11  Thomas Thurman  <thomas@thurman.org.uk>
 
 	Workaround for a gdk bug which dies with BadAlloc if you try

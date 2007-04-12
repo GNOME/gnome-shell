@@ -1015,6 +1015,12 @@ meta_window_free (MetaWindow  *window,
 
   if (window->maximized_horizontally || window->maximized_vertically)
     unmaximize_window_before_freeing (window);
+
+  /* The XReparentWindow call in meta_window_destroy_frame() moves the
+   * window so we need to send a configure notify; see bug 399552.  (We
+   * also do this just in case a window got unmaximized.)
+   */
+  send_configure_notify (window);
   
   meta_window_unqueue_calc_showing (window);
   meta_window_unqueue_move_resize (window);
@@ -2390,8 +2396,6 @@ unmaximize_window_before_freeing (MetaWindow        *window)
   if (window->withdrawn)                /* See bug #137185 */
     {
       window->rect = window->saved_rect;
-      send_configure_notify (window);
-
       set_net_wm_state (window);
     }
   else if (window->screen->closing)     /* See bug #358042 */
@@ -5393,9 +5397,20 @@ send_configure_notify (MetaWindow *window)
   event.xconfigure.y = window->rect.y - window->border_width;
   if (window->frame)
     {
-      /* Need to be in root window coordinates */
-      event.xconfigure.x += window->frame->rect.x;
-      event.xconfigure.y += window->frame->rect.y;
+      if (window->withdrawn)
+        {
+          /* WARNING: x & y need to be set to whatever the XReparentWindow
+           * call in meta_window_destroy_frame will use so that the window
+           * has the right coordinates.  Currently, that means no change to
+           * x & y.
+           */
+        }
+      else
+        {
+          /* Need to be in root window coordinates */
+          event.xconfigure.x += window->frame->rect.x;
+          event.xconfigure.y += window->frame->rect.y;
+        }
     }
   event.xconfigure.width = window->rect.width;
   event.xconfigure.height = window->rect.height;
