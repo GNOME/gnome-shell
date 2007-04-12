@@ -4,6 +4,7 @@
  * An OpenGL based 'interactive canvas' library.
  *
  * Authored By Matthew Allum  <mallum@openedhand.com>
+ *             Tomas Frydrych <tf@openedhand.com>
  *
  * Copyright (C) 2006 OpenedHand
  *

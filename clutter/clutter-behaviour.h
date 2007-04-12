@@ -33,6 +33,21 @@
 
 G_BEGIN_DECLS
 
+#define CLUTTER_TYPE_KNOT       (clutter_knot_get_type ())
+
+typedef struct _ClutterKnot  ClutterKnot;
+
+struct _ClutterKnot
+{
+  gint x,y;
+};
+
+GType        clutter_knot_get_type (void) G_GNUC_CONST;
+ClutterKnot *clutter_knot_copy     (const ClutterKnot *knot);
+void         clutter_knot_free     (ClutterKnot       *knot);
+gboolean     clutter_knot_equal    (const ClutterKnot *knot_a,
+                                    const ClutterKnot *knot_b);
+
 #define CLUTTER_TYPE_BEHAVIOUR clutter_behaviour_get_type()
 
 #define CLUTTER_BEHAVIOUR(obj) \

@@ -35,6 +35,7 @@
 #include "clutter-behaviour.h"
 #include "clutter-behaviour-opacity.h"
 #include "clutter-behaviour-path.h"
+#include "clutter-behaviour-bspline.h"
 #include "clutter-behaviour-scale.h"
 #include "clutter-stage.h"
 #include "clutter-actor.h"

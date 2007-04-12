@@ -40,6 +40,7 @@ source_h =					\
 	$(srcdir)/clutter-behaviour.h     	\
 	$(srcdir)/clutter-behaviour-opacity.h 	\
 	$(srcdir)/clutter-behaviour-path.h 	\
+	$(srcdir)/clutter-behaviour-bspline.h 	\
 	$(srcdir)/clutter-behaviour-scale.h 	\
 	$(srcdir)/clutter-clone-texture.h 	\
 	$(srcdir)/clutter-color.h		\
@@ -123,6 +124,7 @@ source_c = \
         clutter-behaviour.c 		\
 	clutter-behaviour-opacity.c	\
 	clutter-behaviour-path.c	\
+	clutter-behaviour-bspline.c	\
 	clutter-behaviour-scale.c	\
 	clutter-color.c 		\
 	clutter-clone-texture.c 	\

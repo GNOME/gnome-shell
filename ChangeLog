@@ -1,3 +1,26 @@
+2007-04-12  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-behaviour.h:
+	* clutter/clutter-behaviour.c:
+	* clutter/clutter-behaviour-path.h:
+	* clutter/clutter-behaviour-path.c:
+	Moved declaration of ClutterKnot from clutter-behaviour path 
+	into clutter-behaviour.
+
+	* clutter/clutter-fixed.h
+	* clutter/clutter-fixed.c
+	Added myself as an author.
+
+	* clutter/Makefile.am:
+	* clutter/clutter.h:
+	* clutter/clutter-behaviour-bspline.h:
+	* clutter/clutter-behaviour-bspline.c:
+	Added new bezier spline behaviour.
+
+	* examples/bspline.c:
+	* examples/Makefile.am:
+	An example of using bspline path.
+	
 2007-03-29  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-stage.c:
