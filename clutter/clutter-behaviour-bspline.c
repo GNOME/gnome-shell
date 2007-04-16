@@ -647,6 +647,8 @@ clutter_behaviour_bspline_new (ClutterAlpha      *alpha,
 {
   ClutterBehaviourBspline *bs;
   gint i;
+
+  g_return_val_if_fail (alpha == NULL || CLUTTER_IS_ALPHA (alpha), NULL);
      
   bs = g_object_new (CLUTTER_TYPE_BEHAVIOUR_BSPLINE, 
                      "alpha", alpha,
@@ -657,9 +659,7 @@ clutter_behaviour_bspline_new (ClutterAlpha      *alpha,
   bs->priv->length  = 0;
     
   for (i = 0; i < n_knots; ++i)
-    {
-      clutter_behaviour_bspline_append_knot (bs, &knots[i]);
-    }
+    clutter_behaviour_bspline_append_knot (bs, &knots[i]);
 
   return CLUTTER_BEHAVIOUR (bs);
 }
@@ -672,15 +672,22 @@ static void
 clutter_behaviour_bspline_append_spline (ClutterBehaviourBspline  * bs,
                                          const ClutterKnot       ** knots)
 {
+  ClutterBehaviourBsplinePrivate *priv;
   gint            i;
   ClutterBezier * b;
   ClutterKnot     knot0;
+  
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_BSPLINE (bs));
+  priv = bs->priv;
 
-  if (bs->priv->splines->len)
+  if (priv->splines->len)
     {
       /* Get the first point from the last curve */
-      ClutterBezier * b_last = g_array_index (bs->priv->splines,ClutterBezier*,
-                                              bs->priv->splines->len-1);
+      ClutterBezier *b_last;
+      
+      b_last = g_array_index (priv->splines,
+                              ClutterBezier *,
+                              priv->splines->len - 1);
 
       knot0.x = b_last->ax + b_last->bx + b_last->cx + b_last->dx;
       knot0.y = b_last->ay + b_last->by + b_last->cy + b_last->dy;
@@ -699,12 +706,12 @@ clutter_behaviour_bspline_append_spline (ClutterBehaviourBspline  * bs,
                        knot0.x,
                        knot0.y,
                        knots[i]->x, knots[i]->y,
-                       knots[i+1]->x, knots[i+1]->y,
-                       knots[i+2]->x, knots[i+2]->y);
+                       knots[i + 1]->x, knots[i + 1]->y,
+                       knots[i + 2]->x, knots[i + 2]->y);
 
-  bs->priv->splines = g_array_append_val (bs->priv->splines, b);
+  priv->splines = g_array_append_val (priv->splines, b);
 
-  bs->priv->length += b->length;
+  priv->length += b->length;
 }
 
 /**
@@ -723,28 +730,32 @@ void
 clutter_behaviour_bspline_append_knot (ClutterBehaviourBspline * bs,
                                        const ClutterKnot       * knot)
 {
+  ClutterBehaviourBsplinePrivate *priv;
   ClutterKnot * k = clutter_knot_copy (knot);
   guint needed = 3;
   guint i;
-  
-  g_array_append_val (bs->priv->point_stack, k);
 
-  if (bs->priv->splines->len == 0)
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_BSPLINE (bs));
+  priv = bs->priv;
+  
+  g_array_append_val (priv->point_stack, k);
+
+  if (priv->splines->len == 0)
     needed = 4;
 
-  if (bs->priv->point_stack->len == needed)
+  if (priv->point_stack->len == needed)
     {
       clutter_behaviour_bspline_append_spline (bs,
-                                 (ClutterKnot**) bs->priv->point_stack->data);
+                                               (const ClutterKnot**) priv->point_stack->data);
 
       for (i = 0; i < needed; ++i)
         {
-          clutter_knot_free (g_array_index (bs->priv->point_stack,
-                                            ClutterKnot*,
+          clutter_knot_free (g_array_index (priv->point_stack,
+                                            ClutterKnot *,
                                             i));
         }
         
-      g_array_set_size (bs->priv->point_stack, 0);
+      g_array_set_size (priv->point_stack, 0);
     }
 }
 
