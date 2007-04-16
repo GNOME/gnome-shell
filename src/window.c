@@ -556,14 +556,15 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->xgroup_leader = None;
   meta_window_compute_group (window);
   
-  /* Fill these in the order we want them to be gotten.
-   * we want to get window name and class first
-   * so we can use them in error messages and such.
+  /* Fill these in the order we want them to be gotten.  we want to
+   * get window name and class first so we can use them in error
+   * messages and such.  However, name is modified depending on
+   * wm_client_machine, so push it slightly sooner.
    */
   i = 0;
+  initial_props[i++] = display->atom_wm_client_machine;
   initial_props[i++] = display->atom_net_wm_name;
   initial_props[i++] = XA_WM_CLASS;
-  initial_props[i++] = display->atom_wm_client_machine;
   initial_props[i++] = display->atom_net_wm_pid;
   initial_props[i++] = XA_WM_NAME;
   initial_props[i++] = display->atom_net_wm_icon_name;

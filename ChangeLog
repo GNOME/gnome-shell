@@ -1,5 +1,14 @@
 2007-04-16  Elijah Newren  <newren gmail com>
 
+	Prevent metacity from "forgetting" which machine a window is on.
+	#418552
+
+	* src/window.c (meta_window_new_with_attrs): reorder the property
+	loading so that we know the wm_client_machine when we load the
+	name of the window and can modify the window name accordingly.
+
+2007-04-16  Elijah Newren  <newren gmail com>
+
         * configure.in: post-release bump to 2.19.5.
 
 2007-04-16  Elijah Newren  <newren gmail com>
