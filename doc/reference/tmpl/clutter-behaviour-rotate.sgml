@@ -1,0 +1,151 @@
+<!-- ##### SECTION Title ##### -->
+ClutterBehaviourRotate
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### ENUM ClutterRotateAxis ##### -->
+<para>
+
+</para>
+
+@CLUTTER_X_AXIS: 
+@CLUTTER_Y_AXIS: 
+@CLUTTER_Z_AXIS: 
+
+<!-- ##### ENUM ClutterRotateDirection ##### -->
+<para>
+
+</para>
+
+@CLUTTER_ROTATE_CW: 
+@CLUTTER_ROTATE_CCW: 
+
+<!-- ##### STRUCT ClutterBehaviourRotate ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### ARG ClutterBehaviourRotate:angle-begin ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterBehaviourRotate:angle-end ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterBehaviourRotate:axis ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterBehaviourRotate:direction ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT ClutterBehaviourRotateClass ##### -->
+<para>
+
+</para>
+
+@parent_class: 
+
+<!-- ##### FUNCTION clutter_behaviour_rotate_new ##### -->
+<para>
+
+</para>
+
+@alpha: 
+@axis: 
+@direction: 
+@angle_begin: 
+@angle_end: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_behaviour_rotate_newx ##### -->
+<para>
+
+</para>
+
+@alpha: 
+@axis: 
+@direction: 
+@angle_begin: 
+@angle_end: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_behaviour_rotate_set_axis ##### -->
+<para>
+
+</para>
+
+@rotate: 
+@axis: 
+
+
+<!-- ##### FUNCTION clutter_behaviour_rotate_set_direction ##### -->
+<para>
+
+</para>
+
+@rotate: 
+@direction: 
+
+
+<!-- ##### FUNCTION clutter_behaviour_rotate_get_axis ##### -->
+<para>
+
+</para>
+
+@rotate: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_behaviour_rotate_get_bounds ##### -->
+<para>
+
+</para>
+
+@rotate: 
+@angle_begin: 
+@angle_end: 
+
+
+<!-- ##### FUNCTION clutter_behaviour_rotate_get_boundsx ##### -->
+<para>
+
+</para>
+
+@rotate: 
+@angle_begin: 
+@angle_end: 
+
+
+<!-- ##### FUNCTION clutter_behaviour_rotate_get_direction ##### -->
+<para>
+
+</para>
+
+@rotate: 
+@Returns: 
+
+
