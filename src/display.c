@@ -4702,6 +4702,7 @@ meta_display_unmanage_windows_for_screen (MetaDisplay *display,
   GSList *winlist;
 
   winlist = meta_display_list_windows (display);
+  winlist = g_slist_sort (winlist, meta_display_stack_cmp);
 
   /* Unmanage all windows */
   tmp = winlist;
@@ -4712,6 +4713,24 @@ meta_display_unmanage_windows_for_screen (MetaDisplay *display,
       tmp = tmp->next;
     }
   g_slist_free (winlist);
+}
+
+int
+meta_display_stack_cmp (const void *a,
+                        const void *b)
+{
+  MetaWindow *aw = (void*) a;
+  MetaWindow *bw = (void*) b;
+
+  if (aw->screen == bw->screen)
+    return meta_stack_windows_cmp (aw->screen->stack, aw, bw);
+  /* Then assume screens are stacked by number */
+  else if (aw->screen->number < bw->screen->number)
+    return -1;
+  else if (aw->screen->number > bw->screen->number)
+    return 1;
+  else
+    return 0; /* not reached in theory, if windows on same display */
 }
 
 void

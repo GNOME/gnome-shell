@@ -801,24 +801,6 @@ decode_text_from_utf8 (const char *text)
   return g_string_free (str, FALSE);
 }
 
-static int
-stack_cmp (const void *a,
-           const void *b)
-{
-  MetaWindow *aw = (void*) a;
-  MetaWindow *bw = (void*) b;
-
-  if (aw->screen == bw->screen)
-    return meta_stack_windows_cmp (aw->screen->stack, aw, bw);
-  /* Then assume screens are stacked by number */
-  else if (aw->screen->number < bw->screen->number)
-    return -1;
-  else if (aw->screen->number > bw->screen->number)
-    return 1;
-  else
-    return 0; /* not reached in theory, if windows on same display */
-}
-
 static void
 save_state (void)
 {
@@ -891,7 +873,7 @@ save_state (void)
       int stack_position;
       
       windows = meta_display_list_windows (display_iter->data);
-      windows = g_slist_sort (windows, stack_cmp);
+      windows = g_slist_sort (windows, meta_display_stack_cmp);
 
       stack_position = 0;
       tmp = windows;

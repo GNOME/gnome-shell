@@ -1,5 +1,20 @@
 2007-04-15  Elijah Newren  <newren gmail com>
 
+	Preserve stacking order across restarts.
+
+	* src/display.c (meta_display_unmanage_windows_for_screen):
+	unmap windows in stacking order so that stacking is preserved upon
+	shutdown
+
+	* src/display.[ch] (meta_display_stack_cmp):
+	* src/session.c (stack_cmp, save_state):
+	rename stack_cmp() -> meta_display_stack_cmp() and move it to a
+	different function so that it can be used in both
+	session.c:save_state() and
+	meta_display_unmanage_windows_for_screen()
+
+2007-04-15  Elijah Newren  <newren gmail com>
+
 	Remove incorrect usage of window.h from menu.c.  See #426791 &
 	#382962.
 

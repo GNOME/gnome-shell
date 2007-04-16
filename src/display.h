@@ -416,6 +416,10 @@ void          meta_display_unmanage_windows_for_screen (MetaDisplay *display,
                                                         MetaScreen  *screen,
                                                         guint32      timestamp);
 
+/* Utility function to compare the stacking of two windows */
+int           meta_display_stack_cmp           (const void *a,
+                                                const void *b);
+
 /* A given MetaWindow may have various X windows that "belong"
  * to it, such as the frame window.
  */
