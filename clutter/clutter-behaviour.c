@@ -308,8 +308,8 @@ gboolean
 clutter_behaviour_is_applied (ClutterBehaviour *behave,
 			      ClutterActor     *actor)
 {
-  g_return_if_fail (CLUTTER_IS_BEHAVIOUR (behave));
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR (behave), FALSE);
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), FALSE);
 
   return (g_slist_find (behave->priv->actors, actor) != NULL);
 }
