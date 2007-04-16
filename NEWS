@@ -1,3 +1,25 @@
+2.19.3
+======
+
+Thanks to Magnus Therning, Elijah Newren, Thomas Thurman, and Bruno
+Boaventura for improvements in this release.
+
+  - Add support for _NET_MOVERESIZE_WINDOW (Magnus, Elijah) [#344521]
+  - EWMH compliance: set _NET_WM_ALLOWED_ACTIONS so that pagers know
+    which actions we support (Elijah) [#115247]
+  - Fix crash with apps trying to open an insanely huge window
+    (Thomas) [#399529]
+  - Fix temporary hang/pause with libXt by making sure apps get a
+    ConfigureNotify on unmap (Elijah) [#399552]
+  - do not auto-maximize windows larger than the workarea in only a
+    single direction (Elijah) [#419810]
+  - Don't show the current workspace as a possible workspace to switch
+    to (Bruno) [#426791]
+  - Preserve stacking order across restarts (Elijah)
+
+Translations
+  Khaled Hosny (ar), Kjartan Maraas (nb)
+
 2.19.2
 ======
 

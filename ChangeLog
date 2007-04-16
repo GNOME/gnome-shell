@@ -1,3 +1,7 @@
+2007-04-16  Elijah Newren  <newren gmail com>
+
+        * NEWS: 2.19.3 release.
+
 2007-04-15  Elijah Newren  <newren gmail com>
 
 	Preserve stacking order across restarts.
@@ -95,7 +99,8 @@
 
 2007-04-09  Elijah Newren  <newren gmail com>
 
-	Add support for _NET_MOVERESIZE_WINDOW.  #344521.
+	Add support for _NET_MOVERESIZE_WINDOW.  Based on patch from
+	Magnus Therning.  #344521.
 
 	* src/display.c (handle_net_moveresize_window, event_callback):
 	Remove handle_net_moveresize_window() and the call to it; this
