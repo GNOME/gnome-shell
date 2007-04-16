@@ -331,7 +331,6 @@ clutter_stage_show_cursor
 clutter_stage_hide_cursor
 clutter_stage_get_actor_at_pos
 clutter_stage_snapshot
-clutter_stage_flush
 <SUBSECTION Standard>
 CLUTTER_STAGE
 CLUTTER_IS_STAGE
@@ -423,6 +422,32 @@ CLUTTER_BEHAVIOUR_OPACITY_GET_CLASS
 <SUBSECTION Private>
 ClutterBehaviourOpacityPrivate
 clutter_behaviour_opacity_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-behaviour-rotate</FILE>
+<TITLE>ClutterBehaviourRotate</TITLE>
+ClutterRotateAxis
+ClutterRotateDirection
+ClutterBehaviourRotate
+ClutterBehaviourRotateClass
+clutter_behaviour_rotate_new
+clutter_behaviour_rotate_newx
+clutter_behaviour_rotate_set_axis
+clutter_behaviour_rotate_set_direction
+clutter_behaviour_rotate_get_axis
+clutter_behaviour_rotate_get_bounds
+clutter_behaviour_rotate_get_boundsx
+clutter_behaviour_rotate_get_direction
+<SUBSECTION Standard>
+CLUTTER_BEHAVIOUR_ROTATE
+CLUTTER_IS_BEHAVIOUR_ROTATE
+CLUTTER_BEHAVIOUR_ROTATE_CLASS
+CLUTTER_IS_BEHAVIOUR_ROTATE_CLASS
+CLUTTER_BEHAVIOUR_ROTATE_GET_CLASS
+<SUBSECTION Private>
+ClutterBehaviourRotatePrivate
+clutter_behaviour_rotate_get_type
 </SECTION>
 
 <SECTION>
