@@ -1,3 +1,17 @@
+2007-04-16  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Merge from clutter.git
+
+	* clutter/clutter-behaviour-bspline.[ch]: Return a ClutterBehaviour
+	when splicing the b-spline; fix the header and the API documentation;
+	hush the compiler warnings; kill of some pointer indirections.
+
+	* clutter/clutter-behaviour-rotate.[ch]: Add a rotate behaviour,
+	with user defined axis, direction and sweep angle.
+
+	* clutter/clutter-behaviour.c (clutter_behaviour_is_applied): Add
+	a parameter ISA check and return FALSE if it fails.
+
 2007-04-12  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-behaviour.h:

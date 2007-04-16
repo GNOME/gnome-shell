@@ -1,3 +1,10 @@
+2007-04-16  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-docs.sgml:
+	* clutter-sections.txt:
+	* clutter.types: Add new b-spline and rotate behaviours
+	to the API documentation.
+
 2007-03-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* Makefile.am: Ignore clutter/cogl: it's private API.
