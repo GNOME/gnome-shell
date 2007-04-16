@@ -60,7 +60,9 @@ typedef struct _ClutterBehaviourBsplineClass   ClutterBehaviourBsplineClass;
  
 struct _ClutterBehaviourBspline
 {
-  ClutterBehaviour                parent;
+  ClutterBehaviour parent_instance;
+
+  /*< private >*/
   ClutterBehaviourBsplinePrivate *priv;
 };
 
@@ -68,8 +70,8 @@ struct _ClutterBehaviourBsplineClass
 {
   ClutterBehaviourClass   parent_class;
 
-  void (*knot_reached) (ClutterBehaviourBspline * bsplineb,
-                        const ClutterKnot       * knot);
+  void (*knot_reached) (ClutterBehaviourBspline *bsplineb,
+                        const ClutterKnot       *knot);
 
   void (*_clutter_bspline_1) (void);
   void (*_clutter_bspline_2) (void);
@@ -79,37 +81,28 @@ struct _ClutterBehaviourBsplineClass
 
 GType clutter_behaviour_bspline_get_type (void) G_GNUC_CONST;
 
-ClutterBehaviour * clutter_behaviour_bspline_new (ClutterAlpha      * alpha,
-						  const ClutterKnot * points,
-						  guint               n_points);
-
-void clutter_behaviour_bspline_append_knot (ClutterBehaviourBspline * bs,
-					    const ClutterKnot       * knot);
-
-void clutter_behaviour_bspline_append (ClutterBehaviourBspline * bs,
-				       const ClutterKnot       * first_knot,
-				       ...) G_GNUC_NULL_TERMINATED;
-
-void clutter_behaviour_bspline_truncate (ClutterBehaviourBspline *bs,
-					 guint offset);
-
-void clutter_behaviour_bspline_join (ClutterBehaviourBspline * bs1,
-				     ClutterBehaviourBspline * bs2);
-
-ClutterBehaviourBspline * clutter_behaviour_bspline_split (ClutterBehaviourBspline * bs,
-							   guint offset);
-
-void clutter_behaviour_bspline_clear (ClutterBehaviourBspline * bs);
-
-void clutter_behaviour_bspline_adjust (ClutterBehaviourBspline  * bs,
-				       guint                      offset,
-				       ClutterKnot              * knot);
-
-void clutter_behaviour_bspline_set_origin (ClutterBehaviourBspline * bs,
-					   ClutterKnot             * knot);
-
-void clutter_behaviour_bspline_get_origin (ClutterBehaviourBspline * bs,
-					   ClutterKnot             * knot);
+ClutterBehaviour *clutter_behaviour_bspline_new         (ClutterAlpha            *alpha,
+                                                         const ClutterKnot       *knots,
+                                                         guint                    n_knots);
+void              clutter_behaviour_bspline_append_knot (ClutterBehaviourBspline *bs,
+                                                         const ClutterKnot       *knot);
+void              clutter_behaviour_bspline_append      (ClutterBehaviourBspline *bs,
+                                                         const ClutterKnot       *first_knot,
+                                                         ...) G_GNUC_NULL_TERMINATED;
+void              clutter_behaviour_bspline_truncate    (ClutterBehaviourBspline *bs,
+                                                         guint                    offset);
+void              clutter_behaviour_bspline_join        (ClutterBehaviourBspline *bs1,
+                                                         ClutterBehaviourBspline *bs2);
+ClutterBehaviour *clutter_behaviour_bspline_split       (ClutterBehaviourBspline *bs,
+                                                         guint                    offset);
+void              clutter_behaviour_bspline_clear       (ClutterBehaviourBspline *bs);
+void              clutter_behaviour_bspline_adjust      (ClutterBehaviourBspline *bs,
+                                                         guint                    offset,
+                                                         ClutterKnot             *knot);
+void              clutter_behaviour_bspline_set_origin  (ClutterBehaviourBspline *bs,
+                                                         ClutterKnot             *knot);
+void              clutter_behaviour_bspline_get_origin  (ClutterBehaviourBspline *bs,
+                                                         ClutterKnot             *knot);
 
 G_END_DECLS
 

@@ -308,7 +308,7 @@ clutter_behaviour_rotate_new (ClutterAlpha           *alpha,
  * @axis: the rotation axis
  * @direction: the rotation direction
  * @angle_begin: the starting angle, in fixed point notation
- * @andle_end: the final angle, in fixed point notation
+ * @angle_end: the final angle, in fixed point notation
  *
  * Creates a new #ClutterBehaviourRotate. This is the fixed point version
  * of clutter_behaviour_rotate_new().

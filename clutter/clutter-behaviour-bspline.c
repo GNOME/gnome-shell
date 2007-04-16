@@ -43,7 +43,7 @@
  * Each time the behaviour reaches a point on the path, the "knot-reached"
  * signal is emitted.
  *
- * Since: 0.3
+ * Since: 0.4
  */
 
 #include "clutter-fixed.h"
@@ -638,7 +638,7 @@ clutter_behaviour_bspline_init (ClutterBehaviourBspline * self)
  *
  * Return value: a #ClutterBehaviour
  *
- * Since: 0.3
+ * Since: 0.4
  */
 ClutterBehaviour *
 clutter_behaviour_bspline_new (ClutterAlpha      *alpha,
@@ -724,7 +724,7 @@ clutter_behaviour_bspline_append_spline (ClutterBehaviourBspline  * bs,
  * a temporary chache, and only when there are enough control points to
  * create a new bezier curve will the bspline extended.
  *
- * Since: 0.3
+ * Since: 0.4
  */
 void
 clutter_behaviour_bspline_append_knot (ClutterBehaviourBspline * bs,
@@ -776,14 +776,15 @@ clutter_behaviour_bspline_append_knots_valist (ClutterBehaviourBspline *bs,
 
 /**
  * clutter_behaviour_bspline_append:
- * @bs:      a #ClutterBehaviourBspline
- * @knots:   a NULL-terminated array of #ClutterKnot control points.
+ * @bs: a #ClutterBehaviourBspline
+ * @first_knot: first #ClutterKnot
+ * @VarArgs: a NULL-terminated array of #ClutterKnot control points.
  *
  * Appends a bezier spline defined by the last control point of bezier spline
  * bs and the array of #ClutterKnot control points to the orginal bezier spline
  * bs.
  *
- * Since: 0.3
+ * Since: 0.4
  */
 void
 clutter_behaviour_bspline_append (ClutterBehaviourBspline * bs,
@@ -809,11 +810,11 @@ clutter_behaviour_bspline_append (ClutterBehaviourBspline * bs,
  * offset is not one of the on-curve points, the bspline will be
  * truncated at the nearest preceeding on-curve point.
  *
- * Since: 0.3
+ * Since: 0.4
  */
 void
 clutter_behaviour_bspline_truncate (ClutterBehaviourBspline *bs,
-                                    guint offset)
+                                    guint                    offset)
 {
   guint i;
   
@@ -846,7 +847,7 @@ clutter_behaviour_bspline_truncate (ClutterBehaviourBspline *bs,
  *
  * Empties a bspline.
  *
- * Since: 0.3
+ * Since: 0.4
  */
 void
 clutter_behaviour_bspline_clear (ClutterBehaviourBspline * bs)
@@ -882,7 +883,7 @@ clutter_behaviour_bspline_clear (ClutterBehaviourBspline * bs)
  * Joins a copy of bezier spline bs2 onto the end of bezier spline bs1; bs2 is
  * not modified.
  *
- * Since: 0.3
+ * Since: 0.4
  */
 void
 clutter_behaviour_bspline_join (ClutterBehaviourBspline * bs1,
@@ -928,7 +929,7 @@ clutter_behaviour_bspline_join (ClutterBehaviourBspline * bs1,
  * bspline will be split at the nearest on-curve point before the offset.
  * The original bspline is shortened appropriately.
  *
- * Since: 0.3
+ * Since: 0.4
  */
 ClutterBehaviourBspline *
 clutter_behaviour_bspline_split (ClutterBehaviourBspline * bs, guint offset)
@@ -971,14 +972,14 @@ clutter_behaviour_bspline_split (ClutterBehaviourBspline * bs, guint offset)
 
 /**
  * clutter_behaviour_bspline_adjust:
- * @bs:    a #ClutterBehaviourBspline
- * @index: an index of control point to ajdust
- * @knot:  a #ClutterKnot with new coordinances for the control point.
+ * @bs: a #ClutterBehaviourBspline
+ * @offset: an index of control point to ajdust
+ * @knot: a #ClutterKnot with new coordinances for the control point.
  *
  * Change the coordinaces of control point at index to those represented by
  * the knot.
  *
- * Since: 0.3
+ * Since: 0.4
  */
 void
 clutter_behaviour_bspline_adjust (ClutterBehaviourBspline  * bs,
@@ -1052,7 +1053,7 @@ clutter_behaviour_bspline_adjust (ClutterBehaviourBspline  * bs,
  * the origin of a bspline is given by the position of the first control point
  * of the first bezier curve.)
  * 
- * Since: 0.3
+ * Since: 0.4
  */
 void
 clutter_behaviour_bspline_set_origin (ClutterBehaviourBspline * bs,
@@ -1086,7 +1087,7 @@ clutter_behaviour_bspline_set_origin (ClutterBehaviourBspline * bs,
  *
  * Gets the origin of the bezier.
  * 
- * Since: 0.3
+ * Since: 0.4
  */
 void
 clutter_behaviour_bspline_get_origin (ClutterBehaviourBspline * bs,

@@ -471,6 +471,32 @@ clutter_behaviour_scale_get_type
 </SECTION>
 
 <SECTION>
+<FILE>clutter-behaviour-bspline</FILE>
+<TITLE>ClutterBehaviourBspline</TITLE>
+ClutterBehaviourBspline
+ClutterBehaviourBsplineClass
+clutter_behaviour_bspline_new
+clutter_behaviour_bspline_append_knot
+clutter_behaviour_bspline_append
+clutter_behaviour_bspline_truncate
+clutter_behaviour_bspline_join
+clutter_behaviour_bspline_split
+clutter_behaviour_bspline_clear
+clutter_behaviour_bspline_adjust
+clutter_behaviour_bspline_set_origin
+clutter_behaviour_bspline_get_origin
+<SUBSECTION Standard>
+CLUTTER_BEHAVIOUR_BSPLINE
+CLUTTER_BEHAVIOUR_BSPLINE_CLASS
+CLUTTER_IS_BEHAVIOUR_BSPLINE
+CLUTTER_IS_BEHAVIOUR_BSPLINE_CLASS
+CLUTTER_BEHAVIOUR_BSPLINE_GET_CLASS
+<SUBSECTION Private>
+ClutterBehaviourBsplinePrivate
+clutter_behaviour_bspline_get_type
+</SECTION>
+
+<SECTION>
 <FILE>clutter-backend</FILE>
 <TITLE>ClutterBackend</TITLE>
 ClutterBackend
