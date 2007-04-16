@@ -1,3 +1,32 @@
+2007-04-15  Elijah Newren  <newren gmail com>
+
+	Remove incorrect usage of window.h from menu.c.  See #426791 &
+	#382962.
+
+	* src/menu.c (enum MetaMenuItemType, variable menuitems,
+	  meta_menu_item_new):
+	cleanup: add a MENU_ITEM_RADIOBUTTON for the sticky stuff
+
+	* src/menu.c (variable menuitems):
+	* src/core.c (meta_core_get_menu_accelerator):
+	* src/window.c (menu_callback, meta_window_show_menu):
+	* src/common.h (enum MetaMenuOp):
+	reinstate META_MENU_OP_UNABOVE
+
+	* src/menu.c (meta_window_menu_new):
+	remove hacks (using inappropriate data) for STICK/UNSTICK/ABOVE
+	and clean it up while just setting STICK/UNSTICK activeness as
+	necessary
+
+	* src/menu.[ch] (meta_window_menu_new):
+	* src/ui.[ch] (meta_ui_window_menu_new):
+	make the active_workspace parameter an unsigned long
+
+2007-04-15  Bruno Boaventura <brunobol@gnome.org>
+
+	* src/menu.c (meta_window_menu_new): don't show the current
+	workspace as a possible workspace to switch to.  Fixes #426791.
+
 2007-04-12  Elijah Newren  <newren gmail com>
 
 	* src/place.c (meta_window_place): do not auto-maximize windows

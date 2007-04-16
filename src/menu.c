@@ -32,7 +32,6 @@
 #include "core.h"
 #include "themewidget.h"
 #include "metaaccellabel.h"
-#include "window.h"
 
 typedef struct _MenuItem MenuItem;
 typedef struct _MenuData MenuData;
@@ -43,6 +42,7 @@ typedef enum
   MENU_ITEM_NORMAL,
   MENU_ITEM_IMAGE,
   MENU_ITEM_CHECKBOX,
+  MENU_ITEM_RADIOBUTTON,
 } MetaMenuItemType;
 
 struct _MenuItem
@@ -87,9 +87,11 @@ static MenuItem menuitems[] = {
   /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_ABOVE, MENU_ITEM_CHECKBOX, NULL, FALSE, N_("Always on _Top") },
   /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_STICK, MENU_ITEM_CHECKBOX, NULL, FALSE, N_("_Always on Visible Workspace") },
+  { META_MENU_OP_UNABOVE, MENU_ITEM_CHECKBOX, NULL, TRUE, N_("Always on _Top") },
   /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_UNSTICK, MENU_ITEM_CHECKBOX, NULL, FALSE,  N_("_Only on This Workspace") },
+  { META_MENU_OP_STICK, MENU_ITEM_RADIOBUTTON, NULL, FALSE, N_("_Always on Visible Workspace") },
+  /* Translators: Translate this string the same way as you do in libwnck! */
+  { META_MENU_OP_UNSTICK, MENU_ITEM_RADIOBUTTON, NULL, FALSE,  N_("_Only on This Workspace") },
   /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_MOVE_LEFT, MENU_ITEM_NORMAL, NULL, FALSE, N_("Move to Workspace _Left") },
   /* Translators: Translate this string the same way as you do in libwnck! */
@@ -274,14 +276,18 @@ menu_item_new (MenuItem *menuitem, int workspace_id)
     {
       mi = gtk_check_menu_item_new ();
       
-      if (menuitem->op == META_MENU_OP_STICK || menuitem->op == META_MENU_OP_UNSTICK)
-        {
-          gtk_check_menu_item_set_draw_as_radio (GTK_CHECK_MENU_ITEM (mi),
-                                                 TRUE);
-        }
-      else
-        gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (mi), menuitem->checked);
+      gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (mi),
+                                      menuitem->checked);
     }    
+  else if (menuitem->type == MENU_ITEM_RADIOBUTTON)
+    {
+      mi = gtk_check_menu_item_new ();
+
+      gtk_check_menu_item_set_draw_as_radio (GTK_CHECK_MENU_ITEM (mi),
+                                             TRUE);
+      gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (mi),
+                                      menuitem->checked);
+    }
   else
     return gtk_separator_menu_item_new ();
 
@@ -305,7 +311,7 @@ meta_window_menu_new   (MetaFrames         *frames,
                         MetaMenuOp          ops,
                         MetaMenuOp          insensitive,
                         Window              client_xwindow,
-                        int                 active_workspace,
+                        unsigned long       active_workspace,
                         int                 n_workspaces,
                         MetaWindowMenuFunc  func,
                         gpointer            data)
@@ -313,6 +319,7 @@ meta_window_menu_new   (MetaFrames         *frames,
   int i;
   MetaWindowMenu *menu;
 
+  /* FIXME: Modifications to 'ops' should happen in meta_window_show_menu */
   if (n_workspaces < 2)
     ops &= ~(META_MENU_OP_STICK | META_MENU_OP_UNSTICK | META_MENU_OP_WORKSPACES);
   else if (n_workspaces == 2) 
@@ -344,26 +351,19 @@ meta_window_menu_new   (MetaFrames         *frames,
 
           mi = menu_item_new (&menuitem, -1);
 
-          if ((menuitem.op == META_MENU_OP_STICK) ||
-              (menuitem.op == META_MENU_OP_UNSTICK) ||
-              (menuitem.op == META_MENU_OP_ABOVE))
+          /* Set the activeness of radiobuttons. */
+          switch (menuitem.op)
             {
-              Display *xdisplay;
-              MetaDisplay *display;
-              MetaWindow *window;
-              
-              xdisplay = gdk_x11_drawable_get_xdisplay (GTK_WIDGET (frames)->window);
-              display = meta_display_for_x_display (xdisplay);
-              window = meta_display_lookup_x_window (display, client_xwindow);
-
-              if (menuitem.op == META_MENU_OP_STICK)
-                gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (mi), window->on_all_workspaces);
-              else
-                gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (mi), !window->on_all_workspaces);
-                
-              if (menuitem.op == META_MENU_OP_ABOVE)
-                gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (mi), window->wm_state_above);
-
+            case META_MENU_OP_STICK:
+              gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (mi),
+                                              active_workspace == 0xFFFFFFFF);
+              break;
+            case META_MENU_OP_UNSTICK:
+              gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (mi),
+                                              active_workspace != 0xFFFFFFFF);
+              break;
+            default:
+              break;
             }
 
           if (menuitem.type != MENU_ITEM_SEPARATOR)
@@ -407,7 +407,7 @@ meta_window_menu_new   (MetaFrames         *frames,
         N_("Move to Another _Workspace")
       };
 
-      meta_verbose ("Creating %d-workspace menu current space %d\n",
+      meta_verbose ("Creating %d-workspace menu current space %lu\n",
                     n_workspaces, active_workspace);
           
       display = gdk_x11_drawable_get_xdisplay (GTK_WIDGET (frames)->window);
@@ -443,12 +443,9 @@ meta_window_menu_new   (MetaFrames         *frames,
 
           g_free (label);
 
-          if (!(ops & META_MENU_OP_UNSTICK) &&
-              (active_workspace == i ||
-               insensitive & META_MENU_OP_WORKSPACES))
+          if ((active_workspace == (unsigned)i) && (ops & META_MENU_OP_UNSTICK))
             gtk_widget_set_sensitive (mi, FALSE);
-          else if (insensitive & META_MENU_OP_WORKSPACES)
-            gtk_widget_set_sensitive (mi, FALSE);
+            
           md = g_new (MenuData, 1);
 
           md->menu = menu;

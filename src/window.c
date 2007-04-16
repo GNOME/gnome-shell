@@ -6408,6 +6408,7 @@ menu_callback (MetaWindowMenu *menu,
           break;
 
         case META_MENU_OP_ABOVE:
+        case META_MENU_OP_UNABOVE:
           if (window->wm_state_above == FALSE)
             meta_window_make_above (window);
           else
@@ -6537,7 +6538,10 @@ meta_window_show_menu (MetaWindow *window,
   ops |= META_MENU_OP_UNSTICK;
   ops |= META_MENU_OP_STICK;
 
-  ops |= META_MENU_OP_ABOVE;
+  if (window->wm_state_above)
+    ops |= META_MENU_OP_UNABOVE;
+  else
+    ops |= META_MENU_OP_ABOVE;
   
   if (!window->has_maximize_func)
     insensitive |= META_MENU_OP_UNMAXIMIZE | META_MENU_OP_MAXIMIZE;
@@ -6563,7 +6567,7 @@ meta_window_show_menu (MetaWindow *window,
   if ((window->type == META_WINDOW_DESKTOP) ||
       (window->type == META_WINDOW_DOCK) ||
       (window->type == META_WINDOW_SPLASHSCREEN))
-    insensitive |= META_MENU_OP_ABOVE;
+    insensitive |= META_MENU_OP_ABOVE | META_MENU_OP_UNABOVE;
 
   /* If all operations are disabled, just quit without showing the menu.
    * This is the case, for example, with META_WINDOW_DESKTOP windows.

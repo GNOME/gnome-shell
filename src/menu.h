@@ -47,7 +47,7 @@ MetaWindowMenu* meta_window_menu_new      (MetaFrames         *frames,
                                            MetaMenuOp          ops,
                                            MetaMenuOp          insensitive,
                                            Window              client_xwindow,
-                                           int                 active_workspace,
+                                           unsigned long       active_workspace,
                                            int                 n_workspaces,
                                            MetaWindowMenuFunc  func,
                                            gpointer            data);

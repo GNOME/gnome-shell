@@ -116,7 +116,7 @@ MetaWindowMenu* meta_ui_window_menu_new   (MetaUI             *ui,
                                            Window              client_xwindow,
                                            MetaMenuOp          ops,
                                            MetaMenuOp          insensitive,
-                                           int                 active_workspace,
+                                           unsigned long       active_workspace,
                                            int                 n_workspaces,
                                            MetaWindowMenuFunc  func,
                                            gpointer            data);
