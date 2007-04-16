@@ -257,11 +257,3 @@ Macro evaluating to the height of the #ClutterStage
 @Returns: 
 
 
-<!-- ##### FUNCTION clutter_stage_flush ##### -->
-<para>
-
-</para>
-
-@stage: 
-
-
