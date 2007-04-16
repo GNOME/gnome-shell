@@ -383,8 +383,10 @@ texture_upload_data (ClutterTexture *texture,
 		     gint            bpp)
 {
   ClutterTexturePrivate *priv;
-  int                    x, y, i = 0;
-  gboolean               create_textures = FALSE;
+  gint x, y;
+  gint i = 0;
+  gboolean create_textures = FALSE;
+  GdkPixbuf *master_pixbuf = NULL;
 
   priv = texture->priv;
 
@@ -466,6 +468,13 @@ texture_upload_data (ClutterTexture *texture,
 		priv->width, priv->height);
 
   g_return_if_fail (priv->x_tiles != NULL && priv->y_tiles != NULL);
+
+  master_pixbuf = gdk_pixbuf_new_from_data (data,
+                                            GDK_COLORSPACE_RGB,
+                                            has_alpha,
+                                            8,
+                                            width, height, rowstride,
+                                            NULL, NULL);
   
   if (priv->tiles == NULL)
     {
@@ -477,42 +486,31 @@ texture_upload_data (ClutterTexture *texture,
   for (x = 0; x < priv->n_x_tiles; x++)
     for (y = 0; y < priv->n_y_tiles; y++)
       {
-	guchar *tmp;
-	gint    src_h, src_w, dy;
+        GdkPixbuf *pixtmp;
+	gint src_h, src_w;
 	
 	src_w = priv->x_tiles[x].size;
 	src_h = priv->y_tiles[y].size;
-	
-	/* fixme - gslice ? */
-	tmp = g_malloc (sizeof (guchar) * priv->x_tiles[x].size 
-			                * priv->y_tiles[y].size
-                                        * bpp);
+
+        pixtmp = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
+                                 has_alpha,
+                                 8,
+                                 src_w, src_h);
 
 	/* clip */
 	if (priv->x_tiles[x].pos + src_w > priv->width)
-	  {
-	    src_w = priv->width - priv->x_tiles[x].pos;
-	  }
+	  src_w = priv->width - priv->x_tiles[x].pos;
 
 	if (priv->y_tiles[y].pos + src_h > priv->height)
-	  {
-	    src_h = priv->height - priv->y_tiles[y].pos;
-	  }
+	  src_h = priv->height - priv->y_tiles[y].pos;
 
-	CLUTTER_NOTE (TEXTURE,
-                      "copying tile %i,%i - %ix%i to 0,0 %ix%i",
-		      priv->x_tiles[x].pos, priv->y_tiles[y].pos,
-		      src_w, src_h,
-		      priv->x_tiles[x].size,
-		      priv->y_tiles[y].size);
-
-	for (dy = 0; dy < src_h; dy++)
-	  {
-	    memcpy (tmp + (dy * src_w * bpp),
-		    data + ((priv->y_tiles[y].pos + dy) * rowstride)
-		         + (priv->x_tiles[x].pos * bpp),
-		    (src_w * bpp));
-	  }
+        gdk_pixbuf_copy_area (master_pixbuf,
+                              priv->x_tiles[x].pos,
+                              priv->y_tiles[y].pos,
+                              src_w,
+                              src_h,
+                              pixtmp,
+                              0, 0);
 
 #ifdef CLUTTER_DUMP_TILES
 	{
@@ -549,15 +547,13 @@ texture_upload_data (ClutterTexture *texture,
 	
 	if (create_textures)
 	  {
-	    glTexImage2D(priv->target_type, 
-			 0, 
-			 (bpp == 4) ? GL_RGBA : GL_RGB,
-			 priv->x_tiles[x].size,
-			 priv->y_tiles[y].size,
-			 0, 
-			 priv->pixel_format, 
-			 priv->pixel_type, 
-			 tmp);
+	    glTexImage2D (priv->target_type, 0, GL_RGBA,
+                          gdk_pixbuf_get_width (pixtmp),
+                          gdk_pixbuf_get_height (pixtmp),
+                          0,
+			  priv->pixel_format, 
+			  priv->pixel_type,
+                          gdk_pixbuf_get_pixels (pixtmp));
 	  }
 	else 
 	  {
@@ -565,17 +561,19 @@ texture_upload_data (ClutterTexture *texture,
 	    */
 	    glTexSubImage2D (priv->target_type, 0, 
 			     0, 0,
-			     priv->x_tiles[x].size,
-			     priv->y_tiles[y].size,
-			     priv->pixel_format, 
+			     gdk_pixbuf_get_width (pixtmp),
+                             gdk_pixbuf_get_height (pixtmp),
+                             priv->pixel_format, 
 			     priv->pixel_type, 
-			     tmp);
+			     gdk_pixbuf_get_pixels (pixtmp));
 	  }
 
-	g_free(tmp);
+	g_object_unref (pixtmp);
 
 	i++;
       }
+
+  g_object_unref (master_pixbuf);
 }
 
 static void
@@ -754,8 +752,7 @@ clutter_texture_set_property (GObject      *object,
     case PROP_USE_TILES:
       priv->is_tiled = g_value_get_boolean (value);
 
-      if (priv->target_type == GL_TEXTURE_RECTANGLE_ARB &&
-          priv->is_tiled)
+      if (priv->target_type == GL_TEXTURE_RECTANGLE_ARB && priv->is_tiled)
 	priv->target_type = GL_TEXTURE_2D;
 
       CLUTTER_NOTE (TEXTURE, "Texture is tiled ? %s",
@@ -1052,9 +1049,9 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 
   if (!priv->is_tiled)
     {
-      pixels = g_malloc (priv->width * priv->height * bpp);
+      pixels = g_malloc (((priv->width * bpp + 3) &~ 3) * priv->height);
       
-      if (pixels == NULL)
+      if (!pixels)
 	return NULL;
 
       glBindTexture(priv->target_type, priv->tiles[0]);
@@ -1075,7 +1072,7 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 					 8,
 					 priv->width,
 					 priv->height,
-					 priv->width * bpp,
+					 ((priv->width * bpp + 3) &~ 3),
 					 pixbuf_destroy_notify,
 					 NULL);
     }
@@ -1091,8 +1088,8 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 			       priv->width,
 			       priv->height);
 
-      for (x=0; x < priv->n_x_tiles; x++)
-	for (y=0; y < priv->n_y_tiles; y++)
+      for (x = 0; x < priv->n_x_tiles; x++)
+	for (y = 0; y < priv->n_y_tiles; y++)
 	  {
 	    GdkPixbuf  *tmp_pixb;
 	    gint        src_h, src_w;
@@ -1100,7 +1097,7 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 	    src_w = priv->x_tiles[x].size;
 	    src_h = priv->y_tiles[y].size;
 
-	    pixels = g_malloc (src_w * src_h * bpp);
+	    pixels = g_malloc (((src_w  * bpp) &~ 3) * src_h);
 
 	    glBindTexture(priv->target_type, priv->tiles[i]);
 	    
@@ -1111,18 +1108,25 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 			   0,
 			   priv->pixel_format,
 			   priv->pixel_type,
-			   (GLvoid*)pixels);
+			   (GLvoid *) pixels);
 	
-	    tmp_pixb 
-	      = gdk_pixbuf_new_from_data ((const guchar*)pixels,
-					  GDK_COLORSPACE_RGB,
-					  (priv->pixel_format == GL_RGBA),
-					  8,
-					  src_w,
-					  src_h,
-					  src_w * bpp,
-					  pixbuf_destroy_notify,
-					  NULL);
+            /* Clip */
+            if (priv->x_tiles[x].pos + src_w > priv->width)
+              src_w = priv->width - priv->x_tiles[x].pos;
+
+            if (priv->y_tiles[y].pos + src_h > priv->height)
+              src_h = priv->height = priv->y_tiles[y].pos;
+
+	    tmp_pixb =
+	      gdk_pixbuf_new_from_data ((const guchar*)pixels,
+					GDK_COLORSPACE_RGB,
+					(priv->pixel_format == GL_RGBA),
+					8,
+					src_w,
+					src_h,
+					((src_w * bpp + 3) &~ 3),
+					pixbuf_destroy_notify,
+					NULL);
 	
 	    gdk_pixbuf_copy_area (tmp_pixb,
 				  0,
