@@ -931,7 +931,7 @@ clutter_behaviour_bspline_join (ClutterBehaviourBspline * bs1,
  *
  * Since: 0.4
  */
-ClutterBehaviourBspline *
+ClutterBehaviour *
 clutter_behaviour_bspline_split (ClutterBehaviourBspline * bs, guint offset)
 {
   ClutterBehaviourBspline * bs2 = NULL;
@@ -967,7 +967,7 @@ clutter_behaviour_bspline_split (ClutterBehaviourBspline * bs, guint offset)
 
   g_array_set_size (bs->priv->splines, split);
 
-  return bs2;
+  return CLUTTER_BEHAVIOUR (bs2);
 }
 
 /**
