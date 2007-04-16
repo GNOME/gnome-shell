@@ -85,6 +85,7 @@ Windowing events handled by Clutter.
 @CLUTTER_SCROLL: 
 @CLUTTER_STAGE_STATE: 
 @CLUTTER_DESTROY_NOTIFY: 
+@CLUTTER_CLIENT_MESSAGE: 
 
 <!-- ##### UNION ClutterEvent ##### -->
 <para>

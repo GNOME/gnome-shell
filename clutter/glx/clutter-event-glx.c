@@ -41,6 +41,28 @@
 
 #include <X11/Xatom.h>
 
+/* XEMBED protocol support for toolkit embedding */
+#define XEMBED_MAPPED                   (1 << 0)
+#define MAX_SUPPORTED_XEMBED_VERSION    1
+
+#define XEMBED_EMBEDDED_NOTIFY          0
+#define XEMBED_WINDOW_ACTIVATE          1
+#define XEMBED_WINDOW_DEACTIVATE        2
+#define XEMBED_REQUEST_FOCUS            3
+#define XEMBED_FOCUS_IN                 4
+#define XEMBED_FOCUS_OUT                5
+#define XEMBED_FOCUS_NEXT               6
+#define XEMBED_FOCUS_PREV               7
+/* 8-9 were used for XEMBED_GRAB_KEY/XEMBED_UNGRAB_KEY */
+#define XEMBED_MODALITY_ON              10
+#define XEMBED_MODALITY_OFF             11
+#define XEMBED_REGISTER_ACCELERATOR     12
+#define XEMBED_UNREGISTER_ACCELERATOR   13
+#define XEMBED_ACTIVATE_ACCELERATOR     14
+
+static Atom Atom_XEMBED = 0;
+static Window ParentEmbedderWin = None;
+
 typedef struct _ClutterEventSource      ClutterEventSource;
 
 struct _ClutterEventSource
@@ -84,6 +106,59 @@ clutter_check_xpending (ClutterBackend *backend)
   return XPending (CLUTTER_BACKEND_GLX (backend)->xdpy);
 }
 
+static gboolean
+xembed_send_message (Display *xdisplay,
+                     Window   window,
+		     long     message,
+		     long     detail,
+		     long     data1, 
+		     long     data2)
+{
+  XEvent ev;
+
+  memset (&ev, 0, sizeof (ev));
+
+  ev.xclient.type = ClientMessage;
+  ev.xclient.window = window;
+  ev.xclient.message_type = Atom_XEMBED;
+  ev.xclient.format = 32;
+  ev.xclient.data.l[0] = CurrentTime;
+  ev.xclient.data.l[1] = message;
+  ev.xclient.data.l[2] = detail;
+  ev.xclient.data.l[3] = data1;
+  ev.xclient.data.l[4] = data2;
+
+  clutter_glx_trap_x_errors ();
+
+  XSendEvent (xdisplay, window, False, NoEventMask, &ev);
+  XSync (xdisplay, False);
+
+  if (clutter_glx_untrap_x_errors ())
+    return False;
+
+  return True;
+}
+
+static void
+xembed_set_info (Display *xdisplay,
+                 Window   window,
+                 gint     flags)
+{
+  gint32 list[2];
+  Atom atom_XEMBED_INFO;
+  
+  atom_XEMBED_INFO = XInternAtom (xdisplay, "_XEMBED_INFO", False);
+
+  list[0] = MAX_SUPPORTED_XEMBED_VERSION;
+  list[1] = XEMBED_MAPPED;
+
+  clutter_glx_trap_x_errors ();
+  XChangeProperty (xdisplay, window,
+                   atom_XEMBED_INFO,
+                   atom_XEMBED_INFO, 32,
+                   PropModeReplace, (unsigned char *) list, 2);
+  clutter_glx_untrap_x_errors ();
+}
 
 void
 _clutter_events_init (ClutterBackend *backend)
@@ -95,6 +170,8 @@ _clutter_events_init (ClutterBackend *backend)
   
   connection_number = ConnectionNumber (backend_glx->xdpy);
   CLUTTER_NOTE (EVENT, "Connection number: %d", connection_number);
+
+  Atom_XEMBED = XInternAtom (backend_glx->xdpy, "_XEMBED", False);
 
   source = backend_glx->event_source = clutter_event_source_new (backend);
   event_source = (ClutterEventSource *) source;
@@ -108,6 +185,10 @@ _clutter_events_init (ClutterBackend *backend)
   g_source_add_poll (source, &event_source->event_poll_fd);
   g_source_set_can_recurse (source, TRUE);
   g_source_attach (source, NULL);
+
+  xembed_set_info (backend_glx->xdpy,
+                   clutter_glx_get_stage_window (CLUTTER_STAGE (backend_glx->stage)),
+                   0);
 }
 
 void
@@ -127,6 +208,7 @@ _clutter_events_uninit (ClutterBackend *backend)
       backend_glx->event_source = NULL;
     }
 }
+
 
 static void
 set_user_time (Display      *display,
@@ -198,6 +280,48 @@ translate_key_event (ClutterBackend *backend,
   event->key.keyval = XKeycodeToKeysym (xevent->xkey.display, 
                                         xevent->xkey.keycode,
                                         0); /* FIXME: index with modifiers */
+}
+
+static void
+handle_xembed_event (ClutterBackendGlx *backend_glx,
+                     XEvent            *xevent)
+{
+  ClutterActor *stage;
+
+  stage = _clutter_backend_get_stage (CLUTTER_BACKEND (backend_glx));
+
+  switch (xevent->xclient.data.l[1])
+    {
+    case XEMBED_EMBEDDED_NOTIFY:
+      CLUTTER_NOTE (EVENT, "got XEMBED_EMBEDDED_NOTIFY from %lx",
+                    xevent->xclient.data.l[3]);
+
+      ParentEmbedderWin = xevent->xclient.data.l[3];
+
+      clutter_actor_realize (stage);
+      clutter_actor_show (stage);
+
+      xembed_set_info (backend_glx->xdpy,
+                       clutter_glx_get_stage_window (CLUTTER_STAGE (stage)),
+                       XEMBED_MAPPED);
+      break;
+    case XEMBED_WINDOW_ACTIVATE:
+      CLUTTER_NOTE (EVENT, "got XEMBED_WINDOW_ACTIVATE");
+      break;
+    case XEMBED_WINDOW_DEACTIVATE:
+      CLUTTER_NOTE (EVENT, "got XEMBED_WINDOW_DEACTIVATE");
+      break;
+    case XEMBED_FOCUS_IN:
+      CLUTTER_NOTE (EVENT, "got XEMBED_FOCUS_IN");
+      if (ParentEmbedderWin)
+        xembed_send_message (backend_glx->xdpy, ParentEmbedderWin,
+                             XEMBED_FOCUS_NEXT,
+                             0, 0, 0);
+      break;
+    default:
+      CLUTTER_NOTE (EVENT, "got unknown XEMBED message");
+      break;
+    }
 }
 
 static gboolean
@@ -315,6 +439,12 @@ clutter_event_translate (ClutterBackend *backend,
       CLUTTER_NOTE (EVENT, "destroy notify:\twindow: %ld",
                     xevent->xdestroywindow.window);
       event->type = event->any.type = CLUTTER_DESTROY_NOTIFY;
+      break;
+    case ClientMessage:
+      CLUTTER_NOTE (EVENT, "client message");
+      if (xevent->xclient.message_type == Atom_XEMBED)
+        handle_xembed_event (backend_glx, xevent);
+      event->type = event->any.type = CLUTTER_CLIENT_MESSAGE;
       break;
     default:
       /* ignore every other event */
