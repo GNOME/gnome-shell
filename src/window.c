@@ -440,8 +440,6 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->frame = NULL;
   window->has_focus = FALSE;
 
-  window->user_has_move_resized = FALSE;
-  
   window->maximized_horizontally = FALSE;
   window->maximized_vertically = FALSE;
   window->maximize_horizontally_after_placement = FALSE;
@@ -3367,17 +3365,12 @@ meta_window_move_resize_internal (MetaWindow          *window,
   if (need_configure_notify)
     send_configure_notify (window);
 
-  if (is_user_action)
-    {
-      window->user_has_move_resized = TRUE;
-
-      window->user_rect.width = window->rect.width;
-      window->user_rect.height = window->rect.height;
-
-      meta_window_get_position (window, 
-                                &window->user_rect.x,
-                                &window->user_rect.y);
-    }
+  /* user_rect is the position to restore towards if strut changes occur.  Thus
+   * we want user_rect to reflect user position/size changes OR the initial
+   * placement of the window.
+   */
+  if (is_user_action || !window->placed)
+    meta_window_get_client_root_coords (window, &window->user_rect);
   
   if (need_move_frame || need_resize_frame ||
       need_move_client || need_resize_client)
@@ -3614,24 +3607,6 @@ meta_window_get_client_root_coords (MetaWindow    *window,
   meta_window_get_position (window, &rect->x, &rect->y);
   rect->width  = window->rect.width;
   rect->height = window->rect.height;
-}
-
-void
-meta_window_get_user_position  (MetaWindow  *window,
-                                int         *x,
-                                int         *y)
-{
-  if (window->user_has_move_resized)
-    {
-      if (x)
-        *x = window->user_rect.x;
-      if (y)
-        *y = window->user_rect.y;
-    }
-  else
-    {
-      meta_window_get_position (window, x, y);
-    }
 }
 
 void

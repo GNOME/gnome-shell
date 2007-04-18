@@ -221,11 +221,6 @@ struct _MetaWindow
    */
   guint has_focus : 1;
   
-  /* Track whether the user has ever manually modified
-   * the window; if so, we can use the saved user size/pos
-   */
-  guint user_has_move_resized : 1;
-
   /* Have we placed this window? */
   guint placed : 1;
 
@@ -452,9 +447,6 @@ void        meta_window_update_struts      (MetaWindow  *window);
 
 /* this gets root coords */
 void        meta_window_get_position       (MetaWindow  *window,
-                                            int         *x,
-                                            int         *y);
-void        meta_window_get_user_position  (MetaWindow  *window,
                                             int         *x,
                                             int         *y);
 

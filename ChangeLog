@@ -1,3 +1,22 @@
+2007-04-17  Elijah Newren  <newren gmail com>
+
+	Fix some fallout from #426519; update user_rect for all position
+	changes prior to the window being marked as placed.  Prevents
+	emacs in particular from flickering on start and always being
+	shoved to the upper-left corner.
+
+	* src/window.c (meta_window_move_resize_internal):
+	Record position in user_rect if the window is not yet marked as
+	placed too
+
+	* src/window.c (struct MetaWindow, meta_window_new_with_attrs,
+	  meta_window_move_resize_internal):
+	Remove window->user_has_move_resized; it's not needed or used
+	anymore.
+
+	* src/window.[ch] (meta_window_get_user_position):
+	Remove this function as it is no longer needed or used.
+
 2007-04-16  Elijah Newren  <newren gmail com>
 
 	Prevent metacity from "forgetting" which machine a window is on.
