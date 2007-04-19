@@ -1,3 +1,38 @@
+2007-04-19  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Merge from clutter.git/master
+
+	* clutter/clutter-backend.h:
+	* clutter/clutter-backend.c: Add API for getting screen/display
+	properties from the backend.
+
+	* clutter/glx/clutter-backend-glx.c:
+	* clutter/glx/clutter-backend-egl.c: Retrieve screen/display
+	properties inside the backends init function.
+
+	* clutter/glx/clutter-event-glx.c: Handle the WM_PROTOCOLS
+	ClientMessage events.
+
+	* clutter/glx/clutter-stage-glx.c: Use XSetWMProtocols to enable
+	the WM_PROTOCOLS ClientMessage events on the stage window.
+
+	* clutter/glx/clutter-glx.h: Return the Screen pointer and not
+	the screen number in clutter_glx_get_default_screen(). The screen
+	number is returned by clutter_backend_get_screen_number(), or
+	by calling XScreenNumberOfScreen on the returned pointer.
+
+	* clutter/clutter-event.h: Add CLUTTER_DELETE to the event types.
+
+	* clutter/clutter-main.c: Emit the ClutterStage::delete-event
+	when receiving a CLUTTER_DELETE event; if the signal handlers
+	return FALSE, call clutter_main_quit().
+
+	* clutter/clutter-marshal.list:
+	* clutter/clutter-stage.c: Use the right marshaller function
+	for the delete-event closure.
+
+	* examples/test.c: Test the "delete-event" signal handler.
+
 2007-04-16  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Merge from clutter.git/merge-from-stable
