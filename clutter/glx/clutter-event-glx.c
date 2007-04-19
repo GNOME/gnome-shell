@@ -60,7 +60,9 @@
 #define XEMBED_UNREGISTER_ACCELERATOR   13
 #define XEMBED_ACTIVATE_ACCELERATOR     14
 
-static Atom Atom_XEMBED = 0;
+static Atom Atom_XEMBED       = 0;
+static Atom Atom_WM_PROTOCOLS = 0;
+
 static Window ParentEmbedderWin = None;
 
 typedef struct _ClutterEventSource      ClutterEventSource;
@@ -172,6 +174,7 @@ _clutter_events_init (ClutterBackend *backend)
   CLUTTER_NOTE (EVENT, "Connection number: %d", connection_number);
 
   Atom_XEMBED = XInternAtom (backend_glx->xdpy, "_XEMBED", False);
+  Atom_WM_PROTOCOLS = XInternAtom (backend_glx->xdpy, "WM_PROTOCOLS", False);
 
   source = backend_glx->event_source = clutter_event_source_new (backend);
   event_source = (ClutterEventSource *) source;
@@ -211,14 +214,13 @@ _clutter_events_uninit (ClutterBackend *backend)
 
 
 static void
-set_user_time (Display      *display,
-               Window       *xwindow,
-               ClutterEvent *event)
+set_user_time (Display *display,
+               Window  *xwindow,
+               long     timestamp)
 {
-  if (clutter_event_get_time (event) != CLUTTER_CURRENT_TIME)
+  if (timestamp != CLUTTER_CURRENT_TIME)
     {
       Atom atom_WM_USER_TIME;
-      long timestamp = clutter_event_get_time (event);
 
       atom_WM_USER_TIME = XInternAtom (display, "_NET_WM_USER_TIME", False);
 
@@ -282,7 +284,43 @@ translate_key_event (ClutterBackend *backend,
                                         0); /* FIXME: index with modifiers */
 }
 
-static void
+static gboolean
+handle_wm_protocols_event (ClutterBackendGlx *backend_glx,
+                           XEvent            *xevent)
+{
+  Atom atom = (Atom) xevent->xclient.data.l[0];
+  Atom Atom_WM_DELETE_WINDOW;
+
+  ClutterStage *stage = CLUTTER_STAGE (backend_glx->stage);
+  Window stage_xwindow = clutter_glx_get_stage_window (stage);
+
+  Atom_WM_DELETE_WINDOW = XInternAtom (backend_glx->xdpy,
+                                       "WM_DELETE_WINDOW",
+                                        False);
+
+  if (atom == Atom_WM_DELETE_WINDOW &&
+      xevent->xany.window == stage_xwindow)
+    {
+      /* the WM_DELETE_WINDOW is a request: we do not destroy
+       * the window right away, as it might contain vital data;
+       * we relay the event to the application and we let it
+       * handle the request
+       */
+      CLUTTER_NOTE (EVENT, "delete window:\twindow: %ld",
+                    xevent->xclient.window);
+
+      set_user_time (backend_glx->xdpy,
+                     &stage_xwindow,
+                     xevent->xclient.data.l[1]);
+
+      return TRUE;
+    }
+
+  /* do not send the WM_PROTOCOLS events to the queue */
+  return FALSE;
+}
+
+static gboolean
 handle_xembed_event (ClutterBackendGlx *backend_glx,
                      XEvent            *xevent)
 {
@@ -322,6 +360,9 @@ handle_xembed_event (ClutterBackendGlx *backend_glx,
       CLUTTER_NOTE (EVENT, "got unknown XEMBED message");
       break;
     }
+
+  /* do not propagate the XEMBED events to the stage */
+  return FALSE;
 }
 
 static gboolean
@@ -366,7 +407,7 @@ clutter_event_translate (ClutterBackend *backend,
     case KeyPress:
       event->type = CLUTTER_KEY_PRESS;
       translate_key_event (backend, event, xevent);
-      set_user_time (backend_glx->xdpy, &xwindow, event);
+      set_user_time (backend_glx->xdpy, &xwindow, xevent->xkey.time);
       break;
     case KeyRelease:
       event->type = CLUTTER_KEY_RELEASE;
@@ -408,7 +449,7 @@ clutter_event_translate (ClutterBackend *backend,
           break;
         }
 
-      set_user_time (backend_glx->xdpy, &xwindow, event);
+      set_user_time (backend_glx->xdpy, &xwindow, event->button.time);
       break;
     case ButtonRelease:
       /* scroll events don't have a corresponding release */
@@ -442,9 +483,16 @@ clutter_event_translate (ClutterBackend *backend,
       break;
     case ClientMessage:
       CLUTTER_NOTE (EVENT, "client message");
-      if (xevent->xclient.message_type == Atom_XEMBED)
-        handle_xembed_event (backend_glx, xevent);
+      
       event->type = event->any.type = CLUTTER_CLIENT_MESSAGE;
+      
+      if (xevent->xclient.message_type == Atom_XEMBED)
+        res = handle_xembed_event (backend_glx, xevent);
+      else if (xevent->xclient.message_type == Atom_WM_PROTOCOLS)
+        {
+          res = handle_wm_protocols_event (backend_glx, xevent);
+          event->type = event->any.type = CLUTTER_DELETE;
+        }
       break;
     default:
       /* ignore every other event */

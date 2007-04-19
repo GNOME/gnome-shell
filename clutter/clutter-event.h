@@ -58,7 +58,8 @@ typedef enum
   CLUTTER_SCROLL,
   CLUTTER_STAGE_STATE,
   CLUTTER_DESTROY_NOTIFY,
-  CLUTTER_CLIENT_MESSAGE
+  CLUTTER_CLIENT_MESSAGE,
+  CLUTTER_DELETE
 } ClutterEventType;
 
 typedef enum
@@ -80,6 +81,7 @@ typedef enum
 typedef enum
 {
   CLUTTER_FILTER_CONTINUE,
+  CLUTTER_FILTER_TRANSLATE,
   CLUTTER_FILTER_REMOVE
 } ClutterFilterResponse;
 

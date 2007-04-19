@@ -47,6 +47,7 @@ Windowing events handled by Clutter.
 </para>
 
 @CLUTTER_FILTER_CONTINUE: 
+@CLUTTER_FILTER_TRANSLATE: 
 @CLUTTER_FILTER_REMOVE: 
 
 <!-- ##### ENUM ClutterScrollDirection ##### -->
@@ -86,6 +87,7 @@ Windowing events handled by Clutter.
 @CLUTTER_STAGE_STATE: 
 @CLUTTER_DESTROY_NOTIFY: 
 @CLUTTER_CLIENT_MESSAGE: 
+@CLUTTER_DELETE: 
 
 <!-- ##### UNION ClutterEvent ##### -->
 <para>

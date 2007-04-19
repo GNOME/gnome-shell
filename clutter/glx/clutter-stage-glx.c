@@ -109,6 +109,20 @@ clutter_stage_glx_unrealize (ClutterActor *actor)
 }
 
 static void
+set_wm_protocols (Display *xdisplay,
+                  Window   xwindow)
+{
+  Atom protocols[3];
+  int n = 0;
+  
+  protocols[n++] = XInternAtom (xdisplay, "WM_DELETE_WINDOW", False);
+  protocols[n++] = XInternAtom (xdisplay, "WM_TAKE_FOCUS", False);
+  protocols[n++] = XInternAtom (xdisplay, "_NET_WM_PING", False);
+
+  XSetWMProtocols (xdisplay, xwindow, protocols, n);
+}
+
+static void
 clutter_stage_glx_realize (ClutterActor *actor)
 {
   ClutterStageGlx *stage_glx = CLUTTER_STAGE_GLX (actor);
@@ -167,6 +181,8 @@ clutter_stage_glx_realize (ClutterActor *actor)
 		    KeyPressMask | KeyReleaseMask |
 		    ButtonPressMask | ButtonReleaseMask |
 		    PropertyChangeMask);
+
+      set_wm_protocols (stage_glx->xdpy, stage_glx->xwin);
 
       if (stage_glx->gl_context)
 	glXDestroyContext (stage_glx->xdpy, stage_glx->gl_context);

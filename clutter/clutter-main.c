@@ -153,10 +153,22 @@ clutter_main_do_event (ClutterEvent *event,
     case CLUTTER_MOTION:
       g_signal_emit_by_name (stage, "motion-event", event);
       break;
-    case CLUTTER_DESTROY_NOTIFY:
-      g_signal_emit_by_name (stage, "delete-event");
+    case CLUTTER_DELETE:
+      {
+        gboolean res = FALSE;
+
+        g_object_ref (stage);
+        g_signal_emit_by_name (stage, "delete-event", event, &res);
+        if (!res)
+          clutter_main_quit ();
+        g_object_unref (stage);
+      }
       break;
     case CLUTTER_STAGE_STATE:
+      break;
+    case CLUTTER_DESTROY_NOTIFY:
+      break;
+    case CLUTTER_CLIENT_MESSAGE:
       break;
     }
 }

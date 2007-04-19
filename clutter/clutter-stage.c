@@ -92,19 +92,6 @@ enum
 
 static guint stage_signals[LAST_SIGNAL] = { 0 };
 
-static gboolean
-clutter_stage_delete_event (ClutterStage    *stage,
-                            ClutterAnyEvent *event)
-{
-  /* FIXME - destroy the main stage, probably attaching a weak ref
-   * to it from the backend, so that it gets destroyed too.
-   */
-  CLUTTER_NOTE (EVENT, "Received a destroy notification");
-
-  /* we don't want to block */
-  return FALSE;
-}
-
 static void
 clutter_stage_paint (ClutterActor *actor)
 {
@@ -207,8 +194,6 @@ clutter_stage_class_init (ClutterStageClass *klass)
   gobject_class->get_property = clutter_stage_get_property;
 
   actor_class->paint = clutter_stage_paint;
-
-  stage_class->delete_event = clutter_stage_delete_event;
 
   /**
    * ClutterStage:fullscreen
