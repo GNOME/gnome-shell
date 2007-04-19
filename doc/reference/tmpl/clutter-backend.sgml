@@ -58,3 +58,84 @@ ClutterBackend
 @event: 
 
 
+<!-- ##### FUNCTION clutter_backend_get_width ##### -->
+<para>
+
+</para>
+
+@backend: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_backend_get_height ##### -->
+<para>
+
+</para>
+
+@backend: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_backend_get_width_mm ##### -->
+<para>
+
+</para>
+
+@backend: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_backend_get_height_mm ##### -->
+<para>
+
+</para>
+
+@backend: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_backend_get_screen_number ##### -->
+<para>
+
+</para>
+
+@backend: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_backend_get_double_click_time ##### -->
+<para>
+
+</para>
+
+@backend: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_backend_set_double_click_time ##### -->
+<para>
+
+</para>
+
+@backend: 
+@msec: 
+
+
+<!-- ##### FUNCTION clutter_backend_get_double_click_distance ##### -->
+<para>
+
+</para>
+
+@backend: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_backend_set_double_click_distance ##### -->
+<para>
+
+</para>
+
+@backend: 
+@distance: 
+
+
