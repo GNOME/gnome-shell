@@ -1,28 +1,6 @@
 2007-04-16  Emmanuele Bassi  <ebassi@openedhand.com>
 
-	Merge from clutter.git/merge-from-stable
-
-	* clutter/clutter-event.h:
-	* clutter/glx/clutter-event-glx.c: Add the XEMBED protocol support
-	in the GLX backend, for embedding the stage window into another
-	X window. This allows cross-toolkit inclusion and makes clutter-gtk
-	possible.
-
-	* clutter/clutter-behaviour-scale.c: Implement every ClutterGravity
-	value inside the scale behaviour and make the actors anchor to a
-	gravity when scaling up and down.
-
-	* clutter/clutter-texture.c: Revert to copying GdkPixbuf areas to
-	correctly implement the texture tiling. This fixes segmentation
-	faults occurring with cards with a small texture memory area.
-
-	* clutter/clutter-actor.c: Call g_object_freeze_notify() (and take
-	a reference on the actor) inside clutter_actor_request_size() so
-	that the notifications get unqueued at the end of the size request.
-
-2007-04-16  Emmanuele Bassi  <ebassi@openedhand.com>
-
-	Merge from clutter.git/work
+	Merge from clutter.git
 
 	* clutter/clutter-behaviour-bspline.[ch]: Return a ClutterBehaviour
 	when splicing the b-spline; fix the header and the API documentation;

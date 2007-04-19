@@ -437,9 +437,6 @@ clutter_actor_request_coords (ClutterActor    *self,
       
       if (CLUTTER_ACTOR_IS_VISIBLE (self))
 	clutter_actor_queue_redraw (self);
-
-      g_object_ref (self);
-      g_object_freeze_notify (G_OBJECT (self));
       
       if (x_change)
 	g_object_notify (G_OBJECT (self), "x");
@@ -452,9 +449,6 @@ clutter_actor_request_coords (ClutterActor    *self,
       
       if (height_change)
 	g_object_notify (G_OBJECT (self), "height");
-
-      g_object_thaw_notify (G_OBJECT (self));
-      g_object_unref (self);
     }
 }
 
