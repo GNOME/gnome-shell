@@ -52,7 +52,8 @@ struct _ClutterBackend
   gint res_width;
   gint res_height;
 
-  gint screen_n;
+  gint screen_num;
+  gint n_screens;
 
   /* events queue: every backend must implement one */
   GQueue *events_queue;
@@ -101,6 +102,7 @@ gint clutter_backend_get_height        (ClutterBackend *backend);
 gint clutter_backend_get_width_mm      (ClutterBackend *backend);
 gint clutter_backend_get_height_mm     (ClutterBackend *backend);
 gint clutter_backend_get_screen_number (ClutterBackend *backend);
+gint clutter_backend_get_n_screens     (ClutterBackend *backend);
 
 void  clutter_backend_set_double_click_time     (ClutterBackend *backend,
                                                  guint           msec);

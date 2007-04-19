@@ -46,7 +46,8 @@ struct _ClutterBackendEgl
   Display *xdpy;
   gchar   *display_name;
   Window   xwin_root;
-  int      xscreen;
+  int      xscreen_num;
+  Screen  *xscreen;
 
   /* main stage singleton */
   ClutterActor *stage;

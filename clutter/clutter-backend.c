@@ -312,7 +312,25 @@ clutter_backend_get_screen_number (ClutterBackend *backend)
 {
   g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), -1);
 
-  return backend->screen_n;
+  return backend->screen_num;
+}
+
+/**
+ * clutter_backend_get_n_screens:
+ * @backend: a #ClutterBackend
+ *
+ * Gets the number of screens managed by @backend.
+ *
+ * Return value: the number of screens
+ *
+ * Since: 0.4
+ */
+gint
+clutter_backend_get_n_screens (ClutterBackend *backend)
+{
+  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), 0);
+
+  return backend->n_screens;
 }
 
 /**

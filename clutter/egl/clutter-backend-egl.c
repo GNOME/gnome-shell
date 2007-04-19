@@ -62,19 +62,24 @@ clutter_backend_egl_post_parse (ClutterBackend  *backend,
       CLUTTER_NOTE (MISC, "Getting the X screen");
 
       if (clutter_screen == 0)
-        backend_egl->xscreen = DefaultScreen (backend_egl->xdpy);
+        backend_egl->xscreen = DefaultScreenOfDisplay (backend_egl->xdpy);
       else
-        {
-          Screen *xscreen;
+        backend_egl->xscreen = ScreenOfDisplay (backend_egl->xdpy,
+                                                clutter_screen);
 
-          xscreen = ScreenOfDisplay (backend_egl->xdpy, clutter_screen);
-          backend_egl->xscreen = XScreenNumberOfScreen (xscreen);
-        }
-
+      backend_egl->xscreen_num = XScreenNumberOfScreen (backend_egl->xscreen);
       backend_egl->xwin_root = RootWindow (backend_egl->xdpy,
-                                           backend_egl->xscreen);
+                                           backend_egl->xscreen_num);
       
       backend_egl->display_name = g_strdup (clutter_display_name);
+
+      /* generic backend properties */
+      backend->res_width = WidthOfScreen (backend_egl->xscreen);
+      backend->res_height = HeightOfScreen (backend_egl->xscreen);
+      backend->mm_width = WidthMMOfScreen (backend_egl->xscreen);
+      backend->mm_height = HeightMMOfScreen (backend_egl->xscreen);
+      backend->screen_num = backend_egl->xscreen_num;
+      backend->n_screens = ScreenCount (backend_egl->xdpy)
     }
 
   g_free (clutter_display_name);
@@ -82,7 +87,7 @@ clutter_backend_egl_post_parse (ClutterBackend  *backend,
   CLUTTER_NOTE (MISC, "X Display `%s' [%p] opened (screen:%d, root:%u)",
                 backend_egl->display_name,
                 backend_egl->xdpy,
-                backend_egl->xscreen,
+                backend_egl->xscreen_num,
                 (unsigned int) backend_egl->xwin_root);
 
   return TRUE;
@@ -105,7 +110,7 @@ clutter_backend_egl_init_stage (ClutterBackend  *backend,
       stage_egl = CLUTTER_STAGE_EGL (stage);
       stage_egl->xdpy = backend_egl->xdpy;
       stage_egl->xwin_root = backend_egl->xwin_root;
-      stage_egl->xscreen = backend_egl->xscreen;
+      stage_egl->xscreen = backend_egl->xscreen_num;
 
       g_object_set_data (G_OBJECT (stage), "clutter-backend", backend);
 
@@ -249,7 +254,8 @@ clutter_backend_egl_init (ClutterBackendEgl *backend_egl)
 
   backend->res_width = backend->res_height = -1;
   backend->mm_width = backend->mm_height = -1;
-  backend->screen_n = 0;
+  backend->screen_num = 0;
+  backend->n_screens = 0;
 
   backend->double_click_time = 250;
   backend->double_click_distance = 5
@@ -339,7 +345,7 @@ clutter_egl_get_default_screen (void)
       return -1;
     }
 
-  return backend_singleton->xscreen;
+  return backend_singleton->xscreen_num;
 }
 
 /**

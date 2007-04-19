@@ -112,7 +112,8 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
       backend->res_height = HeightOfScreen (backend_glx->xscreen);
       backend->mm_width = WidthMMOfScreen (backend_glx->xscreen);
       backend->mm_height = HeightMMOfScreen (backend_glx->xscreen);
-      backend->screen_n = ScreenCount (backend_glx->xdpy);
+      backend->screen_num = backend_glx->xscreen_num;
+      backend->n_screens = ScreenCount (backend_glx->xdpy);
     }
 
   g_free (clutter_display_name);
@@ -309,7 +310,8 @@ clutter_backend_glx_init (ClutterBackendGlx *backend_glx)
 
   backend->res_width = backend->res_height = -1;
   backend->mm_width = backend->mm_height = -1;
-  backend->screen_n = 0;
+  backend->screen_num = 0;
+  backend->n_screens = 0;
 
   /* FIXME - find a way to set this stuff from XSettings */
   backend->double_click_time = 250;

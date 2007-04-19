@@ -103,6 +103,15 @@ ClutterBackend
 @Returns: 
 
 
+<!-- ##### FUNCTION clutter_backend_get_n_screens ##### -->
+<para>
+
+</para>
+
+@backend: 
+@Returns: 
+
+
 <!-- ##### FUNCTION clutter_backend_get_double_click_time ##### -->
 <para>
 
