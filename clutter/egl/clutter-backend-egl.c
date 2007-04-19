@@ -237,9 +237,22 @@ clutter_backend_egl_class_init (ClutterBackendEglClass *klass)
 }
 
 static void
-clutter_backend_egl_init (ClutterBackendEgl *backend)
+clutter_backend_egl_init (ClutterBackendEgl *backend_egl)
 {
+  ClutterBackend *backend = CLUTTER_BACKEND (backend_egl);
+  backend->events_queue = g_queue_new ();
 
+  backend->button_click_time[0] = backend->button_click_time[1] = 0;
+  backend->button_number[0] = backend->button_number[1] = -1;
+  backend->button_x[0] = backend->button_x[1] = 0;
+  backend->button_y[0] = backend->button_y[1] = 0;
+
+  backend->res_width = backend->res_height = -1;
+  backend->mm_width = backend->mm_height = -1;
+  backend->screen_n = 0;
+
+  backend->double_click_time = 250;
+  backend->double_click_distance = 5
 }
 
 GType
