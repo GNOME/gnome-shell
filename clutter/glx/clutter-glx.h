@@ -37,7 +37,7 @@ void     clutter_glx_trap_x_errors       (void);
 gint     clutter_glx_untrap_x_errors     (void);
 
 Display *clutter_glx_get_default_display (void);
-gint     clutter_glx_get_default_screen  (void);
+Screen * clutter_glx_get_default_screen  (void);
 Window   clutter_glx_get_root_window     (void);
 
 Window       clutter_glx_get_stage_window (ClutterStage *stage);

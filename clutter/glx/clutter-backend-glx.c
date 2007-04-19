@@ -388,22 +388,22 @@ clutter_glx_get_default_display (void)
 /**
  * clutter_glx_get_default_screen:
  * 
- * FIXME
+ * Gets the pointer to the default X Screen object.
  *
  * Return value: FIXME
  *
  * Since: 0.4
  */
-gint
+Screen *
 clutter_glx_get_default_screen (void)
 {
   if (!backend_singleton)
     {
       g_critical ("GLX backend has not been initialised");
-      return -1;
+      return NULL;
     }
 
-  return backend_singleton->xscreen_num;
+  return backend_singleton->xscreen;
 }
 
 /**
