@@ -47,6 +47,12 @@ struct _ClutterBackend
   GObject parent_instance;
 
   /*< private >*/
+  gint mm_width;
+  gint mm_height;
+  gint res_width;
+  gint res_height;
+
+  gint screen_n;
 
   /* events queue: every backend must implement one */
   GQueue *events_queue;
@@ -81,14 +87,27 @@ struct _ClutterBackendClass
                                    GOptionGroup    *group);
 };
 
-GType           clutter_backend_get_type    (void) G_GNUC_CONST;
+GType clutter_backend_get_type    (void) G_GNUC_CONST;
 
 ClutterBackend *clutter_get_default_backend (void);
 
-ClutterEvent *  clutter_backend_get_event   (ClutterBackend *backend);
-ClutterEvent *  clutter_backend_peek_event  (ClutterBackend *backend);
-void            clutter_backend_put_event   (ClutterBackend *backend,
-                                             ClutterEvent   *event);
+ClutterEvent *clutter_backend_get_event  (ClutterBackend *backend);
+ClutterEvent *clutter_backend_peek_event (ClutterBackend *backend);
+void          clutter_backend_put_event  (ClutterBackend *backend,
+                                          ClutterEvent   *event);
+
+gint clutter_backend_get_width         (ClutterBackend *backend);
+gint clutter_backend_get_height        (ClutterBackend *backend);
+gint clutter_backend_get_width_mm      (ClutterBackend *backend);
+gint clutter_backend_get_height_mm     (ClutterBackend *backend);
+gint clutter_backend_get_screen_number (ClutterBackend *backend);
+
+void  clutter_backend_set_double_click_time     (ClutterBackend *backend,
+                                                 guint           msec);
+guint clutter_backend_get_double_click_time     (ClutterBackend *backend);
+void  clutter_backend_set_double_click_distance (ClutterBackend *backend,
+                                                 guint           distance);
+guint clutter_backend_get_double_click_distance (ClutterBackend *backend);
 
 G_END_DECLS
 

@@ -48,7 +48,8 @@ struct _ClutterBackendGlx
 
   Display *xdpy;
   Window xwin_root;
-  int xscreen;
+  Screen *xscreen;
+  int xscreen_num;
   gchar *display_name;
 
   /* main stage singleton */

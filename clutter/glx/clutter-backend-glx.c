@@ -95,19 +95,24 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
       CLUTTER_NOTE (MISC, "Getting the X screen");
 
       if (clutter_screen == 0)
-        backend_glx->xscreen = DefaultScreen (backend_glx->xdpy);
+        backend_glx->xscreen = DefaultScreenOfDisplay (backend_glx->xdpy);
       else
-        {
-          Screen *xscreen;
-
-          xscreen = ScreenOfDisplay (backend_glx->xdpy, clutter_screen);
-          backend_glx->xscreen = XScreenNumberOfScreen (xscreen);
-        }
+        backend_glx->xscreen = ScreenOfDisplay (backend_glx->xdpy,
+                                                clutter_screen);
+      
+      backend_glx->xscreen_num = XScreenNumberOfScreen (backend_glx->xscreen);
 
       backend_glx->xwin_root = RootWindow (backend_glx->xdpy,
-                                           backend_glx->xscreen);
+                                           backend_glx->xscreen_num);
       
       backend_glx->display_name = g_strdup (clutter_display_name);
+
+      /* generic backend properties */
+      backend->res_width = WidthOfScreen (backend_glx->xscreen);
+      backend->res_height = HeightOfScreen (backend_glx->xscreen);
+      backend->mm_width = WidthMMOfScreen (backend_glx->xscreen);
+      backend->mm_height = HeightMMOfScreen (backend_glx->xscreen);
+      backend->screen_n = ScreenCount (backend_glx->xdpy);
     }
 
   g_free (clutter_display_name);
@@ -115,7 +120,7 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
   CLUTTER_NOTE (MISC, "X Display `%s' [%p] opened (screen:%d, root:%u)",
                 backend_glx->display_name,
                 backend_glx->xdpy,
-                backend_glx->xscreen,
+                backend_glx->xscreen_num,
                 (unsigned int) backend_glx->xwin_root);
 
   return TRUE;
@@ -146,7 +151,7 @@ clutter_backend_glx_init_stage (ClutterBackend  *backend,
       stage_glx = CLUTTER_STAGE_GLX (stage);
       stage_glx->xdpy = backend_glx->xdpy;
       stage_glx->xwin_root = backend_glx->xwin_root;
-      stage_glx->xscreen = backend_glx->xscreen;
+      stage_glx->xscreen = backend_glx->xscreen_num;
 
       CLUTTER_NOTE (MISC, "GLX stage created (display:%p, screen:%d, root:%u)",
                     stage_glx->xdpy,
@@ -302,6 +307,10 @@ clutter_backend_glx_init (ClutterBackendGlx *backend_glx)
   backend->button_x[0] = backend->button_x[1] = 0;
   backend->button_y[0] = backend->button_y[1] = 0;
 
+  backend->res_width = backend->res_height = -1;
+  backend->mm_width = backend->mm_height = -1;
+  backend->screen_n = 0;
+
   /* FIXME - find a way to set this stuff from XSettings */
   backend->double_click_time = 250;
   backend->double_click_distance = 5;
@@ -392,7 +401,7 @@ clutter_glx_get_default_screen (void)
       return -1;
     }
 
-  return backend_singleton->xscreen;
+  return backend_singleton->xscreen_num;
 }
 
 /**
@@ -415,5 +424,3 @@ clutter_glx_get_root_window (void)
 
   return backend_singleton->xwin_root;
 }
-
-

@@ -224,3 +224,85 @@ clutter_backend_put_event (ClutterBackend *backend,
 
   _clutter_event_queue_push (backend, clutter_event_copy (event));
 }
+
+gint
+clutter_backend_get_width (ClutterBackend *backend)
+{
+  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), -1);
+
+  return backend->res_width;
+}
+
+gint
+clutter_backend_get_height (ClutterBackend *backend)
+{
+  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), -1);
+
+  return backend->res_height;
+}
+
+gint
+clutter_backend_get_width_mm (ClutterBackend *backend)
+{
+  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), -1);
+
+  return backend->mm_width;
+}
+
+gint
+clutter_backend_get_height_mm (ClutterBackend *backend)
+{
+  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), -1);
+
+  return backend->mm_height;
+}
+
+gint
+clutter_backend_get_screen_number (ClutterBackend *backend)
+{
+  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), -1);
+
+  return backend->screen_n;
+}
+
+gdouble
+clutter_backend_get_resolution (ClutterBackend *backend)
+{
+  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), 0.0);
+
+  return (gdouble) backend->res_width / (gdouble) backend->res_height;
+}
+
+void
+clutter_backend_set_double_click_time (ClutterBackend *backend,
+                                       guint           msec)
+{
+  g_return_if_fail (CLUTTER_IS_BACKEND (backend));
+
+  backend->double_click_time = msec;
+}
+
+guint
+clutter_backend_get_double_click_time (ClutterBackend *backend)
+{
+  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), 0);
+
+  return backend->double_click_time;
+}
+
+void
+clutter_backend_set_double_click_distance (ClutterBackend *backend,
+                                           guint           distance)
+{
+  g_return_if_fail (CLUTTER_IS_BACKEND (backend));
+  
+  backend->double_click_distance = distance;
+}
+
+guint
+clutter_backend_get_double_click_distance (ClutterBackend *backend)
+{
+  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), 0);
+
+  return backend->double_click_distance;
+}
