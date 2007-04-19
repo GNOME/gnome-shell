@@ -84,9 +84,14 @@ delete_event_cb (ClutterStage *stage,
                  ClutterEvent *event,
                  gpointer      data)
 {
-  g_print ("delete-event\n");
+  static gboolean res = FALSE;
 
-  return TRUE;
+  g_print ("delete-event: %s\n",
+           res == FALSE ? "first attempt" : "second attempt");
+
+  res = !res;
+
+  return res;
 }
 
 

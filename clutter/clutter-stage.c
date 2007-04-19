@@ -188,7 +188,6 @@ clutter_stage_class_init (ClutterStageClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
-  ClutterStageClass *stage_class = CLUTTER_STAGE_CLASS (klass);
 
   gobject_class->set_property = clutter_stage_set_property;
   gobject_class->get_property = clutter_stage_get_property;
@@ -360,7 +359,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (ClutterStageClass, delete_event),
                   _clutter_boolean_accumulator, NULL,
-                  clutter_marshal_VOID__BOXED,
+                  clutter_marshal_BOOLEAN__BOXED,
                   G_TYPE_BOOLEAN, 1,
                   CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
   
