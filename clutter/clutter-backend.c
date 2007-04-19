@@ -225,6 +225,16 @@ clutter_backend_put_event (ClutterBackend *backend,
   _clutter_event_queue_push (backend, clutter_event_copy (event));
 }
 
+/**
+ * clutter_backend_get_width:
+ * @backend: a #ClutterBackend
+ *
+ * Gets the width of the screen used by @backend in pixels.
+ *
+ * Return value: the width of the screen
+ *
+ * Since: 0.4
+ */
 gint
 clutter_backend_get_width (ClutterBackend *backend)
 {
@@ -233,6 +243,16 @@ clutter_backend_get_width (ClutterBackend *backend)
   return backend->res_width;
 }
 
+/**
+ * clutter_backend_get_height:
+ * @backend: a #ClutterBackend
+ *
+ * Gets the height of the screen used by @backend in pixels.
+ *
+ * Return value: the height of the screen
+ *
+ * Since: 0.4
+ */
 gint
 clutter_backend_get_height (ClutterBackend *backend)
 {
@@ -241,6 +261,16 @@ clutter_backend_get_height (ClutterBackend *backend)
   return backend->res_height;
 }
 
+/**
+ * clutter_backend_get_width_mm:
+ * @backend: a #ClutterBackend
+ *
+ * Gets the width of the screen used by @backend in millimiters.
+ *
+ * Return value: the width of the screen
+ *
+ * Since: 0.4
+ */
 gint
 clutter_backend_get_width_mm (ClutterBackend *backend)
 {
@@ -249,6 +279,16 @@ clutter_backend_get_width_mm (ClutterBackend *backend)
   return backend->mm_width;
 }
 
+/**
+ * clutter_backend_get_height_mm:
+ * @backend: a #ClutterBackend
+ *
+ * Gets the height of the screen used by @backend in millimiters.
+ *
+ * Return value: the height of the screen
+ *
+ * Since: 0.4
+ */
 gint
 clutter_backend_get_height_mm (ClutterBackend *backend)
 {
@@ -257,6 +297,16 @@ clutter_backend_get_height_mm (ClutterBackend *backend)
   return backend->mm_height;
 }
 
+/**
+ * clutter_backend_get_screen_number:
+ * @backend: a #ClutterBackend
+ *
+ * Gets the number of screens available for @backend.
+ *
+ * Return value: the number of screens.
+ *
+ * Since: 0.4
+ */
 gint
 clutter_backend_get_screen_number (ClutterBackend *backend)
 {
@@ -265,14 +315,35 @@ clutter_backend_get_screen_number (ClutterBackend *backend)
   return backend->screen_n;
 }
 
+/**
+ * clutter_backend_get_resolution:
+ * @backend: a #ClutterBackend
+ *
+ * Gets the resolution of the screen used by @backend.
+ *
+ * Return value: the resolution of the screen
+ *
+ * Since: 0.4
+ */
 gdouble
 clutter_backend_get_resolution (ClutterBackend *backend)
 {
   g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), 0.0);
 
-  return (gdouble) backend->res_width / (gdouble) backend->res_height;
+  return (((gdouble) backend->res_height * 25.4) /
+           (gdouble) backend->mm_height);
 }
 
+/**
+ * clutter_backend_set_double_click_time:
+ * @backend: a #ClutterBackend
+ * @msec: milliseconds between two button press events
+ *
+ * Sets the maximum time between two button press events, used to
+ * verify whether it's a double click event or not.
+ *
+ * Since: 0.4
+ */
 void
 clutter_backend_set_double_click_time (ClutterBackend *backend,
                                        guint           msec)
@@ -282,6 +353,17 @@ clutter_backend_set_double_click_time (ClutterBackend *backend,
   backend->double_click_time = msec;
 }
 
+/**
+ * clutter_backend_get_double_click_time:
+ * @backend: a #ClutterBackend
+ *
+ * Gets the maximum time between two button press events, as set
+ * by clutter_backend_set_double_click_time().
+ *
+ * Return value: a time in milliseconds
+ *
+ * Since: 0.4
+ */
 guint
 clutter_backend_get_double_click_time (ClutterBackend *backend)
 {
@@ -290,6 +372,15 @@ clutter_backend_get_double_click_time (ClutterBackend *backend)
   return backend->double_click_time;
 }
 
+/**
+ * clutter_backend_set_double_click_distance:
+ * @backend: a #ClutterBackend
+ * @distance: a distance, in pixels
+ *
+ * Sets the maximum distance used to verify a double click event.
+ *
+ * Since: 0.4
+ */
 void
 clutter_backend_set_double_click_distance (ClutterBackend *backend,
                                            guint           distance)
@@ -299,6 +390,16 @@ clutter_backend_set_double_click_distance (ClutterBackend *backend,
   backend->double_click_distance = distance;
 }
 
+/**
+ * clutter_backend_get_double_click_distance:
+ * @backend: a #ClutterBackend
+ *
+ * Retrieves the distance used to verify a double click event
+ *
+ * Return value: a distance, in pixels.
+ *
+ * Since: 0.4
+ */
 guint
 clutter_backend_get_double_click_distance (ClutterBackend *backend)
 {
