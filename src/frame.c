@@ -114,6 +114,11 @@ meta_window_ensure_frame (MetaWindow *window)
   
   meta_display_register_x_window (window->display, &frame->xwindow, window);
 
+  /* Now that frame->xwindow is registered with window, we can set its
+   * background.
+   */
+  meta_ui_reset_frame_bg (window->screen->ui, frame->xwindow);
+
   /* Reparent the client window; it may be destroyed,
    * thus the error trap. We'll get a destroy notify later
    * and free everything. Comment in FVWM source code says

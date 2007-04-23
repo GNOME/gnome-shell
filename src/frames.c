@@ -571,9 +571,6 @@ meta_frames_manage_window (MetaFrames *frames,
 
   gdk_window_set_user_data (frame->window, frames);
 
-  /* Set the window background to the current style */
-  meta_frames_set_window_background (frames, frame);
-
   /* Don't set event mask here, it's in frame.c */
   
   frame->xwindow = xwindow;
@@ -584,6 +581,11 @@ meta_frames_manage_window (MetaFrames *frames,
   frame->expose_delayed = FALSE;
   frame->shape_applied = FALSE;
   frame->prelit_control = META_FRAME_CONTROL_NONE;
+
+  /* Don't set the window background yet; we need frame->xwindow to be
+   * registered with its MetaWindow, which happens after this function
+   * and meta_ui_create_frame_window() return to meta_window_ensure_frame().
+   */
   
   meta_core_grab_buttons (gdk_display, frame->xwindow);
   

@@ -1,3 +1,14 @@
+2007-04-23  Elijah Newren  <newren gmail com>
+
+	Fix some uninitialized memory usage errors.  #427385
+
+	* src/frame.c (meta_window_ensure_frame):
+	* src/frames.c (meta_frames_manage_window):
+	Do not try to set the window background in
+	meta_frames_manage_window() since the frame window is not yet
+	created and not yet registered with the corresponding MetaWindow.
+	Do it inside meta_window_ensure_frame() instead.
+
 2007-04-17  Elijah Newren  <newren gmail com>
 
 	Fix some fallout from #426519; update user_rect for all position
