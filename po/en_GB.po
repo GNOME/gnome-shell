@@ -9,13 +9,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-15 07:02+0000\n"
-"PO-Revision-Date: 2007-03-15 07:03-0000\n"
+"POT-Creation-Date: 2007-04-23 07:11+0100\n"
+"PO-Revision-Date: 2007-04-23 07:11-0000\n"
 "Last-Translator: David Lodge <dave@cirt.net>\n"
 "Language-Team: English/GB <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/50-metacity-desktop-key.xml.in.h:1
+msgid "Desktop"
+msgstr "Desktop"
+
+#: ../src/50-metacity-key.xml.in.h:1
+msgid "Window Management"
+msgstr "Window Management"
 
 #: ../src/tools/metacity-message.c:150
 #, c-format
@@ -64,7 +72,7 @@ msgstr "Error launching metacity-dialog to ask about killing an application: %s\
 msgid "Failed to get hostname: %s\n"
 msgstr "Failed to get hostname: %s\n"
 
-#: ../src/display.c:346
+#: ../src/display.c:349
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Failed to open X Window System display '%s'\n"
@@ -85,66 +93,66 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Fatal IO error %d (%s) on display '%s'.\n"
 
-#: ../src/frames.c:1062
+#: ../src/frames.c:1067
 msgid "Close Window"
 msgstr "Close Window"
 
-#: ../src/frames.c:1065
+#: ../src/frames.c:1070
 msgid "Window Menu"
 msgstr "Window Menu"
 
-#: ../src/frames.c:1068
+#: ../src/frames.c:1073
 msgid "Minimize Window"
 msgstr "Minimise Window"
 
-#: ../src/frames.c:1071
+#: ../src/frames.c:1076
 msgid "Maximize Window"
 msgstr "Maximise Window"
 
-#: ../src/frames.c:1074
+#: ../src/frames.c:1079
 msgid "Unmaximize Window"
 msgstr "Unmaximise Window"
 
-#: ../src/frames.c:1077
+#: ../src/frames.c:1082
 msgid "Roll Up Window"
 msgstr "Roll Up Window"
 
-#: ../src/frames.c:1080
+#: ../src/frames.c:1085
 msgid "Unroll Window"
 msgstr "Unroll Window"
 
-#: ../src/frames.c:1083
+#: ../src/frames.c:1088
 msgid "Keep Window On Top"
 msgstr "Keep Window On Top"
 
-#: ../src/frames.c:1086
+#: ../src/frames.c:1091
 msgid "Remove Window From Top"
 msgstr "Remove Window From Top"
 
-#: ../src/frames.c:1089
+#: ../src/frames.c:1094
 msgid "Always On Visible Workspace"
 msgstr "Always On Visible Workspace"
 
-#: ../src/frames.c:1092
+#: ../src/frames.c:1097
 msgid "Put Window On Only One Workspace"
 msgstr "Put Window On Only One Workspace"
 
-#: ../src/keybindings.c:1081
+#: ../src/keybindings.c:1087
 #, c-format
 msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
 msgstr "Some other program is already using the key %s with modifiers %x as a binding\n"
 
-#: ../src/keybindings.c:2713
+#: ../src/keybindings.c:2716
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "Error launching metacity-dialog to print an error about a command: %s\n"
 
-#: ../src/keybindings.c:2818
+#: ../src/keybindings.c:2821
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "No command %d has been defined.\n"
 
-#: ../src/keybindings.c:3845
+#: ../src/keybindings.c:3846
 msgid "No terminal command has been defined.\n"
 msgstr "No terminal command has been defined.\n"
 
@@ -249,51 +257,52 @@ msgstr "_Close"
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:88
+#: ../src/menu.c:90
 msgid "Always on _Top"
 msgstr "Always on _Top"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:90
+#: ../src/menu.c:92
 msgid "_Always on Visible Workspace"
 msgstr "_Always on Visible Workspace"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:92
+#: ../src/menu.c:94
 msgid "_Only on This Workspace"
 msgstr "_Only on This Workspace"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:94
+#: ../src/menu.c:96
 msgid "Move to Workspace _Left"
 msgstr "Move to Workspace _Left"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:96
+#: ../src/menu.c:98
 msgid "Move to Workspace R_ight"
 msgstr "Move to Workspace R_ight"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:98
+#: ../src/menu.c:100
 msgid "Move to Workspace _Up"
 msgstr "Move to Workspace _Up"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:100
+#: ../src/menu.c:102
 msgid "Move to Workspace _Down"
 msgstr "Move to Workspace _Down"
 
-#: ../src/menu.c:191
-#: ../src/prefs.c:2201
-#: ../src/prefs.c:2736
+#: ../src/menu.c:193
+#: ../src/prefs.c:2202
+#: ../src/prefs.c:2737
 #, c-format
 msgid "Workspace %d"
 msgstr "Workspace %d"
 
-#: ../src/menu.c:200
+#: ../src/menu.c:202
 msgid "Workspace 1_0"
 msgstr "Workspace 1_0"
 
-#: ../src/menu.c:202
+#: ../src/menu.c:204
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Workspace %s%d"
@@ -1316,13 +1325,13 @@ msgstr "%d stored in GConf key %s is out of range 0 to %d\n"
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Error setting number of workspaces to %d: %s\n"
 
-#: ../src/prefs.c:2231
-#: ../src/prefs.c:2401
+#: ../src/prefs.c:2232
+#: ../src/prefs.c:2402
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
 msgstr "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
 
-#: ../src/prefs.c:2817
+#: ../src/prefs.c:2818
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Error setting name for workspace %d to \"%s\": %s\n"
@@ -1332,97 +1341,97 @@ msgstr "Error setting name for workspace %d to \"%s\": %s\n"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/screen.c:406
+#: ../src/screen.c:410
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Screen %d on display '%s' is invalid\n"
 
-#: ../src/screen.c:422
+#: ../src/screen.c:426
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager; try using the --replace option to replace the current window manager.\n"
 msgstr "Screen %d on display \"%s\" already has a window manager; try using the --replace option to replace the current window manager.\n"
 
-#: ../src/screen.c:446
+#: ../src/screen.c:453
 #, c-format
 msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Could not acquire window manager selection on screen %d display \"%s\"\n"
 
-#: ../src/screen.c:504
+#: ../src/screen.c:511
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Screen %d on display \"%s\" already has a window manager\n"
 
-#: ../src/screen.c:709
+#: ../src/screen.c:716
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Could not release screen %d on display \"%s\"\n"
 
-#: ../src/session.c:837
-#: ../src/session.c:844
+#: ../src/session.c:826
+#: ../src/session.c:833
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Could not create directory '%s': %s\n"
 
-#: ../src/session.c:854
+#: ../src/session.c:843
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Could not open session file '%s' for writing: %s\n"
 
-#: ../src/session.c:1006
+#: ../src/session.c:995
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Error writing session file '%s': %s\n"
 
-#: ../src/session.c:1011
+#: ../src/session.c:1000
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Error closing session file '%s': %s\n"
 
-#: ../src/session.c:1086
+#: ../src/session.c:1075
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Failed to read saved session file %s: %s\n"
 
-#: ../src/session.c:1121
+#: ../src/session.c:1110
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Failed to parse saved session file: %s\n"
 
-#: ../src/session.c:1170
+#: ../src/session.c:1159
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session> attribute seen but we already have the session ID"
 
-#: ../src/session.c:1183
+#: ../src/session.c:1172
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Unknown attribute %s on <metacity_session> element"
 
-#: ../src/session.c:1200
+#: ../src/session.c:1189
 msgid "nested <window> tag"
 msgstr "nested <window> tag"
 
-#: ../src/session.c:1258
-#: ../src/session.c:1290
+#: ../src/session.c:1247
+#: ../src/session.c:1279
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Unknown attribute %s on <window> element"
 
-#: ../src/session.c:1362
+#: ../src/session.c:1351
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Unknown attribute %s on <maximized> element"
 
-#: ../src/session.c:1422
+#: ../src/session.c:1411
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Unknown attribute %s on <geometry> element"
 
-#: ../src/session.c:1442
+#: ../src/session.c:1431
 #, c-format
 msgid "Unknown element %s"
 msgstr "Unknown element %s"
 
-#: ../src/session.c:1908
+#: ../src/session.c:1868
 #, c-format
 msgid "Error launching metacity-dialog to warn about apps that don't support session management: %s\n"
 msgstr "Error launching metacity-dialogue to warn about apps that don't support session management: %s\n"
@@ -1995,7 +2004,7 @@ msgstr "<description> specified twice for this theme"
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Failed to find a valid file for theme %s\n"
 
-#: ../src/theme-parser.c:4628
+#: ../src/theme-parser.c:4629
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Theme file %s did not contain a root <metacity_theme> element"
@@ -2424,39 +2433,39 @@ msgstr "Failed to fdopen() log file %s: %s\n"
 msgid "Opened log file %s\n"
 msgstr "Opened log file %s\n"
 
-#: ../src/util.c:222
+#: ../src/util.c:231
 msgid "Window manager: "
 msgstr "Window manager: "
 
-#: ../src/util.c:370
+#: ../src/util.c:379
 msgid "Bug in window manager: "
 msgstr "Bug in window manager: "
 
-#: ../src/util.c:399
+#: ../src/util.c:408
 msgid "Window manager warning: "
 msgstr "Window manager warning: "
 
-#: ../src/util.c:423
+#: ../src/util.c:432
 msgid "Window manager error: "
 msgstr "Window manager error: "
 
-#: ../src/window-props.c:172
+#: ../src/window-props.c:192
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Application set a bogus _NET_WM_PID %lu\n"
 
-#: ../src/window-props.c:240
+#: ../src/window-props.c:324
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (on %s)"
 
-#: ../src/window-props.c:1186
+#: ../src/window-props.c:1405
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 
 #. first time through
-#: ../src/window.c:5401
+#: ../src/window.c:5532
 #, c-format
 msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
 msgstr "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
@@ -2468,7 +2477,7 @@ msgstr "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADE
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5997
+#: ../src/window.c:6141
 #, c-format
 msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
