@@ -1,5 +1,9 @@
 2007-04-23  Elijah Newren  <newren gmail com>
 
+        * NEWS: 2.19.5 release.
+
+2007-04-23  Elijah Newren  <newren gmail com>
+
 	Fix some uninitialized memory usage errors.  #427385
 
 	* src/frame.c (meta_window_ensure_frame):

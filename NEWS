@@ -1,3 +1,16 @@
+2.19.5
+======
+
+ - Prevent metacity from "forgetting" which machine a window is on
+   (Elijah) [#418552]
+ - Prevent nasty flickering an placement problem introduced in
+   metacity 2.19.2 (Elijah) [fix side-effect of change in #426519]
+ - Fix some uninitialized memory usage errors (Elijah) [#427385]
+
+Translations
+  David Lodge (en_GB), Jorge González (es), Ignacio Casal Quinteiro (gl),
+  Daniel Nylander (sv)
+
 2.19.3
 ======
 
