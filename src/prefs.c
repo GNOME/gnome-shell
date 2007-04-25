@@ -144,7 +144,7 @@ static gboolean update_visual_bell_type   (const char *value);
 static gboolean update_num_workspaces     (int         value);
 static gboolean update_application_based  (gboolean    value);
 static gboolean update_disable_workarounds (gboolean   value);
-static gboolean update_action_double_click_titlebar (const char *value);
+static gboolean update_action_titlebar    (const char *key, const char *value, MetaActionTitlebar *action);
 static gboolean update_auto_raise          (gboolean   value);
 static gboolean update_auto_raise_delay    (int        value);
 static gboolean update_button_layout      (const char *value);
@@ -353,6 +353,20 @@ get_bool (const char *key, gboolean *val)
 
   return filled_in;
 }
+
+static void
+init_action_meta_prefs(const char *key, MetaActionTitlebar *action)
+{
+  GError *err = NULL;
+  char *str_val;
+  
+  str_val = gconf_client_get_string (default_client,
+                                     key,
+                                     &err);
+  cleanup_error (&err);
+  update_action_titlebar (key, str_val, action);
+  g_free (str_val);
+}
 #endif /* HAVE_GCONF */
 
 void
@@ -413,12 +427,9 @@ meta_prefs_init (void)
   if (get_bool (KEY_RAISE_ON_CLICK, &bool_val))
     update_raise_on_click (bool_val);
   
-  str_val = gconf_client_get_string (default_client,
-                                     KEY_ACTION_DOUBLE_CLICK_TITLEBAR,
-				     &err);
-  cleanup_error (&err);
-  update_action_double_click_titlebar (str_val);
-  g_free (str_val);
+  init_action_meta_prefs (KEY_ACTION_DOUBLE_CLICK_TITLEBAR, &action_double_click_titlebar);
+  init_action_meta_prefs (KEY_ACTION_MIDDLE_CLICK_TITLEBAR, &action_middle_click_titlebar);
+  init_action_meta_prefs (KEY_ACTION_RIGHT_CLICK_TITLEBAR, &action_right_click_titlebar);
 
   if (get_bool (KEY_AUTO_RAISE, &bool_val))
     update_auto_raise (bool_val);
@@ -557,6 +568,23 @@ meta_prefs_init (void)
 }
 
 #ifdef HAVE_GCONF
+
+static gboolean
+action_change_titlebar (const char *key, GConfValue *value, MetaActionTitlebar *action)
+{
+  const char *str;
+
+  if (value && value->type != GCONF_VALUE_STRING)
+    {
+      meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
+                    key);
+      return FALSE;
+    }
+
+  str = value ? gconf_value_get_string (value) : NULL;
+
+  return update_action_titlebar (key, str, action);
+}
 
 static void
 change_notify (GConfClient    *client,
@@ -806,19 +834,21 @@ change_notify (GConfClient    *client,
     }
   else if (strcmp (key, KEY_ACTION_DOUBLE_CLICK_TITLEBAR) == 0)
     {
-      const char *str;
-
-      if (value && value->type != GCONF_VALUE_STRING)
-        {
-          meta_warning (_("GConf key \"%s\" is set to an invalid type\n"),
-                        key);
-          goto out;
-        }
-
-      str = value ? gconf_value_get_string (value) : NULL;
-
-      if (update_action_double_click_titlebar (str))
+      if (action_change_titlebar(KEY_ACTION_DOUBLE_CLICK_TITLEBAR, value, &action_double_click_titlebar))
         queue_changed (META_PREF_ACTION_DOUBLE_CLICK_TITLEBAR);
+      return;
+    }
+  else if (strcmp (key, KEY_ACTION_MIDDLE_CLICK_TITLEBAR) == 0)
+    {
+      if (action_change_titlebar(KEY_ACTION_MIDDLE_CLICK_TITLEBAR, value, &action_middle_click_titlebar))
+        queue_changed (META_PREF_ACTION_MIDDLE_CLICK_TITLEBAR);
+      return;
+    }
+  else if (strcmp (key, KEY_ACTION_RIGHT_CLICK_TITLEBAR) == 0)
+    {
+      if (action_change_titlebar(KEY_ACTION_RIGHT_CLICK_TITLEBAR, value, &action_right_click_titlebar))
+        queue_changed (META_PREF_ACTION_RIGHT_CLICK_TITLEBAR);
+      return;
     }
   else if (strcmp (key, KEY_AUTO_RAISE) == 0)
     {
@@ -1653,23 +1683,23 @@ action_titlebar_from_string (const char *str)
 }
 
 static gboolean
-update_action_double_click_titlebar (const char *value)
+update_action_titlebar (const char *key, const char *value, MetaActionTitlebar *action)
 {
-  MetaActionTitlebar old_action = action_double_click_titlebar;
+  MetaActionTitlebar old_action = *action, new_action = old_action;
   
   if (value != NULL)
     {
-      action_double_click_titlebar = action_titlebar_from_string (value);
+      new_action = action_titlebar_from_string (value);
 
-      if (action_double_click_titlebar == META_ACTION_TITLEBAR_LAST)
+      if (new_action == META_ACTION_TITLEBAR_LAST)
         {
-          action_double_click_titlebar = old_action;
-          meta_warning (_("GConf key '%s' is set to an invalid value\n"),
-                        KEY_ACTION_DOUBLE_CLICK_TITLEBAR);
+          new_action = old_action;
+          meta_warning (_("GConf key '%s' is set to an invalid value\n"), key);
         }
+      *action = new_action;
     }
 
-  return (old_action != action_double_click_titlebar);
+  return (old_action != new_action);
 }
 
 static gboolean
@@ -1764,6 +1794,12 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_ACTION_DOUBLE_CLICK_TITLEBAR:
       return "ACTION_DOUBLE_CLICK_TITLEBAR";
+
+    case META_PREF_ACTION_MIDDLE_CLICK_TITLEBAR:
+      return "ACTION_MIDDLE_CLICK_TITLEBAR";
+
+    case META_PREF_ACTION_RIGHT_CLICK_TITLEBAR:
+      return "ACTION_RIGHT_CLICK_TITLEBAR";
 
     case META_PREF_AUTO_RAISE:
       return "AUTO_RAISE";

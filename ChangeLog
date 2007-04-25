@@ -1,3 +1,11 @@
+2007-04-24  Linus Torvalds  <torvalds@woody.linux-foundation.org>
+
+	* src/prefs.[ch] (init_action_meta_prefs, meta_prefs_init,
+	action_change_titlebar, change_notify, update_action_titlebar,
+	meta_preference_to_string): Add code to configure what happens
+	when the titlebar is right or middle clicked as well as
+	double clicked.
+
 2007-04-23  Elijah Newren  <newren gmail com>
 
         * configure.in: post-release bump to 2.19.8.
