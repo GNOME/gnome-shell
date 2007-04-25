@@ -206,10 +206,8 @@ clutter_stage_egl_paint (ClutterActor *self)
   glDisable (GL_LIGHTING); 
   glDisable (GL_DEPTH_TEST);
 
-  /* FIXME Check is redundant */
-  if (G_LIKELY(CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->paint))
-    /* Basically call up to ClutterGroup paint here */
-    CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->paint (self);
+  /* Basically call up to ClutterGroup paint here */
+  CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->paint (self);
 
   /* Why this paint is done in backend as likely GL windowing system
    * specific calls, like swapping buffers.
@@ -370,7 +368,8 @@ static void
 clutter_stage_egl_set_offscreen (ClutterStage *stage,
                                  gboolean      offscreen)
 {
-
+  g_warning ("Stage of type `%s' do not support ClutterStage::set_offscreen",
+             G_OBJECT_TYPE_NAME (stage));
 }
 
 static void
@@ -388,7 +387,8 @@ clutter_stage_egl_draw_to_pixbuf (ClutterStage *stage,
                                   gint          width,
                                   gint          height)
 {
-  /* FIXME: implement */
+  g_warning ("Stage of type `%s' do not support ClutterStage::draw_to_pixbuf",
+             G_OBJECT_TYPE_NAME (stage));
 }
 
 static void
@@ -474,6 +474,15 @@ clutter_egl_get_stage_visual (ClutterStage *stage)
   return CLUTTER_STAGE_EGL (stage)->xvisinfo;
 }
 
+/**
+ * clutter_egl_set_stage_foreign:
+ * @stage: a #ClutterStage
+ * @window: FIXME
+ *
+ * FIXME
+ *
+ * Since: 0.4
+ */
 void
 clutter_egl_set_stage_foreign (ClutterStage *stage,
                                Window        window)

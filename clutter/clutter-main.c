@@ -128,50 +128,30 @@ clutter_main_do_event (ClutterEvent *event,
   stage = _clutter_backend_get_stage (backend);
   if (!stage)
     return;
-  
+
   switch (event->type)
     {
     case CLUTTER_NOTHING:
       break;
+
+    case CLUTTER_DESTROY_NOTIFY:
+    case CLUTTER_DELETE:
+      if (clutter_stage_event (CLUTTER_STAGE (stage), event))
+        clutter_main_quit ();
+      break;
+    
+    case CLUTTER_KEY_PRESS:
+    case CLUTTER_KEY_RELEASE:
+    case CLUTTER_MOTION:
     case CLUTTER_BUTTON_PRESS:
     case CLUTTER_2BUTTON_PRESS:
     case CLUTTER_3BUTTON_PRESS:
-      g_signal_emit_by_name (stage, "button-press-event", event);
-      break;
     case CLUTTER_BUTTON_RELEASE:
-      g_signal_emit_by_name (stage, "button-release-event", event);
-      break;
     case CLUTTER_SCROLL:
-      g_signal_emit_by_name (stage, "scroll-event", event);
+      clutter_stage_event (CLUTTER_STAGE (stage), event);
       break;
-    case CLUTTER_KEY_PRESS:
-      g_signal_emit_by_name (stage, "key-press-event", event);
-      break;
-    case CLUTTER_KEY_RELEASE:
-      g_signal_emit_by_name (stage, "key-release-event", event);
-      break;
-    case CLUTTER_MOTION:
-      g_signal_emit_by_name (stage, "motion-event", event);
-      break;
-    case CLUTTER_DELETE:
-      {
-        gboolean res = FALSE;
 
-        g_object_ref (stage);
-
-        g_signal_emit_by_name (stage, "delete-event", event, &res);
-        CLUTTER_NOTE (EVENT, "delete-event return: %s",
-                      res == TRUE ? "true" : "false");
-        if (!res)
-          clutter_main_quit ();
-        
-        g_object_unref (stage);
-      }
-      break;
     case CLUTTER_STAGE_STATE:
-      break;
-    case CLUTTER_DESTROY_NOTIFY:
-      break;
     case CLUTTER_CLIENT_MESSAGE:
       break;
     }
@@ -189,7 +169,8 @@ clutter_main_quit (void)
 
   g_return_if_fail (context->main_loops != NULL);
 
-  g_main_loop_quit (context->main_loops->data);
+  if (g_main_loop_is_running (context->main_loops->data))
+    g_main_loop_quit (context->main_loops->data);
 }
 
 /**
@@ -232,6 +213,7 @@ clutter_main (void)
 
   if (g_main_loop_is_running (context->main_loops->data))
     {
+      /* FIXME - add thread locking around this call */
       g_main_loop_run (loop);
     }
 
@@ -257,7 +239,7 @@ clutter_main (void)
  * Locks the Clutter thread lock.
  */
 void
-clutter_threads_enter(void)
+clutter_threads_enter (void)
 {
   ClutterMainContext *context = CLUTTER_CONTEXT ();
   

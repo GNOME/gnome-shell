@@ -78,6 +78,7 @@ enum
 enum
 {
   EVENT,
+  EVENT_AFTER,
   BUTTON_PRESS_EVENT,
   BUTTON_RELEASE_EVENT,
   SCROLL_EVENT,
@@ -85,12 +86,11 @@ enum
   KEY_RELEASE_EVENT,
   MOTION_EVENT,
   STAGE_STATE_EVENT,
-  DELETE_EVENT,
   
   LAST_SIGNAL
 };
 
-static guint stage_signals[LAST_SIGNAL] = { 0 };
+static guint stage_signals[LAST_SIGNAL] = { 0, };
 
 static void
 clutter_stage_paint (ClutterActor *actor)
@@ -249,6 +249,23 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  G_TYPE_NONE, 1,
 		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
   /**
+   * ClutterStage::event-after:
+   * @stage: the actor which received the event
+   * @event: a #ClutterEvent
+   *
+   * The ::event-after signal is emitted after each event, except for
+   * the "delete-event" is received by @stage.
+   */
+  stage_signals[EVENT_AFTER] =
+    g_signal_new ("event-after",
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ClutterStageClass, event_after),
+                  NULL, NULL,
+                  clutter_marshal_VOID__BOXED,
+                  G_TYPE_NONE, 1,
+                  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+  /**
    * ClutterStage::button-press-event:
    * @stage: the actor which received the event
    * @event: a #ClutterButtonEvent
@@ -352,16 +369,6 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  clutter_marshal_VOID__BOXED,
 		  G_TYPE_NONE, 1,
 		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
-  
-  stage_signals[DELETE_EVENT] =
-    g_signal_new ("delete-event",
-                  G_TYPE_FROM_CLASS (gobject_class),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (ClutterStageClass, delete_event),
-                  _clutter_boolean_accumulator, NULL,
-                  clutter_marshal_BOOLEAN__BOXED,
-                  G_TYPE_BOOLEAN, 1,
-                  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
   
   g_type_class_add_private (gobject_class, sizeof (ClutterStagePrivate));
 }
@@ -834,6 +841,83 @@ clutter_stage_get_actor_at_pos (ClutterStage *stage,
   _clutter_stage_sync_viewport (stage);
 
   return found;
+}
+
+/**
+ * clutter_stage_event:
+ * @stage: a #ClutterStage
+ * @event: a #ClutterEvent
+ *
+ * This function is used to emit an event on the main stage.
+ * You should rarely need to use this function, except for
+ * synthetising events.
+ *
+ * Return value: the return value from the signal emission
+ *
+ * Since: 0.4
+ */
+gboolean
+clutter_stage_event (ClutterStage *stage,
+                     ClutterEvent *event)
+{
+  gboolean res = TRUE;
+  gint signal_num = -1;
+
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
+  g_return_val_if_fail (event != NULL, FALSE);
+
+  g_object_ref (stage);
+
+  g_signal_emit (stage, stage_signals[EVENT], 0, event);
+  
+  switch (event->type)
+    {
+    case CLUTTER_NOTHING:
+      break;
+    case CLUTTER_BUTTON_PRESS:
+    case CLUTTER_2BUTTON_PRESS:
+    case CLUTTER_3BUTTON_PRESS:
+      signal_num = BUTTON_PRESS_EVENT;
+      break;
+    case CLUTTER_BUTTON_RELEASE:
+      signal_num = BUTTON_RELEASE_EVENT;
+      break;
+    case CLUTTER_SCROLL:
+      signal_num = SCROLL_EVENT;
+      break;
+    case CLUTTER_KEY_PRESS:
+      signal_num = KEY_PRESS_EVENT;
+      break;
+    case CLUTTER_KEY_RELEASE:
+      signal_num = KEY_RELEASE_EVENT;
+      break;
+    case CLUTTER_MOTION:
+      signal_num = MOTION_EVENT;
+      break;
+    case CLUTTER_DELETE:
+      signal_num = -1;
+      break;
+    case CLUTTER_STAGE_STATE:
+      signal_num = -1;
+      break;
+    case CLUTTER_DESTROY_NOTIFY:
+      signal_num = -1;
+      break;
+    case CLUTTER_CLIENT_MESSAGE:
+      signal_num = -1;
+      break;
+    }
+
+  if (signal_num != -1)
+    {
+      g_signal_emit (stage, stage_signals[signal_num], 0, event);
+      g_signal_emit (stage, stage_signals[EVENT_AFTER], 0, event);
+      res = TRUE;
+    }
+
+  g_object_unref (stage);
+
+  return res;
 }
 
 /*** Perspective boxed type ******/

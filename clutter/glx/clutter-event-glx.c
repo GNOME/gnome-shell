@@ -290,6 +290,7 @@ handle_wm_protocols_event (ClutterBackendGlx *backend_glx,
 {
   Atom atom = (Atom) xevent->xclient.data.l[0];
   Atom Atom_WM_DELETE_WINDOW;
+  Atom Atom_NEW_WM_PING;
 
   ClutterStage *stage = CLUTTER_STAGE (backend_glx->stage);
   Window stage_xwindow = clutter_glx_get_stage_window (stage);
@@ -297,6 +298,7 @@ handle_wm_protocols_event (ClutterBackendGlx *backend_glx,
   Atom_WM_DELETE_WINDOW = XInternAtom (backend_glx->xdpy,
                                        "WM_DELETE_WINDOW",
                                         False);
+  Atom_NEW_WM_PING = XInternAtom (backend_glx->xdpy, "_NET_WM_PING", False);
 
   if (atom == Atom_WM_DELETE_WINDOW &&
       xevent->xany.window == stage_xwindow)
@@ -315,8 +317,21 @@ handle_wm_protocols_event (ClutterBackendGlx *backend_glx,
 
       return TRUE;
     }
+  else if (atom == Atom_NEW_WM_PING &&
+           xevent->xany.window == stage_xwindow)
+    {
+      XClientMessageEvent xclient = xevent->xclient;
 
-  /* do not send the WM_PROTOCOLS events to the queue */
+      xclient.window = backend_glx->xwin_root;
+      XSendEvent (backend_glx->xdpy, xclient.window,
+                  False,
+                  SubstructureRedirectMask | SubstructureNotifyMask,
+                  (XEvent *) &xclient);
+
+      return FALSE;
+    }
+
+  /* do not send any of the WM_PROTOCOLS events to the queue */
   return FALSE;
 }
 

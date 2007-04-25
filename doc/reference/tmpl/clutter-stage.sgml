@@ -80,16 +80,15 @@ Macro evaluating to the height of the #ClutterStage
 @clutterstage: the object which received the signal.
 @arg1: 
 
-<!-- ##### SIGNAL ClutterStage::delete-event ##### -->
+<!-- ##### SIGNAL ClutterStage::event ##### -->
 <para>
 
 </para>
 
 @clutterstage: the object which received the signal.
-@Param2: 
-@Returns: 
+@arg1: 
 
-<!-- ##### SIGNAL ClutterStage::event ##### -->
+<!-- ##### SIGNAL ClutterStage::event-after ##### -->
 <para>
 
 </para>
@@ -160,6 +159,7 @@ Macro evaluating to the height of the #ClutterStage
 @set_offscreen: 
 @draw_to_pixbuf: 
 @event: 
+@event_after: 
 @button_press_event: 
 @button_release_event: 
 @scroll_event: 
@@ -167,7 +167,6 @@ Macro evaluating to the height of the #ClutterStage
 @key_release_event: 
 @motion_event: 
 @stage_state_event: 
-@delete_event: 
 @_clutter_stage1: 
 @_clutter_stage2: 
 @_clutter_stage3: 
@@ -254,6 +253,16 @@ Macro evaluating to the height of the #ClutterStage
 @y: 
 @width: 
 @height: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_stage_event ##### -->
+<para>
+
+</para>
+
+@stage: 
+@event: 
 @Returns: 
 
 

@@ -94,6 +94,8 @@ struct _ClutterStageClass
   /* signals */
   void     (* event)                (ClutterStage           *stage,
                                      ClutterEvent           *event);
+  void     (* event_after)          (ClutterStage           *stage,
+                                     ClutterEvent           *event);
   void     (* button_press_event)   (ClutterStage           *stage,
 			             ClutterButtonEvent     *event);
   void     (* button_release_event) (ClutterStage           *stage,
@@ -108,8 +110,6 @@ struct _ClutterStageClass
                                      ClutterMotionEvent     *event);
   void     (* stage_state_event)    (ClutterStage           *stage,
                                      ClutterStageStateEvent *event);
-  gboolean (* delete_event)         (ClutterStage           *stage,
-                                     ClutterAnyEvent        *event);
 
   /* padding for future expansion */
   void (*_clutter_stage1) (void);
@@ -158,6 +158,8 @@ GdkPixbuf *   clutter_stage_snapshot         (ClutterStage       *stage,
                                               gint                y,
                                               gint                width,
                                               gint                height);
+gboolean      clutter_stage_event            (ClutterStage       *stage,
+                                              ClutterEvent       *event);
 
 G_END_DECLS
 

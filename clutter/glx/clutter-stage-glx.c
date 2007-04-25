@@ -112,11 +112,10 @@ static void
 set_wm_protocols (Display *xdisplay,
                   Window   xwindow)
 {
-  Atom protocols[3];
+  Atom protocols[2];
   int n = 0;
   
   protocols[n++] = XInternAtom (xdisplay, "WM_DELETE_WINDOW", False);
-  protocols[n++] = XInternAtom (xdisplay, "WM_TAKE_FOCUS", False);
   protocols[n++] = XInternAtom (xdisplay, "_NET_WM_PING", False);
 
   XSetWMProtocols (xdisplay, xwindow, protocols, n);

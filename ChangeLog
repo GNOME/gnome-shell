@@ -1,3 +1,24 @@
+2007-04-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Merge from clutter.git/master
+
+	* clutter/glx/clutter-event-glx.c:
+	* clutter/glx/clutter-stage-glx.c: Implement the _NET_WM_PING
+	protocol handling on the main stage window.
+
+	* clutter/clutter-stage.h:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-main.c: Handle CLUTTER_DELETE events internally,
+	by calling clutter_main_quit(), and remove the ::delete-event
+	signal from ClutterStage; clean up the signal emission sequence
+	for the events: emit the ::event signal before emitting any signal
+	and the ::event-after signal after the signal has been emitted; move
+	the signal emission calls inside ClutterStage so we can call
+	g_signal_emit() instead of g_signal_emit_by_name(), thus sparing us
+	a lookup for each event.
+
+	* examples/test.c: Remove ::delete-event signal handling.
+
 2007-04-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Merge from clutter.git/master

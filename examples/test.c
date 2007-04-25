@@ -79,22 +79,6 @@ key_release_cb (ClutterStage    *stage,
   g_print ("key-release-event\n");
 }
 
-static gboolean
-delete_event_cb (ClutterStage *stage,
-                 ClutterEvent *event,
-                 gpointer      data)
-{
-  static gboolean res = FALSE;
-
-  g_print ("delete-event: %s\n",
-           res == FALSE ? "first attempt" : "second attempt");
-
-  res = !res;
-
-  return res;
-}
-
-
 int
 main (int argc, char *argv[])
 {
@@ -107,8 +91,6 @@ main (int argc, char *argv[])
   clutter_init (&argc, &argv);
 
   stage = clutter_stage_get_default ();
-  g_signal_connect (stage, "delete-event",
-                    G_CALLBACK (delete_event_cb), NULL);
   g_signal_connect (stage, "key-press-event",
                     G_CALLBACK (key_press_cb), NULL);
   g_signal_connect (stage, "key-release-event",
