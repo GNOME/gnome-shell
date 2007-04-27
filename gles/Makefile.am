@@ -1,5 +1,6 @@
 libclutterincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter
-libclutterinclude_HEADERS = $(top_srcdir)/clutter/cogl/cogl.h
+libclutterinclude_HEADERS = $(top_srcdir)/clutter/cogl/cogl.h \
+                            $(top_srcdir)/clutter/cogl/gles/cogl-defines.h
 
 INCLUDES = \
 	-I$(top_srcdir)              \

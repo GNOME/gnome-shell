@@ -26,6 +26,54 @@
 #include "cogl.h"
 #include <GLES/gl.h>
 
+
+#if COGL_DEBUG
+struct token_string
+{
+  GLuint Token;
+  const char *String;
+};
+
+static const struct token_string Errors[] = {
+  { GL_NO_ERROR, "no error" },
+  { GL_INVALID_ENUM, "invalid enumerant" },
+  { GL_INVALID_VALUE, "invalid value" },
+  { GL_INVALID_OPERATION, "invalid operation" },
+  { GL_STACK_OVERFLOW, "stack overflow" },
+  { GL_STACK_UNDERFLOW, "stack underflow" },
+  { GL_OUT_OF_MEMORY, "out of memory" },
+#ifdef GL_INVALID_FRAMEBUFFER_OPERATION_EXT
+  { GL_INVALID_FRAMEBUFFER_OPERATION_EXT, "invalid framebuffer operation" },
+#endif
+  { ~0, NULL }
+};
+
+static const char*
+error_string(GLenum errorCode)
+{
+  int i;
+  for (i = 0; Errors[i].String; i++) {
+    if (Errors[i].Token == errorCode)
+      return Errors[i].String;
+  }
+  return "unknown";
+}
+#endif
+
+#if COGL_DEBUG
+#define GE(x...) {                                               \
+        GLenum err;                                              \
+        (x);                                                     \
+        while ((err = glGetError()) != GL_NO_ERROR) {            \
+                fprintf(stderr, "glError: %s caught at %s:%u\n", \
+                                (char *)error_string(err),       \
+			         __FILE__, __LINE__);            \
+        }                                                        \
+}
+#else
+#define GE(x) (x);
+#endif
+
 CoglFuncPtr
 cogl_get_proc_address (const gchar* name)
 {
@@ -67,21 +115,21 @@ cogl_pop_matrix (void)
 void
 cogl_scaled (ClutterFixed x, ClutterFixed y)
 {
-  glScalex (x, y, CFX_ONE); 
+  GE( glScalex (x, y, CFX_ONE) );
 }
 
 void
 cogl_translatex (ClutterFixed x, ClutterFixed y, ClutterFixed z)
 {
-  glTranslatex (x, y, z);
+  GE( glTranslatex (x, y, z) );
 }
 
 void
 cogl_translate (gint x, gint y, gint z)
 {
-  glTranslatex (CLUTTER_INT_TO_FIXED(x), 
-		CLUTTER_INT_TO_FIXED(y), 
-		CLUTTER_INT_TO_FIXED(z));
+  GE( glTranslatex (CLUTTER_INT_TO_FIXED(x), 
+		    CLUTTER_INT_TO_FIXED(y), 
+		    CLUTTER_INT_TO_FIXED(z)) );
 }
 
 void
@@ -90,14 +138,14 @@ cogl_rotatex (ClutterFixed angle,
 	      ClutterFixed y, 
 	      ClutterFixed z)
 {
-  glRotatex (angle,x,y,z);
+  GE( glRotatex (angle,x,y,z) );
 }
 
 void
 cogl_rotate (gint angle, gint x, gint y, gint z)
 {
-  glRotatef (CLUTTER_INT_TO_FIXED(angle),
-	     CLUTTER_INT_TO_FIXED(x), 
-	     CLUTTER_INT_TO_FIXED(y), 
-	     CLUTTER_INT_TO_FIXED(z));
+  GE( glRotatef (CLUTTER_INT_TO_FIXED(angle),
+		 CLUTTER_INT_TO_FIXED(x), 
+		 CLUTTER_INT_TO_FIXED(y), 
+		 CLUTTER_INT_TO_FIXED(z)) );
 }

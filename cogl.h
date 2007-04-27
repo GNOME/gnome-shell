@@ -23,13 +23,36 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/* 
+ * COGL
+ * ====
+ *
+ * 'cogl' is a very simple abstraction layer which wraps GL and GLES.
+ * 
+ *
+ * !!!! DO NOT USE THIS API YET OUTSIDE OF CLUTTER CORE !!!!
+ *              THE API WILL FLUCTUATE WILDLY
+ *
+ * TODO:
+ *  - Use ClutterReal for fixed/float params.
+ *  - Add Perspective/viewport setup
+ *  - Add Features..
+ */
+
 #ifndef __COGL_H__
 #define __COGL_H__
 
 #include <glib.h>
 #include <clutter/clutter.h>
 
+#include "cogl-defines.h"
+
 G_BEGIN_DECLS
+
+#define CGL_ENABLE_BLEND        (1<<1)
+#define CGL_ENABLE_TEXTURE_2D   (1<<2)
+#define CGL_ENABLE_ALPHA_TEST   (1<<3)
+#define CGL_ENABLE_TEXTURE_RECT (1<<4)
 
 typedef void (*CoglFuncPtr) (void);
 
@@ -38,6 +61,20 @@ cogl_get_proc_address (const gchar* name);
 
 gboolean 
 cogl_check_extension (const gchar *name, const gchar *ext);
+
+void
+cogl_perspective (ClutterAngle fovy,
+		  ClutterFixed aspect,
+		  ClutterFixed zNear,
+		  ClutterFixed zFar);
+
+void
+cogl_setup_viewport (guint        width,
+		     guint        height,
+		     ClutterAngle fovy,
+		     ClutterFixed aspect,
+		     ClutterFixed z_near,
+		     ClutterFixed z_far);
 
 void
 cogl_paint_init (ClutterColor *color);
@@ -49,7 +86,7 @@ void
 cogl_pop_matrix (void);
 
 void
-cogl_scaled (ClutterFixed x, ClutterFixed z);
+cogl_scale (ClutterFixed x, ClutterFixed z);
 
 void
 cogl_translatex (ClutterFixed x, ClutterFixed y, ClutterFixed z);
@@ -66,29 +103,81 @@ cogl_rotate (gint angle, gint x, gint y, gint z);
 void
 cogl_color (ClutterColor *color);
 
-#if 0
+void
+cogl_enable (gulong flags);
 
-../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glColor3f'
-../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glColor4ub'
-../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glGetTexLevelParameteriv'
-../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glSelectBuffer'
-../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glScaled'
-../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glPushName'
-../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glRecti'
-../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glBegin'
-../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glInitNames'
-../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glVertex2i'
-../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glGetTexImage'
-../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glTexCoord2f'
-../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glRenderMode'
-../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glTranslated'
-../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glRotated'
-../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glLoadName'
-../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glTexEnvi'
-../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glVertex2d'
-../clutter/.libs/libclutter-egl-0.3.so: undefined reference to `glEnd'
+gboolean
+cogl_texture_can_size (COGLenum pixel_format,
+		       COGLenum pixel_type,
+		       int    width, 
+		       int    height);
+void
+cogl_texture_quad (gint   x1,
+		   gint   x2, 
+		   gint   y1, 
+		   gint   y2,
+		   ClutterFixed tx1,
+		   ClutterFixed ty1,
+		   ClutterFixed tx2,
+		   ClutterFixed ty2);
 
-#endif
+void
+cogl_textures_create (guint num, guint *textures);
+
+void
+cogl_textures_destroy (guint num, const guint *textures);
+
+void
+cogl_texture_bind (COGLenum target, guint texture);
+
+void
+cogl_texture_set_alignment (COGLenum target, 
+			    guint    alignment,
+			    guint    row_length);
+
+void
+cogl_texture_set_filters (COGLenum target, 
+			  COGLenum min_filter,
+			  COGLenum max_filter);
+
+void
+cogl_texture_set_wrap (COGLenum target, 
+		       COGLenum wrap_s,
+		       COGLenum wrap_t);
+
+void
+cogl_texture_image_2d (COGLenum      target,
+		       COGLint       internal_format,
+		       gint          width, 
+		       gint          height, 
+		       COGLenum      format,
+		       COGLenum      type,
+		       const guchar* pixels);
+
+void
+cogl_texture_sub_image_2d (COGLenum      target,
+			   gint          xoff,
+			   gint          yoff,
+			   gint          width, 
+			   gint          height,
+			   COGLenum      format,  
+			   COGLenum      type,
+			   const guchar* pixels);
+
+void
+cogl_rectangle (gint x, gint y, guint width, guint height);
+
+void
+cogl_trapezoid (gint y1,
+		gint x11,
+		gint x21,
+		gint y2,
+		gint x12,
+		gint x22);
+void
+cogl_alpha_func (COGLenum     func, 
+		 ClutterFixed ref);
+
 
 G_END_DECLS
 

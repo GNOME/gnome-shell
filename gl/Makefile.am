@@ -1,5 +1,6 @@
 libclutterincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter
-libclutterinclude_HEADERS = $(top_srcdir)/clutter/cogl/cogl.h
+libclutterinclude_HEADERS = $(top_srcdir)/clutter/cogl/cogl.h \
+                            $(top_srcdir)/clutter/cogl/gl/cogl-defines.h
 
 INCLUDES = \
 	-I$(top_srcdir)              \
@@ -12,6 +13,7 @@ LDADD = $(CLUTTER_LIBS)
 
 noinst_LTLIBRARIES = libclutter-cogl.la
 
-libclutter_cogl_la_SOURCES =              \
-	$(top_srcdir)/clutter/cogl/cogl.h         \
+libclutter_cogl_la_SOURCES =                         \
+	$(top_srcdir)/clutter/cogl/cogl.h            \
+        $(top_srcdir)/clutter/cogl/gl/cogl-defines.h \
 	cogl.c
