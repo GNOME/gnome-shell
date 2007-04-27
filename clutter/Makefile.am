@@ -15,7 +15,8 @@ GLIB_MKENUMS=`pkg-config --variable=glib_mkenums glib-2.0`
 INCLUDES = \
 	-I$(top_srcdir) 			\
 	-I$(top_srcdir)/clutter/pango 		\
-	-I$(top_srcdir)/cogl 	         	\
+	-I$(top_srcdir)/clutter/cogl 	        \
+	-I$(top_srcdir)/clutter/cogl/@CLUTTER_COGL@ \
 	-DPREFIX=\""$(prefix)"\" 		\
 	-DLIBDIR=\""$(libdir)"\" 		\
 	-DDATADIR=\""$(datadir)"\" 		\

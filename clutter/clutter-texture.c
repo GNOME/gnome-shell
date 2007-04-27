@@ -38,6 +38,8 @@
  * memory.  
  */
 
+#include "config.h"
+
 #include "clutter-texture.h"
 #include "clutter-main.h"
 #include "clutter-marshal.h"
@@ -45,15 +47,16 @@
 #include "clutter-util.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
+#include "clutter-fixed.h"
 
-#include <GL/gl.h>
+#include "cogl.h"
 
 G_DEFINE_TYPE (ClutterTexture, clutter_texture, CLUTTER_TYPE_ACTOR);
 
 #if G_BYTE_ORDER == G_LITTLE_ENDIAN
-#define PIXEL_TYPE GL_UNSIGNED_BYTE
+#define PIXEL_TYPE CGL_UNSIGNED_BYTE
 #else
-#define PIXEL_TYPE GL_UNSIGNED_INT_8_8_8_8_REV
+#define PIXEL_TYPE CGL_UNSIGNED_INT_8_8_8_8_REV
 #endif
 
 typedef struct {
@@ -64,28 +67,23 @@ typedef struct {
 
 struct _ClutterTexturePrivate
 {
-  gint width;
-  gint height;
-
-  GLenum pixel_format;
-  GLenum pixel_type;
-  GLenum target_type; 
-
-  GdkPixbuf *local_pixbuf; /* non video memory copy */
-
-  guint sync_actor_size : 1;
-  gint max_tile_waste;
-  guint filter_quality;
-  guint repeat_x : 1; /* non working */
-  guint repeat_y : 1; /* non working */
-
-  
-  guint is_tiled : 1;
+  gint                         width;
+  gint                         height;
+  COGLenum                     pixel_format;
+  COGLenum                     pixel_type;
+  COGLenum                     target_type; 
+  GdkPixbuf                   *local_pixbuf; /* non video memory copy */
+  guint                        sync_actor_size : 1;
+  gint                         max_tile_waste;
+  guint                        filter_quality;
+  guint                        repeat_x : 1; /* non working */
+  guint                        repeat_y : 1; /* non working */
+  guint                        is_tiled : 1;
   ClutterTextureTileDimension *x_tiles;
   ClutterTextureTileDimension *y_tiles;
-  gint n_x_tiles;
-  gint n_y_tiles;
-  GLuint *tiles;
+  gint                         n_x_tiles;
+  gint                         n_y_tiles;
+  guint                       *tiles;
 };
 
 enum
@@ -111,27 +109,6 @@ enum
 
 static int texture_signals[LAST_SIGNAL] = { 0 };
 
-static gboolean
-can_create (int    width, 
-	    int    height,
-	    GLenum pixel_format,
-	    GLenum pixel_type)
-{
-  GLint new_width = 0;
-
-  CLUTTER_NOTE (TEXTURE, "checking %ix%i", width, height);
-
-  glTexImage2D (GL_PROXY_TEXTURE_2D, 0, GL_RGBA,
-                width, height, 0 /* border */,
-                pixel_format, pixel_type, NULL);
-
-  CLUTTER_GLERR();
-
-  glGetTexLevelParameteriv (GL_PROXY_TEXTURE_2D, 0,
-                            GL_TEXTURE_WIDTH, &new_width);
-
-  return new_width != 0;
-}
 
 static gboolean
 can_create_rect_arb (int    width, 
@@ -195,7 +172,8 @@ texture_init_tiles (ClutterTexture *texture)
   x_pot = clutter_util_next_p2 (priv->width);
   y_pot = clutter_util_next_p2 (priv->height);
 
-  while (!(can_create (x_pot, y_pot, priv->pixel_format, priv->pixel_type) 
+  while (!(cogl_texture_can_size (x_pot, y_pot, 
+				  priv->pixel_format, priv->pixel_type) 
 	   && (x_pot - priv->width < priv->max_tile_waste) 
 	   && (y_pot - priv->height < priv->max_tile_waste)))
     {
@@ -272,9 +250,11 @@ texture_render_to_gl_quad (ClutterTexture *texture,
 
   if (!priv->is_tiled)
     {
-      glBindTexture(priv->target_type, priv->tiles[0]);
+      cogl_texture_bind (priv->target_type, priv->tiles[0]);
 
-      if (priv->target_type == GL_TEXTURE_2D) /* POT */
+      /* FIXME: FIXED */
+
+      if (priv->target_type == CGL_TEXTURE_2D) /* POT */
 	{
 	  tx = (float) priv->width / clutter_util_next_p2 (priv->width);  
 	  ty = (float) priv->height / clutter_util_next_p2 (priv->height);
@@ -288,13 +268,12 @@ texture_render_to_gl_quad (ClutterTexture *texture,
 
       qx1 = x1; qx2 = x2;
       qy1 = y1; qy2 = y2;
-      
-      glBegin (GL_QUADS);
-      glTexCoord2f (tx, ty);   glVertex2i   (qx2, qy2);
-      glTexCoord2f (0,  ty);   glVertex2i   (qx1, qy2);
-      glTexCoord2f (0,  0);    glVertex2i   (qx1, qy1);
-      glTexCoord2f (tx, 0);    glVertex2i   (qx2, qy1);
-      glEnd ();	
+
+      cogl_texture_quad (x1, x2, y1, y2, 
+			 0,
+			 0,
+			 CLUTTER_FLOAT_TO_FIXED (tx),
+			 CLUTTER_FLOAT_TO_FIXED (ty));
       
       return;
     }
@@ -307,7 +286,7 @@ texture_render_to_gl_quad (ClutterTexture *texture,
 	{
 	  int actual_w, actual_h;
 
-	  glBindTexture(priv->target_type, priv->tiles[i]);
+	  cogl_texture_bind (priv->target_type, priv->tiles[i]);
 	 
 	  actual_w = priv->x_tiles[x].size - priv->x_tiles[x].waste;
 	  actual_h = priv->y_tiles[y].size - priv->y_tiles[y].waste;
@@ -325,12 +304,11 @@ texture_render_to_gl_quad (ClutterTexture *texture,
 	  qy1 = y1 + lasty;
 	  qy2 = qy1 + ((qheight * actual_h) / priv->height );
 
-	  glBegin (GL_QUADS);
-	  glTexCoord2f (tx, ty);   glVertex2i   (qx2, qy2);
-	  glTexCoord2f (0,  ty);   glVertex2i   (qx1, qy2);
-	  glTexCoord2f (0,  0);    glVertex2i   (qx1, qy1);
-	  glTexCoord2f (tx, 0);    glVertex2i   (qx2, qy1);
-	  glEnd ();	
+	  cogl_texture_quad (qx1, qx2, qy1, qy2, 
+			     0,
+			     0,
+			     CLUTTER_FLOAT_TO_FIXED (tx),
+			     CLUTTER_FLOAT_TO_FIXED (ty));
 
 	  lasty += (qy2 - qy1) ;	  
 
@@ -352,9 +330,9 @@ texture_free_gl_resources (ClutterTexture *texture)
   if (priv->tiles)
     {
       if (!priv->is_tiled)
-	glDeleteTextures(1, priv->tiles);
+	cogl_textures_destroy (1, priv->tiles);
       else
-	glDeleteTextures(priv->n_x_tiles * priv->n_y_tiles, priv->tiles);
+	cogl_textures_destroy (priv->n_x_tiles * priv->n_y_tiles, priv->tiles);
 
       g_free(priv->tiles);
       priv->tiles = NULL;
@@ -399,33 +377,27 @@ texture_upload_data (ClutterTexture *texture,
       /* Single Texture */
       if (!priv->tiles)
 	{
-	  priv->tiles = g_new (GLuint, 1);
+	  priv->tiles = g_new (guint, 1);
 	  glGenTextures (1, priv->tiles);
 	  create_textures = TRUE;
 	}
 
       CLUTTER_NOTE (TEXTURE, "syncing for single tile");
 
-      glBindTexture(priv->target_type, priv->tiles[0]);
+      cogl_texture_bind (priv->target_type, priv->tiles[0]);
 
-      glTexParameteri(priv->target_type, 
-		      GL_TEXTURE_WRAP_S, 
-		      priv->repeat_x ? GL_REPEAT : GL_CLAMP_TO_EDGE);
+      cogl_texture_set_alignment (priv->target_type, 4, priv->width);
 
-      glTexParameteri(priv->target_type, 
-		      GL_TEXTURE_WRAP_T, 
-		      priv->repeat_y ? GL_REPEAT : GL_CLAMP_TO_EDGE);
+      cogl_texture_set_filters 
+	(priv->target_type, 
+	 priv->filter_quality ? CGL_LINEAR : CGL_NEAREST,
+	 priv->filter_quality ? CGL_LINEAR : CGL_NEAREST);
+
+      cogl_texture_set_wrap (priv->target_type, 
+			     priv->repeat_x ? CGL_REPEAT : CGL_CLAMP_TO_EDGE,
+			     priv->repeat_y ? CGL_REPEAT : CGL_CLAMP_TO_EDGE);
 
       priv->filter_quality = 1;
-
-      glTexParameteri(priv->target_type, GL_TEXTURE_MAG_FILTER, 
-		      priv->filter_quality ? GL_LINEAR : GL_NEAREST);
-
-      glTexParameteri(priv->target_type, GL_TEXTURE_MIN_FILTER, 
-		      priv->filter_quality ? GL_LINEAR : GL_NEAREST);
-
-      glPixelStorei (GL_UNPACK_ROW_LENGTH, priv->width);
-      glPixelStorei (GL_UNPACK_ALIGNMENT, 4);
 	  
       if (create_textures)
 	{
@@ -434,30 +406,29 @@ texture_upload_data (ClutterTexture *texture,
 	  width  = priv->width;
 	  height = priv->height;
 
-	  if (priv->target_type == GL_TEXTURE_2D) /* POT */
+	  if (priv->target_type == CGL_TEXTURE_2D) /* POT */
 	    {
 	      width  = clutter_util_next_p2(priv->width);
 	      height = clutter_util_next_p2(priv->height);
 	    }
 
-	  glTexImage2D(priv->target_type, 
-		       0, 
-		       /* (has_alpha) ? GL_RGBA : GL_RGB, */
-		       GL_RGBA,
-		       width,
-		       height,
-		       0, 
-		       priv->pixel_format, 
-		       priv->pixel_type, 
-		       NULL);
+	  cogl_texture_image_2d (priv->target_type,
+				 CGL_RGBA,
+				 width, 
+				 height, 
+				 priv->pixel_format,
+				 priv->pixel_type,
+				 NULL);
 	}
-      
-      glTexSubImage2D (priv->target_type, 0, 0, 0,
-		       priv->width,
-		       priv->height,
-		       priv->pixel_format, 
-		       priv->pixel_type, 
-		       data);
+
+      cogl_texture_sub_image_2d (priv->target_type,
+				 0,
+				 0,
+				 width,
+				 height,
+				 priv->pixel_format,
+				 priv->pixel_type,
+				 data);
       return;
     }
 
@@ -478,7 +449,7 @@ texture_upload_data (ClutterTexture *texture,
   
   if (priv->tiles == NULL)
     {
-      priv->tiles = g_new (GLuint, priv->n_x_tiles * priv->n_y_tiles);
+      priv->tiles = g_new (guint, priv->n_x_tiles * priv->n_y_tiles);
       glGenTextures (priv->n_x_tiles * priv->n_y_tiles, priv->tiles);
       create_textures = TRUE;
     }
@@ -524,48 +495,40 @@ texture_upload_data (ClutterTexture *texture,
 	}
 #endif
 
-	glBindTexture(priv->target_type, priv->tiles[i]);
-
-	glTexParameteri(priv->target_type, 
-			GL_TEXTURE_WRAP_S, 
-			priv->repeat_x ? GL_REPEAT : GL_CLAMP_TO_EDGE);
-
-	glTexParameteri(priv->target_type, 
-			GL_TEXTURE_WRAP_T, 
-			priv->repeat_y ? GL_REPEAT : GL_CLAMP_TO_EDGE);
-
-	glTexParameteri(priv->target_type, GL_TEXTURE_MAG_FILTER, 
-			priv->filter_quality ? GL_LINEAR : GL_NEAREST);
-
-	glTexParameteri(priv->target_type, GL_TEXTURE_MIN_FILTER, 
-			priv->filter_quality ? GL_LINEAR : GL_NEAREST);
-
-	glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-	glPixelStorei (GL_UNPACK_ROW_LENGTH, src_w);
-	glPixelStorei (GL_UNPACK_ALIGNMENT, 4);
+	cogl_texture_bind (priv->target_type, priv->tiles[0]);
 	
+	cogl_texture_set_alignment (priv->target_type, 4, priv->width);
+
+	cogl_texture_set_filters 
+	  (priv->target_type, 
+	   priv->filter_quality ? CGL_LINEAR : CGL_NEAREST,
+	   priv->filter_quality ? CGL_LINEAR : CGL_NEAREST);
+
+	cogl_texture_set_wrap (priv->target_type, 
+			       priv->repeat_x ? CGL_REPEAT : CGL_CLAMP_TO_EDGE,
+			       priv->repeat_y ? CGL_REPEAT : CGL_CLAMP_TO_EDGE);
 	if (create_textures)
 	  {
-	    glTexImage2D (priv->target_type, 0, GL_RGBA,
-                          gdk_pixbuf_get_width (pixtmp),
-                          gdk_pixbuf_get_height (pixtmp),
-                          0,
-			  priv->pixel_format, 
-			  priv->pixel_type,
-                          gdk_pixbuf_get_pixels (pixtmp));
+	    cogl_texture_image_2d (priv->target_type,
+				   CGL_RGBA,
+				   gdk_pixbuf_get_width (pixtmp), 
+				   gdk_pixbuf_get_height (pixtmp), 
+				   priv->pixel_format,
+				   priv->pixel_type,
+				   gdk_pixbuf_get_pixels (pixtmp));
 	  }
 	else 
 	  {
 	    /* Textures already created, so just update whats inside 
 	    */
-	    glTexSubImage2D (priv->target_type, 0, 
-			     0, 0,
-			     gdk_pixbuf_get_width (pixtmp),
-                             gdk_pixbuf_get_height (pixtmp),
-                             priv->pixel_format, 
-			     priv->pixel_type, 
-			     gdk_pixbuf_get_pixels (pixtmp));
+	    cogl_texture_sub_image_2d (priv->target_type,
+				       0,
+				       0,
+				       gdk_pixbuf_get_width (pixtmp),
+				       gdk_pixbuf_get_height (pixtmp),
+				       priv->pixel_format,
+				       priv->pixel_type,
+				       gdk_pixbuf_get_pixels (pixtmp));
 	  }
 
 	g_object_unref (pixtmp);
@@ -668,31 +631,41 @@ clutter_texture_paint (ClutterActor *self)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (self);
   gint            x1, y1, x2, y2;
-  guint8          opacity;
+  ClutterColor    col = { 0xff, 0xff, 0xff, 0xff };
 
   CLUTTER_NOTE (PAINT,
-                "@@@ for '%s' @@@",
+                "painting texture '%s'",
 		clutter_actor_get_name (self) ? clutter_actor_get_name (self)
                                               : "unknown");
-  glPushMatrix ();
+  cogl_push_matrix ();
 
-  glEnable (GL_BLEND);
-  glEnable (texture->priv->target_type);
-  glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+  switch (texture->priv->target_type)
+    {
+    case CGL_TEXTURE_2D:
+      cogl_enable (CGL_ENABLE_TEXTURE_2D|CGL_ENABLE_BLEND);
+      break;
+    case CGL_TEXTURE_RECTANGLE_ARB:
+      cogl_enable (CGL_ENABLE_TEXTURE_RECT|CGL_ENABLE_BLEND);
+      break;
+    default:
+      break;
+    }
 
-  opacity = clutter_actor_get_opacity (self);
+  col.alpha = clutter_actor_get_opacity (self);
 
-  CLUTTER_NOTE (PAINT, "setting opacity to %i\n", opacity);
-  glColor4ub (255, 255, 255, opacity);
+  cogl_color (&col);
 
   clutter_actor_get_coords (self, &x1, &y1, &x2, &y2);
+
+  CLUTTER_NOTE (PAINT, "paint to x1: %i, y1: %i x2: %i, y2: %i "
+		"opacity: %i",
+		x1, y1, x2, y2,
+		clutter_actor_get_opacity (self));
+
   /* Paint will of translated us */
   texture_render_to_gl_quad (texture, 0, 0, x2 - x1, y2 - y1);
 
-  glDisable (texture->priv->target_type);
-  glDisable (GL_BLEND);
-
-  glPopMatrix ();
+  cogl_pop_matrix ();
 }
 
 static void 
@@ -752,8 +725,8 @@ clutter_texture_set_property (GObject      *object,
     case PROP_USE_TILES:
       priv->is_tiled = g_value_get_boolean (value);
 
-      if (priv->target_type == GL_TEXTURE_RECTANGLE_ARB && priv->is_tiled)
-	priv->target_type = GL_TEXTURE_2D;
+      if (priv->target_type == CGL_TEXTURE_RECTANGLE_ARB && priv->is_tiled)
+	priv->target_type = CGL_TEXTURE_2D;
 
       CLUTTER_NOTE (TEXTURE, "Texture is tiled ? %s",
 		    priv->is_tiled ? "yes" : "no");
@@ -950,7 +923,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		       "GL texture pixel format used",
 		       0,
 		       G_MAXINT,
-		       GL_RGBA,
+		       CGL_RGBA,
 		       G_PARAM_CONSTRUCT_ONLY | CLUTTER_PARAM_READWRITE));
 
   /**
@@ -1001,17 +974,17 @@ clutter_texture_init (ClutterTexture *self)
   priv->filter_quality = 0;
   priv->is_tiled     = TRUE;
   priv->pixel_type   = PIXEL_TYPE;
-  priv->pixel_format = GL_RGBA;
+  priv->pixel_format = CGL_RGBA;
   priv->repeat_x     = FALSE;
   priv->repeat_y     = FALSE;
 
   if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_RECTANGLE))
     {
-      priv->target_type  = GL_TEXTURE_RECTANGLE_ARB;
+      priv->target_type  = CGL_TEXTURE_RECTANGLE_ARB;
       priv->is_tiled     = FALSE;
     }
   else
-    priv->target_type = GL_TEXTURE_2D;
+    priv->target_type = CGL_TEXTURE_2D;
 
   self->priv  = priv;
 }
@@ -1034,6 +1007,7 @@ pixbuf_destroy_notify (guchar  *pixels, gpointer data)
 GdkPixbuf*
 clutter_texture_get_pixbuf (ClutterTexture* texture)
 {
+#if CLUTTER_COGL_GL
   ClutterTexturePrivate *priv;
   GdkPixbuf             *pixbuf = NULL;
   guchar                *pixels = NULL;
@@ -1044,7 +1018,7 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
   if (priv->tiles == NULL)
     return NULL; 
 
-  if (priv->pixel_format == GL_RGB)
+  if (priv->pixel_format == CGL_RGB)
     bpp = 3;
 
   if (!priv->is_tiled)
@@ -1054,12 +1028,15 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
       if (!pixels)
 	return NULL;
 
+      /* FIXME: cogl */
+
       glBindTexture(priv->target_type, priv->tiles[0]);
 
       glPixelStorei (GL_UNPACK_ROW_LENGTH, priv->width);
       glPixelStorei (GL_UNPACK_ALIGNMENT, 4);
 
       /* read data from gl text and return as pixbuf */
+      /* No such func in gles... */
       glGetTexImage (priv->target_type,
 		     0,
 		     priv->pixel_format, 
@@ -1145,6 +1122,13 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
     }
 
   return pixbuf;
+#else
+
+  /* FIXME: func call wont work for GLES... 
+   *        features need to reflect this.
+   */
+  return NULL;
+#endif
 }
 
 /**
@@ -1185,9 +1169,9 @@ clutter_texture_set_from_data (ClutterTexture *texture,
   priv->height = height;
 
   if (has_alpha)
-    priv->pixel_format = GL_RGBA;
+    priv->pixel_format = CGL_RGBA;
   else
-    priv->pixel_format = GL_RGB;
+    priv->pixel_format = CGL_RGB;
 
   if (texture_dirty)
     {
@@ -1195,7 +1179,7 @@ clutter_texture_set_from_data (ClutterTexture *texture,
 
       if (priv->is_tiled == FALSE)
 	{
-	  if (priv->target_type == GL_TEXTURE_RECTANGLE_ARB
+	  if (priv->target_type == CGL_TEXTURE_RECTANGLE_ARB
 	      && !can_create_rect_arb (priv->width, 
 				       priv->height,
 				       priv->pixel_format,
@@ -1203,10 +1187,11 @@ clutter_texture_set_from_data (ClutterTexture *texture,
 	    {
 	      /* If we cant create NPOT tex of this size fall back to tiles */
 	      priv->is_tiled = TRUE; 
-	      priv->target_type = GL_TEXTURE_2D;
+	      priv->target_type = CGL_TEXTURE_2D;
 	    }
-	  else if (priv->target_type == GL_TEXTURE_2D
-		   && !can_create(clutter_util_next_p2(priv->width), 
+	  else if (priv->target_type == CGL_TEXTURE_2D
+		   && !cogl_texture_can_size
+		                 (clutter_util_next_p2(priv->width), 
 				  clutter_util_next_p2(priv->height),
 				  priv->pixel_format, 
 				  priv->pixel_type))
@@ -1352,7 +1337,7 @@ clutter_texture_bind_tile (ClutterTexture *texture, gint index)
   ClutterTexturePrivate *priv;
 
   priv = texture->priv;
-  glBindTexture(priv->target_type, priv->tiles[index]);
+  cogl_texture_bind (priv->target_type, priv->tiles[index]);
 }
 
 /**

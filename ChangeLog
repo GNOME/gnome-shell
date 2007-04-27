@@ -1,3 +1,31 @@
+2007-04-27  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/Makefile.am:
+	* clutter/clutter-actor.c:
+	* clutter/clutter-clone-texture.c:
+	* clutter/clutter-rectangle.c:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-texture.c:
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/gl/Makefile.am:
+	* clutter/cogl/gl/cogl-defines.h:
+	* clutter/cogl/gl/cogl.c:
+	* clutter/cogl/gles/Makefile.am:
+	* clutter/cogl/gles/cogl-defines.h:
+	* clutter/cogl/gles/cogl.c:
+	* clutter/glx/Makefile.am:
+	* clutter/glx/clutter-stage-glx.c:
+	* clutter/pango/Makefile.am:
+	* clutter/pango/pangoclutter-render.c:
+	* configure.ac:
+	Add initial 'cogl' implementation. 'cogl' is a simple abstration
+	layer over GL and GL/ES used by clutter internally. It should 
+	eventually allow clutter applications to be run on both GL and GL/ES
+	with just a recompile as well as provide more debugging and potentially
+	profiling information for GL and GL/ES usage.
+
+	This commit contains the initial GL implementation.
+
 2007-04-26  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Merge from clutter-0-2
@@ -119,7 +147,12 @@
 	* examples/bspline.c:
 	* examples/Makefile.am:
 	An example of using bspline path.
-	
+
+2007-04-07  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/glx/clutter-backend-glx.c:
+	Fix version check.
+
 2007-03-29  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-stage.c:

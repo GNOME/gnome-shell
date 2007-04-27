@@ -26,12 +26,13 @@
 #include "config.h"
 #endif
 
-#include <GL/gl.h>
 #include <math.h>
 
 #include "pangoclutter.h"
 #include "pangoclutter-private.h"
 #include "../clutter-debug.h"
+
+#include "cogl.h"
 
 /* 
  * Texture cache support code
@@ -42,18 +43,18 @@
 #define TC_ROUND  4
 
 typedef struct {
-  GLuint name;
+  guint name;
   int x, y, w, h;
 } tc_area;
 
 typedef struct tc_texture {
   struct tc_texture *next;
-  GLuint name;
+  guint name;
   int avail;
 } tc_texture;
 
 typedef struct tc_slice {
-  GLuint name;
+  guint name;
   int avail, y;
 } tc_slice;
 
@@ -72,7 +73,7 @@ tc_clear ()
   while (first_texture)
     {
       tc_texture *next = first_texture->next;
-      glDeleteTextures (1, &first_texture->name);
+      cogl_textures_destroy (1, &first_texture->name);
       g_slice_free (tc_texture, first_texture);
       first_texture = next;
     }
@@ -111,14 +112,21 @@ tc_get (tc_area *area, int width, int height)
           match = g_slice_new (tc_texture);
           match->next = first_texture;
           first_texture = match;
-          glGenTextures (1, &match->name);
           match->avail = TC_HEIGHT;
 
-          glBindTexture (GL_TEXTURE_2D, match->name);
-          glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-          glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-          glTexImage2D (GL_TEXTURE_2D, 0, GL_ALPHA, 
-			TC_WIDTH, TC_HEIGHT, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0);
+	  cogl_textures_create (1, &match->name);
+
+	  cogl_texture_bind (CGL_TEXTURE_2D, match->name);
+
+	  cogl_texture_set_filters (CGL_TEXTURE_2D, CGL_NEAREST, CGL_NEAREST);
+
+	  cogl_texture_image_2d (CGL_TEXTURE_2D, 
+				 CGL_ALPHA,
+				 TC_WIDTH,
+				 TC_HEIGHT,
+				 CGL_ALPHA, 
+				 CGL_UNSIGNED_BYTE, 
+				 NULL);
         }
 
       match->avail -= slice_height;
@@ -166,7 +174,7 @@ struct _PangoClutterRenderer
   PangoRenderer parent_instance;
   ClutterColor  color;
   int           flags;
-  GLuint        curtex; /* current texture */
+  guint         curtex; /* current texture */
 };
 
 G_DEFINE_TYPE (PangoClutterRenderer,   \
@@ -341,20 +349,19 @@ draw_glyph (PangoRenderer *renderer_,
 
       CLUTTER_NOTE (PANGO, g_message ("cache fail; subimage2d %i\n", glyph));
 
-      glBindTexture (GL_TEXTURE_2D, g->tex.name);
-      glPixelStorei (GL_UNPACK_ROW_LENGTH, bm.stride);
-      glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
-      glTexSubImage2D (GL_TEXTURE_2D, 
-		       0, 
-		       g->tex.x, 
-		       g->tex.y, 
-		       bm.width, 
-		       bm.height, 
-		       GL_ALPHA, 
-		       GL_UNSIGNED_BYTE, 
-		       bm.bitmap);
-      glPixelStorei (GL_UNPACK_ROW_LENGTH, 0);
-      glPixelStorei (GL_UNPACK_ALIGNMENT, 4);
+
+      cogl_texture_bind (CGL_TEXTURE_2D, g->tex.name);
+
+      cogl_texture_set_alignment (CGL_TEXTURE_2D, 1, bm.stride); 
+
+      cogl_texture_sub_image_2d (CGL_TEXTURE_2D,
+				 g->tex.x, 
+				 g->tex.y, 
+				 bm.width, 
+				 bm.height, 
+				 CGL_ALPHA, 
+				 CGL_UNSIGNED_BYTE, 
+				 bm.bitmap);
 
       renderer->curtex = g->tex.name;
       glBegin (GL_QUADS);
@@ -371,19 +378,25 @@ draw_glyph (PangoRenderer *renderer_,
 
   if (g->tex.name != renderer->curtex)
     {
-      if (renderer->curtex)
-        glEnd ();
+      /*
+	if (renderer->curtex)
+          glEnd ();
+      */
 
-      glBindTexture (GL_TEXTURE_2D, g->tex.name);
+      cogl_texture_bind (CGL_TEXTURE_2D, g->tex.name);
       renderer->curtex = g->tex.name;
 
-      glBegin (GL_QUADS);
+      /* glBegin (GL_QUADS); */
     }
 
-  glTexCoord2f (x1, y1); glVertex2i (x           , y           );
-  glTexCoord2f (x2, y1); glVertex2i (x + g->tex.w, y           );
-  glTexCoord2f (x2, y2); glVertex2i (x + g->tex.w, y + g->tex.h);
-  glTexCoord2f (x1, y2); glVertex2i (x           , y + g->tex.h);
+  cogl_texture_quad (x, 
+		     x + g->tex.w, 
+		     y,
+		     y + g->tex.h,
+		     CLUTTER_FLOAT_TO_FIXED(x1), 
+		     CLUTTER_FLOAT_TO_FIXED(y1), 
+		     CLUTTER_FLOAT_TO_FIXED(x2), 
+		     CLUTTER_FLOAT_TO_FIXED(y2));
 }
 
 static void
@@ -400,20 +413,22 @@ draw_trapezoid (PangoRenderer   *renderer_,
 
   if (renderer->curtex)
     {
-      glEnd ();
+      /* glEnd (); */
       renderer->curtex = 0;
     }
 
-  glDisable (GL_TEXTURE_2D);
+  /* Turn texturing off */
+  cogl_enable (CGL_ENABLE_BLEND);
 
-  glBegin (GL_QUADS);
-  glVertex2d (x11, y1);
-  glVertex2d (x21, y1);
-  glVertex2d (x22, y2);
-  glVertex2d (x12, y2);
-  glEnd ();
+  cogl_trapezoid ((gint) y1,
+		  (gint) x11,
+		  (gint) x21,
+		  (gint) y2,
+		  (gint) x12,
+		  (gint) x22);
 
-  glEnable (GL_TEXTURE_2D);
+  /* Turn it back on again */
+  cogl_enable (CGL_ENABLE_TEXTURE_2D|CGL_ENABLE_BLEND);
 }
 
 void 
@@ -491,7 +506,7 @@ prepare_run (PangoRenderer *renderer, PangoLayoutRun *run)
   PangoClutterRenderer *glrenderer = (PangoClutterRenderer *)renderer;
   PangoColor           *fg = 0;
   GSList               *l;
-  unsigned char         r, g, b, a;
+  ClutterColor          col;
 
   renderer->underline = PANGO_UNDERLINE_NONE;
   renderer->strikethrough = FALSE;
@@ -520,27 +535,27 @@ prepare_run (PangoRenderer *renderer, PangoLayoutRun *run)
 
   if (fg)
     {
-      r = fg->red   * (255.f / 65535.f);
-      g = fg->green * (255.f / 65535.f);
-      b = fg->blue  * (255.f / 65535.f);
+      col.red   = (fg->red   * 255) / 65535;
+      col.green = (fg->green * 255) / 65535;
+      col.blue  = (fg->blue  * 255) / 65535;
     }
   else 
     {
-      r = glrenderer->color.red;
-      g = glrenderer->color.green;
-      b = glrenderer->color.blue;
+      col.red   = glrenderer->color.red;
+      col.green = glrenderer->color.green;
+      col.blue  = glrenderer->color.blue;
     }
 
-  a = glrenderer->color.alpha;
+  col.alpha = glrenderer->color.alpha;
 
   if (glrenderer->flags & FLAG_INVERSE)
     {
-      r ^= 0xffU;
-      g ^= 0xffU;
-      b ^= 0xffU;
+      col.red   ^= 0xffU;
+      col.green ^= 0xffU;
+      col.blue   ^= 0xffU;
     } 
   
-  glColor4ub (r, g, b, a);
+  cogl_color(&col);
 }
 
 static void
@@ -550,32 +565,30 @@ draw_begin (PangoRenderer *renderer_)
 
   renderer->curtex = 0;
 
-  glEnable (GL_TEXTURE_2D);
-  glTexEnvi (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-  glEnable (GL_BLEND);
+  cogl_enable (CGL_ENABLE_TEXTURE_2D
+	       |CGL_ENABLE_BLEND);
+
 #if 0
-  /* How to handle in ES ? */
   gl_BlendFuncSeparate (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,
                         GL_ONE      , GL_ONE_MINUS_SRC_ALPHA);
-#endif
+
   glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   glEnable (GL_ALPHA_TEST);
   glAlphaFunc (GL_GREATER, 0.01f);
+#endif
 
 }
 
 static void
 draw_end (PangoRenderer *renderer_)
 {
+  /*
   PangoClutterRenderer *renderer = (PangoClutterRenderer *)renderer_;
 
   if (renderer->curtex)
     glEnd ();
-
-  glDisable (GL_ALPHA_TEST);
-  glDisable (GL_BLEND);
-  glDisable (GL_TEXTURE_2D);
+  */
 }
 
 static void

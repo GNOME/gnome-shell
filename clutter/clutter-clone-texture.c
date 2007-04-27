@@ -41,7 +41,7 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
-#include <GL/gl.h>
+#include "cogl.h"
 
 enum
 {
@@ -109,16 +109,11 @@ clone_texture_render_to_gl_quad (ClutterCloneTexture *ctexture,
 	  ty = (float) pheight / clutter_util_next_p2 (pheight);
 	}
 
-      qx1 = x1; qx2 = x2;
-      qy1 = y1; qy2 = y2;
-      
-      glBegin (GL_QUADS);
-      glTexCoord2f (tx, ty);   glVertex2i   (qx2, qy2);
-      glTexCoord2f (0,  ty);   glVertex2i   (qx1, qy2);
-      glTexCoord2f (0,  0);    glVertex2i   (qx1, qy1);
-      glTexCoord2f (tx, 0);    glVertex2i   (qx2, qy1);
-      glEnd ();	
-      
+      cogl_texture_quad (x1, x2, y1, y2, 
+			 0,
+			 0,
+			 CLUTTER_FLOAT_TO_FIXED (tx),
+			 CLUTTER_FLOAT_TO_FIXED (ty));
       return;
     }
 
@@ -158,12 +153,11 @@ clone_texture_render_to_gl_quad (ClutterCloneTexture *ctexture,
 			x, y,
 			actual_w, actual_h);
 
-	  glBegin (GL_QUADS);
-	  glTexCoord2f (tx, ty);   glVertex2i   (qx2, qy2);
-	  glTexCoord2f (0,  ty);   glVertex2i   (qx1, qy2);
-	  glTexCoord2f (0,  0);    glVertex2i   (qx1, qy1);
-	  glTexCoord2f (tx, 0);    glVertex2i   (qx2, qy1);
-	  glEnd ();	
+	  cogl_texture_quad (qx1, qx2, qy1, qy2, 
+			     0,
+			     0,
+			     CLUTTER_FLOAT_TO_FIXED (tx),
+			     CLUTTER_FLOAT_TO_FIXED (ty));
 
 	  lasty += qy2 - qy1;	  
 
@@ -180,12 +174,18 @@ clutter_clone_texture_paint (ClutterActor *self)
   ClutterActor                *parent_texture;
   gint                         x1, y1, x2, y2;
   GLenum                       target_type;
+  ClutterColor                 col = { 0xff, 0xff, 0xff, 0xff };
 
   priv = CLUTTER_CLONE_TEXTURE (self)->priv;
 
   /* no need to paint stuff if we don't have a texture to clone */
   if (!priv->parent_texture)
     return;
+
+  CLUTTER_NOTE (PAINT,
+                "painting clone texture '%s'",
+		clutter_actor_get_name (self) ? clutter_actor_get_name (self)
+                                              : "unknown");
 
   /* parent texture may have been hidden, there for need to make sure its 
    * realised with resources available.  
@@ -194,19 +194,24 @@ clutter_clone_texture_paint (ClutterActor *self)
   if (!CLUTTER_ACTOR_IS_REALIZED (parent_texture))
     clutter_actor_realize (parent_texture);
 
+  cogl_push_matrix ();
+
   /* FIXME: figure out nicer way of getting at this info...  
    */  
   if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_RECTANGLE) &&
       clutter_texture_is_tiled (CLUTTER_TEXTURE (parent_texture)) == FALSE)
-    target_type = GL_TEXTURE_RECTANGLE_ARB;
+    {
+      target_type = CGL_TEXTURE_RECTANGLE_ARB;
+      cogl_enable (CGL_ENABLE_TEXTURE_RECT|CGL_ENABLE_BLEND);
+    }
   else
-    target_type = GL_TEXTURE_2D;
+    {
+      target_type = CGL_TEXTURE_2D;
+      cogl_enable (CGL_ENABLE_TEXTURE_2D|CGL_ENABLE_BLEND);
+    }
 
-  glEnable (GL_BLEND);
-  glEnable (target_type);
-  glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-  glColor4ub (255, 255, 255, clutter_actor_get_opacity (self));
+  col.alpha = clutter_actor_get_opacity (self);
+  cogl_color (&col);
 
   clutter_actor_get_coords (self, &x1, &y1, &x2, &y2);
 
@@ -218,8 +223,8 @@ clutter_clone_texture_paint (ClutterActor *self)
   /* Parent paint translated us into position */
   clone_texture_render_to_gl_quad (CLUTTER_CLONE_TEXTURE (self), 
 				   0, 0, x2 - x1, y2 - y1);
-  glDisable (target_type);
-  glDisable (GL_BLEND);
+
+  cogl_pop_matrix ();
 }
 
 static void

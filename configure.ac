@@ -106,8 +106,10 @@ case $clutterbackend in
   glx)
 
     CLUTTER_FLAVOUR="glx"
-    CLUTTER_COGL="gl"
     AC_DEFINE([HAVE_CLUTTER_GLX], 1, [Have the GLX backend])
+
+    CLUTTER_COGL="gl"
+    AC_DEFINE([HAVE_COGL_GL], 1, [Have GL for rendering])
 
     AC_CHECK_HEADERS([GL/gl.h GL/glx.h],,
 	         [AC_MSG_ERROR([Unable to locate required GL headers])])
@@ -125,8 +127,11 @@ case $clutterbackend in
   egl)
     
     CLUTTER_FLAVOUR="egl"
-    CLUTTER_GOGL="gles"
     AC_DEFINE([HAVE_CLUTTER_EGL], 1, [Have the EGL backend])
+
+    # We currently assume having egl means also having gles..
+    CLUTTER_GOGL="gles"
+    AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
 
     PKG_CHECK_MODULES(EGL, libvincent, HAVE_OGLES=yes, HAVE_OGLES=no)
     if test "x$HAVE_OGLES" = "xno"; then

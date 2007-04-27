@@ -39,6 +39,7 @@
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
+#include "cogl.h"
 
 #include <GL/gl.h>
 
@@ -55,23 +56,16 @@ static guint32 __id = 0;
 struct _ClutterActorPrivate
 {
   ClutterActorBox coords;
-
   ClutterGeometry clip;
-  guint has_clip : 1;
-
-  gfloat rxang, ryang, rzang; /* Rotation foo. */
-  gint rzx, rzy, rxy, rxz, ryx, ryz;
-  gint z; /* to actor box ? */
-
-  guint8 opacity;
-  
-  ClutterActor *parent_actor; /* This should always be a group */
-  
-  gchar *name;
-
-  ClutterFixed   scale_x, scale_y;
-
-  guint32 id; /* Unique ID */
+  guint           has_clip : 1;
+  ClutterFixed    rxang, ryang, rzang;           /* Rotation*/
+  gint            rzx, rzy, rxy, rxz, ryx, ryz;
+  gint            z;
+  guint8          opacity;
+  ClutterActor   *parent_actor;
+  gchar          *name;
+  ClutterFixed    scale_x, scale_y;
+  guint32         id; /* Unique ID */
 };
 
 enum
@@ -303,54 +297,56 @@ clutter_actor_paint (ClutterActor *self)
 
   klass = CLUTTER_ACTOR_GET_CLASS (self);
 
-  glPushMatrix();
+  cogl_push_matrix();
 
+#if CLUTTER_COGL_GL
   glLoadName (clutter_actor_get_id (self));
+#endif
 
   if (clutter_actor_get_parent (self) != NULL)
     {
-      glTranslatef((float) (priv->coords.x1), 
-		   (float) (priv->coords.y1), 
-		   0.0);
+      cogl_translate ((priv->coords.x1), 
+		      (priv->coords.y1), 
+		      0);
     }
 
   if (self->priv->rzang)
     {
-      glTranslatef (priv->rzx,
-		    priv->rzy,
-		    0.0);
+      cogl_translatex (priv->rzx,
+		       priv->rzy,
+		       0);
 
-      glRotatef (priv->rzang, 0.0f, 0.0f, 1.0f);
+      cogl_rotatex (priv->rzang, 0, 0, CFX_ONE);
 
-      glTranslatef (-1. * priv->rzx,
-		    -1. * priv->rzy,
-		     0.0);
+      cogl_translatex (-1. * priv->rzx,
+		       -1. * priv->rzy,
+		       0);
     }
 
   if (self->priv->ryang)
     {
-      glTranslatef (priv->ryx,
-		    0.0,
-		    (float) (priv->z) + priv->ryz);
+      cogl_translatex (priv->ryx,
+		       0,
+		       CLUTTER_INT_TO_FIXED (priv->z) + priv->ryz);
 
-      glRotatef (priv->ryang, 0.0f, 1.0f, 0.0f);
+      cogl_rotatex (priv->ryang, 0, CFX_ONE, 0);
 
-      glTranslatef ((float) - priv->ryx,
-		    0.0,
-		    (float) (-1. * priv->z) - priv->ryz);
+      cogl_translatex (- priv->ryx,
+		       0.0,
+		       CLUTTER_INT_TO_FIXED(-priv->z) - priv->ryz);
     }
 
   if (self->priv->rxang)
     {
-      glTranslatef (0.0,
-		    (float) priv->rxy,
-		    (float) (priv->z) + priv->rxz);
+      cogl_translatex (0,
+		       priv->rxy,
+		       CLUTTER_INT_TO_FIXED(priv->z) + priv->rxz);
 
-      glRotatef (priv->rxang, 1.0f, 0.0f, 0.0f);
+      cogl_rotatex (priv->rxang, CFX_ONE, 0, CFX_ONE);
 
-      glTranslatef (0.0,
-		    -1. * priv->rxy,
-		    -1. * priv->z - priv->rxz);
+      cogl_translatex (0,
+		       - priv->rxy,
+		       CLUTTER_INT_TO_FIXED(-priv->z) - priv->rxz);
     }
 
   if (self->priv->z)
@@ -359,15 +355,15 @@ clutter_actor_paint (ClutterActor *self)
   if (self->priv->scale_x != CFX_ONE ||
       self->priv->scale_y != CFX_ONE)
     {
-      glScaled (CLUTTER_FIXED_TO_DOUBLE (priv->scale_x),
-		CLUTTER_FIXED_TO_DOUBLE (priv->scale_y),
-		1.0);
+      cogl_scale (priv->scale_x, priv->scale_y);
     }
 
+#if CLUTTER_COGL_GL
   if (priv->has_clip)
     {
       ClutterGeometry *clip = &(priv->clip);
 
+      /* FIXME: ES ... */
       glEnable (GL_STENCIL_TEST);
 
       glClearStencil (0.0f);
@@ -386,17 +382,20 @@ clutter_actor_paint (ClutterActor *self)
       glStencilFunc (GL_EQUAL, 0x1, 0x1);
       glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP);
     }
+#endif
 
   if (klass->paint)
     (klass->paint) (self);
 
+#if CLUTTER_COGL_GL
   if (priv->has_clip)
     glDisable (GL_STENCIL_TEST);
+#endif
 
   if (priv->scale_x != CFX_ONE || priv->scale_y != CFX_ONE)
-    glScaled (1.0, 1.0, 1.0);
+    cogl_scale (CFX_ONE, CFX_ONE);
 
-  glPopMatrix();
+  cogl_pop_matrix();
 }
 
 /**
@@ -1569,9 +1568,10 @@ clutter_actor_rotate_z (ClutterActor *self,
 			gint          x,
 			gint          y)
 {
+  /* FIXME: FIXED VERSION */
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  self->priv->rzang = angle;
+  self->priv->rzang = CLUTTER_FLOAT_TO_FIXED (angle);
   self->priv->rzx   = x;
   self->priv->rzy   = y;
 
@@ -1596,7 +1596,9 @@ clutter_actor_rotate_x (ClutterActor *self,
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   
-  self->priv->rxang = angle;
+  /* FIXME: FIXED API Version */
+
+  self->priv->rxang = CLUTTER_FLOAT_TO_FIXED(angle);
   self->priv->rxy   = y;
   self->priv->rxz   = z;
 
@@ -1620,8 +1622,11 @@ clutter_actor_rotate_y (ClutterActor *self,
 			gint          z)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  /* FIXME: FIXED API VERSION */
   
-  self->priv->ryang = angle;
+  self->priv->ryang = CLUTTER_FLOAT_TO_FIXED(angle);
+
   self->priv->ryx   = x;
   self->priv->ryz   = z;
 

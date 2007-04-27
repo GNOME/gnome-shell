@@ -44,7 +44,7 @@
 #include "clutter-debug.h"
 #include "clutter-version.h" 	/* For flavour */
 
-#include <GL/gl.h>
+#include "cogl.h"
 
 #include <gdk-pixbuf-xlib/gdk-pixbuf-xlib.h>
 
@@ -616,122 +616,13 @@ clutter_stage_snapshot (ClutterStage *stage,
   return NULL;
 }
 
-#ifndef FIXED_PERSPECTIVE
-/*
- * Original floating point implementaiton of the perspective function,
- * retained for reference purposes
- */
-static inline void
-frustum (GLfloat left,
-	 GLfloat right,
-	 GLfloat bottom,
-	 GLfloat top,
-	 GLfloat nearval,
-	 GLfloat farval)
-{
-  GLfloat x, y, a, b, c, d;
-  GLfloat m[16];
-
-  x = (2.0 * nearval) / (right - left);
-  y = (2.0 * nearval) / (top - bottom);
-  a = (right + left) / (right - left);
-  b = (top + bottom) / (top - bottom);
-  c = -(farval + nearval) / ( farval - nearval);
-  d = -(2.0 * farval * nearval) / (farval - nearval);
-
-#define M(row,col)  m[col*4+row]
-  M(0,0) = x;     M(0,1) = 0.0F;  M(0,2) = a;      M(0,3) = 0.0F;
-  M(1,0) = 0.0F;  M(1,1) = y;     M(1,2) = b;      M(1,3) = 0.0F;
-  M(2,0) = 0.0F;  M(2,1) = 0.0F;  M(2,2) = c;      M(2,3) = d;
-  M(3,0) = 0.0F;  M(3,1) = 0.0F;  M(3,2) = -1.0F;  M(3,3) = 0.0F;
-#undef M
-
-  glMultMatrixf (m);
-}
-
-static inline void
-perspective (GLfloat fovy,
-	     GLfloat aspect,
-	     GLfloat zNear,
-	     GLfloat zFar)
-{
-  GLfloat xmin, xmax, ymin, ymax;
-
-  ymax = zNear * tan (fovy * M_PI / 360.0);
-  ymin = -ymax;
-  xmin = ymin * aspect;
-  xmax = ymax * aspect;
-
-  printf ("%f, %f, %f, %f\n", xmin, xmax, ymin, ymax);
-  
-  frustum (xmin, xmax, ymin, ymax, zNear, zFar);
-}
-#else
-
-/*
- * Fixed point implementation of the perspective function
- */
-static inline void
-perspectivex (ClutterAngle fovy,
-	      ClutterFixed aspect,
-	      ClutterFixed zNear,
-	      ClutterFixed zFar)
-{
-  ClutterFixed xmax, ymax;
-  ClutterFixed x, y, c, d;
-
-#ifndef USING_GLES
-  GLfloat m[16];
-#else
-  GLfixed m[16];
-#endif
-  
-  memset (&m[0], 0, sizeof (m));
-
-  /*
-   * Based on the original algorithm in perspective():
-   * 
-   * 1) xmin = -xmax => xmax + xmin == 0 && xmax - xmin == 2 * xmax
-   * same true for y, hence: a == 0 && b == 0;
-   *
-   * 2) When working with small numbers, we can are loosing significant
-   * precision, hence we use clutter_qmulx() here, not the fast macro.
-   */
-  ymax = clutter_qmulx (zNear, clutter_tani (fovy >> 1));
-  xmax = clutter_qmulx (ymax, aspect);
-
-  x = CFX_DIV (zNear, xmax);
-  y = CFX_DIV (zNear, ymax);
-  c = CFX_DIV (-(zFar + zNear), ( zFar - zNear));
-  d = CFX_DIV (-(clutter_qmulx (2*zFar, zNear)), (zFar - zNear));
-
-#define M(row,col)  m[col*4+row]
-#ifndef USING_GLES
-  M(0,0) = CLUTTER_FIXED_TO_FLOAT (x);
-  M(1,1) = CLUTTER_FIXED_TO_FLOAT (y);
-  M(2,2) = CLUTTER_FIXED_TO_FLOAT (c);
-  M(2,3) = CLUTTER_FIXED_TO_FLOAT (d);
-  M(3,2) = -1.0F;
-  
-  glMultMatrixf (m);
-#else
-  M(0,0) = x;
-  M(1,1) = y;
-  M(2,2) = c;
-  M(2,3) = d;
-  M(3,2) = 1 + ~CFX_ONE;
-  
-  glMultMatrixx (m);
-#endif
-#undef M
-}
-#endif
-
 void
 _clutter_stage_sync_viewport (ClutterStage *stage)
 {
   ClutterActor *actor;
   gint width, height;
+
+  /* FIXME: SHould be able to completely overide this func.. */
 
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
@@ -740,33 +631,12 @@ _clutter_stage_sync_viewport (ClutterStage *stage)
   width = clutter_actor_get_width (actor);
   height = clutter_actor_get_height (actor);
 
-  glViewport (0, 0, width, height);
-  
-  glMatrixMode (GL_PROJECTION);
-  glLoadIdentity ();
-
-#ifndef FIXED_PERSPECTIVE
-  perspective (60.0f, 1.0f, 0.1f, 100.0f);
-#else
-  perspectivex (171, /* 60 degrees */
-		CFX_ONE,
-		CLUTTER_FLOAT_TO_FIXED (0.1),
-		CLUTTER_FLOAT_TO_FIXED (100.0));
-#endif
-  
-  glMatrixMode (GL_MODELVIEW);
-  glLoadIdentity ();
-
-  /* Then for 2D like transform */
-
-  /* camera distance from screen, 0.5 * tan (FOV) */
-#define DEFAULT_Z_CAMERA 0.866025404f
-
-  glTranslatef (-0.5f, -0.5f, -DEFAULT_Z_CAMERA);
-  glScalef ( 1.0f / width, 
-	    -1.0f / height, 
-	     1.0f / width);
-  glTranslatef (0.0f, -1.0 * height, 0.0f);
+  cogl_setup_viewport (width,
+		       height,
+		       171, /* 60 degrees */
+		       CFX_ONE,
+		       CLUTTER_FLOAT_TO_FIXED (0.1),
+		       CLUTTER_FLOAT_TO_FIXED (100.0));
 }
 
 /**
@@ -784,6 +654,12 @@ clutter_stage_get_actor_at_pos (ClutterStage *stage,
                                 gint          x,
                                 gint          y)
 {
+#if HAVE_COGL_GL
+
+  /* FIXME: Add a clutter feature flag for this or figure out  
+   *        for gles.
+  */
+
   ClutterActor *found = NULL;
   GLuint buff[64] = { 0 };
   GLint hits;
@@ -808,14 +684,10 @@ clutter_stage_get_actor_at_pos (ClutterStage *stage,
 	        (view[3] - 2 * (y - view[1])), 0);
   glScalef (view[2], -view[3], 1.0);
 
-#ifndef FIXED_PERSPECTIVE
-  perspective (60.0f, 1.0f, 0.1f, 100.0f);
-#else
-  perspectivex (171, /* 60 degrees */
-		CFX_ONE,
-		CLUTTER_FLOAT_TO_FIXED (0.1),
-		CLUTTER_FLOAT_TO_FIXED (100.0));
-#endif
+  cogl_perspective (171, /* 60 degrees */
+		    CFX_ONE,
+		    CLUTTER_FLOAT_TO_FIXED (0.1),
+		    CLUTTER_FLOAT_TO_FIXED (100.0));
 
   glMatrixMode (GL_MODELVIEW);
 
@@ -841,6 +713,10 @@ clutter_stage_get_actor_at_pos (ClutterStage *stage,
   _clutter_stage_sync_viewport (stage);
 
   return found;
+#else
+  /* GL/ES cannot do this yet.. */
+  return NULL;
+#endif
 }
 
 /**

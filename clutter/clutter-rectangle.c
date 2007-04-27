@@ -32,10 +32,10 @@
 
 #include "clutter-rectangle.h"
 #include "clutter-main.h"
-#include "clutter-private.h" 	/* for DBG */
+#include "clutter-private.h"  
+#include "clutter-debug.h"
 
-#include <GL/glx.h>
-#include <GL/gl.h>
+#include "cogl.h"
 
 G_DEFINE_TYPE (ClutterRectangle, clutter_rectangle, CLUTTER_TYPE_ACTOR);
 
@@ -70,14 +70,18 @@ clutter_rectangle_paint (ClutterActor *self)
   ClutterRectangle        *rectangle = CLUTTER_RECTANGLE(self);
   ClutterRectanglePrivate *priv;
   ClutterGeometry          geom;
+  ClutterColor             tmp_col;
 
   rectangle = CLUTTER_RECTANGLE(self);
   priv = rectangle->priv;
 
-  glPushMatrix();
+  CLUTTER_NOTE (PAINT,
+                "painting rect '%s'",
+		clutter_actor_get_name (self) ? clutter_actor_get_name (self)
+                                              : "unknown");
+  cogl_push_matrix();
 
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  cogl_enable (CGL_BLEND);
 
   clutter_actor_get_geometry (self, &geom);
 
@@ -86,44 +90,47 @@ clutter_rectangle_paint (ClutterActor *self)
    */
   if (priv->has_border)
     {
-      glColor4ub (priv->border_color.red,
-                  priv->border_color.green,
-                  priv->border_color.blue,
-                  clutter_actor_get_opacity (self));
+      tmp_col.red   = priv->border_color.red;
+      tmp_col.green = priv->border_color.green;
+      tmp_col.blue  = priv->border_color.blue;
+      tmp_col.alpha = clutter_actor_get_opacity (self);
+
+      cogl_color (&tmp_col);
 
       /* this sucks, but it's the only way to make a border */
-      glRecti (0, 0,
-               geom.width, priv->border_width);
-      glRecti (geom.width - priv->border_width, priv->border_width,
-               geom.width, geom.height - priv->border_width);
-      glRecti (0, geom.height - priv->border_width,
-               geom.width, geom.height);
-      glRecti (0, priv->border_width,
-               priv->border_width, geom.height - priv->border_width);
-      
-      glColor4ub (priv->color.red,
-	          priv->color.green,
-	          priv->color.blue, 
-	          clutter_actor_get_opacity (self));
+      cogl_rectangle (0, 0,
+		      geom.width, priv->border_width);
+      cogl_rectangle (geom.width - priv->border_width, priv->border_width,
+		      geom.width, geom.height - priv->border_width);
+      cogl_rectangle (0, geom.height - priv->border_width,
+		      geom.width, geom.height);
+      cogl_rectangle (0, priv->border_width,
+		      priv->border_width, geom.height - priv->border_width);
 
-      glRecti (priv->border_width,
-               priv->border_width,
-               geom.width - priv->border_width,
-               geom.height - priv->border_width);
+      tmp_col.red   = priv->color.red;
+      tmp_col.green = priv->color.green;
+      tmp_col.blue  = priv->color.blue;
+
+      cogl_color (&tmp_col);
+
+      cogl_rectangle (priv->border_width,
+		      priv->border_width,
+		      geom.width - priv->border_width,
+		      geom.height - priv->border_width);
     }
   else
     {
-      glColor4ub (priv->color.red,
-	          priv->color.green,
-	          priv->color.blue, 
-	          clutter_actor_get_opacity (self));
-      
-      glRecti (0, 0, geom.width, geom.height);
+      tmp_col.red   = priv->color.red;
+      tmp_col.green = priv->color.green;
+      tmp_col.blue  = priv->color.blue;
+      tmp_col.alpha = clutter_actor_get_opacity (self);
+
+      cogl_color (&tmp_col);
+
+      cogl_rectangle (0, 0, geom.width, geom.height);
     }
 
-  glDisable(GL_BLEND);
-
-  glPopMatrix();
+  cogl_push_matrix();
 }
 
 static void

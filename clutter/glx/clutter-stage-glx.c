@@ -36,6 +36,8 @@
 #include "../clutter-private.h"
 #include "../clutter-debug.h"
 
+#include "cogl.h"
+
 #ifdef HAVE_XFIXES
 #include <X11/extensions/Xfixes.h>
 #endif
@@ -319,14 +321,7 @@ clutter_stage_glx_paint (ClutterActor *self)
 
   clutter_stage_get_color (stage, &stage_color);
 
-  /* FIXME: move below into cogl_paint_start() ? */
-  glClearColor (((float) stage_color.red / 0xff * 1.0),
-	        ((float) stage_color.green / 0xff * 1.0),
-	        ((float) stage_color.blue / 0xff * 1.0),
-	        0.0);
-  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-  glDisable (GL_LIGHTING); 
-  glDisable (GL_DEPTH_TEST);
+  cogl_paint_init (&stage_color);
 
   /* chain up to reach ClutterGroup->paint here */
   CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->paint (self);
