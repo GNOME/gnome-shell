@@ -23,6 +23,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <GLES/gl.h>
+
 #ifndef __COGL_DEFINES_H__
 #define __COGL_DEFINES_H__
 
@@ -434,6 +436,15 @@ G_BEGIN_DECLS
 #define CGL_WEIGHT_ARRAY_POINTER_OES GL_WEIGHT_ARRAY_POINTER_OES
 #define CGL_WEIGHT_ARRAY_BUFFER_BINDING_OES GL_WEIGHT_ARRAY_BUFFER_BINDING_OES
 #define CGL_TEXTURE_CROP_RECT_OES GL_TEXTURE_CROP_RECT_OES
+
+typedef GLenum COGLenum;
+typedef GLint  COGLint;
+
+/* extras */
+
+#define CGL_TEXTURE_2D GL_TEXTURE_2D
+#define CGL_ARGB GL_ARGB
+#define CGL_TEXTURE_RECTANGLE_ARB 0 /* Its unlikely we support this */
 
 G_END_DECLS
 
