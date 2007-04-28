@@ -48,6 +48,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 
 #define CFX_Q      16		/* Decimal part size in bits */
 #define CFX_ONE    (1 << CFX_Q)	/* 1 */
+#define CFX_HALF   32768
 #define CFX_MAX    0x7fffffff
 #define CFX_MIN    0x80000000
 

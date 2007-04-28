@@ -14,7 +14,8 @@ typedef enum {
   CLUTTER_DEBUG_GL              = 1 << 5,
   CLUTTER_DEBUG_ALPHA           = 1 << 6,
   CLUTTER_DEBUG_BEHAVIOUR       = 1 << 7,
-  CLUTTER_DEBUG_PANGO           = 1 << 8
+  CLUTTER_DEBUG_PANGO           = 1 << 8,
+  CLUTTER_DEBUG_BACKEND         = 1 << 9
 } ClutterDebugFlag;
 
 #ifdef CLUTTER_ENABLE_DEBUG

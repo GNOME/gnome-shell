@@ -130,7 +130,7 @@ case $clutterbackend in
     AC_DEFINE([HAVE_CLUTTER_EGL], 1, [Have the EGL backend])
 
     # We currently assume having egl means also having gles..
-    CLUTTER_GOGL="gles"
+    CLUTTER_COGL="gles"
     AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
 
     PKG_CHECK_MODULES(EGL, libvincent, HAVE_OGLES=yes, HAVE_OGLES=no)

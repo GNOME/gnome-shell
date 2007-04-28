@@ -27,6 +27,9 @@
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 
+#include <GLES/gl.h>
+#include <GLES/egl.h>
+
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_BACKEND_EGL                (clutter_backend_egl_get_type ())
@@ -48,6 +51,10 @@ struct _ClutterBackendEgl
   Window   xwin_root;
   int      xscreen_num;
   Screen  *xscreen;
+
+  /* EGL Specific */
+  EGLDisplay edpy;
+  gint       egl_version_major, egl_version_minor;
 
   /* main stage singleton */
   ClutterActor *stage;

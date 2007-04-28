@@ -339,8 +339,10 @@ draw_glyph (PangoRenderer *renderer_,
           _pango_clutter_font_set_cache_glyph_data (font, glyph, g);
         }
 
+      /*
       if (renderer->curtex)
         glEnd ();
+      */
 
       tc_get (&g->tex, bm.width, bm.height);
 
@@ -364,7 +366,7 @@ draw_glyph (PangoRenderer *renderer_,
 				 bm.bitmap);
 
       renderer->curtex = g->tex.name;
-      glBegin (GL_QUADS);
+      /* glBegin (GL_QUADS); */
     }
   else CLUTTER_NOTE (PANGO, g_message ("cache succsess %i\n", glyph));
 

@@ -59,6 +59,8 @@ clutter_backend_egl_post_parse (ClutterBackend  *backend,
 
   if (backend_egl->xdpy)
     {
+      EGLBoolean status;
+
       CLUTTER_NOTE (MISC, "Getting the X screen");
 
       if (clutter_screen == 0)
@@ -73,22 +75,40 @@ clutter_backend_egl_post_parse (ClutterBackend  *backend,
       
       backend_egl->display_name = g_strdup (clutter_display_name);
 
+      backend_egl->edpy = eglGetDisplay(backend_egl->xdpy);
+
+      status = eglInitialize(backend_egl->edpy, 
+			     &backend_egl->egl_version_major, 
+			     &backend_egl->egl_version_minor);
+
+      if (status != EGL_TRUE)
+	{
+	  g_set_error (error, CLUTTER_INIT_ERROR,
+		       CLUTTER_INIT_ERROR_BACKEND,
+		       "Unable to Initialize EGL");
+	  return FALSE;
+	}
+
       /* generic backend properties */
       backend->res_width = WidthOfScreen (backend_egl->xscreen);
       backend->res_height = HeightOfScreen (backend_egl->xscreen);
       backend->mm_width = WidthMMOfScreen (backend_egl->xscreen);
       backend->mm_height = HeightMMOfScreen (backend_egl->xscreen);
       backend->screen_num = backend_egl->xscreen_num;
-      backend->n_screens = ScreenCount (backend_egl->xdpy)
+      backend->n_screens = ScreenCount (backend_egl->xdpy);
     }
 
   g_free (clutter_display_name);
   
-  CLUTTER_NOTE (MISC, "X Display `%s' [%p] opened (screen:%d, root:%u)",
+  CLUTTER_NOTE (BACKEND, "X Display `%s' [%p] opened (screen:%d, root:%u)",
                 backend_egl->display_name,
                 backend_egl->xdpy,
                 backend_egl->xscreen_num,
                 (unsigned int) backend_egl->xwin_root);
+
+  CLUTTER_NOTE (BACKEND, "EGL Reports version %i.%i",
+		backend_egl->egl_version_major, 
+		backend_egl->egl_version_minor);
 
   return TRUE;
 }
@@ -164,7 +184,9 @@ clutter_backend_egl_add_options (ClutterBackend *backend,
 static ClutterActor *
 clutter_backend_egl_get_stage (ClutterBackend *backend)
 {
-  return NULL;
+  ClutterBackendEgl *backend_egl = CLUTTER_BACKEND_EGL (backend);
+
+  return backend_egl->stage;
 }
 
 static void
@@ -245,6 +267,7 @@ static void
 clutter_backend_egl_init (ClutterBackendEgl *backend_egl)
 {
   ClutterBackend *backend = CLUTTER_BACKEND (backend_egl);
+
   backend->events_queue = g_queue_new ();
 
   backend->button_click_time[0] = backend->button_click_time[1] = 0;
@@ -258,7 +281,7 @@ clutter_backend_egl_init (ClutterBackendEgl *backend_egl)
   backend->n_screens = 0;
 
   backend->double_click_time = 250;
-  backend->double_click_distance = 5
+  backend->double_click_distance = 5;
 }
 
 GType

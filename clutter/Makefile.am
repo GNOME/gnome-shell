@@ -158,7 +158,7 @@ source_h_priv = \
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LIBADD =   \
   $(CLUTTER_LIBS) pango/libpangoclutter.la                       \
   @CLUTTER_FLAVOUR@/libclutter-@CLUTTER_FLAVOUR@.la              \
-  cogl/gl/libclutter-cogl.la	  
+  cogl/@CLUTTER_COGL@/libclutter-cogl.la	  
 
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_SOURCES =  \
   $(source_c) $(source_h) $(source_h_priv)                      

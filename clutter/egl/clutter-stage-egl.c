@@ -91,7 +91,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
 
   gboolean is_offscreen;
 
-  CLUTTER_NOTE (MISC, "Realizing main stage");
+  CLUTTER_NOTE (BACKEND, "Realizing main stage");
 
   g_object_get (actor, "offscreen", &is_offscreen, NULL);
 
@@ -116,16 +116,21 @@ clutter_stage_egl_realize (ClutterActor *actor)
 				configs, 
 				sizeof configs / sizeof configs[0], 
 				&config_count);
+
+      if (status != EGL_TRUE)
+	g_warning ("eglChooseConfig");		
       
       if (stage_egl->xwin == None)
-	stage_egl->xwin = XCreateSimpleWindow(clutter_egl_get_default_display(),
-					    clutter_egl_get_default_root_window(),
-					    0, 0,
-					    stage_egl->xwin_width, 
-					    stage_egl->xwin_height,
-					    0, 0, 
-					    WhitePixel(clutter_egl_get_default_display(), 
-						       clutter_egl_get_default_screen()));
+	stage_egl->xwin 
+	  = XCreateSimpleWindow(clutter_egl_get_default_display(),
+				clutter_egl_get_default_root_window(),
+				0, 0,
+				stage_egl->xwin_width, 
+				stage_egl->xwin_height,
+				0, 0, 
+				WhitePixel(clutter_egl_get_default_display(), 
+					   clutter_egl_get_default_screen()));
+
       XSelectInput(clutter_egl_get_default_display(), 
 		   stage_egl->xwin, 
 		   StructureNotifyMask
@@ -149,6 +154,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
 				  configs[0], 
 				  (NativeWindowType)stage_egl->xwin, 
 				  NULL);
+
       if (stage_egl->egl_surface == EGL_NO_SURFACE)
 	g_warning ("eglCreateWindowSurface");
       
@@ -168,6 +174,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
       if (status != EGL_TRUE)
 	g_warning ("eglMakeCurrent");		
 
+      
     }
   else
     {
@@ -196,15 +203,7 @@ clutter_stage_egl_paint (ClutterActor *self)
 
   clutter_stage_get_color (stage, &stage_color);
 
-  /* FIXME: move below into cogl_paint_start() ? */
-  glClearColorx ((stage_color.red << 16) / 0xff, 
-		 (stage_color.green << 16) / 0xff,
-		 (stage_color.blue << 16) / 0xff, 
-		 0xff);
-
-  glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-  glDisable (GL_LIGHTING); 
-  glDisable (GL_DEPTH_TEST);
+  cogl_paint_init (&stage_color);
 
   /* Basically call up to ClutterGroup paint here */
   CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->paint (self);
@@ -215,8 +214,7 @@ clutter_stage_egl_paint (ClutterActor *self)
   if (stage_egl->xwin)
     {
       clutter_feature_wait_for_vblank ();
-      eglSwapBuffers ((EGLDisplay)stage_egl->xdpy, 
-		      (EGLSurface)stage_egl->xwin);
+      eglSwapBuffers ((EGLDisplay)stage_egl->xdpy,  stage_egl->egl_surface);
     }
   else
     {

@@ -66,6 +66,7 @@ static const GDebugKey clutter_debug_keys[] = {
   { "alpha", CLUTTER_DEBUG_ALPHA },
   { "behaviour", CLUTTER_DEBUG_BEHAVIOUR },
   { "pango", CLUTTER_DEBUG_PANGO },
+  { "backend", CLUTTER_DEBUG_BACKEND },
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
 
@@ -614,13 +615,17 @@ clutter_init (int    *argc,
   g_type_init ();
 
   if (clutter_parse_args (argc, argv) == FALSE)
-    return CLUTTER_INIT_ERROR_INTERNAL;
+    {
+      CLUTTER_NOTE (MISC, "failed to parse arguments.");
+      return CLUTTER_INIT_ERROR_INTERNAL;
+    }
 
   context = clutter_context_get_default ();
 
   stage_error = NULL;
   if (!_clutter_backend_init_stage (context->backend, &stage_error))
     {
+      CLUTTER_NOTE (MISC, "stage failed to initialise.");
       g_critical (stage_error->message);
       g_error_free (stage_error);
       return CLUTTER_INIT_ERROR_INTERNAL;

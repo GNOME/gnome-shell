@@ -1,3 +1,24 @@
+2007-04-28  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/Makefile.am:
+	* clutter/clutter-debug.h:
+	* clutter/clutter-fixed.h:
+	* clutter/clutter-main.c:
+	* clutter/cogl/gles/Makefile.am:
+	* clutter/cogl/gles/cogl-defines.h:
+	* clutter/cogl/gles/cogl.c:
+	* clutter/egl/clutter-backend-egl.c:
+	* clutter/egl/clutter-backend-egl.h:
+	* clutter/egl/clutter-stage-egl.c:
+	* configure.ac:
+	Populate most stubs for cogl GL/ES implementation.
+	(against vincent - see http://svn.o-hand.com/repos/misc/ogles)
+	Add various fixups to EGL backend.
+	Code builds and runs (on 16bpp) but yet displays much (is close!)
+
+	* clutter/pango/pangoclutter-render.c:
+	comment out some rouge glBegin/end calls.	
+
 2007-04-27  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/Makefile.am:
