@@ -34,6 +34,7 @@
 #include "clutter-timeline.h"
 #include "clutter-behaviour.h"
 #include "clutter-behaviour-bspline.h"
+#include "clutter-behaviour-ellipse.h"
 #include "clutter-behaviour-opacity.h"
 #include "clutter-behaviour-path.h"
 #include "clutter-behaviour-rotate.h"

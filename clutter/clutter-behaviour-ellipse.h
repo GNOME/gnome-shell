@@ -5,7 +5,7 @@
  *
  * Authored By Tomas Frydrych  <tf@openedhand.com>
  *
- * Copyright (C) 2006, 2007 OpenedHand
+ * Copyright (C) 2007 OpenedHand
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,7 +29,6 @@
 #include <clutter/clutter-alpha.h>
 #include <clutter/clutter-actor.h>
 #include <clutter/clutter-behaviour.h>
-#include <clutter/clutter-behaviour-rotate.h>
 
 G_BEGIN_DECLS
 
@@ -82,18 +81,37 @@ struct _ClutterBehaviourEllipseClass
 
 GType clutter_behaviour_ellipse_get_type (void) G_GNUC_CONST;
 
-ClutterBehaviour *clutter_behaviour_ellipse_new         (ClutterAlpha               *alpha,
-							 ClutterKnot * center,
-							 gint width,
-							 gint height,
-							 ClutterAngle start,
-							 ClutterAngle end,
-							 ClutterRotateDirection dir);
+ClutterBehaviour *clutter_behaviour_ellipse_new             (ClutterAlpha               * alpha,
+							     ClutterKnot                * center,
+							     gint width,
+							     gint height,
+							     ClutterAngle                 start,
+							     ClutterAngle                 end);
 
-void              clutter_behaviour_ellipse_set_center  (ClutterBehaviourEllipse     *self,
-							 ClutterKnot                *knot);
-void              clutter_behaviour_ellipse_get_center  (ClutterBehaviourEllipse     *bs,
-							 ClutterKnot                *knot);
+void              clutter_behaviour_ellipse_set_center      (ClutterBehaviourEllipse    * self,
+							     ClutterKnot                * knot);
+void              clutter_behaviour_ellipse_get_center      (ClutterBehaviourEllipse    * bs,
+							     ClutterKnot                * knot);
+
+void              clutter_behaviour_ellipse_set_width       (ClutterBehaviourEllipse    * self,
+							     gint                         width);
+
+gint              clutter_behaviour_ellipse_get_width       (ClutterBehaviourEllipse    * self);
+
+void              clutter_behaviour_ellipse_set_height      (ClutterBehaviourEllipse    * self,
+							     gint                         height);
+
+gint              clutter_behaviour_ellipse_get_height      (ClutterBehaviourEllipse    * self);
+
+void              clutter_behaviour_ellipse_set_angle_begin (ClutterBehaviourEllipse    * self,
+							     ClutterAngle                 angle_begin);
+
+ClutterAngle      clutter_behaviour_ellipse_get_angle_begin (ClutterBehaviourEllipse    * self);
+
+void              clutter_behaviour_ellipse_set_angle_end   (ClutterBehaviourEllipse    * self,
+							     ClutterAngle                 angle_end);
+
+ClutterAngle      clutter_behaviour_ellipse_get_angle_end   (ClutterBehaviourEllipse    * self);
 
 G_END_DECLS
 

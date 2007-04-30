@@ -80,6 +80,7 @@
     <xi:include href="xml/clutter-alpha.xml"/>
     <xi:include href="xml/clutter-behaviour.xml"/>
     <xi:include href="xml/clutter-behaviour-bspline.xml"/>
+    <xi:include href="xml/clutter-behaviour-ellipse.xml"/>
     <xi:include href="xml/clutter-behaviour-opacity.xml"/>
     <xi:include href="xml/clutter-behaviour-path.xml"/>
     <xi:include href="xml/clutter-behaviour-rotate.xml"/>
