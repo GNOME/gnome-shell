@@ -1,3 +1,25 @@
+2007-04-30  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-fixed.c (clutter_sini):
+	Fixed bug in reducing angle to 0-2pi.
+
+	* clutter/clutter-behaviour-ellipse.h:
+	* clutter/clutter-behaviour-ellipse.c:
+	* clutter/clutter.h:
+	* clutter/Makefile.am:
+	* doc/clutter.types:
+	* doc/clutter-docs.sgml:
+	Added ClutterBehaviourEllipse for movement along
+	elliptic paths.
+
+	* examples/bspline.c:
+	* examples/behave.c:
+	* examples/Makefile.am:
+	Added --path commandline option to behave to choose different
+	path types (poly, ellipse, bspline) and dropped bspline example.
+	
+	
+	
 2007-04-28  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/Makefile.am:
