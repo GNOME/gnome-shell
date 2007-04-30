@@ -222,7 +222,7 @@ clutter_sini (ClutterAngle angle)
     }
     
     /* reduce to <0, 2*pi) */
-    angle &= 0x7ff;
+    angle &= 0x3ff;
     
     /* reduce to first quadrant and sign */
     if (angle > 512)
