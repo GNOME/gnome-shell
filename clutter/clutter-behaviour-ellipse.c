@@ -107,8 +107,10 @@ clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse * e,
   knot->x = CFX_INT (e->priv->a * clutter_cosi (angle));
   knot->y = CFX_INT (e->priv->b * clutter_sini (angle));
 
+#if 0
    g_debug ("advancing to angle %d [%d, %d] (a: %d, b: %d)", 
             angle, knot->x, knot->y, e->priv->a, e->priv->b);
+#endif
 }
 
 
