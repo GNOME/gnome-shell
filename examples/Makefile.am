@@ -1,4 +1,4 @@
-noinst_PROGRAMS = test super-oh behave test-text bspline
+noinst_PROGRAMS = test super-oh behave test-text
 
 INCLUDES = -I$(top_srcdir)/
 LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.la
@@ -24,12 +24,6 @@ behave_LDFLAGS = \
 test_text_SOURCES = test-text.c
 test_text_CFLAGS = $(CLUTTER_CFLAGS) $(GCONF_CFLAGS)
 test_text_LDFLAGS = \
-    $(CLUTTER_LIBS) \
-    $(GCONF_LIBS) 
-
-bspline_SOURCES = bspline.c
-bspline_CFLAGS = $(CLUTTER_CFLAGS) $(GCONF_CFLAGS)
-bspline_LDFLAGS = \
     $(CLUTTER_LIBS) \
     $(GCONF_LIBS) 
 

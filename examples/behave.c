@@ -33,6 +33,15 @@ scroll_event_cb (ClutterStage       *stage,
                                                  : "down");
 }
 
+typedef enum {
+    PATH_POLY,
+    PATH_ELLIPSE,
+    PATH_BSPLINE
+} path_t;
+
+#define MAGIC 0.551784
+#define RADIUS 200
+
 int
 main (int argc, char *argv[])
 {
@@ -45,10 +54,47 @@ main (int argc, char *argv[])
   ClutterColor      rect_bg_color = { 0x33, 0x22, 0x22, 0xff };
   ClutterColor      rect_border_color = { 0, 0, 0, 0 };
   GdkPixbuf        *pixbuf;
+  int               i;
+  char             *p;
+  path_t            path_type = PATH_POLY;
+  
+  ClutterKnot       knots_poly[] = {{ 0, 0 }, { 0, 300 }, { 300, 300 },
+				    { 300, 0 }, {0, 0 }};
+  
+  ClutterKnot       origin = { 200, 200 };
 
-  ClutterKnot       knots[] = {{ 0, 0 }, { 0, 300 }, { 300, 300 },
-                               { 300, 0 }, {0, 0 }};
+  ClutterKnot       knots_bspline[] = {{ -RADIUS, 0 },
+				       { -RADIUS, RADIUS*MAGIC },
+				       { -RADIUS*MAGIC, RADIUS },
+				       { 0, RADIUS },
+				       { RADIUS*MAGIC, RADIUS },
+				       { RADIUS, RADIUS*MAGIC },
+				       { RADIUS, 0 },
+				       { RADIUS, -RADIUS*MAGIC },
+				       { RADIUS*MAGIC, -RADIUS },
+				       { 0, -RADIUS },
+				       { -RADIUS*MAGIC, -RADIUS },
+				       { -RADIUS, -RADIUS*MAGIC },
+				       { -RADIUS, 0}};
 
+  for (i = 0; i < argc; ++i)
+    {
+      if (!strncmp (argv[i], "--path", 6))
+	{
+	  if (!strncmp (argv[i] + 7, "poly", 4))
+	    path_type  = PATH_POLY;
+	  else if (!strncmp (argv[i] + 7, "bspline", 7))
+	    path_type  = PATH_BSPLINE;
+	  else if (!strncmp (argv[i] + 7, "ellipse", 7))
+	    path_type  = PATH_ELLIPSE;
+	}
+      else if (!strncmp (argv[i], "--help", 6))
+	{
+	  printf ("behave [--path=poly|ellipse|bspline]\n");
+	  exit (0);
+	}
+    }
+  
   clutter_init (&argc, &argv);
 
   stage = clutter_stage_get_default ();
@@ -112,7 +158,30 @@ main (int argc, char *argv[])
   clutter_behaviour_apply (o_behave, group);
 
   /* Make a path behaviour and apply that too */
-  p_behave = clutter_behaviour_path_new (alpha, knots, 5); 
+  switch (path_type)
+    {
+    case PATH_POLY:
+      p_behave = clutter_behaviour_path_new (alpha, knots_poly, 5);
+      break;
+    case PATH_ELLIPSE:
+      p_behave =
+	clutter_behaviour_ellipse_new (alpha, &origin, 400, 300,
+				       1024, 0);
+      break;
+
+    case PATH_BSPLINE:
+      origin.x = 0;
+      origin.y = RADIUS;
+      p_behave =
+	clutter_behaviour_bspline_new (alpha, knots_bspline,
+				   sizeof (knots_bspline)/sizeof(ClutterKnot));
+
+      clutter_behaviour_bspline_set_origin (
+					CLUTTER_BEHAVIOUR_BSPLINE (p_behave),
+					&origin);
+      break;
+    }
+
   clutter_behaviour_apply (p_behave, group);
 
   /* start the timeline and thus the animations */
