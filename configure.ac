@@ -140,6 +140,10 @@ case $clutterbackend in
     
     EGL_LIBS="$EGL_LIBS $X11_LIBS"
     EGL_CFLAGS="$EGL_CFLAGS $X11_CFLAGS"
+
+#     Hack for building against dgles 
+#     EGL_CFLAGS="-I/usr/local/include -I/usr/local/include/GLES $X11_CFLAGS"
+#     EGL_LIBS="-L/usr/local/lib -lGLES_CM -legl -lSDL $X11_LIBS"
     ;;
 
   *) AC_MSG_ERROR([Invalid backend for Clutter: use glx or egl])

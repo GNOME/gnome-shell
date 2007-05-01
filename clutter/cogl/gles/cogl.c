@@ -37,6 +37,8 @@
 
 static gulong __enable_flags = 0;
 
+#define COGL_DEBUG 1
+
 #if COGL_DEBUG
 struct token_string
 {
@@ -74,6 +76,7 @@ error_string(GLenum errorCode)
 #define GE(x...) {                                               \
         GLenum err;                                              \
         (x);                                                     \
+        fprintf(stderr, "%s\n", #x);                             \
         while ((err = glGetError()) != GL_NO_ERROR) {            \
                 fprintf(stderr, "glError: %s caught at %s:%u\n", \
                                 (char *)error_string(err),       \
@@ -99,6 +102,10 @@ cogl_check_extension (const gchar *name, const gchar *ext)
 void
 cogl_paint_init (ClutterColor *color)
 {
+#if COGL_DEBUG
+  fprintf(stderr, "\n ============== Paint Start ================ \n");
+#endif
+
   glClearColorx ((color->red << 16) / 0xff, 
 		 (color->green << 16) / 0xff,
 		 (color->blue << 16) / 0xff, 
@@ -117,13 +124,13 @@ cogl_paint_init (ClutterColor *color)
 void
 cogl_push_matrix (void)
 {
-  glPushMatrix();
+  GE( glPushMatrix() );
 }
 
 void
 cogl_pop_matrix (void)
 {
-  glPopMatrix();
+  GE( glPopMatrix() );
 }
 
 void
@@ -174,26 +181,26 @@ cogl_enable (gulong flags)
     {
       if (!(__enable_flags & CGL_ENABLE_BLEND))
 	{
-	  glEnable (GL_BLEND);
-	  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	  GE( glEnable (GL_BLEND) );
+	  GE( glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) );
 	}
       __enable_flags |= CGL_ENABLE_BLEND;
     }
   else if (__enable_flags & CGL_ENABLE_BLEND)
     {
-      glDisable (GL_BLEND);
+      GE( glDisable (GL_BLEND) );
       __enable_flags &= ~CGL_ENABLE_BLEND;
     }
 
   if (flags & CGL_ENABLE_TEXTURE_2D)
     {
       if (!(__enable_flags & CGL_ENABLE_TEXTURE_2D))
-	glEnable (GL_TEXTURE_2D);
+	GE( glEnable (GL_TEXTURE_2D) );
       __enable_flags |= CGL_ENABLE_TEXTURE_2D;
     }
   else if (__enable_flags & CGL_ENABLE_TEXTURE_2D)
     {
-      glDisable (GL_TEXTURE_2D);
+      GE( glDisable (GL_TEXTURE_2D) );
       __enable_flags &= ~CGL_ENABLE_TEXTURE_2D;
     }
 
@@ -229,13 +236,10 @@ cogl_enable (gulong flags)
 void
 cogl_color (ClutterColor *color)
 {
-#define FIX(x) CFX_DIV(CLUTTER_INT_TO_FIXED(x), CFX_255)
-
-  GE( glColor4x (FIX(color->red), 
-		 FIX(color->green), 
-		 FIX(color->blue), 
-		 FIX(color->alpha)) );  
-#undef FIX
+  GE( glColor4x ((color->red << 16) / 0xff, 
+		 (color->green << 16) / 0xff,
+		 (color->blue << 16) / 0xff, 
+		 (color->alpha << 16) / 0xff) );  
 }
 
 gboolean
@@ -271,13 +275,15 @@ cogl_texture_quad (gint   x1,
 		   ClutterFixed tx2,
 		   ClutterFixed ty2)
 {
+#define FIX CLUTTER_INT_TO_FIXED
+
   GLfixed quadVerts[] = {
-    x1, y1, 0,
-    x2, y1, 0,
-    x2, y2, 0,
-    x2, y2, 0,
-    x1, y2, 0,
-    x1, y1, 0
+    FIX(x1), FIX(y1), 0,
+    FIX(x2), FIX(y1), 0,
+    FIX(x2), FIX(y2), 0,
+    FIX(x2), FIX(y2), 0,
+    FIX(x1), FIX(y2), 0,
+    FIX(x1), FIX(y1), 0
   };
 
   GLfixed quadTex[] = {
@@ -289,15 +295,15 @@ cogl_texture_quad (gint   x1,
     tx1, ty1
   };
 
-  glEnableClientState(GL_VERTEX_ARRAY);
-  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-  glVertexPointer(3, GL_FIXED, 0, quadVerts);
-  glTexCoordPointer(2, GL_FIXED, 0, quadTex);
-  
-  glDrawArrays(GL_TRIANGLES, 0, 6);
+#undef FIX
 
-  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-  glDisableClientState(GL_VERTEX_ARRAY);
+  GE( glEnableClientState(GL_VERTEX_ARRAY) );
+  GE( glEnableClientState(GL_TEXTURE_COORD_ARRAY) );
+  GE( glVertexPointer(3, GL_FIXED, 0, quadVerts) );
+  GE( glTexCoordPointer(2, GL_FIXED, 0, quadTex) );
+  GE( glDrawArrays(GL_TRIANGLES, 0, 6) );
+  GE( glDisableClientState(GL_TEXTURE_COORD_ARRAY) );
+  GE( glDisableClientState(GL_VERTEX_ARRAY) );
 }
 
 void
@@ -393,15 +399,15 @@ cogl_rectangle (gint x, gint y, guint width, guint height)
 
   GLfixed rect_verts[] = {
     FIX(x), FIX(y), 
-    FIX(x + width), FIX(y), 
-    FIX(x), FIX(y + height), 
-    FIX(x + width), FIX(y + height), 
+    FIX((x + width)), FIX(y), 
+    FIX(x), FIX((y + height)), 
+    FIX((x + width)), FIX((y + height)), 
   };
 
 #undef FIX
 
-  GE( glVertexPointer(2, GL_FIXED, 0, rect_verts) );
   GE( glEnableClientState(GL_VERTEX_ARRAY) );
+  GE( glVertexPointer(2, GL_FIXED, 0, rect_verts) );
   GE( glDrawArrays(GL_TRIANGLE_STRIP, 0, 4) );
   GE( glDisableClientState(GL_VERTEX_ARRAY) );
 }
@@ -425,6 +431,8 @@ cogl_alpha_func (COGLenum     func,
 {
   GE( glAlphaFunc (func, CLUTTER_FIXED_TO_FLOAT(ref)) );
 }
+
+
 
 /*
  * Fixed point implementation of the perspective function
@@ -465,10 +473,56 @@ cogl_perspective (ClutterAngle fovy,
   M(2,2) = c;
   M(2,3) = d;
   M(3,2) = 1 + ~CFX_ONE;
-  
+
   GE( glMultMatrixx (m) );
 #undef M
 }
+
+
+
+#if 0
+void
+cogl_perspective (ClutterAngle fovy,
+		  ClutterFixed aspect,
+		  ClutterFixed zNear,
+		  ClutterFixed zFar)
+{
+  ClutterFixed xmax, ymax;
+  ClutterFixed x, y, c, d;
+
+  GLfloat m[16];
+  
+  memset (&m[0], 0, sizeof (m));
+
+  /*
+   * Based on the original algorithm in perspective():
+   * 
+   * 1) xmin = -xmax => xmax + xmin == 0 && xmax - xmin == 2 * xmax
+   * same true for y, hence: a == 0 && b == 0;
+   *
+   * 2) When working with small numbers, we can are loosing significant
+   * precision, hence we use clutter_qmulx() here, not the fast macro.
+   */
+  ymax = clutter_qmulx (zNear, clutter_tani (fovy >> 1));
+  xmax = clutter_qmulx (ymax, aspect);
+
+  x = CFX_DIV (zNear, xmax);
+  y = CFX_DIV (zNear, ymax);
+  c = CFX_DIV (-(zFar + zNear), ( zFar - zNear));
+  d = CFX_DIV (-(clutter_qmulx (2*zFar, zNear)), (zFar - zNear));
+
+#define M(row,col)  m[col*4+row]
+  M(0,0) = CLUTTER_FIXED_TO_FLOAT (x);
+  M(1,1) = CLUTTER_FIXED_TO_FLOAT (y);
+  M(2,2) = CLUTTER_FIXED_TO_FLOAT (c);
+  M(2,3) = CLUTTER_FIXED_TO_FLOAT (d);
+  M(3,2) = -1.0F;
+  
+  GE( glMultMatrixf (m) );
+
+#undef M
+}
+#endif
 
 void
 cogl_setup_viewport (guint        width,
@@ -480,8 +534,18 @@ cogl_setup_viewport (guint        width,
 {
   GE( glViewport (0, 0, width, height) );
   
+#define NEG(x) (1 + ~(x))
+
   GE( glMatrixMode (GL_PROJECTION) );
   GE( glLoadIdentity () );
+
+  /*
+  glOrthox (0,
+            width << 16,
+            0, 
+	    height << 16,  
+	    -1 << 16, 1 << 16);
+  */
 
   cogl_perspective (fovy, aspect, z_near, z_far);
   
@@ -491,13 +555,35 @@ cogl_setup_viewport (guint        width,
   /* camera distance from screen, 0.5 * tan (FOV) */
 #define DEFAULT_Z_CAMERA 0.866025404f
 
-  GE( glTranslatex (-CFX_HALF, 
-		    -CFX_HALF, 
-		    -CLUTTER_FLOAT_TO_FIXED(DEFAULT_Z_CAMERA)) );
+
+  GE( glTranslatex (-1 << 15, 
+		    -1 << 15, 
+		    NEG(CLUTTER_FLOAT_TO_FIXED(DEFAULT_Z_CAMERA))) );
+
+  GE( glScalex ( CFX_ONE / width, 
+		 NEG(CFX_ONE) / height,
+		 CFX_ONE / width));
+
+  GE( glTranslatex (0, NEG(CFX_ONE) * height, 0) );
+
+#if 0
+  GE( glTranslatex (NEG(CFX_HALF), 
+		    NEG(CFX_HALF), 
+		    NEG(CLUTTER_FLOAT_TO_FIXED(DEFAULT_Z_CAMERA))) );
 
   GE( glScalex ( CFX_DIV(CFX_ONE, CLUTTER_INT_TO_FIXED(width)),
-		-CFX_DIV(CFX_ONE, CLUTTER_INT_TO_FIXED(height)),
+		 NEG(CFX_DIV(CFX_ONE, CLUTTER_INT_TO_FIXED(height))),
 		 CFX_DIV(CFX_ONE, CLUTTER_INT_TO_FIXED(width))) );
 
-  GE( glTranslatex (0, -CFX_DIV(CFX_ONE, CLUTTER_INT_TO_FIXED(height)), 0) );
+  GE( glTranslatex (0, NEG(CFX_MUL(CFX_ONE, CLUTTER_INT_TO_FIXED(height))), 0) );
+#endif
+
+#if 0
+  GE( glTranslatef (-0.5f, -0.5f, -DEFAULT_Z_CAMERA) );
+  GE( glScalef ( 1.0f / width, 
+     	         -1.0f / height, 
+		 1.0f / width) );
+  GE( glTranslatef (0.0f, -1.0 * height, 0.0f) );
+#endif
+
 }

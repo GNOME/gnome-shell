@@ -213,7 +213,7 @@ clutter_stage_egl_paint (ClutterActor *self)
   */
   if (stage_egl->xwin)
     {
-      clutter_feature_wait_for_vblank ();
+      /* clutter_feature_wait_for_vblank (); */
       eglSwapBuffers ((EGLDisplay)stage_egl->xdpy,  stage_egl->egl_surface);
     }
   else

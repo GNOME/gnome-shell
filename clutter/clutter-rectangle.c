@@ -384,10 +384,13 @@ clutter_rectangle_set_color (ClutterRectangle   *rectangle,
   clutter_actor_set_opacity (CLUTTER_ACTOR (rectangle),
 		  	       priv->color.alpha);
 
+#if 0
+  /* FIXME - appears to be causing border to always get drawn */
   if (clutter_color_equal (&priv->color, &priv->border_color))
     priv->has_border = FALSE;
   else
     priv->has_border = TRUE;
+#endif
 
   if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (rectangle)))
     clutter_actor_queue_redraw (CLUTTER_ACTOR (rectangle));

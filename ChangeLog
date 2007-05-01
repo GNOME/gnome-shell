@@ -1,3 +1,17 @@
+2007-05-01  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-rectangle.c:
+	Comment out color match check for now as appears to be causing
+	borders to always get pained.
+
+	* clutter/clutter-texture.h:
+	Add some format defines (unused as yet)
+
+	* clutter/cogl/gles/cogl.c:
+	* clutter/egl/clutter-stage-egl.c:
+	* configure.ac:
+	Various OpenGL ES backend related fixes and tweaks.
+
 2007-04-30  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.c (clutter_sini):
@@ -17,8 +31,6 @@
 	* examples/Makefile.am:
 	Added --path commandline option to behave to choose different
 	path types (poly, ellipse, bspline) and dropped bspline example.
-	
-	
 	
 2007-04-28  Matthew Allum  <mallum@openedhand.com>
 
