@@ -525,13 +525,16 @@ cogl_perspective (ClutterAngle fovy,
 #endif
 
 void
-cogl_setup_viewport (guint        width,
-		     guint        height,
+cogl_setup_viewport (guint         w,
+		     guint         h,
 		     ClutterAngle fovy,
 		     ClutterFixed aspect,
 		     ClutterFixed z_near,
 		     ClutterFixed z_far)
 {
+  gint width = (gint) w;
+  gint height = (gint) h;
+    
   GE( glViewport (0, 0, width, height) );
   
 #define NEG(x) (1 + ~(x))
@@ -560,12 +563,27 @@ cogl_setup_viewport (guint        width,
 		    -1 << 15, 
 		    NEG(CLUTTER_FLOAT_TO_FIXED(DEFAULT_Z_CAMERA))) );
 
+  g_debug ("TX1: %f/%f %f/%f %f/%f",
+	   CLUTTER_FIXED_TO_DOUBLE (-1 << 15), -0.5,
+	   CLUTTER_FIXED_TO_DOUBLE (-1 << 15), -0.5,
+	   CLUTTER_FIXED_TO_DOUBLE (NEG(CLUTTER_FLOAT_TO_FIXED(DEFAULT_Z_CAMERA))),
+	   -DEFAULT_Z_CAMERA);
+  
   GE( glScalex ( CFX_ONE / width, 
 		 NEG(CFX_ONE) / height,
 		 CFX_ONE / width));
 
+  g_debug ("SX: %f/%f %f/%f, w %d, h %d",
+	   CLUTTER_FIXED_TO_DOUBLE (CFX_ONE / width), 1.0f / width,
+	   CLUTTER_FIXED_TO_DOUBLE (NEG(CFX_ONE) / height), -1.0f / height,
+	   width, height);
+	   
   GE( glTranslatex (0, NEG(CFX_ONE) * height, 0) );
 
+  g_debug ("TX2: %f/%f",
+	   CLUTTER_FIXED_TO_DOUBLE (NEG(CFX_ONE) * height), 
+	   -1.0 * height);
+  
 #if 0
   GE( glTranslatex (NEG(CFX_HALF), 
 		    NEG(CFX_HALF), 
