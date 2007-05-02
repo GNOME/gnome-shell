@@ -1,3 +1,12 @@
+2007-05-02  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/cogl/gles/cogl.c:
+	Fix rotation + other fixed point cleanups. 
+
+	* clutter/clutter-texture.h:
+	Sketch out an updated API.
+
 2007-05-01  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-rectangle.c:

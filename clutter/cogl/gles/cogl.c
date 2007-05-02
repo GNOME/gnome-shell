@@ -37,7 +37,7 @@
 
 static gulong __enable_flags = 0;
 
-#define COGL_DEBUG 1
+#define COGL_DEBUG 0
 
 #if COGL_DEBUG
 struct token_string
@@ -249,6 +249,7 @@ cogl_texture_can_size (COGLenum pixel_format,
 		       int    height)
 {
   GLint new_width = 0;
+
 
   /* FIXME */
   return TRUE;
@@ -478,52 +479,6 @@ cogl_perspective (ClutterAngle fovy,
 #undef M
 }
 
-
-
-#if 0
-void
-cogl_perspective (ClutterAngle fovy,
-		  ClutterFixed aspect,
-		  ClutterFixed zNear,
-		  ClutterFixed zFar)
-{
-  ClutterFixed xmax, ymax;
-  ClutterFixed x, y, c, d;
-
-  GLfloat m[16];
-  
-  memset (&m[0], 0, sizeof (m));
-
-  /*
-   * Based on the original algorithm in perspective():
-   * 
-   * 1) xmin = -xmax => xmax + xmin == 0 && xmax - xmin == 2 * xmax
-   * same true for y, hence: a == 0 && b == 0;
-   *
-   * 2) When working with small numbers, we can are loosing significant
-   * precision, hence we use clutter_qmulx() here, not the fast macro.
-   */
-  ymax = clutter_qmulx (zNear, clutter_tani (fovy >> 1));
-  xmax = clutter_qmulx (ymax, aspect);
-
-  x = CFX_DIV (zNear, xmax);
-  y = CFX_DIV (zNear, ymax);
-  c = CFX_DIV (-(zFar + zNear), ( zFar - zNear));
-  d = CFX_DIV (-(clutter_qmulx (2*zFar, zNear)), (zFar - zNear));
-
-#define M(row,col)  m[col*4+row]
-  M(0,0) = CLUTTER_FIXED_TO_FLOAT (x);
-  M(1,1) = CLUTTER_FIXED_TO_FLOAT (y);
-  M(2,2) = CLUTTER_FIXED_TO_FLOAT (c);
-  M(2,3) = CLUTTER_FIXED_TO_FLOAT (d);
-  M(3,2) = -1.0F;
-  
-  GE( glMultMatrixf (m) );
-
-#undef M
-}
-#endif
-
 void
 cogl_setup_viewport (guint         w,
 		     guint         h,
@@ -536,18 +491,11 @@ cogl_setup_viewport (guint         w,
   gint height = (gint) h;
     
   GE( glViewport (0, 0, width, height) );
-  
-#define NEG(x) (1 + ~(x))
-
   GE( glMatrixMode (GL_PROJECTION) );
   GE( glLoadIdentity () );
 
-  /*
-  glOrthox (0,
-            width << 16,
-            0, 
-	    height << 16,  
-	    -1 << 16, 1 << 16);
+  /* For Ortho projection.
+   * glOrthox (0, width << 16, 0,  height << 16,  -1 << 16, 1 << 16);
   */
 
   cogl_perspective (fovy, aspect, z_near, z_far);
@@ -558,50 +506,14 @@ cogl_setup_viewport (guint         w,
   /* camera distance from screen, 0.5 * tan (FOV) */
 #define DEFAULT_Z_CAMERA 0.866025404f
 
-
   GE( glTranslatex (-1 << 15, 
 		    -1 << 15, 
-		    NEG(CLUTTER_FLOAT_TO_FIXED(DEFAULT_Z_CAMERA))) );
+		    -CLUTTER_FLOAT_TO_FIXED(DEFAULT_Z_CAMERA)) );
 
-  g_debug ("TX1: %f/%f %f/%f %f/%f",
-	   CLUTTER_FIXED_TO_DOUBLE (-1 << 15), -0.5,
-	   CLUTTER_FIXED_TO_DOUBLE (-1 << 15), -0.5,
-	   CLUTTER_FIXED_TO_DOUBLE (NEG(CLUTTER_FLOAT_TO_FIXED(DEFAULT_Z_CAMERA))),
-	   -DEFAULT_Z_CAMERA);
-  
   GE( glScalex ( CFX_ONE / width, 
-		 NEG(CFX_ONE) / height,
+		 -CFX_ONE / height,
 		 CFX_ONE / width));
 
-  g_debug ("SX: %f/%f %f/%f, w %d, h %d",
-	   CLUTTER_FIXED_TO_DOUBLE (CFX_ONE / width), 1.0f / width,
-	   CLUTTER_FIXED_TO_DOUBLE (NEG(CFX_ONE) / height), -1.0f / height,
-	   width, height);
-	   
-  GE( glTranslatex (0, NEG(CFX_ONE) * height, 0) );
-
-  g_debug ("TX2: %f/%f",
-	   CLUTTER_FIXED_TO_DOUBLE (NEG(CFX_ONE) * height), 
-	   -1.0 * height);
-  
-#if 0
-  GE( glTranslatex (NEG(CFX_HALF), 
-		    NEG(CFX_HALF), 
-		    NEG(CLUTTER_FLOAT_TO_FIXED(DEFAULT_Z_CAMERA))) );
-
-  GE( glScalex ( CFX_DIV(CFX_ONE, CLUTTER_INT_TO_FIXED(width)),
-		 NEG(CFX_DIV(CFX_ONE, CLUTTER_INT_TO_FIXED(height))),
-		 CFX_DIV(CFX_ONE, CLUTTER_INT_TO_FIXED(width))) );
-
-  GE( glTranslatex (0, NEG(CFX_MUL(CFX_ONE, CLUTTER_INT_TO_FIXED(height))), 0) );
-#endif
-
-#if 0
-  GE( glTranslatef (-0.5f, -0.5f, -DEFAULT_Z_CAMERA) );
-  GE( glScalef ( 1.0f / width, 
-     	         -1.0f / height, 
-		 1.0f / width) );
-  GE( glTranslatef (0.0f, -1.0 * height, 0.0f) );
-#endif
+  GE( glTranslatex (0, -CFX_ONE * height, 0) );
 
 }

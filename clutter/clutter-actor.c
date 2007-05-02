@@ -299,6 +299,8 @@ clutter_actor_paint (ClutterActor *self)
 
   cogl_push_matrix();
 
+#define NEG(x) (1 + ~(x))
+
 #if CLUTTER_COGL_GL
   glLoadName (clutter_actor_get_id (self));
 #endif
@@ -312,45 +314,27 @@ clutter_actor_paint (ClutterActor *self)
 
   if (self->priv->rzang)
     {
-      cogl_translatex (priv->rzx,
-		       priv->rzy,
-		       0);
-
+      cogl_translate (priv->rzx, priv->rzy, 0);
       cogl_rotatex (priv->rzang, 0, 0, CFX_ONE);
-
-      cogl_translatex (-1. * priv->rzx,
-		       -1. * priv->rzy,
-		       0);
+      cogl_translate (-priv->rzx, -priv->rzy, 0);
     }
 
   if (self->priv->ryang)
     {
-      cogl_translatex (priv->ryx,
-		       0,
-		       CLUTTER_INT_TO_FIXED (priv->z) + priv->ryz);
-
+      cogl_translate (priv->ryx, 0, priv->z + priv->ryz);
       cogl_rotatex (priv->ryang, 0, CFX_ONE, 0);
-
-      cogl_translatex (- priv->ryx,
-		       0.0,
-		       CLUTTER_INT_TO_FIXED(-priv->z) - priv->ryz);
+      cogl_translate (-priv->ryx, 0, -(priv->z + priv->ryz));
     }
 
   if (self->priv->rxang)
     {
-      cogl_translatex (0,
-		       priv->rxy,
-		       CLUTTER_INT_TO_FIXED(priv->z) + priv->rxz);
-
+      cogl_translate (0, priv->rxy, priv->z + priv->rxz);
       cogl_rotatex (priv->rxang, CFX_ONE, 0, CFX_ONE);
-
-      cogl_translatex (0,
-		       - priv->rxy,
-		       CLUTTER_INT_TO_FIXED(-priv->z) - priv->rxz);
+      cogl_translate (0, -priv->rxy, -(priv->z - priv->rxz));
     }
 
   if (self->priv->z)
-    glTranslatef (0.0, 0.0, (float) priv->z);
+    cogl_translate (0, 0, priv->z);
 
   if (self->priv->scale_x != CFX_ONE ||
       self->priv->scale_y != CFX_ONE)

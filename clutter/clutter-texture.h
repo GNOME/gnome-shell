@@ -31,12 +31,39 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TEXTURE_FORMAT_RGB  1
-#define CLUTTER_TEXTURE_FORMAT_RGBA 2
-#define CLUTTER_TEXTURE_FORMAT_BGR  3
-#define CLUTTER_TEXTURE_FORMAT_BGRA 4
-#define CLUTTER_TEXTURE_FORMAT_YUV  5
-#define CLUTTER_TEXTURE_FORMAT_YUV2 6
+#if 0
+
+/* New API Ideas */
+
+#define CLUTTER_TEXTURE_RGB_FLAG_BRGA    (1<<1)
+#define CLUTTER_TEXTURE_RGB_FLAG_PREMULT (1<<2)
+
+gboolean          
+clutter_texture_set_from_rgb_data   (ClutterTexture *texture,
+				     const guchar   *data,
+				     gboolean        has_alpha,
+				     gint            width,
+				     gint            height,
+				     gint            rowstride,
+				     gint            bpp,
+				     gint            flags,
+				     GError         *error);
+
+gboolean          
+clutter_texture_set_from_yuv_data   (ClutterTexture *texture,
+				     const guchar   *data,
+				     gint            width,
+				     gint            height,
+				     gint            flags,
+				     GError         *error);
+
+Notes
+=====
+
+ - drop format and type props - would be set in GL texture automagically
+   via about calls.
+
+#endif 
 
 #define CLUTTER_TYPE_TEXTURE            (clutter_texture_get_type ())
 #define CLUTTER_TEXTURE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_TEXTURE, ClutterTexture))
