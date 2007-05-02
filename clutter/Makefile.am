@@ -2,7 +2,7 @@ NULL =
 
 SUBDIRS = cogl pango $(clutterbackend) 
 
-DIST_SUBDIRS = pango glx egl cogl
+DIST_SUBDIRS = pango glx egl cogl sdl
 
 target = $(clutterbackend)
 

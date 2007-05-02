@@ -120,8 +120,8 @@ typedef void (* ClutterEventFunc) (ClutterEvent *event,
 
 /* the event dispatcher function */
 extern ClutterEventFunc _clutter_event_func;
-extern gpointer _clutter_event_data;
-extern GDestroyNotify _clutter_event_destroy;
+extern gpointer         _clutter_event_data;
+extern GDestroyNotify   _clutter_event_destroy;
 
 void          _clutter_set_events_handler     (ClutterEventFunc   func,
                                                gpointer           data,

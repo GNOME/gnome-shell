@@ -1,5 +1,21 @@
 2007-05-02  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/Makefile.am:
+	* clutter/clutter-stage.c:
+	* clutter/sdl/Makefile.am:
+	* clutter/sdl/clutter-backend-sdl.c:
+	* clutter/sdl/clutter-backend-sdl.h:
+	* clutter/sdl/clutter-event-sdl.c:
+	* clutter/sdl/clutter-sdl.h:
+	* clutter/sdl/clutter-stage-sdl.c:
+	* clutter/sdl/clutter-stage-sdl.h:
+	* configure.ac:
+	Add a basic SDL based backend. Lacks real input event handling 
+	(translation) as yet.
+	Also allows for clutter to be built against dgles. 
+
+2007-05-02  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-actor.c:
 	* clutter/cogl/gles/cogl.c:
 	Fix rotation + other fixed point cleanups. 

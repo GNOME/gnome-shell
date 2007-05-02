@@ -95,13 +95,62 @@ fi
 
 clutterbackend=glx
 AC_ARG_WITH([flavour],
-            AC_HELP_STRING([--with-flavour=@<:@glx/egl@:>@],
+            AC_HELP_STRING([--with-flavour=@<:@glx/egl/sdl@:>@],
                            [Select the Clutter backend]),
             clutterbackend=$with_flavour)
 
-AC_SUBST([clutterbackend])
-
 case $clutterbackend in
+
+  sdl)
+    CLUTTER_FLAVOUR="sdl"
+    AC_DEFINE([HAVE_CLUTTER_SDL], 1, [Have the SDL backend])
+
+    CLUTTER_COGL="gl"
+    AC_DEFINE([HAVE_COGL_GL], 1, [Have GL for rendering])
+
+    AC_PATH_PROG(SDL_CONFIG, sdl-config)
+    if test "x$SDL_CONFIG" = "x"; then
+       AC_MSG_ERROR([[No sdl-config binary found in path and SDL flavour requested.]])
+    else
+       SDL_CFLAGS=`$SDL_CONFIG --cflags`
+       SDL_LIBS=`$SDL_CONFIG --libs`
+       AC_CHECK_HEADERS([GL/gl.h],,[AC_MSG_ERROR([Unable to locate required GL headers])])
+       AC_CHECK_LIB(GL, glEnable, HAVE_LIBGL=yes, HAVE_LIBGL=no)
+       if test "x$HAVE_LIBGL" = "xno"; then
+         AC_MSG_ERROR([libGL not found]);
+       fi
+       SDL_LIBS="$SDL_LIBS -lGL"
+     fi
+    ;;
+
+  sdles)
+#
+# Temp Hack for building with dgles (runs atop SDL)
+#
+    clutterbackend=sdl
+    CLUTTER_FLAVOUR="sdl"
+    AC_DEFINE([HAVE_CLUTTER_SDL], 1, [Have the SDL backend])
+
+    CLUTTER_COGL="gles"
+    AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL for rendering])
+
+    AC_PATH_PROG(SDL_CONFIG, sdl-config)
+    if test "x$SDL_CONFIG" = "x"; then
+       AC_MSG_ERROR([[No sdl-config binary found in path and SDL flavour requested.]])
+    else
+       SDL_CFLAGS=`$SDL_CONFIG --cflags`
+       SDL_LIBS=`$SDL_CONFIG --libs`
+     fi
+
+# FIXME: Obviously we need some real detection here
+     SDL_CFLAGS="-I/usr/local/include $SDL_CFLAGS"
+     SDL_LIBS="-L/usr/local/lib -lGLES_CM $SDL_LIBS"
+
+     AC_MSG_WARN([])
+     AC_MSG_WARN([The SDL/Open GL ES Backend is purely for experimental])
+     AC_MSG_WARN([and devlopment purposes. Do not use in production code!!])
+     AC_MSG_WARN([])
+     ;;
 
   glx)
 
@@ -114,9 +163,9 @@ case $clutterbackend in
     AC_CHECK_HEADERS([GL/gl.h GL/glx.h],,
 	         [AC_MSG_ERROR([Unable to locate required GL headers])])
 
-    AC_CHECK_LIB(GL, glXCreateContext, HAVE_LIBGL=yes, HAVE_LIBGL=no)
+    AC_CHECK_LIB(GL, glXCreateContext, HAVE_LIBGLX=yes, HAVE_LIBGLX=no)
 
-    if test "x$HAVE_LIBGL" = "xno"; then
+    if test "x$HAVE_LIBGLX" = "xno"; then
       AC_MSG_ERROR([GLX not found and GLX backend requested]);
     fi
 
@@ -141,9 +190,6 @@ case $clutterbackend in
     EGL_LIBS="$EGL_LIBS $X11_LIBS"
     EGL_CFLAGS="$EGL_CFLAGS $X11_CFLAGS"
 
-#     Hack for building against dgles 
-#     EGL_CFLAGS="-I/usr/local/include -I/usr/local/include/GLES $X11_CFLAGS"
-#     EGL_LIBS="-L/usr/local/lib -lGLES_CM -legl -lSDL $X11_LIBS"
     ;;
 
   *) AC_MSG_ERROR([Invalid backend for Clutter: use glx or egl])
@@ -151,6 +197,7 @@ case $clutterbackend in
 
 esac
 
+AC_SUBST([clutterbackend])
 AC_SUBST(CLUTTER_FLAVOUR)
 AC_SUBST(CLUTTER_COGL)
 
@@ -210,8 +257,8 @@ dnl ========================================================================
 
 AC_SUBST(GCC_FLAGS)
 
-CLUTTER_CFLAGS="$EGL_CFLAGS $GLX_CFLAGS $CLUTTER_DEPS_CFLAGS $CLUTTER_FIXED_CFLAGS"
-CLUTTER_LIBS="$EGL_LIBS $GLX_LIBS $CLUTTER_DEPS_LIBS"
+CLUTTER_CFLAGS="$SDL_CFLAGS $EGL_CFLAGS $GLX_CFLAGS $CLUTTER_DEPS_CFLAGS $CLUTTER_FIXED_CFLAGS"
+CLUTTER_LIBS="$SDL_LIBS $EGL_LIBS $GLX_LIBS $CLUTTER_DEPS_LIBS"
 
 AC_SUBST(CLUTTER_CFLAGS)
 AC_SUBST(CLUTTER_LIBS)
@@ -223,6 +270,7 @@ AC_CONFIG_FILES([
         clutter/clutter-version.h
         clutter/glx/Makefile
         clutter/egl/Makefile
+        clutter/sdl/Makefile
         clutter/cogl/Makefile
         clutter/cogl/gl/Makefile
         clutter/cogl/gles/Makefile

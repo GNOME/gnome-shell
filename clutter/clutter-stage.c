@@ -619,10 +619,12 @@ clutter_stage_snapshot (ClutterStage *stage,
 void
 _clutter_stage_sync_viewport (ClutterStage *stage)
 {
+  /* FIXME: 
+   *   Something needs to be done with this func, apps may need to
+   *   overide it and its need better integration into the backend.
+  */
   ClutterActor *actor;
   gint width, height;
-
-  /* FIXME: SHould be able to completely overide this func.. */
 
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
