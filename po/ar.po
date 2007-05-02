@@ -12,25 +12,22 @@ msgstr ""
 "Project-Id-Version: metacity.gnome-2-16\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-04-14 19:43+0100\n"
-"PO-Revision-Date: 2007-01-06 22:42+0200\n"
+"PO-Revision-Date: 2007-05-01 03:19+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: Plural-Forms: nplurals=4; plural=n==1 ? 0 : n==2 ? 1 : n>=3 && "
-"n<=10 ? 2 : 3\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 0 : n==2 ? 1 : n>=3 && n<=10 ? 2 : 3\n"
 
 #: ../src/50-metacity-desktop-key.xml.in.h:1
-#, fuzzy
 msgid "Desktop"
-msgstr "أعلى"
+msgstr "سطح المكتب"
 
 #: ../src/50-metacity-key.xml.in.h:1
-#, fuzzy
 msgid "Window Management"
-msgstr "مدير النوافذ: "
+msgstr "إدارة النوافذ"
 
 #: ../src/tools/metacity-message.c:150
 #, c-format
@@ -65,8 +62,7 @@ msgstr "خطأ أثناء القراءة من عملية عرض الحوار: %s
 
 #: ../src/delete.c:348
 #, c-format
-msgid ""
-"Error launching metacity-dialog to ask about killing an application: %s\n"
+msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "خطأ في اطلاق حوار مِتسِتي للسؤال حول قتل تطبيق: %s\n"
 
 #: ../src/delete.c:456
@@ -205,8 +201,7 @@ msgstr "فشلت قراءة دليل السِمات : %s\n"
 
 #: ../src/main.c:368
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr "لم يمكن ايجاد سِمة! تأكد من وجود %s و احتواءه على السِمات معتادة.\n"
 
 #: ../src/main.c:428
@@ -472,14 +467,12 @@ msgid "Action on title bar double-click"
 msgstr "إجراء النقر المزدوج على شريط العناوين"
 
 #: ../src/metacity.schemas.in.h:4
-#, fuzzy
 msgid "Action on title bar middle-click"
-msgstr "إجراء النقر المزدوج على شريط العناوين"
+msgstr "إجراء النقر الأوسط على شريط العناوين"
 
 #: ../src/metacity.schemas.in.h:5
-#, fuzzy
 msgid "Action on title bar right-click"
-msgstr "إجراء النقر المزدوج على شريط العناوين"
+msgstr "إجراء النقر الأيمن على شريط العناوين"
 
 #: ../src/metacity.schemas.in.h:6
 msgid "Activate window menu"
@@ -2130,13 +2123,12 @@ msgid ""
 "'minimize' which will minimize the window, and 'none' which will not do "
 "anything."
 msgstr ""
-"هذا الخيار يحدد نتائج النقر مزدوج على شريط العنواين. الخيارات الممكنة حاليا "
+"هذا الخيار يحدد نتائج النقر المزدوج على شريط العنواين. الخيارات الممكنة حاليا "
 "هي 'toggle_shaded'، مما سيخفي/يلغي إخفاء النافذة،  'toggle_maximized' مما "
 "سيكبر/يلغي تكبير النافذة، 'minimize' لإخفاء النافذة، و  'none' لعدم فعل أي "
 "شيء."
 
 #: ../src/metacity.schemas.in.h:188
-#, fuzzy
 msgid ""
 "This option determines the effects of middle-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2144,13 +2136,12 @@ msgid ""
 "'minimize' which will minimize the window, and 'none' which will not do "
 "anything."
 msgstr ""
-"هذا الخيار يحدد نتائج النقر مزدوج على شريط العنواين. الخيارات الممكنة حاليا "
+"هذا الخيار يحدد نتائج النقر الأوسط على شريط العنواين. الخيارات المقبولة حاليا "
 "هي 'toggle_shaded'، مما سيخفي/يلغي إخفاء النافذة،  'toggle_maximized' مما "
 "سيكبر/يلغي تكبير النافذة، 'minimize' لإخفاء النافذة، و  'none' لعدم فعل أي "
 "شيء."
 
 #: ../src/metacity.schemas.in.h:189
-#, fuzzy
 msgid ""
 "This option determines the effects of right-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2158,7 +2149,7 @@ msgid ""
 "'minimize' which will minimize the window, and 'none' which will not do "
 "anything."
 msgstr ""
-"هذا الخيار يحدد نتائج النقر مزدوج على شريط العنواين. الخيارات الممكنة حاليا "
+"هذا الخيار يحدد نتائج النقر الأيمن على شريط العنواين. الخيارات الممكنة حاليا "
 "هي 'toggle_shaded'، مما سيخفي/يلغي إخفاء النافذة،  'toggle_maximized' مما "
 "سيكبر/يلغي تكبير النافذة، 'minimize' لإخفاء النافذة، و  'none' لعدم فعل أي "
 "شيء."
@@ -2244,8 +2235,7 @@ msgstr "مفتاح GConf \"%s\" مضبوط لنوع غير صحيح\n"
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
-msgstr ""
-"\"%s\" الموجود في قاعدة بايانات الإعدادات ليس قيمة سليمة لمغير أزرار الفأرة\n"
+msgstr "\"%s\" الموجود في قاعدة بايانات الإعدادات ليس قيمة سليمة لمغير أزرار الفأرة\n"
 
 #: ../src/prefs.c:1104 ../src/prefs.c:1125 ../src/prefs.c:1667
 #, c-format
@@ -2328,8 +2318,7 @@ msgstr ""
 
 #: ../src/screen.c:453
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "لا يمكن الحصول على اختيار مدير النوافذ على الشاشة %d العرض \"%s\"\n"
 
 #: ../src/screen.c:511
@@ -2410,8 +2399,7 @@ msgstr "عنصر مجهول %s"
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
 "session management: %s\n"
-msgstr ""
-"خطأ عند اطلاق حوار مِتسِتي للتحذير من تطبيقات التي لا تدعم ادارة الجلسة: %s\n"
+msgstr "خطأ عند اطلاق حوار مِتسِتي للتحذير من تطبيقات التي لا تدعم ادارة الجلسة: %s\n"
 
 #: ../src/theme-parser.c:227 ../src/theme-parser.c:245
 #, c-format
@@ -2548,8 +2536,7 @@ msgstr "لا صفة \"قيمة\" على العنصر <%s>"
 
 #: ../src/theme-parser.c:1414 ../src/theme-parser.c:1428
 #: ../src/theme-parser.c:1487
-msgid ""
-"Cannot specify both button_width/button_height and aspect ratio for buttons"
+msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr "لا يمكن تخصيص button_width/button_height و نسبة الجانب للأزرار"
 
 #: ../src/theme-parser.c:1437
@@ -2837,8 +2824,7 @@ msgstr "لا يجب أن تكون صفة \"التحجيم\" على عنصر <%s>
 
 #: ../src/theme-parser.c:3639
 #, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized states"
+msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr "لا يجب أن تكون صفة \"التحجيم\" على عنصر <%s> لحالات التكبير"
 
 #: ../src/theme-parser.c:3653 ../src/theme-parser.c:3675
@@ -2882,8 +2868,7 @@ msgstr "يجب أن يكون أخرج عنصر في السِمة <metacity_theme
 
 #: ../src/theme-parser.c:3869
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "العنصر <%s> غير مسموح به داخل عنصر اسم/كاتب/تاريخ/وصف"
 
 #: ../src/theme-parser.c:3874
@@ -2893,8 +2878,7 @@ msgstr "العنصر <%s> غير مسموح به داخل عنصر <constant>"
 
 #: ../src/theme-parser.c:3886
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "العنصر <%s> غير مسموح به داخل عنصر مسافة/حد/aspect_ratio"
 
 #: ../src/theme-parser.c:3908
@@ -3233,10 +3217,8 @@ msgstr "قيمة الشفافية \"%s\" في اللون المخلوط ليست
 
 #: ../src/theme.c:1190
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-"تهيئة التظليل هي \"تظليل/اللون_الأساسي/العامل\"، \"%s\" لا يناسب التهيئة"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr "تهيئة التظليل هي \"تظليل/اللون_الأساسي/العامل\"، \"%s\" لا يناسب التهيئة"
 
 #: ../src/theme.c:1201
 #, c-format
@@ -3286,14 +3268,12 @@ msgid "Coordinate expression results in division by zero"
 msgstr "تعبير الإحداثيّات ينتُج عند القسمة على صفر"
 
 #: ../src/theme.c:1853
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "تعبير الإحداثيّاتيّات يحاول استعمال مقسوم mod على عدد فاصلة متحرّكة"
 
 #: ../src/theme.c:1909
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "تعبير الإحداثيّات له مقسوم \"%s\" بالرغم من ترقبه قاسم"
 
 #: ../src/theme.c:1918
@@ -3348,10 +3328,8 @@ msgstr ""
 
 #: ../src/theme.c:4425 ../src/theme.c:4450
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> مفقود"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> مفقود"
 
 #: ../src/theme.c:4496
 #, c-format
@@ -3375,10 +3353,8 @@ msgstr ""
 
 #: ../src/theme.c:5009 ../src/theme.c:5071 ../src/theme.c:5134
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
-"الثوابت المعرفة من طرف المستخدم يجب أن تبدأ بحروف كبيرة، \"%s\" لا يبدأ بذلك"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr "الثوابت المعرفة من طرف المستخدم يجب أن تبدأ بحروف كبيرة، \"%s\" لا يبدأ بذلك"
 
 #: ../src/theme.c:5017 ../src/theme.c:5079 ../src/theme.c:5142
 #, c-format
@@ -3479,7 +3455,6 @@ msgstr "الخاصية %s على النافذة 0x%lx تحتوي UTF-8 غير ص
 
 #: ../src/xprops.c:484
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr ""
-"الخاصية %s على النافذة 0x%lx تحتوي UTF-8 غير صحيح للعنصر %d في القائمة\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr "الخاصية %s على النافذة 0x%lx تحتوي UTF-8 غير صحيح للعنصر %d في القائمة\n"
+
