@@ -1,3 +1,15 @@
+2007-05-05  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-texture.c:
+	Fix typos with new cogl using texture code. Fixes tiled textures.
+	Add a check for max npots size.
+
+	* configure.ac:
+	* Makefile.am:
+	* tests/Makefile.am:
+	* tests/test-textures.c:
+	Add a simple texture test.	
+
 2007-05-02  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/Makefile.am:

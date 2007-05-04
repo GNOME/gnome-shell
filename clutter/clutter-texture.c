@@ -116,11 +116,14 @@ can_create_rect_arb (int    width,
 		     GLenum pixel_format,
 		     GLenum pixel_type)
 {
-  /* FIXME: How to correctly query what max size of NPOTS text can be */
-  if (width > 4096 || height > 4096)
-    return FALSE;
+#if HAVE_COGL_GL
+  gint max_size = 0;
 
-  return TRUE;
+  glGetIntegerv(GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB, &max_size);
+
+  return (max_size && width <= max_size && height <= max_size);
+#endif
+  return FALSE;
 }
 
 static int
@@ -172,8 +175,8 @@ texture_init_tiles (ClutterTexture *texture)
   x_pot = clutter_util_next_p2 (priv->width);
   y_pot = clutter_util_next_p2 (priv->height);
 
-  while (!(cogl_texture_can_size (x_pot, y_pot, 
-				  priv->pixel_format, priv->pixel_type) 
+  while (!(cogl_texture_can_size (priv->pixel_format, priv->pixel_type,
+				  x_pot, y_pot)
 	   && (x_pot - priv->width < priv->max_tile_waste) 
 	   && (y_pot - priv->height < priv->max_tile_waste)))
     {
@@ -191,6 +194,8 @@ texture_init_tiles (ClutterTexture *texture)
 	x_pot /= 2;
       else
 	y_pot /= 2;
+
+      g_return_if_fail (x_pot != 0 || y_pot != 0);
     }
   
   if (priv->x_tiles)
@@ -495,9 +500,9 @@ texture_upload_data (ClutterTexture *texture,
 	}
 #endif
 
-	cogl_texture_bind (priv->target_type, priv->tiles[0]);
+	cogl_texture_bind (priv->target_type, priv->tiles[i]);
 	
-	cogl_texture_set_alignment (priv->target_type, 4, priv->width);
+	cogl_texture_set_alignment (priv->target_type, 4, src_w);
 
 	cogl_texture_set_filters 
 	  (priv->target_type, 
@@ -1186,15 +1191,21 @@ clutter_texture_set_from_data (ClutterTexture *texture,
 				       priv->pixel_type))
 	    {
 	      /* If we cant create NPOT tex of this size fall back to tiles */
-	      priv->is_tiled = TRUE; 
+	      CLUTTER_NOTE (TEXTURE, 
+			    "Cannot make npots of size %ix%i "
+			    "falling back to tiled",
+			    priv->width,
+			    priv->height);
+
 	      priv->target_type = CGL_TEXTURE_2D;
 	    }
-	  else if (priv->target_type == CGL_TEXTURE_2D
-		   && !cogl_texture_can_size
-		                 (clutter_util_next_p2(priv->width), 
-				  clutter_util_next_p2(priv->height),
-				  priv->pixel_format, 
-				  priv->pixel_type))
+	  
+	  if (priv->target_type == CGL_TEXTURE_2D
+	      && !cogl_texture_can_size
+	                 (priv->pixel_format, 
+			  priv->pixel_type,
+			  clutter_util_next_p2(priv->width), 
+			  clutter_util_next_p2(priv->height)))
 	    { 
 	      priv->is_tiled = TRUE; 
 	    }
