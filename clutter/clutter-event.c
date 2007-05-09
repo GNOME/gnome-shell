@@ -32,10 +32,11 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
-/* main event handler */
-ClutterEventFunc _clutter_event_func    = NULL;
-gpointer         _clutter_event_data    = NULL;
-GDestroyNotify   _clutter_event_destroy = NULL;
+/* multiple button click detection */
+static guint32 button_click_time[2] = {0, 0};
+static guint32 button_number[2] = {0, -1};
+static gint    button_x[2] = {0, 0};
+static gint    button_y[2] = {0, 0};;
 
 /**
  * clutter_event_type:
@@ -320,6 +321,7 @@ clutter_event_new (ClutterEventType type)
   new_event = g_slice_new0 (ClutterEvent);
   new_event->type = new_event->any.type = type;
 
+  /* FIXME: why do we put in a hash ? */
   g_hash_table_insert (event_hash, new_event, GUINT_TO_POINTER (1));
 
   return new_event;
@@ -375,10 +377,8 @@ ClutterEvent *
 clutter_event_get (void)
 {
   ClutterMainContext *context = clutter_context_get_default ();
-  ClutterBackend *backend = context->backend;
 
-  _clutter_events_queue (backend);
-  return _clutter_event_queue_pop (backend);
+  return g_queue_pop_tail (context->events_queue);
 }
 
 /**
@@ -394,8 +394,13 @@ ClutterEvent *
 clutter_event_peek (void)
 {
   ClutterMainContext *context = clutter_context_get_default ();
+
+  g_return_val_if_fail (context != NULL, NULL);
   
-  return _clutter_event_queue_peek (context->backend);
+  if (context->events_queue == NULL)
+    return NULL;
+
+  return g_queue_peek_tail (context->events_queue);
 }
 
 /**
@@ -410,74 +415,32 @@ void
 clutter_event_put (ClutterEvent *event)
 {
   ClutterMainContext *context = clutter_context_get_default ();
-  ClutterBackend *backend = context->backend;
 
-  _clutter_event_queue_push (backend, clutter_event_copy (event));
-}
+  /* FIXME: check queue is valid */
+  g_return_if_fail (context != NULL);
 
-void
-_clutter_event_queue_push (ClutterBackend *backend,
-                           ClutterEvent   *event)
-{
-  if (!backend->events_queue)
-    backend->events_queue = g_queue_new ();
-
-  g_queue_push_head (backend->events_queue, event);
-}
-
-ClutterEvent *
-_clutter_event_queue_pop (ClutterBackend *backend)
-{
-  if (!backend->events_queue)
-    return NULL;
-
-  return g_queue_pop_tail (backend->events_queue);
-}
-
-ClutterEvent *
-_clutter_event_queue_peek (ClutterBackend *backend)
-{
-  if (!backend->events_queue)
-    return NULL;
-
-  return g_queue_peek_tail (backend->events_queue);
+  g_queue_push_head (context->events_queue, clutter_event_copy (event));
 }
 
 gboolean
-_clutter_event_queue_check_pending (ClutterBackend *backend)
+clutter_events_pending (void)
 {
-  if (!backend->events_queue)
+  ClutterMainContext *context = clutter_context_get_default ();
+
+  g_return_val_if_fail (context != NULL, FALSE);
+
+  if (!context->events_queue)
     return FALSE;
 
-  return g_queue_is_empty (backend->events_queue) == FALSE;
+  return g_queue_is_empty (context->events_queue) == FALSE;
 }
 
-void
-_clutter_set_events_handler (ClutterEventFunc func,
-                             gpointer         data,
-                             GDestroyNotify   destroy)
-{
-  if (_clutter_event_destroy)
-    (* _clutter_event_destroy) (_clutter_event_data);
+/* Backend helpers (private) */
 
-  _clutter_event_func = func;
-  _clutter_event_data = data;
-  _clutter_event_destroy = destroy;
-}
-
-void
-_clutter_synthetise_stage_state (ClutterBackend    *backend,
-                                 ClutterEvent      *event,
-                                 ClutterStageState  set_flags,
-                                 ClutterStageState  unset_flags)
-{
-
-}
-
-void
-_clutter_synthesize_click (ClutterBackend *backend,
-                           ClutterEvent   *event,
-                           gint            n_clicks)
+static void
+synthesize_click (ClutterBackend *backend,
+		  ClutterEvent   *event,
+		  gint            n_clicks)
 {
   ClutterEvent temp_event;
 
@@ -485,52 +448,58 @@ _clutter_synthesize_click (ClutterBackend *backend,
   temp_event.type = (n_clicks == 2) ? CLUTTER_2BUTTON_PRESS
                                     : CLUTTER_3BUTTON_PRESS;
 
-  clutter_backend_put_event (backend, &temp_event);
+  clutter_event_put (&temp_event);
 }
 
+/* post process a button to synthesize double clicks etc */
 void
 _clutter_event_button_generate (ClutterBackend *backend,
                                 ClutterEvent   *event)
 {
-  if ((event->button.time < (backend->button_click_time[1] + 2 * backend->double_click_time)) &&
-      (event->button.button == backend->button_number[1]) &&
-      (ABS (event->button.x - backend->button_x[1]) <= backend->double_click_distance) &&
-      (ABS (event->button.y - backend->button_y[1]) <= backend->double_click_distance))
+  guint double_click_time, double_click_distance;
+
+  double_click_distance = clutter_backend_get_double_click_distance (backend);
+  double_click_time = clutter_backend_get_double_click_time (backend);
+
+  if ((event->button.time < (button_click_time[1] + 2 * double_click_time)) 
+      && (event->button.button == button_number[1]) 
+      && (ABS (event->button.x - button_x[1]) <= double_click_distance) 
+      && (ABS (event->button.y - button_y[1]) <= double_click_distance))
     {
-      _clutter_synthesize_click (backend, event, 3);
+      synthesize_click (backend, event, 3);
             
-      backend->button_click_time[1] = 0;
-      backend->button_click_time[0] = 0;
-      backend->button_number[1] = -1;
-      backend->button_number[0] = -1;
-      backend->button_x[0] = backend->button_x[1] = 0;
-      backend->button_y[0] = backend->button_y[1] = 0;
+      button_click_time[1] = 0;
+      button_click_time[0] = 0;
+      button_number[1] = -1;
+      button_number[0] = -1;
+      button_x[0] = button_x[1] = 0;
+      button_y[0] = button_y[1] = 0;
     }
-  else if ((event->button.time < (backend->button_click_time[0] + backend->double_click_time)) &&
-      (event->button.button == backend->button_number[0]) &&
-      (ABS (event->button.x - backend->button_x[0]) <= backend->double_click_distance) &&
-      (ABS (event->button.y - backend->button_y[0]) <= backend->double_click_distance))
+  else if ((event->button.time < (button_click_time[0] + double_click_time)) &&
+      (event->button.button == button_number[0]) &&
+      (ABS (event->button.x - button_x[0]) <= double_click_distance) &&
+      (ABS (event->button.y - button_y[0]) <= double_click_distance))
     {
-      _clutter_synthesize_click (backend, event, 2);
+      synthesize_click (backend, event, 2);
       
-      backend->button_click_time[1] = backend->button_click_time[0];
-      backend->button_click_time[0] = event->button.time;
-      backend->button_number[1] = backend->button_number[0];
-      backend->button_number[0] = event->button.button;
-      backend->button_x[1] = backend->button_x[0];
-      backend->button_x[0] = event->button.x;
-      backend->button_y[1] = backend->button_y[0];
-      backend->button_y[0] = event->button.y;
+      button_click_time[1] = button_click_time[0];
+      button_click_time[0] = event->button.time;
+      button_number[1] = button_number[0];
+      button_number[0] = event->button.button;
+      button_x[1] = button_x[0];
+      button_x[0] = event->button.x;
+      button_y[1] = button_y[0];
+      button_y[0] = event->button.y;
     }
   else
     {
-      backend->button_click_time[1] = 0;
-      backend->button_click_time[0] = event->button.time;
-      backend->button_number[1] = -1;
-      backend->button_number[0] = event->button.button;
-      backend->button_x[1] = 0;
-      backend->button_x[0] = event->button.x;
-      backend->button_y[1] = 0;
-      backend->button_y[0] = event->button.y;
+      button_click_time[1] = 0;
+      button_click_time[0] = event->button.time;
+      button_number[1] = -1;
+      button_number[0] = event->button.button;
+      button_x[1] = 0;
+      button_x[0] = event->button.x;
+      button_y[1] = 0;
+      button_y[0] = event->button.y;
     }
 }

@@ -56,7 +56,7 @@ main (int argc, char *argv[])
   ClutterActor    *texture;
   ClutterActor    *stage;
   GdkPixbuf       *pixbuf;
-  gint             i, cols, rows;
+  gint             i, j, cols, rows;
 
   clutter_init (&argc, &argv);
 
@@ -66,31 +66,33 @@ main (int argc, char *argv[])
   SPIN();
 
   for (i=100; i<5000; i += 100)
-    {
-      pixbuf = make_pixbuf (i, i, 4, TRUE);
-
-      if (!pixbuf)
-	g_error("%ix%i pixbuf creation failed", i, i);
-
-      printf("o %ix%i pixbuf... ", i, i);
-
-      texture = clutter_texture_new_from_pixbuf (pixbuf);
-
-      g_object_unref (pixbuf);
-
-      if (!texture)
-	g_error("Pixbuf creation failed");
-
-      printf("uploaded to texture... ", i, i);
-
-      clutter_group_add (CLUTTER_GROUP (stage), texture);
-      clutter_actor_set_size (texture, 400, 400);
-      clutter_actor_show (texture);
-
-      clutter_texture_get_n_tiles(CLUTTER_TEXTURE(texture), &cols, &rows);
-      printf("with tiles: %i x %i\n", cols, rows);
-
-      SPIN();
+    for (j=0; j<4; j++)
+      {
+	pixbuf = make_pixbuf (i+j, i+j, 4, TRUE);
+	
+	if (!pixbuf)
+	  g_error("%ix%i pixbuf creation failed", i+j, i+j);
+	
+	printf("o %ix%i pixbuf... ", i+j, i+j);
+	
+	texture = clutter_texture_new_from_pixbuf (pixbuf);
+	
+	g_object_unref (pixbuf);
+	
+	if (!texture)
+	  g_error("Pixbuf creation failed");
+	
+	printf("uploaded to texture... ");
+	
+	clutter_group_add (CLUTTER_GROUP (stage), texture);
+	clutter_actor_set_size (texture, 400, 400);
+	clutter_actor_show (texture);
+	
+	clutter_texture_get_n_tiles(CLUTTER_TEXTURE(texture), &cols, &rows);
+	
+	printf("with tiles: %i x %i\n", cols, rows);
+	
+	SPIN();
 
       clutter_group_remove (CLUTTER_GROUP (stage), texture);
     }

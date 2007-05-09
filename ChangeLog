@@ -1,3 +1,23 @@
+2007-05-10  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-backend.c:
+	* clutter/clutter-backend.h:
+	* clutter/clutter-event.c:
+	* clutter/clutter-main.c:
+	* clutter/clutter-private.h:
+	* clutter/glx/clutter-backend-glx.c:
+	* clutter/glx/clutter-backend-glx.h:
+	* clutter/glx/clutter-event-glx.c:
+	Rejig backend event code as to simplify a little. 
+	NOTE: This breaks non glx backends.
+
+	* tests/Makefile.am:
+	* tests/test-events.c:
+	Add a very simple event test. 	
+
+	* tests/test-textures.c: (main):
+	Add some more sizes to the test.
+
 2007-05-05  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-texture.c:

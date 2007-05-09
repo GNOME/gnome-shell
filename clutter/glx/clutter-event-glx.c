@@ -103,7 +103,7 @@ clutter_event_source_new (ClutterBackend *backend)
 }
 
 static gboolean
-clutter_check_xpending (ClutterBackend *backend)
+check_xpending (ClutterBackend *backend)
 {
   return XPending (CLUTTER_BACKEND_GLX (backend)->xdpy);
 }
@@ -163,7 +163,7 @@ xembed_set_info (Display *xdisplay,
 }
 
 void
-_clutter_events_init (ClutterBackend *backend)
+_clutter_backend_glx_events_init (ClutterBackend *backend)
 {
   GSource *source;
   ClutterEventSource *event_source;
@@ -195,7 +195,7 @@ _clutter_events_init (ClutterBackend *backend)
 }
 
 void
-_clutter_events_uninit (ClutterBackend *backend)
+_clutter_backend_glx_events_uninit (ClutterBackend *backend)
 {
   ClutterBackendGlx *backend_glx = CLUTTER_BACKEND_GLX (backend);
 
@@ -229,41 +229,6 @@ set_user_time (Display *display,
                        XA_CARDINAL, 32, PropModeReplace,
                        (unsigned char *) &timestamp, 1);
     }
-}
-
-/**
- * clutter_events_pending:
- *
- * FIXME
- *
- * Return value: FIXME
- *
- * Since: 0.4
- */
-gboolean
-clutter_events_pending (void)
-{
-  GList *i;
-
-  for (i = event_sources; i != NULL; i = i->next)
-    {
-      ClutterEventSource *source = i->data;
-      ClutterBackend *backend = source->backend;
-
-      if (_clutter_event_queue_check_pending (backend))
-        return TRUE;
-    }
-
-  for (i = event_sources; i != NULL; i = i->next)
-    {
-      ClutterEventSource *source = i->data;
-      ClutterBackend *backend = source->backend;
-
-      if (clutter_check_xpending (backend))
-        return TRUE;
-    }
-
-  return FALSE;
 }
 
 static void
@@ -381,9 +346,9 @@ handle_xembed_event (ClutterBackendGlx *backend_glx,
 }
 
 static gboolean
-clutter_event_translate (ClutterBackend *backend,
-                         ClutterEvent   *event,
-                         XEvent         *xevent)
+event_translate (ClutterBackend *backend,
+		 ClutterEvent   *event,
+		 XEvent         *xevent)
 {
   ClutterBackendGlx *backend_glx;
   ClutterStage *stage;
@@ -518,32 +483,27 @@ clutter_event_translate (ClutterBackend *backend,
   return res;
 }
 
-void
-_clutter_events_queue (ClutterBackend *backend)
+static void
+events_queue (ClutterBackend *backend)
 {
   ClutterBackendGlx *backend_glx = CLUTTER_BACKEND_GLX (backend);
-  ClutterEvent *event;
-  XEvent xevent;
-  Display *xdisplay = backend_glx->xdpy;
+  ClutterEvent      *event;
+  Display           *xdisplay = backend_glx->xdpy;
+  XEvent             xevent;
+  ClutterMainContext  *clutter_context;
 
-  while (!_clutter_event_queue_check_pending (backend) && XPending (xdisplay))
+  clutter_context = clutter_context_get_default ();
+
+  while (!clutter_events_pending () && XPending (xdisplay))
     {
       XNextEvent (xdisplay, &xevent);
 
-      switch (xevent.type)
-        {
-        case KeyPress:
-        case KeyRelease:
-          break;
-        default:
-          if (XFilterEvent (&xevent, None))
-            continue;
-        }
-
       event = clutter_event_new (CLUTTER_NOTHING);
-      if (clutter_event_translate (backend, event, &xevent))
+
+      if (event_translate (backend, event, &xevent))
         {
-          _clutter_event_queue_push (backend, event);
+	  /* push directly here to avoid copy of queue_put */
+	  g_queue_push_head (clutter_context->events_queue, event);
         }
       else
         {
@@ -560,8 +520,7 @@ clutter_event_prepare (GSource *source,
   gboolean retval;
 
   *timeout = -1;
-  retval = (_clutter_event_queue_check_pending (backend) ||
-            clutter_check_xpending (backend));
+  retval = (clutter_events_pending () || check_xpending (backend));
 
   return retval;
 }
@@ -574,8 +533,7 @@ clutter_event_check (GSource *source)
   gboolean retval;
 
   if (event_source->event_poll_fd.revents & G_IO_IN)
-    retval = (_clutter_event_queue_check_pending (backend) ||
-              clutter_check_xpending (backend));
+    retval = (clutter_events_pending () || check_xpending (backend));
   else
     retval = FALSE;
 
@@ -590,17 +548,18 @@ clutter_event_dispatch (GSource     *source,
   ClutterBackend *backend = ((ClutterEventSource *) source)->backend;
   ClutterEvent *event;
 
-  _clutter_events_queue (backend);
-  event = _clutter_event_queue_pop (backend);
+  /*  Grab the event(s), translate and figure out double click.   
+   *  The push onto queue (stack) if valid.
+  */
+  events_queue (backend);
+
+  /* Pop an event off the queue if any */
+  event = clutter_event_get ();
 
   if (event)
     {
-      if (_clutter_event_func)
-        {
-          CLUTTER_NOTE (EVENT, "Dispatching _clutter_event_func");
-          (* _clutter_event_func) (event, _clutter_event_data);
-        }
-
+      /* forward the event into clutter for emission etc. */
+      clutter_do_event (event);
       clutter_event_free (event);
     }
 

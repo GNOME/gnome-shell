@@ -47,17 +47,14 @@ typedef struct _ClutterMainContext ClutterMainContext;
 struct _ClutterMainContext
 {
   /* holds a pointer to the stage */
-  ClutterBackend *backend;
-
+  ClutterBackend  *backend;
+  GQueue          *events_queue;
   PangoFT2FontMap *font_map;
-  
-  GMutex *gl_lock;
-  guint update_idle;
-  
-  guint main_loop_level;
-  GSList *main_loops;
-  
-  guint is_initialized : 1;
+  GMutex          *gl_lock;
+  guint            update_idle;
+  guint            main_loop_level;
+  GSList          *main_loops;
+  guint            is_initialized : 1;
 };
 
 #define CLUTTER_CONTEXT()	(clutter_context_get_default ())
@@ -84,19 +81,18 @@ typedef enum {
 #define CLUTTER_PARAM_READWRITE \
         G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK |G_PARAM_STATIC_BLURB
 
+/* signal accumulators */
+gboolean _clutter_boolean_accumulator (GSignalInvocationHint *ihint,
+                                       GValue                *return_accu,
+                                       const GValue          *handler_return,
+                                       gpointer               dummy);
+
+/* vfuncs implemnted by backend */
+
 GType _clutter_backend_impl_get_type (void);
 
-/* backend-specific private functions */
-void          _clutter_events_init               (ClutterBackend *backend);
-void          _clutter_events_uninit             (ClutterBackend *backend);
-void          _clutter_events_queue              (ClutterBackend *backend);
-void          _clutter_event_queue_push          (ClutterBackend *backend,
-                                                  ClutterEvent   *event);
-ClutterEvent *_clutter_event_queue_pop           (ClutterBackend *backend);
-ClutterEvent *_clutter_event_queue_peek          (ClutterBackend *backend);
-gboolean      _clutter_event_queue_check_pending (ClutterBackend *backend);
-
 ClutterActor *_clutter_backend_get_stage     (ClutterBackend  *backend);
+
 void          _clutter_backend_add_options   (ClutterBackend  *backend,
                                               GOptionGroup    *group);
 gboolean      _clutter_backend_pre_parse     (ClutterBackend  *backend,
@@ -106,38 +102,18 @@ gboolean      _clutter_backend_post_parse    (ClutterBackend  *backend,
 gboolean      _clutter_backend_init_stage    (ClutterBackend  *backend,
                                               GError         **error);
 void          _clutter_backend_init_events   (ClutterBackend  *backend);
+
 void          _clutter_backend_init_features (ClutterBackend  *backend);
 
-
-/* signal accumulators */
-gboolean _clutter_boolean_accumulator (GSignalInvocationHint *ihint,
-                                       GValue                *return_accu,
-                                       const GValue          *handler_return,
-                                       gpointer               dummy);
-
-typedef void (* ClutterEventFunc) (ClutterEvent *event,
-                                   gpointer      data);
-
-/* the event dispatcher function */
-extern ClutterEventFunc _clutter_event_func;
-extern gpointer         _clutter_event_data;
-extern GDestroyNotify   _clutter_event_destroy;
-
-void          _clutter_set_events_handler     (ClutterEventFunc   func,
-                                               gpointer           data,
-                                               GDestroyNotify     destroy);
-
+/* backend helpers */
 void          _clutter_event_button_generate  (ClutterBackend    *backend,
                                                ClutterEvent      *event);
-void          _clutter_synthetise_click       (ClutterBackend    *backend,
-                                               ClutterEvent      *event,
-                                               gint               n_clicks);
-void          _clutter_synthetise_stage_state (ClutterBackend    *backend,
-                                               ClutterEvent      *event,
-                                               ClutterStageState  set_flags,
-                                               ClutterStageState  unset_flags);
 
+/* FIXME: move elsewhere via ClutterAudience */
 void _clutter_stage_sync_viewport (ClutterStage *stage);
+
+/* Does this need to be private ? */
+void clutter_do_event (ClutterEvent *event);
 
 G_END_DECLS
 

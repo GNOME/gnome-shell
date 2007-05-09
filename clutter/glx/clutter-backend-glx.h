@@ -64,6 +64,9 @@ struct _ClutterBackendGlxClass
   ClutterBackendClass parent_class;
 };
 
+void   _clutter_backend_glx_events_init (ClutterBackend *backend);
+void   _clutter_backend_glx_events_uninit (ClutterBackend *backend);
+
 GType clutter_backend_glx_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS

@@ -70,7 +70,6 @@ static const GDebugKey clutter_debug_keys[] = {
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
 
-
 /**
  * clutter_get_show_fps:
  *
@@ -116,9 +115,13 @@ clutter_redraw (void)
     clutter_actor_paint (_clutter_backend_get_stage (ctx->backend));
 }
 
-static void
-clutter_main_do_event (ClutterEvent *event,
-                       gpointer      dummy)
+/** 
+ * clutter_do_event
+ *
+ * This function should never be called by applications.
+ */
+void
+clutter_do_event (ClutterEvent *event)
 {
   ClutterMainContext *context;
   ClutterBackend *backend;
@@ -366,8 +369,6 @@ pre_parse_hook (GOptionContext  *context,
 
   backend = clutter_context->backend;
   g_assert (CLUTTER_IS_BACKEND (backend));
-
-  _clutter_set_events_handler (clutter_main_do_event, NULL, NULL);
 
 #ifdef CLUTTER_ENABLE_DEBUG
   env_string = g_getenv ("CLUTTER_DEBUG");
@@ -631,7 +632,7 @@ clutter_init (int    *argc,
       return CLUTTER_INIT_ERROR_INTERNAL;
     }
 
-  _clutter_events_init (context->backend);
+  _clutter_backend_init_events (context->backend);
 
   return CLUTTER_INIT_SUCCESS;
 }

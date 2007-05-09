@@ -107,13 +107,6 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
       
       backend_glx->display_name = g_strdup (clutter_display_name);
 
-      /* generic backend properties */
-      backend->res_width = WidthOfScreen (backend_glx->xscreen);
-      backend->res_height = HeightOfScreen (backend_glx->xscreen);
-      backend->mm_width = WidthMMOfScreen (backend_glx->xscreen);
-      backend->mm_height = HeightMMOfScreen (backend_glx->xscreen);
-      backend->screen_num = backend_glx->xscreen_num;
-      backend->n_screens = ScreenCount (backend_glx->xdpy);
     }
 
   g_free (clutter_display_name);
@@ -130,7 +123,7 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
 static gboolean 
 is_gl_version_at_least_12 (void)
 {
-  /* FIXME: This likely needs to live elsewhere in features */
+  /* FIXME: This likely needs to live elsewhere in features or cogl */
   return 
     (g_ascii_strtod ((const gchar*) glGetString (GL_VERSION), NULL) >= 1.2);
 }
@@ -189,7 +182,8 @@ static void
 clutter_backend_glx_init_events (ClutterBackend *backend)
 {
   CLUTTER_NOTE (EVENT, "initialising the event loop");
-  _clutter_events_init (backend);
+
+  _clutter_backend_glx_events_init (backend);
 }
 
 static ClutterActor *
@@ -244,7 +238,7 @@ clutter_backend_glx_dispose (GObject *gobject)
 {
   ClutterBackendGlx *backend_glx = CLUTTER_BACKEND_GLX (gobject);
 
-  _clutter_events_uninit (CLUTTER_BACKEND (backend_glx));
+  _clutter_backend_glx_events_uninit (CLUTTER_BACKEND(backend_glx));
 
   if (backend_glx->stage)
     {
@@ -301,21 +295,10 @@ static void
 clutter_backend_glx_init (ClutterBackendGlx *backend_glx)
 {
   ClutterBackend *backend = CLUTTER_BACKEND (backend_glx);
-  backend->events_queue = g_queue_new ();
 
-  backend->button_click_time[0] = backend->button_click_time[1] = 0;
-  backend->button_number[0] = backend->button_number[1] = -1;
-  backend->button_x[0] = backend->button_x[1] = 0;
-  backend->button_y[0] = backend->button_y[1] = 0;
-
-  backend->res_width = backend->res_height = -1;
-  backend->mm_width = backend->mm_height = -1;
-  backend->screen_num = 0;
-  backend->n_screens = 0;
-
-  /* FIXME - find a way to set this stuff from XSettings */
-  backend->double_click_time = 250;
-  backend->double_click_distance = 5;
+  /* FIXME: get from xsettings */
+  clutter_backend_set_double_click_time (backend, 250);
+  clutter_backend_set_double_click_distance (backend, 5);
 }
 
 /* every backend must implement this function */

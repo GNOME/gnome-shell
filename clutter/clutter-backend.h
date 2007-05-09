@@ -40,34 +40,14 @@ G_BEGIN_DECLS
 #define CLUTTER_BACKEND_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_BACKEND, ClutterBackendClass))
 
 typedef struct _ClutterBackend          ClutterBackend;
+typedef struct _ClutterBackendPrivate   ClutterBackendPrivate;
 typedef struct _ClutterBackendClass     ClutterBackendClass;
 
 struct _ClutterBackend
 {
-  GObject parent_instance;
+  GObject                parent_instance;
+  ClutterBackendPrivate *priv;
 
-  /*< private >*/
-  gint mm_width;
-  gint mm_height;
-  gint res_width;
-  gint res_height;
-
-  gint screen_num;
-  gint n_screens;
-
-  /* events queue: every backend must implement one */
-  GQueue *events_queue;
-  gpointer queue_head;
-
-  /* settings */
-  guint double_click_time;
-  guint double_click_distance;
-
-  /* multiple button click detection */
-  guint32 button_click_time[2];
-  guint32 button_number[2];
-  gint button_x[2];
-  gint button_y[2];
 };
 
 struct _ClutterBackendClass
@@ -92,17 +72,12 @@ GType clutter_backend_get_type    (void) G_GNUC_CONST;
 
 ClutterBackend *clutter_get_default_backend (void);
 
+#if 0
 ClutterEvent *clutter_backend_get_event  (ClutterBackend *backend);
 ClutterEvent *clutter_backend_peek_event (ClutterBackend *backend);
 void          clutter_backend_put_event  (ClutterBackend *backend,
                                           ClutterEvent   *event);
-
-gint clutter_backend_get_width         (ClutterBackend *backend);
-gint clutter_backend_get_height        (ClutterBackend *backend);
-gint clutter_backend_get_width_mm      (ClutterBackend *backend);
-gint clutter_backend_get_height_mm     (ClutterBackend *backend);
-gint clutter_backend_get_screen_number (ClutterBackend *backend);
-gint clutter_backend_get_n_screens     (ClutterBackend *backend);
+#endif
 
 void  clutter_backend_set_double_click_time     (ClutterBackend *backend,
                                                  guint           msec);
