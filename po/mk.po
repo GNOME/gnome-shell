@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.mk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-02 02:17+0000\n"
-"PO-Revision-Date: 2007-03-06 12:25+0100\n"
+"POT-Creation-Date: 2007-04-06 03:31+0100\n"
+"PO-Revision-Date: 2007-05-09 17:06+0200\n"
 "Last-Translator: Jovan Naumovski <jovan@lugola.net>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
 "MIME-Version: 1.0\n"
@@ -23,6 +23,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural= n==1 || n%10==1 ? 0 : 1\n"
 "X-Generator: KBabel 1.11.4\n"
+
+#: ../src/50-metacity-desktop-key.xml.in.h:1
+msgid "Desktop"
+msgstr "Работна површина"
+
+#: ../src/50-metacity-key.xml.in.h:1
+msgid "Window Management"
+msgstr "Менаџер на прозорци"
 
 #: ../src/tools/metacity-message.c:150
 #, c-format
@@ -67,7 +75,7 @@ msgstr ""
 msgid "Failed to get hostname: %s\n"
 msgstr "Не успеав да добијам име на хост: %s\n"
 
-#: ../src/display.c:346
+#: ../src/display.c:347
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Не успеав да го отворам приказот за X системот за прозорци '%s'\n"
@@ -88,47 +96,47 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Фатална IO грешка %d (%s) на приказ '%s'.\n"
 
-#: ../src/frames.c:1062
+#: ../src/frames.c:1066
 msgid "Close Window"
 msgstr "Затвори прозорец"
 
-#: ../src/frames.c:1065
+#: ../src/frames.c:1069
 msgid "Window Menu"
 msgstr "Мени во прозорец"
 
-#: ../src/frames.c:1068
+#: ../src/frames.c:1072
 msgid "Minimize Window"
 msgstr "Спушти прозорец"
 
-#: ../src/frames.c:1071
+#: ../src/frames.c:1075
 msgid "Maximize Window"
 msgstr "Зголеми прозорец"
 
-#: ../src/frames.c:1074
+#: ../src/frames.c:1078
 msgid "Unmaximize Window"
 msgstr "Намали прозорец"
 
-#: ../src/frames.c:1077
+#: ../src/frames.c:1081
 msgid "Roll Up Window"
 msgstr "Завиткај го прозорецот"
 
-#: ../src/frames.c:1080
+#: ../src/frames.c:1084
 msgid "Unroll Window"
 msgstr "Одвиткај го прозорецот"
 
-#: ../src/frames.c:1083
+#: ../src/frames.c:1087
 msgid "Keep Window On Top"
 msgstr "Задржи го прозорецот најгоре"
 
-#: ../src/frames.c:1086
+#: ../src/frames.c:1090
 msgid "Remove Window From Top"
-msgstr ""
+msgstr "Отстрани го прозорецот од најгоре"
 
-#: ../src/frames.c:1089
+#: ../src/frames.c:1093
 msgid "Always On Visible Workspace"
 msgstr "Секогаш на видливиот работен простор"
 
-#: ../src/frames.c:1092
+#: ../src/frames.c:1096
 msgid "Put Window On Only One Workspace"
 msgstr "Стави го прозорецот на само една работна површина"
 
@@ -151,7 +159,7 @@ msgstr "Грешка при отворањето на metacity-дијалог д
 msgid "No command %d has been defined.\n"
 msgstr "Ниедна команда %d не е дефинирана.\n"
 
-#: ../src/keybindings.c:3845
+#: ../src/keybindings.c:3847
 msgid "No terminal command has been defined.\n"
 msgstr "Ниедна команда %d не е дефинирана.\n"
 
@@ -265,12 +273,12 @@ msgstr "_Најгоре"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:90
 msgid "_Always on Visible Workspace"
-msgstr "Само на овој работен простор"
+msgstr "_Секогаш видлив на работниот простор"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:92
 msgid "_Only on This Workspace"
-msgstr "Само на овој работен простор"
+msgstr "_Само на овој работен простор"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:94
@@ -292,7 +300,7 @@ msgstr "Премести на _горниот работен простор"
 msgid "Move to Workspace _Down"
 msgstr "Премести на _долниот работен простор"
 
-#: ../src/menu.c:191 ../src/prefs.c:2194 ../src/prefs.c:2729
+#: ../src/menu.c:191 ../src/prefs.c:2201 ../src/prefs.c:2736
 #, c-format
 msgid "Workspace %d"
 msgstr "Работно место %d"
@@ -473,14 +481,22 @@ msgid "Action on title bar double-click"
 msgstr "Дејство на лентата со наслов двоен-клик"
 
 #: ../src/metacity.schemas.in.h:4
+msgid "Action on title bar middle-click"
+msgstr "Дејство на лентата со наслов среден клик"
+
+#: ../src/metacity.schemas.in.h:5
+msgid "Action on title bar right-click"
+msgstr "Дејство на лентата со наслов десен-клик"
+
+#: ../src/metacity.schemas.in.h:6
 msgid "Activate window menu"
 msgstr "Активно мени во прозорец"
 
-#: ../src/metacity.schemas.in.h:5
+#: ../src/metacity.schemas.in.h:7
 msgid "Arrangement of buttons on the titlebar"
 msgstr "Уредување на копчиња на лентата со наслов"
 
-#: ../src/metacity.schemas.in.h:6
+#: ../src/metacity.schemas.in.h:8
 msgid ""
 "Arrangement of buttons on the titlebar. The value should be a string, such "
 "as \"menu:minimize,maximize,close\"; the colon separates the left corner of "
@@ -496,11 +512,11 @@ msgstr ""
 "копчиња се игнорирани за да се додадат нови копчиња во идните верзии на "
 "metacity без да секршат постарите."
 
-#: ../src/metacity.schemas.in.h:7
+#: ../src/metacity.schemas.in.h:9
 msgid "Automatically raises the focused window"
 msgstr "Автоматски го подигнува фокусираниот прозорец"
 
-#: ../src/metacity.schemas.in.h:8
+#: ../src/metacity.schemas.in.h:10
 msgid ""
 "Clicking a window while holding down this modifier key will move the window "
 "(left click), resize the window (middle click), or show the window menu "
@@ -512,35 +528,35 @@ msgstr ""
 "или прикажи во менито од прозорецот (десен клик). Менувачот е изразен како  "
 "\"&lt;Alt&gt;\" или \"&lt;Супер&gt;\" на пример."
 
-#: ../src/metacity.schemas.in.h:9
+#: ../src/metacity.schemas.in.h:11
 msgid "Close window"
 msgstr "Затвори прозорец"
 
-#: ../src/metacity.schemas.in.h:10
+#: ../src/metacity.schemas.in.h:12
 msgid "Commands to run in response to keybindings"
 msgstr "Команди да се активираат како одговор на биндозите од копчината"
 
-#: ../src/metacity.schemas.in.h:11
+#: ../src/metacity.schemas.in.h:13
 msgid "Compositing Manager"
 msgstr "Менаџер за комбинирање"
 
-#: ../src/metacity.schemas.in.h:12
+#: ../src/metacity.schemas.in.h:14
 msgid "Control how new windows get focus"
 msgstr "Контролирај како новите прозорци добиваат фокус"
 
-#: ../src/metacity.schemas.in.h:13
+#: ../src/metacity.schemas.in.h:15
 msgid "Current theme"
 msgstr "Тековна тема"
 
-#: ../src/metacity.schemas.in.h:14
+#: ../src/metacity.schemas.in.h:16
 msgid "Delay in milliseconds for the auto raise option"
 msgstr "Прикажи во милисекунди за авто кревање опцијата"
 
-#: ../src/metacity.schemas.in.h:15
+#: ../src/metacity.schemas.in.h:17
 msgid "Determines whether Metacity is a compositing manager."
 msgstr "Одредува дали Метасити е менаџер за комбинирање."
 
-#: ../src/metacity.schemas.in.h:16
+#: ../src/metacity.schemas.in.h:18
 msgid ""
 "Determines whether applications or the system can generate audible 'beeps'; "
 "may be used in conjunction with 'visual bell' to allow silent 'beeps'."
@@ -548,19 +564,19 @@ msgstr ""
 "Одлучува дали апликацијата или системот може да генерира звуци кои ќе бидат "
 "користени заедно со други"
 
-#: ../src/metacity.schemas.in.h:17
+#: ../src/metacity.schemas.in.h:19
 msgid "Disable misfeatures that are required by old or broken applications"
 msgstr "Оневозможи  можности кои се барани од стари или скршени апликации"
 
-#: ../src/metacity.schemas.in.h:18
+#: ../src/metacity.schemas.in.h:20
 msgid "Enable Visual Bell"
 msgstr "Овозможи визуелно ѕвонче"
 
-#: ../src/metacity.schemas.in.h:19
+#: ../src/metacity.schemas.in.h:21
 msgid "Hide all windows and focus desktop"
 msgstr "Сокриј ги сите прозорци и фокусирај го десктопот"
 
-#: ../src/metacity.schemas.in.h:20
+#: ../src/metacity.schemas.in.h:22
 msgid ""
 "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
 "the focused window will be automatically raised after a delay specified by "
@@ -573,7 +589,7 @@ msgstr ""
 "прозорецот за негово подигнување, ниту покажување на прозорецот при влечење-"
 "пуштање."
 
-#: ../src/metacity.schemas.in.h:21
+#: ../src/metacity.schemas.in.h:23
 msgid ""
 "If true, ignore the titlebar_font option, and use the standard application "
 "font for window titles."
@@ -581,7 +597,7 @@ msgstr ""
 "Ако точно, игнорирај ја линија со наслов_фонт опцијата, и користи го "
 "стандардниот апликациски фонт за насловите на прозорците."
 
-#: ../src/metacity.schemas.in.h:22
+#: ../src/metacity.schemas.in.h:24
 msgid ""
 "If true, metacity will give the user less feedback by using wireframes, "
 "avoiding animations, or other means. This is a significant reduction in "
@@ -597,7 +613,7 @@ msgstr ""
 "проблеми, опцијата за користење на жични рамки е исклучена кога "
 "пристапливоста е вклучена."
 
-#: ../src/metacity.schemas.in.h:23
+#: ../src/metacity.schemas.in.h:25
 msgid ""
 "If true, then Metacity works in terms of applications rather than windows. "
 "The concept is a bit abstract, but in general an application-based setup is "
@@ -615,15 +631,15 @@ msgstr ""
 "прозорци од другите апликации. Режимот за апликации, сепак, не е целосно "
 "имплементиран во моментов."
 
-#: ../src/metacity.schemas.in.h:24
+#: ../src/metacity.schemas.in.h:26
 msgid "If true, trade off usability for less resource usage"
 msgstr "Ако е точно, намали ја користливоста за помалку ресурси"
 
-#: ../src/metacity.schemas.in.h:25
+#: ../src/metacity.schemas.in.h:27
 msgid "Lower window below other windows"
 msgstr "намали го прозорецот под другите"
 
-#: ../src/metacity.schemas.in.h:26
+#: ../src/metacity.schemas.in.h:28
 msgid ""
 "Many actions (e.g. clicking in the client area, moving or resizing the "
 "window) normally raise the window as a side-effect. Set this option to false "
@@ -642,183 +658,183 @@ msgstr ""
 "актвиација од пагинатори. Оваа опција е моментално оневозможена во режимот "
 "„кликни за фокус“."
 
-#: ../src/metacity.schemas.in.h:27
+#: ../src/metacity.schemas.in.h:29
 msgid "Maximize window"
 msgstr "Максимизирај прозорец"
 
-#: ../src/metacity.schemas.in.h:28
+#: ../src/metacity.schemas.in.h:30
 msgid "Maximize window horizontally"
 msgstr "Максимизирај прозорец хоризонтално"
 
-#: ../src/metacity.schemas.in.h:29
+#: ../src/metacity.schemas.in.h:31
 msgid "Maximize window vertically"
 msgstr "Максимизирај прозорец вертикално"
 
-#: ../src/metacity.schemas.in.h:30
+#: ../src/metacity.schemas.in.h:32
 msgid "Minimize window"
 msgstr "Минимизирај прозорец"
 
-#: ../src/metacity.schemas.in.h:31
+#: ../src/metacity.schemas.in.h:33
 msgid "Modifier to use for modified window click actions"
 msgstr "Менувач за користење за изменети дејства за кликање на прозорецот"
 
-#: ../src/metacity.schemas.in.h:32
+#: ../src/metacity.schemas.in.h:34
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Премести назад меѓу панел и работната околина одма"
 
-#: ../src/metacity.schemas.in.h:33
+#: ../src/metacity.schemas.in.h:35
 msgid "Move backwards between panels and the desktop with popup"
 msgstr "Премести назад помеѓу панелите и работната околина со скокачки"
 
-#: ../src/metacity.schemas.in.h:34
+#: ../src/metacity.schemas.in.h:36
 msgid "Move backwards between windows immediately"
 msgstr "Премести назад меѓу прозорци веднаш"
 
-#: ../src/metacity.schemas.in.h:35
+#: ../src/metacity.schemas.in.h:37
 msgid "Move backwards between windows of an application immediately"
 msgstr "Премести назад меѓу прозорци од апликациа веднаш"
 
-#: ../src/metacity.schemas.in.h:36
+#: ../src/metacity.schemas.in.h:38
 msgid "Move backwards between windows of an application with popup"
 msgstr "Премести назад помеѓу панелите и работната околина со скокачки прозорци"
 
-#: ../src/metacity.schemas.in.h:37
+#: ../src/metacity.schemas.in.h:39
 msgid "Move between panels and the desktop immediately"
 msgstr "Премести помеѓу панели и работната околина веднаш"
 
-#: ../src/metacity.schemas.in.h:38
+#: ../src/metacity.schemas.in.h:40
 msgid "Move between panels and the desktop with popup"
 msgstr "Премести меѓу панели и работната околина со скокачки"
 
-#: ../src/metacity.schemas.in.h:39
+#: ../src/metacity.schemas.in.h:41
 msgid "Move between windows immediately"
 msgstr "Премести меѓу прозорци веднаш"
 
-#: ../src/metacity.schemas.in.h:40
+#: ../src/metacity.schemas.in.h:42
 msgid "Move between windows of an application immediately"
 msgstr "Премести меѓу прозорци од апликација веднаш"
 
-#: ../src/metacity.schemas.in.h:41
+#: ../src/metacity.schemas.in.h:43
 msgid "Move between windows of an application with popup"
 msgstr "Движи се меѓу прозорци од апликација со скокачки прозорци"
 
-#: ../src/metacity.schemas.in.h:42
+#: ../src/metacity.schemas.in.h:44
 msgid "Move between windows with popup"
 msgstr "премести меѓу прозорци со скокачки"
 
-#: ../src/metacity.schemas.in.h:43
+#: ../src/metacity.schemas.in.h:45
 msgid "Move focus backwards between windows using popup display"
 msgstr "Премести го фокусот назад меѓу прозорци користејќи скокачки приказ"
 
-#: ../src/metacity.schemas.in.h:44
+#: ../src/metacity.schemas.in.h:46
 msgid "Move window"
 msgstr "Премести прозорец"
 
-#: ../src/metacity.schemas.in.h:45
+#: ../src/metacity.schemas.in.h:47
 msgid "Move window one workspace down"
 msgstr "Премести прозорец за еден работен простор подолу"
 
-#: ../src/metacity.schemas.in.h:46
+#: ../src/metacity.schemas.in.h:48
 msgid "Move window one workspace to the left"
 msgstr "Премести прозорец за една работна површина на лево"
 
-#: ../src/metacity.schemas.in.h:47
+#: ../src/metacity.schemas.in.h:49
 msgid "Move window one workspace to the right"
 msgstr "Премести прозорец за една работна површина на десно"
 
-#: ../src/metacity.schemas.in.h:48
+#: ../src/metacity.schemas.in.h:50
 msgid "Move window one workspace up"
 msgstr "Премести работна површина за едно работно место на горе"
 
-#: ../src/metacity.schemas.in.h:49
+#: ../src/metacity.schemas.in.h:51
 msgid "Move window to east side of screen"
 msgstr "Помести го прозорецот на десната страна на екранот"
 
-#: ../src/metacity.schemas.in.h:50
+#: ../src/metacity.schemas.in.h:52
 msgid "Move window to north side of screen"
 msgstr "Помести го прозорецот кон горната страна на екранот"
 
-#: ../src/metacity.schemas.in.h:51
+#: ../src/metacity.schemas.in.h:53
 msgid "Move window to north-east corner"
 msgstr "Помести го прозорецот кон горниот десен ќош"
 
-#: ../src/metacity.schemas.in.h:52
+#: ../src/metacity.schemas.in.h:54
 msgid "Move window to north-west corner"
 msgstr "Помести го прозорецот кон горниот лев ќош"
 
-#: ../src/metacity.schemas.in.h:53
+#: ../src/metacity.schemas.in.h:55
 msgid "Move window to south side of screen"
 msgstr "Помести го прозорецот кон долната страна на екранот"
 
-#: ../src/metacity.schemas.in.h:54
+#: ../src/metacity.schemas.in.h:56
 msgid "Move window to south-east corner"
 msgstr "Помести го прозорецот кон долниот десен ќош"
 
-#: ../src/metacity.schemas.in.h:55
+#: ../src/metacity.schemas.in.h:57
 msgid "Move window to south-west corner"
 msgstr "Помести го прозорецот кон долниот лев ќош"
 
-#: ../src/metacity.schemas.in.h:56
+#: ../src/metacity.schemas.in.h:58
 msgid "Move window to west side of screen"
 msgstr "Помести го прозорецот кон левата страна на екранот"
 
-#: ../src/metacity.schemas.in.h:57
+#: ../src/metacity.schemas.in.h:59
 msgid "Move window to workspace 1"
 msgstr "Премести прозорец на работна површина 1"
 
-#: ../src/metacity.schemas.in.h:58
+#: ../src/metacity.schemas.in.h:60
 msgid "Move window to workspace 10"
 msgstr "Премести прозорец на работна површина 10"
 
-#: ../src/metacity.schemas.in.h:59
+#: ../src/metacity.schemas.in.h:61
 msgid "Move window to workspace 11"
 msgstr "Премести прозорец на работна површина 11"
 
-#: ../src/metacity.schemas.in.h:60
+#: ../src/metacity.schemas.in.h:62
 msgid "Move window to workspace 12"
 msgstr "Премести прозорец на работна површина 12"
 
-#: ../src/metacity.schemas.in.h:61
+#: ../src/metacity.schemas.in.h:63
 msgid "Move window to workspace 2"
 msgstr "Премести прозорец на работна површина 2"
 
-#: ../src/metacity.schemas.in.h:62
+#: ../src/metacity.schemas.in.h:64
 msgid "Move window to workspace 3"
 msgstr "Премести прозорец на работна површина 3"
 
-#: ../src/metacity.schemas.in.h:63
+#: ../src/metacity.schemas.in.h:65
 msgid "Move window to workspace 4"
 msgstr "Премести прозорец на работна површина 4"
 
-#: ../src/metacity.schemas.in.h:64
+#: ../src/metacity.schemas.in.h:66
 msgid "Move window to workspace 5"
 msgstr "Премести прозорец на работна површина 5"
 
-#: ../src/metacity.schemas.in.h:65
+#: ../src/metacity.schemas.in.h:67
 msgid "Move window to workspace 6"
 msgstr "Премести прозорец на работна површина 6"
 
-#: ../src/metacity.schemas.in.h:66
+#: ../src/metacity.schemas.in.h:68
 msgid "Move window to workspace 7"
 msgstr "Премести прозорец на работна површина 7"
 
-#: ../src/metacity.schemas.in.h:67
+#: ../src/metacity.schemas.in.h:69
 msgid "Move window to workspace 8"
 msgstr "Премести прозорец на работна површина 8"
 
-#: ../src/metacity.schemas.in.h:68
+#: ../src/metacity.schemas.in.h:70
 msgid "Move window to workspace 9"
 msgstr "Премести прозорец на работна површина 9"
 
-#: ../src/metacity.schemas.in.h:69
+#: ../src/metacity.schemas.in.h:71
 msgid "Name of workspace"
 msgstr "Име на работниот простор"
 
-#: ../src/metacity.schemas.in.h:70
+#: ../src/metacity.schemas.in.h:72
 msgid "Number of workspaces"
 msgstr "Број на работни простори"
 
-#: ../src/metacity.schemas.in.h:71
+#: ../src/metacity.schemas.in.h:73
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum to "
 "prevent making the desktop unusable by accidentally asking for too many "
@@ -828,35 +844,35 @@ msgstr ""
 "со цел да се спречи случајно уништување на десктопот барајќи премногу "
 "површини."
 
-#: ../src/metacity.schemas.in.h:72
+#: ../src/metacity.schemas.in.h:74
 msgid "Raise obscured window, otherwise lower"
 msgstr "Крени опскјурд прозорец, инаку спушти"
 
-#: ../src/metacity.schemas.in.h:73
+#: ../src/metacity.schemas.in.h:75
 msgid "Raise window above other windows"
 msgstr "Крени прозорец над другите прозорци"
 
-#: ../src/metacity.schemas.in.h:74
+#: ../src/metacity.schemas.in.h:76
 msgid "Resize window"
 msgstr "Промени големина"
 
-#: ../src/metacity.schemas.in.h:75
+#: ../src/metacity.schemas.in.h:77
 msgid "Run a defined command"
 msgstr "Изврши друга команда"
 
-#: ../src/metacity.schemas.in.h:76
+#: ../src/metacity.schemas.in.h:78
 msgid "Run a terminal"
 msgstr "Изврши терминал"
 
-#: ../src/metacity.schemas.in.h:77
+#: ../src/metacity.schemas.in.h:79
 msgid "Show the panel menu"
 msgstr "Покажи го менито на панелот"
 
-#: ../src/metacity.schemas.in.h:78
+#: ../src/metacity.schemas.in.h:80
 msgid "Show the panel run application dialog"
 msgstr "Покажи го извршниот дијалог на панелот"
 
-#: ../src/metacity.schemas.in.h:79
+#: ../src/metacity.schemas.in.h:81
 msgid ""
 "Some applications disregard specifications in ways that result in window "
 "manager misfeatures. This option puts Metacity in a rigorously correct mode, "
@@ -869,83 +885,83 @@ msgstr ""
 "и со него нема потреба од извршување на било какви апликации кои се "
 "однесуваат несоодветно."
 
-#: ../src/metacity.schemas.in.h:80
+#: ../src/metacity.schemas.in.h:82
 msgid "Switch to workspace 1"
 msgstr "Префрли на работен простор 1"
 
-#: ../src/metacity.schemas.in.h:81
+#: ../src/metacity.schemas.in.h:83
 msgid "Switch to workspace 10"
 msgstr "Префрли на работен простор 10"
 
-#: ../src/metacity.schemas.in.h:82
+#: ../src/metacity.schemas.in.h:84
 msgid "Switch to workspace 11"
 msgstr "Префрли на работен простор 11"
 
-#: ../src/metacity.schemas.in.h:83
+#: ../src/metacity.schemas.in.h:85
 msgid "Switch to workspace 12"
 msgstr "Префрли на работен простор 12"
 
-#: ../src/metacity.schemas.in.h:84
+#: ../src/metacity.schemas.in.h:86
 msgid "Switch to workspace 2"
 msgstr "Префрли на работен простор 2"
 
-#: ../src/metacity.schemas.in.h:85
+#: ../src/metacity.schemas.in.h:87
 msgid "Switch to workspace 3"
 msgstr "Префрли на работен простор 3"
 
-#: ../src/metacity.schemas.in.h:86
+#: ../src/metacity.schemas.in.h:88
 msgid "Switch to workspace 4"
 msgstr "Префрли на работен простор 4"
 
-#: ../src/metacity.schemas.in.h:87
+#: ../src/metacity.schemas.in.h:89
 msgid "Switch to workspace 5"
 msgstr "Префрли на работен простор 5"
 
-#: ../src/metacity.schemas.in.h:88
+#: ../src/metacity.schemas.in.h:90
 msgid "Switch to workspace 6"
 msgstr "Префрли на работен простор 6"
 
-#: ../src/metacity.schemas.in.h:89
+#: ../src/metacity.schemas.in.h:91
 msgid "Switch to workspace 7"
 msgstr "Префрли на работен простор 7"
 
-#: ../src/metacity.schemas.in.h:90
+#: ../src/metacity.schemas.in.h:92
 msgid "Switch to workspace 8"
 msgstr "Префрли на работен простор 8"
 
-#: ../src/metacity.schemas.in.h:91
+#: ../src/metacity.schemas.in.h:93
 msgid "Switch to workspace 9"
 msgstr "Префрли на работен простор 9"
 
-#: ../src/metacity.schemas.in.h:92
+#: ../src/metacity.schemas.in.h:94
 msgid "Switch to workspace above this one"
 msgstr "Префрли на работен простор над овој"
 
-#: ../src/metacity.schemas.in.h:93
+#: ../src/metacity.schemas.in.h:95
 msgid "Switch to workspace below this one"
 msgstr "Префрли на работен простор под овој"
 
-#: ../src/metacity.schemas.in.h:94
+#: ../src/metacity.schemas.in.h:96
 msgid "Switch to workspace on the left"
 msgstr "Префрли на работниот простор на лево"
 
-#: ../src/metacity.schemas.in.h:95
+#: ../src/metacity.schemas.in.h:97
 msgid "Switch to workspace on the right"
 msgstr "Префрли на работен простор на десно"
 
-#: ../src/metacity.schemas.in.h:96
+#: ../src/metacity.schemas.in.h:98
 msgid "System Bell is Audible"
 msgstr "Системското ѕвоно е Audible"
 
-#: ../src/metacity.schemas.in.h:97
+#: ../src/metacity.schemas.in.h:99
 msgid "Take a screenshot"
 msgstr "Земи слика од екранот"
 
-#: ../src/metacity.schemas.in.h:98
+#: ../src/metacity.schemas.in.h:100
 msgid "Take a screenshot of a window"
 msgstr "Земи слика од екранот (прозорец)"
 
-#: ../src/metacity.schemas.in.h:99
+#: ../src/metacity.schemas.in.h:101
 msgid ""
 "Tells Metacity how to implement the visual indication that the system bell "
 "or another application 'bell' indicator has been rung. Currently there are "
@@ -960,7 +976,7 @@ msgstr ""
 "fullscreen за целосно трепнување на екранот и frame_flash што предизвикува "
 "трепнување на насловот на апликацијата која го испратила сигналот."
 
-#: ../src/metacity.schemas.in.h:100
+#: ../src/metacity.schemas.in.h:102
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
 "that correspond to these commands. Pressing the keybinding for run_command_N "
@@ -970,7 +986,7 @@ msgstr ""
 "копчињата кои одговараат на соодветните команди. Притискањето на соодветното "
 "копче предизвикува соодветна акција."
 
-#: ../src/metacity.schemas.in.h:101
+#: ../src/metacity.schemas.in.h:103
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
 "keybinding which causes the command specified by this setting to be invoked."
@@ -979,7 +995,7 @@ msgstr ""
 "означува тастерот кој предизвикува командата специфицирана од ова подесување "
 "да биде повикана."
 
-#: ../src/metacity.schemas.in.h:102
+#: ../src/metacity.schemas.in.h:104
 msgid ""
 "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
 "defines a keybinding which causes the command specified by this setting to "
@@ -989,7 +1005,7 @@ msgstr ""
 "го означува тастерот кој предизвикува командата специфицирана од ова "
 "подесување да биде повикана."
 
-#: ../src/metacity.schemas.in.h:103
+#: ../src/metacity.schemas.in.h:105
 msgid ""
 "The keybinding that runs the correspondingly-numbered command in /apps/"
 "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
@@ -1005,7 +1021,7 @@ msgstr ""
 "Ако ја подесите опцијата до специјалниот стринг \"disabled\", тогаш ќе нема "
 "кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:104
+#: ../src/metacity.schemas.in.h:106
 msgid ""
 "The keybinding that switches to the workspace above the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1020,7 +1036,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот "
 "стринг \"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:105
+#: ../src/metacity.schemas.in.h:107
 msgid ""
 "The keybinding that switches to the workspace below the current workspace. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1035,7 +1051,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот "
 "стринг \"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:106
+#: ../src/metacity.schemas.in.h:108
 msgid ""
 "The keybinding that switches to the workspace on the left of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1051,7 +1067,7 @@ msgstr ""
 "опцијата до специјалниот стринг \"disabled\", тогаш нема да има копчиња-"
 "кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:107
+#: ../src/metacity.schemas.in.h:109
 msgid ""
 "The keybinding that switches to the workspace on the right of the current "
 "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1067,7 +1083,7 @@ msgstr ""
 "опцијата до специјалниот стринг \"disabled\", тогаш нема да има копчиња-"
 "кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:108
+#: ../src/metacity.schemas.in.h:110
 msgid ""
 "The keybinding that switches to workspace 1. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1081,7 +1097,7 @@ msgstr ""
 "Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг \"disabled\", "
 "тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:109
+#: ../src/metacity.schemas.in.h:111
 msgid ""
 "The keybinding that switches to workspace 10. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1095,7 +1111,7 @@ msgstr ""
 "Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг \"disabled\", "
 "тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:110
+#: ../src/metacity.schemas.in.h:112
 msgid ""
 "The keybinding that switches to workspace 11. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1109,7 +1125,7 @@ msgstr ""
 "Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг \"disabled\", "
 "тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:111
+#: ../src/metacity.schemas.in.h:113
 msgid ""
 "The keybinding that switches to workspace 12. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1123,7 +1139,7 @@ msgstr ""
 "Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг \"disabled\", "
 "тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:112
+#: ../src/metacity.schemas.in.h:114
 msgid ""
 "The keybinding that switches to workspace 2. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1137,7 +1153,7 @@ msgstr ""
 "Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг \"disabled\", "
 "тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:113
+#: ../src/metacity.schemas.in.h:115
 msgid ""
 "The keybinding that switches to workspace 3. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1151,7 +1167,7 @@ msgstr ""
 "Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг \"disabled\", "
 "тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:114
+#: ../src/metacity.schemas.in.h:116
 msgid ""
 "The keybinding that switches to workspace 4. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1165,7 +1181,7 @@ msgstr ""
 "Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг \"disabled\", "
 "тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:115
+#: ../src/metacity.schemas.in.h:117
 msgid ""
 "The keybinding that switches to workspace 5. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1179,7 +1195,7 @@ msgstr ""
 "Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг \"disabled\", "
 "тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:116
+#: ../src/metacity.schemas.in.h:118
 msgid ""
 "The keybinding that switches to workspace 6. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1193,7 +1209,7 @@ msgstr ""
 "Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг \"disabled\", "
 "тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:117
+#: ../src/metacity.schemas.in.h:119
 msgid ""
 "The keybinding that switches to workspace 7. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1207,7 +1223,7 @@ msgstr ""
 "Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг \"disabled\", "
 "тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:118
+#: ../src/metacity.schemas.in.h:120
 msgid ""
 "The keybinding that switches to workspace 8. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1221,7 +1237,7 @@ msgstr ""
 "Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг \"disabled\", "
 "тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:119
+#: ../src/metacity.schemas.in.h:121
 msgid ""
 "The keybinding that switches to workspace 9. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1235,7 +1251,7 @@ msgstr ""
 "Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг \"disabled\", "
 "тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:120
+#: ../src/metacity.schemas.in.h:122
 msgid ""
 "The keybinding used to activate the window menu. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1249,7 +1265,7 @@ msgstr ""
 "Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот "
 "стринг \"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:121
+#: ../src/metacity.schemas.in.h:123
 msgid ""
 "The keybinding used to close a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1263,7 +1279,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг \"disabled"
 "\", тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:122
+#: ../src/metacity.schemas.in.h:124
 msgid ""
 "The keybinding used to enter \"move mode\" and begin moving a window using "
 "the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1279,7 +1295,7 @@ msgstr ""
 "Ако ја подесите опцијата до специјалниот стринг \"disabled\", тогаш нема да "
 "има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:123
+#: ../src/metacity.schemas.in.h:125
 msgid ""
 "The keybinding used to enter \"resize mode\" and begin resizing a window "
 "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1295,7 +1311,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг \"disabled"
 "\", тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:124
+#: ../src/metacity.schemas.in.h:126
 msgid ""
 "The keybinding used to hide all normal windows and set the focus to the "
 "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1311,7 +1327,7 @@ msgstr ""
 "Ако ја подесите опцијата до специјалниот стринг \"disabled\", тогаш нема да "
 "има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:125
+#: ../src/metacity.schemas.in.h:127
 msgid ""
 "The keybinding used to maximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1325,7 +1341,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг \"disabled"
 "\", тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:126
+#: ../src/metacity.schemas.in.h:128
 msgid ""
 "The keybinding used to minimize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1339,7 +1355,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот стринг \"disabled"
 "\", тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:127
+#: ../src/metacity.schemas.in.h:129
 msgid ""
 "The keybinding used to move a window one workspace down. The format looks "
 "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
@@ -1355,7 +1371,7 @@ msgstr ""
 "специјалниот стринг \"disabled\", тогаш нема да има копчиња-кратенки за оваа "
 "акција."
 
-#: ../src/metacity.schemas.in.h:128
+#: ../src/metacity.schemas.in.h:130
 msgid ""
 "The keybinding used to move a window one workspace to the left. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1371,7 +1387,7 @@ msgstr ""
 "специјалниот стринг \"disabled\", тогаш нема да има копчиња-кратенки за оваа "
 "акција."
 
-#: ../src/metacity.schemas.in.h:129
+#: ../src/metacity.schemas.in.h:131
 msgid ""
 "The keybinding used to move a window one workspace to the right. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1387,7 +1403,7 @@ msgstr ""
 "до специјалниот стринг \"disabled\", тогаш нема да има копчиња-кратенки за "
 "оваа акција."
 
-#: ../src/metacity.schemas.in.h:130
+#: ../src/metacity.schemas.in.h:132
 msgid ""
 "The keybinding used to move a window one workspace up. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1402,7 +1418,7 @@ msgstr ""
 "специјалниот стринг \"disabled\", тогаш нема да има копчиња-кратенки за оваа "
 "акција."
 
-#: ../src/metacity.schemas.in.h:131
+#: ../src/metacity.schemas.in.h:133
 msgid ""
 "The keybinding used to move a window to workspace 1. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1416,7 +1432,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот "
 "стринг \"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:132
+#: ../src/metacity.schemas.in.h:134
 msgid ""
 "The keybinding used to move a window to workspace 10. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1430,7 +1446,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот "
 "стринг \"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:133
+#: ../src/metacity.schemas.in.h:135
 msgid ""
 "The keybinding used to move a window to workspace 11. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1444,7 +1460,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот "
 "стринг \"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:134
+#: ../src/metacity.schemas.in.h:136
 msgid ""
 "The keybinding used to move a window to workspace 12. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1458,7 +1474,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот "
 "стринг \"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:135
+#: ../src/metacity.schemas.in.h:137
 msgid ""
 "The keybinding used to move a window to workspace 2. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1472,7 +1488,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот "
 "стринг \"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:136
+#: ../src/metacity.schemas.in.h:138
 msgid ""
 "The keybinding used to move a window to workspace 3. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1486,7 +1502,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот "
 "стринг \"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:137
+#: ../src/metacity.schemas.in.h:139
 msgid ""
 "The keybinding used to move a window to workspace 4. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1500,7 +1516,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот "
 "стринг \"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:138
+#: ../src/metacity.schemas.in.h:140
 msgid ""
 "The keybinding used to move a window to workspace 5. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1514,7 +1530,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот "
 "стринг \"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:139
+#: ../src/metacity.schemas.in.h:141
 msgid ""
 "The keybinding used to move a window to workspace 6. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1528,7 +1544,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот "
 "стринг \"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:140
+#: ../src/metacity.schemas.in.h:142
 msgid ""
 "The keybinding used to move a window to workspace 7. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1542,7 +1558,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот "
 "стринг \"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:141
+#: ../src/metacity.schemas.in.h:143
 msgid ""
 "The keybinding used to move a window to workspace 8. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1556,7 +1572,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот "
 "стринг \"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:142
+#: ../src/metacity.schemas.in.h:144
 msgid ""
 "The keybinding used to move a window to workspace 9. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1570,7 +1586,7 @@ msgstr ""
 "\"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја подесите опцијата до специјалниот "
 "стринг \"disabled\", тогаш нема да има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:143
+#: ../src/metacity.schemas.in.h:145
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1586,7 +1602,7 @@ msgstr ""
 "Ако ја подесите опцијата до специјалниот стринг \"disabled\", тогаш нема да "
 "има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:144
+#: ../src/metacity.schemas.in.h:146
 msgid ""
 "The keybinding used to move focus backwards between panels and the desktop, "
 "without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1602,7 +1618,7 @@ msgstr ""
 "Ако ја подесите опцијата до специјалниот стринг \"disabled\", тогаш нема да "
 "има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:145
+#: ../src/metacity.schemas.in.h:147
 msgid ""
 "The keybinding used to move focus backwards between windows of an "
 "application without a popup window. Holding \"shift\" together with this "
@@ -1620,7 +1636,7 @@ msgstr ""
 "опцијата до специјалниот стринг \"disabled\", тогаш нема да има копчиња-"
 "кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:146
+#: ../src/metacity.schemas.in.h:148
 msgid ""
 "The keybinding used to move focus backwards between windows of an "
 "application, using a popup window. Holding \"shift\" together with this "
@@ -1638,7 +1654,7 @@ msgstr ""
 "подесите опцијата до специјалниот стринг \"disabled\", тогаш нема да има "
 "копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:147
+#: ../src/metacity.schemas.in.h:149
 msgid ""
 "The keybinding used to move focus backwards between windows without a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1656,7 +1672,7 @@ msgstr ""
 "опцијата до специјалниот стринг \"disabled\", тогаш нема да има копчиња-"
 "кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:148
+#: ../src/metacity.schemas.in.h:150
 msgid ""
 "The keybinding used to move focus backwards between windows, using a popup "
 "window. Holding \"shift\" together with this binding makes the direction go "
@@ -1674,7 +1690,7 @@ msgstr ""
 "подесите опцијата до специјалниот стринг \"disabled\", тогаш нема да има "
 "копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:149
+#: ../src/metacity.schemas.in.h:151
 msgid ""
 "The keybinding used to move focus between panels and the desktop, using a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1690,7 +1706,7 @@ msgstr ""
 "Ако ја подесите опцијата до специјалниот стринг \"disabled\", тогаш нема да "
 "има копчиња-кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:150
+#: ../src/metacity.schemas.in.h:152
 msgid ""
 "The keybinding used to move focus between panels and the desktop, without a "
 "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
@@ -1706,7 +1722,7 @@ msgstr ""
 "опцијата до специјалниот стринг \"disabled\", тогаш нема да има копчиња-"
 "кратенки за оваа акција."
 
-#: ../src/metacity.schemas.in.h:151
+#: ../src/metacity.schemas.in.h:153
 msgid ""
 "The keybinding used to move focus between windows of an application without "
 "a popup window. Holding the \"shift\" key while using this binding reverses "
@@ -1724,7 +1740,7 @@ msgstr ""
 "ја наместиш опцијата на специјална низа \"оневозможено\", тогаш ќе нема "
 "биндинг на тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:152
+#: ../src/metacity.schemas.in.h:154
 msgid ""
 "The keybinding used to move focus between windows of an application, using a "
 "popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" key while "
@@ -1743,7 +1759,7 @@ msgstr ""
 "специјална низа \"оневозможено\", тогаш ќе нема кратенки на тастатурата за "
 "таа акција."
 
-#: ../src/metacity.schemas.in.h:153
+#: ../src/metacity.schemas.in.h:155
 msgid ""
 "The keybinding used to move focus between windows without a popup window. "
 "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this "
@@ -1761,7 +1777,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа \"оневозможено"
 "\", тогаш ќе нема биндинг на тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:154
+#: ../src/metacity.schemas.in.h:156
 msgid ""
 "The keybinding used to move focus between windows, using a popup window. "
 "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
@@ -1779,7 +1795,7 @@ msgstr ""
 "Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
 "\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:155
+#: ../src/metacity.schemas.in.h:157
 msgid ""
 "The keybinding used to toggle always on top. A window that is always on top "
 "will always be visible over other overlapping windows. The format looks like "
@@ -1795,7 +1811,7 @@ msgstr ""
 "наместиш опцијата на специјална низа \"оневозможено\", тогаш ќе нема "
 "кратенка на тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:156
+#: ../src/metacity.schemas.in.h:158
 msgid ""
 "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1811,7 +1827,7 @@ msgstr ""
 "Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
 "\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:157
+#: ../src/metacity.schemas.in.h:159
 msgid ""
 "The keybinding used to toggle maximization. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1825,7 +1841,7 @@ msgstr ""
 "\"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа \"оневозможено"
 "\", тогаш ќе нема кратенки на тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:158
+#: ../src/metacity.schemas.in.h:160
 msgid ""
 "The keybinding used to toggle shaded/unshaded state. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1839,7 +1855,7 @@ msgstr ""
 "Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
 "\"оневозможено\", тогаш ќе нема кратенка на тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:159
+#: ../src/metacity.schemas.in.h:161
 msgid ""
 "The keybinding used to toggle whether the window is on all workspaces or "
 "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -1855,7 +1871,7 @@ msgstr ""
 "наместиш опцијата на специјална низа \"оневозможено\", тогаш ќе нема "
 "кратенка на тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:160
+#: ../src/metacity.schemas.in.h:162
 msgid ""
 "The keybinding used to unmaximize a window. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1869,7 +1885,7 @@ msgstr ""
 "Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
 "\"оневозможено\", тогаш ќе нема кратенка на тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:161
+#: ../src/metacity.schemas.in.h:163
 msgid ""
 "The keybinding which display's the panel's \"Run Application\" dialog box. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -1884,7 +1900,7 @@ msgstr ""
 "Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
 "\"оневозможено\", тогаш ќе нема кратенка на тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:162
+#: ../src/metacity.schemas.in.h:164
 msgid ""
 "The keybinding which invokes a terminal. The format looks like \"&lt;"
 "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1899,7 +1915,7 @@ msgstr ""
 "специјална низа \"оневозможено\", тогаш ќе нема кратенки на тастатурата за "
 "таа акција."
 
-#: ../src/metacity.schemas.in.h:163
+#: ../src/metacity.schemas.in.h:165
 msgid ""
 "The keybinding which invokes the panel's screenshot utility to take a "
 "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
@@ -1915,7 +1931,7 @@ msgstr ""
 "опцијата на специјална низа \"оневозможено\", тогаш ќе нема кратенки на "
 "тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:164
+#: ../src/metacity.schemas.in.h:166
 msgid ""
 "The keybinding which invokes the panel's screenshot utility. The format "
 "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
@@ -1931,7 +1947,7 @@ msgstr ""
 "опцијата на специјална низа \"оневозможено\", тогаш ќе нема кратенки на "
 "тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:165
+#: ../src/metacity.schemas.in.h:167
 msgid ""
 "The keybinding which shows the panel's main menu. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -1946,21 +1962,21 @@ msgstr ""
 "специјална низа \"оневозможено\", тогаш ќе нема кратенки на тастатурата за "
 "таа акција."
 
-#: ../src/metacity.schemas.in.h:166
+#: ../src/metacity.schemas.in.h:168
 msgid "The name of a workspace."
 msgstr "Името на работниот простор"
 
-#: ../src/metacity.schemas.in.h:167
+#: ../src/metacity.schemas.in.h:169
 msgid "The screenshot command"
 msgstr "Командата за слика на екранот"
 
-#: ../src/metacity.schemas.in.h:168
+#: ../src/metacity.schemas.in.h:170
 msgid ""
 "The theme determines the appearance of window borders, titlebar, and so "
 "forth."
 msgstr "Темата одлучува за изгледот на границите, лентата со наслов, и.т.н."
 
-#: ../src/metacity.schemas.in.h:169
+#: ../src/metacity.schemas.in.h:171
 msgid ""
 "The time delay before raising a window if auto_raise is set to true. The "
 "delay is given in thousandths of a second."
@@ -1968,7 +1984,7 @@ msgstr ""
 "Времето се одложува пред кревање на прозорец ако авто_кревај опцијата е "
 "овозможена. Одложувањето е во илјадинки од секунда."
 
-#: ../src/metacity.schemas.in.h:170
+#: ../src/metacity.schemas.in.h:172
 msgid ""
 "The window focus mode indicates how windows are activated. It has three "
 "possible values; \"click\" means windows must be clicked in order to focus "
@@ -1983,11 +1999,11 @@ msgstr ""
 "фокусиран кога глувчето ќе влезе во него, и излегува од фокус кога ќе го "
 "напушти прозорецот."
 
-#: ../src/metacity.schemas.in.h:171
+#: ../src/metacity.schemas.in.h:173
 msgid "The window screenshot command"
 msgstr "Командата за слика на екранот"
 
-#: ../src/metacity.schemas.in.h:172
+#: ../src/metacity.schemas.in.h:174
 msgid ""
 "This keybinding changes whether a window is above or below other windows. If "
 "the window is covered by another one, it raises the window above all others, "
@@ -2007,7 +2023,7 @@ msgstr ""
 "специјална низа \"оневозможено\", тогаш ќе нема кратенки на тастатурата за "
 "таа акција. "
 
-#: ../src/metacity.schemas.in.h:173
+#: ../src/metacity.schemas.in.h:175
 msgid ""
 "This keybinding lowers a window below other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2021,7 +2037,7 @@ msgstr ""
 "Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
 "\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:174
+#: ../src/metacity.schemas.in.h:176
 msgid ""
 "This keybinding moves a window against the north (top) side of the screen. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -2030,13 +2046,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Оваа кратенка за копче го поместува прозорецот кон горната страна на екранот. Форматот изгледа "
-"како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1\". Парсерот е "
-"либеларен и дозволува мали или големи букви, и истотака абервации како \"&lt;"
-"Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместите опцијата на специјална низа "
-"\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
+"Оваа кратенка за копче го поместува прозорецот кон горната страна на "
+"екранот. Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\". Парсерот е либеларен и дозволува мали или големи букви, и "
+"истотака абервации како \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместите "
+"опцијата на специјална низа \"оневозможено\", тогаш ќе нема кратенки на "
+"тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:175
+#: ../src/metacity.schemas.in.h:177
 msgid ""
 "This keybinding moves a window into the east (right) side of the screen. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2045,13 +2062,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Оваа кратенка за копче го поместува прозорецот кон десната страна на екранот. Форматот изгледа "
-"како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1\". Парсерот е "
-"либеларен и дозволува мали или големи букви, и истотака абервации како \"&lt;"
-"Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместите опцијата на специјална низа "
-"\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
+"Оваа кратенка за копче го поместува прозорецот кон десната страна на "
+"екранот. Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\". Парсерот е либеларен и дозволува мали или големи букви, и "
+"истотака абервации како \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместите "
+"опцијата на специјална низа \"оневозможено\", тогаш ќе нема кратенки на "
+"тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:176
+#: ../src/metacity.schemas.in.h:178
 msgid ""
 "This keybinding moves a window into the north-east (top right) corner of the "
 "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2060,13 +2078,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Оваа кратенка за копче го поместува прозорецот кон горната десна страна на екранот. Форматот изгледа "
-"како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1\". Парсерот е "
-"либеларен и дозволува мали или големи букви, и истотака абервации како \"&lt;"
-"Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместите опцијата на специјална низа "
-"\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
+"Оваа кратенка за копче го поместува прозорецот кон горната десна страна на "
+"екранот. Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\". Парсерот е либеларен и дозволува мали или големи букви, и "
+"истотака абервации како \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместите "
+"опцијата на специјална низа \"оневозможено\", тогаш ќе нема кратенки на "
+"тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:177
+#: ../src/metacity.schemas.in.h:179
 msgid ""
 "This keybinding moves a window into the north-west (top left) corner of the "
 "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2075,13 +2094,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Оваа кратенка за копче го поместува прозорецот кон горната лева страна на екранот. Форматот изгледа "
-"како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1\". Парсерот е "
-"либеларен и дозволува мали или големи букви, и истотака абервации како \"&lt;"
-"Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместите опцијата на специјална низа "
-"\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
+"Оваа кратенка за копче го поместува прозорецот кон горната лева страна на "
+"екранот. Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\". Парсерот е либеларен и дозволува мали или големи букви, и "
+"истотака абервации како \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместите "
+"опцијата на специјална низа \"оневозможено\", тогаш ќе нема кратенки на "
+"тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:178
+#: ../src/metacity.schemas.in.h:180
 msgid ""
 "This keybinding moves a window into the south (bottom) side of the screen. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -2090,13 +2110,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Оваа кратенка за копче го поместува прозорецот кон долната страна на екранот. Форматот изгледа "
-"како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1\". Парсерот е "
-"либеларен и дозволува мали или големи букви, и истотака абервации како \"&lt;"
-"Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместите опцијата на специјална низа "
-"\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
+"Оваа кратенка за копче го поместува прозорецот кон долната страна на "
+"екранот. Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\". Парсерот е либеларен и дозволува мали или големи букви, и "
+"истотака абервации како \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместите "
+"опцијата на специјална низа \"оневозможено\", тогаш ќе нема кратенки на "
+"тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:179
+#: ../src/metacity.schemas.in.h:181
 msgid ""
 "This keybinding moves a window into the south-east (bottom right) corner of "
 "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2105,13 +2126,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Оваа кратенка за копче го поместува прозорецот кон долната десна страна на екранот. Форматот изгледа "
-"како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1\". Парсерот е "
-"либеларен и дозволува мали или големи букви, и истотака абервации како \"&lt;"
-"Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместите опцијата на специјална низа "
-"\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
+"Оваа кратенка за копче го поместува прозорецот кон долната десна страна на "
+"екранот. Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\". Парсерот е либеларен и дозволува мали или големи букви, и "
+"истотака абервации како \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместите "
+"опцијата на специјална низа \"оневозможено\", тогаш ќе нема кратенки на "
+"тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:180
+#: ../src/metacity.schemas.in.h:182
 msgid ""
 "This keybinding moves a window into the south-west (bottom left) corner of "
 "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2120,13 +2142,14 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Оваа кратенка за копче го поместува прозорецот кон долната лева страна на екранот. Форматот изгледа "
-"како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1\". Парсерот е "
-"либеларен и дозволува мали или големи букви, и истотака абервации како \"&lt;"
-"Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместите опцијата на специјална низа "
-"\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
+"Оваа кратенка за копче го поместува прозорецот кон долната лева страна на "
+"екранот. Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;"
+"Alt&gt;F1\". Парсерот е либеларен и дозволува мали или големи букви, и "
+"истотака абервации како \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместите "
+"опцијата на специјална низа \"оневозможено\", тогаш ќе нема кратенки на "
+"тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:181
+#: ../src/metacity.schemas.in.h:183
 msgid ""
 "This keybinding moves a window into the west (left) side of the screen. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2135,13 +2158,14 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Оваа кратенка за копче го поместува прозорецот кон левата страна на екранот. Форматот изгледа "
-"како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1\". Парсерот е "
-"либеларен и дозволува мали или големи букви, и истотака абервации како \"&lt;"
-"Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместите опцијата на специјална низа "
-"\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
+"Оваа кратенка за копче го поместува прозорецот кон левата страна на екранот. "
+"Форматот изгледа како \"&lt;Control&gt;a\" или \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\". Парсерот е либеларен и дозволува мали или големи букви, и истотака "
+"абервации како \"&lt;Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместите опцијата "
+"на специјална низа \"оневозможено\", тогаш ќе нема кратенки на тастатурата "
+"за таа акција."
 
-#: ../src/metacity.schemas.in.h:182
+#: ../src/metacity.schemas.in.h:184
 msgid ""
 "This keybinding raises the window above other windows. The format looks like "
 "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
@@ -2155,7 +2179,7 @@ msgstr ""
 "Ctl&gt;\" и \"&lt;Ctrl&gt;\". Ако ја наместиш опцијата на специјална низа "
 "\"оневозможено\", тогаш ќе нема кратенки на тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:183
+#: ../src/metacity.schemas.in.h:185
 msgid ""
 "This keybinding resizes a window to fill available horizontal space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2171,7 +2195,7 @@ msgstr ""
 "Ако ја наместиш опцијата на специјална низа \"оневозможено\", тогаш ќе нема "
 "кратенки на тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:184
+#: ../src/metacity.schemas.in.h:186
 msgid ""
 "This keybinding resizes a window to fill available vertical space. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2187,7 +2211,7 @@ msgstr ""
 "Ако ја наместиш опцијата на специјална низа \"оневозможено\", тогаш ќе нема "
 "кратенки на тастатурата за таа акција."
 
-#: ../src/metacity.schemas.in.h:185
+#: ../src/metacity.schemas.in.h:187
 msgid ""
 "This option determines the effects of double-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2201,7 +2225,37 @@ msgstr ""
 "прозорецот, 'минимизирај' која што ќе го минимизира прозорецот и 'ништо' "
 "која што нема да прави ништо."
 
-#: ../src/metacity.schemas.in.h:186
+#: ../src/metacity.schemas.in.h:188
+#, fuzzy
+msgid ""
+"This option determines the effects of middle-clicking on the title bar. "
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'minimize' which will minimize the window, and 'none' which will not do "
+"anything."
+msgstr ""
+"Оваа опција ги детерминира ефектите на дупло кликање на лентата со наслов. "
+"Моментални валидни опции се 'вклучи_сенка'. која ќе вклучи/исклучи сенка на "
+"прозорецот, и 'вклучи_максимизирање' која ќе го максимизира/врати "
+"прозорецот, 'минимизирај' која што ќе го минимизира прозорецот и 'ништо' "
+"која што нема да прави ништо."
+
+#: ../src/metacity.schemas.in.h:189
+#, fuzzy
+msgid ""
+"This option determines the effects of right-clicking on the title bar. "
+"Current valid options are 'toggle_shade', which will shade/unshade the "
+"window, 'toggle_maximize' which will maximize/unmaximize the window, "
+"'minimize' which will minimize the window, and 'none' which will not do "
+"anything."
+msgstr ""
+"Оваа опција ги детерминира ефектите на дупло кликање на лентата со наслов. "
+"Моментални валидни опции се 'вклучи_сенка'. која ќе вклучи/исклучи сенка на "
+"прозорецот, и 'вклучи_максимизирање' која ќе го максимизира/врати "
+"прозорецот, 'минимизирај' која што ќе го минимизира прозорецот и 'ништо' "
+"која што нема да прави ништо."
+
+#: ../src/metacity.schemas.in.h:190
 msgid ""
 "This option provides additional control over how newly created windows get "
 "focus. It has two possible values; \"smart\" applies the user's normal focus "
@@ -2213,27 +2267,27 @@ msgstr ""
 "нормален фокус на корисникот и \"стриктно\" резултира во прозорци стартувани "
 "од терминал и без даден фокус."
 
-#: ../src/metacity.schemas.in.h:187
+#: ../src/metacity.schemas.in.h:191
 msgid "Toggle always on top state"
 msgstr "Секогаш менувај на највисокото"
 
-#: ../src/metacity.schemas.in.h:188
+#: ../src/metacity.schemas.in.h:192
 msgid "Toggle fullscreen mode"
 msgstr "Промени на цел екран"
 
-#: ../src/metacity.schemas.in.h:189
+#: ../src/metacity.schemas.in.h:193
 msgid "Toggle maximization state"
 msgstr "Промени ја состојбата на максимизација"
 
-#: ../src/metacity.schemas.in.h:190
+#: ../src/metacity.schemas.in.h:194
 msgid "Toggle shaded state"
 msgstr "Промени ја состојбата на сенка"
 
-#: ../src/metacity.schemas.in.h:191
+#: ../src/metacity.schemas.in.h:195
 msgid "Toggle window on all workspaces"
 msgstr "Промени прозорец на сите работни простори"
 
-#: ../src/metacity.schemas.in.h:192
+#: ../src/metacity.schemas.in.h:196
 msgid ""
 "Turns on a visual indication when an application or the system issues a "
 "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
@@ -2243,43 +2297,43 @@ msgstr ""
 "издаде 'ѕвоно' или 'бип'; корисно за луѓето со оштетен слух за користење во "
 "бучна околина."
 
-#: ../src/metacity.schemas.in.h:193
+#: ../src/metacity.schemas.in.h:197
 msgid "Unmaximize window"
 msgstr "Намали прозорец"
 
-#: ../src/metacity.schemas.in.h:194
+#: ../src/metacity.schemas.in.h:198
 msgid "Use standard system font in window titles"
 msgstr "Користи стандарсен систем на фонт во насловите на прозорците"
 
-#: ../src/metacity.schemas.in.h:195
+#: ../src/metacity.schemas.in.h:199
 msgid "Visual Bell Type"
 msgstr "Визуелно ѕвоно тип"
 
-#: ../src/metacity.schemas.in.h:196
+#: ../src/metacity.schemas.in.h:200
 msgid "Whether raising should be a side-effect of other user interactions"
 msgstr "Дали кревањето да биде ефект проследен од други кориснички дејствија"
 
-#: ../src/metacity.schemas.in.h:197
+#: ../src/metacity.schemas.in.h:201
 msgid "Window focus mode"
 msgstr "Фокус на прозорци "
 
-#: ../src/metacity.schemas.in.h:198
+#: ../src/metacity.schemas.in.h:202
 msgid "Window title font"
 msgstr "Фонт на лентата со наслов"
 
-#: ../src/prefs.c:576 ../src/prefs.c:592 ../src/prefs.c:608 ../src/prefs.c:624
-#: ../src/prefs.c:640 ../src/prefs.c:656 ../src/prefs.c:672 ../src/prefs.c:692
-#: ../src/prefs.c:708 ../src/prefs.c:724 ../src/prefs.c:742 ../src/prefs.c:758
-#: ../src/prefs.c:777 ../src/prefs.c:793 ../src/prefs.c:810 ../src/prefs.c:826
-#: ../src/prefs.c:842 ../src/prefs.c:859 ../src/prefs.c:875 ../src/prefs.c:891
-#: ../src/prefs.c:907 ../src/prefs.c:923 ../src/prefs.c:938 ../src/prefs.c:953
-#: ../src/prefs.c:968 ../src/prefs.c:984 ../src/prefs.c:1000
-#: ../src/prefs.c:1016 ../src/prefs.c:1032
+#: ../src/prefs.c:579 ../src/prefs.c:595 ../src/prefs.c:611 ../src/prefs.c:627
+#: ../src/prefs.c:643 ../src/prefs.c:659 ../src/prefs.c:675 ../src/prefs.c:695
+#: ../src/prefs.c:711 ../src/prefs.c:727 ../src/prefs.c:745 ../src/prefs.c:761
+#: ../src/prefs.c:780 ../src/prefs.c:796 ../src/prefs.c:813 ../src/prefs.c:829
+#: ../src/prefs.c:845 ../src/prefs.c:862 ../src/prefs.c:878 ../src/prefs.c:894
+#: ../src/prefs.c:910 ../src/prefs.c:926 ../src/prefs.c:941 ../src/prefs.c:956
+#: ../src/prefs.c:971 ../src/prefs.c:987 ../src/prefs.c:1003
+#: ../src/prefs.c:1019 ../src/prefs.c:1035
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf копче \"%s\" е наместено на невалиден тип \n"
 
-#: ../src/prefs.c:1077
+#: ../src/prefs.c:1080
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2288,12 +2342,12 @@ msgstr ""
 "\"%s\" пронајдено во конфигурацијата на базата не е валидна вредност за "
 "спец. копчиња на глувче \n"
 
-#: ../src/prefs.c:1101 ../src/prefs.c:1122 ../src/prefs.c:1660
+#: ../src/prefs.c:1104 ../src/prefs.c:1125 ../src/prefs.c:1667
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf копче '%s' е наместено на невалидна вредност\n"
 
-#: ../src/prefs.c:1251
+#: ../src/prefs.c:1254
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
@@ -2302,12 +2356,12 @@ msgstr ""
 "%d ставено во GConf копчето %s не е разумна големина за _стрелка; мора да "
 "биде во истиот опсег 1..128 \n"
 
-#: ../src/prefs.c:1331
+#: ../src/prefs.c:1334
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Не може да парсува опис на фонт \"%s\" од GConf копчето %s\n"
 
-#: ../src/prefs.c:1558
+#: ../src/prefs.c:1561
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2316,7 +2370,7 @@ msgstr ""
 "%d ставено во GConf копчето %s не е разумен број на работни околини, "
 "моментален максимум е %d\n"
 
-#: ../src/prefs.c:1618
+#: ../src/prefs.c:1621
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2324,17 +2378,17 @@ msgstr ""
 "Работни околини за скршени апликации е оневозможено. Некои апликации можеби "
 "нема да работат добро.\n"
 
-#: ../src/prefs.c:1687
+#: ../src/prefs.c:1694
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d ставено во GConf копче %s е надвор од дострел 0 до %d\n"
 
-#: ../src/prefs.c:1830
+#: ../src/prefs.c:1837
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Грешка при поставката на број на работни простори %d: %s\n"
 
-#: ../src/prefs.c:2224 ../src/prefs.c:2394
+#: ../src/prefs.c:2231 ../src/prefs.c:2401
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2343,7 +2397,7 @@ msgstr ""
 "\"%s\" пронајдено при конфигурирањето на базата не е валидна вредност за "
 "keybinding \"%s\"\n"
 
-#: ../src/prefs.c:2810
+#: ../src/prefs.c:2817
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Грешка при поставката на имиња на работните  простори %d до \"%s\": %s\n"
@@ -2353,12 +2407,12 @@ msgstr "Грешка при поставката на имиња на работ
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/screen.c:406
+#: ../src/screen.c:407
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Екран %d на приказ '%s' е невалиден\n"
 
-#: ../src/screen.c:422
+#: ../src/screen.c:423
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -2367,85 +2421,85 @@ msgstr ""
 "Екран %d на приказ \"%s\" веќе има менџер на прозорци; пробај со --преклопи "
 "опција да го преклопиш моменталниот менаџер на прозорци.\n"
 
-#: ../src/screen.c:446
+#: ../src/screen.c:450
 #, c-format
 msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Не можам да обезбедам менаџер на прозорци на екранот %d прикажи \"%s\"\n"
 
-#: ../src/screen.c:504
+#: ../src/screen.c:508
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Екран %d на приказ \"%s\" веќе има менаџер на прозорец\n"
 
-#: ../src/screen.c:709
+#: ../src/screen.c:713
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Не можам да отпуштам екран %d на приказ \"%s\"\n"
 
-#: ../src/session.c:837 ../src/session.c:844
+#: ../src/session.c:844 ../src/session.c:851
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Не можам да креирам директориум '%s': %s\n"
 
-#: ../src/session.c:854
+#: ../src/session.c:861
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Не можам да отворам сесија на датотеката  '%s' за пишување: %s\n"
 
-#: ../src/session.c:1006
+#: ../src/session.c:1013
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Грешка при пишувањето на датотека од сесијата '%s': %s\n"
 
-#: ../src/session.c:1011
+#: ../src/session.c:1018
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "Грешка при затворање на датотека од сесијата '%s': %s\n"
 
-#: ../src/session.c:1086
+#: ../src/session.c:1093
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Не успеав да ја прочитам снимената датотека од сесијата %s: %s\n"
 
-#: ../src/session.c:1121
+#: ../src/session.c:1128
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Не успеав да ја парсирам снимената датотека од сесијата: %s\n"
 
-#: ../src/session.c:1170
+#: ../src/session.c:1177
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "<metacity_session> атрибутот е виден но веќе го имаме ID-от на сесијата"
 
-#: ../src/session.c:1183
+#: ../src/session.c:1190
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Непознат атрибут %s на <metacity_session> елемент"
 
-#: ../src/session.c:1200
+#: ../src/session.c:1207
 msgid "nested <window> tag"
 msgstr "вгнездена <window> ознака"
 
-#: ../src/session.c:1258 ../src/session.c:1290
+#: ../src/session.c:1265 ../src/session.c:1297
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Непознат атрибут %s на <window> елемент."
 
-#: ../src/session.c:1362
+#: ../src/session.c:1369
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Непознат атрибут %s на <maximized> елемент"
 
-#: ../src/session.c:1422
+#: ../src/session.c:1429
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Непознат атрибут %s на <geometry> елемент"
 
-#: ../src/session.c:1442
+#: ../src/session.c:1449
 #, c-format
 msgid "Unknown element %s"
 msgstr "Непознат елемент %s"
 
-#: ../src/session.c:1908
+#: ../src/session.c:1886
 #, c-format
 msgid ""
 "Error launching metacity-dialog to warn about apps that don't support "
@@ -2884,7 +2938,9 @@ msgstr ""
 #: ../src/theme-parser.c:3639
 #, c-format
 msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
-msgstr "Не треба да има „смени големина“ атрибут на <%s> елемент за максимизирани состојби"
+msgstr ""
+"Не треба да има „смени големина“ атрибут на <%s> елемент за максимизирани "
+"состојби"
 
 #: ../src/theme-parser.c:3653 ../src/theme-parser.c:3675
 #, c-format
@@ -2989,7 +3045,7 @@ msgstr "<description> специфицирано два пати за оваа �
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Не успеав да најдам валидна датотека за темата %s\n"
 
-#: ../src/theme-parser.c:4628
+#: ../src/theme-parser.c:4629
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Датотеката на темата %s не содржи корен <metacity_theme> елемент"
@@ -3451,39 +3507,39 @@ msgstr "Не успеав да fdopen() дневник датотеката %s: 
 msgid "Opened log file %s\n"
 msgstr "Отворив дневник датотека %s\n"
 
-#: ../src/util.c:222
+#: ../src/util.c:231
 msgid "Window manager: "
 msgstr "Менаџер на прозорци"
 
-#: ../src/util.c:370
+#: ../src/util.c:379
 msgid "Bug in window manager: "
 msgstr "Бубачка во менаџерот на прозорци"
 
-#: ../src/util.c:399
+#: ../src/util.c:408
 msgid "Window manager warning: "
 msgstr "Предупредување од менаџерот на прозорци:"
 
-#: ../src/util.c:423
+#: ../src/util.c:432
 msgid "Window manager error: "
 msgstr "Грешка од менаџерот на прозорци:"
 
-#: ../src/window-props.c:172
+#: ../src/window-props.c:192
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Апликацијата намести лажно _NET_WM_PID %lu\n"
 
-#: ../src/window-props.c:240
+#: ../src/window-props.c:324
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (на %s)"
 
-#: ../src/window-props.c:1186
+#: ../src/window-props.c:1405
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Невалиден WM_TRANSIENT_FOR прозорец 0x%lx одреден за %s.\n"
 
 #. first time through
-#: ../src/window.c:5401
+#: ../src/window.c:5499
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3499,7 +3555,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5997
+#: ../src/window.c:6102
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
