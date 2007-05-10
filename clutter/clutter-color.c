@@ -134,7 +134,8 @@ clutter_color_darken (const ClutterColor *src,
  * @luminance: return location for the luminance value or %NULL
  * @saturation: return location for the saturation value or %NULL
  *
- * Converts @src to the HLS format.
+ * Converts @src to the HLS format. Returned hue is in degrees (0 .. 360),
+ * luminance and saturation from interval <0 .. 1>.
  */
 void
 clutter_color_to_hlsx (const ClutterColor *src,
@@ -214,9 +215,9 @@ clutter_color_to_hlsx (const ClutterColor *src,
 /**
  * clutter_color_from_hlsx:
  * @dest: return location for a #ClutterColor
- * @hue: hue value (0 .. 255)
- * @luminance: luminance value (0 .. 255)
- * @saturation: saturation value (0 .. 255)
+ * @hue: hue value (0 .. 360)
+ * @luminance: luminance value (0 .. 1)
+ * @saturation: saturation value (0 .. 1)
  *
  * Converts a color expressed in HLS (hue, luminance and saturation)
  * values into a #ClutterColor.
@@ -306,7 +307,8 @@ clutter_color_from_hlsx (ClutterColor *dest,
  * @luminance: return location for the luminance value or %NULL
  * @saturation: return location for the saturation value or %NULL
  *
- * Converts @src to the HLS format.
+ * Converts @src to the HLS format. Returned HLS values are from interval
+ * 0 .. 255.
  */
 void
 clutter_color_to_hls (const ClutterColor *src,
@@ -331,7 +333,7 @@ clutter_color_to_hls (const ClutterColor *src,
 /**
  * clutter_color_from_hls:
  * @dest: return location for a #ClutterColor
- * @hue: hue value (0 .. 360)
+ * @hue: hue value (0 .. 255)
  * @luminance: luminance value (0 .. 255)
  * @saturation: saturation value (0 .. 255)
  *
