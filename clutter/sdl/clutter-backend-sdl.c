@@ -22,7 +22,6 @@ static gboolean
 clutter_backend_sdl_post_parse (ClutterBackend  *backend,
                                 GError         **error)
 {
-  ClutterBackendSDL *backend_sdl = CLUTTER_BACKEND_SDL (backend);
   int                err;
 
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_NOPARACHUTE) < 0)
@@ -117,8 +116,6 @@ clutter_backend_sdl_get_stage (ClutterBackend *backend)
 static void
 clutter_backend_sdl_finalize (GObject *gobject)
 {
-  ClutterBackendSDL *backend_sdl = CLUTTER_BACKEND_SDL (gobject);
-
   SDL_Quit();
 
   if (backend_singleton)
@@ -191,20 +188,8 @@ clutter_backend_sdl_init (ClutterBackendSDL *backend_sdl)
 {
   ClutterBackend *backend = CLUTTER_BACKEND (backend_sdl);
 
-  backend->events_queue = g_queue_new ();
-
-  backend->button_click_time[0] = backend->button_click_time[1] = 0;
-  backend->button_number[0] = backend->button_number[1] = -1;
-  backend->button_x[0] = backend->button_x[1] = 0;
-  backend->button_y[0] = backend->button_y[1] = 0;
-
-  backend->res_width = backend->res_height = -1;
-  backend->mm_width = backend->mm_height = -1;
-  backend->screen_num = 0;
-  backend->n_screens = 0;
-
-  backend->double_click_time = 250;
-  backend->double_click_distance = 5;
+  clutter_backend_set_double_click_time (backend, 250);
+  clutter_backend_set_double_click_distance (backend, 5);
 }
 
 GType

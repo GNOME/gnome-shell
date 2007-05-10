@@ -147,40 +147,6 @@ set_user_time (Display      *display,
     }
 }
 
-/**
- * clutter_events_pending:
- *
- * FIXME
- *
- * Return value: FIXME
- *
- * Since: 0.4
- */
-gboolean
-clutter_events_pending (void)
-{
-  GList *i;
-
-  for (i = event_sources; i != NULL; i = i->next)
-    {
-      ClutterEventSource *source = i->data;
-      ClutterBackend *backend = source->backend;
-
-      if (_clutter_event_queue_check_pending (backend))
-        return TRUE;
-    }
-
-  for (i = event_sources; i != NULL; i = i->next)
-    {
-      ClutterEventSource *source = i->data;
-      ClutterBackend *backend = source->backend;
-
-      if (clutter_check_xpending (backend))
-        return TRUE;
-    }
-
-  return FALSE;
-}
 
 static void
 translate_key_event (ClutterBackend *backend,
@@ -325,32 +291,26 @@ clutter_event_translate (ClutterBackend *backend,
   return res;
 }
 
-void
-_clutter_events_queue (ClutterBackend *backend)
+static void
+events_queue (ClutterBackend *backend)
 {
-  ClutterBackendEgl *backend_egl = CLUTTER_BACKEND_EGL (backend);
-  ClutterEvent *event;
-  XEvent xevent;
+  ClutterBackendEgl   *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  ClutterEvent        *event;
+  XEvent               xevent;
+  ClutterMainContext  *clutter_context;
+
+  clutter_context = clutter_context_get_default ();
+
   Display *xdisplay = backend_egl->xdpy;
 
-  while (!_clutter_event_queue_check_pending (backend) && XPending (xdisplay))
+  while (!clutter_events_pending () && XPending (xdisplay))
     {
       XNextEvent (xdisplay, &xevent);
-
-      switch (xevent.type)
-        {
-        case KeyPress:
-        case KeyRelease:
-          break;
-        default:
-          if (XFilterEvent (&xevent, None))
-            continue;
-        }
 
       event = clutter_event_new (CLUTTER_NOTHING);
       if (clutter_event_translate (backend, event, &xevent))
         {
-          _clutter_event_queue_push (backend, event);
+	  g_queue_push_head (clutter_context->events_queue, event);
         }
       else
         {
@@ -367,8 +327,7 @@ clutter_event_prepare (GSource *source,
   gboolean retval;
 
   *timeout = -1;
-  retval = (_clutter_event_queue_check_pending (backend) ||
-            clutter_check_xpending (backend));
+  retval = (clutter_events_pending () || clutter_check_xpending (backend));
 
   return retval;
 }
@@ -381,8 +340,7 @@ clutter_event_check (GSource *source)
   gboolean retval;
 
   if (event_source->event_poll_fd.revents & G_IO_IN)
-    retval = (_clutter_event_queue_check_pending (backend) ||
-              clutter_check_xpending (backend));
+    retval = (clutter_events_pending () || clutter_check_xpending (backend));
   else
     retval = FALSE;
 
@@ -397,17 +355,13 @@ clutter_event_dispatch (GSource     *source,
   ClutterBackend *backend = ((ClutterEventSource *) source)->backend;
   ClutterEvent *event;
 
-  _clutter_events_queue (backend);
-  event = _clutter_event_queue_pop (backend);
+  events_queue (backend);
+
+  event = clutter_event_get ();
 
   if (event)
     {
-      if (_clutter_event_func)
-        {
-          CLUTTER_NOTE (EVENT, "Dispatching _clutter_event_func");
-          (* _clutter_event_func) (event, _clutter_event_data);
-        }
-
+      clutter_do_event (event);
       clutter_event_free (event);
     }
 

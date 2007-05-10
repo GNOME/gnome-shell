@@ -1,3 +1,11 @@
+2007-05-10  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/egl/clutter-backend-egl.c:
+	* clutter/egl/clutter-event-egl.c:
+	* clutter/sdl/clutter-backend-sdl.c:
+	* clutter/sdl/clutter-event-sdl.c:
+	Fix SDL & EGL backends to work with newer backend code.
+
 2007-05-10  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-color.h:

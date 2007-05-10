@@ -105,21 +105,6 @@ _clutter_events_uninit (ClutterBackend *backend)
     }
 }
 
-/**
- * clutter_events_pending:
- *
- * FIXME
- *
- * Return value: FIXME
- *
- * Since: 0.4
- */
-gboolean
-clutter_events_pending (void)
-{
-  return FALSE;
-}
-
 static gboolean
 clutter_event_prepare (GSource *source,
                        gint    *timeout)
@@ -138,19 +123,11 @@ clutter_event_check (GSource *source)
   return SDL_PeepEvents(&events, 1, SDL_PEEKEVENT, SDL_ALLEVENTS);
 }
 
-void
-_clutter_events_queue (ClutterBackend *backend)
-{
-  /* FIXME: Implement */
-}
-
-
 static gboolean
 clutter_event_dispatch (GSource     *source,
                         GSourceFunc  callback,
                         gpointer     user_data)
 {
-  ClutterBackend *backend = ((ClutterEventSource *) source)->backend;
   SDL_Event       sdl_event;
   ClutterEvent   *event = NULL;
 
@@ -169,16 +146,11 @@ clutter_event_dispatch (GSource     *source,
 
   return TRUE;
 
-  event = _clutter_event_queue_pop (backend);
+  event = clutter_event_get ();
 
   if (event)
     {
-      if (_clutter_event_func)
-        {
-          CLUTTER_NOTE (EVENT, "Dispatching _clutter_event_func");
-          (* _clutter_event_func) (event, _clutter_event_data);
-        }
-
+      clutter_do_event(event);
       clutter_event_free (event);
     }
 
