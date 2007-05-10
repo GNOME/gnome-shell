@@ -72,6 +72,15 @@ void          clutter_color_shadex     (const ClutterColor *src,
                                         ClutterColor       *dest,
                                         ClutterFixed        shade);
 
+void          clutter_color_to_hlsx     (const ClutterColor *src,
+					 ClutterFixed       *hue,
+					 ClutterFixed       *luminance,
+					 ClutterFixed       *saturation);
+void          clutter_color_from_hlsx   (ClutterColor       *dest,
+					 ClutterFixed        hue,
+					 ClutterFixed        luminance,
+					 ClutterFixed        saturation);
+
 void          clutter_color_to_hls     (const ClutterColor *src,
                                         guint8             *hue,
                                         guint8             *luminance,

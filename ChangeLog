@@ -1,3 +1,11 @@
+2007-05-10  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-color.h:
+	* clutter/clutter-color.c:
+	Added clutter_color_to/from_hlsx()
+	(clutter_color_to/from_hls):
+	Clobber hue to 0 .. 250
+	
 2007-05-10  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-backend.c:
