@@ -39,6 +39,7 @@
 #include "clutter-behaviour-path.h"
 #include "clutter-behaviour-rotate.h"
 #include "clutter-behaviour-scale.h"
+#include "clutter-effect.h"
 #include "clutter-stage.h"
 #include "clutter-actor.h"
 #include "clutter-rectangle.h"

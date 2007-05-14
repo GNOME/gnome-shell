@@ -59,6 +59,7 @@ source_h =					\
 	$(srcdir)/clutter-stage.h 		\
 	$(srcdir)/clutter-texture.h 		\
 	$(srcdir)/clutter-timeline.h 		\
+	$(srcdir)/clutter-effect.h 		\
 	$(srcdir)/clutter-util.h 		\
 	$(srcdir)/clutter-version.h		\
 	$(NULL)
@@ -146,6 +147,7 @@ source_c = \
 	clutter-rectangle.c 		\
 	clutter-texture.c 		\
 	clutter-timeline.c 		\
+	$(srcdir)/clutter-effect.c      \
 	clutter-util.c 			\
 	$(NULL)
 

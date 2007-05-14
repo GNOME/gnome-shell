@@ -1,7 +1,12 @@
-noinst_PROGRAMS = test super-oh behave test-text
+noinst_PROGRAMS = test super-oh behave test-text slider
 
 INCLUDES = -I$(top_srcdir)/
 LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.la
+
+AM_CFLAGS = $(CLUTTER_CFLAGS) 
+LDFLAGS = $(CLUTTER_LIBS)
+
+slider_SOURCES = slider.c
 
 test_SOURCES = test.c
 test_CFLAGS = $(CLUTTER_CFLAGS) $(GCONF_CFLAGS)

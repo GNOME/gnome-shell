@@ -239,6 +239,8 @@ fi
 
 AC_SUBST(CLUTTER_DEBUG_CFLAGS)
 
+CLUTTER_NO_FPU=0
+
 AC_ARG_WITH(fpu,
             AS_HELP_STRING([--without-fpu],
                            [Assume target hardware has no fpu]),
@@ -246,8 +248,11 @@ AC_ARG_WITH(fpu,
             [with_fpu=yes])
 
 if test "x$with_fpu" != "xyes" ; then
+   CLUTTER_NO_FPU=1
    CLUTTER_FIXED_CFLAGS="-DCFX_NO_FPU"
 fi
+
+AC_SUBST(CLUTTER_HAS_FPU)
 
 dnl = GTK Doc check ========================================================
 

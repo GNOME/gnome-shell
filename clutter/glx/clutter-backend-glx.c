@@ -167,6 +167,7 @@ clutter_backend_glx_init_stage (ClutterBackend  *backend,
     }
 
   /* At least GL 1.2 is needed for CLAMP_TO_EDGE */
+  /* FIXME: move to cogl... */
   if (!is_gl_version_at_least_12 ())
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
@@ -186,7 +187,7 @@ clutter_backend_glx_init_events (ClutterBackend *backend)
   _clutter_backend_glx_events_init (backend);
 }
 
-static ClutterActor *
+static ClutterActor*
 clutter_backend_glx_get_stage (ClutterBackend *backend)
 {
   ClutterBackendGlx *backend_glx = CLUTTER_BACKEND_GLX (backend);

@@ -41,6 +41,13 @@
          (CLUTTER_MAJOR_VERSION == (major) && CLUTTER_MINOR_VERSION > (minor)) || \
          (CLUTTER_MAJOR_VERSION == (major) && CLUTTER_MINOR_VERSION == (minor) && CLUTTER_MICRO_VERSION > (micro)))
 
+/* GL Windowing system used */
 #define CLUTTER_FLAVOUR         "@CLUTTER_FLAVOUR@"
+
+/* cogl backend - gl or gles currently */
+#define CLUTTER_COGL            "@CLUTTER_COGL@"
+
+/* Set to 1 if clutter built without FPU (i.e fixed math), 0 otherwise */
+#define CLUTTER_NO_FPU          @CLUTTER_NO_FPU@
 
 #endif /* __CLUTTER_VERSION_H__ */

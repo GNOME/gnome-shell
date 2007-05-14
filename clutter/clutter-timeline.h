@@ -106,6 +106,7 @@ void             clutter_timeline_set_n_frames      (ClutterTimeline *timeline,
                                                      guint            n_frames);
 guint            clutter_timeline_get_n_frames      (ClutterTimeline *timeline);
 gboolean         clutter_timeline_is_playing        (ClutterTimeline *timeline);
+ClutterTimeline* clutter_timeline_copy              (ClutterTimeline *timeline);
 
 G_END_DECLS
 

@@ -145,6 +145,8 @@ actor_apply_knot_foreach (ClutterBehaviour *behaviour,
 {
   ClutterKnot *knot = data;
 
+  CLUTTER_NOTE (BEHAVIOUR, "Setting actor to %ix%i", knot->x, knot->y);
+
   clutter_actor_set_position (actor, knot->x, knot->y);
 }
 
@@ -172,14 +174,33 @@ path_alpha_to_position (ClutterBehaviourPath *behave,
   total_len = path_total_length (behave);
   offset = (alpha * total_len) / CLUTTER_ALPHA_MAX_ALPHA;
 
+  CLUTTER_NOTE (BEHAVIOUR, "alpha %i vs %i, len: %i vs %i", 
+		alpha, CLUTTER_ALPHA_MAX_ALPHA,
+		offset, total_len);
+
   if (offset == 0)
     {
+      /* first knot */
       clutter_behaviour_actors_foreach (behaviour, 
 					actor_apply_knot_foreach,
 					priv->knots->data);
       
       g_signal_emit (behave, path_signals[KNOT_REACHED], 0,
                      priv->knots->data);
+      return;
+    }
+  
+  if (offset == total_len)
+    {
+      /* Special case for last knot */
+      ClutterKnot *last_knot = (g_slist_last (priv->knots))->data;
+
+      clutter_behaviour_actors_foreach (behaviour, 
+					actor_apply_knot_foreach,
+					last_knot);
+
+      g_signal_emit (behave, path_signals[KNOT_REACHED], 0, last_knot);
+
       return;
     }
 
@@ -192,6 +213,7 @@ path_alpha_to_position (ClutterBehaviourPath *behave,
           ClutterKnot *next = l->next->data;
 
 	  dist_to_next = node_distance (knot, next);
+
           if (offset >= dist && offset < (dist + dist_to_next))
             {
 	      ClutterKnot new;

@@ -1,3 +1,36 @@
+2007-05-14  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-behaviour-path.c:
+	Fix bug where last knot position wouldn't get reached.
+
+	* clutter/clutter-group.c:
+	Add some docs 
+
+	* clutter/clutter-timeline.h:
+	* clutter/clutter-timeline.c:
+	Add clutter_timeline_copy (needed for ClutterEffect)
+
+	* clutter/clutter-version.h.in:
+	Export windowing system / GL backend etc defines.
+
+	* clutter/Makefile.am:
+	* clutter/clutter-effect.c:
+	* clutter/clutter-effect.h:
+	* clutter/clutter.h:
+
+	* clutter/glx/clutter-backend-glx.c:
+	Minor clean ups.
+
+	* clutter/clutter-alpha.h:
+	Add a fixme.
+
+	* configure.ac:
+	Add FPU define.
+
+	* examples/Makefile.am:
+	* examples/slider.c:
+	Add Robs slider game.
+
 2007-05-10  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/egl/clutter-backend-egl.c:

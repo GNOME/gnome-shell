@@ -25,10 +25,15 @@
 
 /**
  * SECTION:clutter-group
- * @short_description: Base class for actors which contain multiple child
+ * @short_description: Actor class containing multiple children.
  * actors.
  *
- * A #ClutterGroup is an Actor which can contain multiple child actors.
+ * A #ClutterGroup is an Actor which contains multiple child actors positioned
+ * relative to the #ClutterGroup position. Other operations such as scaling, 
+ * rotating and clipping of the group will child actors.
+ *
+ * A ClutterGroup's size is defined by the size and position of it
+ * it children. Resize requests via parent #ClutterActor will be ignored.
  */
 
 #include "config.h"
