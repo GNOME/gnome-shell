@@ -1090,7 +1090,7 @@ clutter_actor_get_abs_position (ClutterActor *self,
 {
   ClutterActorBox  box;
   ClutterActor    *parent;
-  gint               px = 0, py = 0;
+  gint             px = 0, py = 0;
   
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
@@ -1111,10 +1111,8 @@ clutter_actor_get_abs_position (ClutterActor *self,
       if (parent_scale_x != CFX_ONE ||
           parent_scale_y != CFX_ONE)
 	{
-	  fx = CLUTTER_FIXED_MUL (CLUTTER_INT_TO_FIXED (box.x1),
-                                  parent_scale_x); 
-	  fy = CLUTTER_FIXED_MUL (CLUTTER_INT_TO_FIXED (box.y1),
-                                  parent_scale_y); 
+	  fx = box.x1 * parent_scale_x;
+	  fy = box.y1 * parent_scale_y;
 
 	  box.x1 = CLUTTER_FIXED_INT (fx);
 	  box.y1 = CLUTTER_FIXED_INT (fy);
