@@ -1,3 +1,10 @@
+2007-05-15  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-behaviour-ellipse.h:
+	* clutter/clutter-behaviour-ellipse.c:
+	(clutter_behaviour_ellipse_new):
+	Added a tilt parameter.
+	
 2007-05-14  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-behaviour-path.c:

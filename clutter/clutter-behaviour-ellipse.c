@@ -79,6 +79,7 @@ enum
   PROP_HEIGHT,
   PROP_ANGLE_BEGIN,
   PROP_ANGLE_END,
+  PROP_ANGLE_TILT,
 };
 
 struct _ClutterBehaviourEllipsePrivate
@@ -91,6 +92,7 @@ struct _ClutterBehaviourEllipsePrivate
   gint         b;
   ClutterAngle angle_begin;
   ClutterAngle angle_end;
+  ClutterAngle angle_tilt;
 };
 
 static void 
@@ -104,9 +106,39 @@ clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse * e,
                                    ClutterAngle              angle,
                                    ClutterKnot             * knot)
 {
-  knot->x = CFX_INT (e->priv->a * clutter_cosi (angle));
-  knot->y = CFX_INT (e->priv->b * clutter_sini (angle));
+  gint x = CFX_INT (e->priv->a * clutter_cosi (angle));
+  gint y = CFX_INT (e->priv->b * clutter_sini (angle));
 
+  if (e->priv->angle_tilt)
+    {
+      /* Problem: sqrti is not giving us sufficient precission here
+       * and ClutterFixed range is too small to hold x^2+y^2 even for
+       * reasonable x, y values.
+       *
+       * We take advantage of sqrt (a * b^2) == sqrt (a) * b,
+       * and divide repeatedly by 4 until we get it into range, and then
+       * multiply the result by 2 the same number of times.
+       */
+      ClutterFixed r;
+      guint q = x*x + y*y;
+      gint shift = 0;
+
+      while (q > G_MAXINT16)
+        {
+          ++shift;
+          
+          q >>= 2;
+        }
+
+      r = clutter_sqrtx (CLUTTER_INT_TO_FIXED (q)) << shift;
+
+      x = CFX_INT (CFX_MUL (r, clutter_cosi (angle + e->priv->angle_tilt)));
+      y = CFX_INT (CFX_MUL (r, clutter_sini (angle + e->priv->angle_tilt)));
+    }
+
+  knot->x = x;
+  knot->y = y;
+  
 #if 0
    g_debug ("advancing to angle %d [%d, %d] (a: %d, b: %d)", 
             angle, knot->x, knot->y, e->priv->a, e->priv->b);
@@ -175,6 +207,9 @@ clutter_behaviour_ellipse_set_property (GObject      *gobject,
     case PROP_ANGLE_END:
       priv->angle_end = g_value_get_int (value);
       break;
+    case PROP_ANGLE_TILT:
+      priv->angle_tilt = g_value_get_int (value);
+      break;
     case PROP_WIDTH:
       priv->a = g_value_get_int (value) >> 1;
       break;
@@ -207,6 +242,9 @@ clutter_behaviour_ellipse_get_property (GObject    *gobject,
       break;
     case PROP_ANGLE_END:
       g_value_set_int (value, priv->angle_end);
+      break;
+    case PROP_ANGLE_TILT:
+      g_value_set_int (value, priv->angle_tilt);
       break;
     case PROP_WIDTH:
       g_value_set_int (value, 2 * priv->a);
@@ -263,6 +301,22 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
                                                      "Final angle",
                                                      0, G_MAXINT, 1024,
                                                      CLUTTER_PARAM_READWRITE));
+
+  /**
+   * ClutterBehaviourEllipse:angle-end:
+   *
+   * The final angle to where the rotation should end.
+   * 
+   * Since: 0.4
+   */
+  g_object_class_install_property (object_class,
+                                   PROP_ANGLE_TILT,
+                                   g_param_spec_int ("angle-tilt",
+                                                     "Angle Tilt",
+                                                     "Tilt of the ellipse",
+                                                     0, G_MAXINT, 1024,
+                                                     CLUTTER_PARAM_READWRITE));
+  
   /**
    * ClutterBehaviourEllipse:width:
    *
@@ -344,6 +398,8 @@ clutter_behaviour_ellipse_init (ClutterBehaviourEllipse * self)
  * @height: height of the ellipse
  * @begin: #ClutterAngle at which movement begins
  * @end: #ClutterAngle at which movement ends
+ * @tilt: #ClutterAngle with which the ellipse should be tilted around its
+ * center
  *
  * Creates a behaviour that drives actors along an elliptical path with
  * given center, width and height; the movement begins at angle_begin and
@@ -360,7 +416,8 @@ clutter_behaviour_ellipse_new (ClutterAlpha          * alpha,
                                gint                    width,
                                gint                    height,
                                ClutterAngle            begin,
-                               ClutterAngle            end)
+                               ClutterAngle            end,
+                               ClutterAngle            tilt)
 {
   ClutterBehaviourEllipse *bc;
 
@@ -373,6 +430,7 @@ clutter_behaviour_ellipse_new (ClutterAlpha          * alpha,
                      "height", height,
                      "angle-begin", begin,
                      "angle-end", end,
+                     "angle-tilt", tilt,
                      NULL);
 
   return CLUTTER_BEHAVIOUR (bc);
@@ -561,5 +619,42 @@ ClutterAngle
 clutter_behaviour_ellipse_get_angle_end (ClutterBehaviourEllipse  * self)
 {
   return self->priv->angle_end;
+}
+
+
+/**
+ * clutter_behaviour_ellipse_set_angle_tilt
+ * @self: a #ClutterBehaviourEllipse
+ * @angle_end: #ClutterAngle tilt of the elipse around the center
+ *
+ * Sets the angle at which the ellipse should be tilted around it's center.
+ * 
+ * Since: 0.4
+ */
+void
+clutter_behaviour_ellipse_set_angle_tilt (ClutterBehaviourEllipse * self,
+                                          ClutterAngle              angle_tilt)
+{
+  if (self->priv->angle_tilt != angle_tilt)
+    {
+      g_object_ref (self);
+      self->priv->angle_tilt = angle_tilt;
+      g_object_notify (G_OBJECT (self), "angle-tilt");
+      g_object_unref (self);
+    }
+}
+
+/**
+ * clutter_behaviour_ellipse_get_angle_tilt
+ * @self: a #ClutterBehaviourEllipse
+ *
+ * Gets the tilt of the ellipse around the center.
+ * 
+ * Since: 0.4
+ */
+ClutterAngle
+clutter_behaviour_ellipse_get_angle_tilt (ClutterBehaviourEllipse  * self)
+{
+  return self->priv->angle_tilt;
 }
 

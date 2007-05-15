@@ -86,7 +86,8 @@ ClutterBehaviour *clutter_behaviour_ellipse_new             (ClutterAlpha       
 							     gint width,
 							     gint height,
 							     ClutterAngle                 start,
-							     ClutterAngle                 end);
+							     ClutterAngle                 end,
+							     ClutterAngle                 tilt);
 
 void              clutter_behaviour_ellipse_set_center      (ClutterBehaviourEllipse    * self,
 							     ClutterKnot                * knot);
@@ -112,6 +113,11 @@ void              clutter_behaviour_ellipse_set_angle_end   (ClutterBehaviourEll
 							     ClutterAngle                 angle_end);
 
 ClutterAngle      clutter_behaviour_ellipse_get_angle_end   (ClutterBehaviourEllipse    * self);
+
+void              clutter_behaviour_ellipse_set_angle_tilt  (ClutterBehaviourEllipse    * self,
+							     ClutterAngle                 angle_tilt);
+
+ClutterAngle      clutter_behaviour_ellipse_get_angle_tilt  (ClutterBehaviourEllipse    * self);
 
 G_END_DECLS
 
