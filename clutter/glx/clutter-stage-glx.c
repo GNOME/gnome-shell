@@ -331,7 +331,7 @@ clutter_stage_glx_paint (ClutterActor *self)
   */
   if (stage_glx->xwin)
     {
-      clutter_feature_wait_for_vblank ();
+      clutter_backend_glx_wait_for_vblank (stage_glx->backend);
       glXSwapBuffers (stage_glx->xdpy, stage_glx->xwin);
     }
   else
@@ -373,7 +373,6 @@ clutter_stage_glx_request_coords (ClutterActor    *self,
   ClutterStageGlx *stage_glx = CLUTTER_STAGE_GLX (self);
   gint new_width, new_height;
 
-  /* FIXME: some how have X configure_notfiys call this ? */
   new_width  = ABS (box->x2 - box->x1);
   new_height = ABS (box->y2 - box->y1); 
 

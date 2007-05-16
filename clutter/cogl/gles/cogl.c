@@ -515,5 +515,11 @@ cogl_setup_viewport (guint         w,
 		 CFX_ONE / width));
 
   GE( glTranslatex (0, -CFX_ONE * height, 0) );
+}
 
+ClutterFeatureFlags
+cogl_get_features ()
+{
+  /* Suck */
+  return 0;
 }

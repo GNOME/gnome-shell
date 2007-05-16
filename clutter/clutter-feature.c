@@ -35,311 +35,48 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/ioctl.h>
-#include <fcntl.h>
-#include <errno.h>
-
-#include <GL/glx.h>
-#include <GL/gl.h>
-
-#include <dlfcn.h>
 
 #include "clutter-feature.h"
 #include "clutter-main.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
-#ifdef HAVE_CLUTTER_GLX
-#include "glx/clutter-glx.h"
-#endif
-
-typedef void (*FuncPtr) (void);
-typedef int (*GetVideoSyncProc)  (unsigned int *count);
-typedef int (*WaitVideoSyncProc) (int           divisor,
-				  int          remainder,
-				  unsigned int *count);
-typedef FuncPtr (*GLXGetProcAddressProc) (const guint8 *procName);
-
-typedef struct ClutterFeatureFuncs
-{
-  GetVideoSyncProc  get_video_sync;
-  WaitVideoSyncProc wait_video_sync;
-
-} ClutterFeatureFuncs;
-
-typedef enum ClutterVBlankType
-{
-  CLUTTER_VBLANK_NONE = 0,
-  CLUTTER_VBLANK_GLX,
-  CLUTTER_VBLANK_DRI
-
-} ClutterVBlankType;
+#include "cogl.h"
 
 typedef struct ClutterFeatures
 {
   ClutterFeatureFlags flags;
-  ClutterFeatureFuncs funcs;
-  gint                dri_fd;
-  ClutterVBlankType   vblank_type;
-
   guint               features_set : 1;
 } ClutterFeatures;
 
 static ClutterFeatures* __features = NULL;
 G_LOCK_DEFINE_STATIC (__features);
 
-
-#ifdef __linux__
-#define DRM_VBLANK_RELATIVE 0x1;
-
-struct drm_wait_vblank_request {
-    int           type;
-    unsigned int  sequence;
-    unsigned long signal;
-};
-
-struct drm_wait_vblank_reply {
-    int          type;
-    unsigned int sequence;
-    long         tval_sec;
-    long         tval_usec;
-};
-
-typedef union drm_wait_vblank {
-    struct drm_wait_vblank_request request;
-    struct drm_wait_vblank_reply reply;
-} drm_wait_vblank_t;
-
-#define DRM_IOCTL_BASE                  'd'
-#define DRM_IOWR(nr,type)               _IOWR(DRM_IOCTL_BASE,nr,type)
-#define DRM_IOCTL_WAIT_VBLANK           DRM_IOWR(0x3a, drm_wait_vblank_t)
-
-static int drm_wait_vblank(int fd, drm_wait_vblank_t *vbl)
+void
+_clutter_feature_init (void)
 {
-    int ret, rc;
-
-    do 
-      {
-	ret = ioctl(fd, DRM_IOCTL_WAIT_VBLANK, vbl);
-	vbl->request.type &= ~DRM_VBLANK_RELATIVE;
-	rc = errno;
-      } 
-    while (ret && rc == EINTR);
-    
-    return rc;
-}
-
-#endif 
-
-
-/* Note must be called after context created */
-static gboolean 
-check_gl_extension (const gchar *name,
-                    const gchar *ext)
-{
-  /* FIXME: move to cogl */
-  gchar *end;
-  gint name_len, n;
-
-  if (name == NULL || ext == NULL)
-    return FALSE;
-
-  end = (gchar*)(ext + strlen(ext));
-
-  name_len = strlen(name);
-
-  while (ext < end) 
-    {
-      n = strcspn(ext, " ");
-
-      if ((name_len == n) && (!strncmp(name, ext, n)))
-	return TRUE;
-      ext += (n + 1);
-    }
-
-  return FALSE;
-}
-
-/* FIXME: move to cogl */
-static FuncPtr
-get_proc_address (const gchar *name)
-{
-  static GLXGetProcAddressProc get_proc_func = NULL;
-  static void                 *dlhand = NULL;
-
-  if (get_proc_func == NULL && dlhand == NULL)
-    {
-      dlhand = dlopen (NULL, RTLD_LAZY);
-
-      if (dlhand)
-	{
-	  dlerror ();
-
-	  get_proc_func =
-            (GLXGetProcAddressProc) dlsym (dlhand, "glXGetProcAddress");
-
-	  if (dlerror () != NULL)
-            {
-              get_proc_func =
-                (GLXGetProcAddressProc) dlsym (dlhand, "glXGetProcAddressARB");
-            }
-
-	  if (dlerror () != NULL)
-	    {
-	      get_proc_func = NULL;
-	      g_warning ("failed to bind GLXGetProcAddress "
-                         "or GLXGetProcAddressARB");
-	    }
-	}
-    }
-
-  if (get_proc_func)
-    return get_proc_func ((unsigned char*) name);
-
-  return NULL;
-}
-
-
-static gboolean
-check_vblank_env (const char *name)
-{
-  const char *val;
-
-  val = clutter_get_vblank_method ();
-
-  if (val && !strcasecmp(val, name))
-    return TRUE;
-
-  return FALSE;
-}
-
-/* clutter_feature_init:
- * must be called with the static lock on __features held, to keep it
- * mt-safe.
- *
- * XXX - here we need a bit of weird machinery in place.  the features
- * are checked at run time, each time we try to access them - unless
- * we already checked them once.  unfortunately, we need an open
- * X display if we want to check them, so ideally we'd need to call
- * clutter_init() before checking for any feature.  the generator for
- * the api documentation, and more in general every tool relying on the
- * introspection API provided by GObject, may well not be able to call
- * clutter_init() (and neither they should be, as we might be running
- * them on a headless build box).  so, we need a way to get the features
- * without explicitely calling clutter_feature_init() inside clutter_init()
- * and we also need to have an open X display when we test for the features.
- * __features is dynamically allocated, and applications tend to badly
- * crash when trying to access __features components if we did not allocate
- * it; so when can't use a NULL check to know whether we already invoked
- * clutter_feature_init() once; hence, we must allocate it anyway, and have
- * a flag to let us know when the features have been set - that is when
- * clutter_feature_init() has been successfully completed with an open
- * X display.
- */
-static void
-clutter_feature_init (void)
-{
-  const gchar *gl_extensions, *glx_extensions = NULL;
+  ClutterMainContext *context;
   
   CLUTTER_NOTE (MISC, "checking features");
 
   if (!__features)
     {
       CLUTTER_NOTE (MISC, "allocating features data");
-
       __features = g_new0 (ClutterFeatures, 1);
-      memset(&__features->funcs, 0, sizeof (ClutterFeatureFuncs));
       __features->features_set = FALSE; /* don't rely on zero-ing */
     }
-
-#ifdef HAVE_CLUTTER_GLX
-  if (!clutter_glx_get_default_display ())
-    return;
-#endif
 
   if (__features->features_set)
     return;
 
-#ifdef HAVE_CLUTTER_GLX
-  glx_extensions 
-    = glXQueryExtensionsString (clutter_glx_get_default_display (),
-				clutter_glx_get_default_screen ());
-#endif  
+  context = clutter_context_get_default ();
 
-  gl_extensions = (const gchar*) glGetString (GL_EXTENSIONS);
-
-  if (check_gl_extension ("GL_ARB_texture_rectangle", gl_extensions) ||
-      check_gl_extension ("GL_EXT_texture_rectangle", gl_extensions))
-    {
-      __features->flags |= CLUTTER_FEATURE_TEXTURE_RECTANGLE;
-    }
-
-  /* vblank */
-
-  __features->vblank_type = CLUTTER_VBLANK_NONE;
-
-  if (getenv("__GL_SYNC_TO_VBLANK") || check_vblank_env ("none"))
-    {
-      CLUTTER_NOTE (MISC, "vblank sync: disabled at user request");
-    }
-  else
-    {
-#ifdef HAVE_CLUTTER_GLX
-      if (!check_vblank_env ("dri") && 
-	  check_gl_extension ("GLX_SGI_video_sync", glx_extensions))
-	{
-	  __features->funcs.get_video_sync = 
-	     (GetVideoSyncProc) get_proc_address ("glXGetVideoSyncSGI");
-
-	  __features->funcs.wait_video_sync = 
-	    (WaitVideoSyncProc) get_proc_address ("glXWaitVideoSyncSGI");
-
-	  if ((__features->funcs.get_video_sync != NULL) &&
-	      (__features->funcs.wait_video_sync != NULL))
-	    {
-	      CLUTTER_NOTE (MISC, "vblank sync: using glx");
-	      
-              __features->vblank_type = CLUTTER_VBLANK_GLX;
-	      __features->flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
-	    }
-	}
-#endif
-#ifdef __linux__
-      if (!(__features->flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
-	{
-	  __features->dri_fd = open("/dev/dri/card0", O_RDWR);
-	  if (__features->dri_fd >= 0)
-	    {
-	      CLUTTER_NOTE (MISC, "vblank sync: using dri");
-
-	      __features->vblank_type = CLUTTER_VBLANK_DRI;
-	      __features->flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
-	    }
-	}
-#endif
-      if (!(__features->flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
-        {
-          CLUTTER_NOTE (MISC,
-                        "vblank sync: no use-able mechanism found");
-        }
-    }
-
-  CLUTTER_NOTE (MISC, "features checked");
+  __features->flags = cogl_get_features()
+                          |_clutter_backend_get_features (context->backend);
 
   __features->features_set = TRUE;
-}
 
-static inline void
-clutter_feature_do_init (void)
-{
-  if (G_UNLIKELY (__features == NULL) ||
-      G_UNLIKELY (__features->features_set == FALSE))
-    {
-      G_LOCK (__features);
-      clutter_feature_init ();
-      G_UNLOCK (__features);
-    }
+  CLUTTER_NOTE (MISC, "features checked");
 }
 
 /**
@@ -356,9 +93,7 @@ clutter_feature_do_init (void)
 gboolean
 clutter_feature_available (ClutterFeatureFlags feature)
 {
-  clutter_feature_do_init ();
-
-  return (__features->flags & feature);
+   return (__features->flags & feature);
 }
 
 /**
@@ -373,49 +108,6 @@ clutter_feature_available (ClutterFeatureFlags feature)
 ClutterFeatureFlags
 clutter_feature_get_all (void)
 {
-  clutter_feature_do_init ();
-
   return __features->flags;
 }
 
-/**
- * clutter_feature_wait_for_vblank:
- *
- * FIXME
- *
- * Since: 0.2
- */
-void
-clutter_feature_wait_for_vblank (void)
-{
-  clutter_feature_do_init ();
-
-  switch (__features->vblank_type)
-    {
-    case CLUTTER_VBLANK_GLX:
-#ifdef HAVE_CLUTTER_GLX
-      {
-	unsigned int retraceCount;
-	__features->funcs.get_video_sync (&retraceCount);
-	__features->funcs.wait_video_sync (2, 
-					   (retraceCount + 1) % 2,
-                                           &retraceCount); 
-      }
-#endif
-      break;
-    case CLUTTER_VBLANK_DRI:
-#ifdef __linux__
-      {
-	drm_wait_vblank_t blank;
-	blank.request.type     = DRM_VBLANK_RELATIVE;
-	blank.request.sequence = 1;
-	blank.request.signal   = 0;
-	drm_wait_vblank (__features->dri_fd, &blank);
-      }
-#endif
-      break;
-    case CLUTTER_VBLANK_NONE:
-    default:
-      break;
-    }
-}

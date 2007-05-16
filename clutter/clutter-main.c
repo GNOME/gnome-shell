@@ -51,7 +51,6 @@ static ClutterMainContext *ClutterCntx = NULL;
 static gboolean clutter_is_initialized = FALSE;
 static gboolean clutter_show_fps       = FALSE;
 static gboolean clutter_fatal_warnings = FALSE;
-static gchar *clutter_vblank_name      = NULL;
 
 guint clutter_debug_flags = 0;  /* global clutter debug flag */
 
@@ -85,20 +84,6 @@ clutter_get_show_fps (void)
   return clutter_show_fps;
 }
 
-/**
- * clutter_get_vblank_method:
- *
- * FIXME
- *
- * Return value: FIXME
- *
- * Since: 0.4
- */
-G_CONST_RETURN gchar *
-clutter_get_vblank_method (void)
-{
-  return clutter_vblank_name;
-}
 
 /**
  * clutter_redraw:
@@ -330,8 +315,6 @@ clutter_arg_no_debug_cb (const char *key,
 static GOptionEntry clutter_args[] = {
   { "clutter-show-fps", 0, 0, G_OPTION_ARG_NONE, &clutter_show_fps,
     "Show frames per second", NULL },
-  { "clutter-vblank", 0, 0, G_OPTION_ARG_STRING, &clutter_vblank_name,
-    "VBlank method to be used (none, dri or glx)", "METHOD" },
   { "g-fatal-warnings", 0, 0, G_OPTION_ARG_NONE, &clutter_fatal_warnings,
     "Make all warnings fatal", NULL },
 #ifdef CLUTTER_ENABLE_DEBUG
@@ -382,12 +365,6 @@ pre_parse_hook (GOptionContext  *context,
     }
 #endif /* CLUTTER_ENABLE_DEBUG */
 
-  env_string = g_getenv ("CLUTTER_VBLANK");
-  if (env_string)
-    {
-      clutter_vblank_name = g_strdup (env_string);
-      env_string = NULL;
-    }
 
   env_string = g_getenv ("CLUTTER_SHOW_FPS");
   if (env_string)
@@ -555,6 +532,8 @@ clutter_init_with_args (int            *argc,
 
   _clutter_backend_init_events (clutter_context->backend);
 
+  _clutter_feature_init ();
+
   return CLUTTER_INIT_SUCCESS;
 }
 
@@ -615,14 +594,21 @@ clutter_init (int    *argc,
 
   g_type_init ();
 
+  /* parse_args will trigger backend creation and things like
+   * DISPLAY connection etc.
+  */
   if (clutter_parse_args (argc, argv) == FALSE)
     {
       CLUTTER_NOTE (MISC, "failed to parse arguments.");
       return CLUTTER_INIT_ERROR_INTERNAL;
     }
 
+  /* Note, creates backend if not already existing (though parse args will
+   * have likely created it)  
+   */
   context = clutter_context_get_default ();
 
+  /* Stage will give us a GL Context etc */
   stage_error = NULL;
   if (!_clutter_backend_init_stage (context->backend, &stage_error))
     {
@@ -632,7 +618,11 @@ clutter_init (int    *argc,
       return CLUTTER_INIT_ERROR_INTERNAL;
     }
 
+  /* Initiate event collection */
   _clutter_backend_init_events (context->backend);
+
+  /* finally features - will call to backend and cogl */
+  _clutter_feature_init ();
 
   return CLUTTER_INIT_SUCCESS;
 }

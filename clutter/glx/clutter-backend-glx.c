@@ -29,15 +29,30 @@
 #include <unistd.h>
 #endif
 
+#include <sys/stat.h>
+#include <sys/ioctl.h>
+#include <fcntl.h>
+#include <errno.h>
+
+#include <GL/glx.h>
+#include <GL/gl.h>
+
+#include <dlfcn.h>
+
 #include "clutter-backend-glx.h"
 #include "clutter-stage-glx.h"
+#include "clutter-glx.h"
 
 #include "../clutter-event.h"
 #include "../clutter-main.h"
 #include "../clutter-debug.h"
 #include "../clutter-private.h"
 
+#include "cogl.h"
+
 G_DEFINE_TYPE (ClutterBackendGlx, clutter_backend_glx, CLUTTER_TYPE_BACKEND);
+
+typedef CoglFuncPtr (*GLXGetProcAddressProc) (const guint8 *procName);
 
 /* singleton object */
 static ClutterBackendGlx *backend_singleton = NULL;
@@ -49,6 +64,56 @@ static gint clutter_screen = 0;
 /* X error trap */
 static int TrappedErrorCode = 0;
 static int (* old_error_handler) (Display *, XErrorEvent *);
+
+static gchar *clutter_vblank_name = NULL;
+
+#ifdef __linux__
+#define DRM_VBLANK_RELATIVE 0x1;
+
+struct drm_wait_vblank_request {
+    int           type;
+    unsigned int  sequence;
+    unsigned long signal;
+};
+
+struct drm_wait_vblank_reply {
+    int          type;
+    unsigned int sequence;
+    long         tval_sec;
+    long         tval_usec;
+};
+
+typedef union drm_wait_vblank {
+    struct drm_wait_vblank_request request;
+    struct drm_wait_vblank_reply reply;
+} drm_wait_vblank_t;
+
+#define DRM_IOCTL_BASE                  'd'
+#define DRM_IOWR(nr,type)               _IOWR(DRM_IOCTL_BASE,nr,type)
+#define DRM_IOCTL_WAIT_VBLANK           DRM_IOWR(0x3a, drm_wait_vblank_t)
+
+static int drm_wait_vblank(int fd, drm_wait_vblank_t *vbl)
+{
+    int ret, rc;
+
+    do 
+      {
+	ret = ioctl(fd, DRM_IOCTL_WAIT_VBLANK, vbl);
+	vbl->request.type &= ~DRM_VBLANK_RELATIVE;
+	rc = errno;
+      } 
+    while (ret && rc == EINTR);
+    
+    return rc;
+}
+
+#endif 
+
+G_CONST_RETURN gchar*
+clutter_backend_glx_get_vblank_method (void)
+{
+  return clutter_vblank_name;
+}
 
 static gboolean
 clutter_backend_glx_pre_parse (ClutterBackend  *backend,
@@ -63,6 +128,13 @@ clutter_backend_glx_pre_parse (ClutterBackend  *backend,
   if (env_string)
     {
       clutter_display_name = g_strdup (env_string);
+      env_string = NULL;
+    }
+
+  env_string = g_getenv ("CLUTTER_VBLANK");
+  if (env_string)
+    {
+      clutter_vblank_name = g_strdup (env_string);
       env_string = NULL;
     }
 
@@ -120,13 +192,6 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
   return TRUE;
 }
 
-static gboolean 
-is_gl_version_at_least_12 (void)
-{
-  /* FIXME: This likely needs to live elsewhere in features or cogl */
-  return 
-    (g_ascii_strtod ((const gchar*) glGetString (GL_VERSION), NULL) >= 1.2);
-}
 
 static gboolean
 clutter_backend_glx_init_stage (ClutterBackend  *backend,
@@ -146,6 +211,7 @@ clutter_backend_glx_init_stage (ClutterBackend  *backend,
       stage_glx->xdpy = backend_glx->xdpy;
       stage_glx->xwin_root = backend_glx->xwin_root;
       stage_glx->xscreen = backend_glx->xscreen_num;
+      stage_glx->backend = backend_glx;
 
       CLUTTER_NOTE (MISC, "GLX stage created (display:%p, screen:%d, root:%u)",
                     stage_glx->xdpy,
@@ -163,16 +229,6 @@ clutter_backend_glx_init_stage (ClutterBackend  *backend,
       g_set_error (error, CLUTTER_INIT_ERROR,
                    CLUTTER_INIT_ERROR_INTERNAL,
                    "Unable to realize the main stage");
-      return FALSE;
-    }
-
-  /* At least GL 1.2 is needed for CLAMP_TO_EDGE */
-  /* FIXME: move to cogl... */
-  if (!is_gl_version_at_least_12 ())
-    {
-      g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_BACKEND,
-                   "Clutter needs at least version 1.2 of OpenGL");
       return FALSE;
     }
 
@@ -208,6 +264,11 @@ static const GOptionEntry entries[] =
     G_OPTION_FLAG_IN_MAIN,
     G_OPTION_ARG_INT, &clutter_screen,
     "X screen to use", "SCREEN"
+  },
+  { "vblank", 0, 
+    G_OPTION_FLAG_IN_MAIN, 
+    G_OPTION_ARG_STRING, &clutter_vblank_name,
+    "VBlank method to be used (none, dri or glx)", "METHOD" 
   },
   { NULL }
 };
@@ -274,6 +335,115 @@ clutter_backend_glx_constructor (GType                  gtype,
   return g_object_ref (backend_singleton);
 }
 
+static gboolean
+check_vblank_env (const char *name)
+{
+  if (clutter_vblank_name && !strcasecmp(clutter_vblank_name, name))
+    return TRUE;
+
+  return FALSE;
+}
+
+static CoglFuncPtr
+get_proc_address (const gchar* name)
+{
+  static GLXGetProcAddressProc get_proc_func = NULL;
+  static void                 *dlhand = NULL;
+
+  if (get_proc_func == NULL && dlhand == NULL)
+    {
+      dlhand = dlopen (NULL, RTLD_LAZY);
+
+      if (dlhand)
+	{
+	  dlerror ();
+
+	  get_proc_func =
+            (GLXGetProcAddressProc) dlsym (dlhand, "glXGetProcAddress");
+
+	  if (dlerror () != NULL)
+            {
+              get_proc_func =
+                (GLXGetProcAddressProc) dlsym (dlhand, "glXGetProcAddressARB");
+            }
+
+	  if (dlerror () != NULL)
+	    {
+	      get_proc_func = NULL;
+	      g_warning ("failed to bind GLXGetProcAddress "
+                         "or GLXGetProcAddressARB");
+	    }
+	}
+    }
+
+  if (get_proc_func)
+    return get_proc_func ((unsigned char*) name);
+
+  return NULL;
+    }
+
+static ClutterFeatureFlags
+clutter_backend_glx_get_features (ClutterBackend *backend)
+{
+  ClutterBackendGlx  *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  const gchar        *glx_extensions = NULL;
+  ClutterFeatureFlags flags = 0;
+
+  /* FIXME: we really need to check if gl context is set */
+
+  glx_extensions 
+    = glXQueryExtensionsString (clutter_glx_get_default_display (),
+				clutter_glx_get_default_screen ());
+
+  if (getenv("__GL_SYNC_TO_VBLANK") || check_vblank_env ("none"))
+    {
+      CLUTTER_NOTE (MISC, "vblank sync: disabled at user request");
+    }
+  else
+    {
+      if (!check_vblank_env ("dri") && 
+	  cogl_check_extension ("GLX_SGI_video_sync", glx_extensions))
+	{
+	  backend_glx->get_video_sync = 
+	    (GetVideoSyncProc) get_proc_address ("glXGetVideoSyncSGI");
+
+	  backend_glx->wait_video_sync = 
+	    (WaitVideoSyncProc) get_proc_address ("glXWaitVideoSyncSGI");
+
+	  if ((backend_glx->get_video_sync != NULL) &&
+	      (backend_glx->wait_video_sync != NULL))
+	    {
+	      CLUTTER_NOTE (MISC, "vblank sync: using glx");
+	      
+              backend_glx->vblank_type = CLUTTER_VBLANK_GLX;
+	      flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
+	    }
+	}
+#ifdef __linux__
+      if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
+	{
+	  backend_glx->dri_fd = open("/dev/dri/card0", O_RDWR);
+	  if (backend_glx->dri_fd >= 0)
+	    {
+	      CLUTTER_NOTE (MISC, "vblank sync: using dri");
+
+	      backend_glx->vblank_type = CLUTTER_VBLANK_DRI;
+	      flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
+	    }
+	}
+#endif
+      if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
+        {
+          CLUTTER_NOTE (MISC,
+                        "vblank sync: no use-able mechanism found");
+        }
+    }
+
+  CLUTTER_NOTE (MISC, "backend features checked");
+
+  return flags;
+}
+
 static void
 clutter_backend_glx_class_init (ClutterBackendGlxClass *klass)
 {
@@ -290,6 +460,7 @@ clutter_backend_glx_class_init (ClutterBackendGlxClass *klass)
   backend_class->init_events = clutter_backend_glx_init_events;
   backend_class->get_stage = clutter_backend_glx_get_stage;
   backend_class->add_options = clutter_backend_glx_add_options;
+  backend_class->get_features = clutter_backend_glx_get_features;
 }
 
 static void
@@ -316,6 +487,38 @@ error_handler(Display     *xdpy,
   TrappedErrorCode = error->error_code;
   return 0;
 }
+
+void
+clutter_backend_glx_wait_for_vblank (ClutterBackendGlx *backend_glx)
+{
+  switch (backend_glx->vblank_type)
+    {
+    case CLUTTER_VBLANK_GLX:
+      {
+	unsigned int retraceCount;
+	backend_glx->get_video_sync (&retraceCount);
+	backend_glx->wait_video_sync (2, 
+				      (retraceCount + 1) % 2,
+				      &retraceCount); 
+      }
+      break;
+    case CLUTTER_VBLANK_DRI:
+#ifdef __linux__
+      {
+	drm_wait_vblank_t blank;
+	blank.request.type     = DRM_VBLANK_RELATIVE;
+	blank.request.sequence = 1;
+	blank.request.signal   = 0;
+	drm_wait_vblank (backend_glx->dri_fd, &blank);
+      }
+#endif
+      break;
+    case CLUTTER_VBLANK_NONE:
+    default:
+      break;
+    }
+}
+
 
 /**
  * clutter_glx_trap_x_errors:
@@ -378,16 +581,16 @@ clutter_glx_get_default_display (void)
  *
  * Since: 0.4
  */
-Screen *
+int
 clutter_glx_get_default_screen (void)
 {
   if (!backend_singleton)
     {
       g_critical ("GLX backend has not been initialised");
-      return NULL;
+      return 0;
     }
 
-  return backend_singleton->xscreen;
+  return backend_singleton->xscreen_num;
 }
 
 /**

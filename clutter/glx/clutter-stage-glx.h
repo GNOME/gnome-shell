@@ -29,6 +29,8 @@
 #include <GL/glx.h>
 #include <GL/gl.h>
 
+#include "clutter-backend-glx.h"
+
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_STAGE_GLX                  (clutter_stage_glx_get_type ())
@@ -60,6 +62,9 @@ struct _ClutterStageGlx
   GLXContext gl_context;
 
   guint is_foreign_xwin : 1;
+
+  ClutterBackendGlx *backend;
+
 };
 
 struct _ClutterStageGlxClass

@@ -39,6 +39,7 @@
 #include "clutter-event.h"
 #include "clutter-backend.h"
 #include "clutter-stage.h"
+#include "clutter-feature.h"
 
 G_BEGIN_DECLS
 
@@ -103,11 +104,13 @@ gboolean      _clutter_backend_init_stage    (ClutterBackend  *backend,
                                               GError         **error);
 void          _clutter_backend_init_events   (ClutterBackend  *backend);
 
-void          _clutter_backend_init_features (ClutterBackend  *backend);
+ClutterFeatureFlags _clutter_backend_get_features (ClutterBackend *backend);
 
 /* backend helpers */
 void          _clutter_event_button_generate  (ClutterBackend    *backend,
                                                ClutterEvent      *event);
+
+void          _clutter_feature_init (void);
 
 /* FIXME: move elsewhere via ClutterAudience */
 void _clutter_stage_sync_viewport (ClutterStage *stage);

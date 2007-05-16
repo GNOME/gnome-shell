@@ -84,11 +84,56 @@ error_string(GLenum errorCode)
 #define GE(x) (x);
 #endif
 
+static gboolean 
+check_gl_extension (const gchar *name,
+                    const gchar *ext)
+{
+  gchar *end;
+  gint name_len, n;
+
+  if (name == NULL || ext == NULL)
+    return FALSE;
+
+  end = (gchar*)(ext + strlen(ext));
+
+  name_len = strlen(name);
+
+  while (ext < end) 
+    {
+      n = strcspn(ext, " ");
+
+      if ((name_len == n) && (!strncmp(name, ext, n)))
+	return TRUE;
+      ext += (n + 1);
+    }
+
+  return FALSE;
+}
+
+static gboolean 
+is_gl_version_at_least_12 (void)
+{
+  /* FIXME: This likely needs to live elsewhere in features or cogl */
+  return 
+    (g_ascii_strtod ((const gchar*) glGetString (GL_VERSION), NULL) >= 1.2);
+
+#if 0
+  /* At least GL 1.2 is needed for CLAMP_TO_EDGE */
+  /* FIXME: move to cogl... */
+  if (!is_gl_version_at_least_12 ())
+    {
+      g_set_error (error, CLUTTER_INIT_ERROR,
+                   CLUTTER_INIT_ERROR_BACKEND,
+                   "Clutter needs at least version 1.2 of OpenGL");
+      return FALSE;
+    }
+#endif
+}
 
 CoglFuncPtr
 cogl_get_proc_address (const gchar* name)
 {
-  return NULL;
+  /* FIXME */
 }
 
 gboolean 
@@ -527,3 +572,24 @@ cogl_setup_viewport (guint        width,
 		 1.0f / width) );
   GE( glTranslatef (0.0f, -1.0 * height, 0.0f) );
 }
+
+ClutterFeatureFlags
+cogl_get_features ()
+{
+  ClutterFeatureFlags flags = 0;
+  const gchar        *gl_extensions;
+          
+  flags = CLUTTER_FEATURE_TEXTURE_READ_PIXELS;
+
+  gl_extensions = (const gchar*) glGetString (GL_EXTENSIONS);
+
+
+  if (check_gl_extension ("GL_ARB_texture_rectangle", gl_extensions) ||
+      check_gl_extension ("GL_EXT_texture_rectangle", gl_extensions))
+    {
+      flags |= CLUTTER_FEATURE_TEXTURE_RECTANGLE;
+    }
+  
+  return flags;
+}
+

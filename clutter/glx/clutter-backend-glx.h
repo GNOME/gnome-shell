@@ -42,6 +42,19 @@ G_BEGIN_DECLS
 typedef struct _ClutterBackendGlx       ClutterBackendGlx;
 typedef struct _ClutterBackendGlxClass  ClutterBackendGlxClass;
 
+typedef enum ClutterGLXVBlankType
+{
+  CLUTTER_VBLANK_NONE = 0,
+  CLUTTER_VBLANK_GLX,
+  CLUTTER_VBLANK_DRI
+
+} ClutterGLXVBlankType;
+
+typedef int (*GetVideoSyncProc)  (unsigned int *count);
+typedef int (*WaitVideoSyncProc) (int           divisor,
+				  int          remainder,
+				  unsigned int *count);
+
 struct _ClutterBackendGlx
 {
   ClutterBackend parent_instance;
@@ -57,6 +70,12 @@ struct _ClutterBackendGlx
 
   /* event source */
   GSource *event_source;
+
+  /* Vblank stuff */
+  GetVideoSyncProc  get_video_sync;
+  WaitVideoSyncProc wait_video_sync;
+  gint                dri_fd;
+  ClutterGLXVBlankType   vblank_type;
 };
 
 struct _ClutterBackendGlxClass
@@ -66,6 +85,8 @@ struct _ClutterBackendGlxClass
 
 void   _clutter_backend_glx_events_init (ClutterBackend *backend);
 void   _clutter_backend_glx_events_uninit (ClutterBackend *backend);
+
+void   clutter_backend_glx_wait_for_vblank (ClutterBackendGlx *backend_glx);
 
 GType clutter_backend_glx_get_type (void) G_GNUC_CONST;
 

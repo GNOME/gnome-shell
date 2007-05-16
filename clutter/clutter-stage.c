@@ -151,9 +151,9 @@ clutter_stage_set_property (GObject      *object,
 
 static void
 clutter_stage_get_property (GObject    *object, 
-			      guint       prop_id,
-			      GValue     *value, 
-			      GParamSpec *pspec)
+			    guint       prop_id,
+			    GValue     *value, 
+			    GParamSpec *pspec)
 {
   ClutterStage        *stage;
   ClutterStagePrivate *priv;

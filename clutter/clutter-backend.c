@@ -143,16 +143,18 @@ _clutter_backend_init_stage (ClutterBackend  *backend,
   return TRUE;
 }
 
-void
-_clutter_backend_init_features (ClutterBackend *backend)
+ClutterFeatureFlags
+_clutter_backend_get_features (ClutterBackend *backend)
 {
   ClutterBackendClass *klass;
 
   g_return_if_fail (CLUTTER_IS_BACKEND (backend));
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
-  if (klass->init_features)
-    klass->init_features (backend);
+  if (klass->get_features)
+    return klass->get_features (backend);
+  
+  return 0;
 }
 
 void

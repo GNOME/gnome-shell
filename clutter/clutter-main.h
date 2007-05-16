@@ -62,7 +62,6 @@ void             clutter_redraw           (void);
 
 gboolean              clutter_get_debug_enabled (void);
 gboolean              clutter_get_show_fps      (void);
-G_CONST_RETURN gchar *clutter_get_vblank_method (void);
 
 void             clutter_threads_enter    (void);
 void             clutter_threads_leave    (void);

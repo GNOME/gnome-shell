@@ -1,3 +1,23 @@
+2007-05-16  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-backend.c:
+	* clutter/clutter-backend.h:
+	* clutter/clutter-feature.c:
+	* clutter/clutter-feature.h:
+	* clutter/clutter-main.c:
+	* clutter/clutter-main.h:
+	* clutter/clutter-private.h:
+	* clutter/clutter-stage.c:
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/gl/cogl.c:
+	* clutter/cogl/gles/cogl.c:
+	* clutter/glx/clutter-backend-glx.c:
+	* clutter/glx/clutter-backend-glx.h:
+	* clutter/glx/clutter-glx.h:
+	* clutter/glx/clutter-stage-glx.c:
+	* clutter/glx/clutter-stage-glx.h:
+	Rejig the features() foo, moving mostly into backends/cogl.
+
 2007-05-15  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.c:
