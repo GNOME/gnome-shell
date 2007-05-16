@@ -23,6 +23,21 @@ clutter-media
 </para>
 
 
+<!-- ##### SIGNAL ClutterMedia::eos ##### -->
+<para>
+
+</para>
+
+@cluttermedia: the object which received the signal.
+
+<!-- ##### SIGNAL ClutterMedia::error ##### -->
+<para>
+
+</para>
+
+@cluttermedia: the object which received the signal.
+@arg1: 
+
 <!-- ##### ARG ClutterMedia:buffer-percent ##### -->
 <para>
 

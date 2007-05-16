@@ -93,7 +93,10 @@ _clutter_feature_init (void)
 gboolean
 clutter_feature_available (ClutterFeatureFlags feature)
 {
-   return (__features->flags & feature);
+  if (G_UNLIKELY (!__features))
+    return FALSE;
+
+  return (__features->flags & feature);
 }
 
 /**

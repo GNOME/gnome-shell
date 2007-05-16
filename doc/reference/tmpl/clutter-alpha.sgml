@@ -134,7 +134,6 @@ frame 15, and threshold of 1.0 to frame 60.
 @min: lower threshold; a #ClutterFixed value from &lt;0,1&gt;
 @max: upper threshold; a #ClutterFixed value from &lt;0,1&gt;
 
-
 <!-- ##### FUNCTION clutter_smoothstep_copy ##### -->
 <para>
 
@@ -234,6 +233,23 @@ Symbolic name for passing clutter_sine_func().
 
 @alpha: 
 @dummy: 
+@Returns: 
+
+
+<!-- ##### MACRO CLUTTER_ALPHA_SMOOTHSTEP ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_smoothstep_func ##### -->
+<para>
+
+</para>
+
+@alpha: 
+@data: 
 @Returns: 
 
 

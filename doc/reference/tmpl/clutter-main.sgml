@@ -83,14 +83,6 @@ Error codes for the Clutter initialisation process.
 @Returns: 
 
 
-<!-- ##### FUNCTION clutter_get_vblank_method ##### -->
-<para>
-
-</para>
-
-@Returns: 
-
-
 <!-- ##### FUNCTION clutter_main ##### -->
 <para>
 

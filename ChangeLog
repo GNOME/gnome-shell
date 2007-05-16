@@ -1,3 +1,12 @@
+2007-05-16  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-main.[ch]: Add clutter_base_init(), semi-private
+	function to initialise just the base Clutter functionalities; it's
+	only used by gtk-doc to introspect the classes.
+
+	* clutter/clutter-feature.c: Do not access the private features
+	data structure unless it has been initialised.
+
 2007-05-16  Tomas Frydrych  <tf@openedhand.com>
 	
 	* clutter/clutter-alpha.h:

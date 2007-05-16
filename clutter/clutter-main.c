@@ -642,3 +642,18 @@ _clutter_boolean_accumulator (GSignalInvocationHint *ihint,
 
   return continue_emission;
 }
+
+void
+clutter_base_init (void)
+{
+  static gboolean initialised = FALSE;
+
+  if (!initialised)
+    {
+      initialised = TRUE;
+
+      /* initialise GLib type system */
+      g_type_init ();
+      clutter_actor_get_type ();
+    }
+}

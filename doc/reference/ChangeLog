@@ -1,3 +1,8 @@
+2007-05-16  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* Makefile.am: Use the newly added clutter_base_init() function
+	when scanning the library for documentation.
+
 2007-04-16  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-docs.sgml:

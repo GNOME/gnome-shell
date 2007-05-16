@@ -24,6 +24,7 @@ clutter-feature
 
 @CLUTTER_FEATURE_TEXTURE_RECTANGLE: 
 @CLUTTER_FEATURE_SYNC_TO_VBLANK: 
+@CLUTTER_FEATURE_TEXTURE_READ_PIXELS: 
 
 <!-- ##### FUNCTION clutter_feature_available ##### -->
 <para>
@@ -40,12 +41,5 @@ clutter-feature
 </para>
 
 @Returns: 
-
-
-<!-- ##### FUNCTION clutter_feature_wait_for_vblank ##### -->
-<para>
-
-</para>
-
 
 
