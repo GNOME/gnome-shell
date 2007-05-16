@@ -6,8 +6,9 @@
  * Authored By Matthew Allum  <mallum@openedhand.com>
  *             Jorn Baayen  <jorn@openedhand.com>
  *             Emmanuele Bassi  <ebassi@openedhand.com>
+ *             Tomas Frydrych <tf@openedhand.com>
  *
- * Copyright (C) 2006 OpenedHand
+ * Copyright (C) 2006, 2007 OpenedHand
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,6 +31,7 @@
 
 #include <glib-object.h>
 #include <clutter/clutter-timeline.h>
+#include <clutter/clutter-fixed.h>
 
 G_BEGIN_DECLS
 
@@ -100,23 +102,40 @@ void             clutter_alpha_set_timeline (ClutterAlpha     *alpha,
 ClutterTimeline *clutter_alpha_get_timeline (ClutterAlpha     *alpha);
 
 /* convenience functions */
-#define CLUTTER_ALPHA_RAMP_INC  clutter_ramp_inc_func
-#define CLUTTER_ALPHA_RAMP_DEC  clutter_ramp_dec_func
-#define CLUTTER_ALPHA_RAMP      clutter_ramp_func
-#define CLUTTER_ALPHA_SINE      clutter_sine_func
+#define CLUTTER_ALPHA_RAMP_INC   clutter_ramp_inc_func
+#define CLUTTER_ALPHA_RAMP_DEC   clutter_ramp_dec_func
+#define CLUTTER_ALPHA_RAMP       clutter_ramp_func
+#define CLUTTER_ALPHA_SINE       clutter_sine_func
 /* FIXME add SINE_INC/DEC */
-#define CLUTTER_ALPHA_SQUARE    clutter_square_func
+#define CLUTTER_ALPHA_SQUARE     clutter_square_func
+#define CLUTTER_ALPHA_SMOOTHSTEP clutter_smoothstep_func
 
-guint32          clutter_ramp_inc_func      (ClutterAlpha     *alpha,
-                                             gpointer          dummy);
-guint32          clutter_ramp_dec_func      (ClutterAlpha     *alpha,
-                                             gpointer          dummy);
-guint32          clutter_ramp_func          (ClutterAlpha     *alpha,
-                                             gpointer          dummy);
-guint32          clutter_sine_func          (ClutterAlpha     *alpha,
-                                             gpointer          dummy);
-guint32          clutter_square_func        (ClutterAlpha     *alpha,
-                                             gpointer          dummy);
+#define CLUTTER_TYPE_SMOOTHSTEP (clutter_smoothstep_get_type ())
+
+typedef struct _ClutterSmoothstep  ClutterSmoothstep;
+
+struct _ClutterSmoothstep
+{
+  ClutterFixed min;
+  ClutterFixed max;
+};
+
+ClutterSmoothstep * clutter_smoothstep_copy    (const ClutterSmoothstep *smoothstep);
+
+void                clutter_smoothstep_free    (ClutterSmoothstep *smoothstep);
+
+guint32             clutter_ramp_inc_func      (ClutterAlpha     *alpha,
+						gpointer          dummy);
+guint32             clutter_ramp_dec_func      (ClutterAlpha     *alpha,
+						gpointer          dummy);
+guint32             clutter_ramp_func          (ClutterAlpha     *alpha,
+						gpointer          dummy);
+guint32             clutter_sine_func          (ClutterAlpha     *alpha,
+						gpointer          dummy);
+guint32             clutter_square_func        (ClutterAlpha     *alpha,
+						gpointer          dummy);
+guint32             clutter_smoothstep_func    (ClutterAlpha     *alpha,
+			                        gpointer         *data);
 
 G_END_DECLS
 

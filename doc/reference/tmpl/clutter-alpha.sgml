@@ -123,6 +123,35 @@ transforming the current position in the timeline.
 @Returns: 
 
 
+<!-- ##### STRUCT ClutterSmoothstep ##### -->
+<para>
+Represents minimum and maximum thresholds for the smoothstep function. The
+thresholds are values from &lt;0,1&gt; relative to the frame-length of the behaviour,
+i.e., if the behaviour consists of 60 frames, threshold of 0.25 corresponds to
+frame 15, and threshold of 1.0 to frame 60.
+</para>
+
+@min: lower threshold; a #ClutterFixed value from &lt;0,1&gt;
+@max: upper threshold; a #ClutterFixed value from &lt;0,1&gt;
+
+
+<!-- ##### FUNCTION clutter_smoothstep_copy ##### -->
+<para>
+
+</para>
+
+@smoothstep: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_smoothstep_free ##### -->
+<para>
+
+</para>
+
+@smoothstep: 
+
+
 <!-- ##### MACRO CLUTTER_ALPHA_RAMP_INC ##### -->
 <para>
 Symbolic name for passing clutter_ramp_inc_func().

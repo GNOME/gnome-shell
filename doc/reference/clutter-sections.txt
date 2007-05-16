@@ -101,6 +101,9 @@ ClutterAlphaFunc
 clutter_alpha_set_func
 clutter_alpha_set_timeline
 clutter_alpha_get_timeline
+ClutterSmoothstep
+clutter_smoothstep_copy
+clutter_smoothstep_free
 CLUTTER_ALPHA_RAMP_INC
 clutter_ramp_inc_func
 CLUTTER_ALPHA_RAMP_DEC
@@ -111,6 +114,8 @@ CLUTTER_ALPHA_SINE
 clutter_sine_func
 CLUTTER_ALPHA_SQUARE
 clutter_square_func
+CLUTTER_ALPHA_SMOOTHSTEP
+clutter_smoothstep_func
 <SUBSECTION Standard>
 CLUTTER_ALPHA
 CLUTTER_IS_ALPHA

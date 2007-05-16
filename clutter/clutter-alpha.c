@@ -6,8 +6,9 @@
  * Authored By Matthew Allum  <mallum@openedhand.com>
  *             Jorn Baayen  <jorn@openedhand.com>
  *             Emmanuele Bassi  <ebassi@openedhand.com>
+ *             Tomas Frydrych <tf@openedhand.com>
  *
- * Copyright (C) 2006 OpenedHand
+ * Copyright (C) 2006, 2007 OpenedHand
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -646,4 +647,128 @@ clutter_square_func (ClutterAlpha *alpha,
 
   return (current_frame_num > (n_frames / 2)) ? CLUTTER_ALPHA_MAX_ALPHA
                                               : 0;
+}
+
+/**
+ * clutter_smoothstep_copy:
+ * @smoothstep: a #ClutterSmoothstep
+ *
+ * Makes an allocated copy of a smoothstep.
+ *
+ * Return value: the copied smoothstep.
+ *
+ * Since: 0.4
+ */
+ClutterSmoothstep *
+clutter_smoothstep_copy (const ClutterSmoothstep *smoothstep)
+{
+  ClutterSmoothstep *copy;
+
+  copy = g_slice_new0 (ClutterSmoothstep);
+  
+  *copy = *smoothstep;
+
+  return copy;
+}
+
+/**
+ * clutter_smoothstep_free:
+ * @smoothstep: a #ClutterSmoothstep
+ *
+ * Frees the memory of an allocated smoothstep.
+ *
+ * Since: 0.4
+ */
+void
+clutter_smoothstep_free (ClutterSmoothstep *smoothstep)
+{
+  if (G_LIKELY (smoothstep))
+    {
+      g_slice_free (ClutterSmoothstep, smoothstep);
+    }
+}
+
+GType
+clutter_smoothstep_get_type (void)
+{
+  static GType our_type = 0;
+
+  if (G_UNLIKELY (!our_type))
+    {
+      our_type =
+        g_boxed_type_register_static ("ClutterSmoothstep",
+                                      (GBoxedCopyFunc) clutter_smoothstep_copy,
+                                      (GBoxedFreeFunc) clutter_smoothstep_free);
+    }
+
+  return our_type;
+}
+
+/**
+ * clutter_smoothstep_func:
+ * @alpha: a #ClutterAlpha
+ * @data: pointer to a #ClutterSmoothstep defining the minimum and
+ * maximum thresholds for the smoothstep as supplied to
+ * clutter_alpha_set_func().
+ *
+ * Convenience alpha function for a smoothstep curve. You can use this
+ * function as the alpha function for clutter_alpha_set_func().
+ *
+ * Return value: an alpha value
+ *
+ * Since: 0.4
+ */
+guint32
+clutter_smoothstep_func (ClutterAlpha  * alpha,
+			 gpointer      * data)
+{
+  ClutterSmoothstep * smoothstep = data;
+  ClutterTimeline   * timeline;
+  gint                frame;
+  gint                n_frames;
+  gint32              r;
+  gint32              x; 
+
+  /*
+   * The smoothstep function uses f(x) = -2x^3 + 3x^2 where x is from <0,1>,
+   * and precission is critical -- we use 8.24 fixed format for this operation.
+   * The earlier operations involve division, which we cannot do in 8.24 for
+   * numbers in <0,1> we use ClutterFixed.
+   */
+  
+  g_return_val_if_fail (data, 0);
+  
+  timeline = clutter_alpha_get_timeline (alpha);
+  frame    = clutter_timeline_get_current_frame (timeline);
+  n_frames = clutter_timeline_get_n_frames (timeline);
+
+  r = CFX_DIV (frame, n_frames);
+
+  if (r <= smoothstep->min)
+      return 0;
+
+  if (r >= smoothstep->max)
+      return CLUTTER_ALPHA_MAX_ALPHA;
+
+  /*
+   * Normalize x for the smoothstep polynomal.
+   *
+   * Convert result to 8.24 for next step.
+   */
+  x = CFX_DIV ((r - smoothstep->min), (smoothstep->max - smoothstep->min))
+      << 8;
+
+  /*
+   * f(x) = -2x^3 + 3x^2
+   * 
+   * Convert result to ClutterFixed to avoid overflow in next step.
+   */
+  r = ((x >> 12) * (x >> 12) * 3 - (x >> 15) * (x >> 16) * (x >> 16)) >> 8;
+
+  g_debug ("Frame %d of %d, x %f, ret %f",
+	   frame, n_frames,
+	   CLUTTER_FIXED_TO_DOUBLE (x >> 8),
+	   CLUTTER_FIXED_TO_DOUBLE (r));
+	   
+  return CFX_INT (r * CLUTTER_ALPHA_MAX_ALPHA);
 }

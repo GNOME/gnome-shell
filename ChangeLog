@@ -1,3 +1,13 @@
+2007-05-16  Tomas Frydrych  <tf@openedhand.com>
+	
+	* clutter/clutter-alpha.h:
+	* clutter/clutter-alpha.c:
+	* doc/reference/clutter-sections.txt:
+	* doc/rererence/clutter.types:
+	* doc/reference/tmpl/clutter-alpha.sgml:
+	clutter_smoothstep_func alpha function, 
+	ClutterSmoothstep struct for smoothstep function data.
+
 2007-05-16  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-backend.c:
