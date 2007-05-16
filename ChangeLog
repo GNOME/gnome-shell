@@ -3,6 +3,13 @@
 	* clutter/clutter-alpha.h:
 	* clutter/clutter-alpha.c:
 	* doc/reference/clutter-sections.txt:
+	Added clutter_sine_half().
+	
+2007-05-16  Tomas Frydrych  <tf@openedhand.com>
+	
+	* clutter/clutter-alpha.h:
+	* clutter/clutter-alpha.c:
+	* doc/reference/clutter-sections.txt:
 	Fixed clutter_sine_inc(), added clutter_sine_dec().
 	
 2007-05-16  Tomas Frydrych  <tf@openedhand.com>
