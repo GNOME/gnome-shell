@@ -178,6 +178,8 @@ void
 cogl_alpha_func (COGLenum     func, 
 		 ClutterFixed ref);
 
+ClutterFeatureFlags
+cogl_get_features ();
 
 G_END_DECLS
 
