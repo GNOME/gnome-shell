@@ -106,7 +106,8 @@ ClutterTimeline *clutter_alpha_get_timeline (ClutterAlpha     *alpha);
 #define CLUTTER_ALPHA_RAMP_DEC   clutter_ramp_dec_func
 #define CLUTTER_ALPHA_RAMP       clutter_ramp_func
 #define CLUTTER_ALPHA_SINE       clutter_sine_func
-/* FIXME add SINE_INC/DEC */
+#define CLUTTER_ALPHA_SINE_INC   clutter_sine_inc_func
+#define CLUTTER_ALPHA_SINE_DEC   clutter_sine_dec_func
 #define CLUTTER_ALPHA_SQUARE     clutter_square_func
 #define CLUTTER_ALPHA_SMOOTHSTEP clutter_smoothstep_func
 
@@ -131,6 +132,10 @@ guint32             clutter_ramp_dec_func      (ClutterAlpha     *alpha,
 guint32             clutter_ramp_func          (ClutterAlpha     *alpha,
 						gpointer          dummy);
 guint32             clutter_sine_func          (ClutterAlpha     *alpha,
+						gpointer          dummy);
+guint32             clutter_sine_inc_func      (ClutterAlpha     *alpha,
+						gpointer          dummy);
+guint32             clutter_sine_dec_func      (ClutterAlpha     *alpha,
 						gpointer          dummy);
 guint32             clutter_square_func        (ClutterAlpha     *alpha,
 						gpointer          dummy);

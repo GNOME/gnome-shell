@@ -603,8 +603,9 @@ clutter_sine_func (ClutterAlpha *alpha,
  * @alpha: a #ClutterAlpha
  * @dummy: unused argument
  *
- * Convenience alpha function for a sine wave. You can use this
- * function as the alpha function for clutter_alpha_set_func().
+ * Convenience alpha function for a sine wave over interval <0, pi/2>.
+ * You can use this function as the alpha function for
+ * clutter_alpha_set_func().
  *
  * Return value: an alpha value.
  *
@@ -614,11 +615,55 @@ guint32
 clutter_sine_inc_func (ClutterAlpha *alpha,
 		       gpointer      dummy)
 {
-#if 0
-  return sinc_func (alpha, 0.5, 1.0);
-#else
-  return sincx1024_func (alpha, 256, CFX_ONE);
-#endif
+  ClutterTimeline * timeline;
+  gint              frame;
+  gint              n_frames;
+  ClutterAngle      x;
+  ClutterFixed      sine;
+  
+  timeline = clutter_alpha_get_timeline (alpha);
+  frame    = clutter_timeline_get_current_frame (timeline);
+  n_frames = clutter_timeline_get_n_frames (timeline);
+
+  x = 256 * frame / n_frames;
+
+  sine = clutter_sini (x) * CLUTTER_ALPHA_MAX_ALPHA;
+
+  return CFX_INT (sine);
+}
+
+/**
+ * clutter_sine_dec_func:
+ * @alpha: a #ClutterAlpha
+ * @dummy: unused argument
+ *
+ * Convenience alpha function for a sine wave over interval <pi/2, pi>.
+ * You can use this function as the alpha function for
+ * clutter_alpha_set_func().
+ *
+ * Return value: an alpha value.
+ *
+ * Since: 0.4
+ */
+guint32 
+clutter_sine_dec_func (ClutterAlpha *alpha,
+		       gpointer      dummy)
+{
+  ClutterTimeline * timeline;
+  gint              frame;
+  gint              n_frames;
+  ClutterAngle      x;
+  ClutterFixed      sine;
+  
+  timeline = clutter_alpha_get_timeline (alpha);
+  frame    = clutter_timeline_get_current_frame (timeline);
+  n_frames = clutter_timeline_get_n_frames (timeline);
+
+  x = 256 * frame / n_frames + 256;
+
+  sine = clutter_sini (x) * CLUTTER_ALPHA_MAX_ALPHA;
+
+  return CFX_INT (sine);
 }
 
 /**

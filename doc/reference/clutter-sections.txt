@@ -112,6 +112,10 @@ CLUTTER_ALPHA_RAMP
 clutter_ramp_func
 CLUTTER_ALPHA_SINE
 clutter_sine_func
+CLUTTER_ALPHA_SINE_INC
+clutter_sine_inc_func
+CLUTTER_ALPHA_SINE_DEC
+clutter_sine_dec_func
 CLUTTER_ALPHA_SQUARE
 clutter_square_func
 CLUTTER_ALPHA_SMOOTHSTEP
