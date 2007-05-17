@@ -654,6 +654,6 @@ clutter_base_init (void)
 
       /* initialise GLib type system */
       g_type_init ();
-      clutter_actor_get_type ();
+      (void) clutter_actor_get_type ();
     }
 }
