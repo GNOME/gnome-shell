@@ -603,7 +603,7 @@ clutter_sine_func (ClutterAlpha *alpha,
  * @alpha: a #ClutterAlpha
  * @dummy: unused argument
  *
- * Convenience alpha function for a sine wave over interval <0, pi/2>.
+ * Convenience alpha function for a sine wave over interval [0, pi / 2].
  * You can use this function as the alpha function for
  * clutter_alpha_set_func().
  *
@@ -637,7 +637,7 @@ clutter_sine_inc_func (ClutterAlpha *alpha,
  * @alpha: a #ClutterAlpha
  * @dummy: unused argument
  *
- * Convenience alpha function for a sine wave over interval <pi/2, pi>.
+ * Convenience alpha function for a sine wave over interval [pi / 2, pi].
  * You can use this function as the alpha function for
  * clutter_alpha_set_func().
  *
@@ -671,7 +671,7 @@ clutter_sine_dec_func (ClutterAlpha *alpha,
  * @alpha: a #ClutterAlpha
  * @dummy: unused argument
  *
- * Convenience alpha function for a sine wave over interval <0, pi>.
+ * Convenience alpha function for a sine wave over interval [0, pi].
  * You can use this function as the alpha function for
  * clutter_alpha_set_func().
  *
@@ -798,8 +798,8 @@ clutter_smoothstep_get_type (void)
  * Since: 0.4
  */
 guint32
-clutter_smoothstep_func (ClutterAlpha  * alpha,
-			 gpointer      * data)
+clutter_smoothstep_func (ClutterAlpha  *alpha,
+			 gpointer      *data)
 {
   ClutterSmoothstep * smoothstep = data;
   ClutterTimeline   * timeline;

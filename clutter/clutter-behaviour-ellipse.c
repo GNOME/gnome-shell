@@ -502,6 +502,8 @@ clutter_behaviour_ellipse_set_width (ClutterBehaviourEllipse * self,
  * @self: a #ClutterBehaviourEllipse
  *
  * Gets the width of the elliptical path.
+ *
+ * Return: the width of the path
  * 
  * Since: 0.4
  */
@@ -538,6 +540,8 @@ clutter_behaviour_ellipse_set_height (ClutterBehaviourEllipse * self,
  * @self: a #ClutterBehaviourEllipse
  *
  * Gets the height of the elliptical path.
+ *
+ * Return value: the height of the path
  * 
  * Since: 0.4
  */
@@ -574,7 +578,9 @@ clutter_behaviour_ellipse_set_angle_begin (ClutterBehaviourEllipse * self,
  * clutter_behaviour_ellipse_get_angle_begin
  * @self: a #ClutterBehaviourEllipse
  *
- * Gets the at which movements begins.
+ * Gets the angle at which movements begins.
+ *
+ * Return value: a #ClutterAngle
  * 
  * Since: 0.4
  */
@@ -612,6 +618,8 @@ clutter_behaviour_ellipse_set_angle_end (ClutterBehaviourEllipse * self,
  * @self: a #ClutterBehaviourEllipse
  *
  * Gets the at which movements ends.
+ *
+ * Return value: a #ClutterAngle
  * 
  * Since: 0.4
  */
@@ -649,6 +657,8 @@ clutter_behaviour_ellipse_set_angle_tilt (ClutterBehaviourEllipse * self,
  * @self: a #ClutterBehaviourEllipse
  *
  * Gets the tilt of the ellipse around the center.
+ *
+ * Return value: a #ClutterAngle
  * 
  * Since: 0.4
  */

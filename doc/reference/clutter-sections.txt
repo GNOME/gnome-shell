@@ -1,5 +1,6 @@
 <SECTION>
 <FILE>clutter-media</FILE>
+<TITLE>ClutterMedia</TITLE>
 ClutterMedia
 ClutterMediaInterface
 clutter_media_set_uri
@@ -69,6 +70,7 @@ ClutterBehaviour
 ClutterBehaviourClass
 clutter_behaviour_apply
 clutter_behaviour_remove
+clutter_behaviour_is_applied
 ClutterBehaviourForeachFunc
 clutter_behaviour_actors_foreach
 clutter_behaviour_get_actors
@@ -366,6 +368,7 @@ clutter_perspective_get_type
 ClutterTimeline
 ClutterTimelineClass
 clutter_timeline_new
+clutter_timeline_copy
 clutter_timeline_set_speed
 clutter_timeline_get_speed
 clutter_timeline_start
@@ -456,6 +459,7 @@ clutter_behaviour_rotate_get_bounds
 clutter_behaviour_rotate_get_boundsx
 clutter_behaviour_rotate_get_direction
 <SUBSECTION Standard>
+CLUTTER_TYPE_BEHAVIOUR_ROTATE
 CLUTTER_BEHAVIOUR_ROTATE
 CLUTTER_IS_BEHAVIOUR_ROTATE
 CLUTTER_BEHAVIOUR_ROTATE_CLASS
@@ -474,6 +478,9 @@ ClutterBehaviourScale
 ClutterBehaviourScaleClass
 clutter_behaviour_scale_new
 clutter_behaviour_scale_newx
+clutter_behaviour_scale_get_bounds
+clutter_behaviour_scale_get_boundsx
+clutter_behaviour_scale_get_gravity
 <SUBSECTION Standard>
 CLUTTER_BEHAVIOUR_SCALE
 CLUTTER_IS_BEHAVIOUR_SCALE
@@ -502,6 +509,7 @@ clutter_behaviour_bspline_adjust
 clutter_behaviour_bspline_set_origin
 clutter_behaviour_bspline_get_origin
 <SUBSECTION Standard>
+CLUTTER_TYPE_BEHAVIOUR_BSPLINE
 CLUTTER_BEHAVIOUR_BSPLINE
 CLUTTER_BEHAVIOUR_BSPLINE_CLASS
 CLUTTER_IS_BEHAVIOUR_BSPLINE
@@ -520,7 +528,18 @@ ClutterBehaviourEllipseClass
 clutter_behaviour_ellipse_new
 clutter_behaviour_ellipse_set_center
 clutter_behaviour_ellipse_get_center
+clutter_behaviour_ellipse_get_angle_begin
+clutter_behaviour_ellipse_get_angle_end
+clutter_behaviour_ellipse_get_angle_tilt
+clutter_behaviour_ellipse_get_height
+clutter_behaviour_ellipse_get_width
+clutter_behaviour_ellipse_set_angle_begin
+clutter_behaviour_ellipse_set_angle_end
+clutter_behaviour_ellipse_set_angle_tilt
+clutter_behaviour_ellipse_set_height
+clutter_behaviour_ellipse_set_width
 <SUBSECTION Standard>
+CLUTTER_TYPE_BEHAVIOUR_ELLIPSE
 CLUTTER_BEHAVIOUR_ELLIPSE
 CLUTTER_BEHAVIOUR_ELLIPSE_CLASS
 CLUTTER_IS_BEHAVIOUR_ELLIPSE

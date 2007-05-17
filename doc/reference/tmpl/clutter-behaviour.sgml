@@ -64,6 +64,16 @@ Class structure.
 @actor: 
 
 
+<!-- ##### FUNCTION clutter_behaviour_is_applied ##### -->
+<para>
+
+</para>
+
+@behave: 
+@actor: 
+@Returns: 
+
+
 <!-- ##### USER_FUNCTION ClutterBehaviourForeachFunc ##### -->
 <para>
 The function used to iterate on every #ClutterActor to which a behaviour

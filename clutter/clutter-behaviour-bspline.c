@@ -919,20 +919,21 @@ clutter_behaviour_bspline_join (ClutterBehaviourBspline * bs1,
 
 /**
  * clutter_behaviour_bspline_split:
- * @bs:      a #ClutterBehaviourBspline
- * @offset:  an offset of the control point at which to split the spline.
- *
- * Return: new ClutterBehaviourBspline.
+ * @bs: a #ClutterBehaviourBspline
+ * @offset: an offset of the control point at which to split the spline.
  * 
  * Splits a bezier spline into two at the control point at offset; if the
  * control point at offset is not one of the on-curve bezier points, the
  * bspline will be split at the nearest on-curve point before the offset.
  * The original bspline is shortened appropriately.
  *
+ * Return value: new ClutterBehaviourBspline.
+ *
  * Since: 0.4
  */
 ClutterBehaviour *
-clutter_behaviour_bspline_split (ClutterBehaviourBspline * bs, guint offset)
+clutter_behaviour_bspline_split (ClutterBehaviourBspline *bs,
+                                 guint                    offset)
 {
   ClutterBehaviourBspline * bs2 = NULL;
   ClutterAlpha * alpha;

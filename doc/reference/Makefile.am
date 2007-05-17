@@ -59,6 +59,7 @@ IGNORE_HFILES=\
 	cogl \
 	egl \
 	glx \
+	sdl \
 	pango 
 
 EXTRA_HFILES=\

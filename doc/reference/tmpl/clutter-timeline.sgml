@@ -93,6 +93,15 @@ The #ClutterTimeline has been started.
 @Returns: 
 
 
+<!-- ##### FUNCTION clutter_timeline_copy ##### -->
+<para>
+
+</para>
+
+@timeline: 
+@Returns: 
+
+
 <!-- ##### FUNCTION clutter_timeline_set_speed ##### -->
 <para>
 

@@ -86,3 +86,32 @@ Class structure for #ClutterBehaviourScale.
 @Returns: 
 
 
+<!-- ##### FUNCTION clutter_behaviour_scale_get_bounds ##### -->
+<para>
+
+</para>
+
+@scale: 
+@scale_begin: 
+@scale_end: 
+
+
+<!-- ##### FUNCTION clutter_behaviour_scale_get_boundsx ##### -->
+<para>
+
+</para>
+
+@scale: 
+@scale_begin: 
+@scale_end: 
+
+
+<!-- ##### FUNCTION clutter_behaviour_scale_get_gravity ##### -->
+<para>
+
+</para>
+
+@scale: 
+@Returns: 
+
+
