@@ -111,6 +111,8 @@ ClutterTimeline *clutter_alpha_get_timeline (ClutterAlpha     *alpha);
 #define CLUTTER_ALPHA_SINE_HALF  clutter_sine_half_func
 #define CLUTTER_ALPHA_SQUARE     clutter_square_func
 #define CLUTTER_ALPHA_SMOOTHSTEP clutter_smoothstep_func
+#define CLUTTER_ALPHA_EXP_INC    clutter_exp_inc_func
+#define CLUTTER_ALPHA_EXP_DEC    clutter_exp_dec_func
 
 #define CLUTTER_TYPE_SMOOTHSTEP (clutter_smoothstep_get_type ())
 
@@ -144,6 +146,10 @@ guint32             clutter_square_func        (ClutterAlpha     *alpha,
 						gpointer          dummy);
 guint32             clutter_smoothstep_func    (ClutterAlpha     *alpha,
 			                        gpointer         *data);
+guint32             clutter_exp_inc_func       (ClutterAlpha     *alpha,
+						gpointer          dummy);
+guint32             clutter_exp_dec_func       (ClutterAlpha     *alpha,
+						gpointer          dummy);
 
 G_END_DECLS
 

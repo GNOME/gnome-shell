@@ -1,3 +1,10 @@
+2007-05-17  Tomas Frydrych  <tf@openedhand.com>
+	
+	* clutter/clutter-alpha.h:
+	* clutter/clutter-alpha.c:
+	* doc/reference/clutter-sections.txt:
+	Added clutter_exp_inc_func() and clutter_exp_dec_func().
+	
 2007-05-16  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-main.[ch]: Add clutter_base_init(), semi-private

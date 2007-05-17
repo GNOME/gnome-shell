@@ -851,3 +851,90 @@ clutter_smoothstep_func (ClutterAlpha  * alpha,
 	   
   return CFX_INT (r * CLUTTER_ALPHA_MAX_ALPHA);
 }
+
+/**
+ * clutter_exp_inc_func:
+ * @alpha: a #ClutterAlpha
+ * @dummy: unused argument
+ *
+ * Convenience alpha function for a 2^x curve. You can use this function as the
+ * alpha function for clutter_alpha_set_func().
+ *
+ * Return value: an alpha value.
+ *
+ * Since: 0.4
+ */
+guint32 
+clutter_exp_inc_func (ClutterAlpha *alpha,
+		      gpointer      dummy)
+{
+  ClutterTimeline * timeline;
+  gint              frame;
+  gint              n_frames;
+  ClutterFixed      x;
+  ClutterFixed      x_alpha_max = 0x100000;
+  guint32           result;
+  
+  /*
+   * Choose x_alpha_max such that
+   * 
+   *   (2^x_alpha_max) - 1 == CLUTTER_ALPHA_MAX_ALPHA
+   */
+#if CLUTTER_ALPHA_MAX_ALPHA != 0xffff
+#error Adjust x_alpha_max to match CLUTTER_ALPHA_MAX_ALPHA
+#endif
+  
+  timeline = clutter_alpha_get_timeline (alpha);
+  frame    = clutter_timeline_get_current_frame (timeline);
+  n_frames = clutter_timeline_get_n_frames (timeline);
+
+  x =  x_alpha_max * frame / n_frames;
+
+  result = clutter_pow2x (x) - 1;
+
+  return result;
+}
+
+
+/**
+ * clutter_exp_dec_func:
+ * @alpha: a #ClutterAlpha
+ * @dummy: unused argument
+ *
+ * Convenience alpha function for a decreasing 2^x curve. You can use this
+ * function as the alpha function for clutter_alpha_set_func().
+ *
+ * Return value: an alpha value.
+ *
+ * Since: 0.4
+ */
+guint32 
+clutter_exp_dec_func (ClutterAlpha *alpha,
+		      gpointer      dummy)
+{
+  ClutterTimeline * timeline;
+  gint              frame;
+  gint              n_frames;
+  ClutterFixed      x;
+  ClutterFixed      x_alpha_max = 0x100000;
+  guint32           result;
+  
+  /*
+   * Choose x_alpha_max such that
+   * 
+   *   (2^x_alpha_max) - 1 == CLUTTER_ALPHA_MAX_ALPHA
+   */
+#if CLUTTER_ALPHA_MAX_ALPHA != 0xffff
+#error Adjust x_alpha_max to match CLUTTER_ALPHA_MAX_ALPHA
+#endif
+  
+  timeline = clutter_alpha_get_timeline (alpha);
+  frame    = clutter_timeline_get_current_frame (timeline);
+  n_frames = clutter_timeline_get_n_frames (timeline);
+
+  x =  (x_alpha_max * (n_frames - frame)) / n_frames;
+
+  result = clutter_pow2x (x) - 1;
+
+  return result;
+}

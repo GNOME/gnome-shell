@@ -122,6 +122,10 @@ CLUTTER_ALPHA_SQUARE
 clutter_square_func
 CLUTTER_ALPHA_SMOOTHSTEP
 clutter_smoothstep_func
+CLUTTER_ALPHA_EXP_INC
+clutter_exp_inc_func
+CLUTTER_ALPHA_EXP_DEC
+clutter_exp_dec_func
 <SUBSECTION Standard>
 CLUTTER_ALPHA
 CLUTTER_IS_ALPHA
