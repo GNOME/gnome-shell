@@ -252,7 +252,7 @@ if test "x$with_fpu" != "xyes" ; then
    CLUTTER_FIXED_CFLAGS="-DCFX_NO_FPU"
 fi
 
-AC_SUBST(CLUTTER_HAS_FPU)
+AC_SUBST(CLUTTER_NO_FPU)
 
 dnl = GTK Doc check ========================================================
 

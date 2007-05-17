@@ -68,7 +68,11 @@ typedef enum {
 
   CLUTTER_ACTOR_IN_DESTRUCTION = 1 << 0,
   CLUTTER_ACTOR_IS_TOPLEVEL    = 1 << 1,
-  CLUTTER_ACTOR_IN_REPARENT    = 1 << 2
+  CLUTTER_ACTOR_IN_REPARENT    = 1 << 2,
+  CLUTTER_ACTOR_SYNC_MATRICES  = 1 << 3 /* Used by stage to indicate GL
+					 * viewport / perspective etc
+					 * needs (re)setting. 
+					*/
 } ClutterPrivateFlags;
 
 #define CLUTTER_PRIVATE_FLAGS(a)	 (CLUTTER_ACTOR ((a))->private_flags)

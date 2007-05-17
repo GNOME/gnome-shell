@@ -1,3 +1,8 @@
+2007-05-17  Matthew Allum  <mallum@openedhand.com>
+
+	* configure.ac:
+	Fix CLUTTER_NO_FPU typo.
+
 2007-05-17  Tomas Frydrych  <tf@openedhand.com>
 	
 	* clutter/clutter-alpha.h:

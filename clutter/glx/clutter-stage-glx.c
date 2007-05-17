@@ -313,17 +313,29 @@ clutter_stage_glx_paint (ClutterActor *self)
 
   CLUTTER_NOTE (PAINT, " Redraw enter");
 
+  /* Setup FPS count */
   if (clutter_get_show_fps ())
     {
       if (!timer)
 	timer = g_timer_new ();
     }
 
-  clutter_stage_get_color (stage, &stage_color);
+  /* Reset view matrices if needed. */
+  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_SYNC_MATRICES)
+    {
+      /* 
+	 cogl_set_view_matrix (view_width, 
+	                       view_height, 
+			       perspective)
+			       
+      */
+    }
 
+  /* Setup the initial paint */
+  clutter_stage_get_color (stage, &stage_color);
   cogl_paint_init (&stage_color);
 
-  /* chain up to reach ClutterGroup->paint here */
+  /* chain up to reach ClutterGroup->paint here and actually paint all */
   CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->paint (self);
 
   /* Why this paint is done in backend as likely GL windowing system
@@ -340,6 +352,7 @@ clutter_stage_glx_paint (ClutterActor *self)
       CLUTTER_GLERR ();
     }
 
+  /* Complete FPS info */
   if (clutter_get_show_fps ())
     {
       timer_n_frames++;
