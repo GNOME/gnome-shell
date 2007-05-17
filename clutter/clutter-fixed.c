@@ -673,6 +673,132 @@ clutter_qmulx (ClutterFixed op1, ClutterFixed op2)
 #endif
 }
 
+
+/*
+ * The log2x() and pow2x() functions
+ *
+ * The implementation of the log2x() and pow2x() exploits the well-documented
+ * fact that the exponent part of IEEE floating number provides a good estimate
+ * of log2 of that number, while the mantisa serves as a good error-correction.
+ * 
+ * The implemenation here uses a quadratic error correction as described by
+ * Ian Stephenson at http://www.dctsystems.co.uk/Software/power.html.
+ */
+
+/**
+ * clutter_log2x :
+ * @x: value to calculate base 2 logarithm from
+ *
+ * Calculates base 2 logarithm.
+ *
+ * This function is some 2.5 times faster on x86, and over 12 times faster on
+ * fpu-less arm, than using libc log().
+ *
+ * Return value: base 2 logarithm.
+ *
+ * Since: 0.4
+ */
+ClutterFixed
+clutter_log2x (guint x)
+{
+  /* Note: we could easily have a version for ClutterFixed x, but the int
+   *       precission is enough for the current purposes.
+   */
+  union 
+  {
+    float        f;
+    ClutterFixed i;
+  } flt;
+  
+  ClutterFixed magic = 0x58bb;
+  ClutterFixed y;
+  
+  /*
+   * Convert x to float, then extract exponent.
+   *
+   * We want the result to be 16.16 fixed, so we shift (23-16) bits only
+   */
+  flt.f = x;
+  flt.i >>= 7; 
+  flt.i -= CLUTTER_INT_TO_FIXED (127);
+
+  y = CLUTTER_FIXED_FRACTION (flt.i);
+  
+  y = CFX_MUL ((y - CFX_MUL (y, y)), magic);
+
+  return flt.i + y;
+}
+
+/**
+ * clutter_pow2x :
+ * @x: exponent
+ *
+ * Calculates 2 to x power.
+ *
+ * This function is around 11 times faster on x86, and around 22 times faster
+ * on fpu-less arm than libc pow(2, x).
+ *
+ * Return value: 2 in x power.
+ *
+ * Since: 0.4
+ */
+guint
+clutter_pow2x (ClutterFixed x)
+{
+  /* Note: we could easily have a version that produces ClutterFixed result,
+   *       but the the range would be limited to x < 15, and the int precission
+   *       is enough for the current purposes.
+   */
+    
+  union 
+  {
+    float        f;
+    ClutterFixed i;
+  } flt;
+  
+  ClutterFixed magic = 0x56f7;
+  ClutterFixed y;
+
+  flt.i = x;
+
+  /*
+   * Reverse of the log2x function -- convert the fixed value to a suitable
+   * floating point exponent, and mantisa adjusted with quadratic error
+   * correction y.
+   */
+  y = CLUTTER_FIXED_FRACTION (x);
+  y = CFX_MUL ((y - CFX_MUL (y, y)), magic);
+
+  /* Shift the exponent into it's position in the floating point
+   * representation; as our number is not int but 16.16 fixed, shift only
+   * by (23 - 16)
+   */
+  flt.i += (CLUTTER_INT_TO_FIXED (127) - y);
+  flt.i <<= 7;
+  
+  return CLUTTER_FLOAT_TO_INT (flt.f);
+}
+
+
+/**
+ * clutter_powx :
+ * @x: base
+ * @y: #ClutterFixed exponent
+ *
+ * Calculates x to y power. (Note, if x is a constant it will be faster to 
+ * calculate the power as clutter_pow2x (CLUTTER_FIXED_MUL(y, log2 (x)))
+ *
+ * Return value: x in y power.
+ *
+ * Since: 0.4
+ */
+guint
+clutter_powx (guint x, ClutterFixed y)
+{
+  return clutter_pow2x (CFX_MUL (y, clutter_log2x (x)));
+}
+
+
 /* <private> */
 const double _magic = 68719476736.0*1.5;
 

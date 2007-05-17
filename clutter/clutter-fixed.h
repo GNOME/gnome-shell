@@ -186,6 +186,9 @@ ClutterFixed clutter_tani (ClutterAngle angle);
 ClutterFixed clutter_sqrtx (ClutterFixed x);
 gint         clutter_sqrti (gint         x);
 
+ClutterFixed clutter_log2x (guint x);
+guint        clutter_pow2x (ClutterFixed x);
+guint        clutter_powx  (guint x, ClutterFixed y);
 
 /* <private> */
 extern inline
