@@ -1,3 +1,12 @@
+2007-05-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-main.c: Use clutter_base_init() inside the
+	initialisation process, instead of calling g_type_init() directly.
+
+	* clutter/clutter-alpha.c:
+	* clutter/clutter-behaviour-bspline.c:
+	* clutter/clutter-behaviour-ellipse.c: Fix API documentation.
+
 2007-05-17  Matthew Allum  <mallum@openedhand.com>
 
 	* configure.ac:

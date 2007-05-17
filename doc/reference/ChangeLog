@@ -4,8 +4,6 @@
 
 	* clutter-sections.txt: Add undocumented symbols.
 
-	* clutter-docs.sgml: Add ClutterLayout section to the documentation.
-
 2007-05-16  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* Makefile.am: Use the newly added clutter_base_init() function
