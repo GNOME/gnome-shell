@@ -502,7 +502,7 @@ clutter_init_with_args (int            *argc,
   if (clutter_is_initialized)
     return CLUTTER_INIT_SUCCESS;
 
-  g_type_init ();
+  clutter_base_init ();
 
   group   = clutter_get_option_group ();
   context = g_option_context_new (parameter_string);
@@ -592,7 +592,7 @@ clutter_init (int    *argc,
   if (clutter_is_initialized)
     return CLUTTER_INIT_SUCCESS;
 
-  g_type_init ();
+  clutter_base_init ();
 
   /* parse_args will trigger backend creation and things like
    * DISPLAY connection etc.
