@@ -30,7 +30,7 @@
 
 #include <glib-object.h>
 
-#include "clutter-fixed.h"
+#include "clutter-real.h"
 
 G_BEGIN_DECLS
 
@@ -58,9 +58,23 @@ G_BEGIN_DECLS
 #define CLUTTER_ACTOR_IS_VISIBLE(e)     (CLUTTER_ACTOR_IS_MAPPED (e) && \
                                          CLUTTER_ACTOR_IS_REALIZED (e))
 
+typedef enum { /*< prefix=CLUTTER_GRAVITY >*/
+  CLUTTER_GRAVITY_NONE       = 0,
+  CLUTTER_GRAVITY_NORTH,
+  CLUTTER_GRAVITY_NORTH_EAST,
+  CLUTTER_GRAVITY_EAST,
+  CLUTTER_GRAVITY_SOUTH_EAST,
+  CLUTTER_GRAVITY_SOUTH,
+  CLUTTER_GRAVITY_SOUTH_WEST,
+  CLUTTER_GRAVITY_WEST,
+  CLUTTER_GRAVITY_NORTH_WEST,
+  CLUTTER_GRAVITY_CENTER
+} ClutterGravity;
+
 typedef struct _ClutterActor         ClutterActor;
 typedef struct _ClutterActorClass    ClutterActorClass;
 typedef struct _ClutterActorBox      ClutterActorBox;
+typedef struct _ClutterActorBoxReal  ClutterActorBoxReal;
 typedef struct _ClutterActorPrivate  ClutterActorPrivate;
 typedef struct _ClutterGeometry      ClutterGeometry;
 
@@ -88,6 +102,7 @@ typedef enum
 } ClutterActorFlags;
 
 struct _ClutterActorBox { gint x1, y1, x2, y2; };
+struct _ClutterActorBoxReal { ClutterReal x1, y1, x2, y2; };
 
 GType clutter_actor_box_get_type (void) G_GNUC_CONST;
 
@@ -107,22 +122,22 @@ struct _ClutterActorClass
 {
   GObjectClass parent_class;
 
-  void (* show)            (ClutterActor    *actor);
-  void (* show_all)        (ClutterActor    *actor);
-  void (* hide)            (ClutterActor    *actor);
-  void (* hide_all)        (ClutterActor    *actor);
-  void (* realize)         (ClutterActor    *actor);
-  void (* unrealize)       (ClutterActor    *actor);
-  void (* paint)           (ClutterActor    *actor);
-  void (* request_coords)  (ClutterActor    *actor,
-			    ClutterActorBox *box);
-  void (* allocate_coords) (ClutterActor    *actor,
-			    ClutterActorBox *box);
-  void (* set_depth)       (ClutterActor    *actor,
-		            gint             depth);
-  gint (* get_depth)       (ClutterActor    *actor);
-  void (* parent_set)      (ClutterActor    *actor,
-                            ClutterActor    *old_parent);
+  void (* show)            (ClutterActor        *actor);
+  void (* show_all)        (ClutterActor        *actor);
+  void (* hide)            (ClutterActor        *actor);
+  void (* hide_all)        (ClutterActor        *actor);
+  void (* realize)         (ClutterActor        *actor);
+  void (* unrealize)       (ClutterActor        *actor);
+  void (* paint)           (ClutterActor        *actor);
+  void (* request_coords)  (ClutterActor        *actor,
+			    ClutterActorBoxReal *box);
+  void (* allocate_coords) (ClutterActor        *actor,
+			    ClutterActorBoxReal *box);
+  void (* set_depth)       (ClutterActor        *actor,
+		            gint                 depth);
+  gint (* get_depth)       (ClutterActor        *actor);
+  void (* parent_set)      (ClutterActor        *actor,
+                            ClutterActor        *old_parent);
 
   void (* destroy)         (ClutterActor    *actor);
 
@@ -235,6 +250,12 @@ void                  clutter_actor_get_scalex       (ClutterActor          *sel
 void                  clutter_actor_get_scale        (ClutterActor          *self,
                                                       gdouble               *scale_x,
                                                       gdouble               *scale_y);
+
+void                  clutter_actor_scalex           (ClutterActor          *self,
+						      ClutterFixed      scale_x,
+						      ClutterFixed      scale_y,
+						      ClutterGravity    gravity);
+
 void                  clutter_actor_get_abs_size     (ClutterActor          *self,
                                                       guint                 *width,
                                                       guint                 *height);
@@ -244,6 +265,13 @@ void                  clutter_actor_get_size         (ClutterActor          *sel
 void                  clutter_actor_move_by          (ClutterActor          *self,
                                                       gint                   dx,
                                                       gint                   dy);
+
+/*<private*/
+void                  _clutter_actor_request_coords_real (ClutterActor        *self,
+							  ClutterActorBoxReal *rbox);
+
+void                  _clutter_actor_allocate_coords_real (ClutterActor        *self,
+							   ClutterActorBoxReal *rbox);
 
 G_END_DECLS
 

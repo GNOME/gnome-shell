@@ -1,3 +1,22 @@
+2007-05-18  Tomas Frydrych  <tf@openedhand.com>
+	
+	* configure.ac:
+	* Makefile.am:
+	* clutter.pc.in:
+	* clutter/Makefile.am:
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	* clutter/clutter-behaviour-scale.c:
+	* clutter/clutter-behaviour-scale.h:
+	* clutter/clutter-group.c:
+	* clutter/clutter-label.c:
+	* clutter/clutter-real.h:
+	* clutter/egl/clutter-stage-egl.c:
+	* clutter/glx/clutter-stage-glx.c:
+	* examples/Makefile.am:
+	* tests/Makefile.am:
+	ClutterReal type.
+	
 2007-05-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-main.c: Use clutter_base_init() inside the

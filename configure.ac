@@ -92,6 +92,22 @@ if $PKG_CONFIG --exists xfixes ; then
   X11_LIBS="$X11_LIBS -lXfixes"
 fi
 
+CLUTTER_NO_FPU="0"
+CLUTTER_REAL=""
+
+AC_ARG_WITH(fpu,
+            AS_HELP_STRING([--without-fpu],
+                           [Assume target hardware has no fpu]),
+            [with_fpu=$withval],
+            [with_fpu=yes])
+
+if test "x$with_fpu" != "xyes" ; then
+   CLUTTER_NO_FPU="1"
+   CLUTTER_REAL="-fx"
+fi
+
+AC_SUBST(CLUTTER_NO_FPU)
+AC_SUBST(CLUTTER_REAL)
 
 clutterbackend=glx
 AC_ARG_WITH([flavour],
@@ -201,7 +217,7 @@ AC_SUBST([clutterbackend])
 AC_SUBST(CLUTTER_FLAVOUR)
 AC_SUBST(CLUTTER_COGL)
 
-clutterbackendlib=libclutter-$clutterbackend-$CLUTTER_MAJORMINOR.la
+clutterbackendlib=libclutter$CLUTTER_REAL-$clutterbackend-$CLUTTER_MAJORMINOR.la
 AC_SUBST([clutterbackendlib])
 
 dnl ========================================================================
@@ -239,21 +255,6 @@ fi
 
 AC_SUBST(CLUTTER_DEBUG_CFLAGS)
 
-CLUTTER_NO_FPU=0
-
-AC_ARG_WITH(fpu,
-            AS_HELP_STRING([--without-fpu],
-                           [Assume target hardware has no fpu]),
-            [with_fpu=$withval],
-            [with_fpu=yes])
-
-if test "x$with_fpu" != "xyes" ; then
-   CLUTTER_NO_FPU=1
-   CLUTTER_FIXED_CFLAGS="-DCFX_NO_FPU"
-fi
-
-AC_SUBST(CLUTTER_NO_FPU)
-
 dnl = GTK Doc check ========================================================
 
 GTK_DOC_CHECK([1.4])
@@ -262,7 +263,7 @@ dnl ========================================================================
 
 AC_SUBST(GCC_FLAGS)
 
-CLUTTER_CFLAGS="$SDL_CFLAGS $EGL_CFLAGS $GLX_CFLAGS $CLUTTER_DEPS_CFLAGS $CLUTTER_FIXED_CFLAGS"
+CLUTTER_CFLAGS="$SDL_CFLAGS $EGL_CFLAGS $GLX_CFLAGS $CLUTTER_DEPS_CFLAGS"
 CLUTTER_LIBS="$SDL_LIBS $EGL_LIBS $GLX_LIBS $CLUTTER_DEPS_LIBS"
 
 AC_SUBST(CLUTTER_CFLAGS)

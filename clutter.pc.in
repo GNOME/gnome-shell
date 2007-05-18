@@ -3,11 +3,12 @@ exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
 backend=@clutterbackend@
+real=@CLUTTER_REAL@
 apiversion=@CLUTTER_API_VERSION@
 
 Name: Clutter
 Description: Clutter Core Library (${backend} backend)
 Version: @VERSION@
-Libs: -L${libdir} -lclutter-${backend}-${apiversion}
+Libs: -L${libdir} -lclutter${real}-${backend}-${apiversion}
 Cflags: -I${includedir}/clutter-${apiversion}
 Requires: glib-2.0 >= 2.10 gobject-2.0 gthread-2.0 pangoft2 gdk-pixbuf-2.0 gdk-pixbuf-xlib-2.0

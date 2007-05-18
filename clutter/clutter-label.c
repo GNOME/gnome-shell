@@ -263,8 +263,8 @@ clutter_label_paint (ClutterActor *self)
 }
 
 static void
-clutter_label_allocate_coords (ClutterActor    *self,
-			       ClutterActorBox *box)
+clutter_label_allocate_coords (ClutterActor        *self,
+			       ClutterActorBoxReal *box)
 {
   ClutterLabel         *label = CLUTTER_LABEL(self);
   ClutterLabelPrivate  *priv;  
@@ -272,7 +272,7 @@ clutter_label_allocate_coords (ClutterActor    *self,
 
   priv = label->priv;
 
-  clutter_label_ensure_layout (label, box->x2 - box->x1);
+  clutter_label_ensure_layout (label, CLUTTER_REAL_TO_INT (box->x2 - box->x1));
 
   pango_layout_get_extents (priv->layout, NULL, &logical_rect);
 
@@ -283,8 +283,8 @@ clutter_label_allocate_coords (ClutterActor    *self,
 }
 
 static void
-clutter_label_request_coords (ClutterActor    *self,
-			      ClutterActorBox *box)
+clutter_label_request_coords (ClutterActor        *self,
+			      ClutterActorBoxReal *box)
 {
   /* do we need to do anything ? */
   clutter_label_clear_layout (CLUTTER_LABEL(self));

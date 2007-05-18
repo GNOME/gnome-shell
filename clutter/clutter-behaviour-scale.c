@@ -78,55 +78,12 @@ scale_frame_foreach (ClutterBehaviour *behaviour,
                      ClutterActor     *actor,
 		     gpointer          data)
 {
-  ClutterBehaviourScalePrivate *priv;
-  guint sw, sh, w, h;
-  gint x, y;
-  guint scale = GPOINTER_TO_UINT (data);
+  ClutterBehaviourScalePrivate *priv =
+      CLUTTER_BEHAVIOUR_SCALE (behaviour)->priv;
+  ClutterFixed scale = GPOINTER_TO_UINT (data);
+  ClutterGravity gravity = priv->gravity;
 
-  priv = CLUTTER_BEHAVIOUR_SCALE (behaviour)->priv;
-
-  clutter_actor_get_abs_size (actor, &w, &h);
-  clutter_actor_set_scalex (actor, scale, scale);
-
-  if (priv->gravity == CLUTTER_GRAVITY_NONE ||
-      priv->gravity == CLUTTER_GRAVITY_NORTH_WEST)
-    return;
-
-  clutter_actor_get_abs_size (actor, &sw, &sh);
-
-  x = clutter_actor_get_x (actor);
-  y = clutter_actor_get_y (actor);
-
-  switch (priv->gravity)
-    {
-    case CLUTTER_GRAVITY_NORTH:
-      clutter_actor_set_position (actor, x - ((sw - w) / 2), y);
-      break;
-    case CLUTTER_GRAVITY_NORTH_EAST:
-      clutter_actor_set_position (actor, x + w - sw, y);
-      break;
-    case CLUTTER_GRAVITY_EAST:
-      clutter_actor_set_position (actor, x + w - sw, y - (sh - h) / 2);
-      break;
-    case CLUTTER_GRAVITY_SOUTH_EAST:
-      clutter_actor_set_position (actor, x + w - sw, y + h - sh);
-      break;
-    case CLUTTER_GRAVITY_SOUTH:
-      clutter_actor_set_position (actor, x - ((sw - w) / 2), y + h - sh);
-      break;
-    case CLUTTER_GRAVITY_SOUTH_WEST:
-      clutter_actor_set_position (actor, x, y + h - sh);
-      break;
-    case CLUTTER_GRAVITY_WEST:
-      clutter_actor_set_position (actor, x, y - ((sh - h) / 2));
-      break;
-    case CLUTTER_GRAVITY_CENTER:
-      clutter_actor_set_position (actor,
-                                  x - ((sw - w) / 2),
-                                  y - ((sh - h) / 2));
-    default:
-      break;
-    }
+  clutter_actor_scalex (actor, scale, scale, gravity);
 }
 
 static void

@@ -159,19 +159,19 @@ source_h_priv = \
 	$(NULL)
 
 
-libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LIBADD =   \
+libclutter@CLUTTER_REAL@_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LIBADD =   \
   $(CLUTTER_LIBS) pango/libpangoclutter.la                       \
   @CLUTTER_FLAVOUR@/libclutter-@CLUTTER_FLAVOUR@.la              \
   cogl/@CLUTTER_COGL@/libclutter-cogl.la	  
 
-libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_SOURCES =  \
+libclutter@CLUTTER_REAL@_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_SOURCES =  \
   $(source_c) $(source_h) $(source_h_priv)                      
 
-libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LDFLAGS = $(LDADD)
+libclutter@CLUTTER_REAL@_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LDFLAGS = $(LDADD)
 
 lib_LTLIBRARIES = $(clutterbackendlib)
 
-EXTRA_LTLIBRARIES = libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la
+EXTRA_LTLIBRARIES = libclutter@CLUTTER_REAL@-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la
 
 clutterdir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter
 

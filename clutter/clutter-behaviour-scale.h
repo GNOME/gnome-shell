@@ -30,6 +30,7 @@
 
 #include <clutter/clutter-alpha.h>
 #include <clutter/clutter-behaviour.h>
+#include <clutter/clutter-actor.h>
 
 G_BEGIN_DECLS
 
@@ -54,19 +55,6 @@ G_BEGIN_DECLS
 #define CLUTTER_BEHAVIOUR_SCALE_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   CLUTTER_TYPE_BEHAVIOUR_SCALE, ClutterBehaviourScaleClass))
-
-typedef enum { /*< prefix=CLUTTER_GRAVITY >*/
-  CLUTTER_GRAVITY_NONE       = 0,
-  CLUTTER_GRAVITY_NORTH,
-  CLUTTER_GRAVITY_NORTH_EAST,
-  CLUTTER_GRAVITY_EAST,
-  CLUTTER_GRAVITY_SOUTH_EAST,
-  CLUTTER_GRAVITY_SOUTH,
-  CLUTTER_GRAVITY_SOUTH_WEST,
-  CLUTTER_GRAVITY_WEST,
-  CLUTTER_GRAVITY_NORTH_WEST,
-  CLUTTER_GRAVITY_CENTER
-} ClutterGravity;
 
 typedef struct _ClutterBehaviourScale        ClutterBehaviourScale;
 typedef struct _ClutterBehaviourScalePrivate ClutterBehaviourScalePrivate;

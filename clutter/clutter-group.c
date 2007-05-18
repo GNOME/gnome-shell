@@ -96,12 +96,12 @@ clutter_group_paint (ClutterActor *actor)
 }
 
 static void
-clutter_group_request_coords (ClutterActor    *self,
-			      ClutterActorBox *box)
+clutter_group_request_coords (ClutterActor        *self,
+			      ClutterActorBoxReal *box)
 {
-  ClutterActorBox cbox;
+  ClutterActorBoxReal cbox;
 
-  clutter_actor_allocate_coords (self, &cbox);
+  _clutter_actor_allocate_coords_real (self, &cbox);
 
   /* Only positioning works.
    * Sizing requests fail, use scale() instead 
@@ -111,8 +111,8 @@ clutter_group_request_coords (ClutterActor    *self,
 }
 
 static void
-clutter_group_allocate_coords (ClutterActor    *self,
-			       ClutterActorBox *box)
+clutter_group_allocate_coords (ClutterActor        *self,
+			       ClutterActorBoxReal *box)
 {
   ClutterGroupPrivate *priv;
   GList               *child_item;
@@ -132,19 +132,21 @@ clutter_group_allocate_coords (ClutterActor    *self,
 	  /* Once added we include in sizing - doesn't matter if visible */
 	  /* if (CLUTTER_ACTOR_IS_VISIBLE (child)) */
 	    {
-	      ClutterActorBox cbox;
+	      ClutterActorBoxReal cbox;
 
-	      clutter_actor_allocate_coords (child, &cbox);
+	      _clutter_actor_allocate_coords_real (child, &cbox);
 	      
 	      /* Ignore any children with offscreen ( negaive )
                * positions.
 	       *
                * Also x1 and x2 will be set by parent caller.
 	      */
-	      if (box->x2 == 0 || cbox.x2 > box->x2)
+	      if (CLUTTER_REAL_EZ (box->x2) ||
+		  CLUTTER_REAL_GT (cbox.x2, box->x2))
 		box->x2 = cbox.x2;
 
-	      if (box->y2 == 0 || cbox.y2 > box->y2)
+	      if (CLUTTER_REAL_EZ (box->y2) ||
+		  CLUTTER_REAL_GT (cbox.y2, box->y2))
 		box->y2 = cbox.y2;
 	    }
 	}
