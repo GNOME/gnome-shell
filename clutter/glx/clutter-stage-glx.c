@@ -35,6 +35,7 @@
 #include "../clutter-enum-types.h"
 #include "../clutter-private.h"
 #include "../clutter-debug.h"
+#include "../clutter-units.h"
 
 #include "cogl.h"
 
@@ -370,24 +371,24 @@ clutter_stage_glx_paint (ClutterActor *self)
 
 static void
 clutter_stage_glx_allocate_coords (ClutterActor        *self,
-                                   ClutterActorBoxReal *box)
+                                   ClutterActorBox     *box)
 {
   ClutterStageGlx *stage_glx = CLUTTER_STAGE_GLX (self);
 
   box->x1 = box->y1 = 0;
-  box->x2 = CLUTTER_REAL_ADD_INT (box->x1, stage_glx->xwin_width);
-  box->y2 = CLUTTER_REAL_ADD_INT (box->y1, stage_glx->xwin_height);
+  box->x2 = box->x1 + CLUTTER_UNITS_FROM_INT (stage_glx->xwin_width);
+  box->y2 = box->y1 + CLUTTER_UNITS_FROM_INT (stage_glx->xwin_height);
 }
 
 static void
 clutter_stage_glx_request_coords (ClutterActor        *self,
-				  ClutterActorBoxReal *box)
+				  ClutterActorBox     *box)
 {
   ClutterStageGlx *stage_glx = CLUTTER_STAGE_GLX (self);
   gint new_width, new_height;
 
-  new_width  = ABS (CLUTTER_REAL_TO_INT (box->x2 - box->x1));
-  new_height = ABS (CLUTTER_REAL_TO_INT (box->y2 - box->y1)); 
+  new_width  = ABS (CLUTTER_UNITS_TO_INT (box->x2 - box->x1));
+  new_height = ABS (CLUTTER_UNITS_TO_INT (box->y2 - box->y1)); 
 
   if (new_width != stage_glx->xwin_width ||
       new_height != stage_glx->xwin_height)
@@ -414,8 +415,8 @@ clutter_stage_glx_request_coords (ClutterActor        *self,
   if (stage_glx->xwin != None) /* Do we want to bother ? */
     XMoveWindow (stage_glx->xdpy,
 		 stage_glx->xwin,
-		 CLUTTER_REAL_TO_INT (box->x1),
-		 CLUTTER_REAL_TO_INT (box->y1));
+		 CLUTTER_UNITS_TO_INT (box->x1),
+		 CLUTTER_UNITS_TO_INT (box->y1));
 }
 
 static void

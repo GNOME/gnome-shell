@@ -1,3 +1,23 @@
+2007-05-22  Tomas Frydrych  <tf@openedhand.com>
+
+	* configure.ac:
+	* Makefile.am:
+	* clutter.pc.in:
+	* clutter/Makefile.am:
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	* clutter/clutter-group.c:
+	* clutter/clutter-label.c:
+	* clutter/clutter-real.h:
+	* clutter/clutter-units.h:
+	* clutter/clutter.h:
+	* clutter/egl/clutter-stage-egl.c:
+	* clutter/glx/clutter-stage-glx.c:
+	* clutter/sdl/clutter-stage-sdl.c:
+	* examples/Makefile.am:
+	* tests/Makefile.am:
+	Removed ClutterReal; added clutter-units.
+	
 2007-05-18  Tomas Frydrych  <tf@openedhand.com>
 	
 	* configure.ac:

@@ -29,8 +29,7 @@
 /* clutter-actor.h */
 
 #include <glib-object.h>
-
-#include "clutter-real.h"
+#include <clutter/clutter-fixed.h>
 
 G_BEGIN_DECLS
 
@@ -74,7 +73,6 @@ typedef enum { /*< prefix=CLUTTER_GRAVITY >*/
 typedef struct _ClutterActor         ClutterActor;
 typedef struct _ClutterActorClass    ClutterActorClass;
 typedef struct _ClutterActorBox      ClutterActorBox;
-typedef struct _ClutterActorBoxReal  ClutterActorBoxReal;
 typedef struct _ClutterActorPrivate  ClutterActorPrivate;
 typedef struct _ClutterGeometry      ClutterGeometry;
 
@@ -86,11 +84,13 @@ struct _ClutterGeometry
   /* FIXME: 
    * It is likely gonna save a load of pain if we make 
    * x,y unsigned...
-  */
-  gint x;
-  gint y;
-  guint width;
-  guint height;
+   *
+   * No, no, no, usigned is evil; we should make width and height signed.
+   */
+  gint   x;
+  gint   y;
+  guint  width;
+  guint  height;
 };
 
 GType clutter_geometry_get_type (void) G_GNUC_CONST;
@@ -101,8 +101,7 @@ typedef enum
   CLUTTER_ACTOR_REALIZED = 1 << 2
 } ClutterActorFlags;
 
-struct _ClutterActorBox { gint x1, y1, x2, y2; };
-struct _ClutterActorBoxReal { ClutterReal x1, y1, x2, y2; };
+struct _ClutterActorBox { gint32 x1, y1, x2, y2; };
 
 GType clutter_actor_box_get_type (void) G_GNUC_CONST;
 
@@ -130,9 +129,9 @@ struct _ClutterActorClass
   void (* unrealize)       (ClutterActor        *actor);
   void (* paint)           (ClutterActor        *actor);
   void (* request_coords)  (ClutterActor        *actor,
-			    ClutterActorBoxReal *box);
+			    ClutterActorBox     *box);
   void (* allocate_coords) (ClutterActor        *actor,
-			    ClutterActorBoxReal *box);
+			    ClutterActorBox     *box);
   void (* set_depth)       (ClutterActor        *actor,
 		            gint                 depth);
   gint (* get_depth)       (ClutterActor        *actor);
@@ -185,6 +184,9 @@ void                  clutter_actor_set_position     (ClutterActor          *sel
 void                  clutter_actor_get_abs_position (ClutterActor          *self,
 						      gint                  *x,
 						      gint                  *y);
+void                  clutter_actor_get_abs_position_units (ClutterActor    *self,
+							    gint32          *x,
+							    gint32          *y);
 guint                 clutter_actor_get_width        (ClutterActor          *self);
 guint                 clutter_actor_get_height       (ClutterActor          *self);
 
@@ -259,19 +261,15 @@ void                  clutter_actor_scalex           (ClutterActor          *sel
 void                  clutter_actor_get_abs_size     (ClutterActor          *self,
                                                       guint                 *width,
                                                       guint                 *height);
+void                  clutter_actor_get_abs_size_units (ClutterActor        *self,
+							gint32              *width,
+							gint32              *height);
 void                  clutter_actor_get_size         (ClutterActor          *self,
                                                       guint                 *width,
                                                       guint                 *height);
 void                  clutter_actor_move_by          (ClutterActor          *self,
                                                       gint                   dx,
                                                       gint                   dy);
-
-/*<private*/
-void                  _clutter_actor_request_coords_real (ClutterActor        *self,
-							  ClutterActorBoxReal *rbox);
-
-void                  _clutter_actor_allocate_coords_real (ClutterActor        *self,
-							   ClutterActorBoxReal *rbox);
 
 G_END_DECLS
 

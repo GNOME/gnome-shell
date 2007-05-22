@@ -11,6 +11,7 @@
 #include "../clutter-enum-types.h"
 #include "../clutter-private.h"
 #include "../clutter-debug.h"
+#include "../clutter-units.h"
 
 #include "cogl.h"
 
@@ -130,8 +131,8 @@ clutter_stage_sdl_allocate_coords (ClutterActor    *self,
   ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (self);
 
   box->x1 = box->y1 = 0;
-  box->x2 = box->x1 + stage_sdl->win_width;
-  box->y2 = box->y1 + stage_sdl->win_height;
+  box->x2 = box->x1 + CLUTTER_UNITS_FROM_INT (stage_sdl->win_width);
+  box->y2 = box->y1 + CLUTTER_UNITS_FROM_INT (stage_sdl->win_height);
 }
 
 static void
@@ -142,8 +143,8 @@ clutter_stage_sdl_request_coords (ClutterActor    *self,
   gint new_width, new_height;
 
   /* FIXME: some how have X configure_notfiys call this ? */
-  new_width  = ABS (box->x2 - box->x1);
-  new_height = ABS (box->y2 - box->y1); 
+  new_width  = ABS (CLUTTER_UNITS_TO_INT (box->x2 - box->x1));
+  new_height = ABS (CLUTTER_UNITS_TO_INT (box->y2 - box->y1));
 
   if (new_width != stage_sdl->win_width ||
       new_height != stage_sdl->win_height)

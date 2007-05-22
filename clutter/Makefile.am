@@ -60,6 +60,7 @@ source_h =					\
 	$(srcdir)/clutter-texture.h 		\
 	$(srcdir)/clutter-timeline.h 		\
 	$(srcdir)/clutter-effect.h 		\
+	$(srcdir)/clutter-units.h 		\
 	$(srcdir)/clutter-util.h 		\
 	$(srcdir)/clutter-version.h		\
 	$(NULL)
@@ -159,19 +160,19 @@ source_h_priv = \
 	$(NULL)
 
 
-libclutter@CLUTTER_REAL@_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LIBADD =   \
+libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LIBADD =   \
   $(CLUTTER_LIBS) pango/libpangoclutter.la                       \
   @CLUTTER_FLAVOUR@/libclutter-@CLUTTER_FLAVOUR@.la              \
   cogl/@CLUTTER_COGL@/libclutter-cogl.la	  
 
-libclutter@CLUTTER_REAL@_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_SOURCES =  \
+libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_SOURCES =  \
   $(source_c) $(source_h) $(source_h_priv)                      
 
-libclutter@CLUTTER_REAL@_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LDFLAGS = $(LDADD)
+libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LDFLAGS = $(LDADD)
 
 lib_LTLIBRARIES = $(clutterbackendlib)
 
-EXTRA_LTLIBRARIES = libclutter@CLUTTER_REAL@-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la
+EXTRA_LTLIBRARIES = libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_API_VERSION@.la
 
 clutterdir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter
 

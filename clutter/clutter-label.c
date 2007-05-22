@@ -37,6 +37,7 @@
 #include "clutter-enum-types.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
+#include "clutter-units.h"
 
 #include "pangoclutter.h"
 
@@ -264,7 +265,7 @@ clutter_label_paint (ClutterActor *self)
 
 static void
 clutter_label_allocate_coords (ClutterActor        *self,
-			       ClutterActorBoxReal *box)
+			       ClutterActorBox     *box)
 {
   ClutterLabel         *label = CLUTTER_LABEL(self);
   ClutterLabelPrivate  *priv;  
@@ -272,19 +273,19 @@ clutter_label_allocate_coords (ClutterActor        *self,
 
   priv = label->priv;
 
-  clutter_label_ensure_layout (label, CLUTTER_REAL_TO_INT (box->x2 - box->x1));
+  clutter_label_ensure_layout (label, CLUTTER_UNITS_TO_INT (box->x2 - box->x1));
 
   pango_layout_get_extents (priv->layout, NULL, &logical_rect);
 
-  box->x2 = box->x1 + PANGO_PIXELS (logical_rect.width);
-  box->y2 = box->y1 + PANGO_PIXELS (logical_rect.height);
+  box->x2 = box->x1 + CLUTTER_UNITS_FROM_PANGO_UNIT (logical_rect.width);
+  box->y2 = box->y1 + CLUTTER_UNITS_FROM_PANGO_UNIT (logical_rect.height);
 
   return;
 }
 
 static void
 clutter_label_request_coords (ClutterActor        *self,
-			      ClutterActorBoxReal *box)
+			      ClutterActorBox     *box)
 {
   /* do we need to do anything ? */
   clutter_label_clear_layout (CLUTTER_LABEL(self));

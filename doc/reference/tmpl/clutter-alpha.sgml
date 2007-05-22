@@ -219,6 +219,57 @@ Symbolic name for passing clutter_sine_func().
 @Returns: 
 
 
+<!-- ##### MACRO CLUTTER_ALPHA_SINE_INC ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_sine_inc_func ##### -->
+<para>
+
+</para>
+
+@alpha: 
+@dummy: 
+@Returns: 
+
+
+<!-- ##### MACRO CLUTTER_ALPHA_SINE_DEC ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_sine_dec_func ##### -->
+<para>
+
+</para>
+
+@alpha: 
+@dummy: 
+@Returns: 
+
+
+<!-- ##### MACRO CLUTTER_ALPHA_SINE_HALF ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_sine_half_func ##### -->
+<para>
+
+</para>
+
+@alpha: 
+@dummy: 
+@Returns: 
+
+
 <!-- ##### MACRO CLUTTER_ALPHA_SQUARE ##### -->
 <para>
 
@@ -250,6 +301,40 @@ Symbolic name for passing clutter_sine_func().
 
 @alpha: 
 @data: 
+@Returns: 
+
+
+<!-- ##### MACRO CLUTTER_ALPHA_EXP_INC ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_exp_inc_func ##### -->
+<para>
+
+</para>
+
+@alpha: 
+@dummy: 
+@Returns: 
+
+
+<!-- ##### MACRO CLUTTER_ALPHA_EXP_DEC ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### FUNCTION clutter_exp_dec_func ##### -->
+<para>
+
+</para>
+
+@alpha: 
+@dummy: 
 @Returns: 
 
 

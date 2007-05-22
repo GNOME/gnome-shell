@@ -1,3 +1,15 @@
+2007-05-22  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter-sections.txt:
+	* clutter-docs.sgml: 
+	* tmpl/clutter-units.sgml:
+	Added clutter-units.
+
+	* tmpl/clutter-alpha.sgml:
+	* tmpl/clutter-actor.sgml:
+	* tmpl/clutter-media.sgml:
+	Updated templates.
+	
 2007-05-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* Makefile.am: Ignore the sdl backend.

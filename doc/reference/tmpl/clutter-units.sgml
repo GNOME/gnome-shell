@@ -1,0 +1,107 @@
+<!-- ##### SECTION Title ##### -->
+Clutter Units
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### MACRO CLUTTER_UNITS_FROM_DEVICE ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### MACRO CLUTTER_UNITS_FROM_FIXED ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### MACRO CLUTTER_UNITS_FROM_FLOAT ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### MACRO CLUTTER_UNITS_FROM_INT ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### MACRO CLUTTER_UNITS_FROM_PANGO_UNIT ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### MACRO CLUTTER_UNITS_TMP_FROM_DEVICE ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### MACRO CLUTTER_UNITS_TMP_TO_DEVICE ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### MACRO CLUTTER_UNITS_TO_DEVICE ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### MACRO CLUTTER_UNITS_TO_FIXED ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### MACRO CLUTTER_UNITS_TO_FLOAT ##### -->
+<para>
+
+</para>
+
+@x: 
+
+
+<!-- ##### MACRO CLUTTER_UNITS_TO_INT ##### -->
+<para>
+
+</para>
+
+@x: 
+
+

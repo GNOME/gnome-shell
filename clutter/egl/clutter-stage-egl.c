@@ -11,6 +11,7 @@
 #include "../clutter-enum-types.h"
 #include "../clutter-private.h"
 #include "../clutter-debug.h"
+#include "../clutter-units.h"
 
 #ifdef HAVE_XFIXES
 #include <X11/extensions/Xfixes.h>
@@ -239,25 +240,25 @@ clutter_stage_egl_paint (ClutterActor *self)
 
 static void
 clutter_stage_egl_allocate_coords (ClutterActor        *self,
-                                   ClutterActorBoxReal *box)
+                                   ClutterActorBox     *box)
 {
   ClutterStageEgl *stage_egl = CLUTTER_STAGE_EGL (self);
 
   box->x1 = box->y1 = 0;
-  box->x2 = CLUTTER_REAL_ADD_INT (box->x1, stage_egl->xwin_width);
-  box->y2 = CLUTTER_REAL_ADD_INT (box->y1, stage_egl->xwin_height);
+  box->x2 = box->x1 + CLUTTER_UNITS_FROM_INT (stage_egl->xwin_width);
+  box->y2 = box->y1 + CLUTTER_UNITS_FROM_INT (stage_egl->xwin_height);
 }
 
 static void
 clutter_stage_egl_request_coords (ClutterActor        *self,
-				  ClutterActorBoxReal *box)
+				  ClutterActorBox     *box)
 {
   ClutterStageEgl *stage_egl = CLUTTER_STAGE_EGL (self);
   gint new_width, new_height;
 
   /* FIXME: some how have X configure_notfiys call this ? */
-  new_width  = ABS (CLUTTER_REAL_TO_INT (box->x2 - box->x1));
-  new_height = ABS (CLUTTER_REAL_TO_INT (box->y2 - box->y1)); 
+  new_width  = ABS (CLUTTER_UNITS_TO_INT (box->x2 - box->x1));
+  new_height = ABS (CLUTTER_UNITS_TO_INT (box->y2 - box->y1)); 
 
   if (new_width != stage_egl->xwin_width ||
       new_height != stage_egl->xwin_height)
@@ -277,8 +278,8 @@ clutter_stage_egl_request_coords (ClutterActor        *self,
   if (stage_egl->xwin != None) /* Do we want to bother ? */
     XMoveWindow (stage_egl->xdpy,
 		 stage_egl->xwin,
-		 CLUTTER_REAL_TO_INT (box->x1),
-		 CLUTTER_REAL_TO_INT (box->y1));
+		 CLUTTER_UNITS_TO_INT (box->x1),
+		 CLUTTER_UNITS_TO_INT (box->y1));
 }
 
 static void

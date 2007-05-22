@@ -61,7 +61,8 @@ Evaluates to %TRUE if an actor is visible.
 
 <!-- ##### STRUCT ClutterActorBox ##### -->
 <para>
-Coordinates (top-left to bottom-right) of a box surrounding an actor.
+Coordinates (top-left to bottom-right) of a box surrounding an actor; in
+cluttter units.
 </para>
 
 @x1: X coordinate of the top left corner of the box

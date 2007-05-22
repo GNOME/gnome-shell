@@ -93,8 +93,6 @@ if $PKG_CONFIG --exists xfixes ; then
 fi
 
 CLUTTER_NO_FPU="0"
-CLUTTER_REAL=""
-
 AC_ARG_WITH(fpu,
             AS_HELP_STRING([--without-fpu],
                            [Assume target hardware has no fpu]),
@@ -103,11 +101,9 @@ AC_ARG_WITH(fpu,
 
 if test "x$with_fpu" != "xyes" ; then
    CLUTTER_NO_FPU="1"
-   CLUTTER_REAL="-fx"
 fi
 
 AC_SUBST(CLUTTER_NO_FPU)
-AC_SUBST(CLUTTER_REAL)
 
 clutterbackend=glx
 AC_ARG_WITH([flavour],

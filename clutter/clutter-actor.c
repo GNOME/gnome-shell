@@ -39,6 +39,7 @@
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
+#include "clutter-units.h"
 #include "cogl.h"
 
 #include <GL/gl.h>
@@ -55,7 +56,7 @@ static guint32 __id = 0;
 
 struct _ClutterActorPrivate
 {
-  ClutterActorBoxReal coords;
+  ClutterActorBox coords;
 
   ClutterGeometry clip;
   guint           has_clip : 1;
@@ -308,8 +309,8 @@ clutter_actor_paint (ClutterActor *self)
 
   if (clutter_actor_get_parent (self) != NULL)
     {
-      cogl_translate (CLUTTER_REAL_TO_FLOAT (priv->coords.x1), 
-		      CLUTTER_REAL_TO_FLOAT (priv->coords.y1), 
+      cogl_translate (CLUTTER_FIXED_TO_FLOAT (priv->coords.x1), 
+		      CLUTTER_FIXED_TO_FLOAT (priv->coords.y1), 
 		      0);
     }
 
@@ -383,9 +384,19 @@ clutter_actor_paint (ClutterActor *self)
   cogl_pop_matrix();
 }
 
+/**
+ * clutter_actor_request_coords:
+ * @self: A #ClutterActor
+ * @box: A #ClutterActorBox with requested new co-ordinates.
+ *
+ * Requests new co-ordinates for the #ClutterActor ralative to any parent.
+ *
+ * This function should not be called directly by applications instead 
+ * the various position/geometry methods should be used.
+ **/
 void
-_clutter_actor_request_coords_real (ClutterActor        *self,
-				    ClutterActorBoxReal *box)
+clutter_actor_request_coords (ClutterActor    *self,
+			      ClutterActorBox *box)
 {
   ClutterActorClass *klass;
   gboolean x_change, y_change, width_change, height_change;
@@ -395,12 +406,12 @@ _clutter_actor_request_coords_real (ClutterActor        *self,
   if (klass->request_coords)
     klass->request_coords (self, box);
   
-  x_change     = CLUTTER_REAL_NE (self->priv->coords.x1,  box->x1);
-  y_change     = CLUTTER_REAL_NE (self->priv->coords.y1,  box->y1);
-  width_change = CLUTTER_REAL_NE ((self->priv->coords.x2 - self->priv->coords.x1),
-			 (box->x2 - box->x1));
-  height_change = CLUTTER_REAL_NE ((self->priv->coords.y2 - self->priv->coords.y1),
-			  (box->y2 - box->y1));
+  x_change     = (self->priv->coords.x1 != box->x1);
+  y_change     = (self->priv->coords.y1 != box->y1);
+  width_change = ((self->priv->coords.x2 - self->priv->coords.x1) != 
+      (box->x2 - box->x1));
+  height_change = ((self->priv->coords.y2 - self->priv->coords.y1) !=
+		   (box->y2 - box->y1));
 
   if (x_change || y_change || width_change || height_change)
     {
@@ -433,59 +444,6 @@ _clutter_actor_request_coords_real (ClutterActor        *self,
 }
 
 /**
- * clutter_actor_request_coords:
- * @self: A #ClutterActor
- * @box: A #ClutterActorBox with requested new co-ordinates.
- *
- * Requests new co-ordinates for the #ClutterActor ralative to any parent.
- *
- * This function should not be called directly by applications instead 
- * the various position/geometry methods should be used.
- **/
-void
-clutter_actor_request_coords (ClutterActor    *self,
-			      ClutterActorBox *box)
-{
-  ClutterActorBoxReal rbox;
-
-  rbox.x1 = CLUTTER_REAL_FROM_INT (box->x1);
-  rbox.y1 = CLUTTER_REAL_FROM_INT (box->y1);
-  rbox.x2 = CLUTTER_REAL_FROM_INT (box->x2);
-  rbox.y2 = CLUTTER_REAL_FROM_INT (box->y2);
-
-  _clutter_actor_request_coords_real (self, &rbox);
-}
-
-void
-_clutter_actor_allocate_coords_real (ClutterActor        *self,
-			             ClutterActorBoxReal *rbox)
-{
-  ClutterActorClass *klass;
-
-  klass = CLUTTER_ACTOR_GET_CLASS (self);
-
-  rbox->x1 = self->priv->coords.x1;
-  rbox->y1 = self->priv->coords.y1;
-  rbox->x2 = self->priv->coords.x2;
-  rbox->y2 = self->priv->coords.y2;
-
-  if (klass->allocate_coords)
-    {
-      /* FIXME: This is kind of a cludge - we pass out *private* 
-       *        co-ords down to any subclasses so they can modify
-       *        we then resync any changes. Needed for group class.
-       *        Need to figure out nicer way.
-      */
-      klass->allocate_coords(self, rbox);
-
-      self->priv->coords.x1 = rbox->x1;
-      self->priv->coords.y1 = rbox->y1; 
-      self->priv->coords.x2 = rbox->x2; 
-      self->priv->coords.y2 = rbox->y2; 
-    }
-}
-
-/**
  * clutter_actor_allocate_coords:
  * @self: A #ClutterActor
  * @box: A location to store the actors #ClutterActorBox co-ordinates
@@ -500,14 +458,29 @@ void
 clutter_actor_allocate_coords (ClutterActor    *self,
 			       ClutterActorBox *box)
 {
-  ClutterActorBoxReal rbox;
-  
-  _clutter_actor_allocate_coords_real (self, &rbox);
+  ClutterActorClass *klass;
 
-  box->x1 = CLUTTER_REAL_TO_INT (rbox.x1);
-  box->y1 = CLUTTER_REAL_TO_INT (rbox.y1);
-  box->x2 = CLUTTER_REAL_TO_INT (rbox.x2);
-  box->y2 = CLUTTER_REAL_TO_INT (rbox.y2);
+  klass = CLUTTER_ACTOR_GET_CLASS (self);
+
+  box->x1 = self->priv->coords.x1;
+  box->y1 = self->priv->coords.y1;
+  box->x2 = self->priv->coords.x2;
+  box->y2 = self->priv->coords.y2;
+
+  if (klass->allocate_coords)
+    {
+      /* FIXME: This is kind of a cludge - we pass out *private* 
+       *        co-ords down to any subclasses so they can modify
+       *        we then resync any changes. Needed for group class.
+       *        Need to figure out nicer way.
+      */
+      klass->allocate_coords(self, box);
+
+      self->priv->coords.x1 = box->x1;
+      self->priv->coords.y1 = box->y1; 
+      self->priv->coords.x2 = box->x2; 
+      self->priv->coords.y2 = box->y2; 
+    }
 }
 
 static void 
@@ -926,10 +899,10 @@ clutter_actor_set_geometry (ClutterActor          *self,
 {
   ClutterActorBox box;
 
-  box.x1 = geometry->x;
-  box.y1 = geometry->y;
-  box.x2 = geometry->x + geometry->width;
-  box.y2 = geometry->y + geometry->height;
+  box.x1 = CLUTTER_UNITS_FROM_INT (geometry->x);
+  box.y1 = CLUTTER_UNITS_FROM_INT (geometry->y);
+  box.x2 = CLUTTER_UNITS_FROM_INT (geometry->x + geometry->width);
+  box.y2 = CLUTTER_UNITS_FROM_INT (geometry->y + geometry->height);
   
   clutter_actor_request_coords (self, &box);
 }
@@ -951,10 +924,10 @@ clutter_actor_get_geometry (ClutterActor    *self,
   
   clutter_actor_allocate_coords (self, &box);
 
-  geometry->x      = box.x1;
-  geometry->y      = box.y1;
-  geometry->width  = box.x2 - box.x1;
-  geometry->height = box.y2 - box.y1;
+  geometry->x      = CLUTTER_UNITS_TO_INT (box.x1);
+  geometry->y      = CLUTTER_UNITS_TO_INT (box.y1);
+  geometry->width  = CLUTTER_UNITS_TO_INT (box.x2 - box.x1);
+  geometry->height = CLUTTER_UNITS_TO_INT (box.y2 - box.y1);
 }
 
 /**
@@ -975,43 +948,23 @@ clutter_actor_get_coords (ClutterActor *self,
 			  gint         *x2,
 			  gint         *y2)
 {
-  ClutterActorBoxReal box;
+  ClutterActorBox box;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   
-  _clutter_actor_allocate_coords_real (self, &box);
+  clutter_actor_allocate_coords (self, &box);
 
   if (x1)
-    *x1 = CLUTTER_REAL_TO_INT (box.x1);
+    *x1 = CLUTTER_UNITS_TO_INT (box.x1);
   
   if (y1)
-    *y1 = CLUTTER_REAL_TO_INT (box.y1);
+    *y1 = CLUTTER_UNITS_TO_INT (box.y1);
   
   if (x2)
-    *x2 = CLUTTER_REAL_TO_INT (box.x2);
+    *x2 = CLUTTER_UNITS_TO_INT (box.x2);
   
   if (y2)
-    *y2 = CLUTTER_REAL_TO_INT (box.y2);
-}
-
-static void
-_clutter_actor_set_position_real (ClutterActor *self,
-				  ClutterReal   x,
-				  ClutterReal   y)
-{
-  ClutterActorBoxReal box;
-
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-
-  _clutter_actor_allocate_coords_real (self, &box);
-
-  box.x2 += (x - box.x1);
-  box.y2 += (y - box.y1);
-
-  box.x1 = x;
-  box.y1 = y;
-
-  _clutter_actor_request_coords_real (self, &box);
+    *y2 = CLUTTER_UNITS_TO_INT (box.y2);
 }
 
 /**
@@ -1028,10 +981,19 @@ clutter_actor_set_position (ClutterActor *self,
 			    gint          x,
 			    gint          y)
 {
-  ClutterReal xr = CLUTTER_REAL_FROM_INT (x);
-  ClutterReal yr = CLUTTER_REAL_FROM_INT (y);
-  
-  _clutter_actor_set_position_real (self, xr, yr);
+  ClutterActorBox box;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_allocate_coords (self, &box);
+
+  box.x2 += (CLUTTER_UNITS_FROM_INT (x) - box.x1);
+  box.y2 += (CLUTTER_UNITS_FROM_INT (y) - box.y1);
+
+  box.x1 = CLUTTER_UNITS_FROM_INT (x);
+  box.y1 = CLUTTER_UNITS_FROM_INT (y);
+
+  clutter_actor_request_coords (self, &box);
 }
 
 /**
@@ -1050,20 +1012,20 @@ clutter_actor_move_by (ClutterActor *self,
 		       gint          dx,
 		       gint          dy)
 {
-  ClutterActorBoxReal box;
-  ClutterReal dxr = CLUTTER_REAL_FROM_INT (dx);
-  ClutterReal dyr = CLUTTER_REAL_FROM_INT (dy);
+  ClutterActorBox box;
+  gint32 dxu = CLUTTER_UNITS_FROM_INT (dx);
+  gint32 dyu = CLUTTER_UNITS_FROM_INT (dy);
   
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  _clutter_actor_allocate_coords_real (self, &box);
+  clutter_actor_allocate_coords (self, &box);
 
-  box.x2 += dxr;
-  box.y2 += dyr;
-  box.x1 += dxr;
-  box.y1 += dyr;
+  box.x2 += dxu;
+  box.y2 += dyu;
+  box.x1 += dxu;
+  box.y1 += dyu;
 
-  _clutter_actor_request_coords_real (self, &box);
+  clutter_actor_request_coords (self, &box);
 }
 
 /**
@@ -1080,16 +1042,16 @@ clutter_actor_set_size (ClutterActor *self,
 			gint          width,
 			gint          height)
 {
-  ClutterActorBoxReal box;
+  ClutterActorBox box;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  _clutter_actor_allocate_coords_real (self, &box);
+  clutter_actor_allocate_coords (self, &box);
 
-  box.x2 = CLUTTER_REAL_ADD_INT (box.x1, width);
-  box.y2 = CLUTTER_REAL_ADD_INT (box.y1, height);
+  box.x2 = box.x1 + CLUTTER_UNITS_FROM_INT (width);
+  box.y2 = box.y1 + CLUTTER_UNITS_FROM_INT (height);
 
-  _clutter_actor_request_coords_real (self, &box);
+  clutter_actor_request_coords (self, &box);
 }
 
 /**
@@ -1116,52 +1078,6 @@ clutter_actor_get_size (ClutterActor *self,
     *height = clutter_actor_get_height (self);
 }
 
-void
-_clutter_actor_get_abs_position_real (ClutterActor *self,
-				      ClutterReal  *x,
-				      ClutterReal  *y)
-{
-  ClutterActorBoxReal   box;
-  ClutterActor         *parent;
-  ClutterReal           px = 0, py = 0;
-  
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-
-  _clutter_actor_allocate_coords_real (self, &box);
-
-  parent = self->priv->parent_actor;
-
-  /* FIXME: must be nicer way to get 0,0 for stage ? */
-  if (parent)
-    {
-      ClutterFixed parent_scale_x, parent_scale_y;
-      ClutterReal sx, sy;
-
-      clutter_actor_get_scalex (parent,
-                                &parent_scale_x,
-                                &parent_scale_y);
-
-      sx = CLUTTER_REAL_FROM_FIXED (parent_scale_x);
-      sy = CLUTTER_REAL_FROM_FIXED (parent_scale_y);
-      
-      if (parent_scale_x != CFX_ONE ||
-          parent_scale_y != CFX_ONE)
-	{
-	  box.x1 = CLUTTER_REAL_MUL (box.x1, sx); 
-	  box.y1 = CLUTTER_REAL_MUL (box.y1, sy); 
-	}
-
-      if (!CLUTTER_IS_STAGE (parent))
-	_clutter_actor_get_abs_position_real (parent, &px, &py);
-    }
-
-  if (x)
-    *x = px + box.x1;
-  
-  if (y)
-    *y = py + box.y1;
-}
-
 /**
  * clutter_actor_get_abs_position
  * @self: A #ClutterActor
@@ -1176,14 +1092,64 @@ clutter_actor_get_abs_position (ClutterActor *self,
 				gint           *x,
 				gint           *y)
 {
-    ClutterReal xr, yr;
-    _clutter_actor_get_abs_position_real (self, &xr, &yr);
+  gint32 xu, yu;
+  clutter_actor_get_abs_position_units (self, &xu, &yu);
 
-    if (x)
-	*x = CLUTTER_REAL_TO_INT (xr);
+  *x = CLUTTER_UNITS_TO_INT (xu);
+  *y = CLUTTER_UNITS_TO_INT (yu);
+}
 
-    if (y)
-	*y = CLUTTER_REAL_TO_INT (yr);
+/**
+ * clutter_actor_get_abs_position_units
+ * @self: A #ClutterActor
+ * @x: Location to store x position if non NULL.
+ * @y: Location to store y position if non NULL.
+ *
+ * Gets the absolute position of an actor in clutter units relative
+ * to the stage.
+ *
+ * Since: 0.4
+ */
+void
+clutter_actor_get_abs_position_units (ClutterActor *self,
+				      gint32       *x,
+				      gint32       *y)
+{
+  ClutterActorBox   box;
+  ClutterActor     *parent;
+  gint32            px = 0, py = 0;
+  
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_allocate_coords (self, &box);
+
+  parent = self->priv->parent_actor;
+
+  /* FIXME: must be nicer way to get 0,0 for stage ? */
+  if (parent)
+    {
+      ClutterFixed parent_scale_x, parent_scale_y;
+
+      clutter_actor_get_scalex (parent,
+                                &parent_scale_x,
+                                &parent_scale_y);
+
+      if (parent_scale_x != CFX_ONE ||
+          parent_scale_y != CFX_ONE)
+	{
+	  box.x1 = CFX_MUL (box.x1, parent_scale_x); 
+	  box.y1 = CFX_MUL (box.y1, parent_scale_y); 
+	}
+
+      if (!CLUTTER_IS_STAGE (parent))
+	clutter_actor_get_abs_position_units (parent, &px, &py);
+    }
+
+  if (x)
+    *x = px + box.x1;
+  
+  if (y)
+    *y = py + box.y1;
 }
 
 /**
@@ -1199,6 +1165,29 @@ void
 clutter_actor_get_abs_size (ClutterActor *self,
 			    guint        *width,
 			    guint        *height)
+{
+  gint32 wu, hu;
+  clutter_actor_get_abs_size_units (self, &wu, &hu);
+  
+  *width  = CLUTTER_UNITS_TO_INT (wu);
+  *height = CLUTTER_UNITS_TO_INT (hu);
+}
+
+/**
+ * clutter_actor_get_abs_size_units:
+ * @self: A #ClutterActor
+ * @width: Location to store width if non NULL.
+ * @height: Location to store height if non NULL.
+ *
+ * Gets the absolute size of an actor in clutter units taking into account
+ * an scaling factors.
+ *
+ * Since: 0.4
+ */
+void
+clutter_actor_get_abs_size_units (ClutterActor *self,
+				  gint32       *width,
+				  gint32       *height)
 {
   ClutterActorBox  box;
   ClutterActor    *parent;
@@ -1222,56 +1211,16 @@ clutter_actor_get_abs_size (ClutterActor *self,
 
 	  if (width)
 	    {
-	      fx = CLUTTER_FIXED_MUL (CLUTTER_INT_TO_FIXED (*width),
-				     parent->priv->scale_x); 
-	      *width = CLUTTER_FIXED_INT (fx);
+	      fx = CLUTTER_FIXED_MUL (CLUTTER_UNITS_TO_FIXED (*width),
+				      parent->priv->scale_x); 
+	      *width = CLUTTER_UNITS_FROM_FIXED (fx);
 	    }
 
 	  if (height)
 	    {
-	      fy = CLUTTER_FIXED_MUL (CLUTTER_INT_TO_FIXED (*height),
-				     parent->priv->scale_x); 
-	      *height = CLUTTER_FIXED_INT (fy);
-	    }
-	}
-    }
-  while ((parent = clutter_actor_get_parent (parent)) != NULL);
-}
-
-static void
-_clutter_actor_get_abs_size_real (ClutterActor *self,
-				  ClutterReal  *width,
-				  ClutterReal  *height)
-{
-  ClutterActorBoxReal  box;
-  ClutterActor        *parent;
-
-  _clutter_actor_allocate_coords_real (self, &box);
-
-  if (width)
-    *width  = box.x2 - box.x1;
-
-  if (height)
-    *height = box.y2 - box.y1;
-
-  parent = self;
-
-  do
-    {
-      if (parent->priv->scale_x != CFX_ONE ||
-          parent->priv->scale_y != CFX_ONE)
-	{
-	  
-	  if (width)
-	    {
-	      ClutterReal scale = CLUTTER_REAL_FROM_FIXED (parent->priv->scale_x);
-	      *width = CLUTTER_REAL_MUL (*width, scale); 
-	    }
-
-	  if (height)
-	    {
-	      ClutterReal scale = CLUTTER_REAL_FROM_FIXED (parent->priv->scale_y);
-	      *height = CLUTTER_REAL_MUL (*height, scale); 
+	      fy = CLUTTER_FIXED_MUL (CLUTTER_UNITS_TO_FIXED (*height),
+				      parent->priv->scale_x); 
+	      *height = CLUTTER_UNITS_FROM_FIXED (fy);
 	    }
 	}
     }
@@ -1296,7 +1245,7 @@ clutter_actor_get_width (ClutterActor *self)
   
   clutter_actor_allocate_coords (self, &box);
 
-  return box.x2 - box.x1;
+  return CLUTTER_UNITS_TO_INT (box.x2 - box.x1);
 }
 
 /**
@@ -1316,7 +1265,7 @@ clutter_actor_get_height (ClutterActor *self)
   
   clutter_actor_allocate_coords (self, &box);
 
-  return box.y2 - box.y1;
+  return CLUTTER_UNITS_TO_INT (box.y2 - box.y1);
 }
 
 /**
@@ -1371,19 +1320,7 @@ clutter_actor_get_x (ClutterActor *self)
 
   clutter_actor_allocate_coords (self, &box);
 
-  return box.x1;
-}
-
-static ClutterReal
-_clutter_actor_get_x_real (ClutterActor *self)
-{
-  ClutterActorBoxReal box;
-  
-  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
-
-  _clutter_actor_allocate_coords_real (self, &box);
-
-  return box.x1;
+  return CLUTTER_UNITS_TO_INT (box.x1);
 }
 
 /**
@@ -1403,19 +1340,7 @@ clutter_actor_get_y (ClutterActor *self)
 
   clutter_actor_allocate_coords (self, &box);
 
-  return box.y1;
-}
-
-static ClutterReal
-_clutter_actor_get_y_real (ClutterActor *self)
-{
-  ClutterActorBoxReal box;
-
-  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
-
-  _clutter_actor_allocate_coords_real (self, &box);
-
-  return box.y1;
+  return CLUTTER_UNITS_TO_INT (box.y1);
 }
 
 /**
@@ -1524,21 +1449,23 @@ clutter_actor_scalex (ClutterActor     *self,
 		      ClutterFixed      scale_y,
 		      ClutterGravity    gravity)
 {
-  ClutterReal sw, sh, w, h;
-  ClutterReal x, y;
+  ClutterActorBox box;
+  gint32 sw, sh, w, h;
+  gint32 x, y;
 
-  _clutter_actor_get_abs_size_real (self, &w, &h);
+  clutter_actor_get_abs_size_units (self, &w, &h);
   clutter_actor_set_scalex (self, scale_x, scale_y);
 
   if (gravity == CLUTTER_GRAVITY_NONE ||
       gravity == CLUTTER_GRAVITY_NORTH_WEST)
     return;
 
-  _clutter_actor_get_abs_size_real (self, &sw, &sh);
+  clutter_actor_get_abs_size_units (self, &sw, &sh);
 
-  x = _clutter_actor_get_x_real (self);
-  y = _clutter_actor_get_y_real (self);
-
+  clutter_actor_allocate_coords (self, &box);
+  x = box.x1;
+  y = box.y1;
+  
   switch (gravity)
     {
     case CLUTTER_GRAVITY_NORTH:
@@ -1572,7 +1499,12 @@ clutter_actor_scalex (ClutterActor     *self,
       break;
     }
 
-  _clutter_actor_set_position_real (self, x, y);
+  box.x2 += (x - box.x1);
+  box.y2 += (y - box.y1);
+  box.x1 = x;
+  box.y1 = y;
+
+  clutter_actor_request_coords (self, &box);
 }
 
 /**
@@ -1584,7 +1516,7 @@ clutter_actor_scalex (ClutterActor     *self,
  */
 void
 clutter_actor_set_opacity (ClutterActor *self,
-			     guint8          opacity)
+			   guint8        opacity)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   
@@ -2185,28 +2117,3 @@ clutter_actor_box_get_type (void)
   return our_type;
 }
 
-/*
- * ClutterActorBoxReal
- */
-static ClutterActorBoxReal *
-clutter_actor_box_real_copy (const ClutterActorBoxReal *box)
-{
-  ClutterActorBoxReal *result = g_new (ClutterActorBoxReal, 1);
-
-  *result = *box;
-
-  return result;
-}
-
-GType
-clutter_actor_box_real_get_type (void)
-{
-  static GType our_type = 0;
-
-  if (our_type == 0)
-    our_type = g_boxed_type_register_static (
-              g_intern_static_string ("ClutterActorBoxReal"),
-	      (GBoxedCopyFunc) clutter_actor_box_real_copy,
-	      (GBoxedFreeFunc) g_free);
-  return our_type;
-}
