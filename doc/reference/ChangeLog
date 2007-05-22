@@ -8,6 +8,7 @@
 	* tmpl/clutter-alpha.sgml:
 	* tmpl/clutter-actor.sgml:
 	* tmpl/clutter-media.sgml:
+	* tmpl/clutter-behaviour-ellipse.sgml:
 	Updated templates.
 	
 2007-05-17  Emmanuele Bassi  <ebassi@openedhand.com>
