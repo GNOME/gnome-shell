@@ -1,16 +1,8 @@
-# French translation of metacity.
+# Occitan translation of metacity.
 # Copyright (C) 2002-2006 Free Software Foundation, Inc.
 # This file is distributed under the same license as the metacity package.
 #
-# Christophe Fergeau <teuf@users.sourceforge.net>, 2002.
-# Christophe Merlet (RedFox) <redfox@redfoxcenter.org>, 2002-2006.
-# Sun G11n <gnome_int_l10n@ireland.sun.com>, 2002.
-# Guy Clotilde <guy.clotilde@wanadoo.fr>, 2002.
-# Baptiste Mille-Mathias <baptiste@mille-mathias.info>, 2004.
-# Jonathan Ernst <jonathan@ernstfamily.ch>, 2006.
-# Cyprien Le Pannérer <cyplp@free.fr>, 2006.
-# Robert-André Mauchin <zebob.m@gmail.com>, 2007. 
-# Stéphane Raimbault <stephane.raimbault@gmail.com>, 2007.
+# Yannig MARCHEGAY (yannig@marchegay.org) - 2006-2007
 #
 msgid ""
 msgstr ""
@@ -18,11 +10,12 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-01-31 22:10+0100\n"
 "PO-Revision-Date: 2007-05-16 19:03+0200\n"
-"Last-Translator: Robert-André Mauchin <zebob.m@gmail.com>\n"
-"Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
+"Last-Translator: Yannig MARCHEGAY <yannig@marchegay.org>\n"
+"Language-Team: Occitan (post 1500) <ubuntu-l10n-oci@lists.ubuntu.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);"
 
 #: ../src/tools/metacity-message.c:150
 #, c-format
@@ -37,7 +30,7 @@ msgstr ""
 #: ../src/theme-parser.c:484
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
-msgstr "Impossible d'analisar '%s' coma entièr"
+msgstr "Impossible d'analizar '%s' coma entièr"
 
 #: ../src/delete.c:74 ../src/delete.c:101 ../src/metacity-dialog.c:57
 #: ../src/theme-parser.c:493 ../src/theme-parser.c:548
