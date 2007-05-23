@@ -184,9 +184,6 @@ void                  clutter_actor_set_position     (ClutterActor          *sel
 void                  clutter_actor_get_abs_position (ClutterActor          *self,
 						      gint                  *x,
 						      gint                  *y);
-void                  clutter_actor_get_abs_position_units (ClutterActor    *self,
-							    gint32          *x,
-							    gint32          *y);
 guint                 clutter_actor_get_width        (ClutterActor          *self);
 guint                 clutter_actor_get_height       (ClutterActor          *self);
 
@@ -261,9 +258,6 @@ void                  clutter_actor_scalex           (ClutterActor          *sel
 void                  clutter_actor_get_abs_size     (ClutterActor          *self,
                                                       guint                 *width,
                                                       guint                 *height);
-void                  clutter_actor_get_abs_size_units (ClutterActor        *self,
-							gint32              *width,
-							gint32              *height);
 void                  clutter_actor_get_size         (ClutterActor          *self,
                                                       guint                 *width,
                                                       guint                 *height);

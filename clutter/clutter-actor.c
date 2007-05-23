@@ -1078,28 +1078,7 @@ clutter_actor_get_size (ClutterActor *self,
     *height = clutter_actor_get_height (self);
 }
 
-/**
- * clutter_actor_get_abs_position
- * @self: A #ClutterActor
- * @x: Location to store x position if non NULL.
- * @y: Location to store y position if non NULL.
- *
- * Gets the absolute position of an actor in pixels relative
- * to the stage.
- */
-void
-clutter_actor_get_abs_position (ClutterActor *self,
-				gint           *x,
-				gint           *y)
-{
-  gint32 xu, yu;
-  clutter_actor_get_abs_position_units (self, &xu, &yu);
-
-  *x = CLUTTER_UNITS_TO_INT (xu);
-  *y = CLUTTER_UNITS_TO_INT (yu);
-}
-
-/**
+/*
  * clutter_actor_get_abs_position_units
  * @self: A #ClutterActor
  * @x: Location to store x position if non NULL.
@@ -1110,7 +1089,7 @@ clutter_actor_get_abs_position (ClutterActor *self,
  *
  * Since: 0.4
  */
-void
+static void
 clutter_actor_get_abs_position_units (ClutterActor *self,
 				      gint32       *x,
 				      gint32       *y)
@@ -1153,27 +1132,27 @@ clutter_actor_get_abs_position_units (ClutterActor *self,
 }
 
 /**
- * clutter_actor_get_abs_size:
+ * clutter_actor_get_abs_position
  * @self: A #ClutterActor
- * @width: Location to store width if non NULL.
- * @height: Location to store height if non NULL.
+ * @x: Location to store x position if non NULL.
+ * @y: Location to store y position if non NULL.
  *
- * Gets the absolute size of an actor taking into account
- * an scaling factors
+ * Gets the absolute position of an actor in pixels relative
+ * to the stage.
  */
 void
-clutter_actor_get_abs_size (ClutterActor *self,
-			    guint        *width,
-			    guint        *height)
+clutter_actor_get_abs_position (ClutterActor *self,
+				gint           *x,
+				gint           *y)
 {
-  gint32 wu, hu;
-  clutter_actor_get_abs_size_units (self, &wu, &hu);
-  
-  *width  = CLUTTER_UNITS_TO_INT (wu);
-  *height = CLUTTER_UNITS_TO_INT (hu);
+  gint32 xu, yu;
+  clutter_actor_get_abs_position_units (self, &xu, &yu);
+
+  *x = CLUTTER_UNITS_TO_INT (xu);
+  *y = CLUTTER_UNITS_TO_INT (yu);
 }
 
-/**
+/*
  * clutter_actor_get_abs_size_units:
  * @self: A #ClutterActor
  * @width: Location to store width if non NULL.
@@ -1184,7 +1163,7 @@ clutter_actor_get_abs_size (ClutterActor *self,
  *
  * Since: 0.4
  */
-void
+static void
 clutter_actor_get_abs_size_units (ClutterActor *self,
 				  gint32       *width,
 				  gint32       *height)
@@ -1225,6 +1204,27 @@ clutter_actor_get_abs_size_units (ClutterActor *self,
 	}
     }
   while ((parent = clutter_actor_get_parent (parent)) != NULL);
+}
+
+/**
+ * clutter_actor_get_abs_size:
+ * @self: A #ClutterActor
+ * @width: Location to store width if non NULL.
+ * @height: Location to store height if non NULL.
+ *
+ * Gets the absolute size of an actor taking into account
+ * an scaling factors
+ */
+void
+clutter_actor_get_abs_size (ClutterActor *self,
+			    guint        *width,
+			    guint        *height)
+{
+  gint32 wu, hu;
+  clutter_actor_get_abs_size_units (self, &wu, &hu);
+  
+  *width  = CLUTTER_UNITS_TO_INT (wu);
+  *height = CLUTTER_UNITS_TO_INT (hu);
 }
 
 

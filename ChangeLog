@@ -1,3 +1,11 @@
+2007-05-23  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	(clutter_actor_get_abs_size_units):
+	(clutter_actor_get_abs_position_units):
+	removed from public api
+	
 2007-05-22  Tomas Frydrych  <tf@openedhand.com>
 
 	* configure.ac:
