@@ -1,3 +1,35 @@
+2007-05-25  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	Renamed clutter_actor_scalex() to clutter_actor_set_scale_with_gravityx
+	Added floating point version clutter_actor_set_scale_with_gravity.
+
+	* clutter/clutter-units.h:
+	* clutter/clutter-actor.h:
+	typedef ClutterUnit
+
+	* clutter/clutter-fixed.h:
+	* clutter/clutter-stage.c:
+	CLUTTER_ANGLE_FROM_DEG(), CLUTTER_ANGLE_FROM_DEGX()
+	renamed CLUTTER_DEGF_TO_CLUTTER_ANGLE to CLUTTER_ANGLE_FROM_DEGF
+
+	* clutter/clutter-behaviour-ellipse.h:
+	* clutter/clutter-behaviour-ellipse.c:
+	* examples/behave.c:
+	(clutter_behaviour_ellipse_new):
+	Changed signature to take angles in degrees, and x,y offsets.
+	(clutter_behaviour_ellipse_newx):
+	Fixed version clutter_behaviour_ellipse_new.
+	(clutter_behaviour_ellipse_set_center):
+	(clutter_behaviour_ellipse_get_center):
+	Changed signature to take x,y coords instead of ClutterKnot.
+
+	clutter/cogl/gl/cogl.c:
+	clutter/cogl/gles/cogl.c:
+	(cogl_setup_viewport):
+	Added z_camera calculation.
+
 2007-05-25  Matthew Allum  <mallum@openedhand.com>
 
 	* Makefile.am:
@@ -55,7 +87,7 @@
 	* tests/test-offscreen.c:
 	* tests/test-scale.c:
 	More tests.
-
+	
 2007-05-23  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.c:

@@ -165,8 +165,8 @@ main (int argc, char *argv[])
       break;
     case PATH_ELLIPSE:
       p_behave =
-	clutter_behaviour_ellipse_new (alpha, &origin, 400, 300,
-				       0, 1024, 0);
+	clutter_behaviour_ellipse_new (alpha, 200, 200, 400, 300,
+				       0.0, 360.0, 0.0);
       break;
 
     case PATH_BSPLINE:

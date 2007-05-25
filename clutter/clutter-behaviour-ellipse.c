@@ -217,7 +217,12 @@ clutter_behaviour_ellipse_set_property (GObject      *gobject,
       priv->b = g_value_get_int (value) >> 1;
       break;
     case PROP_CENTER:
-      clutter_behaviour_ellipse_set_center (el, g_value_get_boxed (value));
+      {
+        ClutterKnot * k = g_value_get_boxed (value);
+        if (k)
+          clutter_behaviour_ellipse_set_center (el, k->x, k->y);
+      }
+      
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
@@ -393,12 +398,13 @@ clutter_behaviour_ellipse_init (ClutterBehaviourEllipse * self)
 /**
  * clutter_behaviour_ellipse_new:
  * @alpha: a #ClutterAlpha, or %NULL
- * @center: center of the ellipse as #ClutterKnot
+ * @x: x coordinace of the center
+ * @y: y coordiance of the center
  * @width: width of the ellipse
  * @height: height of the ellipse
- * @begin: #ClutterAngle at which movement begins
- * @end: #ClutterAngle at which movement ends
- * @tilt: #ClutterAngle with which the ellipse should be tilted around its
+ * @begin: angle in degrees at which movement begins
+ * @end: angle in degrees at which movement ends
+ * @tilt: angle in degrees with which the ellipse should be tilted around its
  * center
  *
  * Creates a behaviour that drives actors along an elliptical path with
@@ -412,34 +418,93 @@ clutter_behaviour_ellipse_init (ClutterBehaviourEllipse * self)
  */
 ClutterBehaviour *
 clutter_behaviour_ellipse_new (ClutterAlpha          * alpha,
-                               ClutterKnot           * center,
+                               gint                    x,
+                               gint                    y,
                                gint                    width,
                                gint                    height,
-                               ClutterAngle            begin,
-                               ClutterAngle            end,
-                               ClutterAngle            tilt)
+                               gdouble                 begin,
+                               gdouble                 end,
+                               gdouble                 tilt)
 {
   ClutterBehaviourEllipse *bc;
 
   g_return_val_if_fail (alpha == NULL || CLUTTER_IS_ALPHA (alpha), NULL);
-     
+
+  ClutterKnot center;
+  center.x = x;
+  center.y = y;
+  
   bc = g_object_new (CLUTTER_TYPE_BEHAVIOUR_ELLIPSE, 
                      "alpha", alpha,
-                     "center", center,
+                     "center", &center,
                      "width", width,
                      "height", height,
-                     "angle-begin", begin,
-                     "angle-end", end,
-                     "angle-tilt", tilt,
+                     "angle-begin", CLUTTER_ANGLE_FROM_DEG (begin),
+                     "angle-end", CLUTTER_ANGLE_FROM_DEG (end),
+                     "angle-tilt", CLUTTER_ANGLE_FROM_DEG (tilt),
                      NULL);
 
   return CLUTTER_BEHAVIOUR (bc);
 }
 
 /**
+ * clutter_behaviour_ellipse_newx:
+ * @alpha: a #ClutterAlpha, or %NULL
+ * @x: x coordinace of the center
+ * @y: y coordiance of the center
+ * @width: width of the ellipse
+ * @height: height of the ellipse
+ * @begin: #ClutterFixed angle in degrees at which movement begins
+ * @end: #ClutterFixed angle in degrees at which movement ends
+ * @tilt: #ClutterFixed angle in degrees with which the ellipse should be tilted around its
+ * center
+ *
+ * Creates a behaviour that drives actors along an elliptical path with
+ * given center, width and height; the movement begins at angle_begin and
+ * ends at angle_end; if angle_end > angle_begin, the movement is in
+ * counter-clockwise direction, clockwise other wise.
+ *
+ * Return value: a #ClutterBehaviour
+ *
+ * Since: 0.4
+ */
+ClutterBehaviour *
+clutter_behaviour_ellipse_newx (ClutterAlpha          * alpha,
+                                gint                    x,
+                                gint                    y,
+                                gint                    width,
+                                gint                    height,
+                                ClutterFixed            begin,
+                                ClutterFixed            end,
+                                ClutterFixed            tilt)
+{
+  ClutterBehaviourEllipse *bc;
+
+  g_return_val_if_fail (alpha == NULL || CLUTTER_IS_ALPHA (alpha), NULL);
+
+  ClutterKnot center;
+  center.x = x;
+  center.y = y;
+  
+  bc = g_object_new (CLUTTER_TYPE_BEHAVIOUR_ELLIPSE, 
+                     "alpha", alpha,
+                     "center", &center,
+                     "width", width,
+                     "height", height,
+                     "angle-begin", CLUTTER_ANGLE_FROM_DEGX (begin),
+                     "angle-end", CLUTTER_ANGLE_FROM_DEGX (end),
+                     "angle-tilt", CLUTTER_ANGLE_FROM_DEGX (tilt),
+                     NULL);
+
+  return CLUTTER_BEHAVIOUR (bc);
+}
+
+
+/**
  * clutter_behaviour_ellipse_set_center
  * @self: a #ClutterBehaviourEllipse
- * @knot: a #ClutterKnot center for the ellipse
+ * @x: x coordinace of centre
+ * @y: y coordinace of centre
  *
  * Sets the center of the elliptical path to the point represented by knot.
  * 
@@ -447,12 +512,14 @@ clutter_behaviour_ellipse_new (ClutterAlpha          * alpha,
  */
 void
 clutter_behaviour_ellipse_set_center (ClutterBehaviourEllipse * self,
-                                      ClutterKnot             * knot)
+                                      gint                      x,
+                                      gint                      y)
 {
-  if (self->priv->center.x != knot->x || self->priv->center.y != knot->y)
+  if (self->priv->center.x != x || self->priv->center.y != y)
     {
       g_object_ref (self);
-      self->priv->center = *knot;
+      self->priv->center.x = x;
+      self->priv->center.y = y;
       g_object_notify (G_OBJECT (self), "center");
       g_object_unref (self);
     }
@@ -461,7 +528,8 @@ clutter_behaviour_ellipse_set_center (ClutterBehaviourEllipse * self,
 /**
  * clutter_behaviour_ellipse_get_center
  * @self: a #ClutterBehaviourEllipse
- * @knot: a #ClutterKnot where to store the center of the ellipse
+ * @x: location to store the x coordinace of the center, or NULL
+ * @y: location to store the y coordinace of the center, or NULL
  *
  * Gets the center of the elliptical path path.
  * 
@@ -469,9 +537,14 @@ clutter_behaviour_ellipse_set_center (ClutterBehaviourEllipse * self,
  */
 void
 clutter_behaviour_ellipse_get_center (ClutterBehaviourEllipse  * self,
-                                      ClutterKnot              * knot)
+                                      gint                     * x,
+                                      gint                     * y)
 {
-  *knot = self->priv->center;
+  if (x)
+    *x = self->priv->center.x;
+
+  if (y)
+    *y = self->priv->center.y;
 }
 
 

@@ -49,6 +49,10 @@
 
 #include <clutter/clutter-fixed.h>
 
+G_BEGIN_DECLS
+
+typedef gint32 ClutterUnit;
+
 /*
  * Currently CLUTTER_UNIT maps directly onto ClutterFixed. Nevertheless, the
  * _FROM_FIXED and _TO_FIXED macros should always be used in case that we
@@ -70,5 +74,7 @@
 #define CLUTTER_UNITS_TO_FIXED(x)        (x)
 
 #define CLUTTER_UNITS_FROM_PANGO_UNIT(x) (x << 6)
+
+G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_UNITS_H */

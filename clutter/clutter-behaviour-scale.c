@@ -83,7 +83,7 @@ scale_frame_foreach (ClutterBehaviour *behaviour,
   ClutterFixed scale = GPOINTER_TO_UINT (data);
   ClutterGravity gravity = priv->gravity;
 
-  clutter_actor_scalex (actor, scale, scale, gravity);
+  clutter_actor_set_scale_with_gravityx (actor, scale, scale, gravity);
 }
 
 static void

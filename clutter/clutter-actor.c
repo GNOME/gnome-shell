@@ -1428,7 +1428,31 @@ clutter_actor_get_scale (ClutterActor *self,
 }
 
 /**
- * clutter_actor_scalex:
+ * clutter_actor_set_scale_with_gravity:
+ * @self: A #ClutterActor
+ * @scale_x: scaling factor for x axis
+ * @scale_y: scaling factor for y axis
+ * @gravity: #ClutterGravity to apply to scaling.
+ *
+ * Scales the actor by scale_x, scale_y taking into consideration the
+ * required gravity.
+ *
+ * Since: 0.4
+ */
+void
+clutter_actor_set_scale_with_gravity (ClutterActor     *self,
+				  gfloat            scale_x,
+				  gfloat            scale_y,
+				  ClutterGravity    gravity)
+{
+    clutter_actor_set_scale_with_gravityx (self,
+					   CLUTTER_FLOAT_TO_FIXED (scale_x),
+					   CLUTTER_FLOAT_TO_FIXED (scale_y),
+					   gravity);
+}
+
+/**
+ * clutter_actor_set_scale_with_gravityx:
  * @self: A #ClutterActor
  * @scale_x: #ClutterFixed scaling factor for x axis
  * @scale_y: #ClutterFixed scaling factor for y axis
@@ -1440,10 +1464,10 @@ clutter_actor_get_scale (ClutterActor *self,
  * Since: 0.4
  */
 void
-clutter_actor_scalex (ClutterActor     *self,
-		      ClutterFixed      scale_x,
-		      ClutterFixed      scale_y,
-		      ClutterGravity    gravity)
+clutter_actor_set_scale_with_gravityx (ClutterActor     *self,
+				       ClutterFixed      scale_x,
+				       ClutterFixed      scale_y,
+				       ClutterGravity    gravity)
 {
   ClutterActorBox box;
   gint32 sw, sh, w, h;

@@ -79,7 +79,8 @@ ClutterBehaviourEllipse
 </para>
 
 @alpha: 
-@center: 
+@x: 
+@y: 
 @width: 
 @height: 
 @start: 
@@ -94,7 +95,8 @@ ClutterBehaviourEllipse
 </para>
 
 @self: 
-@knot: 
+@x: 
+@y: 
 
 
 <!-- ##### FUNCTION clutter_behaviour_ellipse_get_center ##### -->
@@ -103,7 +105,8 @@ ClutterBehaviourEllipse
 </para>
 
 @bs: 
-@knot: 
+@x: 
+@y: 
 
 
 <!-- ##### FUNCTION clutter_behaviour_ellipse_get_angle_begin ##### -->

@@ -38,8 +38,8 @@ Macro evaluating to the height of the #ClutterStage
 
 @fovy: 
 @aspect: 
-@zNear: 
-@zFar: 
+@z_near: 
+@z_far: 
 
 <!-- ##### FUNCTION clutter_perspective_copy ##### -->
 <para>

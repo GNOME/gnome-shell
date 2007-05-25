@@ -30,6 +30,7 @@
 
 #include <glib-object.h>
 #include <clutter/clutter-fixed.h>
+#include <clutter/clutter-units.h>
 
 G_BEGIN_DECLS
 
@@ -101,7 +102,7 @@ typedef enum
   CLUTTER_ACTOR_REALIZED = 1 << 2
 } ClutterActorFlags;
 
-struct _ClutterActorBox { gint32 x1, y1, x2, y2; };
+struct _ClutterActorBox { ClutterUnit x1, y1, x2, y2; };
 
 GType clutter_actor_box_get_type (void) G_GNUC_CONST;
 
@@ -250,10 +251,15 @@ void                  clutter_actor_get_scale        (ClutterActor          *sel
                                                       gdouble               *scale_x,
                                                       gdouble               *scale_y);
 
-void                  clutter_actor_scalex           (ClutterActor          *self,
-						      ClutterFixed      scale_x,
-						      ClutterFixed      scale_y,
-						      ClutterGravity    gravity);
+void                  clutter_actor_set_scale_with_gravityx (ClutterActor          *self,
+							     ClutterFixed      scale_x,
+							     ClutterFixed      scale_y,
+							     ClutterGravity    gravity);
+
+void                  clutter_actor_set_scale_with_gravity  (ClutterActor          *self,
+							     gfloat                 scale_x,
+							     gfloat                 scale_y,
+							     ClutterGravity         gravity);
 
 void                  clutter_actor_get_abs_size     (ClutterActor          *self,
                                                       guint                 *width,

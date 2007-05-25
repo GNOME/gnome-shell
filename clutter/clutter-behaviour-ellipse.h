@@ -82,17 +82,30 @@ struct _ClutterBehaviourEllipseClass
 GType clutter_behaviour_ellipse_get_type (void) G_GNUC_CONST;
 
 ClutterBehaviour *clutter_behaviour_ellipse_new             (ClutterAlpha               * alpha,
-							     ClutterKnot                * center,
-							     gint width,
-							     gint height,
-							     ClutterAngle                 start,
-							     ClutterAngle                 end,
-							     ClutterAngle                 tilt);
+							     gint                         x,
+							     gint                         y,
+							     gint                         width,
+							     gint                         height,
+							     gdouble                      start,
+							     gdouble                      end,
+							     gdouble                      tilt);
+
+ClutterBehaviour *clutter_behaviour_ellipse_newx            (ClutterAlpha               * alpha,
+							     gint                         x,
+							     gint                         y,
+							     gint                         width,
+							     gint                         height,
+							     ClutterFixed                 start,
+							     ClutterFixed                 end,
+							     ClutterFixed                 tilt);
 
 void              clutter_behaviour_ellipse_set_center      (ClutterBehaviourEllipse    * self,
-							     ClutterKnot                * knot);
+							     gint                         x,
+							     gint                         y);
+
 void              clutter_behaviour_ellipse_get_center      (ClutterBehaviourEllipse    * bs,
-							     ClutterKnot                * knot);
+							     gint                       * x,
+							     gint                       * y);
 
 void              clutter_behaviour_ellipse_set_width       (ClutterBehaviourEllipse    * self,
 							     gint                         width);

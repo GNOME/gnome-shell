@@ -557,7 +557,7 @@ clutter_stage_set_perspective (ClutterStage       *stage,
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
   priv = stage->priv;
-  priv->perspective.fovy   = CLUTTER_DEGF_TO_CLUTTER_ANGLE(fovy);
+  priv->perspective.fovy   = CLUTTER_ANGLE_FROM_DEGF(fovy);
   priv->perspective.aspect = CLUTTER_FLOAT_TO_FIXED(aspect);
   priv->perspective.z_near = CLUTTER_FLOAT_TO_FIXED(z_near);
   priv->perspective.z_far  = CLUTTER_FLOAT_TO_FIXED(z_far);

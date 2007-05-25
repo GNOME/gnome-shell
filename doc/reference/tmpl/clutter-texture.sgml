@@ -116,20 +116,6 @@ ClutterTexture
 @Returns: 
 
 
-<!-- ##### FUNCTION clutter_texture_set_from_data ##### -->
-<para>
-
-</para>
-
-@texture: 
-@data: 
-@has_alpha: 
-@width: 
-@height: 
-@rowstride: 
-@bpp: 
-
-
 <!-- ##### FUNCTION clutter_texture_set_pixbuf ##### -->
 <para>
 
@@ -137,6 +123,8 @@ ClutterTexture
 
 @texture: 
 @pixbuf: 
+@error: 
+@Returns: 
 
 
 <!-- ##### FUNCTION clutter_texture_get_pixbuf ##### -->
