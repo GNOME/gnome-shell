@@ -1,3 +1,15 @@
+2007-05-25  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-color.c: (clutter_color_parse):
+	Handle #rrggbbaa color setting strings (i.e with alpha). 
+	Set alpha to 0xff if it is not specified. 
+
+	* clutter/clutter-stage.c: (clutter_stage_get_actor_at_pos)
+	Increase select buffer. 
+
+	* examples/super-oh.c:
+	Fix up use of clutter_group_show_all()
+
 2007-05-25  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.c:

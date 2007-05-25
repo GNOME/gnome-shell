@@ -773,21 +773,17 @@ clutter_stage_get_actor_at_pos (ClutterStage *stage,
   */
 
   ClutterActor *found = NULL;
-  GLuint buff[64] = { 0 };
+  GLuint buff[512] = { 0 };
   GLint hits;
   GLint view[4];
-  ClutterMainContext *ctx;
   
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
  
-  ctx = clutter_context_get_default ();
-
-  glSelectBuffer (sizeof (buff), buff);
+  glSelectBuffer (512, buff);
   glGetIntegerv (GL_VIEWPORT, view);
   glRenderMode (GL_SELECT);
 
   glInitNames ();
-
   glPushName (0);
  
   glMatrixMode (GL_PROJECTION);

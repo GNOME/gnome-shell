@@ -452,17 +452,17 @@ clutter_color_from_pixel (ClutterColor *dest,
 
 /**
  * clutter_color_parse:
- * @color: a string specifiying a color
+ * @color: a string specifiying a color (named color or #RRGGBBAA)
  * @dest: return location for a #ClutterColor
  *
  * Parses a string definition of a color, filling the
- * <structfield>red</structfield>, <structfield>green</structfield> and
- * <structfield>blue</structfield> channels of @dest. The
- * <structfield>alpha</structfield> channel is not changed. The
- * color in @dest is not allocated.
+ * <structfield>red</structfield>, <structfield>green</structfield>, 
+ * <structfield>blue</structfield> and <structfield>alpha</structfield> 
+ * channels of @dest. If alpha is not specified it will be set full opaque.
+ * The color in @dest is not allocated.
  *
  * The color may be defined by any of the formats understood by
- * <function>XParseColor</function>; these include literal color
+ * <function>pango_color_parse</function>; these include literal color
  * names, like <literal>Red</literal> or <literal>DarkSlateGray</literal>,
  * or hexadecimal specifications like <literal>&num;3050b2</literal> or
  * <literal>&num;333</literal>.
@@ -477,16 +477,43 @@ clutter_color_parse (const gchar  *color,
 {
   PangoColor pango_color;
 
+  /* parse ourselves to get alpha */
+  if (color[0] == '#')
+    {
+      gint32 result;
+
+      if (sscanf (color+1, "%x", &result))
+	{
+	  if (strlen(color) == 9)
+	    {
+	      dest->red   = result >> 24 & 0xff;
+	      dest->green = (result >> 16) & 0xff;
+	      dest->blue  = (result >> 8) & 0xff;
+	      dest->alpha = result & 0xff;
+	      return TRUE;
+	    }
+	  else if (strlen(color) == 7)
+	    {
+	      dest->red   = (result >> 16) & 0xff;
+	      dest->green = (result >> 8) & 0xff;
+	      dest->blue  = result & 0xff;
+	      dest->alpha = 0xff;
+	      return TRUE;
+	    }
+	}
+    }
+  
+  /* Fall back to pango for named colors - note pango does not handle alpha */
   if (pango_color_parse (&pango_color, color))
     {
-      dest->red = pango_color.red;
+      dest->red   = pango_color.red;
       dest->green = pango_color.green;
-      dest->blue = pango_color.blue;
-
+      dest->blue  = pango_color.blue;
+      dest->alpha = 0xff;
       return TRUE;
     }
-  else
-    return FALSE;
+
+  return FALSE;
 }
 
 /**
