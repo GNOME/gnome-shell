@@ -29,12 +29,6 @@
 #include <GL/gl.h>
 #include <string.h>
 
-#if G_BYTE_ORDER == G_LITTLE_ENDIAN
-#define PIXEL_TYPE GL_UNSIGNED_BYTE
-#else
-#define PIXEL_TYPE GL_UNSIGNED_INT_8_8_8_8_REV
-#endif
-
 static gulong __enable_flags = 0;
 
 #if COGL_DEBUG
@@ -110,6 +104,7 @@ check_gl_extension (const gchar *name,
   return FALSE;
 }
 
+#if 0
 static gboolean 
 is_gl_version_at_least_12 (void)
 {
@@ -117,7 +112,7 @@ is_gl_version_at_least_12 (void)
   return 
     (g_ascii_strtod ((const gchar*) glGetString (GL_VERSION), NULL) >= 1.2);
 
-#if 0
+
   /* At least GL 1.2 is needed for CLAMP_TO_EDGE */
   /* FIXME: move to cogl... */
   if (!is_gl_version_at_least_12 ())
@@ -127,13 +122,14 @@ is_gl_version_at_least_12 (void)
                    "Clutter needs at least version 1.2 of OpenGL");
       return FALSE;
     }
-#endif
 }
+#endif
 
 CoglFuncPtr
 cogl_get_proc_address (const gchar* name)
 {
   /* FIXME */
+  return NULL;
 }
 
 gboolean 
@@ -583,12 +579,34 @@ cogl_get_features ()
 
   gl_extensions = (const gchar*) glGetString (GL_EXTENSIONS);
 
-
   if (check_gl_extension ("GL_ARB_texture_rectangle", gl_extensions) ||
       check_gl_extension ("GL_EXT_texture_rectangle", gl_extensions))
     {
       flags |= CLUTTER_FEATURE_TEXTURE_RECTANGLE;
     }
+
+#ifdef GL_YCBCR_MESA
+  if (check_gl_extension ("GL_MESA_ycbcr_texture", gl_extensions))
+    {
+      flags |= CLUTTER_FEATURE_TEXTURE_YUV;
+    }
+#endif
+
+#if 0
+  CLUTTER_NOTE (GL,
+		"\n"
+		"===========================================\n"
+		"GL_VENDOR: %s\n"
+		"GL_RENDERER: %s\n"
+		"GL_VERSION: %s\n"
+		"GL_EXTENSIONS: %s\n"
+		"===========================================\n",
+		glGetString (GL_VENDOR),
+		glGetString (GL_RENDERER),
+		glGetString (GL_VERSION),
+		glGetString (GL_EXTENSIONS),
+		: "no");
+#endif
   
   return flags;
 }
