@@ -116,9 +116,6 @@ void          _clutter_event_button_generate  (ClutterBackend    *backend,
 
 void          _clutter_feature_init (void);
 
-/* FIXME: move elsewhere via ClutterAudience */
-void _clutter_stage_sync_viewport (ClutterStage *stage);
-
 /* Does this need to be private ? */
 void clutter_do_event (ClutterEvent *event);
 

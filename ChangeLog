@@ -1,3 +1,61 @@
+2007-05-25  Matthew Allum  <mallum@openedhand.com>
+
+	* Makefile.am:
+	Install a default flavour .pc file.
+
+	* clutter/clutter-actor.c:
+	Translate units correctly for translate()
+
+	* clutter/clutter-feature.h:
+	Add new texture features.
+
+	* clutter/clutter-fixed.h:
+	Add clutter angle conversion defines.
+
+	* clutter/clutter-group.c:
+	Use cogl not GL. Dont recurse on show all.
+
+	* clutter/clutter-private.h:
+	Remove sync_viewport.
+
+	* clutter/clutter-rectangle.c:
+	Fix cogl typo.
+
+	* clutter/clutter-stage.c:
+	* clutter/clutter-stage.h:
+	Add perspective settings. Remove viewport_sync.
+	Add audience stubs. Fix up actor_at_pos a little (still broken)
+
+	* clutter/clutter-texture.h:
+	* clutter/clutter-texture.c:
+	Redo pixel uploading. Add initial (disabled) YUV support.
+
+	* clutter/clutter-timeline.c:
+	Fire 'completed' signal when looping.
+	
+	* clutter/cogl/gl/cogl.c:
+	Move some backend checks here.
+
+	* clutter/glx/clutter-backend-glx.c:
+	Actually check target display has GLX ext.
+
+	* clutter/glx/clutter-stage-glx.c:
+	Handle offscreen failing more gracefully.
+
+	* examples/Makefile.am:
+	Use AM_LDFLAGS.
+
+	* clutter/clutter-main.c:
+	* clutter/clutter-feature.c:
+	* clutter/clutter-backend.c:
+	* clutter/clutter-alpha.c:
+	Fix a compile warnings.
+
+	* tests/Makefile.am:
+	* tests/test-offscreen.c:
+	* tests/test-scale.c:
+	More tests.
+
 2007-05-23  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.c:

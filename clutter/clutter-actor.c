@@ -42,8 +42,6 @@
 #include "clutter-units.h"
 #include "cogl.h"
 
-#include <GL/gl.h>
-
 G_DEFINE_ABSTRACT_TYPE (ClutterActor,
 			clutter_actor,
 			G_TYPE_INITIALLY_UNOWNED);
@@ -301,16 +299,14 @@ clutter_actor_paint (ClutterActor *self)
 
   cogl_push_matrix();
 
-#define NEG(x) (1 + ~(x))
-
-#if CLUTTER_COGL_GL
+#if HAVE_COGL_GL
   glLoadName (clutter_actor_get_id (self));
 #endif
 
   if (clutter_actor_get_parent (self) != NULL)
     {
-      cogl_translate (CLUTTER_FIXED_TO_FLOAT (priv->coords.x1), 
-		      CLUTTER_FIXED_TO_FLOAT (priv->coords.y1), 
+      cogl_translate (CLUTTER_UNITS_TO_INT (priv->coords.x1), 
+		      CLUTTER_UNITS_TO_INT (priv->coords.y1), 
 		      0);
     }
 
@@ -344,7 +340,7 @@ clutter_actor_paint (ClutterActor *self)
       cogl_scale (priv->scale_x, priv->scale_y);
     }
 
-#if CLUTTER_COGL_GL
+#if HAVE_COGL_GL
   if (priv->has_clip)
     {
       ClutterGeometry *clip = &(priv->clip);

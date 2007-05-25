@@ -130,7 +130,7 @@ clutter_rectangle_paint (ClutterActor *self)
       cogl_rectangle (0, 0, geom.width, geom.height);
     }
 
-  cogl_push_matrix();
+  cogl_pop_matrix();
 }
 
 static void

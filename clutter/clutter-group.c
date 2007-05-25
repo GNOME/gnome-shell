@@ -46,8 +46,6 @@
 #include "clutter-marshal.h"
 #include "clutter-enum-types.h"
 
-#include <GL/gl.h>
-
 enum
 {
   ADD,
@@ -76,7 +74,7 @@ clutter_group_paint (ClutterActor *actor)
 
   CLUTTER_NOTE (PAINT, "ClutterGroup paint enter");
 
-  glPushMatrix();
+  cogl_push_matrix();
 
   for (child_item = self->priv->children;
        child_item != NULL;
@@ -90,7 +88,7 @@ clutter_group_paint (ClutterActor *actor)
 	clutter_actor_paint (child);
     }
 
-  glPopMatrix();
+  cogl_pop_matrix();
   
   CLUTTER_NOTE (PAINT, "ClutterGroup paint leave");
 }
@@ -175,7 +173,7 @@ static void
 clutter_group_real_show_all (ClutterActor *actor)
 {
   clutter_group_foreach (CLUTTER_GROUP (actor),
-                         CLUTTER_CALLBACK (clutter_actor_show_all),
+                         CLUTTER_CALLBACK (clutter_actor_show),
                          NULL);
   clutter_actor_show (actor);
 }
@@ -185,7 +183,7 @@ clutter_group_real_hide_all (ClutterActor *actor)
 {
   clutter_actor_hide (actor);
   clutter_group_foreach (CLUTTER_GROUP (actor),
-                         CLUTTER_CALLBACK (clutter_actor_hide_all),
+                         CLUTTER_CALLBACK (clutter_actor_hide),
                          NULL);
 }
 

@@ -41,7 +41,8 @@ typedef enum
 {
   CLUTTER_FEATURE_TEXTURE_RECTANGLE      = (1 << 1),
   CLUTTER_FEATURE_SYNC_TO_VBLANK         = (1 << 2),
-  CLUTTER_FEATURE_TEXTURE_READ_PIXELS    = (1 << 3)
+  CLUTTER_FEATURE_TEXTURE_YUV            = (1 << 3),
+  CLUTTER_FEATURE_TEXTURE_READ_PIXELS    = (1 << 4)
 } ClutterFeatureFlags;
 
 gboolean            clutter_feature_available       (ClutterFeatureFlags feature);

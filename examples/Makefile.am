@@ -4,7 +4,7 @@ INCLUDES = -I$(top_srcdir)/
 LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.la
 
 AM_CFLAGS = $(CLUTTER_CFLAGS) 
-LDFLAGS = $(CLUTTER_LIBS)
+AM_LDFLAGS = $(CLUTTER_LIBS)
 
 slider_SOURCES = slider.c
 

@@ -210,10 +210,13 @@ clutter_stage_glx_realize (ClutterActor *actor)
   else
     {
       int gl_attributes[] = {
-	GLX_RGBA, 
+	GLX_DEPTH_SIZE,    0,
+	GLX_ALPHA_SIZE,    0,
 	GLX_RED_SIZE, 1,
 	GLX_GREEN_SIZE, 1,
 	GLX_BLUE_SIZE, 1,
+	GLX_USE_GL,
+	GLX_RGBA,
 	0
       };
 
@@ -227,10 +230,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
       if (!stage_glx->xvisinfo)
 	{
 	  g_critical ("Unable to find suitable GL visual.");
-	  
-          CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-
-	  return;
+	  goto fail;
 	}
 
       if (stage_glx->gl_context)
@@ -240,7 +240,8 @@ clutter_stage_glx_realize (ClutterActor *actor)
 				          stage_glx->xwin_root,
 				          stage_glx->xwin_width, 
 				          stage_glx->xwin_height,
-				          stage_glx->xvisinfo->depth);
+					  DefaultDepth (stage_glx->xdpy,
+							stage_glx->xscreen));
 
       stage_glx->glxpixmap = glXCreateGLXPixmap (stage_glx->xdpy,
 					         stage_glx->xvisinfo,
@@ -251,10 +252,18 @@ clutter_stage_glx_realize (ClutterActor *actor)
 					        stage_glx->xvisinfo, 
 					        0, 
 					        False);
-      
+
+      clutter_glx_trap_x_errors ();
+
       glXMakeCurrent (stage_glx->xdpy,
                       stage_glx->glxpixmap,
                       stage_glx->gl_context);
+
+      if (clutter_glx_untrap_x_errors ())
+	{
+	  g_critical ("Unable to set up offscreen context.");
+	  goto fail;
+	}
 
 #if 0
       /* Debug code for monitoring a off screen pixmap via window */
@@ -282,25 +291,18 @@ clutter_stage_glx_realize (ClutterActor *actor)
 	XMapWindow(clutter_glx_display(), foo_win);
       }
 #endif
+
     }
 
-  CLUTTER_NOTE (GL,
-                "\n"
-		"===========================================\n"
-		"GL_VENDOR: %s\n"
-		"GL_RENDERER: %s\n"
-		"GL_VERSION: %s\n"
-		"GL_EXTENSIONS: %s\n"
-		"Direct Rendering: %s\n"
-		"===========================================\n",
-		glGetString (GL_VENDOR),
-		glGetString (GL_RENDERER),
-		glGetString (GL_VERSION),
-		glGetString (GL_EXTENSIONS),
-		glXIsDirect (stage_glx->xdpy, stage_glx->gl_context) ? "yes"
-                                                                     : "no");
+  CLUTTER_SET_PRIVATE_FLAGS(actor, CLUTTER_ACTOR_SYNC_MATRICES);
+      
+  return;
+  
+ fail:
 
-  _clutter_stage_sync_viewport (CLUTTER_STAGE (stage_glx));
+  /* For one reason or another we cant realize the stage.. */
+  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+  return;
 }
 
 static void
@@ -324,12 +326,12 @@ clutter_stage_glx_paint (ClutterActor *self)
   /* Reset view matrices if needed. */
   if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_SYNC_MATRICES)
     {
-      /* 
-	 cogl_set_view_matrix (view_width, 
-	                       view_height, 
-			       perspective)
-			       
-      */
+      cogl_setup_viewport (clutter_actor_get_width (self),
+			   clutter_actor_get_height (self),
+			   171, /* 60 degrees */
+			   CFX_ONE,
+			   CLUTTER_FLOAT_TO_FIXED (0.1),
+			   CLUTTER_FLOAT_TO_FIXED (100.0));
     }
 
   /* Setup the initial paint */
@@ -409,7 +411,7 @@ clutter_stage_glx_request_coords (ClutterActor        *self,
 	  clutter_actor_realize (self);
 	}
 
-      _clutter_stage_sync_viewport (CLUTTER_STAGE (stage_glx));
+      CLUTTER_SET_PRIVATE_FLAGS(self, CLUTTER_ACTOR_SYNC_MATRICES);
     }
 
   if (stage_glx->xwin != None) /* Do we want to bother ? */
@@ -453,7 +455,7 @@ clutter_stage_glx_set_fullscreen (ClutterStage *stage,
         XDeleteProperty (stage_glx->xdpy, stage_glx->xwin, atom_WM_STATE);
     }
 
-  _clutter_stage_sync_viewport (stage);
+  CLUTTER_SET_PRIVATE_FLAGS(stage, CLUTTER_ACTOR_SYNC_MATRICES);
 }
 
 static void
@@ -496,8 +498,6 @@ clutter_stage_glx_set_cursor_visible (ClutterStage *stage,
       XDefineCursor (stage_glx->xdpy, stage_glx->xwin, curs);
 #endif /* HAVE_XFIXES */
     }
-
-  _clutter_stage_sync_viewport (stage);
 }
 
 static void
@@ -623,6 +623,8 @@ clutter_stage_glx_init (ClutterStageGlx *stage)
   stage->xvisinfo = None;
 
   stage->is_foreign_xwin = FALSE;
+
+  CLUTTER_SET_PRIVATE_FLAGS(stage, CLUTTER_ACTOR_SYNC_MATRICES);
 }
 
 /**

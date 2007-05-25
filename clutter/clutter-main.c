@@ -650,10 +650,12 @@ clutter_base_init (void)
 
   if (!initialised)
     {
+      GType foo; /* Quiet gcc */
+
       initialised = TRUE;
 
       /* initialise GLib type system */
       g_type_init ();
-      (void) clutter_actor_get_type ();
+      foo = clutter_actor_get_type ();
     }
 }

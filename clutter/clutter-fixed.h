@@ -135,6 +135,10 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 #define CLUTTER_FIXED_MUL(x,y) ((x) >> 8) * ((y) >> 8)
 #define CLUTTER_FIXED_DIV(x,y) ((((x) << 8)/(y)) << 8)
 
+#define CLUTTER_DEGF_TO_CLUTTER_ANGLE(x) CLUTTER_FLOAT_TO_INT ((x / 360.0) * 1024)
+
+#define CLUTTER_ANGLE_TO_DEGF(x) (((float)x * 360.0)/ 1024.0)
+
 /* some handy short aliases to avoid exessively long lines */
 
 #define CFX_INT CLUTTER_FIXED_INT

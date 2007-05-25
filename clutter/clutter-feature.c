@@ -50,7 +50,6 @@ typedef struct ClutterFeatures
 } ClutterFeatures;
 
 static ClutterFeatures* __features = NULL;
-G_LOCK_DEFINE_STATIC (__features);
 
 void
 _clutter_feature_init (void)

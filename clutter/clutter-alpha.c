@@ -801,8 +801,8 @@ guint32
 clutter_smoothstep_func (ClutterAlpha  *alpha,
 			 gpointer      *data)
 {
-  ClutterSmoothstep * smoothstep = data;
-  ClutterTimeline   * timeline;
+  ClutterSmoothstep  *smoothstep = (ClutterSmoothstep*)data;
+  ClutterTimeline    *timeline;
   gint                frame;
   gint                n_frames;
   gint32              r;

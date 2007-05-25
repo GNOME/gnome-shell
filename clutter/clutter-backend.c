@@ -148,7 +148,7 @@ _clutter_backend_get_features (ClutterBackend *backend)
 {
   ClutterBackendClass *klass;
 
-  g_return_if_fail (CLUTTER_IS_BACKEND (backend));
+  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), 0);
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
   if (klass->get_features)

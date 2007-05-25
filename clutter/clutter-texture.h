@@ -31,40 +31,6 @@
 
 G_BEGIN_DECLS
 
-#if 0
-
-/* New API Ideas */
-
-#define CLUTTER_TEXTURE_RGB_FLAG_BRGA    (1<<1)
-#define CLUTTER_TEXTURE_RGB_FLAG_PREMULT (1<<2)
-
-gboolean          
-clutter_texture_set_from_rgb_data   (ClutterTexture *texture,
-				     const guchar   *data,
-				     gboolean        has_alpha,
-				     gint            width,
-				     gint            height,
-				     gint            rowstride,
-				     gint            bpp,
-				     gint            flags,
-				     GError         *error);
-
-gboolean          
-clutter_texture_set_from_yuv_data   (ClutterTexture *texture,
-				     const guchar   *data,
-				     gint            width,
-				     gint            height,
-				     gint            flags,
-				     GError         *error);
-
-Notes
-=====
-
- - drop format and type props - would be set in GL texture automagically
-   via about calls.
-
-#endif 
-
 #define CLUTTER_TYPE_TEXTURE            (clutter_texture_get_type ())
 #define CLUTTER_TEXTURE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_TEXTURE, ClutterTexture))
 #define CLUTTER_TEXTURE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_TEXTURE, ClutterTextureClass))
@@ -101,19 +67,36 @@ struct _ClutterTextureClass
   void (*_clutter_texture6) (void);
 };
 
+typedef enum ClutterTextureFlags
+{
+    CLUTTER_TEXTURE_RGB_FLAG_BGR     = (1<<1),
+    CLUTTER_TEXTURE_RGB_FLAG_PREMULT = (1<<2),
+    CLUTTER_TEXTURE_YUV_FLAG_YUV2    = (1<<3)
+    /* FIXME: add compressed types ? */
+} ClutterTextureFlags;
+
 GType clutter_texture_get_type (void) G_GNUC_CONST;
 
 ClutterActor *clutter_texture_new             (void);
 ClutterActor *clutter_texture_new_from_pixbuf (GdkPixbuf      *pixbuf);
-void          clutter_texture_set_from_data   (ClutterTexture *texture,
-                                               const guchar   *data,
-                                               gboolean        has_alpha,
-                                               gint            width,
-                                               gint            height,
-                                               gint            rowstride,
-                                               gint            bpp);
-void          clutter_texture_set_pixbuf      (ClutterTexture *texture,
-                                               GdkPixbuf      *pixbuf);
+gboolean      clutter_texture_set_from_rgb_data   (ClutterTexture *texture,
+						   const guchar   *data,
+						   gboolean        has_alpha,
+						   gint            width,
+						   gint            height,
+						   gint            rowstride,
+						   gint            bpp,
+						   ClutterTextureFlags  flags,
+						   GError         *error);
+gboolean      clutter_texture_set_from_yuv_data   (ClutterTexture *texture,
+						   const guchar   *data,
+						   gint            width,
+						   gint            height,
+						   ClutterTextureFlags  flags,
+						   GError         *error);
+gboolean      clutter_texture_set_pixbuf          (ClutterTexture *texture,
+						   GdkPixbuf      *pixbuf,
+						   GError         *error);
 GdkPixbuf *   clutter_texture_get_pixbuf      (ClutterTexture *texture);
 void          clutter_texture_get_base_size   (ClutterTexture *texture,
                                                gint           *width,

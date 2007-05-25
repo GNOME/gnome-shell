@@ -329,7 +329,10 @@ timeline_timeout_func (gpointer data)
 	}
 
       if (priv->loop)
-	clutter_timeline_rewind (timeline);
+	{
+	  clutter_timeline_rewind (timeline);
+	  g_signal_emit (timeline, timeline_signals[COMPLETED], 0); 
+	}
       else
 	{
 	  clutter_timeline_stop (timeline);

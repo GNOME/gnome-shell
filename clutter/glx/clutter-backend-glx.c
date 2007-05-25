@@ -149,7 +149,7 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
 
   if (clutter_display_name)
     {
-      CLUTTER_NOTE (MISC, "XOpenDisplay on `%s'", clutter_display_name);
+      CLUTTER_NOTE (BACKEND, "XOpenDisplay on `%s'", clutter_display_name);
       backend_glx->xdpy = XOpenDisplay (clutter_display_name);
     }
   else
@@ -164,7 +164,9 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
 
   if (backend_glx->xdpy)
     {
-      CLUTTER_NOTE (MISC, "Getting the X screen");
+      int glx_major, glx_minor;
+
+      CLUTTER_NOTE (BACKEND, "Getting the X screen");
 
       if (clutter_screen == 0)
         backend_glx->xscreen = DefaultScreenOfDisplay (backend_glx->xdpy);
@@ -178,6 +180,28 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
                                            backend_glx->xscreen_num);
       
       backend_glx->display_name = g_strdup (clutter_display_name);
+
+      CLUTTER_NOTE (BACKEND, "Checking GLX info");
+
+      if (!glXQueryVersion (backend_glx->xdpy, &glx_major, &glx_minor) 
+	  || !(glx_major > 1 || glx_minor > 1)) 
+	{
+	  g_set_error (error, CLUTTER_INIT_ERROR,
+		       CLUTTER_INIT_ERROR_BACKEND,
+		       "XServer appears to lack required GLX support");
+	  return 1;
+	}
+
+#if 0
+      /* Prefer current GLX specs over current violations */
+      if (!(glx_major > 1 || glx_minor > 2)) 
+	{
+	  
+	  const char* exts = glXQueryExtensionsString (display, screen);
+	  if (!exts || !strstr (exts, "GLX_SGIX_fbconfig"))
+	    have_fbconfig = 0;
+	}
+#endif
 
     }
 

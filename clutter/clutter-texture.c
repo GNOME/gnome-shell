@@ -30,11 +30,14 @@
  * #ClutterTexture is a base class for displaying and manipulating pixel
  * buffer type data.
  *
- * The #clutter_texture_set_from_data and #clutter_texture_set_pixbuf are
+ * The #clutter_texture_set_from_rgb_data and #clutter_texture_set_pixbuf are
  * used to copy image data into texture memory and subsequently realize the
- * the texture. Unrealizing/hiding frees image data from texture memory moving
- * to main system memory. Re-realizing then performs the opposite operation.
- * This process allows basic management of commonly limited available texture
+ * the texture. 
+ *
+ * If texture reads are supported by underlying GL implementaion 
+ * Unrealizing/hiding frees image data from texture memory moving to main 
+ * system memory. Re-realizing then performs the opposite operation. 
+ * This process allows basic management of commonly limited available texture 
  * memory.  
  */
 
@@ -584,7 +587,7 @@ clutter_texture_realize (ClutterActor *actor)
       /* Move any local image data we have from unrealization  
        * back into video memory.	 
       */
-      clutter_texture_set_pixbuf (texture, priv->local_pixbuf);
+      clutter_texture_set_pixbuf (texture, priv->local_pixbuf, NULL);
       g_object_unref (priv->local_pixbuf);
       priv->local_pixbuf = NULL;
     }
@@ -725,7 +728,8 @@ clutter_texture_set_property (GObject      *object,
     {
     case PROP_PIXBUF:
       clutter_texture_set_pixbuf (texture, 
-				  (GdkPixbuf*)g_value_get_pointer(value));
+				  (GdkPixbuf*)g_value_get_pointer(value),
+				  NULL);
       break;
     case PROP_USE_TILES:
       priv->is_tiled = g_value_get_boolean (value);
@@ -738,12 +742,6 @@ clutter_texture_set_property (GObject      *object,
       break;
     case PROP_MAX_TILE_WASTE:
       priv->max_tile_waste = g_value_get_int (value);
-      break;
-    case PROP_PIXEL_TYPE:
-      priv->pixel_type = g_value_get_int (value);
-      break;
-    case PROP_PIXEL_FORMAT:
-      priv->pixel_format = g_value_get_int (value);
       break;
     case PROP_SYNC_SIZE:
       priv->sync_actor_size = g_value_get_boolean (value);
@@ -919,7 +917,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		       0,
 		       G_MAXINT,
 		       PIXEL_TYPE,
-		       G_PARAM_CONSTRUCT_ONLY | CLUTTER_PARAM_READWRITE));
+		       G_PARAM_READABLE));
 
   g_object_class_install_property
     (gobject_class, PROP_PIXEL_FORMAT,
@@ -929,7 +927,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		       0,
 		       G_MAXINT,
 		       CGL_RGBA,
-		       G_PARAM_CONSTRUCT_ONLY | CLUTTER_PARAM_READWRITE));
+		       G_PARAM_READABLE));
 
   /**
    * ClutterTexture::size-change:
@@ -1012,7 +1010,7 @@ pixbuf_destroy_notify (guchar  *pixels, gpointer data)
 GdkPixbuf*
 clutter_texture_get_pixbuf (ClutterTexture* texture)
 {
-#if CLUTTER_COGL_GL
+#if HAVE_COGL_GL
   ClutterTexturePrivate *priv;
   GdkPixbuf             *pixbuf = NULL;
   guchar                *pixels = NULL;
@@ -1137,7 +1135,7 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 }
 
 /**
- * clutter_texture_set_from_data:
+ * clutter_texture_set_from_rgb_data:
  * @texture: A #ClutterTexture
  * @data: Image data in RGB type colorspace.
  * @has_alpha: Set to TRUE if image data has a alpha channel.
@@ -1145,38 +1143,59 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
  * @height: Height in pixels of image data
  * @rowstride: Distance in bytes between row starts.
  * @bpp: bytes per pixel ( Currently only 4 supported )
+ * @flags: #ClutterTextureFlags
+ * @error: FIXME.
  *
  * Sets #ClutterTexture image data.
  *
- * Since 0.2. This function is likely to change in future versions.
+ * Return value: TRUE on success, FALSE on failure. 
+ *
+ * Since 0.4. This function is likely to change in future versions.
  **/
-void
-clutter_texture_set_from_data (ClutterTexture *texture,
-			       const guchar   *data,
-			       gboolean        has_alpha,
-			       gint            width,
-			       gint            height,
-			       gint            rowstride,
-			       gint            bpp)
+gboolean          
+clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
+				     const guchar       *data,
+				     gboolean            has_alpha,
+				     gint                width,
+				     gint                height,
+				     gint                rowstride,
+				     gint                bpp,
+				     ClutterTextureFlags flags,
+				     GError             *error)
 {
   ClutterTexturePrivate *priv;
   gboolean               texture_dirty = TRUE;
+  COGLenum               prev_format;
 
   priv = texture->priv;
 
-  g_return_if_fail (data != NULL);
-  g_return_if_fail (bpp == 4);
-
-  /* FIXME: check other image props */
+  g_return_val_if_fail (data != NULL, FALSE);
+  /* Needed for GL_RGBA (internal format) and gdk pixbuf usage */
+  g_return_val_if_fail (bpp == 4, FALSE); 
+  
   texture_dirty = (width != priv->width || height != priv->height);
 
-  priv->width  = width;
-  priv->height = height;
-
+  prev_format = priv->pixel_format;
+  
   if (has_alpha)
     priv->pixel_format = CGL_RGBA;
   else
     priv->pixel_format = CGL_RGB;
+
+  if (flags & CLUTTER_TEXTURE_RGB_FLAG_BGR)
+    {
+      if (has_alpha)
+	priv->pixel_format = CGL_BGRA;
+      else
+	priv->pixel_format = CGL_BGR;
+    }
+
+  if (prev_format != priv->pixel_format || priv->pixel_type != PIXEL_TYPE)
+    texture_dirty = TRUE;
+
+  priv->pixel_type = PIXEL_TYPE;
+  priv->width      = width;
+  priv->height     = height;
 
   if (texture_dirty)
     {
@@ -1220,8 +1239,14 @@ clutter_texture_set_from_data (ClutterTexture *texture,
 		priv->width,
 		priv->height);
 
-  texture_upload_data (texture, data, has_alpha, 
-		       width, height, rowstride, bpp);
+  /* Set Error from this */
+  texture_upload_data (texture, 
+		       data, 
+		       has_alpha, 
+		       width, 
+		       height, 
+		       rowstride, 
+		       bpp);
 
   CLUTTER_ACTOR_SET_FLAGS (CLUTTER_ACTOR (texture), CLUTTER_ACTOR_REALIZED);
 
@@ -1243,6 +1268,110 @@ clutter_texture_set_from_data (ClutterTexture *texture,
   if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR(texture)))
     clutter_actor_queue_redraw (CLUTTER_ACTOR(texture));
 
+  return TRUE;
+}
+
+/**
+ * clutter_texture_set_from_yuv_data:
+ * @texture: A #ClutterTexture
+ * @data: Image data in RGB type colorspace.
+ * @width: Width in pixels of image data.
+ * @height: Height in pixels of image data
+ * @flags: #ClutterTextureFlags
+ * @error: FIXME.
+ *
+ * Sets a #ClutterTexture from YUV image data.
+ *
+ * Return value: TRUE on success, FALSE on failure. 
+ *
+ * Since 0.4. This function is likely to change in future versions.
+ **/
+gboolean          
+clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
+				     const guchar       *data,
+				     gint                width,
+				     gint                height,
+				     ClutterTextureFlags flags,
+				     GError             *error)
+{
+#if 0
+  gboolean               texture_dirty = TRUE;
+  COGLenum               prev_format;
+
+  if (!clutter_feature_available(CLUTTER_FEATURE_TEXTURE_YUV))
+    return FALSE;
+
+  priv = texture->priv;
+
+  /* FIXME: check other image props */
+  texture_dirty = (width != priv->width || height != priv->height);
+
+  priv->width  = width;
+  priv->height = height;
+
+  /* #ifdef GL_YCBCR_MESA */
+  priv->pixel_format = CGL_YCBCR_MESA;
+
+  if (!priv->tiles)
+    {
+      priv->tiles = g_new (guint, 1);
+      glGenTextures (1, priv->tiles);
+    }
+
+  cogl_texture_bind (priv->target_type, priv->tiles[0]);
+
+  cogl_texture_set_filters (priv->target_type, 
+			    priv->filter_quality ? CGL_LINEAR : CGL_NEAREST,
+			    priv->filter_quality ? CGL_LINEAR : CGL_NEAREST);
+
+  if (texture_dirty)
+    {
+      if (cogl_texture_can_size(priv->pixel_format, 
+				priv->pixel_type,
+				clutter_util_next_p2(priv->width), 
+				clutter_util_next_p2(priv->height)))
+	{
+	  glTexImage2D (CGL_TEXTURE_2D, 
+			0, 
+			GL_YCBCR_MESA, 
+			clutter_util_next_p2(priv->width),
+			clutter_util_next_p2(priv->height),
+			0, 
+			GL_YCBCR_MESA, 
+			GL_UNSIGNED_SHORT_8_8_REV_MESA, 
+			NULL);
+	}
+      else
+	/* No tiled support for YUV textures as yet */
+	return FALSE; 		/* Set Error */
+    }
+
+  if (flags & CLUTTER_TEXTURE_YUV_FLAG_YUV2)
+    {
+      glTexSubImage2D (GL_TEXTURE_2D, 
+		       0, 
+		       0, 
+		       0,
+		       priv->width,
+		       priv->height
+		       CGL_YCBCR_MESA, 
+		       CGL_UNSIGNED_SHORT_8_8_REV_MESA,
+		       data);
+    }
+  else
+    {
+      glTexSubImage2D (GL_TEXTURE_2D, 
+		       0, 
+		       0, 
+		       0,
+		       priv->width,
+		       priv->height
+		       CGL_YCBCR_MESA, 
+		       CGL_UNSIGNED_SHORT_8_8_MESA,
+		       data);
+    }
+#endif
+  return FALSE;
 }
 
 /**
@@ -1253,23 +1382,26 @@ clutter_texture_set_from_data (ClutterTexture *texture,
  * Sets a  #ClutterTexture image data from a #GdkPixbuf
  *
  **/
-void
+gboolean
 clutter_texture_set_pixbuf (ClutterTexture *texture,
-                            GdkPixbuf      *pixbuf)
+                            GdkPixbuf      *pixbuf,
+			    GError         *error)
 {
   ClutterTexturePrivate *priv;
 
   priv = texture->priv;
 
-  g_return_if_fail (pixbuf != NULL);
+  g_return_val_if_fail (pixbuf != NULL, FALSE);
 
-  clutter_texture_set_from_data (texture,
-				 gdk_pixbuf_get_pixels (pixbuf),
-				 gdk_pixbuf_get_has_alpha (pixbuf),
-				 gdk_pixbuf_get_width (pixbuf),
-				 gdk_pixbuf_get_height (pixbuf),
-				 gdk_pixbuf_get_rowstride (pixbuf),
-				 4);
+  return clutter_texture_set_from_rgb_data (texture,
+					    gdk_pixbuf_get_pixels (pixbuf),
+					    gdk_pixbuf_get_has_alpha (pixbuf),
+					    gdk_pixbuf_get_width (pixbuf),
+					    gdk_pixbuf_get_height (pixbuf),
+					    gdk_pixbuf_get_rowstride (pixbuf),
+					    4,
+					    0,
+					    error);
 }
 
 /**
