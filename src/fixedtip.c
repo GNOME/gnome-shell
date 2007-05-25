@@ -23,6 +23,7 @@
 
 #include <config.h>
 #include "fixedtip.h"
+#include "ui.h"
 
 static GtkWidget *tip = NULL;
 static GtkWidget *label = NULL;
@@ -87,6 +88,10 @@ meta_fixed_tip_show (Display *xdisplay, int screen_number,
   gtk_label_set_markup (GTK_LABEL (label), markup_text);
   
   gtk_window_get_size (GTK_WINDOW (tip), &w, &h);
+
+  if (meta_ui_get_direction() == META_UI_DIRECTION_RTL)
+      root_x = MAX(0, root_x - w);
+
   if ((root_x + w) > screen_right_edge)
     root_x -= (root_x + w) - screen_right_edge;
   

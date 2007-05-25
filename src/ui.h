@@ -40,6 +40,12 @@ typedef struct _MetaImageWindow MetaImageWindow;
 
 typedef gboolean (* MetaEventFunc) (XEvent *xevent, gpointer data);
 
+typedef enum
+{
+  META_UI_DIRECTION_LTR,
+  META_UI_DIRECTION_RTL
+} MetaUIDirection;
+
 void meta_ui_init (int *argc, char ***argv);
 
 Display* meta_ui_get_display (void);
@@ -193,6 +199,8 @@ gboolean meta_ui_window_is_widget (MetaUI *ui,
                                    Window  xwindow);
 
 int      meta_ui_get_drag_threshold       (MetaUI *ui);
+
+MetaUIDirection meta_ui_get_direction (void);
 
 #include "tabpopup.h"
 

@@ -6454,6 +6454,7 @@ meta_window_show_menu (MetaWindow *window,
   MetaWindowMenu *menu;
   MetaWorkspaceLayout layout;
   int n_workspaces;
+  gboolean ltr;
   
   if (window->display->window_menu)
     {
@@ -6484,12 +6485,13 @@ meta_window_show_menu (MetaWindow *window,
 
   if (!window->on_all_workspaces)
     {
+      ltr = meta_ui_get_direction() == META_UI_DIRECTION_LTR;
 
       if (layout.current_col > 0)
-        ops |= META_MENU_OP_MOVE_LEFT;
+        ops |= ltr ? META_MENU_OP_MOVE_LEFT : META_MENU_OP_MOVE_RIGHT;
       if ((layout.current_col < layout.cols - 1) &&
           (layout.current_row * layout.cols + (layout.current_col + 1) < n_workspaces))
-        ops |= META_MENU_OP_MOVE_RIGHT;
+        ops |= ltr ? META_MENU_OP_MOVE_RIGHT : META_MENU_OP_MOVE_LEFT;
       if (layout.current_row > 0)
         ops |= META_MENU_OP_MOVE_UP;
       if ((layout.current_row < layout.rows - 1) &&

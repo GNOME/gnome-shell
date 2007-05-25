@@ -34,6 +34,7 @@
 #include "theme.h"
 #include "prefs.h"
 #include "errors.h"
+#include "ui.h"
 
 #ifdef HAVE_SHAPE
 #include <X11/extensions/shape.h>
@@ -1134,6 +1135,11 @@ show_tip_now (MetaFrames *frames)
       /* get conversion delta for root-to-frame coords */
       dx = root_x - x;
       dy = root_y - y;
+
+      /* Align the tooltip to the button right end if RTL */
+      if (meta_ui_get_direction() == META_UI_DIRECTION_RTL)
+        dx += rect->width;
+
       screen_number = gdk_screen_get_number (gtk_widget_get_screen (GTK_WIDGET (frames)));
       
       meta_fixed_tip_show (gdk_display,
@@ -1432,6 +1438,10 @@ meta_frames_button_press_event (GtkWidget      *widget,
           dx = event->x_root - event->x;
           dy = event->y_root - event->y;
           
+	  /* Align to the right end of the menu rectangle if RTL */
+	  if (meta_ui_get_direction() == META_UI_DIRECTION_RTL)
+	    dx += rect->width;
+
           meta_core_show_window_menu (gdk_display,
                                       frame->xwindow,
                                       rect->x + dx,

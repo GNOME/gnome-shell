@@ -3229,6 +3229,9 @@ handle_activate_menu (MetaDisplay    *display,
       meta_window_get_position (display->focus_window,
                                 &x, &y);
       
+      if (meta_ui_get_direction() == META_UI_DIRECTION_RTL)
+	  x += display->focus_window->rect.width;
+
       meta_window_show_menu (display->focus_window,
                              x, y,
                              0,

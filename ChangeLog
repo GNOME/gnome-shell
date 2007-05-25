@@ -1,3 +1,25 @@
+2007-05-25  Yair Hershkovitz  <yairhr@yahoo.com>
+
+	* src/workspace.c (meta_workspace_get_neighbor): Add support
+	for RTL languages so that alt-tab, etc., go the other way.
+	* src/keybindings.c (handle_activate_menu): In RTL locales,
+	pop up the menu on the right-hand side when the menu keystroke
+	is pressed.
+	* src/fixedtip.c (meta_fixed_tip_show): right-justify tooltips
+	in RTL locales.
+	* src/menu.c (popup_position_func): popup menus in RTL locales
+	are flush with the right-hand side of the window where possible.
+	* src/frames.c (show_tip_now, meta_frames_button_press_event):
+	tooltips are aligned with the right-hand side of buttons in
+	RTL locales.
+	* src/ui.[ch] (meta_ui_get_direction, enum MetaUIDirection):
+	New content.
+	* src/window.c (meta_window_show_menu): "move left" appears above
+	"move right" in the window menu for LTR locales, and vice versa
+	for RTL locales.
+
+	This is all to close bug #387893.
+
 2007-04-24  Linus Torvalds  <torvalds@woody.linux-foundation.org>
 
 	* src/prefs.[ch] (init_action_meta_prefs, meta_prefs_init,

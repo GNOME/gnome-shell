@@ -721,6 +721,7 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
 {
   MetaWorkspaceLayout layout;  
   int i, current_space, num_workspaces;
+  gboolean ltr;
 
   current_space = meta_workspace_index (workspace);
   num_workspaces = meta_screen_get_n_workspaces (workspace->screen);
@@ -730,13 +731,15 @@ meta_workspace_get_neighbor (MetaWorkspace      *workspace,
   meta_verbose ("Getting neighbor of %d in direction %s\n",
                 current_space, meta_motion_direction_to_string (direction));
   
+  ltr = meta_ui_get_direction() == META_UI_DIRECTION_LTR;
+
   switch (direction) 
     {
     case META_MOTION_LEFT:
-      layout.current_col -= 1;
+      layout.current_col -= ltr ? 1 : -1;
       break;
     case META_MOTION_RIGHT:
-      layout.current_col += 1;
+      layout.current_col += ltr ? 1 : -1;
       break;
     case META_MOTION_UP:
       layout.current_row -= 1;

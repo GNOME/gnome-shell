@@ -32,6 +32,7 @@
 #include "core.h"
 #include "themewidget.h"
 #include "metaaccellabel.h"
+#include "ui.h"
 
 typedef struct _MenuItem MenuItem;
 typedef struct _MenuData MenuData;
@@ -119,6 +120,9 @@ popup_position_func (GtkMenu   *menu,
   *x = pos->x;
   *y = pos->y;
   
+  if (meta_ui_get_direction() == META_UI_DIRECTION_RTL)
+    *x = MAX (0, *x - req.width); 
+
   /* Ensure onscreen */
   *x = CLAMP (*x, 0, MAX (0, gdk_screen_width () - req.width));
   *y = CLAMP (*y, 0, MAX (0, gdk_screen_height () - req.height));

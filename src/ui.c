@@ -952,3 +952,12 @@ meta_ui_get_drag_threshold (MetaUI *ui)
 
   return threshold;
 }
+
+MetaUIDirection
+meta_ui_get_direction (void)
+{
+  if (gtk_widget_get_default_direction() == GTK_TEXT_DIR_RTL)
+    return META_UI_DIRECTION_RTL;
+
+  return META_UI_DIRECTION_LTR;
+}
