@@ -489,7 +489,8 @@ cogl_setup_viewport (guint         w,
 {
   gint width = (gint) w;
   gint height = (gint) h;
-    
+  ClutterFixed z_camera;
+  
   GE( glViewport (0, 0, width, height) );
   GE( glMatrixMode (GL_PROJECTION) );
   GE( glLoadIdentity () );
@@ -505,10 +506,9 @@ cogl_setup_viewport (guint         w,
 
   /* camera distance from screen, 0.5 * tan (FOV) */
 #define DEFAULT_Z_CAMERA 0.866025404f
-
-  GE( glTranslatex (-1 << 15, 
-		    -1 << 15, 
-		    -CLUTTER_FLOAT_TO_FIXED(DEFAULT_Z_CAMERA)) );
+  z_camera = clutter_tani (fovy) << 1;
+  
+  GE( glTranslatex (-1 << 15, -1 << 15, -z_camera );
 
   GE( glScalex ( CFX_ONE / width, 
 		 -CFX_ONE / height,
