@@ -444,6 +444,13 @@ typedef GLint  COGLint;
 
 #define CGL_TEXTURE_2D GL_TEXTURE_2D
 #define CGL_ARGB GL_ARGB
+
+/* FIXME: There is no BGR support in GLES - so with below BGR textures are 
+ * borked. Will likely need a feature flag and some coversion..
+ */
+#define CGL_BGR GL_RGB
+#define CGL_BGRA GL_RGBA
+
 #define CGL_TEXTURE_RECTANGLE_ARB 0 /* Its unlikely we support this */
 
 G_END_DECLS
