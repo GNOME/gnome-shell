@@ -1,5 +1,11 @@
 2007-05-28  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/clutter-texture.c: (clutter_texture_unrealize):
+	Dont even try to move texture pixels from video -> system
+	ram on unrealisation for GL/ES
+
+2007-05-28  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-stage.c: (clutter_stage_get_actor_at_pos):
 	Fix for GL/ES. Barring texture reads this means all clutter 
         functionality now works on GL/ES! (no doubt with a few yet to

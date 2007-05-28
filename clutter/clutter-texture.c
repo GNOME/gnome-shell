@@ -561,12 +561,18 @@ clutter_texture_unrealize (ClutterActor *actor)
 
   CLUTTER_MARK();
 
-  /* Move image data from video to main memory 
-  */
-  if (priv->local_pixbuf == NULL)
-    priv->local_pixbuf = clutter_texture_get_pixbuf (texture);
+  if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_READ_PIXELS))
+    {
+      /* Move image data from video to main memory. 
+       * GL/ES cant do this - it probably makes sense 	 
+       * to move this kind of thing into a ClutterProxyTexture
+       * where this behaviour can be better controlled.
+       */
+      if (priv->local_pixbuf == NULL)
+	priv->local_pixbuf = clutter_texture_get_pixbuf (texture);
   
-  texture_free_gl_resources (texture);
+      texture_free_gl_resources (texture);
+    }
 
   CLUTTER_NOTE (TEXTURE, "Texture unrealized");
 }
