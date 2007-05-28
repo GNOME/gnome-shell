@@ -1,5 +1,12 @@
 2007-05-28  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/clutter-stage.c: (clutter_stage_get_actor_at_pos):
+	Fix for GL/ES. Barring texture reads this means all clutter 
+        functionality now works on GL/ES! (no doubt with a few yet to
+	be discovered bugs)
+
+2007-05-28  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-backend.c:
 	* clutter/clutter-backend.h:
 	* clutter/glx/clutter-stage-glx.c:
