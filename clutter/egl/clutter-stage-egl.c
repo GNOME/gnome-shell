@@ -182,60 +182,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
       /* FIXME */
     }
 
-  _clutter_stage_sync_viewport (CLUTTER_STAGE (stage_egl));
-}
-
-static void
-clutter_stage_egl_paint (ClutterActor *self)
-{
-  ClutterStageEgl *stage_egl = CLUTTER_STAGE_EGL (self);
-  ClutterStage    *stage = CLUTTER_STAGE (self);
-  ClutterColor     stage_color;
-  static GTimer   *timer = NULL; 
-  static guint     timer_n_frames = 0;
-
-  CLUTTER_NOTE (PAINT, " Redraw enter");
-
-  if (clutter_get_show_fps ())
-    {
-      if (!timer)
-	timer = g_timer_new ();
-    }
-
-  clutter_stage_get_color (stage, &stage_color);
-
-  cogl_paint_init (&stage_color);
-
-  /* Basically call up to ClutterGroup paint here */
-  CLUTTER_ACTOR_CLASS (clutter_stage_egl_parent_class)->paint (self);
-
-  /* Why this paint is done in backend as likely GL windowing system
-   * specific calls, like swapping buffers.
-  */
-  if (stage_egl->xwin)
-    {
-      /* clutter_feature_wait_for_vblank (); */
-      eglSwapBuffers ((EGLDisplay)stage_egl->xdpy,  stage_egl->egl_surface);
-    }
-  else
-    {
-      eglWaitGL ();
-      CLUTTER_GLERR ();
-    }
-
-  if (clutter_get_show_fps ())
-    {
-      timer_n_frames++;
-
-      if (g_timer_elapsed (timer, NULL) >= 1.0)
-	{
-	  g_print ("*** FPS: %i ***\n", timer_n_frames);
-	  timer_n_frames = 0;
-	  g_timer_start (timer);
-	}
-    }
-
-  CLUTTER_NOTE (PAINT, " Redraw leave");
+  CLUTTER_SET_PRIVATE_FLAGS(actor, CLUTTER_ACTOR_SYNC_MATRICES);
 }
 
 static void
@@ -272,7 +219,7 @@ clutter_stage_egl_request_coords (ClutterActor        *self,
 		       stage_egl->xwin_width,
 		       stage_egl->xwin_height);
 
-      _clutter_stage_sync_viewport (CLUTTER_STAGE (stage_egl));
+      CLUTTER_SET_PRIVATE_FLAGS(self, CLUTTER_ACTOR_SYNC_MATRICES);
     }
 
   if (stage_egl->xwin != None) /* Do we want to bother ? */
@@ -316,7 +263,7 @@ clutter_stage_egl_set_fullscreen (ClutterStage *stage,
         XDeleteProperty (stage_egl->xdpy, stage_egl->xwin, atom_WM_STATE);
     }
 
-  _clutter_stage_sync_viewport (stage);
+  CLUTTER_SET_PRIVATE_FLAGS(stage, CLUTTER_ACTOR_SYNC_MATRICES);
 }
 
 static void
@@ -359,8 +306,6 @@ clutter_stage_egl_set_cursor_visible (ClutterStage *stage,
       XDefineCursor (stage_egl->xdpy, stage_egl->xwin, curs);
 #endif /* HAVE_XFIXES */
     }
-
-  _clutter_stage_sync_viewport (stage);
 }
 
 static void
@@ -369,13 +314,6 @@ clutter_stage_egl_set_offscreen (ClutterStage *stage,
 {
   g_warning ("Stage of type `%s' do not support ClutterStage::set_offscreen",
              G_OBJECT_TYPE_NAME (stage));
-}
-
-static void
-snapshot_pixbuf_free (guchar   *pixels,
-		      gpointer  data)
-{
-  g_free (pixels);
 }
 
 static void
@@ -414,7 +352,6 @@ clutter_stage_egl_class_init (ClutterStageEglClass *klass)
   actor_class->hide = clutter_stage_egl_hide;
   actor_class->realize = clutter_stage_egl_realize;
   actor_class->unrealize = clutter_stage_egl_unrealize;
-  actor_class->paint = clutter_stage_egl_paint;
   actor_class->request_coords = clutter_stage_egl_request_coords;
   actor_class->allocate_coords = clutter_stage_egl_allocate_coords;
   

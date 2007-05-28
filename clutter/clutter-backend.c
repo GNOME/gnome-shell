@@ -143,6 +143,16 @@ _clutter_backend_init_stage (ClutterBackend  *backend,
   return TRUE;
 }
 
+void
+_clutter_backend_redraw (ClutterBackend *backend)
+{
+  ClutterBackendClass *klass;
+
+  klass = CLUTTER_BACKEND_GET_CLASS (backend);
+  if (G_LIKELY(klass->redraw))
+    klass->redraw (backend);
+}
+
 ClutterFeatureFlags
 _clutter_backend_get_features (ClutterBackend *backend)
 {

@@ -166,6 +166,30 @@ static const GOptionEntry entries[] =
   { NULL }
 };
 
+static void
+clutter_backend_egl_redraw (ClutterBackend *backend)
+{
+  ClutterBackendEgl *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  ClutterStageEgl   *stage_egl;
+
+  stage_egl = CLUTTER_STAGE_EGL(backend_egl->stage);
+
+  clutter_actor_paint (CLUTTER_ACTOR(stage_egl));
+
+  /* Why this paint is done in backend as likely GL windowing system
+   * specific calls, like swapping buffers.
+  */
+  if (stage_egl->xwin)
+    {
+      /* clutter_feature_wait_for_vblank (); */
+      eglSwapBuffers ((EGLDisplay)stage_egl->xdpy,  stage_egl->egl_surface);
+    }
+  else
+    {
+      eglWaitGL ();
+      CLUTTER_GLERR ();
+    }
+}
 
 static void
 clutter_backend_egl_add_options (ClutterBackend *backend,
@@ -237,7 +261,6 @@ clutter_backend_egl_constructor (GType                  gtype,
   return g_object_ref (backend_singleton);
 }
 
-
 static void
 clutter_backend_egl_class_init (ClutterBackendEglClass *klass)
 {
@@ -248,12 +271,13 @@ clutter_backend_egl_class_init (ClutterBackendEglClass *klass)
   gobject_class->dispose = clutter_backend_egl_dispose;
   gobject_class->finalize = clutter_backend_egl_finalize;
 
-  backend_class->pre_parse = clutter_backend_egl_pre_parse;
-  backend_class->post_parse = clutter_backend_egl_post_parse;
-  backend_class->init_stage = clutter_backend_egl_init_stage;
+  backend_class->pre_parse   = clutter_backend_egl_pre_parse;
+  backend_class->post_parse  = clutter_backend_egl_post_parse;
+  backend_class->init_stage  = clutter_backend_egl_init_stage;
   backend_class->init_events = clutter_backend_egl_init_events;
-  backend_class->get_stage = clutter_backend_egl_get_stage;
+  backend_class->get_stage   = clutter_backend_egl_get_stage;
   backend_class->add_options = clutter_backend_egl_add_options;
+  backend_class->redraw      = clutter_backend_egl_redraw;
 }
 
 static void

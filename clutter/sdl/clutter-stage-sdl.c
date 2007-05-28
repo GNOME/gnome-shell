@@ -77,51 +77,7 @@ clutter_stage_sdl_realize (ClutterActor *actor)
       return;
     }
 
-  _clutter_stage_sync_viewport (CLUTTER_STAGE (stage_sdl));
-}
-
-static void
-clutter_stage_sdl_paint (ClutterActor *self)
-{
-  ClutterStage    *stage = CLUTTER_STAGE (self);
-  ClutterColor     stage_color;
-  static GTimer   *timer = NULL; 
-  static guint     timer_n_frames = 0;
-
-  CLUTTER_NOTE (PAINT, " Redraw enter");
-
-  if (clutter_get_show_fps ())
-    {
-      if (!timer)
-	timer = g_timer_new ();
-    }
-
-  clutter_stage_get_color (stage, &stage_color);
-
-  cogl_paint_init (&stage_color);
-
-  /* Basically call up to ClutterGroup paint here */
-  CLUTTER_ACTOR_CLASS (clutter_stage_sdl_parent_class)->paint (self);
-
-  /* Why this paint is done in backend as likely GL windowing system
-   * specific calls, like swapping buffers.
-  */
-  
-  SDL_GL_SwapBuffers();
-
-  if (clutter_get_show_fps ())
-    {
-      timer_n_frames++;
-
-      if (g_timer_elapsed (timer, NULL) >= 1.0)
-	{
-	  g_print ("*** FPS: %i ***\n", timer_n_frames);
-	  timer_n_frames = 0;
-	  g_timer_start (timer);
-	}
-    }
-
-  CLUTTER_NOTE (PAINT, " Redraw leave");
+  CLUTTER_SET_PRIVATE_FLAGS(actor, CLUTTER_ACTOR_SYNC_MATRICES);
 }
 
 static void
@@ -163,7 +119,7 @@ clutter_stage_sdl_request_coords (ClutterActor    *self,
       stage_sdl->win_width  = new_width;
       stage_sdl->win_height = new_height;
 
-      _clutter_stage_sync_viewport (CLUTTER_STAGE (stage_sdl));
+      CLUTTER_SET_PRIVATE_FLAGS(self, CLUTTER_ACTOR_SYNC_MATRICES);
     }
 }
 
@@ -231,7 +187,6 @@ clutter_stage_sdl_class_init (ClutterStageSDLClass *klass)
   actor_class->hide = clutter_stage_sdl_hide;
   actor_class->realize = clutter_stage_sdl_realize;
   actor_class->unrealize = clutter_stage_sdl_unrealize;
-  actor_class->paint = clutter_stage_sdl_paint;
   actor_class->request_coords = clutter_stage_sdl_request_coords;
   actor_class->allocate_coords = clutter_stage_sdl_allocate_coords;
   

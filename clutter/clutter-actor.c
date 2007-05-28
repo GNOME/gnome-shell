@@ -266,6 +266,40 @@ clutter_actor_unrealize (ClutterActor *self)
 }
 
 /**
+ * clutter_actor_pick:
+ * @self: A #ClutterActor
+ * @color: A #ClutterColor
+ *
+ * Renders a silhouette of the actor in supplied color.
+ *
+ * This function should not never be called directly by applications. 
+ **/
+void                  
+clutter_actor_pick (ClutterActor       *self, 
+		    const ClutterColor *color)
+{
+  ClutterActorClass *klass;
+
+  klass = CLUTTER_ACTOR_GET_CLASS (self);
+
+  if (G_UNLIKELY(klass->pick))
+    {
+      /* Its pretty unlikely anything other than a container actor 
+       * would need to supply its own pick method.
+      */
+      (klass->pick) (self, color);
+    }
+  else
+    {
+      cogl_color (color);
+      cogl_rectangle (0, 
+		      0, 
+		      clutter_actor_get_width(self), 
+		      clutter_actor_get_height(self));
+    }
+}
+
+/**
  * clutter_actor_paint:
  * @self: A #ClutterActor
  *
@@ -279,6 +313,7 @@ clutter_actor_paint (ClutterActor *self)
 {
   ClutterActorPrivate *priv;
   ClutterActorClass *klass;
+  ClutterMainContext *context;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   priv = self->priv;
@@ -295,13 +330,10 @@ clutter_actor_paint (ClutterActor *self)
 	}
     }
 
-  klass = CLUTTER_ACTOR_GET_CLASS (self);
+  context = clutter_context_get_default ();
+  klass   = CLUTTER_ACTOR_GET_CLASS (self);
 
   cogl_push_matrix();
-
-#if HAVE_COGL_GL
-  glLoadName (clutter_actor_get_id (self));
-#endif
 
   if (clutter_actor_get_parent (self) != NULL)
     {
@@ -340,39 +372,35 @@ clutter_actor_paint (ClutterActor *self)
       cogl_scale (priv->scale_x, priv->scale_y);
     }
 
-#if HAVE_COGL_GL
   if (priv->has_clip)
+    cogl_clip_set (&(priv->clip));
+
+  if (G_UNLIKELY(context->pick_mode == TRUE))
     {
-      ClutterGeometry *clip = &(priv->clip);
+      ClutterColor col;
+      guint32      id;
 
-      /* FIXME: ES ... */
-      glEnable (GL_STENCIL_TEST);
+      id = clutter_actor_get_id (self);
 
-      glClearStencil (0.0f);
-      glClear (GL_STENCIL_BUFFER_BIT);
+      /* Encode the actor id into a color */
+      col.red   = (id >> 16) & 0xff;
+      col.green = (id >> 8) & 0xff;
+      col.blue  =  id & 0xff;
+      col.alpha = 0xff;
 
-      glStencilFunc (GL_NEVER, 0x1, 0x1);
-      glStencilOp (GL_INCR, GL_INCR, GL_INCR);
-
-      glColor3f (1.0f, 1.0f, 1.0f);
-
-      glRecti (clip->x, 
-	       clip->y,
-	       clip->x + clip->width,
-	       clip->y + clip->height);
-
-      glStencilFunc (GL_EQUAL, 0x1, 0x1);
-      glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP);
+      /* Actor will then paint silhouette of itself in supplied color.
+       * See clutter_stage_get_actor_at_pos() for where picking is enabled.  
+      */
+      clutter_actor_pick (self, &col);
     }
-#endif
+  else
+    {
+      if (G_LIKELY(klass->paint))
+	(klass->paint) (self);
+    }
 
-  if (klass->paint)
-    (klass->paint) (self);
-
-#if CLUTTER_COGL_GL
   if (priv->has_clip)
-    glDisable (GL_STENCIL_TEST);
-#endif
+    cogl_clip_unset();
 
   if (priv->scale_x != CFX_ONE || priv->scale_y != CFX_ONE)
     cogl_scale (CFX_ONE, CFX_ONE);

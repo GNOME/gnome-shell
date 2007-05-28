@@ -1,3 +1,45 @@
+2007-05-28  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-backend.c:
+	* clutter/clutter-backend.h:
+	* clutter/glx/clutter-stage-glx.c:
+	* clutter/glx/clutter-backend-glx.c:
+	Fix up rendering pipeline removing clutter_backend_XXX_stage_paint
+	and adding clutter_backend_XXX_redraw instead. Duplicates less
+	code in backends, avoids clutter_actor_paint() getting called
+	before stage is set up (viewport wise) and unbreaks things like
+	picking.
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	* clutter/clutter-main.c:
+	* clutter/clutter-private.h:
+	* clutter/clutter-stage.c: (clutter_stage_get_actor_at_pos):
+	Redo picking functionality a different way (via color indexing)
+	as to provide more flexibility, possibly speed and more likely
+	work with GL/ES (doesn't currently however - not sure why).
+
+	* clutter/clutter-group.c:
+	Add groups own 'pick' method.
+
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/gl/cogl.c:
+	* clutter/cogl/gles/cogl.c:
+	Move clipping funtionality into cogl.
+
+	* clutter/cogl/gles/cogl-defines.h:
+	Hack around missing BGR format in GL/ES.
+
+	* clutter/egl/clutter-backend-egl.c:
+	* clutter/egl/clutter-backend-egl.h:
+	* clutter/egl/clutter-stage-egl.c:
+	* clutter/sdl/clutter-backend-sdl.c:
+	* clutter/sdl/clutter-backend-sdl.h:
+	* clutter/sdl/clutter-event-sdl.c:
+	* clutter/sdl/clutter-stage-sdl.c:
+	Update backends to newer API.
+	Add basic mouse event translation to SDL.
+
 2007-05-25  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-color.c: (clutter_color_parse):

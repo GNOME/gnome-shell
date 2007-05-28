@@ -94,12 +94,9 @@ enum
 static guint stage_signals[LAST_SIGNAL] = { 0, };
 
 static void
-clutter_stage_paint (ClutterActor *actor)
+clutter_stage_paint (ClutterActor *self)
 {
-  /* chain up */
-  CLUTTER_NOTE (PAINT, "Chaining up to parent class paint");
-
-  CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->paint (actor);
+  CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->paint (self);
 }
 
 static void
@@ -766,68 +763,41 @@ clutter_stage_get_actor_at_pos (ClutterStage *stage,
                                 gint          x,
                                 gint          y)
 {
-#if HAVE_COGL_GL
+  ClutterMainContext *context;
+  guchar              pixel[3];
+  GLint               viewport[4];
+  ClutterColor        white = { 0xff, 0xff, 0xff, 0xff };
+  guint32             id;
 
-  /* FIXME: Add a clutter feature flag for this or figure out  
-   *        for gles.
+  context = clutter_context_get_default ();
+
+  cogl_paint_init (&white);
+  cogl_enable (0);
+
+  /* Render the entire scence in pick mode - just single colored silhouette's  
+   * are drawn offscreen (as we never swap buffers)
   */
-
-  ClutterActor *found = NULL;
-  GLuint buff[512] = { 0 };
-  GLint hits;
-  GLint view[4];
-  
-  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
- 
-  glSelectBuffer (512, buff);
-  glGetIntegerv (GL_VIEWPORT, view);
-  glRenderMode (GL_SELECT);
-
-  glInitNames ();
-  glPushName (0);
- 
-  glMatrixMode (GL_PROJECTION);
-  glPushMatrix ();
-  glLoadIdentity ();
-
-  /* This is gluPickMatrix(x, y, 1.0, 1.0, view); */
-  glTranslatef ((view[2] - 2 * (x - view[0])),
-	        (view[3] - 2 * (y - view[1])), 0);
-  glScalef (view[2], -view[3], 1.0);
-
-  cogl_perspective (171, /* 60 degrees */
-		    CFX_ONE,
-		    CLUTTER_FLOAT_TO_FIXED (0.1),
-		    CLUTTER_FLOAT_TO_FIXED (100.0));
-
-  glMatrixMode (GL_MODELVIEW);
-
+  context->pick_mode = TRUE;
   clutter_actor_paint (CLUTTER_ACTOR (stage));
+  context->pick_mode = FALSE;
 
-  glMatrixMode (GL_PROJECTION);
-  glPopMatrix ();
+  /* Calls should work under both GL and GLES 
+   *
+   * FIXME: of course we need to handle the case where the frame buffer isn't
+   * 24bpp, i.e 16bpp which could be the case with GLES.
+  */
+  glGetIntegerv(GL_VIEWPORT, viewport);
+  glReadPixels(x, viewport[3] - y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
 
-  hits = glRenderMode (GL_RENDER);
+  /* printf("x: %i , y: %i %x:%x:%x\n", x, y, pixel[0], pixel[1], pixel[2]); */
 
-  if (hits != 0)
-    {
-#if 1
-      gint i;
-      for (i = 0; i < hits; i++)
-	g_print ("Hit at %i\n", buff[(hits-1) * 4 + 3]);
-#endif
-  
-      found = clutter_group_find_child_by_id (CLUTTER_GROUP (stage), 
-					      buff[(hits-1) * 4 + 3]);
-    }
+  if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
+    return CLUTTER_ACTOR(stage);
 
-  CLUTTER_SET_PRIVATE_FLAGS(stage, CLUTTER_ACTOR_SYNC_MATRICES);
+  /* Decode color back into an ID */
+  id =  pixel[2] | pixel[1] << 8 | pixel[0] << 16;
 
-  return found;
-#else
-  /* GL/ES cannot do this yet.. */
-  return NULL;
-#endif
+  return clutter_group_find_child_by_id (CLUTTER_GROUP (stage), id);
 }
 
 /**

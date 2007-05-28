@@ -46,6 +46,8 @@
 #include "clutter-marshal.h"
 #include "clutter-enum-types.h"
 
+#include "cogl.h"
+
 enum
 {
   ADD,
@@ -65,6 +67,7 @@ struct _ClutterGroupPrivate
 {
   GList *children;
 };
+
 
 static void
 clutter_group_paint (ClutterActor *actor)
@@ -92,6 +95,19 @@ clutter_group_paint (ClutterActor *actor)
   
   CLUTTER_NOTE (PAINT, "ClutterGroup paint leave");
 }
+
+static void                  
+clutter_group_pick (ClutterActor       *actor, 
+		    const ClutterColor *color)
+{
+  /* Just forward to the paint call which in turn will trigger 
+   * the child actors also getting 'picked'. To make ourselves
+   * 'sensitive' to clicks we could also paint a bounding rect
+   * but this is not currently done.  
+  */
+  clutter_group_paint (actor);
+}
+
 
 static void
 clutter_group_request_coords (ClutterActor        *self,
@@ -224,6 +240,7 @@ clutter_group_class_init (ClutterGroupClass *klass)
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   actor_class->paint           = clutter_group_paint;
+  actor_class->pick            = clutter_group_pick;
   actor_class->show_all        = clutter_group_real_show_all;
   actor_class->hide_all        = clutter_group_real_hide_all;
   actor_class->request_coords  = clutter_group_request_coords;

@@ -100,7 +100,7 @@ cogl_check_extension (const gchar *name, const gchar *ext)
 }
 
 void
-cogl_paint_init (ClutterColor *color)
+cogl_paint_init (const ClutterColor *color)
 {
 #if COGL_DEBUG
   fprintf(stderr, "\n ============== Paint Start ================ \n");
@@ -234,7 +234,7 @@ cogl_enable (gulong flags)
 }
 
 void
-cogl_color (ClutterColor *color)
+cogl_color (const ClutterColor *color)
 {
   GE( glColor4x ((color->red << 16) / 0xff, 
 		 (color->green << 16) / 0xff,
@@ -242,19 +242,45 @@ cogl_color (ClutterColor *color)
 		 (color->alpha << 16) / 0xff) );  
 }
 
+void
+cogl_clip_set (const ClutterGeometry *clip)
+{
+  GE( glEnable (GL_STENCIL_TEST) );
+
+  GE( glClearStencil (0) );
+  GE( glClear (GL_STENCIL_BUFFER_BIT) );
+
+  GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
+  GE( glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
+
+  GE( glColor4x (CFX_ONE, CFX_ONE, CFX_ONE, CFX_ONE ) );
+
+  cogl_rectangle (clip->x, clip->y, clip->width, clip->height);
+  
+  GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
+  GE( glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
+}
+
+void
+cogl_clip_unset (void)
+{
+  GE( glDisable (GL_STENCIL_TEST) );
+}
+
+
+
 gboolean
 cogl_texture_can_size (COGLenum pixel_format,
 		       COGLenum pixel_type,
 		       int    width, 
 		       int    height)
 {
-  GLint new_width = 0;
-
-
   /* FIXME */
   return TRUE;
 
 #if 0
+  GLint new_width = 0;
+
   GE( glTexImage2D (GL_PROXY_TEXTURE_2D, 0, GL_RGBA,
 		    width, height, 0 /* border */,
 		    pixel_format, pixel_type, NULL) );
@@ -433,8 +459,6 @@ cogl_alpha_func (COGLenum     func,
   GE( glAlphaFunc (func, CLUTTER_FIXED_TO_FLOAT(ref)) );
 }
 
-
-
 /*
  * Fixed point implementation of the perspective function
  */
@@ -507,8 +531,15 @@ cogl_setup_viewport (guint         w,
   /* camera distance from screen, 0.5 * tan (FOV) */
 #define DEFAULT_Z_CAMERA 0.866025404f
   z_camera = clutter_tani (fovy) << 1;
-  
-  GE( glTranslatex (-1 << 15, -1 << 15, -z_camera );
+
+  /*  
+  printf("%i vs %i\n", 
+	 CLUTTER_FLOAT_TO_FIXED(DEFAULT_Z_CAMERA),
+	 clutter_tani (fovy) << 1);
+  */
+
+  GE( glTranslatex (-1 << 15, -1 << 15, /*-z_camera*/
+		    -CLUTTER_FLOAT_TO_FIXED(DEFAULT_Z_CAMERA)));
 
   GE( glScalex ( CFX_ONE / width, 
 		 -CFX_ONE / height,

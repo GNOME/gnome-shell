@@ -46,6 +46,8 @@
 #include "clutter-debug.h"
 #include "clutter-version.h" 	/* For flavour define */
 
+#include "cogl.h"
+
 static ClutterMainContext *ClutterCntx = NULL;
 
 static gboolean clutter_is_initialized = FALSE;
@@ -94,10 +96,61 @@ void
 clutter_redraw (void)
 {
   ClutterMainContext *ctx;
+  ClutterColor        stage_color;
+  ClutterActor       *stage;
+  static GTimer      *timer = NULL; 
+  static guint        timer_n_frames = 0;
   
-  ctx = clutter_context_get_default ();
-  if (ctx->backend)
-    clutter_actor_paint (_clutter_backend_get_stage (ctx->backend));
+  ctx  = clutter_context_get_default ();
+
+  stage = _clutter_backend_get_stage (ctx->backend);
+
+  CLUTTER_NOTE (PAINT, " Redraw enter");
+
+  /* Setup FPS count */
+  if (clutter_get_show_fps ())
+    {
+      if (!timer)
+	timer = g_timer_new ();
+    }
+
+  /* The below cant go in stage paint as base actor_paint will get
+   * called before the below (and break picking etc)
+  */
+  if (CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_SYNC_MATRICES)
+    {
+      cogl_setup_viewport (clutter_actor_get_width (stage),
+			   clutter_actor_get_height (stage),
+			   171, /* 60 degrees */
+			   CFX_ONE,
+			   CLUTTER_FLOAT_TO_FIXED (0.1),
+			   CLUTTER_FLOAT_TO_FIXED (100.0));
+    }
+
+  /* Setup the initial paint */
+  clutter_stage_get_color (CLUTTER_STAGE(stage), &stage_color);
+  cogl_paint_init (&stage_color);
+
+  /* Call through ti the actual backend to do the painting down from  
+   * the stage. It will likely need to swap buffers, vblank sync etc
+   * which will be windowing system dependant.
+  */
+  _clutter_backend_redraw (ctx->backend);
+
+  /* Complete FPS info */
+  if (clutter_get_show_fps ())
+    {
+      timer_n_frames++;
+
+      if (g_timer_elapsed (timer, NULL) >= 1.0)
+	{
+	  g_print ("*** FPS: %i ***\n", timer_n_frames);
+	  timer_n_frames = 0;
+	  g_timer_start (timer);
+	}
+    }
+
+  CLUTTER_NOTE (PAINT, " Redraw leave");
 }
 
 /** 
@@ -271,7 +324,7 @@ clutter_get_debug_enabled (void)
 ClutterMainContext*
 clutter_context_get_default (void)
 {
-  if (!ClutterCntx)
+  if (G_UNLIKELY(!ClutterCntx))
     {
       ClutterMainContext *ctx;
 

@@ -124,12 +124,101 @@ clutter_event_check (GSource *source)
 }
 
 static gboolean
+event_translate (ClutterBackend *backend,
+		 ClutterEvent   *event,
+		 SDL_Event      *sdl_event)
+{
+  /* FIXME: Complete */
+  gboolean res;
+
+  res = TRUE;
+
+  switch (sdl_event->type) 
+    {
+
+    case SDL_MOUSEBUTTONDOWN:
+      switch (sdl_event->button.button)
+        {
+        case 4: /* up */
+        case 5: /* down */
+        case 6: /* left */
+        case 7: /* right */
+          event->scroll.type = event->type = CLUTTER_SCROLL;
+
+          if (sdl_event->button.button == 4)
+            event->scroll.direction = CLUTTER_SCROLL_UP;
+          else if (sdl_event->button.button == 5)
+            event->scroll.direction = CLUTTER_SCROLL_DOWN;
+          else if (sdl_event->button.button == 6)
+            event->scroll.direction = CLUTTER_SCROLL_LEFT;
+          else
+            event->scroll.direction = CLUTTER_SCROLL_RIGHT;
+          
+          event->scroll.time = 0;
+          event->scroll.x = sdl_event->button.x;
+          event->scroll.y = sdl_event->button.y;
+          event->scroll.modifier_state = sdl_event->button.state;
+
+          break;
+        default:
+          event->button.type = event->type = CLUTTER_BUTTON_PRESS;
+          event->button.time = 0;
+          event->button.x = sdl_event->button.x;
+          event->button.y = sdl_event->button.y;
+          event->button.modifier_state = sdl_event->button.state;
+          event->button.button = sdl_event->button.button;
+          _clutter_event_button_generate (backend, event);
+          break;
+        }
+      break;
+
+    case SDL_MOUSEBUTTONUP:
+      /* scroll events don't have a corresponding release */
+      if (sdl_event->button.button == 4 ||
+          sdl_event->button.button == 5 ||
+          sdl_event->button.button == 6 ||
+          sdl_event->button.button == 7)
+        {
+          res = FALSE;
+          break;
+        }
+
+      event->button.type = event->type = CLUTTER_BUTTON_RELEASE;
+      event->button.time = 0;
+      event->button.x = sdl_event->button.x;
+      event->button.y = sdl_event->button.y;
+      event->button.modifier_state = sdl_event->button.state;
+      event->button.button = sdl_event->button.button;
+      break;
+
+    case SDL_MOUSEMOTION:
+      event->motion.type = event->type = CLUTTER_MOTION;
+      event->motion.time = 0;
+      event->motion.x = sdl_event->motion.x;
+      event->motion.y = sdl_event->motion.y;
+      event->motion.modifier_state = sdl_event->motion.state;;
+      break;
+
+    default:
+      res = FALSE;
+      break;
+    }
+
+  return res;
+}
+
+
+static gboolean
 clutter_event_dispatch (GSource     *source,
                         GSourceFunc  callback,
                         gpointer     user_data)
 {
   SDL_Event       sdl_event;
   ClutterEvent   *event = NULL;
+  ClutterBackend *backend = ((ClutterEventSource *) source)->backend;
+  ClutterMainContext  *clutter_context;
+
+  clutter_context = clutter_context_get_default ();
 
   while (SDL_PollEvent(&sdl_event))
     {
@@ -141,10 +230,21 @@ clutter_event_dispatch (GSource     *source,
 	  SDL_Quit();
 	  exit(0);
 	}
+      else 
+	{
+	  event = clutter_event_new (CLUTTER_NOTHING);
 
+	  if (event_translate (backend, event, &sdl_event))
+	    {
+	      /* push directly here to avoid copy of queue_put */
+	      g_queue_push_head (clutter_context->events_queue, event);
+	    }
+	  else
+	    {
+	      clutter_event_free (event);
+	    }
+	}
     }
-
-  return TRUE;
 
   event = clutter_event_get ();
 

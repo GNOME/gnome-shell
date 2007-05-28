@@ -469,6 +469,33 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
 }
 
 static void
+clutter_backend_glx_redraw (ClutterBackend *backend)
+{
+  ClutterBackendGlx *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterStageGlx   *stage_glx;
+
+  stage_glx = CLUTTER_STAGE_GLX(backend_glx->stage);
+
+  clutter_actor_paint (CLUTTER_ACTOR(stage_glx));
+
+  /* Why this paint is done in backend as likely GL windowing system
+   * specific calls, like swapping buffers.
+  */
+  if (stage_glx->xwin)
+    {
+      clutter_backend_glx_wait_for_vblank (stage_glx->backend);
+      glXSwapBuffers (stage_glx->xdpy, stage_glx->xwin);
+    }
+  else
+    {
+      /* offscreen */
+      glXWaitGL ();
+      CLUTTER_GLERR ();
+    }
+
+}
+
+static void
 clutter_backend_glx_class_init (ClutterBackendGlxClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -478,13 +505,14 @@ clutter_backend_glx_class_init (ClutterBackendGlxClass *klass)
   gobject_class->dispose = clutter_backend_glx_dispose;
   gobject_class->finalize = clutter_backend_glx_finalize;
 
-  backend_class->pre_parse = clutter_backend_glx_pre_parse;
-  backend_class->post_parse = clutter_backend_glx_post_parse;
-  backend_class->init_stage = clutter_backend_glx_init_stage;
-  backend_class->init_events = clutter_backend_glx_init_events;
-  backend_class->get_stage = clutter_backend_glx_get_stage;
-  backend_class->add_options = clutter_backend_glx_add_options;
+  backend_class->pre_parse   = clutter_backend_glx_pre_parse;
+  backend_class->post_parse   = clutter_backend_glx_post_parse;
+  backend_class->init_stage   = clutter_backend_glx_init_stage;
+  backend_class->init_events  = clutter_backend_glx_init_events;
+  backend_class->get_stage    = clutter_backend_glx_get_stage;
+  backend_class->add_options  = clutter_backend_glx_add_options;
   backend_class->get_features = clutter_backend_glx_get_features;
+  backend_class->redraw       = clutter_backend_glx_redraw;
 }
 
 static void

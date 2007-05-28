@@ -68,6 +68,7 @@ struct _ClutterBackendClass
   void          (* add_options)   (ClutterBackend  *backend,
                                    GOptionGroup    *group);
   ClutterFeatureFlags (* get_features)  (ClutterBackend  *backend);
+  void                (* redraw)  (ClutterBackend *backend);
 };
 
 GType clutter_backend_get_type    (void) G_GNUC_CONST;

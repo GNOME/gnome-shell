@@ -56,6 +56,7 @@ struct _ClutterMainContext
   guint            main_loop_level;
   GSList          *main_loops;
   guint            is_initialized : 1;
+  guint            pick_mode :1;
 };
 
 #define CLUTTER_CONTEXT()	(clutter_context_get_default ())
@@ -97,6 +98,8 @@ gboolean _clutter_boolean_accumulator (GSignalInvocationHint *ihint,
 GType _clutter_backend_impl_get_type (void);
 
 ClutterActor *_clutter_backend_get_stage     (ClutterBackend  *backend);
+
+void          _clutter_backend_redraw        (ClutterBackend *backend);
 
 void          _clutter_backend_add_options   (ClutterBackend  *backend,
                                               GOptionGroup    *group);

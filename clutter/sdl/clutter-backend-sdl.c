@@ -114,6 +114,19 @@ clutter_backend_sdl_get_stage (ClutterBackend *backend)
 }
 
 static void
+clutter_backend_sdl_redraw (ClutterBackend *backend)
+{
+  ClutterBackendSDL *backend_sdl = CLUTTER_BACKEND_SDL (backend);
+  ClutterStageSDL   *stage_sdl;
+
+  stage_sdl = CLUTTER_STAGE_SDL(backend_sdl->stage);
+
+  clutter_actor_paint (CLUTTER_ACTOR(stage_sdl));
+  
+  SDL_GL_SwapBuffers();
+}
+
+static void
 clutter_backend_sdl_finalize (GObject *gobject)
 {
   SDL_Quit();
@@ -181,6 +194,7 @@ clutter_backend_sdl_class_init (ClutterBackendSDLClass *klass)
   backend_class->init_events = clutter_backend_sdl_init_events;
   backend_class->get_stage = clutter_backend_sdl_get_stage;
   backend_class->add_options = clutter_backend_sdl_add_options;
+  backend_class->redraw      = clutter_backend_sdl_redraw;
 }
 
 static void

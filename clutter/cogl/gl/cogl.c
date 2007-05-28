@@ -139,7 +139,7 @@ cogl_check_extension (const gchar *name, const gchar *ext)
 }
 
 void
-cogl_paint_init (ClutterColor *color)
+cogl_paint_init (const ClutterColor *color)
 {
   GE( glClearColor (((float) color->red / 0xff * 1.0),
 		    ((float) color->green / 0xff * 1.0),
@@ -266,9 +266,37 @@ cogl_enable (gulong flags)
 }
 
 void
-cogl_color (ClutterColor *color)
+cogl_color (const ClutterColor *color)
 {
   glColor4ub (color->red, color->green, color->blue, color->alpha);  
+}
+
+void
+cogl_clip_set (const ClutterGeometry *clip)
+{
+  GE( glEnable (GL_STENCIL_TEST) );
+
+  GE( glClearStencil (0.0f) );
+  GE( glClear (GL_STENCIL_BUFFER_BIT) );
+
+  GE( glStencilFunc (GL_NEVER, 0x1, 0x1) );
+  GE( glStencilOp (GL_INCR, GL_INCR, GL_INCR) );
+
+  GE( glColor3f (1.0f, 1.0f, 1.0f) );
+
+  GE( glRecti (clip->x, 
+	       clip->y,
+	       clip->x + clip->width,
+	       clip->y + clip->height) );
+  
+  GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
+; GE(  glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
+}
+
+void
+cogl_clip_unset (void)
+{
+  GE( glDisable (GL_STENCIL_TEST) );
 }
 
 gboolean
@@ -423,7 +451,6 @@ cogl_trapezoid (gint y1,
   GE( glEnd () );
 }
 
-
 void
 cogl_alpha_func (COGLenum     func, 
 		 ClutterFixed ref)
@@ -431,61 +458,6 @@ cogl_alpha_func (COGLenum     func,
   GE( glAlphaFunc (func, CLUTTER_FIXED_TO_FLOAT(ref)) );
 }
 
-#if 0
-/*
- * Original floating point implementaiton of the perspective function,
- * retained for reference purposes
- */
-static inline void
-frustum (GLfloat left,
-	 GLfloat right,
-	 GLfloat bottom,
-	 GLfloat top,
-	 GLfloat nearval,
-	 GLfloat farval)
-{
-  GLfloat x, y, a, b, c, d;
-  GLfloat m[16];
-
-  x = (2.0 * nearval) / (right - left);
-  y = (2.0 * nearval) / (top - bottom);
-  a = (right + left) / (right - left);
-  b = (top + bottom) / (top - bottom);
-  c = -(farval + nearval) / ( farval - nearval);
-  d = -(2.0 * farval * nearval) / (farval - nearval);
-
-#define M(row,col)  m[col*4+row]
-  M(0,0) = x;     M(0,1) = 0.0F;  M(0,2) = a;      M(0,3) = 0.0F;
-  M(1,0) = 0.0F;  M(1,1) = y;     M(1,2) = b;      M(1,3) = 0.0F;
-  M(2,0) = 0.0F;  M(2,1) = 0.0F;  M(2,2) = c;      M(2,3) = d;
-  M(3,0) = 0.0F;  M(3,1) = 0.0F;  M(3,2) = -1.0F;  M(3,3) = 0.0F;
-#undef M
-
-  GE( glMultMatrixf (m) );
-}
-
-static inline void
-perspective (GLfloat fovy,
-	     GLfloat aspect,
-	     GLfloat zNear,
-	     GLfloat zFar)
-{
-  GLfloat xmin, xmax, ymin, ymax;
-
-  ymax = zNear * tan (fovy * M_PI / 360.0);
-  ymin = -ymax;
-  xmin = ymin * aspect;
-  xmax = ymax * aspect;
-
-  printf ("%f, %f, %f, %f\n", xmin, xmax, ymin, ymax);
-  
-  frustum (xmin, xmax, ymin, ymax, zNear, zFar);
-}
-#endif
-
-/*
- * Fixed point implementation of the perspective function
- */
 void
 cogl_perspective (ClutterAngle fovy,
 		  ClutterFixed aspect,
@@ -495,11 +467,7 @@ cogl_perspective (ClutterAngle fovy,
   ClutterFixed xmax, ymax;
   ClutterFixed x, y, c, d;
 
-#ifdef HAVE_COGL_GL
   GLfloat m[16];
-#else
-  GLfixed m[16];
-#endif
   
   memset (&m[0], 0, sizeof (m));
 
@@ -521,7 +489,6 @@ cogl_perspective (ClutterAngle fovy,
   d = CFX_DIV (-(clutter_qmulx (2*zFar, zNear)), (zFar - zNear));
 
 #define M(row,col)  m[col*4+row]
-#ifdef HAVE_COGL_GL
   M(0,0) = CLUTTER_FIXED_TO_FLOAT (x);
   M(1,1) = CLUTTER_FIXED_TO_FLOAT (y);
   M(2,2) = CLUTTER_FIXED_TO_FLOAT (c);
@@ -529,15 +496,6 @@ cogl_perspective (ClutterAngle fovy,
   M(3,2) = -1.0F;
   
   GE( glMultMatrixf (m) );
-#else
-  M(0,0) = x;
-  M(1,1) = y;
-  M(2,2) = c;
-  M(2,3) = d;
-  M(3,2) = 1 + ~CFX_ONE;
-  
-  GE( glMultMatrixx (m) );
-#endif
 #undef M
 }
 
@@ -568,7 +526,7 @@ cogl_setup_viewport (guint        width,
 
   GE( glTranslatef (-0.5f, -0.5f, -z_camera) );
   GE( glScalef ( 1.0f / width, 
-	    -1.0f / height, 
+ 	    -1.0f / height, 
 		 1.0f / width) );
   GE( glTranslatef (0.0f, -1.0 * height, 0.0f) );
 }

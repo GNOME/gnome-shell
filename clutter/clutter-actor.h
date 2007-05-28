@@ -31,6 +31,7 @@
 #include <glib-object.h>
 #include <clutter/clutter-fixed.h>
 #include <clutter/clutter-units.h>
+#include <clutter/clutter-color.h>
 
 G_BEGIN_DECLS
 
@@ -139,10 +140,8 @@ struct _ClutterActorClass
   void (* parent_set)      (ClutterActor        *actor,
                             ClutterActor        *old_parent);
 
-  void (* destroy)         (ClutterActor    *actor);
-
-  /* to go ? */
-  void (* queue_redraw)    (ClutterActor    *actor);
+  void (* destroy)         (ClutterActor        *actor);
+  void (* pick)            (ClutterActor        *actor, const ClutterColor *color);
 
   /* padding for future expansion */
   void (*_clutter_actor_1) (void);
@@ -161,6 +160,8 @@ void                  clutter_actor_hide_all         (ClutterActor          *sel
 void                  clutter_actor_realize          (ClutterActor          *self);
 void                  clutter_actor_unrealize        (ClutterActor          *self);
 void                  clutter_actor_paint            (ClutterActor          *self);
+void                  clutter_actor_pick             (ClutterActor        *actor, 
+						      const ClutterColor  *color);
 void                  clutter_actor_queue_redraw     (ClutterActor          *self);
 void                  clutter_actor_destroy          (ClutterActor          *self);
 void                  clutter_actor_request_coords   (ClutterActor          *self,

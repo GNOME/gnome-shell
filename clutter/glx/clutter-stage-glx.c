@@ -306,72 +306,6 @@ clutter_stage_glx_realize (ClutterActor *actor)
 }
 
 static void
-clutter_stage_glx_paint (ClutterActor *self)
-{
-  ClutterStageGlx *stage_glx = CLUTTER_STAGE_GLX (self);
-  ClutterStage    *stage = CLUTTER_STAGE (self);
-  ClutterColor     stage_color;
-  static GTimer   *timer = NULL; 
-  static guint     timer_n_frames = 0;
-
-  CLUTTER_NOTE (PAINT, " Redraw enter");
-
-  /* Setup FPS count */
-  if (clutter_get_show_fps ())
-    {
-      if (!timer)
-	timer = g_timer_new ();
-    }
-
-  /* Reset view matrices if needed. */
-  if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_SYNC_MATRICES)
-    {
-      cogl_setup_viewport (clutter_actor_get_width (self),
-			   clutter_actor_get_height (self),
-			   171, /* 60 degrees */
-			   CFX_ONE,
-			   CLUTTER_FLOAT_TO_FIXED (0.1),
-			   CLUTTER_FLOAT_TO_FIXED (100.0));
-    }
-
-  /* Setup the initial paint */
-  clutter_stage_get_color (stage, &stage_color);
-  cogl_paint_init (&stage_color);
-
-  /* chain up to reach ClutterGroup->paint here and actually paint all */
-  CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->paint (self);
-
-  /* Why this paint is done in backend as likely GL windowing system
-   * specific calls, like swapping buffers.
-  */
-  if (stage_glx->xwin)
-    {
-      clutter_backend_glx_wait_for_vblank (stage_glx->backend);
-      glXSwapBuffers (stage_glx->xdpy, stage_glx->xwin);
-    }
-  else
-    {
-      glXWaitGL ();
-      CLUTTER_GLERR ();
-    }
-
-  /* Complete FPS info */
-  if (clutter_get_show_fps ())
-    {
-      timer_n_frames++;
-
-      if (g_timer_elapsed (timer, NULL) >= 1.0)
-	{
-	  g_print ("*** FPS: %i ***\n", timer_n_frames);
-	  timer_n_frames = 0;
-	  g_timer_start (timer);
-	}
-    }
-
-  CLUTTER_NOTE (PAINT, " Redraw leave");
-}
-
-static void
 clutter_stage_glx_allocate_coords (ClutterActor        *self,
                                    ClutterActorBox     *box)
 {
@@ -600,7 +534,6 @@ clutter_stage_glx_class_init (ClutterStageGlxClass *klass)
   actor_class->hide = clutter_stage_glx_hide;
   actor_class->realize = clutter_stage_glx_realize;
   actor_class->unrealize = clutter_stage_glx_unrealize;
-  actor_class->paint = clutter_stage_glx_paint;
   actor_class->request_coords = clutter_stage_glx_request_coords;
   actor_class->allocate_coords = clutter_stage_glx_allocate_coords;
   

@@ -77,7 +77,7 @@ cogl_setup_viewport (guint        width,
 		     ClutterFixed z_far);
 
 void
-cogl_paint_init (ClutterColor *color);
+cogl_paint_init (const ClutterColor *color);
 
 void
 cogl_push_matrix (void);
@@ -101,7 +101,13 @@ void
 cogl_rotate (gint angle, gint x, gint y, gint z);
 
 void
-cogl_color (ClutterColor *color);
+cogl_color (const ClutterColor *color);
+
+void
+cogl_clip_set (const ClutterGeometry *clip);
+
+void
+cogl_clip_unset (void);
 
 void
 cogl_enable (gulong flags);

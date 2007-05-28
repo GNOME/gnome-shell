@@ -72,6 +72,9 @@ struct _ClutterBackendEglClass
 
 GType clutter_backend_egl_get_type (void) G_GNUC_CONST;
 
+void _clutter_events_init (ClutterBackend *backend);
+void _clutter_events_uninit (ClutterBackend *backend);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_BACKEND_EGL_H__ */
