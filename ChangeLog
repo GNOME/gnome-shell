@@ -1,3 +1,9 @@
+2007-05-29  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/cogl/gles/cogl.c:
+	(cogl_setup_viewport):
+	Fixed z_camera calculation.
+	
 2007-05-28  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-texture.c: (clutter_texture_unrealize):

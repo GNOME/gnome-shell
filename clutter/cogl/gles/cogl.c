@@ -530,16 +530,9 @@ cogl_setup_viewport (guint         w,
 
   /* camera distance from screen, 0.5 * tan (FOV) */
 #define DEFAULT_Z_CAMERA 0.866025404f
-  z_camera = clutter_tani (fovy) << 1;
+  z_camera = clutter_tani (fovy) >> 1;
 
-  /*  
-  printf("%i vs %i\n", 
-	 CLUTTER_FLOAT_TO_FIXED(DEFAULT_Z_CAMERA),
-	 clutter_tani (fovy) << 1);
-  */
-
-  GE( glTranslatex (-1 << 15, -1 << 15, /*-z_camera*/
-		    -CLUTTER_FLOAT_TO_FIXED(DEFAULT_Z_CAMERA)));
+  GE( glTranslatex (-1 << 15, -1 << 15, -z_camera));
 
   GE( glScalex ( CFX_ONE / width, 
 		 -CFX_ONE / height,
