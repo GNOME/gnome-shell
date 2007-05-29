@@ -171,7 +171,7 @@ ClutterFixed clutter_tani (ClutterAngle angle);
  *
  * Since: 0.2
  */
-#define clutter_cosx(angle) clutter_fixed_sin((angle) - CFX_PI_2)
+#define clutter_cosx(angle) clutter_fixed_sin((angle) + CFX_PI_2)
 
 /**
  * clutter_cosi:
@@ -188,7 +188,7 @@ ClutterFixed clutter_tani (ClutterAngle angle);
  *
  * Since: 0.2
  */
-#define clutter_cosi(angle) clutter_sini((angle) - 256)
+#define clutter_cosi(angle) clutter_sini((angle) + 256)
 
 ClutterFixed clutter_sqrtx (ClutterFixed x);
 gint         clutter_sqrti (gint         x);

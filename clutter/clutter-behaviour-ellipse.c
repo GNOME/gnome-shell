@@ -111,33 +111,30 @@ clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse * e,
 
   if (e->priv->angle_tilt)
     {
-      /* Problem: sqrti is not giving us sufficient precission here
-       * and ClutterFixed range is too small to hold x^2+y^2 even for
-       * reasonable x, y values.
+      /*
+       * x2 = r * cos (angle + tilt)
+       * y2 = r * sin (angle + tilt)
        *
-       * We take advantage of sqrt (a * b^2) == sqrt (a) * b,
-       * and divide repeatedly by 4 until we get it into range, and then
-       * multiply the result by 2 the same number of times.
+       * These can be trasformed to the formulas below using properties of
+       * sin (a + b) and cos (a + b)
+       *
        */
-      ClutterFixed r;
-      guint q = x*x + y*y;
-      gint shift = 0;
+      ClutterFixed x2, y2;
 
-      while (q > G_MAXINT16)
-        {
-          ++shift;
-          
-          q >>= 2;
-        }
+      x2 = x * clutter_cosi (e->priv->angle_tilt) -
+        y * clutter_sini (e->priv->angle_tilt);
 
-      r = clutter_sqrtx (CLUTTER_INT_TO_FIXED (q)) << shift;
-
-      x = CFX_INT (CFX_MUL (r, clutter_cosi (angle + e->priv->angle_tilt)));
-      y = CFX_INT (CFX_MUL (r, clutter_sini (angle + e->priv->angle_tilt)));
+      y2 = y * clutter_cosi (e->priv->angle_tilt) +
+        x * clutter_sini (e->priv->angle_tilt);
+      
+      knot->x = CFX_INT (x2);
+      knot->y = CFX_INT (y2);
     }
-
-  knot->x = x;
-  knot->y = y;
+  else
+    {
+      knot->x = x;
+      knot->y = y;
+    }
   
 #if 0
    g_debug ("advancing to angle %d [%d, %d] (a: %d, b: %d)", 
