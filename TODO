@@ -1,31 +1,46 @@
 TODO
 ====
 
-New Features
+Last updated 31/05/2007
+
+
+0.4 (July 07)
 ==
 
- - More portability - GL ES, DirectFB?, Windows, Mac ?
-   (See backends branch, GL ES for 0.3)
- - Text entry actor (0.3).
- - VBox and HBox ClutterGroup subclasses (0.3). 
- - Figure out focus model + binding events to actors (0.3).
- - Fragment shading ?
- - Gradients
- - More drawing primitives (or just cairo?)
+Definetly:
 
-Optimisations
-==
+ - YUV texture data, premulled alpha texture data. (ma)
+ - Basic layout code. (eb)
+ - Basic text entry (np)
+ - Perspective setup (ma)
+ - API doc fixups (all)
+ - main loop scheduling - paints vs timelimes vs events (ma, eb)
+ - ClutterProxyTexture (ma)
+ - event queue fixups (eb)
+ - clutter_actor_get_vertices (tf)
+ - fix up event queue (eb)
 
- - Display lists.
- - Custom source rather than idle handler for paints ?
- - General oprofiling.
- - GL state cache - avoid so much expensive glenable/disable calling 
-   during paint (Also GL does not check if a state is already set) 
- 
-Other
-==
- - Unit tests
- - Much improved examples / demos
- - Bindings to languages other than just Python and Perl.
- - Improve documentation.
- - Overhaul co-ordinate system ( more precision ? )
+Maybe:
+
+ - SDL event fixups
+ - Application developers manual
+ - Lookat type functionality.
+
+
+0.6
+===
+
+Definetly:
+
+ - Fragment shader support infrastructure
+ - Device independant units
+ - XML/JSON type 'layout' files - include actors + behaviours + timeline etc.
+ - App developers manual.
+
+Nice/Maybe:
+
+ - Gradient support ?
+ - Rectangle like props to all actors
+ - Glitz integration
+ - Some kind of focus model.
+ - Apple/Win native backends.

@@ -1,5 +1,10 @@
 2007-05-31  Matthew Allum  <mallum@openedhand.com>
 
+	* TODO:
+	Sync up for whats left for 0.4 release (and 0.6 ideas)
+
+2007-05-31  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-behaviour-ellipse.c:
 	Remove uneeded knot signal
 
