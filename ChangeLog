@@ -1,3 +1,13 @@
+2007-05-30  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-alpha.h:
+	* clutter/clutter-alpha.c:
+	Removed ClutterSmoothstep struct
+	(clutter_smoothstep_inc_func):
+	Renamed to clutter_smoothstep_func.
+	(clutter_smoothstep_added_func):
+	Added.
+	
 2007-05-29  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.h:

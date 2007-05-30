@@ -208,7 +208,7 @@ Base class for #ClutterActor
 @get_depth: 
 @parent_set: 
 @destroy: 
-@queue_redraw: 
+@pick: 
 @_clutter_actor_1: 
 @_clutter_actor_2: 
 @_clutter_actor_3: 

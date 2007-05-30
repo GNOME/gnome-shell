@@ -102,54 +102,45 @@ void             clutter_alpha_set_timeline (ClutterAlpha     *alpha,
 ClutterTimeline *clutter_alpha_get_timeline (ClutterAlpha     *alpha);
 
 /* convenience functions */
-#define CLUTTER_ALPHA_RAMP_INC   clutter_ramp_inc_func
-#define CLUTTER_ALPHA_RAMP_DEC   clutter_ramp_dec_func
-#define CLUTTER_ALPHA_RAMP       clutter_ramp_func
-#define CLUTTER_ALPHA_SINE       clutter_sine_func
-#define CLUTTER_ALPHA_SINE_INC   clutter_sine_inc_func
-#define CLUTTER_ALPHA_SINE_DEC   clutter_sine_dec_func
-#define CLUTTER_ALPHA_SINE_HALF  clutter_sine_half_func
-#define CLUTTER_ALPHA_SQUARE     clutter_square_func
-#define CLUTTER_ALPHA_SMOOTHSTEP clutter_smoothstep_func
-#define CLUTTER_ALPHA_EXP_INC    clutter_exp_inc_func
-#define CLUTTER_ALPHA_EXP_DEC    clutter_exp_dec_func
+#define CLUTTER_ALPHA_RAMP_INC       clutter_ramp_inc_func
+#define CLUTTER_ALPHA_RAMP_DEC       clutter_ramp_dec_func
+#define CLUTTER_ALPHA_RAMP           clutter_ramp_func
+#define CLUTTER_ALPHA_SINE           clutter_sine_func
+#define CLUTTER_ALPHA_SINE_INC       clutter_sine_inc_func
+#define CLUTTER_ALPHA_SINE_DEC       clutter_sine_dec_func
+#define CLUTTER_ALPHA_SINE_HALF      clutter_sine_half_func
+#define CLUTTER_ALPHA_SQUARE         clutter_square_func
+#define CLUTTER_ALPHA_SMOOTHSTEP_INC clutter_smoothstep_inc_func
+#define CLUTTER_ALPHA_SMOOTHSTEP_DEC clutter_smoothstep_dec_func
+#define CLUTTER_ALPHA_EXP_INC        clutter_exp_inc_func
+#define CLUTTER_ALPHA_EXP_DEC        clutter_exp_dec_func
 
 #define CLUTTER_TYPE_SMOOTHSTEP (clutter_smoothstep_get_type ())
 
-typedef struct _ClutterSmoothstep  ClutterSmoothstep;
-
-struct _ClutterSmoothstep
-{
-  ClutterFixed min;
-  ClutterFixed max;
-};
-
-ClutterSmoothstep * clutter_smoothstep_copy    (const ClutterSmoothstep *smoothstep);
-
-void                clutter_smoothstep_free    (ClutterSmoothstep *smoothstep);
-
-guint32             clutter_ramp_inc_func      (ClutterAlpha     *alpha,
-						gpointer          dummy);
-guint32             clutter_ramp_dec_func      (ClutterAlpha     *alpha,
-						gpointer          dummy);
-guint32             clutter_ramp_func          (ClutterAlpha     *alpha,
-						gpointer          dummy);
-guint32             clutter_sine_func          (ClutterAlpha     *alpha,
-						gpointer          dummy);
-guint32             clutter_sine_inc_func      (ClutterAlpha     *alpha,
-						gpointer          dummy);
-guint32             clutter_sine_dec_func      (ClutterAlpha     *alpha,
-						gpointer          dummy);
-guint32             clutter_sine_half_func     (ClutterAlpha     *alpha,
-						gpointer          dummy);
-guint32             clutter_square_func        (ClutterAlpha     *alpha,
-						gpointer          dummy);
-guint32             clutter_smoothstep_func    (ClutterAlpha     *alpha,
-			                        gpointer         *data);
-guint32             clutter_exp_inc_func       (ClutterAlpha     *alpha,
-						gpointer          dummy);
-guint32             clutter_exp_dec_func       (ClutterAlpha     *alpha,
-						gpointer          dummy);
+guint32             clutter_ramp_inc_func       (ClutterAlpha     *alpha,
+						 gpointer          dummy);
+guint32             clutter_ramp_dec_func       (ClutterAlpha     *alpha,
+						 gpointer          dummy);
+guint32             clutter_ramp_func           (ClutterAlpha     *alpha,
+						 gpointer          dummy);
+guint32             clutter_sine_func           (ClutterAlpha     *alpha,
+						 gpointer          dummy);
+guint32             clutter_sine_inc_func       (ClutterAlpha     *alpha,
+						 gpointer          dummy);
+guint32             clutter_sine_dec_func       (ClutterAlpha     *alpha,
+						 gpointer          dummy);
+guint32             clutter_sine_half_func      (ClutterAlpha     *alpha,
+						 gpointer          dummy);
+guint32             clutter_square_func         (ClutterAlpha     *alpha,
+						 gpointer          dummy);
+guint32             clutter_smoothstep_inc_func (ClutterAlpha     *alpha,
+			                         gpointer         *data);
+guint32             clutter_smoothstep_dec_func (ClutterAlpha     *alpha,
+			                         gpointer         *data);
+guint32             clutter_exp_inc_func        (ClutterAlpha     *alpha,
+						 gpointer          dummy);
+guint32             clutter_exp_dec_func        (ClutterAlpha     *alpha,
+						 gpointer          dummy);
 
 G_END_DECLS
 

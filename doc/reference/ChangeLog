@@ -1,3 +1,13 @@
+2007-05-30  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter.types:
+	removed clutter_smoothstep_get_type.
+
+	* tmpl/clutter-alpha.sgml:
+	* tmpl/clutter-actor.sgml:
+	* tmpl/clutter-media.sgml:
+	Updated templates.
+	
 2007-05-22  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter-sections.txt:

@@ -728,67 +728,11 @@ clutter_square_func (ClutterAlpha *alpha,
                                               : 0;
 }
 
-/**
- * clutter_smoothstep_copy:
- * @smoothstep: a #ClutterSmoothstep
- *
- * Makes an allocated copy of a smoothstep.
- *
- * Return value: the copied smoothstep.
- *
- * Since: 0.4
- */
-ClutterSmoothstep *
-clutter_smoothstep_copy (const ClutterSmoothstep *smoothstep)
-{
-  ClutterSmoothstep *copy;
-
-  copy = g_slice_new0 (ClutterSmoothstep);
-  
-  *copy = *smoothstep;
-
-  return copy;
-}
 
 /**
- * clutter_smoothstep_free:
- * @smoothstep: a #ClutterSmoothstep
- *
- * Frees the memory of an allocated smoothstep.
- *
- * Since: 0.4
- */
-void
-clutter_smoothstep_free (ClutterSmoothstep *smoothstep)
-{
-  if (G_LIKELY (smoothstep))
-    {
-      g_slice_free (ClutterSmoothstep, smoothstep);
-    }
-}
-
-GType
-clutter_smoothstep_get_type (void)
-{
-  static GType our_type = 0;
-
-  if (G_UNLIKELY (!our_type))
-    {
-      our_type =
-        g_boxed_type_register_static ("ClutterSmoothstep",
-                                      (GBoxedCopyFunc) clutter_smoothstep_copy,
-                                      (GBoxedFreeFunc) clutter_smoothstep_free);
-    }
-
-  return our_type;
-}
-
-/**
- * clutter_smoothstep_func:
+ * clutter_smoothstep_inc_func:
  * @alpha: a #ClutterAlpha
- * @data: pointer to a #ClutterSmoothstep defining the minimum and
- * maximum thresholds for the smoothstep as supplied to
- * clutter_alpha_set_func().
+ * @dummy: unused
  *
  * Convenience alpha function for a smoothstep curve. You can use this
  * function as the alpha function for clutter_alpha_set_func().
@@ -798,14 +742,13 @@ clutter_smoothstep_get_type (void)
  * Since: 0.4
  */
 guint32
-clutter_smoothstep_func (ClutterAlpha  *alpha,
-			 gpointer      *data)
+clutter_smoothstep_inc_func (ClutterAlpha  *alpha,
+			     gpointer      *dummy)
 {
-  ClutterSmoothstep  *smoothstep = (ClutterSmoothstep*)data;
   ClutterTimeline    *timeline;
   gint                frame;
   gint                n_frames;
-  gint32              r;
+  gint32              r; 
   gint32              x; 
 
   /*
@@ -814,28 +757,14 @@ clutter_smoothstep_func (ClutterAlpha  *alpha,
    * The earlier operations involve division, which we cannot do in 8.24 for
    * numbers in <0,1> we use ClutterFixed.
    */
-  
-  g_return_val_if_fail (data, 0);
-  
   timeline = clutter_alpha_get_timeline (alpha);
   frame    = clutter_timeline_get_current_frame (timeline);
   n_frames = clutter_timeline_get_n_frames (timeline);
 
-  r = CFX_DIV (frame, n_frames);
-
-  if (r <= smoothstep->min)
-      return 0;
-
-  if (r >= smoothstep->max)
-      return CLUTTER_ALPHA_MAX_ALPHA;
-
   /*
-   * Normalize x for the smoothstep polynomal.
-   *
-   * Convert result to 8.24 for next step.
+   * Convert x to 8.24 for next step.
    */
-  x = CFX_DIV ((r - smoothstep->min), (smoothstep->max - smoothstep->min))
-      << 8;
+  x = CFX_DIV (frame, n_frames) << 8;
 
   /*
    * f(x) = -2x^3 + 3x^2
@@ -850,6 +779,25 @@ clutter_smoothstep_func (ClutterAlpha  *alpha,
 	   CLUTTER_FIXED_TO_DOUBLE (r));
 	   
   return CFX_INT (r * CLUTTER_ALPHA_MAX_ALPHA);
+}
+
+/**
+ * clutter_smoothstep_dec_func:
+ * @alpha: a #ClutterAlpha
+ * @dummy: unused
+ *
+ * Convenience alpha function for a downward smoothstep curve. You can use
+ * this function as the alpha function for clutter_alpha_set_func().
+ *
+ * Return value: an alpha value
+ *
+ * Since: 0.4
+ */
+guint32
+clutter_smoothstep_dec_func (ClutterAlpha  *alpha,
+			     gpointer      *dummy)
+{
+  return CLUTTER_ALPHA_MAX_ALPHA - clutter_smoothstep_inc_func (alpha, dummy);
 }
 
 /**
