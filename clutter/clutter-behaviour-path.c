@@ -61,7 +61,8 @@ G_DEFINE_TYPE (ClutterBehaviourPath,
 
 struct _ClutterBehaviourPathPrivate
 {
-  GSList *knots;
+  GSList      *knots;
+  ClutterKnot *last_knot_passed;
 };
 
 #define CLUTTER_BEHAVIOUR_PATH_GET_PRIVATE(obj)    \
@@ -185,6 +186,7 @@ path_alpha_to_position (ClutterBehaviourPath *behave,
 					actor_apply_knot_foreach,
 					priv->knots->data);
       
+      priv->last_knot_passed = (ClutterKnot*)priv->knots->data;
       g_signal_emit (behave, path_signals[KNOT_REACHED], 0,
                      priv->knots->data);
       return;
@@ -199,6 +201,7 @@ path_alpha_to_position (ClutterBehaviourPath *behave,
 					actor_apply_knot_foreach,
 					last_knot);
 
+      priv->last_knot_passed = (ClutterKnot*)priv->knots->data;
       g_signal_emit (behave, path_signals[KNOT_REACHED], 0, last_knot);
 
       return;
@@ -227,7 +230,12 @@ path_alpha_to_position (ClutterBehaviourPath *behave,
 					        actor_apply_knot_foreach,
 					        &new);
 
-              g_signal_emit (behave, path_signals[KNOT_REACHED], 0, &new);
+	      if (knot != priv->last_knot_passed)
+		{
+		  /* We just passed a new Knot */
+		  priv->last_knot_passed = knot;
+		  g_signal_emit (behave, path_signals[KNOT_REACHED], 0, knot);
+		}
 
 	      return;
 	    }

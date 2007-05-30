@@ -88,6 +88,14 @@ clutter_effect_move (ClutterEffectTemplate    *template,
 		     ClutterEffectCompleteFunc completed_func,
 		     gpointer                  completed_data);
 
+ClutterTimeline*
+clutter_effect_scale (ClutterEffectTemplate    *template,
+		      ClutterActor             *actor,
+		      gdouble                   scale_begin,
+		      gdouble                   scale_end,
+		      ClutterGravity            gravity,
+		      ClutterEffectCompleteFunc completed_func,
+		      gpointer                  completed_userdata);
 
 G_END_DECLS
 

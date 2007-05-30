@@ -31,9 +31,6 @@
  * #ClutterBehaviourEllipse interpolates actors along a path defined by
  *  en ellipse.
  *
- * Each time the behaviour reaches a point on the path, the "knot-reached"
- * signal is emitted.
- *
  * Since: 0.4
  */
 
@@ -60,15 +57,6 @@ G_DEFINE_TYPE (ClutterBehaviourEllipse,
               (G_TYPE_INSTANCE_GET_PRIVATE ((obj),    \
                CLUTTER_TYPE_BEHAVIOUR_ELLIPSE,        \
                ClutterBehaviourEllipsePrivate))
-
-enum
-  {
-    KNOT_REACHED,
-
-    LAST_SIGNAL
-  };
-
-static guint ellipse_signals[LAST_SIGNAL] = { 0, };
 
 enum
 {
@@ -181,8 +169,6 @@ clutter_behaviour_ellipse_alpha_notify (ClutterBehaviour * behave,
   clutter_behaviour_actors_foreach (behave, 
                                     actor_apply_knot_foreach,
                                     &knot);
-
-  g_signal_emit (behave, ellipse_signals[KNOT_REACHED], 0, &knot);
 }
 
 static void
@@ -361,25 +347,6 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
                                                        "Center of ellipse",
                                                        CLUTTER_TYPE_KNOT,
                                                        CLUTTER_PARAM_READWRITE));
-  
-  /**
-   * ClutterBehaviourEllipse::knot-reached:
-   * @ellipse: the object which received the signal
-   * @knot: the #ClutterKnot reached
-   *
-   * This signal is emitted at the end of each frame.
-   *
-   * Since: 0.4
-   */
-  ellipse_signals[KNOT_REACHED] =
-    g_signal_new ("knot-reached",
-                  G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (ClutterBehaviourEllipseClass, knot_reached),
-                  NULL, NULL,
-                  clutter_marshal_VOID__BOXED,
-                  G_TYPE_NONE, 1,
-                  CLUTTER_TYPE_KNOT);
   
   g_type_class_add_private (klass, sizeof (ClutterBehaviourEllipsePrivate));
 }

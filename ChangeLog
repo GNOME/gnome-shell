@@ -1,3 +1,22 @@
+2007-05-31  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-behaviour-ellipse.c:
+	Remove uneeded knot signal
+
+	* clutter/clutter-behaviour-path.c: 
+	Fix so knot signal is emitted only when a knot is reached.
+
+	* clutter/clutter-effect.c:
+	* clutter/clutter-effect.h:
+	Add a scale effect.
+
+	* configure.ac:
+	* doc/manual/Makefile.am:
+	* doc/manual/clutter-manual.xml.in:
+	* doc/manual/manual.xsl:
+	* doc/manual/style.css:
+	Add various bits for application developers manual. 
+
 2007-05-30  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-alpha.h:

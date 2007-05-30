@@ -255,6 +255,15 @@ dnl = GTK Doc check ========================================================
 
 GTK_DOC_CHECK([1.4])
 
+dnl = Manual ===============================================================
+
+AC_ARG_ENABLE(manual,
+              AC_HELP_STRING([--enable-manual=@<:@no/yes@:>@],
+                             [Build application developers manual. Requires jw and xmlto binaries.]),
+              enable_manual=$enableval, enable_manual=no)
+
+AM_CONDITIONAL(ENABLE_MANUAL, test x$enable_manual != xno)
+
 dnl ========================================================================
 
 AC_SUBST(GCC_FLAGS)
@@ -281,6 +290,8 @@ AC_CONFIG_FILES([
         doc/Makefile
         doc/reference/Makefile
         doc/reference/version.xml
+        doc/manual/clutter-manual.xml
+        doc/manual/Makefile
         clutter.pc
 ])
 
@@ -297,6 +308,7 @@ echo ""
 echo "                  Flavour:   ${clutterbackend}"
 echo "           Target library:   ${clutterbackendlib}"
 echo "              Debug level:   ${enable_debug}"
-echo "            Documentation:   ${enable_gtk_doc}"
+echo "        API Documentation:   ${enable_gtk_doc}"
+echo "     Manual Documentation:   ${enable_manual}"
 echo "                      FPU:   ${with_fpu}"
 echo ""

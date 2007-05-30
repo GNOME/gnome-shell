@@ -346,3 +346,41 @@ clutter_effect_move (ClutterEffectTemplate    *template,
   
   return c->timeline;
 }
+
+/**
+ * clutter_effect_scale:
+ *
+ * FIXME
+ *
+ * Return value: a #ClutterTimeline.
+ *
+ * Since: 0.4
+ */
+ClutterTimeline*
+clutter_effect_scale (ClutterEffectTemplate    *template,
+		      ClutterActor             *actor,
+		      gdouble                   scale_begin,
+		      gdouble                   scale_end,
+		      ClutterGravity            gravity,
+		      ClutterEffectCompleteFunc completed_func,
+		      gpointer                  completed_userdata)
+{
+  ClutterEffectClosure *c;
+
+  c = clutter_effect_closure_new (template,
+				  actor, 
+				  G_CALLBACK (on_effect_complete));
+
+  c->completed_func = completed_func;
+  c->completed_data = completed_userdata;
+
+  c->behave = clutter_behaviour_scale_new (c->alpha, 
+					   scale_begin,
+					   scale_end,
+					   gravity);
+  
+  clutter_behaviour_apply (c->behave, actor);
+  clutter_timeline_start (c->timeline);
+  
+  return c->timeline;
+}

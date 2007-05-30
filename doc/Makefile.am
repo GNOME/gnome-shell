@@ -1,1 +1,1 @@
-SUBDIRS=reference
+SUBDIRS=reference manual
