@@ -454,10 +454,8 @@ mtx_transform (ClutterFixed *m,
 }
 
 static void
-mtx_create (ClutterActor *self, ClutterFixed *mtx)
+mtx_create (ClutterActorPrivate *priv, ClutterFixed *mtx)
 {
-  ClutterActorPrivate  *priv = self->priv;
-
   /* FIXME: need to apply perspective / viewport transforms */
 
   mtx_identity (&mtx[0]);
@@ -472,7 +470,7 @@ mtx_create (ClutterActor *self, ClutterFixed *mtx)
 		 CLUTTER_UNITS_TO_FIXED (priv->coords.y1), 
 		 CLUTTER_INT_TO_FIXED (priv->z));
 
-  if (self->priv->rzang)
+  if (priv->rzang)
     {
       mtx_translate (&mtx[0],
 		 CLUTTER_INT_TO_FIXED (priv->rzx),
@@ -487,7 +485,7 @@ mtx_create (ClutterActor *self, ClutterFixed *mtx)
 		 0);
     }
 
-  if (self->priv->ryang)
+  if (priv->ryang)
     {
       mtx_translate (&mtx[0],
 		 CLUTTER_INT_TO_FIXED (priv->ryx),
@@ -502,7 +500,7 @@ mtx_create (ClutterActor *self, ClutterFixed *mtx)
 		 CLUTTER_INT_TO_FIXED (-(priv->z + priv->ryz)));
     }
 
-  if (self->priv->rxang)
+  if (priv->rxang)
     {
       mtx_translate (&mtx[0],
 		 0,
@@ -517,10 +515,10 @@ mtx_create (ClutterActor *self, ClutterFixed *mtx)
 		 CLUTTER_INT_TO_FIXED (-(priv->z - priv->rxz)));
     }
 
-  if (self->priv->z)
+  if (priv->z)
     mtx_translate (&mtx[0], 0, 0, CLUTTER_INT_TO_FIXED (priv->z));
 
-  if (self->priv->scale_x != CFX_ONE || self->priv->scale_y != CFX_ONE)
+  if (priv->scale_x != CFX_ONE || priv->scale_y != CFX_ONE)
     {
       mtx_scale (&mtx[0], priv->scale_x, priv->scale_y);
     }
@@ -549,13 +547,16 @@ clutter_actor_get_transformed_point (ClutterActor *actor,
 				     ClutterUnit  *z_return)
 {
   ClutterFixed           mtx[16];
+  ClutterActorPrivate   *priv;
   
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
-  mtx_create (actor, &mtx[0]);
+  priv = actor->priv;
 
-  *x_return = CLUTTER_UNITS_FROM_INT(x);
-  *y_return = CLUTTER_UNITS_FROM_INT(y);
+  mtx_create (priv, &mtx[0]);
+
+  *x_return = CLUTTER_UNITS_FROM_INT(x) - priv->coords.x1;
+  *y_return = CLUTTER_UNITS_FROM_INT(y) - priv->coords.y1;
   *z_return = 0;
 
   mtx_transform (&mtx[0], x_return, y_return, z_return);
@@ -586,7 +587,7 @@ clutter_actor_get_transformed_vertices (ClutterActor    * self,
 
   priv = self->priv;
 
-  mtx_create (self, &mtx[0]);
+  mtx_create (priv, &mtx[0]);
 
 #if 0
   g_debug ("Matrix\n"

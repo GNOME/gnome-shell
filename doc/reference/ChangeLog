@@ -1,5 +1,10 @@
 2007-05-31  Tomas Frydrych  <tf@openedhand.com>
 
+	* tmpl/clutter-behaviour-ellipse.sgml:
+	Updated template.
+	
+2007-05-31  Tomas Frydrych  <tf@openedhand.com>
+
 	* clutter.types:
 	Added clutter_vertices_get_type.
 	

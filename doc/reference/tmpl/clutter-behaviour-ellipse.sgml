@@ -23,14 +23,6 @@ ClutterBehaviourEllipse
 </para>
 
 
-<!-- ##### SIGNAL ClutterBehaviourEllipse::knot-reached ##### -->
-<para>
-
-</para>
-
-@clutterbehaviourellipse: the object which received the signal.
-@arg1: 
-
 <!-- ##### ARG ClutterBehaviourEllipse:angle-begin ##### -->
 <para>
 

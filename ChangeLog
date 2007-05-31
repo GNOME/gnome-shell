@@ -1,3 +1,9 @@
+2007-05-31  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_get_transformed_point):
+	Fixed coordinance translation.
+	
 2007-05-31  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c:
