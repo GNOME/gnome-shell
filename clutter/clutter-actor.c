@@ -454,74 +454,202 @@ mtx_transform (ClutterFixed *m,
 }
 
 static void
-mtx_create (ClutterActorPrivate *priv, ClutterFixed *mtx)
+mtx_mul (ClutterFixed * m1, const ClutterFixed * m2)
+{
+  ClutterFixed n0, n1, n2, n3;
+  
+  n0 =
+    CFX_MUL (M(m1,0,0),M(m2,0,0)) +
+    CFX_MUL (M(m1,0,1),M(m2,1,0)) +
+    CFX_MUL (M(m1,0,2),M(m2,2,0)) +
+    CFX_MUL (M(m1,0,3),M(m2,3,0));
+  
+  n1 =
+    CFX_MUL (M(m1,0,0),M(m2,0,1)) +
+    CFX_MUL (M(m1,0,1),M(m2,1,1)) +
+    CFX_MUL (M(m1,0,2),M(m2,2,1)) +
+    CFX_MUL (M(m1,0,3),M(m2,3,1));
+    
+  n2 =
+    CFX_MUL (M(m1,0,0),M(m2,0,2)) +
+    CFX_MUL (M(m1,0,1),M(m2,1,2)) +
+    CFX_MUL (M(m1,0,2),M(m2,2,2)) +
+    CFX_MUL (M(m1,0,3),M(m2,3,2));
+
+  n3 =
+    CFX_MUL (M(m1,0,0),M(m2,0,3)) +
+    CFX_MUL (M(m1,0,1),M(m2,1,3)) +
+    CFX_MUL (M(m1,0,2),M(m2,2,3)) +
+    CFX_MUL (M(m1,0,3),M(m2,3,3));
+
+  M(m1,0,0) = n0;
+  M(m1,0,1) = n1;
+  M(m1,0,2) = n2;
+  M(m1,0,3) = n3;
+
+  n0 =
+    CFX_MUL (M(m1,1,0),M(m2,0,0)) +
+    CFX_MUL (M(m1,1,1),M(m2,1,0)) +
+    CFX_MUL (M(m1,1,2),M(m2,2,0)) +
+    CFX_MUL (M(m1,1,3),M(m2,3,0));
+  
+  n1 =
+    CFX_MUL (M(m1,1,0),M(m2,0,1)) +
+    CFX_MUL (M(m1,1,1),M(m2,1,1)) +
+    CFX_MUL (M(m1,1,2),M(m2,2,1)) +
+    CFX_MUL (M(m1,1,3),M(m2,3,1));
+    
+  n2 =
+    CFX_MUL (M(m1,1,0),M(m2,0,2)) +
+    CFX_MUL (M(m1,1,1),M(m2,1,2)) +
+    CFX_MUL (M(m1,1,2),M(m2,2,2)) +
+    CFX_MUL (M(m1,1,3),M(m2,3,2));
+
+  n3 =
+    CFX_MUL (M(m1,1,0),M(m2,0,3)) +
+    CFX_MUL (M(m1,1,1),M(m2,1,3)) +
+    CFX_MUL (M(m1,1,2),M(m2,2,3)) +
+    CFX_MUL (M(m1,1,3),M(m2,3,3));
+
+  M(m1,1,0) = n0;
+  M(m1,1,1) = n1;
+  M(m1,1,2) = n2;
+  M(m1,1,3) = n3;
+  
+  n0 =
+    CFX_MUL (M(m1,2,0),M(m2,0,0)) +
+    CFX_MUL (M(m1,2,1),M(m2,1,0)) +
+    CFX_MUL (M(m1,2,2),M(m2,2,0)) +
+    CFX_MUL (M(m1,2,3),M(m2,3,0));
+  
+  n1 =
+    CFX_MUL (M(m1,2,0),M(m2,0,1)) +
+    CFX_MUL (M(m1,2,1),M(m2,1,1)) +
+    CFX_MUL (M(m1,2,2),M(m2,2,1)) +
+    CFX_MUL (M(m1,2,3),M(m2,3,1));
+    
+  n2 =
+    CFX_MUL (M(m1,2,0),M(m2,0,2)) +
+    CFX_MUL (M(m1,2,1),M(m2,1,2)) +
+    CFX_MUL (M(m1,2,2),M(m2,2,2)) +
+    CFX_MUL (M(m1,2,3),M(m2,3,2));
+
+  n3 =
+    CFX_MUL (M(m1,2,0),M(m2,0,3)) +
+    CFX_MUL (M(m1,2,1),M(m2,1,3)) +
+    CFX_MUL (M(m1,2,2),M(m2,2,3)) +
+    CFX_MUL (M(m1,2,3),M(m2,3,3));
+
+  M(m1,2,0) = n0;
+  M(m1,2,1) = n1;
+  M(m1,2,2) = n2;
+  M(m1,2,3) = n3;
+
+  n0 =
+    CFX_MUL (M(m1,3,0),M(m2,0,0)) +
+    CFX_MUL (M(m1,3,1),M(m2,1,0)) +
+    CFX_MUL (M(m1,3,2),M(m2,2,0)) +
+    CFX_MUL (M(m1,3,3),M(m2,3,0));
+  
+  n1 =
+    CFX_MUL (M(m1,3,0),M(m2,0,1)) +
+    CFX_MUL (M(m1,3,1),M(m2,1,1)) +
+    CFX_MUL (M(m1,3,2),M(m2,2,1)) +
+    CFX_MUL (M(m1,3,3),M(m2,3,1));
+    
+  n2 =
+    CFX_MUL (M(m1,3,0),M(m2,0,2)) +
+    CFX_MUL (M(m1,3,1),M(m2,1,2)) +
+    CFX_MUL (M(m1,3,2),M(m2,2,2)) +
+    CFX_MUL (M(m1,3,3),M(m2,3,2));
+
+  n3 =
+    CFX_MUL (M(m1,3,0),M(m2,0,3)) +
+    CFX_MUL (M(m1,3,1),M(m2,1,3)) +
+    CFX_MUL (M(m1,3,2),M(m2,2,3)) +
+    CFX_MUL (M(m1,3,3),M(m2,3,3));
+
+  M(m1,3,0) = n0;
+  M(m1,3,1) = n1;
+  M(m1,3,2) = n2;
+  M(m1,3,3) = n3;
+}
+
+/* Creates a transform matrix by combining the actor transformations and the
+ * stage perspective
+ */
+static void
+mtx_create (ClutterActorPrivate *priv,
+	    ClutterFixed *mtx,
+	    const ClutterFixed * mtx_p)
 {
   /* FIXME: need to apply perspective / viewport transforms */
-
-  mtx_identity (&mtx[0]);
+  mtx_identity (mtx);
 
   /*
    * All the rotation ops are relative to the actor, not the overall
    * coordiante system; so first of all, we carry out a translation from
    * 0,0 to where our actor is.
    */
-  mtx_translate (&mtx[0],
+  mtx_translate (mtx,
 		 CLUTTER_UNITS_TO_FIXED (priv->coords.x1), 
 		 CLUTTER_UNITS_TO_FIXED (priv->coords.y1), 
 		 CLUTTER_INT_TO_FIXED (priv->z));
 
   if (priv->rzang)
     {
-      mtx_translate (&mtx[0],
-		 CLUTTER_INT_TO_FIXED (priv->rzx),
-		 CLUTTER_INT_TO_FIXED (priv->rzy),
-		 0);
+      mtx_translate (mtx,
+		     CLUTTER_INT_TO_FIXED (priv->rzx),
+		     CLUTTER_INT_TO_FIXED (priv->rzy),
+		     0);
       
-      mtx_rotate_z (&mtx[0], priv->rzang);
+      mtx_rotate_z (mtx, priv->rzang);
       
-      mtx_translate (&mtx[0],
-		 CLUTTER_INT_TO_FIXED (-priv->rzx),
-		 CLUTTER_INT_TO_FIXED (-priv->rzy),
-		 0);
+      mtx_translate (mtx,
+		     CLUTTER_INT_TO_FIXED (-priv->rzx),
+		     CLUTTER_INT_TO_FIXED (-priv->rzy),
+		     0);
     }
 
   if (priv->ryang)
     {
-      mtx_translate (&mtx[0],
-		 CLUTTER_INT_TO_FIXED (priv->ryx),
-		 0,
-		 CLUTTER_INT_TO_FIXED (priv->z + priv->ryz));
+      mtx_translate (mtx,
+		     CLUTTER_INT_TO_FIXED (priv->ryx),
+		     0,
+		     CLUTTER_INT_TO_FIXED (priv->z + priv->ryz));
       
-      mtx_rotate_y (&mtx[0], priv->ryang);
+      mtx_rotate_y (mtx, priv->ryang);
       
-      mtx_translate (&mtx[0],
-		 CLUTTER_INT_TO_FIXED (-priv->ryx),
-		 0,
-		 CLUTTER_INT_TO_FIXED (-(priv->z + priv->ryz)));
+      mtx_translate (mtx,
+		     CLUTTER_INT_TO_FIXED (-priv->ryx),
+		     0,
+		     CLUTTER_INT_TO_FIXED (-(priv->z + priv->ryz)));
     }
 
   if (priv->rxang)
     {
-      mtx_translate (&mtx[0],
-		 0,
-		 CLUTTER_INT_TO_FIXED (priv->rxy),
-		 CLUTTER_INT_TO_FIXED (priv->z + priv->rxz));
+      mtx_translate (mtx,
+		     0,
+		     CLUTTER_INT_TO_FIXED (priv->rxy),
+		     CLUTTER_INT_TO_FIXED (priv->z + priv->rxz));
       
-      mtx_rotate_x (&mtx[0], priv->rxang);
+      mtx_rotate_x (mtx, priv->rxang);
       
-      mtx_translate (&mtx[0],
-		 0,
-		 CLUTTER_INT_TO_FIXED (-priv->rxy),
-		 CLUTTER_INT_TO_FIXED (-(priv->z - priv->rxz)));
+      mtx_translate (mtx,
+		     0,
+		     CLUTTER_INT_TO_FIXED (-priv->rxy),
+		     CLUTTER_INT_TO_FIXED (-(priv->z - priv->rxz)));
     }
 
   if (priv->z)
-    mtx_translate (&mtx[0], 0, 0, CLUTTER_INT_TO_FIXED (priv->z));
+    mtx_translate (mtx, 0, 0, CLUTTER_INT_TO_FIXED (priv->z));
 
   if (priv->scale_x != CFX_ONE || priv->scale_y != CFX_ONE)
     {
-      mtx_scale (&mtx[0], priv->scale_x, priv->scale_y);
+      mtx_scale (mtx, priv->scale_x, priv->scale_y);
     }
+
+  mtx_mul (mtx, mtx_p);
 }
 
 /**
@@ -547,13 +675,16 @@ clutter_actor_get_transformed_point (ClutterActor *actor,
 				     ClutterUnit  *z_return)
 {
   ClutterFixed           mtx[16];
+  const ClutterFixed    *mtx_p;
   ClutterActorPrivate   *priv;
   
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
   priv = actor->priv;
 
-  mtx_create (priv, &mtx[0]);
+  mtx_p = _clutter_stage_get_perspective_matrix (CLUTTER_STAGE (clutter_stage_get_default()));
+  
+  mtx_create (priv, &mtx[0], mtx_p);
 
   *x_return = CLUTTER_UNITS_FROM_INT(x) - priv->coords.x1;
   *y_return = CLUTTER_UNITS_FROM_INT(y) - priv->coords.y1;
@@ -576,6 +707,7 @@ clutter_actor_get_transformed_vertices (ClutterActor    * self,
 					ClutterVertices * verts)
 {
   ClutterFixed           mtx[16];
+  const ClutterFixed    *mtx_p;
   ClutterFixed           x, y, z;
   ClutterActorPrivate   *priv;
   
@@ -587,7 +719,9 @@ clutter_actor_get_transformed_vertices (ClutterActor    * self,
 
   priv = self->priv;
 
-  mtx_create (priv, &mtx[0]);
+  mtx_p = _clutter_stage_get_perspective_matrix (CLUTTER_STAGE (clutter_stage_get_default()));
+  
+  mtx_create (priv, &mtx[0], mtx_p);
 
 #if 0
   g_debug ("Matrix\n"

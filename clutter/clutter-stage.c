@@ -61,6 +61,8 @@ struct _ClutterStagePrivate
   guint is_fullscreen     : 1;
   guint is_offscreen      : 1;
   guint is_cursor_visible : 1;
+
+  ClutterFixed perspective_mtx[16];
 };
 
 enum
@@ -484,6 +486,43 @@ clutter_stage_get_color (ClutterStage *stage,
   color->alpha = priv->color.alpha;
 }
 
+static void
+_clutter_stage_refresh_perspective_matrix (ClutterStagePrivate * priv)
+{
+  ClutterFixed xmax, ymax;
+  ClutterFixed x, y, c, d;
+
+  memset (&priv->perspective_mtx[0], 0, sizeof (priv->perspective_mtx));
+
+  ymax = clutter_qmulx (priv->perspective.z_near,
+			clutter_tani (priv->perspective.fovy >> 1));
+  
+  xmax = clutter_qmulx (ymax, priv->perspective.aspect);
+
+  x = CFX_DIV (priv->perspective.z_near, xmax);
+  y = CFX_DIV (priv->perspective.z_near, ymax);
+  c = CFX_DIV (-(priv->perspective.z_far + priv->perspective.z_near),
+	       ( priv->perspective.z_far - priv->perspective.z_near));
+  
+  d = CFX_DIV (-(clutter_qmulx (2 * priv->perspective.z_far,
+				priv->perspective.z_near)),
+	       (priv->perspective.z_far - priv->perspective.z_near));
+
+#define M(row,col)  priv->perspective_mtx[col*4+row]
+  M(0,0) = x;
+  M(1,1) = y;
+  M(2,2) = c;
+  M(2,3) = d;
+  M(3,2) = -CFX_ONE;
+#undef M
+}
+
+const ClutterFixed *
+_clutter_stage_get_perspective_matrix (ClutterStage * stage)
+{
+  return &stage->priv->perspective_mtx[0];
+}
+
 /**
  * clutter_stage_set_perspectivex
  * @stage: A #ClutterStage
@@ -505,6 +544,8 @@ clutter_stage_set_perspectivex (ClutterStage       *stage,
   priv->perspective.z_near = perspective->z_near;
   priv->perspective.z_far  = perspective->z_far;
 
+  _clutter_stage_refresh_perspective_matrix (priv);
+  
   CLUTTER_SET_PRIVATE_FLAGS(stage, CLUTTER_ACTOR_SYNC_MATRICES);
 }
 
@@ -553,6 +594,8 @@ clutter_stage_set_perspective (ClutterStage       *stage,
   priv->perspective.aspect = CLUTTER_FLOAT_TO_FIXED(aspect);
   priv->perspective.z_near = CLUTTER_FLOAT_TO_FIXED(z_near);
   priv->perspective.z_far  = CLUTTER_FLOAT_TO_FIXED(z_far);
+
+  _clutter_stage_refresh_perspective_matrix (priv);
 
   CLUTTER_SET_PRIVATE_FLAGS(stage, CLUTTER_ACTOR_SYNC_MATRICES);
 }
