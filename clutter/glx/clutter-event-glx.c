@@ -167,7 +167,7 @@ _clutter_backend_glx_events_init (ClutterBackend *backend)
 {
   GSource *source;
   ClutterEventSource *event_source;
-  ClutterBackendGlx *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
   int connection_number;
   
   connection_number = ConnectionNumber (backend_glx->xdpy);
@@ -197,7 +197,7 @@ _clutter_backend_glx_events_init (ClutterBackend *backend)
 void
 _clutter_backend_glx_events_uninit (ClutterBackend *backend)
 {
-  ClutterBackendGlx *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
 
   if (backend_glx->event_source)
     {
@@ -250,7 +250,7 @@ translate_key_event (ClutterBackend *backend,
 }
 
 static gboolean
-handle_wm_protocols_event (ClutterBackendGlx *backend_glx,
+handle_wm_protocols_event (ClutterBackendGLX *backend_glx,
                            XEvent            *xevent)
 {
   Atom atom = (Atom) xevent->xclient.data.l[0];
@@ -301,7 +301,7 @@ handle_wm_protocols_event (ClutterBackendGlx *backend_glx,
 }
 
 static gboolean
-handle_xembed_event (ClutterBackendGlx *backend_glx,
+handle_xembed_event (ClutterBackendGLX *backend_glx,
                      XEvent            *xevent)
 {
   ClutterActor *stage;
@@ -350,7 +350,7 @@ event_translate (ClutterBackend *backend,
 		 ClutterEvent   *event,
 		 XEvent         *xevent)
 {
-  ClutterBackendGlx *backend_glx;
+  ClutterBackendGLX *backend_glx;
   ClutterStage *stage;
   gboolean res;
   Window xwindow, stage_xwindow;
@@ -363,6 +363,32 @@ event_translate (ClutterBackend *backend,
   if (xwindow == None)
     xwindow = stage_xwindow;
 
+  if (backend_glx->event_filters)
+    {
+      GSList                *node;
+      ClutterGLXEventFilter *filter;
+
+      node = backend_glx->event_filters;
+
+      while (node)
+	{
+	  filter = (ClutterGLXEventFilter *)node->data;
+
+	  switch (filter->func(xevent, event, filter->data))
+	    {
+	    case CLUTTER_GLX_FILTER_CONTINUE:
+	      break;
+	    case CLUTTER_GLX_FILTER_TRANSLATE:
+	      return TRUE;
+	    case CLUTTER_GLX_FILTER_REMOVE:
+	      return FALSE;
+	    default:
+	      break;
+	    }
+	  node = node->next;
+	}
+    }
+  
   res = TRUE;
 
   switch (xevent->type)
@@ -486,7 +512,7 @@ event_translate (ClutterBackend *backend,
 static void
 events_queue (ClutterBackend *backend)
 {
-  ClutterBackendGlx *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
   ClutterEvent      *event;
   Display           *xdisplay = backend_glx->xdpy;
   XEvent             xevent;

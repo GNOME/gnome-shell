@@ -33,6 +33,18 @@
 
 G_BEGIN_DECLS
 
+typedef enum {
+  CLUTTER_GLX_FILTER_CONTINUE,   /* Event not handled, continue processesing */
+  CLUTTER_GLX_FILTER_TRANSLATE,  /* Native event translated into a Clutter 
+                                    event and stored in the "event" structure 
+                                    that was passed in */
+  CLUTTER_GLX_FILTER_REMOVE      /* Terminate processing, removing event */
+} ClutterGLXFilterReturn;
+
+typedef ClutterGLXFilterReturn (*ClutterGLXFilterFunc) (XEvent        *xev, 
+							ClutterEvent  *cev,
+							gpointer      *data);
+
 void     clutter_glx_trap_x_errors       (void);
 gint     clutter_glx_untrap_x_errors     (void);
 

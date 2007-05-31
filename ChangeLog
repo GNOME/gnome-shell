@@ -1,3 +1,15 @@
+2007-05-31  Matthew Allum  <mallum@openedhand.com>
+
+
+	* clutter/glx/clutter-backend-glx.c:
+	* clutter/glx/clutter-backend-glx.h:
+	* clutter/glx/clutter-event-glx.c:
+	* clutter/glx/clutter-glx.h:
+	* clutter/glx/clutter-stage-glx.c:
+	* clutter/glx/clutter-stage-glx.h:
+	Change type nameing from Glx -> GLX.
+	Add basic event filtering functionality
+
 2007-05-31  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-behaviour-ellipse.c:

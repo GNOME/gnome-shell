@@ -50,12 +50,12 @@
 
 #include "cogl.h"
 
-G_DEFINE_TYPE (ClutterBackendGlx, clutter_backend_glx, CLUTTER_TYPE_BACKEND);
+G_DEFINE_TYPE (ClutterBackendGLX, clutter_backend_glx, CLUTTER_TYPE_BACKEND);
 
 typedef CoglFuncPtr (*GLXGetProcAddressProc) (const guint8 *procName);
 
 /* singleton object */
-static ClutterBackendGlx *backend_singleton = NULL;
+static ClutterBackendGLX *backend_singleton = NULL;
 
 /* options */
 static gchar *clutter_display_name = NULL;
@@ -145,7 +145,7 @@ static gboolean
 clutter_backend_glx_post_parse (ClutterBackend  *backend,
                                 GError         **error)
 {
-  ClutterBackendGlx *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
 
   if (clutter_display_name)
     {
@@ -221,11 +221,11 @@ static gboolean
 clutter_backend_glx_init_stage (ClutterBackend  *backend,
                                 GError         **error)
 {
-  ClutterBackendGlx *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
 
   if (!backend_glx->stage)
     {
-      ClutterStageGlx *stage_glx;
+      ClutterStageGLX *stage_glx;
       ClutterActor *stage;
 
       stage = g_object_new (CLUTTER_TYPE_STAGE_GLX, NULL);
@@ -270,7 +270,7 @@ clutter_backend_glx_init_events (ClutterBackend *backend)
 static ClutterActor*
 clutter_backend_glx_get_stage (ClutterBackend *backend)
 {
-  ClutterBackendGlx *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
 
   return backend_glx->stage;
 }
@@ -307,7 +307,7 @@ clutter_backend_glx_add_options (ClutterBackend *backend,
 static void
 clutter_backend_glx_finalize (GObject *gobject)
 {
-  ClutterBackendGlx *backend_glx = CLUTTER_BACKEND_GLX (gobject);
+  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (gobject);
 
   g_free (backend_glx->display_name);
 
@@ -322,7 +322,7 @@ clutter_backend_glx_finalize (GObject *gobject)
 static void
 clutter_backend_glx_dispose (GObject *gobject)
 {
-  ClutterBackendGlx *backend_glx = CLUTTER_BACKEND_GLX (gobject);
+  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (gobject);
 
   _clutter_backend_glx_events_uninit (CLUTTER_BACKEND(backend_glx));
 
@@ -409,7 +409,7 @@ get_proc_address (const gchar* name)
 static ClutterFeatureFlags
 clutter_backend_glx_get_features (ClutterBackend *backend)
 {
-  ClutterBackendGlx  *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterBackendGLX  *backend_glx = CLUTTER_BACKEND_GLX (backend);
   const gchar        *glx_extensions = NULL;
   ClutterFeatureFlags flags = 0;
 
@@ -471,8 +471,8 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
 static void
 clutter_backend_glx_redraw (ClutterBackend *backend)
 {
-  ClutterBackendGlx *backend_glx = CLUTTER_BACKEND_GLX (backend);
-  ClutterStageGlx   *stage_glx;
+  ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterStageGLX   *stage_glx;
 
   stage_glx = CLUTTER_STAGE_GLX(backend_glx->stage);
 
@@ -496,7 +496,7 @@ clutter_backend_glx_redraw (ClutterBackend *backend)
 }
 
 static void
-clutter_backend_glx_class_init (ClutterBackendGlxClass *klass)
+clutter_backend_glx_class_init (ClutterBackendGLXClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterBackendClass *backend_class = CLUTTER_BACKEND_CLASS (klass);
@@ -516,7 +516,7 @@ clutter_backend_glx_class_init (ClutterBackendGlxClass *klass)
 }
 
 static void
-clutter_backend_glx_init (ClutterBackendGlx *backend_glx)
+clutter_backend_glx_init (ClutterBackendGLX *backend_glx)
 {
   ClutterBackend *backend = CLUTTER_BACKEND (backend_glx);
 
@@ -541,7 +541,7 @@ error_handler(Display     *xdpy,
 }
 
 void
-clutter_backend_glx_wait_for_vblank (ClutterBackendGlx *backend_glx)
+clutter_backend_glx_wait_for_vblank (ClutterBackendGLX *backend_glx)
 {
   switch (backend_glx->vblank_type)
     {
@@ -664,4 +664,74 @@ clutter_glx_get_root_window (void)
     }
 
   return backend_singleton->xwin_root;
+}
+
+/**
+ * clutter_glx_add_filter:
+ * 
+ * FIXME
+ *
+ * Return value: FIXME
+ *
+ * Since: 0.4
+ */
+void
+clutter_glx_add_filter (ClutterGLXFilterFunc func, gpointer data)
+{
+  ClutterGLXEventFilter *filter;
+
+  g_return_if_fail (func != NULL);
+
+  if (!backend_singleton)
+    {
+      g_critical ("GLX backend has not been initialised");
+      return;
+    }
+
+  filter = g_new0(ClutterGLXEventFilter, 1);
+  filter->func = func;
+  filter->data = data;
+
+  backend_singleton->event_filters 
+     = g_slist_append (backend_singleton->event_filters, filter);
+
+  return;
+}
+
+/**
+ * clutter_glx_remove_filter:
+ * 
+ * FIXME
+ *
+ * Return value: FIXME
+ *
+ * Since: 0.4
+ */
+void
+clutter_glx_remove_filter (ClutterGLXFilterFunc func, gpointer data)
+{
+  GSList                *tmp_list, *this;
+  ClutterGLXEventFilter *filter;
+
+  g_return_if_fail (func == NULL);
+
+  tmp_list = backend_singleton->event_filters;
+
+  while (tmp_list)
+    {
+      filter = (ClutterGLXEventFilter *)tmp_list->data;
+      this     =  tmp_list;
+      tmp_list = tmp_list->next;
+
+      if (filter->func == func && filter->data == data)
+        {
+	  backend_singleton->event_filters 
+	      = g_slist_remove_link (backend_singleton->event_filters, this);
+
+          g_slist_free_1 (this);
+          g_free (filter);
+
+          return;
+        }
+    }
 }

@@ -48,12 +48,12 @@
 
 #include <gdk-pixbuf-xlib/gdk-pixbuf-xlib.h>
 
-G_DEFINE_TYPE (ClutterStageGlx, clutter_stage_glx, CLUTTER_TYPE_STAGE);
+G_DEFINE_TYPE (ClutterStageGLX, clutter_stage_glx, CLUTTER_TYPE_STAGE);
 
 static void
 clutter_stage_glx_show (ClutterActor *actor)
 {
-  ClutterStageGlx *stage_glx = CLUTTER_STAGE_GLX (actor);
+  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (actor);
 
   if (stage_glx->xwin)
     XMapWindow (stage_glx->xdpy, stage_glx->xwin);
@@ -62,7 +62,7 @@ clutter_stage_glx_show (ClutterActor *actor)
 static void
 clutter_stage_glx_hide (ClutterActor *actor)
 {
-  ClutterStageGlx *stage_glx = CLUTTER_STAGE_GLX (actor);
+  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (actor);
 
   if (stage_glx->xwin)
     XUnmapWindow (stage_glx->xdpy, stage_glx->xwin);
@@ -71,7 +71,7 @@ clutter_stage_glx_hide (ClutterActor *actor)
 static void
 clutter_stage_glx_unrealize (ClutterActor *actor)
 {
-  ClutterStageGlx *stage_glx = CLUTTER_STAGE_GLX (actor);
+  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (actor);
   gboolean was_offscreen;
 
   CLUTTER_MARK();
@@ -127,7 +127,7 @@ set_wm_protocols (Display *xdisplay,
 static void
 clutter_stage_glx_realize (ClutterActor *actor)
 {
-  ClutterStageGlx *stage_glx = CLUTTER_STAGE_GLX (actor);
+  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (actor);
   gboolean is_offscreen;
 
   CLUTTER_NOTE (MISC, "Realizing main stage");
@@ -309,7 +309,7 @@ static void
 clutter_stage_glx_allocate_coords (ClutterActor        *self,
                                    ClutterActorBox     *box)
 {
-  ClutterStageGlx *stage_glx = CLUTTER_STAGE_GLX (self);
+  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (self);
 
   box->x1 = box->y1 = 0;
   box->x2 = box->x1 + CLUTTER_UNITS_FROM_INT (stage_glx->xwin_width);
@@ -320,7 +320,7 @@ static void
 clutter_stage_glx_request_coords (ClutterActor        *self,
 				  ClutterActorBox     *box)
 {
-  ClutterStageGlx *stage_glx = CLUTTER_STAGE_GLX (self);
+  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (self);
   gint new_width, new_height;
 
   new_width  = ABS (CLUTTER_UNITS_TO_INT (box->x2 - box->x1));
@@ -359,7 +359,7 @@ static void
 clutter_stage_glx_set_fullscreen (ClutterStage *stage,
                                   gboolean      fullscreen)
 {
-  ClutterStageGlx *stage_glx = CLUTTER_STAGE_GLX (stage);
+  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage);
   Atom atom_WM_STATE, atom_WM_STATE_FULLSCREEN;
 
   atom_WM_STATE = XInternAtom (stage_glx->xdpy, "_NET_WM_STATE", False);
@@ -396,7 +396,7 @@ static void
 clutter_stage_glx_set_cursor_visible (ClutterStage *stage,
                                       gboolean      show_cursor)
 {
-  ClutterStageGlx *stage_glx = CLUTTER_STAGE_GLX (stage);
+  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage);
 
   if (stage_glx->xwin == None)
     return;
@@ -459,7 +459,7 @@ clutter_stage_glx_draw_to_pixbuf (ClutterStage *stage,
   guchar *data;
   GdkPixbuf *pixb;
   ClutterActor *actor;
-  ClutterStageGlx *stage_glx;
+  ClutterStageGLX *stage_glx;
   gboolean is_offscreen = FALSE;
 
   stage_glx = CLUTTER_STAGE_GLX (stage);
@@ -513,7 +513,7 @@ clutter_stage_glx_draw_to_pixbuf (ClutterStage *stage,
 static void
 clutter_stage_glx_dispose (GObject *gobject)
 {
-  ClutterStageGlx *stage_glx = CLUTTER_STAGE_GLX (gobject);
+  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (gobject);
 
   if (stage_glx->xwin)
     clutter_actor_unrealize (CLUTTER_ACTOR (stage_glx));
@@ -522,7 +522,7 @@ clutter_stage_glx_dispose (GObject *gobject)
 }
 
 static void
-clutter_stage_glx_class_init (ClutterStageGlxClass *klass)
+clutter_stage_glx_class_init (ClutterStageGLXClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
@@ -544,7 +544,7 @@ clutter_stage_glx_class_init (ClutterStageGlxClass *klass)
 }
 
 static void
-clutter_stage_glx_init (ClutterStageGlx *stage)
+clutter_stage_glx_init (ClutterStageGLX *stage)
 {
   stage->xdpy = NULL;
   stage->xwin_root = None;
@@ -611,7 +611,7 @@ gboolean
 clutter_glx_set_stage_foreign (ClutterStage *stage,
                                Window        xwindow)
 {
-  ClutterStageGlx *stage_glx;
+  ClutterStageGLX *stage_glx;
   ClutterActor *actor;
   gint x, y;
   guint width, height, border, depth;

@@ -30,17 +30,19 @@
 #include <GL/glx.h>
 #include <GL/gl.h>
 
+#include "clutter-glx.h"
+
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_BACKEND_GLX                (clutter_backend_glx_get_type ())
-#define CLUTTER_BACKEND_GLX(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BACKEND_GLX, ClutterBackendGlx))
+#define CLUTTER_BACKEND_GLX(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BACKEND_GLX, ClutterBackendGLX))
 #define CLUTTER_IS_BACKEND_GLX(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BACKEND_GLX))
-#define CLUTTER_BACKEND_GLX_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BACKEND_GLX, ClutterBackendGlxClass))
+#define CLUTTER_BACKEND_GLX_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BACKEND_GLX, ClutterBackendGLXClass))
 #define CLUTTER_IS_BACKEND_GLX_CLASS(klass)     (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_BACKEND_GLX))
-#define CLUTTER_BACKEND_GLX_GET_CLASS(obj)      (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_BACKEND_GLX, ClutterBackendGlxClass))
+#define CLUTTER_BACKEND_GLX_GET_CLASS(obj)      (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_BACKEND_GLX, ClutterBackendGLXClass))
 
-typedef struct _ClutterBackendGlx       ClutterBackendGlx;
-typedef struct _ClutterBackendGlxClass  ClutterBackendGlxClass;
+typedef struct _ClutterBackendGLX       ClutterBackendGLX;
+typedef struct _ClutterBackendGLXClass  ClutterBackendGLXClass;
 
 typedef enum ClutterGLXVBlankType
 {
@@ -55,7 +57,14 @@ typedef int (*WaitVideoSyncProc) (int           divisor,
 				  int          remainder,
 				  unsigned int *count);
 
-struct _ClutterBackendGlx
+typedef struct _ClutterGLXEventFilter
+{
+  ClutterGLXFilterFunc func;
+  gpointer             data;
+
+} ClutterGLXEventFilter;
+
+struct _ClutterBackendGLX
 {
   ClutterBackend parent_instance;
 
@@ -70,6 +79,7 @@ struct _ClutterBackendGlx
 
   /* event source */
   GSource *event_source;
+  GSList  *event_filters;
 
   /* Vblank stuff */
   GetVideoSyncProc  get_video_sync;
@@ -78,7 +88,7 @@ struct _ClutterBackendGlx
   ClutterGLXVBlankType   vblank_type;
 };
 
-struct _ClutterBackendGlxClass
+struct _ClutterBackendGLXClass
 {
   ClutterBackendClass parent_class;
 };
@@ -86,7 +96,7 @@ struct _ClutterBackendGlxClass
 void   _clutter_backend_glx_events_init (ClutterBackend *backend);
 void   _clutter_backend_glx_events_uninit (ClutterBackend *backend);
 
-void   clutter_backend_glx_wait_for_vblank (ClutterBackendGlx *backend_glx);
+void   clutter_backend_glx_wait_for_vblank (ClutterBackendGLX *backend_glx);
 
 GType clutter_backend_glx_get_type (void) G_GNUC_CONST;
 

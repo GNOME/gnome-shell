@@ -34,16 +34,16 @@
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_STAGE_GLX                  (clutter_stage_glx_get_type ())
-#define CLUTTER_STAGE_GLX(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_STAGE_GLX, ClutterStageGlx))
+#define CLUTTER_STAGE_GLX(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_STAGE_GLX, ClutterStageGLX))
 #define CLUTTER_IS_STAGE_GLX(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_STAGE_GLX))
-#define CLUTTER_STAGE_GLX_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_STAGE_GLX, ClutterStageGlxClass))
+#define CLUTTER_STAGE_GLX_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_STAGE_GLX, ClutterStageGLXClass))
 #define CLUTTER_IS_STAGE_GLX_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_STAGE_GLX))
-#define CLUTTER_STAGE_GLX_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_STAGE_GLX, ClutterStageGlxClass))
+#define CLUTTER_STAGE_GLX_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_STAGE_GLX, ClutterStageGLXClass))
 
-typedef struct _ClutterStageGlx         ClutterStageGlx;
-typedef struct _ClutterStageGlxClass    ClutterStageGlxClass;
+typedef struct _ClutterStageGLX         ClutterStageGLX;
+typedef struct _ClutterStageGLXClass    ClutterStageGLXClass;
 
-struct _ClutterStageGlx
+struct _ClutterStageGLX
 {
   ClutterStage parent_instance;
 
@@ -63,11 +63,11 @@ struct _ClutterStageGlx
 
   guint is_foreign_xwin : 1;
 
-  ClutterBackendGlx *backend;
+  ClutterBackendGLX *backend;
 
 };
 
-struct _ClutterStageGlxClass
+struct _ClutterStageGLXClass
 {
   ClutterStageClass parent_class;
 };
