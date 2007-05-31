@@ -6,7 +6,7 @@
 #include "../clutter-main.h"
 #include "../clutter-debug.h"
 
-static ClutterBackendEgl *backend_singleton = NULL;
+static ClutterBackendEGL *backend_singleton = NULL;
 
 /* options */
 static gchar *clutter_display_name = NULL;
@@ -16,7 +16,7 @@ static gint clutter_screen = 0;
 static int TrappedErrorCode = 0;
 static int (*old_error_handler) (Display *, XErrorEvent *);
 
-G_DEFINE_TYPE (ClutterBackendEgl, clutter_backend_egl, CLUTTER_TYPE_BACKEND);
+G_DEFINE_TYPE (ClutterBackendEGL, clutter_backend_egl, CLUTTER_TYPE_BACKEND);
 
 static gboolean
 clutter_backend_egl_pre_parse (ClutterBackend  *backend,
@@ -41,7 +41,7 @@ static gboolean
 clutter_backend_egl_post_parse (ClutterBackend  *backend,
                                 GError         **error)
 {
-  ClutterBackendEgl *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
 
   if (clutter_display_name)
     {
@@ -110,11 +110,11 @@ static gboolean
 clutter_backend_egl_init_stage (ClutterBackend  *backend,
                                 GError         **error)
 {
-  ClutterBackendEgl *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
 
   if (!backend_egl->stage)
     {
-      ClutterStageEgl *stage_egl;
+      ClutterStageEGL *stage_egl;
       ClutterActor *stage;
 
       stage = g_object_new (CLUTTER_TYPE_STAGE_EGL, NULL);
@@ -169,8 +169,8 @@ static const GOptionEntry entries[] =
 static void
 clutter_backend_egl_redraw (ClutterBackend *backend)
 {
-  ClutterBackendEgl *backend_egl = CLUTTER_BACKEND_EGL (backend);
-  ClutterStageEgl   *stage_egl;
+  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  ClutterStageEGL   *stage_egl;
 
   stage_egl = CLUTTER_STAGE_EGL(backend_egl->stage);
 
@@ -201,7 +201,7 @@ clutter_backend_egl_add_options (ClutterBackend *backend,
 static ClutterActor *
 clutter_backend_egl_get_stage (ClutterBackend *backend)
 {
-  ClutterBackendEgl *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
 
   return backend_egl->stage;
 }
@@ -209,7 +209,7 @@ clutter_backend_egl_get_stage (ClutterBackend *backend)
 static void
 clutter_backend_egl_finalize (GObject *gobject)
 {
-  ClutterBackendEgl *backend_egl = CLUTTER_BACKEND_EGL (gobject);
+  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (gobject);
 
   g_free (backend_egl->display_name);
 
@@ -224,7 +224,7 @@ clutter_backend_egl_finalize (GObject *gobject)
 static void
 clutter_backend_egl_dispose (GObject *gobject)
 {
-  ClutterBackendEgl *backend_egl = CLUTTER_BACKEND_EGL (gobject);
+  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (gobject);
 
   _clutter_events_uninit (CLUTTER_BACKEND (backend_egl));
 
@@ -262,7 +262,7 @@ clutter_backend_egl_constructor (GType                  gtype,
 }
 
 static void
-clutter_backend_egl_class_init (ClutterBackendEglClass *klass)
+clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterBackendClass *backend_class = CLUTTER_BACKEND_CLASS (klass);
@@ -281,7 +281,7 @@ clutter_backend_egl_class_init (ClutterBackendEglClass *klass)
 }
 
 static void
-clutter_backend_egl_init (ClutterBackendEgl *backend_egl)
+clutter_backend_egl_init (ClutterBackendEGL *backend_egl)
 {
   ClutterBackend *backend = CLUTTER_BACKEND (backend_egl);
 

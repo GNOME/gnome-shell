@@ -17,7 +17,7 @@
 #include <X11/extensions/Xfixes.h>
 #endif
 
-G_DEFINE_TYPE (ClutterStageEgl, clutter_stage_egl, CLUTTER_TYPE_STAGE);
+G_DEFINE_TYPE (ClutterStageEGL, clutter_stage_egl, CLUTTER_TYPE_STAGE);
 
 /* This is currently an EGL on X implementation (eg for use with vincent) 
  *
@@ -27,7 +27,7 @@ G_DEFINE_TYPE (ClutterStageEgl, clutter_stage_egl, CLUTTER_TYPE_STAGE);
 static void
 clutter_stage_egl_show (ClutterActor *actor)
 {
-  ClutterStageEgl *stage_egl = CLUTTER_STAGE_EGL (actor);
+  ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (actor);
 
   if (stage_egl->xwin)
     XMapWindow (stage_egl->xdpy, stage_egl->xwin);
@@ -36,7 +36,7 @@ clutter_stage_egl_show (ClutterActor *actor)
 static void
 clutter_stage_egl_hide (ClutterActor *actor)
 {
-  ClutterStageEgl *stage_egl = CLUTTER_STAGE_EGL (actor);
+  ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (actor);
 
   if (stage_egl->xwin)
     XUnmapWindow (stage_egl->xdpy, stage_egl->xwin);
@@ -45,7 +45,7 @@ clutter_stage_egl_hide (ClutterActor *actor)
 static void
 clutter_stage_egl_unrealize (ClutterActor *actor)
 {
-  ClutterStageEgl *stage_egl = CLUTTER_STAGE_EGL (actor);
+  ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (actor);
   gboolean was_offscreen;
 
   CLUTTER_MARK();
@@ -84,7 +84,7 @@ clutter_stage_egl_unrealize (ClutterActor *actor)
 static void
 clutter_stage_egl_realize (ClutterActor *actor)
 {
-  ClutterStageEgl *stage_egl = CLUTTER_STAGE_EGL (actor);
+  ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (actor);
 
   EGLConfig            configs[2];
   EGLint               config_count;
@@ -189,7 +189,7 @@ static void
 clutter_stage_egl_allocate_coords (ClutterActor        *self,
                                    ClutterActorBox     *box)
 {
-  ClutterStageEgl *stage_egl = CLUTTER_STAGE_EGL (self);
+  ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (self);
 
   box->x1 = box->y1 = 0;
   box->x2 = box->x1 + CLUTTER_UNITS_FROM_INT (stage_egl->xwin_width);
@@ -200,7 +200,7 @@ static void
 clutter_stage_egl_request_coords (ClutterActor        *self,
 				  ClutterActorBox     *box)
 {
-  ClutterStageEgl *stage_egl = CLUTTER_STAGE_EGL (self);
+  ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (self);
   gint new_width, new_height;
 
   /* FIXME: some how have X configure_notfiys call this ? */
@@ -233,7 +233,7 @@ static void
 clutter_stage_egl_set_fullscreen (ClutterStage *stage,
                                   gboolean      fullscreen)
 {
-  ClutterStageEgl *stage_egl = CLUTTER_STAGE_EGL (stage);
+  ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (stage);
   Atom atom_WM_STATE, atom_WM_STATE_FULLSCREEN;
 
   atom_WM_STATE = XInternAtom (stage_egl->xdpy, "_NET_WM_STATE", False);
@@ -270,7 +270,7 @@ static void
 clutter_stage_egl_set_cursor_visible (ClutterStage *stage,
                                       gboolean      show_cursor)
 {
-  ClutterStageEgl *stage_egl = CLUTTER_STAGE_EGL (stage);
+  ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (stage);
 
   if (stage_egl->xwin == None)
     return;
@@ -331,7 +331,7 @@ clutter_stage_egl_draw_to_pixbuf (ClutterStage *stage,
 static void
 clutter_stage_egl_dispose (GObject *gobject)
 {
-  ClutterStageEgl *stage_egl = CLUTTER_STAGE_EGL (gobject);
+  ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (gobject);
 
   if (stage_egl->xwin)
     clutter_actor_unrealize (CLUTTER_ACTOR (stage_egl));
@@ -340,7 +340,7 @@ clutter_stage_egl_dispose (GObject *gobject)
 }
 
 static void
-clutter_stage_egl_class_init (ClutterStageEglClass *klass)
+clutter_stage_egl_class_init (ClutterStageEGLClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
@@ -362,7 +362,7 @@ clutter_stage_egl_class_init (ClutterStageEglClass *klass)
 }
 
 static void
-clutter_stage_egl_init (ClutterStageEgl *stage)
+clutter_stage_egl_init (ClutterStageEGL *stage)
 {
   stage->xdpy = NULL;
   stage->xwin_root = None;

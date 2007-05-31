@@ -33,16 +33,16 @@
 G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_BACKEND_EGL                (clutter_backend_egl_get_type ())
-#define CLUTTER_BACKEND_EGL(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BACKEND_EGL, ClutterBackendEgl))
+#define CLUTTER_BACKEND_EGL(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_BACKEND_EGL, ClutterBackendEGL))
 #define CLUTTER_IS_BACKEND_EGL(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_BACKEND_EGL))
-#define CLUTTER_BACKEND_EGL_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BACKEND_EGL, ClutterBackendEglClass))
+#define CLUTTER_BACKEND_EGL_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BACKEND_EGL, ClutterBackendEGLClass))
 #define CLUTTER_IS_BACKEND_EGL_CLASS(klass)     (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_BACKEND_EGL))
-#define CLUTTER_BACKEND_EGL_GET_CLASS(obj)      (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_BACKEND_EGL, ClutterBackendEglClass))
+#define CLUTTER_BACKEND_EGL_GET_CLASS(obj)      (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_BACKEND_EGL, ClutterBackendEGLClass))
 
-typedef struct _ClutterBackendEgl       ClutterBackendEgl;
-typedef struct _ClutterBackendEglClass  ClutterBackendEglClass;
+typedef struct _ClutterBackendEGL       ClutterBackendEGL;
+typedef struct _ClutterBackendEGLClass  ClutterBackendEGLClass;
 
-struct _ClutterBackendEgl
+struct _ClutterBackendEGL
 {
   ClutterBackend parent_instance;
 
@@ -65,7 +65,7 @@ struct _ClutterBackendEgl
   /*< private >*/
 };
 
-struct _ClutterBackendEglClass
+struct _ClutterBackendEGLClass
 {
   ClutterBackendClass parent_class;
 };

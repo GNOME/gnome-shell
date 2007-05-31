@@ -90,7 +90,7 @@ _clutter_events_init (ClutterBackend *backend)
 {
   GSource *source;
   ClutterEventSource *event_source;
-  ClutterBackendEgl *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
   int connection_number;
   
   connection_number = ConnectionNumber (backend_egl->xdpy);
@@ -113,7 +113,7 @@ _clutter_events_init (ClutterBackend *backend)
 void
 _clutter_events_uninit (ClutterBackend *backend)
 {
-  ClutterBackendEgl *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
 
   if (backend_egl->event_source)
     {
@@ -171,7 +171,7 @@ clutter_event_translate (ClutterBackend *backend,
                          ClutterEvent   *event,
                          XEvent         *xevent)
 {
-  ClutterBackendEgl *backend_egl;
+  ClutterBackendEGL *backend_egl;
   ClutterStage *stage;
   gboolean res;
   Window xwindow, stage_xwindow;
@@ -294,7 +294,7 @@ clutter_event_translate (ClutterBackend *backend,
 static void
 events_queue (ClutterBackend *backend)
 {
-  ClutterBackendEgl   *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  ClutterBackendEGL   *backend_egl = CLUTTER_BACKEND_EGL (backend);
   ClutterEvent        *event;
   XEvent               xevent;
   ClutterMainContext  *clutter_context;

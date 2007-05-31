@@ -1,5 +1,13 @@
 2007-05-31  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/egl/clutter-backend-egl.c:
+	* clutter/egl/clutter-backend-egl.h:
+	* clutter/egl/clutter-event-egl.c:
+	* clutter/egl/clutter-stage-egl.c:
+	* clutter/egl/clutter-stage-egl.h:
+	Rename Egl -> EGL
+
+2007-05-31  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/glx/clutter-backend-glx.c:
 	* clutter/glx/clutter-backend-glx.h:
