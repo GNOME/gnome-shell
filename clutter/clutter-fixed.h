@@ -51,7 +51,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 #define CLUTTER_ANGLE_FROM_DEGF(x) CLUTTER_FLOAT_TO_INT(((float)x*1024.0f)/360.0f)
 #define CLUTTER_ANGLE_TO_DEGF(x) (((float)x * 360.0)/ 1024.0)
 
-#define CLUTTER_ANGLE_FROM_DEGX(x) CFX_INT(((x*1024)/360) + CFX_HALF)
+#define CLUTTER_ANGLE_FROM_DEGX(x) CFX_INT(((x/360)*1024) + CFX_HALF)
 
 #define CFX_Q      16		/* Decimal part size in bits */
 #define CFX_ONE    (1 << CFX_Q)	/* 1 */
@@ -202,7 +202,7 @@ extern inline
 ClutterFixed _clutter_double_to_fixed (double value);
 
 extern inline
-ClutterFixed _clutter_double_to_int (double value);
+gint _clutter_double_to_int (double value);
 
 G_END_DECLS
 

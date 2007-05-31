@@ -1,5 +1,24 @@
-2007-05-31  Matthew Allum  <mallum@openedhand.com>
+2007-05-31  Tomas Frydrych  <tf@openedhand.com>
 
+	* clutter/clutter-fixed.h:
+	* clutter/clutter-fixed.c:
+	(_clutter_double_to_int):
+	Fixed return value to gint; added missing cast that broke negative
+	number conversions.
+	
+	(CLUTTER_ANGLE_FROM_DEGX):
+	Swapped division and multiplication around to avoid overflows.
+
+	* clutter/clutter-behaviour-ellipse.c:
+	Fixed incorrectly set lower bounds for angle properties.
+
+	* clutter/clutter-actor.h:
+	* clutter/clutter-actor.c:
+	Added ClutterVertices type.
+	(clutter_actor_get_transformed_vertices):
+	New function.
+
+2007-05-31  Matthew Allum  <mallum@openedhand.com>
 	* TODO:
 	Sync up for whats left for 0.4 release (and 0.6 ideas)
 
@@ -21,7 +40,7 @@
 	* doc/manual/manual.xsl:
 	* doc/manual/style.css:
 	Add various bits for application developers manual. 
-
+	
 2007-05-30  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-alpha.h:

@@ -160,7 +160,7 @@ clutter_behaviour_ellipse_alpha_notify (ClutterBehaviour * behave,
       angle =
         self->priv->angle_begin - (angle * alpha) / CLUTTER_ALPHA_MAX_ALPHA;
     }
-    
+
   clutter_behaviour_ellipse_advance (self, angle, &knot);
 
   knot.x += self->priv->center.x;
@@ -273,7 +273,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
                                    g_param_spec_int ("angle-begin",
                                                      "Angle Begin",
                                                      "Initial angle",
-                                                     0, G_MAXINT, 0,
+                                                     G_MININT, G_MAXINT, 0,
                                                      CLUTTER_PARAM_READWRITE));
   /**
    * ClutterBehaviourEllipse:angle-end:
@@ -287,7 +287,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
                                    g_param_spec_int ("angle-end",
                                                      "Angle End",
                                                      "Final angle",
-                                                     0, G_MAXINT, 1024,
+                                                     G_MININT, G_MAXINT, 1024,
                                                      CLUTTER_PARAM_READWRITE));
 
   /**
@@ -302,7 +302,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
                                    g_param_spec_int ("angle-tilt",
                                                      "Angle Tilt",
                                                      "Tilt of the ellipse",
-                                                     0, G_MAXINT, 1024,
+                                                     G_MININT, G_MAXINT, 1024,
                                                      CLUTTER_PARAM_READWRITE));
   
   /**

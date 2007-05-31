@@ -844,7 +844,7 @@ _clutter_double_to_fixed (double val)
  *
  * Since: 0.2
  */
-ClutterFixed
+gint
 _clutter_double_to_int (double val)
 {
     union 
@@ -855,7 +855,7 @@ _clutter_double_to_int (double val)
 
     dbl.d = val;
     dbl.d = dbl.d + _magic;
-    return dbl.i[0] >> 16; 
+    return ((int)dbl.i[0]) >> 16; 
 }
 
 #undef _CFX_MAN

@@ -77,6 +77,7 @@ typedef struct _ClutterActorClass    ClutterActorClass;
 typedef struct _ClutterActorBox      ClutterActorBox;
 typedef struct _ClutterActorPrivate  ClutterActorPrivate;
 typedef struct _ClutterGeometry      ClutterGeometry;
+typedef struct _ClutterVertices      ClutterVertices;
 
 typedef void (*ClutterCallback) (ClutterActor *actor, gpointer data);
 #define CLUTTER_CALLBACK(f)	((ClutterCallback) (f))
@@ -106,6 +107,39 @@ typedef enum
 struct _ClutterActorBox { ClutterUnit x1, y1, x2, y2; };
 
 GType clutter_actor_box_get_type (void) G_GNUC_CONST;
+
+struct _ClutterVertices
+{
+  struct
+  {
+    ClutterUnit x;
+    ClutterUnit y;
+    ClutterUnit z;
+  }topleft;
+  
+  struct
+  {
+    ClutterUnit x;
+    ClutterUnit y;
+    ClutterUnit z;
+  }topright;
+    
+  struct
+  {
+    ClutterUnit x;
+    ClutterUnit y;
+    ClutterUnit z;
+  }bottomleft;
+  
+  struct
+  {
+    ClutterUnit x;
+    ClutterUnit y;
+    ClutterUnit z;
+  }bottomright;
+};
+
+GType clutter_vertices_get_type (void) G_GNUC_CONST;
 
 struct _ClutterActor
 {

@@ -299,6 +299,348 @@ clutter_actor_pick (ClutterActor       *self,
     }
 }
 
+/*
+ * Utility functions for manipulating transformation matrix
+ *
+ * Matrix: 4x4 of ClutterFixed
+ */
+#define M(m,row,col)  (m)[col*4+row]
+
+/* Make indentity matrix */
+static void
+mtx_identity (ClutterFixed * m)
+{
+    memset (m, 0, sizeof (ClutterFixed) * 16);
+    M (m,0,0) = CFX_ONE;
+    M (m,1,1) = CFX_ONE;
+    M (m,2,2) = CFX_ONE;
+    M (m,3,3) = CFX_ONE;
+}
+
+/* Add translation by (x,y,z) to matrix */
+static void
+mtx_translate (ClutterFixed * m,
+	       ClutterFixed x, ClutterFixed y, ClutterFixed z)
+{
+    M (m,0,3) += CFX_MUL (M (m,0,0), x) + CFX_MUL (M (m,0,1), y) +
+	CFX_MUL (M (m,0,2), z);
+
+    M (m,1,3) += CFX_MUL (M (m,1,0), x) + CFX_MUL (M (m,1,1), y) +
+	CFX_MUL (M (m,1,2), z);
+    
+    M (m,2,3) += CFX_MUL (M (m,2,0), x) + CFX_MUL (M (m,2,1), y) +
+	CFX_MUL (M (m,2,2), z);
+    
+    M (m,3,3) += CFX_MUL (M (m,3,0), x) + CFX_MUL (M (m,3,1), y) +
+	CFX_MUL (M (m,3,2), z);
+}
+
+/* Add rotation around Z axis by ang to matrix */
+static void
+mtx_rotate_z (ClutterFixed *m, ClutterFixed ang)
+{
+    ClutterFixed m0, m1;
+    ClutterAngle a = CLUTTER_ANGLE_FROM_DEGX (ang);
+    ClutterFixed c = clutter_cosi (a);
+    ClutterFixed s = clutter_sini (a);
+
+    m0 = CFX_MUL (M (m,0,0),  c) + CFX_MUL (M (m,0,1), s);
+    m1 = CFX_MUL (M (m,0,0), -s) + CFX_MUL (M (m,0,1), c);
+    M (m,0,0) = m0;
+    M (m,0,1) = m1;
+    
+    m0 = CFX_MUL (M (m,1,0),  c) + CFX_MUL (M (m,1,1), s);
+    m1 = CFX_MUL (M (m,1,0), -s) + CFX_MUL (M (m,1,1), c);
+    M (m,1,0) = m0;
+    M (m,1,1) = m1;
+    
+    m0 = CFX_MUL (M (m,2,0),  c) + CFX_MUL (M (m,2,1), s);
+    m1 = CFX_MUL (M (m,2,0), -s) + CFX_MUL (M (m,2,1), c);
+    M (m,2,0) = m0;
+    M (m,2,1) = m1;
+
+    m0 = CFX_MUL (M (m,3,0),  c) + CFX_MUL (M (m,3,1), s);
+    m1 = CFX_MUL (M (m,3,0), -s) + CFX_MUL (M (m,3,1), c);
+    M (m,3,0) = m0;
+    M (m,3,1) = m1;
+}
+
+/* Add rotation around X axis by ang to matrix */
+static void
+mtx_rotate_x (ClutterFixed *m, ClutterFixed ang)
+{
+    ClutterFixed m1, m2;
+    ClutterAngle a = CLUTTER_ANGLE_FROM_DEGX (ang);
+    ClutterFixed c = clutter_cosi (a);
+    ClutterFixed s = clutter_sini (a);
+    
+    m1 = CFX_MUL (M (m,0,1),  c) + CFX_MUL (M (m,0,2), s);
+    m2 = CFX_MUL (M (m,0,1), -s) + CFX_MUL (M (m,0,2), c);
+    M (m,0,1) = m1;
+    M (m,0,2) = m2;
+    
+    m1 = CFX_MUL (M (m,1,1),  c) + CFX_MUL (M (m,1,2), s);
+    m2 = CFX_MUL (M (m,1,1), -s) + CFX_MUL (M (m,1,2), c);
+    M (m,1,1) = m1;
+    M (m,1,2) = m2;
+    
+    m1 = CFX_MUL (M (m,2,1),  c) + CFX_MUL (M (m,2,2), s);
+    m2 = CFX_MUL (M (m,2,1), -s) + CFX_MUL (M (m,2,2), c);
+    M (m,2,1) = m1;
+    M (m,2,2) = m2;
+    
+    m1 = CFX_MUL (M (m,3,1),  c) + CFX_MUL (M (m,3,2), s);
+    m2 = CFX_MUL (M (m,3,1), -s) + CFX_MUL (M (m,3,2), c);
+    M (m,3,1) = m1;
+    M (m,3,2) = m2;
+}
+
+/* Add rotation around Y axis by ang to matrix */
+static void
+mtx_rotate_y (ClutterFixed *m, ClutterFixed ang)
+{
+    ClutterFixed m0, m2;
+    ClutterAngle a = CLUTTER_ANGLE_FROM_DEGX (ang);
+    ClutterFixed c = clutter_cosi (a);
+    ClutterFixed s = clutter_sini (a);
+    
+    m0 = CFX_MUL (M (m,0,0), c) + CFX_MUL (M (m,0,2), -s);
+    m2 = CFX_MUL (M (m,0,0), s) + CFX_MUL (M (m,0,2),  c);
+    M (m,0,0) = m0;
+    M (m,0,2) = m2;
+
+    m0 = CFX_MUL (M (m,1,0), c) + CFX_MUL (M (m,1,2), -s);
+    m2 = CFX_MUL (M (m,1,0), s) + CFX_MUL (M (m,1,2),  c);
+    M (m,1,0) = m0;
+    M (m,1,2) = m2;
+
+    m0 = CFX_MUL (M (m,2,0), c) + CFX_MUL (M (m,2,2), -s);
+    m2 = CFX_MUL (M (m,2,0), s) + CFX_MUL (M (m,2,2),  c);
+    M (m,2,0) = m0;
+    M (m,2,2) = m2;
+
+    m0 = CFX_MUL (M (m,3,0), c) + CFX_MUL (M (m,3,2), -s);
+    m2 = CFX_MUL (M (m,3,0), s) + CFX_MUL (M (m,3,2),  c);
+    M (m,3,0) = m0;
+    M (m,3,2) = m2;
+}
+
+/* Apply scale by factors x, y to matrix */
+static void
+mtx_scale (ClutterFixed *m, ClutterFixed x, ClutterFixed y)
+{
+    M (m,0,0) = CFX_MUL (M (m,0,0), x);
+    M (m,1,1) = CFX_MUL (M (m,1,1), y);
+}
+
+/* Transform point (x,y,z) by matrix */
+static void
+mtx_transform (ClutterFixed *m,
+	       ClutterFixed *x, ClutterFixed *y, ClutterFixed *z)
+{
+    ClutterFixed _x, _y, _z;
+    _x = *x;
+    _y = *y;
+    _z = *z;
+    
+    *x = CFX_MUL (M (m,0,0), _x) + CFX_MUL (M (m,0,1), _y) +
+	CFX_MUL (M (m,0,2), _z) + M (m,0,3);
+
+    *y = CFX_MUL (M (m,1,0), _x) + CFX_MUL (M (m,1,1), _y) +
+	CFX_MUL (M (m,1,2), _z) + M (m,1,3);
+
+    *z = CFX_MUL (M (m,2,0), _x) + CFX_MUL (M (m,2,1), _y) +
+	CFX_MUL (M (m,2,2), _z) + M (m,2,3);
+}
+
+/**
+ * clutter_actor_get_transformed_vertices:
+ * @self: A #ClutterActor
+ * @verts: Pointer to a location of #ClutterVertices where to store the result.
+ * Calculates the vertices of the translated, rotated and scaled actor in 3D
+ * space.
+ *
+ * Since: 0.4
+ **/
+void
+clutter_actor_get_transformed_vertices (ClutterActor    * self,
+					ClutterVertices * verts)
+{
+  ClutterActorPrivate  * priv;
+  ClutterFixed           mtx[16];
+  ClutterFixed           x, y, z;
+  
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  priv = self->priv;
+
+  mtx_identity (&mtx[0]);
+
+  /*
+   * All the rotation ops are relative to the actor, not the overall
+   * coordiante system; so first of all, we carry out a translation from
+   * 0,0 to where our actor is.
+   */
+  mtx_translate (&mtx[0],
+	     CLUTTER_UNITS_TO_FIXED (priv->coords.x1), 
+	     CLUTTER_UNITS_TO_FIXED (priv->coords.y1), 
+	     CLUTTER_INT_TO_FIXED (priv->z));
+
+  if (self->priv->rzang)
+    {
+      mtx_translate (&mtx[0],
+		 CLUTTER_INT_TO_FIXED (priv->rzx),
+		 CLUTTER_INT_TO_FIXED (priv->rzy),
+		 0);
+      
+      mtx_rotate_z (&mtx[0], priv->rzang);
+      
+      mtx_translate (&mtx[0],
+		 CLUTTER_INT_TO_FIXED (-priv->rzx),
+		 CLUTTER_INT_TO_FIXED (-priv->rzy),
+		 0);
+    }
+
+  if (self->priv->ryang)
+    {
+      mtx_translate (&mtx[0],
+		 CLUTTER_INT_TO_FIXED (priv->ryx),
+		 0,
+		 CLUTTER_INT_TO_FIXED (priv->z + priv->ryz));
+      
+      mtx_rotate_y (&mtx[0], priv->ryang);
+      
+      mtx_translate (&mtx[0],
+		 CLUTTER_INT_TO_FIXED (-priv->ryx),
+		 0,
+		 CLUTTER_INT_TO_FIXED (-(priv->z + priv->ryz)));
+    }
+
+  if (self->priv->rxang)
+    {
+      mtx_translate (&mtx[0],
+		 0,
+		 CLUTTER_INT_TO_FIXED (priv->rxy),
+		 CLUTTER_INT_TO_FIXED (priv->z + priv->rxz));
+      
+      mtx_rotate_x (&mtx[0], priv->rxang);
+      
+      mtx_translate (&mtx[0],
+		 0,
+		 CLUTTER_INT_TO_FIXED (-priv->rxy),
+		 CLUTTER_INT_TO_FIXED (-(priv->z - priv->rxz)));
+    }
+
+  if (self->priv->z)
+    mtx_translate (&mtx[0], 0, 0, CLUTTER_INT_TO_FIXED (priv->z));
+
+  if (self->priv->scale_x != CFX_ONE || self->priv->scale_y != CFX_ONE)
+    {
+      mtx_scale (&mtx[0], priv->scale_x, priv->scale_y);
+    }
+
+#if 0
+  g_debug ("Matrix\n"
+	   "       %f, %f, %f, %f\n"
+	   "       %f, %f, %f, %f\n"
+	   "       %f, %f, %f, %f\n"
+	   "       %f, %f, %f, %f",
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx,0,0)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx,0,1)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx,0,2)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx,0,3)),
+
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx,1,0)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx,1,1)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx,1,2)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx,1,3)),
+	   
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx,2,0)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx,2,1)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx,2,2)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx,2,3)),
+
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx,3,0)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx,3,1)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx,3,2)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx,3,3)));
+#endif
+  
+  x = 0;
+  y = 0;
+  z = 0;
+      
+  mtx_transform (&mtx[0], &x, &y, &z);
+
+  verts->topleft.x = CLUTTER_UNITS_FROM_FIXED (x);
+  verts->topleft.y = CLUTTER_UNITS_FROM_FIXED (y);
+  verts->topleft.z = CLUTTER_UNITS_FROM_FIXED (z);
+
+  x = CLUTTER_UNITS_TO_FIXED (priv->coords.x2 - priv->coords.x1);
+  y = CLUTTER_UNITS_TO_FIXED (priv->coords.y2 - priv->coords.y1);
+  z = CLUTTER_INT_TO_FIXED (priv->z);
+
+  mtx_transform (&mtx[0], &x, &y, &z);
+  
+  verts->bottomright.x = CLUTTER_UNITS_FROM_FIXED (x);
+  verts->bottomright.y = CLUTTER_UNITS_FROM_FIXED (y);
+  verts->bottomright.z = CLUTTER_UNITS_FROM_FIXED (z);
+
+  x = 0;
+  y = CLUTTER_UNITS_TO_FIXED (priv->coords.y2 - priv->coords.y1);
+  z = CLUTTER_INT_TO_FIXED (priv->z);
+  
+  mtx_transform (&mtx[0], &x, &y, &z);
+  
+  verts->bottomleft.x = CLUTTER_UNITS_FROM_FIXED (x);
+  verts->bottomleft.y = CLUTTER_UNITS_FROM_FIXED (y);
+  verts->bottomleft.z = CLUTTER_UNITS_FROM_FIXED (z);
+  
+  x = CLUTTER_UNITS_TO_FIXED (priv->coords.x2 - priv->coords.x1);
+  y = 0;
+  z = CLUTTER_INT_TO_FIXED (priv->z);
+  
+  mtx_transform (&mtx[0], &x, &y, &z);
+  
+  verts->topright.x = CLUTTER_UNITS_FROM_FIXED (x);
+  verts->topright.y = CLUTTER_UNITS_FROM_FIXED (y);
+  verts->topright.z = CLUTTER_UNITS_FROM_FIXED (z);
+
+#if 0
+  if (priv->coords.x1 != verts->topleft.x ||
+      priv->coords.y1 != verts->topleft.y ||
+      priv->coords.x2 != verts->bottomright.x ||
+      priv->coords.y2 != verts->bottomright.y)
+      g_debug ("Box [%f,%f],[%f,%f], \n"
+	       "                rxy %d, rxz %d, rxa %f\n"
+	       "                ryx %d, ryz %d, rya %f\n"
+	       "                rzx %d, rzy %d, rza %f\n"
+	       "Vertices: \n"
+	       " tl [%f,%f,%f], tr [%f,%f,%f] \n"
+	       " bl [%f,%f,%f], br [%f,%f,%f] \n",
+	       CLUTTER_FIXED_TO_FLOAT (priv->coords.x1),
+	       CLUTTER_FIXED_TO_FLOAT (priv->coords.y1),
+	       CLUTTER_FIXED_TO_FLOAT (priv->coords.x2),
+	       CLUTTER_FIXED_TO_FLOAT (priv->coords.y2),
+	       priv->rxy, priv->rxz, CLUTTER_FIXED_TO_FLOAT (priv->rxang),
+	       priv->ryx, priv->ryz, CLUTTER_FIXED_TO_FLOAT (priv->ryang),
+	       priv->rzx, priv->rzy, CLUTTER_FIXED_TO_FLOAT (priv->rzang),
+	       CLUTTER_FIXED_TO_FLOAT (verts->topleft.x),
+	       CLUTTER_FIXED_TO_FLOAT (verts->topleft.y),
+	       CLUTTER_FIXED_TO_FLOAT (verts->topleft.z),
+	       CLUTTER_FIXED_TO_FLOAT (verts->topright.x),
+	       CLUTTER_FIXED_TO_FLOAT (verts->topright.y),
+	       CLUTTER_FIXED_TO_FLOAT (verts->topright.z),
+	       CLUTTER_FIXED_TO_FLOAT (verts->bottomleft.x),
+	       CLUTTER_FIXED_TO_FLOAT (verts->bottomleft.y),
+	       CLUTTER_FIXED_TO_FLOAT (verts->bottomleft.z),
+	       CLUTTER_FIXED_TO_FLOAT (verts->bottomright.x),
+	       CLUTTER_FIXED_TO_FLOAT (verts->bottomright.y),
+	       CLUTTER_FIXED_TO_FLOAT (verts->bottomright.z));
+#endif
+}
+
+#undef M
+
 /**
  * clutter_actor_paint:
  * @self: A #ClutterActor
@@ -314,7 +656,9 @@ clutter_actor_paint (ClutterActor *self)
   ClutterActorPrivate *priv;
   ClutterActorClass *klass;
   ClutterMainContext *context;
-
+#if 1
+  ClutterVertices verts;
+#endif
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   priv = self->priv;
 
@@ -330,6 +674,10 @@ clutter_actor_paint (ClutterActor *self)
 	}
     }
 
+#if 1
+  clutter_actor_get_transformed_vertices (self, &verts);
+#endif
+  
   context = clutter_context_get_default ();
   klass   = CLUTTER_ACTOR_GET_CLASS (self);
 
@@ -2134,6 +2482,34 @@ clutter_geometry_get_type (void)
     our_type = g_boxed_type_register_static (
               g_intern_static_string ("ClutterGeometry"),
 	      (GBoxedCopyFunc) clutter_geometry_copy,
+	      (GBoxedFreeFunc) g_free);
+
+  return our_type;
+}
+
+/*
+ * ClutterVertices
+ */
+
+static ClutterVertices*
+clutter_vertices_copy (const ClutterVertices *vertices)
+{
+  ClutterVertices *result = g_new (ClutterVertices, 1);
+
+  *result = *vertices;
+
+  return result;
+}
+
+GType
+clutter_vertices_get_type (void)
+{
+  static GType our_type = 0;
+
+  if (our_type == 0)
+    our_type = g_boxed_type_register_static (
+              g_intern_static_string ("ClutterVertices"),
+	      (GBoxedCopyFunc) clutter_vertices_copy,
 	      (GBoxedFreeFunc) g_free);
 
   return our_type;

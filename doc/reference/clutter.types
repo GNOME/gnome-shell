@@ -18,3 +18,4 @@ clutter_behaviour_path_get_type
 clutter_behaviour_rotate_get_type
 clutter_behaviour_scale_get_type
 clutter_backend_get_type
+clutter_vertices_get_type
