@@ -1,5 +1,11 @@
 2007-05-31  Tomas Frydrych  <tf@openedhand.com>
 
+	* clutter/clutter-behaviour-ellipse.c:
+	Changed behaviour so that a beginning angle of 0 would correspond
+	to 12 o'clock.
+	
+2007-05-31  Tomas Frydrych  <tf@openedhand.com>
+
 	* clutter/clutter-fixed.h:
 	* clutter/clutter-fixed.c:
 	(_clutter_double_to_int):

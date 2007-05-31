@@ -372,9 +372,9 @@ clutter_behaviour_ellipse_init (ClutterBehaviourEllipse * self)
  * center
  *
  * Creates a behaviour that drives actors along an elliptical path with
- * given center, width and height; the movement begins at angle_begin and
- * ends at angle_end; if angle_end > angle_begin, the movement is in
- * counter-clockwise direction, clockwise other wise.
+ * given center, width and height; the movement begins at angle_begin (with 0
+ * corresponding to 12 o'clock) and ends at angle_end; if angle_end > angle_begin,
+ * the movement is in clockwise direction, counter-clockwise otherwise.
  *
  * Return value: a #ClutterBehaviour
  *
@@ -403,8 +403,8 @@ clutter_behaviour_ellipse_new (ClutterAlpha          * alpha,
                      "center", &center,
                      "width", width,
                      "height", height,
-                     "angle-begin", CLUTTER_ANGLE_FROM_DEG (begin),
-                     "angle-end", CLUTTER_ANGLE_FROM_DEG (end),
+                     "angle-begin", CLUTTER_ANGLE_FROM_DEG (begin) - 256,
+                     "angle-end", CLUTTER_ANGLE_FROM_DEG (end) - 256,
                      "angle-tilt", CLUTTER_ANGLE_FROM_DEG (tilt),
                      NULL);
 
@@ -420,13 +420,13 @@ clutter_behaviour_ellipse_new (ClutterAlpha          * alpha,
  * @height: height of the ellipse
  * @begin: #ClutterFixed angle in degrees at which movement begins
  * @end: #ClutterFixed angle in degrees at which movement ends
- * @tilt: #ClutterFixed angle in degrees with which the ellipse should be tilted around its
- * center
+ * @tilt: #ClutterFixed angle in degrees with which the ellipse should be
+ * tilted around its center
  *
  * Creates a behaviour that drives actors along an elliptical path with
- * given center, width and height; the movement begins at angle_begin and
- * ends at angle_end; if angle_end > angle_begin, the movement is in
- * counter-clockwise direction, clockwise other wise.
+ * given center, width and height; the movement begins at angle_begin (with 0
+ * corresponding to 12 o'clock) and ends at angle_end; if angle_end > angle_begin,
+ * the movement is in clockwise direction, counter-clockwise otherwise.
  *
  * Return value: a #ClutterBehaviour
  *
@@ -455,8 +455,8 @@ clutter_behaviour_ellipse_newx (ClutterAlpha          * alpha,
                      "center", &center,
                      "width", width,
                      "height", height,
-                     "angle-begin", CLUTTER_ANGLE_FROM_DEGX (begin),
-                     "angle-end", CLUTTER_ANGLE_FROM_DEGX (end),
+                     "angle-begin", CLUTTER_ANGLE_FROM_DEGX (begin) - 256,
+                     "angle-end", CLUTTER_ANGLE_FROM_DEGX (end) - 256,
                      "angle-tilt", CLUTTER_ANGLE_FROM_DEGX (tilt),
                      NULL);
 
