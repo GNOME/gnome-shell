@@ -1,3 +1,31 @@
+2007-05-31  Neil J Patel  <njp@o-hand.com>
+
+	* clutter/Makefile.am:
+	* clutter/clutter-entry.c: (clutter_entry_set_property),
+	(clutter_entry_get_property), (clutter_entry_ensure_layout),
+	(clutter_entry_clear_layout),
+	(clutter_entry_ensure_cursor_position), (clutter_entry_paint),
+	(clutter_entry_request_coords), (clutter_entry_dispose),
+	(clutter_entry_finalize), (clutter_entry_class_init),
+	(clutter_entry_init), (clutter_entry_new_with_text),
+	(clutter_entry_new_full), (clutter_entry_new),
+	(clutter_entry_get_text), (clutter_entry_set_text),
+	(clutter_entry_get_font_name), (clutter_entry_set_font_name),
+	(clutter_entry_set_color), (clutter_entry_get_color),
+	(clutter_entry_get_layout), (clutter_entry_set_alignment),
+	(clutter_entry_get_alignment), (clutter_entry_set_position),
+	(clutter_entry_get_position), (clutter_entry_add),
+	(clutter_entry_remove), (clutter_entry_insert_text),
+	(clutter_entry_delete_text), (clutter_entry_set_visible_cursor),
+	(clutter_entry_get_visible_cursor):
+	* clutter/clutter-entry.h:
+	* clutter/clutter.h:
+	* examples/Makefile.am:
+	Initial import of ClutterEntry actor.
+	
+	* examples/test-entry.c: (on_key_release_cb), (main):
+	A basic test for ClutterEntry
+
 2007-05-31  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.c:

@@ -31,6 +31,7 @@
 #include "clutter-color.h"
 #include "clutter-util.h"
 #include "clutter-event.h"
+#include "clutter-entry.h"
 #include "clutter-timeline.h"
 #include "clutter-behaviour.h"
 #include "clutter-behaviour-bspline.h"

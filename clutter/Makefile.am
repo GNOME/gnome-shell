@@ -48,6 +48,7 @@ source_h =					\
 	$(srcdir)/clutter-clone-texture.h 	\
 	$(srcdir)/clutter-color.h		\
         $(srcdir)/clutter-event.h 		\
+        $(srcdir)/clutter-entry.h               \
 	$(srcdir)/clutter-feature.h 		\
 	$(srcdir)/clutter-fixed.h 		\
 	$(srcdir)/clutter-group.h 		\
@@ -137,6 +138,7 @@ source_c = \
 	clutter-clone-texture.c 	\
 	clutter-enum-types.c		\
         clutter-event.c 		\
+        clutter-entry.c                 \
 	clutter-feature.c 		\
 	clutter-fixed.c			\
 	clutter-group.c 		\

@@ -1,3 +1,10 @@
+2007-05-31  Neil J Patel  <njp@o-hand.com>
+
+	* clutter-docs.sgml:
+	* clutter-sections.txt:
+	* tmpl/clutter-entry.sgml:
+	Added ClutterEntry
+
 2007-05-31  Tomas Frydrych  <tf@openedhand.com>
 
 	* tmpl/clutter-behaviour-ellipse.sgml:
