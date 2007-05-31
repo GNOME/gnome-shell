@@ -1,3 +1,15 @@
+2007-05-31  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-stage.c:
+	* clutter/clutter-private.h:
+	(_clutter_stage_get_perspective_matrix):
+	New function.
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_get_tranformed_vertices):
+	(clutter_actor_get_tranformed_point):
+	Apply perspective matrix on the top of actor transform matrix.
+	
 2007-05-31  Neil J Patel  <njp@o-hand.com>
 
 	* clutter/Makefile.am:
@@ -26,18 +38,6 @@
 	* examples/test-entry.c: (on_key_release_cb), (main):
 	A basic test for ClutterEntry
 
-2007-05-31  Tomas Frydrych  <tf@openedhand.com>
-
-	* clutter/clutter-stage.c:
-	* clutter/clutter-private.h:
-	(_clutter_stage_get_perspective_matrix):
-	New function.
-
-	* clutter/clutter-actor.c:
-	(clutter_actor_get_tranformed_vertices):
-	(clutter_actor_get_tranformed_point):
-	Apply perspective matrix on the top of actor transform matrix.
-	
 2007-05-31  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.c:
