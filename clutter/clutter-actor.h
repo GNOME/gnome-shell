@@ -306,6 +306,9 @@ void                  clutter_actor_move_by          (ClutterActor          *sel
                                                       gint                   dx,
                                                       gint                   dy);
 
+void                  clutter_actor_get_transformed_vertices (ClutterActor  *self,
+							      ClutterVertices * verts);
+
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_ACTOR_H */

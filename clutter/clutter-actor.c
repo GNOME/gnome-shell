@@ -656,9 +656,6 @@ clutter_actor_paint (ClutterActor *self)
   ClutterActorPrivate *priv;
   ClutterActorClass *klass;
   ClutterMainContext *context;
-#if 1
-  ClutterVertices verts;
-#endif
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   priv = self->priv;
 
@@ -674,10 +671,6 @@ clutter_actor_paint (ClutterActor *self)
 	}
     }
 
-#if 1
-  clutter_actor_get_transformed_vertices (self, &verts);
-#endif
-  
   context = clutter_context_get_default ();
   klass   = CLUTTER_ACTOR_GET_CLASS (self);
 
