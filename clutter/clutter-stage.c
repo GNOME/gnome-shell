@@ -57,7 +57,6 @@ struct _ClutterStagePrivate
 {
   ClutterColor        color;
   ClutterPerspective  perspective;
-  ClutterAudience     audience;
 
   guint is_fullscreen     : 1;
   guint is_offscreen      : 1;
@@ -73,7 +72,6 @@ enum
   PROP_OFFSCREEN,
   PROP_CURSOR_VISIBLE,
   PROP_PERSPECTIVE,
-  PROP_AUDIENCE
 };
 
 enum
@@ -149,9 +147,6 @@ clutter_stage_set_property (GObject      *object,
     case PROP_PERSPECTIVE:
       clutter_stage_set_perspectivex (stage, g_value_get_boxed (value)); 
       break;
-    case PROP_AUDIENCE:
-      clutter_stage_set_audience (stage, g_value_get_boxed (value)); 
-      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -167,7 +162,6 @@ clutter_stage_get_property (GObject    *object,
   ClutterStage        *stage;
   ClutterStagePrivate *priv;
   ClutterColor         color;
-  ClutterAudience      audience;
   ClutterPerspective   perspective;
 
   stage = CLUTTER_STAGE(object);
@@ -191,10 +185,6 @@ clutter_stage_get_property (GObject    *object,
     case PROP_PERSPECTIVE:
       clutter_stage_get_perspectivex (stage, &perspective);
       g_value_set_boxed (value, &perspective);
-      break;
-    case PROP_AUDIENCE:
-      clutter_stage_get_audience (stage, &audience);
-      g_value_set_boxed (value, &audience);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -410,6 +400,11 @@ clutter_stage_init (ClutterStage *self)
   priv->color.green = 0xff;
   priv->color.blue  = 0xff;
   priv->color.alpha = 0xff;
+
+  priv->perspective.fovy   = 171; /* 60 Degrees */
+  priv->perspective.aspect = CFX_ONE;
+  priv->perspective.z_near = CLUTTER_FLOAT_TO_FIXED (0.1);
+  priv->perspective.z_far  = CLUTTER_FLOAT_TO_FIXED (100.0);
   
   clutter_actor_set_size (CLUTTER_ACTOR (self), 640, 480);
 }
@@ -586,21 +581,6 @@ clutter_stage_get_perspective (ClutterStage       *stage,
   *z_near = CLUTTER_FIXED_TO_FLOAT(priv->perspective.z_near);
   *z_far  = CLUTTER_FIXED_TO_FLOAT(priv->perspective.z_far);
 }
-
-
-void
-clutter_stage_set_audience (ClutterStage       *stage,
-			    ClutterAudience    *audience)
-{
-
-} 
-
-void
-clutter_stage_get_audience (ClutterStage       *stage,
-			    ClutterAudience    *audience)
-{
-
-} 
 
 /**
  * clutter_stage_fullscreen:
@@ -789,8 +769,6 @@ clutter_stage_get_actor_at_pos (ClutterStage *stage,
   glGetIntegerv(GL_VIEWPORT, viewport);
   glReadPixels(x, viewport[3] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
 
-  /* printf("x: %i , y: %i %x:%x:%x\n", x, y, pixel[0], pixel[1], pixel[2]); */
-
   if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
     return CLUTTER_ACTOR(stage);
 
@@ -932,57 +910,3 @@ clutter_perspective_get_type (void)
   return our_type;
 }
 
-/*** Audience boxed type ******/
-
-/**
- * clutter_audience_copy:
- * @audience: a #ClutterAudience
- *
- * Makes a copy of the audience structure.  The result must be
- * freed using clutter_audience_free().
- *
- * Return value: an allocated copy of @audience.
- *
- * Since: 0.4
- */
-ClutterAudience *
-clutter_audience_copy (const ClutterAudience *audience)
-{
-  ClutterAudience *result;
-  
-  g_return_val_if_fail (audience != NULL, NULL);
-
-  result = g_slice_new (ClutterAudience);
-  *result = *audience;
-
-  return result;
-}
-
-/**
- * clutter_audience_free:
- * @audience: a #ClutterAudience
- *
- * Frees a audience structure created with clutter_audience_copy().
- *
- * Since: 0.4
- */
-void
-clutter_audience_free (ClutterAudience *audience)
-{
-  g_return_if_fail (audience != NULL);
-
-  g_slice_free (ClutterAudience, audience);
-}
-
-GType
-clutter_audience_get_type (void)
-{
-  static GType our_type = 0;
-  
-  if (!our_type)
-    our_type = g_boxed_type_register_static 
-                       ("ClutterAudience",
-			(GBoxedCopyFunc) clutter_audience_copy,
-			(GBoxedFreeFunc) clutter_audience_free);
-  return our_type;
-}

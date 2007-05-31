@@ -453,25 +453,12 @@ mtx_transform (ClutterFixed *m,
 	CFX_MUL (M (m,2,2), _z) + M (m,2,3);
 }
 
-/**
- * clutter_actor_get_transformed_vertices:
- * @self: A #ClutterActor
- * @verts: Pointer to a location of #ClutterVertices where to store the result.
- * Calculates the vertices of the translated, rotated and scaled actor in 3D
- * space.
- *
- * Since: 0.4
- **/
-void
-clutter_actor_get_transformed_vertices (ClutterActor    * self,
-					ClutterVertices * verts)
+static void
+mtx_create (ClutterActor *self, ClutterFixed *mtx)
 {
-  ClutterActorPrivate  * priv;
-  ClutterFixed           mtx[16];
-  ClutterFixed           x, y, z;
-  
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-  priv = self->priv;
+  ClutterActorPrivate  *priv = self->priv;
+
+  /* FIXME: need to apply perspective / viewport transforms */
 
   mtx_identity (&mtx[0]);
 
@@ -481,9 +468,9 @@ clutter_actor_get_transformed_vertices (ClutterActor    * self,
    * 0,0 to where our actor is.
    */
   mtx_translate (&mtx[0],
-	     CLUTTER_UNITS_TO_FIXED (priv->coords.x1), 
-	     CLUTTER_UNITS_TO_FIXED (priv->coords.y1), 
-	     CLUTTER_INT_TO_FIXED (priv->z));
+		 CLUTTER_UNITS_TO_FIXED (priv->coords.x1), 
+		 CLUTTER_UNITS_TO_FIXED (priv->coords.y1), 
+		 CLUTTER_INT_TO_FIXED (priv->z));
 
   if (self->priv->rzang)
     {
@@ -537,6 +524,69 @@ clutter_actor_get_transformed_vertices (ClutterActor    * self,
     {
       mtx_scale (&mtx[0], priv->scale_x, priv->scale_y);
     }
+}
+
+/**
+ * clutter_actor_get_transformed_point:
+ * @self: A #ClutterActor
+ * @x: X screen position in pixels 
+ * @y: Y screen position in pixels 
+ * @x_return: location to store tranformed X Axis value in #ClutterUnits
+ * @y_return: location to store tranformed Y Axis value in #ClutterUnits
+ * @z_return: location to store tranformed Z Axis value in #ClutterUnits
+ *
+ * Transforms a 2D point (relative to the actor) into 3D space defined by 
+ * the actors current tranformation matrix. 
+ *
+ * Since: 0.4
+ **/
+void
+clutter_actor_get_transformed_point (ClutterActor *actor, 
+				     gint          x,
+				     gint          y,
+				     ClutterUnit  *x_return,
+				     ClutterUnit  *y_return,
+				     ClutterUnit  *z_return)
+{
+  ClutterFixed           mtx[16];
+  
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+
+  mtx_create (actor, &mtx[0]);
+
+  *x_return = CLUTTER_UNITS_FROM_INT(x);
+  *y_return = CLUTTER_UNITS_FROM_INT(y);
+  *z_return = 0;
+
+  mtx_transform (&mtx[0], x_return, y_return, z_return);
+}
+
+/**
+ * clutter_actor_get_transformed_vertices:
+ * @self: A #ClutterActor
+ * @verts: Pointer to a location of #ClutterVertices where to store the result.
+ * Calculates the vertices of the translated, rotated and scaled actor in 3D
+ * space.
+ *
+ * Since: 0.4
+ **/
+void
+clutter_actor_get_transformed_vertices (ClutterActor    * self,
+					ClutterVertices * verts)
+{
+  ClutterFixed           mtx[16];
+  ClutterFixed           x, y, z;
+  ClutterActorPrivate   *priv;
+  
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  /* FIXME: we should probably call allocate_cords on the actor to make
+   * sure untransformed box is up to date. 
+  */
+
+  priv = self->priv;
+
+  mtx_create (self, &mtx[0]);
 
 #if 0
   g_debug ("Matrix\n"

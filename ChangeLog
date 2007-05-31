@@ -1,5 +1,18 @@
 2007-05-31  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	Add clutter_actor_get_transformed_point()
+
+	* clutter/clutter-main.c:
+	Plug in perspective setup to redraw 
+
+	* clutter/clutter-stage.c:
+	* clutter/clutter-stage.h:
+	Remove audience code for now.
+
+2007-05-31  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/egl/clutter-backend-egl.c:
 	* clutter/egl/clutter-backend-egl.h:
 	* clutter/egl/clutter-event-egl.c:

@@ -132,21 +132,9 @@ struct _ClutterPerspective
   ClutterFixed z_far;
 };
 
-#define CLUTTER_TYPE_AUDIENCE  (clutter_audience_get_type ())
-
-typedef struct _ClutterAudience ClutterAudience;
-
-struct _ClutterAudience
-{
-};
-
 GType               clutter_perspective_get_type (void) G_GNUC_CONST;
 ClutterPerspective *clutter_perspective_copy     (const ClutterPerspective *perspective);
 void                clutter_perspective_free     (ClutterPerspective       *perspective);
-GType               clutter_audience_get_type (void) G_GNUC_CONST;
-ClutterAudience    *clutter_audience_copy     (const ClutterAudience *audience);
-void                clutter_audience_free     (ClutterAudience       *audience);
-
 GType         clutter_stage_get_type         (void) G_GNUC_CONST;
 
 ClutterActor *clutter_stage_get_default      (void);
@@ -169,10 +157,6 @@ void          clutter_stage_get_perspective   (ClutterStage       *stage,
 					       gfloat             *aspect,
 					       gfloat             *z_near,
 					       gfloat             *z_far);
-void          clutter_stage_set_audience     (ClutterStage       *stage,
-			                      ClutterAudience    *audience);
-void          clutter_stage_get_audience     (ClutterStage       *stage,
-                     			      ClutterAudience    *audience);
 void          clutter_stage_fullscreen       (ClutterStage       *stage);
 void          clutter_stage_unfullscreen     (ClutterStage       *stage);
 void          clutter_stage_show_cursor      (ClutterStage       *stage);

@@ -119,12 +119,16 @@ clutter_redraw (void)
   */
   if (CLUTTER_PRIVATE_FLAGS (stage) & CLUTTER_ACTOR_SYNC_MATRICES)
     {
+      ClutterPerspective perspective;
+
+      clutter_stage_get_perspectivex (stage, &perspective);
+
       cogl_setup_viewport (clutter_actor_get_width (stage),
 			   clutter_actor_get_height (stage),
-			   171, /* 60 degrees */
-			   CFX_ONE,
-			   CLUTTER_FLOAT_TO_FIXED (0.1),
-			   CLUTTER_FLOAT_TO_FIXED (100.0));
+			   perspective.fovy,
+			   perspective.aspect,
+			   perspective.z_near,
+			   perspective.z_far);
     }
 
   /* Setup the initial paint */

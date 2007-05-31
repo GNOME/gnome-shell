@@ -309,6 +309,13 @@ void                  clutter_actor_move_by          (ClutterActor          *sel
 void                  clutter_actor_get_transformed_vertices (ClutterActor  *self,
 							      ClutterVertices * verts);
 
+void                  clutter_actor_get_transformed_point    (ClutterActor *actor, 
+							      gint          x,
+							      gint          y,
+							      ClutterUnit  *x_return,
+							      ClutterUnit  *y_return,
+							      ClutterUnit  *z_return);
+     
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_ACTOR_H */
