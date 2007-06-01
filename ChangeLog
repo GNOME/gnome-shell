@@ -1,3 +1,15 @@
+2007-06-01  Neil J. Patel  <njp@o-hand.com>
+
+	* clutter/clutter-entry.c: (clutter_entry_ensure_cursor_position),
+	(clutter_entry_paint), (clutter_entry_init),
+	(clutter_entry_handle_key_event):
+	Clipping within the entry class to stop it over-slipping its
+	boundries.
+	Text will move within the clip region to keep the cursor always
+	visible.
+	Added some padding to the left and right to make sure cursor is
+	always show.
+
 2007-06-01  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.c:

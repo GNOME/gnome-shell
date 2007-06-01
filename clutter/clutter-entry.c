@@ -47,6 +47,7 @@
 
 #define DEFAULT_FONT_NAME	"Sans 10"
 #define ENTRY_CURSOR_WIDTH      1
+#define ENTRY_PADDING           5
 
 G_DEFINE_TYPE (ClutterEntry, clutter_entry, CLUTTER_TYPE_ACTOR);
 
@@ -102,6 +103,7 @@ struct _ClutterEntryPrivate
   guint                 single_line_mode : 1;
   guint                 wrap_mode        : 3;
   gint                  position;
+  gint                  text_x;
 
   PangoAttrList        *attrs;
   PangoAttrList        *effective_attrs;
@@ -264,7 +266,7 @@ clutter_entry_ensure_cursor_position (ClutterEntry *entry)
   else
     index = priv->position;
   
-  if (priv->cursor_pos.width == 0) 
+  if (1) 
     {
        pango_layout_get_cursor_pos (priv->layout, index, &rect, NULL);
        priv->cursor_pos.x = rect.x / PANGO_SCALE;
@@ -308,7 +310,11 @@ clutter_entry_paint (ClutterActor *self)
 {
   ClutterEntry         *entry;
   ClutterEntryPrivate  *priv;
-
+  PangoRectangle        logical;
+  gint                  actor_width;
+  gint                  text_width;
+  gint                  cursor_x;
+  
   entry  = CLUTTER_ENTRY(self);
   priv   = entry->priv;
 
@@ -320,17 +326,63 @@ clutter_entry_paint (ClutterActor *self)
 		    priv->text);
       return;
     }
-
-  clutter_entry_ensure_layout (entry, clutter_actor_get_width(self));
+  
+  clutter_actor_set_clip (self, 0, 0,
+                          clutter_actor_get_width (self),
+                          clutter_actor_get_height (self));
+  
+  actor_width = clutter_actor_get_width(self) - (2*ENTRY_PADDING);
+  clutter_entry_ensure_layout (entry, actor_width);
   clutter_entry_ensure_cursor_position (entry);
-  priv->fgcol.alpha   =  clutter_actor_get_opacity(self);
 
-  pango_clutter_render_layout (priv->layout, 0, 0, &priv->fgcol, 0);
+  pango_layout_get_extents (priv->layout, NULL, &logical);
+  text_width = logical.width / PANGO_SCALE;
+  
+  if (actor_width < text_width)
+    {
+      /* We need to do some scrolling */
+      cursor_x = priv->cursor_pos.x;
+      
+      /* If the cursor is at the begining or the end of the text, the placement
+         is easy, however, if the cursor is in the middle somewhere, we need to
+         make sure the text doesn't move until the cursor is either in the 
+         far left or far right
+      */
+      
+      if (priv->position == 0)
+        priv->text_x = 0;
+      else if (priv->position == -1)
+        {
+          priv->text_x = actor_width - text_width;
+          priv->cursor_pos.x += priv->text_x + ENTRY_PADDING;
+        }
+      else 
+        {
+           if (priv->text_x < 0)
+             {
+               gint diff = -1 * priv->text_x;
+               if (cursor_x < diff)
+                 priv->text_x += diff - cursor_x;
+               else if (cursor_x > (diff + actor_width))
+                 priv->text_x -= cursor_x - (diff+actor_width);
+             }
+           priv->cursor_pos.x += priv->text_x + ENTRY_PADDING;
+        }
+      
+    } 
+  else
+    {
+      priv->text_x = 0;
+      priv->cursor_pos.x += ENTRY_PADDING;
+    }
+  
+  priv->fgcol.alpha   =  clutter_actor_get_opacity(self);
+  pango_clutter_render_layout (priv->layout, 
+                               priv->text_x + ENTRY_PADDING, 
+                               0, &priv->fgcol, 0);
   
   if (CLUTTER_ENTRY_GET_CLASS (entry)->paint_cursor != NULL)
-    {
-       CLUTTER_ENTRY_GET_CLASS (entry)->paint_cursor (entry);
-    }
+    CLUTTER_ENTRY_GET_CLASS (entry)->paint_cursor (entry);
 }
 
 static void
@@ -535,6 +587,8 @@ clutter_entry_init (ClutterEntry *self)
   priv->attrs         = NULL;
   priv->position      = -1;
   priv->priv_char     = '*';
+  priv->text_visible  = TRUE;
+  priv->text_x        = 0;
 
   priv->fgcol.red     = 0;
   priv->fgcol.green   = 0;
@@ -975,6 +1029,10 @@ clutter_entry_handle_key_event (ClutterEntry *entry, ClutterKeyEvent *kev)
       case CLUTTER_KP_Enter:
       case CLUTTER_ISO_Enter:
       case CLUTTER_Escape:
+      case CLUTTER_Up:
+      case CLUTTER_KP_Up:
+      case CLUTTER_Down:
+      case CLUTTER_KP_Down:
       case CLUTTER_Shift_L:
       case CLUTTER_Shift_R:
         break;
