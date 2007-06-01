@@ -1,5 +1,12 @@
 2007-06-01  Tomas Frydrych  <tf@openedhand.com>
 
+	* clutter/clutter-stage.c:
+	(clutter_stage_init):
+	Call _clutter_stage_refresh_perspective_matrix to initialize the
+	matrix for default values.
+	
+2007-06-01  Tomas Frydrych  <tf@openedhand.com>
+
 	* clutter/clutter-fixed.h:
 	* clutter/clutter-behaviour-ellipse.h:
 	* clutter/clutter-behaviour-ellipse.c:
