@@ -119,8 +119,6 @@ void          _clutter_event_button_generate  (ClutterBackend    *backend,
 
 void          _clutter_feature_init (void);
 
-const ClutterFixed * _clutter_stage_get_perspective_matrix (ClutterStage * stage);
-
 /* Does this need to be private ? */
 void clutter_do_event (ClutterEvent *event);
 

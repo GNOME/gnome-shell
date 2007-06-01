@@ -1,3 +1,10 @@
+2007-06-01  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-private.h:
+	Removed perspective matrix caching from ClutterStage.
+	
 2007-06-01  Neil J. Patel  <njp@o-hand.com>
 
 	* clutter/clutter-entry.c: (clutter_entry_set_property),
@@ -23,7 +30,7 @@
 	Added a signla to track cursor movements.
 	Moved the sursor painting function so it can be subclassed.
 
-007-06-01  Tomas Frydrych  <tf@openedhand.com>
+2007-06-01  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.c:
 	(clutter_actor_get_transformed_point):

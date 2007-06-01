@@ -679,6 +679,37 @@ mtx_create (ClutterActorPrivate *priv,
     }
 }
 
+static void
+mtx_perspective (ClutterFixed * m, ClutterStage * stage)
+{
+  ClutterFixed xmax, ymax;
+  ClutterPerspective perspective;
+  ClutterFixed x, y, c, d;
+  
+  memset (m, 0, sizeof (ClutterFixed) * 16);
+
+  clutter_stage_get_perspectivex (stage, &perspective);
+  
+  ymax = clutter_qmulx (perspective.z_near,
+			clutter_tani (perspective.fovy >> 1));
+  
+  xmax = clutter_qmulx (ymax, perspective.aspect);
+
+  x = CFX_DIV (perspective.z_near, xmax);
+  y = CFX_DIV (perspective.z_near, ymax);
+  c = CFX_DIV (-(perspective.z_far + perspective.z_near),
+	       ( perspective.z_far - perspective.z_near));
+  
+  d = CFX_DIV (-(clutter_qmulx (2 * perspective.z_far, perspective.z_near)),
+	       (perspective.z_far - perspective.z_near));
+  
+  M(m,0,0) = x;
+  M(m,1,1) = y;
+  M(m,2,2) = c;
+  M(m,2,3) = d;
+  M(m,3,2) = -CFX_ONE;
+}
+
 /**
  * clutter_actor_get_transformed_point:
  * @self: A #ClutterActor
@@ -702,16 +733,16 @@ clutter_actor_get_transformed_point (ClutterActor *actor,
 				     ClutterUnit  *z_return)
 {
   ClutterFixed           mtx[16];
-  const ClutterFixed    *mtx_p;
+  ClutterFixed           mtx_p[16];
   ClutterActorPrivate   *priv;
   
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
   priv = actor->priv;
 
-  mtx_p = _clutter_stage_get_perspective_matrix (CLUTTER_STAGE (clutter_stage_get_default()));
+  mtx_perspective (&mtx_p[0], CLUTTER_STAGE (clutter_stage_get_default()));
   
-  mtx_create (priv, &mtx[0], mtx_p);
+  mtx_create (priv, &mtx[0], &mtx_p[0]);
 
   *x_return = CLUTTER_UNITS_FROM_INT(x);
   *y_return = CLUTTER_UNITS_FROM_INT(y);
@@ -734,7 +765,7 @@ clutter_actor_get_transformed_vertices (ClutterActor    * self,
 					ClutterVertices * verts)
 {
   ClutterFixed           mtx[16];
-  const ClutterFixed    *mtx_p;
+  ClutterFixed           mtx_p[16];
   ClutterFixed           x, y, z;
   ClutterActorPrivate   *priv;
   
@@ -746,9 +777,9 @@ clutter_actor_get_transformed_vertices (ClutterActor    * self,
 
   priv = self->priv;
 
-  mtx_p = _clutter_stage_get_perspective_matrix (CLUTTER_STAGE (clutter_stage_get_default()));
-  
-  mtx_create (priv, &mtx[0], mtx_p);
+  mtx_perspective (&mtx_p[0], CLUTTER_STAGE (clutter_stage_get_default()));
+
+  mtx_create (priv, &mtx[0], &mtx_p[0]);
 
 #if 0
   g_debug ("Matrix\n"
