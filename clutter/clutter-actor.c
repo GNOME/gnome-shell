@@ -713,9 +713,9 @@ clutter_actor_get_transformed_point (ClutterActor *actor,
   
   mtx_create (priv, &mtx[0], mtx_p);
 
-  *x_return = CLUTTER_UNITS_FROM_INT(x) - priv->coords.x1;
-  *y_return = CLUTTER_UNITS_FROM_INT(y) - priv->coords.y1;
-  *z_return = 0;
+  *x_return = CLUTTER_UNITS_FROM_INT(x);
+  *y_return = CLUTTER_UNITS_FROM_INT(y);
+  *z_return = CLUTTER_INT_TO_FIXED (priv->z);
 
   mtx_transform (&mtx[0], x_return, y_return, z_return);
 }

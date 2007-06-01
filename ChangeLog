@@ -1,3 +1,9 @@
+2007-06-01  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_get_transformed_point):
+	Make input again relative to the actor; feed depth into transform.
+	
 2007-06-01  Neil J. Patel  <njp@o-hand.com>
 
 	* clutter/clutter-entry.c: (clutter_entry_class_init),
