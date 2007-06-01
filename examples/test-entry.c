@@ -3,52 +3,11 @@
 void                
 on_key_release_cb (ClutterStage *stage, ClutterEvent *event, ClutterEntry *entry)
 {
-  if (event->type == CLUTTER_KEY_RELEASE) {
+  if (event->type == CLUTTER_KEY_RELEASE) 
+  {
     ClutterKeyEvent* kev = (ClutterKeyEvent *) event;
-    guint key = clutter_key_event_symbol (kev);
-    
-    gint pos = clutter_entry_get_position (entry);
-    gint len = g_utf8_strlen (clutter_entry_get_text (entry), -1);
-    
-    switch (key)
-      {
-        case CLUTTER_Return:
-        case CLUTTER_KP_Enter:
-        case CLUTTER_ISO_Enter:
-          break;
-        case CLUTTER_Escape:
-          clutter_main_quit ();
-          break;
-        case CLUTTER_BackSpace:
-          clutter_entry_remove (entry, 1);
-          break;
-        case CLUTTER_Left:
-          if (pos != 0)
-            {
-              if (pos == -1)
-                {
-                  clutter_entry_set_position (entry, len-1);  
-                }
-              else
-                clutter_entry_set_position (entry, pos - 1);  
-            }         
-          break;
-        case CLUTTER_Right:
-          if (pos != -1)
-            {
-              if (pos != len)
-                clutter_entry_set_position (entry, pos +1);  
-            } 
-          break;
-        case CLUTTER_Up:
-          clutter_entry_insert_text (entry, "insert", 5);
-          break;
-        case CLUTTER_Down:
-          clutter_entry_delete_text (entry, 5, 11);
-        default:
-          clutter_entry_add (entry, clutter_key_event_unicode (kev));
-          break;
-      }
+    clutter_entry_handle_key_event (entry, kev);
+    return;
   }
 }
 

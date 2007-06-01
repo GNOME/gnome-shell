@@ -1,3 +1,9 @@
+2007-06-01  Neil J. Patel  <njp@o-hand.com>
+
+	* clutter-sections.txt:
+	* tmpl/clutter-entry.sgml:
+	Updated for new functions.
+
 2007-06-01  Tomas Frydrych  <tf@openedhand.com>
 
 	* tmpl/clutter-alpha.sgml:

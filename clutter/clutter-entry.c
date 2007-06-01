@@ -26,21 +26,22 @@
 
 /**
  * SECTION:clutter-entry
- * @short_description: Actor for displaying text
+ * @short_description: A single line text entry actor
  *
- * #ClutterEntry is a #ClutterTexture that displays text.
+ * #ClutterEntry is a #ClutterTexture that allows single line text entry
  */
 
 #include "config.h"
 
 #include "clutter-entry.h"
-#include "clutter-main.h"
-#include "clutter-enum-types.h"
-#include "clutter-private.h"
-#include "clutter-debug.h"
-#include "clutter-units.h"
-#include "clutter-rectangle.h"
 
+#include "clutter-debug.h"
+#include "clutter-enum-types.h"
+#include "clutter-keysyms.h"
+#include "clutter-main.h"
+#include "clutter-private.h"
+#include "clutter-rectangle.h"
+#include "clutter-units.h"
 #include "pangoclutter.h"
 
 #define DEFAULT_FONT_NAME	"Sans 10"
@@ -822,6 +823,88 @@ clutter_entry_get_position (ClutterEntry *entry)
 }
 
 /**
+ * clutter_entry_handle_key_event:
+ * @entry: a #ClutterEntry
+ * @kev: a #ClutterKeyEvent
+ *
+ * This function will handle a #ClutterKeyEvent, like those returned in a 
+ * key-press/release-event, and will translate it for the @entry. This includes
+ * non-alphanumeric keys, such as the arrows keys, which will move the
+ * input cursor.
+ *
+ **/
+void
+clutter_entry_handle_key_event (ClutterEntry *entry, ClutterKeyEvent *kev)
+{
+  ClutterEntryPrivate *priv;
+  gint pos = 0;
+  gint len = 0;
+  gint keyval = clutter_key_event_symbol (kev);
+
+  g_return_if_fail (CLUTTER_IS_ENTRY (entry));
+
+  priv = entry->priv;  
+  
+  pos = priv->position;
+  if (priv->text)
+    len = g_utf8_strlen (priv->text, -1);
+  
+  switch (keyval)
+    {
+      case CLUTTER_Return:
+      case CLUTTER_KP_Enter:
+      case CLUTTER_ISO_Enter:
+      case CLUTTER_Escape:
+      case CLUTTER_Shift_L:
+      case CLUTTER_Shift_R:
+        break;
+      case CLUTTER_BackSpace:
+        if (pos != 0 && len != 0)
+          clutter_entry_remove (entry, 1);
+        break;
+      case CLUTTER_Delete:
+      case CLUTTER_KP_Delete:
+        if (len && pos != -1)
+          {
+            clutter_entry_delete_text (entry, pos, pos+1);;
+          }
+        break;
+      case CLUTTER_Left:
+      case CLUTTER_KP_Left:
+        if (pos != 0 && len != 0)
+          {
+            if (pos == -1)
+              {
+                clutter_entry_set_position (entry, len-1);  
+              }
+            else
+              clutter_entry_set_position (entry, pos - 1);  
+          }         
+        break;
+      case CLUTTER_Right:
+      case CLUTTER_KP_Right:
+        if (pos != -1 && len != 0)
+          {
+            if (pos != len)
+              clutter_entry_set_position (entry, pos +1);  
+          } 
+        break;
+      case CLUTTER_End:
+      case CLUTTER_KP_End:
+        clutter_entry_set_position (entry, -1);  
+        break;
+      case CLUTTER_Begin:
+      case CLUTTER_Home:
+      case CLUTTER_KP_Home:
+        clutter_entry_set_position (entry, 0);
+        break;
+      default:
+        clutter_entry_add (entry, clutter_keysym_to_unicode (keyval));
+        break;
+    }
+}
+
+/**
  * clutter_entry_add:
  * @entry: a #ClutterEntry
  * @utf8: the character to add.
@@ -848,7 +931,7 @@ clutter_entry_add (ClutterEntry *entry, gunichar wc)
   
   clutter_entry_set_text (entry, new->str);
 
-  if (priv->position > 0)
+  if (priv->position >= 0)
     clutter_entry_set_position (entry, priv->position + 1);
   
   g_string_free (new, TRUE);

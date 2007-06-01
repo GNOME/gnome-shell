@@ -776,6 +776,7 @@ clutter_entry_set_alignment
 clutter_entry_get_alignment
 clutter_entry_set_position
 clutter_entry_get_position
+clutter_entry_handle_key_event
 clutter_entry_add
 clutter_entry_remove
 clutter_entry_insert_text

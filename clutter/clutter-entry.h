@@ -29,6 +29,7 @@
 
 #include <clutter/clutter-actor.h>
 #include <clutter/clutter-color.h>
+#include <clutter/clutter-event.h>
 #include <pango/pango.h>
 
 
@@ -106,6 +107,8 @@ PangoAlignment        clutter_entry_get_alignment      (ClutterEntry       *entr
 void                  clutter_entry_set_position       (ClutterEntry       *entry,
                                                         gint                position);
 gint                  clutter_entry_get_position       (ClutterEntry       *entry);
+void                  clutter_entry_handle_key_event   (ClutterEntry       *entry,
+                                                        ClutterKeyEvent    *kev);
 void                  clutter_entry_add                (ClutterEntry       *entry,
                                                         gunichar            wc);
 void                  clutter_entry_remove             (ClutterEntry       *entry,

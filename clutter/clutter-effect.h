@@ -57,14 +57,17 @@ typedef void (*ClutterEffectCompleteFunc) (ClutterActor *actor,
 #define CLUTTER_EFFECT_TEMPLATE_GET_CLASS(obj) \
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   CLUTTER_TYPE_EFFECT_TEMPLATE, ClutterEffectTemplateClass))
+  
+typedef struct _ClutterEffectTemplate ClutterEffectTemplate;
+typedef struct _ClutterEffectTemplateClass ClutterEffectTemplateClass;
 
-typedef struct {
+struct _ClutterEffectTemplate{
   GObject parent;
-} ClutterEffectTemplate;
+};
 
-typedef struct {
+struct _ClutterEffectTemplateClass{
   GObjectClass parent_class;
-} ClutterEffectTemplateClass;
+};
 
 GType clutter_effect_template_get_type (void);
 
@@ -100,6 +103,4 @@ clutter_effect_scale (ClutterEffectTemplate    *template,
 G_END_DECLS
 
 #endif /* _CLUTTER_EFFECT */
-
-G_END_DECLS
 

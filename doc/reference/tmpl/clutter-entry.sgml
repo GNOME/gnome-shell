@@ -158,6 +158,15 @@ ClutterEntry
 @Returns: 
 
 
+<!-- ##### FUNCTION clutter_entry_handle_key_event ##### -->
+<para>
+
+</para>
+
+@entry: 
+@kev: 
+
+
 <!-- ##### FUNCTION clutter_entry_add ##### -->
 <para>
 
