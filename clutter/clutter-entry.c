@@ -39,12 +39,14 @@
 #include "clutter-enum-types.h"
 #include "clutter-keysyms.h"
 #include "clutter-main.h"
+#include "clutter-marshal.h"
 #include "clutter-private.h"
 #include "clutter-rectangle.h"
 #include "clutter-units.h"
 #include "pangoclutter.h"
 
 #define DEFAULT_FONT_NAME	"Sans 10"
+#define ENTRY_CURSOR_WIDTH      1
 
 G_DEFINE_TYPE (ClutterEntry, clutter_entry, CLUTTER_TYPE_ACTOR);
 
@@ -66,6 +68,7 @@ enum
 enum
 {
   TEXT_CHANGED,
+  CURSOR_EVENT,
   
   LAST_SIGNAL
 };
@@ -102,7 +105,7 @@ struct _ClutterEntryPrivate
   PangoLayout          *layout;
   gint                  width_chars;
   
-  PangoRectangle        cursor_pos;
+  ClutterGeometry       cursor_pos;
   ClutterActor         *cursor;
   gboolean              show_cursor;
 };
@@ -238,8 +241,9 @@ static void
 clutter_entry_ensure_cursor_position (ClutterEntry *entry)
 {
   ClutterEntryPrivate  *priv;
-  gint index;
-  
+  gint                  index;
+  PangoRectangle        rect;
+    
   priv = entry->priv;
   
   if (priv->position == -1)
@@ -247,15 +251,43 @@ clutter_entry_ensure_cursor_position (ClutterEntry *entry)
   else
     index = priv->position;
   
-  pango_layout_get_cursor_pos (priv->layout, index, 
-                               &priv->cursor_pos, NULL);
-
-  clutter_actor_set_size (CLUTTER_ACTOR (priv->cursor), 
-                          1, priv->cursor_pos.height/ PANGO_SCALE);
+  if (priv->cursor_pos.width == 0) 
+    {
+       pango_layout_get_cursor_pos (priv->layout, index, &rect, NULL);
+       priv->cursor_pos.x = rect.x / PANGO_SCALE;
+       priv->cursor_pos.y = rect.y / PANGO_SCALE;
+       priv->cursor_pos.width = ENTRY_CURSOR_WIDTH;
+       priv->cursor_pos.height = rect.height / PANGO_SCALE;
   
-  clutter_actor_set_position (priv->cursor,
-                              priv->cursor_pos.x/ PANGO_SCALE,
-                              priv->cursor_pos.y/ PANGO_SCALE);
+       g_signal_emit (entry, entry_signals[CURSOR_EVENT], 0, &priv->cursor_pos);
+  }
+}
+
+static void
+clutter_entry_clear_cursor_position (ClutterEntry *entry)
+{
+  entry->priv->cursor_pos.width = 0;
+}
+
+void
+clutter_entry_paint_cursor (ClutterEntry *entry)
+{
+  ClutterEntryPrivate  *priv;
+
+  priv   = entry->priv;
+  
+  if (priv->show_cursor)
+    {
+      clutter_actor_set_size (CLUTTER_ACTOR (priv->cursor), 
+                              priv->cursor_pos.width,
+                              priv->cursor_pos.height);
+      
+      clutter_actor_set_position (priv->cursor,
+                                  priv->cursor_pos.x,
+                                  priv->cursor_pos.y);
+                              
+      clutter_actor_paint (priv->cursor);
+    }  
 }
 
 void
@@ -277,14 +309,14 @@ clutter_entry_paint (ClutterActor *self)
     }
 
   clutter_entry_ensure_layout (entry, clutter_actor_get_width(self));
+  clutter_entry_ensure_cursor_position (entry);
   priv->fgcol.alpha   =  clutter_actor_get_opacity(self);
 
   pango_clutter_render_layout (priv->layout, 0, 0, &priv->fgcol, 0);
   
-  if (priv->show_cursor)
+  if (CLUTTER_ENTRY_GET_CLASS (entry)->paint_cursor != NULL)
     {
-      clutter_entry_ensure_cursor_position (entry);
-      clutter_actor_paint (priv->cursor);
+       CLUTTER_ENTRY_GET_CLASS (entry)->paint_cursor (entry);
     }
 }
 
@@ -342,6 +374,8 @@ clutter_entry_class_init (ClutterEntryClass *klass)
 {
   GObjectClass        *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  
+  klass->paint_cursor          = clutter_entry_paint_cursor;
 
   actor_class->paint           = clutter_entry_paint;
   actor_class->request_coords  = clutter_entry_request_coords;
@@ -384,6 +418,11 @@ clutter_entry_class_init (ClutterEntryClass *klass)
 			 PANGO_ALIGN_LEFT,
 			 CLUTTER_PARAM_READWRITE));
 
+  /**
+   * ClutterEntry:position
+   *
+   * The current input cursor position. -1 is taken to be the end of the text
+   */	
   g_object_class_install_property 
     (gobject_class, PROP_POSITION,
      g_param_spec_int ( "position",
@@ -392,12 +431,17 @@ clutter_entry_class_init (ClutterEntryClass *klass)
 			-1, G_MAXINT,
 			-1,
 			CLUTTER_PARAM_READWRITE));
-			
+
+  /**
+   * ClutterEntry:cursor-visible
+   *
+   * Whether the input cursor is visible
+   */			
   g_object_class_install_property 
     (gobject_class, PROP_CURSOR,
      g_param_spec_boolean ( "cursor-visible",
 			"Cursor Visible",
-			"Whether the input cursor is visible ",
+			"Whether the input cursor is visible",
 			TRUE,
 			CLUTTER_PARAM_READWRITE));
 			
@@ -416,6 +460,26 @@ clutter_entry_class_init (ClutterEntryClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
+
+  /**
+   * ClutterEntry::cursor-event:
+   * @entry: the actor which received the event
+   * @geometry: a #ClutterGeometry
+   *
+   * The ::cursor-event signal is emitted each time the input cursors geometry
+   * changes, this could be a positional or size change. If you would like to
+   * implement your own input cursor, set the cursor-visible property to FALSE, 
+   * and connect to this signal to position and size your own cursor.
+   */
+  entry_signals[CURSOR_EVENT] =
+    g_signal_new ("cursor-event",
+		  G_TYPE_FROM_CLASS (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterEntryClass, cursor_event),
+		  NULL, NULL,
+		  clutter_marshal_VOID__BOXED,
+		  G_TYPE_NONE, 1,
+		  CLUTTER_TYPE_GEOMETRY | G_SIGNAL_TYPE_STATIC_SCOPE);
 
   g_type_class_add_private (gobject_class, sizeof (ClutterEntryPrivate));
 }
@@ -562,7 +626,8 @@ clutter_entry_set_text (ClutterEntry *entry,
   g_free (priv->text);
   priv->text = g_strdup (text);
 
-  clutter_entry_clear_layout (entry);   
+  clutter_entry_clear_layout (entry);  
+  clutter_entry_clear_cursor_position (entry); 
 
   if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(entry)))
     clutter_actor_queue_redraw (CLUTTER_ACTOR(entry));
@@ -819,6 +884,8 @@ clutter_entry_set_position (ClutterEntry *entry, gint position)
   else
     priv->position = position;
 
+  clutter_entry_clear_cursor_position (entry);
+  
   if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(entry)))
     clutter_actor_queue_redraw (CLUTTER_ACTOR(entry));
 }

@@ -1,4 +1,15 @@
-2007-06-01  Tomas Frydrych  <tf@openedhand.com>
+2007-06-01  Neil J. Patel  <njp@o-hand.com>
+
+	* clutter/clutter-entry.c: (clutter_entry_ensure_cursor_position),
+	(clutter_entry_clear_cursor_position),
+	(clutter_entry_paint_cursor), (clutter_entry_paint),
+	(clutter_entry_class_init), (clutter_entry_set_text),
+	(clutter_entry_set_position):
+	* clutter/clutter-entry.h:
+	Added a signla to track cursor movements.
+	Moved the sursor painting function so it can be subclassed.
+
+007-06-01  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.c:
 	(clutter_actor_get_transformed_point):

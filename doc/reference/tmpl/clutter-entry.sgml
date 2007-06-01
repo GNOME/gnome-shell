@@ -22,7 +22,51 @@ ClutterEntry
 
 </para>
 
-@parent: 
+
+<!-- ##### SIGNAL ClutterEntry::cursor-event ##### -->
+<para>
+
+</para>
+
+@clutterentry: the object which received the signal.
+@arg1: 
+
+<!-- ##### SIGNAL ClutterEntry::text-changed ##### -->
+<para>
+
+</para>
+
+@clutterentry: the object which received the signal.
+
+<!-- ##### ARG ClutterEntry:alignment ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterEntry:color ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterEntry:cursor-visible ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterEntry:font-name ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterEntry:position ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG ClutterEntry:text ##### -->
+<para>
+
+</para>
 
 <!-- ##### STRUCT ClutterEntryClass ##### -->
 <para>
