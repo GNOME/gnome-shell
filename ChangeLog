@@ -1,6 +1,8 @@
 2007-06-01  Neil J. Patel  <njp@o-hand.com>
 
 	* clutter/clutter-effect.h:
+	Removed extra G_END_DECLS outside the #endif
+
 	* clutter/clutter-entry.c: (clutter_entry_handle_key_event),
 	(clutter_entry_add):
 	* clutter/clutter-entry.h:
