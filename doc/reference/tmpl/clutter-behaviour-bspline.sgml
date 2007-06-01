@@ -19,7 +19,8 @@ ClutterBehaviourBspline
 
 <!-- ##### STRUCT ClutterBehaviourBspline ##### -->
 <para>
-
+The <structname>ClutterBehaviourBspline</structname> structure contains
+only private data, and should not be accessed directly.
 </para>
 
 
@@ -33,7 +34,7 @@ ClutterBehaviourBspline
 
 <!-- ##### STRUCT ClutterBehaviourBsplineClass ##### -->
 <para>
-
+Class structure for #ClutterBehaviouBspline.
 </para>
 
 @parent_class: 

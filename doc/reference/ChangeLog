@@ -1,3 +1,13 @@
+2007-06-01  Tomas Frydrych  <tf@openedhand.com>
+
+	* tmpl/clutter-alpha.sgml:
+	* tmpl/clutter-fixed.sgml:
+	* tmpl/clutter-units.sgml:
+	* tmpl/clutter-behaviour-rotate.sgml:
+	* tmpl/clutter-behaviour-bspline.sgml:
+	* tmpl/clutter-behaviour-ellipse.sgml:
+	Updated templates.
+	
 2007-05-31  Neil J Patel  <njp@o-hand.com>
 
 	* clutter-docs.sgml:

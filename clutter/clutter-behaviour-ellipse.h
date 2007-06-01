@@ -61,8 +61,6 @@ typedef struct _ClutterBehaviourEllipseClass   ClutterBehaviourEllipseClass;
 struct _ClutterBehaviourEllipse
 {
   ClutterBehaviour parent_instance;
-
-  /*< private >*/
   ClutterBehaviourEllipsePrivate *priv;
 };
 
@@ -86,7 +84,7 @@ ClutterBehaviour *clutter_behaviour_ellipse_new             (ClutterAlpha       
 							     gint                         y,
 							     gint                         width,
 							     gint                         height,
-							     gdouble                      start,
+							     gdouble                      begin,
 							     gdouble                      end,
 							     gdouble                      tilt);
 
@@ -95,7 +93,7 @@ ClutterBehaviour *clutter_behaviour_ellipse_newx            (ClutterAlpha       
 							     gint                         y,
 							     gint                         width,
 							     gint                         height,
-							     ClutterFixed                 start,
+							     ClutterFixed                 begin,
 							     ClutterFixed                 end,
 							     ClutterFixed                 tilt);
 
@@ -103,7 +101,7 @@ void              clutter_behaviour_ellipse_set_center      (ClutterBehaviourEll
 							     gint                         x,
 							     gint                         y);
 
-void              clutter_behaviour_ellipse_get_center      (ClutterBehaviourEllipse    * bs,
+void              clutter_behaviour_ellipse_get_center      (ClutterBehaviourEllipse    * self,
 							     gint                       * x,
 							     gint                       * y);
 

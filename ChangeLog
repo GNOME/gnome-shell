@@ -1,3 +1,12 @@
+2007-06-01  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-fixed.h:
+	* clutter/clutter-behaviour-ellipse.h:
+	* clutter/clutter-behaviour-ellipse.c:
+	* clutter/clutter-behaviour-bspline.h:
+	* clutter/clutter-behaviour-bspline.c:
+	Documentation fixes.
+	
 2007-05-31  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-stage.c:

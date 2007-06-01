@@ -76,13 +76,13 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
  */
 #define CFX_2PI    0x0006487f
 /**
- * CFX_PI2:
+ * CFX_PI_2:
  * 
  * Fixed point representation of Pi/2
  */
 #define CFX_PI_2   0x00019220   /* pi/2 */
 /**
- * CFX_PI4:
+ * CFX_PI_4:
  * 
  * Fixed point representation of Pi/4
  */

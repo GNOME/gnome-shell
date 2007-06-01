@@ -36,7 +36,8 @@ ClutterBehaviourRotate
 
 <!-- ##### STRUCT ClutterBehaviourRotate ##### -->
 <para>
-
+The <structname>ClutterBehaviourRotate</structname> structure contains
+only private data, and should not be accessed directly.
 </para>
 
 
@@ -62,7 +63,7 @@ ClutterBehaviourRotate
 
 <!-- ##### STRUCT ClutterBehaviourRotateClass ##### -->
 <para>
-
+Class structure for #ClutterBehaviourRotate.
 </para>
 
 @parent_class: 

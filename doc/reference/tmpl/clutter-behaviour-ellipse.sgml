@@ -19,7 +19,8 @@ ClutterBehaviourEllipse
 
 <!-- ##### STRUCT ClutterBehaviourEllipse ##### -->
 <para>
-
+The <structname>ClutterBehaviourEllipse</structname> structure contains
+only private data, and should not be accessed directly.
 </para>
 
 
@@ -55,7 +56,7 @@ ClutterBehaviourEllipse
 
 <!-- ##### STRUCT ClutterBehaviourEllipseClass ##### -->
 <para>
-
+Class structure for #ClutterBehaviourEllipse.
 </para>
 
 @parent_class: 
@@ -75,7 +76,7 @@ ClutterBehaviourEllipse
 @y: 
 @width: 
 @height: 
-@start: 
+@begin: 
 @end: 
 @tilt: 
 @Returns: 
@@ -96,7 +97,7 @@ ClutterBehaviourEllipse
 
 </para>
 
-@bs: 
+@self: 
 @x: 
 @y: 
 

@@ -61,8 +61,6 @@ typedef struct _ClutterBehaviourBsplineClass   ClutterBehaviourBsplineClass;
 struct _ClutterBehaviourBspline
 {
   ClutterBehaviour parent_instance;
-
-  /*< private >*/
   ClutterBehaviourBsplinePrivate *priv;
 };
 

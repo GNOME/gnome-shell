@@ -29,7 +29,7 @@
  * @short_description: elliptic path behaviour.
  *
  * #ClutterBehaviourEllipse interpolates actors along a path defined by
- *  en ellipse.
+ *  an ellipse.
  *
  * Since: 0.4
  */
@@ -540,7 +540,7 @@ clutter_behaviour_ellipse_set_width (ClutterBehaviourEllipse * self,
  *
  * Gets the width of the elliptical path.
  *
- * Return: the width of the path
+ * Return value: the width of the path
  * 
  * Since: 0.4
  */
@@ -670,7 +670,7 @@ clutter_behaviour_ellipse_get_angle_end (ClutterBehaviourEllipse  * self)
 /**
  * clutter_behaviour_ellipse_set_angle_tilt
  * @self: a #ClutterBehaviourEllipse
- * @angle_end: #ClutterAngle tilt of the elipse around the center
+ * @angle_tilt: #ClutterAngle tilt of the elipse around the center
  *
  * Sets the angle at which the ellipse should be tilted around it's center.
  * 
