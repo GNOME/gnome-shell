@@ -63,6 +63,15 @@ enum
   PROP_CURSOR
 };
 
+enum
+{
+  TEXT_CHANGED,
+  
+  LAST_SIGNAL
+};
+
+static guint entry_signals[LAST_SIGNAL] = { 0, };
+
 #define CLUTTER_ENTRY_GET_PRIVATE(obj) \
 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_ENTRY, ClutterEntryPrivate))
 
@@ -391,6 +400,22 @@ clutter_entry_class_init (ClutterEntryClass *klass)
 			"Whether the input cursor is visible ",
 			TRUE,
 			CLUTTER_PARAM_READWRITE));
+			
+
+  /**
+   * ClutterEntry::text-changed:
+   * @entry: the actor which received the event
+   *
+   * The ::text-changed signal is emitted after the @entrys text changes
+   */
+  entry_signals[TEXT_CHANGED] =
+    g_signal_new ("text-changed",
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ClutterEntryClass, text_changed),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 
   g_type_class_add_private (gobject_class, sizeof (ClutterEntryPrivate));
 }
@@ -543,6 +568,7 @@ clutter_entry_set_text (ClutterEntry *entry,
     clutter_actor_queue_redraw (CLUTTER_ACTOR(entry));
 
   g_object_notify (G_OBJECT (entry), "text");
+  g_signal_emit (G_OBJECT (entry), entry_signals[TEXT_CHANGED], 0);  
   g_object_unref (entry);
 }
 

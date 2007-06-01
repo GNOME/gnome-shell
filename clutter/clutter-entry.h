@@ -73,7 +73,11 @@ struct _ClutterEntryClass
 {
   /*< private >*/
   ClutterActorClass parent_class;
-
+  
+  /* signals */
+  void     (* text_changed)         (ClutterEntry           *stage);
+  
+  /* padding for future */
   void (*_clutter_entry_1) (void);
   void (*_clutter_entry_2) (void);
   void (*_clutter_entry_3) (void);

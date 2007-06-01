@@ -1,5 +1,11 @@
 #include <clutter/clutter.h>
 
+static void
+on_entry_text_changed (ClutterEntry *entry)
+{
+  g_print ("Text changed\n");
+}
+
 void                
 on_key_release_cb (ClutterStage *stage, ClutterEvent *event, ClutterEntry *entry)
 {
@@ -42,7 +48,11 @@ main (int argc, char *argv[])
 
   g_signal_connect (stage, "key-release-event",
 		    G_CALLBACK (on_key_release_cb), (gpointer)entry);
-
+ 
+  /*
+  g_signal_connect (entry, "text-changed",
+                    G_CALLBACK (on_entry_text_changed), NULL);
+  */
   clutter_main();
 
   return 0;

@@ -1,5 +1,13 @@
 2007-06-01  Neil J. Patel  <njp@o-hand.com>
 
+	* clutter/clutter-entry.c: (clutter_entry_class_init),
+	(clutter_entry_set_text):
+	* clutter/clutter-entry.h:
+	* examples/test-entry.c: (on_entry_text_changed), (main):
+	Added a text-changed signal to the entry.
+
+2007-06-01  Neil J. Patel  <njp@o-hand.com>
+
 	* clutter/clutter-effect.h:
 	Removed extra G_END_DECLS outside the #endif
 
