@@ -13,6 +13,12 @@
 
 2007-06-01  Tomas Frydrych  <tf@openedhand.com>
 
+	* clutter/clutter-actor.c:
+	(mtx_create):
+	Apply perspective transform before all other transforms.
+	
+2007-06-01  Tomas Frydrych  <tf@openedhand.com>
+
 	* clutter/clutter-stage.c:
 	(clutter_stage_init):
 	Call _clutter_stage_refresh_perspective_matrix to initialize the

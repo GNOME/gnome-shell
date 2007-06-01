@@ -586,6 +586,35 @@ mtx_create (ClutterActorPrivate *priv,
   /* FIXME: need to apply perspective / viewport transforms */
   mtx_identity (mtx);
 
+  mtx_mul (mtx, mtx_p);
+
+#if 0
+  g_debug ("Perspective Matrix\n"
+	   "       %f, %f, %f, %f\n"
+	   "       %f, %f, %f, %f\n"
+	   "       %f, %f, %f, %f\n"
+	   "       %f, %f, %f, %f",
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,0,0)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,0,1)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,0,2)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,0,3)),
+
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,1,0)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,1,1)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,1,2)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,1,3)),
+	   
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,2,0)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,2,1)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,2,2)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,2,3)),
+
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,3,0)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,3,1)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,3,2)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,3,3)));
+#endif
+  
   /*
    * All the rotation ops are relative to the actor, not the overall
    * coordiante system; so first of all, we carry out a translation from
@@ -648,8 +677,6 @@ mtx_create (ClutterActorPrivate *priv,
     {
       mtx_scale (mtx, priv->scale_x, priv->scale_y);
     }
-
-  mtx_mul (mtx, mtx_p);
 }
 
 /**
