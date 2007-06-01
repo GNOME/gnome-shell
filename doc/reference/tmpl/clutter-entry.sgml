@@ -58,6 +58,11 @@ ClutterEntry
 
 </para>
 
+<!-- ##### ARG ClutterEntry:max-length ##### -->
+<para>
+
+</para>
+
 <!-- ##### ARG ClutterEntry:position ##### -->
 <para>
 
@@ -306,5 +311,14 @@ ClutterEntry
 
 @entry: 
 @Returns: 
+
+
+<!-- ##### FUNCTION clutter_entry_set_max_length ##### -->
+<para>
+
+</para>
+
+@entry: 
+@max: 
 
 

@@ -43,6 +43,7 @@ main (int argc, char *argv[])
   clutter_actor_set_size (entry, 600, 50);
   clutter_actor_set_position (entry, 100, 100);
   /*clutter_entry_set_visibility (CLUTTER_ENTRY (entry), FALSE);*/
+  /*clutter_entry_set_max_length (CLUTTER_ENTRY (entry), 50);*/
   
   clutter_group_add (CLUTTER_GROUP (stage), entry);
   clutter_group_show_all (CLUTTER_GROUP (stage));

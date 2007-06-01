@@ -64,7 +64,8 @@ enum
   PROP_ALIGNMENT, 		/* FIXME */
   PROP_POSITION,
   PROP_CURSOR,
-  PROP_TEXT_VISIBLE
+  PROP_TEXT_VISIBLE,
+  PROP_MAX_LENGTH
 };
 
 enum
@@ -104,6 +105,7 @@ struct _ClutterEntryPrivate
   guint                 wrap_mode        : 3;
   gint                  position;
   gint                  text_x;
+  gint                  max_length;
 
   PangoAttrList        *attrs;
   PangoAttrList        *effective_attrs;
@@ -151,6 +153,9 @@ clutter_entry_set_property (GObject      *object,
     case PROP_TEXT_VISIBLE:
       clutter_entry_set_visibility (entry, g_value_get_boolean (value));
       break;
+    case PROP_MAX_LENGTH:
+      clutter_entry_set_max_length (entry, g_value_get_int (value));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -193,6 +198,9 @@ clutter_entry_get_property (GObject    *object,
       break;
     case PROP_TEXT_VISIBLE:
       g_value_set_boolean (value, priv->text_visible);
+      break;
+    case PROP_MAX_LENGTH:
+      g_value_set_int (value, priv->max_length);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -522,6 +530,20 @@ clutter_entry_class_init (ClutterEntryClass *klass)
 			   "Whether the text is visible in plain text",
 			   TRUE,
 			   CLUTTER_PARAM_READWRITE));
+
+  /**
+   * ClutterEntry:max-length
+   *
+   * The maximum length of the entry text
+   */			
+  g_object_class_install_property 
+    (gobject_class, PROP_MAX_LENGTH,
+     g_param_spec_int ("max-length",
+		       "Max Length",
+		       "The maximum length of the entry text",
+		       0, G_MAXINT,
+	               0,
+		       CLUTTER_PARAM_READWRITE));
 			
 
   /**
@@ -589,6 +611,7 @@ clutter_entry_init (ClutterEntry *self)
   priv->priv_char     = '*';
   priv->text_visible  = TRUE;
   priv->text_x        = 0;
+  priv->max_length    = 0;
 
   priv->fgcol.red     = 0;
   priv->fgcol.green   = 0;
@@ -696,16 +719,35 @@ void
 clutter_entry_set_text (ClutterEntry *entry,
 		        const gchar  *text)
 {
-  ClutterEntryPrivate  *priv;  
+  ClutterEntryPrivate  *priv;
 
   g_return_if_fail (CLUTTER_IS_ENTRY (entry));
 
   priv = entry->priv;
 
   g_object_ref (entry);
-
-  g_free (priv->text);
-  priv->text = g_strdup (text);
+  
+  if (priv->max_length)
+    {
+      gint len = g_utf8_strlen (text, -1);
+      if (len < priv->max_length)
+        {  
+           g_free (priv->text);
+           priv->text = g_strdup (text);
+        }
+      else
+        {
+          gchar new[priv->max_length+1];
+          g_utf8_strncpy (new, text, priv->max_length);
+           g_free (priv->text);
+           priv->text = g_strdup (new);
+        }
+    }
+  else
+    {
+      g_free (priv->text);
+      priv->text = g_strdup (text);
+    }
 
   clutter_entry_clear_layout (entry);  
   clutter_entry_clear_cursor_position (entry); 
@@ -1381,4 +1423,36 @@ clutter_entry_get_invisible_char (ClutterEntry *entry)
   
   return priv->priv_char;
 }
+
+/**
+ * clutter_entry_set_max_length
+ * @entry: a #ClutterEntry
+ * @max: the maximum number of characters allowed in the entry
+ *
+ * Sets the maximum allowed length of the contents of the actor. If the current
+ * contents are longer than the given length, then they will be truncated to 
+ * fit. 
+ * 
+ **/
+void
+clutter_entry_set_max_length (ClutterEntry *entry, gint max)
+{
+  ClutterEntryPrivate *priv;
+  gchar *new = NULL;
+    
+  g_return_if_fail (CLUTTER_IS_ENTRY (entry));
+  
+  priv = entry->priv;
+  
+  if (max < 0)
+    max = 0;
+  
+  priv->max_length = max;
+  new = g_strdup (priv->text);
+  
+  clutter_entry_set_text (entry, new);
+  
+  g_free (new);
+}
+
 

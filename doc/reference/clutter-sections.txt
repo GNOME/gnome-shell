@@ -787,6 +787,7 @@ clutter_entry_set_visibility
 clutter_entry_get_visibility
 clutter_entry_set_invisible_char
 clutter_entry_get_invisible_char
+clutter_entry_set_max_length
 <SUBSECTION Standard>
 CLUTTER_ENTRY
 CLUTTER_IS_ENTRY

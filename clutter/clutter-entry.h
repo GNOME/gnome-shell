@@ -138,7 +138,8 @@ gboolean              clutter_entry_get_visibility     (ClutterEntry       *entr
 void                  clutter_entry_set_invisible_char (ClutterEntry       *entry,
                                                         gunichar            wc);
 gunichar              clutter_entry_get_invisible_char (ClutterEntry       *entry);
-
+void                  clutter_entry_set_max_length     (ClutterEntry       *entry,
+                                                        gint                max);
 
 
 G_END_DECLS
