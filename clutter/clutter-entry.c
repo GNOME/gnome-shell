@@ -62,7 +62,8 @@ enum
   PROP_COLOR,
   PROP_ALIGNMENT, 		/* FIXME */
   PROP_POSITION,
-  PROP_CURSOR
+  PROP_CURSOR,
+  PROP_TEXT_VISIBLE
 };
 
 enum
@@ -87,6 +88,8 @@ struct _ClutterEntryPrivate
   
   gchar                *text;
   gchar                *font_name;
+  gboolean              text_visible;
+  gunichar              priv_char;
   
   gint                  extents_width;
   gint                  extents_height;
@@ -143,6 +146,9 @@ clutter_entry_set_property (GObject      *object,
     case PROP_CURSOR:
       clutter_entry_set_visible_cursor (entry, g_value_get_boolean (value));
       break;
+    case PROP_TEXT_VISIBLE:
+      clutter_entry_set_visibility (entry, g_value_get_boolean (value));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -183,6 +189,9 @@ clutter_entry_get_property (GObject    *object,
     case PROP_CURSOR:
       g_value_set_boolean (value, priv->show_cursor);
       break;
+    case PROP_TEXT_VISIBLE:
+      g_value_set_boolean (value, priv->text_visible);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -210,11 +219,15 @@ clutter_entry_ensure_layout (ClutterEntry *entry, gint width)
       
       pango_layout_set_font_description (priv->layout, priv->desc);
       
-      if (!priv->use_markup)
+      if (priv->text_visible)
         pango_layout_set_text (priv->layout, priv->text, -1);
       else
-        pango_layout_set_markup (priv->layout, priv->text, -1);
-      
+        {
+          gint len = g_utf8_strlen (priv->text, -1);
+          gchar *invisible = g_strnfill (len, priv->priv_char);
+          pango_layout_set_markup (priv->layout, invisible, -1);
+          g_free (invisible);
+        }
       if (priv->wrap)
 	pango_layout_set_wrap  (priv->layout, priv->wrap_mode);
       
@@ -445,6 +458,19 @@ clutter_entry_class_init (ClutterEntryClass *klass)
 			TRUE,
 			CLUTTER_PARAM_READWRITE));
 			
+  /**
+   * ClutterEntry:text-visible
+   *
+   * Whether the text is visible in plain text
+   */			
+  g_object_class_install_property 
+    (gobject_class, PROP_TEXT_VISIBLE,
+     g_param_spec_boolean ("text-visible",
+			   "Text Visible",
+			   "Whether the text is visible in plain text",
+			   TRUE,
+			   CLUTTER_PARAM_READWRITE));
+			
 
   /**
    * ClutterEntry::text-changed:
@@ -508,6 +534,7 @@ clutter_entry_init (ClutterEntry *self)
   priv->text          = NULL;
   priv->attrs         = NULL;
   priv->position      = -1;
+  priv->priv_char     = '*';
 
   priv->fgcol.red     = 0;
   priv->fgcol.green   = 0;
@@ -1000,7 +1027,7 @@ clutter_entry_handle_key_event (ClutterEntry *entry, ClutterKeyEvent *kev)
 /**
  * clutter_entry_add:
  * @entry: a #ClutterEntry
- * @utf8: the character to add.
+ * @wc: a Unicode character
  *
  * Insert a character to the right of the current position of the cursor.
  * 
@@ -1187,5 +1214,113 @@ clutter_entry_get_visible_cursor (ClutterEntry *entry)
   priv = entry->priv;
   
   return priv->show_cursor;
+}
+
+/**
+ * clutter_entry_set_visibility
+ * @entry: a #ClutterEntry
+ * @visible: TRUE if the contents of the entry are displayed as plaintext. 
+ *
+ * Sets whether the contents of the entry are visible or not. When visibility 
+ * is set to FALSE, characters are displayed as the invisible char, and will 
+ * also appear that way when the text in the entry widget is copied elsewhere.
+ * 
+ * The default invisible char is the asterisk '*', but it can be changed with  
+ * #clutter_entry_set_invisible_char().  
+ * 
+ **/
+void
+clutter_entry_set_visibility (ClutterEntry *entry, gboolean visible)
+{
+  ClutterEntryPrivate *priv;
+  
+  g_return_if_fail (CLUTTER_IS_ENTRY (entry));
+  
+  priv = entry->priv;
+  
+  priv->text_visible = visible;
+  
+  clutter_entry_clear_layout (entry);
+  clutter_entry_clear_cursor_position (entry);
+  
+  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(entry)))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR(entry));  
+}
+
+/**
+ * clutter_entry_get_visibility
+ * @entry: a #ClutterEntry
+ *
+ * Returns the entry text visiblity
+ *
+ * Return value: TRUE if the contents of the entry are displayed as plaintext. 
+ * 
+ **/
+gboolean
+clutter_entry_get_visibility (ClutterEntry *entry)
+{
+  ClutterEntryPrivate *priv;
+  
+  g_return_val_if_fail (CLUTTER_IS_ENTRY (entry), TRUE);
+  
+  priv = entry->priv;
+  
+  return priv->text_visible;
+}
+
+/**
+ * clutter_entry_set_invisible_cha
+ * @entry: a #ClutterEntry
+ * @wc: a Unicode character 
+ *
+ * Sets the character to use in place of the actual text when   
+ * #clutter_entry_set_visibility() has been called to set text visibility 
+ * to FALSE. i.e. this is the character used in "password mode" to show the 
+ * user how many characters have been typed. The default invisible char is an
+ * asterisk ('*'). If you set the invisible char to 0, then the user will get
+ * no feedback at all; there will be no text on the screen as they type. 
+ * 
+ **/
+void
+clutter_entry_set_invisible_char (ClutterEntry *entry, gunichar wc)
+{
+  ClutterEntryPrivate *priv;
+  
+  g_return_if_fail (CLUTTER_IS_ENTRY (entry));
+  
+  priv = entry->priv;
+  
+  priv->priv_char = wc;
+  
+  if (!priv->text_visible)
+    return;
+  
+  clutter_entry_clear_layout (entry);
+  clutter_entry_clear_cursor_position (entry);
+  
+  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(entry)))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR(entry));  
+}
+
+/**
+ * clutter_entry_get_invisible_char
+ * @entry: a #ClutterEntry
+ *
+ * Returns the character to use in place of the actual text when text-visibility
+ * is set to FALSE
+ *
+ * Return value: a Unicode character 
+ * 
+ **/
+gunichar
+clutter_entry_get_invisible_char (ClutterEntry *entry)
+{
+  ClutterEntryPrivate *priv;
+  
+  g_return_val_if_fail (CLUTTER_IS_ENTRY (entry), TRUE);
+  
+  priv = entry->priv;
+  
+  return priv->priv_char;
 }
 

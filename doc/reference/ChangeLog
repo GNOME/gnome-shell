@@ -1,4 +1,10 @@
 2007-06-01  Neil J. Patel  <njp@o-hand.com>
+
+	* clutter-sections.txt:
+	* tmpl/clutter-entry.sgml:
+	Added new functions.
+
+2007-06-01  Neil J. Patel  <njp@o-hand.com>
 	* clutter.types:
 	* tmpl/clutter-entry.sgml:
 	Updated for new signals/properties.

@@ -131,6 +131,16 @@ void                  clutter_entry_delete_text        (ClutterEntry       *entr
 void                  clutter_entry_set_visible_cursor (ClutterEntry       *entry,
                                                         gboolean            visible);
 gboolean              clutter_entry_get_visible_cursor (ClutterEntry       *entry);
+
+void                  clutter_entry_set_visibility     (ClutterEntry       *entry,
+                                                        gboolean            visible);
+gboolean              clutter_entry_get_visibility     (ClutterEntry       *entry);
+void                  clutter_entry_set_invisible_char (ClutterEntry       *entry,
+                                                        gunichar            wc);
+gunichar              clutter_entry_get_invisible_char (ClutterEntry       *entry);
+
+
+
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_ENTRY_H */

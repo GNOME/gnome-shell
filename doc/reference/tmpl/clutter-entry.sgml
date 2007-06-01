@@ -68,6 +68,11 @@ ClutterEntry
 
 </para>
 
+<!-- ##### ARG ClutterEntry:text-visible ##### -->
+<para>
+
+</para>
+
 <!-- ##### STRUCT ClutterEntryClass ##### -->
 <para>
 
@@ -259,6 +264,42 @@ ClutterEntry
 
 
 <!-- ##### FUNCTION clutter_entry_get_visible_cursor ##### -->
+<para>
+
+</para>
+
+@entry: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_entry_set_visibility ##### -->
+<para>
+
+</para>
+
+@entry: 
+@visible: 
+
+
+<!-- ##### FUNCTION clutter_entry_get_visibility ##### -->
+<para>
+
+</para>
+
+@entry: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_entry_set_invisible_char ##### -->
+<para>
+
+</para>
+
+@entry: 
+@wc: 
+
+
+<!-- ##### FUNCTION clutter_entry_get_invisible_char ##### -->
 <para>
 
 </para>

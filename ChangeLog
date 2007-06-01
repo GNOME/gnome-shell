@@ -1,5 +1,19 @@
 2007-06-01  Neil J. Patel  <njp@o-hand.com>
 
+	* clutter/clutter-entry.c: (clutter_entry_set_property),
+	(clutter_entry_get_property), (clutter_entry_ensure_layout),
+	(clutter_entry_class_init), (clutter_entry_init),
+	(clutter_entry_set_visibility), (clutter_entry_get_visibility),
+	(clutter_entry_set_invisible_char),
+	(clutter_entry_get_invisible_char):
+	* clutter/clutter-entry.h:
+	Added text-visibility, which will allow you to show all entered text
+	as a nominated charaecter ('*' is default).
+
+	* examples/test-entry.c: (main):
+
+2007-06-01  Neil J. Patel  <njp@o-hand.com>
+
 	* clutter/clutter-entry.c: (clutter_entry_ensure_cursor_position),
 	(clutter_entry_clear_cursor_position),
 	(clutter_entry_paint_cursor), (clutter_entry_paint),

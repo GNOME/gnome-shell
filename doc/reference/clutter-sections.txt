@@ -783,6 +783,10 @@ clutter_entry_insert_text
 clutter_entry_delete_text
 clutter_entry_set_visible_cursor
 clutter_entry_get_visible_cursor
+clutter_entry_set_visibility
+clutter_entry_get_visibility
+clutter_entry_set_invisible_char
+clutter_entry_get_invisible_char
 <SUBSECTION Standard>
 CLUTTER_ENTRY
 CLUTTER_IS_ENTRY

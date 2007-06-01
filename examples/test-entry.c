@@ -42,7 +42,8 @@ main (int argc, char *argv[])
   clutter_entry_set_color (CLUTTER_ENTRY (entry), &entry_color);
   clutter_actor_set_size (entry, 600, 50);
   clutter_actor_set_position (entry, 100, 100);
-
+  /*clutter_entry_set_visibility (CLUTTER_ENTRY (entry), FALSE);*/
+  
   clutter_group_add (CLUTTER_GROUP (stage), entry);
   clutter_group_show_all (CLUTTER_GROUP (stage));
 
