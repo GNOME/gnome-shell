@@ -481,6 +481,8 @@ meta_frames_ensure_layout (MetaFrames  *frames,
                                           flags);
       
       frame->layout = gtk_widget_create_pango_layout (widget, frame->title);
+
+      pango_layout_set_auto_dir (frame->layout, FALSE);
       
       font_desc = meta_gtk_widget_get_font_desc (widget, scale,
 						 meta_prefs_get_titlebar_font ());

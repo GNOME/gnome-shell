@@ -1,3 +1,9 @@
+2007-06-03  Thomas Thurman  <thomas@thurman.org.uk>
+
+	* src/frames.c (meta_frames_ensure_layout): Pango layout for
+	titlebars should take LTR/RTL-ness from the underlying widget
+	and not from sniffing the content. Closes #438944.
+
 2007-05-25  Yair Hershkovitz  <yairhr@yahoo.com>
 
 	* src/workspace.c (meta_workspace_get_neighbor): Add support
