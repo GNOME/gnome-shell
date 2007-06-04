@@ -1,3 +1,17 @@
+2.19.8
+======
+
+Thanks to Linus Torvalds, Yair Hershkovitz and Thomas Thurman for
+improvements in this release.
+
+ - Lots of fixups for various alignments in RTL locales (Yair)
+   [#387893]
+ - Add code to configure what happens on right or middle click
+   of titlebar (Linus) [#408904]
+ - Fix layout for titlebars with mixed LTR/RTL scripts (Thomas)
+   [#433400]
+ - Fix window menu layout for RTL scripts (Thomas) [#433400]
+
 2.19.5
 ======
 

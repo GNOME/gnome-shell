@@ -1,5 +1,9 @@
 2007-06-04  Thomas Thurman  <thomas@thurman.org.uk>
 
+        * NEWS: 2.19.8 release.
+
+2007-06-04  Thomas Thurman  <thomas@thurman.org.uk>
+
 	* src/metaaccellabel.c (meta_accel_label_expose_event): fix
 	label layout for RTL languages. Closes #433400.
 
