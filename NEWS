@@ -12,6 +12,13 @@ improvements in this release.
    [#433400]
  - Fix window menu layout for RTL scripts (Thomas) [#433400]
 
+Translations
+  Khaled Hosny (ar), Ihar Hrachyshka (be@latin), Jovan Naumovski (mk),
+  Theppitak Karoonboonyanan (th)
+
+  [ Apologies to these translators who didn't get credited in the
+    version of 2.19.8 that shipped. ]
+
 2.19.5
 ======
 

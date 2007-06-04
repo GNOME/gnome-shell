@@ -1,5 +1,10 @@
 2007-06-04  Thomas Thurman  <thomas@thurman.org.uk>
 
+	* NEWS: Added translators' names from 2.19.8 (sorry, folks:
+	I forgot to save NEWS with their names in it before shipping.)
+
+2007-06-04  Thomas Thurman  <thomas@thurman.org.uk>
+
         * configure.in: post-release bump to 2.19.13.
 
 2007-06-04  Thomas Thurman  <thomas@thurman.org.uk>
