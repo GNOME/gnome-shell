@@ -271,15 +271,33 @@ meta_accel_label_expose_event (GtkWidget      *widget,
 
       if (widget->allocation.width >= widget->requisition.width + ac_width)
 	{
-	  int x;
-	  int y;
+          GtkTextDirection direction = gtk_widget_get_direction (widget);
+	  gint x;
+	  gint y;
 
+          if (direction == GTK_TEXT_DIR_RTL)
+            {
+              widget->allocation.x += ac_width;
+            }
 	  widget->allocation.width -= ac_width;
+
 	  if (GTK_WIDGET_CLASS (parent_class)->expose_event)
 	    GTK_WIDGET_CLASS (parent_class)->expose_event (widget, event);
-	  widget->allocation.width += ac_width;
 
-	  x = widget->allocation.x + widget->allocation.width - misc->xpad - ac_width;
+          if (direction == GTK_TEXT_DIR_RTL)
+            {
+              widget->allocation.x -= ac_width;
+            }
+          widget->allocation.width += ac_width;
+
+          if (direction == GTK_TEXT_DIR_RTL)
+            {
+              x = widget->allocation.x + misc->xpad;
+            }
+          else
+            {
+              x = widget->allocation.x + widget->allocation.width - misc->xpad - ac_width;
+            }
 
 	  y = (widget->allocation.y * (1.0 - misc->yalign) +
 	       (widget->allocation.y + widget->allocation.height -

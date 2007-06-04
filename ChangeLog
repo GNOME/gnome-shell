@@ -1,3 +1,8 @@
+2007-06-04  Thomas Thurman  <thomas@thurman.org.uk>
+
+	* src/metaaccellabel.c (meta_accel_label_expose_event): fix
+	label layout for RTL languages. Closes #433400.
+
 2007-06-03  Thomas Thurman  <thomas@thurman.org.uk>
 
 	* src/frames.c (meta_frames_ensure_layout): Pango layout for
