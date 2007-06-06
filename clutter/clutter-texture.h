@@ -87,16 +87,16 @@ gboolean      clutter_texture_set_from_rgb_data   (ClutterTexture *texture,
 						   gint            rowstride,
 						   gint            bpp,
 						   ClutterTextureFlags  flags,
-						   GError         *error);
+						   GError        **error);
 gboolean      clutter_texture_set_from_yuv_data   (ClutterTexture *texture,
 						   const guchar   *data,
 						   gint            width,
 						   gint            height,
 						   ClutterTextureFlags  flags,
-						   GError         *error);
+						   GError        **error);
 gboolean      clutter_texture_set_pixbuf          (ClutterTexture *texture,
 						   GdkPixbuf      *pixbuf,
-						   GError         *error);
+						   GError        **error);
 GdkPixbuf *   clutter_texture_get_pixbuf      (ClutterTexture *texture);
 void          clutter_texture_get_base_size   (ClutterTexture *texture,
                                                gint           *width,

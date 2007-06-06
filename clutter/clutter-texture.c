@@ -1167,7 +1167,7 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
 				     gint                rowstride,
 				     gint                bpp,
 				     ClutterTextureFlags flags,
-				     GError             *error)
+				     GError            **error)
 {
   ClutterTexturePrivate *priv;
   gboolean               texture_dirty = TRUE;
@@ -1298,7 +1298,7 @@ clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
 				     gint                width,
 				     gint                height,
 				     ClutterTextureFlags flags,
-				     GError             *error)
+				     GError            **error)
 {
 #if 0
   gboolean               texture_dirty = TRUE;
@@ -1391,7 +1391,7 @@ clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
 gboolean
 clutter_texture_set_pixbuf (ClutterTexture *texture,
                             GdkPixbuf      *pixbuf,
-			    GError         *error)
+			    GError        **error)
 {
   ClutterTexturePrivate *priv;
 
