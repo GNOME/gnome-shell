@@ -49,9 +49,12 @@ G_DEFINE_TYPE (ClutterTimeline, clutter_timeline, G_TYPE_OBJECT);
 struct _ClutterTimelinePrivate
 {
   guint timeout_id;
+  guint delay_id;
+  
   guint fps;
   guint n_frames;
   guint current_frame_num;
+  guint delay;
 
   gulong last_frame_msecs;
   gulong start_frame_secs;
@@ -65,7 +68,8 @@ enum
   
   PROP_FPS,
   PROP_NUM_FRAMES,
-  PROP_LOOP
+  PROP_LOOP,
+  PROP_DELAY
 };
 
 enum
@@ -97,13 +101,16 @@ clutter_timeline_set_property (GObject      *object,
   switch (prop_id) 
     {
     case PROP_FPS:
-      clutter_timeline_set_speed (timeline, g_value_get_int (value));
+      clutter_timeline_set_speed (timeline, g_value_get_uint (value));
       break;
     case PROP_NUM_FRAMES:
-      priv->n_frames = g_value_get_int (value);
+      priv->n_frames = g_value_get_uint (value);
       break;
     case PROP_LOOP:
       priv->loop = g_value_get_boolean (value);
+      break;
+    case PROP_DELAY:
+      priv->delay = g_value_get_uint (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -126,13 +133,16 @@ clutter_timeline_get_property (GObject    *object,
   switch (prop_id) 
     {
     case PROP_FPS:
-      g_value_set_int (value, priv->fps);
+      g_value_set_uint (value, priv->fps);
       break;
     case PROP_NUM_FRAMES:
-      g_value_set_int (value, priv->n_frames);
+      g_value_set_uint (value, priv->n_frames);
       break;
     case PROP_LOOP:
       g_value_set_boolean (value, priv->loop);
+      break;
+    case PROP_DELAY:
+      g_value_set_uint (value, priv->delay);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -154,13 +164,16 @@ clutter_timeline_dispose (GObject *object)
 
   priv = self->priv;
 
-  if (priv != NULL)
+  if (priv->delay_id)
     {
-      if (priv->timeout_id)
-	{
-	  g_source_remove (priv->timeout_id);
-	  priv->timeout_id = 0;
-	}
+      g_source_remove (priv->delay_id);
+      priv->delay_id = 0;
+    }
+
+  if (priv->timeout_id)
+    {
+      g_source_remove (priv->timeout_id);
+      priv->timeout_id = 0;
     }
 
   G_OBJECT_CLASS (clutter_timeline_parent_class)->dispose (object);
@@ -181,33 +194,61 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 
   g_type_class_add_private (klass, sizeof (ClutterTimelinePrivate));
 
-  g_object_class_install_property
-    (object_class, PROP_FPS,
-     g_param_spec_int ("fps",
-		       "Frames Per Second",
-		       "Timeline frames per second",
-		       0,
-		       1000,
-		       50,
-		       G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
-
-  g_object_class_install_property
-    (object_class, PROP_NUM_FRAMES,
-     g_param_spec_int ("num-frames",
-		       "Total number of frames",
-		       "Timelines total number of frames",
-		       0,
-		       G_MAXINT,
-		       0,
-		       CLUTTER_PARAM_READWRITE));
-
-  g_object_class_install_property
-    (object_class, PROP_LOOP,
-     g_param_spec_boolean ("loop",
-			   "Loop",
-			   "Should the timeline automatically restart",
-			   FALSE,
-			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterTimeline:fps:
+   *
+   * Timeline frames per second. Because of the nature of the main
+   * loop used by Clutter this is to be considered a best approximation.
+   */
+  g_object_class_install_property (object_class,
+                                   PROP_FPS,
+                                   g_param_spec_uint ("fps",
+                                                      "Frames Per Second",
+                                                      "Timeline frames per second",
+                                                      0, 1000,
+                                                      50,
+                                                      G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterTimeline:num-frames:
+   *
+   * Total number of frames for the timeline.
+   */
+  g_object_class_install_property (object_class,
+                                   PROP_NUM_FRAMES,
+                                   g_param_spec_uint ("num-frames",
+                                                      "Total number of frames",
+                                                      "Timelines total number of frames",
+                                                      0, G_MAXUINT,
+                                                      0,
+                                                      G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterTimeline:loop:
+   *
+   * Whether the timeline should automatically rewind and restart.
+   */
+  g_object_class_install_property (object_class,
+                                   PROP_LOOP,
+                                   g_param_spec_boolean ("loop",
+                                                         "Loop",
+                                                         "Should the timeline automatically restart",
+                                                         FALSE,
+                                                         G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterTimeline:delay:
+   *
+   * A delay, in milliseconds, that should be observed by the
+   * timeline before actually starting.
+   *
+   * Since: 0.4
+   */
+  g_object_class_install_property (object_class,
+                                   PROP_DELAY,
+                                   g_param_spec_uint ("delay",
+                                                      "Delay",
+                                                      "Delay before start",
+                                                      0, G_MAXUINT,
+                                                      0,
+                                                      G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
 
   /**
    * ClutterTimeline::new-frame:
@@ -255,15 +296,15 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 static void
 clutter_timeline_init (ClutterTimeline *self)
 {
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE(self,
-					   CLUTTER_TYPE_TIMELINE,
-					   ClutterTimelinePrivate);
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
+					    CLUTTER_TYPE_TIMELINE,
+					    ClutterTimelinePrivate);
 }
 
 static gboolean
 timeline_timeout_func (gpointer data)
 {
-  ClutterTimeline        *timeline = CLUTTER_TIMELINE(data);
+  ClutterTimeline        *timeline = data;
   ClutterTimelinePrivate *priv;
   GTimeVal                timeval;
   gint                    n_frames;
@@ -344,6 +385,25 @@ timeline_timeout_func (gpointer data)
   return TRUE;
 }
 
+static gboolean
+delay_timeout_func (gpointer data)
+{
+  ClutterTimeline *timeline = data;
+  ClutterTimelinePrivate *priv = timeline->priv;
+
+  priv->delay_id = 0;
+
+  priv->timeout_id = g_timeout_add_full (G_PRIORITY_DEFAULT + 20,
+                                         FPS_TO_INTERVAL (priv->fps),
+                                         timeline_timeout_func,
+                                         timeline,
+                                         NULL);
+  
+  g_signal_emit (timeline, timeline_signals[STARTED], 0);
+
+  return FALSE;
+}
+
 /**
  * clutter_timeline_start:
  * @timeline: A #ClutterTimeline
@@ -359,14 +419,26 @@ clutter_timeline_start (ClutterTimeline *timeline)
   
   priv = timeline->priv;
 
-  if (!priv->timeout_id)
-    priv->timeout_id = g_timeout_add_full (G_PRIORITY_DEFAULT + 20,
-                                           FPS_TO_INTERVAL (priv->fps),
-                                           timeline_timeout_func,
+  if (priv->delay_id || priv->timeout_id)
+    return;
+
+  if (priv->delay)
+    {
+      priv->delay_id = g_timeout_add_full (G_PRIORITY_DEFAULT + 20,
+                                           priv->delay,
+                                           delay_timeout_func,
                                            timeline,
                                            NULL);
-
-  g_signal_emit (timeline, timeline_signals[STARTED], 0);
+    }
+  else
+    {
+      priv->timeout_id = g_timeout_add_full (G_PRIORITY_DEFAULT + 20,
+                                             FPS_TO_INTERVAL (priv->fps),
+                                             timeline_timeout_func,
+                                             timeline,
+                                             NULL);
+      g_signal_emit (timeline, timeline_signals[STARTED], 0);
+    }
 }
 
 /**
@@ -378,13 +450,26 @@ clutter_timeline_start (ClutterTimeline *timeline)
 void
 clutter_timeline_pause (ClutterTimeline *timeline)
 {
+  ClutterTimelinePrivate *priv;
+
   g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
 
-  if (timeline->priv->timeout_id)
-    g_source_remove (timeline->priv->timeout_id);
+  priv = timeline->priv;
 
-  timeline->priv->timeout_id = 0;
-  timeline->priv->last_frame_msecs = 0;
+  if (priv->delay_id)
+    {
+      g_source_remove (priv->delay_id);
+      priv->delay_id = 0;
+    }
+
+  if (priv->timeout_id)
+    {
+      g_source_remove (priv->timeout_id);
+      priv->timeout_id = 0;
+    }
+
+  priv->timeout_id = 0;
+  priv->last_frame_msecs = 0;
 
   g_signal_emit (timeline, timeline_signals[PAUSED], 0);
 }
@@ -417,12 +502,9 @@ clutter_timeline_set_loop (ClutterTimeline *timeline,
   
   if (timeline->priv->loop != loop)
     {
-      g_object_ref (timeline);
-
       timeline->priv->loop = loop;
 
       g_object_notify (G_OBJECT (timeline), "loop");
-      g_object_unref (timeline);
     }
 }
 
@@ -654,6 +736,7 @@ clutter_timeline_clone (ClutterTimeline *timeline)
                        "fps", clutter_timeline_get_speed (timeline),
                        "num-frames", clutter_timeline_get_n_frames (timeline),
                        "loop", clutter_timeline_get_loop (timeline),
+                       "delay", clutter_timeline_get_delay (timeline),
                        NULL);
 
   return copy;
@@ -676,4 +759,49 @@ clutter_timeline_new (guint n_frames,
 		       "fps", fps, 
 		       "num-frames", n_frames, 
 		       NULL);
+}
+
+/**
+ * clutter_timeline_get_delay:
+ * @timeline: a #ClutterTimeline
+ *
+ * Retrieves the delay set using clutter_timeline_set_delay().
+ *
+ * Return value: the delay in milliseconds.
+ *
+ * Since: 0.4
+ */
+guint
+clutter_timeline_get_delay (ClutterTimeline *timeline)
+{
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), 0);
+
+  return timeline->priv->delay;
+}
+
+/**
+ * clutter_timeline_set_delay:
+ * @timeline: a #ClutterTimeline
+ * @msecs: delay in milliseconds
+ *
+ * Sets the delay, in milliseconds, before @timeline should start.
+ *
+ * Since: 0.4
+ */
+void
+clutter_timeline_set_delay (ClutterTimeline *timeline,
+                            guint            msecs)
+{
+  ClutterTimelinePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+  g_return_if_fail (msecs > 0);
+
+  priv = timeline->priv;
+
+  if (priv->delay != msecs)
+    {
+      priv->delay = msecs;
+      g_object_notify (G_OBJECT (timeline), "delay");
+    }
 }

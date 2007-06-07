@@ -52,6 +52,11 @@ The #ClutterTimeline has been started.
 
 @cluttertimeline: the object which received the signal.
 
+<!-- ##### ARG ClutterTimeline:delay ##### -->
+<para>
+
+</para>
+
 <!-- ##### ARG ClutterTimeline:fps ##### -->
 <para>
 
@@ -93,7 +98,7 @@ The #ClutterTimeline has been started.
 @Returns: 
 
 
-<!-- ##### FUNCTION clutter_timeline_copy ##### -->
+<!-- ##### FUNCTION clutter_timeline_clone ##### -->
 <para>
 
 </para>
@@ -216,6 +221,24 @@ The #ClutterTimeline has been started.
 
 
 <!-- ##### FUNCTION clutter_timeline_is_playing ##### -->
+<para>
+
+</para>
+
+@timeline: 
+@Returns: 
+
+
+<!-- ##### FUNCTION clutter_timeline_set_delay ##### -->
+<para>
+
+</para>
+
+@timeline: 
+@msecs: 
+
+
+<!-- ##### FUNCTION clutter_timeline_get_delay ##### -->
 <para>
 
 </para>
