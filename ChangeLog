@@ -1,5 +1,10 @@
 2007-06-08  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/clutter-texture.c: (clutter_texture_get_pixbuf):
+	Remove stray printf.
+
+2007-06-08  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-actor.c:
 	* clutter/clutter-debug.h:
 	* clutter/clutter-main.c:

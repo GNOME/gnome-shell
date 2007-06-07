@@ -1021,8 +1021,6 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 
       /* FIXME: cogl */
 
-      printf("grabbing single tile - %i x %i\n", priv->width, priv->height);
-
       glBindTexture(priv->target_type, priv->tiles[0]);
 
       glPixelStorei (GL_UNPACK_ROW_LENGTH, priv->width);
