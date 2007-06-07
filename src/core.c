@@ -42,7 +42,7 @@
  */
 static MetaWindow *
 get_window (Display *xdisplay,
-	    Window   frame_xwindow)
+            Window   frame_xwindow)
 {
   MetaDisplay *display;
   MetaWindow *window;
@@ -60,125 +60,156 @@ get_window (Display *xdisplay,
 }
 
 void
-meta_core_get_client_size (Display *xdisplay,
-                           Window   frame_xwindow,
-                           int     *width,
-                           int     *height)
+meta_core_get (Display *xdisplay,
+    Window xwindow,
+    ...)
 {
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-  
-  if (width)
-    *width = window->rect.width;
-  if (height)
-    *height = window->rect.height;
-}
+  va_list args;
+  MetaCoreGetType request;
 
-gboolean
-meta_core_window_has_frame (Display *xdisplay,
-                            Window frame_xwindow)
-{
-  MetaDisplay *display;
-  MetaWindow *window;
-  
-  display = meta_display_for_x_display (xdisplay);
-  window = meta_display_lookup_x_window (display, frame_xwindow);
+  MetaDisplay *display = meta_display_for_x_display (xdisplay);
+  MetaWindow *window = meta_display_lookup_x_window (display, xwindow);
 
-  return window != NULL && window->frame != NULL;
-}
+  va_start (args, xwindow);
 
-gboolean
-meta_core_titlebar_is_onscreen (Display *xdisplay,
-                                Window   frame_xwindow)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
+  request = va_arg (args, MetaCoreGetType);
 
-  return meta_window_titlebar_is_onscreen (window);  
-}
+  /* Now, we special-case the first request slightly. Mostly, requests
+   * for information on windows which have no frame are errors.
+   * But sometimes we may want to know *whether* a window has a frame.
+   * In this case, pass the key META_CORE_WINDOW_HAS_FRAME
+   * as the *first* request, with a pointer to a boolean; if the window
+   * has no frame, this will be set to False and meta_core_get will
+   * exit immediately (so the values of any other requests will be
+   * undefined). Otherwise it will be set to True and meta_core_get will
+   * continue happily on its way.
+   */
 
-Window
-meta_core_get_client_xwindow (Display *xdisplay,
-                              Window   frame_xwindow)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
+  if (request != META_CORE_WINDOW_HAS_FRAME &&
+      (window == NULL || window->frame == NULL)) {
+    meta_bug ("No such frame window 0x%lx!\n", xwindow);
+    return;
+  }
 
-  return window->xwindow;
-}
+  while (request != META_CORE_GET_END) {
+    
+    gpointer answer = va_arg (args, gpointer);
 
-MetaFrameFlags
-meta_core_get_frame_flags (Display *xdisplay,
-                           Window   frame_xwindow)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-  
-  return meta_frame_get_flags (window->frame);
-}
+    switch (request) {
+      case META_CORE_WINDOW_HAS_FRAME:
+        *((gboolean*)answer) = window != NULL && window->frame != NULL;
+        if (!*((gboolean*)answer)) return; /* see above */
+        break; 
+      case META_CORE_GET_CLIENT_WIDTH:
+        *((gint*)answer) = window->rect.width;
+        break;
+      case META_CORE_GET_CLIENT_HEIGHT:
+        *((gint*)answer) = window->rect.height;
+        break;
+      case META_CORE_IS_TITLEBAR_ONSCREEN:
+        *((gboolean*)answer) = meta_window_titlebar_is_onscreen (window);
+        break;
+      case META_CORE_GET_CLIENT_XWINDOW:
+        *((Window*)answer) = window->xwindow;
+        break;
+      case META_CORE_GET_FRAME_FLAGS:
+        *((MetaFrameFlags*)answer) = meta_frame_get_flags (window->frame);
+        break; 
+      case META_CORE_GET_FRAME_TYPE:
+          {
+          MetaFrameType base_type = META_FRAME_TYPE_LAST;
 
-MetaFrameType
-meta_core_get_frame_type (Display *xdisplay,
-                          Window   frame_xwindow)
-{
-  MetaWindow *window;
-  MetaFrameType base_type;
+          switch (window->type)
+            {
+            case META_WINDOW_NORMAL:
+              base_type = META_FRAME_TYPE_NORMAL;
+              break;
 
-  window = get_window (xdisplay, frame_xwindow);
+            case META_WINDOW_DIALOG:
+              base_type = META_FRAME_TYPE_DIALOG;
+              break;
 
-  base_type = META_FRAME_TYPE_LAST;
-  
-  switch (window->type)
-    {
-    case META_WINDOW_NORMAL:
-      base_type = META_FRAME_TYPE_NORMAL;
-      break;
-      
-    case META_WINDOW_DIALOG:
-      base_type = META_FRAME_TYPE_DIALOG;
-      break;
-      
-    case META_WINDOW_MODAL_DIALOG:
-      base_type = META_FRAME_TYPE_MODAL_DIALOG;
-      break;
-      
-    case META_WINDOW_MENU:
-      base_type = META_FRAME_TYPE_MENU;
-      break;
+            case META_WINDOW_MODAL_DIALOG:
+              base_type = META_FRAME_TYPE_MODAL_DIALOG;
+              break;
 
-    case META_WINDOW_UTILITY:
-      base_type = META_FRAME_TYPE_UTILITY;
-      break;
-      
-    case META_WINDOW_DESKTOP:
-    case META_WINDOW_DOCK:
-    case META_WINDOW_TOOLBAR:
-    case META_WINDOW_SPLASHSCREEN:
-      /* No frame */
-      base_type = META_FRAME_TYPE_LAST;
-      break;
+            case META_WINDOW_MENU:
+              base_type = META_FRAME_TYPE_MENU;
+              break;
+
+            case META_WINDOW_UTILITY:
+              base_type = META_FRAME_TYPE_UTILITY;
+              break;
+
+            case META_WINDOW_DESKTOP:
+            case META_WINDOW_DOCK:
+            case META_WINDOW_TOOLBAR:
+            case META_WINDOW_SPLASHSCREEN:
+              /* No frame */
+              base_type = META_FRAME_TYPE_LAST;
+              break;
+
+            }
+
+          if (base_type == META_FRAME_TYPE_LAST)
+            {
+              /* can't add border if undecorated */
+              *((MetaFrameType*)answer) = META_FRAME_TYPE_LAST; 
+            }
+          else if (window->border_only)
+            {
+              /* override base frame type */
+              *((MetaFrameType*)answer) = META_FRAME_TYPE_BORDER; 
+            }
+          else
+            {
+              *((MetaFrameType*)answer) = base_type;
+            }
+
+          break; 
+          }
+      case META_CORE_GET_MINI_ICON:
+        *((GdkPixbuf**)answer) = window->mini_icon;
+        break;
+      case META_CORE_GET_ICON:
+        *((GdkPixbuf**)answer) = window->icon;
+        break;
+      case META_CORE_GET_X:
+        meta_window_get_position (window, (int*)answer, NULL);
+        break;
+      case META_CORE_GET_Y:
+        meta_window_get_position (window, NULL, (int*)answer);
+        break;
+      case META_CORE_GET_FRAME_WORKSPACE:
+        *((gint*)answer) = meta_window_get_net_wm_desktop (window);
+        break;
+      case META_CORE_GET_FRAME_X:
+        *((gint*)answer) = window->frame->rect.x;
+        break;
+      case META_CORE_GET_FRAME_Y:
+        *((gint*)answer) = window->frame->rect.y;
+        break;
+      case META_CORE_GET_FRAME_WIDTH:
+        *((gint*)answer) = window->frame->rect.width;
+        break;
+      case META_CORE_GET_FRAME_HEIGHT:
+        *((gint*)answer) = window->frame->rect.height;
+        break;
+      case META_CORE_GET_SCREEN_WIDTH:
+        *((gint*)answer) = window->screen->rect.width;
+        break;
+      case META_CORE_GET_SCREEN_HEIGHT:
+        *((gint*)answer) = window->screen->rect.height;
+        break;
+
+      default:
+        meta_warning(_("Unknown window information request: %d"), request);
     }
 
-  if (base_type == META_FRAME_TYPE_LAST)
-    return META_FRAME_TYPE_LAST; /* can't add border if undecorated */
-  else if (window->border_only)
-    return META_FRAME_TYPE_BORDER; /* override base frame type */
-  else
-    return base_type;
-}
+    request = va_arg (args, MetaCoreGetType);
+  } 
 
-GdkPixbuf*
-meta_core_get_mini_icon (Display *xdisplay,
-                         Window   frame_xwindow)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-  
-  return window->mini_icon;
-}
-
-GdkPixbuf*
-meta_core_get_icon (Display *xdisplay,
-                    Window   frame_xwindow)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-  
-  return window->icon;
+  va_end (args);
 }
 
 void
@@ -274,32 +305,6 @@ meta_core_user_focus (Display *xdisplay,
   
   meta_window_focus (window, timestamp);
 }
-
-void
-meta_core_get_position (Display *xdisplay,
-                        Window   frame_xwindow,
-                        int     *x,
-                        int     *y)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-
-  meta_window_get_position (window, x, y);
-}
-
-void
-meta_core_get_size (Display *xdisplay,
-                    Window   frame_xwindow,
-                    int     *width,
-                    int     *height)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-
-  if (width)
-    *width = window->rect.width;
-  if (height)
-    *height = window->rect.height;
-}
-
 
 void
 meta_core_minimize (Display *xdisplay,
@@ -450,36 +455,6 @@ meta_core_get_active_workspace (Screen *xscreen)
 
   return meta_workspace_index (screen->active_workspace);
 }
-
-int
-meta_core_get_frame_workspace (Display *xdisplay,
-                               Window frame_xwindow)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-
-  return meta_window_get_net_wm_desktop (window);
-}
-
-void
-meta_core_get_frame_extents   (Display        *xdisplay,
-                               Window          frame_xwindow,
-                               int            *x,
-                               int            *y,
-                               int            *width,
-                               int            *height)
-{
-  MetaWindow *window = get_window (xdisplay, frame_xwindow);
-
-  if (x)
-    *x = window->frame->rect.x;
-  if (y)
-    *y = window->frame->rect.y;
-  if (width)
-    *width = window->frame->rect.width;
-  if (height)
-    *height = window->frame->rect.height;
-}
-
 
 void
 meta_core_show_window_menu (Display *xdisplay,
@@ -728,20 +703,6 @@ meta_core_set_screen_cursor (Display *xdisplay,
   MetaWindow *window = get_window (xdisplay, frame_on_screen);
 
   meta_frame_set_screen_cursor (window->frame, cursor);
-}
-
-void
-meta_core_get_screen_size (Display *xdisplay,
-                           Window   frame_on_screen,
-                           int     *width,
-                           int     *height)
-{
-  MetaWindow *window = get_window (xdisplay, frame_on_screen);
-
-  if (width)
-    *width = window->screen->rect.width;
-  if (height)
-    *height = window->screen->rect.height;
 }
 
 void

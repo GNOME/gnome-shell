@@ -1,3 +1,24 @@
+2007-06-06  Thomas Thurman  <thomas@thurman.org.uk>
+
+	* frames.c, core.[ch]: changed all tabs to spaces.
+	* core.[ch] (meta_core_get_client_size, meta_core_window_has_frame,
+	meta_core_titlebar_is_onscreen, meta_core_get_client_xwindow,
+        meta_core_get_frame_flags, meta_core_get_frame_type,
+	meta_core_get_mini_icon, meta_core_get_icon, meta_core_get_position,
+	meta_core_get_size, meta_core_get_frame_workspace,
+	meta_core_get_frame_extents, meta_core_get_screen_size): Removed
+        and replaced with meta_core_get().
+	* core.[ch] (meta_core_get): New function.
+	* core.h (MetaCoreGetType): New enum.
+	* frames.c (meta_frames_ensure_layout, meta_frames_calc_geometry,
+	meta_frames_get_geometry, meta_frames_apply_shapes,
+	meta_frame_titlebar_event, meta_frames_button_press_event,
+	populate_cache, clip_to_screen, meta_frames_paint_to_drawable,
+	meta_frames_set_window_background, get_control): Replace use of
+        removed functions in ui.c with meta_core_get().
+
+        All this should make things a little faster. Closes #377495.
+
 2007-06-04  Thomas Thurman  <thomas@thurman.org.uk>
 
 	* NEWS: Added translators' names from 2.19.8 (sorry, folks:

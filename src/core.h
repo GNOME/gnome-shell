@@ -29,30 +29,68 @@
 #include <gdk/gdkx.h>
 #include "common.h"
 
-void meta_core_get_client_size (Display *xdisplay,
-                                Window   frame_xwindow,
-                                int     *width,
-                                int     *height);
+typedef enum
+{
+  META_CORE_GET_END = 0,
+  META_CORE_WINDOW_HAS_FRAME,
+  META_CORE_GET_CLIENT_WIDTH,
+  META_CORE_GET_CLIENT_HEIGHT,
+  META_CORE_IS_TITLEBAR_ONSCREEN,
+  META_CORE_GET_CLIENT_XWINDOW,
+  META_CORE_GET_FRAME_FLAGS,
+  META_CORE_GET_FRAME_TYPE,
+  META_CORE_GET_MINI_ICON,
+  META_CORE_GET_ICON,
+  META_CORE_GET_X,
+  META_CORE_GET_Y,
+  META_CORE_GET_FRAME_WORKSPACE,
+  META_CORE_GET_FRAME_X,
+  META_CORE_GET_FRAME_Y,
+  META_CORE_GET_FRAME_WIDTH,
+  META_CORE_GET_FRAME_HEIGHT,
+  META_CORE_GET_SCREEN_WIDTH,
+  META_CORE_GET_SCREEN_HEIGHT,
+} MetaCoreGetType;
 
-gboolean meta_core_titlebar_is_onscreen (Display *xdisplay,
-                                         Window   frame_xwindow);
-
-gboolean meta_core_window_has_frame (Display *xdisplay,
-                                     Window   frame_xwindow);
-
-
-Window meta_core_get_client_xwindow (Display *xdisplay,
-                                     Window   frame_xwindow);
-
-MetaFrameFlags meta_core_get_frame_flags (Display *xdisplay,
-                                          Window   frame_xwindow);
-MetaFrameType  meta_core_get_frame_type   (Display *xdisplay,
-                                           Window   frame_xwindow);
-
-GdkPixbuf* meta_core_get_mini_icon (Display *xdisplay,
-                                    Window   frame_xwindow);
-GdkPixbuf* meta_core_get_icon      (Display *xdisplay,
-                                    Window   frame_xwindow);
+/* General information function about the given window. Pass in a sequence of
+ * pairs of MetaCoreGetTypes and pointers to variables; the variables will be
+ * filled with the requested values. End the list with META_CORE_GET_END.
+ * For example:
+ *
+ *   meta_core_get (my_display, my_window,
+ *                  META_CORE_GET_X, &x,
+ *                  META_CORE_GET_Y, &y,
+ *                  META_CORE_GET_END);
+ *
+ * If the window doesn't have a frame, this will raise a meta_bug. To suppress
+ * this behaviour, ask META_CORE_WINDOW_HAS_FRAME as the *first* question in
+ * the list. If the window has no frame, the answer to this question will be
+ * False, and anything else you asked will be undefined. Otherwise, the answer
+ * will be True. The answer will necessarily be True if you ask the question
+ * in any other position. The positions of all other questions don't matter.
+ *
+ * The reason for this function is that some parts of the program don't know
+ * about MetaWindows. But they *can* see core.h. So we used to have a whole
+ * load of functions which took a display and an X window, looked up the
+ * relevant MetaWindow, and returned information about it. The trouble with
+ * that is that looking up the MetaWindow is a nontrivial operation, and
+ * consolidating the calls in this way makes (for example) frame exposes
+ * 33% faster, according to valgrind.
+ *
+ * This function would perhaps be slightly better if the questions were
+ * represented by pointers, perhaps gchar*s, because then we could take
+ * advantage of gcc's automatic sentinel checking. On the other hand, this
+ * immediately suggests string comparison, and that's slow.
+ *
+ * Another possible improvement is that core.h still has a bunch of
+ * functions which can't be described by the formula "give a display and
+ * an X window, get a single value" (meta_core_user_move, for example), but
+ * which could theoretically be handled by this function if we relaxed the
+ * requirement that all questions should have exactly one argument.
+ */
+void meta_core_get (Display *xdisplay,
+                    Window window,
+                    ...);
 
 void meta_core_queue_frame_resize (Display *xdisplay,
                                    Window frame_xwindow);
@@ -77,17 +115,6 @@ void meta_core_user_lower_and_unfocus (Display *xdisplay,
 void meta_core_user_focus   (Display *xdisplay,
                              Window   frame_xwindow,
                              guint32  timestamp);
-
-/* get position of client, same coord space expected by move */
-void meta_core_get_position (Display *xdisplay,
-                             Window   frame_xwindow,
-                             int     *x,
-                             int     *y);
-
-void meta_core_get_size     (Display *xdisplay,
-                             Window   frame_xwindow,
-                             int     *width,
-                             int     *height);
 
 void meta_core_minimize         (Display *xdisplay,
                                  Window   frame_xwindow);
@@ -126,14 +153,6 @@ const char* meta_core_get_workspace_name_with_index (Display *xdisplay,
                                                      Window xroot,
                                                      int    index);
 
-void  meta_core_get_frame_extents   (Display        *xdisplay,
-                                     Window          frame_xwindow,
-                                     int            *x,
-                                     int            *y,
-                                     int            *width,
-                                     int            *height);
-
-
 void meta_core_show_window_menu (Display *xdisplay,
                                  Window   frame_xwindow,
                                  int      root_x,
@@ -169,11 +188,6 @@ void       meta_core_grab_buttons  (Display *xdisplay,
 void       meta_core_set_screen_cursor (Display *xdisplay,
                                         Window   frame_on_screen,
                                         MetaCursor cursor);
-
-void       meta_core_get_screen_size (Display *xdisplay,
-                                      Window   frame_on_screen,
-                                      int     *width,
-                                      int     *height);
 
 /* Used because we ignore EnterNotify when a window is unmapped that
  * really shouldn't cause focus changes, by comparing the event serial
