@@ -1,0 +1,98 @@
+/*
+ * Clutter.
+ *
+ * An OpenGL based 'interactive canvas' library.
+ *
+ * Authored By Matthew Allum  <mallum@openedhand.com>
+ *
+ * Copyright (C) 2006 OpenedHand
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ClutterContainer: Generic actor container interface.
+ * Author: Emmanuele Bassi <ebassi@openedhand.com>
+ */
+
+#ifndef __CLUTTER_CONTAINER_H__
+#define __CLUTTER_CONTAINER_H__
+
+#include <clutter/clutter-actor.h>
+
+G_BEGIN_DECLS
+
+#define CLUTTER_TYPE_CONTAINER                  (clutter_container_get_type ())
+#define CLUTTER_CONTAINER(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_CONTAINER, ClutterContainer))
+#define CLUTTER_IS_CONTAINER(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_CONTAINER))
+#define CLUTTER_CONTAINER_GET_IFACE(obj)        (G_TYPE_INSTANCE_GET_INTERFACE ((obj), CLUTTER_TYPE_CONTAINER, ClutterContainerIface))
+
+typedef struct _ClutterContainer        ClutterContainer; /* dummy */
+typedef struct _ClutterContainerIface   ClutterContainerIface;
+
+struct _ClutterContainerIface
+{
+  GTypeInterface g_iface;
+
+  void (* add)           (ClutterContainer *container,
+                          ClutterActor     *actor);
+  void (* remove)        (ClutterContainer *container,
+                          ClutterActor     *actor);
+  void (* foreach)       (ClutterContainer *container,
+                          ClutterCallback   callback,
+                          gpointer          user_data);
+  
+  /* signals */
+  void (* actor_added)   (ClutterContainer *container,
+                          ClutterActor     *actor);
+  void (* actor_removed) (ClutterContainer *container,
+                          ClutterActor     *actor);
+
+  /* padding, for future expansion */
+  void (*_clutter_reserved1) (void);
+  void (*_clutter_reserved2) (void);
+  void (*_clutter_reserved3) (void);
+  void (*_clutter_reserved4) (void);
+  void (*_clutter_reserved5) (void);
+  void (*_clutter_reserved6) (void);
+  void (*_clutter_reserved7) (void);
+  void (*_clutter_reserved8) (void);
+};
+
+GType  clutter_container_get_type      (void) G_GNUC_CONST;
+
+void   clutter_container_add           (ClutterContainer *container,
+                                        ClutterActor     *first_actor,
+                                        ...) G_GNUC_NULL_TERMINATED;
+void   clutter_container_add_actor     (ClutterContainer *container,
+                                        ClutterActor     *actor);
+void   clutter_container_add_valist    (ClutterContainer *container,
+                                        ClutterActor     *first_actor,
+                                        va_list           varargs);
+void   clutter_container_remove        (ClutterContainer *container,
+                                        ClutterActor     *first_actor,
+                                        ...) G_GNUC_NULL_TERMINATED;
+void   clutter_container_remove_actor  (ClutterContainer *container,
+                                        ClutterActor     *actor);
+void   clutter_container_remove_valist (ClutterContainer *container,
+                                        ClutterActor     *first_actor,
+                                        va_list           varargs);
+GList *clutter_container_get_children  (ClutterContainer *container);
+void   clutter_container_foreach       (ClutterContainer *container,
+                                        ClutterCallback   callback,
+                                        gpointer          user_data);
+
+G_END_DECLS
+
+#endif /* __CLUTTER_CONTAINER_H__ */
