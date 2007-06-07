@@ -36,8 +36,8 @@ main (int argc, char *argv[])
   label = clutter_label_new_with_text ("Mono 8", text);
   clutter_label_set_color (CLUTTER_LABEL (label), &label_color);
 
-  clutter_group_add (CLUTTER_GROUP (stage), label);
-  clutter_group_show_all (CLUTTER_GROUP (stage));
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), label);
+  clutter_actor_show_all (stage);
 
   timeline = clutter_timeline_new (400, 60); /* num frames, fps */
   g_object_set(timeline, "loop", TRUE, 0);   /* have it loop */

@@ -44,6 +44,8 @@
 #include "clutter-stage.h"
 #include "clutter-actor.h"
 #include "clutter-rectangle.h"
+#include "clutter-container.h"
+#include "clutter-layout.h"
 #include "clutter-group.h"
 #include "clutter-texture.h"
 #include "clutter-clone-texture.h"

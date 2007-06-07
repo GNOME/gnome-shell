@@ -33,6 +33,7 @@
 #include "config.h"
 
 #include "clutter-label.h"
+#include "clutter-layout.h"
 #include "clutter-main.h"
 #include "clutter-enum-types.h"
 #include "clutter-private.h"
@@ -43,7 +44,13 @@
 
 #define DEFAULT_FONT_NAME	"Sans 10"
 
-G_DEFINE_TYPE (ClutterLabel, clutter_label, CLUTTER_TYPE_ACTOR);
+static void clutter_layout_iface_init (ClutterLayoutIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterLabel,
+                         clutter_label,
+                         CLUTTER_TYPE_ACTOR,
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_LAYOUT,
+                                                clutter_layout_iface_init));
 
 /* Probably move into main */
 static PangoClutterFontMap  *_font_map = NULL;
@@ -61,6 +68,7 @@ enum
   PROP_WRAP,
   PROP_WRAP_MODE,
   PROP_ELLIPSIZE,
+  PROP_LAYOUT_FLAGS,
 };
 
 #define CLUTTER_LABEL_GET_PRIVATE(obj) \
@@ -72,6 +80,8 @@ struct _ClutterLabelPrivate
   PangoFontDescription *desc;
   
   ClutterColor          fgcol;
+
+  ClutterLayoutFlags    layout_flags;
   
   gchar                *text;
   gchar                *font_name;
@@ -184,6 +194,9 @@ clutter_label_get_property (GObject    *object,
     case PROP_ELLIPSIZE:
       g_value_set_enum (value, priv->ellipsize);
       break;
+    case PROP_LAYOUT_FLAGS:
+      g_value_set_flags (value, priv->layout_flags);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -191,7 +204,8 @@ clutter_label_get_property (GObject    *object,
 }
 
 static void
-clutter_label_ensure_layout (ClutterLabel *label, gint width)
+clutter_label_ensure_layout (ClutterLabel *label,
+                             gint          width)
 {
   ClutterLabelPrivate  *priv;
 
@@ -256,9 +270,9 @@ clutter_label_paint (ClutterActor *self)
       return;
     }
 
-  clutter_label_ensure_layout (label, clutter_actor_get_width(self));
+  clutter_label_ensure_layout (label, clutter_actor_get_width (self));
 
-  priv->fgcol.alpha   =  clutter_actor_get_opacity(self);
+  priv->fgcol.alpha = clutter_actor_get_opacity(self);
 
   pango_clutter_render_layout (priv->layout, 0, 0, &priv->fgcol, 0);
 }
@@ -288,7 +302,7 @@ clutter_label_request_coords (ClutterActor        *self,
 			      ClutterActorBox     *box)
 {
   /* do we need to do anything ? */
-  clutter_label_clear_layout (CLUTTER_LABEL(self));
+  clutter_label_clear_layout (CLUTTER_LABEL (self));
 }
 
 static void 
@@ -330,6 +344,34 @@ static void
 clutter_label_finalize (GObject *object)
 {
   G_OBJECT_CLASS (clutter_label_parent_class)->finalize (object);
+}
+
+static ClutterLayoutFlags
+clutter_layout_label_get_layout_flags (ClutterLayout *layout)
+{
+  return CLUTTER_LABEL (layout)->priv->layout_flags;
+}
+
+static void
+clutter_layout_label_height_for_width (ClutterLayout *layout,
+                                       ClutterUnit    width,
+                                       ClutterUnit   *height)
+{
+  ClutterLabel *label = CLUTTER_LABEL (layout);
+  gint layout_height;
+
+  clutter_label_ensure_layout (label, CLUTTER_UNITS_TO_INT (width));
+  pango_layout_get_pixel_size (label->priv->layout, NULL, &layout_height);
+
+  if (height)
+    *height = CLUTTER_UNITS_FROM_INT (layout_height);
+}
+
+static void
+clutter_layout_iface_init (ClutterLayoutIface *iface)
+{
+  iface->get_layout_flags = clutter_layout_label_get_layout_flags;
+  iface->height_for_width = clutter_layout_label_height_for_width;
 }
 
 static void
@@ -426,6 +468,10 @@ clutter_label_class_init (ClutterLabelClass *klass)
 			 PANGO_ALIGN_LEFT,
 			 CLUTTER_PARAM_READWRITE));
 
+  g_object_class_override_property (gobject_class,
+                                    PROP_LAYOUT_FLAGS,
+                                    "layout-flags");
+
   g_type_class_add_private (gobject_class, sizeof (ClutterLabelPrivate));
 }
 
@@ -452,6 +498,7 @@ clutter_label_init (ClutterLabel *self)
   priv->layout        = NULL;
   priv->text          = NULL;
   priv->attrs         = NULL;
+  priv->layout_flags  = CLUTTER_LAYOUT_HEIGHT_FOR_WIDTH;
 
   priv->fgcol.red     = 0;
   priv->fgcol.green   = 0;

@@ -198,7 +198,7 @@ main (int argc, char *argv[])
   clutter_actor_set_size (oh->bgtex, 
 			  CLUTTER_STAGE_WIDTH(), CLUTTER_STAGE_HEIGHT());
   clutter_actor_set_opacity (oh->bgtex, 0x99);
-  clutter_group_add (CLUTTER_GROUP (stage), oh->bgtex);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), oh->bgtex);
 #endif
 
   /* create a new group to hold multiple actors in a group */
@@ -232,7 +232,7 @@ main (int argc, char *argv[])
       clutter_actor_set_position (oh->hand[i], x, y);
 
       /* Add to our group group */
-      clutter_group_add (CLUTTER_GROUP (oh->group), oh->hand[i]);
+      clutter_container_add_actor (CLUTTER_CONTAINER (oh->group), oh->hand[i]);
     }
 
 #if 0
@@ -251,7 +251,8 @@ main (int argc, char *argv[])
   clutter_actor_show_all (oh->group);
 
   /* Add the group to the stage */
-  clutter_group_add (CLUTTER_GROUP (stage), CLUTTER_ACTOR(oh->group));
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage),
+                               CLUTTER_ACTOR (oh->group));
 
   /* Show everying ( and map window ) */
   clutter_actor_show_all (stage);

@@ -53,15 +53,6 @@ The #ClutterActor @arg1 was removed from the group.
 @Returns: 
 
 
-<!-- ##### FUNCTION clutter_group_get_children ##### -->
-<para>
-
-</para>
-
-@self: 
-@Returns: 
-
-
 <!-- ##### FUNCTION clutter_group_get_n_children ##### -->
 <para>
 
@@ -81,22 +72,12 @@ The #ClutterActor @arg1 was removed from the group.
 @Returns: 
 
 
-<!-- ##### FUNCTION clutter_group_foreach ##### -->
-<para>
-
-</para>
-
-@self: 
-@callback: 
-@user_data: 
-
-
 <!-- ##### FUNCTION clutter_group_add ##### -->
 <para>
 
 </para>
 
-@self: 
+@group: 
 @actor: 
 
 
@@ -105,9 +86,9 @@ The #ClutterActor @arg1 was removed from the group.
 
 </para>
 
-@self: 
+@group: 
 @first_actor: 
-@args: 
+@var_args: 
 
 
 <!-- ##### FUNCTION clutter_group_add_many ##### -->
@@ -115,7 +96,7 @@ The #ClutterActor @arg1 was removed from the group.
 
 </para>
 
-@self: 
+@group: 
 @first_actor: 
 @Varargs: 
 
@@ -125,7 +106,7 @@ The #ClutterActor @arg1 was removed from the group.
 
 </para>
 
-@self: 
+@group: 
 @actor: 
 
 
@@ -134,23 +115,7 @@ The #ClutterActor @arg1 was removed from the group.
 
 </para>
 
-@self: 
-
-
-<!-- ##### FUNCTION clutter_group_show_all ##### -->
-<para>
-
-</para>
-
-@self: 
-
-
-<!-- ##### FUNCTION clutter_group_hide_all ##### -->
-<para>
-
-</para>
-
-@self: 
+@group: 
 
 
 <!-- ##### FUNCTION clutter_group_find_child_by_id ##### -->

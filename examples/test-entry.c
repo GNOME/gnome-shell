@@ -46,7 +46,7 @@ main (int argc, char *argv[])
   /*clutter_entry_set_max_length (CLUTTER_ENTRY (entry), 50);*/
   
   clutter_group_add (CLUTTER_GROUP (stage), entry);
-  clutter_group_show_all (CLUTTER_GROUP (stage));
+  clutter_actor_show_all (CLUTTER_GROUP (stage));
 
   g_signal_connect (stage, "key-release-event",
 		    G_CALLBACK (on_key_release_cb), (gpointer)entry);

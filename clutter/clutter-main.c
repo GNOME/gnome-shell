@@ -121,7 +121,7 @@ clutter_redraw (void)
     {
       ClutterPerspective perspective;
 
-      clutter_stage_get_perspectivex (stage, &perspective);
+      clutter_stage_get_perspectivex (CLUTTER_STAGE (stage), &perspective);
 
       cogl_setup_viewport (clutter_actor_get_width (stage),
 			   clutter_actor_get_height (stage),

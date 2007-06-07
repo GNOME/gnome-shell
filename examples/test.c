@@ -121,10 +121,10 @@ main (int argc, char *argv[])
   clutter_actor_set_position(para, 10, 10);
   clutter_actor_set_size(para, 200, 0);
 
-  clutter_group_add (CLUTTER_GROUP (stage), texture);
-  clutter_group_add (CLUTTER_GROUP (stage), label);
-  clutter_group_add (CLUTTER_GROUP (stage), rect);
-  clutter_group_add (CLUTTER_GROUP (stage), para);
+  clutter_container_add (CLUTTER_CONTAINER (stage),
+                         texture, label,
+                         rect, para,
+                         NULL);
 
   clutter_actor_set_size (CLUTTER_ACTOR (stage), 800, 600);
 

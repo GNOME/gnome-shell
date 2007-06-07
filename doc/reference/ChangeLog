@@ -1,3 +1,9 @@
+2007-05-31  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter.types:
+	* clutter-sections.txt:
+	* clutter-docs.sgml: Add ClutterLayout API.
+
 2007-06-07  Emmanuele Bassi  <ebassi@o-hand.com>
 
 	* clutter-sections.txt: Add new ClutterTimeline API.

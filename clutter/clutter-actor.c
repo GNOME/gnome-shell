@@ -33,7 +33,7 @@
 #include "config.h"
 
 #include "clutter-actor.h"
-#include "clutter-group.h"
+#include "clutter-container.h"
 #include "clutter-main.h"
 #include "clutter-enum-types.h"
 #include "clutter-marshal.h"
@@ -2551,6 +2551,8 @@ void
 clutter_actor_reparent (ClutterActor *self,
                         ClutterActor *new_parent)
 {
+  ClutterActorPrivate *priv;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (new_parent));
   g_return_if_fail (self != new_parent);
@@ -2561,7 +2563,9 @@ clutter_actor_reparent (ClutterActor *self,
       return;
     }
 
-  if (self->priv->parent_actor != new_parent)
+  priv = self->priv;
+
+  if (priv->parent_actor != new_parent)
     {
       ClutterActor *old_parent;
 
@@ -2575,13 +2579,14 @@ clutter_actor_reparent (ClutterActor *self,
           CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_REPARENT);
         }
 
-      old_parent = self->priv->parent_actor;
+      old_parent = priv->parent_actor;
 
       g_object_ref (self);
-      /* FIXME: below assumes only groups can reparent
-      */
-      clutter_group_remove (CLUTTER_GROUP (self->priv->parent_actor), self);
-      clutter_group_add (CLUTTER_GROUP (new_parent), self);
+
+      /* XXX: below assumes only containers can reparent */
+      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->parent_actor), self);
+      clutter_container_add_actor (CLUTTER_CONTAINER (new_parent), self);
+
       g_object_unref (self);
 
       if (CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_REPARENT)

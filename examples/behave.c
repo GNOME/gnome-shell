@@ -120,7 +120,7 @@ main (int argc, char *argv[])
 
   /* Make a hand */
   group = clutter_group_new ();
-  clutter_group_add (CLUTTER_GROUP (stage), group);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), group);
   clutter_actor_show (group);
   
   rect = clutter_rectangle_new ();
@@ -140,7 +140,7 @@ main (int argc, char *argv[])
   clutter_actor_set_position (hand, 0, 0);
   clutter_actor_show (hand);
 
-  clutter_group_add_many (CLUTTER_GROUP (group), rect, hand, NULL);
+  clutter_container_add (CLUTTER_CONTAINER (group), rect, hand, NULL);
   
   /* Make a timeline */
   timeline = clutter_timeline_new (100, 26); /* num frames, fps */

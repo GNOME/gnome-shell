@@ -1,3 +1,27 @@
+2007-06-07  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-container.[ch]: Add a generic actor container
+	interface, for actors to implement without subclassing ClutterGroup.
+
+	* clutter/clutter-group.[ch]: Make ClutterGroup implement the
+	ClutterContainer interface, and deprecate the colliding methods.
+
+	* clutter/clutter-layout.[ch]: Add extended layout interface.
+	Actors and containers requiring or honouring complex layout
+	management should implement this interface and provide at least
+	one of the available layout types: width for height, height for
+	width, natural size, iterative size request.
+
+	* clutter/clutter-label.c: A ClutterLabel requires height for
+	width layout management, so it implements the ClutterLayout
+	interface.
+
+	* clutter/Makefile.am: Add new files to the build.
+
+	* tests/*.c:
+	* examples/*.c: Update tests and examples code to use the
+	new ClutterContainer API instead of ClutterGroup.
+
 2007-06-07  Emmanuele Bassi  <ebassi@o-hand.com>
 
 	* clutter/clutter-timeline.[ch]: Add a "delay" property, which

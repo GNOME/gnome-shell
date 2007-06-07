@@ -47,14 +47,16 @@ source_h =					\
 	$(srcdir)/clutter-behaviour-scale.h 	\
 	$(srcdir)/clutter-clone-texture.h 	\
 	$(srcdir)/clutter-color.h		\
-        $(srcdir)/clutter-event.h 		\
+        $(srcdir)/clutter-container.h		\
         $(srcdir)/clutter-entry.h               \
+	$(srcdir)/clutter-event.h 		\
 	$(srcdir)/clutter-feature.h 		\
 	$(srcdir)/clutter-fixed.h 		\
 	$(srcdir)/clutter-group.h 		\
 	$(srcdir)/clutter-keysyms.h 		\
 	$(srcdir)/clutter-label.h 		\
-        $(srcdir)/clutter-main.h		\
+        $(srcdir)/clutter-layout.h		\
+	$(srcdir)/clutter-main.h		\
 	$(srcdir)/clutter-media.h		\
 	$(srcdir)/clutter-rectangle.h		\
 	$(srcdir)/clutter-stage.h 		\
@@ -135,6 +137,7 @@ source_c = \
 	clutter-behaviour-rotate.c	\
 	clutter-behaviour-scale.c	\
 	clutter-color.c 		\
+	clutter-container.c		\
 	clutter-clone-texture.c 	\
 	clutter-enum-types.c		\
         clutter-event.c 		\
@@ -143,6 +146,7 @@ source_c = \
 	clutter-fixed.c			\
 	clutter-group.c 		\
 	clutter-label.c 		\
+	clutter-layout.c		\
 	clutter-main.c 			\
 	clutter-marshal.c		\
 	clutter-media.c 		\

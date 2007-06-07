@@ -84,7 +84,7 @@ main (int argc, char *argv[])
 	
 	printf("uploaded to texture... ");
 	
-	clutter_group_add (CLUTTER_GROUP (stage), texture);
+	clutter_container_add (CLUTTER_CONTAINER (stage), texture, NULL);
 	clutter_actor_set_size (texture, 400, 400);
 	clutter_actor_show (texture);
 	
@@ -94,7 +94,7 @@ main (int argc, char *argv[])
 	
 	SPIN();
 
-      clutter_group_remove (CLUTTER_GROUP (stage), texture);
+        clutter_container_remove (CLUTTER_CONTAINER (stage), texture, NULL);
     }
 
   return 0;

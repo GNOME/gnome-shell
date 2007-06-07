@@ -66,8 +66,10 @@
   <chapter>
     <title>Clutter Actors And Objects</title>
     <xi:include href="xml/clutter-actor.xml"/>
-    <xi:include href="xml/clutter-stage.xml"/>
+    <xi:include href="xml/clutter-container.xml"/>
+    <xi:include href="xml/clutter-layout.xml"/>
     <xi:include href="xml/clutter-group.xml"/>
+    <xi:include href="xml/clutter-stage.xml"/>
     <xi:include href="xml/clutter-rectangle.xml"/>
     <xi:include href="xml/clutter-texture.xml"/>
     <xi:include href="xml/clutter-clone-texture.xml"/>

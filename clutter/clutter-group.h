@@ -86,31 +86,26 @@ struct _ClutterGroupClass
 
 GType         clutter_group_get_type         (void) G_GNUC_CONST;
 ClutterActor *clutter_group_new              (void);
-GList *       clutter_group_get_children     (ClutterGroup    *self);
-void          clutter_group_foreach          (ClutterGroup    *self,
-					      ClutterCallback  callback,
-					      gpointer         user_data);
-void          clutter_group_add              (ClutterGroup    *self,
-					      ClutterActor    *actor); 
-void          clutter_group_add_many_valist  (ClutterGroup    *self,
-					      ClutterActor    *first_actor,
-					      va_list          args);
-void          clutter_group_add_many         (ClutterGroup    *self,
-					      ClutterActor    *first_actor,
-					      ...) G_GNUC_NULL_TERMINATED;
-void          clutter_group_remove           (ClutterGroup    *self,
-					      ClutterActor    *actor); 
-void          clutter_group_remove_all       (ClutterGroup *self);
-#ifndef CLUTTER_DISABLE_DEPRECATED
-void          clutter_group_show_all         (ClutterGroup    *self);
-void          clutter_group_hide_all         (ClutterGroup    *self);
-#endif /* CLUTTER_DISABLE_DEPRECATED */
-
 ClutterActor *clutter_group_find_child_by_id (ClutterGroup    *self,
 					      guint            id);
 ClutterActor *clutter_group_get_nth_child    (ClutterGroup    *self,
                                               gint             index);
 gint          clutter_group_get_n_children   (ClutterGroup    *self);
+void          clutter_group_remove_all       (ClutterGroup    *group);
+
+#ifndef CLUTTER_DISABLE_DEPRECATED
+void          clutter_group_add              (ClutterGroup    *group,
+                                              ClutterActor    *actor);
+void          clutter_group_add_many         (ClutterGroup    *group,
+                                              ClutterActor    *first_actor,
+                                              ...) G_GNUC_NULL_TERMINATED;
+void          clutter_group_add_many_valist  (ClutterGroup    *group,
+                                              ClutterActor    *first_actor,
+                                              va_list          var_args);
+void          clutter_group_remove           (ClutterGroup    *group,
+                                              ClutterActor    *actor);
+#endif /* CLUTTER_DISABLE_DEPRECATED */
+
 void          clutter_group_raise            (ClutterGroup    *self,
 					      ClutterActor    *actor, 
 					      ClutterActor    *sibling);

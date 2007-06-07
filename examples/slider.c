@@ -1,3 +1,6 @@
+#include <stdlib.h>
+#include <stdio.h>
+
 #include <clutter/clutter.h>
 
 typedef struct Tile 
@@ -46,7 +49,8 @@ make_tiles (GdkPixbuf *pixbuf)
 	  if (pos != 15)
 	    {
 	      tile->actor = clutter_texture_new_from_pixbuf (subpixbuf);
-	      clutter_group_add (CLUTTER_GROUP (group), tile->actor);
+	      clutter_container_add_actor (CLUTTER_CONTAINER (group),
+                                           tile->actor);
 	      clutter_actor_set_position (tile->actor, x, y);
 	    } 
 	  else 
@@ -143,6 +147,7 @@ key_press_event_cb (ClutterStage    *stage,
 int
 main (int argc, char **argv)
 {
+  GError       *error;
   GdkPixbuf    *pixbuf;
   ClutterActor *stage, *group;
   ClutterColor  bgcolour;
@@ -158,11 +163,19 @@ main (int argc, char **argv)
   clutter_stage_set_color (CLUTTER_STAGE (stage), &bgcolour);
 
   /* Create Tiles */
-  pixbuf = gdk_pixbuf_new_from_file ("image.jpg", NULL);
+  error = NULL;
+  pixbuf = gdk_pixbuf_new_from_file ("image.jpg", &error);
+  if (error)
+    {
+      g_warning ("Unable to load `image.jpg': %s", error->message);
+      g_error_free (error);
+      return EXIT_FAILURE;
+    }
+
   group = make_tiles (pixbuf);
 
   /* Add to stage and center */
-  clutter_group_add (CLUTTER_GROUP (stage), group);
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), group);
   clutter_actor_set_position (group, 
    (clutter_actor_get_width (stage) - clutter_actor_get_width (group)) / 2, 
    (clutter_actor_get_height (stage) - clutter_actor_get_height (group)) / 2);

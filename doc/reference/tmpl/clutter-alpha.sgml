@@ -193,7 +193,7 @@ Symbolic name for passing clutter_sine_func().
 
 <!-- ##### MACRO CLUTTER_ALPHA_SINE_INC ##### -->
 <para>
-Symbolic name for passing clutter_sine_inc_func().
+
 </para>
 
 
@@ -210,7 +210,7 @@ Symbolic name for passing clutter_sine_inc_func().
 
 <!-- ##### MACRO CLUTTER_ALPHA_SINE_DEC ##### -->
 <para>
-Symbolic name for passing clutter_sine_dec_func().
+
 </para>
 
 
@@ -227,7 +227,7 @@ Symbolic name for passing clutter_sine_dec_func().
 
 <!-- ##### MACRO CLUTTER_ALPHA_SINE_HALF ##### -->
 <para>
-Symbolic name for passing clutter_sine_hav_func().
+
 </para>
 
 

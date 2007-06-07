@@ -210,6 +210,49 @@ clutter_group_get_type
 </SECTION>
 
 <SECTION>
+<FILE>clutter-container</FILE>
+<TITLE>ClutterContainer</TITLE>
+ClutterContainer
+ClutterContainerIface
+clutter_container_add_actor
+clutter_container_add
+clutter_container_add_valist
+clutter_container_remove_actor
+clutter_container_remove
+clutter_container_remove_valist
+clutter_container_get_children
+clutter_container_foreach
+<SUBSECTION Standard>
+CLUTTER_TYPE_CONTAINER
+CLUTTER_CONTAINER
+CLUTTER_IS_CONTAINER
+CLUTTER_CONTAINER_GET_IFACE
+<SUBSECTION Private>
+clutter_container_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-layout</FILE>
+<TITLE>ClutterLayout</TITLE>
+ClutterLayout
+ClutterLayoutIface
+ClutterLayoutFlags
+clutter_layout_get_layout_flags
+clutter_layout_get_type
+clutter_layout_height_for_width
+clutter_layout_natural_request
+clutter_layout_tune_request
+clutter_layout_width_for_height
+<SUBSECTION Standard>
+CLUTTER_TYPE_LAYOUT
+CLUTTER_LAYOUT
+CLUTTER_IS_LAYOUT
+CLUTTER_LAYOUT_GET_IFACE
+<SUBSECTION Private>
+clutter_layout_get_type
+</SECTION>
+
+<SECTION>
 <FILE>clutter-rectangle</FILE>
 <TITLE>ClutterRectangle</TITLE>
 ClutterRectangle
