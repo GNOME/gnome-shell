@@ -253,7 +253,7 @@ clutter_effect_closure_new (ClutterEffectTemplate *template,
 
   c->template = template;
   c->actor    = actor;
-  c->timeline = clutter_timeline_copy (priv->timeline);
+  c->timeline = clutter_timeline_clone (priv->timeline);
   c->alpha    = clutter_alpha_new_full (c->timeline,
 					priv->alpha_func,
 					NULL, NULL);

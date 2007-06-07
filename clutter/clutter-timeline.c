@@ -631,28 +631,30 @@ clutter_timeline_is_playing (ClutterTimeline *timeline)
 }
 
 /**
- * clutter_timeline_copy:
+ * clutter_timeline_clone:
  * @timeline: #ClutterTimeline to duplicate.
  *
  * Create a new #ClutterTimeline instance which has property values
- * matching that of supplied timeline.
+ * matching that of supplied timeline. The cloned timeline will not
+ * be started and will not be positioned to the current position of
+ * @timeline: you will have to start it with clutter_timeline_start().
  *
- * Return Value: a new #ClutterTimeline
+ * Return Value: a new #ClutterTimeline, cloned from @timeline
  *
  * Since 0.4
  */
-ClutterTimeline*
-clutter_timeline_copy (ClutterTimeline *timeline)
+ClutterTimeline *
+clutter_timeline_clone (ClutterTimeline *timeline)
 {
   ClutterTimeline *copy;
 
   g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), NULL);
 
-  copy = g_object_new (CLUTTER_TYPE_TIMELINE, NULL);
-
-  copy->priv->fps      = timeline->priv->fps;
-  copy->priv->n_frames = timeline->priv->n_frames;
-  copy->priv->loop     = timeline->priv->loop;
+  copy = g_object_new (CLUTTER_TYPE_TIMELINE,
+                       "fps", clutter_timeline_get_speed (timeline),
+                       "num-frames", clutter_timeline_get_n_frames (timeline),
+                       "loop", clutter_timeline_get_loop (timeline),
+                       NULL);
 
   return copy;
 }

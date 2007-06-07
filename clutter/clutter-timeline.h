@@ -87,6 +87,8 @@ GType clutter_timeline_get_type (void) G_GNUC_CONST;
 
 ClutterTimeline *clutter_timeline_new               (guint            n_frames,
                                                      guint            fps);
+ClutterTimeline *clutter_timeline_clone             (ClutterTimeline *timeline);
+
 guint            clutter_timeline_get_speed         (ClutterTimeline *timeline);
 void             clutter_timeline_set_speed         (ClutterTimeline *timeline,
                                                      guint            fps);
@@ -106,7 +108,6 @@ void             clutter_timeline_set_n_frames      (ClutterTimeline *timeline,
                                                      guint            n_frames);
 guint            clutter_timeline_get_n_frames      (ClutterTimeline *timeline);
 gboolean         clutter_timeline_is_playing        (ClutterTimeline *timeline);
-ClutterTimeline* clutter_timeline_copy              (ClutterTimeline *timeline);
 
 G_END_DECLS
 

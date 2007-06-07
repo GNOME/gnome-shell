@@ -384,7 +384,7 @@ clutter_perspective_get_type
 ClutterTimeline
 ClutterTimelineClass
 clutter_timeline_new
-clutter_timeline_copy
+clutter_timeline_clone
 clutter_timeline_set_speed
 clutter_timeline_get_speed
 clutter_timeline_start
