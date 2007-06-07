@@ -1,4 +1,9 @@
+2007-06-07  Emmanuele Bassi  <ebassi@o-hand.com>
+
+	* clutter-sections.txt: Add new ClutterTimeline API.
+
 2007-06-01  Neil J. Patel  <njp@o-hand.com>
+
 	* clutter-sections.txt:
 	* tmpl/clutter-entry.sgml:
 	updated for new functions.

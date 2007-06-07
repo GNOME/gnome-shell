@@ -1,3 +1,11 @@
+2007-06-07  Emmanuele Bassi  <ebassi@o-hand.com>
+
+	* clutter/clutter-timeline.[ch]: Add a "delay" property, which
+	delays the real start of the timeline by a number of milliseconds.
+
+	(clutter_timeline_clone): Rename clutter_timeline_copy() to
+	clutter_timeline_clone(), for consistency.
+
 2007-06-01  Neil J. Patel  <njp@o-hand.com>
 
 	* clutter/clutter-entry.c: (clutter_entry_set_property),
