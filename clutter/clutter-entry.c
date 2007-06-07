@@ -72,6 +72,7 @@ enum
 {
   TEXT_CHANGED,
   CURSOR_EVENT,
+  ACTIVATE,
   
   LAST_SIGNAL
 };
@@ -580,6 +581,24 @@ clutter_entry_class_init (ClutterEntryClass *klass)
 		  clutter_marshal_VOID__BOXED,
 		  G_TYPE_NONE, 1,
 		  CLUTTER_TYPE_GEOMETRY | G_SIGNAL_TYPE_STATIC_SCOPE);
+		  
+  /**
+  * ClutterEntry::activate:
+   * @entry: the actor which received the event
+   *
+   * The ::cursor-event signal is emitted each time the netry is 'activated'
+   * by the user, normally by pressing the 'Enter' key. This will only be 
+   * emitted when your are adding text to the entry via 
+   * #clutter_entry_handle_key_event.
+   */
+  entry_signals[ACTIVATE] =
+    g_signal_new ("activate",
+		  G_TYPE_FROM_CLASS (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterEntryClass, activate),
+		  NULL, NULL,
+		  clutter_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
 
   g_type_class_add_private (gobject_class, sizeof (ClutterEntryPrivate));
 }
@@ -1070,6 +1089,8 @@ clutter_entry_handle_key_event (ClutterEntry *entry, ClutterKeyEvent *kev)
       case CLUTTER_Return:
       case CLUTTER_KP_Enter:
       case CLUTTER_ISO_Enter:
+        g_signal_emit (G_OBJECT (entry), entry_signals[ACTIVATE], 0);  
+        break;
       case CLUTTER_Escape:
       case CLUTTER_Up:
       case CLUTTER_KP_Up:

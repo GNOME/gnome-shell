@@ -1,3 +1,14 @@
+2007-06-07  Neil J. Patel  <njp@o-hand.com>
+
+	* clutter/clutter-entry.c: (clutter_entry_class_init),
+	(clutter_entry_handle_key_event):
+	* clutter/clutter-entry.h:
+	Added an 'activated' signal, whihc is emitted when the 'Enter' key is
+	pressed.
+
+	* examples/test-entry.c: (on_entry_activated), (main):
+	Added a test handler for the activated signal.
+
 2007-06-07  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/*: Move documentation from the templates into the

@@ -17,6 +17,12 @@ on_key_release_cb (ClutterStage *stage, ClutterEvent *event, ClutterEntry *entry
   }
 }
 
+static void
+on_entry_activated (ClutterEntry *entry, gpointer null)
+{
+  g_print ("Activated: %s\n", clutter_entry_get_text (entry));
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -55,6 +61,8 @@ main (int argc, char *argv[])
   g_signal_connect (entry, "text-changed",
                     G_CALLBACK (on_entry_text_changed), NULL);
   */
+  g_signal_connect (entry, "activate", 
+		    G_CALLBACK (on_entry_activated), NULL);
   clutter_main();
 
   return 0;

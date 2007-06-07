@@ -81,6 +81,7 @@ struct _ClutterEntryClass
   void     (* text_changed)          (ClutterEntry           *entry);
   void     (* cursor_event)          (ClutterEntry           *entry,
                                       ClutterGeometry        *geometry);
+  void     (* activate)              (ClutterEntry           *entry);
     
   /* padding for future */
   void (*_clutter_entry_1) (void);
