@@ -312,6 +312,8 @@ timeline_timeout_func (gpointer data)
 
   priv = timeline->priv;
 
+  CLUTTER_TIMESTAMP (SCHEDULER, "Timeline:%p activated\n", timeline);
+
   /* Figure out potential frame skips */
   g_get_current_time (&timeval);
 
@@ -342,7 +344,11 @@ timeline_timeout_func (gpointer data)
         n_frames = 1;
 
       if (n_frames > 1)
-	CLUTTER_NOTE (MISC, "Skipping %i frames", n_frames);
+	{
+	  CLUTTER_TIMESTAMP (SCHEDULER, 
+			     "Timeline %p, skipping %i frames\n", 
+			     timeline, n_frames);
+	}
     }
   else 
     {

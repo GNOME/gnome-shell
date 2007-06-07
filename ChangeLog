@@ -1,9 +1,31 @@
+2007-06-08  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-debug.h:
+	* clutter/clutter-main.c:
+	* clutter/clutter-main.h:
+	* clutter/clutter-private.h:
+	* clutter/clutter-timeline.c:
+	Add 'schedule' debug flag and new CLUTTER_TIMESTAMP macro.
+
+	* clutter/clutter-texture.c:
+	* clutter/clutter-texture.h:
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/gl/cogl-defines.h:
+	* clutter/cogl/gles/cogl-defines.h:
+	* clutter/cogl/gl/cogl.c:
+	* clutter/cogl/gles/cogl.c:
+	Add initial experiemental YUV texture support. 
+	Move texture rect size checks into cogl.
+	Better handle moving texture data from video -> system memory 
+	(if support available).
+
 2007-06-07  Neil J. Patel  <njp@o-hand.com>
 
 	* clutter/clutter-entry.c: (clutter_entry_class_init),
 	(clutter_entry_handle_key_event):
 	* clutter/clutter-entry.h:
-	Added an 'activated' signal, whihc is emitted when the 'Enter' key is
+	Added an 'activated' signal, which is emitted when the 'Enter' key is
 	pressed.
 
 	* examples/test-entry.c: (on_entry_activated), (main):

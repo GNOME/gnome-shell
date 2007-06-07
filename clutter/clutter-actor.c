@@ -1488,6 +1488,8 @@ clutter_actor_queue_redraw (ClutterActor *self)
 
   if (!ctx->update_idle)
     {
+      CLUTTER_TIMESTAMP (SCHEDULER, 
+			 "Adding ideler for actor: %p", self);
       ctx->update_idle = g_idle_add_full (-100 , /* very high priority */
 					  redraw_update_idle, 
 					  NULL, NULL);

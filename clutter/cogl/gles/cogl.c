@@ -267,29 +267,15 @@ cogl_clip_unset (void)
   GE( glDisable (GL_STENCIL_TEST) );
 }
 
-
-
 gboolean
-cogl_texture_can_size (COGLenum pixel_format,
+cogl_texture_can_size (COGLenum       target,
+		       COGLenum pixel_format,
 		       COGLenum pixel_type,
 		       int    width, 
 		       int    height)
 {
-  /* FIXME */
+  /* FIXME: How we get this is likely GLES implementation dependant. */
   return TRUE;
-
-#if 0
-  GLint new_width = 0;
-
-  GE( glTexImage2D (GL_PROXY_TEXTURE_2D, 0, GL_RGBA,
-		    width, height, 0 /* border */,
-		    pixel_format, pixel_type, NULL) );
-
-  GE( glGetTexLevelParameteriv (GL_PROXY_TEXTURE_2D, 0,
-				GL_TEXTURE_WIDTH, &new_width) );
-
-  return new_width != 0;
-#endif
 }
 
 void

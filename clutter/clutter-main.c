@@ -68,6 +68,7 @@ static const GDebugKey clutter_debug_keys[] = {
   { "behaviour", CLUTTER_DEBUG_BEHAVIOUR },
   { "pango", CLUTTER_DEBUG_PANGO },
   { "backend", CLUTTER_DEBUG_BACKEND },
+  { "scheduler", CLUTTER_DEBUG_SCHEDULER },
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
 
@@ -104,6 +105,8 @@ clutter_redraw (void)
   ctx  = clutter_context_get_default ();
 
   stage = _clutter_backend_get_stage (ctx->backend);
+
+  CLUTTER_TIMESTAMP (SCHEDULER, "Redraw start");
 
   CLUTTER_NOTE (PAINT, " Redraw enter");
 
@@ -155,6 +158,8 @@ clutter_redraw (void)
     }
 
   CLUTTER_NOTE (PAINT, " Redraw leave");
+
+  CLUTTER_TIMESTAMP (SCHEDULER, "Redraw finish");
 }
 
 /** 
@@ -174,6 +179,8 @@ clutter_do_event (ClutterEvent *event)
   stage = _clutter_backend_get_stage (backend);
   if (!stage)
     return;
+
+  CLUTTER_TIMESTAMP (SCHEDULER, "Event recieved");
 
   switch (event->type)
     {
@@ -336,12 +343,42 @@ clutter_context_get_default (void)
       ctx->backend = g_object_new (_clutter_backend_impl_get_type (), NULL);
 
       ctx->is_initialized = FALSE;
-
+#ifdef CLUTTER_ENABLE_DEBUG
+      ctx->timer          =  g_timer_new ();
+      g_timer_start (ctx->timer);
+#endif
       ClutterCntx = ctx;
     }
 
   return ClutterCntx;
 }
+
+/**
+ * clutter_get_timestamp:
+ *
+ * Returns the approximate number of microseconds passed since clutter was
+ * intialised.
+ *
+ * Return value: Number of microseconds since clutter_init() was called.
+ */
+gulong
+clutter_get_timestamp (void)
+{
+#ifdef CLUTTER_ENABLE_DEBUG
+  ClutterMainContext *ctx;
+  gdouble             seconds;
+
+  ctx = clutter_context_get_default ();
+
+  /* FIXME: may need a custom timer for embedded setups */
+  seconds = g_timer_elapsed (ctx->timer, NULL);
+
+  return (gulong)(seconds / 0.0000001);
+#else
+  return 0;
+#endif
+}
+
 
 #ifdef CLUTTER_ENABLE_DEBUG
 static gboolean

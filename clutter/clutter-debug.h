@@ -2,6 +2,7 @@
 #define __CLUTTER_DEBUG_H__
 
 #include <glib.h>
+#include "clutter-main.h"
 
 G_BEGIN_DECLS
 
@@ -15,7 +16,8 @@ typedef enum {
   CLUTTER_DEBUG_ALPHA           = 1 << 6,
   CLUTTER_DEBUG_BEHAVIOUR       = 1 << 7,
   CLUTTER_DEBUG_PANGO           = 1 << 8,
-  CLUTTER_DEBUG_BACKEND         = 1 << 9
+  CLUTTER_DEBUG_BACKEND         = 1 << 9,
+  CLUTTER_DEBUG_SCHEDULER       = 1 << 10
 } ClutterDebugFlag;
 
 #ifdef CLUTTER_ENABLE_DEBUG
@@ -35,12 +37,19 @@ typedef enum {
               g_warning (G_STRLOC ": GL Error %x", _err);       \
           }                                     } G_STMT_END
 
+#define CLUTTER_TIMESTAMP(type,x,a...)             G_STMT_START {  \
+        if (clutter_debug_flags & CLUTTER_DEBUG_##type)            \
+          { g_message ("[" #type "]" " %li:"  G_STRLOC ": "        \
+                       x, clutter_get_timestamp(), ##a); }         \
+                                                   } G_STMT_END
+
 #else /* !CLUTTER_ENABLE_DEBUG */
 
 #define CLUTTER_NOTE(type,x,a...)
 #define CLUTTER_MARK()
 #define CLUTTER_DBG(x)
 #define CLUTTER_GLERR()
+#define CLUTTER_TIMESTAMP(type,x,a...)
 
 #endif /* CLUTTER_ENABLE_DEBUG */
 

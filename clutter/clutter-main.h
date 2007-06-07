@@ -68,6 +68,8 @@ void             clutter_threads_leave    (void);
 
 void             clutter_base_init        (void);
 
+gulong           clutter_get_timestamp    (void);
+
 G_END_DECLS
 
 #endif

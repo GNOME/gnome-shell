@@ -56,7 +56,8 @@ struct _ClutterMainContext
   guint            main_loop_level;
   GSList          *main_loops;
   guint            is_initialized : 1;
-  guint            pick_mode :1;
+  guint            pick_mode :1;       /* Indicates pick render mode   */
+  GTimer          *timer;	       /* Used for debugging scheduler */
 };
 
 #define CLUTTER_CONTEXT()	(clutter_context_get_default ())

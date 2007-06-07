@@ -300,21 +300,33 @@ cogl_clip_unset (void)
 }
 
 gboolean
-cogl_texture_can_size (COGLenum pixel_format,
+cogl_texture_can_size (COGLenum       target,
+		       COGLenum pixel_format,
 		       COGLenum pixel_type,
 		       int    width, 
 		       int    height)
 {
-  GLint new_width = 0;
+  if (target == CGL_TEXTURE_RECTANGLE_ARB)
+    {
+      gint max_size = 0;
 
-  GE( glTexImage2D (GL_PROXY_TEXTURE_2D, 0, GL_RGBA,
-		    width, height, 0 /* border */,
-		    pixel_format, pixel_type, NULL) );
+      GE( glGetIntegerv(GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB, &max_size) );
 
-  GE( glGetTexLevelParameteriv (GL_PROXY_TEXTURE_2D, 0,
-				GL_TEXTURE_WIDTH, &new_width) );
+      return (max_size && width <= max_size && height <= max_size);
+    }
+  else /* Assumes CGL_TEXTURE_2D */
+    {
+      GLint new_width = 0;
 
-  return new_width != 0;
+      GE( glTexImage2D (GL_PROXY_TEXTURE_2D, 0, GL_RGBA,
+			width, height, 0 /* border */,
+			pixel_format, pixel_type, NULL) );
+
+      GE( glGetTexLevelParameteriv (GL_PROXY_TEXTURE_2D, 0,
+				    GL_TEXTURE_WIDTH, &new_width) );
+
+      return new_width != 0;
+    }
 }
 
 void

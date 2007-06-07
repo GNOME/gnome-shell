@@ -112,23 +112,6 @@ enum
 
 static int texture_signals[LAST_SIGNAL] = { 0 };
 
-
-static gboolean
-can_create_rect_arb (int    width, 
-		     int    height,
-		     GLenum pixel_format,
-		     GLenum pixel_type)
-{
-#if HAVE_COGL_GL
-  gint max_size = 0;
-
-  glGetIntegerv(GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB, &max_size);
-
-  return (max_size && width <= max_size && height <= max_size);
-#endif
-  return FALSE;
-}
-
 static int
 tile_dimension (int                          to_fill,
 		int                          start_size,
@@ -178,7 +161,9 @@ texture_init_tiles (ClutterTexture *texture)
   x_pot = clutter_util_next_p2 (priv->width);
   y_pot = clutter_util_next_p2 (priv->height);
 
-  while (!(cogl_texture_can_size (priv->pixel_format, priv->pixel_type,
+  while (!(cogl_texture_can_size (CGL_TEXTURE_2D,
+				  priv->pixel_format, 
+				  priv->pixel_type,
 				  x_pot, y_pot)
 	   && (x_pot - priv->width < priv->max_tile_waste) 
 	   && (y_pot - priv->height < priv->max_tile_waste)))
@@ -250,17 +235,9 @@ texture_render_to_gl_quad (ClutterTexture *texture,
 
   g_return_if_fail(priv->tiles != NULL);
 
-  /* OPT: Put in display list */
-
-  /* OPT: Optionally avoid tiling and use texture rectangles ext if
-   *      supported. 
-  */
-
   if (!priv->is_tiled)
     {
       cogl_texture_bind (priv->target_type, priv->tiles[0]);
-
-      /* FIXME: FIXED */
 
       if (priv->target_type == CGL_TEXTURE_2D) /* POT */
 	{
@@ -393,7 +370,6 @@ texture_upload_data (ClutterTexture *texture,
       CLUTTER_NOTE (TEXTURE, "syncing for single tile");
 
       cogl_texture_bind (priv->target_type, priv->tiles[0]);
-
       cogl_texture_set_alignment (priv->target_type, 4, priv->width);
 
       cogl_texture_set_filters 
@@ -569,8 +545,11 @@ clutter_texture_unrealize (ClutterActor *actor)
        * where this behaviour can be better controlled.
        */
       if (priv->local_pixbuf == NULL)
-	priv->local_pixbuf = clutter_texture_get_pixbuf (texture);
-  
+	{
+	  priv->local_pixbuf = clutter_texture_get_pixbuf (texture);
+	  CLUTTER_NOTE (TEXTURE, "moved pixels into system (pixbuf) mem");
+	}
+
       texture_free_gl_resources (texture);
     }
 
@@ -599,16 +578,19 @@ clutter_texture_realize (ClutterActor *actor)
     }
   else
     {
-      /* Dont allow realization with no pixbuf - note set_pixbuf/data 
-       * will set realize flags.	 
-      */
-      CLUTTER_NOTE (TEXTURE,
-                    "Texture has no image data cannot realize");
-
-      CLUTTER_NOTE (TEXTURE, "flags %i", actor->flags);
-      CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
-      CLUTTER_NOTE (TEXTURE, "flags %i", actor->flags);
-      return;
+      if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_READ_PIXELS))
+	{
+	  /* Dont allow realization with no pixbuf - note set_pixbuf/data 
+	   * will set realize flags.	 
+	  */
+	  CLUTTER_NOTE (TEXTURE,
+			"Texture has no image data cannot realize");
+	  
+	  CLUTTER_NOTE (TEXTURE, "flags %i", actor->flags);
+	  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
+	  CLUTTER_NOTE (TEXTURE, "flags %i", actor->flags);
+	  return;
+	}
     }
 
   CLUTTER_NOTE (TEXTURE, "Texture realized");
@@ -1039,6 +1021,8 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 
       /* FIXME: cogl */
 
+      printf("grabbing single tile - %i x %i\n", priv->width, priv->height);
+
       glBindTexture(priv->target_type, priv->tiles[0]);
 
       glPixelStorei (GL_UNPACK_ROW_LENGTH, priv->width);
@@ -1170,7 +1154,7 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
 				     GError            **error)
 {
   ClutterTexturePrivate *priv;
-  gboolean               texture_dirty = TRUE;
+  gboolean               texture_dirty = TRUE, size_change = FALSE;
   COGLenum               prev_format;
 
   priv = texture->priv;
@@ -1179,7 +1163,8 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
   /* Needed for GL_RGBA (internal format) and gdk pixbuf usage */
   g_return_val_if_fail (bpp == 4, FALSE); 
   
-  texture_dirty = (width != priv->width || height != priv->height);
+  texture_dirty = size_change = (width != priv->width 
+				 || height != priv->height);
 
   prev_format = priv->pixel_format;
   
@@ -1190,6 +1175,7 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
 
   if (flags & CLUTTER_TEXTURE_RGB_FLAG_BGR)
     {
+      /* FIXME: We actually need to convert for GLES */
       if (has_alpha)
 	priv->pixel_format = CGL_BGRA;
       else
@@ -1210,10 +1196,11 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
       if (priv->is_tiled == FALSE)
 	{
 	  if (priv->target_type == CGL_TEXTURE_RECTANGLE_ARB
-	      && !can_create_rect_arb (priv->width, 
-				       priv->height,
-				       priv->pixel_format,
-				       priv->pixel_type))
+	      && !cogl_texture_can_size (CGL_TEXTURE_RECTANGLE_ARB,
+					 priv->pixel_format,
+					 priv->pixel_type,
+					 priv->width, 
+					 priv->height))
 	    {
 	      /* If we cant create NPOT tex of this size fall back to tiles */
 	      CLUTTER_NOTE (TEXTURE, 
@@ -1226,11 +1213,11 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
 	    }
 	  
 	  if (priv->target_type == CGL_TEXTURE_2D
-	      && !cogl_texture_can_size
-	                 (priv->pixel_format, 
-			  priv->pixel_type,
-			  clutter_util_next_p2(priv->width), 
-			  clutter_util_next_p2(priv->height)))
+	      && !cogl_texture_can_size (CGL_TEXTURE_2D,
+					 priv->pixel_format, 
+					 priv->pixel_type,
+					 clutter_util_next_p2(priv->width), 
+					 clutter_util_next_p2(priv->height)))
 	    { 
 	      priv->is_tiled = TRUE; 
 	    }
@@ -1256,7 +1243,7 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
 
   CLUTTER_ACTOR_SET_FLAGS (CLUTTER_ACTOR (texture), CLUTTER_ACTOR_REALIZED);
 
-  if (texture_dirty)
+  if (size_change)
     {
       g_signal_emit (texture, texture_signals[SIZE_CHANGE], 
 		     0, priv->width, priv->height);
@@ -1300,9 +1287,8 @@ clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
 				     ClutterTextureFlags flags,
 				     GError            **error)
 {
-#if 0
-  gboolean               texture_dirty = TRUE;
-  COGLenum               prev_format;
+  ClutterTexturePrivate *priv;
+  gboolean               texture_dirty = TRUE, size_change = FALSE;
 
   if (!clutter_feature_available(CLUTTER_FEATURE_TEXTURE_YUV))
     return FALSE;
@@ -1310,13 +1296,19 @@ clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
   priv = texture->priv;
 
   /* FIXME: check other image props */
-  texture_dirty = (width != priv->width || height != priv->height);
+  size_change = (width != priv->width || height != priv->height);
+  texture_dirty = size_change || (priv->pixel_format != CGL_YCBCR_MESA);
 
   priv->width  = width;
   priv->height = height;
-
-  /* #ifdef GL_YCBCR_MESA */
+  priv->pixel_type = (flags & CLUTTER_TEXTURE_YUV_FLAG_YUV2) ?
+                                CGL_UNSIGNED_SHORT_8_8_REV_MESA : 
+                                CGL_UNSIGNED_SHORT_8_8_MESA;
   priv->pixel_format = CGL_YCBCR_MESA;
+  priv->target_type = CGL_TEXTURE_2D;
+
+  if (texture_dirty)      
+    texture_free_gl_resources (texture);
 
   if (!priv->tiles)
     {
@@ -1332,52 +1324,56 @@ clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
 
   if (texture_dirty)
     {
-      if (cogl_texture_can_size(priv->pixel_format, 
-				priv->pixel_type,
-				clutter_util_next_p2(priv->width), 
-				clutter_util_next_p2(priv->height)))
+      /* FIXME: need to check size limits correctly - does not
+       * seem to work if correct format and typre are used so
+       * this is really a guess...
+      */
+      if (cogl_texture_can_size (CGL_TEXTURE_2D,
+				 CGL_RGBA, 
+				 CGL_UNSIGNED_BYTE,
+				 clutter_util_next_p2(priv->width), 
+				 clutter_util_next_p2(priv->height)))
 	{
-	  glTexImage2D (CGL_TEXTURE_2D, 
-			0, 
-			GL_YCBCR_MESA, 
-			clutter_util_next_p2(priv->width),
-			clutter_util_next_p2(priv->height),
-			0, 
-			GL_YCBCR_MESA, 
-			GL_UNSIGNED_SHORT_8_8_REV_MESA, 
-			NULL);
+	  cogl_texture_image_2d (priv->target_type,
+				 priv->pixel_format,
+				 clutter_util_next_p2(priv->width),
+				 clutter_util_next_p2(priv->height),
+				 priv->pixel_format,
+				 priv->pixel_type,
+				 NULL);
 	}
       else
-	/* No tiled support for YUV textures as yet */
-	return FALSE; 		/* Set Error */
+	return FALSE; 		/* FIXME: add tiling */
     }
 
-  if (flags & CLUTTER_TEXTURE_YUV_FLAG_YUV2)
+  cogl_texture_sub_image_2d (priv->target_type,
+			     0,
+			     0,
+			     priv->width,
+			     priv->height,
+			     priv->pixel_format,
+			     priv->pixel_type,
+			     data);
+
+  CLUTTER_ACTOR_SET_FLAGS (CLUTTER_ACTOR (texture), CLUTTER_ACTOR_REALIZED);
+
+  if (size_change)
     {
-      glTexSubImage2D (GL_TEXTURE_2D, 
-		       0, 
-		       0, 
-		       0,
-		       priv->width,
-		       priv->height
-		       CGL_YCBCR_MESA, 
-		       CGL_UNSIGNED_SHORT_8_8_REV_MESA,
-		       data);
+      g_signal_emit (texture, texture_signals[SIZE_CHANGE], 
+		     0, priv->width, priv->height);
+
+      if (priv->sync_actor_size)
+	clutter_actor_set_size (CLUTTER_ACTOR(texture), 
+				priv->width, 
+				priv->height);
     }
-  else
-    {
-      glTexSubImage2D (GL_TEXTURE_2D, 
-		       0, 
-		       0, 
-		       0,
-		       priv->width,
-		       priv->height
-		       CGL_YCBCR_MESA, 
-		       CGL_UNSIGNED_SHORT_8_8_MESA,
-		       data);
-    }
-#endif
-  return FALSE;
+
+  g_signal_emit (texture, texture_signals[PIXBUF_CHANGE], 0); 
+
+  if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR(texture)))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR(texture));
+
+  return TRUE;
 }
 
 /**
