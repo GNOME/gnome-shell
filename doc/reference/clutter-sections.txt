@@ -26,7 +26,7 @@ clutter_media_get_type
 
 <SECTION>
 <FILE>clutter-units</FILE>
-<TITLE>clutter-units</TITLE>
+<TITLE>Unit conversion</TITLE>
 CLUTTER_UNITS_FROM_DEVICE
 CLUTTER_UNITS_FROM_FIXED
 CLUTTER_UNITS_FROM_FLOAT
@@ -644,11 +644,13 @@ clutter_backend_get_type
 
 <SECTION>
 <FILE>clutter-util</FILE>
+<TITLE>Utilities</TITLE>
 clutter_util_next_p2
 </SECTION>
 
 <SECTION>
 <FILE>clutter-feature</FILE>
+<TITLE>GL Features</TITLE>
 ClutterFeatureFlags
 clutter_feature_available
 clutter_feature_get_all
@@ -657,6 +659,7 @@ clutter_feature_wait_for_vblank
 
 <SECTION>
 <FILE>clutter-fixed</FILE>
+<TITLE>Fixed Point Support</TITLE>
 ClutterFixed
 CFX_Q
 CFX_ONE
@@ -697,6 +700,7 @@ clutter_sqrtx
 
 <SECTION>
 <FILE>clutter-color</FILE>
+<TITLE>Colors</TITLE>
 ClutterColor
 clutter_color_copy
 clutter_color_free
@@ -721,6 +725,7 @@ clutter_color_get_type
 
 <SECTION>
 <FILE>clutter-event</FILE>
+<TITLE>Events</TITLE>
 CLUTTER_CURRENT_TIME
 CLUTTER_PRIORITY_EVENTS
 ClutterFilterFunc
@@ -760,6 +765,7 @@ clutter_event_get_type
 
 <SECTION>
 <FILE>clutter-main</FILE>
+<TITLE>General</TITLE>
 CLUTTER_INIT_ERROR
 ClutterInitError
 clutter_init
@@ -780,6 +786,7 @@ clutter_init_error_quark
 
 <SECTION>
 <FILE>clutter-glx</FILE>
+<TITLE>GLX Specific Support</TITLE>
 clutter_glx_get_default_display
 clutter_glx_get_default_screen
 clutter_glx_get_root_window
@@ -792,6 +799,7 @@ clutter_glx_untrap_x_errors
 
 <SECTION>
 <FILE>clutter-version</FILE>
+<TITLE>Versioning Macros</TITLE>
 CLUTTER_MAJOR_VERSION
 CLUTTER_MINOR_VERSION
 CLUTTER_MICRO_VERSION

@@ -32,6 +32,13 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 
+/**
+ * SECTION:clutter-event
+ * @short_description: User and window system events
+ *
+ * Windowing events handled by Clutter.
+ */
+
 /* multiple button click detection */
 static guint32 button_click_time[2] = {0, 0};
 static guint32 button_number[2] = {0, -1};

@@ -46,12 +46,10 @@ typedef gint32 ClutterFixed;
  */
 typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 
-#define CLUTTER_ANGLE_FROM_DEG(x) CLUTTER_FLOAT_TO_INT((x*1024.0)/360.0)
-
-#define CLUTTER_ANGLE_FROM_DEGF(x) CLUTTER_FLOAT_TO_INT(((float)x*1024.0f)/360.0f)
-#define CLUTTER_ANGLE_TO_DEGF(x) (((float)x * 360.0)/ 1024.0)
-
-#define CLUTTER_ANGLE_FROM_DEGX(x) CFX_INT(((x/360)*1024) + CFX_HALF)
+#define CLUTTER_ANGLE_FROM_DEG(x)  (CLUTTER_FLOAT_TO_INT ((x * 1024.0) / 360.0))
+#define CLUTTER_ANGLE_FROM_DEGF(x) (CLUTTER_FLOAT_TO_INT (((float)x * 1024.0f) / 360.0f))
+#define CLUTTER_ANGLE_TO_DEGF(x)   (((float)x * 360.0)/ 1024.0)
+#define CLUTTER_ANGLE_FROM_DEGX(x) (CFX_INT(((x/360)*1024) + CFX_HALF))
 
 #define CFX_Q      16		/* Decimal part size in bits */
 #define CFX_ONE    (1 << CFX_Q)	/* 1 */
@@ -127,26 +125,24 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 #define CLUTTER_FIXED_TO_FLOAT(x)       ((float) ((int)(x) / 65536.0))
 #define CLUTTER_FIXED_TO_DOUBLE(x)      ((double) ((int)(x) / 65536.0))
 
-#define CLUTTER_FLOAT_TO_FIXED(x) _clutter_double_to_fixed((x))
-#define CLUTTER_FLOAT_TO_INT(x)   _clutter_double_to_int((x))
+#define CLUTTER_FLOAT_TO_FIXED(x)       (_clutter_double_to_fixed ((x)))
+#define CLUTTER_FLOAT_TO_INT(x)         (_clutter_double_to_int ((x)))
 
-#define CLUTTER_INT_TO_FIXED(x) ((x) << CFX_Q)
-
+#define CLUTTER_INT_TO_FIXED(x)         ((x) << CFX_Q)
 #define CLUTTER_FIXED_INT(x)            ((x) >> CFX_Q)
 #define CLUTTER_FIXED_FRACTION(x)       ((x) & ((1 << CFX_Q) - 1))
-
 #define CLUTTER_FIXED_FLOOR(x)          (((x) >= 0) ? ((x) >> CFX_Q) \
                                                     : ~((~(x)) >> CFX_Q))
-#define CLUTTER_FIXED_CEIL(x) CLUTTER_FIXED_FLOOR(x + 0xffff) 
+#define CLUTTER_FIXED_CEIL(x)           (CLUTTER_FIXED_FLOOR (x + 0xffff))
 
 #define CLUTTER_FIXED_MUL(x,y) ((x) >> 8) * ((y) >> 8)
 #define CLUTTER_FIXED_DIV(x,y) ((((x) << 8)/(y)) << 8)
 
 /* some handy short aliases to avoid exessively long lines */
 
-#define CFX_INT CLUTTER_FIXED_INT
-#define CFX_MUL CLUTTER_FIXED_MUL
-#define CFX_DIV CLUTTER_FIXED_DIV
+#define CFX_INT         CLUTTER_FIXED_INT
+#define CFX_MUL         CLUTTER_FIXED_MUL
+#define CFX_DIV         CLUTTER_FIXED_DIV
 
 /* Fixed point math routines */
 extern inline
@@ -171,7 +167,7 @@ ClutterFixed clutter_tani (ClutterAngle angle);
  *
  * Since: 0.2
  */
-#define clutter_cosx(angle) clutter_fixed_sin((angle) + CFX_PI_2)
+#define clutter_cosx(angle) (clutter_fixed_sin((angle) + CFX_PI_2))
 
 /**
  * clutter_cosi:
@@ -188,7 +184,7 @@ ClutterFixed clutter_tani (ClutterAngle angle);
  *
  * Since: 0.2
  */
-#define clutter_cosi(angle) clutter_sini((angle) + 256)
+#define clutter_cosi(angle) (clutter_sini ((angle) + 256))
 
 ClutterFixed clutter_sqrtx (ClutterFixed x);
 gint         clutter_sqrti (gint         x);
@@ -206,4 +202,4 @@ gint _clutter_double_to_int (double value);
 
 G_END_DECLS
 
-#endif
+#endif /* _HAVE_CLUTTER_FIXED_H */

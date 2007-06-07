@@ -25,7 +25,7 @@
 
 /**
  * SECTION:clutter-feature
- * @short_description: functions to query available GL features ay runtime 
+ * @short_description: Query GL features at runtime 
  *
  * Functions to query available GL features ay runtime 
  */

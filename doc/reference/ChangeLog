@@ -1,4 +1,11 @@
-2007-05-31  Emmanuele Bassi  <ebassi@openedhand.com>
+2007-06-07  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* tmpl/*.sgml: Remove from revision control the templates:
+	everything is now documented from within the source code.
+
+	* clutter-sections.txt: Add missing titles.
+
+2007-06-07  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter.types:
 	* clutter-sections.txt:

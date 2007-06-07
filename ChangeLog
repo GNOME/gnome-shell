@@ -1,5 +1,10 @@
 2007-06-07  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/*: Move documentation from the templates into the
+	source code.
+
+2007-06-07  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-container.[ch]: Add a generic actor container
 	interface, for actors to implement without subclassing ClutterGroup.
 
