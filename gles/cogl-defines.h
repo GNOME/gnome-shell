@@ -451,7 +451,13 @@ typedef GLint  COGLint;
 #define CGL_BGR GL_RGB
 #define CGL_BGRA GL_RGBA
 
-#define CGL_TEXTURE_RECTANGLE_ARB 0 /* Its unlikely we support this */
+/* Its unlikely we support this */
+#define CGL_TEXTURE_RECTANGLE_ARB 0
+
+/* YUV textures also unsupported */
+#define CGL_YCBCR_MESA 0
+#define CGL_UNSIGNED_SHORT_8_8_REV_MESA 0
+#define CGL_UNSIGNED_SHORT_8_8_MESA 0
 
 G_END_DECLS
 

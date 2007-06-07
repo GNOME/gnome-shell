@@ -113,10 +113,12 @@ void
 cogl_enable (gulong flags);
 
 gboolean
-cogl_texture_can_size (COGLenum pixel_format,
+cogl_texture_can_size (COGLenum       target,
+		       COGLenum pixel_format,
 		       COGLenum pixel_type,
 		       int    width, 
 		       int    height);
+
 void
 cogl_texture_quad (gint   x1,
 		   gint   x2, 
