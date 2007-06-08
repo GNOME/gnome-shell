@@ -1,3 +1,10 @@
+2007-06-08  Elijah Newren  <newren gmail com>
+
+	* src/metacity.schemas.in:
+	Update the raise_on_click description to try to prevent misuses,
+	to appropriately warn users, and to stop wasting the time of
+	application developers.  #445447, #389923
+
 2007-06-06  Thomas Thurman  <thomas@thurman.org.uk>
 
 	* frames.c, core.[ch]: changed all tabs to spaces.
