@@ -1,3 +1,7 @@
+2007-06-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Add ClutterTimeoutPool API.
+
 2007-06-07  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* tmpl/*.sgml: Remove from revision control the templates:

@@ -1,3 +1,13 @@
+2007-06-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter.h: 
+	* clutter/clutter-timeout-pool.[ch]: Add a timeout pool source;
+	every timeout added to this pool will use a single slice of the
+	main loop.
+
+	* clutter/clutter-timelince.c: Use a per-class timeout pool for
+	every timeline.
+
 2007-06-08  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-texture.c: (clutter_texture_get_pixbuf):
