@@ -646,6 +646,10 @@ clutter_backend_get_type
 <FILE>clutter-util</FILE>
 <TITLE>Utilities</TITLE>
 clutter_util_next_p2
+ClutterTimeoutPool
+clutter_timeout_pool_new
+clutter_timeout_pool_add
+clutter_timeout_pool_remove
 </SECTION>
 
 <SECTION>

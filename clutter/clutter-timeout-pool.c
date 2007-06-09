@@ -308,9 +308,18 @@ clutter_timeout_pool_finalize (GSource *source)
 
 /**
  * clutter_timeout_pool_new:
- * @priority:
+ * @priority: the priority of the timeout pool. Typically this will
+ *   be #G_PRIORITY_DEFAULT
  *
- * FIXME
+ * Creates a new timeout pool source. A timeout pool should be used when
+ * multiple timeout functions, running at the same priority, are needed and
+ * the g_timeout_add() API might lead to starvation of the time slice of
+ * the main loop. A timeout pool allocates a single time slice of the main
+ * loop and runs every timeout function inside it. The timeout pool is
+ * always sorted, so that the extraction of the next timeout function is
+ * a constant time operation.
+ *
+ * Inside Clutter, every #ClutterTimeline share the same timeout pool.
  *
  * Return value: the newly created #ClutterTimeoutPool
  *
@@ -342,14 +351,25 @@ clutter_timeout_pool_new (gint priority)
 /**
  * clutter_timeout_pool_add:
  * @pool: a #ClutterTimeoutPool
- * @interval: FIXME
- * @func: FIXME
- * @data: FIXME
- * @notify: FIXME
+ * @interval: the time between calls to the function, in milliseconds
+ * @func: function to call
+ * @data: data to pass to the function, or %NULL
+ * @notify: function to call when the timeout is removed, or %NULL
  *
- * FIXME
+ * Sets a function to be called at regular intervals, and puts it inside
+ * the @pool. The function is repeatedly called until it returns %FALSE,
+ * at which point the timeout is automatically destroyed and the function
+ * won't be called again. If @notify is not %NULL, the @notify function
+ * will be called. The first call to @func will be at the end of @interval.
  *
- * Return value: FIXME
+ * Note that timeout functions may be delayed, due to the processing of other
+ * event sources. Thus they should not be relied on for precise timing.
+ * After each call to the timeout function, the time of the next
+ * timeout is recalculated based on the current time and the given interval
+ * (it does not try to 'catch up' time lost in delays).
+ * 
+ * Return value: the ID (greater than 0) of the timeout inside the pool.
+ *   Use clutter_timeout_pool_remove() to stop the timeout.
  *
  * Since: 0.4
  */
@@ -379,9 +399,11 @@ clutter_timeout_pool_add (ClutterTimeoutPool *pool,
 /**
  * clutter_timeout_pool_remove:
  * @pool: a #ClutterTimeoutPool
- * @id: FIXME
+ * @id: the id of the timeout to remove
  *
- * FIXME
+ * Removes a timeout function with @id from the timeout pool. The id
+ * is the same returned when adding a function to the timeout pool with
+ * clutter_timeout_pool_add().
  *
  * Since: 0.4
  */
