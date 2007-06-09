@@ -55,6 +55,7 @@
 #include "clutter-feature.h"
 #include "clutter-version.h"
 #include "clutter-enum-types.h"
+#include "clutter-timeout-pool.h"
 #include "clutter-units.h"
 
 #endif
