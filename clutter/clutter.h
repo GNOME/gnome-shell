@@ -32,6 +32,7 @@
 #include "clutter-util.h"
 #include "clutter-event.h"
 #include "clutter-entry.h"
+#include "clutter-timeout-pool.h"
 #include "clutter-timeline.h"
 #include "clutter-behaviour.h"
 #include "clutter-behaviour-bspline.h"
@@ -55,7 +56,6 @@
 #include "clutter-feature.h"
 #include "clutter-version.h"
 #include "clutter-enum-types.h"
-#include "clutter-timeout-pool.h"
 #include "clutter-units.h"
 
 #endif

@@ -1,4 +1,4 @@
-v/*
+/*
  * Clutter.
  *
  * An OpenGL based 'interactive canvas' library.
@@ -32,11 +32,8 @@ v/*
 
 #include "config.h"
 
-#include "clutter-timeout-pool.h"
-
-#include "clutter-main.h"
 #include "clutter-debug.h"
-#include "clutter-private.h"
+#include "clutter-timeout-pool.h"
 
 typedef struct _ClutterTimeout  ClutterTimeout;
 
@@ -342,7 +339,6 @@ clutter_timeout_pool_new (gint priority)
   pool = (ClutterTimeoutPool *) source;
   pool->next_id = 1;
   pool->id = g_source_attach (source, NULL);
-
   g_source_unref (source);
 
   return pool;

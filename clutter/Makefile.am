@@ -35,6 +35,7 @@ LDADD = \
 
 BUILT_SOURCES = $(MARSHALFILES) $(ENUMFILES)
 
+# please, keep this sorted alphabetically
 source_h =					\
 	$(srcdir)/clutter-actor.h		\
 	$(srcdir)/clutter-alpha.h		\
@@ -126,6 +127,7 @@ clutter-enum-types.c: clutter-enum-types.h
 
 CLEANFILES = $(STAMPFILES)
 
+# please, keep this sorted alphabetically
 source_c = \
         clutter-actor.c			\
 	clutter-alpha.c 		\
