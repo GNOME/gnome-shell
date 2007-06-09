@@ -1,3 +1,7 @@
+2007-06-09  Thomas Thuramn  <thomas@thurman.org.uk>
+
+	* src/50-metacity-key.xml.in: added switch_group; closes #444879.
+
 2007-06-08  Elijah Newren  <newren gmail com>
 
 	* src/metacity.schemas.in:

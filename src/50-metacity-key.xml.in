@@ -152,6 +152,9 @@
 	name="/apps/metacity/global_keybindings/switch_windows" />
 
 	<KeyListEntry
+	name="/apps/metacity/global_keybindings/switch_group" />
+
+	<KeyListEntry
 	name="/apps/metacity/global_keybindings/switch_panels" />
 
 	<KeyListEntry
