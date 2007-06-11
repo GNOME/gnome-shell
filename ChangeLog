@@ -1,3 +1,13 @@
+2007-06-11  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-event.h: Add full modifier masks enums.
+	
+	* clutter/glx/clutter-event-glx.c: Copy the modifier masks from
+	the native X event structure.
+
+	* clutter/clutter-event.c: Convert to upper case if the
+	shift or the lock masks are applied.
+
 2007-06-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter.h: 
