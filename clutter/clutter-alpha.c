@@ -629,7 +629,7 @@ clutter_sine_inc_func (ClutterAlpha *alpha,
 
   sine = clutter_sini (x) * CLUTTER_ALPHA_MAX_ALPHA;
 
-  return CFX_INT (sine);
+  return ((guint32)sine) >> CFX_Q;
 }
 
 /**
@@ -663,7 +663,7 @@ clutter_sine_dec_func (ClutterAlpha *alpha,
 
   sine = clutter_sini (x) * CLUTTER_ALPHA_MAX_ALPHA;
 
-  return CFX_INT (sine);
+  return ((guint32)sine) >> CFX_Q;
 }
 
 /**
@@ -697,7 +697,7 @@ clutter_sine_half_func (ClutterAlpha *alpha,
 
   sine = clutter_sini (x) * CLUTTER_ALPHA_MAX_ALPHA;
 
-  return CFX_INT (sine);
+  return ((guint32)sine) >> CFX_Q;
 }
 
 /**

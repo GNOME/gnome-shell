@@ -1,3 +1,11 @@
+2007-06-11  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-alpha.c:
+	(clutter_alpha_sine_inc):
+	(clutter_alpha_sine_dec):
+	(clutter_alpha_sine_half):
+	Fixed unsigned overflow.
+	
 2007-06-11  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-event.h: Add full modifier masks enums.
