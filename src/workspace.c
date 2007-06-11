@@ -168,7 +168,6 @@ meta_workspace_add_window (MetaWorkspace *workspace,
 
   meta_window_set_current_workspace_hint (window);
   
-  meta_window_queue_calc_showing (window);
   if (window->struts)
     {
       meta_topic (META_DEBUG_WORKAREA,
@@ -180,7 +179,7 @@ meta_workspace_add_window (MetaWorkspace *workspace,
   /* queue a move_resize since changing workspaces may change
    * the relevant struts
    */
-  meta_window_queue_move_resize (window);
+  meta_window_queue (window, META_QUEUE_CALC_SHOWING|META_QUEUE_MOVE_RESIZE);
 }
 
 void
@@ -215,8 +214,6 @@ meta_workspace_remove_window (MetaWorkspace *workspace,
 
   meta_window_set_current_workspace_hint (window);
   
-  meta_window_queue_calc_showing (window);
-
   if (window->struts)
     {
       meta_topic (META_DEBUG_WORKAREA,
@@ -228,7 +225,7 @@ meta_workspace_remove_window (MetaWorkspace *workspace,
   /* queue a move_resize since changing workspaces may change
    * the relevant struts
    */
-  meta_window_queue_move_resize (window);
+  meta_window_queue (window, META_QUEUE_CALC_SHOWING|META_QUEUE_MOVE_RESIZE);
 }
 
 void
@@ -267,7 +264,7 @@ meta_workspace_queue_calc_showing  (MetaWorkspace *workspace)
   tmp = workspace->windows;
   while (tmp != NULL)
     {
-      meta_window_queue_calc_showing (tmp->data);
+      meta_window_queue (tmp->data, META_QUEUE_CALC_SHOWING);
 
       tmp = tmp->next;
     }
@@ -480,7 +477,7 @@ meta_workspace_invalidate_work_area (MetaWorkspace *workspace)
     {
       MetaWindow *w = tmp->data;
 
-      meta_window_queue_move_resize (w);
+      meta_window_queue (w, META_QUEUE_MOVE_RESIZE);
       
       tmp = tmp->next;
     }

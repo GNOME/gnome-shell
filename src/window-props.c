@@ -702,9 +702,10 @@ reload_mwm_hints (MetaWindow    *window,
       else
         meta_window_destroy_frame (window);
       
-      meta_window_queue_move_resize (window);
-      /* because ensure/destroy frame may unmap */
-      meta_window_queue_calc_showing (window);
+      meta_window_queue (window,
+                         META_QUEUE_MOVE_RESIZE |
+                         /* because ensure/destroy frame may unmap: */
+                         META_QUEUE_CALC_SHOWING);
     }
 }
 
@@ -1374,9 +1375,7 @@ reload_wm_hints (MetaWindow    *window,
                                     window->display,
                                     XA_WM_HINTS);
 
-  meta_window_queue_update_icon (window);
-      
-  meta_window_queue_move_resize (window);  
+  meta_window_queue (window, META_QUEUE_UPDATE_ICON | META_QUEUE_MOVE_RESIZE);
 }
 
 static void
@@ -1433,7 +1432,7 @@ reload_transient_for (MetaWindow    *window,
     meta_window_group_leader_changed (window);
 
   if (!window->constructing)
-    meta_window_queue_move_resize (window);
+    meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
 }
 
 #define N_HOOKS 26

@@ -1,3 +1,36 @@
+2007-06-10  Thomas Thurman  <thomas@thurman.org.uk>
+
+	Refactor thrice-duplicated queue code in window.c. Closes #376760.
+
+	* src/window.c (meta_window_queue, meta_window_unqueue):
+	New functions.
+	* src/window.[ch] (meta_window_unqueue_*, meta_window_queue_*):
+	Removed functions.
+	* src/window.c (meta_window_new_with_attrs, meta_window_free,
+	meta_window_flush_calc_showing, queue_calc_showing_func,
+	meta_window_minimize, meta_window_unminimize, meta_window_maximize,
+	meta_window_make_fullscreen, meta_window_shade,
+	meta_window_unshade, meta_window_move_resize_internal,
+	window_stick_impl, window_unstick_impl,
+	meta_window_client_message, process_property_notify): Modified to
+	use new queueing functions.
+	* src/window.c (idle_move_resize, idle_update_icon,
+	idle_calc_showing): update to receive queue number from pointer.
+	* src/window.h (MetaQueueType): new enum.
+	* src/window.h (MetaWindow): *_queued replaced with is_in_queue
+	bitfield.
+	* src/core.c (meta_core_queue_frame_resize):
+	* src/display.c (event_callback,
+	meta_display_queue_retheme_all_windows): Using new queueing functions.
+	* src/frame.c (meta_window_destroy_frame): Using new queueing functions.
+	* src/screen.c (queue_resize, meta_screen_resize_func,
+	queue_windows_showing): Using new queueing functions.
+	* src/window-props.c (reload_mwm_hints, reload_wm_hints,
+	reload_transient_for): Using new queueing functions.
+	* src/workspace.c (meta_workspace_add_window,
+	meta_workspace_remove_window, meta_workspace_queue_calc_showing,
+	meta_workspace_invalidate_work_area): Using new queueing functions.
+
 2007-06-09  Thomas Thuramn  <thomas@thurman.org.uk>
 
 	* src/50-metacity-key.xml.in: added switch_group; closes #444879.

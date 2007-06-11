@@ -90,6 +90,8 @@ static void     ensure_mru_position_after (MetaWindow *window,
 
 static void meta_window_move_resize_now (MetaWindow  *window);
 
+static void meta_window_unqueue (MetaWindow *window, MetaQueueType queue);
+
 static void     update_move           (MetaWindow   *window,
                                        gboolean      snap,
                                        int           x,
@@ -103,14 +105,7 @@ static void     update_resize         (MetaWindow   *window,
 static gboolean update_resize_timeout (gpointer data);
 
 
-/* FIXME we need an abstraction that covers all these queues. */   
-
-static void meta_window_unqueue_calc_showing (MetaWindow *window);
 static void meta_window_flush_calc_showing   (MetaWindow *window);
-
-static void meta_window_unqueue_move_resize  (MetaWindow *window);
-
-static void meta_window_unqueue_update_icon    (MetaWindow *window);
 
 static gboolean queue_calc_showing_func (MetaWindow *window,
                                          void       *data);
@@ -121,6 +116,15 @@ static void meta_window_apply_session_info (MetaWindow                  *window,
 static void unmaximize_window_before_freeing (MetaWindow        *window);
 static void unminimize_window_and_all_transient_parents (MetaWindow *window);
 
+/* Idle handlers for the three queues. The "data" parameter in each case
+ * will be a GINT_TO_POINTER of the index into the queue arrays to use.
+ *
+ * TODO: Possibly there is still some code duplication among these, which we
+ * need to sort out at some point.
+ */
+static gboolean idle_calc_showing (gpointer data);
+static gboolean idle_move_resize (gpointer data);
+static gboolean idle_update_icon (gpointer data);
 
 #ifdef WITH_VERBOSE_MODE
 static const char*
@@ -467,8 +471,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
                 xwindow);
   window->denied_focus_and_not_transient = FALSE;
   window->unmanaging = FALSE;
-  window->calc_showing_queued = FALSE;
-  window->move_resize_queued = FALSE;
+  window->is_in_queues = 0;
   window->keys_grabbed = FALSE;
   window->grab_on_frame = FALSE;
   window->all_keys_grabbed = FALSE;
@@ -538,7 +541,6 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->using_net_wm_visible_icon_name = FALSE;
 
   window->need_reread_icon = TRUE;
-  window->update_icon_queued = FALSE;
   
   window->layer = META_LAYER_LAST; /* invalid value */
   window->stack_position = -1;
@@ -753,7 +755,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   /* disable show desktop mode unless we're a desktop component */
   maybe_leave_show_desktop_mode (window);
   
-  meta_window_queue_calc_showing (window);
+  meta_window_queue (window, META_QUEUE_CALC_SHOWING);
   /* See bug 303284; a transient of the given window can already exist, in which
    * case we think it should probably be shown.
    */
@@ -1021,9 +1023,9 @@ meta_window_free (MetaWindow  *window,
    */
   send_configure_notify (window);
   
-  meta_window_unqueue_calc_showing (window);
-  meta_window_unqueue_move_resize (window);
-  meta_window_unqueue_update_icon (window);
+  meta_window_unqueue (window, META_QUEUE_CALC_SHOWING |
+                               META_QUEUE_MOVE_RESIZE |
+                               META_QUEUE_UPDATE_ICON);
   meta_window_free_delete_dialog (window);
   
   if (window->workspace)
@@ -1450,8 +1452,8 @@ meta_window_calc_showing (MetaWindow  *window)
   implement_showing (window, meta_window_should_be_showing (window));
 }
 
-static guint calc_showing_idle = 0;
-static GSList *calc_showing_pending = NULL;
+static guint queue_idle[NUMBER_OF_QUEUES] = {0, 0, 0};
+static GSList *queue_pending[NUMBER_OF_QUEUES] = {NULL, NULL, NULL};
 
 static int
 stackcmp (gconstpointer a, gconstpointer b)
@@ -1476,6 +1478,7 @@ idle_calc_showing (gpointer data)
   GSList *unplaced;
   GSList *displays;
   MetaWindow *first_window;
+  guint queue_index = GPOINTER_TO_INT (data);
 
   meta_topic (META_DEBUG_WINDOW_STATE,
               "Clearing the calc_showing queue\n");
@@ -1484,10 +1487,10 @@ idle_calc_showing (gpointer data)
    * complete; destroying a window while we're in here would result in
    * badness. But it's OK to queue/unqueue calc_showings.
    */
-  copy = g_slist_copy (calc_showing_pending);
-  g_slist_free (calc_showing_pending);
-  calc_showing_pending = NULL;
-  calc_showing_idle = 0;
+  copy = g_slist_copy (queue_pending[queue_index]);
+  g_slist_free (queue_pending[queue_index]);
+  queue_pending[queue_index] = NULL;
+  queue_idle[queue_index] = 0;
 
   destroying_windows_disallowed += 1;
   
@@ -1575,9 +1578,9 @@ idle_calc_showing (gpointer data)
       /* important to set this here for reentrancy -
        * if we queue a window again while it's in "copy",
        * then queue_calc_showing will just return since
-       * calc_showing_queued = TRUE still
+       * we are still in the calc_showing queue
        */
-      window->calc_showing_queued = FALSE;
+      window->is_in_queues &= ~META_QUEUE_CALC_SHOWING;
       
       tmp = tmp->next;
     }
@@ -1615,62 +1618,123 @@ idle_calc_showing (gpointer data)
   return FALSE;
 }
 
+static const gchar* meta_window_queue_names[NUMBER_OF_QUEUES] =
+  {"calc_showing", "move_resize", "update_icon"};
+
 static void
-meta_window_unqueue_calc_showing (MetaWindow *window)
+meta_window_unqueue (MetaWindow *window, guint queuebits)
 {
-  if (!window->calc_showing_queued)
-    return;
+  gint queuenum;
 
-  meta_topic (META_DEBUG_WINDOW_STATE,
-              "Removing %s from the calc_showing queue\n",
-              window->desc);
-
-  /* Note that window may not actually be in move_resize_pending
-   * because it may have been in "copy" inside the idle handler
-   */  
-  calc_showing_pending = g_slist_remove (calc_showing_pending, window);
-  window->calc_showing_queued = FALSE;
-  
-  if (calc_showing_pending == NULL &&
-      calc_showing_idle != 0)
+  for (queuenum=0; queuenum<NUMBER_OF_QUEUES; queuenum++)
     {
-      g_source_remove (calc_showing_idle);
-      calc_showing_idle = 0;
+      if ((queuebits & 1<<queuenum) /* they have asked to unqueue */
+          &&
+          (window->is_in_queues & 1<<queuenum)) /* it's in the queue */
+        {
+
+          meta_topic (META_DEBUG_WINDOW_STATE,
+              "Removing %s from the %s queue\n",
+              window->desc,
+              meta_window_queue_names[queuenum]);
+
+          /* Note that window may not actually be in the queue
+           * because it may have been in "copy" inside the idle handler
+           */  
+          queue_pending[queuenum] = g_slist_remove (queue_pending[queuenum], window);
+          window->is_in_queues &= ~(1<<queuenum);
+
+          /* Okay, so maybe we've used up all the entries in the queue.
+           * In that case, we should kill the function that deals with
+           * the queue, because there's nothing left for it to do.
+           */
+          if (queue_pending[queuenum] == NULL && queue_idle[queuenum] != 0)
+            {
+              g_source_remove (queue_idle[queuenum]);
+              queue_idle[queuenum] = 0;
+            }
+        }
     }
 }
 
 static void
 meta_window_flush_calc_showing (MetaWindow *window)
 {
-  if (window->calc_showing_queued)
+  if (window->is_in_queues & META_QUEUE_CALC_SHOWING)
     {
-      meta_window_unqueue_calc_showing (window);
+      meta_window_unqueue (window, META_QUEUE_CALC_SHOWING);
       meta_window_calc_showing (window);
     }
 }
 
 void
-meta_window_queue_calc_showing (MetaWindow  *window)
+meta_window_queue (MetaWindow *window, guint queuebits)
 {
-  /* if withdrawn = TRUE then unmanaging should also be TRUE,
-   * really.
-   */
-  if (window->unmanaging || window->withdrawn)
-    return;
+  guint queuenum;
 
-  if (window->calc_showing_queued)
-    return;
+  for (queuenum=0; queuenum<NUMBER_OF_QUEUES; queuenum++)
+    {
+      if (queuebits & 1<<queuenum)
+        {
+          /* Data which varies between queues.
+           * Yes, these do look a lot like associative arrays:
+           * I seem to be turning into a Perl programmer.
+           */
 
-  meta_topic (META_DEBUG_WINDOW_STATE,
-              "Putting %s in the calc_showing queue\n",
-              window->desc);
-  
-  window->calc_showing_queued = TRUE;
-  
-  if (calc_showing_idle == 0)
-    calc_showing_idle = g_idle_add (idle_calc_showing, NULL);
+          const gint window_queue_idle_priority[NUMBER_OF_QUEUES] =
+            {
+              G_PRIORITY_DEFAULT_IDLE,  /* CALC_SHOWING */
+              META_PRIORITY_RESIZE,     /* MOVE_RESIZE */
+              G_PRIORITY_DEFAULT_IDLE   /* UPDATE_ICON */
+            };
 
-  calc_showing_pending = g_slist_prepend (calc_showing_pending, window);
+          const GSourceFunc window_queue_idle_handler[NUMBER_OF_QUEUES] =
+            {
+              idle_calc_showing,
+              idle_move_resize,
+              idle_update_icon,
+            };
+
+          /* If we're about to drop the window, there's no point in putting
+           * it on a queue.
+           */
+          if (window->unmanaging)
+            break;
+
+          /* If the window already claims to be in that queue, there's no
+           * point putting it in the queue.
+           */
+          if (window->is_in_queues & 1<<queuenum)
+            break;
+
+          meta_topic (META_DEBUG_WINDOW_STATE,
+              "Putting %s in the %s queue\n",
+              window->desc,
+              meta_window_queue_names[queuenum]);
+
+          /* So, mark it as being in this queue. */
+          window->is_in_queues |= 1<<queuenum;
+
+          /* There's not a lot of point putting things into a queue if
+           * nobody's on the other end pulling them out. Therefore,
+           * let's check to see whether an idle handler exists to do
+           * that. If not, we'll create one.
+           */
+
+          if (queue_idle[queuenum] == 0)
+            queue_idle[queuenum] = g_idle_add_full
+              (
+                window_queue_idle_priority[queuenum],
+                window_queue_idle_handler[queuenum],
+                GUINT_TO_POINTER(queuenum),
+                NULL
+              );
+
+          /* And now we actually put it on the queue. */
+          queue_pending[queuenum] = g_slist_prepend (queue_pending[queuenum],
+                                                     window);
+      }
+  }
 }
 
 static gboolean
@@ -2191,7 +2255,7 @@ static gboolean
 queue_calc_showing_func (MetaWindow *window,
                          void       *data)
 {
-  meta_window_queue_calc_showing (window);
+  meta_window_queue(window, META_QUEUE_CALC_SHOWING);
   return TRUE;
 }
 
@@ -2201,7 +2265,7 @@ meta_window_minimize (MetaWindow  *window)
   if (!window->minimized)
     {
       window->minimized = TRUE;
-      meta_window_queue_calc_showing (window);
+      meta_window_queue(window, META_QUEUE_CALC_SHOWING);
 
       meta_window_foreach_transient (window,
                                      queue_calc_showing_func,
@@ -2229,7 +2293,7 @@ meta_window_unminimize (MetaWindow  *window)
     {
       window->minimized = FALSE;
       window->was_minimized = TRUE;
-      meta_window_queue_calc_showing (window);
+      meta_window_queue(window, META_QUEUE_CALC_SHOWING);
 
       meta_window_foreach_transient (window,
                                      queue_calc_showing_func,
@@ -2378,7 +2442,7 @@ meta_window_maximize (MetaWindow        *window,
 
       /* move_resize with new maximization constraints
        */
-      meta_window_queue_move_resize (window);
+      meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
     }
 }
 
@@ -2551,7 +2615,7 @@ meta_window_make_fullscreen (MetaWindow  *window)
       meta_window_make_fullscreen_internal (window);
       /* move_resize with new constraints
        */
-      meta_window_queue_move_resize (window);
+      meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
     }
 }
 
@@ -2621,8 +2685,7 @@ meta_window_shade (MetaWindow  *window,
       
       window->shaded = TRUE;
 
-      meta_window_queue_move_resize (window);
-      meta_window_queue_calc_showing (window);
+      meta_window_queue(window, META_QUEUE_MOVE_RESIZE | META_QUEUE_CALC_SHOWING);
 
       /* After queuing the calc showing, since _focus flushes it,
        * and we need to focus the frame
@@ -2645,8 +2708,7 @@ meta_window_unshade (MetaWindow  *window,
   if (window->shaded)
     {
       window->shaded = FALSE;
-      meta_window_queue_move_resize (window);
-      meta_window_queue_calc_showing (window);
+      meta_window_queue(window, META_QUEUE_MOVE_RESIZE | META_QUEUE_CALC_SHOWING);
 
       /* focus the window */
       meta_topic (META_DEBUG_FOCUS,
@@ -3017,7 +3079,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
   g_assert (flags & (META_IS_MOVE_ACTION | META_IS_RESIZE_ACTION));
   
   /* We don't need it in the idle queue anymore. */
-  meta_window_unqueue_move_resize (window);
+  meta_window_unqueue (window, META_QUEUE_MOVE_RESIZE);
 
   meta_window_get_client_root_coords (window, &old_rect);
   
@@ -3485,14 +3547,12 @@ meta_window_move_resize_now (MetaWindow  *window)
                            window->user_rect.height);
 }
 
-static guint move_resize_idle = 0;
-static GSList *move_resize_pending = NULL;
-
 static gboolean
 idle_move_resize (gpointer data)
 {
   GSList *tmp;
   GSList *copy;
+  guint queue_index = GPOINTER_TO_INT (data);
 
   meta_topic (META_DEBUG_GEOMETRY, "Clearing the move_resize queue\n");
 
@@ -3500,10 +3560,10 @@ idle_move_resize (gpointer data)
    * complete; destroying a window while we're in here would result in
    * badness. But it's OK to queue/unqueue move_resizes.
    */
-  copy = g_slist_copy (move_resize_pending);
-  g_slist_free (move_resize_pending);
-  move_resize_pending = NULL;
-  move_resize_idle = 0;
+  copy = g_slist_copy (queue_pending[queue_index]);
+  g_slist_free (queue_pending[queue_index]);
+  queue_pending[queue_index] = NULL;
+  queue_idle[queue_index] = 0;
 
   destroying_windows_disallowed += 1;
   
@@ -3525,58 +3585,6 @@ idle_move_resize (gpointer data)
   destroying_windows_disallowed -= 1;
   
   return FALSE;
-}
-
-static void
-meta_window_unqueue_move_resize (MetaWindow *window)
-{
-  if (!window->move_resize_queued)
-    return;
-
-  meta_topic (META_DEBUG_GEOMETRY,
-              "Removing %s from the move_resize queue\n",
-              window->desc);
-
-  /* Note that window may not actually be in move_resize_pending
-   * because it may have been in "copy" inside the idle handler
-   */
-  move_resize_pending = g_slist_remove (move_resize_pending, window);
-  window->move_resize_queued = FALSE;
-  
-  if (move_resize_pending == NULL &&
-      move_resize_idle != 0)
-    {
-      g_source_remove (move_resize_idle);
-      move_resize_idle = 0;
-    }
-}
-
-/* The move/resize queue is only used when we need to
- * recheck the constraints on the window, e.g. when
- * maximizing or when changing struts. Configure requests
- * and such always have to be handled synchronously,
- * they can't be done via a queue.
- */
-void
-meta_window_queue_move_resize (MetaWindow  *window)
-{
-  if (window->unmanaging)
-    return;
-
-  if (window->move_resize_queued)
-    return;
-
-  meta_topic (META_DEBUG_GEOMETRY,
-              "Putting %s in the move_resize queue\n",
-              window->desc);
-  
-  window->move_resize_queued = TRUE;
-  
-  if (move_resize_idle == 0)
-    move_resize_idle = g_idle_add_full (META_PRIORITY_RESIZE,
-                                        idle_move_resize, NULL, NULL);
-  
-  move_resize_pending = g_slist_prepend (move_resize_pending, window);
 }
 
 void
@@ -4058,7 +4066,7 @@ window_stick_impl (MetaWindow  *window)
 
   meta_window_set_current_workspace_hint (window);
   
-  meta_window_queue_calc_showing (window);
+  meta_window_queue(window, META_QUEUE_CALC_SHOWING);
 }
 
 static void
@@ -4094,7 +4102,7 @@ window_unstick_impl (MetaWindow  *window)
   
   meta_window_set_current_workspace_hint (window);
   
-  meta_window_queue_calc_showing (window);
+  meta_window_queue(window, META_QUEUE_CALC_SHOWING);
 }
 
 static gboolean
@@ -4757,7 +4765,7 @@ meta_window_client_message (MetaWindow *window,
             (action == _NET_WM_STATE_TOGGLE && !window->wm_state_modal);
           
           recalc_window_type (window);
-          meta_window_queue_move_resize (window);
+          meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
         }
 
       if (first == display->atom_net_wm_state_skip_pager ||
@@ -5248,7 +5256,7 @@ process_property_notify (MetaWindow     *window,
       meta_window_reload_property (window, XA_WM_NORMAL_HINTS);
       
       /* See if we need to constrain current size */
-      meta_window_queue_move_resize (window);
+      meta_window_queue(window, META_QUEUE_MOVE_RESIZE);
     }
   else if (event->atom == window->display->atom_wm_protocols)
     {
@@ -5307,7 +5315,7 @@ process_property_notify (MetaWindow     *window,
       meta_icon_cache_property_changed (&window->icon_cache,
                                         window->display,
                                         event->atom);
-      meta_window_queue_update_icon (window);
+      meta_window_queue(window, META_QUEUE_UPDATE_ICON);
     }
   else if (event->atom == window->display->atom_kwm_win_icon)
     {
@@ -5316,7 +5324,7 @@ process_property_notify (MetaWindow     *window,
       meta_icon_cache_property_changed (&window->icon_cache,
                                         window->display,
                                         event->atom);
-      meta_window_queue_update_icon (window);
+      meta_window_queue(window, META_QUEUE_UPDATE_ICON);
     }
   else if ((event->atom == window->display->atom_net_wm_strut) ||
 	   (event->atom == window->display->atom_net_wm_strut_partial))
@@ -5671,14 +5679,12 @@ meta_window_update_icon_now (MetaWindow *window)
   g_assert (window->mini_icon);
 }
 
-static guint update_icon_idle = 0;
-static GSList *update_icon_pending = NULL;
-
 static gboolean
 idle_update_icon (gpointer data)
 {
   GSList *tmp;
   GSList *copy;
+  guint queue_index = GPOINTER_TO_INT (data);
 
   meta_topic (META_DEBUG_GEOMETRY, "Clearing the update_icon queue\n");
 
@@ -5686,10 +5692,10 @@ idle_update_icon (gpointer data)
    * complete; destroying a window while we're in here would result in
    * badness. But it's OK to queue/unqueue update_icons.
    */
-  copy = g_slist_copy (update_icon_pending);
-  g_slist_free (update_icon_pending);
-  update_icon_pending = NULL;
-  update_icon_idle = 0;
+  copy = g_slist_copy (queue_pending[queue_index]);
+  g_slist_free (queue_pending[queue_index]);
+  queue_pending[queue_index] = NULL;
+  queue_idle[queue_index] = 0;
 
   destroying_windows_disallowed += 1;
   
@@ -5701,7 +5707,7 @@ idle_update_icon (gpointer data)
       window = tmp->data;
 
       meta_window_update_icon_now (window); 
-      window->update_icon_queued = FALSE;
+      window->is_in_queues &= ~META_QUEUE_UPDATE_ICON;
       
       tmp = tmp->next;
     }
@@ -5711,51 +5717,6 @@ idle_update_icon (gpointer data)
   destroying_windows_disallowed -= 1;
   
   return FALSE;
-}
-
-static void
-meta_window_unqueue_update_icon (MetaWindow *window)
-{
-  if (!window->update_icon_queued)
-    return;
-
-  meta_topic (META_DEBUG_GEOMETRY,
-              "Removing %s from the update_icon queue\n",
-              window->desc);
-
-  /* Note that window may not actually be in update_icon_pending
-   * because it may have been in "copy" inside the idle handler
-   */
-  update_icon_pending = g_slist_remove (update_icon_pending, window);
-  window->update_icon_queued = FALSE;
-  
-  if (update_icon_pending == NULL &&
-      update_icon_idle != 0)
-    {
-      g_source_remove (update_icon_idle);
-      update_icon_idle = 0;
-    }
-}
-
-void
-meta_window_queue_update_icon (MetaWindow *window)
-{
-  if (window->unmanaging)
-    return;
-
-  if (window->update_icon_queued)
-    return;
-
-  meta_topic (META_DEBUG_GEOMETRY,
-              "Putting %s in the update_icon queue\n",
-              window->desc);
-  
-  window->update_icon_queued = TRUE;
-  
-  if (update_icon_idle == 0)
-    update_icon_idle = g_idle_add (idle_update_icon, NULL);
-  
-  update_icon_pending = g_slist_prepend (update_icon_pending, window);
 }
 
 GList*

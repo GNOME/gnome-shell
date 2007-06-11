@@ -990,7 +990,7 @@ meta_screen_queue_frame_redraws (MetaScreen *screen)
 static void
 queue_resize (MetaScreen *screen, MetaWindow *window, gpointer data)
 {
-  meta_window_queue_move_resize (window);
+  meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
 }
 
 void
@@ -2219,7 +2219,7 @@ meta_screen_resize_func (MetaScreen *screen,
     {
       meta_window_update_struts (window);
     }
-  meta_window_queue_move_resize (window);
+  meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
 
   meta_window_recalc_features (window);
 }
@@ -2272,7 +2272,7 @@ queue_windows_showing (MetaScreen *screen)
       MetaWindow *w = tmp->data;
 
       if (w->screen == screen)
-        meta_window_queue_calc_showing (w);
+        meta_window_queue (w, META_QUEUE_CALC_SHOWING);
       
       tmp = tmp->next;
     }

@@ -223,7 +223,7 @@ meta_window_destroy_frame (MetaWindow *window)
   g_free (frame);
   
   /* Put our state back where it should be */
-  meta_window_queue_calc_showing (window);
+  meta_window_queue (window, META_QUEUE_CALC_SHOWING);
 }
 
 

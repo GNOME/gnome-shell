@@ -218,7 +218,7 @@ meta_core_queue_frame_resize (Display *xdisplay,
 {
   MetaWindow *window = get_window (xdisplay, frame_xwindow);
 
-  meta_window_queue_move_resize (window);
+  meta_window_queue (window, META_QUEUE_MOVE_RESIZE);
 }
 
 void

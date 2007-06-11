@@ -36,6 +36,7 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 typedef struct _MetaGroup MetaGroup;
+typedef struct _MetaWindowQueue MetaWindowQueue;
 
 typedef gboolean (*MetaWindowForeachFunc) (MetaWindow *window,
                                            void       *data);
@@ -65,6 +66,14 @@ typedef enum {
   META_CLIENT_TYPE_PAGER = 2,
   META_CLIENT_TYPE_MAX_RECOGNIZED = 2
 } MetaClientType;
+
+typedef enum {
+  META_QUEUE_CALC_SHOWING = 1 << 0,
+  META_QUEUE_MOVE_RESIZE  = 1 << 1,
+  META_QUEUE_UPDATE_ICON  = 1 << 2,
+} MetaQueueType;
+
+#define NUMBER_OF_QUEUES 3
 
 struct _MetaWindow
 {
@@ -236,15 +245,9 @@ struct _MetaWindow
   /* Are we in meta_window_new()? */
   guint constructing : 1;
   
-  /* Are we in the calc_showing queue? */
-  guint calc_showing_queued : 1;
-
-  /* Are we in the move_resize queue? */
-  guint move_resize_queued : 1;
-
-  /* Are we in the update_icon queue? */
-  guint update_icon_queued : 1;
-  
+  /* Are we in the various queues? (Bitfield: see META_WINDOW_IS_IN_QUEUE) */
+  guint is_in_queues : NUMBER_OF_QUEUES;
+ 
   /* Used by keybindings.c */
   guint keys_grabbed : 1;     /* normal keybindings grabbed */
   guint grab_on_frame : 1;    /* grabs are on the frame */
@@ -377,7 +380,8 @@ MetaWindow* meta_window_new_with_attrs     (MetaDisplay *display,
 void        meta_window_free               (MetaWindow  *window,
                                             guint32      timestamp);
 void        meta_window_calc_showing       (MetaWindow  *window);
-void        meta_window_queue_calc_showing (MetaWindow  *window);
+void        meta_window_queue              (MetaWindow  *window,
+                                            guint queuebits);
 void        meta_window_minimize           (MetaWindow  *window);
 void        meta_window_unminimize         (MetaWindow  *window);
 void        meta_window_maximize           (MetaWindow        *window,
@@ -437,11 +441,6 @@ gboolean    meta_window_should_be_showing   (MetaWindow  *window);
 
 /* See warning in window.c about this function */
 gboolean    __window_is_terminal (MetaWindow *window);
-
-/* This recalcs the window/frame size, and recalcs the frame
- * size/contents as well.
- */
-void        meta_window_queue_move_resize  (MetaWindow  *window);
 
 void        meta_window_update_struts      (MetaWindow  *window);
 
@@ -596,8 +595,6 @@ const char* meta_window_get_startup_id (MetaWindow *window);
 
 void meta_window_recalc_features    (MetaWindow *window);
 void meta_window_recalc_window_type (MetaWindow *window);
-
-void meta_window_queue_update_icon (MetaWindow *window);
 
 void meta_window_stack_just_below (MetaWindow *window,
                                    MetaWindow *below_this_one);
