@@ -1,5 +1,9 @@
 2007-06-10  Thomas Thurman  <thomas@thurman.org.uk>
 
+        * configure.in: post-release bump to 2.19.21.
+
+2007-06-10  Thomas Thurman  <thomas@thurman.org.uk>
+
         * NEWS: 2.19.13 release.
 
 2007-06-10  Thomas Thurman  <thomas@thurman.org.uk>
@@ -35,7 +39,7 @@
 	meta_workspace_remove_window, meta_workspace_queue_calc_showing,
 	meta_workspace_invalidate_work_area): Using new queueing functions.
 
-2007-06-09  Thomas Thuramn  <thomas@thurman.org.uk>
+2007-06-09  Thomas Thurman  <thomas@thurman.org.uk>
 
 	* src/50-metacity-key.xml.in: added switch_group; closes #444879.
 
