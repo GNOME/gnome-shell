@@ -247,15 +247,19 @@ guint32
 clutter_key_event_unicode (ClutterKeyEvent *keyev)
 {
   g_return_val_if_fail (keyev != NULL, 0);
-  
-  return clutter_keysym_to_unicode (keyev->keyval);
+ 
+  if ((keyev->modifier_state & CLUTTER_SHIFT_MASK) ||
+      (keyev->modifier_state & CLUTTER_LOCK_MASK))
+    return g_unichar_toupper (clutter_keysym_to_unicode (keyev->keyval));
+  else
+    return clutter_keysym_to_unicode (keyev->keyval);
 }
 
 /**
  * clutter_keysym_to_unicode:
  * @keyval: a clutter key symbol 
  * 
- * Convert from a GDK key symbol to the corresponding ISO10646 (Unicode)
+ * Convert from a Clutter key symbol to the corresponding ISO10646 (Unicode)
  * character.
  * 
  * Return value: the corresponding unicode character, or 0 if there

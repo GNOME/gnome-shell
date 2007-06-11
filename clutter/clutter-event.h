@@ -34,15 +34,21 @@
 
 G_BEGIN_DECLS
 
-enum
-{
-  /* Map to xlibs masks */
-  CLUTTER_BUTTON1_MASK	= (1 << 8),
-  CLUTTER_BUTTON2_MASK	= (1 << 9),
-  CLUTTER_BUTTON3_MASK	= (1 << 10),
-  CLUTTER_BUTTON4_MASK	= (1 << 11),
-  CLUTTER_BUTTON5_MASK	= (1 << 12)
-};
+typedef enum {
+  CLUTTER_SHIFT_MASK    = 1 << 0,
+  CLUTTER_LOCK_MASK     = 1 << 1,
+  CLUTTER_CONTROL_MASK  = 1 << 2,
+  CLUTTER_MOD1_MASK     = 1 << 3,
+  CLUTTER_MOD2_MASK     = 1 << 4,
+  CLUTTER_MOD3_MASK     = 1 << 5,
+  CLUTTER_MOD4_MASK     = 1 << 6,
+  CLUTTER_MOD5_MASK     = 1 << 7,
+  CLUTTER_BUTTON1_MASK  = 1 << 8,
+  CLUTTER_BUTTON2_MASK  = 1 << 9,
+  CLUTTER_BUTTON3_MASK  = 1 << 10,
+  CLUTTER_BUTTON4_MASK  = 1 << 11,
+  CLUTTER_BUTTON5_MASK  = 1 << 12
+} ClutterModifierType;
 
 typedef enum 
 {
