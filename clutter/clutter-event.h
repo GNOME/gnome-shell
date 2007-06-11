@@ -114,7 +114,7 @@ struct _ClutterKeyEvent
 {
   ClutterEventType type;
   guint32 time;
-  guint modifier_state;
+  ClutterModifierType modifier_state;
   guint keyval;
   guint16 hardware_keycode;
 };
@@ -125,7 +125,7 @@ struct _ClutterButtonEvent
   guint32 time;
   gint x;
   gint y;
-  guint32 modifier_state;
+  ClutterModifierType modifier_state;
   guint32 button;
   gdouble *axes; /* Future use */
   ClutterInputDevice *device; /* Future use */
@@ -137,7 +137,7 @@ struct _ClutterMotionEvent
   guint32 time;
   gint x;
   gint y;
-  guint32 modifier_state;
+  ClutterModifierType modifier_state;
   gdouble *axes; /* Future use */
   ClutterInputDevice *device; /* Future use */
 };
@@ -149,7 +149,7 @@ struct _ClutterScrollEvent
   gint x;
   gint y;
   ClutterScrollDirection direction;
-  guint32 modifier_state;
+  ClutterModifierType modifier_state;
   gdouble *axes; /* future use */
   ClutterInputDevice *device; /* future use */
 };
@@ -175,19 +175,19 @@ union _ClutterEvent
 
 GType clutter_event_get_type (void) G_GNUC_CONST;
 
-gboolean          clutter_events_pending   (void);
-ClutterEvent *    clutter_event_get        (void);
-ClutterEvent *    clutter_event_peek       (void);
-void              clutter_event_put	   (ClutterEvent     *event);
-ClutterEvent *    clutter_event_new        (ClutterEventType  type);
-ClutterEvent *    clutter_event_copy       (ClutterEvent     *event);
-void              clutter_event_free       (ClutterEvent     *event);
-ClutterEventType  clutter_event_type       (ClutterEvent     *event);
-guint32           clutter_event_get_time   (ClutterEvent     *event);
-guint             clutter_event_get_state  (ClutterEvent     *event);
-void              clutter_event_get_coords (ClutterEvent     *event,
-                                            gint             *x,
-                                            gint             *y);
+gboolean            clutter_events_pending   (void);
+ClutterEvent *      clutter_event_get        (void);
+ClutterEvent *      clutter_event_peek       (void);
+void                clutter_event_put        (ClutterEvent     *event);
+ClutterEvent *      clutter_event_new        (ClutterEventType  type);
+ClutterEvent *      clutter_event_copy       (ClutterEvent     *event);
+void                clutter_event_free       (ClutterEvent     *event);
+ClutterEventType    clutter_event_type       (ClutterEvent     *event);
+guint32             clutter_event_get_time   (ClutterEvent     *event);
+ClutterModifierType clutter_event_get_state  (ClutterEvent     *event);
+void                clutter_event_get_coords (ClutterEvent     *event,
+                                              gint             *x,
+                                              gint             *y);
 
 guint   clutter_key_event_symbol  (ClutterKeyEvent *keyev);
 guint16 clutter_key_event_code    (ClutterKeyEvent *keyev);

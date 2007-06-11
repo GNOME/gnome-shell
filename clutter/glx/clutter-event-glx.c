@@ -242,7 +242,7 @@ translate_key_event (ClutterBackend *backend,
   event->key.type = (xevent->xany.type == KeyPress) ? CLUTTER_KEY_PRESS
                                                     : CLUTTER_KEY_RELEASE;
   event->key.time = xevent->xkey.time;
-  event->key.modifier_state = xevent->xkey.state; /* FIXME: handle modifiers */
+  event->key.modifier_state = (ClutterModifierType) xevent->xkey.state;
   event->key.hardware_keycode = xevent->xkey.keycode;
   event->key.keyval = XKeycodeToKeysym (xevent->xkey.display, 
                                         xevent->xkey.keycode,
