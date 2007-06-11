@@ -1,3 +1,15 @@
+2.19.13
+=======
+
+Thanks to Elijah Newren and Thomas Thurman for improvements in
+this release.
+
+ - Updated the description of raise_on_click (Elijah) [#445447,
+   #389923]
+ - Refactor queueing code in window.c (Thomas) [#376760]
+ - Added switch_group to the keybindings file (Thomas) [#444879]
+ - New window information accessor function (Thomas) [#377495]
+
 2.19.8
 ======
 

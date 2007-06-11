@@ -1,5 +1,9 @@
 2007-06-10  Thomas Thurman  <thomas@thurman.org.uk>
 
+        * NEWS: 2.19.13 release.
+
+2007-06-10  Thomas Thurman  <thomas@thurman.org.uk>
+
 	Refactor thrice-duplicated queue code in window.c. Closes #376760.
 
 	* src/window.c (meta_window_queue, meta_window_unqueue):
