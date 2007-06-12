@@ -1,3 +1,28 @@
+2007-06-12  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-alpha.c:
+	Remove stray g_debug.
+
+	* clutter/clutter-behaviour-rotate.c:
+	Register private class member.
+
+	* clutter/clutter-behaviour.c:
+	* clutter/clutter-behaviour.h:
+	Add applied and removed signals.
+
+	* Makefile.am:
+	* configure.ac:
+	* examples/Makefile.am:
+	* examples/README:
+	* examples/behave.c:
+	* examples/slider.c:
+	* examples/super-oh.c:
+	* examples/test-entry.c:
+	* examples/test-text.c:
+	* examples/test.c:
+	* tests/Makefile.am:
+	Remove examples, moving applicable code into tests.
+
 2007-06-11  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-alpha.c:

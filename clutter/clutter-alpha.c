@@ -773,11 +773,6 @@ clutter_smoothstep_inc_func (ClutterAlpha  *alpha,
    */
   r = ((x >> 12) * (x >> 12) * 3 - (x >> 15) * (x >> 16) * (x >> 16)) >> 8;
 
-  g_debug ("Frame %d of %d, x %f, ret %f",
-	   frame, n_frames,
-	   CLUTTER_FIXED_TO_DOUBLE (x >> 8),
-	   CLUTTER_FIXED_TO_DOUBLE (r));
-	   
   return CFX_INT (r * CLUTTER_ALPHA_MAX_ALPHA);
 }
 

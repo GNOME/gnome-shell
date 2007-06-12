@@ -285,7 +285,6 @@ AC_CONFIG_FILES([
         clutter/cogl/Makefile
         clutter/cogl/gl/Makefile
         clutter/cogl/gles/Makefile
-        examples/Makefile
         tests/Makefile
         doc/Makefile
         doc/reference/Makefile

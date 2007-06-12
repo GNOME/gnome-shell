@@ -259,6 +259,8 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
                                                       CLUTTER_TYPE_ROTATE_DIRECTION,
                                                       CLUTTER_ROTATE_CW,
                                                       CLUTTER_PARAM_READWRITE));
+
+  g_type_class_add_private (klass, sizeof (ClutterBehaviourRotatePrivate));
 }
 
 static void

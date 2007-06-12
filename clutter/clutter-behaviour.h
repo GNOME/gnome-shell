@@ -102,6 +102,11 @@ struct _ClutterBehaviourClass
   void (*alpha_notify) (ClutterBehaviour *behave,
                         guint32           alpha_value);
 
+  void (*apply)    (ClutterBehaviour *behave,
+		    ClutterActor     *actor);
+  void (*remove)   (ClutterBehaviour *behave,
+		    ClutterActor     *actor);
+
   /* padding, for future expansion */
   void (*_clutter_behaviour1) (void);
   void (*_clutter_behaviour2) (void);

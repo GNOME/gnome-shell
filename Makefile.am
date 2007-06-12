@@ -1,4 +1,4 @@
-SUBDIRS=clutter doc examples tests
+SUBDIRS=clutter doc tests
 
 pcfiles = clutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.pc
 
