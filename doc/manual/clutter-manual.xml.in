@@ -82,10 +82,40 @@
 		</section>
 	</chapter>
 
+	<appendix id="FAQ">
+		 <title>
+			Frequently Asked Questions
+		</title>
+		<qandaset defaultlabel='qanda'>
+		<qandaentry>
+			<question>
+				<para>
+
+				Why do Clutter applications run <emphasis>really</emphasis> slowly on Intel cards even though 
+				direct rendering support is reported.
+
+				</para>
+			</question>			
+			<answer>
+				<para>
+
+				There is a bug in some versions of the Intel drivers that causes the driver to 'stall' when 
+				attempting to sync to vblank (as Clutter does by default). The fix is to either upgrade 
+				your drivers or set 'CLUTTER_VBLANK=none' when running Clutter applications.					
+
+				</para>
+			</answer>
+		</qandaentry>		
+		</qandaset>	
+	</appendix>
+
 	<appendix id="contrib">
 	    <title>Contributing to this document</title>
-	    <para>This document is written in Docbook XML. The source file for it is located in the
-	    	  subdirectory "doc" of the source directory of Clutter.
+	    <para>
+
+		  This document is written in Docbook XML. The source file for it is located in the
+	    	  subdirectory "doc/manual" of the source directory of Clutter.
+
 	    </para>
 	</appendix>
 

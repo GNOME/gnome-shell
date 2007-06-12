@@ -1,3 +1,11 @@
+2007-06-12  Matthew Allum  <mallum@openedhand.com>
+
+	* doc/manual/Makefile.am:
+	Fix typo in Makefile so PDF's actually get built.
+
+	* doc/manual/clutter-manual.xml.in:
+	Add an FAQ section with initial entry.
+
 2007-06-12  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.h:

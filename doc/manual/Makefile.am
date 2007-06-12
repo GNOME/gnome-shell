@@ -12,7 +12,7 @@ pdf-build.stamp: clutter-manual.xml
 txt-build.stamp: clutter-manual.xml 
 	xmlto txt $(srcdir)/clutter-manual.xml
 	mv $(srcdir)/clutter-manual.txt clutter-manual-@CLUTTER_MAJORMINOR@.txt
-	touch pdf-build.stamp
+	touch txt-build.stamp
 
 htmldoc-build.stamp: clutter-manual.xml
 	$(mkinstalldirs) html
