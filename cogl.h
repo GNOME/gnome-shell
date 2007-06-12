@@ -189,6 +189,15 @@ cogl_alpha_func (COGLenum     func,
 ClutterFeatureFlags
 cogl_get_features ();
 
+void
+cogl_get_modelview_matrix (ClutterFixed m[16]);
+
+void
+cogl_get_projection_matrix (ClutterFixed m[16]);
+
+void
+cogl_get_viewport (ClutterFixed v[4]);
+
 G_END_DECLS
 
 #endif /* __COGL_H__ */
