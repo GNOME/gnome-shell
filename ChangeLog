@@ -1,3 +1,31 @@
+2007-06-12  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-fixed.h:
+	Added shorthand CFX_QMUL macro.
+	
+	* clutter/clutter-private.h:
+	* clutter/clutter-actor.h:
+	* clutter/clutter-actor.c:
+	Replaced ClutterVertices with ClutterVertex;
+	
+	(clutter_actor_get_transformed_vertices):
+	(clutter_actor_get_transformed_point):
+	Replaced with clutter_actor_projected_vertices and 
+	clutter_actor_projected_point.
+
+	(_clutter_actor_apply_modelview_transform):
+	(_clutter_actor_apply_modelview_transform_recursive):
+	Private functions to push actor modelview transforms on OpenGL
+	stack.
+	
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/gl/cogl.c:
+	* clutter/cogl/gles/cogl.c:
+	(cogl_get_viewport):
+	(cogl_get_modelview_matrix):
+	(cogl_get_projection_matrix):
+	Functions to access OpenGL transforms.
+	
 2007-06-12  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-alpha.c:

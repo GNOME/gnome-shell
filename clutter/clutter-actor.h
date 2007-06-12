@@ -77,7 +77,7 @@ typedef struct _ClutterActorClass    ClutterActorClass;
 typedef struct _ClutterActorBox      ClutterActorBox;
 typedef struct _ClutterActorPrivate  ClutterActorPrivate;
 typedef struct _ClutterGeometry      ClutterGeometry;
-typedef struct _ClutterVertices      ClutterVertices;
+typedef struct _ClutterVertex        ClutterVertex;
 
 typedef void (*ClutterCallback) (ClutterActor *actor, gpointer data);
 #define CLUTTER_CALLBACK(f)	((ClutterCallback) (f))
@@ -108,35 +108,11 @@ struct _ClutterActorBox { ClutterUnit x1, y1, x2, y2; };
 
 GType clutter_actor_box_get_type (void) G_GNUC_CONST;
 
-struct _ClutterVertices
+struct _ClutterVertex
 {
-  struct
-  {
-    ClutterUnit x;
-    ClutterUnit y;
-    ClutterUnit z;
-  }topleft;
-  
-  struct
-  {
-    ClutterUnit x;
-    ClutterUnit y;
-    ClutterUnit z;
-  }topright;
-    
-  struct
-  {
-    ClutterUnit x;
-    ClutterUnit y;
-    ClutterUnit z;
-  }bottomleft;
-  
-  struct
-  {
-    ClutterUnit x;
-    ClutterUnit y;
-    ClutterUnit z;
-  }bottomright;
+  ClutterUnit x;
+  ClutterUnit y;
+  ClutterUnit z;
 };
 
 GType clutter_vertices_get_type (void) G_GNUC_CONST;
@@ -306,15 +282,13 @@ void                  clutter_actor_move_by          (ClutterActor          *sel
                                                       gint                   dx,
                                                       gint                   dy);
 
-void                  clutter_actor_get_transformed_vertices (ClutterActor  *self,
-							      ClutterVertices * verts);
+void                  clutter_actor_project_vertices (ClutterActor          *self,
+						      ClutterVertex          verts[4]);
 
-void                  clutter_actor_get_transformed_point    (ClutterActor *actor, 
-							      gint          x,
-							      gint          y,
-							      ClutterUnit  *x_return,
-							      ClutterUnit  *y_return,
-							      ClutterUnit  *z_return);
+void                  clutter_actor_project_point    (ClutterActor          *actor, 
+						      ClutterUnit           *x,
+						      ClutterUnit           *y,
+						      ClutterUnit           *z);
      
 G_END_DECLS
 

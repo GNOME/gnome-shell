@@ -506,7 +506,7 @@ cogl_perspective (ClutterAngle fovy,
   M(2,2) = CLUTTER_FIXED_TO_FLOAT (c);
   M(2,3) = CLUTTER_FIXED_TO_FLOAT (d);
   M(3,2) = -1.0F;
-  
+
   GE( glMultMatrixf (m) );
 #undef M
 }
@@ -533,7 +533,6 @@ cogl_setup_viewport (guint        width,
 
   /* camera distance from screen, 0.5 * tan (FOV) */
 #define DEFAULT_Z_CAMERA 0.866025404f
-
   z_camera = CLUTTER_FIXED_TO_FLOAT (clutter_tani (fovy) >> 1);
 
   GE( glTranslatef (-0.5f, -0.5f, -z_camera) );
@@ -585,3 +584,74 @@ cogl_get_features ()
   return flags;
 }
 
+void
+cogl_get_modelview_matrix (ClutterFixed m[16])
+{
+  GLdouble md[16];
+
+  glGetDoublev(GL_MODELVIEW_MATRIX, &md[0]);
+
+#define M(m,row,col)  m[col*4+row]
+  M(m,0,0) = CLUTTER_FLOAT_TO_FIXED (M(md,0,0));
+  M(m,0,1) = CLUTTER_FLOAT_TO_FIXED (M(md,0,1));
+  M(m,0,2) = CLUTTER_FLOAT_TO_FIXED (M(md,0,2));
+  M(m,0,3) = CLUTTER_FLOAT_TO_FIXED (M(md,0,3));
+
+  M(m,1,0) = CLUTTER_FLOAT_TO_FIXED (M(md,1,0));
+  M(m,1,1) = CLUTTER_FLOAT_TO_FIXED (M(md,1,1));
+  M(m,1,2) = CLUTTER_FLOAT_TO_FIXED (M(md,1,2));
+  M(m,1,3) = CLUTTER_FLOAT_TO_FIXED (M(md,1,3));
+  
+  M(m,2,0) = CLUTTER_FLOAT_TO_FIXED (M(md,2,0));
+  M(m,2,1) = CLUTTER_FLOAT_TO_FIXED (M(md,2,1));
+  M(m,2,2) = CLUTTER_FLOAT_TO_FIXED (M(md,2,2));
+  M(m,2,3) = CLUTTER_FLOAT_TO_FIXED (M(md,2,3));
+
+  M(m,3,0) = CLUTTER_FLOAT_TO_FIXED (M(md,3,0));
+  M(m,3,1) = CLUTTER_FLOAT_TO_FIXED (M(md,3,1));
+  M(m,3,2) = CLUTTER_FLOAT_TO_FIXED (M(md,3,2));
+  M(m,3,3) = CLUTTER_FLOAT_TO_FIXED (M(md,3,3));
+#undef M
+}
+
+void
+cogl_get_projection_matrix (ClutterFixed m[16])
+{
+  GLdouble md[16];
+  
+  glGetDoublev(GL_PROJECTION_MATRIX, &md[0]);
+  
+#define M(m,row,col)  m[col*4+row]
+  M(m,0,0) = CLUTTER_FLOAT_TO_FIXED (M(md,0,0));
+  M(m,0,1) = CLUTTER_FLOAT_TO_FIXED (M(md,0,1));
+  M(m,0,2) = CLUTTER_FLOAT_TO_FIXED (M(md,0,2));
+  M(m,0,3) = CLUTTER_FLOAT_TO_FIXED (M(md,0,3));
+
+  M(m,1,0) = CLUTTER_FLOAT_TO_FIXED (M(md,1,0));
+  M(m,1,1) = CLUTTER_FLOAT_TO_FIXED (M(md,1,1));
+  M(m,1,2) = CLUTTER_FLOAT_TO_FIXED (M(md,1,2));
+  M(m,1,3) = CLUTTER_FLOAT_TO_FIXED (M(md,1,3));
+  
+  M(m,2,0) = CLUTTER_FLOAT_TO_FIXED (M(md,2,0));
+  M(m,2,1) = CLUTTER_FLOAT_TO_FIXED (M(md,2,1));
+  M(m,2,2) = CLUTTER_FLOAT_TO_FIXED (M(md,2,2));
+  M(m,2,3) = CLUTTER_FLOAT_TO_FIXED (M(md,2,3));
+
+  M(m,3,0) = CLUTTER_FLOAT_TO_FIXED (M(md,3,0));
+  M(m,3,1) = CLUTTER_FLOAT_TO_FIXED (M(md,3,1));
+  M(m,3,2) = CLUTTER_FLOAT_TO_FIXED (M(md,3,2));
+  M(m,3,3) = CLUTTER_FLOAT_TO_FIXED (M(md,3,3));
+#undef M
+}
+
+void
+cogl_get_viewport (ClutterFixed v[4])
+{
+  GLdouble vd[4];
+  glGetDoublev(GL_VIEWPORT, &vd[0]);
+
+  v[0] = CLUTTER_FLOAT_TO_FIXED (vd[0]);
+  v[1] = CLUTTER_FLOAT_TO_FIXED (vd[1]);
+  v[2] = CLUTTER_FLOAT_TO_FIXED (vd[2]);
+  v[3] = CLUTTER_FLOAT_TO_FIXED (vd[3]);
+}

@@ -306,487 +306,135 @@ clutter_actor_pick (ClutterActor       *self,
  */
 #define M(m,row,col)  (m)[col*4+row]
 
-/* Make indentity matrix */
-static void
-mtx_identity (ClutterFixed * m)
-{
-    memset (m, 0, sizeof (ClutterFixed) * 16);
-    M (m,0,0) = CFX_ONE;
-    M (m,1,1) = CFX_ONE;
-    M (m,2,2) = CFX_ONE;
-    M (m,3,3) = CFX_ONE;
-}
-
-/* Add translation by (x,y,z) to matrix */
-static void
-mtx_translate (ClutterFixed * m,
-	       ClutterFixed x, ClutterFixed y, ClutterFixed z)
-{
-    M (m,0,3) += CFX_MUL (M (m,0,0), x) + CFX_MUL (M (m,0,1), y) +
-	CFX_MUL (M (m,0,2), z);
-
-    M (m,1,3) += CFX_MUL (M (m,1,0), x) + CFX_MUL (M (m,1,1), y) +
-	CFX_MUL (M (m,1,2), z);
-    
-    M (m,2,3) += CFX_MUL (M (m,2,0), x) + CFX_MUL (M (m,2,1), y) +
-	CFX_MUL (M (m,2,2), z);
-    
-    M (m,3,3) += CFX_MUL (M (m,3,0), x) + CFX_MUL (M (m,3,1), y) +
-	CFX_MUL (M (m,3,2), z);
-}
-
-/* Add rotation around Z axis by ang to matrix */
-static void
-mtx_rotate_z (ClutterFixed *m, ClutterFixed ang)
-{
-    ClutterFixed m0, m1;
-    ClutterAngle a = CLUTTER_ANGLE_FROM_DEGX (ang);
-    ClutterFixed c = clutter_cosi (a);
-    ClutterFixed s = clutter_sini (a);
-
-    m0 = CFX_MUL (M (m,0,0),  c) + CFX_MUL (M (m,0,1), s);
-    m1 = CFX_MUL (M (m,0,0), -s) + CFX_MUL (M (m,0,1), c);
-    M (m,0,0) = m0;
-    M (m,0,1) = m1;
-    
-    m0 = CFX_MUL (M (m,1,0),  c) + CFX_MUL (M (m,1,1), s);
-    m1 = CFX_MUL (M (m,1,0), -s) + CFX_MUL (M (m,1,1), c);
-    M (m,1,0) = m0;
-    M (m,1,1) = m1;
-    
-    m0 = CFX_MUL (M (m,2,0),  c) + CFX_MUL (M (m,2,1), s);
-    m1 = CFX_MUL (M (m,2,0), -s) + CFX_MUL (M (m,2,1), c);
-    M (m,2,0) = m0;
-    M (m,2,1) = m1;
-
-    m0 = CFX_MUL (M (m,3,0),  c) + CFX_MUL (M (m,3,1), s);
-    m1 = CFX_MUL (M (m,3,0), -s) + CFX_MUL (M (m,3,1), c);
-    M (m,3,0) = m0;
-    M (m,3,1) = m1;
-}
-
-/* Add rotation around X axis by ang to matrix */
-static void
-mtx_rotate_x (ClutterFixed *m, ClutterFixed ang)
-{
-    ClutterFixed m1, m2;
-    ClutterAngle a = CLUTTER_ANGLE_FROM_DEGX (ang);
-    ClutterFixed c = clutter_cosi (a);
-    ClutterFixed s = clutter_sini (a);
-    
-    m1 = CFX_MUL (M (m,0,1),  c) + CFX_MUL (M (m,0,2), s);
-    m2 = CFX_MUL (M (m,0,1), -s) + CFX_MUL (M (m,0,2), c);
-    M (m,0,1) = m1;
-    M (m,0,2) = m2;
-    
-    m1 = CFX_MUL (M (m,1,1),  c) + CFX_MUL (M (m,1,2), s);
-    m2 = CFX_MUL (M (m,1,1), -s) + CFX_MUL (M (m,1,2), c);
-    M (m,1,1) = m1;
-    M (m,1,2) = m2;
-    
-    m1 = CFX_MUL (M (m,2,1),  c) + CFX_MUL (M (m,2,2), s);
-    m2 = CFX_MUL (M (m,2,1), -s) + CFX_MUL (M (m,2,2), c);
-    M (m,2,1) = m1;
-    M (m,2,2) = m2;
-    
-    m1 = CFX_MUL (M (m,3,1),  c) + CFX_MUL (M (m,3,2), s);
-    m2 = CFX_MUL (M (m,3,1), -s) + CFX_MUL (M (m,3,2), c);
-    M (m,3,1) = m1;
-    M (m,3,2) = m2;
-}
-
-/* Add rotation around Y axis by ang to matrix */
-static void
-mtx_rotate_y (ClutterFixed *m, ClutterFixed ang)
-{
-    ClutterFixed m0, m2;
-    ClutterAngle a = CLUTTER_ANGLE_FROM_DEGX (ang);
-    ClutterFixed c = clutter_cosi (a);
-    ClutterFixed s = clutter_sini (a);
-    
-    m0 = CFX_MUL (M (m,0,0), c) + CFX_MUL (M (m,0,2), -s);
-    m2 = CFX_MUL (M (m,0,0), s) + CFX_MUL (M (m,0,2),  c);
-    M (m,0,0) = m0;
-    M (m,0,2) = m2;
-
-    m0 = CFX_MUL (M (m,1,0), c) + CFX_MUL (M (m,1,2), -s);
-    m2 = CFX_MUL (M (m,1,0), s) + CFX_MUL (M (m,1,2),  c);
-    M (m,1,0) = m0;
-    M (m,1,2) = m2;
-
-    m0 = CFX_MUL (M (m,2,0), c) + CFX_MUL (M (m,2,2), -s);
-    m2 = CFX_MUL (M (m,2,0), s) + CFX_MUL (M (m,2,2),  c);
-    M (m,2,0) = m0;
-    M (m,2,2) = m2;
-
-    m0 = CFX_MUL (M (m,3,0), c) + CFX_MUL (M (m,3,2), -s);
-    m2 = CFX_MUL (M (m,3,0), s) + CFX_MUL (M (m,3,2),  c);
-    M (m,3,0) = m0;
-    M (m,3,2) = m2;
-}
-
-/* Apply scale by factors x, y to matrix */
-static void
-mtx_scale (ClutterFixed *m, ClutterFixed x, ClutterFixed y)
-{
-    M (m,0,0) = CFX_MUL (M (m,0,0), x);
-    M (m,1,1) = CFX_MUL (M (m,1,1), y);
-}
-
 /* Transform point (x,y,z) by matrix */
 static void
-mtx_transform (ClutterFixed *m,
-	       ClutterFixed *x, ClutterFixed *y, ClutterFixed *z)
+mtx_transform (ClutterFixed m[16],
+	       ClutterFixed *x, ClutterFixed *y, ClutterFixed *z,
+	       ClutterFixed *w)
 {
-    ClutterFixed _x, _y, _z;
+    ClutterFixed _x, _y, _z, _w;
     _x = *x;
     _y = *y;
     _z = *z;
-    
-    *x = CFX_MUL (M (m,0,0), _x) + CFX_MUL (M (m,0,1), _y) +
-	CFX_MUL (M (m,0,2), _z) + M (m,0,3);
+    _w = *w;
 
-    *y = CFX_MUL (M (m,1,0), _x) + CFX_MUL (M (m,1,1), _y) +
-	CFX_MUL (M (m,1,2), _z) + M (m,1,3);
+    *x = CFX_QMUL (M (m,0,0), _x) + CFX_QMUL (M (m,0,1), _y) +
+	 CFX_QMUL (M (m,0,2), _z) + CFX_QMUL (M (m,0,3), _w);
 
-    *z = CFX_MUL (M (m,2,0), _x) + CFX_MUL (M (m,2,1), _y) +
-	CFX_MUL (M (m,2,2), _z) + M (m,2,3);
-}
+    *y = CFX_QMUL (M (m,1,0), _x) + CFX_QMUL (M (m,1,1), _y) +
+	 CFX_QMUL (M (m,1,2), _z) + CFX_QMUL (M (m,1,3), _w);
 
-static void
-mtx_mul (ClutterFixed * m1, const ClutterFixed * m2)
-{
-  ClutterFixed n0, n1, n2, n3;
-  
-  n0 =
-    CFX_MUL (M(m1,0,0),M(m2,0,0)) +
-    CFX_MUL (M(m1,0,1),M(m2,1,0)) +
-    CFX_MUL (M(m1,0,2),M(m2,2,0)) +
-    CFX_MUL (M(m1,0,3),M(m2,3,0));
-  
-  n1 =
-    CFX_MUL (M(m1,0,0),M(m2,0,1)) +
-    CFX_MUL (M(m1,0,1),M(m2,1,1)) +
-    CFX_MUL (M(m1,0,2),M(m2,2,1)) +
-    CFX_MUL (M(m1,0,3),M(m2,3,1));
-    
-  n2 =
-    CFX_MUL (M(m1,0,0),M(m2,0,2)) +
-    CFX_MUL (M(m1,0,1),M(m2,1,2)) +
-    CFX_MUL (M(m1,0,2),M(m2,2,2)) +
-    CFX_MUL (M(m1,0,3),M(m2,3,2));
+    *z = CFX_QMUL (M (m,2,0), _x) + CFX_QMUL (M (m,2,1), _y) +
+	 CFX_QMUL (M (m,2,2), _z) + CFX_QMUL (M (m,2,3), _w);
 
-  n3 =
-    CFX_MUL (M(m1,0,0),M(m2,0,3)) +
-    CFX_MUL (M(m1,0,1),M(m2,1,3)) +
-    CFX_MUL (M(m1,0,2),M(m2,2,3)) +
-    CFX_MUL (M(m1,0,3),M(m2,3,3));
-
-  M(m1,0,0) = n0;
-  M(m1,0,1) = n1;
-  M(m1,0,2) = n2;
-  M(m1,0,3) = n3;
-
-  n0 =
-    CFX_MUL (M(m1,1,0),M(m2,0,0)) +
-    CFX_MUL (M(m1,1,1),M(m2,1,0)) +
-    CFX_MUL (M(m1,1,2),M(m2,2,0)) +
-    CFX_MUL (M(m1,1,3),M(m2,3,0));
-  
-  n1 =
-    CFX_MUL (M(m1,1,0),M(m2,0,1)) +
-    CFX_MUL (M(m1,1,1),M(m2,1,1)) +
-    CFX_MUL (M(m1,1,2),M(m2,2,1)) +
-    CFX_MUL (M(m1,1,3),M(m2,3,1));
-    
-  n2 =
-    CFX_MUL (M(m1,1,0),M(m2,0,2)) +
-    CFX_MUL (M(m1,1,1),M(m2,1,2)) +
-    CFX_MUL (M(m1,1,2),M(m2,2,2)) +
-    CFX_MUL (M(m1,1,3),M(m2,3,2));
-
-  n3 =
-    CFX_MUL (M(m1,1,0),M(m2,0,3)) +
-    CFX_MUL (M(m1,1,1),M(m2,1,3)) +
-    CFX_MUL (M(m1,1,2),M(m2,2,3)) +
-    CFX_MUL (M(m1,1,3),M(m2,3,3));
-
-  M(m1,1,0) = n0;
-  M(m1,1,1) = n1;
-  M(m1,1,2) = n2;
-  M(m1,1,3) = n3;
-  
-  n0 =
-    CFX_MUL (M(m1,2,0),M(m2,0,0)) +
-    CFX_MUL (M(m1,2,1),M(m2,1,0)) +
-    CFX_MUL (M(m1,2,2),M(m2,2,0)) +
-    CFX_MUL (M(m1,2,3),M(m2,3,0));
-  
-  n1 =
-    CFX_MUL (M(m1,2,0),M(m2,0,1)) +
-    CFX_MUL (M(m1,2,1),M(m2,1,1)) +
-    CFX_MUL (M(m1,2,2),M(m2,2,1)) +
-    CFX_MUL (M(m1,2,3),M(m2,3,1));
-    
-  n2 =
-    CFX_MUL (M(m1,2,0),M(m2,0,2)) +
-    CFX_MUL (M(m1,2,1),M(m2,1,2)) +
-    CFX_MUL (M(m1,2,2),M(m2,2,2)) +
-    CFX_MUL (M(m1,2,3),M(m2,3,2));
-
-  n3 =
-    CFX_MUL (M(m1,2,0),M(m2,0,3)) +
-    CFX_MUL (M(m1,2,1),M(m2,1,3)) +
-    CFX_MUL (M(m1,2,2),M(m2,2,3)) +
-    CFX_MUL (M(m1,2,3),M(m2,3,3));
-
-  M(m1,2,0) = n0;
-  M(m1,2,1) = n1;
-  M(m1,2,2) = n2;
-  M(m1,2,3) = n3;
-
-  n0 =
-    CFX_MUL (M(m1,3,0),M(m2,0,0)) +
-    CFX_MUL (M(m1,3,1),M(m2,1,0)) +
-    CFX_MUL (M(m1,3,2),M(m2,2,0)) +
-    CFX_MUL (M(m1,3,3),M(m2,3,0));
-  
-  n1 =
-    CFX_MUL (M(m1,3,0),M(m2,0,1)) +
-    CFX_MUL (M(m1,3,1),M(m2,1,1)) +
-    CFX_MUL (M(m1,3,2),M(m2,2,1)) +
-    CFX_MUL (M(m1,3,3),M(m2,3,1));
-    
-  n2 =
-    CFX_MUL (M(m1,3,0),M(m2,0,2)) +
-    CFX_MUL (M(m1,3,1),M(m2,1,2)) +
-    CFX_MUL (M(m1,3,2),M(m2,2,2)) +
-    CFX_MUL (M(m1,3,3),M(m2,3,2));
-
-  n3 =
-    CFX_MUL (M(m1,3,0),M(m2,0,3)) +
-    CFX_MUL (M(m1,3,1),M(m2,1,3)) +
-    CFX_MUL (M(m1,3,2),M(m2,2,3)) +
-    CFX_MUL (M(m1,3,3),M(m2,3,3));
-
-  M(m1,3,0) = n0;
-  M(m1,3,1) = n1;
-  M(m1,3,2) = n2;
-  M(m1,3,3) = n3;
-}
-
-/* Creates a transform matrix by combining the actor transformations and the
- * stage perspective
- */
-static void
-mtx_create (ClutterActorPrivate *priv,
-	    ClutterFixed *mtx,
-	    const ClutterFixed * mtx_p)
-{
-  /* FIXME: need to apply perspective / viewport transforms */
-  mtx_identity (mtx);
-
-  mtx_mul (mtx, mtx_p);
+    *w = CFX_QMUL (M (m,3,0), _x) + CFX_QMUL (M (m,3,1), _y) +
+	 CFX_QMUL (M (m,3,2), _z) + CFX_QMUL (M (m,3,3), _w);
 
 #if 0
-  g_debug ("Perspective Matrix\n"
-	   "       %f, %f, %f, %f\n"
-	   "       %f, %f, %f, %f\n"
-	   "       %f, %f, %f, %f\n"
-	   "       %f, %f, %f, %f",
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,0,0)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,0,1)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,0,2)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,0,3)),
-
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,1,0)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,1,1)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,1,2)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,1,3)),
-	   
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,2,0)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,2,1)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,2,2)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,2,3)),
-
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,3,0)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,3,1)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,3,2)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,3,3)));
+    g_debug ("Transforming %f, %f, %f -> %f, %f, %f (m00 %f)",
+	     CLUTTER_FIXED_TO_FLOAT (_x),
+	     CLUTTER_FIXED_TO_FLOAT (_y),
+	     CLUTTER_FIXED_TO_FLOAT (_z),
+	     CLUTTER_FIXED_TO_FLOAT (*x),
+	     CLUTTER_FIXED_TO_FLOAT (*y),
+	     CLUTTER_FIXED_TO_FLOAT (*z),
+	     CLUTTER_FIXED_TO_FLOAT (M(m,0,0)));
 #endif
-  
-  /*
-   * All the rotation ops are relative to the actor, not the overall
-   * coordiante system; so first of all, we carry out a translation from
-   * 0,0 to where our actor is.
-   */
-  mtx_translate (mtx,
-		 CLUTTER_UNITS_TO_FIXED (priv->coords.x1), 
-		 CLUTTER_UNITS_TO_FIXED (priv->coords.y1), 
-		 CLUTTER_INT_TO_FIXED (priv->z));
-
-  if (priv->rzang)
-    {
-      mtx_translate (mtx,
-		     CLUTTER_INT_TO_FIXED (priv->rzx),
-		     CLUTTER_INT_TO_FIXED (priv->rzy),
-		     0);
-      
-      mtx_rotate_z (mtx, priv->rzang);
-      
-      mtx_translate (mtx,
-		     CLUTTER_INT_TO_FIXED (-priv->rzx),
-		     CLUTTER_INT_TO_FIXED (-priv->rzy),
-		     0);
-    }
-
-  if (priv->ryang)
-    {
-      mtx_translate (mtx,
-		     CLUTTER_INT_TO_FIXED (priv->ryx),
-		     0,
-		     CLUTTER_INT_TO_FIXED (priv->z + priv->ryz));
-      
-      mtx_rotate_y (mtx, priv->ryang);
-      
-      mtx_translate (mtx,
-		     CLUTTER_INT_TO_FIXED (-priv->ryx),
-		     0,
-		     CLUTTER_INT_TO_FIXED (-(priv->z + priv->ryz)));
-    }
-
-  if (priv->rxang)
-    {
-      mtx_translate (mtx,
-		     0,
-		     CLUTTER_INT_TO_FIXED (priv->rxy),
-		     CLUTTER_INT_TO_FIXED (priv->z + priv->rxz));
-      
-      mtx_rotate_x (mtx, priv->rxang);
-      
-      mtx_translate (mtx,
-		     0,
-		     CLUTTER_INT_TO_FIXED (-priv->rxy),
-		     CLUTTER_INT_TO_FIXED (-(priv->z - priv->rxz)));
-    }
-
-  if (priv->z)
-    mtx_translate (mtx, 0, 0, CLUTTER_INT_TO_FIXED (priv->z));
-
-  if (priv->scale_x != CFX_ONE || priv->scale_y != CFX_ONE)
-    {
-      mtx_scale (mtx, priv->scale_x, priv->scale_y);
-    }
 }
 
 static void
-mtx_perspective (ClutterFixed * m, ClutterStage * stage)
-{
-  ClutterFixed xmax, ymax;
-  ClutterPerspective perspective;
-  ClutterFixed x, y, c, d;
-  
-  memset (m, 0, sizeof (ClutterFixed) * 16);
-
-  clutter_stage_get_perspectivex (stage, &perspective);
-  
-  ymax = clutter_qmulx (perspective.z_near,
-			clutter_tani (perspective.fovy >> 1));
-  
-  xmax = clutter_qmulx (ymax, perspective.aspect);
-
-  x = CFX_DIV (perspective.z_near, xmax);
-  y = CFX_DIV (perspective.z_near, ymax);
-  c = CFX_DIV (-(perspective.z_far + perspective.z_near),
-	       ( perspective.z_far - perspective.z_near));
-  
-  d = CFX_DIV (-(clutter_qmulx (2 * perspective.z_far, perspective.z_near)),
-	       (perspective.z_far - perspective.z_near));
-  
-  M(m,0,0) = x;
-  M(m,1,1) = y;
-  M(m,2,2) = c;
-  M(m,2,3) = d;
-  M(m,3,2) = -CFX_ONE;
-}
-
-/**
- * clutter_actor_get_transformed_point:
- * @self: A #ClutterActor
- * @x: X screen position in pixels 
- * @y: Y screen position in pixels 
- * @x_return: location to store tranformed X Axis value in #ClutterUnits
- * @y_return: location to store tranformed Y Axis value in #ClutterUnits
- * @z_return: location to store tranformed Z Axis value in #ClutterUnits
- *
- * Transforms a 2D point (relative to the actor) into 3D space defined by 
- * the actors current tranformation matrix. 
- *
- * Since: 0.4
- **/
-void
-clutter_actor_get_transformed_point (ClutterActor *actor, 
-				     gint          x,
-				     gint          y,
-				     ClutterUnit  *x_return,
-				     ClutterUnit  *y_return,
-				     ClutterUnit  *z_return)
+clutter_actor_transform_point (ClutterActor *actor, 
+			       ClutterUnit  *x,
+			       ClutterUnit  *y,
+			       ClutterUnit  *z,
+			       ClutterUnit  *w)
 {
   ClutterFixed           mtx[16];
-  ClutterFixed           mtx_p[16];
   ClutterActorPrivate   *priv;
   
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
   priv = actor->priv;
 
-  mtx_perspective (&mtx_p[0], CLUTTER_STAGE (clutter_stage_get_default()));
+  cogl_push_matrix();
+  _clutter_actor_apply_modelview_transform_recursive (actor);
+
+  cogl_get_modelview_matrix (mtx);
   
-  mtx_create (priv, &mtx[0], &mtx_p[0]);
+  mtx_transform (mtx, x, y, z, w);
 
-  *x_return = CLUTTER_UNITS_FROM_INT(x);
-  *y_return = CLUTTER_UNITS_FROM_INT(y);
-  *z_return = CLUTTER_INT_TO_FIXED (priv->z);
-
-  mtx_transform (&mtx[0], x_return, y_return, z_return);
+  cogl_pop_matrix();
 }
 
+#define MTX_GL_SCALE(x,w,v1,v2) (CFX_MUL( \
+                                      ((CFX_DIV (x,w) + CFX_ONE) >> 1), v1) \
+				         + v2)
+
+#define MTX_GL_SCALE_Z(z,w) ((CFX_DIV (z,w) + CFX_ONE) >> 1)
+
 /**
- * clutter_actor_get_transformed_vertices:
+ * clutter_actor_project_point:
  * @self: A #ClutterActor
- * @verts: Pointer to a location of #ClutterVertices where to store the result.
- * Calculates the vertices of the translated, rotated and scaled actor in 3D
- * space.
+ * @x: in/out X 
+ * @y: in/out Y
+ * @z: in
+ *
+ * Transforms point [x,y,z] in coordinance relative to the actor
+ * into screen coordiances [x,y]
  *
  * Since: 0.4
  **/
 void
-clutter_actor_get_transformed_vertices (ClutterActor    * self,
-					ClutterVertices * verts)
+clutter_actor_project_point (ClutterActor *self,
+			     ClutterUnit  *x,
+			     ClutterUnit  *y,
+			     ClutterUnit  *z)
+{
+  ClutterFixed  mtx_p[16];
+  ClutterFixed  v[4];
+  ClutterFixed  w = CFX_ONE;
+  
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  clutter_actor_transform_point (self, x, y, z, &w);
+
+  cogl_get_projection_matrix (mtx_p);
+  cogl_get_viewport (v);
+  
+  mtx_transform (mtx_p, x, y, z, &w);
+
+  *x = MTX_GL_SCALE(*x,w,v[2],v[0]);
+  *y = MTX_GL_SCALE(*y,w,v[3],v[1]);
+  *z = MTX_GL_SCALE_Z(*z,w);
+}
+
+/* Recursively tranform supplied vertices with the tranform for the current
+ * actor and all its ancestors
+ */
+static void
+clutter_actor_transform_vertices (ClutterActor    * self,
+				  ClutterVertex     verts[4],
+				  ClutterFixed      w[4])
 {
   ClutterFixed           mtx[16];
-  ClutterFixed           mtx_p[16];
-  ClutterFixed           x, y, z;
+  ClutterFixed           _x, _y, _z, _w;
   ClutterActorPrivate   *priv;
   
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  /* FIXME: we should probably call allocate_cords on the actor to make
-   * sure untransformed box is up to date. 
-  */
-
   priv = self->priv;
 
-  mtx_perspective (&mtx_p[0], CLUTTER_STAGE (clutter_stage_get_default()));
+  cogl_push_matrix();
+  _clutter_actor_apply_modelview_transform_recursive (self);
 
-  mtx_create (priv, &mtx[0], &mtx_p[0]);
+  cogl_get_modelview_matrix (mtx);
 
 #if 0
-  g_debug ("Matrix\n"
-	   "       %f, %f, %f, %f\n"
-	   "       %f, %f, %f, %f\n"
-	   "       %f, %f, %f, %f\n"
-	   "       %f, %f, %f, %f",
+  g_debug ("Modelview Matrix:\n"
+	   "%f, %f, %f, %f\n"
+	   "%f, %f, %f, %f\n"
+	   "%f, %f, %f, %f\n"
+	   "%f, %f, %f, %f\n",
 	   CLUTTER_FIXED_TO_FLOAT (M(mtx,0,0)),
 	   CLUTTER_FIXED_TO_FLOAT (M(mtx,0,1)),
 	   CLUTTER_FIXED_TO_FLOAT (M(mtx,0,2)),
@@ -807,82 +455,318 @@ clutter_actor_get_transformed_vertices (ClutterActor    * self,
 	   CLUTTER_FIXED_TO_FLOAT (M(mtx,3,2)),
 	   CLUTTER_FIXED_TO_FLOAT (M(mtx,3,3)));
 #endif
+  _x = 0;
+  _y = 0;
+  _z = 0;
+  _w = CFX_ONE;
   
-  x = 0;
-  y = 0;
-  z = 0;
-      
-  mtx_transform (&mtx[0], &x, &y, &z);
+  mtx_transform (mtx, &_x, &_y, &_z, &_w);
 
-  verts->topleft.x = CLUTTER_UNITS_FROM_FIXED (x);
-  verts->topleft.y = CLUTTER_UNITS_FROM_FIXED (y);
-  verts->topleft.z = CLUTTER_UNITS_FROM_FIXED (z);
+  verts[0].x = _x;
+  verts[0].y = _y;
+  verts[0].z = _z;
+  w[0] = _w;
 
-  x = CLUTTER_UNITS_TO_FIXED (priv->coords.x2 - priv->coords.x1);
-  y = CLUTTER_UNITS_TO_FIXED (priv->coords.y2 - priv->coords.y1);
-  z = CLUTTER_INT_TO_FIXED (priv->z);
+  _x = priv->coords.x2 - priv->coords.x1;
+  _y = 0;
+  _z = 0;
+  _w = CFX_ONE;
+  
+  mtx_transform (mtx, &_x, &_y, &_z, &_w);
+  
+  verts[1].x = _x;
+  verts[1].y = _y;
+  verts[1].z = _z;
+  w[1] = _w;
 
-  mtx_transform (&mtx[0], &x, &y, &z);
+  _x = 0;
+  _y = priv->coords.y2 - priv->coords.y1;
+  _z = 0;
+  _w = CFX_ONE;
   
-  verts->bottomright.x = CLUTTER_UNITS_FROM_FIXED (x);
-  verts->bottomright.y = CLUTTER_UNITS_FROM_FIXED (y);
-  verts->bottomright.z = CLUTTER_UNITS_FROM_FIXED (z);
+  mtx_transform (mtx, &_x, &_y, &_z, &_w);
+  
+  verts[2].x = _x;
+  verts[2].y = _y;
+  verts[2].z = _z;
+  w[2] = _w;
+  
+  _x = priv->coords.x2 - priv->coords.x1;
+  _y = priv->coords.y2 - priv->coords.y1;
+  _z = 0;
+  _w = CFX_ONE;
+  
+  mtx_transform (mtx, &_x, &_y, &_z, &_w);
+  
+  verts[3].x = _x;
+  verts[3].y = _y;
+  verts[3].z = _z;
+  w[3] = _w;
 
-  x = 0;
-  y = CLUTTER_UNITS_TO_FIXED (priv->coords.y2 - priv->coords.y1);
-  z = CLUTTER_INT_TO_FIXED (priv->z);
+  cogl_pop_matrix();
+}
+
+/**
+ * clutter_actor_project_vertices:
+ * @self: A #ClutterActor
+ * @verts: Pointer to a location of an array of 4 #ClutterVertex where to
+ * store the result.
+ * 
+ * Calculates the screen coordinaces of the four corners or the actor; the
+ * returned corners are in the following order: bottomleft, bottomright,
+ * topright, topleft.
+ *
+ * Since: 0.4
+ **/
+void
+clutter_actor_project_vertices (ClutterActor    * self,
+				ClutterVertex     verts[4])
+{
+  ClutterFixed           mtx_p[16];
+  ClutterFixed           v[4];
+  ClutterFixed           w[4];
+  ClutterActorPrivate   *priv;
   
-  mtx_transform (&mtx[0], &x, &y, &z);
-  
-  verts->bottomleft.x = CLUTTER_UNITS_FROM_FIXED (x);
-  verts->bottomleft.y = CLUTTER_UNITS_FROM_FIXED (y);
-  verts->bottomleft.z = CLUTTER_UNITS_FROM_FIXED (z);
-  
-  x = CLUTTER_UNITS_TO_FIXED (priv->coords.x2 - priv->coords.x1);
-  y = 0;
-  z = CLUTTER_INT_TO_FIXED (priv->z);
-  
-  mtx_transform (&mtx[0], &x, &y, &z);
-  
-  verts->topright.x = CLUTTER_UNITS_FROM_FIXED (x);
-  verts->topright.y = CLUTTER_UNITS_FROM_FIXED (y);
-  verts->topright.z = CLUTTER_UNITS_FROM_FIXED (z);
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  /* FIXME: we should probably call allocate_cords on the actor to make
+   * sure untransformed box is up to date. 
+  */
+  priv = self->priv;
+
+  clutter_actor_transform_vertices (self, verts, w);
 
 #if 0
-  if (priv->coords.x1 != verts->topleft.x ||
-      priv->coords.y1 != verts->topleft.y ||
-      priv->coords.x2 != verts->bottomright.x ||
-      priv->coords.y2 != verts->bottomright.y)
-      g_debug ("Box [%f,%f],[%f,%f], \n"
-	       "                rxy %d, rxz %d, rxa %f\n"
-	       "                ryx %d, ryz %d, rya %f\n"
-	       "                rzx %d, rzy %d, rza %f\n"
-	       "Vertices: \n"
-	       " tl [%f,%f,%f], tr [%f,%f,%f] \n"
-	       " bl [%f,%f,%f], br [%f,%f,%f] \n",
-	       CLUTTER_FIXED_TO_FLOAT (priv->coords.x1),
-	       CLUTTER_FIXED_TO_FLOAT (priv->coords.y1),
-	       CLUTTER_FIXED_TO_FLOAT (priv->coords.x2),
-	       CLUTTER_FIXED_TO_FLOAT (priv->coords.y2),
-	       priv->rxy, priv->rxz, CLUTTER_FIXED_TO_FLOAT (priv->rxang),
-	       priv->ryx, priv->ryz, CLUTTER_FIXED_TO_FLOAT (priv->ryang),
-	       priv->rzx, priv->rzy, CLUTTER_FIXED_TO_FLOAT (priv->rzang),
-	       CLUTTER_FIXED_TO_FLOAT (verts->topleft.x),
-	       CLUTTER_FIXED_TO_FLOAT (verts->topleft.y),
-	       CLUTTER_FIXED_TO_FLOAT (verts->topleft.z),
-	       CLUTTER_FIXED_TO_FLOAT (verts->topright.x),
-	       CLUTTER_FIXED_TO_FLOAT (verts->topright.y),
-	       CLUTTER_FIXED_TO_FLOAT (verts->topright.z),
-	       CLUTTER_FIXED_TO_FLOAT (verts->bottomleft.x),
-	       CLUTTER_FIXED_TO_FLOAT (verts->bottomleft.y),
-	       CLUTTER_FIXED_TO_FLOAT (verts->bottomleft.z),
-	       CLUTTER_FIXED_TO_FLOAT (verts->bottomright.x),
-	       CLUTTER_FIXED_TO_FLOAT (verts->bottomright.y),
-	       CLUTTER_FIXED_TO_FLOAT (verts->bottomright.z));
+  g_debug ("Transformed Vertices:\n"
+	   "tl: %f, %f, %f, %f\n"
+	   "tr: %f, %f, %f, %f\n"
+	   "bl: %f, %f, %f, %f\n"
+	   "br: %f, %f, %f, %f\n",
+	   CLUTTER_FIXED_TO_FLOAT (verts[0].x),
+	   CLUTTER_FIXED_TO_FLOAT (verts[0].y),
+	   CLUTTER_FIXED_TO_FLOAT (verts[0].z),
+	   CLUTTER_FIXED_TO_FLOAT (w[0]),
+	   CLUTTER_FIXED_TO_FLOAT (verts[1].x),
+	   CLUTTER_FIXED_TO_FLOAT (verts[1].y),
+	   CLUTTER_FIXED_TO_FLOAT (verts[1].z),
+	   CLUTTER_FIXED_TO_FLOAT (w[1]),
+	   CLUTTER_FIXED_TO_FLOAT (verts[2].x),
+	   CLUTTER_FIXED_TO_FLOAT (verts[2].y),
+	   CLUTTER_FIXED_TO_FLOAT (verts[2].z),
+	   CLUTTER_FIXED_TO_FLOAT (w[2]),
+	   CLUTTER_FIXED_TO_FLOAT (verts[3].x),
+	   CLUTTER_FIXED_TO_FLOAT (verts[3].y),
+	   CLUTTER_FIXED_TO_FLOAT (verts[3].z),
+	   CLUTTER_FIXED_TO_FLOAT (w[3]));
+#endif
+  
+  cogl_get_projection_matrix (mtx_p);
+  cogl_get_viewport (v);
+  
+  mtx_transform (mtx_p,
+		 &verts[0].x,
+		 &verts[0].y,
+		 &verts[0].z,
+		 &w[0]);
+
+  verts[0].x = MTX_GL_SCALE (verts[0].x, w[0], v[2], v[0]);
+  verts[0].y = MTX_GL_SCALE (verts[0].y, w[0], v[3], v[1]);
+  verts[0].z = MTX_GL_SCALE_Z (verts[0].z, w[0]);
+  
+  mtx_transform (mtx_p,
+		 &verts[1].x,
+		 &verts[1].y,
+		 &verts[1].z,
+		 &w[1]);
+
+  verts[1].x = MTX_GL_SCALE (verts[1].x, w[1], v[2], v[0]);
+  verts[1].y = MTX_GL_SCALE (verts[1].y, w[1], v[3], v[1]);
+  verts[1].z = MTX_GL_SCALE_Z (verts[1].z, w[1]);
+
+  mtx_transform (mtx_p,
+		 &verts[2].x,
+		 &verts[2].y,
+		 &verts[2].z,
+		 &w[2]);
+
+  verts[2].x = MTX_GL_SCALE (verts[2].x, w[2], v[2], v[0]);
+  verts[2].y = MTX_GL_SCALE (verts[2].y, w[2], v[3], v[1]);
+  verts[2].z = MTX_GL_SCALE_Z (verts[2].z, w[2]);
+  
+  mtx_transform (mtx_p,
+		 &verts[3].x,
+		 &verts[3].y,
+		 &verts[3].z,
+		 &w[3]);
+
+  verts[3].x = MTX_GL_SCALE (verts[3].x, w[3], v[2], v[0]);
+  verts[3].y = MTX_GL_SCALE (verts[3].y, w[3], v[3], v[1]);
+  verts[3].z = MTX_GL_SCALE_Z (verts[3].z, w[3]);
+  
+#if 0
+  g_debug ("Projection Matrix:\n"
+	   "%f, %f, %f, %f\n"
+	   "%f, %f, %f, %f\n"
+	   "%f, %f, %f, %f\n"
+	   "%f, %f, %f, %f\n",
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,0,0)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,0,1)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,0,2)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,0,3)),
+
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,1,0)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,1,1)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,1,2)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,1,3)),
+	   
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,2,0)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,2,1)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,2,2)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,2,3)),
+
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,3,0)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,3,1)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,3,2)),
+	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,3,3)));
+  
+  g_debug ("Projected Vertices:\n"
+	   "tl: %f, %f, %f\n"
+	   "tr: %f, %f, %f\n"
+	   "bl: %f, %f, %f\n"
+	   "br: %f, %f, %f\n",
+	   CLUTTER_FIXED_TO_FLOAT (verts[0].x),
+	   CLUTTER_FIXED_TO_FLOAT (verts[0].y),
+	   CLUTTER_FIXED_TO_FLOAT (verts[0].z),
+	   CLUTTER_FIXED_TO_FLOAT (verts[1].x),
+	   CLUTTER_FIXED_TO_FLOAT (verts[1].y),
+	   CLUTTER_FIXED_TO_FLOAT (verts[1].z),
+	   CLUTTER_FIXED_TO_FLOAT (verts[2].x),
+	   CLUTTER_FIXED_TO_FLOAT (verts[2].y),
+	   CLUTTER_FIXED_TO_FLOAT (verts[2].z),
+	   CLUTTER_FIXED_TO_FLOAT (verts[3].x),
+	   CLUTTER_FIXED_TO_FLOAT (verts[3].y),
+	   CLUTTER_FIXED_TO_FLOAT (verts[3].z));
 #endif
 }
 
-#undef M
+void
+_clutter_actor_apply_modelview_transform (ClutterActor * self)
+{
+  ClutterActorPrivate *priv = self->priv;
+
+  if (clutter_actor_get_parent (self) != NULL)
+    {
+      cogl_translate (CLUTTER_UNITS_TO_INT (priv->coords.x1), 
+		      CLUTTER_UNITS_TO_INT (priv->coords.y1), 
+		      0);
+    }
+
+  if (priv->rzang)
+    {
+      cogl_translate (priv->rzx, priv->rzy, 0);
+      cogl_rotatex (priv->rzang, 0, 0, CFX_ONE);
+      cogl_translate (-priv->rzx, -priv->rzy, 0);
+    }
+
+  if (priv->ryang)
+    {
+      cogl_translate (priv->ryx, 0, priv->z + priv->ryz);
+      cogl_rotatex (priv->ryang, 0, CFX_ONE, 0);
+      cogl_translate (-priv->ryx, 0, -(priv->z + priv->ryz));
+    }
+
+  if (priv->rxang)
+    {
+      cogl_translate (0, priv->rxy, priv->z + priv->rxz);
+      cogl_rotatex (priv->rxang, CFX_ONE, 0, CFX_ONE);
+      cogl_translate (0, -priv->rxy, -(priv->z - priv->rxz));
+    }
+
+  if (priv->z)
+    cogl_translate (0, 0, priv->z);
+
+  if (priv->scale_x != CFX_ONE ||
+      priv->scale_y != CFX_ONE)
+    {
+      cogl_scale (priv->scale_x, priv->scale_y);
+    }
+
+  if (priv->has_clip)
+    cogl_clip_set (&(priv->clip));
+
+#if 0
+  float gl_mtx[16];
+  glGetFloatv (GL_MODELVIEW_MATRIX, &gl_mtx[0]);
+  g_debug ("Modelview Matrix (draw)\n"
+	   "%f, %f, %f, %f\n"
+	   "%f, %f, %f, %f\n"
+	   "%f, %f, %f, %f\n"
+	   "%f, %f, %f, %f\n",
+	   M(gl_mtx,0,0),
+	   M(gl_mtx,0,1),
+	   M(gl_mtx,0,2),
+	   M(gl_mtx,0,3),
+
+	   M(gl_mtx,1,0),
+	   M(gl_mtx,1,1),
+	   M(gl_mtx,1,2),
+	   M(gl_mtx,1,3),
+	   
+	   M(gl_mtx,2,0),
+	   M(gl_mtx,2,1),
+	   M(gl_mtx,2,2),
+	   M(gl_mtx,2,3),
+
+	   M(gl_mtx,3,0),
+	   M(gl_mtx,3,1),
+	   M(gl_mtx,3,2),
+	   M(gl_mtx,3,3));
+#endif
+  
+}
+
+void
+_clutter_actor_apply_modelview_transform_recursive (ClutterActor * self)
+{
+  ClutterActor * parent;
+  
+  _clutter_actor_apply_modelview_transform (self);
+  
+#if 0
+  float gl_mtx[16];
+  glGetFloatv (GL_MODELVIEW_MATRIX, &gl_mtx[0]);
+  g_debug ("Modelview Matrix (partial), %s\n"
+	   "%f, %f, %f, %f\n"
+	   "%f, %f, %f, %f\n"
+	   "%f, %f, %f, %f\n"
+	   "%f, %f, %f, %f\n",
+	   g_type_name (G_OBJECT_TYPE (self)),
+	   M(gl_mtx,0,0),
+	   M(gl_mtx,0,1),
+	   M(gl_mtx,0,2),
+	   M(gl_mtx,0,3),
+
+	   M(gl_mtx,1,0),
+	   M(gl_mtx,1,1),
+	   M(gl_mtx,1,2),
+	   M(gl_mtx,1,3),
+	   
+	   M(gl_mtx,2,0),
+	   M(gl_mtx,2,1),
+	   M(gl_mtx,2,2),
+	   M(gl_mtx,2,3),
+
+	   M(gl_mtx,3,0),
+	   M(gl_mtx,3,1),
+	   M(gl_mtx,3,2),
+	   M(gl_mtx,3,3));
+#endif
+  
+  parent = clutter_actor_get_parent (self);
+  
+  if (parent)
+    _clutter_actor_apply_modelview_transform_recursive (parent);
+}
 
 /**
  * clutter_actor_paint:
@@ -919,46 +803,8 @@ clutter_actor_paint (ClutterActor *self)
 
   cogl_push_matrix();
 
-  if (clutter_actor_get_parent (self) != NULL)
-    {
-      cogl_translate (CLUTTER_UNITS_TO_INT (priv->coords.x1), 
-		      CLUTTER_UNITS_TO_INT (priv->coords.y1), 
-		      0);
-    }
-
-  if (self->priv->rzang)
-    {
-      cogl_translate (priv->rzx, priv->rzy, 0);
-      cogl_rotatex (priv->rzang, 0, 0, CFX_ONE);
-      cogl_translate (-priv->rzx, -priv->rzy, 0);
-    }
-
-  if (self->priv->ryang)
-    {
-      cogl_translate (priv->ryx, 0, priv->z + priv->ryz);
-      cogl_rotatex (priv->ryang, 0, CFX_ONE, 0);
-      cogl_translate (-priv->ryx, 0, -(priv->z + priv->ryz));
-    }
-
-  if (self->priv->rxang)
-    {
-      cogl_translate (0, priv->rxy, priv->z + priv->rxz);
-      cogl_rotatex (priv->rxang, CFX_ONE, 0, CFX_ONE);
-      cogl_translate (0, -priv->rxy, -(priv->z - priv->rxz));
-    }
-
-  if (self->priv->z)
-    cogl_translate (0, 0, priv->z);
-
-  if (self->priv->scale_x != CFX_ONE ||
-      self->priv->scale_y != CFX_ONE)
-    {
-      cogl_scale (priv->scale_x, priv->scale_y);
-    }
-
-  if (priv->has_clip)
-    cogl_clip_set (&(priv->clip));
-
+  _clutter_actor_apply_modelview_transform (self);
+  
   if (G_UNLIKELY(context->pick_mode == TRUE))
     {
       ClutterColor col;
@@ -986,11 +832,10 @@ clutter_actor_paint (ClutterActor *self)
   if (priv->has_clip)
     cogl_clip_unset();
 
-  if (priv->scale_x != CFX_ONE || priv->scale_y != CFX_ONE)
-    cogl_scale (CFX_ONE, CFX_ONE);
-
   cogl_pop_matrix();
 }
+
+#undef M
 
 /**
  * clutter_actor_request_coords:
@@ -2734,25 +2579,25 @@ clutter_geometry_get_type (void)
  * ClutterVertices
  */
 
-static ClutterVertices*
-clutter_vertices_copy (const ClutterVertices *vertices)
+static ClutterVertex*
+clutter_vertex_copy (const ClutterVertex *vertex)
 {
-  ClutterVertices *result = g_new (ClutterVertices, 1);
+  ClutterVertex *result = g_new (ClutterVertex, 1);
 
-  *result = *vertices;
+  *result = *vertex;
 
   return result;
 }
 
 GType
-clutter_vertices_get_type (void)
+clutter_vertex_get_type (void)
 {
   static GType our_type = 0;
 
   if (our_type == 0)
     our_type = g_boxed_type_register_static (
-              g_intern_static_string ("ClutterVertices"),
-	      (GBoxedCopyFunc) clutter_vertices_copy,
+              g_intern_static_string ("ClutterVertex"),
+	      (GBoxedCopyFunc) clutter_vertex_copy,
 	      (GBoxedFreeFunc) g_free);
 
   return our_type;

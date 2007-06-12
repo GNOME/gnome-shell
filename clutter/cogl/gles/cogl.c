@@ -533,3 +533,21 @@ cogl_get_features ()
   /* Suck */
   return 0;
 }
+
+void
+cogl_get_modelview_matrix (ClutterFixed m[16])
+{
+  glGetFixedv(GL_MODELVIEW_MATRIX, &m[0]);
+}
+
+void
+cogl_get_projection_matrix (ClutterFixed m[16])
+{
+  glGetFixedv(GL_PROJECTION_MATRIX, &m[0]);
+}
+
+void
+cogl_get_viewport (ClutterFixed v[4])
+{
+  glGetFixedv(GL_VIEWPORT, &v[0]);
+}
