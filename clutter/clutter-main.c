@@ -132,6 +132,8 @@ clutter_redraw (void)
 			   perspective.aspect,
 			   perspective.z_near,
 			   perspective.z_far);
+
+      CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
     }
 
   /* Setup the initial paint */

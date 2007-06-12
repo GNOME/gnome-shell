@@ -1,3 +1,9 @@
+2007-06-12  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-main.c:
+	(clutter_redraw):
+	Clear CLUTTER_ACTOR_SYNC_MATRICES flag after setting up viewport.
+	
 2007-06-12  Matthew Allum  <mallum@openedhand.com>
 
 	* doc/manual/Makefile.am:
