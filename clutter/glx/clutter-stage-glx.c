@@ -313,8 +313,8 @@ clutter_stage_glx_realize (ClutterActor *actor)
 }
 
 static void
-clutter_stage_glx_allocate_coords (ClutterActor        *self,
-                                   ClutterActorBox     *box)
+clutter_stage_glx_query_coords (ClutterActor        *self,
+				ClutterActorBox     *box)
 {
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (self);
 
@@ -542,7 +542,7 @@ clutter_stage_glx_class_init (ClutterStageGLXClass *klass)
   actor_class->realize = clutter_stage_glx_realize;
   actor_class->unrealize = clutter_stage_glx_unrealize;
   actor_class->request_coords = clutter_stage_glx_request_coords;
-  actor_class->allocate_coords = clutter_stage_glx_allocate_coords;
+  actor_class->query_coords = clutter_stage_glx_query_coords;
   
   stage_class->set_fullscreen = clutter_stage_glx_set_fullscreen;
   stage_class->set_cursor_visible = clutter_stage_glx_set_cursor_visible;

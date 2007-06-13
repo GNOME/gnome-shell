@@ -124,7 +124,7 @@ clutter_group_request_coords (ClutterActor        *self,
 {
   ClutterActorBox cbox;
 
-  clutter_actor_allocate_coords (self, &cbox);
+  clutter_actor_query_coords (self, &cbox);
 
   /* Only positioning works.
    * Sizing requests fail, use scale() instead 
@@ -134,8 +134,8 @@ clutter_group_request_coords (ClutterActor        *self,
 }
 
 static void
-clutter_group_allocate_coords (ClutterActor        *self,
-			       ClutterActorBox     *box)
+clutter_group_query_coords (ClutterActor        *self,
+			    ClutterActorBox     *box)
 {
   ClutterGroupPrivate *priv;
   GList               *child_item;
@@ -157,7 +157,7 @@ clutter_group_allocate_coords (ClutterActor        *self,
 	    {
 	      ClutterActorBox cbox;
 
-	      clutter_actor_allocate_coords (child, &cbox);
+	      clutter_actor_query_coords (child, &cbox);
 	      
 	      /* Ignore any children with offscreen ( negaive )
                * positions.
@@ -300,7 +300,7 @@ clutter_group_class_init (ClutterGroupClass *klass)
   actor_class->show_all        = clutter_group_real_show_all;
   actor_class->hide_all        = clutter_group_real_hide_all;
   actor_class->request_coords  = clutter_group_request_coords;
-  actor_class->allocate_coords = clutter_group_allocate_coords;
+  actor_class->query_coords    = clutter_group_query_coords;
 
   /**
    * ClutterGroup::add:

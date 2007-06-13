@@ -244,9 +244,13 @@ translate_key_event (ClutterBackend *backend,
   event->key.time = xevent->xkey.time;
   event->key.modifier_state = (ClutterModifierType) xevent->xkey.state;
   event->key.hardware_keycode = xevent->xkey.keycode;
-  event->key.keyval = XKeycodeToKeysym (xevent->xkey.display, 
-                                        xevent->xkey.keycode,
-                                        0); /* FIXME: index with modifiers */
+
+  /* FIXME: We need to handle other modifiers rather than just shift */
+  event->key.keyval 
+    = XKeycodeToKeysym (xevent->xkey.display, 
+			xevent->xkey.keycode,
+			(event->key.modifier_state & CLUTTER_SHIFT_MASK) 
+			   ? 1 : 0);
 }
 
 static gboolean

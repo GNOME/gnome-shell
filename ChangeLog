@@ -1,3 +1,24 @@
+2007-06-14  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	* clutter/clutter-group.c:
+	* clutter/clutter-label.c:
+	* clutter/egl/clutter-stage-egl.c:
+	* clutter/glx/clutter-stage-glx.c:
+	* clutter/sdl/clutter-stage-sdl.c:
+	Rename clutter_actor_allocate_coords -> clutter_actor_query_coords
+
+	Change repaints to G_PRIORITY_DEFAULT + 10.
+	(timelines are G_PRIORITY_DEFAULT + 30, events G_PRIORITY_DEFAULT) 
+
+	* clutter/glx/clutter-event-glx.c:
+	Handle shift modifier in keycode -> keysym translation.
+
+	* tests/test-actors.c: 
+	Remove (broken) screen saver code. 
+	Add scaling behaviour, clean code a little.
+
 2007-06-13  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.c:

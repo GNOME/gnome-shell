@@ -193,7 +193,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
 }
 
 static void
-clutter_stage_egl_allocate_coords (ClutterActor        *self,
+clutter_stage_egl_query_coords (ClutterActor        *self,
                                    ClutterActorBox     *box)
 {
   ClutterStageEGL *stage_egl = CLUTTER_STAGE_EGL (self);
@@ -360,7 +360,7 @@ clutter_stage_egl_class_init (ClutterStageEGLClass *klass)
   actor_class->realize = clutter_stage_egl_realize;
   actor_class->unrealize = clutter_stage_egl_unrealize;
   actor_class->request_coords = clutter_stage_egl_request_coords;
-  actor_class->allocate_coords = clutter_stage_egl_allocate_coords;
+  actor_class->query_coords = clutter_stage_egl_query_coords;
   
   stage_class->set_fullscreen = clutter_stage_egl_set_fullscreen;
   stage_class->set_cursor_visible = clutter_stage_egl_set_cursor_visible;

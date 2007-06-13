@@ -533,7 +533,7 @@ clutter_actor_project_vertices (ClutterActor    * self,
   
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  /* FIXME: we should probably call allocate_cords on the actor to make
+  /* FIXME: we should probably call query_cords on the actor to make
    * sure untransformed box is up to date. 
   */
   priv = self->priv;
@@ -901,19 +901,19 @@ clutter_actor_request_coords (ClutterActor    *self,
 }
 
 /**
- * clutter_actor_allocate_coords:
+ * clutter_actor_query_coords:
  * @self: A #ClutterActor
  * @box: A location to store the actors #ClutterActorBox co-ordinates
  *
- * Requests the allocated co-ordinates for the #ClutterActor relative 
- * to any parent.
+ * Requests the queryd un transformed co-ordinates for the #ClutterActor 
+ * relative to any parent.
  *
  * This function should not be called directly by applications instead 
  * the various position/geometry methods should be used.
  **/
 void
-clutter_actor_allocate_coords (ClutterActor    *self,
-			       ClutterActorBox *box)
+clutter_actor_query_coords (ClutterActor    *self,
+			    ClutterActorBox *box)
 {
   ClutterActorClass *klass;
 
@@ -924,14 +924,14 @@ clutter_actor_allocate_coords (ClutterActor    *self,
   box->x2 = self->priv->coords.x2;
   box->y2 = self->priv->coords.y2;
 
-  if (klass->allocate_coords)
+  if (klass->query_coords)
     {
       /* FIXME: This is kind of a cludge - we pass out *private* 
        *        co-ords down to any subclasses so they can modify
        *        we then resync any changes. Needed for group class.
        *        Need to figure out nicer way.
       */
-      klass->allocate_coords(self, box);
+      klass->query_coords(self, box);
 
       self->priv->coords.x1 = box->x1;
       self->priv->coords.y1 = box->y1; 
@@ -1339,7 +1339,7 @@ clutter_actor_queue_redraw (ClutterActor *self)
     {
       CLUTTER_TIMESTAMP (SCHEDULER, 
 			 "Adding ideler for actor: %p", self);
-      ctx->update_idle = g_idle_add_full (-100 , /* very high priority */
+      ctx->update_idle = g_idle_add_full (G_PRIORITY_DEFAULT + 10,
 					  redraw_update_idle, 
 					  NULL, NULL);
     }
@@ -1381,7 +1381,7 @@ clutter_actor_get_geometry (ClutterActor    *self,
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   
-  clutter_actor_allocate_coords (self, &box);
+  clutter_actor_query_coords (self, &box);
 
   geometry->x      = CLUTTER_UNITS_TO_INT (box.x1);
   geometry->y      = CLUTTER_UNITS_TO_INT (box.y1);
@@ -1411,7 +1411,7 @@ clutter_actor_get_coords (ClutterActor *self,
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   
-  clutter_actor_allocate_coords (self, &box);
+  clutter_actor_query_coords (self, &box);
 
   if (x1)
     *x1 = CLUTTER_UNITS_TO_INT (box.x1);
@@ -1444,7 +1444,7 @@ clutter_actor_set_position (ClutterActor *self,
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_allocate_coords (self, &box);
+  clutter_actor_query_coords (self, &box);
 
   box.x2 += (CLUTTER_UNITS_FROM_INT (x) - box.x1);
   box.y2 += (CLUTTER_UNITS_FROM_INT (y) - box.y1);
@@ -1477,7 +1477,7 @@ clutter_actor_move_by (ClutterActor *self,
   
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_allocate_coords (self, &box);
+  clutter_actor_query_coords (self, &box);
 
   box.x2 += dxu;
   box.y2 += dyu;
@@ -1505,7 +1505,7 @@ clutter_actor_set_size (ClutterActor *self,
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_allocate_coords (self, &box);
+  clutter_actor_query_coords (self, &box);
 
   box.x2 = box.x1 + CLUTTER_UNITS_FROM_INT (width);
   box.y2 = box.y1 + CLUTTER_UNITS_FROM_INT (height);
@@ -1559,7 +1559,7 @@ clutter_actor_get_abs_position_units (ClutterActor *self,
   
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  clutter_actor_allocate_coords (self, &box);
+  clutter_actor_query_coords (self, &box);
 
   parent = self->priv->parent_actor;
 
@@ -1630,7 +1630,7 @@ clutter_actor_get_abs_size_units (ClutterActor *self,
   ClutterActorBox  box;
   ClutterActor    *parent;
 
-  clutter_actor_allocate_coords (self, &box);
+  clutter_actor_query_coords (self, &box);
 
   if (width)
     *width  = box.x2 - box.x1;
@@ -1702,7 +1702,7 @@ clutter_actor_get_width (ClutterActor *self)
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
   
-  clutter_actor_allocate_coords (self, &box);
+  clutter_actor_query_coords (self, &box);
 
   return CLUTTER_UNITS_TO_INT (box.x2 - box.x1);
 }
@@ -1722,7 +1722,7 @@ clutter_actor_get_height (ClutterActor *self)
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
   
-  clutter_actor_allocate_coords (self, &box);
+  clutter_actor_query_coords (self, &box);
 
   return CLUTTER_UNITS_TO_INT (box.y2 - box.y1);
 }
@@ -1777,7 +1777,7 @@ clutter_actor_get_x (ClutterActor *self)
   
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
 
-  clutter_actor_allocate_coords (self, &box);
+  clutter_actor_query_coords (self, &box);
 
   return CLUTTER_UNITS_TO_INT (box.x1);
 }
@@ -1797,7 +1797,7 @@ clutter_actor_get_y (ClutterActor *self)
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
 
-  clutter_actor_allocate_coords (self, &box);
+  clutter_actor_query_coords (self, &box);
 
   return CLUTTER_UNITS_TO_INT (box.y1);
 }
@@ -1945,7 +1945,7 @@ clutter_actor_set_scale_with_gravityx (ClutterActor     *self,
 
   clutter_actor_get_abs_size_units (self, &sw, &sh);
 
-  clutter_actor_allocate_coords (self, &box);
+  clutter_actor_query_coords (self, &box);
   x = box.x1;
   y = box.y1;
   

@@ -88,7 +88,7 @@ clutter_stage_sdl_realize (ClutterActor *actor)
 }
 
 static void
-clutter_stage_sdl_allocate_coords (ClutterActor    *self,
+clutter_stage_sdl_query_coords (ClutterActor    *self,
                                    ClutterActorBox *box)
 {
   ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (self);
@@ -195,7 +195,7 @@ clutter_stage_sdl_class_init (ClutterStageSDLClass *klass)
   actor_class->realize = clutter_stage_sdl_realize;
   actor_class->unrealize = clutter_stage_sdl_unrealize;
   actor_class->request_coords = clutter_stage_sdl_request_coords;
-  actor_class->allocate_coords = clutter_stage_sdl_allocate_coords;
+  actor_class->query_coords = clutter_stage_sdl_query_coords;
   
   stage_class->set_fullscreen = clutter_stage_sdl_set_fullscreen;
   stage_class->set_cursor_visible = clutter_stage_sdl_set_cursor_visible;

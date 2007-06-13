@@ -142,7 +142,7 @@ struct _ClutterActorClass
   void (* paint)           (ClutterActor        *actor);
   void (* request_coords)  (ClutterActor        *actor,
 			    ClutterActorBox     *box);
-  void (* allocate_coords) (ClutterActor        *actor,
+  void (* query_coords)    (ClutterActor        *actor,
 			    ClutterActorBox     *box);
   void (* set_depth)       (ClutterActor        *actor,
 		            gint                 depth);
@@ -176,7 +176,7 @@ void                  clutter_actor_queue_redraw     (ClutterActor          *sel
 void                  clutter_actor_destroy          (ClutterActor          *self);
 void                  clutter_actor_request_coords   (ClutterActor          *self,
 						      ClutterActorBox       *box);
-void                  clutter_actor_allocate_coords  (ClutterActor          *self,
+void                  clutter_actor_query_coords     (ClutterActor          *self,
 						      ClutterActorBox       *box);
 void                  clutter_actor_set_geometry     (ClutterActor          *self,
 						      const ClutterGeometry *geometry);

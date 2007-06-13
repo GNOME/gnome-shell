@@ -278,8 +278,8 @@ clutter_label_paint (ClutterActor *self)
 }
 
 static void
-clutter_label_allocate_coords (ClutterActor        *self,
-			       ClutterActorBox     *box)
+clutter_label_query_coords (ClutterActor        *self,
+			    ClutterActorBox     *box)
 {
   ClutterLabel         *label = CLUTTER_LABEL(self);
   ClutterLabelPrivate  *priv;  
@@ -382,7 +382,7 @@ clutter_label_class_init (ClutterLabelClass *klass)
 
   actor_class->paint           = clutter_label_paint;
   actor_class->request_coords  = clutter_label_request_coords;
-  actor_class->allocate_coords = clutter_label_allocate_coords;
+  actor_class->query_coords    = clutter_label_query_coords;
 
   gobject_class->finalize   = clutter_label_finalize;
   gobject_class->dispose    = clutter_label_dispose;
