@@ -1,5 +1,5 @@
 noinst_PROGRAMS = test-textures test-events test-offscreen test-scale \
-                  test-actors test-behave test-text test-entry
+                  test-actors test-behave test-text test-entry test-project
 
 INCLUDES = -I$(top_srcdir)/
 LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.la
@@ -14,3 +14,4 @@ test_actor_SOURCES     = test-actors.c
 test_behave_SOURCES    = test-behave.c 
 test_text_SOURCES      = test-text.c 
 test_entry_SOURCES     = test-entry.c
+test_project_SOURCES   = test-project.c

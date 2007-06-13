@@ -129,6 +129,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
 {
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (actor);
   gboolean is_offscreen;
+  ClutterPerspective perspective;
 
   CLUTTER_NOTE (MISC, "Realizing main stage");
 
@@ -294,8 +295,14 @@ clutter_stage_glx_realize (ClutterActor *actor)
 
     }
 
-  CLUTTER_SET_PRIVATE_FLAGS(actor, CLUTTER_ACTOR_SYNC_MATRICES);
-      
+  clutter_stage_get_perspectivex (CLUTTER_STAGE (actor), &perspective);
+  cogl_setup_viewport (clutter_actor_get_width (actor),
+		       clutter_actor_get_height (actor),
+		       perspective.fovy,
+		       perspective.aspect,
+		       perspective.z_near,
+		       perspective.z_far);
+  
   return;
   
  fail:

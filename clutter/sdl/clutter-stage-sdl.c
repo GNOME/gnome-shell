@@ -42,6 +42,7 @@ clutter_stage_sdl_realize (ClutterActor *actor)
   ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (actor);
 
   gboolean is_offscreen, is_fullscreen;
+  ClutterPerspective perspective;
 
   CLUTTER_NOTE (BACKEND, "Realizing main stage");
 
@@ -77,7 +78,13 @@ clutter_stage_sdl_realize (ClutterActor *actor)
       return;
     }
 
-  CLUTTER_SET_PRIVATE_FLAGS(actor, CLUTTER_ACTOR_SYNC_MATRICES);
+  clutter_stage_get_perspectivex (CLUTTER_STAGE (actor), &perspective);
+  cogl_setup_viewport (clutter_actor_get_width (actor),
+		       clutter_actor_get_height (actor),
+		       perspective.fovy,
+		       perspective.aspect,
+		       perspective.z_near,
+		       perspective.z_far);
 }
 
 static void

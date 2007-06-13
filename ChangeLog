@@ -1,3 +1,20 @@
+2007-06-13  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_project_vertices):
+	(clutter_actor_project_proint):
+	Fixed translation of Y coords to match the windowing system.
+	
+	* clutter/egl/clutter-stage-egl.c:
+	* clutter/glx/clutter-stage-glx.c:
+	* clutter/sdl/clutter-stage-sdl.c:
+	(clutter_stage_*_request_size):
+	Initialize viewport when setting/resetting stage side.
+	
+	* tests/Makefile.am
+	* tests/test-project.c:
+	An interactive test of the projection stuff.
+	
 2007-06-12  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-main.c:

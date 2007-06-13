@@ -370,6 +370,10 @@ clutter_actor_transform_point (ClutterActor *actor,
                                       ((CFX_DIV (x,w) + CFX_ONE) >> 1), v1) \
 				         + v2)
 
+#define MTX_GL_SCALE_Y(y,w,v1,v2) (v1 - CFX_MUL( \
+                                      ((CFX_DIV (y,w) + CFX_ONE) >> 1), v1) \
+				         + v2)
+
 #define MTX_GL_SCALE_Z(z,w) ((CFX_DIV (z,w) + CFX_ONE) >> 1)
 
 /**
@@ -404,8 +408,8 @@ clutter_actor_project_point (ClutterActor *self,
   mtx_transform (mtx_p, x, y, z, &w);
 
   *x = MTX_GL_SCALE(*x,w,v[2],v[0]);
-  *y = MTX_GL_SCALE(*y,w,v[3],v[1]);
-  *z = MTX_GL_SCALE_Z(*z,w);
+  *y = MTX_GL_SCALE_Y(*y,w,v[3],v[1]);
+  *z = MTX_GL_SCALE(*z,w,v[2],v[0]);
 }
 
 /* Recursively tranform supplied vertices with the tranform for the current
@@ -570,8 +574,8 @@ clutter_actor_project_vertices (ClutterActor    * self,
 		 &w[0]);
 
   verts[0].x = MTX_GL_SCALE (verts[0].x, w[0], v[2], v[0]);
-  verts[0].y = MTX_GL_SCALE (verts[0].y, w[0], v[3], v[1]);
-  verts[0].z = MTX_GL_SCALE_Z (verts[0].z, w[0]);
+  verts[0].y = MTX_GL_SCALE_Y (verts[0].y, w[0], v[3], v[1]);
+  verts[0].z = MTX_GL_SCALE (verts[0].z, w[0], v[2], v[0]);
   
   mtx_transform (mtx_p,
 		 &verts[1].x,
@@ -580,8 +584,8 @@ clutter_actor_project_vertices (ClutterActor    * self,
 		 &w[1]);
 
   verts[1].x = MTX_GL_SCALE (verts[1].x, w[1], v[2], v[0]);
-  verts[1].y = MTX_GL_SCALE (verts[1].y, w[1], v[3], v[1]);
-  verts[1].z = MTX_GL_SCALE_Z (verts[1].z, w[1]);
+  verts[1].y = MTX_GL_SCALE_Y (verts[1].y, w[1], v[3], v[1]);
+  verts[1].z = MTX_GL_SCALE (verts[1].z, w[1], v[2], v[0]);
 
   mtx_transform (mtx_p,
 		 &verts[2].x,
@@ -590,8 +594,8 @@ clutter_actor_project_vertices (ClutterActor    * self,
 		 &w[2]);
 
   verts[2].x = MTX_GL_SCALE (verts[2].x, w[2], v[2], v[0]);
-  verts[2].y = MTX_GL_SCALE (verts[2].y, w[2], v[3], v[1]);
-  verts[2].z = MTX_GL_SCALE_Z (verts[2].z, w[2]);
+  verts[2].y = MTX_GL_SCALE_Y (verts[2].y, w[2], v[3], v[1]);
+  verts[2].z = MTX_GL_SCALE (verts[2].z, w[2], v[2], v[0]);
   
   mtx_transform (mtx_p,
 		 &verts[3].x,
@@ -600,8 +604,8 @@ clutter_actor_project_vertices (ClutterActor    * self,
 		 &w[3]);
 
   verts[3].x = MTX_GL_SCALE (verts[3].x, w[3], v[2], v[0]);
-  verts[3].y = MTX_GL_SCALE (verts[3].y, w[3], v[3], v[1]);
-  verts[3].z = MTX_GL_SCALE_Z (verts[3].z, w[3]);
+  verts[3].y = MTX_GL_SCALE_Y (verts[3].y, w[3], v[3], v[1]);
+  verts[3].z = MTX_GL_SCALE (verts[3].z, w[3], v[2], v[0]);
   
 #if 0
   g_debug ("Projection Matrix:\n"
