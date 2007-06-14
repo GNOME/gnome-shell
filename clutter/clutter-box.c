@@ -161,6 +161,14 @@ clutter_box_paint (ClutterActor *actor)
 }
 
 static void
+clutter_box_pick (ClutterActor       *actor,
+                  const ClutterColor *color)
+{
+  /* just repaint; in the future we might enter in a "focused" status here */
+  clutter_actor_paint (actor);
+}
+
+static void
 clutter_box_dispose (GObject *gobject)
 {
   ClutterBox *box = CLUTTER_BOX (gobject);
@@ -249,6 +257,7 @@ clutter_box_class_init (ClutterBoxClass *klass)
   actor_class->show_all = clutter_box_show_all;
   actor_class->hide_all = clutter_box_hide_all;
   actor_class->paint = clutter_box_paint;
+  actor_class->pick = clutter_box_pick;
 
   klass->pack_child = clutter_box_pack_child_unimplemented;
   klass->unpack_child = clutter_box_unpack_child_unimplemented;
