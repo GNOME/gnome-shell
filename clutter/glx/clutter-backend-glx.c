@@ -415,19 +415,69 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
 
   /* FIXME: we really need to check if gl context is set */
 
+  CLUTTER_NOTE (BACKEND, "Checking features\n"
+		"GL_VENDOR: %s\n"
+		"GL_RENDERER: %s\n"
+		"GL_VERSION: %s\n"
+		"GL_EXTENSIONS: %s\n",
+		glGetString (GL_VENDOR),
+		glGetString (GL_RENDERER),
+		glGetString (GL_VERSION),
+		glGetString (GL_EXTENSIONS));
+
   glx_extensions 
     = glXQueryExtensionsString (clutter_glx_get_default_display (),
 				clutter_glx_get_default_screen ());
 
+  CLUTTER_NOTE (BACKEND, "GLX Extensions: %s", glx_extensions);
+
+  /* First check for explicit disabling or it set elsewhere (eg NVIDIA) */
   if (getenv("__GL_SYNC_TO_VBLANK") || check_vblank_env ("none"))
     {
-      CLUTTER_NOTE (MISC, "vblank sync: disabled at user request");
+      CLUTTER_NOTE (BACKEND, "vblank sync: disabled at user request");
     }
   else
     {
+      /* We try two GL vblank syncing mechanisms.  
+       * glXSwapIntervalSGI is tried first, then glXGetVideoSyncSGI.
+       *
+       * glXSwapIntervalSGI is known to work with Mesa and in particular
+       * the Intel drivers. glXGetVideoSyncSGI has serious problems with
+       * Intel drivers causing terrible frame rate so it only tried as a
+       * fallback.
+       *
+       * How well glXGetVideoSyncSGI works with other driver (ATI etc) needs
+       * to be investigated. glXGetVideoSyncSGI on ATI at least seems to have
+       * no effect.
+      */
       if (!check_vblank_env ("dri") && 
+	  cogl_check_extension ("GLX_SGI_swap_control", glx_extensions))
+	{
+	  backend_glx->swap_interval = 
+	    (SwapIntervalProc) get_proc_address ("glXSwapIntervalSGI");
+
+	  CLUTTER_NOTE (BACKEND, "attempting glXSwapIntervalSGI vblank setup");
+
+	  if (backend_glx->swap_interval != NULL)
+	    {
+	      if (backend_glx->swap_interval (1) == 0)
+		{
+		  backend_glx->vblank_type = CLUTTER_VBLANK_GLX_SWAP;
+		  flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
+		  CLUTTER_NOTE (BACKEND, "glXSwapIntervalSGI setup success");
+		}
+	    }
+
+	  if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
+	    CLUTTER_NOTE (BACKEND, "glXSwapIntervalSGI vblank setup failed");
+	}
+
+      if (!check_vblank_env ("dri") && 
+	  !(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK) &&
 	  cogl_check_extension ("GLX_SGI_video_sync", glx_extensions))
 	{
+	  CLUTTER_NOTE (BACKEND, "attempting glXGetVideoSyncSGI vblank setup");
+
 	  backend_glx->get_video_sync = 
 	    (GetVideoSyncProc) get_proc_address ("glXGetVideoSyncSGI");
 
@@ -437,29 +487,39 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
 	  if ((backend_glx->get_video_sync != NULL) &&
 	      (backend_glx->wait_video_sync != NULL))
 	    {
-	      CLUTTER_NOTE (MISC, "vblank sync: using glx");
+	      CLUTTER_NOTE (BACKEND, 
+			    "glXGetVideoSyncSGI vblank setup success");
 	      
               backend_glx->vblank_type = CLUTTER_VBLANK_GLX;
 	      flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
 	    }
+
+	  if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
+	    CLUTTER_NOTE (BACKEND, "glXGetVideoSyncSGI vblank setup failed");
 	}
 #ifdef __linux__
+      /* 
+       * DRI is really an extreme fallback -rumoured to work with Via chipsets
+      */
       if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
 	{
+	  CLUTTER_NOTE (BACKEND, "attempting DRI vblank setup");
 	  backend_glx->dri_fd = open("/dev/dri/card0", O_RDWR);
 	  if (backend_glx->dri_fd >= 0)
 	    {
-	      CLUTTER_NOTE (MISC, "vblank sync: using dri");
-
+	      CLUTTER_NOTE (BACKEND, "DRI vblank setup success");
 	      backend_glx->vblank_type = CLUTTER_VBLANK_DRI;
 	      flags |= CLUTTER_FEATURE_SYNC_TO_VBLANK;
 	    }
+
+	  if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
+	    CLUTTER_NOTE (BACKEND, "DRI vblank setup failed");
 	}
 #endif
       if (!(flags & CLUTTER_FEATURE_SYNC_TO_VBLANK))
         {
-          CLUTTER_NOTE (MISC,
-                        "vblank sync: no use-able mechanism found");
+          CLUTTER_NOTE (BACKEND,
+                        "no use-able vblank mechanism found");
         }
     }
 
@@ -545,6 +605,11 @@ clutter_backend_glx_wait_for_vblank (ClutterBackendGLX *backend_glx)
 {
   switch (backend_glx->vblank_type)
     {
+    case CLUTTER_VBLANK_GLX_SWAP:
+      {
+	/* Nothing */
+	break;
+      }
     case CLUTTER_VBLANK_GLX:
       {
 	unsigned int retraceCount;

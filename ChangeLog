@@ -1,3 +1,21 @@
+2007-06-14  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/cogl/gl/cogl.c: (cogl_check_extension):
+	Actually populate this func and remove the static alternate
+	named one. Means GLX actually checks for available extensions.
+	Other minor tidy ups.
+	
+	* clutter/glx/clutter-backend-glx.c:
+	* clutter/glx/clutter-backend-glx.h:
+	Add support for GLX_SGI_swap_control to do vblanking prefering 
+        over glXGetVideoSyncSGI. Should fix issues on Intel chips with 
+        very slow frame rates due to vblank problems. 
+	Thanks to  Michel Danzer for tips, see;
+        http://bugs.freedesktop.org/show_bug.cgi?id=10542  
+
+	* test/test-actors.c:
+	Change FPS to 60.
+
 2007-06-14  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-timeout-pool.c: Make ClutterTimeoutPool

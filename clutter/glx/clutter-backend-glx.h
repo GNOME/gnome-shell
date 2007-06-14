@@ -47,6 +47,7 @@ typedef struct _ClutterBackendGLXClass  ClutterBackendGLXClass;
 typedef enum ClutterGLXVBlankType
 {
   CLUTTER_VBLANK_NONE = 0,
+  CLUTTER_VBLANK_GLX_SWAP,
   CLUTTER_VBLANK_GLX,
   CLUTTER_VBLANK_DRI
 
@@ -56,6 +57,7 @@ typedef int (*GetVideoSyncProc)  (unsigned int *count);
 typedef int (*WaitVideoSyncProc) (int           divisor,
 				  int          remainder,
 				  unsigned int *count);
+typedef int (*SwapIntervalProc) (int interval);
 
 typedef struct _ClutterGLXEventFilter
 {
@@ -82,9 +84,10 @@ struct _ClutterBackendGLX
   GSList  *event_filters;
 
   /* Vblank stuff */
-  GetVideoSyncProc  get_video_sync;
-  WaitVideoSyncProc wait_video_sync;
-  gint                dri_fd;
+  GetVideoSyncProc       get_video_sync;
+  WaitVideoSyncProc      wait_video_sync;
+  SwapIntervalProc       swap_interval;
+  gint                   dri_fd;
   ClutterGLXVBlankType   vblank_type;
 };
 

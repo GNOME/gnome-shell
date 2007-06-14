@@ -151,7 +151,7 @@ main (int argc, char *argv[])
   oh = g_new(SuperOH, 1);
 
   /* Create a timeline to manage animation */
-  timeline = clutter_timeline_new (360, 120); /* num frames, fps */
+  timeline = clutter_timeline_new (360, 60); /* num frames, fps */
   g_object_set(timeline, "loop", TRUE, 0);   /* have it loop */
 
   /* fire a callback for frame change */
