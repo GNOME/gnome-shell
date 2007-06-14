@@ -1,4 +1,14 @@
-2007-06-07  Emmanuele Bassi  <ebassi@openedhand.com>
+2007-06-14  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-timeout-pool.c: Make ClutterTimeoutPool
+	more thread-safe, using a static lock.
+
+	(clutter_timeout_pool_dispatch), (clutter_timeout_pool_remove): Fix
+	a race condition-turned-in-memory corruption bug, triggered by
+	removing a timeout from the pool while still spinning the pool
+	source.
+
+2007-06-14  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* configure.ac:
 	* doc/manual/Makefile.am: Find xmlto and jw in the path and
