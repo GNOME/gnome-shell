@@ -60,7 +60,6 @@ struct _ClutterTimeoutPool
 {
   GSource source;
 
-  GStaticMutex mutex;
   guint next_id;
 
   GList *timeouts;
@@ -68,9 +67,6 @@ struct _ClutterTimeoutPool
 
   guint id;
 };
-
-#define LOCK_POOL(pool)         g_static_mutex_lock (&pool->mutex);
-#define UNLOCK_POOL(pool)       g_static_mutex_unlock (&pool->mutex);
 
 #define TIMEOUT_REMOVED(timeout) ((timeout->flags & CLUTTER_TIMEOUT_ACTIVE) == 0)
 #define TIMEOUT_READY(timeout)   ((timeout->flags & CLUTTER_TIMEOUT_READY) == 1)
@@ -260,8 +256,6 @@ clutter_timeout_pool_check (GSource *source)
   ClutterTimeoutPool *pool = (ClutterTimeoutPool *) source;
   GList *l = pool->timeouts;
 
-  LOCK_POOL (pool);
-  
   for (l = pool->timeouts; l; l = l->next)
     {
       ClutterTimeout *timeout = l->data;
@@ -280,8 +274,6 @@ clutter_timeout_pool_check (GSource *source)
         break;
     }
 
-  UNLOCK_POOL (pool);
-
   return (pool->ready > 0);
 }
 
@@ -294,17 +286,11 @@ clutter_timeout_pool_dispatch (GSource     *source,
   GList *l = pool->timeouts;
   gboolean sort_needed = FALSE;
 
-  LOCK_POOL (pool);
-
   /* the main loop might have predicted this, so we repeat the
    * check for ready timeouts.
    */
   if (!pool->ready)
-    {
-      UNLOCK_POOL (pool);
-      clutter_timeout_pool_check (source);
-      LOCK_POOL (pool);
-    }
+    clutter_timeout_pool_check (source);
 
   while (l && l->data && (pool->ready-- > 0))
     {
@@ -338,8 +324,6 @@ clutter_timeout_pool_dispatch (GSource     *source,
 
   pool->ready = 0;
 
-  UNLOCK_POOL (pool);
-
   return TRUE;
 }
 
@@ -347,8 +331,6 @@ static void
 clutter_timeout_pool_finalize (GSource *source)
 {
   ClutterTimeoutPool *pool = (ClutterTimeoutPool *) source;
-
-  g_static_mutex_free (&pool->mutex);
 
   g_list_foreach (pool->timeouts, (GFunc) clutter_timeout_free, NULL);
   g_list_free (pool->timeouts);
@@ -388,7 +370,6 @@ clutter_timeout_pool_new (gint priority)
     g_source_set_priority (source, priority);
 
   pool = (ClutterTimeoutPool *) source;
-  g_static_mutex_init (&pool->mutex);
   pool->next_id = 1;
   pool->id = g_source_attach (source, NULL);
   g_source_unref (source);
@@ -431,8 +412,6 @@ clutter_timeout_pool_add (ClutterTimeoutPool *pool,
   ClutterTimeout *timeout;
   guint retval = 0;
 
-  LOCK_POOL (pool);
-
   timeout = clutter_timeout_new (interval);
   timeout->flags |= CLUTTER_TIMEOUT_ACTIVE;
 
@@ -444,8 +423,6 @@ clutter_timeout_pool_add (ClutterTimeoutPool *pool,
 
   pool->timeouts = g_list_insert_sorted (pool->timeouts, timeout,
                                          clutter_timeout_sort);
-
-  UNLOCK_POOL (pool);
 
   return retval;
 }
@@ -467,8 +444,6 @@ clutter_timeout_pool_remove (ClutterTimeoutPool *pool,
 {
   GList *l;
 
-  LOCK_POOL (pool);
-
   l = g_list_find_custom (pool->timeouts, GUINT_TO_POINTER (id),
                           clutter_timeout_find_by_id);
   if (l)
@@ -477,6 +452,4 @@ clutter_timeout_pool_remove (ClutterTimeoutPool *pool,
 
       timeout->flags &= ~CLUTTER_TIMEOUT_ACTIVE;
     }
-
-  UNLOCK_POOL (pool);
 }
