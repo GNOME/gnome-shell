@@ -85,8 +85,8 @@ clutter_hbox_pack_child (ClutterBox      *box,
   clutter_actor_get_geometry (CLUTTER_ACTOR (box), &box_geom);
   clutter_actor_get_geometry (child->actor, &child_geom);
 
-  child_geom.x = box_geom.x + box_geom.width + spacing;
-  child_geom.y = box_geom.y;
+  child_geom.x = box_geom.width + spacing;
+  child_geom.y = 0;
 
   clutter_actor_set_geometry (child->actor, &child_geom);
 }

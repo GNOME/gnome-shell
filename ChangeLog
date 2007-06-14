@@ -1,3 +1,11 @@
+2007-06-14  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-vbox.c:
+	* clutter/clutter-hbox.c:
+	(clutter_vbox_pack_child):
+	(clutter_hbox_pack_child):
+	Fixed child coords.
+	
 2007-06-14  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-box.[ch]: Base class for layout containers.
