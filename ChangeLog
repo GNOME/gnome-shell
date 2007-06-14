@@ -1,3 +1,9 @@
+2007-06-07  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* configure.ac:
+	* doc/manual/Makefile.am: Find xmlto and jw in the path and
+	use the symbolic names when building the manual.
+
 2007-06-14  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.c:

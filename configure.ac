@@ -262,6 +262,13 @@ AC_ARG_ENABLE(manual,
                              [Build application developers manual. Requires jw and xmlto binaries.]),
               enable_manual=$enableval, enable_manual=no)
 
+if "x$enable_manual" = "xyes"; then
+  AC_PATH_PROG(JW, jw)
+  AC_PATH_PROG(XMLTO, xmlto)
+  AC_SUBST(JW)
+  AC_SUBST(XMLTO)
+fi
+
 AM_CONDITIONAL(ENABLE_MANUAL, test x$enable_manual != xno)
 
 dnl ========================================================================
