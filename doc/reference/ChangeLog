@@ -1,3 +1,11 @@
+2007-06-14  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt:
+	* clutter.types:
+	* clutter-docs.sgml: Add ClutterBox and subclasses. Rework
+	the layout of the API reference, now that we have fairly more
+	classes.
+
 2007-06-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Add ClutterTimeoutPool API.

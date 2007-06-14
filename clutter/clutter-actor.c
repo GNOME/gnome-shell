@@ -942,9 +942,9 @@ clutter_actor_query_coords (ClutterActor    *self,
 
 static void 
 clutter_actor_set_property (GObject      *object, 
-			      guint         prop_id,
-			      const GValue *value, 
-			      GParamSpec   *pspec)
+			    guint         prop_id,
+			    const GValue *value, 
+			    GParamSpec   *pspec)
 {
 
   ClutterActor        *actor;
@@ -957,23 +957,23 @@ clutter_actor_set_property (GObject      *object,
     {
     case PROP_X:
       clutter_actor_set_position (actor, 
-				    g_value_get_int (value), 
-				    clutter_actor_get_y (actor));
+				  g_value_get_int (value), 
+				  clutter_actor_get_y (actor));
       break;
     case PROP_Y:
       clutter_actor_set_position (actor, 
-				    clutter_actor_get_x (actor),
-				    g_value_get_int (value));
+				  clutter_actor_get_x (actor),
+				  g_value_get_int (value));
       break;
     case PROP_WIDTH:
       clutter_actor_set_size (actor, 
-				g_value_get_int (value),
-				clutter_actor_get_height (actor));
+			      g_value_get_int (value),
+			      clutter_actor_get_height (actor));
       break;
     case PROP_HEIGHT:
       clutter_actor_set_size (actor, 
-				clutter_actor_get_width (actor),
-				g_value_get_int (value));
+			      clutter_actor_get_width (actor),
+			      g_value_get_int (value));
       break;
     case PROP_OPACITY:
       clutter_actor_set_opacity (actor, g_value_get_uchar (value));

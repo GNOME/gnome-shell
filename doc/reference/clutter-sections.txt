@@ -856,3 +856,80 @@ CLUTTER_ENTRY_GET_CLASS
 ClutterEntryPrivate
 clutter_entry_get_type
 </SECTION>
+
+<SECTION>
+<FILE>clutter-box</FILE>
+<TITLE>ClutterBox</TITLE>
+ClutterBox
+ClutterBoxClass
+clutter_box_set_spacing
+clutter_box_get_spacing
+clutter_box_pack_start
+clutter_box_pack_end
+clutter_box_query_child
+clutter_box_query_nth_child
+<SUBSECTION Standard>
+CLUTTER_TYPE_BOX
+CLUTTER_BOX
+CLUTTER_IS_BOX
+CLUTTER_BOX_CLASS
+CLUTTER_IS_BOX_CLASS
+CLUTTER_BOX_GET_CLASS
+<SUBSECTION Private>
+clutter_box_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-effects</FILE>
+<TITLE>Clutter Effects</title>
+ClutterEffectTemplate
+ClutterEffectTemplaceClass
+clutter_effect_template_new
+ClutterEffectCompleteFunc
+clutter_effect_fade
+clutter_effect_move
+clutter_effect_scale
+<SUBSECTION Standard>
+CLUTTER_TYPE_EFFECT_TEMPLATE
+CLUTTER_EFFECT_TEMPLATE
+CLUTTER_IS_EFFECT_TEMPLATE
+CLUTTER_EFFECT_TEMPLATE_CLASS
+CLUTTER_IS_EFFECT_TEMPLATE_CLASS
+CLUTTER_EFFECT_TEMPLATE_GET_CLASS
+<SUBSECTION Private>
+clutter_effect_template_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-hbox</FILE>
+<TITLE>ClutterHBox</TITLE>
+ClutterHBox
+ClutterHBoxClass
+clutter_hbox_new
+<SUBSECTION Standard>
+CLUTTER_TYPE_HBOX
+CLUTTER_HBOX
+CLUTTER_IS_HBOX
+CLUTTER_HBOX_CLASS
+CLUTTER_IS_HBOX_CLASS
+CLUTTER_HBOX_GET_CLASS
+<SUBSECTION Private>
+clutter_hbox_get_type
+</SECTION>
+
+<SECTION>
+<FILE>clutter-vbox</FILE>
+<TITLE>ClutterVBox</TITLE>
+ClutterVBox
+ClutterVBoxClass
+clutter_vbox_new
+<SUBSECTION Standard>
+CLUTTER_TYPE_VBOX
+CLUTTER_VBOX
+CLUTTER_IS_VBOX
+CLUTTER_VBOX_CLASS
+CLUTTER_IS_VBOX_CLASS
+CLUTTER_VBOX_GET_CLASS
+<SUBSECTION Private>
+clutter_vbox_get_type
+</SECTION>

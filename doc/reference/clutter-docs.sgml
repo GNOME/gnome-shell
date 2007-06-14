@@ -37,8 +37,11 @@
     </legalnotice>
   </bookinfo>
 
-  <chapter>
+  <part id="clutter">
     <title>Clutter Overview</title>
+
+    <partintro>
+
     <para>
 
     Clutter is a GObject based library for creating fast, visually
@@ -62,35 +65,71 @@
     modify a property as a function of time.
 
     </para>
-  </chapter>    
-  <chapter>
-    <title>Clutter Actors And Objects</title>
-    <xi:include href="xml/clutter-actor.xml"/>
-    <xi:include href="xml/clutter-container.xml"/>
-    <xi:include href="xml/clutter-layout.xml"/>
-    <xi:include href="xml/clutter-group.xml"/>
-    <xi:include href="xml/clutter-stage.xml"/>
-    <xi:include href="xml/clutter-rectangle.xml"/>
-    <xi:include href="xml/clutter-texture.xml"/>
-    <xi:include href="xml/clutter-clone-texture.xml"/>
-    <xi:include href="xml/clutter-label.xml"/>
-    <xi:include href="xml/clutter-timeline.xml"/>
-    <xi:include href="xml/clutter-media.xml"/>
-    <xi:include href="xml/clutter-entry.xml"/>
-  </chapter>
-  <chapter>
-    <title>Clutter Behaviours</title>
-    <xi:include href="xml/clutter-alpha.xml"/>
-    <xi:include href="xml/clutter-behaviour.xml"/>
-    <xi:include href="xml/clutter-behaviour-bspline.xml"/>
-    <xi:include href="xml/clutter-behaviour-ellipse.xml"/>
-    <xi:include href="xml/clutter-behaviour-opacity.xml"/>
-    <xi:include href="xml/clutter-behaviour-path.xml"/>
-    <xi:include href="xml/clutter-behaviour-rotate.xml"/>
-    <xi:include href="xml/clutter-behaviour-scale.xml"/>
-  </chapter>
-  <chapter>
+
+    </partintro>
+  </part>
+
+  <part id="clutterbase">
+    <title>Clutter Core Reference</title>
+
+    <chapter>
+      <title>Abstract Classes and Interfaces</title>
+      <xi:include href="xml/clutter-actor.xml"/>
+      <xi:include href="xml/clutter-container.xml"/>
+      <xi:include href="xml/clutter-layout.xml"/>
+      <xi:include href="xml/clutter-box.xml"/>
+      <xi:include href="xml/clutter-media.xml"/>
+    </chapter>
+
+    <chapter>
+      <title>Base Actors</title>
+      <xi:include href="xml/clutter-stage.xml"/>
+      <xi:include href="xml/clutter-rectangle.xml"/>
+      <xi:include href="xml/clutter-texture.xml"/>
+      <xi:include href="xml/clutter-clone-texture.xml"/>
+      <xi:include href="xml/clutter-label.xml"/>
+      <xi:include href="xml/clutter-entry.xml"/>
+    </chapter>
+
+    <chapter>
+      <title>Container Actors</title>
+      <xi:include href="xml/clutter-group.xml"/>
+      <xi:include href="xml/clutter-hbox.xml"/>
+      <xi:include href="xml/clutter-vbox.xml"/>
+    </chapter>
+
+  </part>
+
+  <part id="clutteranimation">
+    <title>Clutter Animation Support</title>
+    
+    <chapter>
+      <title>Base Classes</title>
+      <xi:include href="xml/clutter-timeline.xml"/>
+      <xi:include href="xml/clutter-alpha.xml"/>
+      <xi:include href="xml/clutter-behaviour.xml"/>
+    </chapter>
+
+    <chapter>
+      <title>Clutter Behaviours</title>
+      <xi:include href="xml/clutter-behaviour-bspline.xml"/>
+      <xi:include href="xml/clutter-behaviour-ellipse.xml"/>
+      <xi:include href="xml/clutter-behaviour-opacity.xml"/>
+      <xi:include href="xml/clutter-behaviour-path.xml"/>
+      <xi:include href="xml/clutter-behaviour-rotate.xml"/>
+      <xi:include href="xml/clutter-behaviour-scale.xml"/>
+    </chapter>
+
+    <chapter>
+      <title>Simple Effects</title>
+      <xi:include href="xml/clutter-effects.xml"/>
+    </chapter>
+
+  </part>
+
+  <part>
     <title>Clutter Tools</title>
+
     <xi:include href="xml/clutter-main.xml"/>
     <xi:include href="xml/clutter-event.xml"/>
     <xi:include href="xml/clutter-color.xml"/>
@@ -98,14 +137,19 @@
     <xi:include href="xml/clutter-fixed.xml"/>
     <xi:include href="xml/clutter-version.xml"/>
     <xi:include href="xml/clutter-units.xml"/>
-  </chapter>
-  <chapter>
+  </part>
+
+  <part>
     <title>Clutter Backends</title>
+    
     <xi:include href="xml/clutter-backend.xml"/>
     <xi:include href="xml/clutter-glx.xml"/>
-  </chapter>
 
-  <index></index>
+  </part>
+
+  <index>
+    <title>Index</title>
+  </index>
 
   <appendix id="license">
     <title>License</title>

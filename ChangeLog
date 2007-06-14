@@ -1,3 +1,18 @@
+2007-06-14  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-box.[ch]: Base class for layout containers.
+
+	* clutter/clutter-hbox.[ch]: Horizontal box actor.
+	
+	* clutter/clutter-vbox.[ch]: Vertical box actor.
+
+	* clutter/clutter.h:
+	* clutter/Makefile.am: Build glue
+
+	* tests/Makefile.am:
+	* tests/test-boxes.c: Test suite for ClutterBox API and
+	implementations.
+
 2007-06-14  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/cogl/gl/cogl.c: (cogl_check_extension):

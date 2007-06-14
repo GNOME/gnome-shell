@@ -151,7 +151,8 @@ struct _ClutterActorClass
                             ClutterActor        *old_parent);
 
   void (* destroy)         (ClutterActor        *actor);
-  void (* pick)            (ClutterActor        *actor, const ClutterColor *color);
+  void (* pick)            (ClutterActor        *actor,
+                            const ClutterColor  *color);
 
   /* padding for future expansion */
   void (*_clutter_actor_1) (void);
