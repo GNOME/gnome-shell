@@ -116,13 +116,8 @@ on_event (ClutterStage *stage,
 	
         if (actor != CLUTTER_ACTOR (stage))
 	  {
-	    ClutterVertex    v[4];
-	    ClutterActorBox  b;
-	    ClutterFixed     vec[4];
-	    ClutterFixed     m[16];
-	    ClutterFixed     xp, yp, zp;
-	    ClutterFixed     xu, yu, zu;
-
+	    guint32 x, y;
+	      
 	    if (actor != rect)
 	      dragging = actor;
 	  }
@@ -145,8 +140,8 @@ on_event (ClutterStage *stage,
 	    
 	    clutter_event_get_coords (event, &x, &y);
 	    
-	    clutter_actor_allocate_coords (dragging, &box1);
-	    clutter_actor_allocate_coords (rect, &box2);
+	    clutter_actor_query_coords (dragging, &box1);
+	    clutter_actor_query_coords (rect, &box2);
 
 	    xp = CLUTTER_INT_TO_FIXED (x-3) - box1.x1;
 	    yp = CLUTTER_INT_TO_FIXED (y-3) - box1.y1;

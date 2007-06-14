@@ -1553,41 +1553,10 @@ clutter_actor_get_abs_position_units (ClutterActor *self,
 				      gint32       *x,
 				      gint32       *y)
 {
-  ClutterActorBox   box;
-  ClutterActor     *parent;
-  gint32            px = 0, py = 0;
+  ClutterUnit zu = 0;
   
-  g_return_if_fail (CLUTTER_IS_ACTOR (self));
-
-  clutter_actor_query_coords (self, &box);
-
-  parent = self->priv->parent_actor;
-
-  /* FIXME: must be nicer way to get 0,0 for stage ? */
-  if (parent)
-    {
-      ClutterFixed parent_scale_x, parent_scale_y;
-
-      clutter_actor_get_scalex (parent,
-                                &parent_scale_x,
-                                &parent_scale_y);
-
-      if (parent_scale_x != CFX_ONE ||
-          parent_scale_y != CFX_ONE)
-	{
-	  box.x1 = CFX_MUL (box.x1, parent_scale_x); 
-	  box.y1 = CFX_MUL (box.y1, parent_scale_y); 
-	}
-
-      if (!CLUTTER_IS_STAGE (parent))
-	clutter_actor_get_abs_position_units (parent, &px, &py);
-    }
-
-  if (x)
-    *x = px + box.x1;
-  
-  if (y)
-    *y = py + box.y1;
+  *x = *y = 0;
+  clutter_actor_project_point (self, x, y, &zu);
 }
 
 /**
@@ -1620,6 +1589,16 @@ clutter_actor_get_abs_position (ClutterActor *self,
  * Gets the absolute size of an actor in clutter units taking into account
  * an scaling factors.
  *
+ * Note: When the actor (or one of its ancestors) is rotated around the x or y
+ * axis, it no longer appears as on the stage as a rectangle, but as a generic
+ * quadrangle; in that case this function returns the size of the smallest
+ * rectangle that encapsulates the entire quad. Please note that in this case
+ * no assumptions can be made about the relative position of this envelope to
+ * the absolute position of the actor, as returned by
+ * clutter_actor_get_abs_position() - if you need this information, you need
+ * to use clutter_actor_project_vertices() to get the coords of the actual
+ * quadrangle.
+ *
  * Since: 0.4
  */
 static void
@@ -1627,42 +1606,32 @@ clutter_actor_get_abs_size_units (ClutterActor *self,
 				  gint32       *width,
 				  gint32       *height)
 {
-  ClutterActorBox  box;
-  ClutterActor    *parent;
+  ClutterVertex v[4];
+  ClutterFixed  x_min, x_max, y_min, y_max;
+  gint i;
+  
+  clutter_actor_project_vertices (self, v);
 
-  clutter_actor_query_coords (self, &box);
+  x_min = x_max = v[0].x;
+  y_min = y_max = v[0].y;
 
-  if (width)
-    *width  = box.x2 - box.x1;
-
-  if (height)
-    *height = box.y2 - box.y1;
-
-  parent = self;
-
-  do
+  for (i = 1; i < sizeof(v)/sizeof(v[0]); ++i)
     {
-      if (parent->priv->scale_x != CFX_ONE ||
-          parent->priv->scale_y != CFX_ONE)
-	{
-	  ClutterFixed fx, fy;
-
-	  if (width)
-	    {
-	      fx = CLUTTER_FIXED_MUL (CLUTTER_UNITS_TO_FIXED (*width),
-				      parent->priv->scale_x); 
-	      *width = CLUTTER_UNITS_FROM_FIXED (fx);
-	    }
-
-	  if (height)
-	    {
-	      fy = CLUTTER_FIXED_MUL (CLUTTER_UNITS_TO_FIXED (*height),
-				      parent->priv->scale_x); 
-	      *height = CLUTTER_UNITS_FROM_FIXED (fy);
-	    }
-	}
+      if (v[i].x < x_min)
+	x_min = v[i].x;
+      
+      if (v[i].x > x_max)
+	x_max = v[i].x;
+	  
+      if (v[i].y < y_min)
+	y_min = v[i].y;
+      
+      if (v[i].y > y_max)
+	y_max = v[i].y;
     }
-  while ((parent = clutter_actor_get_parent (parent)) != NULL);
+
+  *width  = x_max - x_min;
+  *height = y_max - y_min;
 }
 
 /**

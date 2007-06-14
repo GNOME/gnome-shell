@@ -1,3 +1,14 @@
+2007-06-14  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_get_abs_position):
+	(clutter_actor_get_abs_size):
+	Reimplement using clutter_actor_project_point() and 
+	clutter_actor_project_vertices().
+
+	* tests/test-project.c:
+	Rename clutter_actor_allocate_coords -> clutter_actor_query_coords
+	
 2007-06-14  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c:
