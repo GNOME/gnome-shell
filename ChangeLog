@@ -1,3 +1,9 @@
+2007-06-15  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	Added some comments; renamed MTX_GL_SCALE to MTX_GL_SCALE_X for
+	consistency; removed some debug output.
+
 2007-06-14  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-vbox.c:

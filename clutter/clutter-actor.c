@@ -318,6 +318,7 @@ mtx_transform (ClutterFixed m[16],
     _z = *z;
     _w = *w;
 
+    /* We care lot about precission here, so have to use QMUL */
     *x = CFX_QMUL (M (m,0,0), _x) + CFX_QMUL (M (m,0,1), _y) +
 	 CFX_QMUL (M (m,0,2), _z) + CFX_QMUL (M (m,0,3), _w);
 
@@ -330,18 +331,15 @@ mtx_transform (ClutterFixed m[16],
     *w = CFX_QMUL (M (m,3,0), _x) + CFX_QMUL (M (m,3,1), _y) +
 	 CFX_QMUL (M (m,3,2), _z) + CFX_QMUL (M (m,3,3), _w);
 
-#if 0
-    g_debug ("Transforming %f, %f, %f -> %f, %f, %f (m00 %f)",
-	     CLUTTER_FIXED_TO_FLOAT (_x),
-	     CLUTTER_FIXED_TO_FLOAT (_y),
-	     CLUTTER_FIXED_TO_FLOAT (_z),
-	     CLUTTER_FIXED_TO_FLOAT (*x),
-	     CLUTTER_FIXED_TO_FLOAT (*y),
-	     CLUTTER_FIXED_TO_FLOAT (*z),
-	     CLUTTER_FIXED_TO_FLOAT (M(m,0,0)));
-#endif
+    /* Specially for Matthew: was going to put a comment here, but could not
+     * think of anything at all to say ;)
+     */
 }
 
+/* Applies the transforms associated with this actor and its ancestors,
+ * retrieves the resulting OpenGL modelview matrix, and uses the matrix
+ * to transform the supplied point
+ */
 static void
 clutter_actor_transform_point (ClutterActor *actor, 
 			       ClutterUnit  *x,
@@ -366,7 +364,10 @@ clutter_actor_transform_point (ClutterActor *actor,
   cogl_pop_matrix();
 }
 
-#define MTX_GL_SCALE(x,w,v1,v2) (CFX_MUL( \
+/* Help macros to scale from OpenGL <-1,1> coordianta system to our
+ * X-window based <0,window-size> coordinates
+ */
+#define MTX_GL_SCALE_X(x,w,v1,v2) (CFX_MUL( \
                                       ((CFX_DIV (x,w) + CFX_ONE) >> 1), v1) \
 				         + v2)
 
@@ -374,7 +375,7 @@ clutter_actor_transform_point (ClutterActor *actor,
                                       ((CFX_DIV (y,w) + CFX_ONE) >> 1), v1) \
 				         + v2)
 
-#define MTX_GL_SCALE_Z(z,w) ((CFX_DIV (z,w) + CFX_ONE) >> 1)
+#define MTX_GL_SCALE_Z(z,w,v1,v2) MTX_GL_SCALE_X(z,w,v1,v2)
 
 /**
  * clutter_actor_project_point:
@@ -400,20 +401,24 @@ clutter_actor_project_point (ClutterActor *self,
   
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
+  /* First we tranform the point using the OpenGL modelview matrix */
   clutter_actor_transform_point (self, x, y, z, &w);
 
   cogl_get_projection_matrix (mtx_p);
   cogl_get_viewport (v);
-  
+
+  /* Now, transform it again with the projection matrix */
   mtx_transform (mtx_p, x, y, z, &w);
 
-  *x = MTX_GL_SCALE(*x,w,v[2],v[0]);
+  /* Finaly translate from OpenGL coords to window coords */
+  *x = MTX_GL_SCALE_X(*x,w,v[2],v[0]);
   *y = MTX_GL_SCALE_Y(*y,w,v[3],v[1]);
-  *z = MTX_GL_SCALE(*z,w,v[2],v[0]);
+  *z = MTX_GL_SCALE_Z(*z,w,v[2],v[0]);
 }
 
 /* Recursively tranform supplied vertices with the tranform for the current
- * actor and all its ancestors
+ * actor and all its ancestors (like clutter_actor_transform_point() but
+ * for all the vertices in one go).
  */
 static void
 clutter_actor_transform_vertices (ClutterActor    * self,
@@ -433,32 +438,6 @@ clutter_actor_transform_vertices (ClutterActor    * self,
 
   cogl_get_modelview_matrix (mtx);
 
-#if 0
-  g_debug ("Modelview Matrix:\n"
-	   "%f, %f, %f, %f\n"
-	   "%f, %f, %f, %f\n"
-	   "%f, %f, %f, %f\n"
-	   "%f, %f, %f, %f\n",
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx,0,0)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx,0,1)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx,0,2)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx,0,3)),
-
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx,1,0)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx,1,1)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx,1,2)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx,1,3)),
-	   
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx,2,0)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx,2,1)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx,2,2)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx,2,3)),
-
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx,3,0)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx,3,1)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx,3,2)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx,3,3)));
-#endif
   _x = 0;
   _y = 0;
   _z = 0;
@@ -533,37 +512,10 @@ clutter_actor_project_vertices (ClutterActor    * self,
   
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  /* FIXME: we should probably call query_cords on the actor to make
-   * sure untransformed box is up to date. 
-  */
   priv = self->priv;
 
   clutter_actor_transform_vertices (self, verts, w);
 
-#if 0
-  g_debug ("Transformed Vertices:\n"
-	   "tl: %f, %f, %f, %f\n"
-	   "tr: %f, %f, %f, %f\n"
-	   "bl: %f, %f, %f, %f\n"
-	   "br: %f, %f, %f, %f\n",
-	   CLUTTER_FIXED_TO_FLOAT (verts[0].x),
-	   CLUTTER_FIXED_TO_FLOAT (verts[0].y),
-	   CLUTTER_FIXED_TO_FLOAT (verts[0].z),
-	   CLUTTER_FIXED_TO_FLOAT (w[0]),
-	   CLUTTER_FIXED_TO_FLOAT (verts[1].x),
-	   CLUTTER_FIXED_TO_FLOAT (verts[1].y),
-	   CLUTTER_FIXED_TO_FLOAT (verts[1].z),
-	   CLUTTER_FIXED_TO_FLOAT (w[1]),
-	   CLUTTER_FIXED_TO_FLOAT (verts[2].x),
-	   CLUTTER_FIXED_TO_FLOAT (verts[2].y),
-	   CLUTTER_FIXED_TO_FLOAT (verts[2].z),
-	   CLUTTER_FIXED_TO_FLOAT (w[2]),
-	   CLUTTER_FIXED_TO_FLOAT (verts[3].x),
-	   CLUTTER_FIXED_TO_FLOAT (verts[3].y),
-	   CLUTTER_FIXED_TO_FLOAT (verts[3].z),
-	   CLUTTER_FIXED_TO_FLOAT (w[3]));
-#endif
-  
   cogl_get_projection_matrix (mtx_p);
   cogl_get_viewport (v);
   
@@ -573,9 +525,9 @@ clutter_actor_project_vertices (ClutterActor    * self,
 		 &verts[0].z,
 		 &w[0]);
 
-  verts[0].x = MTX_GL_SCALE (verts[0].x, w[0], v[2], v[0]);
+  verts[0].x = MTX_GL_SCALE_X (verts[0].x, w[0], v[2], v[0]);
   verts[0].y = MTX_GL_SCALE_Y (verts[0].y, w[0], v[3], v[1]);
-  verts[0].z = MTX_GL_SCALE (verts[0].z, w[0], v[2], v[0]);
+  verts[0].z = MTX_GL_SCALE_Z (verts[0].z, w[0], v[2], v[0]);
   
   mtx_transform (mtx_p,
 		 &verts[1].x,
@@ -583,9 +535,9 @@ clutter_actor_project_vertices (ClutterActor    * self,
 		 &verts[1].z,
 		 &w[1]);
 
-  verts[1].x = MTX_GL_SCALE (verts[1].x, w[1], v[2], v[0]);
+  verts[1].x = MTX_GL_SCALE_X (verts[1].x, w[1], v[2], v[0]);
   verts[1].y = MTX_GL_SCALE_Y (verts[1].y, w[1], v[3], v[1]);
-  verts[1].z = MTX_GL_SCALE (verts[1].z, w[1], v[2], v[0]);
+  verts[1].z = MTX_GL_SCALE_Z (verts[1].z, w[1], v[2], v[0]);
 
   mtx_transform (mtx_p,
 		 &verts[2].x,
@@ -593,9 +545,9 @@ clutter_actor_project_vertices (ClutterActor    * self,
 		 &verts[2].z,
 		 &w[2]);
 
-  verts[2].x = MTX_GL_SCALE (verts[2].x, w[2], v[2], v[0]);
+  verts[2].x = MTX_GL_SCALE_X (verts[2].x, w[2], v[2], v[0]);
   verts[2].y = MTX_GL_SCALE_Y (verts[2].y, w[2], v[3], v[1]);
-  verts[2].z = MTX_GL_SCALE (verts[2].z, w[2], v[2], v[0]);
+  verts[2].z = MTX_GL_SCALE_Z (verts[2].z, w[2], v[2], v[0]);
   
   mtx_transform (mtx_p,
 		 &verts[3].x,
@@ -603,56 +555,17 @@ clutter_actor_project_vertices (ClutterActor    * self,
 		 &verts[3].z,
 		 &w[3]);
 
-  verts[3].x = MTX_GL_SCALE (verts[3].x, w[3], v[2], v[0]);
+  verts[3].x = MTX_GL_SCALE_X (verts[3].x, w[3], v[2], v[0]);
   verts[3].y = MTX_GL_SCALE_Y (verts[3].y, w[3], v[3], v[1]);
-  verts[3].z = MTX_GL_SCALE (verts[3].z, w[3], v[2], v[0]);
-  
-#if 0
-  g_debug ("Projection Matrix:\n"
-	   "%f, %f, %f, %f\n"
-	   "%f, %f, %f, %f\n"
-	   "%f, %f, %f, %f\n"
-	   "%f, %f, %f, %f\n",
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,0,0)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,0,1)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,0,2)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,0,3)),
-
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,1,0)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,1,1)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,1,2)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,1,3)),
-	   
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,2,0)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,2,1)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,2,2)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,2,3)),
-
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,3,0)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,3,1)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,3,2)),
-	   CLUTTER_FIXED_TO_FLOAT (M(mtx_p,3,3)));
-  
-  g_debug ("Projected Vertices:\n"
-	   "tl: %f, %f, %f\n"
-	   "tr: %f, %f, %f\n"
-	   "bl: %f, %f, %f\n"
-	   "br: %f, %f, %f\n",
-	   CLUTTER_FIXED_TO_FLOAT (verts[0].x),
-	   CLUTTER_FIXED_TO_FLOAT (verts[0].y),
-	   CLUTTER_FIXED_TO_FLOAT (verts[0].z),
-	   CLUTTER_FIXED_TO_FLOAT (verts[1].x),
-	   CLUTTER_FIXED_TO_FLOAT (verts[1].y),
-	   CLUTTER_FIXED_TO_FLOAT (verts[1].z),
-	   CLUTTER_FIXED_TO_FLOAT (verts[2].x),
-	   CLUTTER_FIXED_TO_FLOAT (verts[2].y),
-	   CLUTTER_FIXED_TO_FLOAT (verts[2].z),
-	   CLUTTER_FIXED_TO_FLOAT (verts[3].x),
-	   CLUTTER_FIXED_TO_FLOAT (verts[3].y),
-	   CLUTTER_FIXED_TO_FLOAT (verts[3].z));
-#endif
+  verts[3].z = MTX_GL_SCALE_Z (verts[3].z, w[3], v[2], v[0]);
 }
 
+/* Applies the transforms associated with this actor to the
+ * OpenGL modelview matrix.
+ *
+ * This function does not push/pop matrix; it is the responsibility
+ * of the caller to do so as appropriate
+ */
 void
 _clutter_actor_apply_modelview_transform (ClutterActor * self)
 {
@@ -697,74 +610,20 @@ _clutter_actor_apply_modelview_transform (ClutterActor * self)
 
   if (priv->has_clip)
     cogl_clip_set (&(priv->clip));
-
-#if 0
-  float gl_mtx[16];
-  glGetFloatv (GL_MODELVIEW_MATRIX, &gl_mtx[0]);
-  g_debug ("Modelview Matrix (draw)\n"
-	   "%f, %f, %f, %f\n"
-	   "%f, %f, %f, %f\n"
-	   "%f, %f, %f, %f\n"
-	   "%f, %f, %f, %f\n",
-	   M(gl_mtx,0,0),
-	   M(gl_mtx,0,1),
-	   M(gl_mtx,0,2),
-	   M(gl_mtx,0,3),
-
-	   M(gl_mtx,1,0),
-	   M(gl_mtx,1,1),
-	   M(gl_mtx,1,2),
-	   M(gl_mtx,1,3),
-	   
-	   M(gl_mtx,2,0),
-	   M(gl_mtx,2,1),
-	   M(gl_mtx,2,2),
-	   M(gl_mtx,2,3),
-
-	   M(gl_mtx,3,0),
-	   M(gl_mtx,3,1),
-	   M(gl_mtx,3,2),
-	   M(gl_mtx,3,3));
-#endif
-  
 }
 
+/* Recursively applies the transforms associated with this actor and
+ * its ancestors to the OpenGL modelview matrix.
+ *
+ * This function does not push/pop matrix; it is the responsibility
+ * of the caller to do so as appropriate
+ */
 void
 _clutter_actor_apply_modelview_transform_recursive (ClutterActor * self)
 {
   ClutterActor * parent;
   
   _clutter_actor_apply_modelview_transform (self);
-  
-#if 0
-  float gl_mtx[16];
-  glGetFloatv (GL_MODELVIEW_MATRIX, &gl_mtx[0]);
-  g_debug ("Modelview Matrix (partial), %s\n"
-	   "%f, %f, %f, %f\n"
-	   "%f, %f, %f, %f\n"
-	   "%f, %f, %f, %f\n"
-	   "%f, %f, %f, %f\n",
-	   g_type_name (G_OBJECT_TYPE (self)),
-	   M(gl_mtx,0,0),
-	   M(gl_mtx,0,1),
-	   M(gl_mtx,0,2),
-	   M(gl_mtx,0,3),
-
-	   M(gl_mtx,1,0),
-	   M(gl_mtx,1,1),
-	   M(gl_mtx,1,2),
-	   M(gl_mtx,1,3),
-	   
-	   M(gl_mtx,2,0),
-	   M(gl_mtx,2,1),
-	   M(gl_mtx,2,2),
-	   M(gl_mtx,2,3),
-
-	   M(gl_mtx,3,0),
-	   M(gl_mtx,3,1),
-	   M(gl_mtx,3,2),
-	   M(gl_mtx,3,3));
-#endif
   
   parent = clutter_actor_get_parent (self);
   
