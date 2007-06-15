@@ -595,7 +595,7 @@ _clutter_actor_apply_modelview_transform (ClutterActor * self)
   if (priv->rxang)
     {
       cogl_translate (0, priv->rxy, priv->z + priv->rxz);
-      cogl_rotatex (priv->rxang, CFX_ONE, 0, CFX_ONE);
+      cogl_rotatex (priv->rxang, CFX_ONE, 0, 0);
       cogl_translate (0, -priv->rxy, -(priv->z - priv->rxz));
     }
 

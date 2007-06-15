@@ -1,3 +1,15 @@
+2007-06-16  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	Fix typo in x rotation transform (Thanks to Johan Billen #138)
+
+	* configure.ac:
+	* doc/manual/Makefile.am:
+	Fix manual build and required program check.
+
+	* tests/Makefile.am:
+	Another typo fix.
+
 2007-06-15  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.c:

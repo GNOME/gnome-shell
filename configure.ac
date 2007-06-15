@@ -263,10 +263,15 @@ AC_ARG_ENABLE(manual,
               enable_manual=$enableval, enable_manual=no)
 
 if "x$enable_manual" = "xyes"; then
-  AC_PATH_PROG(JW, jw)
-  AC_PATH_PROG(XMLTO, xmlto)
-  AC_SUBST(JW)
-  AC_SUBST(XMLTO)
+  AC_PATH_PROG(HAVE_JW, jw, no)
+  if test "x$HAVE_JW" = "xno"; then
+    AC_MSG_ERROR(['jw' program not found in path - required for building manual.])
+  fi
+
+  AC_PATH_PROG(HAVE_XMLTO, xmlto, no)
+  if test "x$HAVE_XMLTO" = "xno"; then
+    AC_MSG_ERROR(['xmlto' program not found in path - required for building manual.])
+  fi
 fi
 
 AM_CONDITIONAL(ENABLE_MANUAL, test x$enable_manual != xno)
