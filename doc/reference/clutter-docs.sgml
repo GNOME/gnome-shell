@@ -2,6 +2,7 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
                "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
 <!ENTITY version SYSTEM "version.xml">
+<!ENTITY clutter-SubclassingActor SYSTEM "xml/subclassing-ClutterActor.sgml">
 ]>
 
 <book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
@@ -93,6 +94,10 @@
 
     <chapter>
       <title>Container Actors</title>
+
+      <partintro>
+        <para>Actors containing other actors.</para>
+      </partintro>
       <xi:include href="xml/clutter-group.xml"/>
       <xi:include href="xml/clutter-hbox.xml"/>
       <xi:include href="xml/clutter-vbox.xml"/>
@@ -105,6 +110,11 @@
     
     <chapter>
       <title>Base Classes</title>
+
+      <partintro>
+        <para>Clutter base animation objects</para>
+      </partintro>
+
       <xi:include href="xml/clutter-timeline.xml"/>
       <xi:include href="xml/clutter-alpha.xml"/>
       <xi:include href="xml/clutter-behaviour.xml"/>
@@ -112,6 +122,11 @@
 
     <chapter>
       <title>Clutter Behaviours</title>
+
+      <partintro>
+        <para>Classes implementing ClutterBehaviour</para>
+      </partintro>
+
       <xi:include href="xml/clutter-behaviour-bspline.xml"/>
       <xi:include href="xml/clutter-behaviour-ellipse.xml"/>
       <xi:include href="xml/clutter-behaviour-opacity.xml"/>
@@ -122,6 +137,11 @@
 
     <chapter>
       <title>Simple Effects</title>
+
+      <partintro>
+        <para>Simple animation API</para>
+      </partintro>
+
       <xi:include href="xml/clutter-effects.xml"/>
     </chapter>
 
@@ -141,9 +161,27 @@
 
   <part>
     <title>Clutter Backends</title>
+
+    <partintro>
+      <para>Clutter is usually compiled against a specific drawing backend.
+      All backends have a common API for querying the underlying platform,
+      and some of them might have specific API exposed by Clutter.</para>
+    </partintro>
     
     <xi:include href="xml/clutter-backend.xml"/>
     <xi:include href="xml/clutter-glx.xml"/>
+
+  </part>
+
+  <part>
+    <title>Additional Documentation</title>
+
+    <partintro>
+      <para>This section contains additional useful documentation for
+      developing with Clutter.</para>
+    </partintro>
+
+    &clutter-SubclassingActor;
 
   </part>
 

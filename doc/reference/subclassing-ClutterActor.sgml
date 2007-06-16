@@ -1,0 +1,112 @@
+<chapter id="clutter-subclassing-ClutterActor">
+  <chapterinfo>
+    <author>
+      <firstname>Emmanuele</firstname>
+      <surname>Bassi</surname>
+      <affiliation>
+        <address>
+          <email>ebassi@openedhand.com</email>
+        </address>
+      </affiliation>
+    </author>
+  </chapterinfo>
+
+  <title>Implementing a new actor</title>
+
+  <para>In order to implement a new #ClutterActor subclass the usual
+  machinery for subclassing a GObject should be used. After that, the
+  ClutterActor::query_coords() and ClutterActor::request_coords() virtual
+  functions should be overidden. Optionally, also the ClutterActor::paint()
+  virtual functions should be overridden.</para>
+
+  <para>The ClutterActor::query_coords() method of a #ClutterActor is
+  invoked when clutter_actor_query_coords() is called on an instance
+  of that actor class. It is used to return a #ClutterActorBox containing
+  the coordinates of the bounding box for the actor (the coordinates
+  of the top left corner and of the bottom right corner of the rectangle
+  that fully contains the actor). Container actors, or composite actors
+  with internal children, should call clutter_actor_query_coords() on
+  each visible child. Remember: the returned coordinates must be relative
+  to the parent actor.</para>
+
+  <example id="clutter-actor-query-coords-example">
+    <para>This example shows how an actor class should override the
+    query_coords() virtual function of #ClutterActor. In this case,
+    the returned bounding box is the sum of the bounding boxes of all
+    the <structname>FooActor</structname> children.</para>
+
+    <programlisting>
+static void
+foo_actor_query_coords (ClutterActor    *actor,
+                        ClutterActorBox *box)
+{
+  FooActor *foo_actor = FOO_ACTOR (actor);
+  GList *child;
+  guint width, height;
+
+  /* initialize our size */
+  width = height = 0;
+
+  for (l = foo_actor-&gt;children; l != NULL; l = l-&gt;next)
+    {
+      ClutterActor *child_actor = child-&gt;data;
+
+      /* we return only visible actors */
+      if (CLUTTER_ACTOR_IS_VISIBLE (child_actor))
+        {
+          ClutterActorBox child_box;
+
+          clutter_actor_query_coords (child_actor, &amp;child_box);
+          
+          width += child_box.x2 - child_box.x2;
+          height += child_box.y2 - child_box.y1;
+        }
+    }
+
+  /* internally, the coordinates are all expressed in generic
+   * "units", but the public API converts them into pixels,
+   * so we need to juggle around with conversions
+   */ 
+  box-&gt;x2 = box-&gt;x1 + CLUTTER_UNITS_FROM_INT (width);
+  box-&gt;y2 = box-&gt;y1 + CLUTTER_UNITS_FROM_INT (height);
+}
+    </programlisting>
+  </example>
+  
+  <para>The ClutterActor::request_coords() method of a #ClutterActor
+  is invoked when clutter_actor_request_coords() is called on an instance
+  of that actor class. It is used to set the coordinates of the bounding
+  box for the actor. Container actors, or composite actors with internal
+  children, should call clutter_actor_request_coords() on each visible
+  child.</para>
+
+  <para>The ClutterActor::paint() method should be overridden if the
+  actor needs to control its drawing process, by using the GL API
+  directly. Actors performing transformations should push the GL matrix
+  first and then pop the GL matrix before returning. Container actors
+  or composite actors with internal children should do the same, and call
+  clutter_actor_paint() on every visible child:</para>
+
+  <example id="clutter-actor-paint-example">
+    <programlisting>
+static void
+foo_actor_paint (ClutterActor *actor)
+{
+  FooActor *foo_actor = FOO_ACTOR (actor);
+  GList *child;
+
+  glPushMatrix ();
+
+  for (child = foo_actor-&gt;children; child != NULL; child = child-&gt;next)
+    {
+      ClutterActor *child_actor = child-&gt;data;
+
+      clutter_actor_paint (child_actor);
+    }
+
+  glPopMatrix ();
+}
+    </programlisting>
+  </example>
+
+</chapter>
