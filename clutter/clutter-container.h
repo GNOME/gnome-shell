@@ -58,16 +58,6 @@ struct _ClutterContainerIface
                           ClutterActor     *actor);
   void (* actor_removed) (ClutterContainer *container,
                           ClutterActor     *actor);
-
-  /* padding, for future expansion */
-  void (*_clutter_reserved1) (void);
-  void (*_clutter_reserved2) (void);
-  void (*_clutter_reserved3) (void);
-  void (*_clutter_reserved4) (void);
-  void (*_clutter_reserved5) (void);
-  void (*_clutter_reserved6) (void);
-  void (*_clutter_reserved7) (void);
-  void (*_clutter_reserved8) (void);
 };
 
 GType  clutter_container_get_type      (void) G_GNUC_CONST;

@@ -99,16 +99,6 @@ struct _ClutterLayoutIface
                                            ClutterUnit    given_height,
                                            ClutterUnit   *width,
                                            ClutterUnit   *height);
-
-  /* padding, for future expansion */
-  void (*_clutter_layout1) (void);
-  void (*_clutter_layout2) (void);
-  void (*_clutter_layout3) (void);
-  void (*_clutter_layout4) (void);
-  void (*_clutter_layout5) (void);
-  void (*_clutter_layout6) (void);
-  void (*_clutter_layout7) (void);
-  void (*_clutter_layout8) (void);
 };
 
 GType              clutter_layout_get_type         (void) G_GNUC_CONST;

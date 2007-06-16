@@ -1,5 +1,12 @@
 2007-06-16  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-container.h:
+	* clutter/clutter-layout.h: Interfaces are not checked
+	at compile-time, so there's not need to add padding to
+	avoid ABI breaks.
+
+2007-06-16  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* configure.ac: Partially revert last commit, and fail
 	with AC_MSG_ERROR() instead of disabling the manual build
 	if no jw and xmlto were found.
