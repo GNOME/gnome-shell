@@ -5,19 +5,19 @@ EXTRA_DIST =  clutter-manual.xml.in manual.xsl style.css $(srcdir)/$(IMAGE_FILES
 CLEANFILES = pdf-build.stamp txt-build.stamp htmldoc-build.stamp clutter-manual.xml
 
 pdf-build.stamp: clutter-manual.xml
-	SP_ENCODING=XML SP_CHARSET_FIXED=YES jw \
-		-b pdf $(srcdir)/clutter-manual.xml && \
+	SP_ENCODING=XML SP_CHARSET_FIXED=YES \
+	$(JW) -b pdf $(srcdir)/clutter-manual.xml && \
 	mv $(srcdir)/clutter-manual.pdf clutter-manual-@CLUTTER_MAJORMINOR@.pdf && \
 	touch pdf-build.stamp
 
 txt-build.stamp: clutter-manual.xml
-	xmlto txt $(srcdir)/clutter-manual.xml && \
+	$(XMLTO) txt $(srcdir)/clutter-manual.xml && \
 	mv $(srcdir)/clutter-manual.txt clutter-manual-@CLUTTER_MAJORMINOR@.txt && \
 	touch txt-build.stamp
 
 htmldoc-build.stamp: clutter-manual.xml
 	$(mkinstalldirs) html && \
-	xmlto -m manual.xsl -o html/ xhtml $(srcdir)/clutter-manual.xml && \
+	$(XMLTO) -m manual.xsl -o html/ xhtml $(srcdir)/clutter-manual.xml && \
 	cp $(srcdir)/style.css html/ && \
 	touch htmldoc-build.stamp
 

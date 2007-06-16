@@ -1,3 +1,13 @@
+2007-06-16  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* configure.ac: If the programs required to build the manual
+	are not found and --enable-manual was passed, then just print
+	a warning and disable the manual build instead of aborting the
+	configure.
+
+	* doc/manual/Makefile.am: Use the full path gathered by the
+	configure script when invoking jw and xmlto.
+
 2007-06-16  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c:

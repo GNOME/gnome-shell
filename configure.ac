@@ -262,19 +262,21 @@ AC_ARG_ENABLE(manual,
                              [Build application developers manual. Requires jw and xmlto binaries.]),
               enable_manual=$enableval, enable_manual=no)
 
-if "x$enable_manual" = "xyes"; then
-  AC_PATH_PROG(HAVE_JW, jw, no)
-  if test "x$HAVE_JW" = "xno"; then
-    AC_MSG_ERROR(['jw' program not found in path - required for building manual.])
+if test "x$enable_manual" = "xyes"; then
+  AC_PATH_PROG(JW, jw, no)
+  if test "x$JW" = "xno"; then
+    AC_MSG_WARN(['jw' program not found in path, disabling manual])
+    enable_manual=no
   fi
 
-  AC_PATH_PROG(HAVE_XMLTO, xmlto, no)
-  if test "x$HAVE_XMLTO" = "xno"; then
-    AC_MSG_ERROR(['xmlto' program not found in path - required for building manual.])
+  AC_PATH_PROG(XMLTO, xmlto, no)
+  if test "x$XMLTO" = "xno"; then
+    AC_MSG_WARN(['xmlto' program not found in path, disabling manual])
+    enable_manual=no
   fi
 fi
 
-AM_CONDITIONAL(ENABLE_MANUAL, test x$enable_manual != xno)
+AM_CONDITIONAL(ENABLE_MANUAL, test "x$enable_manual" != "xno")
 
 dnl ========================================================================
 
