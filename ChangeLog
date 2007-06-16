@@ -1,5 +1,11 @@
 2007-06-16  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* configure.ac: Partially revert last commit, and fail
+	with AC_MSG_ERROR() instead of disabling the manual build
+	if no jw and xmlto were found.
+
+2007-06-16  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* configure.ac: If the programs required to build the manual
 	are not found and --enable-manual was passed, then just print
 	a warning and disable the manual build instead of aborting the

@@ -27,7 +27,10 @@
  * SECTION:clutter-actor
  * @short_description: Base abstract class for all visual stage actors. 
  * 
- * #ClutterActor is a base abstract class for all visual elements. 
+ * #ClutterActor is a base abstract class for all visual elements on the
+ * stage. Every object that must appear on the main #ClutterStage must also
+ * be a #ClutterActor, either by using one of the classes provided by
+ * Clutter, or by implementing a new #ClutterActor subclass.
  */
 
 #include "config.h"

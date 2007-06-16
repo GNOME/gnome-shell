@@ -265,14 +265,12 @@ AC_ARG_ENABLE(manual,
 if test "x$enable_manual" = "xyes"; then
   AC_PATH_PROG(JW, jw, no)
   if test "x$JW" = "xno"; then
-    AC_MSG_WARN(['jw' program not found in path, disabling manual])
-    enable_manual=no
+    AC_MSG_ERROR(['jw' program needed by the manual not found in path])
   fi
 
   AC_PATH_PROG(XMLTO, xmlto, no)
   if test "x$XMLTO" = "xno"; then
-    AC_MSG_WARN(['xmlto' program not found in path, disabling manual])
-    enable_manual=no
+    AC_MSG_ERROR(['xmlto' program needed by the manual not found in path])
   fi
 fi
 
