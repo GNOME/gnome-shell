@@ -111,13 +111,9 @@ struct _ClutterStageClass
   void     (* stage_state_event)    (ClutterStage           *stage,
                                      ClutterStageStateEvent *event);
 
+  /*< private >*/
   /* padding for future expansion */
-  void (*_clutter_stage1) (void);
-  void (*_clutter_stage2) (void);
-  void (*_clutter_stage3) (void);
-  void (*_clutter_stage4) (void);
-  void (*_clutter_stage5) (void);
-  void (*_clutter_stage6) (void);
+  gpointer _padding_dummy[32];
 };
 
 #define CLUTTER_TYPE_PERSPECTIVE  (clutter_perspective_get_type ())

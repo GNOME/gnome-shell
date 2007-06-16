@@ -1,5 +1,14 @@
 2007-06-16  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.h:
+	* clutter/clutter-stage.h: Add 32 padding slots; when we
+	reach 1.0 it'll be a long road until the following ABI
+	break.
+
+	* tests/test-behave.c: Don't forget to include headers.
+
+2007-06-16  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-container.h:
 	* clutter/clutter-layout.h: Interfaces are not checked
 	at compile-time, so there's not need to add padding to

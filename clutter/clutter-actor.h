@@ -154,13 +154,9 @@ struct _ClutterActorClass
   void (* pick)            (ClutterActor        *actor,
                             const ClutterColor  *color);
 
+  /*< private >*/
   /* padding for future expansion */
-  void (*_clutter_actor_1) (void);
-  void (*_clutter_actor_2) (void);
-  void (*_clutter_actor_3) (void);
-  void (*_clutter_actor_4) (void);
-  void (*_clutter_actor_5) (void);
-  void (*_clutter_actor_6) (void);
+  gpointer _padding_dummy[32];
 };
 
 GType                 clutter_actor_get_type         (void) G_GNUC_CONST;
