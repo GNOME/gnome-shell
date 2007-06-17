@@ -1,3 +1,8 @@
+2007-06-16  Damien Carbery  <damien.carbery@sun.com>
+
+	* window.h: make prototype of meta_window_unqueue match
+	implementation. Closes #446535.
+
 2007-06-10  Thomas Thurman  <thomas@thurman.org.uk>
 
         * configure.in: post-release bump to 2.19.21.

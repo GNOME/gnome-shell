@@ -90,7 +90,7 @@ static void     ensure_mru_position_after (MetaWindow *window,
 
 static void meta_window_move_resize_now (MetaWindow  *window);
 
-static void meta_window_unqueue (MetaWindow *window, MetaQueueType queue);
+static void meta_window_unqueue (MetaWindow *window, guint queuebits);
 
 static void     update_move           (MetaWindow   *window,
                                        gboolean      snap,
