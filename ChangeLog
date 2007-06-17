@@ -1,5 +1,11 @@
 2007-06-16  Damien Carbery  <damien.carbery@sun.com>
 
+        * effects.h: MetaCloseEffect and MetaFocusEffect, which were empty
+	structs, #ifdeffed out because they broke the build on Solaris.
+	Closes #397296.
+
+2007-06-16  Damien Carbery  <damien.carbery@sun.com>
+
 	* window.h: make prototype of meta_window_unqueue match
 	implementation. Closes #446535.
 

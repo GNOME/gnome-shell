@@ -69,6 +69,8 @@ typedef struct
   MetaRectangle icon_rect;
 } MetaMinimizeEffect, MetaUnminimizeEffect;
 
+#if 0
+/* Solaris abhors an empty struct. #397296. */
 typedef struct
 {
     
@@ -77,6 +79,7 @@ typedef struct
 typedef struct
 {
 } MetaFocusEffect;
+#endif
 
 struct MetaEffect
 {
@@ -88,8 +91,11 @@ struct MetaEffect
   {
     MetaMinimizeEffect	    minimize;
     MetaUnminimizeEffect    unminimize;
+#if 0
+    /* These don't currently exist, so we aren't using them. #397296. */
     MetaCloseEffect	    close;
     MetaFocusEffect	    focus;
+#endif
   } u;
   
   MetaEffectPriv *priv;
