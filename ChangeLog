@@ -1,3 +1,11 @@
+2007-06-17  Thomas Thurman  <thomas@thurman.org.uk>
+
+	* src/screen.[ch] (meta_screen_apply_startup_properties): return a
+	boolean instead a void, to show whether startup properties were
+        applied. Also some commenting.
+	* src/window-props.c: (reload_net_startup_id): Only activate the
+        window if the startup_id was actually changed. Closes #400167.
+
 2007-06-16  Damien Carbery  <damien.carbery@sun.com>
 
         * effects.h: MetaCloseEffect and MetaFocusEffect, which were empty

@@ -797,14 +797,16 @@ reload_net_startup_id (MetaWindow    *window,
     window->initial_timestamp_set = 0;  
     window->initial_workspace_set = 0;
     
-    meta_screen_apply_startup_properties (window->screen, window);
+    if (meta_screen_apply_startup_properties (window->screen, window))
+      {
   
-    if (window->initial_timestamp_set)
-      timestamp = window->initial_timestamp;
-    if (window->initial_workspace_set)
-      workspace = meta_screen_get_workspace_by_index (window->screen, window->initial_workspace);
+        if (window->initial_timestamp_set)
+          timestamp = window->initial_timestamp;
+        if (window->initial_workspace_set)
+          workspace = meta_screen_get_workspace_by_index (window->screen, window->initial_workspace);
     
-    meta_window_activate_with_workspace (window, timestamp, workspace);
+        meta_window_activate_with_workspace (window, timestamp, workspace);
+      }
   }
   
   meta_verbose ("New _NET_STARTUP_ID \"%s\" for %s\n",

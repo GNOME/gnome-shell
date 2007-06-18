@@ -2546,7 +2546,15 @@ meta_screen_sn_event (SnMonitorEvent *event,
 }
 #endif
 
-void
+/* Sets the initial_timestamp and initial_workspace properties
+ * of a window according to information given us by the
+ * startup-notification library.
+ *
+ * Returns TRUE if startup properties have been applied, and
+ * FALSE if they have not (for example, if they had already
+ * been applied.)
+ */
+gboolean
 meta_screen_apply_startup_properties (MetaScreen *screen,
                                       MetaWindow *window)
 {
@@ -2555,6 +2563,7 @@ meta_screen_apply_startup_properties (MetaScreen *screen,
   GSList *tmp;
   SnStartupSequence *sequence;
   
+  /* Does the window have a startup ID stored? */
   startup_id = meta_window_get_startup_id (window);
 
   meta_topic (META_DEBUG_STARTUP,
@@ -2565,6 +2574,10 @@ meta_screen_apply_startup_properties (MetaScreen *screen,
   sequence = NULL;
   if (startup_id == NULL)
     {
+      /* No startup ID stored for the window. Let's ask the
+       * startup-notification library whether there's anything
+       * stored for the resource name or resource class hints.
+       */
       tmp = screen->startup_sequences;
       while (tmp != NULL)
         {
@@ -2597,9 +2610,14 @@ meta_screen_apply_startup_properties (MetaScreen *screen,
         }
     }
 
+  /* Still no startup ID? Bail. */
   if (startup_id == NULL)
-    return;
+    return FALSE;
   
+  /* We might get this far and not know the sequence ID (if the window
+   * already had a startup ID stored), so let's look for one if we don't
+   * already know it.
+   */
   if (sequence == NULL)
     {
       tmp = screen->startup_sequences;
@@ -2621,8 +2639,7 @@ meta_screen_apply_startup_properties (MetaScreen *screen,
 
   if (sequence != NULL)
     {
-      int space;
-      guint32 timestamp;
+      gboolean changed_something = FALSE;
           
       meta_topic (META_DEBUG_STARTUP,
                   "Found startup sequence for window %s ID \"%s\"\n",
@@ -2630,7 +2647,7 @@ meta_screen_apply_startup_properties (MetaScreen *screen,
 
       if (!window->initial_workspace_set)
         {
-          space = sn_startup_sequence_get_workspace (sequence);
+          int space = sn_startup_sequence_get_workspace (sequence);
           if (space >= 0)
             {
               meta_topic (META_DEBUG_STARTUP,
@@ -2639,21 +2656,23 @@ meta_screen_apply_startup_properties (MetaScreen *screen,
               
               window->initial_workspace_set = TRUE;
               window->initial_workspace = space;
+              changed_something = TRUE;
             }
         }
 
       if (!window->initial_timestamp_set)
         {
-          timestamp = sn_startup_sequence_get_timestamp (sequence);
+          guint32 timestamp = sn_startup_sequence_get_timestamp (sequence);
           meta_topic (META_DEBUG_STARTUP,
                       "Setting initial window timestamp to %u based on startup info\n",
                       timestamp);
               
           window->initial_timestamp_set = TRUE;
           window->initial_timestamp = timestamp;
+          changed_something = TRUE;
         }
 
-      return;
+      return changed_something;
     }
   else
     {
@@ -2663,5 +2682,7 @@ meta_screen_apply_startup_properties (MetaScreen *screen,
     }
   
 #endif /* HAVE_STARTUP_NOTIFICATION */
+
+  return FALSE;
 }
 
