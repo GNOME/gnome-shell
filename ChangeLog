@@ -1,3 +1,8 @@
+2007-06-18  Thomas Thurman  <thomas@thurman.org.uk>
+
+	* src/place.c (find_first_fit, meta_window_place): Only open new
+        windows on the current xinerama. Closes #145503, for now.
+
 2007-06-17  Thomas Thurman  <thomas@thurman.org.uk>
 
 	* src/screen.[ch] (meta_screen_apply_startup_properties): return a
