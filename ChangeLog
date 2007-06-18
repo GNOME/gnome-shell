@@ -1,5 +1,9 @@
 2007-06-18  Thomas Thurman  <thomas@thurman.org.uk>
 
+        * NEWS: 2.19.21 release.
+
+2007-06-18  Thomas Thurman  <thomas@thurman.org.uk>
+
 	* src/place.c (find_first_fit, meta_window_place): Only open new
         windows on the current xinerama. Closes #145503, for now.
 

@@ -1,3 +1,19 @@
+2.19.21
+=======
+
+Thanks to Damien Carbery and Thomas Thurman for improvements in
+this release.
+
+ - Fixed build on Solaris (Damien) [#397296, #446535]
+ - Only activate windows which change their startup ID if the
+   new ID differs from the old. (This fixes the bug where KDE
+   apps gained the attention hint when switching workspaces.)
+   (Thomas) [#400167]
+ - Open new windows on the current xinerama. (Thomas) [#145503].
+
+Translations
+  Tshewang Norbu (dz),  Jorge González (es), Funda Wang (zh_CN)
+
 2.19.13
 =======
 
