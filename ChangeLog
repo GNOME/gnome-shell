@@ -1,5 +1,10 @@
 2007-06-18  Thomas Thurman  <thomas@thurman.org.uk>
 
+	* src/main.c (version): Update copyright year because it was
+	five years out of date.
+
+2007-06-18  Thomas Thurman  <thomas@thurman.org.uk>
+
         * configure.in: post-release bump to 2.19.34.
 
 2007-06-18  Thomas Thurman  <thomas@thurman.org.uk>

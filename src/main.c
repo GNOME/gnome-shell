@@ -65,7 +65,7 @@ static void
 version (void)
 {
   g_print (_("metacity %s\n"
-             "Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
+             "Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
              "This is free software; see the source for copying conditions.\n"
              "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"),
            VERSION);
