@@ -1,5 +1,9 @@
 2007-06-18  Thomas Thurman  <thomas@thurman.org.uk>
 
+        * configure.in: post-release bump to 2.19.34.
+
+2007-06-18  Thomas Thurman  <thomas@thurman.org.uk>
+
         * NEWS: 2.19.21 release.
 
 2007-06-18  Thomas Thurman  <thomas@thurman.org.uk>
