@@ -5,13 +5,22 @@ input_cb (ClutterStage    *stage,
               ClutterEvent    *event,
               gpointer         data)
 {
+  gchar keybuf[9];
+  int   len = 0;
+
   switch (event->type)
     {
     case CLUTTER_KEY_PRESS:
-      printf("- KEY PRESS\n");
+      len = g_unichar_to_utf8 (clutter_keysym_to_unicode (event->key.keyval),
+			       keybuf);
+      keybuf[len] = '\0';
+      printf("- KEY PRESS '%s'\n", keybuf);
       break;
     case CLUTTER_KEY_RELEASE:
-      printf("- KEY RELEASE\n");
+      len = g_unichar_to_utf8 (clutter_keysym_to_unicode (event->key.keyval),
+			       keybuf);
+      keybuf[len] = '\0';
+      printf("- KEY RELEASE '%s'\n");
       break;
     case CLUTTER_MOTION:
       printf("- MOTION\n");

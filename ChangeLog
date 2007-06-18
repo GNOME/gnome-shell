@@ -1,3 +1,13 @@
+2007-06-18  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/sdl/clutter-event-sdl.c:
+	Seemingly fix SDL Event source.
+	Add some very basic SDL keysym translation.
+	(Thanks to Thomas Van Machelen for initial translation code)
+	
+	* tests/test-events.c:
+	Dump some info on keysyms pressed.
+
 2007-06-16  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.h:

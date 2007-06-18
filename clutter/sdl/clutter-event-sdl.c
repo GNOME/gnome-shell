@@ -30,6 +30,7 @@
 #include "../clutter-private.h"
 #include "../clutter-debug.h"
 #include "../clutter-main.h"
+#include "../clutter-keysyms.h"
 
 #include <string.h>
 #include <glib.h>
@@ -109,18 +110,83 @@ static gboolean
 clutter_event_prepare (GSource *source,
                        gint    *timeout)
 {
-  return FALSE;
+  SDL_Event events;
+  int       num_events;
+
+  num_events = SDL_PeepEvents(&events, 1, SDL_PEEKEVENT, SDL_ALLEVENTS);
+
+  if (num_events == 1) 
+    {
+      *timeout = 0;
+      return TRUE;
+    }
+
+  if (num_events == -1)
+    g_warning("Error polling SDL: %s", SDL_GetError());
+
+  *timeout = 50;
+
+  return clutter_events_pending ();
 }
 
 static gboolean
 clutter_event_check (GSource *source)
 {
-  SDL_Event           events;
+  SDL_Event events;
+  int       num_events;
 
   /* Pump SDL */
   SDL_PumpEvents();
 
-  return SDL_PeepEvents(&events, 1, SDL_PEEKEVENT, SDL_ALLEVENTS);
+  num_events = SDL_PeepEvents(&events, 1, SDL_PEEKEVENT, SDL_ALLEVENTS);
+
+  if (num_events == -1)
+    g_warning("Error polling SDL: %s", SDL_GetError());
+
+  return (num_events == 1 || clutter_events_pending ());
+}
+
+static void
+key_event_translate (ClutterEvent   *event,
+		     SDL_Event      *sdl_event)
+{
+  event->key.time = 0;
+
+  /* FIXME: This is just a quick hack to make SDL keys roughly work.
+   * Fixing it properly is left as a exercise to someone who enjoys
+   * battleing the SDL API. 
+   *
+   * We probably need to use sdl_event->key.keysym.unicode to do lookups
+   * and I have no idea how to get shifted keysyms. It looks quite easy
+   * if you drop into xlib but that then avoids the whole point of using
+   * SDL in the first place (More portability than just GLX) 
+  */
+
+  switch(sdl_event->key.keysym.sym) 
+    {
+    case SDLK_UP:        event->key.keyval = CLUTTER_Up; break;
+    case SDLK_DOWN:      event->key.keyval = CLUTTER_Down; break;
+    case SDLK_LEFT:      event->key.keyval = CLUTTER_Left; break;
+    case SDLK_RIGHT:     event->key.keyval = CLUTTER_Right; break;
+    case SDLK_HOME:      event->key.keyval = CLUTTER_Home; break;
+    case SDLK_END:       event->key.keyval = CLUTTER_End; break;
+    case SDLK_PAGEUP:    event->key.keyval = CLUTTER_Page_Up; break;
+    case SDLK_PAGEDOWN:  event->key.keyval = CLUTTER_Page_Down; break;
+    case SDLK_BACKSPACE: event->key.keyval = CLUTTER_BackSpace; break;     
+    case SDLK_DELETE:    event->key.keyval = CLUTTER_Delete; break;
+    default:
+      event->key.keyval = sdl_event->key.keysym.sym;
+  }
+
+  event->key.hardware_keycode = sdl_event->key.keysym.scancode;
+
+  if (sdl_event->key.keysym.mod & KMOD_CTRL)
+    event->key.modifier_state 
+      = event->key.modifier_state & CLUTTER_CONTROL_MASK;
+
+  if (sdl_event->key.keysym.mod & KMOD_SHIFT)
+    event->key.modifier_state 
+      = event->key.modifier_state & CLUTTER_SHIFT_MASK;
 }
 
 static gboolean
@@ -128,13 +194,21 @@ event_translate (ClutterBackend *backend,
 		 ClutterEvent   *event,
 		 SDL_Event      *sdl_event)
 {
-  /* FIXME: Complete */
   gboolean res;
 
   res = TRUE;
 
   switch (sdl_event->type) 
     {
+    case SDL_KEYDOWN:
+      event->type = CLUTTER_KEY_PRESS;
+      key_event_translate (event, sdl_event);
+      break;
+
+    case SDL_KEYUP:
+      event->type = CLUTTER_KEY_RELEASE;
+      key_event_translate (event, sdl_event);
+      break;
 
     case SDL_MOUSEBUTTONDOWN:
       switch (sdl_event->button.button)
@@ -213,9 +287,9 @@ clutter_event_dispatch (GSource     *source,
                         GSourceFunc  callback,
                         gpointer     user_data)
 {
-  SDL_Event       sdl_event;
-  ClutterEvent   *event = NULL;
-  ClutterBackend *backend = ((ClutterEventSource *) source)->backend;
+  SDL_Event            sdl_event;
+  ClutterEvent        *event = NULL;
+  ClutterBackend      *backend = ((ClutterEventSource *) source)->backend;
   ClutterMainContext  *clutter_context;
 
   clutter_context = clutter_context_get_default ();
