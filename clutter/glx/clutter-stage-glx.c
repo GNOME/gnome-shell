@@ -442,10 +442,43 @@ clutter_stage_glx_set_cursor_visible (ClutterStage *stage,
 }
 
 static void
+clutter_stage_glx_set_title (ClutterStage *stage,
+			     const gchar  *title)
+{
+  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage);
+  Atom             atom_NET_WM_NAME, atom_UTF8_STRING;
+
+  if (stage_glx->xwin == None)
+    return;
+
+  /* FIXME: pre create these to avoid too many round trips */
+  atom_NET_WM_NAME  = XInternAtom (stage_glx->xdpy, "_NET_WM_NAME", False);
+  atom_UTF8_STRING  = XInternAtom (stage_glx->xdpy, "UTF8_STRING", False);
+
+  if (title == NULL)
+    {
+      XDeleteProperty (stage_glx->xdpy, 
+		       stage_glx->xwin, 
+		       atom_NET_WM_NAME);
+    }
+  else
+    {
+      XChangeProperty (stage_glx->xdpy, 
+		       stage_glx->xwin, 
+		       atom_NET_WM_NAME, 
+		       atom_UTF8_STRING, 
+		       8, 
+		       PropModeReplace, 
+		       (unsigned char*)title, 
+		       (int)strlen(title));
+    }
+}
+
+static void
 clutter_stage_glx_set_offscreen (ClutterStage *stage,
                                  gboolean      offscreen)
 {
-
+  /* Do nothing ? */
 }
 
 static void
@@ -548,6 +581,7 @@ clutter_stage_glx_class_init (ClutterStageGLXClass *klass)
   stage_class->set_cursor_visible = clutter_stage_glx_set_cursor_visible;
   stage_class->set_offscreen = clutter_stage_glx_set_offscreen;
   stage_class->draw_to_pixbuf = clutter_stage_glx_draw_to_pixbuf;
+  stage_class->set_title = clutter_stage_glx_set_title;
 }
 
 static void

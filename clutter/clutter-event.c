@@ -248,11 +248,7 @@ clutter_key_event_unicode (ClutterKeyEvent *keyev)
 {
   g_return_val_if_fail (keyev != NULL, 0);
  
-  if ((keyev->modifier_state & CLUTTER_SHIFT_MASK) ||
-      (keyev->modifier_state & CLUTTER_LOCK_MASK))
-    return g_unichar_toupper (clutter_keysym_to_unicode (keyev->keyval));
-  else
-    return clutter_keysym_to_unicode (keyev->keyval);
+  return clutter_keysym_to_unicode (keyev->keyval);
 }
 
 /**

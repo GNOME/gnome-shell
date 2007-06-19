@@ -90,6 +90,8 @@ struct _ClutterStageClass
                                         gint          y,
                                         gint          width,
                                         gint          height);
+  void          (* set_title)          (ClutterStage *stage,
+                                        const gchar  *title);
 
   /* signals */
   void     (* event)                (ClutterStage           *stage,
@@ -168,6 +170,10 @@ GdkPixbuf *   clutter_stage_snapshot         (ClutterStage       *stage,
                                               gint                height);
 gboolean      clutter_stage_event            (ClutterStage       *stage,
                                               ClutterEvent       *event);
+
+void          clutter_stage_set_title        (ClutterStage       *stage,
+                                              const gchar        *title);
+G_CONST_RETURN gchar *clutter_stage_get_title (ClutterStage       *stage);
 
 G_END_DECLS
 

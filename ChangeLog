@@ -1,3 +1,20 @@
+2007-06-19  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-stage.c:
+	* clutter/clutter-stage.h:
+	* clutter/glx/clutter-stage-glx.c:
+	* clutter/sdl/clutter-stage-sdl.c:
+	Add window title setting/getting functionality.
+
+	* clutter/clutter-event.c: (clutter_key_event_unicode):
+	Remove uneeded convert case call.
+	
+	* clutter/cogl/gl/cogl.c: (cogl_rectangle)
+	Use parameters correctly for underlying GL rect call. 
+
+	* tests/test-entry.c: 
+	Add a window title.
+
 2007-06-18  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/sdl/clutter-event-sdl.c:

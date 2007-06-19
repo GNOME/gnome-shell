@@ -61,6 +61,8 @@ struct _ClutterStagePrivate
   guint is_fullscreen     : 1;
   guint is_offscreen      : 1;
   guint is_cursor_visible : 1;
+
+  gchar              *title;
 };
 
 enum
@@ -72,6 +74,7 @@ enum
   PROP_OFFSCREEN,
   PROP_CURSOR_VISIBLE,
   PROP_PERSPECTIVE,
+  PROP_TITLE,
 };
 
 enum
@@ -147,6 +150,9 @@ clutter_stage_set_property (GObject      *object,
     case PROP_PERSPECTIVE:
       clutter_stage_set_perspectivex (stage, g_value_get_boxed (value)); 
       break;
+    case PROP_TITLE:
+      clutter_stage_set_title (stage, g_value_get_string (value)); 
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -185,6 +191,9 @@ clutter_stage_get_property (GObject    *object,
     case PROP_PERSPECTIVE:
       clutter_stage_get_perspectivex (stage, &perspective);
       g_value_set_boxed (value, &perspective);
+      break;
+    case PROP_TITLE:
+      g_value_set_string (value, priv->title);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -240,6 +249,22 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			 "The color of the main stage",
 			 CLUTTER_TYPE_COLOR,
 			 CLUTTER_PARAM_READWRITE));
+
+  /**
+   * ClutterStage:title:
+   *
+   * The stages title - usually displayed in stage windows title decorations.
+   *
+   * Since: 0.4
+   */
+  g_object_class_install_property 
+    (gobject_class, PROP_TITLE,
+     g_param_spec_string ("title",
+			  "Title",
+			  "Stage Title",
+			  NULL,
+			  CLUTTER_PARAM_READWRITE));
+
   /**
    * ClutterStage::event:
    * @stage: the actor which received the event
@@ -853,6 +878,54 @@ clutter_stage_event (ClutterStage *stage,
   g_object_unref (stage);
 
   return res;
+}
+
+/**
+ * clutter_stage_set_title
+ * @stage: A #ClutterStage
+ * @title: A utf8 string for the stage windows title.
+ * 
+ * Sets the stage title.
+ *
+ * Since 0.4
+ **/
+void          
+clutter_stage_set_title (ClutterStage       *stage,
+			 const gchar        *title)
+{
+  ClutterStagePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  priv = stage->priv;
+
+  g_free (priv->title);
+  priv->title = g_strdup (title);
+
+  if (CLUTTER_STAGE_GET_CLASS (stage)->set_title)
+    CLUTTER_STAGE_GET_CLASS (stage)->set_title (stage, priv->title);
+
+  g_object_notify (G_OBJECT (stage), "title");
+}
+
+/**
+ * clutter_stage_get_title
+ * @stage: A #ClutterStage
+ * 
+ * Gets the stage title.
+ *
+ * Return value: pointer to the title string for the stage. The
+ * returned string is owned by the actor and should not
+ * be modified or freed.
+ *
+ * Since: 0.4
+ **/
+G_CONST_RETURN gchar *
+clutter_stage_get_title (ClutterStage       *stage)
+{
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
+
+  return stage->priv->title;
 }
 
 /*** Perspective boxed type ******/

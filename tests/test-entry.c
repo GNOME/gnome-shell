@@ -40,7 +40,8 @@ main (int argc, char *argv[])
 
   clutter_actor_set_size (stage, 800, 600);
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
-
+  clutter_stage_set_title (stage, "ClutterEntry Test"); 
+  
   entry = clutter_entry_new_with_text ("Sans 14", 
                                        "Type something, be sure to use the "
                                        "left/right arrow keys to move the "

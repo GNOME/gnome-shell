@@ -172,6 +172,13 @@ clutter_stage_sdl_draw_to_pixbuf (ClutterStage *stage,
 }
 
 static void
+clutter_stage_sdl_set_title (ClutterStage *stage,
+			     const gchar  *title)
+{
+  SDL_WM_SetCaption  (title, NULL);
+}
+
+static void
 clutter_stage_sdl_dispose (GObject *gobject)
 {
   ClutterStageSDL *stage_sdl = CLUTTER_STAGE_SDL (gobject);
@@ -201,6 +208,7 @@ clutter_stage_sdl_class_init (ClutterStageSDLClass *klass)
   stage_class->set_cursor_visible = clutter_stage_sdl_set_cursor_visible;
   stage_class->set_offscreen = clutter_stage_sdl_set_offscreen;
   stage_class->draw_to_pixbuf = clutter_stage_sdl_draw_to_pixbuf;
+  stage_class->set_title = clutter_stage_sdl_set_title;
 }
 
 static void

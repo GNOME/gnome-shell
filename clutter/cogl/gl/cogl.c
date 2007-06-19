@@ -415,7 +415,7 @@ cogl_texture_sub_image_2d (COGLenum      target,
 void
 cogl_rectangle (gint x, gint y, guint width, guint height)
 {
-  GE( glRecti (x,y ,width, height) );
+  GE( glRecti (x, y, x + width, y + height) );
 }
 
 /* FIXME: Should use ClutterReal or Fixed */
