@@ -1,3 +1,7 @@
+2007-06-19  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* README.in: Update release notes.
+
 2007-06-19  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-main.c: (clutter_init_with_args), (clutter_init):
