@@ -1,3 +1,9 @@
+2007-06-19  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* configure.ac:
+	* README.in: Use a template for the README file, so that
+	it gets the right version number.
+
 2007-06-19  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-stage.c:

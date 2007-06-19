@@ -1,0 +1,68 @@
+Clutter README.
+===============
+
+This is Clutter @CLUTTER_VERSION@. Clutter aims to give a nice easy
+GObject based API for creating fast, mainly 2D single window stylalised
+applications such as media box UI's, presentaions, kiosk style apps etc.
+It uses OpenGL for rendering.
+
+Its not meant to be a full featured GUI toolkit for regular desktop
+apps nor provide a general interface to *all* OpenGL functionality.
+
+It currently uses fairly low end GL functionality with an aim to still
+work well on open source graphics drivers as well as possibly making
+an eventual GL ES port feasable.
+
+Clutter currently requires GLib >= 2.10, GdkPixbuf and OpenGL >= 1.2.
+Its also recommended you have some kind of working hardware OpenGL on
+your target system.
+
+Clutter is LGPL licensed.
+
+The official website is:        http://www.clutter-project.org
+
+INSTALLATION
+====
+See the INSTALL file
+
+RELEASE NOTES
+====
+
+Release Notes for Clutter 0.4
+-----------------------------
+
+* ...
+
+HACKING
+====
+If you want to hack on and improve clutter check the TODO file.
+
+BUGS
+====
+
+Bugs should be reported to the OpenedHand Bugzilla at:
+
+  http://bugzilla.o-hand.com
+
+Under the product "Clutter".
+
+In the report you should include:
+* what system you're running Clutter on;
+* which version of GLib, GdkPixbuf and OpenGL you are using;
+* which video card and which drivers you are using;
+* how to reproduce the bug.
+
+If you cannot reproduce the bug with one of the tests that come with Clutter
+source code, you should include a small test case displaying the bad
+behaviour.
+
+If the bug exposes a crash, the exact text printed out and a stack trace
+obtained using gdb are greatly appreciated.
+
+PATCHES
+====
+
+Patches should be submitted using Bugzilla. Patches fixing a bug should be
+attached to the bug report; patches for new features or for fixing bugs not
+yet reported should be attached to a newly opened bug. Patches should always
+be in the unified diff format.
