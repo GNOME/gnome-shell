@@ -1,3 +1,7 @@
+2007-06-19  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* autogen.sh: autoreconf needs a README.
+
 2007-06-19  Matthew Allum  <mallum@openedhand.com>
 
 	* TODO:
