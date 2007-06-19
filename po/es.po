@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-09 03:31+0100\n"
-"PO-Revision-Date: 2007-06-15 12:12+0200\n"
+"POT-Creation-Date: 2007-06-19 04:05+0100\n"
+"PO-Revision-Date: 2007-06-19 10:09+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -164,15 +164,15 @@ msgstr "No ha sido definido ningún comando de terminal.\n"
 #, c-format
 msgid ""
 "metacity %s\n"
-"Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright (C) 2001-2007 Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
-"Copyright © 2001-2002 Havoc Pennington, Red Hat, Inc., y otros\n"
-"Este programa es software libre; vea el código fuente para obtener las "
-"condiciones de copia. NO se proporciona ninguna garantía; ni de "
+"Copyright © 2001-2007 Havoc Pennington, Red Hat, Inc., y otros\n"
+"Este programa es software libre; vea el código fuente para obtener las\n"
+"condiciones de copia. NO se proporciona ninguna garantía; ni de\n"
 "MERCANTILIDAD O DE IDONEIDAD PARA UN PROPÓSITO PARTICULAR.\n"
 
 #: ../src/main.c:171
@@ -869,7 +869,26 @@ msgid ""
 "disabled, tell them it is _their_ fault for breaking their window manager "
 "and that they need to change this option back to true or live with the bug "
 "they requested. See also http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
-msgstr "Establecer esta opción a «false» puede conllevar un comportamiento defectuoso, de tal forma que se desaconseja a los usuarios que lo cambien del valor predeterminado «true». Muchas acciones (ej. pulsar en el área del cliente, mover o redimensionar ventanas) generalmente levantan la ventana como un efecto lateral. Establezca esta opción a «false» para desemparejar levantar de otras acciones de los usuarios. Incluso cuando esta opción está a «false», las ventanas aún pueden levantarse con Alt+botón izquierdo en cualquier parte de la ventana, una pulsación normal en la decoración de la ventana, o por mensajes especiales de los «pager», tales como peticiones de activación de las miniaplicaciones de listas de tareas. Esta opción está desactivada actualmente en el modo pulsar-para-ampliar. Nótese que la lista de maneras para levantar una ventana cuando raise_on_click está a «false» no incluye las peticiones programadas de las aplicaciones para levantar las ventanas; tales peticiones serán ignoradas a pesar de la razón para levantar las ventanas. Si es un desarrollador de aplicaciones y tiene un usuario quejándose de que su aplicación no funciona con este ajuste desactivado, dígale que es culpa _suya_ por romper el gestor de ventanas y que deben cambiar esta opción a su estado anterior o vivir con el error que han propiciado. Vea también http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
+msgstr ""
+"Establecer esta opción a «false» puede conllevar un comportamiento "
+"defectuoso, de tal forma que se desaconseja a los usuarios que lo cambien "
+"del valor predeterminado «true». Muchas acciones (ej. pulsar en el área del "
+"cliente, mover o redimensionar ventanas) generalmente levantan la ventana "
+"como un efecto lateral. Establezca esta opción a «false» para desemparejar "
+"levantar de otras acciones de los usuarios. Incluso cuando esta opción está "
+"a «false», las ventanas aún pueden levantarse con Alt+botón izquierdo en "
+"cualquier parte de la ventana, una pulsación normal en la decoración de la "
+"ventana, o por mensajes especiales de los «pager», tales como peticiones de "
+"activación de las miniaplicaciones de listas de tareas. Esta opción está "
+"desactivada actualmente en el modo pulsar-para-ampliar. Nótese que la lista "
+"de maneras para levantar una ventana cuando raise_on_click está a «false» no "
+"incluye las peticiones programadas de las aplicaciones para levantar las "
+"ventanas; tales peticiones serán ignoradas a pesar de la razón para levantar "
+"las ventanas. Si es un desarrollador de aplicaciones y tiene un usuario "
+"quejándose de que su aplicación no funciona con este ajuste desactivado, "
+"dígale que es culpa _suya_ por romper el gestor de ventanas y que deben "
+"cambiar esta opción a su estado anterior o vivir con el error que han "
+"propiciado. Vea también http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
 
 #: ../src/metacity.schemas.in.h:79
 msgid "Show the panel menu"
@@ -3621,13 +3640,13 @@ msgstr "La aplicación establecio un _NET_WM_PID %lu erróneo\n"
 msgid "%s (on %s)"
 msgstr "%s (on %s)"
 
-#: ../src/window-props.c:1405
+#: ../src/window-props.c:1406
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "WM_TRANSIENT_FOR inválido para la ventana 0x%lx especificada para %s.\n"
 
 #. first time through
-#: ../src/window.c:5532
+#: ../src/window.c:5540
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3643,7 +3662,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6141
+#: ../src/window.c:6102
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
