@@ -598,8 +598,8 @@ clutter_init_with_args (int            *argc,
   if (clutter_is_initialized)
     return CLUTTER_INIT_SUCCESS;
 
-  if (*argc > 0)
-    g_set_prgname (*argv[0]);
+  if (argc && *argc > 0 && *argv)
+    g_set_prgname ((*argv)[0]);
 
   clutter_base_init ();
 
@@ -694,8 +694,8 @@ clutter_init (int    *argc,
   if (clutter_is_initialized)
     return CLUTTER_INIT_SUCCESS;
 
-  if (*argc > 0)
-    g_set_prgname (*argv[0]);
+  if (argc && *argc > 0 && *argv)
+    g_set_prgname ((*argv)[0]);
 
   clutter_base_init ();
 

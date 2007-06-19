@@ -1,3 +1,8 @@
+2007-06-19  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-main.c: (clutter_init_with_args), (clutter_init):
+	Safer checks for setting progname if NULL is passed in init.
+
 2007-06-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* autogen.sh: autoreconf needs a README.
