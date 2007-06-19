@@ -9,23 +9,23 @@ Last updated 31/05/2007
 
 Definetly:
 
- - YUV texture data, premulled alpha texture data. (ma)
- - Basic layout code. (eb)
- - Basic text entry (np)
- - Perspective setup (ma)
+ - YUV texture data [DONE] premulled alpha texture data. (ma)
+ - Basic layout code. [DONE] (eb)
+ - Basic text entry [DONE] (np)
+ - Perspective setup [DONE] (ma)
  - API doc fixups (all)
- - main loop scheduling - paints vs timelimes vs events (ma, eb)
+ - main loop scheduling - paints vs timelimes vs events [DONE] ((ma, eb)
  - ClutterProxyTexture (ma)
- - event queue fixups (eb)
- - clutter_actor_get_vertices (tf)
- - fix up event queue (eb)
+ - event queue fixups [DONE} (eb) 
+ - clutter_actor_get_vertices [Partly DONE?] (tf)
+ - fix up event queue [DONE] (eb)
 
 Maybe:
 
- - SDL event fixups
+ - SDL event fixups [DONE - roughly]
  - Application developers manual
  - Lookat type functionality.
-
+ - Mipmaps for pango renderer to improving text scaling quality
 
 0.6
 ===

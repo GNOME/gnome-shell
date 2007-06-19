@@ -111,6 +111,8 @@ AC_ARG_WITH([flavour],
                            [Select the Clutter backend]),
             clutterbackend=$with_flavour)
 
+BACKEND_PC_FILES=""
+
 case $clutterbackend in
 
   sdl)
@@ -181,6 +183,9 @@ case $clutterbackend in
       AC_MSG_ERROR([GLX not found and GLX backend requested]);
     fi
 
+    # xlib pixbuf needed for exporting the stage
+    BACKEND_PC_FILES="gdk-pixbuf-xlib-2.0"
+ 
     GLX_LIBS="$X11_LIBS -lGL"
     GLX_CFLAGS="$X11_CFLAGS"
     ;;
@@ -198,10 +203,9 @@ case $clutterbackend in
     if test "x$HAVE_OGLES" = "xno"; then
       AC_MSG_ERROR([libvincent (ogles) not found and egl backend requested.]);
     fi
-    
+
     EGL_LIBS="$EGL_LIBS $X11_LIBS"
     EGL_CFLAGS="$EGL_CFLAGS $X11_CFLAGS"
-
     ;;
 
   *) AC_MSG_ERROR([Invalid backend for Clutter: use glx or egl])
@@ -218,7 +222,7 @@ AC_SUBST([clutterbackendlib])
 
 dnl ========================================================================
 
-pkg_modules="pangoft2 glib-2.0 >= 2.10 gobject-2.0 gthread-2.0 gdk-pixbuf-2.0 gdk-pixbuf-xlib-2.0"
+pkg_modules="pangoft2 glib-2.0 >= 2.10 gobject-2.0 gthread-2.0 gdk-pixbuf-2.0 $BACKEND_PC_FILES"
 PKG_CHECK_MODULES(CLUTTER_DEPS, [$pkg_modules])
 
 dnl ========================================================================

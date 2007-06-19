@@ -1,3 +1,23 @@
+2007-06-19  Matthew Allum  <mallum@openedhand.com>
+
+	* TODO:
+	Sync up a little.
+	* clutter/clutter-main.c:
+	Set a default window title based on g_prgname().
+
+	* clutter/clutter-stage.c:
+	* clutter/clutter-stage.h:
+	* clutter/egl/clutter-stage-egl.c:
+	* clutter/glx/clutter-stage-glx.c:
+	* clutter/sdl/clutter-stage-sdl.c:
+	Alter draw_to_pixbuf to return a pixbuf
+
+	* configure.ac:
+	Only full in gdk-pixbuf-xlib as a GLX backend dep.
+
+	* tests/test-entry.c:
+	Fix a couple of warnings.
+
 2007-06-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* Makefile.am: Add README.in to the EXTRA_DIST.

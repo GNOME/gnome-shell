@@ -488,9 +488,8 @@ snapshot_pixbuf_free (guchar   *pixels,
   g_free (pixels);
 }
 
-static void
+static GdkPixbuf*
 clutter_stage_glx_draw_to_pixbuf (ClutterStage *stage,
-                                  GdkPixbuf    *dest,
                                   gint          x,
                                   gint          y,
                                   gint          width,
@@ -517,7 +516,7 @@ clutter_stage_glx_draw_to_pixbuf (ClutterStage *stage,
     {
       gdk_pixbuf_xlib_init (stage_glx->xdpy, stage_glx->xscreen);
 
-      dest = gdk_pixbuf_xlib_get_from_drawable (NULL,
+      pixb = gdk_pixbuf_xlib_get_from_drawable (NULL,
                                                 (Drawable) stage_glx->xpixmap,
                                                 DefaultColormap (stage_glx->xdpy,
                                                                  stage_glx->xscreen),
@@ -528,26 +527,33 @@ clutter_stage_glx_draw_to_pixbuf (ClutterStage *stage,
     }
   else
     {
-      data = g_malloc0 (sizeof (guchar) * width * height * 4);
+      GdkPixbuf *tmp = NULL;
+      gint stride;
+
+      stride = ((width * 4 + 3) &~ 3);
+
+      data = g_malloc0 (sizeof (guchar) * stride * height);
 
       glReadPixels (x, 
 		    clutter_actor_get_height (actor) - y - height,
 		    width, 
 		    height, GL_RGBA, GL_UNSIGNED_BYTE, data);
       
-      pixb = gdk_pixbuf_new_from_data (data,
-				       GDK_COLORSPACE_RGB, 
-				       TRUE, 
-				       8, 
-				       width, height,
-				       width * 4,
-				       snapshot_pixbuf_free,
-				       NULL);
+      tmp = gdk_pixbuf_new_from_data (data,
+				      GDK_COLORSPACE_RGB, 
+				      TRUE, 
+				      8, 
+				      width, height,
+				      stride,
+				      snapshot_pixbuf_free,
+				      NULL);
       
-      dest = gdk_pixbuf_flip (pixb, TRUE); 
+      pixb = gdk_pixbuf_flip (tmp, TRUE); 
 
-      g_object_unref (pixb);
+      g_object_unref (tmp);
    }
+
+  return pixb;
 }
 
 static void

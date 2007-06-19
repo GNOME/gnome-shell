@@ -742,13 +742,7 @@ clutter_stage_snapshot (ClutterStage *stage,
 
   klass = CLUTTER_STAGE_GET_CLASS (stage);
   if (klass->draw_to_pixbuf)
-    {
-      GdkPixbuf *retval = NULL;
-
-      klass->draw_to_pixbuf (stage, retval, x, y, width, height);
-      
-      return retval;
-    }
+    return klass->draw_to_pixbuf (stage, x, y, width, height);
 
   return NULL;
 }

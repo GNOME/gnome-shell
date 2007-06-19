@@ -84,8 +84,7 @@ struct _ClutterStageClass
                                         gboolean      visible);
   void          (* set_offscreen)      (ClutterStage *stage,
                                         gboolean      offscreen);
-  void          (* draw_to_pixbuf)     (ClutterStage *stage,
-                                        GdkPixbuf    *dest,
+  GdkPixbuf*    (* draw_to_pixbuf)     (ClutterStage *stage,
                                         gint          x,
                                         gint          y,
                                         gint          width,

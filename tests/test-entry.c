@@ -40,7 +40,7 @@ main (int argc, char *argv[])
 
   clutter_actor_set_size (stage, 800, 600);
   clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
-  clutter_stage_set_title (stage, "ClutterEntry Test"); 
+  clutter_stage_set_title (CLUTTER_STAGE (stage), "ClutterEntry Test"); 
   
   entry = clutter_entry_new_with_text ("Sans 14", 
                                        "Type something, be sure to use the "
@@ -53,7 +53,7 @@ main (int argc, char *argv[])
   /*clutter_entry_set_max_length (CLUTTER_ENTRY (entry), 50);*/
   
   clutter_group_add (CLUTTER_GROUP (stage), entry);
-  clutter_actor_show_all (CLUTTER_GROUP (stage));
+  clutter_actor_show_all (stage);
 
   g_signal_connect (stage, "key-release-event",
 		    G_CALLBACK (on_key_release_cb), (gpointer)entry);

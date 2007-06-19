@@ -598,6 +598,9 @@ clutter_init_with_args (int            *argc,
   if (clutter_is_initialized)
     return CLUTTER_INIT_SUCCESS;
 
+  if (*argc > 0)
+    g_set_prgname (*argv[0]);
+
   clutter_base_init ();
 
   group   = clutter_get_option_group ();
@@ -629,6 +632,9 @@ clutter_init_with_args (int            *argc,
   _clutter_backend_init_events (clutter_context->backend);
 
   _clutter_feature_init ();
+
+  clutter_stage_set_title (CLUTTER_STAGE(clutter_stage_get_default()),
+			   g_get_prgname ());
 
   return CLUTTER_INIT_SUCCESS;
 }
@@ -688,6 +694,9 @@ clutter_init (int    *argc,
   if (clutter_is_initialized)
     return CLUTTER_INIT_SUCCESS;
 
+  if (*argc > 0)
+    g_set_prgname (*argv[0]);
+
   clutter_base_init ();
 
   /* parse_args will trigger backend creation and things like
@@ -719,6 +728,9 @@ clutter_init (int    *argc,
 
   /* finally features - will call to backend and cogl */
   _clutter_feature_init ();
+
+  clutter_stage_set_title (CLUTTER_STAGE(clutter_stage_get_default()), 
+			   g_get_prgname());
 
   return CLUTTER_INIT_SUCCESS;
 }

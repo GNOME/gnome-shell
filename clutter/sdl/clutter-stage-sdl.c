@@ -159,7 +159,7 @@ clutter_stage_sdl_set_offscreen (ClutterStage *stage,
              G_OBJECT_TYPE_NAME (stage));
 }
 
-static void
+static GdkPixbuf*
 clutter_stage_sdl_draw_to_pixbuf (ClutterStage *stage,
                                   GdkPixbuf    *dest,
                                   gint          x,
@@ -169,6 +169,7 @@ clutter_stage_sdl_draw_to_pixbuf (ClutterStage *stage,
 {
   g_warning ("Stage of type `%s' do not support ClutterStage::draw_to_pixbuf",
              G_OBJECT_TYPE_NAME (stage));
+  return NULL;
 }
 
 static void
