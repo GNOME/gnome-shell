@@ -1,5 +1,9 @@
 2007-06-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* Makefile.am: Add README.in to the EXTRA_DIST.
+
+2007-06-19  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* configure.ac:
 	* README.in: Use a template for the README file, so that
 	it gets the right version number.

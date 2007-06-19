@@ -18,9 +18,9 @@ uninstall-local:
 	rm -f $(DESTDIR)$(pkgconfigdir)/clutter-@CLUTTER_MAJORMINOR@.pc
 
 
-EXTRA_DIST = clutter.pc.in
+EXTRA_DIST = clutter.pc.in README.in
 
-CLEANFILES = $(pcfiles)
+CLEANFILES = $(pcfiles) README
 
 DISTCHECK_CONFIGURE_FLAGS=--enable-gtk-doc --enable-python --enable-gtk
 
