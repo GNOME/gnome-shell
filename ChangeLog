@@ -1,3 +1,9 @@
+2007-06-21  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-timeline.c: Allow disabling the timeline pool
+	by using the CLUTTER_TIMELINE environment variable set to
+	"no-pool".
+
 2007-06-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* README.in: Update release notes.
