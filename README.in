@@ -13,13 +13,20 @@ It currently uses fairly low end GL functionality with an aim to still
 work well on open source graphics drivers as well as possibly making
 an eventual GL ES port feasable.
 
-Clutter currently requires GLib >= 2.10, GdkPixbuf and OpenGL >= 1.2.
+Clutter currently requires:
+
+  * GLib >= 2.10.0
+  * GdkPixbuf
+  * OpenGL >= 1.2
+
 Its also recommended you have some kind of working hardware OpenGL on
 your target system.
 
 Clutter is LGPL licensed.
 
 The official website is:        http://www.clutter-project.org
+The official mailing list is:   http://lists.o-hand.com/clutter/
+New bug page on Bugzilla:       http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter
 
 INSTALLATION
 ====
@@ -55,8 +62,14 @@ Release Notes for Clutter 0.4
   is no longer necessary. In case Clutter applications take really
   long times for redrawing and appear stuck and unresponsive, the
   sync-to-vblank feature might still be the culprit; in that case, use
-  CLUTTER_VBLANK=none to disable it and file a bug reporting the video
-  card model, the driver version and the X server version.
+  "export CLUTTER_VBLANK=none" to disable it and file a bug reporting the
+  video card model, the driver version and the X server version.
+
+* ClutterTimeline objects now share the same timeout pool (see the
+  ClutterTimeoutPool API). This might cause problems with heavily
+  threaded libraries without integration with the GLib main loop.
+  If an application experiences bad behaviours during animations
+  use "export CLUTTER_TIMELINE=no-pool" to disable the timeout pool.
 
 HACKING
 ====
@@ -64,12 +77,11 @@ If you want to hack on and improve clutter check the TODO file.
 
 BUGS
 ====
-
 Bugs should be reported to the OpenedHand Bugzilla at:
 
-  http://bugzilla.o-hand.com
+  http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter
 
-Under the product "Clutter".
+You will need an account.
 
 In the report you should include:
 * what system you're running Clutter on;
@@ -86,7 +98,6 @@ obtained using gdb are greatly appreciated.
 
 PATCHES
 ====
-
 Patches should be submitted using Bugzilla. Patches fixing a bug should be
 attached to the bug report; patches for new features or for fixing bugs not
 yet reported should be attached to a newly opened bug. Patches should always
