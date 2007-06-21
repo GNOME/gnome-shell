@@ -349,7 +349,8 @@ clutter_timeout_pool_finalize (GSource *source)
  * always sorted, so that the extraction of the next timeout function is
  * a constant time operation.
  *
- * Inside Clutter, every #ClutterTimeline share the same timeout pool.
+ * Inside Clutter, every #ClutterTimeline share the same timeout pool, unless
+ * the CLUTTER_TIMELINE=no-pool environment variable is set.
  *
  * Return value: the newly created #ClutterTimeoutPool
  *

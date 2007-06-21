@@ -25,11 +25,18 @@
 
 /**
  * SECTION:clutter-timeline
- * @short_description: A base class for managing time based events such
+ * @short_description: A class for based events
+ *
+ * #ClutterTimeline is a base class for managing time based events such
  * as animations.
  *
- * #ClutterTimeline is a base class  for managing time based events such
- * as animations. 
+ * Every timeline shares the same #ClutterTimeoutPool to decrease the
+ * possibility of starvating the main loop when using many timelines
+ * at the same time; this might cause problems if you are also using
+ * a library making heavy use of threads with no GLib main loop integration.
+ * In that case you might disable the common timeline pool by setting
+ * the %CLUTTER_TIMELINE=no-pool environment variable prior to launching
+ * your application.
  */
 
 #ifndef HAVE_CONFIG_H
@@ -46,8 +53,7 @@
 G_DEFINE_TYPE (ClutterTimeline, clutter_timeline, G_TYPE_OBJECT);
 
 #define FPS_TO_INTERVAL(f) (1000 / (f))
-
-static ClutterTimeoutPool *timeline_pool = NULL;
+#define CLUTTER_TIMELINE_PRIORITY       (G_PRIORITY_DEFAULT + 30)
 
 struct _ClutterTimelinePrivate
 {
@@ -85,7 +91,67 @@ enum
   LAST_SIGNAL
 };
 
-static int timeline_signals[LAST_SIGNAL] = { 0 };
+static guint               timeline_signals[LAST_SIGNAL] = { 0 };
+static gint                timeline_use_pool = -1;
+static ClutterTimeoutPool *timeline_pool = NULL;
+
+static inline void
+timeline_pool_init (void)
+{
+  if (timeline_use_pool == -1)
+    {
+      const gchar *timeline_env;
+
+      timeline_env = g_getenv ("CLUTTER_TIMELINE");
+      if (timeline_env && timeline_env[0] != '\0' &&
+          strcmp (timeline_env, "no-pool") == 0)
+        {
+          timeline_use_pool = FALSE;
+        }
+      else
+        {
+          timeline_pool = clutter_timeout_pool_new (CLUTTER_TIMELINE_PRIORITY);
+          timeline_use_pool = TRUE;
+        }
+    }
+}
+
+static guint
+timeout_add (guint          interval,
+             GSourceFunc    func,
+             gpointer       data,
+             GDestroyNotify notify)
+{
+  guint res;
+
+  if (timeline_use_pool)
+    {
+      g_assert (timeline_pool != NULL);
+      res = clutter_timeout_pool_add (timeline_pool,
+                                      interval,
+                                      func, data, notify);
+    }
+  else
+    {
+      res = g_timeout_add_full (CLUTTER_TIMELINE_PRIORITY,
+                                interval,
+                                func, data, notify);
+    }
+
+  return res;
+}
+
+static void
+timeout_remove (guint tag)
+{
+  if (timeline_use_pool)
+    {
+      g_assert (timeline_pool != NULL);
+      clutter_timeout_pool_remove (timeline_pool, tag);
+    }
+  else
+    g_source_remove (tag);
+}
 
 /* Object */
 
@@ -169,26 +235,25 @@ clutter_timeline_dispose (GObject *object)
 
   if (priv->delay_id)
     {
-      clutter_timeout_pool_remove (timeline_pool, priv->delay_id);
+      timeout_remove (priv->delay_id);
       priv->delay_id = 0;
     }
 
   if (priv->timeout_id)
     {
-      clutter_timeout_pool_remove (timeline_pool, priv->timeout_id);
+      timeout_remove (priv->timeout_id);
       priv->timeout_id = 0;
     }
 
   G_OBJECT_CLASS (clutter_timeline_parent_class)->dispose (object);
 }
 
-
 static void
 clutter_timeline_class_init (ClutterTimelineClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  timeline_pool = clutter_timeout_pool_new (G_PRIORITY_DEFAULT + 30);
+  timeline_pool_init ();
 
   object_class->set_property = clutter_timeline_set_property;
   object_class->get_property = clutter_timeline_get_property;
@@ -402,11 +467,9 @@ delay_timeout_func (gpointer data)
 
   priv->delay_id = 0;
 
-  priv->timeout_id = clutter_timeout_pool_add (timeline_pool,
-                                               FPS_TO_INTERVAL (priv->fps),
-                                               timeline_timeout_func,
-                                               timeline,
-                                               NULL);
+  priv->timeout_id = timeout_add (FPS_TO_INTERVAL (priv->fps),
+                                  timeline_timeout_func,
+                                  timeline, NULL);
   
   g_signal_emit (timeline, timeline_signals[STARTED], 0);
 
@@ -433,19 +496,15 @@ clutter_timeline_start (ClutterTimeline *timeline)
 
   if (priv->delay)
     {
-      priv->delay_id = clutter_timeout_pool_add (timeline_pool,
-                                                 priv->delay,
-                                                 delay_timeout_func,
-                                                 timeline,
-                                                 NULL);
+      priv->delay_id = timeout_add (priv->delay,
+                                    delay_timeout_func,
+                                    timeline, NULL);
     }
   else
     {
-      priv->timeout_id = clutter_timeout_pool_add (timeline_pool,
-                                                   FPS_TO_INTERVAL (priv->fps),
-                                                   timeline_timeout_func,
-                                                   timeline,
-                                                   NULL);
+      priv->timeout_id = timeout_add (FPS_TO_INTERVAL (priv->fps),
+                                      timeline_timeout_func,
+                                      timeline, NULL);
 
       g_signal_emit (timeline, timeline_signals[STARTED], 0);
     }
@@ -468,13 +527,13 @@ clutter_timeline_pause (ClutterTimeline *timeline)
 
   if (priv->delay_id)
     {
-      clutter_timeout_pool_remove (timeline_pool, priv->delay_id);
+      timeout_remove (priv->delay_id);
       priv->delay_id = 0;
     }
 
   if (priv->timeout_id)
     {
-      clutter_timeout_pool_remove (timeline_pool, priv->timeout_id);
+      timeout_remove (priv->timeout_id);
       priv->timeout_id = 0;
     }
 
@@ -678,12 +737,11 @@ clutter_timeline_set_speed (ClutterTimeline *timeline,
       /* if the timeline is playing restart */
       if (priv->timeout_id)
         {
-          clutter_timeout_pool_remove (timeline_pool, priv->timeout_id);
+          timeout_remove (priv->timeout_id);
      
-          priv->timeout_id = clutter_timeout_pool_add (timeline_pool,
-                                                       FPS_TO_INTERVAL (priv->fps),
-                                                       timeline_timeout_func,
-                                                       timeline, NULL);
+          priv->timeout_id = timeout_add (FPS_TO_INTERVAL (priv->fps),
+                                          timeline_timeout_func,
+                                          timeline, NULL);
         }
 
       g_object_notify (G_OBJECT (timeline), "fps");
