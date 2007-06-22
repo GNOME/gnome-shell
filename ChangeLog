@@ -1,5 +1,13 @@
 2007-06-22  Matthew Allum  <mallum@openedhand.com>
 
+	* README:
+	* README.in:
+	* autogen.sh:
+	* configure.ac:
+	Move back to regular README naming at least for now.
+
+2007-06-22  Matthew Allum  <mallum@openedhand.com>
+
 	* NEWS:
 	* README.in:
 	* TODO:

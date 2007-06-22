@@ -292,7 +292,6 @@ AC_SUBST(CLUTTER_LIBS)
 
 AC_CONFIG_FILES([
         Makefile
-        README
         clutter/pango/Makefile
         clutter/Makefile
         clutter/clutter-version.h
