@@ -59,10 +59,10 @@ struct _ClutterActorPrivate
 {
   ClutterActorBox coords;
 
-  ClutterGeometry clip;
+  ClutterGeometry clip;                          /* FIXME: Should be Units */  
   guint           has_clip : 1;
   ClutterFixed    rxang, ryang, rzang;           /* Rotation*/
-  gint            rzx, rzy, rxy, rxz, ryx, ryz;
+  gint            rzx, rzy, rxy, rxz, ryx, ryz;	 /* FIXME: Should be Units */
   gint            z;
   guint8          opacity;
   ClutterActor   *parent_actor;
@@ -498,9 +498,9 @@ clutter_actor_transform_vertices (ClutterActor    * self,
  * @verts: Pointer to a location of an array of 4 #ClutterVertex where to
  * store the result.
  * 
- * Calculates the screen coordinaces of the four corners or the actor; the
- * returned corners are in the following order: bottomleft, bottomright,
- * topright, topleft.
+ * Calculates the tranformed screen coordinaces of the four corners of
+ * the actor; the returned corners are in the following order:
+ * bottomleft, bottomright, topright, topleft.
  *
  * Since: 0.4
  **/
@@ -706,9 +706,10 @@ clutter_actor_paint (ClutterActor *self)
 /**
  * clutter_actor_request_coords:
  * @self: A #ClutterActor
- * @box: A #ClutterActorBox with requested new co-ordinates.
+ * @box: A #ClutterActorBox with requested new co-ordinates in ClutterUnits
  *
- * Requests new co-ordinates for the #ClutterActor ralative to any parent.
+ * Requests new untransformed co-ordinates for the #ClutterActor
+ * ralative to any parent.
  *
  * This function should not be called directly by applications instead 
  * the various position/geometry methods should be used.
@@ -767,8 +768,8 @@ clutter_actor_request_coords (ClutterActor    *self,
  * @self: A #ClutterActor
  * @box: A location to store the actors #ClutterActorBox co-ordinates
  *
- * Requests the queryd un transformed co-ordinates for the #ClutterActor 
- * relative to any parent.
+ * Requests the untransformed co-ordinates (in ClutterUnits) for the
+ * #ClutterActor relative to any parent.
  *
  * This function should not be called directly by applications instead 
  * the various position/geometry methods should be used.
@@ -1212,7 +1213,8 @@ clutter_actor_queue_redraw (ClutterActor *self)
  * @self: A #ClutterActor
  * @geometry: A #ClutterGeometry
  *
- * Sets the actors geometry in pixels relative to any parent actor.
+ * Sets the actors untransformed geometry in pixels relative to any
+ * parent actor.
  */
 void
 clutter_actor_set_geometry (ClutterActor          *self,
@@ -1233,7 +1235,8 @@ clutter_actor_set_geometry (ClutterActor          *self,
  * @self: A #ClutterActor
  * @geometry: A location to store actors #ClutterGeometry
  *
- * Gets the actors geometry in pixels relative to any parent actor.
+ * Gets the actors untransformed geometry in pixels relative to any
+ * parent actor.
  */
 void
 clutter_actor_get_geometry (ClutterActor    *self,
@@ -1259,7 +1262,7 @@ clutter_actor_get_geometry (ClutterActor    *self,
  * @x2: A location to store actors right position if non NULL.
  * @y2: A location to store actors bottom position if non NULL.
  *
- * Gets the actors bounding rectangle co-ordinates in pixels 
+ * Gets the actors untransformed bounding rectangle co-ordinates in pixels 
  * relative to any parent actor. 
  */
 void
@@ -1324,7 +1327,7 @@ clutter_actor_set_position (ClutterActor *self,
  * @dy: Distance to move Actor on Y axis.
  *
  * Moves an actor by specified distance relative to 
- * current position.
+ * current position in pixels.
  *
  * Since: 0.2
  */
@@ -1355,8 +1358,7 @@ clutter_actor_move_by (ClutterActor *self,
  * @width: New width of actor in pixels 
  * @height: New height of actor in pixels
  *
- * Sets the actors position in pixels relative to any
- * parent actor. 
+ * Sets the actors size in pixels.
  */
 void
 clutter_actor_set_size (ClutterActor *self,
@@ -1381,7 +1383,7 @@ clutter_actor_set_size (ClutterActor *self,
  * @width: Location to store width if non NULL.
  * @height: Location to store height if non NULL.
  *
- * Gets the size of an actor ignoring any scaling factors
+ * Gets the size of an actor in pixels ignoring any scaling factors.
  *
  * Since: 0.2
  */
@@ -1522,7 +1524,7 @@ clutter_actor_get_abs_size (ClutterActor *self,
  * clutter_actor_get_width
  * @self: A #ClutterActor
  *
- * Retrieves the actors width.
+ * Retrieves the actors width ignoring any scaling factors.
  *
  * Return value: The actor width in pixels
  **/
@@ -1542,7 +1544,7 @@ clutter_actor_get_width (ClutterActor *self)
  * clutter_actor_get_height
  * @self: A #ClutterActor
  *
- * Retrieves the actors height.
+ * Retrieves the actors height ignoring any scaling factors.
  * 
  * Return value: The actor height in pixels
  **/
@@ -1599,7 +1601,8 @@ clutter_actor_set_height (ClutterActor *self, guint height)
  *
  * Retrieves the actors x position relative to any parent.
  *
- * Return value: The actor x position in pixels
+ * Return value: The actor x position in pixels ignoring any tranforms
+ * (i.e scaling, rotation).
  **/
 gint
 clutter_actor_get_x (ClutterActor *self)
@@ -1619,7 +1622,8 @@ clutter_actor_get_x (ClutterActor *self)
  *
  * Retrieves the actors y position relative to any parent.
  *
- * Return value: The actor y position in pixels
+ * Return value: The actor y position in pixels ignoring any tranforms
+ * (i.e scaling, rotation).
  **/
 gint
 clutter_actor_get_y (ClutterActor *self)
@@ -1639,7 +1643,7 @@ clutter_actor_get_y (ClutterActor *self)
  * @scale_x: #ClutterFixed factor to scale actor by horizontally.
  * @scale_y: #ClutterFixed factor to scale actor by vertically.
  *
- * Scale an actor.
+ * Scales an actor with fixed point parameters.
  */
 void
 clutter_actor_set_scalex (ClutterActor *self,
@@ -1658,10 +1662,10 @@ clutter_actor_set_scalex (ClutterActor *self,
 /**
  * clutter_actor_set_scale:
  * @self: A #ClutterActor
- * @scale_x: double
- * @scale_y: double
+ * @scale_x: double factor to scale actor by horizontally.
+ * @scale_y: double factor to scale actor by vertically.
  *
- * FIXME
+ * Scales an actor with floating point parameters.
  *
  * Since: 0.2
  */
@@ -1680,10 +1684,10 @@ clutter_actor_set_scale (ClutterActor *self,
 /**
  * clutter_actor_get_scalex:
  * @self: A #ClutterActor
- * @scale_x: FIXME
- * @scale_y: FIXME
+ * @scale_x: Location to store horizonal fixed scale factor if non NULL.
+ * @scale_y: Location to store vertical fixed scale factor if non NULL.
  *
- * FIXME
+ * Retrieves an actors scale in fixed point.
  *
  * Since: 0.2
  */
@@ -1702,10 +1706,10 @@ clutter_actor_get_scalex (ClutterActor *self,
 /**
  * clutter_actor_get_scale:
  * @self: A #ClutterActor
- * @scale_x: FIXME
- * @scale_y: FIXME
+ * @scale_x: Location to store horizonal float scale factor if non NULL.
+ * @scale_y: Location to store vertical float scale factor if non NULL.
  *
- * FIXME
+ * Retrieves an actors scale in floating point.
  *
  * Since: 0.2
  */
@@ -1735,14 +1739,14 @@ clutter_actor_get_scale (ClutterActor *self,
  */
 void
 clutter_actor_set_scale_with_gravity (ClutterActor     *self,
-				  gfloat            scale_x,
-				  gfloat            scale_y,
-				  ClutterGravity    gravity)
+				      gfloat            scale_x,
+				      gfloat            scale_y,
+				      ClutterGravity    gravity)
 {
-    clutter_actor_set_scale_with_gravityx (self,
-					   CLUTTER_FLOAT_TO_FIXED (scale_x),
-					   CLUTTER_FLOAT_TO_FIXED (scale_y),
-					   gravity);
+  clutter_actor_set_scale_with_gravityx (self,
+					 CLUTTER_FLOAT_TO_FIXED (scale_x),
+					 CLUTTER_FLOAT_TO_FIXED (scale_y),
+					 gravity);
 }
 
 /**
@@ -1927,7 +1931,8 @@ clutter_actor_get_id (ClutterActor *self)
  * @self: a #ClutterActor
  * @depth: Z co-ord
  *
- * Sets the Z co-ordinate of @self to @depth.
+ * Sets the Z co-ordinate of @self to @depth. The Units of which are dependant
+ * on the perspective setup. 
  */
 void
 clutter_actor_set_depth (ClutterActor *self,
@@ -1942,7 +1947,7 @@ clutter_actor_set_depth (ClutterActor *self,
   /* Sets Z value. - FIXME: should invert ?*/
   priv->z = depth;
 
-  if (priv->parent_actor)
+  if (priv->parent_actor && CLUTTER_IS_GROUP (priv->parent_actor))
     {
       /* We need to resort the group stacking order as to
        * correctly render alpha values. 
@@ -2060,7 +2065,7 @@ clutter_actor_rotate_y (ClutterActor *self,
  * @width: Width of the clip rectangle
  * @height: Height of the clip rectangle
  *
- * Sets clip area for @self.
+ * Sets clip area in pixels for @self.
  */
 void
 clutter_actor_set_clip (ClutterActor *self,
@@ -2090,7 +2095,7 @@ clutter_actor_set_clip (ClutterActor *self,
  * clutter_actor_remove_clip
  * @self: A #ClutterActor
  *
- * Removes clip area from @self.
+ * Removes clip area in pixels from @self.
  */
 void
 clutter_actor_remove_clip (ClutterActor *self)
@@ -2128,7 +2133,8 @@ clutter_actor_has_clip (ClutterActor *self)
  * Sets the parent of @self to @parent.  The opposite function is
  * clutter_actor_unparent().
  * 
- * This function should not be used by applications.
+ * This function should not be used by applications but by custom
+ * 'composite' actor sub classes.
  */
 void
 clutter_actor_set_parent (ClutterActor *self,
@@ -2265,8 +2271,9 @@ clutter_actor_reparent (ClutterActor *self,
 
       g_object_ref (self);
 
-      /* XXX: below assumes only containers can reparent */
-      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->parent_actor), self);
+      /* FIXME: below assumes only containers can reparent */
+      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->parent_actor), 
+				      self);
       clutter_container_add_actor (CLUTTER_CONTAINER (new_parent), self);
 
       g_object_unref (self);

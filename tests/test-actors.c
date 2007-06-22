@@ -94,17 +94,23 @@ frame_cb (ClutterTimeline *timeline,
     {
       gdouble scale_x, scale_y;
 
-
       clutter_actor_get_scale (oh->hand[i], &scale_x, &scale_y);
 
       /* Rotate each hand around there centers - to get this we need
        * to take into account any scaling.
+       *
+       * FIXME: scaling causes drift so disabled for now. Need rotation
+       * unit based functions to fix.
       */
       clutter_actor_rotate_z 
 	      (oh->hand[i],
 	       - 6.0 * frame_num,
+#if 0
 	       (clutter_actor_get_width (oh->hand[i]) / 2) * scale_x,
-	       (clutter_actor_get_height (oh->hand[i]) / 2) * scale_y);
+	       (clutter_actor_get_height (oh->hand[i]) / 2) * scale_y
+#endif
+	       (clutter_actor_get_width (oh->hand[i]) / 2),
+	       (clutter_actor_get_height (oh->hand[i]) / 2));
     }
 }
 
@@ -203,10 +209,12 @@ main (int argc, char *argv[])
       /* Add to our group group */
       clutter_container_add_actor (CLUTTER_CONTAINER (oh->group), oh->hand[i]);
 
+#if 0 /* FIXME: disabled as causes drift - see comment above */
       if (i % 2)
 	clutter_behaviour_apply (scaler_1, oh->hand[i]);
       else
 	clutter_behaviour_apply (scaler_2, oh->hand[i]);
+#endif
     }
 
   clutter_actor_show_all (oh->group);

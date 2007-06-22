@@ -1,7 +1,7 @@
 TODO
 ====
 
-Last updated 31/05/2007
+Last updated 22/06/2007
 
 
 0.4 (July 07)
@@ -32,8 +32,9 @@ Maybe:
 
 Definetly:
 
- - Fragment shader support infrastructure
+ - More ClutterUnits support, convert actor API to units.
  - Device independant units
+ - Fragment shader support infrastructure
  - XML/JSON type 'layout' files - include actors + behaviours + timeline etc.
  - App developers manual.
 
@@ -44,3 +45,4 @@ Nice/Maybe:
  - Glitz integration
  - Some kind of focus model.
  - Apple/Win native backends.
+ - Glitz backend over GLX (would cover above)

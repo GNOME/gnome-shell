@@ -1,3 +1,20 @@
+2007-06-22  Matthew Allum  <mallum@openedhand.com>
+
+	* NEWS:
+	* README.in:
+	* TODO:
+	Update for 0.3 release.
+
+	* clutter/clutter-actor.c:
+	Minor doc fixups 
+	
+	* clutter/clutter-texture.c:
+	Various minor additions for handling non RGBA data.
+	Fix a typo breaking clutter_texture_get_pixbuf() on tiled textures.
+
+	* tests/test-actors.c:
+	Disable scaling to avoid drifting (temporary till API is fixed)
+
 2007-06-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-timeline.c: Allow disabling the timeline pool

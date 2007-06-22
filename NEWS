@@ -1,4 +1,118 @@
-Clutter 0.2 ()
+Clutter 0.3 ()
+========================
+
+ * List of changes between 0.2.3 and 0.3
+   o Clutter now supports both switchable windowing system and GL backends. 
+     Window systems supported include GLX, EGL and SDL. 
+
+     GL support includes OpenGL 1.2+ and OpenGL ES 1.1. This is
+     provided by a small basic abstraction layer 'cogl.h'. Cogl is not
+     yet documented - usage external to Clutter is not yet advised.
+
+     Backends may provide specific command line options.
+
+     Notes;
+
+     GLX 
+     --- 
+     The GLX backend is built by default and is currently the most
+     developed, supported and featured windowing system backend. Only
+     OpenGL is supported via GLX.
+
+     SDL
+     ---
+     Clutter has experimental support for using SDL. Open GL is supported as
+     is OpenGL ES via Dogles (very experimental).
+
+     EGL
+     --- 
+     Clutter has experimental support for using EGL. Only Open GL ES
+     is supported by EGL.
+
+     EGL support assumes an EGL implementation running atop X Windows. 
+
+     Open GL ES.
+     -----------
+
+     Clutter now has experimental support for Open GL ES. 
+     Current known issues;
+
+     + Unrealising a ClutterTexture will not move pixel data from video
+       into system memory but simply destroy it.
+     + BGRA, YUV Texture data not currently supported.
+
+     (Use the clutter_feature API to probe for above at runtime)
+
+     Open Source ES implementations this has been tested against
+     include `Vincent' and `dgles'.  Support for commerical
+     implementations may require modifications to the configure.ac
+     script.
+     
+     vincent: http://ogl-es.sourceforge.net/ 
+              (Also see: http://svn.o-hand.com/repos/misc/trunk/ogles/ )
+
+     dgles: http://developer.hybrid.fi/dgles/index.html
+
+   o New ClutterEffect class provides a simplified (and thus less flexible)
+     API wrapping around behaviours, alphas and timelines.
+   o New Behaviours - bspline, ellipsis, rotation.
+   o New built in Alpha functions;
+      CLUTTER_ALPHA_SINE_INC       
+      CLUTTER_ALPHA_SINE_DEC       
+      CLUTTER_ALPHA_SINE_HALF      
+      CLUTTER_ALPHA_SQUARE         
+      CLUTTER_ALPHA_SMOOTHSTEP_INC 
+      CLUTTER_ALPHA_SMOOTHSTEP_DEC 
+      CLUTTER_ALPHA_EXP_INC        
+      CLUTTER_ALPHA_EXP_DEC        
+   o New Actors
+     + ClutterContainer and ClutterVBox, ClutterHBox layout actors.
+     + ClutterEntry, text entry actor
+   o ClutterTexture now handles BGRA, YUV and premultiplied alpha data.
+   o All internal math now fixed point based.
+   o Clutter now has it own internal event queue.
+   o ClutterStage new features;
+     + Title property for naming in window decorations.
+     + Perspective setting - The stages perspective can now be modified.
+   o New Clutter_actor *project API calls allow for querying of tranformed
+     actor vertices and points.
+   o New Clutter Feature checks.   
+   o Initial ClutterUnit implementation for device independant positioning.  
+ * List of Bugs fixed
+   o Various issues with very poor performance and Intel drivers.
+   o #138 Fix typo in x rotation transform.
+
+
+Clutter 0.2.3 (2007-04-11)
+==========================
+
+ * List of changed between 0.2.2 and 0.2.3
+   o Fixes to tile based textures and again clutter_texture_get_pixbuf(). [Matthew]
+   o Implement Gravity for ClutterScaleBehaviour. [Matthew, Rob]
+
+Clutter 0.2.2 (2007-03-22)
+==========================
+
+ * List of changed between 0.2.1 and 0.2.2
+   o Addition of basic XEMBED support for clutter stage. [Matthew]
+   o Fixes to clutter_texture_get_pixbuf(). [Matthew]
+   o Export clutter_group_remove_all and add associated fixes. [Matthew]
+
+Clutter 0.2.1 (2007-02-07)
+==========================
+
+ * List of changed between 0.2.0 and 0.2.1
+   o Add even faster double to integer (and back) conversion
+     functions. [Tomas]
+   o Fix some errors in the fixed point sine waveform
+     function. [Tomas]
+   o Use fixed point math in the Pango renderer. [Tomas]
+   o Improve the GL version check. [Matthew]
+   o Add a square waveform function. [Emmanuele]
+ * List of bugs fixed
+   o #215 - macro CLUTTER_MARK() not disabled for non-debug builds
+
+Clutter 0.2 (18-01-2007)
 ========================
 
  * List of changes between 0.2 and 0.1

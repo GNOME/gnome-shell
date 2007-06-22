@@ -112,6 +112,77 @@ enum
 
 static int texture_signals[LAST_SIGNAL] = { 0 };
 
+static guchar*
+un_pre_multiply_alpha (const guchar   *data,
+		       gint            width,
+		       gint            height,
+		       gint            rowstride)
+{
+  gint           x,y;
+  unsigned char *ret, *dst, *src;
+
+  ret = dst = g_malloc(sizeof(guchar) * height * rowstride);
+
+  /* FIXME: Optimise */
+  for (y = 0; y < height; y++)
+    {
+      src = (guchar*)data + y * rowstride;
+      for (x = 0; x < width; x++) 
+	{
+	  guchar alpha = src[3];
+	  if (alpha == 0)
+	    {
+	      src[0] = src[1] = src[2] = src[3] = alpha;
+	    }
+	  else
+	    {
+	      dst[0] = (((src[0] >> 16) & 0xff) * 255 ) / alpha;
+	      dst[1] = (((src[1] >> 8) & 0xff) * 255 ) / alpha; 
+	      dst[2] = (((src[2] >> 0) & 0xff) * 255 ) / alpha;
+	      dst[3] = alpha;
+	    }
+	  dst += 4;
+	  src += 4;
+	}
+    }
+
+  return ret;
+}
+
+static guchar*
+rgb_to_bgr (const guchar   *data,
+	    gboolean        has_alpha,
+	    gint            width,
+	    gint            height,
+	    gint            rowstride)
+{
+  gint           x,y, bpp = 4;
+  unsigned char *ret, *dst, *src;
+
+  ret = dst = g_malloc(sizeof(guchar) * height * rowstride);
+
+  if (!has_alpha)
+    bpp = 3;
+
+  /* FIXME: Optimise */
+  for (y = 0; y < height; y++)
+    {
+      src = (guchar*)data + y * rowstride;
+      for (x = 0; x < width; x++) 
+	{
+	  dst[0] = src[2];
+	  dst[1] = src[1];
+	  dst[2] = src[0];
+	  if (has_alpha)
+	    dst[3] = src[3];
+	  dst += bpp;
+	  src += bpp;
+	}
+    }
+
+  return ret;
+}
+
 static int
 tile_dimension (int                          to_fill,
 		int                          start_size,
@@ -447,17 +518,17 @@ texture_upload_data (ClutterTexture *texture,
 	src_w = priv->x_tiles[x].size;
 	src_h = priv->y_tiles[y].size;
 
-        pixtmp = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
-                                 has_alpha,
-                                 8,
-                                 src_w, src_h);
-
 	/* clip */
 	if (priv->x_tiles[x].pos + src_w > priv->width)
 	  src_w = priv->width - priv->x_tiles[x].pos;
 
 	if (priv->y_tiles[y].pos + src_h > priv->height)
 	  src_h = priv->height - priv->y_tiles[y].pos;
+
+        pixtmp = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
+                                 has_alpha,
+                                 8,
+                                 src_w, src_h);
 
         gdk_pixbuf_copy_area (master_pixbuf,
                               priv->x_tiles[x].pos,
@@ -466,7 +537,6 @@ texture_upload_data (ClutterTexture *texture,
                               src_h,
                               pixtmp,
                               0, 0);
-
 #ifdef CLUTTER_DUMP_TILES
 	{
 	  gchar  *filename;
@@ -543,6 +613,8 @@ clutter_texture_unrealize (ClutterActor *actor)
        * GL/ES cant do this - it probably makes sense 	 
        * to move this kind of thing into a ClutterProxyTexture
        * where this behaviour can be better controlled.
+       *
+       * Or make it controllable via a property.
        */
       if (priv->local_pixbuf == NULL)
 	{
@@ -1009,7 +1081,10 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
   if (priv->tiles == NULL)
     return NULL; 
 
-  if (priv->pixel_format == CGL_RGB)
+  if (priv->pixel_format == CGL_YCBCR_MESA)
+    return NULL; 		/* FIXME: convert YUV */
+
+  if (priv->pixel_format == CGL_RGB || priv->pixel_format == CGL_BGR)
     bpp = 3;
 
   if (!priv->is_tiled)
@@ -1018,8 +1093,6 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
       
       if (!pixels)
 	return NULL;
-
-      /* FIXME: cogl */
 
       glBindTexture(priv->target_type, priv->tiles[0]);
 
@@ -1030,13 +1103,16 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
       /* No such func in gles... */
       glGetTexImage (priv->target_type,
 		     0,
-		     priv->pixel_format, 
-		     priv->pixel_type,
+		     (priv->pixel_format == CGL_RGBA 
+		      || priv->pixel_format == CGL_BGRA) ? 
+		     CGL_RGBA : CGL_RGB, 
+		     PIXEL_TYPE,
 		     (GLvoid*)pixels);
 
       pixbuf = gdk_pixbuf_new_from_data ((const guchar*)pixels,
 					 GDK_COLORSPACE_RGB,
-					 (priv->pixel_format == GL_RGBA),
+					 (priv->pixel_format == CGL_RGBA
+					  || priv->pixel_format == CGL_BGRA),
 					 8,
 					 priv->width,
 					 priv->height,
@@ -1051,7 +1127,8 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
       i = 0;
 
       pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
-			       (priv->pixel_format == GL_RGBA),
+			       (priv->pixel_format == CGL_RGBA
+				|| priv->pixel_format == CGL_BGRA),
 			       8,
 			       priv->width,
 			       priv->height);
@@ -1074,8 +1151,10 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 
 	    glGetTexImage (priv->target_type,
 			   0,
-			   priv->pixel_format,
-			   priv->pixel_type,
+			   (priv->pixel_format == CGL_RGBA 
+			    || priv->pixel_format == CGL_BGRA) ? 
+			   CGL_RGBA : CGL_RGB, 
+			   PIXEL_TYPE,
 			   (GLvoid *) pixels);
 	
             /* Clip */
@@ -1083,12 +1162,13 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
               src_w = priv->width - priv->x_tiles[x].pos;
 
             if (priv->y_tiles[y].pos + src_h > priv->height)
-              src_h = priv->height = priv->y_tiles[y].pos;
+              src_h = priv->height - priv->y_tiles[y].pos;
 
 	    tmp_pixb =
 	      gdk_pixbuf_new_from_data ((const guchar*)pixels,
 					GDK_COLORSPACE_RGB,
-					(priv->pixel_format == GL_RGBA),
+					(priv->pixel_format == CGL_RGBA
+					 || priv->pixel_format == CGL_BGRA),
 					8,
 					src_w,
 					src_h,
@@ -1109,7 +1189,7 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 
 	    i++;
 	  }
-      
+
     }
 
   return pixbuf;
@@ -1154,6 +1234,7 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
   ClutterTexturePrivate *priv;
   gboolean               texture_dirty = TRUE, size_change = FALSE;
   COGLenum               prev_format;
+  guchar                *copy_data = NULL;
 
   priv = texture->priv;
 
@@ -1173,12 +1254,19 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
 
   if (flags & CLUTTER_TEXTURE_RGB_FLAG_BGR)
     {
-      /* FIXME: We actually need to convert for GLES */
+#if HAVE_COGL_GL
       if (has_alpha)
 	priv->pixel_format = CGL_BGRA;
       else
 	priv->pixel_format = CGL_BGR;
+#else
+      /* GLES has no BGR format*/
+      copy_data = rgb_to_bgr (data, has_alpha, width, height, rowstride);
+#endif
     }
+
+  if (flags & CLUTTER_TEXTURE_RGB_FLAG_PREMULT)
+    copy_data = un_pre_multiply_alpha (data, width, height, rowstride);
 
   if (prev_format != priv->pixel_format || priv->pixel_type != PIXEL_TYPE)
     texture_dirty = TRUE;
@@ -1232,7 +1320,7 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
 
   /* Set Error from this */
   texture_upload_data (texture, 
-		       data, 
+		       copy_data != NULL ? copy_data : data, 
 		       has_alpha, 
 		       width, 
 		       height, 
@@ -1258,6 +1346,9 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
   /* If resized actor may need resizing but paint() will do this */
   if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR(texture)))
     clutter_actor_queue_redraw (CLUTTER_ACTOR(texture));
+
+  if (copy_data != NULL)
+    g_free (copy_data);
 
   return TRUE;
 }

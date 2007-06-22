@@ -1,32 +1,33 @@
 Clutter README.
 ===============
 
-This is Clutter @CLUTTER_VERSION@. Clutter aims to give a nice easy
-GObject based API for creating fast, mainly 2D single window stylalised
-applications such as media box UI's, presentaions, kiosk style apps etc.
-It uses OpenGL for rendering.
+This is Clutter 0.3. Clutter is a GObject based user interface toolkit
+intended for the creation of fast, visually bespoke and impressive
+applications. Open GL is used for rendering.
 
 Its not meant to be a full featured GUI toolkit for regular desktop
 apps nor provide a general interface to *all* OpenGL functionality.
-
-It currently uses fairly low end GL functionality with an aim to still
-work well on open source graphics drivers as well as possibly making
-an eventual GL ES port feasable.
 
 Clutter currently requires:
 
   * GLib >= 2.10.0
   * GdkPixbuf
-  * OpenGL >= 1.2
+  * Pango 1.x
+  * OpenGL >= 1.2 or OpenGL ES 1.1
+  * GLX, SDL or an EGL Implementation
 
-Its also recommended you have some kind of working hardware OpenGL on
-your target system.
+The official website is:                
+   http://www.clutter-project.org
+The Clutter blog is at
+   http://www.clutter-project.org/blog
+To subscribe to the Clutter mailing list, send mail to: 
+   clutter+subscribe@o-hand.com 
+The official mailing list archive is:   
+   http://lists.o-hand.com/clutter/
+New bug page on Bugzilla:               
+   http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter
 
 Clutter is LGPL licensed.
-
-The official website is:        http://www.clutter-project.org
-The official mailing list is:   http://lists.o-hand.com/clutter/
-New bug page on Bugzilla:       http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter
 
 INSTALLATION
 ====
@@ -35,8 +36,17 @@ See the INSTALL file
 RELEASE NOTES
 ====
 
-Release Notes for Clutter 0.4
+Relevant information for developers with existing Clutter applications
+wanting to port to newer releases;
+
+Release Notes for Clutter 0.3
 -----------------------------
+
+* ClutterTexture changes:
+  + clutter_texture_set_pixbuf() now takes a GError paremeter.
+  + clutter_texture_upload_data has been split into two new and
+    more functional versions; clutter_texture_set_from_rgb_data(),
+    clutter_texture_set_from_yuv_data().
 
 * The GLX specific API has been moved to the GLX backend code and
   it's now under the ClutterGlx namespace. 
@@ -45,7 +55,7 @@ Release Notes for Clutter 0.4
   reviewed and changed were necessary. Every paint is queued with a
   priority of G_PRIORITY_DEFAULT + 10; timelines are allocated with
   a G_PRIORITY_DEFAULT + 30 priority; events are processed with a
-  G_PRIORITY_DEFAUTL priority. This ensures that events are processed
+  G_PRIORITY_DEFAULT priority. This ensures that events are processed
   before the paints take place.
 
 * The ClutterActor::allocate_coords() has been renamed to
@@ -71,6 +81,16 @@ Release Notes for Clutter 0.4
   If an application experiences bad behaviours during animations
   use "export CLUTTER_TIMELINE=no-pool" to disable the timeout pool.
 
+* clutter_color_parse() now handles color definitions with alpha. Alpha
+  will default to fully Opaque rather than fully transparent if not specified.
+
+* The Clutter examples/ directory has been removed and replaced with a 
+  tests/ directory.
+
+* Event API changes and event queue (Ebassi) .
+
+* Runtime options now dependant on backend.
+
 HACKING
 ====
 If you want to hack on and improve clutter check the TODO file.
@@ -86,7 +106,8 @@ You will need an account.
 In the report you should include:
 * what system you're running Clutter on;
 * which version of GLib, GdkPixbuf and OpenGL you are using;
-* which video card and which drivers you are using;
+* which video card and which drivers you are using, including output of
+  glxinfo and xdpyinfo.
 * how to reproduce the bug.
 
 If you cannot reproduce the bug with one of the tests that come with Clutter
