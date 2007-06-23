@@ -1,3 +1,8 @@
+2007-06-23  Thomas Thurman  <thomas@thurman.org.uk>
+
+	* src/window.c (MetaWindow): Put all bitfields together to
+	help with optimisation. Closes #450271.
+
 2007-06-18  Thomas Thurman  <thomas@thurman.org.uk>
 
 	* src/main.c (version): Update copyright year because it was
