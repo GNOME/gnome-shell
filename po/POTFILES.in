@@ -3,6 +3,7 @@
 src/50-metacity-desktop-key.xml.in
 src/50-metacity-key.xml.in
 src/tools/metacity-message.c
+src/core.c
 src/delete.c
 src/display.c
 src/errors.c
