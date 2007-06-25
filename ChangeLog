@@ -1,3 +1,15 @@
+2007-06-25  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-fixed.h:
+	Fixed definition of clutter_cosx() macro.
+
+	* clutter/clutter-stage.c:
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/gl/cogl.c:
+	* clutter/cogl/gles/cogl.c:
+	Changed ClutterPerspective.fovy from ClutterAngle to degrees to 
+	improve precission in Z-camera calculations.
+	
 2007-06-22  Matthew Allum  <mallum@openedhand.com>
 
 	* README:
