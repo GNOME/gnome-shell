@@ -426,7 +426,7 @@ clutter_stage_init (ClutterStage *self)
   priv->color.blue  = 0xff;
   priv->color.alpha = 0xff;
 
-  priv->perspective.fovy   = 171; /* 60 Degrees */
+  priv->perspective.fovy   = CFX_60; /* 60 Degrees */
   priv->perspective.aspect = CFX_ONE;
   priv->perspective.z_near = CLUTTER_FLOAT_TO_FIXED (0.1);
   priv->perspective.z_far  = CLUTTER_FLOAT_TO_FIXED (100.0);
@@ -574,7 +574,7 @@ clutter_stage_set_perspective (ClutterStage       *stage,
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
   priv = stage->priv;
-  priv->perspective.fovy   = CLUTTER_ANGLE_FROM_DEGF(fovy);
+  priv->perspective.fovy   = CLUTTER_FLOAT_TO_FIXED(fovy);
   priv->perspective.aspect = CLUTTER_FLOAT_TO_FIXED(aspect);
   priv->perspective.z_near = CLUTTER_FLOAT_TO_FIXED(z_near);
   priv->perspective.z_far  = CLUTTER_FLOAT_TO_FIXED(z_far);
@@ -601,7 +601,7 @@ clutter_stage_get_perspective (ClutterStage       *stage,
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
   priv = stage->priv;
-  *fovy   = CLUTTER_ANGLE_TO_DEGF(priv->perspective.fovy);
+  *fovy   = CLUTTER_FIXED_TO_FLOAT(priv->perspective.fovy);
   *aspect = CLUTTER_FIXED_TO_FLOAT(priv->perspective.aspect);
   *z_near = CLUTTER_FIXED_TO_FLOAT(priv->perspective.z_near);
   *z_far  = CLUTTER_FIXED_TO_FLOAT(priv->perspective.z_far);

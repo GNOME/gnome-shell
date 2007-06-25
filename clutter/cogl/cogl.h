@@ -63,7 +63,7 @@ gboolean
 cogl_check_extension (const gchar *name, const gchar *ext);
 
 void
-cogl_perspective (ClutterAngle fovy,
+cogl_perspective (ClutterFixed fovy,
 		  ClutterFixed aspect,
 		  ClutterFixed zNear,
 		  ClutterFixed zFar);
@@ -71,7 +71,7 @@ cogl_perspective (ClutterAngle fovy,
 void
 cogl_setup_viewport (guint        width,
 		     guint        height,
-		     ClutterAngle fovy,
+		     ClutterFixed fovy,
 		     ClutterFixed aspect,
 		     ClutterFixed z_near,
 		     ClutterFixed z_far);

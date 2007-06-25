@@ -449,13 +449,14 @@ cogl_alpha_func (COGLenum     func,
  * Fixed point implementation of the perspective function
  */
 void
-cogl_perspective (ClutterAngle fovy,
+cogl_perspective (ClutterFixed fovy,
 		  ClutterFixed aspect,
 		  ClutterFixed zNear,
 		  ClutterFixed zFar)
 {
   ClutterFixed xmax, ymax;
   ClutterFixed x, y, c, d;
+  ClutterFixed fovy_rad_half = CFX_MUL (fovy, CFX_PI) / 360;
 
   GLfixed m[16];
   
@@ -470,7 +471,8 @@ cogl_perspective (ClutterAngle fovy,
    * 2) When working with small numbers, we can are loosing significant
    * precision, hence we use clutter_qmulx() here, not the fast macro.
    */
-  ymax = clutter_qmulx (zNear, clutter_tani (fovy >> 1));
+  ymax = clutter_qmulx (zNear, CFX_DIV (clutter_sinx (fovy_rad_half),
+					clutter_cosx (fovy_rad_half)));
   xmax = clutter_qmulx (ymax, aspect);
 
   x = CFX_DIV (zNear, xmax);
@@ -490,9 +492,9 @@ cogl_perspective (ClutterAngle fovy,
 }
 
 void
-cogl_setup_viewport (guint         w,
-		     guint         h,
-		     ClutterAngle fovy,
+cogl_setup_viewport (guint        w,
+		     guint        h,
+		     ClutterFixed fovy,
 		     ClutterFixed aspect,
 		     ClutterFixed z_near,
 		     ClutterFixed z_far)
@@ -500,6 +502,7 @@ cogl_setup_viewport (guint         w,
   gint width = (gint) w;
   gint height = (gint) h;
   ClutterFixed z_camera;
+  ClutterFixed fovy_rad = CFX_MUL (fovy, CFX_PI) / 180;
   
   GE( glViewport (0, 0, width, height) );
   GE( glMatrixMode (GL_PROJECTION) );
@@ -516,7 +519,8 @@ cogl_setup_viewport (guint         w,
 
   /* camera distance from screen, 0.5 * tan (FOV) */
 #define DEFAULT_Z_CAMERA 0.866025404f
-  z_camera = clutter_tani (fovy) >> 1;
+  z_camera = CFX_DIV (clutter_sinx (fovy_rad),
+		      clutter_cosx (fovy_rad)) >> 1;
 
   GE( glTranslatex (-1 << 15, -1 << 15, -z_camera));
 
