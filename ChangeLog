@@ -1,3 +1,12 @@
+2007-06-25  Matthew Allum  <mallum@openedhand.com>
+
+	* README:
+	Update a little more.
+	* clutter/clutter-effect.c:
+	Add missing func documentation
+	* clutter/clutter-rectangle.c:
+	Fix border drawing. 
+
 2007-06-25  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.h:

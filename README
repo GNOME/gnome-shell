@@ -1,12 +1,8 @@
-Clutter README.
-===============
+Clutter 0.3 README.
+===================
 
-This is Clutter 0.3. Clutter is a GObject based user interface toolkit
-intended for the creation of fast, visually bespoke and impressive
-applications. Open GL is used for rendering.
-
-Its not meant to be a full featured GUI toolkit for regular desktop
-apps nor provide a general interface to *all* OpenGL functionality.
+Clutter it an open source software library for creating fast, visually
+rich and animated graphical user interfaces. 
 
 Clutter currently requires:
 

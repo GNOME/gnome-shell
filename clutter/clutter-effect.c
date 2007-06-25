@@ -26,11 +26,9 @@
  */
 
 /**
- * SECTION:clutter-effect-template
- * @short_description: A utility class
+ * SECTION:clutter-effect
+ * @short_description: Utility Class for basic visual effects
  *
- *
- * Since: 0.4
  */
 
 #ifdef HAVE_CONFIG_H
@@ -207,7 +205,10 @@ clutter_effect_template_init (ClutterEffectTemplate *self)
 /**
  * clutter_effect_template_new:
  *
- * FIXME
+ * @timeline:  A #ClutterTimeline for the template (will be cloned)
+ * @alpha_func: An alpha func to use for the template.
+ *
+ * Creates a template for use with clutter effect functions.
  *
  * Return value: a #ClutterEffectTemplate
  *
@@ -280,9 +281,15 @@ on_effect_complete (ClutterTimeline *timeline,
 /**
  * clutter_effect_fade:
  *
- * FIXME
+ * @template: A #ClutterEffectTemplate
+ * @actor: A #ClutterActor to apply the effect to.
+ * @start_opacity: Initial opacity value to apply to actor
+ * @end_opacity: Final opacity value to apply to actor
+ * @completed_func: A #ClutterEffectCompleteFunc to call on effect completion or NULL
+ * @completed_userdata: Data to pass to supplied  #ClutterEffectCompleteFunc or NULL
  *
- * Return value: an alpha value.
+ * Return value: a #ClutterTimeline for the effect. Will be unrefed by
+ * the effect when completed.
  *
  * Since: 0.4
  */
@@ -316,9 +323,15 @@ clutter_effect_fade (ClutterEffectTemplate     *template,
 /**
  * clutter_effect_move:
  *
- * FIXME
+ * @template: A #ClutterEffectTemplate
+ * @actor: A #ClutterActor to apply the effect to.
+ * @knots: An array of #ClutterKnots representing path for the actor
+ * @n_knots: Number of #ClutterKnots in passed array.
+ * @completed_func: A #ClutterEffectCompleteFunc to call on effect completion or NULL
+ * @completed_userdata: Data to pass to supplied  #ClutterEffectCompleteFunc or NULL
  *
- * Return value: an alpha value.
+ * Return value: a #ClutterTimeline for the effect. Will be unrefed by
+ * the effect when completed.
  *
  * Since: 0.4
  */
@@ -350,9 +363,16 @@ clutter_effect_move (ClutterEffectTemplate    *template,
 /**
  * clutter_effect_scale:
  *
- * FIXME
+ * @template: A #ClutterEffectTemplate
+ * @actor: A #ClutterActor to apply the effect to.
+ * @scale_begin: Initial scale factor to apply to actor
+ * @scale_end: Final scale factor to apply to actor
+ * @gravity: A #ClutterGravity for the scale.
+ * @completed_func: A #ClutterEffectCompleteFunc to call on effect completion or NULL
+ * @completed_userdata: Data to pass to supplied  #ClutterEffectCompleteFunc or NULL
  *
- * Return value: a #ClutterTimeline.
+ * Return value: a #ClutterTimeline for the effect. Will be unrefed by
+ * the effect when completed.
  *
  * Since: 0.4
  */

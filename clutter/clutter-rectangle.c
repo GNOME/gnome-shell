@@ -100,12 +100,19 @@ clutter_rectangle_paint (ClutterActor *self)
       /* this sucks, but it's the only way to make a border */
       cogl_rectangle (0, 0,
 		      geom.width, priv->border_width);
-      cogl_rectangle (geom.width - priv->border_width, priv->border_width,
-		      geom.width, geom.height - priv->border_width);
+
+      cogl_rectangle (geom.width - priv->border_width, 
+		      priv->border_width,
+		      priv->border_width,
+		      geom.height - (2 * priv->border_width));
+
       cogl_rectangle (0, geom.height - priv->border_width,
-		      geom.width, geom.height);
+		      geom.width - priv->border_width, 
+		      priv->border_width);
+
       cogl_rectangle (0, priv->border_width,
-		      priv->border_width, geom.height - priv->border_width);
+		      priv->border_width, 
+		      geom.height - priv->border_width);
 
       tmp_col.red   = priv->color.red;
       tmp_col.green = priv->color.green;
