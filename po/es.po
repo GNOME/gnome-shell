@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-19 04:05+0100\n"
-"PO-Revision-Date: 2007-06-19 10:09+0200\n"
+"POT-Creation-Date: 2007-06-25 03:37+0100\n"
+"PO-Revision-Date: 2007-06-25 08:12+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -35,6 +35,11 @@ msgstr "Uso: %s\n"
 #: ../src/tools/metacity-message.c:176 ../src/util.c:133
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity fue compilado sin soporte para modo prolijo\n"
+
+#: ../src/core.c:206
+#, c-format
+msgid "Unknown window information request: %d"
+msgstr "Petición de información de ventana desconocida: %d"
 
 #: ../src/delete.c:67 ../src/delete.c:94 ../src/metacity-dialog.c:50
 #: ../src/theme-parser.c:484
