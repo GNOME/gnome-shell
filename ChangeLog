@@ -1,3 +1,10 @@
+2007-06-26  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-actor.h:
+	* clutter/clutter-actor.c:
+	Added fixed point version of clutter_actor_rotate_*() functions
+	and accessors for rotation angles.
+	
 2007-06-25  Matthew Allum  <mallum@openedhand.com>
 
 	* README:

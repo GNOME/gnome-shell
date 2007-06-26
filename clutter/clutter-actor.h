@@ -217,6 +217,21 @@ void                  clutter_actor_rotate_z         (ClutterActor          *sel
 						      gfloat                 angle,
 						      gint                   x,
 						      gint                   y);
+void                  clutter_actor_rotate_xx        (ClutterActor          *self,
+						      ClutterFixed           angle,
+						      gint                   y,
+						      gint                   z);
+void                  clutter_actor_rotate_yx        (ClutterActor          *self,
+						      ClutterFixed           angle,
+						      gint                   x,
+						      gint                   z);
+void                  clutter_actor_rotate_zx        (ClutterActor          *self,
+						      ClutterFixed           angle,
+						      gint                   x,
+						      gint                   y);
+ClutterFixed          clutter_actor_get_rxangx       (ClutterActor          *self);
+ClutterFixed          clutter_actor_get_ryangx       (ClutterActor          *self);
+ClutterFixed          clutter_actor_get_rzangx       (ClutterActor          *self);
 void                  clutter_actor_set_opacity      (ClutterActor          *self,
 						      guint8                 opacity);
 guint8                clutter_actor_get_opacity      (ClutterActor          *self);
