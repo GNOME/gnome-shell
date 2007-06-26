@@ -494,7 +494,6 @@ cogl_setup_viewport (guint        width,
 		     ClutterFixed z_far)
 {
   GLfloat z_camera;
-  ClutterFixed fovy_rad = CFX_MUL (fovy, CFX_PI) / 180;
   
   GE( glViewport (0, 0, width, height) );
   
@@ -506,10 +505,31 @@ cogl_setup_viewport (guint        width,
   GE( glMatrixMode (GL_MODELVIEW) );
   GE( glLoadIdentity () );
 
-  /* camera distance from screen, 0.5 * tan (FOV) */
-#define DEFAULT_Z_CAMERA 0.866025404f
-  z_camera = CLUTTER_FIXED_TO_FLOAT (CFX_DIV (clutter_sinx (fovy_rad),
-					      clutter_cosx (fovy_rad)) >> 1);
+  /*
+   * camera distance from screen, 0.5 * tan (FOV)
+   *
+   * We have been having some problems with this; the theoretically correct
+   * value of 0.866025404f for the default 60 deg fovy angle happens to be
+   * touch to small in reality, which on full-screen stage with an actor of
+   * the same size results in about 1px on the left and top edges of the
+   * actor being offscreen. Perhaps more significantly, it also causes
+   * hinting artifacts when rendering text.
+   *
+   * So for the default 60 deg angle we worked out that the value of 0.8699
+   * is giving correct stretch and no noticeable artifacts on text.
+   */
+#define DEFAULT_Z_CAMERA 0.8699f
+  z_camera = DEFAULT_Z_CAMERA;
+
+  if (fovy != CFX_60)
+  {
+    ClutterFixed fovy_rad = CFX_MUL (fovy, CFX_PI) / 180;
+
+    z_camera =
+      CLUTTER_FIXED_TO_FLOAT (CFX_DIV (clutter_sinx (fovy_rad),
+				       clutter_cosx (fovy_rad)) >> 1);
+  }
+  
   GE( glTranslatef (-0.5f, -0.5f, -z_camera) );
   GE( glScalef ( 1.0f / width, 
  	    -1.0f / height, 

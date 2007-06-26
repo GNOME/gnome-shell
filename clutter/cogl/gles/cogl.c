@@ -502,7 +502,6 @@ cogl_setup_viewport (guint        w,
   gint width = (gint) w;
   gint height = (gint) h;
   ClutterFixed z_camera;
-  ClutterFixed fovy_rad = CFX_MUL (fovy, CFX_PI) / 180;
   
   GE( glViewport (0, 0, width, height) );
   GE( glMatrixMode (GL_PROJECTION) );
@@ -517,10 +516,22 @@ cogl_setup_viewport (guint        w,
   GE( glMatrixMode (GL_MODELVIEW) );
   GE( glLoadIdentity () );
 
-  /* camera distance from screen, 0.5 * tan (FOV) */
-#define DEFAULT_Z_CAMERA 0.866025404f
-  z_camera = CFX_DIV (clutter_sinx (fovy_rad),
-		      clutter_cosx (fovy_rad)) >> 1;
+  /*
+   * camera distance from screen, 0.5 * tan (FOV)
+   *
+   * See comments in ../gl/cogl.c
+   */
+#define DEFAULT_Z_CAMERA 0.8699f
+  z_camera = CLUTTER_FLOAT_TO_FIXED (DEFAULT_Z_CAMERA);
+
+  if (fovy != CFX_60)
+  {
+    ClutterFixed fovy_rad = CFX_MUL (fovy, CFX_PI) / 180;
+  
+    z_camera = CFX_DIV (clutter_sinx (fovy_rad),
+			clutter_cosx (fovy_rad)) >> 1;
+  }
+  
 
   GE( glTranslatex (-1 << 15, -1 << 15, -z_camera));
 
