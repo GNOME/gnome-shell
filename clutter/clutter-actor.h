@@ -298,9 +298,12 @@ void                  clutter_actor_project_vertices (ClutterActor          *sel
 						      ClutterVertex          verts[4]);
 
 void                  clutter_actor_project_point    (ClutterActor          *actor, 
-						      ClutterUnit           *x,
-						      ClutterUnit           *y,
-						      ClutterUnit           *z);
+						      ClutterUnit           x,
+						      ClutterUnit           y,
+						      ClutterUnit           z,
+						      ClutterUnit           *x2,
+						      ClutterUnit           *y2,
+						      ClutterUnit           *z2);
      
 G_END_DECLS
 

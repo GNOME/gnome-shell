@@ -1,3 +1,11 @@
+2007-06-27  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-actor.h:
+	* clutter/clutter-actor.c:
+	* tests/test-project.c:
+	(clutter_actor_project_point):
+	Separated input from output parameters.
+	
 2007-06-27  Matthew Allum  <mallum@openedhand.com>
 
 	* Makefile.am:

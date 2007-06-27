@@ -36,7 +36,7 @@ init_handles ()
   yp = CLUTTER_INT_TO_FIXED (clutter_actor_get_height (rect)/2);
   zp = 0;
   
-  clutter_actor_project_point (rect, &xp, &yp, &zp);
+  clutter_actor_project_point (rect, xp, yp, zp, &xp, &yp, &zp);
   p[4] = clutter_rectangle_new_with_color (&blue);
   clutter_actor_set_size (p[4], 5, 5);
   clutter_actor_set_position (p[4], 0, 0);
@@ -74,7 +74,7 @@ place_handles ()
   yp = CLUTTER_INT_TO_FIXED (clutter_actor_get_height (rect)/2);
   zp = 0;
   
-  clutter_actor_project_point (rect, &xp, &yp, &zp);
+  clutter_actor_project_point (rect, xp, yp, zp, &xp, &yp, &zp);
   clutter_actor_set_position (p[4],
 			      CLUTTER_FIXED_INT (xp) -
 			      clutter_actor_get_width (p[4])/2,

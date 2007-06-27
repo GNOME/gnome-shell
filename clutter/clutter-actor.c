@@ -383,20 +383,26 @@ clutter_actor_transform_point (ClutterActor *actor,
 /**
  * clutter_actor_project_point:
  * @self: A #ClutterActor
- * @x: in/out X 
- * @y: in/out Y
- * @z: in
+ * @x: x coordinance of the point to project 
+ * @y: y coordinance of the point to project
+ * @z: z coordinance of the point to project
+ * @x2: projected x coordinance
+ * @y2: projected y coordinance
+ * @z2: projected z coordinance
  *
  * Transforms point [x,y,z] in coordinance relative to the actor
- * into screen coordiances [x,y]
+ * into screen coordiances [x2,y2,z2]
  *
  * Since: 0.4
  **/
 void
 clutter_actor_project_point (ClutterActor *self,
-			     ClutterUnit  *x,
-			     ClutterUnit  *y,
-			     ClutterUnit  *z)
+			     ClutterUnit   x,
+			     ClutterUnit   y,
+			     ClutterUnit   z,
+			     ClutterUnit  *x2,
+			     ClutterUnit  *y2,
+			     ClutterUnit  *z2)
 {
   ClutterFixed  mtx_p[16];
   ClutterFixed  v[4];
@@ -405,18 +411,18 @@ clutter_actor_project_point (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   /* First we tranform the point using the OpenGL modelview matrix */
-  clutter_actor_transform_point (self, x, y, z, &w);
+  clutter_actor_transform_point (self, &x, &y, &z, &w);
 
   cogl_get_projection_matrix (mtx_p);
   cogl_get_viewport (v);
 
   /* Now, transform it again with the projection matrix */
-  mtx_transform (mtx_p, x, y, z, &w);
+  mtx_transform (mtx_p, &x, &y, &z, &w);
 
   /* Finaly translate from OpenGL coords to window coords */
-  *x = MTX_GL_SCALE_X(*x,w,v[2],v[0]);
-  *y = MTX_GL_SCALE_Y(*y,w,v[3],v[1]);
-  *z = MTX_GL_SCALE_Z(*z,w,v[2],v[0]);
+  *x2 = MTX_GL_SCALE_X(x,w,v[2],v[0]);
+  *y2 = MTX_GL_SCALE_Y(y,w,v[3],v[1]);
+  *z2 = MTX_GL_SCALE_Z(z,w,v[2],v[0]);
 }
 
 /* Recursively tranform supplied vertices with the tranform for the current
@@ -499,8 +505,13 @@ clutter_actor_transform_vertices (ClutterActor    * self,
  * store the result.
  * 
  * Calculates the tranformed screen coordinaces of the four corners of
- * the actor; the returned corners are in the following order:
- * bottomleft, bottomright, topright, topleft.
+ * the actor; the returned vertices relate to the ClutterActoBox
+ * coordinances as follows:
+ *
+ * v[0] ~ <x1,y1>
+ * v[1] ~ <x2,y1>
+ * v[2] ~ <x1,y2>
+ * v[3] ~ <x2,y2>.
  *
  * Since: 0.4
  **/
@@ -1423,10 +1434,10 @@ clutter_actor_get_abs_position_units (ClutterActor *self,
 				      gint32       *x,
 				      gint32       *y)
 {
-  ClutterUnit zu = 0;
+  ClutterUnit zu;
   
   *x = *y = 0;
-  clutter_actor_project_point (self, x, y, &zu);
+  clutter_actor_project_point (self, 0, 0, 0, x, y, &zu);
 }
 
 /**
