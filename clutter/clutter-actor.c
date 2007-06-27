@@ -581,7 +581,19 @@ _clutter_actor_apply_modelview_transform (ClutterActor * self)
 		      0);
     }
 
-  if (priv->rzang)
+  /*
+   * because the rotation involves translations, we must scale before
+   * applying the rotations (if we apply the scale after the rotations,
+   * the translations included in the rotation are not scaled and so the
+   * entire object will move on the screen as a result of rotating it).
+   */
+  if (priv->scale_x != CFX_ONE ||
+      priv->scale_y != CFX_ONE)
+    {
+      cogl_scale (priv->scale_x, priv->scale_y);
+    }
+  
+   if (priv->rzang)
     {
       cogl_translate (priv->rzx, priv->rzy, 0);
       cogl_rotatex (priv->rzang, 0, 0, CFX_ONE);
@@ -604,12 +616,6 @@ _clutter_actor_apply_modelview_transform (ClutterActor * self)
 
   if (priv->z)
     cogl_translate (0, 0, priv->z);
-
-  if (priv->scale_x != CFX_ONE ||
-      priv->scale_y != CFX_ONE)
-    {
-      cogl_scale (priv->scale_x, priv->scale_y);
-    }
 
   if (priv->has_clip)
     cogl_clip_set (&(priv->clip));

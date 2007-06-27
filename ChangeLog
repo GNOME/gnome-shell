@@ -1,6 +1,13 @@
 2007-06-27  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.c:
+	(_clutter_actor_apply_modelview_transform):
+	Fixed incorrect order of scaling an rotation that was causing
+	objects that were both rotated and scaled to change position.
+
+2007-06-27  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-actor.c:
 	(clutter_actor_scale_with_gravityx):
 	Made to work after changes to the behavivour of
 	clutter_actor_get_absolute_size() for rotated actors.
