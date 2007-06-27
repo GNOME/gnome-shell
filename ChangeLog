@@ -1,3 +1,10 @@
+2007-06-27  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_scale_with_gravityx):
+	Made to work after changes to the behavivour of
+	clutter_actor_get_absolute_size() for rotated actors.
+	
 2007-06-26  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/cogl/gl/cogl.c:

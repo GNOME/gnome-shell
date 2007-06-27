@@ -1768,19 +1768,24 @@ clutter_actor_set_scale_with_gravityx (ClutterActor     *self,
 				       ClutterGravity    gravity)
 {
   ClutterActorBox box;
-  gint32 sw, sh, w, h;
-  gint32 x, y;
+  ClutterFixed sw, sh, w, h, x, y;
+  ClutterFixed old_scale_x, old_scale_y;
 
-  clutter_actor_get_abs_size_units (self, &w, &h);
+  clutter_actor_get_scalex (self, &old_scale_x, &old_scale_y);
   clutter_actor_set_scalex (self, scale_x, scale_y);
 
   if (gravity == CLUTTER_GRAVITY_NONE ||
       gravity == CLUTTER_GRAVITY_NORTH_WEST)
     return;
 
-  clutter_actor_get_abs_size_units (self, &sw, &sh);
-
   clutter_actor_query_coords (self, &box);
+
+  w  = CFX_MUL (box.x2 - box.x1, old_scale_x);
+  h  = CFX_MUL (box.y2 - box.y1, old_scale_y);
+  sw = CFX_MUL (box.x2 - box.x1, scale_x);
+  sh = CFX_MUL (box.y2 - box.y1, scale_y);
+
+  
   x = box.x1;
   y = box.y1;
   
