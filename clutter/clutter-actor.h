@@ -274,36 +274,36 @@ void                  clutter_actor_get_scale        (ClutterActor          *sel
                                                       gdouble               *scale_x,
                                                       gdouble               *scale_y);
 
-void                  clutter_actor_set_scale_with_gravityx (ClutterActor          *self,
-							     ClutterFixed      scale_x,
-							     ClutterFixed      scale_y,
-							     ClutterGravity    gravity);
+void                  clutter_actor_set_scale_with_gravityx  (ClutterActor          *self,
+							      ClutterFixed      scale_x,
+							      ClutterFixed      scale_y,
+							      ClutterGravity    gravity);
 
-void                  clutter_actor_set_scale_with_gravity  (ClutterActor          *self,
-							     gfloat                 scale_x,
-							     gfloat                 scale_y,
-							     ClutterGravity         gravity);
+void                  clutter_actor_set_scale_with_gravity   (ClutterActor          *self,
+							      gfloat                 scale_x,
+							      gfloat                 scale_y,
+							      ClutterGravity         gravity);
 
-void                  clutter_actor_get_abs_size     (ClutterActor          *self,
-                                                      guint                 *width,
-                                                      guint                 *height);
-void                  clutter_actor_get_size         (ClutterActor          *self,
-                                                      guint                 *width,
-                                                      guint                 *height);
-void                  clutter_actor_move_by          (ClutterActor          *self,
-                                                      gint                   dx,
-                                                      gint                   dy);
+void                  clutter_actor_get_abs_size             (ClutterActor          *self,
+                                                              guint                 *width,
+                                                              guint                 *height);
+void                  clutter_actor_get_size                 (ClutterActor          *self,
+                                                              guint                 *width,
+                                                              guint                 *height);
+void                  clutter_actor_move_by                  (ClutterActor          *self,
+                                                              gint                   dx,
+                                                              gint                   dy);
 
-void                  clutter_actor_project_vertices (ClutterActor          *self,
-						      ClutterVertex          verts[4]);
+void                  clutter_actor_get_vertices             (ClutterActor          *self,
+						              ClutterVertex          verts[4]);
 
-void                  clutter_actor_project_point    (ClutterActor          *actor, 
-						      ClutterUnit           x,
-						      ClutterUnit           y,
-						      ClutterUnit           z,
-						      ClutterUnit           *x2,
-						      ClutterUnit           *y2,
-						      ClutterUnit           *z2);
+void                  clutter_actor_apply_transform_to_point (ClutterActor          *actor, 
+						              ClutterUnit           x,
+						              ClutterUnit           y,
+						              ClutterUnit           z,
+						              ClutterUnit           *x2,
+						              ClutterUnit           *y2,
+						              ClutterUnit           *z2);
      
 G_END_DECLS
 

@@ -3,6 +3,15 @@
 	* clutter/clutter-actor.h:
 	* clutter/clutter-actor.c:
 	* tests/test-project.c:
+	Renamed clutter_actor_project_point() to
+	clutter_actor_apply_trasform_to_point() and
+	clutter_actor_project_vertices() to clutter_actor_get_vertices().
+	
+2007-06-27  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-actor.h:
+	* clutter/clutter-actor.c:
+	* tests/test-project.c:
 	(clutter_actor_project_point):
 	Separated input from output parameters.
 	

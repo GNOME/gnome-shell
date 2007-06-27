@@ -381,7 +381,7 @@ clutter_actor_transform_point (ClutterActor *actor,
 #define MTX_GL_SCALE_Z(z,w,v1,v2) MTX_GL_SCALE_X(z,w,v1,v2)
 
 /**
- * clutter_actor_project_point:
+ * clutter_actor_apply_transform_to_point:
  * @self: A #ClutterActor
  * @x: x coordinance of the point to project 
  * @y: y coordinance of the point to project
@@ -396,13 +396,13 @@ clutter_actor_transform_point (ClutterActor *actor,
  * Since: 0.4
  **/
 void
-clutter_actor_project_point (ClutterActor *self,
-			     ClutterUnit   x,
-			     ClutterUnit   y,
-			     ClutterUnit   z,
-			     ClutterUnit  *x2,
-			     ClutterUnit  *y2,
-			     ClutterUnit  *z2)
+clutter_actor_apply_transform_to_point (ClutterActor *self,
+					ClutterUnit   x,
+					ClutterUnit   y,
+					ClutterUnit   z,
+					ClutterUnit  *x2,
+					ClutterUnit  *y2,
+					ClutterUnit  *z2)
 {
   ClutterFixed  mtx_p[16];
   ClutterFixed  v[4];
@@ -499,7 +499,7 @@ clutter_actor_transform_vertices (ClutterActor    * self,
 }
 
 /**
- * clutter_actor_project_vertices:
+ * clutter_actor_get_vertices:
  * @self: A #ClutterActor
  * @verts: Pointer to a location of an array of 4 #ClutterVertex where to
  * store the result.
@@ -516,7 +516,7 @@ clutter_actor_transform_vertices (ClutterActor    * self,
  * Since: 0.4
  **/
 void
-clutter_actor_project_vertices (ClutterActor    * self,
+clutter_actor_get_vertices (ClutterActor    * self,
 				ClutterVertex     verts[4])
 {
   ClutterFixed           mtx_p[16];
@@ -1437,7 +1437,7 @@ clutter_actor_get_abs_position_units (ClutterActor *self,
   ClutterUnit zu;
   
   *x = *y = 0;
-  clutter_actor_project_point (self, 0, 0, 0, x, y, &zu);
+  clutter_actor_apply_transform_to_point (self, 0, 0, 0, x, y, &zu);
 }
 
 /**
@@ -1477,7 +1477,7 @@ clutter_actor_get_abs_position (ClutterActor *self,
  * no assumptions can be made about the relative position of this envelope to
  * the absolute position of the actor, as returned by
  * clutter_actor_get_abs_position() - if you need this information, you need
- * to use clutter_actor_project_vertices() to get the coords of the actual
+ * to use clutter_actor_get_vertices() to get the coords of the actual
  * quadrangle.
  *
  * Since: 0.4
@@ -1491,7 +1491,7 @@ clutter_actor_get_abs_size_units (ClutterActor *self,
   ClutterFixed  x_min, x_max, y_min, y_max;
   gint i;
   
-  clutter_actor_project_vertices (self, v);
+  clutter_actor_get_vertices (self, v);
 
   x_min = x_max = v[0].x;
   y_min = y_max = v[0].y;
