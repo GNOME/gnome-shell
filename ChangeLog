@@ -1,3 +1,9 @@
+2007-06-28  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/cogl/gl/cogl.c: (cogl_setup_viewport):
+	Improve fixed z_camera value for defualt perspective.
+	Appears pixel perfect on ATI and Intel at least
+
 2007-06-28  Tomas Frydrych  <tf@openedhand.com>
 
 	* tests/test-perspective.c:
