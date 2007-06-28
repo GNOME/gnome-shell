@@ -515,11 +515,13 @@ cogl_setup_viewport (guint        width,
    * actor being offscreen. Perhaps more significantly, it also causes
    * hinting artifacts when rendering text.
    *
-   * So for the default 60 deg angle we worked out that the value of 0.8699
-   * is giving correct stretch and no noticeable artifacts on text.
+   * So for the default 60 deg angle we worked out that the value of 0.869
+   * is giving correct stretch and no noticeable artifacts on text. Seems
+   * good on all drivers too.
    */
-#define DEFAULT_Z_CAMERA 0.8699f
+#define DEFAULT_Z_CAMERA 0.869f
   z_camera = DEFAULT_Z_CAMERA;
+
 
   if (fovy != CFX_60)
   {
@@ -529,7 +531,7 @@ cogl_setup_viewport (guint        width,
       CLUTTER_FIXED_TO_FLOAT (CFX_DIV (clutter_sinx (fovy_rad),
 				       clutter_cosx (fovy_rad)) >> 1);
   }
-  
+
   GE( glTranslatef (-0.5f, -0.5f, -z_camera) );
   GE( glScalef ( 1.0f / width, 
  	    -1.0f / height, 
