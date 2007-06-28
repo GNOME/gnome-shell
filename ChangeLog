@@ -1,3 +1,9 @@
+2007-06-28  Matthew Allum  <mallum@openedhand.com>
+
+	* tests/Makefile.am:
+	* tests/test-perspective.c:
+	Add simple perspective test
+
 2007-06-27  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.h:
