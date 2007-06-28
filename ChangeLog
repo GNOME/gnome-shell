@@ -1,3 +1,10 @@
+2007-06-28  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-group.c:
+	(clutter_group_raise):
+	(clutter_group_lower):
+	Fixed SIGSEGV when attempting to raise / lower an only child.
+	
 2007-06-28  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/cogl/gl/cogl.c: (cogl_setup_viewport):

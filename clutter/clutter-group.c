@@ -596,7 +596,10 @@ clutter_group_raise (ClutterGroup   *self,
 
       /* Raise top */
       last_item = g_list_last (priv->children);
-      sibling = last_item->data;
+
+      if (last_item)
+	sibling = last_item->data;
+      
       priv->children = g_list_append (priv->children, actor);
     }
   else
@@ -609,7 +612,8 @@ clutter_group_raise (ClutterGroup   *self,
    * values will be correct.
    * FIXME: optimise
    */
-  if (clutter_actor_get_depth(sibling) != clutter_actor_get_depth (actor))
+  if ( sibling &&
+       clutter_actor_get_depth(sibling) != clutter_actor_get_depth (actor))
     clutter_actor_set_depth (actor,
 			     clutter_actor_get_depth (sibling));
 
@@ -644,7 +648,9 @@ clutter_group_lower (ClutterGroup   *self,
       GList *last_item;
       /* Raise top */
       last_item = g_list_first (priv->children);
-      sibling = last_item->data;
+
+      if (last_item)
+	sibling = last_item->data;
 
       priv->children = g_list_prepend (priv->children, actor);
     }
@@ -652,7 +658,8 @@ clutter_group_lower (ClutterGroup   *self,
     priv->children = g_list_insert (priv->children, actor, pos);
 
   /* See comment in group_raise for this */
-  if (clutter_actor_get_depth(sibling) != clutter_actor_get_depth(actor))
+  if (sibling &&
+      clutter_actor_get_depth(sibling) != clutter_actor_get_depth(actor))
     clutter_actor_set_depth (actor,
 			     clutter_actor_get_depth(sibling));
 }
