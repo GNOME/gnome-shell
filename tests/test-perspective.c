@@ -23,24 +23,24 @@ main (int argc, char *argv[])
 
   rect = clutter_rectangle_new_with_color (&red);
   clutter_actor_set_size (rect, 2, 2);
-  clutter_actor_set_position (rect, 0, 0);
+  clutter_actor_set_position (rect, 1, 1);
   clutter_group_add (CLUTTER_GROUP (stage), rect);
 
   rect = clutter_rectangle_new_with_color (&red);
   clutter_actor_set_size (rect, 2, 2);
-  clutter_actor_set_position (rect, 0, clutter_actor_get_width(stage)-3);
+  clutter_actor_set_position (rect, clutter_actor_get_width(stage)-3, 1);
   clutter_group_add (CLUTTER_GROUP (stage), rect);
 
   rect = clutter_rectangle_new_with_color (&red);
   clutter_actor_set_size (rect, 2, 2);
-  clutter_actor_set_position (rect, clutter_actor_get_height(stage)-3, 0);
+  clutter_actor_set_position (rect, 1, clutter_actor_get_height(stage)-3);
   clutter_group_add (CLUTTER_GROUP (stage), rect);
 
   rect = clutter_rectangle_new_with_color (&red);
   clutter_actor_set_size (rect, 2, 2);
   clutter_actor_set_position (rect, 
-			      clutter_actor_get_height(stage)-3, 
-			      clutter_actor_get_width(stage)-3);
+			      clutter_actor_get_width(stage)-3, 
+			      clutter_actor_get_height(stage)-3);
   clutter_group_add (CLUTTER_GROUP (stage), rect);
 
   clutter_actor_show_all (CLUTTER_ACTOR (stage));

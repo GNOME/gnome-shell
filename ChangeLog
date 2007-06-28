@@ -1,3 +1,8 @@
+2007-06-28  Tomas Frydrych  <tf@openedhand.com>
+
+	* tests/test-perspective.c:
+	Moved red dots to be positioned 1px off each corner.
+	
 2007-06-28  Matthew Allum  <mallum@openedhand.com>
 
 	* tests/Makefile.am:
