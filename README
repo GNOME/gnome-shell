@@ -83,9 +83,20 @@ Release Notes for Clutter 0.3
 * The Clutter examples/ directory has been removed and replaced with a 
   tests/ directory.
 
-* Event API changes and event queue (Ebassi) .
+* The ClutterEvent API has been changed, and specific functions have been
+  removed in favour of event-agnostic ones.
+
+* The ClutterStage::input-event signal has been removed. All the events now
+  emit the ClutterStage::event and ClutterStage::event-after signals, for
+  generic event handling.
 
 * Runtime options now dependant on backend.
+
+* ClutterGroup API to add, remove and list children has been deprecated in
+  favour of ClutterContainer API. The ClutterGroup::add and
+  ClutterGroup::remove signals have been deprecated:
+  ClutterContainer::actor-added and ClutterContainer::actor-removed should
+  be used instead.
 
 HACKING
 ====
