@@ -156,19 +156,21 @@ clutter_group_query_coords (ClutterActor        *self,
 	  /* if (CLUTTER_ACTOR_IS_VISIBLE (child)) */
 	    {
 	      ClutterActorBox cbox;
-
+	      
 	      clutter_actor_query_coords (child, &cbox);
 	      
 	      /* Ignore any children with offscreen ( negaive )
                * positions.
 	       *
                * Also x1 and x2 will be set by parent caller.
-	      */
-	      if (box->x2 == 0 || cbox.x2 > box->x2)
-		box->x2 = cbox.x2;
+               *
+               * FIXME: this assumes that children are not rotated in anyway.
+	       */
+	      if (box->x2 - box->x1 < cbox.x2)
+		box->x2 = cbox.x2 + box->x1;
 
-	      if (box->y2 == 0 || cbox.y2 > box->y2)
-		box->y2 = cbox.y2;
+	      if (box->y2 - box->y1 < cbox.y2)
+		box->y2 = cbox.y2 + box->y1;
 	    }
 	}
       while ((child_item = g_list_next(child_item)) != NULL);

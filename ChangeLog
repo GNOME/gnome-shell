@@ -1,3 +1,9 @@
+2007-06-29  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-group.c:
+	(clutter_group_query_coords):
+	Fixed box calculation.
+	
 2007-06-28  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-group.c:
