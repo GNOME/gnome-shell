@@ -521,7 +521,7 @@ cogl_setup_viewport (guint        w,
    *
    * See comments in ../gl/cogl.c
    */
-#define DEFAULT_Z_CAMERA 0.8699f
+#define DEFAULT_Z_CAMERA 0.869f
   z_camera = CLUTTER_FLOAT_TO_FIXED (DEFAULT_Z_CAMERA);
 
   if (fovy != CFX_60)
