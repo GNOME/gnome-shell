@@ -1,3 +1,10 @@
+2007-06-29  Neil J. Patel  <njp@o-hand.com>
+
+	* clutter/clutter-entry.c: (clutter_entry_handle_key_event),
+	(clutter_entry_add), (clutter_entry_remove):
+	Check if unichar == 0, and if so, return, as it will cause a delete in
+	the GString.
+
 2007-06-29  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-texture.c: (texture_upload_data):

@@ -1080,6 +1080,8 @@ clutter_entry_handle_key_event (ClutterEntry *entry, ClutterKeyEvent *kev)
 
   priv = entry->priv;  
   
+  g_print  ("%d, %d\n", kev, keyval);
+
   pos = priv->position;
   if (priv->text)
     len = g_utf8_strlen (priv->text, -1);
@@ -1162,6 +1164,9 @@ clutter_entry_add (ClutterEntry *entry, gunichar wc)
   g_return_if_fail (CLUTTER_IS_ENTRY (entry));
   g_return_if_fail (g_unichar_validate (wc));
 
+  if (wc == 0)
+    return;
+
   priv = entry->priv;
 
   g_object_ref (entry);
@@ -1195,6 +1200,7 @@ clutter_entry_remove (ClutterEntry *entry, guint num)
   gint len;
   
   g_return_if_fail (CLUTTER_IS_ENTRY (entry));
+  
   
   priv = entry->priv;
 
