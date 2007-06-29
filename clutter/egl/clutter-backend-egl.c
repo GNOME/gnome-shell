@@ -182,7 +182,7 @@ clutter_backend_egl_redraw (ClutterBackend *backend)
   if (stage_egl->xwin)
     {
       /* clutter_feature_wait_for_vblank (); */
-      eglSwapBuffers ((EGLDisplay)stage_egl->xdpy,  stage_egl->egl_surface);
+      eglSwapBuffers (backend_egl->edpy,  stage_egl->egl_surface);
     }
   else
     {
@@ -338,9 +338,9 @@ clutter_egl_untrap_x_errors (void)
 /**
  * clutter_egl_get_default_display:
  * 
- * FIXME
+ * Returns the default X Display
  *
- * Return value: FIXME
+ * Return value: A Display pointer
  *
  * Since: 0.4
  */
@@ -398,8 +398,17 @@ clutter_egl_get_default_root_window (void)
   return backend_singleton->xwin_root;
 }
 
+/**
+ * clutter_egl_display
+ * 
+ * Gets the current EGLDisplay.
+ *
+ * Return value: an EGLDisplay
+ *
+ * Since: 0.4
+ */
 EGLDisplay
 clutter_egl_display (void)
 {
-  return (EGLDisplay)clutter_egl_get_default_display ();
+  return backend_singleton->edpy;
 }

@@ -105,7 +105,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
 			       EGL_BLUE_SIZE,      5,
 			       EGL_NONE };
       
-      status = eglGetConfigs (clutter_egl_get_default_display(), 
+      status = eglGetConfigs (clutter_egl_display(), 
 			      configs, 
 			      2, 
 			      &config_count);
@@ -113,7 +113,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
       if (status != EGL_TRUE)
 	g_warning ("eglGetConfigs");		
       
-      status = eglChooseConfig (clutter_egl_get_default_display(), 
+      status = eglChooseConfig (clutter_egl_display(), 
 				cfg_attribs, 
 				configs, 
 				sizeof configs / sizeof configs[0], 

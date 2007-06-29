@@ -518,17 +518,17 @@ texture_upload_data (ClutterTexture *texture,
 	src_w = priv->x_tiles[x].size;
 	src_h = priv->y_tiles[y].size;
 
+        pixtmp = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
+                                 has_alpha,
+                                 8,
+                                 src_w, src_h);
+
 	/* clip */
 	if (priv->x_tiles[x].pos + src_w > priv->width)
 	  src_w = priv->width - priv->x_tiles[x].pos;
 
 	if (priv->y_tiles[y].pos + src_h > priv->height)
 	  src_h = priv->height - priv->y_tiles[y].pos;
-
-        pixtmp = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
-                                 has_alpha,
-                                 8,
-                                 src_w, src_h);
 
         gdk_pixbuf_copy_area (master_pixbuf,
                               priv->x_tiles[x].pos,
