@@ -367,7 +367,7 @@ clutter_actor_transform_point (ClutterActor *actor,
   cogl_pop_matrix();
 }
 
-/* Help macros to scale from OpenGL <-1,1> coordianta system to our
+/* Help macros to scale from OpenGL <-1,1> coordinates system to our
  * X-window based <0,window-size> coordinates
  */
 #define MTX_GL_SCALE_X(x,w,v1,v2) (CFX_MUL( \
@@ -390,8 +390,8 @@ clutter_actor_transform_point (ClutterActor *actor,
  * @y2: projected y coordinance
  * @z2: projected z coordinance
  *
- * Transforms point [x,y,z] in coordinance relative to the actor
- * into screen coordiances [x2,y2,z2]
+ * Transforms point (x, y, z) in coordinates relative to the actor
+ * into screen coordiances (x2, y2, z2)
  *
  * Since: 0.4
  **/
@@ -508,16 +508,16 @@ clutter_actor_transform_vertices (ClutterActor    * self,
  * the actor; the returned vertices relate to the ClutterActoBox
  * coordinances as follows:
  *
- * v[0] ~ <x1,y1>
- * v[1] ~ <x2,y1>
- * v[2] ~ <x1,y2>
- * v[3] ~ <x2,y2>.
+ * v[0] contains (x1, y1)
+ * v[1] contains (x2, y1)
+ * v[2] contains (x1, y2)
+ * v[3] contains (x2, y2)
  *
  * Since: 0.4
  **/
 void
-clutter_actor_get_vertices (ClutterActor    * self,
-				ClutterVertex     verts[4])
+clutter_actor_get_vertices (ClutterActor    *self,
+                            ClutterVertex    verts[4])
 {
   ClutterFixed           mtx_p[16];
   ClutterFixed           v[4];

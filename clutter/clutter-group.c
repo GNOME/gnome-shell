@@ -369,7 +369,7 @@ clutter_group_new (void)
 
 /**
  * clutter_group_add:
- * @self: A #ClutterGroup
+ * @group: A #ClutterGroup
  * @actor: A #ClutterActor 
  *
  * Adds a new child #ClutterActor to the #ClutterGroup.
@@ -378,17 +378,17 @@ clutter_group_new (void)
  *   clutter_container_add_actor() instead.
  */
 void
-clutter_group_add (ClutterGroup *self,
+clutter_group_add (ClutterGroup *group,
                    ClutterActor *actor)
 {
-  clutter_container_add_actor (CLUTTER_CONTAINER (self), actor);
+  clutter_container_add_actor (CLUTTER_CONTAINER (group), actor);
 }
 
 /**
  * clutter_group_add_many_valist:
- * @self: a #ClutterGroup
+ * @group: a #ClutterGroup
  * @first_actor: the #ClutterActor actor to add to the group
- * @args: the actors to be added
+ * @var_args: the actors to be added
  *
  * Similar to clutter_group_add_many() but using a va_list.  Use this
  * function inside bindings.
@@ -397,16 +397,16 @@ clutter_group_add (ClutterGroup *self,
  *   clutter_container_add_valist() instead.
  */
 void
-clutter_group_add_many_valist (ClutterGroup *self,
+clutter_group_add_many_valist (ClutterGroup *group,
 			       ClutterActor *first_actor,
-			       va_list       args)
+			       va_list       var_args)
 {
-  clutter_container_add_valist (CLUTTER_CONTAINER (self), first_actor, args);
+  clutter_container_add_valist (CLUTTER_CONTAINER (group), first_actor, var_args);
 }
 
 /**
  * clutter_group_add_many:
- * @self: A #ClutterGroup
+ * @group: A #ClutterGroup
  * @first_actor: the #ClutterActor actor to add to the group
  * @Varargs: additional actors to add to the group
  *
@@ -417,56 +417,53 @@ clutter_group_add_many_valist (ClutterGroup *self,
  *   instead.
  */
 void
-clutter_group_add_many (ClutterGroup *self,
+clutter_group_add_many (ClutterGroup *group,
 		        ClutterActor *first_actor,
 			...)
 {
   va_list args;
 
   va_start (args, first_actor);
-  clutter_container_add_valist (CLUTTER_CONTAINER (self), first_actor, args);
+  clutter_container_add_valist (CLUTTER_CONTAINER (group), first_actor, args);
   va_end (args);
 }
 
 /**
  * clutter_group_remove
- * @self: A #ClutterGroup
+ * @group: A #ClutterGroup
  * @actor: A #ClutterActor 
  *
- * Remove a child #ClutterActor from the #ClutterGroup.
+ * Removes a child #ClutterActor from the parent #ClutterGroup.
  *
  * @Deprecated: 0.4: This function is obsolete, use
  *   clutter_container_remove_actor() instead.
  */
 void
-clutter_group_remove (ClutterGroup *self,
+clutter_group_remove (ClutterGroup *group,
 		      ClutterActor *actor)
 {
-  clutter_container_remove_actor (CLUTTER_CONTAINER (self), actor);
+  clutter_container_remove_actor (CLUTTER_CONTAINER (group), actor);
 }
 
 /**
  * clutter_group_remove_all:
- * @self: A #ClutterGroup
+ * @group: A #ClutterGroup
  *
- * Remove all children actors from the #ClutterGroup.
+ * Removes all children actors from the #ClutterGroup.
  */
 void
-clutter_group_remove_all (ClutterGroup *self)
+clutter_group_remove_all (ClutterGroup *group)
 {
-  GList *child_item, *next;
+  GList *l;
 
-  g_return_if_fail (CLUTTER_IS_GROUP (self));
+  g_return_if_fail (CLUTTER_IS_GROUP (group));
 
-  if ((child_item = self->priv->children) == NULL)
-    return;
-
-  do 
+  for (l = group->priv->children; l; l = l->next)
     {
-      next = g_list_next(child_item);
-      clutter_group_remove (self, CLUTTER_ACTOR (child_item->data));
+      ClutterActor *child = l->data;
+
+      clutter_container_remove_actor (CLUTTER_CONTAINER (group), child);
     }
-  while ((child_item = next) != NULL);
 }
 
 /**

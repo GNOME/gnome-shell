@@ -142,7 +142,7 @@ clutter_container_get_type (void)
  * clutter_container_add:
  * @container: a #ClutterContainer
  * @first_actor: the first #ClutterActor to add
- * @Varargs: %NULL terminated list of actors to add
+ * @varargs: %NULL terminated list of actors to add
  *
  * Adds a list of #ClutterActor<!-- -->s to @container. Each time and
  * actor is added, the "actor-added" signal is emitted. Each actor should

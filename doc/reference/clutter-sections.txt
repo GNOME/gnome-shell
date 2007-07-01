@@ -27,6 +27,7 @@ clutter_media_get_type
 <SECTION>
 <FILE>clutter-units</FILE>
 <TITLE>Unit conversion</TITLE>
+ClutterUnit
 CLUTTER_UNITS_FROM_DEVICE
 CLUTTER_UNITS_FROM_FIXED
 CLUTTER_UNITS_FROM_FLOAT
@@ -140,6 +141,10 @@ CLUTTER_ALPHA_SQUARE
 clutter_square_func
 CLUTTER_ALPHA_SMOOTHSTEP
 clutter_smoothstep_func
+CLUTTER_ALPHA_SMOOTHSTEP_INC
+clutter_smoothstep_inc_func
+CLUTTER_ALPHA_SMOOTHSTEP_DEC
+clutter_smoothstep_dec_func
 CLUTTER_ALPHA_EXP_INC
 clutter_exp_inc_func
 CLUTTER_ALPHA_EXP_DEC
@@ -151,6 +156,7 @@ CLUTTER_TYPE_ALPHA
 CLUTTER_ALPHA_CLASS
 CLUTTER_IS_ALPHA_CLASS
 CLUTTER_ALPHA_GET_CLASS
+CLUTTER_TYPE_SMOOTHSTEP
 <SUBSECTION Private>
 ClutterAlphaPrivate
 clutter_alpha_get_type
@@ -234,7 +240,6 @@ clutter_container_get_type
 <SECTION>
 <FILE>clutter-layout</FILE>
 <TITLE>ClutterLayout</TITLE>
-ClutterLayout
 ClutterLayoutIface
 ClutterLayoutFlags
 clutter_layout_get_layout_flags
@@ -244,6 +249,7 @@ clutter_layout_natural_request
 clutter_layout_tune_request
 clutter_layout_width_for_height
 <SUBSECTION Standard>
+ClutterLayout
 CLUTTER_TYPE_LAYOUT
 CLUTTER_LAYOUT
 CLUTTER_IS_LAYOUT
@@ -279,6 +285,7 @@ clutter_rectangle_get_type
 
 <SECTION>
 <FILE>clutter-actor</FILE>
+<TITLE>ClutterActor</TITLE>
 CLUTTER_ACTOR_SET_FLAGS
 CLUTTER_ACTOR_UNSET_FLAGS
 CLUTTER_ACTOR_IS_MAPPED
@@ -289,7 +296,6 @@ ClutterActorFlags
 ClutterGeometry
 CLUTTER_CALLBACK
 ClutterCallback
-<TITLE>ClutterActor</TITLE>
 ClutterActor
 ClutterActorClass
 clutter_actor_show
@@ -302,7 +308,7 @@ clutter_actor_paint
 clutter_actor_queue_redraw
 clutter_actor_destroy
 clutter_actor_request_coords
-clutter_actor_allocate_coords
+clutter_actor_query_coords
 clutter_actor_set_geometry
 clutter_actor_get_geometry
 clutter_actor_get_coords
@@ -343,6 +349,18 @@ clutter_actor_set_scale
 clutter_actor_get_scalex
 clutter_actor_get_scale
 clutter_actor_get_abs_size
+clutter_actor_apply_transform_to_point
+clutter_actor_get_rxangx
+clutter_actor_get_ryangx
+clutter_actor_get_rzangx
+ClutterVertex
+clutter_actor_get_vertices
+clutter_actor_pick
+clutter_actor_rotate_xx
+clutter_actor_rotate_yx
+clutter_actor_rotate_zx
+clutter_actor_set_scale_with_gravity
+clutter_actor_set_scale_with_gravityx
 <SUBSECTION Standard>
 CLUTTER_TYPE_GEOMETRY
 CLUTTER_TYPE_ACTOR_BOX
@@ -357,6 +375,7 @@ ClutterActorPrivate
 clutter_actor_get_type
 clutter_actor_box_get_type
 clutter_geometry_get_type
+clutter_vertices_get_type
 </SECTION>
 
 <SECTION>
@@ -364,9 +383,11 @@ clutter_geometry_get_type
 <TITLE>ClutterTexture</TITLE>
 ClutterTexture
 ClutterTextureClass
+ClutterTextureFlags
 clutter_texture_new_from_pixbuf
 clutter_texture_new
-clutter_texture_set_from_data
+clutter_texture_set_from_rgb_data
+clutter_texture_set_from_yuv_data
 clutter_texture_set_pixbuf
 clutter_texture_get_pixbuf
 clutter_texture_get_base_size
@@ -390,9 +411,9 @@ clutter_texture_get_type
 
 <SECTION>
 <FILE>clutter-stage</FILE>
+<TITLE>ClutterStage</TITLE>
 CLUTTER_STAGE_WIDTH
 CLUTTER_STAGE_HEIGHT
-<TITLE>ClutterStage</TITLE>
 ClutterPerspective
 clutter_perspective_copy
 clutter_perspective_free
@@ -408,6 +429,12 @@ clutter_stage_hide_cursor
 clutter_stage_get_actor_at_pos
 clutter_stage_snapshot
 clutter_stage_event
+clutter_stage_set_perspective
+clutter_stage_set_perspectivex
+clutter_stage_get_perspective
+clutter_stage_get_perspectivex
+clutter_stage_set_title
+clutter_stage_get_title
 <SUBSECTION Standard>
 CLUTTER_STAGE
 CLUTTER_IS_STAGE
@@ -415,6 +442,7 @@ CLUTTER_TYPE_STAGE
 CLUTTER_STAGE_CLASS
 CLUTTER_IS_STAGE_CLASS
 CLUTTER_STAGE_GET_CLASS
+CLUTTER_TYPE_PERSPECTIVE
 <SUBSECTION Private>
 ClutterStagePrivate
 clutter_stage_get_type
@@ -514,11 +542,13 @@ ClutterBehaviourRotateClass
 clutter_behaviour_rotate_new
 clutter_behaviour_rotate_newx
 clutter_behaviour_rotate_set_axis
-clutter_behaviour_rotate_set_direction
 clutter_behaviour_rotate_get_axis
+clutter_behaviour_rotate_set_direction
+clutter_behaviour_rotate_get_direction
+clutter_behaviour_rotate_set_bounds
+clutter_behaviour_rotate_set_boundsx
 clutter_behaviour_rotate_get_bounds
 clutter_behaviour_rotate_get_boundsx
-clutter_behaviour_rotate_get_direction
 <SUBSECTION Standard>
 CLUTTER_TYPE_BEHAVIOUR_ROTATE
 CLUTTER_BEHAVIOUR_ROTATE
@@ -587,6 +617,7 @@ clutter_behaviour_bspline_get_type
 ClutterBehaviourEllipse
 ClutterBehaviourEllipseClass
 clutter_behaviour_ellipse_new
+clutter_behaviour_ellipse_newx
 clutter_behaviour_ellipse_set_center
 clutter_behaviour_ellipse_get_center
 clutter_behaviour_ellipse_get_angle_begin
@@ -639,6 +670,7 @@ CLUTTER_BACKEND_GET_CLASS
 CLUTTER_TYPE_BACKEND
 <SUBSECTION Private>
 ClutterBackendClass
+ClutterBackendPrivate
 clutter_backend_get_type
 </SECTION>
 
@@ -683,6 +715,8 @@ CFX_255
 CFX_DIV
 CFX_INT
 CFX_MUL
+CFX_HALF
+CFX_QMUL
 CLUTTER_FIXED_TO_FLOAT
 CLUTTER_FIXED_TO_DOUBLE
 CLUTTER_FLOAT_TO_FIXED
@@ -694,12 +728,21 @@ CLUTTER_FIXED_FLOOR
 CLUTTER_FIXED_CEIL
 CLUTTER_FIXED_MUL
 CLUTTER_FIXED_DIV
+CLUTTER_ANGLE_FROM_DEG
+CLUTTER_ANGLE_FROM_DEGF
+CLUTTER_ANGLE_FROM_DEGX
+CLUTTER_ANGLE_TO_DEGF
 clutter_cosi
 clutter_cosx
 clutter_sini
 clutter_sinx
 clutter_sqrti
 clutter_sqrtx
+clutter_log2x
+clutter_pow2x
+clutter_powx
+clutter_qmulx
+clutter_tani
 </SECTION>
 
 <SECTION>
@@ -710,6 +753,7 @@ clutter_color_copy
 clutter_color_free
 clutter_color_parse
 clutter_color_from_hls
+clutter_color_from_hlsx
 clutter_color_from_pixel
 clutter_color_add
 clutter_color_subtract
@@ -719,6 +763,7 @@ clutter_color_darken
 clutter_color_shade
 clutter_color_shadex
 clutter_color_to_hls
+clutter_color_to_hlsx
 clutter_color_to_pixel
 clutter_color_to_string
 <SUBSECTION Standard>
@@ -732,8 +777,7 @@ clutter_color_get_type
 <TITLE>Events</TITLE>
 CLUTTER_CURRENT_TIME
 CLUTTER_PRIORITY_EVENTS
-ClutterFilterFunc
-ClutterFilterResponse
+ClutterModifierType
 ClutterScrollDirection
 ClutterStageState
 ClutterEventType
@@ -784,6 +828,8 @@ clutter_main_level
 clutter_redraw
 clutter_threads_enter
 clutter_threads_leave
+clutter_base_init
+clutter_get_timestamp
 <SUBSECTION Private>
 clutter_init_error_quark
 </SECTION>
@@ -799,6 +845,8 @@ clutter_glx_get_stage_window
 clutter_glx_set_stage_foreign
 clutter_glx_trap_x_errors
 clutter_glx_untrap_x_errors
+ClutterGLXFilterFunc
+ClutterGLXFilterReturn
 </SECTION>
 
 <SECTION>
@@ -812,6 +860,8 @@ CLUTTER_VERSION_S
 CLUTTER_VERSION_HEX
 CLUTTER_CHECK_VERSION
 CLUTTER_FLAVOUR
+CLUTTER_COGL
+CLUTTER_NO_FPU
 </SECTION>
 
 <SECTION>
@@ -864,8 +914,10 @@ ClutterBox
 ClutterBoxClass
 clutter_box_set_spacing
 clutter_box_get_spacing
+ClutterPackType
 clutter_box_pack_start
 clutter_box_pack_end
+ClutterBoxChild
 clutter_box_query_child
 clutter_box_query_nth_child
 <SUBSECTION Standard>
@@ -877,13 +929,13 @@ CLUTTER_IS_BOX_CLASS
 CLUTTER_BOX_GET_CLASS
 <SUBSECTION Private>
 clutter_box_get_type
+clutter_box_child_get_type
 </SECTION>
 
 <SECTION>
-<FILE>clutter-effects</FILE>
-<TITLE>Clutter Effects</title>
+<FILE>clutter-effect</FILE>
+<TITLE>Clutter Effects</TITLE>
 ClutterEffectTemplate
-ClutterEffectTemplaceClass
 clutter_effect_template_new
 ClutterEffectCompleteFunc
 clutter_effect_fade
@@ -896,7 +948,9 @@ CLUTTER_IS_EFFECT_TEMPLATE
 CLUTTER_EFFECT_TEMPLATE_CLASS
 CLUTTER_IS_EFFECT_TEMPLATE_CLASS
 CLUTTER_EFFECT_TEMPLATE_GET_CLASS
+ClutterEffectTemplateClass
 <SUBSECTION Private>
+ClutterEffectTemplatePrivate
 clutter_effect_template_get_type
 </SECTION>
 

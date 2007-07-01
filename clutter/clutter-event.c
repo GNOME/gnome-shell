@@ -102,7 +102,7 @@ clutter_event_get_time (ClutterEvent *event)
  *
  * Retrieves the modifier state of the event.
  *
- * Return value the modifier state parameter, or 0
+ * Return value: the modifier state parameter, or 0
  *
  * Since: 0.4
  */

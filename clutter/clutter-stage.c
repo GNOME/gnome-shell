@@ -749,11 +749,12 @@ clutter_stage_snapshot (ClutterStage *stage,
 
 /**
  * clutter_stage_get_actor_at_pos:
- * @stage:
- * @x:
- * @y:
+ * @stage: a #ClutterStage
+ * @x: X coordinate to check
+ * @y: Y coordinate to check
  *
- * FIXME
+ * Checks the scene at the coordinates @x and @y and returns a pointer
+ * to the #ClutterActor at those coordinates.
  *
  * Return value: the actor at the specified coordinates, if any
  */

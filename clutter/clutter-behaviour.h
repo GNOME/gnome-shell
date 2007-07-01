@@ -37,9 +37,19 @@ G_BEGIN_DECLS
 
 typedef struct _ClutterKnot  ClutterKnot;
 
+/**
+ * ClutterKnot:
+ * @x: X coordinate of the knot
+ * @y: Y coordinate of the knot
+ *
+ * Point in a path behaviour.
+ *
+ * Since: 0.2
+ */
 struct _ClutterKnot
 {
-  gint x,y;
+  gint x;
+  gint y;
 };
 
 GType        clutter_knot_get_type (void) G_GNUC_CONST;

@@ -257,13 +257,14 @@ clutter_behaviour_class_init (ClutterBehaviourClass *klass)
   klass->alpha_notify = clutter_behaviour_alpha_notify_unimplemented;
 
   /**
-   * ClutterBeavhour::apply:
-   * @behaviour: the #ClutterBehvaiour that received the signal
+   * ClutterBehaviour::apply:
+   * @behaviour: the #ClutterBehaviour that received the signal
    * @actor: the actor the behaviour was applied to.
    *
    * The ::apply signal is emitted each time the behaviour is applied
    * to an actor.
    *
+   * Since: 0.4
    */
   behave_signals[APPLY] =
     g_signal_new ("apply",

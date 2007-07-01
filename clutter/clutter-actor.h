@@ -82,14 +82,18 @@ typedef struct _ClutterVertex        ClutterVertex;
 typedef void (*ClutterCallback) (ClutterActor *actor, gpointer data);
 #define CLUTTER_CALLBACK(f)	((ClutterCallback) (f))
 
+/**
+ * ClutterGeometry:
+ * @x: X coordinate of the top left corner of an actor
+ * @y: Y coordinate of the top left corner of an actor
+ * @width: width of an actor
+ * @height: height of an actor
+ *
+ * Rectangle containing an actor.
+ */
 struct _ClutterGeometry
 {
-  /* FIXME: 
-   * It is likely gonna save a load of pain if we make 
-   * x,y unsigned...
-   *
-   * No, no, no, usigned is evil; we should make width and height signed.
-   */
+  /*< public >*/
   gint   x;
   gint   y;
   guint  width;
@@ -98,16 +102,51 @@ struct _ClutterGeometry
 
 GType clutter_geometry_get_type (void) G_GNUC_CONST;
 
+/**
+ * ClutterActorFlags:
+ * @CLUTTER_ACTOR_MAPPED: the actor has been painted
+ * @CLUTTER_ACTOR_REALIZED: the resources associated to the actor have been
+ *   allocated
+ *
+ * Flags used to signal the state of an actor.
+ */
 typedef enum
 {
   CLUTTER_ACTOR_MAPPED   = 1 << 1,
   CLUTTER_ACTOR_REALIZED = 1 << 2
 } ClutterActorFlags;
 
-struct _ClutterActorBox { ClutterUnit x1, y1, x2, y2; };
+/**
+ * ClutterActorBox:
+ * @x1: X coordinate of the top left corner
+ * @y1: Y coordinate of the top left corner
+ * @x2: X coordinate of the bottom right corner
+ * @y2: Y coordinate of the bottom right corner
+ *
+ * Bounding box of an actor. The coordinates of the top left and right bottom
+ * corners of an actor. The coordinates of the two points are expressed in
+ * #ClutterUnit<!-- -->s, that is are device-independent. If you want to obtain
+ * the box dimensions in pixels, use clutter_actor_get_geometry().
+ */
+struct _ClutterActorBox {
+  ClutterUnit x1;
+  ClutterUnit y1;
+  ClutterUnit x2;
+  ClutterUnit y2;
+};
 
 GType clutter_actor_box_get_type (void) G_GNUC_CONST;
 
+/**
+ * ClutterVertex:
+ * @x: X coordinate of the vertex
+ * @y: Y coordinate of the vertex
+ * @z: Z coordinate of the vertex
+ *
+ * Vertex of an actor in 3D space, expressed in device independent units.
+ *
+ * Since: 0.4
+ */
 struct _ClutterVertex
 {
   ClutterUnit x;
@@ -117,10 +156,18 @@ struct _ClutterVertex
 
 GType clutter_vertices_get_type (void) G_GNUC_CONST;
 
+/**
+ * ClutterActor:
+ * @flags: #ClutterActorFlags
+ *
+ * Base class for actors.
+ */
 struct _ClutterActor
 {
-  /*< public >*/
+  /*< private >*/
   GObject parent_instance;
+  
+  /*< public >*/
   guint32 flags;
 
   /*< private >*/

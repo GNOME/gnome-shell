@@ -42,14 +42,13 @@ G_BEGIN_DECLS
 
 /**
  * ClutterLayoutFlags
- *
- * Type of layouts supported by an actor.
- *
  * @CLUTTER_LAYOUT_NONE: No layout (default behaviour)
  * @CLUTTER_LAYOUT_WIDTH_FOR_HEIGHT: Width-for-height
  * @CLUTTER_LAYOUT_HEIGHT_FOR_WIDTH: Height-for-width
  * @CLUTTER_LAYOUT_NATURAL: Natural size request
  * @CLUTTER_LAYOUT_TUNABLE: Tunable size request
+ *
+ * Type of layouts supported by an actor.
  *
  * Since: 0.4
  */

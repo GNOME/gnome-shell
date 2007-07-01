@@ -335,6 +335,13 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 		  clutter_marshal_VOID__INT,
 		  G_TYPE_NONE, 
 		  1, G_TYPE_INT);
+  /**
+   * ClutterTimeline::completed:
+   * @timeline: the #ClutterTimeline which received the signal
+   *
+   * The ::completed signal is emitted when the timeline reaches the
+   * number of frames specified by the ClutterTimeline:num-frames property.
+   */
   timeline_signals[COMPLETED] =
     g_signal_new ("completed",
 		  G_TYPE_FROM_CLASS (object_class),
@@ -343,6 +350,15 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 		  NULL, NULL,
 		  clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
+  /**
+   * ClutterTimeline::started:
+   * @timeline: the #ClutterTimeline which received the signal
+   *
+   * The ::started signal is emitted when the timeline starts its run.
+   * This might be as soon as clutter_timeline_start() is invoked or
+   * after the delay set in the ClutterTimeline:delay property has
+   * expired.
+   */
   timeline_signals[STARTED] =
     g_signal_new ("started",
 		  G_TYPE_FROM_CLASS (object_class),
@@ -351,6 +367,12 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
 		  NULL, NULL,
 		  clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
+  /**
+   * ClutterTimeline::paused:
+   * @timeline: the #ClutterTimeline which received the signal
+   *
+   * The ::paused signal is emitted when clutter_timeline_pause() is invoked.
+   */
   timeline_signals[PAUSED] =
     g_signal_new ("paused",
 		  G_TYPE_FROM_CLASS (object_class),
