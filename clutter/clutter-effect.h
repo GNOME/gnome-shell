@@ -27,6 +27,7 @@
 #define _CLUTTER_EFFECT
 
 #include <glib-object.h>
+#include <clutter/clutter-actor.h>
 #include <clutter/clutter-timeline.h>
 #include <clutter/clutter-alpha.h>
 #include <clutter/clutter-behaviour.h>
@@ -34,7 +35,7 @@
 G_BEGIN_DECLS
 
 typedef void (*ClutterEffectCompleteFunc) (ClutterActor *actor,
-					   gpointer       user_data);
+					   gpointer      user_data);
 
 #define CLUTTER_TYPE_EFFECT_TEMPLATE clutter_effect_template_get_type()
 
@@ -58,47 +59,59 @@ typedef void (*ClutterEffectCompleteFunc) (ClutterActor *actor,
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   CLUTTER_TYPE_EFFECT_TEMPLATE, ClutterEffectTemplateClass))
   
-typedef struct _ClutterEffectTemplate ClutterEffectTemplate;
-typedef struct _ClutterEffectTemplateClass ClutterEffectTemplateClass;
+typedef struct _ClutterEffectTemplate           ClutterEffectTemplate;
+typedef struct _ClutterEffectTemplatePrivate    ClutterEffectTemplatePrivate;
+typedef struct _ClutterEffectTemplateClass      ClutterEffectTemplateClass;
 
-struct _ClutterEffectTemplate{
-  GObject parent;
+
+struct _ClutterEffectTemplate
+{
+  GObject parent_instance;
+
+  /*< private >*/
+  ClutterEffectTemplatePrivate *priv;
 };
 
-struct _ClutterEffectTemplateClass{
+struct _ClutterEffectTemplateClass
+{
   GObjectClass parent_class;
+
+  /*< private >*/
+
+  /* padding, for future expansion */
+  void (*_clutter_reserved1) (void);
+  void (*_clutter_reserved2) (void);
+  void (*_clutter_reserved3) (void);
+  void (*_clutter_reserved4) (void);
 };
 
-GType clutter_effect_template_get_type (void);
+GType                  clutter_effect_template_get_type (void) G_GNUC_CONST;
+ClutterEffectTemplate *clutter_effect_template_new      (ClutterTimeline  *timeline,
+                                                         ClutterAlphaFunc  alpha_func);
 
-ClutterEffectTemplate*
-clutter_effect_template_new (ClutterTimeline *timeline, 
-			     ClutterAlphaFunc alpha_func);
+/*
+ * Clutter effects
+ */
 
-ClutterTimeline*
-clutter_effect_fade (ClutterEffectTemplate     *template,
-		     ClutterActor             *actor,
-		     guint8                    start_opacity,
-		     guint8                    end_opacity,
-		     ClutterEffectCompleteFunc completed_func,
-		     gpointer                  completed_data);
-
-ClutterTimeline*
-clutter_effect_move (ClutterEffectTemplate    *template,
-		     ClutterActor             *actor,
-		     const ClutterKnot        *knots,
-		     guint                     n_knots,
-		     ClutterEffectCompleteFunc completed_func,
-		     gpointer                  completed_data);
-
-ClutterTimeline*
-clutter_effect_scale (ClutterEffectTemplate    *template,
-		      ClutterActor             *actor,
-		      gdouble                   scale_begin,
-		      gdouble                   scale_end,
-		      ClutterGravity            gravity,
-		      ClutterEffectCompleteFunc completed_func,
-		      gpointer                  completed_userdata);
+ClutterTimeline *clutter_effect_fade  (ClutterEffectTemplate     *template_,
+                                       ClutterActor              *actor,
+                                       guint8                     start_opacity,
+                                       guint8                     end_opacity,
+                                       ClutterEffectCompleteFunc  completed_func,
+                                       gpointer                   completed_data);
+ClutterTimeline *clutter_effect_move  (ClutterEffectTemplate     *template_,
+                                       ClutterActor              *actor,
+                                       const ClutterKnot         *knots,
+                                       guint                      n_knots,
+                                       ClutterEffectCompleteFunc  completed_func,
+                                       gpointer                   completed_data);
+ClutterTimeline *clutter_effect_scale (ClutterEffectTemplate     *template_,
+                                       ClutterActor              *actor,
+                                       gdouble                    scale_begin,
+                                       gdouble                    scale_end,
+                                       ClutterGravity             gravity,
+                                       ClutterEffectCompleteFunc  completed_func,
+                                       gpointer                   completed_userdata);
 
 G_END_DECLS
 

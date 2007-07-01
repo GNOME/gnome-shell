@@ -29,6 +29,11 @@
  * SECTION:clutter-effect
  * @short_description: Utility Class for basic visual effects
  *
+ * The #ClutterEffectTemplate class provides a simple API for applying
+ * pre-defined effects to a single actor. It works as a wrapper around
+ * the #ClutterBehaviour objects 
+ *
+ * Since: 0.4
  */
 
 #ifdef HAVE_CONFIG_H
@@ -71,8 +76,6 @@ G_DEFINE_TYPE (ClutterEffectTemplate, clutter_effect_template, G_TYPE_OBJECT);
    CLUTTER_TYPE_EFFECT_TEMPLATE,     \
    ClutterEffectTemplatePrivate))
 
-typedef struct _ClutterEffectTemplatePrivate ClutterEffectTemplatePrivate;
-
 struct _ClutterEffectTemplatePrivate
 {
   ClutterTimeline *timeline;
@@ -82,6 +85,7 @@ struct _ClutterEffectTemplatePrivate
 enum
 {
   PROP_0,
+
   PROP_ALPHA_FUNC,
   PROP_TIMELINE,
 };
@@ -92,23 +96,15 @@ clutter_effect_template_dispose (GObject *object)
   ClutterEffectTemplate        *template;
   ClutterEffectTemplatePrivate *priv;
 
-  template  = CLUTTER_EFFECT_TEMPLATE(object);
-  priv      = EFFECT_TEMPLATE_PRIVATE(template);
+  template  = CLUTTER_EFFECT_TEMPLATE (object);
+  priv      = template->priv;
 
   g_object_unref (priv->timeline);
 
   priv->timeline   = NULL;
   priv->alpha_func = NULL;
 
-  if (G_OBJECT_CLASS (clutter_effect_template_parent_class)->dispose)
-    G_OBJECT_CLASS (clutter_effect_template_parent_class)->dispose (object);
-}
-
-static void
-clutter_effect_template_finalize (GObject *object)
-{
-
-  G_OBJECT_CLASS (clutter_effect_template_parent_class)->finalize (object);
+  G_OBJECT_CLASS (clutter_effect_template_parent_class)->dispose (object);
 }
 
 static void
@@ -120,8 +116,8 @@ clutter_effect_template_set_property (GObject      *object,
   ClutterEffectTemplate        *template;
   ClutterEffectTemplatePrivate *priv;
 
-  template  = CLUTTER_EFFECT_TEMPLATE(object);
-  priv      = EFFECT_TEMPLATE_PRIVATE(template);
+  template  = CLUTTER_EFFECT_TEMPLATE (object);
+  priv      = template->priv; 
 
   switch (prop_id) 
     {
@@ -147,8 +143,8 @@ clutter_effect_template_get_property (GObject    *object,
   ClutterEffectTemplate        *template;
   ClutterEffectTemplatePrivate *priv;
 
-  template  = CLUTTER_EFFECT_TEMPLATE(object);
-  priv      = EFFECT_TEMPLATE_PRIVATE(template);
+  template  = CLUTTER_EFFECT_TEMPLATE (object);
+  priv      = template->priv;
 
   switch (prop_id) 
     {
@@ -172,8 +168,6 @@ clutter_effect_template_class_init (ClutterEffectTemplateClass *klass)
   g_type_class_add_private (klass, sizeof (ClutterEffectTemplatePrivate));
 
   object_class->dispose = clutter_effect_template_dispose;
-  object_class->finalize = clutter_effect_template_finalize;
-
   object_class->set_property = clutter_effect_template_set_property;
   object_class->get_property = clutter_effect_template_get_property;
 
@@ -200,6 +194,7 @@ clutter_effect_template_class_init (ClutterEffectTemplateClass *klass)
 static void
 clutter_effect_template_init (ClutterEffectTemplate *self)
 {
+  self->priv = EFFECT_TEMPLATE_PRIVATE (self);
 }
 
 /**
@@ -239,7 +234,7 @@ clutter_effect_closure_destroy (ClutterEffectClosure *c)
   g_slice_free (ClutterEffectClosure, c);
 }
 
-static ClutterEffectClosure*
+static ClutterEffectClosure *
 clutter_effect_closure_new (ClutterEffectTemplate *template,
 			    ClutterActor          *actor, 
 			    GCallback              complete)
@@ -295,11 +290,11 @@ on_effect_complete (ClutterTimeline *timeline,
  */
 ClutterTimeline*
 clutter_effect_fade (ClutterEffectTemplate     *template,
-		     ClutterActor             *actor,
-		     guint8                    start_opacity,
-		     guint8                    end_opacity,
-		     ClutterEffectCompleteFunc completed_func,
-		     gpointer                  completed_userdata)
+		     ClutterActor              *actor,
+		     guint8                     start_opacity,
+		     guint8                     end_opacity,
+		     ClutterEffectCompleteFunc  completed_func,
+		     gpointer                   completed_userdata)
 {
   ClutterEffectClosure *c;
 
@@ -336,12 +331,12 @@ clutter_effect_fade (ClutterEffectTemplate     *template,
  * Since: 0.4
  */
 ClutterTimeline*
-clutter_effect_move (ClutterEffectTemplate    *template,
-		     ClutterActor             *actor,
-		     const ClutterKnot        *knots,
-		     guint                     n_knots,
-		     ClutterEffectCompleteFunc completed_func,
-		     gpointer                  completed_userdata)
+clutter_effect_move (ClutterEffectTemplate     *template,
+		     ClutterActor              *actor,
+		     const ClutterKnot         *knots,
+		     guint                      n_knots,
+		     ClutterEffectCompleteFunc  completed_func,
+		     gpointer                   completed_userdata)
 {
   ClutterEffectClosure *c;
 
@@ -377,13 +372,13 @@ clutter_effect_move (ClutterEffectTemplate    *template,
  * Since: 0.4
  */
 ClutterTimeline*
-clutter_effect_scale (ClutterEffectTemplate    *template,
-		      ClutterActor             *actor,
-		      gdouble                   scale_begin,
-		      gdouble                   scale_end,
-		      ClutterGravity            gravity,
-		      ClutterEffectCompleteFunc completed_func,
-		      gpointer                  completed_userdata)
+clutter_effect_scale (ClutterEffectTemplate     *template,
+		      ClutterActor              *actor,
+		      gdouble                    scale_begin,
+		      gdouble                    scale_end,
+		      ClutterGravity             gravity,
+		      ClutterEffectCompleteFunc  completed_func,
+		      gpointer                   completed_userdata)
 {
   ClutterEffectClosure *c;
 
