@@ -1,3 +1,16 @@
+2007-07-01  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Merge from clutter.git/work branch
+
+	* clutter/clutter-effect.[ch]: Clean up ClutterEffect; use a
+	pointer to access the private data structure, instead of doing
+	a type check every time. Add description for the API reference.
+
+	* docs/reference/clutter-sections.txt:
+	* clutter/*.[ch]: Add various documentation fixes.
+
+	* clutter/clutter-entry.c: Remove a stray g_print() call.
+
 2007-06-29  Neil J. Patel  <njp@o-hand.com>
 
 	* clutter/clutter-entry.c: (clutter_entry_handle_key_event),
