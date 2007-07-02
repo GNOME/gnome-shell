@@ -10,7 +10,7 @@ init_handles ()
 {
   gint              i;
   ClutterVertex    v[4];
-  ClutterFixed     xp, yp, zp;
+  ClutterVertex    v1, v2;
   ClutterColor blue = { 0, 0, 0xff, 0xff };
 
   clutter_actor_get_vertices (rect, v);
@@ -32,19 +32,19 @@ init_handles ()
       clutter_actor_show (p[i]);
     }
 
-  xp = CLUTTER_INT_TO_FIXED (clutter_actor_get_width (rect)/2);
-  yp = CLUTTER_INT_TO_FIXED (clutter_actor_get_height (rect)/2);
-  zp = 0;
+  v1.x = CLUTTER_INT_TO_FIXED (clutter_actor_get_width (rect)/2);
+  v1.y = CLUTTER_INT_TO_FIXED (clutter_actor_get_height (rect)/2);
+  v1.z = 0;
   
-  clutter_actor_apply_transform_to_point (rect, xp, yp, zp, &xp, &yp, &zp);
+  clutter_actor_apply_transform_to_point (rect, &v1, &v2);
   p[4] = clutter_rectangle_new_with_color (&blue);
   clutter_actor_set_size (p[4], 5, 5);
   clutter_actor_set_position (p[4], 0, 0);
   clutter_group_add (CLUTTER_GROUP(stage), p[4]);
   clutter_actor_set_position (p[4],
-			      CLUTTER_FIXED_INT (xp) -
+			      CLUTTER_FIXED_INT (v2.x) -
 			      clutter_actor_get_width (p[4])/2,
-			      CLUTTER_FIXED_INT (yp) -
+			      CLUTTER_FIXED_INT (v2.y) -
 			      clutter_actor_get_height (p[4])/2);
 
   clutter_actor_raise_top (p[4]);
@@ -57,7 +57,7 @@ place_handles ()
 {
   gint              i;
   ClutterVertex    v[4];
-  ClutterFixed     xp, yp, zp;
+  ClutterVertex    v1, v2;
   ClutterColor blue = { 0, 0, 0xff, 0xff };
 
   clutter_actor_get_vertices (rect, v);
@@ -70,15 +70,15 @@ place_handles ()
 				  clutter_actor_get_height (p[i])/2);
     }
 
-  xp = CLUTTER_INT_TO_FIXED (clutter_actor_get_width (rect)/2);
-  yp = CLUTTER_INT_TO_FIXED (clutter_actor_get_height (rect)/2);
-  zp = 0;
+  v1.x = CLUTTER_INT_TO_FIXED (clutter_actor_get_width (rect)/2);
+  v1.y = CLUTTER_INT_TO_FIXED (clutter_actor_get_height (rect)/2);
+  v1.z = 0;
   
-  clutter_actor_apply_transform_to_point (rect, xp, yp, zp, &xp, &yp, &zp);
+  clutter_actor_apply_transform_to_point (rect, &v1, &v2);
   clutter_actor_set_position (p[4],
-			      CLUTTER_FIXED_INT (xp) -
+			      CLUTTER_FIXED_INT (v2.x) -
 			      clutter_actor_get_width (p[4])/2,
-			      CLUTTER_FIXED_INT (yp) -
+			      CLUTTER_FIXED_INT (v2.y) -
 			      clutter_actor_get_height (p[4])/2);
 }
 

@@ -1,3 +1,11 @@
+2007-07-02  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-actor.h:
+	* clutter/clutter-actor.c:
+	* tests/test-project.c:
+	(clutter_actor_apply_transform_to_point):
+	Use ClutterVertex for input and output parameters.
+	
 2007-07-01  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Merge from clutter.git/work branch

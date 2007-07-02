@@ -345,12 +345,8 @@ void                  clutter_actor_get_vertices             (ClutterActor      
 						              ClutterVertex          verts[4]);
 
 void                  clutter_actor_apply_transform_to_point (ClutterActor          *actor, 
-						              ClutterUnit           x,
-						              ClutterUnit           y,
-						              ClutterUnit           z,
-						              ClutterUnit           *x2,
-						              ClutterUnit           *y2,
-						              ClutterUnit           *z2);
+						              ClutterVertex         *point,
+							      ClutterVertex         *vertex);
      
 G_END_DECLS
 

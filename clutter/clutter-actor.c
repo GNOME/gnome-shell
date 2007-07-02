@@ -383,26 +383,18 @@ clutter_actor_transform_point (ClutterActor *actor,
 /**
  * clutter_actor_apply_transform_to_point:
  * @self: A #ClutterActor
- * @x: x coordinance of the point to project 
- * @y: y coordinance of the point to project
- * @z: z coordinance of the point to project
- * @x2: projected x coordinance
- * @y2: projected y coordinance
- * @z2: projected z coordinance
+ * @point: A point as #ClutterVertex
+ * @vertex: The translated #ClutterVertex
  *
- * Transforms point (x, y, z) in coordinates relative to the actor
- * into screen coordiances (x2, y2, z2)
+ * Transforms point in coordinates relative to the actor
+ * into screen coordiances 
  *
  * Since: 0.4
  **/
 void
-clutter_actor_apply_transform_to_point (ClutterActor *self,
-					ClutterUnit   x,
-					ClutterUnit   y,
-					ClutterUnit   z,
-					ClutterUnit  *x2,
-					ClutterUnit  *y2,
-					ClutterUnit  *z2)
+clutter_actor_apply_transform_to_point (ClutterActor  *self,
+					ClutterVertex *point,
+					ClutterVertex *vertex)
 {
   ClutterFixed  mtx_p[16];
   ClutterFixed  v[4];
@@ -411,18 +403,18 @@ clutter_actor_apply_transform_to_point (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   /* First we tranform the point using the OpenGL modelview matrix */
-  clutter_actor_transform_point (self, &x, &y, &z, &w);
+  clutter_actor_transform_point (self, &point->x, &point->y, &point->z, &w);
 
   cogl_get_projection_matrix (mtx_p);
   cogl_get_viewport (v);
 
   /* Now, transform it again with the projection matrix */
-  mtx_transform (mtx_p, &x, &y, &z, &w);
+  mtx_transform (mtx_p, &point->x, &point->y, &point->z, &w);
 
   /* Finaly translate from OpenGL coords to window coords */
-  *x2 = MTX_GL_SCALE_X(x,w,v[2],v[0]);
-  *y2 = MTX_GL_SCALE_Y(y,w,v[3],v[1]);
-  *z2 = MTX_GL_SCALE_Z(z,w,v[2],v[0]);
+  vertex->x = MTX_GL_SCALE_X(point->x,w,v[2],v[0]);
+  vertex->y = MTX_GL_SCALE_Y(point->y,w,v[3],v[1]);
+  vertex->z = MTX_GL_SCALE_Z(point->z,w,v[2],v[0]);
 }
 
 /* Recursively tranform supplied vertices with the tranform for the current
@@ -1434,10 +1426,14 @@ clutter_actor_get_abs_position_units (ClutterActor *self,
 				      gint32       *x,
 				      gint32       *y)
 {
-  ClutterUnit zu;
+  ClutterVertex v1;
+  ClutterVertex v2;
   
-  *x = *y = 0;
-  clutter_actor_apply_transform_to_point (self, 0, 0, 0, x, y, &zu);
+  v1.x = v1.y = v1.z = 0;
+  clutter_actor_apply_transform_to_point (self, &v1, &v2);
+
+  *x = v2.x;
+  *y = v2.y;
 }
 
 /**
