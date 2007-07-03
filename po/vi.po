@@ -1,6 +1,6 @@
 # Vietnamese translation for Metacity.
 # Copyright © 2007 Gnome i18n Project for Vietnamese.
-# Nguyễn Thái Ngọc Duy <pclouds@vnlinux.org>, 2002-2004, 2007.
+# Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2002-2004, 2007.
 # Clytie Siddall <clytie@riverland.net.au>, 2005-2007.
 # 
 msgid ""
@@ -2924,8 +2924,8 @@ msgstr "Kiểu dạng đã được xác định cho trạng thái « %s » tiê
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
-msgstr "Không thể có hai «draw_ops» cho một phần tử <piece> (sắc thái xác định một "
-"«draw_ops» và thêm một phần tử <draw_ops>, hoặc them xác định cả hai phần "
+msgstr "Không thể có hai draw_ops cho một phần tử <piece> (sắc thái xác định một "
+"draw_ops và thêm một phần tử <draw_ops>, hoặc sắc thái xác định cả hai phần "
 "tử)."
 
 #: ../src/theme-parser.c:3763
