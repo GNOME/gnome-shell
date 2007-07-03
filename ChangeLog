@@ -1,3 +1,8 @@
+2007-07-03  Ross Burton  <ross@openedhand.com>
+
+	* configure.ac:
+	Check for XFixes 4 and above.
+
 2007-07-02  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.h:

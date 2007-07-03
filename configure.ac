@@ -86,9 +86,10 @@ then
    fi
 fi
 
-if $PKG_CONFIG --exists xfixes ; then
+PKG_CHECK_MODULES(XFIXES, xfixes >= 4, [have_xfixes=yes], [have_xfixes=no])
+if test x$have_xfixes = xyes
+then
   AC_DEFINE(HAVE_XFIXES, 1, Have the XFIXES X extension)
-
   X11_LIBS="$X11_LIBS -lXfixes"
 fi
 
