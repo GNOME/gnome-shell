@@ -39,6 +39,7 @@ BUILT_SOURCES = $(MARSHALFILES) $(ENUMFILES)
 source_h =					\
 	$(srcdir)/clutter-actor.h		\
 	$(srcdir)/clutter-alpha.h		\
+	$(srcdir)/clutter-backend.h		\
 	$(srcdir)/clutter-behaviour.h     	\
 	$(srcdir)/clutter-behaviour-bspline.h 	\
 	$(srcdir)/clutter-behaviour-ellipse.h 	\
@@ -170,7 +171,6 @@ source_c = \
 
 source_h_priv = \
 	clutter-keysyms-table.h		\
-	clutter-backend.h		\
 	clutter-debug.h 		\
 	clutter-private.h 		\
 	$(NULL)

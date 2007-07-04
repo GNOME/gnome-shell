@@ -1,5 +1,12 @@
 2007-07-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter.h:
+	* clutter/Makefile.am: ClutterBackend is marked as public API,
+	so install the clutter-backend.h header and include it when
+	including clutter.h.
+
+2007-07-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-entry.[ch]: Various fixes to ClutterEntry:
 	fix code style issues; add documentation for the various
 	properties; add ClutterEntry:entry-padding property, for controlling

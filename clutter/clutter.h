@@ -28,6 +28,7 @@
 
 #include "clutter-actor.h"
 #include "clutter-alpha.h"
+#include "clutter-backend.h"
 #include "clutter-color.h"
 #include "clutter-container.h"
 #include "clutter-behaviour.h"
