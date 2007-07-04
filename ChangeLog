@@ -1,5 +1,13 @@
 2007-07-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-main.c (clutter_redraw): Move the stage
+	paint init call from the main redraw function...
+
+	* clutter/clutter-stage.c (clutter_stage_paint): ... to the
+	ClutterActor::paint() overridden method in ClutterStage.
+
+2007-07-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter.h:
 	* clutter/Makefile.am: ClutterBackend is marked as public API,
 	so install the clutter-backend.h header and include it when

@@ -136,10 +136,6 @@ clutter_redraw (void)
       CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
     }
 
-  /* Setup the initial paint */
-  clutter_stage_get_color (CLUTTER_STAGE(stage), &stage_color);
-  cogl_paint_init (&stage_color);
-
   /* Call through ti the actual backend to do the painting down from  
    * the stage. It will likely need to swap buffers, vblank sync etc
    * which will be windowing system dependant.

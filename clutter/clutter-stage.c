@@ -97,6 +97,10 @@ static guint stage_signals[LAST_SIGNAL] = { 0, };
 static void
 clutter_stage_paint (ClutterActor *self)
 {
+  ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
+
+  cogl_paint_init (&priv->color); 
+
   CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->paint (self);
 }
 
