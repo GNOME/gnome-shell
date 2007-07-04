@@ -215,8 +215,8 @@ void                  clutter_actor_hide_all         (ClutterActor          *sel
 void                  clutter_actor_realize          (ClutterActor          *self);
 void                  clutter_actor_unrealize        (ClutterActor          *self);
 void                  clutter_actor_paint            (ClutterActor          *self);
-void                  clutter_actor_pick             (ClutterActor        *actor, 
-						      const ClutterColor  *color);
+void                  clutter_actor_pick             (ClutterActor          *self, 
+						      const ClutterColor    *color);
 void                  clutter_actor_queue_redraw     (ClutterActor          *self);
 void                  clutter_actor_destroy          (ClutterActor          *self);
 void                  clutter_actor_request_coords   (ClutterActor          *self,
@@ -345,7 +345,7 @@ void                  clutter_actor_move_by                  (ClutterActor      
 void                  clutter_actor_get_vertices             (ClutterActor          *self,
 						              ClutterVertex          verts[4]);
 
-void                  clutter_actor_apply_transform_to_point (ClutterActor          *actor, 
+void                  clutter_actor_apply_transform_to_point (ClutterActor          *self, 
 						              ClutterVertex         *point,
 							      ClutterVertex         *vertex);
      

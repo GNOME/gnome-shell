@@ -84,13 +84,6 @@ typedef enum
   CLUTTER_STAGE_STATE_OFFSCREEN
 } ClutterStageState;
 
-typedef enum
-{
-  CLUTTER_FILTER_CONTINUE,
-  CLUTTER_FILTER_TRANSLATE,
-  CLUTTER_FILTER_REMOVE
-} ClutterFilterResponse;
-
 typedef union _ClutterEvent ClutterEvent;
 
 typedef struct _ClutterAnyEvent         ClutterAnyEvent;
@@ -100,10 +93,7 @@ typedef struct _ClutterMotionEvent      ClutterMotionEvent;
 typedef struct _ClutterScrollEvent      ClutterScrollEvent;
 typedef struct _ClutterStageStateEvent  ClutterStageStateEvent;
 
-typedef struct _ClutterInputDevice ClutterInputDevice;
-
-
-typedef ClutterFilterResponse (* ClutterFilterFunc) (ClutterEvent *event,                                                            gpointer      data);
+typedef struct _ClutterInputDevice      ClutterInputDevice;
 
 struct _ClutterAnyEvent
 {

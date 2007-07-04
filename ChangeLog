@@ -1,5 +1,9 @@
 2007-07-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/*: Loads of fixes for the API reference.
+
+2007-07-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Merge from clutter/work
 
 	* clutter/clutter-alpha.[ch]: Fix the argument names for

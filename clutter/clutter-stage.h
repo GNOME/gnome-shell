@@ -132,46 +132,45 @@ struct _ClutterPerspective
 GType               clutter_perspective_get_type (void) G_GNUC_CONST;
 ClutterPerspective *clutter_perspective_copy     (const ClutterPerspective *perspective);
 void                clutter_perspective_free     (ClutterPerspective       *perspective);
-GType         clutter_stage_get_type         (void) G_GNUC_CONST;
+GType         clutter_stage_get_type          (void) G_GNUC_CONST;
 
-ClutterActor *clutter_stage_get_default      (void);
-
-void          clutter_stage_set_color        (ClutterStage       *stage,
-                                              const ClutterColor *color);
-void          clutter_stage_get_color        (ClutterStage       *stage,
-                                              ClutterColor       *color);
+ClutterActor *clutter_stage_get_default       (void);
+void          clutter_stage_set_color         (ClutterStage       *stage,
+                                               const ClutterColor *color);
+void          clutter_stage_get_color         (ClutterStage       *stage,
+                                               ClutterColor       *color);
 void          clutter_stage_set_perspectivex  (ClutterStage       *stage,
-			                      ClutterPerspective *perspective);
+			                       ClutterPerspective *perspective);
 void          clutter_stage_get_perspectivex  (ClutterStage       *stage,
-			                      ClutterPerspective *perspective);
+			                       ClutterPerspective *perspective);
 void          clutter_stage_set_perspective   (ClutterStage       *stage,
-					       gfloat               fovy,
-					       gfloat               aspect,
-					       gfloat               z_near,
-					       gfloat               z_far);
+					       gfloat              fovy,
+					       gfloat              aspect,
+					       gfloat              z_near,
+					       gfloat              z_far);
 void          clutter_stage_get_perspective   (ClutterStage       *stage,
 					       gfloat             *fovy,
 					       gfloat             *aspect,
 					       gfloat             *z_near,
 					       gfloat             *z_far);
-void          clutter_stage_fullscreen       (ClutterStage       *stage);
-void          clutter_stage_unfullscreen     (ClutterStage       *stage);
-void          clutter_stage_show_cursor      (ClutterStage       *stage);
-void          clutter_stage_hide_cursor      (ClutterStage       *stage);
+void          clutter_stage_fullscreen        (ClutterStage       *stage);
+void          clutter_stage_unfullscreen      (ClutterStage       *stage);
+void          clutter_stage_show_cursor       (ClutterStage       *stage);
+void          clutter_stage_hide_cursor       (ClutterStage       *stage);
 
-ClutterActor *clutter_stage_get_actor_at_pos (ClutterStage       *stage,
-                                              gint                x,
-                                              gint                y);
-GdkPixbuf *   clutter_stage_snapshot         (ClutterStage       *stage,
-                                              gint                x,
-                                              gint                y,
-                                              gint                width,
-                                              gint                height);
-gboolean      clutter_stage_event            (ClutterStage       *stage,
-                                              ClutterEvent       *event);
+ClutterActor *clutter_stage_get_actor_at_pos  (ClutterStage       *stage,
+                                               gint                x,
+                                               gint                y);
+GdkPixbuf *   clutter_stage_snapshot          (ClutterStage       *stage,
+                                               gint                x,
+                                               gint                y,
+                                               gint                width,
+                                               gint                height);
+gboolean      clutter_stage_event             (ClutterStage       *stage,
+                                               ClutterEvent       *event);
 
-void          clutter_stage_set_title        (ClutterStage       *stage,
-                                              const gchar        *title);
+void          clutter_stage_set_title         (ClutterStage       *stage,
+                                               const gchar        *title);
 G_CONST_RETURN gchar *clutter_stage_get_title (ClutterStage       *stage);
 
 G_END_DECLS

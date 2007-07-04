@@ -162,6 +162,15 @@ clutter_vbox_init (ClutterVBox *box)
 
 }
 
+/**
+ * clutter_vbox_new:
+ *
+ * Creates a new vertical layout box.
+ *
+ * Return value: the newly created #ClutterVBox
+ *
+ * Since: 0.4
+ */
 ClutterActor *
 clutter_vbox_new (void)
 {

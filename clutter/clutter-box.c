@@ -343,6 +343,18 @@ clutter_box_pack_end (ClutterBox   *box,
     clutter_actor_queue_redraw (CLUTTER_ACTOR (box));
 }
 
+/**
+ * clutter_box_query_child:
+ * @box: a #ClutterBox
+ * @actor: child to query
+ * @child: return location for a #ClutterBoxChild or %NULL
+ *
+ * Queries @box for the packing data of @actor.
+ *
+ * Return value: %TRUE if @actor is a child of @box
+ *
+ * Since: 0.4
+ */
 gboolean
 clutter_box_query_child (ClutterBox      *box,
                          ClutterActor    *actor,
@@ -372,6 +384,19 @@ clutter_box_query_child (ClutterBox      *box,
   return FALSE;
 }
 
+/**
+ * clutter_box_query_nth_child:
+ * @box: a #ClutterBox
+ * @index: position of the child
+ * @child: return value for a #ClutterBoxChild, or %NULL
+ *
+ * Queries the child of @box at @index and puts the packing informations
+ * inside @child.
+ *
+ * Return value: %TRUE if an actor was found at @index
+ *
+ * Since: 0.4
+ */
 gboolean
 clutter_box_query_nth_child (ClutterBox      *box,
                              gint             index,
@@ -395,6 +420,16 @@ clutter_box_query_nth_child (ClutterBox      *box,
   return TRUE;
 }
 
+/**
+ * clutter_box_get_spacing:
+ * @box: a #ClutterBox
+ *
+ * Gets the value set using clutter_box_set_spacing().
+ *
+ * Return value: the spacing between children of the box
+ *
+ * Since: 0.4
+ */
 guint
 clutter_box_get_spacing (ClutterBox *box)
 {
@@ -403,6 +438,15 @@ clutter_box_get_spacing (ClutterBox *box)
   return box->spacing;
 }
 
+/**
+ * clutter_box_set_spacing:
+ * @box: a #ClutterBox
+ * @spacing: the spacing between children
+ *
+ * Sets the spacing, in pixels, between the children of @box.
+ *
+ * Since: 0.4
+ */
 void
 clutter_box_set_spacing (ClutterBox *box,
                          guint       spacing)

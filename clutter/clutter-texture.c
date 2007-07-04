@@ -149,7 +149,8 @@ un_pre_multiply_alpha (const guchar   *data,
   return ret;
 }
 
-static guchar*
+#ifndef HAVE_COGL_GL
+static guchar *
 rgb_to_bgr (const guchar   *data,
 	    gboolean        has_alpha,
 	    gint            width,
@@ -182,6 +183,7 @@ rgb_to_bgr (const guchar   *data,
 
   return ret;
 }
+#endif /* !HAVE_COGL_GL */
 
 static int
 tile_dimension (int                          to_fill,
@@ -1262,7 +1264,7 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
 #else
       /* GLES has no BGR format*/
       copy_data = rgb_to_bgr (data, has_alpha, width, height, rowstride);
-#endif
+#endif /* HAVE_COGL_GL */
     }
 
   if (flags & CLUTTER_TEXTURE_RGB_FLAG_PREMULT)

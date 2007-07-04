@@ -162,6 +162,15 @@ clutter_hbox_init (ClutterHBox *box)
 
 }
 
+/**
+ * clutter_hbox_new:
+ *
+ * Creates a new horizontal layout box.
+ *
+ * Return value: the newly created #ClutterHBox
+ *
+ * Since: 0.4
+ */
 ClutterActor *
 clutter_hbox_new (void)
 {

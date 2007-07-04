@@ -111,7 +111,7 @@ ClutterTimeline *clutter_effect_scale (ClutterEffectTemplate     *template_,
                                        gdouble                    scale_end,
                                        ClutterGravity             gravity,
                                        ClutterEffectCompleteFunc  completed_func,
-                                       gpointer                   completed_userdata);
+                                       gpointer                   completed_data);
 
 G_END_DECLS
 

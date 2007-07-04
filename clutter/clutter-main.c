@@ -97,7 +97,6 @@ void
 clutter_redraw (void)
 {
   ClutterMainContext *ctx;
-  ClutterColor        stage_color;
   ClutterActor       *stage;
   static GTimer      *timer = NULL; 
   static guint        timer_n_frames = 0;

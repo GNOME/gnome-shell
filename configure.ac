@@ -258,7 +258,7 @@ AC_SUBST(CLUTTER_DEBUG_CFLAGS)
 
 dnl = GTK Doc check ========================================================
 
-GTK_DOC_CHECK([1.4])
+GTK_DOC_CHECK([1.6])
 
 dnl = Manual ===============================================================
 

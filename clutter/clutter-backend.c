@@ -23,6 +23,20 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:clutter-backend
+ * @short_description: Backend abstraction
+ *
+ * Clutter can be compiled against different backends. Each backend
+ * has to implement a set of functions, in order to be used by Clutter.
+ *
+ * #ClutterBackend is the base class abstracting the various implementation;
+ * it provides a basic API to query the backend for generic information
+ * and settings.
+ *
+ * #ClutterBackend is available since Clutter 0.4
+ */
+
 #ifndef HAVE_CONFIG_H
 #include "config.h"
 #endif

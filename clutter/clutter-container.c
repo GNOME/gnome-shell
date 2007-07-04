@@ -142,7 +142,7 @@ clutter_container_get_type (void)
  * clutter_container_add:
  * @container: a #ClutterContainer
  * @first_actor: the first #ClutterActor to add
- * @varargs: %NULL terminated list of actors to add
+ * @Varargs: %NULL terminated list of actors to add
  *
  * Adds a list of #ClutterActor<!-- -->s to @container. Each time and
  * actor is added, the "actor-added" signal is emitted. Each actor should
@@ -156,14 +156,14 @@ clutter_container_add (ClutterContainer *container,
                        ClutterActor     *first_actor,
                        ...)
 {
-  va_list var_args;
+  va_list args;
 
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
   g_return_if_fail (CLUTTER_IS_ACTOR (first_actor));
 
-  va_start (var_args, first_actor);
-  clutter_container_add_valist (container, first_actor, var_args);
-  va_end (var_args);
+  va_start (args, first_actor);
+  clutter_container_add_valist (container, first_actor, args);
+  va_end (args);
 }
 
 /**
@@ -203,7 +203,7 @@ clutter_container_add_actor (ClutterContainer *container,
 }
 
 /**
- * clutter_container_add:
+ * clutter_container_add_valist:
  * @container: a #ClutterContainer
  * @first_actor: the first #ClutterActor to add
  * @var_args: list of actors to add, followed by %NULL

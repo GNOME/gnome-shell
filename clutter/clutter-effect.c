@@ -171,6 +171,13 @@ clutter_effect_template_class_init (ClutterEffectTemplateClass *klass)
   object_class->set_property = clutter_effect_template_set_property;
   object_class->get_property = clutter_effect_template_get_property;
 
+  /**
+   * ClutterEffectTemplate:alpha-func:
+   *
+   * #ClutterAlphaFunc to be used by the template
+   *
+   * Since: 0.4
+   */
   g_object_class_install_property 
            (object_class,
 	    PROP_ALPHA_FUNC,
@@ -179,7 +186,13 @@ clutter_effect_template_class_init (ClutterEffectTemplateClass *klass)
 				  "Alpha reference Function", 
 				  G_PARAM_CONSTRUCT_ONLY |
 				  CLUTTER_PARAM_READWRITE));
-
+  /**
+   * ClutterEffectTemplate:timeline:
+   *
+   * #ClutterTimeline to be used by the template
+   *
+   * Since: 0.4
+   */
   g_object_class_install_property 
            (object_class,
 	    PROP_TIMELINE,
@@ -199,7 +212,6 @@ clutter_effect_template_init (ClutterEffectTemplate *self)
 
 /**
  * clutter_effect_template_new:
- *
  * @timeline:  A #ClutterTimeline for the template (will be cloned)
  * @alpha_func: An alpha func to use for the template.
  *
@@ -209,7 +221,7 @@ clutter_effect_template_init (ClutterEffectTemplate *self)
  *
  * Since: 0.4
  */
-ClutterEffectTemplate*
+ClutterEffectTemplate *
 clutter_effect_template_new (ClutterTimeline *timeline, 
 			     ClutterAlphaFunc alpha_func)
 {
@@ -275,35 +287,38 @@ on_effect_complete (ClutterTimeline *timeline,
 
 /**
  * clutter_effect_fade:
- *
- * @template: A #ClutterEffectTemplate
+ * @template_: A #ClutterEffectTemplate
  * @actor: A #ClutterActor to apply the effect to.
  * @start_opacity: Initial opacity value to apply to actor
  * @end_opacity: Final opacity value to apply to actor
- * @completed_func: A #ClutterEffectCompleteFunc to call on effect completion or NULL
- * @completed_userdata: Data to pass to supplied  #ClutterEffectCompleteFunc or NULL
+ * @completed_func: A #ClutterEffectCompleteFunc to call on effect
+ *   completion or %NULL
+ * @completed_data: Data to pass to supplied  #ClutterEffectCompleteFunc
+ *   or %NULL
+ *
+ * Simple effect for fading a single #ClutterActor.
  *
  * Return value: a #ClutterTimeline for the effect. Will be unrefed by
  * the effect when completed.
  *
  * Since: 0.4
  */
-ClutterTimeline*
-clutter_effect_fade (ClutterEffectTemplate     *template,
+ClutterTimeline *
+clutter_effect_fade (ClutterEffectTemplate     *template_,
 		     ClutterActor              *actor,
 		     guint8                     start_opacity,
 		     guint8                     end_opacity,
 		     ClutterEffectCompleteFunc  completed_func,
-		     gpointer                   completed_userdata)
+		     gpointer                   completed_data)
 {
   ClutterEffectClosure *c;
 
-  c = clutter_effect_closure_new (template,
+  c = clutter_effect_closure_new (template_,
 				  actor, 
 				  G_CALLBACK (on_effect_complete));
 
   c->completed_func = completed_func;
-  c->completed_data = completed_userdata;
+  c->completed_data = completed_data;
 
   c->behave = clutter_behaviour_opacity_new (c->alpha, 
 					     start_opacity, 
@@ -317,35 +332,38 @@ clutter_effect_fade (ClutterEffectTemplate     *template,
 
 /**
  * clutter_effect_move:
- *
- * @template: A #ClutterEffectTemplate
+ * @template_: A #ClutterEffectTemplate
  * @actor: A #ClutterActor to apply the effect to.
  * @knots: An array of #ClutterKnots representing path for the actor
  * @n_knots: Number of #ClutterKnots in passed array.
- * @completed_func: A #ClutterEffectCompleteFunc to call on effect completion or NULL
- * @completed_userdata: Data to pass to supplied  #ClutterEffectCompleteFunc or NULL
+ * @completed_func: A #ClutterEffectCompleteFunc to call on effect
+ *   completion or %NULL
+ * @completed_data: Data to pass to supplied  #ClutterEffectCompleteFunc
+ *   or %NULL
  *
- * Return value: a #ClutterTimeline for the effect. Will be unrefed by
- * the effect when completed.
+ * Simple effect for moving a single #ClutterActor along a path.
+ *
+ * Return value: a #ClutterTimeline for the effect. Will be unreferenced by
+ *   the effect when completed.
  *
  * Since: 0.4
  */
-ClutterTimeline*
-clutter_effect_move (ClutterEffectTemplate     *template,
+ClutterTimeline *
+clutter_effect_move (ClutterEffectTemplate     *template_,
 		     ClutterActor              *actor,
 		     const ClutterKnot         *knots,
 		     guint                      n_knots,
 		     ClutterEffectCompleteFunc  completed_func,
-		     gpointer                   completed_userdata)
+		     gpointer                   completed_data)
 {
   ClutterEffectClosure *c;
 
-  c = clutter_effect_closure_new (template,
+  c = clutter_effect_closure_new (template_,
 				  actor, 
 				  G_CALLBACK (on_effect_complete));
 
   c->completed_func = completed_func;
-  c->completed_data = completed_userdata;
+  c->completed_data = completed_data;
 
   c->behave = clutter_behaviour_path_new (c->alpha, knots, n_knots);
   
@@ -357,37 +375,40 @@ clutter_effect_move (ClutterEffectTemplate     *template,
 
 /**
  * clutter_effect_scale:
- *
- * @template: A #ClutterEffectTemplate
+ * @template_: A #ClutterEffectTemplate
  * @actor: A #ClutterActor to apply the effect to.
  * @scale_begin: Initial scale factor to apply to actor
  * @scale_end: Final scale factor to apply to actor
  * @gravity: A #ClutterGravity for the scale.
- * @completed_func: A #ClutterEffectCompleteFunc to call on effect completion or NULL
- * @completed_userdata: Data to pass to supplied  #ClutterEffectCompleteFunc or NULL
+ * @completed_func: A #ClutterEffectCompleteFunc to call on effect
+ *   completion or NULL
+ * @completed_data: Data to pass to supplied  #ClutterEffectCompleteFunc
+ *   or NULL
  *
- * Return value: a #ClutterTimeline for the effect. Will be unrefed by
- * the effect when completed.
+ * Simple effect for scaling a single #ClutterActor.
+ *
+ * Return value: a #ClutterTimeline for the effect. Will be unreferenced by
+ *   the effect when completed.
  *
  * Since: 0.4
  */
-ClutterTimeline*
-clutter_effect_scale (ClutterEffectTemplate     *template,
+ClutterTimeline *
+clutter_effect_scale (ClutterEffectTemplate     *template_,
 		      ClutterActor              *actor,
 		      gdouble                    scale_begin,
 		      gdouble                    scale_end,
 		      ClutterGravity             gravity,
 		      ClutterEffectCompleteFunc  completed_func,
-		      gpointer                   completed_userdata)
+		      gpointer                   completed_data)
 {
   ClutterEffectClosure *c;
 
-  c = clutter_effect_closure_new (template,
+  c = clutter_effect_closure_new (template_,
 				  actor, 
 				  G_CALLBACK (on_effect_complete));
 
   c->completed_func = completed_func;
-  c->completed_data = completed_userdata;
+  c->completed_data = completed_data;
 
   c->behave = clutter_behaviour_scale_new (c->alpha, 
 					   scale_begin,

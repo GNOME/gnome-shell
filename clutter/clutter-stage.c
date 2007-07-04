@@ -589,7 +589,10 @@ clutter_stage_set_perspective (ClutterStage       *stage,
 /**
  * clutter_stage_get_perspective
  * @stage: A #ClutterStage
- * @perspective: return location for a #ClutterPerspective
+ * @fovy: FIXME
+ * @aspect: FIXME
+ * @z_near: FIXME
+ * @z_far: FIXME
  * 
  * Retrieves the stage perspective.
  */
@@ -605,10 +608,18 @@ clutter_stage_get_perspective (ClutterStage       *stage,
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
   priv = stage->priv;
-  *fovy   = CLUTTER_FIXED_TO_FLOAT(priv->perspective.fovy);
-  *aspect = CLUTTER_FIXED_TO_FLOAT(priv->perspective.aspect);
-  *z_near = CLUTTER_FIXED_TO_FLOAT(priv->perspective.z_near);
-  *z_far  = CLUTTER_FIXED_TO_FLOAT(priv->perspective.z_far);
+
+  if (fovy)
+    *fovy   = CLUTTER_FIXED_TO_FLOAT (priv->perspective.fovy);
+
+  if (aspect)
+    *aspect = CLUTTER_FIXED_TO_FLOAT (priv->perspective.aspect);
+
+  if (z_near)
+    *z_near = CLUTTER_FIXED_TO_FLOAT (priv->perspective.z_near);
+
+  if (z_far)
+    *z_far  = CLUTTER_FIXED_TO_FLOAT (priv->perspective.z_far);
 }
 
 /**
