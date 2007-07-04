@@ -28,7 +28,14 @@
  * SECTION:clutter-entry
  * @short_description: A single line text entry actor
  *
- * #ClutterEntry is a #ClutterTexture that allows single line text entry
+ * #ClutterEntry is a #ClutterTexture that allows single line text entry.
+ *
+ * In order to update the contents of the entry with the text inserted
+ * by the user you should connect to the ClutterStage::key-press-event and
+ * forward the #ClutterKeyEvent received by the #ClutterStage to the
+ * #ClutterEntry you want to update, using clutter_entry_handle_key_event().
+ *
+ * #ClutterEntry is available since Clutter 0.4.
  */
 
 #include "config.h"
@@ -58,6 +65,7 @@ static PangoContext         *_context  = NULL;
 enum
 {
   PROP_0,
+
   PROP_FONT_NAME,
   PROP_TEXT,
   PROP_COLOR,
@@ -65,7 +73,8 @@ enum
   PROP_POSITION,
   PROP_CURSOR,
   PROP_TEXT_VISIBLE,
-  PROP_MAX_LENGTH
+  PROP_MAX_LENGTH,
+  PROP_ENTRY_PADDING
 };
 
 enum
@@ -107,6 +116,7 @@ struct _ClutterEntryPrivate
   gint                  position;
   gint                  text_x;
   gint                  max_length;
+  gint                  entry_padding;
 
   PangoAttrList        *attrs;
   PangoAttrList        *effective_attrs;
@@ -118,6 +128,22 @@ struct _ClutterEntryPrivate
   gboolean              show_cursor;
 };
 
+static void
+clutter_entry_set_entry_padding (ClutterEntry *entry,
+                                 guint         padding)
+{
+  ClutterEntryPrivate *priv = entry->priv;
+
+  if (priv->entry_padding != padding)
+    {
+      priv->entry_padding = padding;
+
+      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (entry)))
+        clutter_actor_queue_redraw (CLUTTER_ACTOR (entry));
+
+      g_object_notify (G_OBJECT (entry), "entry-padding");
+    }
+}
 
 static void
 clutter_entry_set_property (GObject      *object, 
@@ -128,7 +154,7 @@ clutter_entry_set_property (GObject      *object,
   ClutterEntry        *entry;
   ClutterEntryPrivate *priv;
 
-  entry = CLUTTER_ENTRY(object);
+  entry = CLUTTER_ENTRY (object);
   priv = entry->priv;
 
   switch (prop_id) 
@@ -156,6 +182,9 @@ clutter_entry_set_property (GObject      *object,
       break;
     case PROP_MAX_LENGTH:
       clutter_entry_set_max_length (entry, g_value_get_int (value));
+      break;
+    case PROP_ENTRY_PADDING:
+      clutter_entry_set_entry_padding (entry, g_value_get_uint (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -203,6 +232,9 @@ clutter_entry_get_property (GObject    *object,
     case PROP_MAX_LENGTH:
       g_value_set_int (value, priv->max_length);
       break;
+    case PROP_ENTRY_PADDING:
+      g_value_set_uint (value, priv->entry_padding);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -243,9 +275,7 @@ clutter_entry_ensure_layout (ClutterEntry *entry, gint width)
 	pango_layout_set_wrap  (priv->layout, priv->wrap_mode);
       
       if (priv->wrap && width > 0)
-	{
-	  pango_layout_set_width (priv->layout, width * PANGO_SCALE);
-	}
+	pango_layout_set_width (priv->layout, width * PANGO_SCALE);
       else
 	pango_layout_set_width (priv->layout, -1);
     }
@@ -275,16 +305,13 @@ clutter_entry_ensure_cursor_position (ClutterEntry *entry)
   else
     index = priv->position;
   
-  if (1) 
-    {
-       pango_layout_get_cursor_pos (priv->layout, index, &rect, NULL);
-       priv->cursor_pos.x = rect.x / PANGO_SCALE;
-       priv->cursor_pos.y = rect.y / PANGO_SCALE;
-       priv->cursor_pos.width = ENTRY_CURSOR_WIDTH;
-       priv->cursor_pos.height = rect.height / PANGO_SCALE;
+  pango_layout_get_cursor_pos (priv->layout, index, &rect, NULL);
+  priv->cursor_pos.x = rect.x / PANGO_SCALE;
+  priv->cursor_pos.y = rect.y / PANGO_SCALE;
+  priv->cursor_pos.width = ENTRY_CURSOR_WIDTH;
+  priv->cursor_pos.height = rect.height / PANGO_SCALE;
   
-       g_signal_emit (entry, entry_signals[CURSOR_EVENT], 0, &priv->cursor_pos);
-  }
+  g_signal_emit (entry, entry_signals[CURSOR_EVENT], 0, &priv->cursor_pos);
 }
 
 static void
@@ -314,7 +341,7 @@ clutter_entry_paint_cursor (ClutterEntry *entry)
     }  
 }
 
-void
+static void
 clutter_entry_paint (ClutterActor *self)
 {
   ClutterEntry         *entry;
@@ -340,7 +367,7 @@ clutter_entry_paint (ClutterActor *self)
                           clutter_actor_get_width (self),
                           clutter_actor_get_height (self));
   
-  actor_width = clutter_actor_get_width(self) - (2*ENTRY_PADDING);
+  actor_width = clutter_actor_get_width (self) - (2 * priv->entry_padding);
   clutter_entry_ensure_layout (entry, actor_width);
   clutter_entry_ensure_cursor_position (entry);
 
@@ -353,53 +380,55 @@ clutter_entry_paint (ClutterActor *self)
       cursor_x = priv->cursor_pos.x;
       
       /* If the cursor is at the begining or the end of the text, the placement
-         is easy, however, if the cursor is in the middle somewhere, we need to
-         make sure the text doesn't move until the cursor is either in the 
-         far left or far right
-      */
+       * is easy, however, if the cursor is in the middle somewhere, we need to
+       * make sure the text doesn't move until the cursor is either in the 
+       * far left or far right
+       */
       
       if (priv->position == 0)
         priv->text_x = 0;
       else if (priv->position == -1)
         {
           priv->text_x = actor_width - text_width;
-          priv->cursor_pos.x += priv->text_x + ENTRY_PADDING;
+          priv->cursor_pos.x += priv->text_x + priv->entry_padding;
         }
       else 
         {
            if (priv->text_x < 0)
              {
                gint diff = -1 * priv->text_x;
+
                if (cursor_x < diff)
                  priv->text_x += diff - cursor_x;
                else if (cursor_x > (diff + actor_width))
                  priv->text_x -= cursor_x - (diff+actor_width);
              }
-           priv->cursor_pos.x += priv->text_x + ENTRY_PADDING;
+
+           priv->cursor_pos.x += priv->text_x + priv->entry_padding;
         }
       
     } 
   else
     {
       priv->text_x = 0;
-      priv->cursor_pos.x += ENTRY_PADDING;
+      priv->cursor_pos.x += priv->entry_padding;
     }
   
-  priv->fgcol.alpha   =  clutter_actor_get_opacity(self);
+  priv->fgcol.alpha = clutter_actor_get_opacity (self);
   pango_clutter_render_layout (priv->layout, 
-                               priv->text_x + ENTRY_PADDING, 
+                               priv->text_x + priv->entry_padding, 
                                0, &priv->fgcol, 0);
   
-  if (CLUTTER_ENTRY_GET_CLASS (entry)->paint_cursor != NULL)
+  if (CLUTTER_ENTRY_GET_CLASS (entry)->paint_cursor)
     CLUTTER_ENTRY_GET_CLASS (entry)->paint_cursor (entry);
 }
 
 static void
-clutter_entry_request_coords (ClutterActor        *self,
-			      ClutterActorBox     *box)
+clutter_entry_request_coords (ClutterActor    *self,
+			      ClutterActorBox *box)
 {
   /* do we need to do anything ? */
-  clutter_entry_clear_layout (CLUTTER_ENTRY(self));
+  clutter_entry_clear_layout (CLUTTER_ENTRY (self));
 }
 
 static void 
@@ -415,19 +444,7 @@ clutter_entry_dispose (GObject *object)
       g_object_unref (priv->layout);
       priv->layout = NULL;
     }
-  
-  if (priv->desc)
-    {
-      pango_font_description_free (priv->desc);    
-      priv->desc = NULL;
-    }
 
-  g_free (priv->text);
-  priv->text = NULL;
-
-  g_free (priv->font_name);
-  priv->font_name = NULL;
-      
   if (priv->context)
     {
       g_object_unref (priv->context);
@@ -440,6 +457,14 @@ clutter_entry_dispose (GObject *object)
 static void 
 clutter_entry_finalize (GObject *object)
 {
+  ClutterEntryPrivate *priv = CLUTTER_ENTRY (object)->priv;
+
+  if (priv->desc)
+    pango_font_description_free (priv->desc);    
+
+  g_free (priv->text);
+  g_free (priv->font_name);
+
   G_OBJECT_CLASS (clutter_entry_parent_class)->finalize (object);
 }
 
@@ -449,16 +474,24 @@ clutter_entry_class_init (ClutterEntryClass *klass)
   GObjectClass        *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   
-  klass->paint_cursor          = clutter_entry_paint_cursor;
+  klass->paint_cursor = clutter_entry_paint_cursor;
 
   actor_class->paint           = clutter_entry_paint;
   actor_class->request_coords  = clutter_entry_request_coords;
   
-  gobject_class->finalize   = clutter_entry_finalize;
-  gobject_class->dispose    = clutter_entry_dispose;
+  gobject_class->finalize     = clutter_entry_finalize;
+  gobject_class->dispose      = clutter_entry_dispose;
   gobject_class->set_property = clutter_entry_set_property;
   gobject_class->get_property = clutter_entry_get_property;
 
+  /**
+   * ClutterEntry:font-name:
+   *
+   * The font to be used by the entry, expressed in a string that
+   * can be parsed by pango_font_description_from_string().
+   *
+   * Since: 0.4
+   */
   g_object_class_install_property
     (gobject_class, PROP_FONT_NAME,
      g_param_spec_string ("font-name",
@@ -466,7 +499,13 @@ clutter_entry_class_init (ClutterEntryClass *klass)
 			  "Pango font description",
 			  NULL,
 			  G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
-
+  /**
+   * ClutterEntry:text:
+   *
+   * The text inside the entry.
+   *
+   * Since: 0.4
+   */
   g_object_class_install_property
     (gobject_class, PROP_TEXT,
      g_param_spec_string ("text",
@@ -474,7 +513,13 @@ clutter_entry_class_init (ClutterEntryClass *klass)
 			  "Text to render",
 			  NULL,
 			  G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
-
+  /**
+   * ClutterEntry:color:
+   *
+   * The color of the text inside the entry.
+   *
+   * Since: 0.4
+   */
   g_object_class_install_property
     (gobject_class, PROP_COLOR,
      g_param_spec_boxed ("color",
@@ -482,34 +527,43 @@ clutter_entry_class_init (ClutterEntryClass *klass)
 			 "Font Colour",
 			 CLUTTER_TYPE_COLOR,
 			 CLUTTER_PARAM_READWRITE));
-
+  /**
+   * ClutterEntry:alignment:
+   *
+   * The preferred alignment for the string.
+   *
+   * Since: 0.4
+   */
   g_object_class_install_property 
     (gobject_class, PROP_ALIGNMENT,
-     g_param_spec_enum ( "alignment",
-			 "Alignment",
-			 "The preferred alignment for the string,",
-			 PANGO_TYPE_ALIGNMENT,
-			 PANGO_ALIGN_LEFT,
-			 CLUTTER_PARAM_READWRITE));
-
+     g_param_spec_enum ("alignment",
+			"Alignment",
+			"The preferred alignment for the string,",
+			PANGO_TYPE_ALIGNMENT,
+			PANGO_ALIGN_LEFT,
+			CLUTTER_PARAM_READWRITE));
   /**
-   * ClutterEntry:position
+   * ClutterEntry:position:
    *
    * The current input cursor position. -1 is taken to be the end of the text
+   *
+   * Since: 0.4
    */	
   g_object_class_install_property 
     (gobject_class, PROP_POSITION,
-     g_param_spec_int ( "position",
-			"Position",
-			"The cursor position",
-			-1, G_MAXINT,
-			-1,
-			CLUTTER_PARAM_READWRITE));
+     g_param_spec_int ("position",
+                       "Position",
+                       "The cursor position",
+                       -1, G_MAXINT,
+                       -1,
+                       CLUTTER_PARAM_READWRITE));
 
   /**
-   * ClutterEntry:cursor-visible
+   * ClutterEntry:cursor-visible:
    *
-   * Whether the input cursor is visible
+   * Whether the input cursor is visible or not.
+   *
+   * Since: 0.4
    */			
   g_object_class_install_property 
     (gobject_class, PROP_CURSOR,
@@ -520,9 +574,12 @@ clutter_entry_class_init (ClutterEntryClass *klass)
 			CLUTTER_PARAM_READWRITE));
 			
   /**
-   * ClutterEntry:text-visible
+   * ClutterEntry:text-visible:
    *
-   * Whether the text is visible in plain text
+   * Whether the text is visible in plain, or replaced by the
+   * character set by clutter_entry_set_invisible_char().
+   *
+   * Since: 0.4
    */			
   g_object_class_install_property 
     (gobject_class, PROP_TEXT_VISIBLE,
@@ -533,9 +590,11 @@ clutter_entry_class_init (ClutterEntryClass *klass)
 			   CLUTTER_PARAM_READWRITE));
 
   /**
-   * ClutterEntry:max-length
+   * ClutterEntry:max-length:
    *
-   * The maximum length of the entry text
+   * The maximum length of the entry text.
+   *
+   * Since: 0.4
    */			
   g_object_class_install_property 
     (gobject_class, PROP_MAX_LENGTH,
@@ -545,7 +604,22 @@ clutter_entry_class_init (ClutterEntryClass *klass)
 		       0, G_MAXINT,
 	               0,
 		       CLUTTER_PARAM_READWRITE));
-			
+  /**
+   * ClutterEntry:entry-padding:
+   *
+   * The padding space between the text and the entry right and left borders.
+   *
+   * Since: 0.4
+   */
+  g_object_class_install_property
+    (gobject_class, PROP_ENTRY_PADDING,
+     g_param_spec_uint ("entry-padding",
+                        "Entry Padding",
+                        "The padding space between the text and the left and "
+                        "right borders",
+                        0, G_MAXUINT,
+                        ENTRY_PADDING,
+                        CLUTTER_PARAM_READWRITE));
 
   /**
    * ClutterEntry::text-changed:
@@ -571,6 +645,8 @@ clutter_entry_class_init (ClutterEntryClass *klass)
    * changes, this could be a positional or size change. If you would like to
    * implement your own input cursor, set the cursor-visible property to FALSE, 
    * and connect to this signal to position and size your own cursor.
+   *
+   * Since: 0.4
    */
   entry_signals[CURSOR_EVENT] =
     g_signal_new ("cursor-event",
@@ -586,10 +662,12 @@ clutter_entry_class_init (ClutterEntryClass *klass)
   * ClutterEntry::activate:
    * @entry: the actor which received the event
    *
-   * The ::cursor-event signal is emitted each time the netry is 'activated'
-   * by the user, normally by pressing the 'Enter' key. This will only be 
-   * emitted when your are adding text to the entry via 
-   * #clutter_entry_handle_key_event.
+   * The ::activate signal is emitted each time the netry is 'activated'
+   * by the user, normally by pressing the 'Enter' key. This signal will
+   * only be emitted when your are adding text to the entry via 
+   * #clutter_entry_handle_key_event().
+   *
+   * Since: 0.4
    */
   entry_signals[ACTIVATE] =
     g_signal_new ("activate",
@@ -610,9 +688,10 @@ clutter_entry_init (ClutterEntry *self)
   
   self->priv = priv = CLUTTER_ENTRY_GET_PRIVATE (self);
 
-  if (_context == NULL)
+  if (G_UNLIKELY (_context == NULL))
     {
       _font_map = PANGO_CLUTTER_FONT_MAP (pango_clutter_font_map_new ());
+
       /* pango_clutter_font_map_set_resolution (font_map, 96.0, 96.0); */
       _context = pango_clutter_font_map_create_context (_font_map);
     }
@@ -631,6 +710,7 @@ clutter_entry_init (ClutterEntry *self)
   priv->text_visible  = TRUE;
   priv->text_x        = 0;
   priv->max_length    = 0;
+  priv->entry_padding = ENTRY_PADDING;
 
   priv->fgcol.red     = 0;
   priv->fgcol.green   = 0;
@@ -642,9 +722,8 @@ clutter_entry_init (ClutterEntry *self)
   
   priv->cursor        = clutter_rectangle_new_with_color (&priv->fgcol);
   clutter_actor_set_parent (priv->cursor, CLUTTER_ACTOR (self));
-  priv->show_cursor   = TRUE;
 
-  CLUTTER_MARK();
+  priv->show_cursor   = TRUE;
 }
 
 /**
@@ -654,22 +733,18 @@ clutter_entry_init (ClutterEntry *self)
  *
  * Creates a new #ClutterEntry displaying @text using @font_name.
  *
- * Return value: a #ClutterEntry
+ * Return value: the newly created #ClutterEntry
+ *
+ * Since: 0.4
  */
-ClutterActor*
+ClutterActor *
 clutter_entry_new_with_text (const gchar *font_name,
 		             const gchar *text)
 {
-  ClutterActor *entry;
-
-  CLUTTER_MARK();
-
-  entry = clutter_entry_new ();
-
-  clutter_entry_set_font_name (CLUTTER_ENTRY(entry), font_name);
-  clutter_entry_set_text (CLUTTER_ENTRY(entry), text);
-
-  return entry;
+  return g_object_new (CLUTTER_TYPE_ENTRY,
+                       "font-name", font_name,
+                       "text", text,
+                       NULL);
 }
 
 /**
@@ -681,14 +756,15 @@ clutter_entry_new_with_text (const gchar *font_name,
  * Creates a new #ClutterEntry displaying @text with color @color 
  * using @font_name.
  *
- * Return value: a #ClutterEntry
+ * Return value: the newly created #ClutterEntry
+ *
+ * Since: 0.4
  */
-ClutterActor*
-clutter_entry_new_full (const gchar  *font_name,
-			const gchar  *text,
-			ClutterColor *color)
+ClutterActor *
+clutter_entry_new_full (const gchar        *font_name,
+			const gchar        *text,
+			const ClutterColor *color)
 {
-  /* FIXME: really new_with_text should take color argument... */
   ClutterActor *entry;
 
   entry = clutter_entry_new_with_text (font_name, text);
@@ -717,7 +793,9 @@ clutter_entry_new (void)
  * Retrieves the text displayed by @entry
  *
  * Return value: the text of the entry.  The returned string is
- * owned by #ClutterEntry and should not be modified or freed.
+ *   owned by #ClutterEntry and should not be modified or freed.
+ *
+ * Since: 0.4
  */
 G_CONST_RETURN gchar *
 clutter_entry_get_text (ClutterEntry *entry)
@@ -732,7 +810,10 @@ clutter_entry_get_text (ClutterEntry *entry)
  * @entry: a #ClutterEntry
  * @text: the text to be displayed
  *
- * Sets @text as the text to be displayed by @entry.
+ * Sets @text as the text to be displayed by @entry. The
+ * ClutterEntry::text-changed signal is emitted.
+ *
+ * Since: 0.4
  */
 void
 clutter_entry_set_text (ClutterEntry *entry,
@@ -746,9 +827,10 @@ clutter_entry_set_text (ClutterEntry *entry,
 
   g_object_ref (entry);
   
-  if (priv->max_length)
+  if (priv->max_length > 0)
     {
       gint len = g_utf8_strlen (text, -1);
+
       if (len < priv->max_length)
         {  
            g_free (priv->text);
@@ -756,10 +838,12 @@ clutter_entry_set_text (ClutterEntry *entry,
         }
       else
         {
-          gchar new[priv->max_length+1];
+          gchar new[priv->max_length + 1];
+
           g_utf8_strncpy (new, text, priv->max_length);
-           g_free (priv->text);
-           priv->text = g_strdup (new);
+          g_free (priv->text);
+          
+          priv->text = g_strdup (new);
         }
     }
   else
@@ -774,8 +858,9 @@ clutter_entry_set_text (ClutterEntry *entry,
   if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(entry)))
     clutter_actor_queue_redraw (CLUTTER_ACTOR(entry));
 
-  g_object_notify (G_OBJECT (entry), "text");
   g_signal_emit (G_OBJECT (entry), entry_signals[TEXT_CHANGED], 0);  
+  
+  g_object_notify (G_OBJECT (entry), "text");
   g_object_unref (entry);
 }
 
@@ -789,6 +874,8 @@ clutter_entry_set_text (ClutterEntry *entry,
  *   understandable by pango_font_description_from_string().  The
  *   string is owned by #ClutterEntry and should not be modified
  *   or freed.
+ *
+ * Since: 0.4
  */
 G_CONST_RETURN gchar *
 clutter_entry_get_font_name (ClutterEntry *entry)
@@ -808,6 +895,8 @@ clutter_entry_get_font_name (ClutterEntry *entry)
  * @font_name must be a string containing the font name and its
  * size, similarly to what you would feed to the
  * pango_font_description_from_string() function.
+ *
+ * Since: 0.4
  */
 void
 clutter_entry_set_font_name (ClutterEntry *entry,
@@ -849,8 +938,8 @@ clutter_entry_set_font_name (ClutterEntry *entry,
     {
       clutter_entry_clear_layout (entry);      
 
-      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(entry)))
-	clutter_actor_queue_redraw (CLUTTER_ACTOR(entry));
+      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (entry)))
+	clutter_actor_queue_redraw (CLUTTER_ACTOR (entry));
     }
   
   g_object_notify (G_OBJECT (entry), "font-name");
@@ -864,6 +953,8 @@ clutter_entry_set_font_name (ClutterEntry *entry,
  * @color: a #ClutterColor
  *
  * Sets the color of @entry.
+ *
+ * Since: 0.4
  */
 void
 clutter_entry_set_color (ClutterEntry       *entry,
@@ -903,6 +994,8 @@ clutter_entry_set_color (ClutterEntry       *entry,
  * @color: return location for a #ClutterColor
  *
  * Retrieves the color of @entry.
+ *
+ * Since: 0.4
  */
 void
 clutter_entry_get_color (ClutterEntry *entry,
@@ -933,9 +1026,9 @@ clutter_entry_get_color (ClutterEntry *entry,
  * 
  * Return value: the #PangoLayout for this entry
  *
- * Since: 0.2
+ * Since: 0.4
  **/
-PangoLayout*
+PangoLayout *
 clutter_entry_get_layout (ClutterEntry *entry)
 {
   g_return_val_if_fail (CLUTTER_IS_ENTRY (entry), NULL);
@@ -951,7 +1044,9 @@ clutter_entry_get_layout (ClutterEntry *entry)
  * @alignment: A #PangoAlignment
  *
  * Sets text alignment of the entry.
- **/
+ *
+ * Since: 0.4
+ */
 void
 clutter_entry_set_alignment (ClutterEntry   *entry,
 			     PangoAlignment  alignment)
@@ -985,8 +1080,8 @@ clutter_entry_set_alignment (ClutterEntry   *entry,
  *
  * Return value: The entrys #PangoAlignment
  *
- * Since 0.2
- **/
+ * Since 0.4
+ */
 PangoAlignment
 clutter_entry_get_alignment (ClutterEntry *entry)
 {
@@ -998,14 +1093,15 @@ clutter_entry_get_alignment (ClutterEntry *entry)
 /**
  * clutter_entry_set_position:
  * @entry: a #ClutterEntry
- * @position: the position of the cursor. The cursor is displayed before 
- * the character with the given (base 0) index.
- * The value must be less than or equal to the number of 
- * characters in the entry. A value of -1 indicates that the position should
- * be set after the last character in the entry. 
+ * @position: the position of the cursor.
+ *
+ * Sets the position of the cursor. The @position must be less than or
+ * equal to the number of characters in the entry. A value of -1 indicates
+ * that the position should be set after the last character in the entry. 
  * Note that this position is in characters, not in bytes.
- * 
- **/
+ *
+ * Since: 0.4
+ */
 void
 clutter_entry_set_position (ClutterEntry *entry, gint position)
 {
@@ -1028,23 +1124,20 @@ clutter_entry_set_position (ClutterEntry *entry, gint position)
 
   clutter_entry_clear_cursor_position (entry);
   
-  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(entry)))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR(entry));
+  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (entry)))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (entry));
 }
 
 /**
  * clutter_entry_get_position:
  * @entry: a #ClutterEntry
  *
- * Returns the entry's text alignment
+ * Gets the position, in characters, of the cursor in @entry.
  *
- * Return value: the position of the cursor. 
- * The cursor is displayed before the character with the given (base 0) index 
- * in the widget. The value will be less than or equal to the number of 
- * characters in the widget. Note that this position is in characters, 
- * not in bytes.
+ * Return value: the position of the cursor.
  *
- **/
+ * Since: 0.4
+ */
 gint
 clutter_entry_get_position (ClutterEntry *entry)
 {
@@ -1065,11 +1158,14 @@ clutter_entry_get_position (ClutterEntry *entry)
  * This function will handle a #ClutterKeyEvent, like those returned in a 
  * key-press/release-event, and will translate it for the @entry. This includes
  * non-alphanumeric keys, such as the arrows keys, which will move the
- * input cursor.
+ * input cursor. You should use this function inside a handler for the
+ * ClutterStage::key-press-event or ClutterStage::key-release-event.
  *
- **/
+ * Since: 0.4
+ */
 void
-clutter_entry_handle_key_event (ClutterEntry *entry, ClutterKeyEvent *kev)
+clutter_entry_handle_key_event (ClutterEntry    *entry,
+                                ClutterKeyEvent *kev)
 {
   ClutterEntryPrivate *priv;
   gint pos = 0;
@@ -1081,6 +1177,7 @@ clutter_entry_handle_key_event (ClutterEntry *entry, ClutterKeyEvent *kev)
   priv = entry->priv;  
   
   pos = priv->position;
+
   if (priv->text)
     len = g_utf8_strlen (priv->text, -1);
   
@@ -1089,7 +1186,7 @@ clutter_entry_handle_key_event (ClutterEntry *entry, ClutterKeyEvent *kev)
       case CLUTTER_Return:
       case CLUTTER_KP_Enter:
       case CLUTTER_ISO_Enter:
-        g_signal_emit (G_OBJECT (entry), entry_signals[ACTIVATE], 0);  
+        g_signal_emit (entry, entry_signals[ACTIVATE], 0);  
         break;
       case CLUTTER_Escape:
       case CLUTTER_Up:
@@ -1101,33 +1198,29 @@ clutter_entry_handle_key_event (ClutterEntry *entry, ClutterKeyEvent *kev)
         break;
       case CLUTTER_BackSpace:
         if (pos != 0 && len != 0)
-          clutter_entry_remove (entry, 1);
+          clutter_entry_delete_chars (entry, 1);
         break;
       case CLUTTER_Delete:
       case CLUTTER_KP_Delete:
         if (len && pos != -1)
-          {
-            clutter_entry_delete_text (entry, pos, pos+1);;
-          }
+          clutter_entry_delete_text (entry, pos, pos+1);;
         break;
       case CLUTTER_Left:
       case CLUTTER_KP_Left:
         if (pos != 0 && len != 0)
           {
             if (pos == -1)
-              {
-                clutter_entry_set_position (entry, len-1);  
-              }
+              clutter_entry_set_position (entry, len - 1);
             else
-              clutter_entry_set_position (entry, pos - 1);  
-          }         
+              clutter_entry_set_position (entry, pos - 1);
+          }
         break;
       case CLUTTER_Right:
       case CLUTTER_KP_Right:
         if (pos != -1 && len != 0)
           {
             if (pos != len)
-              clutter_entry_set_position (entry, pos +1);  
+              clutter_entry_set_position (entry, pos + 1);
           } 
         break;
       case CLUTTER_End:
@@ -1140,21 +1233,25 @@ clutter_entry_handle_key_event (ClutterEntry *entry, ClutterKeyEvent *kev)
         clutter_entry_set_position (entry, 0);
         break;
       default:
-        clutter_entry_add (entry, clutter_keysym_to_unicode (keyval));
+        clutter_entry_insert_unichar (entry,
+                                      clutter_keysym_to_unicode (keyval));
         break;
     }
 }
 
 /**
- * clutter_entry_add:
+ * clutter_entry_insert_unichar:
  * @entry: a #ClutterEntry
  * @wc: a Unicode character
  *
- * Insert a character to the right of the current position of the cursor.
+ * Insert a character to the right of the current position of the cursor,
+ * and updates the position of the cursor.
  * 
- **/
+ * Since: 0.4
+ */
 void
-clutter_entry_add (ClutterEntry *entry, gunichar wc)
+clutter_entry_insert_unichar (ClutterEntry *entry,
+                              gunichar      wc)
 {
   ClutterEntryPrivate *priv;
   GString *new = NULL;
@@ -1170,7 +1267,6 @@ clutter_entry_add (ClutterEntry *entry, gunichar wc)
   g_object_ref (entry);
   
   new = g_string_new (priv->text);
-  
   new = g_string_insert_unichar (new, priv->position, wc);
   
   clutter_entry_set_text (entry, new->str);
@@ -1179,19 +1275,23 @@ clutter_entry_add (ClutterEntry *entry, gunichar wc)
     clutter_entry_set_position (entry, priv->position + 1);
   
   g_string_free (new, TRUE);
+  
+  g_object_notify (G_OBJECT (entry), "text");
   g_object_unref (entry);
 }
 
 /**
- * clutter_entry_remove:
+ * clutter_entry_delete_chars:
  * @entry: a #ClutterEntry
  * @len: the number of characters to remove.
  *
  * Characters are removed from before the current postion of the cursor.
  * 
- **/
+ * Since: 0.4
+ */
 void
-clutter_entry_remove (ClutterEntry *entry, guint num)
+clutter_entry_delete_chars (ClutterEntry *entry,
+                            guint         num)
 {
   ClutterEntryPrivate *priv;
   GString *new = NULL;
@@ -1199,30 +1299,29 @@ clutter_entry_remove (ClutterEntry *entry, guint num)
   
   g_return_if_fail (CLUTTER_IS_ENTRY (entry));
   
-  
   priv = entry->priv;
 
-  g_object_ref (entry);
+  if (!priv->text)
+    return;
   
-  if (priv->text == NULL)
-    {
-      g_object_unref (entry);
-      return;
-    }
+  g_object_ref (entry);
+
   len = g_utf8_strlen (priv->text, -1);
   new = g_string_new (priv->text);
   
   if (priv->position == -1)
-    new = g_string_erase (new, len-num, num);
+    new = g_string_erase (new, len - num, num);
   else
-    new = g_string_erase (new, priv->position-num, num);
+    new = g_string_erase (new, priv->position - num, num);
 
   clutter_entry_set_text (entry, new->str);
 
   if (priv->position > 0)
-    clutter_entry_set_position (entry, priv->position-num);  
+    clutter_entry_set_position (entry, priv->position - num);
 
   g_string_free (new, TRUE);
+
+  g_object_notify (G_OBJECT (entry), "text");
   g_object_unref (entry);
 }
 
@@ -1230,13 +1329,16 @@ clutter_entry_remove (ClutterEntry *entry, guint num)
  * clutter_entry_insert_text:
  * @entry: a #ClutterEntry
  * @text: the text to insert
- * @position: the position at which to insert the text. A value of 0 indicates 
- * that the text will be inserted before the first character in the entrys text,
- * and a value of -1 indicates that the text will be inserted after the last
- * character in the entrys text.
- * 
+ * @position: the position at which to insert the text.
+ *
  * Insert text at a specifc position.
- **/
+ *
+ * A value of 0 indicates  that the text will be inserted before the first
+ * character in the entrys text, and a value of -1 indicates that the text
+ * will be inserted after the last character in the entrys text.
+ * 
+ * Since: 0.4
+ */
 void
 clutter_entry_insert_text (ClutterEntry *entry, 
                            const gchar  *text,
@@ -1249,28 +1351,27 @@ clutter_entry_insert_text (ClutterEntry *entry,
   
   priv = entry->priv;
 
-  g_object_ref (entry);
-  
   new = g_string_new (priv->text);
   new = g_string_insert (new, position, text);
   
   clutter_entry_set_text (entry, new->str);
   
   g_string_free (new, TRUE);
-  g_object_unref (entry);
 }
 
 /**
- * clutter_entry_delete_text
+ * clutter_entry_delete_text:
  * @entry: a #ClutterEntry
  * @start_pos: the starting position. 
  * @end_pos: the end position. 
  * 
- * Deletes a sequence of characters. The characters that are deleted are those
- * characters at positions from start_pos up to, but not including end_pos. 
- * If end_pos is negative, then the the characters deleted will be those 
- * characters from start_pos to the end of the text.
- **/
+ * Deletes a sequence of characters. The characters that are deleted are
+ * those characters at positions from @start_pos up to, but not including,
+ * @end_pos. If @end_pos is negative, then the characters deleted will be
+ * those characters from @start_pos to the end of the text.
+ *
+ * Since: 0.4
+ */
 void
 clutter_entry_delete_text (ClutterEntry       *entry,
                            gssize              start_pos,
@@ -1283,66 +1384,67 @@ clutter_entry_delete_text (ClutterEntry       *entry,
   
   priv = entry->priv;
 
-  g_object_ref (entry);
-  if (priv->text == NULL)
-    {
-      g_object_unref (entry);
-      return;
-    }
-    
+  if (!priv->text)
+    return;
+  
   new = g_string_new (priv->text);
-  new = g_string_erase (new, start_pos, end_pos-start_pos);
+  new = g_string_erase (new, start_pos, end_pos - start_pos);
   
   clutter_entry_set_text (entry, new->str);
   
   g_string_free (new, TRUE);
-  g_object_unref (entry);
 }
 
 /**
- * clutter_entry_set_visible_cursor
+ * clutter_entry_set_visible_cursor:
  * @entry: a #ClutterEntry
  * @visible: whether the input cursor should be visible
  * 
  * Sets the visibility of the input cursor.
- **/
+ *
+ * Since: 0.4
+ */
 void
-clutter_entry_set_visible_cursor (ClutterEntry *entry, gboolean visible)
+clutter_entry_set_visible_cursor (ClutterEntry *entry,
+                                  gboolean      visible)
 {
   ClutterEntryPrivate *priv;
   
   g_return_if_fail (CLUTTER_IS_ENTRY (entry));
-  
+
   priv = entry->priv;
-  priv->show_cursor = visible;
   
-  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(entry)))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR(entry));
+  if (priv->show_cursor != visible)
+    {
+      priv->show_cursor = visible;
+
+      g_object_notify (G_OBJECT (entry), "cursor-visible");
+
+      if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (entry)))
+        clutter_actor_queue_redraw (CLUTTER_ACTOR (entry));
+    }
 }
 
 /**
- * clutter_entry_get_visible_cursor
+ * clutter_entry_get_visible_cursor:
  * @entry: a #ClutterEntry
  *
  * Returns the input cursors visiblity
  *
  * Return value: whether the input cursor is visible
  * 
- **/
+ * Since: 0.4
+ */
 gboolean
 clutter_entry_get_visible_cursor (ClutterEntry *entry)
 {
-  ClutterEntryPrivate *priv;
-  
   g_return_val_if_fail (CLUTTER_IS_ENTRY (entry), FALSE);
   
-  priv = entry->priv;
-  
-  return priv->show_cursor;
+  return entry->priv->show_cursor;
 }
 
 /**
- * clutter_entry_set_visibility
+ * clutter_entry_set_visibility:
  * @entry: a #ClutterEntry
  * @visible: TRUE if the contents of the entry are displayed as plaintext. 
  *
@@ -1353,7 +1455,8 @@ clutter_entry_get_visible_cursor (ClutterEntry *entry)
  * The default invisible char is the asterisk '*', but it can be changed with  
  * #clutter_entry_set_invisible_char().  
  * 
- **/
+ * Since: 0.4
+ */
 void
 clutter_entry_set_visibility (ClutterEntry *entry, gboolean visible)
 {
@@ -1368,33 +1471,30 @@ clutter_entry_set_visibility (ClutterEntry *entry, gboolean visible)
   clutter_entry_clear_layout (entry);
   clutter_entry_clear_cursor_position (entry);
   
-  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(entry)))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR(entry));  
+  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (entry)))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (entry));  
 }
 
 /**
- * clutter_entry_get_visibility
+ * clutter_entry_get_visibility:
  * @entry: a #ClutterEntry
  *
  * Returns the entry text visiblity
  *
  * Return value: TRUE if the contents of the entry are displayed as plaintext. 
  * 
- **/
+ * Since: 0.4
+ */
 gboolean
 clutter_entry_get_visibility (ClutterEntry *entry)
 {
-  ClutterEntryPrivate *priv;
-  
   g_return_val_if_fail (CLUTTER_IS_ENTRY (entry), TRUE);
   
-  priv = entry->priv;
-  
-  return priv->text_visible;
+  return entry->priv->text_visible;
 }
 
 /**
- * clutter_entry_set_invisible_cha
+ * clutter_entry_set_invisible_char:
  * @entry: a #ClutterEntry
  * @wc: a Unicode character 
  *
@@ -1404,8 +1504,9 @@ clutter_entry_get_visibility (ClutterEntry *entry)
  * user how many characters have been typed. The default invisible char is an
  * asterisk ('*'). If you set the invisible char to 0, then the user will get
  * no feedback at all; there will be no text on the screen as they type. 
- * 
- **/
+ *
+ * Since: 0.4
+ */
 void
 clutter_entry_set_invisible_char (ClutterEntry *entry, gunichar wc)
 {
@@ -1428,7 +1529,7 @@ clutter_entry_set_invisible_char (ClutterEntry *entry, gunichar wc)
 }
 
 /**
- * clutter_entry_get_invisible_char
+ * clutter_entry_get_invisible_char:
  * @entry: a #ClutterEntry
  *
  * Returns the character to use in place of the actual text when text-visibility
@@ -1450,17 +1551,20 @@ clutter_entry_get_invisible_char (ClutterEntry *entry)
 }
 
 /**
- * clutter_entry_set_max_length
+ * clutter_entry_set_max_length:
  * @entry: a #ClutterEntry
- * @max: the maximum number of characters allowed in the entry
+ * @max: the maximum number of characters allowed in the entry, or -1
+ *   to disable
  *
- * Sets the maximum allowed length of the contents of the actor. If the current
- * contents are longer than the given length, then they will be truncated to 
- * fit. 
+ * Sets the maximum allowed length of the contents of the actor. If the
+ * current contents are longer than the given length, then they will be
+ * truncated to fit. 
  * 
- **/
+ * Since: 0.4
+ */
 void
-clutter_entry_set_max_length (ClutterEntry *entry, gint max)
+clutter_entry_set_max_length (ClutterEntry *entry,
+                              gint          max)
 {
   ClutterEntryPrivate *priv;
   gchar *new = NULL;
@@ -1468,16 +1572,40 @@ clutter_entry_set_max_length (ClutterEntry *entry, gint max)
   g_return_if_fail (CLUTTER_IS_ENTRY (entry));
   
   priv = entry->priv;
-  
-  if (max < 0)
-    max = 0;
-  
-  priv->max_length = max;
-  new = g_strdup (priv->text);
-  
-  clutter_entry_set_text (entry, new);
-  
-  g_free (new);
+
+  if (priv->max_length != max)
+    {
+      g_object_ref (entry);
+
+      if (max < 0)
+        max = g_utf8_strlen (priv->text, -1);
+
+      priv->max_length = max;
+      
+      new = g_strdup (priv->text);
+      clutter_entry_set_text (entry, new);
+      g_free (new);
+
+      g_object_notify (G_OBJECT (entry), "max-length");
+      g_object_unref (entry);
+    }
 }
 
+/**
+ * clutter_entry_get_max_length:
+ * @entry: a #ClutterEntry
+ *
+ * Gets the maximum length of text that can be set into @entry.
+ * See clutter_entry_set_max_length().
+ *
+ * Return value: the maximum number of characters.
+ *
+ * Since: 0.4
+ */
+gint
+clutter_entry_get_max_length (ClutterEntry *entry)
+{
+  g_return_val_if_fail (CLUTTER_IS_ENTRY (entry), -1);
 
+  return entry->priv->max_length;
+}

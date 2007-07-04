@@ -63,26 +63,26 @@ typedef struct _ClutterEntryPrivate ClutterEntryPrivate;
 
 struct _ClutterEntry
 {
-  ClutterActor         parent;
-
   /*< private >*/
+  ClutterActor parent_instance;
+
   ClutterEntryPrivate   *priv;
 };
 
 struct _ClutterEntryClass 
 {
-  /*< private >*/
   ClutterActorClass parent_class;
   
   /* vfuncs, not signals */
-  void     (* paint_cursor)          (ClutterEntry           *entry);
+  void (* paint_cursor) (ClutterEntry    *entry);
   
   /* signals */
-  void     (* text_changed)          (ClutterEntry           *entry);
-  void     (* cursor_event)          (ClutterEntry           *entry,
-                                      ClutterGeometry        *geometry);
-  void     (* activate)              (ClutterEntry           *entry);
+  void (* text_changed) (ClutterEntry    *entry);
+  void (* cursor_event) (ClutterEntry    *entry,
+                         ClutterGeometry *geometry);
+  void (* activate)     (ClutterEntry    *entry);
     
+  /*< private >*/
   /* padding for future */
   void (*_clutter_entry_1) (void);
   void (*_clutter_entry_2) (void);
@@ -93,11 +93,9 @@ struct _ClutterEntryClass
 GType clutter_entry_get_type (void) G_GNUC_CONST;
 
 ClutterActor *        clutter_entry_new                (void);
-
-ClutterActor*         clutter_entry_new_full           (const gchar  *font_name,
-							const gchar  *text,
-							ClutterColor *color);
-
+ClutterActor *        clutter_entry_new_full           (const gchar        *font_name,
+							const gchar        *text,
+							const ClutterColor *color);
 ClutterActor *        clutter_entry_new_with_text      (const gchar        *font_name,
                                                         const gchar        *text);
 void                  clutter_entry_set_text           (ClutterEntry       *entry,
@@ -119,9 +117,9 @@ void                  clutter_entry_set_position       (ClutterEntry       *entr
 gint                  clutter_entry_get_position       (ClutterEntry       *entry);
 void                  clutter_entry_handle_key_event   (ClutterEntry       *entry,
                                                         ClutterKeyEvent    *kev);
-void                  clutter_entry_add                (ClutterEntry       *entry,
+void                  clutter_entry_insert_unichar     (ClutterEntry       *entry,
                                                         gunichar            wc);
-void                  clutter_entry_remove             (ClutterEntry       *entry,
+void                  clutter_entry_delete_chars       (ClutterEntry       *entry,
                                                         guint               len);
 void                  clutter_entry_insert_text        (ClutterEntry       *entry,
                                                         const gchar        *text,
@@ -141,7 +139,7 @@ void                  clutter_entry_set_invisible_char (ClutterEntry       *entr
 gunichar              clutter_entry_get_invisible_char (ClutterEntry       *entry);
 void                  clutter_entry_set_max_length     (ClutterEntry       *entry,
                                                         gint                max);
-
+gint                  clutter_entry_get_max_length     (ClutterEntry       *entry);
 
 G_END_DECLS
 

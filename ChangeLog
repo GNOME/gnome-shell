@@ -1,5 +1,18 @@
 2007-07-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-entry.[ch]: Various fixes to ClutterEntry:
+	fix code style issues; add documentation for the various
+	properties; add ClutterEntry:entry-padding property, for controlling
+	the text padding (until we have style properties separated from
+	the object properties); notify property changes; free resources
+	in the ::finalize method; rename clutter_entry_add() to
+	clutter_entry_insert_unichar(), and clutter_entry_remove() to
+	clutter_entry_delete_chars() - for bindings and for matching the
+	insert_text() and delete_text() existing methods; add a getter
+	method for the max-length property.
+
+2007-07-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.[ch]: Use the right get_type() function
 	name for ClutterVertex, and add the CLUTTER_TYPE_VERTEX macro.
 
