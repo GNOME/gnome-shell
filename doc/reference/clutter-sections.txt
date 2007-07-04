@@ -120,9 +120,6 @@ ClutterAlphaFunc
 clutter_alpha_set_func
 clutter_alpha_set_timeline
 clutter_alpha_get_timeline
-ClutterSmoothstep
-clutter_smoothstep_copy
-clutter_smoothstep_free
 CLUTTER_ALPHA_RAMP_INC
 clutter_ramp_inc_func
 CLUTTER_ALPHA_RAMP_DEC
@@ -139,8 +136,6 @@ CLUTTER_ALPHA_SINE_HALF
 clutter_sine_half_func
 CLUTTER_ALPHA_SQUARE
 clutter_square_func
-CLUTTER_ALPHA_SMOOTHSTEP
-clutter_smoothstep_func
 CLUTTER_ALPHA_SMOOTHSTEP_INC
 clutter_smoothstep_inc_func
 CLUTTER_ALPHA_SMOOTHSTEP_DEC
@@ -188,17 +183,13 @@ clutter_clone_texture_get_type
 ClutterGroup
 ClutterGroupClass
 clutter_group_new
-clutter_group_get_children
-clutter_group_get_n_children
-clutter_group_get_nth_child
-clutter_group_foreach
 clutter_group_add
-clutter_group_add_many_valist
 clutter_group_add_many
+clutter_group_add_many_valist
 clutter_group_remove
 clutter_group_remove_all
-clutter_group_show_all
-clutter_group_hide_all
+clutter_group_get_n_children
+clutter_group_get_nth_child
 clutter_group_find_child_by_id
 clutter_group_raise
 clutter_group_lower
@@ -364,6 +355,7 @@ clutter_actor_set_scale_with_gravityx
 <SUBSECTION Standard>
 CLUTTER_TYPE_GEOMETRY
 CLUTTER_TYPE_ACTOR_BOX
+CLUTTER_TYPE_VERTEX
 CLUTTER_ACTOR
 CLUTTER_IS_ACTOR
 CLUTTER_TYPE_ACTOR
@@ -375,7 +367,7 @@ ClutterActorPrivate
 clutter_actor_get_type
 clutter_actor_box_get_type
 clutter_geometry_get_type
-clutter_vertices_get_type
+clutter_vertex_get_type
 </SECTION>
 
 <SECTION>
@@ -651,12 +643,6 @@ clutter_get_default_backend
 clutter_backend_get_event
 clutter_backend_peek_event
 clutter_backend_put_event
-clutter_backend_get_width
-clutter_backend_get_height
-clutter_backend_get_width_mm
-clutter_backend_get_height_mm
-clutter_backend_get_screen_number
-clutter_backend_get_n_screens
 clutter_backend_get_double_click_time
 clutter_backend_set_double_click_time
 clutter_backend_get_double_click_distance
@@ -690,7 +676,6 @@ clutter_timeout_pool_remove
 ClutterFeatureFlags
 clutter_feature_available
 clutter_feature_get_all
-clutter_feature_wait_for_vblank
 </SECTION>
 
 <SECTION>
@@ -821,7 +806,6 @@ clutter_init_with_args
 clutter_get_option_group
 clutter_get_debug_enabled
 clutter_get_show_fps
-clutter_get_vblank_method
 clutter_main
 clutter_main_quit
 clutter_main_level
@@ -884,8 +868,8 @@ clutter_entry_get_alignment
 clutter_entry_set_position
 clutter_entry_get_position
 clutter_entry_handle_key_event
-clutter_entry_add
-clutter_entry_remove
+clutter_entry_insert_unichar
+clutter_entry_delete_chars
 clutter_entry_insert_text
 clutter_entry_delete_text
 clutter_entry_set_visible_cursor
@@ -895,6 +879,7 @@ clutter_entry_get_visibility
 clutter_entry_set_invisible_char
 clutter_entry_get_invisible_char
 clutter_entry_set_max_length
+clutter_entry_get_max_length
 <SUBSECTION Standard>
 CLUTTER_ENTRY
 CLUTTER_IS_ENTRY
@@ -929,7 +914,6 @@ CLUTTER_IS_BOX_CLASS
 CLUTTER_BOX_GET_CLASS
 <SUBSECTION Private>
 clutter_box_get_type
-clutter_box_child_get_type
 </SECTION>
 
 <SECTION>

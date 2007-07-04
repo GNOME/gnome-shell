@@ -95,9 +95,6 @@
     <chapter>
       <title>Container Actors</title>
 
-      <partintro>
-        <para>Actors containing other actors.</para>
-      </partintro>
       <xi:include href="xml/clutter-group.xml"/>
       <xi:include href="xml/clutter-hbox.xml"/>
       <xi:include href="xml/clutter-vbox.xml"/>
@@ -111,10 +108,6 @@
     <chapter>
       <title>Base Classes</title>
 
-      <partintro>
-        <para>Clutter base animation objects</para>
-      </partintro>
-
       <xi:include href="xml/clutter-timeline.xml"/>
       <xi:include href="xml/clutter-alpha.xml"/>
       <xi:include href="xml/clutter-behaviour.xml"/>
@@ -122,10 +115,6 @@
 
     <chapter>
       <title>Clutter Behaviours</title>
-
-      <partintro>
-        <para>Classes implementing ClutterBehaviour</para>
-      </partintro>
 
       <xi:include href="xml/clutter-behaviour-bspline.xml"/>
       <xi:include href="xml/clutter-behaviour-ellipse.xml"/>
@@ -137,10 +126,6 @@
 
     <chapter>
       <title>Simple Effects</title>
-
-      <partintro>
-        <para>Simple animation API</para>
-      </partintro>
 
       <xi:include href="xml/clutter-effect.xml"/>
     </chapter>

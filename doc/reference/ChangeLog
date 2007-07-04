@@ -1,5 +1,12 @@
 2007-07-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter-docs.sgml: Remove partintro, as it messes up with
+	devhelp books.
+
+	* clutter-sections.txt: Update functions.
+
+2007-07-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter-docs.sgml: Use the right include file for the
 	effects section.
 
