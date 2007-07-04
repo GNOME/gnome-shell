@@ -265,7 +265,6 @@ clutter_group_real_remove (ClutterContainer *container,
     clutter_actor_queue_redraw (CLUTTER_ACTOR (group));
 
   g_object_unref (actor);
-
 }
 
 static void
@@ -454,13 +453,15 @@ clutter_group_remove (ClutterGroup *group,
 void
 clutter_group_remove_all (ClutterGroup *group)
 {
-  GList *l;
+  GList *children;
 
   g_return_if_fail (CLUTTER_IS_GROUP (group));
 
-  for (l = group->priv->children; l; l = l->next)
+  children = group->priv->children;
+  while (children)
     {
-      ClutterActor *child = l->data;
+      ClutterActor *child = children->data;
+      children = children->next;
 
       clutter_container_remove_actor (CLUTTER_CONTAINER (group), child);
     }
