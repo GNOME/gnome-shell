@@ -1,5 +1,15 @@
 2007-07-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	Merge from clutter/work
+
+	* clutter/clutter-alpha.[ch]: Fix the argument names for
+	the smoothstep alpha functions, for gtk-doc.
+
+	* clutter/clutter-group.c (clutter_group_remove_all): Fix
+	the iteration on the children list.
+
+2007-07-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-main.c (clutter_redraw): Move the stage
 	paint init call from the main redraw function...
 
