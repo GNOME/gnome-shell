@@ -2535,10 +2535,9 @@ clutter_geometry_get_type (void)
   static GType our_type = 0;
 
   if (our_type == 0)
-    our_type = g_boxed_type_register_static (
-              g_intern_static_string ("ClutterGeometry"),
-	      (GBoxedCopyFunc) clutter_geometry_copy,
-	      (GBoxedFreeFunc) g_free);
+    our_type = g_boxed_type_register_static (g_intern_static_string ("ClutterGeometry"),
+                                             (GBoxedCopyFunc) clutter_geometry_copy,
+                                             (GBoxedFreeFunc) g_free);
 
   return our_type;
 }
@@ -2547,7 +2546,7 @@ clutter_geometry_get_type (void)
  * ClutterVertices
  */
 
-static ClutterVertex*
+static ClutterVertex *
 clutter_vertex_copy (const ClutterVertex *vertex)
 {
   ClutterVertex *result = g_new (ClutterVertex, 1);
@@ -2563,10 +2562,9 @@ clutter_vertex_get_type (void)
   static GType our_type = 0;
 
   if (our_type == 0)
-    our_type = g_boxed_type_register_static (
-              g_intern_static_string ("ClutterVertex"),
-	      (GBoxedCopyFunc) clutter_vertex_copy,
-	      (GBoxedFreeFunc) g_free);
+    our_type = g_boxed_type_register_static (g_intern_static_string ("ClutterVertex"),
+                                             (GBoxedCopyFunc) clutter_vertex_copy,
+                                             (GBoxedFreeFunc) g_free);
 
   return our_type;
 }
@@ -2590,10 +2588,9 @@ clutter_actor_box_get_type (void)
   static GType our_type = 0;
 
   if (our_type == 0)
-    our_type = g_boxed_type_register_static (
-              g_intern_static_string ("ClutterActorBox"),
-	      (GBoxedCopyFunc) clutter_actor_box_copy,
-	      (GBoxedFreeFunc) g_free);
+    our_type = g_boxed_type_register_static (g_intern_static_string ("ClutterActorBox"),
+                                             (GBoxedCopyFunc) clutter_actor_box_copy,
+                                             (GBoxedFreeFunc) g_free);
   return our_type;
 }
 

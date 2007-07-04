@@ -35,10 +35,11 @@
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_GEOMETRY (clutter_geometry_get_type ())
-#define CLUTTER_TYPE_ACTOR_BOX (clutter_actor_box_get_type ())
+#define CLUTTER_TYPE_GEOMETRY   (clutter_geometry_get_type ())
+#define CLUTTER_TYPE_ACTOR_BOX  (clutter_actor_box_get_type ())
+#define CLUTTER_TYPE_VERTEX     (clutter_vertex_get_type ())
 
-#define CLUTTER_TYPE_ACTOR clutter_actor_get_type()
+#define CLUTTER_TYPE_ACTOR      (clutter_actor_get_type ())
 
 #define CLUTTER_ACTOR(obj) \
  (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_ACTOR, ClutterActor))
@@ -154,7 +155,7 @@ struct _ClutterVertex
   ClutterUnit z;
 };
 
-GType clutter_vertices_get_type (void) G_GNUC_CONST;
+GType clutter_vertex_get_type (void) G_GNUC_CONST;
 
 /**
  * ClutterActor:
