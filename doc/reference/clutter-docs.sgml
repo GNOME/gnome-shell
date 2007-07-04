@@ -142,7 +142,7 @@
         <para>Simple animation API</para>
       </partintro>
 
-      <xi:include href="xml/clutter-effects.xml"/>
+      <xi:include href="xml/clutter-effect.xml"/>
     </chapter>
 
   </part>

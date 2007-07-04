@@ -1,3 +1,8 @@
+2007-07-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-docs.sgml: Use the right include file for the
+	effects section.
+
 2007-06-16  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* subclassing-ClutterActor.sgml: Add a chapter about how to
