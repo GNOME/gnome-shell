@@ -134,9 +134,9 @@ guint32             clutter_sine_half_func      (ClutterAlpha     *alpha,
 guint32             clutter_square_func         (ClutterAlpha     *alpha,
 						 gpointer          dummy);
 guint32             clutter_smoothstep_inc_func (ClutterAlpha     *alpha,
-			                         gpointer         *data);
+			                         gpointer          dummy);
 guint32             clutter_smoothstep_dec_func (ClutterAlpha     *alpha,
-			                         gpointer         *data);
+			                         gpointer          dummy);
 guint32             clutter_exp_inc_func        (ClutterAlpha     *alpha,
 						 gpointer          dummy);
 guint32             clutter_exp_dec_func        (ClutterAlpha     *alpha,

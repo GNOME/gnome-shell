@@ -743,7 +743,7 @@ clutter_square_func (ClutterAlpha *alpha,
  */
 guint32
 clutter_smoothstep_inc_func (ClutterAlpha  *alpha,
-			     gpointer      *dummy)
+			     gpointer       dummy)
 {
   ClutterTimeline    *timeline;
   gint                frame;
@@ -790,7 +790,7 @@ clutter_smoothstep_inc_func (ClutterAlpha  *alpha,
  */
 guint32
 clutter_smoothstep_dec_func (ClutterAlpha  *alpha,
-			     gpointer      *dummy)
+			     gpointer       dummy)
 {
   return CLUTTER_ALPHA_MAX_ALPHA - clutter_smoothstep_inc_func (alpha, dummy);
 }
