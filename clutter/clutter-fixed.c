@@ -787,7 +787,7 @@ clutter_pow2x (ClutterFixed x)
   union 
   {
     float        f;
-    ClutterFixed i;
+    guint32      i;
   } flt;
   
   ClutterFixed magic = 0x56f7;
@@ -809,8 +809,8 @@ clutter_pow2x (ClutterFixed x)
    */
   flt.i += (CLUTTER_INT_TO_FIXED (127) - y);
   flt.i <<= 7;
-  
-  return CLUTTER_FLOAT_TO_INT (flt.f);
+
+  return CLUTTER_FLOAT_TO_UINT (flt.f);
 }
 
 
@@ -890,6 +890,20 @@ _clutter_double_to_int (double val)
     dbl.d = val;
     dbl.d = dbl.d + _magic;
     return ((int)dbl.i[0]) >> 16; 
+}
+
+guint
+_clutter_double_to_uint (double val)
+{
+    union 
+    {
+	double d;
+	unsigned int i[2];
+    } dbl;
+
+    dbl.d = val;
+    dbl.d = dbl.d + _magic;
+    return (dbl.i[0]) >> 16; 
 }
 
 #undef _CFX_MAN
