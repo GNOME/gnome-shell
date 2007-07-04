@@ -1,3 +1,11 @@
+2007-07-05  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-fixed.h:
+	* clutter/clutter-fixed.c:
+	Added CLUTTER_FLOAT_TO_UINT macro;
+	(clutter_pow2x):
+	Fixed sign issue.
+	
 2007-07-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/*: Loads of fixes for the API reference.
