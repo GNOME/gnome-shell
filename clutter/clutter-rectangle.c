@@ -104,7 +104,7 @@ clutter_rectangle_paint (ClutterActor *self)
       cogl_rectangle (geom.width - priv->border_width, 
 		      priv->border_width,
 		      priv->border_width,
-		      geom.height - (2 * priv->border_width));
+		      geom.height - priv->border_width);
 
       cogl_rectangle (0, geom.height - priv->border_width,
 		      geom.width - priv->border_width, 

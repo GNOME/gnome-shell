@@ -1,3 +1,8 @@
+2007-07-05  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-rectangle.c: Fix off-by-border-width bug
+	in the border creation of a ClutterRectangle.
+
 2007-07-05  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.h:
