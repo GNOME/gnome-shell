@@ -145,7 +145,9 @@ clutter_group_query_coords (ClutterActor        *self,
   child_item = priv->children;
 
   /* FIXME: Cache these values */
-
+  box->x2 = box->x1;
+  box->y2 = box->y1;
+  
   if (child_item)
     {
       do 
