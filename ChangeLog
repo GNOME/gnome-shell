@@ -1,3 +1,10 @@
+2007-07-05  Tomas Frydrych  <tf@openedhand.com>
+
+	* cluter/clutter-group.c:
+	(clutter_group_query_coords:)
+	Reset box size to zero width and height to report correct size if
+	the contents of the group shrink.
+	
 2007-07-05  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-rectangle.c: Fix off-by-border-width bug
