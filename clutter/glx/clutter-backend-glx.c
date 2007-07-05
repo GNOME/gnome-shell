@@ -60,6 +60,7 @@ static ClutterBackendGLX *backend_singleton = NULL;
 /* options */
 static gchar *clutter_display_name = NULL;
 static gint clutter_screen = 0;
+static gboolean clutter_synchronise = FALSE;
 
 /* X error trap */
 static int TrappedErrorCode = 0;
@@ -202,7 +203,9 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
 	    have_fbconfig = 0;
 	}
 #endif
-
+      
+      if (clutter_synchronise)
+        XSynchronize (backend_glx->xdpy, True);
     }
 
   g_free (clutter_display_name);
@@ -290,9 +293,14 @@ static const GOptionEntry entries[] =
     "X screen to use", "SCREEN"
   },
   { "vblank", 0, 
-    G_OPTION_FLAG_IN_MAIN, 
+    0, 
     G_OPTION_ARG_STRING, &clutter_vblank_name,
     "VBlank method to be used (none, dri or glx)", "METHOD" 
+  },
+  { "synch", 0,
+    0,
+    G_OPTION_ARG_NONE, &clutter_synchronise,
+    "Make X calls synchronous", NULL,
   },
   { NULL }
 };
@@ -425,9 +433,9 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
 		glGetString (GL_VERSION),
 		glGetString (GL_EXTENSIONS));
 
-  glx_extensions 
-    = glXQueryExtensionsString (clutter_glx_get_default_display (),
-				clutter_glx_get_default_screen ());
+  glx_extensions = 
+    glXQueryExtensionsString (clutter_glx_get_default_display (),
+			      clutter_glx_get_default_screen ());
 
   CLUTTER_NOTE (BACKEND, "GLX Extensions: %s", glx_extensions);
 
@@ -536,7 +544,7 @@ clutter_backend_glx_redraw (ClutterBackend *backend)
 
   stage_glx = CLUTTER_STAGE_GLX(backend_glx->stage);
 
-  clutter_actor_paint (CLUTTER_ACTOR(stage_glx));
+  clutter_actor_paint (CLUTTER_ACTOR (stage_glx));
 
   /* Why this paint is done in backend as likely GL windowing system
    * specific calls, like swapping buffers.
