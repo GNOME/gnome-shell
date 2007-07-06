@@ -1,5 +1,11 @@
 2007-07-06  Matthew Allum  <mallum@openedhand.com>
 
+	* NEWS:
+	* configure.ac:
+	Update for 0.3.1	
+
+2007-07-06  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/eglx/Makefile.am:
 	* clutter/eglx/clutter-egl.h:
 	* clutter/eglx/clutter-event-egl.c:
