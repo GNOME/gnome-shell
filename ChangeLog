@@ -1,3 +1,8 @@
+2007-07-06  Ross Burton  <ross@openedhand.com>
+
+	* tests/Makefile.am:
+	Dist redhand.png.
+
 2007-07-05  Tomas Frydrych  <tf@openedhand.com>
 
 	* cluter/clutter-group.c:

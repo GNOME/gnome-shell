@@ -18,3 +18,5 @@ test_entry_SOURCES     = test-entry.c
 test_project_SOURCES   = test-project.c
 test_boxes_SOURCES     = test-boxes.c
 test_perspective_SOURCES = test-perspective.c
+
+EXTRA_DIST = redhand.png
