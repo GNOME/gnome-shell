@@ -35,6 +35,12 @@ RELEASE NOTES
 Relevant information for developers with existing Clutter applications
 wanting to port to newer releases;
 
+Release Notes for Clutter 0.3.1
+-------------------------------
+
+* clutter_actor_apply_transform_to_point() parameters changed to use 
+  ClutterVertices.
+
 Release Notes for Clutter 0.3
 -----------------------------
 

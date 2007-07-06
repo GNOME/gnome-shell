@@ -108,7 +108,7 @@ AC_SUBST(CLUTTER_NO_FPU)
 
 clutterbackend=glx
 AC_ARG_WITH([flavour],
-            AC_HELP_STRING([--with-flavour=@<:@glx/egl/sdl@:>@],
+            AC_HELP_STRING([--with-flavour=@<:@glx/eglx/sdl@:>@],
                            [Select the Clutter backend]),
             clutterbackend=$with_flavour)
 
@@ -191,9 +191,9 @@ case $clutterbackend in
     GLX_CFLAGS="$X11_CFLAGS"
     ;;
 
-  egl)
+  eglx)
     
-    CLUTTER_FLAVOUR="egl"
+    CLUTTER_FLAVOUR="eglx"
     AC_DEFINE([HAVE_CLUTTER_EGL], 1, [Have the EGL backend])
 
     # We currently assume having egl means also having gles..
@@ -209,7 +209,7 @@ case $clutterbackend in
     EGL_CFLAGS="$EGL_CFLAGS $X11_CFLAGS"
     ;;
 
-  *) AC_MSG_ERROR([Invalid backend for Clutter: use glx or egl])
+  *) AC_MSG_ERROR([Invalid backend for Clutter: use glx,sdl or eglx])
     ;;
 
 esac

@@ -1,4 +1,31 @@
-Clutter 0.3 ()
+Clutter 0.3.1 (29/06/2007)
+========================
+
+ * List of changes between 0.3 and 0.3.1
+   o EGL backends
+
+   o ClutterGroup now returns correct size when a child is removed. 
+
+   o Missing redhand.png added to distro tarball (fixing tests that require 
+     it)  
+
+   o Fix picking in ClutterBox
+
+   o Rectangle border creation fixed.
+
+   o Fix overflow in Exponential Alpha funcs.
+
+   o Many API documentation fixes and improvements.
+
+   o ClutterEffect cleanups. 
+
+   o ClutterEntry cleanups.
+
+   o Check for versioned XFixes library (GLX backend).
+
+   o More X error traps in GLX backend.
+
+Clutter 0.3 (29/06/2007)
 ========================
 
  * List of changes between 0.2.3 and 0.3

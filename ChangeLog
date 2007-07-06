@@ -1,5 +1,20 @@
 2007-07-06  Matthew Allum  <mallum@openedhand.com>
 
+	* NEWS:
+	* README:
+	Updates for upcoming 0.3.1 release.
+	* clutter/egl/Makefile.am:
+	* clutter/egl/clutter-backend-egl.c:
+	* clutter/egl/clutter-backend-egl.h:
+	* clutter/egl/clutter-egl.h:
+	* clutter/egl/clutter-event-egl.c:
+	* clutter/egl/clutter-stage-egl.c:
+	* clutter/egl/clutter-stage-egl.h:
+	* configure.ac:
+	Move egl -> eglx
+
+2007-07-06  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-box.c: (clutter_box_pick):
 	Call clutter_box_paint rather than actor paint method avoiding
 	infinte loop (Fixes test-boxes crasher).
@@ -111,6 +126,8 @@
 	(clutter_entry_add), (clutter_entry_remove):
 	Check if unichar == 0, and if so, return, as it will cause a delete in
 	the GString.
+
+2007-06-20  ============== 0.3 Release ====================================
 
 2007-06-29  Matthew Allum  <mallum@openedhand.com>
 
