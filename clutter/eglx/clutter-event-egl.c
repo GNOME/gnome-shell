@@ -23,7 +23,7 @@
 
 #include "clutter-stage-egl.h"
 #include "clutter-backend-egl.h"
-#include "clutter-egl.h"
+#include "clutter-eglx.h"
 
 #include "../clutter-backend.h"
 #include "../clutter-event.h"

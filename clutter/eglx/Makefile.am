@@ -1,4 +1,5 @@
-libclutterincludedir = $(includedir)/clutter-@CLUTTER_MAJORMINOR@/clutter
+libclutterincludedir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter
+libclutterinclude_HEADERS = clutter-eglx.h
 
 INCLUDES = \
 	-DG_LOG_DOMAIN=\"ClutterEGL\" \
@@ -16,4 +17,5 @@ libclutter_eglx_la_SOURCES = \
 	clutter-backend-egl.c \
 	clutter-event-egl.c \
 	clutter-stage-egl.h \
-	clutter-stage-egl.c
+	clutter-stage-egl.c \
+	clutter-eglx.h

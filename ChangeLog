@@ -1,5 +1,17 @@
 2007-07-06  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/eglx/Makefile.am:
+	* clutter/eglx/clutter-egl.h:
+	* clutter/eglx/clutter-event-egl.c:
+	* clutter/eglx/clutter-stage-egl.c:
+	Rename clutter-egl.h -> clutter-eglx.h
+
+	* NEWS:
+	* README:
+	Add info re EGL split.
+
+2007-07-06  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/Makefile.am:
 	* clutter/eglnative/Makefile.am:
 	* clutter/eglnative/clutter-backend-egl.c:

@@ -41,6 +41,11 @@ Release Notes for Clutter 0.3.1
 * clutter_actor_apply_transform_to_point() parameters changed to use 
   ClutterVertices.
 
+* New 'Native API' backend expects EGL implementation to provide a 
+  CreateNativeWindow() API call. 
+
+* Exisiting X11 based egl backend public API calls now prefixed eglx.
+
 Release Notes for Clutter 0.3
 -----------------------------
 

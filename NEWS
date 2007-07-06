@@ -2,7 +2,10 @@ Clutter 0.3.1 (29/06/2007)
 ========================
 
  * List of changes between 0.3 and 0.3.1
-   o EGL backends
+   o EGL. There are now 2 experimental EGL backends;
+     - 'eglx', the former EGL on X11 implementation (now renamed)
+     - 'eglnative', a new EGL 'native' backend which supporting non
+       X11 EGL implementations (i.e framebuffer). 
 
    o ClutterGroup now returns correct size when a child is removed. 
 

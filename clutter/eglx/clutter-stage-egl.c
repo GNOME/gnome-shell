@@ -1,7 +1,7 @@
 #include "config.h"
 
 #include "clutter-stage-egl.h"
-#include "clutter-egl.h"
+#include "clutter-eglx.h"
 
 #include "../clutter-main.h"
 #include "../clutter-feature.h"
