@@ -1,3 +1,12 @@
+2007-07-06  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-box.c: (clutter_box_pick):
+	Call clutter_box_paint rather than actor paint method avoiding
+	infinte loop (Fixes test-boxes crasher).
+ 
+	* clutter/glx/clutter-stage-glx.c: (clutter_stage_glx_unrealize):
+	Trap the X calls to avoid potential X errors.
+
 2007-07-06  Ross Burton  <ross@openedhand.com>
 
 	* tests/Makefile.am:

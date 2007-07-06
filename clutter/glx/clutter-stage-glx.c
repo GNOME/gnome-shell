@@ -78,6 +78,8 @@ clutter_stage_glx_unrealize (ClutterActor *actor)
 
   g_object_get (actor, "offscreen", &was_offscreen, NULL);
 
+  clutter_glx_trap_x_errors ();
+
   if (G_UNLIKELY (was_offscreen))
     {
       if (stage_glx->glxpixmap)
@@ -109,6 +111,9 @@ clutter_stage_glx_unrealize (ClutterActor *actor)
       glXDestroyContext (stage_glx->xdpy, stage_glx->gl_context);
       stage_glx->gl_context = None;
     }
+
+  XSync (stage_glx->xdpy, False);
+  clutter_glx_untrap_x_errors ();
 }
 
 static void

@@ -165,7 +165,7 @@ clutter_box_pick (ClutterActor       *actor,
                   const ClutterColor *color)
 {
   /* just repaint; in the future we might enter in a "focused" status here */
-  clutter_actor_paint (actor);
+  clutter_box_paint (actor);
 }
 
 static void
