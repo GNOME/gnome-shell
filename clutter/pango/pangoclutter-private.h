@@ -26,7 +26,20 @@
 #include <glib-object.h>
 #include <pango/pangofc-decoder.h>
 
-/* Defines duped */
+/* Defines duped - fun,fun.. */
+
+#ifndef PANGO_GLYPH_EMPTY
+#define PANGO_GLYPH_EMPTY           ((PangoGlyph)0x0FFFFFFF)
+#endif
+#ifndef PANGO_GLYPH_UNKNOWN_FLAG
+#define PANGO_GLYPH_UNKNOWN_FLAG ((PangoGlyph)0x10000000)
+#endif
+#ifndef PANGO_UNKNOWN_GLYPH_WIDTH
+#define PANGO_UNKNOWN_GLYPH_WIDTH 10
+#endif
+#ifndef PANGO_UNKNOWN_GLYPH_HEIGHT
+#define PANGO_UNKNOWN_GLYPH_HEIGHT 14
+#endif
 
 #define PANGO_SCALE_26_6 (PANGO_SCALE / (1<<6))
 

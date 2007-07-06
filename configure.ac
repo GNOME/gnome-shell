@@ -74,25 +74,6 @@ AC_CHECK_FUNCS([memset munmap strcasecmp strdup])
 
 dnl ========================================================================
 
-PKG_CHECK_MODULES(X11, x11, [have_x11=yes], [have_x11=no])
-if test x$have_x11 = xno
-then
-   AC_PATH_X
-   if test x"$x_includes" != x"NONE" && test -n "$x_includes" ; then
-     X11_CFLAGS=-I`echo $x_includes | sed -e "s/:/ -I/g"`
-   fi
-   if test x"$x_libraries" != x"NONE" && test -n "$x_libraries" ; then
-     X11_LIBS=-L`echo $x_libraries | sed -e "s/:/ -L/g"`
-   fi
-fi
-
-PKG_CHECK_MODULES(XFIXES, xfixes >= 4, [have_xfixes=yes], [have_xfixes=no])
-if test x$have_xfixes = xyes
-then
-  AC_DEFINE(HAVE_XFIXES, 1, Have the XFIXES X extension)
-  X11_LIBS="$X11_LIBS -lXfixes"
-fi
-
 CLUTTER_NO_FPU="0"
 AC_ARG_WITH(fpu,
             AS_HELP_STRING([--without-fpu],
@@ -108,11 +89,35 @@ AC_SUBST(CLUTTER_NO_FPU)
 
 clutterbackend=glx
 AC_ARG_WITH([flavour],
-            AC_HELP_STRING([--with-flavour=@<:@glx/eglx/sdl@:>@],
+            AC_HELP_STRING([--with-flavour=@<:@glx/eglx/eglnative/sdl@:>@],
                            [Select the Clutter backend]),
             clutterbackend=$with_flavour)
 
 BACKEND_PC_FILES=""
+
+# Check for X though could be redundant if backend does not need it.
+PKG_CHECK_MODULES(X11, x11, [have_x11=yes], [have_x11=no])
+if test x$have_x11 = xno; then
+     AC_PATH_X
+     if test x"$no_x" = "yes" ; then
+        if test "x$clutterbackend" = "xglx" or "x$clutterbackend" = "xeglx"
+        then
+	   AC_MSG_ERROR([[No X11 Libraries found and required by backend.]])
+	fi
+     fi
+     if test x"$x_includes" != x"NONE" && test -n "$x_includes" ; then
+	X11_CFLAGS=-I`echo $x_includes | sed -e "s/:/ -I/g"`
+     fi	     
+     if test x"$x_libraries" != x"NONE" && test -n "$x_libraries" ; then
+	X11_LIBS=-L`echo $x_libraries | sed -e "s/:/ -L/g"`
+     fi
+fi
+   
+PKG_CHECK_MODULES(XFIXES, xfixes >= 4, [have_xfixes=yes], [have_xfixes=no])
+if test x$have_xfixes = xyes; then
+      AC_DEFINE(HAVE_XFIXES, 1, Have the XFIXES X extension)
+      X11_LIBS="$X11_LIBS -lXfixes"
+fi
 
 case $clutterbackend in
 
@@ -200,16 +205,49 @@ case $clutterbackend in
     CLUTTER_COGL="gles"
     AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
 
+    # try for libvincent first
     PKG_CHECK_MODULES(EGL, libvincent, HAVE_OGLES=yes, HAVE_OGLES=no)
     if test "x$HAVE_OGLES" = "xno"; then
-      AC_MSG_ERROR([libvincent (ogles) not found and egl backend requested.]);
+      AC_CHECK_HEADERS([GLES/egl.h GLES/gl.h],,
+	         [AC_MSG_ERROR([Unable to locate required GLES headers])])
+
+      AC_CHECK_LIB(GLES_CM, eglInitialize, HAVE_LIBGLES=yes, HAVE_LIBGLES=no)
+
+      if test "x$HAVE_LIBGLES" = "xno"; then
+	  AC_MSG_ERROR([GLES library not found and egl backend requested.]);
+      fi
+
+      EGL_LIBS="-lGLES_CM"
     fi
 
     EGL_LIBS="$EGL_LIBS $X11_LIBS"
     EGL_CFLAGS="$EGL_CFLAGS $X11_CFLAGS"
     ;;
 
-  *) AC_MSG_ERROR([Invalid backend for Clutter: use glx,sdl or eglx])
+  eglnative)
+    
+    CLUTTER_FLAVOUR="eglnative"
+    AC_DEFINE([HAVE_CLUTTER_EGL], 1, [Have the EGL backend])
+
+    # We currently assume having egl means also having gles..
+    CLUTTER_COGL="gles"
+    AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
+
+    AC_CHECK_HEADERS([GLES/egl.h GLES/gl.h],,
+	         [AC_MSG_ERROR([Unable to locate required GLES headers])])
+
+    AC_CHECK_LIB(GLES_CM, eglInitialize, HAVE_LIBGLES=yes, HAVE_LIBGLES=no)
+
+    if test "x$HAVE_LIBGLES" = "xno"; then
+      AC_MSG_ERROR([libGLES_CM not found and egl backend requested.]);
+    fi
+
+    EGL_LIBS="-lGLES_CM"
+    EGL_CFLAGS=""
+    ;;
+
+
+  *) AC_MSG_ERROR([Invalid backend for Clutter: use glx,sdl, eglx or eglnative])
     ;;
 
 esac
@@ -297,7 +335,8 @@ AC_CONFIG_FILES([
         clutter/Makefile
         clutter/clutter-version.h
         clutter/glx/Makefile
-        clutter/egl/Makefile
+        clutter/eglx/Makefile
+        clutter/eglnative/Makefile
         clutter/sdl/Makefile
         clutter/cogl/Makefile
         clutter/cogl/gl/Makefile

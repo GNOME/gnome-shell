@@ -28,10 +28,6 @@
 
 #include <glib.h>
 
-#include <X11/Xlib.h>
-#include <X11/Xatom.h>
-#include <X11/Xutil.h>
-
 #include <GLES/gl.h>
 #include <GLES/egl.h>
 
@@ -39,21 +35,8 @@
 
 G_BEGIN_DECLS
 
-void     clutter_eglx_trap_x_errors       (void);
-gint     clutter_eglx_untrap_x_errors     (void);
-
-Display *clutter_eglx_get_default_xdisplay (void);
-gint     clutter_eglx_get_default_screen  (void);
-Window   clutter_eglx_get_default_root_window (void);
-
-Window       clutter_eglx_get_stage_window (ClutterStage *stage);
-XVisualInfo *clutter_eglx_get_stage_visual (ClutterStage *stage);
-
-void         clutter_eglx_set_stage_foreign (ClutterStage *stage,
-					     Window        window);
-
 EGLDisplay
-clutter_eglx_display (void);
+clutter_egl_display (void);
 
 G_END_DECLS
 

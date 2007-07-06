@@ -8,13 +8,6 @@
 
 static ClutterBackendEGL *backend_singleton = NULL;
 
-/* options */
-static gchar *clutter_display_name = NULL;
-static gint clutter_screen = 0;
-
-/* X error trap */
-static int TrappedErrorCode = 0;
-static int (*old_error_handler) (Display *, XErrorEvent *);
 
 G_DEFINE_TYPE (ClutterBackendEGL, clutter_backend_egl, CLUTTER_TYPE_BACKEND);
 
@@ -22,18 +15,6 @@ static gboolean
 clutter_backend_egl_pre_parse (ClutterBackend  *backend,
                                GError         **error)
 {
-  const gchar *env_string;
-
-  /* we don't fail here if DISPLAY is not set, as the user
-   * might pass the --display command line switch
-   */
-  env_string = g_getenv ("DISPLAY");
-  if (env_string)
-    {
-      clutter_display_name = g_strdup (env_string);
-      env_string = NULL;
-    }
-
   return TRUE;
 }
 
@@ -41,63 +22,21 @@ static gboolean
 clutter_backend_egl_post_parse (ClutterBackend  *backend,
                                 GError         **error)
 {
-  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  backend_egl->edpy = eglGetDisplay(backend_egl->xdpy);
 
-  if (clutter_display_name)
-    {
-      backend_egl->xdpy = XOpenDisplay (clutter_display_name);
-    }
-  else
+  status = eglInitialize(backend_egl->edpy, 
+			 &backend_egl->egl_version_major, 
+			 &backend_egl->egl_version_minor);
+  
+  if (status != EGL_TRUE)
     {
       g_set_error (error, CLUTTER_INIT_ERROR,
-                   CLUTTER_INIT_ERROR_BACKEND,
-                   "Unable to open display. You have to set the DISPLAY "
-                   "environment variable, or use the --display command "
-                   "line argument");
+		   CLUTTER_INIT_ERROR_BACKEND,
+		   "Unable to Initialize EGL");
       return FALSE;
     }
-
-  if (backend_egl->xdpy)
-    {
-      EGLBoolean status;
-
-      CLUTTER_NOTE (MISC, "Getting the X screen");
-
-      if (clutter_screen == 0)
-        backend_egl->xscreen = DefaultScreenOfDisplay (backend_egl->xdpy);
-      else
-        backend_egl->xscreen = ScreenOfDisplay (backend_egl->xdpy,
-                                                clutter_screen);
-
-      backend_egl->xscreen_num = XScreenNumberOfScreen (backend_egl->xscreen);
-      backend_egl->xwin_root = RootWindow (backend_egl->xdpy,
-                                           backend_egl->xscreen_num);
-      
-      backend_egl->display_name = g_strdup (clutter_display_name);
-
-      backend_egl->edpy = eglGetDisplay(backend_egl->xdpy);
-
-      status = eglInitialize(backend_egl->edpy, 
-			     &backend_egl->egl_version_major, 
-			     &backend_egl->egl_version_minor);
-
-      if (status != EGL_TRUE)
-	{
-	  g_set_error (error, CLUTTER_INIT_ERROR,
-		       CLUTTER_INIT_ERROR_BACKEND,
-		       "Unable to Initialize EGL");
-	  return FALSE;
-	}
-
-    }
-
-  g_free (clutter_display_name);
   
-  CLUTTER_NOTE (BACKEND, "X Display `%s' [%p] opened (screen:%d, root:%u)",
-                backend_egl->display_name,
-                backend_egl->xdpy,
-                backend_egl->xscreen_num,
-                (unsigned int) backend_egl->xwin_root);
+    }
 
   CLUTTER_NOTE (BACKEND, "EGL Reports version %i.%i",
 		backend_egl->egl_version_major, 
@@ -118,12 +57,6 @@ clutter_backend_egl_init_stage (ClutterBackend  *backend,
       ClutterActor *stage;
 
       stage = g_object_new (CLUTTER_TYPE_STAGE_EGL, NULL);
-
-      /* copy backend data into the stage */
-      stage_egl = CLUTTER_STAGE_EGL (stage);
-      stage_egl->xdpy = backend_egl->xdpy;
-      stage_egl->xwin_root = backend_egl->xwin_root;
-      stage_egl->xscreen = backend_egl->xscreen_num;
 
       g_object_set_data (G_OBJECT (stage), "clutter-backend", backend);
 
@@ -151,18 +84,6 @@ clutter_backend_egl_init_events (ClutterBackend *backend)
 
 static const GOptionEntry entries[] =
 {
-  {
-    "display", 0,
-    G_OPTION_FLAG_IN_MAIN,
-    G_OPTION_ARG_STRING, &clutter_display_name,
-    "X display to use", "DISPLAY"
-  },
-  {
-    "screen", 0,
-    G_OPTION_FLAG_IN_MAIN,
-    G_OPTION_ARG_INT, &clutter_screen,
-    "X screen to use", "SCREEN"
-  },
   { NULL }
 };
 
@@ -191,13 +112,6 @@ clutter_backend_egl_redraw (ClutterBackend *backend)
     }
 }
 
-static void
-clutter_backend_egl_add_options (ClutterBackend *backend,
-                                 GOptionGroup   *group)
-{
-  g_option_group_add_entries (group, entries);
-}
-
 static ClutterActor *
 clutter_backend_egl_get_stage (ClutterBackend *backend)
 {
@@ -210,10 +124,6 @@ static void
 clutter_backend_egl_finalize (GObject *gobject)
 {
   ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (gobject);
-
-  g_free (backend_egl->display_name);
-
-  XCloseDisplay (backend_egl->xdpy);
 
   if (backend_singleton)
     backend_singleton = NULL;
@@ -285,7 +195,6 @@ clutter_backend_egl_init (ClutterBackendEGL *backend_egl)
 {
   ClutterBackend *backend = CLUTTER_BACKEND (backend_egl);
 
-  /* FIXME: get from xsettings */
   clutter_backend_set_double_click_time (backend, 250);
   clutter_backend_set_double_click_distance (backend, 5);
 }
@@ -296,119 +205,8 @@ _clutter_backend_impl_get_type (void)
   return clutter_backend_egl_get_type ();
 }
 
-static int
-error_handler(Display     *xdpy,
-	      XErrorEvent *error)
-{
-  TrappedErrorCode = error->error_code;
-  return 0;
-}
-
-/**
- * clutter_eglx_trap_x_errors:
- *
- * FIXME
- *
- * Since: 0.4
- */
-void
-clutter_eglx_trap_x_errors (void)
-{
-  TrappedErrorCode  = 0;
-  old_error_handler = XSetErrorHandler (error_handler);
-}
-
-/**
- * clutter_eglx_untrap_x_errors:
- *
- * FIXME
- *
- * Return value: FIXME
- *
- * Since: 0.4
- */
-gint
-clutter_eglx_untrap_x_errors (void)
-{
-  XSetErrorHandler (old_error_handler);
-
-  return TrappedErrorCode;
-}
-
-/**
- * clutter_eglx_get_default_xdisplay:
- * 
- * Returns the default X Display
- *
- * Return value: A Display pointer
- *
- * Since: 0.4
- */
-Display *
-clutter_eglx_get_default_xdisplay (void)
-{
-  if (!backend_singleton)
-    {
-      g_critical ("EGL backend has not been initialised");
-      return NULL;
-    }
-
-  return backend_singleton->xdpy;
-}
-
-/**
- * clutter_eglx_get_default_screen:
- * 
- * FIXME
- *
- * Return value: FIXME
- *
- * Since: 0.4
- */
-gint
-clutter_eglx_get_default_screen (void)
-{
-  if (!backend_singleton)
-    {
-      g_critical ("EGL backend has not been initialised");
-      return -1;
-    }
-
-  return backend_singleton->xscreen_num;
-}
-
-/**
- * clutter_eglx_get_default_root_window:
- * 
- * FIXME
- *
- * Return value: FIXME
- *
- * Since: 0.4
- */
-Window
-clutter_eglx_get_default_root_window (void)
-{
-  if (!backend_singleton)
-    {
-      g_critical ("EGL backend has not been initialised");
-      return None;
-    }
-
-  return backend_singleton->xwin_root;
-}
-
-/**
- * clutter_egl_display
- * 
- * Gets the current EGLDisplay.
- *
- * Return value: an EGLDisplay
- *
- * Since: 0.4
- */
 EGLDisplay
-clutter_eglx_display (void)
+clutter_egl_display (void)
 {
-  return backend_singleton->edpy;
+  return (EGLDisplay)clutter_egl_get_default_display ();
 }

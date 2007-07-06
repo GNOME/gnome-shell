@@ -1,5 +1,28 @@
 2007-07-06  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/Makefile.am:
+	* clutter/eglnative/Makefile.am:
+	* clutter/eglnative/clutter-backend-egl.c:
+	* clutter/eglnative/clutter-backend-egl.h:
+	* clutter/eglnative/clutter-egl.h:
+	* clutter/eglnative/clutter-event-egl.c:
+	* clutter/eglnative/clutter-stage-egl.c:
+	* clutter/eglnative/clutter-stage-egl.h:
+	* clutter/eglx/Makefile.am:
+	* clutter/eglx/clutter-backend-egl.c:
+	* clutter/eglx/clutter-egl.h:
+	* clutter/eglx/clutter-event-egl.c:
+	* clutter/eglx/clutter-stage-egl.c:
+	* configure.ac:
+	Add a new 'native' EGL backend for non X based EGL's 
+        (i.e on framebuffer).
+	Rename old backend to 'eglx' and namespace public funcs with this.
+	
+	* clutter/pango/pangoclutter-private.h:
+	Add extra checks for expected defines.
+
+2007-07-06  Matthew Allum  <mallum@openedhand.com>
+
 	* NEWS:
 	* README:
 	Updates for upcoming 0.3.1 release.

@@ -68,14 +68,14 @@ clutter_stage_egl_unrealize (ClutterActor *actor)
     }
 
   if (stage_egl->egl_surface)
-    eglDestroySurface (clutter_egl_display(), stage_egl->egl_surface);
+    eglDestroySurface (clutter_eglx_display(), stage_egl->egl_surface);
   stage_egl->egl_surface = NULL;
 
   if (stage_egl->egl_context)
-    eglDestroyContext (clutter_egl_display(), stage_egl->egl_context);
+    eglDestroyContext (clutter_eglx_display(), stage_egl->egl_context);
   stage_egl->egl_context = NULL;
 
-  eglMakeCurrent (clutter_egl_display(), 
+  eglMakeCurrent (clutter_eglx_display(), 
 		  EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
 
   stage_egl->egl_context = None;
@@ -105,7 +105,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
 			       EGL_BLUE_SIZE,      5,
 			       EGL_NONE };
       
-      status = eglGetConfigs (clutter_egl_display(), 
+      status = eglGetConfigs (clutter_eglx_display(), 
 			      configs, 
 			      2, 
 			      &config_count);
@@ -113,7 +113,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
       if (status != EGL_TRUE)
 	g_warning ("eglGetConfigs");		
       
-      status = eglChooseConfig (clutter_egl_display(), 
+      status = eglChooseConfig (clutter_eglx_display(), 
 				cfg_attribs, 
 				configs, 
 				sizeof configs / sizeof configs[0], 
@@ -124,16 +124,16 @@ clutter_stage_egl_realize (ClutterActor *actor)
       
       if (stage_egl->xwin == None)
 	stage_egl->xwin 
-	  = XCreateSimpleWindow(clutter_egl_get_default_display(),
-				clutter_egl_get_default_root_window(),
+	  = XCreateSimpleWindow(clutter_eglx_get_default_xdisplay(),
+				clutter_eglx_get_default_root_window(),
 				0, 0,
 				stage_egl->xwin_width, 
 				stage_egl->xwin_height,
 				0, 0, 
-				WhitePixel(clutter_egl_get_default_display(), 
-					   clutter_egl_get_default_screen()));
+				WhitePixel(clutter_eglx_get_default_xdisplay(), 
+					   clutter_eglx_get_default_screen()));
 
-      XSelectInput(clutter_egl_get_default_display(), 
+      XSelectInput(clutter_eglx_get_default_xdisplay(), 
 		   stage_egl->xwin, 
 		   StructureNotifyMask
 		   |ExposureMask
@@ -146,13 +146,13 @@ clutter_stage_egl_realize (ClutterActor *actor)
 		   |PropertyChangeMask);
 
       if (stage_egl->egl_context)
-	eglDestroyContext (clutter_egl_display(), stage_egl->egl_context);
+	eglDestroyContext (clutter_eglx_display(), stage_egl->egl_context);
 
       if (stage_egl->egl_surface)
-	eglDestroySurface (clutter_egl_display(), stage_egl->egl_surface);
+	eglDestroySurface (clutter_eglx_display(), stage_egl->egl_surface);
 
       stage_egl->egl_surface 
-	= eglCreateWindowSurface (clutter_egl_display(), 
+	= eglCreateWindowSurface (clutter_eglx_display(), 
 				  configs[0], 
 				  (NativeWindowType)stage_egl->xwin, 
 				  NULL);
@@ -160,7 +160,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
       if (stage_egl->egl_surface == EGL_NO_SURFACE)
 	g_warning ("eglCreateWindowSurface");
       
-      stage_egl->egl_context = eglCreateContext (clutter_egl_display(), 
+      stage_egl->egl_context = eglCreateContext (clutter_eglx_display(), 
 						 configs[0], 
 						 EGL_NO_CONTEXT, 
 						 NULL);
@@ -168,7 +168,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
       if (stage_egl->egl_context == EGL_NO_CONTEXT)
 	g_warning ("eglCreateContext");
       
-      status = eglMakeCurrent (clutter_egl_display(), 
+      status = eglMakeCurrent (clutter_eglx_display(), 
 			       stage_egl->egl_surface, 
 			       EGL_NO_SURFACE, 
 			       stage_egl->egl_context);
@@ -382,7 +382,7 @@ clutter_stage_egl_init (ClutterStageEGL *stage)
 }
 
 /**
- * clutter_egl_get_stage_window:
+ * clutter_eglx_get_stage_window:
  * @stage: a #ClutterStage
  *
  * FIXME
@@ -392,7 +392,7 @@ clutter_stage_egl_init (ClutterStageEGL *stage)
  * Since: 0.4
  */
 Window
-clutter_egl_get_stage_window (ClutterStage *stage)
+clutter_eglx_get_stage_window (ClutterStage *stage)
 {
   g_return_val_if_fail (CLUTTER_IS_STAGE_EGL (stage), None);
 
@@ -400,7 +400,7 @@ clutter_egl_get_stage_window (ClutterStage *stage)
 }
 
 /**
- * clutter_egl_get_stage_visual:
+ * clutter_eglx_get_stage_visual:
  * @stage: a #ClutterStage
  *
  * FIXME
@@ -410,7 +410,7 @@ clutter_egl_get_stage_window (ClutterStage *stage)
  * Since: 0.4
  */
 XVisualInfo *
-clutter_egl_get_stage_visual (ClutterStage *stage)
+clutter_eglx_get_stage_visual (ClutterStage *stage)
 {
   g_return_val_if_fail (CLUTTER_IS_STAGE_EGL (stage), NULL);
 
@@ -418,7 +418,7 @@ clutter_egl_get_stage_visual (ClutterStage *stage)
 }
 
 /**
- * clutter_egl_set_stage_foreign:
+ * clutter_eglx_set_stage_foreign:
  * @stage: a #ClutterStage
  * @window: FIXME
  *
@@ -427,7 +427,7 @@ clutter_egl_get_stage_visual (ClutterStage *stage)
  * Since: 0.4
  */
 void
-clutter_egl_set_stage_foreign (ClutterStage *stage,
+clutter_eglx_set_stage_foreign (ClutterStage *stage,
                                Window        window)
 {
   g_return_if_fail (CLUTTER_IS_STAGE_EGL (stage));

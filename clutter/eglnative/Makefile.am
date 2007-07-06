@@ -9,9 +9,9 @@ INCLUDES = \
 
 LDADD = $(CLUTTER_LIBS)
 
-noinst_LTLIBRARIES = libclutter-eglx.la
+noinst_LTLIBRARIES = libclutter-eglnative.la
 
-libclutter_eglx_la_SOURCES = \
+libclutter_eglnative_la_SOURCES = \
 	clutter-backend-egl.h \
 	clutter-backend-egl.c \
 	clutter-event-egl.c \

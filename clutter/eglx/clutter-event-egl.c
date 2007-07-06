@@ -178,7 +178,7 @@ clutter_event_translate (ClutterBackend *backend,
 
   backend_egl = CLUTTER_BACKEND_EGL (backend);
   stage = CLUTTER_STAGE (_clutter_backend_get_stage (backend));
-  stage_xwindow = clutter_egl_get_stage_window (stage);
+  stage_xwindow = clutter_eglx_get_stage_window (stage);
 
   xwindow = xevent->xany.window;
   if (xwindow == None)
