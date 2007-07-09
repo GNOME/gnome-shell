@@ -83,31 +83,32 @@ alpha_notify_foreach (ClutterBehaviour *behaviour,
 		      ClutterActor     *actor,
 		      gpointer          data)
 {
-  clutter_actor_set_opacity (actor, GPOINTER_TO_INT(data));
+  clutter_actor_set_opacity (actor, GPOINTER_TO_UINT(data));
 }
 
 static void
 clutter_behaviour_alpha_notify (ClutterBehaviour *behave,
                                 guint32           alpha_value)
 {
-  guint8 opacity;
   ClutterBehaviourOpacityPrivate *priv;
+  guint8 delta, opacity;
 
   priv = CLUTTER_BEHAVIOUR_OPACITY (behave)->priv;
 
-  opacity = alpha_value 
-          * (priv->opacity_end - priv->opacity_start)
-          / CLUTTER_ALPHA_MAX_ALPHA;
+  if (priv->opacity_end > priv->opacity_start)
+    delta = priv->opacity_end - priv->opacity_start;
+  else
+    delta = priv->opacity_start - priv->opacity_end;
 
-  opacity += priv->opacity_start;
+  opacity = alpha_value * delta / CLUTTER_ALPHA_MAX_ALPHA;
+  opacity += ((priv->opacity_end > priv->opacity_start) ? priv->opacity_start
+                                                        : priv->opacity_end);
 
-  CLUTTER_NOTE (BEHAVIOUR, "alpha: %i, opacity: %i",
-                alpha_value,
-                opacity);
+  CLUTTER_NOTE (BEHAVIOUR, "alpha: %i, opacity: %i", alpha_value, opacity);
 
   clutter_behaviour_actors_foreach (behave,
 				    alpha_notify_foreach,
-				    GINT_TO_POINTER((gint)opacity));
+				    GUINT_TO_POINTER ((guint) opacity));
 }
 
 static void
