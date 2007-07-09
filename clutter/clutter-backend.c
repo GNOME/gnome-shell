@@ -107,9 +107,13 @@ void
 _clutter_backend_add_options (ClutterBackend *backend,
                               GOptionGroup   *group)
 {
+  ClutterBackendClass *klass;
+
   g_return_if_fail (CLUTTER_IS_BACKEND (backend));
 
-  CLUTTER_BACKEND_GET_CLASS (backend)->add_options (backend, group);
+  klass = CLUTTER_BACKEND_GET_CLASS (backend);
+  if (klass->add_options)
+    return klass->add_options (backend, group);
 }
 
 gboolean

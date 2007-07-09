@@ -1,3 +1,8 @@
+2007-07-09  Richard Purdie  <rpurdie@openedhand.com>
+
+	* clutter/clutter-backend.c:
+	Make the backend add_option function optional.
+
 2007-07-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-behaviour-depth.h:
