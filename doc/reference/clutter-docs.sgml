@@ -117,6 +117,7 @@
       <title>Clutter Behaviours</title>
 
       <xi:include href="xml/clutter-behaviour-bspline.xml"/>
+      <xi:include href="xml/clutter-behaviour-depth.xml"/>
       <xi:include href="xml/clutter-behaviour-ellipse.xml"/>
       <xi:include href="xml/clutter-behaviour-opacity.xml"/>
       <xi:include href="xml/clutter-behaviour-path.xml"/>

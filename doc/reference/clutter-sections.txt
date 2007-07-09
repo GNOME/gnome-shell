@@ -971,3 +971,21 @@ CLUTTER_VBOX_GET_CLASS
 <SUBSECTION Private>
 clutter_vbox_get_type
 </SECTION>
+
+<SECTION>
+<FILE>clutter-behaviour-depth</FILE>
+<TITLE>ClutterBehaviourDepth</TITLE>
+ClutterBehaviourDepth
+ClutterBehaviourDepthClass
+clutter_behaviour_depth_new
+<SUBSECTION Standard>
+CLUTTER_BEHAVIOUR_DEPTH
+CLUTTER_IS_BEHAVIOUR_DEPTH
+CLUTTER_TYPE_BEHAVIOUR_DEPTH
+CLUTTER_BEHAVIOUR_DEPTH_CLASS
+CLUTTER_IS_BEHAVIOUR_DEPTH_CLASS
+CLUTTER_BEHAVIOUR_DEPTH_GET_CLASS
+<SUBSECTION Private>
+ClutterBehaviourDepthPrivate
+clutter_behaviour_depth_get_type
+</SECTION>

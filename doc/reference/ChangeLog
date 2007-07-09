@@ -1,3 +1,9 @@
+2007-07-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter.types:
+	* clutter-docs.sgml:
+	* clutter-sections.txt: Add ClutterBehaviourDepth.
+
 2007-07-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-docs.sgml: Remove partintro, as it messes up with
