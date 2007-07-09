@@ -1,3 +1,12 @@
+2007-07-09  Matthew Allum  <mallum@openedhand.com>
+
+	* TODO:
+	Updates.
+	* clutter/clutter-stage.c:
+	* clutter/glx/clutter-stage-glx.c:
+	Fix cursor visibility property. 
+	Force a repaint before mapping to attempt to avoid flicker.    
+
 2007-07-09  Richard Purdie  <rpurdie@openedhand.com>
 
 	* clutter/eglnative/clutter-event-egl.c:

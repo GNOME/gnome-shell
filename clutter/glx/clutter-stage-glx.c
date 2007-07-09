@@ -56,7 +56,14 @@ clutter_stage_glx_show (ClutterActor *actor)
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (actor);
 
   if (stage_glx->xwin)
-    XMapWindow (stage_glx->xdpy, stage_glx->xwin);
+    {
+      /* Fire off a redraw to avoid flicker on first map.
+       * Appears not to work perfectly on intel drivers at least.
+      */
+      clutter_redraw();
+      XSync (stage_glx->xdpy, FALSE);
+      XMapWindow (stage_glx->xdpy, stage_glx->xwin);
+    }
 }
 
 static void
@@ -111,6 +118,7 @@ clutter_stage_glx_unrealize (ClutterActor *actor)
       glXDestroyContext (stage_glx->xdpy, stage_glx->gl_context);
       stage_glx->gl_context = None;
     }
+
 
   XSync (stage_glx->xdpy, False);
   clutter_glx_untrap_x_errors ();
@@ -413,7 +421,7 @@ clutter_stage_glx_set_cursor_visible (ClutterStage *stage,
   if (stage_glx->xwin == None)
     return;
 
-  CLUTTER_NOTE (MISC, "setting cursor state ('%s') over stage window (%u)",
+  CLUTTER_NOTE (BACKEND, "setting cursor state ('%s') over stage window (%u)",
                 show_cursor ? "visible" : "invisible",
                 (unsigned int) stage_glx->xwin);
 

@@ -243,7 +243,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
      g_param_spec_boolean ("cursor-visible",
 			   "Cursor Visible",
 			   "Whether the mouse pointer is visible on the main stage ",
-			   FALSE,
+			   TRUE,
 			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
@@ -423,7 +423,7 @@ clutter_stage_init (ClutterStage *self)
 
   priv->is_offscreen = FALSE;
   priv->is_fullscreen = FALSE;
-  priv->is_cursor_visible = FALSE;
+  priv->is_cursor_visible = TRUE;
 
   priv->color.red   = 0xff;
   priv->color.green = 0xff;
@@ -723,7 +723,7 @@ clutter_stage_hide_cursor (ClutterStage *stage)
       priv->is_cursor_visible = FALSE;
 
       if (CLUTTER_STAGE_GET_CLASS (stage)->set_cursor_visible)
-        CLUTTER_STAGE_GET_CLASS (stage)->set_cursor_visible (stage, FALSE);
+	CLUTTER_STAGE_GET_CLASS (stage)->set_cursor_visible (stage, FALSE);
 
       g_object_notify (G_OBJECT (stage), "cursor-visible");
     }
