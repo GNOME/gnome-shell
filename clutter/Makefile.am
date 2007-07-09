@@ -42,6 +42,7 @@ source_h =					\
 	$(srcdir)/clutter-backend.h		\
 	$(srcdir)/clutter-behaviour.h     	\
 	$(srcdir)/clutter-behaviour-bspline.h 	\
+	$(srcdir)/clutter-behaviour-depth.h 	\
 	$(srcdir)/clutter-behaviour-ellipse.h 	\
 	$(srcdir)/clutter-behaviour-opacity.h 	\
 	$(srcdir)/clutter-behaviour-path.h 	\
@@ -138,6 +139,7 @@ source_c = \
 	clutter-backend.c		\
         clutter-behaviour.c 		\
 	clutter-behaviour-bspline.c	\
+	clutter-behaviour-depth.c	\
 	clutter-behaviour-ellipse.c	\
 	clutter-behaviour-opacity.c	\
 	clutter-behaviour-path.c	\
