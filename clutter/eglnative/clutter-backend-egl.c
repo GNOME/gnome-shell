@@ -22,7 +22,10 @@ static gboolean
 clutter_backend_egl_post_parse (ClutterBackend  *backend,
                                 GError         **error)
 {
-  backend_egl->edpy = eglGetDisplay(backend_egl->xdpy);
+  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL(backend);
+  EGLBoolean status;
+
+  backend_egl->edpy = eglGetDisplay(EGL_DEFAULT_DISPLAY);
 
   status = eglInitialize(backend_egl->edpy, 
 			 &backend_egl->egl_version_major, 
@@ -34,8 +37,6 @@ clutter_backend_egl_post_parse (ClutterBackend  *backend,
 		   CLUTTER_INIT_ERROR_BACKEND,
 		   "Unable to Initialize EGL");
       return FALSE;
-    }
-  
     }
 
   CLUTTER_NOTE (BACKEND, "EGL Reports version %i.%i",
@@ -53,7 +54,6 @@ clutter_backend_egl_init_stage (ClutterBackend  *backend,
 
   if (!backend_egl->stage)
     {
-      ClutterStageEGL *stage_egl;
       ClutterActor *stage;
 
       stage = g_object_new (CLUTTER_TYPE_STAGE_EGL, NULL);
@@ -100,16 +100,8 @@ clutter_backend_egl_redraw (ClutterBackend *backend)
   /* Why this paint is done in backend as likely GL windowing system
    * specific calls, like swapping buffers.
   */
-  if (stage_egl->xwin)
-    {
-      /* clutter_feature_wait_for_vblank (); */
-      eglSwapBuffers (backend_egl->edpy,  stage_egl->egl_surface);
-    }
-  else
-    {
-      eglWaitGL ();
-      CLUTTER_GLERR ();
-    }
+  /* clutter_feature_wait_for_vblank (); */
+  eglSwapBuffers (backend_egl->edpy,  stage_egl->egl_surface);
 }
 
 static ClutterActor *
@@ -123,8 +115,6 @@ clutter_backend_egl_get_stage (ClutterBackend *backend)
 static void
 clutter_backend_egl_finalize (GObject *gobject)
 {
-  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (gobject);
-
   if (backend_singleton)
     backend_singleton = NULL;
 
@@ -186,7 +176,6 @@ clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
   backend_class->init_stage  = clutter_backend_egl_init_stage;
   backend_class->init_events = clutter_backend_egl_init_events;
   backend_class->get_stage   = clutter_backend_egl_get_stage;
-  backend_class->add_options = clutter_backend_egl_add_options;
   backend_class->redraw      = clutter_backend_egl_redraw;
 }
 
@@ -208,5 +197,5 @@ _clutter_backend_impl_get_type (void)
 EGLDisplay
 clutter_egl_display (void)
 {
-  return (EGLDisplay)clutter_egl_get_default_display ();
+  return backend_singleton->edpy;
 }

@@ -1,5 +1,10 @@
 2007-07-09  Richard Purdie  <rpurdie@openedhand.com>
 
+	* clutter/eglnative/clutter-backend-egl.c:
+	Tweaks to the eglnative backend.
+
+2007-07-09  Richard Purdie  <rpurdie@openedhand.com>
+
 	* clutter/clutter-backend.c:
 	Make the backend add_option function optional.
 
