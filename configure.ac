@@ -242,8 +242,13 @@ case $clutterbackend in
       AC_MSG_ERROR([libGLES_CM not found and egl backend requested.]);
     fi
 
-    EGL_LIBS="-lGLES_CM"
-    EGL_CFLAGS=""
+    PKG_CHECK_MODULES(TSLIB, tslib-1.0, [have_tslib=yes], [have_tslib=no])
+    if test x$have_tslib = xyes; then
+           AC_DEFINE([HAVE_TSLIB], 1, [Have tslib for touchscreen handling])
+    fi
+
+    EGL_LIBS="-lGLES_CM $TSLIB_LIBS"
+    EGL_CFLAGS="$TSLIB_CFLAGS"
     ;;
 
 

@@ -35,14 +35,21 @@
 
 #include <glib.h>
 
-typedef struct _ClutterEventSource      ClutterEventSource;
+#ifdef HAVE_TSLIB
+#include <tslib.h>
+#endif
+
+typedef struct _ClutterEventSource  ClutterEventSource;
 
 struct _ClutterEventSource
 {
   GSource source;
 
   ClutterBackend *backend;
-  GPollFD event_poll_fd;
+  GPollFD         event_poll_fd;
+#ifdef HAVE_TSLIB
+  struct tsdev   *ts_device;
+#endif
 };
 
 static gboolean clutter_event_prepare  (GSource     *source,
@@ -75,27 +82,43 @@ clutter_event_source_new (ClutterBackend *backend)
 void
 _clutter_events_init (ClutterBackend *backend)
 {
-  GSource *source;
+  ClutterBackendEGL  *backend_egl = CLUTTER_BACKEND_EGL (backend);
+  GSource            *source;
   ClutterEventSource *event_source;
-  ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
-#if 0
-  int connection_number;
 
-  connection_number = ConnectionNumber (backend_egl->xdpy);
-  CLUTTER_NOTE (EVENT, "Connection number: %d", connection_number);
-
+#ifdef HAVE_TSLIB
+  /* FIXME LEAK on error paths */
   source = backend_egl->event_source = clutter_event_source_new (backend);
   event_source = (ClutterEventSource *) source;
-  g_source_set_priority (source, CLUTTER_PRIORITY_EVENTS);
 
-  event_source->event_poll_fd.fd = connection_number;
-  event_source->event_poll_fd.events = G_IO_IN;
+  event_source->ts_device = ts_open(g_getenv("TSLIB_TSDEVICE"), 0);
 
-  event_sources = g_list_prepend (event_sources, event_source);
+  if (event_source->ts_device)
+    {
 
-  g_source_add_poll (source, &event_source->event_poll_fd);
-  g_source_set_can_recurse (source, TRUE);
-  g_source_attach (source, NULL);
+      CLUTTER_NOTE (EVENT, "Opened '%s'", g_getenv("TSLIB_TSDEVICE"));
+
+      if (ts_config(event_source->ts_device)) 
+	{
+	  g_warning ("ts_config() failed");  
+	  ts_close (event_source->ts_device);
+	  return;
+	}
+
+      g_source_set_priority (source, CLUTTER_PRIORITY_EVENTS);
+      event_source->event_poll_fd.fd = ts_fd(event_source->ts_device);
+      event_source->event_poll_fd.events = G_IO_IN;
+
+      event_sources = g_list_prepend (event_sources, event_source);
+
+      g_source_add_poll (source, &event_source->event_poll_fd);
+      g_source_set_can_recurse (source, TRUE);
+      g_source_attach (source, NULL);
+    }
+  else
+    g_warning ("ts_open() failed opening %s'",  
+	       g_getenv("TSLIB_TSDEVICE") ? 
+  	         g_getenv("TSLIB_TSDEVICE") : "None, TSLIB_TSDEVICE not set"); 
 #endif
 }
 
@@ -106,16 +129,88 @@ _clutter_events_uninit (ClutterBackend *backend)
 
   if (backend_egl->event_source)
     {
-#if 0
       CLUTTER_NOTE (EVENT, "Destroying the event source");
 
+      ClutterEventSource *event_source = 
+                (ClutterEventSource *) backend_egl->event_source;
+
+#ifdef HAVE_TSLIB
+      ts_close (event_source->ts_device);
       event_sources = g_list_remove (event_sources,
                                      backend_egl->event_source);
-
+#endif
       g_source_destroy (backend_egl->event_source);
       g_source_unref (backend_egl->event_source);
-#endif
       backend_egl->event_source = NULL;
     }
 }
 
+static gboolean
+clutter_event_prepare (GSource *source,
+                       gint    *timeout)
+{
+  ClutterBackend *backend = ((ClutterEventSource *) source)->backend;
+
+  *timeout = -1;
+
+  return clutter_events_pending ();
+}
+
+static gboolean
+clutter_event_check (GSource *source)
+{
+  ClutterEventSource *event_source = (ClutterEventSource *) source;
+  ClutterBackend *backend = event_source->backend;
+
+  return ((event_source->event_poll_fd.revents & G_IO_IN) 
+	  || clutter_events_pending ());
+}
+
+static gboolean
+clutter_event_dispatch (GSource     *source,
+                        GSourceFunc  callback,
+                        gpointer     user_data)
+{
+  ClutterBackend     *backend = ((ClutterEventSource *) source)->backend;
+  ClutterEventSource *event_source = (ClutterEventSource *) source;
+  ClutterEvent       *event;
+  struct ts_sample    tsevent;
+  ClutterMainContext *clutter_context;
+
+  clutter_context = clutter_context_get_default ();
+#ifdef HAVE_TSLIB
+  /* FIXME while would be better here but need to deal with lockups */
+  if ((!clutter_events_pending()) && 
+        (ts_read(event_source->ts_device, &tsevent, 1) == 1))
+    {
+      event = clutter_event_new (CLUTTER_NOTHING);
+
+      event->button.time = 0;
+      event->button.x = tsevent.x;
+      event->button.y = tsevent.y;
+      event->button.modifier_state = 0;
+      event->button.button = 1;
+
+      if (tsevent.pressure) 
+	event->button.type = event->type = CLUTTER_BUTTON_PRESS;
+      else
+	event->button.type = event->type = CLUTTER_BUTTON_RELEASE;
+
+      _clutter_event_button_generate (backend, event);
+
+      g_queue_push_head (clutter_context->events_queue, event);
+    }
+#endif
+
+  /* Pop an event off the queue if any */
+  event = clutter_event_get ();
+
+  if (event)
+    {
+      /* forward the event into clutter for emission etc. */
+      clutter_do_event (event);
+      clutter_event_free (event);
+    }
+
+  return TRUE;
+}

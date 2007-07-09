@@ -1,5 +1,11 @@
 2007-07-09  Richard Purdie  <rpurdie@openedhand.com>
 
+	* clutter/eglnative/clutter-event-egl.c:
+	* configure.ac:
+	Add tslib support to eglnative backend.
+
+2007-07-09  Richard Purdie  <rpurdie@openedhand.com>
+
 	* clutter/eglnative/clutter-backend-egl.c:
 	Tweaks to the eglnative backend.
 
