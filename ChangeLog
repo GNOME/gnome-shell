@@ -1,3 +1,15 @@
+2007-07-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-behaviour-depth.h:
+	* clutter/clutter-behaviour-depth.c:
+	* clutter/Makefile.am: Add ClutterBehaviourDepth, a simple
+	behaviour controlling the depth of a set of actors.
+
+	* clutter/clutter-behaviour-opacity.c: Always make sure that
+	the opacity applied to the actors is a positive integer, even
+	in case where the start and end opacity are reversed; use the
+	correct cast macros for passing the opacity as a pointer.
+
 2007-07-06  Matthew Allum  <mallum@openedhand.com>
 
 	* NEWS:
