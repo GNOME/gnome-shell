@@ -11,10 +11,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-18 17:36+0700\n"
-"PO-Revision-Date: 2007-05-18 17:41+0700\n"
+"POT-Creation-Date: 2007-07-10 22:53+0700\n"
+"PO-Revision-Date: 2007-07-10 23:12+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
-"Language-Team: Thai <L10n@opentle.org>\n"
+"Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -36,6 +36,11 @@ msgstr "วิธีใช้: %s\n"
 #: ../src/tools/metacity-message.c:176 ../src/util.c:133
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity ถูกคอมไพล์โดยไม่ได้เลือกรองรับโหมด verbose\n"
+
+#: ../src/core.c:206
+#, c-format
+msgid "Unknown window information request: %d"
+msgstr "คำร้องขอข้อมูลหน้าต่างที่ไม่รู้จัก: %d"
 
 #: ../src/delete.c:67 ../src/delete.c:94 ../src/metacity-dialog.c:50
 #: ../src/theme-parser.c:484
@@ -90,47 +95,47 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "เกิดข้อผิดพลาดร้ายแรง %d (%s) ในการอ่านเขียนข้อมูลจากดิสเพลย์'%s'\n"
 
-#: ../src/frames.c:1069
+#: ../src/frames.c:1078
 msgid "Close Window"
 msgstr "ปิดหน้าต่าง"
 
-#: ../src/frames.c:1072
+#: ../src/frames.c:1081
 msgid "Window Menu"
 msgstr "เมนูหน้าต่าง"
 
-#: ../src/frames.c:1075
+#: ../src/frames.c:1084
 msgid "Minimize Window"
 msgstr "ย่อหน้าต่างหาย"
 
-#: ../src/frames.c:1078
+#: ../src/frames.c:1087
 msgid "Maximize Window"
 msgstr "ขยายหน้าต่างเต็ม"
 
-#: ../src/frames.c:1081
+#: ../src/frames.c:1090
 msgid "Unmaximize Window"
 msgstr "เลิกขยายหน้าต่างเต็ม"
 
-#: ../src/frames.c:1084
+#: ../src/frames.c:1093
 msgid "Roll Up Window"
 msgstr "_ม้วนหน้าต่างขึ้น"
 
-#: ../src/frames.c:1087
+#: ../src/frames.c:1096
 msgid "Unroll Window"
 msgstr "คลี่หน้าต่างกลับ"
 
-#: ../src/frames.c:1090
+#: ../src/frames.c:1099
 msgid "Keep Window On Top"
 msgstr "วางหน้าต่างไว้บนสุด"
 
-#: ../src/frames.c:1093
+#: ../src/frames.c:1102
 msgid "Remove Window From Top"
 msgstr "เลิกวางหน้าต่างไว้บนสุด"
 
-#: ../src/frames.c:1096
+#: ../src/frames.c:1105
 msgid "Always On Visible Workspace"
 msgstr "แสดงบนพื้นที่ทำงานเสมอ"
 
-#: ../src/frames.c:1099
+#: ../src/frames.c:1108
 msgid "Put Window On Only One Workspace"
 msgstr "วางหน้าต่างบนพื้นที่ทำงานเดียวเท่านั้น"
 
@@ -151,7 +156,7 @@ msgstr "ไม่สามารถเปิดกล่องโต้ตอบ
 msgid "No command %d has been defined.\n"
 msgstr "คำสั่ง %d ยังไม่ได้ถูกกำหนด\n"
 
-#: ../src/keybindings.c:3846
+#: ../src/keybindings.c:3849
 msgid "No terminal command has been defined.\n"
 msgstr "คำสั่งเปิดเทอร์มินัลยังไม่ได้ถูกกำหนด\n"
 
@@ -160,13 +165,13 @@ msgstr "คำสั่งเปิดเทอร์มินัลยังไ
 #, c-format
 msgid ""
 "metacity %s\n"
-"Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright (C) 2001-2007 Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
-"สงวนลิขสิทธิ์ (C) 2001-2002 Havoc Pennington, Red Hat, Inc., และอื่นๆ\n"
+"สงวนลิขสิทธิ์ (C) 2001-2007 Havoc Pennington, Red Hat, Inc., และอื่นๆ\n"
 "นี่เป็นซอฟต์แวร์เสรี อ่านเงื่อนไขลิขสิทธิ์ได้ในโค้ดต้นฉบับ\n"
 "ไม่รับผิดชอบข้อเสียหายใดๆ "
 "ไม่รับประกันความเหมาะสมในเชิงพาณิชย์หรือการใช้งานเฉพาะทางอย่างหนึ่งอย่างใด\n"
@@ -212,102 +217,102 @@ msgid "Failed to restart: %s\n"
 msgstr "ไม่สามารถเริ่มการทำงานใหม่ของ: %s\n"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:68
+#: ../src/menu.c:69
 msgid "Mi_nimize"
 msgstr "ย่_อหาย"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:70
+#: ../src/menu.c:71
 msgid "Ma_ximize"
 msgstr "ขย_ายเต็ม"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:72
+#: ../src/menu.c:73
 msgid "Unma_ximize"
 msgstr "เลิกขย_ายเต็ม"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:74
+#: ../src/menu.c:75
 msgid "Roll _Up"
 msgstr "_ม้วนขึ้น"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:76
+#: ../src/menu.c:77
 msgid "_Unroll"
 msgstr "_คลี่กลับ"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:78
+#: ../src/menu.c:79
 msgid "_Move"
 msgstr "_ย้าย"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:80
+#: ../src/menu.c:81
 msgid "_Resize"
 msgstr "_ปรับขนาด"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:82
+#: ../src/menu.c:83
 msgid "Move Titlebar On_screen"
 msgstr "ย้ายแถบหัวเรื่องกลับเข้า_จอ"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:85
+#: ../src/menu.c:86
 msgid "_Close"
 msgstr "ปิ_ด"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:88 ../src/menu.c:90
+#: ../src/menu.c:89 ../src/menu.c:91
 msgid "Always on _Top"
 msgstr "อยู่_บนสุด"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:92
+#: ../src/menu.c:93
 msgid "_Always on Visible Workspace"
 msgstr "แสดงบนพื้นที่ทำงานเ_สมอ"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:94
+#: ../src/menu.c:95
 msgid "_Only on This Workspace"
 msgstr "แสดงบนพื้นที่ทำงาน_นี้เท่านั้น"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:96
+#: ../src/menu.c:97
 msgid "Move to Workspace _Left"
 msgstr "ย้ายไปพื้นที่ทำงานซ้_าย"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:98
+#: ../src/menu.c:99
 msgid "Move to Workspace R_ight"
 msgstr "ย้ายไปพื้นที่ทำงานข_วา"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:100
+#: ../src/menu.c:101
 msgid "Move to Workspace _Up"
 msgstr "ย้ายไปพื้นที่ทำงาน_บน"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:102
+#: ../src/menu.c:103
 msgid "Move to Workspace _Down"
 msgstr "ย้ายไปพื้นที่ทำงาน_ล่าง"
 
-#: ../src/menu.c:193 ../src/prefs.c:2238 ../src/prefs.c:2773
+#: ../src/menu.c:197 ../src/prefs.c:2238 ../src/prefs.c:2773
 #, c-format
 msgid "Workspace %d"
 msgstr "พื้นที่ทำงาน %d"
 
-#: ../src/menu.c:202
+#: ../src/menu.c:206
 msgid "Workspace 1_0"
 msgstr "พื้นที่ทำงาน 1_0"
 
-#: ../src/menu.c:204
+#: ../src/menu.c:208
 #, c-format
 msgid "Workspace %s%d"
 msgstr "พื้นที่ทำงาน %s%d"
 
-#: ../src/menu.c:407
+#: ../src/menu.c:411
 msgid "Move to Another _Workspace"
 msgstr "ย้ายไป_พื้นที่ทำงานอื่น"
 
@@ -620,198 +625,182 @@ msgid "Lower window below other windows"
 msgstr "ถอยหน้าต่างลงไปใว้หลังหน้าต่างอื่น"
 
 #: ../src/metacity.schemas.in.h:28
-msgid ""
-"Many actions (e.g. clicking in the client area, moving or resizing the "
-"window) normally raise the window as a side-effect. Set this option to false "
-"to decouple raising from other user actions. Even when this option is false, "
-"windows can still be raised by an alt-left-click anywhere on the window, a "
-"normal click on the window decorations, or by special messages, such as "
-"activation requests from pagers. This option is currently disabled in click-"
-"to-focus mode."
-msgstr ""
-"โดยปกติ ปฏิบัติการหลายอย่าง (เช่น การคลิกบนพื้นที่ภายในหน้าต่าง การย้ายหรือปรับขนาดหน้าต่าง) "
-"จะยกหน้าต่างขึ้นด้วย ถ้ากำหนดตัวเลือกนี้เป็นเท็จ จะไม่ยกหน้าต่างเมื่อมีปฏิสัมพันธ์กับผู้ใช้ "
-"แต่ยังสามารถยกขึ้นได้โดย alt-คลิกซ้าย ภายในพื้นที่หน้าต่าง หรือคลิกแบบธรรมดาที่กรอบหน้าต่าง "
-"หรือโดยข้อความพิเศษ เช่นการร้องขอกระตุ้นหน้าต่างจากโปรแกรมจัดหน้าพื้นโต๊ะ ขณะนี้ "
-"ตัวเลือกนี้จะไม่มีผลถ้าอยู่ในโหมดโฟกัสด้วยการคลิก"
-
-#: ../src/metacity.schemas.in.h:29
 msgid "Maximize window"
 msgstr "ขยายหน้าต่างเต็มจอ"
 
-#: ../src/metacity.schemas.in.h:30
+#: ../src/metacity.schemas.in.h:29
 msgid "Maximize window horizontally"
 msgstr "ขยายหน้าต่างเต็มด้านกว้าง"
 
-#: ../src/metacity.schemas.in.h:31
+#: ../src/metacity.schemas.in.h:30
 msgid "Maximize window vertically"
 msgstr "ขยายหน้าต่างเต็มด้านสูง"
 
-#: ../src/metacity.schemas.in.h:32
+#: ../src/metacity.schemas.in.h:31
 msgid "Minimize window"
 msgstr "ย่อหน้าต่างหาย"
 
-#: ../src/metacity.schemas.in.h:33
+#: ../src/metacity.schemas.in.h:32
 msgid "Modifier to use for modified window click actions"
 msgstr "ปุ่ม modifier เพื่อเปลี่ยนพฤติกรรมการคลิกหน้าต่าง"
 
-#: ../src/metacity.schemas.in.h:34
+#: ../src/metacity.schemas.in.h:33
 msgid "Move backward between panels and the desktop immediately"
 msgstr "ย้ายโฟกัสย้อนหลังระหว่างพาเนลและพื้นโต๊ะโดยทันที"
 
-#: ../src/metacity.schemas.in.h:35
+#: ../src/metacity.schemas.in.h:34
 msgid "Move backwards between panels and the desktop with popup"
 msgstr "ย้ายโฟกัสย้อนหลังระหว่างพาเนลและพื้นโต๊ะผ่านป๊อบอัพ"
 
-#: ../src/metacity.schemas.in.h:36
+#: ../src/metacity.schemas.in.h:35
 msgid "Move backwards between windows immediately"
 msgstr "ย้ายโฟกัสย้อนหลังระหว่างหน้าต่างโดยทันที"
 
-#: ../src/metacity.schemas.in.h:37
+#: ../src/metacity.schemas.in.h:36
 msgid "Move backwards between windows of an application immediately"
 msgstr "ย้ายโฟกัสย้อนหลังระหว่างหน้าต่างทั้งหลายของโปรแกรมประยุกต์โดยทันที"
 
-#: ../src/metacity.schemas.in.h:38
+#: ../src/metacity.schemas.in.h:37
 msgid "Move backwards between windows of an application with popup"
 msgstr "ย้ายโฟกัสย้อนหลังระหว่างหน้าต่างทั้งหลายของโปรแกรมประยุกต์ผ่านป๊อบอัพ"
 
-#: ../src/metacity.schemas.in.h:39
+#: ../src/metacity.schemas.in.h:38
 msgid "Move between panels and the desktop immediately"
 msgstr "ย้ายโฟกัสระหว่างพาเนลและพื้นโต๊ะโดยทันที"
 
-#: ../src/metacity.schemas.in.h:40
+#: ../src/metacity.schemas.in.h:39
 msgid "Move between panels and the desktop with popup"
 msgstr "ย้ายโฟกัสระหว่างพาเนลและพื้นโต๊ะผ่านป๊อบอัพ"
 
-#: ../src/metacity.schemas.in.h:41
+#: ../src/metacity.schemas.in.h:40
 msgid "Move between windows immediately"
 msgstr "ย้ายโฟกัสระหว่างหน้าต่างโดยทันที"
 
-#: ../src/metacity.schemas.in.h:42
+#: ../src/metacity.schemas.in.h:41
 msgid "Move between windows of an application immediately"
 msgstr "ย้ายโฟกัสระหว่างหน้าต่างทั้งหลายของโปรแกรมประยุกต์โดยทันที"
 
-#: ../src/metacity.schemas.in.h:43
+#: ../src/metacity.schemas.in.h:42
 msgid "Move between windows of an application with popup"
 msgstr "ย้ายโฟกัสระหว่างหน้าต่างทั้งหลายของโปรแกรมประยุกต์ผ่านป๊อบอัพ"
 
-#: ../src/metacity.schemas.in.h:44
+#: ../src/metacity.schemas.in.h:43
 msgid "Move between windows with popup"
 msgstr "ย้ายโฟกัสระหว่างหน้าต่างผ่านป๊อบอัพ"
 
-#: ../src/metacity.schemas.in.h:45
+#: ../src/metacity.schemas.in.h:44
 msgid "Move focus backwards between windows using popup display"
 msgstr "ย้ายโฟกัสย้อนหลังระหว่างหน้าต่างผ่านป๊อบอัพ"
 
-#: ../src/metacity.schemas.in.h:46
+#: ../src/metacity.schemas.in.h:45
 msgid "Move window"
 msgstr "ย้ายหน้าต่าง"
 
-#: ../src/metacity.schemas.in.h:47
+#: ../src/metacity.schemas.in.h:46
 msgid "Move window one workspace down"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านล่าง"
 
-#: ../src/metacity.schemas.in.h:48
+#: ../src/metacity.schemas.in.h:47
 msgid "Move window one workspace to the left"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านซ้าย"
 
-#: ../src/metacity.schemas.in.h:49
+#: ../src/metacity.schemas.in.h:48
 msgid "Move window one workspace to the right"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านขวา"
 
-#: ../src/metacity.schemas.in.h:50
+#: ../src/metacity.schemas.in.h:49
 msgid "Move window one workspace up"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านบน"
 
-#: ../src/metacity.schemas.in.h:51
+#: ../src/metacity.schemas.in.h:50
 msgid "Move window to east side of screen"
 msgstr "ย้ายหน้าต่างไปที่ขอบด้านตะวันออกของหน้าจอ"
 
-#: ../src/metacity.schemas.in.h:52
+#: ../src/metacity.schemas.in.h:51
 msgid "Move window to north side of screen"
 msgstr "ย้ายหน้าต่างไปที่ขอบด้านเหนือของหน้าจอ"
 
-#: ../src/metacity.schemas.in.h:53
+#: ../src/metacity.schemas.in.h:52
 msgid "Move window to north-east corner"
 msgstr "ย้ายหน้าต่างไปที่มุมตะวันออกเฉียงเหนือของหน้าจอ"
 
-#: ../src/metacity.schemas.in.h:54
+#: ../src/metacity.schemas.in.h:53
 msgid "Move window to north-west corner"
 msgstr "ย้ายหน้าต่างไปที่มุมตะวันตกเฉียงเหนือของหน้าจอ"
 
-#: ../src/metacity.schemas.in.h:55
+#: ../src/metacity.schemas.in.h:54
 msgid "Move window to south side of screen"
 msgstr "ย้ายหน้าต่างไปที่ขอบด้านใต้ของหน้าจอ"
 
-#: ../src/metacity.schemas.in.h:56
+#: ../src/metacity.schemas.in.h:55
 msgid "Move window to south-east corner"
 msgstr "ย้ายหน้าต่างไปที่มุมตะวันออกเฉียงใต้ของหน้าจอ"
 
-#: ../src/metacity.schemas.in.h:57
+#: ../src/metacity.schemas.in.h:56
 msgid "Move window to south-west corner"
 msgstr "ย้ายหน้าต่างไปที่มุมตะวันตกเฉียงใต้ของหน้าจอ"
 
-#: ../src/metacity.schemas.in.h:58
+#: ../src/metacity.schemas.in.h:57
 msgid "Move window to west side of screen"
 msgstr "ย้ายหน้าต่างไปที่ขอบด้านตะวันตกของหน้าจอ"
 
-#: ../src/metacity.schemas.in.h:59
+#: ../src/metacity.schemas.in.h:58
 msgid "Move window to workspace 1"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 1"
 
-#: ../src/metacity.schemas.in.h:60
+#: ../src/metacity.schemas.in.h:59
 msgid "Move window to workspace 10"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 10"
 
-#: ../src/metacity.schemas.in.h:61
+#: ../src/metacity.schemas.in.h:60
 msgid "Move window to workspace 11"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 11"
 
-#: ../src/metacity.schemas.in.h:62
+#: ../src/metacity.schemas.in.h:61
 msgid "Move window to workspace 12"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 12"
 
-#: ../src/metacity.schemas.in.h:63
+#: ../src/metacity.schemas.in.h:62
 msgid "Move window to workspace 2"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 2"
 
-#: ../src/metacity.schemas.in.h:64
+#: ../src/metacity.schemas.in.h:63
 msgid "Move window to workspace 3"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 3"
 
-#: ../src/metacity.schemas.in.h:65
+#: ../src/metacity.schemas.in.h:64
 msgid "Move window to workspace 4"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 4"
 
-#: ../src/metacity.schemas.in.h:66
+#: ../src/metacity.schemas.in.h:65
 msgid "Move window to workspace 5"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 5"
 
-#: ../src/metacity.schemas.in.h:67
+#: ../src/metacity.schemas.in.h:66
 msgid "Move window to workspace 6"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 6"
 
-#: ../src/metacity.schemas.in.h:68
+#: ../src/metacity.schemas.in.h:67
 msgid "Move window to workspace 7"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 7"
 
-#: ../src/metacity.schemas.in.h:69
+#: ../src/metacity.schemas.in.h:68
 msgid "Move window to workspace 8"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 8"
 
-#: ../src/metacity.schemas.in.h:70
+#: ../src/metacity.schemas.in.h:69
 msgid "Move window to workspace 9"
 msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 9"
 
-#: ../src/metacity.schemas.in.h:71
+#: ../src/metacity.schemas.in.h:70
 msgid "Name of workspace"
 msgstr "ชื่อของพื้นที่ทำงาน"
 
-#: ../src/metacity.schemas.in.h:72
+#: ../src/metacity.schemas.in.h:71
 msgid "Number of workspaces"
 msgstr "จำนวนพื้นที่ทำงาน"
 
-#: ../src/metacity.schemas.in.h:73
+#: ../src/metacity.schemas.in.h:72
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum to "
 "prevent making the desktop unusable by accidentally asking for too many "
@@ -825,25 +814,59 @@ msgstr ""
 # dialog out too wide.
 #
 # The next entry in the list will make this entry clear.
-#: ../src/metacity.schemas.in.h:74
+#: ../src/metacity.schemas.in.h:73
 msgid "Raise obscured window, otherwise lower"
 msgstr "ยกหน้าต่างขึ้นถ้าถูกบัง ไม่งั้นเอาลงด้านหลัง"
 
-#: ../src/metacity.schemas.in.h:75
+#: ../src/metacity.schemas.in.h:74
 msgid "Raise window above other windows"
 msgstr "ยกหน้าต่างขึ้นมาไว้หน้าหน้าต่างอื่นๆ"
 
-#: ../src/metacity.schemas.in.h:76
+#: ../src/metacity.schemas.in.h:75
 msgid "Resize window"
 msgstr "ปรับขนาดหน้าต่าง"
 
-#: ../src/metacity.schemas.in.h:77
+#: ../src/metacity.schemas.in.h:76
 msgid "Run a defined command"
 msgstr "เรียกใช้คำสั่งที่กำหนดไว้"
 
-#: ../src/metacity.schemas.in.h:78
+#: ../src/metacity.schemas.in.h:77
 msgid "Run a terminal"
 msgstr "เปิดเทอร์มินัล"
+
+#: ../src/metacity.schemas.in.h:78
+msgid ""
+"Setting this option to false can lead to buggy behavior, so users are "
+"strongly discouraged from changing it from the default of true. Many actions "
+"(e.g. clicking in the client area, moving or resizing the window) normally "
+"raise the window as a side-effect. Set this option to false to decouple "
+"raising from other user actions. Even when this option is false, windows can "
+"still be raised by an alt-left-click anywhere on the window, a normal click "
+"on the window decorations, or by special messages from pagers, such as "
+"activation requests from tasklist applets. This option is currently disabled "
+"in click-to-focus mode. Note that the list of ways to raise windows when "
+"raise_on_click is false does not include programmatic requests from "
+"applications to raise windows; such requests will be ignored regardless of "
+"the reason for the request. If you are an application developer and have a "
+"user complaining that your application does not work with this setting "
+"disabled, tell them it is _their_ fault for breaking their window manager "
+"and that they need to change this option back to true or live with the bug "
+"they requested. See also http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
+msgstr ""
+"การกำหนดตัวเลือกนี้เป็นเท็จ อาจทำให้การทำงานผิดพลาด ดังนั้น "
+"จึงไม่ขอแนะนำให้เปลี่ยนค่าจากค่าปกติที่เป็นค่าจริง โดยปกติ ปฏิบัติการหลายอย่าง (เช่น "
+"การคลิกบนพื้นที่ภายในหน้าต่าง การย้ายหรือปรับขนาดหน้าต่าง) จะยกหน้าต่างขึ้นด้วย "
+"ถ้ากำหนดตัวเลือกนี้เป็นเท็จ จะไม่ยกหน้าต่างเมื่อมีปฏิสัมพันธ์กับผู้ใช้ แต่ยังสามารถยกขึ้นได้โดย "
+"alt-คลิกซ้าย ภายในพื้นที่หน้าต่าง หรือคลิกแบบธรรมดาที่กรอบหน้าต่าง "
+"หรือโดยข้อความพิเศษจากโปรแกรมจัดหน้าพื้นโต๊ะ เช่น "
+"การร้องขอกระตุ้นหน้าต่างจากแอพเพล็ตรายการงาน ขณะนี้ "
+"ตัวเลือกนี้จะไม่มีผลถ้าอยู่ในโหมดโฟกัสด้วยการคลิก  สังเกตว่า วิธีการต่างๆ ที่จะยกหน้าต่างขึ้นเมื่อ "
+"raise_on_click เป็นเท็จนี้ ไม่นับรวมการร้องขอจากโปรแกรมเพื่อขอยกหน้าต่างขึ้น "
+"การร้องขอดังกล่าวจะถูกปฏิเสธไม่ว่ากรณีใดๆ ถ้าคุณเป็นนักพัฒนาโปรแกรม "
+"และมีผู้ใช้บ่นว่าโปรแกรมของคุณทำงานผิดพลาดเมื่อปิดค่านี้ ก็บอกเขาได้เลย ว่าเป็นความผิด "
+"_ของเขาเอง_ ที่ทำให้โปรแกรมจัดการหน้าต่างรวน และเขาต้องเปลี่ยนตัวเลือกนี้กลับเป็นค่าจริง มิฉะนั้น "
+"ก็จะต้องอยู่กับบั๊กที่เขาเรียกร้องต่อไป กรุณาอ่าน "
+"http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6 เพิ่มเติม"
 
 #: ../src/metacity.schemas.in.h:79
 msgid "Show the panel menu"
@@ -3383,13 +3406,13 @@ msgstr "โปรแกรมประยุกต์ตั้งค่า _NET_
 msgid "%s (on %s)"
 msgstr "%s (ที่เครื่อง %s)"
 
-#: ../src/window-props.c:1405
+#: ../src/window-props.c:1406
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "ค่า WM_TRANSIENT_FOR หน้าต่าง 0x%lx ที่กำหนดให้กับ %s ใช้ไม่ได้\n"
 
 #. first time through
-#: ../src/window.c:5532
+#: ../src/window.c:5540
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3405,7 +3428,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6141
+#: ../src/window.c:6102
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3440,6 +3463,22 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "คุณสมบัติ %s ของหน้าต่าง 0x%lx มีค่าที่ไม่ใช่ UTF-8 ที่ถูกต้องสำหรับหัวข้อที่ %d ในรายการ\n"
+
+#~ msgid ""
+#~ "Many actions (e.g. clicking in the client area, moving or resizing the "
+#~ "window) normally raise the window as a side-effect. Set this option to "
+#~ "false to decouple raising from other user actions. Even when this option "
+#~ "is false, windows can still be raised by an alt-left-click anywhere on "
+#~ "the window, a normal click on the window decorations, or by special "
+#~ "messages, such as activation requests from pagers. This option is "
+#~ "currently disabled in click-to-focus mode."
+#~ msgstr ""
+#~ "โดยปกติ ปฏิบัติการหลายอย่าง (เช่น การคลิกบนพื้นที่ภายในหน้าต่าง "
+#~ "การย้ายหรือปรับขนาดหน้าต่าง) จะยกหน้าต่างขึ้นด้วย ถ้ากำหนดตัวเลือกนี้เป็นเท็จ "
+#~ "จะไม่ยกหน้าต่างเมื่อมีปฏิสัมพันธ์กับผู้ใช้ แต่ยังสามารถยกขึ้นได้โดย alt-คลิกซ้าย "
+#~ "ภายในพื้นที่หน้าต่าง หรือคลิกแบบธรรมดาที่กรอบหน้าต่าง หรือโดยข้อความพิเศษ "
+#~ "เช่นการร้องขอกระตุ้นหน้าต่างจากโปรแกรมจัดหน้าพื้นโต๊ะ ขณะนี้ "
+#~ "ตัวเลือกนี้จะไม่มีผลถ้าอยู่ในโหมดโฟกัสด้วยการคลิก"
 
 #~ msgid "On _Top"
 #~ msgstr "_บนสุด"
