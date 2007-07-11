@@ -1,3 +1,21 @@
+2007-07-11  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-fixed.h:
+	Fixed CLUTTER_ANGLE_ macros.
+
+	* clutter/clutter-behaviour-ellipse.h:
+	* clutter/clutter-behaviour-ellipse.c:
+	Implemented "apply" signal closer to position actor on the start
+	of the elliptic path.
+	
+	(clutter_behaviour_ellipse_get_angle_begin):
+	(clutter_behaviour_ellipse_set_angle_begin):
+	(clutter_behaviour_ellipse_get_angle_end):
+	(clutter_behaviour_ellipse_set_angle_end):
+	(clutter_behaviour_ellipse_get_angle_tilt):
+	(clutter_behaviour_ellipse_set_angle_tilt):
+	Renamed with an x suffix; added versions for angles in degrees.
+	
 2007-07-09  Matthew Allum  <mallum@openedhand.com>
 
 	* TODO:

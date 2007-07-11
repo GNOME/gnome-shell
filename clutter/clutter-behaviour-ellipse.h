@@ -115,20 +115,35 @@ void              clutter_behaviour_ellipse_set_height      (ClutterBehaviourEll
 
 gint              clutter_behaviour_ellipse_get_height      (ClutterBehaviourEllipse    * self);
 
-void              clutter_behaviour_ellipse_set_angle_begin (ClutterBehaviourEllipse    * self,
-							     ClutterAngle                 angle_begin);
+void              clutter_behaviour_ellipse_set_angle_begin  (ClutterBehaviourEllipse    * self,
+							      gdouble                      angle_begin);
 
-ClutterAngle      clutter_behaviour_ellipse_get_angle_begin (ClutterBehaviourEllipse    * self);
+void              clutter_behaviour_ellipse_set_angle_beginx (ClutterBehaviourEllipse    * self,
+							      ClutterAngle                 angle_begin);
 
-void              clutter_behaviour_ellipse_set_angle_end   (ClutterBehaviourEllipse    * self,
-							     ClutterAngle                 angle_end);
+ClutterAngle      clutter_behaviour_ellipse_get_angle_beginx (ClutterBehaviourEllipse    * self);
 
-ClutterAngle      clutter_behaviour_ellipse_get_angle_end   (ClutterBehaviourEllipse    * self);
+gdouble           clutter_behaviour_ellipse_get_angle_begin  (ClutterBehaviourEllipse    * self);
 
-void              clutter_behaviour_ellipse_set_angle_tilt  (ClutterBehaviourEllipse    * self,
-							     ClutterAngle                 angle_tilt);
+void              clutter_behaviour_ellipse_set_angle_endx   (ClutterBehaviourEllipse    * self,
+							      ClutterAngle                 angle_end);
 
-ClutterAngle      clutter_behaviour_ellipse_get_angle_tilt  (ClutterBehaviourEllipse    * self);
+void              clutter_behaviour_ellipse_set_angle_end    (ClutterBehaviourEllipse    * self,
+							      gdouble                      angle_end);
+
+ClutterAngle      clutter_behaviour_ellipse_get_angle_endx   (ClutterBehaviourEllipse    * self);
+
+gdouble           clutter_behaviour_ellipse_get_angle_end    (ClutterBehaviourEllipse    * self);
+
+void              clutter_behaviour_ellipse_set_angle_tiltx  (ClutterBehaviourEllipse    * self,
+							      ClutterAngle                 angle_tilt);
+
+void              clutter_behaviour_ellipse_set_angle_tilt   (ClutterBehaviourEllipse    * self,
+							      gdouble                      angle_tilt);
+
+ClutterAngle      clutter_behaviour_ellipse_get_angle_tiltx  (ClutterBehaviourEllipse    * self);
+
+gdouble           clutter_behaviour_ellipse_get_angle_tilt   (ClutterBehaviourEllipse    * self);
 
 G_END_DECLS
 
