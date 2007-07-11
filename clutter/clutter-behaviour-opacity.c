@@ -95,14 +95,10 @@ clutter_behaviour_alpha_notify (ClutterBehaviour *behave,
 
   priv = CLUTTER_BEHAVIOUR_OPACITY (behave)->priv;
 
-  if (priv->opacity_end > priv->opacity_start)
-    delta = priv->opacity_end - priv->opacity_start;
-  else
-    delta = priv->opacity_start - priv->opacity_end;
+  delta = priv->opacity_end - priv->opacity_start;
 
   opacity = alpha_value * delta / CLUTTER_ALPHA_MAX_ALPHA;
-  opacity += ((priv->opacity_end > priv->opacity_start) ? priv->opacity_start
-                                                        : priv->opacity_end);
+  opacity += priv->opacity_start; 
 
   CLUTTER_NOTE (BEHAVIOUR, "alpha: %i, opacity: %i", alpha_value, opacity);
 

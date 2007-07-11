@@ -1,3 +1,8 @@
+2007-07-11  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-behaviour-opacity.c:
+	Don't check direction in opacity.
+
 2007-07-11  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.h:
