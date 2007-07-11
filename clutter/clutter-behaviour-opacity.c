@@ -98,7 +98,7 @@ clutter_behaviour_alpha_notify (ClutterBehaviour *behave,
   delta = priv->opacity_end - priv->opacity_start;
 
   opacity = alpha_value * delta / CLUTTER_ALPHA_MAX_ALPHA;
-  opacity += priv->opacity_start; 
+  opacity += priv->opacity_end; 
 
   CLUTTER_NOTE (BEHAVIOUR, "alpha: %i, opacity: %i", alpha_value, opacity);
 
