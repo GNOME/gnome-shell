@@ -783,6 +783,7 @@ clutter_stage_get_actor_at_pos (ClutterStage *stage,
   GLint               viewport[4];
   ClutterColor        white = { 0xff, 0xff, 0xff, 0xff };
   guint32             id;
+  gint                r,g,b;
 
   context = clutter_context_get_default ();
 
@@ -796,19 +797,17 @@ clutter_stage_get_actor_at_pos (ClutterStage *stage,
   clutter_actor_paint (CLUTTER_ACTOR (stage));
   context->pick_mode = FALSE;
 
-  /* Calls should work under both GL and GLES, note GLES needs RGBA
-   *
-   * FIXME: of course we need to handle the case where the frame buffer isn't
-   * 24bpp, i.e 16bpp which could be the case with GLES ?.
-  */
+  /* Calls should work under both GL and GLES, note GLES needs RGBA */
   glGetIntegerv(GL_VIEWPORT, viewport);
   glReadPixels(x, viewport[3] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
 
   if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
     return CLUTTER_ACTOR(stage);
 
-  /* Decode color back into an ID */
-  id =  pixel[2] | pixel[1] << 8 | pixel[0] << 16;
+  cogl_get_bitmasks (&r, &g, &b, NULL);
+
+  /* Decode color back into an ID, taking into account fb depth */
+  id = pixel[2]>>(8-b) | pixel[1]<<b>>(8-g) | pixel[0]<<(g+b)>>(8-r);
 
   return clutter_group_find_child_by_id (CLUTTER_GROUP (stage), id);
 }

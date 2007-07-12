@@ -1,3 +1,17 @@
+2007-07-12  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c: (clutter_actor_paint):
+	* clutter/clutter-stage.c: (clutter_stage_get_actor_at_pos):
+	* clutter/cogl/cogl.h:
+	* clutter/cogl/gl/cogl.c: (cogl_get_viewport):
+	* clutter/cogl/gles/cogl.c: (cogl_get_viewport):
+	Hopefully fix clutter_actor_at_pos on !32bpp displays. 
+	Based on patch from Pan Bohui, See;
+	http://bugzilla.openedhand.com/show_bug.cgi?id=390
+
+	* TODO:
+	More misc updates.
+
 2007-07-11  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-behaviour-opacity.c:

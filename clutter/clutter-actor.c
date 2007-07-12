@@ -682,15 +682,18 @@ clutter_actor_paint (ClutterActor *self)
   
   if (G_UNLIKELY(context->pick_mode == TRUE))
     {
+      gint         r, g, b;
       ClutterColor col;
       guint32      id;
 
       id = clutter_actor_get_id (self);
 
-      /* Encode the actor id into a color */
-      col.red   = (id >> 16) & 0xff;
-      col.green = (id >> 8) & 0xff;
-      col.blue  =  id & 0xff;
+      cogl_get_bitmasks (&r, &g, &b, NULL);
+
+      /* Encode the actor id into a color, taking into account bpp */
+      col.red = ((id >> (g+b)) & (0xff>>(8-r)))<<(8-r);
+      col.green = ((id >> b)  & (0xff>>(8-g))) << (8-g);
+      col.blue = (id & (0xff>>(8-b)))<<(8-b);
       col.alpha = 0xff;
 
       /* Actor will then paint silhouette of itself in supplied color.

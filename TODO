@@ -45,6 +45,7 @@ Definetly:
 Nice/Maybe:
 ===========
 
+ - Improve cogl massively to be be processing like.
  - Gradient support ?
  - Rectangle like props to all actors
  - Glitz integration

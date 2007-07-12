@@ -566,3 +566,16 @@ cogl_get_viewport (ClutterFixed v[4])
 {
   glGetFixedv(GL_VIEWPORT, &v[0]);
 }
+
+void
+cogl_get_bitmasks (gint *red, gint *green, gint *blue, gint *alpha)
+{
+  if (red)
+    GE( glGetInteger(GL_RED_BITS, red) );
+  if (green)
+    GE( glGetInteger(GL_GREEN_BITS, green) );
+  if (blue)
+    GE( glGetInteger(GL_BLUE_BITS, blue) );
+  if (alpha)
+    GE( glGetInteger(GL_ALPHA_BITS, alpha ) );
+}
