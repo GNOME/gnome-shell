@@ -176,6 +176,7 @@ clutter_event_dispatch (GSource     *source,
   ClutterEvent       *event;
   struct ts_sample    tsevent;
   ClutterMainContext *clutter_context;
+  static gint         last_x, last_y;
 
   clutter_context = clutter_context_get_default ();
 #ifdef HAVE_TSLIB
@@ -183,11 +184,20 @@ clutter_event_dispatch (GSource     *source,
   if ((!clutter_events_pending()) && 
         (ts_read(event_source->ts_device, &tsevent, 1) == 1))
     {
+      /* Avoid sending too many events which are just pressure changes. 
+       * We dont current handle pressure in events (FIXME) and thus 
+       * event_button_generate gets confused generating lots of double
+       * and triple clicks.	 
+      */
+      if (tsevent.pressure && last_x == tsevent.x && last_y == tsevent.y) 
+	return;
+
       event = clutter_event_new (CLUTTER_NOTHING);
 
+      last_x = event->button.x = tsevent.x;
+      last_y = event->button.y = tsevent.y;
+
       event->button.time = 0;
-      event->button.x = tsevent.x;
-      event->button.y = tsevent.y;
       event->button.modifier_state = 0;
       event->button.button = 1;
 
@@ -199,6 +209,7 @@ clutter_event_dispatch (GSource     *source,
       _clutter_event_button_generate (backend, event);
 
       g_queue_push_head (clutter_context->events_queue, event);
+
     }
 #endif
 

@@ -1,5 +1,10 @@
 2007-07-12  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/eglnative/clutter-event-egl.c: (clutter_event_dispatch):
+	Avoid sending too many events which are just pressure changes.
+
+2007-07-12  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-actor.c: (clutter_actor_paint):
 	* clutter/clutter-stage.c: (clutter_stage_get_actor_at_pos):
 	* clutter/cogl/cogl.h:
