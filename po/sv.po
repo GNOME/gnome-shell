@@ -1,6 +1,6 @@
 # Swedish messages for metacity.
-# Copyright (C) 2001-2006 Free Software Foundation, Inc.
-# Daniel Nylander <po@danielnylander.se>, 2006.
+# Copyright (C) 2001-2007 Free Software Foundation, Inc.
+# Daniel Nylander <po@danielnylander.se>, 2006, 2007.
 # Christian Rose <menthos@menthos.com>, 2001, 2002, 2003, 2004, 2005.
 #
 # $Id: sv.po,v 1.82 2006/08/20 14:36:24 dnylande Exp $
@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-21 13:43+0200\n"
-"PO-Revision-Date: 2007-04-21 13:14+0100\n"
+"POT-Creation-Date: 2007-07-17 14:02+0200\n"
+"PO-Revision-Date: 2007-07-17 12:35+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -33,6 +33,11 @@ msgstr "Användning: %s\n"
 #: ../src/tools/metacity-message.c:176 ../src/util.c:133
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity kompilerades utan stöd för utförligt läge\n"
+
+#: ../src/core.c:206
+#, c-format
+msgid "Unknown window information request: %d"
+msgstr "Okänd fråga efter fönsterinformation: %d"
 
 #: ../src/delete.c:67 ../src/delete.c:94 ../src/metacity-dialog.c:50
 #: ../src/theme-parser.c:484
@@ -91,47 +96,47 @@ msgstr ""
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Ödesdigert IO-fel %d (%s) på display \"%s\".\n"
 
-#: ../src/frames.c:1067
+#: ../src/frames.c:1078
 msgid "Close Window"
 msgstr "Stäng fönster"
 
-#: ../src/frames.c:1070
+#: ../src/frames.c:1081
 msgid "Window Menu"
 msgstr "Fönstermeny"
 
-#: ../src/frames.c:1073
+#: ../src/frames.c:1084
 msgid "Minimize Window"
 msgstr "Minimera fönster"
 
-#: ../src/frames.c:1076
+#: ../src/frames.c:1087
 msgid "Maximize Window"
 msgstr "Maximera fönster"
 
-#: ../src/frames.c:1079
+#: ../src/frames.c:1090
 msgid "Unmaximize Window"
 msgstr "Avmaximera fönster"
 
-#: ../src/frames.c:1082
+#: ../src/frames.c:1093
 msgid "Roll Up Window"
 msgstr "Rulla upp fönstret"
 
-#: ../src/frames.c:1085
+#: ../src/frames.c:1096
 msgid "Unroll Window"
 msgstr "Rulla tillbaka fönstret"
 
-#: ../src/frames.c:1088
+#: ../src/frames.c:1099
 msgid "Keep Window On Top"
 msgstr "Behåll fönstret överst"
 
-#: ../src/frames.c:1091
+#: ../src/frames.c:1102
 msgid "Remove Window From Top"
 msgstr "Ta bort överliggande fönster"
 
-#: ../src/frames.c:1094
+#: ../src/frames.c:1105
 msgid "Always On Visible Workspace"
 msgstr "Alltid på synlig arbetsyta"
 
-#: ../src/frames.c:1097
+#: ../src/frames.c:1108
 msgid "Put Window On Only One Workspace"
 msgstr "Placera fönstret på endast en arbetsyta"
 
@@ -156,7 +161,7 @@ msgstr ""
 msgid "No command %d has been defined.\n"
 msgstr "Inget kommando %d har definierats.\n"
 
-#: ../src/keybindings.c:3846
+#: ../src/keybindings.c:3849
 msgid "No terminal command has been defined.\n"
 msgstr "Inget terminalkommando har definierats.\n"
 
@@ -164,13 +169,13 @@ msgstr "Inget terminalkommando har definierats.\n"
 #, c-format
 msgid ""
 "metacity %s\n"
-"Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright (C) 2001-2007 Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
-"Copyright © 2001-2002 Havoc Pennington, Red Hat, Inc., coh andra\n"
+"Copyright © 2001-2007 Havoc Pennington, Red Hat, Inc., och andra\n"
 "Det här är fri programvara; se källkoden för kopieringsvillkor.\n"
 "Det finns INGA garantier; inte ens för SÄLJBARHET eller LÄMPLIGHET FÖR NÅGOT "
 "SPECIELLT ÄNDAMÅL.\n"
@@ -218,102 +223,102 @@ msgid "Failed to restart: %s\n"
 msgstr "Misslyckades med att starta om: %s\n"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:68
+#: ../src/menu.c:69
 msgid "Mi_nimize"
 msgstr "_Minimera"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:70
+#: ../src/menu.c:71
 msgid "Ma_ximize"
 msgstr "Ma_ximera"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:72
+#: ../src/menu.c:73
 msgid "Unma_ximize"
 msgstr "Avma_ximera"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:74
+#: ../src/menu.c:75
 msgid "Roll _Up"
 msgstr "_Rulla upp"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:76
+#: ../src/menu.c:77
 msgid "_Unroll"
 msgstr "_Rulla ned"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:78
+#: ../src/menu.c:79
 msgid "_Move"
 msgstr "_Flytta"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:80
+#: ../src/menu.c:81
 msgid "_Resize"
 msgstr "_Ändra storlek"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:82
+#: ../src/menu.c:83
 msgid "Move Titlebar On_screen"
 msgstr "Flytta titelrad på _skärm"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:85
+#: ../src/menu.c:86
 msgid "_Close"
 msgstr "_Stäng"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:88 ../src/menu.c:90
+#: ../src/menu.c:89 ../src/menu.c:91
 msgid "Always on _Top"
 msgstr "Alltid _överst"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:92
+#: ../src/menu.c:93
 msgid "_Always on Visible Workspace"
 msgstr "_Alltid på synlig arbetsyta"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:94
+#: ../src/menu.c:95
 msgid "_Only on This Workspace"
 msgstr "_Endast på denna arbetsyta"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:96
+#: ../src/menu.c:97
 msgid "Move to Workspace _Left"
 msgstr "Flytta till arbetsyta till _vänster"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:98
+#: ../src/menu.c:99
 msgid "Move to Workspace R_ight"
 msgstr "Flytta till arbetsyta till _höger"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:100
+#: ../src/menu.c:101
 msgid "Move to Workspace _Up"
 msgstr "Flytta till arbetsyta _uppåt"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:102
+#: ../src/menu.c:103
 msgid "Move to Workspace _Down"
 msgstr "Flytta till arbetsyta _nedanför"
 
-#: ../src/menu.c:193 ../src/prefs.c:2202 ../src/prefs.c:2737
+#: ../src/menu.c:197 ../src/prefs.c:2238 ../src/prefs.c:2773
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbetsyta %d"
 
-#: ../src/menu.c:202
+#: ../src/menu.c:206
 msgid "Workspace 1_0"
 msgstr "Arbetsyta 1_0"
 
-#: ../src/menu.c:204
+#: ../src/menu.c:208
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Arbetsyta %s%d"
 
-#: ../src/menu.c:407
+#: ../src/menu.c:411
 msgid "Move to Another _Workspace"
 msgstr "Flytta till en annan _arbetsyta"
 
@@ -643,204 +648,184 @@ msgid "Lower window below other windows"
 msgstr "Sänk fönster under andra fönster"
 
 #: ../src/metacity.schemas.in.h:28
-msgid ""
-"Many actions (e.g. clicking in the client area, moving or resizing the "
-"window) normally raise the window as a side-effect. Set this option to false "
-"to decouple raising from other user actions. Even when this option is false, "
-"windows can still be raised by an alt-left-click anywhere on the window, a "
-"normal click on the window decorations, or by special messages, such as "
-"activation requests from pagers. This option is currently disabled in click-"
-"to-focus mode."
-msgstr ""
-"Många åtgärder (exempelvis klickning i klientområde, flyttning eller "
-"förstorning av fönstret) höjer normalt sett fönstret som en sidoeffekt. "
-"Ställ in detta alternativ till falskt för att särbehandla höjning från andra "
-"användarinteraktioner. När den är falsk kan fönster fortfarande höjas genom "
-"en alt-vänster-klick varsomhelst på fönstret, ett normalt klick på "
-"fönsterdekorationerna, eller av speciella meddelanden såsom "
-"aktiveringsbegäran från anropare, kan också höja fönstren när detta "
-"alternativ är falskt. Alternativet är för tillfället inaktiverat i klicka-"
-"för-fokus-läget."
-
-#: ../src/metacity.schemas.in.h:29
 msgid "Maximize window"
 msgstr "Maximera fönster"
 
-#: ../src/metacity.schemas.in.h:30
+#: ../src/metacity.schemas.in.h:29
 msgid "Maximize window horizontally"
 msgstr "Maximera fönster horisontellt"
 
-#: ../src/metacity.schemas.in.h:31
+#: ../src/metacity.schemas.in.h:30
 msgid "Maximize window vertically"
 msgstr "Maximera fönster vertikalt"
 
-#: ../src/metacity.schemas.in.h:32
+#: ../src/metacity.schemas.in.h:31
 msgid "Minimize window"
 msgstr "Minimera fönster"
 
-#: ../src/metacity.schemas.in.h:33
+#: ../src/metacity.schemas.in.h:32
 msgid "Modifier to use for modified window click actions"
 msgstr "Modifierare att använda för modifierade fönsterklickåtgärder"
 
-#: ../src/metacity.schemas.in.h:34
+#: ../src/metacity.schemas.in.h:33
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Flytta baklänges mellan paneler och skrivbordet omedelbart"
 
-#: ../src/metacity.schemas.in.h:35
+#: ../src/metacity.schemas.in.h:34
 msgid "Move backwards between panels and the desktop with popup"
 msgstr ""
 "Flytta baklänges mellan paneler och skrivbordet genom användning av "
 "popupfönster"
 
-#: ../src/metacity.schemas.in.h:36
+#: ../src/metacity.schemas.in.h:35
 msgid "Move backwards between windows immediately"
 msgstr "Flytta baklänges mellan fönster omedelbart"
 
-#: ../src/metacity.schemas.in.h:37
+#: ../src/metacity.schemas.in.h:36
 msgid "Move backwards between windows of an application immediately"
 msgstr "Flytta baklänges mellan ett programs fönster omedelbart"
 
-#: ../src/metacity.schemas.in.h:38
+#: ../src/metacity.schemas.in.h:37
 msgid "Move backwards between windows of an application with popup"
 msgstr "Flytta baklänges mellan ett programs fönster med popupfönster"
 
-#: ../src/metacity.schemas.in.h:39
+#: ../src/metacity.schemas.in.h:38
 msgid "Move between panels and the desktop immediately"
 msgstr "Flytta mellan paneler och skrivbordet omedelbart"
 
-#: ../src/metacity.schemas.in.h:40
+#: ../src/metacity.schemas.in.h:39
 msgid "Move between panels and the desktop with popup"
 msgstr "Flytta mellan paneler och skrivbordet genom användning av popupfönster"
 
-#: ../src/metacity.schemas.in.h:41
+#: ../src/metacity.schemas.in.h:40
 msgid "Move between windows immediately"
 msgstr "Flytta mellan fönster omedelbart"
 
-#: ../src/metacity.schemas.in.h:42
+#: ../src/metacity.schemas.in.h:41
 msgid "Move between windows of an application immediately"
 msgstr "Flytta mellan ett programs fönster omedelbart"
 
-#: ../src/metacity.schemas.in.h:43
+#: ../src/metacity.schemas.in.h:42
 msgid "Move between windows of an application with popup"
 msgstr "Flytta mellan ett programs fönster med popupfönster"
 
-#: ../src/metacity.schemas.in.h:44
+#: ../src/metacity.schemas.in.h:43
 msgid "Move between windows with popup"
 msgstr "Flytta mellan fönster genom användning av popupfönster"
 
-#: ../src/metacity.schemas.in.h:45
+#: ../src/metacity.schemas.in.h:44
 msgid "Move focus backwards between windows using popup display"
 msgstr "Flytta fokus baklänges mellan fönster genom användning av popupfönster"
 
-#: ../src/metacity.schemas.in.h:46
+#: ../src/metacity.schemas.in.h:45
 msgid "Move window"
 msgstr "Flytta fönster"
 
-#: ../src/metacity.schemas.in.h:47
+#: ../src/metacity.schemas.in.h:46
 msgid "Move window one workspace down"
 msgstr "Flytta fönster en arbetsyta nedåt"
 
-#: ../src/metacity.schemas.in.h:48
+#: ../src/metacity.schemas.in.h:47
 msgid "Move window one workspace to the left"
 msgstr "Flytta fönster en arbetsyta åt vänster"
 
-#: ../src/metacity.schemas.in.h:49
+#: ../src/metacity.schemas.in.h:48
 msgid "Move window one workspace to the right"
 msgstr "Flytta fönster en arbetsyta åt höger"
 
-#: ../src/metacity.schemas.in.h:50
+#: ../src/metacity.schemas.in.h:49
 msgid "Move window one workspace up"
 msgstr "Flytta fönster en arbetsyta uppåt"
 
-#: ../src/metacity.schemas.in.h:51
+#: ../src/metacity.schemas.in.h:50
 msgid "Move window to east side of screen"
 msgstr "Flytta fönstret till östra sidan av skärmen"
 
-#: ../src/metacity.schemas.in.h:52
+#: ../src/metacity.schemas.in.h:51
 msgid "Move window to north side of screen"
 msgstr "Flytta fönstret till norra sidan av skärmen"
 
-#: ../src/metacity.schemas.in.h:53
+#: ../src/metacity.schemas.in.h:52
 msgid "Move window to north-east corner"
 msgstr "Flytta fönstret till nordöstra hörnet"
 
-#: ../src/metacity.schemas.in.h:54
+#: ../src/metacity.schemas.in.h:53
 msgid "Move window to north-west corner"
 msgstr "Flytta fönstret till nordvästra hörnet"
 
-#: ../src/metacity.schemas.in.h:55
+#: ../src/metacity.schemas.in.h:54
 msgid "Move window to south side of screen"
 msgstr "Flytta fönstret till södra sidan av skärmen"
 
-#: ../src/metacity.schemas.in.h:56
+#: ../src/metacity.schemas.in.h:55
 msgid "Move window to south-east corner"
 msgstr "Flytta fönstret till sydöstra hörnet"
 
-#: ../src/metacity.schemas.in.h:57
+#: ../src/metacity.schemas.in.h:56
 msgid "Move window to south-west corner"
 msgstr "Flytta fönstret till sydvästra hörnet"
 
-#: ../src/metacity.schemas.in.h:58
+#: ../src/metacity.schemas.in.h:57
 msgid "Move window to west side of screen"
 msgstr "Flytta fönstret till västra sidan av skärmen"
 
-#: ../src/metacity.schemas.in.h:59
+#: ../src/metacity.schemas.in.h:58
 msgid "Move window to workspace 1"
 msgstr "Flytta fönster till arbetsyta 1"
 
-#: ../src/metacity.schemas.in.h:60
+#: ../src/metacity.schemas.in.h:59
 msgid "Move window to workspace 10"
 msgstr "Flytta fönster till arbetsyta 10"
 
-#: ../src/metacity.schemas.in.h:61
+#: ../src/metacity.schemas.in.h:60
 msgid "Move window to workspace 11"
 msgstr "Flytta fönster till arbetsyta 11"
 
-#: ../src/metacity.schemas.in.h:62
+#: ../src/metacity.schemas.in.h:61
 msgid "Move window to workspace 12"
 msgstr "Flytta fönster till arbetsyta 12"
 
-#: ../src/metacity.schemas.in.h:63
+#: ../src/metacity.schemas.in.h:62
 msgid "Move window to workspace 2"
 msgstr "Flytta fönster till arbetsyta 2"
 
-#: ../src/metacity.schemas.in.h:64
+#: ../src/metacity.schemas.in.h:63
 msgid "Move window to workspace 3"
 msgstr "Flytta fönster till arbetsyta 3"
 
-#: ../src/metacity.schemas.in.h:65
+#: ../src/metacity.schemas.in.h:64
 msgid "Move window to workspace 4"
 msgstr "Flytta fönster till arbetsyta 4"
 
-#: ../src/metacity.schemas.in.h:66
+#: ../src/metacity.schemas.in.h:65
 msgid "Move window to workspace 5"
 msgstr "Flytta fönster till arbetsyta 5"
 
-#: ../src/metacity.schemas.in.h:67
+#: ../src/metacity.schemas.in.h:66
 msgid "Move window to workspace 6"
 msgstr "Flytta fönster till arbetsyta 6"
 
-#: ../src/metacity.schemas.in.h:68
+#: ../src/metacity.schemas.in.h:67
 msgid "Move window to workspace 7"
 msgstr "Flytta fönster till arbetsyta 7"
 
-#: ../src/metacity.schemas.in.h:69
+#: ../src/metacity.schemas.in.h:68
 msgid "Move window to workspace 8"
 msgstr "Flytta fönster till arbetsyta 8"
 
-#: ../src/metacity.schemas.in.h:70
+#: ../src/metacity.schemas.in.h:69
 msgid "Move window to workspace 9"
 msgstr "Flytta fönster till arbetsyta 9"
 
-#: ../src/metacity.schemas.in.h:71
+#: ../src/metacity.schemas.in.h:70
 msgid "Name of workspace"
 msgstr "Namn på arbetsyta"
 
-#: ../src/metacity.schemas.in.h:72
+#: ../src/metacity.schemas.in.h:71
 msgid "Number of workspaces"
 msgstr "Antal arbetsytor"
 
-#: ../src/metacity.schemas.in.h:73
+#: ../src/metacity.schemas.in.h:72
 msgid ""
 "Number of workspaces. Must be more than zero, and has a fixed maximum to "
 "prevent making the desktop unusable by accidentally asking for too many "
@@ -850,25 +835,63 @@ msgstr ""
 "att förhindra att skrivbordet förstörs genom att för många arbetsytor begärs "
 "av misstag."
 
-#: ../src/metacity.schemas.in.h:74
+#: ../src/metacity.schemas.in.h:73
 msgid "Raise obscured window, otherwise lower"
 msgstr "Höj fönstret om skymt, sänk det annars"
 
-#: ../src/metacity.schemas.in.h:75
+#: ../src/metacity.schemas.in.h:74
 msgid "Raise window above other windows"
 msgstr "Höj fönstret över andra fönster"
 
-#: ../src/metacity.schemas.in.h:76
+#: ../src/metacity.schemas.in.h:75
 msgid "Resize window"
 msgstr "Ändra storlek på fönster"
 
-#: ../src/metacity.schemas.in.h:77
+#: ../src/metacity.schemas.in.h:76
 msgid "Run a defined command"
 msgstr "Kör ett angivet kommando"
 
-#: ../src/metacity.schemas.in.h:78
+#: ../src/metacity.schemas.in.h:77
 msgid "Run a terminal"
 msgstr "Kör en terminal"
+
+#: ../src/metacity.schemas.in.h:78
+msgid ""
+"Setting this option to false can lead to buggy behavior, so users are "
+"strongly discouraged from changing it from the default of true. Many actions "
+"(e.g. clicking in the client area, moving or resizing the window) normally "
+"raise the window as a side-effect. Set this option to false to decouple "
+"raising from other user actions. Even when this option is false, windows can "
+"still be raised by an alt-left-click anywhere on the window, a normal click "
+"on the window decorations, or by special messages from pagers, such as "
+"activation requests from tasklist applets. This option is currently disabled "
+"in click-to-focus mode. Note that the list of ways to raise windows when "
+"raise_on_click is false does not include programmatic requests from "
+"applications to raise windows; such requests will be ignored regardless of "
+"the reason for the request. If you are an application developer and have a "
+"user complaining that your application does not work with this setting "
+"disabled, tell them it is _their_ fault for breaking their window manager "
+"and that they need to change this option back to true or live with the bug "
+"they requested. See also http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
+msgstr ""
+"Ställa in det här alternativet till falskt kan leda till felaktigt beteende, "
+"därför rekommenderas det inte att användare ändrar det från standardvärdet "
+"sant. Många åtgärder (t.ex. klicka i klientrutan, flytta eller ändra storlek "
+"på fönstret) har sidoeffekten att fönstret höjs. Ställ in det här "
+"alternativet till falskt för att koppla loss höjning från andra "
+"användaråtgärder. Även när det här alternativet är falskt kan fönster "
+"fortfarande höjas med vänstra Alt och klickning var som helst i fönstret, "
+"ett normalt klick på fönsterdekorationerna, eller genom speciella "
+"meddelanden från visare, såsom aktiveringsbegäran från fönsterlistprogram. "
+"Det här alternativet är för närvarande inaktiverat i klicka-för-fokus-läget. "
+"Observera att listan över sätt att höja fönster när raise_on_click är falskt "
+"inte inkluderar programbegäran från program för att höja fönster; sådana "
+"begäran kommer att ignoreras oavsett anledningen till begäran. Om du är "
+"programutvecklare och har en användare som klagar på att ditt program inte "
+"fungerar när den här inställningen är inaktiverad, tala om för dem att det "
+"är _deras_ fel att deras fönsterhanterare är trasig och att de behöver ändra "
+"tillbaka det här alternativet till sant eller leva med felet som de begärde. "
+"Se även http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
 
 #: ../src/metacity.schemas.in.h:79
 msgid "Show the panel menu"
@@ -2375,19 +2398,19 @@ msgid "Window title font"
 msgstr "Typsnitt för fönstertitel"
 
 # SUN CHANGED MESSAGE
-#: ../src/prefs.c:579 ../src/prefs.c:595 ../src/prefs.c:611 ../src/prefs.c:627
-#: ../src/prefs.c:643 ../src/prefs.c:659 ../src/prefs.c:675 ../src/prefs.c:695
-#: ../src/prefs.c:711 ../src/prefs.c:727 ../src/prefs.c:745 ../src/prefs.c:761
-#: ../src/prefs.c:780 ../src/prefs.c:796 ../src/prefs.c:813 ../src/prefs.c:829
-#: ../src/prefs.c:845 ../src/prefs.c:862 ../src/prefs.c:878 ../src/prefs.c:894
-#: ../src/prefs.c:910 ../src/prefs.c:926 ../src/prefs.c:941 ../src/prefs.c:956
-#: ../src/prefs.c:971 ../src/prefs.c:987 ../src/prefs.c:1003
-#: ../src/prefs.c:1019 ../src/prefs.c:1035
+#: ../src/prefs.c:579 ../src/prefs.c:607 ../src/prefs.c:623 ../src/prefs.c:639
+#: ../src/prefs.c:655 ../src/prefs.c:671 ../src/prefs.c:687 ../src/prefs.c:703
+#: ../src/prefs.c:723 ../src/prefs.c:739 ../src/prefs.c:755 ../src/prefs.c:773
+#: ../src/prefs.c:789 ../src/prefs.c:808 ../src/prefs.c:824 ../src/prefs.c:859
+#: ../src/prefs.c:875 ../src/prefs.c:892 ../src/prefs.c:908 ../src/prefs.c:924
+#: ../src/prefs.c:940 ../src/prefs.c:956 ../src/prefs.c:971 ../src/prefs.c:986
+#: ../src/prefs.c:1001 ../src/prefs.c:1017 ../src/prefs.c:1033
+#: ../src/prefs.c:1049 ../src/prefs.c:1065
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-nyckeln \"%s\" är satt till en ogiltig typ\n"
 
-#: ../src/prefs.c:1080
+#: ../src/prefs.c:1110
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2396,12 +2419,12 @@ msgstr ""
 "\"%s\" som hittades i konfigurationsdatabasen är inte ett giltigt värde för "
 "musknappsmodifierare\n"
 
-#: ../src/prefs.c:1104 ../src/prefs.c:1125 ../src/prefs.c:1667
+#: ../src/prefs.c:1134 ../src/prefs.c:1155 ../src/prefs.c:1697
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-nyckeln \"%s\" är satt till ett ogiltigt värde\n"
 
-#: ../src/prefs.c:1254
+#: ../src/prefs.c:1284
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
@@ -2410,12 +2433,12 @@ msgstr ""
 "%d lagrad i GConf-nyckeln %s är inte en rimlig cursor_size; måste vara inom "
 "intervallet 1..128\n"
 
-#: ../src/prefs.c:1334
+#: ../src/prefs.c:1364
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Kunde inte tolka typsnittsbeskrivningen \"%s\" från GConf-nyckeln %s\n"
 
-#: ../src/prefs.c:1561
+#: ../src/prefs.c:1591
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2424,7 +2447,7 @@ msgstr ""
 "%d lagrad i GConf-nyckeln %s är inte ett rimligt antal arbetsytor, aktuellt "
 "maxvärde är %d\n"
 
-#: ../src/prefs.c:1621
+#: ../src/prefs.c:1651
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2432,17 +2455,17 @@ msgstr ""
 "Fixar för trasiga program är inaktiverade. En del program fungerar kanske "
 "inte korrekt.\n"
 
-#: ../src/prefs.c:1694
+#: ../src/prefs.c:1724
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d lagrad i GConf-nyckeln %s är inte i intervallet 0 till %d\n"
 
-#: ../src/prefs.c:1837
+#: ../src/prefs.c:1873
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Fel vid inställning av antalet arbetsytor till %d: %s\n"
 
-#: ../src/prefs.c:2232 ../src/prefs.c:2402
+#: ../src/prefs.c:2268 ../src/prefs.c:2438
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2451,7 +2474,7 @@ msgstr ""
 "\"%s\" som hittades i konfigurationsdatabasen är inte ett giltigt värde för "
 "tangentbindningen \"%s\"\n"
 
-#: ../src/prefs.c:2818
+#: ../src/prefs.c:2854
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fel vid inställning av namnet på arbetsyta %d till \"%s\": %s\n"
@@ -3638,13 +3661,13 @@ msgstr "Programmet ställde in ett felaktigt _NET_WM_PID %lu\n"
 msgid "%s (on %s)"
 msgstr "%s (på %s)"
 
-#: ../src/window-props.c:1405
+#: ../src/window-props.c:1406
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Ogiltigt WM_TRANSIENT_FOR-fönster 0x%lx angivet för %s.\n"
 
 #. first time through
-#: ../src/window.c:5532
+#: ../src/window.c:5540
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3660,7 +3683,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6141
+#: ../src/window.c:6102
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3696,6 +3719,25 @@ msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
 "Egenskap %s på fönster 0x%lx innehöll ogiltig UTF-8 för objekt %d i listan\n"
+
+#~ msgid ""
+#~ "Many actions (e.g. clicking in the client area, moving or resizing the "
+#~ "window) normally raise the window as a side-effect. Set this option to "
+#~ "false to decouple raising from other user actions. Even when this option "
+#~ "is false, windows can still be raised by an alt-left-click anywhere on "
+#~ "the window, a normal click on the window decorations, or by special "
+#~ "messages, such as activation requests from pagers. This option is "
+#~ "currently disabled in click-to-focus mode."
+#~ msgstr ""
+#~ "Många åtgärder (exempelvis klickning i klientområde, flyttning eller "
+#~ "förstorning av fönstret) höjer normalt sett fönstret som en sidoeffekt. "
+#~ "Ställ in detta alternativ till falskt för att särbehandla höjning från "
+#~ "andra användarinteraktioner. När den är falsk kan fönster fortfarande "
+#~ "höjas genom en alt-vänster-klick varsomhelst på fönstret, ett normalt "
+#~ "klick på fönsterdekorationerna, eller av speciella meddelanden såsom "
+#~ "aktiveringsbegäran från anropare, kan också höja fönstren när detta "
+#~ "alternativ är falskt. Alternativet är för tillfället inaktiverat i klicka-"
+#~ "för-fokus-läget."
 
 #~ msgid "On _Top"
 #~ msgstr "_Överst"
