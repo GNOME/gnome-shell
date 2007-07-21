@@ -427,7 +427,9 @@ clutter_stage_glx_set_cursor_visible (ClutterStage *stage,
 
   if (show_cursor)
     {
-#ifdef HAVE_XFIXES
+#if 0 /* HAVE_XFIXES - borked on fiesty at least so disabled until further 
+       *               investigation.	 
+       */
       XFixesShowCursor (stage_glx->xdpy, stage_glx->xwin);
 #else
       XUndefineCursor (stage_glx->xdpy, stage_glx->xwin);
@@ -435,7 +437,7 @@ clutter_stage_glx_set_cursor_visible (ClutterStage *stage,
     }
   else
     {
-#ifdef HAVE_XFIXES
+#if 0 /* HAVE_XFIXES - borked */
       XFixesHideCursor (stage_glx->xdpy, stage_glx->xwin);
 #else
       XColor col;
@@ -540,7 +542,7 @@ clutter_stage_glx_draw_to_pixbuf (ClutterStage *stage,
     }
   else
     {
-      GdkPixbuf *tmp = NULL;
+      GdkPixbuf *tmp = NULL, *tmp2 = NULL;
       gint stride;
 
       stride = ((width * 4 + 3) &~ 3);
@@ -561,9 +563,11 @@ clutter_stage_glx_draw_to_pixbuf (ClutterStage *stage,
 				      snapshot_pixbuf_free,
 				      NULL);
       
-      pixb = gdk_pixbuf_flip (tmp, TRUE); 
-
+      tmp2 = gdk_pixbuf_flip (tmp, TRUE); 
       g_object_unref (tmp);
+
+      pixb = gdk_pixbuf_rotate_simple (tmp2, GDK_PIXBUF_ROTATE_UPSIDEDOWN);
+      g_object_unref (tmp2);
    }
 
   return pixb;

@@ -1,3 +1,15 @@
+2007-07-21  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-event.c:
+	Correct  clutter_event_get_state () return type. Fixes #398
+
+	* clutter/glx/clutter-stage-glx.c:
+	Disable use XFixes cursor visibility funcs. Appears to have issues
+	on feisty X Server at least. Fallback should work generally better.
+	
+	Fix non offscreen clutter_stage_snapshot to also rotate read pixel
+	data to correct orientation. 
+	
 2007-07-12  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/eglnative/clutter-event-egl.c: (clutter_event_dispatch):

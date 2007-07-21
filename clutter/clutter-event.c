@@ -106,7 +106,7 @@ clutter_event_get_time (ClutterEvent *event)
  *
  * Since: 0.4
  */
-guint32
+ClutterModifierType
 clutter_event_get_state (ClutterEvent *event)
 {
   g_return_val_if_fail (event != NULL, 0);
