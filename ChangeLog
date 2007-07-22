@@ -1,5 +1,12 @@
 2007-07-22  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-behaviour-ellipse.c: Remove pointer indirections;
+	add sanity checks on the public entry points; make all the public
+	properties floating point (where needed) andconvert them to fixed
+	point internally. (Partial fix for #389)
+
+2007-07-22  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-behaviour.[ch]: Rename ClutterBehaviour::apply
 	and ClutterBehaviour::remove to ClutterBehaviour::applied and
 	ClutterBehaviour::removed respectively, and emit them when the

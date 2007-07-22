@@ -37,6 +37,7 @@
 #include "clutter-fixed.h"
 #include "clutter-marshal.h"
 #include "clutter-behaviour-ellipse.h"
+#include "clutter-debug.h"
 #include "clutter-enum-types.h"
 #include "clutter-private.h"
 
@@ -72,30 +73,26 @@ enum
 
 struct _ClutterBehaviourEllipsePrivate
 {
-  /*
-   * Ellipse center
-   */
   ClutterKnot  center;
+  
   gint         a;
   gint         b;
+  
   ClutterAngle angle_begin;
   ClutterAngle angle_end;
   ClutterAngle angle_tilt;
 };
 
-static void 
-clutter_behaviour_ellipse_finalize (GObject *object)
-{
-  G_OBJECT_CLASS (clutter_behaviour_ellipse_parent_class)->finalize (object);
-}
-
 static void
-clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse * e,
-                                   ClutterAngle              angle,
-                                   ClutterKnot             * knot)
+clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse *e,
+                                   ClutterAngle             angle,
+                                   ClutterKnot             *knot)
 {
-  gint x = CFX_INT (e->priv->a * clutter_cosi (angle));
-  gint y = CFX_INT (e->priv->b * clutter_sini (angle));
+  ClutterBehaviourEllipsePrivate *priv = e->priv;
+  gint x, y;
+  
+  x = CLUTTER_FIXED_INT (priv->a * clutter_cosi (angle));
+  y = CLUTTER_FIXED_INT (priv->b * clutter_sini (angle));
 
   if (e->priv->angle_tilt)
     {
@@ -109,14 +106,14 @@ clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse * e,
        */
       ClutterFixed x2, y2;
 
-      x2 = x * clutter_cosi (e->priv->angle_tilt) -
-        y * clutter_sini (e->priv->angle_tilt);
+      x2 = x * clutter_cosi (priv->angle_tilt)
+           - y * clutter_sini (priv->angle_tilt);
 
-      y2 = y * clutter_cosi (e->priv->angle_tilt) +
-        x * clutter_sini (e->priv->angle_tilt);
+      y2 = y * clutter_cosi (priv->angle_tilt)
+           + x * clutter_sini (priv->angle_tilt);
       
-      knot->x = CFX_INT (x2);
-      knot->y = CFX_INT (y2);
+      knot->x = CLUTTER_FIXED_INT (x2);
+      knot->y = CLUTTER_FIXED_INT (y2);
     }
   else
     {
@@ -124,10 +121,10 @@ clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse * e,
       knot->y = y;
     }
   
-#if 0
-   g_debug ("advancing to angle %d [%d, %d] (a: %d, b: %d)", 
-            angle, knot->x, knot->y, e->priv->a, e->priv->b);
-#endif
+  CLUTTER_NOTE (BEHAVIOUR, "advancing to angle %d [%d, %d] (a: %d, b: %d)", 
+                angle,
+                knot->x, knot->y,
+                priv->a, priv->b);
 }
 
 
@@ -137,38 +134,39 @@ actor_apply_knot_foreach (ClutterBehaviour *behave,
                           gpointer          data)
 {
   ClutterKnot *knot = data;
+
   clutter_actor_set_position (actor, knot->x, knot->y);
 }
 
 static void
-clutter_behaviour_ellipse_alpha_notify (ClutterBehaviour * behave,
-                                        guint32            alpha)
+clutter_behaviour_ellipse_alpha_notify (ClutterBehaviour *behave,
+                                        guint32           alpha)
 {
+  ClutterBehaviourEllipse *self = CLUTTER_BEHAVIOUR_ELLIPSE (behave);
+  ClutterBehaviourEllipsePrivate *priv = self->priv;
   ClutterKnot knot;
-  ClutterBehaviourEllipse * self = CLUTTER_BEHAVIOUR_ELLIPSE (behave);
   ClutterAngle angle;
 
-  if (self->priv->angle_end >= self->priv->angle_begin)
+  if (priv->angle_end >= priv->angle_begin)
     {
-      angle = self->priv->angle_end - self->priv->angle_begin;
-      angle =
-        (angle * alpha) / CLUTTER_ALPHA_MAX_ALPHA + self->priv->angle_begin;
+      angle = (priv->angle_end - priv->angle_begin)
+              * alpha
+              / CLUTTER_ALPHA_MAX_ALPHA
+              + priv->angle_begin;
     }
   else
     {
-      angle = self->priv->angle_begin - self->priv->angle_end;
-      angle =
-        self->priv->angle_begin - (angle * alpha) / CLUTTER_ALPHA_MAX_ALPHA;
+      angle = priv->angle_begin
+              - ((priv->angle_begin - priv->angle_end) * alpha)
+              / CLUTTER_ALPHA_MAX_ALPHA;
     }
 
   clutter_behaviour_ellipse_advance (self, angle, &knot);
 
-  knot.x += self->priv->center.x;
-  knot.y += self->priv->center.y;
+  knot.x += priv->center.x;
+  knot.y += priv->center.y;
   
-  clutter_behaviour_actors_foreach (behave, 
-                                    actor_apply_knot_foreach,
-                                    &knot);
+  clutter_behaviour_actors_foreach (behave, actor_apply_knot_foreach, &knot);
 }
 
 static void
@@ -177,21 +175,19 @@ clutter_behaviour_ellipse_set_property (GObject      *gobject,
                                         const GValue *value,
                                         GParamSpec   *pspec)
 {
-  ClutterBehaviourEllipse * el = CLUTTER_BEHAVIOUR_ELLIPSE (gobject);
-  ClutterBehaviourEllipsePrivate *priv;
-
-  priv = CLUTTER_BEHAVIOUR_ELLIPSE (gobject)->priv;
+  ClutterBehaviourEllipse *el = CLUTTER_BEHAVIOUR_ELLIPSE (gobject);
+  ClutterBehaviourEllipsePrivate *priv = el->priv;
 
   switch (prop_id)
     {
     case PROP_ANGLE_BEGIN:
-      priv->angle_begin = g_value_get_int (value);
+      priv->angle_begin = CLUTTER_ANGLE_FROM_DEG (g_value_get_double (value));
       break;
     case PROP_ANGLE_END:
-      priv->angle_end = g_value_get_int (value);
+      priv->angle_end = CLUTTER_ANGLE_FROM_DEG (g_value_get_double (value));
       break;
     case PROP_ANGLE_TILT:
-      priv->angle_tilt = g_value_get_int (value);
+      priv->angle_tilt = CLUTTER_ANGLE_FROM_DEG (g_value_get_double (value));
       break;
     case PROP_WIDTH:
       priv->a = g_value_get_int (value) >> 1;
@@ -201,11 +197,10 @@ clutter_behaviour_ellipse_set_property (GObject      *gobject,
       break;
     case PROP_CENTER:
       {
-        ClutterKnot * k = g_value_get_boxed (value);
-        if (k)
-          clutter_behaviour_ellipse_set_center (el, k->x, k->y);
+        ClutterKnot *knot = g_value_get_boxed (value);
+        if (knot)
+          clutter_behaviour_ellipse_set_center (el, knot->x, knot->y);
       }
-      
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
@@ -226,19 +221,19 @@ clutter_behaviour_ellipse_get_property (GObject    *gobject,
   switch (prop_id)
     {
     case PROP_ANGLE_BEGIN:
-      g_value_set_int (value, priv->angle_begin);
+      g_value_set_double (value, CLUTTER_ANGLE_TO_DEG (priv->angle_begin));
       break;
     case PROP_ANGLE_END:
-      g_value_set_int (value, priv->angle_end);
+      g_value_set_double (value, CLUTTER_ANGLE_TO_DEG (priv->angle_end));
       break;
     case PROP_ANGLE_TILT:
-      g_value_set_int (value, priv->angle_tilt);
+      g_value_set_double (value, CLUTTER_ANGLE_TO_DEG (priv->angle_tilt));
       break;
     case PROP_WIDTH:
-      g_value_set_int (value, 2 * priv->a);
+      g_value_set_int (value, (priv->a << 1));
       break;
     case PROP_HEIGHT:
-      g_value_set_int (value, 2 * priv->b);
+      g_value_set_int (value, (priv->b << 1));
       break;
     case PROP_CENTER:
       g_value_set_boxed (value, &priv->center);
@@ -250,33 +245,36 @@ clutter_behaviour_ellipse_get_property (GObject    *gobject,
 }
 
 static void
-clutter_behaviour_ellipse_apply    (ClutterBehaviour *behave,
-                                    ClutterActor     *actor)
+clutter_behaviour_ellipse_applied (ClutterBehaviour *behave,
+                                   ClutterActor     *actor)
 {
+  ClutterBehaviourEllipse *e = CLUTTER_BEHAVIOUR_ELLIPSE (behave);
   ClutterKnot knot;
-  ClutterBehaviourEllipse * e = CLUTTER_BEHAVIOUR_ELLIPSE (behave);
   
   clutter_behaviour_ellipse_advance (e, e->priv->angle_begin, &knot);
 
   clutter_actor_set_position (actor, knot.x, knot.y);
-  
+
+#if 0
+  /* no need to chain up: ClutterBehaviourEllipse's parent class does
+   * not have a class closure for ::apply
+   */
   if (CLUTTER_BEHAVIOUR_CLASS (clutter_behaviour_ellipse_parent_class)->apply)
     CLUTTER_BEHAVIOUR_CLASS (clutter_behaviour_ellipse_parent_class)->apply (behave, actor);
+#endif
 }
-
 
 static void
 clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
 {
-  GObjectClass          * object_class = G_OBJECT_CLASS (klass);
-  ClutterBehaviourClass * behave_class = CLUTTER_BEHAVIOUR_CLASS (klass);
+  GObjectClass          *object_class = G_OBJECT_CLASS (klass);
+  ClutterBehaviourClass *behave_class = CLUTTER_BEHAVIOUR_CLASS (klass);
 
-  object_class->finalize = clutter_behaviour_ellipse_finalize;
   object_class->set_property = clutter_behaviour_ellipse_set_property;
   object_class->get_property = clutter_behaviour_ellipse_get_property;
 
   behave_class->alpha_notify = clutter_behaviour_ellipse_alpha_notify;
-  behave_class->apply = clutter_behaviour_ellipse_apply;
+  behave_class->applied = clutter_behaviour_ellipse_applied;
   
   /**
    * ClutterBehaviourEllipse:angle-begin:
@@ -287,11 +285,11 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
    */
   g_object_class_install_property (object_class,
                                    PROP_ANGLE_BEGIN,
-                                   g_param_spec_int ("angle-begin",
-                                                     "Angle Begin",
-                                                     "Initial angle",
-                                                     G_MININT, G_MAXINT, 0,
-                                                     CLUTTER_PARAM_READWRITE));
+                                   g_param_spec_double ("angle-begin",
+                                                        "Angle Begin",
+                                                        "Initial angle",
+                                                        0.0, 360.0, 0.0,
+                                                        CLUTTER_PARAM_READWRITE));
   /**
    * ClutterBehaviourEllipse:angle-end:
    *
@@ -301,27 +299,25 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
    */
   g_object_class_install_property (object_class,
                                    PROP_ANGLE_END,
-                                   g_param_spec_int ("angle-end",
-                                                     "Angle End",
-                                                     "Final angle",
-                                                     G_MININT, G_MAXINT, 1024,
-                                                     CLUTTER_PARAM_READWRITE));
-
+                                   g_param_spec_double ("angle-end",
+                                                        "Angle End",
+                                                        "Final angle",
+                                                        0.0, 360.0, 360.0,
+                                                        CLUTTER_PARAM_READWRITE));
   /**
-   * ClutterBehaviourEllipse:angle-end:
+   * ClutterBehaviourEllipse:angle-tilt:
    *
-   * The final angle to where the rotation should end.
+   * The tilt angle for the rotation
    * 
    * Since: 0.4
    */
   g_object_class_install_property (object_class,
                                    PROP_ANGLE_TILT,
-                                   g_param_spec_int ("angle-tilt",
-                                                     "Angle Tilt",
-                                                     "Tilt of the ellipse",
-                                                     G_MININT, G_MAXINT, 1024,
-                                                     CLUTTER_PARAM_READWRITE));
-  
+                                   g_param_spec_double ("angle-tilt",
+                                                        "Angle Tilt",
+                                                        "Tilt of the ellipse",
+                                                        0.0, 360.0, 360.0,
+                                                        CLUTTER_PARAM_READWRITE));
   /**
    * ClutterBehaviourEllipse:width:
    *
@@ -398,34 +394,31 @@ clutter_behaviour_ellipse_init (ClutterBehaviourEllipse * self)
  * Since: 0.4
  */
 ClutterBehaviour *
-clutter_behaviour_ellipse_new (ClutterAlpha          * alpha,
-                               gint                    x,
-                               gint                    y,
-                               gint                    width,
-                               gint                    height,
-                               gdouble                 begin,
-                               gdouble                 end,
-                               gdouble                 tilt)
+clutter_behaviour_ellipse_new (ClutterAlpha          *alpha,
+                               gint                   x,
+                               gint                   y,
+                               gint                   width,
+                               gint                   height,
+                               gdouble                begin,
+                               gdouble                end,
+                               gdouble                tilt)
 {
-  ClutterBehaviourEllipse *bc;
+  ClutterKnot center;
 
   g_return_val_if_fail (alpha == NULL || CLUTTER_IS_ALPHA (alpha), NULL);
 
-  ClutterKnot center;
   center.x = x;
   center.y = y;
   
-  bc = g_object_new (CLUTTER_TYPE_BEHAVIOUR_ELLIPSE, 
-                     "alpha", alpha,
-                     "center", &center,
-                     "width", width,
-                     "height", height,
-                     "angle-begin", CLUTTER_ANGLE_FROM_DEG (begin) - 256,
-                     "angle-end", CLUTTER_ANGLE_FROM_DEG (end) - 256,
-                     "angle-tilt", CLUTTER_ANGLE_FROM_DEG (tilt),
-                     NULL);
-
-  return CLUTTER_BEHAVIOUR (bc);
+  return g_object_new (CLUTTER_TYPE_BEHAVIOUR_ELLIPSE, 
+                       "alpha", alpha,
+                       "center", &center,
+                       "width", width,
+                       "height", height,
+                       "angle-begin", begin,
+                       "angle-end", end,
+                       "angle-tilt", tilt,
+                       NULL);
 }
 
 /**
@@ -459,25 +452,22 @@ clutter_behaviour_ellipse_newx (ClutterAlpha          * alpha,
                                 ClutterFixed            end,
                                 ClutterFixed            tilt)
 {
-  ClutterBehaviourEllipse *bc;
+  ClutterKnot center;
 
   g_return_val_if_fail (alpha == NULL || CLUTTER_IS_ALPHA (alpha), NULL);
 
-  ClutterKnot center;
   center.x = x;
   center.y = y;
   
-  bc = g_object_new (CLUTTER_TYPE_BEHAVIOUR_ELLIPSE, 
-                     "alpha", alpha,
-                     "center", &center,
-                     "width", width,
-                     "height", height,
-                     "angle-begin", CLUTTER_ANGLE_FROM_DEGX (begin) - 256,
-                     "angle-end", CLUTTER_ANGLE_FROM_DEGX (end) - 256,
-                     "angle-tilt", CLUTTER_ANGLE_FROM_DEGX (tilt),
-                     NULL);
-
-  return CLUTTER_BEHAVIOUR (bc);
+  return g_object_new (CLUTTER_TYPE_BEHAVIOUR_ELLIPSE, 
+                       "alpha", alpha,
+                       "center", &center,
+                       "width", width,
+                       "height", height,
+                       "angle-begin", CLUTTER_ANGLE_FROM_DEGX (begin),
+                       "angle-end", CLUTTER_ANGLE_FROM_DEGX (end),
+                       "angle-tilt", CLUTTER_ANGLE_FROM_DEGX (tilt),
+                       NULL);
 }
 
 
@@ -492,17 +482,22 @@ clutter_behaviour_ellipse_newx (ClutterAlpha          * alpha,
  * Since: 0.4
  */
 void
-clutter_behaviour_ellipse_set_center (ClutterBehaviourEllipse * self,
-                                      gint                      x,
-                                      gint                      y)
+clutter_behaviour_ellipse_set_center (ClutterBehaviourEllipse *self,
+                                      gint                     x,
+                                      gint                     y)
 {
-  if (self->priv->center.x != x || self->priv->center.y != y)
+  ClutterBehaviourEllipsePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
+
+  priv = self->priv;
+
+  if (priv->center.x != x || priv->center.y != y)
     {
-      g_object_ref (self);
-      self->priv->center.x = x;
-      self->priv->center.y = y;
+      priv->center.x = x;
+      priv->center.y = y;
+      
       g_object_notify (G_OBJECT (self), "center");
-      g_object_unref (self);
     }
 }
 
@@ -517,15 +512,21 @@ clutter_behaviour_ellipse_set_center (ClutterBehaviourEllipse * self,
  * Since: 0.4
  */
 void
-clutter_behaviour_ellipse_get_center (ClutterBehaviourEllipse  * self,
-                                      gint                     * x,
-                                      gint                     * y)
+clutter_behaviour_ellipse_get_center (ClutterBehaviourEllipse  *self,
+                                      gint                     *x,
+                                      gint                     *y)
 {
+  ClutterBehaviourEllipsePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
+
+  priv = self->priv;
+
   if (x)
-    *x = self->priv->center.x;
+    *x = priv->center.x;
 
   if (y)
-    *y = self->priv->center.y;
+    *y = priv->center.y;
 }
 
 
@@ -542,12 +543,17 @@ void
 clutter_behaviour_ellipse_set_width (ClutterBehaviourEllipse * self,
                                      gint                      width)
 {
-  if (self->priv->a != width >> 1)
+  ClutterBehaviourEllipsePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
+
+  priv = self->priv;
+
+  if (priv->a != width >> 1)
     {
-      g_object_ref (self);
-      self->priv->a = width >> 1;
+      priv->a = width >> 1;
+      
       g_object_notify (G_OBJECT (self), "width");
-      g_object_unref (self);
     }
 }
 
@@ -562,8 +568,10 @@ clutter_behaviour_ellipse_set_width (ClutterBehaviourEllipse * self,
  * Since: 0.4
  */
 gint
-clutter_behaviour_ellipse_get_width (ClutterBehaviourEllipse  * self)
+clutter_behaviour_ellipse_get_width (ClutterBehaviourEllipse *self)
 {
+  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0);
+
   return self->priv->a << 1;
 }
 
@@ -577,15 +585,20 @@ clutter_behaviour_ellipse_get_width (ClutterBehaviourEllipse  * self)
  * Since: 0.4
  */
 void
-clutter_behaviour_ellipse_set_height (ClutterBehaviourEllipse * self,
-                                      gint                      height)
+clutter_behaviour_ellipse_set_height (ClutterBehaviourEllipse *self,
+                                      gint                     height)
 {
-  if (self->priv->b != height >> 1)
+  ClutterBehaviourEllipsePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
+
+  priv = self->priv;
+
+  if (priv->b != height >> 1)
     {
-      g_object_ref (self);
-      self->priv->b = height >> 1;
+      priv->b = height >> 1;
+      
       g_object_notify (G_OBJECT (self), "height");
-      g_object_unref (self);
     }
 }
 
@@ -600,8 +613,10 @@ clutter_behaviour_ellipse_set_height (ClutterBehaviourEllipse * self,
  * Since: 0.4
  */
 gint
-clutter_behaviour_ellipse_get_height (ClutterBehaviourEllipse  * self)
+clutter_behaviour_ellipse_get_height (ClutterBehaviourEllipse *self)
 {
+  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0);
+
   return self->priv->b << 1;
 }
 
@@ -615,9 +630,11 @@ clutter_behaviour_ellipse_get_height (ClutterBehaviourEllipse  * self)
  * Since: 0.4
  */
 void
-clutter_behaviour_ellipse_set_angle_begin (ClutterBehaviourEllipse * self,
-                                           gdouble                   angle_begin)
+clutter_behaviour_ellipse_set_angle_begin (ClutterBehaviourEllipse *self,
+                                           gdouble                  angle_begin)
 {
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
+
   clutter_behaviour_ellipse_set_angle_beginx (self,
                                               CLUTTER_ANGLE_FROM_DEG (angle_begin));
 }
@@ -632,15 +649,18 @@ clutter_behaviour_ellipse_set_angle_begin (ClutterBehaviourEllipse * self,
  * Since: 0.4
  */
 void
-clutter_behaviour_ellipse_set_angle_beginx (ClutterBehaviourEllipse * self,
-                                            ClutterAngle            angle_begin)
+clutter_behaviour_ellipse_set_angle_beginx (ClutterBehaviourEllipse *self,
+                                            ClutterAngle             angle_begin)
 {
-  if (self->priv->angle_begin != angle_begin)
+  ClutterBehaviourEllipsePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
+
+  priv = self->priv;
+  if (priv->angle_begin != angle_begin)
     {
-      g_object_ref (self);
-      self->priv->angle_begin = angle_begin;
+      priv->angle_begin = angle_begin;
       g_object_notify (G_OBJECT (self), "angle-begin");
-      g_object_unref (self);
     }
 }
 
@@ -655,8 +675,10 @@ clutter_behaviour_ellipse_set_angle_beginx (ClutterBehaviourEllipse * self,
  * Since: 0.4
  */
 gdouble
-clutter_behaviour_ellipse_get_angle_begin (ClutterBehaviourEllipse  * self)
+clutter_behaviour_ellipse_get_angle_begin (ClutterBehaviourEllipse *self)
 {
+  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0.0);
+
   return CLUTTER_ANGLE_TO_DEG (self->priv->angle_begin);
 }
 
@@ -671,8 +693,10 @@ clutter_behaviour_ellipse_get_angle_begin (ClutterBehaviourEllipse  * self)
  * Since: 0.4
  */
 ClutterAngle
-clutter_behaviour_ellipse_get_angle_beginx (ClutterBehaviourEllipse  * self)
+clutter_behaviour_ellipse_get_angle_beginx (ClutterBehaviourEllipse *self)
 {
+  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0);
+
   return self->priv->angle_begin;
 }
 
@@ -686,9 +710,11 @@ clutter_behaviour_ellipse_get_angle_beginx (ClutterBehaviourEllipse  * self)
  * Since: 0.4
  */
 void
-clutter_behaviour_ellipse_set_angle_end (ClutterBehaviourEllipse * self,
-                                         gdouble                   angle_end)
+clutter_behaviour_ellipse_set_angle_end (ClutterBehaviourEllipse *self,
+                                         gdouble                  angle_end)
 {
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
+
   clutter_behaviour_ellipse_set_angle_endx (self,
                                             CLUTTER_ANGLE_FROM_DEG (angle_end));
 }
@@ -703,15 +729,20 @@ clutter_behaviour_ellipse_set_angle_end (ClutterBehaviourEllipse * self,
  * Since: 0.4
  */
 void
-clutter_behaviour_ellipse_set_angle_endx (ClutterBehaviourEllipse * self,
-                                          ClutterAngle              angle_end)
+clutter_behaviour_ellipse_set_angle_endx (ClutterBehaviourEllipse *self,
+                                          ClutterAngle             angle_end)
 {
-  if (self->priv->angle_end != angle_end)
+  ClutterBehaviourEllipsePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
+
+  priv = self->priv;
+
+  if (priv->angle_end != angle_end)
     {
-      g_object_ref (self);
-      self->priv->angle_end = angle_end;
+      priv->angle_end = angle_end;
+      
       g_object_notify (G_OBJECT (self), "angle-end");
-      g_object_unref (self);
     }
 }
 
@@ -726,8 +757,10 @@ clutter_behaviour_ellipse_set_angle_endx (ClutterBehaviourEllipse * self,
  * Since: 0.4
  */
 gdouble
-clutter_behaviour_ellipse_get_angle_end (ClutterBehaviourEllipse  * self)
+clutter_behaviour_ellipse_get_angle_end (ClutterBehaviourEllipse *self)
 {
+  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0.0);
+
   return CLUTTER_ANGLE_TO_DEG (self->priv->angle_end);
 }
 
@@ -742,8 +775,10 @@ clutter_behaviour_ellipse_get_angle_end (ClutterBehaviourEllipse  * self)
  * Since: 0.4
  */
 ClutterAngle
-clutter_behaviour_ellipse_get_angle_endx (ClutterBehaviourEllipse  * self)
+clutter_behaviour_ellipse_get_angle_endx (ClutterBehaviourEllipse *self)
 {
+  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0);
+
   return self->priv->angle_end;
 }
 
@@ -757,9 +792,11 @@ clutter_behaviour_ellipse_get_angle_endx (ClutterBehaviourEllipse  * self)
  * Since: 0.4
  */
 void
-clutter_behaviour_ellipse_set_angle_tilt (ClutterBehaviourEllipse * self,
-                                          gdouble                   angle_tilt)
+clutter_behaviour_ellipse_set_angle_tilt (ClutterBehaviourEllipse *self,
+                                          gdouble                  angle_tilt)
 {
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
+
   clutter_behaviour_ellipse_set_angle_tiltx (self,
                                              CLUTTER_ANGLE_FROM_DEG (angle_tilt));
 }
@@ -774,15 +811,20 @@ clutter_behaviour_ellipse_set_angle_tilt (ClutterBehaviourEllipse * self,
  * Since: 0.4
  */
 void
-clutter_behaviour_ellipse_set_angle_tiltx (ClutterBehaviourEllipse * self,
-                                           ClutterAngle              angle_tilt)
+clutter_behaviour_ellipse_set_angle_tiltx (ClutterBehaviourEllipse *self,
+                                           ClutterAngle             angle_tilt)
 {
-  if (self->priv->angle_tilt != angle_tilt)
+  ClutterBehaviourEllipsePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
+
+  priv = self->priv;
+
+  if (priv->angle_tilt != angle_tilt)
     {
-      g_object_ref (self);
-      self->priv->angle_tilt = angle_tilt;
+      priv->angle_tilt = angle_tilt;
+      
       g_object_notify (G_OBJECT (self), "angle-tilt");
-      g_object_unref (self);
     }
 }
 
@@ -797,8 +839,10 @@ clutter_behaviour_ellipse_set_angle_tiltx (ClutterBehaviourEllipse * self,
  * Since: 0.4
  */
 gdouble
-clutter_behaviour_ellipse_get_angle_tilt (ClutterBehaviourEllipse  * self)
+clutter_behaviour_ellipse_get_angle_tilt (ClutterBehaviourEllipse *self)
 {
+  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0.0);
+
   return CLUTTER_ANGLE_TO_DEG (self->priv->angle_tilt);
 }
 
@@ -813,8 +857,10 @@ clutter_behaviour_ellipse_get_angle_tilt (ClutterBehaviourEllipse  * self)
  * Since: 0.4
  */
 ClutterAngle
-clutter_behaviour_ellipse_get_angle_tiltx (ClutterBehaviourEllipse  * self)
+clutter_behaviour_ellipse_get_angle_tiltx (ClutterBehaviourEllipse *self)
 {
+  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0);
+
   return self->priv->angle_tilt;
 }
 
