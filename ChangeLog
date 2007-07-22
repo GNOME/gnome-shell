@@ -1,5 +1,17 @@
 2007-07-22  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	Two small fixes for correctly debugging the deinitialisation
+	phase of the backend:
+
+	* clutter/glx/clutter-backend-glx.c: Remove the event source
+	after we unref the main stage.
+
+	* clutter/glx/clutter-stage-glx.c: Add a mark at the end of the
+	unrealize call (the perl bindings seem to crash before we reach
+	this point).
+
+2007-07-22  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-behaviour-ellipse.c: Remove pointer indirections;
 	add sanity checks on the public entry points; make all the public
 	properties floating point (where needed) andconvert them to fixed

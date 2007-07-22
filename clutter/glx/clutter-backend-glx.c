@@ -332,13 +332,16 @@ clutter_backend_glx_dispose (GObject *gobject)
 {
   ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (gobject);
 
-  _clutter_backend_glx_events_uninit (CLUTTER_BACKEND(backend_glx));
-
   if (backend_glx->stage)
     {
+      CLUTTER_NOTE (BACKEND, "Disposing the main stage");
+
       g_object_unref (backend_glx->stage);
       backend_glx->stage = NULL;
     }
+ 
+  CLUTTER_NOTE (BACKEND, "Removing the event source");
+  _clutter_backend_glx_events_uninit (CLUTTER_BACKEND (backend_glx));
 
   G_OBJECT_CLASS (clutter_backend_glx_parent_class)->dispose (gobject);
 }

@@ -119,9 +119,11 @@ clutter_stage_glx_unrealize (ClutterActor *actor)
       stage_glx->gl_context = None;
     }
 
-
   XSync (stage_glx->xdpy, False);
+
   clutter_glx_untrap_x_errors ();
+
+  CLUTTER_MARK ();
 }
 
 static void
