@@ -1,3 +1,18 @@
+2007-07-22  Yair Hershkovitz  <yairhr@gmail.com>
+
+	Reverse window buttons and align them to the left for RTL locales.
+	Fixed #92212.
+
+	* src/prefs.c (button_layout, init_button_layout, update_button_layout):
+	Support reversing and left-aligning of buttons for both Gconf and
+	NO-Gconf modes. 
+	* src/main.c (main): Call meta_ui_init() before meta_prefs_init().
+	meta_prefs_init() check for RTL locales which is initialized in
+	meta_ui_init().
+	* src/theme.c (meta_frame_layout_calc_geometry): Fixed access to
+	button_layout to stop iterating when getting to a
+	META_BUTTON_FUNCTION_LAST value.
+
 2007-06-23  Thomas Thurman  <thomas@thurman.org.uk>
 
 	* src/window.c (MetaWindow): Put all bitfields together to
@@ -53,7 +68,7 @@
 	Refactor thrice-duplicated queue code in window.c. Closes #376760.
 
 	* src/window.c (meta_window_queue, meta_window_unqueue):
-	New functions.
+	New functiortl.patchns.
 	* src/window.[ch] (meta_window_unqueue_*, meta_window_queue_*):
 	Removed functions.
 	* src/window.c (meta_window_new_with_attrs, meta_window_free,

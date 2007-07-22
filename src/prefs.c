@@ -109,20 +109,7 @@ static int   cursor_size = 24;
 static gboolean compositing_manager = FALSE;
 
 static MetaVisualBellType visual_bell_type = META_VISUAL_BELL_FULLSCREEN_FLASH;
-static MetaButtonLayout button_layout = {
-  {
-    META_BUTTON_FUNCTION_MENU,
-    META_BUTTON_FUNCTION_LAST,
-    META_BUTTON_FUNCTION_LAST,
-    META_BUTTON_FUNCTION_LAST
-  },
-  {
-    META_BUTTON_FUNCTION_MINIMIZE,
-    META_BUTTON_FUNCTION_MAXIMIZE,
-    META_BUTTON_FUNCTION_CLOSE,
-    META_BUTTON_FUNCTION_LAST
-  }
-};
+static MetaButtonLayout button_layout;
 
 /* The screenshot commands are at the end */
 static char *commands[MAX_COMMANDS] = { NULL, };
@@ -195,6 +182,7 @@ static gboolean update_list_binding       (MetaKeyPref *binding,
 static void     init_bindings             (void);
 static void     init_commands             (void);
 static void     init_workspace_names      (void);
+static void     init_button_layout        (void);
 
        
 typedef struct
@@ -530,6 +518,8 @@ meta_prefs_init (void)
    */
   titlebar_font = pango_font_description_from_string ("Sans Bold 10");
   current_theme = g_strdup ("Atlanta");
+  
+  init_button_layout();
 #endif /* HAVE_GCONF */
   
   /* Load keybindings prefs */
@@ -1461,14 +1451,6 @@ update_button_layout (const char *value)
   if (value == NULL)
     return FALSE;
   
-  i = 0;
-  while (i < MAX_BUTTONS_PER_CORNER)
-    {
-      new_layout.left_buttons[i] = META_BUTTON_FUNCTION_LAST;
-      new_layout.right_buttons[i] = META_BUTTON_FUNCTION_LAST;
-      ++i;
-    }
-
   /* We need to ignore unknown button functions, for
    * compat with future versions
    */
@@ -1515,6 +1497,8 @@ update_button_layout (const char *value)
           ++b;
         }
 
+      new_layout.left_buttons[i] = META_BUTTON_FUNCTION_LAST;
+      
       g_strfreev (buttons);
     }
 
@@ -1558,10 +1542,31 @@ update_button_layout (const char *value)
           ++b;
         }
 
+      new_layout.right_buttons[i] = META_BUTTON_FUNCTION_LAST;
+      
       g_strfreev (buttons);
     }
 
   g_strfreev (sides);
+  
+  /* Invert the button layout for RTL languages */
+  if (meta_ui_get_direction() == META_UI_DIRECTION_RTL)
+  {
+    MetaButtonLayout rtl_layout;
+    int j;
+    
+    for (i = 0; new_layout.left_buttons[i] != META_BUTTON_FUNCTION_LAST; i++);
+    for (j = 0; j < i; j++)
+	  rtl_layout.right_buttons[j] = new_layout.left_buttons[i - j - 1];
+    rtl_layout.right_buttons[j] = META_BUTTON_FUNCTION_LAST;
+      
+    for (i = 0; new_layout.right_buttons[i] != META_BUTTON_FUNCTION_LAST; i++);
+    for (j = 0; j < i; j++)
+      rtl_layout.left_buttons[j] = new_layout.right_buttons[i - j - 1];
+    rtl_layout.left_buttons[j] = META_BUTTON_FUNCTION_LAST;
+
+    new_layout = rtl_layout;
+  }
   
   changed = !button_layout_equal (&button_layout, &new_layout);
 
@@ -3036,3 +3041,39 @@ meta_prefs_get_compositing_manager (void)
 {
   return compositing_manager;
 }
+
+static void
+init_button_layout(void)
+{
+  MetaButtonLayout button_layout_ltr = {
+    {    
+      /* buttons in the group on the left side */
+      META_BUTTON_FUNCTION_MENU,
+      META_BUTTON_FUNCTION_LAST
+    },
+    {
+      /* buttons in the group on the right side */
+      META_BUTTON_FUNCTION_MINIMIZE,
+      META_BUTTON_FUNCTION_MAXIMIZE,
+      META_BUTTON_FUNCTION_CLOSE,
+      META_BUTTON_FUNCTION_LAST
+    }
+  };
+  MetaButtonLayout button_layout_rtl = {
+    {    
+      /* buttons in the group on the left side */
+      META_BUTTON_FUNCTION_CLOSE,
+      META_BUTTON_FUNCTION_MAXIMIZE,
+      META_BUTTON_FUNCTION_MINIMIZE,
+      META_BUTTON_FUNCTION_LAST
+    },
+    {
+      /* buttons in the group on the right side */
+      META_BUTTON_FUNCTION_MENU,
+      META_BUTTON_FUNCTION_LAST
+    }
+  };
+
+  button_layout = meta_ui_get_direction() == META_UI_DIRECTION_LTR ?
+    button_layout_ltr : button_layout_rtl;
+};

@@ -293,14 +293,15 @@ main (int argc, char **argv)
   
   g_type_init ();
 
-  /* Load prefs */
-  meta_prefs_init ();
-  meta_prefs_add_listener (prefs_changed_callback, NULL);
-
   meta_ui_init (&argc, &argv);  
 
   /* must be after UI init so we can override GDK handlers */
   meta_errors_init ();
+
+  /* Load prefs */
+  meta_prefs_init ();
+  meta_prefs_add_listener (prefs_changed_callback, NULL);
+
 
 #if 1
   g_log_set_handler (NULL,
