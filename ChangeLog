@@ -1,3 +1,19 @@
+2007-07-22  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-behaviour.[ch]: Rename ClutterBehaviour::apply
+	and ClutterBehaviour::remove to ClutterBehaviour::applied and
+	ClutterBehaviour::removed respectively, and emit them when the
+	behaviour has been applied (or does no longer apply) to an actor.
+
+	(clutter_behaviour_dispose), (clutter_behaviour_finalize),
+	(clutter_behaviour_class_init): Move the actor removal to the
+	::dispose virtual function, and remove the ::finalize one;
+	document the missing properties and signals.
+
+	(clutter_behaviour_clear): Add function to clear a behaviour:
+	every actor will be unreffed and the ClutterBehaviour::removed
+	signal will be emitted.
+
 2007-07-21  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-event.c:

@@ -158,8 +158,8 @@ enum
 };
 
 enum {
-  APPLY,
-  REMOVE,
+  APPLIED,
+  REMOVED,
   LAST_SIGNAL
 };
 
@@ -170,18 +170,15 @@ static guint behave_signals[LAST_SIGNAL] = { 0 };
                CLUTTER_TYPE_BEHAVIOUR,             \
                ClutterBehaviourPrivate))
 
-static void 
-clutter_behaviour_finalize (GObject *object)
+static void
+clutter_behaviour_dispose (GObject *gobject)
 {
-  ClutterBehaviour *self = CLUTTER_BEHAVIOUR (object);
+  ClutterBehaviour *self = CLUTTER_BEHAVIOUR (gobject);
 
   clutter_behaviour_set_alpha (self, NULL);
-  
-  /* FIXME: Should we also emit remove signals here ? */
-  g_slist_foreach (self->priv->actors, (GFunc) g_object_unref, NULL);
-  g_slist_free (self->priv->actors);
+  clutter_behaviour_clear (self);
 
-  G_OBJECT_CLASS (clutter_behaviour_parent_class)->finalize (object);
+  G_OBJECT_CLASS (clutter_behaviour_parent_class)->dispose (gobject);
 }
 
 static void
@@ -190,9 +187,7 @@ clutter_behaviour_set_property (GObject      *object,
 				const GValue *value, 
 				GParamSpec   *pspec)
 {
-  ClutterBehaviour *behaviour;
-
-  behaviour = CLUTTER_BEHAVIOUR(object);
+  ClutterBehaviour *behaviour = CLUTTER_BEHAVIOUR (object);
 
   switch (prop_id) 
     {
@@ -211,11 +206,8 @@ clutter_behaviour_get_property (GObject    *object,
 			        GValue     *value, 
 			        GParamSpec *pspec)
 {
-  ClutterBehaviour        *behaviour;
-  ClutterBehaviourPrivate *priv;
-
-  behaviour = CLUTTER_BEHAVIOUR(object);
-  priv      = CLUTTER_BEHAVIOUR_GET_PRIVATE(behaviour);
+  ClutterBehaviour        *behaviour = CLUTTER_BEHAVIOUR (object);
+  ClutterBehaviourPrivate *priv = behaviour->priv;
 
   switch (prop_id) 
     {
@@ -241,23 +233,32 @@ clutter_behaviour_class_init (ClutterBehaviourClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->finalize     = clutter_behaviour_finalize;
+  object_class->dispose      = clutter_behaviour_dispose;
   object_class->set_property = clutter_behaviour_set_property;
   object_class->get_property = clutter_behaviour_get_property;
 
+  /**
+   * ClutterBehaviour:alpha:
+   *
+   * The #ClutterAlpha object used to drive this behaviour. A #ClutterAlpha
+   * object binds a #ClutterTimeline and a function which computes a value
+   * (the "alpha") depending on the time. Each time the alpha value changes
+   * the alpha-notify virtual function is called.
+   *
+   * Since: 0.2
+   */
   g_object_class_install_property (object_class,
                                    PROP_ALPHA,
                                    g_param_spec_object ("alpha",
                                                         "Alpha",
                                                         "Alpha Object to drive the behaviour",
                                                         CLUTTER_TYPE_ALPHA,
-                                                        G_PARAM_CONSTRUCT |
                                                         CLUTTER_PARAM_READWRITE));
 
   klass->alpha_notify = clutter_behaviour_alpha_notify_unimplemented;
 
   /**
-   * ClutterBehaviour::apply:
+   * ClutterBehaviour::applied:
    * @behaviour: the #ClutterBehaviour that received the signal
    * @actor: the actor the behaviour was applied to.
    *
@@ -266,29 +267,29 @@ clutter_behaviour_class_init (ClutterBehaviourClass *klass)
    *
    * Since: 0.4
    */
-  behave_signals[APPLY] =
-    g_signal_new ("apply",
+  behave_signals[APPLIED] =
+    g_signal_new ("applied",
 		  G_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
-		  G_STRUCT_OFFSET (ClutterBehaviourClass, apply),
+		  G_STRUCT_OFFSET (ClutterBehaviourClass, applied),
 		  NULL, NULL,
 		  clutter_marshal_VOID__OBJECT,
 		  G_TYPE_NONE, 1,
 		  CLUTTER_TYPE_ACTOR);
   /**
-   * ClutterBehaviour::remove:
+   * ClutterBehaviour::removed:
    * @behaviour: the #ClutterBehaviour that received the signal
-   * @actor: the actor added to the group
+   * @actor: the removed actor
    *
-   * The ::remove signal is emitted each time an actor has been removed
-   * from the group
+   * The ::removed signal is emitted each time a behaviour is not applied
+   * to an actor anymore.
    *
    */
-  behave_signals[REMOVE] =
-    g_signal_new ("remove",
+  behave_signals[REMOVED] =
+    g_signal_new ("removed",
 		  G_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
-		  G_STRUCT_OFFSET (ClutterBehaviourClass, remove),
+		  G_STRUCT_OFFSET (ClutterBehaviourClass, removed),
 		  NULL, NULL,
 		  clutter_marshal_VOID__OBJECT,
 		  G_TYPE_NONE, 1,
@@ -320,10 +321,14 @@ void
 clutter_behaviour_apply (ClutterBehaviour *behave,
                          ClutterActor     *actor)
 {
+  ClutterBehaviourPrivate *priv;
+
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR (behave));
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
-  if (g_slist_find (behave->priv->actors, actor))
+  priv = behave->priv;
+
+  if (g_slist_find (priv->actors, actor))
     {
       g_warning ("The behaviour of type %s already applies "
                  "to the actor of type %s",
@@ -332,11 +337,9 @@ clutter_behaviour_apply (ClutterBehaviour *behave,
       return;
     }
 
-  g_object_ref (actor);
+  priv->actors = g_slist_prepend (priv->actors, g_object_ref (actor));
 
-  g_signal_emit (behave, behave_signals[APPLY], 0, actor);
-
-  behave->priv->actors = g_slist_prepend (behave->priv->actors, actor);
+  g_signal_emit (behave, behave_signals[APPLIED], 0, actor);
 }
 
 /**
@@ -348,7 +351,7 @@ clutter_behaviour_apply (ClutterBehaviour *behave,
  *
  * Return value: TRUE if actor has behaviour. FALSE otherwise.
  *
- * Since: 0.3
+ * Since: 0.4
  */
 gboolean
 clutter_behaviour_is_applied (ClutterBehaviour *behave,
@@ -374,10 +377,14 @@ void
 clutter_behaviour_remove (ClutterBehaviour *behave,
                           ClutterActor     *actor)
 {
+  ClutterBehaviourPrivate *priv;
+
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR (behave));
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
-  if (!g_slist_find (behave->priv->actors, actor))
+  priv = behave->priv;
+
+  if (!g_slist_find (priv->actors, actor))
     {
       g_warning ("The behaviour of type %s is not applied "
                  "to the actor of type %s",
@@ -386,11 +393,11 @@ clutter_behaviour_remove (ClutterBehaviour *behave,
       return;
     }
   
+  priv->actors = g_slist_remove (priv->actors, actor);
+  
+  g_signal_emit (behave, behave_signals[REMOVED], 0, actor);
+
   g_object_unref (actor);
-
-  g_signal_emit (behave, behave_signals[REMOVE], 0, actor);
-
-  behave->priv->actors = g_slist_remove (behave->priv->actors, actor);
 }
 
 /**
@@ -473,7 +480,7 @@ clutter_behaviour_actors_foreach (ClutterBehaviour            *behave,
  * 
  * Since: 0.2
  */
-ClutterAlpha*
+ClutterAlpha *
 clutter_behaviour_get_alpha (ClutterBehaviour *behave)
 {
   g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR (behave), NULL);
@@ -567,7 +574,7 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
  * @behave: a #ClutterBehaviour
  *
  * Retrieves all the actors to which @behave applies. It is not recommended
- * derived classes use this in there alpha notify method but use 
+ * for derived classes to use this in there alpha notify method but use 
  * #clutter_behaviour_actors_foreach as it avoids alot of needless allocations.
  *
  * Return value: a list of actors. You should free the returned list
@@ -578,13 +585,44 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
 GSList *
 clutter_behaviour_get_actors (ClutterBehaviour *behave)
 {
+  ClutterBehaviourPrivate *priv;
   GSList *retval, *l;
 
   g_return_val_if_fail (CLUTTER_BEHAVIOUR (behave), NULL);
 
+  priv = behave->priv;
   retval = NULL;
-  for (l = behave->priv->actors; l != NULL; l = l->next)
+  for (l = priv->actors; l != NULL; l = l->next)
     retval = g_slist_prepend (retval, l->data);
 
-  return g_slist_reverse (retval);
+  return retval;
+}
+
+/**
+ * clutter_behaviour_clear:
+ * @behave: a #ClutterBehaviour
+ *
+ * Removes every actor from the list that @behave holds.
+ *
+ * Since: 0.4
+ */
+void
+clutter_behaviour_clear (ClutterBehaviour *behave)
+{
+  ClutterBehaviourPrivate *priv;
+  GSList *l;
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR (behave));
+
+  priv = behave->priv;
+  for (l = priv->actors; l != NULL; l = l->next)
+    {
+      ClutterActor *actor = l->data;
+
+      g_signal_emit (behave, behave_signals[REMOVED], 0, actor);
+      g_object_unref (actor);
+    }
+
+  g_slist_free (priv->actors);
+  priv->actors = NULL;
 }

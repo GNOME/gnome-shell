@@ -112,9 +112,9 @@ struct _ClutterBehaviourClass
   void (*alpha_notify) (ClutterBehaviour *behave,
                         guint32           alpha_value);
 
-  void (*apply)    (ClutterBehaviour *behave,
+  void (*applied)  (ClutterBehaviour *behave,
 		    ClutterActor     *actor);
-  void (*remove)   (ClutterBehaviour *behave,
+  void (*removed)  (ClutterBehaviour *behave,
 		    ClutterActor     *actor);
 
   /* padding, for future expansion */
@@ -142,9 +142,9 @@ GSList *      clutter_behaviour_get_actors     (ClutterBehaviour            *beh
 ClutterAlpha *clutter_behaviour_get_alpha      (ClutterBehaviour            *behave);
 void          clutter_behaviour_set_alpha      (ClutterBehaviour            *behave,
                                                 ClutterAlpha                *alpha);
-
-gboolean      clutter_behaviour_is_applied     (ClutterBehaviour *behave,
-						ClutterActor     *actor);
+gboolean      clutter_behaviour_is_applied     (ClutterBehaviour            *behave,
+						ClutterActor                *actor);
+void          clutter_behaviour_clear          (ClutterBehaviour            *behave);
 
 G_END_DECLS
 
