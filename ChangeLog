@@ -1,3 +1,12 @@
+2007-07-22  Rob Bradford  <rob@robster.org.uk>
+
+	Fix a bug where the window can be focused without being raised
+	if the maximize is aborted. Fixes #459027.
+
+        * src/frames.c (meta_frames_button_press_event,
+        meta_frames_button_release_event): When maximising only focus
+	the window once the button press is released.
+
 2007-07-22  Cosimo Cecchi  <anarki@lilik.it>
 
 	Unset fullscreen is an allowed action where relevant. Fixes #449427.

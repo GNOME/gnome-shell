@@ -1341,7 +1341,8 @@ meta_frames_button_press_event (GtkWidget      *widget,
   /* focus on click, even if click was on client area */
   if (event->button == 1 &&
       !(control == META_FRAME_CONTROL_MINIMIZE ||
-        control == META_FRAME_CONTROL_DELETE))
+        control == META_FRAME_CONTROL_DELETE ||
+        control == META_FRAME_CONTROL_MAXIMIZE))
     {
       meta_topic (META_DEBUG_FOCUS,
                   "Focusing window with frame 0x%lx due to button 1 press\n",
@@ -1637,8 +1638,13 @@ meta_frames_button_release_event    (GtkWidget           *widget,
 
         case META_GRAB_OP_CLICKING_MAXIMIZE:
           if (control == META_FRAME_CONTROL_MAXIMIZE)
+          {
+            /* Focus the window on the maximize */
+            meta_core_user_focus (gdk_display,
+                            frame->xwindow,
+                            event->time);      
             meta_core_maximize (gdk_display, frame->xwindow);
-          
+          }
           meta_core_end_grab_op (gdk_display, event->time);
           break;
 
