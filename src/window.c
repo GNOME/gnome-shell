@@ -6001,6 +6001,9 @@ set_allowed_actions_hint (MetaWindow *window)
     {
       data[i] = window->display->atom_net_wm_action_resize;
       ++i;
+    }
+  if (window->has_fullscreen_func)
+    {
       data[i] = window->display->atom_net_wm_action_fullscreen;
       ++i;
     }

@@ -1,3 +1,10 @@
+2007-07-22  Cosimo Cecchi  <anarki@lilik.it>
+
+	Unset fullscreen is an allowed action where relevant. Fixes #449427.
+
+	* src/window.c (set_allowed_actions_hint): Separate FULLSCREEN action
+	from RESIZE action.
+
 2007-07-22  Yair Hershkovitz  <yairhr@gmail.com>
 
 	Reverse window buttons and align them to the left for RTL locales.
