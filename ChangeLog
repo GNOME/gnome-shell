@@ -1,3 +1,10 @@
+2007-07-23  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-texture.c: (texture_render_to_gl_quad),
+	(clutter_texture_paint):
+	Dont be over aggressive in throwing criticals for unrealized
+	textures. Doesn't make sense for sub classes. (#403)
+
 2007-07-22  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Two small fixes for correctly debugging the deinitialisation

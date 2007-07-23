@@ -303,11 +303,6 @@ texture_render_to_gl_quad (ClutterTexture *texture,
   qwidth  = x2-x1;
   qheight = y2-y1;
 
-  if (!CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR(texture)))
-      clutter_actor_realize (CLUTTER_ACTOR(texture));
-
-  g_return_if_fail(priv->tiles != NULL);
-
   if (!priv->is_tiled)
     {
       cogl_texture_bind (priv->target_type, priv->tiles[0]);
@@ -702,6 +697,23 @@ clutter_texture_paint (ClutterActor *self)
   ClutterTexture *texture = CLUTTER_TEXTURE (self);
   gint            x1, y1, x2, y2;
   ClutterColor    col = { 0xff, 0xff, 0xff, 0xff };
+
+  if (!CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR(texture)))
+    clutter_actor_realize (CLUTTER_ACTOR(texture));
+
+  if (texture->priv->tiles == NULL)
+    {
+      /* We just need do debug this state, it doesn't really need to 
+       * throw a an error as what previously happened. Sub classes
+       * quite likely may not be able to realize.	 
+      */
+      CLUTTER_NOTE (PAINT,
+		    "unable to paint texture '%s', contains no tiles",
+		    clutter_actor_get_name (self) 
+		           ? clutter_actor_get_name (self)
+		           : "unknown");
+      return;
+    }
 
   CLUTTER_NOTE (PAINT,
                 "painting texture '%s'",
