@@ -88,6 +88,7 @@ ClutterBehaviourClass
 clutter_behaviour_apply
 clutter_behaviour_remove
 clutter_behaviour_is_applied
+clutter_behaviour_clear
 ClutterBehaviourForeachFunc
 clutter_behaviour_actors_foreach
 clutter_behaviour_get_actors
@@ -234,7 +235,6 @@ clutter_container_get_type
 ClutterLayoutIface
 ClutterLayoutFlags
 clutter_layout_get_layout_flags
-clutter_layout_get_type
 clutter_layout_height_for_width
 clutter_layout_natural_request
 clutter_layout_tune_request
@@ -376,8 +376,10 @@ clutter_vertex_get_type
 ClutterTexture
 ClutterTextureClass
 ClutterTextureFlags
-clutter_texture_new_from_pixbuf
 clutter_texture_new
+clutter_texture_new_from_pixbuf
+CLUTTER_TEXTURE_ERROR
+ClutterTextureError
 clutter_texture_set_from_rgb_data
 clutter_texture_set_from_yuv_data
 clutter_texture_set_pixbuf
@@ -398,6 +400,7 @@ CLUTTER_IS_TEXTURE_CLASS
 CLUTTER_TEXTURE_GET_CLASS
 <SUBSECTION Private>
 ClutterTexturePrivate
+clutter_texture_error_quark
 clutter_texture_get_type
 </SECTION>
 
@@ -622,6 +625,12 @@ clutter_behaviour_ellipse_set_angle_end
 clutter_behaviour_ellipse_set_angle_tilt
 clutter_behaviour_ellipse_set_height
 clutter_behaviour_ellipse_set_width
+clutter_behaviour_ellipse_get_angle_beginx
+clutter_behaviour_ellipse_get_angle_endx
+clutter_behaviour_ellipse_get_angle_tiltx
+clutter_behaviour_ellipse_set_angle_beginx
+clutter_behaviour_ellipse_set_angle_endx
+clutter_behaviour_ellipse_set_angle_tiltx
 <SUBSECTION Standard>
 CLUTTER_TYPE_BEHAVIOUR_ELLIPSE
 CLUTTER_BEHAVIOUR_ELLIPSE
@@ -717,6 +726,9 @@ CLUTTER_ANGLE_FROM_DEG
 CLUTTER_ANGLE_FROM_DEGF
 CLUTTER_ANGLE_FROM_DEGX
 CLUTTER_ANGLE_TO_DEGF
+CLUTTER_ANGLE_TO_DEG
+CLUTTER_ANGLE_TO_DEGX
+CLUTTER_FLOAT_TO_UINT
 clutter_cosi
 clutter_cosx
 clutter_sini
@@ -921,6 +933,7 @@ clutter_box_get_type
 <TITLE>Clutter Effects</TITLE>
 ClutterEffectTemplate
 clutter_effect_template_new
+clutter_effect_template_new_full
 ClutterEffectCompleteFunc
 clutter_effect_fade
 clutter_effect_move

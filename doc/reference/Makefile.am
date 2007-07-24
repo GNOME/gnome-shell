@@ -57,7 +57,8 @@ IGNORE_HFILES=\
 	stamp-clutter-enum-types.h \
 	stamp-clutter-marshal.h \
 	cogl \
-	egl \
+	eglnative \
+	eglx \
 	glx \
 	sdl \
 	pango 
