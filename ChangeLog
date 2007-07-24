@@ -1,5 +1,9 @@
 2007-07-22  Thomas Thurman  <thomas@thurman.org.uk>
 
+        * configure.in: post-release bump to 2.19.55.
+
+2007-07-22  Thomas Thurman  <thomas@thurman.org.uk>
+
         * NEWS: 2.19.34 release.
 
 2007-07-22  Rob Bradford  <rob@robster.org.uk>
