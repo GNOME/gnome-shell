@@ -1,5 +1,9 @@
 2007-07-24  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-main.c: Add debug markers.
+
+2007-07-24  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-texture.[ch]: Add a ClutterTextureError
 	to be returned by the loader functions; use the GObject API
 	to allocate the private data structure instead of managing it

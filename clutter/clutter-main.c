@@ -256,6 +256,8 @@ clutter_main (void)
       return;
     }
 
+  CLUTTER_MARK ();
+
   context->main_loop_level++;
 
   loop = g_main_loop_new (NULL, TRUE);
@@ -281,6 +283,8 @@ clutter_main (void)
 
       g_free (context);
     }
+
+  CLUTTER_MARK ();
 }
 
 /**
