@@ -210,11 +210,11 @@ cogl_enable (gulong flags)
       __enable_flags &= ~CGL_ENABLE_TEXTURE_2D;
     }
 
+#ifdef GL_TEXTURE_RECTANGLE_ARB
   if (flags & CGL_ENABLE_TEXTURE_RECT)
     {
       if (!(__enable_flags & CGL_ENABLE_TEXTURE_RECT))
 	  glEnable (GL_TEXTURE_RECTANGLE_ARB);
-
       __enable_flags |= CGL_ENABLE_TEXTURE_RECT;
     }
   else if (__enable_flags & CGL_ENABLE_TEXTURE_RECT)
@@ -222,6 +222,7 @@ cogl_enable (gulong flags)
       glDisable (GL_TEXTURE_RECTANGLE_ARB);
       __enable_flags &= ~CGL_ENABLE_TEXTURE_RECT;
     }
+#endif
 
   if (flags & CGL_ENABLE_ALPHA_TEST)
     {
@@ -278,6 +279,7 @@ cogl_texture_can_size (COGLenum       target,
 		       int    width, 
 		       int    height)
 {
+#ifdef GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB
   if (target == CGL_TEXTURE_RECTANGLE_ARB)
     {
       gint max_size = 0;
@@ -287,6 +289,7 @@ cogl_texture_can_size (COGLenum       target,
       return (max_size && width <= max_size && height <= max_size);
     }
   else /* Assumes CGL_TEXTURE_2D */
+#endif
     {
       GLint new_width = 0;
 
@@ -549,11 +552,13 @@ cogl_get_features ()
 
   gl_extensions = (const gchar*) glGetString (GL_EXTENSIONS);
 
+#ifdef GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB and GL_TEXTURE_RECTANGLE_ARB
   if (cogl_check_extension ("GL_ARB_texture_rectangle", gl_extensions) ||
       cogl_check_extension ("GL_EXT_texture_rectangle", gl_extensions))
     {
       flags |= CLUTTER_FEATURE_TEXTURE_RECTANGLE;
     }
+#endif
 
 #ifdef GL_YCBCR_MESA
   if (cogl_check_extension ("GL_MESA_ycbcr_texture", gl_extensions))
