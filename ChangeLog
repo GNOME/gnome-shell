@@ -1,3 +1,9 @@
+2007-07-24  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/glx/clutter-stage-glx.c: (clutter_stage_glx_realize):
+	Create stage window with correct depth/visual. Via patch from
+	Robert Bragg (#409).
+
 2007-07-23  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-texture.c: (texture_render_to_gl_quad),

@@ -179,15 +179,30 @@ clutter_stage_glx_realize (ClutterActor *actor)
 
       if (stage_glx->xwin == None)
         {
+ 	XSetWindowAttributes xattr;
+	unsigned long mask;
+	
         CLUTTER_NOTE (MISC, "Creating stage X window");
-	stage_glx->xwin = XCreateSimpleWindow (stage_glx->xdpy,
-                                               stage_glx->xwin_root,
-                                               0, 0,
-                                               stage_glx->xwin_width,
-                                               stage_glx->xwin_height,
-                                               0, 0, 
-                                               WhitePixel (stage_glx->xdpy,
-                                                           stage_glx->xscreen));
+
+	/* window attributes */  
+	xattr.background_pixel = WhitePixel (stage_glx->xdpy,
+					     stage_glx->xscreen);
+	xattr.border_pixel = 0;
+	xattr.colormap = XCreateColormap (stage_glx->xdpy, 
+					  stage_glx->xwin_root,
+					  stage_glx->xvisinfo->visual,
+					  AllocNone);
+	mask = CWBackPixel | CWBorderPixel | CWColormap;
+	stage_glx->xwin = XCreateWindow (stage_glx->xdpy,
+                                            stage_glx->xwin_root,
+                                            0, 0,
+                                            stage_glx->xwin_width,
+                                            stage_glx->xwin_height,
+                                            0,
+                                            stage_glx->xvisinfo->depth,
+                                            InputOutput,
+                                            stage_glx->xvisinfo->visual,
+                                            mask, &xattr);
         }
       
       CLUTTER_NOTE (MISC, "XSelectInput");
