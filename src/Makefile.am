@@ -163,7 +163,7 @@ schema_DATA = $(schema_in_files:.schemas.in=.schemas)
 
 @INTLTOOL_XML_NOMERGE_RULE@
 
-xmldir       = $(datadir)/control-center/keybindings
+xmldir       = @GNOME_KEYBINDINGS_KEYSDIR@
 xml_in_files = 50-metacity-desktop-key.xml.in 50-metacity-key.xml.in
 xml_DATA     = $(xml_in_files:.xml.in=.xml)
 

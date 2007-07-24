@@ -1,3 +1,9 @@
+2007-07-23  Matthias Clasen  <mclasen@redhat.com>
+
+	* configure.in:
+	* src/Makefile.am: Use the correct directory when
+	installing keybindings.  (#454055)
+
 2007-07-22  Thomas Thurman  <thomas@thurman.org.uk>
 
         * configure.in: post-release bump to 2.19.55.

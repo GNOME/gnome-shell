@@ -176,6 +176,13 @@ else
    AC_MSG_ERROR("Pango 1.2.0 or greater based on Xft2 is required")
 fi
 
+if $PKG_CONFIG --exists gnome-keybindings; then
+  GNOME_KEYBINDINGS_KEYSDIR=$($PKG_CONFIG --variable keysdir gnome-keybindings)
+else
+  GNOME_KEYBINDINGS_KEYSDIR="${datadir}/gnome-control-center/keybindings"
+fi
+AC_SUBST(GNOME_KEYBINDINGS_KEYSDIR)
+
 STARTUP_NOTIFICATION_VERSION=0.7
 AC_MSG_CHECKING([Startup notification library >= $STARTUP_NOTIFICATION_VERSION])
 if $PKG_CONFIG --atleast-version $STARTUP_NOTIFICATION_VERSION libstartup-notification-1.0; then
