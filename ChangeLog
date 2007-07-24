@@ -1,5 +1,10 @@
 2007-07-24  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/cogl/gles/cogl.c: (cogl_get_bitmasks):
+	Fix typo calling glGetIntegerv rather than glGetInteger
+
+2007-07-24  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/cogl/gl/cogl.c: (cogl_get_features):
 	learn to use cpp properly.
 

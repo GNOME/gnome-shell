@@ -571,11 +571,11 @@ void
 cogl_get_bitmasks (gint *red, gint *green, gint *blue, gint *alpha)
 {
   if (red)
-    GE( glGetInteger(GL_RED_BITS, red) );
+    GE( glGetIntegerv(GL_RED_BITS, red) );
   if (green)
-    GE( glGetInteger(GL_GREEN_BITS, green) );
+    GE( glGetIntegerv(GL_GREEN_BITS, green) );
   if (blue)
-    GE( glGetInteger(GL_BLUE_BITS, blue) );
+    GE( glGetIntegerv(GL_BLUE_BITS, blue) );
   if (alpha)
-    GE( glGetInteger(GL_ALPHA_BITS, alpha ) );
+    GE( glGetIntegerv(GL_ALPHA_BITS, alpha ) );
 }
