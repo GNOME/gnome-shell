@@ -1,5 +1,9 @@
 2007-07-24  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter-sections.txt: Add new rotate behaviour methods.
+
+2007-07-24  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter-sections.txt: Add undocumented symbols
 
 2007-07-09  Emmanuele Bassi  <ebassi@openedhand.com>
