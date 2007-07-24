@@ -62,7 +62,9 @@ typedef struct ClutterEffectClosure
   ClutterTimeline          *timeline;
   ClutterAlpha             *alpha;
   ClutterBehaviour         *behave;
+  
   gulong                    signal_id;
+  
   ClutterEffectCompleteFunc completed_func;
   gpointer                  completed_data;
   ClutterEffectTemplate     *template;
@@ -79,7 +81,10 @@ G_DEFINE_TYPE (ClutterEffectTemplate, clutter_effect_template, G_TYPE_OBJECT);
 struct _ClutterEffectTemplatePrivate
 {
   ClutterTimeline *timeline;
+
   ClutterAlphaFunc alpha_func;
+  gpointer alpha_data;
+  GDestroyNotify alpha_notify;
 };
 
 enum
@@ -91,6 +96,24 @@ enum
 };
 
 static void
+clutter_effect_template_finalize (GObject *gobject)
+{
+  ClutterEffectTemplate *template = CLUTTER_EFFECT_TEMPLATE (gobject);
+  ClutterEffectTemplatePrivate *priv = template->priv;
+
+  if (priv->alpha_notify)
+    {
+      priv->alpha_notify (priv->alpha_data);
+      priv->alpha_notify = NULL;
+    }
+
+  priv->alpha_data = NULL;
+  priv->alpha_func = NULL;
+
+  G_OBJECT_CLASS (clutter_effect_template_parent_class)->finalize (gobject);
+}
+
+static void
 clutter_effect_template_dispose (GObject *object)
 {
   ClutterEffectTemplate        *template;
@@ -99,10 +122,11 @@ clutter_effect_template_dispose (GObject *object)
   template  = CLUTTER_EFFECT_TEMPLATE (object);
   priv      = template->priv;
 
-  g_object_unref (priv->timeline);
-
-  priv->timeline   = NULL;
-  priv->alpha_func = NULL;
+  if (priv->timeline)
+    {
+      g_object_unref (priv->timeline);
+      priv->timeline   = NULL;
+    }
 
   G_OBJECT_CLASS (clutter_effect_template_parent_class)->dispose (object);
 }
@@ -167,6 +191,7 @@ clutter_effect_template_class_init (ClutterEffectTemplateClass *klass)
 
   g_type_class_add_private (klass, sizeof (ClutterEffectTemplatePrivate));
 
+  object_class->finalize = clutter_effect_template_finalize;
   object_class->dispose = clutter_effect_template_dispose;
   object_class->set_property = clutter_effect_template_set_property;
   object_class->get_property = clutter_effect_template_get_property;
@@ -210,12 +235,41 @@ clutter_effect_template_init (ClutterEffectTemplate *self)
   self->priv = EFFECT_TEMPLATE_PRIVATE (self);
 }
 
+static void
+clutter_effect_template_set_alpha_func (ClutterEffectTemplate *self,
+                                        ClutterAlphaFunc       alpha_func,
+                                        gpointer               alpha_data,
+                                        GDestroyNotify         alpha_notify)
+{
+  ClutterEffectTemplatePrivate *priv;
+
+  priv = self->priv;
+
+  if (priv->alpha_notify)
+    {
+      priv->alpha_notify (priv->alpha_data);
+      priv->alpha_notify = NULL;
+    }
+
+  priv->alpha_data = alpha_data;
+  priv->alpha_notify = alpha_notify;
+  priv->alpha_func = alpha_func;
+}
+
 /**
  * clutter_effect_template_new:
  * @timeline:  A #ClutterTimeline for the template (will be cloned)
  * @alpha_func: An alpha func to use for the template.
  *
- * Creates a template for use with clutter effect functions.
+ * Creates a new #ClutterEffectTemplate, to be used with the effects API.
+ *
+ * A #ClutterEffectTemplate binds a timeline and an alpha function and can
+ * be used as a template for multiple calls of clutter_effect_fade(),
+ * clutter_effect_move() and clutter_effect_scale().
+ *
+ * This API is intended for simple animations involving a single actor;
+ * for more complex animations, you should see #ClutterBehaviour and the
+ * derived classes.
  *
  * Return value: a #ClutterEffectTemplate
  *
@@ -225,10 +279,63 @@ ClutterEffectTemplate *
 clutter_effect_template_new (ClutterTimeline *timeline, 
 			     ClutterAlphaFunc alpha_func)
 {
-  return g_object_new (CLUTTER_TYPE_EFFECT_TEMPLATE, 
-		       "timeline", timeline,
-		       "alpha-func", alpha_func,
-		       NULL);
+  ClutterEffectTemplate *retval;
+
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), NULL);
+  g_return_val_if_fail (alpha_func != NULL, NULL);
+
+  retval = g_object_new (CLUTTER_TYPE_EFFECT_TEMPLATE, 
+                         "timeline", timeline,
+                         NULL);
+
+  clutter_effect_template_set_alpha_func (retval, alpha_func, NULL, NULL);
+
+  return retval;
+}
+
+/**
+ * clutter_effect_template_new_full:
+ * @timeline: a #ClutterTimeline
+ * @alpha_func: an alpha function to use for the template
+ * @user_data: data to be passed to the alpha function, or %NULL
+ * @notify: function to be called when disposing the alpha function's use
+ *   data, or %NULL
+ *
+ * Creates a new #ClutterEffectTemplate, to be used with the effects API.
+ *
+ * A #ClutterEffectTemplate binds a timeline and an alpha function and can
+ * be used as a template for multiple calls of clutter_effect_fade(),
+ * clutter_effect_move() and clutter_effect_scale().
+ *
+ * This API is intended for simple animations involving a single actor;
+ * for more complex animations, you should see #ClutterBehaviour and the
+ * derived classes.
+ *
+ * This function is intended for language bindings only: if @notify is
+ * not %NULL it will be called to dispose of @user_data.
+ *
+ * Return value: the newly created #ClutterEffectTemplate object
+ *
+ * Since: 0.4
+ */
+ClutterEffectTemplate *
+clutter_effect_template_new_full (ClutterTimeline  *timeline,
+                                  ClutterAlphaFunc  alpha_func,
+                                  gpointer          user_data,
+                                  GDestroyNotify    notify)
+{
+  ClutterEffectTemplate *retval;
+
+  g_return_val_if_fail (CLUTTER_IS_TIMELINE (timeline), NULL);
+  g_return_val_if_fail (alpha_func != NULL, NULL);
+
+  retval = g_object_new (CLUTTER_TYPE_EFFECT_TEMPLATE,
+                         "timeline", timeline,
+                         NULL);
+
+  clutter_effect_template_set_alpha_func (retval, alpha_func, user_data, notify);
+
+  return retval;
 }
 
 static void
@@ -264,12 +371,12 @@ clutter_effect_closure_new (ClutterEffectTemplate *template,
   c->timeline = clutter_timeline_clone (priv->timeline);
   c->alpha    = clutter_alpha_new_full (c->timeline,
 					priv->alpha_func,
-					NULL, NULL);
+					priv->alpha_data,
+                                        NULL);
 
-  c->signal_id  = g_signal_connect (c->timeline,
-				    "completed",
-				    G_CALLBACK(complete),
-				    c);
+  c->signal_id =
+    g_signal_connect (c->timeline, "completed",G_CALLBACK (complete), c);
+
   return c;
 }
 

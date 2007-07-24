@@ -88,6 +88,10 @@ struct _ClutterEffectTemplateClass
 GType                  clutter_effect_template_get_type (void) G_GNUC_CONST;
 ClutterEffectTemplate *clutter_effect_template_new      (ClutterTimeline  *timeline,
                                                          ClutterAlphaFunc  alpha_func);
+ClutterEffectTemplate *clutter_effect_template_new_full (ClutterTimeline  *timeline,
+                                                         ClutterAlphaFunc  alpha_func,
+                                                         gpointer          user_data,
+                                                         GDestroyNotify    notify);
 
 /*
  * Clutter effects
