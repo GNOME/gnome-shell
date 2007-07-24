@@ -149,16 +149,6 @@ clutter_media_base_init (gpointer g_iface)
 	  G_PARAM_STATIC_BLURB));
 
       /* signals */
-#if 0
-      g_signal_new ("metadata-available",
-		    CLUTTER_TYPE_MEDIA,
-		    G_SIGNAL_RUN_LAST,
-		    G_STRUCT_OFFSET (ClutterMediaInterface,
-				     metadata_available),
-		    NULL, NULL,
-		    g_cclosure_marshal_VOID__POINTER,
-		    G_TYPE_NONE, 1, G_TYPE_POINTER);
-#endif      
       g_signal_new ("eos",
 		    CLUTTER_TYPE_MEDIA,
 		    G_SIGNAL_RUN_LAST,

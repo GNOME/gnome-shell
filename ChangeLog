@@ -1,5 +1,15 @@
 2007-07-24  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/clutter-media.c: (clutter_media_base_init):
+	Remove #if 0! signal - assume causing issues with binding generation.
+	(#407)
+
+	* clutter/cogl/gl/cogl.c:
+	Check GL_TEXTURE_RECTANGLE_ARB and GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB
+	are defined in gl.h (#404)
+
+2007-07-24  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/glx/clutter-stage-glx.c: (clutter_stage_glx_realize):
 	Create stage window with correct depth/visual. Via patch from
 	Robert Bragg (#409).
