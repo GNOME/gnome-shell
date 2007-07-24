@@ -1,5 +1,10 @@
 2007-07-24  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/cogl/gl/cogl-defines.h:
+	Another GL_TEXTURE_RECTANGLE_ARB related fix (#404)
+
+2007-07-24  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-backend.c: 
 	Minor build fixes (#413)
 
