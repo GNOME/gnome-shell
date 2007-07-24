@@ -59,6 +59,7 @@ struct _ClutterBehaviourRotatePrivate
 
   ClutterRotateAxis axis;
   ClutterRotateDirection direction;
+  ClutterKnot center;
 };
 
 #define CLUTTER_BEHAVIOUR_ROTATE_GET_PRIVATE(obj) \
@@ -73,7 +74,8 @@ enum
   PROP_ANGLE_BEGIN,
   PROP_ANGLE_END,
   PROP_AXIS,
-  PROP_DIRECTION
+  PROP_DIRECTION,
+  PROP_CENTER
 };
 
 static void
@@ -113,17 +115,17 @@ clutter_behaviour_rotate_alpha_notify (ClutterBehaviour *behaviour,
         case CLUTTER_X_AXIS:
           clutter_actor_rotate_x (actor,
                                   CLUTTER_FIXED_TO_FLOAT (angle),
-                                  0, 0);
+                                  priv->center.x, priv->center.y);
           break;
         case CLUTTER_Y_AXIS:
           clutter_actor_rotate_y (actor,
                                   CLUTTER_FIXED_TO_FLOAT (angle),
-                                  0, 0);
+                                  priv->center.x, priv->center.y);
           break;
         case CLUTTER_Z_AXIS:
           clutter_actor_rotate_z (actor,
                                   CLUTTER_FIXED_TO_FLOAT (angle),
-                                  0, 0);
+                                  priv->center.x, priv->center.y);
           break;
         }
     }
@@ -136,9 +138,11 @@ clutter_behaviour_rotate_set_property (GObject      *gobject,
                                        const GValue *value,
                                        GParamSpec   *pspec)
 {
+  ClutterBehaviourRotate *rotate;
   ClutterBehaviourRotatePrivate *priv;
 
-  priv = CLUTTER_BEHAVIOUR_ROTATE (gobject)->priv;
+  rotate = CLUTTER_BEHAVIOUR_ROTATE (gobject);
+  priv = rotate->priv;
 
   switch (prop_id)
     {
@@ -153,6 +157,13 @@ clutter_behaviour_rotate_set_property (GObject      *gobject,
       break;
     case PROP_DIRECTION:
       priv->direction = g_value_get_enum (value);
+      break;
+    case PROP_CENTER:
+      {
+        ClutterKnot *knot = g_value_get_boxed (value);
+        if (knot)
+          clutter_behaviour_rotate_set_center (rotate, knot);
+      }
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
@@ -183,6 +194,9 @@ clutter_behaviour_rotate_get_property (GObject    *gobject,
       break;
     case PROP_DIRECTION:
       g_value_set_enum (value, priv->direction);
+      break;
+    case PROP_CENTER:
+      g_value_set_boxed (value, &priv->center);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
@@ -259,6 +273,21 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
                                                       CLUTTER_TYPE_ROTATE_DIRECTION,
                                                       CLUTTER_ROTATE_CW,
                                                       CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterBehaviourRotate:center:
+   *
+   * The center of rotation. The coordinates are relative to the plane normal
+   * to the axis of rotation.
+   *
+   * Since: 0.4
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_CENTER,
+                                   g_param_spec_boxed ("center",
+                                                       "Center",
+                                                       "Center of rotation",
+                                                       CLUTTER_TYPE_KNOT,
+                                                       CLUTTER_PARAM_READWRITE));
 
   g_type_class_add_private (klass, sizeof (ClutterBehaviourRotatePrivate));
 }
@@ -271,9 +300,10 @@ clutter_behaviour_rotate_init (ClutterBehaviourRotate *rotate)
   rotate->priv = priv = CLUTTER_BEHAVIOUR_ROTATE_GET_PRIVATE (rotate);
 
   priv->angle_begin = CLUTTER_FLOAT_TO_FIXED (0.0);
-  priv->angle_end = CLUTTER_FLOAT_TO_FIXED (359.0);
+  priv->angle_end = CLUTTER_FLOAT_TO_FIXED (360.0);
   priv->axis = CLUTTER_Z_AXIS;
   priv->direction = CLUTTER_ROTATE_CW;
+  priv->center.x = priv->center.y = 0;
 }
 
 /**
@@ -472,19 +502,11 @@ clutter_behaviour_rotate_set_bounds (ClutterBehaviourRotate *rotate,
                                      gdouble                 angle_begin,
                                      gdouble                 angle_end)
 {
-#if 0
-  ClutterBehaviourRotatePrivate *priv;
-  
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ROTATE (rotate));
 
-  priv = rotate->priv;
-
-  g_object_ref (rotate);
-  g_object_freeze_notify (G_OBJECT (rotate));
-
-  g_object_thaw_notify (G_OBJECT (rotate));
-  g_object_unref (rotate);
-#endif
+  clutter_behaviour_rotate_set_boundsx (rotate,
+                                        CLUTTER_FLOAT_TO_FIXED (angle_begin),
+                                        CLUTTER_FLOAT_TO_FIXED (angle_end));
 }
 
 /**
@@ -521,7 +543,6 @@ clutter_behaviour_rotate_set_boundsx (ClutterBehaviourRotate *rotate,
                                       ClutterFixed            angle_begin,
                                       ClutterFixed            angle_end)
 {
-#if 0
   ClutterBehaviourRotatePrivate *priv;
   
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ROTATE (rotate));
@@ -531,7 +552,75 @@ clutter_behaviour_rotate_set_boundsx (ClutterBehaviourRotate *rotate,
   g_object_ref (rotate);
   g_object_freeze_notify (G_OBJECT (rotate));
 
+  if (priv->angle_begin != angle_begin)
+    {
+      priv->angle_begin = angle_begin;
+
+      g_object_notify (G_OBJECT (rotate), "angle-begin");
+    }
+
+  if (priv->angle_end != angle_end)
+    {
+      priv->angle_end = angle_end;
+
+      g_object_notify (G_OBJECT (rotate), "angle-end");
+    }
+
   g_object_thaw_notify (G_OBJECT (rotate));
   g_object_unref (rotate);
-#endif
+}
+
+/**
+ * clutter_behaviour_rotate_set_center:
+ * @rotate: a #ClutterBehaviourRotate
+ * @center: a #ClutterKnot
+ *
+ * Sets the center of rotation. The coordinates are relative to the plane
+ * normal to the rotation axis set with clutter_behaviour_rotate_set_axis().
+ *
+ * Since: 0.4
+ */
+void
+clutter_behaviour_rotate_set_center (ClutterBehaviourRotate *rotate,
+                                     const ClutterKnot      *center)
+{
+  ClutterBehaviourRotatePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ROTATE (rotate));
+  g_return_if_fail (center != NULL);
+
+  priv = rotate->priv;
+
+  if (priv->center.x != center->x || priv->center.y != center->y)
+    {
+      priv->center.x = center->x;
+      priv->center.y = center->y;
+
+      g_object_notify (G_OBJECT (rotate), "center");
+    }
+}
+
+/**
+ * clutter_behaviour_rotate_get_center:
+ * @rotate: a #ClutterBehaviourRotate
+ * @center: return location for the center of rotation
+ *
+ * Retrieves the center of rotation set using
+ * clutter_behaviour_rotate_set_center().
+ *
+ * Since: 0.4
+ */
+void
+clutter_behaviour_rotate_get_center (ClutterBehaviourRotate *rotate,
+                                     ClutterKnot            *center)
+{
+  ClutterBehaviourRotatePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ROTATE (rotate));
+  g_return_if_fail (center != NULL);
+
+  priv = rotate->priv;
+
+  center->x = priv->center.x;
+  center->y = priv->center.y;
 }

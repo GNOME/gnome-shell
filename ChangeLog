@@ -1,5 +1,10 @@
 2007-07-24  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-behaviour-rotate.[ch]: Add a center property
+	for the center or rotation; implement the set_bounds() methods.
+
+2007-07-24  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/eglx/clutter-backend-egl.c:
 	* clutter/eglnative/clutter-backend-egl.c:
 	* clutter/sdl/clutter-backend-sdl.c: Destroy the stage in every

@@ -79,6 +79,10 @@ ClutterBehaviour *clutter_behaviour_rotate_newx (ClutterAlpha           *alpha,
                                                  ClutterFixed            angle_begin,
                                                  ClutterFixed            angle_end);
 
+void                   clutter_behaviour_rotate_get_center    (ClutterBehaviourRotate *rotate,
+                                                               ClutterKnot            *center);
+void                   clutter_behaviour_rotate_set_center    (ClutterBehaviourRotate *rotate,
+                                                               const ClutterKnot      *knot);
 ClutterRotateAxis      clutter_behaviour_rotate_get_axis      (ClutterBehaviourRotate *rotate);
 void                   clutter_behaviour_rotate_set_axis      (ClutterBehaviourRotate *rotate,
                                                                ClutterRotateAxis       axis);
