@@ -1,3 +1,8 @@
+2007-07-24  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-backend.c: 
+	Minor build fixes (#413)
+
 2007-07-24  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-effect.h:

@@ -44,9 +44,7 @@
 #include "clutter-backend.h"
 #include "clutter-private.h"
 
-G_DEFINE_ABSTRACT_TYPE (ClutterBackend,
-                        clutter_backend,
-                        G_TYPE_OBJECT);
+G_DEFINE_ABSTRACT_TYPE (ClutterBackend, clutter_backend, G_TYPE_OBJECT);
 
 #define CLUTTER_BACKEND_GET_PRIVATE(obj) \
 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_BACKEND, ClutterBackendPrivate))
@@ -113,7 +111,7 @@ _clutter_backend_add_options (ClutterBackend *backend,
 
   klass = CLUTTER_BACKEND_GET_CLASS (backend);
   if (klass->add_options)
-    return klass->add_options (backend, group);
+    klass->add_options (backend, group);
 }
 
 gboolean
