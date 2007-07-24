@@ -14,11 +14,10 @@ G_BEGIN_DECLS
 
 /**
  * ClutterPackType:
- *
- * Pack order for a #ClutterBox child.
- *
  * @CLUTTER_PACK_START: append child from the start
  * @CLUTTER_PACK_END: append child from the end
+ *
+ * Pack order for a #ClutterBox child.
  *
  * Since: 0.4
  */
@@ -67,11 +66,10 @@ struct _ClutterBoxClass
 
 /**
  * ClutterBoxChild:
- *
- * Packing data for children of a #ClutterBox.
- *
  * @actor: the child #ClutterActor
  * @pack_type: the type of packing used
+ *
+ * Packing data for children of a #ClutterBox.
  *
  * Since: 0.4
  */

@@ -562,16 +562,21 @@ clutter_stage_get_perspectivex (ClutterStage       *stage,
 /**
  * clutter_stage_set_perspective
  * @stage: A #ClutterStage
- * FIXME
+ * @fovy: FIXME
+ * @aspect: FIXME
+ * @z_near: FIXME
+ * @z_far: FIXME
  * 
  * Set the stage perspective.
- **/
+ *
+ * Since: 0.4
+ */
 void
-clutter_stage_set_perspective (ClutterStage       *stage,
-				gfloat               fovy,
-				gfloat               aspect,
-				gfloat               z_near,
-				gfloat               z_far)
+clutter_stage_set_perspective (ClutterStage *stage,
+                               gfloat        fovy,
+                               gfloat        aspect,
+                               gfloat        z_near,
+                               gfloat        z_far)
 {
   ClutterStagePrivate *priv;
 
@@ -706,9 +711,11 @@ clutter_stage_show_cursor (ClutterStage *stage)
 
 /**
  * clutter_stage_hide_cursor:
- * @stage:
+ * @stage: a #ClutterStage
  *
- * Hides the cursor as invisible on the stage window
+ * Makes the cursor invisible on the stage window
+ *
+ * Since: 0.4
  */
 void
 clutter_stage_hide_cursor (ClutterStage *stage)
