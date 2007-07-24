@@ -1,5 +1,10 @@
 2007-07-24  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/cogl/gl/cogl.c: (cogl_get_features):
+	learn to use cpp properly.
+
+2007-07-24  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-media.c: (clutter_media_base_init):
 	Remove #if 0! signal - assume causing issues with binding generation.
 	(#407)

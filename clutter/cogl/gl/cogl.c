@@ -552,7 +552,7 @@ cogl_get_features ()
 
   gl_extensions = (const gchar*) glGetString (GL_EXTENSIONS);
 
-#ifdef GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB and GL_TEXTURE_RECTANGLE_ARB
+#if defined(GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB) && defined(GL_TEXTURE_RECTANGLE_ARB)
   if (cogl_check_extension ("GL_ARB_texture_rectangle", gl_extensions) ||
       cogl_check_extension ("GL_EXT_texture_rectangle", gl_extensions))
     {
