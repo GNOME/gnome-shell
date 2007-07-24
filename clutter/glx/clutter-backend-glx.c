@@ -270,7 +270,7 @@ clutter_backend_glx_init_events (ClutterBackend *backend)
   _clutter_backend_glx_events_init (backend);
 }
 
-static ClutterActor*
+static ClutterActor *
 clutter_backend_glx_get_stage (ClutterBackend *backend)
 {
   ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
@@ -336,7 +336,7 @@ clutter_backend_glx_dispose (GObject *gobject)
     {
       CLUTTER_NOTE (BACKEND, "Disposing the main stage");
 
-      g_object_unref (backend_glx->stage);
+      clutter_actor_destroy (backend_glx->stage);
       backend_glx->stage = NULL;
     }
  

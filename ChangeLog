@@ -1,5 +1,10 @@
 2007-07-24  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/glx/clutter-backend-glx.c: Destroy the stage, don't
+	just unref it.
+
+2007-07-24  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-main.c: Add debug markers.
 
 2007-07-24  Emmanuele Bassi  <ebassi@openedhand.com>
