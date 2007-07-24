@@ -130,7 +130,7 @@ clutter_backend_egl_dispose (GObject *gobject)
 
   if (backend_egl->stage)
     {
-      g_object_unref (backend_egl->stage);
+      clutter_actor_destroy (backend_egl->stage);
       backend_egl->stage = NULL;
     }
 

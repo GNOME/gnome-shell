@@ -146,7 +146,7 @@ clutter_backend_sdl_dispose (GObject *gobject)
 
   if (backend_sdl->stage)
     {
-      g_object_unref (backend_sdl->stage);
+      clutter_actor_destroy (backend_sdl->stage);
       backend_sdl->stage = NULL;
     }
 

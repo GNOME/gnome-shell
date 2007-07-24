@@ -1,5 +1,12 @@
 2007-07-24  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/eglx/clutter-backend-egl.c:
+	* clutter/eglnative/clutter-backend-egl.c:
+	* clutter/sdl/clutter-backend-sdl.c: Destroy the stage in every
+	backend.
+
+2007-07-24  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/glx/clutter-backend-glx.c: Destroy the stage, don't
 	just unref it.
 
