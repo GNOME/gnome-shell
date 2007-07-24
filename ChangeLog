@@ -1,6 +1,11 @@
 2007-07-24  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/cogl/gl/cogl-defines.h:
+	Add  CGL_UNSIGNED_INT_8_8_8_8_REV (for big endian machines)
+
+2007-07-24  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/cogl/gl/cogl-defines.h:
 	Another GL_TEXTURE_RECTANGLE_ARB related fix (#404)
 
 2007-07-24  Matthew Allum  <mallum@openedhand.com>
