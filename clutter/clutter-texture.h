@@ -38,6 +38,14 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_TEXTURE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_TEXTURE))
 #define CLUTTER_TEXTURE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_TEXTURE, ClutterTextureClass))
 
+typedef enum {
+  CLUTTER_TEXTURE_ERROR_OUT_OF_MEMORY,
+  CLUTTER_TEXTURE_ERROR_NO_YUV
+} ClutterTextureError;
+
+#define CLUTTER_TEXTURE_ERROR   (clutter_texture_error_quark ())
+GQuark clutter_texture_error_quark (void);
+
 typedef struct _ClutterTexture        ClutterTexture;
 typedef struct _ClutterTextureClass   ClutterTextureClass;
 typedef struct _ClutterTexturePrivate ClutterTexturePrivate;
@@ -69,16 +77,16 @@ struct _ClutterTextureClass
 
 typedef enum ClutterTextureFlags
 {
-    CLUTTER_TEXTURE_RGB_FLAG_BGR     = (1<<1),
-    CLUTTER_TEXTURE_RGB_FLAG_PREMULT = (1<<2), /* FIXME: not handled */
-    CLUTTER_TEXTURE_YUV_FLAG_YUV2    = (1<<3)
+    CLUTTER_TEXTURE_RGB_FLAG_BGR     = (1 << 1),
+    CLUTTER_TEXTURE_RGB_FLAG_PREMULT = (1 << 2), /* FIXME: not handled */
+    CLUTTER_TEXTURE_YUV_FLAG_YUV2    = (1 << 3)
     /* FIXME: add compressed types ? */
 } ClutterTextureFlags;
 
 GType clutter_texture_get_type (void) G_GNUC_CONST;
 
-ClutterActor *clutter_texture_new             (void);
-ClutterActor *clutter_texture_new_from_pixbuf (GdkPixbuf      *pixbuf);
+ClutterActor *clutter_texture_new                 (void);
+ClutterActor *clutter_texture_new_from_pixbuf     (GdkPixbuf      *pixbuf);
 gboolean      clutter_texture_set_from_rgb_data   (ClutterTexture *texture,
 						   const guchar   *data,
 						   gboolean        has_alpha,
@@ -97,24 +105,24 @@ gboolean      clutter_texture_set_from_yuv_data   (ClutterTexture *texture,
 gboolean      clutter_texture_set_pixbuf          (ClutterTexture *texture,
 						   GdkPixbuf      *pixbuf,
 						   GError        **error);
-GdkPixbuf *   clutter_texture_get_pixbuf      (ClutterTexture *texture);
-void          clutter_texture_get_base_size   (ClutterTexture *texture,
-                                               gint           *width,
-                                               gint           *height);
+GdkPixbuf *   clutter_texture_get_pixbuf          (ClutterTexture *texture);
+void          clutter_texture_get_base_size       (ClutterTexture *texture,
+                                                   gint           *width,
+                                                   gint           *height);
 
 /* Below mainly for subclassed texture based actors */
 
-void clutter_texture_bind_tile               (ClutterTexture *texture,
+void     clutter_texture_bind_tile           (ClutterTexture *texture,
                                               gint            index);
-void clutter_texture_get_n_tiles             (ClutterTexture *texture,
+void     clutter_texture_get_n_tiles         (ClutterTexture *texture,
                                               gint           *n_x_tiles,
                                               gint           *n_y_tiles);
-void clutter_texture_get_x_tile_detail       (ClutterTexture *texture, 
+void     clutter_texture_get_x_tile_detail   (ClutterTexture *texture, 
 				              gint            x_index,
 				              gint           *pos,
 				              gint           *size,
 				              gint           *waste);
-void clutter_texture_get_y_tile_detail       (ClutterTexture *texture, 
+void     clutter_texture_get_y_tile_detail   (ClutterTexture *texture, 
 				              gint            y_index,
 				              gint           *pos,
 				              gint           *size,

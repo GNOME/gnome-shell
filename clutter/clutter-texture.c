@@ -30,12 +30,12 @@
  * #ClutterTexture is a base class for displaying and manipulating pixel
  * buffer type data.
  *
- * The #clutter_texture_set_from_rgb_data and #clutter_texture_set_pixbuf are
- * used to copy image data into texture memory and subsequently realize the
- * the texture. 
+ * The clutter_texture_set_from_rgb_data() and clutter_texture_set_pixbuf()
+ * functions are used to copy image data into texture memory and subsequently
+ * realize the the texture. 
  *
- * If texture reads are supported by underlying GL implementaion 
- * Unrealizing/hiding frees image data from texture memory moving to main 
+ * If texture reads are supported by underlying GL implementation,
+ * unrealizing/hiding frees image data from texture memory moving to main 
  * system memory. Re-realizing then performs the opposite operation. 
  * This process allows basic management of commonly limited available texture 
  * memory.  
@@ -67,6 +67,8 @@ typedef struct {
   gint size;
   gint waste;
 } ClutterTextureTileDimension;
+
+#define CLUTTER_TEXTURE_GET_PRIVATE(obj)        (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_TEXTURE, ClutterTexturePrivate))
 
 struct _ClutterTexturePrivate
 {
@@ -111,6 +113,12 @@ enum
 };
 
 static int texture_signals[LAST_SIGNAL] = { 0 };
+
+GQuark
+clutter_texture_error_quark (void)
+{
+  return g_quark_from_static_string ("clutter-texture-error-quark");
+}
 
 static guchar*
 un_pre_multiply_alpha (const guchar   *data,
@@ -260,7 +268,7 @@ texture_init_tiles (ClutterTexture *texture)
     }
   
   if (priv->x_tiles)
-    g_free(priv->x_tiles);
+    g_free (priv->x_tiles);
 
   priv->n_x_tiles = tile_dimension (priv->width, x_pot, 
 				    priv->max_tile_waste, NULL);
@@ -268,7 +276,7 @@ texture_init_tiles (ClutterTexture *texture)
   tile_dimension (priv->width, x_pot, priv->max_tile_waste, priv->x_tiles);
 
   if (priv->y_tiles)
-    g_free(priv->y_tiles);
+    g_free (priv->y_tiles);
 
   priv->n_y_tiles = tile_dimension (priv->height, y_pot, 
 				    priv->max_tile_waste, NULL);
@@ -387,19 +395,19 @@ texture_free_gl_resources (ClutterTexture *texture)
       else
 	cogl_textures_destroy (priv->n_x_tiles * priv->n_y_tiles, priv->tiles);
 
-      g_free(priv->tiles);
+      g_free (priv->tiles);
       priv->tiles = NULL;
     }
 
   if (priv->x_tiles)
     {
-      g_free(priv->x_tiles);
+      g_free (priv->x_tiles);
       priv->x_tiles = NULL;
     }
 
   if (priv->y_tiles)
     {
-      g_free(priv->y_tiles);
+      g_free (priv->y_tiles);
       priv->y_tiles = NULL;
     }
 }
@@ -758,32 +766,15 @@ clutter_texture_dispose (GObject *object)
 
   priv = texture->priv;
 
-  if (priv != NULL)
-    {
-      texture_free_gl_resources (texture);
+  texture_free_gl_resources (texture);
 
-      if (priv->local_pixbuf != NULL)
-	{
-	  g_object_unref (priv->local_pixbuf);
-	  priv->local_pixbuf = NULL;
-	}
+  if (priv->local_pixbuf != NULL)
+    {
+      g_object_unref (priv->local_pixbuf);
+      priv->local_pixbuf = NULL;
     }
 
   G_OBJECT_CLASS (clutter_texture_parent_class)->dispose (object);
-}
-
-static void 
-clutter_texture_finalize (GObject *object)
-{
-  ClutterTexture *self = CLUTTER_TEXTURE(object);
-
-  if (self->priv)
-    {
-      g_free(self->priv);
-      self->priv = NULL;
-    }
-
-  G_OBJECT_CLASS (clutter_texture_parent_class)->finalize (object);
 }
 
 static void
@@ -893,8 +884,10 @@ clutter_texture_class_init (ClutterTextureClass *klass)
   GObjectClass        *gobject_class;
   ClutterActorClass *actor_class;
 
-  gobject_class = (GObjectClass*)klass;
-  actor_class = (ClutterActorClass*)klass;
+  gobject_class = (GObjectClass*) klass;
+  actor_class = (ClutterActorClass*) klass;
+
+  g_type_class_add_private (klass, sizeof (ClutterTexturePrivate));
 
   actor_class->paint      = clutter_texture_paint;
   actor_class->realize    = clutter_texture_realize;
@@ -903,7 +896,6 @@ clutter_texture_class_init (ClutterTextureClass *klass)
   actor_class->hide       = clutter_texture_hide;
 
   gobject_class->dispose      = clutter_texture_dispose;
-  gobject_class->finalize     = clutter_texture_finalize;
   gobject_class->set_property = clutter_texture_set_property;
   gobject_class->get_property = clutter_texture_get_property;
 
@@ -1045,7 +1037,7 @@ clutter_texture_init (ClutterTexture *self)
 {
   ClutterTexturePrivate *priv;
 
-  priv = g_new0 (ClutterTexturePrivate, 1);
+  self->priv = priv = CLUTTER_TEXTURE_GET_PRIVATE (self); 
 
   priv->max_tile_waste = 64;
   priv->filter_quality = 0;
@@ -1062,8 +1054,6 @@ clutter_texture_init (ClutterTexture *self)
     }
   else
     priv->target_type = CGL_TEXTURE_2D;
-
-  self->priv  = priv;
 }
 
 static void
@@ -1253,11 +1243,12 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
   priv = texture->priv;
 
   g_return_val_if_fail (data != NULL, FALSE);
+
   /* Needed for GL_RGBA (internal format) and gdk pixbuf usage */
   g_return_val_if_fail (bpp == 4, FALSE); 
   
-  texture_dirty = size_change = (width != priv->width 
-				 || height != priv->height);
+  texture_dirty = size_change =
+    (width != priv->width || height != priv->height);
 
   prev_format = priv->pixel_format;
   
@@ -1295,12 +1286,12 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
 
       if (priv->is_tiled == FALSE)
 	{
-	  if (priv->target_type == CGL_TEXTURE_RECTANGLE_ARB
-	      && !cogl_texture_can_size (CGL_TEXTURE_RECTANGLE_ARB,
-					 priv->pixel_format,
-					 priv->pixel_type,
-					 priv->width, 
-					 priv->height))
+	  if (priv->target_type == CGL_TEXTURE_RECTANGLE_ARB &&
+              !cogl_texture_can_size (CGL_TEXTURE_RECTANGLE_ARB,
+				      priv->pixel_format,
+				      priv->pixel_type,
+				      priv->width, 
+				      priv->height))
 	    {
 	      /* If we cant create NPOT tex of this size fall back to tiles */
 	      CLUTTER_NOTE (TEXTURE, 
@@ -1312,12 +1303,12 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
 	      priv->target_type = CGL_TEXTURE_2D;
 	    }
 	  
-	  if (priv->target_type == CGL_TEXTURE_2D
-	      && !cogl_texture_can_size (CGL_TEXTURE_2D,
-					 priv->pixel_format, 
-					 priv->pixel_type,
-					 clutter_util_next_p2(priv->width), 
-					 clutter_util_next_p2(priv->height)))
+	  if (priv->target_type == CGL_TEXTURE_2D &&
+	      !cogl_texture_can_size (CGL_TEXTURE_2D,
+				      priv->pixel_format, 
+				      priv->pixel_type,
+				      clutter_util_next_p2 (priv->width), 
+				      clutter_util_next_p2 (priv->height)))
 	    { 
 	      priv->is_tiled = TRUE; 
 	    }
@@ -1374,13 +1365,16 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
  * @width: Width in pixels of image data.
  * @height: Height in pixels of image data
  * @flags: #ClutterTextureFlags
- * @error: FIXME.
+ * @error: Return location for a #GError, or %NULL.
  *
- * Sets a #ClutterTexture from YUV image data.
+ * Sets a #ClutterTexture from YUV image data. If an error occurred,
+ * %FALSE is returned and @error is set.
  *
- * Return value: TRUE on success, FALSE on failure. 
+ * This function is likely to change in future versions.
  *
- * Since 0.4. This function is likely to change in future versions.
+ * Return value: %TRUE if the texture was successfully updated
+ *
+ * Since 0.4.
  **/
 gboolean          
 clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
@@ -1393,8 +1387,15 @@ clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
   ClutterTexturePrivate *priv;
   gboolean               texture_dirty = TRUE, size_change = FALSE;
 
-  if (!clutter_feature_available(CLUTTER_FEATURE_TEXTURE_YUV))
-    return FALSE;
+  g_return_val_if_fail (CLUTTER_IS_TEXTURE (texture), FALSE);
+
+  if (!clutter_feature_available (CLUTTER_FEATURE_TEXTURE_YUV))
+    {
+      g_set_error (error, CLUTTER_TEXTURE_ERROR,
+                   CLUTTER_TEXTURE_ERROR_NO_YUV,
+                   "YUV textures are not supported");
+      return FALSE;
+    }
 
   priv = texture->priv;
 
@@ -1427,26 +1428,37 @@ clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
 
   if (texture_dirty)
     {
+      gint new_width, new_height;
+
+      new_width = clutter_util_next_p2 (priv->width);
+      new_height = clutter_util_next_p2 (priv->height);
+
       /* FIXME: need to check size limits correctly - does not
-       * seem to work if correct format and typre are used so
+       * seem to work if correct format and type are used so
        * this is really a guess...
       */
       if (cogl_texture_can_size (CGL_TEXTURE_2D,
 				 CGL_RGBA, 
 				 CGL_UNSIGNED_BYTE,
-				 clutter_util_next_p2(priv->width), 
-				 clutter_util_next_p2(priv->height)))
+                                 new_width, new_height))
 	{
 	  cogl_texture_image_2d (priv->target_type,
 				 priv->pixel_format,
-				 clutter_util_next_p2(priv->width),
-				 clutter_util_next_p2(priv->height),
-				 priv->pixel_format,
+				 new_width, new_height,
+                                 priv->pixel_format,
 				 priv->pixel_type,
 				 NULL);
 	}
       else
-	return FALSE; 		/* FIXME: add tiling */
+        {
+          g_set_error (error, CLUTTER_TEXTURE_ERROR,
+                       CLUTTER_TEXTURE_ERROR_OUT_OF_MEMORY,
+                       "Unable to allocate a texture of %d by %d pixels",
+                       new_width,
+                       new_height);
+
+	  return FALSE; 		/* FIXME: add tiling */
+       }
     }
 
   cogl_texture_sub_image_2d (priv->target_type,
@@ -1483,10 +1495,15 @@ clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
  * clutter_texture_set_pixbuf:
  * @texture: A #ClutterTexture
  * @pixbuf: A #GdkPixbuf
+ * @error: Return location for a #GError, or %NULL
  *
- * Sets a  #ClutterTexture image data from a #GdkPixbuf
+ * Sets a  #ClutterTexture image data from a #GdkPixbuf. In case of
+ * failure, %FALSE is returned and @error is set.
  *
- **/
+ * Return value: %TRUE if the pixbuf was successfully set
+ *
+ * Since: 0.4
+ */
 gboolean
 clutter_texture_set_pixbuf (ClutterTexture *texture,
                             GdkPixbuf      *pixbuf,
