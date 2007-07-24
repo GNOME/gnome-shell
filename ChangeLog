@@ -1,3 +1,7 @@
+2007-07-22  Thomas Thurman  <thomas@thurman.org.uk>
+
+        * NEWS: 2.19.34 release.
+
 2007-07-22  Rob Bradford  <rob@robster.org.uk>
 
 	Fix a bug where the window can be focused without being raised
