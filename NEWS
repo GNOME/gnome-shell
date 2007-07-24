@@ -1,3 +1,23 @@
+2.19.34
+=======
+
+Thanks to Rob Bradford, Cosimo Cecchi, Yair Hershkovitz and Thomas Thurman
+for improvements in this release.
+
+ - Fix a bug where the window can be focused without being raised
+   if the maximize is aborted. (Rob) [#459027]
+ - Unset fullscreen is an allowed action where relevant. (Cosimo) [#449427]
+ - Reverse window buttons and align them to the left for RTL locales.
+   (Yair) [#92212]
+ - Put all bitfields in window data together to help with optimisation.
+   (Thomas) [#450271]
+
+Translations
+  Jorge Gonzalez (es), Ilkka Tyohela (fi), Gabor Kelemen (hu),
+  Takeshi AIHANA (ja), Kjartan Maraas (nb), Vincent van Adrighem (nl),
+  Daniel Nylander (sv), Theppitak Karoonbooyana (th),
+  Nguyễn Thái Ngọc Duy (vi)
+
 2.19.21
 =======
 
