@@ -374,13 +374,14 @@ clutter_event_free (ClutterEvent *event)
 /**
  * clutter_event_get:
  *
- * FIXME
+ * Pops an event off the event queue. Applications should not need to call 
+ * this.
  *
- * Return value: FIXME
+ * Return value: A #ClutterEvent or NULL if queue empty
  *
  * Since: 0.4
  */
-ClutterEvent *
+ClutterEvent*
 clutter_event_get (void)
 {
   ClutterMainContext *context = clutter_context_get_default ();
@@ -391,9 +392,10 @@ clutter_event_get (void)
 /**
  * clutter_event_peek:
  * 
- * FIXME
+ * Returns a pointer to the first event from the event queue but 
+ * does not remove it. 
  *
- * Return value: FIXME
+ * Return value: A #ClutterEvent or NULL if queue empty.
  *
  * Since: 0.4
  */
@@ -414,7 +416,7 @@ clutter_event_peek (void)
  * clutter_event_put:
  * @event: a #ClutterEvent
  *
- * FIXME
+ * Puts a copy of the event on the back on the event queue. 
  *
  * Since: 0.4
  */
@@ -429,6 +431,16 @@ clutter_event_put (ClutterEvent *event)
   g_queue_push_head (context->events_queue, clutter_event_copy (event));
 }
 
+/**
+ * clutter_events_pending:
+ * @event: a #ClutterEvent
+ *
+ * Checks if events are pending in the event queue.
+ *
+ * Return value: TRUE if there are pending events, FALSE otherwise.
+ *
+ * Since: 0.4
+ */
 gboolean
 clutter_events_pending (void)
 {

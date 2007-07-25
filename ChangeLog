@@ -1,3 +1,19 @@
+2007-07-25  Matthew Allum  <mallum@openedhand.com>
+
+	* Makefile.am:
+	* HACKING:
+	Add with initial notes on coding bits and bobs. 
+
+	* clutter/clutter-behaviour-scale.c:
+	Doc fixes.
+
+	* clutter/clutter-event.c: (clutter_event_put):
+	Doc fixes.
+
+	* clutter/glx/clutter-stage-glx.c:
+	Disable wm user resizing of stage (At least for now)
+	Doc fixes. 
+
 2007-07-25  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.c:

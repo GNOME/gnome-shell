@@ -1,0 +1,15 @@
+General notes and rules on clutter core hacking;
+
+ - GNU style indentation, please wrap at 80 chars. 
+
+ - All public functions with float parameters should also provide a fixed
+   point version.
+
+ - Propertys should always be float (never fixed). 
+
+ - API funcs should always use g_return_*
+
+ - Really try to avoid if possible additions to clutter-private.h
+
+ - Dont add direct GL calls but wrap with cogl (also adding GL ES Version)
+

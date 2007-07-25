@@ -18,7 +18,7 @@ uninstall-local:
 	rm -f $(DESTDIR)$(pkgconfigdir)/clutter-@CLUTTER_MAJORMINOR@.pc
 
 
-EXTRA_DIST = clutter.pc.in 
+EXTRA_DIST = clutter.pc.in HACKING
 
 CLEANFILES = $(pcfiles)
 

@@ -232,7 +232,7 @@ clutter_behaviour_scale_init (ClutterBehaviourScale *self)
  * @alpha: a #ClutterAlpha
  * @scale_begin: initial scale factor
  * @scale_end: final scale factor
- * @gravity: FIXME: Not currently implemented
+ * @gravity: a #ClutterGravity for the scale.
  *
  * Creates a new  #ClutterBehaviourScale instance.
  *
@@ -259,7 +259,7 @@ clutter_behaviour_scale_new (ClutterAlpha   *alpha,
  * @alpha: a #ClutterAlpha
  * @scale_begin: initial scale factor
  * @scale_end: final scale factor
- * @gravity: FIXME: Not currently implemented
+ * @gravity: a #ClutterGravity for the scale.
  *
  * A fixed point implementation of clutter_behaviour_scale_new()
  *

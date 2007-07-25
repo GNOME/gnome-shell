@@ -51,6 +51,28 @@
 G_DEFINE_TYPE (ClutterStageGLX, clutter_stage_glx, CLUTTER_TYPE_STAGE);
 
 static void
+fix_window_size (ClutterStageGLX *stage_glx)
+{
+  /* Dont allow window to be user resize-able. 
+   * FIXME: This needs to be bound to a boolean prop.
+  */
+  if (stage_glx->xwin != None && stage_glx->is_foreign_xwin == FALSE)
+    {
+      XSizeHints *size_hints;
+
+      size_hints = XAllocSizeHints();
+
+      size_hints->max_width  = size_hints->min_width = stage_glx->xwin_width;
+      size_hints->max_height = size_hints->min_height = stage_glx->xwin_height;
+      size_hints->flags      = PMinSize|PMaxSize;
+
+      XSetWMNormalHints (stage_glx->xdpy, stage_glx->xwin, size_hints);
+
+      XFree(size_hints);
+    }
+}
+
+static void
 clutter_stage_glx_show (ClutterActor *actor)
 {
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (actor);
@@ -215,6 +237,9 @@ clutter_stage_glx_realize (ClutterActor *actor)
 		    ButtonPressMask | ButtonReleaseMask |
 		    PropertyChangeMask);
 
+      /* no user resize.. */
+      fix_window_size (stage_glx);
+
       set_wm_protocols (stage_glx->xdpy, stage_glx->xwin);
 
       if (stage_glx->gl_context)
@@ -370,11 +395,15 @@ clutter_stage_glx_request_coords (ClutterActor        *self,
       stage_glx->xwin_height = new_height;
 
       if (stage_glx->xwin != None)
-	XResizeWindow (stage_glx->xdpy, 
-		       stage_glx->xwin,
-		       stage_glx->xwin_width,
-		       stage_glx->xwin_height);
+	{
+	  XResizeWindow (stage_glx->xdpy, 
+			 stage_glx->xwin,
+			 stage_glx->xwin_width,
+			 stage_glx->xwin_height);
 
+	  fix_window_size (stage_glx);
+	}
+      
       if (stage_glx->xpixmap != None)
 	{
 	  /* Need to recreate to resize */
@@ -390,6 +419,8 @@ clutter_stage_glx_request_coords (ClutterActor        *self,
 		 stage_glx->xwin,
 		 CLUTTER_UNITS_TO_INT (box->x1),
 		 CLUTTER_UNITS_TO_INT (box->y1));
+
+ 
 }
 
 static void
@@ -408,7 +439,7 @@ clutter_stage_glx_set_fullscreen (ClutterStage *stage,
     {
       gint width, height;
 
-      width = DisplayWidth (stage_glx->xdpy, stage_glx->xscreen);
+      width  = DisplayWidth (stage_glx->xdpy, stage_glx->xscreen);
       height = DisplayHeight (stage_glx->xdpy, stage_glx->xscreen);
 
       clutter_actor_set_size (CLUTTER_ACTOR (stage_glx), width, height);
@@ -645,9 +676,9 @@ clutter_stage_glx_init (ClutterStageGLX *stage)
  * clutter_glx_get_stage_window:
  * @stage: a #ClutterStage
  *
- * FIXME
+ * Gets the stages X Window. 
  *
- * Return value: FIXME
+ * Return value: An XID for the stage window.
  *
  * Since: 0.4
  */
@@ -663,9 +694,9 @@ clutter_glx_get_stage_window (ClutterStage *stage)
  * clutter_glx_get_stage_visual:
  * @stage: a #ClutterStage
  *
- * FIXME
+ * Returns the stage XVisualInfo
  *
- * Return value: FIXME
+ * Return value: The XVisualInfo for the stage.
  *
  * Since: 0.4
  */
