@@ -87,8 +87,8 @@ ClutterBehaviour
 ClutterBehaviourClass
 clutter_behaviour_apply
 clutter_behaviour_remove
+clutter_behaviour_remove_all
 clutter_behaviour_is_applied
-clutter_behaviour_clear
 ClutterBehaviourForeachFunc
 clutter_behaviour_actors_foreach
 clutter_behaviour_get_actors

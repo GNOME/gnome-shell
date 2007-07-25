@@ -1,3 +1,8 @@
+2007-07-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Rename clutter_behaviour_clear() to
+	clutter_behaviour_remove_all().
+
 2007-07-24  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Add new rotate behaviour methods.

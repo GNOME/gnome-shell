@@ -176,7 +176,7 @@ clutter_behaviour_dispose (GObject *gobject)
   ClutterBehaviour *self = CLUTTER_BEHAVIOUR (gobject);
 
   clutter_behaviour_set_alpha (self, NULL);
-  clutter_behaviour_clear (self);
+  clutter_behaviour_remove_all (self);
 
   G_OBJECT_CLASS (clutter_behaviour_parent_class)->dispose (gobject);
 }
@@ -599,7 +599,7 @@ clutter_behaviour_get_actors (ClutterBehaviour *behave)
 }
 
 /**
- * clutter_behaviour_clear:
+ * clutter_behaviour_remove_all:
  * @behave: a #ClutterBehaviour
  *
  * Removes every actor from the list that @behave holds.
@@ -607,7 +607,7 @@ clutter_behaviour_get_actors (ClutterBehaviour *behave)
  * Since: 0.4
  */
 void
-clutter_behaviour_clear (ClutterBehaviour *behave)
+clutter_behaviour_remove_all (ClutterBehaviour *behave)
 {
   ClutterBehaviourPrivate *priv;
   GSList *l;

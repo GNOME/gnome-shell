@@ -132,6 +132,7 @@ void          clutter_behaviour_apply          (ClutterBehaviour            *beh
                                                 ClutterActor                *actor);
 void          clutter_behaviour_remove         (ClutterBehaviour            *behave,
                                                 ClutterActor                *actor);
+void          clutter_behaviour_remove_all     (ClutterBehaviour            *behave);
 void          clutter_behaviour_actors_foreach (ClutterBehaviour            *behave,
                                                 ClutterBehaviourForeachFunc  func,
                                                 gpointer                     data);
@@ -144,7 +145,6 @@ void          clutter_behaviour_set_alpha      (ClutterBehaviour            *beh
                                                 ClutterAlpha                *alpha);
 gboolean      clutter_behaviour_is_applied     (ClutterBehaviour            *behave,
 						ClutterActor                *actor);
-void          clutter_behaviour_clear          (ClutterBehaviour            *behave);
 
 G_END_DECLS
 
