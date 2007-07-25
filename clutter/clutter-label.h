@@ -116,7 +116,7 @@ void                  clutter_label_set_use_markup     (ClutterLabel       *labe
 gboolean              clutter_label_get_use_markup     (ClutterLabel       *label);
 void                  clutter_label_set_alignment      (ClutterLabel       *label,
                                                         PangoAlignment      alignment);
-gboolean              clutter_label_get_alignment      (ClutterLabel       *label);
+PangoAlignment        clutter_label_get_alignment      (ClutterLabel       *label);
 
 G_END_DECLS
 

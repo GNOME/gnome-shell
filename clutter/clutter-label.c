@@ -1127,7 +1127,7 @@ clutter_label_set_alignment (ClutterLabel   *label,
  *
  * Since 0.2
  **/
-gboolean
+PangoAlignment
 clutter_label_get_alignment (ClutterLabel *label)
 {
   g_return_val_if_fail (CLUTTER_IS_LABEL (label), FALSE);
