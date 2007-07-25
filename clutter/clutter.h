@@ -33,6 +33,7 @@
 #include "clutter-container.h"
 #include "clutter-behaviour.h"
 #include "clutter-behaviour-bspline.h"
+#include "clutter-behaviour-depth.h"
 #include "clutter-behaviour-ellipse.h"
 #include "clutter-behaviour-opacity.h"
 #include "clutter-behaviour-path.h"
