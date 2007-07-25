@@ -1,3 +1,16 @@
+2007-07-25  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-behaviour-rotate.c:
+	* clutter/clutter-behaviour-rotate.h:
+	Split 'center' prop into 3 seperate props for each axis.
+	Use clutter_behaviour_actors_foreach() rather than
+        clutter_behaviour_get_actors() to avoid copying list.
+	Call fixed point rotation funcs internally.
+
+	* clutter/clutter-effect.c:
+	* clutter/clutter-effect.h:
+	Add new simple rotation based effect funcs.
+
 2007-07-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter.h: Include clutter-behaviour-depth.h
