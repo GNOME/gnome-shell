@@ -299,6 +299,22 @@ fi
 
 AC_SUBST(CLUTTER_DEBUG_CFLAGS)
 
+dnl = Disable fast floating point conversions ==============================
+
+AC_ARG_ENABLE(fast-fp-conversions,
+              AC_HELP_STRING([--disable-fast-fp-conversions=@<:@no/yes@:>@],
+                             [Turn off fast conversion from floating point to int. no: fast floating point conversion are enabled. yes: fast floating point conversions are disabled.  @<:@default=no@:>@]),
+,
+              enable_fast_fp_conversions=yes)
+
+if test "x$enable_fast_fp_conversions" = "xno"; then
+   FIXED_POINT_CFLAGS="$FIXED_POINT_CFLAGS -DCFX_NO_FAST_CONVERSIONS"
+else
+   FIXED_POINT_CFLAGS="$FIXED_POINT_CFLAGS -UCFX_NO_FAST_CONVERSIONS"
+fi
+
+AC_SUBST(FIXED_POINT_CFLAGS)
+
 dnl = GTK Doc check ========================================================
 
 GTK_DOC_CHECK([1.6])
@@ -328,7 +344,9 @@ dnl ========================================================================
 
 AC_SUBST(GCC_FLAGS)
 
-CLUTTER_CFLAGS="$SDL_CFLAGS $EGL_CFLAGS $GLX_CFLAGS $CLUTTER_DEPS_CFLAGS"
+CLUTTER_CFLAGS="$SDL_CFLAGS $EGL_CFLAGS $GLX_CFLAGS $CLUTTER_DEPS_CFLAGS \
+                $FIXED_POINT_CFLAGS"
+
 CLUTTER_LIBS="$SDL_LIBS $EGL_LIBS $GLX_LIBS $CLUTTER_DEPS_LIBS"
 
 AC_SUBST(CLUTTER_CFLAGS)
@@ -368,6 +386,7 @@ echo ""
 echo "                  Flavour:   ${clutterbackend}"
 echo "           Target library:   ${clutterbackendlib}"
 echo "              Debug level:   ${enable_debug}"
+echo "      Fast FP conversions:   ${enable_fast_fp_conversions}"
 echo "        API Documentation:   ${enable_gtk_doc}"
 echo "     Manual Documentation:   ${enable_manual}"
 echo "                      FPU:   ${with_fpu}"

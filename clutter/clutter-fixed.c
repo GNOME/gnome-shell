@@ -856,6 +856,9 @@ const double _magic = 68719476736.0*1.5;
 ClutterFixed
 _clutter_double_to_fixed (double val)
 {
+#ifdef CFX_NO_FAST_CONVERSIONS
+    return (ClutterFixed)(val * (double)CFX_ONE);
+#else
     union 
     {
 	double d;
@@ -864,7 +867,8 @@ _clutter_double_to_fixed (double val)
 
     dbl.d = val;
     dbl.d = dbl.d + _magic;
-    return dbl.i[0]; 
+    return dbl.i[0];
+#endif
 }
 
 /*
@@ -881,6 +885,9 @@ _clutter_double_to_fixed (double val)
 gint
 _clutter_double_to_int (double val)
 {
+#ifdef CFX_NO_FAST_CONVERSIONS
+    return (gint)(val);
+#else
     union 
     {
 	double d;
@@ -889,12 +896,16 @@ _clutter_double_to_int (double val)
 
     dbl.d = val;
     dbl.d = dbl.d + _magic;
-    return ((int)dbl.i[0]) >> 16; 
+    return ((int)dbl.i[0]) >> 16;
+#endif
 }
 
 guint
 _clutter_double_to_uint (double val)
 {
+#ifdef CFX_NO_FAST_CONVERSIONS
+    return (guint)(val);
+#else
     union 
     {
 	double d;
@@ -903,7 +914,8 @@ _clutter_double_to_uint (double val)
 
     dbl.d = val;
     dbl.d = dbl.d + _magic;
-    return (dbl.i[0]) >> 16; 
+    return (dbl.i[0]) >> 16;
+#endif
 }
 
 #undef _CFX_MAN
