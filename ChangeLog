@@ -1,5 +1,11 @@
 2007-07-25  Tomas Frydrych  <tf@openedhand.com>
 
+	* clutter/clutter-fixed.c:
+
+	Fixed endianness issue in fast fp conversions.
+	
+2007-07-25  Tomas Frydrych  <tf@openedhand.com>
+
 	* configure.ac:
 	* clutter/clutter-fixed.c:
 

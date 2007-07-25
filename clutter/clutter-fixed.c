@@ -837,10 +837,12 @@ clutter_powx (guint x, ClutterFixed y)
 const double _magic = 68719476736.0*1.5;
 
 /* Where in the 64 bits of double is the mantisa */
-#ifdef LITTLE_ENDIAN
+#if (__FLOAT_WORD_ORDER == 1234)
 #define _CFX_MAN			0
-#else
+#elif (__FLOAT_WORD_ORDER == 4321)
 #define _CFX_MAN			1
+#else
+#define CFX_NO_FAST_CONVERSIONS
 #endif
 
 /* 
@@ -867,7 +869,7 @@ _clutter_double_to_fixed (double val)
 
     dbl.d = val;
     dbl.d = dbl.d + _magic;
-    return dbl.i[0];
+    return dbl.i[_CFX_MAN];
 #endif
 }
 
@@ -896,7 +898,7 @@ _clutter_double_to_int (double val)
 
     dbl.d = val;
     dbl.d = dbl.d + _magic;
-    return ((int)dbl.i[0]) >> 16;
+    return ((int)dbl.i[_CFX_MAN]) >> 16;
 #endif
 }
 
@@ -914,7 +916,7 @@ _clutter_double_to_uint (double val)
 
     dbl.d = val;
     dbl.d = dbl.d + _magic;
-    return (dbl.i[0]) >> 16;
+    return (dbl.i[_CFX_MAN]) >> 16;
 #endif
 }
 
