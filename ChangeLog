@@ -1,10 +1,18 @@
+2007-07-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-behaviour-bspline.c: Kill off some deep pointer
+	indirections; use CLUTTER_NOTE() instead of ifdeffed out g_debug();
+	add checks in every public entry point; move some initialisations
+	of private data structures out of the constructor and into the
+	init function, where they belong.
+
 2007-07-25  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-behaviour-rotate.c:
 	* clutter/clutter-behaviour-rotate.h:
 	Split 'center' prop into 3 seperate props for each axis.
 	Use clutter_behaviour_actors_foreach() rather than
-        clutter_behaviour_get_actors() to avoid copying list.
+	clutter_behaviour_get_actors() to avoid copying list.
 	Call fixed point rotation funcs internally.
 
 	* clutter/clutter-effect.c:

@@ -49,6 +49,9 @@
 #include "clutter-fixed.h"
 #include "clutter-marshal.h"
 #include "clutter-behaviour-bspline.h"
+#include "clutter-debug.h"
+#include "clutter-private.h"
+
 #include <stdlib.h>
 #include <memory.h>
 
@@ -204,12 +207,10 @@ clutter_bezier_advance (ClutterBezier *b, _FixedT L, ClutterKnot * knot)
   knot->x = clutter_bezier_t2x (b, t);
   knot->y = clutter_bezier_t2y (b, t);
   
-#if 0
-  g_debug ("advancing to relative pt %f: t %f, {%d,%d}",
-           (double)L/(double)CBZ_T_ONE,
-           (double)t/(double)CBZ_T_ONE,
-           knot->x, knot->y);
-#endif
+  CLUTTER_NOTE (BEHAVIOUR, "advancing to relative pt %f: t %f, {%d,%d}",
+                (double) L / (double) CBZ_T_ONE,
+                (double) t / (double) CBZ_T_ONE,
+                knot->x, knot->y);
 }
 
 static void
@@ -500,18 +501,19 @@ struct _ClutterBehaviourBsplinePrivate
 static void 
 clutter_behaviour_bspline_finalize (GObject *object)
 {
-  gint i;
   ClutterBehaviourBspline *self = CLUTTER_BEHAVIOUR_BSPLINE (object);
+  ClutterBehaviourBsplinePrivate *priv = self->priv;
+  gint i;
 
-  for (i = 0; i < self->priv->splines->len; ++i)
-    clutter_bezier_free (g_array_index (self->priv->splines,ClutterBezier*,i));
+  for (i = 0; i < priv->splines->len; ++i)
+    clutter_bezier_free (g_array_index (priv->splines, ClutterBezier*, i));
     
-  g_array_free (self->priv->splines, TRUE);
+  g_array_free (priv->splines, TRUE);
 
-  for (i = 0; i < self->priv->point_stack->len; ++i)
-    clutter_knot_free (g_array_index (self->priv->point_stack,ClutterKnot*,i));
+  for (i = 0; i < priv->point_stack->len; ++i)
+    clutter_knot_free (g_array_index (priv->point_stack, ClutterKnot*, i));
     
-  g_array_free (self->priv->point_stack, TRUE);
+  g_array_free (priv->point_stack, TRUE);
   
   G_OBJECT_CLASS (clutter_behaviour_bspline_parent_class)->finalize (object);
 }
@@ -522,6 +524,7 @@ actor_apply_knot_foreach (ClutterBehaviour *behaviour,
                           gpointer          data)
 {
   ClutterKnot *knot = data;
+
   clutter_actor_set_position (actor, knot->x, knot->y);
 }
 
@@ -531,19 +534,20 @@ actor_apply_knot_foreach (ClutterBehaviour *behaviour,
  * returns FALSE if the length is beyond the end of the bspline.
  */
 static gboolean
-clutter_behaviour_bspline_advance (ClutterBehaviourBspline * bs,
-				   guint                     to)
+clutter_behaviour_bspline_advance (ClutterBehaviourBspline *bs,
+				   guint                    to)
 {
+  ClutterBehaviourBsplinePrivate *priv = bs->priv;
   gint          i;
   guint         length = 0;
   ClutterKnot   knot;
     
-  if (to > bs->priv->length)
+  if (to > priv->length)
     return FALSE;
 
-  for (i = 0; i < bs->priv->splines->len; ++i)
+  for (i = 0; i < priv->splines->len; ++i)
     {
-      ClutterBezier * b = g_array_index (bs->priv->splines,ClutterBezier*,i);
+      ClutterBezier *b = g_array_index (priv->splines, ClutterBezier*, i);
 	
       if (length + b->length >= to)
 	{
@@ -553,10 +557,10 @@ clutter_behaviour_bspline_advance (ClutterBehaviourBspline * bs,
 
           knot.x += bs->priv->x;
           knot.y += bs->priv->y;
-#if 0
-          g_debug ("advancing to length %d: {%d,%d}",
-                   to, knot.x, knot.y);
-#endif
+          
+          CLUTTER_NOTE (BEHAVIOUR, "advancing to length %d: (%d, %d)",
+                        to, knot.x, knot.y);
+
           clutter_behaviour_actors_foreach (CLUTTER_BEHAVIOUR (bs), 
                                             actor_apply_knot_foreach,
                                             &knot);
@@ -621,6 +625,10 @@ clutter_behaviour_bspline_init (ClutterBehaviourBspline * self)
   ClutterBehaviourBsplinePrivate *priv;
 
   self->priv = priv = CLUTTER_BEHAVIOUR_BSPLINE_GET_PRIVATE (self);
+
+  priv->splines = g_array_new (FALSE, FALSE, sizeof (ClutterBezier *));
+  priv->point_stack = g_array_new (FALSE, FALSE, sizeof (ClutterKnot *));
+  priv->length  = 0;
 }
 
 /**
@@ -650,14 +658,8 @@ clutter_behaviour_bspline_new (ClutterAlpha      *alpha,
 
   g_return_val_if_fail (alpha == NULL || CLUTTER_IS_ALPHA (alpha), NULL);
      
-  bs = g_object_new (CLUTTER_TYPE_BEHAVIOUR_BSPLINE, 
-                     "alpha", alpha,
-                     NULL);
+  bs = g_object_new (CLUTTER_TYPE_BEHAVIOUR_BSPLINE, "alpha", alpha, NULL);
 
-  bs->priv->splines = g_array_new (FALSE, FALSE, sizeof (ClutterBezier *));
-  bs->priv->point_stack = g_array_new (FALSE, FALSE, sizeof (ClutterKnot *));
-  bs->priv->length  = 0;
-    
   for (i = 0; i < n_knots; ++i)
     clutter_behaviour_bspline_append_knot (bs, &knots[i]);
 
@@ -816,27 +818,32 @@ void
 clutter_behaviour_bspline_truncate (ClutterBehaviourBspline *bs,
                                     guint                    offset)
 {
+  ClutterBehaviourBsplinePrivate *priv;
   guint i;
   
-  if (offset == 0)
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_BSPLINE (bs));
+
+  if (!offset)
     {
       clutter_behaviour_bspline_clear (bs);
       return;
     }
 
-  /* convert control point offset to the offset of last spline to keep */
-  offset = (offset-1) / 3;
+  priv = bs->priv;
 
-  bs->priv->splines = g_array_set_size (bs->priv->splines, offset+1);
-  bs->priv->length = 0;
+  /* convert control point offset to the offset of last spline to keep */
+  offset = (offset - 1) / 3;
+
+  priv->splines = g_array_set_size (priv->splines, offset + 1);
+  priv->length = 0;
   
-  for (i = 0; i < bs->priv->splines->len; ++i)
+  for (i = 0; i < priv->splines->len; ++i)
     {
-      ClutterBezier * b = g_array_index (bs->priv->splines,
-                                         ClutterBezier*,
-                                         i);
+      ClutterBezier *b;
       
-      bs->priv->length += b->length;
+      b = g_array_index (priv->splines, ClutterBezier*, i);
+      
+      priv->length += b->length;
     }
   
 }
@@ -850,29 +857,28 @@ clutter_behaviour_bspline_truncate (ClutterBehaviourBspline *bs,
  * Since: 0.4
  */
 void
-clutter_behaviour_bspline_clear (ClutterBehaviourBspline * bs)
+clutter_behaviour_bspline_clear (ClutterBehaviourBspline *bs)
 {
+  ClutterBehaviourBsplinePrivate *priv;
   gint i;
 
-  for (i = 0; i < bs->priv->splines->len; ++i)
-    {
-      clutter_bezier_free (g_array_index (bs->priv->splines,
-                                          ClutterBezier*, i));
-    }
-    
-  g_array_set_size (bs->priv->splines, 0);
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_BSPLINE (bs));
 
-  for (i = 0; i < bs->priv->point_stack->len; ++i)
-    {
-      clutter_knot_free (g_array_index (bs->priv->point_stack,
-                                        ClutterKnot*, i));
-    }
-    
-  g_array_set_size (bs->priv->point_stack, 0);
+  priv = bs->priv;
 
-  bs->priv->x = 0;
-  bs->priv->y = 0;
-  bs->priv->length = 0;
+  for (i = 0; i < priv->splines->len; ++i)
+    clutter_bezier_free (g_array_index (priv->splines, ClutterBezier*, i));
+    
+  g_array_set_size (priv->splines, 0);
+
+  for (i = 0; i < priv->point_stack->len; ++i)
+    clutter_knot_free (g_array_index (priv->point_stack, ClutterKnot*, i));
+    
+  g_array_set_size (priv->point_stack, 0);
+
+  priv->x = 0;
+  priv->y = 0;
+  priv->length = 0;
 }
 
 /**
@@ -886,17 +892,20 @@ clutter_behaviour_bspline_clear (ClutterBehaviourBspline * bs)
  * Since: 0.4
  */
 void
-clutter_behaviour_bspline_join (ClutterBehaviourBspline * bs1,
-                                ClutterBehaviourBspline * bs2)
+clutter_behaviour_bspline_join (ClutterBehaviourBspline *bs1,
+                                ClutterBehaviourBspline *bs2)
 {
+  ClutterBehaviourBsplinePrivate *priv;
   gint i, x1, y1;
   ClutterKnot knot;
-  ClutterBezier * b, *b2;
+  ClutterBezier *b, *b2;
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_BSPLINE (bs1));
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_BSPLINE (bs2));
   
   clutter_behaviour_bspline_get_origin (bs2, &knot);
   
-  b = g_array_index (bs1->priv->splines,ClutterBezier*,
-                     bs1->priv->splines->len-1);
+  b = g_array_index (priv->splines, ClutterBezier*, priv->splines->len - 1);
 
   x1 = clutter_bezier_t2x (b, CBZ_T_ONE);
   y1 = clutter_bezier_t2y (b, CBZ_T_ONE);
@@ -907,13 +916,13 @@ clutter_behaviour_bspline_join (ClutterBehaviourBspline * bs1,
   x1 -= knot.x;
   y1 -= knot.y;
 
-  for (i = 0; i < bs1->priv->splines->len; ++i)
+  for (i = 0; i < priv->splines->len; ++i)
     {
       b = g_array_index (bs2->priv->splines, ClutterBezier*, i);
       b2 = clutter_bezier_clone_and_move (b, x1, y1);
 
-      bs1->priv->length += b2->length;
-      g_array_append_val (bs1->priv->splines, b2);
+      priv->length += b2->length;
+      g_array_append_val (priv->splines, b2);
     }
 }
 
@@ -935,38 +944,41 @@ ClutterBehaviour *
 clutter_behaviour_bspline_split (ClutterBehaviourBspline *bs,
                                  guint                    offset)
 {
+  ClutterBehaviourBsplinePrivate *priv;
   ClutterBehaviourBspline * bs2 = NULL;
   ClutterAlpha * alpha;
   guint i, split, length2 = 0;
 
+  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_BSPLINE (bs), NULL);
+
+  priv = bs->priv;
+
   split = offset / 3;
   
-  if (split == 0 || split >= bs->priv->splines->len)
+  if (split == 0 || split >= priv->splines->len)
     return NULL;
 
   alpha = clutter_behaviour_get_alpha (CLUTTER_BEHAVIOUR (bs));
     
-  bs2 = g_object_new (CLUTTER_TYPE_BEHAVIOUR_BSPLINE, 
-                      "alpha", alpha,
-                      NULL);
+  bs2 = g_object_new (CLUTTER_TYPE_BEHAVIOUR_BSPLINE, "alpha", alpha, NULL);
 
-  bs2->priv->splines = g_array_new (FALSE, FALSE, sizeof (ClutterBezier *));
-  bs2->priv->length  = 0;
-
-  bs2->priv->x = bs->priv->x;
-  bs2->priv->y = bs->priv->y;
+  bs2->priv->x = priv->x;
+  bs2->priv->y = priv->y;
     
-  for (i = split; i < bs->priv->splines->len; ++i)
+  for (i = split; i < priv->splines->len; ++i)
     {
-      ClutterBezier * b = g_array_index (bs->priv->splines,ClutterBezier*,i);
+      ClutterBezier *b;
+      
+      b = g_array_index (priv->splines, ClutterBezier*, i);
       g_array_append_val (bs2->priv->splines, b);
+
       length2 += b->length;
     }
 
-  bs->priv->length -= length2;
+  bs2->priv->length -= length2;
   bs2->priv->length = length2;
 
-  g_array_set_size (bs->priv->splines, split);
+  g_array_set_size (priv->splines, split);
 
   return CLUTTER_BEHAVIOUR (bs2);
 }
@@ -983,29 +995,33 @@ clutter_behaviour_bspline_split (ClutterBehaviourBspline *bs,
  * Since: 0.4
  */
 void
-clutter_behaviour_bspline_adjust (ClutterBehaviourBspline  * bs,
-				  guint                      offset,
-				  ClutterKnot              * knot)
+clutter_behaviour_bspline_adjust (ClutterBehaviourBspline  *bs,
+				  guint                     offset,
+				  ClutterKnot              *knot)
 {
+  ClutterBehaviourBsplinePrivate *priv;
   ClutterBezier * b1 = NULL;
   ClutterBezier * b2 = NULL;
   guint           p1_indx = 0;
   guint           p2_indx = 0;
   guint           old_length;
-    
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_BSPLINE (bs));
+
+  priv = bs->priv;
+
   /*
    * Find the bezier(s) affected by change of this control point
    * and the relative position of the control point within them
    */
     
   if (offset == 0)
+    b1 = g_array_index (priv->splines, ClutterBezier*, 0);
+  else if (offset + 1 == priv->splines->len)
     {
-      b1 = g_array_index (bs->priv->splines, ClutterBezier*, 0);;
-    }
-  else if (offset + 1 == bs->priv->splines->len)
-    {
-      b2 = g_array_index (bs->priv->splines, ClutterBezier*,
-                          bs->priv->splines->len-1);
+      b2 = g_array_index (priv->splines,
+                          ClutterBezier*,
+                          priv->splines->len - 1);
       p2_indx = 3;
     }
   else 
@@ -1016,13 +1032,13 @@ clutter_behaviour_bspline_adjust (ClutterBehaviourBspline  * bs,
       if (mod3 == 0)
 	{
           /* on-curve point, i.e., two beziers */
-          b1 = g_array_index (bs->priv->splines, ClutterBezier*, i-1);
-          b2 = g_array_index (bs->priv->splines, ClutterBezier*, i);
+          b1 = g_array_index (priv->splines, ClutterBezier*, i - 1);
+          b2 = g_array_index (priv->splines, ClutterBezier*, i);
           p1_indx = 3;
 	}
       else
 	{
-          b1 = g_array_index (bs->priv->splines,ClutterBezier*,i);
+          b1 = g_array_index (priv->splines, ClutterBezier*, i);
           p1_indx = mod3;
 	}
     }
@@ -1034,14 +1050,14 @@ clutter_behaviour_bspline_adjust (ClutterBehaviourBspline  * bs,
     {
       old_length = b1->length;
       clutter_bezier_adjust (b1, knot, p1_indx);
-      bs->priv->length = bs->priv->length - old_length + b1->length;
+      priv->length = priv->length - old_length + b1->length;
     }
     
   if (b2)
     {
       old_length = b2->length;
       clutter_bezier_adjust (b2, knot, p2_indx);
-      bs->priv->length = bs->priv->length - old_length + b2->length;
+      priv->length = priv->length - old_length + b2->length;
     }
 }
 
@@ -1060,24 +1076,31 @@ void
 clutter_behaviour_bspline_set_origin (ClutterBehaviourBspline * bs,
 				      ClutterKnot             * knot)
 {
-  if (bs->priv->splines->len == 0)
+  ClutterBehaviourBsplinePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_BSPLINE (bs));
+
+  priv = bs->priv;
+
+  if (priv->splines->len == 0)
     {
-      bs->priv->x = knot->x;
-      bs->priv->y = knot->y;
+      priv->x = knot->x;
+      priv->y = knot->y;
     }
   else
     {
-      ClutterBezier * b = g_array_index (bs->priv->splines, ClutterBezier*,
-                                         0);
+      ClutterBezier *b;
+      
+      b = g_array_index (priv->splines, ClutterBezier*, 0);
 
-      bs->priv->x = knot->x - b->dx;
-      bs->priv->y = knot->y - b->dy;
-#if 0
-      g_debug ("setting origin to {%d,%d}: b {%d,%d}, adjustment {%d,%d}",
-               knot->x, knot->y,
-               b->dx, b->dy,
-               bs->priv->x, bs->priv->y);
-#endif
+      priv->x = knot->x - b->dx;
+      priv->y = knot->y - b->dy;
+      
+      CLUTTER_NOTE (BEHAVIOUR, "setting origin to (%d, %d): "
+                               "b (%d, %d), adjustment (%d, %d)",
+                    knot->x, knot->y,
+                    b->dx, b->dy,
+                    priv->x, priv->y);
     }
 }
 
@@ -1091,21 +1114,29 @@ clutter_behaviour_bspline_set_origin (ClutterBehaviourBspline * bs,
  * Since: 0.4
  */
 void
-clutter_behaviour_bspline_get_origin (ClutterBehaviourBspline * bs,
-				      ClutterKnot             * knot)
+clutter_behaviour_bspline_get_origin (ClutterBehaviourBspline *bs,
+				      ClutterKnot             *knot)
 {
-  if (bs->priv->splines->len == 0)
+  ClutterBehaviourBsplinePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_BSPLINE (bs));
+  g_return_if_fail (knot != NULL);
+
+  priv = bs->priv;
+
+  if (priv->splines->len == 0)
     {
-      knot->x = bs->priv->x;
-      knot->y = bs->priv->y;
+      knot->x = priv->x;
+      knot->y = priv->y;
     }
   else
     {
-      ClutterBezier * b = g_array_index (bs->priv->splines, ClutterBezier*,
-                                         0);
+      ClutterBezier *b;
+      
+      b = g_array_index (priv->splines, ClutterBezier*, 0);
 	
-      knot->x = bs->priv->x + b->dx;
-      knot->y = bs->priv->y + b->dy;
+      knot->x = priv->x + b->dx;
+      knot->y = priv->y + b->dy;
     }
 }
 
