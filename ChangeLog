@@ -1,3 +1,10 @@
+2007-07-25  Tomas Frydrych  <tf@openedhand.com>
+
+	* tests/test-rotate.c:
+	* tests/Makefile.am:
+
+	Added test-rotate.
+	
 2007-07-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-behaviour-bspline.c: Kill off some deep pointer
