@@ -91,6 +91,8 @@ struct _ClutterStageClass
                                         gint          height);
   void          (* set_title)          (ClutterStage *stage,
                                         const gchar  *title);
+  void          (* set_user_resize)    (ClutterStage *stage,
+                                        gboolean      value);
 
   /* signals */
   void     (* event)                (ClutterStage           *stage,
@@ -172,6 +174,9 @@ gboolean      clutter_stage_event             (ClutterStage       *stage,
 void          clutter_stage_set_title         (ClutterStage       *stage,
                                                const gchar        *title);
 G_CONST_RETURN gchar *clutter_stage_get_title (ClutterStage       *stage);
+
+void          clutter_stage_set_user_resizeable (ClutterStage *stage, 
+						 gboolean      value);
 
 G_END_DECLS
 

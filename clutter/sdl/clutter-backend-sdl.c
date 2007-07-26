@@ -177,6 +177,11 @@ clutter_backend_sdl_constructor (GType                  gtype,
   return g_object_ref (backend_singleton);
 }
 
+static ClutterFeatureFlags
+clutter_backend_egl_get_features (ClutterBackend *backend)
+{
+  return CLUTTER_FEATURE_STAGE_CURSOR;
+}
 
 static void
 clutter_backend_sdl_class_init (ClutterBackendSDLClass *klass)
@@ -195,6 +200,7 @@ clutter_backend_sdl_class_init (ClutterBackendSDLClass *klass)
   backend_class->get_stage = clutter_backend_sdl_get_stage;
   backend_class->add_options = clutter_backend_sdl_add_options;
   backend_class->redraw      = clutter_backend_sdl_redraw;
+  backend_class->get_features = clutter_backend_sdl_get_features;
 }
 
 static void

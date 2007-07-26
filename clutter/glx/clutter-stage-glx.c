@@ -53,18 +53,24 @@ G_DEFINE_TYPE (ClutterStageGLX, clutter_stage_glx, CLUTTER_TYPE_STAGE);
 static void
 fix_window_size (ClutterStageGLX *stage_glx)
 {
-  /* Dont allow window to be user resize-able. 
-   * FIXME: This needs to be bound to a boolean prop.
-  */
+  gboolean resize;
+
+  g_object_get (stage_glx, "user-resizeable", &resize, NULL);
+
   if (stage_glx->xwin != None && stage_glx->is_foreign_xwin == FALSE)
     {
       XSizeHints *size_hints;
 
       size_hints = XAllocSizeHints();
 
-      size_hints->max_width  = size_hints->min_width = stage_glx->xwin_width;
-      size_hints->max_height = size_hints->min_height = stage_glx->xwin_height;
-      size_hints->flags      = PMinSize|PMaxSize;
+      if (!resize)
+	{
+	  size_hints->max_width  
+	    = size_hints->min_width = stage_glx->xwin_width;
+	  size_hints->max_height 
+	    = size_hints->min_height = stage_glx->xwin_height;
+	  size_hints->flags = PMinSize|PMaxSize;
+	}
 
       XSetWMNormalHints (stage_glx->xdpy, stage_glx->xwin, size_hints);
 
@@ -538,6 +544,15 @@ clutter_stage_glx_set_title (ClutterStage *stage,
 }
 
 static void
+clutter_stage_glx_set_user_resize (ClutterStage *stage,
+				   gboolean      value)
+{
+  ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage);
+
+  fix_window_size (stage_glx);
+}
+
+static void
 clutter_stage_glx_set_offscreen (ClutterStage *stage,
                                  gboolean      offscreen)
 {
@@ -653,6 +668,7 @@ clutter_stage_glx_class_init (ClutterStageGLXClass *klass)
   stage_class->set_offscreen = clutter_stage_glx_set_offscreen;
   stage_class->draw_to_pixbuf = clutter_stage_glx_draw_to_pixbuf;
   stage_class->set_title = clutter_stage_glx_set_title;
+  stage_class->set_user_resize = clutter_stage_glx_set_user_resize;
 }
 
 static void

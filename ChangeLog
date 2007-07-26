@@ -1,3 +1,20 @@
+2007-07-26  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-feature.h:
+	Add new stage feature flags and document.
+
+	* clutter/eglnative/clutter-backend-egl.c:
+	* clutter/eglx/clutter-backend-egl.c:
+	* clutter/sdl/clutter-backend-sdl.c:
+	Set new feature flags.
+
+	* clutter/glx/clutter-backend-glx.c:
+	* clutter/glx/clutter-stage-glx.c:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-stage.h:
+	Add a 'user_resizeable' setting to the backend and implement
+	for glx backend.
+
 2007-07-26  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-behaviour-ellipse.c:

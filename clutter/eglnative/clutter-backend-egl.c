@@ -161,6 +161,12 @@ clutter_backend_egl_constructor (GType                  gtype,
   return g_object_ref (backend_singleton);
 }
 
+static ClutterFeatureFlags
+clutter_backend_egl_get_features (ClutterBackend *backend)
+{
+  return CLUTTER_FEATURE_STAGE_STATIC;
+}
+
 static void
 clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
 {
@@ -177,6 +183,7 @@ clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
   backend_class->init_events = clutter_backend_egl_init_events;
   backend_class->get_stage   = clutter_backend_egl_get_stage;
   backend_class->redraw      = clutter_backend_egl_redraw;
+  backend_class->get_features = clutter_backend_egl_get_features;
 }
 
 static void

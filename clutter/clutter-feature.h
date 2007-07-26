@@ -37,12 +37,30 @@
 
 G_BEGIN_DECLS
 
+/**
+ * ClutterFeatureFlags:
+ * @CLUTTER_FEATURE_TEXTURE_RECTANGLE: Set if NPOTS textures supported.
+ * @CLUTTER_FEATURE_SYNC_TO_VBLANK: Set if vblank syncing supported.
+ * @CLUTTER_FEATURE_TEXTURE_YUV: Set if YUV based textures supported.
+ * @CLUTTER_FEATURE_TEXTURE_READ_PIXELS: Set if texture pixels can be read.
+ * @CLUTTER_FEATURE_STAGE_STATIC: Set if stage size if fixed (i.e framebuffer)
+ * @CLUTTER_FEATURE_STAGE_USER_RESIZE: Set if stage is able to be user resized.
+ * @CLUTTER_FEATURE_STAGE_CURSOR: Set if stage has a graphical cursor.
+ *
+ * Runtime flags indicating specific features available via Clutter window
+ * sysytem and graphics backend.
+ *
+ * Since: 0.4
+ */
 typedef enum 
 {
   CLUTTER_FEATURE_TEXTURE_RECTANGLE      = (1 << 1),
   CLUTTER_FEATURE_SYNC_TO_VBLANK         = (1 << 2),
   CLUTTER_FEATURE_TEXTURE_YUV            = (1 << 3),
-  CLUTTER_FEATURE_TEXTURE_READ_PIXELS    = (1 << 4)
+  CLUTTER_FEATURE_TEXTURE_READ_PIXELS    = (1 << 4),
+  CLUTTER_FEATURE_STAGE_STATIC           = (1 << 5),
+  CLUTTER_FEATURE_STAGE_USER_RESIZE      = (1 << 6),
+  CLUTTER_FEATURE_STAGE_CURSOR           = (1 << 7)
 } ClutterFeatureFlags;
 
 gboolean            clutter_feature_available       (ClutterFeatureFlags feature);

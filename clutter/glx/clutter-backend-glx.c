@@ -426,6 +426,8 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
 
   /* FIXME: we really need to check if gl context is set */
 
+  flags = CLUTTER_FEATURE_STAGE_USER_RESIZE|CLUTTER_FEATURE_STAGE_CURSOR;
+
   CLUTTER_NOTE (BACKEND, "Checking features\n"
 		"GL_VENDOR: %s\n"
 		"GL_RENDERER: %s\n"

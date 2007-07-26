@@ -261,6 +261,13 @@ clutter_backend_egl_constructor (GType                  gtype,
   return g_object_ref (backend_singleton);
 }
 
+static ClutterFeatureFlags
+clutter_backend_egl_get_features (ClutterBackend *backend)
+{
+  /* We can actually resize too */
+  return CLUTTER_FEATURE_STAGE_CURSOR;
+}
+
 static void
 clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
 {
@@ -278,6 +285,7 @@ clutter_backend_egl_class_init (ClutterBackendEGLClass *klass)
   backend_class->get_stage   = clutter_backend_egl_get_stage;
   backend_class->add_options = clutter_backend_egl_add_options;
   backend_class->redraw      = clutter_backend_egl_redraw;
+  backend_class->get_features = clutter_backend_egl_get_features;
 }
 
 static void
