@@ -719,6 +719,7 @@ clutter_timeline_set_n_frames (ClutterTimeline *timeline,
   ClutterTimelinePrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+  g_return_if_fail (n_frames > 0);
 
   priv = timeline->priv;
 
@@ -747,6 +748,7 @@ clutter_timeline_set_speed (ClutterTimeline *timeline,
   ClutterTimelinePrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+  g_return_if_fail (fps > 0);
 
   priv = timeline->priv;
 
