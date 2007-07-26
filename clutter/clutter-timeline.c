@@ -273,7 +273,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
                                    g_param_spec_uint ("fps",
                                                       "Frames Per Second",
                                                       "Timeline frames per second",
-                                                      0, 1000,
+                                                      1, 1000,
                                                       50,
                                                       G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
   /**
@@ -286,8 +286,8 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
                                    g_param_spec_uint ("num-frames",
                                                       "Total number of frames",
                                                       "Timelines total number of frames",
-                                                      0, G_MAXUINT,
-                                                      0,
+                                                      1, G_MAXUINT,
+                                                      1,
                                                       G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
   /**
    * ClutterTimeline:loop:
@@ -846,6 +846,9 @@ ClutterTimeline*
 clutter_timeline_new (guint n_frames,
 		      guint fps)
 {
+  g_return_val_if_fail (n_frames > 0, NULL);
+  g_return_val_if_fail (fps > 0, NULL);
+
   return g_object_new (CLUTTER_TYPE_TIMELINE, 
 		       "fps", fps, 
 		       "num-frames", n_frames, 
