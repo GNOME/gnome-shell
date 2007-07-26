@@ -402,11 +402,8 @@ echo ""
 echo "                  Flavour:   ${clutterbackend}/${CLUTTER_COGL}"
 echo "           Target library:   ${clutterbackendlib}"
 echo "              Debug level:   ${enable_debug}"
-<<<<<<< HEAD:configure.ac
 echo "      Fast FP conversions:   ${enable_fast_fp_conversions}"
-=======
 echo "           Compiler flags:   ${CPPFLAGS}"
->>>>>>> Enable strict compiler flags with a configure flag:configure.ac
 echo "        API Documentation:   ${enable_gtk_doc}"
 echo "     Manual Documentation:   ${enable_manual}"
 echo "              FPU Support:   ${with_fpu}"
