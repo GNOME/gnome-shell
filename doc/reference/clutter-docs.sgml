@@ -3,6 +3,7 @@
                "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
 <!ENTITY version SYSTEM "version.xml">
 <!ENTITY clutter-SubclassingActor SYSTEM "xml/subclassing-ClutterActor.sgml">
+<!ENTITY clutter-animation SYSTEM "xml/clutter-animation.sgml">
 ]>
 
 <book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
@@ -11,7 +12,7 @@
     <releaseinfo>Version &version;</releaseinfo>
 
     <copyright>
-      <year>2006</year>
+      <year>2007</year>
       <holder>OpenedHand LTD</holder>
     </copyright>
 
@@ -104,6 +105,7 @@
 
   <part id="clutteranimation">
     <title>Clutter Animation Support</title>
+
     
     <chapter>
       <title>Base Classes</title>
@@ -168,6 +170,8 @@
     </partintro>
 
     &clutter-SubclassingActor;
+
+    &clutter-animation;
 
   </part>
 

@@ -1,0 +1,206 @@
+<chapter id="clutter-animations">
+  <chapterinfo>
+    <author>
+      <firstname>Matthew</firstname>
+      <surname>Allum</surname>
+      <affiliation>
+        <address>
+          <email>mallum@openedhand.com</email>
+        </address>
+      </affiliation>
+    </author>
+  </chapterinfo>
+
+  <title>Creating Animations with Clutter</title>
+
+  <para>
+
+  Clutter has a powerful and flexible framework for animating
+  actors. The basis of which is the #ClutterTimeline class which
+  reprents a period of time in frames. A #ClutterTimeline takes two
+  parameters, a total number of frames and a frame rate (in frames per
+  second). Once created, a signal ("new-frame") can be attached and
+  then on starting (clutter_timeline_start()) the signal callback wil
+  be called every time a new frame is reached. With the callback also
+  receiving the current frame number this information can be used to
+  modify actor properties and thus produce an animation.
+  </para>
+
+  <example id="clutter-timeline-example">
+  <para>
+  The following example demonstrates rotating an actor with a timeline.
+  </para>
+  <programlisting>
+#include &lt;clutter/clutter.h&gt;
+
+void
+on_new_frame (ClutterTimeline *timeline, 
+	      gint             frame_num, 
+	      gpointer         data)
+{
+  ClutterActor *actor = CLUTTER_ACTOR(data);
+
+  clutter_actor_rotate_z (actor, (gdouble)frame_num, 
+			  clutter_actor_get_width (actor)/2,
+			  clutter_actor_get_height (actor)/2);
+}
+
+int
+main (int argc, char *argv[])
+{
+  ClutterTimeline *timeline;
+
+  ClutterActor    *stage, *actor;
+  GdkPixbuf       *pixbuf;
+
+  clutter_init (&amp;argc, &amp;argv);
+
+  stage = clutter_stage_get_default ();
+
+  pixbuf = gdk_pixbuf_new_from_file ("an-image.png", NULL);
+
+  actor  = clutter_texture_new_from_pixbuf (pixbuf);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), actor);
+
+  clutter_actor_set_position (actor, 100, 100);
+
+  timeline = clutter_timeline_new (360, 60);    /* num frames, fps */
+  g_object_set(timeline, "loop", TRUE, NULL);   /* have it loop */
+
+  g_signal_connect (timeline, "new-frame", G_CALLBACK (on_new_frame), actor);
+
+  clutter_actor_show_all (stage);
+
+  clutter_timeline_start (timeline);
+
+  clutter_main();
+
+  return 0;
+}
+  </programlisting>
+  </example>
+  <para>
+
+  Timelines will 'drop' frames if it appears the application cannot
+  keep up with the requested framerate. The first and last frames are
+  guaranteed to be called however. Read the #ClutterTimeline
+  documentation for more information on how they can be manipulated.
+
+  </para>
+  <para>
+
+  Timelines on there own are useful for simple animations but can be
+  come very unweldy for more complex multiple actor animations. Also
+  they can lead to much code duplication. The #ClutterAlpha and
+  #ClutterBehaviour classes build on timelines to offer further
+  animation functionality and avoid these problems.
+
+  </para>
+
+  <para>
+
+  A #ClutterAlpha is a 'function if time' (note, not pixel alpha!). It is
+  created by passing both a #ClutterTimelime and a
+  #ClutterAlphaFunc. The Alpha then produces a value between 0 and
+  CLUTTER_ALPHA_MAX. This value is dependant on both the position of
+  the Alpha's supplied timeline and the supplied function used by the
+  Alpha.
+
+  </para>
+
+  <para>
+
+  Clutter comes with many predefined #ClutterAlphaFunc's including:
+  #CLUTTER_ALPHA_RAMP_INC - A rising alpha value over time,
+  #CLUTTER_ALPHA_RAMP_DEC - A decreasing alpha value over time,
+  #CLUTTER_ALPHA_SINE, A sinewave etc.
+
+  </para>
+  <para>
+
+  A #ClutterBehaviour is then 'driven' by a supplied #ClutterAlpha and
+  when then applied to an actor it will modify a visual property or
+  feature of the actor dependant on the Alpha's value. For example a
+  path based behaviour applied to an actor will alter its position
+  along the path dependant on the current alpha value over time. The
+  actual motion will depend on the chosen #ClutterAlphaFunc - a
+  #CLUTTER_ALPHA_RAMP_INC making it to move at constant speed along the
+  path, a #CLUTTER_ALPHA_SINE making it alternate from one end of the
+  path to the other with non constant speed.
+
+  </para>
+
+  <example id="clutter-timeline-example">
+  <para>
+  The following example demonstrates an ellipse behaviour in action.
+  </para>
+  <programlisting>
+#include &lt;clutter/clutter.h&gt;
+
+int
+main (int argc, char *argv[])
+{
+  ClutterTimeline  *timeline;
+  ClutterBehaviour *behave;
+  ClutterAlpha     *alpha;
+  ClutterActor     *stage, *actor;
+  GdkPixbuf        *pixbuf;
+
+  clutter_init (&amp;argc, &amp;argv);
+
+  stage = clutter_stage_get_default ();
+
+  pixbuf = gdk_pixbuf_new_from_file ("ohpowers.png", NULL);
+
+  actor  = clutter_texture_new_from_pixbuf (pixbuf);
+
+  clutter_container_add_actor (CLUTTER_CONTAINER (stage), actor);
+
+  timeline = clutter_timeline_new (100, 26);    /* num frames, fps */
+  g_object_set(timeline, "loop", TRUE, NULL);   /* have it loop */
+
+  /* Set an alpha func to power behaviour */
+  alpha = clutter_alpha_new_full (timeline,
+                                  CLUTTER_ALPHA_SINE,
+                                  NULL, NULL);
+
+  behave = clutter_behaviour_ellipse_new (alpha, 
+					  200,   /* center x */
+					  200,   /* center y */
+					  400,   /* width */
+					  300,   /* height */
+					  0.0,   /* angle begin */
+					  360.0); /* angle end */
+
+  clutter_behaviour_apply (behave, actor);
+
+  clutter_actor_show_all (stage);
+
+  clutter_timeline_start (timeline);
+
+  clutter_main();
+
+  return 0;
+}
+
+  </programlisting>
+  </example>
+  <para>
+
+  Multiple behaviours can of course be applied to an actor as well as
+  a single behaviour being applied to multiple actors.  The separation
+  of timelines, alphas and behaviours allows for a single timeline to
+  drive many behaviours each potentially using different alpha
+  functions.
+
+  </para>
+
+  <para>
+
+  Properties of the behaviour, alpha and timeline can be changed on
+  the fly making animations
+
+  </para>
+
+</chapter>
