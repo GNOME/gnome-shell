@@ -35,6 +35,23 @@ G_BEGIN_DECLS
 #define CLUTTER_TYPE_KNOT       (clutter_knot_get_type ())
 #define CLUTTER_TYPE_VERTEX     (clutter_vertex_get_type ())
 
+/**
+ * ClutterGravity:
+ * @CLUTTER_GRAVITY_NONE:
+ * @CLUTTER_GRAVITY_NORTH:
+ * @CLUTTER_GRAVITY_NORTH_EAST:
+ * @CLUTTER_GRAVITY_EAST:
+ * @CLUTTER_GRAVITY_SOUTH_EAST:
+ * @CLUTTER_GRAVITY_SOUTH:
+ * @CLUTTER_GRAVITY_SOUTH_WEST:
+ * @CLUTTER_GRAVITY_WEST:
+ * @CLUTTER_GRAVITY_NORTH_WEST:
+ * @CLUTTER_GRAVITY_CENTER:
+ *
+ * Gravity of the scaling operations.
+ *
+ * Since: 0.2
+ */
 typedef enum { /*< prefix=CLUTTER_GRAVITY >*/
   CLUTTER_GRAVITY_NONE       = 0,
   CLUTTER_GRAVITY_NORTH,
@@ -115,11 +132,11 @@ gboolean     clutter_knot_equal    (const ClutterKnot *knot_a,
 
 /**
  * ClutterRotateAxis:
- * @CLUTTER_X_AXIS: FIXME
- * @CLUTTER_Y_AXIS: FIXME
- * @CLUTTER_Z_AXIS: FIXME
+ * @CLUTTER_X_AXIS: Rotate around the X axis
+ * @CLUTTER_Y_AXIS: Rotate around the Y axis
+ * @CLUTTER_Z_AXIS: Rotate around the Z axis
  *
- * FIXME
+ * Axis of a rotation.
  *
  * Since: 0.4
  */
@@ -134,7 +151,7 @@ typedef enum { /*< prefix=CLUTTER >*/
  * @CLUTTER_ROTATE_CW: Clockwise rotation
  * @CLUTTER_ROTATE_CCW: Counter-clockwise rotation
  *
- * FIXME
+ * Direction of a rotation.
  *
  * Since: 0.4
  */
