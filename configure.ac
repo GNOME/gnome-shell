@@ -315,6 +315,22 @@ fi
 
 AC_SUBST(FIXED_POINT_CFLAGS)
 
+dnl = Enable strict compiler flags =========================================
+
+# use strict compiler flags only on development releases
+#m4_define([maintainer_flags_default],
+#          m4_if(m4_eval(clutter_minor_version % 2), [1], [yes], [no]))
+m4_define([maintainer_flags_default], [no])
+AC_ARG_ENABLE([maintainer-flags],
+              AC_HELP_STRING([--enable-maintainer-flags=@<:@no/yes@:>@],
+                             [Use strict compiler flags @<:@default=maintainer_flags_default@:>@]),,
+              enable_maintainer_flags=maintainer_flags_default)
+
+if test "x$enable_maintainer_flags" = "xyes"; then
+  CPPFLAGS="$CPPFLAGS -Werror -Wall -Wshadow -Wcast-align -Wno-uninitialized"
+fi
+
+
 dnl = GTK Doc check ========================================================
 
 GTK_DOC_CHECK([1.6])
@@ -383,11 +399,15 @@ echo "                 ==================="
 echo ""
 echo "                   prefix:   ${prefix}"
 echo ""
-echo "                  Flavour:   ${clutterbackend}"
+echo "                  Flavour:   ${clutterbackend}/${CLUTTER_COGL}"
 echo "           Target library:   ${clutterbackendlib}"
 echo "              Debug level:   ${enable_debug}"
+<<<<<<< HEAD:configure.ac
 echo "      Fast FP conversions:   ${enable_fast_fp_conversions}"
+=======
+echo "           Compiler flags:   ${CPPFLAGS}"
+>>>>>>> Enable strict compiler flags with a configure flag:configure.ac
 echo "        API Documentation:   ${enable_gtk_doc}"
 echo "     Manual Documentation:   ${enable_manual}"
-echo "                      FPU:   ${with_fpu}"
+echo "              FPU Support:   ${with_fpu}"
 echo ""
