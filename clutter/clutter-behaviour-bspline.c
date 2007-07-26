@@ -904,6 +904,8 @@ clutter_behaviour_bspline_join (ClutterBehaviourBspline *bs1,
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_BSPLINE (bs2));
   
   clutter_behaviour_bspline_get_origin (bs2, &knot);
+
+  priv = bs1->priv;
   
   b = g_array_index (priv->splines, ClutterBezier*, priv->splines->len - 1);
 
