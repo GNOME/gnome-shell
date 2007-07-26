@@ -1,5 +1,26 @@
 2007-07-26  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.[ch]:
+	* clutter/clutter-behaviour-bspline.c:
+	* clutter/clutter-behaviour.c:
+	* clutter/clutter-box.[ch]:
+	* clutter/clutter-clone-texture.c:
+	* clutter/clutter-entry.c:
+	* clutter/clutter-group.[ch]:
+	* clutter/clutter-texture.c:
+	* clutter/pango/pangoclutter-render.c:
+	* tests/test-actors.c:
+	* tests/test-behave.c:
+	* tests/test-entry.c:
+	* tests/test-events.c:
+	* tests/test-project.c:
+	* tests/test-rotate.c:
+	* tests/test-scale.c:
+	* tests/test-text.c:
+	* tests/test-textures.c: Miscellaneous compiler warning fixes.
+
+2007-07-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* configure.ac:
 	* Makefile.am: Add a configure switch to enable strict
 	compiler flags, and turn it on when we are doing a distcheck.
