@@ -82,7 +82,7 @@ struct _ClutterBehaviourEllipsePrivate
   ClutterAngle angle_begin;
   ClutterAngle angle_end;
   ClutterAngle angle_tilt;
-  
+
   ClutterRotateDirection direction;
 };
 
@@ -675,13 +675,16 @@ clutter_behaviour_ellipse_set_angle_beginx (ClutterBehaviourEllipse *self,
                                             ClutterAngle             angle_begin)
 {
   ClutterBehaviourEllipsePrivate *priv;
-
+  ClutterAngle new_angle;
+  
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
+  new_angle = angle_begin - 256;
+  
   priv = self->priv;
-  if (priv->angle_begin != angle_begin)
+  if (priv->angle_begin != new_angle)
     {
-      priv->angle_begin = angle_begin;
+      priv->angle_begin = new_angle;
       g_object_notify (G_OBJECT (self), "angle-begin");
     }
 }
@@ -755,14 +758,17 @@ clutter_behaviour_ellipse_set_angle_endx (ClutterBehaviourEllipse *self,
                                           ClutterAngle             angle_end)
 {
   ClutterBehaviourEllipsePrivate *priv;
+  ClutterAngle new_angle;
 
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
+  new_angle = angle_end - 256;
+  
   priv = self->priv;
 
-  if (priv->angle_end != angle_end)
+  if (priv->angle_end != new_angle)
     {
-      priv->angle_end = angle_end;
+      priv->angle_end = new_angle;
       
       g_object_notify (G_OBJECT (self), "angle-end");
     }
@@ -837,14 +843,17 @@ clutter_behaviour_ellipse_set_angle_tiltx (ClutterBehaviourEllipse *self,
                                            ClutterAngle             angle_tilt)
 {
   ClutterBehaviourEllipsePrivate *priv;
+  ClutterAngle new_angle;
 
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
+  new_angle = angle_tilt - 256;
+  
   priv = self->priv;
 
-  if (priv->angle_tilt != angle_tilt)
+  if (priv->angle_tilt != new_angle)
     {
-      priv->angle_tilt = angle_tilt;
+      priv->angle_tilt = new_angle;
       
       g_object_notify (G_OBJECT (self), "angle-tilt");
     }

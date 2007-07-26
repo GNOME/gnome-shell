@@ -1,3 +1,13 @@
+2007-07-26  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-behaviour-ellipse.h:
+	* clutter/clutter-behaviour-ellipse.c:
+	* tests/test-behave.c:
+
+	Removed tilt paramter from ClutterBehaviourEllipse constructors;
+	Made angles to be relative to 12 o'clock;
+	Added direction property;
+
 2007-07-26  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-types.h:
