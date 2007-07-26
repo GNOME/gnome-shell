@@ -1,3 +1,9 @@
+2007-07-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* configure.ac:
+	* Makefile.am: Add a configure switch to enable strict
+	compiler flags, and turn it on when we are doing a distcheck.
+
 2007-07-25  Matthew Allum  <mallum@openedhand.com>
 
 	* Makefile.am:
