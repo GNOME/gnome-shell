@@ -1,3 +1,15 @@
+2007-07-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-types.h:
+	* clutter/Makefile.am: Add a header for common types, to avoid
+	inclusion hell.
+
+	* clutter/clutter-actor.h:
+	* clutter/clutter-behaviour.h:
+	* clutter/clutter-behaviour-rotate.h:
+	* clutter/clutter-behaviour-scale.h: Move some boxed types and som
+	enums to clutter-types.h.
+
 2007-07-26  Neil J. Patel  <njp@o-hand.com>
 
 	* clutter/clutter-entry.c: (offset_to_bytes),
