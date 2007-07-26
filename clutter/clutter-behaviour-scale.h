@@ -28,9 +28,10 @@
 #ifndef __CLUTTER_BEHAVIOUR_SCALE_H__
 #define __CLUTTER_BEHAVIOUR_SCALE_H__
 
+#include <clutter/clutter-actor.h>
 #include <clutter/clutter-alpha.h>
 #include <clutter/clutter-behaviour.h>
-#include <clutter/clutter-actor.h>
+#include <clutter/clutter-types.h>
 
 G_BEGIN_DECLS
 

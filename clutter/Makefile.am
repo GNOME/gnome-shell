@@ -52,6 +52,7 @@ source_h =					\
 	$(srcdir)/clutter-clone-texture.h 	\
 	$(srcdir)/clutter-color.h		\
         $(srcdir)/clutter-container.h		\
+	$(srcdir)/clutter-effect.h 		\
         $(srcdir)/clutter-entry.h               \
 	$(srcdir)/clutter-event.h 		\
 	$(srcdir)/clutter-feature.h 		\
@@ -68,7 +69,7 @@ source_h =					\
 	$(srcdir)/clutter-texture.h 		\
 	$(srcdir)/clutter-timeline.h 		\
 	$(srcdir)/clutter-timeout-pool.h 	\
-	$(srcdir)/clutter-effect.h 		\
+	$(srcdir)/clutter-types.h		\
 	$(srcdir)/clutter-units.h 		\
 	$(srcdir)/clutter-util.h 		\
 	$(srcdir)/clutter-vbox.h		\

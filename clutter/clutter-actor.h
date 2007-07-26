@@ -29,16 +29,14 @@
 /* clutter-actor.h */
 
 #include <glib-object.h>
-#include <clutter/clutter-fixed.h>
-#include <clutter/clutter-units.h>
 #include <clutter/clutter-color.h>
+#include <clutter/clutter-fixed.h>
+#include <clutter/clutter-types.h>
+#include <clutter/clutter-units.h>
 
 G_BEGIN_DECLS
 
-#define CLUTTER_TYPE_GEOMETRY   (clutter_geometry_get_type ())
 #define CLUTTER_TYPE_ACTOR_BOX  (clutter_actor_box_get_type ())
-#define CLUTTER_TYPE_VERTEX     (clutter_vertex_get_type ())
-
 #define CLUTTER_TYPE_ACTOR      (clutter_actor_get_type ())
 
 #define CLUTTER_ACTOR(obj) \
@@ -60,48 +58,13 @@ G_BEGIN_DECLS
 #define CLUTTER_ACTOR_IS_VISIBLE(e)     (CLUTTER_ACTOR_IS_MAPPED (e) && \
                                          CLUTTER_ACTOR_IS_REALIZED (e))
 
-typedef enum { /*< prefix=CLUTTER_GRAVITY >*/
-  CLUTTER_GRAVITY_NONE       = 0,
-  CLUTTER_GRAVITY_NORTH,
-  CLUTTER_GRAVITY_NORTH_EAST,
-  CLUTTER_GRAVITY_EAST,
-  CLUTTER_GRAVITY_SOUTH_EAST,
-  CLUTTER_GRAVITY_SOUTH,
-  CLUTTER_GRAVITY_SOUTH_WEST,
-  CLUTTER_GRAVITY_WEST,
-  CLUTTER_GRAVITY_NORTH_WEST,
-  CLUTTER_GRAVITY_CENTER
-} ClutterGravity;
-
 typedef struct _ClutterActor         ClutterActor;
 typedef struct _ClutterActorClass    ClutterActorClass;
 typedef struct _ClutterActorBox      ClutterActorBox;
 typedef struct _ClutterActorPrivate  ClutterActorPrivate;
-typedef struct _ClutterGeometry      ClutterGeometry;
-typedef struct _ClutterVertex        ClutterVertex;
 
 typedef void (*ClutterCallback) (ClutterActor *actor, gpointer data);
 #define CLUTTER_CALLBACK(f)	((ClutterCallback) (f))
-
-/**
- * ClutterGeometry:
- * @x: X coordinate of the top left corner of an actor
- * @y: Y coordinate of the top left corner of an actor
- * @width: width of an actor
- * @height: height of an actor
- *
- * Rectangle containing an actor.
- */
-struct _ClutterGeometry
-{
-  /*< public >*/
-  gint   x;
-  gint   y;
-  guint  width;
-  guint  height;
-};
-
-GType clutter_geometry_get_type (void) G_GNUC_CONST;
 
 /**
  * ClutterActorFlags:
@@ -129,7 +92,8 @@ typedef enum
  * #ClutterUnit<!-- -->s, that is are device-independent. If you want to obtain
  * the box dimensions in pixels, use clutter_actor_get_geometry().
  */
-struct _ClutterActorBox {
+struct _ClutterActorBox
+{
   ClutterUnit x1;
   ClutterUnit y1;
   ClutterUnit x2;
@@ -137,25 +101,6 @@ struct _ClutterActorBox {
 };
 
 GType clutter_actor_box_get_type (void) G_GNUC_CONST;
-
-/**
- * ClutterVertex:
- * @x: X coordinate of the vertex
- * @y: Y coordinate of the vertex
- * @z: Z coordinate of the vertex
- *
- * Vertex of an actor in 3D space, expressed in device independent units.
- *
- * Since: 0.4
- */
-struct _ClutterVertex
-{
-  ClutterUnit x;
-  ClutterUnit y;
-  ClutterUnit z;
-};
-
-GType clutter_vertex_get_type (void) G_GNUC_CONST;
 
 /**
  * ClutterActor:

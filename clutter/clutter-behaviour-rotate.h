@@ -26,8 +26,9 @@
 #ifndef __CLUTTER_BEHAVIOUR_ROTATE_H__
 #define __CLUTTER_BEHAVIOUR_ROTATE_H__
 
-#include <clutter/clutter-behaviour.h>
 #include <clutter/clutter-alpha.h>
+#include <clutter/clutter-behaviour.h>
+#include <clutter/clutter-types.h>
 
 G_BEGIN_DECLS
 
@@ -37,17 +38,6 @@ G_BEGIN_DECLS
 #define CLUTTER_BEHAVIOUR_ROTATE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_BEHAVIOUR_ROTATE, ClutterBehaviourRotateClass))
 #define CLUTTER_IS_BEHAVIOUR_ROTATE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_BEHAVIOUR_ROTATE))
 #define CLUTTER_BEHAVIOUR_ROTATE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((klass), CLUTTER_TYPE_BEHAVIOUR_ROTATE, ClutterBehaviourRotateClass))
-
-typedef enum { /*< prefix=CLUTTER >*/
-  CLUTTER_X_AXIS,
-  CLUTTER_Y_AXIS,
-  CLUTTER_Z_AXIS
-} ClutterRotateAxis;
-
-typedef enum { /*< prefix=CLUTTER_ROTATE >*/
-  CLUTTER_ROTATE_CW,
-  CLUTTER_ROTATE_CCW
-} ClutterRotateDirection;
 
 typedef struct _ClutterBehaviourRotate          ClutterBehaviourRotate;
 typedef struct _ClutterBehaviourRotatePrivate   ClutterBehaviourRotatePrivate;
