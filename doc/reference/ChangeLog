@@ -1,10 +1,14 @@
+2007-07-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Add new symbols.
+
 2007-07-26  Matthew Allum  <mallum@openedhand.com>
 
 	* Makefile.am:
 	* clutter-animation.sgml:
 	* clutter-docs.sgml:
 	An initial shot at some general animation documentation. 
-        Needs some love.
+	Needs some love.
 
 2007-07-25  Emmanuele Bassi  <ebassi@openedhand.com>
 

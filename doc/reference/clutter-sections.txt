@@ -633,6 +633,8 @@ clutter_behaviour_ellipse_get_angle_tiltx
 clutter_behaviour_ellipse_set_angle_beginx
 clutter_behaviour_ellipse_set_angle_endx
 clutter_behaviour_ellipse_set_angle_tiltx
+clutter_behaviour_ellipse_get_direction
+clutter_behaviour_ellipse_set_direction
 <SUBSECTION Standard>
 CLUTTER_TYPE_BEHAVIOUR_ELLIPSE
 CLUTTER_BEHAVIOUR_ELLIPSE
@@ -940,6 +942,9 @@ ClutterEffectCompleteFunc
 clutter_effect_fade
 clutter_effect_move
 clutter_effect_scale
+clutter_effect_rotate_x
+clutter_effect_rotate_y
+clutter_effect_rotate_z
 <SUBSECTION Standard>
 CLUTTER_TYPE_EFFECT_TEMPLATE
 CLUTTER_EFFECT_TEMPLATE
