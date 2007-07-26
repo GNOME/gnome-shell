@@ -52,13 +52,15 @@
 	(clutter_entry_ensure_cursor_position),
 	(clutter_entry_new_with_text), (clutter_entry_new),
 	(clutter_entry_insert_unichar), (clutter_entry_delete_chars):
-	Fixed utf8 support so it actually works now, for both inserting and deleting
-	chars.
-	Fixed positioning of cursor for utf8 chars. Both GString and Pnago need
-	bytes (not documented!) for string manipulation, so making sure all values
-	were bytes and not char positions fixed the issue.
-	Set a default size of 50x50 for the entry, otherwise no chars can be seen
-	if the size is not set after creation (which confuses the developer).
+
+	Fixed utf8 support so it actually works now, for both
+	inserting and deleting chars.  Fixed positioning of cursor for
+	utf8 chars. Both GString and Pnago need bytes (not
+	documented!) for string manipulation, so making sure all
+	values were bytes and not char positions fixed the issue.  Set
+	a default size of 50x50 for the entry, otherwise no chars can
+	be seen if the size is not set after creation (which confuses
+	the developer).
 
 2007-07-26  Emmanuele Bassi  <ebassi@openedhand.com>
 
