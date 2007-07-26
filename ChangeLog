@@ -1,5 +1,11 @@
 2007-07-26  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-timeline.c:
+	Do not accept zero as a value for the num-frames and fps properties
+	in both the constructor and the setter functions.
+
+2007-07-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.[ch]:
 	* clutter/clutter-behaviour-bspline.c:
 	* clutter/clutter-behaviour.c:
