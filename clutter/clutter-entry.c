@@ -291,21 +291,51 @@ clutter_entry_clear_layout (ClutterEntry *entry)
     }
 }
 
+static gint
+offset_to_bytes (const gchar *text, gint pos)
+{
+  gchar *c = NULL;
+  gint i, j, len;
+
+  if (pos < 1)
+    return pos;
+
+  c = g_utf8_next_char (text);
+  j = 1;
+  len = strlen (text);
+
+  for (i = 0; i < len; i++)
+    {
+      if (&text[i] == c)
+      {
+        if (j == pos)
+          break;
+        else
+          {
+            c = g_utf8_next_char (c);
+            j++;
+          }
+      }
+    }
+  return i;
+}
+
+
 static void
 clutter_entry_ensure_cursor_position (ClutterEntry *entry)
 {
   ClutterEntryPrivate  *priv;
-  gint index_;
-  PangoRectangle rect;
+  gint                  index;
+  PangoRectangle        rect;
     
   priv = entry->priv;
   
   if (priv->position == -1)
-    index_ = g_utf8_strlen (priv->text, -1);
+    index = strlen (priv->text);
   else
-    index_ = priv->position;
+    index = offset_to_bytes (priv->text, priv->position);
   
-  pango_layout_get_cursor_pos (priv->layout, index_, &rect, NULL);
+  pango_layout_get_cursor_pos (priv->layout, index, &rect, NULL);
   priv->cursor_pos.x = rect.x / PANGO_SCALE;
   priv->cursor_pos.y = rect.y / PANGO_SCALE;
   priv->cursor_pos.width = ENTRY_CURSOR_WIDTH;
@@ -741,10 +771,13 @@ ClutterActor *
 clutter_entry_new_with_text (const gchar *font_name,
 		             const gchar *text)
 {
-  return g_object_new (CLUTTER_TYPE_ENTRY,
-                       "font-name", font_name,
-                       "text", text,
-                       NULL);
+  ClutterActor *entry = clutter_entry_new ();
+
+  g_object_set (entry,
+                "font-name", font_name,
+                "text", text,
+                NULL);
+  return entry;
 }
 
 /**
@@ -783,7 +816,11 @@ clutter_entry_new_full (const gchar        *font_name,
 ClutterActor *
 clutter_entry_new (void)
 {
-  return g_object_new (CLUTTER_TYPE_ENTRY, NULL);
+  ClutterActor *entry =  g_object_new (CLUTTER_TYPE_ENTRY, 
+                                       NULL);
+  clutter_actor_set_size (entry, 50, 50);
+
+  return entry;
 }
 
 /**
@@ -1255,6 +1292,7 @@ clutter_entry_insert_unichar (ClutterEntry *entry,
 {
   ClutterEntryPrivate *priv;
   GString *new = NULL;
+  glong pos;
 
   g_return_if_fail (CLUTTER_IS_ENTRY (entry));
   g_return_if_fail (g_unichar_validate (wc));
@@ -1265,14 +1303,15 @@ clutter_entry_insert_unichar (ClutterEntry *entry,
   priv = entry->priv;
 
   g_object_ref (entry);
-  
+ 
   new = g_string_new (priv->text);
-  new = g_string_insert_unichar (new, priv->position, wc);
+  pos = offset_to_bytes (priv->text, priv->position);
+  new = g_string_insert_unichar (new, pos, wc);
   
   clutter_entry_set_text (entry, new->str);
 
-  if (priv->position >= 0)
-    clutter_entry_set_position (entry, priv->position + 1);
+  if (priv->position >= 0) 
+    clutter_entry_set_position (entry, priv->position + 1);      
   
   g_string_free (new, TRUE);
   
@@ -1296,6 +1335,8 @@ clutter_entry_delete_chars (ClutterEntry *entry,
   ClutterEntryPrivate *priv;
   GString *new = NULL;
   gint len;
+  gint pos;
+  gint num_pos;
   
   g_return_if_fail (CLUTTER_IS_ENTRY (entry));
   
@@ -1310,10 +1351,16 @@ clutter_entry_delete_chars (ClutterEntry *entry,
   new = g_string_new (priv->text);
   
   if (priv->position == -1)
-    new = g_string_erase (new, len - num, num);
+   {
+     num_pos = offset_to_bytes (priv->text, len - num);
+     new = g_string_erase (new, num_pos, -1);
+   }
   else
-    new = g_string_erase (new, priv->position - num, num);
-
+  {
+    pos = offset_to_bytes (priv->text, priv->position - num);
+    num_pos = offset_to_bytes (priv->text, priv->position);
+    new = g_string_erase (new, pos, num_pos-pos);
+  }
   clutter_entry_set_text (entry, new->str);
 
   if (priv->position > 0)
