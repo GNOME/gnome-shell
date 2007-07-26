@@ -294,10 +294,10 @@ texture_init_tiles (ClutterTexture *texture)
 
 static void
 texture_render_to_gl_quad (ClutterTexture *texture, 
-			   int             x1, 
-			   int             y1, 
-			   int             x2, 
-			   int             y2)
+			   int             x_1, 
+			   int             y_1, 
+			   int             x_2, 
+			   int             y_2)
 {
   int   qx1 = 0, qx2 = 0, qy1 = 0, qy2 = 0;
   int   qwidth = 0, qheight = 0;
@@ -308,8 +308,8 @@ texture_render_to_gl_quad (ClutterTexture *texture,
 
   priv = texture->priv;
 
-  qwidth  = x2-x1;
-  qheight = y2-y1;
+  qwidth  = x_2 - x_1;
+  qheight = y_2 - y_1;
 
   if (!priv->is_tiled)
     {
@@ -327,10 +327,10 @@ texture_render_to_gl_quad (ClutterTexture *texture,
 
 	}
 
-      qx1 = x1; qx2 = x2;
-      qy1 = y1; qy2 = y2;
+      qx1 = x_1; qx2 = x_2;
+      qy1 = y_1; qy2 = y_2;
 
-      cogl_texture_quad (x1, x2, y1, y2, 
+      cogl_texture_quad (x_1, x_2, y_1, y_2, 
 			 0,
 			 0,
 			 CLUTTER_FLOAT_TO_FIXED (tx),
@@ -339,7 +339,7 @@ texture_render_to_gl_quad (ClutterTexture *texture,
       return;
     }
 
-  for (x=0; x < priv->n_x_tiles; x++)
+  for (x = 0; x < priv->n_x_tiles; x++)
     {
       lasty = 0;
 
@@ -359,10 +359,10 @@ texture_render_to_gl_quad (ClutterTexture *texture,
 	  tx = (float) actual_w / priv->x_tiles[x].size;
 	  ty = (float) actual_h / priv->y_tiles[y].size;
 
-	  qx1 = x1 + lastx;
+	  qx1 = x_1 + lastx;
 	  qx2 = qx1 + ((qwidth * actual_w ) / priv->width );
 	  
-	  qy1 = y1 + lasty;
+	  qy1 = y_1 + lasty;
 	  qy2 = qy1 + ((qheight * actual_h) / priv->height );
 
 	  cogl_texture_quad (qx1, qx2, qy1, qy2, 
@@ -461,21 +461,21 @@ texture_upload_data (ClutterTexture *texture,
 	  
       if (create_textures)
 	{
-	  gint width, height;
+	  gint tex_width, tex_height;
 
-	  width  = priv->width;
-	  height = priv->height;
+	  tex_width  = priv->width;
+	  tex_height = priv->height;
 
 	  if (priv->target_type == CGL_TEXTURE_2D) /* POT */
 	    {
-	      width  = clutter_util_next_p2(priv->width);
-	      height = clutter_util_next_p2(priv->height);
+	      tex_width  = clutter_util_next_p2 (priv->width);
+	      tex_height = clutter_util_next_p2 (priv->height);
 	    }
 
 	  cogl_texture_image_2d (priv->target_type,
 				 CGL_RGBA,
-				 width, 
-				 height, 
+				 tex_width, 
+				 tex_height, 
 				 priv->pixel_format,
 				 priv->pixel_type,
 				 NULL);
@@ -703,22 +703,22 @@ static void
 clutter_texture_paint (ClutterActor *self)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (self);
-  gint            x1, y1, x2, y2;
+  ClutterTexturePrivate *priv = texture->priv;
+  gint            x_1, y_1, x_2, y_2;
   ClutterColor    col = { 0xff, 0xff, 0xff, 0xff };
 
   if (!CLUTTER_ACTOR_IS_REALIZED (CLUTTER_ACTOR(texture)))
     clutter_actor_realize (CLUTTER_ACTOR(texture));
 
-  if (texture->priv->tiles == NULL)
+  if (priv->tiles == NULL)
     {
       /* We just need do debug this state, it doesn't really need to 
        * throw a an error as what previously happened. Sub classes
        * quite likely may not be able to realize.	 
       */
-      CLUTTER_NOTE (PAINT,
-		    "unable to paint texture '%s', contains no tiles",
-		    clutter_actor_get_name (self) 
-		           ? clutter_actor_get_name (self)
+      CLUTTER_NOTE (PAINT, "unable to paint texture '%s', contains no tiles",
+		    clutter_actor_get_name (self)
+                           ? clutter_actor_get_name (self)
 		           : "unknown");
       return;
     }
@@ -729,7 +729,7 @@ clutter_texture_paint (ClutterActor *self)
                                               : "unknown");
   cogl_push_matrix ();
 
-  switch (texture->priv->target_type)
+  switch (priv->target_type)
     {
     case CGL_TEXTURE_2D:
       cogl_enable (CGL_ENABLE_TEXTURE_2D|CGL_ENABLE_BLEND);
@@ -745,15 +745,15 @@ clutter_texture_paint (ClutterActor *self)
 
   cogl_color (&col);
 
-  clutter_actor_get_coords (self, &x1, &y1, &x2, &y2);
+  clutter_actor_get_coords (self, &x_1, &y_1, &x_2, &y_2);
 
   CLUTTER_NOTE (PAINT, "paint to x1: %i, y1: %i x2: %i, y2: %i "
-		"opacity: %i",
-		x1, y1, x2, y2,
+		       "opacity: %i",
+		x_1, y_1, x_2, y_2,
 		clutter_actor_get_opacity (self));
 
   /* Paint will of translated us */
-  texture_render_to_gl_quad (texture, 0, 0, x2 - x1, y2 - y1);
+  texture_render_to_gl_quad (texture, 0, 0, x_2 - x_1, y_2 - y_1);
 
   cogl_pop_matrix ();
 }
@@ -761,7 +761,7 @@ clutter_texture_paint (ClutterActor *self)
 static void 
 clutter_texture_dispose (GObject *object)
 {
-  ClutterTexture *texture = CLUTTER_TEXTURE(object);
+  ClutterTexture *texture = CLUTTER_TEXTURE (object);
   ClutterTexturePrivate *priv;
 
   priv = texture->priv;
@@ -1589,7 +1589,7 @@ clutter_texture_get_base_size (ClutterTexture *texture,
 /**
  * clutter_texture_bind_tile:
  * @texture: A #ClutterTexture
- * @index: Tile index to bind
+ * @index_: Tile index to bind
  *
  * Proxys a call to glBindTexture a to bind an internal 'tile'. 
  *
@@ -1597,12 +1597,16 @@ clutter_texture_get_base_size (ClutterTexture *texture,
  * and never should be called by an application.
  **/
 void
-clutter_texture_bind_tile (ClutterTexture *texture, gint index)
+clutter_texture_bind_tile (ClutterTexture *texture,
+                           gint            index_)
 {
   ClutterTexturePrivate *priv;
 
+  g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
+
   priv = texture->priv;
-  cogl_texture_bind (priv->target_type, priv->tiles[index]);
+
+  cogl_texture_bind (priv->target_type, priv->tiles[index_]);
 }
 
 /**

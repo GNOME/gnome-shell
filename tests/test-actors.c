@@ -41,8 +41,6 @@ input_cb (ClutterStage *stage,
 	  ClutterEvent *event,
 	  gpointer      data)
 {
-  SuperOH *oh = (SuperOH *)data;
-
   if (event->type == CLUTTER_BUTTON_PRESS)
     {
       ClutterButtonEvent *button_event;
@@ -81,7 +79,6 @@ frame_cb (ClutterTimeline *timeline,
 	  gpointer         data)
 {
   SuperOH        *oh = (SuperOH *)data;
-  ClutterActor *stage = clutter_stage_get_default ();
   gint            i;
 
   /* Rotate everything clockwise about stage center*/
@@ -158,7 +155,7 @@ main (int argc, char *argv[])
 
   /* Create a timeline to manage animation */
   timeline = clutter_timeline_new (360, 60); /* num frames, fps */
-  g_object_set(timeline, "loop", TRUE, 0);   /* have it loop */
+  g_object_set (timeline, "loop", TRUE, NULL);   /* have it loop */
 
   /* fire a callback for frame change */
   g_signal_connect (timeline, "new-frame", G_CALLBACK (frame_cb), oh);

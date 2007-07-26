@@ -214,16 +214,16 @@ clutter_bezier_advance (ClutterBezier *b, _FixedT L, ClutterKnot * knot)
 }
 
 static void
-clutter_bezier_init (ClutterBezier * b,
-		     gint x0, gint y0,
-		     gint x1, gint y1,
-		     gint x2, gint y2,
-		     gint x3, gint y3)
+clutter_bezier_init (ClutterBezier *b,
+		     gint x_0, gint y_0,
+		     gint x_1, gint y_1,
+		     gint x_2, gint y_2,
+		     gint x_3, gint y_3)
 {
   _FixedT t;
   int i;
-  int xp = x0;
-  int yp = y0;
+  int xp = x_0;
+  int yp = y_0;
   _FixedT length [CBZ_T_SAMPLES + 1];
 
 #ifdef CBZ_L2T_INTERPOLATION
@@ -237,17 +237,17 @@ clutter_bezier_init (ClutterBezier * b,
            x0, y0, x1, y1, x2, y2, x3, y3);
 #endif
   
-  b->dx = x0;
-  b->dy = y0;
+  b->dx = x_0;
+  b->dy = y_0;
 
-  b->cx = 3 * (x1 - x0);
-  b->cy = 3 * (y1 - y0);
+  b->cx = 3 * (x_1 - x_0);
+  b->cy = 3 * (y_1 - y_0);
 
-  b->bx = 3 * (x2 - x1) - b->cx;
-  b->by = 3 * (y2 - y1) - b->cy;
+  b->bx = 3 * (x_2 - x_1) - b->cx;
+  b->by = 3 * (y_2 - y_1) - b->cy;
 
-  b->ax = x3 - 3 * x2 + 3 * x1 - x0;
-  b->ay = y3 - 3 * y2 + 3 * y1 - y0;
+  b->ax = x_3 - 3 * x_2 + 3 * x_1 - x_0;
+  b->ay = y_3 - 3 * y_2 + 3 * y_1 - y_0;
 
 #if 0
   g_debug ("Cooeficients {{%d,%d},{%d,%d},{%d,%d},{%d,%d}}",
@@ -896,7 +896,7 @@ clutter_behaviour_bspline_join (ClutterBehaviourBspline *bs1,
                                 ClutterBehaviourBspline *bs2)
 {
   ClutterBehaviourBsplinePrivate *priv;
-  gint i, x1, y1;
+  gint i, x_1, y_1;
   ClutterKnot knot;
   ClutterBezier *b, *b2;
 
@@ -907,19 +907,19 @@ clutter_behaviour_bspline_join (ClutterBehaviourBspline *bs1,
   
   b = g_array_index (priv->splines, ClutterBezier*, priv->splines->len - 1);
 
-  x1 = clutter_bezier_t2x (b, CBZ_T_ONE);
-  y1 = clutter_bezier_t2y (b, CBZ_T_ONE);
+  x_1 = clutter_bezier_t2x (b, CBZ_T_ONE);
+  y_1 = clutter_bezier_t2y (b, CBZ_T_ONE);
 
   /*
    * need to move bs2 so it joins bs1
    */
-  x1 -= knot.x;
-  y1 -= knot.y;
+  x_1 -= knot.x;
+  y_1 -= knot.y;
 
   for (i = 0; i < priv->splines->len; ++i)
     {
       b = g_array_index (bs2->priv->splines, ClutterBezier*, i);
-      b2 = clutter_bezier_clone_and_move (b, x1, y1);
+      b2 = clutter_bezier_clone_and_move (b, x_1, y_1);
 
       priv->length += b2->length;
       g_array_append_val (priv->splines, b2);

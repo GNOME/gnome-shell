@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <clutter/clutter.h>
 
 ClutterGravity gravitys[] = {
@@ -77,4 +78,6 @@ main (int argc, char *argv[])
   clutter_actor_show_all (stage);
 
   clutter_main();
+
+  return EXIT_SUCCESS;
 }

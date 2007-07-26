@@ -295,17 +295,17 @@ static void
 clutter_entry_ensure_cursor_position (ClutterEntry *entry)
 {
   ClutterEntryPrivate  *priv;
-  gint                  index;
-  PangoRectangle        rect;
+  gint index_;
+  PangoRectangle rect;
     
   priv = entry->priv;
   
   if (priv->position == -1)
-    index = g_utf8_strlen (priv->text, -1);
+    index_ = g_utf8_strlen (priv->text, -1);
   else
-    index = priv->position;
+    index_ = priv->position;
   
-  pango_layout_get_cursor_pos (priv->layout, index, &rect, NULL);
+  pango_layout_get_cursor_pos (priv->layout, index_, &rect, NULL);
   priv->cursor_pos.x = rect.x / PANGO_SCALE;
   priv->cursor_pos.y = rect.y / PANGO_SCALE;
   priv->cursor_pos.width = ENTRY_CURSOR_WIDTH;

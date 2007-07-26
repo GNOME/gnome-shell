@@ -2,8 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-ClutterActor     *stage, *rect, *p[5];
-gboolean          init_done = FALSE;
+static ClutterActor *main_stage, *rect, *p[5];
 
 static void
 init_handles ()
@@ -19,7 +18,7 @@ init_handles ()
       p[i] = clutter_rectangle_new_with_color (&blue);
       clutter_actor_set_size (p[i], 5, 5);
       clutter_actor_set_position (p[i], 0, 0);
-      clutter_group_add (CLUTTER_GROUP(stage), p[i]);
+      clutter_group_add (CLUTTER_GROUP (main_stage), p[i]);
 
       clutter_actor_set_position (p[i],
 				  CLUTTER_FIXED_INT (v[i].x) -
@@ -40,7 +39,7 @@ init_handles ()
   p[4] = clutter_rectangle_new_with_color (&blue);
   clutter_actor_set_size (p[4], 5, 5);
   clutter_actor_set_position (p[4], 0, 0);
-  clutter_group_add (CLUTTER_GROUP(stage), p[4]);
+  clutter_group_add (CLUTTER_GROUP (main_stage), p[4]);
   clutter_actor_set_position (p[4],
 			      CLUTTER_FIXED_INT (v2.x) -
 			      clutter_actor_get_width (p[4])/2,
@@ -58,7 +57,6 @@ place_handles ()
   gint              i;
   ClutterVertex    v[4];
   ClutterVertex    v1, v2;
-  ClutterColor blue = { 0, 0, 0xff, 0xff };
 
   clutter_actor_get_vertices (rect, v);
   for (i = 0; i < 4; ++i)
@@ -116,8 +114,6 @@ on_event (ClutterStage *stage,
 	
         if (actor != CLUTTER_ACTOR (stage))
 	  {
-	    guint32 x, y;
-	      
 	    if (actor != rect)
 	      dragging = actor;
 	  }
@@ -205,37 +201,33 @@ on_event (ClutterStage *stage,
 int
 main (int argc, char *argv[])
 {
-  ClutterAlpha     *alpha;
-  ClutterBehaviour *o_behave;
-  ClutterActor     *label;
+  ClutterActor *label;
   
   ClutterColor      stage_color = { 0x0, 0x0, 0x0, 0xff }, 
-                    red         = { 0xff, 0, 0, 0xff },
 	            white       = { 0xff, 0xff, 0xff, 0xff };
 
   clutter_init (&argc, &argv);
 
-  stage = clutter_stage_get_default ();
+  main_stage = clutter_stage_get_default ();
 
-  clutter_stage_set_color (CLUTTER_STAGE (stage), &stage_color);
-  clutter_actor_set_size (stage, 640, 480);
+  clutter_stage_set_color (CLUTTER_STAGE (main_stage), &stage_color);
+  clutter_actor_set_size (main_stage, 640, 480);
 
   rect = clutter_rectangle_new_with_color (&white);
   clutter_actor_set_size (rect, 320, 240);
   clutter_actor_set_position (rect, 180, 120);
   clutter_actor_rotate_y (rect, 60, 0, 0);
-  clutter_group_add (CLUTTER_GROUP(stage), rect);
+  clutter_group_add (CLUTTER_GROUP (main_stage), rect);
 
-  label = clutter_label_new_with_text ("Mono 8pt",
-				       "Drag the blue rectangles");
+  label = clutter_label_new_with_text ("Mono 8pt", "Drag the blue rectangles");
   clutter_label_set_color (CLUTTER_LABEL (label), &white);
   
   clutter_actor_set_position (label, 10, 10);
-  clutter_group_add (CLUTTER_GROUP(stage), label);
+  clutter_group_add (CLUTTER_GROUP (main_stage), label);
   
-  clutter_actor_show_all (stage);
+  clutter_actor_show_all (main_stage);
   
-  g_signal_connect (stage, "event", G_CALLBACK (on_event), NULL);
+  g_signal_connect (main_stage, "event", G_CALLBACK (on_event), NULL);
 
   init_handles ();
   

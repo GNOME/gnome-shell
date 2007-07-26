@@ -14,13 +14,13 @@ input_cb (ClutterStage    *stage,
       len = g_unichar_to_utf8 (clutter_keysym_to_unicode (event->key.keyval),
 			       keybuf);
       keybuf[len] = '\0';
-      printf("- KEY PRESS '%s'\n", keybuf);
+      printf ("- KEY PRESS '%s'\n", keybuf);
       break;
     case CLUTTER_KEY_RELEASE:
       len = g_unichar_to_utf8 (clutter_keysym_to_unicode (event->key.keyval),
 			       keybuf);
       keybuf[len] = '\0';
-      printf("- KEY RELEASE '%s'\n");
+      printf ("- KEY RELEASE '%s'\n", keybuf);
       break;
     case CLUTTER_MOTION:
       printf("- MOTION\n");
@@ -51,6 +51,8 @@ input_cb (ClutterStage    *stage,
       break;
     case CLUTTER_DELETE:
       printf("- DELETE\n");
+      break;
+    case CLUTTER_NOTHING:
       break;
     }
 }

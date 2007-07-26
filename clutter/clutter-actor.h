@@ -228,10 +228,10 @@ void                  clutter_actor_set_geometry     (ClutterActor          *sel
 void                  clutter_actor_get_geometry     (ClutterActor          *self,
 						      ClutterGeometry       *geometry);
 void                  clutter_actor_get_coords       (ClutterActor          *self,
-						      gint                  *x1,
-						      gint                  *y1,
-						      gint                  *x2,
-						      gint                  *y2);
+						      gint                  *x_1,
+						      gint                  *y_1,
+						      gint                  *x_2,
+						      gint                  *y_2);
 void                  clutter_actor_set_size         (ClutterActor          *self,
 						      gint                   width,
 						      gint                   height);

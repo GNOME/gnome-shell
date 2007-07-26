@@ -63,14 +63,14 @@ struct _ClutterCloneTexturePrivate
 
 static void
 clone_texture_render_to_gl_quad (ClutterCloneTexture *ctexture, 
-				 int             x1, 
-				 int             y1, 
-				 int             x2, 
-				 int             y2)
+				 int                  x_1, 
+				 int                  y_1, 
+				 int                  x_2, 
+				 int                  y_2)
 {
   gint   qx1 = 0, qx2 = 0, qy1 = 0, qy2 = 0;
   gint   qwidth = 0, qheight = 0;
-  gint   x, y, i =0, lastx = 0, lasty = 0;
+  gint   x, y, i = 0, lastx = 0, lasty = 0;
   gint   n_x_tiles, n_y_tiles; 
   gint   pwidth, pheight;
   float tx, ty;
@@ -80,8 +80,8 @@ clone_texture_render_to_gl_quad (ClutterCloneTexture *ctexture,
 
   priv = ctexture->priv;
 
-  qwidth  = x2 - x1;
-  qheight = y2 - y1;
+  qwidth  = x_2 - x_1;
+  qheight = y_2 - y_1;
 
   if (!CLUTTER_ACTOR_IS_REALIZED (parent_actor))
       clutter_actor_realize (parent_actor);
@@ -109,7 +109,7 @@ clone_texture_render_to_gl_quad (ClutterCloneTexture *ctexture,
 	  ty = (float) pheight / clutter_util_next_p2 (pheight);
 	}
 
-      cogl_texture_quad (x1, x2, y1, y2, 
+      cogl_texture_quad (x_1, x_2, y_1, y_2, 
 			 0,
 			 0,
 			 CLUTTER_FLOAT_TO_FIXED (tx),
@@ -142,10 +142,10 @@ clone_texture_render_to_gl_quad (ClutterCloneTexture *ctexture,
 	  tx = (float) actual_w / xsize;
 	  ty = (float) actual_h / ysize;
 
-	  qx1 = x1 + lastx;
+	  qx1 = x_1 + lastx;
 	  qx2 = qx1 + ((qwidth * actual_w ) / pwidth );
 	  
-	  qy1 = y1 + lasty;
+	  qy1 = y_1 + lasty;
 	  qy2 = qy1 + ((qheight * actual_h) / pheight );
 
 	  CLUTTER_NOTE (TEXTURE,
@@ -172,7 +172,7 @@ clutter_clone_texture_paint (ClutterActor *self)
 {
   ClutterCloneTexturePrivate  *priv;
   ClutterActor                *parent_texture;
-  gint                         x1, y1, x2, y2;
+  gint                         x_1, y_1, x_2, y_2;
   GLenum                       target_type;
   ClutterColor                 col = { 0xff, 0xff, 0xff, 0xff };
 
@@ -213,16 +213,16 @@ clutter_clone_texture_paint (ClutterActor *self)
   col.alpha = clutter_actor_get_opacity (self);
   cogl_color (&col);
 
-  clutter_actor_get_coords (self, &x1, &y1, &x2, &y2);
+  clutter_actor_get_coords (self, &x_1, &y_1, &x_2, &y_2);
 
   CLUTTER_NOTE (PAINT, "paint to x1: %i, y1: %i x2: %i, y2: %i "
 		"opacity: %i",
-		x1, y1, x2, y2,
+		x_1, y_1, x_2, y_2,
 		clutter_actor_get_opacity (self));
 
   /* Parent paint translated us into position */
   clone_texture_render_to_gl_quad (CLUTTER_CLONE_TEXTURE (self), 
-				   0, 0, x2 - x1, y2 - y1);
+				   0, 0, x_2 - x_1, y_2 - y_1);
 
   cogl_pop_matrix ();
 }

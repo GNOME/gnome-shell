@@ -7,7 +7,6 @@ make_pixbuf (int width, int height, int bpp, int has_alpha)
 
   GdkPixbuf *px;
   gint       x,y, rowstride, n_channels, i = 0;
-  guchar    *pixels;
 
   px = gdk_pixbuf_new (GDK_COLORSPACE_RGB,
 		       has_alpha,
@@ -20,12 +19,12 @@ make_pixbuf (int width, int height, int bpp, int has_alpha)
   rowstride  = gdk_pixbuf_get_rowstride (px);
   n_channels = gdk_pixbuf_get_n_channels (px);
 
-  for (y=0; y<height; y++)
+  for (y = 0; y < height; y++)
     {
       i = 0;
-      for (x=0; x<width; x++)
+      for (x = 0; x < width; x++)
 	{
-	  guchar *p, r, g, b, a;
+	  guchar *p;
 	  
 	  p = gdk_pixbuf_get_pixels (px) + y * rowstride + x * n_channels;
 	  

@@ -1,10 +1,12 @@
 #include <clutter/clutter.h>
 
+#if 0
 static void
 on_entry_text_changed (ClutterEntry *entry)
 {
   g_print ("Text changed\n");
 }
+#endif
 
 void                
 on_key_release_cb (ClutterStage *stage, ClutterEvent *event, ClutterEntry *entry)
@@ -26,11 +28,8 @@ on_entry_activated (ClutterEntry *entry, gpointer null)
 int
 main (int argc, char *argv[])
 {
-  ClutterTimeline *timeline;
   ClutterActor    *entry;
   ClutterActor    *stage;
-  gchar           *text;
-  gsize            size;
   ClutterColor     stage_color = { 0x00, 0x00, 0x00, 0xff };
   ClutterColor     entry_color = { 0x33, 0xdd, 0xff, 0xff };
 
@@ -56,7 +55,7 @@ main (int argc, char *argv[])
   clutter_actor_show_all (stage);
 
   g_signal_connect (stage, "key-release-event",
-		    G_CALLBACK (on_key_release_cb), (gpointer)entry);
+		    G_CALLBACK (on_key_release_cb), entry);
  
   /*
   g_signal_connect (entry, "text-changed",
@@ -64,6 +63,7 @@ main (int argc, char *argv[])
   */
   g_signal_connect (entry, "activate", 
 		    G_CALLBACK (on_entry_activated), NULL);
+  
   clutter_main();
 
   return 0;

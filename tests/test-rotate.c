@@ -15,8 +15,6 @@ main (int argc, char *argv[])
   ClutterActor     *stage;
   ClutterActor     *hand, *label;
   ClutterColor      stage_color = { 0xcc, 0xcc, 0xcc, 0xff };
-  ClutterColor      rect_bg_color = { 0x33, 0x22, 0x22, 0xff };
-  ClutterColor      rect_border_color = { 0, 0, 0, 0 };
   GdkPixbuf        *pixbuf;
 
   clutter_init (&argc, &argv);
@@ -46,7 +44,7 @@ main (int argc, char *argv[])
   
   /* Make a timeline */
   timeline = clutter_timeline_new (200, 26); /* num frames, fps */
-  g_object_set (timeline, "loop", TRUE, 0);  
+  g_object_set (timeline, "loop", TRUE, NULL);  
 
   /* Set an alpha func to power behaviour - ramp is constant rise/fall */
   alpha = clutter_alpha_new_full (timeline,
@@ -59,7 +57,8 @@ main (int argc, char *argv[])
 					   CLUTTER_ROTATE_CW,
 					   0.0, 360.0); 
 
-  clutter_behaviour_rotate_set_center (r_behave, 86, 125, 0);
+  clutter_behaviour_rotate_set_center (CLUTTER_BEHAVIOUR_ROTATE (r_behave),
+                                       86, 125, 0);
   
   /* Apply it to our actor */
   clutter_behaviour_apply (r_behave, hand);

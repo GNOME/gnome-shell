@@ -92,7 +92,7 @@ gboolean clutter_box_query_child     (ClutterBox      *box,
                                       ClutterActor    *actor,
                                       ClutterBoxChild *child);
 gboolean clutter_box_query_nth_child (ClutterBox      *box,
-                                      gint             index,
+                                      gint             index_,
                                       ClutterBoxChild *child);
 
 G_END_DECLS

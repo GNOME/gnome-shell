@@ -1269,20 +1269,20 @@ clutter_actor_get_geometry (ClutterActor    *self,
 /**
  * clutter_actor_get_coords:
  * @self: A #ClutterActor
- * @x1: A location to store actors left position if non NULL.
- * @y1: A location to store actors top position if non NULL.
- * @x2: A location to store actors right position if non NULL.
- * @y2: A location to store actors bottom position if non NULL.
+ * @x_1: A location to store actors left position, or %NULL.
+ * @y_1: A location to store actors top position, or %NULL.
+ * @x_2: A location to store actors right position, or %NULL.
+ * @y_2: A location to store actors bottom position, or %NULL.
  *
  * Gets the actors untransformed bounding rectangle co-ordinates in pixels 
  * relative to any parent actor. 
  */
 void
 clutter_actor_get_coords (ClutterActor *self,
-			  gint         *x1,
-			  gint         *y1,
-			  gint         *x2,
-			  gint         *y2)
+			  gint         *x_1,
+			  gint         *y_1,
+			  gint         *x_2,
+			  gint         *y_2)
 {
   ClutterActorBox box;
 
@@ -1290,17 +1290,17 @@ clutter_actor_get_coords (ClutterActor *self,
   
   clutter_actor_query_coords (self, &box);
 
-  if (x1)
-    *x1 = CLUTTER_UNITS_TO_INT (box.x1);
+  if (x_1)
+    *x_1 = CLUTTER_UNITS_TO_INT (box.x1);
   
-  if (y1)
-    *y1 = CLUTTER_UNITS_TO_INT (box.y1);
+  if (y_1)
+    *y_1 = CLUTTER_UNITS_TO_INT (box.y1);
   
-  if (x2)
-    *x2 = CLUTTER_UNITS_TO_INT (box.x2);
+  if (x_2)
+    *x_2 = CLUTTER_UNITS_TO_INT (box.x2);
   
-  if (y2)
-    *y2 = CLUTTER_UNITS_TO_INT (box.y2);
+  if (y_2)
+    *y_2 = CLUTTER_UNITS_TO_INT (box.y2);
 }
 
 /**

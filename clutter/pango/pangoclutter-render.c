@@ -311,7 +311,7 @@ draw_glyph (PangoRenderer *renderer_,
 {
   PangoClutterRenderer *renderer = PANGO_CLUTTER_RENDERER (renderer_);
   glyph_info           *g;
-  float                 x1, y1, x2, y2;
+  struct { float x1, y1, x2, y2; } box;
 
   if (glyph & PANGO_GLYPH_UNKNOWN_FLAG)
     {
@@ -373,10 +373,10 @@ draw_glyph (PangoRenderer *renderer_,
   x += g->left;
   y -= g->top;
 
-  x1 = g->tex.x * (1. / TC_WIDTH );
-  y1 = g->tex.y * (1. / TC_HEIGHT);
-  x2 = g->tex.w * (1. / TC_WIDTH ) + x1;
-  y2 = g->tex.h * (1. / TC_HEIGHT) + y1;
+  box.x1 = g->tex.x * (1. / TC_WIDTH );
+  box.y1 = g->tex.y * (1. / TC_HEIGHT);
+  box.x2 = g->tex.w * (1. / TC_WIDTH ) + box.x1;
+  box.y2 = g->tex.h * (1. / TC_HEIGHT) + box.y1;
 
   if (g->tex.name != renderer->curtex)
     {
@@ -395,19 +395,19 @@ draw_glyph (PangoRenderer *renderer_,
 		     x + g->tex.w, 
 		     y,
 		     y + g->tex.h,
-		     CLUTTER_FLOAT_TO_FIXED(x1), 
-		     CLUTTER_FLOAT_TO_FIXED(y1), 
-		     CLUTTER_FLOAT_TO_FIXED(x2), 
-		     CLUTTER_FLOAT_TO_FIXED(y2));
+		     CLUTTER_FLOAT_TO_FIXED (box.x1), 
+		     CLUTTER_FLOAT_TO_FIXED (box.y1), 
+		     CLUTTER_FLOAT_TO_FIXED (box.x2), 
+		     CLUTTER_FLOAT_TO_FIXED (box.y2));
 }
 
 static void
 draw_trapezoid (PangoRenderer   *renderer_,
 		PangoRenderPart  part,
-		double           y1,
+		double           y01,
 		double           x11,
 		double           x21,
-		double           y2,
+		double           y02,
 		double           x12,
 		double           x22)
 {
@@ -422,10 +422,10 @@ draw_trapezoid (PangoRenderer   *renderer_,
   /* Turn texturing off */
   cogl_enable (CGL_ENABLE_BLEND);
 
-  cogl_trapezoid ((gint) y1,
+  cogl_trapezoid ((gint) y01,
 		  (gint) x11,
 		  (gint) x21,
-		  (gint) y2,
+		  (gint) y02,
 		  (gint) x12,
 		  (gint) x22);
 

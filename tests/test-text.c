@@ -40,7 +40,7 @@ main (int argc, char *argv[])
   clutter_actor_show_all (stage);
 
   timeline = clutter_timeline_new (400, 60); /* num frames, fps */
-  g_object_set(timeline, "loop", TRUE, 0);   /* have it loop */
+  g_object_set(timeline, "loop", TRUE, NULL);   /* have it loop */
 
   g_signal_connect(timeline, "new-frame",  G_CALLBACK (frame_cb), label);
 

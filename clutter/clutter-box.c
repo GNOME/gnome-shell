@@ -387,19 +387,19 @@ clutter_box_query_child (ClutterBox      *box,
 /**
  * clutter_box_query_nth_child:
  * @box: a #ClutterBox
- * @index: position of the child
+ * @index_: position of the child
  * @child: return value for a #ClutterBoxChild, or %NULL
  *
- * Queries the child of @box at @index and puts the packing informations
+ * Queries the child of @box at @index_ and puts the packing informations
  * inside @child.
  *
- * Return value: %TRUE if an actor was found at @index
+ * Return value: %TRUE if an actor was found at @index_
  *
  * Since: 0.4
  */
 gboolean
 clutter_box_query_nth_child (ClutterBox      *box,
-                             gint             index,
+                             gint             index_,
                              ClutterBoxChild *child)
 {
   ClutterBoxChild *box_child;
@@ -407,7 +407,7 @@ clutter_box_query_nth_child (ClutterBox      *box,
   g_return_val_if_fail (CLUTTER_IS_BOX (box), FALSE);
   g_return_val_if_fail (index > 0, FALSE);
 
-  box_child = g_list_nth_data (box->children, index);
+  box_child = g_list_nth_data (box->children, index_);
   if (!box_child)
     return FALSE;
 

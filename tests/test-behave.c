@@ -61,7 +61,6 @@ main (int argc, char *argv[])
   ClutterColor      rect_border_color = { 0, 0, 0, 0 };
   GdkPixbuf        *pixbuf;
   int               i;
-  char             *p;
   path_t            path_type = PATH_POLY;
   
   ClutterKnot       knots_poly[] = {{ 0, 0 }, { 0, 300 }, { 300, 300 },
@@ -150,7 +149,7 @@ main (int argc, char *argv[])
   
   /* Make a timeline */
   timeline = clutter_timeline_new (100, 26); /* num frames, fps */
-  g_object_set (timeline, "loop", TRUE, 0);  
+  g_object_set (timeline, "loop", TRUE, NULL);  
 
   /* Set an alpha func to power behaviour - ramp is constant rise/fall */
   alpha = clutter_alpha_new_full (timeline,

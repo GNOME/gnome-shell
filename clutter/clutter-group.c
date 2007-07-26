@@ -508,21 +508,21 @@ clutter_group_get_n_children (ClutterGroup *self)
 /**
  * clutter_group_get_nth_child:
  * @self: A #ClutterGroup
- * @index: the position of the requested actor. 
+ * @index_: the position of the requested actor. 
  * 
- * Gets a groups child held at position index in stack.
+ * Gets a groups child held at @index_ in stack.
  *
- * Return value: A Clutter actor or NULL if index is invalid.
+ * Return value: A Clutter actor or NULL if @index_ is invalid.
  *
  * Since: 0.2
  **/
 ClutterActor *
 clutter_group_get_nth_child (ClutterGroup *self,
-			     gint          index)
+			     gint          index_)
 {
   g_return_val_if_fail (CLUTTER_IS_GROUP (self), NULL);
 
-  return g_list_nth_data (self->priv->children, index);
+  return g_list_nth_data (self->priv->children, index_);
 }
 
 /**

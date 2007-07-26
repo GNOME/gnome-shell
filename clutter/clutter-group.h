@@ -89,7 +89,7 @@ ClutterActor *clutter_group_new              (void);
 ClutterActor *clutter_group_find_child_by_id (ClutterGroup    *self,
 					      guint            id);
 ClutterActor *clutter_group_get_nth_child    (ClutterGroup    *self,
-                                              gint             index);
+                                              gint             index_);
 gint          clutter_group_get_n_children   (ClutterGroup    *self);
 void          clutter_group_remove_all       (ClutterGroup    *group);
 
