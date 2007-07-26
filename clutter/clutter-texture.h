@@ -113,7 +113,7 @@ void          clutter_texture_get_base_size       (ClutterTexture *texture,
 /* Below mainly for subclassed texture based actors */
 
 void     clutter_texture_bind_tile           (ClutterTexture *texture,
-                                              gint            index);
+                                              gint            index_);
 void     clutter_texture_get_n_tiles         (ClutterTexture *texture,
                                               gint           *n_x_tiles,
                                               gint           *n_y_tiles);

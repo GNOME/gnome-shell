@@ -433,7 +433,6 @@ clutter_event_put (ClutterEvent *event)
 
 /**
  * clutter_events_pending:
- * @event: a #ClutterEvent
  *
  * Checks if events are pending in the event queue.
  *

@@ -114,7 +114,7 @@ void          clutter_behaviour_actors_foreach (ClutterBehaviour            *beh
                                                 gpointer                     data);
 gint          clutter_behaviour_get_n_actors   (ClutterBehaviour            *behave);
 ClutterActor *clutter_behaviour_get_nth_actor  (ClutterBehaviour            *behave,
-						gint                         index);
+						gint                         index_);
 GSList *      clutter_behaviour_get_actors     (ClutterBehaviour            *behave);
 ClutterAlpha *clutter_behaviour_get_alpha      (ClutterBehaviour            *behave);
 void          clutter_behaviour_set_alpha      (ClutterBehaviour            *behave,

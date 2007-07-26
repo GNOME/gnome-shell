@@ -898,7 +898,7 @@ clutter_behaviour_ellipse_get_angle_tiltx (ClutterBehaviourEllipse *self)
 
 /**
  * clutter_behaviour_ellipse_get_direction:
- * @ellipse: a #ClutterBehaviourEllipse
+ * @self: a #ClutterBehaviourEllipse
  *
  * Retrieves the #ClutterRotateDirection used by the ellipse behaviour.
  *
@@ -917,7 +917,7 @@ clutter_behaviour_ellipse_get_direction (ClutterBehaviourEllipse *self)
 
 /**
  * clutter_behaviour_ellipse_set_direction:
- * @ellipse: a #ClutterBehaviourEllipse
+ * @self: a #ClutterBehaviourEllipse
  * @direction: the rotation direction
  *
  * Sets the rotation direction used by the ellipse behaviour.
@@ -926,7 +926,7 @@ clutter_behaviour_ellipse_get_direction (ClutterBehaviourEllipse *self)
  */
 void
 clutter_behaviour_ellipse_set_direction (ClutterBehaviourEllipse *self,
-                                        ClutterRotateDirection  direction)
+                                         ClutterRotateDirection  direction)
 {
   ClutterBehaviourEllipsePrivate *priv;
 
