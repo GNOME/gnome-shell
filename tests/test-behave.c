@@ -153,7 +153,7 @@ main (int argc, char *argv[])
 
   /* Set an alpha func to power behaviour - ramp is constant rise/fall */
   alpha = clutter_alpha_new_full (timeline,
-                                  CLUTTER_ALPHA_SINE,
+                                  CLUTTER_ALPHA_RAMP_INC,
                                   NULL, NULL);
 
   /* Create a behaviour for that alpha */
@@ -171,7 +171,8 @@ main (int argc, char *argv[])
     case PATH_ELLIPSE:
       p_behave =
 	clutter_behaviour_ellipse_new (alpha, 200, 200, 400, 300,
-				       0.0, 360.0, 120.0);
+				       0.0, 360.0);
+      g_object_set (p_behave, "angle-tilt", 45.0, NULL);
       break;
 
     case PATH_BSPLINE:
