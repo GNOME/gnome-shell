@@ -1,3 +1,12 @@
+2007-07-26  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-behaviour-ellipse.c:
+	* clutter/clutter-behaviour.h:
+	* clutter/clutter-event.c:
+	* clutter/clutter-texture.h:
+	* clutter/clutter-types.h: Add missing documentation and fix
+	parameters names to make gtk-doc happy.
+
 2007-07-26  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-behaviour-ellipse.h:
