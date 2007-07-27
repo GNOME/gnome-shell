@@ -173,7 +173,8 @@ main (int argc, char *argv[])
 	clutter_behaviour_ellipse_new (alpha, 200, 200, 400, 300,
 				       0.0, 360.0);
 
-      clutter_behaviour_ellipse_set_angle_tilt (p_behave, 45.0);
+      clutter_behaviour_ellipse_set_angle_tilt_x (p_behave, 45.0);
+      clutter_behaviour_ellipse_set_angle_tilt_z (p_behave, 45.0);
       break;
 
     case PATH_BSPLINE:

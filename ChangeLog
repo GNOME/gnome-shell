@@ -1,3 +1,30 @@
+2007-07-27  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-behaviour-ellipse.h:
+	* clutter/clutter-behaviour-ellipse.c:
+	(clutter_behaviour_ellipse_set_angle_tilt_x):
+	(clutter_behaviour_ellipse_set_angle_tilt_xx):
+	(clutter_behaviour_ellipse_get_angle_tilt_x):
+	(clutter_behaviour_ellipse_get_angle_tilt_xx):
+	(clutter_behaviour_ellipse_set_angle_tilt_y):
+	(clutter_behaviour_ellipse_set_angle_tilt_yx):
+	(clutter_behaviour_ellipse_get_angle_tilt_y):
+	(clutter_behaviour_ellipse_get_angle_tilt_yx):
+	(clutter_behaviour_ellipse_set_angle_tilt_z):
+	(clutter_behaviour_ellipse_set_angle_tilt_zx):
+	(clutter_behaviour_ellipse_get_angle_tilt_z):
+	(clutter_behaviour_ellipse_get_angle_tilt_zx):
+	(clutter_behaviour_ellipse_set_tilt):
+	(clutter_behaviour_ellipse_set_tiltx):
+	(clutter_behaviour_ellipse_get_tilt):
+	(clutter_behaviour_ellipse_get_tiltx):
+	
+	* tests/test-behave.c:
+	
+	Allow tilting ClutterBehaviourEllipse in all three axis; affects
+	any code using the previous tilt api.
+	
+
 2007-07-26  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-feature.h:
