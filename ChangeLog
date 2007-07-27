@@ -2,6 +2,16 @@
 
 	* clutter/clutter-behaviour-ellipse.h:
 	* clutter/clutter-behaviour-ellipse.c:
+	* tests/test-behave.c:
+	(clutter_behaviour_ellipse_get_angle_tilt):
+	(clutter_behaviour_ellipse_set_angle_tilt):
+	
+	Pruned ClutterBehaviourEllipse api.
+	
+2007-07-27  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-behaviour-ellipse.h:
+	* clutter/clutter-behaviour-ellipse.c:
 	(clutter_behaviour_ellipse_set_angle_tilt_x):
 	(clutter_behaviour_ellipse_set_angle_tilt_xx):
 	(clutter_behaviour_ellipse_get_angle_tilt_x):

@@ -890,258 +890,135 @@ clutter_behaviour_ellipse_get_angle_endx (ClutterBehaviourEllipse *self)
 }
 
 /**
- * clutter_behaviour_ellipse_set_angle_tilt_z
+ * clutter_behaviour_ellipse_set_angle_tilt
  * @self: a #ClutterBehaviourEllipse
- * @angle_tilt_z: tilt of the elipse around the center in Z axis in degrees.
+ * @axis: a #ClutterRotateAxis
+ * @angle_tilt: tilt of the elipse around the center in the given axis in
+ * degrees.
  *
  * Sets the angle at which the ellipse should be tilted around it's center.
  *
  * Since: 0.4
  */
 void
-clutter_behaviour_ellipse_set_angle_tilt_z (ClutterBehaviourEllipse *self,
-                                            gdouble                  angle_tilt_z)
+clutter_behaviour_ellipse_set_angle_tilt (ClutterBehaviourEllipse *self,
+                                          ClutterRotateAxis        axis,
+                                          gdouble                  angle_tilt)
 {
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
-  clutter_behaviour_ellipse_set_angle_tilt_zx (self,
-                                               CLUTTER_ANGLE_FROM_DEG (angle_tilt_z));
+  clutter_behaviour_ellipse_set_angle_tiltx (self,
+                                             axis,
+                                             CLUTTER_ANGLE_FROM_DEG (angle_tilt));
 }
 
 /**
- * clutter_behaviour_ellipse_set_angle_tilt_zx
+ * clutter_behaviour_ellipse_set_angle_tiltx
  * @self: a #ClutterBehaviourEllipse
- * @angle_tilt_z: #ClutterAngle tilt of the elipse around the center in z axis
+ * @axis: a #ClutterRoateAxis
+ * @angle_tilt: #ClutterAngle tilt of the elipse around the center in the given
+ * axis
  *
  * Sets the angle at which the ellipse should be tilted around it's center.
  *
  * Since: 0.4
  */
 void
-clutter_behaviour_ellipse_set_angle_tilt_zx (ClutterBehaviourEllipse *self,
-                                             ClutterAngle             angle_tilt_z)
+clutter_behaviour_ellipse_set_angle_tiltx (ClutterBehaviourEllipse *self,
+                                           ClutterRotateAxis        axis,
+                                           ClutterAngle             angle_tilt)
 {
   ClutterBehaviourEllipsePrivate *priv;
   ClutterAngle new_angle;
 
   g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
 
-  new_angle = angle_tilt_z - 256;
+  new_angle = angle_tilt - 256;
 
   priv = self->priv;
 
-  if (priv->angle_tilt_z != new_angle)
+  switch (axis)
     {
-      priv->angle_tilt_z = new_angle;
+    case CLUTTER_X_AXIS:
+      if (priv->angle_tilt_x != new_angle)
+        {
+          priv->angle_tilt_x = new_angle;
 
-      g_object_notify (G_OBJECT (self), "angle-tilt-z");
+          g_object_notify (G_OBJECT (self), "angle-tilt-x");
+        }
+      break;
+    case CLUTTER_Y_AXIS:
+      if (priv->angle_tilt_y != new_angle)
+        {
+          priv->angle_tilt_y = new_angle;
+
+          g_object_notify (G_OBJECT (self), "angle-tilt-y");
+        }
+      break;
+    case CLUTTER_Z_AXIS:
+      if (priv->angle_tilt_z != new_angle)
+        {
+          priv->angle_tilt_z = new_angle;
+
+          g_object_notify (G_OBJECT (self), "angle-tilt-z");
+        }
+      break;
+    default:
+      break;
     }
 }
 
 /**
- * clutter_behaviour_ellipse_get_angle_tilt_z
+ * clutter_behaviour_ellipse_get_angle_tilt
  * @self: a #ClutterBehaviourEllipse
+ * @axis: a #ClutterRotateAxis
  *
- * Gets the tilt of the ellipse around the center in Z axis.
+ * Gets the tilt of the ellipse around the center in the given axis.
  *
  * Return value: angle in degrees.
  *
  * Since: 0.4
  */
 gdouble
-clutter_behaviour_ellipse_get_angle_tilt_z (ClutterBehaviourEllipse *self)
+clutter_behaviour_ellipse_get_angle_tilt (ClutterBehaviourEllipse *self,
+                                          ClutterRotateAxis        axis)
 {
   g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0.0);
 
-  return CLUTTER_ANGLE_TO_DEG (self->priv->angle_tilt_z + 256);
+  return CLUTTER_ANGLE_TO_DEG (clutter_behaviour_ellipse_get_angle_tilt (self,
+                                                                         axis));
 }
 
 /**
- * clutter_behaviour_ellipse_get_angle_tilt_zx
+ * clutter_behaviour_ellipse_get_angle_tiltx
  * @self: a #ClutterBehaviourEllipse
+ * @self: a #ClutterRotateAxis
  *
- * Gets the tilt of the ellipse around the center in Z axis.
+ * Gets the tilt of the ellipse around the center in the given axis.
  *
  * Return value: a #ClutterAngle
  *
  * Since: 0.4
  */
 ClutterAngle
-clutter_behaviour_ellipse_get_angle_tilt_zx (ClutterBehaviourEllipse *self)
+clutter_behaviour_ellipse_get_angle_tiltx (ClutterBehaviourEllipse *self,
+                                           ClutterRotateAxis        axis)
 {
   g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0);
 
-  return self->priv->angle_tilt_z + 256;
-}
-
-/**
- * clutter_behaviour_ellipse_set_angle_tilt_x
- * @self: a #ClutterBehaviourEllipse
- * @angle_tilt_x: tilt of the elipse around the center in X axis in degrees.
- *
- * Sets the angle at which the ellipse should be tilted around it's center.
- *
- * Since: 0.4
- */
-void
-clutter_behaviour_ellipse_set_angle_tilt_x (ClutterBehaviourEllipse *self,
-                                            gdouble                  angle_tilt_x)
-{
-  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
-
-  clutter_behaviour_ellipse_set_angle_tilt_xx (self,
-                                             CLUTTER_ANGLE_FROM_DEG (angle_tilt_x));
-}
-
-/**
- * clutter_behaviour_ellipse_set_angle_tilt_xx
- * @self: a #ClutterBehaviourEllipse
- * @angle_tilt_x: #ClutterAngle tilt of the elipse around the center in X axis
- *
- * Sets the angle at which the ellipse should be tilted around it's center.
- *
- * Since: 0.4
- */
-void
-clutter_behaviour_ellipse_set_angle_tilt_xx (ClutterBehaviourEllipse *self,
-                                             ClutterAngle             angle_tilt_x)
-{
-  ClutterBehaviourEllipsePrivate *priv;
-  ClutterAngle new_angle;
-
-  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
-
-  new_angle = angle_tilt_x - 256;
-
-  priv = self->priv;
-
-  if (priv->angle_tilt_x != new_angle)
+  switch (axis)
     {
-      priv->angle_tilt_x = new_angle;
-
-      g_object_notify (G_OBJECT (self), "angle-tilt-x");
+    case CLUTTER_X_AXIS:
+      return self->priv->angle_tilt_x + 256;
+    case CLUTTER_Y_AXIS:
+      return self->priv->angle_tilt_y + 256;
+    case CLUTTER_Z_AXIS:
+      return self->priv->angle_tilt_z + 256;
+    default:
+      break;
     }
-}
 
-/**
- * clutter_behaviour_ellipse_get_angle_tilt_x
- * @self: a #ClutterBehaviourEllipse
- *
- * Gets the tilt of the ellipse around the center in X axis.
- *
- * Return value: angle in degrees.
- *
- * Since: 0.4
- */
-gdouble
-clutter_behaviour_ellipse_get_angle_tilt_x (ClutterBehaviourEllipse *self)
-{
-  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0.0);
-
-  return CLUTTER_ANGLE_TO_DEG (self->priv->angle_tilt_x + 256);
-}
-
-/**
- * clutter_behaviour_ellipse_get_angle_tilt_xx
- * @self: a #ClutterBehaviourEllipse
- *
- * Gets the tilt of the ellipse around the center in X axis.
- *
- * Return value: a #ClutterAngle
- *
- * Since: 0.4
- */
-ClutterAngle
-clutter_behaviour_ellipse_get_angle_tilt_xx (ClutterBehaviourEllipse *self)
-{
-  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0);
-
-  return self->priv->angle_tilt_x + 256;
-}
-
-/**
- * clutter_behaviour_ellipse_set_angle_tilt_y
- * @self: a #ClutterBehaviourEllipse
- * @angle_tilt_y: tilt of the elipse around the center in Y axis in degrees.
- *
- * Sets the angle at which the ellipse should be tilted around it's center.
- *
- * Since: 0.4
- */
-void
-clutter_behaviour_ellipse_set_angle_tilt_y (ClutterBehaviourEllipse *self,
-                                            gdouble                  angle_tilt_y)
-{
-  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
-
-  clutter_behaviour_ellipse_set_angle_tilt_yx (self,
-                                               CLUTTER_ANGLE_FROM_DEG (angle_tilt_y));
-}
-
-/**
- * clutter_behaviour_ellipse_set_angle_tilt_yx
- * @self: a #ClutterBehaviourEllipse
- * @angle_tilt_y: #ClutterAngle tilt of the elipse around the center in Y axis
- *
- * Sets the angle at which the ellipse should be tilted around it's center.
- *
- * Since: 0.4
- */
-void
-clutter_behaviour_ellipse_set_angle_tilt_yx (ClutterBehaviourEllipse *self,
-                                             ClutterAngle             angle_tilt_y)
-{
-  ClutterBehaviourEllipsePrivate *priv;
-  ClutterAngle new_angle;
-
-  g_return_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self));
-
-  new_angle = angle_tilt_y - 256;
-
-  priv = self->priv;
-
-  if (priv->angle_tilt_y != new_angle)
-    {
-      priv->angle_tilt_y = new_angle;
-
-      g_object_notify (G_OBJECT (self), "angle-tilt-y");
-    }
-}
-
-/**
- * clutter_behaviour_ellipse_get_angle_tilt_y
- * @self: a #ClutterBehaviourEllipse
- *
- * Gets the tilt of the ellipse around the center in Y axis.
- *
- * Return value: angle in degrees.
- *
- * Since: 0.4
- */
-gdouble
-clutter_behaviour_ellipse_get_angle_tilt_y (ClutterBehaviourEllipse *self)
-{
-  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0.0);
-
-  return CLUTTER_ANGLE_TO_DEG (self->priv->angle_tilt_y + 256);
-}
-
-/**
- * clutter_behaviour_ellipse_get_angle_tilt_yx
- * @self: a #ClutterBehaviourEllipse
- *
- * Gets the tilt of the ellipse around the center in Y axis.
- *
- * Return value: a #ClutterAngle
- *
- * Since: 0.4
- */
-ClutterAngle
-clutter_behaviour_ellipse_get_angle_tilt_yx (ClutterBehaviourEllipse *self)
-{
-  g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0);
-
-  return self->priv->angle_tilt_y + 256;
+  return 0;
 }
 
 /**
