@@ -1,3 +1,8 @@
+2007-07-28  Emmanuele Bassi  <ebasso@openedhand.com>
+
+	* clutter-sections.txt: Add new ClutterBehaviourEllipse 
+	and ClutterStage API.
+
 2007-07-26  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Add new symbols.
