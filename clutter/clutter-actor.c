@@ -1431,12 +1431,16 @@ clutter_actor_get_abs_position_units (ClutterActor *self,
 {
   ClutterVertex v1;
   ClutterVertex v2;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
   
   v1.x = v1.y = v1.z = 0;
   clutter_actor_apply_transform_to_point (self, &v1, &v2);
 
-  *x = v2.x;
-  *y = v2.y;
+  if (x)
+    *x = v2.x;
+  if (y)
+    *y = v2.y;
 }
 
 /**
@@ -1450,14 +1454,20 @@ clutter_actor_get_abs_position_units (ClutterActor *self,
  */
 void
 clutter_actor_get_abs_position (ClutterActor *self,
-				gint           *x,
-				gint           *y)
+				gint         *x,
+				gint         *y)
 {
-  gint32 xu, yu;
+  ClutterUnit xu, yu;
+
+  g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  xu = yu = 0;
   clutter_actor_get_abs_position_units (self, &xu, &yu);
 
-  *x = CLUTTER_UNITS_TO_INT (xu);
-  *y = CLUTTER_UNITS_TO_INT (yu);
+  if (x)
+    *x = CLUTTER_UNITS_TO_INT (xu);
+  if (y)
+    *y = CLUTTER_UNITS_TO_INT (yu);
 }
 
 /*

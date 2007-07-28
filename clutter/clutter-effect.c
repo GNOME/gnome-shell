@@ -657,7 +657,7 @@ clutter_effect_rotate_y (ClutterEffectTemplate     *template_,
 }
 
 /**
- * clutter_effect_rotate_y:
+ * clutter_effect_rotate_z:
  * @template_: A #ClutterEffectTemplate
  * @actor: A #ClutterActor to apply the effect to.
  * @angle_begin: Initial angle to apply to actor

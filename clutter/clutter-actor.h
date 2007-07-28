@@ -111,7 +111,7 @@ GType clutter_actor_box_get_type (void) G_GNUC_CONST;
 struct _ClutterActor
 {
   /*< private >*/
-  GObject parent_instance;
+  GInitiallyUnowned parent_instance;
   
   /*< public >*/
   guint32 flags;
@@ -124,7 +124,7 @@ struct _ClutterActor
 
 struct _ClutterActorClass
 {
-  GObjectClass parent_class;
+  GInitiallyUnownedClass parent_class;
 
   void (* show)            (ClutterActor        *actor);
   void (* show_all)        (ClutterActor        *actor);

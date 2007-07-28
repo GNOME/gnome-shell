@@ -992,7 +992,7 @@ clutter_behaviour_ellipse_get_angle_tilt (ClutterBehaviourEllipse *self,
 /**
  * clutter_behaviour_ellipse_get_angle_tiltx
  * @self: a #ClutterBehaviourEllipse
- * @self: a #ClutterRotateAxis
+ * @axis: a #ClutterRotateAxis
  *
  * Gets the tilt of the ellipse around the center in the given axis.
  *

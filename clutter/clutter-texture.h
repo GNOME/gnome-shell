@@ -75,11 +75,11 @@ struct _ClutterTextureClass
   void (*_clutter_texture6) (void);
 };
 
-typedef enum ClutterTextureFlags
-{
-    CLUTTER_TEXTURE_RGB_FLAG_BGR     = (1 << 1),
-    CLUTTER_TEXTURE_RGB_FLAG_PREMULT = (1 << 2), /* FIXME: not handled */
-    CLUTTER_TEXTURE_YUV_FLAG_YUV2    = (1 << 3)
+typedef enum { /*< prefix=CLUTTER_TEXTURE >*/
+    CLUTTER_TEXTURE_RGB_FLAG_BGR     = 1 << 1,
+    CLUTTER_TEXTURE_RGB_FLAG_PREMULT = 1 << 2, /* FIXME: not handled */
+    CLUTTER_TEXTURE_YUV_FLAG_YUV2    = 1 << 3
+
     /* FIXME: add compressed types ? */
 } ClutterTextureFlags;
 

@@ -1,3 +1,22 @@
+2007-07-28  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.[ch]: Use GInitiallyUnowned
+	as the parent structure in the ClutterActor structure
+	definition; somehow, this has escaped everyone attention
+	in one year and a half. Luckily, GInitiallyUnowned is
+	as big as GObject.
+	 
+	 (clutter_actor_get_abs_position_units),
+	 (clutter_actor_get_abs_position): Check parameters.
+
+	 * clutter/clutter-texture.h: Unmangle the flags enum
+	 type declaration, so that dumb parsers like h2defs.py
+	 are not fooled.
+
+	 * clutter/clutter-behaviour-ellipse.[ch]:
+	 * clutter/clutter-effect.c: Fix some documentation
+	 issues and make gtk-doc happy.
+
 2007-07-27  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-behaviour-ellipse.h:
