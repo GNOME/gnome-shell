@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: metacity 2.16.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-01-31 22:10+0100\n"
-"PO-Revision-Date: 2007-05-16 19:03+0200\n"
+"PO-Revision-Date: 2007-06-26 11:39+0200\n"
 "Last-Translator: Yannig MARCHEGAY <yannig@marchegay.org>\n"
 "Language-Team: Occitan (post 1500) <ubuntu-l10n-oci@lists.ubuntu.com>\n"
 "MIME-Version: 1.0\n"
@@ -79,7 +79,7 @@ msgstr ""
 
 #: ../src/frames.c:1062
 msgid "Close Window"
-msgstr "Barrar la fenèstra"
+msgstr "Tampar la fenèstra"
 
 #: ../src/frames.c:1065
 msgid "Window Menu"
@@ -174,7 +174,7 @@ msgstr ""
 
 #: ../src/main.c:200
 msgid "Print version"
-msgstr "Mostrar la version"
+msgstr "Visualizar la version"
 
 #: ../src/main.c:352
 #, c-format
@@ -236,7 +236,7 @@ msgstr ""
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/menu.c:85
 msgid "_Close"
-msgstr "_Barrar"
+msgstr "_Tampar"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
@@ -476,7 +476,7 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:9
 msgid "Close window"
-msgstr "Barrar la fenèstra"
+msgstr "Tampar la fenèstra"
 
 #: ../src/metacity.schemas.in.h:10
 msgid "Commands to run in response to keybindings"
@@ -778,7 +778,7 @@ msgstr "Executar un terminal"
 
 #: ../src/metacity.schemas.in.h:77
 msgid "Show the panel menu"
-msgstr "Mostrar lo menut del panèl"
+msgstr "Visualizar lo menut del panèl"
 
 #: ../src/metacity.schemas.in.h:78
 msgid "Show the panel run application dialog"
