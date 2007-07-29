@@ -37,18 +37,20 @@ G_BEGIN_DECLS
 
 /**
  * ClutterGravity:
- * @CLUTTER_GRAVITY_NONE:
- * @CLUTTER_GRAVITY_NORTH:
- * @CLUTTER_GRAVITY_NORTH_EAST:
- * @CLUTTER_GRAVITY_EAST:
- * @CLUTTER_GRAVITY_SOUTH_EAST:
- * @CLUTTER_GRAVITY_SOUTH:
- * @CLUTTER_GRAVITY_SOUTH_WEST:
- * @CLUTTER_GRAVITY_WEST:
- * @CLUTTER_GRAVITY_NORTH_WEST:
- * @CLUTTER_GRAVITY_CENTER:
+ * @CLUTTER_GRAVITY_NONE: Do not apply any gravity
+ * @CLUTTER_GRAVITY_NORTH: Scale from topmost downwards
+ * @CLUTTER_GRAVITY_NORTH_EAST: Scale from the top left corner
+ * @CLUTTER_GRAVITY_EAST: Scale from the left side
+ * @CLUTTER_GRAVITY_SOUTH_EAST: Scale from the bottom left corner
+ * @CLUTTER_GRAVITY_SOUTH: Scale from the bottom upwards
+ * @CLUTTER_GRAVITY_SOUTH_WEST: Scale from the bottom right corner
+ * @CLUTTER_GRAVITY_WEST: Scale from the right side
+ * @CLUTTER_GRAVITY_NORTH_WEST: Scale from the top right corner
+ * @CLUTTER_GRAVITY_CENTER: Scale from the center.
  *
- * Gravity of the scaling operations.
+ * Gravity of the scaling operations. When a gravity different than
+ * %CLUTTER_GRAVITY_NONE is used, an actor is scaled keeping the position
+ * of the specified portion at the same coordinates.
  *
  * Since: 0.2
  */

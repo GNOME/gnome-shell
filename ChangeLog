@@ -1,5 +1,11 @@
 2007-07-29  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-types.h: Document ClutterGravity enumeration
+	and remove the only incomplete symbol of the api reference. Now
+	we are up to 79% documented symbols.
+
+2007-07-29  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-media.c: Document ClutterMedia signals;
 	replace the implementation of clutter_media_set_filename() with
 	something a wee bit more robust (and portable) than a sprintf().
