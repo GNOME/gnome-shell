@@ -1,3 +1,10 @@
+2007-07-30  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-texture.c:
+	Fix re-relisation for large tiled textures.
+	* tests/test-textures.c: (main):
+	Add a show/hide to trigger above (see #442)
+
 2007-07-29  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-types.h: Document ClutterGravity enumeration

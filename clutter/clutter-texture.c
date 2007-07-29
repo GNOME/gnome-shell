@@ -649,6 +649,8 @@ clutter_texture_realize (ClutterActor *actor)
       /* Move any local image data we have from unrealization  
        * back into video memory.	 
       */
+      if (priv->is_tiled)
+	texture_init_tiles (texture); 
       clutter_texture_set_pixbuf (texture, priv->local_pixbuf, NULL);
       g_object_unref (priv->local_pixbuf);
       priv->local_pixbuf = NULL;
@@ -1146,7 +1148,7 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 	    src_w = priv->x_tiles[x].size;
 	    src_h = priv->y_tiles[y].size;
 
-	    pixels = g_malloc (((src_w  * bpp) &~ 3) * src_h);
+	    pixels = g_malloc (((src_w  * bpp + 3) &~ 3) * src_h);
 
 	    glBindTexture(priv->target_type, priv->tiles[i]);
 	    
@@ -1160,13 +1162,6 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 			   CGL_RGBA : CGL_RGB, 
 			   PIXEL_TYPE,
 			   (GLvoid *) pixels);
-	
-            /* Clip */
-            if (priv->x_tiles[x].pos + src_w > priv->width)
-              src_w = priv->width - priv->x_tiles[x].pos;
-
-            if (priv->y_tiles[y].pos + src_h > priv->height)
-              src_h = priv->height - priv->y_tiles[y].pos;
 
 	    tmp_pixb =
 	      gdk_pixbuf_new_from_data ((const guchar*)pixels,
@@ -1179,6 +1174,13 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 					((src_w * bpp + 3) &~ 3),
 					pixbuf_destroy_notify,
 					NULL);
+
+            /* Clip */
+            if (priv->x_tiles[x].pos + src_w > priv->width)
+              src_w = priv->width - priv->x_tiles[x].pos;
+
+            if (priv->y_tiles[y].pos + src_h > priv->height)
+              src_h = priv->height - priv->y_tiles[y].pos;
 	
 	    gdk_pixbuf_copy_area (tmp_pixb,
 				  0,
@@ -1248,7 +1250,7 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
   g_return_val_if_fail (bpp == 4, FALSE); 
   
   texture_dirty = size_change =
-    (width != priv->width || height != priv->height);
+    (width != priv->width || height != priv->height) ;
 
   prev_format = priv->pixel_format;
   

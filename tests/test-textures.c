@@ -86,7 +86,11 @@ main (int argc, char *argv[])
 	clutter_container_add (CLUTTER_CONTAINER (stage), texture, NULL);
 	clutter_actor_set_size (texture, 400, 400);
 	clutter_actor_show (texture);
-	
+
+	/* Hide & show to unreaise then realise the texture */
+	clutter_actor_hide (texture);
+	clutter_actor_show (texture);	
+
 	clutter_texture_get_n_tiles(CLUTTER_TEXTURE(texture), &cols, &rows);
 	
 	printf("with tiles: %i x %i\n", cols, rows);
