@@ -109,7 +109,7 @@ clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse *e,
   y = CLUTTER_FIXED_INT (priv->b * clutter_sini (angle));
   z = 0;
 
-  if (e->priv->angle_tilt_z)
+  if (priv->angle_tilt_z)
     {
       /*
        * x2 = r * cos (angle + tilt_z)
@@ -131,7 +131,7 @@ clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse *e,
       y = CLUTTER_FIXED_INT (y2);
     }
 
-  if (e->priv->angle_tilt_x)
+  if (priv->angle_tilt_x)
     {
       ClutterFixed z2, y2;
 
@@ -143,7 +143,7 @@ clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse *e,
       y = CLUTTER_FIXED_INT (y2);
     }
 
-  if (e->priv->angle_tilt_y)
+  if (priv->angle_tilt_y)
     {
       ClutterFixed x2, z2;
 
@@ -197,7 +197,7 @@ clutter_behaviour_ellipse_alpha_notify (ClutterBehaviour *behave,
   else
     {
       angle = priv->angle_begin
-              - (abs(priv->angle_begin - priv->angle_end) * alpha)
+              - (abs (priv->angle_begin - priv->angle_end) * alpha)
               / CLUTTER_ALPHA_MAX_ALPHA;
     }
 
@@ -492,11 +492,12 @@ clutter_behaviour_ellipse_init (ClutterBehaviourEllipse * self)
  * @end: angle in degrees at which movement ends
  *
  * Creates a behaviour that drives actors along an elliptical path with
- * given center, width and height; the movement begins at angle_begin (with 0
- * corresponding to 12 o'clock) and ends at angle_end; if angle_end > angle_begin,
- * the movement is in clockwise direction, counter-clockwise otherwise.
+ * given center, width and height; the movement begins at @angle_begin
+ * degrees (with 0 corresponding to 12 o'clock) and ends at @angle_end degrees;
+ * if @angle_end is greater than @angle_begin, the movement is in clockwise
+ * direction, counter-clockwise otherwise.
  *
- * Return value: a #ClutterBehaviour
+ * Return value: the newly created #ClutterBehaviourEllipse
  *
  * Since: 0.4
  */
@@ -536,12 +537,10 @@ clutter_behaviour_ellipse_new (ClutterAlpha          *alpha,
  * @begin: #ClutterFixed angle in degrees at which movement begins
  * @end: #ClutterFixed angle in degrees at which movement ends
  *
- * Creates a behaviour that drives actors along an elliptical path with
- * given center, width and height; the movement begins at angle_begin (with 0
- * corresponding to 12 o'clock) and ends at angle_end; if angle_end > angle_begin,
- * the movement is in clockwise direction, counter-clockwise otherwise.
+ * Creates a behaviour that drives actors along an elliptical path. This
+ * is the fixed point variant of clutter_behaviour_ellipse_new().
  *
- * Return value: a #ClutterBehaviour
+ * Return value: the newly created #ClutterBehaviourEllipse
  *
  * Since: 0.4
  */
@@ -1074,6 +1073,8 @@ clutter_behaviour_ellipse_set_tiltx (ClutterBehaviourEllipse *self,
 
   priv = self->priv;
 
+  g_object_freeze_notify (G_OBJECT (self));
+
   if (priv->angle_tilt_x != new_angle_x)
     {
       priv->angle_tilt_x = new_angle_x;
@@ -1094,6 +1095,8 @@ clutter_behaviour_ellipse_set_tiltx (ClutterBehaviourEllipse *self,
 
       g_object_notify (G_OBJECT (self), "angle-tilt-z");
     }
+  
+  g_object_thaw_notify (G_OBJECT (self));
 }
 
 /**
@@ -1211,11 +1214,8 @@ clutter_behaviour_ellipse_set_direction (ClutterBehaviourEllipse *self,
 
   if (priv->direction != direction)
     {
-      g_object_ref (self);
-
       priv->direction = direction;
 
       g_object_notify (G_OBJECT (self), "direction");
-      g_object_unref (self);
     }
 }

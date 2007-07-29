@@ -115,8 +115,6 @@ ClutterTimeline *clutter_alpha_get_timeline (ClutterAlpha     *alpha);
 #define CLUTTER_ALPHA_EXP_INC        clutter_exp_inc_func
 #define CLUTTER_ALPHA_EXP_DEC        clutter_exp_dec_func
 
-#define CLUTTER_TYPE_SMOOTHSTEP (clutter_smoothstep_get_type ())
-
 guint32             clutter_ramp_inc_func       (ClutterAlpha     *alpha,
 						 gpointer          dummy);
 guint32             clutter_ramp_dec_func       (ClutterAlpha     *alpha,
