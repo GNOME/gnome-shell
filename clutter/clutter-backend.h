@@ -75,13 +75,6 @@ GType clutter_backend_get_type    (void) G_GNUC_CONST;
 
 ClutterBackend *clutter_get_default_backend (void);
 
-#if 0
-ClutterEvent *clutter_backend_get_event  (ClutterBackend *backend);
-ClutterEvent *clutter_backend_peek_event (ClutterBackend *backend);
-void          clutter_backend_put_event  (ClutterBackend *backend,
-                                          ClutterEvent   *event);
-#endif
-
 void  clutter_backend_set_double_click_time     (ClutterBackend *backend,
                                                  guint           msec);
 guint clutter_backend_get_double_click_time     (ClutterBackend *backend);

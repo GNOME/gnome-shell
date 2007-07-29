@@ -1,5 +1,11 @@
 2007-07-30  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/clutter-backend.h:
+	Remove #if 0's old backend_api 
+	(generating uneeded documentation)
+
+2007-07-30  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-texture.c:
 	Fix re-relisation for large tiled textures.
 	* tests/test-textures.c: (main):

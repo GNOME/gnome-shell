@@ -199,7 +199,13 @@ main (int argc, char *argv[])
   <para>
 
   Properties of the behaviour, alpha and timeline can be changed on
-  the fly making animations
+  the fly making animations. Experiment!
+
+  </para>
+  <para>
+
+  ClutterEffects provide a simpler (but more limited) layer around the above.
+  FIXME.
 
   </para>
 

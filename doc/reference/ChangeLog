@@ -1,3 +1,8 @@
+2007-07-30  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter-animation.sgml:
+	Note on ClutterEffects
+
 2007-07-28  Emmanuele Bassi  <ebasso@openedhand.com>
 
 	* clutter-sections.txt: Add new ClutterBehaviourEllipse 
