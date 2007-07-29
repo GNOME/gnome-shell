@@ -37,7 +37,17 @@
 #include "clutter-enum-types.h"
 #include "clutter-private.h" 	/* for DBG */
 
+enum
+{
+  EOS,
+  ERROR,
+
+  LAST_SIGNAL
+};
+
 static void clutter_media_base_init (gpointer g_class);
+
+static guint media_signals[LAST_SIGNAL] = { 0, };
 
 GType
 clutter_media_get_type (void)
@@ -65,7 +75,7 @@ clutter_media_base_init (gpointer g_iface)
 {
   static gboolean initialized = FALSE;
 
-  if (!initialized)
+  if (G_UNLIKELY (!initialized))
     {
       initialized = TRUE;
 
@@ -148,24 +158,40 @@ clutter_media_base_init (gpointer g_iface)
 	  G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK |
 	  G_PARAM_STATIC_BLURB));
 
-      /* signals */
-      g_signal_new ("eos",
-		    CLUTTER_TYPE_MEDIA,
-		    G_SIGNAL_RUN_LAST,
-		    G_STRUCT_OFFSET (ClutterMediaInterface,
-				     eos),
-		    NULL, NULL,
-		    g_cclosure_marshal_VOID__VOID,
-		    G_TYPE_NONE, 0);
-      
-      g_signal_new ("error",
-		    CLUTTER_TYPE_MEDIA,
-		    G_SIGNAL_RUN_LAST,
-		    G_STRUCT_OFFSET (ClutterMediaInterface,
-				     error),
-		    NULL, NULL,
-		    g_cclosure_marshal_VOID__POINTER,
-		    G_TYPE_NONE, 1, G_TYPE_POINTER);
+      /**
+       * ClutterMedia::eos:
+       * @media: the #ClutterMedia instance that received the signal
+       *
+       * The ::eos signal is emitted each time the media stream ends.
+       *
+       * Since: 0.2
+       */
+      media_signals[EOS] =
+        g_signal_new ("eos",
+                      CLUTTER_TYPE_MEDIA,
+                      G_SIGNAL_RUN_LAST,
+                      G_STRUCT_OFFSET (ClutterMediaInterface, eos),
+                      NULL, NULL,
+                      g_cclosure_marshal_VOID__VOID,
+                      G_TYPE_NONE, 0);
+      /**
+       * ClutterMedia::error:
+       * @media: the #ClutterMedia instance that received the signal
+       * @error: the #GError
+       *
+       * The ::error signal is emitted each time an error occurred.
+       *
+       * Since: 0.2
+       */
+      media_signals[ERROR] =
+        g_signal_new ("error",
+                      CLUTTER_TYPE_MEDIA,
+                      G_SIGNAL_RUN_LAST,
+                      G_STRUCT_OFFSET (ClutterMediaInterface, error),
+                      NULL, NULL,
+                      g_cclosure_marshal_VOID__POINTER,
+                      G_TYPE_NONE, 1,
+                      G_TYPE_POINTER);
     }
 }
 
@@ -352,19 +378,36 @@ clutter_media_get_duration (ClutterMedia *media)
  * @media: A #ClutterMedia object
  * @filename: A filename to media file.
  *
- * Converts a filesystem path to a uri and calls clutter_media_set_uri
+ * Sets the filename of the media source.
  */
 void
-clutter_media_set_filename (ClutterMedia *media, const gchar *filename)
+clutter_media_set_filename (ClutterMedia *media,
+                            const gchar  *filename)
 {
   gchar *uri;
+  GError *uri_error = NULL;
 
-  if (filename[0] != '/')
-    uri = g_strdup_printf ("file://%s/%s", g_get_current_dir (), filename);
-  else 
-    uri = g_strdup_printf ("file://%s", filename);
+  if (!g_path_is_absolute (filename))
+    {
+      gchar *abs_path;
+
+      abs_path = g_build_filename (g_get_current_dir (), filename, NULL);
+      uri = g_filename_to_uri (abs_path, NULL, &uri_error);
+      g_free (abs_path);
+    }
+  else
+    {
+      uri = g_filename_to_uri (filename, NULL, &uri_error);
+    }
+
+  if (uri_error)
+    {
+      g_signal_emit (media, media_signals[ERROR], 0, uri_error);
+      g_error_free (uri_error);
+      return;
+    }
 
   clutter_media_set_uri (media, uri);
 
-  g_free(uri);
+  g_free (uri);
 }

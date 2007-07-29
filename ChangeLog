@@ -1,5 +1,11 @@
 2007-07-29  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-media.c: Document ClutterMedia signals;
+	replace the implementation of clutter_media_set_filename() with
+	something a wee bit more robust (and portable) than a sprintf().
+
+2007-07-29  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-behaviour-ellipse.c: Documentation
 	fixes; kill some indirections; freeze the notification
 	queue when (potentially) emitting multiple notify
