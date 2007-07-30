@@ -635,12 +635,12 @@ _clutter_actor_apply_modelview_transform_recursive (ClutterActor * self)
 {
   ClutterActor * parent;
   
-  _clutter_actor_apply_modelview_transform (self);
-  
   parent = clutter_actor_get_parent (self);
   
   if (parent)
     _clutter_actor_apply_modelview_transform_recursive (parent);
+
+  _clutter_actor_apply_modelview_transform (self);
 }
 
 /**

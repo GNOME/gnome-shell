@@ -1,3 +1,10 @@
+2007-07-30  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-actor.c:
+
+	Fixed incorrect order of modelview matrix stack in calculating
+	actor vertices.
+
 2007-07-30  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-backend.h:
