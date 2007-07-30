@@ -1,9 +1,14 @@
+GENERAL
+=======
+
 General notes and rules on clutter core hacking;
 
  - GNU style indentation, please wrap at 80 chars. 
 
+ - All non static public API funcs should be documented in the .c via gtk-doc
+
  - All public functions with float parameters should also provide a fixed
-   point version.
+   point version. Fixed point should be used internally.
 
  - Propertys should always be float (never fixed). 
 
@@ -13,3 +18,34 @@ General notes and rules on clutter core hacking;
 
  - Dont add direct GL calls but wrap with cogl (also adding GL ES Version)
 
+ - Use CLUTTER_NOTE() macro for debug statements.
+
+ - New features should also include an exhaustive test in tests/
+
+
+RELEASES
+========
+
+In making a new release;
+
+ - Check out a fresh copy from SVN.
+
+ - verify versioning in configure.ac, increasing relevant
+   clutter_major_version/clutter_minor_version/clutter_micro_version
+   value.
+
+ - Update NEWS (New feature details, bug #'s), README (Any API changes
+   relevant to developers + version), AUTHORS if relevant.
+
+ - Add a Release entry to the ChangeLog noting version.
+
+ - make distcheck and fix if fails. 
+
+ - commit.
+
+ - Make tarballs, upload.
+ 
+ - Announce release to waiting world on blog and mailing list.
+
+ - Release any dependant add-ons following similar rules to above. 
+   Dont forget to check *.pc file version deps!

@@ -25,15 +25,109 @@ New bug page on Bugzilla:
 
 Clutter is LGPL licensed.
 
+
 INSTALLATION
 ====
-See the INSTALL file
+
+See the INSTALL file. Info on specific Clutter options;
+
+ --enable-debug=[no/minimum/yes]
+	Turn on debugging (default=yes):
+	  yes: All glib asserts, checks and runtime clutter verbose messages. 
+          minimum: Just glib cast checks and runtime clutter verbose messagaes.
+          no: No glib asserts or checks and no runtime clutter verbose messages
+	      (Only really of use in extreme performance cases)
+
+ --enable-maintainer-flags=[no/yes]
+        Use strict compiler flags (default=no)
+
+ --enable-gtk-doc        
+	use gtk-doc to build API documentation (default=no). Requires gtk-doc 
+	present on system
+
+ --enable-manual=[no/yes]
+        Build application developers manual. Requires jw and xmlto binaries.
+	Presently incomplete.
+
+  --without-fpu           
+	Assume target hardware has no floating point unit. Useful only
+	for embedded targets such as ARM.
+
+  --with-flavour=[glx/eglx/eglnative/sdl]
+        Select the Clutter backend: (defualt=glx)
+
+	  glx: Fully featured GLX backend. Using Open GL.
+
+	  eglx: EGL/Open GL ES backend for EGL on X windows implementations
+		(experimental)
+
+	  eglnative: EGL/Open GL ES backend on 'native windowing system' - i.e
+		     raw framebuffer. Expects EGL implementation to provide a 
+		     createNativeWindow () call. Also optionally supports 
+		     tslib for touchscreen events.
+		     (experimental)
+
+	  sdl: Basic SDL backend, using Open GL. Should provide portability
+	       to windows and possibly other OS's. 
+
+
+VERSIONING
+====
+
+Clutter uses the common "Linux kernel" versioning system, where
+even-numbered minor versions are stable and odd-numbered minor
+versions are development snapshots.
+
+Different Minor versions break both API and ABI but are paralell
+installable. The same Minor version with differing Micro version is
+expected to be ABI compatible with other micro versions. Though this
+is not guarenteed, especially for odd numbered minor releases, we'll
+try our very hardest (promise).
+
+
+HACKING
+====
+
+If you want to hack on and improve clutter check the contained TODO
+file for pending tasks and HACKING for general coding guidelines.
+
+
+BUGS
+====
+Bugs should be reported to the OpenedHand Bugzilla at:
+
+  http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter
+
+You will need an account.
+
+In the report you should include:
+* what system you're running Clutter on;
+* which version of GLib, GdkPixbuf and OpenGL you are using;
+* which video card and which drivers you are using, including output of
+  glxinfo and xdpyinfo.
+* how to reproduce the bug.
+
+If you cannot reproduce the bug with one of the tests that come with Clutter
+source code, you should include a small test case displaying the bad
+behaviour.
+
+If the bug exposes a crash, the exact text printed out and a stack trace
+obtained using gdb are greatly appreciated.
+
+
+PATCHES
+====
+Patches should be submitted using Bugzilla. Patches fixing a bug should be
+attached to the bug report; patches for new features or for fixing bugs not
+yet reported should be attached to a newly opened bug. Patches should always
+be in the unified diff format.
+
 
 RELEASE NOTES
 ====
 
 Relevant information for developers with existing Clutter applications
-wanting to port to newer releases;
+wanting to port to newer releases (See NEWS for general new feature info).
 
 Release Notes for Clutter 0.3.1
 -------------------------------
@@ -109,35 +203,3 @@ Release Notes for Clutter 0.3
   ClutterContainer::actor-added and ClutterContainer::actor-removed should
   be used instead.
 
-HACKING
-====
-If you want to hack on and improve clutter check the TODO file.
-
-BUGS
-====
-Bugs should be reported to the OpenedHand Bugzilla at:
-
-  http://bugzilla.o-hand.com/enter_bug.cgi?product=Clutter
-
-You will need an account.
-
-In the report you should include:
-* what system you're running Clutter on;
-* which version of GLib, GdkPixbuf and OpenGL you are using;
-* which video card and which drivers you are using, including output of
-  glxinfo and xdpyinfo.
-* how to reproduce the bug.
-
-If you cannot reproduce the bug with one of the tests that come with Clutter
-source code, you should include a small test case displaying the bad
-behaviour.
-
-If the bug exposes a crash, the exact text printed out and a stack trace
-obtained using gdb are greatly appreciated.
-
-PATCHES
-====
-Patches should be submitted using Bugzilla. Patches fixing a bug should be
-attached to the bug report; patches for new features or for fixing bugs not
-yet reported should be attached to a newly opened bug. Patches should always
-be in the unified diff format.
