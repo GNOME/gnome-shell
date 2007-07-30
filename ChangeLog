@@ -1,3 +1,8 @@
+2007-06-23  Thomas Thurman  <thomas@thurman.org.uk>
+
+	* src/window.h (MetaWindow): Put all bitfields together to
+	help with optimisation. Closes #450271 (for real this time).
+
 2007-07-23  Matthias Clasen  <mclasen@redhat.com>
 
 	* configure.in:

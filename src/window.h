@@ -263,9 +263,6 @@ struct _MetaWindow
    */
   guint calc_placement : 1;
 
-  /* Note: can be NULL */
-  GSList *struts;
-
   /* Transient parent is a root window */
   guint transient_parent_is_root_window : 1;
 
@@ -289,6 +286,9 @@ struct _MetaWindow
 
   /* if TRUE, application is buggy and SYNC resizing is turned off */
   guint disable_sync : 1;
+
+  /* Note: can be NULL */
+  GSList *struts;
 
 #ifdef HAVE_XSYNC
   /* XSync update counter */
