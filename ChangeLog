@@ -1,5 +1,13 @@
 2007-07-30  Tomas Frydrych  <tf@openedhand.com>
 
+	* clutter/clutter-behaviour-ellipse:
+	(clutter_behaviour_ellipse_advance):
+
+	Fixed invalid assumption about z cooordiance in calculation of
+	tilt in y axis.
+	
+2007-07-30  Tomas Frydrych  <tf@openedhand.com>
+
 	* clutter/clutter-actor.c:
 
 	Fixed incorrect order of modelview matrix stack in calculating

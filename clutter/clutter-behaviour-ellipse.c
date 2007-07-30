@@ -147,9 +147,11 @@ clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse *e,
     {
       ClutterFixed x2, z2;
 
-      x2 = x * clutter_cosi (priv->angle_tilt_y);
+      x2 = x * clutter_cosi (priv->angle_tilt_y)
+        - z * clutter_sini (priv->angle_tilt_y);
 
-      z2 = x * clutter_sini (priv->angle_tilt_y);
+      z2 = z * clutter_cosi (priv->angle_tilt_y)
+        + x * clutter_sini (priv->angle_tilt_y);
 
       x = CLUTTER_FIXED_INT (x2);
       z = CLUTTER_FIXED_INT (z2);
