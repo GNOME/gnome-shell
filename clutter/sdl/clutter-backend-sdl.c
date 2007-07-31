@@ -178,7 +178,7 @@ clutter_backend_sdl_constructor (GType                  gtype,
 }
 
 static ClutterFeatureFlags
-clutter_backend_egl_get_features (ClutterBackend *backend)
+clutter_backend_sdl_get_features (ClutterBackend *backend)
 {
   return CLUTTER_FEATURE_STAGE_CURSOR;
 }

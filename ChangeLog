@@ -1,3 +1,8 @@
+2007-07-31  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/sdl/clutter-backend-sdl.c: Fix a typo in
+	clutter_backend_sdl_get_features() (#426, Pan Bohui)
+
 2007-07-30  Matthew Allum  <mallum@openedhand.com>
 
 	* AUTHORS:
