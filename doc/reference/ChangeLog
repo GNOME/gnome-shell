@@ -1,3 +1,7 @@
+2007-07-31  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Update ClutterBackend API.
+
 2007-07-30  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter-animation.sgml:
