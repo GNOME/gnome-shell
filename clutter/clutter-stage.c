@@ -58,10 +58,10 @@ struct _ClutterStagePrivate
   ClutterColor        color;
   ClutterPerspective  perspective;
 
-  guint is_fullscreen      : 1;
-  guint is_offscreen       : 1;
-  guint is_cursor_visible  : 1;
-  guint is_user_resizeable : 1;
+  guint is_fullscreen     : 1;
+  guint is_offscreen      : 1;
+  guint is_cursor_visible : 1;
+  guint is_user_resizable : 1;
 
   gchar              *title;
 };
@@ -160,7 +160,7 @@ clutter_stage_set_property (GObject      *object,
       clutter_stage_set_title (stage, g_value_get_string (value)); 
       break;
     case PROP_USER_RESIZE:
-      clutter_stage_set_user_resizeable (stage, g_value_get_boolean (value));
+      clutter_stage_set_user_resizable (stage, g_value_get_boolean (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -205,7 +205,7 @@ clutter_stage_get_property (GObject    *object,
       g_value_set_string (value, priv->title);
       break;
     case PROP_USER_RESIZE:
-      g_value_set_boolean (value, priv->is_user_resizeable);
+      g_value_set_boolean (value, priv->is_user_resizable);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -256,8 +256,8 @@ clutter_stage_class_init (ClutterStageClass *klass)
 
   g_object_class_install_property
     (gobject_class, PROP_USER_RESIZE,
-     g_param_spec_boolean ("user-resizeable",
-			   "User Resizeable",
+     g_param_spec_boolean ("user-resizable",
+			   "User Resizable",
 			   "Whether the stage is able to be resized via "
 			   "user interaction",
 			   FALSE,
@@ -438,10 +438,10 @@ clutter_stage_init (ClutterStage *self)
   
   self->priv = priv = CLUTTER_STAGE_GET_PRIVATE (self);
 
-  priv->is_offscreen       = FALSE;
-  priv->is_fullscreen      = FALSE;
-  priv->is_user_resizeable = FALSE;
-  priv->is_cursor_visible  = TRUE;
+  priv->is_offscreen      = FALSE;
+  priv->is_fullscreen     = FALSE;
+  priv->is_user_resizable = FALSE;
+  priv->is_cursor_visible = TRUE;
 
   priv->color.red   = 0xff;
   priv->color.green = 0xff;
@@ -703,15 +703,18 @@ clutter_stage_unfullscreen (ClutterStage *stage)
 }
 
 /**
- * clutter_stage_set_user_resizeable:
+ * clutter_stage_set_user_resizable:
  * @stage: a #ClutterStage
- * @value: a boolean indicating if the stage should be user resizable.
+ * @resizable: whether if the stage should be user resizable.
  *
  * Sets if the stage is able to be resized by user interaction (i.e via
  * window manager controls)
+ *
+ * Since: 0.4
  */
 void
-clutter_stage_set_user_resizeable (ClutterStage *stage, gboolean value)
+clutter_stage_set_user_resizable (ClutterStage *stage,
+                                  gboolean      resizable)
 {
   ClutterStagePrivate *priv;
 
@@ -720,15 +723,33 @@ clutter_stage_set_user_resizeable (ClutterStage *stage, gboolean value)
   priv = stage->priv;
 
   if (clutter_feature_available (CLUTTER_FEATURE_STAGE_USER_RESIZE)
-      && priv->is_user_resizeable != value
+      && priv->is_user_resizable != resizable
       && CLUTTER_STAGE_GET_CLASS (stage)->set_user_resize)
     {
-      priv->is_user_resizeable = value;
+      priv->is_user_resizable = resizable;
 
-      CLUTTER_STAGE_GET_CLASS (stage)->set_user_resize (stage, value);
+      CLUTTER_STAGE_GET_CLASS (stage)->set_user_resize (stage, resizable);
 
-      g_object_notify (G_OBJECT (stage), "user-resizeable");
+      g_object_notify (G_OBJECT (stage), "user-resizable");
     }
+}
+
+/**
+ * clutter_stage_get_user_resizable:
+ * @stage: a #ClutterStage
+ *
+ * Retrieves the value set with clutter_stage_set_user_resizable().
+ *
+ * Return value: %TRUE is the stage is resizable by the user.
+ *
+ * Since: 0.4
+ */
+gboolean
+clutter_stage_get_user_resizable (ClutterStage *stage)
+{
+  g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
+
+  return stage->priv->is_user_resizable;
 }
 
 /**

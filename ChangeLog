@@ -1,5 +1,13 @@
 2007-07-31  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-stage.[ch]: Fix clutter_stage_set_user_resizable()
+	name, and add a getter for the property.
+
+	* clutter/glx/clutter-stage-glx.c: Use the accessor, not
+	g_object_get() to retrieve the value of the resizable property.
+
+2007-07-31  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-backend.[ch]: Add clutter_backend_set_resolution()
 	and clutter_backend_get_resolution(); backends should use the former
 	to set the resolution of the display when initialising, while actors

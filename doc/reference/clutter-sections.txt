@@ -429,7 +429,8 @@ clutter_stage_get_perspective
 clutter_stage_get_perspectivex
 clutter_stage_set_title
 clutter_stage_get_title
-clutter_stage_set_user_resizeable
+clutter_stage_set_user_resizable
+clutter_stage_get_user_resizable
 <SUBSECTION Standard>
 CLUTTER_STAGE
 CLUTTER_IS_STAGE

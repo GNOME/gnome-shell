@@ -55,7 +55,7 @@ fix_window_size (ClutterStageGLX *stage_glx)
 {
   gboolean resize;
 
-  g_object_get (stage_glx, "user-resizeable", &resize, NULL);
+  resize = clutter_stage_get_user_resizable (CLUTTER_STAGE (stage_glx));
 
   if (stage_glx->xwin != None && stage_glx->is_foreign_xwin == FALSE)
     {
