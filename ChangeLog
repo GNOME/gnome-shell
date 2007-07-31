@@ -1,3 +1,8 @@
+2007-06-31  Thomas Thurman  <thomas@thurman.org.uk>
+
+	* src/window.c (meta_window_show_menu): windows which are
+	always on top have the "stick" menu option insensitive. (#460997).
+
 2007-06-23  Thomas Thurman  <thomas@thurman.org.uk>
 
 	* src/window.h (MetaWindow): Put all bitfields together to

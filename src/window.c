@@ -6504,7 +6504,7 @@ meta_window_show_menu (MetaWindow *window,
     insensitive |= META_MENU_OP_RESIZE;
 
    if (window->always_sticky)
-     insensitive |= META_MENU_OP_UNSTICK | META_MENU_OP_WORKSPACES;
+     insensitive |= META_MENU_OP_STICK | META_MENU_OP_UNSTICK | META_MENU_OP_WORKSPACES;
 
   if ((window->type == META_WINDOW_DESKTOP) ||
       (window->type == META_WINDOW_DOCK) ||
