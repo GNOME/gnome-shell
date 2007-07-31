@@ -1,5 +1,10 @@
 2007-07-31  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-entry.c (clutter_entry_init): Set the default
+	size of the entry based on the size of the default font. (#414).
+
+2007-07-31  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/sdl/clutter-backend-sdl.c: Fix a typo in
 	clutter_backend_sdl_get_features() (#426, Pan Bohui)
 

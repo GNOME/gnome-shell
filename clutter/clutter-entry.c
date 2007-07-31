@@ -715,6 +715,8 @@ static void
 clutter_entry_init (ClutterEntry *self)
 {
   ClutterEntryPrivate *priv;
+  gdouble resolution;
+  gint font_size;
   
   self->priv = priv = CLUTTER_ENTRY_GET_PRIVATE (self);
 
@@ -749,7 +751,16 @@ clutter_entry_init (ClutterEntry *self)
 
   priv->font_name     = g_strdup (DEFAULT_FONT_NAME);
   priv->desc          = pango_font_description_from_string (priv->font_name);
-  
+
+  /* we use the font size to set the default width and height, in case
+   * the user doesn't call clutter_actor_set_size().
+   */
+  resolution = 96.0; /* FIXME use clutter_backend_get_resolution() */
+  font_size = PANGO_PIXELS (pango_font_description_get_size (priv->desc))
+              * resolution
+              / 72.0;
+  clutter_actor_set_size (CLUTTER_ACTOR (self), font_size * 20, 50);
+
   priv->cursor        = clutter_rectangle_new_with_color (&priv->fgcol);
   clutter_actor_set_parent (priv->cursor, CLUTTER_ACTOR (self));
 
