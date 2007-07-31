@@ -321,11 +321,14 @@ clutter_backend_set_resolution (ClutterBackend *backend,
                                 gdouble         dpi)
 {
   ClutterFixed fixed_dpi;
+  ClutterBackendPrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_BACKEND (backend));
 
   if (dpi < 0)
-    dpi = -1.0
+    dpi = -1.0;
+
+  priv = backend->priv;
 
   fixed_dpi = CLUTTER_FLOAT_TO_FIXED (dpi);
   if (priv->resolution != fixed_dpi)

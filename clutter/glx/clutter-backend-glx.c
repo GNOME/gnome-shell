@@ -205,8 +205,8 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
 	}
 #endif
       
-      dpi = (((double) DisplayHeight (xdisplay, xscreen) * 25.4)
-            / (double) DisplayHeightMM (xdisplay, xscreen));
+      dpi = (((double) DisplayHeight (backend_glx->xdpy, backend_glx->xscreen_num) * 25.4)
+            / (double) DisplayHeightMM (backend_glx->xdpy, backend_glx->xscreen_num));
 
       clutter_backend_set_resolution (backend, dpi);
 
