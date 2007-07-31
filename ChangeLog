@@ -1,5 +1,19 @@
 2007-07-31  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-backend.[ch]: Add clutter_backend_set_resolution()
+	and clutter_backend_get_resolution(); backends should use the former
+	to set the resolution of the display when initialising, while actors
+	should use the latter when sizing themselves depending on the
+	resolution or the font size.
+
+	* clutter/glx/clutter-backend-glx.c: Set the resolution as 96 dpi
+	as a default and query the X server when opening the display.
+
+	* clutter/clutter-entry.c: Drop the hardcoded dpi value and use
+	clutter_backend_get_resolution() to compute the default size.
+
+2007-07-31  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-entry.c (clutter_entry_init): Set the default
 	size of the entry based on the size of the default font. (#414).
 

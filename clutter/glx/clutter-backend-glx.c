@@ -166,6 +166,7 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
   if (backend_glx->xdpy)
     {
       int glx_major, glx_minor;
+      double dpi;
 
       CLUTTER_NOTE (BACKEND, "Getting the X screen");
 
@@ -204,17 +205,24 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
 	}
 #endif
       
+      dpi = (((double) DisplayHeight (xdisplay, xscreen) * 25.4)
+            / (double) DisplayHeightMM (xdisplay, xscreen));
+
+      clutter_backend_set_resolution (backend, dpi);
+
       if (clutter_synchronise)
         XSynchronize (backend_glx->xdpy, True);
     }
 
   g_free (clutter_display_name);
   
-  CLUTTER_NOTE (MISC, "X Display `%s' [%p] opened (screen:%d, root:%u)",
+  CLUTTER_NOTE (BACKEND,
+                "X Display `%s'[%p] opened (screen:%d, root:%u, dpi:%f)",
                 backend_glx->display_name,
                 backend_glx->xdpy,
                 backend_glx->xscreen_num,
-                (unsigned int) backend_glx->xwin_root);
+                (unsigned int) backend_glx->xwin_root,
+                clutter_backend_get_resolution (backend));
 
   return TRUE;
 }
@@ -596,6 +604,7 @@ clutter_backend_glx_init (ClutterBackendGLX *backend_glx)
   /* FIXME: get from xsettings */
   clutter_backend_set_double_click_time (backend, 250);
   clutter_backend_set_double_click_distance (backend, 5);
+  clutter_backend_set_resolution (backend, 96.0);
 }
 
 /* every backend must implement this function */

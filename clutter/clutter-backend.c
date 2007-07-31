@@ -41,6 +41,7 @@
 #include "config.h"
 #endif
 
+#include "clutter-fixed.h"
 #include "clutter-backend.h"
 #include "clutter-private.h"
 
@@ -55,7 +56,7 @@ struct _ClutterBackendPrivate
   guint double_click_time;
   guint double_click_distance;
 
-
+  ClutterFixed resolution;
 };
 
 static void
@@ -91,6 +92,7 @@ clutter_backend_init (ClutterBackend *backend)
   ClutterBackendPrivate *priv;
 
   priv = backend->priv = CLUTTER_BACKEND_GET_PRIVATE(backend);
+  priv->resolution = -1.0;
 }
 
 ClutterActor *
@@ -297,4 +299,55 @@ clutter_backend_get_double_click_distance (ClutterBackend *backend)
   g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), 0);
 
   return backend->priv->double_click_distance;
+}
+
+/**
+ * clutter_backend_set_resolution:
+ * @backend: a #ClutterBackend
+ * @dpi: the resolution in "dots per inch" (Physical inches aren't
+ *   actually involved; the terminology is conventional).
+ *
+ * Sets the resolution for font handling on the screen. This is a
+ * scale factor between points specified in a #PangoFontDescription
+ * and cairo units. The default value is 96, meaning that a 10 point
+ * font will be 13 units high. (10 * 96. / 72. = 13.3).
+ *
+ * Applications should never need to call this function.
+ *
+ * Since: 0.4
+ */
+void
+clutter_backend_set_resolution (ClutterBackend *backend,
+                                gdouble         dpi)
+{
+  ClutterFixed fixed_dpi;
+
+  g_return_if_fail (CLUTTER_IS_BACKEND (backend));
+
+  if (dpi < 0)
+    dpi = -1.0
+
+  fixed_dpi = CLUTTER_FLOAT_TO_FIXED (dpi);
+  if (priv->resolution != fixed_dpi)
+    priv->resolution = fixed_dpi;
+}
+
+/**
+ * clutter_backend_get_resolution:
+ * @backend: a #ClutterBackend
+ *
+ * Gets the resolution for font handling on the screen; see
+ * clutter_backend_set_resolution() for full details.
+ * 
+ * Return value: the current resolution, or -1 if no resolution
+ *   has been set.
+ *
+ * Since: 0.4
+ */
+gdouble
+clutter_backend_get_resolution (ClutterBackend *backend)
+{
+  g_return_val_if_fail (CLUTTER_IS_BACKEND (backend), -1.0);
+
+  return CLUTTER_FIXED_TO_FLOAT (backend->priv->resolution);
 }

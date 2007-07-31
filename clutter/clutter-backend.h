@@ -75,12 +75,15 @@ GType clutter_backend_get_type    (void) G_GNUC_CONST;
 
 ClutterBackend *clutter_get_default_backend (void);
 
-void  clutter_backend_set_double_click_time     (ClutterBackend *backend,
-                                                 guint           msec);
-guint clutter_backend_get_double_click_time     (ClutterBackend *backend);
-void  clutter_backend_set_double_click_distance (ClutterBackend *backend,
-                                                 guint           distance);
-guint clutter_backend_get_double_click_distance (ClutterBackend *backend);
+void    clutter_backend_set_resolution            (ClutterBackend *backend,
+                                                   gdouble         dpi);
+gdouble clutter_backend_get_resolution            (ClutterBackend *backend);
+void    clutter_backend_set_double_click_time     (ClutterBackend *backend,
+                                                   guint           msec);
+guint   clutter_backend_get_double_click_time     (ClutterBackend *backend);
+void    clutter_backend_set_double_click_distance (ClutterBackend *backend,
+                                                   guint           distance);
+guint   clutter_backend_get_double_click_distance (ClutterBackend *backend);
 
 G_END_DECLS
 

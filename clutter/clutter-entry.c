@@ -720,6 +720,10 @@ clutter_entry_init (ClutterEntry *self)
   
   self->priv = priv = CLUTTER_ENTRY_GET_PRIVATE (self);
 
+  resolution = clutter_backend_get_resolution (clutter_get_default_backend ());
+  if (resolution < 0)
+    resolution = 96.0; /* fall back */
+
   if (G_UNLIKELY (_context == NULL))
     {
       _font_map = PANGO_CLUTTER_FONT_MAP (pango_clutter_font_map_new ());
@@ -755,7 +759,6 @@ clutter_entry_init (ClutterEntry *self)
   /* we use the font size to set the default width and height, in case
    * the user doesn't call clutter_actor_set_size().
    */
-  resolution = 96.0; /* FIXME use clutter_backend_get_resolution() */
   font_size = PANGO_PIXELS (pango_font_description_get_size (priv->desc))
               * resolution
               / 72.0;
