@@ -340,6 +340,9 @@ clutter_actor_get_scalex
 clutter_actor_get_scale
 clutter_actor_get_abs_size
 clutter_actor_apply_transform_to_point
+clutter_actor_get_rxang
+clutter_actor_get_ryang
+clutter_actor_get_rzang
 clutter_actor_get_rxangx
 clutter_actor_get_ryangx
 clutter_actor_get_rzangx

@@ -1,3 +1,8 @@
+2007-08-01  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.[ch]: Add floating-point variant of the
+	clutter_actor_get_r[xyz]angx() functions.
+
 2007-07-31  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-stage.[ch]: Fix clutter_stage_set_user_resizable()

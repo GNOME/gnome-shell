@@ -2161,7 +2161,7 @@ clutter_actor_rotate_yx (ClutterActor *self,
  * clutter_actor_get_rxangx:
  * @self: A #ClutterActor
  *
- * Gets the angle of rotation around x axis in degrees.
+ * Gets the angle of rotation around the X axis.
  *
  * Returns: the angle or rotation, as a fixed point value
  *
@@ -2176,10 +2176,28 @@ clutter_actor_get_rxangx (ClutterActor *self)
 }
 
 /**
+ * clutter_actor_get_rxang:
+ * @self: a #ClutterActor
+ *
+ * Gets the angle of rotation around the X axis.
+ *
+ * Return value: the angle of rotation
+ *
+ * Since: 0.4
+ */
+gdouble
+clutter_actor_get_rxang (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0.);
+
+  return CLUTTER_FIXED_TO_FLOAT (self->priv->rxang);
+}
+
+/**
  * clutter_actor_get_ryangx:
  * @self: A #ClutterActor
  *
- * Gets the angle of rotation around y axis in degrees.
+ * Gets the angle of rotation around the Y axis.
  *
  * Return value: the angle of rotation, as a fixed point value
  *
@@ -2189,7 +2207,26 @@ ClutterFixed
 clutter_actor_get_ryangx (ClutterActor *self)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
+
   return self->priv->ryang;
+}
+
+/**
+ * clutter_actor_get_ryang:
+ * @self: a #ClutterActor
+ *
+ * Gets the angle of rotation around the Y axis.
+ *
+ * Return value: the angle of rotation
+ *
+ * Since: 0.4
+ */
+gdouble
+clutter_actor_get_ryang (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0.);
+
+  return CLUTTER_FIXED_TO_FLOAT (self->priv->ryang);
 }
 
 /**
@@ -2207,6 +2244,24 @@ clutter_actor_get_rzangx (ClutterActor *self)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0);
   return self->priv->rzang;
+}
+
+/**
+ * clutter_actor_get_rzang:
+ * @self: a #ClutterActor
+ *
+ * Gets the angle of rotation around the Z axis.
+ *
+ * Return value: the angle of rotation
+ *
+ * Since: 0.4
+ */
+gdouble
+clutter_actor_get_rzang (ClutterActor *self)
+{
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (self), 0.);
+
+  return CLUTTER_FIXED_TO_FLOAT (self->priv->rzang);
 }
 
 /**

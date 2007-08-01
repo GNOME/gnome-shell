@@ -222,6 +222,9 @@ void                  clutter_actor_rotate_zx        (ClutterActor          *sel
 						      ClutterFixed           angle,
 						      gint                   x,
 						      gint                   y);
+gdouble               clutter_actor_get_rxang        (ClutterActor          *self);
+gdouble               clutter_actor_get_ryang        (ClutterActor          *self);
+gdouble               clutter_actor_get_rzang        (ClutterActor          *self);
 ClutterFixed          clutter_actor_get_rxangx       (ClutterActor          *self);
 ClutterFixed          clutter_actor_get_ryangx       (ClutterActor          *self);
 ClutterFixed          clutter_actor_get_rzangx       (ClutterActor          *self);

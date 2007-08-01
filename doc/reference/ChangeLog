@@ -1,3 +1,8 @@
+2007-08-01  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Add clutter_actot_get_r[xyz]ang()
+	functions.
+
 2007-07-31  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Update ClutterBackend API.
