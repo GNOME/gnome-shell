@@ -447,7 +447,7 @@ clutter_color_from_pixel (ClutterColor *dest,
   dest->red = pixel >> 24;
   dest->green = (pixel >> 16) & 0xff;
   dest->blue = (pixel >> 8) & 0xff;
-  dest->alpha = pixel % 0xff;
+  dest->alpha = pixel & 0xff;
 }
 
 /**
