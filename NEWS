@@ -1,3 +1,28 @@
+Clutter 0.4.0 (XX/08/2007)
+========================
+
+ * List of changes between 0.3.1 and 0.4.0
+
+   o Many documentation additions and improvements.
+
+   o ClutterBehaviourEllipse API and internals improvements 
+
+   o Add basic tslib support to eglnative backend (for touchscreen events)
+
+ * List of bug fixed
+   o #390 - clutter_stage_get_actor_at_pos broken on 16bpp displays.
+   o #398 - inconsistent type for return value of clutter_event_get_state
+   o #403 - Critical error when removing texture actor
+   o #404 - Solaris build error with OpenGL, missing 
+            GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB and GL_TEXTURE_RECTANGLE_ARB
+   o #409 - depth mismatch between visual (32) and window (24)
+   o #407 - metadata-available signal #ifdef'ed out
+   o #413 - Clutter compile error with Sun Studio C compiler
+   o #426 - typo in sdl_backend
+   o #414 - ClutterEntry invisible if size not set		
+   o #434 - clutter_color_from_pixel incorrectly interprets alpha value
+   o #435 - clutter_color_subtract does the opposite of its documentation
+
 Clutter 0.3.1 (06/07/2007)
 ========================
 
