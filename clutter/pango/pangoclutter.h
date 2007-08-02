@@ -61,6 +61,10 @@ pango_clutter_font_map_set_default_substitute
 			    gpointer                    data,
 			    GDestroyNotify              notify);
 
+void
+pango_clutter_font_map_set_resolution (PangoClutterFontMap *fontmap,
+                                       double               dpi);
+
 void          
 pango_clutter_font_map_substitute_changed (PangoClutterFontMap *fontmap);
 

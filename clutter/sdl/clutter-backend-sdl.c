@@ -208,6 +208,7 @@ clutter_backend_sdl_init (ClutterBackendSDL *backend_sdl)
 {
   ClutterBackend *backend = CLUTTER_BACKEND (backend_sdl);
 
+  clutter_backend_set_resolution (backend, 96.0);
   clutter_backend_set_double_click_time (backend, 250);
   clutter_backend_set_double_click_distance (backend, 5);
 }

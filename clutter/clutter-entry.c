@@ -727,8 +727,7 @@ clutter_entry_init (ClutterEntry *self)
   if (G_UNLIKELY (_context == NULL))
     {
       _font_map = PANGO_CLUTTER_FONT_MAP (pango_clutter_font_map_new ());
-
-      /* pango_clutter_font_map_set_resolution (font_map, 96.0, 96.0); */
+      pango_clutter_font_map_set_resolution (_font_map, resolution);
       _context = pango_clutter_font_map_create_context (_font_map);
     }
 

@@ -39,6 +39,8 @@ struct _PangoClutterFontMap
 
   FT_Library library;
 
+  double dpi;
+
   /* Function to call on prepared patterns to do final
    * config tweaking.
    */
@@ -150,6 +152,16 @@ _pango_clutter_font_map_get_library (PangoFontMap *fontmap_)
   return fontmap->library;
 }
 
+void
+pango_clutter_font_map_set_resolution (PangoClutterFontMap *fontmap,
+                                       double               dpi)
+{
+  g_return_if_fail (PANGO_CLUTTER_IS_FONT_MAP (fontmap));
+
+  fontmap->dpi = dpi;
+
+  pango_clutter_font_map_substitute_changed (fontmap);
+}
 
 /**
  * _pango_clutter_font_map_get_renderer:
@@ -194,6 +206,13 @@ pango_clutter_font_map_new_font (PangoFcFontMap  *fcfontmap,
   return (PangoFcFont *)_pango_clutter_font_new (PANGO_CLUTTER_FONT_MAP (fcfontmap), pattern);
 }
 
+static double
+pango_clutter_font_map_get_resolution (PangoFcFontMap *fcfontmap,
+                                       PangoContext   *context)
+{
+  return ((PangoClutterFontMap *)fcfontmap)->dpi;
+}
+
 static void
 pango_clutter_font_map_class_init (PangoClutterFontMapClass *class)
 {
@@ -203,11 +222,13 @@ pango_clutter_font_map_class_init (PangoClutterFontMapClass *class)
   gobject_class->finalize = pango_clutter_font_map_finalize;
   fcfontmap_class->default_substitute = pango_clutter_font_map_default_substitute;
   fcfontmap_class->new_font = pango_clutter_font_map_new_font;
+  fcfontmap_class->get_resolution = pango_clutter_font_map_get_resolution;
 }
 
 static void
 pango_clutter_font_map_init (PangoClutterFontMap *fontmap)
 {
   fontmap->library = NULL;
+  fontmap->dpi = 96.0;
 }
 

@@ -1,5 +1,26 @@
 2007-08-02  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/eglnative/clutter-backend-egl.c:
+	* clutter/eglx/clutter-backend-egl.c:
+	* clutter/sdl/clutter-backend-sdl.c: Set the default resolution
+	as 96.0 dpi for every backend (we already were under this
+	assumption anyway, and this makes it easier to change this
+	setting per-backend).
+
+	* clutter/pango/pangoclutter-fontmap.c:
+	* clutter/pango/pangoclutter.h: Allow setting the resolution
+	for the PangoClutterFontMap object and provide the implementation
+	for the PangoFcFontMap::get_resolution() virtual function. This
+	allows to set the resolution of the PangoContext when retrieving
+	it.
+
+	* clutter/clutter-label.c (clutter_label_init): Set the
+	resolution of the font map with the one the backend gives us.
+
+	* clutter/clutter-entry.c (clutter_entry_init): Ditto.
+
+2007-08-02  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-color.c (clutter_color_subtract): Invert the
 	operands and match what the function says it does. (#435)
 

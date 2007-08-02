@@ -60,6 +60,7 @@ clutter_backend_egl_post_parse (ClutterBackend  *backend,
   if (backend_egl->xdpy)
     {
       EGLBoolean status;
+      double dpi;
 
       CLUTTER_NOTE (MISC, "Getting the X screen");
 
@@ -76,6 +77,10 @@ clutter_backend_egl_post_parse (ClutterBackend  *backend,
       backend_egl->display_name = g_strdup (clutter_display_name);
 
       backend_egl->edpy = eglGetDisplay(backend_egl->xdpy);
+
+      dpi = (((double) DisplayHeight (backend_egl->xdpy, backend_egl->xscreen_num) * 25.4)
+            / (double) DisplayHeightMM (backend_egl->xdpy, backend_egl->xscreen_num));
+      clutter_backend_set_resolution (backend, dpi);
 
       status = eglInitialize(backend_egl->edpy, 
 			     &backend_egl->egl_version_major, 
@@ -294,6 +299,7 @@ clutter_backend_egl_init (ClutterBackendEGL *backend_egl)
   ClutterBackend *backend = CLUTTER_BACKEND (backend_egl);
 
   /* FIXME: get from xsettings */
+  clutter_backend_set_resolution (backend, 96.0);
   clutter_backend_set_double_click_time (backend, 250);
   clutter_backend_set_double_click_distance (backend, 5);
 }
