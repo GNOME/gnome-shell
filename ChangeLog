@@ -1,7 +1,7 @@
 2007-08-02  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-color.c (clutter_color_subtract): Invert the
-	operands and match what the function says it does.
+	operands and match what the function says it does. (#435)
 
 2007-08-01  Matthew Allum  <mallum@openedhand.com>
 
