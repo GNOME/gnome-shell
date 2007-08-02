@@ -1,9 +1,20 @@
-2007-06-31  Thomas Thurman  <thomas@thurman.org.uk>
+2007-08-02  Thomas Thurman  <thomas@thurman.org.uk>
+
+        Move "close" to bottom of window menu; allow workspace list to appear
+	at any position in the menu. Closes #104026.
+
+	* src/menu.c (MetaMenuItemType): added new MENU_ITEM_WORKSPACE_LIST
+        item.
+	* src/menu.c (menuitems): reordered "close", added a workspace list.
+	* src/menu.c (menu_item_new): return null for workspace lists.
+	* src/menu.c (meta_window_menu_new): handle workspace lists.
+
+2007-07-31  Thomas Thurman  <thomas@thurman.org.uk>
 
 	* src/window.c (meta_window_show_menu): windows which are
 	always on top have the "stick" menu option insensitive. (#460997).
 
-2007-06-23  Thomas Thurman  <thomas@thurman.org.uk>
+2007-07-23  Thomas Thurman  <thomas@thurman.org.uk>
 
 	* src/window.h (MetaWindow): Put all bitfields together to
 	help with optimisation. Closes #450271 (for real this time).

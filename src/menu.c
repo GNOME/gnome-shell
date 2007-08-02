@@ -44,6 +44,7 @@ typedef enum
   MENU_ITEM_IMAGE,
   MENU_ITEM_CHECKBOX,
   MENU_ITEM_RADIOBUTTON,
+  MENU_ITEM_WORKSPACE_LIST,
 } MetaMenuItemType;
 
 struct _MenuItem
@@ -81,9 +82,6 @@ static MenuItem menuitems[] = {
   { META_MENU_OP_RESIZE, MENU_ITEM_NORMAL, NULL, FALSE, N_("_Resize") },
   /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_RECOVER, MENU_ITEM_NORMAL, NULL, FALSE, N_("Move Titlebar On_screen") },
-  { 0, MENU_ITEM_SEPARATOR, NULL, FALSE, NULL }, /* separator */
-  /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_DELETE, MENU_ITEM_IMAGE, METACITY_STOCK_DELETE, FALSE, N_("_Close") },
   { META_MENU_OP_WORKSPACES, MENU_ITEM_SEPARATOR, NULL, FALSE, NULL }, /* separator */
   /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_ABOVE, MENU_ITEM_CHECKBOX, NULL, FALSE, N_("Always on _Top") },
@@ -100,7 +98,11 @@ static MenuItem menuitems[] = {
   /* Translators: Translate this string the same way as you do in libwnck! */
   { META_MENU_OP_MOVE_UP, MENU_ITEM_NORMAL, NULL, FALSE, N_("Move to Workspace _Up") },
   /* Translators: Translate this string the same way as you do in libwnck! */
-  { META_MENU_OP_MOVE_DOWN, MENU_ITEM_NORMAL, NULL, FALSE, N_("Move to Workspace _Down") }
+  { META_MENU_OP_MOVE_DOWN, MENU_ITEM_NORMAL, NULL, FALSE, N_("Move to Workspace _Down") },
+  { 0, MENU_ITEM_WORKSPACE_LIST, NULL, FALSE, NULL },
+  { 0, MENU_ITEM_SEPARATOR, NULL, FALSE, NULL }, /* separator */
+  /* Translators: Translate this string the same way as you do in libwnck! */
+  { META_MENU_OP_DELETE, MENU_ITEM_IMAGE, METACITY_STOCK_DELETE, FALSE, N_("_Close") }
 };
 
 static void
@@ -292,6 +294,8 @@ menu_item_new (MenuItem *menuitem, int workspace_id)
       gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (mi),
                                       menuitem->checked);
     }
+  else if (menuitem->type == MENU_ITEM_WORKSPACE_LIST)
+    return NULL;
   else
     return gtk_separator_menu_item_new ();
 
@@ -370,7 +374,86 @@ meta_window_menu_new   (MetaFrames         *frames,
               break;
             }
 
-          if (menuitem.type != MENU_ITEM_SEPARATOR)
+          if (menuitem.type == MENU_ITEM_WORKSPACE_LIST)
+            {
+              if (ops & META_MENU_OP_WORKSPACES)
+                {
+                  Display *display;
+                  Window xroot;
+                  GdkScreen *screen;
+                  GtkWidget *submenu;
+                  int j;
+
+                  MenuItem to_another_workspace = {
+                    0, MENU_ITEM_NORMAL,
+                    NULL, FALSE,
+                    N_("Move to Another _Workspace")
+                  };
+
+                  meta_verbose ("Creating %d-workspace menu current space %lu\n",
+                      n_workspaces, active_workspace);
+
+                  display = gdk_x11_drawable_get_xdisplay (GTK_WIDGET (frames)->window);
+
+                  screen = gdk_drawable_get_screen (GTK_WIDGET (frames)->window);
+                  xroot = GDK_DRAWABLE_XID (gdk_screen_get_root_window (screen));
+
+                  submenu = gtk_menu_new ();
+
+                  g_assert (mi==NULL);
+                  mi = menu_item_new (&to_another_workspace, -1);
+                  gtk_menu_item_set_submenu (GTK_MENU_ITEM (mi), submenu);
+
+                  for (j = 0; j < n_workspaces; j++)
+                    {
+                      char *label;
+                      MenuData *md;
+                      unsigned int key;
+                      MetaVirtualModifier mods;
+                      MenuItem moveitem;
+                      GtkWidget *submi;
+
+                      meta_core_get_menu_accelerator (META_MENU_OP_WORKSPACES,
+                          j + 1,
+                          &key, &mods);
+
+                      label = get_workspace_name_with_accel (display, xroot, j);
+
+                      moveitem.type = MENU_ITEM_NORMAL;
+                      moveitem.op = META_MENU_OP_WORKSPACES;
+                      moveitem.label = label;
+                      submi = menu_item_new (&moveitem, j + 1);
+
+                      g_free (label);
+
+                      if ((active_workspace == (unsigned)j) && (ops & META_MENU_OP_UNSTICK))
+                        gtk_widget_set_sensitive (submi, FALSE);
+
+                      md = g_new (MenuData, 1);
+
+                      md->menu = menu;
+                      md->op = META_MENU_OP_WORKSPACES;
+
+                      g_object_set_data (G_OBJECT (submi),
+                          "workspace",
+                          GINT_TO_POINTER (j));
+
+                      gtk_signal_connect_full (GTK_OBJECT (submi),
+                          "activate",
+                          GTK_SIGNAL_FUNC (activate_cb),
+                          NULL,
+                          md,
+                          g_free, FALSE, FALSE);
+
+                      gtk_menu_shell_append (GTK_MENU_SHELL (submenu), submi);
+
+                      gtk_widget_show (submi);
+                    }
+                  }
+                else
+                  meta_verbose ("not creating workspace menu\n");
+            }
+          else if (menuitem.type != MENU_ITEM_SEPARATOR)
             {
               meta_core_get_menu_accelerator (menuitems[i].op, -1,
                                               &key, &mods);
@@ -390,90 +473,15 @@ meta_window_menu_new   (MetaFrames         *frames,
                                        md,
                                        g_free, FALSE, FALSE);
             }
-          
+
+
           gtk_menu_shell_append (GTK_MENU_SHELL (menu->menu), mi);
           
           gtk_widget_show (mi);
         }
     }
 
-  if (ops & META_MENU_OP_WORKSPACES)
-    {
-      Display *display;
-      Window xroot;
-      GdkScreen *screen;
-      GtkWidget *submenu;
-      GtkWidget *submenuitem;
-
-      MenuItem to_another_workspace = {
-        0, MENU_ITEM_NORMAL,
-        NULL, FALSE,
-        N_("Move to Another _Workspace")
-      };
-
-      meta_verbose ("Creating %d-workspace menu current space %lu\n",
-                    n_workspaces, active_workspace);
-          
-      display = gdk_x11_drawable_get_xdisplay (GTK_WIDGET (frames)->window);
-        
-      screen = gdk_drawable_get_screen (GTK_WIDGET (frames)->window);
-      xroot = GDK_DRAWABLE_XID (gdk_screen_get_root_window (screen));
-
-      submenu = gtk_menu_new ();
-      submenuitem = menu_item_new (&to_another_workspace, -1);
-      gtk_menu_item_set_submenu (GTK_MENU_ITEM (submenuitem), submenu);
-      gtk_menu_shell_append (GTK_MENU_SHELL (menu->menu), submenuitem);
-      gtk_widget_show (submenuitem);
-           
-      for (i = 0; i < n_workspaces; i++)
-        {
-          char *label;
-          MenuData *md;
-          unsigned int key;
-          MetaVirtualModifier mods;
-          MenuItem moveitem;
-          GtkWidget *mi;
-          
-          meta_core_get_menu_accelerator (META_MENU_OP_WORKSPACES,
-                                          i + 1,
-                                          &key, &mods);
-              
-          label = get_workspace_name_with_accel (display, xroot, i);
-
-          moveitem.type = MENU_ITEM_NORMAL;
-          moveitem.op = META_MENU_OP_WORKSPACES;
-          moveitem.label = label;
-          mi = menu_item_new (&moveitem, i + 1);
-
-          g_free (label);
-
-          if ((active_workspace == (unsigned)i) && (ops & META_MENU_OP_UNSTICK))
-            gtk_widget_set_sensitive (mi, FALSE);
-            
-          md = g_new (MenuData, 1);
-
-          md->menu = menu;
-          md->op = META_MENU_OP_WORKSPACES;
-
-          g_object_set_data (G_OBJECT (mi),
-                             "workspace",
-                             GINT_TO_POINTER (i));
-          
-          gtk_signal_connect_full (GTK_OBJECT (mi),
-                                   "activate",
-                                   GTK_SIGNAL_FUNC (activate_cb),
-                                   NULL,
-                                   md,
-                                   g_free, FALSE, FALSE);
-
-          gtk_menu_shell_append (GTK_MENU_SHELL (submenu), mi);
-          
-          gtk_widget_show (mi);
-        }
-    }
-  else
-    meta_verbose ("not creating workspace menu\n");
-  
+ 
   g_signal_connect (menu->menu, "selection_done",
                     G_CALLBACK (menu_closed), menu);  
 
