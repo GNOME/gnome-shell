@@ -74,7 +74,9 @@ clutter_color_add (const ClutterColor *src1,
  * @dest: return location for the result
  *
  * Subtracts @src2 from @src1 and saves the resulting
- * color inside @dest.
+ * color inside @dest. This function assumes that the components
+ * of @src1 are greater than the components of @src2; the result is,
+ * otherwise, undefined.
  *
  * The alpha channel of @dest is set as the minimum value
  * between the alpha channels of @src1 and @src2.
@@ -88,9 +90,9 @@ clutter_color_subtract (const ClutterColor *src1,
   g_return_if_fail (src2 != NULL);
   g_return_if_fail (dest != NULL);
 
-  dest->red   = CLAMP (src2->red   - src1->red,   0, 255);
-  dest->green = CLAMP (src2->green - src1->green, 0, 255);
-  dest->blue  = CLAMP (src2->blue  - src1->blue,  0, 255);
+  dest->red   = CLAMP (src1->red   - src2->red,   0, 255);
+  dest->green = CLAMP (src1->green - src2->green, 0, 255);
+  dest->blue  = CLAMP (src1->blue  - src2->blue,  0, 255);
 
   dest->alpha = MIN (src1->alpha, src2->alpha);
 }
