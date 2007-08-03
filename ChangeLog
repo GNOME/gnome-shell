@@ -1,3 +1,8 @@
+2007-08-03  Frederic Crozat  <fcrozat@mandriva.com>
+
+	* src/delete.c: Fix mangled window title in "Force Quit"
+	dialog when using non-UTF8 locale. Close #462734.
+
 2007-08-02  Thomas Thurman  <thomas@thurman.org.uk>
 
         Move "close" to bottom of window menu; allow workspace list to appear

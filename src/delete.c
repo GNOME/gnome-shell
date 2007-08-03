@@ -306,6 +306,7 @@ delete_ping_timeout_func (MetaDisplay *display,
   char numbuf[32];
   char timestampbuf[32];
   char *window_id_str;
+  char *window_title;
   GIOChannel *channel;
   
   meta_topic (META_DEBUG_PING,
@@ -319,6 +320,7 @@ delete_ping_timeout_func (MetaDisplay *display,
     }
   
   window_id_str = g_strdup_printf ("0x%lx", window->xwindow);
+  window_title = g_locale_from_utf8 (window->title, -1, NULL, NULL, NULL);
 
   sprintf (numbuf, "%d", window->screen->number);
   sprintf (timestampbuf, "%u", timestamp);
@@ -329,7 +331,7 @@ delete_ping_timeout_func (MetaDisplay *display,
   argv[3] = "--timestamp";
   argv[4] = timestampbuf;
   argv[5] = "--kill-window-question";
-  argv[6] = window->title;
+  argv[6] = window_title;
   argv[7] = window_id_str;
   argv[8] = NULL;
   
@@ -362,6 +364,7 @@ delete_ping_timeout_func (MetaDisplay *display,
   g_io_channel_unref (channel);
   
  out:
+  g_free (window_title);
   g_free (window_id_str);
 }
 
