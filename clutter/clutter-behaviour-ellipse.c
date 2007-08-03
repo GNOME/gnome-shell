@@ -187,7 +187,7 @@ clutter_behaviour_ellipse_alpha_notify (ClutterBehaviour *behave,
   ClutterBehaviourEllipse *self = CLUTTER_BEHAVIOUR_ELLIPSE (behave);
   ClutterBehaviourEllipsePrivate *priv = self->priv;
   knot3d knot;
-  ClutterAngle angle;
+  ClutterAngle angle = 0;
 
   if ((priv->angle_end >= priv->angle_begin &&
        priv->direction == CLUTTER_ROTATE_CW) ||
@@ -838,7 +838,7 @@ clutter_behaviour_ellipse_get_angle_begin (ClutterBehaviourEllipse *self)
 {
   g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0.0);
 
-  return CLUTTER_ANGLE_TO_DEG (self->priv->angle_begin);
+  return CLUTTER_ANGLE_TO_DEG (self->priv->angle_begin + 256);
 }
 
 /**
@@ -923,7 +923,7 @@ clutter_behaviour_ellipse_get_angle_end (ClutterBehaviourEllipse *self)
 {
   g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0.0);
 
-  return CLUTTER_ANGLE_TO_DEG (self->priv->angle_end);
+  return CLUTTER_ANGLE_TO_DEG (self->priv->angle_end + 256);
 }
 
 /**
@@ -1040,8 +1040,8 @@ clutter_behaviour_ellipse_get_angle_tilt (ClutterBehaviourEllipse *self,
 {
   g_return_val_if_fail (CLUTTER_IS_BEHAVIOUR_ELLIPSE (self), 0.0);
 
-  return CLUTTER_ANGLE_TO_DEG (clutter_behaviour_ellipse_get_angle_tilt (self,
-                                                                         axis));
+  return CLUTTER_ANGLE_TO_DEG (clutter_behaviour_ellipse_get_angle_tiltx (self,
+                                                                          axis));
 }
 
 /**

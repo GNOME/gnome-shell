@@ -1,6 +1,16 @@
 2007-08-03  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-behaviour-ellipse.c:
+	(clutter_behaviour_ellipse_get_angle_tilt): Avoid recursion
+	by fixing a typo.
+
+	(clutter_behaviour_ellipse_get_angle_begin),
+	(clutter_behaviour_ellipse_get_angle_end): Correct the angles
+	here too.
+
+2007-08-03  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-behaviour-ellipse.c:
 	(clutter_behaviour_ellipse_get_property): Do not forget to
 	correct the angles when returning them.
 
