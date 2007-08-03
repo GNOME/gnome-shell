@@ -1,3 +1,13 @@
+2007-08-03  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-behaviour-ellipse.c:
+	* clutter/clutter-behaviour-ellipse.h:
+	(clutter_behaviour_ellipse_new):
+	(clutter_behaviour_ellipse_newx):
+
+	Added direction parameter; made behaviour to respect direction
+	parameter; unclumped angle_begin and angle_end values.
+	
 2007-08-02  Matthew Allum  <mallum@openedhand.com>
 
 	* NEWS:

@@ -171,14 +171,15 @@ main (int argc, char *argv[])
     case PATH_ELLIPSE:
       p_behave =
 	clutter_behaviour_ellipse_new (alpha, 200, 200, 400, 300,
+				       CLUTTER_ROTATE_CW,
 				       0.0, 360.0);
 
       clutter_behaviour_ellipse_set_angle_tilt (CLUTTER_BEHAVIOUR_ELLIPSE (p_behave),
-						CLUTTER_X_AXIS,
-						45.0);
+ 						CLUTTER_X_AXIS,
+ 						45.0);
       clutter_behaviour_ellipse_set_angle_tilt (CLUTTER_BEHAVIOUR_ELLIPSE (p_behave),
-						CLUTTER_Z_AXIS,
-						45.0);
+ 						CLUTTER_Z_AXIS,
+ 						45.0);
       break;
 
     case PATH_BSPLINE:

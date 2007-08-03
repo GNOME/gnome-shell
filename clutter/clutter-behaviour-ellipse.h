@@ -85,6 +85,7 @@ ClutterBehaviour *     clutter_behaviour_ellipse_new                (ClutterAlph
 								     gint                        y,
 								     gint                        width,
 								     gint                        height,
+								     ClutterRotateDirection      direction,
 								     gdouble                     begin,
 								     gdouble                     end);
 
@@ -93,6 +94,7 @@ ClutterBehaviour *     clutter_behaviour_ellipse_newx               (ClutterAlph
 								     gint                        y,
 								     gint                        width,
 								     gint                        height,
+								     ClutterRotateDirection      direction,
 								     ClutterFixed                begin,
 								     ClutterFixed                end);
 
