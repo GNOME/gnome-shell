@@ -319,19 +319,24 @@ clutter_behaviour_ellipse_get_property (GObject    *gobject,
   switch (prop_id)
     {
     case PROP_ANGLE_BEGIN:
-      g_value_set_double (value, CLUTTER_ANGLE_TO_DEG (priv->angle_begin));
+      g_value_set_double (value,
+                          CLUTTER_ANGLE_TO_DEG (priv->angle_begin + 256));
       break;
     case PROP_ANGLE_END:
-      g_value_set_double (value, CLUTTER_ANGLE_TO_DEG (priv->angle_end));
+      g_value_set_double (value,
+                          CLUTTER_ANGLE_TO_DEG (priv->angle_end + 256));
       break;
     case PROP_ANGLE_TILT_X:
-      g_value_set_double (value, CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_x));
+      g_value_set_double (value,
+                          CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_x + 256));
       break;
     case PROP_ANGLE_TILT_Y:
-      g_value_set_double (value, CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_y));
+      g_value_set_double (value,
+                          CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_y + 256));
       break;
     case PROP_ANGLE_TILT_Z:
-      g_value_set_double (value, CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_z));
+      g_value_set_double (value,
+                          CLUTTER_ANGLE_TO_DEG (priv->angle_tilt_z + 256));
       break;
     case PROP_WIDTH:
       g_value_set_int (value, (priv->a << 1));
