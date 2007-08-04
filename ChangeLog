@@ -1,3 +1,8 @@
+2007-08-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c (clutter_actor_set_opacity): Queue
+	a redraw when setting the opacity of an actor.
+
 2007-08-03  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-behaviour-ellipse.c:

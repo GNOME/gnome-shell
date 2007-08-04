@@ -1988,6 +1988,9 @@ clutter_actor_set_depth (ClutterActor *self,
       */
       clutter_group_sort_depth_order (CLUTTER_GROUP (priv->parent_actor));
     }
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (self))
+    clutter_actor_queue_redraw (self);
 }
 
 /**
