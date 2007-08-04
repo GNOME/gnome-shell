@@ -1,6 +1,6 @@
 noinst_PROGRAMS = test-textures test-events test-offscreen test-scale \
                   test-actors test-behave test-text test-entry test-project \
-		  test-boxes test-perspective test-rotate
+		  test-boxes test-perspective test-rotate test-depth
 
 INCLUDES = -I$(top_srcdir)/
 LDADD = $(top_builddir)/clutter/libclutter-@CLUTTER_FLAVOUR@-@CLUTTER_MAJORMINOR@.la
@@ -19,5 +19,6 @@ test_project_SOURCES   = test-project.c
 test_boxes_SOURCES     = test-boxes.c
 test_perspective_SOURCES = test-perspective.c
 test_rotate_SOURCES    = test-rotate.c
+test_depth_SOURCES     = test-depth.c
 
 EXTRA_DIST = redhand.png

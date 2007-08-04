@@ -1,5 +1,18 @@
 2007-08-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-behaviour-depth.c: Clarify that what drives
+	the movement along the Z axis is the ClutterAlpha object (we
+	don't have the luxury of a rollover like the opacity does);
+	so, if you want to go from 0 to -100 you have to use a
+	decreasing function, just as well if you want to go from 100
+	to 0. Using a min-depth of 100 and a max-depth of 0 and an
+	increasing function is undefined behaviour.
+
+	* tests/Makefile.am:
+	* tests/test-depth.c: Add a test case for the depth behaviour.
+
+2007-08-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c (clutter_actor_set_opacity): Queue
 	a redraw when setting the opacity of an actor.
 
