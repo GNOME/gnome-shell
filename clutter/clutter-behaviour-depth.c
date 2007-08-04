@@ -44,9 +44,17 @@
  * The minimum and maximum depth are controlled by the
  * ClutterBehaviourDepth:min-depth and ClutterBehaviourDepth:max-depth
  * properties. The direction of the motion on the depth axis is controlled
- * by the #ClutterAlpha object.
+ * by the #ClutterAlpha object. If you want to make a #ClutterActor
+ * controlled by the #ClutterBehaviourDepth behaviour from a depth of
+ * 0 to a depth of 100 you will have to use an increasing alpha function,
+ * like %CLUTTER_ALPHA_RAMP_INC. On the other hand, if you want to make
+ * the same actor move from a depth of 100 to a depth of 0 you will have
+ * to use a decreasing alpha function, like %CLUTTER_ALPHA_RAMP_DEC. Using
+ * a minimum depth greater than the maximum depth and a decreasing alpha
+ * function, or using a maximum depth greater than the minimum depth and
+ * an increasing alpha function will result in an undefined behaviour.
  *
- * Since: 0.4
+ * #ClutterBehaviourDepth is available since Clutter 0.4.
  */
 
 G_DEFINE_TYPE (ClutterBehaviourDepth,
