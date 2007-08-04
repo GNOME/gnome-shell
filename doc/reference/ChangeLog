@@ -1,3 +1,8 @@
+2007-08-04  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-docs.sgml: Add autogeneration of the per-version
+	indexes of symbols, plus the index of deprecated symbols.
+
 2007-08-01  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Add clutter_actot_get_r[xyz]ang()
