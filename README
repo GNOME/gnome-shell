@@ -132,6 +132,9 @@ wanting to port to newer releases (See NEWS for general new feature info).
 Release Notes for Clutter 0.4.0
 -------------------------------
 
+* clutter_actor_show_all does not recurse for groups at least (this is to
+  match the original group_show_all behaviour)
+
 * FIXME
 
 Release Notes for Clutter 0.3.1

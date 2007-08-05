@@ -153,8 +153,7 @@ clutter_actor_show (ClutterActor *self)
  * clutter_actor_show_all:
  * @self: a #ClutterActor
  *
- * Recursively show an actor, and any child actor if @self has
- * child actors.
+ * Call show() on all children of a actor (if any).   
  *
  * Since: 0.2
  */
@@ -205,8 +204,7 @@ clutter_actor_hide (ClutterActor *self)
  * clutter_actor_hide_all:
  * @self: a #ClutterActor
  *
- * Recursively hides an actor, and any child actor if @self
- * has child actors.
+ * Call hide() on all child actors (if any).
  *
  * Since: 0.2
  */
