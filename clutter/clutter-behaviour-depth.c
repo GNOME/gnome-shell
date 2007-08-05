@@ -39,20 +39,7 @@
  * @short_description: Behaviour controlling the depth
  *
  * #ClutterBehaviourDepth is a simple #ClutterBehaviour controlling the
- * depth of a set of actors.
- *
- * The minimum and maximum depth are controlled by the
- * ClutterBehaviourDepth:min-depth and ClutterBehaviourDepth:max-depth
- * properties. The direction of the motion on the depth axis is controlled
- * by the #ClutterAlpha object. If you want to make a #ClutterActor
- * controlled by the #ClutterBehaviourDepth behaviour move from a depth of
- * 0 to a depth of 100 you will have to use an increasing alpha function,
- * like %CLUTTER_ALPHA_RAMP_INC. On the other hand, if you want to make
- * the same actor move from a depth of 100 to a depth of 0 you will have
- * to use a decreasing alpha function, like %CLUTTER_ALPHA_RAMP_DEC. Using
- * a minimum depth greater than the maximum depth and a decreasing alpha
- * function, or using a maximum depth greater than the minimum depth and
- * an increasing alpha function will result in an undefined behaviour.
+ * depth of a set of actors between a start and end depth.
  *
  * #ClutterBehaviourDepth is available since Clutter 0.4.
  */
@@ -63,16 +50,16 @@ G_DEFINE_TYPE (ClutterBehaviourDepth,
 
 struct _ClutterBehaviourDepthPrivate
 {
-  gint min_depth;
-  gint max_depth;
+  gint start_depth;
+  gint end_depth;
 };
 
 enum
 {
   PROP_0,
 
-  PROP_MIN_DEPTH,
-  PROP_MAX_DEPTH
+  PROP_START_DEPTH,
+  PROP_END_DEPTH
 };
 
 static void
@@ -87,27 +74,16 @@ static void
 clutter_behaviour_depth_alpha_notify (ClutterBehaviour *behaviour,
                                       guint32           alpha_value)
 {
+  ClutterFixed factor;
   ClutterBehaviourDepthPrivate *priv;
   gint depth;
 
   priv = CLUTTER_BEHAVIOUR_DEPTH (behaviour)->priv;
 
-  if (priv->max_depth > priv->min_depth)
-    {
-      depth = alpha_value
-              * (priv->max_depth - priv->min_depth)
-              / CLUTTER_ALPHA_MAX_ALPHA;
-
-      depth += priv->min_depth;
-    }
-  else
-    {
-      depth = alpha_value
-              * (priv->min_depth - priv->max_depth)
-              / CLUTTER_ALPHA_MAX_ALPHA;
-      
-      depth += priv->max_depth;
-    }
+  /* Need to create factor as to avoid borking signedness */
+  factor = CLUTTER_INT_TO_FIXED (alpha_value) / CLUTTER_ALPHA_MAX_ALPHA;
+  depth  = priv->start_depth + 
+       CLUTTER_FIXED_INT(factor * (priv->end_depth - priv->start_depth));
 
   CLUTTER_NOTE (BEHAVIOUR, "alpha: %d, depth: %d", alpha_value, depth);
 
@@ -122,7 +98,7 @@ clutter_behaviour_depth_applied (ClutterBehaviour *behaviour,
 {
   ClutterBehaviourDepth *depth = CLUTTER_BEHAVIOUR_DEPTH (behaviour);
 
-  clutter_actor_set_depth (actor, depth->priv->min_depth);
+  clutter_actor_set_depth (actor, depth->priv->start_depth);
 }
 
 static void
@@ -135,11 +111,11 @@ clutter_behaviour_depth_set_property (GObject      *gobject,
 
   switch (prop_id)
     {
-    case PROP_MIN_DEPTH:
-      depth->priv->min_depth = g_value_get_int (value);
+    case PROP_START_DEPTH:
+      depth->priv->start_depth = g_value_get_int (value);
       break;
-    case PROP_MAX_DEPTH:
-      depth->priv->max_depth = g_value_get_int (value);
+    case PROP_END_DEPTH:
+      depth->priv->end_depth = g_value_get_int (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
@@ -157,11 +133,11 @@ clutter_behaviour_depth_get_property (GObject    *gobject,
 
   switch (prop_id)
     {
-    case PROP_MIN_DEPTH:
-      g_value_set_int (value, depth->priv->min_depth);
+    case PROP_START_DEPTH:
+      g_value_set_int (value, depth->priv->start_depth);
       break;
-    case PROP_MAX_DEPTH:
-      g_value_set_int (value, depth->priv->max_depth);
+    case PROP_END_DEPTH:
+      g_value_set_int (value, depth->priv->end_depth);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
@@ -184,31 +160,31 @@ clutter_behaviour_depth_class_init (ClutterBehaviourDepthClass *klass)
   behaviour_class->applied = clutter_behaviour_depth_applied;
 
   /**
-   * ClutterBehaviourDepth:min-depth:
+   * ClutterBehaviourDepth:start-depth:
    *
-   * Minimum depth level to apply to the actors.
+   * Start depth level to apply to the actors.
    *
    * Since: 0.4
    */
   g_object_class_install_property (gobject_class,
-                                   PROP_MIN_DEPTH,
-                                   g_param_spec_int ("min-depth",
-                                                     "Minimum Depth",
-                                                     "Minimum depth to apply",
+                                   PROP_START_DEPTH,
+                                   g_param_spec_int ("start-depth",
+                                                     "Start Depth",
+                                                     "Start depth to apply",
                                                      G_MININT, G_MAXINT, 0,
                                                      CLUTTER_PARAM_READWRITE));
   /**
-   * ClutterBehaviourDepth:max-depth:
+   * ClutterBehaviourDepth:end-depth:
    *
-   * Maximum depth level to apply to the actors.
+   * End depth level to apply to the actors.
    *
    * Since: 0.4
    */
   g_object_class_install_property (gobject_class,
-                                   PROP_MAX_DEPTH,
-                                   g_param_spec_int ("max-depth",
-                                                     "Maximum Depth",
-                                                     "Maximum depth to apply",
+                                   PROP_END_DEPTH,
+                                   g_param_spec_int ("end-depth",
+                                                     "End Depth",
+                                                     "End depth to apply",
                                                      G_MININT, G_MAXINT, 0,
                                                      CLUTTER_PARAM_READWRITE));
 }
@@ -224,8 +200,8 @@ clutter_behaviour_depth_init (ClutterBehaviourDepth *depth)
 /**
  * clutter_behaviour_depth_new:
  * @alpha: a #ClutterAlpha or %NULL
- * @min_depth: minimum depth level
- * @max_depth: maximum depth level
+ * @start_depth: start depth
+ * @end_depth: end depth 
  *
  * Creates a new #ClutterBehaviourDepth which can be used to control
  * the ClutterActor:depth property of a set of #ClutterActor<!-- -->s.
@@ -236,14 +212,14 @@ clutter_behaviour_depth_init (ClutterBehaviourDepth *depth)
  */
 ClutterBehaviour *
 clutter_behaviour_depth_new (ClutterAlpha *alpha,
-                             gint          min_depth,
-                             gint          max_depth)
+                             gint          start_depth,
+                             gint          end_depth)
 {
   g_return_val_if_fail (alpha == NULL || CLUTTER_IS_ALPHA (alpha), NULL);
 
   return g_object_new (CLUTTER_TYPE_BEHAVIOUR_DEPTH,
                        "alpha", alpha,
-                       "min-depth", min_depth,
-                       "max-depth", max_depth,
+                       "start-depth", start_depth,
+                       "end-depth", end_depth,
                        NULL);
 }

@@ -1,12 +1,6 @@
 #include <stdlib.h>
 #include <clutter/clutter.h>
 
-/* this is a rather contrieved test case emulating a CLUTTER_ALPHA_RAMP
- * with two half-ramps. it shows that the direction of the motion on the
- * Z axis of a ClutterBehaviourDepth is controlled by the ClutterAlpha
- * and not by the minimum and maximum depth.
- */
-
 static gboolean zoom_in = TRUE;
 static ClutterBehaviour *d_behave = NULL;
 
@@ -14,33 +8,25 @@ static void
 timeline_completed (ClutterTimeline *timeline,
                     gpointer         user_data)
 {
-  ClutterAlpha *alpha;
-  gint min_depth, max_depth;
+  gint start_depth, end_depth;
 
   if (zoom_in)
     {
-      alpha = clutter_alpha_new_full (timeline,
-                                      CLUTTER_ALPHA_RAMP_INC,
-                                      NULL, NULL);
-      min_depth = -100;
-      max_depth = 0;
+      start_depth = 100;
+      end_depth = 0;
       zoom_in = FALSE;
     }
   else
     {
-      alpha = clutter_alpha_new_full (timeline,
-                                      CLUTTER_ALPHA_RAMP_DEC,
-                                      NULL, NULL);
-      min_depth = 0;
-      max_depth = -100;
+      start_depth = 0;
+      end_depth = 100;
       zoom_in = TRUE;
     }
 
   g_object_set (G_OBJECT (d_behave),
-                "min-depth", min_depth,
-                "max-depth", max_depth,
+                "start-depth", start_depth,
+                "end-depth", end_depth,
                 NULL);
-  clutter_behaviour_set_alpha (d_behave, alpha);
 
   clutter_timeline_rewind (timeline);
   clutter_timeline_start (timeline);
@@ -86,9 +72,9 @@ main (int argc, char *argv[])
                     NULL);
 
   d_behave = clutter_behaviour_depth_new (clutter_alpha_new_full (timeline,
-                                                                  CLUTTER_ALPHA_RAMP_DEC,
+                                                                  CLUTTER_ALPHA_RAMP_INC,
                                                                   NULL, NULL),
-                                          0, -100);
+                                          0, 100);
   clutter_behaviour_apply (d_behave, hand);
   clutter_behaviour_apply (d_behave, label);
 

@@ -118,7 +118,7 @@ static void
 clutter_behaviour_rotate_alpha_notify (ClutterBehaviour *behaviour,
                                        guint32           alpha_value)
 {
-  ClutterFixed factor, angle;
+  ClutterFixed factor, angle, diff;
   ClutterBehaviourRotate *rotate_behaviour;
   ClutterBehaviourRotatePrivate *priv;
 
@@ -131,12 +131,66 @@ clutter_behaviour_rotate_alpha_notify (ClutterBehaviour *behaviour,
   switch (priv->direction)
     {
     case CLUTTER_ROTATE_CW:
-      angle = CLUTTER_FIXED_MUL (factor, (priv->angle_end - priv->angle_begin));
-      angle += priv->angle_begin;
+      if (priv->angle_end >= priv->angle_begin)
+	{
+	  angle = CLUTTER_FIXED_MUL (factor, 
+				     (priv->angle_end - priv->angle_begin));
+	  angle += priv->angle_begin;
+	}
+      else
+	{
+	  /* Work out the angular length of the arch represented by the
+	   * end angle in CCW direction
+	   */
+	  if (priv->angle_end > CLUTTER_INT_TO_FIXED(360))
+	    {
+	      ClutterFixed rounds, a1, a2;
+
+	      rounds = priv->angle_begin / 360;
+	      a1 = rounds * 360;
+	      a2 = CLUTTER_INT_TO_FIXED(360) - (priv->angle_begin - a1);
+
+	      diff = a1 + a2 + priv->angle_end;
+	    }
+	  else
+	    {
+	      diff = CLUTTER_INT_TO_FIXED(360) 
+		        - priv->angle_begin + priv->angle_end;
+	    }
+      
+	  angle = CLUTTER_FIXED_MUL (diff, factor);
+	  angle += priv->angle_begin;
+	}
       break;
     case CLUTTER_ROTATE_CCW:
-      angle = CLUTTER_FIXED_MUL (factor, (priv->angle_begin - priv->angle_end));
-      angle += priv->angle_end;
+      if (priv->angle_end <= priv->angle_begin)
+	{
+	  angle = CLUTTER_FIXED_MUL (factor, 
+				     (priv->angle_begin - priv->angle_end));
+	  angle += priv->angle_end;
+	}
+      else
+	{
+	  /* Work out the angular length of the arch represented by the
+	   * end angle in CCW direction
+	   */
+	  if (priv->angle_end > CLUTTER_INT_TO_FIXED(360))
+	    {
+	      ClutterFixed rounds, a1, a2;
+
+	      rounds = priv->angle_begin / 360;
+	      a1 = rounds * 360;
+	      a2 = CLUTTER_INT_TO_FIXED(360) - (priv->angle_end - a1);
+
+	      diff = a1 + a2 + priv->angle_begin;
+	    }
+	  else
+	    {
+	      diff = CLUTTER_INT_TO_FIXED(360) 
+		       - priv->angle_end + priv->angle_begin;
+	    }
+	  angle = priv->angle_begin - CLUTTER_FIXED_MUL (diff, factor);
+	}
       break;
     }
 
@@ -257,7 +311,9 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
                                    g_param_spec_double ("angle-begin",
                                                         "Angle Begin",
                                                         "Initial angle",
-                                                        0.0, 359.0, 0.0,
+                                                        0.0,
+                                                        CLUTTER_ANGLE_MAX_DEG,
+                                                        0.0,
                                                         CLUTTER_PARAM_READWRITE));
   /**
    * ClutterBehaviourRotate:angle-end:
@@ -271,7 +327,9 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
                                    g_param_spec_double ("angle-end",
                                                         "Angle End",
                                                         "Final angle",
-                                                        0.0, 359.0, 359.0,
+                                                        0.0,
+                                                        CLUTTER_ANGLE_MAX_DEG,
+                                                        360.0,
                                                         CLUTTER_PARAM_READWRITE));
   /**
    * ClutterBehaviourRotate:axis:

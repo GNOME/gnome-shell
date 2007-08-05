@@ -1,3 +1,24 @@
+2007-08-06  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-behaviour-depth.c:
+	Modify to work like all other behvaiours in not forcing
+	increasing order in behaviour 'limits'. (#436)
+	Rename limit min/max props to start/end.
+
+	* tests/test-depth.c:
+	Simplify test-case to work with above change and 
+	without multiple ramps
+
+	* clutter/clutter-behaviour-rotate.c:
+	Handle CW rotation when end > start and similar for CCW just
+	like ellipse behaviour. 
+
+2007-08-05  Matthew Allum  <mallum@openedhand.com>
+
+	* README:
+	* clutter/clutter-actor.c:
+	Document show/hide_all behaviour correctly.
+
 2007-08-05  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-behaviour-depth.c: Fix typo in the description.
