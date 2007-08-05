@@ -1,3 +1,7 @@
+2007-08-05  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-behaviour-depth.c: Fix typo in the description.
+
 2007-08-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-behaviour-depth.c: Clarify the depth behaviour
