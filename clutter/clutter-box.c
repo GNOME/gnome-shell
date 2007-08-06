@@ -313,7 +313,8 @@ clutter_box_class_init (ClutterBoxClass *klass)
 static void
 clutter_box_init (ClutterBox *box)
 {
-
+  box->allocation.x1 = box->allocation.y1 = 0;
+  box->allocation.x2 = box->allocation.y2 = -1;
 }
 
 /*
@@ -508,8 +509,8 @@ clutter_box_get_margin (ClutterBox    *box,
  * Since: 0.4
  */
 void
-clutter_box_set_spacing (ClutterBox          *box,
-                         const ClutterMargin *margin)
+clutter_box_set_margin (ClutterBox          *box,
+                        const ClutterMargin *margin)
 {
   g_return_if_fail (CLUTTER_IS_BOX (box));
 
