@@ -833,13 +833,11 @@ clutter_get_show_fps
 clutter_main
 clutter_main_quit
 clutter_main_level
-clutter_redraw
-clutter_threads_enter
-clutter_threads_leave
-clutter_base_init
 clutter_get_timestamp
 <SUBSECTION Private>
 clutter_init_error_quark
+clutter_base_init
+clutter_redraw
 </SECTION>
 
 <SECTION>

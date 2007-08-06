@@ -51,7 +51,6 @@ struct _ClutterMainContext
   ClutterBackend  *backend;
   GQueue          *events_queue;
   PangoFT2FontMap *font_map;
-  GMutex          *gl_lock;
   guint            update_idle;
   guint            main_loop_level;
   GSList          *main_loops;

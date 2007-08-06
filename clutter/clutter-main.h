@@ -63,9 +63,6 @@ void             clutter_redraw           (void);
 gboolean         clutter_get_debug_enabled (void);
 gboolean         clutter_get_show_fps      (void);
 
-void             clutter_threads_enter    (void);
-void             clutter_threads_leave    (void);
-
 void             clutter_base_init        (void);
 
 gulong           clutter_get_timestamp    (void);

@@ -288,35 +288,6 @@ clutter_main (void)
 }
 
 /**
- * clutter_threads_enter:
- *
- * Locks the Clutter thread lock.
- */
-void
-clutter_threads_enter (void)
-{
-  ClutterMainContext *context = CLUTTER_CONTEXT ();
-  
-  if (context->gl_lock)
-    g_mutex_lock (context->gl_lock);
-}
-
-/**
- * clutter_threads_leave:
- *
- * Unlocks the Clutter thread lock.
- */
-void
-clutter_threads_leave (void)
-{
-  ClutterMainContext *context = CLUTTER_CONTEXT ();
-  
-  if (context->gl_lock)
-    g_mutex_unlock (context->gl_lock);
-}
-
-
-/**
  * clutter_get_debug_enabled:
  * 
  * Check if clutter has debugging turned on.

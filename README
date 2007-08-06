@@ -135,7 +135,14 @@ Release Notes for Clutter 0.4.0
 * clutter_actor_show_all does not recurse for groups at least (this is to
   match the original group_show_all behaviour)
 
-* FIXME
+* ClutterBox API has changed: clutter_box_pack_start() and
+  clutter_box_pack_end() have been removed in favour of the clutter_box_pack()
+  API.
+
+* Both clutter_threads_enter() and clutter_threads_leave() have been
+  removed from the API, as they just created confusion and the wrong
+  idea that Clutter is either thread-safe or thread-aware. Full
+  thread-awareness is arriving in the next revision (see bug #429).
 
 Release Notes for Clutter 0.3.1
 -------------------------------

@@ -1,5 +1,15 @@
 2007-08-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-main.[ch]: Remove clutter_threads_enter()
+	and clutter_threads_leave(); both are no-ops and they just
+	confuse things. The thread-awareness in Clutter is planned
+	for 0.4.1/0.5.0.
+
+	* README:
+	* NEWS: Update.
+
+2007-08-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-box.[ch]: Implement margin, color and default
 	padding for ClutterBox. Provide API to pack a child by specifying
 	every packing detail or just pack with the defaults. ClutterBox

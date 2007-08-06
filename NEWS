@@ -9,6 +9,13 @@ Clutter 0.4.0 (XX/08/2007)
 
    o Add basic tslib support to eglnative backend (for touchscreen events)
 
+   o New ClutterBox API: each box has now a colour and a margin (distance
+     between the inner-border and the children); plus, each packed child
+     has a padding. Margins and paddings are expressed in ClutterUnits,
+     to ease the transition to the device independent units. You can use
+     clutter_box_set_default_padding() if you want the same padding for
+     each child.
+
  * List of bug fixed
    o #390 - clutter_stage_get_actor_at_pos broken on 16bpp displays.
    o #398 - inconsistent type for return value of clutter_event_get_state
