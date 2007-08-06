@@ -921,11 +921,13 @@ clutter_entry_get_type
 <TITLE>ClutterBox</TITLE>
 ClutterBox
 ClutterBoxClass
-clutter_box_set_spacing
-clutter_box_get_spacing
 ClutterPackType
-clutter_box_pack_start
-clutter_box_pack_end
+ClutterPadding
+clutter_box_pack
+clutter_box_pack_defaults
+ClutterMargin
+clutter_box_set_margin
+clutter_box_get_margin
 ClutterBoxChild
 clutter_box_query_child
 clutter_box_query_nth_child
