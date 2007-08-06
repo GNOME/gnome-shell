@@ -57,6 +57,7 @@ main (int argc, char *argv[])
                     NULL);
 
   vbox = clutter_vbox_new ();
+  clutter_box_set_default_padding (CLUTTER_BOX (vbox), 10, 0, 10, 0);
   clutter_actor_set_position (vbox, 100, 100);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), vbox);
   clutter_actor_show (vbox);
@@ -64,16 +65,8 @@ main (int argc, char *argv[])
   for (i = 0; i < 3; i++)
     {
       ClutterActor *hbox;
-      ClutterPadding hbox_padding;
-
-      hbox_padding.top = CLUTTER_UNITS_FROM_INT (10);
-      hbox_padding.bottom = CLUTTER_UNITS_FROM_INT (10);
-      hbox_padding.left = hbox_padding.right = 0;
 
       hbox = clutter_hbox_new ();
-      clutter_box_pack (CLUTTER_BOX (vbox), hbox,
-                        CLUTTER_PACK_START,
-                        &hbox_padding);
 
       for (j = 0; j < 3; j++)
         {
@@ -100,6 +93,7 @@ main (int argc, char *argv[])
                    clutter_actor_get_height (rect));
         }
 
+      clutter_box_pack_defaults (CLUTTER_BOX (vbox), hbox);
       clutter_actor_show (hbox);
 
       g_print ("hbox[%d]    - (x:%3d, y:%3d, w:%3d, h:%3d)\n",
