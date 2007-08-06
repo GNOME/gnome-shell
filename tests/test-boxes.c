@@ -107,7 +107,7 @@ main (int argc, char *argv[])
 
   clutter_actor_show_all (stage);
 
-  g_debug (G_STRLOC ": vbox (x:%d, y%d, w:%d, h:%d)",
+  g_print ("vbox       - (x:%3d, y:%3d, w:%3d, h:%3d)\n",
            clutter_actor_get_x (vbox),
            clutter_actor_get_y (vbox),
            clutter_actor_get_width (vbox),
