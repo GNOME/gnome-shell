@@ -40,13 +40,22 @@ clutter_hbox_query_coords (ClutterActor    *actor,
                            ClutterActorBox *coords)
 {
   ClutterBox *box = CLUTTER_BOX (actor);
+  ClutterMargin box_margin;
   GList *l;
   gint width, height;
-  guint spacing;
 
-  spacing = clutter_box_get_spacing (box);
-  width = height = 0;
+  if (box->allocation.x2 != -1 && box->allocation.y2 != -1)
+    {
+      coords->x2 = box->allocation.x2;
+      coords->y2 = box->allocation.y2;
+      return;
+    }
   
+  clutter_box_get_margin (box, &box_margin);
+
+  width = CLUTTER_UNITS_TO_INT (box_margin.left);
+  height = CLUTTER_UNITS_TO_INT (box_margin.top);
+
   for (l = box->children; l; l = l->next)
     {
       ClutterBoxChild *child = l->data;
@@ -57,20 +66,38 @@ clutter_hbox_query_coords (ClutterActor    *actor,
 
           clutter_actor_get_size (child->actor, &child_width, &child_height);
 
-          width += child_width + (spacing * 2);
-          height = MAX (child_height, height);
+          width = width
+                  + CLUTTER_UNITS_TO_INT (child->padding.left)
+                  + child_width
+                  + CLUTTER_UNITS_TO_INT (child->padding.right);
+
+          height = MAX ((child_height
+                         + CLUTTER_UNITS_TO_INT (child->padding.top)
+                         + CLUTTER_UNITS_TO_INT (child->padding.bottom)),
+                        height);
         }
     }
 
-  coords->x2 = coords->x1 + CLUTTER_UNITS_FROM_INT (width);
-  coords->y2 = coords->y1 + CLUTTER_UNITS_FROM_INT (height);
+  width += CLUTTER_UNITS_TO_INT (box_margin.right);
+  height += CLUTTER_UNITS_TO_INT (box_margin.bottom);
+
+  box->allocation.x2 = coords->x2 = 
+        coords->x1 + CLUTTER_UNITS_FROM_INT (width);
+  box->allocation.y2 = coords->y2 = 
+        coords->y1 + CLUTTER_UNITS_FROM_INT (height);
 }
 
 static void
 clutter_hbox_request_coords (ClutterActor    *actor,
                              ClutterActorBox *coords)
 {
-  /* FIXME */
+  ClutterBox *box = CLUTTER_BOX (actor);
+
+  /* we reset the allocation here */
+  box->allocation.x1 = coords->x1;
+  box->allocation.y1 = coords->y1;
+  box->allocation.x2 = -1;
+  box->allocation.y2 = -1;
 }
 
 static void
@@ -78,15 +105,35 @@ clutter_hbox_pack_child (ClutterBox      *box,
                          ClutterBoxChild *child)
 {
   ClutterGeometry box_geom, child_geom;
-  guint spacing;
+  ClutterMargin box_margin;
 
-  spacing = clutter_box_get_spacing (box);
+  /* reset the saved allocation */
+  box->allocation.x2 = box->allocation.y2 = -1;
 
   clutter_actor_get_geometry (CLUTTER_ACTOR (box), &box_geom);
   clutter_actor_get_geometry (child->actor, &child_geom);
 
-  child_geom.x = box_geom.width + spacing;
-  child_geom.y = 0;
+  clutter_box_get_margin (box, &box_margin);
+  
+  if (child->pack_type == CLUTTER_PACK_START)
+    {
+      child_geom.x = box_geom.width
+                     + CLUTTER_UNITS_TO_INT (child->padding.right);
+      child_geom.y = CLUTTER_UNITS_TO_INT (child->padding.top);
+    }
+  else if (child->pack_type == CLUTTER_PACK_END)
+    {
+      child_geom.x = box_geom.width - child_geom.width 
+                     - CLUTTER_UNITS_TO_INT (child->padding.right);
+      child_geom.y = CLUTTER_UNITS_TO_INT (child->padding.top);
+    }
+
+  child->child_coords.x1 = CLUTTER_UNITS_FROM_INT (child_geom.x);
+  child->child_coords.y1 = CLUTTER_UNITS_FROM_INT (child_geom.y);
+  child->child_coords.x2 = CLUTTER_UNITS_FROM_INT (child_geom.x)
+                           + CLUTTER_UNITS_FROM_INT (child_geom.width);
+  child->child_coords.y2 = CLUTTER_UNITS_FROM_INT (child_geom.y)
+                           + CLUTTER_UNITS_FROM_INT (child_geom.height);
 
   clutter_actor_set_geometry (child->actor, &child_geom);
 }
