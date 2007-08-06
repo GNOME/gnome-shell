@@ -22,7 +22,8 @@ enum
 {
   PROP_0,
 
-  PROP_SPACING
+  PROP_MARGIN,
+  PROP_COLOR
 };
 
 static void clutter_container_iface_init (ClutterContainerIface *iface);
@@ -38,7 +39,7 @@ static void
 clutter_box_add (ClutterContainer *container,
                  ClutterActor     *actor)
 {
-  clutter_box_pack_start (CLUTTER_BOX (container), actor);
+  clutter_box_pack_defaults (CLUTTER_BOX (container), actor);
 }
 
 static void
@@ -149,6 +150,8 @@ clutter_box_paint (ClutterActor *actor)
 
   cogl_push_matrix ();
 
+  cogl_color (&box->color);
+
   for (l = box->children; l; l = l->next)
     {
       ClutterBoxChild *child = l->data;
@@ -216,8 +219,11 @@ clutter_box_set_property (GObject      *gobject,
 
   switch (prop_id)
     {
-    case PROP_SPACING:
-      box->spacing = g_value_get_uint (value);
+    case PROP_COLOR:
+      clutter_box_set_color (box, g_value_get_boxed (value));
+      break;
+    case PROP_MARGIN:
+      clutter_box_set_margin (box, g_value_get_boxed (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
@@ -235,8 +241,19 @@ clutter_box_get_property (GObject    *gobject,
 
   switch (prop_id)
     {
-    case PROP_SPACING:
-      g_value_set_uint (value, box->spacing);
+    case PROP_MARGIN:
+      {
+        ClutterMargin margin;
+        clutter_box_get_margin (box, &margin);
+        g_value_set_boxed (value, &margin);
+      }
+      break;
+    case PROP_COLOR:
+      {
+        ClutterColor color;
+        clutter_box_get_color (box, &color);
+        g_value_set_boxed (value, &color);
+      }
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
@@ -262,13 +279,35 @@ clutter_box_class_init (ClutterBoxClass *klass)
   klass->pack_child = clutter_box_pack_child_unimplemented;
   klass->unpack_child = clutter_box_unpack_child_unimplemented;
 
+  /**
+   * ClutterBox:margin:
+   *
+   * The margin between the inner border of a #ClutterBox and its
+   * children.
+   *
+   * Since: 0.4
+   */
   g_object_class_install_property (gobject_class,
-                                   PROP_SPACING,
-                                   g_param_spec_uint ("spacing",
-                                                      "Spacing",
-                                                      "Space between each child actor",
-                                                      0, G_MAXUINT, 0,
-                                                      CLUTTER_PARAM_READWRITE));
+                                   PROP_MARGIN,
+                                   g_param_spec_boxed ("margin",
+                                                       "Margin",
+                                                       "Margin between the inner border of a box and its children",
+                                                       CLUTTER_TYPE_MARGIN,
+                                                       CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterBox:color:
+   *
+   * The background color of a #ClutterBox.
+   *
+   * Since: 0.4
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_COLOR,
+                                   g_param_spec_boxed ("color",
+                                                       "Color",
+                                                       "Background color of a box",
+                                                       CLUTTER_TYPE_COLOR,
+                                                       CLUTTER_PARAM_READWRITE));
 }
 
 static void
@@ -282,17 +321,19 @@ clutter_box_init (ClutterBox *box)
  */
 
 /**
- * clutter_box_pack_start:
+ * clutter_box_pack:
  * @box: a #ClutterBox
  * @actor: a #ClutterActor
  *
- * Packs @actor into @box
+ * Packs @actor into @box.
  *
  * Since: 0.4
  */
 void
-clutter_box_pack_start (ClutterBox   *box,
-                        ClutterActor *actor)
+clutter_box_pack (ClutterBox           *box,
+                  ClutterActor         *actor,
+                  ClutterPackType       pack_type,
+                  const ClutterPadding *padding)
 {
   ClutterBoxChild *child;
 
@@ -301,11 +342,12 @@ clutter_box_pack_start (ClutterBox   *box,
 
   child = g_slice_new (ClutterBoxChild);
   child->actor = actor;
-  child->pack_type = CLUTTER_PACK_START;
+  child->pack_type = pack_type;
+  memcpy (&(child->padding), padding, sizeof (ClutterPadding));
 
   CLUTTER_BOX_GET_CLASS (box)->pack_child (box, child);
   
-  box->children = g_list_append (box->children, child);
+  box->children = g_list_prepend (box->children, child);
   clutter_actor_set_parent (actor, CLUTTER_ACTOR (box));
 
   if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (box)))
@@ -313,34 +355,25 @@ clutter_box_pack_start (ClutterBox   *box,
 }
 
 /**
- * clutter_box_pack_end:
+ * clutter_box_pack_defaults:
  * @box: a #ClutterBox
  * @actor: a #ClutterActor
  *
- * Packs @actor into @box
+ * Packs @actor into @box, using the default settings for the
+ * pack type and padding.
  *
  * Since: 0.4
  */
 void
-clutter_box_pack_end (ClutterBox   *box,
-                      ClutterActor *actor)
+clutter_box_pack_defaults (ClutterBox   *box,
+                           ClutterActor *actor)
 {
-  ClutterBoxChild *child;
+  ClutterPadding padding = { 0, };
 
   g_return_if_fail (CLUTTER_IS_BOX (box));
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
-  child = g_slice_new (ClutterBoxChild);
-  child->actor = actor;
-  child->pack_type = CLUTTER_PACK_END;
-
-  box->children = g_list_append (box->children, child);
-  clutter_actor_set_parent (actor, CLUTTER_ACTOR (box));
-
-  CLUTTER_BOX_GET_CLASS (box)->pack_child (box, child);
-
-  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (box)))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (box));
+  clutter_box_pack (box, actor, CLUTTER_PACK_START, &padding);
 }
 
 /**
@@ -374,7 +407,18 @@ clutter_box_query_child (ClutterBox      *box,
           if (child)
             {
               child->actor = actor;
+
               child->pack_type = box_child->pack_type;
+
+              child->child_coords.x1 = box_child->child_coords.x1;
+              child->child_coords.y1 = box_child->child_coords.y1;
+              child->child_coords.x2 = box_child->child_coords.x2;
+              child->child_coords.y2 = box_child->child_coords.y2;
+              
+              child->padding.top = box_child->padding.top;
+              child->padding.right = box_child->padding.right;
+              child->padding.bottom = box_child->padding.bottom;
+              child->padding.left = box_child->padding.left;
             }
 
           return TRUE;
@@ -414,49 +458,226 @@ clutter_box_query_nth_child (ClutterBox      *box,
   if (child)
     {
       child->actor = box_child->actor;
+
       child->pack_type = box_child->pack_type;
+      
+      child->child_coords.x1 = box_child->child_coords.x1;
+      child->child_coords.y1 = box_child->child_coords.y1;
+      child->child_coords.x2 = box_child->child_coords.x2;
+      child->child_coords.y2 = box_child->child_coords.y2;
+      
+      child->padding.top = box_child->padding.top;
+      child->padding.right = box_child->padding.right;
+      child->padding.bottom = box_child->padding.bottom;
+      child->padding.left = box_child->padding.left;
     }
 
   return TRUE;
 }
 
 /**
- * clutter_box_get_spacing:
+ * clutter_box_get_margin:
  * @box: a #ClutterBox
+ * @margin: return location for a #ClutterMargin
  *
- * Gets the value set using clutter_box_set_spacing().
- *
- * Return value: the spacing between children of the box
- *
- * Since: 0.4
- */
-guint
-clutter_box_get_spacing (ClutterBox *box)
-{
-  g_return_val_if_fail (CLUTTER_IS_BOX (box), 0);
-
-  return box->spacing;
-}
-
-/**
- * clutter_box_set_spacing:
- * @box: a #ClutterBox
- * @spacing: the spacing between children
- *
- * Sets the spacing, in pixels, between the children of @box.
+ * Gets the value set using clutter_box_set_margin().
  *
  * Since: 0.4
  */
 void
-clutter_box_set_spacing (ClutterBox *box,
-                         guint       spacing)
+clutter_box_get_margin (ClutterBox    *box,
+                        ClutterMargin *margin)
+{
+  g_return_if_fail (CLUTTER_IS_BOX (box));
+  g_return_if_fail (margin != NULL);
+
+  margin->top = box->margin.top;
+  margin->right = box->margin.right;
+  margin->bottom = box->margin.bottom;
+  margin->left = box->margin.left;
+}
+
+/**
+ * clutter_box_set_margin:
+ * @box: a #ClutterBox
+ * @margin: a #ClutterMargin, or %NULL to unset the margin
+ *
+ * Sets the margin, in #ClutterUnit<!-- -->s, between the inner border
+ * of the box and the children of the box.
+ *
+ * Since: 0.4
+ */
+void
+clutter_box_set_spacing (ClutterBox          *box,
+                         const ClutterMargin *margin)
 {
   g_return_if_fail (CLUTTER_IS_BOX (box));
 
-  if (box->spacing != spacing)
+  if (margin)
     {
-      box->spacing = spacing;
-
-      g_object_notify (G_OBJECT (box), "spacing");
+      box->margin.top = margin->top;
+      box->margin.right = margin->right;
+      box->margin.bottom = margin->bottom;
+      box->margin.left = margin->left;
     }
+  else
+    {
+      box->margin.top = 0;
+      box->margin.right = 0;
+      box->margin.bottom = 0;
+      box->margin.left = 0;
+    }
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (box)))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (box));
+
+  g_object_notify (G_OBJECT (box), "margin");
+}
+
+/**
+ * clutter_box_get_color:
+ * @box: a #ClutterBox
+ * @color: return location for the color
+ *
+ * Gets the background color of the box set with clutter_box_set_color().
+ *
+ * Since: 0.4
+ */
+void
+clutter_box_get_color (ClutterBox   *box,
+                       ClutterColor *color)
+{
+  g_return_if_fail (CLUTTER_IS_BOX (box));
+  g_return_if_fail (color != NULL);
+
+  color->red = box->color.red;
+  color->green = box->color.green;
+  color->blue = box->color.blue;
+  color->alpha = box->color.alpha;
+}
+
+/**
+ * clutter_box_set_color:
+ * @box: a #ClutterBox
+ * @color: the background color of the box
+ *
+ * Sets the background color of the box.
+ *
+ * Since: 0.4
+ */
+void
+clutter_box_set_color (ClutterBox         *box,
+                       const ClutterColor *color)
+{
+  g_return_if_fail (CLUTTER_IS_BOX (box));
+  g_return_if_fail (color != NULL);
+
+  box->color.red = color->red;
+  box->color.green = color->green;
+  box->color.blue = color->blue;
+  box->color.alpha = color->alpha;
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (box)))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (box));
+
+  g_object_notify (G_OBJECT (box), "color");
+}
+
+/**
+ * clutter_box_remove_all:
+ * @box: a #ClutterBox
+ *
+ * Removes all children actors from the #ClutterBox
+ *
+ * Since: 0.4
+ */
+void
+clutter_box_remove_all (ClutterBox *box)
+{
+  GList *children;
+
+  g_return_if_fail (CLUTTER_IS_BOX (box));
+
+  children = box->children;
+  while (children)
+    {
+      ClutterBoxChild *child = children->data;
+      children = children->next;
+
+      clutter_container_remove_actor (CLUTTER_CONTAINER (box), child->actor);
+    }
+}
+
+/*
+ * Boxed types
+ */
+
+static void
+clutter_margin_free (ClutterMargin *margin)
+{
+  if (G_LIKELY (margin))
+    {
+      g_slice_free (ClutterMargin, margin);
+    }
+}
+
+static ClutterMargin *
+clutter_margin_copy (const ClutterMargin *margin)
+{
+  ClutterMargin *copy;
+
+  g_return_val_if_fail (margin != NULL, NULL);
+
+  copy = g_slice_new (ClutterMargin);
+  *copy = *margin;
+
+  return copy;
+}
+
+GType
+clutter_margin_get_type (void)
+{
+  static GType gtype = 0;
+
+  if (G_UNLIKELY (gtype == 0))
+    gtype = g_boxed_type_register_static (g_intern_static_string ("ClutterMargin"),
+                                          (GBoxedCopyFunc) clutter_margin_copy,
+                                          (GBoxedFreeFunc) clutter_margin_free);
+
+  return gtype;
+}
+
+static void
+clutter_padding_free (ClutterPadding *padding)
+{
+  if (G_LIKELY (padding))
+    {
+      g_slice_free (ClutterPadding, padding);
+    }
+}
+
+static ClutterPadding *
+clutter_padding_copy (const ClutterPadding *padding)
+{
+  ClutterPadding *copy;
+
+  g_return_val_if_fail (padding != NULL, NULL);
+
+  copy = g_slice_new (ClutterPadding);
+  *copy = *padding;
+
+  return copy;
+}
+
+GType
+clutter_padding_get_type (void)
+{
+  static GType gtype = 0;
+
+  if (G_UNLIKELY (gtype == 0))
+    gtype = g_boxed_type_register_static (g_intern_static_string ("ClutterPadding"),
+                                          (GBoxedCopyFunc) clutter_padding_copy,
+                                          (GBoxedFreeFunc) clutter_padding_free);
+
+  return gtype;
 }

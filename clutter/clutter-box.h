@@ -2,6 +2,7 @@
 #define __CLUTTER_BOX_H__
 
 #include <clutter/clutter-actor.h>
+#include <clutter/clutter-types.h>
 
 G_BEGIN_DECLS
 
@@ -35,12 +36,23 @@ struct _ClutterBox
   ClutterActor parent_instance;
 
   /*< private >*/
+  
+  /* We need to put these in the instance structure, since this
+   * is an abstract class meant to be subclassed; think of these
+   * as "protected" attributes of the ClutterBox class
+   */
 
-  /* list of ClutterBoxChild structures */
+  /* Allocation of the box */
+  ClutterActorBox allocation;
+
+  /* List of ClutterBoxChild structures */
   GList *children;
 
-  /* spacing between child actors */
-  guint spacing;
+  /* Background color of the box */
+  ClutterColor color;
+
+  /* Margin between the inner border of the box and the children */
+  ClutterMargin margin;
 };
 
 struct _ClutterBoxClass
@@ -67,7 +79,9 @@ struct _ClutterBoxClass
 /**
  * ClutterBoxChild:
  * @actor: the child #ClutterActor
- * @pack_type: the type of packing used
+ * @child_coords: the original coordinates of the child
+ * @pack_type: the type of packing used by the child
+ * @padding: the padding around the child
  *
  * Packing data for children of a #ClutterBox.
  *
@@ -76,24 +90,33 @@ struct _ClutterBoxClass
 struct _ClutterBoxChild
 {
   ClutterActor *actor;
-
+  ClutterActorBox child_coords;
   ClutterPackType pack_type;
+  ClutterPadding padding;
 };
 
 GType    clutter_box_get_type        (void) G_GNUC_CONST;
-void     clutter_box_set_spacing     (ClutterBox      *box,
-                                      guint            spacing);
-guint    clutter_box_get_spacing     (ClutterBox      *box);
-void     clutter_box_pack_start      (ClutterBox      *box,
-                                      ClutterActor    *actor);
-void     clutter_box_pack_end        (ClutterBox      *box,
-                                      ClutterActor    *actor);
-gboolean clutter_box_query_child     (ClutterBox      *box,
-                                      ClutterActor    *actor,
-                                      ClutterBoxChild *child);
-gboolean clutter_box_query_nth_child (ClutterBox      *box,
-                                      gint             index_,
-                                      ClutterBoxChild *child);
+void     clutter_box_set_color       (ClutterBox           *box,
+                                      const ClutterColor   *color);
+void     clutter_box_get_color       (ClutterBox           *box,
+                                      ClutterColor         *color);
+void     clutter_box_set_margin      (ClutterBox           *box,
+                                      const ClutterMargin  *margin);
+void     clutter_box_get_margin      (ClutterBox           *box,
+                                      ClutterMargin        *margin);
+void     clutter_box_pack            (ClutterBox           *box,
+                                      ClutterActor         *actor,
+                                      ClutterPackType       pack_type,
+                                      const ClutterPadding *padding);
+void     clutter_box_pack_defaults   (ClutterBox           *box,
+                                      ClutterActor         *actor);
+void     clutter_box_remove_all      (ClutterBox           *box);
+gboolean clutter_box_query_child     (ClutterBox           *box,
+                                      ClutterActor         *actor,
+                                      ClutterBoxChild      *child);
+gboolean clutter_box_query_nth_child (ClutterBox           *box,
+                                      gint                  index_,
+                                      ClutterBoxChild      *child);
 
 G_END_DECLS
 

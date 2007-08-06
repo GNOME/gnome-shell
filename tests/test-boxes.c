@@ -78,7 +78,7 @@ main (int argc, char *argv[])
           rect = clutter_rectangle_new_with_color (&label_color);
           clutter_actor_set_size (rect, 100, 100);
 
-          clutter_box_pack_start (CLUTTER_BOX (hbox), rect);
+          clutter_box_pack_defaults (CLUTTER_BOX (hbox), rect);
           clutter_actor_show (rect);
 
           g_debug (G_STRLOC ": rect[%d][%d] - (x:%d, y:%d, w:%d, h:%d)",
