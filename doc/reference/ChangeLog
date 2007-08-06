@@ -1,3 +1,7 @@
+2007-08-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Update with the new ClutterBox API.
+
 2007-08-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-docs.sgml: Add autogeneration of the per-version

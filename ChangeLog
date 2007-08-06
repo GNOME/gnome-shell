@@ -1,3 +1,18 @@
+2007-08-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-box.[ch]: Implement margin, color and default
+	padding for ClutterBox. Provide API to pack a child by specifying
+	every packing detail or just pack with the defaults. ClutterBox
+	works like the HTML boxing model, API-wise: a box with margins
+	and padding around each child. Needs work, still.
+
+	* clutter/clutter-hbox.c:
+	* clutter/clutter-vbox.c: Update with the new API and new attributes.
+
+	* clutter/clutter-types.h: Add ClutterMargin and ClutterPadding.
+
+	* test/test-boxes.c: Exercise the new API.
+
 2007-08-06  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-texture.c:
