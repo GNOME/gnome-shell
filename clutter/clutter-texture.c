@@ -795,7 +795,7 @@ clutter_texture_set_property (GObject      *object,
     {
     case PROP_PIXBUF:
       clutter_texture_set_pixbuf (texture, 
-				  (GdkPixbuf*)g_value_get_pointer(value),
+				  GDK_PIXBUF (g_value_get_object (value)),
 				  NULL);
       break;
     case PROP_USE_TILES:
@@ -846,7 +846,7 @@ clutter_texture_get_property (GObject    *object,
       {
 	GdkPixbuf *pixb;
 	pixb = clutter_texture_get_pixbuf (texture);
-	g_value_set_pointer (value, pixb);
+	g_value_set_object (value, pixb);
       }
       break;
     case PROP_USE_TILES:
@@ -903,10 +903,11 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 
   g_object_class_install_property
     (gobject_class, PROP_PIXBUF,
-     g_param_spec_pointer ("pixbuf",
-			   "Pixbuf source for Texture.",
-			   "Pixbuf source for Texture.",
-			   CLUTTER_PARAM_READWRITE));
+     g_param_spec_object ("pixbuf",
+			  "Pixbuf source for Texture.",
+			  "Pixbuf source for Texture.",
+			  GDK_TYPE_PIXBUF,
+			  CLUTTER_PARAM_READWRITE));
 
   g_object_class_install_property
     (gobject_class, PROP_USE_TILES,

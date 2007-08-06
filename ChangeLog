@@ -1,5 +1,11 @@
 2007-08-06  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/clutter-texture.c:
+	Correct set pixbuf property as GDK_TYPE_PIXBUF 
+	(fix via Neil Roberts)
+
+2007-08-06  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-behaviour-depth.c:
 	Modify to work like all other behvaiours in not forcing
 	increasing order in behaviour 'limits'. (#436)
