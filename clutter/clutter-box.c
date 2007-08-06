@@ -13,7 +13,31 @@
  * SECTION:clutter-box
  * @short_description: Base class for layout containers
  *
- * FIXME
+ * #ClutterBox is a base class for containers which impose a specific layout
+ * on their children, unlike #ClutterGroup which is a free-form container.
+ *
+ * Layout containers are expected to move and size their children depending
+ * on a layout contract they establish per-class. For instance, a #ClutterHBox
+ * (a subclass of #ClutterBox) lays out its children along an imaginary
+ * horizontal line.
+ *
+ * All #ClutterBox<!-- -->es have a margin, which is decomposed in four
+ * components (top, right, bottom left) and a background color. Each child
+ * of a #ClutterBox has a packing type and a padding, decomposed like the
+ * margin. Actors can be packed using clutter_box_pack() and providing
+ * the packing type and the padding, or using clutter_box_pack_defaults()
+ * and setting a default padding with clutter_box_set_default_padding().
+ * A #ClutterBox implements the #ClutterContainer interface: calling
+ * clutter_container_add_actor() on a #ClutterBox will automatically invoke
+ * clutter_box_pack_defaults().
+ *
+ * Each child of a #ClutterBox has its packing information wrapped into the
+ * #ClutterBoxChild structure, which can be retrieved either using the
+ * clutter_box_query_child() or the clutter_box_query_nth_child() function.
+ *
+ * Subclasses of #ClutterBox must implement the ClutterBox::pack_child and
+ * ClutterBox::unpack_child virtual functions; these functions will be called
+ * when adding a child and when removing one, respectively.
  *
  * #ClutterBox is available since Clutter 0.4
  */

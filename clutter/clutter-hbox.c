@@ -15,7 +15,9 @@
  * SECTION:clutter-hbox
  * @short_description: Simple horizontal box
  *
- * FIXME
+ * A #ClutterHBox is a #ClutterBox which lays all its children horizontally.
+ *
+ * See #ClutterBox for more details.
  *
  * #ClutterHBox is available since Clutter 0.4.
  */

@@ -13,9 +13,11 @@
 
 /**
  * SECTION:clutter-vbox
- * @short_description: Simple horizontal box
+ * @short_description: Simple vertical box
  *
- * FIXME
+ * A #ClutterVBox is a #ClutterBox that lays out its children vertically.
+ *
+ * See #ClutterBox for more details.
  *
  * #ClutterVBox is available since Clutter 0.4.
  */
