@@ -324,7 +324,9 @@ clutter_box_init (ClutterBox *box)
 /**
  * clutter_box_pack:
  * @box: a #ClutterBox
- * @actor: a #ClutterActor
+ * @actor: a #ClutterActor to pack into the box
+ * @pack_type: Type of packing to use
+ * @padding: padding to use on the actor
  *
  * Packs @actor into @box.
  *
@@ -340,6 +342,7 @@ clutter_box_pack (ClutterBox           *box,
 
   g_return_if_fail (CLUTTER_IS_BOX (box));
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_if_fail (padding != NULL);
 
   child = g_slice_new (ClutterBoxChild);
   child->actor = actor;
