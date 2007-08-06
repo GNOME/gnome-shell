@@ -922,9 +922,14 @@ clutter_entry_get_type
 ClutterBox
 ClutterBoxClass
 ClutterPackType
+clutter_box_set_color
+clutter_box_get_color
 ClutterPadding
 clutter_box_pack
+clutter_box_set_default_padding
+clutter_box_get_default_padding
 clutter_box_pack_defaults
+clutter_box_remove_all
 ClutterMargin
 clutter_box_set_margin
 clutter_box_get_margin
@@ -938,8 +943,12 @@ CLUTTER_IS_BOX
 CLUTTER_BOX_CLASS
 CLUTTER_IS_BOX_CLASS
 CLUTTER_BOX_GET_CLASS
+CLUTTER_TYPE_MARGIN
+CLUTTER_TYPE_PADDING
 <SUBSECTION Private>
 clutter_box_get_type
+clutter_margin_get_type
+clutter_padding_get_type
 </SECTION>
 
 <SECTION>
