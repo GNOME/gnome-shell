@@ -58,38 +58,51 @@ main (int argc, char *argv[])
 
   vbox = clutter_vbox_new ();
   clutter_actor_set_position (vbox, 100, 100);
-  clutter_box_set_spacing (CLUTTER_BOX (vbox), 10);
   clutter_container_add_actor (CLUTTER_CONTAINER (stage), vbox);
   clutter_actor_show (vbox);
 
   for (i = 0; i < 3; i++)
     {
       ClutterActor *hbox;
+      ClutterPadding hbox_padding;
+
+      hbox_padding.top = CLUTTER_UNITS_FROM_INT (10);
+      hbox_padding.bottom = CLUTTER_UNITS_FROM_INT (10);
+      hbox_padding.left = hbox_padding.right = 0;
 
       hbox = clutter_hbox_new ();
-      clutter_box_set_spacing (CLUTTER_BOX (hbox), 10);
-      clutter_container_add_actor (CLUTTER_CONTAINER (vbox), hbox);
-      clutter_actor_show (hbox);
+      clutter_box_pack (CLUTTER_BOX (vbox), hbox,
+                        CLUTTER_PACK_START,
+                        &hbox_padding);
 
       for (j = 0; j < 3; j++)
         {
           ClutterActor *rect;
+          ClutterPadding rect_padding;
 
           rect = clutter_rectangle_new_with_color (&label_color);
           clutter_actor_set_size (rect, 100, 100);
 
-          clutter_box_pack_defaults (CLUTTER_BOX (hbox), rect);
+          rect_padding.top = rect_padding.bottom = 0;
+          rect_padding.left = CLUTTER_UNITS_FROM_INT (10);
+          rect_padding.right = CLUTTER_UNITS_FROM_INT (10);
+
+          clutter_box_pack (CLUTTER_BOX (hbox), rect,
+                            CLUTTER_PACK_START,
+                            &rect_padding);
           clutter_actor_show (rect);
 
-          g_debug (G_STRLOC ": rect[%d][%d] - (x:%d, y:%d, w:%d, h:%d)",
+          g_print ("rect[%d][%d] - (x:%3d, y:%3d, w:%3d, h:%3d)\n",
                    i, j,
                    clutter_actor_get_x (rect),
                    clutter_actor_get_y (rect),
                    clutter_actor_get_width (rect),
                    clutter_actor_get_height (rect));
         }
-      
-      g_debug (G_STRLOC ": hbox[%d] (x:%d, y%d, w:%d, h:%d)",
+
+      clutter_actor_show (hbox);
+
+      g_print ("hbox[%d]    - (x:%3d, y:%3d, w:%3d, h:%3d)\n",
                i,
                clutter_actor_get_x (hbox),
                clutter_actor_get_y (hbox),
