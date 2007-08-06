@@ -53,6 +53,9 @@ struct _ClutterBox
 
   /* Margin between the inner border of the box and the children */
   ClutterMargin margin;
+
+  /* Default padding for the children */
+  ClutterPadding default_padding;
 };
 
 struct _ClutterBoxClass
@@ -95,28 +98,38 @@ struct _ClutterBoxChild
   ClutterPadding padding;
 };
 
-GType    clutter_box_get_type        (void) G_GNUC_CONST;
-void     clutter_box_set_color       (ClutterBox           *box,
-                                      const ClutterColor   *color);
-void     clutter_box_get_color       (ClutterBox           *box,
-                                      ClutterColor         *color);
-void     clutter_box_set_margin      (ClutterBox           *box,
-                                      const ClutterMargin  *margin);
-void     clutter_box_get_margin      (ClutterBox           *box,
-                                      ClutterMargin        *margin);
-void     clutter_box_pack            (ClutterBox           *box,
-                                      ClutterActor         *actor,
-                                      ClutterPackType       pack_type,
-                                      const ClutterPadding *padding);
-void     clutter_box_pack_defaults   (ClutterBox           *box,
-                                      ClutterActor         *actor);
-void     clutter_box_remove_all      (ClutterBox           *box);
-gboolean clutter_box_query_child     (ClutterBox           *box,
-                                      ClutterActor         *actor,
-                                      ClutterBoxChild      *child);
-gboolean clutter_box_query_nth_child (ClutterBox           *box,
-                                      gint                  index_,
-                                      ClutterBoxChild      *child);
+GType    clutter_box_get_type            (void) G_GNUC_CONST;
+void     clutter_box_set_color           (ClutterBox           *box,
+                                          const ClutterColor   *color);
+void     clutter_box_get_color           (ClutterBox           *box,
+                                          ClutterColor         *color);
+void     clutter_box_set_margin          (ClutterBox           *box,
+                                          const ClutterMargin  *margin);
+void     clutter_box_get_margin          (ClutterBox           *box,
+                                          ClutterMargin        *margin);
+void     clutter_box_set_default_padding (ClutterBox           *box,
+                                          gint                  padding_top,
+                                          gint                  padding_right,
+                                          gint                  padding_bottom,
+                                          gint                  padding_left);
+void     clutter_box_get_default_padding (ClutterBox           *box,
+                                          gint                 *padding_top,
+                                          gint                 *padding_right,
+                                          gint                 *padding_bottom,
+                                          gint                 *padding_left);
+void     clutter_box_pack                (ClutterBox           *box,
+                                          ClutterActor         *actor,
+                                          ClutterPackType       pack_type,
+                                          const ClutterPadding *padding);
+void     clutter_box_pack_defaults       (ClutterBox           *box,
+                                          ClutterActor         *actor);
+void     clutter_box_remove_all          (ClutterBox           *box);
+gboolean clutter_box_query_child         (ClutterBox           *box,
+                                          ClutterActor         *actor,
+                                          ClutterBoxChild      *child);
+gboolean clutter_box_query_nth_child     (ClutterBox           *box,
+                                          gint                  index_,
+                                          ClutterBoxChild      *child);
 
 G_END_DECLS
 

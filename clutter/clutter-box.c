@@ -369,12 +369,12 @@ void
 clutter_box_pack_defaults (ClutterBox   *box,
                            ClutterActor *actor)
 {
-  ClutterPadding padding = { 0, };
-
   g_return_if_fail (CLUTTER_IS_BOX (box));
   g_return_if_fail (CLUTTER_IS_ACTOR (actor));
 
-  clutter_box_pack (box, actor, CLUTTER_PACK_START, &padding);
+  clutter_box_pack (box, actor,
+                    CLUTTER_PACK_START,
+                    &box->default_padding);
 }
 
 /**
@@ -607,6 +607,66 @@ clutter_box_remove_all (ClutterBox *box)
 
       clutter_container_remove_actor (CLUTTER_CONTAINER (box), child->actor);
     }
+}
+
+/**
+ * clutter_box_set_default_padding:
+ * @box: a #ClutterBox
+ * @padding_top: top padding, in pixels
+ * @padding_right: right padding, in pixels
+ * @padding_bottom: bottom padding, in pixels
+ * @padding_left: left padding, in pixels
+ *
+ * Sets the default padding for children, which will be used when
+ * packing actors with clutter_box_pack_defaults(). The padding is
+ * given in pixels.
+ *
+ * Since: 0.4
+ */
+void
+clutter_box_set_default_padding (ClutterBox *box,
+                                 gint        padding_top,
+                                 gint        padding_right,
+                                 gint        padding_bottom,
+                                 gint        padding_left)
+{
+  g_return_if_fail (CLUTTER_IS_BOX (box));
+
+  box->default_padding.top = CLUTTER_UNITS_FROM_INT (padding_top);
+  box->default_padding.right = CLUTTER_UNITS_FROM_INT (padding_right);
+  box->default_padding.bottom = CLUTTER_UNITS_FROM_INT (padding_bottom);
+  box->default_padding.left = CLUTTER_UNITS_FROM_INT (padding_left);
+}
+
+/**
+ * clutter_box_get_default_padding:
+ * @box: a #ClutterBox
+ * @padding_top: return location for the top padding, or %NULL
+ * @padding_right: return location for the right padding, or %NULL
+ * @padding_bottom: return location for the bottom padding, or %NULL
+ * @padding_left: return location for the left padding, or %NULL
+ *
+ * Gets the default padding set with clutter_box_set_default_padding().
+ *
+ * Since: 0.4
+ */
+void
+clutter_box_get_default_padding (ClutterBox *box,
+                                 gint       *padding_top,
+                                 gint       *padding_right,
+                                 gint       *padding_bottom,
+                                 gint       *padding_left)
+{
+  g_return_if_fail (CLUTTER_IS_BOX (box));
+
+  if (padding_top)
+    *padding_top = CLUTTER_UNITS_TO_INT (box->default_padding.top);
+  if (padding_right)
+    *padding_right = CLUTTER_UNITS_TO_INT (box->default_padding.right);
+  if (padding_bottom)
+    *padding_bottom = CLUTTER_UNITS_TO_INT (box->default_padding.bottom);
+  if (padding_left)
+    *padding_left = CLUTTER_UNITS_TO_INT (box->default_padding.left);
 }
 
 /*
