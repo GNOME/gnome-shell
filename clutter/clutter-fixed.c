@@ -26,16 +26,20 @@
 #include "config.h"
 
 #include <clutter-fixed.h>
+#include <clutter-private.h> 
 
 /**
  * SECTION:clutter-fixed
  * @short_description: Fixed Point API
  *
- * Clutter has a fixed point API targeted at platforms without a floating
- * point unit, such as embedded devices. This API should be preferred to
- * the floating point one as it does not trigger the slow path of software
- * emulation, relying on integer math for fixed-to-floating and
- * floating-to-fixed conversion.
+ * Clutter has a fixed point API targeted at platforms without a
+ * floating point unit, such as embedded devices. On such platforms
+ * this API should be preferred to the floating point one as it does
+ * not trigger the slow path of software emulation, relying on integer
+ * math for fixed-to-floating and floating-to-fixed conversion.
+ *
+ * It is no recommened for use on platforms with a floating point unit
+ * (eg desktop systems) nor for use in bindings. 
  *
  * Basic rules of Fixed Point arithmethic:
  *

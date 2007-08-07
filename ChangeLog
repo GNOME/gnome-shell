@@ -1,3 +1,12 @@
+2007-08-07  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-fixed.c:
+	* clutter/clutter-fixed.h:
+	Add documentation.
+
+	* clutter/cogl/gl/cogl.c: (cogl_perspective):
+	Remove CFX_* shortened macros
+
 2007-08-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-main.[ch]: Remove clutter_threads_enter()

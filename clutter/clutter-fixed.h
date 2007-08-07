@@ -53,15 +53,44 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 #define CLUTTER_ANGLE_TO_DEGF(x)   (((float)(x) * 360.0)/ 1024.0)
 #define CLUTTER_ANGLE_TO_DEGX(x)   (CLUTTER_INT_TO_FIXED((x) * 45)/128)
 
-#define CFX_Q      16		/* Decimal part size in bits */
-#define CFX_ONE    (1 << CFX_Q)	/* 1 */
-#define CFX_HALF   32768
-#define CFX_MAX    0x7fffffff
-#define CFX_MIN    0x80000000
-
 /*
  * some commonly used constants
  */
+
+/**
+ * CFX_Q:
+ * 
+ * Size in bits of decimal part of floating point value.
+ */
+#define CFX_Q      16		/* Decimal part size in bits */
+
+/**
+ * CFX_ONE:
+ * 
+ * 1.0 represented as a fixed point value.
+ */
+#define CFX_ONE    (1 << CFX_Q)	/* 1 */
+
+/**
+ * CFX_HALF:
+ * 
+ * 0.5 represented as a fixed point value.
+ */
+#define CFX_HALF   32768
+
+/**
+ * CFX_MAX:
+ * 
+ * Maximum fixed point value.
+ */
+#define CFX_MAX    0x7fffffff
+
+/**
+ * CFX_MIN:
+ * 
+ * Minimum fixed point value.
+ */
+#define CFX_MIN    0x80000000
 
 /**
  * CFX_PI:
@@ -124,25 +153,92 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
  */
 #define CFX_255 CLUTTER_INT_TO_FIXED (255)
 
+/**
+ * CLUTTER_FIXED_TO_FLOAT:
+ * 
+ * Convert a fixed point value to float.
+ */
 #define CLUTTER_FIXED_TO_FLOAT(x)       ((float) ((int)(x) / 65536.0))
+
+/**
+ * CLUTTER_FIXED_TO_DOUBLE:
+ * 
+ * Convert a fixed point value to double.
+ */
 #define CLUTTER_FIXED_TO_DOUBLE(x)      ((double) ((int)(x) / 65536.0))
 
+/**
+ * CLUTTER_FLOAT_TO_FIXED:
+ * 
+ * Convert a float value to fixed.
+ */
 #define CLUTTER_FLOAT_TO_FIXED(x)       (_clutter_double_to_fixed ((x)))
+
+/**
+ * CLUTTER_FLOAT_TO_INT:
+ * 
+ * Convert a float value to int.
+ */
 #define CLUTTER_FLOAT_TO_INT(x)         (_clutter_double_to_int ((x)))
+
+/**
+ * CLUTTER_FLOAT_TO_UINT:
+ * 
+ * Convert a float value to unsigned int.
+ */
 #define CLUTTER_FLOAT_TO_UINT(x)         (_clutter_double_to_uint ((x)))
 
+/**
+ * CLUTTER_INT_TO_FIXED:
+ * 
+ * Convert an integer value to fixed point.
+ */
 #define CLUTTER_INT_TO_FIXED(x)         ((x) << CFX_Q)
+
+/**
+ * CLUTTER_FIXED_INT:
+ * 
+ * Convert a fixed point value to integer (removing decimal part).
+ */
 #define CLUTTER_FIXED_INT(x)            ((x) >> CFX_Q)
+
+/**
+ * CLUTTER_FIXED_FRACTION:
+ * 
+ * FIXME
+ */
 #define CLUTTER_FIXED_FRACTION(x)       ((x) & ((1 << CFX_Q) - 1))
+
+/**
+ * CLUTTER_FIXED_FLOOR:
+ * 
+ * Round down a fixed point value to an integer.
+ */
 #define CLUTTER_FIXED_FLOOR(x)          (((x) >= 0) ? ((x) >> CFX_Q) \
                                                     : ~((~(x)) >> CFX_Q))
+/**
+ * CLUTTER_FIXED_CEIL:
+ * 
+ * Round up a fixed point value to an integer.
+ */
 #define CLUTTER_FIXED_CEIL(x)           (CLUTTER_FIXED_FLOOR (x + 0xffff))
 
+/**
+ * CLUTTER_FIXED_MUL:
+ * 
+ * Multiply two fixed point values
+ */
 #define CLUTTER_FIXED_MUL(x,y) ((x) >> 8) * ((y) >> 8)
+
+/**
+ * CLUTTER_FIXED_MUL:
+ * 
+ * Devide two fixed point values
+ */
 #define CLUTTER_FIXED_DIV(x,y) ((((x) << 8)/(y)) << 8)
 
-/* some handy short aliases to avoid exessively long lines */
-
+/* Some handy fixed point short aliases to avoid exessively long lines */
+/* FIXME: Remove from public API */
 #define CFX_INT         CLUTTER_FIXED_INT
 #define CFX_MUL         CLUTTER_FIXED_MUL
 #define CFX_DIV         CLUTTER_FIXED_DIV
