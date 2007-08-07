@@ -5143,8 +5143,18 @@ meta_window_notify_focus (MetaWindow *window,
           /* Ungrab click to focus button since the sync grab can interfere
            * with some things you might do inside the focused window, by
            * causing the client to get funky enter/leave events.
+           *
+           * The reason we usually have a passive grab on the window is
+           * so that we can intercept clicks and raise the window in
+           * response. For click-to-focus we don't need that since the
+           * focused window is already raised. When raise_on_click is
+           * FALSE we also don't need that since we don't do anything
+           * when the window is clicked.
+           *
+           * There is dicussion in bugs 102209, 115072, and 461577
            */
-          if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
+          if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK ||
+              !meta_prefs_get_raise_on_click())
             meta_display_ungrab_focus_window_button (window->display, window);
         }
     }
@@ -5183,8 +5193,9 @@ meta_window_notify_focus (MetaWindow *window,
           /* move out of FOCUSED_WINDOW layer */
           meta_window_update_layer (window);
 
-          /* Re-grab for click to focus, if necessary */
-          if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK)
+          /* Re-grab for click to focus and raise-on-click, if necessary */
+          if (meta_prefs_get_focus_mode () == META_FOCUS_MODE_CLICK ||
+              !meta_prefs_get_raise_on_click ())
             meta_display_grab_focus_window_button (window->display, window);
        }
     }
