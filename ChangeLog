@@ -1,3 +1,12 @@
+2007-08-06  Thomas Thurman  <thomas@thurman.org.uk>
+
+	If KEY_AUTO_RAISE_DELAY is undefined or non-integer, it is not treated
+	as zero.
+
+	* src/prefs.c (meta_prefs_init): check type of key, and behave sensibly
+	if it's unexpected.
+	* src/prefs.c (find_and_update_list_binding): remove old comment.
+
 2007-08-03  Frederic Crozat  <fcrozat@mandriva.com>
 
 	* src/delete.c: Fix mangled window title in "Force Quit"

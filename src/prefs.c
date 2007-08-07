@@ -364,6 +364,7 @@ meta_prefs_init (void)
   GError *err = NULL;
   char *str_val;
   int int_val;
+  GConfValue *gconf_val;
   gboolean bool_val, bool_val_2;
   gboolean update_visual;
   gboolean update_audible;
@@ -422,16 +423,18 @@ meta_prefs_init (void)
   if (get_bool (KEY_AUTO_RAISE, &bool_val))
     update_auto_raise (bool_val);
 
-  /* FIXME: Since auto_raise_delay of 0 is valid and gconf_client_get_int
-   * silently returns that value when KEY_AUTO_RAISE_DELAY doesn't exist,
-   * we should be using gconf_client_get() instead if we cared about
-   * careful error checking of the key-doesn't-exist case.  Since this
-   * setting is crap, though, I'm adding a FIXME instead of fixing it.  ;-)
-   */
-  int_val = gconf_client_get_int (default_client, KEY_AUTO_RAISE_DELAY,
+  gconf_val = gconf_client_get (default_client, KEY_AUTO_RAISE_DELAY,
 				  &err);
   cleanup_error (&err);
-  update_auto_raise_delay (int_val);
+  if (gconf_val)
+    {
+      if (gconf_val->type == GCONF_VALUE_INT)
+        update_auto_raise_delay (gconf_value_get_int (gconf_val));
+      else
+        meta_warning(_("Type of %s was not integer"), KEY_AUTO_RAISE_DELAY);
+
+      gconf_value_free (gconf_val);
+    }
   
 
   str_val = gconf_client_get_string (default_client, KEY_THEME,
@@ -2549,7 +2552,6 @@ find_and_update_list_binding (MetaKeyPref *bindings,
 
   name_without_suffix[strlen(name_without_suffix) - strlen(KEY_LIST_BINDINGS_SUFFIX)] = 0;
 
-  /* FIXME factor out dupld code */
   if (*name_without_suffix == '/')
     key = relative_key (name_without_suffix);
   else
