@@ -626,7 +626,7 @@ clutter_sqrti (gint number)
      * elsewhere in clutter is not good enough, and 10.22 is used instead.
      */
     ClutterFixed x;
-    unsigned long y1;        /* 10.22 fixed point */
+    unsigned long y_1;        /* 10.22 fixed point */
     unsigned long f = 0x600000; /* '1.5' as 10.22 fixed */
 
     union
@@ -658,11 +658,11 @@ clutter_sqrti (gint number)
     flt2.i &= 0x7FFFFF;
 
     /* Now we correct the estimate, only single iterration is needed */
-    y1 = (flt2.i >> 11) * (flt2.i >> 11);
-    y1 = (y1 >> 8) * (x >> 8);
+    y_1 = (flt2.i >> 11) * (flt2.i >> 11);
+    y_1 = (y_1 >> 8) * (x >> 8);
 
-    y1 = f - y1;
-    flt2.i = (flt2.i >> 11) * (y1 >> 11);
+    y_1 = f - y_1;
+    flt2.i = (flt2.i >> 11) * (y_1 >> 11);
 
     /* Invert, round and convert from 10.22 to an integer
      * 0x1e3c68 is a magical rounding constant that produces slightly
