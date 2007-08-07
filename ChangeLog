@@ -1,3 +1,7 @@
+2007-08-07  Thomas Thurman  <thomas@thurman.org.uk>
+
+        * NEWS: 2.19.55 release.
+	
 2007-08-06  Thomas Thurman  <thomas@thurman.org.uk>
 
 	If KEY_AUTO_RAISE_DELAY is undefined or non-integer, it is not treated

@@ -1,3 +1,22 @@
+2.19.55
+=======
+
+Thanks to Frederic Crozat, Matthias Clasen, and Thomas Thurman for improvements
+in this release.
+
+ - Noninteger auto-raise delay is not assumed to be zero (Thomas) (#377491)
+ - Fix mangled window title in "Force Quit" (Frederic) (#462734)
+ - "Close" can appear at any point in the window menu, and now appears
+   at the bottom (Thomas) (#104026)
+ - Windows which are always on top have "stick" insensitive (Thomas) (#460997)
+ - All bitfields in window structure are together for optimisation (Thomas)
+   (#450271)
+ - Use the correct directory when installing keybindings (Matthias) (#454055)
+
+Translations
+  Alexander Shopov (bg), Jorge González (es), Iñaki Larrañaga Murgoitio (eu),
+  Ilkka Tuohela (fi), Theppitak Karoonboonyanan (th)
+
 2.19.34
 =======
 
