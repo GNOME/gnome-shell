@@ -1,5 +1,11 @@
 2007-08-07  Matthew Allum  <mallum@openedhand.com>
 
+	* NEWS:
+	* README:
+	More updates ready for 0.4.0
+
+2007-08-07  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-fixed.c:
 	* clutter/clutter-fixed.h:
 	Add documentation.

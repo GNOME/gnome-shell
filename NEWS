@@ -1,13 +1,29 @@
-Clutter 0.4.0 (XX/08/2007)
+Clutter 0.4.0 (07/08/2007)
 ========================
 
  * List of changes between 0.3.1 and 0.4.0
 
    o Many documentation additions and improvements.
 
-   o ClutterBehaviourEllipse API and internals improvements 
+   o Display DPI now honours on backends its can be queried. 
+
+   o Various big endian related fixes.
+
+   o ClutterBehaviourEllipse and ClutterBehaviourRotate API and
+   internals improvements.
 
    o Add basic tslib support to eglnative backend (for touchscreen events)
+
+   o clutter_stage_get_actor_at_pos should now work on 16bpp displays.
+
+   o New ClutterEffect rotation calls.
+
+   o Allowing user resizing of the stage now optional.
+    (implemented by glx backend only currently)
+
+   o ClutterEntry UTF8 fixes and improved automatic initial sizing.
+
+   o Make ClutterActor GInitiallyUnowned.
 
    o New ClutterBox API: each box has now a colour and a margin (distance
      between the inner-border and the children); plus, each packed child
@@ -29,6 +45,7 @@ Clutter 0.4.0 (XX/08/2007)
    o #414 - ClutterEntry invisible if size not set		
    o #434 - clutter_color_from_pixel incorrectly interprets alpha value
    o #435 - clutter_color_subtract does the opposite of its documentation
+   o #436 - clutter-behaviour-depth always perform "from deep to shallow"
 
 Clutter 0.3.1 (06/07/2007)
 ========================

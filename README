@@ -1,4 +1,4 @@
-Clutter 0.3 README.
+Clutter 0.4 README.
 ===================
 
 Clutter it an open source software library for creating fast, visually
@@ -133,7 +133,8 @@ Release Notes for Clutter 0.4.0
 -------------------------------
 
 * clutter_actor_show_all does not recurse for groups at least (this is to
-  match the original group_show_all behaviour)
+  match the original group_show_all behaviour). This is like 0.3 but was
+  never noted.
 
 * ClutterBox API has changed: clutter_box_pack_start() and
   clutter_box_pack_end() have been removed in favour of the clutter_box_pack()
@@ -143,6 +144,9 @@ Release Notes for Clutter 0.4.0
   removed from the API, as they just created confusion and the wrong
   idea that Clutter is either thread-safe or thread-aware. Full
   thread-awareness is arriving in the next revision (see bug #429).
+
+* The ClutterBehaviourRotate and ClutterBehaviourEllsipse APIs have been
+  overhauled.
 
 Release Notes for Clutter 0.3.1
 -------------------------------
