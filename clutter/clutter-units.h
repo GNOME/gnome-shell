@@ -51,6 +51,14 @@
 
 G_BEGIN_DECLS
 
+/**
+ * ClutterUnit:
+ *
+ * Device independent unit used by Clutter. The value held can be transformed
+ * into other units, likes pixels.
+ *
+ * Since: 0.4
+ */
 typedef gint32 ClutterUnit;
 
 /*

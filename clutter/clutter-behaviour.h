@@ -61,13 +61,15 @@ typedef struct _ClutterBehaviourPrivate ClutterBehaviourPrivate;
 typedef struct _ClutterBehaviourClass   ClutterBehaviourClass;
 
 /**
- * ClutterBehaviourFunction:
+ * ClutterBehaviourForeachFunc:
  * @behaviour: the #ClutterBehaviour
  * @actor: an actor driven by @behaviour
  * @data: optional data passed to the function
  *
  * This function is passed to clutter_behaviour_foreach_actor() and
  * will be called for each actor driven by @behaviour.
+ *
+ * Since: 0.2
  */
 typedef void (*ClutterBehaviourForeachFunc) (ClutterBehaviour *behaviour,
                                              ClutterActor     *actor,
@@ -80,19 +82,36 @@ struct _ClutterBehaviour
   ClutterBehaviourPrivate *priv;
 };
 
+/**
+ * ClutterBehaviourClass
+ * @alpha_notify: virtual function, called each time the #ClutterAlpha
+ *   computes a new alpha value; the actors to which the behaviour applies
+ *   should be changed in this function. Every subclass of #ClutterBehaviour
+ *   must implement this virtual function
+ * @applied: signal class handler for the ClutterBehaviour::applied signal
+ * @removed: signal class handler for the ClutterBehaviour::removed signal
+ *
+ * Base class for behaviours.
+ *
+ * Since: 0.2
+ */
 struct _ClutterBehaviourClass
 {
+  /*< private >*/
   GObjectClass parent_class;
 
+  /*< public >*/
   /* vfunc, not signal */
   void (*alpha_notify) (ClutterBehaviour *behave,
                         guint32           alpha_value);
 
+  /* signals */
   void (*applied)  (ClutterBehaviour *behave,
 		    ClutterActor     *actor);
   void (*removed)  (ClutterBehaviour *behave,
 		    ClutterActor     *actor);
 
+  /*< private >*/
   /* padding, for future expansion */
   void (*_clutter_behaviour1) (void);
   void (*_clutter_behaviour2) (void);

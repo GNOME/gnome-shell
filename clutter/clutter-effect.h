@@ -34,6 +34,15 @@
 
 G_BEGIN_DECLS
 
+/**
+ * ClutterEffectCompleteFunc:
+ * @actor: a #ClutterActor
+ * @user_data: user data
+ *
+ * Callback function invoked when an effect is complete.
+ *
+ * Since: 0.4
+ */
 typedef void (*ClutterEffectCompleteFunc) (ClutterActor *actor,
 					   gpointer      user_data);
 
@@ -66,17 +75,16 @@ typedef struct _ClutterEffectTemplateClass      ClutterEffectTemplateClass;
 
 struct _ClutterEffectTemplate
 {
+  /*< private >*/
   GObject parent_instance;
 
-  /*< private >*/
   ClutterEffectTemplatePrivate *priv;
 };
 
 struct _ClutterEffectTemplateClass
 {
-  GObjectClass parent_class;
-
   /*< private >*/
+  GObjectClass parent_class;
 
   /* padding, for future expansion */
   void (*_clutter_reserved1) (void);
@@ -150,4 +158,3 @@ ClutterTimeline * clutter_effect_rotate_z (ClutterEffectTemplate     *template_,
 G_END_DECLS
 
 #endif /* _CLUTTER_EFFECT */
-

@@ -616,6 +616,16 @@ clutter_behaviour_rotate_get_bounds (ClutterBehaviourRotate *rotate,
     *angle_end = CLUTTER_FIXED_TO_DOUBLE (priv->angle_end);
 }
 
+/**
+ * clutter_behaviour_rotate_set_bounds:
+ * @rotate: a #ClutterBehaviourRotate
+ * @angle_begin: initial angle
+ * @angle_end: final angle
+ *
+ * Sets the initial and final angles of a rotation behaviour.
+ *
+ * Since: 0.4
+ */
 void
 clutter_behaviour_rotate_set_bounds (ClutterBehaviourRotate *rotate,
                                      gdouble                 angle_begin,
@@ -629,7 +639,7 @@ clutter_behaviour_rotate_set_bounds (ClutterBehaviourRotate *rotate,
 }
 
 /**
- * clutter_behaviour_rotate_get_bounds:
+ * clutter_behaviour_rotate_get_boundsx:
  * @rotate: a #ClutterBehaviourRotate
  * @angle_begin: return value for the initial angle
  * @angle_end: return value for the final angle
@@ -657,6 +667,16 @@ clutter_behaviour_rotate_get_boundsx (ClutterBehaviourRotate *rotate,
     *angle_end = priv->angle_end;
 }
 
+/**
+ * clutter_behaviour_rotate_set_boundsx:
+ * @rotate: a #ClutterBehaviourRotate
+ * @angle_begin: initial angle, in fixed point notation
+ * @angle_end: final angle, in fixed point notation
+ *
+ * Fixed point version of clutter_behaviour_rotate_set_bounds().
+ *
+ * Since: 0.4
+ */
 void
 clutter_behaviour_rotate_set_boundsx (ClutterBehaviourRotate *rotate,
                                       ClutterFixed            angle_begin,

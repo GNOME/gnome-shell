@@ -35,6 +35,15 @@ G_BEGIN_DECLS
 
 typedef struct _ClutterColor ClutterColor;
 
+/**
+ * ClutterColor:
+ * @red: red component, between 0 and 255
+ * @green: green component, between 0 and 255
+ * @blue: blue component, between 0 and 255
+ * @alpha: alpha component, between 0 and 255
+ *
+ * Color representation.
+ */
 struct _ClutterColor
 {
   guint8 red;

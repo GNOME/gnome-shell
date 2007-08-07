@@ -33,6 +33,7 @@
 
 G_BEGIN_DECLS
 
+#define CLUTTER_TYPE_PERSPECTIVE  (clutter_perspective_get_type ())
 #define CLUTTER_TYPE_STAGE (clutter_stage_get_type())
 
 #define CLUTTER_STAGE(obj) \
@@ -61,22 +62,25 @@ G_BEGIN_DECLS
 #define CLUTTER_STAGE_HEIGHT() \
  clutter_actor_get_height (clutter_stage_get_default ())
 
+typedef struct _ClutterPerspective  ClutterPerspective;
 typedef struct _ClutterStage        ClutterStage;
 typedef struct _ClutterStageClass   ClutterStageClass;
 typedef struct _ClutterStagePrivate ClutterStagePrivate;
 
 struct _ClutterStage
 {
+  /*< private >*/
   ClutterGroup parent_instance;
   
-  /*< private >*/
   ClutterStagePrivate *priv;
 }; 
 
 struct _ClutterStageClass 
 {
+  /*< private >*/
   ClutterGroupClass parent_class;
 
+  /*< public >*/
   /* vfuncs, not signals */
   void          (* set_fullscreen)     (ClutterStage *stage,
                                         gboolean      fullscreen);
@@ -119,10 +123,19 @@ struct _ClutterStageClass
   gpointer _padding_dummy[32];
 };
 
-#define CLUTTER_TYPE_PERSPECTIVE  (clutter_perspective_get_type ())
 
-typedef struct _ClutterPerspective ClutterPerspective;
 
+/**
+ * ClutterPerspective:
+ * @fovy: FIXME
+ * @aspect: FIXME
+ * @z_near: FIXME
+ * @z_far: FIXME
+ *
+ * Stage perspective definition
+ *
+ * Since: 0.4
+ */
 struct _ClutterPerspective
 {
   ClutterFixed fovy;
@@ -134,6 +147,7 @@ struct _ClutterPerspective
 GType               clutter_perspective_get_type (void) G_GNUC_CONST;
 ClutterPerspective *clutter_perspective_copy     (const ClutterPerspective *perspective);
 void                clutter_perspective_free     (ClutterPerspective       *perspective);
+
 GType         clutter_stage_get_type          (void) G_GNUC_CONST;
 
 ClutterActor *clutter_stage_get_default       (void);

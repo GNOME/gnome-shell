@@ -69,10 +69,24 @@ struct _ClutterEntry
   ClutterEntryPrivate   *priv;
 };
 
+/**
+ * ClutterEntryClass:
+ * @paint_cursor: virtual function for subclasses to use to draw a custom
+ *   cursor instead of the default one
+ * @text_changed: signal class handler for ClutterEntry::text-changed
+ * @cursor_event: signal class handler for ClutterEntry::cursor-event
+ * @activate: signal class handler for ClutterEntry::activate
+ *
+ * Class fo entry actors.
+ *
+ * Since: 0.4
+ */
 struct _ClutterEntryClass 
 {
+  /*< private >*/
   ClutterActorClass parent_class;
   
+  /*< public >*/
   /* vfuncs, not signals */
   void (* paint_cursor) (ClutterEntry    *entry);
   

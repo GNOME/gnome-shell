@@ -41,10 +41,24 @@ G_BEGIN_DECLS
 typedef struct _ClutterContainer        ClutterContainer; /* dummy */
 typedef struct _ClutterContainerIface   ClutterContainerIface;
 
+/**
+ * ClutterContainerIface:
+ * @add: virtual function for adding an actor to the container
+ * @remove: virtual function for removing an actor from the container
+ * @foreach: virtual function for iterating over the container's children
+ * @actor_added: signal class handler for ClutterContainer::actor_added
+ * @actor_removed: signal class handler for ClutterContainer::actor_removed
+ * 
+ * Base interface for container actors.
+ *
+ * Since: 0.4
+ */
 struct _ClutterContainerIface
 {
+  /*< private >*/
   GTypeInterface g_iface;
 
+  /*< public >*/
   void (* add)           (ClutterContainer *container,
                           ClutterActor     *actor);
   void (* remove)        (ClutterContainer *container,

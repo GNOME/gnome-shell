@@ -61,17 +61,28 @@ typedef struct _ClutterBehaviourPathClass   ClutterBehaviourPathClass;
  
 struct _ClutterBehaviourPath
 {
+  /*< private >*/
   ClutterBehaviour             parent;
   ClutterBehaviourPathPrivate *priv;
 };
 
+/**
+ * ClutterBehaviourPathClass
+ * @knot_reached: signal class handler for the
+ *   ClutterBehaviourPath::knot_reached signal
+ *
+ * Since 0.2
+ */
 struct _ClutterBehaviourPathClass
 {
+  /*< private >*/
   ClutterBehaviourClass   parent_class;
 
+  /*< public >*/
   void (*knot_reached) (ClutterBehaviourPath *pathb,
                         const ClutterKnot    *knot);
 
+  /*< private >*/
   void (*_clutter_path_1) (void);
   void (*_clutter_path_2) (void);
   void (*_clutter_path_3) (void);

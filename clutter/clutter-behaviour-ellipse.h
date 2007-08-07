@@ -61,17 +61,31 @@ typedef struct _ClutterBehaviourEllipseClass   ClutterBehaviourEllipseClass;
  
 struct _ClutterBehaviourEllipse
 {
+  /*< private >*/
   ClutterBehaviour parent_instance;
   ClutterBehaviourEllipsePrivate *priv;
 };
 
+/**
+ * ClutterBehaviourEllipseClass
+ * @knot_reached: signal class handler for the
+ *   ClutterBehaviourEllipse::knot_reached signal
+ *
+ * Ellipse behaviour class
+ *
+ * Since: 0.4
+ */
 struct _ClutterBehaviourEllipseClass
 {
+  /*< private >*/
   ClutterBehaviourClass   parent_class;
 
+  /*< public >*/
   void (*knot_reached) (ClutterBehaviourEllipse *ellipseb,
                         const ClutterKnot       *knot);
 
+  /*< private >*/
+  /* padding, for future expansion */
   void (*_clutter_ellipse_1) (void);
   void (*_clutter_ellipse_2) (void);
   void (*_clutter_ellipse_3) (void);

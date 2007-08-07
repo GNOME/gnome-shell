@@ -63,10 +63,24 @@ typedef enum {
 typedef struct _ClutterLayout           ClutterLayout; /* dummy */
 typedef struct _ClutterLayoutIface      ClutterLayoutIface;
 
+/**
+ * ClutterLayoutIface:
+ * @get_layout_flags: Retrieve the layout mode used by the actor
+ * @width_for_height: Compute width for a given height
+ * @height_for_width: Compute height for a given width
+ * @natural_request: Natural size of an actor
+ * @tune_request: Iterative size allocation
+ *
+ * Interface for extended layout support in actors.
+ *
+ * Since: 0.4
+ */
 struct _ClutterLayoutIface
 {
+  /*< private >*/
   GTypeInterface g_iface;
 
+  /*< public >*/
   /* Retrieve the layout mode used by the actor */
   ClutterLayoutFlags (* get_layout_flags) (ClutterLayout *layout);
   

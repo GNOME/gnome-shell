@@ -33,9 +33,8 @@ typedef struct _ClutterBoxClass         ClutterBoxClass;
 
 struct _ClutterBox
 {
-  ClutterActor parent_instance;
-
   /*< private >*/
+  ClutterActor parent_instance;
   
   /* We need to put these in the instance structure, since this
    * is an abstract class meant to be subclassed; think of these
@@ -58,16 +57,30 @@ struct _ClutterBox
   ClutterPadding default_padding;
 };
 
+/**
+ * ClutterBoxClass:
+ * @pack_child: virtual function, called when packing a new child. All
+ *   #ClutterBox subclasses must implement this function
+ * @unpack_child: virtual function, called when unpacking a child. All
+ *   #ClutterBox subclasses must implement this function
+ *
+ * Base class for layout containers
+ *
+ * Since: 0.4
+ */
 struct _ClutterBoxClass
 {
+  /*< private >*/
   ClutterActorClass parent_class;
 
+  /*< public >*/
   /* vfuncs, not signals */
   void (* pack_child)   (ClutterBox      *box,
                          ClutterBoxChild *child);
   void (* unpack_child) (ClutterBox      *box,
                          ClutterBoxChild *child);
 
+  /*< private >*/
   /* padding, for future expansion */
   void (*_clutter_reserved1) (void);
   void (*_clutter_reserved2) (void);

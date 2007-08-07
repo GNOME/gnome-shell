@@ -38,6 +38,16 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_TEXTURE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_TEXTURE))
 #define CLUTTER_TEXTURE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_TEXTURE, ClutterTextureClass))
 
+/**
+ * ClutterTextureError:
+ * @CLUTTER_TEXTURE_ERROR_OUT_OF_MEMORY: OOM condition
+ * @CLUTTER_TEXTURE_ERROR_NO_YUV: YUV operation attempted but no YUV support
+ *   found
+ *
+ * Error enumeration for #ClutterTexture
+ *
+ * Since: 0.4
+ */
 typedef enum {
   CLUTTER_TEXTURE_ERROR_OUT_OF_MEMORY,
   CLUTTER_TEXTURE_ERROR_NO_YUV
@@ -52,6 +62,7 @@ typedef struct _ClutterTexturePrivate ClutterTexturePrivate;
 
 struct _ClutterTexture
 {
+  /*< private >*/
   ClutterActor         parent;
 
   ClutterTexturePrivate *priv;
@@ -66,6 +77,7 @@ struct _ClutterTextureClass
 		         gint            height);
   void (*pixbuf_change) (ClutterTexture *texture);
 
+  /*< private >*/
   /* padding, for future expansion */
   void (*_clutter_texture1) (void);
   void (*_clutter_texture2) (void);
@@ -75,6 +87,17 @@ struct _ClutterTextureClass
   void (*_clutter_texture6) (void);
 };
 
+/**
+ * ClutterTextureFlags:
+ * @CLUTTER_TEXTURE_RGB_FLAG_BGR: FIXME
+ * @CLUTTER_TEXTURE_RGB_FLAG_PREMULT: FIXME
+ * @CLUTTER_TEXTURE_YUV_FLAG_YUV2: FIXME
+ *
+ * Flags for clutter_texture_set_from_rgb_data() and
+ * clutter_texture_set_from_rgb_data().
+ *
+ * Since: 0.4
+ */
 typedef enum { /*< prefix=CLUTTER_TEXTURE >*/
     CLUTTER_TEXTURE_RGB_FLAG_BGR     = 1 << 1,
     CLUTTER_TEXTURE_RGB_FLAG_PREMULT = 1 << 2, /* FIXME: not handled */

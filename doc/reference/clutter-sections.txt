@@ -414,7 +414,6 @@ CLUTTER_STAGE_HEIGHT
 ClutterPerspective
 clutter_perspective_copy
 clutter_perspective_free
-ClutterStageClass
 clutter_stage_get_default
 clutter_stage_set_color
 clutter_stage_get_color
@@ -435,6 +434,7 @@ clutter_stage_set_user_resizable
 clutter_stage_get_user_resizable
 <SUBSECTION Standard>
 ClutterStage
+ClutterStageClass
 CLUTTER_STAGE
 CLUTTER_IS_STAGE
 CLUTTER_TYPE_STAGE
@@ -451,7 +451,6 @@ clutter_perspective_get_type
 <SECTION>
 <FILE>clutter-timeline</FILE>
 <TITLE>ClutterTimeline</TITLE>
-ClutterTimelineClass
 clutter_timeline_new
 clutter_timeline_clone
 clutter_timeline_set_speed
@@ -472,6 +471,7 @@ clutter_timeline_set_delay
 clutter_timeline_get_delay
 <SUBSECTION Standard>
 ClutterTimeline
+ClutterTimelineClass
 CLUTTER_TIMELINE
 CLUTTER_IS_TIMELINE
 CLUTTER_TYPE_TIMELINE
@@ -824,7 +824,6 @@ clutter_event_get_type
 <SECTION>
 <FILE>clutter-main</FILE>
 <TITLE>General</TITLE>
-CLUTTER_INIT_ERROR
 ClutterInitError
 clutter_init
 clutter_init_with_args
@@ -835,6 +834,8 @@ clutter_main
 clutter_main_quit
 clutter_main_level
 clutter_get_timestamp
+<SUBSECTION Standard>
+CLUTTER_INIT_ERROR
 <SUBSECTION Private>
 clutter_init_error_quark
 clutter_base_init

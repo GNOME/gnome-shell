@@ -33,9 +33,21 @@ G_BEGIN_DECLS
 
 #define CLUTTER_INIT_ERROR      (clutter_init_error_quark ())
 
+/**
+ * ClutterInitError:
+ * @CLUTTER_INIT_SUCCESS: Initialisation successful
+ * @CLUTTER_INIT_ERROR_UNKNOWN: Unknown error
+ * @CLUTTER_INIT_ERROR_THREADS: Thread initialisation failed
+ * @CLUTTER_INIT_ERROR_BACKEND: Backend initialisation failed
+ * @CLUTTER_INIT_ERROR_INTERNAL: Internal error
+ *
+ * Error conditions returned by clutter_init() and clutter_init_with_args().
+ *
+ * Since: 0.2
+ */
 typedef enum {
   CLUTTER_INIT_SUCCESS        =  1,
-  CLUTTER_INIT_ERROR_UNKOWN   =  0,
+  CLUTTER_INIT_ERROR_UNKNOWN  =  0,
   CLUTTER_INIT_ERROR_THREADS  = -1,
   CLUTTER_INIT_ERROR_BACKEND  = -2,
   CLUTTER_INIT_ERROR_INTERNAL = -3

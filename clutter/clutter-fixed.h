@@ -155,6 +155,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 
 /**
  * CLUTTER_FIXED_TO_FLOAT:
+ * @x: a fixed point value
  * 
  * Convert a fixed point value to float.
  */
@@ -162,6 +163,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 
 /**
  * CLUTTER_FIXED_TO_DOUBLE:
+ * @x: a fixed point value
  * 
  * Convert a fixed point value to double.
  */
@@ -169,6 +171,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 
 /**
  * CLUTTER_FLOAT_TO_FIXED:
+ * @x: a floating point value
  * 
  * Convert a float value to fixed.
  */
@@ -176,6 +179,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 
 /**
  * CLUTTER_FLOAT_TO_INT:
+ * @x: a floating point value
  * 
  * Convert a float value to int.
  */
@@ -183,6 +187,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 
 /**
  * CLUTTER_FLOAT_TO_UINT:
+ * @x: a floating point value
  * 
  * Convert a float value to unsigned int.
  */
@@ -190,6 +195,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 
 /**
  * CLUTTER_INT_TO_FIXED:
+ * @x: an integer value
  * 
  * Convert an integer value to fixed point.
  */
@@ -197,6 +203,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 
 /**
  * CLUTTER_FIXED_INT:
+ * @x: a fixed point value
  * 
  * Convert a fixed point value to integer (removing decimal part).
  */
@@ -204,6 +211,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 
 /**
  * CLUTTER_FIXED_FRACTION:
+ * @x: a fixed point value
  * 
  * FIXME
  */
@@ -211,6 +219,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 
 /**
  * CLUTTER_FIXED_FLOOR:
+ * @x: a fixed point value
  * 
  * Round down a fixed point value to an integer.
  */
@@ -218,6 +227,7 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
                                                     : ~((~(x)) >> CFX_Q))
 /**
  * CLUTTER_FIXED_CEIL:
+ * @x: a fixed point value
  * 
  * Round up a fixed point value to an integer.
  */
@@ -225,15 +235,19 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 
 /**
  * CLUTTER_FIXED_MUL:
+ * @x: a fixed point value
+ * @y: a fixed point value
  * 
  * Multiply two fixed point values
  */
 #define CLUTTER_FIXED_MUL(x,y) ((x) >> 8) * ((y) >> 8)
 
 /**
- * CLUTTER_FIXED_MUL:
+ * CLUTTER_FIXED_DIV:
+ * @x: a fixed point value
+ * @y: a fixed point value
  * 
- * Devide two fixed point values
+ * Divide two fixed point values
  */
 #define CLUTTER_FIXED_DIV(x,y) ((((x) << 8)/(y)) << 8)
 
