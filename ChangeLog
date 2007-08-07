@@ -1,5 +1,9 @@
 2007-08-07  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* configure.ac: Bump up to 0.4.0.
+
+2007-08-07  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-entry.c:
 	* clutter/clutter-fixed.c:
 	* clutter/pango/pangoclutter.h: Small fixes for passing the
