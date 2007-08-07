@@ -63,6 +63,13 @@ typedef struct _ClutterActorClass    ClutterActorClass;
 typedef struct _ClutterActorBox      ClutterActorBox;
 typedef struct _ClutterActorPrivate  ClutterActorPrivate;
 
+/**
+ * ClutterCallback:
+ * @actor: a #ClutterActor
+ * @data: user data
+ *
+ * Generic callback
+ */
 typedef void (*ClutterCallback) (ClutterActor *actor, gpointer data);
 #define CLUTTER_CALLBACK(f)	((ClutterCallback) (f))
 
@@ -122,10 +129,42 @@ struct _ClutterActor
   ClutterActorPrivate *priv;
 };
 
+/**
+ * ClutterActorClass:
+ * @show: signal class handler for the ClutterActor::show signal
+ * @show_all: virtual function for containers and composite actors, to
+ *   determine which children should be shown when calling
+ *   clutter_actor_show_all() on the actor. Defaults to calling
+ *   clutter_actor_show().
+ * @hide: signal class handler for the ClutterActor::hide signal
+ * @hide_all: virtual function for containers and composite actors, to
+ *   determine which children should be shown when calling
+ *   clutter_actor_hide_all() on the actor. Defaults to calling
+ *   clutter_actor_show().
+ * @realize: virtual function, used to allocate resources for the actor;
+ *   it should chain up to the parent's implementation
+ * @unrealize: virtual function, used to deallocate resources allocated
+ *   in ::realized; it should chain up to the parent's implementation
+ * @paint: virtual function, used to paint the actor
+ * @request_coords: virtual function, used when setting the coordinates
+ *   of an actor
+ * @query_coords: virtual function, used when querying the actor for
+ *   its coordinates
+ * @set_depth: virtual function, used when setting the depth
+ * @get_depth: virtual function, used when getting the depth
+ * @parent_set: signal class closure for the ClutterActor::parent-set
+ *   signal
+ * @destroy: signal class closure for the ClutterActor::destroy signal
+ * @pick: virtual functions, used to draw an outline of the actor
+ *
+ * Base class for actors.
+ */
 struct _ClutterActorClass
 {
+  /*< private >*/
   GInitiallyUnownedClass parent_class;
 
+  /*< public >*/
   void (* show)            (ClutterActor        *actor);
   void (* show_all)        (ClutterActor        *actor);
   void (* hide)            (ClutterActor        *actor);

@@ -111,8 +111,6 @@ clutter_behaviour_get_type
 <SECTION>
 <FILE>clutter-alpha</FILE>
 <TITLE>ClutterAlpha</TITLE>
-ClutterAlpha
-ClutterAlphaClass
 clutter_alpha_new
 clutter_alpha_new_full
 clutter_alpha_get_alpha
@@ -152,6 +150,8 @@ CLUTTER_TYPE_ALPHA
 CLUTTER_ALPHA_CLASS
 CLUTTER_IS_ALPHA_CLASS
 CLUTTER_ALPHA_GET_CLASS
+ClutterAlpha
+ClutterAlphaClass
 <SUBSECTION Private>
 ClutterAlphaPrivate
 clutter_alpha_get_type

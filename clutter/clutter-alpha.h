@@ -61,6 +61,16 @@ typedef struct _ClutterAlpha        ClutterAlpha;
 typedef struct _ClutterAlphaClass   ClutterAlphaClass; 
 typedef struct _ClutterAlphaPrivate ClutterAlphaPrivate;
 
+/**
+ * ClutterAlphaFunc:
+ * @alpha: a #ClutterAlpha
+ * @user_data: user data passed to the function
+ *
+ * A function of time, which returns a value between 0 and
+ * %CLUTTER_ALPHA_MAX_ALPHA
+ *
+ * Since: 0.2
+ */
 typedef guint32 (*ClutterAlphaFunc) (ClutterAlpha *alpha,
                                      gpointer      user_data); 
 
@@ -82,7 +92,13 @@ struct _ClutterAlphaClass
   void (*_clutter_alpha_5) (void);
 }; 
 
-
+/**
+ * CLUTTER_ALPHA_MAX_ALPHA:
+ *
+ * Maximum value returned by #ClutterAlphaFunc
+ *
+ * Since: 0.2
+ */
 #define CLUTTER_ALPHA_MAX_ALPHA 0xffff
 
 GType clutter_alpha_get_type (void) G_GNUC_CONST;
