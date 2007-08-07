@@ -1,3 +1,7 @@
+2007-08-07  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Shuffle around a bit the symbols.
+
 2007-08-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Update with the new ClutterBox API.

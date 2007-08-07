@@ -1,3 +1,26 @@
+2007-08-07  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.h:
+	* clutter/clutter-alpha.h:
+	* clutter/clutter-behaviour-ellipse.[ch]:
+	* clutter/clutter-behaviour-path.h:
+	* clutter/clutter-behaviour-rotate.c:
+	* clutter/clutter-behaviour.h:
+	* clutter/clutter-box.h:
+	* clutter/clutter-color.h:
+	* clutter/clutter-container.h:
+	* clutter/clutter-effect.h:
+	* clutter/clutter-entry.h:
+	* clutter/clutter-fixed.h:
+	* clutter/clutter-layout.h:
+	* clutter/clutter-main.h:
+	* clutter/clutter-stage.h:
+	* clutter/clutter-texture.h:
+	* clutter/clutter-units.h:
+	* clutter/clutter-version.h.in:
+	* clutter/glx/clutter-glx.h: Documentation additions and
+	various fixes.
+
 2007-08-07  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-behaviour-ellipse.c:
