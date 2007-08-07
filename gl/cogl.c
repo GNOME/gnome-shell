@@ -453,7 +453,7 @@ cogl_perspective (ClutterFixed fovy,
 {
   ClutterFixed xmax, ymax;
   ClutterFixed x, y, c, d;
-  ClutterFixed fovy_rad_half = CFX_MUL (fovy, CFX_PI) / 360;
+  ClutterFixed fovy_rad_half = CLUTTER_FIXED_MUL (fovy, CFX_PI) / 360;
 
   GLfloat m[16];
   
@@ -468,14 +468,14 @@ cogl_perspective (ClutterFixed fovy,
    * 2) When working with small numbers, we are loosing significant
    * precision, hence we use clutter_qmulx() here, not the fast macro.
    */
-  ymax = clutter_qmulx (zNear, CFX_DIV (clutter_sinx (fovy_rad_half),
-					clutter_cosx (fovy_rad_half)));
+  ymax = clutter_qmulx (zNear, CLUTTER_FIXED_DIV (clutter_sinx (fovy_rad_half),
+						  clutter_cosx (fovy_rad_half)));
   xmax = clutter_qmulx (ymax, aspect);
 
-  x = CFX_DIV (zNear, xmax);
-  y = CFX_DIV (zNear, ymax);
-  c = CFX_DIV (-(zFar + zNear), ( zFar - zNear));
-  d = CFX_DIV (-(clutter_qmulx (2*zFar, zNear)), (zFar - zNear));
+  x = CLUTTER_FIXED_DIV (zNear, xmax);
+  y = CLUTTER_FIXED_DIV (zNear, ymax);
+  c = CLUTTER_FIXED_DIV (-(zFar + zNear), ( zFar - zNear));
+  d = CLUTTER_FIXED_DIV (-(clutter_qmulx (2*zFar, zNear)), (zFar - zNear));
 
 #define M(row,col)  m[col*4+row]
   M(0,0) = CLUTTER_FIXED_TO_FLOAT (x);
