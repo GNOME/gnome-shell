@@ -1,5 +1,12 @@
 2007-08-07  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-entry.c:
+	* clutter/clutter-fixed.c:
+	* clutter/pango/pangoclutter.h: Small fixes for passing the
+	distcheck phase with extra-strict compiler flags.
+
+2007-08-07  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.h:
 	* clutter/clutter-alpha.h:
 	* clutter/clutter-behaviour-ellipse.[ch]:
