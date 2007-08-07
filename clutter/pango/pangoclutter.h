@@ -24,7 +24,11 @@
 #define PANGOCLUTTER_H__
 
 #define PANGO_ENABLE_BACKEND
+
+/* we always want to disable cast checks */
+#ifndef G_DISABLE_CAST_CHECKS
 #define G_DISABLE_CAST_CHECKS
+#endif
 
 #include <glib-object.h>
 #include <pango/pango.h>
