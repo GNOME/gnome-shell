@@ -32,6 +32,9 @@
  * #ClutterBehaviourEllipse interpolates actors along a path defined by
  *  an ellipse.
  *
+ * Note, on applying an ellipse behaviour to an actor its position will
+ * be set to what is dictated by the ellipses initial position.
+ *
  * Since: 0.4
  */
 

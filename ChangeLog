@@ -1,5 +1,11 @@
 2007-08-07  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/clutter-behaviour-ellipse.c:
+	Add a documentation note regarding ellipse setting 
+	the applied actors position.
+
+2007-08-07  Matthew Allum  <mallum@openedhand.com>
+
 	* NEWS:
 	* README:
 	More updates ready for 0.4.0
