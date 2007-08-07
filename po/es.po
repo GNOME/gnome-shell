@@ -1,16 +1,17 @@
 # Spanish trasnlation for Metacity
+# Copyright © 2001,2002,2003, 2006, 2007 Free Software Foundation, Inc.
+# This file is distributed under the same license as the metacity package.
+#
 # Héctor García Álvarez <hector@scouts-es.org>, 2001.
 # Pablo Gonzalo del Campo <pablodc@bigfoot.com>,2002,2003.
 # Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004, 2005, 2006.
 # Jorge González <jorgegonz@svn.gnome.org>, 2007.
-# Copyright © 2001,2002,2003, 2006, 2007 Free Software Foundation, Inc.
-# This file is distributed under the same license as the metacity package.
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-25 03:37+0100\n"
-"PO-Revision-Date: 2007-06-25 08:12+0200\n"
+"POT-Creation-Date: 2007-08-07 03:38+0100\n"
+"PO-Revision-Date: 2007-08-07 12:18+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -63,14 +64,14 @@ msgstr "Ocurrió un error al interpretar el mensaje «%s» desde el proceso de d
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Ocurrió un error leyendo desde el proceso de diálogo de pantalla: %s\n"
 
-#: ../src/delete.c:348
+#: ../src/delete.c:350
 #, c-format
 msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr ""
 "Ocurrió un error al lanzar metacity-dialog para preguntar acerca de matar "
 "una aplicación: %s\n"
 
-#: ../src/delete.c:456
+#: ../src/delete.c:459
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Ocurrió un error al obtener el nombre del host: %s\n"
@@ -204,120 +205,120 @@ msgstr "Inicializar sesión desde el archivo de salvaguarda"
 msgid "Print version"
 msgstr "Imprimir versión"
 
-#: ../src/main.c:352
+#: ../src/main.c:353
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Falló al inspeccionar el directorio de temas: %s\n"
 
-#: ../src/main.c:368
+#: ../src/main.c:369
 #, c-format
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
 "No se ha podido encontrar un tema. Asegúrese de que %s existe y contiene los "
 "temas usuales.\n"
 
-#: ../src/main.c:428
+#: ../src/main.c:429
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "No se pudo reiniciar: %s\n"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:69
+#: ../src/menu.c:70
 msgid "Mi_nimize"
 msgstr "Mi_nimizar"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:71
+#: ../src/menu.c:72
 msgid "Ma_ximize"
 msgstr "Ma_ximizar"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:73
+#: ../src/menu.c:74
 msgid "Unma_ximize"
 msgstr "_Restaurar"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:75
+#: ../src/menu.c:76
 msgid "Roll _Up"
 msgstr "Enro_llar"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:77
+#: ../src/menu.c:78
 msgid "_Unroll"
 msgstr "De_senrollar"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:79
+#: ../src/menu.c:80
 msgid "_Move"
 msgstr "_Mover"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:81
+#: ../src/menu.c:82
 msgid "_Resize"
 msgstr "Re_dimensionar"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:83
+#: ../src/menu.c:84
 msgid "Move Titlebar On_screen"
 msgstr "Mover la barra de título a la _pantalla"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:86
-msgid "_Close"
-msgstr "_Cerrar"
-
-#. separator
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:89 ../src/menu.c:91
+#: ../src/menu.c:87 ../src/menu.c:89
 msgid "Always on _Top"
 msgstr "Siempre _encima"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:93
+#: ../src/menu.c:91
 msgid "_Always on Visible Workspace"
 msgstr "_Siempre en el área de trabajo visible"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:95
+#: ../src/menu.c:93
 msgid "_Only on This Workspace"
 msgstr "_Sólo en este área de trabajo"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:97
+#: ../src/menu.c:95
 msgid "Move to Workspace _Left"
 msgstr "Mover al área de trabajo de la _izquierda"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:99
+#: ../src/menu.c:97
 msgid "Move to Workspace R_ight"
 msgstr "Mover al área de trabajo de la _derecha"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:101
+#: ../src/menu.c:99
 msgid "Move to Workspace _Up"
 msgstr "Mover al área de trabajo de a_rriba"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:103
+#: ../src/menu.c:101
 msgid "Move to Workspace _Down"
 msgstr "Mover al área de trabajo de a_bajo"
 
-#: ../src/menu.c:197 ../src/prefs.c:2238 ../src/prefs.c:2773
+#. separator
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:105
+msgid "_Close"
+msgstr "_Cerrar"
+
+#: ../src/menu.c:199 ../src/prefs.c:2246 ../src/prefs.c:2780
 #, c-format
 msgid "Workspace %d"
 msgstr "Área de trabajo %d"
 
-#: ../src/menu.c:206
+#: ../src/menu.c:208
 msgid "Workspace 1_0"
 msgstr "Área de trabajo 1_0"
 
-#: ../src/menu.c:208
+#: ../src/menu.c:210
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Área de trabajo %s%d"
 
-#: ../src/menu.c:411
+#: ../src/menu.c:390
 msgid "Move to Another _Workspace"
 msgstr "Mover a _otro área de trabajo"
 
@@ -2402,19 +2403,24 @@ msgstr "Modo de foco de la ventana"
 msgid "Window title font"
 msgstr "Tipografía del título de la ventana"
 
-#: ../src/prefs.c:579 ../src/prefs.c:607 ../src/prefs.c:623 ../src/prefs.c:639
-#: ../src/prefs.c:655 ../src/prefs.c:671 ../src/prefs.c:687 ../src/prefs.c:703
-#: ../src/prefs.c:723 ../src/prefs.c:739 ../src/prefs.c:755 ../src/prefs.c:773
-#: ../src/prefs.c:789 ../src/prefs.c:808 ../src/prefs.c:824 ../src/prefs.c:859
-#: ../src/prefs.c:875 ../src/prefs.c:892 ../src/prefs.c:908 ../src/prefs.c:924
-#: ../src/prefs.c:940 ../src/prefs.c:956 ../src/prefs.c:971 ../src/prefs.c:986
-#: ../src/prefs.c:1001 ../src/prefs.c:1017 ../src/prefs.c:1033
-#: ../src/prefs.c:1049 ../src/prefs.c:1065
+#: ../src/prefs.c:434
+#, c-format
+msgid "Type of %s was not integer"
+msgstr "El tipo de %s no es entero"
+
+#: ../src/prefs.c:572 ../src/prefs.c:600 ../src/prefs.c:616 ../src/prefs.c:632
+#: ../src/prefs.c:648 ../src/prefs.c:664 ../src/prefs.c:680 ../src/prefs.c:696
+#: ../src/prefs.c:716 ../src/prefs.c:732 ../src/prefs.c:748 ../src/prefs.c:766
+#: ../src/prefs.c:782 ../src/prefs.c:801 ../src/prefs.c:817 ../src/prefs.c:852
+#: ../src/prefs.c:868 ../src/prefs.c:885 ../src/prefs.c:901 ../src/prefs.c:917
+#: ../src/prefs.c:933 ../src/prefs.c:949 ../src/prefs.c:964 ../src/prefs.c:979
+#: ../src/prefs.c:994 ../src/prefs.c:1010 ../src/prefs.c:1026
+#: ../src/prefs.c:1042 ../src/prefs.c:1058
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "La clave GConf «%s» está configurada con un tipo inválido\n"
 
-#: ../src/prefs.c:1110
+#: ../src/prefs.c:1103
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2423,12 +2429,12 @@ msgstr ""
 "«%s» encontrado en la base de datos de configuración no es un valor válido "
 "para el modificador del botón del ratón\n"
 
-#: ../src/prefs.c:1134 ../src/prefs.c:1155 ../src/prefs.c:1697
+#: ../src/prefs.c:1127 ../src/prefs.c:1148 ../src/prefs.c:1705
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "La clave GConf «%s» está configurada con un valor inválido\n"
 
-#: ../src/prefs.c:1284
+#: ../src/prefs.c:1277
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
@@ -2437,14 +2443,14 @@ msgstr ""
 "%d almacenado en la clave GConf %s no es un tamaño razonable para "
 "«cursor_size»; debe estar entre 1..128\n"
 
-#: ../src/prefs.c:1364
+#: ../src/prefs.c:1357
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "No se ha podido interpretar la descripción de la tipografía «%s» de la clave "
 "GConf %s\n"
 
-#: ../src/prefs.c:1591
+#: ../src/prefs.c:1599
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2453,7 +2459,7 @@ msgstr ""
 "%d almacenado en la clave GConf %s no es un número razonable de espacios de "
 "trabajo. El máximo disponible es de %d\n"
 
-#: ../src/prefs.c:1651
+#: ../src/prefs.c:1659
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2461,17 +2467,17 @@ msgstr ""
 "Los arreglos para aplicaciones rotas se han deshabilitado. Algunas "
 "aplicaciones podrían no comportarse correctamente.\n"
 
-#: ../src/prefs.c:1724
+#: ../src/prefs.c:1732
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d almacenado en la clave GConf %s está fuera de rango 0 hasta %d\n"
 
-#: ../src/prefs.c:1873
+#: ../src/prefs.c:1881
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Ocurrió un error configurando la número de espacios de trabajo para %d: %s\n"
 
-#: ../src/prefs.c:2268 ../src/prefs.c:2438
+#: ../src/prefs.c:2276 ../src/prefs.c:2446
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2480,7 +2486,7 @@ msgstr ""
 "«%s» encontrado en la base de datos de configuración no es un valor válido "
 "para la combinación de teclas «%s»\n"
 
-#: ../src/prefs.c:2854
+#: ../src/prefs.c:2861
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr ""
@@ -3382,11 +3388,11 @@ msgstr "La proporción del botón %g no es razonable"
 msgid "Frame geometry does not specify size of buttons"
 msgstr "La geometría del marco no especifica el tamaño de los botones"
 
-#: ../src/theme.c:928
+#: ../src/theme.c:925
 msgid "Gradients should have at least two colors"
 msgstr "Los degradados deben tener al menos dos colores"
 
-#: ../src/theme.c:1054
+#: ../src/theme.c:1051
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -3396,7 +3402,7 @@ msgstr ""
 "ejemplo. gtk:fg[NORMAL] donde NORMAL es el estado ; no se ha podido "
 "interpretar «%s»"
 
-#: ../src/theme.c:1068
+#: ../src/theme.c:1065
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -3406,17 +3412,17 @@ msgstr ""
 "estado, ejemplo. gtk:fg[NORMAL] donde NORMAL es el estado ; no se ha podido "
 "interpretar «%s»"
 
-#: ../src/theme.c:1079
+#: ../src/theme.c:1076
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "No se entiende el estado «%s» en la especificación del color"
 
-#: ../src/theme.c:1092
+#: ../src/theme.c:1089
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "No se entiende el componente de color «%s» en la especificación del color"
 
-#: ../src/theme.c:1122
+#: ../src/theme.c:1119
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -3425,48 +3431,48 @@ msgstr ""
 "El formato de blend es «blend/bg_color/fg_color/alfa», «%s» no cumple con el "
 "formato"
 
-#: ../src/theme.c:1133
+#: ../src/theme.c:1130
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "No se ha podido interpretar el valor alfa «%s» en el color mezclado"
 
-#: ../src/theme.c:1143
+#: ../src/theme.c:1140
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "El valor alfa «%s» en el color mezclado no está entre 0.0 y 1.0"
 
-#: ../src/theme.c:1190
+#: ../src/theme.c:1187
 #, c-format
 msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "El formato de sombreado es «shade/base_color/factor», «%s» no coincide con "
 "el formato"
 
-#: ../src/theme.c:1201
+#: ../src/theme.c:1198
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr ""
 "No se ha podido interpretar el factor de sombreado «%s» en el color del "
 "sombreado"
 
-#: ../src/theme.c:1211
+#: ../src/theme.c:1208
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "El factor de sombreado «%s» en el color sombreado es negativo"
 
-#: ../src/theme.c:1240
+#: ../src/theme.c:1237
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "No se ha podido interpretar el color «%s»"
 
-#: ../src/theme.c:1499
+#: ../src/theme.c:1496
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr ""
 "La expresión de coordenadas contenía un carácter «%s» en cual no está "
 "permitido"
 
-#: ../src/theme.c:1526
+#: ../src/theme.c:1523
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -3475,12 +3481,12 @@ msgstr ""
 "La expresión de coordenadas contenía un número de coma flotante «%s» en cual "
 "no pudo ser analizado"
 
-#: ../src/theme.c:1540
+#: ../src/theme.c:1537
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "La expresión de coordenadas contenía un entero «%s» que no pudo ser analizado"
 
-#: ../src/theme.c:1607
+#: ../src/theme.c:1604
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -3489,36 +3495,36 @@ msgstr ""
 "La expresión de coordenadas contenía un operador inválido al inicio de su "
 "texto: «%s»"
 
-#: ../src/theme.c:1664
+#: ../src/theme.c:1661
 msgid "Coordinate expression was empty or not understood"
 msgstr "La expresión de coordenadas estaba vacía o no fue entendida"
 
-#: ../src/theme.c:1801 ../src/theme.c:1811 ../src/theme.c:1845
+#: ../src/theme.c:1798 ../src/theme.c:1808 ../src/theme.c:1842
 msgid "Coordinate expression results in division by zero"
 msgstr "La expresión de coordenadas resultó en un error de división por cero"
 
-#: ../src/theme.c:1853
+#: ../src/theme.c:1850
 msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "La expresión de coordenadas intentó usar un operador mod con un número de "
 "coma flotante"
 
-#: ../src/theme.c:1909
+#: ../src/theme.c:1906
 #, c-format
 msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "La expresión de coordenadas tiene un operador «%s» donde se esperaba un "
 "operando"
 
-#: ../src/theme.c:1918
+#: ../src/theme.c:1915
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "La expresión de coordenadas tiene un operando donde se esperaba un operador"
 
-#: ../src/theme.c:1926
+#: ../src/theme.c:1923
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "La expresión de coordenadas termina con una operador en vez de un operando"
 
-#: ../src/theme.c:1936
+#: ../src/theme.c:1933
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -3527,37 +3533,37 @@ msgstr ""
 "La expresión de coordenadas tiene el operador «%c» seguido del operador «%c» "
 "sin un operando entre ellos"
 
-#: ../src/theme.c:2054
+#: ../src/theme.c:2051
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "El parser de la expresión de coordenadas desbordó su búfer."
 
-#: ../src/theme.c:2083
+#: ../src/theme.c:2080
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
 "La expresión de coordenadas tenía un paréntesis cerrado sin un paréntesis "
 "abierto"
 
-#: ../src/theme.c:2145
+#: ../src/theme.c:2142
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "La expresión de coordenadas tenía una variable o constante desconocida «%s»"
 
-#: ../src/theme.c:2200
+#: ../src/theme.c:2197
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 "La expresión de coordenadas tenía un paréntesis abierto sin un paréntesis "
 "cerrado"
 
-#: ../src/theme.c:2211
+#: ../src/theme.c:2208
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "La expresión de coordenadas no parece tener ni operadores ni operandos"
 
-#: ../src/theme.c:2452 ../src/theme.c:2474 ../src/theme.c:2495
+#: ../src/theme.c:2449 ../src/theme.c:2471 ../src/theme.c:2492
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "El tema contenía una expresión «%s» que ha resultado en un error: %s\n"
 
-#: ../src/theme.c:3949
+#: ../src/theme.c:3946
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3566,23 +3572,23 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> debe ser "
 "especificado para este estilo de marco"
 
-#: ../src/theme.c:4425 ../src/theme.c:4450
+#: ../src/theme.c:4422 ../src/theme.c:4447
 #, c-format
 msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr "Falta <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: ../src/theme.c:4496
+#: ../src/theme.c:4493
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Ocurrió un error al cargar el tema «%s»: %s\n"
 
-#: ../src/theme.c:4606 ../src/theme.c:4613 ../src/theme.c:4620
-#: ../src/theme.c:4627 ../src/theme.c:4634
+#: ../src/theme.c:4603 ../src/theme.c:4610 ../src/theme.c:4617
+#: ../src/theme.c:4624 ../src/theme.c:4631
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "No se configuró <%s> para el tema «%s»"
 
-#: ../src/theme.c:4642
+#: ../src/theme.c:4639
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3591,14 +3597,14 @@ msgstr ""
 "No hay un estilo de marco para el tipo de ventana «%s» en el tema «%s», "
 "añada un elemento <window type=\"%s\" style_set=\"whatever\"/>"
 
-#: ../src/theme.c:5009 ../src/theme.c:5071 ../src/theme.c:5134
+#: ../src/theme.c:5006 ../src/theme.c:5068 ../src/theme.c:5131
 #, c-format
 msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "Las constantes definidas por el usuario deben comenzar con una letra "
 "mayúscula; «%s» no lo hace"
 
-#: ../src/theme.c:5017 ../src/theme.c:5079 ../src/theme.c:5142
+#: ../src/theme.c:5014 ../src/theme.c:5076 ../src/theme.c:5139
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "La constante «%s» ya ha sido definida"
@@ -3667,7 +3673,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6102
+#: ../src/window.c:6105
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
