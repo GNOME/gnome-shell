@@ -1,7 +1,6 @@
 <SECTION>
 <FILE>clutter-media</FILE>
 <TITLE>ClutterMedia</TITLE>
-ClutterMedia
 ClutterMediaInterface
 clutter_media_set_uri
 clutter_media_get_uri
@@ -16,6 +15,7 @@ clutter_media_get_buffer_percent
 clutter_media_get_duration
 clutter_media_set_filename
 <SUBSECTION Standard>
+ClutterMedia
 CLUTTER_MEDIA
 CLUTTER_IS_MEDIA
 CLUTTER_TYPE_MEDIA
@@ -44,8 +44,6 @@ CLUTTER_UNITS_TO_INT
 <SECTION>
 <FILE>clutter-label</FILE>
 <TITLE>ClutterLabel</TITLE>
-ClutterLabel
-ClutterLabelClass
 clutter_label_new
 clutter_label_new_with_text
 clutter_label_new_full
@@ -69,6 +67,8 @@ clutter_label_get_use_markup
 clutter_label_set_alignment
 clutter_label_get_alignment
 <SUBSECTION Standard>
+ClutterLabel
+ClutterLabelClass
 CLUTTER_LABEL
 CLUTTER_IS_LABEL
 CLUTTER_TYPE_LABEL
@@ -83,7 +83,6 @@ clutter_label_get_type
 <SECTION>
 <FILE>clutter-behaviour</FILE>
 <TITLE>ClutterBehaviour</TITLE>
-ClutterBehaviour
 ClutterBehaviourClass
 clutter_behaviour_apply
 clutter_behaviour_remove
@@ -97,6 +96,7 @@ clutter_behaviour_get_nth_actor
 clutter_behaviour_get_alpha
 clutter_behaviour_set_alpha
 <SUBSECTION Standard>
+ClutterBehaviour
 CLUTTER_BEHAVIOUR
 CLUTTER_IS_BEHAVIOUR
 CLUTTER_TYPE_BEHAVIOUR
@@ -160,12 +160,12 @@ clutter_alpha_get_type
 <SECTION>
 <FILE>clutter-clone-texture</FILE>
 <TITLE>ClutterCloneTexture</TITLE>
-ClutterCloneTexture
-ClutterCloneTextureClass
 clutter_clone_texture_new
 clutter_clone_texture_get_parent_texture
 clutter_clone_texture_set_parent_texture
 <SUBSECTION Standard>
+ClutterCloneTexture
+ClutterCloneTextureClass
 CLUTTER_CLONE_TEXTURE
 CLUTTER_IS_CLONE_TEXTURE
 CLUTTER_TYPE_CLONE_TEXTURE
@@ -180,8 +180,6 @@ clutter_clone_texture_get_type
 <SECTION>
 <FILE>clutter-group</FILE>
 <TITLE>ClutterGroup</TITLE>
-ClutterGroup
-ClutterGroupClass
 clutter_group_new
 clutter_group_add
 clutter_group_add_many
@@ -195,6 +193,8 @@ clutter_group_raise
 clutter_group_lower
 clutter_group_sort_depth_order
 <SUBSECTION Standard>
+ClutterGroup
+ClutterGroupClass
 CLUTTER_GROUP
 CLUTTER_IS_GROUP
 CLUTTER_TYPE_GROUP
@@ -209,7 +209,6 @@ clutter_group_get_type
 <SECTION>
 <FILE>clutter-container</FILE>
 <TITLE>ClutterContainer</TITLE>
-ClutterContainer
 ClutterContainerIface
 clutter_container_add_actor
 clutter_container_add
@@ -220,6 +219,7 @@ clutter_container_remove_valist
 clutter_container_get_children
 clutter_container_foreach
 <SUBSECTION Standard>
+ClutterContainer
 CLUTTER_TYPE_CONTAINER
 CLUTTER_CONTAINER
 CLUTTER_IS_CONTAINER
@@ -251,8 +251,6 @@ clutter_layout_get_type
 <SECTION>
 <FILE>clutter-rectangle</FILE>
 <TITLE>ClutterRectangle</TITLE>
-ClutterRectangle
-ClutterRectangleClass
 clutter_rectangle_new
 clutter_rectangle_new_with_color
 clutter_rectangle_get_color
@@ -262,6 +260,8 @@ clutter_rectangle_set_border_color
 clutter_rectangle_get_border_width
 clutter_rectangle_set_border_width
 <SUBSECTION Standard>
+ClutterRectangle
+ClutterRectangleClass
 CLUTTER_RECTANGLE
 CLUTTER_IS_RECTANGLE
 CLUTTER_TYPE_RECTANGLE
@@ -375,8 +375,6 @@ clutter_vertex_get_type
 <SECTION>
 <FILE>clutter-texture</FILE>
 <TITLE>ClutterTexture</TITLE>
-ClutterTexture
-ClutterTextureClass
 ClutterTextureFlags
 clutter_texture_new
 clutter_texture_new_from_pixbuf
@@ -394,6 +392,8 @@ clutter_texture_get_y_tile_detail
 clutter_texture_has_generated_tiles
 clutter_texture_is_tiled
 <SUBSECTION Standard>
+ClutterTexture
+ClutterTextureClass
 CLUTTER_TEXTURE
 CLUTTER_IS_TEXTURE
 CLUTTER_TYPE_TEXTURE
@@ -414,7 +414,6 @@ CLUTTER_STAGE_HEIGHT
 ClutterPerspective
 clutter_perspective_copy
 clutter_perspective_free
-ClutterStage
 ClutterStageClass
 clutter_stage_get_default
 clutter_stage_set_color
@@ -435,6 +434,7 @@ clutter_stage_get_title
 clutter_stage_set_user_resizable
 clutter_stage_get_user_resizable
 <SUBSECTION Standard>
+ClutterStage
 CLUTTER_STAGE
 CLUTTER_IS_STAGE
 CLUTTER_TYPE_STAGE
@@ -451,7 +451,6 @@ clutter_perspective_get_type
 <SECTION>
 <FILE>clutter-timeline</FILE>
 <TITLE>ClutterTimeline</TITLE>
-ClutterTimeline
 ClutterTimelineClass
 clutter_timeline_new
 clutter_timeline_clone
@@ -472,6 +471,7 @@ clutter_timeline_is_playing
 clutter_timeline_set_delay
 clutter_timeline_get_delay
 <SUBSECTION Standard>
+ClutterTimeline
 CLUTTER_TIMELINE
 CLUTTER_IS_TIMELINE
 CLUTTER_TYPE_TIMELINE
@@ -490,7 +490,6 @@ ClutterKnot
 clutter_knot_copy
 clutter_knot_free
 clutter_knot_equal
-ClutterBehaviourPath
 ClutterBehaviourPathClass
 clutter_behaviour_path_new
 clutter_behaviour_path_get_knots
@@ -500,6 +499,7 @@ clutter_behaviour_path_insert_knot
 clutter_behaviour_path_remove_knot
 clutter_behaviour_path_clear
 <SUBSECTION Standard>
+ClutterBehaviourPath
 CLUTTER_TYPE_KNOT
 CLUTTER_BEHAVIOUR_PATH
 CLUTTER_IS_BEHAVIOUR_PATH
@@ -516,10 +516,10 @@ clutter_behaviour_path_get_type
 <SECTION>
 <FILE>clutter-behaviour-opacity</FILE>
 <TITLE>ClutterBehaviourOpacity</TITLE>
-ClutterBehaviourOpacity
-ClutterBehaviourOpacityClass
 clutter_behaviour_opacity_new
 <SUBSECTION Standard>
+ClutterBehaviourOpacity
+ClutterBehaviourOpacityClass
 CLUTTER_BEHAVIOUR_OPACITY
 CLUTTER_IS_BEHAVIOUR_OPACITY
 CLUTTER_TYPE_BEHAVIOUR_OPACITY
@@ -536,8 +536,6 @@ clutter_behaviour_opacity_get_type
 <TITLE>ClutterBehaviourRotate</TITLE>
 ClutterRotateAxis
 ClutterRotateDirection
-ClutterBehaviourRotate
-ClutterBehaviourRotateClass
 clutter_behaviour_rotate_new
 clutter_behaviour_rotate_newx
 clutter_behaviour_rotate_set_axis
@@ -551,6 +549,8 @@ clutter_behaviour_rotate_get_boundsx
 clutter_behaviour_rotate_set_center
 clutter_behaviour_rotate_get_center
 <SUBSECTION Standard>
+ClutterBehaviourRotate
+ClutterBehaviourRotateClass
 CLUTTER_TYPE_BEHAVIOUR_ROTATE
 CLUTTER_BEHAVIOUR_ROTATE
 CLUTTER_IS_BEHAVIOUR_ROTATE
@@ -566,14 +566,14 @@ clutter_behaviour_rotate_get_type
 <FILE>clutter-behaviour-scale</FILE>
 <TITLE>ClutterBehaviourScale</TITLE>
 ClutterGravity
-ClutterBehaviourScale
-ClutterBehaviourScaleClass
 clutter_behaviour_scale_new
 clutter_behaviour_scale_newx
 clutter_behaviour_scale_get_bounds
 clutter_behaviour_scale_get_boundsx
 clutter_behaviour_scale_get_gravity
 <SUBSECTION Standard>
+ClutterBehaviourScale
+ClutterBehaviourScaleClass
 CLUTTER_BEHAVIOUR_SCALE
 CLUTTER_IS_BEHAVIOUR_SCALE
 CLUTTER_TYPE_BEHAVIOUR_SCALE
@@ -588,8 +588,6 @@ clutter_behaviour_scale_get_type
 <SECTION>
 <FILE>clutter-behaviour-bspline</FILE>
 <TITLE>ClutterBehaviourBspline</TITLE>
-ClutterBehaviourBspline
-ClutterBehaviourBsplineClass
 clutter_behaviour_bspline_new
 clutter_behaviour_bspline_append_knot
 clutter_behaviour_bspline_append
@@ -601,6 +599,8 @@ clutter_behaviour_bspline_adjust
 clutter_behaviour_bspline_set_origin
 clutter_behaviour_bspline_get_origin
 <SUBSECTION Standard>
+ClutterBehaviourBspline
+ClutterBehaviourBsplineClass
 CLUTTER_TYPE_BEHAVIOUR_BSPLINE
 CLUTTER_BEHAVIOUR_BSPLINE
 CLUTTER_BEHAVIOUR_BSPLINE_CLASS
@@ -615,7 +615,6 @@ clutter_behaviour_bspline_get_type
 <SECTION>
 <FILE>clutter-behaviour-ellipse</FILE>
 <TITLE>ClutterBehaviourEllipse</TITLE>
-ClutterBehaviourEllipse
 ClutterBehaviourEllipseClass
 clutter_behaviour_ellipse_new
 clutter_behaviour_ellipse_newx
@@ -644,6 +643,7 @@ clutter_behaviour_ellipse_set_tiltx
 clutter_behaviour_ellipse_get_direction
 clutter_behaviour_ellipse_set_direction
 <SUBSECTION Standard>
+ClutterBehaviourEllipse
 CLUTTER_TYPE_BEHAVIOUR_ELLIPSE
 CLUTTER_BEHAVIOUR_ELLIPSE
 CLUTTER_BEHAVIOUR_ELLIPSE_CLASS
@@ -659,7 +659,6 @@ clutter_behaviour_ellipse_get_type
 <SECTION>
 <FILE>clutter-backend</FILE>
 <TITLE>ClutterBackend</TITLE>
-ClutterBackend
 clutter_get_default_backend
 clutter_backend_get_resolution
 clutter_backend_set_resolution
@@ -675,6 +674,7 @@ CLUTTER_IS_BACKEND_CLASS
 CLUTTER_BACKEND_GET_CLASS
 CLUTTER_TYPE_BACKEND
 <SUBSECTION Private>
+ClutterBackend
 ClutterBackendClass
 ClutterBackendPrivate
 clutter_backend_get_type
@@ -684,10 +684,11 @@ clutter_backend_get_type
 <FILE>clutter-util</FILE>
 <TITLE>Utilities</TITLE>
 clutter_util_next_p2
-ClutterTimeoutPool
 clutter_timeout_pool_new
 clutter_timeout_pool_add
 clutter_timeout_pool_remove
+<SUBSECTION Standard>
+ClutterTimeoutPool
 </SECTION>
 
 <SECTION>
@@ -791,7 +792,6 @@ ClutterScrollDirection
 ClutterStageState
 ClutterEventType
 ClutterEvent
-ClutterAnyEvent
 ClutterButtonEvent
 ClutterKeyEvent
 ClutterMotionEvent
@@ -817,6 +817,7 @@ clutter_keysym_to_unicode
 <SUBSECTION Standard>
 CLUTTER_TYPE_EVENT
 <SUBSECTION Private>
+ClutterAnyEvent
 clutter_event_get_type
 </SECTION>
 
@@ -873,7 +874,6 @@ CLUTTER_NO_FPU
 <SECTION>
 <FILE>clutter-entry</FILE>
 <TITLE>ClutterEntry</TITLE>
-ClutterEntry
 ClutterEntryClass
 clutter_entry_new
 clutter_entry_new_with_text
@@ -909,6 +909,7 @@ CLUTTER_TYPE_ENTRY
 CLUTTER_ENTRY_CLASS
 CLUTTER_IS_ENTRY_CLASS
 CLUTTER_ENTRY_GET_CLASS
+ClutterEntry
 <SUBSECTION Private>
 ClutterEntryPrivate
 clutter_entry_get_type
@@ -917,7 +918,6 @@ clutter_entry_get_type
 <SECTION>
 <FILE>clutter-box</FILE>
 <TITLE>ClutterBox</TITLE>
-ClutterBox
 ClutterBoxClass
 ClutterPackType
 clutter_box_set_color
@@ -935,6 +935,7 @@ ClutterBoxChild
 clutter_box_query_child
 clutter_box_query_nth_child
 <SUBSECTION Standard>
+ClutterBox
 CLUTTER_TYPE_BOX
 CLUTTER_BOX
 CLUTTER_IS_BOX
@@ -952,7 +953,6 @@ clutter_padding_get_type
 <SECTION>
 <FILE>clutter-effect</FILE>
 <TITLE>Clutter Effects</TITLE>
-ClutterEffectTemplate
 clutter_effect_template_new
 clutter_effect_template_new_full
 ClutterEffectCompleteFunc
@@ -963,13 +963,14 @@ clutter_effect_rotate_x
 clutter_effect_rotate_y
 clutter_effect_rotate_z
 <SUBSECTION Standard>
+ClutterEffectTemplate
+ClutterEffectTemplateClass
 CLUTTER_TYPE_EFFECT_TEMPLATE
 CLUTTER_EFFECT_TEMPLATE
 CLUTTER_IS_EFFECT_TEMPLATE
 CLUTTER_EFFECT_TEMPLATE_CLASS
 CLUTTER_IS_EFFECT_TEMPLATE_CLASS
 CLUTTER_EFFECT_TEMPLATE_GET_CLASS
-ClutterEffectTemplateClass
 <SUBSECTION Private>
 ClutterEffectTemplatePrivate
 clutter_effect_template_get_type
@@ -978,10 +979,10 @@ clutter_effect_template_get_type
 <SECTION>
 <FILE>clutter-hbox</FILE>
 <TITLE>ClutterHBox</TITLE>
-ClutterHBox
-ClutterHBoxClass
 clutter_hbox_new
 <SUBSECTION Standard>
+ClutterHBox
+ClutterHBoxClass
 CLUTTER_TYPE_HBOX
 CLUTTER_HBOX
 CLUTTER_IS_HBOX
@@ -995,10 +996,10 @@ clutter_hbox_get_type
 <SECTION>
 <FILE>clutter-vbox</FILE>
 <TITLE>ClutterVBox</TITLE>
-ClutterVBox
-ClutterVBoxClass
 clutter_vbox_new
 <SUBSECTION Standard>
+ClutterVBox
+ClutterVBoxClass
 CLUTTER_TYPE_VBOX
 CLUTTER_VBOX
 CLUTTER_IS_VBOX
@@ -1012,10 +1013,10 @@ clutter_vbox_get_type
 <SECTION>
 <FILE>clutter-behaviour-depth</FILE>
 <TITLE>ClutterBehaviourDepth</TITLE>
-ClutterBehaviourDepth
-ClutterBehaviourDepthClass
 clutter_behaviour_depth_new
 <SUBSECTION Standard>
+ClutterBehaviourDepth
+ClutterBehaviourDepthClass
 CLUTTER_BEHAVIOUR_DEPTH
 CLUTTER_IS_BEHAVIOUR_DEPTH
 CLUTTER_TYPE_BEHAVIOUR_DEPTH

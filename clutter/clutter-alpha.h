@@ -67,7 +67,10 @@ typedef struct _ClutterAlphaPrivate ClutterAlphaPrivate;
  * @user_data: user data passed to the function
  *
  * A function of time, which returns a value between 0 and
- * %CLUTTER_ALPHA_MAX_ALPHA
+ * %CLUTTER_ALPHA_MAX_ALPHA.
+ *
+ * Return value: an unsigned integer value, between 0 and
+ * %CLUTTER_ALPHA_MAX_ALPHA.
  *
  * Since: 0.2
  */

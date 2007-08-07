@@ -23,6 +23,17 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:clutter-glx
+ * @short_description: GLX specific API
+ *
+ * The GLX backend for Clutter provides some specific API, allowing
+ * integration with the Xlibs API for embedding and manipulating the
+ * stage window, or for trapping X errors.
+ *
+ * The ClutterGLX API is available since Clutter 0.4
+ */
+
 #ifndef __CLUTTER_GLX_H__
 #define __CLUTTER_GLX_H__
 
