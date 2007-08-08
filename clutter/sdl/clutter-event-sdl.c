@@ -112,11 +112,16 @@ clutter_event_prepare (GSource *source,
 {
   SDL_Event events;
   int       num_events;
+  gboolean retval;
+
+  clutter_threads_enter ();
 
   num_events = SDL_PeepEvents(&events, 1, SDL_PEEKEVENT, SDL_ALLEVENTS);
 
   if (num_events == 1) 
     {
+      clutter_threads_leave ();
+      
       *timeout = 0;
       return TRUE;
     }
@@ -126,7 +131,11 @@ clutter_event_prepare (GSource *source,
 
   *timeout = 50;
 
-  return clutter_events_pending ();
+  retval = clutter_events_pending ();
+
+  clutter_threads_leave ();
+
+  return retval;
 }
 
 static gboolean
@@ -134,6 +143,9 @@ clutter_event_check (GSource *source)
 {
   SDL_Event events;
   int       num_events;
+  gboolean  retval;
+
+  clutter_threads_enter ();
 
   /* Pump SDL */
   SDL_PumpEvents();
@@ -143,7 +155,11 @@ clutter_event_check (GSource *source)
   if (num_events == -1)
     g_warning("Error polling SDL: %s", SDL_GetError());
 
-  return (num_events == 1 || clutter_events_pending ());
+  retval = (num_events == 1 || clutter_events_pending ());
+
+  clutter_threads_leave ();
+
+  return retval;
 }
 
 static void
@@ -292,6 +308,8 @@ clutter_event_dispatch (GSource     *source,
   ClutterBackend      *backend = ((ClutterEventSource *) source)->backend;
   ClutterMainContext  *clutter_context;
 
+  clutter_threads_enter ();
+
   clutter_context = clutter_context_get_default ();
 
   while (SDL_PollEvent(&sdl_event))
@@ -327,6 +345,8 @@ clutter_event_dispatch (GSource     *source,
       clutter_do_event(event);
       clutter_event_free (event);
     }
+
+  clutter_threads_leave ();
 
   return TRUE;
 }

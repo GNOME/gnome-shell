@@ -234,7 +234,7 @@ main (int argc, char *argv[])
   /* and start it */
   clutter_timeline_start (timeline);
 
-  clutter_main();
+  clutter_main ();
 
   g_free (oh->hand);
   g_free (oh);

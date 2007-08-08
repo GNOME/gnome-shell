@@ -326,8 +326,12 @@ clutter_event_prepare (GSource *source,
   ClutterBackend *backend = ((ClutterEventSource *) source)->backend;
   gboolean retval;
 
+  clutter_threads_enter ();
+
   *timeout = -1;
   retval = (clutter_events_pending () || clutter_check_xpending (backend));
+
+  clutter_threads_leave ();
 
   return retval;
 }
@@ -339,10 +343,14 @@ clutter_event_check (GSource *source)
   ClutterBackend *backend = event_source->backend;
   gboolean retval;
 
+  clutter_threads_enter ();
+
   if (event_source->event_poll_fd.revents & G_IO_IN)
     retval = (clutter_events_pending () || clutter_check_xpending (backend));
   else
     retval = FALSE;
+  
+  clutter_threads_leave ();
 
   return retval;
 }
@@ -355,6 +363,8 @@ clutter_event_dispatch (GSource     *source,
   ClutterBackend *backend = ((ClutterEventSource *) source)->backend;
   ClutterEvent *event;
 
+  clutter_thread_enter ();
+
   events_queue (backend);
 
   event = clutter_event_get ();
@@ -364,6 +374,8 @@ clutter_event_dispatch (GSource     *source,
       clutter_do_event (event);
       clutter_event_free (event);
     }
+
+  clutter_threads_leave ();
 
   return TRUE;
 }

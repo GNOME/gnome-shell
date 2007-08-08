@@ -48,11 +48,20 @@
 
 #include "cogl.h"
 
+/* main context */
 static ClutterMainContext *ClutterCntx = NULL;
+
+/* main lock and locking/unlocking functions */
+static GMutex *clutter_threads_mutex    = NULL;
+static GCallback clutter_threads_lock   = NULL;
+static GCallback clutter_threads_unlock = NULL;
 
 static gboolean clutter_is_initialized = FALSE;
 static gboolean clutter_show_fps       = FALSE;
 static gboolean clutter_fatal_warnings = FALSE;
+
+static guint clutter_main_loop_level = 0;
+static GSList *main_loops = NULL;
 
 guint clutter_debug_flags = 0;  /* global clutter debug flag */
 
@@ -75,9 +84,12 @@ static const GDebugKey clutter_debug_keys[] = {
 /**
  * clutter_get_show_fps:
  *
- * FIXME
+ * Returns whether Clutter should print out the frames per second on the
+ * console. You can enable this setting either using the
+ * <literal>CLUTTER_SHOW_FPS</literal> environment variable or passing
+ * the <literal>--clutter-show-fps</literal> command line argument. *
  *
- * Return value: FIXME
+ * Return value: %TRUE if Clutter should show the FPS.
  *
  * Since: 0.4
  */
@@ -91,7 +103,8 @@ clutter_get_show_fps (void)
 /**
  * clutter_redraw:
  *
- * FIXME
+ * Forces a redraw of the entire stage. Applications should never use this
+ * function, but queue a redraw using clutter_actor_queue_redraw().
  */
 void
 clutter_redraw (void)
@@ -161,8 +174,11 @@ clutter_redraw (void)
 
 /** 
  * clutter_do_event
+ * @event: a #ClutterEvent.
  *
- * This function should never be called by applications.
+ * Processes an event. This function should never be called by applications.
+ *
+ * Since: 0.4
  */
 void
 clutter_do_event (ClutterEvent *event)
@@ -215,12 +231,9 @@ clutter_do_event (ClutterEvent *event)
 void
 clutter_main_quit (void)
 {
-  ClutterMainContext *context = CLUTTER_CONTEXT ();
+  g_return_if_fail (main_loops != NULL);
 
-  g_return_if_fail (context->main_loops != NULL);
-
-  if (g_main_loop_is_running (context->main_loops->data))
-    g_main_loop_quit (context->main_loops->data);
+  g_main_loop_quit (main_loops->data);
 }
 
 /**
@@ -233,9 +246,7 @@ clutter_main_quit (void)
 gint
 clutter_main_level (void)
 {
-  ClutterMainContext *context = CLUTTER_CONTEXT ();
-
-  return context->main_loop_level;
+  return clutter_main_loop_level;
 }
 
 /**
@@ -258,24 +269,25 @@ clutter_main (void)
 
   CLUTTER_MARK ();
 
-  context->main_loop_level++;
+  clutter_main_loop_level++;
 
   loop = g_main_loop_new (NULL, TRUE);
-  context->main_loops = g_slist_prepend (context->main_loops, loop);
+  main_loops = g_slist_prepend (main_loops, loop);
 
-  if (g_main_loop_is_running (context->main_loops->data))
+  if (g_main_loop_is_running (main_loops->data))
     {
-      /* FIXME - add thread locking around this call */
+      clutter_threads_leave ();
       g_main_loop_run (loop);
+      clutter_threads_enter ();
     }
 
-  context->main_loops = g_slist_remove (context->main_loops, loop);
+  main_loops = g_slist_remove (main_loops, loop);
 
   g_main_loop_unref (loop);
 
-  context->main_loop_level--;
+  clutter_main_loop_level--;
 
-  if (context->main_loop_level == 0)
+  if (clutter_main_loop_level == 0)
     {
       /* this will take care of destroying the stage */
       g_object_unref (context->backend);
@@ -286,6 +298,326 @@ clutter_main (void)
 
   CLUTTER_MARK ();
 }
+
+static void
+clutter_threads_impl_lock (void)
+{
+  if (clutter_threads_mutex)
+    g_mutex_lock (clutter_threads_mutex);
+}
+
+static void
+clutter_threads_impl_unlock (void)
+{
+  if (clutter_threads_mutex)
+    g_mutex_unlock (clutter_threads_mutex);
+}
+
+/**
+ * clutter_threads_init:
+ *
+ * Initialises the Clutter threading mechanism, so that Clutter API can be
+ * called by multiple threads, using clutter_threads_enter() and
+ * clutter_threads_leave() to mark the critical sections.
+ *
+ * You must call g_thread_init() before this function.
+ *
+ * This function must be called before clutter_init().
+ *
+ * Since: 0.6
+ */
+void
+clutter_threads_init (void)
+{
+  if (!g_thread_supported ())
+    g_error ("g_thread_init() must be called before clutter_threads_init()");
+
+  clutter_threads_mutex = g_mutex_new ();
+
+  if (!clutter_threads_lock)
+    clutter_threads_lock = clutter_threads_impl_lock;
+
+  if (!clutter_threads_unlock)
+    clutter_threads_unlock = clutter_threads_impl_unlock;
+}
+
+/**
+ * clutter_threads_set_lock_functions:
+ * @enter_fn: function called when aquiring the Clutter main lock
+ * @leave_fn: function called when releasing the Clutter main lock
+ *
+ * Allows the application to replace the standard method that
+ * Clutter uses to protect its data structures. Normally, Clutter
+ * creates a single #GMutex that is locked by clutter_threads_enter(),
+ * and released by clutter_threads_leave(); using this function an
+ * application provides, instead, a function @enter_fn that is
+ * called by clutter_threads_enter() and a function @leave_fn that is
+ * called by clutter_threads_leave().
+ *
+ * The functions must provide at least same locking functionality
+ * as the default implementation, but can also do extra application
+ * specific processing.
+ *
+ * As an example, consider an application that has its own recursive
+ * lock that when held, holds the Clutter lock as well. When Clutter
+ * unlocks the Clutter lock when entering a recursive main loop, the
+ * application must temporarily release its lock as well.
+ *
+ * Most threaded Clutter apps won't need to use this method.
+ *
+ * This method must be called before clutter_threads_init(), and cannot
+ * be called multiple times.
+ *
+ * Since: 0.6
+ */
+void
+clutter_threads_set_lock_functions (GCallback enter_fn,
+                                    GCallback leave_fn)
+{
+  g_return_if_fail (clutter_threads_lock == NULL &&
+                    clutter_threads_unlock == NULL);
+
+  clutter_threads_lock = enter_fn;
+  clutter_threads_unlock = leave_fn;
+}
+
+typedef struct
+{
+  GSourceFunc func;
+  gpointer data;
+  GDestroyNotify notify;
+} ClutterThreadsDispatch;
+
+static gboolean
+clutter_threads_dispatch (gpointer data)
+{
+  ClutterThreadsDispatch *dispatch = data;
+  gboolean ret = FALSE;
+
+  clutter_threads_enter ();
+
+  if (!g_source_is_destroyed (g_main_current_source ()))
+    ret = dispatch->func (dispatch->data);
+
+  clutter_threads_leave ();
+
+  return ret;
+}
+
+static void
+clutter_threads_dispatch_free (gpointer data)
+{
+  ClutterThreadsDispatch *dispatch = data;
+
+  clutter_threads_enter ();
+
+  if (dispatch->notify)
+    dispatch->notify (dispatch->data);
+
+  clutter_threads_leave ();
+
+  g_slice_free (ClutterThreadsDispatch, dispatch);
+}
+
+/**
+ * clutter_threads_add_idle_full:
+ * @priority: the priority of the timeout source. Typically this will be in the
+ *    range between #G_PRIORITY_DEFAULT_IDLE and #G_PRIORITY_HIGH_IDLE
+ * @func: function to call
+ * @data: data to pass to the function
+ * @notify: functio to call when the idle source is removed
+ *
+ * Adds a function to be called whenever there are no higher priority
+ * events pending.  If the function returns %FALSE it is automatically
+ * removed from the list of event sources and will not be called again.
+ *
+ * This variant of g_idle_add_full() calls @function with the Clutter lock
+ * held. It can be thought of a MT-safe version for Clutter actors for the 
+ * following use case, where you have to worry about idle_callback()
+ * running in thread A and accessing @self after it has been finalized
+ * in thread B:
+ *
+ * <informalexample><programlisting>
+ * static gboolean
+ * idle_callback (gpointer data)
+ * {
+ *    // clutter_threads_enter(); would be needed for g_idle_add()
+ *
+ *    SomeActor *self = data;
+ *    /<!-- -->* do stuff with self *<!-- -->/
+ *
+ *    self->idle_id = 0;
+ *
+ *    // clutter_threads_leave(); would be needed for g_idle_add()
+ *    return FALSE;
+ * }
+ * static void
+ * some_actor_do_stuff_later (SomeActor *self)
+ * {
+ *    self->idle_id = clutter_threads_add_idle (idle_callback, self)
+ *    // using g_idle_add() here would require thread protection in the callback
+ * }
+ *
+ * static void
+ * some_actor_finalize (GObject *object)
+ * {
+ *    SomeActor *self = SOME_ACTOR (object);
+ *    if (self->idle_id)
+ *      g_source_remove (self->idle_id);
+ *    G_OBJECT_CLASS (parent_class)->finalize (object);
+ * }
+ * </programlisting></informalexample>
+ *
+ * Return value: the ID (greater than 0) of the event source.
+ *
+ * Since: 0.6
+ */
+guint
+clutter_threads_add_idle_full (gint           priority,
+                               GSourceFunc    func,
+                               gpointer       data,
+                               GDestroyNotify notify)
+{
+  ClutterThreadsDispatch *dispatch;
+
+  g_return_val_if_fail (func != NULL, 0);
+
+  dispatch = g_slice_new (ClutterThreadsDispatch);
+  dispatch->func = func;
+  dispatch->data = data;
+  dispatch->notify = notify;
+
+  return g_idle_add_full (priority,
+                          clutter_threads_dispatch, dispatch,
+                          clutter_threads_dispatch_free);
+}
+
+/**
+ * clutter_threads_add_idle:
+ * @func: function to call
+ * @data: data to pass to the function
+ *
+ * Simple wrapper around clutter_threads_add_idle_full()
+ *
+ * Return value: the ID (greater than 0) of the event source.
+ *
+ * Since: 0.6
+ */
+guint
+clutter_threads_add_idle (GSourceFunc func,
+                          gpointer    data)
+{
+  g_return_val_if_fail (func != NULL, 0);
+
+  return clutter_threads_add_idle_full (G_PRIORITY_DEFAULT_IDLE,
+                                        func, data,
+                                        NULL);
+}
+
+/**
+ * clutter_threads_add_timeout_full:
+ * @priority: the priority of the timeout source. Typically this will be in the
+ *            range between #G_PRIORITY_DEFAULT and #G_PRIORITY_HIGH.
+ * @interval: the time between calls to the function, in milliseconds
+ * @func: function to call
+ * @data: data to pass to the function
+ * @notify: function to call when the timeout source is removed
+ *
+ * Sets a function to be called at regular intervals holding the Clutter lock,
+ * with the given priority.  The function is called repeatedly until it 
+ * returns %FALSE, at which point the timeout is automatically destroyed 
+ * and the function will not be called again.  The @notify function is
+ * called when the timeout is destroyed.  The first call to the
+ * function will be at the end of the first @interval.
+ *
+ * Note that timeout functions may be delayed, due to the processing of other
+ * event sources. Thus they should not be relied on for precise timing.
+ * After each call to the timeout function, the time of the next
+ * timeout is recalculated based on the current time and the given interval
+ * (it does not try to 'catch up' time lost in delays).
+ *
+ * This variant of g_timeout_add_full() can be thought of a MT-safe version 
+ * for Clutter actors. See also clutter_threads_add_idle_full().
+ *
+ * Return value: the ID (greater than 0) of the event source.
+ *
+ * Since: 0.6
+ */
+guint
+clutter_threads_add_timeout_full (gint           priority,
+                                  guint          interval,
+                                  GSourceFunc    func,
+                                  gpointer       data,
+                                  GDestroyNotify notify)
+{
+  ClutterThreadsDispatch *dispatch;
+
+  g_return_val_if_fail (func != NULL, 0);
+
+  dispatch = g_slice_new (ClutterThreadsDispatch);
+  dispatch->func = func;
+  dispatch->data = data;
+  dispatch->notify = notify;
+
+  return g_timeout_add_full (priority,
+                             interval,
+                             clutter_threads_dispatch, dispatch,
+                             clutter_threads_dispatch_free);
+}
+
+/**
+ * clutter_threads_add_timeout:
+ * @interval: the time between calls to the function, in milliseconds
+ * @func: function to call
+ * @data: data to pass to the function
+ *
+ * Simple wrapper around clutter_threads_add_timeout_full().
+ *
+ * Return value: the ID (greater than 0) of the event source.
+ *
+ * Since: 0.6
+ */
+guint
+clutter_threads_add_timeout (guint       interval,
+                             GSourceFunc func,
+                             gpointer    data)
+{
+  g_return_val_if_fail (func != NULL, 0);
+
+  return clutter_threads_add_timeout_full (G_PRIORITY_DEFAULT,
+                                           interval,
+                                           func, data,
+                                           NULL);
+}
+
+/**
+ * clutter_threads_enter:
+ *
+ * Locks the Clutter thread lock.
+ *
+ * Since: 0.6
+ */
+void
+clutter_threads_enter (void)
+{
+  if (clutter_threads_lock)
+    (* clutter_threads_lock) ();
+}
+
+/**
+ * clutter_threads_leave:
+ *
+ * Unlocks the Clutter thread lock.
+ *
+ * Since: 0.6
+ */
+void
+clutter_threads_leave (void)
+{
+  if (clutter_threads_unlock)
+    (* clutter_threads_unlock) ();
+}
+
 
 /**
  * clutter_get_debug_enabled:
@@ -410,8 +742,6 @@ pre_parse_hook (GOptionContext  *context,
     return TRUE;
 
   clutter_context = clutter_context_get_default ();
-  clutter_context->main_loops = NULL;
-  clutter_context->main_loop_level = 0;
 
   clutter_context->font_map = PANGO_FT2_FONT_MAP (pango_ft2_font_map_new ());
   pango_ft2_font_map_set_resolution (clutter_context->font_map, 96.0, 96.0);
@@ -568,10 +898,10 @@ clutter_init_with_args (int            *argc,
   if (clutter_is_initialized)
     return CLUTTER_INIT_SUCCESS;
 
+  clutter_base_init ();
+  
   if (argc && *argc > 0 && *argv)
     g_set_prgname ((*argv)[0]);
-
-  clutter_base_init ();
 
   group   = clutter_get_option_group ();
   context = g_option_context_new (parameter_string);
@@ -664,10 +994,11 @@ clutter_init (int    *argc,
   if (clutter_is_initialized)
     return CLUTTER_INIT_SUCCESS;
 
+  clutter_base_init ();
+  
   if (argc && *argc > 0 && *argv)
     g_set_prgname ((*argv)[0]);
 
-  clutter_base_init ();
 
   /* parse_args will trigger backend creation and things like
    * DISPLAY connection etc.
@@ -734,6 +1065,8 @@ clutter_base_init (void)
 
       /* initialise GLib type system */
       g_type_init ();
+
+      /* CLUTTER_TYPE_ACTOR */
       foo = clutter_actor_get_type ();
     }
 }

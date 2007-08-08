@@ -183,11 +183,15 @@ static gboolean
 clutter_timeout_dispatch (GSource        *source,
                           ClutterTimeout *timeout)
 {
+  gboolean retval = FALSE;
+
   if (G_UNLIKELY (!timeout->func))
     {
       g_warning ("Timeout dispatched without a callback.");
       return FALSE;
     }
+
+  clutter_threads_enter ();
 
   if (timeout->func (timeout->data))
     {
@@ -196,10 +200,12 @@ clutter_timeout_dispatch (GSource        *source,
       g_source_get_current_time (source, &current_time);
       clutter_timeout_set_expiration (timeout, &current_time);
 
-      return TRUE;
+      retval = TRUE;
     }
-  else
-    return FALSE;
+  
+  clutter_threads_leave ();
+
+  return retval;
 }
 
 static ClutterTimeout *

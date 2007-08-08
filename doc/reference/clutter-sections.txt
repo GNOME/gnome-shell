@@ -828,12 +828,23 @@ ClutterInitError
 clutter_init
 clutter_init_with_args
 clutter_get_option_group
-clutter_get_debug_enabled
-clutter_get_show_fps
+<SUBSECTION>
 clutter_main
 clutter_main_quit
 clutter_main_level
+<SUBSECTION>
+clutter_get_debug_enabled
+clutter_get_show_fps
 clutter_get_timestamp
+<SUBSECTION>
+clutter_threads_set_lock_functions
+clutter_threads_init
+clutter_threads_enter
+clutter_threads_leave
+clutter_threads_add_idle
+clutter_threads_add_idle_full
+clutter_threads_add_timeout
+clutter_threads_add_timeout_full
 <SUBSECTION Standard>
 CLUTTER_INIT_ERROR
 <SUBSECTION Private>

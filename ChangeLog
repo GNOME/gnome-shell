@@ -1,3 +1,40 @@
+2007-08-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Merge the clutter.git/threading branch.
+
+	* clutter/clutter-main.c:
+	* clutter/clutter-main.h:
+	* clutter/clutter-private.h: Add threading locking and unlocking
+	functions, to mark a critical section and access the Clutter API
+	from differen threads. Add an initialisation function and a function
+	to override the default lock aquisition and release functions, for
+	bindings and application-specific locking handling. Add MT-safe
+	versions of g_idle_add() and g_timeout_add() which will call the
+	functions under the main Clutter lock and without races. The
+	Clutter thread-safe implementation is basically the same used by
+	GDK, so the same caveats apply.
+	
+	* clutter/clutter-actor.c:
+	* clutter/clutter-timeline.c:
+	* clutter/clutter-timeout-pool.c: Use the new threading API when
+	invoking idle and timeouts.
+
+	* clutter/eglnative/clutter-event-egl.c:
+	* clutter/eglx/clutter-event-egl.c:
+	* clutter/glx/clutter-event-glx.c:
+	* clutter/sdl/clutter-event-sdl.c: Acquire and release the main
+	Clutter lock when preparing, checking and dispatching the events
+	on the queue in every backend.
+
+	* tests/Makefile.am:
+	* tests/test-threads.c: Add a test case, showing how to use the
+	threading API and write thread-safe Clutter applications.
+
+2007-08-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* configure.ac: Bump up to 0.5.0 and start the new development
+	branch.
+
 2007-08-07  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* configure.ac: Bump up to 0.4.0.

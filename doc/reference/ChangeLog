@@ -1,3 +1,7 @@
+2007-08-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Add the new clutter_threads_* API.
+
 2007-08-07  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Shuffle around a bit the symbols.

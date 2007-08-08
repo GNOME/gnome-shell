@@ -55,6 +55,8 @@ typedef enum {
 
 GQuark clutter_init_error_quark (void);
 
+/* Initialisation */
+void             clutter_base_init        (void);
 ClutterInitError clutter_init             (int          *argc,
                                            char       ***argv);
 ClutterInitError clutter_init_with_args   (int          *argc,
@@ -63,22 +65,41 @@ ClutterInitError clutter_init_with_args   (int          *argc,
                                            GOptionEntry *entries,
                                            char         *translation_domain,
                                            GError      **error);
-
 GOptionGroup *   clutter_get_option_group (void);
 
-void             clutter_main             (void);
-void             clutter_main_quit        (void);
-gint             clutter_main_level       (void);
+/* Mainloop */
+void             clutter_main                       (void);
+void             clutter_main_quit                  (void);
+gint             clutter_main_level                 (void);
 
-void             clutter_redraw           (void);
+void             clutter_redraw                     (void);
 
-gboolean         clutter_get_debug_enabled (void);
-gboolean         clutter_get_show_fps      (void);
+/* Debug utility functions */
+gboolean         clutter_get_debug_enabled          (void);
+gboolean         clutter_get_show_fps               (void);
+gulong           clutter_get_timestamp              (void);
 
-void             clutter_base_init        (void);
-
-gulong           clutter_get_timestamp    (void);
+/* Threading functions */
+void             clutter_threads_init               (void);
+void             clutter_threads_enter              (void);
+void             clutter_threads_leave              (void);
+void             clutter_threads_set_lock_functions (GCallback enter_fn,
+                                                     GCallback leave_fn);
+guint            clutter_threads_add_idle           (GSourceFunc    func,
+                                                     gpointer       data);
+guint            clutter_threads_add_idle_full      (gint           priority,
+                                                     GSourceFunc    func,
+                                                     gpointer       data,
+                                                     GDestroyNotify notify);
+guint            clutter_threads_add_timeout        (guint          interval,
+                                                     GSourceFunc    func,
+                                                     gpointer       data);
+guint            clutter_threads_add_timeout_full   (gint           priority,
+                                                     guint          interval,
+                                                     GSourceFunc    func,
+                                                     gpointer       data,
+                                                     GDestroyNotify notify);
 
 G_END_DECLS
 
-#endif
+#endif /* _HAVE_CLUTTER_MAIN_H */

@@ -133,9 +133,9 @@ timeout_add (guint          interval,
     }
   else
     {
-      res = g_timeout_add_full (CLUTTER_TIMELINE_PRIORITY,
-                                interval,
-                                func, data, notify);
+      res = clutter_threads_add_timeout_full (CLUTTER_TIMELINE_PRIORITY,
+                                              interval,
+                                              func, data, notify);
     }
 
   return res;

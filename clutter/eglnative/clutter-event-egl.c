@@ -150,10 +150,16 @@ clutter_event_prepare (GSource *source,
                        gint    *timeout)
 {
   ClutterBackend *backend = ((ClutterEventSource *) source)->backend;
+  gboolean retval;
+
+  clutter_threads_enter ();
 
   *timeout = -1;
+  retval = clutter_events_pending ();
 
-  return clutter_events_pending ();
+  clutter_threads_leave ();
+
+  return retval;
 }
 
 static gboolean
@@ -161,9 +167,16 @@ clutter_event_check (GSource *source)
 {
   ClutterEventSource *event_source = (ClutterEventSource *) source;
   ClutterBackend *backend = event_source->backend;
+  gboolean retval;
 
-  return ((event_source->event_poll_fd.revents & G_IO_IN) 
-	  || clutter_events_pending ());
+  clutter_threads_enter ();
+
+  retval = ((event_source->event_poll_fd.revents & G_IO_IN) ||
+            clutter_events_pending ());
+
+  clutter_threads_leave ();
+
+  return retval;
 }
 
 static gboolean
@@ -178,6 +191,8 @@ clutter_event_dispatch (GSource     *source,
   ClutterMainContext *clutter_context;
   static gint         last_x, last_y;
 
+  clutter_threads_enter ();
+
   clutter_context = clutter_context_get_default ();
 #ifdef HAVE_TSLIB
   /* FIXME while would be better here but need to deal with lockups */
@@ -189,8 +204,8 @@ clutter_event_dispatch (GSource     *source,
        * event_button_generate gets confused generating lots of double
        * and triple clicks.	 
       */
-      if (tsevent.pressure && last_x == tsevent.x && last_y == tsevent.y) 
-	return;
+      if (tsevent.pressure && last_x == tsevent.x && last_y == tsevent.y)
+        goto out;
 
       event = clutter_event_new (CLUTTER_NOTHING);
 
@@ -222,6 +237,9 @@ clutter_event_dispatch (GSource     *source,
       clutter_do_event (event);
       clutter_event_free (event);
     }
+
+out:
+  clutter_threads_leave ();
 
   return TRUE;
 }

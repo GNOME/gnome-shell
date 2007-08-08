@@ -47,15 +47,19 @@ typedef struct _ClutterMainContext ClutterMainContext;
 
 struct _ClutterMainContext
 {
-  /* holds a pointer to the stage */
+  /* holds a pointer to the backend, which controls the stage */
   ClutterBackend  *backend;
+  
+  /* the main event queue */
   GQueue          *events_queue;
+
   PangoFT2FontMap *font_map;
+  
   guint            update_idle;
-  guint            main_loop_level;
-  GSList          *main_loops;
+  
   guint            is_initialized : 1;
-  guint            pick_mode :1;       /* Indicates pick render mode   */
+  guint            pick_mode      : 1; /* Indicates pick render mode   */
+
   GTimer          *timer;	       /* Used for debugging scheduler */
 };
 
