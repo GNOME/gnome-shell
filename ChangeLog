@@ -1,5 +1,11 @@
 2007-08-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-timeout-pool.c: Fix sorting of the pool
+	when inserting and removing timeout sources. (#449, Neil
+	Roberts)
+
+2007-08-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-main.c (clutter_get_timestamp): Remove
 	the microseconds remainder, which is mostly useless. (#447)
 

@@ -93,10 +93,11 @@ clutter_timeout_sort (gconstpointer a,
 {
   const ClutterTimeout *t_a = a;
   const ClutterTimeout *t_b = b;
-
-  return ((t_a->expiration.tv_sec < t_b->expiration.tv_sec) ||
-          ((t_a->expiration.tv_sec == t_b->expiration.tv_sec) &&
-           (t_a->expiration.tv_usec <= t_b->expiration.tv_usec)));
+  gint comparison;
+  
+  return ((comparison = t_a->expiration.tv_sec - t_b->expiration.tv_sec)
+	  ? comparison
+	  : t_a->expiration.tv_usec - t_b->expiration.tv_usec);
 }
 
 static gint
@@ -283,6 +284,47 @@ clutter_timeout_pool_check (GSource *source)
   return (pool->ready > 0);
 }
 
+static GList *
+clutter_timeout_pool_insert_sorted (GList *node, GList *list)
+{
+  GList *l, *last = NULL, *next;
+
+  /* Find the first timeout which expires after this one */
+  for (l = list; l; l = l->next)
+    {
+      ClutterTimeout *t_a = node->data;
+      ClutterTimeout *t_b = l->data;
+
+      last = l;
+      next = l->next;
+
+      if (clutter_timeout_sort (t_a, t_b) < 0)
+	break;
+    }
+
+  /* If we didn't find an entry then add it at the end */
+  if (!l)
+    {
+      node->prev = last;
+      node->next = NULL;
+
+      if (last)
+	last->next = node;
+    }
+  else
+    {
+      /* Otherwise insert it before the found entry */
+      node->next = l;
+      node->prev = l->prev;
+      l->prev = node;
+
+      if (node->prev)
+	node->prev->next = node;
+    }
+
+  return node->prev ? list : node;
+}
+
 static gboolean
 clutter_timeout_pool_dispatch (GSource     *source,
                                GSourceFunc  func,
@@ -290,7 +332,10 @@ clutter_timeout_pool_dispatch (GSource     *source,
 {
   ClutterTimeoutPool *pool = (ClutterTimeoutPool *) source;
   GList *l = pool->timeouts;
-  gboolean sort_needed = FALSE;
+  GList *dispatched = NULL;
+  GList *n, *next;
+
+  clutter_threads_enter ();
 
   /* the main loop might have predicted this, so we repeat the
    * check for ready timeouts.
@@ -301,16 +346,13 @@ clutter_timeout_pool_dispatch (GSource     *source,
   while (l && l->data && (pool->ready-- > 0))
     {
       ClutterTimeout *timeout = l->data;
-      GList *next = l->next;
       gboolean needs_removing = FALSE;
+      next = l->next;
 
       timeout->flags &= ~CLUTTER_TIMEOUT_READY;
 
       if (!TIMEOUT_REMOVED (timeout))
-        {
-          needs_removing = !clutter_timeout_dispatch (source, timeout);
-          sort_needed = needs_removing;
-        }
+	needs_removing = !clutter_timeout_dispatch (source, timeout);
       else
         needs_removing = TRUE;
 
@@ -321,14 +363,31 @@ clutter_timeout_pool_dispatch (GSource     *source,
           clutter_timeout_free (timeout);
           g_list_free1 (l);
         }
+      else
+	{
+	  /* Move the list node to a singly-linked list of dispatched
+	     timeouts */
+	  if (next)
+	    next->prev = NULL;
+
+	  l->next = dispatched;
+	  dispatched = l;
+	}
 
       l = next;
     }
 
-  if (sort_needed)
-    pool->timeouts = g_list_sort (pool->timeouts, clutter_timeout_sort);
+  /* Re-insert the dispatched timeouts in sorted order */
+  for (n = dispatched; n; n = next)
+    {
+      next = n->next;
+      l = clutter_timeout_pool_insert_sorted (n, l);
+    }
 
+  pool->timeouts = l;
   pool->ready = 0;
+
+  clutter_threads_leave ();
 
   return TRUE;
 }
