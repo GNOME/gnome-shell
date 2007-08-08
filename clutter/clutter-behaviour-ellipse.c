@@ -1207,8 +1207,6 @@ clutter_behaviour_ellipse_get_tilt (ClutterBehaviourEllipse *self,
  *
  * Gets the tilt of the ellipse around the center in Y axis.
  *
- * Return value: a #ClutterAngle
- *
  * Since: 0.4
  */
 void

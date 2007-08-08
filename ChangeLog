@@ -1,5 +1,11 @@
 2007-08-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-behaviour-ellipse:
+	(clutter_behaviour_ellipse_get_tiltx): Remove useless
+	"Return" in the API documentation.
+
+2007-08-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-timeout-pool.c: Fix sorting of the pool
 	when inserting and removing timeout sources. (#449, Neil
 	Roberts)
