@@ -1,5 +1,10 @@
 2007-08-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-main.c (clutter_get_timestamp): Return the
+	correct number of microseconds (#447, Neil Roberts)
+
+2007-08-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Merge the clutter.git/threading branch.
 
 	* clutter/clutter-main.c:
