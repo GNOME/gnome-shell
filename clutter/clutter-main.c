@@ -671,14 +671,13 @@ clutter_get_timestamp (void)
 #ifdef CLUTTER_ENABLE_DEBUG
   ClutterMainContext *ctx;
   gdouble seconds;
-  gulong msecs;
 
   ctx = clutter_context_get_default ();
 
   /* FIXME: may need a custom timer for embedded setups */
-  seconds = g_timer_elapsed (ctx->timer, &msecs);
+  seconds = g_timer_elapsed (ctx->timer, NULL);
 
-  return (gulong)(seconds / 1.0e-6) + msecs;
+  return (gulong)(seconds / 1.0e-6);
 #else
   return 0;
 #endif

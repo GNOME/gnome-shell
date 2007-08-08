@@ -1,5 +1,10 @@
 2007-08-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-main.c (clutter_get_timestamp): Remove
+	the microseconds remainder, which is mostly useless. (#447)
+
+2007-08-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-main.c (clutter_get_timestamp): Return the
 	correct number of microseconds (#447, Neil Roberts)
 
