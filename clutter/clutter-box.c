@@ -477,7 +477,7 @@ clutter_box_query_nth_child (ClutterBox      *box,
   ClutterBoxChild *box_child;
 
   g_return_val_if_fail (CLUTTER_IS_BOX (box), FALSE);
-  g_return_val_if_fail (index > 0, FALSE);
+  g_return_val_if_fail (index_ > 0, FALSE);
 
   box_child = g_list_nth_data (box->children, index_);
   if (!box_child)
