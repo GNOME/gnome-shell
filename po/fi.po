@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-06 16:28+0300\n"
+"POT-Creation-Date: 2007-08-09 07:12+0300\n"
 "PO-Revision-Date: 2007-02-16 20:03+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
@@ -302,7 +302,7 @@ msgstr "Siirrä _allaolevaan työtilaan"
 msgid "_Close"
 msgstr "_Sulje"
 
-#: ../src/menu.c:199 ../src/prefs.c:2243 ../src/prefs.c:2778
+#: ../src/menu.c:199 ../src/prefs.c:2246 ../src/prefs.c:2780
 #, c-format
 msgid "Workspace %d"
 msgstr "Työtila %d"
@@ -864,6 +864,23 @@ msgid ""
 "and that they need to change this option back to true or live with the bug "
 "they requested. See also http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
 msgstr ""
+"Tämän valitsimen asettaminen epätodeksi voi johtaa epävakaaseen toimintaan, "
+"joten on erittäin suositeltavaa olla muuttamatta oletusarvo tosi. Monet "
+"toiminnotu, kuten napsautus ikkunan asiakasosaan sekä ikkunan siirto ja koon "
+"muuttaminen, nostavat samalla ikkunan näkyviin. Asettamalla tämän epätodeksi "
+"voit estää tämän nostamisen. Arvosta riippumatta ikkuna voidaan nostaa "
+"edelleen aina päällimmäiseksi napsauttamalla ikkunaa Alt-vasen "
+"nappiyhdistelmällä, napsauttamalla ikkunan reunoja tavallisesti tai "
+"erityisillä sivuttajien viesteillä, kuten tehtävälistasovelman "
+"aktivointipyynnöllä. Tämä valitsin ei ole lainkaan käytössä click-to-focus -"
+"tilassa. Huomaa, että tavat nostaa ikkuna valitsimen raise_on_click ollessa "
+"epätosi eivät sisllä ohjelmallisia pyyntöjä sovelluksilta ikkunan nostoon: "
+"tällaiset pyynnöt jätetään huomioimatta riippumatta pyynnön syystä. Jos olet "
+"kehittäjä, joiden käyttäjät valittavat ettei sovellus toimi tämän asetuksen "
+"ollessa epätosi, voit kertoa että tämä on käyttäjien oma vika ja heidän "
+"tulee joko asettaa tämä uudestaan todeksi tai sietää vikaa, jota itse ovat "
+"pyytäneet asettamalla arvon epätodeksi. Lue lisää osoitteesta http://"
+"bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
 
 #: ../src/metacity.schemas.in.h:79
 msgid "Show the panel menu"
@@ -2295,19 +2312,24 @@ msgstr "Windows-tyylinen kohdistus"
 msgid "Window title font"
 msgstr "Ikkunan otsikon kirjasin"
 
-#: ../src/prefs.c:569 ../src/prefs.c:597 ../src/prefs.c:613 ../src/prefs.c:629
-#: ../src/prefs.c:645 ../src/prefs.c:661 ../src/prefs.c:677 ../src/prefs.c:693
-#: ../src/prefs.c:713 ../src/prefs.c:729 ../src/prefs.c:745 ../src/prefs.c:763
-#: ../src/prefs.c:779 ../src/prefs.c:798 ../src/prefs.c:814 ../src/prefs.c:849
-#: ../src/prefs.c:865 ../src/prefs.c:882 ../src/prefs.c:898 ../src/prefs.c:914
-#: ../src/prefs.c:930 ../src/prefs.c:946 ../src/prefs.c:961 ../src/prefs.c:976
-#: ../src/prefs.c:991 ../src/prefs.c:1007 ../src/prefs.c:1023
-#: ../src/prefs.c:1039 ../src/prefs.c:1055
+#: ../src/prefs.c:434
+#, c-format
+msgid "Type of %s was not integer"
+msgstr "Muuttujan %s tyyppi ei ollut kokonaisluku"
+
+#: ../src/prefs.c:572 ../src/prefs.c:600 ../src/prefs.c:616 ../src/prefs.c:632
+#: ../src/prefs.c:648 ../src/prefs.c:664 ../src/prefs.c:680 ../src/prefs.c:696
+#: ../src/prefs.c:716 ../src/prefs.c:732 ../src/prefs.c:748 ../src/prefs.c:766
+#: ../src/prefs.c:782 ../src/prefs.c:801 ../src/prefs.c:817 ../src/prefs.c:852
+#: ../src/prefs.c:868 ../src/prefs.c:885 ../src/prefs.c:901 ../src/prefs.c:917
+#: ../src/prefs.c:933 ../src/prefs.c:949 ../src/prefs.c:964 ../src/prefs.c:979
+#: ../src/prefs.c:994 ../src/prefs.c:1010 ../src/prefs.c:1026
+#: ../src/prefs.c:1042 ../src/prefs.c:1058
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf-avain \"%s\" on asetettu väärän tyyppiseksi\n"
 
-#: ../src/prefs.c:1100
+#: ../src/prefs.c:1103
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2315,12 +2337,12 @@ msgid ""
 msgstr ""
 "Asetustietokannassa oleva \"%s\" ei ole kelvollinen hiiren muunnosnäppäin\n"
 
-#: ../src/prefs.c:1124 ../src/prefs.c:1145 ../src/prefs.c:1702
+#: ../src/prefs.c:1127 ../src/prefs.c:1148 ../src/prefs.c:1705
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf-avain \"%s\" on asetettu arvoltaan vääräksi\n"
 
-#: ../src/prefs.c:1274
+#: ../src/prefs.c:1277
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
@@ -2329,12 +2351,12 @@ msgstr ""
 "GConf-avaimeen %2$s tallennettu arvo %1$d ei ole järkevä kohdistimen koko. "
 "Sallitut arvot ovat välilä 1-128\n"
 
-#: ../src/prefs.c:1354
+#: ../src/prefs.c:1357
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "GConf-avaimesta %2$s saatu kirjasinkuvaus \"%1$s\" ei jäsenny\n"
 
-#: ../src/prefs.c:1596
+#: ../src/prefs.c:1599
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2343,7 +2365,7 @@ msgstr ""
 "GConf-avaimeen %2$s tallennettu %1$d ei ole järkevä työtilojen määrä. "
 "Nykyinen raja on %3$d\n"
 
-#: ../src/prefs.c:1656
+#: ../src/prefs.c:1659
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2351,17 +2373,17 @@ msgstr ""
 "Rikkinäisten sovellusten kiertotiet eivät ole käytössä. Jotkin sovellukset "
 "eivät välttämättä käyttäydy kunnolla.\n"
 
-#: ../src/prefs.c:1729
+#: ../src/prefs.c:1732
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d, joka on GConf-avaimessa %s, ei ole välillä 0 - %d\n"
 
-#: ../src/prefs.c:1878
+#: ../src/prefs.c:1881
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Virhe työtilojen määrän asettamisessa arvoon %d: %s\n"
 
-#: ../src/prefs.c:2273 ../src/prefs.c:2443
+#: ../src/prefs.c:2276 ../src/prefs.c:2446
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2370,7 +2392,7 @@ msgstr ""
 "\"%s\", joka on asetustietokannassa, ei ole kelvollinen näppäinsidonnan \"%s"
 "\" arvo\n"
 
-#: ../src/prefs.c:2859
+#: ../src/prefs.c:2861
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Virhe työtilan %d nimen asettamisessa nimeksi \"%s\": %s\n"
@@ -3530,7 +3552,7 @@ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Virheellinen WM_TRANSIENT_FOR ikkuna 0x%lx kohteelle %s.\n"
 
 #. first time through
-#: ../src/window.c:5540
+#: ../src/window.c:5551
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3546,7 +3568,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6105
+#: ../src/window.c:6116
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
