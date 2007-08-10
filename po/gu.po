@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.gu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-07 03:38+0100\n"
-"PO-Revision-Date: 2007-08-08 18:42+0530\n"
+"POT-Creation-Date: 2007-08-08 14:55+0100\n"
+"PO-Revision-Date: 2007-08-10 12:39+0530\n"
 "Last-Translator: Ankit Patel <ankit@redhat.com>\n"
 "Language-Team: Gujarati <fedora-trans-gu@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -14,6 +14,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=2; plural=(n!=1);\n\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -416,7 +417,9 @@ msgstr "\"%s\" જવાબ આપતું નથી."
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
-msgstr "તેને ચાલુ રાખવા માટે અથવા કાર્યક્રમને સંપૂર્ણપણે બંધ થઈ જવા માટે તમે થોડો સમય રાહ જોવાનું પસંદ કરી શકશો."
+msgstr ""
+"તેને ચાલુ રાખવા માટે અથવા કાર્યક્રમને સંપૂર્ણપણે બંધ થઈ જવા માટે તમે થોડો સમય રાહ જોવાનું "
+"પસંદ કરી શકશો."
 
 #: ../src/metacity-dialog.c:107
 msgid "_Wait"
@@ -854,6 +857,8 @@ msgid ""
 "and that they need to change this option back to true or live with the bug "
 "they requested. See also http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
 msgstr ""
+"Setting this option to false can lead to buggy behavior, so users are strongly discouraged from changing it from the default of true. Many actions (e.g. clicking in the client area, moving or resizing the window) normally raise the window as a side-effect. Set this option to false to decouple raising from other user actions. Even when this option is false, windows can still be raised by an alt-left-click anywhere on the window, a normal click on the window decorations, or by special messages from pagers, such as "
+"activation requests from tasklist applets. This option is currently disabled in click-to-focus mode. Note that the list of ways to raise windows when raise_on_click is false does not include programmatic requests from applications to raise windows; such requests will be ignored regardless of the reason for the request. If you are an application developer and have a user complaining that your application does not work with this setting disabled, tell them it is _their_ fault for breaking their window manager and that they need to change this option back to true or live with the bug they requested. See also http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
 
 #: ../src/metacity.schemas.in.h:79
 msgid "Show the panel menu"
@@ -1998,7 +2003,6 @@ msgstr ""
 "આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
 #: ../src/metacity.schemas.in.h:176
-#, fuzzy
 msgid ""
 "This keybinding moves a window against the north (top) side of the screen. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -2007,14 +2011,10 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"આ કી જોડાણ વિન્ડોને બીજી બધી વિન્ડોની નીચે નાનું કરે છે. માળખું આ રીતે હશે \"&lt;"
-"Control&gt;\" અથવા \"&lt;Shift&gt;&lt;Alt&gt;F1\". આ પદચ્છેદ કરનાર ઘણું ઉદાર છે "
-"અને નાના અથવા મોટા બંને અક્ષર સ્વીકારે છે, ટૂંકુ નામ કે જે-  \"&lt;Ctl&gt;\" અને \"&lt;"
-"Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો "
+"આ કી જોડાણ વિન્ડોને સ્ક્રીનની ઉત્તર (ટોચ) બાજુએ ખસેડે છે. માળખું આ રીતે હશે \"&lt;Control&gt;\" અથવા \"&lt;Shift&gt;&lt;Alt&gt;F1\". આ પદચ્છેદ કરનાર ઘણું ઉદાર છે અને નાના અથવા મોટા બંને અક્ષર સ્વીકારે છે, ટૂંકુ નામ કે જે-  \"&lt;Ctl&gt;\" અને \"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો "
 "આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
 #: ../src/metacity.schemas.in.h:177
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the east (right) side of the screen. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2022,15 +2022,9 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"આ કી જોડાણ વિન્ડોને બીજી બધી વિન્ડોની નીચે નાનું કરે છે. માળખું આ રીતે હશે \"&lt;"
-"Control&gt;\" અથવા \"&lt;Shift&gt;&lt;Alt&gt;F1\". આ પદચ્છેદ કરનાર ઘણું ઉદાર છે "
-"અને નાના અથવા મોટા બંને અક્ષર સ્વીકારે છે, ટૂંકુ નામ કે જે-  \"&lt;Ctl&gt;\" અને \"&lt;"
-"Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો "
-"આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
+msgstr "આ કી જોડાણ વિન્ડોને સ્ક્રીનની પૂર્વ (જમણી) બાજુએ ખસેડે છે. માળખું આ રીતે હશે \"&lt;Control&gt;\" અથવા \"&lt;Shift&gt;&lt;Alt&gt;F1\". આ પદચ્છેદ કરનાર ઘણું ઉદાર છે અને નાના અથવા મોટા બંને અક્ષર સ્વીકારે છે, ટૂંકુ નામ કે જે-  \"&lt;Ctl&gt;\" અને \"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
 #: ../src/metacity.schemas.in.h:178
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the north-east (top right) corner of the "
 "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2038,15 +2032,9 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
-"આ કી જોડાણ વિન્ડોને બીજી બધી વિન્ડોની નીચે નાનું કરે છે. માળખું આ રીતે હશે \"&lt;"
-"Control&gt;\" અથવા \"&lt;Shift&gt;&lt;Alt&gt;F1\". આ પદચ્છેદ કરનાર ઘણું ઉદાર છે "
-"અને નાના અથવા મોટા બંને અક્ષર સ્વીકારે છે, ટૂંકુ નામ કે જે-  \"&lt;Ctl&gt;\" અને \"&lt;"
-"Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો "
-"આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
+msgstr "આ કી જોડાણ વિન્ડોને સ્ક્રીનના ખૂણાની ઉત્તર-પૂર્વ (ટોચ જમણી) બાજુએ ખસેડે છે. માળખું આ રીતે હશે \"&lt;Control&gt;\" અથવા \"&lt;Shift&gt;&lt;Alt&gt;F1\". આ પદચ્છેદ કરનાર ઘણું ઉદાર છે અને નાના અથવા મોટા બંને અક્ષર સ્વીકારે છે, ટૂંકુ નામ કે જે-  \"&lt;Ctl&gt;\" અને \"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
 #: ../src/metacity.schemas.in.h:179
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the north-west (top left) corner of the "
 "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2054,15 +2042,9 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
-"આ કી જોડાણ વિન્ડોને બીજી બધી વિન્ડોની નીચે નાનું કરે છે. માળખું આ રીતે હશે \"&lt;"
-"Control&gt;\" અથવા \"&lt;Shift&gt;&lt;Alt&gt;F1\". આ પદચ્છેદ કરનાર ઘણું ઉદાર છે "
-"અને નાના અથવા મોટા બંને અક્ષર સ્વીકારે છે, ટૂંકુ નામ કે જે-  \"&lt;Ctl&gt;\" અને \"&lt;"
-"Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો "
-"આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
+msgstr "આ કી જોડાણ વિન્ડોને સ્ક્રીનના ખૂણાની ઉત્તર-પશ્ચિમ (ટોચ ડાબી) બાજુએ ખસેડે છે. માળખું આ રીતે હશે \"&lt;Control&gt;\" અથવા \"&lt;Shift&gt;&lt;Alt&gt;F1\". આ પદચ્છેદ કરનાર ઘણું ઉદાર છે અને નાના અથવા મોટા બંને અક્ષર સ્વીકારે છે, ટૂંકુ નામ કે જે-  \"&lt;Ctl&gt;\" અને \"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
 #: ../src/metacity.schemas.in.h:180
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the south (bottom) side of the screen. "
 "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
@@ -2070,15 +2052,9 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"આ કી જોડાણ વિન્ડોને બીજી બધી વિન્ડોની નીચે નાનું કરે છે. માળખું આ રીતે હશે \"&lt;"
-"Control&gt;\" અથવા \"&lt;Shift&gt;&lt;Alt&gt;F1\". આ પદચ્છેદ કરનાર ઘણું ઉદાર છે "
-"અને નાના અથવા મોટા બંને અક્ષર સ્વીકારે છે, ટૂંકુ નામ કે જે-  \"&lt;Ctl&gt;\" અને \"&lt;"
-"Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો "
-"આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
+msgstr "આ કી જોડાણ વિન્ડોને સ્ક્રીનની દક્ષિણ (તળિયા) બાજુએ ખસેડે છે. માળખું આ રીતે હશે \"&lt;Control&gt;\" અથવા \"&lt;Shift&gt;&lt;Alt&gt;F1\". આ પદચ્છેદ કરનાર ઘણું ઉદાર છે અને નાના અથવા મોટા બંને અક્ષર સ્વીકારે છે, ટૂંકુ નામ કે જે-  \"&lt;Ctl&gt;\" અને \"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
 #: ../src/metacity.schemas.in.h:181
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the south-east (bottom right) corner of "
 "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2086,15 +2062,9 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
-"આ કી જોડાણ વિન્ડોને બીજી બધી વિન્ડોની નીચે નાનું કરે છે. માળખું આ રીતે હશે \"&lt;"
-"Control&gt;\" અથવા \"&lt;Shift&gt;&lt;Alt&gt;F1\". આ પદચ્છેદ કરનાર ઘણું ઉદાર છે "
-"અને નાના અથવા મોટા બંને અક્ષર સ્વીકારે છે, ટૂંકુ નામ કે જે-  \"&lt;Ctl&gt;\" અને \"&lt;"
-"Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો "
-"આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
+msgstr "આ કી જોડાણ વિન્ડોને સ્ક્રીનના ખૂણાની દક્ષિણ-પૂર્વ (તળિયે જમણી) બાજુએ ખસેડે છે. માળખું આ રીતે હશે \"&lt;Control&gt;\" અથવા \"&lt;Shift&gt;&lt;Alt&gt;F1\". આ પદચ્છેદ કરનાર ઘણું ઉદાર છે અને નાના અથવા મોટા બંને અક્ષર સ્વીકારે છે, ટૂંકુ નામ કે જે-  \"&lt;Ctl&gt;\" અને \"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
 #: ../src/metacity.schemas.in.h:182
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the south-west (bottom left) corner of "
 "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
@@ -2102,15 +2072,9 @@ msgid ""
 "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
-msgstr ""
-"આ કી જોડાણ વિન્ડોને બીજી બધી વિન્ડોની નીચે નાનું કરે છે. માળખું આ રીતે હશે \"&lt;"
-"Control&gt;\" અથવા \"&lt;Shift&gt;&lt;Alt&gt;F1\". આ પદચ્છેદ કરનાર ઘણું ઉદાર છે "
-"અને નાના અથવા મોટા બંને અક્ષર સ્વીકારે છે, ટૂંકુ નામ કે જે-  \"&lt;Ctl&gt;\" અને \"&lt;"
-"Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો "
-"આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
+msgstr "આ કી જોડાણ વિન્ડોને સ્ક્રીનના ખૂણાની દક્ષિણ-પશ્ચિમ (તળિયે ડાબી) બાજુએ ખસેડે છે. માળખું આ રીતે હશે \"&lt;Control&gt;\" અથવા \"&lt;Shift&gt;&lt;Alt&gt;F1\". આ પદચ્છેદ કરનાર ઘણું ઉદાર છે અને નાના અથવા મોટા બંને અક્ષર સ્વીકારે છે, ટૂંકુ નામ કે જે-  \"&lt;Ctl&gt;\" અને \"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
 #: ../src/metacity.schemas.in.h:183
-#, fuzzy
 msgid ""
 "This keybinding moves a window into the west (left) side of the screen. The "
 "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
@@ -2118,12 +2082,7 @@ msgid ""
 "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the "
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
-msgstr ""
-"આ કી જોડાણ વિન્ડોને બીજી બધી વિન્ડોની નીચે નાનું કરે છે. માળખું આ રીતે હશે \"&lt;"
-"Control&gt;\" અથવા \"&lt;Shift&gt;&lt;Alt&gt;F1\". આ પદચ્છેદ કરનાર ઘણું ઉદાર છે "
-"અને નાના અથવા મોટા બંને અક્ષર સ્વીકારે છે, ટૂંકુ નામ કે જે-  \"&lt;Ctl&gt;\" અને \"&lt;"
-"Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો "
-"આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
+msgstr "આ કી જોડાણ વિન્ડોને સ્ક્રીનની પશ્ચિમ (ડાબી) બાજુએ ખસેડે છે. માળખું આ રીતે હશે \"&lt;Control&gt;\" અથવા \"&lt;Shift&gt;&lt;Alt&gt;F1\". આ પદચ્છેદ કરનાર ઘણું ઉદાર છે અને નાના અથવા મોટા બંને અક્ષર સ્વીકારે છે, ટૂંકુ નામ કે જે-  \"&lt;Ctl&gt;\" અને \"&lt;Ctrl&gt;\". જો તમે વિકલ્પને વિશિષ્ટ શબ્દમાળા તરીકે સુયોજિત કરેલી હશે \"disabled\", તો આ ક્રિયા માટે કોઈપણ કી જોડાણ નહિં હોય."
 
 #: ../src/metacity.schemas.in.h:184
 msgid ""
@@ -2183,32 +2142,22 @@ msgstr ""
 "ન્યૂનતમમાંથી પાછી લાવે છે, અને 'none' કે જે કંઈ કરશે નહિં."
 
 #: ../src/metacity.schemas.in.h:188
-#, fuzzy
 msgid ""
 "This option determines the effects of middle-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, 'toggle_maximize' which will maximize/unmaximize the window, "
 "'minimize' which will minimize the window, and 'none' which will not do "
 "anything."
-msgstr ""
-"આ વિકલ્પ શીર્ષક પટ્ટી પર બેવડું-ક્લિક કરવાથી થતી અસરોને વર્ણવે છે. 'toggle_shade' એ "
-"વર્તમાન માન્ય વિકલ્પો છે, કે જે વિન્ડોને છાયામાં લાવે/નહિં લાવે, 'toggle_maximize' કે જે "
-"વિન્ડોને મહત્તમ બનાવે/મહત્તમમાંથી પાછી લાવે, 'minimize' કે જે વિન્ડોને ન્યૂનતમ બનાવે/"
-"ન્યૂનતમમાંથી પાછી લાવે છે, અને 'none' કે જે કંઈ કરશે નહિં."
+msgstr "આ વિકલ્પ શીર્ષક પટ્ટી પર વચ્ચેનું-ક્લિક કરવાથી થતી અસરોને વર્ણવે છે. 'toggle_shade' એ વર્તમાન માન્ય વિકલ્પો છે, કે જે વિન્ડોને છાયામાં લાવે/નહિં લાવે, 'toggle_maximize' કે જે વિન્ડોને મહત્તમ બનાવે/મહત્તમમાંથી પાછી લાવે, 'minimize' કે જે વિન્ડોને ન્યૂનતમ બનાવે/ન્યૂનતમમાંથી પાછી લાવે છે, અને 'none' કે જે કંઈ કરશે નહિં."
 
 #: ../src/metacity.schemas.in.h:189
-#, fuzzy
 msgid ""
 "This option determines the effects of right-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
 "window, 'toggle_maximize' which will maximize/unmaximize the window, "
 "'minimize' which will minimize the window, and 'none' which will not do "
 "anything."
-msgstr ""
-"આ વિકલ્પ શીર્ષક પટ્ટી પર બેવડું-ક્લિક કરવાથી થતી અસરોને વર્ણવે છે. 'toggle_shade' એ "
-"વર્તમાન માન્ય વિકલ્પો છે, કે જે વિન્ડોને છાયામાં લાવે/નહિં લાવે, 'toggle_maximize' કે જે "
-"વિન્ડોને મહત્તમ બનાવે/મહત્તમમાંથી પાછી લાવે, 'minimize' કે જે વિન્ડોને ન્યૂનતમ બનાવે/"
-"ન્યૂનતમમાંથી પાછી લાવે છે, અને 'none' કે જે કંઈ કરશે નહિં."
+msgstr "આ વિકલ્પ શીર્ષક પટ્ટી પર જમણું-ક્લિક કરવાથી થતી અસરોને વર્ણવે છે. 'toggle_shade' એ વર્તમાન માન્ય વિકલ્પો છે, કે જે વિન્ડોને છાયામાં લાવે/નહિં લાવે, 'toggle_maximize' કે જે વિન્ડોને મહત્તમ બનાવે/મહત્તમમાંથી પાછી લાવે, 'minimize' કે જે વિન્ડોને ન્યૂનતમ બનાવે/ન્યૂનતમમાંથી પાછી લાવે છે, અને 'none' કે જે કંઈ કરશે નહિં."
 
 #: ../src/metacity.schemas.in.h:190
 msgid ""
@@ -3469,7 +3418,7 @@ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "અયોગ્ય WM_TRANSIENT_FOR વિન્ડો 0x%lx એ %s માટે સ્પષ્ટ થયેલ છે.\n"
 
 #. first time through
-#: ../src/window.c:5540
+#: ../src/window.c:5551
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3485,7 +3434,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6105
+#: ../src/window.c:6116
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
