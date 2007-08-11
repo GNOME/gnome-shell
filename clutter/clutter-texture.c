@@ -846,7 +846,7 @@ clutter_texture_get_property (GObject    *object,
       {
 	GdkPixbuf *pixb;
 	pixb = clutter_texture_get_pixbuf (texture);
-	g_value_set_object (value, pixb);
+	g_value_take_object (value, pixb);
       }
       break;
     case PROP_USE_TILES:
@@ -1190,7 +1190,7 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 				  src_h,
 				  pixbuf,
 				  priv->x_tiles[x].pos,
-				  priv->x_tiles[y].pos);
+				  priv->y_tiles[y].pos);
 
 	    g_object_unref (tmp_pixb);
 
