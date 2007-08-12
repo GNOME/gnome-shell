@@ -556,7 +556,8 @@ texture_upload_data (ClutterTexture *texture,
 
 	cogl_texture_bind (priv->target_type, priv->tiles[i]);
 	
-	cogl_texture_set_alignment (priv->target_type, 4, src_w);
+	cogl_texture_set_alignment (priv->target_type, 
+				    4, priv->x_tiles[x].size);
 
 	cogl_texture_set_filters 
 	  (priv->target_type, 
