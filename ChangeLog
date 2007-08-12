@@ -1,3 +1,10 @@
+2007-08-11  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-texture.c:
+	 Fix typo in clutter_texture_get_pixbuf (#458, #442?, Neil Roberts).
+	 Use take_object when getting pixbuf prop to avoid ref leak. (Neil
+	 Roberts)
+
 2007-08-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-box.c: Rename a variable to fix a compiler
