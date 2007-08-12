@@ -38,7 +38,6 @@
 typedef struct _ClutterTimeout  ClutterTimeout;
 typedef enum {
   CLUTTER_TIMEOUT_NONE   = 0,
-  CLUTTER_TIMEOUT_ACTIVE = 1 << 0,
   CLUTTER_TIMEOUT_READY  = 1 << 1
 } ClutterTimeoutFlags;
 
@@ -46,6 +45,7 @@ struct _ClutterTimeout
 {
   guint id;
   ClutterTimeoutFlags flags;
+  gint refcount;
   
   guint interval;
 
@@ -62,14 +62,13 @@ struct _ClutterTimeoutPool
 
   guint next_id;
 
-  GList *timeouts;
+  GList *timeouts, *dispatched_timeouts;
   gint ready;
 
   guint id;
 };
 
-#define TIMEOUT_REMOVED(timeout) ((timeout->flags & CLUTTER_TIMEOUT_ACTIVE) == 0)
-#define TIMEOUT_READY(timeout)   ((timeout->flags & CLUTTER_TIMEOUT_READY) == 1)
+#define TIMEOUT_READY(timeout)   (timeout->flags & CLUTTER_TIMEOUT_READY)
 
 static gboolean clutter_timeout_pool_prepare  (GSource     *source,
                                                gint        *next_timeout);
@@ -77,7 +76,7 @@ static gboolean clutter_timeout_pool_check    (GSource     *source);
 static gboolean clutter_timeout_pool_dispatch (GSource     *source,
                                                GSourceFunc  callback,
                                                gpointer     data);
-static void clutter_timeout_pool_finalize (GSource     *source);
+static void clutter_timeout_pool_finalize     (GSource     *source);
 
 static GSourceFuncs clutter_timeout_pool_funcs =
 {
@@ -95,9 +94,13 @@ clutter_timeout_sort (gconstpointer a,
   const ClutterTimeout *t_b = b;
   gint comparison;
   
-  return ((comparison = t_a->expiration.tv_sec - t_b->expiration.tv_sec)
-	  ? comparison
-	  : t_a->expiration.tv_usec - t_b->expiration.tv_usec);
+  /* Keep 'ready' timeouts at the front */
+  return (comparison = TIMEOUT_READY (t_a) - TIMEOUT_READY (t_b))
+    ? -comparison
+    /* Otherwise sort by expiration time */
+    : ((comparison = t_a->expiration.tv_sec - t_b->expiration.tv_sec)
+       ? comparison
+       : t_a->expiration.tv_usec - t_b->expiration.tv_usec);
 }
 
 static gint
@@ -192,8 +195,6 @@ clutter_timeout_dispatch (GSource        *source,
       return FALSE;
     }
 
-  clutter_threads_enter ();
-
   if (timeout->func (timeout->data))
     {
       GTimeVal current_time;
@@ -204,8 +205,6 @@ clutter_timeout_dispatch (GSource        *source,
       retval = TRUE;
     }
   
-  clutter_threads_leave ();
-
   return retval;
 }
 
@@ -218,11 +217,44 @@ clutter_timeout_new (guint interval)
   timeout = g_slice_new0 (ClutterTimeout);
   timeout->interval = interval;
   timeout->flags = CLUTTER_TIMEOUT_NONE;
+  timeout->refcount = 1;
 
   g_get_current_time (&current_time);
   clutter_timeout_set_expiration (timeout, &current_time);
 
   return timeout;
+}
+
+/* ref and unref are always called under the main Clutter lock, so there
+ * is not need for us to use g_atomic_int_* API.
+ */
+
+static ClutterTimeout *
+clutter_timeout_ref (ClutterTimeout *timeout)
+{
+  g_return_val_if_fail (timeout != NULL, timeout);
+  g_return_val_if_fail (timeout->refcount > 0, timeout);
+
+  timeout->refcount += 1;
+
+  return timeout;
+}
+
+static void
+clutter_timeout_unref (ClutterTimeout *timeout)
+{
+  g_return_if_fail (timeout != NULL);
+  g_return_if_fail (timeout->refcount > 0);
+
+  timeout->refcount -= 1;
+
+  if (timeout->refcount == 0)
+    {
+      if (timeout->notify)
+        timeout->notify (timeout->data);
+
+      g_slice_free (ClutterTimeout, timeout);
+    }
 }
 
 static void
@@ -263,6 +295,8 @@ clutter_timeout_pool_check (GSource *source)
   ClutterTimeoutPool *pool = (ClutterTimeoutPool *) source;
   GList *l = pool->timeouts;
 
+  clutter_threads_enter ();
+
   for (l = pool->timeouts; l; l = l->next)
     {
       ClutterTimeout *timeout = l->data;
@@ -280,6 +314,8 @@ clutter_timeout_pool_check (GSource *source)
       else
         break;
     }
+
+  clutter_threads_leave ();
 
   return (pool->ready > 0);
 }
@@ -331,11 +367,7 @@ clutter_timeout_pool_dispatch (GSource     *source,
                                gpointer     data)
 {
   ClutterTimeoutPool *pool = (ClutterTimeoutPool *) source;
-  GList *l = pool->timeouts;
-  GList *dispatched = NULL;
-  GList *n, *next;
-
-  clutter_threads_enter ();
+  GList *l;
 
   /* the main loop might have predicted this, so we repeat the
    * check for ready timeouts.
@@ -343,48 +375,77 @@ clutter_timeout_pool_dispatch (GSource     *source,
   if (!pool->ready)
     clutter_timeout_pool_check (source);
 
-  while (l && l->data && (pool->ready-- > 0))
+  clutter_threads_enter ();
+  
+  /* Iterate by moving the actual start of the list along so that it
+   * can cope with adds and removes while a timeout is being dispatched
+   */
+  while (pool->timeouts && pool->timeouts->data && pool->ready-- > 0)
     {
-      ClutterTimeout *timeout = l->data;
-      gboolean needs_removing = FALSE;
-      next = l->next;
+      ClutterTimeout *timeout = pool->timeouts->data;
+
+      /* One of the ready timeouts may have been removed during dispatch,
+       * in which case pool->ready will be wrong, but the ready timeouts
+       * are always kept at the start of the list so we can stop once
+       * we've reached the first non-ready timeout
+       */
+      if (!(TIMEOUT_READY (timeout)))
+	break;
+
+      /* Add a reference to the timeout so it can't disappear
+       * while it's being dispatched
+       */
+      clutter_timeout_ref (timeout);
 
       timeout->flags &= ~CLUTTER_TIMEOUT_READY;
 
-      if (!TIMEOUT_REMOVED (timeout))
-	needs_removing = !clutter_timeout_dispatch (source, timeout);
-      else
-        needs_removing = TRUE;
+      /* Move the list node to a list of dispatched timeouts */
+      l = pool->timeouts;
+      if (l->next)
+	l->next->prev = NULL;
 
-      if (needs_removing)
-        {
-          pool->timeouts = g_list_remove_link (pool->timeouts, l);
+      pool->timeouts = l->next;
 
-          clutter_timeout_free (timeout);
-          g_list_free1 (l);
-        }
-      else
+      if (pool->dispatched_timeouts)
+	pool->dispatched_timeouts->prev = l;
+      
+      l->prev = NULL;
+      l->next = pool->dispatched_timeouts;
+      pool->dispatched_timeouts = l;
+
+      if (!clutter_timeout_dispatch (source, timeout))
 	{
-	  /* Move the list node to a singly-linked list of dispatched
-	     timeouts */
-	  if (next)
-	    next->prev = NULL;
+	  /* The timeout may have already been removed, but nothing
+           * can be added to the dispatched_timeout list except in this
+           * function so it will always either be at the head of the
+           * dispatched list or have been removed
+           */
+          if (pool->dispatched_timeouts &&
+              pool->dispatched_timeouts->data == timeout)
+	    {
+	      pool->dispatched_timeouts =
+                g_list_delete_link (pool->dispatched_timeouts,
+                                    pool->dispatched_timeouts);
 
-	  l->next = dispatched;
-	  dispatched = l;
+	      /* Remove the reference that was held by it being in the list */
+	      clutter_timeout_unref (timeout);
+	    }
 	}
 
-      l = next;
+      clutter_timeout_unref (timeout);
     }
 
   /* Re-insert the dispatched timeouts in sorted order */
-  for (n = dispatched; n; n = next)
+  while (pool->dispatched_timeouts)
     {
-      next = n->next;
-      l = clutter_timeout_pool_insert_sorted (n, l);
+      GList *next = pool->dispatched_timeouts->next;
+      
+      pool->timeouts = clutter_timeout_pool_insert_sorted (pool->dispatched_timeouts,
+							   pool->timeouts);
+
+      pool->dispatched_timeouts = next;
     }
 
-  pool->timeouts = l;
   pool->ready = 0;
 
   clutter_threads_leave ();
@@ -397,6 +458,7 @@ clutter_timeout_pool_finalize (GSource *source)
 {
   ClutterTimeoutPool *pool = (ClutterTimeoutPool *) source;
 
+  /* force destruction */
   g_list_foreach (pool->timeouts, (GFunc) clutter_timeout_free, NULL);
   g_list_free (pool->timeouts);
 }
@@ -479,7 +541,6 @@ clutter_timeout_pool_add (ClutterTimeoutPool *pool,
   guint retval = 0;
 
   timeout = clutter_timeout_new (interval);
-  timeout->flags |= CLUTTER_TIMEOUT_ACTIVE;
 
   retval = timeout->id = pool->next_id++;
 
@@ -510,12 +571,16 @@ clutter_timeout_pool_remove (ClutterTimeoutPool *pool,
 {
   GList *l;
 
-  l = g_list_find_custom (pool->timeouts, GUINT_TO_POINTER (id),
-                          clutter_timeout_find_by_id);
-  if (l)
+  if ((l = g_list_find_custom (pool->timeouts, GUINT_TO_POINTER (id),
+			       clutter_timeout_find_by_id)))
     {
-      ClutterTimeout *timeout = l->data;
-
-      timeout->flags &= ~CLUTTER_TIMEOUT_ACTIVE;
+      clutter_timeout_unref (l->data);
+      pool->timeouts = g_list_delete_link (pool->timeouts, l);
+    }
+  else if ((l = g_list_find_custom (pool->dispatched_timeouts, GUINT_TO_POINTER (id),
+				    clutter_timeout_find_by_id)))
+    {
+      clutter_timeout_unref (l->data);
+      pool->dispatched_timeouts = g_list_delete_link (pool->dispatched_timeouts, l);
     }
 }
