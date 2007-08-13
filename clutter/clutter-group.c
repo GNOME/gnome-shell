@@ -324,9 +324,6 @@ clutter_group_real_raise (ClutterContainer *container,
 {
   ClutterGroup *self = CLUTTER_GROUP (container);
   ClutterGroupPrivate *priv = self->priv;
-  gint pos;
-
-  pos = g_list_index (priv->children, actor) + 1;
 
   priv->children = g_list_remove (priv->children, actor); 
 
@@ -344,6 +341,10 @@ clutter_group_real_raise (ClutterContainer *container,
     }
   else
     {
+      gint pos;
+
+      pos = g_list_index (priv->children, sibling) + 1;
+
       priv->children = g_list_insert (priv->children, actor, pos);
     }
 
@@ -369,8 +370,6 @@ clutter_group_real_lower (ClutterContainer *container,
   ClutterGroupPrivate *priv = self->priv;
   gint pos;
 
-  pos = g_list_index (priv->children, actor) - 1;
-
   priv->children = g_list_remove (priv->children, actor); 
 
   /* Push to bottom */
@@ -386,7 +385,13 @@ clutter_group_real_lower (ClutterContainer *container,
       priv->children = g_list_prepend (priv->children, actor);
     }
   else
-    priv->children = g_list_insert (priv->children, actor, pos);
+    {
+      gint pos;
+
+      pos = g_list_index (priv->children, sibling) + 1;
+
+      priv->children = g_list_insert (priv->children, actor, pos);
+    }
 
   /* See comment in group_raise for this */
   if (sibling &&
