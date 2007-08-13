@@ -873,8 +873,8 @@ clutter_stage_get_actor_at_pos (ClutterStage *stage,
   context->pick_mode = FALSE;
 
   /* Calls should work under both GL and GLES, note GLES needs RGBA */
-  glGetIntegerv(GL_VIEWPORT, viewport);
-  glReadPixels(x, viewport[3] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
+  glGetIntegerv (GL_VIEWPORT, viewport);
+  glReadPixels (x, viewport[3] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
 
   if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
     return CLUTTER_ACTOR(stage);
@@ -882,9 +882,11 @@ clutter_stage_get_actor_at_pos (ClutterStage *stage,
   cogl_get_bitmasks (&r, &g, &b, NULL);
 
   /* Decode color back into an ID, taking into account fb depth */
-  id = pixel[2]>>(8-b) | pixel[1]<<b>>(8-g) | pixel[0]<<(g+b)>>(8-r);
+  id = pixel[2] >> (8 - b)
+       | pixel[1] << b >> (8 - g)
+       | pixel[0] << (g + b) >> (8 - r);
 
-  return clutter_group_find_child_by_id (CLUTTER_GROUP (stage), id);
+  return clutter_container_find_child_by_id (CLUTTER_CONTAINER (stage), id);
 }
 
 /**
