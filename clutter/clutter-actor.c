@@ -1179,9 +1179,9 @@ clutter_actor_init (ClutterActor *self)
  *
  * Destroys an actor.  When an actor is destroyed, it will break any
  * references it holds to other objects.  If the actor is inside a
- * group, the actor will be removed from the group.
+ * container, the actor will be removed.
  *
- * When you destroy a group its children will be destroyed as well.
+ * When you destroy a container its children will be destroyed as well.
  */
 void
 clutter_actor_destroy (ClutterActor *self)
@@ -1977,15 +1977,15 @@ clutter_actor_set_depth (ClutterActor *self,
   /* Sets Z value. - FIXME: should invert ?*/
   priv->z = depth;
 
-  if (priv->parent_actor && CLUTTER_IS_GROUP (priv->parent_actor))
+  if (priv->parent_actor && CLUTTER_IS_CONTAINER (priv->parent_actor))
     {
-      /* We need to resort the group stacking order as to
+      /* We need to resort the container stacking order as to
        * correctly render alpha values. 
        *
        * FIXME: This is sub optimal. maybe queue the the sort 
        *        before stacking  
       */
-      clutter_group_sort_depth_order (CLUTTER_GROUP (priv->parent_actor));
+      clutter_container_sort_depth_order (CLUTTER_CONTAINER (priv->parent_actor));
     }
 
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
@@ -2403,7 +2403,8 @@ clutter_actor_get_parent (ClutterActor *self)
  * @self: a #ClutterActor
  *
  * This function should not be used in applications.  It should be called by
- * implementations of group actors, to dissociate a child from the container.
+ * implementations of container actors, to dissociate a child from the
+ * container.
  *
  * Since: 0.1.1
  */
@@ -2514,7 +2515,7 @@ clutter_actor_raise (ClutterActor *self,
   parent = clutter_actor_get_parent (self);
   if (!parent)
     {
-      g_warning ("Actor of type %s is not inside a group",
+      g_warning ("Actor of type %s is not inside a container",
                  g_type_name (G_OBJECT_TYPE (self)));
       return;
     }
@@ -2524,14 +2525,14 @@ clutter_actor_raise (ClutterActor *self,
       if (parent != clutter_actor_get_parent (below))
         {
           g_warning ("Actor of type %s is not in the same "
-                     "group of actor of type %s",
+                     "container of actor of type %s",
                      g_type_name (G_OBJECT_TYPE (self)),
                      g_type_name (G_OBJECT_TYPE (below)));
           return;
         }
     }
 
-  clutter_group_raise (CLUTTER_GROUP (parent), self, below);
+  clutter_container_raise (CLUTTER_CONTAINER (parent), self, below);
 }
 
 /**
@@ -2553,7 +2554,7 @@ clutter_actor_lower (ClutterActor *self,
   parent = clutter_actor_get_parent (self);
   if (!parent)
     {
-      g_warning ("Actor of type %s is not inside a group",
+      g_warning ("Actor of type %s is not inside a container",
                  g_type_name (G_OBJECT_TYPE (self)));
       return;
     }
@@ -2563,15 +2564,14 @@ clutter_actor_lower (ClutterActor *self,
       if (parent != clutter_actor_get_parent (above))
         {
           g_warning ("Actor of type %s is not in the same "
-                     "group of actor of type %s",
+                     "container of actor of type %s",
                      g_type_name (G_OBJECT_TYPE (self)),
                      g_type_name (G_OBJECT_TYPE (above)));
           return;
         }
     }
 
-  /* FIXME: group_lower should be an overidable method ? */
-  clutter_group_lower (CLUTTER_GROUP (parent), self, above);
+  clutter_container_lower (CLUTTER_CONTAINER (parent), self, above);
 }
 
 /**
