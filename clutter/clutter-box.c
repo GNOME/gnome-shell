@@ -161,12 +161,154 @@ clutter_box_find_child_by_id (ClutterContainer *container,
 }
 
 static void
+clutter_box_raise (ClutterContainer *container,
+                   ClutterActor     *actor,
+                   ClutterActor     *sibling)
+{
+  ClutterBox *box = CLUTTER_BOX (container);
+  ClutterBoxChild *child = NULL, *sibling_child = NULL;
+  GList *l;
+  gint pos;
+
+  for (l = box->children; l; l = l->next)
+    {
+      child = l->data;
+
+      if (child->actor == actor)
+        break;
+    }
+
+  box->children = g_list_remove (box->children, child);
+
+  if (!sibling)
+    {
+      GList *last_item;
+
+      /* raise to top */
+      last_item = g_list_last (box->children);
+      if (last_item)
+        sibling_child = last_item->data;
+
+      box->children = g_list_append (box->children, child);
+    }
+  else
+    {
+      for (pos = 1, l = box->children; l; l = l->next, pos += 1)
+        {
+          sibling_child = l->data;
+
+          if (sibling_child->actor == sibling)
+            break;
+        }
+      
+      box->children = g_list_insert (box->children, child, pos);
+    }
+
+  if (sibling_child)
+    {
+      ClutterActor *a = child->actor;
+      ClutterActor *b = sibling_child->actor;
+
+      if (clutter_actor_get_depth (a) != clutter_actor_get_depth (b))
+        clutter_actor_set_depth (a, clutter_actor_get_depth (b));
+    }
+}
+
+static void
+clutter_box_lower (ClutterContainer *container,
+                   ClutterActor     *actor,
+                   ClutterActor     *sibling)
+{
+  ClutterBox *box = CLUTTER_BOX (container);
+  ClutterBoxChild *child = NULL, *sibling_child = NULL;
+  GList *l;
+  gint pos;
+
+  for (l = box->children; l; l = l->next)
+    {
+      child = l->data;
+
+      if (child->actor == actor)
+        break;
+    }
+
+  box->children = g_list_remove (box->children, child);
+
+  if (!sibling)
+    {
+      GList *first_item;
+
+      /* lower to bottom */
+      first_item = g_list_first (box->children);
+      if (first_item)
+        sibling_child = first_item->data;
+
+      box->children = g_list_prepend (box->children, child);
+    }
+  else
+    {
+      for (pos = 1, l = box->children; l; l = l->next, pos += 1)
+        {
+          sibling_child = l->data;
+
+          if (sibling_child->actor == sibling)
+            break;
+        }
+      
+      box->children = g_list_insert (box->children, child, pos);
+    }
+
+  if (sibling_child)
+    {
+      ClutterActor *a = child->actor;
+      ClutterActor *b = sibling_child->actor;
+
+      if (clutter_actor_get_depth (a) != clutter_actor_get_depth (b))
+        clutter_actor_set_depth (a, clutter_actor_get_depth (b));
+    }
+}
+
+static gint
+sort_z_order (gconstpointer a,
+              gconstpointer b)
+{
+  ClutterBoxChild *child_a = (ClutterBoxChild *) a;
+  ClutterBoxChild *child_b = (ClutterBoxChild *) b;
+  gint depth_a, depth_b;
+
+  depth_a = clutter_actor_get_depth (child_a->actor);
+  depth_b = clutter_actor_get_depth (child_b->actor);
+
+  if (depth_a == depth_b)
+    return 0;
+
+  if (depth_a > depth_b)
+    return 1;
+
+  return -1;
+}
+
+static void
+clutter_box_sort_depth_order (ClutterContainer *container)
+{
+  ClutterBox *box = CLUTTER_BOX (container);
+
+  box->children = g_list_sort (box->children, sort_z_order);
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (box)))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (box));
+}
+
+static void
 clutter_container_iface_init (ClutterContainerIface *iface)
 {
   iface->add = clutter_box_add;
   iface->remove = clutter_box_remove;
   iface->foreach = clutter_box_foreach;
   iface->find_child_by_id = clutter_box_find_child_by_id;
+  iface->raise = clutter_box_raise;
+  iface->lower = clutter_box_lower;
+  iface->sort_depth_order = clutter_box_sort_depth_order;
 }
 
 static void
