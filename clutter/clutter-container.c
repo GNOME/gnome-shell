@@ -377,3 +377,25 @@ clutter_container_foreach (ClutterContainer *container,
   CLUTTER_CONTAINER_GET_IFACE (container)->foreach (container, callback, user_data);
 }
 
+/**
+ * clutter_container_find_child_by_id:
+ * @container: a #ClutterContainer
+ * @child_id: the unique id of an actor
+ *
+ * Finds a child actor of a container by its unique ID. Search recurses
+ * into any child container.
+ *
+ * Return value: The child actor with the requested id, or %NULL if no
+ *   actor with that id was found
+ *
+ * Since: 0.6
+ */
+ClutterActor *
+clutter_container_find_child_by_id (ClutterContainer *container,
+                                    guint             child_id)
+{
+  g_return_val_if_fail (CLUTTER_IS_CONTAINER (container), NULL);
+
+  return CLUTTER_CONTAINER_GET_IFACE (container)->find_child_by_id (container,
+                                                                    child_id);
+}

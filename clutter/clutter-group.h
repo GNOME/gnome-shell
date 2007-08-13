@@ -86,8 +86,6 @@ struct _ClutterGroupClass
 
 GType         clutter_group_get_type         (void) G_GNUC_CONST;
 ClutterActor *clutter_group_new              (void);
-ClutterActor *clutter_group_find_child_by_id (ClutterGroup    *self,
-					      guint            id);
 ClutterActor *clutter_group_get_nth_child    (ClutterGroup    *self,
                                               gint             index_);
 gint          clutter_group_get_n_children   (ClutterGroup    *self);
@@ -104,6 +102,8 @@ void          clutter_group_add_many_valist  (ClutterGroup    *group,
                                               va_list          var_args);
 void          clutter_group_remove           (ClutterGroup    *group,
                                               ClutterActor    *actor);
+ClutterActor *clutter_group_find_child_by_id (ClutterGroup    *self,
+					      guint            id);
 #endif /* CLUTTER_DISABLE_DEPRECATED */
 
 void          clutter_group_raise            (ClutterGroup    *self,

@@ -218,6 +218,7 @@ clutter_container_remove
 clutter_container_remove_valist
 clutter_container_get_children
 clutter_container_foreach
+clutter_container_find_child_by_id
 <SUBSECTION Standard>
 ClutterContainer
 CLUTTER_TYPE_CONTAINER

@@ -282,12 +282,48 @@ clutter_group_real_foreach (ClutterContainer *container,
     (* callback) (CLUTTER_ACTOR (l->data), user_data);
 }
 
+static ClutterActor *
+clutter_group_real_find_child_by_id (ClutterContainer *container,
+                                     guint             child_id)
+{
+  ClutterGroup *self = CLUTTER_GROUP (container);
+  ClutterGroupPrivate *priv = self->priv;
+  ClutterActor *actor = NULL;
+  GList *l;
+
+  if (clutter_actor_get_id (CLUTTER_ACTOR (self)) == child_id)
+    return CLUTTER_ACTOR (self);
+
+  for (l = priv->children; l; l = l->next)
+    {
+      ClutterActor *child = l->data;
+
+      if (clutter_actor_get_id (child) == child_id)
+        {
+          actor = child;
+          break;
+        }
+
+      if (CLUTTER_IS_CONTAINER (child))
+        {
+          ClutterContainer *c = CLUTTER_CONTAINER (child);
+
+          actor = clutter_container_find_child_by_id (c, child_id);
+          if (actor)
+            break;
+	}
+    }
+
+  return actor;
+}
+
 static void
 clutter_container_iface_init (ClutterContainerIface *iface)
 {
   iface->add = clutter_group_real_add;
   iface->remove = clutter_group_real_remove;
   iface->foreach = clutter_group_real_foreach;
+  iface->find_child_by_id = clutter_group_real_find_child_by_id;
 }
 
 static void
@@ -534,38 +570,16 @@ clutter_group_get_nth_child (ClutterGroup *self,
  * into any child groups.
  *
  * Returns: the #ClutterActor if found, or NULL.
+ *
+ * Deprecated: 0.6: Use clutter_container_find_child_by_id() instead.
  */
 ClutterActor *
 clutter_group_find_child_by_id (ClutterGroup *self,
 				guint         id)
 {
-  ClutterActor *actor = NULL;
-  GList *l;
-
   g_return_val_if_fail (CLUTTER_IS_GROUP (self), NULL);
 
-  if (clutter_actor_get_id (CLUTTER_ACTOR (self)) == id)
-    return CLUTTER_ACTOR (self);
-
-  for (l = self->priv->children; l; l = l->next)
-    {
-      ClutterActor *child = l->data;
-
-      if (clutter_actor_get_id (child) == id)
-        {
-          actor = child;
-          break;
-        }
-
-      if (CLUTTER_IS_GROUP (child))
-        {
-          actor = clutter_group_find_child_by_id (CLUTTER_GROUP (child), id);
-          if (actor)
-            break;
-	}
-    }
-
-  return actor;
+  return clutter_container_find_child_by_id (CLUTTER_CONTAINER (self), id);
 }
 
 /**
@@ -577,7 +591,7 @@ clutter_group_find_child_by_id (ClutterGroup *self,
  * FIXME
  */
 void
-clutter_group_raise (ClutterGroup   *self,
+clutter_group_raise (ClutterGroup *self,
 		     ClutterActor *actor, 
 		     ClutterActor *sibling)
 {

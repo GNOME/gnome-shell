@@ -46,6 +46,9 @@ typedef struct _ClutterContainerIface   ClutterContainerIface;
  * @add: virtual function for adding an actor to the container
  * @remove: virtual function for removing an actor from the container
  * @foreach: virtual function for iterating over the container's children
+ * @find_child_by_id: virtual function for searching a container children
+ *   using its unique id. Should recurse through its children. This function
+ *   is used when "picking" actors (e.g. by clutter_stage_get_actor_at_pos())
  * @actor_added: signal class handler for ClutterContainer::actor_added
  * @actor_removed: signal class handler for ClutterContainer::actor_removed
  * 
@@ -59,14 +62,16 @@ struct _ClutterContainerIface
   GTypeInterface g_iface;
 
   /*< public >*/
-  void (* add)           (ClutterContainer *container,
-                          ClutterActor     *actor);
-  void (* remove)        (ClutterContainer *container,
-                          ClutterActor     *actor);
-  void (* foreach)       (ClutterContainer *container,
-                          ClutterCallback   callback,
-                          gpointer          user_data);
-  
+  void          (* add)              (ClutterContainer *container,
+                                      ClutterActor     *actor);
+  void          (* remove)           (ClutterContainer *container,
+                                      ClutterActor     *actor);
+  void          (* foreach)          (ClutterContainer *container,
+                                      ClutterCallback   callback,
+                                      gpointer          user_data);
+  ClutterActor *(* find_child_by_id) (ClutterContainer *container,
+                                      guint             child_id);
+
   /* signals */
   void (* actor_added)   (ClutterContainer *container,
                           ClutterActor     *actor);
@@ -74,28 +79,31 @@ struct _ClutterContainerIface
                           ClutterActor     *actor);
 };
 
-GType  clutter_container_get_type      (void) G_GNUC_CONST;
+GType         clutter_container_get_type         (void) G_GNUC_CONST;
 
-void   clutter_container_add           (ClutterContainer *container,
-                                        ClutterActor     *first_actor,
-                                        ...) G_GNUC_NULL_TERMINATED;
-void   clutter_container_add_actor     (ClutterContainer *container,
-                                        ClutterActor     *actor);
-void   clutter_container_add_valist    (ClutterContainer *container,
-                                        ClutterActor     *first_actor,
-                                        va_list           var_args);
-void   clutter_container_remove        (ClutterContainer *container,
-                                        ClutterActor     *first_actor,
-                                        ...) G_GNUC_NULL_TERMINATED;
-void   clutter_container_remove_actor  (ClutterContainer *container,
-                                        ClutterActor     *actor);
-void   clutter_container_remove_valist (ClutterContainer *container,
-                                        ClutterActor     *first_actor,
-                                        va_list           var_args);
-GList *clutter_container_get_children  (ClutterContainer *container);
-void   clutter_container_foreach       (ClutterContainer *container,
-                                        ClutterCallback   callback,
-                                        gpointer          user_data);
+void          clutter_container_add              (ClutterContainer *container,
+                                                  ClutterActor     *first_actor,
+                                                  ...) G_GNUC_NULL_TERMINATED;
+void          clutter_container_add_actor        (ClutterContainer *container,
+                                                  ClutterActor     *actor);
+void          clutter_container_add_valist       (ClutterContainer *container,
+                                                  ClutterActor     *first_actor,
+                                                  va_list           var_args);
+void          clutter_container_remove           (ClutterContainer *container,
+                                                  ClutterActor     *first_actor,
+                                                  ...) G_GNUC_NULL_TERMINATED;
+void          clutter_container_remove_actor     (ClutterContainer *container,
+                                                  ClutterActor     *actor);
+void          clutter_container_remove_valist    (ClutterContainer *container,
+                                                  ClutterActor     *first_actor,
+                                                  va_list           var_args);
+GList *       clutter_container_get_children     (ClutterContainer *container);
+void          clutter_container_foreach          (ClutterContainer *container,
+                                                  ClutterCallback   callback,
+                                                  gpointer          user_data);
+ClutterActor *clutter_container_find_child_by_id (ClutterContainer *container,
+                                                  guint             child_id);
+
 
 G_END_DECLS
 
