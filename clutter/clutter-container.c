@@ -399,3 +399,70 @@ clutter_container_find_child_by_id (ClutterContainer *container,
   return CLUTTER_CONTAINER_GET_IFACE (container)->find_child_by_id (container,
                                                                     child_id);
 }
+
+/**
+ * clutter_container_raise:
+ * @container: a #ClutterContainer
+ * @actor: the actor to raise
+ * @sibling: the sibling to raise to, or %NULL to raise at the top
+ *
+ * Raises @actor at @sibling level, in the depth ordering.
+ *
+ * Since: 0.6
+ */
+void
+clutter_container_raise (ClutterContainer *container,
+                         ClutterActor     *actor,
+                         ClutterActor     *sibling)
+{
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_if_fail (sibling == NULL || CLUTTER_IS_ACTOR (sibling));
+
+  if (actor == sibling)
+    return;
+
+  CLUTTER_CONTAINER_GET_IFACE (container)->raise (container, actor, sibling);
+}
+
+/**
+ * clutter_container_lower:
+ * @container: a #ClutterContainer
+ * @actor: the actor to raise
+ * @sibling: the sibling to lower to, or %NULL to lower at the bottom
+ *
+ * Lowers @actor at @sibling level, in the depth ordering.
+ *
+ * Since: 0.6
+ */
+void
+clutter_container_lower (ClutterContainer *container,
+                         ClutterActor     *actor,
+                         ClutterActor     *sibling)
+{
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_if_fail (sibling == NULL || CLUTTER_IS_ACTOR (sibling));
+
+  if (actor == sibling)
+    return;
+
+  CLUTTER_CONTAINER_GET_IFACE (container)->raise (container, actor, sibling);
+}
+
+/**
+ * clutter_container_sort_depth_order:
+ * @container: a #ClutterContainer
+ *
+ * Sorts a container children using their depth. This function should not
+ * be normally used by applications.
+ *
+ * Since: 0.6
+ */
+void
+clutter_container_sort_depth_order (ClutterContainer *container)
+{
+  g_return_if_fail (CLUTTER_IS_CONTAINER (container));
+
+  CLUTTER_CONTAINER_GET_IFACE (container)->sort_depth_order (container);
+}

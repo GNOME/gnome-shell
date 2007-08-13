@@ -104,8 +104,6 @@ void          clutter_group_remove           (ClutterGroup    *group,
                                               ClutterActor    *actor);
 ClutterActor *clutter_group_find_child_by_id (ClutterGroup    *self,
 					      guint            id);
-#endif /* CLUTTER_DISABLE_DEPRECATED */
-
 void          clutter_group_raise            (ClutterGroup    *self,
 					      ClutterActor    *actor, 
 					      ClutterActor    *sibling);
@@ -113,6 +111,7 @@ void          clutter_group_lower            (ClutterGroup    *self,
 					      ClutterActor    *actor, 
 					      ClutterActor    *sibling);
 void          clutter_group_sort_depth_order (ClutterGroup    *self);
+#endif /* CLUTTER_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

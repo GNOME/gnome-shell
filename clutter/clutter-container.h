@@ -49,6 +49,10 @@ typedef struct _ClutterContainerIface   ClutterContainerIface;
  * @find_child_by_id: virtual function for searching a container children
  *   using its unique id. Should recurse through its children. This function
  *   is used when "picking" actors (e.g. by clutter_stage_get_actor_at_pos())
+ * @raise: virtual function for raising a child
+ * @lower: virtual function for lowering a child
+ * @sort_depth_order: virtual function for sorting the children of a
+ *   container depending on their depth
  * @actor_added: signal class handler for ClutterContainer::actor_added
  * @actor_removed: signal class handler for ClutterContainer::actor_removed
  * 
@@ -71,6 +75,13 @@ struct _ClutterContainerIface
                                       gpointer          user_data);
   ClutterActor *(* find_child_by_id) (ClutterContainer *container,
                                       guint             child_id);
+  void          (* raise)            (ClutterContainer *container,
+                                      ClutterActor     *actor,
+                                      ClutterActor     *sibling);
+  void          (* lower)            (ClutterContainer *container,
+                                      ClutterActor     *actor,
+                                      ClutterActor     *sibling);
+  void          (* sort_depth_order) (ClutterContainer *container);
 
   /* signals */
   void (* actor_added)   (ClutterContainer *container,
@@ -103,7 +114,13 @@ void          clutter_container_foreach          (ClutterContainer *container,
                                                   gpointer          user_data);
 ClutterActor *clutter_container_find_child_by_id (ClutterContainer *container,
                                                   guint             child_id);
-
+void          clutter_container_raise            (ClutterContainer *container,
+                                                  ClutterActor     *actor,
+                                                  ClutterActor     *sibling);
+void          clutter_container_lower            (ClutterContainer *container,
+                                                  ClutterActor     *actor,
+                                                  ClutterActor     *sibling);
+void          clutter_container_sort_depth_order (ClutterContainer *container);
 
 G_END_DECLS
 

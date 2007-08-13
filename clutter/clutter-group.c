@@ -318,12 +318,123 @@ clutter_group_real_find_child_by_id (ClutterContainer *container,
 }
 
 static void
+clutter_group_real_raise (ClutterContainer *container,
+                          ClutterActor     *actor,
+                          ClutterActor     *sibling)
+{
+  ClutterGroup *self = CLUTTER_GROUP (container);
+  ClutterGroupPrivate *priv = self->priv;
+  gint pos;
+
+  pos = g_list_index (priv->children, actor) + 1;
+
+  priv->children = g_list_remove (priv->children, actor); 
+
+  /* Raise at the top */
+  if (!sibling)
+    {
+      GList *last_item;
+
+      last_item = g_list_last (priv->children);
+
+      if (last_item)
+	sibling = last_item->data;
+      
+      priv->children = g_list_append (priv->children, actor);
+    }
+  else
+    {
+      priv->children = g_list_insert (priv->children, actor, pos);
+    }
+
+  /* set Z ordering a value below, this will then call sort
+   * as values are equal ordering shouldn't change but Z
+   * values will be correct.
+   *
+   * FIXME: optimise
+   */
+  if (sibling &&
+      clutter_actor_get_depth (sibling) != clutter_actor_get_depth (actor))
+    {
+      clutter_actor_set_depth (actor, clutter_actor_get_depth (sibling));
+    }
+}
+
+static void
+clutter_group_real_lower (ClutterContainer *container,
+                          ClutterActor     *actor,
+                          ClutterActor     *sibling)
+{
+  ClutterGroup *self = CLUTTER_GROUP (container);
+  ClutterGroupPrivate *priv = self->priv;
+  gint pos;
+
+  pos = g_list_index (priv->children, actor) - 1;
+
+  priv->children = g_list_remove (priv->children, actor); 
+
+  /* Push to bottom */
+  if (!sibling)
+    {
+      GList *last_item;
+
+      last_item = g_list_first (priv->children);
+
+      if (last_item)
+	sibling = last_item->data;
+
+      priv->children = g_list_prepend (priv->children, actor);
+    }
+  else
+    priv->children = g_list_insert (priv->children, actor, pos);
+
+  /* See comment in group_raise for this */
+  if (sibling &&
+      clutter_actor_get_depth (sibling) != clutter_actor_get_depth (actor))
+    {
+      clutter_actor_set_depth (actor, clutter_actor_get_depth (sibling));
+    }
+}
+
+static gint 
+sort_z_order (gconstpointer a,
+              gconstpointer b)
+{
+  ClutterActor *actor_a = CLUTTER_ACTOR (a);
+  ClutterActor *actor_b = CLUTTER_ACTOR (b);
+
+  if (clutter_actor_get_depth (actor_a) == clutter_actor_get_depth (actor_b)) 
+    return 0;
+
+  if (clutter_actor_get_depth (actor_a) > clutter_actor_get_depth (actor_b)) 
+    return 1;
+
+  return -1;
+}
+
+static void
+clutter_group_real_sort_depth_order (ClutterContainer *container)
+{
+  ClutterGroup *self = CLUTTER_GROUP (container);
+  ClutterGroupPrivate *priv = self->priv;
+
+  priv->children = g_list_sort (priv->children, sort_z_order);
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (self)))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
+
+}
+
+static void
 clutter_container_iface_init (ClutterContainerIface *iface)
 {
   iface->add = clutter_group_real_add;
   iface->remove = clutter_group_real_remove;
   iface->foreach = clutter_group_real_foreach;
   iface->find_child_by_id = clutter_group_real_find_child_by_id;
+  iface->raise = clutter_group_real_raise;
+  iface->lower = clutter_group_real_lower;
+  iface->sort_depth_order = clutter_group_real_sort_depth_order;
 }
 
 static void
@@ -589,50 +700,22 @@ clutter_group_find_child_by_id (ClutterGroup *self,
  * @sibling: a #ClutterActor
  *
  * FIXME
+ *
+ * Deprecated: 0.6: Use clutter_container_raise() instead.
  */
 void
 clutter_group_raise (ClutterGroup *self,
 		     ClutterActor *actor, 
 		     ClutterActor *sibling)
 {
-  ClutterGroupPrivate *priv;
-  gint                 pos;
+  g_return_if_fail (CLUTTER_IS_GROUP (self));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_if_fail (sibling == NULL || CLUTTER_IS_ACTOR (sibling));
 
-  g_return_if_fail (actor != sibling);
+  if (actor == sibling)
+    return;
 
-  priv = self->priv;
-
-  pos = g_list_index (priv->children, actor) + 1;
-
-  priv->children = g_list_remove (priv->children, actor); 
-
-  if (sibling == NULL)
-    {
-      GList *last_item;
-
-      /* Raise top */
-      last_item = g_list_last (priv->children);
-
-      if (last_item)
-	sibling = last_item->data;
-      
-      priv->children = g_list_append (priv->children, actor);
-    }
-  else
-    {
-      priv->children = g_list_insert (priv->children, actor, pos);
-    }
-
-  /* set Z ordering a value below, this will then call sort
-   * as values are equal ordering shouldn't change but Z
-   * values will be correct.
-   * FIXME: optimise
-   */
-  if ( sibling &&
-       clutter_actor_get_depth(sibling) != clutter_actor_get_depth (actor))
-    clutter_actor_set_depth (actor,
-			     clutter_actor_get_depth (sibling));
-
+  clutter_container_raise (CLUTTER_CONTAINER (self), actor, sibling);
 }
 
 /**
@@ -642,57 +725,22 @@ clutter_group_raise (ClutterGroup *self,
  * @sibling: a #ClutterActor
  *
  * FIXME
+ *
+ * Deprecated: 0.6: Use clutter_container_lower() instead
  */
 void
-clutter_group_lower (ClutterGroup   *self,
+clutter_group_lower (ClutterGroup *self,
 		     ClutterActor *actor, 
 		     ClutterActor *sibling)
 {
-  ClutterGroupPrivate *priv;
-  gint               pos;
+  g_return_if_fail (CLUTTER_IS_GROUP (self));
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  g_return_if_fail (sibling == NULL || CLUTTER_IS_ACTOR (sibling));
 
-  g_return_if_fail (actor != sibling);
+  if (actor == sibling)
+    return;
 
-  priv = self->priv;
-
-  pos = g_list_index (priv->children, actor) - 1;
-
-  priv->children = g_list_remove (priv->children, actor); 
-
-  if (sibling == NULL)
-    {
-      GList *last_item;
-      /* Raise top */
-      last_item = g_list_first (priv->children);
-
-      if (last_item)
-	sibling = last_item->data;
-
-      priv->children = g_list_prepend (priv->children, actor);
-    }
-  else
-    priv->children = g_list_insert (priv->children, actor, pos);
-
-  /* See comment in group_raise for this */
-  if (sibling &&
-      clutter_actor_get_depth(sibling) != clutter_actor_get_depth(actor))
-    clutter_actor_set_depth (actor,
-			     clutter_actor_get_depth(sibling));
-}
-
-static gint 
-sort_z_order (gconstpointer a,
-              gconstpointer b)
-{
-  if (clutter_actor_get_depth (CLUTTER_ACTOR(a)) 
-         == clutter_actor_get_depth (CLUTTER_ACTOR(b))) 
-    return 0;
-
-  if (clutter_actor_get_depth (CLUTTER_ACTOR(a)) 
-        > clutter_actor_get_depth (CLUTTER_ACTOR(b))) 
-    return 1;
-
-  return -1;
+  clutter_container_lower (CLUTTER_CONTAINER (self), actor, sibling);
 }
 
 /**
@@ -701,18 +749,13 @@ sort_z_order (gconstpointer a,
  *
  * Sorts a #ClutterGroup's children by there depth value.  
  * This function should not be used by applications. 
- **/
+ *
+ * Deprecated: 0.6: Use clutter_container_sort_depth_order() instead.
+ */
 void
 clutter_group_sort_depth_order (ClutterGroup *self)
 {
-  ClutterGroupPrivate *priv;
+  g_return_if_fail (CLUTTER_IS_GROUP (self));
 
-  g_return_if_fail (CLUTTER_IS_GROUP(self));
-
-  priv = self->priv;
-
-  priv->children = g_list_sort (priv->children, sort_z_order);
-
-  if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR(self)))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR(self));
+  clutter_container_sort_depth_order (CLUTTER_CONTAINER (self));
 }
