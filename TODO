@@ -1,31 +1,7 @@
 TODO
 ====
 
-Last updated 22/06/2007
-
-
-0.4 (July 07)
-==
-
-Definetly:
-
- - YUV texture data [DONE] premulled alpha texture data. (ma)
- - Basic layout code. [DONE] (eb)
- - Basic text entry [DONE] (np)
- - Perspective setup [DONE] (ma)
- - API doc fixups (all)
- - main loop scheduling - paints vs timelimes vs events [DONE] ((ma, eb)
- - ClutterProxyTexture (ma)
- - event queue fixups [DONE} (eb) 
- - clutter_actor_get_vertices [Partly DONE?] (tf)
- - fix up event queue [DONE] (eb)
-
-Maybe:
-
- - SDL event fixups [DONE - roughly]
- - Application developers manual
- - Lookat type functionality.
- - Mipmaps for pango renderer to improving text scaling quality
+Last updated 08/08/2007
 
 0.6
 ===
@@ -41,10 +17,13 @@ Definetly:
    - Very simple focus model - actors have a focus flag and if set emit
      key events.
    - Motion events need to be explicitly enabled. 
+ - Mipmaps for pango renderer to improving text scaling quality
+ - ClutterScore
+   - Class for chaining timelines togeather
 
 Nice/Maybe:
-===========
 
+ - Lookat type functionality.
  - Improve cogl massively to be be processing like.
  - Gradient support ?
  - Rectangle like props to all actors
@@ -54,3 +33,11 @@ Nice/Maybe:
  - ClutterBehaviourDepth (trivial)
  - ClutterTextureAnimation (trivial)
  - Glitz backend over GLX (would cover above)
+
+(Also see bugzilla.o-hand.com bug with 0.6 milestones for more
+ detail/status on the above)
+
+0.8
+===
+ 
+ - ?

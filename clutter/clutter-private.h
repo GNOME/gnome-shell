@@ -43,6 +43,24 @@
 
 G_BEGIN_DECLS
 
+typedef enum {
+  CLUTTER_ACTOR_UNUSED_FLAG = 0,
+
+  CLUTTER_ACTOR_IN_DESTRUCTION = 1 << 0,
+  CLUTTER_ACTOR_IS_TOPLEVEL    = 1 << 1,
+  CLUTTER_ACTOR_IN_REPARENT    = 1 << 2,
+  CLUTTER_ACTOR_SYNC_MATRICES  = 1 << 3 /* Used by stage to indicate GL
+					 * viewport / perspective etc
+					 * needs (re)setting. 
+					*/
+} ClutterPrivateFlags;
+
+typedef enum {
+  CLUTTER_PICK_NONE = 0,
+  CLUTTER_PICK_REACTIVE,
+  CLUTTER_PICK_ALL
+} ClutterPickMode;
+
 typedef struct _ClutterMainContext ClutterMainContext;
 
 struct _ClutterMainContext
@@ -58,27 +76,15 @@ struct _ClutterMainContext
   guint            update_idle;
   
   guint            is_initialized : 1;
-  guint            pick_mode      : 1; /* Indicates pick render mode   */
-
   GTimer          *timer;	       /* Used for debugging scheduler */
+
+  ClutterPickMode  pick_mode;          /* Indicates pick render mode   */
+  guint            motion_events_per_actor : 1;
+  gint             num_reactives;      /* Num of reactive actors */
 };
 
 #define CLUTTER_CONTEXT()	(clutter_context_get_default ())
 ClutterMainContext *clutter_context_get_default (void);
-
-const gchar *clutter_vblank_method (void);
-
-typedef enum {
-  CLUTTER_ACTOR_UNUSED_FLAG = 0,
-
-  CLUTTER_ACTOR_IN_DESTRUCTION = 1 << 0,
-  CLUTTER_ACTOR_IS_TOPLEVEL    = 1 << 1,
-  CLUTTER_ACTOR_IN_REPARENT    = 1 << 2,
-  CLUTTER_ACTOR_SYNC_MATRICES  = 1 << 3 /* Used by stage to indicate GL
-					 * viewport / perspective etc
-					 * needs (re)setting. 
-					*/
-} ClutterPrivateFlags;
 
 #define CLUTTER_PRIVATE_FLAGS(a)	 (CLUTTER_ACTOR ((a))->private_flags)
 #define CLUTTER_SET_PRIVATE_FLAGS(a,f)	 G_STMT_START{ (CLUTTER_PRIVATE_FLAGS (a) |= (f)); }G_STMT_END
@@ -122,6 +128,11 @@ void          _clutter_event_button_generate  (ClutterBackend    *backend,
                                                ClutterEvent      *event);
 
 void          _clutter_feature_init (void);
+
+ClutterActor*  _clutter_do_pick (ClutterStage   *stage,
+				 gint            x,
+				 gint            y,
+				 ClutterPickMode mode);
 
 /* Does this need to be private ? */
 void clutter_do_event (ClutterEvent *event);

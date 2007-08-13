@@ -1,3 +1,40 @@
+2007-08-13  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	* clutter/clutter-event.c:
+	* clutter/clutter-event.h:
+	* clutter/clutter-main.c:
+	* clutter/clutter-main.h:
+	* clutter/clutter-private.h:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-stage.h:
+	* clutter/clutter-types.h:
+	Initial implementation of actors emmitting event signals (423);
+	- Actors set_reactive() to receive mouse events.
+	  (call clutter_enable_motion_events() for per action motion events)
+        - clutter_stage_set_key_focus () to direct key events.
+        - Events bubble up to parents (ending at stage) 
+	  (original source identified by clutter_event_get_source())
+	TODO:
+	- enter/leave notifys for actors.
+        - stage specific events - fullscreen
+        - grabs  
+
+	* tests/test-events.c:
+	Extend a little to use new API
+
+	* clutter/cogl/gl/cogl.c:
+	* clutter/glx/clutter-backend-glx.c:
+	Move get_proc_address into cogl and out of backend.
+	(shaders will need it)
+
+	* clutter/clutter-group.c: (clutter_group_real_lower):
+	Fix a minor compile warning.
+
+	* TODO:
+	Sync up.
+
 2007-08-13  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-container.[ch]: Add find_child_by_id(),
@@ -27,10 +64,16 @@
 	the per-timeout dispatch; this guarantees that the ref+unref of
 	the single timeouts are done under the main lock.
 
+2007-08-12  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-texture.c: (texture_upload_data):
+	Align texture data correctly for edge tiles.
+	(#422 - Neil Roberts)
+
 2007-08-11  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-texture.c:
-	 Fix typo in clutter_texture_get_pixbuf (#458, #442?, Neil Roberts).
+	 Fix typo in clutter_texture_get_pixbuf (#458, Neil Roberts).
 	 Use take_object when getting pixbuf prop to avoid ref leak. (Neil
 	 Roberts)
 

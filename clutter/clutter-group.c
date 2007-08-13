@@ -368,7 +368,6 @@ clutter_group_real_lower (ClutterContainer *container,
 {
   ClutterGroup *self = CLUTTER_GROUP (container);
   ClutterGroupPrivate *priv = self->priv;
-  gint pos;
 
   priv->children = g_list_remove (priv->children, actor); 
 

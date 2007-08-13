@@ -27,6 +27,7 @@
 #define _HAVE_CLUTTER_EVENT_H
 
 #include <glib-object.h>
+#include <clutter/clutter-types.h>
 
 #define CLUTTER_TYPE_EVENT	(clutter_event_get_type ())
 #define CLUTTER_PRIORITY_EVENTS (G_PRIORITY_DEFAULT)
@@ -78,10 +79,12 @@ typedef enum
 
 typedef enum
 {
-  CLUTTER_STAGE_STATE_FULLSCREEN,
-  CLUTTER_STAGE_STATE_MAXIMIZED,
-  CLUTTER_STAGE_STATE_MINIMIZED,
-  CLUTTER_STAGE_STATE_OFFSCREEN
+  CLUTTER_STAGE_STATE_FULLSCREEN       = (1<<1),
+  CLUTTER_STAGE_STATE_OFFSCREEN        = (1<<2),
+  CLUTTER_STAGE_STATE_POINTER_ENTER    = (1<<3),
+  CLUTTER_STAGE_STATE_POINTER_LEAVE    = (1<<4),
+  CLUTTER_STAGE_STATE_FOCUS_ACTIVATE   = (1<<5),
+  CLUTTER_STAGE_STATE_FOCUS_DEACTIVATE = (1<<6),
 } ClutterStageState;
 
 typedef union _ClutterEvent ClutterEvent;
@@ -107,6 +110,7 @@ struct _ClutterKeyEvent
   ClutterModifierType modifier_state;
   guint keyval;
   guint16 hardware_keycode;
+  ClutterActor *source;
 };
 
 struct _ClutterButtonEvent
@@ -119,6 +123,7 @@ struct _ClutterButtonEvent
   guint32 button;
   gdouble *axes; /* Future use */
   ClutterInputDevice *device; /* Future use */
+  ClutterActor *source;
 };
 
 struct _ClutterMotionEvent
@@ -130,6 +135,7 @@ struct _ClutterMotionEvent
   ClutterModifierType modifier_state;
   gdouble *axes; /* Future use */
   ClutterInputDevice *device; /* Future use */
+  ClutterActor *source;
 };
 
 struct _ClutterScrollEvent
@@ -142,6 +148,7 @@ struct _ClutterScrollEvent
   ClutterModifierType modifier_state;
   gdouble *axes; /* future use */
   ClutterInputDevice *device; /* future use */
+  ClutterActor *source;
 };
 
 struct _ClutterStageStateEvent
@@ -186,6 +193,8 @@ guint32 clutter_key_event_unicode (ClutterKeyEvent *keyev);
 guint32 clutter_button_event_button (ClutterButtonEvent *buttev);
 
 guint32 clutter_keysym_to_unicode (guint keyval);
+
+ClutterActor* clutter_event_get_source (ClutterEvent *event);
 
 G_END_DECLS
 

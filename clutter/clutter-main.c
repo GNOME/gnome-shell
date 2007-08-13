@@ -172,6 +172,23 @@ clutter_redraw (void)
   CLUTTER_TIMESTAMP (SCHEDULER, "Redraw finish");
 }
 
+void
+clutter_enable_motion_events (gboolean enable)
+{
+  ClutterMainContext  *context = clutter_context_get_default ();
+
+  context->motion_events_per_actor = enable;
+}
+
+gboolean
+clutter_get_motion_events_enabled (void)
+{
+  ClutterMainContext  *context = clutter_context_get_default ();
+
+  return context->motion_events_per_actor;
+}
+
+
 /** 
  * clutter_do_event
  * @event: a #ClutterEvent.
@@ -183,9 +200,10 @@ clutter_redraw (void)
 void
 clutter_do_event (ClutterEvent *event)
 {
-  ClutterMainContext *context;
-  ClutterBackend *backend;
-  ClutterActor *stage;
+  ClutterMainContext  *context;
+  ClutterBackend      *backend;
+  ClutterActor        *stage;
+  static ClutterActor *motion_last_actor = NULL; 
 
   context = clutter_context_get_default ();
   backend = context->backend;
@@ -195,6 +213,10 @@ clutter_do_event (ClutterEvent *event)
 
   CLUTTER_TIMESTAMP (SCHEDULER, "Event recieved");
 
+  /* TODO: 
+   *
+  */
+
   switch (event->type)
     {
     case CLUTTER_NOTHING:
@@ -202,26 +224,144 @@ clutter_do_event (ClutterEvent *event)
 
     case CLUTTER_DESTROY_NOTIFY:
     case CLUTTER_DELETE:
+      /* FIXME: handle delete working in stage */
       if (clutter_stage_event (CLUTTER_STAGE (stage), event))
         clutter_main_quit ();
       break;
-    
     case CLUTTER_KEY_PRESS:
     case CLUTTER_KEY_RELEASE:
+      {
+	ClutterActor *actor = NULL;
+
+	actor = clutter_stage_get_key_focus (CLUTTER_STAGE(stage));
+
+	g_return_if_fail (actor != NULL);
+
+	/* FIXME: should we ref ? */
+	event->key.source = actor;
+
+	/* bubble up */
+	do
+	  {
+	    clutter_actor_event (actor, event);
+	    actor = clutter_actor_get_parent(actor);
+	  }
+	while (actor != NULL);
+      }
+      break;
     case CLUTTER_MOTION:
+      if (context->motion_events_per_actor == FALSE)
+	{
+	  /* Only stage gets motion events */
+	  event->motion.source = stage;
+	  clutter_actor_event (stage, event);
+	  break;
+	}
     case CLUTTER_BUTTON_PRESS:
     case CLUTTER_2BUTTON_PRESS:
     case CLUTTER_3BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
     case CLUTTER_SCROLL:
-      clutter_stage_event (CLUTTER_STAGE (stage), event);
-      break;
+      {
+	ClutterActor *actor;
+	gint          x,y;
 
+	clutter_event_get_coords (event, &x, &y);
+
+	/* Map the event to a reactive actor */
+	actor = _clutter_do_pick (CLUTTER_STAGE (stage), 
+				  x, y, 
+				  CLUTTER_PICK_REACTIVE);
+
+	CLUTTER_NOTE (EVENT, "Reactive event recieved at %ix%i - actor: %p", 
+		      x, y, actor);
+
+	if (event->type == CLUTTER_SCROLL)
+	  event->scroll.source = actor;
+	else
+	  event->button.source = actor;
+
+	/* Motion enter leave events */
+	if (event->type == CLUTTER_MOTION)
+	  {
+	    if (motion_last_actor != actor)
+	      {
+		if (motion_last_actor)
+		  ;		/* FIXME: leave_notify to motion_last_actor */
+		if (actor)
+		  ;             /* FIXME: Enter notify to actor */
+	      }
+	    motion_last_actor = actor;
+	  }
+
+	/* Send the event to the actor and all parents always the 
+	 * stage.  
+         *
+	 * FIXME: for an optimisation should check if there are
+	 * actually any reactive actors and avoid the pick all togeather
+	 * (signalling just the stage). Should be big help for gles.
+	 */
+	while (actor)
+	  {
+	    if (clutter_actor_is_reactive (actor)
+		|| clutter_actor_get_parent(actor) == NULL /* STAGE */ )
+	      {
+		CLUTTER_NOTE (EVENT, "forwarding event to reactive actor");
+		clutter_actor_event (actor, event);
+	      }
+
+	    actor = clutter_actor_get_parent(actor);
+	  }
+      }
+      break;
     case CLUTTER_STAGE_STATE:
+      /* FIXME: fullscreen / focus / mouse - forward to stage */
+      break;
     case CLUTTER_CLIENT_MESSAGE:
       break;
     }
 }
+
+ClutterActor*  
+_clutter_do_pick (ClutterStage   *stage,
+		  gint            x,
+		  gint            y,
+		  ClutterPickMode mode)
+{
+  ClutterMainContext *context;
+  guchar              pixel[4];
+  GLint               viewport[4];
+  ClutterColor        white = { 0xff, 0xff, 0xff, 0xff };
+  guint32             id;
+  gint                r,g,b;
+
+  context = clutter_context_get_default ();
+
+  cogl_paint_init (&white);
+  cogl_enable (0);
+
+  /* Render the entire scence in pick mode - just single colored silhouette's  
+   * are drawn offscreen (as we never swap buffers)
+  */
+  context->pick_mode = mode;
+  clutter_actor_paint (CLUTTER_ACTOR (stage));
+  context->pick_mode = CLUTTER_PICK_NONE;
+
+  /* Calls should work under both GL and GLES, note GLES needs RGBA */
+  glGetIntegerv(GL_VIEWPORT, viewport);
+  glReadPixels(x, viewport[3] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
+
+  if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
+    return CLUTTER_ACTOR(stage);
+
+  cogl_get_bitmasks (&r, &g, &b, NULL);
+
+  /* Decode color back into an ID, taking into account fb depth */
+  id = pixel[2]>>(8-b) | pixel[1]<<b>>(8-g) | pixel[0]<<(g+b)>>(8-r);
+
+  return clutter_container_find_child_by_id (CLUTTER_CONTAINER (stage), id);
+}
+
 
 /**
  * clutter_main_quit:

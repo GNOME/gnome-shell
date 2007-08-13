@@ -100,6 +100,11 @@ guint            clutter_threads_add_timeout_full   (gint           priority,
                                                      gpointer       data,
                                                      GDestroyNotify notify);
 
+void             clutter_enable_motion_events (gboolean enable);
+
+gboolean         clutter_get_motion_events_enabled (void);
+
+
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_MAIN_H */

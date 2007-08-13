@@ -33,6 +33,7 @@
 #include <clutter/clutter-fixed.h>
 #include <clutter/clutter-types.h>
 #include <clutter/clutter-units.h>
+#include <clutter/clutter-event.h>
 
 G_BEGIN_DECLS
 
@@ -57,8 +58,10 @@ G_BEGIN_DECLS
 #define CLUTTER_ACTOR_IS_REALIZED(e)    ((e)->flags & CLUTTER_ACTOR_REALIZED)
 #define CLUTTER_ACTOR_IS_VISIBLE(e)     (CLUTTER_ACTOR_IS_MAPPED (e) && \
                                          CLUTTER_ACTOR_IS_REALIZED (e))
+#define CLUTTER_ACTOR_IS_REACTIVE(e)   (((e)->flags & CLUTTER_ACTOR_REACTIVE)) 
+/*                                        && CLUTTER_ACTOR_IS_VISIBLE(e)) */
 
-typedef struct _ClutterActor         ClutterActor;
+
 typedef struct _ClutterActorClass    ClutterActorClass;
 typedef struct _ClutterActorBox      ClutterActorBox;
 typedef struct _ClutterActorPrivate  ClutterActorPrivate;
@@ -78,13 +81,16 @@ typedef void (*ClutterCallback) (ClutterActor *actor, gpointer data);
  * @CLUTTER_ACTOR_MAPPED: the actor has been painted
  * @CLUTTER_ACTOR_REALIZED: the resources associated to the actor have been
  *   allocated
+ * @CLUTTER_ACTOR_REACTIVE: the actor 'reacts' to mouse events emmitting event
+ *   signals
  *
  * Flags used to signal the state of an actor.
  */
 typedef enum
 {
   CLUTTER_ACTOR_MAPPED   = 1 << 1,
-  CLUTTER_ACTOR_REALIZED = 1 << 2
+  CLUTTER_ACTOR_REALIZED = 1 << 2,
+  CLUTTER_ACTOR_REACTIVE = 1 << 3
 } ClutterActorFlags;
 
 /**
@@ -185,6 +191,26 @@ struct _ClutterActorClass
   void (* destroy)         (ClutterActor        *actor);
   void (* pick)            (ClutterActor        *actor,
                             const ClutterColor  *color);
+
+  /* event signals */
+  void (* event)                (ClutterActor           *actor,
+				 ClutterEvent           *event);
+  void (* event_after)          (ClutterActor           *actor,
+				 ClutterEvent           *event);
+  void (* button_press_event)   (ClutterActor           *actor,
+				 ClutterButtonEvent     *event);
+  void (* button_release_event) (ClutterActor           *actor,
+				 ClutterButtonEvent     *event);
+  void  (* scroll_event)         (ClutterActor           *actor,
+				  ClutterScrollEvent     *event);
+  void  (* key_press_event)      (ClutterActor           *actor,
+				  ClutterKeyEvent        *event);
+  void  (* key_release_event)    (ClutterActor           *actor,
+				  ClutterKeyEvent        *event);
+  void  (* motion_event)         (ClutterActor           *actor,
+				  ClutterMotionEvent     *event);
+  void  (* focus_in)             (ClutterActor           *actor);
+  void  (* focus_out)            (ClutterActor           *actor);
 
   /*< private >*/
   /* padding for future expansion */
@@ -335,6 +361,20 @@ void                  clutter_actor_get_vertices             (ClutterActor      
 void                  clutter_actor_apply_transform_to_point (ClutterActor          *self, 
 						              ClutterVertex         *point,
 							      ClutterVertex         *vertex);
+
+/* Per actor event handling - may change  */
+gboolean
+clutter_actor_event (ClutterActor *actor,
+                     ClutterEvent *event);
+void
+clutter_actor_set_reactive (ClutterActor *actor);
+
+void
+clutter_actor_unset_reactive (ClutterActor *actor);
+
+gboolean
+clutter_actor_is_reactive (ClutterActor *actor);
+
      
 G_END_DECLS
 

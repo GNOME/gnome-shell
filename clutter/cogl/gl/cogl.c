@@ -29,6 +29,13 @@
 #include <GL/gl.h>
 #include <string.h>
 
+#ifdef HAVE_CLUTTER_GLX
+#include <dlfcn.h>
+#include <GL/glx.h>
+
+typedef CoglFuncPtr (*GLXGetProcAddressProc) (const guint8 *procName);
+#endif
+
 static gulong __enable_flags = 0;
 
 #if COGL_DEBUG
@@ -81,7 +88,43 @@ error_string(GLenum errorCode)
 CoglFuncPtr
 cogl_get_proc_address (const gchar* name)
 {
-  /* FIXME: This very likely needs to be handled in the backend */
+  /* Sucks to ifdef here but not other option..? would be nice to
+   * split the code up for more reuse (once more backends use this 
+   */
+#ifdef HAVE_CLUTTER_GLX
+  static GLXGetProcAddressProc get_proc_func = NULL;
+  static void                 *dlhand = NULL;
+
+  if (get_proc_func == NULL && dlhand == NULL)
+    {
+      dlhand = dlopen (NULL, RTLD_LAZY);
+
+      if (dlhand)
+	{
+	  dlerror ();
+
+	  get_proc_func =
+            (GLXGetProcAddressProc) dlsym (dlhand, "glXGetProcAddress");
+
+	  if (dlerror () != NULL)
+            {
+              get_proc_func =
+                (GLXGetProcAddressProc) dlsym (dlhand, "glXGetProcAddressARB");
+            }
+
+	  if (dlerror () != NULL)
+	    {
+	      get_proc_func = NULL;
+	      g_warning ("failed to bind GLXGetProcAddress "
+                         "or GLXGetProcAddressARB");
+	    }
+	}
+    }
+
+  if (get_proc_func)
+    return get_proc_func ((unsigned char*) name);
+#endif
+
   return NULL;
 }
 

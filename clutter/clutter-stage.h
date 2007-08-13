@@ -98,23 +98,7 @@ struct _ClutterStageClass
   void          (* set_user_resize)    (ClutterStage *stage,
                                         gboolean      value);
 
-  /* signals */
-  void     (* event)                (ClutterStage           *stage,
-                                     ClutterEvent           *event);
-  void     (* event_after)          (ClutterStage           *stage,
-                                     ClutterEvent           *event);
-  void     (* button_press_event)   (ClutterStage           *stage,
-			             ClutterButtonEvent     *event);
-  void     (* button_release_event) (ClutterStage           *stage,
-		  		     ClutterButtonEvent     *event);
-  void     (* scroll_event)         (ClutterStage           *stage,
-                                     ClutterScrollEvent     *event);
-  void     (* key_press_event)      (ClutterStage           *stage,
-		  		     ClutterKeyEvent        *event);
-  void     (* key_release_event)    (ClutterStage           *stage,
-		  		     ClutterKeyEvent        *event);
-  void     (* motion_event)         (ClutterStage           *stage,
-                                     ClutterMotionEvent     *event);
+  /* events */
   void     (* stage_state_event)    (ClutterStage           *stage,
                                      ClutterStageStateEvent *event);
 
@@ -191,6 +175,14 @@ G_CONST_RETURN gchar *clutter_stage_get_title          (ClutterStage *stage);
 void                  clutter_stage_set_user_resizable (ClutterStage *stage, 
 						        gboolean      resizable);
 gboolean              clutter_stage_get_user_resizable (ClutterStage *stage);
+
+/* New experiental calls */
+void
+clutter_stage_set_key_focus (ClutterStage       *stage,
+			     ClutterActor       *actor);
+
+ClutterActor*
+clutter_stage_get_key_focus (ClutterStage       *stage);
 
 G_END_DECLS
 

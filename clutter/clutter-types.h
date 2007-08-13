@@ -39,6 +39,9 @@ G_BEGIN_DECLS
 #define CLUTTER_TYPE_PADDING    (clutter_padding_get_type ())
 #define CLUTTER_TYPE_VERTEX     (clutter_vertex_get_type ())
 
+/* Forward delarations to avoid header catch 22's */
+typedef struct _ClutterActor         ClutterActor;
+
 /**
  * ClutterGravity:
  * @CLUTTER_GRAVITY_NONE: Do not apply any gravity

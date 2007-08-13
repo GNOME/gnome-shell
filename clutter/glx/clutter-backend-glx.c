@@ -37,7 +37,7 @@
 #include <GL/glx.h>
 #include <GL/gl.h>
 
-#include <dlfcn.h>
+
 
 #include "clutter-backend-glx.h"
 #include "clutter-stage-glx.h"
@@ -51,8 +51,6 @@
 #include "cogl.h"
 
 G_DEFINE_TYPE (ClutterBackendGLX, clutter_backend_glx, CLUTTER_TYPE_BACKEND);
-
-typedef CoglFuncPtr (*GLXGetProcAddressProc) (const guint8 *procName);
 
 /* singleton object */
 static ClutterBackendGLX *backend_singleton = NULL;
@@ -387,43 +385,6 @@ check_vblank_env (const char *name)
   return FALSE;
 }
 
-static CoglFuncPtr
-get_proc_address (const gchar* name)
-{
-  static GLXGetProcAddressProc get_proc_func = NULL;
-  static void                 *dlhand = NULL;
-
-  if (get_proc_func == NULL && dlhand == NULL)
-    {
-      dlhand = dlopen (NULL, RTLD_LAZY);
-
-      if (dlhand)
-	{
-	  dlerror ();
-
-	  get_proc_func =
-            (GLXGetProcAddressProc) dlsym (dlhand, "glXGetProcAddress");
-
-	  if (dlerror () != NULL)
-            {
-              get_proc_func =
-                (GLXGetProcAddressProc) dlsym (dlhand, "glXGetProcAddressARB");
-            }
-
-	  if (dlerror () != NULL)
-	    {
-	      get_proc_func = NULL;
-	      g_warning ("failed to bind GLXGetProcAddress "
-                         "or GLXGetProcAddressARB");
-	    }
-	}
-    }
-
-  if (get_proc_func)
-    return get_proc_func ((unsigned char*) name);
-
-  return NULL;
-    }
 
 static ClutterFeatureFlags
 clutter_backend_glx_get_features (ClutterBackend *backend)
@@ -475,7 +436,7 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
 	  cogl_check_extension ("GLX_SGI_swap_control", glx_extensions))
 	{
 	  backend_glx->swap_interval = 
-	    (SwapIntervalProc) get_proc_address ("glXSwapIntervalSGI");
+	    (SwapIntervalProc) cogl_get_proc_address ("glXSwapIntervalSGI");
 
 	  CLUTTER_NOTE (BACKEND, "attempting glXSwapIntervalSGI vblank setup");
 
@@ -500,10 +461,10 @@ clutter_backend_glx_get_features (ClutterBackend *backend)
 	  CLUTTER_NOTE (BACKEND, "attempting glXGetVideoSyncSGI vblank setup");
 
 	  backend_glx->get_video_sync = 
-	    (GetVideoSyncProc) get_proc_address ("glXGetVideoSyncSGI");
+	    (GetVideoSyncProc) cogl_get_proc_address ("glXGetVideoSyncSGI");
 
 	  backend_glx->wait_video_sync = 
-	    (WaitVideoSyncProc) get_proc_address ("glXWaitVideoSyncSGI");
+	    (WaitVideoSyncProc) cogl_get_proc_address ("glXWaitVideoSyncSGI");
 
 	  if ((backend_glx->get_video_sync != NULL) &&
 	      (backend_glx->wait_video_sync != NULL))

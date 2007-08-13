@@ -91,7 +91,16 @@ enum
   HIDE,
   DESTROY,
   PARENT_SET,
-
+  EVENT,
+  EVENT_AFTER,
+  BUTTON_PRESS_EVENT,
+  BUTTON_RELEASE_EVENT,
+  SCROLL_EVENT,
+  KEY_PRESS_EVENT,
+  KEY_RELEASE_EVENT,
+  MOTION_EVENT,
+  FOCUS_IN,
+  FOCUS_OUT,
   LAST_SIGNAL
 };
 
@@ -193,11 +202,14 @@ clutter_actor_hide (ClutterActor *self)
     {
       g_object_ref (self);
 
+      if (CLUTTER_ACTOR_IS_REACTIVE(self))
+	; 			/* FIXME: decrease global reactive count */
+
       g_signal_emit (self, actor_signals[HIDE], 0);
       g_object_notify (G_OBJECT (self), "visible");
 
       g_object_unref (self);
-    }
+    } 
 }
 
 /**
@@ -678,26 +690,32 @@ clutter_actor_paint (ClutterActor *self)
 
   _clutter_actor_apply_modelview_transform (self);
   
-  if (G_UNLIKELY(context->pick_mode == TRUE))
+  if (G_UNLIKELY(context->pick_mode != CLUTTER_PICK_NONE))
     {
       gint         r, g, b;
       ClutterColor col;
       guint32      id;
 
-      id = clutter_actor_get_id (self);
+      if (context->pick_mode == CLUTTER_PICK_ALL
+	  || (context->pick_mode == CLUTTER_PICK_REACTIVE
+	      && CLUTTER_ACTOR_IS_REACTIVE(self)))
+	{
+	  id = clutter_actor_get_id (self);
+	  
+	  cogl_get_bitmasks (&r, &g, &b, NULL);
 
-      cogl_get_bitmasks (&r, &g, &b, NULL);
+	  /* Encode the actor id into a color, taking into account bpp */
+	  col.red = ((id >> (g+b)) & (0xff>>(8-r)))<<(8-r);
+	  col.green = ((id >> b)  & (0xff>>(8-g))) << (8-g);
+	  col.blue = (id & (0xff>>(8-b)))<<(8-b);
+	  col.alpha = 0xff;
 
-      /* Encode the actor id into a color, taking into account bpp */
-      col.red = ((id >> (g+b)) & (0xff>>(8-r)))<<(8-r);
-      col.green = ((id >> b)  & (0xff>>(8-g))) << (8-g);
-      col.blue = (id & (0xff>>(8-b)))<<(8-b);
-      col.alpha = 0xff;
-
-      /* Actor will then paint silhouette of itself in supplied color.
-       * See clutter_stage_get_actor_at_pos() for where picking is enabled.  
-      */
-      clutter_actor_pick (self, &col);
+	  /* Actor will then paint silhouette of itself in supplied
+	   * color.  See clutter_stage_get_actor_at_pos() for where
+	   * picking is enabled.
+	   */
+	  clutter_actor_pick (self, &col);
+	}
     }
   else
     {
@@ -1150,6 +1168,195 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   clutter_marshal_VOID__OBJECT,
                   G_TYPE_NONE, 1,
                   CLUTTER_TYPE_ACTOR);
+
+  /**
+   * ClutterActor::event:
+   * @actor: the actor which received the event
+   * @event: a #ClutterEvent
+   *
+   * The ::event signal is emitted each time and event is received
+   * by the @actor.
+   *
+   * Since: 0.6
+   */
+  actor_signals[EVENT] =
+    g_signal_new ("event",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterActorClass, event),
+		  NULL, NULL,
+		  clutter_marshal_VOID__BOXED,
+		  G_TYPE_NONE, 1,
+		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+  /**
+   * ClutterActor::event-after:
+   * @actor: the actor which received the event
+   * @event: a #ClutterEvent
+   *
+   * The ::event-after signal is emitted after each event, except for
+   * the "delete-event" is received by @actor.
+   *
+   * Since: 0.6
+   */
+  actor_signals[EVENT_AFTER] =
+    g_signal_new ("event-after",
+                  G_TYPE_FROM_CLASS (object_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ClutterActorClass, event_after),
+                  NULL, NULL,
+                  clutter_marshal_VOID__BOXED,
+                  G_TYPE_NONE, 1,
+                  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+  /**
+   * ClutterActor::button-press-event:
+   * @actor: the actor which received the event
+   * @event: a #ClutterButtonEvent
+   *
+   * The ::button-press-event signal is emitted each time a mouse button
+   * is pressed on @actor.
+   *
+   * Since: 0.6
+   */
+  actor_signals[BUTTON_PRESS_EVENT] =
+    g_signal_new ("button-press-event",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterActorClass, button_press_event),
+		  NULL, NULL,
+		  clutter_marshal_VOID__BOXED,
+		  G_TYPE_NONE, 1,
+		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+  /**
+   * ClutterActor::button-release-event:
+   * @actor: the actor which received the event
+   * @event: a #ClutterButtonEvent
+   *
+   * The ::button-release-event signal is emitted each time a mouse button
+   * is released on @actor.
+   *
+   * Since: 0.6
+   */
+  actor_signals[BUTTON_RELEASE_EVENT] =
+    g_signal_new ("button-release-event",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterActorClass, button_release_event),
+		  NULL, NULL,
+		  clutter_marshal_VOID__BOXED,
+		  G_TYPE_NONE, 1,
+		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+  /**
+   * ClutterActor::scroll-event:
+   * @actor: the actor which received the event
+   * @event: a #ClutterScrollEvent
+   *
+   * The ::scroll-event signal is emitted each time a the mouse is
+   * scrolled on @actor
+   *
+   *
+   * Since: 0.6
+   */
+  actor_signals[SCROLL_EVENT] =
+    g_signal_new ("scroll-event",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterActorClass, scroll_event),
+		  NULL, NULL,
+		  clutter_marshal_VOID__BOXED,
+		  G_TYPE_NONE, 1,
+		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+  /**
+   * ClutterActor::key-press-event:
+   * @actor: the actor which received the event
+   * @event: a #ClutterKeyEvent
+   *
+   * The ::key-press-event signal is emitted each time a keyboard button
+   * is pressed on @actor.
+   *
+   * Since: 0.6
+   */
+  actor_signals[KEY_PRESS_EVENT] =
+    g_signal_new ("key-press-event",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterActorClass, key_press_event),
+		  NULL, NULL,
+		  clutter_marshal_VOID__BOXED,
+		  G_TYPE_NONE, 1,
+		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+  /**
+   * ClutterActor::key-release-event:
+   * @actor: the actor which received the event
+   * @event: a #ClutterKeyEvent
+   *
+   * The ::key-release-event signal is emitted each time a keyboard button
+   * is released on @actor.
+   *
+   * Since: 0.6
+   */
+  actor_signals[KEY_RELEASE_EVENT] =
+    g_signal_new ("key-release-event",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterActorClass, key_release_event),
+		  NULL, NULL,
+		  clutter_marshal_VOID__BOXED,
+		  G_TYPE_NONE, 1,
+		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+  /**
+   * ClutterActor::motion-event:
+   * @actor: the actor which received the event
+   * @event: a #ClutterMotionEvent
+   *
+   * The ::motion-event signal is emitted each time the mouse pointer is
+   * moved on @actor.
+   *
+   * Since: 0.6
+   */
+  actor_signals[MOTION_EVENT] =
+    g_signal_new ("motion-event",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterActorClass, motion_event),
+		  NULL, NULL,
+		  clutter_marshal_VOID__BOXED,
+		  G_TYPE_NONE, 1,
+		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+
+  /**
+   * ClutterActor::focus-in:
+   * @actor: the actor which now has key focus
+   *
+   * The ::focus-in signal is emitted when @actor recieves key focus.
+   *
+   * Since: 0.6
+   */
+  actor_signals[FOCUS_IN] =
+    g_signal_new ("focus-in",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterActorClass, focus_in),
+		  NULL, NULL,
+		  clutter_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
+
+  /**
+   * ClutterActor::focus-out:
+   * @actor: the actor which now has key focus
+   *
+   * The ::focus-out signal is emitted when @actor loses key focus.
+   *
+   * Source: 0.6
+   */
+  actor_signals[FOCUS_OUT] =
+    g_signal_new ("focus-out",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterActorClass, focus_out),
+		  NULL, NULL,
+		  clutter_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
+
 
   klass->show = clutter_actor_real_show;
   klass->show_all = clutter_actor_show;
@@ -2598,6 +2805,104 @@ clutter_actor_lower_bottom (ClutterActor *self)
   clutter_actor_lower (self, NULL);
 }
 
+/* 
+ * Event handling
+ */
+
+/**
+ * clutter_actor_event:
+ * @actor: a #ClutterActor
+ * @event: a #ClutterEvent
+ *
+ * This function is used to emit an event on the main stage.
+ * You should rarely need to use this function, except for
+ * synthetising events.
+ *
+ * Return value: the return value from the signal emission
+ *
+ * Since: 0.4
+ */
+gboolean
+clutter_actor_event (ClutterActor *actor,
+                     ClutterEvent *event)
+{
+  gboolean res = TRUE;
+  gint signal_num = -1;
+
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), FALSE);
+  g_return_val_if_fail (event != NULL, FALSE);
+
+  g_object_ref (actor);
+
+  g_signal_emit (actor, actor_signals[EVENT], 0, event);
+  
+  switch (event->type)
+    {
+    case CLUTTER_NOTHING:
+      break;
+    case CLUTTER_BUTTON_PRESS:
+    case CLUTTER_2BUTTON_PRESS:
+    case CLUTTER_3BUTTON_PRESS:
+      signal_num = BUTTON_PRESS_EVENT;
+      break;
+    case CLUTTER_BUTTON_RELEASE:
+      signal_num = BUTTON_RELEASE_EVENT;
+      break;
+    case CLUTTER_SCROLL:
+      signal_num = SCROLL_EVENT;
+      break;
+    case CLUTTER_KEY_PRESS:
+      signal_num = KEY_PRESS_EVENT;
+      break;
+    case CLUTTER_KEY_RELEASE:
+      signal_num = KEY_RELEASE_EVENT;
+      break;
+    case CLUTTER_MOTION:
+      signal_num = MOTION_EVENT;
+      break;
+    case CLUTTER_DELETE:
+      signal_num = -1;
+      break;
+    case CLUTTER_DESTROY_NOTIFY:
+      signal_num = -1;
+      break;
+    case CLUTTER_CLIENT_MESSAGE:
+      signal_num = -1;
+      break;
+    default:
+      break;
+    }
+
+  if (signal_num != -1)
+    {
+      g_signal_emit (actor, actor_signals[signal_num], 0, event);
+      g_signal_emit (actor, actor_signals[EVENT_AFTER], 0, event);
+      res = TRUE;
+    }
+
+  g_object_unref (actor);
+
+  return res;
+}
+
+void
+clutter_actor_set_reactive (ClutterActor *actor)
+{
+  CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_REACTIVE);
+}
+
+void
+clutter_actor_unset_reactive (ClutterActor *actor)
+{
+  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REACTIVE);
+}
+
+gboolean
+clutter_actor_is_reactive (ClutterActor *actor)
+{
+  return CLUTTER_ACTOR_IS_REACTIVE(actor);
+}
+
 /*
  * ClutterGemoetry
  */
@@ -2618,9 +2923,10 @@ clutter_geometry_get_type (void)
   static GType our_type = 0;
 
   if (our_type == 0)
-    our_type = g_boxed_type_register_static (g_intern_static_string ("ClutterGeometry"),
-                                             (GBoxedCopyFunc) clutter_geometry_copy,
-                                             (GBoxedFreeFunc) g_free);
+    our_type = g_boxed_type_register_static 
+                   (g_intern_static_string ("ClutterGeometry"),
+		    (GBoxedCopyFunc) clutter_geometry_copy,
+		    (GBoxedFreeFunc) g_free);
 
   return our_type;
 }
@@ -2645,9 +2951,10 @@ clutter_vertex_get_type (void)
   static GType our_type = 0;
 
   if (our_type == 0)
-    our_type = g_boxed_type_register_static (g_intern_static_string ("ClutterVertex"),
-                                             (GBoxedCopyFunc) clutter_vertex_copy,
-                                             (GBoxedFreeFunc) g_free);
+    our_type = g_boxed_type_register_static 
+                   (g_intern_static_string ("ClutterVertex"),
+		    (GBoxedCopyFunc) clutter_vertex_copy,
+		    (GBoxedFreeFunc) g_free);
 
   return our_type;
 }
@@ -2671,9 +2978,10 @@ clutter_actor_box_get_type (void)
   static GType our_type = 0;
 
   if (our_type == 0)
-    our_type = g_boxed_type_register_static (g_intern_static_string ("ClutterActorBox"),
-                                             (GBoxedCopyFunc) clutter_actor_box_copy,
-                                             (GBoxedFreeFunc) g_free);
+    our_type = g_boxed_type_register_static 
+                   (g_intern_static_string ("ClutterActorBox"),
+		    (GBoxedCopyFunc) clutter_actor_box_copy,
+		    (GBoxedFreeFunc) g_free);
   return our_type;
 }
 
