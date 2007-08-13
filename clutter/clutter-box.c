@@ -126,12 +126,47 @@ clutter_box_foreach (ClutterContainer *container,
     }
 }
 
+static ClutterActor *
+clutter_box_find_child_by_id (ClutterContainer *container,
+                              guint             child_id)
+{
+  ClutterBox *self = CLUTTER_BOX (container);
+  ClutterActor *actor = NULL;
+  GList *l;
+
+  if (clutter_actor_get_id (CLUTTER_ACTOR (self)) == child_id)
+    return CLUTTER_ACTOR (self);
+
+  for (l = self->children; l; l = l->next)
+    {
+      ClutterBoxChild *child = l->data;
+
+      if (clutter_actor_get_id (child->actor) == child_id)
+        {
+          actor = child->actor;
+          break;
+        }
+
+      if (CLUTTER_IS_CONTAINER (child->actor))
+        {
+          ClutterContainer *c = CLUTTER_CONTAINER (child->actor);
+
+          actor = clutter_container_find_child_by_id (c, child_id);
+          if (actor)
+            break;
+	}
+    }
+
+  return actor;
+}
+
 static void
 clutter_container_iface_init (ClutterContainerIface *iface)
 {
   iface->add = clutter_box_add;
   iface->remove = clutter_box_remove;
   iface->foreach = clutter_box_foreach;
+  iface->find_child_by_id = clutter_box_find_child_by_id;
 }
 
 static void
