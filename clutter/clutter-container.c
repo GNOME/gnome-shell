@@ -422,6 +422,25 @@ clutter_container_raise (ClutterContainer *container,
   if (actor == sibling)
     return;
 
+  if (clutter_actor_get_parent (actor) != CLUTTER_ACTOR (container))
+    {
+      g_warning ("Actor of type `%s' is not a child of the container "
+                 "of type `%s'",
+                 g_type_name (G_OBJECT_TYPE (actor)),
+                 g_type_name (G_OBJECT_TYPE (container)));
+      return;
+    }
+
+  if (sibling &&
+      clutter_actor_get_parent (sibling) != CLUTTER_ACTOR (container))
+    {
+      g_warning ("Actor of type `%s' is not a child of the container "
+                 "of type `%s'",
+                 g_type_name (G_OBJECT_TYPE (sibling)),
+                 g_type_name (G_OBJECT_TYPE (container)));
+      return;
+    }
+  
   CLUTTER_CONTAINER_GET_IFACE (container)->raise (container, actor, sibling);
 }
 
@@ -447,6 +466,25 @@ clutter_container_lower (ClutterContainer *container,
   if (actor == sibling)
     return;
 
+  if (clutter_actor_get_parent (actor) != CLUTTER_ACTOR (container))
+    {
+      g_warning ("Actor of type `%s' is not a child of the container "
+                 "of type `%s'",
+                 g_type_name (G_OBJECT_TYPE (actor)),
+                 g_type_name (G_OBJECT_TYPE (container)));
+      return;
+    }
+
+  if (sibling &&
+      clutter_actor_get_parent (sibling) != CLUTTER_ACTOR (container))
+    {
+      g_warning ("Actor of type `%s' is not a child of the container "
+                 "of type `%s'",
+                 g_type_name (G_OBJECT_TYPE (sibling)),
+                 g_type_name (G_OBJECT_TYPE (container)));
+      return;
+    }
+  
   CLUTTER_CONTAINER_GET_IFACE (container)->raise (container, actor, sibling);
 }
 
