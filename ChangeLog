@@ -1,3 +1,21 @@
+2007-08-13  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-container.[ch]: Add find_child_by_id(),
+	raise(), lower() and sort_depth_order() virtual functions to
+	ClutterContainer.
+
+	* clutter/clutter-group.[ch]: Deprecate the redundant calls
+	from ClutterGroup, and make ClutterGroup implement them as part
+	of the ClutterContainer interface implementation.
+
+	* clutter/clutter-box.c: Implement the newly added ClutterContainer
+	methods; now clutter_stage_get_actor_at_pos() works with boxes
+	as well as groups.
+
+	* clutter/clutter-stage.c:
+	* clutter/clutter-actor.c: Replace calls to ClutterGroup functions
+	with ClutterContainer ones.
+
 2007-08-12  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-timeout-pool.c: Fix removing and adding timeouts

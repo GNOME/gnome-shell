@@ -1,3 +1,10 @@
+2007-08-13  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Add the new ClutterContainer methods.
+
+	* clutter-docs.sgml: Generate the index for the symbols added
+	in the 0.5/0.6 cycle.
+
 2007-08-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Add the new clutter_threads_* API.
