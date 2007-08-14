@@ -1,3 +1,12 @@
+2007-08-14  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-container.[ch]:
+	* clutter/clutter-actor.c:
+	* clutter/clutter-group.c: Rename clutter_container_raise() to
+	clutter_container_raise_child(), and clutter_container_lower()
+	to clutter_container_lower_child() to avoid clashing with
+	ClutterActor raise() and lower() respectively.
+
 2007-08-13  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c:

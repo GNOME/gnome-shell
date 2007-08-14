@@ -1,3 +1,8 @@
+2007-08-14  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Rename raise() and lower() methods of
+	ClutterContainer.
+
 2007-08-13  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Add the new ClutterContainer methods.
