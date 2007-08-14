@@ -401,7 +401,7 @@ clutter_container_find_child_by_id (ClutterContainer *container,
 }
 
 /**
- * clutter_container_raise:
+ * clutter_container_raise_child:
  * @container: a #ClutterContainer
  * @actor: the actor to raise
  * @sibling: the sibling to raise to, or %NULL to raise at the top
@@ -411,8 +411,8 @@ clutter_container_find_child_by_id (ClutterContainer *container,
  * Since: 0.6
  */
 void
-clutter_container_raise (ClutterContainer *container,
-                         ClutterActor     *actor,
+clutter_container_raise_child (ClutterContainer *container,
+                               ClutterActor     *actor,
                          ClutterActor     *sibling)
 {
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));
@@ -445,7 +445,7 @@ clutter_container_raise (ClutterContainer *container,
 }
 
 /**
- * clutter_container_lower:
+ * clutter_container_lower_child:
  * @container: a #ClutterContainer
  * @actor: the actor to raise
  * @sibling: the sibling to lower to, or %NULL to lower at the bottom
@@ -455,8 +455,8 @@ clutter_container_raise (ClutterContainer *container,
  * Since: 0.6
  */
 void
-clutter_container_lower (ClutterContainer *container,
-                         ClutterActor     *actor,
+clutter_container_lower_child (ClutterContainer *container,
+                               ClutterActor     *actor,
                          ClutterActor     *sibling)
 {
   g_return_if_fail (CLUTTER_IS_CONTAINER (container));

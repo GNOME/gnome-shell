@@ -705,7 +705,7 @@ clutter_group_find_child_by_id (ClutterGroup *self,
  *
  * FIXME
  *
- * Deprecated: 0.6: Use clutter_container_raise() instead.
+ * Deprecated: 0.6: Use clutter_container_raise_child() instead.
  */
 void
 clutter_group_raise (ClutterGroup *self,
@@ -719,7 +719,7 @@ clutter_group_raise (ClutterGroup *self,
   if (actor == sibling)
     return;
 
-  clutter_container_raise (CLUTTER_CONTAINER (self), actor, sibling);
+  clutter_container_raise_child (CLUTTER_CONTAINER (self), actor, sibling);
 }
 
 /**
@@ -730,7 +730,7 @@ clutter_group_raise (ClutterGroup *self,
  *
  * FIXME
  *
- * Deprecated: 0.6: Use clutter_container_lower() instead
+ * Deprecated: 0.6: Use clutter_container_lower_child() instead
  */
 void
 clutter_group_lower (ClutterGroup *self,
@@ -744,7 +744,7 @@ clutter_group_lower (ClutterGroup *self,
   if (actor == sibling)
     return;
 
-  clutter_container_lower (CLUTTER_CONTAINER (self), actor, sibling);
+  clutter_container_lower_child (CLUTTER_CONTAINER (self), actor, sibling);
 }
 
 /**

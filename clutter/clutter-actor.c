@@ -2739,7 +2739,7 @@ clutter_actor_raise (ClutterActor *self,
         }
     }
 
-  clutter_container_raise (CLUTTER_CONTAINER (parent), self, below);
+  clutter_container_raise_child (CLUTTER_CONTAINER (parent), self, below);
 }
 
 /**
@@ -2778,7 +2778,7 @@ clutter_actor_lower (ClutterActor *self,
         }
     }
 
-  clutter_container_lower (CLUTTER_CONTAINER (parent), self, above);
+  clutter_container_lower_child (CLUTTER_CONTAINER (parent), self, above);
 }
 
 /**

@@ -219,8 +219,8 @@ clutter_container_remove_valist
 clutter_container_get_children
 clutter_container_foreach
 clutter_container_find_child_by_id
-clutter_container_raise
-clutter_container_lower
+clutter_container_raise_child
+clutter_container_lower_child
 clutter_container_sort_depth_order
 <SUBSECTION Standard>
 ClutterContainer

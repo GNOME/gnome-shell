@@ -114,10 +114,10 @@ void          clutter_container_foreach          (ClutterContainer *container,
                                                   gpointer          user_data);
 ClutterActor *clutter_container_find_child_by_id (ClutterContainer *container,
                                                   guint             child_id);
-void          clutter_container_raise            (ClutterContainer *container,
+void          clutter_container_raise_child      (ClutterContainer *container,
                                                   ClutterActor     *actor,
                                                   ClutterActor     *sibling);
-void          clutter_container_lower            (ClutterContainer *container,
+void          clutter_container_lower_child      (ClutterContainer *container,
                                                   ClutterActor     *actor,
                                                   ClutterActor     *sibling);
 void          clutter_container_sort_depth_order (ClutterContainer *container);
