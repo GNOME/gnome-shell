@@ -510,10 +510,10 @@ clutter_actor_transform_vertices (ClutterActor    * self,
  * the actor; the returned vertices relate to the ClutterActoBox
  * coordinances as follows:
  *
- * v[0] contains (x1, y1)
- * v[1] contains (x2, y1)
- * v[2] contains (x1, y2)
- * v[3] contains (x2, y2)
+ *  v[0] contains (x1, y1)
+ *  v[1] contains (x2, y1)
+ *  v[2] contains (x1, y2)
+ *  v[3] contains (x2, y2)
  *
  * Since: 0.4
  **/
@@ -2820,7 +2820,7 @@ clutter_actor_lower_bottom (ClutterActor *self)
  *
  * Return value: the return value from the signal emission
  *
- * Since: 0.4
+ * Since: 0.6
  */
 gboolean
 clutter_actor_event (ClutterActor *actor,
@@ -2888,18 +2888,24 @@ clutter_actor_event (ClutterActor *actor,
 void
 clutter_actor_set_reactive (ClutterActor *actor)
 {
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+
   CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_REACTIVE);
 }
 
 void
 clutter_actor_unset_reactive (ClutterActor *actor)
 {
+  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
+  
   CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REACTIVE);
 }
 
 gboolean
 clutter_actor_is_reactive (ClutterActor *actor)
 {
+  g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), FALSE);
+  
   return CLUTTER_ACTOR_IS_REACTIVE(actor);
 }
 

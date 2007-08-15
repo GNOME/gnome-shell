@@ -244,7 +244,7 @@ clutter_do_event (ClutterEvent *event)
 	do
 	  {
 	    clutter_actor_event (actor, event);
-	    actor = clutter_actor_get_parent(actor);
+	    actor = clutter_actor_get_parent (actor);
 	  }
 	while (actor != NULL);
       }
