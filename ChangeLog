@@ -1,5 +1,10 @@
 2007-08-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.c: Add checks for the "reactive" flag
+	accessors.
+
+2007-08-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-effect.[ch]: Add clutter_effect_depth(), a
 	simple wrapper around ClutterBehaviourDepth. (#464, Ali Sabil)
 
