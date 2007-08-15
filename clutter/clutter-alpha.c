@@ -748,8 +748,8 @@ clutter_smoothstep_inc_func (ClutterAlpha  *alpha,
   ClutterTimeline    *timeline;
   gint                frame;
   gint                n_frames;
-  gint32              r; 
-  gint32              x; 
+  guint32             r; 
+  guint32             x; 
 
   /*
    * The smoothstep function uses f(x) = -2x^3 + 3x^2 where x is from <0,1>,
