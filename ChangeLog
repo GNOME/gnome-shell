@@ -1,5 +1,10 @@
 2007-08-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-effect.[ch]: Add clutter_effect_depth(), a
+	simple wrapper around ClutterBehaviourDepth. (#464, Ali Sabil)
+
+2007-08-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-alpha.c (clutter_smoothstep_inc): Use the
 	correct type for parameters, to avoid overflow  (Ali Sabil).
 
