@@ -413,11 +413,12 @@ clutter_texture_get_type
 <SECTION>
 <FILE>clutter-stage</FILE>
 <TITLE>ClutterStage</TITLE>
-CLUTTER_STAGE_WIDTH
-CLUTTER_STAGE_HEIGHT
 ClutterPerspective
 clutter_perspective_copy
 clutter_perspective_free
+<SUBSECTION>
+CLUTTER_STAGE_WIDTH
+CLUTTER_STAGE_HEIGHT
 clutter_stage_get_default
 clutter_stage_set_color
 clutter_stage_get_color
@@ -971,10 +972,12 @@ clutter_padding_get_type
 <TITLE>Clutter Effects</TITLE>
 clutter_effect_template_new
 clutter_effect_template_new_full
+<SUBSECTION>
 ClutterEffectCompleteFunc
 clutter_effect_fade
 clutter_effect_move
 clutter_effect_scale
+clutter_effect_depth
 clutter_effect_rotate_x
 clutter_effect_rotate_y
 clutter_effect_rotate_z

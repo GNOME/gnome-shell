@@ -48,6 +48,7 @@
 #include "clutter-private.h"
 #include "clutter-debug.h"
 #include "clutter-behaviour-bspline.h"
+#include "clutter-behaviour-depth.h"
 #include "clutter-behaviour-ellipse.h"
 #include "clutter-behaviour-opacity.h"
 #include "clutter-behaviour-path.h"
@@ -432,6 +433,49 @@ clutter_effect_fade (ClutterEffectTemplate     *template_,
   c->behave = clutter_behaviour_opacity_new (c->alpha, 
 					     start_opacity, 
 					     end_opacity);
+  
+  clutter_behaviour_apply (c->behave, actor);
+  clutter_timeline_start (c->timeline);
+  
+  return c->timeline;
+}
+
+/**
+ * clutter_effect_depth:
+ * @template_: A #ClutterEffectTemplate
+ * @actor: A #ClutterActor to apply the effect to.
+ * @start_depth: Initial depth value to apply to actor
+ * @end_depth: Final depth value to apply to actor
+ * @completed_func: A #ClutterEffectCompleteFunc to call on effect
+ *   completion or %NULL
+ * @completed_data: Data to pass to supplied  #ClutterEffectCompleteFunc
+ *   or %NULL
+ *
+ * Simple effect for changing the depth of a single #ClutterActor.
+ *
+ * Return value: a #ClutterTimeline for the effect. Will be unrefed by
+ * the effect when completed.
+ *
+ * Since: 0.5
+ */
+ClutterTimeline *
+clutter_effect_depth (ClutterEffectTemplate     *template_,
+		     ClutterActor               *actor,
+		     gint                       start_depth,
+		     gint                       end_depth,
+		     ClutterEffectCompleteFunc  completed_func,
+		     gpointer                   completed_data)
+{
+  ClutterEffectClosure *c;
+
+  c = clutter_effect_closure_new (template_,
+				  actor, 
+				  G_CALLBACK (on_effect_complete));
+
+  c->completed_func = completed_func;
+  c->completed_data = completed_data;
+
+  c->behave = clutter_behaviour_depth_new (c->alpha, start_depth, end_depth);
   
   clutter_behaviour_apply (c->behave, actor);
   clutter_timeline_start (c->timeline);

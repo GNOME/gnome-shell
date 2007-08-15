@@ -111,6 +111,12 @@ ClutterTimeline *clutter_effect_fade  (ClutterEffectTemplate     *template_,
                                        guint8                     end_opacity,
                                        ClutterEffectCompleteFunc  completed_func,
                                        gpointer                   completed_data);
+ClutterTimeline *clutter_effect_depth (ClutterEffectTemplate     *template_,
+                                       ClutterActor               *actor,
+                                       gint                       start_depth,
+                                       gint                       end_depth,
+                                       ClutterEffectCompleteFunc  completed_func,
+                                       gpointer                   completed_data);
 ClutterTimeline *clutter_effect_move  (ClutterEffectTemplate     *template_,
                                        ClutterActor              *actor,
                                        const ClutterKnot         *knots,
@@ -125,35 +131,34 @@ ClutterTimeline *clutter_effect_scale (ClutterEffectTemplate     *template_,
                                        ClutterEffectCompleteFunc  completed_func,
                                        gpointer                   completed_data);
 
-ClutterTimeline * clutter_effect_rotate_x (ClutterEffectTemplate     *template_,
-					   ClutterActor              *actor,
-					   gdouble                    angle_begin,
-					   gdouble                    angle_end,
-					   gint                       center_y,
-					   gint                       center_z,
-					   ClutterRotateDirection     direction,
-					   ClutterEffectCompleteFunc  completed_func,
-					   gpointer                   completed_data);
-ClutterTimeline * clutter_effect_rotate_y (ClutterEffectTemplate     *template_,
-					   ClutterActor              *actor,
-					   gdouble                    angle_begin,
-					   gdouble                    angle_end,
-					   gint                       center_x,
-					   gint                       center_z,
-					   ClutterRotateDirection     direction,
-					   ClutterEffectCompleteFunc  completed_func,
-					   gpointer                   completed_data);
+ClutterTimeline *clutter_effect_rotate_x (ClutterEffectTemplate     *template_,
+					  ClutterActor              *actor,
+					  gdouble                    angle_begin,
+					  gdouble                    angle_end,
+					  gint                       center_y,
+					  gint                       center_z,
+					  ClutterRotateDirection     direction,
+					  ClutterEffectCompleteFunc  completed_func,
+					  gpointer                   completed_data);
+ClutterTimeline *clutter_effect_rotate_y (ClutterEffectTemplate     *template_,
+					  ClutterActor              *actor,
+					  gdouble                    angle_begin,
+					  gdouble                    angle_end,
+					  gint                       center_x,
+					  gint                       center_z,
+					  ClutterRotateDirection     direction,
+					  ClutterEffectCompleteFunc  completed_func,
+					  gpointer                   completed_data);
 
-ClutterTimeline * clutter_effect_rotate_z (ClutterEffectTemplate     *template_,
-					   ClutterActor              *actor,
-					   gdouble                    angle_begin,
-					   gdouble                    angle_end,
-					   gint                       center_x,
-					   gint                       center_y,
-					   ClutterRotateDirection     direction,
-					   ClutterEffectCompleteFunc  completed_func,
-					   gpointer                   completed_data);
-
+ClutterTimeline *clutter_effect_rotate_z (ClutterEffectTemplate     *template_,
+					  ClutterActor              *actor,
+					  gdouble                    angle_begin,
+					  gdouble                    angle_end,
+					  gint                       center_x,
+					  gint                       center_y,
+					  ClutterRotateDirection     direction,
+					  ClutterEffectCompleteFunc  completed_func,
+					  gpointer                   completed_data);
 
 G_END_DECLS
 
