@@ -456,7 +456,7 @@ clutter_effect_fade (ClutterEffectTemplate     *template_,
  * Return value: a #ClutterTimeline for the effect. Will be unrefed by
  * the effect when completed.
  *
- * Since: 0.5
+ * Since: 0.4
  */
 ClutterTimeline *
 clutter_effect_depth (ClutterEffectTemplate     *template_,

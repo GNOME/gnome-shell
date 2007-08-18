@@ -464,7 +464,7 @@ clutter_threads_impl_unlock (void)
  *
  * This function must be called before clutter_init().
  *
- * Since: 0.6
+ * Since: 0.4
  */
 void
 clutter_threads_init (void)
@@ -508,7 +508,7 @@ clutter_threads_init (void)
  * This method must be called before clutter_threads_init(), and cannot
  * be called multiple times.
  *
- * Since: 0.6
+ * Since: 0.4
  */
 void
 clutter_threads_set_lock_functions (GCallback enter_fn,
@@ -610,7 +610,7 @@ clutter_threads_dispatch_free (gpointer data)
  *
  * Return value: the ID (greater than 0) of the event source.
  *
- * Since: 0.6
+ * Since: 0.4
  */
 guint
 clutter_threads_add_idle_full (gint           priority,
@@ -641,7 +641,7 @@ clutter_threads_add_idle_full (gint           priority,
  *
  * Return value: the ID (greater than 0) of the event source.
  *
- * Since: 0.6
+ * Since: 0.4
  */
 guint
 clutter_threads_add_idle (GSourceFunc func,
@@ -681,7 +681,7 @@ clutter_threads_add_idle (GSourceFunc func,
  *
  * Return value: the ID (greater than 0) of the event source.
  *
- * Since: 0.6
+ * Since: 0.4
  */
 guint
 clutter_threads_add_timeout_full (gint           priority,
@@ -715,7 +715,7 @@ clutter_threads_add_timeout_full (gint           priority,
  *
  * Return value: the ID (greater than 0) of the event source.
  *
- * Since: 0.6
+ * Since: 0.4
  */
 guint
 clutter_threads_add_timeout (guint       interval,
@@ -735,7 +735,7 @@ clutter_threads_add_timeout (guint       interval,
  *
  * Locks the Clutter thread lock.
  *
- * Since: 0.6
+ * Since: 0.4
  */
 void
 clutter_threads_enter (void)
@@ -749,7 +749,7 @@ clutter_threads_enter (void)
  *
  * Unlocks the Clutter thread lock.
  *
- * Since: 0.6
+ * Since: 0.4
  */
 void
 clutter_threads_leave (void)
