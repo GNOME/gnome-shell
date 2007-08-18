@@ -59,7 +59,10 @@ struct _ClutterBehaviourRotatePrivate
 
   ClutterRotateAxis axis;
   ClutterRotateDirection direction;
-  gint center_x, center_y, center_z;
+
+  gint center_x;
+  gint center_y;
+  gint center_z;
 };
 
 #define CLUTTER_BEHAVIOUR_ROTATE_GET_PRIVATE(obj) \
@@ -142,20 +145,21 @@ clutter_behaviour_rotate_alpha_notify (ClutterBehaviour *behaviour,
 	  /* Work out the angular length of the arch represented by the
 	   * end angle in CCW direction
 	   */
-	  if (priv->angle_end > CLUTTER_INT_TO_FIXED(360))
+	  if (priv->angle_end > CLUTTER_INT_TO_FIXED (360))
 	    {
 	      ClutterFixed rounds, a1, a2;
 
 	      rounds = priv->angle_begin / 360;
 	      a1 = rounds * 360;
-	      a2 = CLUTTER_INT_TO_FIXED(360) - (priv->angle_begin - a1);
+	      a2 = CLUTTER_INT_TO_FIXED (360) - (priv->angle_begin - a1);
 
 	      diff = a1 + a2 + priv->angle_end;
 	    }
 	  else
 	    {
-	      diff = CLUTTER_INT_TO_FIXED(360) 
-		        - priv->angle_begin + priv->angle_end;
+	      diff = CLUTTER_INT_TO_FIXED (360) 
+		     - priv->angle_begin
+                     + priv->angle_end;
 	    }
       
 	  angle = CLUTTER_FIXED_MUL (diff, factor);
@@ -174,20 +178,21 @@ clutter_behaviour_rotate_alpha_notify (ClutterBehaviour *behaviour,
 	  /* Work out the angular length of the arch represented by the
 	   * end angle in CCW direction
 	   */
-	  if (priv->angle_end > CLUTTER_INT_TO_FIXED(360))
+	  if (priv->angle_end > CLUTTER_INT_TO_FIXED (360))
 	    {
 	      ClutterFixed rounds, a1, a2;
 
 	      rounds = priv->angle_begin / 360;
 	      a1 = rounds * 360;
-	      a2 = CLUTTER_INT_TO_FIXED(360) - (priv->angle_end - a1);
+	      a2 = CLUTTER_INT_TO_FIXED (360) - (priv->angle_end - a1);
 
 	      diff = a1 + a2 + priv->angle_begin;
 	    }
 	  else
 	    {
-	      diff = CLUTTER_INT_TO_FIXED(360) 
-		       - priv->angle_end + priv->angle_begin;
+	      diff = CLUTTER_INT_TO_FIXED (360) 
+		     - priv->angle_end
+                     + priv->angle_begin;
 	    }
 	  angle = priv->angle_begin - CLUTTER_FIXED_MUL (diff, factor);
 	}
@@ -448,9 +453,15 @@ clutter_behaviour_rotate_new (ClutterAlpha           *alpha,
                               gdouble                 angle_begin,
                               gdouble                 angle_end)
 {
-  return clutter_behaviour_rotate_newx (alpha, axis, direction,
-                                        CLUTTER_FLOAT_TO_FIXED (angle_begin),
-                                        CLUTTER_FLOAT_TO_FIXED (angle_end));
+  g_return_val_if_fail (alpha == NULL || CLUTTER_IS_ALPHA (alpha), NULL);
+
+  return g_object_new (CLUTTER_TYPE_BEHAVIOUR_ROTATE,
+                       "alpha", alpha,
+                       "axis", axis,
+                       "direction", direction,
+                       "angle-begin", angle_begin,
+                       "angle-end", angle_end,
+                       NULL);
 }
 
 /**
@@ -478,12 +489,17 @@ clutter_behaviour_rotate_newx (ClutterAlpha           *alpha,
   ClutterBehaviour *retval;
   ClutterBehaviourRotatePrivate *priv;
 
+  g_return_val_if_fail (alpha == NULL || CLUTTER_IS_ALPHA (alpha), NULL);
+
   retval = g_object_new (CLUTTER_TYPE_BEHAVIOUR_ROTATE,
                          "alpha", alpha,
                          "axis", axis,
                          "direction", direction,
                          NULL);
 
+  /* we don't want to convert the angles from fixed to boolean
+   * and then back again to fixed.
+   */
   priv = CLUTTER_BEHAVIOUR_ROTATE_GET_PRIVATE (retval);
   priv->angle_begin = angle_begin;
   priv->angle_end = angle_end;
@@ -530,12 +546,9 @@ clutter_behaviour_rotate_set_axis (ClutterBehaviourRotate *rotate,
 
   if (priv->axis != axis)
     {
-      g_object_ref (rotate);
-
       priv->axis = axis;
 
       g_object_notify (G_OBJECT (rotate), "axis");
-      g_object_unref (rotate);
     }
 }
 
@@ -579,12 +592,9 @@ clutter_behaviour_rotate_set_direction (ClutterBehaviourRotate *rotate,
 
   if (priv->direction != direction)
     {
-      g_object_ref (rotate);
-
       priv->direction = direction;
 
       g_object_notify (G_OBJECT (rotate), "direction");
-      g_object_unref (rotate);
     }
 }
 
@@ -733,6 +743,9 @@ clutter_behaviour_rotate_set_center (ClutterBehaviourRotate *rotate,
 
   priv = rotate->priv;
 
+  g_object_ref (rotate);
+  g_object_freeze_notify (G_OBJECT (rotate));
+
   if (priv->center_x != x)
     {
       priv->center_x = x;
@@ -750,6 +763,9 @@ clutter_behaviour_rotate_set_center (ClutterBehaviourRotate *rotate,
       priv->center_z = z;
       g_object_notify (G_OBJECT (rotate), "center-z");
     }
+
+  g_object_thaw_notify (G_OBJECT (rotate));
+  g_object_unref (rotate);
 }
 
 /**
@@ -781,5 +797,5 @@ clutter_behaviour_rotate_get_center (ClutterBehaviourRotate *rotate,
   if (y)
     *y = priv->center_y;
   if (z)
-    *z = priv->center_x;
+    *z = priv->center_z;
 }
