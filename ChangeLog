@@ -1,3 +1,15 @@
+2007-08-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-effect.c:
+	* clutter/clutter-main.c: Update the Since: tag for the
+	backported API.
+
+	* clutter/clutter-behaviour-rotate.c: Fix a typo in the get_center()
+	method. (#468, Neil Roberts)
+
+	Freeze and thaw the notification queue when changing multiple
+	properties in the same method. Fix some coding style issues.
+
 2007-08-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-actor.c: Add checks for the "reactive" flag
