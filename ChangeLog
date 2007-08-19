@@ -1,3 +1,8 @@
+2007-08-19  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/eglx/clutter-event-egl.c: (clutter_event_dispatch):
+	Fix clutter_thread typo (Kate Alhola)
+
 2007-08-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-effect.c:

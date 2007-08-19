@@ -363,7 +363,7 @@ clutter_event_dispatch (GSource     *source,
   ClutterBackend *backend = ((ClutterEventSource *) source)->backend;
   ClutterEvent *event;
 
-  clutter_thread_enter ();
+  clutter_threads_enter ();
 
   events_queue (backend);
 
