@@ -39,21 +39,21 @@
  *
  * The major version of the Clutter library (1, if %CLUTTER_VERSION is 1.2.3)
  */
-#define CLUTTER_MAJOR_VERSION   @CLUTTER_MAJOR_VERSION@
+#define CLUTTER_MAJOR_VERSION   (@CLUTTER_MAJOR_VERSION@)
 
 /**
  * CLUTTER_MINOR_VERSION:
  *
  * The minor version of the Clutter library (2, if %CLUTTER_VERSION is 1.2.3)
  */
-#define CLUTTER_MINOR_VERSION   @CLUTTER_MINOR_VERSION@
+#define CLUTTER_MINOR_VERSION   (@CLUTTER_MINOR_VERSION@)
 
 /**
  * CLUTTER_MICRO_VERSION:
  *
  * The micro version of the Clutter library (3, if %CLUTTER_VERSION is 1.2.3)
  */
-#define CLUTTER_MICRO_VERSION   @CLUTTER_MICRO_VERSION@
+#define CLUTTER_MICRO_VERSION   (@CLUTTER_MICRO_VERSION@)
 
 /**
  * CLUTTER_VERSION:
@@ -119,6 +119,6 @@
  *
  * Since: 0.4
  */
-#define CLUTTER_NO_FPU          @CLUTTER_NO_FPU@
+#define CLUTTER_NO_FPU          (@CLUTTER_NO_FPU@)
 
 #endif /* __CLUTTER_VERSION_H__ */
