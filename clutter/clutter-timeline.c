@@ -399,26 +399,44 @@ timeline_timeout_func (gpointer data)
   GTimeVal                timeval;
   gint                    n_frames;
   gulong                  msecs;
+  gboolean                retval = TRUE;
 
   priv = timeline->priv;
 
-  CLUTTER_TIMESTAMP (SCHEDULER, "Timeline:%p activated\n", timeline);
+  if (!timeline)
+    {
+      CLUTTER_NOTE (SCHEDULER,
+                    "The timeline [%p] has been disposed",
+                    timeline);
+      return FALSE;
+    }
 
+  if (!priv->timeout_id)
+    {
+      CLUTTER_NOTE (SCHEDULER,
+                    "The timeline [%p] has been removed",
+                    timeline);
+
+      return FALSE;
+    }
+
+  g_object_ref (timeline);
+  
   /* Figure out potential frame skips */
   g_get_current_time (&timeval);
 
-  /* Fire off signal */
-  g_signal_emit (timeline, timeline_signals[NEW_FRAME], 
-		 0, priv->current_frame_num);
+  CLUTTER_TIMESTAMP (SCHEDULER, "Timeline [%p] activated (cur: %d)\n",
+                     timeline,
+                     priv->current_frame_num);
 
-  /* Signal frees timeline ? */
-  if (timeline == NULL)
-    return FALSE;
+  /* Fire off signal */
+  g_signal_emit (timeline, timeline_signals[NEW_FRAME], 0,
+                 priv->current_frame_num);
 
   /* Signal removes source ? */
   if (!priv->timeout_id)
     {
-      clutter_timeline_stop (timeline);
+      g_object_unref (timeline);
       return FALSE;
     }
   
@@ -428,16 +446,18 @@ timeline_timeout_func (gpointer data)
        * of frames to advance accordingly. 
       */
       msecs = ((timeval.tv_sec - priv->start_frame_secs) * 1000) 
-                 + (timeval.tv_usec / 1000);
-      n_frames =  (msecs - priv->last_frame_msecs ) / (1000 / priv->fps);
-      if (n_frames < 0)
+              + (timeval.tv_usec / 1000);
+      n_frames = (msecs - priv->last_frame_msecs)
+                 / (1000 / priv->fps);
+      
+      if (n_frames <= 0)
         n_frames = 1;
-
-      if (n_frames > 1)
+      else if (n_frames > 1)
 	{
 	  CLUTTER_TIMESTAMP (SCHEDULER, 
-			     "Timeline %p, skipping %i frames\n", 
-			     timeline, n_frames);
+			     "Timeline [%p], skipping %d frames\n", 
+			     timeline,
+                             n_frames);
 	}
     }
   else 
@@ -457,28 +477,54 @@ timeline_timeout_func (gpointer data)
   /* Handle loop or stop */
   if (priv->current_frame_num > priv->n_frames)
     {
+      guint frame_diff;
+
+      CLUTTER_NOTE (SCHEDULER,
+                    "Timeline [%p] completed (cur: %d, tot: %d, drop: %d)",
+                    timeline,
+                    priv->current_frame_num,
+                    priv->n_frames,
+                    n_frames - 1);
+
+      frame_diff = priv->current_frame_num - priv->n_frames;
       priv->current_frame_num = priv->n_frames;
 
-      if (n_frames > 1)
+      /* if we skipped some frame to get here let's see whether we still need
+       * to emit the last new-frame signal with the last frame
+       */
+      if (frame_diff)
 	{
-	  g_signal_emit (timeline, timeline_signals[NEW_FRAME], 
-			 0, priv->current_frame_num);
+	  g_signal_emit (timeline, timeline_signals[NEW_FRAME], 0,
+                         priv->current_frame_num);
 	}
 
       if (priv->loop)
 	{
+	  g_signal_emit (timeline, timeline_signals[COMPLETED], 0);
 	  clutter_timeline_rewind (timeline);
-	  g_signal_emit (timeline, timeline_signals[COMPLETED], 0); 
+
+          retval = TRUE;
 	}
       else
 	{
-	  clutter_timeline_stop (timeline);
-	  g_signal_emit (timeline, timeline_signals[COMPLETED], 0); 
-	  return FALSE;
+          if (priv->timeout_id)
+            {
+              timeout_remove (priv->timeout_id);
+              priv->timeout_id = 0;
+            }
+
+          priv->last_frame_msecs = 0;
+
+          g_signal_emit (timeline, timeline_signals[COMPLETED], 0);
+          clutter_timeline_rewind (timeline);
+          
+	  retval = FALSE;
 	}
     }
 
-  return TRUE;
+  g_object_unref (timeline);
+
+  return retval;
 }
 
 static gboolean
@@ -559,7 +605,6 @@ clutter_timeline_pause (ClutterTimeline *timeline)
       priv->timeout_id = 0;
     }
 
-  priv->timeout_id = 0;
   priv->last_frame_msecs = 0;
 
   g_signal_emit (timeline, timeline_signals[PAUSED], 0);
