@@ -211,7 +211,7 @@ clutter_do_event (ClutterEvent *event)
   if (!stage)
     return;
 
-  CLUTTER_TIMESTAMP (SCHEDULER, "Event recieved");
+  CLUTTER_TIMESTAMP (EVENT, "Event received");
 
   /* TODO: 
    *
