@@ -348,7 +348,6 @@ clutter_effect_closure_destroy (ClutterEffectClosure *c)
   g_object_unref (c->actor);
   g_object_unref (c->template);
   g_object_unref (c->behave);
-  g_object_unref (c->alpha);
   g_object_unref (c->timeline);
 
   g_slice_free (ClutterEffectClosure, c);
@@ -376,7 +375,7 @@ clutter_effect_closure_new (ClutterEffectTemplate *template,
                                         NULL);
 
   c->signal_id =
-    g_signal_connect (c->timeline, "completed",G_CALLBACK (complete), c);
+    g_signal_connect (c->timeline, "completed", G_CALLBACK (complete), c);
 
   return c;
 }
@@ -388,7 +387,7 @@ on_effect_complete (ClutterTimeline *timeline,
   ClutterEffectClosure *c =  (ClutterEffectClosure*)user_data;
 
   if (c->completed_func)
-    c->completed_func(c->actor, c->completed_data);
+    c->completed_func (c->actor, c->completed_data);
 
   clutter_effect_closure_destroy (c);
 }
