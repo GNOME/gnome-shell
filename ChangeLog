@@ -1,3 +1,46 @@
+2007-08-19  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Various timeline related changes.
+
+	* clutter/clutter-timeout-pool.c: Use g_list_insert_sorted() to
+	fix a timeout pool reversal happening with our homegrown
+	sorted insertion function. (see #470)
+
+	* tests/Makefile.am:
+	* tests/test-timeline.c: Add a ClutterTimeline test suite, for
+	finding regressions in the behaviour of the timelines. (#470,
+	Rob Bradford)
+
+	* clutter/clutter-main.c (clutter_do_event): Use an EVENT note,
+	not a SCHEDULER one; SCHEDULER is for timelines and idle sources
+	only.
+
+	* clutter/clutter-version.h.in: Protect the bare numbers of
+	the version components.
+
+	* clutter/clutter-effect.c: Do not unref the ClutterAlpha, as
+	the ownership is already of the behaviour used by the effect
+	closure.
+
+	* clutter/clutter-timeline.c: Emit the ::new-frame signal only
+	if the timeline is still active
+	
+	Always advance at least of one frame. (#471, Rob Bradford)
+
+	Do not rewind the timeline if the user paused it in the ::new-frame
+	signal handler: either the user has already done it with
+	clutter_timeline_stop() or it's not what he's expecting if he
+	called clutter_timeline_pause(). (#372, Johan Bilien)
+
+	If we skipped the last frame before emitting the ::complete
+	signal, emit ::new-frame with the last frame.
+
+	Do not call clutter_timeline_stop() at the end of a non-looping
+	timeline, as it emits the ::pause signal as well. Also, rewind the
+	timeline *after* emitting ::complete, so that calling
+	clutter_timeline_get_current_frame() in a signal handler still
+	works.
+
 2007-08-19  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/eglx/clutter-event-egl.c: (clutter_event_dispatch):
