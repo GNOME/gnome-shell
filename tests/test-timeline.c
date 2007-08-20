@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include <clutter/clutter.h>
 
 static void
@@ -51,5 +53,5 @@ main (int argc, char **argv)
   g_object_unref (timeline_2);
   g_object_unref (timeline_3);
 
-  return;
+  return EXIT_SUCCESS;
 }
