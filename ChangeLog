@@ -1,3 +1,8 @@
+2007-08-20  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-version.h.in: Fix CLUTTER_CHECK_VERSION()
+	macro to accept micro versions. (#477, Neil Roberts)
+
 2007-08-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Various timeline related changes.

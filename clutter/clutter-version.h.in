@@ -91,7 +91,7 @@
 #define CLUTTER_CHECK_VERSION(major,minor,micro) \
         (CLUTTER_MAJOR_VERSION > (major) || \
          (CLUTTER_MAJOR_VERSION == (major) && CLUTTER_MINOR_VERSION > (minor)) || \
-         (CLUTTER_MAJOR_VERSION == (major) && CLUTTER_MINOR_VERSION == (minor) && CLUTTER_MICRO_VERSION > (micro)))
+         (CLUTTER_MAJOR_VERSION == (major) && CLUTTER_MINOR_VERSION == (minor) && CLUTTER_MICRO_VERSION >= (micro)))
 
 /**
  * CLUTTER_FLAVOUR:
