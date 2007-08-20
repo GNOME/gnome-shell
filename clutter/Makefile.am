@@ -99,37 +99,21 @@ clutter-marshal.c: clutter-marshal.h Makefile
 clutter-enum-types.h: stamp-clutter-enum-types.h
 	@true
 stamp-clutter-enum-types.h: $(source_h) Makefile
-	$(GLIB_MKENUMS) \
-		--fhead "#ifndef __CLUTTER_ENUM_TYPES_H__\n" \
-                --fhead "#define __CLUTTER_ENUM_TYPES_H__\n\n" \
-		--fhead "G_BEGIN_DECLS\n\n" \
-		--ftail "G_END_DECLS\n\n" \
-		--ftail "#endif\n" \
-		--fprod "/* --- @filename@ --- */\n" \
-		--eprod "#define CLUTTER_TYPE_@ENUMSHORT@ @enum_name@_get_type()\n" \
-		--eprod "GType @enum_name@_get_type (void);\n\n" \
-	$(source_h) >> xgen-ceth \
-	&& (cmp xgen-ceth clutter-enum-types.h || cp xgen-ceth clutter-enum-types.h) \
-	&& rm -f xgen-ceth \
-	&& echo timestamp > $(@F)
+	( cd $(srcdir) && \
+	  $(GLIB_MKENUMS) \
+	  	--template $(srcdir)/clutter-enum-types.h.in \
+	  $(source_h) ) >> xgen-ceth && \
+	(cmp xgen-ceth clutter-enum-types.h || cp xgen-ceth clutter-enum-types.h) && \
+	rm -f xgen-ceth && \
+	echo timestamp > $(@F)
 
 clutter-enum-types.c: clutter-enum-types.h
-	$(GLIB_MKENUMS) \
-		--fhead "#include <glib-object.h>\n" \
-		--fhead "#include \"clutter-enum-types.h\"\n" \
-		--fprod "\n/* enumerations from \"@filename@\" */" \
-		--fprod "\n#include \"@filename@\"" \
-		--vhead "static const G@Type@Value _@enum_name@_values[] = {" \
-		--vprod "  { @VALUENAME@, \"@VALUENAME@\", \"@valuenick@\" }," \
-		--vtail "  { 0, NULL, NULL }\n};\n\n" \
-		--vtail "GType\n@enum_name@_get_type (void)\n{\n" \
-		--vtail "  static GType type = 0;\n\n" \
-		--vtail "  if (!type)\n" \
-		--vtail "    type = g_@type@_register_static (\"@EnumName@\", _@enum_name@_values);\n\n" \
-		--vtail "  return type;\n}\n\n" \
-	$(source_h) >> xgen-cetc \
-	&& cp xgen-cetc clutter-enum-types.c \
-	&& rm -f xgen-cetc
+	( cd $(srcdir) && \
+	  $(GLIB_MKENUMS) \
+	  	--template $(srcdir)/clutter-enum-types.c.in \
+	  $(source_h) ) >> xgen-cetc && \
+	cp xgen-cetc clutter-enum-types.c && \
+	rm -f xgen-cetc
 
 CLEANFILES = $(STAMPFILES)
 
@@ -207,4 +191,8 @@ DISTCLEANFILES = \
 	clutter-version.h \
 	$(NULL)
 
-EXTRA_DIST = clutter-marshal.list clutter-version.h.in
+EXTRA_DIST = \
+	clutter-marshal.list \
+	clutter-version.h.in \
+	clutter-enum-types.h.in \
+	clutter-enum-types.c.in

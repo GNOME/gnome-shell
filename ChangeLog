@@ -1,5 +1,16 @@
 2007-08-20  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/Makefile.am:
+	* clutter/clutter-enum-types.h.in:
+	* clutter/clutter-enum-types.c.in: Use template files for
+	glib-mkenums; this makes the Makefile template a bit more
+	clean and the enum types generation more customisable (e.g.
+	when GLib 2.14 has been released, we can use g_once_init_enter()
+	and g_once_init_leave() to have thread-safe GType functions
+	for the enum types as well).
+
+2007-08-20  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-version.h.in: Fix CLUTTER_CHECK_VERSION()
 	macro to accept micro versions. (#477, Neil Roberts)
 
