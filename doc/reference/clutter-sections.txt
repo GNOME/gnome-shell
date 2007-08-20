@@ -456,6 +456,8 @@ clutter_perspective_get_type
 <SECTION>
 <FILE>clutter-timeline</FILE>
 <TITLE>ClutterTimeline</TITLE>
+ClutterTimeline
+ClutterTimelineClass
 clutter_timeline_new
 clutter_timeline_clone
 clutter_timeline_set_speed
@@ -475,8 +477,6 @@ clutter_timeline_is_playing
 clutter_timeline_set_delay
 clutter_timeline_get_delay
 <SUBSECTION Standard>
-ClutterTimeline
-ClutterTimelineClass
 CLUTTER_TIMELINE
 CLUTTER_IS_TIMELINE
 CLUTTER_TYPE_TIMELINE

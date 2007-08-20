@@ -61,14 +61,16 @@ typedef struct _ClutterTimelinePrivate ClutterTimelinePrivate;
 struct _ClutterTimeline
 {
   /*< private >*/
-  GObject                 parent;
+  GObject parent;
   ClutterTimelinePrivate *priv;
 };
 
 struct _ClutterTimelineClass
 {
+  /*< private >*/
   GObjectClass parent_class;
   
+  /*< public >*/
   void (*started)   (ClutterTimeline *timeline);
   void (*completed) (ClutterTimeline *timeline);
   void (*paused)    (ClutterTimeline *timeline);
@@ -76,6 +78,7 @@ struct _ClutterTimelineClass
   void (*new_frame) (ClutterTimeline *timeline,
 		     gint             frame_num);
 
+  /*< private >*/
   void (*_clutter_timeline_1) (void);
   void (*_clutter_timeline_2) (void);
   void (*_clutter_timeline_3) (void);

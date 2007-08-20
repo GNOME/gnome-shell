@@ -1,3 +1,8 @@
+2007-08-20  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter-sections.txt: Move ClutterTimeline and ClutterTimeline
+	class in the right section.
+
 2007-08-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Add clutter_effect_depth().
