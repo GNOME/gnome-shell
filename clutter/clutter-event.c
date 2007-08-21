@@ -498,8 +498,8 @@ clutter_event_put (ClutterEvent *event)
 {
   ClutterMainContext *context = clutter_context_get_default ();
 
-  /* FIXME: check queue is valid */
-  g_return_if_fail (context != NULL);
+  g_return_if_fail (event != NULL);
+  g_return_if_fail (context->events_queue != NULL);
 
   g_queue_push_head (context->events_queue, clutter_event_copy (event));
 }
@@ -528,14 +528,14 @@ clutter_events_pending (void)
     return FALSE;
 
   /* find the first non pending item */
-  item = context->events_queue->head;
+  item = context->events_queue->tail;
   while (item)
     {
       ClutterEventPrivate *event = item->data;
       if (!(event->flags & CLUTTER_EVENT_PENDING))
         return TRUE;
 
-      item = item->next;
+      item = item->prev;
     }
 
   return FALSE;
