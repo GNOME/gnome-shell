@@ -61,7 +61,25 @@ typedef enum {
   CLUTTER_PICK_ALL
 } ClutterPickMode;
 
-typedef struct _ClutterMainContext ClutterMainContext;
+typedef enum {
+  /* this flag is set when an event has been put on the queue but still
+   * needs processing; the event queue must ignore every event with this
+   * flag set
+   */
+  CLUTTER_EVENT_PENDING = 1 << 0
+} ClutterEventFlags;
+
+typedef struct _ClutterEventPrivate     ClutterEventPrivate;
+typedef struct _ClutterMainContext      ClutterMainContext;
+
+/* Private structure, to be used for extending ClutterEvent without
+ * exposing new members and breaking compatibility.
+ */
+struct _ClutterEventPrivate
+{
+  ClutterEvent event;
+  guint flags;
+};
 
 struct _ClutterMainContext
 {
