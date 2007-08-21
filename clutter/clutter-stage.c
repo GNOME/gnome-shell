@@ -219,7 +219,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
   actor_class->paint = clutter_stage_paint;
 
   /**
-   * ClutterStage:fullscreen
+   * ClutterStage:fullscreen:
    *
    * Whether the stage should be fullscreen or not.
    */
@@ -230,7 +230,11 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			   "Whether the main stage is fullscreen",
 			   FALSE,
 			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
-
+  /**
+   * ClutterStage:offscreen:
+   *
+   * Whether the stage should be rendered in an offscreen buffer.
+   */
   g_object_class_install_property
     (gobject_class, PROP_OFFSCREEN,
      g_param_spec_boolean ("offscreen",
@@ -238,8 +242,11 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			   "Whether the main stage is renderer offscreen",
 			   FALSE,
 			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
-
-
+  /**
+   * ClutterStage:cursor-visible:
+   *
+   * Whether the mouse pointer should be visible
+   */
   g_object_class_install_property
     (gobject_class, PROP_CURSOR_VISIBLE,
      g_param_spec_boolean ("cursor-visible",
@@ -247,7 +254,13 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			   "Whether the mouse pointer is visible on the main stage ",
 			   TRUE,
 			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
-
+  /**
+   * ClutterStage:user-resizable:
+   *
+   * Whether the stage is able to be resized via user interaction.
+   *
+   * Since: 0.4
+   */
   g_object_class_install_property
     (gobject_class, PROP_USER_RESIZE,
      g_param_spec_boolean ("user-resizable",
@@ -256,7 +269,11 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			   "user interaction",
 			   FALSE,
 			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
-
+  /**
+   * ClutterStage:color:
+   *
+   * The color of the main stage.
+   */
   g_object_class_install_property
     (gobject_class, PROP_COLOR,
      g_param_spec_boxed ("color",
@@ -264,7 +281,6 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			 "The color of the main stage",
 			 CLUTTER_TYPE_COLOR,
 			 CLUTTER_PARAM_READWRITE));
-
   /**
    * ClutterStage:title:
    *

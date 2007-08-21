@@ -413,10 +413,9 @@ clutter_texture_get_type
 <SECTION>
 <FILE>clutter-stage</FILE>
 <TITLE>ClutterStage</TITLE>
-ClutterPerspective
-clutter_perspective_copy
-clutter_perspective_free
 <SUBSECTION>
+ClutterStage
+ClutterStageClass
 CLUTTER_STAGE_WIDTH
 CLUTTER_STAGE_HEIGHT
 clutter_stage_get_default
@@ -429,6 +428,9 @@ clutter_stage_hide_cursor
 clutter_stage_get_actor_at_pos
 clutter_stage_snapshot
 clutter_stage_event
+ClutterPerspective
+clutter_perspective_copy
+clutter_perspective_free
 clutter_stage_set_perspective
 clutter_stage_set_perspectivex
 clutter_stage_get_perspective
@@ -438,8 +440,6 @@ clutter_stage_get_title
 clutter_stage_set_user_resizable
 clutter_stage_get_user_resizable
 <SUBSECTION Standard>
-ClutterStage
-ClutterStageClass
 CLUTTER_STAGE
 CLUTTER_IS_STAGE
 CLUTTER_TYPE_STAGE
