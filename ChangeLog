@@ -1,5 +1,25 @@
 2007-08-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	Preserve the ordering of the events in the queue when sythesising
+	new events in the event translation sequence. (#481)
+
+	* clutter/clutter-event.c:
+	* clutter/clutter-private.h: Allow flagging new events on the
+	events queue without breaking ClutterEvent using a masked type.
+
+	(clutter_event_get), (clutter_event_put),
+	(clutter_event_pending): Ignore events with the CLUTTER_EVENT_PENDING
+	flag set when walking the events queue.
+
+	* clutter/eglx/clutter-event-egl.c:
+	* clutter/glx/clutter-event-glx.c:
+	* clutter/sdl/clutter-event-sdl.c: Push the new events straight
+	on the queue, with the CLUTTER_EVENT_PENDING flag set; remove the
+	flag if the event translation was succesful, or remove the event
+	altogether.
+
+2007-08-21  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-stage.c: Add missing documentation for the
 	ClutterStage priorities.
 
