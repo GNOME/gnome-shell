@@ -40,10 +40,10 @@
  */
 
 /* multiple button click detection */
-static guint32 button_click_time[2] = {0, 0};
-static guint32 button_number[2] = {0, -1};
-static gint    button_x[2] = {0, 0};
-static gint    button_y[2] = {0, 0};;
+static guint32 button_click_time[2] = { 0, 0 };
+static guint32 button_number[2] = { -1, -1 };
+static gint    button_x[2] = { 0, 0 };
+static gint    button_y[2] = { 0, 0 };
 
 /**
  * clutter_event_type:
