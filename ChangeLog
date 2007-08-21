@@ -1,5 +1,16 @@
 2007-08-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-event.c: Correctly initialise the state
+	variables used to detect multiple clicks.
+
+	(clutter_event_get_coords): Return the coordinates for
+	CLUTTER_3BUTTON_PRESS events.
+
+	(clutter_events_pending): Check from the tail of the queue backward,
+	like we do in clutter_event_get() and clutter_event_peek().
+
+2007-08-21  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Preserve the ordering of the events in the queue when sythesising
 	new events in the event translation sequence. (#481)
 
