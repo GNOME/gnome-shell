@@ -154,12 +154,17 @@ clutter_event_get_coords (ClutterEvent *event,
 
   switch (event->type)
     {
+    case CLUTTER_NOTHING:
     case CLUTTER_KEY_PRESS:
     case CLUTTER_KEY_RELEASE:
-      event_x = event_y = 0;
+    case CLUTTER_STAGE_STATE:
+    case CLUTTER_DESTROY_NOTIFY:
+    case CLUTTER_CLIENT_MESSAGE:
+    case CLUTTER_DELETE:
       break;
     case CLUTTER_BUTTON_PRESS:
     case CLUTTER_2BUTTON_PRESS:
+    case CLUTTER_3BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
       event_x = event->button.x;
       event_y = event->button.y;
@@ -171,8 +176,6 @@ clutter_event_get_coords (ClutterEvent *event,
     case CLUTTER_SCROLL:
       event_x = event->scroll.x;
       event_y = event->scroll.y;
-      break;
-    default:
       break;
     }
 
@@ -440,6 +443,7 @@ clutter_event_get (void)
       if (!(event->flags & CLUTTER_EVENT_PENDING))
         {
           g_queue_remove (context->events_queue, event);
+
           return (ClutterEvent *) event;
         }
 

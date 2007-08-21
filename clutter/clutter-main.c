@@ -273,7 +273,7 @@ clutter_do_event (ClutterEvent *event)
 				  x, y, 
 				  CLUTTER_PICK_REACTIVE);
 
-	CLUTTER_NOTE (EVENT, "Reactive event recieved at %ix%i - actor: %p", 
+	CLUTTER_NOTE (EVENT, "Reactive event received at %i, %i - actor: %p", 
 		      x, y, actor);
 
 	if (event->type == CLUTTER_SCROLL)
@@ -303,14 +303,14 @@ clutter_do_event (ClutterEvent *event)
 	 */
 	while (actor)
 	  {
-	    if (clutter_actor_is_reactive (actor)
-		|| clutter_actor_get_parent(actor) == NULL /* STAGE */ )
+	    if (clutter_actor_is_reactive (actor) ||
+                clutter_actor_get_parent (actor) == NULL /* STAGE */ )
 	      {
 		CLUTTER_NOTE (EVENT, "forwarding event to reactive actor");
 		clutter_actor_event (actor, event);
 	      }
 
-	    actor = clutter_actor_get_parent(actor);
+	    actor = clutter_actor_get_parent (actor);
 	  }
       }
       break;

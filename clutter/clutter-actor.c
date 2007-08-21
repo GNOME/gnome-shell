@@ -2833,7 +2833,7 @@ clutter_actor_event (ClutterActor *actor,
   g_return_val_if_fail (event != NULL, FALSE);
 
   g_object_ref (actor);
-
+  
   g_signal_emit (actor, actor_signals[EVENT], 0, event);
   
   switch (event->type)
