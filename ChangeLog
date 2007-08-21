@@ -1,5 +1,10 @@
-2007-08-21  Tomas Frydrych  <tf@openedhand.com>
+2007-08-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-stage.c: Add missing documentation for the
+	ClutterStage priorities.
+
+2007-08-21  Tomas Frydrych  <tf@openedhand.com>
+	
 	* clutter/clutter-fixed.c:
 	(clutter_sqrti):
 
