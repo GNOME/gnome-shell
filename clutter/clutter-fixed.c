@@ -539,7 +539,12 @@ clutter_sqrtx (ClutterFixed x)
 	/* make even (2n) */
 	bit &= 0xfffffffe;
 #else
-	/* TODO -- add i386 branch using bshr */
+	/* TODO -- add i386 branch using bshr
+	 *
+	 * NB: it's been said that the bshr instruction is poorly implemented
+	 *     and that it is possible to write a faster code in C using binary
+	 *     search -- at some point we should explore this
+	 */
 	int bit = 30;
 	while (bit >= 0)
 	{
@@ -610,6 +615,12 @@ clutter_sqrtx (ClutterFixed x)
 gint
 clutter_sqrti (gint number)
 {
+#if defined __SSE2__
+    /* The GCC built-in with SSE2 (sqrtsd) is up to twice as fast as
+     * the pure integer code below. It is also more accurate.
+     */
+    return __builtin_sqrt (number);
+#else
     /* This is a fixed point implementation of the Quake III sqrt algorithm,
      * described, for example, at
      *   http://www.codemaestro.com/reviews/review00000105.html
@@ -626,13 +637,13 @@ clutter_sqrti (gint number)
      * elsewhere in clutter is not good enough, and 10.22 is used instead.
      */
     ClutterFixed x;
-    unsigned long y_1;        /* 10.22 fixed point */
-    unsigned long f = 0x600000; /* '1.5' as 10.22 fixed */
+    guint32 y_1;        /* 10.22 fixed point */
+    guint32 f = 0x600000; /* '1.5' as 10.22 fixed */
 
     union
     {
 	float f;
-	unsigned long i;
+	guint32 i;
     } flt, flt2;
     
     flt.f = number;
@@ -669,6 +680,7 @@ clutter_sqrti (gint number)
      * better results than 0x200000.
      */
     return (number * flt2.i + 0x1e3c68) >> 22;
+#endif
 }
 
 /**

@@ -1,3 +1,11 @@
+2007-08-21  Tomas Frydrych  <tf@openedhand.com>
+
+	* clutter/clutter-fixed.c:
+	(clutter_sqrti):
+
+	Fixes for 64-bit platforms; use of SSE builtin when available
+	(patches by Gwenole Beauchesne).
+
 2007-08-20  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/Makefile.am:
