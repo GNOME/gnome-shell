@@ -1,3 +1,12 @@
+2007-08-22  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-main.c (clutter_threads_dispatch_free): Remove
+	the main threads locking calls: the main loop might remove the
+	source while dispatching it, so whether or not we are already
+	holding the lock is unpredictable for the library. Leave a comment
+	with the relevant bug number in GNOME's Bugzilla and wait for a
+	fix in GLib.
+
 2007-08-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-event.c: Correctly initialise the state
