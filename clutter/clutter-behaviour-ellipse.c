@@ -205,21 +205,23 @@ clutter_behaviour_ellipse_alpha_notify (ClutterBehaviour *behave,
            priv->direction == CLUTTER_ROTATE_CCW)
     {
       ClutterAngle diff;
-
+      ClutterAngle angle_begin = priv->angle_begin + 256;
+      ClutterAngle angle_end   = priv->angle_end + 256;
+      
       /* Work out the angular length of the arch represented by the
        * end angle in CCW direction
        */
-      if (priv->angle_end > 1024)
+      if (angle_end >= 1024)
         {
-          gint rounds = priv->angle_end / 1024;
+          gint rounds = angle_end / 1024;
           ClutterAngle a1 = rounds * 1024;
-          ClutterAngle a2 = 1024 - (priv->angle_end - a1);
+          ClutterAngle a2 = - (angle_end - a1);
 
-          diff = a1 + a2 + priv->angle_begin;
+          diff = a1 + a2 + angle_begin;
         }
       else
         {
-          diff = 1024 - priv->angle_end + priv->angle_begin;
+          diff = 1024 - angle_end + angle_begin;
         }
       
       angle = priv->angle_begin - (diff * alpha / CLUTTER_ALPHA_MAX_ALPHA);
@@ -228,23 +230,25 @@ clutter_behaviour_ellipse_alpha_notify (ClutterBehaviour *behave,
            priv->direction == CLUTTER_ROTATE_CW)
     {
       ClutterAngle diff;
+      ClutterAngle angle_begin = priv->angle_begin + 256;
+      ClutterAngle angle_end   = priv->angle_end + 256;
 
       /* Work out the angular length of the arch represented by the
        * begin angle in CW direction
        */
-      if (priv->angle_begin > 1024)
+      if (angle_begin >= 1024)
         {
-          gint rounds = priv->angle_begin/ 1024;
+          gint rounds = angle_begin / 1024;
           ClutterAngle a1 = rounds * 1024;
-          ClutterAngle a2 = 1024 - (priv->angle_begin - a1);
+          ClutterAngle a2 = - (angle_begin - a1);
 
-          diff = a1 + a2 + priv->angle_end;
+          diff = a1 + a2 + angle_end;
         }
       else
         {
-          diff = 1024 - priv->angle_begin + priv->angle_end;
+          diff = 1024 - angle_begin + angle_end;
         }
-      
+
       angle = priv->angle_begin + (diff * alpha / CLUTTER_ALPHA_MAX_ALPHA);
     }
   

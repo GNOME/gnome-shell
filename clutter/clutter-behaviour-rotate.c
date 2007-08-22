@@ -145,13 +145,13 @@ clutter_behaviour_rotate_alpha_notify (ClutterBehaviour *behaviour,
 	  /* Work out the angular length of the arch represented by the
 	   * end angle in CCW direction
 	   */
-	  if (priv->angle_end > CLUTTER_INT_TO_FIXED (360))
+	  if (priv->angle_begin >= CLUTTER_INT_TO_FIXED (360))
 	    {
 	      ClutterFixed rounds, a1, a2;
 
 	      rounds = priv->angle_begin / 360;
 	      a1 = rounds * 360;
-	      a2 = CLUTTER_INT_TO_FIXED (360) - (priv->angle_begin - a1);
+	      a2 = - (priv->angle_begin - a1);
 
 	      diff = a1 + a2 + priv->angle_end;
 	    }
@@ -171,20 +171,20 @@ clutter_behaviour_rotate_alpha_notify (ClutterBehaviour *behaviour,
 	{
 	  angle = CLUTTER_FIXED_MUL (factor, 
 				     (priv->angle_begin - priv->angle_end));
-	  angle += priv->angle_end;
+	  angle = priv->angle_begin - angle;
 	}
       else
 	{
 	  /* Work out the angular length of the arch represented by the
 	   * end angle in CCW direction
 	   */
-	  if (priv->angle_end > CLUTTER_INT_TO_FIXED (360))
+	  if (priv->angle_end >= CLUTTER_INT_TO_FIXED (360))
 	    {
 	      ClutterFixed rounds, a1, a2;
 
-	      rounds = priv->angle_begin / 360;
+	      rounds = priv->angle_end / 360;
 	      a1 = rounds * 360;
-	      a2 = CLUTTER_INT_TO_FIXED (360) - (priv->angle_end - a1);
+	      a2 = - (priv->angle_end - a1);
 
 	      diff = a1 + a2 + priv->angle_begin;
 	    }

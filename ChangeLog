@@ -1,3 +1,11 @@
+2007-08-22  Tomas Frydrych  <tf@openedhand.com>
+	
+	* clutter/clutter-behaviour-rotate.c:
+	* clutter/clutter-behaviour-ellipse.c:
+
+	Fixed CCW rotation in rotate behaviour (bug 483); fixed overall
+	path length calculation for angles > 360 in rotate and ellipse.
+
 2007-08-22  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-main.c (clutter_threads_dispatch_free): Remove
@@ -6,7 +14,7 @@
 	holding the lock is unpredictable for the library. Leave a comment
 	with the relevant bug number in GNOME's Bugzilla and wait for a
 	fix in GLib.
-
+	
 2007-08-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-event.c: Correctly initialise the state
@@ -49,7 +57,7 @@
 	(clutter_sqrti):
 
 	Fixes for 64-bit platforms; use of SSE builtin when available
-	(patches by Gwenole Beauchesne).
+	(bugs 478, 479, patches by Gwenole Beauchesne).
 
 2007-08-20  Emmanuele Bassi  <ebassi@openedhand.com>
 
