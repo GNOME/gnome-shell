@@ -549,12 +549,14 @@ clutter_threads_dispatch_free (gpointer data)
 {
   ClutterThreadsDispatch *dispatch = data;
 
-  clutter_threads_enter ();
-
+  /* XXX - we cannot hold the thread lock here because the main loop
+   * might destroy a source while still in the dispatcher function; so
+   * knowing whether the lock is being held or not is not known a priori.
+   *
+   * see bug: http://bugzilla.gnome.org/show_bug.cgi?id=459555
+   */
   if (dispatch->notify)
     dispatch->notify (dispatch->data);
-
-  clutter_threads_leave ();
 
   g_slice_free (ClutterThreadsDispatch, dispatch);
 }
