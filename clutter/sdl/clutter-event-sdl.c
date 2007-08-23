@@ -326,17 +326,13 @@ clutter_event_dispatch (GSource     *source,
 	{
 	  event = clutter_event_new (CLUTTER_NOTHING);
 
-          ((ClutterEventPrivate *) event)->flags |= CLUTTER_EVENT_PENDING;
-
-	  g_queue_push_head (clutter_context->events_queue, event);
-
 	  if (event_translate (backend, event, &sdl_event))
 	    {
-	      ((ClutterEventPrivate *) event)->flags &= ~CLUTTER_EVENT_PENDING;
-            }
+	      /* push directly here to avoid copy of queue_put */
+	      g_queue_push_head (clutter_context->events_queue, event);
+	    }
 	  else
 	    {
-              g_queue_remove (clutter_context->events_queue, event);
 	      clutter_event_free (event);
 	    }
 	}
@@ -346,7 +342,7 @@ clutter_event_dispatch (GSource     *source,
 
   if (event)
     {
-      clutter_do_event (event);
+      clutter_do_event(event);
       clutter_event_free (event);
     }
 

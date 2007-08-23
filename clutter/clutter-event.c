@@ -364,13 +364,9 @@ clutter_event_get_type (void)
 ClutterEvent *
 clutter_event_new (ClutterEventType type)
 {
-  ClutterEventPrivate *real_event;
   ClutterEvent *new_event;
 
-  real_event = g_slice_new0 (ClutterEventPrivate);
-  real_event->flags = 0;
-
-  new_event = (ClutterEvent *) real_event;
+  new_event = g_slice_new0 (ClutterEvent);
   new_event->type = new_event->any.type = type;
 
   return new_event;
@@ -408,7 +404,7 @@ clutter_event_free (ClutterEvent *event)
 {
   if (G_LIKELY (event))
     {
-      g_slice_free (ClutterEventPrivate, (ClutterEventPrivate *) event);
+      g_slice_free (ClutterEvent, event);
     }
 }
 
@@ -434,23 +430,7 @@ clutter_event_get (void)
   if (g_queue_is_empty (context->events_queue))
     return NULL;
 
-  /* find the first non pending item */
-  item = context->events_queue->tail;
-  while (item)
-    {
-      ClutterEventPrivate *event = item->data;
-
-      if (!(event->flags & CLUTTER_EVENT_PENDING))
-        {
-          g_queue_remove (context->events_queue, event);
-
-          return (ClutterEvent *) event;
-        }
-
-      item = item->prev;
-    }
-
-  return NULL;
+  return g_queue_pop_tail (context->events_queue);
 }
 
 /**
@@ -467,26 +447,16 @@ ClutterEvent *
 clutter_event_peek (void)
 {
   ClutterMainContext *context = clutter_context_get_default ();
-  GList *item;
 
-  if (!context->events_queue)
+  g_return_val_if_fail (context != NULL, NULL);
+  
+  if (context->events_queue == NULL)
     return NULL;
 
   if (g_queue_is_empty (context->events_queue))
     return NULL;
 
-  /* find the first non pending item */
-  item = context->events_queue->tail;
-  while (item)
-    {
-      ClutterEventPrivate *event = item->data;
-      if (!(event->flags & CLUTTER_EVENT_PENDING))
-        return (ClutterEvent *) event;
-
-      item = item->prev;
-    }
-
-  return NULL;
+  return g_queue_peek_tail (context->events_queue);
 }
 
 /**
@@ -502,8 +472,8 @@ clutter_event_put (ClutterEvent *event)
 {
   ClutterMainContext *context = clutter_context_get_default ();
 
-  g_return_if_fail (event != NULL);
-  g_return_if_fail (context->events_queue != NULL);
+  /* FIXME: check queue is valid */
+  g_return_if_fail (context != NULL);
 
   g_queue_push_head (context->events_queue, clutter_event_copy (event));
 }
@@ -521,28 +491,13 @@ gboolean
 clutter_events_pending (void)
 {
   ClutterMainContext *context = clutter_context_get_default ();
-  GList *item;
 
   g_return_val_if_fail (context != NULL, FALSE);
 
   if (!context->events_queue)
     return FALSE;
 
-  if (g_queue_is_empty (context->events_queue))
-    return FALSE;
-
-  /* find the first non pending item */
-  item = context->events_queue->tail;
-  while (item)
-    {
-      ClutterEventPrivate *event = item->data;
-      if (!(event->flags & CLUTTER_EVENT_PENDING))
-        return TRUE;
-
-      item = item->prev;
-    }
-
-  return FALSE;
+  return g_queue_is_empty (context->events_queue) == FALSE;
 }
 
 /* Backend helpers (private) */
@@ -585,10 +540,10 @@ _clutter_event_button_generate (ClutterBackend *backend,
       button_x[0] = button_x[1] = 0;
       button_y[0] = button_y[1] = 0;
     }
-  else if ((event->button.time < (button_click_time[0] + double_click_time))
-           && (event->button.button == button_number[0])
-           && (ABS (event->button.x - button_x[0]) <= double_click_distance)
-           && (ABS (event->button.y - button_y[0]) <= double_click_distance))
+  else if ((event->button.time < (button_click_time[0] + double_click_time)) &&
+      (event->button.button == button_number[0]) &&
+      (ABS (event->button.x - button_x[0]) <= double_click_distance) &&
+      (ABS (event->button.y - button_y[0]) <= double_click_distance))
     {
       synthesize_click (backend, event, 2);
       

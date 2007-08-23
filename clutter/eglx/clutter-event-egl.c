@@ -295,30 +295,25 @@ static void
 events_queue (ClutterBackend *backend)
 {
   ClutterBackendEGL   *backend_egl = CLUTTER_BACKEND_EGL (backend);
-  Display             *xdisplay = backend_egl->xdpy;
+  ClutterEvent        *event;
   XEvent               xevent;
   ClutterMainContext  *clutter_context;
 
   clutter_context = clutter_context_get_default ();
 
+  Display *xdisplay = backend_egl->xdpy;
+
   while (!clutter_events_pending () && XPending (xdisplay))
     {
-      ClutterEvent *event;
-
       XNextEvent (xdisplay, &xevent);
 
       event = clutter_event_new (CLUTTER_NOTHING);
-      ((ClutterEventPrivate *) event)->flags |= CLUTTER_EVENT_PENDING;
-
-      g_queue_push_head (clutter_context->events_queue, event);
-
       if (clutter_event_translate (backend, event, &xevent))
         {
-          ((ClutterEventPrivate *) event)->flags &= ~CLUTTER_EVENT_PENDING;
+	  g_queue_push_head (clutter_context->events_queue, event);
         }
       else
         {
-          g_queue_remove (clutter_context->events_queue, event);
           clutter_event_free (event);
         }
     }

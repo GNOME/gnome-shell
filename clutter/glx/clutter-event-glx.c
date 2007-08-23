@@ -517,6 +517,7 @@ static void
 events_queue (ClutterBackend *backend)
 {
   ClutterBackendGLX *backend_glx = CLUTTER_BACKEND_GLX (backend);
+  ClutterEvent      *event;
   Display           *xdisplay = backend_glx->xdpy;
   XEvent             xevent;
   ClutterMainContext  *clutter_context;
@@ -525,27 +526,17 @@ events_queue (ClutterBackend *backend)
 
   while (!clutter_events_pending () && XPending (xdisplay))
     {
-      ClutterEvent *event;
-
       XNextEvent (xdisplay, &xevent);
 
       event = clutter_event_new (CLUTTER_NOTHING);
 
-      /* mark the event as pending and push it so that event_translate()
-       * can put events on the queue without tampering with the ordering
-       */
-      ((ClutterEventPrivate *) event)->flags |= CLUTTER_EVENT_PENDING;
-      g_queue_push_head (clutter_context->events_queue, event);
-      
       if (event_translate (backend, event, &xevent))
         {
-          /* translation successful, the event is done */
-	  ((ClutterEventPrivate *) event)->flags &= ~CLUTTER_EVENT_PENDING;
+	  /* push directly here to avoid copy of queue_put */
+	  g_queue_push_head (clutter_context->events_queue, event);
         }
       else
         {
-          /* remove the event from the queue */
-          g_queue_remove (clutter_context->events_queue, event);
           clutter_event_free (event);
         }
     }

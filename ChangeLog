@@ -1,3 +1,13 @@
+2007-08-23  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-private.h:
+	* clutter/clutter-event.c: Revert the event queue ordering
+	commit.
+
+	* clutter/eglx/clutter-event-egl.c:
+	* clutter/glx/clutter-event-glx.c:
+	* clutter/sdl/clutter-event-sdl.c: Update backends.
+
 2007-08-22  Tomas Frydrych  <tf@openedhand.com>
 	
 	* clutter/clutter-behaviour-rotate.c:
