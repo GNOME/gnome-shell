@@ -1,3 +1,10 @@
+2007-08-24  Tomas Frydrych  <tf@openedhand.com>
+	
+	* clutter/clutter-actor.c:
+	(_clutter_actor_apply_modelview_transform):
+	
+	Fixed rotation around x axis (bug 486).
+	
 2007-08-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-private.h:
