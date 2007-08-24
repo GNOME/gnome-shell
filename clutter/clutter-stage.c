@@ -82,9 +82,10 @@ enum
 
 enum
 {
-  STAGE_STATE_EVENT,
-  ACTIVATE_STAGE,
-  DEACTIVATE_STAGE,
+  FULLSCREEN,
+  UNFULLSCREEN,
+  ACTIVATE,
+  DEACTIVATE,
   LAST_SIGNAL
 };
 
@@ -295,6 +296,78 @@ clutter_stage_class_init (ClutterStageClass *klass)
 			  "Stage Title",
 			  NULL,
 			  CLUTTER_PARAM_READWRITE));
+
+  /**
+   * ClutterStage::fullscreen
+   * @stage: the stage which was fullscreened
+   *
+   * The ::fullscreen signal is emitted when the stage is made fullscreen.
+   *
+   * Since: 0.6
+   */
+  stage_signals[FULLSCREEN] =
+    g_signal_new ("fullscreen",
+		  G_TYPE_FROM_CLASS (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterStageClass, fullscreen),
+		  NULL, NULL,
+		  clutter_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
+
+  /**
+   * ClutterStage::unfullscreen
+   * @stage: the stage which has left a fullscreen state.
+   *
+   * The ::unfullscreen signal is emitted when the stage leaves a fullscreen
+   * state.
+   *
+   * Since: 0.6
+   */
+  stage_signals[UNFULLSCREEN] =
+    g_signal_new ("unfullscreen",
+		  G_TYPE_FROM_CLASS (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterStageClass, unfullscreen),
+		  NULL, NULL,
+		  clutter_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
+
+
+  /**
+   * ClutterStage::activate
+   * @stage: the stage which was activated
+   *
+   * The ::activate signal is emitted when the stage recieves key focus
+   * from the underlying window system.
+   *
+   * Since: 0.6
+   */
+  stage_signals[ACTIVATE] =
+    g_signal_new ("activate",
+		  G_TYPE_FROM_CLASS (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterStageClass, activate),
+		  NULL, NULL,
+		  clutter_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
+
+  /**
+   * ClutterStage::deactivate
+   * @stage: the stage which was deactivated
+   *
+   * The ::activate signal is emitted when the stage loses key focus
+   * from the underlying window system.
+   *
+   * Since: 0.6
+   */
+  stage_signals[DEACTIVATE] =
+    g_signal_new ("deactivate",
+		  G_TYPE_FROM_CLASS (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterStageClass, deactivate),
+		  NULL, NULL,
+		  clutter_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
   
   g_type_class_add_private (gobject_class, sizeof (ClutterStagePrivate));
 }
@@ -750,7 +823,30 @@ clutter_stage_event (ClutterStage *stage,
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
 
-  /* FIXME: Handle StageState Changes and Delete events */
+  if (event->type == CLUTTER_DELETE)
+    return TRUE;
+
+  if (event->type != CLUTTER_STAGE_STATE)
+    return FALSE;
+
+  /* emit raw event */
+  clutter_actor_event (CLUTTER_ACTOR(stage), event);
+
+  if (event->stage_state.changed_mask & CLUTTER_STAGE_STATE_FULLSCREEN)
+    {
+      if (event->stage_state.new_state & CLUTTER_STAGE_STATE_FULLSCREEN)
+	g_signal_emit (stage, stage_signals[FULLSCREEN], 0);
+      else
+	g_signal_emit (stage, stage_signals[UNFULLSCREEN], 0);
+    }
+  
+  if (event->stage_state.changed_mask & CLUTTER_STAGE_STATE_ACTIVATED)
+    {
+      if (event->stage_state.new_state & CLUTTER_STAGE_STATE_ACTIVATED)
+	g_signal_emit (stage, stage_signals[ACTIVATE], 0);
+      else
+	g_signal_emit (stage, stage_signals[DEACTIVATE], 0);
+    }
 
   return TRUE;
 }

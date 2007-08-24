@@ -50,6 +50,38 @@
 
 G_DEFINE_TYPE (ClutterStageGLX, clutter_stage_glx, CLUTTER_TYPE_STAGE);
 
+#define _NET_WM_STATE_REMOVE        0    /* remove/unset property */
+#define _NET_WM_STATE_ADD           1    /* add/set property */
+#define _NET_WM_STATE_TOGGLE        2    /* toggle property  */
+
+static void
+send_wmspec_change_state (ClutterBackendGLX *backend_glx,
+			  Window             window,
+			  Atom               state,
+			  gboolean           add)
+{
+  XClientMessageEvent xclient;
+
+  memset (&xclient, 0, sizeof (xclient));
+
+  xclient.type         = ClientMessage;
+  xclient.window       = window;
+  xclient.message_type = backend_glx->atom_WM_STATE;
+  xclient.format       = 32;
+
+  xclient.data.l[0] = add ? _NET_WM_STATE_ADD : _NET_WM_STATE_REMOVE;
+  xclient.data.l[1] = state;
+  xclient.data.l[2] = 0;
+  xclient.data.l[3] = 0;
+  xclient.data.l[4] = 0;
+
+  XSendEvent (backend_glx->xdpy, 
+	      DefaultRootWindow(backend_glx->xdpy), 
+	      False,
+              SubstructureRedirectMask|SubstructureNotifyMask,
+              (XEvent *)&xclient);
+}
+
 static void
 fix_window_size (ClutterStageGLX *stage_glx)
 {
@@ -82,6 +114,9 @@ static void
 clutter_stage_glx_show (ClutterActor *actor)
 {
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (actor);
+
+  /* Chain up to set mapped flags */
+  CLUTTER_ACTOR_CLASS (clutter_stage_glx_parent_class)->show(actor);
 
   if (stage_glx->xwin)
     {
@@ -236,6 +271,7 @@ clutter_stage_glx_realize (ClutterActor *actor)
       CLUTTER_NOTE (MISC, "XSelectInput");
       XSelectInput (stage_glx->xdpy, stage_glx->xwin,
                     StructureNotifyMask |
+		    FocusChangeMask |
                     ExposureMask |
 		   /* FIXME: we may want to eplicity enable MotionMask */
 		    PointerMotionMask |
@@ -434,33 +470,76 @@ clutter_stage_glx_set_fullscreen (ClutterStage *stage,
                                   gboolean      fullscreen)
 {
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (stage);
-  Atom atom_WM_STATE, atom_WM_STATE_FULLSCREEN;
+  ClutterBackendGLX *backend_glx = stage_glx->backend;
 
-  atom_WM_STATE = XInternAtom (stage_glx->xdpy, "_NET_WM_STATE", False);
-  atom_WM_STATE_FULLSCREEN = XInternAtom (stage_glx->xdpy,
-                                          "_NET_WM_STATE_FULLSCREEN",
-                                          False);
+  static gboolean was_resizeable = FALSE;
 
   if (fullscreen)
     {
-      gint width, height;
-
-      width  = DisplayWidth (stage_glx->xdpy, stage_glx->xscreen);
-      height = DisplayHeight (stage_glx->xdpy, stage_glx->xscreen);
-
-      clutter_actor_set_size (CLUTTER_ACTOR (stage_glx), width, height);
-
       if (stage_glx->xwin != None)
-	XChangeProperty (stage_glx->xdpy,
-                         stage_glx->xwin,
-                         atom_WM_STATE, XA_ATOM, 32,
-                         PropModeReplace,
-                         (unsigned char *) &atom_WM_STATE_FULLSCREEN, 1);
+	{
+	  if (!CLUTTER_ACTOR_IS_MAPPED(CLUTTER_ACTOR (stage_glx)))
+	    {
+	      gint width, height;
+
+	      width  = DisplayWidth (stage_glx->xdpy, stage_glx->xscreen);
+	      height = DisplayHeight (stage_glx->xdpy, stage_glx->xscreen);
+
+	      clutter_actor_set_size (CLUTTER_ACTOR (stage_glx), 
+				      width, height);
+	      /* FIXME: This wont work if we support more states */
+	      XChangeProperty 
+		(stage_glx->xdpy,
+		 stage_glx->xwin,
+		 backend_glx->atom_WM_STATE, XA_ATOM, 32,
+		 PropModeReplace,
+		 (unsigned char *)&backend_glx->atom_WM_STATE_FULLSCREEN,
+		 1);
+	    }
+	  else
+	    {
+	      /* We need to set window user resize-able for metacity at 
+	       * at least to allow the window to fullscreen *sigh* 	 
+	      */
+	      if (clutter_stage_get_user_resizable (stage) == TRUE)
+		was_resizeable = TRUE;
+	      else
+		clutter_stage_set_user_resizable (stage, TRUE);
+
+	      send_wmspec_change_state(backend_glx,
+				       stage_glx->xwin,
+				       backend_glx->atom_WM_STATE_FULLSCREEN,
+				       TRUE);
+	    }
+	}
     }
   else
     {
       if (stage_glx->xwin != None)
-        XDeleteProperty (stage_glx->xdpy, stage_glx->xwin, atom_WM_STATE);
+	{
+	  if (!CLUTTER_ACTOR_IS_MAPPED(CLUTTER_ACTOR (stage_glx)))
+	    {
+	      /* FIXME: This wont work if we support more states */
+	      XDeleteProperty (stage_glx->xdpy, 
+			       stage_glx->xwin, 
+			       backend_glx->atom_WM_STATE);
+	    }
+	  else
+	    {
+	      clutter_stage_set_user_resizable (stage, TRUE);
+
+	      send_wmspec_change_state(backend_glx,
+				       stage_glx->xwin,
+				       backend_glx->atom_WM_STATE_FULLSCREEN,
+				       FALSE);
+
+	      /* reset the windows state - this isn't fun - see above */
+	      if (!was_resizeable)
+		clutter_stage_set_user_resizable (stage, FALSE);
+
+	      was_resizeable = FALSE;
+	    }
+	}
     }
 
   CLUTTER_SET_PRIVATE_FLAGS(stage, CLUTTER_ACTOR_SYNC_MATRICES);

@@ -3,6 +3,24 @@
 #include <clutter/clutter.h>
 
 static void
+timeline_1_complete (ClutterTimeline *timeline)
+{
+  g_debug ("1: Completed");
+}
+
+static void
+timeline_2_complete (ClutterTimeline *timeline)
+{
+  g_debug ("2: Completed");
+}
+
+static void
+timeline_3_complete (ClutterTimeline *timeline)
+{
+  g_debug ("3: Completed");
+}
+
+static void
 timeline_1_new_frame_cb (ClutterTimeline *timeline, gint frame_no)
 {
   g_debug ("1: Doing frame %d.", frame_no);
@@ -29,18 +47,29 @@ main (int argc, char **argv)
 
   clutter_init (&argc, &argv);
 
-  timeline_1 = clutter_timeline_new (100, 50);
+  timeline_1 = clutter_timeline_new (10, 120);
   timeline_2 = clutter_timeline_clone (timeline_1);
   timeline_3 = clutter_timeline_clone (timeline_1);
 
   g_signal_connect (timeline_1,
                     "new-frame", G_CALLBACK (timeline_1_new_frame_cb),
                     NULL);
+  g_signal_connect (timeline_1,
+                    "completed", G_CALLBACK (timeline_1_complete),
+                    NULL);
+
   g_signal_connect (timeline_2,
                     "new-frame", G_CALLBACK (timeline_2_new_frame_cb),
                     NULL);
+  g_signal_connect (timeline_2,
+                    "completed", G_CALLBACK (timeline_2_complete),
+                    NULL);
+
   g_signal_connect (timeline_3,
                     "new-frame", G_CALLBACK (timeline_3_new_frame_cb),
+                    NULL);
+  g_signal_connect (timeline_3,
+                    "completed", G_CALLBACK (timeline_3_complete),
                     NULL);
 
   clutter_timeline_start (timeline_1);

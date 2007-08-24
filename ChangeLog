@@ -1,3 +1,36 @@
+2007-08-24  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-event.h:
+	* clutter/clutter-main.c:
+	* clutter/clutter-stage.c:
+	* clutter/clutter-stage.h:
+	* clutter/glx/clutter-backend-glx.c:
+	* clutter/glx/clutter-backend-glx.h:
+	* clutter/glx/clutter-event-glx.c:
+	* clutter/glx/clutter-stage-glx.c:
+	* clutter/glx/clutter-stage-glx.h:
+	Add initial support for stage state events.
+	Fix fullscreening for an already mapped stage. 
+
+	* tests/test-events.c:
+	Print out info from the above. Blue button now toggles 
+	fullscreen.
+
+	* clutter/clutter-effect.c:
+	* clutter/clutter-effect.h:
+	Add a setting for templates to ref or clone underlying 
+	timelines. (As to improve sync issues like those in foofone)
+
+	* tests/test-timeline.c:
+	Also add completed signals.	
+
+	* clutter/cogl/gles/cogl.c: (cogl_texture_image_2d):
+	* configure.ac:
+	Forward port from stable branch. RGB Image fixes gles
+	and check for lower case libgles_cm.
+
+
 2007-08-24  Tomas Frydrych  <tf@openedhand.com>
 	
 	* clutter/clutter-actor.c:

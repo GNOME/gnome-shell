@@ -82,6 +82,7 @@ G_DEFINE_TYPE (ClutterEffectTemplate, clutter_effect_template, G_TYPE_OBJECT);
 struct _ClutterEffectTemplatePrivate
 {
   ClutterTimeline *timeline;
+  gboolean         do_clone;
 
   ClutterAlphaFunc alpha_func;
   gpointer alpha_data;
@@ -94,6 +95,7 @@ enum
 
   PROP_ALPHA_FUNC,
   PROP_TIMELINE,
+  PROP_DO_CLONE
 };
 
 static void
@@ -152,6 +154,9 @@ clutter_effect_template_set_property (GObject      *object,
     case PROP_TIMELINE:
       priv->timeline = g_value_get_object (value);
       g_object_ref(priv->timeline);
+    case PROP_DO_CLONE:
+      clutter_effect_template_set_timeline_clone (template, 
+						  g_value_get_boolean (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -178,6 +183,9 @@ clutter_effect_template_get_property (GObject    *object,
       break;
     case PROP_TIMELINE:
       g_value_set_object (value, priv->timeline);
+      break;
+    case PROP_DO_CLONE:
+      g_value_set_boolean (value, priv->do_clone);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -228,12 +236,31 @@ clutter_effect_template_class_init (ClutterEffectTemplateClass *klass)
 				 CLUTTER_TYPE_TIMELINE,
 				 G_PARAM_CONSTRUCT_ONLY |
 				 CLUTTER_PARAM_READWRITE));
+
+  /**
+   * ClutterEffectTemplate:clone:
+   *
+   * Controls if effects should clone or reference the templated timeline
+   *
+   * Since: 0.6
+   */
+  g_object_class_install_property 
+           (object_class,
+	    PROP_DO_CLONE,
+	    g_param_spec_boolean ("clone",
+				  "Clone",
+				  "controls if effects should clone or reference the templated timeline",
+				  TRUE,
+				  G_PARAM_CONSTRUCT |
+				  CLUTTER_PARAM_READWRITE));
+
 }
 
 static void
 clutter_effect_template_init (ClutterEffectTemplate *self)
 {
   self->priv = EFFECT_TEMPLATE_PRIVATE (self);
+  self->priv->do_clone = TRUE;
 }
 
 static void
@@ -258,6 +285,40 @@ clutter_effect_template_set_alpha_func (ClutterEffectTemplate *self,
 }
 
 /**
+ * clutter_effect_template_set_timeline_clone:
+ * @template_:  A #ClutterEffectTemplate
+ * @setting: A boolean indicating if effects should clone the timeline.
+ *
+ * Sets if effects using this template should make a copy of the 
+ * templates timeline (default) or reference the effects timeline.
+ * 
+ * Since: 0.6
+ */
+void
+clutter_effect_template_set_timeline_clone (ClutterEffectTemplate *template_,
+					    gboolean               setting)
+{
+  template_->priv->do_clone = setting;
+}
+
+/**
+ * clutter_effect_template_get_timeline_clone:
+ * @template:  A #ClutterEffectTemplate
+ *
+ * 
+ *
+ * Return value: TRUE if the templates timeline is to be cloned.
+ *
+ * Since: 0.6
+ */
+gboolean
+clutter_effect_template_get_timeline_clone (ClutterEffectTemplate *template_)
+{
+  return template_->priv->do_clone;
+}
+
+
+/**
  * clutter_effect_template_new:
  * @timeline:  A #ClutterTimeline for the template (will be cloned)
  * @alpha_func: An alpha func to use for the template.
@@ -276,7 +337,7 @@ clutter_effect_template_set_alpha_func (ClutterEffectTemplate *self,
  *
  * Since: 0.4
  */
-ClutterEffectTemplate *
+ClutterEffectTemplate*
 clutter_effect_template_new (ClutterTimeline *timeline, 
 			     ClutterAlphaFunc alpha_func)
 {
@@ -368,7 +429,15 @@ clutter_effect_closure_new (ClutterEffectTemplate *template,
 
   c->template = template;
   c->actor    = actor;
-  c->timeline = clutter_timeline_clone (priv->timeline);
+
+  if (clutter_effect_template_get_timeline_clone (template))
+    c->timeline = clutter_timeline_clone (priv->timeline);
+  else
+    {
+      c->timeline = priv->timeline;
+      g_object_ref (priv->timeline);
+    }
+      
   c->alpha    = clutter_alpha_new_full (c->timeline,
 					priv->alpha_func,
 					priv->alpha_data,

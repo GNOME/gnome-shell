@@ -315,7 +315,8 @@ clutter_do_event (ClutterEvent *event)
       }
       break;
     case CLUTTER_STAGE_STATE:
-      /* FIXME: fullscreen / focus / mouse - forward to stage */
+      /* fullscreen / focus - forward to stage */
+      clutter_stage_event (CLUTTER_STAGE(stage), event);
       break;
     case CLUTTER_CLIENT_MESSAGE:
       break;

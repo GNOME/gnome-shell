@@ -99,8 +99,10 @@ struct _ClutterStageClass
                                         gboolean      value);
 
   /* events */
-  void     (* stage_state_event)    (ClutterStage           *stage,
-                                     ClutterStageStateEvent *event);
+  void     (* fullscreen)      (ClutterStage           *stage);
+  void     (* unfullscreen)    (ClutterStage           *stage);
+  void     (* activate)        (ClutterStage           *stage);
+  void     (* deactivate)      (ClutterStage           *stage);
 
   /*< private >*/
   /* padding for future expansion */

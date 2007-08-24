@@ -65,6 +65,7 @@ struct _ClutterStageGLX
 
   ClutterBackendGLX *backend;
 
+  ClutterStageState  state;
 };
 
 struct _ClutterStageGLXClass

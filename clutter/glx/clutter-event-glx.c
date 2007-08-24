@@ -355,13 +355,15 @@ event_translate (ClutterBackend *backend,
 		 XEvent         *xevent)
 {
   ClutterBackendGLX *backend_glx;
-  ClutterStage *stage;
-  gboolean res;
-  Window xwindow, stage_xwindow;
+  ClutterStageGLX   *stage_glx;
+  ClutterStage      *stage;
+  gboolean           res;
+  Window             xwindow, stage_xwindow;
 
-  backend_glx = CLUTTER_BACKEND_GLX (backend);
-  stage = CLUTTER_STAGE (_clutter_backend_get_stage (backend));
-  stage_xwindow = clutter_glx_get_stage_window (stage);
+  backend_glx    = CLUTTER_BACKEND_GLX (backend);
+  stage          = CLUTTER_STAGE (_clutter_backend_get_stage (backend));
+  stage_glx      = CLUTTER_STAGE_GLX (stage);
+  stage_xwindow  = clutter_glx_get_stage_window (stage);
 
   xwindow = xevent->xany.window;
   if (xwindow == None)
@@ -397,6 +399,99 @@ event_translate (ClutterBackend *backend,
 
   switch (xevent->type)
     {
+    case ConfigureNotify:
+      if (xevent->xconfigure.width 
+	  != clutter_actor_get_width (CLUTTER_ACTOR (stage))
+	  ||
+	  xevent->xconfigure.height 
+	  != clutter_actor_get_height (CLUTTER_ACTOR (stage)))
+	clutter_actor_set_size (CLUTTER_ACTOR (stage),
+				xevent->xconfigure.width,
+				xevent->xconfigure.height);
+      res = FALSE;
+      break;
+    case PropertyNotify:
+      {
+	if (xevent->xproperty.atom == backend_glx->atom_WM_STATE)
+	  {
+	    Atom     type;
+	    gint     format;
+	    gulong   nitems, bytes_after;
+	    guchar  *data = NULL;
+	    Atom    *atoms = NULL;
+	    gulong   i;
+	    gboolean fullscreen_set = FALSE;
+
+	    clutter_glx_trap_x_errors ();
+	    XGetWindowProperty (backend_glx->xdpy, 
+				stage_xwindow,
+				backend_glx->atom_WM_STATE,
+				0, G_MAXLONG, 
+				False, XA_ATOM, 
+				&type, &format, &nitems,
+				&bytes_after, &data);
+	    clutter_glx_untrap_x_errors ();
+
+	    if (type != None && data != NULL)
+	      {
+		atoms = (Atom *)data;
+
+		i = 0;
+		while (i < nitems)
+		  {
+		    if (atoms[i] == backend_glx->atom_WM_STATE_FULLSCREEN)
+		      fullscreen_set = TRUE;
+		    i++;
+		  }
+
+		if (fullscreen_set 
+		      != !!(stage_glx->state & CLUTTER_STAGE_STATE_FULLSCREEN))
+		  {
+		    if (fullscreen_set)
+		      stage_glx->state |= CLUTTER_STAGE_STATE_FULLSCREEN;
+		    else
+		      stage_glx->state &= ~CLUTTER_STAGE_STATE_FULLSCREEN;
+
+		    event->type = CLUTTER_STAGE_STATE;
+		    event->stage_state.changed_mask 
+		                = CLUTTER_STAGE_STATE_FULLSCREEN;
+		    event->stage_state.new_state = stage_glx->state;
+		  }
+		else
+		  res = FALSE;
+
+		XFree (data);
+	      }
+	  }
+	else
+	  res = FALSE;
+      }
+      break;
+    case FocusIn:
+      if (!(stage_glx->state & CLUTTER_STAGE_STATE_ACTIVATED))
+	{
+	  /* TODO: check xevent->xfocus.detail ? */
+	  stage_glx->state |= CLUTTER_STAGE_STATE_ACTIVATED;
+
+	  event->type = CLUTTER_STAGE_STATE;
+	  event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
+	  event->stage_state.new_state = stage_glx->state;
+	}
+      else
+	res = FALSE;
+      break;
+    case FocusOut:
+      if (stage_glx->state & CLUTTER_STAGE_STATE_ACTIVATED)
+	{
+	  stage_glx->state &= ~CLUTTER_STAGE_STATE_ACTIVATED;
+
+	  event->type = CLUTTER_STAGE_STATE;
+	  event->stage_state.changed_mask = CLUTTER_STAGE_STATE_ACTIVATED;
+	  event->stage_state.new_state = stage_glx->state;
+	}
+      else
+	res = FALSE;
+      break;
     case Expose:
       {
         XEvent foo_xev;

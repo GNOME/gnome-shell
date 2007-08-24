@@ -1,6 +1,32 @@
 #include <clutter/clutter.h>
 
+gboolean IsFullScreen = FALSE;
 
+static void
+stage_state_cb (ClutterStage    *stage,
+		gpointer         data)
+{
+  gchar *detail = (gchar*)data;
+
+  printf("[stage signal] %s\n", detail);
+}
+
+static void
+blue_button_cb (ClutterActor    *actor,
+		ClutterEvent    *event,
+		gpointer         data)
+{
+  ClutterActor *stage;
+
+  stage = clutter_stage_get_default ();
+
+  if (IsFullScreen)
+    IsFullScreen = FALSE;
+  else
+    IsFullScreen = TRUE;
+
+  g_object_set (stage, "fullscreen", IsFullScreen, NULL);
+}
 
 void
 key_focus_in_cb (ClutterActor    *actor,
@@ -104,6 +130,14 @@ main (int argc, char *argv[])
 
   stage = clutter_stage_get_default ();
   g_signal_connect (stage, "event", G_CALLBACK (input_cb), "stage");
+  g_signal_connect (stage, "fullscreen", 
+		    G_CALLBACK (stage_state_cb), "fullscreen");
+  g_signal_connect (stage, "unfullscreen", 
+		    G_CALLBACK (stage_state_cb), "unfullscreen");
+  g_signal_connect (stage, "activate", 
+		    G_CALLBACK (stage_state_cb), "activate");
+  g_signal_connect (stage, "deactivate", 
+		    G_CALLBACK (stage_state_cb), "deactivate");
 
   focus_box = clutter_rectangle_new_with_color (&ncol);
   clutter_container_add (CLUTTER_CONTAINER(stage), focus_box, NULL);
@@ -145,6 +179,7 @@ main (int argc, char *argv[])
   g_signal_connect (actor, "event", G_CALLBACK (input_cb), "blue box");
   g_signal_connect (actor, "focus-in", G_CALLBACK (key_focus_in_cb), 
 		    focus_box);
+  g_signal_connect (actor, "button-press-event", G_CALLBACK (blue_button_cb), NULL);
 
   actor = clutter_rectangle_new_with_color (&ncol);
   clutter_actor_set_size (actor, 400, 50);

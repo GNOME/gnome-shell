@@ -205,19 +205,26 @@ case $clutterbackend in
     CLUTTER_COGL="gles"
     AC_DEFINE([HAVE_COGL_GLES], 1, [Have GL/ES for rendering])
 
-    # try for libvincent first
+    # try for libvincent first (though its not so good)
     PKG_CHECK_MODULES(EGL, libvincent, HAVE_OGLES=yes, HAVE_OGLES=no)
     if test "x$HAVE_OGLES" = "xno"; then
       AC_CHECK_HEADERS([GLES/egl.h GLES/gl.h],,
 	         [AC_MSG_ERROR([Unable to locate required GLES headers])])
 
+      # No libvincent so start checking for upper/lower case libgles_em
+      # The powervr sdk uses lower case.
+
       AC_CHECK_LIB(GLES_CM, eglInitialize, HAVE_LIBGLES=yes, HAVE_LIBGLES=no)
-
       if test "x$HAVE_LIBGLES" = "xno"; then
+        
+        AC_CHECK_LIB(gles_cm, eglInitialize, HAVE_LIBGLES=yes, HAVE_LIBGLES=no)
+	if test "x$HAVE_LIBGLES" = "xno"; then
 	  AC_MSG_ERROR([GLES library not found and egl backend requested.]);
+	fi
+        EGL_LIBS="-lgles_cm"  
+      else
+        EGL_LIBS="-lGLES_CM"  
       fi
-
-      EGL_LIBS="-lGLES_CM"
     fi
 
     EGL_LIBS="$EGL_LIBS $X11_LIBS"

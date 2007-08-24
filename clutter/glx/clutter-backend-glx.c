@@ -210,6 +210,11 @@ clutter_backend_glx_post_parse (ClutterBackend  *backend,
 
       if (clutter_synchronise)
         XSynchronize (backend_glx->xdpy, True);
+
+      backend_glx->atom_WM_STATE 
+	= XInternAtom (backend_glx->xdpy, "_NET_WM_STATE", False);
+      backend_glx->atom_WM_STATE_FULLSCREEN 
+	= XInternAtom (backend_glx->xdpy, "_NET_WM_STATE_FULLSCREEN", False);
     }
 
   g_free (clutter_display_name);

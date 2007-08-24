@@ -89,6 +89,10 @@ struct _ClutterBackendGLX
   SwapIntervalProc       swap_interval;
   gint                   dri_fd;
   ClutterGLXVBlankType   vblank_type;
+
+  /* props */
+  Atom atom_WM_STATE;
+  Atom atom_WM_STATE_FULLSCREEN;
 };
 
 struct _ClutterBackendGLXClass

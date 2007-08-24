@@ -2861,15 +2861,10 @@ clutter_actor_event (ClutterActor *actor,
       signal_num = MOTION_EVENT;
       break;
     case CLUTTER_DELETE:
-      signal_num = -1;
-      break;
     case CLUTTER_DESTROY_NOTIFY:
-      signal_num = -1;
-      break;
     case CLUTTER_CLIENT_MESSAGE:
-      signal_num = -1;
-      break;
     default:
+      signal_num = -1;
       break;
     }
 

@@ -101,6 +101,11 @@ ClutterEffectTemplate *clutter_effect_template_new_full (ClutterTimeline  *timel
                                                          gpointer          user_data,
                                                          GDestroyNotify    notify);
 
+void                   clutter_effect_template_set_timeline_clone (ClutterEffectTemplate *template_,
+								   gboolean               setting);
+gboolean               clutter_effect_template_get_timeline_clone (ClutterEffectTemplate *template_);
+
+
 /*
  * Clutter effects
  */
