@@ -374,11 +374,17 @@ cogl_texture_image_2d (COGLenum      target,
 		       const guchar* pixels)
 {
   GE( glTexImage2D (target,
-		    0, 		/* No mipmap support as yet */
-		    internal_format,
+		    0, 	
+		    format, /* HACK: For gles we set the internal_format equal
+			     * to the pixel format. This is for RGB data (i.e
+			     * jpgs) which seem to need a matching internal
+                             * format rather than RGBA (which is used by GL) 
+			     *.
+                             * This fix isn't ideal..
+			     */
 		    width,
 		    height,
-		    0, 		/* 0 pixel border */
+		    0, 	
 		    format,
 		    type,
 		    pixels) );
