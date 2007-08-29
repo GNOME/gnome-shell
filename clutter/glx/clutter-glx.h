@@ -69,6 +69,10 @@ XVisualInfo *clutter_glx_get_stage_visual (ClutterStage *stage);
 gboolean     clutter_glx_set_stage_foreign (ClutterStage *stage,
                                             Window        xwindow);
 
+void         clutter_glx_add_filter (ClutterGLXFilterFunc func, gpointer data);
+
+void         clutter_glx_remove_filter (ClutterGLXFilterFunc func, 
+					gpointer data);
 
 G_END_DECLS
 

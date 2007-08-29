@@ -1,3 +1,14 @@
+2007-08-29  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-main.c: (_clutter_do_pick):
+	Call glFinish before reading pixels
+	* clutter/eglx/clutter-stage-egl.c: (clutter_stage_egl_realize):
+	Add missing read surface in making context current.
+	Above fixes via	Kate Alhola.
+
+	* clutter/glx/clutter-glx.h:
+	Add missing filter funcs so there actually exported
+
 2007-08-24  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c:

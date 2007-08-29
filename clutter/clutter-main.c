@@ -350,6 +350,12 @@ _clutter_do_pick (ClutterStage   *stage,
 
   /* Calls should work under both GL and GLES, note GLES needs RGBA */
   glGetIntegerv(GL_VIEWPORT, viewport);
+
+  /* Below to be safe, particularly on GL ES. an EGL wait call or full 
+   * could be nicer.  
+  */
+  glFinish(); 		
+
   glReadPixels(x, viewport[3] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
 
   if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)

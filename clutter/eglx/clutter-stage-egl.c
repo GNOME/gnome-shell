@@ -170,7 +170,7 @@ clutter_stage_egl_realize (ClutterActor *actor)
       
       status = eglMakeCurrent (clutter_eglx_display(), 
 			       stage_egl->egl_surface, 
-			       EGL_NO_SURFACE, 
+			       stage_egl->egl_surface, 
 			       stage_egl->egl_context);
 
       if (status != EGL_TRUE)
