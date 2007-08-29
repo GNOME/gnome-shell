@@ -154,6 +154,7 @@ clutter_effect_template_set_property (GObject      *object,
     case PROP_TIMELINE:
       priv->timeline = g_value_get_object (value);
       g_object_ref(priv->timeline);
+      break;
     case PROP_DO_CLONE:
       clutter_effect_template_set_timeline_clone (template, 
 						  g_value_get_boolean (value));

@@ -1,5 +1,10 @@
 2007-08-29  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/clutter-effect.c: (clutter_effect_template_set_property):
+	Add missing break statement. Whoops.
+
+2007-08-29  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-main.c: (_clutter_do_pick):
 	Call glFinish before reading pixels
 	* clutter/eglx/clutter-stage-egl.c: (clutter_stage_egl_realize):
