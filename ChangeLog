@@ -1,3 +1,9 @@
+2007-08-31  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-rectangle.c: Fix the border drawing: do not
+	overdraw the rectangle on the border and fix the check for
+	different border colour. (#488, Neil Roberts)
+
 2007-08-29  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-effect.c: (clutter_effect_template_set_property):
