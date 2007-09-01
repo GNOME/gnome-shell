@@ -42,18 +42,17 @@ Minimal Building/Testing Environment
   build a development version of Metacity -- odds are, you may be able
   to build metacity from CVS without building any other modules.
 
-  As long as you have gtk+ >= 2.10 with your distro (gtk+ >= 2.6 if
-  you manually revert the change from bug 348633), you should be able
-  to install your distro's development packages (e.g. gtk2-devel,
-  GConf2-devel, startup-notification-devel on Fedora; also, remember
-  to install the gnome-common package which is needed for building cvs
-  versions of Gnome modules like Metacity) as well as the standard
-  development tools (gcc, autoconf, automake, pkg-config, intltool,
-  and libtool) and be ready to build and test Metacity.  Steps to do
-  so:
+  As long as you have gtk+ >= 2.10 and GConf with your distro (gtk+ >=
+  2.6 if you manually revert the change from bug 348633), you should
+  be able to install your distro's development packages
+  (e.g. gtk2-devel, GConf2-devel, startup-notification-devel on
+  Fedora; also, remember to install the gnome-common package which is
+  needed for building cvs versions of Gnome modules like Metacity) as
+  well as the standard development tools (gcc, autoconf, automake,
+  pkg-config, intltool, and libtool) and be ready to build and test
+  Metacity.  Steps to do so:
 
-  $ cvs -q -z3 -d :pserver:anonymous@anoncvs.gnome.org:/cvs/gnome \
-                  checkout metacity
+  $ svn checkout http://svn.gnome.org/svn/metacity/trunk metacity
   $ cd metacity
   $ ./autogen.sh --prefix /usr
   $ make

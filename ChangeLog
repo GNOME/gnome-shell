@@ -1,3 +1,9 @@
+2007-09-01  Elijah Newren  <newren gmail com>
+
+	* HACKING: update; cvs->svn & mention GConf needed
+	* MAINTAINERS: Make it match idiotic format requirements (I love
+	you Olav!)
+
 2007-08-07  Thomas Thurman  <thomas@thurman.org.uk>
 
         * configure.in: post-release bump to 2.19.89.
