@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.16.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-20 18:02+0100\n"
-"PO-Revision-Date: 2007-08-21 10:55+0200\n"
+"POT-Creation-Date: 2007-08-21 12:15+0100\n"
+"PO-Revision-Date: 2007-09-01 19:08+0200\n"
 "Last-Translator: Yannig MARCHEGAY (Kokoyaya) <yannig@marchegay.org>\n"
 "Language-Team: Occitan (post 1500) <ubuntu-l10n-oci@lists.ubuntu.com>\n"
 "MIME-Version: 1.0\n"
@@ -2496,7 +2496,7 @@ msgstr "/_Fenèstras"
 
 #: ../src/theme-viewer.c:75
 msgid "/Windows/tearoff"
-msgstr ""
+msgstr "/Fenèstras/tearoff"
 
 #: ../src/theme-viewer.c:76
 msgid "/Windows/_Dialog"
