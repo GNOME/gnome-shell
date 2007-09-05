@@ -1,4 +1,4 @@
-# translation of metacity.HEAD.po to Macedonian
+# translation of metacity.HEAD.mk.po to Macedonian
 # translation of metacity.HEAD.mk.po to
 # translation of metacity.HEAD.mk.po to
 # This file is distributed under the same license as the PACKAGE package.
@@ -13,11 +13,11 @@
 # Arangel Angov <arangel@linux.net.mk>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity.HEAD\n"
+"Project-Id-Version: metacity.HEAD.mk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-01 12:08+0100\n"
-"PO-Revision-Date: 2007-09-02 21:58+0200\n"
-"Last-Translator: Arangel Angov <arangel@linux.net.mk>\n"
+"POT-Creation-Date: 2007-09-03 00:43+0100\n"
+"PO-Revision-Date: 2007-09-05 14:37+0200\n"
+"Last-Translator: Jovan Naumovski <jovan@lugola.net>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -870,6 +870,21 @@ msgid ""
 "and that they need to change this option back to true or live with the bug "
 "they requested. See also http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
 msgstr ""
+"Поставувањето на оваа опција на „false“ може да предизвика чудно однесување, па"
+"им се препорачува на корисниците ова да го постават на „default“ или „true“. Многу дејства"
+"(пр. кликање на површината на клиентот или поместување или промена на големината на прозорецот)"
+"обично го подигнуваат прозорецот како придружен ефект. Поставете ја оваа опција на „false“ за"
+"да се оневозможи подигнувањето како придружен ефект. Дури и кога оваа опција е „false“, прозорците"
+"сѐ уште ќе можат да се подигнат со „alt-лев-клик“ било каде на прозорецот, со нормално кликнување на"
+"декорациите на прозорецот или со специјални пораки од скокачите на работни површини, какви што се"
+"барањата за активација од аплетите за листи на прозорци. Оваа опција моментално е оневозможена"
+"во режимот „клик за фокусирање“. Забележете дека листата на начини за подигање на прозорците кога"
+"raise_on_click е „false“ не вклучува програматички барања од апликациите за подигнување на "
+"прозорците и таквите барања ќе бидат игнорирани без разлика на причината на таквото барање."
+"Ако сте развивач на апликации и Вашите корисници се жалат дека Вашата апликација не работи кога ова"
+"поставување е оневозможено, кажете им дека тоа е _нивна_ вина за кршењето на менаџерот на прозорци "
+"и дека треба да ја променат оваа опција во „true“ или да продолжат да „живеат“ со оваа грешка."
+"Видете на http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
 
 #: ../src/metacity.schemas.in.h:79
 msgid "Show the panel menu"
