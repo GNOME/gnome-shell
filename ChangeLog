@@ -1,3 +1,8 @@
+2007-09-06  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-stage.c: Remove stray include <gdk-pixbuf-xlib.h>
+	in ClutterStage: the code requesting it was moved in the backends.
+
 2007-08-31  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-rectangle.c: Fix the border drawing: do not

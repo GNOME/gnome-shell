@@ -46,8 +46,6 @@
 
 #include "cogl.h"
 
-#include <gdk-pixbuf-xlib/gdk-pixbuf-xlib.h>
-
 G_DEFINE_ABSTRACT_TYPE (ClutterStage, clutter_stage, CLUTTER_TYPE_GROUP);
 
 #define CLUTTER_STAGE_GET_PRIVATE(obj) \
