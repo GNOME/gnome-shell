@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-09 03:31+0100\n"
-"PO-Revision-Date: 2007-06-16 17:21+0800\n"
+"POT-Creation-Date: 2007-08-07 03:38+0100\n"
+"PO-Revision-Date: 2007-09-07 19:34+0800\n"
 "Last-Translator: Funda Wang <fundawang@gmail.com>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
@@ -35,6 +35,11 @@ msgstr "用法：%s\n"
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity 编译的时候没有加入详细模式的支持\n"
 
+#: ../src/core.c:206
+#, c-format
+msgid "Unknown window information request: %d"
+msgstr "未知的窗口信息请求：%d"
+
 #: ../src/delete.c:67 ../src/delete.c:94 ../src/metacity-dialog.c:50
 #: ../src/theme-parser.c:484
 #, c-format
@@ -57,13 +62,13 @@ msgstr "无法通过对话进程解析消息“%s”\n"
 msgid "Error reading from dialog display process: %s\n"
 msgstr "读取对话显示进程时出错：%s\n"
 
-#: ../src/delete.c:348
+#: ../src/delete.c:350
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "启动 metacity-dialog 查询有关杀死应用程序的情况时出错：%s\n"
 
-#: ../src/delete.c:456
+#: ../src/delete.c:459
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "无法获取主机名：%s\n"
@@ -158,13 +163,13 @@ msgstr "终端命令尚未定义。\n"
 #, c-format
 msgid ""
 "metacity %s\n"
-"Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright (C) 2001-2007 Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
 "PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
-"Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., 以及其他人\n"
+"Copyright (C) 2001-2007 Havoc Pennington, Red Hat, Inc., 以及其他人\n"
 "这是自由软件：版权条款请参见源码.\n"
 "不存在任何保证：即使是对商用性或者适合某种特定目的也不作保证。\n"
 
@@ -192,119 +197,119 @@ msgstr "从保存文件中初始化会话"
 msgid "Print version"
 msgstr "打印版本"
 
-#: ../src/main.c:352
+#: ../src/main.c:353
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "扫描主题目录失败：%s\n"
 
-#: ../src/main.c:368
+#: ../src/main.c:369
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr "无法找到主题！请确认 %s 存在并且含有正常的主题。\n"
 
-#: ../src/main.c:428
+#: ../src/main.c:429
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "无法重启动：%s\n"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:69
+#: ../src/menu.c:70
 msgid "Mi_nimize"
 msgstr "最小化(_N)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:71
+#: ../src/menu.c:72
 msgid "Ma_ximize"
 msgstr "最大化(_X)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:73
+#: ../src/menu.c:74
 msgid "Unma_ximize"
 msgstr "取消最大化(_X)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:75
+#: ../src/menu.c:76
 msgid "Roll _Up"
 msgstr "卷起(_U)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:77
+#: ../src/menu.c:78
 msgid "_Unroll"
 msgstr "展开(_U)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:79
+#: ../src/menu.c:80
 msgid "_Move"
 msgstr "移动(_M)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:81
+#: ../src/menu.c:82
 msgid "_Resize"
 msgstr "改变大小(_R)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:83
+#: ../src/menu.c:84
 msgid "Move Titlebar On_screen"
 msgstr "将标题栏上移动到屏幕上(_S)"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:86
-msgid "_Close"
-msgstr "关闭(_C)"
-
-#. separator
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:89 ../src/menu.c:91
+#: ../src/menu.c:87 ../src/menu.c:89
 msgid "Always on _Top"
 msgstr "常居顶端(_T)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:93
+#: ../src/menu.c:91
 msgid "_Always on Visible Workspace"
 msgstr "总在可见工作区(_A)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:95
+#: ../src/menu.c:93
 msgid "_Only on This Workspace"
 msgstr "只在此工作区(_O)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:97
+#: ../src/menu.c:95
 msgid "Move to Workspace _Left"
 msgstr "移动到左侧工作区(_L)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:99
+#: ../src/menu.c:97
 msgid "Move to Workspace R_ight"
 msgstr "移动到右侧工作区(_I)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:101
+#: ../src/menu.c:99
 msgid "Move to Workspace _Up"
 msgstr "移动到上侧工作区(_U)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:103
+#: ../src/menu.c:101
 msgid "Move to Workspace _Down"
 msgstr "移动到下侧工作区(_D)"
 
-#: ../src/menu.c:197 ../src/prefs.c:2238 ../src/prefs.c:2773
+#. separator
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:105
+msgid "_Close"
+msgstr "关闭(_C)"
+
+#: ../src/menu.c:199 ../src/prefs.c:2246 ../src/prefs.c:2780
 #, c-format
 msgid "Workspace %d"
 msgstr "工作区 %d"
 
-#: ../src/menu.c:206
+#: ../src/menu.c:208
 msgid "Workspace 1_0"
 msgstr "工作区 1_0"
 
-#: ../src/menu.c:208
+#: ../src/menu.c:210
 #, c-format
 msgid "Workspace %s%d"
 msgstr "工作区 %s%d"
 
-#: ../src/menu.c:411
+#: ../src/menu.c:390
 msgid "Move to Another _Workspace"
 msgstr "移动到另外的工作区(_W)"
 
@@ -833,6 +838,22 @@ msgid ""
 "and that they need to change this option back to true or live with the bug "
 "they requested. See also http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
 msgstr ""
+"Setting this option to false can lead to buggy behavior, so users are "
+"strongly discouraged from changing it from the default of true. Many actions "
+"(e.g. clicking in the client area, moving or resizing the window) normally "
+"raise the window as a side-effect. Set this option to false to decouple "
+"raising from other user actions. Even when this option is false, windows can "
+"still be raised by an alt-left-click anywhere on the window, a normal click "
+"on the window decorations, or by special messages from pagers, such as "
+"activation requests from tasklist applets. This option is currently disabled "
+"in click-to-focus mode. Note that the list of ways to raise windows when "
+"raise_on_click is false does not include programmatic requests from "
+"applications to raise windows; such requests will be ignored regardless of "
+"the reason for the request. If you are an application developer and have a "
+"user complaining that your application does not work with this setting "
+"disabled, tell them it is _their_ fault for breaking their window manager "
+"and that they need to change this option back to true or live with the bug "
+"they requested. See also http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
 
 #: ../src/metacity.schemas.in.h:79
 msgid "Show the panel menu"
@@ -2063,7 +2084,6 @@ msgstr ""
 "而“none”将不执行任何操作。"
 
 #: ../src/metacity.schemas.in.h:188
-#, fuzzy
 msgid ""
 "This option determines the effects of middle-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2071,12 +2091,11 @@ msgid ""
 "'minimize' which will minimize the window, and 'none' which will not do "
 "anything."
 msgstr ""
-"这个选项决定在标题栏上双击的效果。当前有效的选项包括，“toggle_shade”将卷起/展"
+"这个选项决定在标题栏上单击中键击的效果。当前有效的选项包括，“toggle_shade”将卷起/展"
 "开窗口，“toggle_maximize”将最大化/还原窗口，“minimize”将最小化窗口，"
 "而“none”将不执行任何操作。"
 
 #: ../src/metacity.schemas.in.h:189
-#, fuzzy
 msgid ""
 "This option determines the effects of right-clicking on the title bar. "
 "Current valid options are 'toggle_shade', which will shade/unshade the "
@@ -2084,7 +2103,7 @@ msgid ""
 "'minimize' which will minimize the window, and 'none' which will not do "
 "anything."
 msgstr ""
-"这个选项决定在标题栏上双击的效果。当前有效的选项包括，“toggle_shade”将卷起/展"
+"这个选项决定在标题栏上单击右键的效果。当前有效的选项包括，“toggle_shade”将卷起/展"
 "开窗口，“toggle_maximize”将最大化/还原窗口，“minimize”将最小化窗口，"
 "而“none”将不执行任何操作。"
 
@@ -2152,31 +2171,36 @@ msgstr "窗口焦点模式"
 msgid "Window title font"
 msgstr "窗口标题字体"
 
-#: ../src/prefs.c:579 ../src/prefs.c:607 ../src/prefs.c:623 ../src/prefs.c:639
-#: ../src/prefs.c:655 ../src/prefs.c:671 ../src/prefs.c:687 ../src/prefs.c:703
-#: ../src/prefs.c:723 ../src/prefs.c:739 ../src/prefs.c:755 ../src/prefs.c:773
-#: ../src/prefs.c:789 ../src/prefs.c:808 ../src/prefs.c:824 ../src/prefs.c:859
-#: ../src/prefs.c:875 ../src/prefs.c:892 ../src/prefs.c:908 ../src/prefs.c:924
-#: ../src/prefs.c:940 ../src/prefs.c:956 ../src/prefs.c:971 ../src/prefs.c:986
-#: ../src/prefs.c:1001 ../src/prefs.c:1017 ../src/prefs.c:1033
-#: ../src/prefs.c:1049 ../src/prefs.c:1065
+#: ../src/prefs.c:434
+#, c-format
+msgid "Type of %s was not integer"
+msgstr "%s 的类型不是整型"
+
+#: ../src/prefs.c:572 ../src/prefs.c:600 ../src/prefs.c:616 ../src/prefs.c:632
+#: ../src/prefs.c:648 ../src/prefs.c:664 ../src/prefs.c:680 ../src/prefs.c:696
+#: ../src/prefs.c:716 ../src/prefs.c:732 ../src/prefs.c:748 ../src/prefs.c:766
+#: ../src/prefs.c:782 ../src/prefs.c:801 ../src/prefs.c:817 ../src/prefs.c:852
+#: ../src/prefs.c:868 ../src/prefs.c:885 ../src/prefs.c:901 ../src/prefs.c:917
+#: ../src/prefs.c:933 ../src/prefs.c:949 ../src/prefs.c:964 ../src/prefs.c:979
+#: ../src/prefs.c:994 ../src/prefs.c:1010 ../src/prefs.c:1026
+#: ../src/prefs.c:1042 ../src/prefs.c:1058
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "GConf 关键字“%s”被设置为无效的类型\n"
 
-#: ../src/prefs.c:1110
+#: ../src/prefs.c:1103
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr "在配置数据库中找到的“%s”不是鼠标按钮修饰键的有效值\n"
 
-#: ../src/prefs.c:1134 ../src/prefs.c:1155 ../src/prefs.c:1697
+#: ../src/prefs.c:1127 ../src/prefs.c:1148 ../src/prefs.c:1705
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "GConf 关键字“%s”被设置为无效值\n"
 
-#: ../src/prefs.c:1284
+#: ../src/prefs.c:1277
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
@@ -2185,12 +2209,12 @@ msgstr ""
 "存储在 GConf 关键字 %2$s 中的值 %1$d 不是一个合理的光标大小；必须介于 1 到 "
 "128 之间\n"
 
-#: ../src/prefs.c:1364
+#: ../src/prefs.c:1357
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "无法解析字体说明“%s”(来自 GConf 关键字 %s)\n"
 
-#: ../src/prefs.c:1591
+#: ../src/prefs.c:1599
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2199,30 +2223,30 @@ msgstr ""
 "存储在 GConf 关键字 %2$s 中的值 %1$d 不是一个合理的工作区数量，当前最大值为 %"
 "3$d\n"
 
-#: ../src/prefs.c:1651
+#: ../src/prefs.c:1659
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr "有缺陷的应用程序的工作区已禁用。某些应用程序可能无法正常运行。\n"
 
-#: ../src/prefs.c:1724
+#: ../src/prefs.c:1732
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "存储在 GConf 关键字 %2$s 中的值 %1$d 超出了 0 到 %3$d 的范围\n"
 
-#: ../src/prefs.c:1873
+#: ../src/prefs.c:1881
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "将工作区数量设置为 %d 时出错：%s\n"
 
-#: ../src/prefs.c:2268 ../src/prefs.c:2438
+#: ../src/prefs.c:2276 ../src/prefs.c:2446
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "在配置数据库中找到的“%s”不是按键组合“%s”的有效值\n"
 
-#: ../src/prefs.c:2854
+#: ../src/prefs.c:2861
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "将工作区 %d 的名称设置为“%s”时出错：%s\n"
@@ -3101,11 +3125,11 @@ msgstr "按钮长宽比 %g 不合理"
 msgid "Frame geometry does not specify size of buttons"
 msgstr "框架几何布局没有指定按钮大小"
 
-#: ../src/theme.c:928
+#: ../src/theme.c:925
 msgid "Gradients should have at least two colors"
 msgstr "渐变应至少有两种颜色"
 
-#: ../src/theme.c:1054
+#: ../src/theme.c:1051
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -3114,7 +3138,7 @@ msgstr ""
 "GTK 颜色规范必须将状态包含在方括号中，例如 gtk:fg[NORMAL]其中 NORMAL 是状态；"
 "无法解析“%s”"
 
-#: ../src/theme.c:1068
+#: ../src/theme.c:1065
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -3123,139 +3147,139 @@ msgstr ""
 "GTK 颜色规范必须在状态后有一个闭方括号，例如 gtk:fg[NORMAL]，其中 NORMAL 是状"
 "态；无法解析“%s”"
 
-#: ../src/theme.c:1079
+#: ../src/theme.c:1076
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "不理解颜色规范中的状态“%s”"
 
-#: ../src/theme.c:1092
+#: ../src/theme.c:1089
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "不理解颜色规范中的颜色组成部分“%s”"
 
-#: ../src/theme.c:1122
+#: ../src/theme.c:1119
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr "混合格式为“blend/bg_color/fg_color/alpha”，“%s”不符合该格式"
 
-#: ../src/theme.c:1133
+#: ../src/theme.c:1130
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "无法解析混合色中的 Alpha 值“%s”"
 
-#: ../src/theme.c:1143
+#: ../src/theme.c:1140
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "混合色中的 Alpha 值“%s”不在 0.0 到 1.0 之间"
 
-#: ../src/theme.c:1190
+#: ../src/theme.c:1187
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "阴影格式为“shade/base_color/factor”，“%s”不符合该格式"
 
-#: ../src/theme.c:1201
+#: ../src/theme.c:1198
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "无法解析阴影色中的阴影因子“%s”"
 
-#: ../src/theme.c:1211
+#: ../src/theme.c:1208
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "阴影色中的阴影因子“%s”为负数"
 
-#: ../src/theme.c:1240
+#: ../src/theme.c:1237
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "无法解析颜色“%s”"
 
-#: ../src/theme.c:1499
+#: ../src/theme.c:1496
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "坐标表达式包含不允许的字符“%s”"
 
-#: ../src/theme.c:1526
+#: ../src/theme.c:1523
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "坐标表达式包含无法解析的浮点数“%s”"
 
-#: ../src/theme.c:1540
+#: ../src/theme.c:1537
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "坐标表达式包含无法解析的整数“%s”"
 
-#: ../src/theme.c:1607
+#: ../src/theme.c:1604
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr "坐标表达式在该文本开始处包含未知的运算符：“%s”"
 
-#: ../src/theme.c:1664
+#: ../src/theme.c:1661
 msgid "Coordinate expression was empty or not understood"
 msgstr "坐标表达式为空或无法理解"
 
-#: ../src/theme.c:1801 ../src/theme.c:1811 ../src/theme.c:1845
+#: ../src/theme.c:1798 ../src/theme.c:1808 ../src/theme.c:1842
 msgid "Coordinate expression results in division by zero"
 msgstr "坐标表达式用零做除数"
 
-#: ../src/theme.c:1853
+#: ../src/theme.c:1850
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "坐标表达式试图对浮点数使用 mod 运算符"
 
-#: ../src/theme.c:1909
+#: ../src/theme.c:1906
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "坐标表达式的运算符“%s”应该是一个操作数"
 
-#: ../src/theme.c:1918
+#: ../src/theme.c:1915
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "坐标表达式的某个操作数应该是运算符"
 
-#: ../src/theme.c:1926
+#: ../src/theme.c:1923
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "坐标表达式以运算符结尾，而不是以操作数结尾"
 
-#: ../src/theme.c:1936
+#: ../src/theme.c:1933
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr "坐标表达式的运算符“%c”后面跟着运算符“%c”，之间没有操作数"
 
-#: ../src/theme.c:2054
+#: ../src/theme.c:2051
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "坐标表达式溢出了其缓冲区。"
 
-#: ../src/theme.c:2083
+#: ../src/theme.c:2080
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "坐标表达式有一个闭括号，而没有开括号"
 
-#: ../src/theme.c:2145
+#: ../src/theme.c:2142
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "坐标表达式有未知的变量或常数“%s”"
 
-#: ../src/theme.c:2200
+#: ../src/theme.c:2197
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "坐标表达式有一个开括号，而没有闭括号"
 
-#: ../src/theme.c:2211
+#: ../src/theme.c:2208
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "坐标表达式似乎没有任何运算符或操作数"
 
-#: ../src/theme.c:2452 ../src/theme.c:2474 ../src/theme.c:2495
+#: ../src/theme.c:2449 ../src/theme.c:2471 ../src/theme.c:2492
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "主题包含的表达式“%s”产生一个错误：%s\n"
 
-#: ../src/theme.c:3949
+#: ../src/theme.c:3946
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -3264,25 +3288,25 @@ msgstr ""
 "必须为该框架风格指定<button function=\"%s\" state=\"%s\" draw_ops=\"whatever"
 "\"/>"
 
-#: ../src/theme.c:4425 ../src/theme.c:4450
+#: ../src/theme.c:4422 ../src/theme.c:4447
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "缺少 <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: ../src/theme.c:4496
+#: ../src/theme.c:4493
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "无法载入主题“%s”：%s\n"
 
-#: ../src/theme.c:4606 ../src/theme.c:4613 ../src/theme.c:4620
-#: ../src/theme.c:4627 ../src/theme.c:4634
+#: ../src/theme.c:4603 ../src/theme.c:4610 ../src/theme.c:4617
+#: ../src/theme.c:4624 ../src/theme.c:4631
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "没有为主题“%2$s”设置 <%1$s>"
 
-#: ../src/theme.c:4642
+#: ../src/theme.c:4639
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -3291,13 +3315,13 @@ msgstr ""
 "没有为窗口类型“%s”(在主题“%s”中)设置框架风格，请添加一个 <window type=\"%s\" "
 "style_set=\"whatever\"/> 元素"
 
-#: ../src/theme.c:5009 ../src/theme.c:5071 ../src/theme.c:5134
+#: ../src/theme.c:5006 ../src/theme.c:5068 ../src/theme.c:5131
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "用户定义的常数必须以大写字母开头；而“%s”却不必"
 
-#: ../src/theme.c:5017 ../src/theme.c:5079 ../src/theme.c:5142
+#: ../src/theme.c:5014 ../src/theme.c:5076 ../src/theme.c:5139
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "常数“%s”已被定义"
@@ -3343,13 +3367,13 @@ msgstr "应用程序设置一个假的 _NET_WM_PID %lu\n"
 msgid "%s (on %s)"
 msgstr "%s (于 %s)"
 
-#: ../src/window-props.c:1405
+#: ../src/window-props.c:1406
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "为 %2$s 指定了无效的 WM_TRANSIENT_FOR 窗口 0x%1$lx。\n"
 
 #. first time through
-#: ../src/window.c:5532
+#: ../src/window.c:5540
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3365,7 +3389,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6141
+#: ../src/window.c:6105
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
@@ -3399,4 +3423,3 @@ msgstr "窗口 0x%2$lx 上的属性 %1$s 包含无效的 UTF-8\n"
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "窗口 0x%2$lx 上的属性 %1$s 为列表中的条目 %3$d 包含无效的 UTF-8\n"
-
