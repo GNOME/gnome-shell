@@ -9,10 +9,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-05 16:38+0200\n"
-"PO-Revision-Date: 2007-08-05 20:58+0200\n"
+"POT-Creation-Date: 2007-09-08 18:42+0200\n"
+"PO-Revision-Date: 2007-09-08 18:43+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
-"Language-Team: Basque <eu@li.org>\n"
+"Language-Team: Basque <itzulpena@euskalgnu.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -214,8 +214,8 @@ msgstr "Huts egin du gaien direktorioa aztertzean: %s\n"
 #, c-format
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
-"Gai bat ezin izan da aurkitu! Ziurtatu %s badagoela eta ohiko "
-"gaiak dituela.\n"
+"Gai bat ezin izan da aurkitu! Ziurtatu %s badagoela eta ohiko gaiak "
+"dituela.\n"
 
 #: ../src/main.c:429
 #, c-format
@@ -304,7 +304,7 @@ msgstr "Eraman _azpiko laneko areara"
 msgid "_Close"
 msgstr "It_xi"
 
-#: ../src/menu.c:199 ../src/prefs.c:2243 ../src/prefs.c:2778
+#: ../src/menu.c:199 ../src/prefs.c:2246 ../src/prefs.c:2780
 #, c-format
 msgid "Workspace %d"
 msgstr "%d laneko area"
@@ -422,8 +422,8 @@ msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr ""
-"Aukeratu piskatean zai egotea aplikazioak jarraitzeko"
-"edo derrigortu aplikazioa erabat ixtea."
+"Aukeratu piskatean zai egotea aplikazioak jarraitzekoedo derrigortu "
+"aplikazioa erabat ixtea."
 
 #: ../src/metacity-dialog.c:107
 msgid "_Wait"
@@ -870,8 +870,23 @@ msgid ""
 "and that they need to change this option back to true or live with the bug "
 "they requested. See also http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
 msgstr ""
-"Aukera hau faltsua balioarekin ezarriz okerreko portaera sor dezakenez, egia balio lehenetsia ez aldatzea aholkatzen da. Ekintza asko (adbi. bezeroaren arean klik egitea, leihoa mugitzea edo tamainaz aldatzea) leihoa goratzen du bigarren mailako efektu gisa. Ezarri aukera faltsua gisa leihoa goratzea erabiltzailearen beste ekintzetatik askatzeko. Nahiz eta aukera hau faltsua denean, leihoak goratu daitezke Alt+ezkerreko klik eginez leihoko edozein lekutan, leihoaren apaingarrian edo zereginen zerrendako appletek egindako aktibazio-eskaeren bezalako ekintzek sortzen dituzten mezu berezietan. Unean aukera hau desgaituta dago 'click-to-focus' modua. Jakin ezazu leihoak goratzeko bideen zerrenda 'raise_on_click' faltsua denean ez duela aplikazioen eskaera programatikorik leihoak goratzeko, eta ondorioz leihoak goratzeko eskaerei ez ikusi egingo zaiela. Aplikazioen garatzailea bazara eta erabiltzaile batek bere kexua agertzen badizu ezarpen hau desgaituta ez duela funtzionatzen azalduz, ezaiozu _bere_ akatsa dela leiho-kudeatzailea hausteagatik eta aukera hau egia balioarekin berrezarri behar dutela eta kexatutako akatsarekin bizi eta ohitu beharko dutela. Ikus ere"
-" http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
+"Aukera hau faltsua balioarekin ezarriz okerreko portaera sor dezakenez, egia "
+"balio lehenetsia ez aldatzea aholkatzen da. Ekintza asko (adbi. bezeroaren "
+"arean klik egitea, leihoa mugitzea edo tamainaz aldatzea) leihoa goratzen du "
+"bigarren mailako efektu gisa. Ezarri aukera faltsua gisa leihoa goratzea "
+"erabiltzailearen beste ekintzetatik askatzeko. Nahiz eta aukera hau faltsua "
+"denean, leihoak goratu daitezke Alt+ezkerreko klik eginez leihoko edozein "
+"lekutan, leihoaren apaingarrian edo zereginen zerrendako appletek egindako "
+"aktibazio-eskaeren bezalako ekintzek sortzen dituzten mezu berezietan. Unean "
+"aukera hau desgaituta dago 'click-to-focus' modua. Jakin ezazu leihoak "
+"goratzeko bideen zerrenda 'raise_on_click' faltsua denean ez duela "
+"aplikazioen eskaera programatikorik leihoak goratzeko, eta ondorioz leihoak "
+"goratzeko eskaerei ez ikusi egingo zaiela. Aplikazioen garatzailea bazara "
+"eta erabiltzaile batek bere kexua agertzen badizu ezarpen hau desgaituta ez "
+"duela funtzionatzen azalduz, ezaiozu _bere_ akatsa dela leiho-kudeatzailea "
+"hausteagatik eta aukera hau egia balioarekin berrezarri behar dutela eta "
+"kexatutako akatsarekin bizi eta ohitu beharko dutela. Ikus ere http://"
+"bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
 
 #: ../src/metacity.schemas.in.h:79
 msgid "Show the panel menu"
@@ -2061,10 +2076,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Laster-tekla honek leihoa pantailaren goiko aldera eramaten du. "
-"Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa "
-"izango da. Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak "
-"ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
+"Laster-tekla honek leihoa pantailaren goiko aldera eramaten du. Formatua "
+"\"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
+"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
+"eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. "
+"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
 "izango ekintza honentzat."
 
 #: ../src/metacity.schemas.in.h:177
@@ -2076,10 +2092,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Laster-tekla honek leihoa pantailaren eskuineko aldera eramaten du. "
-"Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa "
-"izango da. Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak "
-"ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
+"Laster-tekla honek leihoa pantailaren eskuineko aldera eramaten du. Formatua "
+"\"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
+"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
+"eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. "
+"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
 "izango ekintza honentzat."
 
 #: ../src/metacity.schemas.in.h:178
@@ -2091,11 +2108,12 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Laster-tekla honek leihoa pantailaren goiko eta eskuineko ertzera eramaten du. "
-"Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa "
-"izango da. Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak "
-"ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
+"Laster-tekla honek leihoa pantailaren goiko eta eskuineko ertzera eramaten "
+"du. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa "
+"izango da. Analizatzailea oso irekia da eta maiuskulak eta minuskulak "
+"onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko "
+"laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da "
+"laster-teklarik izango ekintza honentzat."
 
 #: ../src/metacity.schemas.in.h:179
 msgid ""
@@ -2106,11 +2124,12 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Laster-tekla honek leihoa pantailaren goiko eta ezkerreko ertzera eramaten du. "
-"Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa "
-"izango da. Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak "
-"ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
+"Laster-tekla honek leihoa pantailaren goiko eta ezkerreko ertzera eramaten "
+"du. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa "
+"izango da. Analizatzailea oso irekia da eta maiuskulak eta minuskulak "
+"onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko "
+"laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da "
+"laster-teklarik izango ekintza honentzat."
 
 #: ../src/metacity.schemas.in.h:180
 msgid ""
@@ -2121,10 +2140,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Laster-tekla honek leihoa pantailaren beheko aldera eramaten du. "
-"Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa "
-"izango da. Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak "
-"ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
+"Laster-tekla honek leihoa pantailaren beheko aldera eramaten du. Formatua "
+"\"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
+"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
+"eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. "
+"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
 "izango ekintza honentzat."
 
 #: ../src/metacity.schemas.in.h:181
@@ -2136,11 +2156,12 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Laster-tekla honek leihoa pantailaren beheko eta eskuineko ertzera eramaten du. "
-"Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa "
-"izango da. Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak "
-"ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
+"Laster-tekla honek leihoa pantailaren beheko eta eskuineko ertzera eramaten "
+"du. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa "
+"izango da. Analizatzailea oso irekia da eta maiuskulak eta minuskulak "
+"onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko "
+"laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da "
+"laster-teklarik izango ekintza honentzat."
 
 #: ../src/metacity.schemas.in.h:182
 msgid ""
@@ -2151,12 +2172,12 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"Laster-tekla honek leihoa pantailaren beheko eta ezkerreko ertzera "
-"eramaten du. "
-"Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa "
-"izango da. Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak "
-"ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
-"izango ekintza honentzat."
+"Laster-tekla honek leihoa pantailaren beheko eta ezkerreko ertzera eramaten "
+"du. Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa "
+"izango da. Analizatzailea oso irekia da eta maiuskulak eta minuskulak "
+"onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko "
+"laburdurak ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da "
+"laster-teklarik izango ekintza honentzat."
 
 #: ../src/metacity.schemas.in.h:183
 msgid ""
@@ -2167,10 +2188,11 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"Laster-tekla honek leihoa pantailaren ezkerreko aldera eramaten du. "
-"Formatua \"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa "
-"izango da. Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak "
-"ere. Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
+"Laster-tekla honek leihoa pantailaren ezkerreko aldera eramaten du. Formatua "
+"\"&lt;Kontrol&gt;a\" edo \"&lt;Maius&gt;&lt;Alt&gt;F1 itxurakoa izango da. "
+"Analizatzailea oso irekia da eta maiuskulak eta minuskulak onartzen ditu, "
+"eta baita \"&lt;Ktl&gt;\" eta \"&lt;Ktrl&gt;\" moduko laburdurak ere. "
+"Aukeran \"disabled\" kate berezia ezartzen baduzu, ez da laster-teklarik "
 "izango ekintza honentzat."
 
 #: ../src/metacity.schemas.in.h:184
@@ -2241,8 +2263,10 @@ msgid ""
 "'minimize' which will minimize the window, and 'none' which will not do "
 "anything."
 msgstr ""
-"Aukera honek erabakitzen du titulu-barran erdiko botoiarekin klik "
-"egindakoan zer gertatuko den. Uneko aukerak hauek dira: 'toggle_shade', leihoari itzala jarri edo kentzen dio; 'toggle_maximize' leihoa maximizatu edo leheneratzeko; 'minimize' leihoa minimizatzeko eta 'none' ezer ez egiteko."
+"Aukera honek erabakitzen du titulu-barran erdiko botoiarekin klik egindakoan "
+"zer gertatuko den. Uneko aukerak hauek dira: 'toggle_shade', leihoari itzala "
+"jarri edo kentzen dio; 'toggle_maximize' leihoa maximizatu edo "
+"leheneratzeko; 'minimize' leihoa minimizatzeko eta 'none' ezer ez egiteko."
 
 #: ../src/metacity.schemas.in.h:189
 msgid ""
@@ -2253,7 +2277,10 @@ msgid ""
 "anything."
 msgstr ""
 "Aukera honek erabakitzen du titulu-barran eskuineko botoiarekin klik "
-"egindakoan zer gertatuko den. Uneko aukerak hauek dira: 'toggle_shade', leihoari itzala jarri edo kentzen dio; 'toggle_maximize' leihoa maximizatu edo leheneratzeko; 'minimize' leihoa minimizatzeko eta 'none' ezer ez egiteko."
+"egindakoan zer gertatuko den. Uneko aukerak hauek dira: 'toggle_shade', "
+"leihoari itzala jarri edo kentzen dio; 'toggle_maximize' leihoa maximizatu "
+"edo leheneratzeko; 'minimize' leihoa minimizatzeko eta 'none' ezer ez "
+"egiteko."
 
 #: ../src/metacity.schemas.in.h:190
 msgid ""
@@ -2321,19 +2348,24 @@ msgstr "Leiho-fokuaren modua"
 msgid "Window title font"
 msgstr "Leihoaren tituluaren letra-tipoa"
 
-#: ../src/prefs.c:569 ../src/prefs.c:597 ../src/prefs.c:613 ../src/prefs.c:629
-#: ../src/prefs.c:645 ../src/prefs.c:661 ../src/prefs.c:677 ../src/prefs.c:693
-#: ../src/prefs.c:713 ../src/prefs.c:729 ../src/prefs.c:745 ../src/prefs.c:763
-#: ../src/prefs.c:779 ../src/prefs.c:798 ../src/prefs.c:814 ../src/prefs.c:849
-#: ../src/prefs.c:865 ../src/prefs.c:882 ../src/prefs.c:898 ../src/prefs.c:914
-#: ../src/prefs.c:930 ../src/prefs.c:946 ../src/prefs.c:961 ../src/prefs.c:976
-#: ../src/prefs.c:991 ../src/prefs.c:1007 ../src/prefs.c:1023
-#: ../src/prefs.c:1039 ../src/prefs.c:1055
+#: ../src/prefs.c:434
+#, c-format
+msgid "Type of %s was not integer"
+msgstr "%s(r)en mota ez da osoko zenbakia"
+
+#: ../src/prefs.c:572 ../src/prefs.c:600 ../src/prefs.c:616 ../src/prefs.c:632
+#: ../src/prefs.c:648 ../src/prefs.c:664 ../src/prefs.c:680 ../src/prefs.c:696
+#: ../src/prefs.c:716 ../src/prefs.c:732 ../src/prefs.c:748 ../src/prefs.c:766
+#: ../src/prefs.c:782 ../src/prefs.c:801 ../src/prefs.c:817 ../src/prefs.c:852
+#: ../src/prefs.c:868 ../src/prefs.c:885 ../src/prefs.c:901 ../src/prefs.c:917
+#: ../src/prefs.c:933 ../src/prefs.c:949 ../src/prefs.c:964 ../src/prefs.c:979
+#: ../src/prefs.c:994 ../src/prefs.c:1010 ../src/prefs.c:1026
+#: ../src/prefs.c:1042 ../src/prefs.c:1058
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "\"%s\" GConf gakoa mota baliogabean ezarrita dago\n"
 
-#: ../src/prefs.c:1100
+#: ../src/prefs.c:1103
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2342,12 +2374,12 @@ msgstr ""
 "Konfigurazioaren datu-basean aurkitutako \"%s\" balioa ez da baliozkoa sagu-"
 "botoiaren aldatzailearentzat\n"
 
-#: ../src/prefs.c:1124 ../src/prefs.c:1145 ../src/prefs.c:1702
+#: ../src/prefs.c:1127 ../src/prefs.c:1148 ../src/prefs.c:1705
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "\"%s\" GConf gakoa balio baliogabean ezarrita dago\n"
 
-#: ../src/prefs.c:1274
+#: ../src/prefs.c:1277
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
@@ -2356,12 +2388,12 @@ msgstr ""
 "%2$s GConf gakoko %1$d balioa ez da zentzuzko curso_size; 1...128 barrutian "
 "egon behar du\n"
 
-#: ../src/prefs.c:1354
+#: ../src/prefs.c:1357
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Ezin da analizatu \"%s\" letra-tipoaren deskribapena %s GConf gakoan\n"
 
-#: ../src/prefs.c:1596
+#: ../src/prefs.c:1599
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2370,7 +2402,7 @@ msgstr ""
 "%2$s GConf gakoko %1$d balioa ez da zentzuzkoa, laneko areentzat ezarrita "
 "dagoen gehienezko kopurua %3$d da\n"
 
-#: ../src/prefs.c:1656
+#: ../src/prefs.c:1659
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2378,17 +2410,17 @@ msgstr ""
 "Aplikazio hautsien konponbidea desgaituta. Aplikazio batzuk ez dira behar "
 "den bezala ibiliko.\n"
 
-#: ../src/prefs.c:1729
+#: ../src/prefs.c:1732
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%2$s GConf gakoko %1$d balioa 0 - %3$d barrutitik kanpo dago\n"
 
-#: ../src/prefs.c:1878
+#: ../src/prefs.c:1881
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Errorea laneko %d area ezartzean: %s\n"
 
-#: ../src/prefs.c:2273 ../src/prefs.c:2443
+#: ../src/prefs.c:2276 ../src/prefs.c:2446
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2397,7 +2429,7 @@ msgstr ""
 "Konfigurazioaren datu-basean aurkitutako \"%s\" balioa ez da baliozkoa \"%s"
 "\" laster-teklarentzat.\n"
 
-#: ../src/prefs.c:2859
+#: ../src/prefs.c:2861
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Errorea %d. laneko areari \"%s\" izena ezartzean: %s\n"
@@ -2938,7 +2970,9 @@ msgstr ""
 #: ../src/theme-parser.c:3639
 #, c-format
 msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
-msgstr "Ez luke izan behar \"resize\" atributurik <%s> elementuan maximizatutako egoerentzat"
+msgstr ""
+"Ez luke izan behar \"resize\" atributurik <%s> elementuan maximizatutako "
+"egoerentzat"
 
 #: ../src/theme-parser.c:3653 ../src/theme-parser.c:3675
 #, c-format
@@ -3162,7 +3196,7 @@ msgstr "%g milisegundo leiho-markoa marrazteko"
 
 #: ../src/theme-viewer.c:797
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr "Eraiblera: metacity-theme-viewer [GAIA]\n"
+msgstr "Erabilera: metacity-theme-viewer [GAIA]\n"
 
 #: ../src/theme-viewer.c:804
 #, c-format
@@ -3541,7 +3575,7 @@ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "%2$s(e)n baliogabeko WM_TRANSIENT_FOR 0x%1$lx leihoa zehaztu da.\n"
 
 #. first time through
-#: ../src/window.c:5540
+#: ../src/window.c:5551
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3557,7 +3591,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6105
+#: ../src/window.c:6116
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
