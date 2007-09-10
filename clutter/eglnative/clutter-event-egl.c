@@ -187,7 +187,9 @@ clutter_event_dispatch (GSource     *source,
   ClutterBackend     *backend = ((ClutterEventSource *) source)->backend;
   ClutterEventSource *event_source = (ClutterEventSource *) source;
   ClutterEvent       *event;
+#ifdef HAVE_TSLIB
   struct ts_sample    tsevent;
+#endif
   ClutterMainContext *clutter_context;
   static gint         last_x, last_y;
 

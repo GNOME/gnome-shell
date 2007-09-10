@@ -1,3 +1,10 @@
+2007-09-10  Matthew Allum  <mallum@openedhand.com>
+
+	Port from stable branch.
+
+	* clutter/eglnative/clutter-event-egl.c: (clutter_event_dispatch):
+	Only declare tsevent if we have tslib (#498, Robert Bragg)	
+
 2007-09-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-stage.c: Remove stray include <gdk-pixbuf-xlib.h>
