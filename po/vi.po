@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity GNOME HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-07 03:38+0100\n"
-"PO-Revision-Date: 2007-09-03 20:49+0930\n"
+"POT-Creation-Date: 2007-09-03 12:22+0100\n"
+"PO-Revision-Date: 2007-09-14 21:10+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -307,7 +307,7 @@ msgstr "Chuyển sang vùng làm việc bên _dưới"
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
 msgid "_Close"
-msgstr "_Đóng"
+msgstr "Đón_g"
 
 #: ../src/menu.c:199
 #: ../src/prefs.c:2246
@@ -2594,8 +2594,7 @@ msgstr "Không thể phân tích « %s » thành số với điểm phù động
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr ""
-"Giá trị bun phải là « đúng » (true) hoặc « không đúng » (false), không thể "
-"là « %s »."
+"Giá trị luận lý phải là « đúng » (true) hoặc « sai » (false), không thể là « %s »."
 
 #: ../src/theme-parser.c:625
 #, c-format
@@ -3061,7 +3060,8 @@ msgstr ""
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr ""
-"Kiểu dạng đã được xác định cho trạng thái « %s » đổi cỡ « %s » tiêu điểm « %s »."
+"Kiểu dạng đã được xác định cho trạng thái « %s » đổi cỡ « %s » tiêu điểm « %"
+"s »."
 
 #: ../src/theme-parser.c:3664
 #: ../src/theme-parser.c:3686
@@ -3621,7 +3621,7 @@ msgstr ""
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr "Hằng tự định nghĩa phải bắt đầu bằng ký tự hoa; « %s » không như vậy."
+msgstr "Hằng tự định nghĩa phải bắt đầu bằng ký tự hoa; « %s » không phải."
 
 #: ../src/theme.c:5014
 #: ../src/theme.c:5076
@@ -3638,12 +3638,12 @@ msgstr "Lỗi mở bản ghi gỡ lỗi: %s\n"
 #: ../src/util.c:108
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "Lỗi «fdopen()» tập tin ghi lưu %s: %s\n"
+msgstr "Lỗi fdopen() tập tin ghi lưu %s: %s\n"
 
 #: ../src/util.c:114
 #, c-format
 msgid "Opened log file %s\n"
-msgstr "Đã mở tập tin ghi lưu « %s ».\n"
+msgstr "Đã mở tập tin ghi lưu %s.\n"
 
 #: ../src/util.c:231
 msgid "Window manager: "
@@ -3664,7 +3664,7 @@ msgstr "Lỗi bộ quản lý cửa sổ: "
 #: ../src/window-props.c:192
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
-msgstr "Ứng dụng đã đặt «_NET_WM_PID » giả %lu.\n"
+msgstr "Ứng dụng đã đặt « _NET_WM_PID » giả %lu.\n"
 
 #: ../src/window-props.c:324
 #, c-format
@@ -3676,7 +3676,7 @@ msgstr "%s (trên %s)"
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Cửa sổ « WM_TRANSIENT_FOR » không hợp lệ 0x%lx được xác định cho %s.\n"
 
-#: ../src/window.c:5540
+#: ../src/window.c:5551
 #, c-format
 #. first time through
 msgid ""
@@ -3684,9 +3684,9 @@ msgid ""
 "window as specified in the ICCCM.\n"
 msgstr ""
 "Cửa sổ « %s » tự đặt « SM_CLIENT_ID » cho chính nó, thay vì đặt trên cửa sổ "
-"« WM_CLIENT_LEADER » như quy định trong « ICCCM ».\n"
+"« WM_CLIENT_LEADER » như quy định trong ICCCM.\n"
 
-#: ../src/window.c:6105
+#: ../src/window.c:6116
 #, c-format
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -3699,9 +3699,7 @@ msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
 "d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
-"Cửa sổ « %s » gọi ý « MWM » nói rằng nó không thể bị thay đổi kích thước, "
-"nhưng đặt kích thước tối thiểu « %d x %d » và tối đa « %d x %d »; điều này "
-"có vẻ cũng hơi hợp lý.\n"
+"Cửa sổ %s gọi ý MWM nói rằng nó không thể bị thay đổi kích thước, nhưng đặt kích thước tối thiểu %d x %d và tối đa %d x %d; điều này có vẻ cũng hơi hợp lý.\n"
 
 #: ../src/xprops.c:155
 #, c-format
@@ -3712,11 +3710,11 @@ msgid ""
 "This is most likely an application bug, not a window manager bug.\n"
 "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
-"Cửa sổ «0x%lx» có thuộc tính « %s »\n"
+"Cửa sổ 0x%lx có thuộc tính « %s »\n"
 "mà lẽ ra phải có kiểu « %s » dạng thức «%d»\n"
 "và thực sự là kiểu « %s » dạng thức «%d n_items %d».\n"
 "Chắc là có một ứng dụng bị lỗi, không phải lỗi trình quản lý cửa sổ.\n"
-"Cửa sổ có «title=\"%s\" class=\"%s\" name=\"%s\"»\n"
+"Cửa sổ có « title=\"%s\" class=\"%s\" name=\"%s\" »\n"
 
 #: ../src/xprops.c:401
 #, c-format
