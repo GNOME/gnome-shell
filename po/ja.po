@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-13 22:44+0900\n"
-"PO-Revision-Date: 2007-08-13 22:43+0900\n"
+"POT-Creation-Date: 2007-09-16 11:42+0900\n"
+"PO-Revision-Date: 2007-08-26 18:38+0900\n"
 "Last-Translator: Takeshi AIHANA <takeshi.aihana@gmail.com>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -32,6 +32,7 @@ msgid "Usage: %s\n"
 msgstr "用法: %s\n"
 
 #: ../src/tools/metacity-message.c:176 ../src/util.c:133
+#, c-format
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "この metacity は詳細ログ・モードをサポートしていません\n"
 
@@ -162,6 +163,7 @@ msgid "No command %d has been defined.\n"
 msgstr "コマンド %d は定義されていません。\n"
 
 #: ../src/keybindings.c:3849
+#, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "端末を起動するコマンドが定義されていません。\n"
 
@@ -311,6 +313,7 @@ msgid "Workspace %d"
 msgstr "ワークスペース %d"
 
 #: ../src/menu.c:208
+#, c-format
 msgid "Workspace 1_0"
 msgstr "ワークスペース 1_0"
 
@@ -952,7 +955,7 @@ msgstr "ワークスペース 8 へ切り替える"
 
 #: ../src/metacity.schemas.in.h:93
 msgid "Switch to workspace 9"
-msgstr "ワークスペース 9 へ切替える"
+msgstr "ワークスペース 9 へ切り替える"
 
 #: ../src/metacity.schemas.in.h:94
 msgid "Switch to workspace above this one"
@@ -964,11 +967,11 @@ msgstr "下側のワークスペースへ切り替える"
 
 #: ../src/metacity.schemas.in.h:96
 msgid "Switch to workspace on the left"
-msgstr "左側のワークスペースへ切替える"
+msgstr "左側のワークスペースへ切り替える"
 
 #: ../src/metacity.schemas.in.h:97
 msgid "Switch to workspace on the right"
-msgstr "右側のワークスペースへ切替える"
+msgstr "右側のワークスペースへ切り替える"
 
 #: ../src/metacity.schemas.in.h:98
 msgid "System Bell is Audible"
@@ -980,7 +983,7 @@ msgstr "スクリーンショットを撮る"
 
 #: ../src/metacity.schemas.in.h:100
 msgid "Take a screenshot of a window"
-msgstr "ウィンドウのスクリーンショットを撮ります"
+msgstr "ウィンドウのスクリーンショットを撮る"
 
 #: ../src/metacity.schemas.in.h:101
 msgid ""
@@ -1052,9 +1055,9 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"現在のワークスペースの上のワークスペースへ切替えるキーバインドを指定します。"
-"フォーマットは \"&lt;Control&gt;a\" や \"&lt;Shift&gt;&lt;Alt&gt;F1\" のよう"
-"にします。パーサは完全に自由で大文字や小文字を許可します。そして \"&lt;"
+"現在のワークスペースの上のワークスペースへ切り替えるキーバインドを指定しま"
+"す。フォーマットは \"&lt;Control&gt;a\" や \"&lt;Shift&gt;&lt;Alt&gt;F1\" の"
+"ようにします。パーサは完全に自由で大文字や小文字を許可します。そして \"&lt;"
 "Ctl&gt;\" や \"&lt;Ctrl&gt;\" のような省略もできます。もし特別な文字 "
 "\"disabled\" をオプションに設定した場合は、この動作のキーバインドはなくなりま"
 "す。"
@@ -1068,9 +1071,9 @@ msgid ""
 "option to the special string \"disabled\", then there will be no keybinding "
 "for this action."
 msgstr ""
-"現在のワークスペースの下のワークスペースへ切替えるキーバインドを指定します。"
-"フォーマットは \"&lt;Control&gt;a\" や \"&lt;Shift&gt;&lt;Alt&gt;F1\" のよう"
-"にします。パーサは完全に自由で大文字や小文字を許可します。そして \"&lt;"
+"現在のワークスペースの下のワークスペースへ切り替えるキーバインドを指定しま"
+"す。フォーマットは \"&lt;Control&gt;a\" や \"&lt;Shift&gt;&lt;Alt&gt;F1\" の"
+"ようにします。パーサは完全に自由で大文字や小文字を許可します。そして \"&lt;"
 "Ctl&gt;\" や \"&lt;Ctrl&gt;\" のような省略もできます。もし特別な文字 "
 "\"disabled\" をオプションに設定した場合は、この動作のキーバインドはなくなりま"
 "す。"
@@ -1084,10 +1087,10 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"現在のワークスペースの左側にあるワークスペースへ切替えるキーバインドを指定し"
-"ます。フォーマットは \"&lt;Control&gt;a\" や \"&lt;Shift&gt;&lt;Alt&gt;F1\" "
-"のようにします。パーサは完全に自由で大文字や小文字を許可します。そして \"&lt;"
-"Ctl&gt;\" や \"&lt;Ctrl&gt;\" のような省略もできます。もし特別な文字 "
+"現在のワークスペースの左側にあるワークスペースへ切り替えるキーバインドを指定"
+"します。フォーマットは \"&lt;Control&gt;a\" や \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\" のようにします。パーサは完全に自由で大文字や小文字を許可します。そして "
+"\"&lt;Ctl&gt;\" や \"&lt;Ctrl&gt;\" のような省略もできます。もし特別な文字 "
 "\"disabled\" をオプションに設定した場合は、この動作のキーバインドはなくなりま"
 "す。"
 
@@ -1100,10 +1103,10 @@ msgid ""
 "set the option to the special string \"disabled\", then there will be no "
 "keybinding for this action."
 msgstr ""
-"現在のワークスペースの右側にあるワークスペースへ切替えるキーバインドを指定し"
-"ます。フォーマットは \"&lt;Control&gt;a\" や \"&lt;Shift&gt;&lt;Alt&gt;F1\" "
-"のようにします。パーサは完全に自由で大文字や小文字を許可します。そして \"&lt;"
-"Ctl&gt;\" や \"&lt;Ctrl&gt;\" のような省略もできます。もし特別な文字 "
+"現在のワークスペースの右側にあるワークスペースへ切り替えるキーバインドを指定"
+"します。フォーマットは \"&lt;Control&gt;a\" や \"&lt;Shift&gt;&lt;Alt&gt;F1"
+"\" のようにします。パーサは完全に自由で大文字や小文字を許可します。そして "
+"\"&lt;Ctl&gt;\" や \"&lt;Ctrl&gt;\" のような省略もできます。もし特別な文字 "
 "\"disabled\" をオプションに設定した場合は，この動作のキーバインドはなくなりま"
 "す。"
 
@@ -1115,7 +1118,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"ワークスペース 1 へ切替えるキーバインドを指定します。フォーマットは \"&lt;"
+"ワークスペース 1 へ切り替えるキーバインドを指定します。フォーマットは \"&lt;"
 "Control&gt;a\" や \"&lt;Shift&gt;&lt;Alt&gt;F1\" のようにします。パーサは完全"
 "に自由で大文字や小文字を許可します。そして \"&lt;Ctl&gt;\" や \"&lt;Ctrl&gt;"
 "\" のような省略もできます。もし特別な文字 \"disabled\" をオプションに設定した"
@@ -1129,7 +1132,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"ワークスペース 10 へ切替えるキーバインドを指定します。フォーマットは \"&lt;"
+"ワークスペース 10 へ切り替えるキーバインドを指定します。フォーマットは \"&lt;"
 "Control&gt;a\" や \"&lt;Shift&gt;&lt;Alt&gt;F1\" のようにします。パーサは完全"
 "に自由で大文字や小文字を許可します。そして \"&lt;Ctl&gt;\" や \"&lt;Ctrl&gt;"
 "\" のような省略もできます。もし特別な文字 \"disabled\" をオプションに設定した"
@@ -1143,7 +1146,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"ワークスペース 11 へ切替えるキーバインドを指定します。フォーマットは \"&lt;"
+"ワークスペース 11 へ切り替えるキーバインドを指定します。フォーマットは \"&lt;"
 "Control&gt;a\" や \"&lt;Shift&gt;&lt;Alt&gt;F1\" のようにします。パーサは完全"
 "に自由で大文字や小文字を許可します。そして \"&lt;Ctl&gt;\" や \"&lt;Ctrl&gt;"
 "\" のような省略もできます。もし特別な文字 \"disabled\" をオプションに設定した"
@@ -1157,7 +1160,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"ワークスペース 12 へ切替えるキーバインドを指定します。フォーマットは \"&lt;"
+"ワークスペース 12 へ切り替えるキーバインドを指定します。フォーマットは \"&lt;"
 "Control&gt;a\" や \"&lt;Shift&gt;&lt;Alt&gt;F1\" のようにします。パーサは完全"
 "に自由で大文字や小文字を許可します。そして \"&lt;Ctl&gt;\" や \"&lt;Ctrl&gt;"
 "\" のような省略もできます。もし特別な文字 \"disabled\" をオプションに設定した"
@@ -1171,7 +1174,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"ワークスペース 2 へ切替えるキーバインドを指定します。フォーマットは \"&lt;"
+"ワークスペース 2 へ切り替えるキーバインドを指定します。フォーマットは \"&lt;"
 "Control&gt;a\" や \"&lt;Shift&gt;&lt;Alt&gt;F1\" のようにします。パーサは完全"
 "に自由で大文字や小文字を許可します。そして \"&lt;Ctl&gt;\" や \"&lt;Ctrl&gt;"
 "\" のような省略もできます。もし特別な文字 \"disabled\" をオプションに設定した"
@@ -1185,7 +1188,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"ワークスペース 3 へ切替えるキーバインドを指定します。フォーマットは \"&lt;"
+"ワークスペース 3 へ切り替えるキーバインドを指定します。フォーマットは \"&lt;"
 "Control&gt;a\" や \"&lt;Shift&gt;&lt;Alt&gt;F1\" のようにします。パーサは完全"
 "に自由で大文字や小文字を許可します。そして \"&lt;Ctl&gt;\" や \"&lt;Ctrl&gt;"
 "\" のような省略もできます。もし特別な文字 \"disabled\" をオプションに設定した"
@@ -1199,7 +1202,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"ワークスペース 4 へ切替えるキーバインドを指定します。フォーマットは \"&lt;"
+"ワークスペース 4 へ切り替えるキーバインドを指定します。フォーマットは \"&lt;"
 "Control&gt;a\" や \"&lt;Shift&gt;&lt;Alt&gt;F1\" のようにします。パーサは完全"
 "に自由で大文字や小文字を許可します。そして \"&lt;Ctl&gt;\" や \"&lt;Ctrl&gt;"
 "\" のような省略もできます。もし特別な文字 \"disabled\" をオプションに設定した"
@@ -1213,7 +1216,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"ワークスペース 5 へ切替えるキーバインドを指定します。フォーマットは \"&lt;"
+"ワークスペース 5 へ切り替えるキーバインドを指定します。フォーマットは \"&lt;"
 "Control&gt;a\" や \"&lt;Shift&gt;&lt;Alt&gt;F1\" のようにします。パーサは完全"
 "に自由で大文字や小文字を許可します。そして \"&lt;Ctl&gt;\" や \"&lt;Ctrl&gt;"
 "\" のような省略もできます。もし特別な文字 \"disabled\" をオプションに設定した"
@@ -1227,7 +1230,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"ワークスペース 6 へ切替えるキーバインドを指定します。フォーマットは \"&lt;"
+"ワークスペース 6 へ切り替えるキーバインドを指定します。フォーマットは \"&lt;"
 "Control&gt;a\" や \"&lt;Shift&gt;&lt;Alt&gt;F1\" のようにします。パーサは完全"
 "に自由で大文字や小文字を許可します。そして \"&lt;Ctl&gt;\" や \"&lt;Ctrl&gt;"
 "\" のような省略もできます。もし特別な文字 \"disabled\" をオプションに設定した"
@@ -1241,7 +1244,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"ワークスペース 7 へ切替えるキーバインドを指定します。フォーマットは \"&lt;"
+"ワークスペース 7 へ切り替えるキーバインドを指定します。フォーマットは \"&lt;"
 "Control&gt;a\" や \"&lt;Shift&gt;&lt;Alt&gt;F1\" のようにします。パーサは完全"
 "に自由で大文字や小文字を許可します。そして \"&lt;Ctl&gt;\" や \"&lt;Ctrl&gt;"
 "\" のような省略もできます。もし特別な文字 \"disabled\" をオプションに設定した"
@@ -1255,7 +1258,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"ワークスペース 8 へ切替えるキーバインドを指定します。フォーマットは \"&lt;"
+"ワークスペース 8 へ切り替えるキーバインドを指定します。フォーマットは \"&lt;"
 "Control&gt;a\" や \"&lt;Shift&gt;&lt;Alt&gt;F1\" のようにします。パーサは完全"
 "に自由で大文字や小文字を許可します。そして \"&lt;Ctl&gt;\" や \"&lt;Ctrl&gt;"
 "\" のような省略もできます。もし特別な文字 \"disabled\" をオプションに設定した"
@@ -1269,7 +1272,7 @@ msgid ""
 "Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 "\"disabled\", then there will be no keybinding for this action."
 msgstr ""
-"ワークスペース 9 へ切替えるキーバインドを指定します。フォーマットは \"&lt;"
+"ワークスペース 9 へ切り替えるキーバインドを指定します。フォーマットは \"&lt;"
 "Control&gt;a\" や \"&lt;Shift&gt;&lt;Alt&gt;F1\" のようにします。パーサは完全"
 "に自由で大文字や小文字を許可します。そして \"&lt;Ctl&gt;\" や \"&lt;Ctrl&gt;"
 "\" のような省略もできます。もし特別な文字 \"disabled\" をオプションに設定した"
@@ -2503,6 +2506,7 @@ msgid "Failed to parse saved session file: %s\n"
 msgstr "保存されたセッションファイルの解析に失敗しました: %s\n"
 
 #: ../src/session.c:1159
+#, c-format
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
 "<metacity_session> 属性は見られますが，すでにセッションIDを持っています"
@@ -2513,6 +2517,7 @@ msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "<metacity_session> エレメントに不明な属性 %s があります"
 
 #: ../src/session.c:1189
+#, c-format
 msgid "nested <window> tag"
 msgstr "<window> タグがネストされています"
 
@@ -3216,6 +3221,7 @@ msgid "%g milliseconds to draw one window frame"
 msgstr "一つのウィンドウ・フレームの描画時間: %g ミリ秒"
 
 #: ../src/theme-viewer.c:797
+#, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "用法: metacity-theme-viewer [テーマ名]\n"
 
@@ -3332,10 +3338,12 @@ msgid "Button aspect ratio %g is not reasonable"
 msgstr "ボタンのアスペクト比 %g は妥当ではありません"
 
 #: ../src/theme.c:294
+#, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "フレームジオメトリはボタンのサイズを指定しません"
 
 #: ../src/theme.c:925
+#, c-format
 msgid "Gradients should have at least two colors"
 msgstr "階調度は少なくとも2つの色をもつべきです"
 
@@ -3434,14 +3442,17 @@ msgid ""
 msgstr "座標式は次のテキストの先頭に無効な演算子を含んでいました: \"%s\""
 
 #: ../src/theme.c:1661
+#, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "座標式が空か解析不能です"
 
 #: ../src/theme.c:1798 ../src/theme.c:1808 ../src/theme.c:1842
+#, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "座標式はゼロで除算しました"
 
 #: ../src/theme.c:1850
+#, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "座標式は浮動小数点で mod 演算子を使用しようとしています"
@@ -3453,10 +3464,12 @@ msgid ""
 msgstr "座標式はオペランドが必要な場所に演算子 \"%s\" を使用しています"
 
 #: ../src/theme.c:1915
+#, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "座標式は演算子が必要な場所でオペランドを使用しています"
 
 #: ../src/theme.c:1923
+#, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "座標式はオペランドの代わりに演算子で終わっています"
 
@@ -3470,10 +3483,12 @@ msgstr ""
 "ランドがありません"
 
 #: ../src/theme.c:2051
+#, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "座標式を解析する際にオーバーフローが発生しました"
 
 #: ../src/theme.c:2080
+#, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "座標式は左括弧がなしに右括弧が指定されています"
 
@@ -3483,10 +3498,12 @@ msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "座標式は無効な値または定数 \"%s\" が使用されていました"
 
 #: ../src/theme.c:2197
+#, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "座標式は左括弧が指定されていますが，右括弧がありません"
 
 #: ../src/theme.c:2208
+#, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "座標式は演算子もオペランドも使用していないようです"
 
