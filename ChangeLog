@@ -1,3 +1,10 @@
+2007-09-15  Elijah Newren  <newren gmail com>
+
+	* src/session.c (warn_about_lame_clients_and_finish_interact):
+	Patch from Alexey Rusakov to prevent a crash on logout with
+	metacity subsequently not being restored in future sessions.
+	Fixes #433253.
+
 2007-09-01  Elijah Newren  <newren gmail com>
 
 	* HACKING: update; cvs->svn & mention GConf needed

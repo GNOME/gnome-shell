@@ -1804,9 +1804,6 @@ warn_about_lame_clients_and_finish_interact (gboolean shutdown)
 
       display_iter = display_iter->next;
     }
-  /* don't need to free displays */
-  displays = NULL;
-
   if (lame == NULL)
     {
       /* No lame apps. */
@@ -1818,6 +1815,9 @@ warn_about_lame_clients_and_finish_interact (gboolean shutdown)
 
   timestamp = meta_display_get_current_time_roundtrip (displays->data);  
   sprintf (timestampbuf, "%u", timestamp);
+
+  /* don't need to free displays */
+  displays = NULL;
 
   len = g_slist_length (lame);
   len *= 2; /* titles and also classes */
