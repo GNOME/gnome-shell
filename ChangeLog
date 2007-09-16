@@ -1,5 +1,9 @@
 2007-09-15  Elijah Newren  <newren gmail com>
 
+	* configure.in: post-release version bump to 2.20.1
+
+2007-09-15  Elijah Newren  <newren gmail com>
+
 	* configure.in:
 	* NEWS:
 	2.20.0 release
