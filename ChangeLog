@@ -1,5 +1,11 @@
 2007-09-15  Elijah Newren  <newren gmail com>
 
+	* configure.in:
+	* NEWS:
+	2.20.0 release
+
+2007-09-15  Elijah Newren  <newren gmail com>
+
 	* src/session.c (warn_about_lame_clients_and_finish_interact):
 	Patch from Alexey Rusakov to prevent a crash on logout with
 	metacity subsequently not being restored in future sessions.

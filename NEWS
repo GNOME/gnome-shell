@@ -1,3 +1,21 @@
+2.20.0
+======
+
+Thanks to Alexey Rusakov for the fix in this release.
+
+ - prevent a crash on logout with metacity subsequently not being
+   restored in future sessions (Alexey) [#433253]
+
+Translations
+  Khaled Hosny (ar), Ihar Hrachyshka (be@latin), Ask Hjorth Larsen (da),
+  Adam Weinberger (en_CA), Iñaki Larrañaga Murgoitio (eu), Ilkka
+  Tuohela (fi), Vincent Untz (fr), Ankit Patel (gu), Gabor Kelemen (hu),
+  Luca Ferretti (it), Takeshi AIHANA (ja), Žygimantas Beručka (lt), Jovan
+  Naumovski (mk), Ani Peter (ml), Og Maciel (pt_BR), Duarte Loreto (pt),
+  Mugurel Tudor (ro), Nickolay V. Shmyrev (ru), Peter Tuhársky (sk), Горан
+  Ракић (sr), Daniel Nylander (sv), Dr.T.Vasudevan (ta), Maxim
+  Dziumanenko (uk), Clytie Siddall (vi)
+
 2.19.55
 =======
 
