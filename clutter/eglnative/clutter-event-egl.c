@@ -191,11 +191,13 @@ clutter_event_dispatch (GSource     *source,
   struct ts_sample    tsevent;
 #endif
   ClutterMainContext *clutter_context;
-  static gint         last_x, last_y;
+  static gint         last_x = 0, last_y = 0;
+  static gboolean     clicked = FALSE;
 
   clutter_threads_enter ();
 
   clutter_context = clutter_context_get_default ();
+
 #ifdef HAVE_TSLIB
   /* FIXME while would be better here but need to deal with lockups */
   if ((!clutter_events_pending()) && 
@@ -218,10 +220,20 @@ clutter_event_dispatch (GSource     *source,
       event->button.modifier_state = 0;
       event->button.button = 1;
 
-      if (tsevent.pressure) 
-	event->button.type = event->type = CLUTTER_BUTTON_PRESS;
+      if (tsevent.pressure && !clicked)
+        {
+	  event->button.type = event->type = CLUTTER_BUTTON_PRESS;
+          clicked = TRUE;
+        }
+      else if (tsevent.pressure && clicked)
+        {
+          event->motion.type = event->type = CLUTTER_MOTION;
+        }
       else
-	event->button.type = event->type = CLUTTER_BUTTON_RELEASE;
+        {
+	  event->button.type = event->type = CLUTTER_BUTTON_RELEASE;
+          clicked = FALSE;
+        }
 
       _clutter_event_button_generate (backend, event);
 

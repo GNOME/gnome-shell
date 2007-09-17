@@ -1,3 +1,11 @@
+2007-09-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Merge from stable
+
+	* clutter/eglnative/clutter-event-egl.c:
+	Flag every device click after the first as motion events
+	instead of button presses. (#505, Shreyas Srinivasan)
+
 2007-09-10  Matthew Allum  <mallum@openedhand.com>
 
 	Port from stable branch.
