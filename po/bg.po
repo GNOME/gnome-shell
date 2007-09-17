@@ -1,4 +1,4 @@
-# Bulgarian translation for metacity.
+# Bulgarian translation for metacity po-file.
 # Copyright (C) 2002, 2004, 2006, 2007 Free Software Foundation, Inc.
 # Alexander Shopov <ash@contact.bg>, 2002, 2006, 2007.
 # Vladimir Petkov <vpetkov@i-space.org>, 2004. 
@@ -7,10 +7,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: metacity HEAD\n"
+"Project-Id-Version: metacity trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-25 22:49+0300\n"
-"PO-Revision-Date: 2007-07-25 00:25+0300\n"
+"POT-Creation-Date: 2007-09-17 21:34+0300\n"
+"PO-Revision-Date: 2007-09-17 21:34+0300\n"
 "Last-Translator: Alexander Shopov <ash@contact.bg>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "MIME-Version: 1.0\n"
@@ -64,7 +64,7 @@ msgstr ""
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Грешка при четене от процеса за изобразяване на диалога: %s\n"
 
-#: ../src/delete.c:348
+#: ../src/delete.c:350
 #, c-format
 msgid ""
 "Error launching metacity-dialog to ask about killing an application: %s\n"
@@ -72,7 +72,7 @@ msgstr ""
 "Грешка при стартиране на диалога на Metacity, който пита дали да се убие "
 "приложението: %s\n"
 
-#: ../src/delete.c:456
+#: ../src/delete.c:459
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Неуспех при получаването на името на хоста: %s\n"
@@ -224,102 +224,102 @@ msgid "Failed to restart: %s\n"
 msgstr "Неуспех при рестартиране: %s\n"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:69
+#: ../src/menu.c:70
 msgid "Mi_nimize"
 msgstr "Ми_нимизиране"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:71
+#: ../src/menu.c:72
 msgid "Ma_ximize"
 msgstr "_Максимизиране"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:73
+#: ../src/menu.c:74
 msgid "Unma_ximize"
 msgstr "_Демаксимизиране"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:75
+#: ../src/menu.c:76
 msgid "Roll _Up"
 msgstr "На_виване"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:77
+#: ../src/menu.c:78
 msgid "_Unroll"
 msgstr "_Развиване"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:79
+#: ../src/menu.c:80
 msgid "_Move"
 msgstr "_Преместване"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:81
+#: ../src/menu.c:82
 msgid "_Resize"
 msgstr "О_размеряване"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:83
+#: ../src/menu.c:84
 msgid "Move Titlebar On_screen"
 msgstr "Преместване на лентата за заглавието по _екрана"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:86
-msgid "_Close"
-msgstr "_Затваряне"
-
-#. separator
-#. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:89 ../src/menu.c:91
+#: ../src/menu.c:87 ../src/menu.c:89
 msgid "Always on _Top"
 msgstr "_Отгоре"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:93
+#: ../src/menu.c:91
 msgid "_Always on Visible Workspace"
 msgstr "_Винаги на видимия работен плот"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:95
+#: ../src/menu.c:93
 msgid "_Only on This Workspace"
 msgstr "_Само на този работен плот"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:97
+#: ../src/menu.c:95
 msgid "Move to Workspace _Left"
 msgstr "Преместване на _левия работен плот"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:99
+#: ../src/menu.c:97
 msgid "Move to Workspace R_ight"
 msgstr "Преместване на _десния работен плот"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:101
+#: ../src/menu.c:99
 msgid "Move to Workspace _Up"
 msgstr "Преместване на _горния работен плот"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/menu.c:103
+#: ../src/menu.c:101
 msgid "Move to Workspace _Down"
 msgstr "Преместване в до_лния работен плот"
 
-#: ../src/menu.c:197 ../src/prefs.c:2243 ../src/prefs.c:2778
+#. separator
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:105
+msgid "_Close"
+msgstr "_Затваряне"
+
+#: ../src/menu.c:199 ../src/prefs.c:2246 ../src/prefs.c:2780
 #, c-format
 msgid "Workspace %d"
 msgstr "Работен плот %d"
 
-#: ../src/menu.c:206
+#: ../src/menu.c:208
 msgid "Workspace 1_0"
 msgstr "Работен плот 1_0"
 
-#: ../src/menu.c:208
+#: ../src/menu.c:210
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Работен плот %s%d"
 
-#: ../src/menu.c:411
+#: ../src/menu.c:390
 msgid "Move to Another _Workspace"
 msgstr "Преместване на друг _работен плот"
 
@@ -2352,19 +2352,24 @@ msgstr "Режим на фокусиране на прозорци"
 msgid "Window title font"
 msgstr "Шрифт за заглавията на прозорците"
 
-#: ../src/prefs.c:569 ../src/prefs.c:597 ../src/prefs.c:613 ../src/prefs.c:629
-#: ../src/prefs.c:645 ../src/prefs.c:661 ../src/prefs.c:677 ../src/prefs.c:693
-#: ../src/prefs.c:713 ../src/prefs.c:729 ../src/prefs.c:745 ../src/prefs.c:763
-#: ../src/prefs.c:779 ../src/prefs.c:798 ../src/prefs.c:814 ../src/prefs.c:849
-#: ../src/prefs.c:865 ../src/prefs.c:882 ../src/prefs.c:898 ../src/prefs.c:914
-#: ../src/prefs.c:930 ../src/prefs.c:946 ../src/prefs.c:961 ../src/prefs.c:976
-#: ../src/prefs.c:991 ../src/prefs.c:1007 ../src/prefs.c:1023
-#: ../src/prefs.c:1039 ../src/prefs.c:1055
+#: ../src/prefs.c:434
+#, c-format
+msgid "Type of %s was not integer"
+msgstr "„%s“ не е цяло число"
+
+#: ../src/prefs.c:572 ../src/prefs.c:600 ../src/prefs.c:616 ../src/prefs.c:632
+#: ../src/prefs.c:648 ../src/prefs.c:664 ../src/prefs.c:680 ../src/prefs.c:696
+#: ../src/prefs.c:716 ../src/prefs.c:732 ../src/prefs.c:748 ../src/prefs.c:766
+#: ../src/prefs.c:782 ../src/prefs.c:801 ../src/prefs.c:817 ../src/prefs.c:852
+#: ../src/prefs.c:868 ../src/prefs.c:885 ../src/prefs.c:901 ../src/prefs.c:917
+#: ../src/prefs.c:933 ../src/prefs.c:949 ../src/prefs.c:964 ../src/prefs.c:979
+#: ../src/prefs.c:994 ../src/prefs.c:1010 ../src/prefs.c:1026
+#: ../src/prefs.c:1042 ../src/prefs.c:1058
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Ключът на GConf - „%s“ е от невалиден вид\n"
 
-#: ../src/prefs.c:1100
+#: ../src/prefs.c:1103
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -2373,12 +2378,12 @@ msgstr ""
 "„%s“, който е открит в базата данни с настройките, не е валиден модификатор "
 "на бутон на мишката\n"
 
-#: ../src/prefs.c:1124 ../src/prefs.c:1145 ../src/prefs.c:1702
+#: ../src/prefs.c:1127 ../src/prefs.c:1148 ../src/prefs.c:1705
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Ключът на GConf - „%s“ е с невалидна стойност\n"
 
-#: ../src/prefs.c:1274
+#: ../src/prefs.c:1277
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
@@ -2387,14 +2392,14 @@ msgstr ""
 "Стойността %d записана в клавиша на GConf - %s, е неподходяща за размер на "
 "показалеца на мишката. Тя трябва да е в диапазона 1÷128\n"
 
-#: ../src/prefs.c:1354
+#: ../src/prefs.c:1357
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr ""
 "Описанието на шрифт „%s“ от ключа на GConf - %s, не може да бъде "
 "анализирано\n"
 
-#: ../src/prefs.c:1596
+#: ../src/prefs.c:1599
 #, c-format
 msgid ""
 "%d stored in GConf key %s is not a reasonable number of workspaces, current "
@@ -2403,7 +2408,7 @@ msgstr ""
 "Стойността %d записана в клавиша на GConf - %s, е неподходяща за брой на "
 "работните места. Текущият максимум е %d\n"
 
-#: ../src/prefs.c:1656
+#: ../src/prefs.c:1659
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -2411,17 +2416,17 @@ msgstr ""
 "Триковете за развалените програми са изключени. Някои програми могат да са с "
 "неправилно поведение.\n"
 
-#: ../src/prefs.c:1729
+#: ../src/prefs.c:1732
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "Стойността %d записана в ключа на GConf - %s е извън обхвата от 0÷%d\n"
 
-#: ../src/prefs.c:1878
+#: ../src/prefs.c:1881
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Грешка при задаване на броя на работни места да е %d: %s\n"
 
-#: ../src/prefs.c:2273 ../src/prefs.c:2443
+#: ../src/prefs.c:2276 ../src/prefs.c:2446
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -2430,7 +2435,7 @@ msgstr ""
 "Низът „%s“ открит в базата данни с настройки е невалиден за стойност на "
 "клавишната комбинация „%s“\n"
 
-#: ../src/prefs.c:2859
+#: ../src/prefs.c:2861
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Грешка при задаване на името на работното място %d да е „%s“: %s\n"
@@ -3596,7 +3601,7 @@ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "За %2$s е указан неправилен WM_TRANSIENT_FOR, прозорец 0x%1$lx.\n"
 
 #. first time through
-#: ../src/window.c:5540
+#: ../src/window.c:5551
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -3612,7 +3617,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:6105
+#: ../src/window.c:6116
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
