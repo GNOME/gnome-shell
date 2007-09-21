@@ -1,8 +1,10 @@
 Currently active maintainers
 --------------------------------
+
 Elijah Newren
-Email: newren  gmail com
+Email: newren gmail com
 Userid: newren
+
   - Usually won't touch the theme bugs (isn't interested) or the
     compositor (until open source nvidia drivers are up to snuff).
     Tends to be most interested in libwnck/gtk interactions, focus
@@ -10,8 +12,9 @@ Userid: newren
     just about anything other than themes and the compositor.
 
 Thomas Thurman
-Email: thomas  thurman org uk
+Email: thomas thurman org uk
 Userid: tthurman
+
   - Responsible for all theme bugs and the compositor (thank goodness
     Thomas got involved, eh?).  I'm sure he'll replace this sentence
     with his interests when he reads it.  ;-)
