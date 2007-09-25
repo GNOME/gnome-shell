@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity 2.18\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-21 14:14+0200\n"
+"POT-Creation-Date: 2007-09-25 19:29+0200\n"
 "PO-Revision-Date: 2007-03-11 01:03+0100\n"
 "Last-Translator: Jordi Mallach <jordi@sindominio.net>\n"
 "Language-Team: Softcatalà <tradgnome@softcatala.org>\n"
@@ -31,6 +31,7 @@ msgid "Usage: %s\n"
 msgstr "Forma d'ús: %s\n"
 
 #: ../src/tools/metacity-message.c:176 ../src/util.c:133
+#, c-format
 msgid "Metacity was compiled without support for verbose mode\n"
 msgstr "Metacity es va compilar sense suport per al mode detallat\n"
 
@@ -164,6 +165,7 @@ msgid "No command %d has been defined.\n"
 msgstr "No s'ha definit cap ordre %d.\n"
 
 #: ../src/keybindings.c:3849
+#, c-format
 msgid "No terminal command has been defined.\n"
 msgstr "No s'ha definit cap ordre de terminal.\n"
 
@@ -312,6 +314,7 @@ msgid "Workspace %d"
 msgstr "Espai de treball %d"
 
 #: ../src/menu.c:208
+#, c-format
 msgid "Workspace 1_0"
 msgstr "Espai de treball 1_0"
 
@@ -872,25 +875,25 @@ msgid ""
 "and that they need to change this option back to true or live with the bug "
 "they requested. See also http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
 msgstr ""
-"Si establiu aquesta opció a «false» (fals) pot significar un comportament "
+"Si establiu aquesta opció a «false» (fals) es pot produir un comportament "
 "incorrecte, de manera que s'aconsella als usuaris que no canviïn el seu "
-"valor predeterminat: «true» (cert). Moltes accions ( p.ex. fer clic a l'àrea "
-"del client, moure o canviar la mida de la finestra) normalment com a efecte "
-"secundari alcen la finestra. Establiu aquesta opció a fals per a separar "
+"valor predeterminat: «true» (cert). Moltes accions (p.ex. fer clic a l'àrea "
+"del client, moure o canviar la mida de la finestra) normalment alcen la "
+"finestra com a efecte secundari. Establiu aquesta opció a fals per a separar "
 "l'alçament de la finestra d'altres accions de l'usuari. Fins i tot quan és "
 "fals, encara es poden alçar les finestres amb alt-clic-esquerra en qualsevol "
 "lloc de la finestra, amb un clic a les decoracions de la finestra, o amb un "
-"missatge especial dels paginadors, com ara sol·licituts d'activació des de "
+"missatge especial dels paginadors, com ara sol·licituds d'activació des de "
 "les miniaplicacions de la llista de finestres. Aquesta opció està "
 "inhabilitada en el mode d'alçar les finestres amb clic. Fixeu-vos que les "
 "diverses maneres d'alçar les finestres quan «raise_on_click» és fals no "
 "inclouen les peticions programades de les aplicacions per a alçar finestres; "
 "aquestes peticions s'ignoraran sigui quin sigui el motiu. Si desenvolupeu "
-"aplicacions i teniu un usuari que es queixa de que l'aplicació no funciona "
-"amb aquest paràmetre inhabilitat, digueu-li que es culpa _seva_ per a "
-"trencar el gestor de finestres i que ha de tornar a canviar aquesta opció a "
-"«true» o conviure amb l'error. Vegeu també http://bugzilla.gnome.org/"
-"show_bug.cgi?id=445447#c6."
+"aplicacions i un usuari es queixa que l'aplicació no funciona quan aquest "
+"paràmetre està inhabilitat, digueu-li que es culpa _seva_ per haver trencat "
+"el gestor de finestres, i que ha de tornar a canviar aquesta opció a «true» "
+"o conviure amb l'error. Vegeu també http://bugzilla.gnome.org/show_bug.cgi?"
+"id=445447#c6."
 
 #: ../src/metacity.schemas.in.h:79
 msgid "Show the panel menu"
@@ -2510,6 +2513,7 @@ msgid "Failed to parse saved session file: %s\n"
 msgstr "No s'ha pogut analitzar el fitxer de sessió desat: %s\n"
 
 #: ../src/session.c:1159
+#, c-format
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr ""
 "S'ha vist l'atribut <metacity_session> però encara hi ha l'identificador de "
@@ -2521,6 +2525,7 @@ msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Atribut %s desconegut a l'element <metacity_session>"
 
 #: ../src/session.c:1189
+#, c-format
 msgid "nested <window> tag"
 msgstr "etiqueta <window> imbricada"
 
@@ -3218,6 +3223,7 @@ msgid "%g milliseconds to draw one window frame"
 msgstr "%g mil·lisegons per a dibuixar un marc de finestra"
 
 #: ../src/theme-viewer.c:797
+#, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Forma d'ús: metacity-theme-viewer [NOMDELTEMA]\n"
 
@@ -3338,10 +3344,12 @@ msgid "Button aspect ratio %g is not reasonable"
 msgstr "El ràtio d'aspecte dels botons %g no és raonable"
 
 #: ../src/theme.c:294
+#, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "La geometria del marc no especifica la mida dels botons"
 
 #: ../src/theme.c:925
+#, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Els degradats han de tenir almenys dos colors"
 
@@ -3444,14 +3452,17 @@ msgstr ""
 "«%s»"
 
 #: ../src/theme.c:1661
+#, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "L'expressió coordinada estava buida o no s'ha entès"
 
 #: ../src/theme.c:1798 ../src/theme.c:1808 ../src/theme.c:1842
+#, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "L'expressió coordinada dóna una divisió per zero"
 
 #: ../src/theme.c:1850
+#, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
@@ -3466,10 +3477,12 @@ msgstr ""
 "L'expressió coordinada té un operador «%s» on hi hauria d'anar un operand"
 
 #: ../src/theme.c:1915
+#, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "L'expressió coordinada té un operand on hi hauria d'anar un operador"
 
 #: ../src/theme.c:1923
+#, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr ""
 "L'expressió coordinada ha finalitzat amb un operador en lloc d'un operand"
@@ -3484,12 +3497,14 @@ msgstr ""
 "cap operand enmig"
 
 #: ../src/theme.c:2051
+#, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr ""
 "L'analitzador d'expressions de coordinades ha desbordat la seva memòria "
 "intermèdia."
 
 #: ../src/theme.c:2080
+#, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "L'expressió coordinada té un parèntesi de tancament i cap d'obertura"
 
@@ -3499,10 +3514,12 @@ msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "L'expressió coordinada té una variable o constant desconeguda «%s»"
 
 #: ../src/theme.c:2197
+#, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "L'expressió coordinada té un parèntesi d'obertura i cap de tancament"
 
 #: ../src/theme.c:2208
+#, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "L'expressió coordinada no sembla tenir cap operador o operand"
 
