@@ -1,3 +1,10 @@
+2007-09-25  Ross Burton  <ross@openedhand.com>
+
+	Merge from stable.
+	
+	* clutter/clutter-group.c:
+	Optimise sort_z_order.
+
 2007-09-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Merge from stable

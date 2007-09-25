@@ -404,13 +404,15 @@ static gint
 sort_z_order (gconstpointer a,
               gconstpointer b)
 {
-  ClutterActor *actor_a = CLUTTER_ACTOR (a);
-  ClutterActor *actor_b = CLUTTER_ACTOR (b);
+  int depth_a, depth_b;
 
-  if (clutter_actor_get_depth (actor_a) == clutter_actor_get_depth (actor_b)) 
+  depth_a = clutter_actor_get_depth (a);
+  depth_b = clutter_actor_get_depth (b);
+
+  if (depth_a == depth_b) 
     return 0;
 
-  if (clutter_actor_get_depth (actor_a) > clutter_actor_get_depth (actor_b)) 
+  if (depth_a > depth_b)
     return 1;
 
   return -1;
