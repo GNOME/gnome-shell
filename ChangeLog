@@ -1,11 +1,18 @@
 2007-09-27  Matthew Allum  <mallum@openedhand.com>
 
+	Merge from stable.     
+
+        * clutter/clutter-behaviour-path.c: (path_alpha_to_position)
+        Fix uninitialized variable (#480, Gwenole Beauchesne)
+
+2007-09-27  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-event.c:
 	* clutter/clutter-event.h:
 	* clutter/clutter-main.c:
 	Further event tweaks;
 	- Ref the event actor source
-	- Protect against off stage events (button releases)
+	- Protect against off stage events (button releases) (#511)
 	- Move more into ClutterEventAny
 	- Add a click count to button event (as yet unused)
 	- Minor cleanups

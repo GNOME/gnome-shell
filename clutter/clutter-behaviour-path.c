@@ -158,7 +158,7 @@ path_alpha_to_position (ClutterBehaviourPath *behave,
   ClutterBehaviourPathPrivate *priv = behave->priv;
   ClutterBehaviour *behaviour = CLUTTER_BEHAVIOUR (behave);
   GSList  *l;
-  gint     total_len, offset, dist_to_next, dist = 0;
+  gint     total_len, offset, dist = 0;
 
   /* FIXME: Optimise. Much of the data used here can be pre-generated  
    *        ( total_len, dist between knots ) when knots are added/removed.
@@ -209,6 +209,7 @@ path_alpha_to_position (ClutterBehaviourPath *behave,
 
   for (l = priv->knots; l != NULL; l = l->next)
     {
+      gint dist_to_next = 0;
       ClutterKnot *knot = l->data;
       
       if (l->next)
