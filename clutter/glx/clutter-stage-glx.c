@@ -392,14 +392,8 @@ clutter_stage_glx_realize (ClutterActor *actor)
 
     }
 
-  clutter_stage_get_perspectivex (CLUTTER_STAGE (actor), &perspective);
-  cogl_setup_viewport (clutter_actor_get_width (actor),
-		       clutter_actor_get_height (actor),
-		       perspective.fovy,
-		       perspective.aspect,
-		       perspective.z_near,
-		       perspective.z_far);
-  
+  /* Make sure the viewport gets set up correctly */
+  CLUTTER_SET_PRIVATE_FLAGS(actor, CLUTTER_ACTOR_SYNC_MATRICES);
   return;
   
  fail:

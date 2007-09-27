@@ -1,0 +1,126 @@
+/*
+ * Clutter.
+ *
+ * An OpenGL based 'interactive canvas' library.
+ *
+ * Authored By Matthew Allum  <mallum@openedhand.com>
+ *
+ * Copyright (C) 2006 OpenedHand
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#ifndef _HAVE_CLUTTER_SCORE_H
+#define _HAVE_CLUTTER_SCORE_H
+
+/* clutter-score.h */
+
+#include <glib-object.h>
+#include <clutter/clutter-timeline.h>
+
+G_BEGIN_DECLS
+
+#define CLUTTER_TYPE_SCORE clutter_score_get_type()
+
+#define CLUTTER_SCORE(obj) \
+  (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
+  CLUTTER_TYPE_SCORE, ClutterScore))
+
+#define CLUTTER_SCORE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_CAST ((klass), \
+  CLUTTER_TYPE_SCORE, ClutterScoreClass))
+
+#define CLUTTER_IS_SCORE(obj) \
+  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
+  CLUTTER_TYPE_SCORE))
+
+#define CLUTTER_IS_SCORE_CLASS(klass) \
+  (G_TYPE_CHECK_CLASS_TYPE ((klass), \
+  CLUTTER_TYPE_SCORE))
+
+#define CLUTTER_SCORE_GET_CLASS(obj) \
+  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
+  CLUTTER_TYPE_SCORE, ClutterScoreClass))
+
+typedef struct _ClutterScore        ClutterScore;
+typedef struct _ClutterScoreClass   ClutterScoreClass; 
+typedef struct _ClutterScorePrivate ClutterScorePrivate;
+
+struct _ClutterScore
+{
+  /*< private >*/
+  GObject                 parent;
+  ClutterScorePrivate    *priv;
+};
+
+struct _ClutterScoreClass
+{
+  GObjectClass parent_class;
+  
+  void (*started)   (ClutterScore *score);
+  void (*completed) (ClutterScore *score);
+  void (*paused)    (ClutterScore *score);
+
+  void (*_clutter_score_1) (void);
+  void (*_clutter_score_2) (void);
+  void (*_clutter_score_3) (void);
+  void (*_clutter_score_4) (void);
+  void (*_clutter_score_5) (void);
+}; 
+
+GType clutter_score_get_type (void) G_GNUC_CONST;
+
+ClutterScore *clutter_score_new               (void);
+
+void
+clutter_score_set_loop (ClutterScore *score,
+			gboolean         loop);
+
+gboolean
+clutter_score_get_loop (ClutterScore *score);
+
+void
+clutter_score_rewind (ClutterScore *score);
+
+gboolean
+clutter_score_is_playing (ClutterScore *score);
+void
+clutter_score_start (ClutterScore *score);
+
+void
+clutter_score_stop (ClutterScore *score);
+
+void
+clutter_score_append (ClutterScore    *score, 
+		      ClutterTimeline *timeline_existing,
+		      ClutterTimeline *timeline_new);
+
+void
+clutter_score_add (ClutterScore    *score, 
+		   ClutterTimeline *timeline);
+
+void
+clutter_score_remove (ClutterScore    *score,
+		      ClutterTimeline *timeline_parent,
+		      ClutterTimeline *timeline);
+
+void
+clutter_score_remove_all (ClutterScore *score);
+
+
+G_END_DECLS
+
+#endif

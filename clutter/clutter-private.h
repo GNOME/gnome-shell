@@ -137,10 +137,6 @@ ClutterActor*  _clutter_do_pick (ClutterStage   *stage,
 /* Does this need to be private ? */
 void clutter_do_event (ClutterEvent *event);
 
-void _clutter_actor_apply_modelview_transform (ClutterActor * self);
-
-void _clutter_actor_apply_modelview_transform_recursive (ClutterActor * self);
-
 G_END_DECLS
 
 #endif /* _HAVE_CLUTTER_PRIVATE_H */

@@ -404,6 +404,11 @@ clutter_event_free (ClutterEvent *event)
 {
   if (G_LIKELY (event))
     {
+      ClutterActor *source = NULL;
+
+      source = clutter_event_get_source (event);
+      if (source)
+	g_object_unref (source);
       g_slice_free (ClutterEvent, event);
     }
 }
@@ -422,7 +427,6 @@ ClutterEvent *
 clutter_event_get (void)
 {
   ClutterMainContext *context = clutter_context_get_default ();
-  GList *item;
 
   if (!context->events_queue)
     return NULL;

@@ -78,13 +78,7 @@ clutter_stage_sdl_realize (ClutterActor *actor)
       return;
     }
 
-  clutter_stage_get_perspectivex (CLUTTER_STAGE (actor), &perspective);
-  cogl_setup_viewport (clutter_actor_get_width (actor),
-		       clutter_actor_get_height (actor),
-		       perspective.fovy,
-		       perspective.aspect,
-		       perspective.z_near,
-		       perspective.z_far);
+  CLUTTER_SET_PRIVATE_FLAGS(actor, CLUTTER_ACTOR_SYNC_MATRICES);
 }
 
 static void

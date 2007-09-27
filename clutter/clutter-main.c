@@ -148,7 +148,7 @@ clutter_redraw (void)
       CLUTTER_UNSET_PRIVATE_FLAGS (stage, CLUTTER_ACTOR_SYNC_MATRICES);
     }
 
-  /* Call through ti the actual backend to do the painting down from  
+  /* Call through to the actual backend to do the painting down from  
    * the stage. It will likely need to swap buffers, vblank sync etc
    * which will be windowing system dependant.
   */
@@ -200,6 +200,10 @@ clutter_get_motion_events_enabled (void)
 void
 clutter_do_event (ClutterEvent *event)
 {
+  /* FIXME: This should probably be clutter_cook_event() - it would 
+   * take a raw event from the backend and 'cook' it so its more tasty. 
+   * 
+  */
   ClutterMainContext  *context;
   ClutterBackend      *backend;
   ClutterActor        *stage;
@@ -207,15 +211,12 @@ clutter_do_event (ClutterEvent *event)
 
   context = clutter_context_get_default ();
   backend = context->backend;
-  stage = _clutter_backend_get_stage (backend);
+  stage   = _clutter_backend_get_stage (backend);
+
   if (!stage)
     return;
 
   CLUTTER_TIMESTAMP (EVENT, "Event received");
-
-  /* TODO: 
-   *
-  */
 
   switch (event->type)
     {
@@ -224,7 +225,6 @@ clutter_do_event (ClutterEvent *event)
 
     case CLUTTER_DESTROY_NOTIFY:
     case CLUTTER_DELETE:
-      /* FIXME: handle delete working in stage */
       if (clutter_stage_event (CLUTTER_STAGE (stage), event))
         clutter_main_quit ();
       break;
@@ -237,8 +237,7 @@ clutter_do_event (ClutterEvent *event)
 
 	g_return_if_fail (actor != NULL);
 
-	/* FIXME: should we ref ? */
-	event->key.source = actor;
+	event->key.source = g_object_ref(actor);
 
 	/* bubble up */
 	do
@@ -253,7 +252,7 @@ clutter_do_event (ClutterEvent *event)
       if (context->motion_events_per_actor == FALSE)
 	{
 	  /* Only stage gets motion events */
-	  event->motion.source = stage;
+	  event->motion.source = g_object_ref(stage);
 	  clutter_actor_event (stage, event);
 	  break;
 	}
@@ -268,6 +267,15 @@ clutter_do_event (ClutterEvent *event)
 
 	clutter_event_get_coords (event, &x, &y);
 
+	/* Safety on - probably a release off stage ? 
+	 * FIXME: should likely deliver the release somehow - grabs ?
+	 */
+	if (x > CLUTTER_STAGE_WIDTH() 
+	    || y > CLUTTER_STAGE_HEIGHT()
+	    || x < 0 
+	    || y < 0)
+	  break;
+
 	/* Map the event to a reactive actor */
 	actor = _clutter_do_pick (CLUTTER_STAGE (stage), 
 				  x, y, 
@@ -277,9 +285,9 @@ clutter_do_event (ClutterEvent *event)
 		      x, y, actor);
 
 	if (event->type == CLUTTER_SCROLL)
-	  event->scroll.source = actor;
+	  event->scroll.source = g_object_ref(actor);
 	else
-	  event->button.source = actor;
+	  event->button.source = g_object_ref(actor);
 
 	/* Motion enter leave events */
 	if (event->type == CLUTTER_MOTION)
@@ -293,13 +301,15 @@ clutter_do_event (ClutterEvent *event)
 	      }
 	    motion_last_actor = actor;
 	  }
-
+	
 	/* Send the event to the actor and all parents always the 
 	 * stage.  
          *
 	 * FIXME: for an optimisation should check if there are
 	 * actually any reactive actors and avoid the pick all togeather
 	 * (signalling just the stage). Should be big help for gles.
+	 *
+	 * FIXME: Actors be able to stop emission.
 	 */
 	while (actor)
 	  {

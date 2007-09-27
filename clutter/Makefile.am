@@ -68,6 +68,7 @@ source_h =					\
 	$(srcdir)/clutter-stage.h 		\
 	$(srcdir)/clutter-texture.h 		\
 	$(srcdir)/clutter-timeline.h 		\
+	$(srcdir)/clutter-score.h 		\
 	$(srcdir)/clutter-timeout-pool.h 	\
 	$(srcdir)/clutter-types.h		\
 	$(srcdir)/clutter-units.h 		\
@@ -151,6 +152,7 @@ source_c = \
 	clutter-rectangle.c 		\
 	clutter-texture.c 		\
 	clutter-timeline.c 		\
+	clutter-score.c 		\
 	clutter-timeout-pool.c		\
 	clutter-util.c 			\
 	clutter-vbox.c			\

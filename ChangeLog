@@ -1,3 +1,40 @@
+2007-09-27  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-event.c:
+	* clutter/clutter-event.h:
+	* clutter/clutter-main.c:
+	Further event tweaks;
+	- Ref the event actor source
+	- Protect against off stage events (button releases)
+	- Move more into ClutterEventAny
+	- Add a click count to button event (as yet unused)
+	- Minor cleanups
+
+	* clutter/clutter-actor.c:
+	Make scale x/y a property.
+
+	* clutter/clutter-private.h:
+	Remove _clutter_actor_apply_modelview*
+
+	* clutter/eglx/clutter-backend-egl.c:
+	Warning cleanup
+
+	* clutter/eglx/clutter-stage-egl.c:
+	* clutter/glx/clutter-stage-glx.c:
+	* clutter/sdl/clutter-stage-sdl.c:
+	Avoid setting viewport directly, but set sync flag.
+
+	* clutter/pango/pangoclutter-render.c: (draw_glyph):
+	Minor cleanups.
+
+	* clutter/Makefile.am:
+	* tests/Makefile.am:
+        * tests/test-score.c
+	* clutter/clutter.h:
+	* clutter/clutter-score.h:
+	* clutter/clutter-score.c:
+	Add very initial (broken) ClutterScore implementation.
+
 2007-09-25  Ross Burton  <ross@openedhand.com>
 
 	Merge from stable.

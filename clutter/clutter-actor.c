@@ -82,7 +82,9 @@ enum
   PROP_HAS_CLIP,
   PROP_OPACITY,
   PROP_NAME,
-  PROP_VISIBLE
+  PROP_VISIBLE,
+  PROP_SCALE_X,
+  PROP_SCALE_Y
 };
 
 enum
@@ -105,6 +107,12 @@ enum
 };
 
 static guint actor_signals[LAST_SIGNAL] = { 0, };
+
+static 
+void _clutter_actor_apply_modelview_transform (ClutterActor * self);
+
+static
+void _clutter_actor_apply_modelview_transform_recursive (ClutterActor * self);
 
 static gboolean
 redraw_update_idle (gpointer data)
@@ -397,7 +405,8 @@ clutter_actor_transform_point (ClutterActor *actor,
  * @vertex: The translated #ClutterVertex
  *
  * Transforms point in coordinates relative to the actor
- * into screen coordiances 
+ * into screen coordiances with the current actor tranform 
+ * (i.e. scale, rotation etc)
  *
  * Since: 0.4
  **/
@@ -582,7 +591,7 @@ clutter_actor_get_vertices (ClutterActor    *self,
  * This function does not push/pop matrix; it is the responsibility
  * of the caller to do so as appropriate
  */
-void
+static void
 _clutter_actor_apply_modelview_transform (ClutterActor * self)
 {
   ClutterActorPrivate *priv = self->priv;
@@ -640,7 +649,7 @@ _clutter_actor_apply_modelview_transform (ClutterActor * self)
  * This function does not push/pop matrix; it is the responsibility
  * of the caller to do so as appropriate
  */
-void
+static void
 _clutter_actor_apply_modelview_transform_recursive (ClutterActor * self)
 {
   ClutterActor * parent;
@@ -878,6 +887,18 @@ clutter_actor_set_property (GObject      *object,
       else
 	clutter_actor_hide (actor);
       break;
+    case PROP_SCALE_X:
+      clutter_actor_set_scalex 
+                         (actor,
+			  CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value)),
+			  priv->scale_y);
+      break;
+    case PROP_SCALE_Y:
+      clutter_actor_set_scalex 
+                         (actor,
+			  priv->scale_x,
+			  CLUTTER_FLOAT_TO_FIXED (g_value_get_double (value)));
+      break;
     case PROP_CLIP:
       {
         ClutterGeometry *geom = g_value_get_boxed (value);
@@ -934,6 +955,12 @@ clutter_actor_get_property (GObject    *object,
       break;
     case PROP_CLIP:
       g_value_set_boxed (value, &(priv->clip));
+      break;
+    case PROP_SCALE_X:
+      g_value_set_double (value, CLUTTER_FIXED_TO_DOUBLE (priv->scale_x));
+      break;
+    case PROP_SCALE_Y:
+      g_value_set_double (value, CLUTTER_FIXED_TO_DOUBLE (priv->scale_y));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1099,6 +1126,43 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                                         "Name of the actor",
                                                         NULL,
                                                         CLUTTER_PARAM_READWRITE));
+
+  /**
+   * ClutterActor::scale-x:
+   *
+   * The horizontal scale of the actor
+   *
+   * Since: 0.6
+   */
+  g_object_class_install_property 
+                       (object_class,
+			PROP_SCALE_X,
+			g_param_spec_double ("scale-x",
+					     "Scale-X",
+					     "Scale X",
+					     0.0,
+					     G_MAXDOUBLE,
+					     1.0,
+					     CLUTTER_PARAM_READWRITE));
+
+  /**
+   * ClutterActor::scale-y:
+   *
+   * The vertical scale of the actor
+   *
+   * Since: 0.6
+   */
+  g_object_class_install_property 
+                       (object_class,
+			PROP_SCALE_Y,
+			g_param_spec_double ("scale-y",
+					     "Scale-Y",
+					     "Scale Y",
+					     0.0,
+					     G_MAXDOUBLE,
+					     1.0,
+					     CLUTTER_PARAM_READWRITE));
+
   
   /**
    * ClutterActor::destroy:
@@ -1886,6 +1950,15 @@ clutter_actor_set_scalex (ClutterActor *self,
 
   self->priv->scale_x = scale_x;
   self->priv->scale_y = scale_y;
+
+  g_object_ref (self);
+  g_object_freeze_notify (G_OBJECT (self));
+
+  g_object_notify (G_OBJECT (self), "scale-x");
+  g_object_notify (G_OBJECT (self), "scale-y");
+
+  g_object_thaw_notify (G_OBJECT (self));
+  g_object_unref (self);
 
   if (CLUTTER_ACTOR_IS_VISIBLE (self))
     clutter_actor_queue_redraw (self);

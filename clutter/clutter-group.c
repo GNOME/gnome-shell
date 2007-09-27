@@ -406,8 +406,8 @@ sort_z_order (gconstpointer a,
 {
   int depth_a, depth_b;
 
-  depth_a = clutter_actor_get_depth (a);
-  depth_b = clutter_actor_get_depth (b);
+  depth_a = clutter_actor_get_depth (CLUTTER_ACTOR(a));
+  depth_b = clutter_actor_get_depth (CLUTTER_ACTOR(b));
 
   if (depth_a == depth_b) 
     return 0;

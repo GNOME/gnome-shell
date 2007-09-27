@@ -51,6 +51,10 @@ typedef enum {
   CLUTTER_BUTTON5_MASK  = 1 << 12
 } ClutterModifierType;
 
+typedef enum {
+  CLUTTER_EVENT_FLAG_COOKED = 1 << 0,
+} ClutterEventFlags;
+
 typedef enum 
 {
   CLUTTER_NOTHING = 0,
@@ -100,12 +104,15 @@ typedef struct _ClutterInputDevice      ClutterInputDevice;
 struct _ClutterAnyEvent
 {
   ClutterEventType  type;
+  guint32           time;
+  ClutterEventFlags flags;
 };
 
 struct _ClutterKeyEvent
 {
   ClutterEventType type;
   guint32 time;
+  ClutterEventFlags flags;
   ClutterModifierType modifier_state;
   guint keyval;
   guint16 hardware_keycode;
@@ -116,10 +123,12 @@ struct _ClutterButtonEvent
 {
   ClutterEventType type;
   guint32 time;
+  ClutterEventFlags flags;
   gint x;
   gint y;
   ClutterModifierType modifier_state;
   guint32 button;
+  guint click_count;
   gdouble *axes; /* Future use */
   ClutterInputDevice *device; /* Future use */
   ClutterActor *source;
@@ -129,6 +138,7 @@ struct _ClutterMotionEvent
 {
   ClutterEventType type;
   guint32 time;
+  ClutterEventFlags flags;
   gint x;
   gint y;
   ClutterModifierType modifier_state;
@@ -141,6 +151,7 @@ struct _ClutterScrollEvent
 {
   ClutterEventType type;
   guint32 time;
+  ClutterEventFlags flags;
   gint x;
   gint y;
   ClutterScrollDirection direction;
@@ -153,6 +164,8 @@ struct _ClutterScrollEvent
 struct _ClutterStageStateEvent
 {
   ClutterEventType type;
+  guint32 time;
+  ClutterEventFlags flags;
   ClutterStageState changed_mask;
   ClutterStageState new_state;
 };

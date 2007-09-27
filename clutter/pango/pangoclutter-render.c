@@ -58,7 +58,7 @@ typedef struct tc_slice {
   int avail, y;
 } tc_slice;
 
-static int tc_generation;
+static int tc_generation = 0;
 static tc_slice slices[TC_HEIGHT / TC_ROUND];
 static tc_texture *first_texture;
 
@@ -339,11 +339,6 @@ draw_glyph (PangoRenderer *renderer_,
           _pango_clutter_font_set_cache_glyph_data (font, glyph, g);
         }
 
-      /*
-      if (renderer->curtex)
-        glEnd ();
-      */
-
       tc_get (&g->tex, bm.width, bm.height);
 
       g->left = bm.left;
@@ -365,8 +360,9 @@ draw_glyph (PangoRenderer *renderer_,
 				 CGL_UNSIGNED_BYTE, 
 				 bm.bitmap);
 
+      glTexParameteri (CGL_TEXTURE_2D, GL_GENERATE_MIPMAP, FALSE);
+
       renderer->curtex = g->tex.name;
-      /* glBegin (GL_QUADS); */
     }
   else CLUTTER_NOTE (PANGO, g_message ("cache succsess %i\n", glyph));
 
@@ -380,15 +376,8 @@ draw_glyph (PangoRenderer *renderer_,
 
   if (g->tex.name != renderer->curtex)
     {
-      /*
-	if (renderer->curtex)
-          glEnd ();
-      */
-
       cogl_texture_bind (CGL_TEXTURE_2D, g->tex.name);
       renderer->curtex = g->tex.name;
-
-      /* glBegin (GL_QUADS); */
     }
 
   cogl_texture_quad (x, 

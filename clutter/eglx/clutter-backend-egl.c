@@ -76,7 +76,7 @@ clutter_backend_egl_post_parse (ClutterBackend  *backend,
       
       backend_egl->display_name = g_strdup (clutter_display_name);
 
-      backend_egl->edpy = eglGetDisplay(backend_egl->xdpy);
+      backend_egl->edpy = eglGetDisplay((NativeDisplayType)backend_egl->xdpy);
 
       dpi = (((double) DisplayHeight (backend_egl->xdpy, backend_egl->xscreen_num) * 25.4)
             / (double) DisplayHeightMM (backend_egl->xdpy, backend_egl->xscreen_num));
