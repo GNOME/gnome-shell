@@ -1,5 +1,10 @@
 2007-09-27  Matthew Allum  <mallum@openedhand.com>
 
+	* tests/test-scale.c:
+	Fix out of about array addressing (#522, Tommi Komulainen)
+
+2007-09-27  Matthew Allum  <mallum@openedhand.com>
+
 	* clutter/clutter-clone-texture.c:
 	* clutter/clutter-rectangle.c:
 	Include "config.h" in all c files (#524, Tommi Komulainen)

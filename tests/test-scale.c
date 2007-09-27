@@ -22,7 +22,7 @@ on_timeline_completed (ClutterTimeline *cluttertimeline,
 {
   ClutterBehaviourScale *behave = CLUTTER_BEHAVIOUR_SCALE(data);
 
-  if (++gindex > G_N_ELEMENTS(gravitys))
+  if (++gindex >= G_N_ELEMENTS(gravitys))
     gindex = 0;
 
   g_object_set (behave, "scale-gravity", gravitys[gindex], NULL);
