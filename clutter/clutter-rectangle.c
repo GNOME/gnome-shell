@@ -29,6 +29,7 @@
  *
  * #ClutterRectangle is an Actor which draws simple filled rectangles.
  */
+#include "config.h"
 
 #include "clutter-rectangle.h"
 #include "clutter-main.h"

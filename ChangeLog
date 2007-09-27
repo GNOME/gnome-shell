@@ -1,5 +1,11 @@
 2007-09-27  Matthew Allum  <mallum@openedhand.com>
 
+	* clutter/clutter-clone-texture.c:
+	* clutter/clutter-rectangle.c:
+	Include "config.h" in all c files (#524, Tommi Komulainen)
+
+2007-09-27  Matthew Allum  <mallum@openedhand.com>
+
 	Merge from stable.     
 
         * clutter/clutter-behaviour-path.c: (path_alpha_to_position)
