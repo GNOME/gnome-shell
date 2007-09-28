@@ -224,11 +224,14 @@ clutter_label_ensure_layout (ClutterLabel *label,
 					      priv->single_line_mode);
       
       pango_layout_set_font_description (priv->layout, priv->desc);
-      
-      if (!priv->use_markup)
-        pango_layout_set_text (priv->layout, priv->text, -1);
-      else
-        pango_layout_set_markup (priv->layout, priv->text, -1);
+     
+      if (priv->text)
+        { 
+          if (!priv->use_markup)
+            pango_layout_set_text (priv->layout, priv->text, -1);
+          else
+            pango_layout_set_markup (priv->layout, priv->text, -1);
+        }
       
       if (priv->wrap)
 	pango_layout_set_wrap  (priv->layout, priv->wrap_mode);
