@@ -504,3 +504,55 @@ clutter_container_sort_depth_order (ClutterContainer *container)
 
   CLUTTER_CONTAINER_GET_IFACE (container)->sort_depth_order (container);
 }
+
+/**
+ * clutter_container_find_child_by_name:
+ * @container: a #ClutterContainer
+ * @child_name: the name of the requested child. 
+ *
+ * Finds a child actor of a container by its name. Search recurses
+ * into any child container.
+ *
+ * Return value: The child actor with the requested name, or %NULL if no
+ *   actor with that name was found.
+ *
+ * Since: 0.6
+ */
+ClutterActor *
+clutter_container_find_child_by_name (ClutterContainer *container,
+                                      const gchar      *child_name)
+{
+  GList        *children;
+  GList        *iter;
+  ClutterActor *actor = NULL;
+
+  g_return_val_if_fail (CLUTTER_IS_CONTAINER (container), NULL);
+
+  children = clutter_container_get_children (container);
+
+  for (iter=children; iter; iter = g_list_next (iter))
+    {
+      ClutterActor *a;
+      const gchar  *iter_name;
+
+      a = CLUTTER_ACTOR (iter->data);
+      iter_name = clutter_actor_get_name (a);
+
+      if (iter_name && !strcmp (iter_name, child_name))
+        {
+          actor = a;
+          break;
+        }
+
+      if (CLUTTER_IS_CONTAINER (a))
+        {
+          ClutterContainer *c = CLUTTER_CONTAINER (a);
+
+          actor = clutter_container_find_child_by_name (c, child_name);
+          if (actor)
+            break;
+	}
+    }
+  g_list_free (children);
+  return actor;
+}

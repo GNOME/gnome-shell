@@ -1,5 +1,10 @@
 2007-09-28  Øyvind Kolås  <pippin@openedhand.com>
 
+	* clutter/clutter-container.[ch]: added
+	clutter_container_find_child_by_name.
+
+2007-09-28  Øyvind Kolås  <pippin@openedhand.com>
+
 	* clutter/glx/clutter-stage-glx.c: (clutter_stage_glx_realize):
 	removed unused variable perspective.
 	* tests/test-events.c: (main): added CLUTTER_STAGE() cast.

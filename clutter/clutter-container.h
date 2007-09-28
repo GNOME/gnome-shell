@@ -114,6 +114,8 @@ void          clutter_container_foreach          (ClutterContainer *container,
                                                   gpointer          user_data);
 ClutterActor *clutter_container_find_child_by_id (ClutterContainer *container,
                                                   guint             child_id);
+ClutterActor *clutter_container_find_child_by_name(ClutterContainer *container,
+                                                  const gchar      *child_name);
 void          clutter_container_raise_child      (ClutterContainer *container,
                                                   ClutterActor     *actor,
                                                   ClutterActor     *sibling);
