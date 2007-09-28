@@ -154,7 +154,7 @@ main (int argc, char *argv[])
   g_signal_connect (actor, "focus-in", G_CALLBACK (key_focus_in_cb), 
 		    focus_box);
 
-  clutter_stage_set_key_focus (stage, actor);
+  clutter_stage_set_key_focus (CLUTTER_STAGE (stage), actor);
 
   actor = clutter_rectangle_new_with_color (&gcol);
   clutter_actor_set_size (actor, 100, 100);

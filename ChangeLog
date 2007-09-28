@@ -1,5 +1,12 @@
 2007-09-28  Øyvind Kolås  <pippin@openedhand.com>
 
+	* clutter/glx/clutter-stage-glx.c: (clutter_stage_glx_realize):
+	removed unused variable perspective.
+	* tests/test-events.c: (main): added CLUTTER_STAGE() cast.
+	* tests/test-threads.c: include unistd.h for sleep().
+
+2007-09-28  Øyvind Kolås  <pippin@openedhand.com>
+
 	* clutter/clutter-label.c: (clutter_label_ensure_layout): avoid
 	calling pango_layout_set_text|markup before we've got any text.
 

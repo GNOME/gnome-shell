@@ -207,7 +207,6 @@ clutter_stage_glx_realize (ClutterActor *actor)
 {
   ClutterStageGLX *stage_glx = CLUTTER_STAGE_GLX (actor);
   gboolean is_offscreen;
-  ClutterPerspective perspective;
 
   CLUTTER_NOTE (MISC, "Realizing main stage");
 

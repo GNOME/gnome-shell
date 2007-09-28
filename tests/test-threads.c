@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h> /* sleep() */
 #include <clutter/clutter.h>
 
 typedef struct
