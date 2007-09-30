@@ -1,3 +1,12 @@
+2007-09-30  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-event.h:
+	Removed unused POINTER_ENTER and POINTER_LEAVE states. (#546)
+	* clutter/clutter-stage.c: (clutter_stage_fullscreen),
+	(clutter_stage_unfullscreen):
+	Only Change fullscreen prop if the backend implements fullscreen
+	methods. (#545)
+
 2007-09-28  Øyvind Kolås  <pippin@openedhand.com>
 
 	* clutter/clutter-container.[ch]: added

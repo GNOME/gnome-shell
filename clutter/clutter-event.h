@@ -85,9 +85,7 @@ typedef enum
 {
   CLUTTER_STAGE_STATE_FULLSCREEN       = (1<<1),
   CLUTTER_STAGE_STATE_OFFSCREEN        = (1<<2),
-  CLUTTER_STAGE_STATE_POINTER_ENTER    = (1<<3),
-  CLUTTER_STAGE_STATE_POINTER_LEAVE    = (1<<4),
-  CLUTTER_STAGE_STATE_ACTIVATED        = (1<<5),
+  CLUTTER_STAGE_STATE_ACTIVATED        = (1<<3)
 } ClutterStageState;
 
 typedef union _ClutterEvent ClutterEvent;

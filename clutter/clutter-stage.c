@@ -609,12 +609,13 @@ clutter_stage_fullscreen (ClutterStage *stage)
   priv = stage->priv;
   if (!priv->is_fullscreen)
     {
-      priv->is_fullscreen = TRUE;
-
+      /* Only set if backend implements */
       if (CLUTTER_STAGE_GET_CLASS (stage)->set_fullscreen)
-        CLUTTER_STAGE_GET_CLASS (stage)->set_fullscreen (stage, TRUE);
-
-      g_object_notify (G_OBJECT (stage), "fullscreen");
+	{
+	  priv->is_fullscreen = TRUE;
+	  CLUTTER_STAGE_GET_CLASS (stage)->set_fullscreen (stage, TRUE);
+	  g_object_notify (G_OBJECT (stage), "fullscreen");
+	}
     }
 }
 
@@ -638,12 +639,13 @@ clutter_stage_unfullscreen (ClutterStage *stage)
   priv = stage->priv;
   if (priv->is_fullscreen)
     {
-      priv->is_fullscreen = FALSE;
-
+      /* Only set if backend implements */
       if (CLUTTER_STAGE_GET_CLASS (stage)->set_fullscreen)
-        CLUTTER_STAGE_GET_CLASS (stage)->set_fullscreen (stage, FALSE);
-
-      g_object_notify (G_OBJECT (stage), "fullscreen");
+	{
+	  priv->is_fullscreen = FALSE;
+	  CLUTTER_STAGE_GET_CLASS (stage)->set_fullscreen (stage, FALSE);
+	  g_object_notify (G_OBJECT (stage), "fullscreen");
+	}
     }
 }
 
