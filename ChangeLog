@@ -1,3 +1,15 @@
+2007-10-01  Tomas Frydrych  <tf@openedhand.com>
+	
+	* clutter/clutter-actor.c:
+	(clutter_actor_set_scale_with_gravityx):
+	Use CLUTTER_QMUL for better precission (#532, patch by Gwenole
+	Beauchesne).
+
+	* clutter/clutter-color.c:
+	(clutter_color_to_hlsx):
+	Added missing CLUTTER_INT_TO_FIXED conversion (#544, patch by Neil
+	Roberts).
+
 2007-10-01  Neil J. Patel  <njp@o-hand.com>
 
 	Patch by: Tommi Komulainen <tommi.komulainen@iki.fi>

@@ -189,7 +189,7 @@ clutter_color_to_hlsx (const ClutterColor *src,
       if (l <= CFX_ONE/2)
 	s = CFX_DIV ((max - min), (max + min));
       else
-	s = CFX_DIV ((max - min), (2 - max - min));
+	s = CFX_DIV ((max - min), (CLUTTER_INT_TO_FIXED (2) - max - min));
 
       delta = max - min;
       if (red == max)

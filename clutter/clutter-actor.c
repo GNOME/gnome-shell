@@ -2085,10 +2085,10 @@ clutter_actor_set_scale_with_gravityx (ClutterActor     *self,
 
   clutter_actor_query_coords (self, &box);
 
-  w  = CFX_MUL (box.x2 - box.x1, old_scale_x);
-  h  = CFX_MUL (box.y2 - box.y1, old_scale_y);
-  sw = CFX_MUL (box.x2 - box.x1, scale_x);
-  sh = CFX_MUL (box.y2 - box.y1, scale_y);
+  w  = CFX_QMUL (box.x2 - box.x1, old_scale_x);
+  h  = CFX_QMUL (box.y2 - box.y1, old_scale_y);
+  sw = CFX_QMUL (box.x2 - box.x1, scale_x);
+  sh = CFX_QMUL (box.y2 - box.y1, scale_y);
 
   
   x = box.x1;
