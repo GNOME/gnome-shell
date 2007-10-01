@@ -1439,6 +1439,8 @@ clutter_entry_delete_text (ClutterEntry       *entry,
 {
   ClutterEntryPrivate *priv;
   GString *new = NULL;
+  gint start_bytes;
+  gint end_bytes;
 
   g_return_if_fail (CLUTTER_IS_ENTRY (entry));
   
@@ -1446,9 +1448,12 @@ clutter_entry_delete_text (ClutterEntry       *entry,
 
   if (!priv->text)
     return;
+
+  start_bytes = offset_to_bytes (priv->text, start_pos);
+  end_bytes = offset_to_bytes (priv->text, end_pos);
   
   new = g_string_new (priv->text);
-  new = g_string_erase (new, start_pos, end_pos - start_pos);
+  new = g_string_erase (new, start_bytes, end_bytes - start_bytes);
   
   clutter_entry_set_text (entry, new->str);
   

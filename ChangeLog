@@ -1,3 +1,10 @@
+2007-10-01  Neil J. Patel  <njp@o-hand.com>
+
+	Patch by: Tommi Komulainen <tommi.komulainen@iki.fi>
+
+	* clutter/clutter-entry.c: (clutter_entry_delete_text):
+	Fix characters vs. bytes inconsistency (#520).	
+
 2007-09-30  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-event.h:
