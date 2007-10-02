@@ -1,5 +1,17 @@
 2007-10-01  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-fixed.h: Add CLUTTER_FIXED_TO_INT() and
+	deprecate CLUTTER_FIXED_INT(), for symmetry with
+	CLUTTER_FIXED_FROM_INT().
+
+	* clutter/clutter-alpha.c:
+	* clutter/clutter-behaviour-depth.c:
+	* clutter/clutter-behaviour-ellipse.c:
+	* clutter/clutter-behaviour-path.c:
+	* clutter/clutter-fixed.h: Use CLUTTER_FIXED_TO_INT().
+
+2007-10-01  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c (clutter_actor_get_size): Implement
 	get_size() as a wrapper around clutter_actor_query_coords()
 	instead of calling g_object_get() twice.

@@ -543,7 +543,7 @@ sincx_func (ClutterAlpha *alpha,
 
   CLUTTER_NOTE (ALPHA, "sine: %2f\n", CLUTTER_FIXED_TO_DOUBLE (sine));
 
-  return CLUTTER_FIXED_INT (sine * CLUTTER_ALPHA_MAX_ALPHA);
+  return CLUTTER_FIXED_TO_INT (sine * CLUTTER_ALPHA_MAX_ALPHA);
 }
 
 /* NB: angle is not in radians but in muliples of PI, i.e., 2.0

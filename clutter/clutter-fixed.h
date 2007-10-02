@@ -202,18 +202,30 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
 #define CLUTTER_INT_TO_FIXED(x)         ((x) << CFX_Q)
 
 /**
+ * CLUTTER_FIXED_TO_INT:
+ * @x: a fixed point value
+ *
+ * Converts a fixed point value to integer (removing the decimal part).
+ *
+ * Since: 0.6
+ */
+#define CLUTTER_FIXED_TO_INT(x)         ((x) >> CFX_Q)
+
+/**
  * CLUTTER_FIXED_INT:
  * @x: a fixed point value
  * 
  * Convert a fixed point value to integer (removing decimal part).
+ *
+ * Deprecated:0.6: Use %CLUTTER_FIXED_TO_INT instead
  */
-#define CLUTTER_FIXED_INT(x)            ((x) >> CFX_Q)
+#define CLUTTER_FIXED_INT(x)            CLUTTER_FIXED_TO_INT((x))
 
 /**
  * CLUTTER_FIXED_FRACTION:
  * @x: a fixed point value
  * 
- * FIXME
+ * Retrieves the fractionary part of a fixed point value
  */
 #define CLUTTER_FIXED_FRACTION(x)       ((x) & ((1 << CFX_Q) - 1))
 

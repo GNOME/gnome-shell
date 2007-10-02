@@ -103,8 +103,8 @@ interpolate (const ClutterKnot *begin,
 	     ClutterKnot       *out,
 	     ClutterFixed       t)
 {
-  out->x = begin->x + CLUTTER_FIXED_INT (t * (end->x - begin->x));
-  out->y = begin->y + CLUTTER_FIXED_INT (t * (end->y - begin->y));
+  out->x = begin->x + CLUTTER_FIXED_TO_INT (t * (end->x - begin->x));
+  out->y = begin->y + CLUTTER_FIXED_TO_INT (t * (end->y - begin->y));
 }
 
 static gint

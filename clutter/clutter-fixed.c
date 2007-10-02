@@ -207,7 +207,7 @@ clutter_sinx (ClutterFixed angle)
      * Handle the end of the table gracefully
      */
     indx1 = CLUTTER_FIXED_DIV (angle, CFX_SIN_STEP);
-    indx1 = CLUTTER_FIXED_INT (indx1);
+    indx1 = CLUTTER_FIXED_TO_INT (indx1);
 
     if (indx1 == sizeof (sin_tbl)/sizeof (ClutterFixed) - 1)
     {
@@ -573,7 +573,7 @@ clutter_sqrtx (ClutterFixed x)
     }
     else
     {
-	t = CLUTTER_FIXED_INT (x);
+	t = CLUTTER_FIXED_TO_INT (x);
     }
 
     /* Do a weighted average of the two nearest values */

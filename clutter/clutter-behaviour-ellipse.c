@@ -109,8 +109,8 @@ clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse *e,
   ClutterBehaviourEllipsePrivate *priv = e->priv;
   gint x, y, z;
 
-  x = CLUTTER_FIXED_INT (priv->a * clutter_cosi (angle));
-  y = CLUTTER_FIXED_INT (priv->b * clutter_sini (angle));
+  x = CLUTTER_FIXED_TO_INT (priv->a * clutter_cosi (angle));
+  y = CLUTTER_FIXED_TO_INT (priv->b * clutter_sini (angle));
   z = 0;
 
   if (priv->angle_tilt_z)
@@ -131,8 +131,8 @@ clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse *e,
       y2 = y * clutter_cosi (priv->angle_tilt_z)
            + x * clutter_sini (priv->angle_tilt_z);
 
-      x = CLUTTER_FIXED_INT (x2);
-      y = CLUTTER_FIXED_INT (y2);
+      x = CLUTTER_FIXED_TO_INT (x2);
+      y = CLUTTER_FIXED_TO_INT (y2);
     }
 
   if (priv->angle_tilt_x)
@@ -143,8 +143,8 @@ clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse *e,
 
       y2 = y * clutter_cosi (priv->angle_tilt_x);
 
-      z = CLUTTER_FIXED_INT (z2);
-      y = CLUTTER_FIXED_INT (y2);
+      z = CLUTTER_FIXED_TO_INT (z2);
+      y = CLUTTER_FIXED_TO_INT (y2);
     }
 
   if (priv->angle_tilt_y)
@@ -157,8 +157,8 @@ clutter_behaviour_ellipse_advance (ClutterBehaviourEllipse *e,
       z2 = z * clutter_cosi (priv->angle_tilt_y)
         + x * clutter_sini (priv->angle_tilt_y);
 
-      x = CLUTTER_FIXED_INT (x2);
-      z = CLUTTER_FIXED_INT (z2);
+      x = CLUTTER_FIXED_TO_INT (x2);
+      z = CLUTTER_FIXED_TO_INT (z2);
     }
 
   knot->x = x;
