@@ -1,3 +1,33 @@
+2007-10-01  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.[ch]: Remove the ::event-after signal
+	class handler, as it's not meant to be overridden by sub-classes.
+
+	(clutter_actor_class_init):
+	Make every event-related signal return a boolean: return TRUE
+	in a signal handler to block the emission. The value is accumulated
+	automatically by the signal API.
+
+	(clutter_actor_event): If ::event returns TRUE, skip to emitting
+	::event-after. Return the value accumulated by the signal emission
+	chain.
+
+	* clutter/clutter-private.h: Rename _clutter_boolean_accumlator().
+
+	* clutter/clutter-main.c (clutter_do_event): If clutter_actor_event()
+	returns TRUE then stop the event emission chain from child to parent.
+
+	* clutter/clutter-stage.c (clutter_stage_event): Behave like
+	clutter_actor_event().
+
+	(clutter_stage_get_key_focus),
+	(clutter_stage_set_key_focus): Avoid a nasty circular reference
+	issue: if the actor passed to set_key_focus is NULL then the stage
+	has the key focus.
+
+	* tests/test-events.c: Update the events test with the API
+	changes.
+
 2007-10-01  Tomas Frydrych  <tf@openedhand.com>
 	
 	* clutter/clutter-actor.c:

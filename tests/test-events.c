@@ -11,7 +11,7 @@ stage_state_cb (ClutterStage    *stage,
   printf("[stage signal] %s\n", detail);
 }
 
-static void
+static gboolean
 blue_button_cb (ClutterActor    *actor,
 		ClutterEvent    *event,
 		gpointer         data)
@@ -26,9 +26,11 @@ blue_button_cb (ClutterActor    *actor,
     IsFullScreen = TRUE;
 
   g_object_set (stage, "fullscreen", IsFullScreen, NULL);
+
+  return FALSE;
 }
 
-void
+static void
 key_focus_in_cb (ClutterActor    *actor,
 		 gpointer         data)
 {
@@ -40,7 +42,6 @@ key_focus_in_cb (ClutterActor    *actor,
     }
   else
     {
-      clutter_actor_show (focus_box);
       clutter_actor_set_position (focus_box,
 				  clutter_actor_get_x (actor) - 5,
 				  clutter_actor_get_y (actor) - 5);
@@ -48,15 +49,16 @@ key_focus_in_cb (ClutterActor    *actor,
       clutter_actor_set_size (focus_box,
 			      clutter_actor_get_width (actor) + 10,
 			      clutter_actor_get_height (actor) + 10);
+      clutter_actor_show (focus_box);
     }
 }
 
-static void
+static gboolean
 input_cb (ClutterActor    *actor,
 	  ClutterEvent    *event,
 	  gpointer         data)
 {
-  
+  ClutterStage *stage = CLUTTER_STAGE (clutter_stage_get_default ());
   gchar keybuf[9], *source = (gchar*)data;
   int   len = 0;
 
@@ -88,9 +90,10 @@ input_cb (ClutterActor    *actor,
       break;
     case CLUTTER_BUTTON_RELEASE:
       printf("[%s] BUTTON RELEASE", source);
-      if (clutter_event_get_source (event) == actor)
-	clutter_stage_set_key_focus 
-	  (CLUTTER_STAGE(clutter_stage_get_default ()), actor);
+      if (clutter_event_get_source (event) == CLUTTER_ACTOR (stage))
+        clutter_stage_set_key_focus (stage, NULL);
+      else if (clutter_event_get_source (event) == actor)
+	clutter_stage_set_key_focus (stage, actor);
       break;
     case CLUTTER_SCROLL:
       printf("[%s] BUTTON SCROLL", source);
@@ -113,8 +116,10 @@ input_cb (ClutterActor    *actor,
 
   if (clutter_event_get_source (event) == actor)
     printf(" *source*");
+  
   printf("\n");
 
+  return FALSE;
 }
 
 int
@@ -148,7 +153,7 @@ main (int argc, char *argv[])
 
   clutter_actor_set_reactive (actor);
 
-  clutter_container_add (CLUTTER_CONTAINER(stage), actor, NULL);
+  clutter_container_add (CLUTTER_CONTAINER (stage), actor, NULL);
 
   g_signal_connect (actor, "event", G_CALLBACK (input_cb), "red box");
   g_signal_connect (actor, "focus-in", G_CALLBACK (key_focus_in_cb), 
@@ -162,7 +167,7 @@ main (int argc, char *argv[])
 
   clutter_actor_set_reactive (actor);
 
-  clutter_container_add (CLUTTER_CONTAINER(stage), actor, NULL);
+  clutter_container_add (CLUTTER_CONTAINER (stage), actor, NULL);
 
   g_signal_connect (actor, "event", G_CALLBACK (input_cb), "green box");
   g_signal_connect (actor, "focus-in", G_CALLBACK (key_focus_in_cb), 

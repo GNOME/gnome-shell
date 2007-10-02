@@ -97,12 +97,6 @@ ClutterMainContext *clutter_context_get_default (void);
 #define CLUTTER_PARAM_READWRITE \
         G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK |G_PARAM_STATIC_BLURB
 
-/* signal accumulators */
-gboolean _clutter_boolean_accumulator (GSignalInvocationHint *ihint,
-                                       GValue                *return_accu,
-                                       const GValue          *handler_return,
-                                       gpointer               dummy);
-
 /* vfuncs implemnted by backend */
 
 GType _clutter_backend_impl_get_type (void);
@@ -129,10 +123,19 @@ void          _clutter_event_button_generate  (ClutterBackend    *backend,
 
 void          _clutter_feature_init (void);
 
-ClutterActor*  _clutter_do_pick (ClutterStage   *stage,
+ClutterActor *_clutter_do_pick (ClutterStage   *stage,
 				 gint            x,
 				 gint            y,
 				 ClutterPickMode mode);
+
+/* use this function as the accumulator if you have a signal with
+ * a G_TYPE_BOOLEAN return value; this will stop the emission as
+ * soon as one handler returns TRUE
+ */
+gboolean      _clutter_boolean_handled_accumulator (GSignalInvocationHint *ihint,
+                                                    GValue                *return_accu,
+                                                    const GValue          *handler_return,
+                                                    gpointer               dummy);
 
 /* Does this need to be private ? */
 void clutter_do_event (ClutterEvent *event);

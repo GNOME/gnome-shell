@@ -193,24 +193,22 @@ struct _ClutterActorClass
                             const ClutterColor  *color);
 
   /* event signals */
-  void (* event)                (ClutterActor           *actor,
-				 ClutterEvent           *event);
-  void (* event_after)          (ClutterActor           *actor,
-				 ClutterEvent           *event);
-  void (* button_press_event)   (ClutterActor           *actor,
-				 ClutterButtonEvent     *event);
-  void (* button_release_event) (ClutterActor           *actor,
-				 ClutterButtonEvent     *event);
-  void  (* scroll_event)         (ClutterActor           *actor,
-				  ClutterScrollEvent     *event);
-  void  (* key_press_event)      (ClutterActor           *actor,
-				  ClutterKeyEvent        *event);
-  void  (* key_release_event)    (ClutterActor           *actor,
-				  ClutterKeyEvent        *event);
-  void  (* motion_event)         (ClutterActor           *actor,
-				  ClutterMotionEvent     *event);
-  void  (* focus_in)             (ClutterActor           *actor);
-  void  (* focus_out)            (ClutterActor           *actor);
+  gboolean (* event)                (ClutterActor       *actor,
+				     ClutterEvent       *event);
+  gboolean (* button_press_event)   (ClutterActor       *actor,
+				     ClutterButtonEvent *event);
+  gboolean (* button_release_event) (ClutterActor       *actor,
+				     ClutterButtonEvent *event);
+  gboolean (* scroll_event)         (ClutterActor       *actor,
+				     ClutterScrollEvent *event);
+  gboolean (* key_press_event)      (ClutterActor       *actor,
+				     ClutterKeyEvent    *event);
+  gboolean (* key_release_event)    (ClutterActor       *actor,
+				     ClutterKeyEvent    *event);
+  gboolean (* motion_event)         (ClutterActor       *actor,
+				     ClutterMotionEvent *event);
+  void     (* focus_in)             (ClutterActor       *actor);
+  void     (* focus_out)            (ClutterActor       *actor);
 
   /*< private >*/
   /* padding for future expansion */

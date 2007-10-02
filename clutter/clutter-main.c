@@ -237,12 +237,14 @@ clutter_do_event (ClutterEvent *event)
 
 	g_return_if_fail (actor != NULL);
 
-	event->key.source = g_object_ref(actor);
+	event->key.source = g_object_ref (actor);
 
 	/* bubble up */
 	do
 	  {
-	    clutter_actor_event (actor, event);
+	    if (clutter_actor_event (actor, event))
+              break;
+
 	    actor = clutter_actor_get_parent (actor);
 	  }
 	while (actor != NULL);
@@ -252,7 +254,7 @@ clutter_do_event (ClutterEvent *event)
       if (context->motion_events_per_actor == FALSE)
 	{
 	  /* Only stage gets motion events */
-	  event->motion.source = g_object_ref(stage);
+	  event->motion.source = g_object_ref (stage);
 	  clutter_actor_event (stage, event);
 	  break;
 	}
@@ -270,10 +272,9 @@ clutter_do_event (ClutterEvent *event)
 	/* Safety on - probably a release off stage ? 
 	 * FIXME: should likely deliver the release somehow - grabs ?
 	 */
-	if (x > CLUTTER_STAGE_WIDTH() 
-	    || y > CLUTTER_STAGE_HEIGHT()
-	    || x < 0 
-	    || y < 0)
+	if (x > CLUTTER_STAGE_WIDTH () ||
+	    y > CLUTTER_STAGE_HEIGHT() ||
+	    x < 0 || y < 0)
 	  break;
 
 	/* Map the event to a reactive actor */
@@ -285,9 +286,9 @@ clutter_do_event (ClutterEvent *event)
 		      x, y, actor);
 
 	if (event->type == CLUTTER_SCROLL)
-	  event->scroll.source = g_object_ref(actor);
+	  event->scroll.source = g_object_ref (actor);
 	else
-	  event->button.source = g_object_ref(actor);
+	  event->button.source = g_object_ref (actor);
 
 	/* Motion enter leave events */
 	if (event->type == CLUTTER_MOTION)
@@ -317,7 +318,8 @@ clutter_do_event (ClutterEvent *event)
                 clutter_actor_get_parent (actor) == NULL /* STAGE */ )
 	      {
 		CLUTTER_NOTE (EVENT, "forwarding event to reactive actor");
-		clutter_actor_event (actor, event);
+		if (clutter_actor_event (actor, event))
+                  break;
 	      }
 
 	    actor = clutter_actor_get_parent (actor);
@@ -326,14 +328,14 @@ clutter_do_event (ClutterEvent *event)
       break;
     case CLUTTER_STAGE_STATE:
       /* fullscreen / focus - forward to stage */
-      clutter_stage_event (CLUTTER_STAGE(stage), event);
+      clutter_stage_event (CLUTTER_STAGE (stage), event);
       break;
     case CLUTTER_CLIENT_MESSAGE:
       break;
     }
 }
 
-ClutterActor*  
+ClutterActor *
 _clutter_do_pick (ClutterStage   *stage,
 		  gint            x,
 		  gint            y,
@@ -369,7 +371,7 @@ _clutter_do_pick (ClutterStage   *stage,
   glReadPixels(x, viewport[3] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
 
   if (pixel[0] == 0xff && pixel[1] == 0xff && pixel[2] == 0xff)
-    return CLUTTER_ACTOR(stage);
+    return CLUTTER_ACTOR (stage);
 
   cogl_get_bitmasks (&r, &g, &b, NULL);
 
@@ -1196,10 +1198,10 @@ clutter_init (int    *argc,
 }
 
 gboolean
-_clutter_boolean_accumulator (GSignalInvocationHint *ihint,
-                              GValue                *return_accu,
-                              const GValue          *handler_return,
-                              gpointer               dummy)
+_clutter_boolean_handled_accumulator (GSignalInvocationHint *ihint,
+                                      GValue                *return_accu,
+                                      const GValue          *handler_return,
+                                      gpointer               dummy)
 {
   gboolean continue_emission;
   gboolean signal_handled;

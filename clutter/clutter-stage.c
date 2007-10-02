@@ -397,8 +397,7 @@ clutter_stage_init (ClutterStage *self)
 
   clutter_actor_set_size (CLUTTER_ACTOR (self), 640, 480);
   clutter_actor_set_reactive (CLUTTER_ACTOR (self));
-  clutter_stage_set_key_focus (self, CLUTTER_ACTOR (self));
-
+  clutter_stage_set_key_focus (self, NULL);
 }
 
 /**
@@ -830,7 +829,8 @@ clutter_stage_event (ClutterStage *stage,
     return FALSE;
 
   /* emit raw event */
-  clutter_actor_event (CLUTTER_ACTOR(stage), event);
+  if (clutter_actor_event (CLUTTER_ACTOR (stage), event))
+    return TRUE;
 
   if (event->stage_state.changed_mask & CLUTTER_STAGE_STATE_FULLSCREEN)
     {
@@ -904,7 +904,7 @@ on_key_focused_weak_notify (gpointer data,
 			    GObject *where_the_object_was)
 {
   ClutterStagePrivate *priv;
-  ClutterStage        *stage = CLUTTER_STAGE(data);
+  ClutterStage        *stage = CLUTTER_STAGE (data);
 
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
@@ -914,12 +914,12 @@ on_key_focused_weak_notify (gpointer data,
   /* focused actor has dissapeared - fall back to stage 
    * FIXME: need some kind of signal dance/block here.
   */
-  clutter_stage_set_key_focus (stage, CLUTTER_ACTOR(stage));
+  clutter_stage_set_key_focus (stage, NULL);
 }
 
 void
-clutter_stage_set_key_focus (ClutterStage       *stage,
-			     ClutterActor       *actor)
+clutter_stage_set_key_focus (ClutterStage *stage,
+			     ClutterActor *actor)
 {
   ClutterStagePrivate *priv;
 
@@ -933,33 +933,38 @@ clutter_stage_set_key_focus (ClutterStage       *stage,
 
   if (priv->key_focused_actor)
     {
-      g_object_weak_unref (G_OBJECT(priv->key_focused_actor),
+      g_object_weak_unref (G_OBJECT (priv->key_focused_actor),
 			   on_key_focused_weak_notify,
 			   stage);
-      g_signal_emit_by_name (G_OBJECT(priv->key_focused_actor), "focus-out");
+      g_signal_emit_by_name (priv->key_focused_actor, "focus-out");
+      
+      priv->key_focused_actor = NULL;
     }
-
-  priv->key_focused_actor = actor;
+  else
+    g_signal_emit_by_name (stage, "focus-out");
 
   if (actor)
     {
-      g_object_weak_ref (G_OBJECT(actor),
+      priv->key_focused_actor = actor;
+
+      g_object_weak_ref (G_OBJECT (actor),
 			 on_key_focused_weak_notify,
 			 stage);
-      g_signal_emit_by_name (G_OBJECT(actor), "focus-in");
+      g_signal_emit_by_name (priv->key_focused_actor, "focus-in");
     }
+  else
+    g_signal_emit_by_name (stage, "focus-in");
 }
 
-ClutterActor*
-clutter_stage_get_key_focus (ClutterStage       *stage)
+ClutterActor *
+clutter_stage_get_key_focus (ClutterStage *stage)
 {
-  ClutterStagePrivate *priv;
-
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), NULL);
 
-  priv = stage->priv;
+  if (stage->priv->key_focused_actor)
+    return stage->priv->key_focused_actor;
 
-  return priv->key_focused_actor;
+  return CLUTTER_ACTOR (stage);
 }
 
 
