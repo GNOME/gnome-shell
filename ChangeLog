@@ -1,5 +1,13 @@
 2007-10-01  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.c (clutter_actor_get_size): Implement
+	get_size() as a wrapper around clutter_actor_query_coords()
+	instead of calling g_object_get() twice.
+
+	(clutter_actor_init): Initialise the box in one call.
+
+2007-10-01  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.[ch]: Remove the ::event-after signal
 	class handler, as it's not meant to be overridden by sub-classes.
 

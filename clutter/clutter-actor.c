@@ -1451,17 +1451,19 @@ clutter_actor_class_init (ClutterActorClass *klass)
 static void
 clutter_actor_init (ClutterActor *self)
 {
-  self->priv = CLUTTER_ACTOR_GET_PRIVATE (self); 
+  ClutterActorPrivate *priv;
+  ClutterActorBox box = { 0, };
 
-  self->priv->parent_actor = NULL;
-  self->priv->has_clip     = FALSE;
-  self->priv->opacity      = 0xff;
-  self->priv->id           = __id++;
-  self->priv->scale_x      = CFX_ONE;
-  self->priv->scale_y      = CFX_ONE;
+  self->priv = priv = CLUTTER_ACTOR_GET_PRIVATE (self); 
 
-  clutter_actor_set_position (self, 0, 0);
-  clutter_actor_set_size (self, 0, 0);
+  priv->parent_actor = NULL;
+  priv->has_clip     = FALSE;
+  priv->opacity      = 0xff;
+  priv->id           = __id++;
+  priv->scale_x      = CFX_ONE;
+  priv->scale_y      = CFX_ONE;
+
+  clutter_actor_request_coords (self, &box);
 }
 
 /**
@@ -1694,13 +1696,17 @@ clutter_actor_get_size (ClutterActor *self,
 			guint        *width,
 			guint        *height)
 {
+  ClutterActorBox box;
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
+  clutter_actor_query_coords (self, &box);
+
   if (width)
-    *width = clutter_actor_get_width (self);
+    *width = CLUTTER_UNITS_TO_INT (box.x2 - box.x1);
 
   if (height)
-    *height = clutter_actor_get_height (self);
+    *height = CLUTTER_UNITS_TO_INT (box.y2 - box.y1);
 }
 
 /*
@@ -1968,13 +1974,13 @@ clutter_actor_set_scalex (ClutterActor *self,
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  self->priv->scale_x = scale_x;
-  self->priv->scale_y = scale_y;
-
   g_object_ref (self);
   g_object_freeze_notify (G_OBJECT (self));
 
+  self->priv->scale_x = scale_x;
   g_object_notify (G_OBJECT (self), "scale-x");
+  
+  self->priv->scale_y = scale_y;
   g_object_notify (G_OBJECT (self), "scale-y");
 
   g_object_thaw_notify (G_OBJECT (self));
