@@ -416,7 +416,7 @@ msgstr ""
 
 #: ../src/metacity-dialog.c:206
 msgid "Title"
-msgstr "Titol"
+msgstr "Títol"
 
 #: ../src/metacity-dialog.c:218
 msgid "Class"
@@ -455,7 +455,7 @@ msgstr ""
 
 #: ../src/metacity.schemas.in.h:3
 msgid "Action on title bar double-click"
-msgstr "Accion quand doble-clicatz sus la barra de titol"
+msgstr "Accion quand doble-clicatz sus la barra de títol"
 
 #: ../src/metacity.schemas.in.h:4
 msgid "Action on title bar middle-click"
@@ -2621,7 +2621,7 @@ msgstr "Poliça de títol normal"
 
 #: ../src/theme-viewer.c:839
 msgid "Small Title Font"
-msgstr "Pichona poliça de titol"
+msgstr "Pichona poliça de títol"
 
 #: ../src/theme-viewer.c:845
 msgid "Large Title Font"
