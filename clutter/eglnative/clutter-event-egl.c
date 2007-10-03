@@ -235,8 +235,6 @@ clutter_event_dispatch (GSource     *source,
           clicked = FALSE;
         }
 
-      _clutter_event_button_generate (backend, event);
-
       g_queue_push_head (clutter_context->events_queue, event);
 
     }

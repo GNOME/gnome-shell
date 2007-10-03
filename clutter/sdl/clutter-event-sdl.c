@@ -257,7 +257,6 @@ event_translate (ClutterBackend *backend,
           event->button.y = sdl_event->button.y;
           event->button.modifier_state = sdl_event->button.state;
           event->button.button = sdl_event->button.button;
-          _clutter_event_button_generate (backend, event);
           break;
         }
       break;

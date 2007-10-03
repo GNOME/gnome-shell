@@ -1,3 +1,28 @@
+2007-10-03  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-event.c:
+	* clutter/clutter-event.h:
+	* clutter/clutter-main.c:
+	* clutter/clutter-private.h:
+	* clutter/eglnative/clutter-event-egl.c:
+	* clutter/eglx/clutter-event-egl.c:
+	* clutter/glx/clutter-event-glx.c:
+	* clutter/sdl/clutter-event-sdl.c:
+	Remove seperate double/triple click events and replace with 
+	a click_count member.
+	Move calculating click counts from backend to do_event()
+	Initial implementation of ENTER/LEAVE events. 
+
+	* tests/test-events.c:
+	Add code to test above.
+
+	* tests/test-behave.c:
+	Sync with newer API.
+
+	* clutter/clutter-score.c:
+	Silence a warning.
+
 2007-10-01  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-fixed.h: Add CLUTTER_FIXED_TO_INT() and

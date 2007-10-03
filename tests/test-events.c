@@ -1,6 +1,6 @@
 #include <clutter/clutter.h>
 
-gboolean IsFullScreen = FALSE;
+gboolean IsFullScreen = FALSE, IsMotion = FALSE;
 
 static void
 stage_state_cb (ClutterStage    *stage,
@@ -28,6 +28,20 @@ blue_button_cb (ClutterActor    *actor,
   g_object_set (stage, "fullscreen", IsFullScreen, NULL);
 
   return FALSE;
+}
+
+static gboolean
+red_button_cb (ClutterActor    *actor,
+		ClutterEvent    *event,
+		gpointer         data)
+{
+
+  if (IsMotion)
+    IsMotion = FALSE;
+  else
+    IsMotion = TRUE;
+
+  clutter_enable_motion_events (IsMotion);
 }
 
 static void
@@ -79,14 +93,15 @@ input_cb (ClutterActor    *actor,
     case CLUTTER_MOTION:
       printf("[%s] MOTION", source);
       break;
+    case CLUTTER_ENTER:
+      printf("[%s] ENTER", source);
+      break;
+    case CLUTTER_LEAVE:
+      printf("[%s] LEAVE", source);
+      break;
     case CLUTTER_BUTTON_PRESS:
-      printf("[%s] BUTTON PRESS", source);
-      break;
-    case CLUTTER_2BUTTON_PRESS:
-      printf("[%s] BUTTON 2 PRESS", source);
-      break;
-    case CLUTTER_3BUTTON_PRESS:
-      printf("[%s] BUTTON 3 PRESS", source);
+      printf("[%s] BUTTON PRESS (click count:%i)", 
+	     source, event->button.click_count);
       break;
     case CLUTTER_BUTTON_RELEASE:
       printf("[%s] BUTTON RELEASE", source);
@@ -133,6 +148,8 @@ main (int argc, char *argv[])
 
   clutter_init (&argc, &argv);
 
+
+
   stage = clutter_stage_get_default ();
   g_signal_connect (stage, "event", G_CALLBACK (input_cb), "stage");
   g_signal_connect (stage, "fullscreen", 
@@ -159,6 +176,9 @@ main (int argc, char *argv[])
   g_signal_connect (actor, "focus-in", G_CALLBACK (key_focus_in_cb), 
 		    focus_box);
 
+  /* Toggle motion - enter/leave capture */
+  g_signal_connect (actor, "button-press-event", G_CALLBACK (red_button_cb), NULL);
+
   clutter_stage_set_key_focus (CLUTTER_STAGE (stage), actor);
 
   actor = clutter_rectangle_new_with_color (&gcol);
@@ -184,6 +204,7 @@ main (int argc, char *argv[])
   g_signal_connect (actor, "event", G_CALLBACK (input_cb), "blue box");
   g_signal_connect (actor, "focus-in", G_CALLBACK (key_focus_in_cb), 
 		    focus_box);
+  /* Fullscreen */
   g_signal_connect (actor, "button-press-event", G_CALLBACK (blue_button_cb), NULL);
 
   actor = clutter_rectangle_new_with_color (&ncol);

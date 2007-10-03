@@ -94,7 +94,7 @@ enum
   LAST_SIGNAL
 };
 
-static int score_signals[LAST_SIGNAL] = { 0 };
+/* static int score_signals[LAST_SIGNAL] = { 0 }; */
 
 static void start_entry (ClutterScoreEntry *entry);
 

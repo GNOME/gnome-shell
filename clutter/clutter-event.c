@@ -39,12 +39,6 @@
  * Windowing events handled by Clutter.
  */
 
-/* multiple button click detection */
-static guint32 button_click_time[2] = { 0, 0 };
-static guint32 button_number[2] = { -1, -1 };
-static gint    button_x[2] = { 0, 0 };
-static gint    button_y[2] = { 0, 0 };
-
 /**
  * clutter_event_type:
  * @event: a #ClutterEvent
@@ -76,24 +70,7 @@ clutter_event_get_time (ClutterEvent *event)
 {
   g_return_val_if_fail (event != NULL, CLUTTER_CURRENT_TIME);
 
-  switch (event->type)
-    {
-    case CLUTTER_KEY_PRESS:
-    case CLUTTER_KEY_RELEASE:
-      return event->key.time;
-    case CLUTTER_BUTTON_PRESS:
-    case CLUTTER_2BUTTON_PRESS:
-    case CLUTTER_BUTTON_RELEASE:
-      return event->button.time;
-    case CLUTTER_MOTION:
-      return event->motion.time;
-    case CLUTTER_SCROLL:
-      return event->scroll.time;
-    default:
-      break;
-    }
-
-  return CLUTTER_CURRENT_TIME;
+  return event->any.time;
 }
 
 /**
@@ -117,8 +94,6 @@ clutter_event_get_state (ClutterEvent *event)
     case CLUTTER_KEY_RELEASE:
       return event->key.modifier_state;
     case CLUTTER_BUTTON_PRESS:
-    case CLUTTER_2BUTTON_PRESS:
-    case CLUTTER_BUTTON_RELEASE:
       return event->button.modifier_state;
     case CLUTTER_MOTION:
       return event->motion.modifier_state;
@@ -161,10 +136,10 @@ clutter_event_get_coords (ClutterEvent *event,
     case CLUTTER_DESTROY_NOTIFY:
     case CLUTTER_CLIENT_MESSAGE:
     case CLUTTER_DELETE:
+    case CLUTTER_ENTER:
+    case CLUTTER_LEAVE:
       break;
     case CLUTTER_BUTTON_PRESS:
-    case CLUTTER_2BUTTON_PRESS:
-    case CLUTTER_3BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
       event_x = event->button.x;
       event_y = event->button.y;
@@ -212,7 +187,6 @@ clutter_event_get_source (ClutterEvent *event)
       res = event->key.source;
       break;
     case CLUTTER_BUTTON_PRESS:
-    case CLUTTER_2BUTTON_PRESS:
     case CLUTTER_BUTTON_RELEASE:
       res = event->button.source;
       break;
@@ -504,71 +478,3 @@ clutter_events_pending (void)
   return g_queue_is_empty (context->events_queue) == FALSE;
 }
 
-/* Backend helpers (private) */
-
-static void
-synthesize_click (ClutterBackend *backend,
-		  ClutterEvent   *event,
-		  gint            n_clicks)
-{
-  ClutterEvent temp_event;
-
-  temp_event = *event;
-  temp_event.type = (n_clicks == 2) ? CLUTTER_2BUTTON_PRESS
-                                    : CLUTTER_3BUTTON_PRESS;
-
-  clutter_event_put (&temp_event);
-}
-
-/* post process a button to synthesize double clicks etc */
-void
-_clutter_event_button_generate (ClutterBackend *backend,
-                                ClutterEvent   *event)
-{
-  guint double_click_time, double_click_distance;
-
-  double_click_distance = clutter_backend_get_double_click_distance (backend);
-  double_click_time = clutter_backend_get_double_click_time (backend);
-
-  if ((event->button.time < (button_click_time[1] + 2 * double_click_time)) 
-      && (event->button.button == button_number[1]) 
-      && (ABS (event->button.x - button_x[1]) <= double_click_distance) 
-      && (ABS (event->button.y - button_y[1]) <= double_click_distance))
-    {
-      synthesize_click (backend, event, 3);
-            
-      button_click_time[1] = 0;
-      button_click_time[0] = 0;
-      button_number[1] = -1;
-      button_number[0] = -1;
-      button_x[0] = button_x[1] = 0;
-      button_y[0] = button_y[1] = 0;
-    }
-  else if ((event->button.time < (button_click_time[0] + double_click_time)) &&
-      (event->button.button == button_number[0]) &&
-      (ABS (event->button.x - button_x[0]) <= double_click_distance) &&
-      (ABS (event->button.y - button_y[0]) <= double_click_distance))
-    {
-      synthesize_click (backend, event, 2);
-      
-      button_click_time[1] = button_click_time[0];
-      button_click_time[0] = event->button.time;
-      button_number[1] = button_number[0];
-      button_number[0] = event->button.button;
-      button_x[1] = button_x[0];
-      button_x[0] = event->button.x;
-      button_y[1] = button_y[0];
-      button_y[0] = event->button.y;
-    }
-  else
-    {
-      button_click_time[1] = 0;
-      button_click_time[0] = event->button.time;
-      button_number[1] = -1;
-      button_number[0] = event->button.button;
-      button_x[1] = 0;
-      button_x[0] = event->button.x;
-      button_y[1] = 0;
-      button_y[0] = event->button.y;
-    }
-}

@@ -117,10 +117,6 @@ void          _clutter_backend_init_events   (ClutterBackend  *backend);
 
 ClutterFeatureFlags _clutter_backend_get_features (ClutterBackend *backend);
 
-/* backend helpers */
-void          _clutter_event_button_generate  (ClutterBackend    *backend,
-                                               ClutterEvent      *event);
-
 void          _clutter_feature_init (void);
 
 ClutterActor *_clutter_do_pick (ClutterStage   *stage,

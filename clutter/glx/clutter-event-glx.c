@@ -550,7 +550,6 @@ event_translate (ClutterBackend *backend,
           event->button.modifier_state = xevent->xbutton.state;
           event->button.button = xevent->xbutton.button;
 
-          _clutter_event_button_generate (backend, event);
           break;
         }
 

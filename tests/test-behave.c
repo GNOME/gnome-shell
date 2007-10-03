@@ -13,12 +13,12 @@ button_press_cb (ClutterStage       *stage,
 {
   const gchar *click_type;
 
-  switch (event->type)
+  switch (event->click_count)
     {
-    case CLUTTER_2BUTTON_PRESS:
+    case 2:
       click_type = "double";
       break;
-    case CLUTTER_3BUTTON_PRESS:
+    case 3:
       click_type = "triple";
       break;
     default:

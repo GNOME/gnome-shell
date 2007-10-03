@@ -188,153 +188,6 @@ clutter_get_motion_events_enabled (void)
   return context->motion_events_per_actor;
 }
 
-
-/** 
- * clutter_do_event
- * @event: a #ClutterEvent.
- *
- * Processes an event. This function should never be called by applications.
- *
- * Since: 0.4
- */
-void
-clutter_do_event (ClutterEvent *event)
-{
-  /* FIXME: This should probably be clutter_cook_event() - it would 
-   * take a raw event from the backend and 'cook' it so its more tasty. 
-   * 
-  */
-  ClutterMainContext  *context;
-  ClutterBackend      *backend;
-  ClutterActor        *stage;
-  static ClutterActor *motion_last_actor = NULL; 
-
-  context = clutter_context_get_default ();
-  backend = context->backend;
-  stage   = _clutter_backend_get_stage (backend);
-
-  if (!stage)
-    return;
-
-  CLUTTER_TIMESTAMP (EVENT, "Event received");
-
-  switch (event->type)
-    {
-    case CLUTTER_NOTHING:
-      break;
-
-    case CLUTTER_DESTROY_NOTIFY:
-    case CLUTTER_DELETE:
-      if (clutter_stage_event (CLUTTER_STAGE (stage), event))
-        clutter_main_quit ();
-      break;
-    case CLUTTER_KEY_PRESS:
-    case CLUTTER_KEY_RELEASE:
-      {
-	ClutterActor *actor = NULL;
-
-	actor = clutter_stage_get_key_focus (CLUTTER_STAGE(stage));
-
-	g_return_if_fail (actor != NULL);
-
-	event->key.source = g_object_ref (actor);
-
-	/* bubble up */
-	do
-	  {
-	    if (clutter_actor_event (actor, event))
-              break;
-
-	    actor = clutter_actor_get_parent (actor);
-	  }
-	while (actor != NULL);
-      }
-      break;
-    case CLUTTER_MOTION:
-      if (context->motion_events_per_actor == FALSE)
-	{
-	  /* Only stage gets motion events */
-	  event->motion.source = g_object_ref (stage);
-	  clutter_actor_event (stage, event);
-	  break;
-	}
-    case CLUTTER_BUTTON_PRESS:
-    case CLUTTER_2BUTTON_PRESS:
-    case CLUTTER_3BUTTON_PRESS:
-    case CLUTTER_BUTTON_RELEASE:
-    case CLUTTER_SCROLL:
-      {
-	ClutterActor *actor;
-	gint          x,y;
-
-	clutter_event_get_coords (event, &x, &y);
-
-	/* Safety on - probably a release off stage ? 
-	 * FIXME: should likely deliver the release somehow - grabs ?
-	 */
-	if (x > CLUTTER_STAGE_WIDTH () ||
-	    y > CLUTTER_STAGE_HEIGHT() ||
-	    x < 0 || y < 0)
-	  break;
-
-	/* Map the event to a reactive actor */
-	actor = _clutter_do_pick (CLUTTER_STAGE (stage), 
-				  x, y, 
-				  CLUTTER_PICK_REACTIVE);
-
-	CLUTTER_NOTE (EVENT, "Reactive event received at %i, %i - actor: %p", 
-		      x, y, actor);
-
-	if (event->type == CLUTTER_SCROLL)
-	  event->scroll.source = g_object_ref (actor);
-	else
-	  event->button.source = g_object_ref (actor);
-
-	/* Motion enter leave events */
-	if (event->type == CLUTTER_MOTION)
-	  {
-	    if (motion_last_actor != actor)
-	      {
-		if (motion_last_actor)
-		  ;		/* FIXME: leave_notify to motion_last_actor */
-		if (actor)
-		  ;             /* FIXME: Enter notify to actor */
-	      }
-	    motion_last_actor = actor;
-	  }
-	
-	/* Send the event to the actor and all parents always the 
-	 * stage.  
-         *
-	 * FIXME: for an optimisation should check if there are
-	 * actually any reactive actors and avoid the pick all togeather
-	 * (signalling just the stage). Should be big help for gles.
-	 *
-	 * FIXME: Actors be able to stop emission.
-	 */
-	while (actor)
-	  {
-	    if (clutter_actor_is_reactive (actor) ||
-                clutter_actor_get_parent (actor) == NULL /* STAGE */ )
-	      {
-		CLUTTER_NOTE (EVENT, "forwarding event to reactive actor");
-		if (clutter_actor_event (actor, event))
-                  break;
-	      }
-
-	    actor = clutter_actor_get_parent (actor);
-	  }
-      }
-      break;
-    case CLUTTER_STAGE_STATE:
-      /* fullscreen / focus - forward to stage */
-      clutter_stage_event (CLUTTER_STAGE (stage), event);
-      break;
-    case CLUTTER_CLIENT_MESSAGE:
-      break;
-    }
-}
-
 ClutterActor *
 _clutter_do_pick (ClutterStage   *stage,
 		  gint            x,
@@ -1211,6 +1064,257 @@ _clutter_boolean_handled_accumulator (GSignalInvocationHint *ihint,
   continue_emission = !signal_handled;
 
   return continue_emission;
+}
+
+static void
+event_click_count_generate (ClutterEvent *event)
+{
+  /* multiple button click detection */
+  static guint32 button_click_time[2] = { 0, 0 };
+  static guint32 button_number[2] = { -1, -1 };
+  static gint    button_x[2] = { 0, 0 };
+  static gint    button_y[2] = { 0, 0 };
+
+  guint double_click_time, double_click_distance;
+  ClutterBackend      *backend;
+  ClutterMainContext  *context;
+
+  context = clutter_context_get_default ();
+  backend = context->backend;
+
+  double_click_distance = clutter_backend_get_double_click_distance (backend);
+  double_click_time = clutter_backend_get_double_click_time (backend);
+
+  /* FIXME: below could be reduced in lines and handle >3 clicks */
+  if ((event->button.time < (button_click_time[1] + 2 * double_click_time)) 
+      && (event->button.button == button_number[1]) 
+      && (ABS (event->button.x - button_x[1]) <= double_click_distance) 
+      && (ABS (event->button.y - button_y[1]) <= double_click_distance))
+    {
+      event->button.click_count = 2;
+            
+      button_click_time[1] = 0;
+      button_click_time[0] = 0;
+      button_number[1] = -1;
+      button_number[0] = -1;
+      button_x[0] = button_x[1] = 0;
+      button_y[0] = button_y[1] = 0;
+    }
+  else if ((event->button.time < (button_click_time[0] + double_click_time)) &&
+      (event->button.button == button_number[0]) &&
+      (ABS (event->button.x - button_x[0]) <= double_click_distance) &&
+      (ABS (event->button.y - button_y[0]) <= double_click_distance))
+    {
+      event->button.click_count = 3;
+      
+      button_click_time[1] = button_click_time[0];
+      button_click_time[0] = event->button.time;
+      button_number[1] = button_number[0];
+      button_number[0] = event->button.button;
+      button_x[1] = button_x[0];
+      button_x[0] = event->button.x;
+      button_y[1] = button_y[0];
+      button_y[0] = event->button.y;
+    }
+  else
+    {
+      event->button.click_count = 1;
+
+      button_click_time[1] = 0;
+      button_click_time[0] = event->button.time;
+      button_number[1] = -1;
+      button_number[0] = event->button.button;
+      button_x[1] = 0;
+      button_x[0] = event->button.x;
+      button_y[1] = 0;
+      button_y[0] = event->button.y;
+    }
+}
+
+/** 
+ * clutter_do_event
+ * @event: a #ClutterEvent.
+ *
+ * Processes an event. This function should never be called by applications.
+ *
+ * Since: 0.4
+ */
+void
+clutter_do_event (ClutterEvent *event)
+{
+  /* FIXME: This should probably be clutter_cook_event() - it would 
+   * take a raw event from the backend and 'cook' it so its more tasty. 
+   * 
+  */
+  ClutterMainContext  *context;
+  ClutterBackend      *backend;
+  ClutterActor        *stage;
+  static ClutterActor *motion_last_actor = NULL; 
+
+  context = clutter_context_get_default ();
+  backend = context->backend;
+  stage   = _clutter_backend_get_stage (backend);
+
+  if (!stage)
+    return;
+
+  CLUTTER_TIMESTAMP (EVENT, "Event received");
+
+  switch (event->type)
+    {
+    case CLUTTER_NOTHING:
+      break;
+    case CLUTTER_ENTER:
+    case CLUTTER_LEAVE:
+      {
+	ClutterActor *actor = NULL;
+
+	actor = event->crossing.source;
+
+	while (actor)
+	  {
+	    if (clutter_actor_is_reactive (actor) ||
+                clutter_actor_get_parent (actor) == NULL /* STAGE */ )
+	      {
+		CLUTTER_NOTE (EVENT, "forwarding event to reactive actor");
+		if (clutter_actor_event (actor, event))
+                  break;
+	      }
+
+	    actor = clutter_actor_get_parent (actor);
+	  }
+      }
+      break;
+    case CLUTTER_DESTROY_NOTIFY:
+    case CLUTTER_DELETE:
+      if (clutter_stage_event (CLUTTER_STAGE (stage), event))
+        clutter_main_quit ();
+      break;
+    case CLUTTER_KEY_PRESS:
+    case CLUTTER_KEY_RELEASE:
+      {
+	ClutterActor *actor = NULL;
+
+	actor = clutter_stage_get_key_focus (CLUTTER_STAGE(stage));
+
+	g_return_if_fail (actor != NULL);
+
+	event->key.source = g_object_ref (actor);
+
+	/* bubble up */
+	do
+	  {
+	    if (clutter_actor_event (actor, event))
+              break;
+
+	    actor = clutter_actor_get_parent (actor);
+	  }
+	while (actor != NULL);
+      }
+      break;
+    case CLUTTER_MOTION:
+      if (context->motion_events_per_actor == FALSE)
+	{
+	  /* Only stage gets motion events */
+	  event->motion.source = g_object_ref (stage);
+	  clutter_actor_event (stage, event);
+	  break;
+	}
+    case CLUTTER_BUTTON_PRESS:
+    case CLUTTER_BUTTON_RELEASE:
+    case CLUTTER_SCROLL:
+      {
+	ClutterActor *actor;
+	gint          x,y;
+
+	clutter_event_get_coords (event, &x, &y);
+
+	/* Safety on - probably a release off stage ? 
+	 * FIXME: should likely deliver the release somehow - grabs ?
+	 */
+	if (x > CLUTTER_STAGE_WIDTH () ||
+	    y > CLUTTER_STAGE_HEIGHT() ||
+	    x < 0 || y < 0)
+	  break;
+
+	/* Map the event to a reactive actor */
+	actor = _clutter_do_pick (CLUTTER_STAGE (stage), 
+				  x, y, 
+				  CLUTTER_PICK_REACTIVE);
+
+	CLUTTER_NOTE (EVENT, "Reactive event received at %i, %i - actor: %p", 
+		      x, y, actor);
+
+	if (event->type == CLUTTER_SCROLL)
+	  event->scroll.source = g_object_ref (actor);
+	else
+	  event->button.source = g_object_ref (actor);
+
+	/* Motion enter leave events */
+	if (event->type == CLUTTER_MOTION)
+	  {
+	    if (motion_last_actor != actor)
+	      {
+		if (motion_last_actor && actor)
+		  {
+		    ClutterEvent cev;
+
+		    cev.crossing.type    = CLUTTER_LEAVE;
+		    cev.crossing.time    = 0; /* FIXME */
+		    cev.crossing.flags   = 0; 
+		    cev.crossing.x       = x;
+		    cev.crossing.y       = y;
+		    cev.crossing.source  = g_object_ref (motion_last_actor);
+		    cev.crossing.related = g_object_ref (actor);
+
+		    clutter_event_put (&cev); /* copys */
+
+		    cev.crossing.type    = CLUTTER_ENTER;
+		    cev.crossing.time    = 0; /* FIXME */
+		    cev.crossing.flags   = 0; 
+		    cev.crossing.x       = x;
+		    cev.crossing.y       = y;
+		    cev.crossing.source  = g_object_ref (actor);
+		    cev.crossing.related = g_object_ref (motion_last_actor);
+
+		    clutter_event_put (&cev);
+		  }
+	      }
+	    motion_last_actor = actor;
+	  }
+	else
+	  event_click_count_generate (event);
+	
+	/* Send the event to the actor and all parents always the 
+	 * stage.  
+         *
+	 * FIXME: for an optimisation should check if there are
+	 * actually any reactive actors and avoid the pick all togeather
+	 * (signalling just the stage). Should be big help for gles.
+	 *
+	 * FIXME: Actors be able to stop emission.
+	 */
+	while (actor)
+	  {
+	    if (clutter_actor_is_reactive (actor) ||
+                clutter_actor_get_parent (actor) == NULL /* STAGE */ )
+	      {
+		CLUTTER_NOTE (EVENT, "forwarding event to reactive actor");
+		if (clutter_actor_event (actor, event))
+                  break;
+	      }
+
+	    actor = clutter_actor_get_parent (actor);
+	  }
+      }
+      break;
+    case CLUTTER_STAGE_STATE:
+      /* fullscreen / focus - forward to stage */
+      clutter_stage_event (CLUTTER_STAGE (stage), event);
+      break;
+    case CLUTTER_CLIENT_MESSAGE:
+      break;
+    }
 }
 
 void

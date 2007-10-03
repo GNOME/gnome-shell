@@ -58,13 +58,12 @@ typedef enum {
 typedef enum 
 {
   CLUTTER_NOTHING = 0,
-  
   CLUTTER_KEY_PRESS,
   CLUTTER_KEY_RELEASE,
   CLUTTER_MOTION,
+  CLUTTER_ENTER,
+  CLUTTER_LEAVE,
   CLUTTER_BUTTON_PRESS,
-  CLUTTER_2BUTTON_PRESS, 	/* Double click */
-  CLUTTER_3BUTTON_PRESS,        /* Triple click */
   CLUTTER_BUTTON_RELEASE,
   CLUTTER_SCROLL,
   CLUTTER_STAGE_STATE,
@@ -96,6 +95,7 @@ typedef struct _ClutterKeyEvent         ClutterKeyEvent;
 typedef struct _ClutterMotionEvent      ClutterMotionEvent;
 typedef struct _ClutterScrollEvent      ClutterScrollEvent;
 typedef struct _ClutterStageStateEvent  ClutterStageStateEvent;
+typedef struct _ClutterCrossingEvent    ClutterCrossingEvent;
 
 typedef struct _ClutterInputDevice      ClutterInputDevice;
 
@@ -131,6 +131,18 @@ struct _ClutterButtonEvent
   ClutterInputDevice *device; /* Future use */
   ClutterActor *source;
 };
+
+struct _ClutterCrossingEvent
+{
+  ClutterEventType type;
+  guint32 time;
+  ClutterEventFlags flags;
+  gint x;
+  gint y;
+  ClutterActor *source;
+  ClutterActor *related;
+};
+
 
 struct _ClutterMotionEvent
 {
@@ -178,6 +190,7 @@ union _ClutterEvent
   ClutterMotionEvent motion;
   ClutterScrollEvent scroll;
   ClutterStageStateEvent stage_state;
+  ClutterCrossingEvent crossing;
 };
 
 GType clutter_event_get_type (void) G_GNUC_CONST;

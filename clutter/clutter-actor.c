@@ -2942,8 +2942,6 @@ clutter_actor_event (ClutterActor *actor,
         case CLUTTER_NOTHING:
           break;
         case CLUTTER_BUTTON_PRESS:
-        case CLUTTER_2BUTTON_PRESS:
-        case CLUTTER_3BUTTON_PRESS:
           signal_num = BUTTON_PRESS_EVENT;
           break;
         case CLUTTER_BUTTON_RELEASE:
