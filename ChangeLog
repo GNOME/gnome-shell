@@ -1,3 +1,7 @@
+2007-10-03  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* configure.in: Remove circular dep metacity<->gnomecc.
+
 2007-09-15  Elijah Newren  <newren gmail com>
 
 	* configure.in: post-release version bump to 2.20.1

@@ -176,11 +176,8 @@ else
    AC_MSG_ERROR("Pango 1.2.0 or greater based on Xft2 is required")
 fi
 
-if $PKG_CONFIG --exists gnome-keybindings; then
-  GNOME_KEYBINDINGS_KEYSDIR=$($PKG_CONFIG --variable keysdir gnome-keybindings)
-else
-  GNOME_KEYBINDINGS_KEYSDIR="${datadir}/gnome-control-center/keybindings"
-fi
+# Unconditionally use this dir to avoid a circular dep with gnomecc
+GNOME_KEYBINDINGS_KEYSDIR="${datadir}/gnome-control-center/keybindings"
 AC_SUBST(GNOME_KEYBINDINGS_KEYSDIR)
 
 STARTUP_NOTIFICATION_VERSION=0.7
