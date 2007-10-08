@@ -6,7 +6,7 @@
 
 #include <clutter/clutter.h>
 
-static void
+static gboolean
 button_press_cb (ClutterStage       *stage,
                  ClutterButtonEvent *event,
                  gpointer            data)
@@ -27,9 +27,11 @@ button_press_cb (ClutterStage       *stage,
     }
 
   g_print ("%s button press event\n", click_type);
+
+  return FALSE;
 }
 
-static void
+static gboolean
 scroll_event_cb (ClutterStage       *stage,
                  ClutterScrollEvent *event,
                  gpointer            data)
@@ -37,6 +39,8 @@ scroll_event_cb (ClutterStage       *stage,
   g_print ("scroll direction: %s\n",
            event->direction == CLUTTER_SCROLL_UP ? "up"
                                                  : "down");
+
+  return FALSE;
 }
 
 typedef enum {
