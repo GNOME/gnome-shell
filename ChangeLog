@@ -1,3 +1,8 @@
+2007-10-03  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* tests/test-behave.c: Use the right return type for the
+	event callbacks.
+
 2007-10-03  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c:
