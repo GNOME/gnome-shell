@@ -2655,9 +2655,14 @@ void
 clutter_actor_set_parent (ClutterActor *self,
 		          ClutterActor *parent)
 {
+  ClutterMainContext *clutter_context;
+
+  clutter_context = clutter_context_get_default ();
+
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (CLUTTER_IS_ACTOR (parent));
   g_return_if_fail (self != parent);
+  g_return_if_fail (clutter_context != NULL);
 
   if (self->priv->parent_actor != NULL)
     {
@@ -2673,6 +2678,10 @@ clutter_actor_set_parent (ClutterActor *self,
 
       return;
     }
+
+  g_hash_table_insert (clutter_context->actor_hash, 
+		       (gpointer)clutter_actor_get_id(self),
+		       (gpointer)self);
 
   g_object_ref_sink (self);
   self->priv->parent_actor = parent;
@@ -2718,8 +2727,12 @@ void
 clutter_actor_unparent (ClutterActor *self)
 {
   ClutterActor *old_parent;
+  ClutterMainContext *clutter_context;
+
+  clutter_context = clutter_context_get_default ();
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
+  g_return_if_fail (clutter_context != NULL);
 
   if (self->priv->parent_actor == NULL)
     return;
@@ -2736,6 +2749,9 @@ clutter_actor_unparent (ClutterActor *self)
   old_parent = self->priv->parent_actor;
   self->priv->parent_actor = NULL;
   g_signal_emit (self, actor_signals[PARENT_SET], 0, old_parent);
+
+  g_hash_table_remove (clutter_context->actor_hash, 
+		       (gconstpointer)clutter_actor_get_id(self));
 
   g_object_unref (self);
 }

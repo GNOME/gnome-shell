@@ -373,6 +373,8 @@ clutter_actor_unset_reactive (ClutterActor *actor);
 gboolean
 clutter_actor_is_reactive (ClutterActor *actor);
 
+ClutterActor*
+clutter_get_actor_by_id (guint32 id);
      
 G_END_DECLS
 

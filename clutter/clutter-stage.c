@@ -608,13 +608,12 @@ clutter_stage_fullscreen (ClutterStage *stage)
   priv = stage->priv;
   if (!priv->is_fullscreen)
     {
-      /* Only set if backend implements */
+      /* Only set if backend implements. 
+       * Also see clutter_stage_event() for setting priv->is_fullscreen
+       * on state change event. 
+      */
       if (CLUTTER_STAGE_GET_CLASS (stage)->set_fullscreen)
-	{
-	  priv->is_fullscreen = TRUE;
-	  CLUTTER_STAGE_GET_CLASS (stage)->set_fullscreen (stage, TRUE);
-	  g_object_notify (G_OBJECT (stage), "fullscreen");
-	}
+	CLUTTER_STAGE_GET_CLASS (stage)->set_fullscreen (stage, TRUE);
     }
 }
 
@@ -640,11 +639,7 @@ clutter_stage_unfullscreen (ClutterStage *stage)
     {
       /* Only set if backend implements */
       if (CLUTTER_STAGE_GET_CLASS (stage)->set_fullscreen)
-	{
-	  priv->is_fullscreen = FALSE;
-	  CLUTTER_STAGE_GET_CLASS (stage)->set_fullscreen (stage, FALSE);
-	  g_object_notify (G_OBJECT (stage), "fullscreen");
-	}
+	CLUTTER_STAGE_GET_CLASS (stage)->set_fullscreen (stage, FALSE);
     }
 }
 
@@ -819,8 +814,12 @@ gboolean
 clutter_stage_event (ClutterStage *stage,
                      ClutterEvent *event)
 {
+  ClutterStagePrivate *priv;
+
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
+
+  priv = stage->priv;
 
   if (event->type == CLUTTER_DELETE)
     return TRUE;
@@ -835,9 +834,15 @@ clutter_stage_event (ClutterStage *stage,
   if (event->stage_state.changed_mask & CLUTTER_STAGE_STATE_FULLSCREEN)
     {
       if (event->stage_state.new_state & CLUTTER_STAGE_STATE_FULLSCREEN)
-	g_signal_emit (stage, stage_signals[FULLSCREEN], 0);
+	{
+	  priv->is_fullscreen = TRUE;
+	  g_signal_emit (stage, stage_signals[FULLSCREEN], 0);
+	}
       else
-	g_signal_emit (stage, stage_signals[UNFULLSCREEN], 0);
+	{
+	  priv->is_fullscreen = FALSE;
+	  g_signal_emit (stage, stage_signals[UNFULLSCREEN], 0);
+	}
     }
   
   if (event->stage_state.changed_mask & CLUTTER_STAGE_STATE_ACTIVATED)

@@ -1,3 +1,20 @@
+2007-10-08  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	* clutter/clutter-private.h:
+	* clutter/clutter-main.c:
+	Add a hash to global clutter context mapping all parented actor
+	id's to actors. 
+	Add clutter_get_actor_by_id() call.
+	Convert picking machinery to use above.
+	(performance/simpler composite actor creation)
+	
+	* clutter/clutter-stage.c: (clutter_stage_fullscreen),
+	(clutter_stage_unfullscreen), (clutter_stage_event):
+	Only set the fullscreen property on stage state fullscreen event(#545)
+	Experimental as could be painful to implement on non X backends.
+
 2007-10-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-script.c (json_parse_end):

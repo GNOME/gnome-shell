@@ -232,9 +232,8 @@ _clutter_do_pick (ClutterStage   *stage,
   /* Decode color back into an ID, taking into account fb depth */
   id = pixel[2]>>(8-b) | pixel[1]<<b>>(8-g) | pixel[0]<<(g+b)>>(8-r);
 
-  return clutter_container_find_child_by_id (CLUTTER_CONTAINER (stage), id);
+  return clutter_get_actor_by_id (id);
 }
-
 
 /**
  * clutter_main_quit:
@@ -760,6 +759,8 @@ pre_parse_hook (GOptionContext  *context,
 
   clutter_context->font_map = PANGO_FT2_FONT_MAP (pango_ft2_font_map_new ());
   pango_ft2_font_map_set_resolution (clutter_context->font_map, 96.0, 96.0);
+
+  clutter_context->actor_hash = g_hash_table_new (NULL, NULL);
 
   backend = clutter_context->backend;
   g_assert (CLUTTER_IS_BACKEND (backend));
@@ -1318,6 +1319,27 @@ clutter_do_event (ClutterEvent *event)
     }
 }
 
+/** 
+ * clutter_get_actor_by_id
+ * @id: a #ClutterActor ID.
+ *
+ * FIXME.
+ *
+ * Since: 0.6
+ */
+ClutterActor*
+clutter_get_actor_by_id (guint32 id)
+{
+  ClutterMainContext *context;
+
+  context = clutter_context_get_default ();
+
+  g_return_val_if_fail (context != NULL, NULL);
+  g_return_val_if_fail (context->actor_hash != NULL, NULL);
+
+  return g_hash_table_lookup (context->actor_hash, (gconstpointer)id);
+}
+
 void
 clutter_base_init (void)
 {
@@ -1336,3 +1358,4 @@ clutter_base_init (void)
       foo = clutter_actor_get_type ();
     }
 }
+
