@@ -543,21 +543,24 @@ clutter_script_construct_object (ClutterScript *script,
 }
 
 static void
+for_each_object (gpointer key,
+                 gpointer value,
+                 gpointer data)
+{
+  ClutterScript *script = data;
+  ObjectInfo *oinfo = value;
+
+  clutter_script_construct_object (script, oinfo);
+}
+
+static void
 json_parse_end (JsonParser *parser,
                 gpointer    user_data)
 {
   ClutterScript *script = user_data;
   ClutterScriptPrivate *priv = script->priv;
-  GList *objects, *l;
 
-  objects = g_hash_table_get_values (priv->objects);
-  for (l = objects; l; l = l->next)
-    {
-      ObjectInfo *oinfo = l->data;
-
-      oinfo->object = clutter_script_construct_object (script, oinfo);
-    }
-  g_list_free (objects);
+  g_hash_table_foreach (priv->objects, for_each_object, script);
 }
 
 static void

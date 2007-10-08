@@ -1,5 +1,13 @@
 2007-10-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-script.c (json_parse_end):
+	* clutter/json/json-object.c (json_object_get_members): Replace
+	the GLib 2.14 API with the equivalent code for GLib < 2.14.
+
+	* configure.ac: Revert the dependency bump.
+
+2007-10-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	Initial implementation of the UI definition files. (#424)
 
 	* clutter/json/Makefile.am:

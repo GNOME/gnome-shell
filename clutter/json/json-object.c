@@ -158,6 +158,31 @@ json_object_add_member (JsonObject  *object,
   g_hash_table_replace (object->members, g_strdup (member_name), node);
 }
 
+#if GLIB_MAJOR_VERSION >= 2 && GLIB_MAJOR_VERSION < 14
+static void
+get_keys (gpointer key,
+          gpointer value,
+          gpointer data)
+{
+  GList **list = data;
+
+  *list = g_list_prepend (*list, key);
+}
+
+static GList *
+g_hash_table_get_keys (GHashTable *hash_table)
+{
+  GList *retval;
+
+  g_return_val_if_fail (hash_table != NULL, NULL);
+
+  retval = NULL;
+  g_hash_table_foreach (hash_table, get_keys, &retval);
+
+  return g_list_reverse (retval);
+}
+#endif
+
 /**
  * json_object_get_members:
  * @object: a #JsonObject
