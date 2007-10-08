@@ -13,6 +13,7 @@ typedef struct {
   gchar *id;
 
   GList *properties;
+  GList *children;
 
   GType gtype;
   GObject *object;

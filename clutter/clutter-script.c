@@ -137,15 +137,15 @@ parse_member_to_property (ClutterScript *script,
                           const gchar   *name,
                           JsonNode      *node)
 {
-  PropertyInfo *retval;
+  PropertyInfo *retval = NULL;
   GValue value = { 0, };
 
-  retval = g_slice_new (PropertyInfo);
-  retval->property_name = g_strdup (name);
-  
   switch (JSON_NODE_TYPE (node))
     {
     case JSON_NODE_VALUE:
+      retval = g_slice_new (PropertyInfo);
+      retval->property_name = g_strdup (name);
+
       json_node_get_value (node, &value);
       g_value_init (&retval->value, G_VALUE_TYPE (&value));
       g_value_copy (&value, &retval->value);
@@ -156,7 +156,7 @@ parse_member_to_property (ClutterScript *script,
       break;
 
     case JSON_NODE_ARRAY:
-      if (strcmp (name, "geometry") == 0)
+      if (strcmp (name, "clip") == 0)
         {
           JsonArray *array = json_node_get_array (node);
           JsonNode *val;
@@ -176,6 +176,8 @@ parse_member_to_property (ClutterScript *script,
                 }
             }
 
+          retval = g_slice_new (PropertyInfo);
+          retval->property_name = g_strdup (name);
           g_value_init (&retval->value, CLUTTER_TYPE_GEOMETRY);
           g_value_set_boxed (&retval->value, &geom);
         }
@@ -221,8 +223,7 @@ parse_member_to_property (ClutterScript *script,
                 }
             }
 
-          g_value_init (&retval->value, G_TYPE_POINTER);
-          g_value_set_pointer (&retval->value, children);
+          info->children = children;
         }
       break;
 
@@ -277,6 +278,9 @@ json_object_end (JsonParser *parser,
           PropertyInfo *pinfo;
 
           pinfo = parse_member_to_property (script, oinfo, name, val);
+          if (!pinfo)
+            continue;
+
           oinfo->properties = g_list_prepend (oinfo->properties, pinfo);
 
           CLUTTER_NOTE (SCRIPT, "Added property `%s' (type:%s) for class `%s'",
@@ -371,9 +375,6 @@ translate_properties (ClutterScript  *script,
       PropertyInfo *pinfo = l->data;
       GParameter param = { NULL };
 
-      if (strcmp (pinfo->property_name, "children") == 0)
-        continue;
-
       pspec = g_object_class_find_property (oclass, pinfo->property_name);
       if (!pspec)
         {
@@ -450,24 +451,6 @@ construct_stage (ClutterScript *script,
       GParamSpec *pspec;
       GValue value = { 0, };
 
-      /* "children" is a fake property: we use it so we can construct
-       * the list of children of a given container
-       */
-      if (strcmp (name, "children") == 0)
-        {
-          GList *children = g_value_get_pointer (&pinfo->value);
-          
-          /* we know ClutterStage is a ClutterContainer */
-          add_children (script, CLUTTER_CONTAINER (oinfo->object), children);
-
-          /* unset, so we don't leak it later */
-          g_list_foreach (children, (GFunc) g_free, NULL);
-          g_list_free (children);
-          g_value_set_pointer (&pinfo->value, NULL);
-
-          continue;
-        }
-
       pspec = g_object_class_find_property (oclass, name);
       if (!pspec)
         {
@@ -488,6 +471,14 @@ construct_stage (ClutterScript *script,
     }
 
   g_type_class_unref (oclass);
+
+  if (oinfo->children)
+    {
+      /* we know ClutterStage is a ClutterContainer */
+      add_children (script,
+                    CLUTTER_CONTAINER (oinfo->object),
+                    oinfo->children);
+    }
 
   g_object_set_data_full (oinfo->object, "clutter-script-name",
                           g_strdup (oinfo->id),
@@ -527,9 +518,6 @@ clutter_script_construct_object (ClutterScript *script,
                 n_params);
 
   oinfo->object = g_object_newv (gtype, n_params, params);
-  g_object_set_data_full (oinfo->object, "clutter-script-name",
-                          g_strdup (oinfo->id),
-                          g_free);
 
   for (i = 0; i < n_params; i++)
     {
@@ -538,6 +526,16 @@ clutter_script_construct_object (ClutterScript *script,
     }
 
   g_free (params);
+
+  if (oinfo->children)
+    {
+      if (CLUTTER_IS_CONTAINER (oinfo->object))
+        add_children (script, CLUTTER_CONTAINER (oinfo->object), oinfo->children); 
+    }
+
+  g_object_set_data_full (oinfo->object, "clutter-script-name",
+                          g_strdup (oinfo->id),
+                          g_free);
 
   return oinfo->object;
 }
@@ -582,6 +580,9 @@ object_info_free (gpointer data)
           g_value_unset (&pinfo->value);
         }
       g_list_free (oinfo->properties);
+
+      g_list_foreach (oinfo->children, (GFunc) g_free, NULL);
+      g_list_free (oinfo->children);
 
       if (oinfo->object)
         g_object_unref (oinfo->object);

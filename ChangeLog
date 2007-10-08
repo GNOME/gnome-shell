@@ -1,3 +1,9 @@
+2007-10-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-script-private.h:
+	* clutter/clutter-script.c: Allow defining childrens for every
+	container actor inside the UI definition files.
+
 2007-10-08  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c:
