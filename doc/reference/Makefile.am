@@ -60,8 +60,9 @@ IGNORE_HFILES=\
 	eglnative \
 	eglx \
 	glx \
-	sdl \
-	pango 
+	json \
+	pango \
+	sdl
 
 EXTRA_HFILES=\
         ../../clutter/glx/clutter-glx.h

@@ -1,8 +1,8 @@
 NULL =
 
-SUBDIRS = cogl pango $(clutterbackend) 
+SUBDIRS = cogl pango json $(clutterbackend) 
 
-DIST_SUBDIRS = pango glx eglx eglnative cogl sdl
+DIST_SUBDIRS = pango glx eglx eglnative cogl sdl json
 
 target = $(clutterbackend)
 
@@ -17,6 +17,7 @@ INCLUDES = \
 	-I$(top_srcdir)/clutter/pango 		\
 	-I$(top_srcdir)/clutter/cogl 	        \
 	-I$(top_srcdir)/clutter/cogl/@CLUTTER_COGL@ \
+	-I$(top_srcdir)/clutter/json 		\
 	-DPREFIX=\""$(prefix)"\" 		\
 	-DLIBDIR=\""$(libdir)"\" 		\
 	-DDATADIR=\""$(datadir)"\" 		\
@@ -65,6 +66,7 @@ source_h =					\
 	$(srcdir)/clutter-main.h		\
 	$(srcdir)/clutter-media.h		\
 	$(srcdir)/clutter-rectangle.h		\
+	$(srcdir)/clutter-script.h		\
 	$(srcdir)/clutter-stage.h 		\
 	$(srcdir)/clutter-texture.h 		\
 	$(srcdir)/clutter-timeline.h 		\
@@ -153,6 +155,7 @@ source_c = \
 	clutter-texture.c 		\
 	clutter-timeline.c 		\
 	clutter-score.c 		\
+	clutter-script.c		\
 	clutter-timeout-pool.c		\
 	clutter-util.c 			\
 	clutter-vbox.c			\
@@ -162,13 +165,16 @@ source_h_priv = \
 	clutter-keysyms-table.h		\
 	clutter-debug.h 		\
 	clutter-private.h 		\
+	clutter-script-private.h	\
 	$(NULL)
 
 
-libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LIBADD =   \
-  $(CLUTTER_LIBS) pango/libpangoclutter.la                       \
-  @CLUTTER_FLAVOUR@/libclutter-@CLUTTER_FLAVOUR@.la              \
-  cogl/@CLUTTER_COGL@/libclutter-cogl.la	  
+libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_LIBADD = \
+  $(CLUTTER_LIBS) \
+  pango/libpangoclutter.la \
+  @CLUTTER_FLAVOUR@/libclutter-@CLUTTER_FLAVOUR@.la \
+  cogl/@CLUTTER_COGL@/libclutter-cogl.la \
+  json/libclutter-json.la
 
 libclutter_@CLUTTER_FLAVOUR@_@CLUTTER_API_VERSION@_la_SOURCES =  \
   $(source_c) $(source_h) $(source_h_priv)                      

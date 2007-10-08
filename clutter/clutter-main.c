@@ -78,6 +78,7 @@ static const GDebugKey clutter_debug_keys[] = {
   { "pango", CLUTTER_DEBUG_PANGO },
   { "backend", CLUTTER_DEBUG_BACKEND },
   { "scheduler", CLUTTER_DEBUG_SCHEDULER },
+  { "script", CLUTTER_DEBUG_SCRIPT },
 };
 #endif /* CLUTTER_ENABLE_DEBUG */
 

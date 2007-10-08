@@ -273,7 +273,7 @@ AC_SUBST([clutterbackendlib])
 
 dnl ========================================================================
 
-pkg_modules="pangoft2 glib-2.0 >= 2.10 gobject-2.0 gthread-2.0 gdk-pixbuf-2.0 $BACKEND_PC_FILES"
+pkg_modules="pangoft2 glib-2.0 >= 2.14 gobject-2.0 gthread-2.0 gdk-pixbuf-2.0 $BACKEND_PC_FILES"
 PKG_CHECK_MODULES(CLUTTER_DEPS, [$pkg_modules])
 
 dnl ========================================================================
@@ -359,7 +359,6 @@ AC_SUBST(CLUTTER_LIBS)
 
 AC_CONFIG_FILES([
         Makefile
-        clutter/pango/Makefile
         clutter/Makefile
         clutter/clutter-version.h
         clutter/glx/Makefile
@@ -369,6 +368,8 @@ AC_CONFIG_FILES([
         clutter/cogl/Makefile
         clutter/cogl/gl/Makefile
         clutter/cogl/gles/Makefile
+        clutter/json/Makefile
+        clutter/pango/Makefile
         tests/Makefile
         doc/Makefile
         doc/reference/Makefile

@@ -1,4 +1,33 @@
-2007-10-03  Emmanuele Bassi  <ebassi@openedhand.com>
+2007-10-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	Initial implementation of the UI definition files. (#424)
+
+	* clutter/json/Makefile.am:
+	* clutter/json/*.[ch]: In-tree copy of JSON-GLib, a GLib-based
+	JSON parser/generator library. We use it in-tree because we might
+	need to change the API. Ideally, we'd depend on it.
+
+	* clutter/clutter.h:
+	* clutter/clutter-script-private.h:
+	* clutter/clutter-script.[ch]: ClutterScript, the scenegraph
+	generator class. It parses JSON streams in form of buffers and
+	files and builds the scene.
+
+	* clutter/clutter-debug.h:
+	* clutter/clutter-main.c: Add a "script" debug flag
+
+	* clutter/Makefile.am: Build glue.
+
+	* tests/Makefile.am:
+	* tests/test-script.c: Add a test case for the ClutterScript.
+
+	* configure.ac: Depend on GLib 2.14, so we can use the
+	g_hash_table_get_key() and g_hash_table_get_values() functions
+	for the time being; we can probably reimplement those, but we
+	are going to need 2.14 anyway if we are going to implement a
+	list model using GSequence.
+
+2007-10-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* tests/test-behave.c: Use the right return type for the
 	event callbacks.
