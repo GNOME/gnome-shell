@@ -12,7 +12,6 @@
 #include "clutter-stage.h"
 #include "clutter-container.h"
 
-#include "clutter-scriptable.h"
 #include "clutter-script.h"
 #include "clutter-script-private.h"
 
