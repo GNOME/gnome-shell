@@ -1,5 +1,10 @@
 2007-10-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-script.c: Parse ClutterMargin and ClutterPadding
+	properties from arrays or integers (assume pixels).
+
+2007-10-08  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-script-private.h:
 	* clutter/clutter-script.c: Allow defining childrens for every
 	container actor inside the UI definition files.

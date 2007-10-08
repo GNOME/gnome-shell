@@ -156,7 +156,73 @@ parse_member_to_property (ClutterScript *script,
       break;
 
     case JSON_NODE_ARRAY:
-      if (strcmp (name, "clip") == 0)
+      if (strcmp (name, "margin") == 0)
+        {
+          JsonArray *array = json_node_get_array (node);
+          JsonNode *val;
+          gint i;
+          ClutterMargin margin = { 0, };
+
+          /* this is quite evil indeed */
+          for (i = 0; i < json_array_get_length (array); i++)
+            {
+              val = json_array_get_element (array, i);
+              switch (i)
+                {
+                case 0:
+                  margin.top = CLUTTER_UNITS_FROM_INT (json_node_get_int (val));
+                  break;
+                case 1:
+                  margin.right = CLUTTER_UNITS_FROM_INT (json_node_get_int (val));
+                  break;
+                case 2:
+                  margin.bottom = CLUTTER_UNITS_FROM_INT (json_node_get_int (val));
+                  break;
+                case 3:
+                  margin.left = CLUTTER_UNITS_FROM_INT (json_node_get_int (val));
+                  break;
+                }
+            }
+
+          retval = g_slice_new (PropertyInfo);
+          retval->property_name = g_strdup (name);
+          g_value_init (&retval->value, CLUTTER_TYPE_MARGIN);
+          g_value_set_boxed (&retval->value, &margin);
+        }
+      else if (strcmp (name, "padding") == 0)
+        {
+          JsonArray *array = json_node_get_array (node);
+          JsonNode *val;
+          gint i;
+          ClutterPadding padding = { 0, };
+
+          /* this is quite evil indeed */
+          for (i = 0; i < json_array_get_length (array); i++)
+            {
+              val = json_array_get_element (array, i);
+              switch (i)
+                {
+                case 0:
+                  padding.top = CLUTTER_UNITS_FROM_INT (json_node_get_int (val));
+                  break;
+                case 1:
+                  padding.right = CLUTTER_UNITS_FROM_INT (json_node_get_int (val));
+                  break;
+                case 2:
+                  padding.bottom = CLUTTER_UNITS_FROM_INT (json_node_get_int (val));
+                  break;
+                case 3:
+                  padding.left = CLUTTER_UNITS_FROM_INT (json_node_get_int (val));
+                  break;
+                }
+            }
+
+          retval = g_slice_new (PropertyInfo);
+          retval->property_name = g_strdup (name);
+          g_value_init (&retval->value, CLUTTER_TYPE_PADDING);
+          g_value_set_boxed (&retval->value, &padding);
+        }
+      else if (strcmp (name, "clip") == 0)
         {
           JsonArray *array = json_node_get_array (node);
           JsonNode *val;
