@@ -207,6 +207,10 @@ struct _ClutterActorClass
 				     ClutterKeyEvent    *event);
   gboolean (* motion_event)         (ClutterActor       *actor,
 				     ClutterMotionEvent *event);
+  void     (* enter)                (ClutterActor         *actor,
+				     ClutterCrossingEvent *event);
+  void     (* leave)                (ClutterActor         *actor,
+				     ClutterCrossingEvent *event);
   void     (* focus_in)             (ClutterActor       *actor);
   void     (* focus_out)            (ClutterActor       *actor);
 

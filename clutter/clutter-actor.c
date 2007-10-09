@@ -31,6 +31,17 @@
  * stage. Every object that must appear on the main #ClutterStage must also
  * be a #ClutterActor, either by using one of the classes provided by
  * Clutter, or by implementing a new #ClutterActor subclass.
+ *
+ * Ordering of tranformations. FIXME.
+ *
+ * Notes on clutter actor events: FIXME.
+ *
+ *  - Actors emit pointer events if set reactive (#clutter_actor_set_reactive)
+ *  - Keyboard events are emitted if actor has focus (#clutter_stage_set_focus)
+ *  - Motion events (motion, enter, leave) are only emitted per actor if 
+ *    #clutter_enable_motion_events called with TRUE. If set to FALSE (default)
+ *    then only the stage emits events. 
+ *  - One emitted an event emission has two phases - capture and bubble.
  */
 
 #include "config.h"
@@ -93,6 +104,7 @@ enum
   HIDE,
   DESTROY,
   PARENT_SET,
+
   EVENT,
   EVENT_AFTER,
   BUTTON_PRESS_EVENT,
@@ -103,6 +115,9 @@ enum
   MOTION_EVENT,
   FOCUS_IN,
   FOCUS_OUT,
+  ENTER_EVENT,
+  LEAVE_EVENT,
+
   LAST_SIGNAL
 };
 
@@ -1430,13 +1445,47 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * The ::focus-out signal is emitted when @actor loses key focus.
    *
-   * Source: 0.6
+   * Since: 0.6
    */
   actor_signals[FOCUS_OUT] =
     g_signal_new ("focus-out",
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (ClutterActorClass, focus_out),
+		  NULL, NULL,
+		  clutter_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
+
+  /**
+   * ClutterActor::enter:
+   * @actor: the actor which the pointer has entered.
+   *
+   * The ::enter signal is emitted when the pointer enters the @actor 
+   *
+   * Since: 0.6
+   */
+  actor_signals[ENTER_EVENT] =
+    g_signal_new ("enter-event",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterActorClass, enter),
+		  NULL, NULL,
+		  clutter_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
+
+  /**
+   * ClutterActor::leave:
+   * @actor: the actor which the pointer has left
+   *
+   * The ::leave signal is emitted when the pointer leaves the @actor.
+   *
+   * Since: 0.6
+   */
+  actor_signals[LEAVE_EVENT] =
+    g_signal_new ("leave-event",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ClutterActorClass, leave),
 		  NULL, NULL,
 		  clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
@@ -2974,6 +3023,12 @@ clutter_actor_event (ClutterActor *actor,
           break;
         case CLUTTER_MOTION:
           signal_num = MOTION_EVENT;
+          break;
+        case CLUTTER_ENTER:
+          signal_num = ENTER_EVENT;
+          break;
+        case CLUTTER_LEAVE:
+          signal_num = LEAVE_EVENT;
           break;
         case CLUTTER_DELETE:
         case CLUTTER_DESTROY_NOTIFY:

@@ -1,3 +1,13 @@
+2007-10-10  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	Add missing enter/leave event signals
+
+	* clutter/clutter-main.c: (clutter_do_event):
+	Set time in crossing events. 
+	Protect against do_pick() failing.
+
 2007-10-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-script.c (resolve_alpha_func): Fix the

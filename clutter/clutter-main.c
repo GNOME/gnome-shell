@@ -1173,6 +1173,8 @@ clutter_do_event (ClutterEvent *event)
 
 	actor = event->crossing.source;
 
+	g_return_if_fail (actor != NULL);
+
 	while (actor)
 	  {
 	    if (clutter_actor_is_reactive (actor) ||
@@ -1247,6 +1249,8 @@ clutter_do_event (ClutterEvent *event)
 	CLUTTER_NOTE (EVENT, "Reactive event received at %i, %i - actor: %p", 
 		      x, y, actor);
 
+	g_return_if_fail (actor != NULL);
+
 	if (event->type == CLUTTER_SCROLL)
 	  event->scroll.source = g_object_ref (actor);
 	else
@@ -1262,7 +1266,7 @@ clutter_do_event (ClutterEvent *event)
 		    ClutterEvent cev;
 
 		    cev.crossing.type    = CLUTTER_LEAVE;
-		    cev.crossing.time    = 0; /* FIXME */
+		    cev.crossing.time    = event->any.time;
 		    cev.crossing.flags   = 0; 
 		    cev.crossing.x       = x;
 		    cev.crossing.y       = y;
@@ -1272,7 +1276,7 @@ clutter_do_event (ClutterEvent *event)
 		    clutter_event_put (&cev); /* copys */
 
 		    cev.crossing.type    = CLUTTER_ENTER;
-		    cev.crossing.time    = 0; /* FIXME */
+		    cev.crossing.time    = event->any.time;
 		    cev.crossing.flags   = 0; 
 		    cev.crossing.x       = x;
 		    cev.crossing.y       = y;
