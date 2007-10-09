@@ -15,9 +15,6 @@
 
 G_DEFINE_TYPE (ClutterStageEGL, clutter_stage_egl, CLUTTER_TYPE_STAGE);
 
-/* NOTE: EGL implementation needs to provide this function */
-extern NativeWindowType createNativeWindow(void);
-
 static void
 clutter_stage_egl_show (ClutterActor *actor)
 {
@@ -80,8 +77,6 @@ clutter_stage_egl_realize (ClutterActor *actor)
 
   if (G_LIKELY (!is_offscreen))
     {
-      NativeWindowType window;
-
       EGLint cfg_attribs[] = { EGL_BUFFER_SIZE,    EGL_DONT_CARE,
 			       EGL_RED_SIZE,       5,
 			       EGL_GREEN_SIZE,     6,
@@ -115,13 +110,10 @@ clutter_stage_egl_realize (ClutterActor *actor)
       if (stage_egl->egl_surface)
 	eglDestroySurface (clutter_egl_display(), stage_egl->egl_surface);
 
-      /* EGL Implementation needs to provide createNativeWindow() */
-      window = createNativeWindow();
-
       stage_egl->egl_surface 
 	= eglCreateWindowSurface (clutter_egl_display(), 
 				  configs[0], 
-				  window, 
+				  NULL, 
 				  NULL);
 
       eglQuerySurface (clutter_egl_display(),

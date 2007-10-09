@@ -134,6 +134,12 @@ clutter_backend_egl_dispose (GObject *gobject)
       backend_egl->stage = NULL;
     }
 
+  if (backend_egl->edpy)
+    {
+      eglTerminate (backend_egl->edpy);
+      backend_egl->edpy = NULL;
+    }
+
   G_OBJECT_CLASS (clutter_backend_egl_parent_class)->dispose (gobject);
 }
 

@@ -1,3 +1,13 @@
+2007-10-09  Rob Bradford  <rob@openedhand.com>
+
+	* clutter/eglnative/clutter-backend-egl.c:
+	(clutter_backend_egl_dispose):
+	Call eglTerminate() on the display when the backend is disposed of.
+
+	* clutter/eglnative/clutter-stage-egl.c:
+	(clutter_stage_egl_realize):
+	Don't use the createNativeWindow() call, it's not generic EGL.
+
 2007-10-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-script-private.h:
