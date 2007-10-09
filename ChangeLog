@@ -1,3 +1,8 @@
+2007-10-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-fixed.h: Add deprecation guards around
+	CLUTTER_FIXED_INT().
+
 2007-10-08  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-script.c: Parse ClutterMargin and ClutterPadding

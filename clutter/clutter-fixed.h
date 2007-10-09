@@ -211,6 +211,8 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
  */
 #define CLUTTER_FIXED_TO_INT(x)         ((x) >> CFX_Q)
 
+#ifndef CLUTTER_DISABLE_DEPRECATED
+
 /**
  * CLUTTER_FIXED_INT:
  * @x: a fixed point value
@@ -220,6 +222,8 @@ typedef gint32 ClutterAngle;    /* angle such that 1024 == 2*PI */
  * Deprecated:0.6: Use %CLUTTER_FIXED_TO_INT instead
  */
 #define CLUTTER_FIXED_INT(x)            CLUTTER_FIXED_TO_INT((x))
+
+#endif /* !CLUTTER_DISABLE_DEPRECATED */
 
 /**
  * CLUTTER_FIXED_FRACTION:
