@@ -1,5 +1,12 @@
 2007-10-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* tests/Makefile.am:
+	* tests/test-script.c:
+	* tests/test-script.json: Move part of the UI definition into
+	its own file and exercise clutter_script_load_from_file().
+
+2007-10-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-script.c (clutter_script_get_object): Construct
 	the requested object if it hasn't been already. This allows
 	referencing objects within the same snippet.

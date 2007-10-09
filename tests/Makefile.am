@@ -26,4 +26,4 @@ test_timeline_SOURCES  = test-timeline.c
 test_score_SOURCES     = test-score.c
 test_script_SOURCES    = test-script.c
 
-EXTRA_DIST = redhand.png
+EXTRA_DIST = redhand.png test-script.json
