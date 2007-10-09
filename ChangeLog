@@ -1,5 +1,16 @@
 2007-10-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-script.c (clutter_script_get_object): Construct
+	the requested object if it hasn't been already. This allows
+	referencing objects within the same snippet.
+
+	* tests/test-script.c: Declare a timeline and use it inside
+	multiple behaviours; apply multiple behaviours to various
+	actors, then retrieve the timeline to start it when the test
+	runs.
+
+2007-10-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-script-private.h:
 	* clutter/clutter-script.c: Allow applying behaviours directly
 	inside the UI definition data.

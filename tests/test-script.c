@@ -6,17 +6,36 @@
 #include <clutter/clutter.h>
 
 static const gchar *test_behaviour =
-"{"
-"  \"id\"          : \"rotate-behaviour\","
-"  \"type\"        : \"ClutterBehaviourRotate\","
-"  \"angle-begin\" : 0.0,"
-"  \"angle-end\"   : 360.0,"
-"  \"axis\"        : \"z-axis\","
-"  \"alpha\"       : {"
-"    \"timeline\" : { \"num-frames\" : 300, \"fps\" : 60, \"loop\" : true },"
-"    \"function\" : \"sine\""
+"["
+"  {"
+"    \"id\" : \"main-timeline\","
+"    \"type\" : \"ClutterTimeline\","
+"    \"num-frames\" : 300,"
+"    \"fps\" : 60,"
+"    \"loop\" : true"
+"  },"
+"  {"
+"    \"id\"          : \"rotate-behaviour\","
+"    \"type\"        : \"ClutterBehaviourRotate\","
+"    \"angle-begin\" : 0.0,"
+"    \"angle-end\"   : 360.0,"
+"    \"axis\"        : \"z-axis\","
+"    \"alpha\"       : {"
+"      \"timeline\" : \"main-timeline\","
+"      \"function\" : \"sine\""
+"    }"
+"  },"
+"  {"
+"    \"id\"            : \"fade-behaviour\","
+"    \"type\"          : \"ClutterBehaviourOpacity\","
+"    \"opacity-start\" : 255,"
+"    \"opacity-end\"   : 0,"
+"    \"alpha\"         : {"
+"      \"timeline\" : \"main-timeline\","
+"      \"function\" : \"ramp\""
+"    }"
 "  }"
-"}";
+"]";
 
 static const gchar *test_ui =
 "{"
@@ -46,6 +65,7 @@ static const gchar *test_ui =
 "        \"width\"    : 100,"
 "        \"height\"   : 100,"
 "        \"visible\"  : true,"
+"        \"behaviours\" : [ \"fade-behaviour\" ]"
 "      },"
 "      {"
 "        \"id\"       : \"blue-button\","
@@ -65,7 +85,7 @@ static const gchar *test_ui =
 "        \"y\"          : 50,"
 "        \"opacity\"    : 100,"
 "        \"visible\"    : true,"
-"        \"behaviours\" : [ \"rotate-behaviour\" ]"
+"        \"behaviours\" : [ \"rotate-behaviour\", \"fade-behaviour\" ]"
 "      }"
 "    ]"
 "  }"
@@ -74,10 +94,8 @@ static const gchar *test_ui =
 int
 main (int argc, char *argv[])
 {
-  ClutterActor *stage;
-  ClutterActor *texture;
-  ClutterBehaviour *rotate;
   ClutterScript *script;
+  GObject *stage, *timeline;
   GError *error = NULL;
 
   clutter_init (&argc, &argv);
@@ -105,11 +123,11 @@ main (int argc, char *argv[])
       return EXIT_FAILURE;
     }
 
-  stage = CLUTTER_ACTOR (clutter_script_get_object (script, "main-stage"));
-  clutter_actor_show (stage);
+  stage = clutter_script_get_object (script, "main-stage");
+  clutter_actor_show (CLUTTER_ACTOR (stage));
 
-  rotate = CLUTTER_BEHAVIOUR (clutter_script_get_object (script, "rotate-behaviour"));
-  clutter_timeline_start (clutter_alpha_get_timeline (clutter_behaviour_get_alpha (rotate)));
+  timeline = clutter_script_get_object (script, "main-timeline");
+  clutter_timeline_start (CLUTTER_TIMELINE (timeline));
 
   clutter_main ();
 

@@ -196,12 +196,14 @@ resolve_alpha_func (const gchar *name)
     {
       c = name[i];
       /* skip if uppercase, first or previous is uppercase */
-      if ((c == g_ascii_toupper (c) &&
+      if ((c == '-') ||
+          (c == g_ascii_toupper (c) &&
            i > 0 && name[i-1] != g_ascii_toupper (name[i-1])) ||
           (i > 2 && name[i]   == g_ascii_toupper (name[i]) &&
            name[i-1] == g_ascii_toupper (name[i-1]) &&
            name[i-2] == g_ascii_toupper (name[i-2])))
         g_string_append_c (symbol_name, '_');
+
       g_string_append_c (symbol_name, g_ascii_tolower (c));
     }
   g_string_append (symbol_name, "_func");
@@ -210,7 +212,7 @@ resolve_alpha_func (const gchar *name)
 
   if (!g_module_symbol (module, symbol, (gpointer)&func))
     func = NULL;
-  
+
   g_free (symbol);
 
   return func;
@@ -1145,7 +1147,7 @@ clutter_script_get_object (ClutterScript *script,
   if (!oinfo)
     return NULL;
 
-  return oinfo->object;
+  return clutter_script_construct_object (script, oinfo);
 }
 
 static GList *
