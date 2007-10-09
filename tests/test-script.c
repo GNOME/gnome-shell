@@ -32,7 +32,7 @@ static const gchar *test_behaviour =
 "    \"opacity-end\"   : 0,"
 "    \"alpha\"         : {"
 "      \"timeline\" : \"main-timeline\","
-"      \"function\" : \"ramp\""
+"      \"function\" : \"ramp-inc\""
 "    }"
 "  }"
 "]";

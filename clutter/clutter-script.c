@@ -187,6 +187,8 @@ resolve_alpha_func (const gchar *name)
   if (!module)
     module = g_module_open (NULL, 0);
   
+  CLUTTER_NOTE (SCRIPT, "Looking for `%s' alpha function", name);
+  
   if (g_module_symbol (module, name, (gpointer) &func))
     return func;
 
@@ -195,20 +197,17 @@ resolve_alpha_func (const gchar *name)
   for (i = 0; name[i] != '\0'; i++)
     {
       c = name[i];
-      /* skip if uppercase, first or previous is uppercase */
-      if ((c == '-') ||
-          (c == g_ascii_toupper (c) &&
-           i > 0 && name[i-1] != g_ascii_toupper (name[i-1])) ||
-          (i > 2 && name[i]   == g_ascii_toupper (name[i]) &&
-           name[i-1] == g_ascii_toupper (name[i-1]) &&
-           name[i-2] == g_ascii_toupper (name[i-2])))
+      
+      if (name[i] == '-')
         g_string_append_c (symbol_name, '_');
-
-      g_string_append_c (symbol_name, g_ascii_tolower (c));
+      else
+        g_string_append_c (symbol_name, g_ascii_tolower (name[i]));
     }
   g_string_append (symbol_name, "_func");
   
   symbol = g_string_free (symbol_name, FALSE);
+
+  CLUTTER_NOTE (SCRIPT, "Looking for `%s' alpha function", symbol);
 
   if (!g_module_symbol (module, symbol, (gpointer)&func))
     func = NULL;

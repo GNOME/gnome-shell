@@ -1,5 +1,10 @@
 2007-10-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-script.c (resolve_alpha_func): Fix the
+	ClutterAlphaFunc resolution function.
+
+2007-10-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* tests/Makefile.am:
 	* tests/test-script.c:
 	* tests/test-script.json: Move part of the UI definition into
