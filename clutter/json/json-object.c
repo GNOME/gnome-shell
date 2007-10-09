@@ -158,7 +158,7 @@ json_object_add_member (JsonObject  *object,
   g_hash_table_replace (object->members, g_strdup (member_name), node);
 }
 
-#if GLIB_MAJOR_VERSION >= 2 && GLIB_MAJOR_VERSION < 14
+#if GLIB_MAJOR_VERSION >= 2 && GLIB_MINOR_VERSION < 14
 static void
 get_keys (gpointer key,
           gpointer value,
