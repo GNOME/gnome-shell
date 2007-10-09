@@ -1,5 +1,23 @@
 2007-10-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-script-private.h:
+	* clutter/clutter-script.h:
+	* clutter/clutter-script.c: Add licensing information to
+	the newly added files.
+
+	* clutter/clutter-script.c: Support creating behaviours with
+	ClutterScript. ClutterAlpha objects are implicit, but
+	timelines can be both explicit objects using their id or
+	implicit objects. Make the property resolution and translation
+	more robust. Support the pixbuf property.
+
+	* tests/test-script.c: Test the newly added features.
+
+	* docs/reference/clutter-docs.sgml:
+	* docs/reference/clutter-sections.txt: Add ClutterScript.
+
+2007-10-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-fixed.h: Add deprecation guards around
 	CLUTTER_FIXED_INT().
 

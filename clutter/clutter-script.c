@@ -1,3 +1,91 @@
+/*
+ * Clutter.
+ *
+ * An OpenGL based 'interactive canvas' library.
+ *
+ * Authored By Matthew Allum  <mallum@openedhand.com>
+ *
+ * Copyright (C) 2006 OpenedHand
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+/**
+ * SECTION:clutter-script
+ * @short_description: Loads a scene from UI definition data
+ *
+ * #ClutterScript is an object used for loading and building parts or a
+ * complete scenegraph from external definition data in forms of string
+ * buffers or files.
+ *
+ * The UI definition format is JSON, the JavaScript Object Notation as
+ * described by RFC 4627. #ClutterScript can load a JSON data stream,
+ * parse it and build all the objects defined into it. Each object must
+ * have an "id" and a "type" properties defining the name to be used
+ * to retrieve it from #ClutterScript with clutter_script_get_object(),
+ * and the class type to be instanciated. Every other attribute will
+ * be mapped to the class properties.
+ *
+ * A simple object might be defined as:
+ *
+ * <programlisting>
+ * {
+ *   "id"     : "red-button",
+ *   "type"   : "ClutterRectangle",
+ *   "width"  : 100,
+ *   "height" : 100,
+ *   "color"  : "0xff0000ff"
+ * }
+ * </programlisting>
+ *
+ * This will produce a red #ClutterRectangle, 100x100 pixels wide, and
+ * with a name of "red-button"; it can be retrieved by calling:
+ *
+ * <programlisting>
+ * ClutterActor *red_button;
+ *
+ * red_button = CLUTTER_ACTOR (clutter_script_get_object (script, "red-button"));
+ * </programlisting>
+ *
+ * and then manipulated with the Clutter API.
+ *
+ * Packing can be represented using the "children" member, and passing an
+ * array of objects or ids of objects already defined (but not packed: the
+ * packing rules of Clutter still apply).
+ *
+ * Behaviours and timelines can also be defined inside a UI definition
+ * buffer:
+ *
+ * <programlisting>
+ * {
+ *   "id"          : "rotate-behaviour",
+ *   "type"        : "ClutterBehaviourRotate",
+ *   "angle-begin" : 0.0,
+ *   "angle-end"   : 360.0,
+ *   "axis"        : "z-axis",
+ *   "alpha"       : {
+ *     "timeline" : { "num-frames" : 240, "fps" : 60, "loop" : true },
+ *     "function" : "sine"
+ *   }
+ * }
+ * </programlisting>
+ *
+ * #ClutterScript is available since Clutter 0.6
+ */
+
 #include "config.h"
 
 #include <stdlib.h>
@@ -9,8 +97,10 @@
 #include <glib-object.h>
 
 #include "clutter-actor.h"
-#include "clutter-stage.h"
+#include "clutter-alpha.h"
+#include "clutter-behaviour.h"
 #include "clutter-container.h"
+#include "clutter-stage.h"
 
 #include "clutter-script.h"
 #include "clutter-script-private.h"
@@ -37,6 +127,8 @@ struct _ClutterScriptPrivate
 };
 
 G_DEFINE_TYPE (ClutterScript, clutter_script, G_TYPE_OBJECT);
+
+static void object_info_free (gpointer data);
 
 /* tries to map a name in camel case into the corresponding get_type()
  * function, e.g.:
@@ -81,6 +173,47 @@ resolve_type_lazily (const gchar *name)
   g_free (symbol);
 
   return gtype;
+}
+
+static ClutterAlphaFunc
+resolve_alpha_func (const gchar *name)
+{
+  static GModule *module = NULL;
+  ClutterAlphaFunc func;
+  GString *symbol_name = g_string_new ("");
+  char c, *symbol;
+  int i;
+
+  if (!module)
+    module = g_module_open (NULL, 0);
+  
+  if (g_module_symbol (module, name, (gpointer) &func))
+    return func;
+
+  g_string_append (symbol_name, "clutter_");
+
+  for (i = 0; name[i] != '\0'; i++)
+    {
+      c = name[i];
+      /* skip if uppercase, first or previous is uppercase */
+      if ((c == g_ascii_toupper (c) &&
+           i > 0 && name[i-1] != g_ascii_toupper (name[i-1])) ||
+          (i > 2 && name[i]   == g_ascii_toupper (name[i]) &&
+           name[i-1] == g_ascii_toupper (name[i-1]) &&
+           name[i-2] == g_ascii_toupper (name[i-2])))
+        g_string_append_c (symbol_name, '_');
+      g_string_append_c (symbol_name, g_ascii_tolower (c));
+    }
+  g_string_append (symbol_name, "_func");
+  
+  symbol = g_string_free (symbol_name, FALSE);
+
+  if (!g_module_symbol (module, symbol, (gpointer)&func))
+    func = NULL;
+  
+  g_free (symbol);
+
+  return func;
 }
 
 static void
@@ -131,6 +264,53 @@ warn_invalid_value (ClutterScript *script,
     }
 }
 
+static ClutterTimeline *
+construct_timeline (ClutterScript *script,
+                    JsonObject    *object)
+{
+  ClutterTimeline *retval = NULL;
+  ObjectInfo *oinfo;
+  GList *members, *l;
+  
+  /* we fake an ObjectInfo so we can reuse clutter_script_construct_object()
+   * here; we do not save it inside the hash table, because if this had
+   * been a named object then we wouldn't have ended up here in the first
+   * place
+   */
+  oinfo = g_slice_new0 (ObjectInfo);
+  oinfo->gtype = CLUTTER_TYPE_TIMELINE;
+
+  members = json_object_get_members (object);
+  for (l = members; l != NULL; l = l->next)
+    {
+      const gchar *name = l->data;
+      JsonNode *node = json_object_get_member (object, name);
+
+      if (JSON_NODE_TYPE (node) == JSON_NODE_VALUE)
+        {
+          PropertyInfo *pinfo = g_slice_new (PropertyInfo);
+          GValue value = { 0, };
+
+          pinfo->property_name = g_strdup (name);
+
+          json_node_get_value (node, &value);
+          g_value_init (&pinfo->value, G_VALUE_TYPE (&value));
+          g_value_transform (&value, &pinfo->value);
+          g_value_unset (&value);
+
+          oinfo->properties = g_list_prepend (oinfo->properties, pinfo);
+        }
+    }
+  g_list_free (members);
+  
+  retval = CLUTTER_TIMELINE (clutter_script_construct_object (script, oinfo));
+
+  g_object_ref (retval);
+  object_info_free (oinfo);
+
+  return retval;
+}
+
 static PropertyInfo *
 parse_member_to_property (ClutterScript *script,
                           ObjectInfo    *info,
@@ -148,11 +328,51 @@ parse_member_to_property (ClutterScript *script,
 
       json_node_get_value (node, &value);
       g_value_init (&retval->value, G_VALUE_TYPE (&value));
-      g_value_copy (&value, &retval->value);
+      g_value_transform (&value, &retval->value);
       g_value_unset (&value);
       break;
 
     case JSON_NODE_OBJECT:
+      if (strcmp (name, "alpha") == 0)
+        {
+          JsonObject *object = json_node_get_object (node);
+          ClutterAlpha *alpha = NULL;
+          ClutterTimeline *timeline = NULL;
+          ClutterAlphaFunc func = NULL;
+          JsonNode *val;
+
+          retval = g_slice_new (PropertyInfo);
+          retval->property_name = g_strdup (name);
+
+          alpha = clutter_alpha_new ();
+          
+          val = json_object_get_member (object, "timeline");
+          if (val)
+            {
+              if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE &&
+                  json_node_get_string (val) != NULL)
+                {
+                  const gchar *id = json_node_get_string (val);
+
+                  timeline = 
+                    CLUTTER_TIMELINE (clutter_script_get_object (script, id));
+                }
+              else if (JSON_NODE_TYPE (val) == JSON_NODE_OBJECT)
+                timeline = construct_timeline (script, json_node_get_object (val));
+            }
+
+          val = json_object_get_member (object, "function");
+          if (val && json_node_get_string (val) != NULL)
+            func = resolve_alpha_func (json_node_get_string (val));
+
+          alpha = g_object_new (CLUTTER_TYPE_ALPHA,
+                                "timeline", timeline,
+                                NULL);
+          clutter_alpha_set_func (alpha, func, NULL, NULL);
+
+          g_value_init (&retval->value, CLUTTER_TYPE_ALPHA);
+          g_value_set_object (&retval->value, G_OBJECT (alpha));
+        }
       break;
 
     case JSON_NODE_ARRAY:
@@ -365,59 +585,150 @@ json_object_end (JsonParser *parser,
   g_hash_table_replace (priv->objects, g_strdup (oinfo->id), oinfo);
 }
 
+/* the property translation sequence is split in two: the first
+ * half is done in parse_member_to_property(), which translates
+ * from JSON data types into valid property types. the second
+ * half is done here, where property types are translated into
+ * the correct type for the given property GType
+ */
 static gboolean
-translate_property (const gchar  *name,
-                    const GValue *src,
-                    GValue       *dest)
+translate_property (ClutterScript *script,
+                    GType          gtype,
+                    const gchar   *name,
+                    const GValue  *src,
+                    GValue        *dest)
 {
+  gboolean retval = FALSE;
+
+  /* colors have a parse function, so we can pass it the
+   * string we get from the parser
+   */
   if (strcmp (name, "color") == 0)
     {
       ClutterColor color = { 0, };
       const gchar *color_str;
 
       if (G_VALUE_HOLDS (src, G_TYPE_STRING))
-        color_str = g_value_get_string (src);
-      else
-        color_str = NULL;
-
-      clutter_color_parse (color_str, &color);
+        {
+          color_str = g_value_get_string (src);
+          clutter_color_parse (color_str, &color);
+        }
 
       g_value_init (dest, CLUTTER_TYPE_COLOR);
       g_value_set_boxed (dest, &color);
 
       return TRUE;
     }
-  else if (strcmp (name, "pixbuf") == 0)
+
+  /* pixbufs are specified using the path to the file name; the
+   * path can be absolute or relative to the current directory.
+   * we need to load the pixbuf from the file and print a
+   * warning here in case it didn't work.
+   */
+  if (strcmp (name, "pixbuf") == 0)
     {
       GdkPixbuf *pixbuf = NULL;
-      const gchar *path;
+      const gchar *string;
+      gchar *path;
+      GError *error;
 
       if (G_VALUE_HOLDS (src, G_TYPE_STRING))
-        path = g_value_get_string (src);
+        string = g_value_get_string (src);
       else
-        path = NULL;
+        return FALSE;
 
-      if (path && g_path_is_absolute (path))
+      if (g_path_is_absolute (string))
+        path = g_strdup (string);
+      else
         {
-          GError *error = NULL;
-
-          pixbuf = gdk_pixbuf_new_from_file (path, &error);
-          if (error)
+          if (script->priv->is_filename)
             {
-              g_warning ("Unable to open pixbuf at path `%s': %s",
-                         path,
-                         error->message);
-              g_error_free (error);
+              gchar *dirname;
+
+              dirname = g_path_get_dirname (script->priv->filename);
+              path = g_build_filename (dirname, string, NULL);
+              
+              g_free (dirname);
+            }
+          else
+            {
+              gchar *dirname;
+              
+              dirname = g_get_current_dir ();
+              path = g_build_filename (dirname, string, NULL);
+
+              g_free (dirname);
             }
         }
 
+      error = NULL;
+      pixbuf = gdk_pixbuf_new_from_file (path, &error);
+      if (error)
+        {
+          g_warning ("Unable to open pixbuf at path `%s': %s",
+                     path,
+                     error->message);
+          g_error_free (error);
+          g_free (path);
+          return FALSE;
+        }
+
+      CLUTTER_NOTE (SCRIPT, "Setting pixbuf [%p] from file `%s'",
+                    pixbuf,
+                    path);
+      
+      g_free (path);
+      
       g_value_init (dest, GDK_TYPE_PIXBUF);
       g_value_set_object (dest, pixbuf);
 
       return TRUE;
     }
 
-  return FALSE;
+  CLUTTER_NOTE (SCRIPT, "Copying property `%s' to type `%s'",
+                name,
+                g_type_name (gtype));
+
+  /* fall back scenario */
+  g_value_init (dest, gtype);
+
+  switch (G_TYPE_FUNDAMENTAL (gtype))
+    {
+    case G_TYPE_UINT:
+      g_value_set_uint (dest, (guint) g_value_get_int (src));
+      retval = TRUE;
+      break;
+    case G_TYPE_UCHAR:
+      g_value_set_uchar (dest, (guchar) g_value_get_int (src));
+      retval = TRUE;
+      break;
+    case G_TYPE_ENUM:
+      if (G_VALUE_HOLDS (src, G_TYPE_STRING))
+        {
+          const gchar *string = g_value_get_string (src);
+          gint enum_value;
+
+          if (clutter_script_enum_from_string (gtype, string, &enum_value))
+            {
+              g_value_set_enum (dest, enum_value);
+              retval = TRUE;
+            }
+        }
+      else if (G_VALUE_HOLDS (src, G_TYPE_INT))
+        {
+          g_value_set_enum (dest, g_value_get_int (src));
+          retval = TRUE;
+        }
+      break;
+    case G_TYPE_FLAGS:
+      break;
+    default:
+      g_value_copy (src, dest);
+      retval = TRUE;
+      break;
+    }
+
+  return retval;
 }
 
 static void
@@ -451,10 +762,15 @@ translate_properties (ClutterScript  *script,
         }
 
       param.name = pinfo->property_name;
-      if (!translate_property (param.name, &pinfo->value, &param.value))
+      if (!translate_property (script, G_PARAM_SPEC_VALUE_TYPE (pspec),
+                               param.name,
+                               &pinfo->value,
+                               &param.value))
         {
-          g_value_init (&param.value, G_PARAM_SPEC_VALUE_TYPE (pspec));
-          g_value_copy (&pinfo->value, &param.value);
+          g_warning ("Unable to set property `%s' for class `%s'",
+                     pinfo->property_name,
+                     g_type_name (oinfo->gtype));
+          continue;
         }
 
       g_array_append_val (parameters, param);
@@ -525,10 +841,15 @@ construct_stage (ClutterScript *script,
           continue;
         }
 
-      if (!translate_property (name, &pinfo->value, &value))
+      if (!translate_property (script, G_PARAM_SPEC_VALUE_TYPE (pspec),
+                               name,
+                               &pinfo->value,
+                               &value))
         {
-          g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
-          g_value_copy (&pinfo->value, &value);
+          g_warning ("Unable to set property `%s' for class `%s'",
+                     pinfo->property_name,
+                     g_type_name (oinfo->gtype));
+          continue;
         }
 
       g_object_set_property (oinfo->object, name, &value);
@@ -557,33 +878,34 @@ GObject *
 clutter_script_construct_object (ClutterScript *script,
                                  ObjectInfo    *oinfo)
 {
-  GType gtype;
   guint n_params, i;
   GParameter *params;
 
   if (oinfo->object)
     return oinfo->object;
 
-  gtype = resolve_type_lazily (oinfo->class_name);
-  if (gtype == G_TYPE_INVALID)
-    return NULL;
+  if (oinfo->gtype == G_TYPE_INVALID)
+    {
+      oinfo->gtype = resolve_type_lazily (oinfo->class_name);
+      if (oinfo->gtype == G_TYPE_INVALID)
+        return NULL;
+    }
 
   /* the stage is a special case: it's a singleton, it cannot
    * be created by the user and it's owned by the backend. hence,
    * we cannot follow the usual pattern here
    */
-  if (g_type_is_a (gtype, CLUTTER_TYPE_STAGE))
+  if (g_type_is_a (oinfo->gtype, CLUTTER_TYPE_STAGE))
     return construct_stage (script, oinfo);
 
-  oinfo->gtype = gtype;
   params = NULL;
   translate_properties (script, oinfo, &n_params, &params);
 
   CLUTTER_NOTE (SCRIPT, "Creating instance for type `%s' (params:%d)",
-                g_type_name (gtype),
+                g_type_name (oinfo->gtype),
                 n_params);
 
-  oinfo->object = g_object_newv (gtype, n_params, params);
+  oinfo->object = g_object_newv (oinfo->gtype, n_params, params);
 
   for (i = 0; i < n_params; i++)
     {
@@ -593,15 +915,13 @@ clutter_script_construct_object (ClutterScript *script,
 
   g_free (params);
 
-  if (oinfo->children)
-    {
-      if (CLUTTER_IS_CONTAINER (oinfo->object))
-        add_children (script, CLUTTER_CONTAINER (oinfo->object), oinfo->children); 
-    }
+  if (oinfo->children && CLUTTER_IS_CONTAINER (oinfo->object))
+    add_children (script, CLUTTER_CONTAINER (oinfo->object), oinfo->children); 
 
-  g_object_set_data_full (oinfo->object, "clutter-script-name",
-                          g_strdup (oinfo->id),
-                          g_free);
+  if (oinfo->id)
+    g_object_set_data_full (oinfo->object, "clutter-script-name",
+                            g_strdup (oinfo->id),
+                            g_free);
 
   return oinfo->object;
 }
@@ -647,6 +967,7 @@ object_info_free (gpointer data)
         }
       g_list_free (oinfo->properties);
 
+      /* these are ids */
       g_list_foreach (oinfo->children, (GFunc) g_free, NULL);
       g_list_free (oinfo->children);
 
@@ -824,6 +1145,41 @@ clutter_script_get_objects (ClutterScript *script,
 }
 
 gboolean
+clutter_script_enum_from_string (GType        type, 
+                                 const gchar *string,
+                                 gint        *enum_value)
+{
+  GEnumClass *eclass;
+  GEnumValue *ev;
+  gchar *endptr;
+  gint value;
+  gboolean retval = TRUE;
+  
+  g_return_val_if_fail (G_TYPE_IS_ENUM (type), 0);
+  g_return_val_if_fail (string != NULL, 0);
+  
+  value = strtoul (string, &endptr, 0);
+  if (endptr != string) /* parsed a number */
+    *enum_value = value;
+  else
+    {
+      eclass = g_type_class_ref (type);
+      ev = g_enum_get_value_by_name (eclass, string);
+      if (!ev)
+	ev = g_enum_get_value_by_nick (eclass, string);
+
+      if (ev)
+	*enum_value = ev->value;
+      else
+        retval = FALSE;
+      
+      g_type_class_unref (eclass);
+    }
+  
+  return retval;
+}
+
+gboolean
 clutter_script_value_from_data (ClutterScript  *script,
                                 GType           gtype,
                                 const gchar    *data,
@@ -831,4 +1187,10 @@ clutter_script_value_from_data (ClutterScript  *script,
                                 GError        **error)
 {
   return FALSE;
+}
+
+GQuark
+clutter_script_error_quark (void)
+{
+  return g_quark_from_static_string ("clutter-script-error");
 }

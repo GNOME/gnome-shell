@@ -5,6 +5,19 @@
 
 #include <clutter/clutter.h>
 
+static const gchar *test_behaviour =
+"{"
+"  \"id\"          : \"rotate-behaviour\","
+"  \"type\"        : \"ClutterBehaviourRotate\","
+"  \"angle-begin\" : 0.0,"
+"  \"angle-end\"   : 360.0,"
+"  \"axis\"        : \"z-axis\","
+"  \"alpha\"       : {"
+"    \"timeline\" : { \"num-frames\" : 300, \"fps\" : 60, \"loop\" : true },"
+"    \"function\" : \"sine\""
+"  }"
+"}";
+
 static const gchar *test_ui =
 "{"
 "  \"Scene\" : {"
@@ -43,6 +56,15 @@ static const gchar *test_ui =
 "        \"width\"    : 100,"
 "        \"height\"   : 100,"
 "        \"visible\"  : true,"
+"      },"
+"      {"
+"        \"id\"       : \"red-hand\","
+"        \"type\"     : \"ClutterTexture\","
+"        \"pixbuf\"   : \"redhand.png\","
+"        \"x\"        : 50,"
+"        \"y\"        : 50,"
+"        \"opacity\"  : 25,"
+"        \"visible\"  : true,"
 "      }"
 "    ]"
 "  }"
@@ -52,14 +74,26 @@ int
 main (int argc, char *argv[])
 {
   ClutterActor *stage;
-  ClutterActor *rect;
+  ClutterActor *texture;
+  ClutterBehaviour *rotate;
   ClutterScript *script;
-  GError *error;
+  GError *error = NULL;
 
   clutter_init (&argc, &argv);
 
   script = clutter_script_new ();
-  error = NULL;
+  g_assert (CLUTTER_IS_SCRIPT (script));
+
+  clutter_script_load_from_data (script, test_behaviour, -1, &error);
+  if (error)
+    {
+      g_print ("*** Error:\n"
+               "***   %s\n", error->message);
+      g_error_free (error);
+      g_object_unref (script);
+      return EXIT_FAILURE;
+    }
+  
   clutter_script_load_from_data (script, test_ui, -1, &error);
   if (error)
     {
@@ -72,6 +106,12 @@ main (int argc, char *argv[])
 
   stage = CLUTTER_ACTOR (clutter_script_get_object (script, "main-stage"));
   clutter_actor_show (stage);
+
+  texture = CLUTTER_ACTOR (clutter_script_get_object (script, "red-hand"));
+
+  rotate = CLUTTER_BEHAVIOUR (clutter_script_get_object (script, "rotate-behaviour"));
+  clutter_behaviour_apply (rotate, texture);
+  clutter_timeline_start (clutter_alpha_get_timeline (clutter_behaviour_get_alpha (rotate)));
 
   clutter_main ();
 

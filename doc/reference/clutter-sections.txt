@@ -1046,3 +1046,28 @@ CLUTTER_BEHAVIOUR_DEPTH_GET_CLASS
 ClutterBehaviourDepthPrivate
 clutter_behaviour_depth_get_type
 </SECTION>
+
+<SECTION>
+<FILE>clutter-script</FILE>
+<TITLE>ClutterScript</TITLE>
+ClutterScript
+ClutterScriptClass
+clutter_script_new
+ClutterScriptError
+clutter_script_load_from_data
+clutter_script_load_from_file
+clutter_script_get_object
+clutter_script_get_objects
+<SUBSECTION Standard>
+CLUTTER_TYPE_SCRIPT
+CLUTTER_SCRIPT
+CLUTTER_IS_SCRIPT
+CLUTTER_SCRIPT_CLASS
+CLUTTER_IS_SCRIPT_CLASS
+CLUTTER_SCRIPT_GET_CLASS
+CLUTTER_SCRIPT_ERROR
+<SUBSECTION Private>
+ClutterScriptPrivate
+clutter_script_get_type
+clutter_script_error_quark
+</SECTION>
