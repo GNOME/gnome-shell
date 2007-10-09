@@ -58,13 +58,14 @@ static const gchar *test_ui =
 "        \"visible\"  : true,"
 "      },"
 "      {"
-"        \"id\"       : \"red-hand\","
-"        \"type\"     : \"ClutterTexture\","
-"        \"pixbuf\"   : \"redhand.png\","
-"        \"x\"        : 50,"
-"        \"y\"        : 50,"
-"        \"opacity\"  : 25,"
-"        \"visible\"  : true,"
+"        \"id\"         : \"red-hand\","
+"        \"type\"       : \"ClutterTexture\","
+"        \"pixbuf\"     : \"redhand.png\","
+"        \"x\"          : 50,"
+"        \"y\"          : 50,"
+"        \"opacity\"    : 100,"
+"        \"visible\"    : true,"
+"        \"behaviours\" : [ \"rotate-behaviour\" ]"
 "      }"
 "    ]"
 "  }"
@@ -107,10 +108,7 @@ main (int argc, char *argv[])
   stage = CLUTTER_ACTOR (clutter_script_get_object (script, "main-stage"));
   clutter_actor_show (stage);
 
-  texture = CLUTTER_ACTOR (clutter_script_get_object (script, "red-hand"));
-
   rotate = CLUTTER_BEHAVIOUR (clutter_script_get_object (script, "rotate-behaviour"));
-  clutter_behaviour_apply (rotate, texture);
   clutter_timeline_start (clutter_alpha_get_timeline (clutter_behaviour_get_alpha (rotate)));
 
   clutter_main ();

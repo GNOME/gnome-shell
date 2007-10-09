@@ -467,7 +467,8 @@ parse_member_to_property (ClutterScript *script,
           g_value_init (&retval->value, CLUTTER_TYPE_GEOMETRY);
           g_value_set_boxed (&retval->value, &geom);
         }
-      else if (strcmp (name, "children") == 0)
+      else if ((strcmp (name, "children") == 0) ||
+               (strcmp (name, "behaviours") == 0))
         {
           JsonArray *array = json_node_get_array (node);
           JsonNode *val;
@@ -504,12 +505,15 @@ parse_member_to_property (ClutterScript *script,
                   break;
 
                 default:
-                  warn_invalid_value (script, "children", val);
+                  warn_invalid_value (script, name, val);
                   break;
                 }
             }
-
-          info->children = children;
+          
+          if (name[0] == 'c') /* children */
+            info->children = children;
+          else
+            info->behaviours = children;
         }
       break;
 
@@ -783,6 +787,38 @@ translate_properties (ClutterScript  *script,
 }
 
 static void
+apply_behaviours (ClutterScript *script,
+                  ClutterActor  *actor,
+                  GList         *behaviours)
+{
+  GObject *object;
+  GList *l;
+
+  for (l = behaviours; l != NULL; l = l->next)
+    {
+      const gchar *name = l->data;
+
+      object = clutter_script_get_object (script, name);
+      if (!object)
+        {
+          ObjectInfo *oinfo;
+
+          oinfo = g_hash_table_lookup (script->priv->objects, name);
+          if (oinfo)
+            object = clutter_script_construct_object (script, oinfo);
+          else
+            continue;
+        }
+
+      CLUTTER_NOTE (SCRIPT, "Applying behaviour `%s' to actor of type `%s'",
+                    name,
+                    g_type_name (G_OBJECT_TYPE (actor)));
+
+      clutter_behaviour_apply (CLUTTER_BEHAVIOUR (object), actor);
+    }
+}
+
+static void
 add_children (ClutterScript    *script,
               ClutterContainer *container,
               GList            *children)
@@ -915,8 +951,11 @@ clutter_script_construct_object (ClutterScript *script,
 
   g_free (params);
 
-  if (oinfo->children && CLUTTER_IS_CONTAINER (oinfo->object))
+  if (CLUTTER_IS_CONTAINER (oinfo->object) && oinfo->children)
     add_children (script, CLUTTER_CONTAINER (oinfo->object), oinfo->children); 
+
+  if (CLUTTER_IS_ACTOR (oinfo->object) && oinfo->behaviours)
+    apply_behaviours (script, CLUTTER_ACTOR (oinfo->object), oinfo->behaviours);
 
   if (oinfo->id)
     g_object_set_data_full (oinfo->object, "clutter-script-name",
@@ -970,6 +1009,9 @@ object_info_free (gpointer data)
       /* these are ids */
       g_list_foreach (oinfo->children, (GFunc) g_free, NULL);
       g_list_free (oinfo->children);
+
+      g_list_foreach (oinfo->behaviours, (GFunc) g_free, NULL);
+      g_list_free (oinfo->behaviours);
 
       if (oinfo->object)
         g_object_unref (oinfo->object);

@@ -1,3 +1,11 @@
+2007-10-09  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-script-private.h:
+	* clutter/clutter-script.c: Allow applying behaviours directly
+	inside the UI definition data.
+
+	* tests/test-script.c: Test the "behaviours" member.
+
 2007-10-09  Rob Bradford  <rob@openedhand.com>
 
 	* clutter/eglnative/clutter-backend-egl.c:

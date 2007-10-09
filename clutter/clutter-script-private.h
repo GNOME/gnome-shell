@@ -39,6 +39,7 @@ typedef struct {
 
   GList *properties;
   GList *children;
+  GList *behaviours;
 
   GType gtype;
   GObject *object;
