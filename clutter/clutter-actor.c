@@ -107,7 +107,6 @@ enum
 
   EVENT,
   EVENT_CAPTURED,
-  EVENT_AFTER,
   BUTTON_PRESS_EVENT,
   BUTTON_RELEASE_EVENT,
   SCROLL_EVENT,
@@ -1271,25 +1270,6 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  G_TYPE_BOOLEAN, 1,
 		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
   /**
-   * ClutterActor::event-after:
-   * @actor: the actor which received the event
-   * @event: a #ClutterEvent
-   *
-   * The ::event-after signal is emitted after each event, except for
-   * the "delete-event" is received by @actor.
-   *
-   * Since: 0.6
-   */
-  actor_signals[EVENT_AFTER] =
-    g_signal_new ("event-after",
-                  G_TYPE_FROM_CLASS (object_class),
-                  0,
-                  0,
-                  NULL, NULL,
-                  clutter_marshal_VOID__BOXED,
-                  G_TYPE_NONE, 1,
-                  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
-  /**
    * ClutterActor::button-press-event:
    * @actor: the actor which received the event
    * @event: a #ClutterButtonEvent
@@ -1457,10 +1437,10 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  G_TYPE_NONE, 0);
 
   /**
-   * ClutterActor::enter:
+   * ClutterActor::enter-event:
    * @actor: the actor which the pointer has entered.
    *
-   * The ::enter signal is emitted when the pointer enters the @actor 
+   * The ::enter-event signal is emitted when the pointer enters the @actor 
    *
    * Since: 0.6
    */
@@ -1475,10 +1455,10 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
   /**
-   * ClutterActor::leave:
+   * ClutterActor::leave-event:
    * @actor: the actor which the pointer has left
    *
-   * The ::leave signal is emitted when the pointer leaves the @actor.
+   * The ::leave-event signal is emitted when the pointer leaves the @actor.
    *
    * Since: 0.6
    */
@@ -1496,7 +1476,8 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * ClutterActor::captured-event:
    * @actor: the actor which the pointer has left
    *
-   * The ::leave signal is emitted when the pointer leaves the @actor.
+   * The ::captured-event signal is emitted when an event is captured
+   * by Clutter.
    *
    * Since: 0.6
    */
@@ -3011,7 +2992,7 @@ clutter_actor_event (ClutterActor *actor,
                      ClutterEvent *event,
 		     gboolean      capture)
 {
-  gboolean retval = TRUE;
+  gboolean retval = FALSE;
   gint signal_num = -1;
 
   g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), FALSE);
@@ -3022,7 +3003,8 @@ clutter_actor_event (ClutterActor *actor,
   if (capture)
     {
       g_signal_emit (actor, actor_signals[EVENT_CAPTURED], 0, 
-		     event, &retval);
+		     event,
+                     &retval);
       goto out;
     }
   
@@ -3071,12 +3053,7 @@ clutter_actor_event (ClutterActor *actor,
 		       event, &retval);
     }
 
-
-  if (!retval)
-    g_signal_emit (actor, actor_signals[EVENT_AFTER], 0, event);
-
- out:
-
+out:
   g_object_unref (actor);
 
   return retval;

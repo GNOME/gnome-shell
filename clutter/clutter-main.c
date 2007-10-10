@@ -1358,7 +1358,7 @@ clutter_get_actor_by_id (guint32 id)
   g_return_val_if_fail (context != NULL, NULL);
   g_return_val_if_fail (context->actor_hash != NULL, NULL);
 
-  return g_hash_table_lookup (context->actor_hash, (gconstpointer)id);
+  return g_hash_table_lookup (context->actor_hash, GUINT_TO_POINTER (id));
 }
 
 void

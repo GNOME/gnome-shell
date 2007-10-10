@@ -1,3 +1,24 @@
+2007-10-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c: Remove the ::event-after signal:
+	three event layers to connect to seems a bit overkill.
+
+	(clutter_actor_event): Return FALSE, not TRUE by default,
+	as g_signal_emit() will change the return value if no
+	handlers are connected
+
+	* clutter/clutter-stage.c: Emit ::notify when we change
+	the fullscreen property.
+
+	* clutter/clutter-script.c: Add more documentation for the
+	definition format and keywords.
+
+	(translate_property): Collapse the G_TYPE_ENUM and G_TYPE_FLAGS
+	cases into one, to simplify the code.
+
+	* tests/test-script.c: Test enumeration conversion by using
+	a value different from the default.
+
 2007-10-10  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c:

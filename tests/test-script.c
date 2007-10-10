@@ -19,7 +19,7 @@ static const gchar *test_behaviour =
 "    \"type\"        : \"ClutterBehaviourRotate\","
 "    \"angle-begin\" : 0.0,"
 "    \"angle-end\"   : 360.0,"
-"    \"axis\"        : \"z-axis\","
+"    \"axis\"        : \"y-axis\","
 "    \"alpha\"       : {"
 "      \"timeline\" : \"main-timeline\","
 "      \"function\" : \"sine\""

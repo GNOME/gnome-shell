@@ -837,11 +837,15 @@ clutter_stage_event (ClutterStage *stage,
 	{
 	  priv->is_fullscreen = TRUE;
 	  g_signal_emit (stage, stage_signals[FULLSCREEN], 0);
+
+          g_object_notify (G_OBJECT (stage), "fullscreen");
 	}
       else
 	{
 	  priv->is_fullscreen = FALSE;
 	  g_signal_emit (stage, stage_signals[UNFULLSCREEN], 0);
+          
+          g_object_notify (G_OBJECT (stage), "fullscreen");
 	}
     }
   

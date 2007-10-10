@@ -95,6 +95,18 @@
  * }
  * </programlisting>
  *
+ * Clutter reserves the following names, so classes defining properties
+ * through the usual GObject registration process should avoid using these
+ * names to avoid collisions:
+ *
+ * <programlisting><![CDATA[
+ *   "id"         := the unique name of a ClutterScript object
+ *   "type"       := the class literal name, also used to infer the type function
+ *   "type_func"  := the GType function name, for non-standard classes
+ *   "children"   := an array of names or objects to add as children
+ *   "behaviours" := an array of names or objects to apply to an actor
+ * ]]></programlisting>
+ *
  * #ClutterScript is available since Clutter 0.6
  */
 
@@ -794,43 +806,31 @@ translate_property (ClutterScript *script,
       break;
 
     case G_TYPE_ENUM:
-      /* enumeration values can be expressed using the nick field
-       * of GEnumValue or the actual integer value
-       */
-      if (G_VALUE_HOLDS (src, G_TYPE_STRING))
-        {
-          const gchar *string = g_value_get_string (src);
-          gint enum_value;
-
-          if (clutter_script_enum_from_string (gtype, string, &enum_value))
-            {
-              g_value_set_enum (dest, enum_value);
-              retval = TRUE;
-            }
-        }
-      else if (G_VALUE_HOLDS (src, G_TYPE_INT))
-        {
-          g_value_set_enum (dest, g_value_get_int (src));
-          retval = TRUE;
-        }
-      break;
-
     case G_TYPE_FLAGS:
-      if (G_VALUE_HOLDS (src, G_TYPE_STRING))
-        {
-          const gchar *string = g_value_get_string (src);
-          gint flags_value;
+      {
+        gint value;
 
-          if (clutter_script_flags_from_string (gtype, string, &flags_value))
-            {
-              g_value_set_flags (dest, flags_value);
-              retval = TRUE;
-            }
-        }
-      else if (G_VALUE_HOLDS (src, G_TYPE_INT))
-        {
-          g_value_set_flags (dest, g_value_get_int (src));
-          retval = TRUE;
+        if (G_VALUE_HOLDS (src, G_TYPE_STRING))
+          {
+            const gchar *string = g_value_get_string (src);
+
+            if (G_TYPE_FUNDAMENTAL (gtype) == G_TYPE_ENUM)
+              retval = clutter_script_enum_from_string (gtype, string, &value);
+            else
+              retval = clutter_script_flags_from_string (gtype, string, &value);
+          }
+        else if (G_VALUE_HOLDS (src, G_TYPE_INT))
+          {
+            value = g_value_get_int (src);
+          }
+
+        if (retval)
+          {
+            if (G_TYPE_FUNDAMENTAL (gtype) == G_TYPE_ENUM)
+              g_value_set_enum (dest, value);
+            else
+              g_value_set_flags (dest, value);
+          }
         }
       break;
 
@@ -1408,7 +1408,7 @@ clutter_script_enum_from_string (GType        type,
       
       g_type_class_unref (eclass);
     }
-  
+
   return retval;
 }
 
