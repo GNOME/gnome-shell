@@ -1,5 +1,9 @@
 2007-10-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter-sections.txt: Add new API and rearrange the subsections.
+
+2007-10-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter.types:
 	* Makefile.am: Add ClutterScript and ignore clutter-script-private.h
 	to avoid picking up private symbols.

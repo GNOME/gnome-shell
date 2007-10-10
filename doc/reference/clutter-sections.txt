@@ -219,6 +219,7 @@ clutter_container_remove_valist
 clutter_container_get_children
 clutter_container_foreach
 clutter_container_find_child_by_id
+clutter_container_find_child_by_name
 clutter_container_raise_child
 clutter_container_lower_child
 clutter_container_sort_depth_order
@@ -285,6 +286,9 @@ CLUTTER_ACTOR_UNSET_FLAGS
 CLUTTER_ACTOR_IS_MAPPED
 CLUTTER_ACTOR_IS_REALIZED
 CLUTTER_ACTOR_IS_VISIBLE
+CLUTTER_ACTOR_IS_REACTIVE
+
+<SUBSECTION>
 ClutterActorBox
 ClutterActorFlags
 ClutterGeometry
@@ -303,6 +307,12 @@ clutter_actor_queue_redraw
 clutter_actor_destroy
 clutter_actor_request_coords
 clutter_actor_query_coords
+clutter_actor_set_reactive
+clutter_actor_unset_reactive
+clutter_actor_is_reactive
+clutter_actor_event
+
+<SUBSECTION>
 clutter_actor_set_geometry
 clutter_actor_get_geometry
 clutter_actor_get_coords
@@ -328,6 +338,8 @@ clutter_actor_get_id
 clutter_actor_set_clip
 clutter_actor_remove_clip
 clutter_actor_has_clip
+
+<SUBSECTION>
 clutter_actor_set_parent
 clutter_actor_get_parent
 clutter_actor_reparent
@@ -336,6 +348,8 @@ clutter_actor_raise
 clutter_actor_lower
 clutter_actor_raise_top
 clutter_actor_lower_bottom
+
+<SUBSECTION>
 clutter_actor_set_depth
 clutter_actor_get_depth
 clutter_actor_set_scalex
@@ -350,6 +364,8 @@ clutter_actor_get_rzang
 clutter_actor_get_rxangx
 clutter_actor_get_ryangx
 clutter_actor_get_rzangx
+
+<SUBSECTION>
 ClutterVertex
 clutter_actor_get_vertices
 clutter_actor_pick
@@ -358,6 +374,7 @@ clutter_actor_rotate_yx
 clutter_actor_rotate_zx
 clutter_actor_set_scale_with_gravity
 clutter_actor_set_scale_with_gravityx
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_GEOMETRY
 CLUTTER_TYPE_ACTOR_BOX
@@ -389,6 +406,8 @@ clutter_texture_set_from_yuv_data
 clutter_texture_set_pixbuf
 clutter_texture_get_pixbuf
 clutter_texture_get_base_size
+
+<SUBSECTION>
 clutter_texture_bind_tile
 clutter_texture_get_n_tiles
 clutter_texture_get_x_tile_detail
@@ -428,6 +447,10 @@ clutter_stage_hide_cursor
 clutter_stage_get_actor_at_pos
 clutter_stage_snapshot
 clutter_stage_event
+clutter_stage_get_key_focus
+clutter_stage_set_key_focus
+
+<SUBSECTION>
 ClutterPerspective
 clutter_perspective_copy
 clutter_perspective_free
@@ -435,6 +458,8 @@ clutter_stage_set_perspective
 clutter_stage_set_perspectivex
 clutter_stage_get_perspective
 clutter_stage_get_perspectivex
+
+<SUBSECTION>
 clutter_stage_set_title
 clutter_stage_get_title
 clutter_stage_set_user_resizable
@@ -728,6 +753,7 @@ CFX_INT
 CFX_MUL
 CFX_HALF
 CFX_QMUL
+CLUTTER_FIXED_TO_INT
 CLUTTER_FIXED_TO_FLOAT
 CLUTTER_FIXED_TO_DOUBLE
 CLUTTER_FLOAT_TO_FIXED
@@ -797,11 +823,13 @@ ClutterScrollDirection
 ClutterStageState
 ClutterEventType
 ClutterEvent
+ClutterEventFlags
 ClutterButtonEvent
 ClutterKeyEvent
 ClutterMotionEvent
 ClutterScrollEvent
 ClutterStageStateEvent
+ClutterCrossingEvent
 ClutterInputDevice
 clutter_event_new
 clutter_event_copy
@@ -810,6 +838,7 @@ clutter_event_type
 clutter_event_get_coords
 clutter_event_get_state
 clutter_event_get_time
+clutter_event_get_source
 clutter_event_get
 clutter_event_peek
 clutter_event_put
@@ -841,6 +870,9 @@ clutter_main_level
 clutter_get_debug_enabled
 clutter_get_show_fps
 clutter_get_timestamp
+clutter_get_actor_by_id
+clutter_get_motion_events_enabled
+clutter_enable_motion_events
 <SUBSECTION>
 clutter_threads_set_lock_functions
 clutter_threads_init
@@ -869,8 +901,12 @@ clutter_glx_get_stage_window
 clutter_glx_set_stage_foreign
 clutter_glx_trap_x_errors
 clutter_glx_untrap_x_errors
+
+<SUBSECTION>
 ClutterGLXFilterFunc
 ClutterGLXFilterReturn
+clutter_glx_add_filter
+clutter_glx_remove_filter
 </SECTION>
 
 <SECTION>
@@ -972,6 +1008,9 @@ clutter_padding_get_type
 <TITLE>Clutter Effects</TITLE>
 clutter_effect_template_new
 clutter_effect_template_new_full
+clutter_effect_template_get_timeline_clone
+clutter_effect_template_set_timeline_clone
+
 <SUBSECTION>
 ClutterEffectCompleteFunc
 clutter_effect_fade
@@ -981,6 +1020,7 @@ clutter_effect_depth
 clutter_effect_rotate_x
 clutter_effect_rotate_y
 clutter_effect_rotate_z
+
 <SUBSECTION Standard>
 ClutterEffectTemplate
 ClutterEffectTemplateClass
