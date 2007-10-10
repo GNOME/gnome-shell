@@ -600,7 +600,9 @@ json_object_end (JsonParser *parser,
 
       val = json_object_get_member (object, name);
 
-      if (strcmp (name, "id") == 0 || strcmp (name, "type") == 0)
+      if (strcmp (name, "id") == 0 ||
+          strcmp (name, "type_func") == 0 ||
+          strcmp (name, "type") == 0)
         continue;
       else
         {

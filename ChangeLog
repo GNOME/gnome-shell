@@ -1,5 +1,10 @@
 2007-10-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-script.c (json_object_end): Add "type_func"
+	to the list of attributes we skip.
+
+2007-10-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/json/json-parser.c: Use the commodity JsonNode API
 	and accept bare values as root nodes.
 
