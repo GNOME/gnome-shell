@@ -299,22 +299,32 @@ void
 clutter_effect_template_set_timeline_clone (ClutterEffectTemplate *template_,
 					    gboolean               setting)
 {
-  template_->priv->do_clone = setting;
+  g_return_if_fail (CLUTTER_IS_EFFECT_TEMPLATE (template_));
+
+  if (template_->priv->do_clone != setting)
+    {
+      template_->priv->do_clone = setting;
+
+      g_object_notify (G_OBJECT (template_), "clone");
+    }
 }
 
 /**
  * clutter_effect_template_get_timeline_clone:
- * @template:  A #ClutterEffectTemplate
+ * @template_:  A #ClutterEffectTemplate
  *
- * 
+ * Gets whether timelines should be cloned when creating a new
+ * effect or just referenced.
  *
- * Return value: TRUE if the templates timeline is to be cloned.
+ * Return value: %TRUE if the templates timeline is to be cloned.
  *
  * Since: 0.6
  */
 gboolean
 clutter_effect_template_get_timeline_clone (ClutterEffectTemplate *template_)
 {
+  g_return_val_if_fail (CLUTTER_IS_EFFECT_TEMPLATE (template_), FALSE);
+
   return template_->priv->do_clone;
 }
 

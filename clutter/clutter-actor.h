@@ -51,14 +51,14 @@ G_BEGIN_DECLS
 #define CLUTTER_ACTOR_GET_CLASS(obj) \
  (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_ACTOR, ClutterActorClass))
 
-#define CLUTTER_ACTOR_SET_FLAGS(e,f)    ((e)->flags |= (f))  
-#define CLUTTER_ACTOR_UNSET_FLAGS(e,f)  ((e)->flags &= ~(f))  
+#define CLUTTER_ACTOR_SET_FLAGS(e,f)    (((ClutterActor*)(e))->flags |= (f))  
+#define CLUTTER_ACTOR_UNSET_FLAGS(e,f)  (((ClutterActor*)(e))->flags &= ~(f))  
 
-#define CLUTTER_ACTOR_IS_MAPPED(e)      ((e)->flags & CLUTTER_ACTOR_MAPPED)  
-#define CLUTTER_ACTOR_IS_REALIZED(e)    ((e)->flags & CLUTTER_ACTOR_REALIZED)
+#define CLUTTER_ACTOR_IS_MAPPED(e)      (((ClutterActor*)(e))->flags & CLUTTER_ACTOR_MAPPED)  
+#define CLUTTER_ACTOR_IS_REALIZED(e)    (((ClutterActor*)(e))->flags & CLUTTER_ACTOR_REALIZED)
 #define CLUTTER_ACTOR_IS_VISIBLE(e)     (CLUTTER_ACTOR_IS_MAPPED (e) && \
                                          CLUTTER_ACTOR_IS_REALIZED (e))
-#define CLUTTER_ACTOR_IS_REACTIVE(e)   (((e)->flags & CLUTTER_ACTOR_REACTIVE)) 
+#define CLUTTER_ACTOR_IS_REACTIVE(e)    (((ClutterActor*)(e))->flags & CLUTTER_ACTOR_REACTIVE) 
 /*                                        && CLUTTER_ACTOR_IS_VISIBLE(e)) */
 
 

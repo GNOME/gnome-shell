@@ -2808,7 +2808,7 @@ clutter_actor_unparent (ClutterActor *self)
   g_signal_emit (self, actor_signals[PARENT_SET], 0, old_parent);
 
   g_hash_table_remove (clutter_context->actor_hash, 
-		       (gconstpointer)clutter_actor_get_id(self));
+		       GUINT_TO_POINTER (clutter_actor_get_id(self)));
 
   g_object_unref (self);
 }
@@ -3069,6 +3069,14 @@ out:
   return retval;
 }
 
+/**
+ * clutter_actor_set_reactive:
+ * @actor: a #ClutterActor
+ *
+ * Sets @actor as reactive. Reactive actors will receive events.
+ *
+ * Since: 0.6
+ */
 void
 clutter_actor_set_reactive (ClutterActor *actor)
 {
@@ -3077,6 +3085,14 @@ clutter_actor_set_reactive (ClutterActor *actor)
   CLUTTER_ACTOR_SET_FLAGS (actor, CLUTTER_ACTOR_REACTIVE);
 }
 
+/**
+ * clutter_actor_unset_reactive:
+ * @actor: a #ClutterActor
+ *
+ * Sets @actor as not reactive.
+ *
+ * Since: 0.6
+ */
 void
 clutter_actor_unset_reactive (ClutterActor *actor)
 {
@@ -3085,12 +3101,22 @@ clutter_actor_unset_reactive (ClutterActor *actor)
   CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REACTIVE);
 }
 
+/**
+ * clutter_actor_is_reactive:
+ * @actor: a #ClutterActor
+ *
+ * Checks whether @actor is marked as reactive.
+ *
+ * Return value: %TRUE if the actor is reactive
+ *
+ * Since: 0.6
+ */
 gboolean
 clutter_actor_is_reactive (ClutterActor *actor)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (actor), FALSE);
   
-  return CLUTTER_ACTOR_IS_REACTIVE(actor);
+  return CLUTTER_ACTOR_IS_REACTIVE (actor);
 }
 
 /*

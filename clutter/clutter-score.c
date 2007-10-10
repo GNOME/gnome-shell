@@ -44,8 +44,8 @@
  */
 
 /**
- * SECTION:clutter-score @short_description: A class for sequencing
- * multiple #ClutterTimelines in order
+ * SECTION:clutter-score
+ * @short_description: Sequencing multiple #ClutterTimelines in order
  *
  * #ClutterScore is a base class for sequencing multiple timelines in order.
  */

@@ -1,5 +1,17 @@
 2007-10-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/glx/clutter-backend-glx.c: Fix documentation of the
+	filter function API.
+
+	* clutter/clutter-score.c:
+	* clutter/clutter-effect.c:
+	* clutter/clutter-actor.c: Documentation fixes.
+
+	* clutter/clutter-actor.h: Automatically typecast to ClutterActor
+	when setting/checking flags.
+
+2007-10-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c: Beautify the ClutterActor documentation.
 
 2007-10-10  Emmanuele Bassi  <ebassi@openedhand.com>

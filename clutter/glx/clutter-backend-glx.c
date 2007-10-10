@@ -680,9 +680,9 @@ clutter_glx_get_default_display (void)
 /**
  * clutter_glx_get_default_screen:
  * 
- * Gets the pointer to the default X Screen object.
+ * Gets the number of the default X Screen object.
  *
- * Return value: FIXME
+ * Return value: the number of the default Screen object.
  *
  * Since: 0.4
  */
@@ -721,15 +721,21 @@ clutter_glx_get_root_window (void)
 
 /**
  * clutter_glx_add_filter:
- * 
- * FIXME
+ * @func: an event filter function
+ * @data: user data to pass to the function, or %NULL
  *
- * Return value: FIXME
+ * Adds @func to the list of event filters. Filter functions
+ * receive the raw events and must return %CLUTTER_GLX_FILTER_CONTINUE
+ * if the event should be processed by Clutter, %CLUTTER_GLX_FILTER_TRANSLATE
+ * if the event has been translated by the function and it's ready
+ * to be sent to the stage, or %CLUTTER_GLX_FILTER_REMOVE if the event should
+ * not be sent to the stage.
  *
  * Since: 0.4
  */
 void
-clutter_glx_add_filter (ClutterGLXFilterFunc func, gpointer data)
+clutter_glx_add_filter (ClutterGLXFilterFunc func,
+                        gpointer             data)
 {
   ClutterGLXEventFilter *filter;
 
@@ -745,23 +751,24 @@ clutter_glx_add_filter (ClutterGLXFilterFunc func, gpointer data)
   filter->func = func;
   filter->data = data;
 
-  backend_singleton->event_filters 
-     = g_slist_append (backend_singleton->event_filters, filter);
+  backend_singleton->event_filters =
+    g_slist_append (backend_singleton->event_filters, filter);
 
   return;
 }
 
 /**
  * clutter_glx_remove_filter:
+ * @func: the filter function to remove
+ * @data: user data of the filter function, or %NULL
  * 
- * FIXME
- *
- * Return value: FIXME
+ * Removes @func from the list of filter functions installed
  *
  * Since: 0.4
  */
 void
-clutter_glx_remove_filter (ClutterGLXFilterFunc func, gpointer data)
+clutter_glx_remove_filter (ClutterGLXFilterFunc func,
+                           gpointer             data)
 {
   GSList                *tmp_list, *this;
   ClutterGLXEventFilter *filter;
@@ -778,8 +785,8 @@ clutter_glx_remove_filter (ClutterGLXFilterFunc func, gpointer data)
 
       if (filter->func == func && filter->data == data)
         {
-	  backend_singleton->event_filters 
-	      = g_slist_remove_link (backend_singleton->event_filters, this);
+	  backend_singleton->event_filters =
+            g_slist_remove_link (backend_singleton->event_filters, this);
 
           g_slist_free_1 (this);
           g_free (filter);
