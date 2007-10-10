@@ -341,6 +341,56 @@ construct_timeline (ClutterScript *script,
   return retval;
 }
 
+static const gchar *
+get_id_from_node (JsonNode *node)
+{
+  JsonObject *object;
+
+  switch (JSON_NODE_TYPE (node))
+    {
+    case JSON_NODE_OBJECT:
+      object = json_node_get_object (node);
+      if (json_object_has_member (object, "id"))
+        {
+          JsonNode *id = json_object_get_member (object, "id");
+
+          return json_node_get_string (id);
+        }
+      break;
+
+    case JSON_NODE_VALUE:
+      return json_node_get_string (node);
+
+    default:
+      break;
+    }
+
+  return NULL;
+}
+
+static ClutterUnit
+get_units_from_node (JsonNode *node)
+{
+  ClutterUnit retval = 0;
+  GValue value = { 0, };
+
+  if (JSON_NODE_TYPE (node) != JSON_NODE_VALUE)
+    return 0;
+
+  json_node_get_value (node, &value);
+  switch (G_VALUE_TYPE (&value))
+    {
+    case G_TYPE_INT:
+      retval = CLUTTER_UNITS_FROM_INT (g_value_get_int (&value));
+      break;
+    
+    default:
+      break;
+    }
+
+  return retval;
+}
+
 static PropertyInfo *
 parse_member_to_property (ClutterScript *script,
                           ObjectInfo    *info,
@@ -410,26 +460,33 @@ parse_member_to_property (ClutterScript *script,
         {
           JsonArray *array = json_node_get_array (node);
           JsonNode *val;
-          gint i;
+          gint array_len, i;
           ClutterMargin margin = { 0, };
 
-          /* this is quite evil indeed */
-          for (i = 0; i < json_array_get_length (array); i++)
+          array_len = json_array_get_length (array);
+          for (i = 0; i < array_len; i++)
             {
+              ClutterUnit units;
+
               val = json_array_get_element (array, i);
+              units = get_units_from_node (val);
+
               switch (i)
                 {
                 case 0:
-                  margin.top = CLUTTER_UNITS_FROM_INT (json_node_get_int (val));
+                  margin.top = units; 
+                  margin.right = margin.top;
+                  margin.bottom = margin.top;
+                  margin.left = margin.top;
                   break;
                 case 1:
-                  margin.right = CLUTTER_UNITS_FROM_INT (json_node_get_int (val));
+                  margin.right = margin.left = units; 
                   break;
                 case 2:
-                  margin.bottom = CLUTTER_UNITS_FROM_INT (json_node_get_int (val));
+                  margin.bottom = units; 
                   break;
                 case 3:
-                  margin.left = CLUTTER_UNITS_FROM_INT (json_node_get_int (val));
+                  margin.left = units; 
                   break;
                 }
             }
@@ -443,26 +500,33 @@ parse_member_to_property (ClutterScript *script,
         {
           JsonArray *array = json_node_get_array (node);
           JsonNode *val;
-          gint i;
+          gint array_len, i;
           ClutterPadding padding = { 0, };
 
-          /* this is quite evil indeed */
-          for (i = 0; i < json_array_get_length (array); i++)
+          array_len = json_array_get_length (array);
+          for (i = 0; i < array_len; i++)
             {
+              ClutterUnit units;
+
               val = json_array_get_element (array, i);
+              units = get_units_from_node (val);
+
               switch (i)
                 {
                 case 0:
-                  padding.top = CLUTTER_UNITS_FROM_INT (json_node_get_int (val));
+                  padding.top = units;
+                  padding.right = padding.top;
+                  padding.bottom = padding.top;
+                  padding.left = padding.top;
                   break;
                 case 1:
-                  padding.right = CLUTTER_UNITS_FROM_INT (json_node_get_int (val));
+                  padding.right = padding.left = units;
                   break;
                 case 2:
-                  padding.bottom = CLUTTER_UNITS_FROM_INT (json_node_get_int (val));
+                  padding.bottom = units; 
                   break;
                 case 3:
-                  padding.left = CLUTTER_UNITS_FROM_INT (json_node_get_int (val));
+                  padding.left = units; 
                   break;
                 }
             }
@@ -509,35 +573,14 @@ parse_member_to_property (ClutterScript *script,
           array_len = json_array_get_length (array);
           for (i = 0; i < array_len; i++)
             {
-              JsonObject *object;
+              const gchar *id;
 
               val = json_array_get_element (array, i);
-              
-              switch (JSON_NODE_TYPE (val))
-                {
-                case JSON_NODE_OBJECT:
-                  object = json_node_get_object (val);
-
-                  if (json_object_has_member (object, "id") &&
-                      json_object_has_member (object, "type"))
-                    {
-                      JsonNode *id = json_object_get_member (object, "id");
-
-                      children = g_list_prepend (children,
-                                                 json_node_dup_string (id));
-                    }
-                  break;
-                
-                case JSON_NODE_VALUE:
-                  if (json_node_get_string (val))
-                    children = g_list_prepend (children,
-                                               json_node_dup_string (val));
-                  break;
-
-                default:
-                  warn_invalid_value (script, name, val);
-                  break;
-                }
+              id = get_id_from_node (val);
+              if (id)
+                children = g_list_prepend (children, g_strdup (id));
+              else
+                warn_invalid_value (script, "id", val);
             }
           
           if (name[0] == 'c') /* children */
@@ -587,8 +630,10 @@ json_object_end (JsonParser *parser,
 
   if (json_object_has_member (object, "type_func"))
     {
+      /* remove "type_func", as it's not usef by anything else */
       val = json_object_get_member (object, "type_func");
       oinfo->type_func = json_node_dup_string (val);
+      json_object_remove_member (object, "type_func");
     }
 
   oinfo->is_toplevel = FALSE;
@@ -597,28 +642,23 @@ json_object_end (JsonParser *parser,
   for (l = members; l; l = l->next)
     {
       const gchar *name = l->data;
+      PropertyInfo *pinfo;
+
+      if (strcmp (name, "id") == 0 || strcmp (name, "type") == 0)
+        continue;
 
       val = json_object_get_member (object, name);
 
-      if (strcmp (name, "id") == 0 ||
-          strcmp (name, "type_func") == 0 ||
-          strcmp (name, "type") == 0)
+      pinfo = parse_member_to_property (script, oinfo, name, val);
+      if (!pinfo)
         continue;
-      else
-        {
-          PropertyInfo *pinfo;
 
-          pinfo = parse_member_to_property (script, oinfo, name, val);
-          if (!pinfo)
-            continue;
+      oinfo->properties = g_list_prepend (oinfo->properties, pinfo);
 
-          oinfo->properties = g_list_prepend (oinfo->properties, pinfo);
-
-          CLUTTER_NOTE (SCRIPT, "Added property `%s' (type:%s) for class `%s'",
-                        pinfo->property_name,
-                        g_type_name (G_VALUE_TYPE (&pinfo->value)),
-                        oinfo->class_name);
-        }
+      CLUTTER_NOTE (SCRIPT, "Added property `%s' (type:%s) for class `%s'",
+                    pinfo->property_name,
+                    g_type_name (G_VALUE_TYPE (&pinfo->value)),
+                    oinfo->class_name);
     }
   g_list_free (members);
 

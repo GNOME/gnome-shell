@@ -32,6 +32,7 @@
  * Since arrays can be expensive, they are reference counted. You can control
  * the lifetime of a #JsonArray using json_array_ref() and json_array_unref().
  *
+ * To append an element, use json_array_add_element().
  * To extract an element at a given index, use json_array_get_element().
  * To retrieve the entire array in list form, use json_array_get_elements().
  * To retrieve the length of the array, use json_array_get_length().
@@ -183,7 +184,8 @@ json_array_get_elements (JsonArray *array)
  * @array: a #JsonArray
  * @index_: the index of the element to retrieve
  * 
- * Retrieves the element at @index_ inside a #JsonArray.
+ * Retrieves the #JsonNode containing the value of the element at @index_
+ * inside a #JsonArray.
  *
  * Return value: a pointer to the #JsonNode at the requested index
  */
@@ -218,7 +220,8 @@ json_array_get_length (JsonArray *array)
  * @array: a #JsonArray
  * @node: a #JsonNode
  *
- * Appends @node inside @array.
+ * Appends @node inside @array. The array will take ownership of the
+ * #JsonNode.
  */
 void
 json_array_add_element (JsonArray *array,
@@ -228,4 +231,22 @@ json_array_add_element (JsonArray *array,
   g_return_if_fail (node != NULL);
 
   g_ptr_array_add (array->elements, node);
+}
+
+/**
+ * json_array_remove_element:
+ * @array: a #JsonArray
+ * @index_: the position of the element to be removed
+ *
+ * Removes the #JsonNode inside @array at @index_ freeing its allocated
+ * resources.
+ */
+void
+json_array_remove_element (JsonArray *array,
+                           guint      index_)
+{
+  g_return_if_fail (array != NULL);
+  g_return_if_fail (index_ < array->elements->len);
+
+  json_node_free (g_ptr_array_remove_index (array->elements, index_));
 }

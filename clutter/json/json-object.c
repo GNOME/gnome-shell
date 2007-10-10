@@ -34,6 +34,7 @@
  * Since objects can be expensive, they are reference counted. You can control
  * the lifetime of a #JsonObject using json_object_ref() and json_object_unref().
  *
+ * To add a member with a given name, use json_object_add_member().
  * To extract a member with a given name, use json_object_get_member().
  * To retrieve the list of members, use json_object_get_members().
  * To retrieve the size of the object (that is, the number of members it has), use
@@ -137,6 +138,7 @@ json_object_unref (JsonObject *object)
  * @node: the value of the member
  *
  * Adds a member named @member_name and containing @node into a #JsonObject.
+ * The object will take ownership of the #JsonNode.
  */
 void
 json_object_add_member (JsonObject  *object,
@@ -158,30 +160,30 @@ json_object_add_member (JsonObject  *object,
   g_hash_table_replace (object->members, g_strdup (member_name), node);
 }
 
-#if GLIB_MAJOR_VERSION >= 2 && GLIB_MINOR_VERSION < 14
+/* FIXME: yuck. we really need to depend on GLib 2.14 */
+#if GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION < 14
 static void
 get_keys (gpointer key,
           gpointer value,
-          gpointer data)
+          gpointer user_data)
 {
-  GList **list = data;
+  GList **keys = user_data;
 
-  *list = g_list_prepend (*list, key);
+  *keys = g_list_prepend (*keys, key);
 }
 
 static GList *
 g_hash_table_get_keys (GHashTable *hash_table)
 {
-  GList *retval;
+  GList *retval = NULL;
 
   g_return_val_if_fail (hash_table != NULL, NULL);
 
-  retval = NULL;
   g_hash_table_foreach (hash_table, get_keys, &retval);
 
-  return g_list_reverse (retval);
+  return retval;
 }
-#endif
+#endif /* GLIB_MAJOR_VERSION == 2 && GLIB_MINOR_VERSION < 14 */
 
 /**
  * json_object_get_members:
@@ -193,7 +195,7 @@ g_hash_table_get_keys (GHashTable *hash_table)
  * Return value: a #GList of member names. The content of the list
  *   is owned by the #JsonObject and should never be modified or
  *   freed. When you have finished using the returned list, use
- *   g_slist_free() to free the resources it has allocated.
+ *   g_list_free() to free the resources it has allocated.
  */
 GList *
 json_object_get_members (JsonObject *object)
@@ -208,9 +210,10 @@ json_object_get_members (JsonObject *object)
  * @object: a #JsonObject
  * @member_name: the name of the JSON object member to access
  *
- * Retrieves the value of @member_name inside a #JsonObject.
+ * Retrieves the #JsonNode containing the value of @member_name inside
+ * a #JsonObject.
  *
- * Return value: a pointer to the value for the requested object
+ * Return value: a pointer to the node for the requested object
  *   member, or %NULL
  */
 JsonNode *
@@ -246,9 +249,9 @@ json_object_has_member (JsonObject *object,
  * json_object_get_size:
  * @object: a #JsonObject
  *
- * Retrieves the size of a #JsonObject.
+ * Retrieves the number of members of a #JsonObject.
  *
- * Return value: the number of members the JSON object has
+ * Return value: the number of members
  */
 guint
 json_object_get_size (JsonObject *object)
@@ -256,4 +259,21 @@ json_object_get_size (JsonObject *object)
   g_return_val_if_fail (object != NULL, 0);
 
   return g_hash_table_size (object->members);
+}
+
+/**
+ * json_object_remove_member:
+ * @object: a #JsonObject
+ * @member_name: the name of the member to remove
+ *
+ * Removes @member_name from @object, freeing its allocated resources.
+ */
+void
+json_object_remove_member (JsonObject  *object,
+                           const gchar *member_name)
+{
+  g_return_if_fail (object != NULL);
+  g_return_if_fail (member_name != NULL);
+
+  g_hash_table_remove (object->members, member_name);
 }

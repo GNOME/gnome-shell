@@ -1,5 +1,17 @@
 2007-10-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/json/json-types.h:
+	* clutter/json/json-array.c:
+	* clutter/json/json-object.c: Resync with the upstream copy
+	of JSON-GLib; add json_object_remove_member() and
+	json_array_remove_element() and fix the g_hash_table_get_keys()
+	replacement for GLib 2.12.
+
+	* clutter/clutter-script.c: Clean up the complex properties
+	parsing code.
+
+2007-10-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-script.c (json_object_end): Add "type_func"
 	to the list of attributes we skip.
 
