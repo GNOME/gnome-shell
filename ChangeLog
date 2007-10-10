@@ -1,3 +1,18 @@
+2007-10-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/json/json-parser.c: Use the commodity JsonNode API
+	and accept bare values as root nodes.
+
+	* clutter/clutter-script-private.h:
+	* clutter/clutter-script.c: Unreference the created objects
+	only if they are top-levels, like ClutterBehaviour and
+	ClutterTimelines. Actors have floating references, so we
+	just transfer ownership to their containers, and the stage
+	is owned by the backend. Add the "type_func" key to the
+	object definition, so the user can supply its own GType
+	function if the class name doesn't follow the GObject rules.
+	Document the ClutterScript public API.
+
 2007-10-10  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c:

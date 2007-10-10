@@ -83,6 +83,18 @@
  * }
  * </programlisting>
  *
+ * And then to apply a defined behaviour to an actor defined inside the
+ * definition of an actor, the "behaviour" member can be used:
+ *
+ * <programlisting>
+ * {
+ *   "id" : "my-rotating-actor",
+ *   "type" : "ClutterTexture",
+ *   ...
+ *   "behaviours" : [ "rotate-behaviour" ]
+ * }
+ * </programlisting>
+ *
  * #ClutterScript is available since Clutter 0.6
  */
 
@@ -129,6 +141,22 @@ struct _ClutterScriptPrivate
 G_DEFINE_TYPE (ClutterScript, clutter_script, G_TYPE_OBJECT);
 
 static void object_info_free (gpointer data);
+
+static GType
+resolve_type (const gchar *symbol)
+{
+  static GModule *module = NULL;
+  GTypeGetFunc func;
+  GType gtype = G_TYPE_INVALID;
+
+  if (!module)
+    module = g_module_open (NULL, 0);
+  
+  if (g_module_symbol (module, symbol, (gpointer)&func))
+    gtype = func ();
+  
+  return gtype;
+}
 
 /* tries to map a name in camel case into the corresponding get_type()
  * function, e.g.:
@@ -306,6 +334,7 @@ construct_timeline (ClutterScript *script,
   
   retval = CLUTTER_TIMELINE (clutter_script_construct_object (script, oinfo));
 
+  /* it needs to survive */
   g_object_ref (retval);
   object_info_free (oinfo);
 
@@ -536,6 +565,7 @@ json_object_end (JsonParser *parser,
   JsonNode *val;
   GList *members, *l;
 
+  /* ignore any non-named object */
   if (!json_object_has_member (object, "id"))
     return;
 
@@ -554,6 +584,14 @@ json_object_end (JsonParser *parser,
 
   val = json_object_get_member (object, "type");
   oinfo->class_name = json_node_dup_string (val);
+
+  if (json_object_has_member (object, "type_func"))
+    {
+      val = json_object_get_member (object, "type_func");
+      oinfo->type_func = json_node_dup_string (val);
+    }
+
+  oinfo->is_toplevel = FALSE;
 
   members = json_object_get_members (object);
   for (l = members; l; l = l->next)
@@ -708,6 +746,9 @@ translate_property (ClutterScript *script,
       retval = TRUE;
       break;
     case G_TYPE_ENUM:
+      /* enumeration values can be expressed using the nick field
+       * of GEnumValue or the actual integer value
+       */
       if (G_VALUE_HOLDS (src, G_TYPE_STRING))
         {
           const gchar *string = g_value_get_string (src);
@@ -736,6 +777,9 @@ translate_property (ClutterScript *script,
   return retval;
 }
 
+/* translates the PropertyInfo structure into a GParameter array to
+ * be fed to g_object_newv()
+ */
 static void
 translate_properties (ClutterScript  *script,
                       ObjectInfo     *oinfo,
@@ -923,7 +967,11 @@ clutter_script_construct_object (ClutterScript *script,
 
   if (oinfo->gtype == G_TYPE_INVALID)
     {
-      oinfo->gtype = resolve_type_lazily (oinfo->class_name);
+      if (oinfo->type_func)
+        oinfo->gtype = resolve_type (oinfo->type_func);
+      else
+        oinfo->gtype = resolve_type_lazily (oinfo->class_name);
+
       if (oinfo->gtype == G_TYPE_INVALID)
         return NULL;
     }
@@ -957,6 +1005,10 @@ clutter_script_construct_object (ClutterScript *script,
 
   if (CLUTTER_IS_ACTOR (oinfo->object) && oinfo->behaviours)
     apply_behaviours (script, CLUTTER_ACTOR (oinfo->object), oinfo->behaviours);
+
+  if (CLUTTER_IS_BEHAVIOUR (oinfo->object) ||
+      CLUTTER_IS_TIMELINE (oinfo->object))
+    oinfo->is_toplevel = TRUE;
 
   if (oinfo->id)
     g_object_set_data_full (oinfo->object, "clutter-script-name",
@@ -995,8 +1047,9 @@ object_info_free (gpointer data)
       ObjectInfo *oinfo = data;
       GList *l;
 
-      g_free (oinfo->class_name);
       g_free (oinfo->id);
+      g_free (oinfo->class_name);
+      g_free (oinfo->type_func);
 
       for (l = oinfo->properties; l; l = l->next)
         {
@@ -1014,7 +1067,7 @@ object_info_free (gpointer data)
       g_list_foreach (oinfo->behaviours, (GFunc) g_free, NULL);
       g_list_free (oinfo->behaviours);
 
-      if (oinfo->object)
+      if (oinfo->is_toplevel && oinfo->object)
         g_object_unref (oinfo->object);
 
       g_slice_free (ObjectInfo, oinfo);
@@ -1066,12 +1119,40 @@ clutter_script_init (ClutterScript *script)
                                          object_info_free);
 }
 
+/**
+ * clutter_script_new:
+ *
+ * Creates a new #ClutterScript instance. #ClutterScript can be used
+ * to load objects definitions for scenegraph elements, like actors,
+ * or behavioural elements, like behaviours and timelines. The
+ * definitions must be encoded using the JavaScript Object Notation (JSON)
+ * language.
+ *
+ * Return value: the newly created #ClutterScript instance. Use
+ *   g_object_unref() when done.
+ *
+ * Since: 0.6
+ */
 ClutterScript *
 clutter_script_new (void)
 {
   return g_object_new (CLUTTER_TYPE_SCRIPT, NULL);
 }
 
+/**
+ * clutter_script_load_from_file:
+ * @script: a #ClutterScript
+ * @filename: the full path to the definition file
+ * @error: return location for a #GError, or %NULL
+ *
+ * Loads the definitions from @filename into @script and merges with
+ * the currently loaded ones, if any.
+ *
+ * Return value: on error, zero is returned and @error is set
+ *   accordingly. On success, a positive integer is returned.
+ *
+ * Since: 0.6
+ */
 guint
 clutter_script_load_from_file (ClutterScript  *script,
                                const gchar    *filename,
@@ -1102,6 +1183,22 @@ clutter_script_load_from_file (ClutterScript  *script,
   return priv->last_merge_id;
 }
 
+/**
+ * clutter_script_load_from_data:
+ * @script: a #ClutterScript
+ * @data: a buffer containing the definitions
+ * @length: the length of the buffer, or -1 if @data is a NUL-terminated
+ *   buffer
+ * @error: return location for a #GError, or %NULL
+ *
+ * Loads the definitions from @data into @script and merges with
+ * the currently loaded ones, if any.
+ *
+ * Return value: on error, zero is returned and @error is set
+ *   accordingly. On success, a positive integer is returned.
+ *
+ * Since: 0.6
+ */
 guint
 clutter_script_load_from_data (ClutterScript  *script,
                                const gchar    *data,
@@ -1133,6 +1230,19 @@ clutter_script_load_from_data (ClutterScript  *script,
   return priv->last_merge_id;
 }
 
+/**
+ * clutter_script_get_object:
+ * @script: a #ClutterScript
+ * @name: the name of the object to retrieve
+ *
+ * Retrieves the object bound to @name. This function does not increment
+ * the reference count of the returned object.
+ *
+ * Return value: the named object, or %NULL if no object with the
+ *   given name was available
+ *
+ * Since: 0.6
+ */
 GObject *
 clutter_script_get_object (ClutterScript *script,
                            const gchar   *name)
@@ -1169,6 +1279,20 @@ clutter_script_get_objects_valist (ClutterScript *script,
   return g_list_reverse (retval);
 }
 
+/**
+ * clutter_script_get_objects:
+ * @script: a #ClutterScript
+ * @first_name: the name of the first object to retrieve
+ * @Varargs: a %NULL-terminated list of names
+ *
+ * Retrieves a list of objects for the given names. This function does
+ * not increment the reference count of the returned objects.
+ *
+ * Return value: a newly allocated #GList containing the found objects,
+ *   or %NULL. Use g_list_free() when done using it.
+ *
+ * Since: 0.6
+ */
 GList *
 clutter_script_get_objects (ClutterScript *script,
                             const gchar   *first_name,

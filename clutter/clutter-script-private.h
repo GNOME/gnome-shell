@@ -34,8 +34,9 @@ G_BEGIN_DECLS
 typedef GType (* GTypeGetFunc) (void);
 
 typedef struct {
-  gchar *class_name;
   gchar *id;
+  gchar *class_name;
+  gchar *type_func;
 
   GList *properties;
   GList *children;
@@ -43,6 +44,8 @@ typedef struct {
 
   GType gtype;
   GObject *object;
+
+  guint is_toplevel : 1;
 } ObjectInfo;
 
 typedef struct {
