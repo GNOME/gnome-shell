@@ -1,5 +1,10 @@
 2007-10-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-script-private.h:
+	* clutter/clutter-script.c: Parse flags like we parse enums.
+
+2007-10-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/json/json-types.h:
 	* clutter/json/json-array.c:
 	* clutter/json/json-object.c: Resync with the upstream copy

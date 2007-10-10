@@ -53,12 +53,15 @@ typedef struct {
   GValue value;
 } PropertyInfo;
 
-GObject *clutter_script_construct_object (ClutterScript *script,
-                                          ObjectInfo    *info);
+GObject *clutter_script_construct_object  (ClutterScript *script,
+                                           ObjectInfo    *info);
 
-gboolean clutter_script_enum_from_string (GType          gtype,
-                                          const gchar   *string,
-                                          gint          *enum_value);
+gboolean clutter_script_enum_from_string  (GType          gtype,
+                                           const gchar   *string,
+                                           gint          *enum_value);
+gboolean clutter_script_flags_from_string (GType          gtype,
+                                           const gchar   *string,
+                                           gint          *flags_value);
 
 G_END_DECLS
 

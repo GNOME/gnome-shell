@@ -779,14 +779,20 @@ translate_property (ClutterScript *script,
 
   switch (G_TYPE_FUNDAMENTAL (gtype))
     {
+    case G_TYPE_ULONG:
+      g_value_set_ulong (dest, (gulong) g_value_get_int (src));
+      break;
+
     case G_TYPE_UINT:
       g_value_set_uint (dest, (guint) g_value_get_int (src));
       retval = TRUE;
       break;
+
     case G_TYPE_UCHAR:
       g_value_set_uchar (dest, (guchar) g_value_get_int (src));
       retval = TRUE;
       break;
+
     case G_TYPE_ENUM:
       /* enumeration values can be expressed using the nick field
        * of GEnumValue or the actual integer value
@@ -808,8 +814,26 @@ translate_property (ClutterScript *script,
           retval = TRUE;
         }
       break;
+
     case G_TYPE_FLAGS:
+      if (G_VALUE_HOLDS (src, G_TYPE_STRING))
+        {
+          const gchar *string = g_value_get_string (src);
+          gint flags_value;
+
+          if (clutter_script_flags_from_string (gtype, string, &flags_value))
+            {
+              g_value_set_flags (dest, flags_value);
+              retval = TRUE;
+            }
+        }
+      else if (G_VALUE_HOLDS (src, G_TYPE_INT))
+        {
+          g_value_set_flags (dest, g_value_get_int (src));
+          retval = TRUE;
+        }
       break;
+
     default:
       g_value_copy (src, dest);
       retval = TRUE;
@@ -1386,6 +1410,100 @@ clutter_script_enum_from_string (GType        type,
     }
   
   return retval;
+}
+
+gboolean
+clutter_script_flags_from_string (GType        type, 
+                                  const gchar *string,
+                                  gint        *flags_value)
+{
+  GFlagsClass *fclass;
+  gchar *endptr, *prevptr;
+  guint i, j, ret, value;
+  gchar *flagstr;
+  GFlagsValue *fv;
+  const gchar *flag;
+  gunichar ch;
+  gboolean eos;
+
+  g_return_val_if_fail (G_TYPE_IS_FLAGS (type), 0);
+  g_return_val_if_fail (string != 0, 0);
+
+  ret = TRUE;
+  
+  value = strtoul (string, &endptr, 0);
+  if (endptr != string) /* parsed a number */
+    *flags_value = value;
+  else
+    {
+      fclass = g_type_class_ref (type);
+
+      flagstr = g_strdup (string);
+      for (value = i = j = 0; ; i++)
+	{
+	  
+	  eos = flagstr[i] == '\0';
+	  
+	  if (!eos && flagstr[i] != '|')
+	    continue;
+	  
+	  flag = &flagstr[j];
+	  endptr = &flagstr[i];
+	  
+	  if (!eos)
+	    {
+	      flagstr[i++] = '\0';
+	      j = i;
+	    }
+	  
+	  /* trim spaces */
+	  for (;;)
+	    {
+	      ch = g_utf8_get_char (flag);
+	      if (!g_unichar_isspace (ch))
+		break;
+	      flag = g_utf8_next_char (flag);
+	    }
+	  
+	  while (endptr > flag)
+	    {
+	      prevptr = g_utf8_prev_char (endptr);
+	      ch = g_utf8_get_char (prevptr);
+	      if (!g_unichar_isspace (ch))
+		break;
+	      endptr = prevptr;
+	    }
+	  
+	  if (endptr > flag)
+	    {
+	      *endptr = '\0';
+	      fv = g_flags_get_value_by_name (fclass, flag);
+	      
+	      if (!fv)
+		fv = g_flags_get_value_by_nick (fclass, flag);
+	      
+	      if (fv)
+		value |= fv->value;
+	      else
+		{
+		  ret = FALSE;
+		  break;
+		}
+	    }
+	  
+	  if (eos)
+	    {
+	      *flags_value = value;
+	      break;
+	    }
+	}
+      
+      g_free (flagstr);
+      
+      g_type_class_unref (fclass);
+    }
+
+  return ret;
 }
 
 gboolean
