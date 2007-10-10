@@ -34,14 +34,22 @@
  *
  * Ordering of tranformations. FIXME.
  *
- * Notes on clutter actor events: FIXME.
- *
- *  - Actors emit pointer events if set reactive (#clutter_actor_set_reactive)
- *  - Keyboard events are emitted if actor has focus (#clutter_stage_set_focus)
- *  - Motion events (motion, enter, leave) are only emitted per actor if 
- *    #clutter_enable_motion_events called with TRUE. If set to FALSE (default)
- *    then only the stage emits events. 
- *  - One emitted an event emission has two phases - capture and bubble.
+ * Notes on clutter actor events:
+ * <orderedlist>
+ *   <listitem><para>Actors emit pointer events if set reactive, see
+ *   clutter_actor_set_reactive()</para></listitem>
+ *   <listitem><para>Event handlers must return %TRUE if they handled
+ *   the event and wish to block the event emission chain; and %FALSE
+ *   if the emission chain must continue</para></listitem>
+ *   <listitem><para>Keyboard events are emitted if actor has focus, see
+ *   clutter_stage_set_focus()</para></listitem>
+ *   <listitem><para>Motion events (motion, enter, leave) are only emitted
+ *   per actor if clutter_enable_motion_events() was called with %TRUE. If
+ *   set to %FALSE (the default) then only the stage emits motion
+ *   events</para></listitem>
+ *   <listitem><para>Once emitted, an event has two phases: capture
+ *   and bubble</para></listitem>
+ * </orderedlist>
  */
 
 #include "config.h"
@@ -2983,7 +2991,9 @@ clutter_actor_lower_bottom (ClutterActor *self)
  * You should rarely need to use this function, except for
  * synthetising events.
  *
- * Return value: the return value from the signal emission
+ * Return value: the return value from the signal emission: %TRUE
+ *   if the actor handled the event, or %FALSE if the event was
+ *   not handled
  *
  * Since: 0.6
  */

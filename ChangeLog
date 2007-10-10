@@ -1,5 +1,9 @@
 2007-10-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.c: Beautify the ClutterActor documentation.
+
+2007-10-10  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c: Remove the ::event-after signal:
 	three event layers to connect to seems a bit overkill.
 
