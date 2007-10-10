@@ -211,6 +211,8 @@ struct _ClutterActorClass
 				     ClutterCrossingEvent *event);
   void     (* leave)                (ClutterActor         *actor,
 				     ClutterCrossingEvent *event);
+  void     (* captured)             (ClutterActor         *actor,
+				     ClutterEvent         *event);
   void     (* focus_in)             (ClutterActor       *actor);
   void     (* focus_out)            (ClutterActor       *actor);
 
@@ -367,7 +369,8 @@ void                  clutter_actor_apply_transform_to_point (ClutterActor      
 /* Per actor event handling - may change  */
 gboolean
 clutter_actor_event (ClutterActor *actor,
-                     ClutterEvent *event);
+                     ClutterEvent *event,
+		     gboolean      capture);
 void
 clutter_actor_set_reactive (ClutterActor *actor);
 

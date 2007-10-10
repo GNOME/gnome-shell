@@ -828,7 +828,7 @@ clutter_stage_event (ClutterStage *stage,
     return FALSE;
 
   /* emit raw event */
-  if (clutter_actor_event (CLUTTER_ACTOR (stage), event))
+  if (clutter_actor_event (CLUTTER_ACTOR (stage), event, FALSE))
     return TRUE;
 
   if (event->stage_state.changed_mask & CLUTTER_STAGE_STATE_FULLSCREEN)

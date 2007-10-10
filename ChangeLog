@@ -1,3 +1,12 @@
+2007-10-10  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	* clutter/clutter-actor.h:
+	* clutter/clutter-event.c:
+	* clutter/clutter-main.c:
+	* tests/test-events.c:
+	Add basic W3 DOM  event 'capture' like functionality.
+
 2007-10-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-script-private.h:

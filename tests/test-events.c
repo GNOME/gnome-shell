@@ -42,6 +42,18 @@ red_button_cb (ClutterActor    *actor,
     IsMotion = TRUE;
 
   clutter_enable_motion_events (IsMotion);
+
+  return FALSE;
+}
+
+static gboolean
+capture_cb (ClutterActor    *actor,
+	    ClutterEvent    *event,
+	    gpointer         data)
+{
+  printf("captured event for type '%s'\n", G_OBJECT_TYPE_NAME(actor));
+
+  return FALSE;
 }
 
 static void
@@ -152,6 +164,7 @@ main (int argc, char *argv[])
 
   stage = clutter_stage_get_default ();
   g_signal_connect (stage, "event", G_CALLBACK (input_cb), "stage");
+
   g_signal_connect (stage, "fullscreen", 
 		    G_CALLBACK (stage_state_cb), "fullscreen");
   g_signal_connect (stage, "unfullscreen", 
@@ -160,6 +173,8 @@ main (int argc, char *argv[])
 		    G_CALLBACK (stage_state_cb), "activate");
   g_signal_connect (stage, "deactivate", 
 		    G_CALLBACK (stage_state_cb), "deactivate");
+
+  g_signal_connect (stage, "captured-event", G_CALLBACK (capture_cb), NULL);
 
   focus_box = clutter_rectangle_new_with_color (&ncol);
   clutter_container_add (CLUTTER_CONTAINER(stage), focus_box, NULL);
@@ -192,6 +207,8 @@ main (int argc, char *argv[])
   g_signal_connect (actor, "event", G_CALLBACK (input_cb), "green box");
   g_signal_connect (actor, "focus-in", G_CALLBACK (key_focus_in_cb), 
 		    focus_box);
+
+  g_signal_connect (actor, "captured-event", G_CALLBACK (capture_cb), NULL);
 
   actor = clutter_rectangle_new_with_color (&bcol);
   clutter_actor_set_size (actor, 100, 100);

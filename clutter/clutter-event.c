@@ -379,10 +379,8 @@ clutter_event_free (ClutterEvent *event)
   if (G_LIKELY (event))
     {
       ClutterActor *source = NULL;
-
-      source = clutter_event_get_source (event);
-      if (source)
-	g_object_unref (source);
+      if (event->type == CLUTTER_LEAVE || event->type == CLUTTER_ENTER)
+	g_object_unref (event->crossing.related);
       g_slice_free (ClutterEvent, event);
     }
 }

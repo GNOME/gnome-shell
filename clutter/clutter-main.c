@@ -1133,6 +1133,56 @@ event_click_count_generate (ClutterEvent *event)
     }
 }
 
+static void 
+deliver_event (ClutterEvent *event, ClutterActor *source)
+{
+#define MAX_EVENT_DEPTH 512
+
+  static ClutterActor  **event_tree = NULL;
+  static gboolean        lock = FALSE;
+
+  ClutterActor          *actor;
+  gint                   i = 0, n_tree_events = 0;
+
+  g_return_if_fail (source != NULL);
+  g_return_if_fail (lock == FALSE);
+
+  lock = TRUE; /* Guard against reentrancy */
+
+  /* Sorry Mr Bassi. */
+  if (event_tree == NULL)
+    event_tree = g_new0(ClutterActor*, MAX_EVENT_DEPTH);
+
+  actor = source;
+
+  /* Build 'tree' of events */
+  while (actor && n_tree_events < MAX_EVENT_DEPTH)
+    {
+      if (clutter_actor_is_reactive (actor) ||
+	  clutter_actor_get_parent (actor) == NULL)
+	event_tree[n_tree_events++] = g_object_ref (actor);
+
+      actor = clutter_actor_get_parent (actor);
+    }
+
+  /* Capture */
+  for (i=n_tree_events-1; i >= 0; i--)
+      if (clutter_actor_event (event_tree[i], event, TRUE))
+	goto done;
+
+  /* Bubble */
+  for (i=0; i < n_tree_events; i++)
+    if (clutter_actor_event (event_tree[i], event, FALSE))
+      goto done;
+
+ done:
+
+  for (i=0; i < n_tree_events; i++)
+    g_object_unref (event_tree[i]);
+
+  lock = FALSE;
+}
+
 /** 
  * clutter_do_event
  * @event: a #ClutterEvent.
@@ -1151,6 +1201,7 @@ clutter_do_event (ClutterEvent *event)
   ClutterMainContext  *context;
   ClutterBackend      *backend;
   ClutterActor        *stage;
+
   static ClutterActor *motion_last_actor = NULL; 
 
   context = clutter_context_get_default ();
@@ -1175,18 +1226,7 @@ clutter_do_event (ClutterEvent *event)
 
 	g_return_if_fail (actor != NULL);
 
-	while (actor)
-	  {
-	    if (clutter_actor_is_reactive (actor) ||
-                clutter_actor_get_parent (actor) == NULL /* STAGE */ )
-	      {
-		CLUTTER_NOTE (EVENT, "forwarding event to reactive actor");
-		if (clutter_actor_event (actor, event))
-                  break;
-	      }
-
-	    actor = clutter_actor_get_parent (actor);
-	  }
+	deliver_event (event, actor);
       }
       break;
     case CLUTTER_DESTROY_NOTIFY:
@@ -1203,25 +1243,16 @@ clutter_do_event (ClutterEvent *event)
 
 	g_return_if_fail (actor != NULL);
 
-	event->key.source = g_object_ref (actor);
-
-	/* bubble up */
-	do
-	  {
-	    if (clutter_actor_event (actor, event))
-              break;
-
-	    actor = clutter_actor_get_parent (actor);
-	  }
-	while (actor != NULL);
+	event->key.source = actor;
+	deliver_event (event, actor);
       }
       break;
     case CLUTTER_MOTION:
       if (context->motion_events_per_actor == FALSE)
 	{
 	  /* Only stage gets motion events */
-	  event->motion.source = g_object_ref (stage);
-	  clutter_actor_event (stage, event);
+	  event->motion.source = stage;
+	  clutter_actor_event (stage, event, FALSE);
 	  break;
 	}
     case CLUTTER_BUTTON_PRESS:
@@ -1246,15 +1277,20 @@ clutter_do_event (ClutterEvent *event)
 				  x, y, 
 				  CLUTTER_PICK_REACTIVE);
 
+	 /* FIXME: for an optimisation should check if there are
+	 * actually any reactive actors and avoid the pick all togeather
+	 * (signalling just the stage). Should be big help for gles.
+	 */
+
 	CLUTTER_NOTE (EVENT, "Reactive event received at %i, %i - actor: %p", 
 		      x, y, actor);
 
 	g_return_if_fail (actor != NULL);
 
 	if (event->type == CLUTTER_SCROLL)
-	  event->scroll.source = g_object_ref (actor);
+	  event->scroll.source = actor;
 	else
-	  event->button.source = g_object_ref (actor);
+	  event->button.source = actor;
 
 	/* Motion enter leave events */
 	if (event->type == CLUTTER_MOTION)
@@ -1270,7 +1306,8 @@ clutter_do_event (ClutterEvent *event)
 		    cev.crossing.flags   = 0; 
 		    cev.crossing.x       = x;
 		    cev.crossing.y       = y;
-		    cev.crossing.source  = g_object_ref (motion_last_actor);
+		    cev.crossing.source  = motion_last_actor;
+		    /* unref in free  */
 		    cev.crossing.related = g_object_ref (actor);
 
 		    clutter_event_put (&cev); /* copys */
@@ -1280,7 +1317,7 @@ clutter_do_event (ClutterEvent *event)
 		    cev.crossing.flags   = 0; 
 		    cev.crossing.x       = x;
 		    cev.crossing.y       = y;
-		    cev.crossing.source  = g_object_ref (actor);
+		    cev.crossing.source  = actor;
 		    cev.crossing.related = g_object_ref (motion_last_actor);
 
 		    clutter_event_put (&cev);
@@ -1291,27 +1328,7 @@ clutter_do_event (ClutterEvent *event)
 	else
 	  event_click_count_generate (event);
 	
-	/* Send the event to the actor and all parents always the 
-	 * stage.  
-         *
-	 * FIXME: for an optimisation should check if there are
-	 * actually any reactive actors and avoid the pick all togeather
-	 * (signalling just the stage). Should be big help for gles.
-	 *
-	 * FIXME: Actors be able to stop emission.
-	 */
-	while (actor)
-	  {
-	    if (clutter_actor_is_reactive (actor) ||
-                clutter_actor_get_parent (actor) == NULL /* STAGE */ )
-	      {
-		CLUTTER_NOTE (EVENT, "forwarding event to reactive actor");
-		if (clutter_actor_event (actor, event))
-                  break;
-	      }
-
-	    actor = clutter_actor_get_parent (actor);
-	  }
+	deliver_event (event, actor);
       }
       break;
     case CLUTTER_STAGE_STATE:
