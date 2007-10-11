@@ -888,12 +888,12 @@ clutter_entry_set_text (ClutterEntry *entry,
         }
       else
         {
-          gchar new[priv->max_length + 1];
+          gchar * n = g_malloc0 (priv->max_length + 1);
 
-          g_utf8_strncpy (new, text, priv->max_length);
+          g_utf8_strncpy (n, text, priv->max_length);
           g_free (priv->text);
           
-          priv->text = g_strdup (new);
+          priv->text = n;
         }
     }
   else

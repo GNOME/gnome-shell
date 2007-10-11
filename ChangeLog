@@ -1,3 +1,8 @@
+2007-10-11  Tomas Frydrych  <tf@o-hand.com>
+
+	* clutter/clutter-entry.c:
+	Avoid using C++ reserverd words to name variables.
+
 2007-10-11  Øyvind Kolås  <pippin@o-hand.com>
 
 	Improve the quality of text when the scale it is shown at screen is
@@ -102,7 +107,7 @@
 	Add missing enter/leave event signals
 
 	* clutter/clutter-main.c: (clutter_do_event):
-	Set time in crossing events. 
+	Set time in crossing events.
 	Protect against do_pick() failing.
 
 2007-10-09  Emmanuele Bassi  <ebassi@openedhand.com>
@@ -187,11 +192,11 @@
 	* clutter/clutter-private.h:
 	* clutter/clutter-main.c:
 	Add a hash to global clutter context mapping all parented actor
-	id's to actors. 
+	id's to actors.
 	Add clutter_get_actor_by_id() call.
 	Convert picking machinery to use above.
 	(performance/simpler composite actor creation)
-	
+
 	* clutter/clutter-stage.c: (clutter_stage_fullscreen),
 	(clutter_stage_unfullscreen), (clutter_stage_event):
 	Only set the fullscreen property on stage state fullscreen event(#545)
@@ -250,10 +255,10 @@
 	* clutter/eglx/clutter-event-egl.c:
 	* clutter/glx/clutter-event-glx.c:
 	* clutter/sdl/clutter-event-sdl.c:
-	Remove seperate double/triple click events and replace with 
+	Remove seperate double/triple click events and replace with
 	a click_count member.
 	Move calculating click counts from backend to do_event()
-	Initial implementation of ENTER/LEAVE events. 
+	Initial implementation of ENTER/LEAVE events.
 
 	* tests/test-events.c:
 	Add code to test above.
@@ -315,7 +320,7 @@
 	changes.
 
 2007-10-01  Tomas Frydrych  <tf@openedhand.com>
-	
+
 	* clutter/clutter-actor.c:
 	(clutter_actor_set_scale_with_gravityx):
 	Use CLUTTER_QMUL for better precission (#532, patch by Gwenole
@@ -331,7 +336,7 @@
 	Patch by: Tommi Komulainen <tommi.komulainen@iki.fi>
 
 	* clutter/clutter-entry.c: (clutter_entry_delete_text):
-	Fix characters vs. bytes inconsistency (#520).	
+	Fix characters vs. bytes inconsistency (#520).
 
 2007-09-30  Matthew Allum  <mallum@openedhand.com>
 
@@ -372,7 +377,7 @@
 
 2007-09-27  Matthew Allum  <mallum@openedhand.com>
 
-	Merge from stable.     
+	Merge from stable.
 
         * clutter/clutter-behaviour-path.c: (path_alpha_to_position)
         Fix uninitialized variable (#480, Gwenole Beauchesne)
@@ -417,7 +422,7 @@
 2007-09-25  Ross Burton  <ross@openedhand.com>
 
 	Merge from stable.
-	
+
 	* clutter/clutter-group.c:
 	Optimise sort_z_order.
 
@@ -434,7 +439,7 @@
 	Port from stable branch.
 
 	* clutter/eglnative/clutter-event-egl.c: (clutter_event_dispatch):
-	Only declare tsevent if we have tslib (#498, Robert Bragg)	
+	Only declare tsevent if we have tslib (#498, Robert Bragg)
 
 2007-09-06  Emmanuele Bassi  <ebassi@openedhand.com>
 
@@ -476,19 +481,19 @@
 	* clutter/glx/clutter-stage-glx.c:
 	* clutter/glx/clutter-stage-glx.h:
 	Add initial support for stage state events.
-	Fix fullscreening for an already mapped stage. 
+	Fix fullscreening for an already mapped stage.
 
 	* tests/test-events.c:
-	Print out info from the above. Blue button now toggles 
+	Print out info from the above. Blue button now toggles
 	fullscreen.
 
 	* clutter/clutter-effect.c:
 	* clutter/clutter-effect.h:
-	Add a setting for templates to ref or clone underlying 
+	Add a setting for templates to ref or clone underlying
 	timelines. (As to improve sync issues like those in foofone)
 
 	* tests/test-timeline.c:
-	Also add completed signals.	
+	Also add completed signals.
 
 	* clutter/cogl/gles/cogl.c: (cogl_texture_image_2d):
 	* configure.ac:
@@ -497,12 +502,12 @@
 
 
 2007-08-24  Tomas Frydrych  <tf@openedhand.com>
-	
+
 	* clutter/clutter-actor.c:
 	(_clutter_actor_apply_modelview_transform):
-	
+
 	Fixed rotation around x axis (bug 486).
-	
+
 2007-08-23  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-private.h:
@@ -514,7 +519,7 @@
 	* clutter/sdl/clutter-event-sdl.c: Update backends.
 
 2007-08-22  Tomas Frydrych  <tf@openedhand.com>
-	
+
 	* clutter/clutter-behaviour-rotate.c:
 	* clutter/clutter-behaviour-ellipse.c:
 
@@ -529,7 +534,7 @@
 	holding the lock is unpredictable for the library. Leave a comment
 	with the relevant bug number in GNOME's Bugzilla and wait for a
 	fix in GLib.
-	
+
 2007-08-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-event.c: Correctly initialise the state
@@ -567,7 +572,7 @@
 	ClutterStage properties.
 
 2007-08-21  Tomas Frydrych  <tf@openedhand.com>
-	
+
 	* clutter/clutter-fixed.c:
 	(clutter_sqrti):
 
@@ -616,7 +621,7 @@
 
 	* clutter/clutter-timeline.c: Emit the ::new-frame signal only
 	if the timeline is still active
-	
+
 	Always advance at least of one frame. (#471, Rob Bradford)
 
 	Do not rewind the timeline if the user paused it in the ::new-frame
@@ -694,12 +699,12 @@
 	- Actors set_reactive() to receive mouse events.
 	  (call clutter_enable_motion_events() for per action motion events)
         - clutter_stage_set_key_focus () to direct key events.
-        - Events bubble up to parents (ending at stage) 
+        - Events bubble up to parents (ending at stage)
 	  (original source identified by clutter_event_get_source())
 	TODO:
 	- enter/leave notifys for actors.
         - stage specific events - fullscreen
-        - grabs  
+        - grabs
 
 	* tests/test-events.c:
 	Extend a little to use new API
@@ -799,7 +804,7 @@
 	functions under the main Clutter lock and without races. The
 	Clutter thread-safe implementation is basically the same used by
 	GDK, so the same caveats apply.
-	
+
 	* clutter/clutter-actor.c:
 	* clutter/clutter-timeline.c:
 	* clutter/clutter-timeout-pool.c: Use the new threading API when
@@ -858,7 +863,7 @@
 2007-08-07  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-behaviour-ellipse.c:
-	Add a documentation note regarding ellipse setting 
+	Add a documentation note regarding ellipse setting
 	the applied actors position.
 
 2007-08-07  Matthew Allum  <mallum@openedhand.com>
@@ -904,7 +909,7 @@
 2007-08-06  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-texture.c:
-	Correct set pixbuf property as GDK_TYPE_PIXBUF 
+	Correct set pixbuf property as GDK_TYPE_PIXBUF
 	(fix via Neil Roberts)
 
 2007-08-06  Matthew Allum  <mallum@openedhand.com>
@@ -915,12 +920,12 @@
 	Rename limit min/max props to start/end.
 
 	* tests/test-depth.c:
-	Simplify test-case to work with above change and 
+	Simplify test-case to work with above change and
 	without multiple ramps
 
 	* clutter/clutter-behaviour-rotate.c:
 	Handle CW rotation when end > start and similar for CCW just
-	like ellipse behaviour. 
+	like ellipse behaviour.
 
 2007-08-05  Matthew Allum  <mallum@openedhand.com>
 
@@ -980,12 +985,12 @@
 
 	Added direction parameter; made behaviour to respect direction
 	parameter; unclumped angle_begin and angle_end values.
-	
+
 2007-08-02  Matthew Allum  <mallum@openedhand.com>
 
 	* NEWS:
 	* README:
-	Initial updating ready for release. 
+	Initial updating ready for release.
 
 2007-08-02  Emmanuele Bassi  <ebassi@openedhand.com>
 
@@ -1072,7 +1077,7 @@
 
 	Fixed invalid assumption about z cooordiance in calculation of
 	tilt in y axis.
-	
+
 2007-07-30  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.c:
@@ -1083,7 +1088,7 @@
 2007-07-30  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-backend.h:
-	Remove #if 0's old backend_api 
+	Remove #if 0's old backend_api
 	(generating uneeded documentation)
 
 2007-07-30  Matthew Allum  <mallum@openedhand.com>
@@ -1122,7 +1127,7 @@
 	definition; somehow, this has escaped everyone attention
 	in one year and a half. Luckily, GInitiallyUnowned is
 	as big as GObject.
-	 
+
 	 (clutter_actor_get_abs_position_units),
 	 (clutter_actor_get_abs_position): Check parameters.
 
@@ -1141,9 +1146,9 @@
 	* tests/test-behave.c:
 	(clutter_behaviour_ellipse_get_angle_tilt):
 	(clutter_behaviour_ellipse_set_angle_tilt):
-	
+
 	Pruned ClutterBehaviourEllipse api.
-	
+
 2007-07-27  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-behaviour-ellipse.h:
@@ -1164,12 +1169,12 @@
 	(clutter_behaviour_ellipse_set_tiltx):
 	(clutter_behaviour_ellipse_get_tilt):
 	(clutter_behaviour_ellipse_get_tiltx):
-	
+
 	* tests/test-behave.c:
-	
+
 	Allow tilting ClutterBehaviourEllipse in all three axis; affects
 	any code using the previous tilt api.
-	
+
 
 2007-07-26  Matthew Allum  <mallum@openedhand.com>
 
@@ -1272,7 +1277,7 @@
 
 	* Makefile.am:
 	* HACKING:
-	Add with initial notes on coding bits and bobs. 
+	Add with initial notes on coding bits and bobs.
 
 	* clutter/clutter-behaviour-scale.c:
 	Doc fixes.
@@ -1282,21 +1287,21 @@
 
 	* clutter/glx/clutter-stage-glx.c:
 	Disable wm user resizing of stage (At least for now)
-	Doc fixes. 
+	Doc fixes.
 
 2007-07-25  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.c:
 
 	Fixed endianness issue in fast fp conversions.
-	
+
 2007-07-25  Tomas Frydrych  <tf@openedhand.com>
 
 	* configure.ac:
 	* clutter/clutter-fixed.c:
 
 	Added --disable-fast-fp-conversion option.
-	
+
 2007-07-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-label.[ch]: Ouch, clutter_label_get_alignment()
@@ -1315,7 +1320,7 @@
 	* tests/Makefile.am:
 
 	Added test-rotate.
-	
+
 2007-07-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-behaviour-bspline.c: Kill off some deep pointer
@@ -1387,7 +1392,7 @@
 
 2007-07-24  Matthew Allum  <mallum@openedhand.com>
 
-	* clutter/clutter-backend.c: 
+	* clutter/clutter-backend.c:
 	Minor build fixes (#413)
 
 2007-07-24  Emmanuele Bassi  <ebassi@openedhand.com>
@@ -1472,10 +1477,10 @@
 	* clutter/glx/clutter-stage-glx.c:
 	Disable use XFixes cursor visibility funcs. Appears to have issues
 	on feisty X Server at least. Fallback should work generally better.
-	
+
 	Fix non offscreen clutter_stage_snapshot to also rotate read pixel
-	data to correct orientation. 
-	
+	data to correct orientation.
+
 2007-07-12  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/eglnative/clutter-event-egl.c: (clutter_event_dispatch):
@@ -1488,7 +1493,7 @@
 	* clutter/cogl/cogl.h:
 	* clutter/cogl/gl/cogl.c: (cogl_get_viewport):
 	* clutter/cogl/gles/cogl.c: (cogl_get_viewport):
-	Hopefully fix clutter_actor_at_pos on !32bpp displays. 
+	Hopefully fix clutter_actor_at_pos on !32bpp displays.
 	Based on patch from Pan Bohui, See;
 	http://bugzilla.openedhand.com/show_bug.cgi?id=390
 
@@ -1509,7 +1514,7 @@
 	* clutter/clutter-behaviour-ellipse.c:
 	Implemented "apply" signal closer to position actor on the start
 	of the elliptic path.
-	
+
 	(clutter_behaviour_ellipse_get_angle_begin):
 	(clutter_behaviour_ellipse_set_angle_begin):
 	(clutter_behaviour_ellipse_get_angle_end):
@@ -1517,15 +1522,15 @@
 	(clutter_behaviour_ellipse_get_angle_tilt):
 	(clutter_behaviour_ellipse_set_angle_tilt):
 	Renamed with an x suffix; added versions for angles in degrees.
-	
+
 2007-07-09  Matthew Allum  <mallum@openedhand.com>
 
 	* TODO:
 	Updates.
 	* clutter/clutter-stage.c:
 	* clutter/glx/clutter-stage-glx.c:
-	Fix cursor visibility property. 
-	Force a repaint before mapping to attempt to avoid flicker.    
+	Fix cursor visibility property.
+	Force a repaint before mapping to attempt to avoid flicker.
 
 2007-07-09  Richard Purdie  <rpurdie@openedhand.com>
 
@@ -1561,7 +1566,7 @@
 
 	* NEWS:
 	* configure.ac:
-	Update for 0.3.1	
+	Update for 0.3.1
 
 2007-07-06  Matthew Allum  <mallum@openedhand.com>
 
@@ -1591,10 +1596,10 @@
 	* clutter/eglx/clutter-event-egl.c:
 	* clutter/eglx/clutter-stage-egl.c:
 	* configure.ac:
-	Add a new 'native' EGL backend for non X based EGL's 
+	Add a new 'native' EGL backend for non X based EGL's
         (i.e on framebuffer).
 	Rename old backend to 'eglx' and namespace public funcs with this.
-	
+
 	* clutter/pango/pangoclutter-private.h:
 	Add extra checks for expected defines.
 
@@ -1618,7 +1623,7 @@
 	* clutter/clutter-box.c: (clutter_box_pick):
 	Call clutter_box_paint rather than actor paint method avoiding
 	infinte loop (Fixes test-boxes crasher).
- 
+
 	* clutter/glx/clutter-stage-glx.c: (clutter_stage_glx_unrealize):
 	Trap the X calls to avoid potential X errors.
 
@@ -1633,7 +1638,7 @@
 	(clutter_group_query_coords:)
 	Reset box size to zero width and height to report correct size if
 	the contents of the group shrink.
-	
+
 2007-07-05  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-rectangle.c: Fix off-by-border-width bug
@@ -1646,7 +1651,7 @@
 	Added CLUTTER_FLOAT_TO_UINT macro;
 	(clutter_pow2x):
 	Fixed sign issue.
-	
+
 2007-07-04  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/*: Loads of fixes for the API reference.
@@ -1706,7 +1711,7 @@
 	* tests/test-project.c:
 	(clutter_actor_apply_transform_to_point):
 	Use ClutterVertex for input and output parameters.
-	
+
 2007-07-01  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Merge from clutter.git/work branch
@@ -1733,7 +1738,7 @@
 
 	* clutter/clutter-texture.c: (texture_upload_data):
 	Fix a SEGV for GL ES textures.
-	
+
 	* clutter/cogl/gles/cogl.c: (cogl_setup_viewport):
 	Tweak default z_camera for 60 degrees like GL.
 
@@ -1746,14 +1751,14 @@
 	* clutter/clutter-group.c:
 	(clutter_group_query_coords):
 	Fixed box calculation.
-	
+
 2007-06-28  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-group.c:
 	(clutter_group_raise):
 	(clutter_group_lower):
 	Fixed SIGSEGV when attempting to raise / lower an only child.
-	
+
 2007-06-28  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/cogl/gl/cogl.c: (cogl_setup_viewport):
@@ -1764,7 +1769,7 @@
 
 	* tests/test-perspective.c:
 	Moved red dots to be positioned 1px off each corner.
-	
+
 2007-06-28  Matthew Allum  <mallum@openedhand.com>
 
 	* tests/Makefile.am:
@@ -1779,7 +1784,7 @@
 	Renamed clutter_actor_project_point() to
 	clutter_actor_apply_trasform_to_point() and
 	clutter_actor_project_vertices() to clutter_actor_get_vertices().
-	
+
 2007-06-27  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.h:
@@ -1787,7 +1792,7 @@
 	* tests/test-project.c:
 	(clutter_actor_project_point):
 	Separated input from output parameters.
-	
+
 2007-06-27  Matthew Allum  <mallum@openedhand.com>
 
 	* Makefile.am:
@@ -1806,7 +1811,7 @@
 	(clutter_actor_scale_with_gravityx):
 	Made to work after changes to the behavivour of
 	clutter_actor_get_absolute_size() for rotated actors.
-	
+
 2007-06-26  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/cogl/gl/cogl.c:
@@ -1822,7 +1827,7 @@
 	* clutter/clutter-actor.c:
 	Added fixed point version of clutter_actor_rotate_*() functions
 	and accessors for rotation angles.
-	
+
 2007-06-25  Matthew Allum  <mallum@openedhand.com>
 
 	* README:
@@ -1830,7 +1835,7 @@
 	* clutter/clutter-effect.c:
 	Add missing func documentation
 	* clutter/clutter-rectangle.c:
-	Fix border drawing. 
+	Fix border drawing.
 
 2007-06-25  Tomas Frydrych  <tf@openedhand.com>
 
@@ -1841,9 +1846,9 @@
 	* clutter/cogl/cogl.h:
 	* clutter/cogl/gl/cogl.c:
 	* clutter/cogl/gles/cogl.c:
-	Changed ClutterPerspective.fovy from ClutterAngle to degrees to 
+	Changed ClutterPerspective.fovy from ClutterAngle to degrees to
 	improve precission in Z-camera calculations.
-	
+
 2007-06-22  Matthew Allum  <mallum@openedhand.com>
 
 	* README:
@@ -1860,8 +1865,8 @@
 	Update for 0.3 release.
 
 	* clutter/clutter-actor.c:
-	Minor doc fixups 
-	
+	Minor doc fixups
+
 	* clutter/clutter-texture.c:
 	Various minor additions for handling non RGBA data.
 	Fix a typo breaking clutter_texture_get_pixbuf() on tiled textures.
@@ -1928,11 +1933,11 @@
 
 	* clutter/clutter-event.c: (clutter_key_event_unicode):
 	Remove uneeded convert case call.
-	
-	* clutter/cogl/gl/cogl.c: (cogl_rectangle)
-	Use parameters correctly for underlying GL rect call. 
 
-	* tests/test-entry.c: 
+	* clutter/cogl/gl/cogl.c: (cogl_rectangle)
+	Use parameters correctly for underlying GL rect call.
+
+	* tests/test-entry.c:
 	Add a window title.
 
 2007-06-18  Matthew Allum  <mallum@openedhand.com>
@@ -1941,7 +1946,7 @@
 	Seemingly fix SDL Event source.
 	Add some very basic SDL keysym translation.
 	(Thanks to Thomas Van Machelen for initial translation code)
-	
+
 	* tests/test-events.c:
 	Dump some info on keysyms pressed.
 
@@ -2002,13 +2007,13 @@
 	(clutter_vbox_pack_child):
 	(clutter_hbox_pack_child):
 	Fixed child coords.
-	
+
 2007-06-14  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-box.[ch]: Base class for layout containers.
 
 	* clutter/clutter-hbox.[ch]: Horizontal box actor.
-	
+
 	* clutter/clutter-vbox.[ch]: Vertical box actor.
 
 	* clutter/clutter.h:
@@ -2024,14 +2029,14 @@
 	Actually populate this func and remove the static alternate
 	named one. Means GLX actually checks for available extensions.
 	Other minor tidy ups.
-	
+
 	* clutter/glx/clutter-backend-glx.c:
 	* clutter/glx/clutter-backend-glx.h:
-	Add support for GLX_SGI_swap_control to do vblanking prefering 
-        over glXGetVideoSyncSGI. Should fix issues on Intel chips with 
-        very slow frame rates due to vblank problems. 
+	Add support for GLX_SGI_swap_control to do vblanking prefering
+        over glXGetVideoSyncSGI. Should fix issues on Intel chips with
+        very slow frame rates due to vblank problems.
 	Thanks to  Michel Danzer for tips, see;
-        http://bugs.freedesktop.org/show_bug.cgi?id=10542  
+        http://bugs.freedesktop.org/show_bug.cgi?id=10542
 
 	* test/test-actors.c:
 	Change FPS to 60.
@@ -2057,12 +2062,12 @@
 	* clutter/clutter-actor.c:
 	(clutter_actor_get_abs_position):
 	(clutter_actor_get_abs_size):
-	Reimplement using clutter_actor_project_point() and 
+	Reimplement using clutter_actor_project_point() and
 	clutter_actor_project_vertices().
 
 	* tests/test-project.c:
 	Rename clutter_actor_allocate_coords -> clutter_actor_query_coords
-	
+
 2007-06-14  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c:
@@ -2075,13 +2080,13 @@
 	Rename clutter_actor_allocate_coords -> clutter_actor_query_coords
 
 	Change repaints to G_PRIORITY_DEFAULT + 10.
-	(timelines are G_PRIORITY_DEFAULT + 30, events G_PRIORITY_DEFAULT) 
+	(timelines are G_PRIORITY_DEFAULT + 30, events G_PRIORITY_DEFAULT)
 
 	* clutter/glx/clutter-event-glx.c:
 	Handle shift modifier in keycode -> keysym translation.
 
-	* tests/test-actors.c: 
-	Remove (broken) screen saver code. 
+	* tests/test-actors.c:
+	Remove (broken) screen saver code.
 	Add scaling behaviour, clean code a little.
 
 2007-06-13  Tomas Frydrych  <tf@openedhand.com>
@@ -2090,23 +2095,23 @@
 	(clutter_actor_project_vertices):
 	(clutter_actor_project_proint):
 	Fixed translation of Y coords to match the windowing system.
-	
+
 	* clutter/egl/clutter-stage-egl.c:
 	* clutter/glx/clutter-stage-glx.c:
 	* clutter/sdl/clutter-stage-sdl.c:
 	(clutter_stage_*_request_size):
 	Initialize viewport when setting/resetting stage side.
-	
+
 	* tests/Makefile.am
 	* tests/test-project.c:
 	An interactive test of the projection stuff.
-	
+
 2007-06-12  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-main.c:
 	(clutter_redraw):
 	Clear CLUTTER_ACTOR_SYNC_MATRICES flag after setting up viewport.
-	
+
 2007-06-12  Matthew Allum  <mallum@openedhand.com>
 
 	* doc/manual/Makefile.am:
@@ -2119,22 +2124,22 @@
 
 	* clutter/clutter-fixed.h:
 	Added shorthand CFX_QMUL macro.
-	
+
 	* clutter/clutter-private.h:
 	* clutter/clutter-actor.h:
 	* clutter/clutter-actor.c:
 	Replaced ClutterVertices with ClutterVertex;
-	
+
 	(clutter_actor_get_transformed_vertices):
 	(clutter_actor_get_transformed_point):
-	Replaced with clutter_actor_projected_vertices and 
+	Replaced with clutter_actor_projected_vertices and
 	clutter_actor_projected_point.
 
 	(_clutter_actor_apply_modelview_transform):
 	(_clutter_actor_apply_modelview_transform_recursive):
 	Private functions to push actor modelview transforms on OpenGL
 	stack.
-	
+
 	* clutter/cogl/cogl.h:
 	* clutter/cogl/gl/cogl.c:
 	* clutter/cogl/gles/cogl.c:
@@ -2142,7 +2147,7 @@
 	(cogl_get_modelview_matrix):
 	(cogl_get_projection_matrix):
 	Functions to access OpenGL transforms.
-	
+
 2007-06-12  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-alpha.c:
@@ -2175,11 +2180,11 @@
 	(clutter_alpha_sine_dec):
 	(clutter_alpha_sine_half):
 	Fixed unsigned overflow.
-	
+
 2007-06-11  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-event.h: Add full modifier masks enums.
-	
+
 	* clutter/glx/clutter-event-glx.c: Copy the modifier masks from
 	the native X event structure.
 
@@ -2188,7 +2193,7 @@
 
 2007-06-09  Emmanuele Bassi  <ebassi@openedhand.com>
 
-	* clutter/clutter.h: 
+	* clutter/clutter.h:
 	* clutter/clutter-timeout-pool.[ch]: Add a timeout pool source;
 	every timeout added to this pool will use a single slice of the
 	main loop.
@@ -2218,9 +2223,9 @@
 	* clutter/cogl/gles/cogl-defines.h:
 	* clutter/cogl/gl/cogl.c:
 	* clutter/cogl/gles/cogl.c:
-	Add initial experiemental YUV texture support. 
+	Add initial experiemental YUV texture support.
 	Move texture rect size checks into cogl.
-	Better handle moving texture data from video -> system memory 
+	Better handle moving texture data from video -> system memory
 	(if support available).
 
 2007-06-07  Neil J. Patel  <njp@o-hand.com>
@@ -2300,7 +2305,7 @@
 	* clutter/clutter-stage.c:
 	* clutter/clutter-private.h:
 	Removed perspective matrix caching from ClutterStage.
-	
+
 2007-06-01  Neil J. Patel  <njp@o-hand.com>
 
 	* clutter/clutter-entry.c: (clutter_entry_set_property),
@@ -2331,7 +2336,7 @@
 	* clutter/clutter-actor.c:
 	(clutter_actor_get_transformed_point):
 	Make input again relative to the actor; feed depth into transform.
-	
+
 2007-06-01  Neil J. Patel  <njp@o-hand.com>
 
 	* clutter/clutter-entry.c: (clutter_entry_class_init),
@@ -2358,14 +2363,14 @@
 	* clutter/clutter-actor.c:
 	(mtx_create):
 	Apply perspective transform before all other transforms.
-	
+
 2007-06-01  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-stage.c:
 	(clutter_stage_init):
 	Call _clutter_stage_refresh_perspective_matrix to initialize the
 	matrix for default values.
-	
+
 2007-06-01  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.h:
@@ -2374,7 +2379,7 @@
 	* clutter/clutter-behaviour-bspline.h:
 	* clutter/clutter-behaviour-bspline.c:
 	Documentation fixes.
-	
+
 2007-05-31  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-stage.c:
@@ -2386,7 +2391,7 @@
 	(clutter_actor_get_tranformed_vertices):
 	(clutter_actor_get_tranformed_point):
 	Apply perspective matrix on the top of actor transform matrix.
-	
+
 2007-05-31  Neil J Patel  <njp@o-hand.com>
 
 	* clutter/Makefile.am:
@@ -2411,7 +2416,7 @@
 	* clutter/clutter.h:
 	* examples/Makefile.am:
 	Initial import of ClutterEntry actor.
-	
+
 	* examples/test-entry.c: (on_key_release_cb), (main):
 	A basic test for ClutterEntry
 
@@ -2420,7 +2425,7 @@
 	* clutter/clutter-actor.c:
 	(clutter_actor_get_transformed_point):
 	Fixed coordinance translation.
-	
+
 2007-05-31  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c:
@@ -2428,7 +2433,7 @@
 	Add clutter_actor_get_transformed_point()
 
 	* clutter/clutter-main.c:
-	Plug in perspective setup to redraw 
+	Plug in perspective setup to redraw
 
 	* clutter/clutter-stage.c:
 	* clutter/clutter-stage.h:
@@ -2459,7 +2464,7 @@
 	* clutter/clutter-behaviour-ellipse.c:
 	Changed behaviour so that a beginning angle of 0 would correspond
 	to 12 o'clock.
-	
+
 2007-05-31  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.h:
@@ -2467,7 +2472,7 @@
 	(_clutter_double_to_int):
 	Fixed return value to gint; added missing cast that broke negative
 	number conversions.
-	
+
 	(CLUTTER_ANGLE_FROM_DEGX):
 	Swapped division and multiplication around to avoid overflows.
 
@@ -2489,7 +2494,7 @@
 	* clutter/clutter-behaviour-ellipse.c:
 	Remove uneeded knot signal
 
-	* clutter/clutter-behaviour-path.c: 
+	* clutter/clutter-behaviour-path.c:
 	Fix so knot signal is emitted only when a knot is reached.
 
 	* clutter/clutter-effect.c:
@@ -2501,8 +2506,8 @@
 	* doc/manual/clutter-manual.xml.in:
 	* doc/manual/manual.xsl:
 	* doc/manual/style.css:
-	Add various bits for application developers manual. 
-	
+	Add various bits for application developers manual.
+
 2007-05-30  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-alpha.h:
@@ -2512,7 +2517,7 @@
 	Renamed to clutter_smoothstep_func.
 	(clutter_smoothstep_added_func):
 	Added.
-	
+
 2007-05-29  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.h:
@@ -2527,13 +2532,13 @@
 
 	* examples/behave.c:
 	Added tilt parameter to the example ellptic path.
-	
+
 2007-05-29  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/cogl/gles/cogl.c:
 	(cogl_setup_viewport):
 	Fixed z_camera calculation.
-	
+
 2007-05-28  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-texture.c: (clutter_texture_unrealize):
@@ -2543,7 +2548,7 @@
 2007-05-28  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-stage.c: (clutter_stage_get_actor_at_pos):
-	Fix for GL/ES. Barring texture reads this means all clutter 
+	Fix for GL/ES. Barring texture reads this means all clutter
         functionality now works on GL/ES! (no doubt with a few yet to
 	be discovered bugs)
 
@@ -2592,11 +2597,11 @@
 2007-05-25  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-color.c: (clutter_color_parse):
-	Handle #rrggbbaa color setting strings (i.e with alpha). 
-	Set alpha to 0xff if it is not specified. 
+	Handle #rrggbbaa color setting strings (i.e with alpha).
+	Set alpha to 0xff if it is not specified.
 
 	* clutter/clutter-stage.c: (clutter_stage_get_actor_at_pos)
-	Increase select buffer. 
+	Increase select buffer.
 
 	* examples/super-oh.c:
 	Fix up use of clutter_group_show_all()
@@ -2667,7 +2672,7 @@
 
 	* clutter/clutter-timeline.c:
 	Fire 'completed' signal when looping.
-	
+
 	* clutter/cogl/gl/cogl.c:
 	Move some backend checks here.
 
@@ -2690,7 +2695,7 @@
 	* tests/test-offscreen.c:
 	* tests/test-scale.c:
 	More tests.
-	
+
 2007-05-23  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-actor.c:
@@ -2698,7 +2703,7 @@
 	(clutter_actor_get_abs_size_units):
 	(clutter_actor_get_abs_position_units):
 	removed from public api
-	
+
 2007-05-22  Tomas Frydrych  <tf@openedhand.com>
 
 	* configure.ac:
@@ -2718,9 +2723,9 @@
 	* examples/Makefile.am:
 	* tests/Makefile.am:
 	Removed ClutterReal; added clutter-units.
-	
+
 2007-05-18  Tomas Frydrych  <tf@openedhand.com>
-	
+
 	* configure.ac:
 	* Makefile.am:
 	* clutter.pc.in:
@@ -2737,7 +2742,7 @@
 	* examples/Makefile.am:
 	* tests/Makefile.am:
 	ClutterReal type.
-	
+
 2007-05-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-main.c: Use clutter_base_init() inside the
@@ -2753,12 +2758,12 @@
 	Fix CLUTTER_NO_FPU typo.
 
 2007-05-17  Tomas Frydrych  <tf@openedhand.com>
-	
+
 	* clutter/clutter-alpha.h:
 	* clutter/clutter-alpha.c:
 	* doc/reference/clutter-sections.txt:
 	Added clutter_exp_inc_func() and clutter_exp_dec_func().
-	
+
 2007-05-16  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-main.[ch]: Add clutter_base_init(), semi-private
@@ -2769,27 +2774,27 @@
 	data structure unless it has been initialised.
 
 2007-05-16  Tomas Frydrych  <tf@openedhand.com>
-	
+
 	* clutter/clutter-alpha.h:
 	* clutter/clutter-alpha.c:
 	* doc/reference/clutter-sections.txt:
 	Added clutter_sine_half().
-	
+
 2007-05-16  Tomas Frydrych  <tf@openedhand.com>
-	
+
 	* clutter/clutter-alpha.h:
 	* clutter/clutter-alpha.c:
 	* doc/reference/clutter-sections.txt:
 	Fixed clutter_sine_inc(), added clutter_sine_dec().
-	
+
 2007-05-16  Tomas Frydrych  <tf@openedhand.com>
-	
+
 	* clutter/clutter-alpha.h:
 	* clutter/clutter-alpha.c:
 	* doc/reference/clutter-sections.txt:
 	* doc/rererence/clutter.types:
 	* doc/reference/tmpl/clutter-alpha.sgml:
-	clutter_smoothstep_func alpha function, 
+	clutter_smoothstep_func alpha function,
 	ClutterSmoothstep struct for smoothstep function data.
 
 2007-05-16  Matthew Allum  <mallum@openedhand.com>
@@ -2824,14 +2829,14 @@
 	* clutter/clutter-behaviour-ellipse.c:
 	(clutter_behaviour_ellipse_new):
 	Added a tilt parameter.
-	
+
 2007-05-14  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-behaviour-path.c:
 	Fix bug where last knot position wouldn't get reached.
 
 	* clutter/clutter-group.c:
-	Add some docs 
+	Add some docs
 
 	* clutter/clutter-timeline.h:
 	* clutter/clutter-timeline.c:
@@ -2873,7 +2878,7 @@
 	Added clutter_color_to/from_hlsx()
 	(clutter_color_to/from_hls):
 	Clobber hue to 0 .. 250
-	
+
 2007-05-10  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-backend.c:
@@ -2884,12 +2889,12 @@
 	* clutter/glx/clutter-backend-glx.c:
 	* clutter/glx/clutter-backend-glx.h:
 	* clutter/glx/clutter-event-glx.c:
-	Rejig backend event code as to simplify a little. 
+	Rejig backend event code as to simplify a little.
 	NOTE: This breaks non glx backends.
 
 	* tests/Makefile.am:
 	* tests/test-events.c:
-	Add a very simple event test. 	
+	Add a very simple event test.
 
 	* tests/test-textures.c: (main):
 	Add some more sizes to the test.
@@ -2904,7 +2909,7 @@
 	* Makefile.am:
 	* tests/Makefile.am:
 	* tests/test-textures.c:
-	Add a simple texture test.	
+	Add a simple texture test.
 
 2007-05-02  Matthew Allum  <mallum@openedhand.com>
 
@@ -2918,15 +2923,15 @@
 	* clutter/sdl/clutter-stage-sdl.c:
 	* clutter/sdl/clutter-stage-sdl.h:
 	* configure.ac:
-	Add a basic SDL based backend. Lacks real input event handling 
+	Add a basic SDL based backend. Lacks real input event handling
 	(translation) as yet.
-	Also allows for clutter to be built against dgles. 
+	Also allows for clutter to be built against dgles.
 
 2007-05-02  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c:
 	* clutter/cogl/gles/cogl.c:
-	Fix rotation + other fixed point cleanups. 
+	Fix rotation + other fixed point cleanups.
 
 	* clutter/clutter-texture.h:
 	Sketch out an updated API.
@@ -2964,7 +2969,7 @@
 	* examples/Makefile.am:
 	Added --path commandline option to behave to choose different
 	path types (poly, ellipse, bspline) and dropped bspline example.
-	
+
 2007-04-28  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/Makefile.am:
@@ -2984,7 +2989,7 @@
 	Code builds and runs (on 16bpp) but yet displays much (is close!)
 
 	* clutter/pango/pangoclutter-render.c:
-	comment out some rouge glBegin/end calls.	
+	comment out some rouge glBegin/end calls.
 
 2007-04-27  Matthew Allum  <mallum@openedhand.com>
 
@@ -3007,7 +3012,7 @@
 	* clutter/pango/pangoclutter-render.c:
 	* configure.ac:
 	Add initial 'cogl' implementation. 'cogl' is a simple abstration
-	layer over GL and GL/ES used by clutter internally. It should 
+	layer over GL and GL/ES used by clutter internally. It should
 	eventually allow clutter applications to be run on both GL and GL/ES
 	with just a recompile as well as provide more debugging and potentially
 	profiling information for GL and GL/ES usage.
@@ -3119,7 +3124,7 @@
 	* clutter/clutter-behaviour.c:
 	* clutter/clutter-behaviour-path.h:
 	* clutter/clutter-behaviour-path.c:
-	Moved declaration of ClutterKnot from clutter-behaviour path 
+	Moved declaration of ClutterKnot from clutter-behaviour path
 	into clutter-behaviour.
 
 	* clutter/clutter-fixed.h
@@ -3151,7 +3156,7 @@
 2007-03-29  Tomas Frydrych  <tf@openedhand.com>
 
 	* configure.ac: fixed typo
-	
+
 	* clutter/clutter-fixed.c:
 	* clutter/clutter-fixed.h:
 	(clutter_tani): fast implementation of tan()
@@ -3162,7 +3167,7 @@
 	(_clutter_stage_sync_viewport):
 	(clutter_stage_get_actor_at_pos):
 	use perspectivex() instead of perspective()
-	
+
 2007-03-27  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/cogl/Makefile.am:
@@ -3224,7 +3229,7 @@
 	Add a perspective boxed type.
 
 	* clutter/glx/clutter-stage-glx.c:
-	Add some FIXMEs 
+	Add some FIXMEs
 
 	* clutter/Makefile.am:
 	* clutter/cogl/Makefile.am:
@@ -3403,7 +3408,7 @@
 	clutter-$api_version/clutter directory, as usual; call the shared
 	object libclutter-$backend-$api_version; build glue for the
 	backend static library.
-	
+
 2007-03-19  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-label.c:
@@ -3451,12 +3456,12 @@
 
 2007-01-30  Tomas Frydrych  <tf@openedhand.com>
 
-	* clutter/clutter-alpha.c: 
+	* clutter/clutter-alpha.c:
 	(sincx1024_func):
 	(clutter_sine_func):
 	(clutter_sine_inc_func):
 	fixed the fixed point math.
-	
+
 2007-01-30  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-alpha.h:
@@ -3486,8 +3491,8 @@
 	* clutter/pango/pangoclutter-render.c:
 	* configure.ac:
 	* examples/Makefile.am:
-	Initial work in supporting different GL backends (ie. GLX/EGL/DirectFB etc). 
-	Currently just GLX supported and now mostly self contained. 
+	Initial work in supporting different GL backends (ie. GLX/EGL/DirectFB etc).
+	Currently just GLX supported and now mostly self contained.
 
 	* TODO:
 	Add a note about caching glenables
@@ -3506,14 +3511,14 @@
 	* clutter/pango/pangoclutter-font.c:
 	(_pango_clutter_font_new):
 	Replace floating with fixed point math.
-	
+
 2007-01-19  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.c: (clutter_sqrti):
-	Use union instead of casting int <-> float to get rid of 
+	Use union instead of casting int <-> float to get rid of
 	punned-pointer warning and avoid gcc optimatisation breaking
 	the function on arm.
-	
+
 2007-01-19  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	Allow the ClutterGroup subclasses to override the add and
@@ -3526,20 +3531,20 @@
 
 2007-01-19  Tomas Frydrych  <tf@openedhand.com>
 
-	* clutter/clutter-fixed.h.: 
+	* clutter/clutter-fixed.h.:
 	* clutter/clutter-fixed.c:
 	Added fast double to int and double to fixed point conversion
 	routines; changed CLUTTER_FLOAT_TO_FIXED to use it.
 	Replaced clutter_sqrti with fixed point implementation of the QIII
 	algorithm.
-	
+
 
 	* clutter/clutter-behavior-path.c: use clutter_sqrti always
 
-	* clutter/clutter-alpha.c: 
+	* clutter/clutter-alpha.c:
 	(sinc_func): replaced double -> int cast with CLUTTER_FLOAT_TO_INT
-	
-	
+
+
 2007-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* configure.ac: Post release bump to 0.3.0.
@@ -3568,7 +3573,7 @@
 2007-01-18  Tomas Frydrych  <tf@openedhand.com>
 
 	* clutter/clutter-fixed.h: fixed a typo in comment
-	
+
 2007-01-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-fixed.h: Remove some inline documentation to
@@ -3584,14 +3589,14 @@
 	(clutter_color_darken):
 	(clutter_color_lighten):
 	Changed calls to clutter_color_shade calls to clutter_color_shadex
-	
+
 2007-01-17  Matthew Allum  <mallum@openedhand.com>
 
 	* configure.ac:
 	Bump up version to 0.2.0
 
 2007-01-17  Tomas Frydrych  <tf@openedhand.com>
-	* configure.ac: 
+	* configure.ac:
 	* clutter/clutter-behavior-path.c:
 	Added --without-fpu option.
 
@@ -3601,7 +3606,7 @@
 	Documentation for fixed point API.
 
 	* AUTHORS: added self.
-	
+
 2007-01-17  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-feature.h:
@@ -3615,11 +3620,11 @@
 	* clutter/clutter-color.c: Ditto.
 
 2007-01-17  Tomas Frydrych  <tf@openedhand.com>
-	
+
 	* clutter/clutter-fixed.h:
 	* clutter/clutter-fixed.c:
 	* clutter/clutter-alpha.c:
-	Renamed clutter_fixed_sin() to clutter_sinx() and 
+	Renamed clutter_fixed_sin() to clutter_sinx() and
 	clutter_angle_sin() to clutter_sini(); added clutter_sqrtx()
 	and clutter_sqrti(); added missing copyright.
 
@@ -3675,44 +3680,44 @@
 	Check for GL_EXT_texture_rectangle (#198  - Frederick Riss)
 
 	* clutter/clutter-group.c: (clutter_group_allocate_coords):
-	Fix for group size allocation (#199 -  Frederick Riss)	
+	Fix for group size allocation (#199 -  Frederick Riss)
 
 	* clutter/clutter-texture.c: (texture_upload_data):
 	Fix texture unpacking row length (#197 Frederick Riss)
-	
+
 	* examples/Makefile.am:
 	Fix LDADD in build (#196 - Frederick Riss)
 
 2007-01-16  Tomas Frydrych  <tf@openedhand.com>
-	
+
 	* clutter/clutter-fixed.h:
 	Added integer ClutterAngle type, protype of clutter_angle_sin,
 	convenience macros clutter_fixed_cos and clutter_angle_cos, plus
 	other convenience macros for commonly used constants and ops.
-	* clutter/clutter-fixed.c: 
+	* clutter/clutter-fixed.c:
 	(clutter_fixed_sin):
 	Fixed to work for negative angles.
 	(clutter_angle_sin):
 	Fast fixed point sin function for ClutterAngle angles.
-	* clutter/clutter-alpha.c: 
+	* clutter/clutter-alpha.c:
 	(clutter_sin_func, clutter_sin_inc_func):
 	Changed to use clutter_angle_sin function.
 	* clutter-behavior-path.c:
 	replaced floating point with fixed point operations
-	* clutter/clutter-color.c: 
+	* clutter/clutter-color.c:
 	* clutter/clutter-color.h:
 	Added (clutter_color_shadex), replaced floating point operations
 	with fixed point
-	
+
 2007-01-15  Tomas Frydrych  <tf@openedhand.com>
-	
+
 	* clutter/clutter-fixed.h: (CLUTTER_FIXED_TO_DOUBLE/FLOAT):
 	Fixed macro so it works for negative values.
 	* clutter/clutter-fixed.c: (clutter_fixed_sin):
 	Implemented fixed point sin function.
 	* clutter/clutter-alpha.c: (clutter_sin_func, clutter_sin_inc_func):
 	Pluged in fixed point sin function.
-	
+
 2007-01-07  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c: (clutter_actor_allocate_coords):
@@ -3721,7 +3726,7 @@
 
 	* clutter/clutter-behaviour-opacity.c:
 	(clutter_behaviour_alpha_notify):
-	Take into account initial opacity value when calculating from alpha.  
+	Take into account initial opacity value when calculating from alpha.
 
 	* clutter/clutter-group.c:
 	Add new get_nth_child() and get_n_children() api calls.
@@ -3742,9 +3747,9 @@
 	Dont make a copy of all applied actors but use a foreach()
 
 	* clutter/clutter-behaviour-scale.c:
-	Give correct limits to propertys. 
-	Tweak gravity a little more. 
-	Update docs. 
+	Give correct limits to propertys.
+	Tweak gravity a little more.
+	Update docs.
 :
 	* clutter/clutter-behaviour.c: (clutter_behaviour_remove):
 	Minor warning text change.
@@ -4080,11 +4085,11 @@
 	messages now are triggered like this:
 
 	  CLUTTER_DEBUG=section:section:... clutter-app
-	
+
 	or like this:
 
 	  clutter-app --clutter-debug=section:section:...
-	
+
 	where "section" is one of the sections listed in clutter-main.c,
 	or "all", for all sections; each section is bound to a flag,
 	which can be used to define a domain when adding a debug note
@@ -4093,7 +4098,7 @@
 	CLUTTER_NOTE() is used like this:
 
 	  CLUTTER_NOTE (DOMAIN, log-function);
-	
+
 	where log function is g_printerr(), g_message(), g_warning(),
 	g_critical() or directly g_log() - for instance:
 
@@ -4351,7 +4356,7 @@
 	* clutter/clutter-behaviours.h:
 	* examples/behave.c:
 	Behaviours now only 'driven' by ClutterAlpha, not any object/prop.
-	Add simple Clutter path behaviour. 
+	Add simple Clutter path behaviour.
 
 2006-10-03  Matthew Allum  <mallum@openedhand.com>
 
@@ -4366,7 +4371,7 @@
 	* clutter/pango/pangoclutter-private.h:
 	* clutter/pango/pangoclutter-render.c:
 	* clutter/pango/pangoclutter.h:
-	Add initial rough new pango renderer and clutter-label. 
+	Add initial rough new pango renderer and clutter-label.
 
 	* examples/super-oh.c:
 	* examples/test.c:
@@ -4379,17 +4384,17 @@
 	* clutter/clutter-group.c: (clutter_group_paint):
 	* clutter/clutter-rectangle.c: (clutter_rectangle_paint):
 	* clutter/clutter-texture.c: (clutter_texture_paint):
-	Fix for #156. 
+	Fix for #156.
 	clutter_actor_paint() now translates to actor position as
 	to not fix scaled groups positioning. Sub classes now paint
-	at 0,0.  
+	at 0,0.
 
 2006-09-19  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c: (redraw_update_idle),
 	(clutter_actor_queue_redraw):
 	* clutter/clutter-main.c: (clutter_redraw):
-	Remove now uneeded locks 
+	Remove now uneeded locks
 	( new gst and texture code makes redundant )
 
 	* clutter/clutter-texture.c:
@@ -4403,7 +4408,7 @@
 
 	* clutter/clutter-main.c: (clutter_init):
 	* clutter/clutter-main.h:
-	Add an enum for clutter init to return an error code. 
+	Add an enum for clutter init to return an error code.
 	* configure.ac:
 	Dont check for XInitThreads, there is no need, its part of xlib.
 
@@ -4599,7 +4604,7 @@
 
 	* clutter/clutter-actor.c: (clutter_actor_paint):
 	Remove relic from old stage behaviour - dont unref
-	it during a clip. 
+	it during a clip.
 
 2006-07-27  Emmanuele Bassi  <ebassi@openedhand.com>
 
@@ -4627,13 +4632,13 @@
 	* clutter/clutter-feature.c:
 	* clutter/clutter-feature.h:
 
-	Add new funcs for checking for available runtime GL 
-	extensions. 	
-	
+	Add new funcs for checking for available runtime GL
+	extensions.
+
 	* clutter/clutter-clone-texture.c:
 	* clutter/clutter-texture.c:
 
-	Add support for non power of two textures 
+	Add support for non power of two textures
        if GL_TEXTURE_RECTANGLE_ARB extension available ( at runtime ).
        Should lower texture memory needs a little.
 
@@ -4645,7 +4650,7 @@
 2006-07-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-main.c:
-	
+
 	(clutter_main): Destroy the main stage, instead of unreffing it.
 
 	(clutter_init): Ref and sink the main stage, as it is a top
@@ -4679,7 +4684,7 @@
 
 	* clutter/clutter-actor.h:
 	* clutter/clutter-actor.c:
-	
+
 	(clutter_actor_class_init), (clutter_actor_set_property),
 	(clutter_actor_get_property): Add the "clip" and "has-clip"
 	properties.
@@ -4700,7 +4705,7 @@
 	get every child actor destroyed.  Also, now you can do:
 
 	  clutter_group_add (group, clutter_video_texture_new ());
-	
+
 	without having to care about reference counting and explicit
 	unreffing.
 
@@ -4721,7 +4726,7 @@
 
 	(clutter_actor_finalize): Do not leak the actor's name, if it is
 	set.
-	
+
 	(clutter_actor_dispose): Emit the "destroy" signal here.
 
 	(clutter_actor_init): Sink the initial floating flag if needed.
@@ -4765,7 +4770,7 @@
 2006-06-23  Matthew Allum  <mallum@openedhand.com>
 
 	* examples/video-player.c: (size_change):
-	cast stage height to gint avoiding wierdness for when 
+	cast stage height to gint avoiding wierdness for when
 	video height greater than half display height. Fixed #99
 
 2006-06-23  Matthew Allum  <mallum@openedhand.com>
@@ -4834,7 +4839,7 @@
 	Add an entry for 0.1 release
 	* web/index.html:
 	* web/style.css:
-	Add basic website. 
+	Add basic website.
 
 2006-06-22  Iain Holmes  <iain@openedhand.com>
 
@@ -4869,7 +4874,7 @@
 	* clutter/clutter-timeline.h:
 	* clutter/clutter-timeline.c: Add a "started" and a "paused"
 	signals; add more sanity checks on the public functions.
-	
+
 	(clutter_timeline_get_loop): Add a getter function for the
 	loop property.
 
@@ -4878,7 +4883,7 @@
 	* clutter/clutter-timeline.h:
 	* clutter/clutter-actor.h: Add padding for future expansion
 	without breaking ABI.
-	
+
 2006-06-22  Iain Holmes  <iain@openedhand.com>
 
 	* clutter/clutter-actor.c: Fix some typos in the docs.
@@ -4903,7 +4908,7 @@
 2006-06-22  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-main.h:
-	Remove bogus xvisual call. 
+	Remove bogus xvisual call.
 
 2006-06-22  Matthew Allum  <mallum@openedhand.com>
 
@@ -4951,7 +4956,7 @@
 	clutter_stage_set_xwindow_foreign rather than GtkSocket.
 
 	* gtk/gtk-clutter-test.c: Add fading!1!!!!11! OMGWTFBBQ!!!
-	
+
 2006-06-21  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* examples/video-cube.c (main): Quit on key press.
@@ -4975,9 +4980,9 @@
 	* examples/test-video.c:
 	* examples/video-player.c:
 	Redo test-video a little nicer and rename.
-	* examples/video-cube.c: 
+	* examples/video-cube.c:
 	Fix so it at least 'works' again.
-	* examples/test.c: 
+	* examples/test.c:
 	Clean up a little.
 
 2006-06-21  Ross Burton  <ross@openedhand.com>
@@ -5003,12 +5008,12 @@
 	* TODO:
 	Update.
 	* clutter/clutter-group.c:
-	Attempt better group sizing code. 
+	Attempt better group sizing code.
 	* clutter/clutter-label.c:
-	Minor tweaks. 
+	Minor tweaks.
 	* clutter/clutter-texture.c:
 	More debug info, make sure texture is realised for base_size()
-	* clutter/clutter-video-texture.c: 
+	* clutter/clutter-video-texture.c:
 	Seeking fixes
 	* examples/test.c: (main):
 	Populate with more randomness.
@@ -5070,11 +5075,11 @@
 	* examples/test-text.c:
 	* examples/test-video.c:
 	* examples/test.c:
-	* examples/video-cube.c: 
+	* examples/video-cube.c:
 	* gtk/gtk-clutter-test.c:
 	* gtk/gtk-clutter.c:
 	* gtk/gtk-clutter.h:
-	Element to Actor Renaming. 
+	Element to Actor Renaming.
 
 2006-06-12  Matthew Allum  <mallum@openedhand.com>
 
@@ -5088,9 +5093,9 @@
 	* examples/video-cube.c: (main):
 	Add new 'media' interface.
 	Drop Totem based video playback code replace with newly
-	rewritten supper Jorn based code. Clutter is now fully LGPL.  
+	rewritten supper Jorn based code. Clutter is now fully LGPL.
 
-	* clutter/clutter-texture.c: (tile_dimension): 
+	* clutter/clutter-texture.c: (tile_dimension):
 	Remove uneeded overlap code.
 
 2006-06-08  Iain Holmes  <iain@openedhand.com>
@@ -5126,7 +5131,7 @@
 	Explicity set props on _init() as to avoid nasty can_create
 	bug failing miserably in certain situations.
 	Switch to CLAMP_TO_EDGE for textures to avoid tile seams.
-	Add some more GL error checks. 
+	Add some more GL error checks.
 
 	* clutter/clutter-label.c:
 	Extra debug info
@@ -5151,9 +5156,9 @@
 	Lots of cleanups. Add waste prop. Add filter quality prop.
 
 	* clutter/clutter-clone-texture.c:
-	Make object construction simpler to work better with bindings. 
+	Make object construction simpler to work better with bindings.
 
-	* clutter/clutter-stage.c: 
+	* clutter/clutter-stage.c:
 	* clutter/clutter-timeline.c:
 	Minor reformating, cleanups.
 
@@ -5182,7 +5187,7 @@
 2006-06-05  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-event.h:
-	Remove send_event field. Clutter shouldn't need it.  
+	Remove send_event field. Clutter shouldn't need it.
 
 	* clutter/clutter-main.c: (clutter_dispatch_x_event):
 	Dont malloc a new clutter event for each xevent.
@@ -5190,7 +5195,7 @@
 	* clutter/clutter-stage.h:
 	* clutter/clutter-stage.c: (clutter_stage_class_init),
 	(clutter_stage_get_default):
-	Dont ref stage from clutter_stage_get_default. 
+	Dont ref stage from clutter_stage_get_default.
 
 	* examples/super-oh.c: (main):
 	Remove some now uneeded debug g_prints
@@ -5262,7 +5267,7 @@
 	* clutter/clutter-element.c:
 	* clutter/clutter-group.c:
 	* clutter/clutter-group.h:
-	Work more on depth ( Z ) setting with sorting. 
+	Work more on depth ( Z ) setting with sorting.
 
 	* clutter/clutter-main.c: (clutter_redraw):
 	Experiment with glXWaitVideoSyncSGI. Currently disabled.
@@ -5270,7 +5275,7 @@
 2006-06-02  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-element.h:
-	Add missing _depth() declarations 
+	Add missing _depth() declarations
 
 	* clutter/clutter-main.c:
 	* clutter/clutter-main.h:
@@ -5382,7 +5387,7 @@
 	* clutter/clutter-clone-texture.c:
 	(clone_texture_render_to_gl_quad):
 	Remove uneeded bogus warning. Fix a typo causing large
-	texture to get incorrectly rendered.  
+	texture to get incorrectly rendered.
 	* clutter/clutter-texture.c: (init_tiles),
 	(texture_render_to_gl_quad), (clutter_texture_sync_pixbuf),
 	(clutter_texture_realize):
@@ -5429,7 +5434,7 @@
 	(timeline_timeout_func), (clutter_timeline_get_current_frame):
 	* clutter/clutter-timeline.h:
 	Add a 'completed' signal
-	Dont free priv when g_type_class_private used. 
+	Dont free priv when g_type_class_private used.
 	* clutter/clutter.h:
 	Add missing clutter-rectangle.h
 	* examples/Makefile.am:
@@ -5449,8 +5454,8 @@
 	(translate_motion_event):
 	Improve mouse event handling.
 	Add code to map arbituary ( i.e cursor ) position to
-	a clutter element using OpenGL 'picking'.	
-	* clutter/clutter-texture.c: 
+	a clutter element using OpenGL 'picking'.
+	* clutter/clutter-texture.c:
 	* clutter/clutter-clone-texture.c:
 	re-realize parent texture if it gets hidden.
 	* clutter/clutter-stage.c:
@@ -5463,18 +5468,18 @@
 
 2006-05-21  Matthew Allum  <mallum@openedhand.com>
 
-	* clutter/clutter-element.c: 
+	* clutter/clutter-element.c:
 	* clutter/clutter-element.h:
-	Add new core sizing methods and more documentation. 
-	* clutter/clutter-group.c: 
+	Add new core sizing methods and more documentation.
+	* clutter/clutter-group.c:
 	* clutter/clutter-group.h:
 	Use the sizing bits and documentation.
-	* clutter/clutter-main.c: 
+	* clutter/clutter-main.c:
 	* clutter/clutter-event.h:
 	Add FPS display when CLUTTER_SHOW_FPS env var set.
 	Add initial support for mouse events.
-	* clutter/clutter-stage.c: 
-	Add 'snapshot' method. 
+	* clutter/clutter-stage.c:
+	Add 'snapshot' method.
 	* clutter/clutter-texture.c: (clutter_texture_new_from_pixbuf):
 	* clutter/clutter-texture.h:
 	Documentation.
@@ -5512,11 +5517,11 @@
 	Support 3 channel pixbufs as textures and thus increase efficiency
 	of video texture ( also avoids byte swapping. )
 	Clean up video texture code somemore.
-	Add some metadata support. 
+	Add some metadata support.
 
 	* Makefile.am:
 	* configure.ac:
-	Disable old custom clutter gst element from build.	
+	Disable old custom clutter gst element from build.
 
 	* examples/test-video.c: (foo), (size_change), (tick), (main):
 	* examples/video-cube.c: (clutter_video_texture_cube_paint):
@@ -5549,7 +5554,7 @@
 	* clutter/clutter-main.c: (clutter_xscreen), (clutter_init):
 	* clutter/clutter-main.h:
 	* clutter/clutter-private.h:
-	Quick fix for debug statements so now only appear 
+	Quick fix for debug statements so now only appear
         if CLUTTER_DBBUG env var set.
 
 2006-05-12  Matthew Allum  <mallum@openedhand.com>
@@ -5750,7 +5755,7 @@
 	* clutter/Makefile.am:
 	* clutter/clutter-clone-texture.c:
 	* clutter/clutter-clone-texture.h:
-	Add new texture clone element.	
+	Add new texture clone element.
 	* clutter/clutter-color.c:
 	* clutter/clutter-color.h:
 	Add simple color API.
@@ -5857,7 +5862,7 @@
 
 	* bindings/python/Makefile.am:
 	* bindings/python/cluttermodule.c: (initclutter):
-	Fix python build with new -1.0 naming. Use of GdkPixbufs 
+	Fix python build with new -1.0 naming. Use of GdkPixbufs
         still causing crashes.
 
 2006-04-30  Matthew Allum  <mallum@openedhand.com>
@@ -5891,9 +5896,9 @@
 
 	* clutter/clutter-main.c: (clutter_dispatch_x_event),
 	(clutter_queue_redraw), (clutter_redraw):
-	Simplify paint event queueing. Does not actually queue 
-	anymore (broken), needs wrong to reduce high number of 
-        uneeded paints.  
+	Simplify paint event queueing. Does not actually queue
+	anymore (broken), needs wrong to reduce high number of
+        uneeded paints.
 
 	* clutter/clutter-texture.c: (clutter_texture_set_pixbuf):
 	Remove visible check which broke paints of resized texture pixmaps.
@@ -5916,7 +5921,7 @@
 	More object cleanups. Add signal to texture size changes.
 	Fix color props. Adjust element realise flags workings ( broken ).
 	* examples/test-video.c: (main):
-	Broken due to realize flag changes. 
+	Broken due to realize flag changes.
 
 2006-04-18  Matthew Allum  <mallum@openedhand.com>
 
@@ -5965,7 +5970,7 @@
 2006-04-18  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-marshal.list:
-	Add missing. 
+	Add missing.
 
 2006-04-17  Matthew Allum  <mallum@openedhand.com>
 
@@ -6001,7 +6006,7 @@
 	* clutter/clutter-texture.c: (clutter_texture_dispose),
 	(clutter_texture_class_init), (clutter_texture_set_pixbuf):
 	Fixup object finalization a little.
-	
+
 	* bootstrap-autotools.sh:
 	* configure.ac:
 	* doc/Makefile.am:
@@ -6015,7 +6020,7 @@
 
 	* clutter/Makefile.am:
 	* clutter/clutter-rectangle.c: (clutter_rectangle_new):
-	Sync passed color alpha chan to element opacity, 
+	Sync passed color alpha chan to element opacity,
 
 	* clutter/clutter-video-texture.c:
 	(clutter_video_texture_error_quark), (signal_eos_delayed),
@@ -6092,7 +6097,7 @@
 
 	* clutter/clutter-main.c: (events_init):
 	* clutter/clutter-main.h:
-	Make ClutterContex Private to main 
+	Make ClutterContex Private to main
 
 	* clutter/clutter-texture.c:
 	* clutter/clutter-texture.h:
@@ -6120,7 +6125,7 @@
 	(clutter_init):
 	* clutter/clutter-main.h:
 	* clutter/clutter-private.h:
-	Make Stage non fullscreen ( for now ). Change event loop to 
+	Make Stage non fullscreen ( for now ). Change event loop to
 	work better with video.
 
 	* clutter/Makefile.am:
@@ -6185,7 +6190,7 @@
 	* clutter/clutter-label.c:
 	* clutter/clutter-label.h:
 	Add new text rendering class
-	
+
 	* clutter/clutter-rectangle.c:
 	* clutter/clutter-rectangle.h:
 	Add basic rectangle drawing class
@@ -6414,7 +6419,7 @@
 	* clutter/cltr-video.c: (cltr_video_paint):
 	* clutter/cltr.h:
 	* clutter/fonts.c: (draw_layout_on_pixbuf):
-	Fix font alpha blending 
+	Fix font alpha blending
 	* examples/Makefile.am:
 	* examples/player.c: (main):
 	* examples/scratch.c: (main):
@@ -6507,8 +6512,8 @@
 	* clutter/pixbuf.c: (pixbuf_set_pixel), (pixbuf_get_pixel):
 	* examples/photos.c: (photo_grid_populate), (main):
 	* examples/player.c: (main):
-	Improve video widget, use playbin rather than gst_play 
-	Lots of misc tweaks. 
+	Improve video widget, use playbin rather than gst_play
+	Lots of misc tweaks.
 
 2005-04-26  mallum,,,  <mallum@openedhand.com>
 
@@ -6555,7 +6560,7 @@
 	(cltr_photo_grid_set_fps), (cltr_photo_grid_get_fps),
 	(cltr_photo_grid_set_anim_steps), (cltr_photo_grid_get_anim_steps),
 	(cltr_photo_grid_new):
-	Fix up grid so external prog can load images.	
+	Fix up grid so external prog can load images.
 	* clutter/cltr-photo-grid.h:
 	* clutter/cltr-texture.c: (cltr_texture_realize),
 	(cltr_texture_new):
@@ -6584,7 +6589,7 @@
 	* configure.ac:
 	* examples/Makefile.am:
 	* examples/scratch.c:
-	Initial autotooling of everything. 
+	Initial autotooling of everything.
 
 2005-04-07  mallum,,,  <mallum@openedhand.com>
 
@@ -6698,7 +6703,7 @@
 	* cltr.c: (cltr_dispatch_x_event), (cltr_init), (test_idle_cb),
 	(main):
 	* cltr.h:
-	Add a very hacky threaded image loader. 
+	Add a very hacky threaded image loader.
 	Make event handling a little more efficient, though still hacky
 	* pixbuf.c: (pixel_set_vals), pixbuf.h:
 	Add copy func ( unused as yet )
