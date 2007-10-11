@@ -196,6 +196,13 @@ pango_clutter_font_map_default_substitute (PangoFcFontMap *fcfontmap,
   if (FcPatternGet (pattern, FC_DPI, 0, &v) == FcResultNoMatch)
     FcPatternAddDouble (pattern, FC_DPI, fontmap->dpi_y);
 #endif
+
+   /* Turn off hinting, since we most of the time are not using the glyphs
+    * from our cache at their nativly rendered resolution
+    */
+   FcPatternDel (pattern, FC_HINTING);
+   FcPatternAddBool (pattern, FC_HINTING, FALSE);
+
   FcDefaultSubstitute (pattern);
 }
 

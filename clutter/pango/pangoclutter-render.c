@@ -118,7 +118,11 @@ tc_get (tc_area *area, int width, int height)
 
 	  cogl_texture_bind (CGL_TEXTURE_2D, match->name);
 
-	  cogl_texture_set_filters (CGL_TEXTURE_2D, CGL_NEAREST, CGL_NEAREST);
+	  /* We might even want to use mipmapping instead of CGL_LINEAR here
+       * that should allow rerendering of glyphs to look nice even at scales
+       * far below 50%.
+       */
+	  cogl_texture_set_filters (CGL_TEXTURE_2D, CGL_LINEAR, CGL_NEAREST);
 
 	  cogl_texture_image_2d (CGL_TEXTURE_2D, 
 				 CGL_ALPHA,

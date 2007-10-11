@@ -1,3 +1,17 @@
+2007-10-11  Øyvind Kolås  <pippin@o-hand.com>
+
+	Improve the quality of text when the scale it is shown at screen is
+	smaller than the original, seems to work well down to about a scale
+	of 50%.
+
+	* clutter/pango/pangoclutter-fontmap.c:
+	(pango_clutter_font_map_default_substitute): turn off hinting.
+	* clutter/pango/pangoclutter-render.c: request linear filtering
+	instead of nearest neighbour when scaling down.
+	* tests/test-text.c: replaced test with a a test that renders a sample
+	grid with various pixel sizes and scales for visual inspection of
+	text rendering quality.
+
 2007-10-10  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/glx/clutter-backend-glx.c: Fix documentation of the
