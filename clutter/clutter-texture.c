@@ -32,16 +32,18 @@
  *
  * The clutter_texture_set_from_rgb_data() and clutter_texture_set_pixbuf()
  * functions are used to copy image data into texture memory and subsequently
- * realize the the texture. 
+ * realize the the texture.
  *
  * If texture reads are supported by underlying GL implementation,
- * unrealizing/hiding frees image data from texture memory moving to main 
- * system memory. Re-realizing then performs the opposite operation. 
- * This process allows basic management of commonly limited available texture 
- * memory.  
+ * unrealizing/hiding frees image data from texture memory moving to main
+ * system memory. Re-realizing then performs the opposite operation.
+ * This process allows basic management of commonly limited available texture
+ * memory.
  */
 
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include "clutter-texture.h"
 #include "clutter-main.h"
@@ -76,7 +78,7 @@ struct _ClutterTexturePrivate
   gint                         height;
   COGLenum                     pixel_format;
   COGLenum                     pixel_type;
-  COGLenum                     target_type; 
+  COGLenum                     target_type;
   GdkPixbuf                   *local_pixbuf; /* non video memory copy */
   guint                        sync_actor_size : 1;
   gint                         max_tile_waste;
@@ -135,7 +137,7 @@ un_pre_multiply_alpha (const guchar   *data,
   for (y = 0; y < height; y++)
     {
       src = (guchar*)data + y * rowstride;
-      for (x = 0; x < width; x++) 
+      for (x = 0; x < width; x++)
 	{
 	  guchar alpha = src[3];
 	  if (alpha == 0)
@@ -145,7 +147,7 @@ un_pre_multiply_alpha (const guchar   *data,
 	  else
 	    {
 	      dst[0] = (((src[0] >> 16) & 0xff) * 255 ) / alpha;
-	      dst[1] = (((src[1] >> 8) & 0xff) * 255 ) / alpha; 
+	      dst[1] = (((src[1] >> 8) & 0xff) * 255 ) / alpha;
 	      dst[2] = (((src[2] >> 0) & 0xff) * 255 ) / alpha;
 	      dst[3] = alpha;
 	    }
@@ -177,7 +179,7 @@ rgb_to_bgr (const guchar   *data,
   for (y = 0; y < height; y++)
     {
       src = (guchar*)data + y * rowstride;
-      for (x = 0; x < width; x++) 
+      for (x = 0; x < width; x++)
 	{
 	  dst[0] = src[2];
 	  dst[1] = src[1];
@@ -213,7 +215,7 @@ tile_dimension (int                          to_fill,
 	}
 
       n_tiles++;
-	
+
       if (to_fill <= size)
 	{
 	  if (tiles)
@@ -243,22 +245,22 @@ texture_init_tiles (ClutterTexture *texture)
   y_pot = clutter_util_next_p2 (priv->height);
 
   while (!(cogl_texture_can_size (CGL_TEXTURE_2D,
-				  priv->pixel_format, 
+				  priv->pixel_format,
 				  priv->pixel_type,
 				  x_pot, y_pot)
-	   && (x_pot - priv->width < priv->max_tile_waste) 
+	   && (x_pot - priv->width < priv->max_tile_waste)
 	   && (y_pot - priv->height < priv->max_tile_waste)))
     {
       CLUTTER_NOTE (TEXTURE, "x_pot:%i - width:%i < max_waste:%i",
 		    x_pot,
 		    priv->width,
 		    priv->max_tile_waste);
-      
+
       CLUTTER_NOTE (TEXTURE, "y_pot:%i - height:%i < max_waste:%i",
 		    y_pot,
 		    priv->height,
 		    priv->max_tile_waste);
-      
+
       if (x_pot > y_pot)
 	x_pot /= 2;
       else
@@ -266,11 +268,11 @@ texture_init_tiles (ClutterTexture *texture)
 
       g_return_if_fail (x_pot != 0 || y_pot != 0);
     }
-  
+
   if (priv->x_tiles)
     g_free (priv->x_tiles);
 
-  priv->n_x_tiles = tile_dimension (priv->width, x_pot, 
+  priv->n_x_tiles = tile_dimension (priv->width, x_pot,
 				    priv->max_tile_waste, NULL);
   priv->x_tiles = g_new (ClutterTextureTileDimension, priv->n_x_tiles);
   tile_dimension (priv->width, x_pot, priv->max_tile_waste, priv->x_tiles);
@@ -278,7 +280,7 @@ texture_init_tiles (ClutterTexture *texture)
   if (priv->y_tiles)
     g_free (priv->y_tiles);
 
-  priv->n_y_tiles = tile_dimension (priv->height, y_pot, 
+  priv->n_y_tiles = tile_dimension (priv->height, y_pot,
 				    priv->max_tile_waste, NULL);
   priv->y_tiles = g_new (ClutterTextureTileDimension, priv->n_y_tiles);
   tile_dimension (priv->height, y_pot, priv->max_tile_waste, priv->y_tiles);
@@ -293,10 +295,10 @@ texture_init_tiles (ClutterTexture *texture)
 }
 
 static void
-texture_render_to_gl_quad (ClutterTexture *texture, 
-			   int             x_1, 
-			   int             y_1, 
-			   int             x_2, 
+texture_render_to_gl_quad (ClutterTexture *texture,
+			   int             x_1,
+			   int             y_1,
+			   int             x_2,
 			   int             y_2)
 {
   int   qx1 = 0, qx2 = 0, qy1 = 0, qy2 = 0;
@@ -317,7 +319,7 @@ texture_render_to_gl_quad (ClutterTexture *texture,
 
       if (priv->target_type == CGL_TEXTURE_2D) /* POT */
 	{
-	  tx = (float) priv->width / clutter_util_next_p2 (priv->width);  
+	  tx = (float) priv->width / clutter_util_next_p2 (priv->width);
 	  ty = (float) priv->height / clutter_util_next_p2 (priv->height);
 	}
       else
@@ -330,12 +332,12 @@ texture_render_to_gl_quad (ClutterTexture *texture,
       qx1 = x_1; qx2 = x_2;
       qy1 = y_1; qy2 = y_2;
 
-      cogl_texture_quad (x_1, x_2, y_1, y_2, 
+      cogl_texture_quad (x_1, x_2, y_1, y_2,
 			 0,
 			 0,
 			 CLUTTER_FLOAT_TO_FIXED (tx),
 			 CLUTTER_FLOAT_TO_FIXED (ty));
-      
+
       return;
     }
 
@@ -348,7 +350,7 @@ texture_render_to_gl_quad (ClutterTexture *texture,
 	  int actual_w, actual_h;
 
 	  cogl_texture_bind (priv->target_type, priv->tiles[i]);
-	 
+
 	  actual_w = priv->x_tiles[x].size - priv->x_tiles[x].waste;
 	  actual_h = priv->y_tiles[y].size - priv->y_tiles[y].waste;
 
@@ -361,17 +363,17 @@ texture_render_to_gl_quad (ClutterTexture *texture,
 
 	  qx1 = x_1 + lastx;
 	  qx2 = qx1 + ((qwidth * actual_w ) / priv->width );
-	  
+
 	  qy1 = y_1 + lasty;
 	  qy2 = qy1 + ((qheight * actual_h) / priv->height );
 
-	  cogl_texture_quad (qx1, qx2, qy1, qy2, 
+	  cogl_texture_quad (qx1, qx2, qy1, qy2,
 			     0,
 			     0,
 			     CLUTTER_FLOAT_TO_FIXED (tx),
 			     CLUTTER_FLOAT_TO_FIXED (ty));
 
-	  lasty += (qy2 - qy1) ;	  
+	  lasty += (qy2 - qy1) ;
 
 	  i++;
 	}
@@ -448,17 +450,17 @@ texture_upload_data (ClutterTexture *texture,
       cogl_texture_bind (priv->target_type, priv->tiles[0]);
       cogl_texture_set_alignment (priv->target_type, 4, priv->width);
 
-      cogl_texture_set_filters 
-	(priv->target_type, 
+      cogl_texture_set_filters
+	(priv->target_type,
 	 priv->filter_quality ? CGL_LINEAR : CGL_NEAREST,
 	 priv->filter_quality ? CGL_LINEAR : CGL_NEAREST);
 
-      cogl_texture_set_wrap (priv->target_type, 
+      cogl_texture_set_wrap (priv->target_type,
 			     priv->repeat_x ? CGL_REPEAT : CGL_CLAMP_TO_EDGE,
 			     priv->repeat_y ? CGL_REPEAT : CGL_CLAMP_TO_EDGE);
 
       priv->filter_quality = 1;
-	  
+
       if (create_textures)
 	{
 	  gint tex_width, tex_height;
@@ -474,8 +476,8 @@ texture_upload_data (ClutterTexture *texture,
 
 	  cogl_texture_image_2d (priv->target_type,
 				 CGL_RGBA,
-				 tex_width, 
-				 tex_height, 
+				 tex_width,
+				 tex_height,
 				 priv->pixel_format,
 				 priv->pixel_type,
 				 NULL);
@@ -493,7 +495,7 @@ texture_upload_data (ClutterTexture *texture,
     }
 
   /* Multiple tiled texture */
-  
+
   CLUTTER_NOTE (TEXTURE,
                 "syncing for multiple tiles for %ix%i pixbuf",
 		priv->width, priv->height);
@@ -506,7 +508,7 @@ texture_upload_data (ClutterTexture *texture,
                                             8,
                                             width, height, rowstride,
                                             NULL, NULL);
-  
+
   if (priv->tiles == NULL)
     {
       priv->tiles = g_new (guint, priv->n_x_tiles * priv->n_y_tiles);
@@ -519,7 +521,7 @@ texture_upload_data (ClutterTexture *texture,
       {
         GdkPixbuf *pixtmp;
 	gint src_h, src_w;
-	
+
 	src_w = priv->x_tiles[x].size;
 	src_h = priv->y_tiles[y].size;
 
@@ -547,7 +549,7 @@ texture_upload_data (ClutterTexture *texture,
 	  gchar  *filename;
 
 	  filename = g_strdup_printf("/tmp/%i-%i-%i.png",
-				     clutter_actor_get_id(CLUTTER_ACTOR(texture)), 
+				     clutter_actor_get_id(CLUTTER_ACTOR(texture)),
 				     x, y);
 	  printf("saving %s\n", filename);
 	  gdk_pixbuf_save (pixtmp, filename , "png", NULL, NULL);
@@ -555,31 +557,31 @@ texture_upload_data (ClutterTexture *texture,
 #endif
 
 	cogl_texture_bind (priv->target_type, priv->tiles[i]);
-	
-	cogl_texture_set_alignment (priv->target_type, 
+
+	cogl_texture_set_alignment (priv->target_type,
 				    4, priv->x_tiles[x].size);
 
-	cogl_texture_set_filters 
-	  (priv->target_type, 
+	cogl_texture_set_filters
+	  (priv->target_type,
 	   priv->filter_quality ? CGL_LINEAR : CGL_NEAREST,
 	   priv->filter_quality ? CGL_LINEAR : CGL_NEAREST);
 
-	cogl_texture_set_wrap (priv->target_type, 
+	cogl_texture_set_wrap (priv->target_type,
 			       priv->repeat_x ? CGL_REPEAT : CGL_CLAMP_TO_EDGE,
 			       priv->repeat_y ? CGL_REPEAT : CGL_CLAMP_TO_EDGE);
 	if (create_textures)
 	  {
 	    cogl_texture_image_2d (priv->target_type,
 				   CGL_RGBA,
-				   gdk_pixbuf_get_width (pixtmp), 
-				   gdk_pixbuf_get_height (pixtmp), 
+				   gdk_pixbuf_get_width (pixtmp),
+				   gdk_pixbuf_get_height (pixtmp),
 				   priv->pixel_format,
 				   priv->pixel_type,
 				   gdk_pixbuf_get_pixels (pixtmp));
 	  }
-	else 
+	else
 	  {
-	    /* Textures already created, so just update whats inside 
+	    /* Textures already created, so just update whats inside
 	    */
 	    cogl_texture_sub_image_2d (priv->target_type,
 				       0,
@@ -615,8 +617,8 @@ clutter_texture_unrealize (ClutterActor *actor)
 
   if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_READ_PIXELS))
     {
-      /* Move image data from video to main memory. 
-       * GL/ES cant do this - it probably makes sense 	 
+      /* Move image data from video to main memory.
+       * GL/ES cant do this - it probably makes sense
        * to move this kind of thing into a ClutterProxyTexture
        * where this behaviour can be better controlled.
        *
@@ -647,11 +649,11 @@ clutter_texture_realize (ClutterActor *actor)
 
   if (priv->local_pixbuf != NULL)
     {
-      /* Move any local image data we have from unrealization  
-       * back into video memory.	 
+      /* Move any local image data we have from unrealization
+       * back into video memory.
       */
       if (priv->is_tiled)
-	texture_init_tiles (texture); 
+	texture_init_tiles (texture);
       clutter_texture_set_pixbuf (texture, priv->local_pixbuf, NULL);
       g_object_unref (priv->local_pixbuf);
       priv->local_pixbuf = NULL;
@@ -660,12 +662,12 @@ clutter_texture_realize (ClutterActor *actor)
     {
       if (clutter_feature_available (CLUTTER_FEATURE_TEXTURE_READ_PIXELS))
 	{
-	  /* Dont allow realization with no pixbuf - note set_pixbuf/data 
-	   * will set realize flags.	 
+	  /* Dont allow realization with no pixbuf - note set_pixbuf/data
+	   * will set realize flags.
 	  */
 	  CLUTTER_NOTE (TEXTURE,
 			"Texture has no image data cannot realize");
-	  
+
 	  CLUTTER_NOTE (TEXTURE, "flags %i", actor->flags);
 	  CLUTTER_ACTOR_UNSET_FLAGS (actor, CLUTTER_ACTOR_REALIZED);
 	  CLUTTER_NOTE (TEXTURE, "flags %i", actor->flags);
@@ -715,9 +717,9 @@ clutter_texture_paint (ClutterActor *self)
 
   if (priv->tiles == NULL)
     {
-      /* We just need do debug this state, it doesn't really need to 
+      /* We just need do debug this state, it doesn't really need to
        * throw a an error as what previously happened. Sub classes
-       * quite likely may not be able to realize.	 
+       * quite likely may not be able to realize.
       */
       CLUTTER_NOTE (PAINT, "unable to paint texture '%s', contains no tiles",
 		    clutter_actor_get_name (self)
@@ -761,7 +763,7 @@ clutter_texture_paint (ClutterActor *self)
   cogl_pop_matrix ();
 }
 
-static void 
+static void
 clutter_texture_dispose (GObject *object)
 {
   ClutterTexture *texture = CLUTTER_TEXTURE (object);
@@ -781,9 +783,9 @@ clutter_texture_dispose (GObject *object)
 }
 
 static void
-clutter_texture_set_property (GObject      *object, 
+clutter_texture_set_property (GObject      *object,
 			      guint         prop_id,
-			      const GValue *value, 
+			      const GValue *value,
 			      GParamSpec   *pspec)
 {
   ClutterTexture        *texture;
@@ -792,10 +794,10 @@ clutter_texture_set_property (GObject      *object,
   texture = CLUTTER_TEXTURE(object);
   priv = texture->priv;
 
-  switch (prop_id) 
+  switch (prop_id)
     {
     case PROP_PIXBUF:
-      clutter_texture_set_pixbuf (texture, 
+      clutter_texture_set_pixbuf (texture,
 				  GDK_PIXBUF (g_value_get_object (value)),
 				  NULL);
       break;
@@ -830,9 +832,9 @@ clutter_texture_set_property (GObject      *object,
 }
 
 static void
-clutter_texture_get_property (GObject    *object, 
+clutter_texture_get_property (GObject    *object,
 			      guint       prop_id,
-			      GValue     *value, 
+			      GValue     *value,
 			      GParamSpec *pspec)
 {
   ClutterTexture        *texture;
@@ -841,7 +843,7 @@ clutter_texture_get_property (GObject    *object,
   texture = CLUTTER_TEXTURE(object);
   priv = texture->priv;
 
-  switch (prop_id) 
+  switch (prop_id)
     {
     case PROP_PIXBUF:
       {
@@ -877,7 +879,7 @@ clutter_texture_get_property (GObject    *object,
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
-    } 
+    }
 }
 
 
@@ -916,11 +918,11 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 			   "Enable use of tiled textures",
 			   "Enables the use of tiled GL textures to more "
 			   "efficiently use available texture memory",
-			   /* FIXME: This default set at runtime :/  
+			   /* FIXME: This default set at runtime :/
                             * As tiling depends on what GL features available.
                             * Need to figure out better solution
 			   */
-			   (clutter_feature_available 
+			   (clutter_feature_available
 			     (CLUTTER_FEATURE_TEXTURE_RECTANGLE) == FALSE),
 			   G_PARAM_CONSTRUCT_ONLY | CLUTTER_PARAM_READWRITE));
 
@@ -937,7 +939,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
     (gobject_class, PROP_REPEAT_X,
      g_param_spec_boolean ("repeat-x",
 			   "Tile underlying pixbuf in x direction",
-			   "Reapeat underlying pixbuf rather than scale" 
+			   "Reapeat underlying pixbuf rather than scale"
 			   "in x direction. Currently UNWORKING",
 			   FALSE,
 			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
@@ -946,7 +948,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
     (gobject_class, PROP_REPEAT_Y,
      g_param_spec_boolean ("repeat-y",
 			   "Tile underlying pixbuf in y direction",
-			   "Reapeat underlying pixbuf rather than scale" 
+			   "Reapeat underlying pixbuf rather than scale"
 			   "in y direction. Currently UNWORKING",
 			   FALSE,
 			   G_PARAM_CONSTRUCT | CLUTTER_PARAM_READWRITE));
@@ -1016,12 +1018,12 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		  G_STRUCT_OFFSET (ClutterTextureClass, size_change),
 		  NULL, NULL,
 		  clutter_marshal_VOID__INT_INT,
-		  G_TYPE_NONE, 
+		  G_TYPE_NONE,
 		  2, G_TYPE_INT, G_TYPE_INT);
   /**
    * ClutterTexture::pixbuf-change:
    * @texture: the texture which received the signal
-   * 
+   *
    * The ::pixbuf-change signal is emitted each time the pixbuf
    * used by @texture changes.
    */
@@ -1032,8 +1034,8 @@ clutter_texture_class_init (ClutterTextureClass *klass)
 		  G_STRUCT_OFFSET (ClutterTextureClass, pixbuf_change),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 
-		  0); 
+		  G_TYPE_NONE,
+		  0);
 }
 
 static void
@@ -1041,7 +1043,7 @@ clutter_texture_init (ClutterTexture *self)
 {
   ClutterTexturePrivate *priv;
 
-  self->priv = priv = CLUTTER_TEXTURE_GET_PRIVATE (self); 
+  self->priv = priv = CLUTTER_TEXTURE_GET_PRIVATE (self);
 
   priv->max_tile_waste = 64;
   priv->filter_quality = 0;
@@ -1070,8 +1072,8 @@ pixbuf_destroy_notify (guchar  *pixels, gpointer data)
  * clutter_texture_get_pixbuf:
  * @texture: A #ClutterTexture
  *
- * Gets a #GdkPixbuf representation of the #ClutterTexture data. 
- * The created #GdkPixbuf is not owned by the texture but the caller.  
+ * Gets a #GdkPixbuf representation of the #ClutterTexture data.
+ * The created #GdkPixbuf is not owned by the texture but the caller.
  *
  * Return value: A #GdkPixbuf
  **/
@@ -1087,7 +1089,7 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
   priv = texture->priv;
 
   if (priv->tiles == NULL)
-    return NULL; 
+    return NULL;
 
   if (priv->pixel_format == CGL_YCBCR_MESA)
     return NULL; 		/* FIXME: convert YUV */
@@ -1098,7 +1100,7 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
   if (!priv->is_tiled)
     {
       pixels = g_malloc (((priv->width * bpp + 3) &~ 3) * priv->height);
-      
+
       if (!pixels)
 	return NULL;
 
@@ -1111,9 +1113,9 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
       /* No such func in gles... */
       glGetTexImage (priv->target_type,
 		     0,
-		     (priv->pixel_format == CGL_RGBA 
-		      || priv->pixel_format == CGL_BGRA) ? 
-		     CGL_RGBA : CGL_RGB, 
+		     (priv->pixel_format == CGL_RGBA
+		      || priv->pixel_format == CGL_BGRA) ?
+		     CGL_RGBA : CGL_RGB,
 		     PIXEL_TYPE,
 		     (GLvoid*)pixels);
 
@@ -1146,22 +1148,22 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 	  {
 	    GdkPixbuf  *tmp_pixb;
 	    gint        src_h, src_w;
-	
+
 	    src_w = priv->x_tiles[x].size;
 	    src_h = priv->y_tiles[y].size;
 
 	    pixels = g_malloc (((src_w  * bpp + 3) &~ 3) * src_h);
 
 	    glBindTexture(priv->target_type, priv->tiles[i]);
-	    
+
 	    glPixelStorei (GL_UNPACK_ROW_LENGTH, src_w);
 	    glPixelStorei (GL_UNPACK_ALIGNMENT, 4);
 
 	    glGetTexImage (priv->target_type,
 			   0,
-			   (priv->pixel_format == CGL_RGBA 
-			    || priv->pixel_format == CGL_BGRA) ? 
-			   CGL_RGBA : CGL_RGB, 
+			   (priv->pixel_format == CGL_RGBA
+			    || priv->pixel_format == CGL_BGRA) ?
+			   CGL_RGBA : CGL_RGB,
 			   PIXEL_TYPE,
 			   (GLvoid *) pixels);
 
@@ -1183,7 +1185,7 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
 
             if (priv->y_tiles[y].pos + src_h > priv->height)
               src_h = priv->height - priv->y_tiles[y].pos;
-	
+
 	    gdk_pixbuf_copy_area (tmp_pixb,
 				  0,
 				  0,
@@ -1203,7 +1205,7 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
   return pixbuf;
 #else
 
-  /* FIXME: func call wont work for GLES... 
+  /* FIXME: func call wont work for GLES...
    *        features need to reflect this.
    */
   return NULL;
@@ -1224,11 +1226,11 @@ clutter_texture_get_pixbuf (ClutterTexture* texture)
  *
  * Sets #ClutterTexture image data.
  *
- * Return value: TRUE on success, FALSE on failure. 
+ * Return value: TRUE on success, FALSE on failure.
  *
  * Since 0.4. This function is likely to change in future versions.
  **/
-gboolean          
+gboolean
 clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
 				     const guchar       *data,
 				     gboolean            has_alpha,
@@ -1249,13 +1251,13 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
   g_return_val_if_fail (data != NULL, FALSE);
 
   /* Needed for GL_RGBA (internal format) and gdk pixbuf usage */
-  g_return_val_if_fail (bpp == 4, FALSE); 
-  
+  g_return_val_if_fail (bpp == 4, FALSE);
+
   texture_dirty = size_change =
     (width != priv->width || height != priv->height) ;
 
   prev_format = priv->pixel_format;
-  
+
   if (has_alpha)
     priv->pixel_format = CGL_RGBA;
   else
@@ -1294,11 +1296,11 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
               !cogl_texture_can_size (CGL_TEXTURE_RECTANGLE_ARB,
 				      priv->pixel_format,
 				      priv->pixel_type,
-				      priv->width, 
+				      priv->width,
 				      priv->height))
 	    {
 	      /* If we cant create NPOT tex of this size fall back to tiles */
-	      CLUTTER_NOTE (TEXTURE, 
+	      CLUTTER_NOTE (TEXTURE,
 			    "Cannot make npots of size %ix%i "
 			    "falling back to tiled",
 			    priv->width,
@@ -1306,21 +1308,21 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
 
 	      priv->target_type = CGL_TEXTURE_2D;
 	    }
-	  
+
 	  if (priv->target_type == CGL_TEXTURE_2D &&
 	      !cogl_texture_can_size (CGL_TEXTURE_2D,
-				      priv->pixel_format, 
+				      priv->pixel_format,
 				      priv->pixel_type,
-				      clutter_util_next_p2 (priv->width), 
+				      clutter_util_next_p2 (priv->width),
 				      clutter_util_next_p2 (priv->height)))
-	    { 
-	      priv->is_tiled = TRUE; 
+	    {
+	      priv->is_tiled = TRUE;
 	    }
 	}
 
       /* Figure our tiling etc */
       if (priv->is_tiled)
-	texture_init_tiles (texture); 
+	texture_init_tiles (texture);
     }
 
   CLUTTER_NOTE (TEXTURE, "set size %ix%i\n",
@@ -1328,29 +1330,29 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
 		priv->height);
 
   /* Set Error from this */
-  texture_upload_data (texture, 
-		       copy_data != NULL ? copy_data : data, 
-		       has_alpha, 
-		       width, 
-		       height, 
-		       rowstride, 
+  texture_upload_data (texture,
+		       copy_data != NULL ? copy_data : data,
+		       has_alpha,
+		       width,
+		       height,
+		       rowstride,
 		       bpp);
 
   CLUTTER_ACTOR_SET_FLAGS (CLUTTER_ACTOR (texture), CLUTTER_ACTOR_REALIZED);
 
   if (size_change)
     {
-      g_signal_emit (texture, texture_signals[SIZE_CHANGE], 
+      g_signal_emit (texture, texture_signals[SIZE_CHANGE],
 		     0, priv->width, priv->height);
 
       if (priv->sync_actor_size)
-	clutter_actor_set_size (CLUTTER_ACTOR(texture), 
-				priv->width, 
+	clutter_actor_set_size (CLUTTER_ACTOR(texture),
+				priv->width,
 				priv->height);
     }
-  
+
   /* rename signal */
-  g_signal_emit (texture, texture_signals[PIXBUF_CHANGE], 0); 
+  g_signal_emit (texture, texture_signals[PIXBUF_CHANGE], 0);
 
   /* If resized actor may need resizing but paint() will do this */
   if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR(texture)))
@@ -1380,7 +1382,7 @@ clutter_texture_set_from_rgb_data   (ClutterTexture     *texture,
  *
  * Since 0.4.
  **/
-gboolean          
+gboolean
 clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
 				     const guchar       *data,
 				     gint                width,
@@ -1410,12 +1412,12 @@ clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
   priv->width  = width;
   priv->height = height;
   priv->pixel_type = (flags & CLUTTER_TEXTURE_YUV_FLAG_YUV2) ?
-                                CGL_UNSIGNED_SHORT_8_8_REV_MESA : 
+                                CGL_UNSIGNED_SHORT_8_8_REV_MESA :
                                 CGL_UNSIGNED_SHORT_8_8_MESA;
   priv->pixel_format = CGL_YCBCR_MESA;
   priv->target_type = CGL_TEXTURE_2D;
 
-  if (texture_dirty)      
+  if (texture_dirty)
     texture_free_gl_resources (texture);
 
   if (!priv->tiles)
@@ -1426,7 +1428,7 @@ clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
 
   cogl_texture_bind (priv->target_type, priv->tiles[0]);
 
-  cogl_texture_set_filters (priv->target_type, 
+  cogl_texture_set_filters (priv->target_type,
 			    priv->filter_quality ? CGL_LINEAR : CGL_NEAREST,
 			    priv->filter_quality ? CGL_LINEAR : CGL_NEAREST);
 
@@ -1442,7 +1444,7 @@ clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
        * this is really a guess...
       */
       if (cogl_texture_can_size (CGL_TEXTURE_2D,
-				 CGL_RGBA, 
+				 CGL_RGBA,
 				 CGL_UNSIGNED_BYTE,
                                  new_width, new_height))
 	{
@@ -1478,16 +1480,16 @@ clutter_texture_set_from_yuv_data   (ClutterTexture     *texture,
 
   if (size_change)
     {
-      g_signal_emit (texture, texture_signals[SIZE_CHANGE], 
+      g_signal_emit (texture, texture_signals[SIZE_CHANGE],
 		     0, priv->width, priv->height);
 
       if (priv->sync_actor_size)
-	clutter_actor_set_size (CLUTTER_ACTOR(texture), 
-				priv->width, 
+	clutter_actor_set_size (CLUTTER_ACTOR(texture),
+				priv->width,
 				priv->height);
     }
 
-  g_signal_emit (texture, texture_signals[PIXBUF_CHANGE], 0); 
+  g_signal_emit (texture, texture_signals[PIXBUF_CHANGE], 0);
 
   if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR(texture)))
     clutter_actor_queue_redraw (CLUTTER_ACTOR(texture));
@@ -1571,7 +1573,7 @@ clutter_texture_new (void)
  *
  **/
 void 				/* FIXME: rename to get_image_size */
-clutter_texture_get_base_size (ClutterTexture *texture, 
+clutter_texture_get_base_size (ClutterTexture *texture,
 			       gint           *width,
 			       gint           *height)
 {
@@ -1595,9 +1597,9 @@ clutter_texture_get_base_size (ClutterTexture *texture,
  * @texture: A #ClutterTexture
  * @index_: Tile index to bind
  *
- * Proxys a call to glBindTexture a to bind an internal 'tile'. 
+ * Proxys a call to glBindTexture a to bind an internal 'tile'.
  *
- * This function is only useful for sub class implementations 
+ * This function is only useful for sub class implementations
  * and never should be called by an application.
  **/
 void
@@ -1621,11 +1623,11 @@ clutter_texture_bind_tile (ClutterTexture *texture,
  *
  * Retreives internal tile dimentioning.
  *
- * This function is only useful for sub class implementations 
+ * This function is only useful for sub class implementations
  * and never should be called by an application.
  **/
 void
-clutter_texture_get_n_tiles (ClutterTexture *texture, 
+clutter_texture_get_n_tiles (ClutterTexture *texture,
 			     gint           *n_x_tiles,
 			     gint           *n_y_tiles)
 {
@@ -1642,16 +1644,16 @@ clutter_texture_get_n_tiles (ClutterTexture *texture,
  * @texture: A #ClutterTexture
  * @x_index: X index of tile to query
  * @pos: Location to store tiles X position
- * @size: Location to store tiles horizontal size in pixels 
+ * @size: Location to store tiles horizontal size in pixels
  * @waste: Location to store tiles horizontal wastage in pixels
  *
  * Retreives details of a tile on x axis.
  *
- * This function is only useful for sub class implementations 
+ * This function is only useful for sub class implementations
  * and never should be called by an application.
  **/
 void
-clutter_texture_get_x_tile_detail (ClutterTexture *texture, 
+clutter_texture_get_x_tile_detail (ClutterTexture *texture,
 				   gint            x_index,
 				   gint           *pos,
 				   gint           *size,
@@ -1674,16 +1676,16 @@ clutter_texture_get_x_tile_detail (ClutterTexture *texture,
  * @texture: A #ClutterTexture
  * @y_index: Y index of tile to query
  * @pos: Location to store tiles Y position
- * @size: Location to store tiles vertical size in pixels 
+ * @size: Location to store tiles vertical size in pixels
  * @waste: Location to store tiles vertical wastage in pixels
  *
  * Retreives details of a tile on y axis.
  *
- * This function is only useful for sub class implementations 
+ * This function is only useful for sub class implementations
  * and never should be called by an application.
  **/
 void
-clutter_texture_get_y_tile_detail (ClutterTexture *texture, 
+clutter_texture_get_y_tile_detail (ClutterTexture *texture,
 				   gint            y_index,
 				   gint           *pos,
 				   gint           *size,
@@ -1692,7 +1694,7 @@ clutter_texture_get_y_tile_detail (ClutterTexture *texture,
   ClutterTexturePrivate *priv;
 
   g_return_if_fail (CLUTTER_IS_TEXTURE (texture));
-  
+
   priv = texture->priv;
 
   g_return_if_fail (y_index < priv->n_y_tiles);
@@ -1713,7 +1715,7 @@ clutter_texture_get_y_tile_detail (ClutterTexture *texture,
  *
  * Checks if #ClutterTexture has generated underlying GL texture tiles.
  *
- * This function is only useful for sub class implementations 
+ * This function is only useful for sub class implementations
  * and never should be called by an application.
  *
  * Return value: TRUE if texture has pregenerated GL tiles.
@@ -1732,7 +1734,7 @@ clutter_texture_has_generated_tiles (ClutterTexture *texture)
  *
  * Checks if #ClutterTexture is tiled.
  *
- * This function is only useful for sub class implementations 
+ * This function is only useful for sub class implementations
  * and never should be called by an application.
  *
  * Return value: TRUE if texture is tiled

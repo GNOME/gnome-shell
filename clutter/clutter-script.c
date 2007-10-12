@@ -110,7 +110,9 @@
  * #ClutterScript is available since Clutter 0.6
  */
 
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include <stdlib.h>
 #include <string.h>

@@ -23,15 +23,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-/* 
+/*
  * IDEAS:
  *  API;
- *  - add() 
+ *  - add()
  *      + an new timeline to beginning of score
  *  - append (timeline_existing, timeline_new, delay)
- *      + appends a new timeline to an existing one 
+ *      + appends a new timeline to an existing one
  *
- *  ScoreEntry 
+ *  ScoreEntry
  *   {
  *     Timeline *base;
  *     GList    *next_timelines; - to start on completion of base,
@@ -40,7 +40,7 @@
  *     delay
  *   }
  *
- *  start()/stop(),remove(),remove_all() ? 
+ *  start()/stop(),remove(),remove_all() ?
  */
 
 /**
@@ -50,7 +50,7 @@
  * #ClutterScore is a base class for sequencing multiple timelines in order.
  */
 
-#ifndef HAVE_CONFIG_H
+#ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
 
@@ -100,10 +100,10 @@ static void start_entry (ClutterScoreEntry *entry);
 
 /* Object */
 
-static void 
-clutter_score_set_property (GObject      *object, 
+static void
+clutter_score_set_property (GObject      *object,
 			    guint         prop_id,
-			    const GValue *value, 
+			    const GValue *value,
 			    GParamSpec   *pspec)
 {
   ClutterScore        *score;
@@ -112,7 +112,7 @@ clutter_score_set_property (GObject      *object,
   score = CLUTTER_SCORE(object);
   priv = score->priv;
 
-  switch (prop_id) 
+  switch (prop_id)
     {
     case PROP_LOOP:
       priv->loop = g_value_get_boolean (value);
@@ -123,10 +123,10 @@ clutter_score_set_property (GObject      *object,
   }
 }
 
-static void 
-clutter_score_get_property (GObject    *object, 
+static void
+clutter_score_get_property (GObject    *object,
 			       guint       prop_id,
-			       GValue     *value, 
+			       GValue     *value,
 			       GParamSpec *pspec)
 {
   ClutterScore        *score;
@@ -135,7 +135,7 @@ clutter_score_get_property (GObject    *object,
   score = CLUTTER_SCORE(object);
   priv = score->priv;
 
-  switch (prop_id) 
+  switch (prop_id)
     {
     case PROP_LOOP:
       g_value_set_boolean (value, priv->loop);
@@ -146,13 +146,13 @@ clutter_score_get_property (GObject    *object,
     }
 }
 
-static void 
+static void
 clutter_score_finalize (GObject *object)
 {
   G_OBJECT_CLASS (clutter_score_parent_class)->finalize (object);
 }
 
-static void 
+static void
 clutter_score_dispose (GObject *object)
 {
   ClutterScore *self = CLUTTER_SCORE(object);
@@ -200,7 +200,7 @@ clutter_score_class_init (ClutterScoreClass *klass)
 		  G_STRUCT_OFFSET (ClutterScoreClass, new_frame),
 		  NULL, NULL,
 		  clutter_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 
+		  G_TYPE_NONE,
 		  1, CLUTTER_TYPE_TIMELINE);
   score_signals[COMPLETED] =
     g_signal_new ("completed",
@@ -251,7 +251,7 @@ clutter_score_set_loop (ClutterScore *score,
 			   gboolean         loop)
 {
   g_return_if_fail (CLUTTER_IS_SCORE (score));
-  
+
   if (score->priv->loop != loop)
     {
       g_object_ref (score);
@@ -289,7 +289,7 @@ void
 clutter_score_rewind (ClutterScore *score)
 {
   g_return_if_fail (CLUTTER_IS_SCORE (score));
-  
+
 }
 
 /**
@@ -304,21 +304,21 @@ gboolean
 clutter_score_is_playing (ClutterScore *score)
 {
   g_return_val_if_fail (CLUTTER_IS_SCORE (score), FALSE);
-  
+
   return !!g_hash_table_size(score->priv->running_timelines);
 }
 
 static void
-on_timeline_finish (ClutterTimeline   *timeline, 
+on_timeline_finish (ClutterTimeline   *timeline,
 		    ClutterScoreEntry *entry)
 {
   GSList  *item;
 
-  g_hash_table_remove (entry->score->priv->running_timelines, 
+  g_hash_table_remove (entry->score->priv->running_timelines,
 		       GINT_TO_POINTER(entry->handler_id));
   g_signal_handler_disconnect (timeline, entry->handler_id);
 
-  printf("completed %li\n", entry->handler_id); 
+  printf("completed %li\n", entry->handler_id);
 
   for (item = entry->child_entries; item != NULL; item = item->next)
     {
@@ -338,14 +338,14 @@ static void
 start_entry (ClutterScoreEntry *entry)
 {
   entry->handler_id = g_signal_connect (entry->timeline,
-					"completed", 
+					"completed",
 					G_CALLBACK (on_timeline_finish),
 					entry);
 
-  printf("started %li\n", entry->handler_id); 
+  printf("started %li\n", entry->handler_id);
 
   g_hash_table_insert (entry->score->priv->running_timelines,
-		       GINT_TO_POINTER(entry->handler_id), 
+		       GINT_TO_POINTER(entry->handler_id),
 		       entry);
 
   clutter_timeline_start (entry->timeline);
@@ -367,7 +367,7 @@ clutter_score_start (ClutterScore *score)
 
   g_return_if_fail (CLUTTER_IS_SCORE (score));
 
-  priv = score->priv;  
+  priv = score->priv;
 
   for (item = priv->entries; item != NULL; item = item->next)
     {
@@ -422,21 +422,21 @@ find_entry (GSList *list, ClutterTimeline *timeline)
  * clutter_score_append:
  * @score: A #ClutterScore
  * @timeline_existing: A #ClutterTimeline in the score
- * @timeline_new: A new #ClutterTimeline to start when #timeline_existing has 
+ * @timeline_new: A new #ClutterTimeline to start when #timeline_existing has
  * completed,
  *
  * Appends a new timeline to an one existing in the score.
  *
  */
 void
-clutter_score_append (ClutterScore    *score, 
+clutter_score_append (ClutterScore    *score,
 		      ClutterTimeline *timeline_existing,
 		      ClutterTimeline *timeline_new)
 {
   ClutterScorePrivate *priv;
   ClutterScoreEntry   *entry, *entry_new;
 
-  priv = score->priv;  
+  priv = score->priv;
 
   /* Appends a timeline to the end of another */
   if ((entry = find_entry (priv->entries, timeline_existing)) != NULL)
@@ -457,7 +457,7 @@ clutter_score_append (ClutterScore    *score,
  *
  */
 void
-clutter_score_add (ClutterScore    *score, 
+clutter_score_add (ClutterScore    *score,
 		   ClutterTimeline *timeline)
 {
   ClutterScorePrivate  *priv;

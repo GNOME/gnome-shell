@@ -23,10 +23,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include <clutter-fixed.h>
-#include <clutter-private.h> 
+#include <clutter-private.h>
 
 /**
  * SECTION:clutter-fixed
@@ -39,7 +41,7 @@
  * math for fixed-to-floating and floating-to-fixed conversion.
  *
  * It is no recommened for use on platforms with a floating point unit
- * (eg desktop systems) nor for use in bindings. 
+ * (eg desktop systems) nor for use in bindings.
  *
  * Basic rules of Fixed Point arithmethic:
  *
@@ -152,7 +154,7 @@ static ClutterFixed sin_tbl [] =
  * @angle: a #ClutterFixed angle in radians
  *
  * Fixed point implementation of sine function
- * 
+ *
  * Return value: #ClutterFixed sine value.
  *
  * Since: 0.2
@@ -169,7 +171,7 @@ clutter_sinx (ClutterFixed angle)
 	sign  = 1 + ~sign;
 	angle = 1 + ~angle;
     }
-    
+
     /* reduce to <0, 2*pi) */
     if (angle >= CFX_2PI)
     {
@@ -218,7 +220,7 @@ clutter_sinx (ClutterFixed angle)
     {
 	indx2 = indx1 + 1;
     }
-    
+
     low  = sin_tbl[indx1];
     high = sin_tbl[indx2];
 
@@ -229,7 +231,7 @@ clutter_sinx (ClutterFixed angle)
 
     if (sign < 0)
 	angle = (1 + ~angle);
-    
+
     return angle;
 }
 
@@ -241,7 +243,7 @@ clutter_sinx (ClutterFixed angle)
  *
  * ClutterAngle is an integer such that 1024 represents
  * full circle.
- * 
+ *
  * Return value: #ClutterFixed sine value.
  *
  * Since: 0.2
@@ -258,10 +260,10 @@ clutter_sini (ClutterAngle angle)
 	sign  = 1 + ~sign;
 	angle = 1 + ~angle;
     }
-    
+
     /* reduce to <0, 2*pi) */
     angle &= 0x3ff;
-    
+
     /* reduce to first quadrant and sign */
     if (angle > 512)
     {
@@ -287,10 +289,10 @@ clutter_sini (ClutterAngle angle)
     }
 
     result = sin_tbl[angle];
-    
+
     if (sign < 0)
 	result = (1 + ~result);
-    
+
     return result;
 }
 
@@ -301,71 +303,71 @@ clutter_sini (ClutterAngle angle)
  */
 static ClutterFixed tan_tbl [] =
 {
-  0x00000000L, 0x00000192L, 0x00000324L, 0x000004b7L, 
-  0x00000649L, 0x000007dbL, 0x0000096eL, 0x00000b01L, 
-  0x00000c94L, 0x00000e27L, 0x00000fbaL, 0x0000114eL, 
-  0x000012e2L, 0x00001477L, 0x0000160cL, 0x000017a1L, 
-  0x00001937L, 0x00001acdL, 0x00001c64L, 0x00001dfbL, 
-  0x00001f93L, 0x0000212cL, 0x000022c5L, 0x0000245fL, 
-  0x000025f9L, 0x00002795L, 0x00002931L, 0x00002aceL, 
-  0x00002c6cL, 0x00002e0aL, 0x00002faaL, 0x0000314aL, 
-  0x000032ecL, 0x0000348eL, 0x00003632L, 0x000037d7L, 
-  0x0000397dL, 0x00003b24L, 0x00003cccL, 0x00003e75L, 
-  0x00004020L, 0x000041ccL, 0x00004379L, 0x00004528L, 
-  0x000046d8L, 0x0000488aL, 0x00004a3dL, 0x00004bf2L, 
-  0x00004da8L, 0x00004f60L, 0x0000511aL, 0x000052d5L, 
-  0x00005492L, 0x00005651L, 0x00005812L, 0x000059d5L, 
-  0x00005b99L, 0x00005d60L, 0x00005f28L, 0x000060f3L, 
-  0x000062c0L, 0x0000648fL, 0x00006660L, 0x00006834L, 
-  0x00006a0aL, 0x00006be2L, 0x00006dbdL, 0x00006f9aL, 
-  0x0000717aL, 0x0000735dL, 0x00007542L, 0x0000772aL, 
-  0x00007914L, 0x00007b02L, 0x00007cf2L, 0x00007ee6L, 
-  0x000080dcL, 0x000082d6L, 0x000084d2L, 0x000086d2L, 
-  0x000088d6L, 0x00008adcL, 0x00008ce7L, 0x00008ef4L, 
-  0x00009106L, 0x0000931bL, 0x00009534L, 0x00009750L, 
-  0x00009971L, 0x00009b95L, 0x00009dbeL, 0x00009febL, 
-  0x0000a21cL, 0x0000a452L, 0x0000a68cL, 0x0000a8caL, 
-  0x0000ab0eL, 0x0000ad56L, 0x0000afa3L, 0x0000b1f5L, 
-  0x0000b44cL, 0x0000b6a8L, 0x0000b909L, 0x0000bb70L, 
-  0x0000bdddL, 0x0000c04fL, 0x0000c2c7L, 0x0000c545L, 
-  0x0000c7c9L, 0x0000ca53L, 0x0000cce3L, 0x0000cf7aL, 
-  0x0000d218L, 0x0000d4bcL, 0x0000d768L, 0x0000da1aL, 
-  0x0000dcd4L, 0x0000df95L, 0x0000e25eL, 0x0000e52eL, 
-  0x0000e806L, 0x0000eae7L, 0x0000edd0L, 0x0000f0c1L, 
-  0x0000f3bbL, 0x0000f6bfL, 0x0000f9cbL, 0x0000fce1L, 
-  0x00010000L, 0x00010329L, 0x0001065dL, 0x0001099aL, 
-  0x00010ce3L, 0x00011036L, 0x00011394L, 0x000116feL, 
-  0x00011a74L, 0x00011df6L, 0x00012184L, 0x0001251fL, 
-  0x000128c6L, 0x00012c7cL, 0x0001303fL, 0x00013410L, 
-  0x000137f0L, 0x00013bdfL, 0x00013fddL, 0x000143ebL, 
-  0x00014809L, 0x00014c37L, 0x00015077L, 0x000154c9L, 
-  0x0001592dL, 0x00015da4L, 0x0001622eL, 0x000166ccL, 
-  0x00016b7eL, 0x00017045L, 0x00017523L, 0x00017a17L, 
-  0x00017f22L, 0x00018444L, 0x00018980L, 0x00018ed5L, 
-  0x00019445L, 0x000199cfL, 0x00019f76L, 0x0001a53aL, 
-  0x0001ab1cL, 0x0001b11dL, 0x0001b73fL, 0x0001bd82L, 
-  0x0001c3e7L, 0x0001ca71L, 0x0001d11fL, 0x0001d7f4L, 
-  0x0001def1L, 0x0001e618L, 0x0001ed6aL, 0x0001f4e8L, 
-  0x0001fc96L, 0x00020473L, 0x00020c84L, 0x000214c9L, 
-  0x00021d44L, 0x000225f9L, 0x00022ee9L, 0x00023818L, 
-  0x00024187L, 0x00024b3aL, 0x00025534L, 0x00025f78L, 
-  0x00026a0aL, 0x000274edL, 0x00028026L, 0x00028bb8L, 
-  0x000297a8L, 0x0002a3fbL, 0x0002b0b5L, 0x0002bdddL, 
-  0x0002cb79L, 0x0002d98eL, 0x0002e823L, 0x0002f740L, 
-  0x000306ecL, 0x00031730L, 0x00032816L, 0x000339a6L, 
-  0x00034bebL, 0x00035ef2L, 0x000372c6L, 0x00038776L, 
-  0x00039d11L, 0x0003b3a6L, 0x0003cb48L, 0x0003e40aL, 
-  0x0003fe02L, 0x00041949L, 0x000435f7L, 0x0004542bL, 
-  0x00047405L, 0x000495a9L, 0x0004b940L, 0x0004def6L, 
-  0x00050700L, 0x00053196L, 0x00055ef9L, 0x00058f75L, 
-  0x0005c35dL, 0x0005fb14L, 0x00063709L, 0x000677c0L, 
-  0x0006bdd0L, 0x000709ecL, 0x00075ce6L, 0x0007b7bbL, 
-  0x00081b98L, 0x000889e9L, 0x0009046eL, 0x00098d4dL, 
-  0x000a2736L, 0x000ad593L, 0x000b9cc6L, 0x000c828aL, 
-  0x000d8e82L, 0x000ecb1bL, 0x001046eaL, 0x00121703L, 
-  0x00145b00L, 0x0017448dL, 0x001b2672L, 0x002095afL, 
-  0x0028bc49L, 0x0036519aL, 0x00517bb6L, 0x00a2f8fdL, 
-  0x46d3eab2L, 
+  0x00000000L, 0x00000192L, 0x00000324L, 0x000004b7L,
+  0x00000649L, 0x000007dbL, 0x0000096eL, 0x00000b01L,
+  0x00000c94L, 0x00000e27L, 0x00000fbaL, 0x0000114eL,
+  0x000012e2L, 0x00001477L, 0x0000160cL, 0x000017a1L,
+  0x00001937L, 0x00001acdL, 0x00001c64L, 0x00001dfbL,
+  0x00001f93L, 0x0000212cL, 0x000022c5L, 0x0000245fL,
+  0x000025f9L, 0x00002795L, 0x00002931L, 0x00002aceL,
+  0x00002c6cL, 0x00002e0aL, 0x00002faaL, 0x0000314aL,
+  0x000032ecL, 0x0000348eL, 0x00003632L, 0x000037d7L,
+  0x0000397dL, 0x00003b24L, 0x00003cccL, 0x00003e75L,
+  0x00004020L, 0x000041ccL, 0x00004379L, 0x00004528L,
+  0x000046d8L, 0x0000488aL, 0x00004a3dL, 0x00004bf2L,
+  0x00004da8L, 0x00004f60L, 0x0000511aL, 0x000052d5L,
+  0x00005492L, 0x00005651L, 0x00005812L, 0x000059d5L,
+  0x00005b99L, 0x00005d60L, 0x00005f28L, 0x000060f3L,
+  0x000062c0L, 0x0000648fL, 0x00006660L, 0x00006834L,
+  0x00006a0aL, 0x00006be2L, 0x00006dbdL, 0x00006f9aL,
+  0x0000717aL, 0x0000735dL, 0x00007542L, 0x0000772aL,
+  0x00007914L, 0x00007b02L, 0x00007cf2L, 0x00007ee6L,
+  0x000080dcL, 0x000082d6L, 0x000084d2L, 0x000086d2L,
+  0x000088d6L, 0x00008adcL, 0x00008ce7L, 0x00008ef4L,
+  0x00009106L, 0x0000931bL, 0x00009534L, 0x00009750L,
+  0x00009971L, 0x00009b95L, 0x00009dbeL, 0x00009febL,
+  0x0000a21cL, 0x0000a452L, 0x0000a68cL, 0x0000a8caL,
+  0x0000ab0eL, 0x0000ad56L, 0x0000afa3L, 0x0000b1f5L,
+  0x0000b44cL, 0x0000b6a8L, 0x0000b909L, 0x0000bb70L,
+  0x0000bdddL, 0x0000c04fL, 0x0000c2c7L, 0x0000c545L,
+  0x0000c7c9L, 0x0000ca53L, 0x0000cce3L, 0x0000cf7aL,
+  0x0000d218L, 0x0000d4bcL, 0x0000d768L, 0x0000da1aL,
+  0x0000dcd4L, 0x0000df95L, 0x0000e25eL, 0x0000e52eL,
+  0x0000e806L, 0x0000eae7L, 0x0000edd0L, 0x0000f0c1L,
+  0x0000f3bbL, 0x0000f6bfL, 0x0000f9cbL, 0x0000fce1L,
+  0x00010000L, 0x00010329L, 0x0001065dL, 0x0001099aL,
+  0x00010ce3L, 0x00011036L, 0x00011394L, 0x000116feL,
+  0x00011a74L, 0x00011df6L, 0x00012184L, 0x0001251fL,
+  0x000128c6L, 0x00012c7cL, 0x0001303fL, 0x00013410L,
+  0x000137f0L, 0x00013bdfL, 0x00013fddL, 0x000143ebL,
+  0x00014809L, 0x00014c37L, 0x00015077L, 0x000154c9L,
+  0x0001592dL, 0x00015da4L, 0x0001622eL, 0x000166ccL,
+  0x00016b7eL, 0x00017045L, 0x00017523L, 0x00017a17L,
+  0x00017f22L, 0x00018444L, 0x00018980L, 0x00018ed5L,
+  0x00019445L, 0x000199cfL, 0x00019f76L, 0x0001a53aL,
+  0x0001ab1cL, 0x0001b11dL, 0x0001b73fL, 0x0001bd82L,
+  0x0001c3e7L, 0x0001ca71L, 0x0001d11fL, 0x0001d7f4L,
+  0x0001def1L, 0x0001e618L, 0x0001ed6aL, 0x0001f4e8L,
+  0x0001fc96L, 0x00020473L, 0x00020c84L, 0x000214c9L,
+  0x00021d44L, 0x000225f9L, 0x00022ee9L, 0x00023818L,
+  0x00024187L, 0x00024b3aL, 0x00025534L, 0x00025f78L,
+  0x00026a0aL, 0x000274edL, 0x00028026L, 0x00028bb8L,
+  0x000297a8L, 0x0002a3fbL, 0x0002b0b5L, 0x0002bdddL,
+  0x0002cb79L, 0x0002d98eL, 0x0002e823L, 0x0002f740L,
+  0x000306ecL, 0x00031730L, 0x00032816L, 0x000339a6L,
+  0x00034bebL, 0x00035ef2L, 0x000372c6L, 0x00038776L,
+  0x00039d11L, 0x0003b3a6L, 0x0003cb48L, 0x0003e40aL,
+  0x0003fe02L, 0x00041949L, 0x000435f7L, 0x0004542bL,
+  0x00047405L, 0x000495a9L, 0x0004b940L, 0x0004def6L,
+  0x00050700L, 0x00053196L, 0x00055ef9L, 0x00058f75L,
+  0x0005c35dL, 0x0005fb14L, 0x00063709L, 0x000677c0L,
+  0x0006bdd0L, 0x000709ecL, 0x00075ce6L, 0x0007b7bbL,
+  0x00081b98L, 0x000889e9L, 0x0009046eL, 0x00098d4dL,
+  0x000a2736L, 0x000ad593L, 0x000b9cc6L, 0x000c828aL,
+  0x000d8e82L, 0x000ecb1bL, 0x001046eaL, 0x00121703L,
+  0x00145b00L, 0x0017448dL, 0x001b2672L, 0x002095afL,
+  0x0028bc49L, 0x0036519aL, 0x00517bb6L, 0x00a2f8fdL,
+  0x46d3eab2L,
 };
 
 /**
@@ -376,7 +378,7 @@ static ClutterFixed tan_tbl [] =
  *
  * ClutterAngle is an integer such that 1024 represents
  * full circle.
- * 
+ *
  * Return value: #ClutterFixed sine value.
  *
  * Since: 0.3
@@ -393,10 +395,10 @@ clutter_tani (ClutterAngle angle)
 	sign  = 1 + ~sign;
 	angle = 1 + ~angle;
     }
-    
+
     /* reduce to <0,  pi) */
     angle &= 0x1ff;
-    
+
     /* reduce to first quadrant and sign */
     if (angle > 256)
     {
@@ -405,10 +407,10 @@ clutter_tani (ClutterAngle angle)
     }
 
     result = tan_tbl[angle];
-    
+
     if (sign < 0)
 	result = (1 + ~result);
-    
+
     return result;
 }
 
@@ -515,7 +517,7 @@ clutter_sqrtx (ClutterFixed x)
     unsigned int mask = 0x40000000;
     unsigned fract = x & 0x0000ffff;
     unsigned int d1, d2;
-    
+
     if (x <= 0)
 	return 0;
 
@@ -555,9 +557,9 @@ clutter_sqrtx (ClutterFixed x)
 	    bit -= 2;
 	}
 #endif
-	
+
 	/* now bit indicates the highest bit set; there are two scenarios
-	 * 
+	 *
 	 * 1) bit < 23:  Our number is smaller so we shift it left to maximase
 	 *               precision (< 16 really, since <16,23> never goes
 	 *               through here.
@@ -586,14 +588,14 @@ clutter_sqrtx (ClutterFixed x)
      */
     d1 = (unsigned)(fract) >> 12;
     d2 = ((unsigned)CFX_ONE >> 12) - d1;
-    
+
     x = ((v1*d2) + (v2*d1))/(CFX_ONE >> 12);
-    
+
     if (sh > 0)
 	x = x << sh;
     else if (sh < 0)
 	x = (x >> (1 + ~sh));
-    
+
     return x;
 }
 
@@ -602,7 +604,7 @@ clutter_sqrtx (ClutterFixed x)
  * @x: integer value
  *
  * Very fast fixed point implementation of square root for integers.
- * 
+ *
  * This function is about 10x faster than clib sqrt() on x86, and (this is
  * not a typo!) more than 800x faster on ARM without FPU. It's error is < 5%
  * for arguments < 132 and < 10% for arguments < 5591.
@@ -645,9 +647,9 @@ clutter_sqrti (gint number)
 	float f;
 	guint32 i;
     } flt, flt2;
-    
+
     flt.f = number;
-    
+
     x = CLUTTER_INT_TO_FIXED (number) / 2;
 
     /* The QIII initial estimate */
@@ -655,11 +657,11 @@ clutter_sqrti (gint number)
 
     /* Now, we convert the float to 10.22 fixed. We exploit the mechanism
      * described at http://www.d6.com/users/checker/pdfs/gdmfp.pdf.
-     * 
+     *
      * We want 22 bit fraction; a single precission float uses 23 bit
      * mantisa, so we only need to add 2^(23-22) (no need for the 1.5
      * multiplier as we are only dealing with positive numbers).
-     * 
+     *
      * Note: we have to use two separate variables here -- for some reason,
      * if we try to use just the flt variable, gcc on ARM optimises the whole
      * addition out, and it all goes pear shape, since without it, the bits
@@ -708,13 +710,13 @@ clutter_qmulx (ClutterFixed op1, ClutterFixed op2)
      * http://lists.mplayerhq.hu/pipermail/ffmpeg-devel/2006-August/014405.html
      */
     int res_low, res_hi;
-    
+
     __asm__ ("smull %0, %1, %2, %3     \n"
 	     "mov   %0, %0,     lsr %4 \n"
 	     "add   %1, %0, %1, lsl %5 \n"
 	     : "=r"(res_hi), "=r"(res_low)\
 	     : "r"(op1), "r"(op2), "i"(CFX_Q), "i"(32-CFX_Q));
-    
+
     return (ClutterFixed) res_low;
 #else
     long long r = (long long) op1 * (long long) op2;
@@ -730,7 +732,7 @@ clutter_qmulx (ClutterFixed op1, ClutterFixed op2)
  * The implementation of the log2x() and pow2x() exploits the well-documented
  * fact that the exponent part of IEEE floating number provides a good estimate
  * of log2 of that number, while the mantisa serves as a good error-correction.
- * 
+ *
  * The implemenation here uses a quadratic error correction as described by
  * Ian Stephenson at http://www.dctsystems.co.uk/Software/power.html.
  */
@@ -754,26 +756,26 @@ clutter_log2x (guint x)
   /* Note: we could easily have a version for ClutterFixed x, but the int
    *       precission is enough for the current purposes.
    */
-  union 
+  union
   {
     float        f;
     ClutterFixed i;
   } flt;
-  
+
   ClutterFixed magic = 0x58bb;
   ClutterFixed y;
-  
+
   /*
    * Convert x to float, then extract exponent.
    *
    * We want the result to be 16.16 fixed, so we shift (23-16) bits only
    */
   flt.f = x;
-  flt.i >>= 7; 
+  flt.i >>= 7;
   flt.i -= CLUTTER_INT_TO_FIXED (127);
 
   y = CLUTTER_FIXED_FRACTION (flt.i);
-  
+
   y = CFX_MUL ((y - CFX_MUL (y, y)), magic);
 
   return flt.i + y;
@@ -799,13 +801,13 @@ clutter_pow2x (ClutterFixed x)
    *       but the the range would be limited to x < 15, and the int precission
    *       is enough for the current purposes.
    */
-    
-  union 
+
+  union
   {
     float        f;
     guint32      i;
   } flt;
-  
+
   ClutterFixed magic = 0x56f7;
   ClutterFixed y;
 
@@ -835,7 +837,7 @@ clutter_pow2x (ClutterFixed x)
  * @x: base
  * @y: #ClutterFixed exponent
  *
- * Calculates x to y power. (Note, if x is a constant it will be faster to 
+ * Calculates x to y power. (Note, if x is a constant it will be faster to
  * calculate the power as clutter_pow2x (CLUTTER_FIXED_MUL(y, log2 (x)))
  *
  * Return value: x in y power.
@@ -861,7 +863,7 @@ const double _magic = 68719476736.0*1.5;
 #define CFX_NO_FAST_CONVERSIONS
 #endif
 
-/* 
+/*
  * clutter_double_to_fixed :
  * @value: value to be converted
  *
@@ -877,7 +879,7 @@ _clutter_double_to_fixed (double val)
 #ifdef CFX_NO_FAST_CONVERSIONS
     return (ClutterFixed)(val * (double)CFX_ONE);
 #else
-    union 
+    union
     {
 	double d;
 	unsigned int i[2];
@@ -906,7 +908,7 @@ _clutter_double_to_int (double val)
 #ifdef CFX_NO_FAST_CONVERSIONS
     return (gint)(val);
 #else
-    union 
+    union
     {
 	double d;
 	unsigned int i[2];
@@ -924,7 +926,7 @@ _clutter_double_to_uint (double val)
 #ifdef CFX_NO_FAST_CONVERSIONS
     return (guint)(val);
 #else
-    union 
+    union
     {
 	double d;
 	unsigned int i[2];

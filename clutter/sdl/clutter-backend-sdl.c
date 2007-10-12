@@ -1,4 +1,6 @@
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include "clutter-backend-sdl.h"
 #include "clutter-stage-sdl.h"

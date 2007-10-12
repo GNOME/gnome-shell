@@ -28,7 +28,9 @@
  * Author: Emmanuele Bassi <ebassi@openedhand.com>
  */
 
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include "clutter-layout.h"
 #include "clutter-main.h"
@@ -127,7 +129,7 @@ clutter_layout_get_type (void)
         clutter_layout_base_init,
         NULL,
       };
-      
+
       layout_type = g_type_register_static (G_TYPE_INTERFACE, "ClutterLayout",
                                             &layout_info, 0);
       g_type_interface_add_prerequisite (layout_type, CLUTTER_TYPE_ACTOR);
@@ -189,7 +191,7 @@ clutter_layout_width_for_height (ClutterLayout *layout,
       CLUTTER_LAYOUT_GET_IFACE (layout)->width_for_height (layout,
                                                            &u_width,
                                                            u_height);
-      
+
       if (width)
         *width = CLUTTER_UNITS_TO_INT (u_width);
     }
@@ -233,7 +235,7 @@ clutter_layout_height_for_width (ClutterLayout *layout,
       CLUTTER_LAYOUT_GET_IFACE (layout)->height_for_width (layout,
                                                            u_width,
                                                            &u_height);
-      
+
       if (height)
         *height = CLUTTER_UNITS_TO_INT (u_height);
     }
@@ -277,7 +279,7 @@ clutter_layout_natural_request (ClutterLayout *layout,
       CLUTTER_LAYOUT_GET_IFACE (layout)->natural_request (layout,
                                                           &u_width,
                                                           &u_height);
-    
+
       if (width)
         *width = CLUTTER_UNITS_TO_INT (u_width);
 
@@ -330,7 +332,7 @@ clutter_layout_tune_request (ClutterLayout *layout,
       g_warning ("Actor queried for tunable size size but actors of "
                  "type `%s' do not support tunable layouts.",
                  g_type_name (G_OBJECT_TYPE (layout)));
-      
+
       if (width)
         *width = -1;
 

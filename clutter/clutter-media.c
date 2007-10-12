@@ -30,7 +30,9 @@
  * #ClutterMedia is an interface  for controlling playback of media data.
  */
 
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include "clutter-media.h"
 #include "clutter-main.h"
@@ -60,7 +62,7 @@ clutter_media_get_type (void)
       {
 	sizeof (ClutterMediaInterface),
 	clutter_media_base_init,
-	NULL,			
+	NULL,
       };
 
       media_type = g_type_register_static (G_TYPE_INTERFACE, "ClutterMedia",
@@ -81,9 +83,9 @@ clutter_media_base_init (gpointer g_iface)
 
       /* props */
 
-      g_object_interface_install_property 
+      g_object_interface_install_property
 	(g_iface,
-	 g_param_spec_string 
+	 g_param_spec_string
 	 ("uri",
 	  "URI",
 	  "The loaded URI.",
@@ -92,7 +94,7 @@ clutter_media_base_init (gpointer g_iface)
 	  G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK |
 	  G_PARAM_STATIC_BLURB));
 
-      g_object_interface_install_property 
+      g_object_interface_install_property
 	(g_iface,
 	 g_param_spec_boolean
 	 ("playing",
@@ -103,7 +105,7 @@ clutter_media_base_init (gpointer g_iface)
 	  G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK |
 	  G_PARAM_STATIC_BLURB));
 
-      g_object_interface_install_property 
+      g_object_interface_install_property
 	(g_iface,
 	 g_param_spec_int
 	 ("position",
@@ -114,7 +116,7 @@ clutter_media_base_init (gpointer g_iface)
 	  G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK |
 	  G_PARAM_STATIC_BLURB));
 
-      g_object_interface_install_property 
+      g_object_interface_install_property
 	(g_iface,
 	 g_param_spec_double
 	 ("volume",
@@ -125,7 +127,7 @@ clutter_media_base_init (gpointer g_iface)
 	  G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK |
 	  G_PARAM_STATIC_BLURB));
 
-      g_object_interface_install_property 
+      g_object_interface_install_property
 	(g_iface,
 	 g_param_spec_boolean
 	 ("can-seek",
@@ -135,8 +137,8 @@ clutter_media_base_init (gpointer g_iface)
 	  G_PARAM_READABLE |
 	  G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK |
 	  G_PARAM_STATIC_BLURB));
-	 
-      g_object_interface_install_property 
+
+      g_object_interface_install_property
 	(g_iface,
 	 g_param_spec_int
 	 ("buffer-percent",
@@ -146,8 +148,8 @@ clutter_media_base_init (gpointer g_iface)
 	  G_PARAM_READABLE |
 	  G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK |
 	  G_PARAM_STATIC_BLURB));
-	 
-      g_object_interface_install_property 
+
+      g_object_interface_install_property
 	(g_iface,
 	 g_param_spec_int
 	 ("duration",
@@ -307,10 +309,10 @@ clutter_media_set_volume (ClutterMedia *media,
   CLUTTER_MEDIA_GET_INTERFACE (media)->set_volume (media, volume);
 }
 
-/** 
+/**
  * clutter_media_get_volume:
  * @media: A #ClutterMedia object
- * 
+ *
  * Retrieves the playback volume of @media.
  *
  * Return value: The playback volume between 0.0 and 1.0

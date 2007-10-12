@@ -29,11 +29,13 @@
  *
  * #ClutterRectangle is an Actor which draws simple filled rectangles.
  */
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include "clutter-rectangle.h"
 #include "clutter-main.h"
-#include "clutter-private.h"  
+#include "clutter-private.h"
 #include "clutter-debug.h"
 
 #include "cogl.h"
@@ -86,7 +88,7 @@ clutter_rectangle_paint (ClutterActor *self)
 
   clutter_actor_get_geometry (self, &geom);
 
-  /* parent paint call will have translated us into position so 
+  /* parent paint call will have translated us into position so
    * paint from 0, 0
    */
   if (priv->has_border)
@@ -103,17 +105,17 @@ clutter_rectangle_paint (ClutterActor *self)
 		      geom.width - priv->border_width,
 		      priv->border_width);
 
-      cogl_rectangle (geom.width - priv->border_width, 
+      cogl_rectangle (geom.width - priv->border_width,
 		      priv->border_width,
 		      priv->border_width,
 		      geom.height - priv->border_width);
 
       cogl_rectangle (0, geom.height - priv->border_width,
-		      geom.width - priv->border_width, 
+		      geom.width - priv->border_width,
 		      priv->border_width);
 
       cogl_rectangle (0, 0,
-		      priv->border_width, 
+		      priv->border_width,
 		      geom.height - priv->border_width);
 
       tmp_col.red   = priv->color.red;
@@ -143,17 +145,17 @@ clutter_rectangle_paint (ClutterActor *self)
 }
 
 static void
-clutter_rectangle_set_property (GObject      *object, 
+clutter_rectangle_set_property (GObject      *object,
 				guint         prop_id,
-				const GValue *value, 
+				const GValue *value,
 				GParamSpec   *pspec)
 {
   ClutterRectangle *rectangle = CLUTTER_RECTANGLE(object);
 
-  switch (prop_id) 
+  switch (prop_id)
     {
     case PROP_COLOR:
-      clutter_rectangle_set_color (rectangle, g_value_get_boxed (value)); 
+      clutter_rectangle_set_color (rectangle, g_value_get_boxed (value));
       break;
     case PROP_BORDER_COLOR:
       clutter_rectangle_set_border_color (rectangle,
@@ -173,15 +175,15 @@ clutter_rectangle_set_property (GObject      *object,
 }
 
 static void
-clutter_rectangle_get_property (GObject    *object, 
+clutter_rectangle_get_property (GObject    *object,
 				guint       prop_id,
-				GValue     *value, 
+				GValue     *value,
 				GParamSpec *pspec)
 {
   ClutterRectangle *rectangle = CLUTTER_RECTANGLE(object);
   ClutterColor      color;
 
-  switch (prop_id) 
+  switch (prop_id)
     {
     case PROP_COLOR:
       clutter_rectangle_get_color (rectangle, &color);
@@ -200,17 +202,17 @@ clutter_rectangle_get_property (GObject    *object,
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
-    } 
+    }
 }
 
 
-static void 
+static void
 clutter_rectangle_finalize (GObject *object)
 {
   G_OBJECT_CLASS (clutter_rectangle_parent_class)->finalize (object);
 }
 
-static void 
+static void
 clutter_rectangle_dispose (GObject *object)
 {
   G_OBJECT_CLASS (clutter_rectangle_parent_class)->dispose (object);
@@ -260,7 +262,7 @@ clutter_rectangle_class_init (ClutterRectangleClass *klass)
    * ClutterRectangle:border-width:
    *
    * The width of the border of the rectangle, in pixels.
-   * 
+   *
    * Since: 0.2
    */
   g_object_class_install_property (gobject_class,
@@ -353,7 +355,7 @@ clutter_rectangle_get_color (ClutterRectangle *rectangle,
 			     ClutterColor     *color)
 {
   ClutterRectanglePrivate *priv;
-  
+
   g_return_if_fail (CLUTTER_IS_RECTANGLE (rectangle));
   g_return_if_fail (color != NULL);
 
@@ -377,7 +379,7 @@ clutter_rectangle_set_color (ClutterRectangle   *rectangle,
 			     const ClutterColor *color)
 {
   ClutterRectanglePrivate *priv;
-  
+
   g_return_if_fail (CLUTTER_IS_RECTANGLE (rectangle));
   g_return_if_fail (color != NULL);
 

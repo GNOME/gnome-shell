@@ -30,7 +30,9 @@
  * Based on similar code by Tristan van Berkom
  */
 
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include "clutter-debug.h"
 #include "clutter-timeout-pool.h"
@@ -46,7 +48,7 @@ struct _ClutterTimeout
   guint id;
   ClutterTimeoutFlags flags;
   gint refcount;
-  
+
   guint interval;
 
   GSourceFunc func;
@@ -100,7 +102,7 @@ clutter_timeout_sort (gconstpointer a,
 
   if (TIMEOUT_READY (t_b))
     return 1;
-  
+
   /* Otherwise sort by expiration time */
   comparison = t_a->expiration.tv_sec - t_b->expiration.tv_sec;
   if (comparison < 0)
@@ -213,7 +215,7 @@ clutter_timeout_dispatch (GSource        *source,
 
       retval = TRUE;
     }
-  
+
   return retval;
 }
 
@@ -344,7 +346,7 @@ clutter_timeout_pool_dispatch (GSource     *source,
     clutter_timeout_pool_check (source);
 
   clutter_threads_enter ();
-  
+
   /* Iterate by moving the actual start of the list along so that it
    * can cope with adds and removes while a timeout is being dispatched
    */
@@ -377,7 +379,7 @@ clutter_timeout_pool_dispatch (GSource     *source,
 
       if (pool->dispatched_timeouts)
 	pool->dispatched_timeouts->prev = l;
-      
+
       l->prev = NULL;
       l->next = pool->dispatched_timeouts;
       pool->dispatched_timeouts = l;
@@ -499,7 +501,7 @@ clutter_timeout_pool_new (gint priority)
  * After each call to the timeout function, the time of the next
  * timeout is recalculated based on the current time and the given interval
  * (it does not try to 'catch up' time lost in delays).
- * 
+ *
  * Return value: the ID (greater than 0) of the timeout inside the pool.
  *   Use clutter_timeout_pool_remove() to stop the timeout.
  *

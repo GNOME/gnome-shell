@@ -1,4 +1,6 @@
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include "clutter-stage-egl.h"
 #include "clutter-eglx.h"
@@ -19,7 +21,7 @@
 
 G_DEFINE_TYPE (ClutterStageEGL, clutter_stage_egl, CLUTTER_TYPE_STAGE);
 
-/* This is currently an EGL on X implementation (eg for use with vincent) 
+/* This is currently an EGL on X implementation (eg for use with vincent)
  *
  *
  */
@@ -75,7 +77,7 @@ clutter_stage_egl_unrealize (ClutterActor *actor)
     eglDestroyContext (clutter_eglx_display(), stage_egl->egl_context);
   stage_egl->egl_context = NULL;
 
-  eglMakeCurrent (clutter_eglx_display(), 
+  eglMakeCurrent (clutter_eglx_display(),
 		  EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
 
   stage_egl->egl_context = None;
@@ -103,37 +105,37 @@ clutter_stage_egl_realize (ClutterActor *actor)
 			       EGL_GREEN_SIZE,     6,
 			       EGL_BLUE_SIZE,      5,
 			       EGL_NONE };
-      
-      status = eglGetConfigs (clutter_eglx_display(), 
-			      configs, 
-			      2, 
+
+      status = eglGetConfigs (clutter_eglx_display(),
+			      configs,
+			      2,
 			      &config_count);
-      
+
       if (status != EGL_TRUE)
-	g_warning ("eglGetConfigs");		
-      
-      status = eglChooseConfig (clutter_eglx_display(), 
-				cfg_attribs, 
-				configs, 
-				sizeof configs / sizeof configs[0], 
+	g_warning ("eglGetConfigs");
+
+      status = eglChooseConfig (clutter_eglx_display(),
+				cfg_attribs,
+				configs,
+				sizeof configs / sizeof configs[0],
 				&config_count);
 
       if (status != EGL_TRUE)
-	g_warning ("eglChooseConfig");		
-      
+	g_warning ("eglChooseConfig");
+
       if (stage_egl->xwin == None)
-	stage_egl->xwin 
+	stage_egl->xwin
 	  = XCreateSimpleWindow(clutter_eglx_get_default_xdisplay(),
 				clutter_eglx_get_default_root_window(),
 				0, 0,
-				stage_egl->xwin_width, 
+				stage_egl->xwin_width,
 				stage_egl->xwin_height,
-				0, 0, 
-				WhitePixel(clutter_eglx_get_default_xdisplay(), 
+				0, 0,
+				WhitePixel(clutter_eglx_get_default_xdisplay(),
 					   clutter_eglx_get_default_screen()));
 
-      XSelectInput(clutter_eglx_get_default_xdisplay(), 
-		   stage_egl->xwin, 
+      XSelectInput(clutter_eglx_get_default_xdisplay(),
+		   stage_egl->xwin,
 		   StructureNotifyMask
 		   |ExposureMask
 		   /* FIXME: we may want to eplicity enable MotionMask */
@@ -150,32 +152,32 @@ clutter_stage_egl_realize (ClutterActor *actor)
       if (stage_egl->egl_surface)
 	eglDestroySurface (clutter_eglx_display(), stage_egl->egl_surface);
 
-      stage_egl->egl_surface 
-	= eglCreateWindowSurface (clutter_eglx_display(), 
-				  configs[0], 
-				  (NativeWindowType)stage_egl->xwin, 
+      stage_egl->egl_surface
+	= eglCreateWindowSurface (clutter_eglx_display(),
+				  configs[0],
+				  (NativeWindowType)stage_egl->xwin,
 				  NULL);
 
       if (stage_egl->egl_surface == EGL_NO_SURFACE)
 	g_warning ("eglCreateWindowSurface");
-      
-      stage_egl->egl_context = eglCreateContext (clutter_eglx_display(), 
-						 configs[0], 
-						 EGL_NO_CONTEXT, 
+
+      stage_egl->egl_context = eglCreateContext (clutter_eglx_display(),
+						 configs[0],
+						 EGL_NO_CONTEXT,
 						 NULL);
 
       if (stage_egl->egl_context == EGL_NO_CONTEXT)
 	g_warning ("eglCreateContext");
-      
-      status = eglMakeCurrent (clutter_eglx_display(), 
-			       stage_egl->egl_surface, 
-			       stage_egl->egl_surface, 
+
+      status = eglMakeCurrent (clutter_eglx_display(),
+			       stage_egl->egl_surface,
+			       stage_egl->egl_surface,
 			       stage_egl->egl_context);
 
       if (status != EGL_TRUE)
-	g_warning ("eglMakeCurrent");		
+	g_warning ("eglMakeCurrent");
 
-      
+
     }
   else
     {
@@ -205,7 +207,7 @@ clutter_stage_egl_request_coords (ClutterActor        *self,
 
   /* FIXME: some how have X configure_notfiys call this ? */
   new_width  = ABS (CLUTTER_UNITS_TO_INT (box->x2 - box->x1));
-  new_height = ABS (CLUTTER_UNITS_TO_INT (box->y2 - box->y1)); 
+  new_height = ABS (CLUTTER_UNITS_TO_INT (box->y2 - box->y1));
 
   if (new_width != stage_egl->xwin_width ||
       new_height != stage_egl->xwin_height)
@@ -214,7 +216,7 @@ clutter_stage_egl_request_coords (ClutterActor        *self,
       stage_egl->xwin_height = new_height;
 
       if (stage_egl->xwin != None)
-	XResizeWindow (stage_egl->xdpy, 
+	XResizeWindow (stage_egl->xdpy,
 		       stage_egl->xwin,
 		       stage_egl->xwin_width,
 		       stage_egl->xwin_height);
@@ -298,7 +300,7 @@ clutter_stage_egl_set_cursor_visible (ClutterStage *stage,
 
       pix = XCreatePixmap (stage_egl->xdpy, stage_egl->xwin, 1, 1, 1);
       memset (&col, 0, sizeof (col));
-      curs = XCreatePixmapCursor (stage_egl->xdpy, 
+      curs = XCreatePixmapCursor (stage_egl->xdpy,
                                   pix, pix,
                                   &col, &col,
                                   1, 1);
@@ -347,14 +349,14 @@ clutter_stage_egl_class_init (ClutterStageEGLClass *klass)
   ClutterStageClass *stage_class = CLUTTER_STAGE_CLASS (klass);
 
   gobject_class->dispose = clutter_stage_egl_dispose;
-  
+
   actor_class->show = clutter_stage_egl_show;
   actor_class->hide = clutter_stage_egl_hide;
   actor_class->realize = clutter_stage_egl_realize;
   actor_class->unrealize = clutter_stage_egl_unrealize;
   actor_class->request_coords = clutter_stage_egl_request_coords;
   actor_class->query_coords = clutter_stage_egl_query_coords;
-  
+
   stage_class->set_fullscreen = clutter_stage_egl_set_fullscreen;
   stage_class->set_cursor_visible = clutter_stage_egl_set_cursor_visible;
   stage_class->set_offscreen = clutter_stage_egl_set_offscreen;

@@ -26,12 +26,14 @@
 /**
  * SECTION:clutter-stage
  * @short_description: Top level visual element to which actors are placed.
- * 
+ *
  * #ClutterStage is a top level 'window' on which child actors are placed
  * and manipulated.
  */
 
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include "clutter-backend.h"
 #include "clutter-stage.h"
@@ -68,7 +70,7 @@ struct _ClutterStagePrivate
 enum
 {
   PROP_0,
-  
+
   PROP_COLOR,
   PROP_FULLSCREEN,
   PROP_OFFSCREEN,
@@ -94,15 +96,15 @@ clutter_stage_paint (ClutterActor *self)
 {
   ClutterStagePrivate *priv = CLUTTER_STAGE (self)->priv;
 
-  cogl_paint_init (&priv->color); 
+  cogl_paint_init (&priv->color);
 
   CLUTTER_ACTOR_CLASS (clutter_stage_parent_class)->paint (self);
 }
 
 static void
-clutter_stage_set_property (GObject      *object, 
+clutter_stage_set_property (GObject      *object,
 			    guint         prop_id,
-			    const GValue *value, 
+			    const GValue *value,
 			    GParamSpec   *pspec)
 {
   ClutterStage        *stage;
@@ -113,7 +115,7 @@ clutter_stage_set_property (GObject      *object,
   actor = CLUTTER_ACTOR (stage);
   priv = stage->priv;
 
-  switch (prop_id) 
+  switch (prop_id)
     {
     case PROP_COLOR:
       clutter_stage_set_color (stage, g_value_get_boxed (value));
@@ -147,10 +149,10 @@ clutter_stage_set_property (GObject      *object,
         clutter_stage_hide_cursor (stage);
       break;
     case PROP_PERSPECTIVE:
-      clutter_stage_set_perspectivex (stage, g_value_get_boxed (value)); 
+      clutter_stage_set_perspectivex (stage, g_value_get_boxed (value));
       break;
     case PROP_TITLE:
-      clutter_stage_set_title (stage, g_value_get_string (value)); 
+      clutter_stage_set_title (stage, g_value_get_string (value));
       break;
     case PROP_USER_RESIZE:
       clutter_stage_set_user_resizable (stage, g_value_get_boolean (value));
@@ -162,9 +164,9 @@ clutter_stage_set_property (GObject      *object,
 }
 
 static void
-clutter_stage_get_property (GObject    *object, 
+clutter_stage_get_property (GObject    *object,
 			    guint       prop_id,
-			    GValue     *value, 
+			    GValue     *value,
 			    GParamSpec *pspec)
 {
   ClutterStage        *stage;
@@ -175,7 +177,7 @@ clutter_stage_get_property (GObject    *object,
   stage = CLUTTER_STAGE(object);
   priv = stage->priv;
 
-  switch (prop_id) 
+  switch (prop_id)
     {
     case PROP_COLOR:
       clutter_stage_get_color (stage, &color);
@@ -203,7 +205,7 @@ clutter_stage_get_property (GObject    *object,
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
-    } 
+    }
 }
 
 static void
@@ -287,7 +289,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
    *
    * Since: 0.4
    */
-  g_object_class_install_property 
+  g_object_class_install_property
     (gobject_class, PROP_TITLE,
      g_param_spec_string ("title",
 			  "Title",
@@ -366,7 +368,7 @@ clutter_stage_class_init (ClutterStageClass *klass)
 		  NULL, NULL,
 		  clutter_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
-  
+
   g_type_class_add_private (gobject_class, sizeof (ClutterStagePrivate));
 }
 
@@ -377,7 +379,7 @@ clutter_stage_init (ClutterStage *self)
 
   /* a stage is a top-level object */
   CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IS_TOPLEVEL);
-  
+
   self->priv = priv = CLUTTER_STAGE_GET_PRIVATE (self);
 
   priv->is_offscreen      = FALSE;
@@ -427,7 +429,7 @@ clutter_stage_get_default (void)
  * clutter_stage_set_color
  * @stage: A #ClutterStage
  * @color: A #ClutterColor
- * 
+ *
  * Set the stage color.
  **/
 void
@@ -438,7 +440,7 @@ clutter_stage_set_color (ClutterStage       *stage,
 
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
   g_return_if_fail (color != NULL);
-  
+
   priv = stage->priv;
   priv->color.red = color->red;
   priv->color.green = color->green;
@@ -447,7 +449,7 @@ clutter_stage_set_color (ClutterStage       *stage,
 
   if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (stage)))
     clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
-  
+
   g_object_notify (G_OBJECT (stage), "color");
 }
 
@@ -455,7 +457,7 @@ clutter_stage_set_color (ClutterStage       *stage,
  * clutter_stage_get_color
  * @stage: A #ClutterStage
  * @color: return location for a #ClutterColor
- * 
+ *
  * Retrieves the stage color.
  */
 void
@@ -463,12 +465,12 @@ clutter_stage_get_color (ClutterStage *stage,
 			 ClutterColor *color)
 {
   ClutterStagePrivate *priv;
-  
+
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
   g_return_if_fail (color != NULL);
 
   priv = stage->priv;
-  
+
   color->red = priv->color.red;
   color->green = priv->color.green;
   color->blue = priv->color.blue;
@@ -479,7 +481,7 @@ clutter_stage_get_color (ClutterStage *stage,
  * clutter_stage_set_perspectivex
  * @stage: A #ClutterStage
  * @perspective: A #ClutterPerspective
- * 
+ *
  * Set the stage perspective.
  **/
 void
@@ -503,7 +505,7 @@ clutter_stage_set_perspectivex (ClutterStage       *stage,
  * clutter_stage_get_perspectivex
  * @stage: A #ClutterStage
  * @perspective: return location for a #ClutterPerspective
- * 
+ *
  * Retrieves the stage perspective.
  */
 void
@@ -528,7 +530,7 @@ clutter_stage_get_perspectivex (ClutterStage       *stage,
  * @aspect: FIXME
  * @z_near: FIXME
  * @z_far: FIXME
- * 
+ *
  * Set the stage perspective.
  *
  * Since: 0.4
@@ -560,7 +562,7 @@ clutter_stage_set_perspective (ClutterStage *stage,
  * @aspect: FIXME
  * @z_near: FIXME
  * @z_far: FIXME
- * 
+ *
  * Retrieves the stage perspective.
  */
 void
@@ -608,9 +610,9 @@ clutter_stage_fullscreen (ClutterStage *stage)
   priv = stage->priv;
   if (!priv->is_fullscreen)
     {
-      /* Only set if backend implements. 
+      /* Only set if backend implements.
        * Also see clutter_stage_event() for setting priv->is_fullscreen
-       * on state change event. 
+       * on state change event.
       */
       if (CLUTTER_STAGE_GET_CLASS (stage)->set_fullscreen)
 	CLUTTER_STAGE_GET_CLASS (stage)->set_fullscreen (stage, TRUE);
@@ -844,11 +846,11 @@ clutter_stage_event (ClutterStage *stage,
 	{
 	  priv->is_fullscreen = FALSE;
 	  g_signal_emit (stage, stage_signals[UNFULLSCREEN], 0);
-          
+
           g_object_notify (G_OBJECT (stage), "fullscreen");
 	}
     }
-  
+
   if (event->stage_state.changed_mask & CLUTTER_STAGE_STATE_ACTIVATED)
     {
       if (event->stage_state.new_state & CLUTTER_STAGE_STATE_ACTIVATED)
@@ -864,12 +866,12 @@ clutter_stage_event (ClutterStage *stage,
  * clutter_stage_set_title
  * @stage: A #ClutterStage
  * @title: A utf8 string for the stage windows title.
- * 
+ *
  * Sets the stage title.
  *
  * Since 0.4
  **/
-void          
+void
 clutter_stage_set_title (ClutterStage       *stage,
 			 const gchar        *title)
 {
@@ -891,7 +893,7 @@ clutter_stage_set_title (ClutterStage       *stage,
 /**
  * clutter_stage_get_title
  * @stage: A #ClutterStage
- * 
+ *
  * Gets the stage title.
  *
  * Return value: pointer to the title string for the stage. The
@@ -920,7 +922,7 @@ on_key_focused_weak_notify (gpointer data,
   priv = stage->priv;
   priv->key_focused_actor = NULL;
 
-  /* focused actor has dissapeared - fall back to stage 
+  /* focused actor has dissapeared - fall back to stage
    * FIXME: need some kind of signal dance/block here.
   */
   clutter_stage_set_key_focus (stage, NULL);
@@ -946,7 +948,7 @@ clutter_stage_set_key_focus (ClutterStage *stage,
 			   on_key_focused_weak_notify,
 			   stage);
       g_signal_emit_by_name (priv->key_focused_actor, "focus-out");
-      
+
       priv->key_focused_actor = NULL;
     }
   else
@@ -994,7 +996,7 @@ ClutterPerspective *
 clutter_perspective_copy (const ClutterPerspective *perspective)
 {
   ClutterPerspective *result;
-  
+
   g_return_val_if_fail (perspective != NULL, NULL);
 
   result = g_slice_new (ClutterPerspective);
@@ -1023,9 +1025,9 @@ GType
 clutter_perspective_get_type (void)
 {
   static GType our_type = 0;
-  
+
   if (!our_type)
-    our_type = g_boxed_type_register_static 
+    our_type = g_boxed_type_register_static
                        ("ClutterPerspective",
 			(GBoxedCopyFunc) clutter_perspective_copy,
 			(GBoxedFreeFunc) clutter_perspective_free);

@@ -26,7 +26,9 @@
  * Author: Emmanuele Bassi <ebassi@openedhand.com>
  */
 
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include <stdarg.h>
 #include <glib-object.h>
@@ -70,7 +72,7 @@ clutter_container_base_init (gpointer g_iface)
   if (!initialised)
     {
       GType iface_type = G_TYPE_FROM_INTERFACE (g_iface);
-      
+
       initialised = TRUE;
 
       /**
@@ -440,7 +442,7 @@ clutter_container_raise_child (ClutterContainer *container,
                  g_type_name (G_OBJECT_TYPE (container)));
       return;
     }
-  
+
   CLUTTER_CONTAINER_GET_IFACE (container)->raise (container, actor, sibling);
 }
 
@@ -484,7 +486,7 @@ clutter_container_lower_child (ClutterContainer *container,
                  g_type_name (G_OBJECT_TYPE (container)));
       return;
     }
-  
+
   CLUTTER_CONTAINER_GET_IFACE (container)->raise (container, actor, sibling);
 }
 
@@ -508,7 +510,7 @@ clutter_container_sort_depth_order (ClutterContainer *container)
 /**
  * clutter_container_find_child_by_name:
  * @container: a #ClutterContainer
- * @child_name: the name of the requested child. 
+ * @child_name: the name of the requested child.
  *
  * Finds a child actor of a container by its name. Search recurses
  * into any child container.

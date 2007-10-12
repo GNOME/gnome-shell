@@ -30,7 +30,9 @@
  * #ClutterLabel is a #ClutterTexture that displays text.
  */
 
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include "clutter-label.h"
 #include "clutter-layout.h"

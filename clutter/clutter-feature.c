@@ -25,12 +25,14 @@
 
 /**
  * SECTION:clutter-feature
- * @short_description: Query GL features at runtime 
+ * @short_description: Query GL features at runtime
  *
- * Functions to query available GL features ay runtime 
+ * Functions to query available GL features ay runtime
  */
 
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include <stdlib.h>
 #include <string.h>
@@ -55,7 +57,7 @@ void
 _clutter_feature_init (void)
 {
   ClutterMainContext *context;
-  
+
   CLUTTER_NOTE (MISC, "checking features");
 
   if (!__features)
@@ -84,7 +86,7 @@ _clutter_feature_init (void)
  *
  * Checks whether @feature is available.  @feature can be a logical
  * OR of #ClutterFeatureFlags.
- * 
+ *
  * Return value: %TRUE if a feature is available
  *
  * Since: 0.1.1

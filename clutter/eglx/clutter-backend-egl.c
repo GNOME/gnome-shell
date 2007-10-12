@@ -1,4 +1,6 @@
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include "clutter-backend-egl.h"
 #include "clutter-stage-egl.h"
@@ -73,7 +75,7 @@ clutter_backend_egl_post_parse (ClutterBackend  *backend,
       backend_egl->xscreen_num = XScreenNumberOfScreen (backend_egl->xscreen);
       backend_egl->xwin_root = RootWindow (backend_egl->xdpy,
                                            backend_egl->xscreen_num);
-      
+
       backend_egl->display_name = g_strdup (clutter_display_name);
 
       backend_egl->edpy = eglGetDisplay((NativeDisplayType)backend_egl->xdpy);
@@ -82,8 +84,8 @@ clutter_backend_egl_post_parse (ClutterBackend  *backend,
             / (double) DisplayHeightMM (backend_egl->xdpy, backend_egl->xscreen_num));
       clutter_backend_set_resolution (backend, dpi);
 
-      status = eglInitialize(backend_egl->edpy, 
-			     &backend_egl->egl_version_major, 
+      status = eglInitialize(backend_egl->edpy,
+			     &backend_egl->egl_version_major,
 			     &backend_egl->egl_version_minor);
 
       if (status != EGL_TRUE)
@@ -97,7 +99,7 @@ clutter_backend_egl_post_parse (ClutterBackend  *backend,
     }
 
   g_free (clutter_display_name);
-  
+
   CLUTTER_NOTE (BACKEND, "X Display `%s' [%p] opened (screen:%d, root:%u)",
                 backend_egl->display_name,
                 backend_egl->xdpy,
@@ -105,7 +107,7 @@ clutter_backend_egl_post_parse (ClutterBackend  *backend,
                 (unsigned int) backend_egl->xwin_root);
 
   CLUTTER_NOTE (BACKEND, "EGL Reports version %i.%i",
-		backend_egl->egl_version_major, 
+		backend_egl->egl_version_major,
 		backend_egl->egl_version_minor);
 
   return TRUE;
@@ -262,7 +264,7 @@ clutter_backend_egl_constructor (GType                  gtype,
 
   g_warning ("Attempting to create a new backend object. This should "
              "never happen, so we return the singleton instance.");
-  
+
   return g_object_ref (backend_singleton);
 }
 
@@ -351,7 +353,7 @@ clutter_eglx_untrap_x_errors (void)
 
 /**
  * clutter_eglx_get_default_xdisplay:
- * 
+ *
  * Returns the default X Display
  *
  * Return value: A Display pointer
@@ -372,7 +374,7 @@ clutter_eglx_get_default_xdisplay (void)
 
 /**
  * clutter_eglx_get_default_screen:
- * 
+ *
  * FIXME
  *
  * Return value: FIXME
@@ -393,7 +395,7 @@ clutter_eglx_get_default_screen (void)
 
 /**
  * clutter_eglx_get_default_root_window:
- * 
+ *
  * FIXME
  *
  * Return value: FIXME
@@ -414,7 +416,7 @@ clutter_eglx_get_default_root_window (void)
 
 /**
  * clutter_egl_display
- * 
+ *
  * Gets the current EGLDisplay.
  *
  * Return value: an EGLDisplay

@@ -31,7 +31,9 @@
  * #ClutterCloneTexture allows the cloning of existing #ClutterTexture based
  * actors whilst saving underlying graphics resources.
  */
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include "clutter-clone-texture.h"
 #include "clutter-main.h"

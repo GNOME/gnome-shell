@@ -25,7 +25,9 @@
  * put it into a buffer or a file.
  */
 
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include <stdlib.h>
 #include <string.h>

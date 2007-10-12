@@ -1,3 +1,48 @@
+2007-10-12  Tomas Frydrych  <tf@o-hand.com>
+
+        * clutter/clutter-actor.c:
+        * clutter/clutter-backend.c:
+        * clutter/clutter-behaviour-depth.c:
+        * clutter/clutter-box.c:
+        * clutter/clutter-clone-texture.c:
+        * clutter/clutter-container.c:
+        * clutter/clutter-entry.c:
+        * clutter/clutter-feature.c:
+        * clutter/clutter-fixed.c:
+        * clutter/clutter-group.c:
+        * clutter/clutter-hbox.c:
+        * clutter/clutter-label.c:
+        * clutter/clutter-layout.c:
+        * clutter/clutter-media.c:
+        * clutter/clutter-rectangle.c:
+        * clutter/clutter-score.c:
+        * clutter/clutter-script.c:
+        * clutter/clutter-stage.c:
+        * clutter/clutter-texture.c:
+        * clutter/clutter-timeline.c:
+        * clutter/clutter-timeout-pool.c:
+        * clutter/clutter-vbox.c:
+        * clutter/cogl/gl/cogl.c:
+        * clutter/cogl/gles/cogl.c:
+        * clutter/eglnative/clutter-backend-egl.c:
+        * clutter/eglnative/clutter-event-egl.c:
+        * clutter/eglnative/clutter-stage-egl.c:
+        * clutter/eglx/clutter-backend-egl.c:
+        * clutter/eglx/clutter-event-egl.c:
+        * clutter/eglx/clutter-stage-egl.c:
+        * clutter/glx/clutter-event-glx.c:
+        * clutter/json/json-array.c:
+        * clutter/json/json-generator.c:
+        * clutter/json/json-node.c:
+        * clutter/json/json-object.c:
+        * clutter/json/json-parser.c:
+        * clutter/sdl/clutter-backend-sdl.c:
+        * clutter/sdl/clutter-event-sdl.c:
+        * clutter/sdl/clutter-stage-sdl.c:
+
+	Fixedup config.h inclusion (must always be bracketed with #ifdef
+	HAVE_CONFIG_H).
+	
 2007-10-11  Tomas Frydrych  <tf@o-hand.com>
 
 	* clutter/clutter-entry.c:

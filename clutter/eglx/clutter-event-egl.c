@@ -19,7 +19,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include "clutter-stage-egl.h"
 #include "clutter-backend-egl.h"
@@ -92,7 +94,7 @@ _clutter_events_init (ClutterBackend *backend)
   ClutterEventSource *event_source;
   ClutterBackendEGL *backend_egl = CLUTTER_BACKEND_EGL (backend);
   int connection_number;
-  
+
   connection_number = ConnectionNumber (backend_egl->xdpy);
   CLUTTER_NOTE (EVENT, "Connection number: %d", connection_number);
 
@@ -161,7 +163,7 @@ translate_key_event (ClutterBackend *backend,
   event->key.time = xevent->xkey.time;
   event->key.modifier_state = xevent->xkey.state; /* FIXME: handle modifiers */
   event->key.hardware_keycode = xevent->xkey.keycode;
-  event->key.keyval = XKeycodeToKeysym (xevent->xkey.display, 
+  event->key.keyval = XKeycodeToKeysym (xevent->xkey.display,
                                         xevent->xkey.keycode,
                                         0); /* FIXME: index with modifiers */
 }
@@ -193,9 +195,9 @@ clutter_event_translate (ClutterBackend *backend,
         XEvent foo_xev;
 
         /* Cheap compress */
-        while (XCheckTypedWindowEvent (backend_egl->xdpy, 
+        while (XCheckTypedWindowEvent (backend_egl->xdpy,
                                        xevent->xexpose.window,
-                                       Expose, 
+                                       Expose,
                                        &foo_xev));
 
         /* FIXME: need to make stage an 'actor' so can que
@@ -231,7 +233,7 @@ clutter_event_translate (ClutterBackend *backend,
             event->scroll.direction = CLUTTER_SCROLL_LEFT;
           else
             event->scroll.direction = CLUTTER_SCROLL_RIGHT;
-          
+
           event->scroll.time = xevent->xbutton.time;
           event->scroll.x = xevent->xbutton.x;
           event->scroll.y = xevent->xbutton.y;
@@ -348,7 +350,7 @@ clutter_event_check (GSource *source)
     retval = (clutter_events_pending () || clutter_check_xpending (backend));
   else
     retval = FALSE;
-  
+
   clutter_threads_leave ();
 
   return retval;

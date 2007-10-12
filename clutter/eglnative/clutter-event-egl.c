@@ -19,7 +19,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include "clutter-stage-egl.h"
 #include "clutter-backend-egl.h"
@@ -98,9 +100,9 @@ _clutter_events_init (ClutterBackend *backend)
 
       CLUTTER_NOTE (EVENT, "Opened '%s'", g_getenv("TSLIB_TSDEVICE"));
 
-      if (ts_config(event_source->ts_device)) 
+      if (ts_config(event_source->ts_device))
 	{
-	  g_warning ("ts_config() failed");  
+	  g_warning ("ts_config() failed");
 	  ts_close (event_source->ts_device);
 	  return;
 	}
@@ -116,9 +118,9 @@ _clutter_events_init (ClutterBackend *backend)
       g_source_attach (source, NULL);
     }
   else
-    g_warning ("ts_open() failed opening %s'",  
-	       g_getenv("TSLIB_TSDEVICE") ? 
-  	         g_getenv("TSLIB_TSDEVICE") : "None, TSLIB_TSDEVICE not set"); 
+    g_warning ("ts_open() failed opening %s'",
+	       g_getenv("TSLIB_TSDEVICE") ?
+  	         g_getenv("TSLIB_TSDEVICE") : "None, TSLIB_TSDEVICE not set");
 #endif
 }
 
@@ -131,7 +133,7 @@ _clutter_events_uninit (ClutterBackend *backend)
     {
       CLUTTER_NOTE (EVENT, "Destroying the event source");
 
-      ClutterEventSource *event_source = 
+      ClutterEventSource *event_source =
                 (ClutterEventSource *) backend_egl->event_source;
 
 #ifdef HAVE_TSLIB
@@ -200,13 +202,13 @@ clutter_event_dispatch (GSource     *source,
 
 #ifdef HAVE_TSLIB
   /* FIXME while would be better here but need to deal with lockups */
-  if ((!clutter_events_pending()) && 
+  if ((!clutter_events_pending()) &&
         (ts_read(event_source->ts_device, &tsevent, 1) == 1))
     {
-      /* Avoid sending too many events which are just pressure changes. 
-       * We dont current handle pressure in events (FIXME) and thus 
+      /* Avoid sending too many events which are just pressure changes.
+       * We dont current handle pressure in events (FIXME) and thus
        * event_button_generate gets confused generating lots of double
-       * and triple clicks.	 
+       * and triple clicks.
       */
       if (tsevent.pressure && last_x == tsevent.x && last_y == tsevent.y)
         goto out;

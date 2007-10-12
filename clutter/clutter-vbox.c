@@ -1,4 +1,6 @@
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include "clutter-vbox.h"
 
@@ -52,7 +54,7 @@ clutter_vbox_query_coords (ClutterActor    *actor,
       coords->y2 = box->allocation.y2;
       return;
     }
-  
+
   clutter_box_get_margin (box, &box_margin);
 
   width = CLUTTER_UNITS_TO_INT (box_margin.left);
@@ -61,7 +63,7 @@ clutter_vbox_query_coords (ClutterActor    *actor,
   for (l = box->children; l; l = l->next)
     {
       ClutterBoxChild *child = l->data;
-      
+
       if (CLUTTER_ACTOR_IS_VISIBLE (child->actor))
         {
           guint child_width, child_height;
@@ -83,9 +85,9 @@ clutter_vbox_query_coords (ClutterActor    *actor,
   width += CLUTTER_UNITS_TO_INT (box_margin.right);
   height += CLUTTER_UNITS_TO_INT (box_margin.bottom);
 
-  box->allocation.x2 = coords->x2 = 
+  box->allocation.x2 = coords->x2 =
         coords->x1 + CLUTTER_UNITS_FROM_INT (width);
-  box->allocation.y2 = coords->y2 = 
+  box->allocation.y2 = coords->y2 =
         coords->y1 + CLUTTER_UNITS_FROM_INT (height);
 }
 
@@ -116,7 +118,7 @@ clutter_vbox_pack_child (ClutterBox      *box,
   clutter_actor_get_geometry (child->actor, &child_geom);
 
   clutter_box_get_margin (box, &box_margin);
-  
+
   if (child->pack_type == CLUTTER_PACK_START)
     {
       child_geom.x = CLUTTER_UNITS_TO_INT (child->padding.left);

@@ -19,7 +19,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
 
 #include "clutter-stage-sdl.h"
 #include "clutter-backend-sdl.h"
@@ -77,7 +79,7 @@ _clutter_events_init (ClutterBackend *backend)
   GSource *source;
   ClutterEventSource *event_source;
   ClutterBackendSDL *backend_sdl = CLUTTER_BACKEND_SDL (backend);
-  
+
   source = backend_sdl->event_source = clutter_event_source_new (backend);
   event_source = (ClutterEventSource *) source;
   g_source_set_priority (source, CLUTTER_PRIORITY_EVENTS);
@@ -118,10 +120,10 @@ clutter_event_prepare (GSource *source,
 
   num_events = SDL_PeepEvents(&events, 1, SDL_PEEKEVENT, SDL_ALLEVENTS);
 
-  if (num_events == 1) 
+  if (num_events == 1)
     {
       clutter_threads_leave ();
-      
+
       *timeout = 0;
       return TRUE;
     }
@@ -170,15 +172,15 @@ key_event_translate (ClutterEvent   *event,
 
   /* FIXME: This is just a quick hack to make SDL keys roughly work.
    * Fixing it properly is left as a exercise to someone who enjoys
-   * battleing the SDL API. 
+   * battleing the SDL API.
    *
    * We probably need to use sdl_event->key.keysym.unicode to do lookups
    * and I have no idea how to get shifted keysyms. It looks quite easy
    * if you drop into xlib but that then avoids the whole point of using
-   * SDL in the first place (More portability than just GLX) 
+   * SDL in the first place (More portability than just GLX)
   */
 
-  switch(sdl_event->key.keysym.sym) 
+  switch(sdl_event->key.keysym.sym)
     {
     case SDLK_UP:        event->key.keyval = CLUTTER_Up; break;
     case SDLK_DOWN:      event->key.keyval = CLUTTER_Down; break;
@@ -188,7 +190,7 @@ key_event_translate (ClutterEvent   *event,
     case SDLK_END:       event->key.keyval = CLUTTER_End; break;
     case SDLK_PAGEUP:    event->key.keyval = CLUTTER_Page_Up; break;
     case SDLK_PAGEDOWN:  event->key.keyval = CLUTTER_Page_Down; break;
-    case SDLK_BACKSPACE: event->key.keyval = CLUTTER_BackSpace; break;     
+    case SDLK_BACKSPACE: event->key.keyval = CLUTTER_BackSpace; break;
     case SDLK_DELETE:    event->key.keyval = CLUTTER_Delete; break;
     default:
       event->key.keyval = sdl_event->key.keysym.sym;
@@ -197,11 +199,11 @@ key_event_translate (ClutterEvent   *event,
   event->key.hardware_keycode = sdl_event->key.keysym.scancode;
 
   if (sdl_event->key.keysym.mod & KMOD_CTRL)
-    event->key.modifier_state 
+    event->key.modifier_state
       = event->key.modifier_state & CLUTTER_CONTROL_MASK;
 
   if (sdl_event->key.keysym.mod & KMOD_SHIFT)
-    event->key.modifier_state 
+    event->key.modifier_state
       = event->key.modifier_state & CLUTTER_SHIFT_MASK;
 }
 
@@ -214,7 +216,7 @@ event_translate (ClutterBackend *backend,
 
   res = TRUE;
 
-  switch (sdl_event->type) 
+  switch (sdl_event->type)
     {
     case SDL_KEYDOWN:
       event->type = CLUTTER_KEY_PRESS;
@@ -243,7 +245,7 @@ event_translate (ClutterBackend *backend,
             event->scroll.direction = CLUTTER_SCROLL_LEFT;
           else
             event->scroll.direction = CLUTTER_SCROLL_RIGHT;
-          
+
           event->scroll.time = 0;
           event->scroll.x = sdl_event->button.x;
           event->scroll.y = sdl_event->button.y;
@@ -315,13 +317,13 @@ clutter_event_dispatch (GSource     *source,
     {
       /* FIXME: essentially translate events and push them onto the queue
        *        below will then pop them out via _clutter_events_queue.
-       */ 
+       */
       if (sdl_event.type == SDL_QUIT)
 	{
 	  SDL_Quit();
 	  exit(0);
 	}
-      else 
+      else
 	{
 	  event = clutter_event_new (CLUTTER_NOTHING);
 

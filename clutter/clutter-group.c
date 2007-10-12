@@ -29,7 +29,7 @@
  * actors.
  *
  * A #ClutterGroup is an Actor which contains multiple child actors positioned
- * relative to the #ClutterGroup position. Other operations such as scaling, 
+ * relative to the #ClutterGroup position. Other operations such as scaling,
  * rotating and clipping of the group will child actors.
  *
  * A #ClutterGroup's size is defined by the size and position of it
@@ -37,7 +37,10 @@
  * ignored.
  */
 
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
+
 #include <stdarg.h>
 
 #include "clutter-group.h"
@@ -101,18 +104,18 @@ clutter_group_paint (ClutterActor *actor)
     }
 
   cogl_pop_matrix();
-  
+
   CLUTTER_NOTE (PAINT, "ClutterGroup paint leave");
 }
 
-static void                  
-clutter_group_pick (ClutterActor       *actor, 
+static void
+clutter_group_pick (ClutterActor       *actor,
 		    const ClutterColor *color)
 {
-  /* Just forward to the paint call which in turn will trigger 
+  /* Just forward to the paint call which in turn will trigger
    * the child actors also getting 'picked'. To make ourselves
    * 'sensitive' to clicks we could also paint a bounding rect
-   * but this is not currently done.  
+   * but this is not currently done.
   */
   clutter_group_paint (actor);
 }
@@ -127,7 +130,7 @@ clutter_group_request_coords (ClutterActor        *self,
   clutter_actor_query_coords (self, &cbox);
 
   /* Only positioning works.
-   * Sizing requests fail, use scale() instead 
+   * Sizing requests fail, use scale() instead
   */
   box->x2 = box->x1 + (cbox.x2 - cbox.x1);
   box->y2 = box->y1 + (cbox.y2 - cbox.y1);
@@ -147,10 +150,10 @@ clutter_group_query_coords (ClutterActor        *self,
   /* FIXME: Cache these values */
   box->x2 = box->x1;
   box->y2 = box->y1;
-  
+
   if (child_item)
     {
-      do 
+      do
 	{
 	  ClutterActor *child = CLUTTER_ACTOR(child_item->data);
 
@@ -158,9 +161,9 @@ clutter_group_query_coords (ClutterActor        *self,
 	  /* if (CLUTTER_ACTOR_IS_VISIBLE (child)) */
 	    {
 	      ClutterActorBox cbox;
-	      
+
 	      clutter_actor_query_coords (child, &cbox);
-	      
+
 	      /* Ignore any children with offscreen ( negaive )
                * positions.
 	       *
@@ -179,7 +182,7 @@ clutter_group_query_coords (ClutterActor        *self,
     }
 }
 
-static void 
+static void
 clutter_group_dispose (GObject *object)
 {
   ClutterGroup *self = CLUTTER_GROUP (object);
@@ -190,7 +193,7 @@ clutter_group_dispose (GObject *object)
       g_list_foreach (priv->children, (GFunc) clutter_actor_destroy, NULL);
       priv->children = NULL;
     }
-  
+
   G_OBJECT_CLASS (clutter_group_parent_class)->dispose (object);
 }
 
@@ -220,7 +223,7 @@ clutter_group_real_add (ClutterContainer *container,
   ClutterGroupPrivate *priv = group->priv;
 
   g_object_ref (actor);
-  
+
   /* the old ClutterGroup::add signal was emitted before the
    * actor was added to the group, so that the class handler
    * would actually add it. we need to emit the ::add signal
@@ -232,8 +235,8 @@ clutter_group_real_add (ClutterContainer *container,
   clutter_actor_set_parent (actor, CLUTTER_ACTOR (group));
 
   g_signal_emit_by_name (container, "actor-added", actor);
-  
-  clutter_group_sort_depth_order (group); 
+
+  clutter_group_sort_depth_order (group);
 
   g_object_unref (actor);
 }
@@ -246,7 +249,7 @@ clutter_group_real_remove (ClutterContainer *container,
   ClutterGroupPrivate *priv = group->priv;
 
   g_object_ref (actor);
-  
+
   /* the old ClutterGroup::remove signal was emitted before the
    * actor was removed from the group. see the comment in
    * clutter_group_real_add() above for why we need to emit ::remove
@@ -262,7 +265,7 @@ clutter_group_real_remove (ClutterContainer *container,
    * are holding a reference on it, it's still valid
    */
   g_signal_emit_by_name (container, "actor-removed", actor);
-  
+
   if (CLUTTER_ACTOR_IS_VISIBLE (CLUTTER_ACTOR (group)))
     clutter_actor_queue_redraw (CLUTTER_ACTOR (group));
 
@@ -325,7 +328,7 @@ clutter_group_real_raise (ClutterContainer *container,
   ClutterGroup *self = CLUTTER_GROUP (container);
   ClutterGroupPrivate *priv = self->priv;
 
-  priv->children = g_list_remove (priv->children, actor); 
+  priv->children = g_list_remove (priv->children, actor);
 
   /* Raise at the top */
   if (!sibling)
@@ -336,7 +339,7 @@ clutter_group_real_raise (ClutterContainer *container,
 
       if (last_item)
 	sibling = last_item->data;
-      
+
       priv->children = g_list_append (priv->children, actor);
     }
   else
@@ -369,7 +372,7 @@ clutter_group_real_lower (ClutterContainer *container,
   ClutterGroup *self = CLUTTER_GROUP (container);
   ClutterGroupPrivate *priv = self->priv;
 
-  priv->children = g_list_remove (priv->children, actor); 
+  priv->children = g_list_remove (priv->children, actor);
 
   /* Push to bottom */
   if (!sibling)
@@ -400,7 +403,7 @@ clutter_group_real_lower (ClutterContainer *container,
     }
 }
 
-static gint 
+static gint
 sort_z_order (gconstpointer a,
               gconstpointer b)
 {
@@ -409,7 +412,7 @@ sort_z_order (gconstpointer a,
   depth_a = clutter_actor_get_depth (CLUTTER_ACTOR(a));
   depth_b = clutter_actor_get_depth (CLUTTER_ACTOR(b));
 
-  if (depth_a == depth_b) 
+  if (depth_a == depth_b)
     return 0;
 
   if (depth_a > depth_b)
@@ -450,7 +453,7 @@ clutter_group_class_init (ClutterGroupClass *klass)
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   object_class->dispose = clutter_group_dispose;
-  
+
   actor_class->paint           = clutter_group_paint;
   actor_class->pick            = clutter_group_pick;
   actor_class->show_all        = clutter_group_real_show_all;
@@ -524,7 +527,7 @@ clutter_group_new (void)
 /**
  * clutter_group_add:
  * @group: A #ClutterGroup
- * @actor: A #ClutterActor 
+ * @actor: A #ClutterActor
  *
  * Adds a new child #ClutterActor to the #ClutterGroup.
  *
@@ -585,7 +588,7 @@ clutter_group_add_many (ClutterGroup *group,
 /**
  * clutter_group_remove
  * @group: A #ClutterGroup
- * @actor: A #ClutterActor 
+ * @actor: A #ClutterActor
  *
  * Removes a child #ClutterActor from the parent #ClutterGroup.
  *
@@ -625,9 +628,9 @@ clutter_group_remove_all (ClutterGroup *group)
 /**
  * clutter_group_get_children:
  * @self: A #ClutterGroup
- * 
+ *
  * Get a list containing all actors contained in the group.
- * 
+ *
  * Return value: A list of #ClutterActors. You  should free the returned
  *   list using g_list_free() when finished using it.
  *
@@ -645,9 +648,9 @@ clutter_group_get_children (ClutterGroup *self)
  * @self: A #ClutterGroup
  *
  * Gets the number of actors held in the group.
- * 
+ *
  * Return value: The number of child actors held in the group.
- * 
+ *
  * Since: 0.2
  **/
 gint
@@ -661,8 +664,8 @@ clutter_group_get_n_children (ClutterGroup *self)
 /**
  * clutter_group_get_nth_child:
  * @self: A #ClutterGroup
- * @index_: the position of the requested actor. 
- * 
+ * @index_: the position of the requested actor.
+ *
  * Gets a groups child held at @index_ in stack.
  *
  * Return value: A Clutter actor or NULL if @index_ is invalid.
@@ -711,7 +714,7 @@ clutter_group_find_child_by_id (ClutterGroup *self,
  */
 void
 clutter_group_raise (ClutterGroup *self,
-		     ClutterActor *actor, 
+		     ClutterActor *actor,
 		     ClutterActor *sibling)
 {
   g_return_if_fail (CLUTTER_IS_GROUP (self));
@@ -736,7 +739,7 @@ clutter_group_raise (ClutterGroup *self,
  */
 void
 clutter_group_lower (ClutterGroup *self,
-		     ClutterActor *actor, 
+		     ClutterActor *actor,
 		     ClutterActor *sibling)
 {
   g_return_if_fail (CLUTTER_IS_GROUP (self));
@@ -753,8 +756,8 @@ clutter_group_lower (ClutterGroup *self,
  * clutter_group_sort_depth_order:
  * @self: A #ClutterGroup
  *
- * Sorts a #ClutterGroup's children by there depth value.  
- * This function should not be used by applications. 
+ * Sorts a #ClutterGroup's children by there depth value.
+ * This function should not be used by applications.
  *
  * Deprecated: 0.6: Use clutter_container_sort_depth_order() instead.
  */
