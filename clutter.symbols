@@ -370,7 +370,6 @@ clutter_media_get_volume
 clutter_media_get_can_seek       
 clutter_media_get_buffer_percent 
 clutter_media_get_duration       
-clutter_context_get_default 
 clutter_rectangle_get_type
 clutter_rectangle_new              
 clutter_rectangle_new_with_color   
@@ -486,11 +485,6 @@ clutter_score_is_playing
 clutter_score_start 
 clutter_score_stop 
 clutter_score_remove_all 
-clutter_marshal_VOID__INT64_INT64_FLOAT_BOOLEAN
-clutter_marshal_VOID__STRING_BOOLEAN_BOOLEAN
-clutter_marshal_VOID__INT_INT
-clutter_marshal_VOID__OBJECT_POINTER
-clutter_marshal_BOOLEAN__BOXED
 clutter_actor_flags_get_type
 clutter_pack_type_get_type
 clutter_modifier_type_get_type
@@ -507,9 +501,6 @@ clutter_texture_flags_get_type
 clutter_gravity_get_type
 clutter_rotate_axis_get_type
 clutter_rotate_direction_get_type
-clutter_script_construct_object  
-clutter_script_enum_from_string
-clutter_script_flags_from_string
 clutter_script_error_quark
 clutter_script_get_type
 clutter_script_new            
