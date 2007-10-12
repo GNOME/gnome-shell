@@ -1,3 +1,9 @@
+2007-10-12  Tomas Frydrych  <tf@o-hand.com>
+
+	* tests/test-actors.c:
+	When using MSVC, define _USE_MATH_DEFINES before including
+	math.h, otherwise constants like M_PI will not be defined.
+
 2007-10-12  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-script.c (construct_timline),
