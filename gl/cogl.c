@@ -23,7 +23,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#ifdef HAVE_CONFIG_H
 #include "config.h"
+#endif
+
 #include "cogl.h"
 
 #include <GL/gl.h>
@@ -89,7 +92,7 @@ CoglFuncPtr
 cogl_get_proc_address (const gchar* name)
 {
   /* Sucks to ifdef here but not other option..? would be nice to
-   * split the code up for more reuse (once more backends use this 
+   * split the code up for more reuse (once more backends use this
    */
 #ifdef HAVE_CLUTTER_GLX
   static GLXGetProcAddressProc get_proc_func = NULL;
@@ -128,7 +131,7 @@ cogl_get_proc_address (const gchar* name)
   return NULL;
 }
 
-gboolean 
+gboolean
 cogl_check_extension (const gchar *name, const gchar *ext)
 {
   gchar *end;
@@ -141,7 +144,7 @@ cogl_check_extension (const gchar *name, const gchar *ext)
 
   name_len = strlen(name);
 
-  while (ext < end) 
+  while (ext < end)
     {
       n = strcspn(ext, " ");
 
@@ -162,7 +165,7 @@ cogl_paint_init (const ClutterColor *color)
 		    0.0) );
 
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-  glDisable (GL_LIGHTING); 
+  glDisable (GL_LIGHTING);
   glDisable (GL_DEPTH_TEST);
 
   cogl_enable (CGL_ENABLE_BLEND);
@@ -284,7 +287,7 @@ cogl_enable (gulong flags)
 void
 cogl_color (const ClutterColor *color)
 {
-  glColor4ub (color->red, color->green, color->blue, color->alpha);  
+  glColor4ub (color->red, color->green, color->blue, color->alpha);
 }
 
 void
@@ -300,11 +303,11 @@ cogl_clip_set (const ClutterGeometry *clip)
 
   GE( glColor3f (1.0f, 1.0f, 1.0f) );
 
-  GE( glRecti (clip->x, 
+  GE( glRecti (clip->x,
 	       clip->y,
 	       clip->x + clip->width,
 	       clip->y + clip->height) );
-  
+
   GE( glStencilFunc (GL_EQUAL, 0x1, 0x1) );
 ; GE(  glStencilOp (GL_KEEP, GL_KEEP, GL_KEEP) );
 }
@@ -319,7 +322,7 @@ gboolean
 cogl_texture_can_size (COGLenum       target,
 		       COGLenum pixel_format,
 		       COGLenum pixel_type,
-		       int    width, 
+		       int    width,
 		       int    height)
 {
 #ifdef GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB
@@ -349,8 +352,8 @@ cogl_texture_can_size (COGLenum       target,
 
 void
 cogl_texture_quad (gint   x1,
-		   gint   x2, 
-		   gint   y1, 
+		   gint   x2,
+		   gint   y1,
 		   gint   y2,
 		   ClutterFixed tx1,
 		   ClutterFixed ty1,
@@ -369,7 +372,7 @@ cogl_texture_quad (gint   x1,
   glTexCoord2f (txf1, tyf2); glVertex2i   (x1, y2);
   glTexCoord2f (txf1, tyf1); glVertex2i   (x1, y1);
   glTexCoord2f (txf2, tyf1); glVertex2i   (x2, y1);
-  glEnd ();	
+  glEnd ();
 }
 
 void
@@ -391,7 +394,7 @@ cogl_texture_bind (COGLenum target, guint texture)
 }
 
 void
-cogl_texture_set_alignment (COGLenum target, 
+cogl_texture_set_alignment (COGLenum target,
 			    guint    alignment,
 			    guint    row_length)
 {
@@ -400,7 +403,7 @@ cogl_texture_set_alignment (COGLenum target,
 }
 
 void
-cogl_texture_set_filters (COGLenum target, 
+cogl_texture_set_filters (COGLenum target,
 			  COGLenum min_filter,
 			  COGLenum max_filter)
 {
@@ -409,7 +412,7 @@ cogl_texture_set_filters (COGLenum target,
 }
 
 void
-cogl_texture_set_wrap (COGLenum target, 
+cogl_texture_set_wrap (COGLenum target,
 		       COGLenum wrap_s,
 		       COGLenum wrap_t)
 {
@@ -420,8 +423,8 @@ cogl_texture_set_wrap (COGLenum target,
 void
 cogl_texture_image_2d (COGLenum      target,
 		       COGLint       internal_format,
-		       gint          width, 
-		       gint          height, 
+		       gint          width,
+		       gint          height,
 		       COGLenum      format,
 		       COGLenum      type,
 		       const guchar* pixels)
@@ -441,9 +444,9 @@ void
 cogl_texture_sub_image_2d (COGLenum      target,
 			   gint          xoff,
 			   gint          yoff,
-			   gint          width, 
+			   gint          width,
 			   gint          height,
-			   COGLenum      format, 
+			   COGLenum      format,
 			   COGLenum      type,
 			   const guchar* pixels)
 {
@@ -482,7 +485,7 @@ cogl_trapezoid (gint y1,
 }
 
 void
-cogl_alpha_func (COGLenum     func, 
+cogl_alpha_func (COGLenum     func,
 		 ClutterFixed ref)
 {
   GE( glAlphaFunc (func, CLUTTER_FIXED_TO_FLOAT(ref)) );
@@ -499,12 +502,12 @@ cogl_perspective (ClutterFixed fovy,
   ClutterFixed fovy_rad_half = CLUTTER_FIXED_MUL (fovy, CFX_PI) / 360;
 
   GLfloat m[16];
-  
+
   memset (&m[0], 0, sizeof (m));
 
   /*
    * Based on the original algorithm in perspective():
-   * 
+   *
    * 1) xmin = -xmax => xmax + xmin == 0 && xmax - xmin == 2 * xmax
    * same true for y, hence: a == 0 && b == 0;
    *
@@ -540,14 +543,14 @@ cogl_setup_viewport (guint        width,
 		     ClutterFixed z_far)
 {
   GLfloat z_camera;
-  
+
   GE( glViewport (0, 0, width, height) );
-  
+
   GE( glMatrixMode (GL_PROJECTION) );
   GE( glLoadIdentity () );
 
   cogl_perspective (fovy, aspect, z_near, z_far);
-  
+
   GE( glMatrixMode (GL_MODELVIEW) );
   GE( glLoadIdentity () );
 
@@ -579,8 +582,8 @@ cogl_setup_viewport (guint        width,
   }
 
   GE( glTranslatef (-0.5f, -0.5f, -z_camera) );
-  GE( glScalef ( 1.0f / width, 
- 	    -1.0f / height, 
+  GE( glScalef ( 1.0f / width,
+ 	    -1.0f / height,
 		 1.0f / width) );
   GE( glTranslatef (0.0f, -1.0 * height, 0.0f) );
 }
@@ -590,7 +593,7 @@ cogl_get_features ()
 {
   ClutterFeatureFlags flags = 0;
   const gchar        *gl_extensions;
-          
+
   flags = CLUTTER_FEATURE_TEXTURE_READ_PIXELS;
 
   gl_extensions = (const gchar*) glGetString (GL_EXTENSIONS);
@@ -609,7 +612,7 @@ cogl_get_features ()
       flags |= CLUTTER_FEATURE_TEXTURE_YUV;
     }
 #endif
-  
+
   return flags;
 }
 
@@ -630,7 +633,7 @@ cogl_get_modelview_matrix (ClutterFixed m[16])
   M(m,1,1) = CLUTTER_FLOAT_TO_FIXED (M(md,1,1));
   M(m,1,2) = CLUTTER_FLOAT_TO_FIXED (M(md,1,2));
   M(m,1,3) = CLUTTER_FLOAT_TO_FIXED (M(md,1,3));
-  
+
   M(m,2,0) = CLUTTER_FLOAT_TO_FIXED (M(md,2,0));
   M(m,2,1) = CLUTTER_FLOAT_TO_FIXED (M(md,2,1));
   M(m,2,2) = CLUTTER_FLOAT_TO_FIXED (M(md,2,2));
@@ -647,9 +650,9 @@ void
 cogl_get_projection_matrix (ClutterFixed m[16])
 {
   GLdouble md[16];
-  
+
   glGetDoublev(GL_PROJECTION_MATRIX, &md[0]);
-  
+
 #define M(m,row,col)  m[col*4+row]
   M(m,0,0) = CLUTTER_FLOAT_TO_FIXED (M(md,0,0));
   M(m,0,1) = CLUTTER_FLOAT_TO_FIXED (M(md,0,1));
@@ -660,7 +663,7 @@ cogl_get_projection_matrix (ClutterFixed m[16])
   M(m,1,1) = CLUTTER_FLOAT_TO_FIXED (M(md,1,1));
   M(m,1,2) = CLUTTER_FLOAT_TO_FIXED (M(md,1,2));
   M(m,1,3) = CLUTTER_FLOAT_TO_FIXED (M(md,1,3));
-  
+
   M(m,2,0) = CLUTTER_FLOAT_TO_FIXED (M(md,2,0));
   M(m,2,1) = CLUTTER_FLOAT_TO_FIXED (M(md,2,1));
   M(m,2,2) = CLUTTER_FLOAT_TO_FIXED (M(md,2,2));
