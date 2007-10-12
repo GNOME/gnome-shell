@@ -99,6 +99,7 @@ enum
   PROP_Y,
   PROP_WIDTH,
   PROP_HEIGHT,
+  PROP_DEPTH,
   PROP_CLIP,
   PROP_HAS_CLIP,
   PROP_OPACITY,
@@ -899,6 +900,9 @@ clutter_actor_set_property (GObject      *object,
 			      clutter_actor_get_width (actor),
 			      g_value_get_int (value));
       break;
+    case PROP_DEPTH:
+      clutter_actor_set_depth (actor, g_value_get_int (value));
+      break;
     case PROP_OPACITY:
       clutter_actor_set_opacity (actor, g_value_get_uchar (value));
       break;
@@ -963,6 +967,9 @@ clutter_actor_get_property (GObject    *object,
       break;
     case PROP_HEIGHT:
       g_value_set_int (value, clutter_actor_get_height (actor));
+      break;
+    case PROP_DEPTH:
+      g_value_set_int (value, clutter_actor_get_depth (actor));
       break;
     case PROP_OPACITY:
       g_value_set_uchar (value, priv->opacity);
@@ -1085,6 +1092,21 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                                      "Height",
                                                      "Height of actor in pixels",
                                                      0, G_MAXINT,
+                                                     0,
+                                                     CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterActor:depth:
+   *
+   * Depth of the actor.
+   *
+   * Since: 0.6
+   */
+  g_object_class_install_property (object_class,
+                                   PROP_DEPTH,
+                                   g_param_spec_int ("depth",
+                                                     "Depth",
+                                                     "Depth of actor",
+                                                     -G_MAXINT, G_MAXINT,
                                                      0,
                                                      CLUTTER_PARAM_READWRITE));
   /**
@@ -2338,23 +2360,31 @@ clutter_actor_set_depth (ClutterActor *self,
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
   priv = self->priv;
-
-  /* Sets Z value. - FIXME: should invert ?*/
-  priv->z = depth;
-
-  if (priv->parent_actor && CLUTTER_IS_CONTAINER (priv->parent_actor))
+  
+  if (priv->z != depth)
     {
-      /* We need to resort the container stacking order as to
-       * correctly render alpha values.
-       *
-       * FIXME: This is sub optimal. maybe queue the the sort
-       *        before stacking
-      */
-      clutter_container_sort_depth_order (CLUTTER_CONTAINER (priv->parent_actor));
-    }
+      /* Sets Z value. - FIXME: should invert ?*/
+      priv->z = depth;
 
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    clutter_actor_queue_redraw (self);
+      if (priv->parent_actor && CLUTTER_IS_CONTAINER (priv->parent_actor))
+        {
+          ClutterContainer *parent;
+
+          /* We need to resort the container stacking order as to
+           * correctly render alpha values.
+           *
+           * FIXME: This is sub optimal. maybe queue the the sort
+           *        before stacking
+           */
+          parent = CLUTTER_CONTAINER (priv->parent_actor);
+          clutter_container_sort_depth_order (parent);
+        }
+
+      if (CLUTTER_ACTOR_IS_VISIBLE (self))
+        clutter_actor_queue_redraw (self);
+
+      g_object_notify (G_OBJECT (self), "depth");
+    }
 }
 
 /**

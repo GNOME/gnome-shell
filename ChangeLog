@@ -1,3 +1,9 @@
+2007-10-12  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c: Add a :depth property, so we can
+	set the initial depth of an actor inside the UI definition
+	files.
+
 2007-10-12  Tomas Frydrych  <tf@o-hand.com>
 
 	* tests/test-actors.c:
