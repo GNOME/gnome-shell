@@ -23,10 +23,41 @@ typedef enum {
 
 #ifdef CLUTTER_ENABLE_DEBUG
 
+#ifdef __GNUC_
 #define CLUTTER_NOTE(type,x,a...)               G_STMT_START {  \
         if (clutter_debug_flags & CLUTTER_DEBUG_##type)         \
           { g_message ("[" #type "] " G_STRLOC ": " x, ##a); }  \
                                                 } G_STMT_END
+
+#define CLUTTER_TIMESTAMP(type,x,a...)             G_STMT_START {  \
+        if (clutter_debug_flags & CLUTTER_DEBUG_##type)            \
+          { g_message ("[" #type "]" " %li:"  G_STRLOC ": "        \
+                       x, clutter_get_timestamp(), ##a); }         \
+                                                   } G_STMT_END
+#else
+/* Try the C99 version; unfortunately, this does not allow us to pass
+ * empty arguments to the macro, which means we have to
+ * do an intemediate printf.
+ */
+#define CLUTTER_NOTE(type,...)               G_STMT_START {  \
+        if (clutter_debug_flags & CLUTTER_DEBUG_##type)      \
+	{                                                    \
+	  gchar * _fmt = g_strdup_printf (__VA_ARGS__);      \
+          g_message ("[" #type "] " G_STRLOC ": %s",_fmt);   \
+          g_free (_fmt);                                     \
+	}                                                    \
+                                                } G_STMT_END
+
+#define CLUTTER_TIMESTAMP(type,...)             G_STMT_START {  \
+        if (clutter_debug_flags & CLUTTER_DEBUG_##type)         \
+	{                                                       \
+	  gchar * _fmt = g_strdup_printf (__VA_ARGS__);         \
+          g_message ("[" #type "]" " %li:"  G_STRLOC ": %s",    \
+                       clutter_get_timestamp(), _fmt);          \
+          g_free (_fmt);                                        \
+	}                                                       \
+                                                   } G_STMT_END
+#endif
 
 #define CLUTTER_MARK()      CLUTTER_NOTE(MISC, "== mark ==")
 #define CLUTTER_DBG(x) { a }
@@ -38,19 +69,14 @@ typedef enum {
               g_warning (G_STRLOC ": GL Error %x", _err);       \
           }                                     } G_STMT_END
 
-#define CLUTTER_TIMESTAMP(type,x,a...)             G_STMT_START {  \
-        if (clutter_debug_flags & CLUTTER_DEBUG_##type)            \
-          { g_message ("[" #type "]" " %li:"  G_STRLOC ": "        \
-                       x, clutter_get_timestamp(), ##a); }         \
-                                                   } G_STMT_END
 
 #else /* !CLUTTER_ENABLE_DEBUG */
 
-#define CLUTTER_NOTE(type,x,a...)
+#define CLUTTER_NOTE(type,...)
 #define CLUTTER_MARK()
 #define CLUTTER_DBG(x)
 #define CLUTTER_GLERR()
-#define CLUTTER_TIMESTAMP(type,x,a...)
+#define CLUTTER_TIMESTAMP(type,...)
 
 #endif /* CLUTTER_ENABLE_DEBUG */
 

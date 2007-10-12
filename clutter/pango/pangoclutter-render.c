@@ -34,7 +34,7 @@
 
 #include "cogl.h"
 
-/* 
+/*
  * Texture cache support code
  */
 
@@ -106,8 +106,8 @@ tc_get (tc_area *area, int width, int height)
       /* create a new texture if necessary */
       if (!match)
         {
-	  CLUTTER_NOTE (PANGO, g_message ("creating new texture %i x %i\n",
-                                          TC_WIDTH, TC_HEIGHT));
+	  CLUTTER_NOTE (PANGO, "creating new texture %i x %i",
+			TC_WIDTH, TC_HEIGHT);
 
           match = g_slice_new (tc_texture);
           match->next = first_texture;
@@ -124,12 +124,12 @@ tc_get (tc_area *area, int width, int height)
        */
 	  cogl_texture_set_filters (CGL_TEXTURE_2D, CGL_LINEAR, CGL_NEAREST);
 
-	  cogl_texture_image_2d (CGL_TEXTURE_2D, 
+	  cogl_texture_image_2d (CGL_TEXTURE_2D,
 				 CGL_ALPHA,
 				 TC_WIDTH,
 				 TC_HEIGHT,
-				 CGL_ALPHA, 
-				 CGL_UNSIGNED_BYTE, 
+				 CGL_ALPHA,
+				 CGL_UNSIGNED_BYTE,
 				 NULL);
         }
 
@@ -236,11 +236,11 @@ render_box (Glyph *glyph, int width, int height, int top)
   memset (glyph->bitmap, 0, glyph->stride * height);
 
   for (i = width; i--; )
-    glyph->bitmap [i] 
+    glyph->bitmap [i]
       = glyph->bitmap [i + (height - 1) * glyph->stride] = 0xff;
 
   for (i = height; i--; )
-    glyph->bitmap [i * glyph->stride] 
+    glyph->bitmap [i * glyph->stride]
       = glyph->bitmap [i * glyph->stride + (width - 1)] = 0xff;
 }
 
@@ -270,7 +270,7 @@ font_render_glyph (Glyph *glyph, PangoFont *font, int glyph_index)
     }
 
   face = pango_clutter_font_get_face (font);
-  
+
   if (face)
     {
       PangoClutterFont *glfont = (PangoClutterFont *)font;
@@ -287,16 +287,16 @@ font_render_glyph (Glyph *glyph, PangoFont *font, int glyph_index)
     }
   else
     generic_box:
-      render_box (glyph, PANGO_UNKNOWN_GLYPH_WIDTH, 
+      render_box (glyph, PANGO_UNKNOWN_GLYPH_WIDTH,
 		  PANGO_UNKNOWN_GLYPH_HEIGHT, PANGO_UNKNOWN_GLYPH_HEIGHT);
 }
 
-typedef struct glyph_info 
+typedef struct glyph_info
 {
   tc_area tex;
   int     left, top;
   int     generation;
-} 
+}
 glyph_info;
 
 static void
@@ -307,10 +307,10 @@ free_glyph_info (glyph_info *g)
 }
 
 static void
-draw_glyph (PangoRenderer *renderer_, 
-	    PangoFont     *font, 
-	    PangoGlyph     glyph, 
-	    double         x, 
+draw_glyph (PangoRenderer *renderer_,
+	    PangoFont     *font,
+	    PangoGlyph     glyph,
+	    double         x,
 	    double         y)
 {
   PangoClutterRenderer *renderer = PANGO_CLUTTER_RENDERER (renderer_);
@@ -320,7 +320,7 @@ draw_glyph (PangoRenderer *renderer_,
   if (glyph & PANGO_GLYPH_UNKNOWN_FLAG)
     {
       glyph = pango_clutter_get_unknown_glyph (font);
-      
+
       if (glyph == PANGO_GLYPH_EMPTY)
 	glyph = PANGO_GLYPH_UNKNOWN_FLAG;
     }
@@ -338,7 +338,7 @@ draw_glyph (PangoRenderer *renderer_,
         {
           g = g_slice_new (glyph_info);
 
-          _pango_clutter_font_set_glyph_cache_destroy 
+          _pango_clutter_font_set_glyph_cache_destroy
 	                        (font, (GDestroyNotify)free_glyph_info);
           _pango_clutter_font_set_cache_glyph_data (font, glyph, g);
         }
@@ -348,27 +348,27 @@ draw_glyph (PangoRenderer *renderer_,
       g->left = bm.left;
       g->top  = bm.top;
 
-      CLUTTER_NOTE (PANGO, g_message ("cache fail; subimage2d %i\n", glyph));
+      CLUTTER_NOTE (PANGO, "cache fail; subimage2d %i", glyph);
 
 
       cogl_texture_bind (CGL_TEXTURE_2D, g->tex.name);
 
-      cogl_texture_set_alignment (CGL_TEXTURE_2D, 1, bm.stride); 
+      cogl_texture_set_alignment (CGL_TEXTURE_2D, 1, bm.stride);
 
       cogl_texture_sub_image_2d (CGL_TEXTURE_2D,
-				 g->tex.x, 
-				 g->tex.y, 
-				 bm.width, 
-				 bm.height, 
-				 CGL_ALPHA, 
-				 CGL_UNSIGNED_BYTE, 
+				 g->tex.x,
+				 g->tex.y,
+				 bm.width,
+				 bm.height,
+				 CGL_ALPHA,
+				 CGL_UNSIGNED_BYTE,
 				 bm.bitmap);
 
       glTexParameteri (CGL_TEXTURE_2D, GL_GENERATE_MIPMAP, FALSE);
 
       renderer->curtex = g->tex.name;
     }
-  else CLUTTER_NOTE (PANGO, g_message ("cache succsess %i\n", glyph));
+  else CLUTTER_NOTE (PANGO, "cache succsess %i\n", glyph);
 
   x += g->left;
   y -= g->top;
@@ -384,13 +384,13 @@ draw_glyph (PangoRenderer *renderer_,
       renderer->curtex = g->tex.name;
     }
 
-  cogl_texture_quad (x, 
-		     x + g->tex.w, 
+  cogl_texture_quad (x,
+		     x + g->tex.w,
 		     y,
 		     y + g->tex.h,
-		     CLUTTER_FLOAT_TO_FIXED (box.x1), 
-		     CLUTTER_FLOAT_TO_FIXED (box.y1), 
-		     CLUTTER_FLOAT_TO_FIXED (box.x2), 
+		     CLUTTER_FLOAT_TO_FIXED (box.x1),
+		     CLUTTER_FLOAT_TO_FIXED (box.y1),
+		     CLUTTER_FLOAT_TO_FIXED (box.x2),
 		     CLUTTER_FLOAT_TO_FIXED (box.y2));
 }
 
@@ -426,9 +426,9 @@ draw_trapezoid (PangoRenderer   *renderer_,
   cogl_enable (CGL_ENABLE_TEXTURE_2D|CGL_ENABLE_BLEND);
 }
 
-void 
+void
 pango_clutter_render_layout_subpixel (PangoLayout *layout,
-				      int           x, 
+				      int           x,
 				      int           y,
 				      ClutterColor *color,
 				      int           flags)
@@ -439,30 +439,30 @@ pango_clutter_render_layout_subpixel (PangoLayout *layout,
 
   context = pango_layout_get_context (layout);
   fontmap = pango_context_get_font_map (context);
-  renderer = _pango_clutter_font_map_get_renderer 
+  renderer = _pango_clutter_font_map_get_renderer
                      (PANGO_CLUTTER_FONT_MAP (fontmap));
 
-  memcpy (&(PANGO_CLUTTER_RENDERER (renderer)->color), 
+  memcpy (&(PANGO_CLUTTER_RENDERER (renderer)->color),
 	  color, sizeof(ClutterColor));
-  
+
   pango_renderer_draw_layout (renderer, layout, x, y);
 }
 
-void 
+void
 pango_clutter_render_layout (PangoLayout  *layout,
-			     int           x, 
+			     int           x,
 			     int           y,
 			     ClutterColor *color,
 			     int           flags)
 {
-  pango_clutter_render_layout_subpixel (layout, 
-					x * PANGO_SCALE, 
-					y * PANGO_SCALE, 
+  pango_clutter_render_layout_subpixel (layout,
+					x * PANGO_SCALE,
+					y * PANGO_SCALE,
 					color,
 					flags);
 }
 
-void 
+void
 pango_clutter_render_layout_line (PangoLayoutLine *line,
 				  int              x,
 				  int              y,
@@ -474,16 +474,16 @@ pango_clutter_render_layout_line (PangoLayoutLine *line,
 
   context = pango_layout_get_context (line->layout);
   fontmap = pango_context_get_font_map (context);
-  renderer = _pango_clutter_font_map_get_renderer 
+  renderer = _pango_clutter_font_map_get_renderer
                      (PANGO_CLUTTER_FONT_MAP (fontmap));
 
-  memcpy (&(PANGO_CLUTTER_RENDERER (renderer)->color), 
+  memcpy (&(PANGO_CLUTTER_RENDERER (renderer)->color),
 	  color, sizeof(ClutterColor));
-  
+
   pango_renderer_draw_layout_line (renderer, line, x, y);
 }
 
-void 
+void
 pango_clutter_render_clear_caches (void)
 {
   tc_clear();
@@ -509,17 +509,17 @@ prepare_run (PangoRenderer *renderer, PangoLayoutRun *run)
   for (l = run->item->analysis.extra_attrs; l; l = l->next)
     {
       PangoAttribute *attr = l->data;
-      
+
       switch (attr->klass->type)
 	{
 	case PANGO_ATTR_UNDERLINE:
 	  renderer->underline = ((PangoAttrInt *)attr)->value;
 	  break;
-	  
+
 	case PANGO_ATTR_STRIKETHROUGH:
 	  renderer->strikethrough = ((PangoAttrInt *)attr)->value;
 	  break;
-	  
+
 	case PANGO_ATTR_FOREGROUND:
           fg = &((PangoAttrColor *)attr)->color;
 	  break;
@@ -534,7 +534,7 @@ prepare_run (PangoRenderer *renderer, PangoLayoutRun *run)
       col.green = (fg->green * 255) / 65535;
       col.blue  = (fg->blue  * 255) / 65535;
     }
-  else 
+  else
     {
       col.red   = glrenderer->color.red;
       col.green = glrenderer->color.green;
@@ -548,8 +548,8 @@ prepare_run (PangoRenderer *renderer, PangoLayoutRun *run)
       col.red   ^= 0xffU;
       col.green ^= 0xffU;
       col.blue   ^= 0xffU;
-    } 
-  
+    }
+
   cogl_color(&col);
 }
 

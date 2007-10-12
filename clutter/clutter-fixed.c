@@ -27,8 +27,8 @@
 #include "config.h"
 #endif
 
-#include <clutter-fixed.h>
-#include <clutter-private.h>
+#include "clutter-fixed.h"
+#include "clutter-private.h"
 
 /**
  * SECTION:clutter-fixed
@@ -517,6 +517,7 @@ clutter_sqrtx (ClutterFixed x)
     unsigned int mask = 0x40000000;
     unsigned fract = x & 0x0000ffff;
     unsigned int d1, d2;
+    ClutterFixed v1, v2;
 
     if (x <= 0)
 	return 0;
@@ -579,8 +580,8 @@ clutter_sqrtx (ClutterFixed x)
     }
 
     /* Do a weighted average of the two nearest values */
-    ClutterFixed v1 = sqrt_tbl[t];
-    ClutterFixed v2 = sqrt_tbl[t+1];
+    v1 = sqrt_tbl[t];
+    v2 = sqrt_tbl[t+1];
 
     /*
      * 12 is fairly arbitrary -- we want integer that is not too big to cost

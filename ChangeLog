@@ -1,5 +1,25 @@
 2007-10-12  Tomas Frydrych  <tf@o-hand.com>
 
+	Portability fixes:
+
+	* clutter/clutter-private.h:
+	Bracket #include "unistd.h" with #ifdef HAVE_UNISTD_H
+
+	* clutter/clutter-fixed.c:
+	Use "", not <> for inclusion of local files.
+
+	(clutter_sqrtx): forward declare local variables.
+
+	* clutter/clutter-debug.h:
+	Added non-gcc (c99) implementation of variadic debug macros for
+	when not compiling with gcc.
+
+	* clutter/pango/pangoclutter-render.c:
+	Fixed some strange uses of CLUTTER_NOTE() + stripped trailing
+	whitespace.
+
+2007-10-12  Tomas Frydrych  <tf@o-hand.com>
+
         * clutter/clutter-actor.c:
         * clutter/clutter-backend.c:
         * clutter/clutter-behaviour-depth.c:
@@ -42,7 +62,7 @@
 
 	Fixedup config.h inclusion (must always be bracketed with #ifdef
 	HAVE_CONFIG_H).
-	
+
 2007-10-11  Tomas Frydrych  <tf@o-hand.com>
 
 	* clutter/clutter-entry.c:
