@@ -146,7 +146,6 @@ struct _ClutterScriptPrivate
   guint last_merge_id;
 
   JsonParser *parser;
-  ObjectInfo *current;
 
   gchar *filename;
   guint is_filename : 1;
@@ -348,8 +347,8 @@ construct_timeline (ClutterScript *script,
   
   retval = CLUTTER_TIMELINE (clutter_script_construct_object (script, oinfo));
 
-  /* it needs to survive */
-  g_object_ref (retval);
+  /* we transfer ownership to the alpha function later */
+  oinfo->is_toplevel = FALSE;
   object_info_free (oinfo);
 
   return retval;
@@ -434,6 +433,7 @@ parse_member_to_property (ClutterScript *script,
           ClutterTimeline *timeline = NULL;
           ClutterAlphaFunc func = NULL;
           JsonNode *val;
+          gboolean unref_timeline = FALSE;
 
           retval = g_slice_new (PropertyInfo);
           retval->property_name = g_strdup (name);
@@ -452,17 +452,21 @@ parse_member_to_property (ClutterScript *script,
                     CLUTTER_TIMELINE (clutter_script_get_object (script, id));
                 }
               else if (JSON_NODE_TYPE (val) == JSON_NODE_OBJECT)
-                timeline = construct_timeline (script, json_node_get_object (val));
+                {
+                  timeline = construct_timeline (script, json_node_get_object (val));
+                  unref_timeline = TRUE;
+                }
             }
 
           val = json_object_get_member (object, "function");
           if (val && json_node_get_string (val) != NULL)
             func = resolve_alpha_func (json_node_get_string (val));
 
-          alpha = g_object_new (CLUTTER_TYPE_ALPHA,
-                                "timeline", timeline,
-                                NULL);
+          alpha = g_object_new (CLUTTER_TYPE_ALPHA, NULL);
           clutter_alpha_set_func (alpha, func, NULL, NULL);
+          clutter_alpha_set_timeline (alpha, timeline);
+          if (unref_timeline)
+            g_object_unref (timeline);
 
           g_value_init (&retval->value, CLUTTER_TYPE_ALPHA);
           g_value_set_object (&retval->value, G_OBJECT (alpha));
@@ -598,9 +602,9 @@ parse_member_to_property (ClutterScript *script,
             }
           
           if (name[0] == 'c') /* children */
-            info->children = children;
+            info->children = g_list_reverse (children);
           else
-            info->behaviours = children;
+            info->behaviours = g_list_reverse (children);
         }
       break;
 

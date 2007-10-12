@@ -1,3 +1,13 @@
+2007-10-12  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-script.c (construct_timline),
+	(parse_member_to_property): Transfer ownership of the
+	implicit timelines to the behaviour, so that they get
+	unreferenced when the behaviour is destroyed.
+
+	(parse_member_to_property): Reverse the list of children
+	and behaviours.
+
 2007-10-12  Tomas Frydrych  <tf@o-hand.com>
 
 	Portability fixes:
