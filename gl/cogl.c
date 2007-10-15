@@ -29,7 +29,12 @@
 
 #include "cogl.h"
 
+#ifdef WIN32
+#include <windows.h>
+#include <GL/Glee.h>
+#else
 #include <GL/gl.h>
+#endif
 #include <string.h>
 
 #ifdef HAVE_CLUTTER_GLX
