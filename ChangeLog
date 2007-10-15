@@ -1,3 +1,9 @@
+2007-10-15  Tomas Frydrych  <tf@o-hand.com>
+
+	* clutter/cogl/gl/cogl-defines.h:
+	* clutter/cogl/gl/cogl.c:
+	Fixup GL include for windows.
+
 2007-10-15  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-actor.c:

@@ -26,7 +26,12 @@
 #ifndef __COGL_DEFINES_H__
 #define __COGL_DEFINES_H__
 
+#ifdef WIN32
+#include <windows.h>
+#include <GL/Glee.h>
+#else
 #include <GL/gl.h>
+#endif
 
 G_BEGIN_DECLS
 
