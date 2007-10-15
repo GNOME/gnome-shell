@@ -1,3 +1,8 @@
+2007-10-15  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/pango/Makefile.am: Compile with the debug flags, if
+	set.
+
 2007-10-12  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter.symbols: Remove non-public symbols.
