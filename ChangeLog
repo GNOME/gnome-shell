@@ -1,3 +1,16 @@
+2007-10-15  Matthew Allum  <mallum@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	More events documentation.
+
+	* clutter/clutter-event.c:
+	* clutter/clutter-event.h:
+	Add synthetic flag and make put_event use it 
+	(via modded patch from pippin)
+
+	* clutter/clutter-main.c: (clutter_do_event):
+	dont use put event anymore when pushing enter/leave events.
+
 2007-10-15  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/pango/Makefile.am: Compile with the debug flags, if

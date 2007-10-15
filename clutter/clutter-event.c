@@ -439,19 +439,24 @@ clutter_event_peek (void)
  * clutter_event_put:
  * @event: a #ClutterEvent
  *
- * Puts a copy of the event on the back on the event queue. 
+ * Puts a copy of the event on the back of the event queue.
+ * The event will have the #CLUTTER_EVENT_FLAG_SYNTHETIC flag set. 
  *
- * Since: 0.4
+ * Since: 0.6
  */
 void
 clutter_event_put (ClutterEvent *event)
 {
   ClutterMainContext *context = clutter_context_get_default ();
+  ClutterEvent       *event_copy;
 
   /* FIXME: check queue is valid */
   g_return_if_fail (context != NULL);
 
-  g_queue_push_head (context->events_queue, clutter_event_copy (event));
+  event_copy = clutter_event_copy (event);
+  event_copy->any.flags |= CLUTTER_EVENT_FLAG_SYNTHETIC;
+
+  g_queue_push_head (context->events_queue, event_copy);
 }
 
 /**

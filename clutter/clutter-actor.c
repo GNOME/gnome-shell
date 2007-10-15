@@ -38,6 +38,8 @@
  * <orderedlist>
  *   <listitem><para>Actors emit pointer events if set reactive, see
  *   clutter_actor_set_reactive()</para></listitem>
+ *   <listitem><para>Events are handled by connecting signal handlers to
+ *   the numerous event signal types.</para></listitem>
  *   <listitem><para>Event handlers must return %TRUE if they handled
  *   the event and wish to block the event emission chain; and %FALSE
  *   if the emission chain must continue</para></listitem>
@@ -46,10 +48,15 @@
  *   <listitem><para>Motion events (motion, enter, leave) are only emitted
  *   per actor if clutter_enable_motion_events() was called with %TRUE. If
  *   set to %FALSE (the default) then only the stage emits motion
- *   events</para></listitem>
- *   <listitem><para>Once emitted, an event has two phases: capture
- *   and bubble</para></listitem>
- * </orderedlist>
+ *   events (no enter or leave events).</para></listitem>
+ *   <listitem><para>Once emitted, an event emmision chain has two
+ *   phases: capture and bubble. A emitted event starts in the capture
+ *   phase beginning at the stage and transversing child actors until
+ *   the event source actor is reached. The emmision then enters the bubble
+ *   phase transversing back up via parents to the stage. An event
+ *   handler can abort this chain at point by returning
+ *   %TRUE.</para></listitem> 
+ *   </orderedlist>
  */
 
 #ifdef HAVE_CONFIG_H

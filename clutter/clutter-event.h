@@ -52,7 +52,7 @@ typedef enum {
 } ClutterModifierType;
 
 typedef enum {
-  CLUTTER_EVENT_FLAG_COOKED = 1 << 0,
+  CLUTTER_EVENT_FLAG_SYNTHETIC = 1 << 0,
 } ClutterEventFlags;
 
 typedef enum 
