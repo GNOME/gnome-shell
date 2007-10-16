@@ -330,7 +330,7 @@ construct_timeline (ClutterScript *script,
 
       if (JSON_NODE_TYPE (node) == JSON_NODE_VALUE)
         {
-          PropertyInfo *pinfo = g_slice_new (PropertyInfo);
+          PropertyInfo *pinfo = g_slice_new0 (PropertyInfo);
           GValue value = { 0, };
 
           pinfo->property_name = g_strdup (name);
@@ -416,7 +416,7 @@ parse_member_to_property (ClutterScript *script,
   switch (JSON_NODE_TYPE (node))
     {
     case JSON_NODE_VALUE:
-      retval = g_slice_new (PropertyInfo);
+      retval = g_slice_new0 (PropertyInfo);
       retval->property_name = g_strdup (name);
 
       json_node_get_value (node, &value);
@@ -435,7 +435,7 @@ parse_member_to_property (ClutterScript *script,
           JsonNode *val;
           gboolean unref_timeline = FALSE;
 
-          retval = g_slice_new (PropertyInfo);
+          retval = g_slice_new0 (PropertyInfo);
           retval->property_name = g_strdup (name);
 
           alpha = clutter_alpha_new ();
@@ -509,7 +509,7 @@ parse_member_to_property (ClutterScript *script,
                 }
             }
 
-          retval = g_slice_new (PropertyInfo);
+          retval = g_slice_new0 (PropertyInfo);
           retval->property_name = g_strdup (name);
           g_value_init (&retval->value, CLUTTER_TYPE_MARGIN);
           g_value_set_boxed (&retval->value, &margin);
@@ -549,7 +549,7 @@ parse_member_to_property (ClutterScript *script,
                 }
             }
 
-          retval = g_slice_new (PropertyInfo);
+          retval = g_slice_new0 (PropertyInfo);
           retval->property_name = g_strdup (name);
           g_value_init (&retval->value, CLUTTER_TYPE_PADDING);
           g_value_set_boxed (&retval->value, &padding);
@@ -574,7 +574,7 @@ parse_member_to_property (ClutterScript *script,
                 }
             }
 
-          retval = g_slice_new (PropertyInfo);
+          retval = g_slice_new0 (PropertyInfo);
           retval->property_name = g_strdup (name);
           g_value_init (&retval->value, CLUTTER_TYPE_GEOMETRY);
           g_value_set_boxed (&retval->value, &geom);

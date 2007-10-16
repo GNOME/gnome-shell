@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h> /* sleep() */
 #include <clutter/clutter.h>
 
 typedef struct
@@ -84,9 +83,9 @@ do_something_very_slow (void)
   for (i = 0; i < 100; i++)
     {
       /* sleep for a while */
-      sleep(rand() / (RAND_MAX / 3) + 1);
+      g_usleep((rand() / (RAND_MAX / 3) + 1) * 1000000);
 
-      if ((i % 10) == 0)
+	  if ((i % 10) == 0)
         {
           TestUpdate *update;
 

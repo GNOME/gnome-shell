@@ -401,7 +401,7 @@ clutter_stage_set_title
 clutter_stage_get_title          
 clutter_stage_set_user_resizable
 clutter_stage_get_user_resizable
-clutter_stage_get_key_focus 
+clutter_stage_set_key_focus 
 clutter_texture_error_quark
 clutter_texture_get_type
 clutter_texture_new                 
@@ -485,6 +485,8 @@ clutter_score_is_playing
 clutter_score_start 
 clutter_score_stop 
 clutter_score_remove_all 
+clutter_score_add
+clutter_score_append
 clutter_actor_flags_get_type
 clutter_pack_type_get_type
 clutter_modifier_type_get_type

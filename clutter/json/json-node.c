@@ -59,7 +59,7 @@ json_node_new (JsonNodeType type)
 
   g_return_val_if_fail (type >= JSON_NODE_OBJECT && type <= JSON_NODE_NULL, NULL);
 
-  data = g_slice_new (JsonNode);
+  data = g_slice_new0 (JsonNode);
   data->type = type;
 
   return data;
