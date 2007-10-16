@@ -650,7 +650,7 @@ clutter_get_debug_enabled (void)
 #endif
 }
 
-ClutterMainContext*
+ClutterMainContext *
 clutter_context_get_default (void)
 {
   if (G_UNLIKELY(!ClutterCntx))
@@ -760,6 +760,8 @@ pre_parse_hook (GOptionContext  *context,
   clutter_context->font_map = PANGO_FT2_FONT_MAP (pango_ft2_font_map_new ());
   pango_ft2_font_map_set_resolution (clutter_context->font_map, 96.0, 96.0);
 
+  clutter_context->frame_rate = 60;
+
   clutter_context->actor_hash = g_hash_table_new (NULL, NULL);
 
   backend = clutter_context->backend;
@@ -776,7 +778,6 @@ pre_parse_hook (GOptionContext  *context,
       env_string = NULL;
     }
 #endif /* CLUTTER_ENABLE_DEBUG */
-
 
   env_string = g_getenv ("CLUTTER_SHOW_FPS");
   if (env_string)
@@ -1133,8 +1134,9 @@ event_click_count_generate (ClutterEvent *event)
     }
 }
 
-static void 
-deliver_event (ClutterEvent *event, ClutterActor *source)
+static inline void 
+deliver_event (ClutterEvent *event,
+               ClutterActor *source)
 {
 #define MAX_EVENT_DEPTH 512
 
@@ -1150,8 +1152,8 @@ deliver_event (ClutterEvent *event, ClutterActor *source)
   lock = TRUE; /* Guard against reentrancy */
 
   /* Sorry Mr Bassi. */
-  if (event_tree == NULL)
-    event_tree = g_new0(ClutterActor*, MAX_EVENT_DEPTH);
+  if (G_UNLIKELY (event_tree == NULL))
+    event_tree = g_new0 (ClutterActor *, MAX_EVENT_DEPTH);
 
   actor = source;
 
@@ -1166,21 +1168,23 @@ deliver_event (ClutterEvent *event, ClutterActor *source)
     }
 
   /* Capture */
-  for (i=n_tree_events-1; i >= 0; i--)
-      if (clutter_actor_event (event_tree[i], event, TRUE))
-	goto done;
+  for (i = n_tree_events-1; i >= 0; i--)
+    if (clutter_actor_event (event_tree[i], event, TRUE))
+      goto done;
 
   /* Bubble */
-  for (i=0; i < n_tree_events; i++)
+  for (i = 0; i < n_tree_events; i++)
     if (clutter_actor_event (event_tree[i], event, FALSE))
       goto done;
 
- done:
+done:
 
-  for (i=0; i < n_tree_events; i++)
+  for (i = 0; i < n_tree_events; i++)
     g_object_unref (event_tree[i]);
 
   lock = FALSE;
+
+#undef MAX_EVENT_DEPTH
 }
 
 /** 
@@ -1239,7 +1243,7 @@ clutter_do_event (ClutterEvent *event)
       {
 	ClutterActor *actor = NULL;
 
-	actor = clutter_stage_get_key_focus (CLUTTER_STAGE(stage));
+	actor = clutter_stage_get_key_focus (CLUTTER_STAGE (stage));
 
 	g_return_if_fail (actor != NULL);
 
@@ -1276,6 +1280,8 @@ clutter_do_event (ClutterEvent *event)
 	actor = _clutter_do_pick (CLUTTER_STAGE (stage), 
 				  x, y, 
 				  CLUTTER_PICK_REACTIVE);
+        if (!actor)
+          break;
 
 	 /* FIXME: for an optimisation should check if there are
 	 * actually any reactive actors and avoid the pick all togeather
@@ -1284,8 +1290,6 @@ clutter_do_event (ClutterEvent *event)
 
 	CLUTTER_NOTE (EVENT, "Reactive event received at %i, %i - actor: %p", 
 		      x, y, actor);
-
-	g_return_if_fail (actor != NULL);
 
 	if (event->type == CLUTTER_SCROLL)
 	  event->scroll.source = actor;
@@ -1382,3 +1386,23 @@ clutter_base_init (void)
     }
 }
 
+guint
+clutter_get_default_frame_rate (void)
+{
+  ClutterMainContext *context;
+
+  context = clutter_context_get_default ();
+  
+  return context->frame_rate;
+}
+
+void
+clutter_set_default_frame_rate (guint frames_per_sec)
+{
+  ClutterMainContext *context;
+
+  context = clutter_context_get_default ();
+
+  if (context->frame_rate != frames_per_sec)
+    context->frame_rate = frames_per_sec;
+}

@@ -1,6 +1,19 @@
+2007-10-16  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-timeline.[ch]: Added ClutterTimeline:duration,
+	a property for setting the duration of a timeline in milliseconds.
+	The property comes with accessors and a new constructor. The
+	frame rate used is the default value.
+
+	* clutter/clutter-private.h:
+	* clutter/clutter-main.[ch]: Add clutter_get_default_frame_rate()
+	and clutter_set_default_frame_rate(); these two functions control
+	the default frame rate to be used when creating timelines. Currently
+	is set to 60 frames-per-second.
+
 2007-10-16  Tomas Frydrych  <tf@o-hand.com>
 
-	* build/msvc_2k5
+	* build/msvc_2k5:
 	Added MSVC project files.
 
 2007-10-16  Emmanuele bassi  <ebassi@openedhand.com>

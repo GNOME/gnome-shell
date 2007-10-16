@@ -29,6 +29,7 @@
 /* clutter-timeline.h */
 
 #include <glib-object.h>
+#include <clutter/clutter-fixed.h>
 
 G_BEGIN_DECLS
 
@@ -90,8 +91,12 @@ GType clutter_timeline_get_type (void) G_GNUC_CONST;
 
 ClutterTimeline *clutter_timeline_new               (guint            n_frames,
                                                      guint            fps);
+ClutterTimeline *clutter_timeline_new_for_duration  (guint            msecs);
 ClutterTimeline *clutter_timeline_clone             (ClutterTimeline *timeline);
 
+guint            clutter_timeline_get_duration      (ClutterTimeline *timeline);
+void             clutter_timeline_set_duration      (ClutterTimeline *timeline,
+                                                     guint            msecs);
 guint            clutter_timeline_get_speed         (ClutterTimeline *timeline);
 void             clutter_timeline_set_speed         (ClutterTimeline *timeline,
                                                      guint            fps);
@@ -107,6 +112,8 @@ void             clutter_timeline_skip              (ClutterTimeline *timeline,
 void             clutter_timeline_advance           (ClutterTimeline *timeline,
                                                      guint            frame_num);
 gint             clutter_timeline_get_current_frame (ClutterTimeline *timeline);
+gdouble          clutter_timeline_get_progress      (ClutterTimeline *timeline);
+ClutterFixed     clutter_timeline_get_progressx     (ClutterTimeline *timeline);
 void             clutter_timeline_set_n_frames      (ClutterTimeline *timeline,
                                                      guint            n_frames);
 guint            clutter_timeline_get_n_frames      (ClutterTimeline *timeline);

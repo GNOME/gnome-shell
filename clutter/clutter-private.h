@@ -83,6 +83,8 @@ struct _ClutterMainContext
   gint             num_reactives;      /* Num of reactive actors */
 
   GHashTable      *actor_hash;	       /* Hash of all actors mapped to id */
+
+  guint            frame_rate;         /* Default FPS */
 };
 
 #define CLUTTER_CONTEXT()	(clutter_context_get_default ())
