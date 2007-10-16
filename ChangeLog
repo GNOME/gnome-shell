@@ -1,3 +1,7 @@
+2007-10-16  Emmanuele bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-color.c: Copy the alpha when shading.
+
 2007-10-16  Tomas Frydrych  <tf@o-hand.com>
 	
 	* clutter.symbols:
@@ -5,7 +9,8 @@
 	
 	* clutter/clutter-script.c:
 	* json/json-node.c:
-	Use g_slice_new0 instead of g_slice_new to avoid passing garbage to functions.
+	Use g_slice_new0 instead of g_slice_new to avoid passing
+	garbage to functions.
 	
 	* tests/test-threads.c:
 	Replaced non-portable sleep() with g_usleep().

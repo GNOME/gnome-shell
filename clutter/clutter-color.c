@@ -372,7 +372,7 @@ clutter_color_shade (const ClutterColor *src,
 		     ClutterColor       *dest,
 		     gdouble             shade)
 {
-    clutter_color_shadex (src, dest, CLUTTER_FLOAT_TO_FIXED (shade));
+  clutter_color_shadex (src, dest, CLUTTER_FLOAT_TO_FIXED (shade));
 }
 
 /**
@@ -413,6 +413,7 @@ clutter_color_shadex (const ClutterColor *src,
     s = 0;
   
   clutter_color_from_hlsx (dest, h, l, s);
+  dest->alpha = src->alpha;
 }
 
 /**
