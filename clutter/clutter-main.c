@@ -1256,7 +1256,14 @@ clutter_do_event (ClutterEvent *event)
 	{
 	  /* Only stage gets motion events */
 	  event->motion.source = stage;
-	  clutter_actor_event (stage, event, FALSE);
+
+          /* Trigger handlers in both capture .. */
+          if (!clutter_actor_event (stage, event, TRUE))
+            {
+              /* and/or bubbling phase */
+              clutter_actor_event (stage, event, FALSE);
+            }
+
 	  break;
 	}
     case CLUTTER_BUTTON_PRESS:

@@ -1,3 +1,9 @@
+2007-10-15  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/clutter-main.c: (clutter_do_event): allow motion events
+	only delivered to stage to be chaugt in the capture phase as well
+	as the bubbling phase.
+
 2007-10-16  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/json/json-object.c: Automatically transform every
