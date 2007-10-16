@@ -1,5 +1,14 @@
 2007-10-16  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/json/json-object.c: Automatically transform every
+	delimiter into an underscore.
+
+	* clutter/clutter-script.c: Implement the "parent_texture"
+	property translation for ClutterCloneTextures, using the
+	passed id of the parent texture.
+
+2007-10-16  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-timeline.[ch]: Added ClutterTimeline:duration,
 	a property for setting the duration of a timeline in milliseconds.
 	The property comes with accessors and a new constructor. The

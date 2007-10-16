@@ -127,6 +127,7 @@
 #include "clutter-behaviour.h"
 #include "clutter-container.h"
 #include "clutter-stage.h"
+#include "clutter-texture.h"
 
 #include "clutter-script.h"
 #include "clutter-script-private.h"
@@ -333,7 +334,9 @@ construct_timeline (ClutterScript *script,
           PropertyInfo *pinfo = g_slice_new0 (PropertyInfo);
           GValue value = { 0, };
 
-          pinfo->property_name = g_strdup (name);
+          pinfo->property_name = g_strdelimit (g_strdup (name),
+                                               G_STR_DELIMITERS,
+                                               '-');
 
           json_node_get_value (node, &value);
           g_value_init (&pinfo->value, G_VALUE_TYPE (&value));
@@ -417,7 +420,9 @@ parse_member_to_property (ClutterScript *script,
     {
     case JSON_NODE_VALUE:
       retval = g_slice_new0 (PropertyInfo);
-      retval->property_name = g_strdup (name);
+      retval->property_name = g_strdelimit (g_strdup (name),
+                                            G_STR_DELIMITERS,
+                                            '-');
 
       json_node_get_value (node, &value);
       g_value_init (&retval->value, G_VALUE_TYPE (&value));
@@ -576,6 +581,7 @@ parse_member_to_property (ClutterScript *script,
 
           retval = g_slice_new0 (PropertyInfo);
           retval->property_name = g_strdup (name);
+
           g_value_init (&retval->value, CLUTTER_TYPE_GEOMETRY);
           g_value_set_boxed (&retval->value, &geom);
         }
@@ -719,6 +725,26 @@ translate_property (ClutterScript *script,
 
       g_value_init (dest, CLUTTER_TYPE_COLOR);
       g_value_set_boxed (dest, &color);
+
+      return TRUE;
+    }
+
+  if (strcmp (name, "parent_texture") == 0)
+    {
+      GObject *texture;
+      const gchar *string;
+
+      if (G_VALUE_HOLDS (src, G_TYPE_STRING))
+        string = g_value_get_string (src);
+      else
+        return FALSE;
+      
+      texture = clutter_script_get_object (script, string);
+      if (!texture)
+        return FALSE;
+
+      g_value_init (dest, CLUTTER_TYPE_TEXTURE);
+      g_value_set_object (dest, texture);
 
       return TRUE;
     }

@@ -147,6 +147,8 @@ json_object_add_member (JsonObject  *object,
                         const gchar *member_name,
                         JsonNode    *node)
 {
+  gchar *name;
+
   g_return_if_fail (object != NULL);
   g_return_if_fail (member_name != NULL);
   g_return_if_fail (node != NULL);
@@ -159,7 +161,8 @@ json_object_add_member (JsonObject  *object,
       return;
     }
 
-  g_hash_table_replace (object->members, g_strdup (member_name), node);
+  name = g_strdelimit (g_strdup (member_name), G_STR_DELIMITERS, '_');
+  g_hash_table_replace (object->members, name, node);
 }
 
 /* FIXME: yuck. we really need to depend on GLib 2.14 */
@@ -222,10 +225,17 @@ JsonNode *
 json_object_get_member (JsonObject *object,
                         const gchar *member_name)
 {
+  gchar *name;
+  JsonNode *retval;
+
   g_return_val_if_fail (object != NULL, NULL);
   g_return_val_if_fail (member_name != NULL, NULL);
 
-  return g_hash_table_lookup (object->members, member_name);
+  name = g_strdelimit (g_strdup (member_name), G_STR_DELIMITERS, '_');
+  retval = g_hash_table_lookup (object->members, name);
+  g_free (name);
+
+  return retval;
 }
 
 /**
@@ -241,10 +251,17 @@ gboolean
 json_object_has_member (JsonObject *object,
                         const gchar *member_name)
 {
+  gchar *name;
+  gboolean retval;
+
   g_return_val_if_fail (object != NULL, FALSE);
   g_return_val_if_fail (member_name != NULL, FALSE);
-  
-  return (g_hash_table_lookup (object->members, member_name) != NULL);
+
+  name = g_strdelimit (g_strdup (member_name), G_STR_DELIMITERS, '_');
+  retval = (g_hash_table_lookup (object->members, name) != NULL);
+  g_free (name);
+
+  return retval;
 }
 
 /**
@@ -274,8 +291,12 @@ void
 json_object_remove_member (JsonObject  *object,
                            const gchar *member_name)
 {
+  gchar *name;
+
   g_return_if_fail (object != NULL);
   g_return_if_fail (member_name != NULL);
 
-  g_hash_table_remove (object->members, member_name);
+  name = g_strdelimit (g_strdup (member_name), G_STR_DELIMITERS, '_');
+  g_hash_table_remove (object->members, name);
+  g_free (name);
 }
