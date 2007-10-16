@@ -86,11 +86,20 @@ tc_clear ()
 static void
 tc_get (tc_area *area, int width, int height)
 {
-  int slice_height = MIN (height + TC_ROUND - 1, TC_HEIGHT) & ~(TC_ROUND - 1);
-  tc_slice *slice = slices + slice_height / TC_ROUND;
+  int       slice_height; 
+  tc_slice *slice;
 
   area->w = width;
   area->h = height;
+
+  /* Provide for blank rows/columns of pixels between adjecant glyphs in the
+   * texture cache to avoid bilinear interpolation spillage at edges of glyphs.
+   */
+  width += 1;
+  height += 1;
+
+  slice_height = MIN (height + TC_ROUND - 1, TC_HEIGHT) & ~(TC_ROUND - 1);
+  slice = slices + slice_height / TC_ROUND;
 
   width = MIN (width, TC_WIDTH);
 
@@ -118,10 +127,10 @@ tc_get (tc_area *area, int width, int height)
 
 	  cogl_texture_bind (CGL_TEXTURE_2D, match->name);
 
-	  /* We might even want to use mipmapping instead of CGL_LINEAR here
-       * that should allow rerendering of glyphs to look nice even at scales
-       * far below 50%.
-       */
+        /* We might even want to use mipmapping instead of CGL_LINEAR here
+         * that should allow rerendering of glyphs to look nice even at scales
+         * far below 50%.
+         */
 	  cogl_texture_set_filters (CGL_TEXTURE_2D, CGL_LINEAR, CGL_NEAREST);
 
 	  cogl_texture_image_2d (CGL_TEXTURE_2D,
