@@ -1,3 +1,8 @@
+2007-10-16  Tomas Frydrych  <tf@o-hand.com>
+
+	* build/msvc_2k5
+	Added MSVC project files.
+
 2007-10-16  Emmanuele bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-color.c: Copy the alpha when shading.
