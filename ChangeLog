@@ -1,3 +1,11 @@
+2007-10-16  Thomas Thurman  <thomas@thurman.org.uk>
+
+	* src/window.c (window_would_be_covered): new function.
+	* src/window.c (meta_window_show): rewrite assertion not
+	to put window on top in terms of window_would_be_covered();
+	remove assertion because it's no longer valid; explicitly
+	don't focus windows that shouldn't be focussed; closes #486445.
+
 2007-10-14  Thomas Thurman  <thomas@thurman.org.uk>
 
 	* configure.in: Post-branch bump to 2.21.1.

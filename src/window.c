@@ -1954,6 +1954,47 @@ windows_overlap (const MetaWindow *w1, const MetaWindow *w2)
   return meta_rectangle_overlap (&w1rect, &w2rect);
 }
 
+/* Returns whether a new window would be covered by any
+ * existing window on the same workspace that is set
+ * to be "above" ("always on top").  A window that is not
+ * set "above" would be underneath the new window anyway.
+ *
+ * We take "covered" to mean even partially covered, but
+ * some people might prefer entirely covered.  I think it
+ * is more useful to behave this way if any part of the
+ * window is covered, because a partial coverage could be
+ * (say) ninety per cent and almost indistinguishable from total.
+ */
+static gboolean
+window_would_be_covered (const MetaWindow *newbie)
+{
+  MetaWorkspace *workspace = newbie->workspace;
+  GList *tmp, *windows;
+ 
+  windows = meta_workspace_list_windows (workspace);
+
+  tmp = windows;
+  while (tmp != NULL)
+    { 
+      MetaWindow *w = tmp->data;
+
+      if (w->wm_state_above)
+        {
+          /* We have found a window that is "above". Perhaps it overlaps. */
+          if (windows_overlap (w, newbie))
+            {
+              g_list_free (windows); /* clean up... */
+              return TRUE; /* yes, it does */
+            }
+        }
+
+      tmp = tmp->next;
+    }
+
+  g_list_free (windows);
+  return FALSE; /* none found */
+}
+
 /* XXX META_EFFECT_*_MAP */
 void
 meta_window_show (MetaWindow *window)
@@ -1986,11 +2027,24 @@ meta_window_show (MetaWindow *window)
               takes_focus_on_map ? "does" : "does not",
               place_on_top_on_map ? "does" : "does not");
 
-  if ( !takes_focus_on_map &&
-       focus_window != NULL &&
-       !place_on_top_on_map &&
-       window->showing_for_first_time )
-    {
+  /* Now, in some rare cases we should *not* put a new window on top.
+   * These cases include certain types of windows showing for the firat
+   * time, and any window which would be covered because of another window
+   * being set "above" ("always on top").
+   *
+   * FIXME: Although "place_on_top_on_map" and "takes_focus_on_map" are
+   * generally based on the window type, there is a special case when the
+   * focus window is a terminal for them both to be false; this should
+   * probably rather be a term in the "if" condition below.
+   */
+
+  if ( focus_window != NULL &&
+       (
+        (window->showing_for_first_time &&
+         !place_on_top_on_map &&
+         !takes_focus_on_map) ||
+        window_would_be_covered (window))
+     ) {
       if (meta_window_is_ancestor_of_transient (focus_window, window))
         {
           /* This happens for error dialogs or alerts; these need to remain on
@@ -2045,22 +2099,18 @@ meta_window_show (MetaWindow *window)
     {
       gboolean overlap;
 
-      /* needs_stacking_adjustment is only set under certain
-       * circumstances currently; if those circumstances change, this
-       * code may need re-thinking too
-       */
-      g_assert(window->showing_for_first_time &&
-               !place_on_top_on_map &&
-               !takes_focus_on_map &&
-               focus_window != NULL);
-
       /* This window isn't getting focus on map.  We may need to do some
        * special handing with it in regards to
        *   - the stacking of the window
        *   - the MRU position of the window
        *   - the demands attention setting of the window
+       *
+       * Firstly, set the flag so we don't give the window focus anyway
+       * and confuse people.
        */
           
+      takes_focus_on_map = FALSE;
+
       overlap = windows_overlap (window, focus_window);
 
       /* We want alt tab to go to the denied-focus window */
