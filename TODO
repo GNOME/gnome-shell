@@ -1,7 +1,7 @@
 TODO
 ====
 
-Last updated 08/08/2007
+Last updated 17/10/2007
 
 0.6
 ===
@@ -10,16 +10,16 @@ Definetly:
 
  - More ClutterUnits support, convert actor API to units.
  - Fragment shader support infrastructure
- - XML/JSON type 'layout' files - include actors + behaviours + timeline etc.
+ * XML/JSON type 'layout' files - include actors + behaviours + timeline etc.
  - App developers manual.
- - Events for Actors
-   - Add 'sensitive' property, false by default. Only pick sensitive actors
-   - Very simple focus model - actors have a focus flag and if set emit
+ * Events for Actors
+   * Add 'sensitive' property, false by default. Only pick sensitive actors
+   * Very simple focus model - actors have a focus flag and if set emit
      key events.
-   - Motion events need to be explicitly enabled. 
+   * Motion events need to be explicitly enabled. 
  - Mipmaps for pango renderer to improving text scaling quality
  - ClutterScore
-   - Class for chaining timelines togeather
+   - Class for chaining timelines together
 
 Nice/Maybe:
 
@@ -30,7 +30,7 @@ Nice/Maybe:
  - Glitz integration
  - Some kind of focus model.
  - Apple/Win native backends.
- - ClutterBehaviourDepth (trivial)
+ * ClutterBehaviourDepth (trivial)
  - ClutterTextureAnimation (trivial)
  - Glitz backend over GLX (would cover above)
 
