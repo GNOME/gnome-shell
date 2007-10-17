@@ -70,6 +70,7 @@ struct _ClutterScoreClass
 {
   GObjectClass parent_class;
   
+  void (*new_timeline) (ClutterScore *score, ClutterTimeline *timeline);
   void (*started)   (ClutterScore *score);
   void (*completed) (ClutterScore *score);
   void (*paused)    (ClutterScore *score);
@@ -97,11 +98,15 @@ clutter_score_rewind (ClutterScore *score);
 
 gboolean
 clutter_score_is_playing (ClutterScore *score);
+
 void
 clutter_score_start (ClutterScore *score);
 
 void
 clutter_score_stop (ClutterScore *score);
+
+void
+clutter_score_pause (ClutterScore *score);
 
 void
 clutter_score_append (ClutterScore    *score, 

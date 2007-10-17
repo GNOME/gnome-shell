@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <clutter/clutter.h>
 
-
 int
 main (int argc, char **argv)
 {
@@ -10,19 +9,21 @@ main (int argc, char **argv)
   ClutterTimeline *timeline_1;
   ClutterTimeline *timeline_2;
   ClutterTimeline *timeline_3;
+  ClutterTimeline *timeline_4;
 
   clutter_init (&argc, &argv);
 
   timeline_1 = clutter_timeline_new (10, 120);
   timeline_2 = clutter_timeline_clone (timeline_1);
   timeline_3 = clutter_timeline_clone (timeline_1);
+  timeline_4 = clutter_timeline_clone (timeline_1);
 
   score = clutter_score_new();
   clutter_score_add (score, timeline_1);
   clutter_score_append (score, timeline_1, timeline_2);
-#if 0
-  clutter_score_append (score, timeline_2, timeline_3);
-#endif
+  clutter_score_append (score, timeline_1, timeline_3);
+  clutter_score_append (score, timeline_3, timeline_4);
+
   clutter_score_start (score);
 
   clutter_main ();
