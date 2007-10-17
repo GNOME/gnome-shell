@@ -1,3 +1,16 @@
+2007-10-17  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-actor.c:
+	(clutter_actor_set_property), (clutter_actor_get_property),
+	(clutter_actor_class_init): Add the :reactive property, to
+	control reactiveness using the UI definition files.
+
+	(clutter_actor_reparent): Do not assume the parent is a
+	ClutterContainer, and call the container API only if needed.
+
+	(clutter_actor_destroy): Remove from the parent if needed,
+	just like the documentation says.
+
 2007-10-16  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/pango/pangoclutter-render.c: (tc_get): Provide for blank

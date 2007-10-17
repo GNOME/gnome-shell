@@ -113,7 +113,8 @@ enum
   PROP_NAME,
   PROP_VISIBLE,
   PROP_SCALE_X,
-  PROP_SCALE_Y
+  PROP_SCALE_Y,
+  PROP_REACTIVE
 };
 
 enum
@@ -943,6 +944,12 @@ clutter_actor_set_property (GObject      *object,
 				geom->width, geom->height);
       }
       break;
+    case PROP_REACTIVE:
+      if (g_value_get_boolean (value) == TRUE)
+        clutter_actor_set_reactive (actor);
+      else
+        clutter_actor_unset_reactive (actor);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -1000,6 +1007,10 @@ clutter_actor_get_property (GObject    *object,
     case PROP_SCALE_Y:
       g_value_set_double (value, CLUTTER_FIXED_TO_DOUBLE (priv->scale_y));
       break;
+    case PROP_REACTIVE:
+      g_value_set_boolean (value,
+                           (CLUTTER_ACTOR_IS_REACTIVE (actor) != FALSE));
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -1015,7 +1026,7 @@ clutter_actor_dispose (GObject *object)
 		self->priv->id,
 		g_type_name (G_OBJECT_TYPE (self)));
 
-  if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION))
+ if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION))
     {
       CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_ACTOR_IN_DESTRUCTION);
 
@@ -1139,6 +1150,20 @@ clutter_actor_class_init (ClutterActorClass *klass)
                                    g_param_spec_boolean ("visible",
                                                          "Visible",
                                                          "Whether the actor is visible or not",
+                                                         FALSE,
+                                                         CLUTTER_PARAM_READWRITE));
+  /**
+   * ClutterActor:reactive:
+   *
+   * Whether the actor is reactive to events or not.
+   *
+   * Since: 0.6
+   */
+  g_object_class_install_property (object_class,
+                                   PROP_REACTIVE,
+                                   g_param_spec_boolean ("reactive",
+                                                         "Reactive",
+                                                         "Whether the actor is reactive to events or not",
                                                          FALSE,
                                                          CLUTTER_PARAM_READWRITE));
   /**
@@ -1568,6 +1593,19 @@ void
 clutter_actor_destroy (ClutterActor *self)
 {
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
+
+  if (self->priv->parent_actor)
+    {
+      ClutterActor *parent = self->priv->parent_actor;
+
+      if (CLUTTER_IS_CONTAINER (parent))
+        {
+          g_object_ref (self);
+          clutter_container_remove_actor (CLUTTER_CONTAINER (parent), self);
+        }
+      else
+        self->priv->parent_actor = NULL;
+    }
 
   if (!(CLUTTER_PRIVATE_FLAGS (self) & CLUTTER_ACTOR_IN_DESTRUCTION))
     g_object_run_dispose (G_OBJECT (self));
@@ -2900,9 +2938,16 @@ clutter_actor_reparent (ClutterActor *self,
       g_object_ref (self);
 
       /* FIXME: below assumes only containers can reparent */
-      clutter_container_remove_actor (CLUTTER_CONTAINER (priv->parent_actor),
-				      self);
-      clutter_container_add_actor (CLUTTER_CONTAINER (new_parent), self);
+      if (CLUTTER_IS_CONTAINER (priv->parent_actor))
+        clutter_container_remove_actor (CLUTTER_CONTAINER (priv->parent_actor),
+                                        self);
+      else
+        priv->parent_actor = NULL;
+
+      if (CLUTTER_IS_CONTAINER (new_parent))
+        clutter_container_add_actor (CLUTTER_CONTAINER (new_parent), self);
+      else
+        priv->parent_actor = new_parent;
 
       g_object_unref (self);
 
