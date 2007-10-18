@@ -82,21 +82,24 @@ struct _ClutterScriptClass
   void (*_clutter_reserved8) (void);
 };
 
-GType          clutter_script_get_type       (void) G_GNUC_CONST;
+GType          clutter_script_get_type        (void) G_GNUC_CONST;
 
-ClutterScript *clutter_script_new            (void);
-guint          clutter_script_load_from_file (ClutterScript  *script,
-                                              const gchar    *filename,
-                                              GError        **error);
-guint          clutter_script_load_from_data (ClutterScript  *script,
-                                              const gchar    *data,
-                                              gsize           length,
-                                              GError        **error);
-GObject *      clutter_script_get_object     (ClutterScript  *script,
-                                              const gchar    *name);
-GList *        clutter_script_get_objects    (ClutterScript  *script,
-                                              const gchar    *first_name,
-                                              ...) G_GNUC_NULL_TERMINATED;
+ClutterScript *clutter_script_new             (void);
+guint          clutter_script_load_from_file  (ClutterScript  *script,
+                                               const gchar    *filename,
+                                               GError        **error);
+guint          clutter_script_load_from_data  (ClutterScript  *script,
+                                               const gchar    *data,
+                                               gsize           length,
+                                               GError        **error);
+GObject *      clutter_script_get_object      (ClutterScript  *script,
+                                               const gchar    *name);
+GList *        clutter_script_get_objects     (ClutterScript  *script,
+                                               const gchar    *first_name,
+                                               ...) G_GNUC_NULL_TERMINATED;
+void           clutter_script_unmerge_objects (ClutterScript  *script,
+                                               guint           merge_id);
+void           clutter_script_ensure_objects  (ClutterScript  *script);
 
 G_END_DECLS
 

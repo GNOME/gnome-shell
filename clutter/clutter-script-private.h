@@ -45,7 +45,11 @@ typedef struct {
   GType gtype;
   GObject *object;
 
-  guint is_toplevel : 1;
+  guint merge_id;
+
+  guint is_toplevel    : 1;
+  guint has_unresolved : 1;
+  guint is_unmerged    : 1;
 } ObjectInfo;
 
 typedef struct {

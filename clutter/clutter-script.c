@@ -145,6 +145,7 @@ struct _ClutterScriptPrivate
   GHashTable *objects;
 
   guint last_merge_id;
+  guint last_unknown;
 
   JsonParser *parser;
 
@@ -632,10 +633,24 @@ json_object_end (JsonParser *parser,
   JsonNode *val;
   GList *members, *l;
 
-  /* ignore any non-named object */
   if (!json_object_has_member (object, "id"))
-    return;
+    {
+      gchar *fake;
 
+      if (!json_object_has_member (object, "type"))
+        return;
+
+      fake = g_strdup_printf ("script-%d-%d",
+                              priv->last_merge_id,
+                              priv->last_unknown++);
+
+      val = json_node_new (JSON_NODE_VALUE);
+      json_node_set_string (val, fake);
+      json_object_add_member (object, "id", val);
+
+      g_free (fake);
+    }
+      
   if (!json_object_has_member (object, "type"))
     {
       val = json_object_get_member (object, "id");
@@ -645,6 +660,7 @@ json_object_end (JsonParser *parser,
     }
 
   oinfo = g_slice_new0 (ObjectInfo);
+  oinfo->merge_id = priv->last_merge_id;
   
   val = json_object_get_member (object, "id");
   oinfo->id = json_node_dup_string (val);
@@ -654,13 +670,14 @@ json_object_end (JsonParser *parser,
 
   if (json_object_has_member (object, "type_func"))
     {
-      /* remove "type_func", as it's not usef by anything else */
+      /* remove "type_func", as it's not used by anything else */
       val = json_object_get_member (object, "type_func");
       oinfo->type_func = json_node_dup_string (val);
       json_object_remove_member (object, "type_func");
     }
 
   oinfo->is_toplevel = FALSE;
+  oinfo->is_unmerged = FALSE;
 
   members = json_object_get_members (object);
   for (l = members; l; l = l->next)
@@ -686,9 +703,10 @@ json_object_end (JsonParser *parser,
     }
   g_list_free (members);
 
-  CLUTTER_NOTE (SCRIPT, "Added object `%s' (type:%s) with %d properties",
+  CLUTTER_NOTE (SCRIPT, "Added object `%s' (type:%s, id:%d) with %d properties",
                 oinfo->id,
                 oinfo->class_name,
+                oinfo->merge_id,
                 g_list_length (oinfo->properties));
 
   g_hash_table_replace (priv->objects, g_strdup (oinfo->id), oinfo);
@@ -932,12 +950,13 @@ translate_properties (ClutterScript  *script,
 static void
 apply_behaviours (ClutterScript *script,
                   ClutterActor  *actor,
-                  GList         *behaviours)
+                  ObjectInfo    *oinfo)
 {
   GObject *object;
-  GList *l;
+  GList *l, *unresolved;
 
-  for (l = behaviours; l != NULL; l = l->next)
+  unresolved = NULL;
+  for (l = oinfo->behaviours; l != NULL; l = l->next)
     {
       const gchar *name = l->data;
 
@@ -949,8 +968,12 @@ apply_behaviours (ClutterScript *script,
           oinfo = g_hash_table_lookup (script->priv->objects, name);
           if (oinfo)
             object = clutter_script_construct_object (script, oinfo);
-          else
-            continue;
+        }
+
+      if (!object)
+        {
+          unresolved = g_list_prepend (unresolved, g_strdup (name));
+          continue;
         }
 
       CLUTTER_NOTE (SCRIPT, "Applying behaviour `%s' to actor of type `%s'",
@@ -959,17 +982,23 @@ apply_behaviours (ClutterScript *script,
 
       clutter_behaviour_apply (CLUTTER_BEHAVIOUR (object), actor);
     }
+
+  g_list_foreach (oinfo->behaviours, (GFunc) g_free, NULL);
+  g_list_free (oinfo->behaviours);
+
+  oinfo->behaviours = unresolved;
 }
 
 static void
 add_children (ClutterScript    *script,
               ClutterContainer *container,
-              GList            *children)
+              ObjectInfo       *oinfo)
 {
   GObject *object;
-  GList *l;
+  GList *l, *unresolved;
 
-  for (l = children; l != NULL; l = l->next)
+  unresolved = NULL;
+  for (l = oinfo->children; l != NULL; l = l->next)
     {
       const gchar *name = l->data;
 
@@ -981,8 +1010,12 @@ add_children (ClutterScript    *script,
           oinfo = g_hash_table_lookup (script->priv->objects, name);
           if (oinfo)
             object = clutter_script_construct_object (script, oinfo);
-          else
-            continue;
+        }
+
+      if (!object)
+        {
+          unresolved = g_list_prepend (unresolved, g_strdup (name));
+          continue;
         }
 
       CLUTTER_NOTE (SCRIPT, "Adding children `%s' to actor of type `%s'",
@@ -991,6 +1024,11 @@ add_children (ClutterScript    *script,
 
       clutter_container_add_actor (container, CLUTTER_ACTOR (object));
     }
+
+  g_list_foreach (oinfo->children, (GFunc) g_free, NULL);
+  g_list_free (oinfo->children);
+
+  oinfo->children = unresolved;
 }
 
 static GObject *
@@ -1000,51 +1038,51 @@ construct_stage (ClutterScript *script,
   GObjectClass *oclass = g_type_class_ref (CLUTTER_TYPE_STAGE);
   GList *l;
 
-  if (oinfo->object)
+  if (oinfo->object && !oinfo->has_unresolved)
     return oinfo->object;
 
-  oinfo->object = G_OBJECT (clutter_stage_get_default ());
-
-  for (l = oinfo->properties; l; l = l->next)
+  if (!oinfo->object)
     {
-      PropertyInfo *pinfo = l->data;
-      const gchar *name = pinfo->property_name;
-      GParamSpec *pspec;
-      GValue value = { 0, };
+      oinfo->object = G_OBJECT (clutter_stage_get_default ());
 
-      pspec = g_object_class_find_property (oclass, name);
-      if (!pspec)
+      for (l = oinfo->properties; l; l = l->next)
         {
-          g_warning ("Unknown property `%s' for class `ClutterStage'",
-                     name);
-          continue;
+          PropertyInfo *pinfo = l->data;
+          const gchar *name = pinfo->property_name;
+          GParamSpec *pspec;
+          GValue value = { 0, };
+
+          pspec = g_object_class_find_property (oclass, name);
+          if (!pspec)
+            {
+              g_warning ("Unknown property `%s' for class `ClutterStage'",
+                         name);
+              continue;
+            }
+
+          if (!translate_property (script, G_PARAM_SPEC_VALUE_TYPE (pspec),
+                                   name,
+                                   &pinfo->value,
+                                   &value))
+            {
+              g_warning ("Unable to set property `%s' for class `%s'",
+                         pinfo->property_name,
+                         g_type_name (oinfo->gtype));
+              continue;
+            }
+
+          g_object_set_property (oinfo->object, name, &value);
+          g_value_unset (&value);
         }
 
-      if (!translate_property (script, G_PARAM_SPEC_VALUE_TYPE (pspec),
-                               name,
-                               &pinfo->value,
-                               &value))
-        {
-          g_warning ("Unable to set property `%s' for class `%s'",
-                     pinfo->property_name,
-                     g_type_name (oinfo->gtype));
-          continue;
-        }
-
-      g_object_set_property (oinfo->object, name, &value);
-
-      g_value_unset (&value);
+      g_type_class_unref (oclass);
     }
 
-  g_type_class_unref (oclass);
-
+  /* we know ClutterStage is a ClutterContainer */
   if (oinfo->children)
-    {
-      /* we know ClutterStage is a ClutterContainer */
-      add_children (script,
-                    CLUTTER_CONTAINER (oinfo->object),
-                    oinfo->children);
-    }
+    add_children (script, CLUTTER_CONTAINER (oinfo->object), oinfo);
+
+  oinfo->has_unresolved = (oinfo->children != NULL);
 
   g_object_set_data_full (oinfo->object, "clutter-script-name",
                           g_strdup (oinfo->id),
@@ -1060,7 +1098,7 @@ clutter_script_construct_object (ClutterScript *script,
   guint n_params, i;
   GParameter *params;
 
-  if (oinfo->object)
+  if (oinfo->object && !oinfo->has_unresolved)
     return oinfo->object;
 
   if (oinfo->gtype == G_TYPE_INVALID)
@@ -1081,45 +1119,50 @@ clutter_script_construct_object (ClutterScript *script,
   if (g_type_is_a (oinfo->gtype, CLUTTER_TYPE_STAGE))
     return construct_stage (script, oinfo);
 
-  params = NULL;
-  translate_properties (script, oinfo, &n_params, &params);
-
-  CLUTTER_NOTE (SCRIPT, "Creating instance for type `%s' (params:%d)",
-                g_type_name (oinfo->gtype),
-                n_params);
-
-  oinfo->object = g_object_newv (oinfo->gtype, n_params, params);
-
-  for (i = 0; i < n_params; i++)
+  if (!oinfo->object)
     {
-      GParameter param = params[i];
-      g_value_unset (&param.value);
+      params = NULL;
+      translate_properties (script, oinfo, &n_params, &params);
+
+      CLUTTER_NOTE (SCRIPT, "Creating instance for type `%s' (params:%d)",
+                    g_type_name (oinfo->gtype),
+                    n_params);
+
+      oinfo->object = g_object_newv (oinfo->gtype, n_params, params);
+
+      for (i = 0; i < n_params; i++)
+        {
+          GParameter param = params[i];
+          g_value_unset (&param.value);
+        }
+
+      g_free (params);
+
+      if (CLUTTER_IS_BEHAVIOUR (oinfo->object) ||
+          CLUTTER_IS_TIMELINE (oinfo->object))
+        oinfo->is_toplevel = TRUE;
+
+      if (oinfo->id)
+        g_object_set_data_full (oinfo->object, "clutter-script-name",
+                                g_strdup (oinfo->id),
+                                g_free);
     }
 
-  g_free (params);
-
   if (CLUTTER_IS_CONTAINER (oinfo->object) && oinfo->children)
-    add_children (script, CLUTTER_CONTAINER (oinfo->object), oinfo->children); 
+    add_children (script, CLUTTER_CONTAINER (oinfo->object), oinfo); 
 
   if (CLUTTER_IS_ACTOR (oinfo->object) && oinfo->behaviours)
-    apply_behaviours (script, CLUTTER_ACTOR (oinfo->object), oinfo->behaviours);
+    apply_behaviours (script, CLUTTER_ACTOR (oinfo->object), oinfo);
 
-  if (CLUTTER_IS_BEHAVIOUR (oinfo->object) ||
-      CLUTTER_IS_TIMELINE (oinfo->object))
-    oinfo->is_toplevel = TRUE;
-
-  if (oinfo->id)
-    g_object_set_data_full (oinfo->object, "clutter-script-name",
-                            g_strdup (oinfo->id),
-                            g_free);
+  oinfo->has_unresolved = (oinfo->children || oinfo->behaviours);
 
   return oinfo->object;
 }
 
 static void
-for_each_object (gpointer key,
-                 gpointer value,
-                 gpointer data)
+construct_each_object (gpointer key,
+                       gpointer value,
+                       gpointer data)
 {
   ClutterScript *script = data;
   ObjectInfo *oinfo = value;
@@ -1134,7 +1177,7 @@ json_parse_end (JsonParser *parser,
   ClutterScript *script = user_data;
   ClutterScriptPrivate *priv = script->priv;
 
-  g_hash_table_foreach (priv->objects, for_each_object, script);
+  g_hash_table_foreach (priv->objects, construct_each_object, script);
 }
 
 static void
@@ -1166,7 +1209,16 @@ object_info_free (gpointer data)
       g_list_free (oinfo->behaviours);
 
       if (oinfo->is_toplevel && oinfo->object)
-        g_object_unref (oinfo->object);
+        {
+          g_object_unref (oinfo->object);
+          oinfo->object = NULL;
+        }
+
+      if (oinfo->is_unmerged && oinfo->object)
+        {
+          clutter_actor_destroy (CLUTTER_ACTOR (oinfo->object));
+          oinfo->object = NULL;
+        }
 
       g_slice_free (ObjectInfo, oinfo);
     }
@@ -1247,7 +1299,8 @@ clutter_script_new (void)
  * the currently loaded ones, if any.
  *
  * Return value: on error, zero is returned and @error is set
- *   accordingly. On success, a positive integer is returned.
+ *   accordingly. On success, the merge id for the UI definitions is
+ *   returned. You can use the merge id with clutter_script_unmerge().
  *
  * Since: 0.6
  */
@@ -1267,16 +1320,16 @@ clutter_script_load_from_file (ClutterScript  *script,
   g_free (priv->filename);
   priv->filename = g_strdup (filename);
   priv->is_filename = TRUE;
+  priv->last_merge_id += 1;
 
   internal_error = NULL;
   json_parser_load_from_file (priv->parser, filename, &internal_error);
   if (internal_error)
     {
       g_propagate_error (error, internal_error);
+      priv->last_merge_id -= 1;
       return 0;
     }
-  else
-    priv->last_merge_id += 1;
 
   return priv->last_merge_id;
 }
@@ -1293,7 +1346,8 @@ clutter_script_load_from_file (ClutterScript  *script,
  * the currently loaded ones, if any.
  *
  * Return value: on error, zero is returned and @error is set
- *   accordingly. On success, a positive integer is returned.
+ *   accordingly. On success, the merge id for the UI definitions is
+ *   returned. You can use the merge id with clutter_script_unmerge().
  *
  * Since: 0.6
  */
@@ -1314,16 +1368,16 @@ clutter_script_load_from_data (ClutterScript  *script,
   g_free (priv->filename);
   priv->filename = NULL;
   priv->is_filename = FALSE;
+  priv->last_merge_id += 1;
 
   internal_error = NULL;
   json_parser_load_from_data (priv->parser, data, length, &internal_error);
   if (internal_error)
     {
       g_propagate_error (error, internal_error);
+      priv->last_merge_id -= 1;
       return 0;
     }
-  else
-    priv->last_merge_id += 1;
 
   return priv->last_merge_id;
 }
@@ -1407,6 +1461,84 @@ clutter_script_get_objects (ClutterScript *script,
   va_end (var_args);
 
   return retval;
+}
+
+typedef struct {
+  ClutterScript *script;
+  guint merge_id;
+  GSList *ids;
+} UnmergeData;
+
+static void
+remove_by_merge_id (gpointer key,
+                    gpointer value,
+                    gpointer data)
+{
+  gchar *name = key;
+  ObjectInfo *oinfo = value;
+  UnmergeData *unmerge_data = data;
+
+  if (oinfo->merge_id == unmerge_data->merge_id)
+    {
+      unmerge_data->ids = g_slist_prepend (unmerge_data->ids, g_strdup (name));
+      oinfo->is_unmerged = TRUE;
+    }
+}
+
+/**
+ * clutter_script_unmerge_objects:
+ * @script: a #ClutterScript
+ * @merge_id: merge id returned when loading a UI definition
+ *
+ * Unmerges the objects identified by @merge_id.
+ *
+ * Since: 0.6
+ */
+void
+clutter_script_unmerge_objects (ClutterScript *script,
+                                guint          merge_id)
+{
+  ClutterScriptPrivate *priv;
+  UnmergeData data;
+  GSList *l;
+
+  g_return_if_fail (CLUTTER_IS_SCRIPT (script));
+  g_return_if_fail (merge_id > 0);
+
+  priv = script->priv;
+
+  data.script = script;
+  data.merge_id = merge_id;
+  data.ids = NULL;
+  g_hash_table_foreach (priv->objects, remove_by_merge_id, &data);
+
+  for (l = data.ids; l != NULL; l = l->next)
+    g_hash_table_remove (priv->objects, l->data);
+
+  g_slist_foreach (data.ids, (GFunc) g_free, NULL);
+  g_slist_free (data.ids);
+
+  clutter_script_ensure_objects (script);
+}
+
+/**
+ * clutter_script_ensure_object:
+ * @script: a #ClutterScript
+ *
+ * Ensure that every object defined inside @script is correctly
+ * constructed. You should rarely need to use this function.
+ *
+ * Since: 0.6
+ */
+void
+clutter_script_ensure_objects (ClutterScript *script)
+{
+  ClutterScriptPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_SCRIPT (script));
+
+  priv = script->priv;
+  g_hash_table_foreach (priv->objects, construct_each_object, script);  
 }
 
 gboolean
@@ -1536,16 +1668,6 @@ clutter_script_flags_from_string (GType        type,
     }
 
   return ret;
-}
-
-gboolean
-clutter_script_value_from_data (ClutterScript  *script,
-                                GType           gtype,
-                                const gchar    *data,
-                                GValue         *value,
-                                GError        **error)
-{
-  return FALSE;
 }
 
 GQuark

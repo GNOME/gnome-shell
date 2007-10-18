@@ -1098,6 +1098,8 @@ clutter_script_load_from_data
 clutter_script_load_from_file
 clutter_script_get_object
 clutter_script_get_objects
+clutter_script_unmerge_objects
+clutter_script_ensure_objects
 <SUBSECTION Standard>
 CLUTTER_TYPE_SCRIPT
 CLUTTER_SCRIPT

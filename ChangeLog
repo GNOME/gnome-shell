@@ -1,3 +1,29 @@
+2007-10-18  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-script-private.h:
+	* clutter/clutter-script.h:
+	* clutter/clutter-script.c: Allow id-less objects: as long
+	as they have a "type" member, a unique id will be provided.
+
+	(json_object_end): Add merge id to the object information
+	structure.
+
+	(apply_behaviours), (add_children): Keep the unresolved
+	objects around.
+
+	(construct_stage), (clutter_script_construct_object): If an
+	object has unresolved children or behaviours try resolving
+	them when we ask for it.
+
+	(json_parse_end), (clutter_script_ensure_objects): Ensure
+	that the objects are fully constructed as best as we can when
+	finished parsing.
+
+	(object_info_free), (remove_by_merge_id):
+	(clutter_script_unmerge_objects): Remove objects under the
+	same merge id returned by the loading functions. (Fixes
+	bug #558)
+
 2007-10-18  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-score.c:
