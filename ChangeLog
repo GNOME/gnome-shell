@@ -24,6 +24,10 @@
 	same merge id returned by the loading functions. (Fixes
 	bug #558)
 
+	* test/test-script.c:
+	* test/test-script.json: Test unresolved merging and unmerging
+	in ClutterScript.
+
 2007-10-18  Matthew Allum  <mallum@openedhand.com>
 
 	* clutter/clutter-score.c:
