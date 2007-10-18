@@ -1,3 +1,9 @@
+2007-10-18  Øyvind Kolås  <pippin@o-hand.com>
+
+	* clutter/clutter-timeline.c: (clutter_timeline_set_duration):
+	rearranged arithemetic to allow specifying duration with sub second
+	precision (also enables durations smaller than one second).
+
 2007-10-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-script-private.h:

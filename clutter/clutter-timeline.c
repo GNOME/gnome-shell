@@ -1044,8 +1044,7 @@ clutter_timeline_set_duration (ClutterTimeline *timeline,
 
       priv->duration = msecs;
 
-      priv->n_frames = priv->duration / 1000
-                       * priv->fps;
+      priv->n_frames = priv->duration * priv->fps / 1000;
 
       g_object_notify (G_OBJECT (timeline), "num-frames");
       g_object_notify (G_OBJECT (timeline), "duration");
