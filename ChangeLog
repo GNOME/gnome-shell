@@ -1,3 +1,8 @@
+2007-10-19  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-entry.c (clutter_entry_paint): Fixed off by
+	one error. (#566, Gwenole Beauchesne)
+
 2007-10-18  Øyvind Kolås  <pippin@o-hand.com>
 
 	* clutter/clutter-timeline.c: (clutter_timeline_set_duration):

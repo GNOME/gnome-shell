@@ -426,7 +426,7 @@ clutter_entry_paint (ClutterActor *self)
         }
       else
         {
-           if (priv->text_x < 0)
+           if (priv->text_x <= 0)
              {
                gint diff = -1 * priv->text_x;
 
