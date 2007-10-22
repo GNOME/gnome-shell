@@ -84,6 +84,7 @@ struct _ClutterLabelPrivate
   ClutterColor          fgcol;
 
   ClutterLayoutFlags    layout_flags;
+  ClutterActorBox       allocation;
   
   gchar                *text;
   gchar                *font_name;
@@ -275,6 +276,9 @@ clutter_label_paint (ClutterActor *self)
       return;
     }
 
+  CLUTTER_NOTE (PAINT, "painting label (text:`%s')",
+                priv->text);
+
   clutter_label_ensure_layout (label, clutter_actor_get_width (self));
 
   priv->fgcol.alpha = clutter_actor_get_opacity(self);
@@ -306,8 +310,27 @@ static void
 clutter_label_request_coords (ClutterActor        *self,
 			      ClutterActorBox     *box)
 {
-  /* do we need to do anything ? */
-  clutter_label_clear_layout (CLUTTER_LABEL (self));
+  ClutterLabel *label = CLUTTER_LABEL (self);
+  ClutterLabelPrivate *priv = label->priv;
+
+  if (priv->ellipsize)
+    {
+      if (priv->layout)
+        {
+          gint width;
+          PangoRectangle logical;
+
+          width = CLUTTER_UNITS_TO_INT (box->x2 - box->x1) * PANGO_SCALE;
+
+          pango_layout_set_width (priv->layout, -1);
+          pango_layout_get_extents (priv->layout, NULL, &logical);
+
+          if (logical.width > width)
+            pango_layout_set_width (priv->layout, width);
+        }
+    }
+  else
+    clutter_label_clear_layout (label);
 }
 
 static void 

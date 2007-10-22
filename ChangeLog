@@ -1,5 +1,12 @@
 2007-10-22  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-label.c (clutter_label_request_coords): If
+	we get a size requisition, and we have ellipsization active,
+	check if we are getting less space than what the layout needs
+	and recompute the width.
+
+2007-10-22  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-color.c (clutter_color_to_string): Change
 	the print format to "%02x%02x%02x%02x" because we use guint8
 	for each component, not guint16.
