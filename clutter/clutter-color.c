@@ -541,7 +541,7 @@ clutter_color_to_string (const ClutterColor *color)
 {
   g_return_val_if_fail (color != NULL, NULL);
 
-  return g_strdup_printf ("#%04x%04x%04x%04x",
+  return g_strdup_printf ("#%02x%02x%02x%02x",
                           color->red,
                           color->green,
                           color->blue,
