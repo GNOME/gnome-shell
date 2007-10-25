@@ -46,18 +46,24 @@
 
 #include "clutter-actor.h"
 #include "clutter-behaviour.h"
-#include "clutter-marshal.h"
+#include "clutter-behaviour-path.h"
+#include "clutter-debug.h"
 #include "clutter-enum-types.h"
 #include "clutter-main.h"
-#include "clutter-behaviour-path.h"
+#include "clutter-marshal.h"
 #include "clutter-private.h"
-#include "clutter-debug.h"
+#include "clutter-scriptable.h"
+#include "clutter-script-private.h"
 
 #include <math.h>
 
-G_DEFINE_TYPE (ClutterBehaviourPath, 
-               clutter_behaviour_path,
-	       CLUTTER_TYPE_BEHAVIOUR);
+static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterBehaviourPath, 
+                         clutter_behaviour_path,
+	                 CLUTTER_TYPE_BEHAVIOUR,
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                clutter_scriptable_iface_init));
 
 struct _ClutterBehaviourPathPrivate
 {
@@ -327,6 +333,81 @@ clutter_behaviour_path_init (ClutterBehaviourPath *self)
   ClutterBehaviourPathPrivate *priv;
 
   self->priv = priv = CLUTTER_BEHAVIOUR_PATH_GET_PRIVATE (self);
+}
+
+static void
+clutter_behaviour_path_set_custom_property (ClutterScriptable *scriptable,
+                                            ClutterScript     *script,
+                                            const gchar       *name,
+                                            const GValue      *value)
+{
+  if (strcmp (name, "knots") == 0)
+    {
+      ClutterBehaviourPath *path = CLUTTER_BEHAVIOUR_PATH (scriptable);
+      GSList *knots, *l;
+
+      if (!G_VALUE_HOLDS (value, G_TYPE_POINTER))
+        return;
+
+      knots = g_value_get_pointer (value);
+      for (l = knots; l != NULL; l = l->next)
+        {
+          ClutterKnot *knot = l->data;
+
+          clutter_behaviour_path_append_knot (path, knot);
+          clutter_knot_free (knot);
+        }
+
+      g_slist_free (knots);
+    }
+  else
+    g_object_set_property (G_OBJECT (scriptable), name, value);
+}
+
+static gboolean
+clutter_behaviour_path_parse_custom_node (ClutterScriptable *scriptable,
+                                          ClutterScript     *script,
+                                          GValue            *value,
+                                          const gchar       *name,
+                                          JsonNode          *node)
+{
+  if (strcmp (name, "knots") == 0)
+    {
+      JsonArray *array;
+      guint knots_len, i;
+      GSList *knots = NULL;
+
+      array = json_node_get_array (node);
+      knots_len = json_array_get_length (array);
+      
+      for (i = 0; i < knots_len; i++)
+        {
+          JsonNode *val = json_array_get_element (array, i);
+          ClutterKnot knot = { 0, };
+
+          if (clutter_script_parse_knot (script, val, &knot))
+            {
+              CLUTTER_NOTE (SCRIPT, "parsed knot [ x:%d, y:%d ]",
+                            knot.x, knot.y);
+
+              knots = g_slist_prepend (knots, clutter_knot_copy (&knot));
+            }
+        }
+
+      g_value_init (value, G_TYPE_POINTER);
+      g_value_set_pointer (value, knots);
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static void
+clutter_scriptable_iface_init (ClutterScriptableIface *iface)
+{
+  iface->parse_custom_node = clutter_behaviour_path_parse_custom_node;
+  iface->set_custom_property = clutter_behaviour_path_set_custom_property;
 }
 
 /**

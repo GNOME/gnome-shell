@@ -1,5 +1,10 @@
 2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-behaviour-path.c: Implement the
+	ClutterScriptableIface to parse the custom "knots" property.
+
+2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-texture.c (clutter_texture_set_property): Do
 	not try to set NULL pixbufs.
 
