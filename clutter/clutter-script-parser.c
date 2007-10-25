@@ -284,6 +284,8 @@ get_units_from_node (JsonNode *node)
       break;
     }
 
+  g_value_unset (&value);
+
   return retval;
 }
 

@@ -1,5 +1,10 @@
 2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-script-parser.c: Unset the GValue when
+	getting a ClutterUnit from a JSON node.
+
+2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-behaviour-bspline.c: Implement the
 	ClutterScriptableIface to parse the custom "knots" property.
 
