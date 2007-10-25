@@ -1,5 +1,9 @@
 2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/cogl/cogl.h: Do not include <clutter/clutter.h>.
+
+2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-behaviour-path.c: Implement the
 	ClutterScriptableIface to parse the custom "knots" property.
 
