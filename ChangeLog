@@ -1,5 +1,10 @@
 2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-behaviour-bspline.c: Implement the
+	ClutterScriptableIface to parse the custom "knots" property.
+
+2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* tests/test-script.c:
 	* tests/test-script.json: Rejig the test case and add a
 	path behaviour to test the knot parsing code.

@@ -46,11 +46,13 @@
  * Since: 0.4
  */
 
-#include "clutter-fixed.h"
-#include "clutter-marshal.h"
 #include "clutter-behaviour-bspline.h"
 #include "clutter-debug.h"
+#include "clutter-fixed.h"
+#include "clutter-marshal.h"
 #include "clutter-private.h"
+#include "clutter-scriptable.h"
+#include "clutter-script-private.h"
 
 #include <stdlib.h>
 #include <memory.h>
@@ -451,9 +453,13 @@ clutter_bezier_adjust (ClutterBezier * b, ClutterKnot * knot, guint indx)
  *                                                                          *
  ****************************************************************************/
 
-G_DEFINE_TYPE (ClutterBehaviourBspline, 
-               clutter_behaviour_bspline,
-	       CLUTTER_TYPE_BEHAVIOUR);
+static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (ClutterBehaviourBspline, 
+                         clutter_behaviour_bspline,
+	                 CLUTTER_TYPE_BEHAVIOUR,
+                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                clutter_scriptable_iface_init));
 
 #define CLUTTER_BEHAVIOUR_BSPLINE_GET_PRIVATE(obj)    \
               (G_TYPE_INSTANCE_GET_PRIVATE ((obj),    \
@@ -629,6 +635,83 @@ clutter_behaviour_bspline_init (ClutterBehaviourBspline * self)
   priv->splines = g_array_new (FALSE, FALSE, sizeof (ClutterBezier *));
   priv->point_stack = g_array_new (FALSE, FALSE, sizeof (ClutterKnot *));
   priv->length  = 0;
+}
+
+static void
+clutter_behaviour_bspline_set_custom_property (ClutterScriptable *scriptable,
+                                               ClutterScript     *script,
+                                               const gchar       *name,
+                                               const GValue      *value)
+{
+  if (strcmp (name, "knots") == 0)
+    {
+      ClutterBehaviourBspline *bspline;
+      GSList *knots, *l;
+
+      if (!G_VALUE_HOLDS (value, G_TYPE_POINTER))
+        return;
+
+      bspline = CLUTTER_BEHAVIOUR_BSPLINE (scriptable); 
+
+      knots = g_value_get_pointer (value);
+      for (l = knots; l != NULL; l = l->next)
+        {
+          ClutterKnot *knot = l->data;
+
+          clutter_behaviour_bspline_append_knot (bspline, knot);
+          clutter_knot_free (knot);
+        }
+
+      g_slist_free (knots);
+    }
+  else
+    g_object_set_property (G_OBJECT (scriptable), name, value);
+}
+
+static gboolean
+clutter_behaviour_bspline_parse_custom_node (ClutterScriptable *scriptable,
+                                             ClutterScript     *script,
+                                             GValue            *value,
+                                             const gchar       *name,
+                                             JsonNode          *node)
+{
+  if (strcmp (name, "knots") == 0)
+    {
+      JsonArray *array;
+      guint knots_len, i;
+      GSList *knots = NULL;
+
+      array = json_node_get_array (node);
+      knots_len = json_array_get_length (array);
+      
+      for (i = 0; i < knots_len; i++)
+        {
+          JsonNode *val = json_array_get_element (array, i);
+          ClutterKnot knot = { 0, };
+
+          if (clutter_script_parse_knot (script, val, &knot))
+            {
+              CLUTTER_NOTE (SCRIPT, "parsed knot [ x:%d, y:%d ]",
+                            knot.x, knot.y);
+
+              knots = g_slist_prepend (knots, clutter_knot_copy (&knot));
+            }
+        }
+
+      g_value_init (value, G_TYPE_POINTER);
+      g_value_set_pointer (value, knots);
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static void
+clutter_scriptable_iface_init (ClutterScriptableIface *iface)
+{
+  iface->parse_custom_node = clutter_behaviour_bspline_parse_custom_node;
+  iface->set_custom_property = clutter_behaviour_bspline_set_custom_property;
 }
 
 /**
