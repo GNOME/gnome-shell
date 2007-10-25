@@ -1,3 +1,15 @@
+2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter/clutter-json.h: Header for including the JSON
+	parsing and data types.
+
+	* clutter/json/json-types.h: Add JSON_NODE_VALUE_TYPE() macro.
+
+	* clutter/json/Makefile.am: Install the JSON headers into a
+	private location. This might change in the future, and might
+	also cause collisions if you're using JSON-GLib and Clutter
+	at the same time, so be warned.
+
 2007-10-22  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter/clutter-label.c (clutter_label_request_coords): If

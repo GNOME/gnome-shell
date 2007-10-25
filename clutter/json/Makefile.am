@@ -24,3 +24,5 @@ INCLUDES = \
 	$(CLUTTER_CFLAGS) \
 	$(CLUTTER_DEBUG_CFLAGS)
 
+clutterjsondir = $(includedir)/clutter-@CLUTTER_MAJORMINOR@/clutter/json
+clutterjson_HEADERS = $(source_h)

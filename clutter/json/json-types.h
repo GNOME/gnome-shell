@@ -30,7 +30,11 @@ G_BEGIN_DECLS
  *
  * Evaluates to the #JsonNodeType contained by @node
  */
-#define JSON_NODE_TYPE(node)    (((JsonNode *) (node))->type)
+#define JSON_NODE_TYPE(node)            \
+        (((JsonNode *) (node))->type)
+#define JSON_NODE_VALUE_TYPE(node)      \
+        (G_VALUE_TYPE ((((JsonNode *) (node))->data.value))
+
 #define JSON_TYPE_OBJECT        (json_object_get_type ())
 #define JSON_TYPE_ARRAY         (json_array_get_type ())
 
