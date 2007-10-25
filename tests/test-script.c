@@ -26,9 +26,17 @@ static const gchar *test_behaviour =
 "  {"
 "    \"id\" : \"main-timeline\","
 "    \"type\" : \"ClutterTimeline\","
-"    \"num-frames\" : 300,"
-"    \"fps\" : 60,"
+"    \"duration\" : 5000,"
 "    \"loop\" : true"
+"  },"
+"  {"
+"    \"id\"          : \"path-behaviour\","
+"    \"type\"        : \"ClutterBehaviourPath\","
+"    \"knots\"       : [ [ 50, 50 ], { \"x\" : 100, \"y\" : 100 } ],"
+"    \"alpha\"       : {"
+"      \"timeline\" : \"main-timeline\","
+"      \"function\" : \"ramp\""
+"    }"
 "  },"
 "  {"
 "    \"id\"          : \"rotate-behaviour\","
@@ -58,13 +66,35 @@ blue_button_press (ClutterActor       *actor,
                    ClutterButtonEvent *event,
                    gpointer            data)
 {
+  g_print ("[*] Unmerging objects with merge id: %d\n", merge_id);
+
   clutter_script_unmerge_objects (script, merge_id);
+
+  return TRUE;
+}
+
+static gboolean
+red_button_press (ClutterActor *actor,
+                  ClutterButtonEvent *event,
+                  gpointer            data)
+{
+  GObject *timeline;
+
+  timeline = clutter_script_get_object (script, "main-timeline");
+  g_assert (CLUTTER_IS_TIMELINE (timeline));
+
+  if (!clutter_timeline_is_playing (CLUTTER_TIMELINE (timeline)))
+    clutter_timeline_start (CLUTTER_TIMELINE (timeline));
+  else
+    clutter_timeline_pause (CLUTTER_TIMELINE (timeline));
+
+  return TRUE;
 }
 
 int
 main (int argc, char *argv[])
 {
-  GObject *stage, *timeline, *blue_button;
+  GObject *stage, *timeline, *blue_button, *red_button;
   GError *error = NULL;
 
   clutter_init (&argc, &argv);
@@ -105,14 +135,17 @@ main (int argc, char *argv[])
   stage = clutter_script_get_object (script, "main-stage");
   clutter_actor_show (CLUTTER_ACTOR (stage));
 
+  red_button = clutter_script_get_object (script, "red-button");
+  g_signal_connect (red_button,
+                    "button-press-event",
+                    G_CALLBACK (red_button_press),
+                    NULL);
+
   blue_button = clutter_script_get_object (script, "blue-button");
   g_signal_connect (blue_button,
                     "button-press-event",
                     G_CALLBACK (blue_button_press),
                     NULL);
-
-  timeline = clutter_script_get_object (script, "main-timeline");
-  clutter_timeline_start (CLUTTER_TIMELINE (timeline));
 
   clutter_main ();
 

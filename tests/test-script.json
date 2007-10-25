@@ -4,7 +4,7 @@
     "type" : "ClutterStage",
     "color" : "white",
     "width" : 500,
-    "height" : 200,
+    "height" : 400,
     "children" : [
       {
         "id" : "red-button",
@@ -15,6 +15,8 @@
         "width" : 100,
         "height" : 100,
         "visible" : true,
+        "reactive" : true,
+        "behaviours" : [ "fade-behaviour", "path-behaviour" ]
       },
       {
         "id" : "green-button",
@@ -25,7 +27,7 @@
         "width" : 100,
         "height" : 100,
         "visible" : true,
-        "behaviours" : [ "fade-behaviour" ]
+        "reactive" : true
       }, 
       {
         "id" : "red-hand",
@@ -37,7 +39,21 @@
         "visible" : true,
         "behaviours" : [ "rotate-behaviour", "fade-behaviour" ]
       },
-      "blue-button"
+      {
+        "id" : "label",
+        "type" : "ClutterLabel",
+        "x" : 50,
+        "y" : 200,
+        "width" : 400,
+        "text" : "Clutter\tScript",
+        "font-name" : "Sans 24px",
+        "color" : "black",
+        "alignment" : "center",
+        "wrap" : false,
+        "ellipsize" : "none",
+        "visible" : true
+      }
+      "blue-button",
     ]
   }
 }

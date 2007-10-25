@@ -1,5 +1,11 @@
 2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* tests/test-script.c:
+	* tests/test-script.json: Rejig the test case and add a
+	path behaviour to test the knot parsing code.
+
+2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/cogl/cogl.h: Do not include <clutter/clutter.h>.
 
 2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
