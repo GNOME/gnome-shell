@@ -1113,3 +1113,21 @@ ClutterScriptPrivate
 clutter_script_get_type
 clutter_script_error_quark
 </SECTION>
+
+<SECTION>
+<FILE>clutter-scriptable</FILE>
+<TITLE>ClutterScriptable</TITLE>
+ClutterScriptableIface
+clutter_scriptable_set_name
+clutter_scriptable_get_name
+clutter_scriptable_parse_custom_node
+clutter_scriptable_set_custom_property
+<SUBSECTION Standard>
+CLUTTER_TYPE_SCRIPTABLE
+CLUTTER_SCRIPTABLE
+CLUTTER_IS_SCRIPTABLE
+CLUTTER_SCRIPTABLE_GET_IFACE
+<SUBSECTION Private>
+ClutterScriptable
+clutter_scriptable_get_type
+</SECTION>

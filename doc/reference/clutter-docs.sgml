@@ -106,7 +106,6 @@
   <part id="clutteranimation">
     <title>Clutter Animation Support</title>
 
-    
     <chapter>
       <title>Base Classes</title>
 
@@ -128,7 +127,7 @@
     </chapter>
 
     <chapter>
-      <title>Simple Effects</title>
+      <title>Simple Effects API</title>
 
       <xi:include href="xml/clutter-effect.xml"/>
     </chapter>
@@ -138,14 +137,24 @@
   <part>
     <title>Clutter Tools</title>
 
-    <xi:include href="xml/clutter-main.xml"/>
-    <xi:include href="xml/clutter-event.xml"/>
-    <xi:include href="xml/clutter-color.xml"/>
-    <xi:include href="xml/clutter-util.xml"/>
-    <xi:include href="xml/clutter-fixed.xml"/>
-    <xi:include href="xml/clutter-version.xml"/>
-    <xi:include href="xml/clutter-units.xml"/>
-    <xi:include href="xml/clutter-script.xml"/>
+    <chapter>
+      <title>General Purpose API</title>
+
+      <xi:include href="xml/clutter-main.xml"/>
+      <xi:include href="xml/clutter-event.xml"/>
+      <xi:include href="xml/clutter-color.xml"/>
+      <xi:include href="xml/clutter-util.xml"/>
+      <xi:include href="xml/clutter-fixed.xml"/>
+      <xi:include href="xml/clutter-version.xml"/>
+      <xi:include href="xml/clutter-units.xml"/>
+    </chapter>
+
+    <chapter>
+      <title>User Interface Definition</title>
+
+      <xi:include href="xml/clutter-script.xml"/>
+      <xi:include href="xml/clutter-scriptable.xml"/>
+    </chapter>
   </part>
 
   <part>

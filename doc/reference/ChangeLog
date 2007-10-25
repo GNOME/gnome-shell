@@ -1,3 +1,9 @@
+2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
+	* clutter.types:
+	* clutter-sections.txt:
+	* clutter-docs.sgml: Add new ClutterScriptable API.
+
 2007-10-18  Emmanuele Bassi  <ebassi@openedhand.com>
 
 	* clutter-sections.txt: Add new ClutterScript API.
