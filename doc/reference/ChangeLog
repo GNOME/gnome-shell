@@ -1,5 +1,9 @@
 2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* Makefile.am: Ignore clutter-json.h header.
+
+2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter.types:
 	* clutter-sections.txt:
 	* clutter-docs.sgml: Add new ClutterScriptable API.
