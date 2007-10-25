@@ -1,5 +1,26 @@
 2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-actor.c: Implement part of the ClutterScriptable
+	interface, using the ClutterActor API to set and get the name
+	of an actor.
+
+	(clutter_geometry_copy), (clutter_geometry_free): Use
+	the slice allocator to avoid fragmentation when setting
+	properties and emitting signals (that is: when packing
+	boxed types into GValues).
+
+	(clutter_actor_box_copy), (clutter_actor_box_free),
+	(clutter_vertex_copy), (clutter_vertex_free): Ditto.
+
+	* clutter/clutter-actor.h:
+	* clutter/clutter-actor.c:
+	(clutter_actor_push_transform_child),
+	(clutter_actor_pop_transfomr_child): Simple wrappers around
+	COGL API, which avoid including clutter/cogl.h when writing
+	container actors outside Clutter.
+
+2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/Makefile.am:
 	* clutter/clutter.h:
 	* clutter/clutter-scriptable.[ch]: Add the ClutterScriptable

@@ -56,7 +56,7 @@
  *   phase transversing back up via parents to the stage. An event
  *   handler can abort this chain at point by returning
  *   %TRUE.</para></listitem> 
- *   </orderedlist>
+ * </orderedlist>
  */
 
 #ifdef HAVE_CONFIG_H
@@ -67,15 +67,21 @@
 #include "clutter-container.h"
 #include "clutter-main.h"
 #include "clutter-enum-types.h"
+#include "clutter-scriptable.h"
+#include "clutter-script.h"
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 #include "clutter-debug.h"
 #include "clutter-units.h"
 #include "cogl.h"
 
-G_DEFINE_ABSTRACT_TYPE (ClutterActor,
-			clutter_actor,
-			G_TYPE_INITIALLY_UNOWNED);
+static void clutter_scriptable_iface_init (ClutterScriptableIface *iface);
+
+G_DEFINE_ABSTRACT_TYPE_WITH_CODE (ClutterActor,
+                                  clutter_actor,
+                                  G_TYPE_INITIALLY_UNOWNED,
+                                  G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_SCRIPTABLE,
+                                                         clutter_scriptable_iface_init));
 
 static guint32 __id = 0;
 
@@ -141,11 +147,31 @@ enum
 
 static guint actor_signals[LAST_SIGNAL] = { 0, };
 
-static
-void _clutter_actor_apply_modelview_transform (ClutterActor * self);
+static void
+clutter_actor_scriptable_set_name (ClutterScriptable *scriptable,
+                                   const gchar       *name)
+{
+  clutter_actor_set_name (CLUTTER_ACTOR (scriptable), name);
+}
 
-static
-void _clutter_actor_apply_modelview_transform_recursive (ClutterActor * self);
+static const gchar *
+clutter_actor_scriptable_get_name (ClutterScriptable *scriptable)
+{
+  return clutter_actor_get_name (CLUTTER_ACTOR (scriptable));
+}
+
+static void
+clutter_scriptable_iface_init (ClutterScriptableIface *iface)
+{
+  iface->set_name = clutter_actor_scriptable_set_name;
+  iface->get_name = clutter_actor_scriptable_get_name;
+}
+
+static void
+_clutter_actor_apply_modelview_transform (ClutterActor * self);
+
+static void
+_clutter_actor_apply_modelview_transform_recursive (ClutterActor * self);
 
 static gboolean
 redraw_update_idle (gpointer data)
@@ -3203,18 +3229,67 @@ clutter_actor_is_reactive (ClutterActor *actor)
   return CLUTTER_ACTOR_IS_REACTIVE (actor);
 }
 
+/**
+ * clutter_actor_push_transform_child:
+ *
+ * Makes all the children follow the parent's transformation matrix
+ * until clutter_actor_pop_transform_child().
+ *
+ * This function should be used by every actor with children inside
+ * its paint function, in order to make its children transform (that is:
+ * rotate, scale, etc.) with its parent, like:
+ *
+ * <informalexample><programlisting>
+ * clutter_actor_push_transform_child (<!-- -->);
+ * for (l = my_actor-&gt;children; l != NULL; l = l-&gt;next)
+ *   {
+ *     ClutterActor *actor = l-&gt;data;
+ *     clutter_actor_paint (child);
+ *   }
+ * clutter_actor_pop_transform_child (<!-- -->);
+ * </programlisting></informalexample>
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_push_transform_child (void)
+{
+  cogl_push_matrix ();
+}
+
+/**
+ * clutter_actor_pop_transform_child:
+ *
+ * Cancels the effects of a previous clutter_actor_push_transform_child()
+ * call.
+ *
+ * Since: 0.6
+ */
+void
+clutter_actor_pop_transform_child (void)
+{
+  cogl_pop_matrix ();
+}
+
 /*
- * ClutterGemoetry
+ * ClutterGeometry
  */
 
 static ClutterGeometry*
 clutter_geometry_copy (const ClutterGeometry *geometry)
 {
-  ClutterGeometry *result = g_new (ClutterGeometry, 1);
+  ClutterGeometry *result = g_slice_new (ClutterGeometry);
 
   *result = *geometry;
 
   return result;
+}
+
+static void
+clutter_geometry_free (ClutterGeometry *geometry)
+{
+  if (G_LIKELY (geometry))
+    g_slice_free (ClutterGeometry, geometry);
 }
 
 GType
@@ -3226,7 +3301,7 @@ clutter_geometry_get_type (void)
     our_type = g_boxed_type_register_static
                    (g_intern_static_string ("ClutterGeometry"),
 		    (GBoxedCopyFunc) clutter_geometry_copy,
-		    (GBoxedFreeFunc) g_free);
+		    (GBoxedFreeFunc) clutter_geometry_free);
 
   return our_type;
 }
@@ -3238,11 +3313,18 @@ clutter_geometry_get_type (void)
 static ClutterVertex *
 clutter_vertex_copy (const ClutterVertex *vertex)
 {
-  ClutterVertex *result = g_new (ClutterVertex, 1);
+  ClutterVertex *result = g_slice_new (ClutterVertex);
 
   *result = *vertex;
 
   return result;
+}
+
+static void
+clutter_vertex_free (ClutterVertex *vertex)
+{
+  if (G_UNLIKELY (vertex))
+    g_slice_free (ClutterVertex, vertex);
 }
 
 GType
@@ -3254,7 +3336,7 @@ clutter_vertex_get_type (void)
     our_type = g_boxed_type_register_static
                    (g_intern_static_string ("ClutterVertex"),
 		    (GBoxedCopyFunc) clutter_vertex_copy,
-		    (GBoxedFreeFunc) g_free);
+		    (GBoxedFreeFunc) clutter_vertex_free);
 
   return our_type;
 }
@@ -3265,11 +3347,18 @@ clutter_vertex_get_type (void)
 static ClutterActorBox *
 clutter_actor_box_copy (const ClutterActorBox *box)
 {
-  ClutterActorBox *result = g_new (ClutterActorBox, 1);
+  ClutterActorBox *result = g_slice_new (ClutterActorBox);
 
   *result = *box;
 
   return result;
+}
+
+static void
+clutter_actor_box_free (ClutterActorBox *box)
+{
+  if (G_LIKELY (box))
+    g_slice_free (ClutterActorBox, box);
 }
 
 GType
@@ -3281,7 +3370,6 @@ clutter_actor_box_get_type (void)
     our_type = g_boxed_type_register_static
                    (g_intern_static_string ("ClutterActorBox"),
 		    (GBoxedCopyFunc) clutter_actor_box_copy,
-		    (GBoxedFreeFunc) g_free);
+		    (GBoxedFreeFunc) clutter_actor_box_free);
   return our_type;
 }
-

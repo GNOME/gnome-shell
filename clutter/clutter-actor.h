@@ -366,6 +366,9 @@ void                  clutter_actor_apply_transform_to_point (ClutterActor      
 						              ClutterVertex         *point,
 							      ClutterVertex         *vertex);
 
+void                  clutter_actor_push_transform_child     (void);
+void                  clutter_actor_pop_transform_child      (void);
+
 /* Per actor event handling - may change  */
 gboolean
 clutter_actor_event (ClutterActor *actor,
