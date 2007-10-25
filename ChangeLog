@@ -1,5 +1,13 @@
 2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-behaviour-path.c: Reverse the list of
+	parsed knots, to preserve the real ordering after prepending
+	them (thanks to Øyvind for spotting this).
+
+	* clutter/clutter-behaviour-bspline.c: Ditto as above.
+
+2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-script-parser.c: Unset the GValue when
 	getting a ClutterUnit from a JSON node.
 

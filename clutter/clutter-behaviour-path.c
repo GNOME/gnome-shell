@@ -395,7 +395,7 @@ clutter_behaviour_path_parse_custom_node (ClutterScriptable *scriptable,
         }
 
       g_value_init (value, G_TYPE_POINTER);
-      g_value_set_pointer (value, knots);
+      g_value_set_pointer (value, g_slist_reverse (knots));
 
       return TRUE;
     }
