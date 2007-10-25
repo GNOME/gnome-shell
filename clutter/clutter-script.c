@@ -39,6 +39,12 @@
  * and the class type to be instanciated. Every other attribute will
  * be mapped to the class properties.
  *
+ * A #ClutterScript holds a reference on every object it creates from
+ * the definition data, except for the stage. Every non-actor object
+ * will be finalized when the #ClutterScript instance holding it will
+ * be finalized, so they need to be referenced using g_object_ref() in
+ * order for them to survive.
+ *
  * A simple object might be defined as:
  *
  * <programlisting>
@@ -64,7 +70,8 @@
  *
  * Packing can be represented using the "children" member, and passing an
  * array of objects or ids of objects already defined (but not packed: the
- * packing rules of Clutter still apply).
+ * packing rules of Clutter still apply, and an actor cannot be packed
+ * in multiple containers without unparenting it in between).
  *
  * Behaviours and timelines can also be defined inside a UI definition
  * buffer:
@@ -94,6 +101,15 @@
  *   "behaviours" : [ "rotate-behaviour" ]
  * }
  * </programlisting>
+ *
+ * A #ClutterAlpha belonging to a #ClutterBehaviour can only be defined
+ * implicitely. A #ClutterTimeline belonging to a #ClutterAlpha can be
+ * either defined implicitely or explicitely. Implicitely defined
+ * #ClutterAlpha<!-- -->s and #ClutterTimeline<!-- -->s can omit the
+ * <varname>id</varname> member, as well as the <varname>type</varname> member,
+ * but will not be available using clutter_script_get_object() (they can,
+ * however, be extracted using the #ClutterBehaviour and #ClutterAlpha
+ * API respectively).
  *
  * Clutter reserves the following names, so classes defining properties
  * through the usual GObject registration process should avoid using these
@@ -131,6 +147,7 @@
 
 #include "clutter-script.h"
 #include "clutter-script-private.h"
+#include "clutter-scriptable.h"
 
 #include "clutter-private.h"
 #include "clutter-debug.h"
@@ -154,111 +171,6 @@ struct _ClutterScriptPrivate
 };
 
 G_DEFINE_TYPE (ClutterScript, clutter_script, G_TYPE_OBJECT);
-
-static void object_info_free (gpointer data);
-
-static GType
-resolve_type (const gchar *symbol)
-{
-  static GModule *module = NULL;
-  GTypeGetFunc func;
-  GType gtype = G_TYPE_INVALID;
-
-  if (!module)
-    module = g_module_open (NULL, 0);
-  
-  if (g_module_symbol (module, symbol, (gpointer)&func))
-    gtype = func ();
-  
-  return gtype;
-}
-
-/* tries to map a name in camel case into the corresponding get_type()
- * function, e.g.:
- *
- *   ClutterRectangle -> clutter_rectangle_get_type
- *   ClutterCloneTexture -> clutter_clone_texture_get_type
- *
- * taken from GTK+, gtkbuilder.c
- */
-static GType
-resolve_type_lazily (const gchar *name)
-{
-  static GModule *module = NULL;
-  GTypeGetFunc func;
-  GString *symbol_name = g_string_new ("");
-  char c, *symbol;
-  int i;
-  GType gtype = G_TYPE_INVALID;
-
-  if (!module)
-    module = g_module_open (NULL, 0);
-  
-  for (i = 0; name[i] != '\0'; i++)
-    {
-      c = name[i];
-      /* skip if uppercase, first or previous is uppercase */
-      if ((c == g_ascii_toupper (c) &&
-           i > 0 && name[i-1] != g_ascii_toupper (name[i-1])) ||
-          (i > 2 && name[i]   == g_ascii_toupper (name[i]) &&
-           name[i-1] == g_ascii_toupper (name[i-1]) &&
-           name[i-2] == g_ascii_toupper (name[i-2])))
-        g_string_append_c (symbol_name, '_');
-      g_string_append_c (symbol_name, g_ascii_tolower (c));
-    }
-  g_string_append (symbol_name, "_get_type");
-  
-  symbol = g_string_free (symbol_name, FALSE);
-
-  if (g_module_symbol (module, symbol, (gpointer)&func))
-    gtype = func ();
-  
-  g_free (symbol);
-
-  return gtype;
-}
-
-static ClutterAlphaFunc
-resolve_alpha_func (const gchar *name)
-{
-  static GModule *module = NULL;
-  ClutterAlphaFunc func;
-  GString *symbol_name = g_string_new ("");
-  char c, *symbol;
-  int i;
-
-  if (!module)
-    module = g_module_open (NULL, 0);
-  
-  CLUTTER_NOTE (SCRIPT, "Looking for `%s' alpha function", name);
-  
-  if (g_module_symbol (module, name, (gpointer) &func))
-    return func;
-
-  g_string_append (symbol_name, "clutter_");
-
-  for (i = 0; name[i] != '\0'; i++)
-    {
-      c = name[i];
-      
-      if (name[i] == '-')
-        g_string_append_c (symbol_name, '_');
-      else
-        g_string_append_c (symbol_name, g_ascii_tolower (name[i]));
-    }
-  g_string_append (symbol_name, "_func");
-  
-  symbol = g_string_free (symbol_name, FALSE);
-
-  CLUTTER_NOTE (SCRIPT, "Looking for `%s' alpha function", symbol);
-
-  if (!g_module_symbol (module, symbol, (gpointer)&func))
-    func = NULL;
-
-  g_free (symbol);
-
-  return func;
-}
 
 static void
 warn_missing_attribute (ClutterScript *script,
@@ -284,6 +196,7 @@ warn_missing_attribute (ClutterScript *script,
     }
 }
 
+#if 0
 static void
 warn_invalid_value (ClutterScript *script,
                     const gchar   *attribute,
@@ -307,56 +220,7 @@ warn_invalid_value (ClutterScript *script,
                  attribute);
     }
 }
-
-static ClutterTimeline *
-construct_timeline (ClutterScript *script,
-                    JsonObject    *object)
-{
-  ClutterTimeline *retval = NULL;
-  ObjectInfo *oinfo;
-  GList *members, *l;
-  
-  /* we fake an ObjectInfo so we can reuse clutter_script_construct_object()
-   * here; we do not save it inside the hash table, because if this had
-   * been a named object then we wouldn't have ended up here in the first
-   * place
-   */
-  oinfo = g_slice_new0 (ObjectInfo);
-  oinfo->gtype = CLUTTER_TYPE_TIMELINE;
-
-  members = json_object_get_members (object);
-  for (l = members; l != NULL; l = l->next)
-    {
-      const gchar *name = l->data;
-      JsonNode *node = json_object_get_member (object, name);
-
-      if (JSON_NODE_TYPE (node) == JSON_NODE_VALUE)
-        {
-          PropertyInfo *pinfo = g_slice_new0 (PropertyInfo);
-          GValue value = { 0, };
-
-          pinfo->property_name = g_strdelimit (g_strdup (name),
-                                               G_STR_DELIMITERS,
-                                               '-');
-
-          json_node_get_value (node, &value);
-          g_value_init (&pinfo->value, G_VALUE_TYPE (&value));
-          g_value_transform (&value, &pinfo->value);
-          g_value_unset (&value);
-
-          oinfo->properties = g_list_prepend (oinfo->properties, pinfo);
-        }
-    }
-  g_list_free (members);
-  
-  retval = CLUTTER_TIMELINE (clutter_script_construct_object (script, oinfo));
-
-  /* we transfer ownership to the alpha function later */
-  oinfo->is_toplevel = FALSE;
-  object_info_free (oinfo);
-
-  return retval;
-}
+#endif
 
 static const gchar *
 get_id_from_node (JsonNode *node)
@@ -385,239 +249,191 @@ get_id_from_node (JsonNode *node)
   return NULL;
 }
 
-static ClutterUnit
-get_units_from_node (JsonNode *node)
+static GList *
+parse_children (JsonNode *node)
 {
-  ClutterUnit retval = 0;
-  GValue value = { 0, };
+  JsonArray *array;
+  GList *retval;
+  guint array_len, i;
 
-  if (JSON_NODE_TYPE (node) != JSON_NODE_VALUE)
-    return 0;
+  if (JSON_NODE_TYPE (node) != JSON_NODE_ARRAY)
+    return NULL;
 
-  json_node_get_value (node, &value);
-  switch (G_VALUE_TYPE (&value))
+  retval = NULL;
+
+  array = json_node_get_array (node);
+  array_len = json_array_get_length (array);
+
+  for (i = 0; i < array_len; i++)
     {
-    case G_TYPE_INT:
-      retval = CLUTTER_UNITS_FROM_INT (g_value_get_int (&value));
-      break;
-    
-    default:
-      break;
+      JsonNode *child = json_array_get_element (array, i);
+      const gchar *id;
+
+      id = get_id_from_node (child);
+      if (id)
+        retval = g_list_prepend (retval, g_strdup (id));
     }
+
+  return g_list_reverse (retval);
+}
+
+static GList *
+parse_behaviours (JsonNode *node)
+{
+  JsonArray *array;
+  GList *retval;
+  guint array_len, i;
+
+  if (JSON_NODE_TYPE (node) != JSON_NODE_ARRAY)
+    return NULL;
+
+  retval = NULL;
+
+  array = json_node_get_array (node);
+  array_len = json_array_get_length (array);
+
+  for (i = 0; i < array_len; i++)
+    {
+      JsonNode *child = json_array_get_element (array, i);
+      const gchar *id;
+
+      id = get_id_from_node (child);
+      if (id)
+        retval = g_list_prepend (retval, g_strdup (id));
+    }
+
+  return g_list_reverse (retval);
+}
+
+static ClutterTimeline *
+construct_timeline (ClutterScript *script,
+                    JsonObject    *object)
+{
+  ClutterTimeline *retval = NULL;
+  ObjectInfo *oinfo;
+  GList *members, *l;
+  
+  /* we fake an ObjectInfo so we can reuse clutter_script_construct_object()
+   * here; we do not save it inside the hash table, because if this had
+   * been a named object then we wouldn't have ended up here in the first
+   * place
+   */
+  oinfo = g_slice_new0 (ObjectInfo);
+  oinfo->gtype = CLUTTER_TYPE_TIMELINE;
+  oinfo->id = g_strdup ("dummy");
+
+  members = json_object_get_members (object);
+  for (l = members; l != NULL; l = l->next)
+    {
+      const gchar *name = l->data;
+      JsonNode *node = json_object_get_member (object, name);
+      PropertyInfo *pinfo = g_slice_new0 (PropertyInfo);
+
+      pinfo->name = g_strdelimit (g_strdup (name), G_STR_DELIMITERS, '-');
+      pinfo->node = node;
+
+      oinfo->properties = g_list_prepend (oinfo->properties, pinfo);
+    }
+
+  g_list_free (members);
+  
+  retval = CLUTTER_TIMELINE (clutter_script_construct_object (script, oinfo));
+
+  /* we transfer ownership to the alpha function later */
+  oinfo->is_toplevel = FALSE;
+  object_info_free (oinfo);
 
   return retval;
 }
 
-static PropertyInfo *
-parse_member_to_property (ClutterScript *script,
-                          ObjectInfo    *info,
-                          const gchar   *name,
-                          JsonNode      *node)
+static ClutterAlphaFunc
+resolve_alpha_func (const gchar *name)
 {
-  PropertyInfo *retval = NULL;
-  GValue value = { 0, };
+  static GModule *module = NULL;
+  ClutterAlphaFunc func;
+  GString *symbol_name;
+  gchar c, *symbol;
+  gint i;
 
-  switch (JSON_NODE_TYPE (node))
+  if (G_UNLIKELY (!module))
+    module = g_module_open (NULL, 0);
+
+  CLUTTER_NOTE (SCRIPT, "Looking for `%s' alpha function", name);
+  
+  if (g_module_symbol (module, name, (gpointer) &func))
+    return func;
+
+  symbol_name = g_string_new ("");
+  g_string_append (symbol_name, "clutter_");
+  for (i = 0; name[i] != '\0'; i++)
     {
-    case JSON_NODE_VALUE:
-      retval = g_slice_new0 (PropertyInfo);
-      retval->property_name = g_strdelimit (g_strdup (name),
-                                            G_STR_DELIMITERS,
-                                            '-');
-
-      json_node_get_value (node, &value);
-      g_value_init (&retval->value, G_VALUE_TYPE (&value));
-      g_value_transform (&value, &retval->value);
-      g_value_unset (&value);
-      break;
-
-    case JSON_NODE_OBJECT:
-      if (strcmp (name, "alpha") == 0)
-        {
-          JsonObject *object = json_node_get_object (node);
-          ClutterAlpha *alpha = NULL;
-          ClutterTimeline *timeline = NULL;
-          ClutterAlphaFunc func = NULL;
-          JsonNode *val;
-          gboolean unref_timeline = FALSE;
-
-          retval = g_slice_new0 (PropertyInfo);
-          retval->property_name = g_strdup (name);
-
-          alpha = clutter_alpha_new ();
-          
-          val = json_object_get_member (object, "timeline");
-          if (val)
-            {
-              if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE &&
-                  json_node_get_string (val) != NULL)
-                {
-                  const gchar *id = json_node_get_string (val);
-
-                  timeline = 
-                    CLUTTER_TIMELINE (clutter_script_get_object (script, id));
-                }
-              else if (JSON_NODE_TYPE (val) == JSON_NODE_OBJECT)
-                {
-                  timeline = construct_timeline (script, json_node_get_object (val));
-                  unref_timeline = TRUE;
-                }
-            }
-
-          val = json_object_get_member (object, "function");
-          if (val && json_node_get_string (val) != NULL)
-            func = resolve_alpha_func (json_node_get_string (val));
-
-          alpha = g_object_new (CLUTTER_TYPE_ALPHA, NULL);
-          clutter_alpha_set_func (alpha, func, NULL, NULL);
-          clutter_alpha_set_timeline (alpha, timeline);
-          if (unref_timeline)
-            g_object_unref (timeline);
-
-          g_value_init (&retval->value, CLUTTER_TYPE_ALPHA);
-          g_value_set_object (&retval->value, G_OBJECT (alpha));
-        }
-      break;
-
-    case JSON_NODE_ARRAY:
-      if (strcmp (name, "margin") == 0)
-        {
-          JsonArray *array = json_node_get_array (node);
-          JsonNode *val;
-          gint array_len, i;
-          ClutterMargin margin = { 0, };
-
-          array_len = json_array_get_length (array);
-          for (i = 0; i < array_len; i++)
-            {
-              ClutterUnit units;
-
-              val = json_array_get_element (array, i);
-              units = get_units_from_node (val);
-
-              switch (i)
-                {
-                case 0:
-                  margin.top = units; 
-                  margin.right = margin.top;
-                  margin.bottom = margin.top;
-                  margin.left = margin.top;
-                  break;
-                case 1:
-                  margin.right = margin.left = units; 
-                  break;
-                case 2:
-                  margin.bottom = units; 
-                  break;
-                case 3:
-                  margin.left = units; 
-                  break;
-                }
-            }
-
-          retval = g_slice_new0 (PropertyInfo);
-          retval->property_name = g_strdup (name);
-          g_value_init (&retval->value, CLUTTER_TYPE_MARGIN);
-          g_value_set_boxed (&retval->value, &margin);
-        }
-      else if (strcmp (name, "padding") == 0)
-        {
-          JsonArray *array = json_node_get_array (node);
-          JsonNode *val;
-          gint array_len, i;
-          ClutterPadding padding = { 0, };
-
-          array_len = json_array_get_length (array);
-          for (i = 0; i < array_len; i++)
-            {
-              ClutterUnit units;
-
-              val = json_array_get_element (array, i);
-              units = get_units_from_node (val);
-
-              switch (i)
-                {
-                case 0:
-                  padding.top = units;
-                  padding.right = padding.top;
-                  padding.bottom = padding.top;
-                  padding.left = padding.top;
-                  break;
-                case 1:
-                  padding.right = padding.left = units;
-                  break;
-                case 2:
-                  padding.bottom = units; 
-                  break;
-                case 3:
-                  padding.left = units; 
-                  break;
-                }
-            }
-
-          retval = g_slice_new0 (PropertyInfo);
-          retval->property_name = g_strdup (name);
-          g_value_init (&retval->value, CLUTTER_TYPE_PADDING);
-          g_value_set_boxed (&retval->value, &padding);
-        }
-      else if (strcmp (name, "clip") == 0)
-        {
-          JsonArray *array = json_node_get_array (node);
-          JsonNode *val;
-          gint i;
-          ClutterGeometry geom = { 0, };
-
-          /* this is quite evil indeed */
-          for (i = 0; i < json_array_get_length (array); i++)
-            {
-              val = json_array_get_element (array, i);
-              switch (i)
-                {
-                case 0: geom.x      = json_node_get_int (val); break;
-                case 1: geom.y      = json_node_get_int (val); break;
-                case 2: geom.width  = json_node_get_int (val); break;
-                case 3: geom.height = json_node_get_int (val); break;
-                }
-            }
-
-          retval = g_slice_new0 (PropertyInfo);
-          retval->property_name = g_strdup (name);
-
-          g_value_init (&retval->value, CLUTTER_TYPE_GEOMETRY);
-          g_value_set_boxed (&retval->value, &geom);
-        }
-      else if ((strcmp (name, "children") == 0) ||
-               (strcmp (name, "behaviours") == 0))
-        {
-          JsonArray *array = json_node_get_array (node);
-          JsonNode *val;
-          gint i, array_len;
-          GList *children;
-
-          children = NULL;
-          array_len = json_array_get_length (array);
-          for (i = 0; i < array_len; i++)
-            {
-              const gchar *id;
-
-              val = json_array_get_element (array, i);
-              id = get_id_from_node (val);
-              if (id)
-                children = g_list_prepend (children, g_strdup (id));
-              else
-                warn_invalid_value (script, "id", val);
-            }
-          
-          if (name[0] == 'c') /* children */
-            info->children = g_list_reverse (children);
-          else
-            info->behaviours = g_list_reverse (children);
-        }
-      break;
-
-    case JSON_NODE_NULL:
-      break;
+      c = name[i];
+      
+      if (name[i] == '-')
+        g_string_append_c (symbol_name, '_');
+      else
+        g_string_append_c (symbol_name, g_ascii_tolower (name[i]));
     }
+  g_string_append (symbol_name, "_func");
+  
+  symbol = g_string_free (symbol_name, FALSE);
+
+  if (!g_module_symbol (module, symbol, (gpointer)&func))
+    func = NULL;
+
+  g_free (symbol);
+
+  return func;
+}
+
+GObject *
+clutter_script_parse_alpha (ClutterScript *script,
+                            JsonNode      *node)
+{
+  GObject *retval = NULL;
+  JsonObject *object;
+  ClutterTimeline *timeline = NULL;
+  ClutterAlphaFunc alpha_func = NULL;
+  JsonNode *val;
+  gboolean unref_timeline = FALSE;
+
+  if (JSON_NODE_TYPE (node) != JSON_NODE_OBJECT)
+    return NULL;
+
+  object = json_node_get_object (node);
+  
+  val = json_object_get_member (object, "timeline");
+  if (val)
+    {
+      if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE &&
+          json_node_get_string (val) != NULL)
+        {
+          const gchar *id = json_node_get_string (val);
+
+          timeline =
+            CLUTTER_TIMELINE (clutter_script_get_object (script, id));
+        }
+      else if (JSON_NODE_TYPE (val) == JSON_NODE_OBJECT)
+        {
+          timeline = construct_timeline (script, json_node_get_object (val));
+          unref_timeline = TRUE;
+        }
+    }
+
+  val = json_object_get_member (object, "function");
+  if (val && json_node_get_string (val) != NULL)
+    alpha_func = resolve_alpha_func (json_node_get_string (val));
+
+  CLUTTER_NOTE (SCRIPT, "Parsed alpha: %s timeline (%p) and func:%p",
+                unref_timeline ? "implicit" : "explicit",
+                timeline ? timeline : 0x0,
+                alpha_func ? alpha_func : 0x0);
+
+  retval = g_object_new (CLUTTER_TYPE_ALPHA, NULL);
+  clutter_alpha_set_func (CLUTTER_ALPHA (retval), alpha_func, NULL, NULL);
+  clutter_alpha_set_timeline (CLUTTER_ALPHA (retval), timeline);
+  if (unref_timeline)
+    g_object_unref (timeline);
 
   return retval;
 }
@@ -670,37 +486,54 @@ json_object_end (JsonParser *parser,
 
   if (json_object_has_member (object, "type_func"))
     {
-      /* remove "type_func", as it's not used by anything else */
       val = json_object_get_member (object, "type_func");
       oinfo->type_func = json_node_dup_string (val);
+
       json_object_remove_member (object, "type_func");
+    }
+
+  if (json_object_has_member (object, "children"))
+    {
+      val = json_object_get_member (object, "children");
+      oinfo->children = parse_children (val);
+
+      json_object_remove_member (object, "children");
+    }
+
+  if (json_object_has_member (object, "behaviours"))
+    {
+      val = json_object_get_member (object, "behaviours");
+      oinfo->behaviours = parse_behaviours (val);
+
+      json_object_remove_member (object, "behaviours");
     }
 
   oinfo->is_toplevel = FALSE;
   oinfo->is_unmerged = FALSE;
+  oinfo->has_unresolved = TRUE;
 
   members = json_object_get_members (object);
   for (l = members; l; l = l->next)
     {
       const gchar *name = l->data;
       PropertyInfo *pinfo;
+      JsonNode *node;
 
+      /* we have already parsed these */
       if (strcmp (name, "id") == 0 || strcmp (name, "type") == 0)
         continue;
 
-      val = json_object_get_member (object, name);
+      node = json_object_get_member (object, name);
 
-      pinfo = parse_member_to_property (script, oinfo, name, val);
-      if (!pinfo)
-        continue;
+      pinfo = g_slice_new (PropertyInfo);
+
+      pinfo->name = g_strdup (name);
+      pinfo->node = node;
+      pinfo->pspec = NULL;
 
       oinfo->properties = g_list_prepend (oinfo->properties, pinfo);
-
-      CLUTTER_NOTE (SCRIPT, "Added property `%s' (type:%s) for class `%s'",
-                    pinfo->property_name,
-                    g_type_name (G_VALUE_TYPE (&pinfo->value)),
-                    oinfo->class_name);
     }
+
   g_list_free (members);
 
   CLUTTER_NOTE (SCRIPT, "Added object `%s' (type:%s, id:%d) with %d properties",
@@ -710,241 +543,399 @@ json_object_end (JsonParser *parser,
                 g_list_length (oinfo->properties));
 
   g_hash_table_replace (priv->objects, g_strdup (oinfo->id), oinfo);
+
+  oinfo->object = clutter_script_construct_object (script, oinfo);
 }
 
-/* the property translation sequence is split in two: the first
- * half is done in parse_member_to_property(), which translates
- * from JSON data types into valid property types. the second
- * half is done here, where property types are translated into
- * the correct type for the given property GType
- */
-static gboolean
-translate_property (ClutterScript *script,
-                    GType          gtype,
-                    const gchar   *name,
-                    const GValue  *src,
-                    GValue        *dest)
+gboolean
+clutter_script_parse_node (ClutterScript *script,
+                           GValue        *value,
+                           const gchar   *name,
+                           JsonNode      *node,
+                           GParamSpec    *pspec)
 {
+  GValue node_value = { 0, };
   gboolean retval = FALSE;
 
-  /* colors have a parse function, so we can pass it the
-   * string we get from the parser
-   */
-  if (strcmp (name, "color") == 0)
+  g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), FALSE);
+  g_return_val_if_fail (name != NULL, FALSE);
+  g_return_val_if_fail (node != NULL, FALSE);
+
+  switch (JSON_NODE_TYPE (node))
     {
-      ClutterColor color = { 0, };
-      const gchar *color_str;
-
-      if (G_VALUE_HOLDS (src, G_TYPE_STRING))
-        {
-          color_str = g_value_get_string (src);
-          clutter_color_parse (color_str, &color);
-        }
-
-      g_value_init (dest, CLUTTER_TYPE_COLOR);
-      g_value_set_boxed (dest, &color);
-
-      return TRUE;
-    }
-
-  if (strcmp (name, "parent_texture") == 0)
-    {
-      GObject *texture;
-      const gchar *string;
-
-      if (G_VALUE_HOLDS (src, G_TYPE_STRING))
-        string = g_value_get_string (src);
-      else
+    case JSON_NODE_OBJECT:
+      if (!pspec)
         return FALSE;
-      
-      texture = clutter_script_get_object (script, string);
-      if (!texture)
-        return FALSE;
-
-      g_value_init (dest, CLUTTER_TYPE_TEXTURE);
-      g_value_set_object (dest, texture);
-
-      return TRUE;
-    }
-
-  /* pixbufs are specified using the path to the file name; the
-   * path can be absolute or relative to the current directory.
-   * we need to load the pixbuf from the file and print a
-   * warning here in case it didn't work.
-   */
-  if (strcmp (name, "pixbuf") == 0)
-    {
-      GdkPixbuf *pixbuf = NULL;
-      const gchar *string;
-      gchar *path;
-      GError *error;
-
-      if (G_VALUE_HOLDS (src, G_TYPE_STRING))
-        string = g_value_get_string (src);
-      else
-        return FALSE;
-
-      if (g_path_is_absolute (string))
-        path = g_strdup (string);
       else
         {
-          if (script->priv->is_filename)
+          g_value_init (value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+
+          if (G_VALUE_HOLDS (value, CLUTTER_TYPE_ALPHA))
             {
-              gchar *dirname;
+              GObject *alpha;
 
-              dirname = g_path_get_dirname (script->priv->filename);
-              path = g_build_filename (dirname, string, NULL);
-              
-              g_free (dirname);
+              alpha = clutter_script_parse_alpha (script, node);
+              if (alpha)
+                {
+                  g_value_set_object (value, alpha);
+                  return TRUE;
+                }
+            }
+         }
+      return FALSE;
+
+    case JSON_NODE_ARRAY:
+      if (!pspec)
+        return FALSE;
+      else
+        {
+          g_value_init (value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+
+          if (G_VALUE_HOLDS (value, CLUTTER_TYPE_KNOT))
+            {
+              ClutterKnot knot = { 0, };
+
+              if (clutter_script_parse_knot (script, node, &knot))
+                {
+                  g_value_set_boxed (value, &knot);
+                  return TRUE;
+                }
+            }
+          else if (G_VALUE_HOLDS (value, CLUTTER_TYPE_PADDING))
+            {
+              ClutterPadding padding = { 0, };
+
+              if (clutter_script_parse_padding (script, node, &padding))
+                {
+                  g_value_set_boxed (value, &padding);
+                  return TRUE;
+                }
+            }
+          else if (G_VALUE_HOLDS (value, CLUTTER_TYPE_MARGIN))
+            {
+              ClutterMargin margin = { 0, };
+
+              if (clutter_script_parse_margin (script, node, &margin))
+                {
+                  g_value_set_boxed (value, &margin);
+                  return TRUE;
+                }
+            }
+          else if (G_VALUE_HOLDS (value, CLUTTER_TYPE_GEOMETRY))
+            {
+              ClutterGeometry geom = { 0, };
+
+              if (clutter_script_parse_geometry (script, node, &geom))
+                {
+                  g_value_set_boxed (value, &geom);
+                  return TRUE;
+                }
+            }
+        }
+      return FALSE;
+
+    case JSON_NODE_NULL:
+      return FALSE;
+
+    case JSON_NODE_VALUE:
+      json_node_get_value (node, &node_value);
+
+      if (pspec)
+        g_value_init (value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+      else
+        g_value_init (value, G_VALUE_TYPE (&node_value));
+
+      switch (G_TYPE_FUNDAMENTAL (G_VALUE_TYPE (value)))
+        {
+        /* fundamental JSON types */
+        case G_TYPE_INT:
+        case G_TYPE_DOUBLE:
+        case G_TYPE_STRING:
+        case G_TYPE_BOOLEAN:
+          g_value_copy (&node_value, value);
+          retval = TRUE;
+          break;
+
+        case G_TYPE_UINT:
+          g_value_set_uint (value, (guint) g_value_get_int (&node_value));
+          retval = TRUE;
+          break;
+
+        case G_TYPE_ULONG:
+          g_value_set_ulong (value, (gulong) g_value_get_int (&node_value));
+          retval = TRUE;
+          break;
+
+        case G_TYPE_UCHAR:
+          g_value_set_uchar (value, (guchar) g_value_get_int (&node_value));
+          retval = TRUE;
+          break;
+
+        case G_TYPE_ENUM:
+          if (G_VALUE_HOLDS (&node_value, G_TYPE_INT))
+            {
+              g_value_set_enum (value, g_value_get_int (&node_value));
+              retval = TRUE;
+            }
+          else if (G_VALUE_HOLDS (&node_value, G_TYPE_STRING))
+            {
+              gint enum_value;
+
+              retval = clutter_script_enum_from_string (G_VALUE_TYPE (value),
+                                                        g_value_get_string (&node_value),
+                                                        &enum_value);
+              if (retval)
+                g_value_set_enum (value, enum_value);
+            }
+          break;
+
+        case G_TYPE_FLAGS:
+          if (G_VALUE_HOLDS (&node_value, G_TYPE_INT))
+            {
+              g_value_set_flags (value, g_value_get_int (&node_value));
+              retval = TRUE;
+            }
+          else if (G_VALUE_HOLDS (&node_value, G_TYPE_STRING))
+            {
+              gint flags_value;
+
+              retval = clutter_script_flags_from_string (G_VALUE_TYPE (value),
+                                                         g_value_get_string (&node_value),
+                                                         &flags_value);
+              if (retval)
+                g_value_set_flags (value, flags_value);
+            }
+          break;
+
+        case G_TYPE_BOXED:
+          if (G_VALUE_HOLDS (value, CLUTTER_TYPE_COLOR))
+            {
+              if (G_VALUE_HOLDS (&node_value, G_TYPE_STRING))
+                {
+                  const gchar *str = g_value_get_string (&node_value);
+                  ClutterColor color = { 0, };
+
+                  if (str && str[0] != '\0')
+                    clutter_color_parse (str, &color);
+
+                  g_value_set_boxed (value, &color);
+                  retval = TRUE;
+                }
+            }
+          break;
+
+        case G_TYPE_OBJECT:
+          if (G_VALUE_HOLDS (value, GDK_TYPE_PIXBUF))
+            {
+              if (G_VALUE_HOLDS (&node_value, G_TYPE_STRING))
+                {
+                  const gchar *str = g_value_get_string (&node_value);
+                  GdkPixbuf *pixbuf = NULL;
+                  gchar *path;
+                  GError *error;
+
+                  if (g_path_is_absolute (str))
+                    path = g_strdup (str);
+                  else
+                    {
+                      gchar *dirname = NULL;
+
+                      if (script->priv->is_filename)
+                        dirname = g_path_get_dirname (script->priv->filename);
+                      else
+                        dirname = g_get_current_dir ();
+
+                      path = g_build_filename (dirname, str, NULL);
+                      g_free (dirname);
+                    }
+
+                  error = NULL;
+                  pixbuf = gdk_pixbuf_new_from_file (path, &error);
+                  if (error)
+                    {
+                      g_warning ("Unable to open image at path `%s': %s",
+                                 path,
+                                 error->message);
+                                 g_error_free (error);
+                    }
+                  else
+                    {
+                      g_value_set_object (value, pixbuf);
+                      retval = TRUE;
+                    }
+
+                  g_free (path);
+                }
             }
           else
             {
-              gchar *dirname;
-              
-              dirname = g_get_current_dir ();
-              path = g_build_filename (dirname, string, NULL);
-
-              g_free (dirname);
+              if (G_VALUE_HOLDS (&node_value, G_TYPE_STRING))
+                {
+                  const gchar *str = g_value_get_string (&node_value);
+                  GObject *object = clutter_script_get_object (script, str);
+                  if (object)
+                    {
+                      g_value_set_object (value, object);
+                      retval = TRUE;
+                    }
+                }
             }
+          break;
+
+        default:
+          retval = FALSE;
+          break;
         }
 
-      error = NULL;
-      pixbuf = gdk_pixbuf_new_from_file (path, &error);
-      if (error)
-        {
-          g_warning ("Unable to open pixbuf at path `%s': %s",
-                     path,
-                     error->message);
-          g_error_free (error);
-          g_free (path);
-          return FALSE;
-        }
-
-      CLUTTER_NOTE (SCRIPT, "Setting pixbuf [%p] from file `%s'",
-                    pixbuf,
-                    path);
-      
-      g_free (path);
-      
-      g_value_init (dest, GDK_TYPE_PIXBUF);
-      g_value_set_object (dest, pixbuf);
-
-      return TRUE;
+      g_value_unset (&node_value);
+      break;
     }
 
-  CLUTTER_NOTE (SCRIPT, "Copying property `%s' to type `%s'",
-                name,
-                g_type_name (gtype));
-
-  /* fall back scenario */
-  g_value_init (dest, gtype);
-
-  switch (G_TYPE_FUNDAMENTAL (gtype))
+#if 0
+  if (!retval)
     {
-    case G_TYPE_ULONG:
-      g_value_set_ulong (dest, (gulong) g_value_get_int (src));
-      break;
-
-    case G_TYPE_UINT:
-      g_value_set_uint (dest, (guint) g_value_get_int (src));
-      retval = TRUE;
-      break;
-
-    case G_TYPE_UCHAR:
-      g_value_set_uchar (dest, (guchar) g_value_get_int (src));
-      retval = TRUE;
-      break;
-
-    case G_TYPE_ENUM:
-    case G_TYPE_FLAGS:
-      {
-        gint value;
-
-        if (G_VALUE_HOLDS (src, G_TYPE_STRING))
-          {
-            const gchar *string = g_value_get_string (src);
-
-            if (G_TYPE_FUNDAMENTAL (gtype) == G_TYPE_ENUM)
-              retval = clutter_script_enum_from_string (gtype, string, &value);
-            else
-              retval = clutter_script_flags_from_string (gtype, string, &value);
-          }
-        else if (G_VALUE_HOLDS (src, G_TYPE_INT))
-          {
-            value = g_value_get_int (src);
-          }
-
-        if (retval)
-          {
-            if (G_TYPE_FUNDAMENTAL (gtype) == G_TYPE_ENUM)
-              g_value_set_enum (dest, value);
-            else
-              g_value_set_flags (dest, value);
-          }
+      if (pspec)
+        {
+          g_param_value_defaults (pspec, value);
+          retval = TRUE;
         }
-      break;
-
-    default:
-      g_value_copy (src, dest);
-      retval = TRUE;
-      break;
     }
+#endif
 
   return retval;
 }
 
-/* translates the PropertyInfo structure into a GParameter array to
- * be fed to g_object_newv()
- */
-static void
-translate_properties (ClutterScript  *script,
-                      ObjectInfo     *oinfo,
-                      guint          *n_params,
-                      GParameter    **params)
+static GList *
+clutter_script_translate_parameters (ClutterScript  *script,
+                                     GObject        *object,
+                                     const gchar    *name,
+                                     GList          *properties,
+                                     GArray        **params)
 {
-  GList *l;
-  GParamSpec *pspec;
-  GObjectClass *oclass;
-  GArray *parameters;
+  ClutterScriptable *scriptable = NULL;
+  ClutterScriptableIface *iface = NULL;
+  GList *l, *unparsed;
+  gboolean parse_custom = FALSE;
 
-  oclass = g_type_class_ref (oinfo->gtype);
-  g_assert (oclass != NULL);
+  *params = g_array_new (FALSE, FALSE, sizeof (GParameter));
 
-  parameters = g_array_new (FALSE, FALSE, sizeof (GParameter));
+  if (CLUTTER_IS_SCRIPTABLE (object))
+    {
+      scriptable = CLUTTER_SCRIPTABLE (object);
+      iface = CLUTTER_SCRIPTABLE_GET_IFACE (scriptable);
 
-  for (l = oinfo->properties; l; l = l->next)
+      if (iface->parse_custom_node)
+        parse_custom = TRUE;
+    }
+
+  unparsed = NULL;
+
+  for (l = properties; l != NULL; l = l->next)
     {
       PropertyInfo *pinfo = l->data;
       GParameter param = { NULL };
+      gboolean res = FALSE;
 
-      pspec = g_object_class_find_property (oclass, pinfo->property_name);
-      if (!pspec)
+      CLUTTER_NOTE (SCRIPT, "Parsing %s property (id:%s)",
+                    pinfo->pspec ? "regular" : "custom",
+                    pinfo->name);
+
+      if (parse_custom)
+        res = iface->parse_custom_node (scriptable, script, &param.value,
+                                        pinfo->name,
+                                        pinfo->node);
+
+      if (!res)
+        res = clutter_script_parse_node (script, &param.value,
+                                         pinfo->name,
+                                         pinfo->node,
+                                         pinfo->pspec);
+
+      if (!res)
         {
-          g_warning ("Unknown property `%s' for class `%s'",
-                     pinfo->property_name,
-                     g_type_name (oinfo->gtype));
+          unparsed = g_list_prepend (unparsed, pinfo);
           continue;
         }
 
-      param.name = pinfo->property_name;
-      if (!translate_property (script, G_PARAM_SPEC_VALUE_TYPE (pspec),
-                               param.name,
-                               &pinfo->value,
-                               &param.value))
-        {
-          g_warning ("Unable to set property `%s' for class `%s'",
-                     pinfo->property_name,
-                     g_type_name (oinfo->gtype));
-          continue;
-        }
+      param.name = g_strdup (pinfo->name);
+      
+      g_array_append_val (*params, param);
 
-      g_array_append_val (parameters, param);
+      property_info_free (pinfo);
     }
 
-  *n_params = parameters->len;
-  *params = (GParameter *) g_array_free (parameters, FALSE);
+  g_list_free (properties);
 
-  g_type_class_unref (oclass);
+  return unparsed;
+}
+
+static GList *
+clutter_script_get_parameters (ClutterScript  *script,
+                               GType           gtype,
+                               const gchar    *name,
+                               GList          *properties,
+                               GArray        **construct_params)
+{
+  GObjectClass *klass;
+  GList *l, *unparsed;
+
+  klass = g_type_class_ref (gtype);
+  g_assert (klass != NULL);
+
+  *construct_params = g_array_new (FALSE, FALSE, sizeof (GParameter));
+
+  unparsed = NULL;
+
+  for (l = properties; l != NULL; l = l->next)
+    {
+      PropertyInfo *pinfo = l->data;
+      GParameter param = { NULL };
+      GParamSpec *pspec = NULL;
+
+      /* we allow custom property names for classes, so if we
+       * don't find a corresponding GObject property for this
+       * class we just skip it and let the class itself deal
+       * with it later on
+       */
+      pspec = g_object_class_find_property (klass, pinfo->name);
+      if (pspec)
+        {
+          pinfo->pspec = g_param_spec_ref (pspec);
+        }
+      else
+        {
+          pinfo->pspec = NULL;
+          unparsed = g_list_prepend (unparsed, pinfo);
+          continue;
+        }
+
+      if (!(pspec->flags & G_PARAM_CONSTRUCT_ONLY))
+        {
+          unparsed = g_list_prepend (unparsed, pinfo);
+          continue;
+        }
+
+      if (!clutter_script_parse_node (script, &param.value,
+                                      pinfo->name,
+                                      pinfo->node,
+                                      pinfo->pspec))
+        {
+          unparsed = g_list_prepend (unparsed, pinfo);
+          continue;
+        }
+
+      param.name = g_strdup (pinfo->name);
+      
+      g_array_append_val (*construct_params, param);
+
+      property_info_free (pinfo);
+    }
+
+  g_list_free (properties);
+
+  g_type_class_unref (klass);
+
+  return unparsed;
 }
 
 static void
@@ -1031,132 +1022,151 @@ add_children (ClutterScript    *script,
   oinfo->children = unresolved;
 }
 
-static GObject *
-construct_stage (ClutterScript *script,
-                 ObjectInfo    *oinfo)
-{
-  GObjectClass *oclass = g_type_class_ref (CLUTTER_TYPE_STAGE);
-  GList *l;
-
-  if (oinfo->object && !oinfo->has_unresolved)
-    return oinfo->object;
-
-  if (!oinfo->object)
-    {
-      oinfo->object = G_OBJECT (clutter_stage_get_default ());
-
-      for (l = oinfo->properties; l; l = l->next)
-        {
-          PropertyInfo *pinfo = l->data;
-          const gchar *name = pinfo->property_name;
-          GParamSpec *pspec;
-          GValue value = { 0, };
-
-          pspec = g_object_class_find_property (oclass, name);
-          if (!pspec)
-            {
-              g_warning ("Unknown property `%s' for class `ClutterStage'",
-                         name);
-              continue;
-            }
-
-          if (!translate_property (script, G_PARAM_SPEC_VALUE_TYPE (pspec),
-                                   name,
-                                   &pinfo->value,
-                                   &value))
-            {
-              g_warning ("Unable to set property `%s' for class `%s'",
-                         pinfo->property_name,
-                         g_type_name (oinfo->gtype));
-              continue;
-            }
-
-          g_object_set_property (oinfo->object, name, &value);
-          g_value_unset (&value);
-        }
-
-      g_type_class_unref (oclass);
-    }
-
-  /* we know ClutterStage is a ClutterContainer */
-  if (oinfo->children)
-    add_children (script, CLUTTER_CONTAINER (oinfo->object), oinfo);
-
-  oinfo->has_unresolved = (oinfo->children != NULL);
-
-  g_object_set_data_full (oinfo->object, "clutter-script-name",
-                          g_strdup (oinfo->id),
-                          g_free);
-
-  return oinfo->object;
-}
-
 GObject *
 clutter_script_construct_object (ClutterScript *script,
                                  ObjectInfo    *oinfo)
 {
-  guint n_params, i;
-  GParameter *params;
+  GObject *object;
+  guint i;
+  GArray *params;
+  GArray *construct_params;
+  ClutterScriptable *scriptable = NULL;
+  ClutterScriptableIface *iface = NULL;
+  gboolean set_custom_property = FALSE;
 
+  g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), NULL);
+  g_return_val_if_fail (oinfo != NULL, NULL);
+
+  /* we have completely updated the object */
   if (oinfo->object && !oinfo->has_unresolved)
     return oinfo->object;
 
   if (oinfo->gtype == G_TYPE_INVALID)
     {
       if (oinfo->type_func)
-        oinfo->gtype = resolve_type (oinfo->type_func);
+        oinfo->gtype = clutter_script_get_type_from_symbol (oinfo->type_func);
       else
-        oinfo->gtype = resolve_type_lazily (oinfo->class_name);
-
-      if (oinfo->gtype == G_TYPE_INVALID)
-        return NULL;
+        oinfo->gtype = clutter_script_get_type_from_class (oinfo->class_name);
     }
 
-  /* the stage is a special case: it's a singleton, it cannot
-   * be created by the user and it's owned by the backend. hence,
-   * we cannot follow the usual pattern here
-   */
-  if (g_type_is_a (oinfo->gtype, CLUTTER_TYPE_STAGE))
-    return construct_stage (script, oinfo);
+  if (oinfo->gtype == G_TYPE_INVALID)
+    return NULL;
 
-  if (!oinfo->object)
+  if (oinfo->object)
+    object = oinfo->object;
+  else if (oinfo->gtype == CLUTTER_TYPE_STAGE)
     {
-      params = NULL;
-      translate_properties (script, oinfo, &n_params, &params);
+      /* the stage is a complex beast: we cannot create it using
+       * g_object_newv() but we need clutter_script_get_parameters()
+       * to add the GParamSpec to the PropertyInfo pspec member, so
+       * that we don't have to implement every complex property (like
+       * the "color" one) directly inside the ClutterStage class.
+       */
+      oinfo->properties = clutter_script_get_parameters (script,
+                                                         oinfo->gtype,
+                                                         oinfo->id,
+                                                         oinfo->properties,
+                                                         &construct_params);
 
-      CLUTTER_NOTE (SCRIPT, "Creating instance for type `%s' (params:%d)",
-                    g_type_name (oinfo->gtype),
-                    n_params);
-
-      oinfo->object = g_object_newv (oinfo->gtype, n_params, params);
-
-      for (i = 0; i < n_params; i++)
+      object = G_OBJECT (clutter_stage_get_default ());
+      
+      for (i = 0; i < construct_params->len; i++)
         {
-          GParameter param = params[i];
-          g_value_unset (&param.value);
+          GParameter *param = &g_array_index (construct_params, GParameter, i);
+      
+          g_free ((gchar *) param->name);
+          g_value_unset (&param->value);
         }
 
-      g_free (params);
+      g_array_free (construct_params, TRUE);
+    }
+  else
+    {
+      /* every other object: first, we get the construction parameters */
+      oinfo->properties = clutter_script_get_parameters (script,
+                                                         oinfo->gtype,
+                                                         oinfo->id,
+                                                         oinfo->properties,
+                                                         &construct_params);
 
-      if (CLUTTER_IS_BEHAVIOUR (oinfo->object) ||
-          CLUTTER_IS_TIMELINE (oinfo->object))
-        oinfo->is_toplevel = TRUE;
+      object = g_object_newv (oinfo->gtype,
+                              construct_params->len,
+                              (GParameter *) construct_params->data);
 
-      if (oinfo->id)
-        g_object_set_data_full (oinfo->object, "clutter-script-name",
-                                g_strdup (oinfo->id),
-                                g_free);
+      for (i = 0; i < construct_params->len; i++)
+        {
+          GParameter *param = &g_array_index (construct_params, GParameter, i);
+      
+          g_free ((gchar *) param->name);
+          g_value_unset (&param->value);
+        }
+
+      g_array_free (construct_params, TRUE);
+   }
+
+  /* shortcut, to avoid typechecking every time */
+  if (CLUTTER_IS_SCRIPTABLE (object))
+    {
+      scriptable = CLUTTER_SCRIPTABLE (object);
+      iface = CLUTTER_SCRIPTABLE_GET_IFACE (scriptable);
+
+      if (iface->set_custom_property)
+        set_custom_property = TRUE;
     }
 
-  if (CLUTTER_IS_CONTAINER (oinfo->object) && oinfo->children)
-    add_children (script, CLUTTER_CONTAINER (oinfo->object), oinfo); 
+  /* then we get the rest of the parameters, asking the object itself
+   * to translate them for us, if we cannot do that
+   */
+  oinfo->properties = clutter_script_translate_parameters (script,
+                                                           object,
+                                                           oinfo->id,
+                                                           oinfo->properties,
+                                                           &params);
 
-  if (CLUTTER_IS_ACTOR (oinfo->object) && oinfo->behaviours)
-    apply_behaviours (script, CLUTTER_ACTOR (oinfo->object), oinfo);
+  /* consume all the properties we could translate in this pass */
+  for (i = 0; i < params->len; i++)
+    {
+      GParameter *param = &g_array_index (params, GParameter, i);
 
-  oinfo->has_unresolved = (oinfo->children || oinfo->behaviours);
+      CLUTTER_NOTE (SCRIPT,
+                    "Setting %s property `%s' (type:%s) to object `%s' (id:%s)",
+                    set_custom_property ? "custom" : "regular",
+                    param->name,
+                    g_type_name (G_VALUE_TYPE (&param->value)),
+                    g_type_name (oinfo->gtype),
+                    oinfo->id);
 
-  return oinfo->object;
+      if (set_custom_property)
+        iface->set_custom_property (scriptable, script,
+                                    param->name,
+                                    &param->value);
+      else
+        g_object_set_property (object, param->name, &param->value);
+
+      g_free ((gchar *) param->name);
+      g_value_unset (&param->value);
+    }
+  g_array_free (params, TRUE);
+
+  if (oinfo->children && CLUTTER_IS_CONTAINER (object))
+    add_children (script, CLUTTER_CONTAINER (object), oinfo);
+
+  if (oinfo->behaviours && CLUTTER_IS_ACTOR (object))
+    apply_behaviours (script, CLUTTER_ACTOR (object), oinfo);
+
+  if (oinfo->properties || oinfo->children || oinfo->behaviours)
+    oinfo->has_unresolved = TRUE;
+  else
+    oinfo->has_unresolved = FALSE;
+
+  if (scriptable)
+    clutter_scriptable_set_name (scriptable, oinfo->id);
+  else
+    g_object_set_data_full (object, "clutter-script-name",
+                            g_strdup (oinfo->id),
+                            g_free);
+
+  return object;
 }
 
 static void
@@ -1167,7 +1177,8 @@ construct_each_object (gpointer key,
   ClutterScript *script = data;
   ObjectInfo *oinfo = value;
 
-  clutter_script_construct_object (script, oinfo);
+  if (!oinfo->object)
+    oinfo->object = clutter_script_construct_object (script, oinfo);
 }
 
 static void
@@ -1180,25 +1191,34 @@ json_parse_end (JsonParser *parser,
   g_hash_table_foreach (priv->objects, construct_each_object, script);
 }
 
-static void
+void
+property_info_free (gpointer data)
+{
+  if (G_LIKELY (data))
+    {
+      PropertyInfo *pinfo = data;
+
+      if (pinfo->pspec)
+        g_param_spec_unref (pinfo->pspec);
+
+      g_free (pinfo->name);
+
+      g_slice_free (PropertyInfo, pinfo);
+    }
+}
+
+void
 object_info_free (gpointer data)
 {
   if (G_LIKELY (data))
     {
       ObjectInfo *oinfo = data;
-      GList *l;
 
       g_free (oinfo->id);
       g_free (oinfo->class_name);
       g_free (oinfo->type_func);
 
-      for (l = oinfo->properties; l; l = l->next)
-        {
-          PropertyInfo *pinfo = l->data;
-
-          g_free (pinfo->property_name);
-          g_value_unset (&pinfo->value);
-        }
+      g_list_foreach (oinfo->properties, (GFunc) property_info_free, NULL);
       g_list_free (oinfo->properties);
 
       /* these are ids */
@@ -1480,6 +1500,12 @@ remove_by_merge_id (gpointer key,
 
   if (oinfo->merge_id == unmerge_data->merge_id)
     {
+      CLUTTER_NOTE (SCRIPT,
+                    "Unmerging object (id:%s, type:%s, merge-id:%d)",
+                    oinfo->id,
+                    oinfo->class_name,
+                    oinfo->merge_id);
+
       unmerge_data->ids = g_slist_prepend (unmerge_data->ids, g_strdup (name));
       oinfo->is_unmerged = TRUE;
     }
@@ -1539,135 +1565,6 @@ clutter_script_ensure_objects (ClutterScript *script)
 
   priv = script->priv;
   g_hash_table_foreach (priv->objects, construct_each_object, script);  
-}
-
-gboolean
-clutter_script_enum_from_string (GType        type, 
-                                 const gchar *string,
-                                 gint        *enum_value)
-{
-  GEnumClass *eclass;
-  GEnumValue *ev;
-  gchar *endptr;
-  gint value;
-  gboolean retval = TRUE;
-  
-  g_return_val_if_fail (G_TYPE_IS_ENUM (type), 0);
-  g_return_val_if_fail (string != NULL, 0);
-  
-  value = strtoul (string, &endptr, 0);
-  if (endptr != string) /* parsed a number */
-    *enum_value = value;
-  else
-    {
-      eclass = g_type_class_ref (type);
-      ev = g_enum_get_value_by_name (eclass, string);
-      if (!ev)
-	ev = g_enum_get_value_by_nick (eclass, string);
-
-      if (ev)
-	*enum_value = ev->value;
-      else
-        retval = FALSE;
-      
-      g_type_class_unref (eclass);
-    }
-
-  return retval;
-}
-
-gboolean
-clutter_script_flags_from_string (GType        type, 
-                                  const gchar *string,
-                                  gint        *flags_value)
-{
-  GFlagsClass *fclass;
-  gchar *endptr, *prevptr;
-  guint i, j, ret, value;
-  gchar *flagstr;
-  GFlagsValue *fv;
-  const gchar *flag;
-  gunichar ch;
-  gboolean eos;
-
-  g_return_val_if_fail (G_TYPE_IS_FLAGS (type), 0);
-  g_return_val_if_fail (string != 0, 0);
-
-  ret = TRUE;
-  
-  value = strtoul (string, &endptr, 0);
-  if (endptr != string) /* parsed a number */
-    *flags_value = value;
-  else
-    {
-      fclass = g_type_class_ref (type);
-
-      flagstr = g_strdup (string);
-      for (value = i = j = 0; ; i++)
-	{
-	  
-	  eos = flagstr[i] == '\0';
-	  
-	  if (!eos && flagstr[i] != '|')
-	    continue;
-	  
-	  flag = &flagstr[j];
-	  endptr = &flagstr[i];
-	  
-	  if (!eos)
-	    {
-	      flagstr[i++] = '\0';
-	      j = i;
-	    }
-	  
-	  /* trim spaces */
-	  for (;;)
-	    {
-	      ch = g_utf8_get_char (flag);
-	      if (!g_unichar_isspace (ch))
-		break;
-	      flag = g_utf8_next_char (flag);
-	    }
-	  
-	  while (endptr > flag)
-	    {
-	      prevptr = g_utf8_prev_char (endptr);
-	      ch = g_utf8_get_char (prevptr);
-	      if (!g_unichar_isspace (ch))
-		break;
-	      endptr = prevptr;
-	    }
-	  
-	  if (endptr > flag)
-	    {
-	      *endptr = '\0';
-	      fv = g_flags_get_value_by_name (fclass, flag);
-	      
-	      if (!fv)
-		fv = g_flags_get_value_by_nick (fclass, flag);
-	      
-	      if (fv)
-		value |= fv->value;
-	      else
-		{
-		  ret = FALSE;
-		  break;
-		}
-	    }
-	  
-	  if (eos)
-	    {
-	      *flags_value = value;
-	      break;
-	    }
-	}
-      
-      g_free (flagstr);
-      
-      g_type_class_unref (fclass);
-    }
-
-  return ret;
 }
 
 GQuark

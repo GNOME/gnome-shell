@@ -27,6 +27,8 @@
 #define __CLUTTER_SCRIPT_PRIVATE_H__
 
 #include <glib-object.h>
+#include "json/json-types.h"
+#include "clutter-types.h"
 #include "clutter-script.h"
 
 G_BEGIN_DECLS
@@ -52,10 +54,24 @@ typedef struct {
   guint is_unmerged    : 1;
 } ObjectInfo;
 
+void object_info_free (gpointer data);
+
 typedef struct {
-  gchar *property_name;
-  GValue value;
+  gchar *name;
+  JsonNode *node;
+  GParamSpec *pspec;
 } PropertyInfo;
+
+void property_info_free (gpointer data);
+
+gboolean clutter_script_parse_node        (ClutterScript *script,
+                                           GValue        *value,
+                                           const gchar   *name,
+                                           JsonNode      *node,
+                                           GParamSpec    *pspec);
+
+GType    clutter_script_get_type_from_symbol (const gchar *symbol);
+GType    clutter_script_get_type_from_class  (const gchar *name);
 
 GObject *clutter_script_construct_object  (ClutterScript *script,
                                            ObjectInfo    *info);
@@ -66,6 +82,21 @@ gboolean clutter_script_enum_from_string  (GType          gtype,
 gboolean clutter_script_flags_from_string (GType          gtype,
                                            const gchar   *string,
                                            gint          *flags_value);
+
+gboolean clutter_script_parse_knot        (ClutterScript   *script,
+                                           JsonNode        *node,
+                                           ClutterKnot     *knot);
+gboolean clutter_script_parse_padding     (ClutterScript   *script,
+                                           JsonNode        *node,
+                                           ClutterPadding  *padding);
+gboolean clutter_script_parse_margin      (ClutterScript   *script,
+                                           JsonNode        *node,
+                                           ClutterMargin   *margin);
+gboolean clutter_script_parse_geometry    (ClutterScript   *script,
+                                           JsonNode        *node,
+                                           ClutterGeometry *geometry);
+GObject *clutter_script_parse_alpha       (ClutterScript   *script,
+                                           JsonNode        *node);
 
 G_END_DECLS
 

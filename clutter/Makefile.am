@@ -23,6 +23,7 @@ INCLUDES = \
 	-DDATADIR=\""$(datadir)"\" 		\
 	-DG_DISABLE_DEPRECATED 			\
 	-DG_LOG_DOMAIN=\"Clutter\" 		\
+	-DCLUTTER_JSON_API=1			\
 	$(GCC_FLAGS) 				\
 	$(CLUTTER_CFLAGS) 			\
 	$(CLUTTER_DEBUG_CFLAGS)			\
@@ -66,11 +67,12 @@ source_h =					\
 	$(srcdir)/clutter-main.h		\
 	$(srcdir)/clutter-media.h		\
 	$(srcdir)/clutter-rectangle.h		\
+	$(srcdir)/clutter-score.h 		\
 	$(srcdir)/clutter-script.h		\
+	$(srcdir)/clutter-scriptable.h		\
 	$(srcdir)/clutter-stage.h 		\
 	$(srcdir)/clutter-texture.h 		\
 	$(srcdir)/clutter-timeline.h 		\
-	$(srcdir)/clutter-score.h 		\
 	$(srcdir)/clutter-timeout-pool.h 	\
 	$(srcdir)/clutter-types.h		\
 	$(srcdir)/clutter-units.h 		\
@@ -150,12 +152,14 @@ source_c = \
 	clutter-main.c 			\
 	clutter-marshal.c		\
 	clutter-media.c 		\
-	clutter-stage.c 		\
 	clutter-rectangle.c 		\
-	clutter-texture.c 		\
-	clutter-timeline.c 		\
 	clutter-score.c 		\
 	clutter-script.c		\
+	clutter-script-parser.c		\
+	clutter-scriptable.c		\
+	clutter-stage.c			\
+	clutter-texture.c 		\
+	clutter-timeline.c 		\
 	clutter-timeout-pool.c		\
 	clutter-util.c 			\
 	clutter-vbox.c			\
@@ -189,6 +193,7 @@ clutterdir = $(includedir)/clutter-@CLUTTER_API_VERSION@/clutter
 
 clutter_HEADERS = \
 	$(source_h) \
+	clutter-json.h \
 	clutter-enum-types.h \
 	clutter-version.h \
 	clutter.h

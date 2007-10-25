@@ -59,6 +59,7 @@
 #include "clutter-timeline.h"
 #include "clutter-score.h"
 #include "clutter-script.h"
+#include "clutter-scriptable.h"
 #include "clutter-types.h"
 #include "clutter-units.h"
 #include "clutter-util.h"

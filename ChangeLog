@@ -1,5 +1,22 @@
 2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/Makefile.am:
+	* clutter/clutter.h:
+	* clutter/clutter-scriptable.[ch]: Add the ClutterScriptable
+	interface; by implementing this interface, a class can
+	override the UI definition parsing and transform complex data
+	types into GObject properties, or allow custom properties.
+
+	* clutter/clutter-script.c:
+	* clutter/clutter-script-parser.c:
+	* clutter/clutter-script-private.h: Rearrange the code and
+	use the ClutterScriptable interface to parse and build the
+	custom properties. This cleans up the code and also it makes
+	it more reliable (the complex type parsing is now done using
+	the target type and not just the name of the property).
+
+2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-json.h: Header for including the JSON
 	parsing and data types.
 
