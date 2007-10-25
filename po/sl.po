@@ -1,21 +1,33 @@
-# Slovenian translation of metacity.
 # Copyright (C) 2002-2006 Free Software Foundation, Inc.
 # This file is distributed under the same license as the metacity package.
 #
 # Andraz Tori <andraz.tori1@guest.arnes.si>, 2000.
 # Matjaž Horvat <m@owca.info>, 2006.
+# Matej Urbančič <mateju@svn.gnome.org>, 2007
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-14 15:54+0200\n"
-"PO-Revision-Date: 2006-09-15 02:02+0100\n"
-"Last-Translator: Matic Žgur <mr.zgur@gmail.com>\n"
+"POT-Creation-Date: 2007-10-03 03:39+0100\n"
+"PO-Revision-Date: 2007-10-25 15:03+0100\n"
+"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
+"X-Poedit-Language: Slovenian\n"
+"X-Poedit-Country: SLOVENIA\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../src/50-metacity-desktop-key.xml.in.h:1
+msgid "Desktop"
+msgstr "Namizje"
+
+#: ../src/50-metacity-key.xml.in.h:1
+msgid "Window Management"
+msgstr "Upravljanje oken"
 
 #: ../src/tools/metacity-message.c:150
 #, c-format
@@ -23,53 +35,58 @@ msgid "Usage: %s\n"
 msgstr "Uporaba: %s\n"
 
 #: ../src/tools/metacity-message.c:176
-#: ../src/util.c:131
+#: ../src/util.c:133
 msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "Metacity je bil preveden brez podpore za zgovorni način\n"
+msgstr "Metacity je bil preveden brez podpore za podrobni način\n"
 
-#: ../src/delete.c:64
-#: ../src/delete.c:91
-#: ../src/metacity-dialog.c:48
-#: ../src/theme-parser.c:467
+#: ../src/core.c:206
+#, c-format
+msgid "Unknown window information request: %d"
+msgstr "Zahteva izpisa podrobnosti neznanega okna: %d"
+
+#: ../src/delete.c:67
+#: ../src/delete.c:94
+#: ../src/metacity-dialog.c:50
+#: ../src/theme-parser.c:484
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
 msgstr "Ni mogoče razčleniti \"%s\" kot celoštevilčne vrednosti"
 
-#: ../src/delete.c:71
-#: ../src/delete.c:98
-#: ../src/metacity-dialog.c:55
-#: ../src/theme-parser.c:476
-#: ../src/theme-parser.c:530
+#: ../src/delete.c:74
+#: ../src/delete.c:101
+#: ../src/metacity-dialog.c:57
+#: ../src/theme-parser.c:493
+#: ../src/theme-parser.c:548
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr "Ni mogoče razumeti končnih znakov \"%s\" v nizu \"%s\""
 
-#: ../src/delete.c:129
+#: ../src/delete.c:132
 #, c-format
 msgid "Failed to parse message \"%s\" from dialog process\n"
 msgstr "Ni mogoče razčleniti sporočila \"%s\" iz procesa dialogov\n"
 
-#: ../src/delete.c:264
+#: ../src/delete.c:267
 #, c-format
 msgid "Error reading from dialog display process: %s\n"
 msgstr "Napaka ob branju iz procesa prikaza dialogov: %s\n"
 
-#: ../src/delete.c:345
+#: ../src/delete.c:350
 #, c-format
 msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
 msgstr "Napaka ob zaganjanju metacity-dialog, da bi vprašal o ubijanju programa: %s\n"
 
-#: ../src/delete.c:453
+#: ../src/delete.c:459
 #, c-format
 msgid "Failed to get hostname: %s\n"
 msgstr "Ni mogoče dobiti gostitelja z imenom: %s\n"
 
-#: ../src/display.c:344
+#: ../src/display.c:349
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Ni mogoče odpreti zaslona '%s' okenskega sistema X\n"
 
-#: ../src/errors.c:269
+#: ../src/errors.c:271
 #, c-format
 msgid ""
 "Lost connection to the display '%s';\n"
@@ -80,213 +97,253 @@ msgstr ""
 "verjetno se je strežnik X ugasnil ali pa ste ubili/uničili\n"
 "upravljalnik oken.\n"
 
-#: ../src/errors.c:276
+#: ../src/errors.c:278
 #, c-format
 msgid "Fatal IO error %d (%s) on display '%s'.\n"
 msgstr "Usodna napaka IO %d (%s) na zaslonu '%s'.\n"
 
-#: ../src/frames.c:1089
+#: ../src/frames.c:1078
 msgid "Close Window"
 msgstr "Zapri okno"
 
 # G:1 K:1 O:0
-#: ../src/frames.c:1092
+#: ../src/frames.c:1081
 msgid "Window Menu"
 msgstr "Menu oken"
 
 # G:0 K:1 O:0
-#: ../src/frames.c:1095
+#: ../src/frames.c:1084
 msgid "Minimize Window"
 msgstr "Pomanjšaj okno"
 
-#: ../src/frames.c:1098
+#: ../src/frames.c:1087
 msgid "Maximize Window"
-msgstr "Razpni okno"
+msgstr "Razpri okno"
 
 # G:1 K:0 O:0
-#: ../src/frames.c:1101
+#: ../src/frames.c:1090
 msgid "Unmaximize Window"
-msgstr "Odrazpni okno"
+msgstr "Pomanjšaj okno"
+
+# G:2 K:0 O:0
+#: ../src/frames.c:1093
+msgid "Roll Up Window"
+msgstr "Zavij okno"
+
+#: ../src/frames.c:1096
+msgid "Unroll Window"
+msgstr "Odvij okno"
+
+#: ../src/frames.c:1099
+msgid "Keep Window On Top"
+msgstr "Ohrani okno na vrhu"
+
+#: ../src/frames.c:1102
+msgid "Remove Window From Top"
+msgstr "Odstrani okno z vrha"
 
 # G:1 K:0 O:0
-#: ../src/keybindings.c:1031
+#: ../src/frames.c:1105
+msgid "Always On Visible Workspace"
+msgstr "Vedno na vidni delovni površini"
+
+#: ../src/frames.c:1108
+msgid "Put Window On Only One Workspace"
+msgstr "Postavi okno na samo eno delovno površino"
+
+# G:1 K:0 O:0
+#: ../src/keybindings.c:1087
 #, c-format
 msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
 msgstr "Tipko %s s spremenilnikom %x uporablja že nek drug program\n"
 
-#: ../src/keybindings.c:2663
+#: ../src/keybindings.c:2716
 #, c-format
 msgid "Error launching metacity-dialog to print an error about a command: %s\n"
 msgstr "Napaka ob zaganjanju metacity-dialog za izpis napake o ukazu: %s\n"
 
-#: ../src/keybindings.c:2768
+#: ../src/keybindings.c:2821
 #, c-format
 msgid "No command %d has been defined.\n"
 msgstr "Ukaz %d ni bil naveden.\n"
 
-#: ../src/keybindings.c:3635
+#: ../src/keybindings.c:3849
 msgid "No terminal command has been defined.\n"
 msgstr "Ni bilo navedenih ukazov terminala.\n"
 
-#: ../src/main.c:65
+#: ../src/main.c:67
 #, c-format
 msgid ""
 "metacity %s\n"
-"Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
+"Copyright (C) 2001-2007 Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
 "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 msgstr ""
 "metacity %s\n"
-"Avtorske pravice pridržane (C) 2001-2002 Havoc Pennington, Red Hat in \n"
-"drugi\n"
+"Avtorske pravice pridržane (C) 2001-2007 Havoc Pennington, Red Hat in drugi\n"
 "To je prosto programje; za pogoje kopiranja si poglejte izvorno kodo.\n"
-"Program prihaja BREZ KAKRŠNIHKOLI ZAGOTOVIL; tudi brez PRODAJNE VREDNOSTI\n"
-"PRIMERNOSTI ZA DOLOČEN NAMEN.\n"
+"Program prihaja BREZ KAKRŠNIHKOLI ZAGOTOVIL\n"
 
-#: ../src/main.c:169
+#: ../src/main.c:171
 msgid "Disable connection to session manager"
 msgstr "Onemogoči povezavo z upraviteljem sej"
 
-#: ../src/main.c:175
+#: ../src/main.c:177
 msgid "Replace the running window manager with Metacity"
 msgstr "Zamenjaj trenutnega upravitelja oken z Metacity"
 
-#: ../src/main.c:181
+#: ../src/main.c:183
 msgid "Specify session management ID"
 msgstr "Navedite ID upravljanja seje"
 
-#: ../src/main.c:186
+#: ../src/main.c:188
 msgid "X Display to use"
 msgstr "Zaslon X za uporabo"
 
-#: ../src/main.c:192
+#: ../src/main.c:194
 msgid "Initialize session from savefile"
 msgstr "Zagon seje iz datoteke"
 
-#: ../src/main.c:198
+#: ../src/main.c:200
 msgid "Print version"
 msgstr "Izpiši različico"
 
-#: ../src/main.c:350
+#: ../src/main.c:353
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
-msgstr "Ni bilo moč preiskati mape tem: %s\n"
+msgstr "Ni mogoče preiskati mape tem: %s\n"
 
-#: ../src/main.c:366
+#: ../src/main.c:369
 #, c-format
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes."
-msgstr "Ni mogoče najti teme! Prepričajte se ali %s obstaja in vsebuje običajne teme."
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgstr "Ni mogoče najti teme! Prepričajte se, da %s obstaja in vsebuje običajne teme.\n"
 
-#: ../src/main.c:424
+#: ../src/main.c:429
 #, c-format
 msgid "Failed to restart: %s\n"
 msgstr "Ni mogoče znova pognati: %s\n"
 
-#: ../src/menu.c:55
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:70
 msgid "Mi_nimize"
-msgstr "Poma_njšaj"
+msgstr "_Skrči"
 
 # G:1 K:0 O:0
-#: ../src/menu.c:56
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:72
 msgid "Ma_ximize"
 msgstr "Ra_zpni"
 
 # G:1 K:0 O:0
-#: ../src/menu.c:57
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:74
 msgid "Unma_ximize"
-msgstr "Odra_zpni"
+msgstr "Pomanjšaj"
 
 # G:2 K:0 O:0
-#: ../src/menu.c:58
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:76
 msgid "Roll _Up"
-msgstr "_Zavrti navzgor"
+msgstr "_Zavij"
 
 # G:1 K:0 O:0
-#: ../src/menu.c:59
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:78
 msgid "_Unroll"
 msgstr "_Odvij"
 
-#: ../src/menu.c:60
-#: ../src/menu.c:61
-msgid "On _Top"
-msgstr "Na _vrh"
-
 # G:1 K:0 O:0
-#: ../src/menu.c:62
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:80
 msgid "_Move"
-msgstr "_Prestavi"
+msgstr "_Premakni"
 
 # G:2 K:2 O:0
-#: ../src/menu.c:63
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:82
 msgid "_Resize"
 msgstr "Sp_remeni velikost"
 
-#: ../src/menu.c:64
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:84
 msgid "Move Titlebar On_screen"
 msgstr "Premakni naslovno vrstico na _zaslon"
 
-# G:0 K:1 O:0
 #. separator
-#: ../src/menu.c:66
-msgid "_Close"
-msgstr "_Zapri"
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:87
+#: ../src/menu.c:89
+msgid "Always on _Top"
+msgstr "Vedno na _vrhu"
 
 # G:1 K:0 O:0
-#. separator
-#: ../src/menu.c:68
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:91
 msgid "_Always on Visible Workspace"
 msgstr "Vedno n_a vidni delovni površini"
 
 # G:1 K:0 O:0
-#: ../src/menu.c:69
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:93
 msgid "_Only on This Workspace"
 msgstr "Sam_o na tej delovni površini"
 
-#: ../src/menu.c:70
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:95
 msgid "Move to Workspace _Left"
-msgstr "Premakni na delovno površino _levo"
+msgstr "Premakni na _levo delovno površino"
 
-#: ../src/menu.c:71
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:97
 msgid "Move to Workspace R_ight"
-msgstr "Premakni na delovno površ_ino desno"
+msgstr "Premakni na _desno delovno površino"
 
-#: ../src/menu.c:72
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:99
 msgid "Move to Workspace _Up"
-msgstr "Premakni na delovno površino _gor"
+msgstr "Premakni na _zgornjo delovno površino"
 
-#: ../src/menu.c:73
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:101
 msgid "Move to Workspace _Down"
-msgstr "Premakni na delovno površino _dol"
+msgstr "Premakni na _spodnjo delovno površino"
+
+# G:0 K:1 O:0
+#. separator
+#. Translators: Translate this string the same way as you do in libwnck!
+#: ../src/menu.c:105
+msgid "_Close"
+msgstr "_Zapri"
 
 # G:1 K:0 O:0
-#: ../src/menu.c:164
-#: ../src/prefs.c:2142
-#: ../src/prefs.c:2677
+#: ../src/menu.c:199
+#: ../src/prefs.c:2246
+#: ../src/prefs.c:2780
 #, c-format
 msgid "Workspace %d"
 msgstr "Delovna površina %d"
 
 # G:1 K:0 O:0
-#: ../src/menu.c:173
+#: ../src/menu.c:208
 msgid "Workspace 1_0"
 msgstr "Delovna površina 1_0"
 
 # G:2 K:0 O:0
-#: ../src/menu.c:175
+#: ../src/menu.c:210
 #, c-format
 msgid "Workspace %s%d"
 msgstr "Delovna površina %s%d"
 
-#: ../src/menu.c:373
+#: ../src/menu.c:390
 msgid "Move to Another _Workspace"
-msgstr "Premakni na drugo delovno"
+msgstr "Premakni na dru_go delovno površino"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:103
+#: ../src/metaaccellabel.c:105
 msgid "Shift"
 msgstr "Shift"
 
@@ -296,7 +353,7 @@ msgstr "Shift"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:109
+#: ../src/metaaccellabel.c:111
 msgid "Ctrl"
 msgstr "Ctrl"
 
@@ -306,7 +363,7 @@ msgstr "Ctrl"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:115
+#: ../src/metaaccellabel.c:117
 msgid "Alt"
 msgstr "Alt"
 
@@ -316,7 +373,7 @@ msgstr "Alt"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:121
+#: ../src/metaaccellabel.c:123
 msgid "Meta"
 msgstr "Meta"
 
@@ -326,7 +383,7 @@ msgstr "Meta"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:127
+#: ../src/metaaccellabel.c:129
 msgid "Super"
 msgstr "Super"
 
@@ -335,7 +392,7 @@ msgstr "Super"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:133
+#: ../src/metaaccellabel.c:135
 msgid "Hyper"
 msgstr "Hiper"
 
@@ -345,7 +402,7 @@ msgstr "Hiper"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:139
+#: ../src/metaaccellabel.c:141
 msgid "Mod2"
 msgstr "Mod2"
 
@@ -354,7 +411,7 @@ msgstr "Mod2"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:145
+#: ../src/metaaccellabel.c:147
 msgid "Mod3"
 msgstr "Mod3"
 
@@ -364,7 +421,7 @@ msgstr "Mod3"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:151
+#: ../src/metaaccellabel.c:153
 msgid "Mod4"
 msgstr "Mod4"
 
@@ -373,44 +430,48 @@ msgstr "Mod4"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/metaaccellabel.c:157
+#: ../src/metaaccellabel.c:159
 msgid "Mod5"
 msgstr "Mod5"
 
-#: ../src/metacity-dialog.c:88
+#: ../src/metacity-dialog.c:90
 #, c-format
-msgid "The window \"%s\" is not responding."
-msgstr "Okno \"%s\" se ne odziva."
+msgid "\"%s\" is not responding."
+msgstr "\"%s\" se ne odziva."
 
-#: ../src/metacity-dialog.c:96
-msgid "Forcing this application to quit will cause you to lose any unsaved changes."
-msgstr "Če vsilite izhod iz programa, boste izgubili vse neshranjene spremembe."
+#: ../src/metacity-dialog.c:97
+msgid "You may choose to wait a short while for it to continue or force the application to quit entirely."
+msgstr "Lahko počakate za nadaljevanje ali pa na silo zaprete program."
 
 #: ../src/metacity-dialog.c:107
+msgid "_Wait"
+msgstr "_Počakaj"
+
+#: ../src/metacity-dialog.c:109
 msgid "_Force Quit"
 msgstr "_Vsili izhod"
 
-#: ../src/metacity-dialog.c:204
+#: ../src/metacity-dialog.c:206
 msgid "Title"
 msgstr "Naziv"
 
 # G:1 K:0 O:0
-#: ../src/metacity-dialog.c:216
+#: ../src/metacity-dialog.c:218
 msgid "Class"
 msgstr "Razred"
 
 # G:2 K:6 O:0
-#: ../src/metacity-dialog.c:242
+#: ../src/metacity-dialog.c:244
 msgid "These windows do not support \"save current setup\" and will have to be restarted manually next time you log in."
-msgstr "Ta okna ne podpirajo \"shranitve trenutnih nastavitev\", zato bodo morala biti ob vaši naslednji prijavi znova zagnana ročno."
+msgstr "Ta okna ne podpirajo možnosti \"shranjevanja trenutnih nastavitev\", zato bodo morala biti ob vaši naslednji prijavi znova zagnana ročno."
 
-#: ../src/metacity-dialog.c:308
+#: ../src/metacity-dialog.c:310
 #, c-format
 msgid ""
 "There was an error running \"%s\":\n"
 "%s."
 msgstr ""
-"Ob poganjanju \"%s\" se je zgodila napaka:\n"
+"Med zagonom \"%s\" je prišlo do napake:\n"
 "%s."
 
 #: ../src/metacity.desktop.in.h:1
@@ -419,7 +480,7 @@ msgstr "Metacity"
 
 #: ../src/metacity.schemas.in.h:1
 msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr "(Ni implementirano) Navigacija deluje v smislu programov, ne oken"
+msgstr "(Ni vstavljeno) Navigacija deluje v smislu programov, ne oken"
 
 #: ../src/metacity.schemas.in.h:2
 msgid "A font description string describing a font for window titlebars. The size from the description will only be used if the titlebar_font_size option is set to 0. Also, this option is disabled if the titlebar_uses_desktop_font option is set to true."
@@ -430,1946 +491,2040 @@ msgid "Action on title bar double-click"
 msgstr "Dejanje ob dvojnem kliku na naziv okna"
 
 #: ../src/metacity.schemas.in.h:4
-msgid "Activate window menu"
-msgstr "Aktiviraj menu okna"
+msgid "Action on title bar middle-click"
+msgstr "Dejanje ob dvojnem kliku na naslov okna"
 
 #: ../src/metacity.schemas.in.h:5
-msgid "Arrangement of buttons on the titlebar"
-msgstr "Postavitev gumbov v okenskem nazivu"
+msgid "Action on title bar right-click"
+msgstr "Dejanje ob desnem kliku na naslov okna"
 
 #: ../src/metacity.schemas.in.h:6
+msgid "Activate window menu"
+msgstr "Zaženi menu okna"
+
+#: ../src/metacity.schemas.in.h:7
+msgid "Arrangement of buttons on the titlebar"
+msgstr "Postavitev gumbov v nazivu okna"
+
+#: ../src/metacity.schemas.in.h:8
 msgid "Arrangement of buttons on the titlebar. The value should be a string, such as \"menu:minimize,maximize,close\"; the colon separates the left corner of the window from the right corner, and the button names are comma-separated. Duplicate buttons are not allowed. Unknown button names are silently ignored so that buttons can be added in future metacity versions without breaking older versions."
 msgstr "Postavitev gumbov v nazivni vrstici okna. Vrednost mora biti niz, kot je \"menu:minimize,maximize,close\";  dvopičje loči levi kot okna od desnega in imena gumbov so ločena z vejico. Podvojeni gumbi niso dovoljeni. Neznana imena gumbov so tiho prezrta, tako, da se lahko v novih različicah Metacity doda nove gumbe brez, da bi se porušila kompatibilnost s starimi različicami"
 
-#: ../src/metacity.schemas.in.h:7
+#: ../src/metacity.schemas.in.h:9
 msgid "Automatically raises the focused window"
-msgstr "Samodejno dvigne fokusirano okno"
+msgstr "Samodejno dvigne dejavno okno"
 
-#: ../src/metacity.schemas.in.h:8
+#: ../src/metacity.schemas.in.h:10
 msgid "Clicking a window while holding down this modifier key will move the window (left click), resize the window (middle click), or show the window menu (right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;Super&gt;\" for example."
 msgstr "Klik na okno ob držanju tega spremenilnika bo premaknil okno (levi klik), spremenil velikost okna (srednji klik) ali pokazal menu okna (desni klik). Spremenilnik je npr. izražen kot \"&lt;Alt&gt;\" ali \"&lt;Super&gt;\"."
 
-#: ../src/metacity.schemas.in.h:9
+#: ../src/metacity.schemas.in.h:11
 msgid "Close window"
 msgstr "Zapri okno"
 
-#: ../src/metacity.schemas.in.h:10
+#: ../src/metacity.schemas.in.h:12
 msgid "Commands to run in response to keybindings"
-msgstr "Ukazi, ki naj se poženejo preko povezanih tipk"
+msgstr "Ukazi zagnani preko tipkovnih bližnjic"
 
-#: ../src/metacity.schemas.in.h:11
+#: ../src/metacity.schemas.in.h:13
 msgid "Compositing Manager"
 msgstr "Upravitelj sestavljanja"
 
-#: ../src/metacity.schemas.in.h:12
+#: ../src/metacity.schemas.in.h:14
 msgid "Control how new windows get focus"
-msgstr "Upravljanje pridobivanja fokusa novih oken"
+msgstr "Nadzor dejavnosti okna"
 
-#: ../src/metacity.schemas.in.h:13
+#: ../src/metacity.schemas.in.h:15
 msgid "Current theme"
 msgstr "Trenutna tema"
 
 # G:1 K:0 O:0
-#: ../src/metacity.schemas.in.h:14
+#: ../src/metacity.schemas.in.h:16
 msgid "Delay in milliseconds for the auto raise option"
 msgstr "Premor v milisekundah za možnost samodejnega dviga"
 
-#: ../src/metacity.schemas.in.h:15
+#: ../src/metacity.schemas.in.h:17
 msgid "Determines whether Metacity is a compositing manager."
 msgstr "Ugotovi, ali je Metacity upravitelj sestavljanja."
 
-#: ../src/metacity.schemas.in.h:16
+#: ../src/metacity.schemas.in.h:18
 msgid "Determines whether applications or the system can generate audible 'beeps'; may be used in conjunction with 'visual bell' to allow silent 'beeps'."
 msgstr "Ugotovi, ali lahko program ali sistem ustvari zvočne piske. Uporabno tudi skupaj z 'vidnimi zvonci', tako da nastanejo tihi 'piske'."
 
-#: ../src/metacity.schemas.in.h:17
+#: ../src/metacity.schemas.in.h:19
 msgid "Disable misfeatures that are required by old or broken applications"
 msgstr "Izklopi dodatke, ki so potrebni za stare ali pokvarjene programe"
 
-#: ../src/metacity.schemas.in.h:18
+#: ../src/metacity.schemas.in.h:20
 msgid "Enable Visual Bell"
 msgstr "Omogoči vidni zvonec"
 
-#: ../src/metacity.schemas.in.h:19
+#: ../src/metacity.schemas.in.h:21
 msgid "Hide all windows and focus desktop"
-msgstr "Skrij vsa okna in daj fokus na namizje"
+msgstr "Skrij vsa okna in pokaži namizje"
 
-#: ../src/metacity.schemas.in.h:20
+#: ../src/metacity.schemas.in.h:22
 msgid "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then the focused window will be automatically raised after a delay specified by the auto_raise_delay key. This is not related to clicking on a window to raise it, nor to entering a window during drag-and-drop."
 msgstr "Če je resnično in je način fokusa \"sloppy\" ali \"mouse\", potem bo okno s fokusom po premoru, določenem v ključu auto_raise_delay, samodejno dvignjeno. To ni povezano s klikanjem za dviganje okna, niti z vstopom v okno z metodo povleci-spusti."
 
-#: ../src/metacity.schemas.in.h:21
+#: ../src/metacity.schemas.in.h:23
 msgid "If true, ignore the titlebar_font option, and use the standard application font for window titles."
 msgstr "Če je true (resnično), prezri možnost titlebar_font in za naziv okna uporabi privzeto pisavo programov."
 
-#: ../src/metacity.schemas.in.h:22
+#: ../src/metacity.schemas.in.h:24
 msgid "If true, metacity will give the user less feedback by using wireframes, avoiding animations, or other means. This is a significant reduction in usability for many users, but may allow legacy applications to continue working, and may also be a useful tradeoff for terminal servers. However, the wireframe feature is disabled when accessibility is on."
 msgstr "Če je resnično, bo metacity uporabniku nudil manj povratnih z uporabo žičnih okvirjev, ukinitvijo animacij in na druge načine. Uporabnost za večino uporabnikov se bo zmanjšala, število delujočih programov se lahko poveča, izbira pa je primerna tudi za terminalske strežnike. Kljub temu je možnost žičnih okvirjev onemogočena pri uporabi možnosti dostopnosti."
 
-#: ../src/metacity.schemas.in.h:23
+#: ../src/metacity.schemas.in.h:25
 msgid "If true, then Metacity works in terms of applications rather than windows. The concept is a bit abstract, but in general an application-based setup is more like the Mac and less like Windows. When you focus a window in application-based mode, all the windows in the application will be raised. Also, in application-based mode, focus clicks are not passed through to windows in other applications. Application-based mode is, however, largely unimplemented at the moment."
 msgstr "Če je resnično, potem Metacity deluje s konceptom programov namesto s konceptom oken. Ta koncept je nekoliko abstrakten, a je v splošnem značilen za Mace in manj za Windows. Ko okno dobi fokus v programskem konceptu, se vsa okna programa dvignejo. Prav tako se v programskem načinu kliki za fokus ne prenesejo na ostale programe. Programski način v veliki meri še ni implementiran."
 
-#: ../src/metacity.schemas.in.h:24
+#: ../src/metacity.schemas.in.h:26
 msgid "If true, trade off usability for less resource usage"
 msgstr "Če je resnično, se zmanjšajo uporabnost in sistemske zahteve"
 
-#: ../src/metacity.schemas.in.h:25
+#: ../src/metacity.schemas.in.h:27
 msgid "Lower window below other windows"
 msgstr "Spusti okno pod druga"
 
-#: ../src/metacity.schemas.in.h:26
-msgid "Many actions (e.g. clicking in the client area, moving or resizing the window) normally raise the window as a side-effect. Set this option to false to decouple raising from other user actions. Even when this option is false, windows can still be raised by an alt-left-click anywhere on the window, a normal click on the window decorations, or by special messages, such as activation requests from pagers. This option is currently disabled in click-to-focus mode."
-msgstr "Številna dejanja (npr. klikanje v območju odjemalca, premikajne ali spreminjanje velikosti okna) kot stranski učinek običajno dvignejo okno. Nastavite to možnost na neresnično, če ne želite dvigovanja okna v teh primerih. Četudi je izbrana možnost neresnično, lahko okna še vedno dvignete, če ob kliku na okno držite tipko alt, če kliknete na okraske okna ali s posebnimi sporočili, npr. z zahtevami pozivnikov za vključitev. Ta možnost je trenutno onemogočena v načinu klik-za-fokus."
-
-#: ../src/metacity.schemas.in.h:27
+#: ../src/metacity.schemas.in.h:28
 msgid "Maximize window"
-msgstr "Razpni okno"
+msgstr "Razpri okno"
 
 # G:0 K:1 O:0
-#: ../src/metacity.schemas.in.h:28
-msgid "Maximize window horizontally"
-msgstr "Razpni okno vodoravno"
-
-# G:1 K:0 O:0
 #: ../src/metacity.schemas.in.h:29
-msgid "Maximize window vertically"
-msgstr "Razpni okno navpično"
+msgid "Maximize window horizontally"
+msgstr "Razpri okno vodoravno"
 
 # G:1 K:0 O:0
 #: ../src/metacity.schemas.in.h:30
-msgid "Minimize window"
-msgstr "Pomanjšaj okno"
+msgid "Maximize window vertically"
+msgstr "Razpri okno navpično"
 
+# G:1 K:0 O:0
 #: ../src/metacity.schemas.in.h:31
+msgid "Minimize window"
+msgstr "Skrči okno"
+
+#: ../src/metacity.schemas.in.h:32
 msgid "Modifier to use for modified window click actions"
 msgstr "Spremenilnik, ki naj se uporabi za dejanja klika na okno"
 
 # G:0 K:1 O:0
-#: ../src/metacity.schemas.in.h:32
+#: ../src/metacity.schemas.in.h:33
 msgid "Move backward between panels and the desktop immediately"
 msgstr "Med pulti in namizjem se pomakni nazaj takoj"
 
-#: ../src/metacity.schemas.in.h:33
-msgid "Move backwards between panels and the desktop with popup"
-msgstr "Med pulti in namizjem se pomakni nazaj z vzkličnim oknom"
-
 #: ../src/metacity.schemas.in.h:34
-msgid "Move backwards between windows immediately"
-msgstr "Nazaj med okno se pomakni takoj"
+msgid "Move backwards between panels and the desktop with popup"
+msgstr "Med pulti in namizjem se pomakni nazaj s pojavnim oknom"
 
 #: ../src/metacity.schemas.in.h:35
+msgid "Move backwards between windows immediately"
+msgstr "Nazaj med okna se pomakni takoj"
+
+#: ../src/metacity.schemas.in.h:36
 msgid "Move backwards between windows of an application immediately"
 msgstr "Takoj se premikaj nazaj med okni programa"
 
-#: ../src/metacity.schemas.in.h:36
+#: ../src/metacity.schemas.in.h:37
 msgid "Move backwards between windows of an application with popup"
 msgstr "Med okni programa se premikaj nazaj s pojavnim oknom"
 
-#: ../src/metacity.schemas.in.h:37
+#: ../src/metacity.schemas.in.h:38
 msgid "Move between panels and the desktop immediately"
 msgstr "Premikaj se med pulti in namizjem takoj"
 
-#: ../src/metacity.schemas.in.h:38
-msgid "Move between panels and the desktop with popup"
-msgstr "Med pulti in namizjem se premikaj z vzkličnim oknom"
-
 #: ../src/metacity.schemas.in.h:39
+msgid "Move between panels and the desktop with popup"
+msgstr "Med pulti in namizjem se premikaj s pojavnim oknom"
+
+#: ../src/metacity.schemas.in.h:40
 msgid "Move between windows immediately"
 msgstr "Med okni se premikaj takoj"
 
-#: ../src/metacity.schemas.in.h:40
+#: ../src/metacity.schemas.in.h:41
 msgid "Move between windows of an application immediately"
 msgstr "Takoj se premikaj med okni programa"
 
-#: ../src/metacity.schemas.in.h:41
+#: ../src/metacity.schemas.in.h:42
 msgid "Move between windows of an application with popup"
 msgstr "Med okni programa se premikaj s pojavnim oknom"
 
-#: ../src/metacity.schemas.in.h:42
-msgid "Move between windows with popup"
-msgstr "Med okni se premikaj z vzkličnim oknom"
-
 #: ../src/metacity.schemas.in.h:43
-msgid "Move focus backwards between windows using popup display"
-msgstr "Premakni fokus nazaj med okni, ki uporabljajo prikaz vzkličnih oken"
+msgid "Move between windows with popup"
+msgstr "Med okni se premikaj s pojavnim oknom"
 
 #: ../src/metacity.schemas.in.h:44
+msgid "Move focus backwards between windows using popup display"
+msgstr "Premakni fokus nazaj med okni, ki uporabljajo prikaz pojavnih oken"
+
+#: ../src/metacity.schemas.in.h:45
 msgid "Move window"
 msgstr "Premakni okno"
 
-#: ../src/metacity.schemas.in.h:45
+#: ../src/metacity.schemas.in.h:46
 msgid "Move window one workspace down"
 msgstr "Prestavi okno eno delovno površino navzdol"
 
-#: ../src/metacity.schemas.in.h:46
+#: ../src/metacity.schemas.in.h:47
 msgid "Move window one workspace to the left"
 msgstr "Premakni okno eno delovno površino levo"
 
-#: ../src/metacity.schemas.in.h:47
+#: ../src/metacity.schemas.in.h:48
 msgid "Move window one workspace to the right"
 msgstr "Premakni okno eno delovno površino desno"
 
-#: ../src/metacity.schemas.in.h:48
+#: ../src/metacity.schemas.in.h:49
 msgid "Move window one workspace up"
 msgstr "Premakni okno eno delovno površino navzgor"
 
-#: ../src/metacity.schemas.in.h:49
+#: ../src/metacity.schemas.in.h:50
+msgid "Move window to east side of screen"
+msgstr "Premakni okno na desni del zaslona"
+
+#: ../src/metacity.schemas.in.h:51
+msgid "Move window to north side of screen"
+msgstr "Premakni okno na zgornji del zaslona"
+
+#: ../src/metacity.schemas.in.h:52
+msgid "Move window to north-east corner"
+msgstr "Premakni okno v zgornji desni kot"
+
+#: ../src/metacity.schemas.in.h:53
+msgid "Move window to north-west corner"
+msgstr "Premakni okno v zgornji levi kot"
+
+#: ../src/metacity.schemas.in.h:54
+msgid "Move window to south side of screen"
+msgstr "Premakni okno na spodnji del zaslona"
+
+#: ../src/metacity.schemas.in.h:55
+msgid "Move window to south-east corner"
+msgstr "Premakni okno v spodnji desni kot"
+
+#: ../src/metacity.schemas.in.h:56
+msgid "Move window to south-west corner"
+msgstr "Premakni okno v spodnji levi kot"
+
+#: ../src/metacity.schemas.in.h:57
+msgid "Move window to west side of screen"
+msgstr "Premakni okno na levi del zaslona"
+
+#: ../src/metacity.schemas.in.h:58
 msgid "Move window to workspace 1"
 msgstr "Premakni okno na delovno površino 1"
 
-#: ../src/metacity.schemas.in.h:50
+#: ../src/metacity.schemas.in.h:59
 msgid "Move window to workspace 10"
 msgstr "Premakni okno na delovno površino 10"
 
-#: ../src/metacity.schemas.in.h:51
+#: ../src/metacity.schemas.in.h:60
 msgid "Move window to workspace 11"
 msgstr "Premakni okno na delovno površino 11"
 
-#: ../src/metacity.schemas.in.h:52
+#: ../src/metacity.schemas.in.h:61
 msgid "Move window to workspace 12"
 msgstr "Premakni okno na delovno površino 12"
 
-#: ../src/metacity.schemas.in.h:53
+#: ../src/metacity.schemas.in.h:62
 msgid "Move window to workspace 2"
 msgstr "Premakni okno na delovno površino 2"
 
-#: ../src/metacity.schemas.in.h:54
+#: ../src/metacity.schemas.in.h:63
 msgid "Move window to workspace 3"
 msgstr "Premakni okno na delovno površino 3"
 
-#: ../src/metacity.schemas.in.h:55
+#: ../src/metacity.schemas.in.h:64
 msgid "Move window to workspace 4"
 msgstr "Premakni okno na delovno površino 4"
 
-#: ../src/metacity.schemas.in.h:56
+#: ../src/metacity.schemas.in.h:65
 msgid "Move window to workspace 5"
 msgstr "Premakni okno na delovno površino 5"
 
-#: ../src/metacity.schemas.in.h:57
+#: ../src/metacity.schemas.in.h:66
 msgid "Move window to workspace 6"
 msgstr "Premakni okno na delovno površino 6"
 
-#: ../src/metacity.schemas.in.h:58
+#: ../src/metacity.schemas.in.h:67
 msgid "Move window to workspace 7"
 msgstr "Premakni okno na delovno površino 7"
 
-#: ../src/metacity.schemas.in.h:59
+#: ../src/metacity.schemas.in.h:68
 msgid "Move window to workspace 8"
 msgstr "Premakni okno na delovno površino 8"
 
-#: ../src/metacity.schemas.in.h:60
+#: ../src/metacity.schemas.in.h:69
 msgid "Move window to workspace 9"
 msgstr "Premakni okno na delovno površino 9"
 
-#: ../src/metacity.schemas.in.h:61
+#: ../src/metacity.schemas.in.h:70
 msgid "Name of workspace"
 msgstr "Ime delovne površine"
 
-#: ../src/metacity.schemas.in.h:62
+#: ../src/metacity.schemas.in.h:71
 msgid "Number of workspaces"
 msgstr "Število delovnih površin"
 
 # G:1 K:0 O:0
-#: ../src/metacity.schemas.in.h:63
+#: ../src/metacity.schemas.in.h:72
 msgid "Number of workspaces. Must be more than zero, and has a fixed maximum to prevent making the desktop unusable by accidentally asking for too many workspaces."
 msgstr "Število delovnih površin. Mora biti več kot nič in ima določeno najvišjo vrednost, da prepreči uničenje namizja z vnosom prevelikega števila delovnih površin."
 
-#: ../src/metacity.schemas.in.h:64
+#: ../src/metacity.schemas.in.h:73
 msgid "Raise obscured window, otherwise lower"
 msgstr "Dvigni obskurno okno, sicer spusti"
 
-#: ../src/metacity.schemas.in.h:65
+#: ../src/metacity.schemas.in.h:74
 msgid "Raise window above other windows"
 msgstr "Dvigni okno nad druga okna"
 
-#: ../src/metacity.schemas.in.h:66
+#: ../src/metacity.schemas.in.h:75
 msgid "Resize window"
 msgstr "Spremeni velikost okna"
 
 # G:0 K:1 O:0
-#: ../src/metacity.schemas.in.h:67
+#: ../src/metacity.schemas.in.h:76
 msgid "Run a defined command"
-msgstr "Poženi določen ukaz"
+msgstr "Zaženi določen ukaz"
 
-#: ../src/metacity.schemas.in.h:68
+#: ../src/metacity.schemas.in.h:77
 msgid "Run a terminal"
-msgstr "Poženi terminal"
+msgstr "Zaženi terminal"
 
-#: ../src/metacity.schemas.in.h:69
+#: ../src/metacity.schemas.in.h:78
+msgid "Setting this option to false can lead to buggy behavior, so users are strongly discouraged from changing it from the default of true. Many actions (e.g. clicking in the client area, moving or resizing the window) normally raise the window as a side-effect. Set this option to false to decouple raising from other user actions. Even when this option is false, windows can still be raised by an alt-left-click anywhere on the window, a normal click on the window decorations, or by special messages from pagers, such as activation requests from tasklist applets. This option is currently disabled in click-to-focus mode. Note that the list of ways to raise windows when raise_on_click is false does not include programmatic requests from applications to raise windows; such requests will be ignored regardless of the reason for the request. If you are an application developer and have a user complaining that your application does not work with this setting disabled, tell them it is _their_ fault for breaking their window manager and that they need to change this option back to true or live with the bug they requested. See also http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
+msgstr "Nastavitev te možnosti na onemogočeno lahko privede do nepravilnega delovanja, zato ni priporočeno spreminjati nastavitve. Dvig okna veliko dejanj (na primer: klikanje na okno, povečevanje ali premikanje okna) je običajno  stranski učinek. Spremenite možnost, če želite preprečiti dvig preko ostalih skriptov. Kadar je možnost onemogočena, je mogoče okna še vedno dvigniti z alt-levi-klik kjerkoli na oknu, z običajnim klikom na okras okna ali pa posredno preko posebnih sporočil, zahtev in podobno. Možnost je trenutno onemogočena v tem načinu. Več podrobnosti je na povezave http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
+
+#: ../src/metacity.schemas.in.h:79
 msgid "Show the panel menu"
 msgstr "Prikaži meni pulta"
 
-#: ../src/metacity.schemas.in.h:70
+#: ../src/metacity.schemas.in.h:80
 msgid "Show the panel run application dialog"
 msgstr "Prikaži pogovorno okno pulta za zagon programov"
 
-#: ../src/metacity.schemas.in.h:71
+#: ../src/metacity.schemas.in.h:81
 msgid "Some applications disregard specifications in ways that result in window manager misfeatures. This option puts Metacity in a rigorously correct mode, which gives a more consistent user interface, provided one does not need to run any misbehaving applications."
-msgstr "Nekateri programi prezirajo določila, tako da upravitelj oken ne deluje v celoti pravilno. Ta možnost postavi Metacity v pravilen način, ki daje bolj celovit uporabniški vmesnik, če uporabniku ni potrebno zaganjati programo, ki ne delujejo pravilno."
+msgstr "Nekateri programi prezirajo določila, tako da upravitelj oken ne deluje v celoti pravilno. Ta možnost postavi Metacity v pravilen način, ki daje bolj celovit uporabniški vmesnik, če uporabniku ni potrebno zaganjati programov, ki ne delujejo pravilno."
 
-#: ../src/metacity.schemas.in.h:72
+#: ../src/metacity.schemas.in.h:82
 msgid "Switch to workspace 1"
 msgstr "Preklopi na delovno površino 1"
 
-#: ../src/metacity.schemas.in.h:73
+#: ../src/metacity.schemas.in.h:83
 msgid "Switch to workspace 10"
 msgstr "Preklopi na delovno površino 10"
 
-#: ../src/metacity.schemas.in.h:74
+#: ../src/metacity.schemas.in.h:84
 msgid "Switch to workspace 11"
 msgstr "Preklopi na delovno površino 11"
 
-#: ../src/metacity.schemas.in.h:75
+#: ../src/metacity.schemas.in.h:85
 msgid "Switch to workspace 12"
 msgstr "Preklopi na delovno površino 12"
 
-#: ../src/metacity.schemas.in.h:76
+#: ../src/metacity.schemas.in.h:86
 msgid "Switch to workspace 2"
 msgstr "Preklopi na delovno površino 2"
 
-#: ../src/metacity.schemas.in.h:77
+#: ../src/metacity.schemas.in.h:87
 msgid "Switch to workspace 3"
 msgstr "Preklopi na delovno površino 3"
 
-#: ../src/metacity.schemas.in.h:78
+#: ../src/metacity.schemas.in.h:88
 msgid "Switch to workspace 4"
 msgstr "Preklopi na delovno površino 4"
 
-#: ../src/metacity.schemas.in.h:79
+#: ../src/metacity.schemas.in.h:89
 msgid "Switch to workspace 5"
 msgstr "Preklopi na delovno površino 5"
 
-#: ../src/metacity.schemas.in.h:80
+#: ../src/metacity.schemas.in.h:90
 msgid "Switch to workspace 6"
 msgstr "Preklopi na delovno površino 6"
 
-#: ../src/metacity.schemas.in.h:81
+#: ../src/metacity.schemas.in.h:91
 msgid "Switch to workspace 7"
 msgstr "Preklopi na delovno površino 7"
 
-#: ../src/metacity.schemas.in.h:82
+#: ../src/metacity.schemas.in.h:92
 msgid "Switch to workspace 8"
 msgstr "Preklopi na delovno površino 8"
 
-#: ../src/metacity.schemas.in.h:83
+#: ../src/metacity.schemas.in.h:93
 msgid "Switch to workspace 9"
 msgstr "Preklopi na delovno površino 9"
 
-#: ../src/metacity.schemas.in.h:84
+#: ../src/metacity.schemas.in.h:94
 msgid "Switch to workspace above this one"
 msgstr "Preklopi na delovno površino nad to"
 
-#: ../src/metacity.schemas.in.h:85
+#: ../src/metacity.schemas.in.h:95
 msgid "Switch to workspace below this one"
 msgstr "Preklopi na delovno površino pod to"
 
-#: ../src/metacity.schemas.in.h:86
+#: ../src/metacity.schemas.in.h:96
 msgid "Switch to workspace on the left"
 msgstr "Preklopi na delovno površino na levi"
 
-#: ../src/metacity.schemas.in.h:87
+#: ../src/metacity.schemas.in.h:97
 msgid "Switch to workspace on the right"
 msgstr "Preklopi na delovno površino na desni"
 
-#: ../src/metacity.schemas.in.h:88
+#: ../src/metacity.schemas.in.h:98
 msgid "System Bell is Audible"
 msgstr "Sistemski zvonec je zvočen"
 
-#: ../src/metacity.schemas.in.h:89
+#: ../src/metacity.schemas.in.h:99
 msgid "Take a screenshot"
 msgstr "Zajemi zaslon"
 
-#: ../src/metacity.schemas.in.h:90
+#: ../src/metacity.schemas.in.h:100
 msgid "Take a screenshot of a window"
 msgstr "Zajemi okna na zaslonu"
 
-#: ../src/metacity.schemas.in.h:91
+#: ../src/metacity.schemas.in.h:101
 msgid "Tells Metacity how to implement the visual indication that the system bell or another application 'bell' indicator has been rung. Currently there are two valid values, \"fullscreen\", which causes a fullscreen white-black flash, and \"frame_flash\" which causes the titlebar of the application which sent the bell signal to flash. If the application which sent the bell is unknown (as is usually the case for the default \"system beep\"), the currently focused window's titlebar is flashed."
-msgstr "Ukaže Metacityju, kako izvesti vidno opozarjanje sistemskega zvonca ali zvonca drugega programa. Trenutno sta na voljo dve veljavni vrednosti, \"fullscreen\", ki povzroči celozaslonsko črnobelo utripanje in \"frame_flash\", ki povzroči utripanje naslovne vrstice programa, ki je sprožil zvonec. Če je slednji neznan (npr. v primeru \"sistemskega zvonca\"), utripa naslovna vrstica okna, ki ima trenutno fokus."
+msgstr "Ukaže Metacityju, kako izvesti vidno opozarjanje sistemskega zvonca ali zvonca drugega programa. Trenutno sta na voljo dve veljavni vrednosti, \"fullscreen\", ki povzroči celozaslonsko črno belo utripanje in \"frame_flash\", ki povzroči utripanje naslovne vrstice programa, ki je sprožil zvonec. Če je slednji neznan (npr. v primeru \"sistemskega zvonca\"), utripa naslovna vrstica okna, ki ima trenutno fokus."
 
-#: ../src/metacity.schemas.in.h:92
+#: ../src/metacity.schemas.in.h:102
 msgid "The /apps/metacity/global_keybindings/run_command_N keys define keybindings that correspond to these commands. Pressing the keybinding for run_command_N will execute command_N."
-msgstr "Ključi /apps/metacity/global_keybindings/run_command_N navajajo tipkovnične povezave, ki ustrezajo tem ukazom. Pritisk tipke za run_command_N bo izvedel ukaz command_N."
+msgstr "Ključi /apps/metacity/global_keybindings/run_command_N navajajo tipkovne povezave, ki ustrezajo tem ukazom. Pritisk tipke za run_command_N bo izvedel ukaz command_N."
 
-#: ../src/metacity.schemas.in.h:93
+#: ../src/metacity.schemas.in.h:103
 msgid "The /apps/metacity/global_keybindings/run_command_screenshot key defines a keybinding which causes the command specified by this setting to be invoked."
 msgstr "Ključ /apps/metacity/global_keybindings/run_command_screenshot določa bližnjico tipk, ki povzroči izvajanje ukaza, določenega s temi nastavitvami."
 
-#: ../src/metacity.schemas.in.h:94
+#: ../src/metacity.schemas.in.h:104
 msgid "The /apps/metacity/global_keybindings/run_command_window_screenshot key defines a keybinding which causes the command specified by this setting to be invoked."
 msgstr "Ključ /apps/metacity/global_keybindings/run_command_window_screenshot določa bližnjico tipk, ki povzroči izvajanje ukaza, določenega s temi nastavitvami."
 
-#: ../src/metacity.schemas.in.h:95
+#: ../src/metacity.schemas.in.h:105
 msgid "The keybinding that runs the correspondingly-numbered command in /apps/metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki zažene ustrezno oštevilčen ukaz v /apps/metacity/keybinding_commands. Oblikovana je kot \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:96
+#: ../src/metacity.schemas.in.h:106
 msgid "The keybinding that switches to the workspace above the current workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki povzroči preklop na delovno površino nad trenutno. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:97
+#: ../src/metacity.schemas.in.h:107
 msgid "The keybinding that switches to the workspace below the current workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki povzroči preklop na delovno površino pod trenutno. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:98
+#: ../src/metacity.schemas.in.h:108
 msgid "The keybinding that switches to the workspace on the left of the current workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki povzroči preklop na delovno površino levo od trenutne. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:99
+#: ../src/metacity.schemas.in.h:109
 msgid "The keybinding that switches to the workspace on the right of the current workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki povzroči preklop na delovno površino desno od trenutne. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:100
+#: ../src/metacity.schemas.in.h:110
 msgid "The keybinding that switches to workspace 1. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki povzroči preklop na delovno površino št. 1. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:101
+#: ../src/metacity.schemas.in.h:111
 msgid "The keybinding that switches to workspace 10. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki povzroči preklop na delovno površino št. 10. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:102
+#: ../src/metacity.schemas.in.h:112
 msgid "The keybinding that switches to workspace 11. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki povzroči preklop na delovno površino št. 11. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:103
+#: ../src/metacity.schemas.in.h:113
 msgid "The keybinding that switches to workspace 12. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki povzroči preklop na delovno površino št. 12. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:104
+#: ../src/metacity.schemas.in.h:114
 msgid "The keybinding that switches to workspace 2. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki povzroči preklop na delovno površino št. 2. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:105
+#: ../src/metacity.schemas.in.h:115
 msgid "The keybinding that switches to workspace 3. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki povzroči preklop na delovno površino št. 3. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:106
+#: ../src/metacity.schemas.in.h:116
 msgid "The keybinding that switches to workspace 4. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki povzroči preklop na delovno površino št. 4. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:107
+#: ../src/metacity.schemas.in.h:117
 msgid "The keybinding that switches to workspace 5. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki povzroči preklop na delovno površino št. 5. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:108
+#: ../src/metacity.schemas.in.h:118
 msgid "The keybinding that switches to workspace 6. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki povzroči preklop na delovno površino št. 6. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:109
+#: ../src/metacity.schemas.in.h:119
 msgid "The keybinding that switches to workspace 7. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki povzroči preklop na delovno površino št. 7. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:110
+#: ../src/metacity.schemas.in.h:120
 msgid "The keybinding that switches to workspace 8. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki povzroči preklop na delovno površino št. 8. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:111
+#: ../src/metacity.schemas.in.h:121
 msgid "The keybinding that switches to workspace 9. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki povzroči preklop na delovno površino št. 9. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:112
+#: ../src/metacity.schemas.in.h:122
 msgid "The keybinding used to activate the window menu. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki vključi meni oken. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:113
+#: ../src/metacity.schemas.in.h:123
 msgid "The keybinding used to close a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za zapiranje okna. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:114
+#: ../src/metacity.schemas.in.h:124
 msgid "The keybinding used to enter \"move mode\" and begin moving a window using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za prehod v premikalni način in začetek premikanja okna s pomočjo tipkovnice. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:115
+#: ../src/metacity.schemas.in.h:125
 msgid "The keybinding used to enter \"resize mode\" and begin resizing a window using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za prehod v način spreminjanja velikost in začetek spreminjanja velikosti okna s pomočjo tipkovnice. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:116
+#: ../src/metacity.schemas.in.h:126
 msgid "The keybinding used to hide all normal windows and set the focus to the desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za zapiranje vseh običajnih oken in dajanje fokusa namizju. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:117
+#: ../src/metacity.schemas.in.h:127
 msgid "The keybinding used to maximize a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr "Bližnjica tipk za razpetje okna. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
+msgstr "Bližnjica tipk za razprtje okna. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:118
+#: ../src/metacity.schemas.in.h:128
 msgid "The keybinding used to minimize a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr "Bližnjica tipk za pomanjšanje okna. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
+msgstr "Bližnjica tipk za skrčenje okna. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:119
+#: ../src/metacity.schemas.in.h:129
 msgid "The keybinding used to move a window one workspace down. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za prestavitev okna eno delovno površino navzdol. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:120
+#: ../src/metacity.schemas.in.h:130
 msgid "The keybinding used to move a window one workspace to the left. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za prestavitev okna eno delovno površino levo. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:121
+#: ../src/metacity.schemas.in.h:131
 msgid "The keybinding used to move a window one workspace to the right. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za prestavitev okna eno delovno površino desno. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:122
+#: ../src/metacity.schemas.in.h:132
 msgid "The keybinding used to move a window one workspace up. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za prestavitev okna eno delovno površino navzgor. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:123
+#: ../src/metacity.schemas.in.h:133
 msgid "The keybinding used to move a window to workspace 1. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za prestavitev okna na delovno površino št. 1. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:124
+#: ../src/metacity.schemas.in.h:134
 msgid "The keybinding used to move a window to workspace 10. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za prestavitev okna na delovno površino št. 10. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:125
+#: ../src/metacity.schemas.in.h:135
 msgid "The keybinding used to move a window to workspace 11. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za prestavitev okna na delovno površino št. 11. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:126
+#: ../src/metacity.schemas.in.h:136
 msgid "The keybinding used to move a window to workspace 12. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za prestavitev okna na delovno površino št. 12. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:127
+#: ../src/metacity.schemas.in.h:137
 msgid "The keybinding used to move a window to workspace 2. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za prestavitev okna na delovno površino št. 2. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:128
+#: ../src/metacity.schemas.in.h:138
 msgid "The keybinding used to move a window to workspace 3. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za prestavitev okna na delovno površino št. 3. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:129
+#: ../src/metacity.schemas.in.h:139
 msgid "The keybinding used to move a window to workspace 4. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za prestavitev okna na delovno površino št. 4. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:130
+#: ../src/metacity.schemas.in.h:140
 msgid "The keybinding used to move a window to workspace 5. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za prestavitev okna na delovno površino št. 5. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:131
+#: ../src/metacity.schemas.in.h:141
 msgid "The keybinding used to move a window to workspace 6. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za prestavitev okna na delovno površino št. 6. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:132
+#: ../src/metacity.schemas.in.h:142
 msgid "The keybinding used to move a window to workspace 7. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za prestavitev okna na delovno površino št. 7. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:133
+#: ../src/metacity.schemas.in.h:143
 msgid "The keybinding used to move a window to workspace 8. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za prestavitev okna na delovno površino št. 8. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:134
+#: ../src/metacity.schemas.in.h:144
 msgid "The keybinding used to move a window to workspace 9. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za prestavitev okna na delovno površino št. 9. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:135
+#: ../src/metacity.schemas.in.h:145
 msgid "The keybinding used to move focus backwards between panels and the desktop, using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za preklop fokusa nazaj med pulti in namizjem s pomočjo pojavnega okna. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:136
+#: ../src/metacity.schemas.in.h:146
 msgid "The keybinding used to move focus backwards between panels and the desktop, without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za preklop fokusa nazaj med pulti in namizjem brez pojavnega okna. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:137
+#: ../src/metacity.schemas.in.h:147
 msgid "The keybinding used to move focus backwards between windows of an application without a popup window. Holding \"shift\" together with this binding makes the direction go forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za preklop fokusa nazaj med okni programa brez pojavnega okna. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:138
+#: ../src/metacity.schemas.in.h:148
 msgid "The keybinding used to move focus backwards between windows of an application, using a popup window. Holding \"shift\" together with this binding makes the direction go forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za preklop fokusa nazaj med okni programa s pomočjo pojavnega okna. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:139
+#: ../src/metacity.schemas.in.h:149
 msgid "The keybinding used to move focus backwards between windows without a popup window. Holding \"shift\" together with this binding makes the direction go forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za preklop fokusa nazaj med okni brez pojavnega okna. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:140
+#: ../src/metacity.schemas.in.h:150
 msgid "The keybinding used to move focus backwards between windows, using a popup window. Holding \"shift\" together with this binding makes the direction go forward again. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za preklop fokusa nazaj med okni s pomočjo pojavnega okna. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:141
+#: ../src/metacity.schemas.in.h:151
 msgid "The keybinding used to move focus between panels and the desktop, using a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za preklop fokusa med pulti in namizjem s pomočjo pojavnega okna. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:142
+#: ../src/metacity.schemas.in.h:152
 msgid "The keybinding used to move focus between panels and the desktop, without a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za preklop fokusa med pulti in namizjem brez pojavnega okna. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:143
+#: ../src/metacity.schemas.in.h:153
 msgid "The keybinding used to move focus between windows of an application without a popup window. Holding the \"shift\" key while using this binding reverses the direction of movement. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za preklop fokusa med okni brez pojavnega okna. Držanje tipke \"shift\" povzroči obrnjeno smer preklopa. Bližnjica je oblikovana kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:144
+#: ../src/metacity.schemas.in.h:154
 msgid "The keybinding used to move focus between windows of an application, using a popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" key while using this binding reverses the direction of movement. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za preklop fokusa med okni programa s pomočjo pojavnega okna. (Običajno &lt;Alt&gt;Tab). Držanje tipke \"shift\" povzroči obrnjeno smer preklopa. Bližnjica je oblikovana kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:145
+#: ../src/metacity.schemas.in.h:155
 msgid "The keybinding used to move focus between windows without a popup window. (Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using this binding reverses the direction of movement. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za preklop fokusa med okni brez pojavnega okna. (Običajno &lt;Alt&gt;Escape). Držanje tipke \"shift\" povzroči obrnjeno smer preklopa. Bližnjica je oblikovana kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:146
+#: ../src/metacity.schemas.in.h:156
 msgid "The keybinding used to move focus between windows, using a popup window. (Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this binding reverses the direction of movement. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za preklop fokusa med okni s pomočjo pojavnega okna. (Običajno &lt;Alt&gt;Tab). Držanje tipke \"shift\" obrne smer preklopa. Bližnjica je oblikovana kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:147
+#: ../src/metacity.schemas.in.h:157
 msgid "The keybinding used to toggle always on top. A window that is always on top will always be visible over other overlapping windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za preklop stanja vedno na vrhu. Okno, ki je vedno na vrhu, bo vedno vidno nad ostalimi okni. Bližnjica je oblikovana kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:148
+#: ../src/metacity.schemas.in.h:158
 msgid "The keybinding used to toggle fullscreen mode. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za preklop celozaslonskega načina. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:149
+#: ../src/metacity.schemas.in.h:159
 msgid "The keybinding used to toggle maximization. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za preklop razpenjanja okna. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:150
+#: ../src/metacity.schemas.in.h:160
 msgid "The keybinding used to toggle shaded/unshaded state. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za preklop med senčenim in nesenčenim stanjem. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:151
+#: ../src/metacity.schemas.in.h:161
 msgid "The keybinding used to toggle whether the window is on all workspaces or just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk za preklop med tem ali je okno na vseh delovnih površinah ali na eni sami. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:152
+#: ../src/metacity.schemas.in.h:162
 msgid "The keybinding used to unmaximize a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
-msgstr "Bližnjica tipk za odrazpetje okna. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
+msgstr "Bližnjica tipk za pomanjšanje okna. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:153
+#: ../src/metacity.schemas.in.h:163
 msgid "The keybinding which display's the panel's \"Run Application\" dialog box. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki prikaže okno za zagon programov. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:154
+#: ../src/metacity.schemas.in.h:164
 msgid "The keybinding which invokes a terminal. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki zažene termina. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:155
+#: ../src/metacity.schemas.in.h:165
 msgid "The keybinding which invokes the panel's screenshot utility to take a screenshot of a window. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki požene pripomoček za zajem okna na zaslonu. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:156
+#: ../src/metacity.schemas.in.h:166
 msgid "The keybinding which invokes the panel's screenshot utility. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki požene pripomoček za zajem zaslona. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:157
+#: ../src/metacity.schemas.in.h:167
 msgid "The keybinding which shows the panel's main menu. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Bližnjica tipk, ki vključi glavni meni pulta. Oblikovana je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:158
+#: ../src/metacity.schemas.in.h:168
 msgid "The name of a workspace."
 msgstr "Ime namizja."
 
-#: ../src/metacity.schemas.in.h:159
+#: ../src/metacity.schemas.in.h:169
 msgid "The screenshot command"
 msgstr "Ukaz za zajem zaslona"
 
-#: ../src/metacity.schemas.in.h:160
+#: ../src/metacity.schemas.in.h:170
 msgid "The theme determines the appearance of window borders, titlebar, and so forth."
-msgstr "Tema določa izgled robov oken, naziva oken itd."
+msgstr "Tema določa videz robov oken, naziva oken itd."
 
-#: ../src/metacity.schemas.in.h:161
+#: ../src/metacity.schemas.in.h:171
 msgid "The time delay before raising a window if auto_raise is set to true. The delay is given in thousandths of a second."
 msgstr "Časovni premor preden se okno dvigne, kadar je auto_raise nastavljen na \"true\". Premor je podan v tisočinkah sekunde."
 
-#: ../src/metacity.schemas.in.h:162
+#: ../src/metacity.schemas.in.h:172
 msgid "The window focus mode indicates how windows are activated. It has three possible values; \"click\" means windows must be clicked in order to focus them, \"sloppy\" means windows are focused when the mouse enters the window, and \"mouse\" means windows are focused when the mouse enters the window and unfocused when the mouse leaves the window."
-msgstr "Način fokusiranja oken določa kako se okna aktivirajo. Možnosti so tri; \"click\" pomeni, da morajo biti okna za pridobitev fokusa kliknjena. \"sloppy\" pomeni, da se okna fokusiranja, ko gre v njih miška, in \"mouse\" pomeni, da se okna fokusirajo, ko gre v njih miška in odfokusirajo, ko jih ta zapusti."
+msgstr "Način prikaza oken določa kako se okna zaženejo. Možnosti so tri; \"click\" pomeni, da morajo biti okna za pridobitev fokusa kliknjena. \"sloppy\" pomeni, da se okna fokusiranja, ko gre v njih miška, in \"mouse\" pomeni, da se okna fokusirajo, ko gre v njih miška in odfokusirajo, ko jih ta zapusti."
 
-#: ../src/metacity.schemas.in.h:163
+#: ../src/metacity.schemas.in.h:173
 msgid "The window screenshot command"
 msgstr "Ukaz za zajem okna na zaslonu"
 
-#: ../src/metacity.schemas.in.h:164
+#: ../src/metacity.schemas.in.h:174
 msgid "This keybinding changes whether a window is above or below other windows. If the window is covered by another one, it raises the window above all others, and if the window is already fully visible, it lowers it below all others. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Ta bližnjica tipk spremeni ali je okno nad ali pod ostalimi okni. Če je okno prekrito z drugim oknom, se okno dvigne, da je popolnoma vidno.Če je okno že popolnoma vidno, se spusti pod druga okna. Oblikovano je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:165
+#: ../src/metacity.schemas.in.h:175
 msgid "This keybinding lowers a window below other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Ta bližnjica tipk spusti okno pod druga okna. Oblikovano je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:166
+#: ../src/metacity.schemas.in.h:176
+msgid "This keybinding moves a window against the north (top) side of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ta bližnjica tipk premakne okno na zgornji del zaslona. Oblikovano je kot  \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1\". Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"onemogočeno\", potem za to dejanje ne bo bližnjice tipk."
+
+#: ../src/metacity.schemas.in.h:177
+msgid "This keybinding moves a window into the east (right) side of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ta bližnjica tipk premakne okno nadesni del zaslona. Oblikovano je kot  \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1\". Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"onemogočeno\", potem za to dejanje ne bo bližnjice tipk."
+
+#: ../src/metacity.schemas.in.h:178
+msgid "This keybinding moves a window into the north-east (top right) corner of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ta bližnjica tipk premakne okno na zgornji desni del zaslona. Oblikovano je kot  \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1\". Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"onemogočeno\", potem za to dejanje ne bo bližnjice tipk."
+
+#: ../src/metacity.schemas.in.h:179
+msgid "This keybinding moves a window into the north-west (top left) corner of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ta bližnjica tipk premakne okno na zgornji levi del zaslona. Oblikovano je kot  \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1\". Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"onemogočeno\", potem za to dejanje ne bo bližnjice tipk."
+
+#: ../src/metacity.schemas.in.h:180
+msgid "This keybinding moves a window into the south (bottom) side of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ta bližnjica tipk premakne okno na spodnji del zaslona. Oblikovano je kot  \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1\". Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"onemogočeno\", potem za to dejanje ne bo bližnjice tipk."
+
+#: ../src/metacity.schemas.in.h:181
+msgid "This keybinding moves a window into the south-east (bottom right) corner of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ta bližnjica tipk premakne okno na spodnji desni del zaslona. Oblikovano je kot  \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1\". Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"onemogočeno\", potem za to dejanje ne bo bližnjice tipk."
+
+#: ../src/metacity.schemas.in.h:182
+msgid "This keybinding moves a window into the south-west (bottom left) corner of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ta bližnjica tipk premakne okno na spodnji levi del zaslona. Oblikovano je kot  \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1\". Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"onemogočeno\", potem za to dejanje ne bo bližnjice tipk."
+
+#: ../src/metacity.schemas.in.h:183
+msgid "This keybinding moves a window into the west (left) side of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
+msgstr "Ta bližnjica tipk premakne okno na levi del zaslona. Oblikovano je kot  \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1\". Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"onemogočeno\", potem za to dejanje ne bo bližnjice tipk."
+
+#: ../src/metacity.schemas.in.h:184
 msgid "This keybinding raises the window above other windows. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Ta bližnjica tipk dvigne okno nad druga okna. Oblikovano je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:167
+#: ../src/metacity.schemas.in.h:185
 msgid "This keybinding resizes a window to fill available horizontal space. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Ta bližnjica tipk spremeni velikost okna, da napolni vodoraven prostor, ki je na voljo. Oblikovano je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:168
+#: ../src/metacity.schemas.in.h:186
 msgid "This keybinding resizes a window to fill available vertical space. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", then there will be no keybinding for this action."
 msgstr "Ta bližnjica tipk spremeni velikost okna, da napolni navpičen prostor, ki je na voljo. Oblikovano je kot \"&lt;Control&gt;a\" ali \"&lt;Shift&gt;&lt;Alt&gt;F1. Razčlenilnik je precej popustljiv in dopušča različno velikost črk ter okrajšave kot npr. \"&lt;Ctl&gt;\" in \"&lt;Ctrl&gt;\". Če v to možnost nastavite posebni niz \"disabled\", potem za to dejanje ne bo bližnjice tipk."
 
-#: ../src/metacity.schemas.in.h:169
+#: ../src/metacity.schemas.in.h:187
 msgid "This option determines the effects of double-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'minimize' which will minimize the window, and 'none' which will not do anything."
-msgstr "Ta možnost določa učinek dvojnega klika na naslovno vrstico okna. Trenutno veljavne možnosti so 'toggle_shade', ki spremeni senčenost okna, 'toggle_maximize', ki spremeni razpetost okna, 'minimize', ki pomanjša okno in 'none', ki ne naredi ničesar."
+msgstr "Ta možnost določa učinek dvojnega klika na naslovno vrstico okna. Trenutno veljavne možnosti so 'toggle_shade', ki spremeni zasenčenost okna, 'toggle_maximize', ki spremeni razprtost okna, 'minimize', ki skrči okno in 'none', ki ne naredi ničesar."
 
-#: ../src/metacity.schemas.in.h:170
+#: ../src/metacity.schemas.in.h:188
+msgid "This option determines the effects of middle-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'minimize' which will minimize the window, and 'none' which will not do anything."
+msgstr "Ta možnost določa učinek srednjega klika miške na naslovno vrstico okna. Trenutno veljavne možnosti so 'preklop_senčenja', ki spremeni zasenčenost okna, 'preklop razpetosti', ki spremeni razpetost okna, 'pomanjšaj', ki pomanjša okno in 'brez', ki ne naredi ničesar."
+
+#: ../src/metacity.schemas.in.h:189
+msgid "This option determines the effects of right-clicking on the title bar. Current valid options are 'toggle_shade', which will shade/unshade the window, 'toggle_maximize' which will maximize/unmaximize the window, 'minimize' which will minimize the window, and 'none' which will not do anything."
+msgstr "Ta možnost določa učinek desnega klika miške na naslovno vrstico okna. Trenutno veljavne možnosti so 'preklop_senčenja', ki spremeni zasenčenost okna, 'preklop razpetosti', ki spremeni razpetost okna, 'pomanjšaj', ki pomanjša okno in 'brez', ki ne naredi ničesar."
+
+#: ../src/metacity.schemas.in.h:190
 msgid "This option provides additional control over how newly created windows get focus. It has two possible values; \"smart\" applies the user's normal focus mode, and \"strict\" results in windows started from a terminal not being given focus."
 msgstr "Ta možnost omogoča dodaten nadzor o pridobivanju fokusa novih oken. Na voljo sta dve možnosti: \"pametno\" uveljavi običajen način fokusa, \"strogo\" pa ne dodeli fokusa oknom, ki jih zaženete iz terminala."
 
 # G:1 K:0 O:0
-#: ../src/metacity.schemas.in.h:171
+#: ../src/metacity.schemas.in.h:191
 msgid "Toggle always on top state"
 msgstr "Preklopi stanje vedno na vrhu"
 
-#: ../src/metacity.schemas.in.h:172
+#: ../src/metacity.schemas.in.h:192
 msgid "Toggle fullscreen mode"
 msgstr "Preklopi celozaslonski način"
 
 # G:1 K:0 O:0
-#: ../src/metacity.schemas.in.h:173
+#: ../src/metacity.schemas.in.h:193
 msgid "Toggle maximization state"
 msgstr "Preklopi stanje razpetja"
 
-#: ../src/metacity.schemas.in.h:174
+#: ../src/metacity.schemas.in.h:194
 msgid "Toggle shaded state"
 msgstr "Preklopi stanje senčenja"
 
-#: ../src/metacity.schemas.in.h:175
+#: ../src/metacity.schemas.in.h:195
 msgid "Toggle window on all workspaces"
 msgstr "Preklopi ali je okno na vseh delovnih površinah"
 
-#: ../src/metacity.schemas.in.h:176
+#: ../src/metacity.schemas.in.h:196
 msgid "Turns on a visual indication when an application or the system issues a 'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy environments."
-msgstr "Vključi vidna opozorila, ko program ali sistem uporabi 'zvonec' ali 'pisk'. Uporabno v slabo slišnih in hrupnih okoljih."
+msgstr "Vključi vidna opozorila, ko program ali sistem uporabi 'zvonec' ali 'pisk'. Uporabno v hrupnih okoljih."
 
-#: ../src/metacity.schemas.in.h:177
+#: ../src/metacity.schemas.in.h:197
 msgid "Unmaximize window"
-msgstr "Odrazpni okno"
+msgstr "Pomanjšaj okno"
 
-#: ../src/metacity.schemas.in.h:178
+#: ../src/metacity.schemas.in.h:198
 msgid "Use standard system font in window titles"
 msgstr "V nazivih oken uporabi običajno sistemsko pisavo"
 
-#: ../src/metacity.schemas.in.h:179
+#: ../src/metacity.schemas.in.h:199
 msgid "Visual Bell Type"
 msgstr "Vrsta vidnega zvonca"
 
-#: ../src/metacity.schemas.in.h:180
+#: ../src/metacity.schemas.in.h:200
 msgid "Whether raising should be a side-effect of other user interactions"
 msgstr "Ali naj bo dvigovanje stranski učinek drugih dejanj uporabnikov"
 
-#: ../src/metacity.schemas.in.h:181
+#: ../src/metacity.schemas.in.h:201
 msgid "Window focus mode"
 msgstr "Način fokusiranja oken"
 
-#: ../src/metacity.schemas.in.h:182
+#: ../src/metacity.schemas.in.h:202
 msgid "Window title font"
 msgstr "Pisava naziva okna"
 
+#: ../src/prefs.c:434
+#, c-format
+msgid "Type of %s was not integer"
+msgstr "Vrsta %s ni celo število"
+
 # G:1 K:0 O:0
-#: ../src/prefs.c:574
-#: ../src/prefs.c:590
-#: ../src/prefs.c:606
-#: ../src/prefs.c:622
-#: ../src/prefs.c:638
-#: ../src/prefs.c:654
-#: ../src/prefs.c:670
-#: ../src/prefs.c:690
-#: ../src/prefs.c:706
-#: ../src/prefs.c:722
-#: ../src/prefs.c:740
-#: ../src/prefs.c:756
-#: ../src/prefs.c:775
-#: ../src/prefs.c:791
-#: ../src/prefs.c:808
-#: ../src/prefs.c:824
-#: ../src/prefs.c:840
-#: ../src/prefs.c:857
-#: ../src/prefs.c:873
-#: ../src/prefs.c:889
-#: ../src/prefs.c:905
-#: ../src/prefs.c:921
-#: ../src/prefs.c:936
-#: ../src/prefs.c:951
-#: ../src/prefs.c:966
-#: ../src/prefs.c:982
-#: ../src/prefs.c:998
-#: ../src/prefs.c:1014
-#: ../src/prefs.c:1030
+#: ../src/prefs.c:572
+#: ../src/prefs.c:600
+#: ../src/prefs.c:616
+#: ../src/prefs.c:632
+#: ../src/prefs.c:648
+#: ../src/prefs.c:664
+#: ../src/prefs.c:680
+#: ../src/prefs.c:696
+#: ../src/prefs.c:716
+#: ../src/prefs.c:732
+#: ../src/prefs.c:748
+#: ../src/prefs.c:766
+#: ../src/prefs.c:782
+#: ../src/prefs.c:801
+#: ../src/prefs.c:817
+#: ../src/prefs.c:852
+#: ../src/prefs.c:868
+#: ../src/prefs.c:885
+#: ../src/prefs.c:901
+#: ../src/prefs.c:917
+#: ../src/prefs.c:933
+#: ../src/prefs.c:949
+#: ../src/prefs.c:964
+#: ../src/prefs.c:979
+#: ../src/prefs.c:994
+#: ../src/prefs.c:1010
+#: ../src/prefs.c:1026
+#: ../src/prefs.c:1042
+#: ../src/prefs.c:1058
 #, c-format
 msgid "GConf key \"%s\" is set to an invalid type\n"
 msgstr "Ključ GConf \"%s\" je nastavljen na neveljavno vrsto\n"
 
-#: ../src/prefs.c:1075
+#: ../src/prefs.c:1103
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
 msgstr "\"%s\", ki je bil najden v podatkovni zbirki nastavitev ni veljaven spremenilnik za miškine gumbe.\n"
 
-#: ../src/prefs.c:1099
-#: ../src/prefs.c:1120
-#: ../src/prefs.c:1616
+#: ../src/prefs.c:1127
+#: ../src/prefs.c:1148
+#: ../src/prefs.c:1705
 #, c-format
 msgid "GConf key '%s' is set to an invalid value\n"
 msgstr "Ključ GConf '%s' je nastavljen na neveljavno vrednost\n"
 
-#: ../src/prefs.c:1249
+#: ../src/prefs.c:1277
 #, c-format
 msgid "%d stored in GConf key %s is not a reasonable cursor_size; must be in the range 1..128\n"
 msgstr "%d, ki je shranjen v ključu GConf %s, ni običajen cursor_size; mora biti število med 1..128\n"
 
-#: ../src/prefs.c:1329
+#: ../src/prefs.c:1357
 #, c-format
 msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgstr "Ni mogoče razčleniti opisa \"%s\" iz ključa GConf %s\n"
 
-#: ../src/prefs.c:1514
+#: ../src/prefs.c:1599
 #, c-format
 msgid "%d stored in GConf key %s is not a reasonable number of workspaces, current maximum is %d\n"
 msgstr "%d shranjen v ključu GConf %s ni normalno število delovnih površin, trenutno največje število je %d\n"
 
-#: ../src/prefs.c:1574
+#: ../src/prefs.c:1659
 msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
 msgstr "Obhodi za pokvarjene programe so izključeni. Nekateri programi se morda ne bodo pravilno obnašali.\n"
 
-#: ../src/prefs.c:1643
+#: ../src/prefs.c:1732
 #, c-format
 msgid "%d stored in GConf key %s is out of range 0 to %d\n"
 msgstr "%d shranjen v GConf ključu %s je izven meje med 0 in %d\n"
 
-#: ../src/prefs.c:1786
+#: ../src/prefs.c:1881
 #, c-format
 msgid "Error setting number of workspaces to %d: %s\n"
 msgstr "Napaka ob nastavljanju števila delovnih površin na %d: %s\n"
 
-#: ../src/prefs.c:2172
-#: ../src/prefs.c:2342
+#: ../src/prefs.c:2276
+#: ../src/prefs.c:2446
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
-msgstr "\"%s\" najden v podatkovni zbirki nastavitev ni veljaven ključ za tipkovnično vez \"%s\"\n"
+msgstr "\"%s\" najden v podatkovni zbirki nastavitev ni veljaven ključ za tipkovno vez \"%s\"\n"
 
-#: ../src/prefs.c:2758
+#: ../src/prefs.c:2861
 #, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Napaka ob nastavljanju imena delovne površine %d na \"%s\": %s\n"
 
-#: ../src/resizepopup.c:111
+#: ../src/resizepopup.c:113
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/screen.c:403
+#: ../src/screen.c:410
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Zaslon %d na prikazu '%s' ni veljaven\n"
 
-#: ../src/screen.c:419
+#: ../src/screen.c:426
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager; try using the --replace option to replace the current window manager.\n"
 msgstr "Zaslon %d na prikazu \"%s\" že ima upravljalnik oken; poskušajte uporabiti možnost --replace za zamenjavo trenutnega upravljalnika zaslona.\n"
 
-#: ../src/screen.c:443
+#: ../src/screen.c:453
 #, c-format
 msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Ni mogoče dobiti izbire upravljalnika oken na zaslonu %d prikaz \"%s\"\n"
 
-#: ../src/screen.c:501
+#: ../src/screen.c:511
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Zaslon %d na prikazu \"%s\" že ima upravljalnik oken\n"
 
-#: ../src/screen.c:705
+#: ../src/screen.c:716
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Ni mogoče opustiti prikaza %d prikazu \"%s\"\n"
 
-#: ../src/session.c:835
-#: ../src/session.c:842
+#: ../src/session.c:826
+#: ../src/session.c:833
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "Ni mogoče ustvariti imenika %s %s\n"
 
 # G:2 K:0 O:0
-#: ../src/session.c:852
+#: ../src/session.c:843
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "Ni mogoče odpreti datoteke seje '%s' za pisanje: %s\n"
 
-#: ../src/session.c:1004
+#: ../src/session.c:995
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "Napaka ob zapisovanju datoteke seje '%s': %s\n"
 
-#: ../src/session.c:1009
+#: ../src/session.c:1000
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr "Napaka ob zapiranju datekote seje '%s': %s\n"
+msgstr "Napaka ob zapiranju datoteke seje '%s': %s\n"
 
-#: ../src/session.c:1084
+#: ../src/session.c:1075
 #, c-format
 msgid "Failed to read saved session file %s: %s\n"
 msgstr "Ni mogoče prebrati datoteke shranjene seje %s: %s\n"
 
-#: ../src/session.c:1119
+#: ../src/session.c:1110
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "Ni mogoče razčleniti datoteke shranjene seje: %s\n"
 
-#: ../src/session.c:1168
+#: ../src/session.c:1159
 msgid "<metacity_session> attribute seen but we already have the session ID"
 msgstr "atribut <metacity_session> je bil viden, a mi že imamo ID seje"
 
-#: ../src/session.c:1181
+#: ../src/session.c:1172
 #, c-format
 msgid "Unknown attribute %s on <metacity_session> element"
 msgstr "Neznan atribut %s v elementu <metacity_session>"
 
-#: ../src/session.c:1198
+#: ../src/session.c:1189
 msgid "nested <window> tag"
 msgstr "gnezdena označba <window>"
 
-#: ../src/session.c:1256
-#: ../src/session.c:1288
+#: ../src/session.c:1247
+#: ../src/session.c:1279
 #, c-format
 msgid "Unknown attribute %s on <window> element"
 msgstr "Neznan atribut %s elementa <window>"
 
-#: ../src/session.c:1360
+#: ../src/session.c:1351
 #, c-format
 msgid "Unknown attribute %s on <maximized> element"
 msgstr "Neznan atribut %s elementa <maximize>"
 
-#: ../src/session.c:1420
+#: ../src/session.c:1411
 #, c-format
 msgid "Unknown attribute %s on <geometry> element"
 msgstr "Neznan atribut %s elementa <geometry>"
 
-#: ../src/session.c:1440
+#: ../src/session.c:1431
 #, c-format
 msgid "Unknown element %s"
 msgstr "Neznan element %s"
 
-#: ../src/session.c:1906
+#: ../src/session.c:1868
 #, c-format
 msgid "Error launching metacity-dialog to warn about apps that don't support session management: %s\n"
 msgstr "Napaka ob zaganjanju metacity-dialog za opozorilo o programih, ki ne podpirajo upravljanja seje: %s\n"
 
-#: ../src/theme-parser.c:224
-#: ../src/theme-parser.c:242
+#: ../src/theme-parser.c:227
+#: ../src/theme-parser.c:245
 #, c-format
 msgid "Line %d character %d: %s"
 msgstr "Vrstica %d, znak %d: %s"
 
-#: ../src/theme-parser.c:396
+#: ../src/theme-parser.c:399
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "Atribut \"%s\" je bil v enakem elementu <%s> ponovljen dvakrat"
 
-#: ../src/theme-parser.c:414
-#: ../src/theme-parser.c:439
+#: ../src/theme-parser.c:417
+#: ../src/theme-parser.c:442
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "Atribut \"%s\" je v tem kontekstu v elementu <%s> neveljaven"
 
-#: ../src/theme-parser.c:485
+#: ../src/theme-parser.c:503
 #, c-format
 msgid "Integer %ld must be positive"
 msgstr "Celoštevilska vrednost %ld mora biti pozitivna"
 
-#: ../src/theme-parser.c:493
+#: ../src/theme-parser.c:511
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
 msgstr "Celoštevilska vrednost %ld je prevelika, trenutna omejitev je %d"
 
-#: ../src/theme-parser.c:521
-#: ../src/theme-parser.c:602
-#: ../src/theme-parser.c:626
+#: ../src/theme-parser.c:539
+#: ../src/theme-parser.c:655
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "Ni mogoče razčleniti \"%s\" kot števila s plavajočo vejico"
 
-#: ../src/theme-parser.c:552
+#: ../src/theme-parser.c:570
+#: ../src/theme-parser.c:598
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr "Vrednosti boolean morajo biti \"true\" ali \"false\" in ne \"%s\""
 
-#: ../src/theme-parser.c:572
+#: ../src/theme-parser.c:625
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
 msgstr "Kot mora biti med 0.0 in 360.0, bil pa je %g\n"
 
-#: ../src/theme-parser.c:638
+#: ../src/theme-parser.c:688
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr "Alfa mora biti med 0.0 (nevidno) in 1.0 (popolnoma vidno), bilo je %g\n"
 
-#: ../src/theme-parser.c:684
+#: ../src/theme-parser.c:753
 #, c-format
 msgid "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,large,x-large,xx-large)\n"
 msgstr "Neveljavna velikost naziva \"%s\" (mora biti eno od xx-small,x-small,small,medium,large,x-large,xx-large)\n"
 
-#: ../src/theme-parser.c:729
-#: ../src/theme-parser.c:737
-#: ../src/theme-parser.c:807
-#: ../src/theme-parser.c:897
-#: ../src/theme-parser.c:935
-#: ../src/theme-parser.c:1012
-#: ../src/theme-parser.c:1062
-#: ../src/theme-parser.c:1070
-#: ../src/theme-parser.c:1126
-#: ../src/theme-parser.c:1134
-#: ../src/theme-parser.c:2933
-#: ../src/theme-parser.c:3022
-#: ../src/theme-parser.c:3029
-#: ../src/theme-parser.c:3036
+#: ../src/theme-parser.c:798
+#: ../src/theme-parser.c:806
+#: ../src/theme-parser.c:888
+#: ../src/theme-parser.c:985
+#: ../src/theme-parser.c:1027
+#: ../src/theme-parser.c:1138
+#: ../src/theme-parser.c:1188
+#: ../src/theme-parser.c:1196
+#: ../src/theme-parser.c:3074
+#: ../src/theme-parser.c:3163
+#: ../src/theme-parser.c:3170
+#: ../src/theme-parser.c:3177
 #, c-format
 msgid "No \"%s\" attribute on <%s> element"
 msgstr "Atributa \"%s\" ni v elementu <%s>"
 
-#: ../src/theme-parser.c:837
-#: ../src/theme-parser.c:905
-#: ../src/theme-parser.c:943
-#: ../src/theme-parser.c:1020
+#: ../src/theme-parser.c:922
+#: ../src/theme-parser.c:993
+#: ../src/theme-parser.c:1035
+#: ../src/theme-parser.c:1146
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "ime <%s> \"%s\" je uporabljeno drugič"
 
-#: ../src/theme-parser.c:849
-#: ../src/theme-parser.c:955
-#: ../src/theme-parser.c:1032
+#: ../src/theme-parser.c:934
+#: ../src/theme-parser.c:1047
+#: ../src/theme-parser.c:1158
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
 msgstr "starš <%s> \"%s\" ni bil naveden"
 
-#: ../src/theme-parser.c:968
+#: ../src/theme-parser.c:1060
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
 msgstr "geometrija <%s> \"%s\" ni bila navedena"
 
-#: ../src/theme-parser.c:981
+#: ../src/theme-parser.c:1073
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr "<%s> mora navesti ali geometrijo ali starša, ki ima geometrijo"
 
-#: ../src/theme-parser.c:1080
+#: ../src/theme-parser.c:1115
+msgid "You must specify a background for an alpha value to be meaningful"
+msgstr "Določiti morate ozadje, če želite, da ima alfa vrednost pomen."
+
+#: ../src/theme-parser.c:1206
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
 msgstr "Neznana vrsta \"%s\" v elementu <%s>"
 
-#: ../src/theme-parser.c:1091
+#: ../src/theme-parser.c:1217
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "Neznan style_set \"%s\" v elementu <%s>"
 
-#: ../src/theme-parser.c:1099
+#: ../src/theme-parser.c:1225
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "Vrsti okna \"%s\" je bil nabor sloga že določen"
 
-#: ../src/theme-parser.c:1143
-#, c-format
-msgid "Unknown function \"%s\" for menu icon"
-msgstr "Neznana funkcija \"%s\" za ikono menuja"
+#: ../src/theme-parser.c:1261
+msgid "Theme already has a fallback icon"
+msgstr "Tema že ima vzpostavitveno ikono"
 
-#: ../src/theme-parser.c:1152
-#, c-format
-msgid "Unknown state \"%s\" for menu icon"
-msgstr "Neznano stanje \"%s\" za ikono menuja"
+#: ../src/theme-parser.c:1273
+msgid "Theme already has a fallback mini_icon"
+msgstr "Tema že ima vzpostavitveno mini ikono"
 
-#: ../src/theme-parser.c:1160
-#, c-format
-msgid "Theme already has a menu icon for function %s state %s"
-msgstr "Tema že ima ikono menuja za funkcijo %s stanje %s"
-
-#: ../src/theme-parser.c:1177
-#: ../src/theme-parser.c:3241
-#: ../src/theme-parser.c:3320
-#, c-format
-msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr "Za ime \"%s\" ni bilo navedenga <draw_ops>"
-
-#: ../src/theme-parser.c:1192
-#: ../src/theme-parser.c:1256
-#: ../src/theme-parser.c:1545
-#: ../src/theme-parser.c:3121
-#: ../src/theme-parser.c:3175
-#: ../src/theme-parser.c:3335
-#: ../src/theme-parser.c:3512
-#: ../src/theme-parser.c:3550
-#: ../src/theme-parser.c:3588
-#: ../src/theme-parser.c:3626
+#: ../src/theme-parser.c:1286
+#: ../src/theme-parser.c:1350
+#: ../src/theme-parser.c:1639
+#: ../src/theme-parser.c:3262
+#: ../src/theme-parser.c:3316
+#: ../src/theme-parser.c:3488
+#: ../src/theme-parser.c:3704
+#: ../src/theme-parser.c:3742
+#: ../src/theme-parser.c:3780
+#: ../src/theme-parser.c:3818
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "Element <%s> ni dovoljen pod <%s>"
 
-#: ../src/theme-parser.c:1282
-#: ../src/theme-parser.c:1369
-#: ../src/theme-parser.c:1439
+#: ../src/theme-parser.c:1376
+#: ../src/theme-parser.c:1463
+#: ../src/theme-parser.c:1533
 #, c-format
 msgid "No \"name\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"name\""
 
-#: ../src/theme-parser.c:1289
-#: ../src/theme-parser.c:1376
+#: ../src/theme-parser.c:1383
+#: ../src/theme-parser.c:1470
 #, c-format
 msgid "No \"value\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"value\""
 
-#: ../src/theme-parser.c:1320
-#: ../src/theme-parser.c:1334
-#: ../src/theme-parser.c:1393
+#: ../src/theme-parser.c:1414
+#: ../src/theme-parser.c:1428
+#: ../src/theme-parser.c:1487
 msgid "Cannot specify both button_width/button_height and aspect ratio for buttons"
 msgstr "Ni mogoče navesti obojega \"button_width\"/\"button_height\" in razmerje aspect ratio za gumbe"
 
-#: ../src/theme-parser.c:1343
+#: ../src/theme-parser.c:1437
 #, c-format
 msgid "Distance \"%s\" is unknown"
 msgstr "Razdalja \"%s\" je neznana"
 
-#: ../src/theme-parser.c:1402
+#: ../src/theme-parser.c:1496
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
 msgstr "Razmerje \"%s\" je neznano"
 
-#: ../src/theme-parser.c:1446
+#: ../src/theme-parser.c:1540
 #, c-format
 msgid "No \"top\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"top\""
 
-#: ../src/theme-parser.c:1453
+#: ../src/theme-parser.c:1547
 #, c-format
 msgid "No \"bottom\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"bottom\""
 
-#: ../src/theme-parser.c:1460
+#: ../src/theme-parser.c:1554
 #, c-format
 msgid "No \"left\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"left\""
 
-#: ../src/theme-parser.c:1467
+#: ../src/theme-parser.c:1561
 #, c-format
 msgid "No \"right\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"right\""
 
-#: ../src/theme-parser.c:1499
+#: ../src/theme-parser.c:1593
 #, c-format
 msgid "Border \"%s\" is unknown"
 msgstr "Rob \"%s\" je neznan"
 
-#: ../src/theme-parser.c:1652
-#: ../src/theme-parser.c:1762
-#: ../src/theme-parser.c:1865
-#: ../src/theme-parser.c:2052
-#: ../src/theme-parser.c:2866
+#: ../src/theme-parser.c:1746
+#: ../src/theme-parser.c:1856
+#: ../src/theme-parser.c:1963
+#: ../src/theme-parser.c:2190
+#: ../src/theme-parser.c:3007
 #, c-format
 msgid "No \"color\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"color\""
 
-#: ../src/theme-parser.c:1659
+#: ../src/theme-parser.c:1753
 #, c-format
 msgid "No \"x1\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"x1\""
 
-#: ../src/theme-parser.c:1666
-#: ../src/theme-parser.c:2711
+#: ../src/theme-parser.c:1760
+#: ../src/theme-parser.c:2852
 #, c-format
 msgid "No \"y1\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"y1\""
 
-#: ../src/theme-parser.c:1673
+#: ../src/theme-parser.c:1767
 #, c-format
 msgid "No \"x2\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"x2\""
 
-#: ../src/theme-parser.c:1680
-#: ../src/theme-parser.c:2718
+#: ../src/theme-parser.c:1774
+#: ../src/theme-parser.c:2859
 #, c-format
 msgid "No \"y2\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"y2\""
 
-#: ../src/theme-parser.c:1769
-#: ../src/theme-parser.c:1872
-#: ../src/theme-parser.c:1978
-#: ../src/theme-parser.c:2059
-#: ../src/theme-parser.c:2165
-#: ../src/theme-parser.c:2263
-#: ../src/theme-parser.c:2480
-#: ../src/theme-parser.c:2606
-#: ../src/theme-parser.c:2704
-#: ../src/theme-parser.c:2778
-#: ../src/theme-parser.c:2873
+#: ../src/theme-parser.c:1863
+#: ../src/theme-parser.c:1970
+#: ../src/theme-parser.c:2116
+#: ../src/theme-parser.c:2197
+#: ../src/theme-parser.c:2303
+#: ../src/theme-parser.c:2401
+#: ../src/theme-parser.c:2621
+#: ../src/theme-parser.c:2747
+#: ../src/theme-parser.c:2845
+#: ../src/theme-parser.c:2919
+#: ../src/theme-parser.c:3014
 #, c-format
 msgid "No \"x\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"x\""
 
-#: ../src/theme-parser.c:1776
-#: ../src/theme-parser.c:1879
-#: ../src/theme-parser.c:1985
-#: ../src/theme-parser.c:2066
-#: ../src/theme-parser.c:2172
-#: ../src/theme-parser.c:2270
-#: ../src/theme-parser.c:2487
-#: ../src/theme-parser.c:2613
-#: ../src/theme-parser.c:2785
-#: ../src/theme-parser.c:2880
+#: ../src/theme-parser.c:1870
+#: ../src/theme-parser.c:1977
+#: ../src/theme-parser.c:2123
+#: ../src/theme-parser.c:2204
+#: ../src/theme-parser.c:2310
+#: ../src/theme-parser.c:2408
+#: ../src/theme-parser.c:2628
+#: ../src/theme-parser.c:2754
+#: ../src/theme-parser.c:2926
+#: ../src/theme-parser.c:3021
 #, c-format
 msgid "No \"y\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"y\""
 
-#: ../src/theme-parser.c:1783
-#: ../src/theme-parser.c:1886
-#: ../src/theme-parser.c:1992
-#: ../src/theme-parser.c:2073
-#: ../src/theme-parser.c:2179
-#: ../src/theme-parser.c:2277
-#: ../src/theme-parser.c:2494
-#: ../src/theme-parser.c:2620
-#: ../src/theme-parser.c:2792
+#: ../src/theme-parser.c:1877
+#: ../src/theme-parser.c:1984
+#: ../src/theme-parser.c:2130
+#: ../src/theme-parser.c:2211
+#: ../src/theme-parser.c:2317
+#: ../src/theme-parser.c:2415
+#: ../src/theme-parser.c:2635
+#: ../src/theme-parser.c:2761
+#: ../src/theme-parser.c:2933
 #, c-format
 msgid "No \"width\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"width\""
 
-#: ../src/theme-parser.c:1790
-#: ../src/theme-parser.c:1893
-#: ../src/theme-parser.c:1999
-#: ../src/theme-parser.c:2080
-#: ../src/theme-parser.c:2186
-#: ../src/theme-parser.c:2284
-#: ../src/theme-parser.c:2501
-#: ../src/theme-parser.c:2627
-#: ../src/theme-parser.c:2799
+#: ../src/theme-parser.c:1884
+#: ../src/theme-parser.c:1991
+#: ../src/theme-parser.c:2137
+#: ../src/theme-parser.c:2218
+#: ../src/theme-parser.c:2324
+#: ../src/theme-parser.c:2422
+#: ../src/theme-parser.c:2642
+#: ../src/theme-parser.c:2768
+#: ../src/theme-parser.c:2940
 #, c-format
 msgid "No \"height\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"height\""
 
-#: ../src/theme-parser.c:1900
+#: ../src/theme-parser.c:2000
+#, c-format
+msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
+msgstr "Element <%s> nima atributa \"start_angle\" ali \"from\""
+
+#: ../src/theme-parser.c:2007
+#, c-format
+msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
+msgstr "Element <%s> nima atributa \"extent_angle\" ali \"to\""
+
+#: ../src/theme-parser.c:2016
 #, c-format
 msgid "No \"start_angle\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"start_angle\""
 
-#: ../src/theme-parser.c:1907
+#: ../src/theme-parser.c:2023
 #, c-format
 msgid "No \"extent_angle\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"extent_angle\""
 
-#: ../src/theme-parser.c:2087
+#: ../src/theme-parser.c:2225
 #, c-format
 msgid "No \"alpha\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"alpha\""
 
-#: ../src/theme-parser.c:2158
+#: ../src/theme-parser.c:2296
 #, c-format
 msgid "No \"type\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"type\""
 
-#: ../src/theme-parser.c:2206
+#: ../src/theme-parser.c:2344
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "Ni mogoče razumeti vrednost za vrsto preliva \"%s\""
 
-#: ../src/theme-parser.c:2291
+#: ../src/theme-parser.c:2429
 #, c-format
 msgid "No \"filename\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"filename\""
 
-#: ../src/theme-parser.c:2316
-#: ../src/theme-parser.c:2824
+#: ../src/theme-parser.c:2454
+#: ../src/theme-parser.c:2965
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "Disem razumel vrednosti za vrsto polnjenja \"%s\" za element <%s>"
+msgstr "Nerazpoznavna vrsta polnjenja \"%s\" za element <%s>"
 
-#: ../src/theme-parser.c:2459
-#: ../src/theme-parser.c:2592
-#: ../src/theme-parser.c:2697
+#: ../src/theme-parser.c:2600
+#: ../src/theme-parser.c:2733
+#: ../src/theme-parser.c:2838
 #, c-format
 msgid "No \"state\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"state\""
 
-#: ../src/theme-parser.c:2466
-#: ../src/theme-parser.c:2599
+#: ../src/theme-parser.c:2607
+#: ../src/theme-parser.c:2740
 #, c-format
 msgid "No \"shadow\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"shadow\""
 
-#: ../src/theme-parser.c:2473
+#: ../src/theme-parser.c:2614
 #, c-format
 msgid "No \"arrow\" attribute on element <%s>"
 msgstr "Element <%s> nima atributa \"arrow\""
 
-#: ../src/theme-parser.c:2526
-#: ../src/theme-parser.c:2648
-#: ../src/theme-parser.c:2736
+#: ../src/theme-parser.c:2667
+#: ../src/theme-parser.c:2789
+#: ../src/theme-parser.c:2877
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "Ni mogoče razumeti stanja \"%s\" za element <%s>"
 
-#: ../src/theme-parser.c:2536
-#: ../src/theme-parser.c:2658
+#: ../src/theme-parser.c:2677
+#: ../src/theme-parser.c:2799
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "Ni mogoče razumeti senčenja \"%s\" za element <%s>"
 
-#: ../src/theme-parser.c:2546
+#: ../src/theme-parser.c:2687
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "Ni mogoče razumeti puščice \"%s\" za element <%s>"
 
-#: ../src/theme-parser.c:2959
-#: ../src/theme-parser.c:3075
+#: ../src/theme-parser.c:3100
+#: ../src/theme-parser.c:3216
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "<draw_ops> imenovan \"%s\" ni bil naveden"
 
-#: ../src/theme-parser.c:2971
-#: ../src/theme-parser.c:3087
+#: ../src/theme-parser.c:3112
+#: ../src/theme-parser.c:3228
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "Vključevanje draw_ops \"%s\" tu, bi ustvarilo krožno nanašanje"
 
-#: ../src/theme-parser.c:3150
+#: ../src/theme-parser.c:3291
 #, c-format
 msgid "No \"value\" attribute on <%s> element"
 msgstr "Element <%s> nima atributa \"value\""
 
-#: ../src/theme-parser.c:3207
+#: ../src/theme-parser.c:3348
 #, c-format
 msgid "No \"position\" attribute on <%s> element"
 msgstr "Element <%s> nima atributa \"position\""
 
-#: ../src/theme-parser.c:3216
+#: ../src/theme-parser.c:3357
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "Neznan položaj \"%s\" za del okvirja"
 
-#: ../src/theme-parser.c:3224
+#: ../src/theme-parser.c:3365
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "Slog okvirja že ima del na položaju %s"
 
-#: ../src/theme-parser.c:3269
+#: ../src/theme-parser.c:3382
+#: ../src/theme-parser.c:3473
+#, c-format
+msgid "No <draw_ops> with the name \"%s\" has been defined"
+msgstr "Za ime \"%s\" ni bilo navedenega <draw_ops>"
+
+#: ../src/theme-parser.c:3410
 #, c-format
 msgid "No \"function\" attribute on <%s> element"
 msgstr "Element <%s> nima atributa \"function\""
 
-#: ../src/theme-parser.c:3277
-#: ../src/theme-parser.c:3381
+#: ../src/theme-parser.c:3418
+#: ../src/theme-parser.c:3534
 #, c-format
 msgid "No \"state\" attribute on <%s> element"
 msgstr "Element <%s> nima atributa \"state\""
 
-#: ../src/theme-parser.c:3286
+#: ../src/theme-parser.c:3427
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "Neznana funkcija \"%s\" za gumb"
 
-#: ../src/theme-parser.c:3295
+#: ../src/theme-parser.c:3436
+#, c-format
+msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
+msgstr "Funkcija gumba \"%s\" ne obstaja v tej različici (%d, zahtevana %d)"
+
+#: ../src/theme-parser.c:3448
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "Neznano stanje \"%s\" za gumb"
 
-#: ../src/theme-parser.c:3303
+#: ../src/theme-parser.c:3456
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "Slog okvirja že ima gumb za funkcijo %s stanje %s"
 
-#: ../src/theme-parser.c:3373
+#: ../src/theme-parser.c:3526
 #, c-format
 msgid "No \"focus\" attribute on <%s> element"
 msgstr "Element <%s> nima atributa \"fokus\""
 
-#: ../src/theme-parser.c:3389
+#: ../src/theme-parser.c:3542
 #, c-format
 msgid "No \"style\" attribute on <%s> element"
 msgstr "Element <%s> nima atributa \"style\""
 
-#: ../src/theme-parser.c:3398
+#: ../src/theme-parser.c:3551
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "\"%s\" ni veljavna vrednost za atribut \"focus\""
 
-#: ../src/theme-parser.c:3407
+#: ../src/theme-parser.c:3560
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "\"%s\" ni veljavna vrednost za atribut \"state\""
 
-#: ../src/theme-parser.c:3417
+#: ../src/theme-parser.c:3570
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "Slog imenovan \"%s\" ni bil določen"
 
-#: ../src/theme-parser.c:3427
+#: ../src/theme-parser.c:3581
 #, c-format
 msgid "No \"resize\" attribute on <%s> element"
 msgstr "Element <%s> nima atributa \"resize\""
 
-#: ../src/theme-parser.c:3437
+#: ../src/theme-parser.c:3591
+#: ../src/theme-parser.c:3614
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "\"%s\" ni veljavna vrednost za atribut \"resize\""
 
-#: ../src/theme-parser.c:3447
+#: ../src/theme-parser.c:3625
 #, c-format
 msgid "Should not have \"resize\" attribute on <%s> element for maximized/shaded states"
 msgstr "Element <%s> ne bi smel imeti atributa \"resize\" za razpeta/senčena stanja"
 
-#: ../src/theme-parser.c:3461
+#: ../src/theme-parser.c:3639
+#, c-format
+msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
+msgstr "Element <%s> ne bi smel imeti atributa \"resize\" za razpeta stanja"
+
+#: ../src/theme-parser.c:3653
+#: ../src/theme-parser.c:3675
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "Slog za stanje %s resize %s fokus %s je bil že naveden"
 
-#: ../src/theme-parser.c:3472
-#: ../src/theme-parser.c:3483
-#: ../src/theme-parser.c:3494
+#: ../src/theme-parser.c:3664
+#: ../src/theme-parser.c:3686
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "Slog za stanje %s fokus %s je bil že naveden"
 
-#: ../src/theme-parser.c:3533
+#: ../src/theme-parser.c:3725
 msgid "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr "Za element <piece> ni mogoče imeti dveh draw_ops (tema je navedla atribut draw_ops in hkrati element <draw_ops> ali navedena dva elementa)"
 
-#: ../src/theme-parser.c:3571
+#: ../src/theme-parser.c:3763
 msgid "Can't have a two draw_ops for a <button> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr "Za element <button> ni mogoče imeti dveh draw_ops (tema je navedla atribut draw_ops in hkrati element <draw_ops> ali navedena dva elementa)"
 
-#: ../src/theme-parser.c:3609
+#: ../src/theme-parser.c:3801
 msgid "Can't have a two draw_ops for a <menu_icon> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr "Za element <menu_icon> ni mogoče imeti dveh draw_ops (tema je navedla atribut draw_ops in hkrati element <draw_ops> ali navedena dva elementa)"
 
-#: ../src/theme-parser.c:3656
+#: ../src/theme-parser.c:3849
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "Najbolj zunanji element teme mora biti <metacity_theme> in ne <%s>"
 
-#: ../src/theme-parser.c:3676
+#: ../src/theme-parser.c:3869
 #, c-format
 msgid "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr "Element <%s> ni dovoljen znotraj elementov name, author, date ali description"
 
-#: ../src/theme-parser.c:3681
+#: ../src/theme-parser.c:3874
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "Element <%s> ni dovoljen znotraj elementa <constant>"
 
-#: ../src/theme-parser.c:3693
+#: ../src/theme-parser.c:3886
 #, c-format
 msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr "Element <%s> ni dovoljen znotraj elementov distance/border/aspect_ration"
 
-#: ../src/theme-parser.c:3715
+#: ../src/theme-parser.c:3908
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "Element <%s> ni dovoljen znotraj elementa operacije draw"
 
-#: ../src/theme-parser.c:3725
-#: ../src/theme-parser.c:3755
-#: ../src/theme-parser.c:3760
+#: ../src/theme-parser.c:3918
+#: ../src/theme-parser.c:3948
+#: ../src/theme-parser.c:3953
+#: ../src/theme-parser.c:3958
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "Element <%s> ni dovoljen znotraj elementa <%s>"
 
-#: ../src/theme-parser.c:3981
+#: ../src/theme-parser.c:4180
 msgid "No draw_ops provided for frame piece"
 msgstr "Za del okvirja ni naveden draw_ops"
 
-#: ../src/theme-parser.c:3996
+#: ../src/theme-parser.c:4195
 msgid "No draw_ops provided for button"
 msgstr "Za gumb ni naveden draw_ops"
 
-#: ../src/theme-parser.c:4011
-msgid "No draw_ops provided for menu icon"
-msgstr "Za ikono menuja ni naveden draw_ops"
-
-#: ../src/theme-parser.c:4051
+#: ../src/theme-parser.c:4247
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "Znotraj elementa <%s> besedilo ni dovoljeno"
 
-#: ../src/theme-parser.c:4106
+#: ../src/theme-parser.c:4302
 msgid "<name> specified twice for this theme"
 msgstr "Za to temo je element <name> naveden dvakrat"
 
-#: ../src/theme-parser.c:4117
+#: ../src/theme-parser.c:4313
 msgid "<author> specified twice for this theme"
 msgstr "Za to temo je element <author> naveden dvakrat"
 
-#: ../src/theme-parser.c:4128
+#: ../src/theme-parser.c:4324
 msgid "<copyright> specified twice for this theme"
 msgstr "Za to temo je element <copyright> naveden dvakrat"
 
-#: ../src/theme-parser.c:4139
+#: ../src/theme-parser.c:4335
 msgid "<date> specified twice for this theme"
 msgstr "Za to temo je element <date> naveden dvakrat"
 
-#: ../src/theme-parser.c:4150
+#: ../src/theme-parser.c:4346
 msgid "<description> specified twice for this theme"
 msgstr "Za to temo je element <description> naveden dvakrat"
 
-#: ../src/theme-parser.c:4345
+#: ../src/theme-parser.c:4573
 #, c-format
-msgid "Failed to read theme from file %s: %s\n"
-msgstr "Ni mogoče prebrati teme iz datoteke %s: %s\n"
+msgid "Failed to find a valid file for theme %s\n"
+msgstr "Ni mogoče najti veljavne datoteke za temo %s\n"
 
-#: ../src/theme-parser.c:4400
+#: ../src/theme-parser.c:4629
 #, c-format
 msgid "Theme file %s did not contain a root <metacity_theme> element"
 msgstr "Datoteka teme %s ne vsebuje korenskega elementa <metacity_theme>"
 
-#: ../src/theme-viewer.c:72
+#: ../src/theme-viewer.c:74
 msgid "/_Windows"
 msgstr "/_Okna"
 
-#: ../src/theme-viewer.c:73
+#: ../src/theme-viewer.c:75
 msgid "/Windows/tearoff"
 msgstr "/Okna/odtrgaj"
 
-#: ../src/theme-viewer.c:74
+#: ../src/theme-viewer.c:76
 msgid "/Windows/_Dialog"
 msgstr "/Okna/_Pogovorno okno"
 
-#: ../src/theme-viewer.c:75
+#: ../src/theme-viewer.c:77
 msgid "/Windows/_Modal dialog"
 msgstr "/Okna/_Modalno okno"
 
-#: ../src/theme-viewer.c:76
+#: ../src/theme-viewer.c:78
 msgid "/Windows/_Utility"
 msgstr "/Okna/P_ripomoček"
 
-#: ../src/theme-viewer.c:77
+#: ../src/theme-viewer.c:79
 msgid "/Windows/_Splashscreen"
 msgstr "/Okna/Pre_dstavitveno okno"
 
-#: ../src/theme-viewer.c:78
+#: ../src/theme-viewer.c:80
 msgid "/Windows/_Top dock"
 msgstr "/Okna/_Zgornje sidro"
 
-#: ../src/theme-viewer.c:79
+#: ../src/theme-viewer.c:81
 msgid "/Windows/_Bottom dock"
 msgstr "/Okna/_Spodnje sidro"
 
-#: ../src/theme-viewer.c:80
+#: ../src/theme-viewer.c:82
 msgid "/Windows/_Left dock"
 msgstr "/Okna/_Levo sidro"
 
-#: ../src/theme-viewer.c:81
+#: ../src/theme-viewer.c:83
 msgid "/Windows/_Right dock"
 msgstr "/Okna/_Desno sidro"
 
-#: ../src/theme-viewer.c:82
+#: ../src/theme-viewer.c:84
 msgid "/Windows/_All docks"
 msgstr "/Okna/_Vsa sidra"
 
-#: ../src/theme-viewer.c:83
+#: ../src/theme-viewer.c:85
 msgid "/Windows/Des_ktop"
 msgstr "/Okna/_Namizje"
 
-#: ../src/theme-viewer.c:132
+#: ../src/theme-viewer.c:134
 msgid "Open another one of these windows"
 msgstr "Odpri drugo izmed teh oken"
 
-#: ../src/theme-viewer.c:139
+#: ../src/theme-viewer.c:141
 msgid "This is a demo button with an 'open' icon"
 msgstr "To je preizkusni gumb z ikono 'odpri'"
 
-#: ../src/theme-viewer.c:146
+#: ../src/theme-viewer.c:148
 msgid "This is a demo button with a 'quit' icon"
 msgstr "To je preizkusni gumb z ikono 'izhod'"
 
-#: ../src/theme-viewer.c:239
+#: ../src/theme-viewer.c:241
 msgid "This is a sample message in a sample dialog"
 msgstr "To je preizkusno sporočilo v pogovornem oknu"
 
-#: ../src/theme-viewer.c:322
+#: ../src/theme-viewer.c:324
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "Ponarejen predmet menija %d\n"
 
-#: ../src/theme-viewer.c:356
+#: ../src/theme-viewer.c:358
 msgid "Border-only window"
 msgstr "Okno samo z okvirjem"
 
-#: ../src/theme-viewer.c:358
+#: ../src/theme-viewer.c:360
 msgid "Bar"
 msgstr "Vrstica"
 
-#: ../src/theme-viewer.c:375
+#: ../src/theme-viewer.c:377
 msgid "Normal Application Window"
 msgstr "Običajno okno programa"
 
-#: ../src/theme-viewer.c:379
+#: ../src/theme-viewer.c:381
 msgid "Dialog Box"
 msgstr "Pogovorno okno"
 
-#: ../src/theme-viewer.c:383
+#: ../src/theme-viewer.c:385
 msgid "Modal Dialog Box"
 msgstr "Modalno pogovorno okno"
 
-#: ../src/theme-viewer.c:387
+#: ../src/theme-viewer.c:389
 msgid "Utility Palette"
 msgstr "Paleta pripomočkov"
 
-#: ../src/theme-viewer.c:391
+#: ../src/theme-viewer.c:393
 msgid "Torn-off Menu"
-msgstr "Odtrgan meni"
+msgstr "Odtrgan menu"
 
-#: ../src/theme-viewer.c:395
+#: ../src/theme-viewer.c:397
 msgid "Border"
 msgstr "Okvir"
 
-#: ../src/theme-viewer.c:723
+#: ../src/theme-viewer.c:725
 #, c-format
 msgid "Button layout test %d"
 msgstr "Preizkus razporeditve gumbov %d"
 
-#: ../src/theme-viewer.c:752
+#: ../src/theme-viewer.c:754
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g milisekund za risanje ene sličice okna"
 
-#: ../src/theme-viewer.c:795
+#: ../src/theme-viewer.c:797
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Uporaba: metacity-theme-viewer [IMETEME]\n"
 
-#: ../src/theme-viewer.c:802
+#: ../src/theme-viewer.c:804
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Napaka pri nalaganju teme: %s\n"
 
-#: ../src/theme-viewer.c:808
+#: ../src/theme-viewer.c:810
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Tema \"%s\" naložena v %g sekundah\n"
 
-#: ../src/theme-viewer.c:831
+#: ../src/theme-viewer.c:833
 msgid "Normal Title Font"
 msgstr "Običajna pisava naslova"
 
-#: ../src/theme-viewer.c:837
+#: ../src/theme-viewer.c:839
 msgid "Small Title Font"
 msgstr "Majhna pisava naslova"
 
-#: ../src/theme-viewer.c:843
+#: ../src/theme-viewer.c:845
 msgid "Large Title Font"
 msgstr "Velika pisava naslova"
 
-#: ../src/theme-viewer.c:848
+#: ../src/theme-viewer.c:850
 msgid "Button Layouts"
 msgstr "Razpored gumbov"
 
-#: ../src/theme-viewer.c:853
+#: ../src/theme-viewer.c:855
 msgid "Benchmark"
 msgstr "Meritev"
 
-#: ../src/theme-viewer.c:900
+#: ../src/theme-viewer.c:902
 msgid "Window Title Goes Here"
 msgstr "Tukaj je naslov okna"
 
-#: ../src/theme-viewer.c:1004
+#: ../src/theme-viewer.c:1006
 #, c-format
 msgid "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g seconds wall clock time including X server resources (%g milliseconds per frame)\n"
 msgstr "Izrisanih %d sličic v %g sekundah odjemalca (%g milisekund na sličico) in %g sekund v času stenske ure, upoštevajoč sredstva strežnika X (%g milisekund na sličico)\n"
 
-#: ../src/theme-viewer.c:1217
+#: ../src/theme-viewer.c:1219
 msgid "position expression test returned TRUE but set error"
 msgstr "preizkus izjave položaja je vrnil TRUE, a je nastavil napako"
 
-#: ../src/theme-viewer.c:1219
+#: ../src/theme-viewer.c:1221
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "preizkus izjave položaja je vrnil FALSE, a ni nastavil napake"
 
-#: ../src/theme-viewer.c:1223
+#: ../src/theme-viewer.c:1225
 msgid "Error was expected but none given"
 msgstr "Pričakovana je bila napaka, a do nje ni prišlo"
 
-#: ../src/theme-viewer.c:1225
+#: ../src/theme-viewer.c:1227
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Pričakovana je bila napaka %d, vrnjeno pa je bilo %d"
 
-#: ../src/theme-viewer.c:1231
+#: ../src/theme-viewer.c:1233
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Napaka ni bila pričakovana, a je bila kljub temu vrnjena: %s"
 
-#: ../src/theme-viewer.c:1235
+#: ../src/theme-viewer.c:1237
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "vrednost x je bila %d, pričakovana pa %d"
 
-#: ../src/theme-viewer.c:1238
+#: ../src/theme-viewer.c:1240
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "vrednost z je bila %d, pričakovana pa %d"
 
-#: ../src/theme-viewer.c:1301
+#: ../src/theme-viewer.c:1303
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d izjav koordinat razčlenjenih v %g sekundah (%g sekund v povprečju)\n"
 
-#: ../src/theme.c:202
+#: ../src/theme.c:206
 msgid "top"
 msgstr "zgoraj"
 
 # G:12 K:5 O:0
-#: ../src/theme.c:204
+#: ../src/theme.c:208
 msgid "bottom"
 msgstr "spodaj"
 
 # G:10 K:4 O:0
-#: ../src/theme.c:206
+#: ../src/theme.c:210
 msgid "left"
 msgstr "levo"
 
 # G:1 K:0 O:0
-#: ../src/theme.c:208
+#: ../src/theme.c:212
 msgid "right"
 msgstr "desno"
 
 # G:1 K:0 O:0
-#: ../src/theme.c:222
+#: ../src/theme.c:226
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "geometrija okvirja ne navaja dimenzije \"%s\""
 
-#: ../src/theme.c:241
+#: ../src/theme.c:245
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "geometrija okvijra ne navaja dimenzije \"%s\" za okvir \"%s\""
+msgstr "geometrija okvirja ne navaja dimenzije \"%s\" za rob \"%s\""
 
-#: ../src/theme.c:278
+#: ../src/theme.c:282
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
-msgstr "Razmeje gumba %g ni smiselno"
+msgstr "Razmerje gumba %g ni smiselno"
 
-#: ../src/theme.c:290
+#: ../src/theme.c:294
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Geometrija okvirja ne navaja velikosti gumbov"
 
-#: ../src/theme.c:847
+#: ../src/theme.c:925
 msgid "Gradients should have at least two colors"
 msgstr "Prelivi bi morali imeti vsaj dve barvi"
 
-#: ../src/theme.c:973
+#: ../src/theme.c:1051
 #, c-format
 msgid "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr "Navedba barve GTK mora vsebovati stanje v oglatih oklepajih, npr. gtk:fg[NORMAL], kjer je NORMAL stanje; ni mogoče razčleniti \"%s\""
 
-#: ../src/theme.c:987
+#: ../src/theme.c:1065
 #, c-format
 msgid "GTK color specification must have a close bracket after the state, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr "Navedbi barve GTK manjka oglati zaklepaj za stanjem, npr. gtk:fg[NORMAL], kjer je NORMAL stanje; ni mogoče razčleniti \"%s\""
 
-#: ../src/theme.c:998
+#: ../src/theme.c:1076
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Ni mogoče razumeti stanja \"%s\" v navedbi barve "
 
-#: ../src/theme.c:1011
+#: ../src/theme.c:1089
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Ni mogoče razumeti barvne komponente \"%s\" v navedbi barve"
 
-#: ../src/theme.c:1041
+#: ../src/theme.c:1119
 #, c-format
 msgid "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the format"
 msgstr "Oblika zapisa preliva je \"blend/bg_color/fg_color/alpha\", \"%s\" ne ustreza pravilni obliki"
 
-#: ../src/theme.c:1052
+#: ../src/theme.c:1130
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "V prelivni barvi ni mogoče razčleniti vrednosti alfa \"%s\""
 
-#: ../src/theme.c:1062
+#: ../src/theme.c:1140
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "V prelivni barvi alfa vrednost \"%s\" ni med 0.0 in 1.0"
 
-#: ../src/theme.c:1109
+#: ../src/theme.c:1187
 #, c-format
 msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "Oblika zapisa barve senčenja je \"shade/base_color/factor\", \"%s\" ne ustreza pravilni obliki."
 
-#: ../src/theme.c:1120
+#: ../src/theme.c:1198
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Ni mogoče razčleniti faktorja senčenja \"%s\" v senčeni barvi"
 
-#: ../src/theme.c:1130
+#: ../src/theme.c:1208
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "V senčeni barvi je faktor senčenja \"%s\" negativen"
 
-#: ../src/theme.c:1159
+#: ../src/theme.c:1237
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Ni mogoče razčleniti barve \"%s\""
 
-#: ../src/theme.c:1418
+#: ../src/theme.c:1496
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Izraz koordinat vsebuje znak '%s', ki ni dovoljen"
 
-#: ../src/theme.c:1445
+#: ../src/theme.c:1523
 #, c-format
 msgid "Coordinate expression contains floating point number '%s' which could not be parsed"
-msgstr "Izraz kordinat vsebuje številko s plavajočo vejico '%s', ki ne more biti razčlenjena"
+msgstr "Izraz koordinat vsebuje številko s plavajočo vejico '%s', ki ne more biti razčlenjena"
 
-#: ../src/theme.c:1459
+#: ../src/theme.c:1537
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "Izraz kordinat vsebuje celo število '%s', ki ga ni mogoče razčleniti"
+msgstr "Izraz koordinat vsebuje celo število '%s', ki ga ni mogoče razčleniti"
 
-#: ../src/theme.c:1526
+#: ../src/theme.c:1604
 #, c-format
 msgid "Coordinate expression contained unknown operator at the start of this text: \"%s\""
-msgstr "Izraz kordinat vsebuje neznan operator na pričetku besedila: \"%s\""
+msgstr "Izraz koordinat vsebuje neznan operator na pričetku besedila: \"%s\""
 
-#: ../src/theme.c:1583
+#: ../src/theme.c:1661
 msgid "Coordinate expression was empty or not understood"
-msgstr "Izraz kordinat je prazen ali ni razumljen"
+msgstr "Izraz koordinat je prazen ali ni razumljen"
 
-#: ../src/theme.c:1720
-#: ../src/theme.c:1730
-#: ../src/theme.c:1764
+#: ../src/theme.c:1798
+#: ../src/theme.c:1808
+#: ../src/theme.c:1842
 msgid "Coordinate expression results in division by zero"
-msgstr "Izraz kordinat se povzroči deljenje z ničlo"
+msgstr "Izraz koordinat se povzroči deljenje z ničlo"
 
-#: ../src/theme.c:1772
+#: ../src/theme.c:1850
 msgid "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr "Izraz kordinat poskuša uporabiti operator mod ali številko s plavajočo vejico"
+msgstr "Izraz koordinat poskuša uporabiti operator mod ali številko s plavajočo vejico"
 
-#: ../src/theme.c:1828
+#: ../src/theme.c:1906
 #, c-format
 msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr "Izraz kordinat vsebuje operator \"%s\", kjer je pričakovan operand"
+msgstr "Izraz koordinat vsebuje operator \"%s\", kjer je pričakovan operand"
 
-#: ../src/theme.c:1837
+#: ../src/theme.c:1915
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr "Izraz kordinat vsebuje operand kjer je pričakovan operator"
+msgstr "Izraz koordinat vsebuje operand kjer je pričakovan operator"
 
-#: ../src/theme.c:1845
+#: ../src/theme.c:1923
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr "Izraz kordinat se konča z operatorjem namesto z operandom"
+msgstr "Izraz koordinat se konča z operatorjem namesto z operandom"
 
-#: ../src/theme.c:1855
+#: ../src/theme.c:1933
 #, c-format
 msgid "Coordinate expression has operator \"%c\" following operator \"%c\" with no operand in between"
-msgstr "Izraz kordinat vsebuje operator \"%c\", ki sledi operatorju \"%c\", brez vmesnega operanda"
+msgstr "Izraz koordinat vsebuje operator \"%c\", ki sledi operatorju \"%c\", brez vmesnega operanda"
 
-#: ../src/theme.c:1973
+#: ../src/theme.c:2051
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "Razčlenjevalnik izrazov koordinat je preplavil medpomnilnik."
 
-#: ../src/theme.c:2002
+#: ../src/theme.c:2080
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr "Izraz kordinat vsebuje zaklepaj, a ne oklepaja"
+msgstr "Izraz koordinat vsebuje zaklepaj, a ne oklepaja"
 
-#: ../src/theme.c:2064
+#: ../src/theme.c:2142
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "Izraz kordinat vsebuje neznano spremenljivko ali konstanto \"%s\""
+msgstr "Izraz koordinat vsebuje neznano spremenljivko ali konstanto \"%s\""
 
-#: ../src/theme.c:2119
+#: ../src/theme.c:2197
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "Izraz kordinat vsebuje oklepaj, a ne zaklepaja"
+msgstr "Izraz koordinat vsebuje uklepaj, vendar je brez zaklepaja"
 
-#: ../src/theme.c:2130
+#: ../src/theme.c:2208
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr "Zdi se, da izraz kordinat ne vsebuje operatorjev ali operandov"
+msgstr "Videti je, da izraz koordinat ne vsebuje operatorjev ali operandov"
 
-#: ../src/theme.c:2371
-#: ../src/theme.c:2393
-#: ../src/theme.c:2414
+#: ../src/theme.c:2449
+#: ../src/theme.c:2471
+#: ../src/theme.c:2492
 #, c-format
 msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgstr "Tema vsebuje izraz \"%s\", kar je povzročilo napako: %s\n"
 
-#: ../src/theme.c:3860
+#: ../src/theme.c:3946
 #, c-format
 msgid "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this frame style"
 msgstr "za ta slog okvirja mora biti naveden <button function=\"%s\" state=\"%s\" draw_ops=\"karkoli\"/>"
 
-#: ../src/theme.c:4304
-#: ../src/theme.c:4329
+#: ../src/theme.c:4422
+#: ../src/theme.c:4447
 #, c-format
 msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr "Manjka <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"karkoli\"/>"
 
-#: ../src/theme.c:4375
+#: ../src/theme.c:4493
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Nalaganje teme \"%s\" ni uspelo: %s\n"
 
-#: ../src/theme.c:4515
-#: ../src/theme.c:4522
-#: ../src/theme.c:4529
-#: ../src/theme.c:4536
-#: ../src/theme.c:4543
+#: ../src/theme.c:4603
+#: ../src/theme.c:4610
+#: ../src/theme.c:4617
+#: ../src/theme.c:4624
+#: ../src/theme.c:4631
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Ni nastavljen <%s> za temo \"%s\""
 
-#: ../src/theme.c:4551
+#: ../src/theme.c:4639
 #, c-format
 msgid "No frame style set for window type \"%s\" in theme \"%s\", add a <window type=\"%s\" style_set=\"whatever\"/> element"
 msgstr "Slog okvirja za okno vrste \"%s\" v temi \"%s\" ni nastavljen, dodajte element <window type=\"%s\" style_set=\"whatever\"/>"
 
-#: ../src/theme.c:4565
-#, c-format
-msgid "<menu_icon function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this theme"
-msgstr "Za to temo mora biti naveden <menu_icon function=\"%s\" state=\"%s\" draw_ops=\"karkoli\"/>"
-
-#: ../src/theme.c:4945
-#: ../src/theme.c:5007
+#: ../src/theme.c:5006
+#: ../src/theme.c:5068
+#: ../src/theme.c:5131
 #, c-format
 msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "Uporabniško določene konstante se morajo začeti z veliko črko; \"%s\" se ne"
 
-#: ../src/theme.c:4953
-#: ../src/theme.c:5015
+#: ../src/theme.c:5014
+#: ../src/theme.c:5076
+#: ../src/theme.c:5139
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanta \"%s\" je bila že določena"
 
-#: ../src/util.c:96
+#: ../src/util.c:98
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Odpiranje razhroščevalnega dnevnika ni uspelo: %s\n"
 
-#: ../src/util.c:106
+#: ../src/util.c:108
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Odpiranje dnevniške datoteke %s s fdopen() ni uspelo: %s\n"
 
-#: ../src/util.c:112
+#: ../src/util.c:114
 #, c-format
 msgid "Opened log file %s\n"
-msgstr "Odpru dnevniško datoteko %s\n"
+msgstr "Odpri dnevniško datoteko %s\n"
 
-#: ../src/util.c:220
+#: ../src/util.c:231
 msgid "Window manager: "
-msgstr "Upravljalnik oken: "
+msgstr "Upravljavec oken: "
 
 # G:4 K:0 O:0
-#: ../src/util.c:368
+#: ../src/util.c:379
 msgid "Bug in window manager: "
-msgstr "Hrošč v upravljalniku oken: "
+msgstr "Hrošč v upravljavcu oken: "
 
-#: ../src/util.c:397
+#: ../src/util.c:408
 msgid "Window manager warning: "
-msgstr "Opozorilo upravljlanika okan: "
+msgstr "Opozorilo upravljavca oken: "
 
-#: ../src/util.c:421
+#: ../src/util.c:432
 msgid "Window manager error: "
-msgstr "Napaka upravljalnika oken: "
+msgstr "Napaka upravljavca oken: "
 
-#: ../src/window-props.c:169
+#: ../src/window-props.c:192
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Program je nastavil pokvarjen _NET_WM_PID %lu\n"
 
-#: ../src/window-props.c:237
+#: ../src/window-props.c:324
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (na %s)"
 
-#: ../src/window-props.c:1177
+#: ../src/window-props.c:1406
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Neveljaven WM_TRANSIENT_FOR za okno 0x%lx naveden za %s.\n"
 
 #. first time through
-#: ../src/window.c:5298
+#: ../src/window.c:5601
 #, c-format
 msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
-msgstr "Okno %s nastavi svoj SM_CLIENT_ID, namesto, da bi nastavilo WM_CLIENT_LEADER kot je nevaedeno v ICCCM.\n"
+msgstr "Okno %s nastavi svoj SM_CLIENT_ID, namesto, da bi nastavilo WM_CLIENT_LEADER kot je zavedeno v ICCCM.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -2378,12 +2533,12 @@ msgstr "Okno %s nastavi svoj SM_CLIENT_ID, namesto, da bi nastavilo WM_CLIENT_LE
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/window.c:5894
+#: ../src/window.c:6166
 #, c-format
 msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
-msgstr "Okno %s nastavi namig MWM, ki pove, da se mu ne da spremeniti velikosti, anastavi najmanjšo velikost na %d x %d in največjo na %d x %d; to nima smilsa.\n"
+msgstr "Okno %s določi namig MWM, ki pove, da ni mogoče spremeniti velikosti, hkrati pa določi najmanjšo velikost na %d x %d in največjo na %d x %d; vrednost ni smiselna.\n"
 
-#: ../src/xprops.c:153
+#: ../src/xprops.c:155
 #, c-format
 msgid ""
 "Window 0x%lx has property %s\n"
@@ -2398,48 +2553,13 @@ msgstr ""
 "To je najverjetneje hrošč v programu in ne v upravljalniku oken.\n"
 "Okno ima title=\"%s\" class=\"%s\" name=\"%s\"\n"
 
-#: ../src/xprops.c:399
+#: ../src/xprops.c:401
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Lastnost %s okna 0x%lx vsebuje neveljaven znak UTF-8\n"
 
-#: ../src/xprops.c:482
+#: ../src/xprops.c:484
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "Lastnost %s okna 0x%lx vsebuje neveljaven znak UTF-8 za %d. predmet na seznamu\n"
-
-#~ msgid ""
-#~ "Some applications break specifications in ways that result in window "
-#~ "manager misfeatures. For example, ideally Metacity would place all "
-#~ "dialogs in a consistent position with respect to their parent window. "
-#~ "This requires ignoring application-specified positions for dialogs. But "
-#~ "some versions of Java/Swing mark their popup menus as dialogs, so "
-#~ "Metacity has to disable dialog positioning to allow menus to work in "
-#~ "broken Java applications. There are several other examples like this. "
-#~ "This option puts Metacity in full-on Correct mode, which perhaps gives a "
-#~ "moderately nicer UI if you don't need to run any broken apps. Sadly, "
-#~ "workarounds must be enabled by default; the real world is an ugly place. "
-#~ "Some of the workarounds are workarounds for limitations in the "
-#~ "specifications themselves, so sometimes a bug in no-workarounds mode "
-#~ "won't be fixable without amending a spec."
-#~ msgstr ""
-#~ "Nekateri programi se ne ravnajo po specifikacijah, kar povzroči napačno "
-#~ "delovanje upravljalnika oken. Na primer, idealno bi Metacity lahko "
-#~ "namestil vse dialoge v konsistenten položaj glede na starševsko okno. Zo "
-#~ "zahteva prezrtje programsko določenega mesta za dialog. A nekatere "
-#~ "različice Java/Swinga označijo vzklična okna kot dialoge, zato mora "
-#~ "Metacity izklopiti nameščanje dialoga, da lahko v pokvarjenih programih "
-#~ "Java delujejo menuji. Obstaja še mnogo drugih primerov. Ta možnost "
-#~ "postavi Metacity v  Pravilen način, kar morda da rahlo lepši uporabniški "
-#~ "vmesnik, če vam ni treba poganjati pokvarjenih programov. Na žalost je "
-#~ "svet grd in obhodi teh napak morajo biti privzeto vklopljeni. Nekaterih "
-#~ "obhodov ni mogoče popraviti  brez, da se odpravi pomankljivosti samih "
-#~ "specifikacij, zato kdaj hroščav brezobhodnem načinu ne bo mogoče "
-#~ "popraviti brez, da se popravi specifikacija."
-#~ msgid ""
-#~ "Coordinate expression parser overflowed its buffer, this is really a "
-#~ "Metacity bug, but are you sure you need a huge expression like that?"
-#~ msgstr ""
-#~ "Razčlenilnik izraza kodrinat je prekoračil svoj izravnalnik, to je hrošč "
-#~ "v Metacity, ampak ali zares potrebujete tak izraz?"
 
