@@ -1,5 +1,10 @@
 2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
 
+	* clutter/clutter-texture.c (clutter_texture_set_property): Do
+	not try to set NULL pixbufs.
+
+2007-10-25  Emmanuele Bassi  <ebassi@openedhand.com>
+
 	* clutter/clutter-actor.c: Implement part of the ClutterScriptable
 	interface, using the ClutterActor API to set and get the name
 	of an actor.

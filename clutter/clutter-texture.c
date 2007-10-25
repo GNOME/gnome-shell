@@ -797,9 +797,10 @@ clutter_texture_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_PIXBUF:
-      clutter_texture_set_pixbuf (texture,
-				  GDK_PIXBUF (g_value_get_object (value)),
-				  NULL);
+      if (g_value_get_object (value))
+        clutter_texture_set_pixbuf (texture,
+                                    GDK_PIXBUF (g_value_get_object (value)),
+				    NULL);
       break;
     case PROP_USE_TILES:
       priv->is_tiled = g_value_get_boolean (value);
